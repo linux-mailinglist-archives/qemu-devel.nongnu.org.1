@@ -2,74 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36031B2203B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 10:05:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BBC7B22376
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 11:42:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uljzF-0004s4-RH; Tue, 12 Aug 2025 04:04:02 -0400
+	id 1ullUf-0007O5-Hq; Tue, 12 Aug 2025 05:40:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uljyy-0004rg-Gn
- for qemu-devel@nongnu.org; Tue, 12 Aug 2025 04:03:44 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
+ id 1ullUa-0007Mq-RK; Tue, 12 Aug 2025 05:40:28 -0400
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uljyr-0007Xn-V1
- for qemu-devel@nongnu.org; Tue, 12 Aug 2025 04:03:43 -0400
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 57C837HU039654
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Tue, 12 Aug 2025 17:03:08 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=fobMO+6ZpTZRyA8dW9KsHL3gX7arwI/uxdtBgJRXnPU=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1754985788; v=1;
- b=pMvUhXq+sSilCmtfppQGNaX+ToODC8wFSpMppztJryozg3E11xUCpyyvFok7kGcG
- lsHAoTSAXrkOYFwoy2qLt/ujHYSTvfprthaKWPAhlWaSirq/nDhZA2YJVdED54iG
- 3U7z69hJ9J9gwxEpZ6/ZK6Ck54HeccC6GGPbioIqUZGHy+cJG6PdE76FE60fcpru
- 3B+gC2w/bR1Lv95lROXT0SrqMJuzbR+GaiF3CQtf6ce8OdhJG3Tmg0oSZIQy+L8T
- HiwbPs53gJwmmq5Sncw0cu0TQrWjRwCy6BANh9EO84aEf/GGwZEIXwrNCEAa81j3
- I4wML4a8CS/+ipVBRjneKw==
-Message-ID: <73f8b2dc-d5ad-43b7-834f-6322bfe617af@rsg.ci.i.u-tokyo.ac.jp>
-Date: Tue, 12 Aug 2025 17:03:07 +0900
+ (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
+ id 1ullUU-0000Yh-Cz; Tue, 12 Aug 2025 05:40:28 -0400
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 12 Aug
+ 2025 17:40:12 +0800
+Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Tue, 12 Aug 2025 17:40:12 +0800
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open
+ list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>
+CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
+Subject: [PATCH v5 00/10] aspeed: OTP model, SBC integration, tests, and docs
+Date: Tue, 12 Aug 2025 17:39:57 +0800
+Message-ID: <20250812094011.2617526-1-kane_chen@aspeedtech.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v4 07/14] virtio-pci: implement support for extended
- features
-To: Jason Wang <jasowang@redhat.com>, Paolo Abeni <pabeni@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Luigi Rizzo <lrizzo@google.com>,
- Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
- Vincenzo Maffione <v.maffione@gmail.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
-References: <cover.1753297661.git.pabeni@redhat.com>
- <8e8a91adcbf4e37c7a5e086780e1000d3b3298d3.1753297661.git.pabeni@redhat.com>
- <de3c69a8-d874-44a3-bd47-91b6b298e184@rsg.ci.i.u-tokyo.ac.jp>
- <7c7c3f2c-e643-46ad-810c-aefdd486ad78@redhat.com>
- <8e3c5aa3-3180-4df2-b378-18e3e91d3f80@rsg.ci.i.u-tokyo.ac.jp>
- <CACGkMEse8cM8=8y4JwBdVQi23buz1OCzhQmVxvsRJGdQ9tgaWA@mail.gmail.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <CACGkMEse8cM8=8y4JwBdVQi23buz1OCzhQmVxvsRJGdQ9tgaWA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+Received-SPF: pass client-ip=211.20.114.72;
+ envelope-from=kane_chen@aspeedtech.com; helo=TWMBX01.aspeed.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,101 +57,98 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Kane Chen <kane_chen@aspeedtech.com>
+From:  Kane Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/08/12 13:01, Jason Wang wrote:
-> On Fri, Aug 8, 2025 at 12:55 PM Akihiko Odaki
-> <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
->>
->> On 2025/08/08 5:18, Paolo Abeni wrote:
->>> On 7/26/25 1:52 PM, Akihiko Odaki wrote:
->>>> On 2025/07/24 4:31, Paolo Abeni wrote:
->>>>> @@ -1477,6 +1509,13 @@ int virtio_pci_add_shm_cap(VirtIOPCIProxy *proxy,
->>>>>         return virtio_pci_add_mem_cap(proxy, &cap.cap);
->>>>>     }
->>>>>
->>>>> +static int virtio_pci_select_max(const VirtIODevice *vdev)
->>>>> +{
->>>>> +    return virtio_features_use_ex(vdev->host_features_ex) ?
->>>>> +           VIRTIO_FEATURES_NU32S :
->>>>> +           2;
->>>>
->>>> This function could be simplified by replacing VIRTIO_FEATURES_NU32S
->>>> without any functional difference:
-> 
-> Did you mean using VIRTIO_FEATURES_NU32S instead?
-> 
->>>>
->>>> 1. For writes: virtio_set_features_ex() already ignores extended
->>>> features when !virtio_features_use_ex(vdev->host_features_ex)
->>>> 2. For reads: When !virtio_features_use_ex(vdev->host_features_ex), the
->>>> upper bits of host_features_ex are zero, and guest_features upper bits
->>>> remain zero (since they can't be set per point 1)
-> 
-> I think it depends on the compatibility work which hasn't been done in
-> this series.
-> 
->>>>
->>>> So the conditional logic is redundant here.
-> 
-> See below
-> 
->>>
->>> This is to satisfy a request from Jason:
->>>
->>> https://lists.gnu.org/archive/html/qemu-devel/2025-07/msg05291.html
->>> https://lists.gnu.org/archive/html/qemu-devel/2025-07/msg05423.html
->>>
->>> I agree there will not be functional differences always accessing the
->>> full space, but the guest could still be able to notice, i.e. the
->>> extended space will be zeroed on read with that patched qemu and
->>> untouched by the current code and this patch. To be on the safe side I
->>> think it would be better to avoid such difference, as suggested by Jason.
->>>
->>> Does the above make sense to you?
->>
->> By functional, I meant the functionality of QEMU, visible to the guest,
->> rather than the whole system including the guest, visible to the end
->> user. The guest cannot notice the difference because the extended space
->> is zero on read even without the conditional, which is described as
->> point 2 in the previous email.
-> 
-> I'm not sure I understand this correctly. But it doesn't harm here consider:
-> 
-> 1) it's the entry point from the guest, checking and failing early is
-> better than depending on the low layer functions
-> 2) we have checks in several layers (both virtio-pci and virtio core).
-> 
-> And it looks like a must for at least GF:
-> 
->      case VIRTIO_PCI_COMMON_GF:
->          if (proxy->gfselect < virtio_pci_select_max(vdev)) {
->              uint64_t features[VIRTIO_FEATURES_NU64S];
->              int i;
-> 
->              proxy->guest_features[proxy->gfselect] = val;
+From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
-I missed proxy->guest_features. Indeed it makes a difference.
+This patch series extends the QEMU model for the ASPEED OTP (One-Time
+Programmable) memory device with block backend support and tighter
+integration with the SoC and machine configuration.
 
-Now I have another concern with virtio_pci_select_max(). If the feature 
-set grows again, virtio_pci_select_max() will return the grown size for 
-the devices that have [127:64] bits, which will be a breaking change. In 
-this sense, VIRTIO_FEATURES_NU32S, which will grow along with the 
-feature set, is not appropriate here.
+The OTP model simulates a simple fuse array used in ASPEED SoCs for
+secure boot, configuration, key storage, and user-programmable data.
+The updated model adds support for loading initial OTP content from a
+file via the QEMU CLI.
 
-Hardcoding 4 ensures such a breaking change will not happen at least.
+Example usage:
+  ./qemu-system-arm \
+    -machine ast2600-evb \
+    -blockdev driver=file,filename=otpmem.img,node-name=otp \
+    -global aspeed-otp.drive=otp \
+    ...
 
-Perhaps QEMU_BUILD_BUG_ON() may be placed here to tell it needs to be 
-updated when the feature set grows, but I don't require that since there 
-is QEMU_BUILD_BUG_ON() before vmstate_virtio_pci_modern_state_sub. It 
-may be a good idea to move this function somewhere close to 
-QEMU_BUILD_BUG_ON().
+Any feedback or suggestions are appreciated!
 
-Alternatively the function may compute the value to return by finding 
-the last non-zero element in vdev->host_features_ex and multiplying by 
-2. It will probably work even if the feature set grows again in the future.
+Kane
+---
 
-Regards,
-Akihiko Odaki
+ChangeLog
+---------
+v5:
+- Add OTP programming semantics and tracing
+- Integrate OTP into AST1030 SoC
+- Add CAMP2 register support for reading both DWORDs of OTP data
+  entries
+- Handle voltage mode write commands to avoid misreporting valid
+  requests as "Unknown command"
+- Add functional test to verify firmware boot with a pre-configured
+  OTP image
+- Add documentation for OTP memory options in QEMU
+
+v4:
+- Add a 'drive' property to allow backing OTP data with a block device
+- Expose a machine parameter (`-machine otpmem=XXX`) for convenient
+  aliasing of the OTP drive via QOM path
+
+v3:
+- Switched to object_property_set_int() for setting "size"
+- Simplified qdev_realize() error handling by passing errp directly
+- Added "drive" property to OTP model for future extensibility
+
+v2:
+- Rename device from 'aspeed_otpmem' to 'aspeed_otp' and move it to hw/nvram/
+- Move OTP device realization from instance_init to the realize function
+- Improve error logging with qemu_log_mask() and remove unused error propagation
+
+v1:
+- Initial version
+
+---
+
+Kane-Chen-AS (10):
+  hw/nvram/aspeed_otp: Add ASPEED OTP memory device model
+  hw/misc/aspeed_sbc: Connect ASPEED OTP memory device to SBC
+  hw/arm: Integrate ASPEED OTP memory support into AST2600 SoCs
+  hw/nvram/aspeed_otp: Add 'drive' property to support block backend
+  hw/nvram/aspeed_otp: Add OTP programming semantics and tracing
+  hw/arm: Integrate ASPEED OTP memory support into AST1030 SoCs
+  hw/misc/aspeed_sbc: Add CAMP2 support for OTP data reads
+  hw/misc/aspeed_sbc: Handle OTP write command for voltage mode
+    registers
+  tests/function/aspeed: Add OTP functional test
+  docs/system/arm/aspeed: Document OTP memory options
+
+ docs/system/arm/aspeed.rst              |  31 ++++
+ include/hw/misc/aspeed_sbc.h            |   6 +
+ include/hw/nvram/aspeed_otp.h           |  33 ++++
+ hw/arm/aspeed_ast10x0.c                 |   2 +-
+ hw/arm/aspeed_ast2600.c                 |   2 +-
+ hw/misc/aspeed_sbc.c                    | 196 ++++++++++++++++++++++++
+ hw/nvram/aspeed_otp.c                   | 190 +++++++++++++++++++++++
+ hw/misc/trace-events                    |   6 +
+ hw/nvram/meson.build                    |   4 +
+ hw/nvram/trace-events                   |   5 +
+ tests/functional/meson.build            |   2 +
+ tests/functional/test_arm_aspeed_otp.py |  55 +++++++
+ 12 files changed, 530 insertions(+), 2 deletions(-)
+ create mode 100644 include/hw/nvram/aspeed_otp.h
+ create mode 100644 hw/nvram/aspeed_otp.c
+ create mode 100644 tests/functional/test_arm_aspeed_otp.py
+
+-- 
+2.43.0
+
 
