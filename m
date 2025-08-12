@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1FD1B2238D
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 11:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF4EB22380
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Aug 2025 11:42:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ullVZ-0007wE-2V; Tue, 12 Aug 2025 05:41:29 -0400
+	id 1ullVb-0007zp-TT; Tue, 12 Aug 2025 05:41:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1ullVS-0007mC-7K; Tue, 12 Aug 2025 05:41:22 -0400
+ id 1ullVZ-0007yE-LW; Tue, 12 Aug 2025 05:41:29 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1ullVO-0000lv-6y; Tue, 12 Aug 2025 05:41:21 -0400
+ id 1ullVT-0000lv-BE; Tue, 12 Aug 2025 05:41:29 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 12 Aug
- 2025 17:40:15 +0800
+ 2025 17:40:16 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Tue, 12 Aug 2025 17:40:15 +0800
+ Transport; Tue, 12 Aug 2025 17:40:16 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
@@ -30,10 +30,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
-Subject: [PATCH v5 08/10] hw/misc/aspeed_sbc: Handle OTP write command for
- voltage mode registers
-Date: Tue, 12 Aug 2025 17:40:05 +0800
-Message-ID: <20250812094011.2617526-9-kane_chen@aspeedtech.com>
+Subject: [PATCH v5 09/10] tests/function/aspeed: Add OTP functional test
+Date: Tue, 12 Aug 2025 17:40:06 +0800
+Message-ID: <20250812094011.2617526-10-kane_chen@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250812094011.2617526-1-kane_chen@aspeedtech.com>
 References: <20250812094011.2617526-1-kane_chen@aspeedtech.com>
@@ -67,102 +66,98 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
-Extend OTP command handling to recognize specific voltage mode register
-addresses and emulate the expected hardware behavior. Without this
-change, legitimate voltage mode change requests would be incorrectly
-reported as "Unknown command" and logged as an error.
-
-This implementation does not perform actual mode changes, but ensures
-that valid requests are accepted and ignored as per hardware behavior.
+On boot, the SoC firmware reads data from the OTP region to obtain the
+chip ID and default settings. This change adds test cases to verify
+that the firmware can boot correctly with a pre-configured OTP image.
 
 Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 ---
- hw/misc/aspeed_sbc.c | 41 +++++++++++++++++++++++++++++++++++++++++
- hw/misc/trace-events |  1 +
- 2 files changed, 42 insertions(+)
+ tests/functional/meson.build            |  2 +
+ tests/functional/test_arm_aspeed_otp.py | 55 +++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+)
+ create mode 100644 tests/functional/test_arm_aspeed_otp.py
 
-diff --git a/hw/misc/aspeed_sbc.c b/hw/misc/aspeed_sbc.c
-index 787e2d0489..2fc5db749d 100644
---- a/hw/misc/aspeed_sbc.c
-+++ b/hw/misc/aspeed_sbc.c
-@@ -49,10 +49,17 @@
- #define OTP_MEMORY_SIZE 0x4000
- /* OTP command */
- #define SBC_OTP_CMD_READ 0x23b1e361
-+#define SBC_OTP_CMD_WRITE 0x23b1e362
- #define SBC_OTP_CMD_PROG 0x23b1e364
- 
- #define OTP_DATA_DWORD_COUNT        (0x800)
- #define OTP_TOTAL_DWORD_COUNT       (0x1000)
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 311c6f1806..c731b779dd 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -34,6 +34,7 @@ test_timeouts = {
+   'arm_aspeed_bletchley' : 480,
+   'arm_aspeed_catalina' : 480,
+   'arm_aspeed_gb200nvl_bmc' : 480,
++  'arm_aspeed_otp': 1200,
+   'arm_aspeed_rainier' : 480,
+   'arm_bpim2u' : 500,
+   'arm_collie' : 180,
+@@ -132,6 +133,7 @@ tests_arm_system_thorough = [
+   'arm_aspeed_bletchley',
+   'arm_aspeed_catalina',
+   'arm_aspeed_gb200nvl_bmc',
++  'arm_aspeed_otp',
+   'arm_aspeed_rainier',
+   'arm_bpim2u',
+   'arm_canona1100',
+diff --git a/tests/functional/test_arm_aspeed_otp.py b/tests/functional/test_arm_aspeed_otp.py
+new file mode 100644
+index 0000000000..48c7cad3f3
+--- /dev/null
++++ b/tests/functional/test_arm_aspeed_otp.py
+@@ -0,0 +1,55 @@
++import os
++import time
++import tempfile
++import subprocess
 +
-+/* Voltage mode */
-+#define MODE_REGISTER               (0x1000)
-+#define MODE_REGISTER_A             (0x3000)
-+#define MODE_REGISTER_B             (0x5000)
++from qemu_test import LinuxKernelTest, Asset
++from aspeed import AspeedTest
++from qemu_test import exec_command_and_wait_for_pattern, skipIfMissingCommands
 +
- static uint64_t aspeed_sbc_read(void *opaque, hwaddr addr, unsigned int size)
- {
-     AspeedSBCState *s = ASPEED_SBC(opaque);
-@@ -115,6 +122,37 @@ static bool aspeed_sbc_otp_read(AspeedSBCState *s,
-     return true;
- }
- 
-+static bool mode_handler(uint32_t otp_addr)
-+{
-+    switch (otp_addr) {
-+    case MODE_REGISTER:
-+    case MODE_REGISTER_A:
-+    case MODE_REGISTER_B:
-+        /* HW behavior, do nothing here */
-+        return true;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "Unsupported address 0x%x\n",
-+                      otp_addr);
-+        return false;
-+    }
-+}
++class AspeedOtpMemoryTest(AspeedTest):
++    # AST2600 SDK image
++    ASSET_SDK_V907_AST2600 = Asset(
++        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2600-default-obmc.tar.gz',
++        'cb6c08595bcbba1672ce716b068ba4e48eda1ed9abe78a07b30392ba2278feba')
 +
-+static bool aspeed_sbc_otp_write(AspeedSBCState *s,
-+                                    uint32_t otp_addr)
-+{
-+    if (otp_addr == 0) {
-+        trace_aspeed_sbc_ignore_cmd(otp_addr);
-+        return true;
-+    } else {
-+        if (mode_handler(otp_addr) == false) {
-+            return false;
-+        }
-+    }
++    # AST1030 Zephyr image
++    ASSET_ZEPHYR_3_02 = Asset(
++        'https://github.com/AspeedTech-BMC/zephyr/releases/download/v00.03.02/ast1030-evb-demo.zip',
++        '1ec83caab3ddd5d09481772801be7210e222cb015ce22ec6fffb8a76956dcd4f')
 +
-+    return true;
-+}
++    def generate_otpmem_image(self):
++        path = self.scratch_file("otpmem.img")
++        pattern = b'\x00\x00\x00\x00\xff\xff\xff\xff' * (16 * 1024 // 8)
++        with open(path, "wb") as f:
++            f.write(pattern)
++        return path
 +
- static bool aspeed_sbc_otp_prog(AspeedSBCState *s,
-                                    uint32_t otp_addr)
- {
-@@ -157,6 +195,9 @@ static void aspeed_sbc_handle_command(void *opaque, uint32_t cmd)
-     case SBC_OTP_CMD_READ:
-         ret = aspeed_sbc_otp_read(s, otp_addr);
-         break;
-+    case SBC_OTP_CMD_WRITE:
-+        ret = aspeed_sbc_otp_write(s, otp_addr);
-+        break;
-     case SBC_OTP_CMD_PROG:
-         ret = aspeed_sbc_otp_prog(s, otp_addr);
-         break;
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 9e05b82f37..eeb9243898 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -91,6 +91,7 @@ slavio_led_mem_writew(uint32_t val) "Write diagnostic LED 0x%04x"
- slavio_led_mem_readw(uint32_t ret) "Read diagnostic LED 0x%04x"
- 
- # aspeed_sbc.c
-+aspeed_sbc_ignore_cmd(uint32_t cmd) "Ignoring command 0x%" PRIx32
- aspeed_sbc_handle_cmd(uint32_t cmd, uint32_t addr, bool ret) "Handling command 0x%" PRIx32 " for OTP addr 0x%" PRIx32 " Result: %d"
- aspeed_sbc_otp_read(uint32_t addr, uint32_t value) "OTP Memory read: addr 0x%" PRIx32 " value 0x%" PRIx32
- aspeed_sbc_otp_prog(uint32_t addr, uint32_t value) "OTP Memory write: addr 0x%" PRIx32 " value 0x%" PRIx32
++    def test_ast2600_otp_blockdev_device(self):
++        image_path = self.archive_extract(self.ASSET_SDK_V907_AST2600)
++        otp_img = self.generate_otpmem_image()
++        self.vm.set_machine("ast2600-evb")
++        self.vm.set_console()
++        self.vm.add_args(
++            "-blockdev", f"driver=file,filename={otp_img},node-name=otp",
++            "-global", "aspeed-otp.drive=otp",
++        )
++        self.do_test_arm_aspeed_sdk_start(self.scratch_file("ast2600-default", "image-bmc"))
++        self.wait_for_console_pattern("ast2600-default login:")
++
++    def test_ast1030_otp_blockdev_device(self):
++        kernel_name = "ast1030-evb-demo-3/zephyr.elf"
++        kernel_file = self.archive_extract(self.ASSET_ZEPHYR_3_02, member=kernel_name)
++        otp_img = self.generate_otpmem_image()
++        self.vm.set_machine("ast1030-evb")
++        self.vm.set_console()
++        self.vm.add_args(
++            "-kernel", kernel_file,
++            "-blockdev", f"driver=file,filename={otp_img},node-name=otp",
++            "-global", "aspeed-otp.drive=otp",
++        )
++        self.vm.launch()
++        self.wait_for_console_pattern("Booting Zephyr OS")
++
++if __name__ == '__main__':
++    AspeedTest.main()
 -- 
 2.43.0
 
