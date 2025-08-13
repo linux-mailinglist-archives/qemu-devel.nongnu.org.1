@@ -2,52 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32388B252D0
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 20:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70513B26DDC
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 19:39:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umFu5-0003pj-Gm; Wed, 13 Aug 2025 14:08:49 -0400
+	id 1umbth-0007FX-St; Thu, 14 Aug 2025 13:37:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1umFtz-0003oh-VA
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 14:08:44 -0400
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1umbtY-0007El-9u
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:37:44 -0400
 Received: from mail-a.sr.ht ([46.23.81.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1umFtu-0001rv-Ck
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 14:08:42 -0400
-DKIM-Signature: a=rsa-sha256; bh=nsR5s3LFgGbpqVB3uSg+Bs76r4RLw5KyQgIsMLnNh44=; 
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1umbtS-0006lD-Nd
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:37:43 -0400
+DKIM-Signature: a=rsa-sha256; bh=UjjLCmp4BjuXMfxENaXoTrdjjyVEDurmJ0hse4taSU8=; 
  c=simple/simple; d=git.sr.ht;
  h=From:Date:Subject:Reply-to:In-Reply-To:To:Cc; q=dns/txt; s=20240113;
- t=1755108513; v=1;
- b=ipcTznmwJEJDJ4ptFIBNZXQyKqEDK0ggsIfQPtbI9t8S+5VMwiK9gmRZGcb/e1hS9SVS13Cj
- qPbELjmoSoOEtgsnjXQoorpUCzxFz1NUuOcCVvIAxdGxnxGvcjS6ClkFFDDpK6h03kWO1NCKdme
- GMeuuGgrC3ckBRhh/L8GRnRMObfQWtN2Pp3Xp56qdM+gsMQP7XUxbgYwcN4ETMaFLk0c8Ubu4lZ
- cK/hwv9bomnqvBh7ur1HNBAmNQIMtwtgIv/MJkre2Dvsf/TVN99OcUUcPyzXpLh9OF4Z++usRyn
- /KJcoVeUBxRG8H9xCcvRsGVDvwE0hkcWmRdcauZ1TYLQw==
+ t=1755193052; v=1;
+ b=UkmdFJ5VfcE8I1k3wLjpOKZ86oa7U6fo4VnASC5efddx+M5s0n+/9oqF7zIPFas4kr7M31Cl
+ Yd4U4eJTBCnGr9COcy4rdrV02oOwhk+kj54TVsqaKzF4cTYOMNom7KW9tXc42iNBVlGt8N6E2zv
+ qgcwdgBGuTNLkyJEdyhka19iSqFUeN9g0e9UwSC5hY6JDD2UEtRee6LI3tVDeK2yE2Yb+dT/lOK
+ Bky+ytEVuB25jCV72qJza0BUmK9LMhmIXauZH0VvD7/8ikGz4gIxP3dd/09GErrwh994uJzf1MO
+ YsiAZLWwrV2eUNgLN2qNqtCuzwheUzGPGIxpySRSVvTQg==
 Received: from git.sr.ht (unknown [46.23.81.155])
- by mail-a.sr.ht (Postfix) with ESMTPSA id 9089E22F41;
- Wed, 13 Aug 2025 18:08:33 +0000 (UTC)
+ by mail-a.sr.ht (Postfix) with ESMTPSA id E031822FB6;
+ Thu, 14 Aug 2025 17:37:32 +0000 (UTC)
 From: ~myrslint <myrslint@git.sr.ht>
 Date: Wed, 13 Aug 2025 17:53:59 +0000
-Subject: [PATCH qemu v2 1/1] Default disable ignore guest PAT quirk (second
+Subject: [PATCH qemu v3 1/1] Default disable ignore guest PAT quirk (second
  revision)
 MIME-Version: 1.0
-Message-ID: <175510851329.15645.802219111760057966-1@git.sr.ht>
+Message-ID: <175519305258.21579.8228319741764786681-1@git.sr.ht>
 X-Mailer: git.sr.ht
-In-Reply-To: <175510851329.15645.802219111760057966-0@git.sr.ht>
+In-Reply-To: <175519305258.21579.8228319741764786681-0@git.sr.ht>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Alex =?utf-8?q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
  helo=mail-a.sr.ht
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
+ DKIM_INVALID=0.1, DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
@@ -68,25 +67,16 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: myrslint <qemu.haziness801@passinbox.com>
 
-Thanks to Alex Benn=C3=A9e <alex.bennee@linaro.org> for the kind code review
-and helpful guidance. This is a second attempt at addressing this issue:
-https://gitlab.com/qemu-project/qemu/-/issues/2943
-
 Most Intel CPUs in current use have self-snoop. The few added lines of
 code also check for availability of the quirk disablement option so if
 some CPU does not have this feature no change of behavior will occur.
 
 Signed-off-by: Myrsky Lintu <qemu.haziness801@passinbox.com>
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2943
 ---
-Hopefully, I have improved the patch based on kindly provided code
-review.
-
-The only point of divergence is that per
-
-https://www.kernel.org/doc/html/latest/virt/kvm/api.html
-
-this is a VM capability (section 7), not a VCPU one, so a call is made
-to kvm_vm_enable_cap() rather than kvm_vcpu_enable_cap().
+Thanks to Alex Benn=C3=A9e <alex.bennee@linaro.org> for the kind code review
+and helpful guidance.
 
  target/i386/kvm/kvm.c | 19 +++++++++++++++++++
  1 file changed, 19 insertions(+)
