@@ -2,149 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12749B249EE
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 14:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF35CB24A0F
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 15:02:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umB0d-0005OV-B7; Wed, 13 Aug 2025 08:55:15 -0400
+	id 1umB6S-0000We-SP; Wed, 13 Aug 2025 09:01:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1umB0X-0005MH-GL
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 08:55:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1umB0S-000270-LA
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 08:55:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755089700;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=6KH7D7BS6cfbcjbpLocRz9dUcyj/ezFWvsG5tv4hFoM=;
- b=Ziy0i+RLvZQA4f7pzv+SrfUtHuU/NwE6iwRJGmsrCXoqHGTDfxItB7n/ovsTifng5NdI6c
- fhWq5dGQqFxvKCSyTd3Z52jR1m8jvBjhuz441+hO/HZdPDZJnhJDb83nIplGuP9SvQ0vJF
- srxvv3F3M5nAZXbiqrlBOoF3fwWXsqU=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-I2bQ9ViHO1u33NpB1BO0ow-1; Wed, 13 Aug 2025 08:54:59 -0400
-X-MC-Unique: I2bQ9ViHO1u33NpB1BO0ow-1
-X-Mimecast-MFC-AGG-ID: I2bQ9ViHO1u33NpB1BO0ow_1755089698
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3b90ab438b9so1280496f8f.2
- for <qemu-devel@nongnu.org>; Wed, 13 Aug 2025 05:54:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1umB6K-0000ON-At
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 09:01:08 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1umB6E-00035d-LF
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 09:01:08 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-459ddada9b1so61071925e9.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Aug 2025 06:01:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1755090059; x=1755694859; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=r8d+OEKMNQLXkS+0JIZdWtkIaUy2MM8WLDGkj3FgK9A=;
+ b=uhzO4efPOXaZ3xz0CqluCfSmVk9XCq3fUxT2ME5mRt8ak/tMuwYTykvLyMTegzfLCZ
+ ZN9Rdg8ZASurvMURnJCWp0Ff857oDVkPiD0mbkgGE7q9xlunH+qX0CLkKSqlNPsouvg3
+ CYSnUEN1g/A/svwhfHM4e0xxClRfzKjprU/Ww7ebKuClHR7OeiLSFGi9NPPa8KyjXi41
+ XPIwHHKPj3rt1yqsriykpb6RkxPI8ipYMn4QhRHjNbBrxMRwKs7OyhrjhmfkfpG0TxAS
+ LOCN2E6JseQcO9mkVuE6QWlk7uEE06qNcSI+pOpM/vcZib1jdJPGU87kcoJ+4QWdydSH
+ KsyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755089698; x=1755694498;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=6KH7D7BS6cfbcjbpLocRz9dUcyj/ezFWvsG5tv4hFoM=;
- b=xBC1JuJEN4KB6AWjysihV4TyilXJgVzD4gajXa6EsPqlnCPplK7XLhthh9NCPR7yBl
- VaEF20VX+ttwv5seGjQ91IPQTIEW3MLoSO6QZlGhtSUAxSY6JKdJOj4v2X5JFmccRcav
- axwQ7F+p/OfPvc8AnrlPtX0DnwXQyrrjJ7P4S5meayoN9dLB7iHpemu072LyQ4Gh9zPg
- a3MXiF9HdSsegxadylg0mHHPeZzC0VAKXf2Oz0ZbkxouPX4K17pScwBrVhzR7c3YeGGv
- XIdSYiE1wUOhG3aIOHNBwzLSYCYXmpkay6tFnBfgQ8bKR/m+B9Ob4jbdc2+qkp3Jkahm
- cy7g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVlaHARM0qzfIcfruwscM9uS+IAV9gqASOQ2PdchFTLfwfwdk8v/K7gVkhaIQZ7SUq2frYLOhCTPp1G@nongnu.org
-X-Gm-Message-State: AOJu0Yyn0SrUiFWbdrvD8Ks8tGRvsOrSkHBnOilSHIRFnBWWIU91GAvN
- FP0J0JLBuEohPFR2u2WTfp8awny+v2Ab/cr6brwTAVRUgjr8TYXpwh3lBnCL87lTmYiCczoH+Vv
- Ja4K3VJTFSYIsA89H6rHw53uEOCkegWw2qk+BVWPnprIDVgowdr4nDv+J
-X-Gm-Gg: ASbGnctSQb4dM37DVMneugZbQoC6pAJgjZA8ZAQbi20BrT1Xya5HP/zTiDyrptfbnzU
- 5vWW6ZyCHPaKz7N06sYVVXPE9rCiFXJOlAjcvZsjB50Iz4+3RND5QEJdATaajALLlRpmHVqOwFV
- /RRFUb+MIauR4Hlo1rmOjrs/Enipbgv4vEWCH4yHYI9gyeGOMnWRMKIdkrXReMHj811aWUMLwM+
- Ba6HvnxDqTNDI/BbU7CET64TMSTiSJfDoPsq4EbVKvNWdZnw/4T8rXDTWLFYQnOX9uOfnkb3tn4
- rYuxKnfYguAKY0tRuHaat6VJJG3jw7zRUkOQizEjCqyVXI/HChvQuskHT0uoksQj4FFECtxF4Bf
- 13g==
-X-Received: by 2002:a05:6000:2a0b:b0:3b9:1d32:cf63 with SMTP id
- ffacd0b85a97d-3b91d32dd06mr504641f8f.8.1755089697764; 
- Wed, 13 Aug 2025 05:54:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQwW7GINMfRqZkBmZYOtr1NWEpgpuQIaXbJTm26RAqhGe1gnSQWEFtc1aDDdVh+flaw3lQog==
-X-Received: by 2002:a05:6000:2a0b:b0:3b9:1d32:cf63 with SMTP id
- ffacd0b85a97d-3b91d32dd06mr504613f8f.8.1755089697262; 
- Wed, 13 Aug 2025 05:54:57 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b8e054036bsm37812136f8f.31.2025.08.13.05.54.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Aug 2025 05:54:56 -0700 (PDT)
-Message-ID: <9d709d91-1567-456a-83ae-b80f165da9a9@redhat.com>
-Date: Wed, 13 Aug 2025 14:54:55 +0200
+ d=1e100.net; s=20230601; t=1755090059; x=1755694859;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=r8d+OEKMNQLXkS+0JIZdWtkIaUy2MM8WLDGkj3FgK9A=;
+ b=kDKE3VU3oUlU7XhQQNiGFJtRfVClgcS2kPsSFnEHUewna/NoBLLV8suF/m6VLkZyuO
+ ef4NKDoa0pKv4DjLBnGB0cCPmde4E+UHUdVA+r7lWzjnBVCNTP5HF6OEa+mC152yl3tt
+ Y2s0z4V37amr+vheD1yKTexOXymynnUUL00R26Ri9VItLvfreDYjCrw/KSyYZZqX+TiQ
+ bkBetT5ggRzD4Y/4dOOON0MUPnS3mYHGqpU8WTk/+c/UCtff4kNccaTan4HVRCelxRG8
+ Y7sbMlY8Abtgw2U2rIKGl/4YiefTljQW1fQL9y0L9gV8hXTPsMEiZpV4Wp7lxWOdtYp7
+ IuZg==
+X-Gm-Message-State: AOJu0YydLWYxG2ib4JeWPvqFbSJQZChad8+MSr2Ox6WmBCkxBWp1bKyE
+ NB8Y81y9BNEzamIfl9VSxWlvOKri4nrMt2kT2qFvO4/BCBhdciyBZP3qezV/bHpkHtI=
+X-Gm-Gg: ASbGncucDslNcgRV831RTSWF6Y5y+Y9NYD686/coOP8U1N4vo+NfyMYZuJSV35zy1Vd
+ PqcPoB0Y9+wheQb9ixYTGH7p4uSnXcjtRabL41HRY+f/+CLYwhsLVx/6skshsqAScenuVK0PpUg
+ o7d0GwyMZwNpuuscaZFF/bSJcrWHNnfzr9HaMDukv0fj7wH5B3Nxpg4BNmVpiPdYpx64kpGPpKz
+ eiZcaavCBIP/5jGuBCsxrRpfJx1ErayavhYFI04RtYND5Venz1kgGHXB1iM7kPSiqFcH8CB3sKE
+ vhWax08UHhAFVrXnPZYR/cpjRHUWHQ4yPysA/3ekHbT8CVcwJ0C/Y02mZbwlIUGXigtXtItmSyR
+ 3Ayj7iNLjPllsjcEI3dwxKaXvvwyLV/5obg==
+X-Google-Smtp-Source: AGHT+IG78kweVihePeGXobK5ZACONta50Di2ozuW949GOhIjFKfOUdB11BptV5ajC0j06Cvdxo35Bw==
+X-Received: by 2002:a05:600c:4f8a:b0:459:dfde:3329 with SMTP id
+ 5b1f17b1804b1-45a165f7e8fmr29149335e9.31.1755090059156; 
+ Wed, 13 Aug 2025 06:00:59 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45a1a517d49sm2013365e9.11.2025.08.13.06.00.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 13 Aug 2025 06:00:58 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 12C2C5F7AC;
+ Wed, 13 Aug 2025 14:00:57 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: ~myrslint <myrslint@git.sr.ht>
+Cc: qemu-devel@nongnu.org,  ~myrslint <myrskylintu@proton.me>,  Paolo
+ Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH qemu 1/1] Default disable ignore guest PAT quirk
+In-Reply-To: <175506686028.15648.7602021948044277748-1@git.sr.ht>
+ (myrslint@git.sr.ht's message of "Wed, 13 Aug 2025 06:23:24 +0000")
+References: <175506686028.15648.7602021948044277748-1@git.sr.ht>
+User-Agent: mu4e 1.12.12; emacs 30.1
+Date: Wed, 13 Aug 2025 14:00:56 +0100
+Message-ID: <877bz75qbb.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 08/38] vfio/container: recover from unmap-all-vaddr
- failure
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu
- <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-References: <1749569991-25171-1-git-send-email-steven.sistare@oracle.com>
- <1749569991-25171-9-git-send-email-steven.sistare@oracle.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <1749569991-25171-9-git-send-email-steven.sistare@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -160,249 +102,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steve,
+~myrslint <myrslint@git.sr.ht> writes:
 
-On 6/10/25 17:39, Steve Sistare wrote:
-> If there are multiple containers and unmap-all fails for some container, we
-> need to remap vaddr for the other containers for which unmap-all succeeded.
-> Recover by walking all address ranges of all containers to restore the vaddr
-> for each.  Do so by invoking the vfio listener callback, and passing a new
-> "remap" flag that tells it to restore a mapping without re-allocating new
-> userland data structures.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+> From: myrslint <qemu.haziness801@passinbox.com>
+>
+> Addresses this issue:
+> https://gitlab.com/qemu-project/qemu/-/issues/2943
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2943
+
+> Most Intel CPUs in current use have self-snoop. The few added lines of
+> code also check for availability of the quirk disablement option so if
+> some CPU does not have this feature no change of behavior will occur.
 > ---
->   include/hw/vfio/vfio-container-base.h |  3 ++
->   include/hw/vfio/vfio-cpr.h            | 10 ++++
->   hw/vfio/cpr-legacy.c                  | 91 +++++++++++++++++++++++++++++++++++
->   hw/vfio/listener.c                    | 19 +++++++-
->   4 files changed, 122 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-> index 9d37f86..f023265 100644
-> --- a/include/hw/vfio/vfio-container-base.h
-> +++ b/include/hw/vfio/vfio-container-base.h
-> @@ -256,4 +256,7 @@ struct VFIOIOMMUClass {
->   VFIORamDiscardListener *vfio_find_ram_discard_listener(
->       VFIOContainerBase *bcontainer, MemoryRegionSection *section);
->   
-> +void vfio_container_region_add(VFIOContainerBase *bcontainer,
-> +                               MemoryRegionSection *section, bool cpr_remap);
-> +
->   #endif /* HW_VFIO_VFIO_CONTAINER_BASE_H */
-> diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
-> index b83dd42..56ede04 100644
-> --- a/include/hw/vfio/vfio-cpr.h
-> +++ b/include/hw/vfio/vfio-cpr.h
-> @@ -10,6 +10,7 @@
->   #define HW_VFIO_VFIO_CPR_H
->   
->   #include "migration/misc.h"
-> +#include "system/memory.h"
->   
->   struct VFIOContainer;
->   struct VFIOContainerBase;
-> @@ -17,6 +18,9 @@ struct VFIOGroup;
->   
->   typedef struct VFIOContainerCPR {
->       Error *blocker;
-> +    bool vaddr_unmapped;
-> +    NotifierWithReturn transfer_notifier;
-> +    MemoryListener remap_listener;
->       int (*saved_dma_map)(const struct VFIOContainerBase *bcontainer,
->                            hwaddr iova, ram_addr_t size,
->                            void *vaddr, bool readonly, MemoryRegion *mr);
-> @@ -42,4 +46,10 @@ int vfio_cpr_group_get_device_fd(int d, const char *name);
->   bool vfio_cpr_container_match(struct VFIOContainer *container,
->                                 struct VFIOGroup *group, int fd);
->   
-> +void vfio_cpr_giommu_remap(struct VFIOContainerBase *bcontainer,
-> +                           MemoryRegionSection *section);
-> +
-> +bool vfio_cpr_ram_discard_register_listener(
-> +    struct VFIOContainerBase *bcontainer, MemoryRegionSection *section);
-> +
->   #endif /* HW_VFIO_VFIO_CPR_H */
-> diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
-> index 2fd8348..a84c324 100644
-> --- a/hw/vfio/cpr-legacy.c
-> +++ b/hw/vfio/cpr-legacy.c
-> @@ -29,6 +29,7 @@ static bool vfio_dma_unmap_vaddr_all(VFIOContainer *container, Error **errp)
->           error_setg_errno(errp, errno, "vfio_dma_unmap_vaddr_all");
->           return false;
->       }
-> +    container->cpr.vaddr_unmapped = true;
->       return true;
->   }
->   
-> @@ -59,6 +60,14 @@ static int vfio_legacy_cpr_dma_map(const VFIOContainerBase *bcontainer,
->       return 0;
->   }
->   
-> +static void vfio_region_remap(MemoryListener *listener,
-> +                              MemoryRegionSection *section)
-> +{
-> +    VFIOContainer *container = container_of(listener, VFIOContainer,
-> +                                            cpr.remap_listener);
-> +    vfio_container_region_add(&container->bcontainer, section, true);
-> +}
-> +
->   static bool vfio_cpr_supported(VFIOContainer *container, Error **errp)
->   {
->       if (!ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UPDATE_VADDR)) {
-> @@ -120,6 +129,40 @@ static const VMStateDescription vfio_container_vmstate = {
->       }
->   };
->   
-> +static int vfio_cpr_fail_notifier(NotifierWithReturn *notifier,
-> +                                  MigrationEvent *e, Error **errp)
-> +{
-> +    VFIOContainer *container =
-> +        container_of(notifier, VFIOContainer, cpr.transfer_notifier);
-> +    VFIOContainerBase *bcontainer = &container->bcontainer;
-> +
-> +    if (e->type != MIG_EVENT_PRECOPY_FAILED) {
-> +        return 0;
-> +    }
-> +
-> +    if (container->cpr.vaddr_unmapped) {
-> +        /*
-> +         * Force a call to vfio_region_remap for each mapped section by
-> +         * temporarily registering a listener, and temporarily diverting
-> +         * dma_map to vfio_legacy_cpr_dma_map.  The latter restores vaddr.
-> +         */
-> +
-> +        VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
-> +        vioc->dma_map = vfio_legacy_cpr_dma_map;
-> +
-> +        container->cpr.remap_listener = (MemoryListener) {
-> +            .name = "vfio cpr recover",
-> +            .region_add = vfio_region_remap
-> +        };
-> +        memory_listener_register(&container->cpr.remap_listener,
-> +                                 bcontainer->space->as);
-> +        memory_listener_unregister(&container->cpr.remap_listener);
-> +        container->cpr.vaddr_unmapped = false;
-> +        vioc->dma_map = container->cpr.saved_dma_map;
-> +    }
-> +    return 0;
-> +}
-> +
->   bool vfio_legacy_cpr_register_container(VFIOContainer *container, Error **errp)
->   {
->       VFIOContainerBase *bcontainer = &container->bcontainer;
-> @@ -142,6 +185,10 @@ bool vfio_legacy_cpr_register_container(VFIOContainer *container, Error **errp)
->           container->cpr.saved_dma_map = vioc->dma_map;
->           vioc->dma_map = vfio_legacy_cpr_dma_map;
->       }
-> +
-> +    migration_add_notifier_mode(&container->cpr.transfer_notifier,
-> +                                vfio_cpr_fail_notifier,
-> +                                MIG_MODE_CPR_TRANSFER);
->       return true;
->   }
->   
-> @@ -152,6 +199,50 @@ void vfio_legacy_cpr_unregister_container(VFIOContainer *container)
->       migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
->       migrate_del_blocker(&container->cpr.blocker);
->       vmstate_unregister(NULL, &vfio_container_vmstate, container);
-> +    migration_remove_notifier(&container->cpr.transfer_notifier);
-> +}
-> +
-> +/*
-> + * In old QEMU, VFIO_DMA_UNMAP_FLAG_VADDR may fail on some mapping after
-> + * succeeding for others, so the latter have lost their vaddr.  Call this
-> + * to restore vaddr for a section with a giommu.
-> + *
-> + * The giommu already exists.  Find it and replay it, which calls
-> + * vfio_legacy_cpr_dma_map further down the stack.
-> + */
-> +void vfio_cpr_giommu_remap(VFIOContainerBase *bcontainer,
-> +                           MemoryRegionSection *section)
-> +{
-> +    VFIOGuestIOMMU *giommu = NULL;
-> +    hwaddr as_offset = section->offset_within_address_space;
-> +    hwaddr iommu_offset = as_offset - section->offset_within_region;
-> +
-> +    QLIST_FOREACH(giommu, &bcontainer->giommu_list, giommu_next) {
-> +        if (giommu->iommu_mr == IOMMU_MEMORY_REGION(section->mr) &&
-> +            giommu->iommu_offset == iommu_offset) {
-> +            break;
+>  accel/kvm/kvm-all.c | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+>
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 890d5ea9f8..c3d06ae2f8 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -2682,6 +2682,32 @@ static int kvm_init(AccelState *as, MachineState *=
+ms)
+>=20=20
+>      s->vmfd =3D ret;
+>=20=20
+> +/* if target platform has no notion of this or kernel version does
+> + * not have it there is no use for compiling this in */
+> +#ifdef KVM_X86_QUIRK_IGNORE_GUEST_PAT
+
+architecture specific changes should be in kvm_arch_init (in this case
+in target/i386/kvm/kvm.c)
+
+> +    /* first check for modifiable quirks bitmask */
+> +    ret =3D kvm_check_extension(s, KVM_CAP_DISABLE_QUIRKS2);
+> +    /* next make sure disabling it is allowed */
+> +    if (ret & KVM_X86_QUIRK_IGNORE_GUEST_PAT) {
+> +        struct kvm_enable_cap *cap;
+> +        cap =3D calloc(1, sizeof(struct kvm_enable_cap));
+
+I few things, style says:
+
+  Use of the ``malloc/free/realloc/calloc/valloc/memalign/posix_memalign``
+  APIs is not allowed in the QEMU codebase. Instead of these routines,
+  use the GLib memory allocation routines
+  ``g_malloc/g_malloc0/g_new/g_new0/g_realloc/g_free``
+  or QEMU's ``qemu_memalign/qemu_blockalign/qemu_vfree`` APIs.
+
+And to avoid manual free you would do:
+
+  g_autofree kvm_enable_cap *cap =3D g_new0(kvm_enable_cap, 1);
+
+However why not just have a structure on the stack, e.g:
+
+  struct kvm_enable_cap cap =3D { .cap =3D KVM_CAP_DISABLE_QUIRKS2,
+                                .args =3D { KVM_X86_QUIRK_IGNORE_GUEST_PAT =
+};
+
+In fact looking at kvm_vcpu_enable_cap() you should probably just use that.
+
+> +        if (cap) {
+> +            cap->cap =3D KVM_CAP_DISABLE_QUIRKS2;
+> +            cap->args[0] =3D KVM_X86_QUIRK_IGNORE_GUEST_PAT;
+> +            /* if intel cpu does not support self-snoop this is a nop */
+> +            ret =3D kvm_vm_ioctl(s, KVM_ENABLE_CAP, cap);
+> +            if (ret < 0) {
+> +                error_printf("KVM_X86_QUIRK_IGNORE_GUEST_PAT available a=
+nd "
+> +                             "modifiable but we failed to disable
+> it\n");
+
+I think this should be error_report
+
+> +            }
+> +            free(cap);
+> +        } else {
+
+You don't need the else leg if you are dynamically allocating as g_new
+and friends will abort().
+
+> +            error_printf("KVM_X86_QUIRK_IGNORE_GUEST_PAT: could not "
+> +                         "allocate memory\n");
 > +        }
 > +    }
-> +    g_assert(giommu);
-> +    memory_region_iommu_replay(giommu->iommu_mr, &giommu->n);
-> +}
+> +#endif
 > +
-> +/*
-> + * In old QEMU, VFIO_DMA_UNMAP_FLAG_VADDR may fail on some mapping after
-> + * succeeding for others, so the latter have lost their vaddr.  Call this
-> + * to restore vaddr for a section with a RamDiscardManager.
-> + *
-> + * The ram discard listener already exists.  Call its populate function
-> + * directly, which calls vfio_legacy_cpr_dma_map.
-> + */
-> +bool vfio_cpr_ram_discard_register_listener(VFIOContainerBase *bcontainer,
-> +                                            MemoryRegionSection *section)
-> +{
-> +    VFIORamDiscardListener *vrdl =
-> +        vfio_find_ram_discard_listener(bcontainer, section);
-> +
-> +    g_assert(vrdl);
-> +    return vrdl->listener.notify_populate(&vrdl->listener, section) == 0;
->   }
->   
->   int vfio_cpr_group_get_device_fd(int d, const char *name)
-> diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-> index 203ed03..2e57986 100644
-> --- a/hw/vfio/listener.c
-> +++ b/hw/vfio/listener.c
-> @@ -481,6 +481,13 @@ static void vfio_listener_region_add(MemoryListener *listener,
->   {
->       VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
->                                                    listener);
-> +    vfio_container_region_add(bcontainer, section, false);
-> +}
-> +
-> +void vfio_container_region_add(VFIOContainerBase *bcontainer,
-> +                               MemoryRegionSection *section,
-> +                               bool cpr_remap)
-> +{
->       hwaddr iova, end;
->       Int128 llend, llsize;
->       void *vaddr;
-> @@ -516,6 +523,11 @@ static void vfio_listener_region_add(MemoryListener *listener,
->           int iommu_idx;
->   
->           trace_vfio_listener_region_add_iommu(section->mr->name, iova, end);
-> +
-> +        if (cpr_remap) {
-> +            vfio_cpr_giommu_remap(bcontainer, section);
-> +        }
-> +
->           /*
->            * FIXME: For VFIO iommu types which have KVM acceleration to
->            * avoid bouncing all map/unmaps through qemu this way, this
-> @@ -558,7 +570,12 @@ static void vfio_listener_region_add(MemoryListener *listener,
->        * about changes.
->        */
->       if (memory_region_has_ram_discard_manager(section->mr)) {
-> -        vfio_ram_discard_register_listener(bcontainer, section);
-> +        if (!cpr_remap) {
-> +            vfio_ram_discard_register_listener(bcontainer, section);
-> +        } else if (!vfio_cpr_ram_discard_register_listener(bcontainer,
-> +                                                           section)) {
-> +            goto fail;
+>      s->nr_as =3D kvm_vm_check_extension(s, KVM_CAP_MULTI_ADDRESS_SPACE);
+>      if (s->nr_as <=3D 1) {
+>          s->nr_as =3D 1;
 
-vfio_cpr_ram_discard_register_listener() can fail without setting
-an 'Error *' variable. I don't think this will generate a QEMU crash
-(we are in the !bcontainer->initialized case) but it would be better
-addressed if &err was set.
-
-
-Thanks,
-
-C.
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
