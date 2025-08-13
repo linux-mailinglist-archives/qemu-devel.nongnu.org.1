@@ -2,91 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9581B24CD6
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 17:07:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF30B24C73
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 16:51:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umD2l-0004PX-IO; Wed, 13 Aug 2025 11:05:35 -0400
+	id 1umCmr-00074X-No; Wed, 13 Aug 2025 10:49:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1umD2j-0004Ow-2M
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 11:05:33 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1umD2f-0002yo-Pw
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 11:05:31 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-45a15fd04d9so7685305e9.1
- for <qemu-devel@nongnu.org>; Wed, 13 Aug 2025 08:05:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755097524; x=1755702324; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8zFqV9YfUCTYdu44lZXIcCqfnefFSaIKoC3NkPezqGE=;
- b=TkqFZZUIfKCZ//o0i0UXnZ4VRpIK6ExzOIPYWWQiam38xg22tc8VE+EJUbark7zlQU
- h1vmS5Oy8KyetjBs8hs7mmhc2/mYB2XUBH75cS9sbQLxDO2dLc5BK9RIgiiqMCaugPt4
- OEd/WiEjo2GUi4R+tGq/522jK3Sn1Q4xnD4cPiA80hOhxku7UVqao/Gw2XhixFPaCEw7
- UJkvzdPNSy3CGpPS1+2kmG5kar+s84XOtUrALwI53sB2K3YdVq3O9sSjDFeoZSMmDhyV
- xLJbXC2jE4hx4kInIbdB+E4AWVEMWGvMp/x8ghRVJdu8GfhcB/o1NYJc49qZoOE6AHe7
- XyqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755097524; x=1755702324;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8zFqV9YfUCTYdu44lZXIcCqfnefFSaIKoC3NkPezqGE=;
- b=R41OE7WujfSY84mJWx2bFpux515eOLE6XBPrgbj2//JaKTQIvGAvBcYzFr/Z6LQPwu
- wl7jxAxsvYgbBCsTnaVRcA4/tuI83m89pVwRvGqHVIFdt3OYJ2qj+xuJaQzVF8j2Z5zQ
- tt9MiTZFL4PczyzEaE88jo+yKyhk8knW/kESPGq3U5eD4Abc5JwTsvvqowKuns/KOh+D
- v0WvSW4Ve2IlVC5IHJdYKt/NOQXJy48wPF11plNUzFiYvFE3Pc2nMwewasNipbjFwu5W
- OyyrkOKzHqd3uYbxJD1YU6B6Sm3/Ap7KHHL7Wf3t718jZoMruA3+0xQ8Io9pBIYHA3XK
- V8GQ==
-X-Gm-Message-State: AOJu0Yx4jyMURvGR8lOjY/ZJdcS0xpr3QWBpbuN/NgOQU5faUzIhEwUA
- k2Jtt/AsNvDRkOsh0uVJN9fOvw5DNHab5SVVA93dPfnISzvBhHlRb0bFI8wdXdPsbxZBz4ajFB1
- 1OUZS
-X-Gm-Gg: ASbGncuN8fi2Ekyn4YSndzkfVkkjMOPuYuAcyxzVY1iAjUQQfDQ+hP6VH1nj8/721MI
- PN6q1mEPxT4JO9TskOReg53iAzLya7N6jifBd3UaMiB0ZMBZBGM0KP4DzlJAJs6Vl4hkQfpWI5z
- Am51uiEjWnqknVWWAYNkQ0yNIOfLo3Ljp7ZcKiO/0WhfuX+6i3L0WNd3UZBYby65CKUrSZUHdFc
- SV8db//aJezoJzEECgz4zlS7mEJ5fNXTTg6OsdlXRBmS8/0l7ZUdR+uXBJdP0HUAXlHkeYRlpi9
- 7r9SSRstXO0pYqYcSmjG9Lifgw856DiPiaak9wsSY9Vh7D+0exGpVzju6pooK7MNLvCDlSK2mC3
- YjxgUorpUcv7Vn/D85OPYDxca+ritJuo4FTL+sZUbUd5k2SLOING2WJONWVQ4SEnfJA==
-X-Google-Smtp-Source: AGHT+IF8XHg5TZlOM5SAMjEcxXUwrVfHdTZWgpjN6hlCDNihp0uNjx7LYZCG4mmjSm93J0SJKDzjEA==
-X-Received: by 2002:a05:600c:1c9a:b0:456:189e:223a with SMTP id
- 5b1f17b1804b1-45a19ad8354mr11567255e9.10.1755097523905; 
- Wed, 13 Aug 2025 08:05:23 -0700 (PDT)
-Received: from [192.168.69.210] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45a1a50b9e6sm6768665e9.6.2025.08.13.08.05.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Aug 2025 08:05:23 -0700 (PDT)
-Message-ID: <a57b581b-6cd7-478c-ab2c-59111515c1da@linaro.org>
-Date: Wed, 13 Aug 2025 17:05:22 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1umCmo-00073v-LY; Wed, 13 Aug 2025 10:49:06 -0400
+Received: from mgamail.intel.com ([192.198.163.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1umCme-0000du-QY; Wed, 13 Aug 2025 10:49:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1755096537; x=1786632537;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=tIvV3E8n44J30cLpFV7os3SlUAlAuiUq0ZShXd5t0f0=;
+ b=NG+oPkFwcZ/2GuRoshqE8nG3baxeHAPEWX0anprp1mihKdNi8N3NH04Z
+ ykGHqZmyFJrv3nLrB7gfpx7kfZJvVzWFXAmtG2PBDAiVnPv//gPojUzNp
+ oZZYjlctL19x+6u0kpw2oI+XwZ4BqMQIQIuS8o8bFieYG42N0UR1xUjTi
+ KrT5kb7OgeCByQSDmXubwjLx06hsADc+54oLyVrBQPdBy3OfolbW4V9c5
+ vbnpXswqQ8hr2biUBPet+T6PwAiJhi7UDPMv6G9m0U0KAD64IFo0udJ34
+ QfFrICG22lPooiUJeu/ToCr4cnKpjZyIs+4/kcq+s5hIECUoPLBO/DZM8 w==;
+X-CSE-ConnectionGUID: frwVyH/nTKKLieqcCGipIQ==
+X-CSE-MsgGUID: 8ZexVYWCTJuPZplGO6KFPQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="44972098"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="44972098"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2025 07:48:48 -0700
+X-CSE-ConnectionGUID: 9E34JwdMRbyyStpiqebsVQ==
+X-CSE-MsgGUID: yPXXwx5ISa2JjdsT7RHFnw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="171735616"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa004.fm.intel.com with ESMTP; 13 Aug 2025 07:48:46 -0700
+Date: Wed, 13 Aug 2025 23:10:27 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Junjie Mao <junjie.mao@hotmail.com>,
+ qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ Chuanxiao Dong <chuanxiao.dong@intel.com>
+Subject: Re: [RFC 16/26] memory: Make flatview_do_translate() return a
+ pointer to MemoryRegionSection
+Message-ID: <aJyq4396vM2c+5qQ@intel.com>
+References: <20250807123027.2910950-1-zhao1.liu@intel.com>
+ <20250807123027.2910950-17-zhao1.liu@intel.com>
+ <beab841b-9c69-43d2-b996-879eee9e1120@redhat.com>
+ <aJtgIBgl8JzDsJ1O@intel.com>
+ <CABgObfbgX3yiBkyc0aH-6WXLf4bdEOgvY=m2AcPQXAXdruSkNQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vfio/container: set error on cpr failure
-To: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- David Hildenbrand <david@redhat.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Zhenzhong Duan
- <zhenzhong.duan@intel.com>, Peter Xu <peterx@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>
-References: <1755094667-281419-1-git-send-email-steven.sistare@oracle.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <1755094667-281419-1-git-send-email-steven.sistare@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABgObfbgX3yiBkyc0aH-6WXLf4bdEOgvY=m2AcPQXAXdruSkNQ@mail.gmail.com>
+Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,53 +90,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/8/25 16:17, Steve Sistare wrote:
-> Set an error message if vfio_cpr_ram_discard_register_listener fails so
-> the fail label gets a valid error object.
+On Tue, Aug 12, 2025 at 09:23:59PM +0200, Paolo Bonzini wrote:
+> Date: Tue, 12 Aug 2025 21:23:59 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: Re: [RFC 16/26] memory: Make flatview_do_translate() return a
+>  pointer to MemoryRegionSection
 > 
-> Reported-by: Cédric Le Goater <clg@redhat.com>
-> Fixes: eba1f657cbb1 ("vfio/container: recover from unmap-all-vaddr failure")
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->   hw/vfio/listener.c | 3 +++
->   1 file changed, 3 insertions(+)
+> Il mar 12 ago 2025, 17:17 Zhao Liu <zhao1.liu@intel.com> ha scritto:
 > 
-> diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-> index f498e23..5ebafaa 100644
-> --- a/hw/vfio/listener.c
-> +++ b/hw/vfio/listener.c
-> @@ -574,6 +574,9 @@ void vfio_container_region_add(VFIOContainerBase *bcontainer,
->               vfio_ram_discard_register_listener(bcontainer, section);
->           } else if (!vfio_cpr_ram_discard_register_listener(bcontainer,
->                                                              section)) {
+> > But look closer to Opaque<>, it has 2 safe methods: as_mut_ptr() &
+> > raw_get().
+> >
+> > These 2 methods indicate that the T pointed by Qpaque<T> is mutable,
+> > which has the conflict with the original `*const
+> > bindings::MemoryRegionSection`.
+> >
+> > So from this point, it seems unsafe to use Qpaque<> on this case.
+> >
+> 
+> Yes, it's similar to NonNull<>. I am not sure that you need Opaque<> here;
+> since the pointer is const, maybe you can just dereference it to a
+> &bindings::MemoryRegionSection. Is it useful to have the Opaque<> wrapper
+> here?
 
-Looking at commit 8947d7fc4e7 ("memory: Introduce RamDiscardManager for
-RAM memory regions"):
+I agree. Opaque<> is not necessary here. We can have a simple wrapper:
 
-     typedef int (*NotifyRamPopulate)(RamDiscardListener *rdl,
-                                      MemoryRegionSection *section);
+pub struct MemoryRegionSection(*const bindings::MemoryRegionSection)
 
-     /*
-      * @notify_populate:
-      *
-      * Notification that previously discarded memory is about to get
-      * populated.
-      * Listeners are able to object. If any listener objects, already
-      * successfully notified listeners are notified about a discard
-      * again.
-      *
-      * @rdl: the #RamDiscardListener getting notified
-      * @section: the #MemoryRegionSection to get populated. The section
-      *           is aligned within the memory region to the minimum
-      *           granularity unless it would exceed the registered
-      *           section.
-      *
-      * Returns 0 on success. If the notification is rejected by the
-      * listener, an error is returned.
-      */
-     NotifyRamPopulate notify_populate;
+or
 
-Not sure what error is returned by this prototype (errno?), but if what
-error is not relevant, maybe it should take an Error** parameter and
-return a boolean value instead.
+pub struct MemoryRegionSection(NonNull<bindings::MemoryRegionSection>)
+with immutable only use.
+
+In future, if there're more similar case, then we can have a OpaqueRef<>
+like Manos suggested.
+
+Thanks,
+Zhao
+
 
