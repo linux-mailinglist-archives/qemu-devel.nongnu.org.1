@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF85B25237
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 19:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D14B25238
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 19:44:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umFUR-0003xf-8X; Wed, 13 Aug 2025 13:42:20 -0400
+	id 1umFUZ-00044x-3q; Wed, 13 Aug 2025 13:42:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1umFUI-0003we-LK; Wed, 13 Aug 2025 13:42:10 -0400
+ id 1umFUR-00040A-Cb; Wed, 13 Aug 2025 13:42:19 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1umFUG-0006Zk-F4; Wed, 13 Aug 2025 13:42:10 -0400
+ id 1umFUM-0006Zn-Gz; Wed, 13 Aug 2025 13:42:19 -0400
 Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57DCI7ax011380;
- Wed, 13 Aug 2025 17:41:55 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57DAxhTh011153;
+ Wed, 13 Aug 2025 17:41:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=pp1; bh=YyvUOIRykNHVykrmlLSSB/p1FGJ3sKLzq7Df8woU/
- lo=; b=HY4vw1mkTscDRttOpvAYvDB1h33UMUW1dTRl2ddAUnaLN4vtdRPekX1M1
- 4zSTUcsLLQNg9A3GI/5SqtJA6VpNDxDuSw9N9aBqpm/DHN5MIoYKU4j1R4g1t+Vt
- WQ9DuFPZQTnIcnuXVTkQK/YTECd4s+3zPcmMUVtguh00LQGm+ulM8r8tP2HS37Hb
- viSO1Z5Eg6kcrKU9NzHwMHaS1egfPgjXtWQZo10+mLs7FHcMM2y4Als2bxDlvzZa
- oFe5RajVPTaOvBwJ/o93vXV0UMQmniLHEHhBxcozZqEbZuLT17WmOyLsDPfXGXl5
- jU2CQkzZvwaX7qjacUpdOQ0koL3qw==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dx2d5xu1-1
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=TKzUtNPDDvgGMPcPv
+ RNrysDoMV7wwMADifmN9SZ0t1A=; b=CgxgqIZuWfxpOyC/6o5MHd+kKgMn5X67G
+ g3mIzlelZwbnhA4NKQhqgwB8Y6ghLO4VGN0/taSZEmKg1AfoPHSfkBBaCXTjWo1u
+ TLF46Umzxol/ebatJ3ykfjzjmuGZ5/uSDB2Xz8OKwpoJK2PIHw5YDoAjT7EiJYO+
+ 67A3pqoRV5lxr7fm1IlAYni6bICkP/697IkGDO7MYycDT1939HaUi3MtVx3CWPE7
+ E9mPQFLrmqzxh2zDh8KwKvwD1Mt2JSjfUJmuS/ldJnPuRLrUsWMNl7L8gNVs4M3m
+ 1MMdFaUqJ+r778W39lnTK0qTpycHquvyhk1aoeFJ29OQzcWGNszbQ==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dx2d5xu2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 13 Aug 2025 17:41:55 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57DGxfC0017588;
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57DF7bgU010656;
  Wed, 13 Aug 2025 17:41:54 GMT
 Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48ekc3r3hv-1
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 48egnurmyx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 13 Aug 2025 17:41:54 +0000
 Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
  [10.241.53.101])
  by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 57DHfras5374656
+ 57DHfr9529426374
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 13 Aug 2025 17:41:53 GMT
+ Wed, 13 Aug 2025 17:41:54 GMT
 Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3630F5805C;
+ by IMSVA (Postfix) with ESMTP id DE7CA5805C;
  Wed, 13 Aug 2025 17:41:53 +0000 (GMT)
 Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A591B58065;
- Wed, 13 Aug 2025 17:41:52 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 510D85805A;
+ Wed, 13 Aug 2025 17:41:53 +0000 (GMT)
 Received: from IBM-D32RQW3.ibm.com (unknown [9.61.255.61])
  by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 13 Aug 2025 17:41:52 +0000 (GMT)
+ Wed, 13 Aug 2025 17:41:53 +0000 (GMT)
 From: Farhan Ali <alifm@linux.ibm.com>
 To: qemu-s390x@nongnu.org
 Cc: qemu-devel@nongnu.org, mjrosato@linux.ibm.com, thuth@redhat.com,
  alex.williamson@redhat.com, clg@redhat.com, alifm@linux.ibm.com
-Subject: [PATCH v1 0/4] Error recovery for zPCI passthrough devices
-Date: Wed, 13 Aug 2025 10:41:47 -0700
-Message-ID: <20250813174152.1238-1-alifm@linux.ibm.com>
+Subject: [PATCH v1 1/4] [NOTFORMERGE] linux-headers: Update for zpci vfio
+ device
+Date: Wed, 13 Aug 2025 10:41:48 -0700
+Message-ID: <20250813174152.1238-2-alifm@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250813174152.1238-1-alifm@linux.ibm.com>
+References: <20250813174152.1238-1-alifm@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIyNCBTYWx0ZWRfX9k9DCLztDt95
- LBYOjqLhW+jUPgOkFB33i0sRK3UfNQ4i+Vlwo+VJ33eR/GLRc5Yw6SIbEHtqcJn+tNZLAxxKpdv
- 5sK4Ug+sC+jifSYLwVNzDCoKdbAUGOt8xBYl7r4V8irGWItdcbt1R6OX147DzTg/Id5RSz7MwwP
- z2TM4pTQLQCDDWRwC1b5Jn8OeDuTWPjwfo3logQdhHVc2b16YIT4Q45cqQGRrn09Pq5JUPhs7f1
- KtnQVxwySPh/rFE7IQDiTTsaNQb8OwSgw6xmKhZsInL4meMtZ4EY/DubAn3oRVOmZGE/UvIl2tl
- 8S+gzkYaP/8rOuhql5NbfMkdwbpxqLMeT2JVPvMkon/7cXiaoJDDdOLLPelEhikigHmHHCTAOHV
- c55sGk4g
-X-Proofpoint-GUID: zyFVwo05i_Gbd7qZRcuTnuyQmQyyXv88
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIyNCBTYWx0ZWRfX0H230/AsJJNQ
+ AJKaFwaa6jIL48lA8obcASMQji1pmrKEdQm3I7IStDZ9XWLJdwWLAkjrQuCx4xDBru1zCTecMTX
+ VpCPhHBRDhjF2Ety5S6uZa3vpX7pN3Sf+IVdXT+gFR1PPGyWaS8jf6pO8v3GmcqMiy4ukllkx/k
+ xPvD/k3Y3iQhITRap+aH53sti+ZuL8xdlwuVcyKAOdfAYODNuUui/uJWBs/RTo3dvesjkwnKiNp
+ Tvwy8acryK3jt1TVXW7JmIq5PAOaXF6julLOprGu1ID1qvhW9NDhgTC7z++j5/qRfGhNmZ4IQvI
+ HyKhTdGb/vxqXVVOBgLtoIaul6tF6T6mEXKJPtFkoS9deUOk8GaHMPEjonP32PB9UcRZWt2eDTx
+ gOsmzwTG
+X-Proofpoint-GUID: BfEA3lXq-TrETmeSJHgPNgToPgoKVRrS
 X-Authority-Analysis: v=2.4 cv=C9zpyRP+ c=1 sm=1 tr=0 ts=689cce63 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=teYI-SuHLMPDejC4iewA:9
-X-Proofpoint-ORIG-GUID: zyFVwo05i_Gbd7qZRcuTnuyQmQyyXv88
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=w0j_Q2mzfpb_jSiM1AsA:9
+X-Proofpoint-ORIG-GUID: BfEA3lXq-TrETmeSJHgPNgToPgoKVRrS
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-13_01,2025-08-11_01,2025-03-28_01
@@ -111,44 +114,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+---
+ linux-headers/linux/vfio.h      | 2 ++
+ linux-headers/linux/vfio_zdev.h | 5 +++++
+ 2 files changed, 7 insertions(+)
 
-This patch series introduces support for error recovery for passthrough
-PCI devices on System Z (s390x). This is the user space component for the Linux
-kernel patches [1]. For QEMU on eventfd notification for PCI error from vfio-pci
-driver we call the vfio error handler. We can use an architecture specific error
-handler to override the default vfio error handler. 
-
-For s390x specific error handler, we retrieve the architecture specific PCI error
-information and inject the information into the guest. Once the guest receives
-the error information, the guest drivers will drive the error recovery.
-Typically recovery involves a device reset which translate to CLP
-disable/enable cycle for the device.
-
-I would appreciate some feedback on this patch series to understand if
-such an approach is acceptable.
-
-Thanks
-Farhan
-
-[1] https://lore.kernel.org/linux-s390/20250813170821.1115-1-alifm@linux.ibm.com/T/#m7c763e718501a2bbd77f0356f8845b77545d61e1
-
-Farhan Ali (4):
-  [NOTFORMERGE] linux-headers: Update for zpci vfio device
-  vfio/pci: Add an architecture specific error handler
-  s390x/pci: Add PCI error handling for vfio pci devices
-  s390x/pci: Reset a device in error state
-
- hw/s390x/s390-pci-bus.c          | 12 +++++
- hw/s390x/s390-pci-vfio.c         | 88 ++++++++++++++++++++++++++++++++
- hw/vfio/pci.c                    |  5 ++
- hw/vfio/pci.h                    |  1 +
- include/hw/s390x/s390-pci-bus.h  |  1 +
- include/hw/s390x/s390-pci-vfio.h |  4 ++
- linux-headers/linux/vfio.h       |  2 +
- linux-headers/linux/vfio_zdev.h  |  5 ++
- 8 files changed, 118 insertions(+)
-
+diff --git a/linux-headers/linux/vfio.h b/linux-headers/linux/vfio.h
+index 79bf8c0cc5..a437169bce 100644
+--- a/linux-headers/linux/vfio.h
++++ b/linux-headers/linux/vfio.h
+@@ -369,6 +369,8 @@ struct vfio_region_info_cap_type {
+  */
+ #define VFIO_REGION_SUBTYPE_IBM_NVLINK2_ATSD	(1)
+ 
++#define VFIO_REGION_SUBTYPE_IBM_ZPCI_ERROR_REGION (2)
++
+ /* sub-types for VFIO_REGION_TYPE_GFX */
+ #define VFIO_REGION_SUBTYPE_GFX_EDID            (1)
+ 
+diff --git a/linux-headers/linux/vfio_zdev.h b/linux-headers/linux/vfio_zdev.h
+index 77f2aff1f2..bcd06f334a 100644
+--- a/linux-headers/linux/vfio_zdev.h
++++ b/linux-headers/linux/vfio_zdev.h
+@@ -82,4 +82,9 @@ struct vfio_device_info_cap_zpci_pfip {
+ 	__u8 pfip[];
+ };
+ 
++struct vfio_device_zpci_err_region {
++	__u16 pec;
++	int pending_errors;
++};
++
+ #endif
 -- 
 2.43.0
 
