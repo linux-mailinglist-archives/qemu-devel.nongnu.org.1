@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDAFB2502B
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 18:53:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 178BAB25039
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 18:54:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umEgH-0003Bd-8i; Wed, 13 Aug 2025 12:50:29 -0400
+	id 1umEgH-0003CD-Cz; Wed, 13 Aug 2025 12:50:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1umEfu-0002wm-3N; Wed, 13 Aug 2025 12:50:06 -0400
+ id 1umEfz-00031K-27; Wed, 13 Aug 2025 12:50:11 -0400
 Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1umEfk-0007tM-QZ; Wed, 13 Aug 2025 12:50:05 -0400
+ id 1umEfl-0007tO-IU; Wed, 13 Aug 2025 12:50:09 -0400
 Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:cf2d:0:640:140f:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 5E4DE813B1;
- Wed, 13 Aug 2025 19:49:25 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 1D1CE813B7;
+ Wed, 13 Aug 2025 19:49:26 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:167::1:21])
  by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id wmOQI00FoSw0-a0tJfqHE; Wed, 13 Aug 2025 19:49:24 +0300
+ ESMTPSA id wmOQI00FoSw0-BXvnPBfe; Wed, 13 Aug 2025 19:49:25 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1755103764;
- bh=U5xk0Mm+xj1gGYHsGb0KWHnifSCYfGr8y1lwHMvVzaA=;
+ s=default; t=1755103765;
+ bh=ZqwjUtz1Fm9Op2W/FGi59SOWO4q8FsJ64eme844Jh7E=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=CWqayTB4OsZEjfzdKYwvCXgwo/pe/DyShQX8FoxEYy1xlLDx66pOiRRLQb7kuha2c
- EdYrFJ2zmg1qL7r3ucWIXS7Lyo+Gz5aJnuis0I6DgXokg4VCsaC7ZEDREKYxAryLX4
- 32EAqOvICYk9qpAB0nUqkThEfN1oOTcWVC0URhnA=
+ b=iKOCjq5xNP9AhG9fGwVtNMYgeMqZI/YCNto3h869woiD77SVF15WewCnJTJtQ8K/H
+ PgtqjwkEFMzUAPQ7VQ+Lz2b0+vHZ2kbkvTEWR6XNtXfbKLJGOHwXRfvzRhP/JllkVM
+ Jxd4UCUreczclxkmENtZrgHKxdghc39OIrcPht5I=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,9 +41,9 @@ Cc: sgarzare@redhat.com, marcandre.lureau@redhat.com, pbonzini@redhat.com,
  eblake@redhat.com, armbru@redhat.com, qemu-devel@nongnu.org,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  den-plotnikov@yandex-team.ru, vsementsov@yandex-team.ru
-Subject: [PATCH 28/33] vhost: introduce backend migration
-Date: Wed, 13 Aug 2025 19:48:49 +0300
-Message-ID: <20250813164856.950363-29-vsementsov@yandex-team.ru>
+Subject: [PATCH 29/33] vhost-user: support backend migration
+Date: Wed, 13 Aug 2025 19:48:50 +0300
+Message-ID: <20250813164856.950363-30-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250813164856.950363-1-vsementsov@yandex-team.ru>
 References: <20250813164856.950363-1-vsementsov@yandex-team.ru>
@@ -58,7 +58,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,400 +74,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Normally on migration we stop and destroy connection with
-vhost (vhost-user-blk server, or kernel vhost) on source
-and reinitialize it on target.
-
-With this commit we start to implement vhost backend migration,
-i.e. we don't stop the connection and operation of vhost. Instead,
-we pass backend-related state, including open file descriptors
-to target process. Of course, it's possible only for local
-migration, and migration channel should be a unix socket.
+In case of local backend migration, skip backend-related
+initialization, but instead get the state from migration
+channel (including secondary channel file descriptor).
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/virtio/vhost.c                 | 184 +++++++++++++++++++++++++-----
- include/hw/virtio/vhost-backend.h |   5 +
- include/hw/virtio/vhost.h         |   6 +
- 3 files changed, 167 insertions(+), 28 deletions(-)
+ hw/virtio/vhost-user.c | 62 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 0427fc29b2..80371a2653 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -26,8 +26,10 @@
- #include "hw/mem/memory-device.h"
- #include "migration/blocker.h"
- #include "migration/qemu-file-types.h"
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index 3979582975..f220af270e 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -28,6 +28,8 @@
+ #include "system/runstate.h"
+ #include "system/cryptodev.h"
+ #include "migration/postcopy-ram.h"
++#include "migration/qemu-file-types.h"
 +#include "migration/qemu-file.h"
- #include "system/dma.h"
  #include "trace.h"
-+#include <stdint.h>
+ #include "system/ramblock.h"
  
- /* enabled until disconnected backend stabilizes */
- #define _VHOST_DEBUG 1
-@@ -1321,6 +1323,8 @@ out:
-     return ret;
- }
+@@ -2273,6 +2275,10 @@ static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
+     u->dev = dev;
+     dev->opaque = u;
  
-+static void vhost_virtqueue_error_notifier(EventNotifier *n);
++    if (dev->migrating_backend) {
++        goto out;
++    }
 +
- int vhost_virtqueue_start(struct vhost_dev *dev,
-                           struct VirtIODevice *vdev,
-                           struct vhost_virtqueue *vq,
-@@ -1346,7 +1350,17 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
-         return r;
+     err = vhost_user_get_features(dev, &features);
+     if (err < 0) {
+         error_setg_errno(errp, -err, "vhost_backend_init failed");
+@@ -2387,6 +2393,7 @@ static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
+         }
      }
  
--    vq->num = state.num = virtio_queue_get_num(vdev, idx);
-+    vq->num = virtio_queue_get_num(vdev, idx);
-+
-+    if (dev->migrating_backend) {
-+        if (dev->vhost_ops->vhost_set_vring_err) {
-+            event_notifier_set_handler(&vq->error_notifier,
-+                                       vhost_virtqueue_error_notifier);
-+        }
-+        return 0;
-+    }
-+
-+    state.num = vq->num;
-     r = dev->vhost_ops->vhost_set_vring_num(dev, &state);
-     if (r) {
-         VHOST_OPS_DEBUG(r, "vhost_set_vring_num failed");
-@@ -1424,6 +1438,10 @@ static int do_vhost_virtqueue_stop(struct vhost_dev *dev,
++out:
+     u->postcopy_notifier.notify = vhost_user_postcopy_notifier;
+     postcopy_add_notifier(&u->postcopy_notifier);
  
-     trace_vhost_virtque_stop(vdev->name, idx);
+@@ -2936,6 +2943,10 @@ void vhost_user_async_close(DeviceState *d,
  
+ static int vhost_user_dev_start(struct vhost_dev *dev, bool started)
+ {
 +    if (dev->migrating_backend) {
 +        return 0;
 +    }
 +
-     if (virtio_queue_get_desc_addr(vdev, idx) == 0) {
-         /* Don't stop the virtqueue which might have not been started */
+     if (!vhost_user_has_prot(dev, VHOST_USER_PROTOCOL_F_STATUS)) {
          return 0;
-@@ -1514,7 +1532,15 @@ static int vhost_virtqueue_init(struct vhost_dev *dev,
-     struct vhost_vring_file file = {
-         .index = vhost_vq_index,
-     };
--    int r = event_notifier_init(&vq->masked_notifier, 0);
-+    int r;
-+
-+    vq->dev = dev;
-+
-+    if (dev->migrating_backend) {
-+        return 0;
-+    }
-+
-+    r = event_notifier_init(&vq->masked_notifier, 0);
-     if (r < 0) {
-         return r;
      }
-@@ -1526,8 +1552,6 @@ static int vhost_virtqueue_init(struct vhost_dev *dev,
-         goto fail_call;
-     }
- 
--    vq->dev = dev;
--
-     if (dev->vhost_ops->vhost_set_vring_err) {
-         r = event_notifier_init(&vq->error_notifier, 0);
-         if (r < 0) {
-@@ -1564,10 +1588,14 @@ fail_call:
- 
- static void vhost_virtqueue_cleanup(struct vhost_virtqueue *vq)
- {
--    event_notifier_cleanup(&vq->masked_notifier);
-+    if (!vq->dev->migrating_backend) {
-+        event_notifier_cleanup(&vq->masked_notifier);
-+    }
-     if (vq->dev->vhost_ops->vhost_set_vring_err) {
-         event_notifier_set_handler(&vq->error_notifier, NULL);
--        event_notifier_cleanup(&vq->error_notifier);
-+        if (!vq->dev->migrating_backend) {
-+            event_notifier_cleanup(&vq->error_notifier);
-+        }
-     }
+@@ -3105,6 +3116,55 @@ static void vhost_user_qmp_status(struct vhost_dev *dev, VhostStatus *status)
+     status->protocol_features = qmp_decode_protocols(u->protocol_features);
  }
  
-@@ -1624,21 +1652,30 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-     r = vhost_set_backend_type(hdev, backend_type);
-     assert(r >= 0);
- 
--    r = hdev->vhost_ops->vhost_backend_init(hdev, opaque, errp);
--    if (r < 0) {
--        goto fail;
-+    if (hdev->migrating_backend) {
-+        /* backend must support detached state */
-+        assert(hdev->vhost_ops->vhost_save_backend);
-+        assert(hdev->vhost_ops->vhost_load_backend);
-+        hdev->_features_wait_incoming = true;
-     }
- 
--    r = hdev->vhost_ops->vhost_set_owner(hdev);
-+    r = hdev->vhost_ops->vhost_backend_init(hdev, opaque, errp);
-     if (r < 0) {
--        error_setg_errno(errp, -r, "vhost_set_owner failed");
-         goto fail;
-     }
- 
--    r = hdev->vhost_ops->vhost_get_features(hdev, &hdev->_features);
--    if (r < 0) {
--        error_setg_errno(errp, -r, "vhost_get_features failed");
--        goto fail;
-+    if (!hdev->migrating_backend) {
-+        r = hdev->vhost_ops->vhost_set_owner(hdev);
-+        if (r < 0) {
-+            error_setg_errno(errp, -r, "vhost_set_owner failed");
-+            goto fail;
-+        }
-+
-+        r = hdev->vhost_ops->vhost_get_features(hdev, &hdev->_features);
-+        if (r < 0) {
-+            error_setg_errno(errp, -r, "vhost_get_features failed");
-+            goto fail;
-+        }
-     }
- 
-     for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
-@@ -1670,7 +1707,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-         .region_del = vhost_iommu_region_del,
-     };
- 
--    if (hdev->migration_blocker == NULL) {
-+    if (!hdev->migrating_backend && hdev->migration_blocker == NULL) {
-         if (!vhost_dev_has_feature(hdev, VHOST_F_LOG_ALL)) {
-             error_setg(&hdev->migration_blocker,
-                        "Migration disabled: vhost lacks VHOST_F_LOG_ALL feature.");
-@@ -1697,7 +1734,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-     memory_listener_register(&hdev->memory_listener, &address_space_memory);
-     QLIST_INSERT_HEAD(&vhost_devices, hdev, entry);
- 
--    if (!check_memslots(hdev, errp)) {
-+    if (!hdev->migrating_backend && !check_memslots(hdev, errp)) {
-         r = -EINVAL;
-         goto fail;
-     }
-@@ -1765,8 +1802,11 @@ void vhost_dev_disable_notifiers_nvqs(struct vhost_dev *hdev,
-      */
-     memory_region_transaction_commit();
- 
--    for (i = 0; i < nvqs; ++i) {
--        virtio_bus_cleanup_host_notifier(VIRTIO_BUS(qbus), hdev->vq_index + i);
-+    if (!hdev->migrating_backend) {
-+        for (i = 0; i < nvqs; ++i) {
-+            virtio_bus_cleanup_host_notifier(VIRTIO_BUS(qbus),
-+                                             hdev->vq_index + i);
-+        }
-     }
-     virtio_device_release_ioeventfd(vdev);
- }
-@@ -1920,6 +1960,12 @@ uint64_t vhost_get_features(struct vhost_dev *hdev, const int *feature_bits,
-                             uint64_t features)
- {
-     const int *bit = feature_bits;
-+
-+    if (hdev->_features_wait_incoming) {
-+        /* Excessive set is enough for early initialization. */
-+        return features;
-+    }
-+
-     while (*bit != VHOST_INVALID_FEATURE_BIT) {
-         uint64_t bit_mask = (1ULL << *bit);
-         if (!vhost_dev_has_feature(hdev, *bit)) {
-@@ -1930,6 +1976,66 @@ uint64_t vhost_get_features(struct vhost_dev *hdev, const int *feature_bits,
-     return features;
- }
- 
-+void vhost_save_backend(struct vhost_dev *hdev, QEMUFile *f)
++static void vhost_user_save(struct vhost_dev *dev, QEMUFile *f)
 +{
-+    int i;
++    struct vhost_user *u = dev->opaque;
++    bool has_backend_channel = !!u->backend_sioc;
++    qemu_put_be64(f, u->protocol_features);
++    qemu_put_be32(f, u->user->memory_slots);
 +
-+    assert(hdev->migrating_backend);
-+
-+    if (hdev->vhost_ops->vhost_save_backend) {
-+        hdev->vhost_ops->vhost_save_backend(hdev, f);
-+    }
-+
-+    qemu_put_be64(f, hdev->_features);
-+    qemu_put_be64(f, hdev->max_queues);
-+    qemu_put_be64(f, hdev->nvqs);
-+
-+    for (i = 0; i < hdev->nvqs; i++) {
-+        qemu_file_put_fd(f,
-+                         event_notifier_get_fd(&hdev->vqs[i].error_notifier));
-+        qemu_file_put_fd(f,
-+                         event_notifier_get_fd(&hdev->vqs[i].masked_notifier));
++    qemu_put_byte(f, has_backend_channel);
++    if (u->backend_sioc) {
++        qemu_file_put_fd(f, u->backend_sioc->fd);
 +    }
 +}
 +
-+int vhost_load_backend(struct vhost_dev *hdev, QEMUFile *f)
++static int vhost_user_load(struct vhost_dev *dev, QEMUFile *f)
 +{
-+    int i;
-+    Error *err = NULL;
-+    uint64_t nvqs;
++    struct vhost_user *u = dev->opaque;
++    uint8_t has_backend_channel;
++    uint32_t memory_slots;
 +
-+    assert(hdev->migrating_backend);
++    qemu_get_be64s(f, &u->protocol_features);
++    qemu_get_be32s(f, &memory_slots);
++    qemu_get_8s(f, &has_backend_channel);
 +
-+    if (hdev->vhost_ops->vhost_load_backend) {
-+        hdev->vhost_ops->vhost_load_backend(hdev, f);
++    u->user->memory_slots = memory_slots;
++
++    if (has_backend_channel) {
++        int fd = qemu_file_get_fd(f);
++        Error *local_err = NULL;
++
++        u->backend_sioc = qio_channel_socket_new_fd(fd, &local_err);
++        if (!u->backend_sioc) {
++            error_report_err(local_err);
++            return -ECONNREFUSED;
++        }
++        u->backend_src = qio_channel_add_watch_source(
++            QIO_CHANNEL(u->backend_sioc), G_IO_IN | G_IO_HUP,
++            backend_read, dev, NULL, NULL);
 +    }
 +
-+    qemu_get_be64s(f, &hdev->_features);
-+    qemu_get_be64s(f, &hdev->max_queues);
-+    qemu_get_be64s(f, &nvqs);
-+
-+    if (nvqs != hdev->nvqs) {
-+        error_report("%s: number of virt queues mismatch", __func__);
-+        return -EINVAL;
++    if (dev->migration_blocker == NULL &&
++        !vhost_user_has_prot(dev, VHOST_USER_PROTOCOL_F_LOG_SHMFD)) {
++        error_setg(&dev->migration_blocker,
++                   "Migration disabled: vhost-user backend lacks "
++                   "VHOST_USER_PROTOCOL_F_LOG_SHMFD feature.");
 +    }
-+
-+    for (i = 0; i < hdev->nvqs; i++) {
-+        event_notifier_init_fd(&hdev->vqs[i].error_notifier,
-+                               qemu_file_get_fd(f));
-+        event_notifier_init_fd(&hdev->vqs[i].masked_notifier,
-+                               qemu_file_get_fd(f));
-+    }
-+
-+    if (!check_memslots(hdev, &err)) {
-+        error_report_err(err);
-+        return -EINVAL;
-+    }
-+
-+    hdev->_features_wait_incoming = false;
 +
 +    return 0;
 +}
 +
- void vhost_ack_features(struct vhost_dev *hdev, const int *feature_bits,
-                         uint64_t features)
- {
-@@ -2075,19 +2181,24 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-     hdev->started = true;
-     hdev->vdev = vdev;
- 
--    r = vhost_dev_set_features(hdev, hdev->log_enabled);
--    if (r < 0) {
--        goto fail_features;
-+    if (!hdev->migrating_backend) {
-+        r = vhost_dev_set_features(hdev, hdev->log_enabled);
-+        if (r < 0) {
-+            warn_report("%s %d", __func__, __LINE__);
-+            goto fail_features;
-+        }
-     }
- 
-     if (vhost_dev_has_iommu(hdev)) {
-         memory_listener_register(&hdev->iommu_listener, vdev->dma_as);
-     }
- 
--    r = hdev->vhost_ops->vhost_set_mem_table(hdev, hdev->mem);
--    if (r < 0) {
--        VHOST_OPS_DEBUG(r, "vhost_set_mem_table failed");
--        goto fail_mem;
-+    if (!hdev->migrating_backend) {
-+        r = hdev->vhost_ops->vhost_set_mem_table(hdev, hdev->mem);
-+        if (r < 0) {
-+            VHOST_OPS_DEBUG(r, "vhost_set_mem_table failed");
-+            goto fail_mem;
-+        }
-     }
-     for (i = 0; i < hdev->nvqs; ++i) {
-         r = vhost_virtqueue_start(hdev,
-@@ -2127,7 +2238,7 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-         }
-         vhost_dev_elect_mem_logger(hdev, true);
-     }
--    if (vrings) {
-+    if (vrings && !hdev->migrating_backend) {
-         r = vhost_dev_set_vring_enable(hdev, true);
-         if (r) {
-             goto fail_log;
-@@ -2155,6 +2266,8 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-     }
-     vhost_start_config_intr(hdev);
- 
-+    hdev->migrating_backend = false;
-+
-     trace_vhost_dev_start_finish(vdev->name);
-     return 0;
- fail_iotlb:
-@@ -2204,14 +2317,29 @@ static int do_vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev,
-     event_notifier_cleanup(
-         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
- 
-+    if (hdev->migrating_backend) {
-+        /* backend must support detached state */
-+        assert(hdev->vhost_ops->vhost_save_backend);
-+        assert(hdev->vhost_ops->vhost_load_backend);
-+    }
-+
-     trace_vhost_dev_stop(hdev, vdev->name, vrings);
- 
-     if (hdev->vhost_ops->vhost_dev_start) {
-         hdev->vhost_ops->vhost_dev_start(hdev, false);
-     }
--    if (vrings) {
-+    if (vrings && !hdev->migrating_backend) {
-         vhost_dev_set_vring_enable(hdev, false);
-     }
-+
-+    if (hdev->migrating_backend) {
-+        for (i = 0; i < hdev->nvqs; ++i) {
-+            struct vhost_virtqueue *vq = hdev->vqs + i;
-+
-+            event_notifier_set_handler(&vq->error_notifier, NULL);
-+        }
-+    }
-+
-     for (i = 0; i < hdev->nvqs; ++i) {
-         rc |= do_vhost_virtqueue_stop(hdev,
-                                       vdev,
-diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
-index 0785fc764d..66627c6a56 100644
---- a/include/hw/virtio/vhost-backend.h
-+++ b/include/hw/virtio/vhost-backend.h
-@@ -163,6 +163,9 @@ typedef int (*vhost_set_device_state_fd_op)(struct vhost_dev *dev,
- typedef int (*vhost_check_device_state_op)(struct vhost_dev *dev, Error **errp);
- typedef void (*vhost_qmp_status_op)(struct vhost_dev *dev, VhostStatus *status);
- 
-+typedef void (*vhost_detached_save_op)(struct vhost_dev *dev, QEMUFile *f);
-+typedef int (*vhost_detached_load_op)(struct vhost_dev *dev, QEMUFile *f);
-+
- typedef struct VhostOps {
-     VhostBackendType backend_type;
-     vhost_backend_init vhost_backend_init;
-@@ -219,6 +222,8 @@ typedef struct VhostOps {
-     vhost_set_device_state_fd_op vhost_set_device_state_fd;
-     vhost_check_device_state_op vhost_check_device_state;
-     vhost_qmp_status_op vhost_qmp_status;
-+    vhost_detached_save_op vhost_save_backend;
-+    vhost_detached_load_op vhost_load_backend;
- } VhostOps;
- 
- int vhost_backend_update_device_iotlb(struct vhost_dev *dev,
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index 8a4c8c3502..330374aca2 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -103,6 +103,10 @@ struct vhost_dev {
-      * @acked_features: final negotiated features with front-end driver
-      */
-     uint64_t _features;
-+    bool _features_wait_incoming;
-+
-+    bool migrating_backend;
-+
-     uint64_t acked_features;
- 
-     uint64_t max_queues;
-@@ -318,6 +322,8 @@ void vhost_virtqueue_mask(struct vhost_dev *hdev, VirtIODevice *vdev, int n,
-  */
- uint64_t vhost_get_features(struct vhost_dev *hdev, const int *feature_bits,
-                             uint64_t features);
-+void vhost_save_backend(struct vhost_dev *hdev, QEMUFile *f);
-+int vhost_load_backend(struct vhost_dev *hdev, QEMUFile *f);
- 
- /**
-  * vhost_ack_features() - set vhost acked_features
+ const VhostOps user_ops = {
+         .backend_type = VHOST_BACKEND_TYPE_USER,
+         .vhost_backend_init = vhost_user_backend_init,
+@@ -3146,4 +3206,6 @@ const VhostOps user_ops = {
+         .vhost_set_device_state_fd = vhost_user_set_device_state_fd,
+         .vhost_check_device_state = vhost_user_check_device_state,
+         .vhost_qmp_status = vhost_user_qmp_status,
++        .vhost_save_backend = vhost_user_save,
++        .vhost_load_backend = vhost_user_load,
+ };
 -- 
 2.48.1
 
