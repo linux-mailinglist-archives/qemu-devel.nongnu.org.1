@@ -2,65 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9A31B24A05
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 15:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63162B249B9
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 14:45:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umB4Q-00073L-2T; Wed, 13 Aug 2025 08:59:13 -0400
+	id 1umApY-00026c-8r; Wed, 13 Aug 2025 08:43:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiangkunkun@huawei.com>)
- id 1umARY-0005rY-V7
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 08:19:00 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1umApG-00025s-9m
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 08:43:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiangkunkun@huawei.com>)
- id 1umART-00062W-Dp
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 08:19:00 -0400
-Received: from mail.maildlp.com (unknown [172.19.88.234])
- by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4c26mB1NrDz2TT9S;
- Wed, 13 Aug 2025 20:16:10 +0800 (CST)
-Received: from kwepemh200008.china.huawei.com (unknown [7.202.181.115])
- by mail.maildlp.com (Postfix) with ESMTPS id 80DDF1401F0;
- Wed, 13 Aug 2025 20:18:50 +0800 (CST)
-Received: from [10.174.176.125] (10.174.176.125) by
- kwepemh200008.china.huawei.com (7.202.181.115) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 13 Aug 2025 20:18:49 +0800
-Subject: Re: [Question] VFIO migration will not be aborted in a corner scenario
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, Avihai Horon
- <avihaih@nvidia.com>, Alex Williamson <alex.williamson@redhat.com>, Yishai
- Hadas <yishaih@nvidia.com>
-CC: "open list:All patches CC here" <qemu-devel@nongnu.org>,
- <wanghaibin.wang@huawei.com>, Zenghui Yu <yuzenghui@huawei.com>
-References: <6f64724d-7869-1283-bb75-193c7fba5576@huawei.com>
- <f6c1cff4-a0ca-436a-b8d7-3d19ce49e848@redhat.com>
- <506cab2c-35aa-4c68-ba94-b26ba1b315bc@nvidia.com>
- <f6165e17-a926-4a59-9b59-2dd6853f20a6@redhat.com>
-Message-ID: <0efe9dbd-0666-16a4-dccc-c05c0cec95e4@huawei.com>
-Date: Wed, 13 Aug 2025 20:18:49 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1umAp6-0000gz-IN
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 08:43:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1755088996;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1BXnoR3UqMuKkmYEZxaLCYx8OwyCjpGUB5RXMn7lqgg=;
+ b=Hna9y07keAYHNQ0rAiYkO5Czgfa5uGbgOaR0fsNNRTSsyM8gwvX9QUZSm+HQQPAhy6EooM
+ 07JEjPO3I48UDW8T9vsCVFk+9JMtkTwJqeNScvPZeAA8daWDTbYdoVK8Aq/lwzmNkLDDAY
+ bvLAv52MthVR2mdgEYuMtRul6Cpmh0M=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-686-8ye9dIzoPnChGtxxKA-RuA-1; Wed, 13 Aug 2025 08:43:15 -0400
+X-MC-Unique: 8ye9dIzoPnChGtxxKA-RuA-1
+X-Mimecast-MFC-AGG-ID: 8ye9dIzoPnChGtxxKA-RuA_1755088995
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-4b0791a8e8dso181980781cf.2
+ for <qemu-devel@nongnu.org>; Wed, 13 Aug 2025 05:43:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1755088994; x=1755693794;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1BXnoR3UqMuKkmYEZxaLCYx8OwyCjpGUB5RXMn7lqgg=;
+ b=ICJyKueRgPNFnbyuYitc/nrgEyJI5IUCHa9fsje/rB9nxa8wYJ2Sey34KEOY1ttz2r
+ xuhvTvveYORINvJkPf6fBEbHkNSIlYVbrnal9W/I8PhJoNbbQyIWDmG+bZUg4AUxRS8w
+ FvFovNR4DUzmsjJ8dGX0ZU7yQzLEZ20rdjCZhQkoQp3sasmQx2VRTZL5kVvSHiaWjAGJ
+ t0N9y8fVvKi4keI++qrQFzjweuvYYYht/kteuQRZcNHaHLDW6i5Omvr3zWccj5JqY4+o
+ BjV92/kOV4UjSPVShk2KrtuKHn+DSjSP2206x7CKeFFgT4j9IdaWcuXK8hQxLCVyhN/6
+ BbGQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXJGVVNgMVB2i3a/o0Bw6eZTZIyDxU9OIJ7q6KTlTsst1o74gsxHXyFAHS5aUqyvIYwp9tS6ZU9SzW1@nongnu.org
+X-Gm-Message-State: AOJu0Yzyn07r8TrwmrR+SrBnUk2TUBgOSlj0V9xJhx0wt6VxR0N2BIof
+ FIsA1ToXbAFJ0HxpW0yetA+glqbqiaUQmZd3yw5JiXByiltY3Uhh1Fxy+VSH9KMzU36H5RU2AiM
+ 9m1ZsbdmVA9KMR1rxApsX9IxP131yUqOEx/8TAkT0LY7hpEaYzF4sMxWm
+X-Gm-Gg: ASbGncsFpAdb/2wKESvYD5LjJFS9Sj7kybPAq3156CZrwAnJrobvUSgErvfZ/eo736c
+ 1g1nfRpwdURj1gGliludaE87Kvt6wzQelIA2HjW0xtkVHp4jkbSjCoo2iKU0KMtXH4W0K1Xxgze
+ 3T0cOWP9U8zOlD7cB3CoaDei1eeKPDAeVRX6vGmdTz58eKE5cUMzaysmhdN2YO2OYjrNWfabK+w
+ 8pxpbPxbbO1PhmdaJ+yFCDMFnqOZYF6SmIlStYK7ctY2FpvewyOOPKQdGLyZPagVHJHmTIU5bO4
+ bLYQIvgvn4DDjvZj7Rp04yJm3KrsQRNhsTpopbNy4UOvAYg9DTn05/xRirJRqUKXs+SEbE7V7bl
+ 3lFy+/rJ9xBE=
+X-Received: by 2002:a05:622a:5509:b0:4b0:e934:6ff4 with SMTP id
+ d75a77b69052e-4b0fc89257fmr42801221cf.52.1755088994565; 
+ Wed, 13 Aug 2025 05:43:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQ7Go580hhjZB1xh76PzZyq47428ppMrt3Sho2hnvS4MiBFpjd1edQnBZgLNF3iKX7rTetwQ==
+X-Received: by 2002:a05:622a:5509:b0:4b0:e934:6ff4 with SMTP id
+ d75a77b69052e-4b0fc89257fmr42800671cf.52.1755088993961; 
+ Wed, 13 Aug 2025 05:43:13 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4b0aa1efe78sm92297441cf.8.2025.08.13.05.43.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Aug 2025 05:43:13 -0700 (PDT)
+Message-ID: <5bb03486-0463-4167-bc40-b47445d9b6cd@redhat.com>
+Date: Wed, 13 Aug 2025 14:43:11 +0200
 MIME-Version: 1.0
-In-Reply-To: <f6165e17-a926-4a59-9b59-2dd6853f20a6@redhat.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC] arm/kvm: report registers we failed to set
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.176.125]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemh200008.china.huawei.com (7.202.181.115)
-Received-SPF: pass client-ip=45.249.212.190;
- envelope-from=jiangkunkun@huawei.com; helo=szxga04-in.huawei.com
-X-Spam_score_int: -72
-X-Spam_score: -7.3
-X-Spam_bar: -------
-X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.152,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+To: Cornelia Huck <cohuck@redhat.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+References: <20250721161932.548668-1-cohuck@redhat.com>
+ <88812eea-08e3-48f5-b2f8-75ab0fff573b@redhat.com> <875xerfskt.fsf@redhat.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <875xerfskt.fsf@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 13 Aug 2025 08:58:40 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,138 +112,104 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Kunkun Jiang <jiangkunkun@huawei.com>
-From:  Kunkun Jiang via <qemu-devel@nongnu.org>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
 
-On 2025/8/12 22:56, Cédric Le Goater wrote:
-> On 8/12/25 16:08, Avihai Horon wrote:
->>
->> On 11/08/2025 19:34, Cédric Le Goater wrote:
->>> External email: Use caution opening links or attachments
->>>
->>>
->>> Hello,
->>>
->>> + Avihai
->>>
->>> On 8/11/25 18:02, Kunkun Jiang wrote:
->>>> Hi all,
->>>>
->>>> While testing VFIO migration, I encountered an corner scenario case:
->>>> VFIO migration will not be aborted when the vfio device of dst-vm 
->>>> fails to transition from RESUMING to RUNNING state in 
->>>> vfio_vmstate_change.
->>>>
->>>> I saw the comments in the vfio_vmstate_change but I don't understand 
->>>> why no action is taken for this situation.
->>>
->>> There is error handling in vfio_vmstate_change() :
->>>
->>>         /*
->>>          * Migration should be aborted in this case, but 
->>> vm_state_notify()
->>>          * currently does not support reporting failures.
->>>          */
->>>         migration_file_set_error(ret, local_err);
->>
->> Hmm, I think this only sets the error on src. On dst we don't have 
->> MigrationState->to_dst_file, so we end up just reporting the error.
->> But even if we did set it, no one is checking if there is a migration 
->> error after vm_start() is called in process_incoming_migration_bh().
->>
->>>
->>>> Allowing the live migration process to continue could cause 
->>>> unrecoverable damage to the VM.
->>
->> What do you mean by unrecoverable damage to the VM?
->> If RESUMING->RUNNING transition fails, would a VFIO reset recover the 
->> device and allow the VM to continue operation with damage limited only 
->> to the VFIO device?
->>
->>>> In this case, can we directly exit the dst-vm? Through the 
->>>> return-path mechanism, the src-vm can continue to run.
->>>>
->>>> Looking forward to your reply.
->>>
->> The straightforward solution, as you suggested, is to exit dst upon 
->> error in RESUMING->RUNNING transition and notify about it to src 
->> through the return-path.
->> However, I am not sure if failing the migration after vm_start() on 
->> dst is a bit late (as we start vCPUs and do migration_block_activate, 
->> etc.).
->>
->> But I can think of another way to solve this, hopefully simpler.
->> According to VFIO migration uAPI [1]:
->>   * RESUMING -> STOP
->>   *   Leaving RESUMING terminates a data transfer session and 
->> indicates the
->>   *   device should complete processing of the data delivered by 
->> write(). The
->>   *   kernel migration driver should complete the incorporation of 
->> data written
->>   *   to the data transfer FD into the device internal state and perform
->>   *   final validity and consistency checking of the new device state. 
->> If the
->>   *   user provided data is found to be incomplete, inconsistent, or 
->> otherwise
->>   *   invalid, the migration driver must fail the SET_STATE ioctl and
->>   *   optionally go to the ERROR state as described below.
->>
->> So, IIUC, we can add an explicit RESUMING->STOP transition [2] after 
->> the device config is loaded (which is the last data the device is 
->> expected to receive).
->> If this transition fails, it means something was wrong with migration, 
->> and we can send src an error msg via return-path (and not continue to 
->> vm_start()).
->>
->> Maybe this approach is less complicated than the first one, and it 
->> will also work if src VM was paused prior migration.
->> I already tested some POC and it seems to be working (at least with an 
->> artificial error i injected in RESUMING->STOP transition).
->> Kunkun, can you apply the following diff [3] and check if this solves 
->> the issue?
->>
->> And in general, what do you think? Should we go with this approach or 
->> do you have other ideas?
->>
->> Thanks.
->>
->> [1] 
->> https://elixir.bootlin.com/linux/v6.16/source/include/uapi/linux/vfio.h#L1099 
->>
->> [2] Today RESUMING->STOP is done implicitly by the VFIO driver as part 
->> of RESUMING->RUNNING transition.
->> [3]
-> 
-> Avihai,
-> 
-> Could you please send an RFC patch with Peter and Fabiano in cc: ?
-> This will help to discuss the proposal and keep track of the issue.
-> 
-> 
-> Kunkun Jiang,
-> 
-> Could you please share details on your environment ?
-Sorry for the late reply.My test scenario is this:
-Server:		Kunpeng-920
-VFUI device:	SEC, a Kunpeng hardware accelerator
-Host OS:	openEuler 24.03, kernel 6.6, qemu 8.2
-Guest OS:	openEuler 24.03
-Test steps:
-1. Start a VM and run a task using SEC inside the VM
-2. Start migration and inject an error into the SEC used by dst-VM
-3. The SEC used by dst-VM will be reset. So RESUMING->RUNNING transition 
-will fail with probability.(The timing has to be just right)
 
-> 
-> Thanks,
-> 
-> C.
-> 
-> 
-> .
+On 8/13/25 12:01 PM, Cornelia Huck wrote:
+> On Tue, Aug 12 2025, Eric Auger <eric.auger@redhat.com> wrote:
+>
+>> Hi Connie,
+>>
+>> On 7/21/25 6:19 PM, Cornelia Huck wrote:
+>>> If we fail migration because of a mismatch of some registers between
+>>> source and destination, the error message is not very informative:
+>>>
+>>> qemu-system-aarch64: error while loading state for instance 0x0 ofdevice 'cpu'
+>>> qemu-system-aarch64: Failed to put registers after init: Invalid argument
+>>>
+>>> At least try to give the user a hint which registers had a problem,
+>>> even if they cannot really do anything about it right now.
+>>>
+>>> Sample output:
+>>>
+>>> Could not set register op0:3 op1:0 crn:0 crm:0 op2:0 to c00fac31 (is 413fd0c1)
+>>>
+>>> We could be even more helpful once we support writable ID registers,
+>>> at which point the user might actually be able to configure something
+>>> that is migratable.
+>>>
+>>> Suggested-by: Eric Auger <eric.auger@redhat.com>
+>>> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+>>> ---
+>>>
+>>> Notes:
+>>> - This currently prints the list of failing registers for every call to
+>>>   write_list_to_kvmstate(), in particular for every cpu -- we might want
+>>>   to reduce that.
+>>> - If the macros aren't too ugly (or we manage to improve them), there
+>>>   might be other places where they could be useful.
+>>>
+>>> ---
+>>>  target/arm/kvm.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++++
+>>>  1 file changed, 53 insertions(+)
+>>>
+>>> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+>>> index 667234485547..ac6502e0c78f 100644
+>>> --- a/target/arm/kvm.c
+>>> +++ b/target/arm/kvm.c
+>>> @@ -900,6 +900,24 @@ bool write_kvmstate_to_list(ARMCPU *cpu)
+>>>      return ok;
+>>>  }
+>>>  
+>>> +/* pretty-print a KVM register */
+>>> +#define CP_REG_ARM64_SYSREG_OP(_reg, _op)                       \
+>>> +    ((uint8_t)((_reg & CP_REG_ARM64_SYSREG_ ## _op ## _MASK) >> \
+>>> +               CP_REG_ARM64_SYSREG_ ## _op ## _SHIFT))
+>>> +
+>>> +#define PRI_CP_REG_ARM64_SYSREG(_reg)                    \
+>>> +    ({                                                   \
+>>> +        char _out[32];                                   \
+>>> +        snprintf(_out, sizeof(_out),                     \
+>>> +                 "op0:%d op1:%d crn:%d crm:%d op2:%d",   \
+>>> +                 CP_REG_ARM64_SYSREG_OP(_reg, OP0),      \
+>>> +                 CP_REG_ARM64_SYSREG_OP(_reg, OP1),      \
+>>> +                 CP_REG_ARM64_SYSREG_OP(_reg, CRN),      \
+>>> +                 CP_REG_ARM64_SYSREG_OP(_reg, CRM),      \
+>>> +                 CP_REG_ARM64_SYSREG_OP(_reg, OP2));     \
+>>> +        _out;                                            \
+>>> +    })
+>>> +
+>> I am afraid this is too simplistic.
+>> Refering to linux/Documentation/virt/kvm/api.rst 4.68 KVM_SET_ONE_REG
+>> ARM registers section
+>> there are different groups of registers (upper 16b) and not all regs are
+>> further identified by op0-2, crn, crm.
+>> I think it would be valuable to output the group type and then the
+>> formatted lower 16b, depending on the group type.
+>>
+>> For instance 64b ARM FW pseudo reg is formatted as
+>> 0x6030 0000 0014 <regno:16>
+>>
+>> a diff on reg 0 results in
+>> qemu-system-aarch64: Could not set register op0:0 op1:0 crn:0 crm:0
+>> op2:0 to 10003 (is 10001)
+>> qemu-system-aarch64: error while loading state for instance 0x0 of
+>> device 'cpu'
+>> qemu-system-aarch64: Could not set register op0:0 op1:0 crn:0 crm:0
+>> op2:0 to 10003 (is 10001)
+>> qemu-system-aarch64: Failed to put registers after init: Invalid argument
+> You mean smth like
+>
+> Could not set FW pseudo register <regno> to <val> (is <val>)
+> Could not set ID register <decoding> to <val> (is <val>)
+yes
+
+Eric
+>
+> ?
+>
+
 
