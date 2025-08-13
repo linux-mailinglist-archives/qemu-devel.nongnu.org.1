@@ -2,51 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70513B26DDC
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 19:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B2CB252CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 20:10:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umbth-0007FX-St; Thu, 14 Aug 2025 13:37:53 -0400
+	id 1umFu8-0003qS-6Y; Wed, 13 Aug 2025 14:08:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1umbtY-0007El-9u
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:37:44 -0400
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1umFu2-0003pN-LM
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 14:08:46 -0400
 Received: from mail-a.sr.ht ([46.23.81.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1umbtS-0006lD-Nd
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:37:43 -0400
-DKIM-Signature: a=rsa-sha256; bh=UjjLCmp4BjuXMfxENaXoTrdjjyVEDurmJ0hse4taSU8=; 
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1umFtu-0001rt-Cl
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 14:08:45 -0400
+DKIM-Signature: a=rsa-sha256; bh=bsnQc68QKP5EYzLkP3YaI/koVRKh+wpgjA3T6BGSAuQ=; 
  c=simple/simple; d=git.sr.ht;
- h=From:Date:Subject:Reply-to:In-Reply-To:To:Cc; q=dns/txt; s=20240113;
- t=1755193052; v=1;
- b=UkmdFJ5VfcE8I1k3wLjpOKZ86oa7U6fo4VnASC5efddx+M5s0n+/9oqF7zIPFas4kr7M31Cl
- Yd4U4eJTBCnGr9COcy4rdrV02oOwhk+kj54TVsqaKzF4cTYOMNom7KW9tXc42iNBVlGt8N6E2zv
- qgcwdgBGuTNLkyJEdyhka19iSqFUeN9g0e9UwSC5hY6JDD2UEtRee6LI3tVDeK2yE2Yb+dT/lOK
- Bky+ytEVuB25jCV72qJza0BUmK9LMhmIXauZH0VvD7/8ikGz4gIxP3dd/09GErrwh994uJzf1MO
- YsiAZLWwrV2eUNgLN2qNqtCuzwheUzGPGIxpySRSVvTQg==
+ h=From:Date:Subject:Reply-to:To:Cc; 
+ q=dns/txt; s=20240113; t=1755108513; v=1;
+ b=QJF+SG2cU00bWrL623qrm9okKnaGyeCJjhpG8w4ZFXrzHlQkUlTDeQfLgkg5rg7v+J+RDCSo
+ 0t4LMnr76s/fwfVBFCD7KkpVeywKItznndZWWDXXtL1ad2id+kz3vdj3KFC9PHPqMcakf1VtL1C
+ bIGvml5itlq601Ut9WREqBKMLq7TJP7nRw/9mWXuWugGtHk6kAp1nNmlE62+2G20jVmJYgmbvMm
+ DXguD55blv0vXHBKv8d7Eu7HmWPWfb0txU/v9WTxOHJB9KJBAQQ5rtuH2wm8Lg8jMxnvBNrWzRy
+ h7XSfqs4WCLTFw+RQzJGr/ZdT3ZdiBeQbjlBz/lzL6giw==
 Received: from git.sr.ht (unknown [46.23.81.155])
- by mail-a.sr.ht (Postfix) with ESMTPSA id E031822FB6;
- Thu, 14 Aug 2025 17:37:32 +0000 (UTC)
+ by mail-a.sr.ht (Postfix) with ESMTPSA id 5F0A122F40;
+ Wed, 13 Aug 2025 18:08:33 +0000 (UTC)
 From: ~myrslint <myrslint@git.sr.ht>
-Date: Wed, 13 Aug 2025 17:53:59 +0000
-Subject: [PATCH qemu v3 1/1] Default disable ignore guest PAT quirk (second
- revision)
+Date: Wed, 13 Aug 2025 18:08:33 +0000
 MIME-Version: 1.0
-Message-ID: <175519305258.21579.8228319741764786681-1@git.sr.ht>
+Subject: [PATCH qemu v2 0/1] Default disable ignore guest PAT quirk
+Message-ID: <175510851329.15645.802219111760057966-0@git.sr.ht>
 X-Mailer: git.sr.ht
-In-Reply-To: <175519305258.21579.8228319741764786681-0@git.sr.ht>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Alex =?utf-8?q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
  helo=mail-a.sr.ht
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIM_INVALID=0.1, DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
@@ -65,60 +64,19 @@ Reply-To: ~myrslint <myrskylintu@proton.me>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: myrslint <qemu.haziness801@passinbox.com>
+Details of the issue addressed can be found here:
+https://gitlab.com/qemu-project/qemu/-/issues/2943
 
 Most Intel CPUs in current use have self-snoop. The few added lines of
 code also check for availability of the quirk disablement option so if
 some CPU does not have this feature no change of behavior will occur.
 
-Signed-off-by: Myrsky Lintu <qemu.haziness801@passinbox.com>
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2943
----
-Thanks to Alex Benn=C3=A9e <alex.bennee@linaro.org> for the kind code review
-and helpful guidance.
+myrslint (1):
+  Default disable ignore guest PAT quirk (second revision)
 
  target/i386/kvm/kvm.c | 19 +++++++++++++++++++
  1 file changed, 19 insertions(+)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 369626f8c8..124818bf94 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -16,6 +16,7 @@
- #include "qapi/qapi-events-run-state.h"
- #include "qapi/error.h"
- #include "qapi/visitor.h"
-+#include <asm-x86/kvm.h>
- #include <math.h>
- #include <sys/ioctl.h>
- #include <sys/utsname.h>
-@@ -3367,6 +3368,24 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         }
-     }
-=20
-+/* if kernel version does not have it there is no point compiling this in */
-+#ifdef KVM_X86_QUIRK_IGNORE_GUEST_PAT
-+    /* rationale: most x86 cpus in current use have self-snoop so honoring
-+     * guest pat is preferrable. as well, the bochs video driver bug which
-+     * motivated making this a default enabled quirk in kvm was fixed long a=
-go
-+     * */
-+    /* check if disabling this quirk is feasible and allowed */
-+    ret =3D kvm_check_extension(s, KVM_CAP_DISABLE_QUIRKS2);
-+    if (ret & KVM_X86_QUIRK_IGNORE_GUEST_PAT) {
-+        ret =3D kvm_vm_enable_cap(s, KVM_CAP_DISABLE_QUIRKS2, 0, \
-+                                KVM_X86_QUIRK_IGNORE_GUEST_PAT);
-+        if (ret < 0) {
-+            error_report("KVM_X86_QUIRK_IGNORE_GUEST_PAT available and "
-+                         "modifiable but we failed to disable it\n");
-+        }
-+    }
-+#endif
-+
-     return 0;
- }
-=20
---=20
+-- 
 2.49.1
 
