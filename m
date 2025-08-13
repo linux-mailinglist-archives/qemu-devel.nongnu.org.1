@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64688B25236
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 19:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B704B25239
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 19:44:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umFUK-0003wf-5A; Wed, 13 Aug 2025 13:42:12 -0400
+	id 1umFUH-0003wO-IZ; Wed, 13 Aug 2025 13:42:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1umFUE-0003uf-Fv; Wed, 13 Aug 2025 13:42:06 -0400
+ id 1umFUE-0003ue-EB; Wed, 13 Aug 2025 13:42:06 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1umFUB-0006Zx-Jx; Wed, 13 Aug 2025 13:42:06 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57DBZ5Uj025676;
+ id 1umFUB-0006Zw-El; Wed, 13 Aug 2025 13:42:06 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57DCQfRv031309;
  Wed, 13 Aug 2025 17:41:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=QZla6X8ncR2XNnKnb
- A92sFJoa3p4OKGXOP85ivV1B8Y=; b=sSE4C2E98vSP3PwubjLkd63YMs1Q8bDrG
- DRvfvd8SN93gvleUxpv+eFfbfZMVNXKp9ZBCRWS1+58MtjrragP7WrjBoDGxT29x
- MmufuhqaMEr/H2p+CIYKZXBIEjB8syPmMmqZ4GjempvMWjTaXKDLrdE2UcALdEif
- FuWLlMbRKz7F4CJLIHinJD+CYhlVXDd8IXY6L00xzGKTv8GM1QtoKbRKCUOg/9N5
- NJzXL5sn6H28VPsxYkiUw6G3n/fk/zOCm9T4YLuAxD4Szh17s2ztdcPbqlOySu6g
- PZAElBfO0bQFwAwSBj1KTs4VO4ot+kkwQDmkDWmNEzrPDqgFkaaYQ==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48ehaaa59x-1
+ :mime-version:references:subject:to; s=pp1; bh=B5ta6HOMcmrLv2Sy+
+ 6xx72FcquoyT7XUv0NzntvhIq4=; b=e+XOm7oEdsTvEBSUfBVNbzrVN2fg/zZS7
+ Xza5Od6ees/bFP/RVFde0FpUNi3wMVkti4WHvEBf9aJkz9A+mKwT1Js2rYBsI6mX
+ nncgKTtVYqXpO50lXBVjyt4Ud5TWgr69hDmyAuHQzWZSeFxUvzZa/Rx2LW+P1gaO
+ WW27Z93s7RnY/Z6ddnCXLTP66o7oBbtmWm2+cydqyRwAn+aI4OWq4q39/4myl+1d
+ V//ZpF6NELNaygi9RLsOv0+Mafvk/c5/o5fmdxbU+e4zwK8quFItwxKVyKz6Zpj4
+ 03gqvVDTTNXenjEBooaupvCCFQuVB9cOcXRI32QaN5juaCWcPo6NA==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dvrp5pfh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 13 Aug 2025 17:41:58 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57DGNZDh025628;
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57DFca9e020703;
  Wed, 13 Aug 2025 17:41:57 GMT
 Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 48ejvmg77p-1
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48ehnq0df1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 13 Aug 2025 17:41:57 +0000
 Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
  [10.241.53.101])
  by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 57DHftKh35324370
+ 57DHfucq32375068
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 13 Aug 2025 17:41:55 GMT
+ Wed, 13 Aug 2025 17:41:56 GMT
 Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3BA6C5805E;
+ by IMSVA (Postfix) with ESMTP id DDC5D5805A;
  Wed, 13 Aug 2025 17:41:55 +0000 (GMT)
 Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AC9335805A;
- Wed, 13 Aug 2025 17:41:54 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5795758051;
+ Wed, 13 Aug 2025 17:41:55 +0000 (GMT)
 Received: from IBM-D32RQW3.ibm.com (unknown [9.61.255.61])
  by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 13 Aug 2025 17:41:54 +0000 (GMT)
+ Wed, 13 Aug 2025 17:41:55 +0000 (GMT)
 From: Farhan Ali <alifm@linux.ibm.com>
 To: qemu-s390x@nongnu.org
 Cc: qemu-devel@nongnu.org, mjrosato@linux.ibm.com, thuth@redhat.com,
  alex.williamson@redhat.com, clg@redhat.com, alifm@linux.ibm.com
-Subject: [PATCH v1 3/4] s390x/pci: Add PCI error handling for vfio pci devices
-Date: Wed, 13 Aug 2025 10:41:50 -0700
-Message-ID: <20250813174152.1238-4-alifm@linux.ibm.com>
+Subject: [PATCH v1 4/4] s390x/pci: Reset a device in error state
+Date: Wed, 13 Aug 2025 10:41:51 -0700
+Message-ID: <20250813174152.1238-5-alifm@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250813174152.1238-1-alifm@linux.ibm.com>
 References: <20250813174152.1238-1-alifm@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=KPRaDEFo c=1 sm=1 tr=0 ts=689cce66 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=jSCLr9NRB7a5bD1T82IA:9
-X-Proofpoint-ORIG-GUID: hMhGZDT-KMItolRM8y46Pynv_wI8VIxW
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIyNCBTYWx0ZWRfX2pAl4eqD6vRd
- 0fYtqVYto4CfCbx8Ggh6kdpVcfpKbUiVOAsOjq+aoViWYwzFzNLu6v8CYfzcoOy3M5mdTmdPMqi
- 5bWrPtqmCLTZTIpRgMCofgg91M4z44fOiMgdNtWepADgrLUwwYF/chlIiR6Bnr8qVojdJMusd6y
- on2zoIXCkR0MnRje+MoXJm7mwfWMvLMTn2vQx+z1NDSzWfKRjaUW3MHNAHKP5oLfndanvCorCtY
- pttrwMF51SMIvajAx1R1EW7EMzpMz/13VJavi8tbVAcrkEF9N/B97PVicKO91lcktni2PozQQ1F
- 2Kb+ahr4CApa9QlMAHb0Cy8te7B2qedj2PC91goX1SXo7wp143KvqtKO3pWFJnspqPnDkJOmCvD
- L3H+lnU4
-X-Proofpoint-GUID: hMhGZDT-KMItolRM8y46Pynv_wI8VIxW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIxOSBTYWx0ZWRfX2suELHV1OudE
+ JajGInCfYF8KdfoK5hSoANjEiJk/HwVo8/ijRePcEs8EhbYcH90lDy6M1HdFB0Lno9nRGim0a6G
+ AECyV6ww+aTRU1Uhfm1AueWiMQdf2h0cyJ1QP1Y/bGJuPDiWTvH0TG8vH5+V69XEle5GY5m5gTH
+ TimIE7XeRs5OBuLuDZwg4/9U2gjoxuKNPVTzSo5JvGNcEVBVAXrGFNk/xV3tNKlcPdbcoU9Cn2o
+ 9fvLQs+TDiocvquKx5a8hGkDdSGvQfXLqPXP7TO+gN1C/kgcoACxfcgwb51Ba2sa1uUAzIf4MQs
+ CUChUYlgOlKxb72Kjc4McLB31trjgA75N+g7IpuufOdD+EX+XiKsQY3/+//EfNRf8ECF3Pth/nV
+ cUEsCpdG
+X-Authority-Analysis: v=2.4 cv=GrpC+l1C c=1 sm=1 tr=0 ts=689cce66 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=A6rq8h5Md1LYvE6mRIYA:9
+X-Proofpoint-GUID: U4gCi9SuUZ7UcgxBlh-F-3QaTeA01sQn
+X-Proofpoint-ORIG-GUID: U4gCi9SuUZ7UcgxBlh-F-3QaTeA01sQn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-13_01,2025-08-11_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0 bulkscore=0 adultscore=0 priorityscore=1501
- malwarescore=0 spamscore=0 clxscore=1015 suspectscore=0
+ clxscore=1015 adultscore=0 spamscore=0 impostorscore=0 suspectscore=0
+ phishscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508120224
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508120219
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=alifm@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -113,187 +113,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an s390x specific callback for vfio error handling.
-For s390x pci devices, we have platform specific error
-information. We need to retrieve this error information
-for passthrough devices. This is done via a memory region
-which exposes that information.
-
-Once this error information is retrieved we can then
-inject an error into the guest, and let the guest drive
-the recovery.
+For passthrough devices in error state, for a guest driven
+reset of the device we can attempt a hot reset to recover the
+device. A hot reset of the device will trigger a CLP
+disable/enable cycle on the host to bring the device into
+a recovered state.
 
 Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
 ---
- hw/s390x/s390-pci-bus.c          |  5 ++
- hw/s390x/s390-pci-vfio.c         | 82 ++++++++++++++++++++++++++++++++
- include/hw/s390x/s390-pci-bus.h  |  1 +
- include/hw/s390x/s390-pci-vfio.h |  2 +
- 4 files changed, 90 insertions(+)
+ hw/s390x/s390-pci-bus.c          | 7 +++++++
+ hw/s390x/s390-pci-vfio.c         | 6 ++++++
+ include/hw/s390x/s390-pci-vfio.h | 2 ++
+ 3 files changed, 15 insertions(+)
 
 diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-index f87d2748b6..af42eb9938 100644
+index af42eb9938..c9c2d775f0 100644
 --- a/hw/s390x/s390-pci-bus.c
 +++ b/hw/s390x/s390-pci-bus.c
-@@ -158,6 +158,8 @@ static void s390_pci_perform_unplug(S390PCIBusDevice *pbdev)
- {
-     HotplugHandler *hotplug_ctrl;
- 
-+    qemu_mutex_destroy(&pbdev->err_handler_lock);
-+
-     if (pbdev->pft == ZPCI_PFT_ISM) {
-         notifier_remove(&pbdev->shutdown_notifier);
-     }
-@@ -1140,6 +1142,7 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
-         pbdev->iommu->pbdev = pbdev;
+@@ -1493,6 +1493,8 @@ static void s390_pci_device_reset(DeviceState *dev)
+         return;
+     case ZPCI_FS_STANDBY:
+         break;
++    case ZPCI_FS_ERROR:
++        break;
+     default:
+         pbdev->fh &= ~FH_MASK_ENABLE;
          pbdev->state = ZPCI_FS_DISABLED;
-         set_pbdev_info(pbdev);
-+        qemu_mutex_init(&pbdev->err_handler_lock);
- 
-         if (object_dynamic_cast(OBJECT(dev), "vfio-pci")) {
-             /*
-@@ -1164,6 +1167,8 @@ static void s390_pcihost_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
-             pbdev->iommu->dma_limit = s390_pci_start_dma_count(s, pbdev);
-             /* Fill in CLP information passed via the vfio region */
-             s390_pci_get_clp_info(pbdev);
-+            /* Setup error handler for error recovery */
-+            s390_pci_setup_err_handler(pbdev);
-             if (!pbdev->interp) {
-                 /* Do vfio passthrough but intercept for I/O */
-                 pbdev->fh |= FH_SHM_VFIO;
+@@ -1505,6 +1507,11 @@ static void s390_pci_device_reset(DeviceState *dev)
+     } else if (pbdev->summary_ind) {
+         pci_dereg_irqs(pbdev);
+     }
++
++    if (pbdev->state == ZPCI_FS_ERROR) {
++        s390_pci_reset(pbdev);
++    }
++
+     if (pbdev->iommu->enabled) {
+         pci_dereg_ioat(pbdev->iommu);
+     }
 diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
-index aaf91319b4..ceee342f4a 100644
+index ceee342f4a..4ec5e2cd95 100644
 --- a/hw/s390x/s390-pci-vfio.c
 +++ b/hw/s390x/s390-pci-vfio.c
-@@ -10,6 +10,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/error-report.h"
- 
- #include <sys/ioctl.h>
- #include <linux/vfio.h>
-@@ -103,6 +104,70 @@ void s390_pci_end_dma_count(S390pciState *s, S390PCIDMACount *cnt)
-     }
+@@ -168,6 +168,12 @@ static void s390_pci_err_handler(VFIOPCIDevice *vfio_pci)
+     return;
  }
  
-+static int s390_pci_read_error_region(VFIOPCIDevice *vfio_pci,
-+                                      struct vfio_device_zpci_err_region *err)
++void s390_pci_reset(S390PCIBusDevice *pbdev)
 +{
-+    struct vfio_region_info *region = NULL;
-+    g_autofree void *buf;
-+    int ret;
-+
-+    ret = vfio_device_get_region_info_type(&vfio_pci->vbasedev,
-+                    VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_IBM,
-+                    VFIO_REGION_SUBTYPE_IBM_ZPCI_ERROR_REGION, &region);
-+
-+    if (ret) {
-+        error_report("Failed to get the region info for passthrough device"
-+                    " (rc=%d)", ret);
-+        return ret;
-+    }
-+
-+    buf = g_malloc0(region->size);
-+
-+    if (!buf) {
-+        error_report("Failed to allocate memory for error region");
-+        return -ENOMEM;
-+    }
-+
-+    ret = pread(vfio_pci->vbasedev.fd, buf, region->size, region->offset);
-+    if (ret != region->size) {
-+        error_report("Failed to read vfio zpci error region");
-+        return -EINVAL;
-+    }
-+
-+    memcpy(err, (struct vfio_device_zpci_err_region *) buf,
-+            sizeof(struct vfio_device_zpci_err_region));
-+    return 0;
-+}
-+
-+static void s390_pci_err_handler(VFIOPCIDevice *vfio_pci)
-+{
-+    S390PCIBusDevice *pbdev;
-+    struct vfio_device_zpci_err_region err;
-+    int ret;
-+
-+    pbdev = s390_pci_find_dev_by_target(s390_get_phb(),
-+                                        DEVICE(&vfio_pci->pdev)->id);
-+
-+    QEMU_LOCK_GUARD(&pbdev->err_handler_lock);
-+
-+    ret = s390_pci_read_error_region(vfio_pci, &err);
-+    if (ret) {
-+        return;
-+    }
-+
-+    pbdev->state = ZPCI_FS_ERROR;
-+    s390_pci_generate_error_event(err.pec, pbdev->fh, pbdev->fid, 0, 0);
-+
-+    while (err.pending_errors) {
-+        ret = s390_pci_read_error_region(vfio_pci, &err);
-+        if (ret) {
-+            return;
-+        }
-+        s390_pci_generate_error_event(err.pec, pbdev->fh, pbdev->fid, 0, 0);
-+    }
-+    return;
++    VFIOPCIDevice *vfio_pci = container_of(pbdev->pdev, VFIOPCIDevice, pdev);
++    ioctl(vfio_pci->vbasedev.fd, VFIO_DEVICE_RESET);
 +}
 +
  static void s390_pci_read_base(S390PCIBusDevice *pbdev,
                                 struct vfio_device_info *info)
  {
-@@ -369,3 +434,20 @@ void s390_pci_get_clp_info(S390PCIBusDevice *pbdev)
-     s390_pci_read_util(pbdev, info);
-     s390_pci_read_pfip(pbdev, info);
- }
-+
-+void s390_pci_setup_err_handler(S390PCIBusDevice *pbdev)
-+{
-+    int ret;
-+    struct vfio_region_info *region = NULL;
-+    VFIOPCIDevice *vdev =  container_of(pbdev->pdev, VFIOPCIDevice, pdev);
-+
-+    ret = vfio_device_get_region_info_type(&vdev->vbasedev,
-+                    VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_IBM,
-+                    VFIO_REGION_SUBTYPE_IBM_ZPCI_ERROR_REGION, &region);
-+
-+    if (ret) {
-+        info_report("Automated error recovery not available for passthrough device");
-+        return;
-+    }
-+    vdev->arch_err_handler = s390_pci_err_handler;
-+}
-diff --git a/include/hw/s390x/s390-pci-bus.h b/include/hw/s390x/s390-pci-bus.h
-index 04944d4fed..3795e0bbfc 100644
---- a/include/hw/s390x/s390-pci-bus.h
-+++ b/include/hw/s390x/s390-pci-bus.h
-@@ -364,6 +364,7 @@ struct S390PCIBusDevice {
-     bool forwarding_assist;
-     bool aif;
-     bool rtr_avail;
-+    QemuMutex err_handler_lock;
-     QTAILQ_ENTRY(S390PCIBusDevice) link;
- };
- 
 diff --git a/include/hw/s390x/s390-pci-vfio.h b/include/hw/s390x/s390-pci-vfio.h
-index ae1b126ff7..66b274293c 100644
+index 66b274293c..c28dafeed8 100644
 --- a/include/hw/s390x/s390-pci-vfio.h
 +++ b/include/hw/s390x/s390-pci-vfio.h
-@@ -22,6 +22,7 @@ S390PCIDMACount *s390_pci_start_dma_count(S390pciState *s,
- void s390_pci_end_dma_count(S390pciState *s, S390PCIDMACount *cnt);
+@@ -23,6 +23,7 @@ void s390_pci_end_dma_count(S390pciState *s, S390PCIDMACount *cnt);
  bool s390_pci_get_host_fh(S390PCIBusDevice *pbdev, uint32_t *fh);
  void s390_pci_get_clp_info(S390PCIBusDevice *pbdev);
-+void s390_pci_setup_err_handler(S390PCIBusDevice *pbdev);
+ void s390_pci_setup_err_handler(S390PCIBusDevice *pbdev);
++void s390_pci_reset(S390PCIBusDevice *pbdev);
  #else
  static inline bool s390_pci_update_dma_avail(int fd, unsigned int *avail)
  {
-@@ -39,6 +40,7 @@ static inline bool s390_pci_get_host_fh(S390PCIBusDevice *pbdev, uint32_t *fh)
-     return false;
+@@ -41,6 +42,7 @@ static inline bool s390_pci_get_host_fh(S390PCIBusDevice *pbdev, uint32_t *fh)
  }
  static inline void s390_pci_get_clp_info(S390PCIBusDevice *pbdev) { }
-+static inline void s390_pci_setup_err_handler(S390PCIBusDevice *pbdev) { }
+ static inline void s390_pci_setup_err_handler(S390PCIBusDevice *pbdev) { }
++void s390_pci_reset(S390PCIBusDevice *pbdev) { }
  #endif
  
  #endif
