@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5AEB25021
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 18:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB121B25038
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 18:54:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umEfk-0002mF-7k; Wed, 13 Aug 2025 12:49:56 -0400
+	id 1umEfv-0002w3-LH; Wed, 13 Aug 2025 12:50:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1umEfI-0002dk-U9; Wed, 13 Aug 2025 12:49:32 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ id 1umEfL-0002eA-Nt; Wed, 13 Aug 2025 12:49:33 -0400
+Received: from forwardcorp1d.mail.yandex.net
+ ([2a02:6b8:c41:1300:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1umEf4-0007nW-2C; Wed, 13 Aug 2025 12:49:26 -0400
+ id 1umEf8-0007ni-LT; Wed, 13 Aug 2025 12:49:30 -0400
 Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:cf2d:0:640:140f:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 84A6880AA7;
- Wed, 13 Aug 2025 19:49:08 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 4BE9580758;
+ Wed, 13 Aug 2025 19:49:09 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:167::1:21])
  by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id wmOQI00FoSw0-JpK3xgI4; Wed, 13 Aug 2025 19:49:08 +0300
+ ESMTPSA id wmOQI00FoSw0-VIYARLUk; Wed, 13 Aug 2025 19:49:08 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1755103748;
- bh=KVnjEs242mxf0oDV8dheNJ6G8NvptyrhWPMrmMFU1v8=;
+ bh=nqWXIsmLLn9rg1IFHTsU/Prs4niyPIFMdRUQOysIsTY=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=cZ+T3zxjDwXc91G9hPMg/JJPtRLn80PYhqjxXRuy/IE5O/v4ey8PBexDNxjn2O313
- A/Z5+PInFeMW+YSLOEuZOd1nhIulyIHZlrRy08Z3yD2afd0j9wVphyRVSDesc09Aix
- Xfg21+f59Hatp6byfAYkmSZtKQ07MlI3Qgbb95Nk=
+ b=AMi0yGUazKFMSkOwSImea/bfdQrJFaJbK+rui7VjrkjTHJnDeHH3qvItjXki/nlxj
+ WGh7+XM6c1oikWWk7HeLTVX+rqQAJPHVdJBzZosyAgYrDYQ9PJzMdZCsGVVWKXjY2M
+ Voz8M92T+dq0ohR87LS2K/HwCGnKWfa0z91RZ1so=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -40,26 +41,24 @@ Cc: sgarzare@redhat.com, marcandre.lureau@redhat.com, pbonzini@redhat.com,
  kwolf@redhat.com, hreitz@redhat.com, berrange@redhat.com,
  eblake@redhat.com, armbru@redhat.com, qemu-devel@nongnu.org,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
- den-plotnikov@yandex-team.ru, vsementsov@yandex-team.ru,
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 06/33] vhost: make vhost_dev.features private
-Date: Wed, 13 Aug 2025 19:48:27 +0300
-Message-ID: <20250813164856.950363-7-vsementsov@yandex-team.ru>
+ den-plotnikov@yandex-team.ru, vsementsov@yandex-team.ru
+Subject: [PATCH 07/33] virtio: move common part of _set_guest_notifier to
+ generic code
+Date: Wed, 13 Aug 2025 19:48:28 +0300
+Message-ID: <20250813164856.950363-8-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250813164856.950363-1-vsementsov@yandex-team.ru>
 References: <20250813164856.950363-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
+Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,296 +74,252 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's hard to control where and how do we use this field. Let's
-cover all usages by getters/setters, and keep direct access to the
-field only in vhost.c. It will help to control migration of this
-field in further commits.
+virtio-pci and virtio-mmiio handle config notifier equally but
+with different code (mmio adds a separate function, when pci
+use common function). Let's chose the more compact way (pci)
+and reuse it for mmio.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/display/vhost-user-gpu.c |  7 +++----
- hw/net/vhost_net.c          | 17 +++++++++--------
- hw/virtio/vdpa-dev.c        |  2 +-
- hw/virtio/vhost-user-base.c |  8 ++++++--
- hw/virtio/vhost-user.c      |  7 +++----
- hw/virtio/vhost.c           | 21 ++++++++++++++++++---
- hw/virtio/virtio-qmp.c      |  2 +-
- include/hw/virtio/vhost.h   | 21 +++++++++++++++++++--
- net/vhost-vdpa.c            |  7 +++----
- 9 files changed, 63 insertions(+), 29 deletions(-)
+ hw/virtio/virtio-mmio.c        | 41 +++++------------------------
+ hw/virtio/virtio-pci.c         | 34 +++---------------------
+ hw/virtio/virtio.c             | 48 +++++++++++++++++++++++++++++++---
+ include/hw/virtio/virtio-pci.h |  3 ---
+ include/hw/virtio/virtio.h     |  7 +++--
+ 5 files changed, 58 insertions(+), 75 deletions(-)
 
-diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
-index 79ea64b12c..146620e0a3 100644
---- a/hw/display/vhost-user-gpu.c
-+++ b/hw/display/vhost-user-gpu.c
-@@ -631,17 +631,16 @@ vhost_user_gpu_device_realize(DeviceState *qdev, Error **errp)
+diff --git a/hw/virtio/virtio-mmio.c b/hw/virtio/virtio-mmio.c
+index 532c67107b..18afa1c0d0 100644
+--- a/hw/virtio/virtio-mmio.c
++++ b/hw/virtio/virtio-mmio.c
+@@ -658,18 +658,11 @@ static int virtio_mmio_set_guest_notifier(DeviceState *d, int n, bool assign,
+     VirtIOMMIOProxy *proxy = VIRTIO_MMIO(d);
+     VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
+     VirtioDeviceClass *vdc = VIRTIO_DEVICE_GET_CLASS(vdev);
+-    VirtQueue *vq = virtio_get_queue(vdev, n);
+-    EventNotifier *notifier = virtio_queue_get_guest_notifier(vq);
++    int r;
  
-     /* existing backend may send DMABUF, so let's add that requirement */
-     g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_FLAG_DMABUF_ENABLED;
--    if (virtio_has_feature(g->vhost->dev.features, VIRTIO_GPU_F_VIRGL)) {
-+    if (vhost_dev_has_feature(&g->vhost->dev, VIRTIO_GPU_F_VIRGL)) {
-         g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_FLAG_VIRGL_ENABLED;
-     }
--    if (virtio_has_feature(g->vhost->dev.features, VIRTIO_GPU_F_EDID)) {
-+    if (vhost_dev_has_feature(&g->vhost->dev, VIRTIO_GPU_F_EDID)) {
-         g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_FLAG_EDID_ENABLED;
-     } else {
-         error_report("EDID requested but the backend doesn't support it.");
-         g->parent_obj.conf.flags &= ~(1 << VIRTIO_GPU_FLAG_EDID_ENABLED);
-     }
--    if (virtio_has_feature(g->vhost->dev.features,
--        VIRTIO_GPU_F_RESOURCE_UUID)) {
-+    if (vhost_dev_has_feature(&g->vhost->dev, VIRTIO_GPU_F_RESOURCE_UUID)) {
-         g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_FLAG_RESOURCE_UUID_ENABLED;
+-    if (assign) {
+-        int r = event_notifier_init(notifier, 0);
+-        if (r < 0) {
+-            return r;
+-        }
+-        virtio_queue_set_guest_notifier_fd_handler(vq, true, with_irqfd);
+-    } else {
+-        virtio_queue_set_guest_notifier_fd_handler(vq, false, with_irqfd);
+-        event_notifier_cleanup(notifier);
++    r = virtio_queue_set_guest_notifier(vdev, n, assign, with_irqfd);
++    if (r < 0) {
++        return r;
      }
  
-diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index ce30b6e197..5269533864 100644
---- a/hw/net/vhost_net.c
-+++ b/hw/net/vhost_net.c
-@@ -55,7 +55,8 @@ void vhost_net_ack_features(struct vhost_net *net, uint64_t features)
- {
-     net->dev.acked_features =
-         (qemu_has_vnet_hdr(net->nc) ? 0 : (1ULL << VHOST_NET_F_VIRTIO_NET_HDR))
--         | (net->dev.features & (1ULL << VHOST_USER_F_PROTOCOL_FEATURES));
-+         | (vhost_dev_features(&net->dev) &
-+            (1ULL << VHOST_USER_F_PROTOCOL_FEATURES));
+     if (vdc->guest_notifier_mask && vdev->use_guest_notifier_mask) {
+@@ -678,30 +671,7 @@ static int virtio_mmio_set_guest_notifier(DeviceState *d, int n, bool assign,
  
-     vhost_ack_features(&net->dev, net->feature_bits, features);
+     return 0;
  }
-@@ -277,23 +278,23 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
-     if (backend_kernel) {
-         if (!qemu_has_vnet_hdr_len(options->net_backend,
-                                sizeof(struct virtio_net_hdr_mrg_rxbuf))) {
--            net->dev.features &= ~(1ULL << VIRTIO_NET_F_MRG_RXBUF);
-+            vhost_dev_clear_feature(&net->dev, VIRTIO_NET_F_MRG_RXBUF);
-         }
-         if (!qemu_has_vnet_hdr(options->net_backend) &&
--            (~net->dev.features & (1ULL << VHOST_NET_F_VIRTIO_NET_HDR))) {
--            fprintf(stderr, "vhost lacks feature mask 0x%llx for backend\n",
--                    ~net->dev.features & (1ULL << VHOST_NET_F_VIRTIO_NET_HDR));
-+            !vhost_dev_has_feature(&net->dev, VHOST_NET_F_VIRTIO_NET_HDR)) {
-+            fprintf(stderr, "vhost lacks VHOST_NET_F_VIRTIO_NET_HDR "
-+                    "feature for backend\n");
-             goto fail;
+-static int virtio_mmio_set_config_guest_notifier(DeviceState *d, bool assign,
+-                                                 bool with_irqfd)
+-{
+-    VirtIOMMIOProxy *proxy = VIRTIO_MMIO(d);
+-    VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
+-    VirtioDeviceClass *vdc = VIRTIO_DEVICE_GET_CLASS(vdev);
+-    EventNotifier *notifier = virtio_config_get_guest_notifier(vdev);
+-    int r = 0;
+ 
+-    if (assign) {
+-        r = event_notifier_init(notifier, 0);
+-        if (r < 0) {
+-            return r;
+-        }
+-        virtio_config_set_guest_notifier_fd_handler(vdev, assign, with_irqfd);
+-    } else {
+-        virtio_config_set_guest_notifier_fd_handler(vdev, assign, with_irqfd);
+-        event_notifier_cleanup(notifier);
+-    }
+-    if (vdc->guest_notifier_mask && vdev->use_guest_notifier_mask) {
+-        vdc->guest_notifier_mask(vdev, VIRTIO_CONFIG_IRQ_IDX, !assign);
+-    }
+-    return r;
+-}
+ static int virtio_mmio_set_guest_notifiers(DeviceState *d, int nvqs,
+                                            bool assign)
+ {
+@@ -723,7 +693,8 @@ static int virtio_mmio_set_guest_notifiers(DeviceState *d, int nvqs,
+             goto assign_error;
          }
      }
- 
-     /* Set sane init value. Override when guest acks. */
-     if (options->get_acked_features) {
-+        uint64_t backend_features = vhost_dev_features(&net->dev);
-         features = options->get_acked_features(net->nc);
--        if (~net->dev.features & features) {
-+        if (~backend_features & features) {
-             fprintf(stderr, "vhost lacks feature mask 0x%" PRIx64
--                    " for backend\n",
--                    (uint64_t)(~net->dev.features & features));
-+                    " for backend\n", ~backend_features & features);
-             goto fail;
-         }
+-    r = virtio_mmio_set_config_guest_notifier(d, assign, with_irqfd);
++    r = virtio_mmio_set_guest_notifier(d, VIRTIO_CONFIG_IRQ_IDX, assign,
++                                       with_irqfd);
+     if (r < 0) {
+         goto assign_error;
      }
-diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
-index 3c0eed3e8e..4dfb03aaa7 100644
---- a/hw/virtio/vdpa-dev.c
-+++ b/hw/virtio/vdpa-dev.c
-@@ -224,7 +224,7 @@ static uint64_t vhost_vdpa_device_get_features(VirtIODevice *vdev,
-                                                Error **errp)
- {
-     VhostVdpaDevice *s = VHOST_VDPA_DEVICE(vdev);
--    uint64_t backend_features = s->dev.features;
-+    uint64_t backend_features = vhost_dev_features(&s->dev);
- 
-     if (!virtio_has_feature(features, VIRTIO_F_IOMMU_PLATFORM)) {
-         virtio_clear_feature(&backend_features, VIRTIO_F_IOMMU_PLATFORM);
-diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
-index ff67a020b4..cf311c3bfc 100644
---- a/hw/virtio/vhost-user-base.c
-+++ b/hw/virtio/vhost-user-base.c
-@@ -118,9 +118,13 @@ static uint64_t vub_get_features(VirtIODevice *vdev,
-                                  uint64_t requested_features, Error **errp)
- {
-     VHostUserBase *vub = VHOST_USER_BASE(vdev);
-+    uint64_t backend_features = vhost_dev_features(&vub->vhost_dev);
-+
-     /* This should be set when the vhost connection initialises */
--    g_assert(vub->vhost_dev.features);
--    return vub->vhost_dev.features & ~(1ULL << VHOST_USER_F_PROTOCOL_FEATURES);
-+    g_assert(backend_features);
-+    virtio_clear_feature(&backend_features, VHOST_USER_F_PROTOCOL_FEATURES);
-+
-+    return backend_features;
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index 767216d795..3eca3fe2c8 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -1163,43 +1163,17 @@ static void virtio_pci_vector_poll(PCIDevice *dev,
+     }
  }
  
- /*
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index abdf47ee7b..46f09f5988 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -1245,15 +1245,14 @@ static int vhost_user_set_vring_base(struct vhost_dev *dev,
- 
- static bool vhost_user_set_vring_enable_supported(struct vhost_dev *dev)
+-void virtio_pci_set_guest_notifier_fd_handler(VirtIODevice *vdev, VirtQueue *vq,
+-                                              int n, bool assign,
+-                                              bool with_irqfd)
+-{
+-    if (n == VIRTIO_CONFIG_IRQ_IDX) {
+-        virtio_config_set_guest_notifier_fd_handler(vdev, assign, with_irqfd);
+-    } else {
+-        virtio_queue_set_guest_notifier_fd_handler(vq, assign, with_irqfd);
+-    }
+-}
+-
+ static int virtio_pci_set_guest_notifier(DeviceState *d, int n, bool assign,
+                                          bool with_irqfd)
  {
--    return virtio_has_feature(dev->features,
--                              VHOST_USER_F_PROTOCOL_FEATURES);
-+    return vhost_dev_has_feature(dev, VHOST_USER_F_PROTOCOL_FEATURES);
+     VirtIOPCIProxy *proxy = to_virtio_pci_proxy(d);
+     VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
+     VirtioDeviceClass *vdc = VIRTIO_DEVICE_GET_CLASS(vdev);
+-    VirtQueue *vq = NULL;
+-    EventNotifier *notifier = NULL;
++    int r;
+ 
+-    if (n == VIRTIO_CONFIG_IRQ_IDX) {
+-        notifier = virtio_config_get_guest_notifier(vdev);
+-    } else {
+-        vq = virtio_get_queue(vdev, n);
+-        notifier = virtio_queue_get_guest_notifier(vq);
+-    }
+-
+-    if (assign) {
+-        int r = event_notifier_init(notifier, 0);
+-        if (r < 0) {
+-            return r;
+-        }
+-        virtio_pci_set_guest_notifier_fd_handler(vdev, vq, n, true, with_irqfd);
+-    } else {
+-        virtio_pci_set_guest_notifier_fd_handler(vdev, vq, n, false,
+-                                                 with_irqfd);
+-        event_notifier_cleanup(notifier);
++    r = virtio_queue_set_guest_notifier(vdev, n, assign, with_irqfd);
++    if (r < 0) {
++        return r;
+     }
+ 
+     if (!msix_enabled(&proxy->pci_dev) &&
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 9a81ad912e..7880c3bcd9 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -3750,8 +3750,10 @@ static void virtio_config_guest_notifier_read(EventNotifier *n)
+         virtio_notify_config(vdev);
+     }
+ }
+-void virtio_queue_set_guest_notifier_fd_handler(VirtQueue *vq, bool assign,
+-                                                bool with_irqfd)
++
++static void virtio_queue_set_guest_notifier_fd_handler(VirtQueue *vq,
++                                                       bool assign,
++                                                       bool with_irqfd)
+ {
+     if (assign && !with_irqfd) {
+         event_notifier_set_handler(&vq->guest_notifier,
+@@ -3766,7 +3768,7 @@ void virtio_queue_set_guest_notifier_fd_handler(VirtQueue *vq, bool assign,
+     }
  }
  
- static int vhost_user_set_vring_enable(struct vhost_dev *dev, int enable)
+-void virtio_config_set_guest_notifier_fd_handler(VirtIODevice *vdev,
++static void virtio_config_set_guest_notifier_fd_handler(VirtIODevice *vdev,
+                                                  bool assign, bool with_irqfd)
  {
-     int i;
- 
--    if (!virtio_has_feature(dev->features, VHOST_USER_F_PROTOCOL_FEATURES)) {
-+    if (!vhost_dev_has_feature(dev, VHOST_USER_F_PROTOCOL_FEATURES)) {
-         return -EINVAL;
+     EventNotifier *n;
+@@ -3783,6 +3785,46 @@ void virtio_config_set_guest_notifier_fd_handler(VirtIODevice *vdev,
      }
+ }
  
-@@ -1465,7 +1464,7 @@ static int vhost_user_set_features(struct vhost_dev *dev,
-      * Don't lose VHOST_USER_F_PROTOCOL_FEATURES, which is vhost-user
-      * specific.
-      */
--    if (virtio_has_feature(dev->features, VHOST_USER_F_PROTOCOL_FEATURES)) {
-+    if (vhost_dev_has_feature(dev, VHOST_USER_F_PROTOCOL_FEATURES)) {
-         features |= 1ULL << VHOST_USER_F_PROTOCOL_FEATURES;
-     }
- 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index c33dad4acd..2631bbabcf 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -50,6 +50,21 @@ static QLIST_HEAD(, vhost_dev) vhost_log_devs[VHOST_BACKEND_TYPE_MAX];
- static QLIST_HEAD(, vhost_dev) vhost_devices =
-     QLIST_HEAD_INITIALIZER(vhost_devices);
- 
-+bool vhost_dev_has_feature(struct vhost_dev *dev, uint64_t feature)
++static void virtio_pci_set_guest_notifier_fd_handler(VirtIODevice *vdev,
++                                                     VirtQueue *vq,
++                                                     int n, bool assign,
++                                                     bool with_irqfd)
 +{
-+    return virtio_has_feature(dev->_features, feature);
++    if (n == VIRTIO_CONFIG_IRQ_IDX) {
++        virtio_config_set_guest_notifier_fd_handler(vdev, assign, with_irqfd);
++    } else {
++        virtio_queue_set_guest_notifier_fd_handler(vq, assign, with_irqfd);
++    }
 +}
 +
-+uint64_t vhost_dev_features(struct vhost_dev *dev)
++int virtio_queue_set_guest_notifier(VirtIODevice *vdev, int n, bool assign,
++                                    bool with_irqfd)
 +{
-+    return dev->_features;
++    VirtQueue *vq = NULL;
++    EventNotifier *notifier = NULL;
++
++    if (n == VIRTIO_CONFIG_IRQ_IDX) {
++        notifier = virtio_config_get_guest_notifier(vdev);
++    } else {
++        vq = virtio_get_queue(vdev, n);
++        notifier = virtio_queue_get_guest_notifier(vq);
++    }
++
++    if (assign) {
++        int r = event_notifier_init(notifier, 0);
++        if (r < 0) {
++            return r;
++        }
++        virtio_pci_set_guest_notifier_fd_handler(vdev, vq, n, true, with_irqfd);
++    } else {
++        virtio_pci_set_guest_notifier_fd_handler(vdev, vq, n, false,
++                                                 with_irqfd);
++        event_notifier_cleanup(notifier);
++    }
++
++    return 0;
 +}
 +
-+void vhost_dev_clear_feature(struct vhost_dev *dev, uint64_t feature)
-+{
-+    virtio_clear_feature(&dev->_features, feature);
-+}
-+
- unsigned int vhost_get_max_memslots(void)
+ EventNotifier *virtio_queue_get_guest_notifier(VirtQueue *vq)
  {
-     unsigned int max = UINT_MAX;
-@@ -1571,7 +1586,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-         }
-     }
+     return &vq->guest_notifier;
+diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
+index eab5394898..02c2dfb3c6 100644
+--- a/include/hw/virtio/virtio-pci.h
++++ b/include/hw/virtio/virtio-pci.h
+@@ -263,9 +263,6 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t);
+  * @fixed_queues.
+  */
+ unsigned virtio_pci_optimal_num_queues(unsigned fixed_queues);
+-void virtio_pci_set_guest_notifier_fd_handler(VirtIODevice *vdev, VirtQueue *vq,
+-                                              int n, bool assign,
+-                                              bool with_irqfd);
  
--    hdev->features = features;
-+    hdev->_features = features;
- 
-     hdev->memory_listener = (MemoryListener) {
-         .name = "vhost",
-@@ -1594,7 +1609,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
-     };
- 
-     if (hdev->migration_blocker == NULL) {
--        if (!(hdev->features & (0x1ULL << VHOST_F_LOG_ALL))) {
-+        if (!vhost_dev_has_feature(hdev, VHOST_F_LOG_ALL)) {
-             error_setg(&hdev->migration_blocker,
-                        "Migration disabled: vhost lacks VHOST_F_LOG_ALL feature.");
-         } else if (vhost_dev_log_is_shared(hdev) && !qemu_memfd_alloc_check()) {
-@@ -1865,7 +1880,7 @@ uint64_t vhost_get_features(struct vhost_dev *hdev, const int *feature_bits,
-     const int *bit = feature_bits;
-     while (*bit != VHOST_INVALID_FEATURE_BIT) {
-         uint64_t bit_mask = (1ULL << *bit);
--        if (!(hdev->features & bit_mask)) {
-+        if (!vhost_dev_has_feature(hdev, *bit)) {
-             features &= ~bit_mask;
-         }
-         bit++;
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index d55b12f9f3..4bd23c015e 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -785,7 +785,7 @@ VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
-         status->vhost_dev->nvqs = hdev->nvqs;
-         status->vhost_dev->vq_index = hdev->vq_index;
-         status->vhost_dev->features =
--            qmp_decode_features(vdev->device_id, hdev->features);
-+            qmp_decode_features(vdev->device_id, vhost_dev_features(hdev));
-         status->vhost_dev->acked_features =
-             qmp_decode_features(vdev->device_id, hdev->acked_features);
-         status->vhost_dev->max_queues = hdev->max_queues;
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index 15bc287a9d..8a4c8c3502 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -98,10 +98,11 @@ struct vhost_dev {
-      * offered by a backend which may be a subset of the total
-      * features eventually offered to the guest.
-      *
--     * @features: available features provided by the backend
-+     * @_features: available features provided by the backend, private,
-+     *             direct access only in vhost.c
-      * @acked_features: final negotiated features with front-end driver
-      */
--    uint64_t features;
-+    uint64_t _features;
-     uint64_t acked_features;
- 
-     uint64_t max_queues;
-@@ -352,6 +353,22 @@ int vhost_dev_get_inflight(struct vhost_dev *dev, uint16_t queue_size,
-                            struct vhost_inflight *inflight);
- bool vhost_dev_has_iommu(struct vhost_dev *dev);
- 
-+/**
-+ * vhost_dev_has_feature() - check if vhost device has a specific feature
-+ * @dev: common vhost_dev structure
-+ * @feature: feature bit to check
-+ *
-+ * Return: true if the feature is supported, false otherwise
-+ */
-+bool vhost_dev_has_feature(struct vhost_dev *dev, uint64_t feature);
+ int virtio_pci_add_shm_cap(VirtIOPCIProxy *proxy, uint8_t bar, uint64_t offset,
+                            uint64_t length, uint8_t id);
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index c594764f23..8b9db08ddf 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -416,8 +416,6 @@ void virtio_queue_update_used_idx(VirtIODevice *vdev, int n);
+ VirtQueue *virtio_get_queue(VirtIODevice *vdev, int n);
+ uint16_t virtio_get_queue_index(VirtQueue *vq);
+ EventNotifier *virtio_queue_get_guest_notifier(VirtQueue *vq);
+-void virtio_queue_set_guest_notifier_fd_handler(VirtQueue *vq, bool assign,
+-                                                bool with_irqfd);
+ int virtio_device_start_ioeventfd(VirtIODevice *vdev);
+ int virtio_device_grab_ioeventfd(VirtIODevice *vdev);
+ void virtio_device_release_ioeventfd(VirtIODevice *vdev);
+@@ -431,8 +429,9 @@ void virtio_queue_aio_detach_host_notifier(VirtQueue *vq, AioContext *ctx);
+ VirtQueue *virtio_vector_first_queue(VirtIODevice *vdev, uint16_t vector);
+ VirtQueue *virtio_vector_next_queue(VirtQueue *vq);
+ EventNotifier *virtio_config_get_guest_notifier(VirtIODevice *vdev);
+-void virtio_config_set_guest_notifier_fd_handler(VirtIODevice *vdev,
+-                                                 bool assign, bool with_irqfd);
 +
-+/**
-+ * vhost_dev_features() - simple getter for dev->features
-+ */
-+uint64_t vhost_dev_features(struct vhost_dev *dev);
-+
-+void vhost_dev_clear_feature(struct vhost_dev *dev, uint64_t feature);
-+
- #ifdef CONFIG_VHOST
- int vhost_reset_device(struct vhost_dev *hdev);
- #else
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 74d26a9497..0af0d3bdd3 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -256,15 +256,14 @@ static bool vhost_vdpa_get_vnet_hash_supported_types(NetClientState *nc,
++int virtio_queue_set_guest_notifier(VirtIODevice *vdev, int n, bool assign,
++                                    bool with_irqfd);
+ 
+ static inline void virtio_add_feature(uint64_t *features, unsigned int fbit)
  {
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
-     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
--    uint64_t features = s->vhost_vdpa.dev->features;
-     int fd = s->vhost_vdpa.shared->device_fd;
-     struct {
-         struct vhost_vdpa_config hdr;
-         uint32_t supported_hash_types;
-     } config;
- 
--    if (!virtio_has_feature(features, VIRTIO_NET_F_HASH_REPORT) &&
--        !virtio_has_feature(features, VIRTIO_NET_F_RSS)) {
-+    if (!vhost_dev_has_feature(s->vhost_vdpa.dev, VIRTIO_NET_F_HASH_REPORT) &&
-+        !vhost_dev_has_feature(s->vhost_vdpa.dev, VIRTIO_NET_F_RSS)) {
-         return false;
-     }
- 
-@@ -585,7 +584,7 @@ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
-      * If we early return in these cases SVQ will not be enabled. The migration
-      * will be blocked as long as vhost-vdpa backends will not offer _F_LOG.
-      */
--    if (!vhost_vdpa_net_valid_svq_features(v->dev->features, NULL)) {
-+    if (!vhost_vdpa_net_valid_svq_features(vhost_dev_features(v->dev), NULL)) {
-         return 0;
-     }
- 
 -- 
 2.48.1
 
