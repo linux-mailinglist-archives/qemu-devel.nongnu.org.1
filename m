@@ -2,45 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBBC7B249D6
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 14:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD19B24A06
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 15:00:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umAwg-0003wx-9j; Wed, 13 Aug 2025 08:51:10 -0400
+	id 1umB4D-00073Q-R9; Wed, 13 Aug 2025 08:59:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregkh@linuxfoundation.org>)
- id 1umAwb-0003wl-3P
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 08:51:05 -0400
-Received: from nyc.source.kernel.org ([147.75.193.91])
+ (Exim 4.90_1) (envelope-from <broonie@kernel.org>)
+ id 1umAxY-0004ST-TV
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 08:52:06 -0400
+Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregkh@linuxfoundation.org>)
- id 1umAwT-0001kv-I0
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 08:51:03 -0400
+ (Exim 4.90_1) (envelope-from <broonie@kernel.org>)
+ id 1umAxO-0001ni-R4
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 08:52:04 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id BA50CA55C47;
- Wed, 13 Aug 2025 12:50:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B4EC4CEF6;
- Wed, 13 Aug 2025 12:50:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1755089452;
- bh=1sFEp7tfTZsLqsEbQ6yN/DfqybrcqHWTfRSt7pluUnU=;
+ by sea.source.kernel.org (Postfix) with ESMTP id 193904327B;
+ Wed, 13 Aug 2025 12:51:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3288CC4CEEB;
+ Wed, 13 Aug 2025 12:51:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1755089483;
+ bh=UMjaZSS4sd8UG4kwOViWpJphe7Bwr3FK+8uuEvptObY=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=G/lvod9qaNFe8MgiqMNtSrnZl6ICr4ny7PsTyyOhzVZeCv/MZyhfDLlgNxCv37Z7r
- GYSIKBF/pteVt/vjuJB94/MdSefsCgRAQaRxWEIW2/awDVXuZZFSfXB+5rMnnQexLI
- cxOX0SSrpyCPB+x6DMMiVzgiv5VergRxG6Bl2MhE=
-Date: Wed, 13 Aug 2025 14:50:49 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ b=JsZ+37HBd8CyLifn1Zgw1gjmmahHJ/PUjqGvPg/A/GugA+FnkH3U3P9C7LOuwSSy3
+ Fsuhxkz+47NJqpf0hpdFHW6Scew12iDmedLeXW7B+PCArEXcXtqRyJhsUtdSZoQ4wv
+ TvNWjTY7kqttCbgxhGu3GBoaWfrW35eHQGet4JTdgjhegOZM+aFJ9g5R1jppHZwbZj
+ sV5udSiONnk839IrMB5r8E/SX0WdpPfTM9RRhzLEfT72HTwb+ff81cJIg1pR3+EHfh
+ MQGo7gCZkySDY+MQEcqEFD62yI0jxMD0ZOEpo8FgLCNaxyofJXQDN9IpcJB1gFPfpd
+ ay7k8QWarr0lw==
+Date: Wed, 13 Aug 2025 13:51:11 +0100
+From: Mark Brown <broonie@kernel.org>
 To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, qemu-devel@nongnu.org,
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, achill@achill.org, qemu-devel@nongnu.org,
  Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
  Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>,
  Anders Roxell <anders.roxell@linaro.org>,
@@ -51,24 +54,47 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
  Joseph Qi <jiangqi903@gmail.com>, Jan Kara <jack@suse.cz>,
  linux-fsdevel@vger.kernel.org, linux-ext4 <linux-ext4@vger.kernel.org>
 Subject: Re: [PATCH 6.16 000/627] 6.16.1-rc1 review
-Message-ID: <2025081300-frown-sketch-f5bd@gregkh>
+Message-ID: <bf9ccc7d-036d-46eb-85a1-b46317e2d556@sirena.org.uk>
+Mail-Followup-To: Naresh Kamboju <naresh.kamboju@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ stable@vger.kernel.org, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, achill@achill.org,
+ qemu-devel@nongnu.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Dan Carpenter <dan.carpenter@linaro.org>,
+ Anders Roxell <anders.roxell@linaro.org>,
+ Ben Copeland <benjamin.copeland@linaro.org>,
+ LTP List <ltp@lists.linux.it>, chrubis <chrubis@suse.cz>,
+ Petr Vorel <pvorel@suse.cz>, Ian Rogers <irogers@google.com>,
+ linux-perf-users@vger.kernel.org,
+ Zhang Yi <yi.zhang@huaweicloud.com>,
+ Joseph Qi <jiangqi903@gmail.com>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org,
+ linux-ext4 <linux-ext4@vger.kernel.org>
 References: <20250812173419.303046420@linuxfoundation.org>
  <CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="jpbELjH1qfe0Wb2r"
 Content-Disposition: inline
 In-Reply-To: <CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com>
-Received-SPF: pass client-ip=147.75.193.91;
- envelope-from=gregkh@linuxfoundation.org; helo=nyc.source.kernel.org
+X-Cookie: Turn the other cheek.
+Received-SPF: pass client-ip=2600:3c0a:e001:78e:0:1991:8:25;
+ envelope-from=broonie@kernel.org; helo=sea.source.kernel.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 13 Aug 2025 08:58:36 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,41 +109,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+
+--jpbELjH1qfe0Wb2r
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
 On Wed, Aug 13, 2025 at 05:46:26PM +0530, Naresh Kamboju wrote:
-> Long story:
-> 1)
-> The perf gcc-13 build failed on x86_64 and i386.
-> 
-> Build regression: qemu-arm64 ARM64_64K_PAGES ltp syscalls swap fsync
-> fallocate failed.
-> 
-> > Ian Rogers <irogers@google.com>
-> >     perf topdown: Use attribute to see an event is a topdown metic or slots
-> 
-> Build error:
-> 
-> arch/x86/tests/topdown.c: In function 'event_cb':
-> arch/x86/tests/topdown.c:53:25: error: implicit declaration of
-> function 'pr_debug' [-Werror=implicit-function-declaration]
->    53 |                         pr_debug("Broken topdown information
-> for '%s'\n", evsel__name(evsel));
->       |                         ^~~~~~~~
-> cc1: all warnings being treated as errors
+> On Tue, 12 Aug 2025 at 23:57, Greg Kroah-Hartman
 
-Already fixed.
-
-> 2)
-> 
 > The following list of LTP syscalls failure noticed on qemu-arm64 with
-> stable-rc 6.16.1-rc1 with CONFIG_ARM64_64K_PAGES=y build configuration.
-> 
+> stable-rc 6.16.1-rc1 with CONFIG_ARM64_64K_PAGES=3Dy build configuration.
+>=20
 > Most failures report ENOSPC (28) or mkswap errors, which may be related
 > to disk space handling in the 64K page configuration on qemu-arm64.
-> 
+>=20
 > The issue is reproducible on multiple runs.
-> 
+>=20
 > * qemu-arm64, ltp-syscalls - 64K page size test failures list,
-> 
+>=20
 >   - fallocate04
 >   - fallocate05
 >   - fdatasync03
@@ -132,31 +142,34 @@ Already fixed.
 >   - sync01
 >   - sync_file_range02
 >   - syncfs01
-> 
-> Reproducibility:
->  - 64K config above listed test fails
->  - 4K config above listed test pass.
-> 
-> Regression Analysis:
-> - New regression? yes
 
-Regression from 6.16?  Or just from 6.15.y?
+I'm also seeing epoll_ctl04 failing on Raspberry Pi 4, there's a bisect
+still running but I suspect given the error message:
 
-> 3)
-> 
-> Test regression: stable-rc 6.16.1-rc1 WARNING fs jbd2 transaction.c
-> start_this_handle
-> 
-> Kernel warning noticed on this stable-rc 6.16.1-rc1 this regression was
-> reported last month on the Linux next,
-> 
-> - https://lore.kernel.org/all/CA+G9fYsyYQ3ZL4xaSg1-Tt5Evto7Zd+hgNWZEa9cQLbahA1+xg@mail.gmail.com/
+epoll_ctl04.c:59: TFAIL: epoll_ctl(..., EPOLL_CTL_ADD, ...) with number of =
+nesting is 5 expected EINVAL: ELOOP (40)
 
-Ok, no real regression here if this was already in 6.16.
+that it might be:
 
-Doesn't look like it got fixed in 6.17-rc1 either :(
+# bad: [b47ce23d38c737a2f84af2b18c5e6b6e09e4932d] eventpoll: Fix semi-unbou=
+nded recursion
 
-thanks,
+which already got tested, or something adjacent.
 
-greg k-h
+--jpbELjH1qfe0Wb2r
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmicij4ACgkQJNaLcl1U
+h9CPsgf/Zm8iW2xqCXTg33TAp9VCD0jKTGbQODneT3brIHHC/UoNghK+9mMfsEn6
+SQQlgHE0a6ZGj+K7TQchCqcoaN87Mghuxa9RZlBnnu5nGG6FbY0RG05FAbrkPbkz
++47tdqfnsePdRTgKlgMUBFlTXJAlQu+xosyM9AaVZbisvUFd9gAayCNTvRNmMYQA
+XUGFqqqc2K2z/9UvbkZ5rFAp7MfwZUk9dEeVspaTLScb8nQOkk3EiqvxJ/JGvHNN
+QOG0n41MlgWguQ9swGbUdaemvLZHkx5jAkLMYoOH8g1/sL/IM6mwmQfj5QA51SZW
+rjvQmjeNodIoT5+qzsyvvKz8qHav3w==
+=zk6G
+-----END PGP SIGNATURE-----
+
+--jpbELjH1qfe0Wb2r--
 
