@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1410B2503B
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 18:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E579DB2503C
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 18:54:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umEfx-00030K-Rd; Wed, 13 Aug 2025 12:50:09 -0400
+	id 1umEfz-00031P-NI; Wed, 13 Aug 2025 12:50:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1umEfQ-0002fE-2r; Wed, 13 Aug 2025 12:49:36 -0400
+ id 1umEfX-0002ht-Bz; Wed, 13 Aug 2025 12:49:44 -0400
 Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1umEfG-0007rG-Eh; Wed, 13 Aug 2025 12:49:35 -0400
+ id 1umEfG-0007r7-B2; Wed, 13 Aug 2025 12:49:43 -0400
 Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:cf2d:0:640:140f:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 76A9781215;
- Wed, 13 Aug 2025 19:49:16 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 35BDA8126C;
+ Wed, 13 Aug 2025 19:49:17 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:167::1:21])
  by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id wmOQI00FoSw0-2x9qfGo2; Wed, 13 Aug 2025 19:49:16 +0300
+ ESMTPSA id wmOQI00FoSw0-pC4CY3Sq; Wed, 13 Aug 2025 19:49:16 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1755103756;
- bh=BWMv7GCTh1zLrolstH3IcsKkRYEicDVqwv8C15LlkPE=;
+ bh=6mQD+E56AliUFR85mWNTx1RcVkaifnsIXZcOryL08do=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=0l/xxhjkxW5F90hxGQKjQlAhyTdwvLnjDkFJfSBQdJ1uyKTXtSo2iSshHkYJUwAD2
- /zRk710A0Y3BexD8hbBjaVRZEFMGksulbzT7a9QSEF2jFc+8ENZzlg41WCF96eLZK/
- oVDpEWqc1PyksRnNkgvSBQFkSBFlnDUJ1+ZpO3yU=
+ b=QMU/bscdy7Wbc4jjTwkYSVHiah6+xtqFIJxlFwAwrmsKpZwztpygzQvhKq6e5EofY
+ YyS8ss3aF+zVmZNCX2SFfIP5N+VE94ADKGV9LXL2lYTAvc3er4763Cv6skfd9Fj0Vg
+ XSd63L9EzGdpJDfA8P/lQeHDthv0X7zjWHYg3h0w=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,10 +41,9 @@ Cc: sgarzare@redhat.com, marcandre.lureau@redhat.com, pbonzini@redhat.com,
  eblake@redhat.com, armbru@redhat.com, qemu-devel@nongnu.org,
  qemu-block@nongnu.org, steven.sistare@oracle.com,
  den-plotnikov@yandex-team.ru, vsementsov@yandex-team.ru
-Subject: [PATCH 17/33] vhost: move busyloop timeout initialization to
- vhost_virtqueue_init()
-Date: Wed, 13 Aug 2025 19:48:38 +0300
-Message-ID: <20250813164856.950363-18-vsementsov@yandex-team.ru>
+Subject: [PATCH 18/33] vhost: introduce check_memslots() helper
+Date: Wed, 13 Aug 2025 19:48:39 +0300
+Message-ID: <20250813164856.950363-19-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250813164856.950363-1-vsementsov@yandex-team.ru>
 References: <20250813164856.950363-1-vsementsov@yandex-team.ru>
@@ -75,69 +74,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's all per-virtqueue initializations be in one place.
-
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/virtio/vhost.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ hw/virtio/vhost.c | 71 ++++++++++++++++++++++++++---------------------
+ 1 file changed, 40 insertions(+), 31 deletions(-)
 
 diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index a3620c82d8..a8f8b85012 100644
+index a8f8b85012..f9163ba895 100644
 --- a/hw/virtio/vhost.c
 +++ b/hw/virtio/vhost.c
-@@ -1489,7 +1489,8 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
+@@ -1553,11 +1553,49 @@ static void vhost_virtqueue_cleanup(struct vhost_virtqueue *vq)
+     }
  }
  
- static int vhost_virtqueue_init(struct vhost_dev *dev,
--                                struct vhost_virtqueue *vq, int n)
-+                                struct vhost_virtqueue *vq, int n,
-+                                bool busyloop_timeout)
- {
-     int vhost_vq_index = dev->vhost_ops->vhost_get_vq_index(dev, n);
-     struct vhost_vring_file file = {
-@@ -1526,6 +1527,14 @@ static int vhost_virtqueue_init(struct vhost_dev *dev,
-                                    vhost_virtqueue_error_notifier);
-     }
- 
-+    if (busyloop_timeout) {
-+        r = vhost_virtqueue_set_busyloop_timeout(dev, n, busyloop_timeout);
-+        if (r < 0) {
-+            VHOST_OPS_DEBUG(r, "Failed to set busyloop timeout");
-+            goto fail_err;
-+        }
++static bool check_memslots(struct vhost_dev *hdev, Error **errp)
++{
++    unsigned int used, reserved, limit;
++
++    limit = hdev->vhost_ops->vhost_backend_memslots_limit(hdev);
++    if (limit < MEMORY_DEVICES_SAFE_MAX_MEMSLOTS &&
++        memory_devices_memslot_auto_decision_active()) {
++        error_setg(errp, "some memory device (like virtio-mem)"
++            " decided how many memory slots to use based on the overall"
++            " number of memory slots; this vhost backend would further"
++            " restricts the overall number of memory slots");
++        error_append_hint(errp, "Try plugging this vhost backend before"
++            " plugging such memory devices.\n");
++        return false;
 +    }
 +
-     return 0;
++    /*
++     * The listener we registered properly setup the number of required
++     * memslots in vhost_commit().
++     */
++    used = hdev->mem->nregions;
++
++    /*
++     * We assume that all reserved memslots actually require a real memslot
++     * in our vhost backend. This might not be true, for example, if the
++     * memslot would be ROM. If ever relevant, we can optimize for that --
++     * but we'll need additional information about the reservations.
++     */
++    reserved = memory_devices_get_reserved_memslots();
++    if (used + reserved > limit) {
++        error_setg(errp, "vhost backend memory slots limit (%d) is less"
++                   " than current number of used (%d) and reserved (%d)"
++                   " memory slots for memory devices.", limit, used, reserved);
++        return false;
++    }
++
++    return true;
++}
++
+ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+                    VhostBackendType backend_type, uint32_t busyloop_timeout,
+                    Error **errp)
+ {
+-    unsigned int used, reserved, limit;
+     uint64_t features;
+     int i, r, n_initialized_vqs = 0;
  
- fail_err:
-@@ -1589,24 +1598,14 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+@@ -1584,19 +1622,6 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+         goto fail;
      }
  
-     for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
--        r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i);
-+        r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i,
-+                                 busyloop_timeout);
-         if (r < 0) {
-             error_setg_errno(errp, -r, "Failed to initialize virtqueue %d", i);
-             goto fail;
-         }
-     }
- 
--    if (busyloop_timeout) {
--        for (i = 0; i < hdev->nvqs; ++i) {
--            r = vhost_virtqueue_set_busyloop_timeout(hdev, hdev->vq_index + i,
--                                                     busyloop_timeout);
--            if (r < 0) {
--                error_setg_errno(errp, -r, "Failed to set busyloop timeout");
--                goto fail;
--            }
--        }
+-    limit = hdev->vhost_ops->vhost_backend_memslots_limit(hdev);
+-    if (limit < MEMORY_DEVICES_SAFE_MAX_MEMSLOTS &&
+-        memory_devices_memslot_auto_decision_active()) {
+-        error_setg(errp, "some memory device (like virtio-mem)"
+-            " decided how many memory slots to use based on the overall"
+-            " number of memory slots; this vhost backend would further"
+-            " restricts the overall number of memory slots");
+-        error_append_hint(errp, "Try plugging this vhost backend before"
+-            " plugging such memory devices.\n");
+-        r = -EINVAL;
+-        goto fail;
 -    }
 -
-     hdev->_features = features;
+     for (i = 0; i < hdev->nvqs; ++i, ++n_initialized_vqs) {
+         r = vhost_virtqueue_init(hdev, hdev->vqs + i, hdev->vq_index + i,
+                                  busyloop_timeout);
+@@ -1655,23 +1680,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+     memory_listener_register(&hdev->memory_listener, &address_space_memory);
+     QLIST_INSERT_HEAD(&vhost_devices, hdev, entry);
  
-     hdev->memory_listener = (MemoryListener) {
+-    /*
+-     * The listener we registered properly setup the number of required
+-     * memslots in vhost_commit().
+-     */
+-    used = hdev->mem->nregions;
+-
+-    /*
+-     * We assume that all reserved memslots actually require a real memslot
+-     * in our vhost backend. This might not be true, for example, if the
+-     * memslot would be ROM. If ever relevant, we can optimize for that --
+-     * but we'll need additional information about the reservations.
+-     */
+-    reserved = memory_devices_get_reserved_memslots();
+-    if (used + reserved > limit) {
+-        error_setg(errp, "vhost backend memory slots limit (%d) is less"
+-                   " than current number of used (%d) and reserved (%d)"
+-                   " memory slots for memory devices.", limit, used, reserved);
++    if (!check_memslots(hdev, errp)) {
+         r = -EINVAL;
+         goto fail;
+     }
 -- 
 2.48.1
 
