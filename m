@@ -2,84 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0040AB248FE
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 14:00:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AC3B24962
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 14:18:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umA7Y-0007K4-QP; Wed, 13 Aug 2025 07:58:20 -0400
+	id 1umAPV-00055Y-7M; Wed, 13 Aug 2025 08:16:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1umA7S-0007JI-4M
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 07:58:14 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ (Exim 4.90_1) (envelope-from <naresh.kamboju@linaro.org>)
+ id 1umAPT-00055B-MR
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 08:16:51 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1umA7N-000385-Kn
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 07:58:13 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-76bc5e68d96so5883543b3a.3
- for <qemu-devel@nongnu.org>; Wed, 13 Aug 2025 04:58:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <naresh.kamboju@linaro.org>)
+ id 1umAPP-0005qd-Uy
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 08:16:51 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-2402b5396cdso41422195ad.2
+ for <qemu-devel@nongnu.org>; Wed, 13 Aug 2025 05:16:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1755086284; x=1755691084; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DdhYsP/TsnadyLdS0/3dTidJD7nO3g952mgLkI/We1c=;
- b=ClmQaE5cPqSARR586yPalDVNMwZDw9BKob3vcLyocb6Ins6aCM8K+F9PuvwPTSDRbc
- 9xWzlT08Tp9CORc+YxVKKLgzlxh3wgLEIVWdNcVyIzyZyW0hxp2B+komqku2/w7lph4k
- ys5V8j2v4+iPthiEyqjThqJ4bw1DrWa4Drv2CO0eB2Uphl/EmYb6YIwDZCIPqBDL9juT
- moHJLNN13jdMLeztE687wApSChEUzTfYeNpQyp3jn9NnaiTRb/0H6xTbdIzHWmx7axkX
- rRzQ3knviAiMlYWGFZ//x/SIii9NTSgwyUpAuwTNBoXD2nxaN9sN9dpY0PDIHoN5iNjZ
- jniQ==
+ d=linaro.org; s=google; t=1755087400; x=1755692200; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=IbnSBztKB/ky+HfHfoiCEKZibcC+VHhc0U9rmRsC39Q=;
+ b=YTXhPcj2mDdr7lHC4dC6GBzXQcBmosWpawr7dC11as4YH6x6YIpM23fB+B70jCFFPj
+ bDcaIfqWP+rGHj6o1fUm7EVSh8uG/t8UUEyDOcWT3Z4D1SndBEperee91jIoCKF6SEBK
+ SfVatuQOOScR6Uz2/QK0PAM2B8GJq/TmgsLuxDAnUHoI98mkrPvHmT9TB//nHbtbWENY
+ vrqU2luAyEeE9JNVWi2HIYQtEzHxwaVGhu533phcL5NBDUfb2CeyNpCjXa3X5ORZpl9Z
+ 60gBl1j4KLc6jEvnJSZru0Zcltl4jTGCvy6tkZDghXus0weGoScf7vohdfOPI5Bp6Wsu
+ kqxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755086284; x=1755691084;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DdhYsP/TsnadyLdS0/3dTidJD7nO3g952mgLkI/We1c=;
- b=Fsn0sno5jsN+QUyTomlQlLHYvRlGHoUxfG9VXf7+8CL0A8DSps8x+GznuSMvB8AV8d
- vvuaUYJxRHhSLj+kWETHJri2ouMLL+drbK293B+9A6AQZ+pKs2uQE2rcin1e96E4dt0h
- H5sQi66KqerdvjuF+JiKLAGk/tCU2qqlncxR3izyMVIRuOvy+ezzd38QTj9E8UEtDzNK
- iHfmWGXr/ssKlhiqbuQFx2Y1lNudcBPGNBrzChlz6f46eXHiE5YbCEhlYrmnNXdkcOv1
- 1T+y3usWBTm/L5A4ZvpJnAMjpay4u2fRuM7qWnNqXy7Lvf2iNQANfqSc+WWTulx8v2/e
- CDxw==
+ d=1e100.net; s=20230601; t=1755087400; x=1755692200;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IbnSBztKB/ky+HfHfoiCEKZibcC+VHhc0U9rmRsC39Q=;
+ b=OyvvkO46I2gA9G3DmykLMiv56j65PHvyey1Inh+ga3kQCYrJ3LZelNE5PvoyXwEUxt
+ +ZEhWE5UDVKhtD077NF7r3kFaAV5Z3q94i5u3vUd+pO2trQf5zWaiG32BasXMelrhmi0
+ i4fhqdtYKIXCELsT6jZeSIG0+KIkZWQLGLbctF+KLbY+ROwGl2CGCjT9k6ZBcA8xSkhG
+ +klSr2MaBw82eSLBgjK3X9IFNnWCcC/PVFw/UGt/G63VDd6L/VjVWiphbBeC2to808nf
+ 0V9vMlRK1F/r9rq5obhSGGS474Ndht5dgi9xJHy7jGoWtuVGC5B78XDQGVR0iaTIk6sz
+ +AZw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVg1uGzH+ZkhzRbMGxgmIgvOMwUFMVb1GYtxEBUhcwQnElZeUeDjUruHL7pBQdIYG1ftL5lQ5yIw+DK@nongnu.org
-X-Gm-Message-State: AOJu0Yzfg6BnP3amVLfSs0U6siTvZwt0EQHG4q+8nTIAlHrx4TH37w50
- yLGkTmMJiT//5kYvHjJCArkARx92LJtkuvosTS6ux8+hiCxhhXErBXODHiMfAwx1QMdkkDT6ClM
- xVoX8
-X-Gm-Gg: ASbGncuFpULyO3yL1XyBQ6c7l2MbvXwxycc4+QDbwYdk3oTv/EydLoSc8w2aIEKGlew
- lKa+fU7wAzmMqETaWddwGN0FMQNaoAMRMOtoBJzVfTcfkR44U7rHGSgoLxDBJ69/54dhHq56aSd
- 9iUs9asi1oTjukewwkx+FLi34JNVEEkpmrdl662RYqPbDjvH5GTptspWlo9Ij04/SfOgzgY3bcc
- CDUZgt5wONlhCBgeFyFeeRFHI5ftpQABEARxGPL2+VAA2oI78qMfhl/yZItddjIiSM61xRlQgup
- DpXnzgA0CpI3C63TlsdSVjFUPf8ZJXoFuYmn2vVNskO7R/GE68J5gontuMQpN2XBnnF2AW+gTjV
- 2nJWTg7BTUKZw3AnO75P62k+ZjGwLcdRjn0/pJOCI9ZaVZUeY
-X-Google-Smtp-Source: AGHT+IHGyIsAK55gD5EtQroZLCVqbiETdyTLxqzSaQJOxiDzz8BaPg+QxiSIRnslMyqJkVoFTMeuSw==
-X-Received: by 2002:a05:6a20:748e:b0:23d:58e9:347a with SMTP id
- adf61e73a8af0-240a8b0c458mr4752875637.26.1755086283932; 
- Wed, 13 Aug 2025 04:58:03 -0700 (PDT)
-Received: from [192.168.68.110] ([152.234.127.110])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3232553e4a2sm3128a91.4.2025.08.13.04.58.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Aug 2025 04:58:03 -0700 (PDT)
-Message-ID: <d4251660-c05b-42e4-8838-e25b5ee39e0a@ventanamicro.com>
-Date: Wed, 13 Aug 2025 08:58:00 -0300
+ AJvYcCWghPFqYs/5qWjuEPJo16VMv/XVbuwgtetyfsYLfsCA9ohUBbO3pn5Yansu5+hNbSMgxi3JLL7vjdY3@nongnu.org
+X-Gm-Message-State: AOJu0YzDTM81cWZhp5c0bF3UThqPhhr7T6sCXcDUo6bGsWAVEBp6SnCq
+ H3rqh0jE3l58/xEtG/bknOPy7oH/+Sn+Cq4ypobdhdboMUgcNEWvt7LxKNqqezOsuiA4YHXhMFb
+ mnMaSmkXXcm/N3b9FqWkTqUYLOAR6RHz6kVWirRuG2O3m2HWJVUOSGUo=
+X-Gm-Gg: ASbGncvAO5qJoyaw/cwjSN+OUXMfvNyGDu1TLcvJmbdPQ3iJGtPGaQPcW1MCfdBkf2y
+ 7t60sGFZRoJDNGlypVRhSfUEIty4e7ikU1jDan0AK0G8Cw+bqj0twFTSQ//e9VCVU57SHIJTNmd
+ rDaMIENQ0FQ0p6loTkE2Za24QjR0Oq9h3pk91FKnNeYX21kMDS9fS24CSL3oXfmSa/4kjNcVAqi
+ GAybc+ksIk8gatF4ccijIxbmZ/7fDmzPAdjUF9N39L16IZkX5Y=
+X-Google-Smtp-Source: AGHT+IEqRlX1hXQvIAC8z4ap56R3F6zBfHl+FK5wqB5WBXqk2utT/Iy+dcR7aD5xv5GmvhMOoS30o/Rmi8/TkNbCz1I=
+X-Received: by 2002:a17:902:fc47:b0:242:a0b0:3c28 with SMTP id
+ d9443c01a7336-2430d262dd1mr40863255ad.51.1755087400321; Wed, 13 Aug 2025
+ 05:16:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: riscv-iommu: Update status of kernel support
-To: Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair.francis@wdc.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
-References: <20250813055225.410620-1-joel@jms.id.au>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Content-Language: en-US
-In-Reply-To: <20250813055225.410620-1-joel@jms.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x430.google.com
+References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 13 Aug 2025 17:46:26 +0530
+X-Gm-Features: Ac12FXybqNMQTflDlQz__4h-ypQooKNx0q_GNsw0wCT1xS6QPkD-sG6dIOKmaWc
+Message-ID: <CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com>
+Subject: Re: [PATCH 6.16 000/627] 6.16.1-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+ broonie@kernel.org, achill@achill.org, qemu-devel@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, 
+ Anders Roxell <anders.roxell@linaro.org>,
+ Ben Copeland <benjamin.copeland@linaro.org>, 
+ LTP List <ltp@lists.linux.it>, chrubis <chrubis@suse.cz>,
+ Petr Vorel <pvorel@suse.cz>, 
+ Ian Rogers <irogers@google.com>, linux-perf-users@vger.kernel.org, 
+ Zhang Yi <yi.zhang@huaweicloud.com>, Joseph Qi <jiangqi903@gmail.com>,
+ Jan Kara <jack@suse.cz>, 
+ linux-fsdevel@vger.kernel.org, linux-ext4 <linux-ext4@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=naresh.kamboju@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,136 +108,280 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Joel!
+On Tue, 12 Aug 2025 at 23:57, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.16.1 release.
+> There are 627 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 14 Aug 2025 17:32:40 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.16.1-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.16.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+
+LKFT found three regressions on stable-rc 6.16.1-rc1.
+
+Short version:
+1) Pef build regressions on x86_64 and i386
+2) LTP syscalls failures with 64k Page size on qemu-arm64
+3) Kernel warning at fs/jbd2/transaction.c start_this_handle x86, qemu-arm64
+
+Long story:
+1)
+The perf gcc-13 build failed on x86_64 and i386.
+
+Build regression: qemu-arm64 ARM64_64K_PAGES ltp syscalls swap fsync
+fallocate failed.
+
+> Ian Rogers <irogers@google.com>
+>     perf topdown: Use attribute to see an event is a topdown metic or slots
+
+Build error:
+
+arch/x86/tests/topdown.c: In function 'event_cb':
+arch/x86/tests/topdown.c:53:25: error: implicit declaration of
+function 'pr_debug' [-Werror=implicit-function-declaration]
+   53 |                         pr_debug("Broken topdown information
+for '%s'\n", evsel__name(evsel));
+      |                         ^~~~~~~~
+cc1: all warnings being treated as errors
+
+2)
+
+The following list of LTP syscalls failure noticed on qemu-arm64 with
+stable-rc 6.16.1-rc1 with CONFIG_ARM64_64K_PAGES=y build configuration.
+
+Most failures report ENOSPC (28) or mkswap errors, which may be related
+to disk space handling in the 64K page configuration on qemu-arm64.
+
+The issue is reproducible on multiple runs.
+
+* qemu-arm64, ltp-syscalls - 64K page size test failures list,
+
+  - fallocate04
+  - fallocate05
+  - fdatasync03
+  - fsync01
+  - fsync04
+  - ioctl_fiemap01
+  - swapoff01
+  - swapoff02
+  - swapon01
+  - swapon02
+  - swapon03
+  - sync01
+  - sync_file_range02
+  - syncfs01
+
+Reproducibility:
+ - 64K config above listed test fails
+ - 4K config above listed test pass.
+
+Regression Analysis:
+- New regression? yes
+- Reproducibility? yes
+
+Test regression: qemu-arm64 ARM64_64K_PAGES ltp syscalls swap fsync
+fallocate failed.
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+swapoff01:
+libswap.c:198: TINFO: create a swapfile size of 1 megabytes (MB)
+tst_ioctl.c:26: TINFO: FIBMAP ioctl is supported
+libswap.c:218: TFAIL: mkswap on ext2/ext3/ext4 failed
+swapoff01.c:44: TINFO: create a swapfile with 65536 block numbers
+swapoff01.c:44: TCONF: Insufficient disk space to create swap file
+
+swapoff02:
+libswap.c:198: TINFO: create a swapfile size of 1 megabytes (MB)
+tst_ioctl.c:26: TINFO: FIBMAP ioctl is supported
+libswap.c:218: TFAIL: mkswap on ext2/ext3/ext4 failed
+swapoff02.c:88: TINFO: create a swapfile size of 1 megabytes (MB)
+
+swapon01:
+libswap.c:198: TINFO: create a swapfile size of 1 megabytes (MB)
+tst_ioctl.c:26: TINFO: FIBMAP ioctl is supported
+libswap.c:218: TFAIL: mkswap on ext2/ext3/ext4 failed
+swapon01.c:39: TINFO: create a swapfile size of 128 megabytes (MB)
+tst_cmd.c:111: TBROK: 'mkswap' exited with a non-zero code 1 at tst_cmd.c:111
+
+swapon02:
+tst_ioctl.c:26: TINFO: FIBMAP ioctl is supported
+libswap.c:218: TFAIL: mkswap on ext2/ext3/ext4 failed
+swapon02.c:52: TINFO: create a swapfile size of 1 megabytes (MB)
+tst_cmd.c:111: TBROK: 'mkswap' exited with a non-zero code 1 at tst_cmd.c:111
+
+swapon03:
+tst_ioctl.c:26: TINFO: FIBMAP ioctl is supported
+libswap.c:218: TFAIL: mkswap on ext2/ext3/ext4 failed
+tst_kconfig.c:88: TINFO: Parsing kernel config '/proc/config.gz'
+tst_kconfig.c:88: TINFO: Parsing kernel config '/proc/config.gz'
+tst_kconfig.c:88: TINFO: Parsing kernel config '/proc/config.gz'
+tst_kconfig.c:88: TINFO: Parsing kernel config '/proc/config.gz'
+swapon03.c:51: TINFO: create a swapfile size of 1 megabytes (MB)
+tst_cmd.c:111: TBROK: 'mkswap' exited with a non-zero code 1 at tst_cmd.c:111
+
+sync01:
+sync01.c:49: TFAIL: Synced 11403264, expected 33554432
+
+syncfs01:
+syncfs01.c:53: TFAIL: Synced 4096, expected 33554432
+
+sync_file_range02:
+sync_file_range02.c:60: TFAIL: sync_file_range() failed: ENOSPC (28)
+
+fdatasync03:
+fdatasync03.c:43: TFAIL: fdatasync(fd) failed: ENOSPC (28)
+
+fsync01:
+tst_test.c:1888: TINFO: === Testing on ext4 ===
+tst_test.c:1217: TINFO: Formatting /dev/loop0 with ext4 opts='' extra opts=''
+mke2fs 1.47.2 (1-Jan-2025)
+tst_test.c:1229: TINFO: Mounting /dev/loop0 to
+/tmp/LTP_fsyX4HNML/mntpoint fstyp=ext4 flags=0
+fsync01.c:28: TFAIL: fsync failed: ENOSPC (28)
+fsync01.c:28: TFAIL: fsync failed: ENOSPC (28)
+fsync01.c:28: TFAIL: fsync failed: ENOSPC (28)
+fsync01.c:28: TFAIL: fsync failed: ENOSPC (28)
+fsync01.c:28: TFAIL: fsync failed: ENOSPC (28)
+fsync01.c:28: TFAIL: fsync failed: ENOSPC (28)
+fsync01.c:28: TFAIL: fsync failed: ENOSPC (28)
+fsync01.c:28: TFAIL: fsync failed: ENOSPC (28)
+fsync01.c:28: TFAIL: fsync failed: ENOSPC (28)
+fsync01.c:28: TFAIL: fsync failed: ENOSPC (28)
+
+fsync04:
+tst_test.c:1229: TINFO: Mounting /dev/loop0 to
+/tmp/LTP_fsydyQA53/mnt_point fstyp=ext4 flags=0
+fsync04.c:43: TFAIL: fsync(fd) failed: ENOSPC (28)
+
+fallocate04:
+fallocate04.c:198: TFAIL: fallocate failed: ENOSPC (28)
+
+fallocate05:
+tst_fill_fs.c:53: TBROK: fsync(4) failed: ENOSPC (28)
+
+ioctl_fiemap01
+tst_test.c:1217: TINFO: Formatting /dev/loop0 with ext4 opts='' extra opts=''
+mke2fs 1.47.2 (1-Jan-2025)
+tst_test.c:1229: TINFO: Mounting /dev/loop0 to
+/tmp/LTP_iocjRR3ot/mntpoint fstyp=ext4 flags=0
+ioctl_fiemap01.c:74: TPASS: ioctl(fd, FS_IOC_FIEMAP, fiemap) : EBADR (53)
+ioctl_fiemap01.c:77: TPASS: ioctl(fd, FS_IOC_FIEMAP, fiemap) passed
+ioctl_fiemap01.c:79: TPASS: Expect: Empty file should have 0 extends mapped
+ioctl_fiemap01.c:86: TFAIL: ioctl(fd, FS_IOC_FIEMAP, fiemap) failed: ENOSPC (28)
+ioctl_fiemap01.c:41: TFAIL: Expect: extent fm_mapped_extents is 1
+ioctl_fiemap01.c:50: TFAIL: (extent->fe_flags & fe_mask) (0) != fe_flags (1)
+ioctl_fiemap01.c:51: TPASS: Expect: fe_physical > 1
+ioctl_fiemap01.c:52: TFAIL: extent->fe_length (4702687395951105107) !=
+fe_length (1024)
+ioctl_fiemap01.c:96: TFAIL: ioctl(fd, FS_IOC_FIEMAP, fiemap) failed: ENOSPC (28)
+ioctl_fiemap01.c:41: TFAIL: Expect: extent fm_mapped_extents is 3
+ioctl_fiemap01.c:50: TPASS: (extent->fe_flags & fe_mask) == fe_flags (0)
+ioctl_fiemap01.c:51: TPASS: Expect: fe_physical > 1
+ioctl_fiemap01.c:52: TFAIL: extent->fe_length (4702687395951105107) !=
+fe_length (1024)
+ioctl_fiemap01.c:50: TPASS: (extent->fe_flags & fe_mask) == fe_flags (0)
+ioctl_fiemap01.c:51: TPASS: Expect: fe_physical > 1
+ioctl_fiemap01.c:52: TFAIL: extent->fe_length (5136714152143953955) !=
+fe_length (1024)
+ioctl_fiemap01.c:50: TFAIL: (extent->fe_flags & fe_mask) (0) != fe_flags (1)
+ioctl_fiemap01.c:51: TPASS: Expect: fe_physical > 1
+ioctl_fiemap01.c:52: TFAIL: extent->fe_length (8387236464277024288) !=
+fe_length (1024)
 
 
-Thanks for this update. Any help keeping the docs updated is dearly appreciated.
-
-A few comments:
-
-On 8/13/25 2:52 AM, Joel Stanley wrote:
-> The iommu Linux kernel support is now upstream. VFIO is still
-> downstream at this stage.
-> 
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> ---
-> Daniel, the wording might require some massaging but I thought it was
-> best that we update the status of the kernel support. I ran some boot
-> tests with v6.17-rc1 and the examples seemed to work.
-> 
->   docs/specs/riscv-iommu.rst | 35 +++++++++++++----------------------
->   1 file changed, 13 insertions(+), 22 deletions(-)
-> 
-> diff --git a/docs/specs/riscv-iommu.rst b/docs/specs/riscv-iommu.rst
-> index 991d376fdc24..19a0ecdbe4c1 100644
-> --- a/docs/specs/riscv-iommu.rst
-> +++ b/docs/specs/riscv-iommu.rst
-> @@ -30,15 +30,15 @@ This will add a RISC-V IOMMU PCI device in the board following any additional
->   PCI parameters (like PCI bus address).  The behavior of the RISC-V IOMMU is
->   defined by the spec but its operation is OS dependent.
->   
-> -As of this writing the existing Linux kernel support `linux-v8`_, not yet merged,
-> -does not have support for features like VFIO passthrough.  The IOMMU emulation
-> -was tested using a public Ventana Micro Systems kernel repository in
-> -`ventana-linux`_.  This kernel is based on `linux-v8`_ with additional patches that
-> -enable features like KVM VFIO passthrough with irqbypass.  Until the kernel support
-> -is feature complete feel free to use the kernel available in the Ventana Micro Systems
-> -mirror.
-> -
-> -The current Linux kernel support will use the IOMMU device to create IOMMU groups
-> +Linux kernel iommu support was merged in v6.13. Qemu IOMMU emulation can be
+Links,
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.16.y/build/v6.16-628-gcd8771110407/testrun/29470711/suite/ltp-syscalls/tests/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.16.y/build/v6.16-628-gcd8771110407/testrun/29470720/suite/ltp-syscalls/tests/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.16.y/build/v6.16-628-gcd8771110407/testrun/29470711/suite/ltp-syscalls/test/sync01/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.16.y/build/v6.16-628-gcd8771110407/testrun/29470720/suite/ltp-syscalls/test/fdatasync03/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.16.y/build/v6.16-628-gcd8771110407/testrun/29470711/suite/ltp-syscalls/test/swapon01/details/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.16.y/build/v6.16-628-gcd8771110407/testrun/29471488/suite/ltp-syscalls/tests/
 
 
-Nit: s/Qemu/QEMU
+3)
 
+Test regression: stable-rc 6.16.1-rc1 WARNING fs jbd2 transaction.c
+start_this_handle
 
-> +used with mainline kernels for simple IOMMU PCIe support.
-> +
-> +As of v6.17, it does not have support for features like VFIO passthrough.
-> +There is a `VFIO` RFC series that is not yet merged. The public Ventana Micro
+Kernel warning noticed on this stable-rc 6.16.1-rc1 this regression was
+reported last month on the Linux next,
 
-The VFIO ref link is wrong and it'll break the docs build:
+- https://lore.kernel.org/all/CA+G9fYsyYQ3ZL4xaSg1-Tt5Evto7Zd+hgNWZEa9cQLbahA1+xg@mail.gmail.com/
 
-[3006/3007] Generating docs/QEMU manual with a custom command
-FAILED: docs/docs.stamp
-/usr/bin/env CONFDIR=etc/qemu /home/danielhb/work/qemu/build/pyvenv/bin/sphinx-build -q -W -Dkerneldoc_werror=1 -j auto -Dversion=10.0.93 -Drelease= -Ddepfile=docs/docs.d -Ddepfile_stamp=docs/docs.stamp -b html -d /home/danielhb/work/qemu/build/docs/manual.p /home/danielhb/work/qemu/docs /home/danielhb/work/qemu/build/docs/manual
-/home/danielhb/work/qemu/docs/specs/riscv-iommu.rst:36: WARNING: 'any' reference target not found: VFIO [ref.any]
-ninja: build stopped: subcommand failed.
+Kernel warnings:
 
+------------[ cut here ]------------
+[   34.805150] WARNING: CPU: 1 PID: 627 at fs/jbd2/transaction.c:334
+start_this_handle (fs/jbd2/transaction.c:334 (discriminator 1))
+[   34.807683] Modules linked in: btrfs blake2b_generic xor xor_neon
+raid6_pq zstd_compress sm3_ce sha3_ce sha512_ce fuse drm backlight
+ip_tables x_tables
+[   34.809152] CPU: 1 UID: 0 PID: 627 Comm: io_control01 Not tainted
+6.16.1-rc1 #1 PREEMPT
+[   34.809652] Hardware name: linux,dummy-virt (DT)
+[   34.809961] pstate: 63402009 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+[   34.810205] pc : start_this_handle (fs/jbd2/transaction.c:334
+(discriminator 1))
+[   34.810395] lr : start_this_handle (fs/jbd2/transaction.c:334
+(discriminator 1))
+[   34.810798] sp : ffff800080e2f7e0
+[   34.810962] x29: ffff800080e2f820 x28: fff00000c4b43000 x27: ffffa9c145dca000
+[   34.811259] x26: 0000000000000658 x25: 0000000000000629 x24: 0000000000000002
+[   34.811507] x23: 0000000000000629 x22: 0000000000000c40 x21: 0000000000000008
+[   34.811750] x20: fff00000d0800348 x19: fff00000d0800348 x18: 0000000000000000
+[   34.811992] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[   34.812234] x14: 0000000000000000 x13: 00000000ffffffff x12: 0000000000000000
+[   34.812858] x11: 0000000000000000 x10: ffffa9c1456a8c08 x9 : ffffa9c142b54b84
+[   34.813572] x8 : ffff800080e2f408 x7 : 0000000000000000 x6 : 0000000000000001
+[   34.814462] x5 : ffffa9c145629000 x4 : ffffa9c1456293d0 x3 : 0000000000000000
+[   34.815093] x2 : 0000000000000000 x1 : fff00000c4fd0000 x0 : 0000000000000050
+[   34.815812] Call trace:
+[   34.816213] start_this_handle (fs/jbd2/transaction.c:334
+(discriminator 1)) (P)
+[   34.816719] jbd2__journal_start (fs/jbd2/transaction.c:501)
+[   34.817124] __ext4_journal_start_sb (fs/ext4/ext4_jbd2.c:117)
+[   34.817687] ext4_do_writepages (fs/ext4/ext4_jbd2.h:242 fs/ext4/inode.c:2847)
+[   34.818109] ext4_writepages (fs/ext4/inode.c:2954)
+[   34.818549] do_writepages (mm/page-writeback.c:2636)
+[   34.818983] filemap_fdatawrite_wbc (mm/filemap.c:386 mm/filemap.c:376)
+[   34.819520] __filemap_fdatawrite_range (mm/filemap.c:420)
+[   34.819942] file_write_and_wait_range (mm/filemap.c:794)
+[   34.820349] ext4_sync_file (fs/ext4/fsync.c:154)
+[   34.820486] vfs_fsync_range (fs/sync.c:188)
+[   34.820624] do_fsync (fs/sync.c:201 fs/sync.c:212)
+[   34.820743] __arm64_sys_fsync (fs/sync.c:215)
+[   34.820882] invoke_syscall.constprop.0
+(arch/arm64/include/asm/syscall.h:61 arch/arm64/kernel/syscall.c:54)
+[   34.821046] do_el0_svc (include/linux/thread_info.h:135
+(discriminator 2) arch/arm64/kernel/syscall.c:140 (discriminator 2)
+arch/arm64/kernel/syscall.c:151 (discriminator 2))
+[   34.821172] el0_svc (arch/arm64/include/asm/irqflags.h:82
+(discriminator 1) arch/arm64/include/asm/irqflags.h:123 (discriminator
+1) arch/arm64/include/asm/irqflags.h:136 (discriminator 1)
+arch/arm64/kernel/entry-common.c:165 (discriminator 1)
+arch/arm64/kernel/entry-common.c:178 (discriminator 1)
+arch/arm64/kernel/entry-common.c:768 (discriminator 1))
+[   34.821307] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:787)
+[   34.821460] el0t_64_sync (arch/arm64/kernel/entry.S:600)
+[   34.821712] ---[ end trace 0000000000000000 ]---
 
-You missed a '_' after `VFIO` (yeah, rst is annoying):
+Link:
+ -  https://regressions.linaro.org/lkft/linux-stable-rc-linux-6.16.y/v6.16-628-gcd8771110407/log-parser-test/exception-warning-cpu-pid-at-fsjbd2transaction-start_this_handle/
 
-  As of v6.17, it does not have support for features like VFIO passthrough.
--There is a `VFIO` RFC series that is not yet merged. The public Ventana Micro
-+There is a `VFIO`_ RFC series that is not yet merged. The public Ventana Micro
-  Systems kernel repository in `ventana-linux`_ can be used for testing the VFIO
-  functions.
-
-
-With the build fix feel free to send a v2 with:
-
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
-
-Cheers,
-
-Daniel
-
-> +Systems kernel repository in `ventana-linux`_ can be used for testing the VFIO
-> +functions.
-> +
-> +The v6.13+ Linux kernel support uses the IOMMU device to create IOMMU groups
->   with any eligible cards available in the system, regardless of factors such as the
->   order in which the devices are added in the command line.
->   
-> @@ -49,7 +49,7 @@ IOMMU kernel driver behaves:
->   
->     $ qemu-system-riscv64 \
->           -M virt,aia=aplic-imsic,aia-guests=5 \
-> -        -device riscv-iommu-pci,addr=1.0,vendor-id=0x1efd,device-id=0xedf1 \
-> +        -device riscv-iommu-pci,addr=1.0 \
->           -device e1000e,netdev=net1 -netdev user,id=net1,net=192.168.0.0/24 \
->           -device e1000e,netdev=net2 -netdev user,id=net2,net=192.168.200.0/24 \
->           (...)
-> @@ -58,21 +58,11 @@ IOMMU kernel driver behaves:
->           -M virt,aia=aplic-imsic,aia-guests=5 \
->           -device e1000e,netdev=net1 -netdev user,id=net1,net=192.168.0.0/24 \
->           -device e1000e,netdev=net2 -netdev user,id=net2,net=192.168.200.0/24 \
-> -        -device riscv-iommu-pci,addr=1.0,vendor-id=0x1efd,device-id=0xedf1 \
-> +        -device riscv-iommu-pci,addr=3.0 \
->           (...)
->   
->   Both will create iommu groups for the two e1000e cards.
->   
-> -Another thing to notice on `linux-v8`_ and `ventana-linux`_ is that the kernel driver
-> -considers an IOMMU identified as a Rivos device, i.e. it uses Rivos vendor ID.  To
-> -use the riscv-iommu-pci device with the existing kernel support we need to emulate
-> -a Rivos PCI IOMMU by setting 'vendor-id' and 'device-id':
-> -
-> -.. code-block:: bash
-> -
-> -  $ qemu-system-riscv64 -M virt	\
-> -     -device riscv-iommu-pci,vendor-id=0x1efd,device-id=0xedf1 (...)
-> -
->   Several options are available to control the capabilities of the device, namely:
->   
->   - "bus": the bus that the IOMMU device uses
-> @@ -84,6 +74,7 @@ Several options are available to control the capabilities of the device, namely:
->   - "g-stage": enable g-stage support
->   - "hpm-counters": number of hardware performance counters available. Maximum value is 31.
->     Default value is 31. Use 0 (zero) to disable HPM support
-> +- "vendor-id"/"device-id": pci device ID. Defaults to 1b36:0014 (Redhat)
->   
->   riscv-iommu-sys device
->   ----------------------
-> @@ -111,6 +102,6 @@ riscv-iommu options:
->   
->   .. _iommu1.0.0: https://github.com/riscv-non-isa/riscv-iommu/releases/download/v1.0.0/riscv-iommu.pdf
->   
-> -.. _linux-v8: https://lore.kernel.org/linux-riscv/cover.1718388908.git.tjeznach@rivosinc.com/
-> +.. _VFIO: https://lore.kernel.org/linux-riscv/20241114161845.502027-17-ajones@ventanamicro.com/
->   
->   .. _ventana-linux: https://github.com/ventanamicro/linux/tree/dev-upstream
-
+--
+Linaro LKFT
+https://lkft.linaro.org
 
