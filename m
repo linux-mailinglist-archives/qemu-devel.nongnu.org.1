@@ -2,144 +2,174 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80418B2493F
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 14:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2D9B2455B
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Aug 2025 11:26:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umAIS-0001W5-Iy; Wed, 13 Aug 2025 08:09:36 -0400
+	id 1um7iX-0003X7-Pq; Wed, 13 Aug 2025 05:24:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tzimmermann@suse.de>)
- id 1um7RA-0008VP-U1
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 05:06:24 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tzimmermann@suse.de>)
- id 1um7R8-0006Wq-Dd
- for qemu-devel@nongnu.org; Wed, 13 Aug 2025 05:06:24 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id D11E1219BE;
- Wed, 13 Aug 2025 09:06:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1755075979; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=wzPfss0Yx81jm9T9+iN5ZthUeT7U2XD4wjBOjc1Dsnw=;
- b=Gw4A60S0hTXkXfeFH2xcZAMc40qN3iZr9CcHEx9ycD3OnUKHU4DmqHwHcy4aP6CurW/uMK
- CGpS4frnBZxw5OFue9T7hgZjGoxPCKloSdhn9rkQ9hPnJgtBrrrKSUGAPo4wDi/50F1/g6
- aD8K/qYaU3fgaM5zkrzcUfStMbv0XcY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1755075979;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=wzPfss0Yx81jm9T9+iN5ZthUeT7U2XD4wjBOjc1Dsnw=;
- b=RVhlVVVYaOE6dzETfyqdm4YXHqLJWpSw2caDrnnYjJ9+Jn4w3H6fwWiOLLo3Sz05YdhXxM
- G5NJ+Htttui+sVCw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1755075978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=wzPfss0Yx81jm9T9+iN5ZthUeT7U2XD4wjBOjc1Dsnw=;
- b=topybgz3V4ZL1tf3jXFyvDYIqy+rSBo669MRUOv4KK6GRFVqMTsY2NFBMZBgjYWk8EuxH2
- Gg304KAH1NouwSpMtAd+5VH72pAgYxePiUrhdo1p5nlKmmfi6/muFt63+6kskkLkrDfUfY
- i9kspoWq+tUsAFeAYz0LQu0moijhTQM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1755075978;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=wzPfss0Yx81jm9T9+iN5ZthUeT7U2XD4wjBOjc1Dsnw=;
- b=9B5FwsJlCcAx0wZ1G7OnXQAFvXyQ1xD8YM0oj6V7YHq+sM1HVRqCBS4nVL1r4Bvig8fO7m
- VRxjDReqRvc50kBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 780A113479;
- Wed, 13 Aug 2025 09:06:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id NVOzG4pVnGhEFAAAD6G6ig
- (envelope-from <tzimmermann@suse.de>); Wed, 13 Aug 2025 09:06:18 +0000
-Message-ID: <a0325fe4-90ce-45d4-91ad-881c7900a7d5@suse.de>
-Date: Wed, 13 Aug 2025 11:06:18 +0200
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <Sandipan.Das@amd.com>)
+ id 1um7iS-0003Wy-4v
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 05:24:16 -0400
+Received: from mail-bn7nam10on2075.outbound.protection.outlook.com
+ ([40.107.92.75] helo=NAM10-BN7-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Sandipan.Das@amd.com>)
+ id 1um7iL-0000Ao-1j
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 05:24:15 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iTSXf0+Lh+M+e+f+r7P9rW8zoAFQfJjdgcB2btH2KMbGPOBPKTMyTzQt5hflkhRsa8d+9qRa0FLZ4ztapyHQgaDKjh7xR+MS9aC1m9icTquuJq8FyybDdHo8E6hiSoGKP97ZDx1GZMHfgBiwsGHV4rAWe7kF6wnQJbeswLDW4rChatebSSoLFLYibeGJLKVlHOk7Ve2rG8Ms+cTvhf+p7p3v0HU1gVUQ/+xMiJc+Pyl8kVXDQBpGP7fdJwJgIPPBfGImjUH/R7xqMCHNdApmBxcspREupWYe2f0EF0zPZqbBdbm2sZZBpbYu4qwaSFeiUVY+X4NAgjcLbEZgPo2yyQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/lQ9dzf8rYdUCoX94aGGsbp77KaV73w46ptia5m19/E=;
+ b=np8RrBM6VltBlMhaB9LJRO1kR+8GRc48RuogLxoDqosGtgQu1SpYYldy9qjvvnTcDIb92AovSFRs1cYl7ziItQGVTneH4BfcPCivT9JrfF4Fp5h9NmhhrILiE6Z2/q2tlhEtvrljFMjAHjJ9ead5cX+y06C4MWAyg4fXoVS5yNME5DK4wEe4Y3dwDu2+xEmsPUmxwQjwoxUbgdIrY3ratMu/WM89+Yo4yQTmvtZ/QK18w1giIqGvotlBAqXXjjYY+I/DrtyVe063OT+FqcFuhlkJ3Z3JSwNa091uOdPNyZ0vngsoEtpYCP3fSKAre3PsQwZpxNHPfaGLclLvA4+tBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/lQ9dzf8rYdUCoX94aGGsbp77KaV73w46ptia5m19/E=;
+ b=urJ8vcrx4MVzA0yYPiHfnflmuiUamqiMSlf72VBwu6dwWtQlTbxtWBwy38im7kNOC9Jv2Zqe1YZplnZpU+xteenPUPkgF4mz5u/JGUNGMLBueVDRVI9KgChMRf2Ev98GB6bu0gJ8xqARRuY48sJOpo8q7lzLTkVQmDZ3unfyklc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5712.namprd12.prod.outlook.com (2603:10b6:510:1e3::13)
+ by BL3PR12MB6474.namprd12.prod.outlook.com (2603:10b6:208:3ba::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Wed, 13 Aug
+ 2025 09:19:00 +0000
+Received: from PH7PR12MB5712.namprd12.prod.outlook.com
+ ([fe80::2efc:dc9f:3ba8:3291]) by PH7PR12MB5712.namprd12.prod.outlook.com
+ ([fe80::2efc:dc9f:3ba8:3291%4]) with mapi id 15.20.9009.021; Wed, 13 Aug 2025
+ 09:19:00 +0000
+Message-ID: <a51fc2fa-5fc5-4e63-ba53-575ef143d062@amd.com>
+Date: Wed, 13 Aug 2025 14:48:47 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION][BISECTED] kernel panic is not displayed correctly in
- qemu (CONFIG_DRM_BOCHS)
-To: Askar Safin <safinaskar@zohomail.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Noralf_Tr=C3=B8nnes?=
- <noralf@tronnes.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- virtualization <virtualization@lists.linux.dev>,
- ryasuoka <ryasuoka@redhat.com>, dri-devel <dri-devel@lists.freedesktop.org>,
- qemu-devel <qemu-devel@nongnu.org>, regressions
- <regressions@lists.linux.dev>, Ben Hutchings <benh@debian.org>
-References: <197f290e30b.eaadc7bc7913.7315623184036672946@zohomail.com>
+Subject: Re: [PATCH v6 5/9] target/i386/kvm: rename architectural PMU variables
+To: Dongli Zhang <dongli.zhang@oracle.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
+ babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
+ groug@kaod.org, khorenko@virtuozzo.com, alexander.ivanov@virtuozzo.com,
+ den@virtuozzo.com, davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com, ewanhai-oc@zhaoxin.com,
+ ewanhai@zhaoxin.com
+References: <20250624074421.40429-1-dongli.zhang@oracle.com>
+ <20250624074421.40429-6-dongli.zhang@oracle.com>
 Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <197f290e30b.eaadc7bc7913.7315623184036672946@zohomail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-0.998]; MIME_GOOD(-0.10)[text/plain];
- ARC_NA(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- FUZZY_RATELIMITED(0.00)[rspamd.com]; TO_DN_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCVD_TLS_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
- RCPT_COUNT_SEVEN(0.00)[11]; MID_RHS_MATCH_FROM(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, suse.de:mid,
- suse.de:email]
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=tzimmermann@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+From: Sandipan Das <sandipan.das@amd.com>
+In-Reply-To: <20250624074421.40429-6-dongli.zhang@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BMXP287CA0023.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:b00:2c::36) To PH7PR12MB5712.namprd12.prod.outlook.com
+ (2603:10b6:510:1e3::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5712:EE_|BL3PR12MB6474:EE_
+X-MS-Office365-Filtering-Correlation-Id: cc612fae-507d-423f-1ac8-08ddda4a7037
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|7416014|366016|7053199007; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?eXVJdW0vbmhncUhiRjBFUDQyR1o1Yzlwckd5d1NKWnhuL1lNYjlFb0g0b0s1?=
+ =?utf-8?B?MzdIS0w2SkdUZXlmZi8yblVzUmRWUWdUYnpNWWpVS1lWQkh2NWJDck5vcU1O?=
+ =?utf-8?B?N3R0WmZWV3AyZkFkWUFvQXdENlZzd3NXZm5uWjh4UDFQY05zNDYwUkhRZ1hQ?=
+ =?utf-8?B?UmtvaHVQZkJaWVljQ2hPRWtwZGxTMHdIK0xldlNlZjB3dklpbDdUYkE3bzY1?=
+ =?utf-8?B?d2tZNEFZc1BCaWhYQWRsZVlpQzVrcjZtSUpSRmluNzlnem1waWNxcHkzSHBV?=
+ =?utf-8?B?M1F4MTV5Sk55YTRzNGRmcG00Tk1SeFVUWldYdEx5bytNK3ZtSW4zVkNVWUg3?=
+ =?utf-8?B?VVZ1R1NQMDQyRXJucks3alJVa0VyR0h3T1ROYmpCclZBa1RoeDJYYXRxYy9I?=
+ =?utf-8?B?MFlRQk5rczI1bElrWTJ5UkR2RURDK0hVYkdvMHE4dGI3Z0lGKy9uZmtZd1Jt?=
+ =?utf-8?B?RXhiUDF5N0JiYTg0Zi9DMW1La1lUZ1Jzc3BxdldBMUVqWVNwcnhqajBuQWRl?=
+ =?utf-8?B?Z1J1eVBQMEtXT0xwamk3ZWJla3JIcmthaEhqT2dDcTE0VGdydzVMVUc5cTJZ?=
+ =?utf-8?B?bmgzdnZZeGR1c2pMTmN5ZHozOXFTVTJHU3NSUEdRanJEeGtwbWxOK205ajA4?=
+ =?utf-8?B?OHpHRGNyUGFtYkIyd0ZmZFpIekk0VUVVaGx5Mk5DSzNzeVBMSEp1b1FkQThv?=
+ =?utf-8?B?blpMakF6RFh6bS9wWmxEUGdUNjVUVUh6RldXUWdnVDVmd05vNTFCM0MwbWdN?=
+ =?utf-8?B?RVkxZjM5VGNYRUw5Y0h6OTU1SUxwV0xMeEgyQ2R1R1JoTDVGZG1wTHZqVkZ2?=
+ =?utf-8?B?V0ZFNkpMaVdKTHRweEt2WHZQWE15dVo2cm1uN212SlU5cnd2TTJ1dFdpbkln?=
+ =?utf-8?B?NVpNTkhHNDNycUN2a3BFUjQ2VWxxQ3hZazVvQWhkMkNaLzlxT2UyZ1g5WmNp?=
+ =?utf-8?B?U0x6ZEtuUUVqemVZbm5NZnFDeTdQdlRCdGVSU25Jb2ZFMldWMExFRERzcDR1?=
+ =?utf-8?B?a2FNdE1oamswbHFnQWVTb3ZMNTlmVnZtYVR1VDhuNUlQVk92UDFmUldnOFJP?=
+ =?utf-8?B?SjNaOW1uN3VpYUJPcXN3aXZGdzIvNnQwcncvVnJ2K0Yra21MRHN3WVZPUVRq?=
+ =?utf-8?B?RW1xMW92SEJ4dkFZbXZoSlBQUERkZ1RWcDFQN2x6MEI3aFdSUjdhdlN4Q0c1?=
+ =?utf-8?B?MzU2U2hFQ252SExodGhlZlFxeW4yL2EzcGNRWFVtRFVNNUNMTm5BL1FjZEQx?=
+ =?utf-8?B?TC9jcmlYMmJaeCtZbDlaaUtTcWh0MG1ZaVdtT1d5cy9pcWFmRDNVay84ZHRh?=
+ =?utf-8?B?bDJxWVQyQVA1bjNRa3ZiNkhHRXhuSmIxMU1tNTRSVnV6cUZPRWc5ZFRpTlMz?=
+ =?utf-8?B?QklpcmpPdjVxQmMydDRCRFZBTTVUb3NTOTR2TVdYd0pnOUVWeTRGenYyVVZI?=
+ =?utf-8?B?b1VMQmdVanhnWWhKbTc1VHdDWlY2MWMvbHVDMkVudFJPZVNUS1BsRkZSYW40?=
+ =?utf-8?B?OHhFRnc4SFU0WFc2SG5sNVJBOTlhRDdmVEdKbWttZzVXbjRHa2lmVDlWRVZa?=
+ =?utf-8?B?LzZJNDEwaFV3ZyswZzR0cE56dFhqeU9kWEpoRmxkNE4zUFVPay9nMlBEbnRQ?=
+ =?utf-8?B?M29PYU5oR004Y0JGay9RQWNWU3hubjF6bWxtbHltN3o0ZW0yU2QzUVQ5YzlP?=
+ =?utf-8?B?UkxuQUVESnZNWXpmOVpyRlFObFArVFdFZnF0cjgzV1p3SVpYa0p1T3pXOEF2?=
+ =?utf-8?B?dEFxbWF3WjFLbENxSVUzTFR1Q3BDTGlIZVpQWmIyWHV5eDZuR2JYdlNuaXlt?=
+ =?utf-8?B?QXA2Q0V5RHlPcXRNOU1DNjliYndjQkcyZzdsMGVxajhQRVlRczQvanduWlpR?=
+ =?utf-8?B?MVRyRFMvOWxDTXJQb01ROGVXS1IyRzk2eXlYcHUwV1gweHVoZW1ZMTVHdGRO?=
+ =?utf-8?Q?NMSmDeA8Ljo=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR12MB5712.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007); DIR:OUT;
+ SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QzhyYTBEMER2T08zVmQyTHBMNUJHZG1hbmFvSjNuNVBqWHdBbEpVcnhjdWNC?=
+ =?utf-8?B?RlhiNnhqbkdzc2hCWnFoaUFwRkJSM3BVNHl4bGpDcWZWV2lRNFBqWnhDZ0tO?=
+ =?utf-8?B?SEpQREpLS0FIVVZlRFVkdTNPdTUybGo3bUo3eTY1bUk4Z1RNVXZOb2xOMi80?=
+ =?utf-8?B?K0pGTU5pSUVuZ2VVbWZPVkNkeDFURVRyQ21mWlBUdU1GcXdEdFdibERCVkVx?=
+ =?utf-8?B?UHFKRnRCVE1uN29INjQvVnZjYStRWWZsMUY5NlFXSVI2QUhMcTJsVUlzSDRv?=
+ =?utf-8?B?bGZmdXNic0RwY2pveGpQV0JkcFRtcVo0ZzZUV0gxMXM2R3pmdDY2ekNaVmR2?=
+ =?utf-8?B?RkJvWlZFSDBzZ2s4aWJFZU10V09Ic0Fjdjd2MTlnNlhKVTFVYkp4WDJXSjc5?=
+ =?utf-8?B?aFlHc3lRZTdFa1ArZkhqeUJBMFoyLzI1VXdVZ0l0Y2NPdWZMUzh4NTFOYlZk?=
+ =?utf-8?B?UkRSeFlQOVE4ZWR4dkJ3dHcwNXI4NC9MSTVEeHMrd2psd1Z6a2Z1cDVJY3Rh?=
+ =?utf-8?B?OXFqU0kxSVVtMVBQNUlkc3dQWEhBV2VBaE9PUytvUVVBVTJjdEZyajhmUnJs?=
+ =?utf-8?B?QUQ3bU9PUVc5ZGp4TjArYlRVZ2JPeFExRWczTW5INUdrRlJhdlhKY043cDVm?=
+ =?utf-8?B?MUZiN1NDM0VMcGxpYkZ1Wm1QMmRkaHNncG9JTGlwVk9MTVE2QWlTZ3FydUdq?=
+ =?utf-8?B?Wk56b3lxbzA2cnlHV3ZxRDdyOEkwUmd6UmpGOTBkRkg0ZEJaYm9OTXpmeURt?=
+ =?utf-8?B?b1I3WkxYK3hjMGo5Um1WVGQzbEZkVk5hM2ZlRG14b256MDBWVVlZaHM2MWt5?=
+ =?utf-8?B?NVFEbEhGWlNJV0pYODRWWGc4Mzk0ZEJFbG96L0pPWFR3dkI0MHFTRVJwZnNL?=
+ =?utf-8?B?eThtMFR3NGF3Tlh2ZEhieTFaaURZZHBiYVNIQVNpZUR5K1ZqVXFvUFFEUjR2?=
+ =?utf-8?B?c3NONkhBd2o1SStuaWVNR1pXSmFBQmVET0ZiQytsWTRrZEJsYW5uYUNBS2FB?=
+ =?utf-8?B?Zm9lczIvdEJaRE50VGRtQ1J3T085WVcwdFQwYi91ak1wNEsreUFhYXdyMG8v?=
+ =?utf-8?B?VFo4WndYRkFYTnVScm1SbjhHdnViZ1o2cXQwNkdUS0ZFZTZGM1QvOFVlaVlV?=
+ =?utf-8?B?R3RCQmFmb2ZoRkFqSm0xRktFd0JRVVMrMTYyaUk4ZFNTLzZ3REVQejh4NVZ1?=
+ =?utf-8?B?dmJOK3cxcmhES2cvN3NsRmpJNW5HTTVSN0tzT0hNei9ldjZ5MHRVNHRwMkpZ?=
+ =?utf-8?B?VTRjN29FR1J1NFJMWHUzdkNueHZUTnZPQjdhMlZQeGJyV0hqRytab0FsdlRO?=
+ =?utf-8?B?VXpJTVNYMUdkSXExQ0hIS3JJVWxXcGF0WHVvRGVVL1Y3YlcveDFMOUJhbEkr?=
+ =?utf-8?B?cFg4K0l3RjJZckVBOGJ6RW0wbi9CNmxCR3dyNDR6WFY2d2RORkV4ZEdjWHJt?=
+ =?utf-8?B?VHd1RG4yclhXeDVVVWozTnpqVW5wZzVkV3dITSsxaGdkOEtIa2F6c2g5bHdx?=
+ =?utf-8?B?Ky9uSVpEdXh6ZWNSSnZmZUJJd1pXdU5lWlp4T2E4Qk91SXJHUmJ1S1h1TFpz?=
+ =?utf-8?B?SWxDYTk3QVhUTCt4Zm54Ky85YUIxWmJSWVVTNVVCV3REY3Z2My9iQU1aUFZ2?=
+ =?utf-8?B?MXB6c29oTStUSk8yRXFxdU1VZnJ4NFZYR0FRRERiR2lUbXZLV1U0N3VxZld3?=
+ =?utf-8?B?SWVsd2lhK1hiY1lreThZWGZ2TXZEOVJsMGMwQWVrQVdnQjFWdmFOTExoYnVK?=
+ =?utf-8?B?QndyaFNLc0ZHN29mNnNiZG05N3RHcm56K3lMTVN2MlhMQW9vcWI5SjA0VHk1?=
+ =?utf-8?B?MWs3ZVV4OUVQaXZ3RW00L3lEUG5vYnFhRVJudW1YWEQ2Sjl4TXNFOTl4WmJF?=
+ =?utf-8?B?cTludG1BVUJRaWREVTJYMmhjdzlrWnppaGJYSW1FN3BZYVh2RVZiQmtZbjZ0?=
+ =?utf-8?B?RnVITnpSMVFkcjh5cXdMbWgvbEhFeXR3VGptNUlwWkM4aGxOWjMxNmV1TEtR?=
+ =?utf-8?B?ZDIyL1FnZWQxaGZxU0VrODJ2d1ZudjRGUXkxZURRNHRmU0U4cEZJSGowc2xO?=
+ =?utf-8?B?VjZoK1ZWeTB3Y053dkhTUWFqTEFZaDlCZUJBRkZucU83M090cWkyNnNTdVRs?=
+ =?utf-8?Q?bGK0Y0apyj7zuUIAiCahz2VDO?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cc612fae-507d-423f-1ac8-08ddda4a7037
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5712.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 09:19:00.6500 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: r8FrfSp8LyPpUJMHMdR8ZdfuBfrRl6vg4rE0HAO37J8PBaJ+qPV2H7vm3ZSP/0H2TK2aK4qrhoIFKJpULL+l4g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6474
+Received-SPF: permerror client-ip=40.107.92.75;
+ envelope-from=Sandipan.Das@amd.com;
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 13 Aug 2025 08:09:32 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -154,146 +184,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On 24-06-2025 13:13, Dongli Zhang wrote:
+> AMD does not have what is commonly referred to as an architectural PMU.
+> Therefore, we need to rename the following variables to be applicable for
+> both Intel and AMD:
+> 
+> - has_architectural_pmu_version
+> - num_architectural_pmu_gp_counters
+> - num_architectural_pmu_fixed_counters
+> 
+> For Intel processors, the meaning of pmu_version remains unchanged.
+> 
+> For AMD processors:
+> 
+> pmu_version == 1 corresponds to versions before AMD PerfMonV2.
+> pmu_version == 2 corresponds to AMD PerfMonV2.
+> 
+> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+> Changed since v2:
+>   - Change has_pmu_version to pmu_version.
+>   - Add Reviewed-by since the change is minor.
+>   - As a reminder, there are some contextual change due to PATCH 05,
+>     i.e., c->edx vs. edx.
+> 
+>  target/i386/kvm/kvm.c | 49 ++++++++++++++++++++++++-------------------
+>  1 file changed, 28 insertions(+), 21 deletions(-)
+> 
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 4baaa069b8..824148688d 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -166,9 +166,16 @@ static bool has_msr_perf_capabs;
+>  static bool has_msr_pkrs;
+>  static bool has_msr_hwcr;
+>  
+> -static uint32_t has_architectural_pmu_version;
+> -static uint32_t num_architectural_pmu_gp_counters;
+> -static uint32_t num_architectural_pmu_fixed_counters;
+> +/*
+> + * For Intel processors, the meaning is the architectural PMU version
+> + * number.
+> + *
+> + * For AMD processors: 1 corresponds to the prior versions, and 2
+> + * corresponds to AMD PerfMonV2.
+> + */
+> +static uint32_t pmu_version;
+> +static uint32_t num_pmu_gp_counters;
+> +static uint32_t num_pmu_fixed_counters;
+>  
+>  static int has_xsave2;
+>  static int has_xcrs;
+> @@ -2081,24 +2088,24 @@ static void kvm_init_pmu_info(struct kvm_cpuid2 *cpuid)
+>          return;
+>      }
+>  
+> -    has_architectural_pmu_version = c->eax & 0xff;
+> -    if (has_architectural_pmu_version > 0) {
+> -        num_architectural_pmu_gp_counters = (c->eax & 0xff00) >> 8;
+> +    pmu_version = c->eax & 0xff;
+> +    if (pmu_version > 0) {
+> +        num_pmu_gp_counters = (c->eax & 0xff00) >> 8;
+>  
+>          /*
+>           * Shouldn't be more than 32, since that's the number of bits
+>           * available in EBX to tell us _which_ counters are available.
+>           * Play it safe.
+>           */
+> -        if (num_architectural_pmu_gp_counters > MAX_GP_COUNTERS) {
+> -            num_architectural_pmu_gp_counters = MAX_GP_COUNTERS;
+> +        if (num_pmu_gp_counters > MAX_GP_COUNTERS) {
+> +            num_pmu_gp_counters = MAX_GP_COUNTERS;
+>          }
+>  
+> -        if (has_architectural_pmu_version > 1) {
+> -            num_architectural_pmu_fixed_counters = c->edx & 0x1f;
+> +        if (pmu_version > 1) {
+> +            num_pmu_fixed_counters = c->edx & 0x1f;
+>  
+> -            if (num_architectural_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
+> -                num_architectural_pmu_fixed_counters = MAX_FIXED_COUNTERS;
+> +            if (num_pmu_fixed_counters > MAX_FIXED_COUNTERS) {
+> +                num_pmu_fixed_counters = MAX_FIXED_COUNTERS;
+>              }
+>          }
+>      }
+> @@ -4051,25 +4058,25 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
+>              kvm_msr_entry_add(cpu, MSR_KVM_POLL_CONTROL, env->poll_control_msr);
+>          }
+>  
+> -        if (has_architectural_pmu_version > 0) {
+> -            if (has_architectural_pmu_version > 1) {
+> +        if (pmu_version > 0) {
+> +            if (pmu_version > 1) {
+>                  /* Stop the counter.  */
+>                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
+>                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL, 0);
+>              }
+>  
+>              /* Set the counter values.  */
+> -            for (i = 0; i < num_architectural_pmu_fixed_counters; i++) {
+> +            for (i = 0; i < num_pmu_fixed_counters; i++) {
+>                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR0 + i,
+>                                    env->msr_fixed_counters[i]);
+>              }
+> -            for (i = 0; i < num_architectural_pmu_gp_counters; i++) {
+> +            for (i = 0; i < num_pmu_gp_counters; i++) {
+>                  kvm_msr_entry_add(cpu, MSR_P6_PERFCTR0 + i,
+>                                    env->msr_gp_counters[i]);
+>                  kvm_msr_entry_add(cpu, MSR_P6_EVNTSEL0 + i,
+>                                    env->msr_gp_evtsel[i]);
+>              }
+> -            if (has_architectural_pmu_version > 1) {
+> +            if (pmu_version > 1) {
+>                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_STATUS,
+>                                    env->msr_global_status);
+>                  kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
+> @@ -4529,17 +4536,17 @@ static int kvm_get_msrs(X86CPU *cpu)
+>      if (env->features[FEAT_KVM] & CPUID_KVM_POLL_CONTROL) {
+>          kvm_msr_entry_add(cpu, MSR_KVM_POLL_CONTROL, 1);
+>      }
+> -    if (has_architectural_pmu_version > 0) {
+> -        if (has_architectural_pmu_version > 1) {
+> +    if (pmu_version > 0) {
+> +        if (pmu_version > 1) {
+>              kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
+>              kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL, 0);
+>              kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_STATUS, 0);
+>              kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL, 0);
+>          }
+> -        for (i = 0; i < num_architectural_pmu_fixed_counters; i++) {
+> +        for (i = 0; i < num_pmu_fixed_counters; i++) {
+>              kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR0 + i, 0);
+>          }
+> -        for (i = 0; i < num_architectural_pmu_gp_counters; i++) {
+> +        for (i = 0; i < num_pmu_gp_counters; i++) {
+>              kvm_msr_entry_add(cpu, MSR_P6_PERFCTR0 + i, 0);
+>              kvm_msr_entry_add(cpu, MSR_P6_EVNTSEL0 + i, 0);
+>          }
 
-Am 10.07.25 um 06:21 schrieb Askar Safin:
-> Steps to reproduce:
->
-> - Build Linux v6.16-rc5 so:
->
-> $ cat mini
-> CONFIG_64BIT=y
->
-> CONFIG_EXPERT=y
-> CONFIG_EMBEDDED=y
->
-> CONFIG_PRINTK=y
-> CONFIG_PRINTK_TIME=y
->
-> CONFIG_PCI=y
->
-> CONFIG_TTY=y
-> CONFIG_VT=y
-> CONFIG_VT_CONSOLE=y
-> CONFIG_DRM=y
-> CONFIG_DRM_FBDEV_EMULATION=y
-> CONFIG_DRM_BOCHS=y
-> CONFIG_FRAMEBUFFER_CONSOLE=y
-> CONFIG_PROC_FS=y
-> $ make KCONFIG_ALLCONFIG=mini allnoconfig
-> $ make
->
-> - Then boot this Linux image in Qemu so:
->
-> $ qemu-system-x86_64 -enable-kvm -m 1024 -daemonize -kernel arch/x86_64/boot/bzImage
->
-> Kernel will (predictably) panic (because it has no initramfs, nor real disk), but actual panic message will not be shown!
->
-> Last shown line is "Run /bin/sh as init process"
->
-> My host OS is Debian Trixie. "uname -a":
->
-> Linux receipt 6.12.33+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.33-1 (2025-06-19) x86_64 GNU/Linux
->
-> Qemu version is:
->
-> QEMU emulator version 10.0.2 (Debian 1:10.0.2+ds-1)
->
-> Guest kernel is v6.16-rc5 x86_64.
->
-> The problem doesn't reproduce on old guest kernels. I. e. old guest kernels actually show panic message.
->
-> I did bisect, and bisect showed the following two commits:
->
-> ===
->
-> commit a6c3464f69cf5a8a31eb31cc436e7dbd325b8ff9
-> Author: Thomas Zimmermann <tzimmermann@suse.de>
-> Date:   Thu Jun 13 09:30:33 2019 +0200
->
->      drm/gem-vram: Support pinning buffers to current location
->      
->      Pinning a buffer prevents it from being moved to a different memory
->      location. For some operations, such as buffer updates, it is not
->      important where the buffer is located. Setting the pin function's
->      pl_flag argument to 0 will pin the buffer to whereever it is stored.
->      
->      v2:
->              * document pin flags in PRIME pin helper
->      
->      Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->      Acked-by: Gerd Hoffmann <kraxel@redhat.com>
->      Link: https://patchwork.freedesktop.org/patch/msgid/20190613073041.29350-2-tzimmermann@suse.de
->
-> commit 58540594570778fd149cd8c9b2bff61f2cefa8c9
-> Author: Thomas Zimmermann <tzimmermann@suse.de>
-> Date:   Wed Jul 3 09:58:34 2019 +0200
->
->      drm/bochs: Use shadow buffer for bochs framebuffer console
->      
->      The bochs driver (and virtual hardware) requires buffer objects to
->      reside in video ram to display them to the screen. So it can not
->      display the framebuffer console because the respective buffer object
->      is permanently pinned in system memory.
->      
->      Using a shadow buffer for the console solves this problem. The console
->      emulation will pin the buffer object only during updates from the shadow
->      buffer. Otherwise, the bochs driver can freely relocated the buffer
->      between system memory and video ram.
->      
->      v2:
->              * select shadow FB via struct drm_mode_config.prefer_shadow_fbdev
->      
->      Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->      Acked-by: Noralf Trønnes <noralf@tronnes.org>
->      Link: https://patchwork.freedesktop.org/patch/315833/
->      Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
->
-> ===
->
-> Commit a6c3464f69cf5a8a31e changed good behavior to absolutely wrong: after a6c3464f69cf5a8a31e I see just black screen.
-> Then (after many commits) 58540594570778fd149 made screen working again, but now panics are not shown.
->
-> So, result: all commits in range a6c3464f69cf5a8a31e .. 58540594570778fd149 are not testable (black screen), all commits before a6c3464f69cf5a8a31e
-> are "good" (panic is shown) and all commits after 58540594570778fd149 (inclusive) (including v6.16-rc5) are "bad" (panic is not shown).
-
-The bochs driver uses a shadow framebuffer. It's apparently not being 
-flushed to VRAM on kernel panics. You could try the new DRM panic screen 
-to make that happen.
-
-Best regards
-Thomas
-
->
-> The next commit after 58540594570778fd149 is 5fd5d2b7c53de5a1290d82, thus correct regzbot instruction is:
->
-> #regzbot introduced: a6c3464f69cf5a8a31e..5fd5d2b7c53de5a1290d82
->
-> Config above is not special. It is result of minimizing standard Debian config.
->
-> The bug is reproducible with standard Debian kernels (if we use them as guests).
->
-> Reproduction steps are so:
-> - Install Debian Trixie to Qemu VM
-> - Boot it with "init=/bin/true" added (to cause kernel panic)
->
-> You will not see panic message.
->
-> I minimized this Debian bug to small config shown in the beginning of this letter.
->
-> --
-> Askar Safin
-> https://types.pl/@safinaskar
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+Reviewed-by: Sandipan Das <sandipan.das@amd.com>
 
 
