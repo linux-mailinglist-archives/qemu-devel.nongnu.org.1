@@ -2,86 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97402B25825
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 02:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EDBBB26685
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 15:12:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umLe2-0000QX-QT; Wed, 13 Aug 2025 20:16:39 -0400
+	id 1umXiT-0002qJ-3S; Thu, 14 Aug 2025 09:10:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1umLdt-0000PF-Pc; Wed, 13 Aug 2025 20:16:29 -0400
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1umLdk-0005Tg-AX; Wed, 13 Aug 2025 20:16:29 -0400
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-323266d38c2so619280a91.0; 
- Wed, 13 Aug 2025 17:16:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1755130566; x=1755735366; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
- bh=Z3Kmj7EMds+XvdVFyWqM3Z02NVS/rOhSVj2kNVV45YY=;
- b=SUhDvKhbYUYsYJtazGlj6f6NASIWYcFtdkuQ+TX1UW3X+pqugXs+RQTmCucTbagVxA
- bZcrv2UQpHFungzmoUNkIiq4aD+ja0JMMF6suthPpUHhWqxgWaq4nqQiZeQX3fF1PfKm
- YI6zHXmVcI+8h1OAnqV7x5GeINX4mcaf9IpY/BVZlWLHY9p/h6iXOsZAThN6RZ6u7vg2
- BeITf3cxKBC7eB4I+BYYMl/G1MqU6gTKpXJYKgW0JPDE7jsQplmUgb15CwQnFFYDYO08
- UOsnUHkAcbjha+N9EZyttl9y6mlNKIILTOSxH7l0wjY+DbYnkByV1XDRZQVJTM2quzZW
- t2/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755130566; x=1755735366;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:sender:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Z3Kmj7EMds+XvdVFyWqM3Z02NVS/rOhSVj2kNVV45YY=;
- b=nooyP02a0QjJTlIEEuVTWHgNKn1UB1D1lkc0trjy2tyBF8UfA4CTSV5yUc/BE+Yoxh
- 2d+lW1Atv0L/9kJ7/QM98uhSyJfSPhYftU5TK97yKmEMfZdpQyaKuKjIElDlZtX9NiHR
- j+Lf5uw/aKMNqcFqlY5EpSFkiwnncnuuor7kzpkQfyMmlCiiP8eism+XDG09dCqYMC6A
- kQVNFoYub7ucFL1kn2JuQrywZooKbab6PHebSukzQMvqA06S3QFu0Myi4FFzc3mc0iAW
- 4sJU7mRnr4qya3is3jDuJeEBe/G5e9p8kgsQEonRi9R74utEOaNXYYPnrGigCeC6JeoU
- 31hg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVNn9epWimBNl7/2Aqy7JemziBE2+gxJbtYODpND4GI0kh08HK7wVAXOBw8iiZmJzlC/cAYpbnno52B@nongnu.org
-X-Gm-Message-State: AOJu0Yx+p/q0OzyyB9MIE2kuX+Ud4Zb5Wiyfz1b+odfQXXxFr4ISKn9R
- KIjcdIoINDOwVK1OwZocsDXPohqcLjJtcIbbBTQ/ioMJfZwRg/oJNTRE
-X-Gm-Gg: ASbGncsuWBxdJUw65YouZrhX3dLLZbsA25Y2c3WLV46TFetk0lewpleUsk+x43lFhL8
- PlI0nC3JZMvRkT+2x3Juf6MpPdGrBGQJMvNa77IaXi+6qMAKmBn2StW2zWXV2/Wz6US8MkN29D+
- NkDjFE3LoKXMakXS8pDd9JBgCerq1K9UbqwXLTudaJa0l1SqlhOCoY2wvGXxIinj+fXhIc22dfg
- xyLZF1rQJ892z19SU6YbylPwE58NizDIT/+2UytSVp+YzA76gKN4eA5wnkki5mNkWJegmseGxUX
- 1vxJeyFIrrh8/QD+jfe6QpH6pdKyy9vOipJs649bcBBUwuJHRowawWTFrpOPhBLWlv/5Bt8VN8O
- uDU5fKU213kMjGZWoXUdKhoIl6IU=
-X-Google-Smtp-Source: AGHT+IE/NhmxxMt/Ft6BfbS8HcdorI3IoVw6/8Uhhg6gVkvcp4oP6v+TjhNKzurRzscDp7Had7Qa5Q==
-X-Received: by 2002:a17:90b:268a:b0:321:87fa:e1e4 with SMTP id
- 98e67ed59e1d1-32327996e6emr1849817a91.6.1755130565878; 
- Wed, 13 Aug 2025 17:16:05 -0700 (PDT)
-Received: from donnager-debian.. ([203.38.38.6])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3232f7445f2sm81768a91.2.2025.08.13.17.16.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 Aug 2025 17:16:04 -0700 (PDT)
-From: Joel Stanley <joel@jms.id.au>
-To: Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH v2] docs: riscv-iommu: Update status of kernel support
-Date: Thu, 14 Aug 2025 09:44:50 +0930
-Message-ID: <20250814001452.504510-1-joel@jms.id.au>
-X-Mailer: git-send-email 2.47.2
+ (Exim 4.90_1) (envelope-from <yi.zhang@huaweicloud.com>)
+ id 1umMlU-0003XF-DE
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 21:28:25 -0400
+Received: from dggsgout11.his.huawei.com ([45.249.212.51])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <yi.zhang@huaweicloud.com>)
+ id 1umMlM-00062W-Qs
+ for qemu-devel@nongnu.org; Wed, 13 Aug 2025 21:28:24 -0400
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+ by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4c2SKl4B24zYQtxZ
+ for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 09:27:55 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+ by mail.maildlp.com (Postfix) with ESMTP id 320361A058E
+ for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 09:27:54 +0800 (CST)
+Received: from [10.174.179.80] (unknown [10.174.179.80])
+ by APP4 (Coremail) with SMTP id gCh0CgAHgxOVO51oPzBtDg--.8664S3;
+ Thu, 14 Aug 2025 09:27:52 +0800 (CST)
+Message-ID: <42aace87-1b89-4b17-96f1-3efbabc4acf3@huaweicloud.com>
+Date: Thu, 14 Aug 2025 09:27:49 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=joel.stan@gmail.com; helo=mail-pj1-x102c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.07, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.16 000/627] 6.16.1-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
+ Dan Carpenter <dan.carpenter@linaro.org>,
+ Anders Roxell <anders.roxell@linaro.org>,
+ Ben Copeland <benjamin.copeland@linaro.org>, LTP List <ltp@lists.linux.it>,
+ chrubis <chrubis@suse.cz>, Petr Vorel <pvorel@suse.cz>,
+ Ian Rogers <irogers@google.com>, linux-perf-users@vger.kernel.org,
+ Joseph Qi <jiangqi903@gmail.com>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, linux-ext4 <linux-ext4@vger.kernel.org>,
+ Zhang Yi <yi.zhang@huawei.com>, Theodore Ts'o <tytso@mit.edu>,
+ Baokun Li <libaokun1@huawei.com>
+References: <20250812173419.303046420@linuxfoundation.org>
+ <CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com>
+ <2025081300-frown-sketch-f5bd@gregkh>
+ <CA+G9fYuEb7Y__CVHxZ8VkWGqfA4imWzXsBhPdn05GhOandg0Yw@mail.gmail.com>
+ <2025081311-purifier-reviver-aeb2@gregkh>
+Content-Language: en-US
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+In-Reply-To: <2025081311-purifier-reviver-aeb2@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: gCh0CgAHgxOVO51oPzBtDg--.8664S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7KF1fAFW7tF4UtrWrWr1DGFg_yoW8Zw4xpF
+ WrCF98tr45X345ArsFvw4IgFyUtrZ8Krn5Wr1rtw17C39IkryDZF4SgF1Y9F97Jr4DCFyr
+ ZrsFv3sIyryDAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+ 6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+ vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+ xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+ 0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+ 6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+ Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+ 14v26rWY6Fy7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+ 8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8
+ Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
+ CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
+ 6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
+ j6a0PUUUUU=
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+Received-SPF: pass client-ip=45.249.212.51;
+ envelope-from=yi.zhang@huaweicloud.com; helo=dggsgout11.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 14 Aug 2025 09:09:24 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,97 +104,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The iommu Linux kernel support is now upstream. VFIO is still
-downstream at this stage.
+On 2025/8/13 22:53, Greg Kroah-Hartman wrote:
+> On Wed, Aug 13, 2025 at 08:01:51PM +0530, Naresh Kamboju wrote:
+>> Hi Greg,
+>>
+>>>> 2)
+>>>>
+>>>> The following list of LTP syscalls failure noticed on qemu-arm64 with
+>>>> stable-rc 6.16.1-rc1 with CONFIG_ARM64_64K_PAGES=y build configuration.
+>>>>
+>>>> Most failures report ENOSPC (28) or mkswap errors, which may be related
+>>>> to disk space handling in the 64K page configuration on qemu-arm64.
+>>>>
+>>>> The issue is reproducible on multiple runs.
+>>>>
+>>>> * qemu-arm64, ltp-syscalls - 64K page size test failures list,
+>>>>
+>>>>   - fallocate04
+>>>>   - fallocate05
+>>>>   - fdatasync03
+>>>>   - fsync01
+>>>>   - fsync04
+>>>>   - ioctl_fiemap01
+>>>>   - swapoff01
+>>>>   - swapoff02
+>>>>   - swapon01
+>>>>   - swapon02
+>>>>   - swapon03
+>>>>   - sync01
+>>>>   - sync_file_range02
+>>>>   - syncfs01
+>>>>
+>>>> Reproducibility:
+>>>>  - 64K config above listed test fails
+>>>>  - 4K config above listed test pass.
+>>>>
+>>>> Regression Analysis:
+>>>> - New regression? yes
+>>>
+>>> Regression from 6.16?  Or just from 6.15.y?
+>>
+>> Based on available data, the issue is not present in v6.16 or v6.15.
+>>
+>> Anders, bisected this regression and found,
+>>
+>>   ext4: correct the reserved credits for extent conversion
+>>     [ Upstream commit 95ad8ee45cdbc321c135a2db895d48b374ef0f87 ]
+>>
+>> Report lore link,
+>>
+>> https://lore.kernel.org/stable/CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com/
+> 
+> Great, and that's also affecting 6.17-rc1 so we are "bug compatible"?
+> :)
+> 
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: Joel Stanley <joel@jms.id.au>
----
-v2:
- - Fix VFIO link
- - Fix qemu spelling
----
- docs/specs/riscv-iommu.rst | 35 +++++++++++++----------------------
- 1 file changed, 13 insertions(+), 22 deletions(-)
+Hi,
 
-diff --git a/docs/specs/riscv-iommu.rst b/docs/specs/riscv-iommu.rst
-index 991d376fdc24..571a6a6cc963 100644
---- a/docs/specs/riscv-iommu.rst
-+++ b/docs/specs/riscv-iommu.rst
-@@ -30,15 +30,15 @@ This will add a RISC-V IOMMU PCI device in the board following any additional
- PCI parameters (like PCI bus address).  The behavior of the RISC-V IOMMU is
- defined by the spec but its operation is OS dependent.
- 
--As of this writing the existing Linux kernel support `linux-v8`_, not yet merged,
--does not have support for features like VFIO passthrough.  The IOMMU emulation
--was tested using a public Ventana Micro Systems kernel repository in
--`ventana-linux`_.  This kernel is based on `linux-v8`_ with additional patches that
--enable features like KVM VFIO passthrough with irqbypass.  Until the kernel support
--is feature complete feel free to use the kernel available in the Ventana Micro Systems
--mirror.
--
--The current Linux kernel support will use the IOMMU device to create IOMMU groups
-+Linux kernel iommu support was merged in v6.13. QEMU IOMMU emulation can be
-+used with mainline kernels for simple IOMMU PCIe support.
-+
-+As of v6.17, it does not have support for features like VFIO passthrough.
-+There is a `VFIO`_ RFC series that is not yet merged. The public Ventana Micro
-+Systems kernel repository in `ventana-linux`_ can be used for testing the VFIO
-+functions.
-+
-+The v6.13+ Linux kernel support uses the IOMMU device to create IOMMU groups
- with any eligible cards available in the system, regardless of factors such as the
- order in which the devices are added in the command line.
- 
-@@ -49,7 +49,7 @@ IOMMU kernel driver behaves:
- 
-   $ qemu-system-riscv64 \
-         -M virt,aia=aplic-imsic,aia-guests=5 \
--        -device riscv-iommu-pci,addr=1.0,vendor-id=0x1efd,device-id=0xedf1 \
-+        -device riscv-iommu-pci,addr=1.0 \
-         -device e1000e,netdev=net1 -netdev user,id=net1,net=192.168.0.0/24 \
-         -device e1000e,netdev=net2 -netdev user,id=net2,net=192.168.200.0/24 \
-         (...)
-@@ -58,21 +58,11 @@ IOMMU kernel driver behaves:
-         -M virt,aia=aplic-imsic,aia-guests=5 \
-         -device e1000e,netdev=net1 -netdev user,id=net1,net=192.168.0.0/24 \
-         -device e1000e,netdev=net2 -netdev user,id=net2,net=192.168.200.0/24 \
--        -device riscv-iommu-pci,addr=1.0,vendor-id=0x1efd,device-id=0xedf1 \
-+        -device riscv-iommu-pci,addr=3.0 \
-         (...)
- 
- Both will create iommu groups for the two e1000e cards.
- 
--Another thing to notice on `linux-v8`_ and `ventana-linux`_ is that the kernel driver
--considers an IOMMU identified as a Rivos device, i.e. it uses Rivos vendor ID.  To
--use the riscv-iommu-pci device with the existing kernel support we need to emulate
--a Rivos PCI IOMMU by setting 'vendor-id' and 'device-id':
--
--.. code-block:: bash
--
--  $ qemu-system-riscv64 -M virt	\
--     -device riscv-iommu-pci,vendor-id=0x1efd,device-id=0xedf1 (...)
--
- Several options are available to control the capabilities of the device, namely:
- 
- - "bus": the bus that the IOMMU device uses
-@@ -84,6 +74,7 @@ Several options are available to control the capabilities of the device, namely:
- - "g-stage": enable g-stage support
- - "hpm-counters": number of hardware performance counters available. Maximum value is 31.
-   Default value is 31. Use 0 (zero) to disable HPM support
-+- "vendor-id"/"device-id": pci device ID. Defaults to 1b36:0014 (Redhat)
- 
- riscv-iommu-sys device
- ----------------------
-@@ -111,6 +102,6 @@ riscv-iommu options:
- 
- .. _iommu1.0.0: https://github.com/riscv-non-isa/riscv-iommu/releases/download/v1.0.0/riscv-iommu.pdf
- 
--.. _linux-v8: https://lore.kernel.org/linux-riscv/cover.1718388908.git.tjeznach@rivosinc.com/
-+.. _VFIO: https://lore.kernel.org/linux-riscv/20241114161845.502027-17-ajones@ventanamicro.com/
- 
- .. _ventana-linux: https://github.com/ventanamicro/linux/tree/dev-upstream
--- 
-2.47.2
+This issue has already fixed in 6.17-rc1 through this series:
+
+https://lore.kernel.org/linux-ext4/20250707140814.542883-1-yi.zhang@huaweicloud.com/
+
+
+To fix this issue in 6.16, it's necessary to backport the whole series
+instead of just pick 5137d6c8906b ("ext4: fix insufficient credits
+calculation in ext4_meta_trans_blocks()") and 95ad8ee45cdb {"ext4: correct
+the reserved credits for extent conversion").  Otherwise, this will make
+the problem more likely to occur.
+
+Thanks,
+Yi.
 
 
