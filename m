@@ -2,89 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6961B26D55
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 19:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11979B26D71
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 19:19:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umbWJ-0008Nr-07; Thu, 14 Aug 2025 13:13:43 -0400
+	id 1umba5-0005SY-OE; Thu, 14 Aug 2025 13:17:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1umbWG-0008NN-Rg
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:13:40 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1umbWE-0001pt-0G
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:13:40 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-45a1b00f187so5442085e9.0
- for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 10:13:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755191615; x=1755796415; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2uDCZPV6uMGt+mAe6STIf4qoEqC9ni2lBYY7D69qE04=;
- b=hDrkJKsvxc9b63AdrSMSmdu32VWxcpOB1hiCLhKJp2TfRKfyaN36OPDNcqGvMY8i2w
- VjXUROoxD0ih2QLyKbFutVqlygJDKZu7cB3++TbAVGXrDIZga10Fi56aGpyUrPQwoWmS
- BmeopEGkXxOxyKSxgJrRNU+WecZzxbrPsQqiQag+Iomt4aFsK4M0gjQrPYupnlSLkx1Y
- HM1TJ+4ndbCTi0nF9bUnsDSnai7NGOjsAAu/isdBFyvjSOI6R2t0wNRvbzZA9suUlhfu
- bBR9+N9jwovLS/aKoESSqIZeJr4w/melgfDNtr7ucgmFGInpgSk1vQYo0B9w3DUKSgLp
- szlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755191615; x=1755796415;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2uDCZPV6uMGt+mAe6STIf4qoEqC9ni2lBYY7D69qE04=;
- b=HWTbdib3PZgS3IvbzWIdLQOUZ3Gx72MbE7QZpv996zsi6/a85fI8pnC4M7e0wlSEya
- 0frO/u3Ao3ulIaKwX7cQbmC16IS6JZxl3s3+VggnJTERNXr2FMcbJ5bOmRbzDT2N7RPo
- VVNoVHjjVBKFj+Ig+0isrbmlqstPxqpiBQL1Jq97jHWKYsVKgNn94bHPjt2aN5FI4TxN
- xTkQ7J9eB0wVhAEWk2nTi8YEfNndthmXqZWzMadYWyob3lzEMjdtvcIhGLnB/cFtz50G
- KnlJkugPnFZZFM1AC3xB2hsfCupy5OvO+RNCFzzQbKzruFAyjXluW2shvyWLfuuo9V+a
- 0uQw==
-X-Gm-Message-State: AOJu0YzOqXcxdCzLRSNenpI/Zbs0q78c1uUNjTP5z6qGKAHigSDSttrV
- 50Pj2IadhUihoJrFOQFUEllx8F2x7PUo8peXjbiZSzTnvE4RuJB3yd1/jQzMtsuX2oP/AZ5RY5B
- iLlNb
-X-Gm-Gg: ASbGncsIJID7wyZFBrOBdw7VROj09E5Gi7v9qiEwjPACKHIzBgd225dt5RPDsS+4CCV
- XYZPqG2nc2EhGMl4Y7g6A1TXIoRM5BTqzNK1ffVZl+7TYwHLb2m3YtuUXDXQwBcHdrEW0dA+7TM
- r55iNhQQyyrZdRLIh+yUuGf3LikD5Eyaspu90YzynQ0zBELH2ZHgUyAh5WMoHUiOKW4TdBqmbe9
- Js984JDp02jmUjew+bON0i/lK0/F5UPVZLT9hqMCyNeSXWIagRSPwG1n2vAnxDRFGQsnLe0dkR2
- dx6gY/c61+uLv5zx0SZYspZkXINMhUV5oksQfVxrD3puK5F+vFTjLfgo1pK7+EN6nSA9l55qLHq
- LeYGGXSv0gj9fDdX4v3yP2ESLGkwN
-X-Google-Smtp-Source: AGHT+IHm0KULiRwpido2Ihp6qyOc0zvX5kwY9AvE1FEpGnoC0tvUhB4NMhEz56MmyzUr7lKQB9HKoQ==
-X-Received: by 2002:a05:600c:1908:b0:459:e466:1bec with SMTP id
- 5b1f17b1804b1-45a1cc22d1emr26874415e9.2.1755191615047; 
- Thu, 14 Aug 2025 10:13:35 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45a1c76e9basm29489165e9.21.2025.08.14.10.13.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Aug 2025 10:13:34 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1umba3-0005SJ-EP
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:17:35 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1umba0-0002p1-DL
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:17:34 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57ECg1Oh020035;
+ Thu, 14 Aug 2025 17:17:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=corp-2025-04-25; bh=LBGK4jyfgmo63h1o
+ Wx80IV0SJODHC3KV8pAWV90RkRU=; b=UItmhpJ3eZOZ/ITCOyg6tkIm3eJVnRJF
+ 885P7vNb6pGuBfm7m79PJZTD/88nQFkVsU1CK7NASKMEe5htqgs0unA/QzgFhXD0
+ lG4tYHcY8r7wpZ+nEOUBvqMyUiYbCl44qVZVLnoxwCoAdDsjxXqPlqOWx/ISrxJH
+ Tz3ckzZrV9vNRa4eVPVc3S+QXtn1WKcaN72hvwzExJal5Wla6uIJ2jHFlrEQWx5z
+ NNJtv8eegqQmxM83Jd2wScqOMnvuuKVzh36y23+vJZo36c7gzg3assBit0wtOvi8
+ GIN6aPwOVFX2lbxJQWc8hiLCEza3y1G1FHZck97M5dcF0jYDSjPo4A==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dvx4jha9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 14 Aug 2025 17:17:27 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 57EGK7MM010478; Thu, 14 Aug 2025 17:17:26 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 48dvskbrxw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 14 Aug 2025 17:17:26 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57EHGwu6038225;
+ Thu, 14 Aug 2025 17:17:25 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 48dvskbrx5-1; Thu, 14 Aug 2025 17:17:25 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	John Snow <jsnow@redhat.com>
-Subject: [PATCH for-10.2 8/8] MAINTAINERS: Put kernel-doc under the "docs
- build machinery" section
-Date: Thu, 14 Aug 2025 18:13:23 +0100
-Message-ID: <20250814171324.1614516-9-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250814171324.1614516-1-peter.maydell@linaro.org>
-References: <20250814171324.1614516-1-peter.maydell@linaro.org>
+Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V3 0/9] Live update: cpr-exec
+Date: Thu, 14 Aug 2025 10:17:14 -0700
+Message-Id: <1755191843-283480-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-13_02,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ bulkscore=0
+ adultscore=0 mlxscore=0 phishscore=0 spamscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2507300000 definitions=main-2508140147
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE0MDE0OCBTYWx0ZWRfX1VoOYUqO9thz
+ FVsGhF1EDLmlNR8Rt6C2twbsxmmWnOUHmckK0Fvg34PC+klMmVStoCBbhQG9JRR6bSh6tLbKl9r
+ z3jMDD2d6dpDIiI6cScIpt90ijf4kD3WPdRVfkwRefoubsSeACPNT4QexiNtnOgWgpCwiwhLy/h
+ gXzAgni3LECDz/oWCwUPbdvZ2hqDT1DYWKaKm1TIf22AJmEWqLalI24ig8CzsIn6+5FDc0kx4dO
+ gpUmOojyPnLTzfNKlzAVjNM9vPdzSpEkZW1Pa/SZfsLEvh3c8YMwJm3xKL9dK6z6hJ8ub0hKoO+
+ G4uf37RgdAyyp8Gw/FYgUFiHCetkacZXQYiXpy/p1axAFMvs/yQkXKMv95d0ChvYqNO9DP6SUp8
+ cnUNlLRS6QholVBm6j8+wsNJ1lt9tibA34vPNwwlmBKWUquNHGt7loa5p8gFTYjvcOyK07fO
+X-Authority-Analysis: v=2.4 cv=eIsTjGp1 c=1 sm=1 tr=0 ts=689e1a27 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117
+ a=zPCbziy225d3KhSqZt3L1A==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=kcL-enJz2Ef4lsWIegwA:9
+ a=QEXdDO2ut3YA:10 cc=ntf awl=host:12069
+X-Proofpoint-GUID: D0uLu19foeJZSLgSvd6pl9eRcitYhPMO
+X-Proofpoint-ORIG-GUID: D0uLu19foeJZSLgSvd6pl9eRcitYhPMO
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,30 +112,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We never had a MAINTAINERS entry for the old kernel-doc script; add
-the files for the new Python kernel-doc under "Sphinx documentation
-configuration and build machinery", as the most appropriate
-subsection.
+This patch series adds the live migration cpr-exec mode.  
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+The new user-visible interfaces are:
+  * cpr-exec (MigMode migration parameter)
+  * cpr-exec-command (migration parameter)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a07086ed762..efa59ce7c36 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4436,6 +4436,8 @@ F: docs/sphinx/
- F: docs/_templates/
- F: docs/devel/docs.rst
- F: docs/devel/qapi-domain.rst
-+F: scripts/kernel-doc
-+F: scripts/lib/kdoc/
- 
- Rust build system integration
- M: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+cpr-exec mode is similar in most respects to cpr-transfer mode, with the 
+primary difference being that old QEMU directly exec's new QEMU.  The user
+specifies the command to exec new QEMU in the migration parameter
+cpr-exec-command.
+
+Why?
+
+In a containerized QEMU environment, cpr-exec reuses an existing QEMU
+container and its assigned resources.  By contrast, cpr-transfer mode
+requires a new container to be created on the same host as the target of
+the CPR operation.  Resources must be reserved for the new container, while
+the old container still reserves resources until the operation completes.
+Avoiding over commitment requires extra work in the management layer.
+This is one reason why a cloud provider may prefer cpr-exec.  A second reason
+is that the container may include agents with their own connections to the
+outside world, and such connections remain intact if the container is reused.
+
+How?
+
+cpr-exec preserves descriptors across exec by clearing the CLOEXEC flag,
+and by sending the unique name and value of each descriptor to new QEMU
+via CPR state.
+
+CPR state cannot be sent over the normal migration channel, because devices
+and backends are created prior to reading the channel, so this mode sends
+CPR state over a second migration channel that is not visible to the user.
+New QEMU reads the second channel prior to creating devices or backends.
+
+The exec itself is trivial.  After writing to the migration channels, the
+migration code calls a new main-loop hook to perform the exec.
+
+Example:
+
+In this example, we simply restart the same version of QEMU, but in
+a real scenario one would use a new QEMU binary path in cpr-exec-command.
+
+  # qemu-kvm -monitor stdio
+  -object memory-backend-memfd,id=ram0,size=1G
+  -machine memory-backend=ram0 -machine aux-ram-share=on ...
+
+  QEMU 10.1.50 monitor - type 'help' for more information
+  (qemu) info status
+  VM status: running
+  (qemu) migrate_set_parameter mode cpr-exec
+  (qemu) migrate_set_parameter cpr-exec-command qemu-kvm ... -incoming file:vm.state
+  (qemu) migrate -d file:vm.state
+  (qemu) QEMU 10.1.50 monitor - type 'help' for more information
+  (qemu) info status
+  VM status: running
+
+Steve Sistare (9):
+  migration: multi-mode notifier
+  migration: add cpr_walk_fd
+  oslib: qemu_clear_cloexec
+  vl: helper to request exec
+  migration: cpr-exec-command parameter
+  migration: cpr-exec save and load
+  migration: cpr-exec mode
+  migration: cpr-exec docs
+  vfio: cpr-exec mode
+
+ docs/devel/migration/CPR.rst   | 103 ++++++++++++++++++++++++-
+ qapi/migration.json            |  46 ++++++++++-
+ include/migration/cpr.h        |   9 +++
+ include/migration/misc.h       |  12 +++
+ include/qemu/osdep.h           |   9 +++
+ include/system/runstate.h      |   3 +
+ hw/vfio/container.c            |   3 +-
+ hw/vfio/cpr-iommufd.c          |   3 +-
+ hw/vfio/cpr-legacy.c           |   9 ++-
+ hw/vfio/cpr.c                  |  13 ++--
+ migration/cpr-exec.c           | 168 +++++++++++++++++++++++++++++++++++++++++
+ migration/cpr.c                |  39 +++++++++-
+ migration/migration-hmp-cmds.c |  25 ++++++
+ migration/migration.c          |  70 +++++++++++++----
+ migration/options.c            |  14 ++++
+ migration/ram.c                |   1 +
+ migration/vmstate-types.c      |   8 ++
+ system/runstate.c              |  29 +++++++
+ util/oslib-posix.c             |   9 +++
+ util/oslib-win32.c             |   4 +
+ hmp-commands.hx                |   2 +-
+ migration/meson.build          |   1 +
+ migration/trace-events         |   1 +
+ 23 files changed, 548 insertions(+), 33 deletions(-)
+ create mode 100644 migration/cpr-exec.c
+
 -- 
-2.43.0
+1.8.3.1
 
 
