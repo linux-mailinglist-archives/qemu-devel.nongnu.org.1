@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FE1B266AB
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 15:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC337B2660C
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 15:00:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umXeA-0003Qn-7X; Thu, 14 Aug 2025 09:05:34 -0400
+	id 1umXX0-0001A1-4N; Thu, 14 Aug 2025 08:58:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1umXcp-0002Ec-Ng
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 09:04:13 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1umXch-00058B-UU
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 09:04:11 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-76e2ea79219so1116859b3a.2
- for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 06:03:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755176634; x=1755781434; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QDW+HxP2J6pK8IxGshUeq+u65rBy5XdnKzmGA8gxmkE=;
- b=cgrCWCRGZdA4UnKTje3Q2RycP6YYUwCEVMsCzjwTSx9WJqgE2Zk6O27le0sg3DqJp3
- iqR7JImTxbKgEcfVDqk8tTVW7udRzDz1JNCoh8D8Hqx9UoysU37I7vzIdseuCx0RBXTe
- JMNWTVTVbta76HY6xTi/fT8mx0kJIJYQfb275Py4h82OTO0uPjpUuxWNshwhWVev/tqq
- b+HUC+Ce0B92QirjUGGDFWdpqDXu4vKGTDMyLymjcruHJ6nlbxD5ocM4xUAoSi2Wu4vO
- BPWAUFPDiu7hQdoYrN58CTIwp+zGrZHp4DO73oNHGzysU+pzVGjwpgfCuulr+2Ejmtud
- EVFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755176634; x=1755781434;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QDW+HxP2J6pK8IxGshUeq+u65rBy5XdnKzmGA8gxmkE=;
- b=fwIYADjwHg3d4D2u8Mx2pPkV7Vh00Hg8gvgguDBFxrCTkOxHBLaJacpP+lT+fbpIRG
- x0iVOq18pJI4pKqPsdLbsJ7HuO1NbUlKteLEuy5PVKAFXeL2T+ifacE5UzySSls9YUPp
- i4naBLQJ+/YOyUZ/Q7w16Xoo5NyMaOdvLqaV+x2rzBs2S9+/qAoEGN3tvwoTBkj0Wohy
- Gqqg67Pur5TFxgiyniIKEN+M6pxei0Vz4eHA7q2HXHobzI1ztiPIOonQMqDG5gpJCOx0
- WWalLNg8BuC1u58G8gAOEX3angFvGa5Y148ryuLecuYhtfdCjdqUbT5EvteZ7wscJBCg
- 6PVQ==
-X-Gm-Message-State: AOJu0YyuLSYrtMm2nkZu5NoHZtQ7rGgywZfusnKa6vdveVxCNKdF0aWW
- TJ6K2q7IJvA/UZ7D3Y5CNTDQiG5MRzl9N5UrK8q3TLnGN8pknTg0gJx4+yaTIDca8We8jm/BIXw
- ZJ3Ih2vs=
-X-Gm-Gg: ASbGnct2mhJkme0btjbnxKpYCtA0lrN3qgb6iHaYpRK9Pc17v3umf9lXHZ4rsgGmfU4
- oRafCHhNnuRD0LOgzpGl80JIYEFzD4s3Fw6K3L5oPLgS/OEtgN37m/q2kxHW6dhOLXOXSCD634w
- BCRVqkZ5wLVAWEH6ZQzEj62iEX+DwT0NdGw9BlzcE6fr+qfnxSw9My6ZduQesIWbwPgKfo4CSKt
- w/tGIbE/zNJ2c8GveCZIbTVE/jryo4xI15up+rWffFUe7AY0VJZ9m6e+6Wvnl4urOvZ2SQ7N0Th
- MOr54EwJMW1V0bujIqq5bnQEXAfxrUI6QfN2ZtyGcwTISPX8OupeTW2nVkCGm1IXLxsZCY5HFLB
- g1PsJpPM4t3kv7rfEgNON2DcYl7gydMPPgoLGWJqhe6d4JkY=
-X-Google-Smtp-Source: AGHT+IGEamxMvrYocxet/aTZQP6ijcQhpmNxzVnDf0Zka+EgWDe933VyF8cqARSCNxWakiORI9P4Ig==
-X-Received: by 2002:a05:6a00:1883:b0:76b:ef8f:c277 with SMTP id
- d2e1a72fcca58-76e2fd0f872mr4760406b3a.11.1755176634307; 
- Thu, 14 Aug 2025 06:03:54 -0700 (PDT)
-Received: from localhost.localdomain ([206.83.105.236])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76bcce6f6fesm34480631b3a.26.2025.08.14.06.03.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Aug 2025 06:03:53 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 51/85] target/arm: Add syndrome data for EC_GCS
-Date: Thu, 14 Aug 2025 22:57:18 +1000
-Message-ID: <20250814125752.164107-52-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250814125752.164107-1-richard.henderson@linaro.org>
-References: <20250814125752.164107-1-richard.henderson@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1umXWu-00019r-CH
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 08:58:04 -0400
+Received: from p-west2-cluster4-host11-snip4-10.eps.apple.com ([57.103.69.141]
+ helo=outbound.mr.icloud.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1umXWq-00045M-Dv
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 08:58:03 -0400
+Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-west-2a-100-percent-11 (Postfix) with ESMTPS id
+ 97F711800212; Thu, 14 Aug 2025 12:57:34 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+ bh=HNADxR8s6utf4HepPrVf3YVfoL+tnSikU2SoCAMdg6c=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
+ b=G4ijT7JK+SNLJlO033yfz9QhvC6JW57Noji1ZasNyvlYEPlGYn8NZgOGECv+xrOmZ5BT/kJGF8tiKywZX+FqwKippy2C69p2APwb9Y/w3sQsNW6iIMatqXTatx1W+xIdxcIoz2psJTLWQto4dF9qduVzYyYh5vvWhKQDHhaakB3Z8J3TbiOK7BZUve0D5uyXSxFb0Nrg0QZTcV45dFpgFUGVdEth2gD4tOl1/lMF92d6S1Izs0KgVVARrFJ1ko+29QWRf9yzcIg1FPIdJrqMXF/R8Wft41OMom8QA3vuDpWccwdeBePs6HXj8Pbb3fDsyLhsXNOxCHxLagznVLfOXQ==
+X-Client-IP: 212.60.126.184
+Received: from smtpclient.apple (mr-asmtp-me-k8s.p00.prod.me.com
+ [17.57.152.38])
+ by p00-icloudmta-asmtp-us-west-2a-100-percent-11 (Postfix) with ESMTPSA id
+ D2BAF18000A6; Thu, 14 Aug 2025 12:57:31 +0000 (UTC)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 04/13] hw/intc: Add hvf vGIC interrupt controller
+ support
+From: Mads Ynddal <mads@ynddal.dk>
+In-Reply-To: <20250808070137.48716-5-mohamed@unpredictable.fr>
+Date: Thu, 14 Aug 2025 14:57:18 +0200
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Igor Mammedov <imammedo@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
+ Cameron Esfahani <dirty@apple.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <40259CA2-A38D-41C1-A726-5144FB9EA166@ynddal.dk>
+References: <20250808070137.48716-1-mohamed@unpredictable.fr>
+ <20250808070137.48716-5-mohamed@unpredictable.fr>
+To: Mohamed Mediouni <mohamed@unpredictable.fr>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-Proofpoint-GUID: Q69cHdScBdiRdeFfgLPgif6LY_VO_RjW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE0MDEwOCBTYWx0ZWRfX1x7hYDt4nmNi
+ XEvr2JlGqD/E1Tl5gEKUmlmNrHjZkz4XKlLG7wIk4iLh/8l/XfjIPVoMOak4nLy9YpcDFfL0srb
+ 81+gqnWHV2oIN6RU8A0QDX1wYMdLpb/mf4BhyBa+B0YOOaawkKNDMZ11RHmUtWdqj1k9zpMtqPY
+ +oksTp1OINeevt35p/ZEgoQA8bBAOmsTtyjqo7cVmCWLYaLSKbLW8GcjDpNQPM2XyRJf4al7vLT
+ 4EG1dmhuBkY9f1pvfoB5e87f3Bj2gf4HR5lCnx0szW9cBdgUfz2auyXrLokVEHeohFNND1VBg=
+X-Proofpoint-ORIG-GUID: Q69cHdScBdiRdeFfgLPgif6LY_VO_RjW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-13_02,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ bulkscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0 phishscore=0
+ suspectscore=0 spamscore=0 clxscore=1030 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506270000 definitions=main-2508140108
+Received-SPF: pass client-ip=57.103.69.141; envelope-from=mads@ynddal.dk;
+ helo=outbound.mr.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,73 +88,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/syndrome.h | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
 
-diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index c48d3b8587..bff61f052c 100644
---- a/target/arm/syndrome.h
-+++ b/target/arm/syndrome.h
-@@ -63,6 +63,7 @@ enum arm_exception_class {
-     EC_MOP                    = 0x27,
-     EC_AA32_FPTRAP            = 0x28,
-     EC_AA64_FPTRAP            = 0x2c,
-+    EC_GCS                    = 0x2d,
-     EC_SERROR                 = 0x2f,
-     EC_BREAKPOINT             = 0x30,
-     EC_BREAKPOINT_SAME_EL     = 0x31,
-@@ -83,6 +84,23 @@ typedef enum {
-     SME_ET_InaccessibleZT0,
- } SMEExceptionType;
- 
-+typedef enum {
-+    GCS_ET_DataCheck,
-+    GCS_ET_EXLOCK,
-+    GCS_ET_GCSSTR_GCSSTTR,
-+} GCSExceptionType;
-+
-+typedef enum {
-+    GCS_IT_RET_nPauth = 0,
-+    GCS_IT_GCSPOPM = 1,
-+    GCS_IT_RET_PauthA = 2,
-+    GCS_IT_RET_PauthB = 3,
-+    GCS_IT_GCSSS1 = 4,
-+    GCS_IT_GCSSS2 = 5,
-+    GCS_IT_GCSPOPCX = 8,
-+    GCS_IT_GCSPOPX = 9,
-+} GCSInstructionType;
-+
- #define ARM_EL_EC_LENGTH 6
- #define ARM_EL_EC_SHIFT 26
- #define ARM_EL_IL_SHIFT 25
-@@ -351,6 +369,23 @@ static inline uint32_t syn_pcalignment(void)
-     return (EC_PCALIGNMENT << ARM_EL_EC_SHIFT) | ARM_EL_IL;
- }
- 
-+static inline uint32_t syn_gcs_data_check(GCSInstructionType it, int rn)
-+{
-+    return ((EC_GCS << ARM_EL_EC_SHIFT) | ARM_EL_IL |
-+            (GCS_ET_DataCheck << 20) | (rn << 5) | it);
-+}
-+
-+static inline uint32_t syn_gcs_exlock(void)
-+{
-+    return (EC_GCS << ARM_EL_EC_SHIFT) | ARM_EL_IL | (GCS_ET_EXLOCK << 20);
-+}
-+
-+static inline uint32_t syn_gcs_gcsstr(int ra, int rn)
-+{
-+    return ((EC_GCS << ARM_EL_EC_SHIFT) | ARM_EL_IL |
-+            (GCS_ET_GCSSTR_GCSSTTR << 20) | (ra << 10) | (rn << 5));
-+}
-+
- static inline uint32_t syn_serror(uint32_t extra)
- {
-     return (EC_SERROR << ARM_EL_EC_SHIFT) | ARM_EL_IL | extra;
--- 
-2.43.0
+> +static void hvf_gicv3_put(GICv3State *s)
+> +{
+> +    uint32_t reg;
+> +    uint64_t redist_typer;
+> +    int ncpu, i;
+> +
+> +    hvf_gicv3_check(s);
+> +
+> +    hv_vcpu_t vcpu0 =3D s->cpu[0].cpu->accel->fd;
+> +    hv_gic_get_redistributor_reg(vcpu0, =
+HV_GIC_REDISTRIBUTOR_REG_GICR_TYPER
+> +        , &redist_typer);
+> +
 
+I think you should go through all your "hv_" calls and do error handling
+where it's possible, and if not, at least check it with assert_hvf_ok.
+This call to hv_gic_get_redistributor_reg is failing on my setup. I
+don't know if there could be others.
+
+I've configured my VM like this:
+-machine virt,kernel-irqchip=3Don,its=3Doff
+-boot menu=3Don,splash-time=3D0=
 
