@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3E8B26D6E
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 19:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB691B26D6A
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 19:18:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umbaD-0005aN-3B; Thu, 14 Aug 2025 13:17:45 -0400
+	id 1umba8-0005TW-FI; Thu, 14 Aug 2025 13:17:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1umba9-0005Uy-4q
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:17:41 -0400
+ id 1umba4-0005Ss-OY
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:17:36 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1umba0-0002pG-OQ
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:17:40 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57ECgDhC028780;
- Thu, 14 Aug 2025 17:17:29 GMT
+ id 1umba0-0002pg-J9
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:17:36 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57ECgE27020388;
+ Thu, 14 Aug 2025 17:17:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=TEFoIPikc0HL819wjayDhp6+RMMXJYnYxFwcfyldD6M=; b=
- Uym8Gmkd+p+VfYa50V0tHRF6jvwGBIQKwMMwsu55DIf+n5/DHcwOxTuHJlNpikCb
- swSxMKIoAPRYYIOCekeEekO1PRNyOavX14UXqGVRe70dIEhAB1SDHHZVYTakuoKH
- uFM0QRI28n2iK/Kh2NN7OSXKx6hTFRZui3NwSzfwRFH5UekP3HsabJQDNE8fFo5z
- oShJwEh+UKZ1u8gYnySVFbwWeUChpTPqbt2omAzD5llU1qFsKmBBP2J3rqAHpTRm
- vKZJ0Lhn8Xo2oxE1Gy0vcRQLDtwBnz8UknlvTllKAUJtUTDJwEUCZwvKFy10K8xZ
- 1NzFYV7q3qXCHroVoUyEbw==
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=JgRIAMoCHuh6OPoNq+NuoU6FlbtY4XgJKfRrNefoGR4=; b=
+ dzcB7OJudoAeaKal0GCPwXyQ38Ev0H12Vm6btZPoPtCAJWWLMmEb7ToP7eJsC+Jq
+ C0MrdqGhXo0iYtOl4gIpPmrgW82vgoTSLkuUwIpsThFgGBZim3aFn9bhaERDyG9y
+ mZEmO2OPjBSZGo+dvCt36cveXkpgJCcQNravdEkmy2FP5bN4zJAKhT5ubtU17oVq
+ JR9vOBkgexK7AWACCGS6jVIgk/haowDBSQLUfrq5sS8dJOLa7rimCiL687zj/eKc
+ XasuAXtXZKURcGPwNNAbyYD4tJ7oU9rXsf02UNPiUZfFy3izvnlw4hf4vNbO1ui2
+ a2COi1dOM01NxXrjPexAZw==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48guchayy8-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48dw452hcu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Aug 2025 17:17:29 +0000 (GMT)
+ Thu, 14 Aug 2025 17:17:30 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 57EGloDs009881; Thu, 14 Aug 2025 17:17:28 GMT
+ with ESMTP id 57EHEemW009858; Thu, 14 Aug 2025 17:17:29 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 48dvskbryr-1
+ 48dvskbs0b-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Aug 2025 17:17:28 +0000
+ Thu, 14 Aug 2025 17:17:29 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57EHGwuA038225;
- Thu, 14 Aug 2025 17:17:27 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57EHGwuC038225;
+ Thu, 14 Aug 2025 17:17:28 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 48dvskbrx5-3; Thu, 14 Aug 2025 17:17:27 +0000
+ ESMTP id 48dvskbrx5-4; Thu, 14 Aug 2025 17:17:28 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
@@ -58,12 +59,15 @@ Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 2/9] migration: add cpr_walk_fd
-Date: Thu, 14 Aug 2025 10:17:16 -0700
-Message-Id: <1755191843-283480-3-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 3/9] oslib: qemu_clear_cloexec
+Date: Thu, 14 Aug 2025 10:17:17 -0700
+Message-Id: <1755191843-283480-4-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1755191843-283480-1-git-send-email-steven.sistare@oracle.com>
 References: <1755191843-283480-1-git-send-email-steven.sistare@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-13_02,2025-08-14_01,2025-03-28_01
@@ -72,20 +76,21 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  adultscore=0 mlxscore=0 phishscore=0 spamscore=0 suspectscore=0
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2507300000 definitions=main-2508140147
-X-Authority-Analysis: v=2.4 cv=Eo/SrTcA c=1 sm=1 tr=0 ts=689e1a29 b=1 cx=c_pps
+X-Proofpoint-ORIG-GUID: dceiOfFlFjEC_F95EDC2pLeWdAfB8kDU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE0MDE0OCBTYWx0ZWRfXy+k58kRWSG8T
+ 7FIofaHTWQoCIyBurTn098xkgMRxHKTRe9PArTkvSNR3FZ0vMSMiNFE9sDZPoJIxl8LBVNVHf7D
+ 7T5MWdkn3G1PgqivXStvCg/Sg4ewSBLxRog82bQUgo/aYvTDo0RKBwNo5h+8GT9eDCC9ETKuctr
+ BtF9g4QafdpSUahTv6uyJT97aXATWH17AABTFGIfFOP7biAL3tzhHUz8al/n9NysKGbCpXLBCR9
+ mwX0HBSOZ8ObQ4JimIsf1V6XgN85Duc2ruDHCUx3lMfWAFQ2MtCg1rPiqULBDe4ULBtY0lLOr8h
+ DKolLcO0FmM3NqdLPb2qywCI0tTlUET//fSdKqTzBrbUAHK6HQcC6MVXjOkGrk57kNBGxPSKUN+
+ jrTMKU+HaO37c1YxMFawut9dxLmuE7TOxib+S1YrsdjGIqsKE7KfZAloLfwu88AfdFBWVJ4n
+X-Authority-Analysis: v=2.4 cv=X9FSKHTe c=1 sm=1 tr=0 ts=689e1a2a b=1 cx=c_pps
  a=zPCbziy225d3KhSqZt3L1A==:117
  a=zPCbziy225d3KhSqZt3L1A==:17
- a=2OwXVqhp2XgA:10 a=yPCof4ZbAAAA:8 a=QEhf6t8kAlL4CJLHOQYA:9 cc=ntf
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8
+ a=eRAJs6dweEk5O_tl00MA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 cc=ntf
  awl=host:12069
-X-Proofpoint-ORIG-GUID: WqILoSJiVpnsdwItSFkMli_snv3Plrnc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE0MDE0OCBTYWx0ZWRfX6ohaAYeXwf3H
- y3V8cea34Q1i98qZ1/ZsEeNiiQvH4poyy8k59MTy9pU32UTl/zhKJ3DQy7wwOVvzPGUs/91Hq70
- zOFEQddR8oj3ZqGWLwo8+1pRxW42MgbSF6OMuxQN3F2KaglqwN0dXgVwbNksn8vVxSyu17v6VeP
- TeljaTy7D+TFC3fCUm1ON8SS6WyPfD1jondiKWp+Y16u0lqH2OAHfCYWz4ED2SeLWMw+flMlFO6
- woC0kJlgrIe4Kpiqk5lmJN9HLoNMCZphFZSh33y32fiOdreY9oMIV9AjhuNPioxSqFdyurheASf
- 9h/8CYCn3kWATD5GiYTYxNnfiJNh5FuUyqxyj9N0KMC3yBxtGzhDv+VNTnkv2HAiIFFigyf+xug
- H47abFgLR4vEA6zYG/RsqPfduEu4SJpRPMW1zDaIvKYmdyheDdePn9ajqcGCRN850l9AR0iP
-X-Proofpoint-GUID: WqILoSJiVpnsdwItSFkMli_snv3Plrnc
+X-Proofpoint-GUID: dceiOfFlFjEC_F95EDC2pLeWdAfB8kDU
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -111,52 +116,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a helper to walk all CPR fd's and run a callback for each.
+Define qemu_clear_cloexec, analogous to qemu_set_cloexec.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 ---
- include/migration/cpr.h |  3 +++
- migration/cpr.c         | 13 +++++++++++++
- 2 files changed, 16 insertions(+)
+ include/qemu/osdep.h | 9 +++++++++
+ util/oslib-posix.c   | 9 +++++++++
+ util/oslib-win32.c   | 4 ++++
+ 3 files changed, 22 insertions(+)
 
-diff --git a/include/migration/cpr.h b/include/migration/cpr.h
-index baff57f..f4fc5ca 100644
---- a/include/migration/cpr.h
-+++ b/include/migration/cpr.h
-@@ -35,6 +35,9 @@ void cpr_resave_fd(const char *name, int id, int fd);
- int cpr_open_fd(const char *path, int flags, const char *name, int id,
-                 Error **errp);
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index 96fe51b..30136ea 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -680,6 +680,15 @@ ssize_t qemu_write_full(int fd, const void *buf, size_t count)
  
-+typedef bool (*cpr_walk_fd_cb)(int fd);
-+bool cpr_walk_fd(cpr_walk_fd_cb cb);
+ void qemu_set_cloexec(int fd);
+ 
++/*
++ * Clear FD_CLOEXEC for a descriptor.
++ *
++ * The caller must guarantee that no other fork+exec's occur before the
++ * exec that is intended to inherit this descriptor, eg by suspending CPUs
++ * and blocking monitor commands.
++ */
++void qemu_clear_cloexec(int fd);
 +
- MigMode cpr_get_incoming_mode(void);
- void cpr_set_incoming_mode(MigMode mode);
- bool cpr_is_incoming(void);
-diff --git a/migration/cpr.c b/migration/cpr.c
-index 6d01b8c..021bd6a 100644
---- a/migration/cpr.c
-+++ b/migration/cpr.c
-@@ -134,6 +134,19 @@ int cpr_open_fd(const char *path, int flags, const char *name, int id,
-     return fd;
+ /* Return a dynamically allocated directory path that is appropriate for storing
+  * local state.
+  *
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index 4ff577e..4c04658 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -307,6 +307,15 @@ int qemu_socketpair(int domain, int type, int protocol, int sv[2])
+     return ret;
  }
  
-+bool cpr_walk_fd(cpr_walk_fd_cb cb)
++void qemu_clear_cloexec(int fd)
 +{
-+    CprFd *elem;
-+
-+    QLIST_FOREACH(elem, &cpr_state.fds, next) {
-+        g_assert(elem->fd >= 0);
-+        if (!cb(elem->fd)) {
-+            return false;
-+        }
-+    }
-+    return true;
++    int f;
++    f = fcntl(fd, F_GETFD);
++    assert(f != -1);
++    f = fcntl(fd, F_SETFD, f & ~FD_CLOEXEC);
++    assert(f != -1);
 +}
 +
- /*************************************************************************/
- static const VMStateDescription vmstate_cpr_state = {
-     .name = CPR_STATE,
+ char *
+ qemu_get_local_state_dir(void)
+ {
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+index b735163..843a901 100644
+--- a/util/oslib-win32.c
++++ b/util/oslib-win32.c
+@@ -222,6 +222,10 @@ void qemu_set_cloexec(int fd)
+ {
+ }
+ 
++void qemu_clear_cloexec(int fd)
++{
++}
++
+ int qemu_get_thread_id(void)
+ {
+     return GetCurrentThreadId();
 -- 
 1.8.3.1
 
