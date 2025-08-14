@@ -2,87 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4529B266EE
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 15:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1F7B266C6
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 15:18:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umXi5-0002NX-3R; Thu, 14 Aug 2025 09:09:40 -0400
+	id 1umXiY-0003C0-TG; Thu, 14 Aug 2025 09:10:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1umXhT-0001KE-BG
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 09:09:02 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1umXhO-0005yn-9R
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 09:08:59 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-b47174beb13so576439a12.2
- for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 06:08:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755176923; x=1755781723; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=L1ak1ZU/AR0+1y4HNoJj/qDB25/smzJJgjU2bzP6iSw=;
- b=y0ycavbTbeHBg24zlS/TfS1/itLrBDtb5K8r8Y9PPei7DNSi4yhu4aEClep5wRlOFF
- IwmiJdftAhTsZ1ST36YKnrwzqmG9ckQVTb1/jjugS+weN2ILyWppIvsSR0gMxlZ34Azv
- Qu6nzhWGK1oSaJ0WmR2Dgq3h+B9JKA6Yu92ESulzvncP3cMRMtRANkwEEshHm33aN12E
- MOwWkjfpNQStrv9mm9CkSNs4t9XijFPXIkEZXGe3ggdjMvjtMqzDf+TkMQI4+8Y2kqD3
- pIns4yeZWO6FSPVsnvuCs7fuzzoOfxwQchwlm6gkNMJbSVW9fjn9/3FlkmMVyzk6iSeC
- cq2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755176923; x=1755781723;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=L1ak1ZU/AR0+1y4HNoJj/qDB25/smzJJgjU2bzP6iSw=;
- b=FBBQW8wfjMSgBnX1ejdQm4BkcU74V+Sy/MkrZkfOyzQt8ue8mGDOWoAVnOAZE6+l7O
- FV0Oc+knxbEi3lquozX1KXkWv/Q1UWUTd23I0doW6rS6mhhorydfWNY/KwLKh9LKTzUY
- LGU2LAftIJEz8j36gBs2QBapkrI+cBrqtuJ7jojNrcZBQfJLyro5W8BfPjGvnn2Qgppy
- +r+J++g+jEBAIC3xEwOYBAzzufuTM3v/7f3zsf3jGb/7iO4NDuAIDp9cIb9FbfJg962d
- bE5Pj3dcr+KwF2gzXqVoHOa1ggFzB1DvOVR8/0IugVZ+DtWPCSrmTLmgeU8g5GkCg4hj
- JBFA==
-X-Gm-Message-State: AOJu0Yx/OT8rdGCQiLAJWgrwOKPXuj7uhINiOIy+eQlBYP8Qqyha0Gv4
- 3FiQ4HrIoVAIE8aZkSGUrPqVvYazKefPBLqgpIhZcRVu/w3lPlyuf4bZLv21TrFSppjiQ0fXCZ8
- wNCpDZu0=
-X-Gm-Gg: ASbGncsrVNiaSjxKhg9EwvKrSdtZlo2h/R1FmcGAwvXOxI0iDRMUzSCfQR0TSg4kGXH
- fJHTPzy7X8zp/xP5O90RExfrxX4YKcA97ntETVr+S6OPQ4hqRhEmbOk9s6XE+/owIHUa4ZrR/wd
- tgR7NlDAOleWVsGfOZ0PqOjkrn92aQJhIZ8jNV6hhzUM49SScFRs5sRP/wL6nxPwctJr60CocSq
- 9YKci8DgwvCjnNXYg8luaWYPbzzOVWw8KS1x4fKfERXjxLrNZQsMzMq5qPunelmL6RgsvCHRCFb
- q+a75C5Xe/IvBG/znx6+0low1wsWY4PUlt1/medT8ns2hAdMrTeHnY1loCZaIuepNo34rBsJM/z
- dIblYMtpK/uIrt1MKU83MuqqtLrlGR+RYmlQTKpJhN/+gdoQ=
-X-Google-Smtp-Source: AGHT+IG/dkbB6uvMypOJlf2Fesz59oY3wr5wGmYP0fPlPty09Gplf1zoGQfiwLuUwQe3Z84A+u++UQ==
-X-Received: by 2002:a17:903:2285:b0:240:cd3e:d860 with SMTP id
- d9443c01a7336-24458b5546bmr39662555ad.41.1755176923376; 
- Thu, 14 Aug 2025 06:08:43 -0700 (PDT)
-Received: from localhost.localdomain ([206.83.105.236])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-24304c2943asm64438335ad.30.2025.08.14.06.08.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Aug 2025 06:08:43 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 85/85] tests/tcg/aarch64: Add gcsss
-Date: Thu, 14 Aug 2025 22:57:52 +1000
-Message-ID: <20250814125752.164107-86-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250814125752.164107-1-richard.henderson@linaro.org>
-References: <20250814125752.164107-1-richard.henderson@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1umXiO-00035D-HF
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 09:09:57 -0400
+Received: from p-east1-cluster3-host6-snip4-10.eps.apple.com ([57.103.91.191]
+ helo=outbound.ci.icloud.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1umXiH-00067L-1V
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 09:09:56 -0400
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-central-1k-20-percent-1 (Postfix) with ESMTPS id
+ AFE411800195; Thu, 14 Aug 2025 13:09:40 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+ bh=w2CjkhliRfAUzMGtjsGF2RwoF2pCByth6J1Vhgg6ddo=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
+ b=jT3Whi09pKUZydcLOnzwiDB+3KcKr0WrS+MDq7cHXqM9qVIjLSjt+CVFwjueZ9/a4RlGAwFF3j9o3GGCDf6i/kvHloawSsa+ygL5PNN+FHFXC79RMbltzcK1VN+1lzq3999Qntekw7YsxwLQXsrvUC4ug64Lqq2YD2wQlqlxGqBMC33RcXls+COuGPieahGqApNdhJKNCZX0CNAqKVqTop9+QhDjEsSsmiCmY98pDN3JqFGCrnHzvTvtprLbL9BAI+llu/cGn++xJaA3n6A3QOGQzalo6oUKQpa5x0I3dgXvt1i+rSXdNpo/yIx54wJkW/UbFgP7Qm469+hK1yg0Cg==
+X-Client-IP: 212.60.126.184
+Received: from smtpclient.apple (ci-asmtp-me-k8s.p00.prod.me.com
+ [17.57.156.36])
+ by p00-icloudmta-asmtp-us-central-1k-20-percent-1 (Postfix) with ESMTPSA id
+ 3BF1B1804E16; Thu, 14 Aug 2025 13:06:56 +0000 (UTC)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 12/13] target/arm: hvf: instantiate GIC early
+From: Mads Ynddal <mads@ynddal.dk>
+In-Reply-To: <20250808070137.48716-13-mohamed@unpredictable.fr>
+Date: Thu, 14 Aug 2025 15:06:44 +0200
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Igor Mammedov <imammedo@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
+ Cameron Esfahani <dirty@apple.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <FB7A9640-30C1-47FD-A1B7-73A7333BDB23@ynddal.dk>
+References: <20250808070137.48716-1-mohamed@unpredictable.fr>
+ <20250808070137.48716-13-mohamed@unpredictable.fr>
+To: Mohamed Mediouni <mohamed@unpredictable.fr>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-Proofpoint-GUID: XVFlJKab-qIt-4RmFc5HXcLpoDqQ8vvL
+X-Proofpoint-ORIG-GUID: XVFlJKab-qIt-4RmFc5HXcLpoDqQ8vvL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE0MDExMCBTYWx0ZWRfX2LZeA7mRVYqs
+ 5mfFKvnu4hE3q3/NF7ybH4bpLlEb1dxehlZWtIESXwauW3WxmoULO1wmZKDUyKaidEKxf3kp2Mk
+ F6oL6oBpp0ncpFqDrEV6FutpsNlhRMStC5uNeAZaqJRa0+YZ+vcJMtapqLNp1IDmQokIn1SGxKh
+ BgdAKUQfXqa3xsf6l7gAqO1EOv87CXbQQVYO7kMNQuZzfg9fMqGcAP/NV5ozMn6Tvy9v67sKKVX
+ f7thq9g5rVOWtC8SMQBitY1D4NkSdgQIdQByz3huLbyzl/9pxnNFPvpzVt9LDwBBRu4Yo3noQ=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-13_02,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=892
+ malwarescore=0 mlxscore=0 spamscore=0
+ suspectscore=0 clxscore=1030
+ phishscore=0 bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506270000 definitions=main-2508140110
+Received-SPF: pass client-ip=57.103.91.191; envelope-from=mads@ynddal.dk;
+ helo=outbound.ci.icloud.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,128 +90,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Validate stack switching and recursion depth.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tests/tcg/aarch64/gcs.h           |  9 ++++
- tests/tcg/aarch64/gcsss.c         | 74 +++++++++++++++++++++++++++++++
- tests/tcg/aarch64/Makefile.target |  2 +-
- 3 files changed, 84 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/aarch64/gcsss.c
+> On 8 Aug 2025, at 09.01, Mohamed Mediouni <mohamed@unpredictable.fr> =
+wrote:
+>=20
+> While figuring out a better spot for it, put it in =
+hv_arch_vm_create().
+>=20
+> After hv_vcpu_create is documented as too late, and deferring
+> vCPU initialization isn't enough either.
+>=20
+> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+> ---
+> target/arm/hvf/hvf.c | 15 +++++++++++++++
+> 1 file changed, 15 insertions(+)
+>=20
+> diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+> index 6da636724b..bb7b84ff35 100644
+> --- a/target/arm/hvf/hvf.c
+> +++ b/target/arm/hvf/hvf.c
+> @@ -1084,6 +1084,21 @@ hv_return_t hvf_arch_vm_create(MachineState =
+*ms, uint32_t pa_range)
+>     }
+>=20
+>     ret =3D hv_vm_create(config);
+> +    if (hvf_irqchip_in_kernel()) {
+> +        /*
+> +         * Instantiate GIC.
+> +         * This must be done prior to the creation of any vCPU
+> +         * but past hv_vm_create()
+> +         */
+> +        hv_gic_config_t cfg =3D hv_gic_config_create();
+> +        hv_gic_config_set_distributor_base(cfg, 0x08000000);
+> +        hv_gic_config_set_redistributor_base(cfg, 0x080A0000);
+> +        hv_return_t err =3D hv_gic_create(cfg);
+> +        if (err !=3D HV_SUCCESS) {
+> +            error_report("error creating platform VGIC");
+> +            goto cleanup;
+> +         }
+> +    }
+>=20
+> cleanup:
+>     os_release(config);
+> --=20
+> 2.39.5 (Apple Git-154)
+>=20
 
-diff --git a/tests/tcg/aarch64/gcs.h b/tests/tcg/aarch64/gcs.h
-index 99cb4d4e38..e821963cb8 100644
---- a/tests/tcg/aarch64/gcs.h
-+++ b/tests/tcg/aarch64/gcs.h
-@@ -69,3 +69,12 @@
- 
- #define gcspr() \
-     ({ uint64_t *r; asm volatile("mrs %0, s3_3_c2_c5_1" : "=r"(r)); r; })
-+
-+#define gcsss1(val) \
-+    do {                                                                     \
-+        asm volatile("sys #3, c7, c7, #2, %0" : : "r"(val) : "memory");      \
-+    } while (0)
-+
-+#define gcsss2() \
-+    ({ uint64_t *r;                                                          \
-+       asm volatile("sysl %0, #3, c7, c7, #3" : "=r"(r) : : "memory"); r; })
-diff --git a/tests/tcg/aarch64/gcsss.c b/tests/tcg/aarch64/gcsss.c
-new file mode 100644
-index 0000000000..9550c68e7e
---- /dev/null
-+++ b/tests/tcg/aarch64/gcsss.c
-@@ -0,0 +1,74 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include "gcs.h"
-+
-+#define IN_PROGRESS(X)  ((uint64_t)(X) | 5)
-+#define CAP(X)          (((uint64_t)(X) & ~0xfff) + 1)
-+
-+static uint64_t * __attribute__((noinline)) recurse(size_t index)
-+{
-+    if (index == 0) {
-+        return gcspr();
-+    }
-+    return recurse(index - 1);
-+}
-+
-+int main()
-+{
-+    void *tmp;
-+    uint64_t *alt_stack, *alt_cap;
-+    uint64_t *orig_pr, *orig_cap;
-+    uint64_t *bottom;
-+    size_t pagesize = getpagesize();
-+    size_t words;
-+
-+    enable_gcs(0);
-+    orig_pr = gcspr();
-+
-+    /* Allocate a guard page before and after. */
-+    tmp = mmap(0, 3 * pagesize, PROT_NONE, MAP_ANON | MAP_PRIVATE, -1, 0);
-+    assert(tmp != MAP_FAILED);
-+
-+    /* map_shadow_stack won't replace existing mappings */
-+    munmap(tmp + pagesize, pagesize);
-+
-+    /* Allocate a new stack between the guards. */
-+    alt_stack = (uint64_t *)
-+        syscall(__NR_map_shadow_stack, tmp + pagesize, pagesize,
-+                SHADOW_STACK_SET_TOKEN);
-+    assert(alt_stack == tmp + pagesize);
-+
-+    words = pagesize / 8;
-+    alt_cap = alt_stack + words - 1;
-+
-+    /* SHADOW_STACK_SET_TOKEN set the cap. */
-+    assert(*alt_cap == CAP(alt_cap));
-+
-+    /* Swap to the alt stack, one step at a time. */
-+    gcsss1(alt_cap);
-+
-+    assert(gcspr() == alt_cap);
-+    assert(*alt_cap == IN_PROGRESS(orig_pr));
-+
-+    orig_cap = gcsss2();
-+
-+    assert(orig_cap == orig_pr - 1);
-+    assert(*orig_cap == CAP(orig_cap));
-+    assert(gcspr() == alt_stack + words);
-+
-+    /* We should be able to use the whole stack. */
-+    bottom = recurse(words - 1);
-+    assert(bottom == alt_stack);
-+
-+    /* We should be back where we started. */
-+    assert(gcspr() == alt_stack + words);
-+
-+    /* Swap back to the original stack. */
-+    gcsss1(orig_cap);
-+    tmp = gcsss2();
-+
-+    assert(gcspr() == orig_pr);
-+    assert(tmp == alt_cap);
-+
-+    exit(0);
-+}
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index c6f401c317..b858f8692e 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -76,7 +76,7 @@ $(SME_TESTS): CFLAGS += $(CROSS_AS_HAS_ARMV9_SME)
- endif
- 
- # GCS Tests
--GCS_TESTS += gcsstr gcspushm
-+GCS_TESTS += gcsstr gcspushm gcsss
- AARCH64_TESTS += $(GCS_TESTS)
- $(GCS_TESTS): gcs.h
- 
--- 
-2.43.0
+It is difficult to find a place to initialize the GIC config, so I don't
+know if it gets better than this.
 
+Should the values 0x08000000 and 0x080A0000 be defined somewhere, or
+found through a look up? I see hw/arm/virt.c has them in the
+base_memmap.
+
+You can do os_release(cfg) after hv_gic_create.=
 
