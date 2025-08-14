@@ -2,54 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51AC4B25DA0
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 09:38:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93094B25E68
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 10:09:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umSW5-0006xJ-SR; Thu, 14 Aug 2025 03:36:53 -0400
+	id 1umSzq-0002A6-U7; Thu, 14 Aug 2025 04:07:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1umSVy-0006vV-Cr
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 03:36:46 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1umSVv-0004UG-8j
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 03:36:46 -0400
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8AxfeH7kZ1oFas_AQ--.15276S3;
- Thu, 14 Aug 2025 15:36:27 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJCxM+T4kZ1oM9xKAA--.22944S11;
- Thu, 14 Aug 2025 15:36:27 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH 9/9] target/loongarch: Add bit A/D checking in TLB entry with
- PTW supported
-Date: Thu, 14 Aug 2025 15:36:24 +0800
-Message-Id: <20250814073624.430928-10-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250814073624.430928-1-maobibo@loongson.cn>
-References: <20250814073624.430928-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1umSzo-00029q-53
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 04:07:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1umSzk-00013u-Lt
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 04:07:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1755158850;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Aw6ElKPrxJaqLuNhgoU229hFO1WzteZ5QqmH5MUjSf4=;
+ b=KSzdpka9743Beye4Qs/x3oLVAmeEHnj+kpsMgkrXLtI+azbacOVEyQtgYBXnfjFZgXEltQ
+ ymnhou344XL5dppzpHfz5/wWU9Y70vR2MTvPm9G/3Ex7os8XjF+/8WGfOXzpwVaHeXaENC
+ +imyTqsS555+/r4kCYhdZMWj71ZAryk=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-479-krs6YUs3MaOtRVPEcAO__A-1; Thu, 14 Aug 2025 04:06:17 -0400
+X-MC-Unique: krs6YUs3MaOtRVPEcAO__A-1
+X-Mimecast-MFC-AGG-ID: krs6YUs3MaOtRVPEcAO__A_1755158777
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-70a88dae248so16534146d6.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 01:06:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1755158777; x=1755763577;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Aw6ElKPrxJaqLuNhgoU229hFO1WzteZ5QqmH5MUjSf4=;
+ b=BkzlLlNcnvMuxvKDyDCXoC+2gsk7FRyyz6lbEcwW2NSug9QtJx6hu/1xNXiSARun6n
+ H1oW07j3Ri/G6syjDBsZeGFkQLvv0GhAvy3ksyqJxBOy4QZE1r+W6AVTyOBs0yZNGGjJ
+ 5WqcLhpWpqXY7kffQyVRkEkcRT4ooJpTIT794KdRe52SfqI5V/CTL8d0GNrGbjPRlobI
+ GfPEqs8quPIT0srjqGgw9ko9DkEihvZt+Qcxl+JR0KUhrRMHonq2nRVFEMsIz4oo2vas
+ GUcNNq4Aidfu5xDoFOVGVdQUpM4/3D620a14kx7w2fp9zA5WwI/+CGn98tjinQDE0Bq/
+ TLQQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXYjdzdfm9AXgaJgzebKf1rEY+xY5tz5kW1kYsu3gGPz3Gdkkqru/5r9Zec3uBaj+a2t4aLvcCRHWwL@nongnu.org
+X-Gm-Message-State: AOJu0YwNKK0LVq9dZKAIbuvOKmCgJCkAH3jDmGBd+O+lc8ZTtxniuHC5
+ QSfWgs7bUG3NOahqQ39BZR50PNLyPNPmiJJ7RRRjo1l439PvTWuE/JOPen1ML68jCBN8xIucX/O
+ hH2LPwNL9Ia9rAatN2O+sFvgY/4BkuaE14zmu4vXFIcx9bQ5P71KLOyXt
+X-Gm-Gg: ASbGnctJBjOBcyqNGp1P6lsQ25iLmaGrZDFIX+Eu4KFNIih4DVk4BCVOPO+a5TB4z6I
+ x0YEAHqNwXMmkKk8qEIntBqAJIzpQxIbu5HI2HGgOsvhOMC/NO91xVuJG8StGY6oFEL4W4XQf5Z
+ ABMgwU96Cf+vTAJ03WIBHWiP6DeymF7lQy0093bj7DkEQqr5YTDb/+xI625heEg40bksFT7FeHQ
+ YRxyXp6iPNNsV5cNPxLB5RXSMdlwFJPSPjP+Ng2hzGU11GP/7dTyHgp4RtirjmmYWJmC3G5ZgC2
+ E8noXKl1JEsdvxB92cWghcfZiiFQuy0kUBz4NO4=
+X-Received: by 2002:a05:6214:2627:b0:707:612d:3adb with SMTP id
+ 6a1803df08f44-70b97e2ec82mr19491336d6.18.1755158776844; 
+ Thu, 14 Aug 2025 01:06:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH7lVUmLcn69AeEGlIltasyng2VdZBjCKeuYdoN1KmCwRsZIIixWIrMuZD4aCM/GKm/xByjQg==
+X-Received: by 2002:a05:6214:2627:b0:707:612d:3adb with SMTP id
+ 6a1803df08f44-70b97e2ec82mr19491116d6.18.1755158776397; 
+ Thu, 14 Aug 2025 01:06:16 -0700 (PDT)
+Received: from [10.43.3.236] ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-70ae6cc98e4sm10293116d6.21.2025.08.14.01.06.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 14 Aug 2025 01:06:15 -0700 (PDT)
+Message-ID: <23a9cb5f-dda8-403d-964d-b27338d6c94a@redhat.com>
+Date: Thu, 14 Aug 2025 10:06:13 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: QGA installation issue on Windows
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Cc: Jan Tomko <jtomko@redhat.com>, Yan Vugenfirer <yvugenfi@redhat.com>,
+ QEMU <qemu-devel@nongnu.org>
+References: <CAPMcbCpSQS5yWUCcGum6nWq=+HTaxFmJjm57_cgmJp+fMtC1JQ@mail.gmail.com>
+ <aJCTJf67oTZseYUr@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?B?TWljaGFsIFByw612b3puw61r?= <mprivozn@redhat.com>
+In-Reply-To: <aJCTJf67oTZseYUr@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJCxM+T4kZ1oM9xKAA--.22944S11
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mprivozn@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,42 +111,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With read/write access, add bit A/D checking if hardware PTW is
-supported. If no matched, hardware page table walk is called. And
-then bit A/D is updated in PTE entry and TLB entry is updated also.
+On 8/4/25 13:01, Daniel P. Berrangé wrote:
+> On Mon, Aug 04, 2025 at 01:54:09PM +0300, Kostiantyn Kostiuk wrote:
+>> Hi Michal,
+>>
+>> I want to discuss your patch
+>> https://gitlab.com/qemu-project/qemu/-/commit/c6f5dd7ac8ef62dcdec4cdeda1467c658161afff
+>>
+>> Unfortunately, we found bad behaviour on Windows. On Windows, we run QGA
+>> with `-d --retry-path` options by default, so we expect that QGA will start
+>> even without the vioserial driver and will wait for communication
+>> forever.
+>>
+>> This worked previously, but after your patch QGA service fails if the
+>> vioserial communication channel is missing. This behavior is totally
+>> unacceptable for us.
+>>
+>> You send this patch to fix a Linux problem, but it causes a Windows problem.
+>> So, what we need on Windows, if --retry-path specified, we should ignore
+>> any channel error and retry the connection. If -d and --retry-path are
+>> specified, it should become a daemon first to make Windows Service Manager
+>> happy.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- target/loongarch/tcg/tlb_helper.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+The original problem I tried to fix was (and I am bit hazy on all the
+details): when somebody built their own kernel but forgot to enable
+virtio-serial then qemu-ga would fail to initialize but with a
+completely irrelevant error message.
 
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 7fdac475b3..8edd481a53 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -648,6 +648,21 @@ bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-     /* Data access */
-     context.addr = address;
-     ret = get_physical_address(env, &context, access_type, mmu_idx, 0);
-+    if (ret == TLBRET_MATCH && context.mmu_index != MMU_DA_IDX
-+        && cpu_has_ptw(env)) {
-+        bool need_mark = true;
-+
-+        if (access_type == MMU_DATA_STORE && pte_dirty(context.pte)) {
-+            need_mark = false;
-+        } else if (access_type != MMU_DATA_STORE && pte_access(context.pte)) {
-+            need_mark = false;
-+        }
-+
-+        if (need_mark) {
-+            ret = TLBRET_NOMATCH;
-+        }
-+    }
-+
-     if (ret != TLBRET_MATCH && cpu_has_ptw(env)) {
-         /* Take HW PTW if TLB missed or bit P is zero */
-         if (ret == TLBRET_NOMATCH || ret == TLBRET_INVALID) {
--- 
-2.39.3
+> 
+> This looks pretty simple to fix - in the initialize_agent() method, if
+> channel_init() fails, then simply ignore the failure if 'retry_path'
+> is set, because the later code in run_agent() will already correctly
+> retry the connection.
+
+Yeah, do you want me to post such patch?
+
+Michal
 
 
