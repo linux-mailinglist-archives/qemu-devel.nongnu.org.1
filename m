@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C91B26619
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 15:02:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2555FB26632
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 15:06:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umXXy-0001Yu-Cu; Thu, 14 Aug 2025 08:59:10 -0400
+	id 1umXYI-0001iY-V5; Thu, 14 Aug 2025 08:59:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1umXXp-0001Xm-Ne
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 08:59:01 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1umXXr-0001Yi-IK
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 08:59:04 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1umXXj-0004Gt-Bn
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 08:59:01 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-32326e09f58so1121892a91.2
- for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 05:58:51 -0700 (PDT)
+ id 1umXXl-0004HO-MF
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 08:59:03 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-b47174c8e45so718430a12.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 05:58:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755176329; x=1755781129; darn=nongnu.org;
+ d=linaro.org; s=google; t=1755176332; x=1755781132; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L0ihX/6NjLJeiAV+rHpWXFChl+HIpT5VNQEwKbT4BfA=;
- b=S+RWeGqKCn3pfJaj/sIAya6Os7/7YbeGuMRp4sV1f9Blkvt+ULfv1D9B/6jnk/dGBZ
- P5tQmoEEwlgN3rGENZpw2Zy4z2Yht5Sks4S97dLxn70cNfKEZRRCeyT/PXBp7fy+arDw
- 2KOdMGdsA5eijFhRw3oLAXdbSm+xc5CTh4/phywpu96P0iuSOSK3I5J06i71Ao6qOnN6
- s4uP3bfTCXQWRXsI8+ZG1JqGUmsZIUUnZOP9Xj0Cb3C5gyDhE4iN2DkwONuwnWn5h+45
- /ayxO+H0H+tEbTLQhetdzPRydBPgIYUSMxu3cx80fMO6XSE+RGA3Q+FFELJl9AIYPaS6
- PJCg==
+ bh=P80G+Mqq/PBj5fm0u9e6xc+6PUuM6bwSvtsR/7Pt9Yc=;
+ b=yY9CW6hw2aZO8AtL96t4zM1RHKaFCfnm53NR9LjO/CFfD8bWZTKHf7uR0sszWbRQKW
+ 8SrREVRo2fx5cjZT6nsunxAsvckf75OJnlFEDXJEwz7N5uMfsYQ7P7u79xVJnsoMceuy
+ oc2ex7B/XTzU+Zut7mfOss5ryjZaxcU+0llnN9tuYA/W6bBj+hz7uvk1O5JemNXAzdFt
+ Y1GrNTPYw2NIT35qYOVlpU9xYxX2WbcHQnYwEEwDupVumPqYwOu6sblTei8FemGfaS4G
+ CmFQ+/gGXhnm8407TrJi/ToT9v1uvnhZ2GBIW0plqi7GmkbfsV/gxh3f7HqCWLNdrb2f
+ H/DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755176329; x=1755781129;
+ d=1e100.net; s=20230601; t=1755176332; x=1755781132;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L0ihX/6NjLJeiAV+rHpWXFChl+HIpT5VNQEwKbT4BfA=;
- b=KKvkeIo3vgBoDZaGSt6VKj4MO1mAn/Cny3SbLx2zNKHN6OyStNLxJYrfAkIubID9dX
- uNBDejgTGkwivWMz9eARXh8z8plqh0HcP1Yi7pev80GQEnq+OOUOJRw8wxVX7g1+AKYj
- o3HRh5OaMbOZHvXjqeD6WjijVUMQp9BXN3pAfBNTXuFAtIYDCq9bi3Xy9qzOW4P7ZqMC
- Pfx48qqIZGAkBanlMg6Nq/bjNFsJtMHJSm21vEiJYDbDRtYSpCPhVWr7pZQIp4xjsa3i
- 4hKk/oPoQkewI0UyrAS/05KcLRwEjI6dOHvun3p2ZTvjuO94JYBsMOGWVmQO1WsAXb/y
- 3RRQ==
-X-Gm-Message-State: AOJu0YxokLucyzMpqZ0rQVRhIrqtR+vXx0XtEnJULHkF2qtGv4jpA1ub
- 3N2q0q8dAePD41ch//RZWxZpZ2/jl36Bgu5J/W9Ubi45KRD6U8Z4yu/MqsQuZL0C3U7ni3GpEB0
- li2PgzQs=
-X-Gm-Gg: ASbGncueQ/dW5Qsr+Y6L06eGa98C4DQCWN/kCezgcmpizdGa/eqdN7sQhBFw2ExEpT5
- JciD/v5Up4bahKp+gjmR4h4VZKSMUKIMr13qPfrbIgicjaLS0ycCUUsSXlhfjwBdO3SnzB/lHX5
- H7SViFGK6pb4mZzjg2JaL5AcDa1LOik29UztkXgbh4PqHaWwd2+NDTLkCsDkF0JCDrRyrtTfc/U
- ptcCrC7erYPAJnCCSC59E5tw+cDLG+ggfQ5iKNHqgp6anc1mlvyGKeKgZZT4rQedNVYjCDqV4Ng
- P7jam5SNqOkcB86J+oTu5iSF0bnN+8bPCZERJXg6MzJsjdSTU1WwOnVMOzyNUk26jNtwcuBJ7x2
- jM8rYuFeOtiCTyZXkZlDoHjQmn3SzOzHIRH0WRwijXIAaQ+s=
-X-Google-Smtp-Source: AGHT+IF7ixE7gr+nynLlPYG7ZbMSXM8AQtGolV790Hz3ZjrRZFKFUo5Mg7BJTTjNTdjIoso3HCB0ng==
-X-Received: by 2002:a17:90b:264b:b0:321:1682:2d49 with SMTP id
- 98e67ed59e1d1-32327cc148dmr4016860a91.32.1755176329156; 
- Thu, 14 Aug 2025 05:58:49 -0700 (PDT)
+ bh=P80G+Mqq/PBj5fm0u9e6xc+6PUuM6bwSvtsR/7Pt9Yc=;
+ b=a1HVIuCU2bwkr4tz71ItohEBkR+jqF4AgPiUBEV3VIhJ60on0VYorkq4F3DYnXH8yW
+ nBdVFTPomDU7mIXeyD3Al2TpAtIwwWzot0rl/B7Sh152jq+yxw7ci1tC8GHSoUxFguRV
+ W8yxJRYgnVpwzUgnCpBftrHzbYmWR2/2R6nFyN1497bL8HNdOWi1bP+06VunbGTw05sr
+ GRASuzr/kydxvgO40o/8DXWfshOMVC1eZOE9JW6I8Y0skYZRk9w04QW/Z+gnfA9tuNB8
+ FI1/1TbdZhmrp9qyhOasDZjqbJiTrq+4IkKyUghwYkpOxJXHqRgxsPYtqBMBeu/LhDjF
+ eFSw==
+X-Gm-Message-State: AOJu0YxcrMPAgOzw0cNTm4sQxIRYEswH2t393WsOk7uGvQx54+6gWQpe
+ pZvXeuPsY2LJZMqvIP9Z3uvKmPv/VijfDBkP6iCFxX4hni8oKnmTskxOJn10aNIlDbKqh+r3FoP
+ shNk0Ocg=
+X-Gm-Gg: ASbGncu12DIUJUeJf7UBXiqLiWjJpwGsJ0fUeqNXXTuV8vPh9pwj1A4+RzjXVPSQCq0
+ mtJXL/s2Sr3Py3Wneqqk9lsqKpZhMDUsq4elfMIQxAYGMD4fmEfJhHI9INtdLmXbc5Qu/PpXAbm
+ CexhdRTwDsEBu9eWx59q+Fx4uuyPcb/3QAGK7sohxwktb/KxjHFEpPYCWIaV//qDoVyyV7g1YCZ
+ A0AkVBkO+sRv4E2X0R+n34vim2P+OlwavLdQ/zScHiXAcv8MCukrdGb48q+nLJNOBtCbosyV1dN
+ iVSuwLn4vDAh87tkaGsA54+hmGcmOlcHnLvu+kdBmb0P2X9GC4ubN5sdL4tR4GOk4SahyMeh+Sd
+ XKCfFVg3HtZyowMRCS1LbehYe5BykNx9fkUOZH/Ixnd5CrGw=
+X-Google-Smtp-Source: AGHT+IGM+/VwnTutCdMcVaUZ8A4cwwtf8eMGEIrC3kgkgNCekm1yt3ayWa3zifnR/wlHeeuA1R6t1A==
+X-Received: by 2002:a17:903:40d1:b0:240:2a0:c449 with SMTP id
+ d9443c01a7336-244584ed083mr43883645ad.8.1755176332006; 
+ Thu, 14 Aug 2025 05:58:52 -0700 (PDT)
 Received: from localhost.localdomain ([206.83.105.236])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3233100c994sm1766256a91.21.2025.08.14.05.58.46
+ 98e67ed59e1d1-3233100c994sm1766256a91.21.2025.08.14.05.58.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Aug 2025 05:58:48 -0700 (PDT)
+ Thu, 14 Aug 2025 05:58:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 15/85] target/arm: Implement PIR_ELx, PIRE0_ELx,
- S2PIR_EL2 registers
-Date: Thu, 14 Aug 2025 22:56:42 +1000
-Message-ID: <20250814125752.164107-16-richard.henderson@linaro.org>
+Subject: [PATCH v3 16/85] target/arm: Force HPD for stage2 translations
+Date: Thu, 14 Aug 2025 22:56:43 +1000
+Message-ID: <20250814125752.164107-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250814125752.164107-1-richard.henderson@linaro.org>
 References: <20250814125752.164107-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,167 +99,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Stage2 translations do not have hierarchial permissions.
+Setting HPD means we can eliminate an extra check against
+regime_is_stage2.
+
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpregs.h |  2 ++
- target/arm/cpu.h    |  4 +++
- target/arm/cpu.c    |  4 +++
- target/arm/helper.c | 70 +++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 80 insertions(+)
+ target/arm/helper.c |  7 +++++--
+ target/arm/ptw.c    | 24 +++++++++++++-----------
+ 2 files changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
-index 2a4826f5c4..9efe9238c1 100644
---- a/target/arm/cpregs.h
-+++ b/target/arm/cpregs.h
-@@ -776,6 +776,8 @@ typedef enum FGTBit {
-     DO_BIT(HFGRTR, ERRIDR_EL1),
-     DO_REV_BIT(HFGRTR, NSMPRI_EL1),
-     DO_REV_BIT(HFGRTR, NTPIDR2_EL0),
-+    DO_REV_BIT(HFGRTR, NPIRE0_EL1),
-+    DO_REV_BIT(HFGRTR, NPIR_EL1),
- 
-     /* Trap bits in HDFGRTR_EL2 / HDFGWTR_EL2, starting from bit 0. */
-     DO_BIT(HDFGRTR, DBGBCRN_EL1),
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index defe2852f2..fb87fcc3e6 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -369,6 +369,9 @@ typedef struct CPUArchState {
-         uint64_t tcr2_el[3];
-         uint64_t vtcr_el2; /* Virtualization Translation Control.  */
-         uint64_t vstcr_el2; /* Secure Virtualization Translation Control. */
-+        uint64_t pir_el[4]; /* PIRE0_EL1, PIR_EL1, PIR_EL2, PIR_EL3 */
-+        uint64_t pire0_el2;
-+        uint64_t s2pir_el2;
-         uint32_t c2_data; /* MPU data cacheable bits.  */
-         uint32_t c2_insn; /* MPU instruction cacheable bits.  */
-         union { /* MMU domain access control register
-@@ -1738,6 +1741,7 @@ static inline void xpsr_write(CPUARMState *env, uint32_t val, uint32_t mask)
- #define SCR_ENTP2             (1ULL << 41)
- #define SCR_TCR2EN            (1ULL << 43)
- #define SCR_SCTLR2EN          (1ULL << 44)
-+#define SCR_PIEN              (1ULL << 45)
- #define SCR_GPF               (1ULL << 48)
- #define SCR_MECEN             (1ULL << 49)
- #define SCR_NSE               (1ULL << 62)
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index f0545a276e..b472992b4a 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -650,6 +650,10 @@ void arm_emulate_firmware_reset(CPUState *cpustate, int target_el)
-             if (cpu_isar_feature(aa64_sctlr2, cpu)) {
-                 env->cp15.scr_el3 |= SCR_SCTLR2EN;
-             }
-+            if (cpu_isar_feature(aa64_s1pie, cpu) ||
-+                cpu_isar_feature(aa64_s2pie, cpu)) {
-+                env->cp15.scr_el3 |= SCR_PIEN;
-+            }
-             if (cpu_isar_feature(aa64_mec, cpu)) {
-                 env->cp15.scr_el3 |= SCR_MECEN;
-             }
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 61ba9ba5b2..6353b2dea1 100644
+index 6353b2dea1..a6130f7dcd 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -747,6 +747,10 @@ static void scr_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
-         if (cpu_isar_feature(aa64_sctlr2, cpu)) {
-             valid_mask |= SCR_SCTLR2EN;
+@@ -9639,8 +9639,11 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
+         tsz = extract32(tcr, 0, 6);
+         gran = tg0_to_gran_size(extract32(tcr, 14, 2));
+         if (stage2) {
+-            /* VTCR_EL2 */
+-            hpd = false;
++            /*
++             * Stage2 does not have hierarchical permissions.
++             * Thus disabling them makes things easier during ptw.
++             */
++            hpd = true;
+         } else {
+             hpd = extract32(tcr, 24, 1);
          }
-+        if (cpu_isar_feature(aa64_s1pie, cpu) ||
-+            cpu_isar_feature(aa64_s2pie, cpu)) {
-+            valid_mask |= SCR_PIEN;
-+        }
-         if (cpu_isar_feature(aa64_mec, cpu)) {
-             valid_mask |= SCR_MECEN;
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index efbad7af1f..2eb2041edb 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -1472,8 +1472,12 @@ static ARMVAParameters aa32_va_parameters(CPUARMState *env, uint32_t va,
          }
-@@ -4578,6 +4582,11 @@ static void define_arm_vh_e2h_redirects_aliases(ARMCPU *cpu)
-           "SCXTNUM_EL1", "SCXTNUM_EL2", "SCXTNUM_EL12",
-           isar_feature_aa64_scxtnum },
- 
-+        { K(3, 0, 10, 2, 3), K(3, 4, 10, 2, 3), K(3, 5, 10, 2, 3),
-+          "PIR_EL1", "PIR_EL2", "PIR_EL12", isar_feature_aa64_s1pie },
-+        { K(3, 0, 10, 2, 2), K(3, 4, 10, 2, 2), K(3, 5, 10, 2, 2),
-+          "PIRE0_EL1", "PIRE0_EL2", "PIRE0_EL12", isar_feature_aa64_s1pie },
-+
-         /* TODO: ARMv8.2-SPE -- PMSCR_EL2 */
-         /* TODO: ARMv8.4-Trace -- TRFCR_EL2 */
-     };
-@@ -6242,6 +6251,60 @@ static const ARMCPRegInfo tcr2_reginfo[] = {
-       .fieldoffset = offsetof(CPUARMState, cp15.tcr2_el[2]) },
- };
- 
-+static CPAccessResult pien_access(CPUARMState *env, const ARMCPRegInfo *ri,
-+                                  bool isread)
-+{
-+    if (arm_feature(env, ARM_FEATURE_EL3)
-+        && !(env->cp15.scr_el3 & SCR_PIEN)
-+        && arm_current_el(env) < 3) {
-+        return CP_ACCESS_TRAP_EL3;
-+    }
-+    return CP_ACCESS_OK;
-+}
-+
-+static CPAccessResult pien_el1_access(CPUARMState *env, const ARMCPRegInfo *ri,
-+                                      bool isread)
-+{
-+    CPAccessResult ret = access_tvm_trvm(env, ri, isread);
-+    if (ret == CP_ACCESS_OK) {
-+        ret = pien_access(env, ri, isread);
-+    }
-+    return ret;
-+}
-+
-+static const ARMCPRegInfo s1pie_reginfo[] = {
-+    { .name = "PIR_EL1", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 0, .opc2 = 3, .crn = 10, .crm = 2,
-+      .access = PL1_RW, .accessfn = pien_el1_access,
-+      .fgt = FGT_NPIR_EL1, .nv2_redirect_offset = 0x2a0 | NV2_REDIR_NV1,
-+      .fieldoffset = offsetof(CPUARMState, cp15.pir_el[1]) },
-+    { .name = "PIR_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 4, .opc2 = 3, .crn = 10, .crm = 2,
-+      .access = PL2_RW, .accessfn = pien_access,
-+      .fieldoffset = offsetof(CPUARMState, cp15.pir_el[2]) },
-+    { .name = "PIR_EL3", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 6, .opc2 = 3, .crn = 10, .crm = 2,
-+      .access = PL3_RW,
-+      .fieldoffset = offsetof(CPUARMState, cp15.pir_el[3]) },
-+    { .name = "PIRE0_EL1", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 0, .opc2 = 2, .crn = 10, .crm = 2,
-+      .access = PL1_RW, .accessfn = pien_el1_access,
-+      .fgt = FGT_NPIRE0_EL1, .nv2_redirect_offset = 0x290 | NV2_REDIR_NV1,
-+      .fieldoffset = offsetof(CPUARMState, cp15.pir_el[0]) },
-+    { .name = "PIRE0_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 4, .opc2 = 2, .crn = 10, .crm = 2,
-+      .access = PL2_RW, .accessfn = pien_access,
-+      .fieldoffset = offsetof(CPUARMState, cp15.pire0_el2) },
-+};
-+
-+static const ARMCPRegInfo s2pie_reginfo[] = {
-+    { .name = "S2PIR_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 4, .opc2 = 5, .crn = 10, .crm = 2,
-+      .access = PL2_RW, .accessfn = pien_access,
-+      .nv2_redirect_offset = 0x2b0,
-+      .fieldoffset = offsetof(CPUARMState, cp15.s2pir_el2) },
-+};
-+
- void register_cp_regs_for_features(ARMCPU *cpu)
- {
-     /* Register all the coprocessor registers based on feature bits */
-@@ -7479,6 +7542,13 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-         define_arm_cp_regs(cpu, tcr2_reginfo);
+         tsz = sextract32(tcr, 0, 4) + 8;
+         select = 0;
+-        hpd = false;
+         epd = false;
++        /*
++         * Stage2 does not have hierarchical permissions.
++         * Thus disabling them makes things easier during ptw.
++         */
++        hpd = true;
+     } else if (el == 2) {
+         /* HTCR */
+         tsz = extract32(tcr, 0, 3);
+@@ -1979,16 +1983,14 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+      * except NSTable (which we have already handled).
+      */
+     attrs = new_descriptor & (MAKE_64BIT_MASK(2, 10) | MAKE_64BIT_MASK(50, 14));
+-    if (!regime_is_stage2(mmu_idx)) {
+-        if (!param.hpd) {
+-            attrs |= extract64(tableattrs, 0, 2) << 53;     /* XN, PXN */
+-            /*
+-             * The sense of AP[1] vs APTable[0] is reversed, as APTable[0] == 1
+-             * means "force PL1 access only", which means forcing AP[1] to 0.
+-             */
+-            attrs &= ~(extract64(tableattrs, 2, 1) << 6); /* !APT[0] => AP[1] */
+-            attrs |= extract32(tableattrs, 3, 1) << 7;    /* APT[1] => AP[2] */
+-        }
++    if (!param.hpd) {
++        attrs |= extract64(tableattrs, 0, 2) << 53;     /* XN, PXN */
++        /*
++         * The sense of AP[1] vs APTable[0] is reversed, as APTable[0] == 1
++         * means "force PL1 access only", which means forcing AP[1] to 0.
++         */
++        attrs &= ~(extract64(tableattrs, 2, 1) << 6); /* !APT[0] => AP[1] */
++        attrs |= extract32(tableattrs, 3, 1) << 7;    /* APT[1] => AP[2] */
      }
  
-+    if (cpu_isar_feature(aa64_s1pie, cpu)) {
-+        define_arm_cp_regs(cpu, s1pie_reginfo);
-+    }
-+    if (cpu_isar_feature(aa64_s2pie, cpu)) {
-+        define_arm_cp_regs(cpu, s2pie_reginfo);
-+    }
-+
-     if (cpu_isar_feature(aa64_mec, cpu)) {
-         define_arm_cp_regs(cpu, mec_reginfo);
-         if (cpu_isar_feature(aa64_mte, cpu)) {
+     ap = extract32(attrs, 6, 2);
 -- 
 2.43.0
 
