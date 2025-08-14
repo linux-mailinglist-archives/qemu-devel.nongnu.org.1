@@ -2,89 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751B8B264AB
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 13:51:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80DCFB266E8
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 15:22:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umWRN-0005sN-QP; Thu, 14 Aug 2025 07:48:17 -0400
+	id 1umXie-0003GS-Bm; Thu, 14 Aug 2025 09:10:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1umWRK-0005rD-2b
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 07:48:14 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1umWRF-0002WZ-HY
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 07:48:13 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3b9e41101d4so439044f8f.2
- for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 04:48:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755172082; x=1755776882; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Qffpsmd9KZunZ/5hKG3AYa5TWm/pt6oeiktvEU5DzPE=;
- b=Pg671p31Pngg6OQ4nCTPzCKrGwRlq1qkRVeWgv+cdcCnAEjhKQHBQtOv45RQ9PnIY2
- G3BS+g2PtNwqaxBld6K2Bg6hLkragGqz3MglQwg+gG5YmQXBBEU67+L+haE+lnodJ3mH
- 2n3NVMItBoN0imv9ZiHSqZWMA983Di+M/ih3mhydRv6R6Ki1F+mwsnqIcLMuhw3huu/E
- 22rJs05eHYfj39N/4sNciBKPY7ROs7Dksp9TcfymvhOqB7pGzahRW7j/3OdiZ+NsQ/Iv
- q2VN9CoEnbrVrMv6eV1W5GpJnV00ScP5UazfgSBzYTR7pbnoP2ubVnPF1lL/vS6JdoTy
- JjWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755172082; x=1755776882;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Qffpsmd9KZunZ/5hKG3AYa5TWm/pt6oeiktvEU5DzPE=;
- b=OR+ijqvk56ZB/XI9jykD4rLDp7UIwf/lMHGqUoe/Ry9A8deUaSLUvFm32qFcryLPPW
- 4nG58u6p3JIbNnLXCANoWG61S/8eXbVbapyUy+F1XOv38fky7SKNYmqM+/Ex/cFgfaY1
- 9xcyUen1X6vQPfqNR6EpOACSf2v8EavguA4cbjBpz8uSZfFcWujcphGuEUQ8dnDAo2Lk
- QvzQdu1o+GqB/KWhKpCiRxfWOofgTqZQ49DTjRqsBrHYXHwbQxAJDvrArOHdMmGvfVSY
- fdjII0omXxhQ7Z14cwf1xcuqVbhti1yitgmtFqr7PJmahKL4B90NGKlZnfD3Znngap2G
- wmsg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUw5Byft+SyVaL2pfN9uNKmRHlNOEqv1cSz0O0Xo5vwvDv3dYbMfT0lRbuIYhCRBbssg0SNf9q/mi0w@nongnu.org
-X-Gm-Message-State: AOJu0YxC3BWRn58MQ0wHyIu4VKl52qePA9QO7eTtRfbBLKVwfI8zfFtf
- rEwJE32C3ATpmqAe+nr/IveFuVJCzTpYZhY8HbywhxgQvFYHnoiAjd5qGCIYHR6wEk0=
-X-Gm-Gg: ASbGncu0hZv4+XLLqeY9pXZ53MxyMaN5eJ8akaKaWa7uon3FmJ72lpowr2t5LnL0gJ+
- 8zC9Glv3x67flUWA6/SNgAxetjj5Z7YY9286qdieDvKBqmaM2/CeCSp63MGEolnv5s3lL9WixtS
- Z43NHZl5hq/kVtkVDDLF+2bQ4nIP8itRScoTwl1MN3gKZWfnHCDmjG80CK/hMpTYFaSnQKXsrD/
- gjEONS7whlf8QhraKwtetpdobeHwez22+n9btIB5F2+Nst/mYDjU30K+KyrfDs+40HfKcPQN8oA
- +AtLkTyDWuxf+Pe+xa7UPpun1u8VSSlo1NsvCNgBWyvGjBts6hcPWWZdER2uoQR4jAYP3qQ8OuU
- McvbrupY2i92sxdlx4vagI7s1z+LrwwMayQZsSwueDhgJuvue7p3PHa53d2Rl3LQLnA==
-X-Google-Smtp-Source: AGHT+IELlpBp4cJiaNEHnUtc7b8WIRZUnZRa6F+7lQ5Pbk6io8Or6kI5XegCU/RpK4thnktHTWdFww==
-X-Received: by 2002:a05:6000:240b:b0:3b7:fbe3:66bb with SMTP id
- ffacd0b85a97d-3b9fc3701f4mr2390506f8f.50.1755172082114; 
- Thu, 14 Aug 2025 04:48:02 -0700 (PDT)
-Received: from [192.168.69.219] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b8ff860acbsm24323237f8f.51.2025.08.14.04.47.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Aug 2025 04:48:01 -0700 (PDT)
-Message-ID: <426f2edc-9495-4796-abd1-b5de6529f015@linaro.org>
-Date: Thu, 14 Aug 2025 13:47:50 +0200
+ (Exim 4.90_1) (envelope-from <mikko.ylinen@linux.intel.com>)
+ id 1umX81-00057e-8H
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 08:32:21 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mikko.ylinen@linux.intel.com>)
+ id 1umX7r-0000D3-Ta
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 08:32:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1755174732; x=1786710732;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=bevTCByl6UBAESZRwEE97NINll5vS1LciZXikIHEC8o=;
+ b=mnWTkhhmN9SHyYuLA0xFR99a9HVWWagHBUPfVFMQ6ODfcIa2wbEzVWbg
+ UlSzY9EAwUfjLlZCwx/THmx3ftZ8ppCp8H5GjB8VKTDtMVI9+zEvvfO6q
+ m1z8mM36NvuruehVzPcSFLNRHwlC/wJ2lvQbjyXobZ89bQR6SxdPTtyuO
+ N9McNB9ln80qFiSNJDKIKea3/Js5ZKCHl+U+ks9pd7wNug+bt1cS6nQ4q
+ lWTLYVsyusjcapZT2t0Gftibcva9GpRlV3H9UdY9iX/7QJxtNTx2+24KG
+ zTF41vmVpeQXpCZGCihFtTlEdVtjqe2ElzF2liVLDaawEWL6HcRYlMVzO w==;
+X-CSE-ConnectionGUID: 3b/TJLF3StOHn28pnNH/Gw==
+X-CSE-MsgGUID: M6gaE4Q+QvGYma7/SNlH3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="68863810"
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="68863810"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Aug 2025 05:32:01 -0700
+X-CSE-ConnectionGUID: aWJQV8pFSzygInbYZWH79A==
+X-CSE-MsgGUID: DG5HGnljTY65IlL+BV7JTA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="167010450"
+Received: from agladkov-desk.ger.corp.intel.com (HELO himmelriiki.intel.com)
+ ([10.245.244.92])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Aug 2025 05:32:00 -0700
+From: Mikko Ylinen <mikko.ylinen@linux.intel.com>
+To: qemu-devel@nongnu.org
+Cc: xiaoyao.li@intel.com
+Subject: [PATCH] docs/system/i386: document TDG.VP.VMCALL<GetQuote> and TD
+ attestation
+Date: Thu, 14 Aug 2025 15:31:44 +0300
+Message-ID: <20250814123144.136966-1-mikko.ylinen@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/virtio/virtio-pci: add defensive check for vector_irqfd
-To: gerben@altlinux.org, qemu-devel@nongnu.org, mst@redhat.com
-Cc: sdl.qemu@linuxtesting.org
-References: <20250814110830.14660-1-gerben@altlinux.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250814110830.14660-1-gerben@altlinux.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=192.198.163.10;
+ envelope-from=mikko.ylinen@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 14 Aug 2025 09:09:26 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,43 +80,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Denis,
+TD attestation has been supported since the handling of
+TDG.VP.VMCALL<GetQuote> was added. However, the documentation still
+states that TD attestation is future work.
 
-On 14/8/25 13:08, gerben@altlinux.org wrote:
-> From: Denis Rastyogin <gerben@altlinux.org>
-> 
-> Add a NULL check for proxy->vector_irqfd in
-> virtio_pci_one_vector_unmask() before taking the irqfd path.
-> This prevents potential access to uninitialized state if
-> vector_irqfd is absent.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Reported-by: Alexey Appolonov <alexey@altlinux.org>
-> Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
-> ---
->   hw/virtio/virtio-pci.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-> index 767216d795..07904f6f9b 100644
-> --- a/hw/virtio/virtio-pci.c
-> +++ b/hw/virtio/virtio-pci.c
-> @@ -1015,7 +1015,11 @@ static int virtio_pci_one_vector_unmask(VirtIOPCIProxy *proxy,
->               event_notifier_set(n);
->           }
->       } else {
-> -        ret = kvm_virtio_pci_irqfd_use(proxy, n, vector);
-> +        if (proxy->vector_irqfd) {
+Update TDX documention to match with the code and move the TD attestation
+section up to the feature configuration section. In addition, add a link
+to TDX Enabling Guide that gives further details on how to setup the
+platform for attestation to work.
 
-Why check the callers and not once in the callee?
+Fixes: 40da501d8989 ("i386/tdx: handle TDG.VP.VMCALL<GetQuote>")
+Reported-by: Benny Fuhry <benny.fuhry@intel.com>
+Signed-off-by: Mikko Ylinen <mikko.ylinen@linux.intel.com>
+---
+ docs/system/i386/tdx.rst | 40 ++++++++++++++++++++++++++--------------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
 
-> +            ret = kvm_virtio_pci_irqfd_use(proxy, n, vector);
-> +        } else {
-> +            ret = -EFAULT;
-> +        }
->       }
->       return ret;
->   }
+diff --git a/docs/system/i386/tdx.rst b/docs/system/i386/tdx.rst
+index 8131750b64..47d8fd023f 100644
+--- a/docs/system/i386/tdx.rst
++++ b/docs/system/i386/tdx.rst
+@@ -97,6 +97,28 @@ if the fixed-1 feature is requested to be disabled explicitly. This is newly
+ added to QEMU for TDX because TDX has fixed-1 features that are forcibly enabled
+ by TDX module and VMM cannot disable them.
+ 
++TD attestation
++~~~~~~~~~~~~~~
++
++In TD guest, the attestation process is used to verify the TDX guest
++trustworthiness to other entities before provisioning secrets to the guest.
++
++TD attestation is initiated first by calling TDG.MR.REPORT inside TD to get the
++REPORT. Then the REPORT data needs to be converted into a remotely verifiable
++TD-Quote signed by a service hosting TD-Quoting Enclave operating on the host.
++
++The guest issues TDG.VP.VMCALL<GetQuote> which is forwarded to user space by KVM.
++QEMU handles the request and sends the REPORT further to a Quote Generation Service
++(QGS) for signing. On success, a TD-Quote is returned back to the guest.
++
++To enable TD attestation, QGS destination must be configured using a
++"quote-generation-socket" property. Intel reference TDX QGS supports the
++following socket addresses: `{"type":"unix", "path":"/var/run/tdx-qgs/qgs.socket"}`
++or `{"type": "vsock", "cid":"2","port":"<portnum>"}`.
++
++See TDX Enabling Guide for details on how to provision the platform for
++TD attestation to work.
++
+ Launching a TD (TDX VM)
+ -----------------------
+ 
+@@ -112,6 +134,9 @@ split kernel-irqchip, as below:
+         -machine ...,confidential-guest-support=tdx0 \\
+         -bios OVMF.fd \\
+ 
++Additional properties and their descriptions are documented in the QAPI
++schema for the 'tdx-guest' object.
++
+ Restrictions
+ ------------
+ 
+@@ -135,19 +160,6 @@ SEAMCALLs and corresonponding QEMU change.
+ 
+ It's targeted as future work.
+ 
+-TD attestation
+---------------
+-
+-In TD guest, the attestation process is used to verify the TDX guest
+-trustworthiness to other entities before provisioning secrets to the guest.
+-
+-TD attestation is initiated first by calling TDG.MR.REPORT inside TD to get the
+-REPORT. Then the REPORT data needs to be converted into a remotely verifiable
+-Quote by SGX Quoting Enclave (QE).
+-
+-It's a future work in QEMU to add support of TD attestation since it lacks
+-support in current KVM.
+-
+ Live Migration
+ --------------
+ 
+@@ -158,4 +170,4 @@ References
+ 
+ - `TDX Homepage <https://www.intel.com/content/www/us/en/developer/articles/technical/intel-trust-domain-extensions.html>`__
+ 
+-- `SGX QE <https://github.com/intel/SGXDataCenterAttestationPrimitives/tree/master/QuoteGeneration>`__
++- `TDX Enabling Guide <https://cc-enabling.trustedservices.intel.com/intel-tdx-enabling-guide/01/introduction/>`__
+-- 
+2.50.1
 
 
