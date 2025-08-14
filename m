@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1628DB26718
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 15:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D1AB2671E
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 15:26:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umXem-0004XV-Rb; Thu, 14 Aug 2025 09:06:12 -0400
+	id 1umXeu-0004nS-8A; Thu, 14 Aug 2025 09:06:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1umXe0-0003RS-8e
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 09:05:24 -0400
+ id 1umXe4-0003Vp-Dt
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 09:05:29 -0400
 Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1umXdm-0005aW-TS
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 09:05:23 -0400
+ id 1umXdq-0005bK-SV
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 09:05:27 -0400
 Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-76e2ea887f6so719159b3a.2
- for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 06:05:10 -0700 (PDT)
+ d2e1a72fcca58-76e2e89bebaso698248b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 06:05:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755176709; x=1755781509; darn=nongnu.org;
+ d=linaro.org; s=google; t=1755176712; x=1755781512; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RrRDTwGDphkvvBtsV/mK2pHDoMT9L4tWZDtSjWVgm+E=;
- b=QrWjLqGKssKjyHuHMs+aasxkpAEzCqUOY397aWNnLD7GCUSgJKRjzd/OdBQBe43stk
- vKa9YT5Tlv6F8vS+As24YV8H5d9gN5tGe60D9/ngK6i8HF5HO+IfADksT7+g0uC0+Ji4
- aWXGA4YKt/QqZNZSgMqMHT6xCy7kCwv5VoLJm/vOG34nonygUqUxUEisBFUCjgqOmhDU
- 503P1ZbZgb2jNqMRoefacvgezRW6dFPLmv2+WeDLqoOzMuefOGJQ+Wbz9/BhCfyO4ksO
- /PhZRzs070vInyNDC7qmzDAN6H+jXGkmADxXq6/CVSfbXoSlAKHKG9wEhIVca5UxYEWP
- w0cA==
+ bh=Bac99cWBoODM0lZjzPV8FafpKsc60jTDKb6XVoHXo24=;
+ b=xf89rY2RdSFQ4itg5aju4P6bh8iTqLFUL61PBoDij4U4gw7UxVUBAzQv9Q9We2uGeC
+ POnrl0RLD0nrRcFRlLTss+oAttu47MGWRmkii4SuqG5nmtX4VFaVjtKEvNevucuQgaHM
+ edUrnz7Cd/Ob+8Mxo1X01Rkd7GM7ewUV/OIKrESWUBu1WCIxdaDYp3MUb1roZhLyqWnp
+ CbBmbLDBAranYnCilnZFp+OobJkAapvTfBmHRStI///V9fHSErxQOKjSBrLNwhzX4Yew
+ GPU3hcflavru6MB+r1gb7ivP9X8wGL92IZ+xb3JnmnOmnZ1bJV7zNwFCms3clc4ktcNQ
+ tWyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755176709; x=1755781509;
+ d=1e100.net; s=20230601; t=1755176712; x=1755781512;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RrRDTwGDphkvvBtsV/mK2pHDoMT9L4tWZDtSjWVgm+E=;
- b=cA62Bsc4ZkfBcUmpxoI3Pug9hMrBggxptdsAXn3XUMh7XZxLqGKXq5s1Xr+UAOH1F0
- nrpSd/V5HfBc10rqY/tJVTZKXn8Z2Ms0sIcYRMqbopAHmGVwhY6cg4lBpGdnSPl06wG1
- CDpRoVVgkkzTxgy9N0fRFbs8BjZSr+YvS8ReLmkPFv78C4RKvQv5A4J83u73jZEGyQSh
- ys154wQDhGqO1VFFPvdMQdcUI//XIqTESftla0JHeBfbK7deOn8qqN/8D8jl6dt8bY3+
- THgr2RESdqvW/Pwyxbl8vUiOGbizSFy1xDS+n9JLVkhw0rjSPwhI1+BFWNNqQ0ohjgir
- SAnA==
-X-Gm-Message-State: AOJu0YyqClH4vES1g1kqjCsVY0otE4jh9eyQ8tgv1JfGWI5Zhh4j2xEA
- kyAxgLDOCA37T5JrMQ+b6I8kDQsUCYAADpqdXhjUKTHf2SKpSb5ze/7mHcQ65r5zOqr6UpzgX8K
- o3qdWUFc=
-X-Gm-Gg: ASbGnctc0l0a45pdTlIAwrWraATHFvFZ6pxBjN/GgkZcn8/VHsOyuybLjU7UWAuruFO
- 6f83/4irfudrwEUu8Q5j2wMweK+ZlIIPfE6qpEsu9pV5qQLrlODR0bbMVdCn/k8jGccjzOmx/K8
- 2BLUyQs/geo6aVyQ5UhpWDl3bA9vyCd3Mf0Ia4PtZR7Tuo1j0M+RHM+35jfRSH5N0tGyluG23c1
- dPrP19wVdsXxMtJbIENz6ffhQgrz8frDc3zs73jbFqYCojD3I59GpdqqZesGZ8FrwWoQ9exIoBp
- oP5lHeK37YFCKfjb3JGWWf1IAWF2G+5tYeNvvZ5/YNMdgQuckGQqERsYKeQKlOHq+BdFlrOi6eb
- qEQtwQllC0P5ukPuzSmLLziKbhvuKuWdudBBJa0Z3Ksiegig=
-X-Google-Smtp-Source: AGHT+IGpWmGFa/TWxWsDhF7kHJ2I5r7JNiuOH56iHK8+K3kpJYcGceT5x2yhXsfaxDjC3aNXXdLyMA==
-X-Received: by 2002:a05:6a00:244d:b0:76b:6288:e2e7 with SMTP id
- d2e1a72fcca58-76e2fd8dd88mr4424527b3a.20.1755176708438; 
- Thu, 14 Aug 2025 06:05:08 -0700 (PDT)
+ bh=Bac99cWBoODM0lZjzPV8FafpKsc60jTDKb6XVoHXo24=;
+ b=vwHUvkrgirf/jDiTEqcOxsRYU62ZRioqnyHTRL0fhmHh4Wvm1BidDoEc7WoQVMsdCd
+ d7hjNmSBNMlzkQTMX4fZHXhZCufGC5xsSYOXEIx0HuVMjS1UkxILOKcXp66srPenWIRQ
+ mp0uPPMveAX7czvUaBCQ8NLRi75EJYtqaGsInlN/Gguq39mhFaouF8cfRo1PnuO+fmve
+ 2ru73fV0EfQjflnEzh4Iuv48uw7wiWFnLRUYUkjhbtgwVE6OZsPK70U0/cww3DrPbcrU
+ oBJV5ZI1f+88Pb1syHlNR/G2AFWQwJCZrTr8XuthVp55Atn4cWJjaBoc0NrQzBAyi8o7
+ lJ/A==
+X-Gm-Message-State: AOJu0YxAZ5WpIMD13X4NiNrtNzhDJlT/fF20EJsOtCNrD/54SwdQBVee
+ RRmh7u+cdhiHHsVbY3LAepxHb1m7OO16L3kILhYjamu1i9MUnwHFNVeV+hVNfqwvGyAxZ6oUPH8
+ NMJKBIXA=
+X-Gm-Gg: ASbGncvot90tM+6KPfc3wK5BZeEcmvXKr3gTwrGa2JfNZ2NVNcol91Gl7h2oqSoGgza
+ ReQId8iYM5abMmcLydSPJ5NGoD0Yun0St+1FxHo7NmUBVUbbF4Dl1ly4PUOHAokJ4trBR1+HCyw
+ jEm+Esmljf88bHvfQLOf3xUm1b1CRcnFLx+YCdRUrALcdtJeESKQCwcGPg87y5faYMSkJQtLtZ4
+ 0upo/DKdV+nCnpOnzXDOlcOUKl3+4BBBXZp3u8UsAv2KXD7tBT+GUdFUeYmrCrTLNIWOxQ7izTO
+ az9FuHpDR/vXbV536OFKyGEbHj7KGwpe50C5QmhZNbxlQuOX4/x+yiLuIS4i2bQDu3X4khrRj9T
+ 5Yi0z8bEk/po76pVAbRhB1dGBh9MyshXcH74wWJJQery8C2g=
+X-Google-Smtp-Source: AGHT+IFz1rg3YKil1wGP212tKnjrHGzwXOCKqk0XWfiExwIIMX+0YzDe0O905cvhAAUGDJI+6bgPgg==
+X-Received: by 2002:a05:6a00:2311:b0:76b:ef44:1fa6 with SMTP id
+ d2e1a72fcca58-76e31eb9cb8mr4346246b3a.4.1755176711484; 
+ Thu, 14 Aug 2025 06:05:11 -0700 (PDT)
 Received: from localhost.localdomain ([206.83.105.236])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76bcce6f6fesm34480631b3a.26.2025.08.14.06.05.05
+ d2e1a72fcca58-76bcce6f6fesm34480631b3a.26.2025.08.14.06.05.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Aug 2025 06:05:08 -0700 (PDT)
+ Thu, 14 Aug 2025 06:05:11 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 75/85] linux-user/aarch64: Allocate new gcs stack on clone
-Date: Thu, 14 Aug 2025 22:57:42 +1000
-Message-ID: <20250814125752.164107-76-richard.henderson@linaro.org>
+Subject: [PATCH v3 76/85] linux-user/aarch64: Release gcs stack on thread exit
+Date: Thu, 14 Aug 2025 22:57:43 +1000
+Message-ID: <20250814125752.164107-77-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250814125752.164107-1-richard.henderson@linaro.org>
 References: <20250814125752.164107-1-richard.henderson@linaro.org>
@@ -83,7 +83,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,53 +99,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allocate the new stack early, so that error reporting need
-not clean up other objects.
-
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ linux-user/syscall.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 2f1e881046..91210775ed 100644
+index 91210775ed..dfe114ceb3 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -6652,6 +6652,21 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
-         ts = g_new0(TaskState, 1);
-         init_task_state(ts);
+@@ -9309,6 +9309,12 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+                              FUTEX_WAKE, INT_MAX, NULL, NULL, 0);
+             }
  
 +#ifdef TARGET_AARCH64
-+        /*
-+         * If GCS is enabled in the parent thread, it is also enabled
-+         * in the child thread, but with a newly allocated stack.
-+         */
-+        abi_long new_gcspr = 0;
-+        if (env->cp15.gcscr_el[0] & GCSCR_PCRSEL) {
-+            new_gcspr = gcs_new_stack(ts);
-+            if (new_gcspr == -1) {
-+                g_free(ts);
-+                return -TARGET_ENOMEM;
++            if (ts->gcs_base) {
++                target_munmap(ts->gcs_base, ts->gcs_size);
 +            }
-+        }
 +#endif
 +
-         /* Grab a mutex so that thread setup appears atomic.  */
-         pthread_mutex_lock(&clone_lock);
- 
-@@ -6676,6 +6691,11 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
-         ts->info = parent_ts->info;
-         ts->signal_mask = parent_ts->signal_mask;
- 
-+#ifdef TARGET_AARCH64
-+        ts->gcs_el0_locked = parent_ts->gcs_el0_locked;
-+        new_env->cp15.gcspr_el[0] = new_gcspr;
-+#endif
-+
-         if (flags & CLONE_CHILD_CLEARTID) {
-             ts->child_tidptr = child_tidptr;
-         }
+             object_unparent(OBJECT(cpu));
+             object_unref(OBJECT(cpu));
+             /*
 -- 
 2.43.0
 
