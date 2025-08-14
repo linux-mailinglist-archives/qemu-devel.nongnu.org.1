@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6570DB26D5B
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 19:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51225B26D54
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 19:15:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umbWD-0008LE-EP; Thu, 14 Aug 2025 13:13:37 -0400
+	id 1umbWB-0008KX-B6; Thu, 14 Aug 2025 13:13:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1umbWB-0008Kv-Co
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:13:35 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1umbW9-0008Jp-1u
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:13:33 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1umbW6-0001no-Ql
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:13:35 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-45a1b0becf5so5666335e9.2
+ id 1umbW6-0001ny-Oo
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 13:13:32 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-45a1b065d59so6342465e9.1
  for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 10:13:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755191606; x=1755796406; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Qddu1LKlEVM418ztePcYYkApchal3wbvTLvSqsnx7wU=;
- b=O4eY4d6YPzc85Tm0s2mSiceiZtk/fiFw1dxx9aua1Ah/VYydt85BejHpItJ/EyPaUw
- 7al4IX7t9HSIQJnbALP8XtXFk3PqG24CWoSbpanK6JQR42w/huRE2hi5CUu9lL+0C1p0
- jwYNhaaZ3TdEdPy2r/WRedwL7cNHGmUzEEbyUEvQAtr4YGbVb9I+wXOBxEAXfN37e7q2
- SQ4iUU7sOIKT6kU2vEM8LicB9YTqP8nn6VbnaLlWyO1f85f+on7lPF6dK2rc+ktIwOe2
- RhQr+aMSGKO6lkh9BNZBXvfTAKSBmmR+egkXUG0m3cfcqyCPLixhhEoib7U6MFyHdE92
- 5QFg==
+ d=linaro.org; s=google; t=1755191607; x=1755796407; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mTW8JUKYJrzyjOYJQzVwpdJf42zS48hJmAThckQDc8A=;
+ b=O6X4IK5XeyPBUIXSF9Ov6gcgNFMr4/JcP3lK6PuftB6ibp6NF5K7bx8OWozioL9nFK
+ ApgPryMmId0Kjfm9ME62NEgBzZIXGUUkdjl76WvteXrg+uWZD9Xy0xssQhq81p7Skp16
+ Wdmy5A8HttAzsch4e053Cf4w4dbtrEivD16SeckoNI6Wjn7se6O0Bs9zswHww2j5tOLD
+ T1AIfjsSqKg6DEq8ZLak4bdWyHVTt9ne5TELTzmmG1a6t0sylLGTmI1tgcgaprcNYs5M
+ 73+3/qwPY9SoshgBojajRIBLBhwBNZKUhorC7/8IR4r4OLOIftHoy1i5HHavcGaQ39WP
+ V68A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755191606; x=1755796406;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Qddu1LKlEVM418ztePcYYkApchal3wbvTLvSqsnx7wU=;
- b=LWPUzycATUdi1DgS5qR2Cw/ZZO4wgCOpB8vNCVKb5LJzX1PJHgQWZoxYojU33/T8LR
- PewnW4EKFncYCnPp3+A3ZadVBqYApmYpQ4UymOq5UPOw+H7HY3gUCibEQMNo2D9oDxbK
- DvrakWTmbEJ4mypmJhjyDvj3ke5eRPOlYJysci9oWCPI34OPM4OnXPiSHyc8rWBMig9/
- rceqX08V3QPbAi59Q3W3IZMIwKAez4/fp0rTOY6O0kFmuR8hAgi1KdscFpY+tGiGg2hi
- G8bMgefE1OZMfapWm+K9MtoCbtNKiTkXeAXdNh/aRk3fzu/pf2wJGrBBV8By+DmG5dhp
- t4Fg==
-X-Gm-Message-State: AOJu0Yx4yK1log2HWQKFjymzX8j5MyJzBnPflwCK3Y9jtLPZ/wLdrFkk
- eEMIaxbiEdI3kwBmblA6bCauNX8SxZHSUddYc0L6SoFke7NsGnJokvrD6NiFd4U7gGzRJnok7Bz
- U6u5I
-X-Gm-Gg: ASbGncuERYmzugeIpHDa7yTlh0/AlF4vJX+DjYYgDO/5u0N0+u/j0gqB5kZBjHAAzir
- w61NIdW7Ko228d2gNejvcfvtcmyj4St76WkVAc64OWK3lntCkQbGSy0y1ddkZami074JS2ehlvG
- MvgNVBqihwBWB8QIZchd8ETvvVahShJiC30gqVhGOOWMzCX58yFS2ci4qBNqEGHdNINreyTFr/o
- 7VbEkLaPGY9I7TGedmZgVhO6OC6Rk+rF1dtjx31ho8+9Fuco9z9SUTTlCca4vTa3VxPNp6uFzGc
- YKecvcj3LNuQZVGQjDwIEN4QbsjVV/qZ8RRL/DTf+yszYqWiMXaA5gDcCCUiCqFtDSd/MbEl64X
- adY+LjVFrHnF8F532Ft+ltc6H+jfu
-X-Google-Smtp-Source: AGHT+IFdJ7xiyROoUBnhQQoVHI8mYgN7rTvAKdSNIBL1ahO5K02mYf4NDq/d09LnI+2TJZZz5ugPIA==
-X-Received: by 2002:a05:600c:4746:b0:459:e025:8c5a with SMTP id
- 5b1f17b1804b1-45a1b688350mr25942815e9.33.1755191606280; 
- Thu, 14 Aug 2025 10:13:26 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1755191607; x=1755796407;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mTW8JUKYJrzyjOYJQzVwpdJf42zS48hJmAThckQDc8A=;
+ b=RBra4F1aVC0i4FzGB7/2cBbg7FFwFRUdZhZY9Lh69N+lirMtbd/yokzKaCDpTzI5xM
+ 7L79QE0lYMcLpSyMXLHiVxr/8jN2QtznvkYnkDolPVOWpgMurJdi27IbLXXv7GfYWFKz
+ KRsOI93F/7ioFI2vVm7NkzSEPzpG5CMATAYdLqzfYMYCaOIjCs0Oq29+w6Q/lLzODE/P
+ wUIIqJHa9HnslGL/tPQ6DdLVAU03R8iEwEOsT0vizy/jHr/nBplyKjzO/vS1hFHVF+Lo
+ 7iNhGI65juexYIWTOaUKI5Ars6qwzpqPNcidXlbUoK5Z5XoR00yietujPFJSOBtKjvvL
+ o0KA==
+X-Gm-Message-State: AOJu0YyDzU2gSL8W4XfEJH080mtNccD9U0KeXgVRpMfREnaY+6ktIaFN
+ KRVH92M5FO7EOY9gBlDErNf4z85PKnm2TcrH+Q814Q1+H1MyQ71riFjLKpCXhsWDlFwb8HG52um
+ VTJGB
+X-Gm-Gg: ASbGncteeG1cwoI1kdTRyaZ/YuXF14K96HCrlYVMP66wi66JftmdTzscGNCVv2aSq/L
+ PwGT0GUIYwzJnQYKZpY5bGtUVMhzHDDAzmLrvInioeddYu+3txqBSUi7RgZUXWnyHuUjgR2bUFO
+ fI/iYN1s+hnNZGgIyC3N+N9ynud47UTTMJ0Tm1FCGHUVkBIMcOQ/oC/FBWPxn4lW/WKG5Ud82Mt
+ 2cwa4Q8JMXTqw1UiUzdp61UscZ1HTAg0Ut54G+IwPY+QuD7AAddbR+Cxx7dyVH7nzyVZ0Eg4TgF
+ gta9WFLPJdw9DUX6O1PfuatrcP5CKKbPxmx937Zgv9jQVdSLk3TRDlUKbrfg5qyy0Rxkr9wrvki
+ Pld0xIsBKUto8SJho58ehClDJjknw
+X-Google-Smtp-Source: AGHT+IGSYI/ZYJNVuLFZVuG7TzXgclSacAgto5mgDCp5Qd/MD/u//hHKjkBeRBwcocHrRDQkDS3N2A==
+X-Received: by 2002:a05:600c:1c1b:b0:453:5c30:a1fd with SMTP id
+ 5b1f17b1804b1-45a1b61e3a5mr28262765e9.8.1755191607227; 
+ Thu, 14 Aug 2025 10:13:27 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45a1c76e9basm29489165e9.21.2025.08.14.10.13.25
+ 5b1f17b1804b1-45a1c76e9basm29489165e9.21.2025.08.14.10.13.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Aug 2025 10:13:25 -0700 (PDT)
+ Thu, 14 Aug 2025 10:13:26 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	John Snow <jsnow@redhat.com>
-Subject: [PATCH for-10.2 0/8] docs: Update our kernel-doc script to the
- kernel's new Python one
-Date: Thu, 14 Aug 2025 18:13:15 +0100
-Message-ID: <20250814171324.1614516-1-peter.maydell@linaro.org>
+Subject: [PATCH for-10.2 1/8] docs/sphinx/kerneldoc.py: Handle new LINENO
+ syntax
+Date: Thu, 14 Aug 2025 18:13:16 +0100
+Message-ID: <20250814171324.1614516-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250814171324.1614516-1-peter.maydell@linaro.org>
+References: <20250814171324.1614516-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,136 +100,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Earlier this year, the Linux kernel's kernel-doc script was rewritten
-from the old Perl version into a shiny and hopefully more maintainable
-Python version. This commit series updates our copy of this script
-to the latest kernel version. I have tested it by comparing the
-generated HTML documentation and checking that there are no
-unexpected changes.
+The new upstream kernel-doc that we plan to update to uses a different
+syntax for the LINENO directives that the Sphinx extension parses:
+instead of
+  #define LINENO 86
+it has
+  .. LINENO 86
 
-Luckily we are carrying very few local modifications to the Perl
-script, so this is fairly straightforward. The structure of the
-patchset is:
- * a minor update to the kerneldoc.py Sphinx extension so it
-   will work with both old and new kernel-doc script output
- * a fix to a doc comment markup error that I noticed while comparing
-   the HTML output from the two versions of the script
- * import the new Python script, unmodified from the kernel's version
-   (conveniently the kernel calls it kernel-doc.py, so it doesn't
-   clash with the existing script)
- * make the changes to that library code that correspond to the
-   two local QEMU-specific changes we carry
- * tell sphinx to use the Python version
- * delete the Perl script (I have put a diff of our local mods
-   to the Perl script in the commit message of this commit, for
-   posterity)
+Update the kerneldoc.py extension to handle both syntaxes, so
+that it will work with both the old and the new kernel-doc.
 
-The diffstat looks big, but almost all of it is "import the
-kernel's new script that we trust and don't need to review in
-detail" and "delete the old script".
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ docs/sphinx/kerneldoc.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-My immediate motivation for doing this update is that I noticed
-that the submitter of https://gitlab.com/qemu-project/qemu/-/issues/3077
-is using a Perl that complains about a construct in the perl script,
-which prompted me to check if the kernel folks had already fixed
-it, which it turned out that they had, by rewriting the whole thing :-)
-More generally, if we don't do this update, then we're effectively
-going to drift down the same path we did with checkpatch.pl, where
-we have our own version that diverges from the kernel's version
-and we have to maintain it ourselves.
-
-We should also update the Sphinx plugin itself (i.e.
-docs/sphinx/kerneldoc.py), but because I did not need to do
-that to update the main kernel-doc script, I have left that as
-a separate todo item.
-
-Testing
--------
-
-I looked at the HTML output of the old kernel-doc script versus the
-new one, using the following diff command which mechanically excludes
-a couple of "same minor change" everywhere diffs, and eyeballing the
-resulting ~150 lines of diff.
-
-diff -w  -I '^<div class="kernelindent docutils container">$' -I '^</div>$' -I '^<p><strong>Definition</strong>' -r -u -x searchindex.js build/x86/docs-old-kerneldoc/manual build/x86/docs/manual
-
-The HTML changes are:
-
-(1) some paras now have ID tags, eg:
--<p><strong>Functions operating on arrays of bits</strong></p>
-+<p id="functions-operating-on-arrays-of-bits"><strong>Functions operating on arrays of bits</strong></p>
-
-(2) Some extra named <div>s, eg:
-+<div class="kernelindent docutils container">
- <p><strong>Parameters</strong></p>
- <dl class="simple">
- <dt><code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">nr</span></code></dt><dd><p>the bit to set</p>
-@@ -144,12 +145,14 @@
- <dt><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">long</span> <span class="pre">*addr</span></code></dt><dd><p>the address to start counting from</p>
- </dd>
- </dl>
-+</div>
-
-(3) The new version correctly parses the multi-line Return: block for
-the memory_translate_iotlb() doc comment. You can see that the
-old HTML here had dt/dd markup, and it mis-renders in the HTML at
-https://www.qemu.org/docs/master/devel/memory.html#c.memory_translate_iotlb
-
- <p><strong>Return</strong></p>
--<dl class="simple">
--<dt>On success, return the MemoryRegion containing the <strong>iotlb</strong> translated</dt><dd><p>addr.  The MemoryRegion must not be
- accessed after rcu_read_unlock.
-+<p>On success, return the MemoryRegion containing the <strong>iotlb</strong> translated
-+addr.  The MemoryRegion must not be accessed after rcu_read_unlock.
- On failure, return NULL, setting <strong>errp</strong> with error.</p>
--</dd>
--</dl>
-+</div>
-
-"Definition" sections now get output with a trailing colon:
-
--<p><strong>Definition</strong></p>
-+<div class="kernelindent docutils container">
-+<p><strong>Definition</strong>:</p>
-
-This seems like it might be a bug in kernel-doc since the Parameters,
-Return, etc sections don't get the trailing colon. I don't think it's
-important enough to worry about.
-
-thanks
--- PMM
-
-Peter Maydell (8):
-  docs/sphinx/kerneldoc.py: Handle new LINENO syntax
-  tests/qtest/libqtest.h: Remove stray space from doc comment
-  scripts: Import Python kerneldoc from Linux kernel
-  scripts/kernel-doc: strip QEMU_ from function definitions
-  scripts/kernel-doc: tweak for QEMU coding standards
-  scripts/kerneldoc: Switch to the Python kernel-doc script
-  scripts/kernel-doc: Delete the old Perl kernel-doc script
-  MAINTAINERS: Put kernel-doc under the "docs build machinery" section
-
- MAINTAINERS                     |    2 +
- docs/conf.py                    |    4 +-
- docs/sphinx/kerneldoc.py        |    7 +-
- tests/qtest/libqtest.h          |    2 +-
- .editorconfig                   |    2 +-
- scripts/kernel-doc              | 2442 -------------------------------
- scripts/kernel-doc.py           |  325 ++++
- scripts/lib/kdoc/kdoc_files.py  |  291 ++++
- scripts/lib/kdoc/kdoc_item.py   |   42 +
- scripts/lib/kdoc/kdoc_output.py |  749 ++++++++++
- scripts/lib/kdoc/kdoc_parser.py | 1670 +++++++++++++++++++++
- scripts/lib/kdoc/kdoc_re.py     |  270 ++++
- 12 files changed, 3355 insertions(+), 2451 deletions(-)
- delete mode 100755 scripts/kernel-doc
- create mode 100755 scripts/kernel-doc.py
- create mode 100644 scripts/lib/kdoc/kdoc_files.py
- create mode 100644 scripts/lib/kdoc/kdoc_item.py
- create mode 100644 scripts/lib/kdoc/kdoc_output.py
- create mode 100644 scripts/lib/kdoc/kdoc_parser.py
- create mode 100644 scripts/lib/kdoc/kdoc_re.py
-
+diff --git a/docs/sphinx/kerneldoc.py b/docs/sphinx/kerneldoc.py
+index 3aa972f2e89..30bb3431983 100644
+--- a/docs/sphinx/kerneldoc.py
++++ b/docs/sphinx/kerneldoc.py
+@@ -127,7 +127,7 @@ def run(self):
+             result = ViewList()
+ 
+             lineoffset = 0;
+-            line_regex = re.compile("^#define LINENO ([0-9]+)$")
++            line_regex = re.compile(r"^(?:\.\.|#define) LINENO ([0-9]+)$")
+             for line in lines:
+                 match = line_regex.search(line)
+                 if match:
 -- 
 2.43.0
 
