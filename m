@@ -2,54 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F05B25C86
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 09:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3686BB25CA8
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 09:08:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umRyN-0002jr-Td; Thu, 14 Aug 2025 03:02:03 -0400
+	id 1umS3H-0007ki-Lf; Thu, 14 Aug 2025 03:07:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1umRy2-0002g6-BC
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 03:01:42 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1umRxx-0002n6-Ok
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 03:01:41 -0400
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8Ax3eLNiZ1obKY_AQ--.17369S3;
- Thu, 14 Aug 2025 15:01:33 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJAxT+a7iZ1o8s1KAA--.21880S10;
- Thu, 14 Aug 2025 15:01:33 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH v2 8/8] target/loongarch: Only flush one TLB entry in
- helper_invtlb_page_asid()
-Date: Thu, 14 Aug 2025 15:01:13 +0800
-Message-Id: <20250814070113.351760-9-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250814070113.351760-1-maobibo@loongson.cn>
-References: <20250814070113.351760-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1umS3C-0007jd-ML
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 03:07:03 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1umS38-0003ze-1j
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 03:07:01 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-45a1b065d58so3776995e9.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 00:06:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1755155212; x=1755760012; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=e59BaxHwubmbKhg2MtSdXVTimX1acxMLoXeo1of+jh4=;
+ b=NJUrcH22M0Kp4fQ32jNVNKKzQznQC8byjaiF35GpFyejTcaNEpxe8BnGgeeJrGmjRa
+ oYZE4qIhzSXuPHljfuC4sDAEJRBvOIyhdspu9BNsu0XgGCxsI1aICwLx6gkGNIiUaIRc
+ 3Cg2kcTW8m0TaDECWUKvJO8skk2ENnKb5SNJPD/MTNRn2Ultnd6TOAkDzJOe5gtPxAOZ
+ j884Psj31qWZV7LvscVDhsjmrRgY8GdKLfTYM8YNZ6elpZNISaVMkDbNlZVRBw6V1kJz
+ 8PfUz5ZALGvNAuMbAX5l41kQX7pINLEdzlFDEfRfdJl6Et70Hmjtl+bcnqIu0wi6PLu3
+ C1Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1755155212; x=1755760012;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=e59BaxHwubmbKhg2MtSdXVTimX1acxMLoXeo1of+jh4=;
+ b=QVKfQ/q7zCAOfdBtLrHJhQDqRC7vyHi2vm06DTStCR/akfnuW6cG1gILoF8lI2S3lT
+ qPycowJOAPdqtkdibH3kN3sjKKL5vIyAIArIoa618az+/p44OiPLBr1Jx7elaJTVw1Nf
+ 3MGRg3gbXiuPBktjvxM0fMyIIVMYyVEU+gWJ2XCx7JCKIdnK/wuOuCECDrkCQpTimdGN
+ IWPSXPZJU59dRrUdQQFx/TGKl6ML4tKOsW5HR+eYYiYEzajEO1l6OKNHZDvMoN635/UO
+ JimQYOhYKGdKeAbGUCJHrt6FrokTd0o1iGIfD2DeIXfM77QDQM7hTnJd1FmVvX+AdzgW
+ Zp0A==
+X-Gm-Message-State: AOJu0Yy3PcL4g/u8ix+/udT/q3DBdAqMFzgFG607t3sBknVfSTQSjngN
+ yChz7f1XMDo7iL8Qvg/6JpysWpxbGqWkhB65xU+gUw5PvigevZPaB1OI4+dwZ09gz9nKRFxzq2Q
+ roUA6
+X-Gm-Gg: ASbGncv9QGzl9z9k+f2GsuIEfb+hK4XsBZkWEJWxDYiAkl2CxHCge7P8Pm+jNdoC5Un
+ tsQDfCVIpGaGutONMg4mpughdCm1t7W3bVB89PZgTBtFqKpxRNoBGWZTXsy9yqDTFO895+Itr+x
+ lF3pclhtw+TYbQCY+8iQFyqa/jz8itxNXPI1VavZFHQUPTKQd8RF0/kfaH06pR3BOpiIwyhGtnb
+ zevMiRo2lDaOzIYGZckLyLVULiU9J5JaaBqYKiyFIK7PGlvBsascGkRC0wXcX+XwpQMUQZYpARR
+ JM7xvFTA4hFS9OIVvBKfb94rxPiQz7JleuUH2/VOt1iK5nalMv3MDUwW2CdaqD7YaB/PRVffuie
+ PmUg8rNZEX+M0PIiOiFGQe4Xz49mYAAa0zyVsFa0VUL1gOPRRJUctpXu7PtxrcE8hYfn2iu2URe
+ QKsg==
+X-Google-Smtp-Source: AGHT+IH/mFU61Di3WC8xQgH6rPurg1C5x9q8btrdDcNw7Tjkt/guFWZ5989SF8ZwxaQhBYlqtcepKg==
+X-Received: by 2002:a05:600c:3b11:b0:459:10de:551e with SMTP id
+ 5b1f17b1804b1-45a1b6556b9mr12212945e9.27.1755155212031; 
+ Thu, 14 Aug 2025 00:06:52 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45a1c78b33csm9885825e9.25.2025.08.14.00.06.51
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 14 Aug 2025 00:06:51 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH-for-10.1? 0/3] linux-user: Select default CPUs for MicroMIPS
+ and MIPS16e ASEs
+Date: Thu, 14 Aug 2025 09:06:47 +0200
+Message-ID: <20250814070650.78657-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJAxT+a7iZ1o8s1KAA--.21880S10
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,39 +97,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With function helper_invtlb_page_asid(), one TLB entry in LoongArch
-emulated TLB is invalidated if found. Also invalidate_tlb_entry()
-can be called so that only one QEMU TLB entry will be flushed.
+We weren't parsing MIPS ASE in the ELF header, so couldn't
+automatically pick an appropriate CPU.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- target/loongarch/tcg/tlb_helper.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Since we'll have a rc4, I propose these sensible patches
+for 10.1, but both ASEs are available since 15 years in QEMU,
+so this isn't something broken since the latest release, and
+I don't mind holding it for 10.2.
 
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index d83e5fb7f8..7a4de7e566 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -552,7 +552,6 @@ void helper_invtlb_page_asid(CPULoongArchState *env, target_ulong info,
-                              target_ulong addr)
- {
-     int index, asid = info & 0x3ff;
--    LoongArchTLB *tlb;
-     tlb_match func;
-     bool ret;
- 
-@@ -562,9 +561,7 @@ void helper_invtlb_page_asid(CPULoongArchState *env, target_ulong info,
-         return;
-     }
- 
--    tlb = &env->tlb[index];
--    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 0);
--    tlb_flush(env_cpu(env));
-+    invalidate_tlb(env, index);
- }
- 
- void helper_invtlb_page_asid_or_g(CPULoongArchState *env,
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (3):
+  elf: Add EF_MIPS_ARCH_ASE definitions
+  linux-user/mips: Select 74Kf CPU to run MIPS16e binaries
+  linux-user/mips: Select M14Kc CPU to run microMIPS binaries
+
+ include/elf.h                | 7 +++++++
+ linux-user/mips/target_elf.h | 6 ++++++
+ 2 files changed, 13 insertions(+)
+
 -- 
-2.39.3
+2.49.0
 
 
