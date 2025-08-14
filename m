@@ -2,88 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565C7B25CAB
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 09:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68CDBB25CA5
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Aug 2025 09:07:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umS3I-0007kl-9Y; Thu, 14 Aug 2025 03:07:08 -0400
+	id 1umS3N-0007m7-44; Thu, 14 Aug 2025 03:07:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1umS3F-0007kI-4c
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 03:07:05 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1umS3I-0007l6-9n
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 03:07:08 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1umS3C-00040m-LJ
- for qemu-devel@nongnu.org; Thu, 14 Aug 2025 03:07:04 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3b9e415a68eso279931f8f.2
- for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 00:06:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1umS3F-00041o-Ri
+ for qemu-devel@nongnu.org; Thu, 14 Aug 2025 03:07:07 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3b9e4148134so292336f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 00:07:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755155217; x=1755760017; darn=nongnu.org;
+ d=linaro.org; s=google; t=1755155221; x=1755760021; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=roJhrLABrYMM3hT1Qlu1BPFfo21rWtltlN3F1VmKs60=;
- b=wfUIyUoTZY4Ch5ORw+aoEK0WjeZhJBJQAr3THji0Cz9VAjzWn27gUyD/2+SyHJCku5
- Wsm8s/8++1nJEMNei5T5AM/6hJ7hlxHHGZTAtmSdjNtjiNBJj/LcQS9ZB24IaXcQUEDm
- jWhi8dHyTD0sBGoOlSWOtT5sQoPnaQdPEnkLa3OgyM1Rc0pNsFi2PZB1VohCi4Gp2WZN
- ozMkKUfyxmpcjU5oii/slQBoa5gLUA/4Shgx+kqnbqkUvYXdI5/4y58BKdhOGgyocDP0
- LqFbyk1KnsRP9/xJes9cphO34+blGLjDblEN5l6Hv86TsbwjvB2Bfrp/d/ygWT8m8kmX
- wn/Q==
+ bh=5JW+/0ItkEipJlqLSPg29sThOTAq485WSDBW9nj3d0k=;
+ b=IIRbsEtIsi4TBPlNJXn2Vw+M1JByU6ldRzeCvdA+/GCprzSbGckJ7tlDpwmNdvTVtu
+ 4aGBGHoTWGy146vpmPJG0lZayZQndbysP19O1OzCiatyU/1olcpNAePuOVSM/KzbXl8h
+ dMKNj7pqjINaT1h+AuFDn9XusqPj6kuFpbYTgsgC1N+Xqw4wk28qJcJ89f+6HW4zudDr
+ kwiH7SOJGAbA5G4AU6B+YI7cT2x/YRSsfUgLVwKMZkLN7KKgzFoJ1Z0OWaUQ6sLd8PnH
+ cnP23+HAGsufUz92k1dwgMKU7V1Z5MadQTTgKOe/v78AIG3Tt5CusUAI1oKwoAWqNeSB
+ reGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755155217; x=1755760017;
+ d=1e100.net; s=20230601; t=1755155221; x=1755760021;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=roJhrLABrYMM3hT1Qlu1BPFfo21rWtltlN3F1VmKs60=;
- b=LselyOmmNOmRxEP0tnDbPuC6Ne/aSwRweBG+wGB5nOmu4uKruvVVHBcLdmbHjL40Rx
- K57k8Gst00KWDWCKRPssEGOcuhRJG3xE5im3O7QAoRsak3yXG4RRZlELmXO0baOt4kIr
- pFUifpC1wJZQ+w0SocDhMXTs4Kt5rqu6SZ87m5jFBlQRyhgkUf/NrdFNstitNlr4n6Bp
- RhCdWZxjTncFTa0UmjstioBMnrXucSZpjbtgl1z0DJ4/k8rR3iyy+L/RfbKVfsOWq1K7
- n9u8zVMFL9Y1Spdljncql9FPqtWIfoJDzqhnD89ZILkaChtskCbY1Otq/5xleK+pdFcS
- uAVg==
-X-Gm-Message-State: AOJu0YyhDW5kk1KGDKCZS9tqqmF87QF1gZsz5z3AFR/j0SXywgnIRM1Q
- QkpDnh2phPsOwF/9G75a/F7wIuaGoAOjYr8roJnfsf4kWpB2dku7ePziOnayDCbzKpzACWMPZfd
- Q+PRg
-X-Gm-Gg: ASbGncsKfnVWFWUvVL5ubcRqeelI5RMY9Puo5ZQNSPFQ4ybsymXQBYpY9G1/a37kwGy
- k1sp/x2E0xlH53MGD3gfmxVTLPhcNZH5XGP+SIJSDjFyTR3jg9PIYh/knZFoZAqGrgoiFjNiA/T
- LjPr+EoqmZVTtmiJBn78u5Is+WZGeMoMqe2MgZ3wQjy84oyru3yJ8oPbAu1FVCLq5LRlaqBjHvY
- XAZNp3MMslYt3rGvAc14iheGoBRVpKxcBMdMNVyvhT+LFe/9NJ3fPmFoSR+Phjv3nLwWbK3+Y+N
- ZyYOaYywdDWOojnM1DrR148P39C3DAfKpdE8Ucq+5Xo12MAlU4vny2v5jzC4MAt8opdNJlPgTLs
- 01YrlCpUKE+VX0u0IsbY/MfXlNuXUmGFjnutYSfTHhPVDMhYmb4MUcuWoHqCa6+U/DlZiVxjU/v
- 0yaQ==
-X-Google-Smtp-Source: AGHT+IHoYuta4w6XKVGSYZTDITw2WNNCDcU7iRZHrorEqnx0IgXHqhjuxm3hUq4zwvBY8zJfL2n3Fw==
-X-Received: by 2002:a05:6000:290d:b0:3a4:eb80:762d with SMTP id
- ffacd0b85a97d-3b9edf7ddb4mr1504720f8f.56.1755155216707; 
- Thu, 14 Aug 2025 00:06:56 -0700 (PDT)
+ bh=5JW+/0ItkEipJlqLSPg29sThOTAq485WSDBW9nj3d0k=;
+ b=YA+c4ngCWE8+gpE0XAXLHgz8fY7KYqQIpyvvctgnOgjg9Yq9pE9dRuMwcYJTclHn01
+ iOZeQeHJlV9w7NMzNbjuReIPu8QqupTfyrs9BwAAx+XI+3OCbvXsEBaw9XeXjGVfMAFH
+ gSzZQUmyARYh0kGOaP9rDF4n5iu/5E2qFtBO1h5t3eCrc6nKs47Rp7BGFCnGPFgbOcCd
+ j7vF7KE7dX3xZPF0Zp9pgdqcDeGwa6bdJNt/6+2xKdmjWVnJmYF/N+jhTzYApbVMHbp7
+ 6kuIB7Hl6kAKcUV3zEAQbjgh237Iqx5mVYBuMwa4Ry2LFccHZM4/GY61EtnFo58GDsUM
+ 7QTg==
+X-Gm-Message-State: AOJu0Yxzb/b7NsSFLYCUqTlBu+RdI8yeGsfYWnkJSQv/01Ld1cUu6e2V
+ lB36L8+hxIxnTgnQsQwQt/s5laMSGsWecdSYtLdA36DWkkFklsOz7tWjoU0MJAScFcU9Q5Jdjf8
+ ngx0n
+X-Gm-Gg: ASbGncvvYsgTiBCHBpPSgJEeffIQHPg8amn4+X2eaLfM2/fQ9E/JxR2qCrCj3rIT86B
+ LL6B1zkNAkd2YDv+GF18XNiHR0FASzfeUVo58tNE2k/ud5hOVW4yYxl2CWreZZyyyfm/HZcN3iJ
+ hj/gyhwvIp+J5AOAxATb4lJItU6x9AqBTEYvx3WWeTW3ltitLnA8R01/4F46vD5wuoEzUr+/M6L
+ YIamMA8iTCIORlo5+RiQp4Va0Beowjn8jQDSHqk7Pp8BMEGihetQM9Xcu0vEoyP8sNmWyrenqNK
+ LfAcwOO4eXF5REeox8dPu1p/z+MYLxQBVbQdnFePcsGExwkZzqNOoE7iByGIPjtQTNgk0D59hgY
+ SKd5S5D9iIT4h8HGV4h430t1zper/IINGWCzCS4pCrZQusl2mksQVc8x6FSIweuUzCgzeVnghlp
+ SHkg==
+X-Google-Smtp-Source: AGHT+IEHUUk5S9DDVcjkfWJATnf2kgCHWy8qgjco54AwiGxXQbCcYlw4nA0WQq2Ea4V28zkkypx+pw==
+X-Received: by 2002:a05:6000:2510:b0:3a4:d6ed:8df8 with SMTP id
+ ffacd0b85a97d-3b9fc340f86mr1460034f8f.39.1755155221425; 
+ Thu, 14 Aug 2025 00:07:01 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3b79c47c516sm50277956f8f.62.2025.08.14.00.06.55
+ 5b1f17b1804b1-45a1c6dbb51sm9964065e9.14.2025.08.14.00.07.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 14 Aug 2025 00:06:56 -0700 (PDT)
+ Thu, 14 Aug 2025 00:07:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH-for-10.1? 1/3] elf: Add EF_MIPS_ARCH_ASE definitions
-Date: Thu, 14 Aug 2025 09:06:48 +0200
-Message-ID: <20250814070650.78657-2-philmd@linaro.org>
+ Laurent Vivier <laurent@vivier.eu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ qemu-stable@nongnu.org, Justin Applegate <justink.applegate@gmail.com>
+Subject: [PATCH-for-10.1? 2/3] linux-user/mips: Select 74Kf CPU to run MIPS16e
+ binaries
+Date: Thu, 14 Aug 2025 09:06:49 +0200
+Message-ID: <20250814070650.78657-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250814070650.78657-1-philmd@linaro.org>
 References: <20250814070650.78657-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,32 +101,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Include MIPS ASE ELF definitions from binutils:
-https://sourceware.org/git/?p=binutils-gdb.git;a=blob;f=include/elf/mips.h;h=4fc190f404d828ded84e621bfcece5fa9f9c23c8;hb=HEAD#l210
+The 74Kf is our latest CPU supporting MIPS16e ASE.
 
+Cc: qemu-stable@nongnu.org
+Fixes: 6ea219d0196..d19954f46df ("target-mips: MIPS16 support")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3054
+Reported-by: Justin Applegate <justink.applegate@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/elf.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ linux-user/mips/target_elf.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/elf.h b/include/elf.h
-index e7259ec366f..bbfac055de4 100644
---- a/include/elf.h
-+++ b/include/elf.h
-@@ -56,6 +56,13 @@ typedef int64_t  Elf64_Sxword;
- #define EF_MIPS_ARCH_32R6     0x90000000      /* MIPS32r6 code.  */
- #define EF_MIPS_ARCH_64R6     0xa0000000      /* MIPS64r6 code.  */
- 
-+/* MIPS Architectural Extensions. */
-+#define EF_MIPS_ARCH_ASE      0x0f000000
-+
-+#define EF_MIPS_ARCH_ASE_MICROMIPS 0x02000000
-+#define EF_MIPS_ARCH_ASE_M16  0x04000000
-+#define EF_MIPS_ARCH_ASE_MDMX 0x08000000
-+
- /* The ABI of a file. */
- #define EF_MIPS_ABI_O32       0x00001000      /* O32 ABI.  */
- #define EF_MIPS_ABI_O64       0x00002000      /* O32 extended for 64 bit.  */
+diff --git a/linux-user/mips/target_elf.h b/linux-user/mips/target_elf.h
+index 71a32315a85..cd8622ce283 100644
+--- a/linux-user/mips/target_elf.h
++++ b/linux-user/mips/target_elf.h
+@@ -12,6 +12,9 @@ static inline const char *cpu_get_model(uint32_t eflags)
+     if ((eflags & EF_MIPS_ARCH) == EF_MIPS_ARCH_32R6) {
+         return "mips32r6-generic";
+     }
++    if ((eflags & EF_MIPS_ARCH_ASE) == EF_MIPS_ARCH_ASE_M16) {
++        return "74Kf";
++    }
+     if (eflags & EF_MIPS_NAN2008) {
+         return "P5600";
+     }
 -- 
 2.49.0
 
