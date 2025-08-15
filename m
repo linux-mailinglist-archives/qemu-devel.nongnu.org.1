@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D92B27FF5
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Aug 2025 14:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DB5B27FFD
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Aug 2025 14:29:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umtWw-00017S-O4; Fri, 15 Aug 2025 08:27:34 -0400
+	id 1umtWy-00018G-SB; Fri, 15 Aug 2025 08:27:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1umtWb-00014w-19
- for qemu-devel@nongnu.org; Fri, 15 Aug 2025 08:27:13 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1umtWd-00015H-R2
+ for qemu-devel@nongnu.org; Fri, 15 Aug 2025 08:27:16 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1umtWY-0007Y6-VQ
- for qemu-devel@nongnu.org; Fri, 15 Aug 2025 08:27:12 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-76e2ea933b7so1830352b3a.1
- for <qemu-devel@nongnu.org>; Fri, 15 Aug 2025 05:27:10 -0700 (PDT)
+ id 1umtWb-0007YW-KW
+ for qemu-devel@nongnu.org; Fri, 15 Aug 2025 08:27:15 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-76e39ec6e05so984832b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 15 Aug 2025 05:27:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755260829; x=1755865629; darn=nongnu.org;
+ d=linaro.org; s=google; t=1755260832; x=1755865632; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5w644wms9WFSYbf1QHY/TtcSmOasC/VpbJfkdqChOlQ=;
- b=LR6+OwGabesJKMzpAHxFjBN1nRpE1pClDuU9BnlhCrhO4UBW55UwjOZnM6ZdEwjkiO
- CffrGV8iIm09yjg5wELcS529qpRJe/xnzZxQkNOaqKIQ0TtS2xd7ZUxJIoBVYR2hZry/
- I+7fMnqPCE3MapiCWTdpmnorYq1f6B0sAG4tAM54pgPXmd0x+RsD4To/OgBoYYkwcZuM
- BJdDsJQdtDppmEVE5pe6wZqFVs5ZvVSex2usDHT+4raN4Dg3C3eW3yyOgtECkNTaoizC
- MVnCwpCUo15XeW8ycBWFzPWemrnjOKLMKGlpslgvpWMNiZXU4avHX6tG7wXIe09Bd22j
- 0c3g==
+ :reply-to; bh=FXjkQXdB1cnyWfZEPDVzu1UrhqtJ/eTeah1TtiZRU90=;
+ b=LMMghVizyXkvNyZwbawBZ53hWrR8FtZ3hEL5DbiueazekpY3NqUrTBA88Dbvta6INx
+ xTgJa6dsh4dxkXJjuFqFCj92W3B9ejahcf97flKo6grWAxKSrZCN+cNwx8ES5xgI+NzH
+ k6YKfqROBCUX+RQJITwNnTHg7GXwa90E8Kyn1VBVMbhIF6NDFybm9TPa1r6orbrsp/Yh
+ wUBf74kMpc0okxdVkMDJ+LhXGGtxPitYGPXfzY4CaE11xIdJuVx3KjrStNXihBhKwvGq
+ 6cEyt9Kue4U4+woxw2dMScJx/t+HN2eagfdYgql+LDy5bbtZf6tN9UxlNDI2q60DLXIC
+ sDRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755260829; x=1755865629;
+ d=1e100.net; s=20230601; t=1755260832; x=1755865632;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5w644wms9WFSYbf1QHY/TtcSmOasC/VpbJfkdqChOlQ=;
- b=mKq+TIHz+KBNdYwUNxTpT3Zpk575WfT1GsBjHv5WIh9V/O80bQULjBLn3k098W2cI/
- +lSBwlQ7EN8Qjt0uexWwgJqh3NhPYTSBvRtdJbDPErgCpcdut/ltFk8mzUf3zji62BJZ
- TmWM+WnzNV6/AfwHIgqJizgbL9ZZRrwsvdRnHs2MryDkaLePZ0Zad86ORrf3lO+U7BHR
- /NG+NAW2mxe40mY0b6+r3SWl25s/RFOJXkT5U3gJfA9HFi/jYOEVIx1XX3lClQmuTU/i
- zPgtaZFJqxwbyrCsEU+rVg2lJtFjBzR6zvDwWvSOuKqvsHADlL9uA2Gt6BAV2UUwjDvN
- 2QUQ==
-X-Gm-Message-State: AOJu0YwduqeNU36VSXZZ8NeiTsN8f1U39/Mysu9WY+dJA9taY8C3bI0A
- SpYe4Cq+uTNbSm4atfd8E1S/A8OJrFaVDboGRMxbRi6ghzt8QVKf1eo5X7ziv3y8ha1m30qwrRy
- D8icO1Oo=
-X-Gm-Gg: ASbGncsgJrOmudXsvk1fzVJsz2afpE4GYzUKJnCrYpSZ1291LcW1iF5lv+r2A+hzh8j
- lBFPWWppl5wG+Ojf/f92hRGXphDKMirH6hOm0cNxoNK+Q4Elwu4Q7nYJbe1reKwFo+UPJKABB0p
- FgwqIo32xnm8pYJuYPzJdZe0pX3UzsIUmZz9yAEm2HAlddHq1zjb9eLWmzeM0erHwjI3UQ1jdzJ
- ayOaAKxjcw4hNzZ2tzZWNcRxRmeYeRn0NZK3m4wB6HEhrc8otCLDgyZek+Uo9icfEzirCMSujEa
- P1jwhQNW1K1y/Ls3YRgIRtGjnLX87iuX7vJi+owqrfzuH4Vu0ZFN8iUIm1H2hFyeZhC9x7Xx9nN
- 51gwcwUZfEFahkzgZkItieUjuytNU4kjdx6Z8I0oOwfGq6tg=
-X-Google-Smtp-Source: AGHT+IF3eKQgNVeuXF/G93HqpYKJKui2PvpKcwqSW+rFjYf67NNjcjqhYCUbkXTwsyzXSr2s8tKRdA==
-X-Received: by 2002:a05:6a20:9143:b0:240:177:e820 with SMTP id
- adf61e73a8af0-240d2934c15mr3276074637.13.1755260829229; 
- Fri, 15 Aug 2025 05:27:09 -0700 (PDT)
+ bh=FXjkQXdB1cnyWfZEPDVzu1UrhqtJ/eTeah1TtiZRU90=;
+ b=HivOkOXuG9XPaZkTRYjKHcFw5wRSqpDEraWoSNzwloBIFatDhpt5TEcjBJPipg2URk
+ CjaoZNCaTjOUL0Dfvy3FZufe9ZzQP42skapifldsVt9bxknPgRe5+bgCxs9qolPXbpRu
+ SUc33c4MrmnCat70NL/v8st+A6HoBk13jtYYoB16lreqB6yYwd+QuFuW1FJaqOTpgnxI
+ kDGVXw8T8EkHrG7GFrVlQSCQ4nNkmYox7I9S8317XfXNvHc9isY29DeSmyAjuG6ouN6L
+ +g7cefnMsVzv5NbGP83cLkIYPaOhZhD24MLVpnYwFsEK9KBEoe2lPry066j89I2KDF6Q
+ BhwA==
+X-Gm-Message-State: AOJu0Yx1lXWFjnj9YRat4JYu4PhZqLbxTsHysN26w37OWNpVvk69A2nJ
+ lNp+N8AAUTrdk5DnB6l9DRQEQYC5qUZwAg1JriBVRTZ4W6kvmIIZHYNAbciVX0n9pbKQBqYYQjV
+ eI+/tS90=
+X-Gm-Gg: ASbGncvPdPtjZMDobNajWMpkXaJdY5iaHIPdAU5/hYSL1bVaWsDX7ZGEqin9pX8sbjU
+ ye6KZWaVRS8E6kuE+FzQh4MsnXn4+baVJzq+Uc694tZo8h1sqxDY+YGTOGESPEsIqTpNeBGruv8
+ n9fHMrslNjdMviqVYmkAuW/B7PBSIk1LAAq+9KNEFRGr/KFy/UZEQd941ZkYGhKBWl8g92r/8Iq
+ iDgd8tXD+385FKSvYch95BfQpk3Sir9inyAigV5SqbHhh1WqnyIWkpm3UsDmxK159Op725sJOOl
+ waleckRaaDxFnpIJ0pzzw72g95KpQcMgDWHk46Ta4Gz8Abpz21a+bAj/zcZ7noz4Yd0q7kMZbLQ
+ FATv0x7rfq8PpuIKIyTN6jKw9t7N5c8D/VJAZUBuv9W6vrkE=
+X-Google-Smtp-Source: AGHT+IHJlxynQAfzlFLMK7JnTwv38RazmkxXnPZakLvFfdjC1wafSR0T0XR/alMAfGA2+b/DeIfKYA==
+X-Received: by 2002:a05:6a00:b84:b0:76b:f063:a3cb with SMTP id
+ d2e1a72fcca58-76e44818e50mr2591486b3a.19.1755260831797; 
+ Fri, 15 Aug 2025 05:27:11 -0700 (PDT)
 Received: from localhost.localdomain ([206.83.105.236])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76e45292c86sm1053475b3a.48.2025.08.15.05.27.07
+ d2e1a72fcca58-76e45292c86sm1053475b3a.48.2025.08.15.05.27.09
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Aug 2025 05:27:08 -0700 (PDT)
+ Fri, 15 Aug 2025 05:27:11 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 4/7] tcg: Add tcg_gen_atomic_{xchg,fetch_and,fetch_or}_i128
-Date: Fri, 15 Aug 2025 22:26:50 +1000
-Message-ID: <20250815122653.701782-5-richard.henderson@linaro.org>
+Subject: [PATCH 5/7] target/arm: Rename isar_feature_aa64_atomics
+Date: Fri, 15 Aug 2025 22:26:51 +1000
+Message-ID: <20250815122653.701782-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250815122653.701782-1-richard.henderson@linaro.org>
 References: <20250815122653.701782-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,231 +97,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is FEAT_LSE -- rename the predicate to match.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tcg-runtime.h       | 12 +++++
- include/tcg/tcg-op-common.h   |  7 +++
- include/tcg/tcg-op.h          |  3 ++
- tcg/tcg-op-ldst.c             | 97 +++++++++++++++++++++++++++++++++--
- accel/tcg/atomic_common.c.inc |  9 ++++
- 5 files changed, 125 insertions(+), 3 deletions(-)
+ target/arm/cpu-features.h      |  2 +-
+ linux-user/elfload.c           |  2 +-
+ target/arm/tcg/translate-a64.c | 24 ++++++++++++------------
+ 3 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/accel/tcg/tcg-runtime.h b/accel/tcg/tcg-runtime.h
-index c23b5e66c4..8436599b9f 100644
---- a/accel/tcg/tcg-runtime.h
-+++ b/accel/tcg/tcg-runtime.h
-@@ -63,6 +63,18 @@ DEF_HELPER_FLAGS_5(atomic_cmpxchgo_be, TCG_CALL_NO_WG,
-                    i128, env, i64, i128, i128, i32)
- DEF_HELPER_FLAGS_5(atomic_cmpxchgo_le, TCG_CALL_NO_WG,
-                    i128, env, i64, i128, i128, i32)
-+DEF_HELPER_FLAGS_4(atomic_xchgo_be, TCG_CALL_NO_WG,
-+                   i128, env, i64, i128, i32)
-+DEF_HELPER_FLAGS_4(atomic_xchgo_le, TCG_CALL_NO_WG,
-+                   i128, env, i64, i128, i32)
-+DEF_HELPER_FLAGS_4(atomic_fetch_ando_be, TCG_CALL_NO_WG,
-+                   i128, env, i64, i128, i32)
-+DEF_HELPER_FLAGS_4(atomic_fetch_ando_le, TCG_CALL_NO_WG,
-+                   i128, env, i64, i128, i32)
-+DEF_HELPER_FLAGS_4(atomic_fetch_oro_be, TCG_CALL_NO_WG,
-+                   i128, env, i64, i128, i32)
-+DEF_HELPER_FLAGS_4(atomic_fetch_oro_le, TCG_CALL_NO_WG,
-+                   i128, env, i64, i128, i32)
- #endif
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 5876162428..e3d4c3d382 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -406,7 +406,7 @@ static inline bool isar_feature_aa64_crc32(const ARMISARegisters *id)
+     return FIELD_EX64_IDREG(id, ID_AA64ISAR0, CRC32) != 0;
+ }
  
- DEF_HELPER_FLAGS_5(nonatomic_cmpxchgo, TCG_CALL_NO_WG,
-diff --git a/include/tcg/tcg-op-common.h b/include/tcg/tcg-op-common.h
-index e1071adebf..f752ef440b 100644
---- a/include/tcg/tcg-op-common.h
-+++ b/include/tcg/tcg-op-common.h
-@@ -344,6 +344,8 @@ void tcg_gen_atomic_xchg_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-                                  TCGArg, MemOp, TCGType);
- void tcg_gen_atomic_xchg_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-                                  TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_xchg_i128_chk(TCGv_i128, TCGTemp *, TCGv_i128,
-+                                  TCGArg, MemOp, TCGType);
+-static inline bool isar_feature_aa64_atomics(const ARMISARegisters *id)
++static inline bool isar_feature_aa64_lse(const ARMISARegisters *id)
+ {
+     return FIELD_EX64_IDREG(id, ID_AA64ISAR0, ATOMIC) != 0;
+ }
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index ea214105ff..9f36ec06a4 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -862,7 +862,7 @@ uint32_t get_elf_hwcap(void)
+     GET_FEATURE_ID(aa64_sm3, ARM_HWCAP_A64_SM3);
+     GET_FEATURE_ID(aa64_sm4, ARM_HWCAP_A64_SM4);
+     GET_FEATURE_ID(aa64_fp16, ARM_HWCAP_A64_FPHP | ARM_HWCAP_A64_ASIMDHP);
+-    GET_FEATURE_ID(aa64_atomics, ARM_HWCAP_A64_ATOMICS);
++    GET_FEATURE_ID(aa64_lse, ARM_HWCAP_A64_ATOMICS);
+     GET_FEATURE_ID(aa64_lse2, ARM_HWCAP_A64_USCAT);
+     GET_FEATURE_ID(aa64_rdm, ARM_HWCAP_A64_ASIMDRDM);
+     GET_FEATURE_ID(aa64_dp, ARM_HWCAP_A64_ASIMDDP);
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index dbf47595db..d0639e29cf 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -3237,7 +3237,7 @@ static bool trans_LDXP(DisasContext *s, arg_stxr *a)
  
- void tcg_gen_atomic_fetch_add_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-                                       TCGArg, MemOp, TCGType);
-@@ -411,6 +413,11 @@ void tcg_gen_atomic_umax_fetch_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
- void tcg_gen_atomic_umax_fetch_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-                                        TCGArg, MemOp, TCGType);
- 
-+void tcg_gen_atomic_fetch_and_i128_chk(TCGv_i128, TCGTemp *, TCGv_i128,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_or_i128_chk(TCGv_i128, TCGTemp *, TCGv_i128,
-+                                      TCGArg, MemOp, TCGType);
-+
- /* Vector ops */
- 
- void tcg_gen_mov_vec(TCGv_vec, TCGv_vec);
-diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
-index c912578fdd..232733cb71 100644
---- a/include/tcg/tcg-op.h
-+++ b/include/tcg/tcg-op.h
-@@ -134,13 +134,16 @@ DEF_ATOMIC3(tcg_gen_nonatomic_cmpxchg, i128)
- 
- DEF_ATOMIC2(tcg_gen_atomic_xchg, i32)
- DEF_ATOMIC2(tcg_gen_atomic_xchg, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_xchg, i128)
- 
- DEF_ATOMIC2(tcg_gen_atomic_fetch_add, i32)
- DEF_ATOMIC2(tcg_gen_atomic_fetch_add, i64)
- DEF_ATOMIC2(tcg_gen_atomic_fetch_and, i32)
- DEF_ATOMIC2(tcg_gen_atomic_fetch_and, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_and, i128)
- DEF_ATOMIC2(tcg_gen_atomic_fetch_or, i32)
- DEF_ATOMIC2(tcg_gen_atomic_fetch_or, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_or, i128)
- DEF_ATOMIC2(tcg_gen_atomic_fetch_xor, i32)
- DEF_ATOMIC2(tcg_gen_atomic_fetch_xor, i64)
- DEF_ATOMIC2(tcg_gen_atomic_fetch_smin, i32)
-diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
-index 548496002d..67c15fd4d0 100644
---- a/tcg/tcg-op-ldst.c
-+++ b/tcg/tcg-op-ldst.c
-@@ -801,6 +801,8 @@ typedef void (*gen_atomic_op_i32)(TCGv_i32, TCGv_env, TCGv_i64,
-                                   TCGv_i32, TCGv_i32);
- typedef void (*gen_atomic_op_i64)(TCGv_i64, TCGv_env, TCGv_i64,
-                                   TCGv_i64, TCGv_i32);
-+typedef void (*gen_atomic_op_i128)(TCGv_i128, TCGv_env, TCGv_i64,
-+                                   TCGv_i128, TCGv_i32);
- 
- #ifdef CONFIG_ATOMIC64
- # define WITH_ATOMIC64(X) X,
-@@ -1201,6 +1203,94 @@ static void do_atomic_op_i64(TCGv_i64 ret, TCGTemp *addr, TCGv_i64 val,
+ static bool trans_CASP(DisasContext *s, arg_CASP *a)
+ {
+-    if (!dc_isar_feature(aa64_atomics, s)) {
++    if (!dc_isar_feature(aa64_lse, s)) {
+         return false;
      }
+     if (((a->rt | a->rs) & 1) != 0) {
+@@ -3250,7 +3250,7 @@ static bool trans_CASP(DisasContext *s, arg_CASP *a)
+ 
+ static bool trans_CAS(DisasContext *s, arg_CAS *a)
+ {
+-    if (!dc_isar_feature(aa64_atomics, s)) {
++    if (!dc_isar_feature(aa64_lse, s)) {
+         return false;
+     }
+     gen_compare_and_swap(s, a->rs, a->rt, a->rn, a->sz);
+@@ -3743,15 +3743,15 @@ static bool do_atomic_ld(DisasContext *s, arg_atomic *a, AtomicThreeOpFn *fn,
+     return true;
  }
  
-+static void do_nonatomic_op_i128(TCGv_i128 ret, TCGTemp *addr, TCGv_i128 val,
-+                                 TCGArg idx, MemOp memop, bool new_val,
-+                                 void (*gen)(TCGv_i64, TCGv_i64, TCGv_i64))
-+{
-+    TCGv_i128 t = tcg_temp_ebb_new_i128();
-+    TCGv_i128 r = tcg_temp_ebb_new_i128();
-+
-+    tcg_gen_qemu_ld_i128_int(r, addr, idx, memop);
-+    gen(TCGV128_LOW(t), TCGV128_LOW(r), TCGV128_LOW(val));
-+    gen(TCGV128_HIGH(t), TCGV128_HIGH(r), TCGV128_HIGH(val));
-+    tcg_gen_qemu_st_i128_int(t, addr, idx, memop);
-+
-+    tcg_gen_mov_i128(ret, r);
-+    tcg_temp_free_i128(t);
-+    tcg_temp_free_i128(r);
-+}
-+
-+static void do_atomic_op_i128(TCGv_i128 ret, TCGTemp *addr, TCGv_i128 val,
-+                              TCGArg idx, MemOp memop, void * const table[])
-+{
-+    gen_atomic_op_i128 gen = table[memop & (MO_SIZE | MO_BSWAP)];
-+
-+    if (gen) {
-+        MemOpIdx oi = make_memop_idx(memop & ~MO_SIGN, idx);
-+        TCGv_i64 a64 = maybe_extend_addr64(addr);
-+        gen(ret, tcg_env, a64, val, tcg_constant_i32(oi));
-+        maybe_free_addr64(a64);
-+        return;
-+    }
-+
-+    gen_helper_exit_atomic(tcg_env);
-+    /* Produce a result */
-+    tcg_gen_movi_i64(TCGV128_LOW(ret), 0);
-+    tcg_gen_movi_i64(TCGV128_HIGH(ret), 0);
-+}
-+
-+#define GEN_ATOMIC_HELPER128(NAME, OP, NEW)                             \
-+static void * const table_##NAME[(MO_SIZE | MO_BSWAP) + 1] = {          \
-+    [MO_8] = gen_helper_atomic_##NAME##b,                               \
-+    [MO_16 | MO_LE] = gen_helper_atomic_##NAME##w_le,                   \
-+    [MO_16 | MO_BE] = gen_helper_atomic_##NAME##w_be,                   \
-+    [MO_32 | MO_LE] = gen_helper_atomic_##NAME##l_le,                   \
-+    [MO_32 | MO_BE] = gen_helper_atomic_##NAME##l_be,                   \
-+    WITH_ATOMIC64([MO_64 | MO_LE] = gen_helper_atomic_##NAME##q_le)     \
-+    WITH_ATOMIC64([MO_64 | MO_BE] = gen_helper_atomic_##NAME##q_be)     \
-+    WITH_ATOMIC128([MO_128 | MO_LE] = gen_helper_atomic_##NAME##o_le)   \
-+    WITH_ATOMIC128([MO_128 | MO_BE] = gen_helper_atomic_##NAME##o_be)   \
-+};                                                                      \
-+void tcg_gen_atomic_##NAME##_i32_chk(TCGv_i32 ret, TCGTemp *addr,       \
-+                                     TCGv_i32 val, TCGArg idx,          \
-+                                     MemOp memop, TCGType addr_type)    \
-+{                                                                       \
-+    tcg_debug_assert(addr_type == tcg_ctx->addr_type);                  \
-+    tcg_debug_assert((memop & MO_SIZE) <= MO_32);                       \
-+    if (tcg_ctx->gen_tb->cflags & CF_PARALLEL) {                        \
-+        do_atomic_op_i32(ret, addr, val, idx, memop, table_##NAME);     \
-+    } else {                                                            \
-+        do_nonatomic_op_i32(ret, addr, val, idx, memop, NEW,            \
-+                            tcg_gen_##OP##_i32);                        \
-+    }                                                                   \
-+}                                                                       \
-+void tcg_gen_atomic_##NAME##_i64_chk(TCGv_i64 ret, TCGTemp *addr,       \
-+                                     TCGv_i64 val, TCGArg idx,          \
-+                                     MemOp memop, TCGType addr_type)    \
-+{                                                                       \
-+    tcg_debug_assert(addr_type == tcg_ctx->addr_type);                  \
-+    tcg_debug_assert((memop & MO_SIZE) <= MO_64);                       \
-+    if (tcg_ctx->gen_tb->cflags & CF_PARALLEL) {                        \
-+        do_atomic_op_i64(ret, addr, val, idx, memop, table_##NAME);     \
-+    } else {                                                            \
-+        do_nonatomic_op_i64(ret, addr, val, idx, memop, NEW,            \
-+                            tcg_gen_##OP##_i64);                        \
-+    }                                                                   \
-+}                                                                       \
-+void tcg_gen_atomic_##NAME##_i128_chk(TCGv_i128 ret, TCGTemp *addr,     \
-+                                      TCGv_i128 val, TCGArg idx,        \
-+                                      MemOp memop, TCGType addr_type)   \
-+{                                                                       \
-+    tcg_debug_assert(addr_type == tcg_ctx->addr_type);                  \
-+    tcg_debug_assert((memop & MO_SIZE) == MO_128);                      \
-+    if (tcg_ctx->gen_tb->cflags & CF_PARALLEL) {                        \
-+        do_atomic_op_i128(ret, addr, val, idx, memop, table_##NAME);    \
-+    } else {                                                            \
-+        do_nonatomic_op_i128(ret, addr, val, idx, memop, NEW,           \
-+                             tcg_gen_##OP##_i64);                       \
-+    }                                                                   \
-+}
-+
- #define GEN_ATOMIC_HELPER(NAME, OP, NEW)                                \
- static void * const table_##NAME[(MO_SIZE | MO_BSWAP) + 1] = {          \
-     [MO_8] = gen_helper_atomic_##NAME##b,                               \
-@@ -1239,8 +1329,8 @@ void tcg_gen_atomic_##NAME##_i64_chk(TCGv_i64 ret, TCGTemp *addr,       \
- }
+-TRANS_FEAT(LDADD, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_add_i64, 0, false)
+-TRANS_FEAT(LDCLR, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_and_i64, 0, true)
+-TRANS_FEAT(LDEOR, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_xor_i64, 0, false)
+-TRANS_FEAT(LDSET, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_or_i64, 0, false)
+-TRANS_FEAT(LDSMAX, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_smax_i64, MO_SIGN, false)
+-TRANS_FEAT(LDSMIN, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_smin_i64, MO_SIGN, false)
+-TRANS_FEAT(LDUMAX, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_umax_i64, 0, false)
+-TRANS_FEAT(LDUMIN, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_fetch_umin_i64, 0, false)
+-TRANS_FEAT(SWP, aa64_atomics, do_atomic_ld, a, tcg_gen_atomic_xchg_i64, 0, false)
++TRANS_FEAT(LDADD, aa64_lse, do_atomic_ld, a, tcg_gen_atomic_fetch_add_i64, 0, false)
++TRANS_FEAT(LDCLR, aa64_lse, do_atomic_ld, a, tcg_gen_atomic_fetch_and_i64, 0, true)
++TRANS_FEAT(LDEOR, aa64_lse, do_atomic_ld, a, tcg_gen_atomic_fetch_xor_i64, 0, false)
++TRANS_FEAT(LDSET, aa64_lse, do_atomic_ld, a, tcg_gen_atomic_fetch_or_i64, 0, false)
++TRANS_FEAT(LDSMAX, aa64_lse, do_atomic_ld, a, tcg_gen_atomic_fetch_smax_i64, MO_SIGN, false)
++TRANS_FEAT(LDSMIN, aa64_lse, do_atomic_ld, a, tcg_gen_atomic_fetch_smin_i64, MO_SIGN, false)
++TRANS_FEAT(LDUMAX, aa64_lse, do_atomic_ld, a, tcg_gen_atomic_fetch_umax_i64, 0, false)
++TRANS_FEAT(LDUMIN, aa64_lse, do_atomic_ld, a, tcg_gen_atomic_fetch_umin_i64, 0, false)
++TRANS_FEAT(SWP, aa64_lse, do_atomic_ld, a, tcg_gen_atomic_xchg_i64, 0, false)
  
- GEN_ATOMIC_HELPER(fetch_add, add, 0)
--GEN_ATOMIC_HELPER(fetch_and, and, 0)
--GEN_ATOMIC_HELPER(fetch_or, or, 0)
-+GEN_ATOMIC_HELPER128(fetch_and, and, 0)
-+GEN_ATOMIC_HELPER128(fetch_or, or, 0)
- GEN_ATOMIC_HELPER(fetch_xor, xor, 0)
- GEN_ATOMIC_HELPER(fetch_smin, smin, 0)
- GEN_ATOMIC_HELPER(fetch_umin, umin, 0)
-@@ -1266,6 +1356,7 @@ static void tcg_gen_mov2_i64(TCGv_i64 r, TCGv_i64 a, TCGv_i64 b)
-     tcg_gen_mov_i64(r, b);
- }
+ static bool trans_LDAPR(DisasContext *s, arg_LDAPR *a)
+ {
+@@ -3759,7 +3759,7 @@ static bool trans_LDAPR(DisasContext *s, arg_LDAPR *a)
+     TCGv_i64 clean_addr;
+     MemOp mop;
  
--GEN_ATOMIC_HELPER(xchg, mov2, 0)
-+GEN_ATOMIC_HELPER128(xchg, mov2, 0)
- 
- #undef GEN_ATOMIC_HELPER
-+#undef GEN_ATOMIC_HELPER128
-diff --git a/accel/tcg/atomic_common.c.inc b/accel/tcg/atomic_common.c.inc
-index 6056598c23..bca93a0ac4 100644
---- a/accel/tcg/atomic_common.c.inc
-+++ b/accel/tcg/atomic_common.c.inc
-@@ -122,5 +122,14 @@ GEN_ATOMIC_HELPERS(umax_fetch)
- 
- GEN_ATOMIC_HELPERS(xchg)
- 
-+#if HAVE_CMPXCHG128
-+ATOMIC_HELPER(xchgo_be, Int128)
-+ATOMIC_HELPER(xchgo_le, Int128)
-+ATOMIC_HELPER(fetch_ando_be, Int128)
-+ATOMIC_HELPER(fetch_ando_le, Int128)
-+ATOMIC_HELPER(fetch_oro_be, Int128)
-+ATOMIC_HELPER(fetch_oro_le, Int128)
-+#endif
-+
- #undef ATOMIC_HELPER
- #undef GEN_ATOMIC_HELPERS
+-    if (!dc_isar_feature(aa64_atomics, s) ||
++    if (!dc_isar_feature(aa64_lse, s) ||
+         !dc_isar_feature(aa64_rcpc_8_3, s)) {
+         return false;
+     }
 -- 
 2.43.0
 
