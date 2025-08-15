@@ -2,89 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E48DB27711
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Aug 2025 05:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC2EB27879
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Aug 2025 07:32:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umlPf-0004ce-Jg; Thu, 14 Aug 2025 23:47:31 -0400
+	id 1umn1V-0003SR-2U; Fri, 15 Aug 2025 01:30:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
- id 1umlPd-0004br-6L; Thu, 14 Aug 2025 23:47:29 -0400
-Received: from mail-qv1-xf32.google.com ([2607:f8b0:4864:20::f32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
- id 1umlPb-0002z0-Ez; Thu, 14 Aug 2025 23:47:28 -0400
-Received: by mail-qv1-xf32.google.com with SMTP id
- 6a1803df08f44-70ba7aa136fso965616d6.1; 
- Thu, 14 Aug 2025 20:47:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1755229646; x=1755834446; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ia9C9yonrsv1CWsKxEfiaqEx+tiY2731HEt0MKh0uDo=;
- b=QgmkUxx8ZRrs4Eee20WJtPPIyxU+E7+JSsvEmzt5scxtdscQ+U//QnrnM1UZ3mKTp5
- aGCR40OQL/M2LZvPNaUeyAaLjvPj65a0brSEPoUhwILp1LA+JDujP3vI6tKidiKg2qPH
- i9ovDEJiEcV3yYho9s+wz3mODb7McDLNbKiidSd2wC3UrabsziAoVRfZ54iM3MHlrbiV
- OWiWHkCLZzFv/cTtGkeYcpxUiousscRv1zqYsV92VpMi9c1XeDWykXIHzNs0f9vCUzUQ
- Xes5IBKbW+37NHc9qZw4r75Wppy1gea+7OSvna4JnASsRpHLARkUGt/RPpslq9fddi8C
- HZxA==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1umn1T-0003SJ-1L
+ for qemu-devel@nongnu.org; Fri, 15 Aug 2025 01:30:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1umn1Q-0001yC-Ql
+ for qemu-devel@nongnu.org; Fri, 15 Aug 2025 01:30:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1755235834;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=OHlSvAm9bdBUOrpb3X4JFBC1CXKIgTtZFn6Afgo8h8s=;
+ b=JtxSAaIC8bFqBZUIY8LQ3dcB55shMxz0TEYsFSX5IZc5MmuE0z49JrqU4QqLwEZdTCldNM
+ rBYMjszIh4tF2B2RCZGFwBTSxT8kvGQMflIn1V21aV/5aTHKQNHrFLEs0KtI6yPjXrZ7Kd
+ cEn1YfiYgwuiDBPQ/YAFlf3JahIfGEs=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-632-EceUTl7AMN2Yh0xOo4zD7w-1; Fri, 15 Aug 2025 01:30:31 -0400
+X-MC-Unique: EceUTl7AMN2Yh0xOo4zD7w-1
+X-Mimecast-MFC-AGG-ID: EceUTl7AMN2Yh0xOo4zD7w_1755235831
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-323266c83f6so1845280a91.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Aug 2025 22:30:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755229646; x=1755834446;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ia9C9yonrsv1CWsKxEfiaqEx+tiY2731HEt0MKh0uDo=;
- b=MikCU/dHXqUKG0NN341jjFN9c+9W35H8Dfd+yReCvfx+JluIGQMLmRtJODq2czyiiH
- WVq9D/5fbt31pBXjPEnLsPv85qo/hCV4BVJQfbbAY+UqDWHyES9fjuL1Daikf0bD5srO
- 8mFBDY0Oh7760+DtF9ANdeEB+wFdJ5yY8WfiQbUSmEyYmezV19aYGvTLRVULQoYqdmmy
- 6fu2tmNPd6OhtlvkgF8PV4C1cQFN6Vliq1a+0eDVBKyPiDdJsjnCaHQSph0eAZH2jfx1
- OrM4deTG5sABJC+HTL+8Tz2Zo8tsa/P7w140saijPN6mDwO33m7h1h02gXRrS4jzTWM9
- BbAA==
-X-Gm-Message-State: AOJu0YwXY2tSv2o1WpgnMyIFuimMz05GvEigFatRtprn4xzs2/SvlXfq
- l1vdLN58PwQQj55vNrBiN8tfv7tqhU76LTIhiCd3bZ8kI7BW5bi+k49PaOx0Hw==
-X-Gm-Gg: ASbGncvhzTSlyyt4PKTLXkIM7szaXI6VZK0MJZdsjeIwvhJhR7kROyOTHZp0zb1nIm0
- bU5utn3oi3ms0Gt3x97Qz6yc7hOi0OY2JDFb64iEoZRVufmIrwJhBb+gSaaxwIGG9DGB8yfY2uU
- gGvgaX8yG8Pf7DXkyyXdBCkU3Vyo4YSzMXIyknP4JqT1c8jalDvGJyN8bML1pGxozdTGsOZ2hjP
- LQU2urxd7GrsSjC0EQrsAwksOr/GUr769PWYv466/aSotc4n2nHDtufuzxWyBUYTADQH16VvsGB
- csFeI0FOKi+uqI6IATRjs5UM1br9qgIs/uYM1nfuN93J8c9qeC2RrvFKckPX9C3Lf4/GxUMw7VC
- ujKsIJi0vAI9NRZJKXsYaOIhADtHUUQ+zJ/AGRNaVmjGqvAvtpc8YNDcZPX3QewAaHa8Rcy/jUM
- UdXLHSDGLMoJ3t
-X-Google-Smtp-Source: AGHT+IF2dpYCbzCzdJ8Ro3pzur9GdWHwrlDrzKRtzbXOpNuowpPvd787NAUeQrSXRu7GVyikbXZUPg==
-X-Received: by 2002:a05:6214:ca3:b0:70b:a2b7:21cb with SMTP id
- 6a1803df08f44-70ba7a5e86amr4359916d6.9.1755229645544; 
- Thu, 14 Aug 2025 20:47:25 -0700 (PDT)
-Received: from zzzhi.uwaterloo.ca
- (wn-campus-nat-129-97-124-101.dynamic.uwaterloo.ca. [129.97.124.101])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-70ba906706esm1402346d6.17.2025.08.14.20.47.24
+ d=1e100.net; s=20230601; t=1755235830; x=1755840630;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OHlSvAm9bdBUOrpb3X4JFBC1CXKIgTtZFn6Afgo8h8s=;
+ b=oeM5aNDipTip8tf4UTgG3Jdmr7Zy/BgVz8aD8WmIQJvW9R9k3l3FiwnUqLAJAhXc/h
+ FuhqvC7VkNmCi4/aaPsAhyaMKKryr5o/JP+Ibgv5i8vi//T//VYiJQaVNOunWN1DcvBO
+ JCsm1ri1vVWzTTV9H6eDSRkgs1o2LLK0+mt+X/LirCPk8X1TMxClVF4nj6YngMYz6vOK
+ 7kjVg2XSeYp8rx5E0MuYoHSWdBhTdvSkhp0j5xTZxaj0bmbzByu+2GXZhUWGt89Wo6DH
+ ShWcqW2uqktV5YZgpjz34IOQvy+Yg/WNi3KKgodZxvuaAKT9+ieXGSOQssvdP6QuGulb
+ jLMg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUSXSzrUuCIMhgQdQSFuXsxBzqvqgMqU2g+QoS6KonMD2l0FcOb3Aq4+O9ymP0SaCZjOEHzJ/ztBoRJ@nongnu.org
+X-Gm-Message-State: AOJu0Yw7IhFqpGWZUj7WgOudj+0+O6w1bKhW7VM8pYAVwz1Ady1yD6W1
+ fx26mrUy4qFkt78+nhezm8A2rWcJ7R4NuZxdHIvocp6N3qJjCJSrrFRg0w+excvvkyMSbeHqL8C
+ tLnPQZslw7QZv9mjTQ6WbOYBVk8qFLUDCvQMtcKI9+cfdCd6Jm97m8en8
+X-Gm-Gg: ASbGncuV9zfiTKRxt+tW+BH0GedaUksh/qfk5uik5h3So8QLyZvXhkSs/F7sTJ77mqw
+ nYt7/Rp4pjtFKr6hsGTySsXFKQ3NUaNJhFUmlgyD6yYhrMvvOLj/B6+t+kispue6ESBML+tUszM
+ KwFw2nWCzuo3iJ8TTBXCsLwWILNvS1txkEGAxq2zlg2vQunZomr1WS2zu0legY96BW8Lx/8XBsw
+ 1LXktkrtcirlhnqxq/diJMeKMniLW9sJofaQfVXdb20cQ3wQhynStctBDeG2n6qZ/pZnCK66ngG
+ HnbVWlOyoOlh4tbyAFfqYfWfM1lHqVNLhFUiUXeUAzi87U6plSI9mX1h
+X-Received: by 2002:a17:90b:5305:b0:31e:7417:9e86 with SMTP id
+ 98e67ed59e1d1-3232978cc8fmr6161743a91.9.1755235830507; 
+ Thu, 14 Aug 2025 22:30:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFX5oOIfhi3M+WDXrtKmAnTTBuseeBLXuOMo1RXjIkKt9Eao/SYE5dL0A70pIxVQMzxuFHsow==
+X-Received: by 2002:a17:90b:5305:b0:31e:7417:9e86 with SMTP id
+ 98e67ed59e1d1-3232978cc8fmr6161707a91.9.1755235829987; 
+ Thu, 14 Aug 2025 22:30:29 -0700 (PDT)
+Received: from ani-lenovo.domain.name
+ ([2401:4900:1c84:e19a:d863:5334:4ba4:f128])
+ by smtp.googlemail.com with ESMTPSA id
+ d2e1a72fcca58-76e452b40d3sm340665b3a.51.2025.08.14.22.30.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Aug 2025 20:47:25 -0700 (PDT)
-From: Zhi Song <hibriansong@gmail.com>
-X-Google-Original-From: Zhi Song <hizhisong@gmail.com>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, bernd@bsbernd.com,
- fam@euphon.net, hibriansong@gmail.com, hreitz@redhat.com, kwolf@redhat.com,
- stefanha@redhat.com
-Subject: [PATCH 3/3] fuse: Safe termination for FUSE-uring
-Date: Thu, 14 Aug 2025 23:46:19 -0400
-Message-ID: <20250815034619.51980-4-hizhisong@gmail.com>
+ Thu, 14 Aug 2025 22:30:29 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>, kvm@vger.kernel.org, qemu-devel@nongnu.org
+Subject: [PATCH] kvm/kvm-all: declare kvm_park_vcpu static and make it local
+ to kvm-all.c
+Date: Fri, 15 Aug 2025 11:00:21 +0530
+Message-ID: <20250815053021.31427-1-anisinha@redhat.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250815034619.51980-1-hizhisong@gmail.com>
-References: <20250815034619.51980-1-hizhisong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f32;
- envelope-from=hibriansong@gmail.com; helo=mail-qv1-xf32.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,149 +106,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Brian Song <hibriansong@gmail.com>
+kvm_park_vcpu() is only used in kvm-all.c. Declare it static, remove it from
+common header file and make it local to kvm-all.c
 
-When the user sends a termination signal, storage-export-daemon stops
-the export, exits the main loop (main_loop_wait), and begins cleaning
-up associated resources. At this point, some SQEs submitted via FUSE_IO
-_URING_CMD_COMMIT_AND_FETCH may still be pending in the kernel, waiting
-for incoming FUSE requests, which can trigger CQE handlers in user
-space.
-
-Currently, there is no way to manually cancel these pending CQEs in the
-kernel. As a result, after export termination, the related data
-structures might be deleted before the pending CQEs return, causing the
-CQE handler to be invoked after it has been freed, which may lead to a
-segfault.
-
-As a workaround, when submitting an SQE to the kernel, we increment the
-block reference (blk_exp_ref) to prevent the CQE handler from being
-deleted during export termination. Once the CQE is received, we
-decrement the reference (blk_exp_unref).
-
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
-Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Brian Song <hibriansong@gmail.com>
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
 ---
- block/export/fuse.c | 52 +++++++++++++++++++++++++++++++++++----------
- 1 file changed, 41 insertions(+), 11 deletions(-)
+ accel/kvm/kvm-all.c  | 3 ++-
+ include/system/kvm.h | 8 --------
+ 2 files changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/block/export/fuse.c b/block/export/fuse.c
-index 7540f8f5a3..ddd83c50e2 100644
---- a/block/export/fuse.c
-+++ b/block/export/fuse.c
-@@ -298,6 +298,8 @@ static void coroutine_fn co_fuse_uring_queue_handle_cqes(void *opaque)
-     /* Going to process requests */
-     fuse_inc_in_flight(exp);
-
-+    /* A ring entry returned */
-+    blk_exp_unref(&exp->common);
-
-     fuse_uring_co_process_request(ent);
-
-@@ -323,6 +325,9 @@ static void fuse_uring_cqe_handler(CqeHandler *cqe_handler)
-             err != -ENOTCONN) {
-             fuse_export_halt(exp);
-         }
-+
-+        /* A ring entry returned */
-+        blk_exp_unref(&exp->common);
-     } else {
-         co = qemu_coroutine_create(co_fuse_uring_queue_handle_cqes, ent);
-         qemu_coroutine_enter(co);
-@@ -370,6 +375,8 @@ static void fuse_uring_submit_register(void *opaque)
-     FuseQueue *q = opaque;
-     FuseExport *exp = q->exp;
-
-+    /* Commit and fetch a ring entry */
-+    blk_exp_ref(&exp->common);
-
-     aio_add_sqe(fuse_uring_prep_sqe_register, q, &(q->ent.fuse_cqe_handler));
- }
-@@ -762,6 +769,17 @@ static void read_from_fuse_fd(void *opaque)
-     qemu_coroutine_enter(co);
- }
-
-+#ifdef CONFIG_LINUX_IO_URING
-+static void fuse_export_delete_uring(FuseExport *exp)
-+{
-+    exp->is_uring = false;
-+
-+    for (size_t qid = 0; qid < exp->num_queues; qid++) {
-+        g_free(exp->queues[qid].ent.op_payload);
-+    }
-+}
-+#endif
-+
- static void fuse_export_shutdown(BlockExport *blk_exp)
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 890d5ea9f8..41cf606ca8 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -141,6 +141,7 @@ static QemuMutex kml_slots_lock;
+ #define kvm_slots_unlock()  qemu_mutex_unlock(&kml_slots_lock)
+ 
+ static void kvm_slot_init_dirty_bitmap(KVMSlot *mem);
++static void kvm_park_vcpu(CPUState *cpu);
+ 
+ static inline void kvm_resample_fd_remove(int gsi)
  {
-     FuseExport *exp = container_of(blk_exp, FuseExport, common);
-@@ -777,11 +795,6 @@ static void fuse_export_shutdown(BlockExport *blk_exp)
-          */
-         g_hash_table_remove(exports, exp->mountpoint);
-     }
--}
--
--static void fuse_export_delete(BlockExport *blk_exp)
--{
--    FuseExport *exp = container_of(blk_exp, FuseExport, common);
-
-     for (int i = 0; i < exp->num_queues; i++) {
-         FuseQueue *q = &exp->queues[i];
-@@ -790,11 +803,7 @@ static void fuse_export_delete(BlockExport *blk_exp)
-         if (i > 0 && q->fuse_fd >= 0) {
-             close(q->fuse_fd);
-         }
--        if (q->spillover_buf) {
--            qemu_vfree(q->spillover_buf);
--        }
-     }
--    g_free(exp->queues);
-
-     if (exp->fuse_session) {
-         if (exp->mounted) {
-@@ -803,8 +812,29 @@ static void fuse_export_delete(BlockExport *blk_exp)
-
-         fuse_session_destroy(exp->fuse_session);
-     }
-+}
-+
-+static void fuse_export_delete(BlockExport *blk_exp)
-+{
-+    FuseExport *exp = container_of(blk_exp, FuseExport, common);
-+
-+    for (int i = 0; i < exp->num_queues; i++) {
-+        FuseQueue *q = &exp->queues[i];
-+
-+        if (q->spillover_buf) {
-+            qemu_vfree(q->spillover_buf);
-+        }
-+    }
-
-     g_free(exp->mountpoint);
-+
-+#ifdef CONFIG_LINUX_IO_URING
-+    if (exp->is_uring) {
-+        fuse_export_delete_uring(exp);
-+    }
-+#endif
-+
-+    g_free(exp->queues);
+@@ -414,7 +415,7 @@ err:
+     return ret;
  }
-
+ 
+-void kvm_park_vcpu(CPUState *cpu)
++static void kvm_park_vcpu(CPUState *cpu)
+ {
+     struct KVMParkedVcpu *vcpu;
+ 
+diff --git a/include/system/kvm.h b/include/system/kvm.h
+index 3c7d314736..c7fd7533bb 100644
+--- a/include/system/kvm.h
++++ b/include/system/kvm.h
+@@ -317,14 +317,6 @@ int kvm_create_device(KVMState *s, uint64_t type, bool test);
+  */
+ bool kvm_device_supported(int vmfd, uint64_t type);
+ 
+-/**
+- * kvm_park_vcpu - Park QEMU KVM vCPU context
+- * @cpu: QOM CPUState object for which QEMU KVM vCPU context has to be parked.
+- *
+- * @returns: none
+- */
+-void kvm_park_vcpu(CPUState *cpu);
+-
  /**
-@@ -1755,8 +1785,8 @@ fuse_uring_send_response(FuseRingEnt *ent, uint32_t req_id, ssize_t ret,
-     /* out_header->len = ret > 0 ? ret : 0; */
-     ent_in_out->payload_sz = ret > 0 ? ret : 0;
-
--
--    qemu_vfree(spillover_buf);
-+    /* Commit and fetch a ring entry */
-+    blk_exp_ref(&exp->common);
-     aio_add_sqe(fuse_uring_prep_sqe_commit, ent,
-                     &ent->fuse_cqe_handler);
- }
---
-2.45.2
+  * kvm_unpark_vcpu - unpark QEMU KVM vCPU context
+  * @s: KVM State
+-- 
+2.50.1
 
 
