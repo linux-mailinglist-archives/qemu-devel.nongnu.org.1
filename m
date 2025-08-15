@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A03B27C02
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Aug 2025 11:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1961B27C0F
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Aug 2025 11:04:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1umqJb-0003fO-QE; Fri, 15 Aug 2025 05:01:35 -0400
+	id 1umqJX-0003ev-TG; Fri, 15 Aug 2025 05:01:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1umqJS-0003aL-FX; Fri, 15 Aug 2025 05:01:26 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1umqJU-0003cB-Fj; Fri, 15 Aug 2025 05:01:28 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <corvin.koehne@gmail.com>)
- id 1umqJP-0005j4-Hq; Fri, 15 Aug 2025 05:01:25 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-45a1b0bd237so13435385e9.2; 
- Fri, 15 Aug 2025 02:01:22 -0700 (PDT)
+ id 1umqJQ-0005mF-Jm; Fri, 15 Aug 2025 05:01:27 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-45a23def5f2so566855e9.0; 
+ Fri, 15 Aug 2025 02:01:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1755248481; x=1755853281; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1755248482; x=1755853282; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Zzk9hUnM76xaKXIPgu879Vp6/dyXg/0tOdRlxSSSDw4=;
- b=jurOJnILiSTy957c/Cyd7jILPentw2E8SQmmGUg23zFYy2NVU6MvA/jcRnE4KWqNCC
- oAuU5skY5VI/026udpAmNFIvcQPeDRphxGI/lJP7sJwhOK/gWDIr44+MCk39AOMO/v8T
- 2UjlqaAxqssB8X+fuv/WYG7SOvOX/XuCCRKO8EkYp0anbJpE1Ea8945vONONhoKkRokb
- 8hC7Xf1lZIiO+bBlOlY0lR0EdUVFCH6cOdz/bUcIS0qcsuxKGbrX0uDR9MhMSeg/33ej
- q8MtF9yupM6tZIrx85FLVv3TgY8oykB0/Icvr4FBH+tjQSHnrm5dsKKt8fe6wHfgykjm
- WAsw==
+ bh=vawIzwmzl7x6M45nvP0NuxtDTp5R+Phklc/iV4Vde8E=;
+ b=P/iBcTLW/dJlzWC5Y8E2bBPRIGYHgWKU+p5+ROt4VnRomVqVl702/x3KPImexW/07W
+ yEICF9v2/sR0oQE+WJnY95ACyozbc9xbTqSR/vzwGu5gGwYGo/gI7paTjaVtZApQ/ECw
+ 8wm33o3CjrlFz243lUkKGS+8WISqW3lDr6LR73FtgTSb9JSugW+4WoWmFf19GoYTHy7g
+ ZRvCMvsimxKQyxyPLf++Jta3LevvfskfQEgHYWvRTtQOpuDREuCqkifKjTU+6hqVwgM7
+ Chl0CLyGbmsTDNV0k5H09q9YqceeDRtZl0Rw9CdTJJga2IV1DtrE8Ls1w1GG/ojXtlFh
+ zO0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755248481; x=1755853281;
+ d=1e100.net; s=20230601; t=1755248482; x=1755853282;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Zzk9hUnM76xaKXIPgu879Vp6/dyXg/0tOdRlxSSSDw4=;
- b=CIbGJKdWJyNyMEiEtJ4VAG8/B3PshYaNLF+mdOTZkQV5KHtlcrTH13dAhuXNNAhYOS
- wv5Q6pBrkjxlbVxHuyZf7E1dmz5mbf/0rM3V5Y9mRkPiPAGuVjmFgs5WA5zBbQAzOunq
- RxGL8aPtAaUHz/GwIMzWEWCSFaKqGsarzOF9AXcvsLWGSJ6dcP2d5czkcgV3ZxhapIeH
- JYes2anqYC2ESchaYtAb8oGTzGRJt/s+O5NyrY20+Can+XNzadUHSJ37aUGvhEyaJNKf
- OWy37UE9rQC6HZFKGuLtEqPXuS/eyc+GQohXV3sjdtIvNRBScjsRekOCVsv4u1Em1BQl
- TV4A==
+ bh=vawIzwmzl7x6M45nvP0NuxtDTp5R+Phklc/iV4Vde8E=;
+ b=L96bcnjtf4YNPqW2DaIIYWIfYu+GvkK2WuZuIxk4N1N0kOXRjEKj+rlpHWmGARMjLW
+ XUxHW1VOnvXZlK0v7AdoT1erdRE3tfQ/Q0C4tMG7/wNzEXefgIIQJ0NaC49II0dUFh3L
+ HCDxhMT+3TbHy0Oc0T+RPhnwGn4nrMf3vrPnXIvPjkbHTumtCUzoCpqz4fIRpadVI/zI
+ F3F7otP5HPHVBdJQBuyRNajcTlclpILGiyVtMMMjw/aFZHV742DwVkShllhbWMepNOpV
+ pTNiE4sP/jI3zHS5ppj6VFBPK4ZbzttzTdhFvyHQMozc7mWbPLZH2LdbazxM3RJh8AHD
+ xNBg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVCC8y8pu4An7Gt8VSYfHg3dhcYbX6GsKVMK3W0zzD4fAzXbVoAnFpxDUKvjoo4ERYFsdpkRkg3NA==@nongnu.org,
- AJvYcCXjKtYK1fluAYphYPxa0jCHkyK5i9IfIpL7SJVcHf4JK20xFh86eUIenMY7VwSdldf9FCYqGeUuCTvUgg==@nongnu.org
-X-Gm-Message-State: AOJu0YzwMs2pUXXTnw10NKFNo2xdhp2+fr6DJiDzJowZJNfkmgLIM4Q1
- 25as66b9pHGu0R4InjrLML9o6+5WuN7DHvBdh9MWFZKZHuzG1TboV/8PX9NhGrAz
-X-Gm-Gg: ASbGncuvQN2w8KfLlKmZL/B6onli1x+sqqtxRbWHAYx8I/++4iAgmk3/OqkVne8lWlp
- 6eI61ahUkqx1mLrBfSBR4D/jQ5RAD9FSG6vrsAuKp0fB8nQZrqiezcyjfPIr43gtBAiWhenQh0n
- m/e1OQec83vxT5D7NKeOpZHRcI3lLvUHsXaspbrrFvPyJ4DiUNqfp0mrPkW9LW4HoXi2P90zpWW
- eztRKxIfqowGQ9wNQOHpk/ZpYGVKac6Pllc8G6zUTaYwdhoayFDy4cVg9WTc73WcP3/T3tXNKxJ
- OjmsMmRlKx9ONeXbHLLPoNnpcQEW9bmKT+PgoMBiddw6d1oC45xzzUwNqidoDRst12Y1ca8L+me
- XyXxuBGwBG31Cx6KNl/K5tNnVU2RDzWmKwGaF0hiWLAA6dg==
-X-Google-Smtp-Source: AGHT+IHRFt/eEqzpH62Cv4CEZt0PVbEy0BmhY2zlolVMMqHPmUw4kBGrPbojfLummVuS8xIjtpqL/g==
-X-Received: by 2002:a05:600c:468e:b0:458:caec:a741 with SMTP id
- 5b1f17b1804b1-45a21e9f09bmr10715075e9.24.1755248481169; 
- Fri, 15 Aug 2025 02:01:21 -0700 (PDT)
+ AJvYcCVRaA8gfVcZTYAuYV0joLwB+rnvHYLt3LrGmRnNMbed3s7lRKGfRiOv3IDZTmJiPTdV8ZFd5lexcw==@nongnu.org,
+ AJvYcCXdE0/N/08yFuHg1jzslLHF2XdFDd/oYPt7jYBMtqos2SWAlOS8PbLCtQ1osES/ACIvnjbgrrIh2NyNCA==@nongnu.org
+X-Gm-Message-State: AOJu0YwKU/tSmbmrUQJ40O0yhtTURlzCIJ9rTSkDzxismBXiPk4SxMoz
+ G2b1M3Qs7d2N9+GstMByJvselEuBXPu62eppgpCFJERSDq+5i6PoHcBBE/krYQPH
+X-Gm-Gg: ASbGncsge5AStXXQmIig1QJezp2vWNjCANWEbxSrfb9AuCpcijJ4yNjM4nq8idQ5Zu1
+ dVmKdXNeGUvgWR8I1pQy0ZNGtpnnDJ0FwabN4kOPKJTbe0IQLntRAYdsYKo/svzsR/sLGxjODZL
+ lNVzQtGTrdTjKBnUGG8ECAmu/14Gya9KDoZn0uFp0YqtvQU/QYnWJwlKBFqlFPe7PNUu2ikPmv3
+ bv/QjlOzNsFRoeuDqHzmrZiFWyA6Oj4wO/a01wG+g1HpqWDIu2ryGGK4G/kJ6UtwzcMLiHiZjG2
+ s+yjKULvLU2tLdIhDKEXtLbS4DSfQ+gcQ9n+SrXNNZBoyYEkD3Efpyw77+nnny0PdeLlaBA3KBf
+ MoSPadgv0kJr9kvpwnCplxPZBMSh29EOXW2lb8XbP20OkLQ==
+X-Google-Smtp-Source: AGHT+IFZcFh5MwVeSg4UkQ871q2k+C437nLtisLxXZY7NR9xeFIr4DtwqX4JNMgzMnGNp23+l2YAGA==
+X-Received: by 2002:a05:600c:4e86:b0:459:d6a6:77c with SMTP id
+ 5b1f17b1804b1-45a2186461emr10794045e9.33.1755248482132; 
+ Fri, 15 Aug 2025 02:01:22 -0700 (PDT)
 Received: from corvink-nb.beckhoff.com
  ([2001:9e8:dc31:6500:43b3:5eac:8d91:b512])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45a22321a54sm10964045e9.18.2025.08.15.02.01.20
+ 5b1f17b1804b1-45a22321a54sm10964045e9.18.2025.08.15.02.01.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Aug 2025 02:01:20 -0700 (PDT)
+ Fri, 15 Aug 2025 02:01:21 -0700 (PDT)
 From: =?UTF-8?q?Corvin=20K=C3=B6hne?= <corvin.koehne@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -74,18 +74,19 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Alistair Francis <alistair@alistair23.me>,
  =?UTF-8?q?Yannick=20Vo=C3=9Fen?= <y.vossen@beckhoff.com>,
  Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
- YannickV <Y.Vossen@beckhoff.com>
-Subject: [PATCH v2 07/14] hw/dma/zynq-devcfg: Indicate power-up status of PL
-Date: Fri, 15 Aug 2025 11:01:05 +0200
-Message-ID: <20250815090113.141641-8-corvin.koehne@gmail.com>
+ YannickV <Y.Vossen@beckhoff.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+Subject: [PATCH v2 08/14] hw/dma/zynq-devcfg: Fix register memory
+Date: Fri, 15 Aug 2025 11:01:06 +0200
+Message-ID: <20250815090113.141641-9-corvin.koehne@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250815090113.141641-1-corvin.koehne@gmail.com>
 References: <20250815090113.141641-1-corvin.koehne@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=corvin.koehne@gmail.com; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=corvin.koehne@gmail.com; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,29 +111,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: YannickV <Y.Vossen@beckhoff.com>
 
-It is assumed, that the programmable logic (PL) is always powered
-during emulation. Therefor the PCFG_POR_B bit in the MCTRL register
-is set.
+Registers are always 32 bit aligned. R_MAX is not the maximum
+register address, it is the maximum register number. The memory
+size can be determined by 4 * R_MAX.
+
+Currently every register with an offset bigger than 0x40 will be
+ignored, because the memory size is set wrong. This effects the
+MCTRL register and makes it useless. This commit restores the
+correct behaviour.
 
 Signed-off-by: Yannick Voßen <y.vossen@beckhoff.com>
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 ---
- hw/dma/xlnx-zynq-devcfg.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/dma/xlnx-zynq-devcfg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/dma/xlnx-zynq-devcfg.c b/hw/dma/xlnx-zynq-devcfg.c
-index c699df6ad4..064955a0f8 100644
+index 064955a0f8..83570ccfaa 100644
 --- a/hw/dma/xlnx-zynq-devcfg.c
 +++ b/hw/dma/xlnx-zynq-devcfg.c
-@@ -333,7 +333,8 @@ static const RegisterAccessInfo xlnx_zynq_devcfg_regs_info[] = {
-        /* Silicon 3.0 for version field, the mysterious reserved bit 23
-         * and QEMU platform identifier.
-         */
--       .reset = 0x2 << R_MCTRL_PS_VERSION_SHIFT | 1 << 23 | R_MCTRL_QEMU_MASK,
-+       .reset = 0x2 << R_MCTRL_PS_VERSION_SHIFT | 1 << 23 |
-+                R_MCTRL_PCFG_POR_B_MASK | R_MCTRL_QEMU_MASK,
-        .ro = ~R_MCTRL_INT_PCAP_LPBK_MASK,
-        .rsvd = 0x00f00303,
-     },
+@@ -393,7 +393,7 @@ static void xlnx_zynq_devcfg_init(Object *obj)
+                               s->regs_info, s->regs,
+                               &xlnx_zynq_devcfg_reg_ops,
+                               XLNX_ZYNQ_DEVCFG_ERR_DEBUG,
+-                              XLNX_ZYNQ_DEVCFG_R_MAX);
++                              XLNX_ZYNQ_DEVCFG_R_MAX * 4);
+     memory_region_add_subregion(&s->iomem,
+                                 A_CTRL,
+                                 &reg_array->mem);
 -- 
 2.50.1
 
