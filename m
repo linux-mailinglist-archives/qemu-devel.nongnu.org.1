@@ -2,59 +2,129 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC57B286C1
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Aug 2025 21:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D48B286C3
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Aug 2025 21:58:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1un0XN-0003zx-BL; Fri, 15 Aug 2025 15:56:29 -0400
+	id 1un0Yo-0005k4-Bj; Fri, 15 Aug 2025 15:57:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chao.liu@yeah.net>)
- id 1un0XK-0003yf-FS; Fri, 15 Aug 2025 15:56:26 -0400
-Received: from mail-m16.yeah.net ([1.95.21.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chao.liu@yeah.net>)
- id 1un0XF-0004r8-K0; Fri, 15 Aug 2025 15:56:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
- s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=PN
- g+wTrmTTLoLgU6tKSOWk/nt3Gsu/A6S6G6VoF0+Lw=; b=FO11YaTxhZbz4eogeZ
- G/RYWJR0y0HDQ1xxoYnGFQpRmwlDPWLKeuwvL/b8tV3qgnZfP7+7W8SL33c0OkLa
- 0McW/hHBwHqZDcNP8+LFroegct5v7epR+yiEHZ6+KaGvMpHkAXm4SnwIlpq+UFAc
- s8/Nq/DMC38E2eBFGAzfozQ74=
-Received: from ZEVORN-PC (unknown [])
- by gzsmtp1 (Coremail) with SMTP id Mc8vCgCHtrLGkJ9ocCKuAg--.20443S4;
- Sat, 16 Aug 2025 03:55:52 +0800 (CST)
-From: Chao Liu <chao.liu@yeah.net>
-To: paolo.savini@embecosm.com, dbarboza@ventanamicro.com, ebiggers@kernel.org,
- palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, Chao Liu <chao.liu@yeah.net>
-Subject: [PATCH v2 2/2] tests/tcg/riscv64: Add test for vlsseg8e32 instruction
-Date: Sat, 16 Aug 2025 03:55:41 +0800
-Message-ID: <5c9df353c77f6eec479975f41efc3de6e17a47c3.1755287531.git.chao.liu@yeah.net>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1755287531.git.chao.liu@yeah.net>
-References: <cover.1755287531.git.chao.liu@yeah.net>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1un0Yc-0005ef-Jg
+ for qemu-devel@nongnu.org; Fri, 15 Aug 2025 15:57:47 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1un0YY-0004zJ-Nx
+ for qemu-devel@nongnu.org; Fri, 15 Aug 2025 15:57:45 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4984D21257;
+ Fri, 15 Aug 2025 19:57:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1755287861; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2ryCEBLZZ9Ne4YYi+KCfWtFcsi3eSPvdCXmY6vn21Qc=;
+ b=0OygGqAEg7rIeRy8U21s44NRbBfVd+YhAzYJ0KPIkCaZ92OrTNUU2uoyr7iO68gopB9hYD
+ lqEcqQJzy+bvwExFKAmCwY8Vqb7fMWsJy2TOBbB+H9VbcVZwFwTsXVHamB9iwPjKK1rkn2
+ 5/TZZbS83BjLu7ObbT5FiTAoIG7Wq+c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1755287861;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2ryCEBLZZ9Ne4YYi+KCfWtFcsi3eSPvdCXmY6vn21Qc=;
+ b=lHF0dETYc5BLvH2tKxpbVvNEJLj+nWHFmne3nFGKVK8e7WsNTGZdZ5c1IOAjlRcOgEzeHq
+ YtiTwXN7tnfiCeDQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1755287861; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2ryCEBLZZ9Ne4YYi+KCfWtFcsi3eSPvdCXmY6vn21Qc=;
+ b=0OygGqAEg7rIeRy8U21s44NRbBfVd+YhAzYJ0KPIkCaZ92OrTNUU2uoyr7iO68gopB9hYD
+ lqEcqQJzy+bvwExFKAmCwY8Vqb7fMWsJy2TOBbB+H9VbcVZwFwTsXVHamB9iwPjKK1rkn2
+ 5/TZZbS83BjLu7ObbT5FiTAoIG7Wq+c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1755287861;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2ryCEBLZZ9Ne4YYi+KCfWtFcsi3eSPvdCXmY6vn21Qc=;
+ b=lHF0dETYc5BLvH2tKxpbVvNEJLj+nWHFmne3nFGKVK8e7WsNTGZdZ5c1IOAjlRcOgEzeHq
+ YtiTwXN7tnfiCeDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 76B6413876;
+ Fri, 15 Aug 2025 19:57:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id u2emHDSRn2gpXAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 15 Aug 2025 19:57:40 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Arun Menon <armenon@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, Dmitry Osipenko
+ <dmitry.osipenko@collabora.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Cornelia Huck
+ <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, Eric Farman
+ <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, Christian
+ Borntraeger <borntraeger@linux.ibm.com>, Matthew Rosato
+ <mjrosato@linux.ibm.com>, Richard Henderson
+ <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>, Ilya
+ Leoshkevich <iii@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>, Alex Williamson
+ <alex.williamson@redhat.com>, =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>, Steve
+ Sistare <steven.sistare@oracle.com>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Hailiang Zhang <zhanghailiang@xfusion.com>, Stefan Berger
+ <stefanb@linux.vnet.ibm.com>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org, Arun Menon <armenon@redhat.com>
+Subject: Re: [PATCH v11 23/27] migration: Capture error in
+ postcopy_ram_listen_thread()
+In-Reply-To: <20250813-propagate_tpm_error-v11-23-b470a374b42d@redhat.com>
+References: <20250813-propagate_tpm_error-v11-0-b470a374b42d@redhat.com>
+ <20250813-propagate_tpm_error-v11-23-b470a374b42d@redhat.com>
+Date: Fri, 15 Aug 2025 16:57:38 -0300
+Message-ID: <875xeoxsr1.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: Mc8vCgCHtrLGkJ9ocCKuAg--.20443S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWr4DXr1UXr1xWF1UCr4rXwb_yoW5urW3pr
- 15Gw4qkr4vq343Ka43GF1UuFyrWr4F9F1UXFy8K3W09rW8ZFZruF4ktFWUtFyrAw4UCr13
- uFnYqF1rKanxA3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uf9NsUUUUU=
-X-Originating-IP: [240e:b8f:29d6:3800:f820:962e:d888:73d]
-X-CM-SenderInfo: pfkd0hxolxq5hhdkh0dhw/1tbiIghYgGifkMgwlAAA35
-Received-SPF: pass client-ip=1.95.21.14; envelope-from=chao.liu@yeah.net;
- helo=mail-m16.yeah.net
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ MIME_TRACE(0.00)[0:+]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ TO_DN_SOME(0.00)[]; RCPT_COUNT_TWELVE(0.00)[32];
+ TAGGED_RCPT(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ R_RATELIMIT(0.00)[to_ip_from(RL96jwb13nk98k7j3ws9zhxhn8)];
+ FROM_HAS_DN(0.00)[];
+ FREEMAIL_CC(0.00)[redhat.com,linaro.org,rsg.ci.i.u-tokyo.ac.jp,collabora.com,gmail.com,linux.ibm.com,euphon.net,oracle.com,nongnu.org,xfusion.com,linux.vnet.ibm.com];
+ RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,159 +140,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This case, it copied 64 bytes from a0 to a1 with vlsseg8e32.
+Arun Menon <armenon@redhat.com> writes:
 
-Signed-off-by: Chao Liu <chao.liu@yeah.net>
----
- tests/tcg/riscv64/Makefile.softmmu-target |   8 +-
- tests/tcg/riscv64/test-vlsseg8e32.S       | 108 ++++++++++++++++++++++
- 2 files changed, 114 insertions(+), 2 deletions(-)
- create mode 100644 tests/tcg/riscv64/test-vlsseg8e32.S
+> This is an incremental step in converting vmstate loading
+> code to report error via Error objects instead of directly
+> printing it to console/monitor.
+> postcopy_ram_listen_thread() calls qemu_loadvm_state_main()
+> to load the vm, and in case of a failure, it should set the error
+> in the migration object.
+>
+> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> Signed-off-by: Arun Menon <armenon@redhat.com>
+> ---
+>  migration/savevm.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+>
+> diff --git a/migration/savevm.c b/migration/savevm.c
+> index de2bce276faa863a0f25deedafb0b784f10559d7..b85620a03654c214f4e771fa3=
+b2bcfdf48661214 100644
+> --- a/migration/savevm.c
+> +++ b/migration/savevm.c
+> @@ -2095,6 +2095,7 @@ static void *postcopy_ram_listen_thread(void *opaqu=
+e)
+>      QEMUFile *f =3D mis->from_src_file;
+>      int load_res;
+>      MigrationState *migr =3D migrate_get_current();
+> +    Error *local_err =3D NULL;
+>=20=20
+>      object_ref(OBJECT(migr));
+>=20=20
+> @@ -2111,7 +2112,7 @@ static void *postcopy_ram_listen_thread(void *opaqu=
+e)
+>      qemu_file_set_blocking(f, true);
+>=20=20
+>      /* TODO: sanity check that only postcopiable data will be loaded her=
+e */
+> -    load_res =3D qemu_loadvm_state_main(f, mis, &error_fatal);
+> +    load_res =3D qemu_loadvm_state_main(f, mis, &local_err);
+>=20=20
+>      /*
+>       * This is tricky, but, mis->from_src_file can change after it
+> @@ -2137,9 +2138,12 @@ static void *postcopy_ram_listen_thread(void *opaq=
+ue)
+>                           __func__, load_res);
+>              load_res =3D 0; /* prevent further exit() */
+>          } else {
+> -            error_report("%s: loadvm failed: %d", __func__, load_res);
+> +            error_prepend(&local_err,
+> +                          "loadvm failed during postcopy: %d: ", load_re=
+s);
+> +            migrate_set_error(migr, local_err);
+> +            error_report_err(local_err);
+>              migrate_set_state(&mis->state, MIGRATION_STATUS_POSTCOPY_ACT=
+IVE,
+> -                                           MIGRATION_STATUS_FAILED);
+> +                              MIGRATION_STATUS_FAILED);
 
-diff --git a/tests/tcg/riscv64/Makefile.softmmu-target b/tests/tcg/riscv64/Makefile.softmmu-target
-index 7c1d44d3f4..c3c5b66713 100644
---- a/tests/tcg/riscv64/Makefile.softmmu-target
-+++ b/tests/tcg/riscv64/Makefile.softmmu-target
-@@ -7,18 +7,22 @@ VPATH += $(TEST_SRC)
- 
- LINK_SCRIPT = $(TEST_SRC)/semihost.ld
- LDFLAGS = -T $(LINK_SCRIPT)
--CFLAGS += -g -Og
-+CFLAGS += -march=rv64gcv -mabi=lp64d -g -Og
- 
- %.o: %.S
- 	$(CC) $(CFLAGS) $< -Wa,--noexecstack -c -o $@
- %: %.o $(LINK_SCRIPT)
- 	$(LD) $(LDFLAGS) $< -o $@
- 
--QEMU_OPTS += -M virt -display none -semihosting -device loader,file=
-+QEMU_OPTS += -M virt -cpu rv64,v=true -display none -semihosting -device loader,file=
- 
- EXTRA_RUNS += run-issue1060
- run-issue1060: issue1060
- 	$(call run-test, $<, $(QEMU) $(QEMU_OPTS)$<)
- 
-+EXTRA_RUNS += run-vlsseg8e32
-+run-vlsseg8e32: test-vlsseg8e32
-+	$(call run-test, $<, $(QEMU) $(QEMU_OPTS)$<)
-+
- # We don't currently support the multiarch system tests
- undefine MULTIARCH_TESTS
-diff --git a/tests/tcg/riscv64/test-vlsseg8e32.S b/tests/tcg/riscv64/test-vlsseg8e32.S
-new file mode 100644
-index 0000000000..2861ff3702
---- /dev/null
-+++ b/tests/tcg/riscv64/test-vlsseg8e32.S
-@@ -0,0 +1,108 @@
-+#
-+# QEMU RISC-V Vector Strided Load Instruction testcase
-+#
-+# Copyright (c) 2025 Chao Liu chao.liu@yeah.net
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+
-+	.option	norvc
-+
-+	.section .data
-+	.align 4
-+source_data:
-+	.asciz "Test the vlsseg8e32 insn by copy 64b and verifying correctness."
-+	.equ source_len, 64
-+
-+	.text
-+	.global _start
-+_start:
-+	lla	t0, trap
-+	csrw	mtvec, t0
-+
-+enable_rvv:
-+
-+	li	x15, 0x800000000024112d
-+	csrw	0x301, x15
-+	li	x1, 0x2200
-+	csrr	x2, mstatus
-+	or	x2, x2, x1
-+	csrw	mstatus, x2
-+
-+rvv_test_func:
-+	la	a0, source_data
-+	li	a1, 0x80020000
-+	vsetivli	zero, 1, e32, m1, ta, ma
-+	li	t0, 64
-+
-+	vlsseg8e32.v	v0, (a0), t0
-+	addi	a0, a0, 32
-+	vlsseg8e32.v	v8, (a0), t0
-+
-+	vssseg8e32.v	v0, (a1), t0
-+	addi	a1, a1, 32
-+	vssseg8e32.v	v8, (a1), t0
-+
-+compare_start:
-+	la	a0, source_data
-+	li	a1, 0x80020000
-+	li	t0, 0
-+	li	t1, source_len
-+
-+compare_loop:
-+	# when t0 >= len, compare end
-+	bge	 t0, t1, compare_done
-+
-+	lb	t2, 0(a0)
-+	lb	t3, 0(a1)
-+	bne	t2, t3, compare_fail
-+
-+	addi	a0, a0, 1
-+	addi	a1, a1, 1
-+	addi	t0, t0, 1
-+	j	compare_loop
-+
-+compare_done:
-+	# compare ok, return 0
-+	li	a0, 0
-+	j	_exit
-+
-+compare_fail:
-+	# compare failed, return 2
-+	li	a0, 2
-+	j	_exit
-+
-+trap:
-+	# When an instruction traps, compare it to the insn in memory.
-+	csrr	t0, mepc
-+	csrr	t1, mtval
-+	lwu	t2, 0(t0)
-+	bne	t1, t2, fail
-+
-+	# Skip the insn and continue.
-+	addi	t0, t0, 4
-+	csrw	mepc, t0
-+	mret
-+
-+fail:
-+	li	a0, 1
-+
-+# Exit code in a0
-+_exit:
-+	lla	a1, semiargs
-+	li	t0, 0x20026	# ADP_Stopped_ApplicationExit
-+	sd	t0, 0(a1)
-+	sd	a0, 8(a1)
-+	li	a0, 0x20	# TARGET_SYS_EXIT_EXTENDED
-+
-+	# Semihosting call sequence
-+	.balign	16
-+	slli	zero, zero, 0x1f
-+	ebreak
-+	srai	zero, zero, 0x7
-+	j	.
-+
-+	.data
-+	.balign	16
-+semiargs:
-+	.space	16
--- 
-2.50.1
+This should be left alone. Having this patch (git) conflict with
+something else just because of this line would be really annoying.
 
+>          }
+>      }
+>      if (load_res >=3D 0) {
 
