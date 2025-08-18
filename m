@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F139B29823
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 06:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 703C6B29827
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 06:27:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1unrRe-0000WT-1d; Mon, 18 Aug 2025 00:26:06 -0400
+	id 1unrRe-0000XZ-EC; Mon, 18 Aug 2025 00:26:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1unrG3-0005nC-ND
- for qemu-devel@nongnu.org; Mon, 18 Aug 2025 00:14:07 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1unrG7-0005nm-NO
+ for qemu-devel@nongnu.org; Mon, 18 Aug 2025 00:14:12 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1unrG1-0002Bk-Ul
- for qemu-devel@nongnu.org; Mon, 18 Aug 2025 00:14:07 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-32326e7baa1so2886362a91.3
- for <qemu-devel@nongnu.org>; Sun, 17 Aug 2025 21:14:04 -0700 (PDT)
+ id 1unrG4-0002Bw-Dl
+ for qemu-devel@nongnu.org; Mon, 18 Aug 2025 00:14:10 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-244581caca6so27580605ad.2
+ for <qemu-devel@nongnu.org>; Sun, 17 Aug 2025 21:14:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755490443; x=1756095243; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=o7DezmuwfjbPRIU2hYkSmLkMWVfXQ4fggw3uYW+YQzI=;
- b=PqBztlNuM9xlaawq8px0u+vIMpvcys4JF5NhbyOrE/IuFTUV61qIJlavq9l2LTA0MH
- cKNDWMIx+l3zX3wPhcm7Fp9bFLAzz9s1Tb/IQA9lXSMG266doMQa1epdLq8HacjlYHkl
- Lk+k/gwlpAudkiol6TloXaQ+KxlCEOOhcYw1/xCnHbQ1kkFxzVpN9QhGbHn8FRGCpEfX
- piW6urKQkhDeeqTSnGbe8wJx/Ir1wDPgXkWgdMvqLfPfPKiwhmrPq+/ag2ds6XF96gRt
- UawRRHGC/SpWXA7jGPhcI1DY12XWVovSSozniTw9AlSOC1FQ/ZI88RuSajVmO9Vn/sUs
- K9Ag==
+ d=linaro.org; s=google; t=1755490447; x=1756095247; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=64+ahYFh4IwC51HUbhtOgwf0sNLEsCS04TzU9ll5HPo=;
+ b=YtX+rVXs+nLRp2Wj6iuSD2Dhs0COJkCZQI9IT1CEFM8ekwBJwJZyUloas/s4LeDxH4
+ XS/NvSmVpDubciR90rr6K3/ceQBwSgqJUZOruQLnPDMdBCLDbhJ2VEgShI6Ekq/UuRO2
+ HC3NTVtppikhMFx5sjztVAc7bp91Dj0mMeNljlNh1b0matbPUsjtzhQtPkR2SBLYuPmT
+ 5vWshzRFan4jFeCKTRaTonSYVPGMgU2Q1RAR/45EBuMoGuDBGzsUgqHdQVyIIWcW1Ukt
+ 5MLEpUx8bEC2kpljt0xWbbg+OWhshwF1PIVDKiZQyzpL9R8qRrc173A2Aj+Ww4vz1Ffp
+ frbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755490443; x=1756095243;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=o7DezmuwfjbPRIU2hYkSmLkMWVfXQ4fggw3uYW+YQzI=;
- b=qjL7z76woUqTDgAJmBqrHN2iZ7BNEsBIkWAqNd7FsRhGmDCG/aG3LodGLizi4qRf7r
- jkrpjJamxCnX5+aJXoTUWnstzoa8KAwaLRVZz5PeNbhT79aiW7mUeNpmwPnxPxt/I2Q0
- 8wFZ8e62anc0+Q5VShchhVSkNOkcDfJv9RmGHvAPcBeiv7jGeK5BYYel7Ytw8ajNunFC
- e7opNlHrXeDpC/UVxmBgPmM3mPkvhCIfbazCOGLdLjEVrw88Fr9YPLr7q99aAfFxSV1w
- E9nT68tLzi50UzyrwOjS1o2FzDEh53Rf86qd9b5nc0XlaNmKMvL1eB5ss8Z8eQFeVD7c
- mhFQ==
-X-Gm-Message-State: AOJu0YyyFfky60czws76rlRMF7N3aRhSzc71z6nF0as7WreiHw1pIXhP
- yVaAvsIYGKE918ZJV+r5asidoFyOjdcNyHII2LgCxTkgIHj3qdY6I7d8IH05Qdlil6xWOtufK9J
- M8eIK2gE=
-X-Gm-Gg: ASbGncs9vfKHWYjLEASLXWfhy+B4s5Eyee5Ll5+slSyyuwZvo2Fy4XxF8RtpdwkMc8r
- /7tYB4AS5sctbEA5ClH9LbEGJiepm0l3lf/JQy6H4oQeoFI7MOJjJbk3i/CM7Oy97PEXABAgihq
- 1jaYx7rXt4hvg6tvnV9yMTCadojkXFuwtHNKydMi3ijVK3ApgOY5h7FlckBTtrZ9TjqHg9hll4c
- tuHThD5kBxkVH1doBpn2p6pTvFqQXCYMfp6saF52X+4W420Y1MnC/aQn/C28/zlCZpnsox2p7/5
- PpO0xfe9lln88jgGXivnyE/uudQAmkhsaDVWTeSV87W4JVBPVbOe548LvIcFKk5/Jjva7VLyPsv
- WXf9i8dYjJf6rbMGqiela5u/qAJ4jyN+DClbsbfDf3in4OJ0=
-X-Google-Smtp-Source: AGHT+IGKjweePcn2HRKhrvWC2ZYQ1F5nagLzSElu/nDR/LZ6sLs3vN7iobRQjB/d/VBXNMWx3ikMFA==
-X-Received: by 2002:a17:90b:180f:b0:321:c567:44bf with SMTP id
- 98e67ed59e1d1-323421849b3mr14035859a91.29.1755490442670; 
- Sun, 17 Aug 2025 21:14:02 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1755490447; x=1756095247;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=64+ahYFh4IwC51HUbhtOgwf0sNLEsCS04TzU9ll5HPo=;
+ b=NvaihxmaonoNXvZiK4fkZTqVBLlxKGkE2W1h/LcLxCNQg13U+NRfMg0qFs0FYIWJK+
+ hscoYjYv2VpnHKxxROr+KFSC921Py35CUQOWD1h5cdrh56/LeDSFFZdz07e3U87aQbzJ
+ 5D+Fm2Bv+bJka+wIdX9pbFNYNWk/lTpQKqzBW5l+FwQY+XGO53Idz3CxlcvNxqcimwtM
+ ggRmK+5o7soN+h0PRUekhUWrnLZRyRX46hfh1PVZEJ9uhGzrGZJLxQmzsbmVOWXETNYO
+ AB/pHnvINojGaSO3GOPr/b2hpad5IDAHrkNtN64q2D4kooTPAjkJZJnRquyqUOnZ9tCF
+ BWdw==
+X-Gm-Message-State: AOJu0YynPvy+UDnGIHHJ+JfRidSCuYe7qRbKccO5awzIYf5qdqxVktQo
+ CiO66M8XGL/X+mzzGuV3zpt2UIeR9Lbc3fAEQWgKaBPhd0LIU64K/kuDu80rV6hqYO21E+djkCH
+ 7oERfPyw=
+X-Gm-Gg: ASbGncsT6E7wnvmF98am3i/TxT9v2998fMd696JyIXI4/QqV7BvBi4ClbbfjLOG7uPL
+ 4S7x7MG86pYwciqkYs7oY7XhIgrQlOdfX9A2WiVBnunJ9Jnqr2CJPrkroUuS7yoODFHxPcNr72O
+ ya9AVTC3eKgwpGfRetWiXPJU2a2nDy1xzfZKkh4LFeJve9b+o7FzGcDkukRJRbxJugzHr69IJ+f
+ F3K8hOxSLiaEGQATC7oKzCFB0d0JiuJuRrS4qdSYXmGd+Z7FZP+Nv9lzPUzvAX8FhKkVHRqOSf2
+ bXm3NtrZZE901TwN41d63TSlINQRnRA7v51eVOZ8Zl7IEMUHbd75vZF4UvECbQQjG2q5YABCtdW
+ 1dzU2Qq2lCBFtuIBk2M8LVyxzT94tGkacHiWobFVCspISnGE=
+X-Google-Smtp-Source: AGHT+IHrAdJ7dmciH2Py8pMjYvuvihH+V7uvt4TmGTyTFH0eaKLqq4XSUopGi+zLQaPMCnM1Vm5iqQ==
+X-Received: by 2002:a17:903:1aae:b0:240:3909:5359 with SMTP id
+ d9443c01a7336-2446d8dcccamr147351265ad.40.1755490446765; 
+ Sun, 17 Aug 2025 21:14:06 -0700 (PDT)
 Received: from localhost.localdomain ([206.83.122.207])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3232f8c8e4bsm5498344a91.2.2025.08.17.21.13.59
+ 98e67ed59e1d1-3232f8c8e4bsm5498344a91.2.2025.08.17.21.14.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Aug 2025 21:14:02 -0700 (PDT)
+ Sun, 17 Aug 2025 21:14:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mads@ynddal.dk, agraf@csgraf.de, qemu-arm@nongnu.org, philmd@linaro.org
-Subject: [PATCH 0/7] target/arm/hvf cleanups
-Date: Mon, 18 Aug 2025 14:13:47 +1000
-Message-ID: <20250818041354.2393041-1-richard.henderson@linaro.org>
+Subject: [PATCH 1/7] target/arm: Introduce KVMID_AA64_SYS_REG64
+Date: Mon, 18 Aug 2025 14:13:48 +1000
+Message-ID: <20250818041354.2393041-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250818041354.2393041-1-richard.henderson@linaro.org>
+References: <20250818041354.2393041-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,35 +98,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While working on other things cpregs related, I noticed that
-target/arm/hvf failed to produce a sorted cpreg_indexes[].
+Allow us to create kvm ids directly, rather than going
+through ENCODE_AA64_CP_REG + cpreg_to_kvm_id.
 
-I wondered if that explained the migration-test failure that
-we have, but no such luck.  (I have no idea how to debug that
-test, btw; so far it is still just a mysterious SIGSEGV.)
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/kvm-consts.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-
-r~
-
-
-Richard Henderson (7):
-  target/arm: Introduce KVMID_AA64_SYS_REG64
-  target/arm: Move compare_u64 to helper.c
-  target/arm/hvf: Split out sysreg.c.inc
-  target/arm/hvf: Add KVMID_TO_HVF, HVF_TO_KVMID
-  target/arm/hvf: Remove hvf_sreg_match.key
-  target/arm/hvf: Replace hvf_sreg_match with hvf_sreg_list
-  target/arm/hvf: Sort the cpreg_indexes array
-
- target/arm/cpregs.h         |   3 +
- target/arm/kvm-consts.h     |  11 ++
- target/arm/helper.c         |  11 ++
- target/arm/hvf/hvf.c        | 230 +++++++++---------------------------
- target/arm/kvm.c            |  11 --
- target/arm/hvf/sysreg.c.inc | 146 +++++++++++++++++++++++
- 6 files changed, 224 insertions(+), 188 deletions(-)
- create mode 100644 target/arm/hvf/sysreg.c.inc
-
+diff --git a/target/arm/kvm-consts.h b/target/arm/kvm-consts.h
+index c44d23dbe7..90d792ad42 100644
+--- a/target/arm/kvm-consts.h
++++ b/target/arm/kvm-consts.h
+@@ -180,4 +180,15 @@ MISMATCH_CHECK(CP_REG_ARM64_SYSREG_OP2_SHIFT, KVM_REG_ARM64_SYSREG_OP2_SHIFT);
+ 
+ #undef MISMATCH_CHECK
+ 
++#define KVMID_AA64_SYS_REG_(crn, crm, op0, op1, op2)    \
++    (CP_REG_AA64_MASK | CP_REG_ARM64_SYSREG |           \
++     ((op0) << CP_REG_ARM64_SYSREG_OP0_SHIFT) |         \
++     ((op1) << CP_REG_ARM64_SYSREG_OP1_SHIFT) |         \
++     ((crn) << CP_REG_ARM64_SYSREG_CRN_SHIFT) |         \
++     ((crm) << CP_REG_ARM64_SYSREG_CRM_SHIFT) |         \
++     ((op2) << CP_REG_ARM64_SYSREG_OP2_SHIFT))
++
++#define KVMID_AA64_SYS_REG64(crn, crm, op0, op1, op2)   \
++    (KVMID_AA64_SYS_REG_(crn, crm, op0, op1, op2) | CP_REG_SIZE_U64)
++
+ #endif
 -- 
 2.43.0
 
