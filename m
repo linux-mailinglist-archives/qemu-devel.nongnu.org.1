@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34540B2A8B9
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 16:08:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D95BB2A8CF
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 16:09:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uo0Vo-0001Lt-Ph; Mon, 18 Aug 2025 10:07:00 -0400
+	id 1uo0Vq-0001Mi-EN; Mon, 18 Aug 2025 10:07:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uo0Vl-0001Jv-3x
- for qemu-devel@nongnu.org; Mon, 18 Aug 2025 10:06:57 -0400
+ id 1uo0Vm-0001Kw-As
+ for qemu-devel@nongnu.org; Mon, 18 Aug 2025 10:06:58 -0400
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uo0Vh-0002B6-Fu
- for qemu-devel@nongnu.org; Mon, 18 Aug 2025 10:06:56 -0400
+ id 1uo0Vh-0002B7-Gj
+ for qemu-devel@nongnu.org; Mon, 18 Aug 2025 10:06:57 -0400
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c21:2d8b:0:640:7d49:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 31DD2807B5;
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 819C6807A7;
  Mon, 18 Aug 2025 17:06:48 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b25::1:17])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id k6RC4003YeA0-1X2frNWW; Mon, 18 Aug 2025 17:06:47 +0300
+ ESMTPSA id k6RC4003YeA0-HqCL0C3S; Mon, 18 Aug 2025 17:06:48 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1755526007;
- bh=XZ907GoTMSukCC5aa7hwWOOYOieaiLj2RzPVyep6PXA=;
+ s=default; t=1755526008;
+ bh=tqSxf8tU4NUdXhUe8SOdly4Zaf5Ojq1JY3s5SFqYwUU=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=Pe7PIoEh3unIECyzf7qdc3vzDM1IrZegliZ471idyqg+AFh6dRd0I8g35UeIFfcK8
- d5MEpf1cKQCfxRxi/vzU197ohAO+s3OM86le/07W2CHPXlOCGqO0D0Q4vdHjbMdLWg
- +CETGl1+rv0U5cOCTkKddVnpeLAw4K5tsDQNbhiQ=
+ b=apuJ8u/U0+4+H09iGqm4QYG3vRVCj6lsmR93SRY8dg1j/1u7pjokuGrFtUsX11Oyf
+ tAyBTxumICSMMDCS4xBFpU4x1sNcAQYQuBx559xuHl+wgr8uIZLxU1uoZabBWOx0rE
+ kp7Qlwlsl3tRCX3AbRcsqVZjukVLKIfFaSHE3Nfw=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: jasowang@redhat.com
 Cc: qemu-devel@nongnu.org,
 	vsementsov@yandex-team.ru
-Subject: [PATCH 02/19] net/tap: add set_fd_nonblocking() helper
-Date: Mon, 18 Aug 2025 17:06:28 +0300
-Message-ID: <20250818140645.27904-3-vsementsov@yandex-team.ru>
+Subject: [PATCH 03/19] net/tap: tap_set_sndbuf(): add return value
+Date: Mon, 18 Aug 2025 17:06:29 +0300
+Message-ID: <20250818140645.27904-4-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250818140645.27904-1-vsementsov@yandex-team.ru>
 References: <20250818140645.27904-1-vsementsov@yandex-team.ru>
@@ -72,101 +72,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Follow common recommendations to avoid error propagation.
+
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- net/tap.c | 34 +++++++++++++++++++---------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ net/tap-linux.c | 5 ++++-
+ net/tap.c       | 4 +---
+ net/tap_int.h   | 2 +-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/tap.c b/net/tap.c
-index 531ef75e91..ba2731ee8a 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -609,6 +609,18 @@ static int net_bridge_run_helper(const char *helper, const char *bridge,
+diff --git a/net/tap-linux.c b/net/tap-linux.c
+index 22ec2f45d2..3625379c58 100644
+--- a/net/tap-linux.c
++++ b/net/tap-linux.c
+@@ -140,7 +140,7 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+  */
+ #define TAP_DEFAULT_SNDBUF 0
+ 
+-void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
++int tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+ {
+     int sndbuf;
+ 
+@@ -154,7 +154,10 @@ void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+ 
+     if (ioctl(fd, TUNSETSNDBUF, &sndbuf) == -1 && tap->has_sndbuf) {
+         error_setg_errno(errp, errno, "TUNSETSNDBUF ioctl failed");
++        return -1;
      }
++
++    return 0;
  }
  
-+static bool set_fd_nonblocking(int fd, const char *note, Error **errp)
-+{
-+    bool ok = g_unix_set_fd_nonblocking(fd, true, NULL);
-+
-+    if (!ok) {
-+        error_setg_errno(errp, errno, "Failed to set fd %d (%s) nonblocking",
-+                         fd, note);
-+    }
-+
-+    return ok;
-+}
-+
- int net_init_bridge(const Netdev *netdev, const char *name,
-                     NetClientState *peer, Error **errp)
- {
-@@ -627,10 +639,10 @@ int net_init_bridge(const Netdev *netdev, const char *name,
-         return -1;
+ int tap_probe_vnet_hdr(int fd, Error **errp)
+diff --git a/net/tap.c b/net/tap.c
+index ba2731ee8a..0258ac8574 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -702,9 +702,7 @@ static int net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+     TAPState *s = net_tap_fd_init(peer, model, name, fd, vnet_hdr);
+     int vhostfd;
+ 
+-    tap_set_sndbuf(s->fd, tap, &err);
+-    if (err) {
+-        error_propagate(errp, err);
++    if (tap_set_sndbuf(s->fd, tap, errp) < 0) {
+         goto failed;
      }
  
--    if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
--        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+    if (!set_fd_nonblocking(fd, name, errp)) {
-         return -1;
-     }
-+
-     vnet_hdr = tap_probe_vnet_hdr(fd, errp);
-     if (vnet_hdr < 0) {
-         close(fd);
-@@ -729,9 +741,7 @@ static int net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-                 error_propagate(errp, err);
-                 goto failed;
-             }
--            if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
--                error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
--                                 name, fd);
-+            if (!set_fd_nonblocking(vhostfd, vhostfdname, errp)) {
-                 goto failed;
-             }
-         } else {
-@@ -741,8 +751,7 @@ static int net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-                                  "tap: open vhost char device failed");
-                 goto failed;
-             }
--            if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
--                error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+            if (!set_fd_nonblocking(vhostfd, "opened /dev/vhost-net", errp)) {
-                 goto failed;
-             }
-         }
-@@ -839,9 +848,7 @@ int net_init_tap(const Netdev *netdev, const char *name,
-             return -1;
-         }
+diff --git a/net/tap_int.h b/net/tap_int.h
+index 8857ff299d..d21acf8486 100644
+--- a/net/tap_int.h
++++ b/net/tap_int.h
+@@ -33,7 +33,7 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
  
--        if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
--            error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
--                             name, fd);
-+        if (!set_fd_nonblocking(fd, tap->fd, errp)) {
-             close(fd);
-             return -1;
-         }
-@@ -893,10 +900,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
-                 goto free_fail;
-             }
+ ssize_t tap_read_packet(int tapfd, uint8_t *buf, int maxlen);
  
--            if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
-+            if (!set_fd_nonblocking(fd, fds[i], errp)) {
-                 ret = -1;
--                error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
--                                 name, fd);
-                 goto free_fail;
-             }
- 
-@@ -948,8 +953,7 @@ free_fail:
-             return -1;
-         }
- 
--        if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
--            error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+        if (!set_fd_nonblocking(fd, name, errp)) {
-             return -1;
-         }
-         vnet_hdr = tap_probe_vnet_hdr(fd, errp);
+-void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
++int tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
+ int tap_probe_vnet_hdr(int fd, Error **errp);
+ int tap_probe_has_ufo(int fd);
+ int tap_probe_has_uso(int fd);
 -- 
 2.48.1
 
