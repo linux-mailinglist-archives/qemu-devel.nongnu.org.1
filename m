@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32825B2B3B0
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 23:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8A0B2B3B4
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 23:49:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uo7eY-0001zJ-UM; Mon, 18 Aug 2025 17:44:31 -0400
+	id 1uo7eV-0001xG-Sh; Mon, 18 Aug 2025 17:44:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uo7dp-0001gk-E9; Mon, 18 Aug 2025 17:43:46 -0400
+ id 1uo7eF-0001ou-Ip; Mon, 18 Aug 2025 17:44:14 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uo7dn-0003m6-Er; Mon, 18 Aug 2025 17:43:45 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57ID7cao031324;
- Mon, 18 Aug 2025 21:43:41 GMT
+ id 1uo7dq-0003mY-2Z; Mon, 18 Aug 2025 17:44:09 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57IHpNKZ025716;
+ Mon, 18 Aug 2025 21:43:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=5hzX6z
- zvOb1EfclVIP0O6jxDqootMn/oL420wqUNcSg=; b=GwHX6wgDp6LkGWtZORpr2L
- 5xiLxfnHkdog3tCSxdRk1G/Ky6YkHwKSG65wExZPBYY8/GtVFl31vu+Jq8WvfoB2
- 1CUItZx+gExFePpnVXAtcOO4sCARmpBgHChFBb8QU3pFJ7xg+Y58buYgB9oGVyHE
- XCEkAmmk8KrZ+T/u4AwhfvSSaj0rJ6ixOzrFcpvMMPl4mtBqm0MicJ1Uqa2OaNSB
- Tr/WhGyO/PO4Rm9shTVj9rGszjczonUOYX9oCt34K5kJYjLI1SYxgFSVA0haojsh
- ZY7lPvWHEpc8I9NmlFQSy5oRPglolZDbHgDYe3wdUhBaOAUWTDBxMqxCCygzzO+Q
- ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48k60g0cnu-1
+ :content-transfer-encoding:date:from:in-reply-to:message-id
+ :mime-version:references:subject:to; s=pp1; bh=5sCY091RE+vTIef3g
+ kdp/DqTC7/Pdj4qMj960hJor/0=; b=AiACi4KW+twRwt1V+NnuVhOdQo+NnjaJq
+ KHcAPkN/58Kuuqh5TykE8tlK31ddWqYSbPjb6chDSkEA7MvRXAIf9X/L3zOgJ3pD
+ gZyE63qIugzTtVHDy7ITzO/Y7Z8GlAkkpBLOPz4dwKS2HET2t7Iy6ICEXu9VL60/
+ jDgxL5PGTtTsxAJhzlt6aT9iLy5l4QsIcqNmkUzLBixXTG6jnuUJGdt1I5cwvxJJ
+ P4f2yyNfK6R3kCWualmSQ5J7Wjzkq6c6M0pPh43ZcdhBPb50jXY/GyuIlLW6Sryf
+ fUUb5MBDtFnPp9mw9CGofQ2PQnVuxR4ucDYBIS3TiU19TALZGaGiw==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jhq9ugj5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Aug 2025 21:43:40 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57IKJKmA002381;
- Mon, 18 Aug 2025 21:43:40 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48k712y9w5-1
+ Mon, 18 Aug 2025 21:43:43 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57IJ9QTE014728;
+ Mon, 18 Aug 2025 21:43:41 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48k5tmqgnq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Aug 2025 21:43:40 +0000
+ Mon, 18 Aug 2025 21:43:41 +0000
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
  [10.241.53.100])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 57ILhdmh20709892
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 57ILhe4b26083718
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 18 Aug 2025 21:43:39 GMT
+ Mon, 18 Aug 2025 21:43:40 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 14A5C58057;
+ by IMSVA (Postfix) with ESMTP id 37BB258057;
+ Mon, 18 Aug 2025 21:43:40 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2DBC258058;
  Mon, 18 Aug 2025 21:43:39 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A3C7B58058;
- Mon, 18 Aug 2025 21:43:37 +0000 (GMT)
 Received: from fedora-workstation.ibmuc.com (unknown [9.61.98.172])
  by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 18 Aug 2025 21:43:37 +0000 (GMT)
+ Mon, 18 Aug 2025 21:43:39 +0000 (GMT)
 From: Zhuoying Cai <zycai@linux.ibm.com>
 To: thuth@redhat.com, berrange@redhat.com, richard.henderson@linaro.org,
  david@redhat.com, jrossi@linux.ibm.com, qemu-s390x@nongnu.org,
@@ -64,38 +63,36 @@ Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
  borntraeger@linux.ibm.com, farman@linux.ibm.com,
  mjrosato@linux.ibm.com, iii@linux.ibm.com, eblake@redhat.com,
  armbru@redhat.com, alifm@linux.ibm.com, zycai@linux.ibm.com
-Subject: [PATCH v5 11/29] crypto/x509-utils: Add helper functions for DIAG 508
- subcode 1
-Date: Mon, 18 Aug 2025 17:43:04 -0400
-Message-ID: <20250818214323.529501-12-zycai@linux.ibm.com>
+Subject: [PATCH v5 12/29] s390x/diag: Implement DIAG 508 subcode 1 for
+ signature verification
+Date: Mon, 18 Aug 2025 17:43:05 -0400
+Message-ID: <20250818214323.529501-13-zycai@linux.ibm.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818214323.529501-1-zycai@linux.ibm.com>
 References: <20250818214323.529501-1-zycai@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _Sm9C0wKQx291DhepiDPSUX1Tq1vdwEP
-X-Authority-Analysis: v=2.4 cv=coObk04i c=1 sm=1 tr=0 ts=68a39e8d cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=Ehcw9bocbOASTidboh8A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: _Sm9C0wKQx291DhepiDPSUX1Tq1vdwEP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE3MDAxNiBTYWx0ZWRfX3b3VP9bo/KFH
- Q6AYSSxHPNF7MCVN5LdoN6M0p46hOdu3aIPKgAp68FurNg5+E5swA/kJjrgmOAA67zcu2NuB4im
- CdXJGVtRZHy6wEw4AVRMAM/+8pd4tUO1TCVyXTSpb5dJHUpvLXjZcAUvTpa/2LB48wgZKV4Ru6r
- OpblCBm7bVPoesuw5P8anXL9aXh4KzCSprpkJ4TanrjAHlgddcN34X36yVqkWgO0wIA78lLnFI0
- I9x39BNT/ETRc4+w0isBzNxtBI9/XulKNf35W7RCu1MJHSx8vN9E4NYDBWuC5zUbA9KlUGPDoTX
- ZvQEuNnsiVJeNrUmrBAeAbAMwrQ7EsfGU/W5fH+GJtU1U7GmX68xRYvIqHd4e0rhgLSswbcUnhe
- yjU9wUL1
+X-Authority-Analysis: v=2.4 cv=N50pF39B c=1 sm=1 tr=0 ts=68a39e8f cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=QUeH2xgz5R9ERI6wYg0A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAyNyBTYWx0ZWRfX26j1X59KjhXw
+ lUGj7ZULR2/1WDQdW0w6YaOdgkWmSJcqsbDrhQ8BySIZbZ7Bc9O72L4pH2QoI1nbVqQWkyKyyxR
+ KqHiT1BaFy5m+SLCDRN54NNvEs6/oyYT+SWvZCV7uvC8/dxomp1E+NZjEMC52bob4ahK3cMdQbF
+ VDtM1XFpJGdy6NNVL+HXyBauVNLzcwaAgQ3EUlnwbOodxrfgcgIkYiEXi735rGhbECDvEUBBdnZ
+ DCBkNQJ/wX6QPqnqGKbVCnuSyqEP+Lon+/ZMAf2QewYUPNqs45ThMp7tWDlBKQqp+kW97yY/bFk
+ AoZzPf9lfhSyrjOiimNqOZ9mOkRtv+xaJD+VVXXpjjBMngoXwtTWOoC20pyGyP+rMOHDpq6Re1N
+ vj4qpJU0
+X-Proofpoint-GUID: Y5DKEQ3N9iNHSZva8BVcEgC4_l59lZqG
+X-Proofpoint-ORIG-GUID: Y5DKEQ3N9iNHSZva8BVcEgC4_l59lZqG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-18_06,2025-08-14_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 suspectscore=0 bulkscore=0 clxscore=1015 malwarescore=0
- priorityscore=1501 adultscore=0 impostorscore=0 spamscore=0
+ malwarescore=0 phishscore=0 suspectscore=0 impostorscore=0 bulkscore=0
+ adultscore=0 priorityscore=1501 spamscore=0 clxscore=1015
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508170016
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508160027
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=zycai@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -121,199 +118,222 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce helper functions to support signature verification required by
-DIAG 508 subcode 1:
+From: Collin Walling <walling@linux.ibm.com>
 
-qcrypto_pkcs7_convert_sig_pem() – converts a signature from DER to PEM format
-qcrypto_x509_verify_sig() – verifies the provided data against the given signature
+DIAG 508 subcode 1 performs signature-verification on signed components.
+A signed component may be a Linux kernel image, or any other signed
+binary. **Verification of initrd is not supported.**
 
-These functions enable basic signature verification support.
+The instruction call expects two item-pairs: an address of a device
+component, an address of the analogous signature file (in PKCS#7 DER format),
+and their respective lengths. All of this data should be encapsulated
+within a Diag508SignatureVerificationBlock, with the CertificateStoreInfo
+fields ignored. The DIAG handler will read from the provided addresses
+to retrieve the necessary data, parse the signature file, then
+perform the signature-verification. Because there is no way to
+correlate a specific certificate to a component, each certificate
+in the store is tried until either verification succeeds, or all
+certs have been exhausted.
 
+The subcode value is denoted by setting the second-to-left-most bit of
+a 2-byte field.
+
+A return code of 1 indicates success, and the index and length of the
+corresponding certificate will be set in the CertificateStoreInfo
+portion of the SigVerifBlock. The following values indicate failure:
+
+	0x0102: certificate not available
+	0x0202: component data is invalid
+	0x0302: signature is not in PKCS#7 format
+	0x0402: signature-verification failed
+
+Signed-off-by: Collin Walling <walling@linux.ibm.com>
 Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
 ---
- crypto/x509-utils.c         | 108 ++++++++++++++++++++++++++++++++++++
- include/crypto/x509-utils.h |  39 +++++++++++++
- 2 files changed, 147 insertions(+)
+ docs/specs/s390x-secure-ipl.rst |   5 ++
+ include/hw/s390x/ipl/diag508.h  |  23 +++++++
+ target/s390x/diag.c             | 112 +++++++++++++++++++++++++++++++-
+ 3 files changed, 139 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/x509-utils.c b/crypto/x509-utils.c
-index 67b42aad1f..f582e2ee48 100644
---- a/crypto/x509-utils.c
-+++ b/crypto/x509-utils.c
-@@ -16,6 +16,7 @@
- #include <gnutls/gnutls.h>
- #include <gnutls/crypto.h>
- #include <gnutls/x509.h>
-+#include <gnutls/pkcs7.h>
+diff --git a/docs/specs/s390x-secure-ipl.rst b/docs/specs/s390x-secure-ipl.rst
+index 6b3249173f..385f8d85a8 100644
+--- a/docs/specs/s390x-secure-ipl.rst
++++ b/docs/specs/s390x-secure-ipl.rst
+@@ -64,3 +64,8 @@ that requires assistance from QEMU.
  
- static const int qcrypto_to_gnutls_hash_alg_map[QCRYPTO_HASH_ALGO__MAX] = {
-     [QCRYPTO_HASH_ALGO_MD5] = GNUTLS_DIG_MD5,
-@@ -275,6 +276,96 @@ cleanup:
-     return ret;
- }
+ Subcode 0 - query installed subcodes
+     Returns a 64-bit mask indicating which subcodes are supported.
++
++Subcode 1 - perform signature verification
++    Perform signature-verification on a signed component, using certificates
++    from the certificate store and leveraging qcrypto libraries to perform
++    this operation.
+diff --git a/include/hw/s390x/ipl/diag508.h b/include/hw/s390x/ipl/diag508.h
+index 6281ad8299..c99c6705c0 100644
+--- a/include/hw/s390x/ipl/diag508.h
++++ b/include/hw/s390x/ipl/diag508.h
+@@ -11,5 +11,28 @@
+ #define S390X_DIAG508_H
  
-+int qcrypto_pkcs7_convert_sig_pem(uint8_t *sig, size_t sig_size,
-+                                  uint8_t **result, size_t *resultlen,
-+                                  Error **errp)
-+{
-+    int ret = -1;
-+    int rc;
-+    gnutls_pkcs7_t signature;
-+    gnutls_datum_t sig_datum_der = {.data = sig, .size = sig_size};
-+    gnutls_datum_t sig_datum_pem = { 0, };
+ #define DIAG_508_SUBC_QUERY_SUBC    0x0000
++#define DIAG_508_SUBC_SIG_VERIF     0x8000
 +
-+    rc = gnutls_pkcs7_init(&signature);
-+    if (rc < 0) {
-+        error_setg(errp, "Failed to initalize pkcs7 data: %s", gnutls_strerror(rc));
-+        return ret;
-+     }
++#define DIAG_508_RC_OK              0x0001
++#define DIAG_508_RC_NO_CERTS        0x0102
++#define DIAG_508_RC_INVAL_COMP_DATA 0x0202
++#define DIAG_508_RC_INVAL_PKCS7_SIG 0x0302
++#define DIAG_508_RC_FAIL_VERIF      0x0402
 +
-+    rc = gnutls_pkcs7_import(signature, &sig_datum_der, GNUTLS_X509_FMT_DER);
-+    if (rc != 0) {
-+        error_setg(errp, "Failed to import signature: %s", gnutls_strerror(rc));
-+        goto cleanup;
-+    }
++struct Diag508CertificateStoreInfo {
++    uint8_t  idx;
++    uint8_t  reserved[7];
++    uint64_t len;
++};
++typedef struct Diag508CertificateStoreInfo Diag508CertificateStoreInfo;
 +
-+    rc = gnutls_pkcs7_export2(signature, GNUTLS_X509_FMT_PEM, &sig_datum_pem);
-+    if (rc != 0) {
-+        error_setg(errp, "Failed to convert signature to PEM format: %s",
-+                   gnutls_strerror(rc));
-+        gnutls_free(sig_datum_pem.data);
-+        goto cleanup;
-+    }
-+
-+    *result = g_steal_pointer(&sig_datum_pem.data);
-+    *resultlen = sig_datum_pem.size;
-+
-+    ret = 0;
-+
-+cleanup:
-+    gnutls_pkcs7_deinit(signature);
-+    return ret;
-+}
-+
-+int qcrypto_x509_verify_sig(uint8_t *cert, size_t cert_size,
-+                            uint8_t *comp, size_t comp_size,
-+                            uint8_t *sig, size_t sig_size, Error **errp)
-+{
-+    int rc;
-+    int ret = -1;
-+    gnutls_x509_crt_t crt = NULL;
-+    gnutls_pkcs7_t signature = NULL;
-+    gnutls_datum_t cert_datum = {.data = cert, .size = cert_size};
-+    gnutls_datum_t data_datum = {.data = comp, .size = comp_size};
-+    gnutls_datum_t sig_datum = {.data = sig, .size = sig_size};
-+
-+    rc = gnutls_x509_crt_init(&crt);
-+    if (rc < 0) {
-+        error_setg(errp, "Failed to initialize certificate: %s", gnutls_strerror(rc));
-+        goto cleanup;
-+    }
-+
-+    rc = gnutls_x509_crt_import(crt, &cert_datum, GNUTLS_X509_FMT_PEM);
-+    if (rc != 0) {
-+        error_setg(errp, "Failed to import certificate: %s", gnutls_strerror(rc));
-+        goto cleanup;
-+    }
-+
-+    rc = gnutls_pkcs7_init(&signature);
-+    if (rc < 0) {
-+        error_setg(errp, "Failed to initalize pkcs7 data: %s", gnutls_strerror(rc));
-+        goto cleanup;
-+     }
-+
-+    rc = gnutls_pkcs7_import(signature, &sig_datum , GNUTLS_X509_FMT_PEM);
-+    if (rc != 0) {
-+        error_setg(errp, "Failed to import signature: %s", gnutls_strerror(rc));
-+        goto cleanup;
-+    }
-+
-+    rc = gnutls_pkcs7_verify_direct(signature, crt, 0, &data_datum, 0);
-+    if (rc != 0) {
-+        error_setg(errp, "Failed to verify signature: %s", gnutls_strerror(rc));
-+        goto cleanup;
-+    }
-+
-+    ret = 0;
-+
-+cleanup:
-+    gnutls_x509_crt_deinit(crt);
-+    gnutls_pkcs7_deinit(signature);
-+    return ret;
-+}
-+
- #else /* ! CONFIG_GNUTLS */
++struct Diag508SignatureVerificationBlock {
++    Diag508CertificateStoreInfo csi;
++    uint64_t comp_len;
++    uint64_t comp_addr;
++    uint64_t sig_len;
++    uint64_t sig_addr;
++};
++typedef struct Diag508SignatureVerificationBlock Diag508SignatureVerificationBlock;
  
- int qcrypto_get_x509_cert_fingerprint(uint8_t *cert, size_t size,
-@@ -318,4 +409,21 @@ int qcrypto_x509_get_cert_key_id(uint8_t *cert, size_t size,
-     return -1;
- }
- 
-+int qcrypto_pkcs7_convert_sig_pem(uint8_t *sig, size_t sig_size,
-+                                  uint8_t **result,
-+                                  size_t *resultlen,
-+                                  Error **errp)
-+{
-+    error_setg(errp, "GNUTLS is required to export pkcs7 signature");
-+    return -1;
-+}
-+
-+int qcrypto_x509_verify_sig(uint8_t *cert, size_t cert_size,
-+                            uint8_t *comp, size_t comp_size,
-+                            uint8_t *sig, size_t sig_size, Error **errp)
-+{
-+    error_setg(errp, "GNUTLS is required for signature-verification support");
-+    return -1;
-+}
-+
- #endif /* ! CONFIG_GNUTLS */
-diff --git a/include/crypto/x509-utils.h b/include/crypto/x509-utils.h
-index f169df81cb..c4073fd265 100644
---- a/include/crypto/x509-utils.h
-+++ b/include/crypto/x509-utils.h
-@@ -97,4 +97,43 @@ int qcrypto_x509_get_cert_key_id(uint8_t *cert, size_t size,
-                                  size_t *resultlen,
-                                  Error **errp);
- 
-+/**
-+ * qcrypto_pkcs7_convert_sig_pem
-+ * @sig: pointer to the PKCS#7 signature in DER format
-+ * @sig_size: size of the signature
-+ * @result: output location for the allocated buffer for the signature in PEM format
-+            (the function allocates memory which must be freed by the caller)
-+ * @resultlen: pointer to the size of the buffer
-+               (will be updated with the actual size of the PEM-encoded signature)
-+ * @errp: error pointer
-+ *
-+ * Convert given PKCS#7 @sig from DER to PEM format.
-+ *
-+ * Returns: 0 if PEM-encoded signature was successfully stored in @result,
-+ *         -1 on error.
-+ */
-+int qcrypto_pkcs7_convert_sig_pem(uint8_t *sig, size_t sig_size,
-+                                  uint8_t **result,
-+                                  size_t *resultlen,
-+                                  Error **errp);
-+
-+/**
-+ * qcrypto_x509_verify_sig
-+ * @cert: pointer to the raw certificate data
-+ * @cert_size: size of the certificate
-+ * @comp: pointer to the component to be verified
-+ * @comp_size: size of the component
-+ * @sig: pointer to the signature
-+ * @sig_size: size of the signature
-+ * @errp: error pointer
-+ *
-+ * Verify the provided @comp against the @sig and @cert.
-+ *
-+ * Returns: 0 on success,
-+ *         -1 on error.
-+ */
-+int qcrypto_x509_verify_sig(uint8_t *cert, size_t cert_size,
-+                            uint8_t *comp, size_t comp_size,
-+                            uint8_t *sig, size_t sig_size, Error **errp);
-+
  #endif
+diff --git a/target/s390x/diag.c b/target/s390x/diag.c
+index 6519a3cedc..2fe25a2c66 100644
+--- a/target/s390x/diag.c
++++ b/target/s390x/diag.c
+@@ -573,9 +573,107 @@ void handle_diag_320(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
+     }
+ }
+ 
++static int diag_508_verify_sig(uint8_t *cert, size_t cert_size,
++                              uint8_t *comp, size_t comp_size,
++                              uint8_t *sig, size_t sig_size)
++{
++    g_autofree uint8_t *sig_pem = NULL;
++    size_t sig_size_pem;
++    int rc;
++
++    /*
++     * PKCS#7 signature with DER format
++     * Convert to PEM format for signature verification
++     */
++    rc = qcrypto_pkcs7_convert_sig_pem(sig, sig_size, &sig_pem, &sig_size_pem, NULL);
++    if (rc < 0) {
++        return -1;
++    }
++
++    /*
++     * Ignore errors from signature format convertion and verification,
++     * because currently in the certificate lookup process.
++     *
++     * Any error is treated as a verification failure,
++     * and the final result (verified or not) will be reported later.
++     */
++    rc = qcrypto_x509_verify_sig(cert, cert_size,
++                                 comp, comp_size,
++                                 sig_pem, sig_size_pem, NULL);
++    if (rc < 0) {
++        return -1;
++    }
++
++    return 0;
++}
++
++static int handle_diag508_sig_verif(uint64_t addr, size_t csi_size, size_t svb_size,
++                                    S390IPLCertificateStore *qcs)
++{
++    int rc;
++    int verified;
++    uint64_t comp_len, comp_addr;
++    uint64_t sig_len, sig_addr;
++    g_autofree uint8_t *svb_comp = NULL;
++    g_autofree uint8_t *svb_sig = NULL;
++    g_autofree Diag508SignatureVerificationBlock *svb = NULL;
++
++    if (!qcs || !qcs->count) {
++        return DIAG_508_RC_NO_CERTS;
++    }
++
++    svb = g_new0(Diag508SignatureVerificationBlock, 1);
++    cpu_physical_memory_read(addr, svb, svb_size);
++
++    comp_len = be64_to_cpu(svb->comp_len);
++    comp_addr = be64_to_cpu(svb->comp_addr);
++    sig_len = be64_to_cpu(svb->sig_len);
++    sig_addr = be64_to_cpu(svb->sig_addr);
++
++    if (!comp_len || !comp_addr) {
++        return DIAG_508_RC_INVAL_COMP_DATA;
++    }
++
++    if (!sig_len || !sig_addr) {
++        return DIAG_508_RC_INVAL_PKCS7_SIG;
++    }
++
++    svb_comp = g_malloc0(comp_len);
++    cpu_physical_memory_read(comp_addr, svb_comp, comp_len);
++
++    svb_sig = g_malloc0(sig_len);
++    cpu_physical_memory_read(sig_addr, svb_sig, sig_len);
++
++    rc = DIAG_508_RC_FAIL_VERIF;
++    /*
++     * It is uncertain which certificate contains
++     * the analogous key to verify the signed data
++     */
++    for (int i = 0; i < qcs->count; i++) {
++        verified = diag_508_verify_sig(qcs->certs[i].raw,
++                                       qcs->certs[i].size,
++                                       svb_comp, comp_len,
++                                       svb_sig, sig_len);
++        if (verified == 0) {
++            svb->csi.idx = i;
++            svb->csi.len = cpu_to_be64(qcs->certs[i].der_size);
++            cpu_physical_memory_write(addr, &svb->csi, be32_to_cpu(csi_size));
++            rc = DIAG_508_RC_OK;
++            break;
++       }
++    }
++
++    return rc;
++}
++
++QEMU_BUILD_BUG_MSG(sizeof(Diag508SignatureVerificationBlock) != 48,
++                   "size of Diag508SignatureVerificationBlock is wrong");
++
+ void handle_diag_508(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
+ {
++    S390IPLCertificateStore *qcs = s390_ipl_get_certificate_store();
+     uint64_t subcode = env->regs[r3];
++    uint64_t addr = env->regs[r1];
+     int rc;
+ 
+     if (env->psw.mask & PSW_MASK_PSTATE) {
+@@ -590,7 +688,19 @@ void handle_diag_508(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
+ 
+     switch (subcode) {
+     case DIAG_508_SUBC_QUERY_SUBC:
+-        rc = 0;
++        rc = DIAG_508_SUBC_SIG_VERIF;
++        break;
++    case DIAG_508_SUBC_SIG_VERIF:
++        size_t csi_size = sizeof(Diag508CertificateStoreInfo);
++        size_t svb_size = sizeof(Diag508SignatureVerificationBlock);
++
++        if (!diag_parm_addr_valid(addr, svb_size, false) ||
++            !diag_parm_addr_valid(addr, csi_size, true)) {
++            s390_program_interrupt(env, PGM_ADDRESSING, ra);
++            return;
++        }
++
++        rc = handle_diag508_sig_verif(addr, csi_size, svb_size, qcs);
+         break;
+     default:
+         s390_program_interrupt(env, PGM_SPECIFICATION, ra);
 -- 
 2.50.1
 
