@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F4EB29ECA
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 12:05:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3EAB29ECE
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 12:05:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1unwjH-0004AK-94; Mon, 18 Aug 2025 06:04:39 -0400
+	id 1unwjL-0004Ag-0y; Mon, 18 Aug 2025 06:04:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1unwjD-00049q-K3
- for qemu-devel@nongnu.org; Mon, 18 Aug 2025 06:04:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1unwjJ-0004AW-4S
+ for qemu-devel@nongnu.org; Mon, 18 Aug 2025 06:04:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1unwjB-0002rq-Hu
- for qemu-devel@nongnu.org; Mon, 18 Aug 2025 06:04:34 -0400
+ id 1unwjH-0002s8-Fz
+ for qemu-devel@nongnu.org; Mon, 18 Aug 2025 06:04:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755511472;
+ s=mimecast20190719; t=1755511478;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=P9I8pN3Ic6kx4QGFOkHjvVo+AEU5MXFerKiYPdyNHE0=;
- b=Dn6/4M20LXopSvSYzG15aYjIwF/i0lgvEcs5YfuDA59wLQhWXyK2oqis8j0YhkYZTrzRC6
- ZXFHsoTMUUl5uTppgIsd78dGXvkw2U7PvT5AaAZxaGdHgyZYw68GxygTHoegBSuusPXhJv
- vAwOijznMhf13qLoe7K3kDAGFKvr5cg=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=4hVX23j1qg89GM2XTJ2f9M0XbvXysR1u9GM3HK6Mb+g=;
+ b=LqjVa5hdvVEVj71frxPxkt0HIoIVfT5JFwcNo8TaAglCwwS+By9VYu2SZm0k9TIvuzJYJu
+ sfhUhQxwG0LmK/ubfhlmwBzJjgaEgTVHmj3VgYub+iMLrdxdkzA46xjIwjC5P9WEa3C++H
+ VmFUf3VWGyCWbTOzeGz86J0prCqqlas=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-189-3ZZegC1bO4CYvQVjEz1PiA-1; Mon,
- 18 Aug 2025 06:04:29 -0400
-X-MC-Unique: 3ZZegC1bO4CYvQVjEz1PiA-1
-X-Mimecast-MFC-AGG-ID: 3ZZegC1bO4CYvQVjEz1PiA_1755511468
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-540-8i6lietbNsSNtOYsaam89w-1; Mon,
+ 18 Aug 2025 06:04:35 -0400
+X-MC-Unique: 8i6lietbNsSNtOYsaam89w-1
+X-Mimecast-MFC-AGG-ID: 8i6lietbNsSNtOYsaam89w_1755511474
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D36971956096; Mon, 18 Aug 2025 10:04:27 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 22C6A195F165; Mon, 18 Aug 2025 10:04:34 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.45.225.45])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A663B180028B; Mon, 18 Aug 2025 10:04:21 +0000 (UTC)
+ id 6C5A8180047F; Mon, 18 Aug 2025 10:04:28 +0000 (UTC)
 From: Albert Esteve <aesteve@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: david@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>, hi@alyssa.is,
@@ -54,15 +54,15 @@ Cc: david@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>, hi@alyssa.is,
  stevensd@chromium.org, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>, slp@redhat.com,
  Albert Esteve <aesteve@redhat.com>
-Subject: [PATCH v7 4/8] vhost_user: Add frontend get_shmem_config command
-Date: Mon, 18 Aug 2025 12:03:49 +0200
-Message-ID: <20250818100353.1560655-5-aesteve@redhat.com>
+Subject: [PATCH v7 5/8] vhost_user.rst: Add GET_SHMEM_CONFIG message
+Date: Mon, 18 Aug 2025 12:03:50 +0200
+Message-ID: <20250818100353.1560655-6-aesteve@redhat.com>
 In-Reply-To: <20250818100353.1560655-1-aesteve@redhat.com>
 References: <20250818100353.1560655-1-aesteve@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -87,156 +87,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The frontend can use this command to retrieve
-VirtIO Shared Memory Regions configuration from
-the backend. The response contains the number of
-shared memory regions, their size, and shmid.
+Add GET_SHMEM_CONFIG vhost-user frontend
+message to the spec documentation.
 
-This is useful when the frontend is unaware of
-specific backend type and configuration,
-for example, in the `vhost-user-device` case.
-
+Reviewed-by: Alyssa Ross <hi@alyssa.is>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Albert Esteve <aesteve@redhat.com>
 ---
- hw/virtio/vhost-user.c            | 43 +++++++++++++++++++++++++++++++
- include/hw/virtio/vhost-backend.h | 10 +++++++
- include/hw/virtio/vhost-user.h    |  1 +
- include/hw/virtio/virtio.h        |  2 ++
- 4 files changed, 56 insertions(+)
+ docs/interop/vhost-user.rst | 39 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index eb3ad728b0..d1bf162497 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -105,6 +105,7 @@ typedef enum VhostUserRequest {
-     VHOST_USER_GET_SHARED_OBJECT = 41,
-     VHOST_USER_SET_DEVICE_STATE_FD = 42,
-     VHOST_USER_CHECK_DEVICE_STATE = 43,
-+    VHOST_USER_GET_SHMEM_CONFIG = 44,
-     VHOST_USER_MAX
- } VhostUserRequest;
+diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+index dab9f3af42..54d64ae75f 100644
+--- a/docs/interop/vhost-user.rst
++++ b/docs/interop/vhost-user.rst
+@@ -371,6 +371,20 @@ MMAP request
+   - 0: Pages are mapped read-only
+   - 1: Pages are mapped read-write
  
-@@ -139,6 +140,12 @@ typedef struct VhostUserMemRegMsg {
-     VhostUserMemoryRegion region;
- } VhostUserMemRegMsg;
- 
-+typedef struct VhostUserShMemConfig {
-+    uint32_t nregions;
-+    uint32_t padding;
-+    uint64_t memory_sizes[VIRTIO_MAX_SHMEM_REGIONS];
-+} VhostUserShMemConfig;
++VIRTIO Shared Memory Region configuration
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 +
- typedef struct VhostUserLog {
-     uint64_t mmap_size;
-     uint64_t mmap_offset;
-@@ -245,6 +252,7 @@ typedef union {
-         VhostUserShared object;
-         VhostUserTransferDeviceState transfer_state;
-         VhostUserMMap mmap;
-+        VhostUserShMemConfig shmem;
- } VhostUserPayload;
- 
- typedef struct VhostUserMsg {
-@@ -3213,6 +3221,40 @@ static int vhost_user_check_device_state(struct vhost_dev *dev, Error **errp)
-     return 0;
- }
- 
-+static int vhost_user_get_shmem_config(struct vhost_dev *dev,
-+                                       int *nregions,
-+                                       uint64_t *memory_sizes,
-+                                       Error **errp)
-+{
-+    int ret;
-+    VhostUserMsg msg = {
-+        .hdr.request = VHOST_USER_GET_SHMEM_CONFIG,
-+        .hdr.flags = VHOST_USER_VERSION,
-+    };
+++-------------+---------+------------+----+--------------+
++| num regions | padding | mem size 0 | .. | mem size 255 |
+++-------------+---------+------------+----+--------------+
 +
-+    if (!virtio_has_feature(dev->protocol_features,
-+                            VHOST_USER_PROTOCOL_F_SHMEM)) {
-+        return 0;
-+    }
++:num regions: a 32-bit number of regions
 +
-+    ret = vhost_user_write(dev, &msg, NULL, 0);
-+    if (ret < 0) {
-+        return ret;
-+    }
++:padding: 32-bit
 +
-+    ret = vhost_user_read(dev, &msg);
-+    if (ret < 0) {
-+        return ret;
-+    }
++:mem size: contains ``num regions`` 64-bit fields representing the size of each
++           VIRTIO Shared Memory Region
 +
-+    assert(msg.payload.shmem.nregions <= VIRTIO_MAX_SHMEM_REGIONS);
-+    *nregions = msg.payload.shmem.nregions;
-+    memcpy(memory_sizes,
-+           &msg.payload.shmem.memory_sizes,
-+           sizeof(uint64_t) * msg.payload.shmem.nregions);
-+    return 0;
-+}
-+
- const VhostOps user_ops = {
-         .backend_type = VHOST_BACKEND_TYPE_USER,
-         .vhost_backend_init = vhost_user_backend_init,
-@@ -3251,4 +3293,5 @@ const VhostOps user_ops = {
-         .vhost_supports_device_state = vhost_user_supports_device_state,
-         .vhost_set_device_state_fd = vhost_user_set_device_state_fd,
-         .vhost_check_device_state = vhost_user_check_device_state,
-+        .vhost_get_shmem_config = vhost_user_get_shmem_config,
- };
-diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
-index d6df209a2f..42400b276e 100644
---- a/include/hw/virtio/vhost-backend.h
-+++ b/include/hw/virtio/vhost-backend.h
-@@ -159,6 +159,15 @@ typedef int (*vhost_set_device_state_fd_op)(struct vhost_dev *dev,
-                                             int *reply_fd,
-                                             Error **errp);
- typedef int (*vhost_check_device_state_op)(struct vhost_dev *dev, Error **errp);
-+/*
-+ * Max regions is VIRTIO_MAX_SHMEM_REGIONS, so that is the maximum
-+ * number of memory_sizes that will be accepted.
-+ */
-+typedef int (*vhost_get_shmem_config_op)(struct vhost_dev *dev,
-+                                         int *nregions,
-+                                         uint64_t *memory_sizes,
-+                                         Error **errp);
-+
+ C structure
+ -----------
  
- typedef struct VhostOps {
-     VhostBackendType backend_type;
-@@ -214,6 +223,7 @@ typedef struct VhostOps {
-     vhost_supports_device_state_op vhost_supports_device_state;
-     vhost_set_device_state_fd_op vhost_set_device_state_fd;
-     vhost_check_device_state_op vhost_check_device_state;
-+    vhost_get_shmem_config_op vhost_get_shmem_config;
- } VhostOps;
+@@ -397,6 +411,7 @@ In QEMU the vhost-user message is implemented with the following struct:
+           VhostUserShared object;
+           VhostUserTransferDeviceState transfer_state;
+           VhostUserMMap mmap;
++          VhostUserShMemConfig shmem;
+       };
+   } QEMU_PACKED VhostUserMsg;
  
- int vhost_backend_update_device_iotlb(struct vhost_dev *dev,
-diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
-index 9a3f238b43..bacc7d184c 100644
---- a/include/hw/virtio/vhost-user.h
-+++ b/include/hw/virtio/vhost-user.h
-@@ -32,6 +32,7 @@ enum VhostUserProtocolFeature {
-     /* Feature 17 reserved for VHOST_USER_PROTOCOL_F_XEN_MMAP. */
-     VHOST_USER_PROTOCOL_F_SHARED_OBJECT = 18,
-     VHOST_USER_PROTOCOL_F_DEVICE_STATE = 19,
-+    VHOST_USER_PROTOCOL_F_SHMEM = 20,
-     VHOST_USER_PROTOCOL_F_MAX
- };
+@@ -1754,6 +1769,30 @@ Front-end message types
+   Using this function requires prior negotiation of the
+   ``VHOST_USER_PROTOCOL_F_DEVICE_STATE`` feature.
  
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index a563bbac2c..2109186d7d 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -81,6 +81,8 @@ typedef struct VirtQueueElement
- 
- #define VIRTIO_NO_VECTOR 0xffff
- 
-+#define VIRTIO_MAX_SHMEM_REGIONS 256
++``VHOST_USER_GET_SHMEM_CONFIG``
++  :id: 44
++  :equivalent ioctl: N/A
++  :request payload: N/A
++  :reply payload: ``struct VhostUserShMemConfig``
 +
- /* special index value used internally for config irqs */
- #define VIRTIO_CONFIG_IRQ_IDX -1
++  When the ``VHOST_USER_PROTOCOL_F_SHMEM`` protocol feature has been
++  successfully negotiated, this message can be submitted by the front-end
++  to gather the VIRTIO Shared Memory Region configuration. The back-end will
++  respond with the number of VIRTIO Shared Memory Regions it requires, and
++  each shared memory region size in an array. The shared memory IDs are
++  represented by the array index. The information returned shall comply
++  with the following rules:
++
++  * The shared information will remain valid and unchanged for the entire
++    lifetime of the connection.
++
++  * The Shared Memory Region size must be a multiple of the page size
++    supported by mmap(2).
++
++  * The size may be 0 if the region is unused. This can happen when the
++    device does not support an optional feature but does support a feature
++    that uses a higher shmid.
++
+ Back-end message types
+ ----------------------
  
 -- 
 2.49.0
