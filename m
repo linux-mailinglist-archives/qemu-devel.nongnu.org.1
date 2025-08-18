@@ -2,76 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC17B2A863
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 16:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AACCBB2A8D0
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 16:09:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uo0SL-0008Ri-0I; Mon, 18 Aug 2025 10:03:25 -0400
+	id 1uo0Vn-0001Kh-9o; Mon, 18 Aug 2025 10:06:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uo0SJ-0008RU-6n
- for qemu-devel@nongnu.org; Mon, 18 Aug 2025 10:03:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1uo0Vj-0001JX-Nf
+ for qemu-devel@nongnu.org; Mon, 18 Aug 2025 10:06:55 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uo0SH-0001hu-IT
- for qemu-devel@nongnu.org; Mon, 18 Aug 2025 10:03:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755525798;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Nk+MhEN7Ea4Vdc/oDnqmeHHxKuRPHEKe2LmFTs2iebw=;
- b=GsK1wZuMRf88iGRGc83bx34C2rW1EV3TaixtfiVvVZM3frk8b+7lviwLipurYg6ATVHhne
- 3rfImud2X3BNtL/39QtNDjc9mFUfOOaRpYSa2oip33hyqbEaXEnu7Of62kD4l3UiNsRKVs
- YszUH7eC8S+IuGfwTWcOf+EzuMgAKeg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-8-bDeI_RpRPBSKuds0dAjGfg-1; Mon,
- 18 Aug 2025 10:03:16 -0400
-X-MC-Unique: bDeI_RpRPBSKuds0dAjGfg-1
-X-Mimecast-MFC-AGG-ID: bDeI_RpRPBSKuds0dAjGfg_1755525795
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 348D1180035F; Mon, 18 Aug 2025 14:03:15 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.137])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 59F9A30001A5; Mon, 18 Aug 2025 14:03:14 +0000 (UTC)
-Date: Mon, 18 Aug 2025 10:03:13 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Jason Wang <jasowang@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Cc: Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Dmitry Fleytman <dmitry.fleytman@gmail.com>
-Subject: Re: [PATCH v2] e1000e: Prevent crash from legacy interrupt firing
- after MSI-X enable
-Message-ID: <20250818140313.GA7391@fedora>
-References: <20250807110806.409065-1-lvivier@redhat.com>
- <CACGkMEsYDPjPBNmAd=AmZQ2AY46weFC_u8PK=+CSCuUD6W9zYg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1uo0Vh-0002B5-BN
+ for qemu-devel@nongnu.org; Mon, 18 Aug 2025 10:06:55 -0400
+Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c21:2d8b:0:640:7d49:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 857A6807B1;
+ Mon, 18 Aug 2025 17:06:47 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b25::1:17])
+ by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id k6RC4003YeA0-69eZFfBK; Mon, 18 Aug 2025 17:06:47 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1755526007;
+ bh=KA33589QmHph33pd7g5bbngUdZzm4Gu2kQ67TDP+FEU=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=rLH2rsrHob2weQOJOh7PByKONqNFwcEfzzFpQ5QOK0fa8EbXeJnRrmQv/0hq/r8Uq
+ WKFGqXzLVtjbteoOIXcoPYayS6Jdl8w+7pOAXH6zdBiqo8BlXqh6YTEgMvis/WuXhl
+ oF1mQAkET/M8+fgHvwKswOgQHJRwqw9BBs3p51CI=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: jasowang@redhat.com
+Cc: qemu-devel@nongnu.org,
+	vsementsov@yandex-team.ru
+Subject: [PATCH 00/19] TAP initialization refactoring
+Date: Mon, 18 Aug 2025 17:06:26 +0300
+Message-ID: <20250818140645.27904-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="Y/vzq+LRRQd8dtr0"
-Content-Disposition: inline
-In-Reply-To: <CACGkMEsYDPjPBNmAd=AmZQ2AY46weFC_u8PK=+CSCuUD6W9zYg@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,80 +70,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi all!
 
---Y/vzq+LRRQd8dtr0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+As preparation for further development of TAP live local migration
+(passing open fds through unix socket), here is a refactoring
+of initialization code, to improve its readability and get rid
+of duplication.
 
-On Mon, Aug 18, 2025 at 10:08:18AM +0800, Jason Wang wrote:
-> On Thu, Aug 7, 2025 at 7:08=E2=80=AFPM Laurent Vivier <lvivier@redhat.com=
-> wrote:
-> >
-> > A race condition between guest driver actions and QEMU timers can lead
-> > to an assertion failure when the guest switches the e1000e from legacy
-> > interrupt mode to MSI-X. If a legacy interrupt delay timer (TIDV or
-> > RDTR) is active, but the guest enables MSI-X before the timer fires,
-> > the pending interrupt cause can trigger an assert in
-> > e1000e_intmgr_collect_delayed_causes().
-> >
-> > This patch removes the assertion and executes the code that clears the
-> > pending legacy causes. This change is safe and introduces no unintended
-> > behavioral side effects, as it only alters a state that previously led
-> > to termination.
-> >
-> > - when core->delayed_causes =3D=3D 0 the function was already a no-op a=
-nd
-> >   remains so.
-> >
-> > - when core->delayed_causes !=3D 0 the function would previously
-> >   crash due to the assertion failure. The patch now defines a safe
-> >   outcome by clearing the cause and returning. Since behavior after
-> >   the assertion never existed, this simply corrects the crash.
-> >
-> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1863
-> > Suggested-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> > Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-> > ---
->=20
-> Acked-by: Jason Wang <jasowang@redhat.com>
->=20
-> Consider rc3 is out. Can this be applied directly by maintainers or a
-> PULL request is expected?
+Below are the initialization flow diagrams showing the changes.
 
-The commit description doesn't mention whether this fixes a regression
-introduced since QEMU 10.0, whether there is a security impact, etc.
-In the absence of more information, this looks like a regular bug fix
-that does not need to be merged for -rc4.
+BEFORE REFACTORING:
+==================
 
-Only release blockers will be merged for -rc4 (Tue 19 Aug). Please
-provide a justification if this commit is a release blocker. Reasoning:
-- From -rc3 onwards the goal is to make the final release and adding
-  additional patches risks introducing new issues that will delay the
-  release further.
-- Commits should include enough information to make the decision to
-  merge easy and documented in git-log(1). Don't rely on me to judge the
-  severity in areas of the codebase I'm not an expert in.
+```
+net_init_tap()
+    |
+    +-- if (tap->fd)
+    |   +-- duplicated logic*
+    |   +-- net_init_tap_one()
+    |
+    +-- else if (tap->fds)
+    |   +-- for each fd:
+    |       +-- duplicated logic*
+    |       +-- net_init_tap_one()
+    |
+    +-- else if (tap->helper)
+    |   +-- duplicated logic*
+    |   +-- net_init_bridge()
+    |
+    +-- else (normal case)
+        +-- for each queue:
+            +-- net_tap_init()
+            +-- net_init_tap_one()
 
-Thanks!
+net_init_bridge()
+    |
+    +-- duplicated logic*
+    +-- net_tap_fd_init()
 
-Stefan
+net_init_tap_one()
+    |
+    +-- net_tap_fd_init()
 
---Y/vzq+LRRQd8dtr0
-Content-Type: application/pgp-signature; name=signature.asc
+net_tap_init()
+    |
+    +-- tap_open()
 
------BEGIN PGP SIGNATURE-----
+net_tap_fd_init()
+    |
+    +-- qemu_new_net_client()
+    +-- Initialize TAPState
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmijMqAACgkQnKSrs4Gr
-c8hUywf/VAy5PfEPiPKqzi0pgkLjsMrQ8loioQTeqjH0RR+5Yf4SwHVq3fsETFuX
-gFQG+pwTWVPfIqIVDiJLK0hY4727/tKxg7urWpYq2THHnzRgK+YC5tuEpZBc/Z7k
-ewAcH5rmNGZk48xXCxeOBZmPhy/UbTNhBdMQG/VQ70aip77qA7FQ37WVffLBmu/a
-FsqALI2+EtmQeXt7vVsts3kjkRu9mpSsmMbYcUoaElWysiY/D2rriYqhANCA1t0K
-AGw/nWSbS9USMiPJMiYyod+INaxEMEl0tIqocg+BYCIDQ2dUSv6KvroqejhHdGbE
-+yyuKQgXVDzfoGNLhBXoA0cc65uSqg==
-=fFQh
------END PGP SIGNATURE-----
+* duplicated logic: set fd nonblocking + probe vnet_hdr
+```
 
---Y/vzq+LRRQd8dtr0--
+AFTER REFACTORING:
+=================
+
+```
+net_init_tap()
+    |
+    +-- if (tap->fd)
+    |   +-- net_tap_from_monitor_fd()
+    |
+    +-- else if (tap->fds)
+    |   +-- for each fd:
+    |       +-- net_tap_from_monitor_fd()
+    |
+    +-- else if (tap->helper)
+    |   +-- net_init_bridge()
+    |
+    +-- else (normal case)
+        +-- net_tap_open()
+
+net_tap_open()
+    |
+    +-- for each queue:
+        +-- net_tap_open_one()
+
+net_tap_open_one()
+    |
+    +-- tap_open()
+    +-- net_tap_fd_init_common()
+
+net_tap_from_monitor_fd()
+    |
+    +-- net_tap_fd_init_external()
+
+net_tap_fd_init_external()
+    |
+    +-- net_tap_fd_init_common()
+
+net_init_bridge()
+    |
+    +-- net_tap_fd_init_external()
+
+net_tap_fd_init_common()
+    |
+    +-- qemu_new_net_client()
+    +-- Initialize TAPState
+```
+
+Solved problems:
+
+- duplicated logic to handle external
+  file descriptors (set nonblocking, probe vnet_hdr)
+
+- duplication between tap/helper case in
+  net_init_tap() and net_init_bridge()
+
+- confusing naming and functionality spread between functions (we had
+  net_init_tap(), together with net_tap_init(); also main central
+  function was net_init_tap_one(), and part of its logic (not clear
+  why) moved to separate net_tap_fd_init()),
+
+
+Vladimir Sementsov-Ogievskiy (19):
+  net/tap: net_init_tap_one(): add return value
+  net/tap: add set_fd_nonblocking() helper
+  net/tap: tap_set_sndbuf(): add return value
+  net/tap: net_init_tap_one(): drop extra error propagation
+  net/tap: net_init_tap_one(): move parameter checking earlier
+  net/tap: net_init_tap(): refactor parameter checking
+  net/tap: net_init_tap(): drop extra variable vhostfdname
+  net/tap: move local variables related to the latter case to else
+    branch
+  net/tap: use glib strings vector and g_strsplit for fds case
+  net/tap: drop extra tap_fd_get_ifname() call
+  net/tap: net_init_tap_one(): refactor to use netdev as first arg
+  net/tap: net_init_tap_one(): support bridge
+  net/tap: net_init_bridge(): support tap
+  net/tap: refactor net_tap_init() into net_tap_open_one()
+  net/tap: introduce net_tap_open()
+  net/tap: introduce net_tap_fd_init_external()
+  net/tap: introduce net_tap_from_monitor_fd() helper
+  net/tap: split net_tap_setup_vhost() separate function
+  net/tap: drop net_tap_fd_init()
+
+ net/tap-linux.c |   5 +-
+ net/tap.c       | 548 ++++++++++++++++++++++--------------------------
+ net/tap_int.h   |   2 +-
+ 3 files changed, 256 insertions(+), 299 deletions(-)
+
+-- 
+2.48.1
 
 
