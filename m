@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90831B2B39A
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 23:45:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A379EB2B3AE
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 23:48:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uo7eX-0001yW-52; Mon, 18 Aug 2025 17:44:29 -0400
+	id 1uo7em-0002MS-RD; Mon, 18 Aug 2025 17:44:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uo7eI-0001pW-K0; Mon, 18 Aug 2025 17:44:14 -0400
+ id 1uo7ee-0002DW-Jj; Mon, 18 Aug 2025 17:44:37 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uo7eF-0003oI-QN; Mon, 18 Aug 2025 17:44:14 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57IAopNF030302;
- Mon, 18 Aug 2025 21:43:55 GMT
+ id 1uo7ea-0003oS-TB; Mon, 18 Aug 2025 17:44:35 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57IKJO8i016893;
+ Mon, 18 Aug 2025 21:43:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=Be2ya04rzyfZp85RE
- 3gnjSaLtSvZyFTxlu/dewNTC/o=; b=tlxpCrkBNyq3wHpeQLMfQBjc1e9bV6Abd
- laY48NMKHMIf17w7vw8pAQ/HKq2mIdvDmH6i8VzUS18VSMvM+nVs0tf0coEntZQC
- IP4oKlXmRSrgmXrLB2Uign9qNKqSLtmz/qgoF4Y+rcqIW5yhpbb6N1lJrSg5sC2c
- q29CbbI0qgCIQZBm71ONlSLdWA3eac60F2Riv7sJu/GDEdTAB26kKNEPv2uNvyNL
- rfCHRYSDpBWWOPKkEOZOb5OSmAf1DoFNTk2XIvYi8cMxCsOdb7DrjPjMbo619um2
- NwcGxzFx8YykIi1qv9JKILiei+OCrHRnDnKKNBXbGUThV2spKx56g==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jhq9ugjm-1
+ :mime-version:references:subject:to; s=pp1; bh=KgtadV4KyUFkHAMkR
+ RIyGE0IJgWXf3DvcKaQ91Q10NU=; b=qtluG5zfPJyS0d+faLeXjLvD66jmyIxbE
+ MF2/XS8o3VheRj4/ug7cHR1KpzKE9bac5HqgapTq7++gwpxmb7wCwuP4jpi2mpiu
+ OdK/uD2pZLC3Xjz3yluC+sREaYzlpD8IfKTnTJ8jJgKkPyKd/Xn/VbcN9M8Szvwj
+ pJIQU9AuVN/LTIOKT26jWDp5KiNklRWDUVP3e1JDtbWD65YaErSHfOsKRilMCU5Q
+ G7rhjmGS5kMR3Edk/vv3on22+bhAkPMFt7kDiGfJ01pWpHiGaV/f9NgerjRpxc4T
+ M1sf/3NV38VuKFS4XyjHyeXPvgmN4EKQDOis+wkMp0F0o898A4QlQ==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48k60g0cpe-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Aug 2025 21:43:55 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57IIoMc3014692;
- Mon, 18 Aug 2025 21:43:53 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48k5tmqgp3-1
+ Mon, 18 Aug 2025 21:43:56 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57IIesaY028695;
+ Mon, 18 Aug 2025 21:43:55 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48k5apfk08-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Aug 2025 21:43:53 +0000
+ Mon, 18 Aug 2025 21:43:55 +0000
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
  [10.241.53.100])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 57ILhqtA9634830
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 57ILhrkR29753794
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 18 Aug 2025 21:43:52 GMT
+ Mon, 18 Aug 2025 21:43:53 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 50B0A58057;
+ by IMSVA (Postfix) with ESMTP id 6AC9A58057;
+ Mon, 18 Aug 2025 21:43:53 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6851B58058;
  Mon, 18 Aug 2025 21:43:52 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5471858059;
- Mon, 18 Aug 2025 21:43:51 +0000 (GMT)
 Received: from fedora-workstation.ibmuc.com (unknown [9.61.98.172])
  by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 18 Aug 2025 21:43:51 +0000 (GMT)
+ Mon, 18 Aug 2025 21:43:52 +0000 (GMT)
 From: Zhuoying Cai <zycai@linux.ibm.com>
 To: thuth@redhat.com, berrange@redhat.com, richard.henderson@linaro.org,
  david@redhat.com, jrossi@linux.ibm.com, qemu-s390x@nongnu.org,
@@ -63,36 +63,35 @@ Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
  borntraeger@linux.ibm.com, farman@linux.ibm.com,
  mjrosato@linux.ibm.com, iii@linux.ibm.com, eblake@redhat.com,
  armbru@redhat.com, alifm@linux.ibm.com, zycai@linux.ibm.com
-Subject: [PATCH v5 23/29] Add secure-boot to s390-ccw-virtio machine type
- option
-Date: Mon, 18 Aug 2025 17:43:16 -0400
-Message-ID: <20250818214323.529501-24-zycai@linux.ibm.com>
+Subject: [PATCH v5 24/29] hw/s390x/ipl: Set IPIB flags for secure IPL
+Date: Mon, 18 Aug 2025 17:43:17 -0400
+Message-ID: <20250818214323.529501-25-zycai@linux.ibm.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818214323.529501-1-zycai@linux.ibm.com>
 References: <20250818214323.529501-1-zycai@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=N50pF39B c=1 sm=1 tr=0 ts=68a39e9b cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=uyvjcAWwEQu1yBn7KtoA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAyNyBTYWx0ZWRfX05kDjmJaFlP9
- um5ffEsufCkR9RiaT0xQXNQCdlegAoKbVRmBpmyZTODerHqv1GGHC3sgBeBGNSbTwgxS4B2Juni
- Ck2gCtbAEgnDSjvy+0gml3hAgxWpDfcstBxKkiVS3vzG7xAl90NEAHyTF6bgRZimL28qMIHIqJv
- QzykO47gUqOMsa5NTvG/W6c3o95ICVoEEHvs49FGgbZ2zUrXEKOowP89Gq11GaTCiKGKn//EeFx
- X0GNljqKnZ9ehecN5esqvYqgeiO8ghiP4YvarJOXqmzLDug8UGGBVKXJWYozm6F1qJAQyZYlKqI
- Zkp0Krcl6vCFJ4KC5tyGCUgoSXlwpoe/lGvd9nFHfqoIY526JFAFBIIDa6s36VSSkbCFtjCIHfO
- TrC8XXhb
-X-Proofpoint-GUID: 8AG-uLbrg_EHmohWrztcL1yzeHOlV_H4
-X-Proofpoint-ORIG-GUID: 8AG-uLbrg_EHmohWrztcL1yzeHOlV_H4
+X-Proofpoint-ORIG-GUID: WwosAwWbLsETfyj-mOmUBEuM_fNEojeG
+X-Authority-Analysis: v=2.4 cv=coObk04i c=1 sm=1 tr=0 ts=68a39e9c cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=MUQpW0jNMHjpGy_Q9scA:9
+X-Proofpoint-GUID: WwosAwWbLsETfyj-mOmUBEuM_fNEojeG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE3MDAxNiBTYWx0ZWRfX6fuhU3mChO2v
+ ywDW5BtVL+kkYnUacsK418fQG23nw5iCVEwzJRGbIdMUF+hslGPwGKDfSk1uO7UXcRLlgnXBOPx
+ huI1SYQqrNwfw/HV9daYiyA9xIR+UJhKaA3qMV8IQGiPIbBFGRcSK19KWrcDN+Axu7Zpf98Gawu
+ dfRieX8ZBkbTi3XQiwnQrZuzZsoKoBXh+bUyseM+SmNc6Vw+V/tqYBUA2VSzgm0ZJkuQ6G5AkCw
+ KlZSnMlUOAziEueqE8MTUPv3X6altBVguZiegeK0lh+3jF6c/AqD0/y4A/0PwEKwVsl/ywh6YU0
+ LIPNQ0Q9O8gRsEpyyMtsJXspDrdNgQMcOGVH2/vRGoH56ln92TnrfObFGNm81rrDlAQbWEGWUK1
+ DA0E4HMB
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-18_06,2025-08-14_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 suspectscore=0 impostorscore=0 bulkscore=0
- adultscore=0 priorityscore=1501 spamscore=0 clxscore=1015
+ phishscore=0 suspectscore=0 bulkscore=0 clxscore=1015 malwarescore=0
+ priorityscore=1501 adultscore=0 impostorscore=0 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508160027
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508170016
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=zycai@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -118,137 +117,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add secure-boot as a parameter of s390-ccw-virtio machine type option.
+If `-secure-boot on` is specified on the command line option, indicating
+true secure IPL enabled, set Secure-IPL bit and IPL-Information-Report
+bit on in IPIB Flags field, and trigger true secure IPL in the S390 BIOS.
 
-The `secure-boot=on|off` parameter is implemented to enable secure IPL.
-
-By default, secure-boot is set to false if not specified in
-the command line.
+Any error that occurs during true secure IPL will cause the IPL to
+terminate.
 
 Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
 ---
- docs/system/s390x/secure-ipl.rst   | 20 ++++++++++++++++----
- hw/s390x/s390-virtio-ccw.c         | 22 ++++++++++++++++++++++
- include/hw/s390x/s390-virtio-ccw.h |  1 +
- qemu-options.hx                    |  6 +++++-
- 4 files changed, 44 insertions(+), 5 deletions(-)
+ hw/s390x/ipl.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/docs/system/s390x/secure-ipl.rst b/docs/system/s390x/secure-ipl.rst
-index 40a5781c7d..0d14d0d62d 100644
---- a/docs/system/s390x/secure-ipl.rst
-+++ b/docs/system/s390x/secure-ipl.rst
-@@ -19,19 +19,31 @@ paths or directories on the command-line:
-                                boot-certs.0.path=/.../qemu/certs, \
-                                boot-certs.1.path=/another/path/cert.pem ...
- 
-+Enabling Secure IPL
-+-------------------
-+
-+Secure IPL is enabled by explicitly setting ``secure-boot=on``; if not specified,
-+secure boot is considered off.
-+
-+.. code-block:: shell
-+
-+    qemu-system-s390x -machine s390-ccw-virtio,secure-boot=on|off
-+
- 
- IPL Modes
- =========
- 
- The concept of IPL Modes are introduced to differentiate between the IPL configurations.
--These modes are mutually exclusive and enabled based on the ``boot-certs`` option on the
--QEMU command line.
-+These modes are mutually exclusive and enabled based on specific combinations of
-+the ``secure-boot`` and ``boot-certs`` options on the QEMU command line.
- 
- Normal Mode
- -----------
- 
--The absence of certificates will attempt to IPL a guest without secure IPL operations.
--No checks are performed, and no warnings/errors are reported. This is the default mode.
-+The absence of both certificates and the ``secure-boot`` option will attempt to
-+IPL a guest without secure IPL operations. No checks are performed, and no
-+warnings/errors are reported.  This is the default mode, and can be explicitly
-+enabled with ``secure-boot=off``.
- 
- Configuration:
- 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 9ac425c695..1a1c905c7b 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -823,6 +823,21 @@ static void machine_set_boot_certs(Object *obj, Visitor *v, const char *name,
-     ms->boot_certs = cert_list;
+diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
+index d1a972ac8d..a196e1d648 100644
+--- a/hw/s390x/ipl.c
++++ b/hw/s390x/ipl.c
+@@ -437,6 +437,11 @@ static bool s390_has_certificate(void)
+     return ipl->cert_store.count > 0;
  }
  
-+static inline bool machine_get_secure_boot(Object *obj, Error **errp)
++static bool s390_secure_boot_enabled(void)
 +{
-+    S390CcwMachineState *ms = S390_CCW_MACHINE(obj);
-+
-+    return ms->secure_boot;
++    return S390_CCW_MACHINE(qdev_get_machine())->secure_boot;
 +}
 +
-+static inline void machine_set_secure_boot(Object *obj, bool value,
-+                                            Error **errp)
-+{
-+    S390CcwMachineState *ms = S390_CCW_MACHINE(obj);
-+
-+    ms->secure_boot = value;
-+}
-+
- static void ccw_machine_class_init(ObjectClass *oc, const void *data)
+ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
  {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -881,6 +896,13 @@ static void ccw_machine_class_init(ObjectClass *oc, const void *data)
-                               machine_get_boot_certs, machine_set_boot_certs, NULL, NULL);
-     object_class_property_set_description(oc, "boot-certs",
-             "provide paths to a directory and/or a certificate file for secure boot");
-+
-+    object_class_property_add_bool(oc, "secure-boot",
-+                                   machine_get_secure_boot,
-+                                   machine_set_secure_boot);
-+    object_class_property_set_description(oc, "secure-boot",
-+            "enable/disable secure boot");
-+
- }
+     CcwDevice *ccw_dev = NULL;
+@@ -494,6 +499,17 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
+         s390_ipl_convert_loadparm((char *)lp, iplb->loadparm);
+         iplb->flags |= DIAG308_FLAGS_LP_VALID;
  
- static inline void s390_machine_initfn(Object *obj)
-diff --git a/include/hw/s390x/s390-virtio-ccw.h b/include/hw/s390x/s390-virtio-ccw.h
-index b90949355c..552c936da0 100644
---- a/include/hw/s390x/s390-virtio-ccw.h
-+++ b/include/hw/s390x/s390-virtio-ccw.h
-@@ -33,6 +33,7 @@ struct S390CcwMachineState {
-     uint64_t memory_limit;
-     uint64_t max_pagesize;
-     BootCertPathList *boot_certs;
-+    bool secure_boot;
++        /*
++         * If secure-boot is enabled, then toggle the secure IPL flags to trigger
++         * secure boot in the s390 BIOS.
++         *
++         * Boot process will terminate if any error occurs during secure boot.
++         *
++         * If SIPL is on, IPLIR must also be on.
++         */
++        if (s390_secure_boot_enabled()) {
++            iplb->hdr_flags |= (DIAG308_IPIB_FLAGS_SIPL | DIAG308_IPIB_FLAGS_IPLIR);
++        }
+         /*
+          * Secure boot in audit mode will perform
+          * if certificate(s) exist in the key store.
+@@ -503,7 +519,7 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
+          *
+          * Results of secure boot will be stored in IIRB.
+          */
+-        if (s390_has_certificate()) {
++        else if (s390_has_certificate()) {
+             iplb->hdr_flags |= DIAG308_IPIB_FLAGS_IPLIR;
+         }
  
-     SCLPDevice *sclp;
- };
-diff --git a/qemu-options.hx b/qemu-options.hx
-index ac497eb3a0..5d9cd0d0f1 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -45,7 +45,8 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
-     "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
-     "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n"
-     "                smp-cache.0.cache=cachename,smp-cache.0.topology=topologylevel\n"
--    "                boot-certs.0.path=/path/directory,boot-certs.1.path=/path/file provides paths to a directory and/or a certificate file\n",
-+    "                boot-certs.0.path=/path/directory,boot-certs.1.path=/path/file provides paths to a directory and/or a certificate file\n"
-+    "                secure-boot=on|off enable/disable secure boot (default=off) \n",
-     QEMU_ARCH_ALL)
- SRST
- ``-machine [type=]name[,prop=value[,...]]``
-@@ -209,6 +210,9 @@ SRST
- 
-     ``boot-certs.0.path=/path/directory,boot-certs.1.path=/path/file``
-         Provide paths to a directory and/or a certificate file on the host [s390x only].
-+
-+    ``secure-boot=on|off``
-+        Enables or disables secure boot on s390-ccw guest. The default is off.
- ERST
- 
- DEF("M", HAS_ARG, QEMU_OPTION_M,
 -- 
 2.50.1
 
