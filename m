@@ -2,77 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05FC4B2AE91
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 18:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53500B2B2A8
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Aug 2025 22:43:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uo363-0001DQ-K2; Mon, 18 Aug 2025 12:52:35 -0400
+	id 1uo6g1-0006RN-Bp; Mon, 18 Aug 2025 16:41:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uo361-0001DE-Ou
- for qemu-devel@nongnu.org; Mon, 18 Aug 2025 12:52:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uo6fz-0006R1-5Z
+ for qemu-devel@nongnu.org; Mon, 18 Aug 2025 16:41:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uo35z-0005Tj-Ku
- for qemu-devel@nongnu.org; Mon, 18 Aug 2025 12:52:33 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uo6fx-0005ug-2t
+ for qemu-devel@nongnu.org; Mon, 18 Aug 2025 16:41:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755535949;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1755549710;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ReTSi3vkAF7X4w7IO4ddKUE8lc98iPPT+4VLTwNOuro=;
- b=MFkxTZYnX2VZQAd8/1s73zCZV8TUGCfi7vm5oW1T/Ex0Vf2wqktkwslj7cluXu2AKf3E5V
- NNqrhKXv5+z5w/2A8o6PHhJFFSX4lTOKKA0bmi3KlGW9c7itDbMbFLg2Sq5yeqxTklrDpg
- TWTS7QqTSM4tN3qtxusPLTooBAjfaT0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=sXcA3eT4yNEpNu794FMadm8ZiXmc8VfpAUdd6d+1DUA=;
+ b=aYtGOHaCUsjGwJdbYCYE0BB8FPpK4OHwdNt6UmXtIrBJWqOLLBJXxEx6xWbE3As46BLHZr
+ blbzlHlwwqZeYBUJU8XNBjPl7+f5VdoestqNf9b0Qzcchitw3RjnuRt/3hTrw77hg0av82
+ RK4jOn1/FViw2+Rp1RPRLOU/XBOrQM8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-408-xERee3kANci_Q2JLV6KXfw-1; Mon,
- 18 Aug 2025 12:52:28 -0400
-X-MC-Unique: xERee3kANci_Q2JLV6KXfw-1
-X-Mimecast-MFC-AGG-ID: xERee3kANci_Q2JLV6KXfw_1755535946
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-421-aWRXPNvrPJ-8tQ2imdUUwA-1; Mon,
+ 18 Aug 2025 16:41:47 -0400
+X-MC-Unique: aWRXPNvrPJ-8tQ2imdUUwA-1
+X-Mimecast-MFC-AGG-ID: aWRXPNvrPJ-8tQ2imdUUwA_1755549706
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 998DC1800292; Mon, 18 Aug 2025 16:52:26 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.90])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 330D919560B0; Mon, 18 Aug 2025 16:52:22 +0000 (UTC)
-Date: Mon, 18 Aug 2025 17:52:19 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: Re: [PATCH RFC] util/error.c: Print backtrace on error
-Message-ID: <aKNaQ4Md4rfVxB7v@redhat.com>
-References: <20250805-backtrace-v1-1-d189d09b1e92@linaro.org>
- <aJIqdQSYXO4K6lCJ@redhat.com>
- <CAAjaMXY1ytnhp+APdwM39-K=Mu=5p8W=MEUVvLers3M=rLS6Qw@mail.gmail.com>
- <aJI18an38eBkVL-Q@redhat.com>
- <CAAjaMXZhFM7keE1abmhQqehsZn7LaJXwYvUAuOvd-MdNTYtw1Q@mail.gmail.com>
- <aJJGvL8feHr7Wme7@redhat.com> <87h5ykzout.fsf@draig.linaro.org>
- <aJM9v0ASQOPWzcQ9@redhat.com>
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AD23719775A6; Mon, 18 Aug 2025 20:41:45 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.66])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 9F2F71955F24; Mon, 18 Aug 2025 20:41:44 +0000 (UTC)
+Date: Mon, 18 Aug 2025 13:55:48 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Mads Ynddal <mads@ynddal.dk>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, oleg.tolmatcev@gmail.com
+Subject: Re: [PATCH v3 5/8] tracetool: support "-" as a shorthand for stdout
+Message-ID: <20250818175548.GA16685@fedora>
+References: <20250806164832.1382919-1-berrange@redhat.com>
+ <20250806164832.1382919-6-berrange@redhat.com>
+ <20250807194608.GF51368@fedora> <aKNBsOekKkCSqgD7@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="rWZidU2v4zyJ7x3G"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aJM9v0ASQOPWzcQ9@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <aKNBsOekKkCSqgD7@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -94,52 +86,120 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 06, 2025 at 12:34:23PM +0100, Daniel P. Berrangé wrote:
-> On Wed, Aug 06, 2025 at 12:11:38PM +0100, Alex Bennée wrote:
-> > Daniel P. Berrangé <berrange@redhat.com> writes:
-> > 
-> > > On Tue, Aug 05, 2025 at 07:57:38PM +0300, Manos Pitsidianakis wrote:
-> > >> On Tue, Aug 5, 2025 at 7:49 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> > >> >
-> > >> >
-> > >> > Was there a specific place where you found things hard to debug
-> > >> > from the error message alone ?  I'm sure we have plenty of examples
-> > >> > of errors that can be improved, but wondering if there are some
-> > >> > general patterns we're doing badly that would be a good win
-> > >> > to improve ?
-> > >> 
-> > >> Some months ago I was debugging a MemoryRegion use-after-free and used
-> > >> this code to figure out that the free was called from RCU context
-> > >> instead of the main thread.
-> > >
-> > > We give useful names to many (but not neccessarily all) threads that we
-> > > spawn. Perhaps we should call pthread_getname_np() to fetch the current
-> > > thread name, and used that as a prefix on the error message we print
-> > > out, as a bit of extra context ?
-> > 
-> > Do we always have sensible names for threads or only if we enable the
-> > option?
-> 
-> I was surprised to discover we don't name threads by default, only if we
-> add '-name debug-threads=yes'.  I'm struggling to understand why we would
-> ever want thread naming disabled, if an OS supports it ?
-> 
-> I'm inclined to deprecate 'debug-threads' and always set the names when
-> available.
 
-FYI, I'm working on a small series that will enable thread names and
-IDs to be printed by default with errors, and should post it sometime
-this week.
+--rWZidU2v4zyJ7x3G
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+On Mon, Aug 18, 2025 at 04:07:28PM +0100, Daniel P. Berrang=E9 wrote:
+> On Thu, Aug 07, 2025 at 03:46:08PM -0400, Stefan Hajnoczi wrote:
+> > On Wed, Aug 06, 2025 at 05:48:29PM +0100, Daniel P. Berrang=E9 wrote:
+> > > This avoids callers needing to use the UNIX-only /dev/stdout
+> > > workaround.
+> > >=20
+> > > Signed-off-by: Daniel P. Berrang=E9 <berrange@redhat.com>
+> > > ---
+> > >  scripts/tracetool/__init__.py | 8 ++++++--
+> > >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init=
+__.py
+> > > index 0f33758870..c8fd3a7ddc 100644
+> > > --- a/scripts/tracetool/__init__.py
+> > > +++ b/scripts/tracetool/__init__.py
+> > > @@ -38,8 +38,12 @@ def error(*lines):
+> > > =20
+> > >  def out_open(filename):
+> > >      global out_filename, out_fobj
+> > > -    out_filename =3D posix_relpath(filename)
+> > > -    out_fobj =3D open(filename, 'wt')
+> > > +    if filename =3D=3D "-":
+> > > +        out_filename =3D "[stdout]"
+> >=20
+> > A few lines above:
+> >=20
+> >   out_filename =3D '<none>'
+> >   out_fobj =3D sys.stdout
+> >=20
+> > Stick to '<none>' here for consistency?
+>=20
+> Curious - that suggests that it was intended to be able to write to
+> stdout by default, but tracetool.py unconditionally calls out_open()
+> so those default assignments are effectively dead code, unless this
+> internal code is called by something other than the tracetool.py main
+> entrypoint ?
+>=20
+> I guess I'd be inclined to change the global initialization to just
+> be 'None' to make it explicit that out_open is expected to always be
+> called ?
+
+Originally the script wrote to stdout, but I added an explicit output
+filename argument in commit c05012a365c2 ("tracetool: add output
+filename command-line argument") because #line directives emitted by
+tracetool need to know the output filename.
+
+Your next patch tests/tracetool/tracetool-test.py uses "-" as the
+output filename but leaves the existing meson.build files unchanged.
+They will still specify an output filename.
+
+This commit doesn't break anything, at least not in how this patch
+series uses "-", but I see a contradiction with commit c05012a365c2
+since we're now allowing the output filename to be effectively empty.
+
+Could you avoid special casing stdout and instead pass a relative path
+to the output file? The relative path is important so the test reference
+output is portable across machines. Then you don't need this commit.
+
+Stefan
+
+>=20
+> > > +        out_fobj =3D sys.stdout
+> > > +    else:
+> > > +        out_filename =3D posix_relpath(filename)
+> >=20
+> > I have CCed Oleg in case he spots any portability issues, but I think
+> > this should still work on Windows.
+>=20
+> This use of posix_relpath() was pre-existing, so there shouldn't be
+> any new issues from this.
+>=20
+> >=20
+> > > +        out_fobj =3D open(filename, 'wt')
+> > > =20
+> > >  def out(*lines, **kwargs):
+> > >      """Write a set of output lines.
+>=20
+>=20
+> With regards,
+> Daniel
+> --=20
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
+ge :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
+om :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
+ge :|
+>=20
+
+--rWZidU2v4zyJ7x3G
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmijaSQACgkQnKSrs4Gr
+c8gYoAgAlEkSUEyDDQeBBTIV4XNairZHJiBpexQ8GNX6dFpbblN9M7u6jPAwotxK
+nnQRn4tqr71ibiuAhBrCGJAHz52CgB92bjsEV5xNOE7L2uKVpksp3pb4GEsUlEQa
+BJJVbSSF9MwXyIWLK2oz5wy8b7PPmB4UhRJJeJMHYv/prtSmT6p0sIy71kuhiPFT
++4fS747/kWSvqrt5lnupA/arwZH+WqgZTYMUQPwlAP4SVpcm7GKkZm7t48CtR0/y
+1OqPc8YUDlhfJQqLFop7/MOo0SNv+MCrpoIe323EAiwyhoHN8v8l9VaVOyy9/D3E
+FOoB28woGm9+7GvfSvj36N6H0IwnTQ==
+=diaI
+-----END PGP SIGNATURE-----
+
+--rWZidU2v4zyJ7x3G--
 
 
