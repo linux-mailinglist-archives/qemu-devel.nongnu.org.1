@@ -2,95 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEFAB2C945
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 18:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE721B2C8F0
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 18:00:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoOxQ-0006Bg-Ly; Tue, 19 Aug 2025 12:13:08 -0400
+	id 1uoOjy-0003Ej-Qi; Tue, 19 Aug 2025 11:59:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eschwartz93@gmail.com>)
- id 1uoOap-0001cq-0t; Tue, 19 Aug 2025 11:49:47 -0400
-Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <eschwartz93@gmail.com>)
- id 1uoOan-0003ht-4w; Tue, 19 Aug 2025 11:49:46 -0400
-Received: by mail-qt1-x82b.google.com with SMTP id
- d75a77b69052e-4b289cdc86aso5917871cf.1; 
- Tue, 19 Aug 2025 08:49:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1755618583; x=1756223383; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=xGc0RvBkXVmxTJct1RQl8OVv+1bQNUlhd5ux3jZAZGY=;
- b=QfUq3omz8XBUdw15x8Jr8xYgRZYx7A9LmchSJEu+5tSzeXiCH5Pw7joKpNLPooQXiH
- 4Nb29R9yxj9zTI/4e0lZf3qDEPfODBWHyzfm8kNfYbRetg/Wbl+CE5jrrffpugQ0avJY
- fxNM7k2b00RxiCvZcdyDqypnjzsN/OxzNLiUvU3glEV8sHyqBzmwjyj+u7VMvski6Bt0
- tkntnDtEvQqXclSVYJ4yHHIe48MG66bJy8ntLZSC5lSBW9bRfYtcBGWAwL/MB0FxW7/N
- QCV/E8pL7OdGwZFax81M9/79vH2WlHgisvcKb7+hcgmPhErZF/PFXAczL8iIweO3Z81K
- uNpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755618583; x=1756223383;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xGc0RvBkXVmxTJct1RQl8OVv+1bQNUlhd5ux3jZAZGY=;
- b=FBBN1+UtJSyYSfNSIN+va3cVYvFFU58YnP6jy0TWyqCNjDcno9vzIsUlQVpmQUThH4
- iRxIrpLJGja8ZLDOynQasIgNoMr68+7RSsREBQTEHoPzywHiRCpjnSfoRfsJk8ak3PPq
- 62XmCjLV9t4bylBBGU0qxTNuZqVDHfSbHnodeZmB9W8ZdL69uUTzM4ESzCRZrTFC0MOS
- xnYej27LzijN97/uzfaKHfVvL12XBHZspwqvcepwlM5WLYAqk2arrhm6bcg8sDndzkQo
- ylKPzsA0LPlAug8F/1HKQxNJEJNlMjNDvrjs6QdL74vRkn+i4xP3F/G5cYFtp65p3BER
- 2l4A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWYMKCdw3Wa1vsDyeIl5q9nHuYYVzq/g578l69e7FYBS7URhlQg8G2kxc9PsRTs4rwUCjlKZ6MnVz8=@nongnu.org
-X-Gm-Message-State: AOJu0YxZODRVFKsGBJ8S5Q6q+F95TTsOTTZrGm/vkib4X7k92rf4rt6T
- ZpFc8Wlu+zLErswwSi8NUiGSBOvp3rXY6q7f12ZFsoYbyS/Jf0WdLw2NfbK9KuEC
-X-Gm-Gg: ASbGnctx+mtD4ypzmhKR7wLkWme9FGYymZM12mkd1Kj820kZh2EtE3OMRX/L7SFjKbF
- n6j9LxlyZQeohlXMmqvBmHe4BModdQ4Up7xI1/nTFrjZmn9J/6X2fQwMGrHIO8l3g6ONBJ0Hqyd
- Ue44eAUDpqnmz7EDm3fI/YFVUkSqizbxh7AFcJ/zfTZbTyfLLfs11eHhuhK0zURYXtIkfmJzI/Q
- CQ94rYHw9/2SPQ0u/J3OhQnI8NSG+YJEcq+bBQlsJ+rfm/Sr1n9Y55I+LLGYUmbTVB8AAbZ2zlJ
- h2xtzk9A4y9mID8k1FOJ0pEDOVdRCfClY7pOZqsGWDH3mrqK29mWH75bdTS5kyO4ytLfDHpFKpw
- KtwR8ELE+qsMBJATUXj8=
-X-Google-Smtp-Source: AGHT+IFaqStKKR4ZBqQXLz+Vola0yFtCBM/gfY0diEMkQRyiP3iwaFuzAcaLjSv0V5qtQaSkFjlJmQ==
-X-Received: by 2002:a05:622a:4a89:b0:4b0:f8ee:9355 with SMTP id
- d75a77b69052e-4b286e21764mr34445081cf.30.1755618582564; 
- Tue, 19 Aug 2025 08:49:42 -0700 (PDT)
-Received: from acleverhostname.lan ([2603:6011:3f0:cf90::12ac])
- by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4b11dc1827esm71258291cf.11.2025.08.19.08.49.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Aug 2025 08:49:42 -0700 (PDT)
-From: Eli Schwartz <eschwartz93@gmail.com>
-X-Google-Original-From: Eli Schwartz <eschwartz@gentoo.org>
-To: qemu-devel@nongnu.org
-Cc: Michael Roth <michael.roth@amd.com>,
- Kostiantyn Kostiuk <kkostiuk@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- qemu-rust@nongnu.org (open list:Rust-related patc...)
-Subject: [PATCH] meson: set test programs to not build by default
-Date: Tue, 19 Aug 2025 11:49:40 -0400
-Message-ID: <20250819154940.2137965-1-eschwartz@gentoo.org>
-X-Mailer: git-send-email 2.49.1
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uoOju-0003Db-3T
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 11:59:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uoOjr-0005K9-AZ
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 11:59:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1755619143;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hGSKVmlMEKu/j0HHDJU/geySDvt42YgNjcBsovx4w+s=;
+ b=g04JbRooM117PPEA0rd4YRpG4tOVg5l3CJ0wkrJ7TX10VHWgvgE/9tq7QQAqOwkHkbck17
+ 2nKelRY3IEsk2cWLN5RUO20x8URhhP295ef+kHvbVHF0NV/QDnAXoRaEC5uJTnhJARyqA/
+ PsUN8NuFF7TqzAQPC6AyitgPj+3nad8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-96-ieXU7em-OAOQqyn9c6VUzA-1; Tue,
+ 19 Aug 2025 11:58:55 -0400
+X-MC-Unique: ieXU7em-OAOQqyn9c6VUzA-1
+X-Mimecast-MFC-AGG-ID: ieXU7em-OAOQqyn9c6VUzA_1755619134
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4A3EF180034F; Tue, 19 Aug 2025 15:58:53 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.237])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D8EB63000198; Tue, 19 Aug 2025 15:58:49 +0000 (UTC)
+Date: Tue, 19 Aug 2025 16:58:45 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mads Ynddal <mads@ynddal.dk>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, oleg.tolmatcev@gmail.com
+Subject: Re: [PATCH v3 5/8] tracetool: support "-" as a shorthand for stdout
+Message-ID: <aKSfNansKsbP2-Lz@redhat.com>
+References: <20250806164832.1382919-1-berrange@redhat.com>
+ <20250806164832.1382919-6-berrange@redhat.com>
+ <20250807194608.GF51368@fedora> <aKNBsOekKkCSqgD7@redhat.com>
+ <20250818175548.GA16685@fedora>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
- envelope-from=eschwartz93@gmail.com; helo=mail-qt1-x82b.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20250818175548.GA16685@fedora>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 19 Aug 2025 12:12:33 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,122 +90,80 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather, they are built when running `meson test`. This change is inert
-unless building with meson 1.7, as previous versions of meson build all
-`meson test` dependencies as part of `ninja all` as well.
+On Mon, Aug 18, 2025 at 01:55:48PM -0400, Stefan Hajnoczi wrote:
+> On Mon, Aug 18, 2025 at 04:07:28PM +0100, Daniel P. Berrangé wrote:
+> > On Thu, Aug 07, 2025 at 03:46:08PM -0400, Stefan Hajnoczi wrote:
+> > > On Wed, Aug 06, 2025 at 05:48:29PM +0100, Daniel P. Berrangé wrote:
+> > > > This avoids callers needing to use the UNIX-only /dev/stdout
+> > > > workaround.
+> > > > 
+> > > > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > > > ---
+> > > >  scripts/tracetool/__init__.py | 8 ++++++--
+> > > >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > > > 
+> > > > diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
+> > > > index 0f33758870..c8fd3a7ddc 100644
+> > > > --- a/scripts/tracetool/__init__.py
+> > > > +++ b/scripts/tracetool/__init__.py
+> > > > @@ -38,8 +38,12 @@ def error(*lines):
+> > > >  
+> > > >  def out_open(filename):
+> > > >      global out_filename, out_fobj
+> > > > -    out_filename = posix_relpath(filename)
+> > > > -    out_fobj = open(filename, 'wt')
+> > > > +    if filename == "-":
+> > > > +        out_filename = "[stdout]"
+> > > 
+> > > A few lines above:
+> > > 
+> > >   out_filename = '<none>'
+> > >   out_fobj = sys.stdout
+> > > 
+> > > Stick to '<none>' here for consistency?
+> > 
+> > Curious - that suggests that it was intended to be able to write to
+> > stdout by default, but tracetool.py unconditionally calls out_open()
+> > so those default assignments are effectively dead code, unless this
+> > internal code is called by something other than the tracetool.py main
+> > entrypoint ?
+> > 
+> > I guess I'd be inclined to change the global initialization to just
+> > be 'None' to make it explicit that out_open is expected to always be
+> > called ?
+> 
+> Originally the script wrote to stdout, but I added an explicit output
+> filename argument in commit c05012a365c2 ("tracetool: add output
+> filename command-line argument") because #line directives emitted by
+> tracetool need to know the output filename.
+> 
+> Your next patch tests/tracetool/tracetool-test.py uses "-" as the
+> output filename but leaves the existing meson.build files unchanged.
+> They will still specify an output filename.
+> 
+> This commit doesn't break anything, at least not in how this patch
+> series uses "-", but I see a contradiction with commit c05012a365c2
+> since we're now allowing the output filename to be effectively empty.
+> 
+> Could you avoid special casing stdout and instead pass a relative path
+> to the output file? The relative path is important so the test reference
+> output is portable across machines. Then you don't need this commit.
 
-See:
-https://mesonbuild.com/Release-notes-for-1-7-0.html#test-targets-no-longer-built-by-default
+If I copy the 'trace-events' file into the build-dir, then I can rely
+on relative files for both the input & output, and avoid need to
+support '-'.
 
-An existing comment references this meson issue, with an included bug
-reference, but was written before meson 1.7 fixed the bug. Update the
-comment to change the advice from "if the bug gets fixed" to "when
-bumping the minimum meson version".
 
-Signed-off-by: Eli Schwartz <eschwartz@gentoo.org>
----
- qga/meson.build              | 1 +
- rust/qemu-api/meson.build    | 1 +
- tests/fp/meson.build         | 2 ++
- tests/functional/meson.build | 9 ++++-----
- tests/qtest/meson.build      | 2 +-
- tests/unit/meson.build       | 2 +-
- 6 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/qga/meson.build b/qga/meson.build
-index 89a4a8f713..44175ccedd 100644
---- a/qga/meson.build
-+++ b/qga/meson.build
-@@ -197,6 +197,7 @@ if host_os != 'windows' and not get_option('fuzzing')
-     i = i + 1
-   endforeach
-   qga_ssh_test = executable('qga-ssh-test', srcs,
-+                            build_by_default: false,
-                             dependencies: [qemuutil],
-                             c_args: ['-DQGA_BUILD_UNIT_TEST'])
- 
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index a090297c45..fec38d6726 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -102,6 +102,7 @@ test('rust-qemu-api-integration',
-     executable(
-         'rust-qemu-api-integration',
-         files('tests/tests.rs', 'tests/vmstate_tests.rs'),
-+        build_by_default: false,
-         override_options: ['rust_std=2021', 'build.rust_std=2021'],
-         rust_args: ['--test'],
-         install: false,
-diff --git a/tests/fp/meson.build b/tests/fp/meson.build
-index 9059a24752..9c50452bf1 100644
---- a/tests/fp/meson.build
-+++ b/tests/fp/meson.build
-@@ -57,6 +57,7 @@ fpcflags = [
- fptest = executable(
-   'fp-test',
-   ['fp-test.c', '../../fpu/softfloat.c'],
-+  build_by_default: false,
-   dependencies: [qemuutil, libsoftfloat, libtestfloat, libslowfloat],
-   c_args: fpcflags,
- )
-@@ -149,6 +150,7 @@ executable(
- fptestlog2 = executable(
-   'fp-test-log2',
-   ['fp-test-log2.c', '../../fpu/softfloat.c'],
-+  build_by_default: false,
-   dependencies: [qemuutil, libsoftfloat],
-   c_args: fpcflags,
- )
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 311c6f1806..6d7dc91954 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -408,11 +408,10 @@ foreach speed : ['quick', 'thorough']
-       # Ideally we would add 'precache' to 'depends' here, such that
-       # 'build_by_default: false' lets the pre-caching automatically
-       # run immediately before the test runs. In practice this is
--      # broken in meson, with it running the pre-caching in the normal
--      # compile phase https://github.com/mesonbuild/meson/issues/2518
--      # If the above bug ever gets fixed, when QEMU changes the min
--      # meson version, add the 'depends' and remove the custom
--      # 'run_target' logic below & in Makefile.include
-+      # broken in older versions of meson, with it running the
-+      # pre-caching in the normal compile phase. When QEMU changes
-+      # the min meson version to >=1.7, add the 'depends' and remove
-+      # the custom 'run_target' logic below & in Makefile.include
-       test('func-' + testname,
-            python,
-            depends: [test_deps, test_emulator, emulator_modules, plugin_modules],
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 669d07c06b..0a5309005f 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -447,7 +447,7 @@ foreach dir : target_dirs
-         deps += test_ss.all_dependencies()
-       endif
-       qtest_executables += {
--        test: executable(test, src, dependencies: deps)
-+        test: executable(test, src, build_by_default: false, dependencies: deps)
-       }
-     endif
- 
-diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index d5248ae51d..af9725a3f8 100644
---- a/tests/unit/meson.build
-+++ b/tests/unit/meson.build
-@@ -189,7 +189,7 @@ foreach test_name, extra: tests
-     src += test_ss.all_sources()
-     deps += test_ss.all_dependencies()
-   endif
--  exe = executable(test_name, src, genh, dependencies: deps)
-+  exe = executable(test_name, src, genh, build_by_default: false, dependencies: deps)
- 
-   test(test_name, exe,
-        depends: test_deps.get(test_name, []),
+With regards,
+Daniel
 -- 
-2.49.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
