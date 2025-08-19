@@ -2,111 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B388DB2CE86
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 23:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40655B2CE8B
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 23:31:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoTu2-0007So-FP; Tue, 19 Aug 2025 17:29:58 -0400
+	id 1uoTv9-00016Q-MU; Tue, 19 Aug 2025 17:31:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1uoTu0-0007Rw-MH; Tue, 19 Aug 2025 17:29:56 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uoTv5-0000zb-RP
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 17:31:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1uoTtz-0006qO-0j; Tue, 19 Aug 2025 17:29:56 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57JJ8YEM018279;
- Tue, 19 Aug 2025 21:29:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=aN023FXOP01KI1YVM
- 08x3W37aBtLvsDDKGGQ9kNvh8U=; b=tCdYZDFlX/PGlMS1j2/YxfEW3pt0JXpMI
- qosUrTePOpsJLABVMkfyRTKtkKsHkkbHuVAInc4yUSEpW8Ee+Jh4CmRrw13Ln6rN
- tF5uiOEZem4WHJM/3jJ68xfbo0ypJymsi6rL3sUjxshA5jy8UQktYGWF1gxWG4qN
- g8GBaZ7c5L82fWGc2nSPFmxPfHRhfiw9mjjfFMTchKEDeBCnS4Kj3mC64w8c8eR4
- x9b8mFmfmmFe99cA5QQybP6Ar1Ie0TJ5juO3S8XgG2nf7kvDMOXD61iwkvlERct0
- tEdloHYZmM5+jzFCIFVA25nZwZuzawCx8Fp1lFpAws8XPm70oZ0Mw==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jge40xa2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Aug 2025 21:29:53 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57JLERge016511;
- Tue, 19 Aug 2025 21:29:53 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jge40x9y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Aug 2025 21:29:52 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57JJ9BJJ032003;
- Tue, 19 Aug 2025 21:29:52 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48my5y0e42-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Aug 2025 21:29:52 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 57JLTo5028770868
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Aug 2025 21:29:51 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C718B58056;
- Tue, 19 Aug 2025 21:29:50 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EF7815803F;
- Tue, 19 Aug 2025 21:29:49 +0000 (GMT)
-Received: from mglenn-KVM.. (unknown [9.10.239.198])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 19 Aug 2025 21:29:49 +0000 (GMT)
-From: Glenn Miles <milesg@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: Glenn Miles <milesg@linux.ibm.com>, qemu-ppc@nongnu.org, clg@redhat.com,
- npiggin@gmail.com, harshpb@linux.ibm.com, thuth@redhat.com,
- rathc@linux.ibm.com, richard.henderson@linaro.org
-Subject: [PATCH 4/4] tests/functional: Add test for IBM PPE42 instructions
-Date: Tue, 19 Aug 2025 16:28:48 -0500
-Message-ID: <20250819212856.219932-5-milesg@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250819212856.219932-1-milesg@linux.ibm.com>
-References: <20250819212856.219932-1-milesg@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uoTuz-000778-V6
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 17:31:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1755639054;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Z6ngWuAj4uC2iChQyAjmuht1AtGU8sgIEG/lqjJRWqw=;
+ b=ALReXaEUyxfuK9Sm9ONAfHST1Sid9Sr2kSBOm3vwG63An4/PewPViUAOwXfEyxnqOBkneR
+ hIWaCrLiZeiBGIXA+PdpUvNXmmOxPAvw0xTQbLH5P0vOrIXqVWnTCOkL7qjltiXI/tUdoj
+ mniv25Om4kgQpy39a40cRUBk5MzrihE=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-178--poaVHqwPw-qv03loc1UaA-1; Tue, 19 Aug 2025 17:30:52 -0400
+X-MC-Unique: -poaVHqwPw-qv03loc1UaA-1
+X-Mimecast-MFC-AGG-ID: -poaVHqwPw-qv03loc1UaA_1755639052
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-244581ce13aso117620765ad.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Aug 2025 14:30:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1755639051; x=1756243851;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Z6ngWuAj4uC2iChQyAjmuht1AtGU8sgIEG/lqjJRWqw=;
+ b=BzVIsT7Yuj2OJEzoUGriCqRsCwQ5TWv7TvyUdNTWZ5Gmv/EDlU5FYTpEp7CzA2ryql
+ cCtqtCihoH+mXFfwgL21RCv7LhJgwaXFju73lh3d3N2on8QvumOqXjO+ur6hXwccyENM
+ yiTZPJxm0GEaJT4djKXctfmNowv4w81fiSrNSjrpQcHEt7uakRpLk4Ul3IwWj+zF247P
+ 8kG7MqhbCr1kP6uZ6a6RH6ElVjWJQm3c841+WGIFD7CWeY+MPKje9JbaLEcXFuF0cprc
+ TFQBXvnj4Y/kgfHc7RBv6UdrOORSaiAetBC0YQhGn1Je1t9Z1vZlQDie7iIfJA0o+xtS
+ AJGg==
+X-Gm-Message-State: AOJu0YwlMAqGuE+W03JU0WdoEQvgLhjx/KsE9W4A8eB8wdMlKy/YTskO
+ 7Ol3+xQUHdVQAkC4j6ziLR2Go789l/tuAy9uUvrL+57BViKjAx/Qn6Ck7J+shHB7DX+/h1gQKWc
+ G9AhpyFpvTdTtb4FsIfF0ahMrtv5gtltzRO+ONGKO6d8IwRfvO62AMlKS7c+c2X6KylHzlOeK+I
+ QMRPG1NGFlkJefLVfCgET12ZhrXPkg5hZk3K9wEOY=
+X-Gm-Gg: ASbGnctr6XCKGn0aL7iAl08OfzTiTicrJV1UKX1RG7q4uRziuSLhGn6wbcNEuYiwBsO
+ 7D6iroYv2bHBZdeXyh90imVKBazfACRV7rh3h2qYg3jNTnd8hJuOKVV/Sz+H4PMCGHY3b9dNFKk
+ yNYcsZiTgJDUyfpg6iF4gErtZWWOW0wXVhRf50WY1tbc5wwj3wq1/i
+X-Received: by 2002:a17:902:d512:b0:224:910:23f0 with SMTP id
+ d9443c01a7336-245ef26d2acmr6158385ad.49.1755639050995; 
+ Tue, 19 Aug 2025 14:30:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFc54VJvAjhLQIZtnzcheXUlpO2ek9jwP/6zdB4T50+dD5VxxhRRGRfGcwkgvtMlxX+9ux1RK+ZFKeqv+sWjiU=
+X-Received: by 2002:a17:902:d512:b0:224:910:23f0 with SMTP id
+ d9443c01a7336-245ef26d2acmr6157915ad.49.1755639050333; Tue, 19 Aug 2025
+ 14:30:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=FcM3xI+6 c=1 sm=1 tr=0 ts=68a4ecd1 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=2OwXVqhp2XgA:10 a=NEAV23lmAAAA:8 a=VnNF1IyMAAAA:8 a=WP5zsaevAAAA:8
- a=NUakdCcs51WeiAtREWwA:9 a=t8Kx07QrZZTALmIZmm-o:22
-X-Proofpoint-GUID: vvoITcok_tKw1jzhKzOvj9Gn5j52p819
-X-Proofpoint-ORIG-GUID: xSFqLeiDi5BrLO478kP8wZXBGlCWVVI6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAxMSBTYWx0ZWRfXz5Rid6RAHqOc
- gW2+no/ttzb6r0OtdZE/gFnqQKQS6vY2Vw9gVi/oMbhS4V1c7kIKnFJvjo+Vyu4jfXf+uo5MNpD
- rTMuYDFDLHlPkMZ1morQiv4NJ6LddoKjZETq7UUnvxmHWmpKAscsUduCQsFf0JYkN98fqLFKEBJ
- WrnLyKqWQ2CsVdwn6vMKMqiB6uwwIjsrTLjOBQvjKdZ1glddotuFsRJRlU2eVGjbsD+/9J2ulLt
- MpCXCvRjNkdAd3EiqwhWIMT1/KUjUJebbJjh97Qi7nNfpirAYuEqg6pRD/N7EiCGIQcnihcQ3Ls
- 9TbGpB2a3UpGhS9IZ5sIcyYpr1RKFBBYJY03dLo2h3UPZKlWISUPU0Be3CMxNh5/rQOXx1FLZ1r
- 7nffJp/2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-19_03,2025-08-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0 priorityscore=1501 suspectscore=0 adultscore=0
- phishscore=0 clxscore=1011 impostorscore=0 spamscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508160011
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=milesg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <20250819102409.2117969-1-peter.maydell@linaro.org>
+In-Reply-To: <20250819102409.2117969-1-peter.maydell@linaro.org>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 19 Aug 2025 17:30:38 -0400
+X-Gm-Features: Ac12FXz30ZAK7JBRkzkOS-JRrMZRem2wwy0hyTwPdIyp1SuQBIIQY9HLcg8WIKo
+Message-ID: <CAFn=p-Y_-HEKWDrZeZjG5GLaM6dk6fRFHqGr9KCiL1ri+TaCnA@mail.gmail.com>
+Subject: Re: [PATCH] tests,
+ scripts: Don't import print_function from __future__
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,127 +102,203 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds a functional test for the IBM PPE42 instructions which
-downloads a test image from a public github repo and then
-loads and executes the image.
-(see https://github.com/milesg-github/ppe42-tests for details)
+On Tue, Aug 19, 2025 at 6:24=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
+.org> wrote:
+>
+> Some of our Python scripts still include the line
+>   from __future__ import print_function
+>
+> which is intended to allow a Python 2 to handle the Python 3 print()
+> syntax. This particular part of the future arrived many years ago,
+> and our minimum Python version is 3.9, so we don't need to keep
+> this line around.
+>
+> NB: the scripts in tests/tcg/*/gdbstub/ are run with whatever Python
+> gdb was built against, but we can safely assume that that was a
+> Python 3 because our supported distros are all on Python 3.  In any
+> case these are only run as part of "make check-tcg", not by
+> end-users.
+>
+> Commit created with:
+>
+>  sed -i -e '/import print_function/d' $(git grep -l 'from __future__')
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-Test status is checked by periodically issuing 'info register'
-commands and checking the NIP value.  If the NIP is 0xFFF80200
-then the test successfully executed to completion.  If the
-machine stops before the test completes or if a 90 second
-timeout is reached, then the test is marked as having failed.
+Reviewed-by: John Snow <jsnow@redhat.com>
 
-This test does not test any PowerPC instructions as it is
-expected that these instructions are well covered in other
-tests.  Only instructions that are unique to the IBM PPE42
-processor are tested.
-
-Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
----
- tests/functional/meson.build       |  1 +
- tests/functional/test_ppc_ppe42.py | 79 ++++++++++++++++++++++++++++++
- 2 files changed, 80 insertions(+)
- create mode 100644 tests/functional/test_ppc_ppe42.py
-
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 311c6f1806..ddfef55bd2 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -233,6 +233,7 @@ tests_ppc_system_quick = [
- ]
- 
- tests_ppc_system_thorough = [
-+  'ppc_ppe42',
-   'ppc_40p',
-   'ppc_amiga',
-   'ppc_bamboo',
-diff --git a/tests/functional/test_ppc_ppe42.py b/tests/functional/test_ppc_ppe42.py
-new file mode 100644
-index 0000000000..26bbe11b2d
---- /dev/null
-+++ b/tests/functional/test_ppc_ppe42.py
-@@ -0,0 +1,79 @@
-+#!/usr/bin/env python3
-+#
-+# Functional tests for the IBM PPE42 processor
-+#
-+# Copyright (c) 2025, IBM Corporation
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+from qemu_test import QemuSystemTest, Asset
-+import asyncio
-+
-+class Ppe42Machine(QemuSystemTest):
-+
-+    timeout = 90
-+    poll_period = 1.0
-+
-+    ASSET_PPE42_TEST_IMAGE = Asset(
-+        ('https://github.com/milesg-github/ppe42-tests/raw/refs/heads/main/'
-+         'images/ppe42-test.out'),
-+        '03c1ac0fb7f6c025102a02776a93b35101dae7c14b75e4eab36a337e39042ea8')
-+
-+    def _test_completed(self):
-+        self.log.info("Checking for test completion...")
-+        try:
-+            output = self.vm.cmd('human-monitor-command',
-+                                 command_line='info registers')
-+        except Exception as err:
-+            self.log.debug(f"'info registers' cmd failed due to {err=},"
-+                            " {type(err)=}")
-+            raise
-+
-+        self.log.info(output)
-+        if "NIP fff80200" in output:
-+            self.log.info("<test completed>")
-+            return True
-+        else:
-+            self.log.info("<test not completed>")
-+            return False
-+
-+    def _wait_pass_fail(self, timeout):
-+        while not self._test_completed():
-+            if timeout >= self.poll_period:
-+                timeout = timeout - self.poll_period
-+                self.log.info(f"Waiting {self.poll_period} seconds for test"
-+                               " to complete...")
-+                e = None
-+                try:
-+                    e = self.vm.event_wait('STOP', self.poll_period)
-+
-+                except asyncio.TimeoutError:
-+                    self.log.info("Poll period ended.")
-+                    pass
-+
-+                except Exception as err:
-+                    self.log.debug(f"event_wait() failed due to {err=},"
-+                                    " {type(err)=}")
-+                    raise
-+
-+                if e != None:
-+                    self.log.debug(f"Execution stopped: {e}")
-+                    self.log.debug("Exiting due to test failure")
-+                    self.fail("Failure detected!")
-+                    break
-+            else:
-+                self.fail("Timed out waiting for test completion.")
-+
-+    def test_ppe42_instructions(self):
-+        self.set_machine('ppe42_machine')
-+        self.require_accelerator("tcg")
-+        image_path = self.ASSET_PPE42_TEST_IMAGE.fetch()
-+        self.vm.add_args('-nographic')
-+        self.vm.add_args('-device', f'loader,file={image_path}')
-+        self.vm.add_args('-device', 'loader,addr=0xfff80040,cpu-num=0')
-+        self.vm.add_args('-action', 'panic=pause')
-+        self.vm.launch()
-+        self._wait_pass_fail(self.timeout)
-+
-+if __name__ == '__main__':
-+    QemuSystemTest.main()
--- 
-2.43.0
+> ---
+>  scripts/userfaultfd-wrlat.py                           | 1 -
+>  tests/guest-debug/test_gdbstub.py                      | 1 -
+>  tests/tcg/aarch64/gdbstub/test-mte.py                  | 1 -
+>  tests/tcg/aarch64/gdbstub/test-sve-ioctl.py            | 1 -
+>  tests/tcg/aarch64/gdbstub/test-sve.py                  | 1 -
+>  tests/tcg/multiarch/gdbstub/interrupt.py               | 1 -
+>  tests/tcg/multiarch/gdbstub/memory.py                  | 1 -
+>  tests/tcg/multiarch/gdbstub/sha1.py                    | 1 -
+>  tests/tcg/multiarch/gdbstub/test-proc-mappings.py      | 1 -
+>  tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py    | 1 -
+>  tests/tcg/multiarch/gdbstub/test-qxfer-siginfo-read.py | 1 -
+>  tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py  | 1 -
+>  tests/tcg/s390x/gdbstub/test-signals-s390x.py          | 1 -
+>  tests/tcg/s390x/gdbstub/test-svc.py                    | 1 -
+>  14 files changed, 14 deletions(-)
+>
+> diff --git a/scripts/userfaultfd-wrlat.py b/scripts/userfaultfd-wrlat.py
+> index 0684be4e044..a61a9abbfcb 100755
+> --- a/scripts/userfaultfd-wrlat.py
+> +++ b/scripts/userfaultfd-wrlat.py
+> @@ -17,7 +17,6 @@
+>  # This work is licensed under the terms of the GNU GPL, version 2 or
+>  # later.  See the COPYING file in the top-level directory.
+>
+> -from __future__ import print_function
+>  from bcc import BPF
+>  from ctypes import c_ushort, c_int, c_ulonglong
+>  from time import sleep
+> diff --git a/tests/guest-debug/test_gdbstub.py b/tests/guest-debug/test_g=
+dbstub.py
+> index 4f08089e6a9..e017ccb55d7 100644
+> --- a/tests/guest-debug/test_gdbstub.py
+> +++ b/tests/guest-debug/test_gdbstub.py
+> @@ -1,7 +1,6 @@
+>  """Helper functions for gdbstub testing
+>
+>  """
+> -from __future__ import print_function
+>  import argparse
+>  import gdb
+>  import os
+> diff --git a/tests/tcg/aarch64/gdbstub/test-mte.py b/tests/tcg/aarch64/gd=
+bstub/test-mte.py
+> index 9ad98e7a54c..f4a7d7b4465 100644
+> --- a/tests/tcg/aarch64/gdbstub/test-mte.py
+> +++ b/tests/tcg/aarch64/gdbstub/test-mte.py
+> @@ -1,4 +1,3 @@
+> -from __future__ import print_function
+>  #
+>  # Test GDB memory-tag commands that exercise the stubs for the qIsAddres=
+sTagged,
+>  # qMemTag, and QMemTag packets, which are used for manipulating allocati=
+on tags.
+> diff --git a/tests/tcg/aarch64/gdbstub/test-sve-ioctl.py b/tests/tcg/aarc=
+h64/gdbstub/test-sve-ioctl.py
+> index a78a3a2514d..2c5c2180319 100644
+> --- a/tests/tcg/aarch64/gdbstub/test-sve-ioctl.py
+> +++ b/tests/tcg/aarch64/gdbstub/test-sve-ioctl.py
+> @@ -1,4 +1,3 @@
+> -from __future__ import print_function
+>  #
+>  # Test the SVE ZReg reports the right amount of data. It uses the
+>  # sve-ioctl test and examines the register data each time the
+> diff --git a/tests/tcg/aarch64/gdbstub/test-sve.py b/tests/tcg/aarch64/gd=
+bstub/test-sve.py
+> index 84cdcd4a32e..7b0489a622b 100644
+> --- a/tests/tcg/aarch64/gdbstub/test-sve.py
+> +++ b/tests/tcg/aarch64/gdbstub/test-sve.py
+> @@ -1,4 +1,3 @@
+> -from __future__ import print_function
+>  #
+>  # Test the SVE registers are visible and changeable via gdbstub
+>  #
+> diff --git a/tests/tcg/multiarch/gdbstub/interrupt.py b/tests/tcg/multiar=
+ch/gdbstub/interrupt.py
+> index 2d5654d1540..4eccdb41b97 100644
+> --- a/tests/tcg/multiarch/gdbstub/interrupt.py
+> +++ b/tests/tcg/multiarch/gdbstub/interrupt.py
+> @@ -1,4 +1,3 @@
+> -from __future__ import print_function
+>  #
+>  # Test some of the system debug features with the multiarch memory
+>  # test. It is a port of the original vmlinux focused test case but
+> diff --git a/tests/tcg/multiarch/gdbstub/memory.py b/tests/tcg/multiarch/=
+gdbstub/memory.py
+> index 532b92e7fb3..76d75e52512 100644
+> --- a/tests/tcg/multiarch/gdbstub/memory.py
+> +++ b/tests/tcg/multiarch/gdbstub/memory.py
+> @@ -1,4 +1,3 @@
+> -from __future__ import print_function
+>  #
+>  # Test some of the system debug features with the multiarch memory
+>  # test. It is a port of the original vmlinux focused test case but
+> diff --git a/tests/tcg/multiarch/gdbstub/sha1.py b/tests/tcg/multiarch/gd=
+bstub/sha1.py
+> index 1ce711a402c..3403b82fd4a 100644
+> --- a/tests/tcg/multiarch/gdbstub/sha1.py
+> +++ b/tests/tcg/multiarch/gdbstub/sha1.py
+> @@ -1,4 +1,3 @@
+> -from __future__ import print_function
+>  #
+>  # A very simple smoke test for debugging the SHA1 userspace test on
+>  # each target.
+> diff --git a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py b/tests/tc=
+g/multiarch/gdbstub/test-proc-mappings.py
+> index 6eb6ebf7b17..796dca75f0c 100644
+> --- a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
+> +++ b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
+> @@ -1,7 +1,6 @@
+>  """Test that gdbstub has access to proc mappings.
+>
+>  This runs as a sourced script (via -x, via run-test.py)."""
+> -from __future__ import print_function
+>  import gdb
+>  from test_gdbstub import gdb_exit, main, report
+>
+> diff --git a/tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py b/tests/=
+tcg/multiarch/gdbstub/test-qxfer-auxv-read.py
+> index 00c26ab4a95..fa36c943d66 100644
+> --- a/tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py
+> +++ b/tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py
+> @@ -1,4 +1,3 @@
+> -from __future__ import print_function
+>  #
+>  # Test auxiliary vector is loaded via gdbstub
+>  #
+> diff --git a/tests/tcg/multiarch/gdbstub/test-qxfer-siginfo-read.py b/tes=
+ts/tcg/multiarch/gdbstub/test-qxfer-siginfo-read.py
+> index 862596b07a7..b18fa1234fb 100644
+> --- a/tests/tcg/multiarch/gdbstub/test-qxfer-siginfo-read.py
+> +++ b/tests/tcg/multiarch/gdbstub/test-qxfer-siginfo-read.py
+> @@ -1,4 +1,3 @@
+> -from __future__ import print_function
+>  #
+>  # Test gdbstub Xfer:siginfo:read stub.
+>  #
+> diff --git a/tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py b/test=
+s/tcg/multiarch/gdbstub/test-thread-breakpoint.py
+> index 4d6b6b9fbe7..49cbc3548f6 100644
+> --- a/tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py
+> +++ b/tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py
+> @@ -1,4 +1,3 @@
+> -from __future__ import print_function
+>  #
+>  # Test auxiliary vector is loaded via gdbstub
+>  #
+> diff --git a/tests/tcg/s390x/gdbstub/test-signals-s390x.py b/tests/tcg/s3=
+90x/gdbstub/test-signals-s390x.py
+> index b6b7b39fc46..398ad534ebf 100644
+> --- a/tests/tcg/s390x/gdbstub/test-signals-s390x.py
+> +++ b/tests/tcg/s390x/gdbstub/test-signals-s390x.py
+> @@ -1,4 +1,3 @@
+> -from __future__ import print_function
+>
+>  #
+>  # Test that signals and debugging mix well together on s390x.
+> diff --git a/tests/tcg/s390x/gdbstub/test-svc.py b/tests/tcg/s390x/gdbstu=
+b/test-svc.py
+> index 17210b4e020..29a0aa0ede4 100644
+> --- a/tests/tcg/s390x/gdbstub/test-svc.py
+> +++ b/tests/tcg/s390x/gdbstub/test-svc.py
+> @@ -1,7 +1,6 @@
+>  """Test single-stepping SVC.
+>
+>  This runs as a sourced script (via -x, via run-test.py)."""
+> -from __future__ import print_function
+>  import gdb
+>  from test_gdbstub import main, report
+>
+> --
+> 2.43.0
+>
 
 
