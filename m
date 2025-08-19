@@ -2,62 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCBADB2C06C
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 13:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06403B2C03A
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 13:26:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoKTA-0004VQ-6T; Tue, 19 Aug 2025 07:25:36 -0400
+	id 1uoKSF-0003Ir-Tq; Tue, 19 Aug 2025 07:24:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uoKT3-0004DE-Ex
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 07:25:29 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uoKSE-0003IE-7S
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 07:24:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uoKT1-0007TO-ID
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 07:25:29 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uoKSC-0007C1-9b
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 07:24:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755602725;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ s=mimecast20190719; t=1755602675;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FJHO5oByfo+b2uZrmGiIQMB3hXMDpZMnafwBM9+Mj5c=;
- b=DetnYF5e8osaON2DTlLcnohn4YrFR2BBttEXpzFJhLi0JKbKtzSA6vUNtlmn2oX1eWvxbK
- zZfAzVjAlgF2aZMN9yG2CHB31EtRmGOYZl5m3eweZs8z/3TztZ+eiDgYKzB32HGT+3+Qso
- GbPFGgojmV28enB8lGE7T0kRulWpXls=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=bSKQB5Gbc4mrM6rrSfobAZR5pEiSDbbt2Q8sVdxDF8c=;
+ b=UTD9iyhXhK5f2t6g8PwDePNuJqniJu+3ohwlaTAcFEhS2wriJpAaf0ImepBwY+FWM+TBtg
+ y4uD0hQhRg82R2ZFS7se9FAY2SvNDrrwcYZyrXxkyU8ssVAo0mjuQOryZN+I5AAB7VQ9gD
+ M+fBwsBjXPdBBgnhWUZZCFY0JhHIk8I=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-424-o9ywgUqPNQePvY5BDS4txw-1; Tue,
- 19 Aug 2025 07:25:22 -0400
-X-MC-Unique: o9ywgUqPNQePvY5BDS4txw-1
-X-Mimecast-MFC-AGG-ID: o9ywgUqPNQePvY5BDS4txw_1755602721
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-440-Y8_90g2aNcqsI8jQKodXhw-1; Tue,
+ 19 Aug 2025 07:24:34 -0400
+X-MC-Unique: Y8_90g2aNcqsI8jQKodXhw-1
+X-Mimecast-MFC-AGG-ID: Y8_90g2aNcqsI8jQKodXhw_1755602673
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3DEA519560B6; Tue, 19 Aug 2025 11:25:21 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.45.224.251])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BC90230001A8; Tue, 19 Aug 2025 11:25:18 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 25/25] MAINTAINERS: Adjust wildcards for the migration,
- multiprocess and replay tests
-Date: Tue, 19 Aug 2025 13:24:02 +0200
-Message-ID: <20250819112403.432587-26-thuth@redhat.com>
-In-Reply-To: <20250819112403.432587-1-thuth@redhat.com>
-References: <20250819112403.432587-1-thuth@redhat.com>
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3FE191800446; Tue, 19 Aug 2025 11:24:33 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.237])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1D2BF30001A8; Tue, 19 Aug 2025 11:24:29 +0000 (UTC)
+Date: Tue, 19 Aug 2025 12:24:26 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, odaki@rsg.ci.i.u-tokyo.ac.jp,
+ marcandre.lureau@redhat.com
+Subject: Re: [PATCH 08/12] util/oslib-win32: Revert warning on
+ WSAEventSelect() failure
+Message-ID: <aKRe6pTbdU0OZ85I@redhat.com>
+References: <20250808080823.2638861-1-armbru@redhat.com>
+ <20250808080823.2638861-9-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250808080823.2638861-9-armbru@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -79,57 +85,65 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+On Fri, Aug 08, 2025 at 10:08:19AM +0200, Markus Armbruster wrote:
+> qemu_socket_select() and its wrapper qemu_socket_unselect() treat a
+> NULL @errp as &error_warn.  This is wildly inappropriate.  A caller
+> passing NULL specifies that errors are to be ignored.  If warnings are
+> wanted, the caller must pass &error_warn.
+> 
+> I'm not familiar with the calling code, so I can't say whether it will
+> work after WSAEventSelect() failure.  If it doesn't, then this should
+> be an error.  If it does, then why bother the user with a warning that
+> isn't actionable, and likely confusing?
+> 
+> The warning goes back to commit f5fd677ae7cf (win32/socket: introduce
+> qemu_socket_select() helper).  Before that commit, the error was
+> ignored, as indicated by passing a null @errp.  Revert to that
+> behavior.
+> 
+> Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>  util/oslib-win32.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+> index b7351634ec..136a8fe118 100644
+> --- a/util/oslib-win32.c
+> +++ b/util/oslib-win32.c
+> @@ -296,10 +296,6 @@ bool qemu_socket_select(int sockfd, WSAEVENT hEventObject,
+>  {
+>      SOCKET s = _get_osfhandle(sockfd);
+>  
+> -    if (errp == NULL) {
+> -        errp = &error_warn;
+> -    }
 
-Now that we moved the tests into subfolders, we have to adjust the
-wildcards accordingly.
+This makes sense, but I'd want the callers to be using warn_report
+instead. Ideally some (but not all) of the callers would propagate
+the error, but this isn't practical with the QIOChannel create
+watch function usage. I'd want to keep Error *errp on this function
+though, and have warn_report as a sign to our future selves that
+this is still not ideal.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- MAINTAINERS | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+> -
+>      if (s == INVALID_SOCKET) {
+>          error_setg(errp, "invalid socket fd=%d", sockfd);
+>          return false;
+> -- 
+> 2.49.0
+> 
+> 
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 625fe67b41d..a64b5b849b5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3604,7 +3604,8 @@ F: include/migration/
- F: include/qemu/userfaultfd.h
- F: migration/
- F: scripts/vmstate-static-checker.py
--F: tests/functional/*migration.py
-+F: tests/functional/migration.py
-+F: tests/functional/*/*migration.py
- F: tests/vmstate-static-checker-data/
- F: tests/qtest/migration/
- F: tests/qtest/migration-*
-@@ -3773,8 +3774,10 @@ F: include/system/replay.h
- F: docs/devel/replay.rst
- F: docs/system/replay.rst
- F: stubs/replay.c
--F: tests/functional/*reverse_debug*.py
--F: tests/functional/*replay*.py
-+F: tests/functional/replay_kernel.py
-+F: tests/functional/reverse_debugging.py
-+F: tests/functional/*/*replay*.py
-+F: tests/functional/*/*reverse_debug*.py
- F: qapi/replay.json
- 
- IOVA Tree
-@@ -4293,7 +4296,8 @@ F: hw/remote/vfio-user-obj.c
- F: include/hw/remote/vfio-user-obj.h
- F: hw/remote/iommu.c
- F: include/hw/remote/iommu.h
--F: tests/functional/*multiprocess.py
-+F: tests/functional/multiprocess.py
-+F: tests/functional/*/*multiprocess.py
- 
- VFIO-USER:
- M: John Levon <john.levon@nutanix.com>
+With regards,
+Daniel
 -- 
-2.50.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
