@@ -2,104 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519B4B2C7E5
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 17:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE238B2C7E8
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 17:05:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoNsv-0002IW-W0; Tue, 19 Aug 2025 11:04:26 -0400
+	id 1uoNtX-0002le-PH; Tue, 19 Aug 2025 11:05:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uoNss-0002Hz-9L
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 11:04:22 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uoNsq-0003Ic-2v
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 11:04:22 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-b4717ba0d5dso3756954a12.1
- for <qemu-devel@nongnu.org>; Tue, 19 Aug 2025 08:04:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755615858; x=1756220658; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2vin8+zsd4VEAVrYozEhkaGbKvgvJ1PgV2ByS/ztruw=;
- b=QF33Vh3IKkzLBV7MJ2pOqIolmjArXos+to6y5IcmE8zVQfWwXicRJ0wMH5Hf33+ozf
- OAKSL6F26V3C/paXZg5ki29T+QfGrHGhCkWe8vqAzIybp2iIX32Z7KnxN6ReMQVcpWGO
- aNU0WT+mZhYXffp+vjmI/O5SZX3pI5ioleKulOBSsl/tKvxwhoY+RO/8B8gAKcMvERfc
- w509lGVLFRuJqaHSAPX1A1sEMwHdkQ+r2qDwvHxjfzPQGgN5wWcC4FTCw8skPgUzj0Rz
- gvV96x+IvUHnBCXIUgdFLmTzU7C6jBqJ+l4ORBatozuNio1T0hbSlN3pOXc/Nmg3OTtR
- ktGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755615858; x=1756220658;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2vin8+zsd4VEAVrYozEhkaGbKvgvJ1PgV2ByS/ztruw=;
- b=eDpzEmFDZnOtXsHXg/NLcnVxfyTYD64ntD+UyUFYnsdmklvaT0V/tARYjKjUmkbYLV
- RHyWtwgbHYPEHOEZRO6wa3V/AHiGzOvmPbWC9C91Q2xd7zuYfpT9ZLqAuM7O4dfMrvSP
- 8KXKfx/Dix1J1w/AfGq+mArfNPKJo8vs/ln36J6uxIoJNdIrV2Zjh1klPr8HJgBcrPN9
- IeJPYyL1c1t1dp8fZuHQI7vsTdgIzUxXjjn2JoWl3T4VAgMCmwSUCjObUGfCEGapMcnA
- hQ6NEkiHjzzAMQ6JYRFFsb9BYThce7HPvEPQ/UBnS0p/cKARZqE83hr8XkBA1bfQ7P9U
- V94A==
-X-Gm-Message-State: AOJu0YxYOrXHNUSdhU6MBZRNwbHd0TK9eJOcA0vFP6esW5QKZXgXr2H1
- IJFAt6acY9hwmAh5jPMUzLWLiS8z0qLYfPH01prrIv88ThPCc2tAlV7UpmX3SoLNsgc=
-X-Gm-Gg: ASbGncs/sKg38cbSBuq7eFA5lP3NpSNuK7qK5AkE9wjpb5jh5KasHxoD01DAY3AkSJa
- 4+ZlZ0yjPntE9e+zFZOE6uYRZqXiP9Lp5H7GYrScOq06Jbq4ev3zfFuV5awRr7CqpCI3ALKUTaF
- Vu8VXXclxQZKXFL3DTMT17IByQinWzGsvvr13oD+uEc2Keu9TjTLyEk/ml0WtYXh4GZoGIJubu5
- lajRD8GhrNwxUw+95+1GJe13jfcj1aI7R0cMSQ7SfbxjOaE3KHMYI+JSO+2DohEqPU5cIQq9Ji8
- LhM4iuV6MJ7WQMI8t5Ql8gqlD67l/OnocgQ4gQJYvZGHgzmZNYvMlG0Z+bErC/ToWTez1OBfnSC
- qcGdzbYEzvIUqkHXVbXNwZq+vqm2aPmv4WY4=
-X-Google-Smtp-Source: AGHT+IF0nxufkoXKHQgp9WIP/UUiBGbhmgyB/QFKQlNKthYtOxjbsJtMnooBI0PoAxNLshXkKwUh6Q==
-X-Received: by 2002:a17:903:1987:b0:240:72d8:96fa with SMTP id
- d9443c01a7336-245e0a09c44mr31509485ad.20.1755615857607; 
- Tue, 19 Aug 2025 08:04:17 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-245ed33cac4sm47735ad.16.2025.08.19.08.04.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Aug 2025 08:04:17 -0700 (PDT)
-Message-ID: <8e64fd77-9969-42b3-bbcd-1ed8de910ff9@linaro.org>
-Date: Tue, 19 Aug 2025 08:04:20 -0700
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uoNtP-0002cD-O7
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 11:04:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uoNtM-0003NT-IR
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 11:04:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1755615891;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lJVaPLaMgBW+iLFaW02IKkVA5Wl2P39O12xOf81eP1k=;
+ b=Nxi0yHvWn9KZstM0/e/a7+mbG55PlAWrRcXGGpBAtjqljuFeXzcCXDnm63E4+pZgtnx8i9
+ O0qGWVswLYHpUvqan+DbAbFUi1+FGK2cXL5GEsUvPCqlKMYYvBbh3LFlD/Hi3PdkcqHJDh
+ wYrkgswV86yXSA/9Lt88eJTKrYBvJ8U=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-qY9wa5LiMQepK5lCbjWXuA-1; Tue,
+ 19 Aug 2025 11:04:49 -0400
+X-MC-Unique: qY9wa5LiMQepK5lCbjWXuA-1
+X-Mimecast-MFC-AGG-ID: qY9wa5LiMQepK5lCbjWXuA_1755615888
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4AEAB1800293; Tue, 19 Aug 2025 15:04:48 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.237])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1CC9B19A4CA1; Tue, 19 Aug 2025 15:04:45 +0000 (UTC)
+Date: Tue, 19 Aug 2025 16:04:42 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, stefanha@redhat.com,
+ "Christian A. Ehrhardt" <christian.ehrhardt@canonical.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: Re: [PATCH 10.1?] Revert "i386/cpu: Warn about why CPUID_EXT_PDCM is
+ not available"
+Message-ID: <aKSSitJ-jeV8K7Ux@redhat.com>
+References: <20250819150235.785559-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 15/18] whpx: arm64: implement -cpu host
-To: Peter Maydell <peter.maydell@linaro.org>,
- Mohamed Mediouni <mohamed@unpredictable.fr>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Igor Mammedov <imammedo@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan
- <phil@philjordan.eu>, Ani Sinha <anisinha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Alexander Graf <agraf@csgraf.de>,
- Mads Ynddal <mads@ynddal.dk>, Sunil Muthuswamy <sunilmut@microsoft.com>,
- Zhao Liu <zhao1.liu@intel.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
- Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org,
- Yanan Wang <wangyanan55@huawei.com>
-References: <20250808065419.47415-1-mohamed@unpredictable.fr>
- <20250808065419.47415-16-mohamed@unpredictable.fr>
- <CAFEAcA9iQnrKWXPXw2wG3c6gmevOMFQtt48HsJdx8GZz2sd+4Q@mail.gmail.com>
-Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <CAFEAcA9iQnrKWXPXw2wG3c6gmevOMFQtt48HsJdx8GZz2sd+4Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52e.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250819150235.785559-1-pbonzini@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,42 +85,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/19/25 6:24 AM, Peter Maydell wrote:
-> On Fri, 8 Aug 2025 at 07:55, Mohamed Mediouni <mohamed@unpredictable.fr> wrote:
->>
->> OpenProcessorKey and ReadRegU64 adapted from:
->> https://github.com/FEX-Emu/FEX/blob/e6de17e72ef03aa88ba14fa0ec13163061608c74/Source/Windows/Common/CPUFeatures.cpp#L62
->>
->> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+On Tue, Aug 19, 2025 at 05:02:35PM +0200, Paolo Bonzini wrote:
+> This reverts commit 00268e00027459abede448662f8794d78eb4b0a4.
+> (The only conflict is in the !is_tdx_vm() part of the condition,
+> which is safe to keep).
 > 
->> +    /*
->> +     * MIDR_EL1 is not a global register on WHPX
->> +     * As such, read the CPU0 from the registry to get a consistent value.
->> +     * Otherwise, on heterogenous systems, you'll get variance between CPUs.
->> +     */
->> +    HKEY ProcessorKey = OpenProcessorKey();
+> mark_unavailable_features() actively blocks usage of the feature,
+> so it is a functional change, not merely a emitting warning.
+> The commit was intended to merely warn if PDCM was enabled when
+> the performance counters are not, so revert it.
 > 
+> Reported-by: Christian A. Ehrhardt <christian.ehrhardt@canonical.com>
+> Analyzed-by: Daniel P. Berrangé <berrange@redhat.com>
+> Analyzed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  target/i386/cpu.c | 3 ---
+>  1 file changed, 3 deletions(-)
+
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
 > 
-> Can you follow the QEMU coding style, please (here and elsewhere)?
-> Variables and function names should be all lower case,
-> and variable declarations go at the start of a C code
-> block, not in the middle of one.
->
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 673f8583c80..6d85149e6e1 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -8946,9 +8946,6 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+>  
+>      /* PDCM is fixed1 bit for TDX */
+>      if (!cpu->enable_pmu && !is_tdx_vm()) {
+> -        mark_unavailable_features(cpu, FEAT_1_ECX,
+> -                                  env->user_features[FEAT_1_ECX] & CPUID_EXT_PDCM,
+> -                                  "This feature is not available due to PMU being disabled");
+>          env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
+>      }
+>  
+> -- 
+> 2.50.1
+> 
 
-In some cases, including in this function, I feel that the rule to 
-declare variables at the start of a block is not really helpful, and is 
-more related to legacy C than a real point nowadays.
-As well, it sometimes forces to reuse some variables between various sub 
-blocks, which definitely can create bugs.
-
-Anyway, I'm not discussing the existing QEMU coding style, but just 
-asking if for the current context, is it really a problem to declare 
-variable here?
-
-> thanks
-> -- PMM
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
