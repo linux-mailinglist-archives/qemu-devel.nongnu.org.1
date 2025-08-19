@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC922B2C043
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 13:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA8EB2C039
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 13:26:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoKSH-0003JJ-5X; Tue, 19 Aug 2025 07:24:41 -0400
+	id 1uoKSL-0003KS-2M; Tue, 19 Aug 2025 07:24:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uoKSF-0003Ii-5A
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 07:24:39 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uoKSI-0003Js-Dj
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 07:24:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uoKSD-0007C7-1f
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 07:24:38 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uoKSG-0007Cj-Lk
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 07:24:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755602675;
+ s=mimecast20190719; t=1755602679;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C5X/rywS4xpnaJWI82edPdKMyskx1dznqkdXp2jLU9U=;
- b=fEw0MVvqXdVq5XcxQyLOF35doxOaz8W2zLhTH4xpU9+YQy/xtWDroo0gvioo7sdMlW2Pz+
- pJ1TTYGC2P9ca4suygVej3SfBLgNflRoqpVUKjCp1mDnpQK0RYAE9Y0yX6mDfJsE29T9OY
- eaiSpGv1SyX9eLY7V2KFfJUb1ciALz4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=YSbB7bvvfN8gJwZRKe8rLSfSPhRdMHl5o3lTMFH5YrM=;
+ b=LsFiz4IFIEcEap3OdAI5u13WBIqMWco7XLIIuJl+6NIAxVsdwKOnXvdZ/mRkX3jGya/Svy
+ CunpnFnoHeETBdxIowC4gqQ+Jdzf+4m/oOQG+Kzzec4onbhsvTUTyDyaYIqPxzLcw/5ivg
+ X5dzLCP8/hrU5SAzHZn7DP+4VH7Bvcs=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-265-Es6vnEvpPTW8fvj5smvdfw-1; Tue,
- 19 Aug 2025 07:24:34 -0400
-X-MC-Unique: Es6vnEvpPTW8fvj5smvdfw-1
-X-Mimecast-MFC-AGG-ID: Es6vnEvpPTW8fvj5smvdfw_1755602673
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-391-KuT_zZgWPnSHMHv20DVbVA-1; Tue,
+ 19 Aug 2025 07:24:37 -0400
+X-MC-Unique: KuT_zZgWPnSHMHv20DVbVA-1
+X-Mimecast-MFC-AGG-ID: KuT_zZgWPnSHMHv20DVbVA_1755602676
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 449F81953963; Tue, 19 Aug 2025 11:24:33 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 152B8195605A; Tue, 19 Aug 2025 11:24:36 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.251])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 21C593000223; Tue, 19 Aug 2025 11:24:30 +0000 (UTC)
+ id C678730001A8; Tue, 19 Aug 2025 11:24:33 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 08/25] tests/functional: Move avr tests into architecture
+Subject: [PATCH v2 09/25] tests/functional: Move hppa tests into architecture
  specific folder
-Date: Tue, 19 Aug 2025 13:23:45 +0200
-Message-ID: <20250819112403.432587-9-thuth@redhat.com>
+Date: Tue, 19 Aug 2025 13:23:46 +0200
+Message-ID: <20250819112403.432587-10-thuth@redhat.com>
 In-Reply-To: <20250819112403.432587-1-thuth@redhat.com>
 References: <20250819112403.432587-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -92,81 +92,64 @@ Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                                                 | 4 ++--
- tests/functional/avr/meson.build                            | 6 ++++++
- .../{test_avr_mega2560.py => avr/test_mega2560.py}          | 0
- tests/functional/{test_avr_uno.py => avr/test_uno.py}       | 0
- tests/functional/meson.build                                | 6 +-----
- 5 files changed, 9 insertions(+), 7 deletions(-)
- create mode 100644 tests/functional/avr/meson.build
- rename tests/functional/{test_avr_mega2560.py => avr/test_mega2560.py} (100%)
- rename tests/functional/{test_avr_uno.py => avr/test_uno.py} (100%)
+ MAINTAINERS                                                  | 2 +-
+ tests/functional/hppa/meson.build                            | 5 +++++
+ .../{test_hppa_seabios.py => hppa/test_seabios.py}           | 0
+ tests/functional/meson.build                                 | 5 +----
+ 4 files changed, 7 insertions(+), 5 deletions(-)
+ create mode 100644 tests/functional/hppa/meson.build
+ rename tests/functional/{test_hppa_seabios.py => hppa/test_seabios.py} (100%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 1eb964feca4..d01afcbea6d 100644
+index d01afcbea6d..2e1754912f6 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -221,7 +221,7 @@ S: Maintained
- F: docs/system/target-avr.rst
- F: gdb-xml/avr-cpu.xml
- F: target/avr/
--F: tests/functional/test_avr_*.py
-+F: tests/functional/avr/
+@@ -1273,7 +1273,7 @@ F: include/hw/pci-host/astro.h
+ F: include/hw/pci-host/dino.h
+ F: pc-bios/hppa-firmware.img
+ F: roms/seabios-hppa/
+-F: tests/functional/test_hppa_seabios.py
++F: tests/functional/hppa/test_seabios.py
  
- Hexagon TCG CPUs
- M: Brian Cain <brian.cain@oss.qualcomm.com>
-@@ -1249,7 +1249,7 @@ Arduino
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
- S: Maintained
- F: hw/avr/arduino.c
--F: tests/functional/test_avr_uno.py
-+F: tests/functional/avr/test_uno.py
- 
- HP-PARISC Machines
+ LoongArch Machines
  ------------------
-diff --git a/tests/functional/avr/meson.build b/tests/functional/avr/meson.build
+diff --git a/tests/functional/hppa/meson.build b/tests/functional/hppa/meson.build
 new file mode 100644
-index 00000000000..7a2cb7099e7
+index 00000000000..a3348370884
 --- /dev/null
-+++ b/tests/functional/avr/meson.build
-@@ -0,0 +1,6 @@
++++ b/tests/functional/hppa/meson.build
+@@ -0,0 +1,5 @@
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+tests_avr_system_thorough = [
-+  'mega2560',
-+  'uno',
++tests_hppa_system_quick = [
++  'seabios',
 +]
-diff --git a/tests/functional/test_avr_mega2560.py b/tests/functional/avr/test_mega2560.py
+diff --git a/tests/functional/test_hppa_seabios.py b/tests/functional/hppa/test_seabios.py
 similarity index 100%
-rename from tests/functional/test_avr_mega2560.py
-rename to tests/functional/avr/test_mega2560.py
-diff --git a/tests/functional/test_avr_uno.py b/tests/functional/avr/test_uno.py
-similarity index 100%
-rename from tests/functional/test_avr_uno.py
-rename to tests/functional/avr/test_uno.py
+rename from tests/functional/test_hppa_seabios.py
+rename to tests/functional/hppa/test_seabios.py
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 6989446d1c4..81eaa9c218c 100644
+index 81eaa9c218c..8f85c13d3d1 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -12,6 +12,7 @@ endif
- subdir('aarch64')
+@@ -13,6 +13,7 @@ subdir('aarch64')
  subdir('alpha')
  subdir('arm')
-+subdir('avr')
+ subdir('avr')
++subdir('hppa')
  
  test_mips_timeouts = {
    'mips_malta' : 480,
-@@ -77,11 +78,6 @@ tests_generic_linuxuser = [
+@@ -78,10 +79,6 @@ tests_generic_linuxuser = [
  tests_generic_bsduser = [
  ]
  
--tests_avr_system_thorough = [
--  'avr_mega2560',
--  'avr_uno',
+-tests_hppa_system_quick = [
+-  'hppa_seabios',
 -]
 -
- tests_hppa_system_quick = [
-   'hppa_seabios',
+ tests_i386_system_quick = [
+   'i386_migration',
  ]
 -- 
 2.50.1
