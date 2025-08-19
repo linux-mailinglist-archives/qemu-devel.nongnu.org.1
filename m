@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A0DB2CDCC
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 22:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED35B2CDD3
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 22:29:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoSw1-00049P-Fm; Tue, 19 Aug 2025 16:27:57 -0400
+	id 1uoSwC-0004GW-5A; Tue, 19 Aug 2025 16:28:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uoSvz-00048m-Kz
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:27:55 -0400
+ id 1uoSw6-0004F0-OW
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:28:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uoSvy-0006Tm-4M
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:27:55 -0400
+ id 1uoSw5-0006Ua-3k
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:28:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755635273;
+ s=mimecast20190719; t=1755635280;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+JngSOVRcj7j3a39al930RGL/WH5Ch8VPH2AvafffrI=;
- b=SdediuHbj7J7iO2UTUzwncrbQ+QNwanKL3W1yXCUT9uDQs6M/XXy5pwIhj362Mz8FCzjkC
- vIJmQ6mwoFW+VhjuqpLkCY8lfv/vRnrOAO6aEu7fSLDUu2zsL0N791ENw6TaidkAgmHDss
- UIZMn2ZMOjlpk2lPFpDzKKlEnRPT0i0=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=Sr0g1DAUgTZ2GH3ea4vJsvzbH2d1880lt804xDUQbFY=;
+ b=ifRv4MpfGwNz0w+FbdvtRa+4XUS6m/Jnpt31Y7bKwueoD5Py2cchZPUHp6hDbyUvjI+QDT
+ sxfbIoUgt07R40m2/5VGxCxD+06k8i/JVD5od/dDm+X2FdLE8zsM4nrQ6RFa3Yftm6lobS
+ mTvQuzzLyJcOS8o3wByTvMvepLsyQTE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-372-LOfRCt73OmiFuMIQOJCVZA-1; Tue,
- 19 Aug 2025 16:27:51 -0400
-X-MC-Unique: LOfRCt73OmiFuMIQOJCVZA-1
-X-Mimecast-MFC-AGG-ID: LOfRCt73OmiFuMIQOJCVZA_1755635270
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-376-6e53m47ePea-7CBTb8Fw4w-1; Tue,
+ 19 Aug 2025 16:27:56 -0400
+X-MC-Unique: 6e53m47ePea-7CBTb8Fw4w-1
+X-Mimecast-MFC-AGG-ID: 6e53m47ePea-7CBTb8Fw4w_1755635274
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C0BAC19560B0; Tue, 19 Aug 2025 20:27:49 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8BED01800446; Tue, 19 Aug 2025 20:27:54 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.237])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4D84319560B0; Tue, 19 Aug 2025 20:27:44 +0000 (UTC)
+ id 3C52D19560B0; Tue, 19 Aug 2025 20:27:49 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -56,10 +56,10 @@ Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Stefan Weil <sw@weilnetz.de>, qemu-block@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 07/12] util: introduce common helper for error-report & log
- code
-Date: Tue, 19 Aug 2025 21:27:03 +0100
-Message-ID: <20250819202708.1185594-8-berrange@redhat.com>
+Subject: [PATCH 08/12] util: convert error-report & log to message API for
+ timestamp
+Date: Tue, 19 Aug 2025 21:27:04 +0100
+Message-ID: <20250819202708.1185594-9-berrange@redhat.com>
 In-Reply-To: <20250819202708.1185594-1-berrange@redhat.com>
 References: <20250819202708.1185594-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -75,7 +75,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,141 +91,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The error-report and log code both have a need to add prefixes
-to messages they are printing, with the current example being
-a timestamp.
+Both the error-report and log APIs can optional emit a timestamp
+as a prefix on messages, with the '-msg timestamp=on' command
+line flag is set.
 
-The format and configuration they use should be consistent, so
-providing a common helper will ensure this is always the case.
-Initially the helper only emits a timestamp, but future patches
-will expand this.
+Convert them to the new message API for formatting the context
+prefix, guaranteeign they will have matching behaviour going
+forward.
 
-This takes the liberty of assigning the new file to the same
-maintainer as the existing error-report.c file, given it will
-be extracting some functionality from the latter.
+There is no change in output format for either logs or errors
+with this conversion.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- MAINTAINERS            |  2 ++
- include/qemu/message.h | 40 ++++++++++++++++++++++++++++++++++++++++
- util/meson.build       |  1 +
- util/message.c         | 32 ++++++++++++++++++++++++++++++++
- 4 files changed, 75 insertions(+)
- create mode 100644 include/qemu/message.h
- create mode 100644 util/message.c
+ include/qemu/error-report.h    |  1 -
+ system/vl.c                    |  7 ++++++-
+ tests/unit/test-error-report.c |  3 ++-
+ util/error-report.c            | 18 +++---------------
+ util/log.c                     | 20 +++++++-------------
+ 5 files changed, 18 insertions(+), 31 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a07086ed76..3cc6c0b409 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3169,9 +3169,11 @@ M: Markus Armbruster <armbru@redhat.com>
- S: Supported
- F: include/qapi/error.h
- F: include/qemu/error-report.h
-+F: include/qemu/message.h
- F: qapi/error.json
- F: util/error.c
- F: util/error-report.c
-+F: util/message.c
- F: scripts/coccinelle/err-bad-newline.cocci
- F: scripts/coccinelle/error-use-after-free.cocci
- F: scripts/coccinelle/error_propagate_null.cocci
-diff --git a/include/qemu/message.h b/include/qemu/message.h
-new file mode 100644
-index 0000000000..160bee8417
---- /dev/null
-+++ b/include/qemu/message.h
-@@ -0,0 +1,40 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#ifndef QEMU_MESSAGE_H
-+#define QEMU_MESSAGE_H
-+
-+enum QMessageFormatFlags {
-+    QMESSAGE_FORMAT_TIMESTAMP = (1 << 0),
-+};
-+
-+/*
-+ * qmessage_set_format:
-+ * @flags: the message information to emit
-+ *
-+ * Select which pieces of information to
-+ * emit for messages
-+ */
-+void qmessage_set_format(int flags);
-+
-+enum QMessageContextFlags {
-+    QMESSAGE_CONTEXT_SKIP_MONITOR = (1 << 0),
-+};
-+
-+/*
-+ * qmessage_context:
-+ * @flags: the message formatting control flags
-+ *
-+ * Format a message prefix with the information
-+ * previously selected by a call to
-+ * qmessage_set_format.
-+ *
-+ * If @flags contains QMESSAGE_CONTEXT_SKIP_MONITOR
-+ * an empty string will be returned if running in
-+ * the context of a HMP command
-+ *
-+ * Returns: a formatted message prefix, or empty string;
-+ * to be freed by the caller.
-+ */
-+char *qmessage_context(int flags);
-+
-+#endif /* QEMU_MESSAGE_H */
-diff --git a/util/meson.build b/util/meson.build
-index 35029380a3..f5365e3b4f 100644
---- a/util/meson.build
-+++ b/util/meson.build
-@@ -40,6 +40,7 @@ util_ss.add(files('host-utils.c'))
- util_ss.add(files('bitmap.c', 'bitops.c'))
- util_ss.add(files('fifo8.c'))
- util_ss.add(files('cacheflush.c'))
-+util_ss.add(files('message.c'))
- util_ss.add(files('error.c', 'error-report.c'))
- util_ss.add(files('qemu-print.c'))
- util_ss.add(files('id.c'))
-diff --git a/util/message.c b/util/message.c
-new file mode 100644
-index 0000000000..4c7eeb75e2
---- /dev/null
-+++ b/util/message.c
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include "qemu/osdep.h"
-+
+diff --git a/include/qemu/error-report.h b/include/qemu/error-report.h
+index 3ae2357fda..c8000778ec 100644
+--- a/include/qemu/error-report.h
++++ b/include/qemu/error-report.h
+@@ -70,7 +70,6 @@ void error_init(const char *argv0);
+                               fmt, ##__VA_ARGS__);      \
+     })
+ 
+-extern bool message_with_timestamp;
+ extern bool error_with_guestname;
+ extern const char *error_guest_name;
+ 
+diff --git a/system/vl.c b/system/vl.c
+index a64fd90d4a..696dd92669 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -26,6 +26,7 @@
+ #include "qemu/help-texts.h"
+ #include "qemu/datadir.h"
+ #include "qemu/units.h"
 +#include "qemu/message.h"
-+#include "monitor/monitor.h"
-+
-+static int message_format;
-+
-+void qmessage_set_format(int flags)
-+{
-+    message_format = flags;
-+}
-+
-+char *qmessage_context(int flags)
-+{
-+    g_autofree char *timestr = NULL;
-+
-+    if ((flags & QMESSAGE_CONTEXT_SKIP_MONITOR) &&
-+        monitor_cur()) {
-+        return g_strdup("");
+ #include "qemu/module.h"
+ #include "qemu/target-info.h"
+ #include "exec/cpu-common.h"
+@@ -813,8 +814,12 @@ static void realtime_init(void)
+ 
+ static void configure_msg(QemuOpts *opts)
+ {
+-    message_with_timestamp = qemu_opt_get_bool(opts, "timestamp", false);
++    int flags = 0;
++    if (qemu_opt_get_bool(opts, "timestamp", false)) {
++        flags |= QMESSAGE_FORMAT_TIMESTAMP;
 +    }
-+
-+    if (message_format & QMESSAGE_FORMAT_TIMESTAMP) {
-+        g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
-+        timestr = g_date_time_format_iso8601(dt);
-+    }
-+
-+    return g_strdup_printf("%s%s",
-+                           timestr ? timestr : "",
-+                           timestr ? " " : "");
-+}
+     error_with_guestname = qemu_opt_get_bool(opts, "guest-name", false);
++    qmessage_set_format(flags);
+ }
+ 
+ 
+diff --git a/tests/unit/test-error-report.c b/tests/unit/test-error-report.c
+index 54319c86c9..78f8b57660 100644
+--- a/tests/unit/test-error-report.c
++++ b/tests/unit/test-error-report.c
+@@ -13,6 +13,7 @@
+ 
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
++#include "qemu/message.h"
+ 
+ static void
+ test_error_report_simple(void)
+@@ -90,7 +91,7 @@ static void
+ test_error_report_timestamp(void)
+ {
+     if (g_test_subprocess()) {
+-        message_with_timestamp = true;
++        qmessage_set_format(QMESSAGE_FORMAT_TIMESTAMP);
+         warn_report("warn");
+         error_report("err");
+         return;
+diff --git a/util/error-report.c b/util/error-report.c
+index 1b17c11de1..932af5d9f5 100644
+--- a/util/error-report.c
++++ b/util/error-report.c
+@@ -13,6 +13,7 @@
+ #include "qemu/osdep.h"
+ #include "monitor/monitor.h"
+ #include "qemu/error-report.h"
++#include "qemu/message.h"
+ 
+ /*
+  * @report_type is the type of message: error, warning or
+@@ -24,8 +25,6 @@ typedef enum {
+     REPORT_TYPE_INFO,
+ } report_type;
+ 
+-/* Prepend timestamp to messages */
+-bool message_with_timestamp;
+ bool error_with_guestname;
+ const char *error_guest_name;
+ 
+@@ -169,13 +168,6 @@ static void print_loc(void)
+     }
+ }
+ 
+-static char *
+-real_time_iso8601(void)
+-{
+-    g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
+-    return g_date_time_format_iso8601(dt);
+-}
+-
+ /*
+  * Print a message to current monitor if we have one, else to stderr.
+  * @report_type is the type of message: error, warning or informational.
+@@ -186,13 +178,9 @@ real_time_iso8601(void)
+ G_GNUC_PRINTF(2, 0)
+ static void vreport(report_type type, const char *fmt, va_list ap)
+ {
+-    gchar *timestr;
++    g_autofree gchar *context = qmessage_context(QMESSAGE_CONTEXT_SKIP_MONITOR);
+ 
+-    if (message_with_timestamp && !monitor_cur()) {
+-        timestr = real_time_iso8601();
+-        error_printf("%s ", timestr);
+-        g_free(timestr);
+-    }
++    error_printf("%s", context);
+ 
+     /* Only prepend guest name if -msg guest-name and -name guest=... are set */
+     if (error_with_guestname && error_guest_name && !monitor_cur()) {
+diff --git a/util/log.c b/util/log.c
+index abdcb6b311..435d1c7135 100644
+--- a/util/log.c
++++ b/util/log.c
+@@ -22,6 +22,7 @@
+ #include "qemu/range.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
++#include "qemu/message.h"
+ #include "qemu/cutils.h"
+ #include "trace/control.h"
+ #include "qemu/thread.h"
+@@ -146,26 +147,19 @@ void qemu_log_unlock(FILE *logfile)
+ void qemu_log(const char *fmt, ...)
+ {
+     FILE *f;
+-    g_autofree const char *timestr = NULL;
+-
+     /*
+-     * Prepare the timestamp *outside* the logging
+-     * lock so it better reflects when the message
+-     * was emitted if we are delayed acquiring the
+-     * mutex
++     * Prepare the context *outside* the logging
++     * lock so any timestamp better reflects when
++     * the message was emitted if we are delayed
++     * acquiring the mutex
+      */
+-    if (message_with_timestamp) {
+-        g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
+-        timestr = g_date_time_format_iso8601(dt);
+-    }
++    g_autofree const char *context = qmessage_context(0);
+ 
+     f = qemu_log_trylock();
+     if (f) {
+         va_list ap;
+ 
+-        if (timestr) {
+-            fprintf(f, "%s ", timestr);
+-        }
++        fwrite(context, 1, strlen(context), f);
+ 
+         va_start(ap, fmt);
+         vfprintf(f, fmt, ap);
 -- 
 2.50.1
 
