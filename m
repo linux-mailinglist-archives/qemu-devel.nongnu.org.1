@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2973B2CDCA
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 22:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44569B2CDD5
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 22:29:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoSvj-00043B-PR; Tue, 19 Aug 2025 16:27:40 -0400
+	id 1uoSvn-000449-MS; Tue, 19 Aug 2025 16:27:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uoSvh-00041Z-4e
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:27:37 -0400
+ id 1uoSvl-00043f-Gm
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:27:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uoSvf-0006RN-6p
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:27:36 -0400
+ id 1uoSvk-0006Rv-34
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:27:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755635254;
+ s=mimecast20190719; t=1755635259;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KDvem1vGil1OZCITRTEEqpQe+PsbTDB2zBp3Eqvr5/M=;
- b=CUCbcWzViNYp1TmRvpM97KPRpOtkXccliGm5Y9L/DP5iGK6q5rYJqu8ETA3DAMPb35jzn4
- 5lcZJ3dh6yGJQG2q/DRbhOtH8vB3xBZGKp0Xqby9rutCZk8kZ4cSzWXmGbvRQvAlSWZUY1
- q0Ld2AoQe/53S/Ev8tKzsQc9RVZ/K60=
+ bh=HzSH5386A2ciXWk609Dzo5lu5Yf4nIt0Y0Ov5liK81E=;
+ b=Tz6Sn73vQikqKGFm9wh7W9G/XMWJHlZuKSrNA4c45TQnHey3I2bYRXHqZfOuMtdtWO1U8n
+ EHWgDMx/kAh8zGiAfhnM86YM3EgqCniGSVYRba/m7B4p/g5qANVE7mCo5rK0qKsjOcRliB
+ eI7YonmMKWTQx/JkOPpQ+GPQRqZCDNQ=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-gj7bLjmINACSF4bTtEv2VQ-1; Tue,
- 19 Aug 2025 16:27:30 -0400
-X-MC-Unique: gj7bLjmINACSF4bTtEv2VQ-1
-X-Mimecast-MFC-AGG-ID: gj7bLjmINACSF4bTtEv2VQ_1755635249
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-203-HwxLKlNCOpGoWXPUnMxXuA-1; Tue,
+ 19 Aug 2025 16:27:35 -0400
+X-MC-Unique: HwxLKlNCOpGoWXPUnMxXuA-1
+X-Mimecast-MFC-AGG-ID: HwxLKlNCOpGoWXPUnMxXuA_1755635254
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4525519775A6; Tue, 19 Aug 2025 20:27:29 +0000 (UTC)
+ id BE71F19775AD; Tue, 19 Aug 2025 20:27:33 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.237])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6C74D19560B0; Tue, 19 Aug 2025 20:27:24 +0000 (UTC)
+ id A504F19560B0; Tue, 19 Aug 2025 20:27:29 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -56,9 +56,9 @@ Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Stefan Weil <sw@weilnetz.de>, qemu-block@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 03/12] system: unconditionally enable thread naming
-Date: Tue, 19 Aug 2025 21:26:59 +0100
-Message-ID: <20250819202708.1185594-4-berrange@redhat.com>
+Subject: [PATCH 04/12] util: set the name for the 'main' thread
+Date: Tue, 19 Aug 2025 21:27:00 +0100
+Message-ID: <20250819202708.1185594-5-berrange@redhat.com>
 In-Reply-To: <20250819202708.1185594-1-berrange@redhat.com>
 References: <20250819202708.1185594-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -90,211 +90,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When thread naming was introduced years ago, it was disabled by
-default and put behind a command line flag:
-
-  commit 8f480de0c91a18d550721f8d9af969ebfbda0793
-  Author: Dr. David Alan Gilbert <dgilbert@redhat.com>
-  Date:   Thu Jan 30 10:20:31 2014 +0000
-
-    Add 'debug-threads' suboption to --name
-
-This was done based on a concern that something might depend
-on the historical thread naming. Thread names, however, were
-never promised to be part of QEMU's public API. The defaults
-will vary across platforms, so no assumptions should ever be
-made about naming.
-
-An opt-in behaviour is also unfortunately incompatible with
-RCU which creates its thread from an constructor function
-which is run before command line args are parsed. Thus the
-RCU thread lacks any name.
-
-libvirt has unconditionally enabled debug-threads=yes on all
-VMs it creates for 10 years. Interestingly this DID expose a
-bug in libvirt, as it parsed /proc/$PID/stat and could not
-cope with a space in the thread name. This was a latent
-pre-existing bug in libvirt though, and not a part of QEMU's
-API.
-
-Having thread names always available, will allow thread names
-to be included in error reports and log messags QEMU prints
-by default, which will improve ability to triage QEMU bugs.
+The default main thread name is undefined, so use a constructor to
+explicitly set it to 'main'. This constructor is marked to run early
+as the thread name is intended to be used in error reporting / logs
+which may be triggered very early in QEMU execution.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- docs/about/deprecated.rst |  7 +++++++
- include/qemu/thread.h     |  1 -
- system/vl.c               | 11 ++++++-----
- util/qemu-thread-posix.c  | 18 +-----------------
- util/qemu-thread-win32.c  | 27 ++++++---------------------
- 5 files changed, 20 insertions(+), 44 deletions(-)
+ util/qemu-thread-posix.c | 12 ++++++++++++
+ util/qemu-thread-win32.c |  6 ++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index d50645a071..bd6f865558 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -81,6 +81,13 @@ kernel since 2001. None of the board types QEMU supports need
- ``param_struct`` support, so this option has been deprecated and will
- be removed in a future QEMU version.
- 
-+``debug-threads`` option for ``-name``
-+''''''''''''''''''''''''''''''''''''''
-+
-+Thread ``debug-threads`` option for the ``-name`` argument is now
-+ignored. Thread naming is unconditionally enabled for all platforms
-+where it is supported.
-+
- User-mode emulator command line arguments
- -----------------------------------------
- 
-diff --git a/include/qemu/thread.h b/include/qemu/thread.h
-index f0302ed01f..3a286bb3ef 100644
---- a/include/qemu/thread.h
-+++ b/include/qemu/thread.h
-@@ -215,7 +215,6 @@ void *qemu_thread_join(QemuThread *thread);
- void qemu_thread_get_self(QemuThread *thread);
- bool qemu_thread_is_self(QemuThread *thread);
- G_NORETURN void qemu_thread_exit(void *retval);
--void qemu_thread_naming(bool enable);
- 
- struct Notifier;
- /**
-diff --git a/system/vl.c b/system/vl.c
-index 3b7057e6c6..a64fd90d4a 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -403,9 +403,7 @@ static QemuOptsList qemu_name_opts = {
-         }, {
-             .name = "debug-threads",
-             .type = QEMU_OPT_BOOL,
--            .help = "When enabled, name the individual threads; defaults off.\n"
--                    "NOTE: The thread names are for debugging and not a\n"
--                    "stable API.",
-+            .help = "DEPRECATED: thread names are always set where supported",
-         },
-         { /* End of list */ }
-     },
-@@ -554,9 +552,12 @@ static int parse_name(void *opaque, QemuOpts *opts, Error **errp)
- {
-     const char *proc_name;
- 
--    if (qemu_opt_get(opts, "debug-threads")) {
--        qemu_thread_naming(qemu_opt_get_bool(opts, "debug-threads", false));
-+    if (qemu_opt_get(opts, "debug-threads") &&
-+        !qemu_opt_get_bool(opts, "debug-threads", false)) {
-+        fprintf(stderr, "Ignoring deprecated 'debug-threads=no' option, " \
-+                "thread naming is unconditionally enabled\n");
-     }
-+
-     qemu_name = qemu_opt_get(opts, "guest");
- 
-     proc_name = qemu_opt_get(opts, "process");
 diff --git a/util/qemu-thread-posix.c b/util/qemu-thread-posix.c
-index ba725444ba..7c985b5d38 100644
+index 7c985b5d38..121d7ed69b 100644
 --- a/util/qemu-thread-posix.c
 +++ b/util/qemu-thread-posix.c
-@@ -22,22 +22,6 @@
+@@ -22,6 +22,18 @@
  #include <pthread_np.h>
  #endif
  
--static bool name_threads;
--
--void qemu_thread_naming(bool enable)
--{
--    name_threads = enable;
--
--#if !defined CONFIG_PTHREAD_SETNAME_NP_W_TID && \
--    !defined CONFIG_PTHREAD_SETNAME_NP_WO_TID && \
--    !defined CONFIG_PTHREAD_SET_NAME_NP
--    /* This is a debugging option, not fatal */
--    if (enable) {
--        fprintf(stderr, "qemu: thread naming not supported on this host\n");
--    }
--#endif
--}
--
++static void __attribute__((__constructor__(QEMU_CONSTRUCTOR_EARLY)))
++qemu_thread_init(void)
++{
++# if defined(CONFIG_PTHREAD_SETNAME_NP_W_TID)
++    pthread_setname_np(pthread_self(), "main");
++# elif defined(CONFIG_PTHREAD_SETNAME_NP_WO_TID)
++    pthread_setname_np("main");
++# elif defined(CONFIG_PTHREAD_SET_NAME_NP)
++    pthread_set_name_np(pthread_self(), "main");
++# endif
++}
++
  static void error_exit(int err, const char *msg)
  {
      fprintf(stderr, "qemu: %s: %s\n", msg, strerror(err));
-@@ -361,7 +345,7 @@ static void *qemu_thread_start(void *args)
-     /* Attempt to set the threads name; note that this is for debug, so
-      * we're not going to fail if we can't set it.
-      */
--    if (name_threads && qemu_thread_args->name) {
-+    if (qemu_thread_args->name) {
- # if defined(CONFIG_PTHREAD_SETNAME_NP_W_TID)
-         pthread_setname_np(pthread_self(), qemu_thread_args->name);
- # elif defined(CONFIG_PTHREAD_SETNAME_NP_WO_TID)
 diff --git a/util/qemu-thread-win32.c b/util/qemu-thread-win32.c
-index ca2e0b512e..9595a5b090 100644
+index 9595a5b090..5e6ca0c12f 100644
 --- a/util/qemu-thread-win32.c
 +++ b/util/qemu-thread-win32.c
-@@ -17,8 +17,6 @@
- #include "qemu-thread-common.h"
- #include <process.h>
- 
--static bool name_threads;
--
- typedef HRESULT (WINAPI *pSetThreadDescription) (HANDLE hThread,
-                                                  PCWSTR lpThreadDescription);
- static pSetThreadDescription SetThreadDescriptionFunc;
-@@ -44,16 +42,6 @@ static bool load_set_thread_description(void)
-     return !!SetThreadDescriptionFunc;
+@@ -332,6 +332,12 @@ static void set_thread_description(HANDLE h, const char *name)
+     SetThreadDescriptionFunc(h, namew);
  }
  
--void qemu_thread_naming(bool enable)
--{
--    name_threads = enable;
--
--    if (enable && !load_set_thread_description()) {
--        fprintf(stderr, "qemu: thread naming not supported on this host\n");
--        name_threads = false;
--    }
--}
--
- static void error_exit(int err, const char *msg)
- {
-     char *pstr;
-@@ -328,23 +316,20 @@ void *qemu_thread_join(QemuThread *thread)
-     return ret;
- }
- 
--static bool set_thread_description(HANDLE h, const char *name)
-+static void set_thread_description(HANDLE h, const char *name)
- {
--    HRESULT hr;
-     g_autofree wchar_t *namew = NULL;
- 
-     if (!load_set_thread_description()) {
--        return false;
-+        return;
-     }
- 
-     namew = g_utf8_to_utf16(name, -1, NULL, NULL, NULL);
-     if (!namew) {
--        return false;
-+        return;
-     }
- 
--    hr = SetThreadDescriptionFunc(h, namew);
--
--    return SUCCEEDED(hr);
-+    SetThreadDescriptionFunc(h, namew);
- }
- 
++static void __attribute__((__constructor__(QEMU_CONSTRUCTOR_EARLY)))
++qemu_thread_init(void)
++{
++    set_thread_description(GetCurrentThread(), "main");
++}
++
  void qemu_thread_create(QemuThread *thread, const char *name,
-@@ -370,8 +355,8 @@ void qemu_thread_create(QemuThread *thread, const char *name,
-     if (!hThread) {
-         error_exit(GetLastError(), __func__);
-     }
--    if (name_threads && name && !set_thread_description(hThread, name)) {
--        fprintf(stderr, "qemu: failed to set thread description: %s\n", name);
-+    if (name) {
-+        set_thread_description(hThread, name);
-     }
-     CloseHandle(hThread);
- 
+                        void *(*start_routine)(void *),
+                        void *arg, int mode)
 -- 
 2.50.1
 
