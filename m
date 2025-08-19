@@ -2,110 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D698B2C8B4
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 17:48:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AEFAB2C945
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 18:14:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoOZT-0000kw-T4; Tue, 19 Aug 2025 11:48:23 -0400
+	id 1uoOxQ-0006Bg-Ly; Tue, 19 Aug 2025 12:13:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uoOZR-0000kL-Tu
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 11:48:21 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ (Exim 4.90_1) (envelope-from <eschwartz93@gmail.com>)
+ id 1uoOap-0001cq-0t; Tue, 19 Aug 2025 11:49:47 -0400
+Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uoOZQ-0003Z5-82
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 11:48:21 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-76e434a0118so4058927b3a.0
- for <qemu-devel@nongnu.org>; Tue, 19 Aug 2025 08:48:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <eschwartz93@gmail.com>)
+ id 1uoOan-0003ht-4w; Tue, 19 Aug 2025 11:49:46 -0400
+Received: by mail-qt1-x82b.google.com with SMTP id
+ d75a77b69052e-4b289cdc86aso5917871cf.1; 
+ Tue, 19 Aug 2025 08:49:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755618498; x=1756223298; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=j6BZc9SKK+UiaMRIB9B2dq1pyKcokINx0nKeKUuluMg=;
- b=L6HtFln2DTHwN7GvRs5yaaoH8hk96Z2up2PbtU2rrLjr0XWyqTopNJgeOrrSUJoGa1
- 9egeevewY4mmREwGiBn6Rwgf8CRWM6yduGjQ4Ms7qfYfmpkteXSYyaFF8ycwlEvgbY2v
- iMNnYiVVsdNK/PWZs5JDfxxMVj3FQmZqVaPjajXaKhOOtcsjvxInbKWHlo2nFnsF+4xH
- gMnTWgSpsIGU07lOeIDlcDS5vwJ/YC0+joq710bDeM5qbF7Mrs9XMZ8pXkr+3rNpzg4W
- AIK4uhE+GF++aAIY+r4Uyy5fl4zpQr3YWPi4s1Ds/Qnyjb5pIGHku2f3QQJ7fqJln/sI
- XdlQ==
+ d=gmail.com; s=20230601; t=1755618583; x=1756223383; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=xGc0RvBkXVmxTJct1RQl8OVv+1bQNUlhd5ux3jZAZGY=;
+ b=QfUq3omz8XBUdw15x8Jr8xYgRZYx7A9LmchSJEu+5tSzeXiCH5Pw7joKpNLPooQXiH
+ 4Nb29R9yxj9zTI/4e0lZf3qDEPfODBWHyzfm8kNfYbRetg/Wbl+CE5jrrffpugQ0avJY
+ fxNM7k2b00RxiCvZcdyDqypnjzsN/OxzNLiUvU3glEV8sHyqBzmwjyj+u7VMvski6Bt0
+ tkntnDtEvQqXclSVYJ4yHHIe48MG66bJy8ntLZSC5lSBW9bRfYtcBGWAwL/MB0FxW7/N
+ QCV/E8pL7OdGwZFax81M9/79vH2WlHgisvcKb7+hcgmPhErZF/PFXAczL8iIweO3Z81K
+ uNpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755618498; x=1756223298;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j6BZc9SKK+UiaMRIB9B2dq1pyKcokINx0nKeKUuluMg=;
- b=GqGVI9tMjOQX6VlNNZju+5sF8MduYKPAjNZWIlQ9j2esWRNs/o3EWJbiq7U1+VXZsx
- GUl5/rJ0dKQCQog4NHUlBQXsC7biQMfpCpSi5+eZg/Ze4fNWTli4DUXUqCo7MSEAtJJU
- 9yPieLhTSrUbx+V/zh+yauTfVHIPF5JxSKChArvG3HPVAIkXGKCA1BMbE/vHzlWOrkV8
- oWKg1QtWCCza4IPQ6u3msahZIJ36d4OE8zZNhuPGILLDFSj98wNk/qO3TqYRggPDqeEy
- GvyUj9Ql/r02IUGHfi3648J561/3ffqoACqy/+ZlttHhId1e8ogbtbGV2vahe5kVjKX+
- CfBA==
+ d=1e100.net; s=20230601; t=1755618583; x=1756223383;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xGc0RvBkXVmxTJct1RQl8OVv+1bQNUlhd5ux3jZAZGY=;
+ b=FBBN1+UtJSyYSfNSIN+va3cVYvFFU58YnP6jy0TWyqCNjDcno9vzIsUlQVpmQUThH4
+ iRxIrpLJGja8ZLDOynQasIgNoMr68+7RSsREBQTEHoPzywHiRCpjnSfoRfsJk8ak3PPq
+ 62XmCjLV9t4bylBBGU0qxTNuZqVDHfSbHnodeZmB9W8ZdL69uUTzM4ESzCRZrTFC0MOS
+ xnYej27LzijN97/uzfaKHfVvL12XBHZspwqvcepwlM5WLYAqk2arrhm6bcg8sDndzkQo
+ ylKPzsA0LPlAug8F/1HKQxNJEJNlMjNDvrjs6QdL74vRkn+i4xP3F/G5cYFtp65p3BER
+ 2l4A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVnqqUcQcK4fOHDp93C2rOW7qvRG+CjtFumSX8V+rQijB1ZMvSAZpszbOiyJUKnfkIkSmdJNOp4HBeL@nongnu.org
-X-Gm-Message-State: AOJu0Ywwv7nB1ZtAXV/PhTX7TvRtne0oUNp8LKuLVEOwcsi1IDmCkgIW
- 4Fd8hzNtJCu0Ey3UcvokwtL+bnW+hceiTULU7a7ZVN8yVsjLC3EgVjXzhStXZlmZW6I=
-X-Gm-Gg: ASbGnctS57pc9LpJ/Hggml2NrOUScOiZDu8MS9T061Wf0lVKQ75xIqxT/VH7m0UqcjU
- DWtdAB0nx1LKGN9ORqkYSE0y8yD9d44x1bGLrp1rAEE5fVBbE7cMImHe5cvFmV6790gXfTlM4Wh
- 3dcWXn63qgmYlcJ/jhMyC//9394QSgjbWpW5r5w5likhHg/e7VSXimD1kf4L0o2ARKpW0ejDB9o
- 0Ox1a9mL85q5cFCqPkYBZvr8QlTRV9V65SR1pQCfQjjUBPo+5J0visuesRYppFjQqL7/GJe1O3b
- 7WEzQQjXMPolGNiFKI5IM5eZQZ/lgcYcqgtc26irxvHrcE67cRMf6/noT2wOBA5JvuiHwD10gfH
- maWdx8hcjsxuy9/W3+v+eeGvx3ZRlq3Aqgro=
-X-Google-Smtp-Source: AGHT+IHzKdPGnuh5ePrXs3AayZneWjnAdZJOW/mYIOlKo26QEYHuf3tmWHItehL2YcRiWcVOicl7yg==
-X-Received: by 2002:a05:6a00:929c:b0:749:bb6:3a8e with SMTP id
- d2e1a72fcca58-76e80eb487cmr3738344b3a.1.1755618498163; 
- Tue, 19 Aug 2025 08:48:18 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
+ AJvYcCWYMKCdw3Wa1vsDyeIl5q9nHuYYVzq/g578l69e7FYBS7URhlQg8G2kxc9PsRTs4rwUCjlKZ6MnVz8=@nongnu.org
+X-Gm-Message-State: AOJu0YxZODRVFKsGBJ8S5Q6q+F95TTsOTTZrGm/vkib4X7k92rf4rt6T
+ ZpFc8Wlu+zLErswwSi8NUiGSBOvp3rXY6q7f12ZFsoYbyS/Jf0WdLw2NfbK9KuEC
+X-Gm-Gg: ASbGnctx+mtD4ypzmhKR7wLkWme9FGYymZM12mkd1Kj820kZh2EtE3OMRX/L7SFjKbF
+ n6j9LxlyZQeohlXMmqvBmHe4BModdQ4Up7xI1/nTFrjZmn9J/6X2fQwMGrHIO8l3g6ONBJ0Hqyd
+ Ue44eAUDpqnmz7EDm3fI/YFVUkSqizbxh7AFcJ/zfTZbTyfLLfs11eHhuhK0zURYXtIkfmJzI/Q
+ CQ94rYHw9/2SPQ0u/J3OhQnI8NSG+YJEcq+bBQlsJ+rfm/Sr1n9Y55I+LLGYUmbTVB8AAbZ2zlJ
+ h2xtzk9A4y9mID8k1FOJ0pEDOVdRCfClY7pOZqsGWDH3mrqK29mWH75bdTS5kyO4ytLfDHpFKpw
+ KtwR8ELE+qsMBJATUXj8=
+X-Google-Smtp-Source: AGHT+IFaqStKKR4ZBqQXLz+Vola0yFtCBM/gfY0diEMkQRyiP3iwaFuzAcaLjSv0V5qtQaSkFjlJmQ==
+X-Received: by 2002:a05:622a:4a89:b0:4b0:f8ee:9355 with SMTP id
+ d75a77b69052e-4b286e21764mr34445081cf.30.1755618582564; 
+ Tue, 19 Aug 2025 08:49:42 -0700 (PDT)
+Received: from acleverhostname.lan ([2603:6011:3f0:cf90::12ac])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-76e7d5242dasm2881479b3a.77.2025.08.19.08.48.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Aug 2025 08:48:17 -0700 (PDT)
-Message-ID: <1396c8cf-fb2c-4b39-811a-7152bdbe976f@linaro.org>
-Date: Tue, 19 Aug 2025 08:48:16 -0700
+ d75a77b69052e-4b11dc1827esm71258291cf.11.2025.08.19.08.49.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Aug 2025 08:49:42 -0700 (PDT)
+From: Eli Schwartz <eschwartz93@gmail.com>
+X-Google-Original-From: Eli Schwartz <eschwartz@gentoo.org>
+To: qemu-devel@nongnu.org
+Cc: Michael Roth <michael.roth@amd.com>,
+ Kostiantyn Kostiuk <kkostiuk@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-rust@nongnu.org (open list:Rust-related patc...)
+Subject: [PATCH] meson: set test programs to not build by default
+Date: Tue, 19 Aug 2025 11:49:40 -0400
+Message-ID: <20250819154940.2137965-1-eschwartz@gentoo.org>
+X-Mailer: git-send-email 2.49.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 15/18] whpx: arm64: implement -cpu host
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: Mohamed Mediouni <mohamed@unpredictable.fr>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan
- <phil@philjordan.eu>, Ani Sinha <anisinha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Alexander Graf <agraf@csgraf.de>,
- Mads Ynddal <mads@ynddal.dk>, Sunil Muthuswamy <sunilmut@microsoft.com>,
- Zhao Liu <zhao1.liu@intel.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
- Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org,
- Yanan Wang <wangyanan55@huawei.com>
-References: <20250808065419.47415-1-mohamed@unpredictable.fr>
- <20250808065419.47415-16-mohamed@unpredictable.fr>
- <CAFEAcA9iQnrKWXPXw2wG3c6gmevOMFQtt48HsJdx8GZz2sd+4Q@mail.gmail.com>
- <8e64fd77-9969-42b3-bbcd-1ed8de910ff9@linaro.org>
- <CAFEAcA9OXu3=HuA9n+Oo0C5K5hTG+kLr9xsM=geBJ_UtCi4_-w@mail.gmail.com>
- <aKSUS2-JrMBX7JXo@redhat.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <aKSUS2-JrMBX7JXo@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
+ envelope-from=eschwartz93@gmail.com; helo=mail-qt1-x82b.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 19 Aug 2025 12:12:33 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,62 +105,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/19/25 8:12 AM, Daniel P. Berrangé wrote:
-> On Tue, Aug 19, 2025 at 04:06:45PM +0100, Peter Maydell wrote:
->> On Tue, 19 Aug 2025 at 16:04, Pierrick Bouvier
->> <pierrick.bouvier@linaro.org> wrote:
->>>
->>> On 8/19/25 6:24 AM, Peter Maydell wrote:
->>>> On Fri, 8 Aug 2025 at 07:55, Mohamed Mediouni <mohamed@unpredictable.fr> wrote:
->>>> Can you follow the QEMU coding style, please (here and elsewhere)?
->>>> Variables and function names should be all lower case,
->>>> and variable declarations go at the start of a C code
->>>> block, not in the middle of one.
->>>>
->>>
->>> In some cases, including in this function, I feel that the rule to
->>> declare variables at the start of a block is not really helpful, and is
->>> more related to legacy C than a real point nowadays.
->>> As well, it sometimes forces to reuse some variables between various sub
->>> blocks, which definitely can create bugs.
->>>
->>> Anyway, I'm not discussing the existing QEMU coding style, but just
->>> asking if for the current context, is it really a problem to declare
->>> variable here?
->>
->> The point of a coding style is to aim for consistency. QEMU
->> is pretty terrible at being consistent, but we should try.
->> The rule about variables at start of block is not because
->> some compilers fail to compile it, but because we think
->> it's overall more readable that way.
-> 
-> There are also potential[1] functional problems with not declaring
-> at the start of block, because if you have a "goto cleanup" which
-> jumps over the line of the declaration, the variable will have
-> undefined state when the 'cleanup:' block is running. This is
-> something which is very subtle and easily missed when reading the
-> code flow.
->
+Rather, they are built when running `meson test`. This change is inert
+unless building with meson 1.7, as previous versions of meson build all
+`meson test` dependencies as part of `ninja all` as well.
 
-This has nothing to do with where variables are declared, but where they 
-are assigned. The same issue can happen whether or not it's declared at 
-the start of a block.
+See:
+https://mesonbuild.com/Release-notes-for-1-7-0.html#test-targets-no-longer-built-by-default
 
-I suspect we use -ftrivial-auto-var-init precisely because we force 
-variables to be declared at start of the scope, i.e. where they don't 
-have any value yet. So, instead of forcing an explicit initialization or 
-rely on compiler warnings for uninitialized values, it was decided to 
-initialize them to 0 by default.
+An existing comment references this meson issue, with an included bug
+reference, but was written before meson 1.7 fixed the bug. Update the
+comment to change the advice from "if the bug gets fixed" to "when
+bumping the minimum meson version".
 
-If we declared them at the point where they have a defined semantic 
-value, this problem would not exist anyway, out of the goto_cleanup 
-situation, which has the same fundamental issue in both cases.
+Signed-off-by: Eli Schwartz <eschwartz@gentoo.org>
+---
+ qga/meson.build              | 1 +
+ rust/qemu-api/meson.build    | 1 +
+ tests/fp/meson.build         | 2 ++
+ tests/functional/meson.build | 9 ++++-----
+ tests/qtest/meson.build      | 2 +-
+ tests/unit/meson.build       | 2 +-
+ 6 files changed, 10 insertions(+), 7 deletions(-)
 
-> With regards,
-> Daniel
-> 
-> [1] I say "potential" because we unconditionally build with
->      -ftrivial-auto-var-init=zero to mitigate this danger
->      in practice.
+diff --git a/qga/meson.build b/qga/meson.build
+index 89a4a8f713..44175ccedd 100644
+--- a/qga/meson.build
++++ b/qga/meson.build
+@@ -197,6 +197,7 @@ if host_os != 'windows' and not get_option('fuzzing')
+     i = i + 1
+   endforeach
+   qga_ssh_test = executable('qga-ssh-test', srcs,
++                            build_by_default: false,
+                             dependencies: [qemuutil],
+                             c_args: ['-DQGA_BUILD_UNIT_TEST'])
+ 
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index a090297c45..fec38d6726 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -102,6 +102,7 @@ test('rust-qemu-api-integration',
+     executable(
+         'rust-qemu-api-integration',
+         files('tests/tests.rs', 'tests/vmstate_tests.rs'),
++        build_by_default: false,
+         override_options: ['rust_std=2021', 'build.rust_std=2021'],
+         rust_args: ['--test'],
+         install: false,
+diff --git a/tests/fp/meson.build b/tests/fp/meson.build
+index 9059a24752..9c50452bf1 100644
+--- a/tests/fp/meson.build
++++ b/tests/fp/meson.build
+@@ -57,6 +57,7 @@ fpcflags = [
+ fptest = executable(
+   'fp-test',
+   ['fp-test.c', '../../fpu/softfloat.c'],
++  build_by_default: false,
+   dependencies: [qemuutil, libsoftfloat, libtestfloat, libslowfloat],
+   c_args: fpcflags,
+ )
+@@ -149,6 +150,7 @@ executable(
+ fptestlog2 = executable(
+   'fp-test-log2',
+   ['fp-test-log2.c', '../../fpu/softfloat.c'],
++  build_by_default: false,
+   dependencies: [qemuutil, libsoftfloat],
+   c_args: fpcflags,
+ )
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 311c6f1806..6d7dc91954 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -408,11 +408,10 @@ foreach speed : ['quick', 'thorough']
+       # Ideally we would add 'precache' to 'depends' here, such that
+       # 'build_by_default: false' lets the pre-caching automatically
+       # run immediately before the test runs. In practice this is
+-      # broken in meson, with it running the pre-caching in the normal
+-      # compile phase https://github.com/mesonbuild/meson/issues/2518
+-      # If the above bug ever gets fixed, when QEMU changes the min
+-      # meson version, add the 'depends' and remove the custom
+-      # 'run_target' logic below & in Makefile.include
++      # broken in older versions of meson, with it running the
++      # pre-caching in the normal compile phase. When QEMU changes
++      # the min meson version to >=1.7, add the 'depends' and remove
++      # the custom 'run_target' logic below & in Makefile.include
+       test('func-' + testname,
+            python,
+            depends: [test_deps, test_emulator, emulator_modules, plugin_modules],
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 669d07c06b..0a5309005f 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -447,7 +447,7 @@ foreach dir : target_dirs
+         deps += test_ss.all_dependencies()
+       endif
+       qtest_executables += {
+-        test: executable(test, src, dependencies: deps)
++        test: executable(test, src, build_by_default: false, dependencies: deps)
+       }
+     endif
+ 
+diff --git a/tests/unit/meson.build b/tests/unit/meson.build
+index d5248ae51d..af9725a3f8 100644
+--- a/tests/unit/meson.build
++++ b/tests/unit/meson.build
+@@ -189,7 +189,7 @@ foreach test_name, extra: tests
+     src += test_ss.all_sources()
+     deps += test_ss.all_dependencies()
+   endif
+-  exe = executable(test_name, src, genh, dependencies: deps)
++  exe = executable(test_name, src, genh, build_by_default: false, dependencies: deps)
+ 
+   test(test_name, exe,
+        depends: test_deps.get(test_name, []),
+-- 
+2.49.1
 
 
