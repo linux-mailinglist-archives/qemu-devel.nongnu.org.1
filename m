@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32931B2CBFC
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 20:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36DB8B2CBD2
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 20:24:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoQzZ-00056Q-Fu; Tue, 19 Aug 2025 14:23:29 -0400
+	id 1uoQzi-00058h-Hh; Tue, 19 Aug 2025 14:23:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uoQzV-000536-5i; Tue, 19 Aug 2025 14:23:26 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1uoQza-00057H-OH; Tue, 19 Aug 2025 14:23:30 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uoQzS-0003p2-Tu; Tue, 19 Aug 2025 14:23:24 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-b47175d02dcso4698660a12.3; 
- Tue, 19 Aug 2025 11:23:21 -0700 (PDT)
+ id 1uoQzX-0003pk-W3; Tue, 19 Aug 2025 14:23:29 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2445827be70so62677015ad.3; 
+ Tue, 19 Aug 2025 11:23:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1755627800; x=1756232600; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1755627806; x=1756232606; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hEe0HN7Xf3vBBHUAfg1FxQ2bKTW63w/E0lVNLcPFW3I=;
- b=aQ7yijkDQhxfsHVYXh58q9h5GF0nOEY6M42zA/xaSdHJT5/jn0QceImK22bHeLmggD
- gi0yUCD4yfUCRtzMF+oc1zDpe85MQWIWfC2ogD4+HPCqXBKeI3ospfjZqCdAqdY7+Xir
- IqkKNQRWRvIcT+SKBQ047hvmPo7BIFMwufu8o2UbwQin67xcBv1yTWDcV9NB3/7d9/lF
- 6gYyn3T4iJs/xGDMQda57vpBQc6pwcWTyTU9iJuOpJNj0VCSO9LINQlSna5uiKHATVkM
- BPD7QokpjYFbHddIUYqAmXzcKQ+zgxw+pWBN2VLMETTqrbtOTnfru4zXaQMBAxrKDtWC
- PEkQ==
+ bh=2oFY77tRx6dazr6YCQwTL9wWp6iPtE6SNv60RdyQaWg=;
+ b=mVLcYAjTmHkdNDPg5yv/XEw2mMK10I3i8cJmS58uwzJVW1eJSAf3ea0qwTugXrdSqd
+ 92BwGzYmiEYodPn/9okflZvt3N2pHKQAE4rmcVreKdH+LU3eArpDJtN5vF6y5l9V7rYh
+ Ia3KdC3JUQoig5A323fcspjYzA28LrwVd2R81i+ZuMug7a1IiwFgQxq+KJ8zVKOQ3xyT
+ +yavxlYbNR2sTcOnQUkixvolQlV5Wg1KFA81C30q8FWnxm2EF2Ki31HT/p1J7GEqoajv
+ SV6ef+uo0eAqfVtXqXDxGrAf+w0OpP4ay1KYZvSCjoirGhg+C9fEyVJoLg9QETs4SFt5
+ JKbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755627800; x=1756232600;
+ d=1e100.net; s=20230601; t=1755627806; x=1756232606;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hEe0HN7Xf3vBBHUAfg1FxQ2bKTW63w/E0lVNLcPFW3I=;
- b=n2mLwlASlcFvhAsyrMVuJSiVA3cK6JEpVCtcI6d3fpKtp2flir5tDCtFZoWZIEhd0Q
- 82CU5g7lXswQ0TM5jhzShhlhYT50hZXyk02tm/Z9Onuf007q2zI7kNf1PrfBHcylwBab
- YXntHMCTKpSJUteHbQygY6dLlobqbaXR36sL5uh25e5Nu8Wj0zh2bi8az+ekOeoUi1fU
- HfuBedin0zteFHBuKAUDRMxQhd9/tZP7VHGEM2xQulZ/ehemqXQPTa/ZkmV/IPzKTN6a
- vggbFtfqy2J7sdUKuJG17wjIN+5YWSt/Wd9GgMtThQ9MIq5Cykq6lvqad/ED6AZx0DXI
- WeIw==
+ bh=2oFY77tRx6dazr6YCQwTL9wWp6iPtE6SNv60RdyQaWg=;
+ b=ZpDR9S6xqCiY0SGi+NQqZG1WteRB6KB2y4iZKCu3BP23zWKBSHZ748b6qtTbab7i4B
+ xlwC9HMD36/PDt+OnY2FUCFblrZMToecxZ9IOHTAG2PT9Ebqn08hTzprPQ+LcVDCd+vE
+ dOFSPYf3Tm74WBqidwpPPUaSzwztdOLz667nb+C34UeAFx/Jr9G7v2KfCVIoctwqP2RU
+ XXD5O5D/FtkIXuOWIGf2jHizXKuoh8c8yRJytVTi1+6YwDTd9kOJeiJAWLvXsu751PqX
+ RC3blyLRLvS183YN3rQK5Ski8j98tQpacEVryey5fHfmQSr+1DiNSpOT8qekXL4UUbFx
+ k/FA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVUT8FleC6PbltIgr36M3loyz7FJYMCq1jIAZxK/JQeAWBazhG/Yn8t0G0WvVtuh71n+FQkoJHHnQ==@nongnu.org,
- AJvYcCWO7Fqv4Am3umO5CL6Z9zSfTJoIPHFwsgwMa9HKZtoGLQa0rLstmABHgBud9+12d9LwfusjDzFYm4skRA==@nongnu.org
-X-Gm-Message-State: AOJu0YwWP3avh7dH6jxIEkdDbiKthZI+LyIy/2uXYy5RS5yRxdLzAplT
- 0o9Ao3qW38PDdmzyeXzs3N+jPUxIL2B8njbqmgq9kxTFKRWZ0sSY0xwiIkgQn+Yu
-X-Gm-Gg: ASbGncu+aDWJugYwYX2C1xEtWEsK5bcO0n139LlHKG3D7M7dLpXQx4AulbLSKsk9OJJ
- +aHb8OTpYS7A1wwBf/hEuyMo9yHWK0KxAfF4Xz+k/wV9t4xFmXKAVZu1o+Eifv13iO0OxcoYyBv
- +aSh0gGMS93axM1TFtIlui6kHQG5yu0onjeM2Cn2+0h8XsemGDJ4qNkGDTt1kYYi0Je8iOFVWUh
- 3DrkUdBP5aztOqjKSw6Qsby3q9FfUXJBuXd/OlD8n0BRiICxOEGxdM9V3dcPk/nObL64bXK+cur
- CkWPiCMs03dsWhhZljat6M/Pth7nxWNuuTfL5+j51+Vmo44Zz5XXE4TGPK5jHoKjkM6ZTO5YfWo
- 5QzWXg2JgDjBWbfW3WTYbgbie6RA+rj4C
-X-Google-Smtp-Source: AGHT+IHtNnKipR3Fypo/eDFtdgSl7BprlRg5emqbe3ysrJHUAV2vD8MkoDbuZM3v7oL0TVitf5GA4A==
-X-Received: by 2002:a17:903:4b2b:b0:244:5311:8ed4 with SMTP id
- d9443c01a7336-245e0504d55mr41833065ad.55.1755627799997; 
- Tue, 19 Aug 2025 11:23:19 -0700 (PDT)
+ AJvYcCVanMzxvPjbGIm9PjodaSdNeQ2Ui1ebntsQhZ430Zw8nMqdzwwL/XIwzbQrhMkHo04ynrnkXINZdjuPaw==@nongnu.org,
+ AJvYcCVmy7aZmq9e8WzxdrBuaXIDYFs9TjHFU/2BmD94rPWFEPJCq8zGFNuwpreTL75KUBfRiAeZyfzkzg==@nongnu.org
+X-Gm-Message-State: AOJu0YzDA/2/P9tzt051/LnqyMK4ZitXjFVYmEMKLjh5kWE1qFKOYazZ
+ 7FwpAHc8STuBw4qapl4jjFYva34KuD95bsDRdO1M18uM1VI3XQWioY8f2uFcMJTB
+X-Gm-Gg: ASbGncsoud1uazpsgnvO9uMIzxSCLl/SAkB60mlt617I5ufNfoTkFFzaYEmM2Ytksan
+ enwttVTNPZH9qzLG9rJcGP+lkZX1ax8199BEpZk+4oqqZ2Tb8hvwa/Vzii6NspDxJGq86p5BTcC
+ QQqdCiTafnmpjlNf/q/zFUYXVQFH7aOOjQzOtwrClrng9J1lwobsGyE0nVS09ytYEJTiRNOuKMn
+ IysOXd1UPCj31B1VjgUThQC6j/hldgEDfE4RnsT+m5VyUrdOa3Nr90M+Afn65n4lhZ4zDyS3902
+ iRagUl7ClMZWS4zNhK6IXjRJYRE7WH6tnVpC0PSDCRnP87TwnbHe4Kugl1Vk3PHVikpSEcBMTVo
+ a6XfzJpC22mY5Hy/Q25uAJyZfKVsRFrKnWfSNkPeNg1w=
+X-Google-Smtp-Source: AGHT+IGKLgmqjAJmEQUg6Jnid/CSW2HNdVpbvUo+ag9zk7QdNfQNMtPvlVnA7R+RaqiT5cbw9TmyPQ==
+X-Received: by 2002:a17:903:196b:b0:240:640a:b2e4 with SMTP id
+ d9443c01a7336-245e04df64cmr44629585ad.49.1755627805827; 
+ Tue, 19 Aug 2025 11:23:25 -0700 (PDT)
 Received: from ktock.. ([240d:1a:3b6:8b00:29ce:ef58:c2c9:e52f])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-245ed33b4c2sm3725125ad.25.2025.08.19.11.23.14
+ d9443c01a7336-245ed33b4c2sm3725125ad.25.2025.08.19.11.23.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Aug 2025 11:23:19 -0700 (PDT)
+ Tue, 19 Aug 2025 11:23:25 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -78,16 +78,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, ktokunaga.mail@gmail.com
-Subject: [PATCH 08/35] meson: Enable to build wasm backend
-Date: Wed, 20 Aug 2025 03:21:37 +0900
-Message-ID: <3bfbeb81abed474af3b984911b3185e072339efb.1755623521.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH 09/35] tcg/wasm: Set TCG_TARGET_INSN_UNIT_SIZE to 1
+Date: Wed, 20 Aug 2025 03:21:38 +0900
+Message-ID: <37c473f501f89041fa180e652bcd8b12dbe8b4db.1755623521.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1755623521.git.ktokunaga.mail@gmail.com>
 References: <cover.1755623521.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,227 +110,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable to use tcg/wasm as the TCG backend for the WebAssembly (wasm64)
-build.
+WebAssembly instructions vary in size, including single-byte
+instructions. This commit sets TCG_TARGET_INSN_UNIT_SIZE to 1 and
+updates the TCI fork to use "tcg_insn_unit_tci" (a uint32_t) for
+4-byte operations.
 
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 ---
- include/accel/tcg/getpc.h |  2 +-
- include/tcg/helper-info.h |  4 ++--
- include/tcg/tcg.h         |  2 +-
- meson.build               |  4 +++-
- tcg/meson.build           |  5 +++++
- tcg/region.c              | 10 +++++-----
- tcg/tcg.c                 | 16 ++++++++--------
- 7 files changed, 25 insertions(+), 18 deletions(-)
+ tcg/wasm/tcg-target.c.inc | 38 +++++++++++++++++++++-----------------
+ tcg/wasm/tcg-target.h     |  2 +-
+ 2 files changed, 22 insertions(+), 18 deletions(-)
 
-diff --git a/include/accel/tcg/getpc.h b/include/accel/tcg/getpc.h
-index 0fc08addcf..3901655715 100644
---- a/include/accel/tcg/getpc.h
-+++ b/include/accel/tcg/getpc.h
-@@ -9,7 +9,7 @@
- #define ACCEL_TCG_GETPC_H
+diff --git a/tcg/wasm/tcg-target.c.inc b/tcg/wasm/tcg-target.c.inc
+index efec95e74f..f1c329eabd 100644
+--- a/tcg/wasm/tcg-target.c.inc
++++ b/tcg/wasm/tcg-target.c.inc
+@@ -33,6 +33,8 @@
+ #define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_NORMAL
+ #define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
  
- /* GETPC is the true target of the return instruction that we'll execute.  */
--#ifdef CONFIG_TCG_INTERPRETER
-+#if defined(CONFIG_TCG_INTERPRETER) || defined(EMSCRIPTEN)
- extern __thread uintptr_t tci_tb_ptr;
- # define GETPC() tci_tb_ptr
- #else
-diff --git a/include/tcg/helper-info.h b/include/tcg/helper-info.h
-index 909fe73afa..9b4e8832a8 100644
---- a/include/tcg/helper-info.h
-+++ b/include/tcg/helper-info.h
-@@ -9,7 +9,7 @@
- #ifndef TCG_HELPER_INFO_H
- #define TCG_HELPER_INFO_H
- 
--#ifdef CONFIG_TCG_INTERPRETER
-+#if defined(CONFIG_TCG_INTERPRETER) || defined(EMSCRIPTEN)
- #include <ffi.h>
- #endif
- #include "tcg-target-reg-bits.h"
-@@ -48,7 +48,7 @@ struct TCGHelperInfo {
-     const char *name;
- 
-     /* Used with g_once_init_enter. */
--#ifdef CONFIG_TCG_INTERPRETER
-+#if defined(CONFIG_TCG_INTERPRETER) || defined(EMSCRIPTEN)
-     ffi_cif *cif;
- #else
-     uintptr_t init;
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index a6d9aa50d4..b91818d982 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -963,7 +963,7 @@ static inline size_t tcg_current_code_size(TCGContext *s)
- #define TB_EXIT_IDXMAX    1
- #define TB_EXIT_REQUESTED 3
- 
--#ifdef CONFIG_TCG_INTERPRETER
-+#if defined(CONFIG_TCG_INTERPRETER) || defined(EMSCRIPTEN)
- uintptr_t tcg_qemu_tb_exec(CPUArchState *env, const void *tb_ptr);
- #else
- typedef uintptr_t tcg_prologue_fn(CPUArchState *env, const void *tb_ptr);
-diff --git a/meson.build b/meson.build
-index 291fe3f0d0..263a72df61 100644
---- a/meson.build
-+++ b/meson.build
-@@ -916,7 +916,7 @@ if have_tcg
-     if not get_option('tcg_interpreter')
-       error('Unsupported CPU @0@, try --enable-tcg-interpreter'.format(cpu))
-     endif
--  elif host_arch == 'wasm32' or host_arch == 'wasm64'
-+  elif host_arch == 'wasm32'
-     if not get_option('tcg_interpreter')
-       error('WebAssembly host requires --enable-tcg-interpreter')
-     endif
-@@ -934,6 +934,8 @@ if have_tcg
-     tcg_arch = 'i386'
-   elif host_arch == 'ppc64'
-     tcg_arch = 'ppc'
-+  elif host_arch == 'wasm64'
-+    tcg_arch = 'wasm'
-   endif
-   add_project_arguments('-iquote', meson.current_source_dir() / 'tcg' / tcg_arch,
-                         language: all_languages)
-diff --git a/tcg/meson.build b/tcg/meson.build
-index 706a6eb260..1563f4fd30 100644
---- a/tcg/meson.build
-+++ b/tcg/meson.build
-@@ -20,6 +20,11 @@ if get_option('tcg_interpreter')
-                       method: 'pkg-config')
-   tcg_ss.add(libffi)
-   tcg_ss.add(files('tci.c'))
-+elif host_os == 'emscripten'
-+  libffi = dependency('libffi', version: '>=3.0', required: true,
-+                      method: 'pkg-config')
-+  specific_ss.add(libffi)
-+  specific_ss.add(files('wasm.c'))
- endif
- 
- tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
-diff --git a/tcg/region.c b/tcg/region.c
-index 7ea0b37a84..68cb6f18b7 100644
---- a/tcg/region.c
-+++ b/tcg/region.c
-@@ -94,7 +94,7 @@ bool in_code_gen_buffer(const void *p)
-     return (size_t)(p - region.start_aligned) <= region.total_size;
- }
- 
--#ifndef CONFIG_TCG_INTERPRETER
-+#if !defined(CONFIG_TCG_INTERPRETER) && !defined(EMSCRIPTEN)
- static int host_prot_read_exec(void)
++typedef uint32_t tcg_insn_unit_tci;
++
+ static TCGConstraintSetIndex
+ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
  {
- #if defined(CONFIG_LINUX) && defined(HOST_AARCH64) && defined(PROT_BTI)
-@@ -569,7 +569,7 @@ static int alloc_code_gen_buffer_anon(size_t size, int prot,
-     return prot;
- }
- 
--#ifndef CONFIG_TCG_INTERPRETER
-+#if !defined(CONFIG_TCG_INTERPRETER) && !defined(EMSCRIPTEN)
- #ifdef CONFIG_POSIX
- #include "qemu/memfd.h"
- 
-@@ -667,11 +667,11 @@ static int alloc_code_gen_buffer_splitwx_vmremap(size_t size, Error **errp)
-     return PROT_READ | PROT_WRITE;
- }
- #endif /* CONFIG_DARWIN */
--#endif /* CONFIG_TCG_INTERPRETER */
-+#endif /* !CONFIG_TCG_INTERPRETER && !EMSCRIPTEN */
- 
- static int alloc_code_gen_buffer_splitwx(size_t size, Error **errp)
- {
--#ifndef CONFIG_TCG_INTERPRETER
-+#if !defined(CONFIG_TCG_INTERPRETER) && !defined(EMSCRIPTEN)
- # ifdef CONFIG_DARWIN
-     return alloc_code_gen_buffer_splitwx_vmremap(size, errp);
- # endif
-@@ -813,7 +813,7 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_threads)
-      * Work with the page protections set up with the initial mapping.
-      */
-     need_prot = PROT_READ | PROT_WRITE;
--#ifndef CONFIG_TCG_INTERPRETER
-+#if !defined(CONFIG_TCG_INTERPRETER) && !defined(EMSCRIPTEN)
-     if (tcg_splitwx_diff == 0) {
-         need_prot |= host_prot_read_exec();
-     }
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index afac55a203..e6f8f9db5c 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -254,7 +254,7 @@ TCGv_env tcg_env;
- const void *tcg_code_gen_epilogue;
- uintptr_t tcg_splitwx_diff;
- 
--#ifndef CONFIG_TCG_INTERPRETER
-+#if !defined(CONFIG_TCG_INTERPRETER) && !defined(EMSCRIPTEN)
- tcg_prologue_fn *tcg_qemu_tb_exec;
- #endif
- 
-@@ -1118,7 +1118,7 @@ typedef struct TCGOutOpSubtract {
- 
- #include "tcg-target.c.inc"
- 
--#ifndef CONFIG_TCG_INTERPRETER
-+#if !defined(CONFIG_TCG_INTERPRETER) && !defined(EMSCRIPTEN)
- /* Validate CPUTLBDescFast placement. */
- QEMU_BUILD_BUG_ON((int)(offsetof(CPUNegativeOffsetState, tlb.f[0]) -
-                         sizeof(CPUNegativeOffsetState))
-@@ -1440,7 +1440,7 @@ static TCGHelperInfo info_helper_st128_mmu = {
-               | dh_typemask(ptr, 5)  /* uintptr_t ra */
+@@ -90,16 +92,18 @@ static const char *const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
  };
- 
--#ifdef CONFIG_TCG_INTERPRETER
-+#if defined(CONFIG_TCG_INTERPRETER) || defined(EMSCRIPTEN)
- static ffi_type *typecode_to_ffi(int argmask)
- {
-     /*
-@@ -1517,7 +1517,7 @@ static ffi_cif *init_ffi_layout(TCGHelperInfo *info)
- #else
- #define HELPER_INFO_INIT(I)      (&(I)->init)
- #define HELPER_INFO_INIT_VAL(I)  1
--#endif /* CONFIG_TCG_INTERPRETER */
-+#endif /* CONFIG_TCG_INTERPRETER || EMSCRIPTEN */
- 
- static inline bool arg_slot_reg_p(unsigned arg_slot)
- {
-@@ -1894,7 +1894,7 @@ void tcg_prologue_init(void)
-     s->code_buf = s->code_gen_ptr;
-     s->data_gen_ptr = NULL;
- 
--#ifndef CONFIG_TCG_INTERPRETER
-+#if !defined(CONFIG_TCG_INTERPRETER) && !defined(EMSCRIPTEN)
-     tcg_qemu_tb_exec = (tcg_prologue_fn *)tcg_splitwx_to_rx(s->code_ptr);
  #endif
  
-@@ -1913,7 +1913,7 @@ void tcg_prologue_init(void)
-     prologue_size = tcg_current_code_size(s);
-     perf_report_prologue(s->code_gen_ptr, prologue_size);
+-static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
++static bool patch_reloc(tcg_insn_unit *code_ptr_i, int type,
+                         intptr_t value, intptr_t addend)
+ {
++    tcg_insn_unit_tci *code_ptr = (tcg_insn_unit_tci *)code_ptr_i;
+     intptr_t diff = value - (intptr_t)(code_ptr + 1);
  
--#ifndef CONFIG_TCG_INTERPRETER
-+#if !defined(CONFIG_TCG_INTERPRETER) && !defined(EMSCRIPTEN)
-     flush_idcache_range((uintptr_t)tcg_splitwx_to_rx(s->code_buf),
-                         (uintptr_t)s->code_buf, prologue_size);
- #endif
-@@ -1950,7 +1950,7 @@ void tcg_prologue_init(void)
-         }
+     tcg_debug_assert(addend == 0);
+     tcg_debug_assert(type == 20);
+ 
+     if (diff == sextract32(diff, 0, type)) {
+-        tcg_patch32(code_ptr, deposit32(*code_ptr, 32 - type, type, diff));
++        tcg_patch32((tcg_insn_unit *)code_ptr,
++                    deposit32(*code_ptr, 32 - type, type, diff));
+         return true;
      }
+     return false;
+@@ -116,7 +120,7 @@ static void stack_bounds_check(TCGReg base, intptr_t offset)
  
--#ifndef CONFIG_TCG_INTERPRETER
-+#if !defined(CONFIG_TCG_INTERPRETER) && !defined(EMSCRIPTEN)
-     /*
-      * Assert that goto_ptr is implemented completely, setting an epilogue.
-      * For tci, we use NULL as the signal to return from the interpreter,
-@@ -7048,7 +7048,7 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
-         return -2;
-     }
+ static void tcg_out_op_l(TCGContext *s, TCGOpcode op, TCGLabel *l0)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
  
--#ifndef CONFIG_TCG_INTERPRETER
-+#if !defined(CONFIG_TCG_INTERPRETER) && !defined(EMSCRIPTEN)
-     /* flush instruction cache */
-     flush_idcache_range((uintptr_t)tcg_splitwx_to_rx(s->code_buf),
-                         (uintptr_t)s->code_buf,
+     tcg_out_reloc(s, s->code_ptr, 20, l0, 0);
+     insn = deposit32(insn, 0, 8, op);
+@@ -125,14 +129,14 @@ static void tcg_out_op_l(TCGContext *s, TCGOpcode op, TCGLabel *l0)
+ 
+ static void tcg_out_op_p(TCGContext *s, TCGOpcode op, void *p0)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+     intptr_t diff;
+ 
+     /* Special case for exit_tb: map null -> 0. */
+     if (p0 == NULL) {
+         diff = 0;
+     } else {
+-        diff = p0 - (void *)(s->code_ptr + 1);
++        diff = p0 - (void *)(s->code_ptr + 4);
+         tcg_debug_assert(diff != 0);
+         if (diff != sextract32(diff, 0, 20)) {
+             tcg_raise_tb_overflow(s);
+@@ -145,7 +149,7 @@ static void tcg_out_op_p(TCGContext *s, TCGOpcode op, void *p0)
+ 
+ static void tcg_out_op_r(TCGContext *s, TCGOpcode op, TCGReg r0)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+ 
+     insn = deposit32(insn, 0, 8, op);
+     insn = deposit32(insn, 8, 4, r0);
+@@ -159,7 +163,7 @@ static void tcg_out_op_v(TCGContext *s, TCGOpcode op)
+ 
+ static void tcg_out_op_ri(TCGContext *s, TCGOpcode op, TCGReg r0, int32_t i1)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+ 
+     tcg_debug_assert(i1 == sextract32(i1, 0, 20));
+     insn = deposit32(insn, 0, 8, op);
+@@ -170,7 +174,7 @@ static void tcg_out_op_ri(TCGContext *s, TCGOpcode op, TCGReg r0, int32_t i1)
+ 
+ static void tcg_out_op_rl(TCGContext *s, TCGOpcode op, TCGReg r0, TCGLabel *l1)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+ 
+     tcg_out_reloc(s, s->code_ptr, 20, l1, 0);
+     insn = deposit32(insn, 0, 8, op);
+@@ -180,7 +184,7 @@ static void tcg_out_op_rl(TCGContext *s, TCGOpcode op, TCGReg r0, TCGLabel *l1)
+ 
+ static void tcg_out_op_rr(TCGContext *s, TCGOpcode op, TCGReg r0, TCGReg r1)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+ 
+     insn = deposit32(insn, 0, 8, op);
+     insn = deposit32(insn, 8, 4, r0);
+@@ -191,7 +195,7 @@ static void tcg_out_op_rr(TCGContext *s, TCGOpcode op, TCGReg r0, TCGReg r1)
+ static void tcg_out_op_rrm(TCGContext *s, TCGOpcode op,
+                            TCGReg r0, TCGReg r1, TCGArg m2)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+ 
+     tcg_debug_assert(m2 == extract32(m2, 0, 16));
+     insn = deposit32(insn, 0, 8, op);
+@@ -204,7 +208,7 @@ static void tcg_out_op_rrm(TCGContext *s, TCGOpcode op,
+ static void tcg_out_op_rrr(TCGContext *s, TCGOpcode op,
+                            TCGReg r0, TCGReg r1, TCGReg r2)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+ 
+     insn = deposit32(insn, 0, 8, op);
+     insn = deposit32(insn, 8, 4, r0);
+@@ -216,7 +220,7 @@ static void tcg_out_op_rrr(TCGContext *s, TCGOpcode op,
+ static void tcg_out_op_rrs(TCGContext *s, TCGOpcode op,
+                            TCGReg r0, TCGReg r1, intptr_t i2)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+ 
+     tcg_debug_assert(i2 == sextract32(i2, 0, 16));
+     insn = deposit32(insn, 0, 8, op);
+@@ -229,7 +233,7 @@ static void tcg_out_op_rrs(TCGContext *s, TCGOpcode op,
+ static void tcg_out_op_rrbb(TCGContext *s, TCGOpcode op, TCGReg r0,
+                             TCGReg r1, uint8_t b2, uint8_t b3)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+ 
+     tcg_debug_assert(b2 == extract32(b2, 0, 6));
+     tcg_debug_assert(b3 == extract32(b3, 0, 6));
+@@ -244,7 +248,7 @@ static void tcg_out_op_rrbb(TCGContext *s, TCGOpcode op, TCGReg r0,
+ static void tcg_out_op_rrrc(TCGContext *s, TCGOpcode op,
+                             TCGReg r0, TCGReg r1, TCGReg r2, TCGCond c3)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+ 
+     insn = deposit32(insn, 0, 8, op);
+     insn = deposit32(insn, 8, 4, r0);
+@@ -257,7 +261,7 @@ static void tcg_out_op_rrrc(TCGContext *s, TCGOpcode op,
+ static void tcg_out_op_rrrbb(TCGContext *s, TCGOpcode op, TCGReg r0,
+                              TCGReg r1, TCGReg r2, uint8_t b3, uint8_t b4)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+ 
+     tcg_debug_assert(b3 == extract32(b3, 0, 6));
+     tcg_debug_assert(b4 == extract32(b4, 0, 6));
+@@ -287,7 +291,7 @@ static void tcg_out_op_rrrrrc(TCGContext *s, TCGOpcode op,
+                               TCGReg r0, TCGReg r1, TCGReg r2,
+                               TCGReg r3, TCGReg r4, TCGCond c5)
+ {
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+ 
+     insn = deposit32(insn, 0, 8, op);
+     insn = deposit32(insn, 8, 4, r0);
+@@ -446,7 +450,7 @@ static void tcg_out_call(TCGContext *s, const tcg_insn_unit *func,
+                          const TCGHelperInfo *info)
+ {
+     ffi_cif *cif = info->cif;
+-    tcg_insn_unit insn = 0;
++    tcg_insn_unit_tci insn = 0;
+     uint8_t which;
+ 
+     if (cif->rtype == &ffi_type_void) {
+diff --git a/tcg/wasm/tcg-target.h b/tcg/wasm/tcg-target.h
+index 00befa2fcc..b3d540198b 100644
+--- a/tcg/wasm/tcg-target.h
++++ b/tcg/wasm/tcg-target.h
+@@ -42,7 +42,7 @@
+ #define TCG_TARGET_H
+ 
+ #define TCG_TARGET_INTERPRETER 1
+-#define TCG_TARGET_INSN_UNIT_SIZE 4
++#define TCG_TARGET_INSN_UNIT_SIZE 1
+ #define MAX_CODE_GEN_BUFFER_SIZE  ((size_t)-1)
+ 
+ /* Number of registers available. */
 -- 
 2.43.0
 
