@@ -2,84 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C555EB2CD8A
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 22:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF9AB2CDD6
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 22:29:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoSh6-0000RY-UJ; Tue, 19 Aug 2025 16:12:33 -0400
+	id 1uoSvX-0003wV-Fm; Tue, 19 Aug 2025 16:27:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uoSh5-0000R8-KM
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:12:31 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uoSvV-0003vZ-D5
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:27:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uoSh4-000558-9b
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:12:31 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uoSvS-0006PT-0z
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:27:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755634349;
+ s=mimecast20190719; t=1755635241;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=F7h1oXZOArq5Kt0brqn10RJF++tc1uwLLGB67VVMe48=;
- b=LbLdxaPjMSQZzBrAv7NldA9eDjpkJHFRrGs+S6K8I9YBM82LCrhdNIhKH8huJyG9r6QdhL
- wH7+o/+yhEv3cY2LUgIusU2X0/ycCxmtLoaVlqHemvOnrOnx19xQd6P9j2pTCwQGUgLRob
- JXSkejbLDkVRwBBER7WCajZPAiLuFFE=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-AvtQsgL5NRWSDPF0lm4V-g-1; Tue, 19 Aug 2025 16:12:26 -0400
-X-MC-Unique: AvtQsgL5NRWSDPF0lm4V-g-1
-X-Mimecast-MFC-AGG-ID: AvtQsgL5NRWSDPF0lm4V-g_1755634345
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-24458194d82so58975545ad.2
- for <qemu-devel@nongnu.org>; Tue, 19 Aug 2025 13:12:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755634345; x=1756239145;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=F7h1oXZOArq5Kt0brqn10RJF++tc1uwLLGB67VVMe48=;
- b=tfWCzUUsAXrTzpj6FBe7phPSI6vHVWiGjqm/yNrGPJqj6FISkSTYg1RjHU+p4p5RWs
- hMs1Qzfo1HJM5ni1ahUGBzzuojhVuwgiq6AD4xNRAlCxZWU2UbeNKkD/4JYkS4IsmFzq
- o4HCT8tXr+UlA4PVFzhNfxJ6feGzNZb0BxQChWpNyzRDRJ0eGaieYrUDtid1RxuX6CoD
- RQewXRRmLUIo4RDS1A3P4mAu/53OjwWc5ECaQ6iYjZ+GsNQ4edh//2oza1603Z29T2+c
- OCQUyt7sDTpoPWda+DABkD1SvDZtQIGWdLVgZAlEUKC+jExBWl5y6YPDe7XaEk+clDfC
- o2KQ==
-X-Gm-Message-State: AOJu0YzofQoMG+L9TkI5RyyyRm2JVrlW5NLQ9y5tJfQDbFkRilKrHS8e
- 66eEKTs2KUieczpVa6kQGSl7oolxURtln64Kda7AWtM8fQbHfVhuytNpLAQvicCMJRW4nOjSmZk
- yJgH9TGrpxvnvwHwPm93iMILl5C0+0ssSKDsqPbB7HlAVESXfavhF+J2IWFD9m4UanwlCnxnuG3
- dcDG1tfBgHEkmpfKY92tTG7lgkZoAYATE=
-X-Gm-Gg: ASbGnctxgfTV/uWmSCN1F112ZDjmsvnVi6U0XjW8/0cEu5K1b2u92RftiwwOOmvC7da
- 6EeOTzB+GxfET9KYnxsLaIngVLQ4NavHEflipv4oDMqzliYZuGryKqRxd2l9IvmkaBosIjiLZAS
- X4XAmiIrg+fVY1LQ3q+Oe3sJd2xjbfNbP12ZRhcSH2To0LvaCuFLOR
-X-Received: by 2002:a17:903:183:b0:240:640a:c560 with SMTP id
- d9443c01a7336-245ef14c4acmr3710615ad.24.1755634344955; 
- Tue, 19 Aug 2025 13:12:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFV8FG+zTZuUdlLadrP2MUPuTXJYup5uv430xrk4yH98/CzPICbEASdbJ67cEoBVEmoS3kklGN4UeqWTRAjeGc=
-X-Received: by 2002:a17:903:183:b0:240:640a:c560 with SMTP id
- d9443c01a7336-245ef14c4acmr3710315ad.24.1755634344591; Tue, 19 Aug 2025
- 13:12:24 -0700 (PDT)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=NilJ6MEPI25XTGInaoAYGovN3ut+wa4IIXZII1mTO+Q=;
+ b=KOXMq7RP0ma8c7LDM7SjhHK5qMcGYtfG2EUylnbv7Yci4t2baIZgknBMdiqCdMwq3bRcck
+ u8cv2SbZT9r98Ee1nl7CnLcrDiVgMOeNiBTXbScQrGup0nvEK+NPbeEtENPUKrx4mDImx8
+ wTvm+XTzQprP6QAljtt8G5cr6nR5zfY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-UBODzNi7Mh-kef6v_us3SA-1; Tue,
+ 19 Aug 2025 16:27:16 -0400
+X-MC-Unique: UBODzNi7Mh-kef6v_us3SA-1
+X-Mimecast-MFC-AGG-ID: UBODzNi7Mh-kef6v_us3SA_1755635234
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E189B180028D; Tue, 19 Aug 2025 20:27:13 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.237])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id C597619560B2; Tue, 19 Aug 2025 20:27:09 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>, devel@lists.libvirt.org,
+ Stefan Weil <sw@weilnetz.de>, qemu-block@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 00/12] util: sync error_report & qemu_log output more closely
+Date: Tue, 19 Aug 2025 21:26:56 +0100
+Message-ID: <20250819202708.1185594-1-berrange@redhat.com>
 MIME-Version: 1.0
-References: <20250715143023.1851000-1-berrange@redhat.com>
- <20250715143023.1851000-12-berrange@redhat.com>
-In-Reply-To: <20250715143023.1851000-12-berrange@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Tue, 19 Aug 2025 16:12:12 -0400
-X-Gm-Features: Ac12FXyanhFX2C8dTEyfTt6GdYwXv0jQXDVmxnP915DFgYxP2C1GkV6JFGLdPMg
-Message-ID: <CAFn=p-YmCbBi_puVXV-0iEoFixuGvyfGcKB6EMkWWNjcxczvRg@mail.gmail.com>
-Subject: Re: [PATCH 11/14] python: ensure QEMUQtestProtocol closes its socket
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, 
- Jagannathan Raman <jag.raman@oracle.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Elena Ufimtseva <elena.ufimtseva@oracle.com>, Thomas Huth <thuth@redhat.com>, 
- Cleber Rosa <crosa@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,42 +87,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 15, 2025 at 10:32=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@=
-redhat.com> wrote:
->
-> While QEMUQtestMachine closes the socket that was passed to
-> QEMUQtestProtocol, the python resource leak manager still
-> believes that the copy QEMUQtestProtocol holds is open. We
-> must explicitly call close to avoid this leak warnnig.
+This series is a tangent that came out of discussion in
 
-Huh. I wonder if that's a false positive, or if it's actually true?
+   https://lists.nongnu.org/archive/html/qemu-devel/2025-08/msg00903.html
 
->
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+In thinking about adding thread info to error_report, I came
+to realize we should likely make qemu_log behave consistently
+with error_report & friends more generally. We already honour
+'-msg timestamp=on' in both (with duplicated code), and qemu_log
+doesn't honour the '-msg guest-name=on' parameter, nor will it
+include the binary name.
 
-Well, either way...
+This series shouldn't be considered mutually exclusive with
+Manos' backtrace suggestion above - it is complementary &
+each proposal can be evaluated independently. 
 
-Reviewed-by: John Snow <jsnow@redhat.com>
 
-> ---
->  python/qemu/machine/qtest.py | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/python/qemu/machine/qtest.py b/python/qemu/machine/qtest.py
-> index 4f5ede85b2..781f674ffa 100644
-> --- a/python/qemu/machine/qtest.py
-> +++ b/python/qemu/machine/qtest.py
-> @@ -177,6 +177,8 @@ def _post_shutdown(self) -> None:
->              self._qtest_sock_pair[0].close()
->              self._qtest_sock_pair[1].close()
->              self._qtest_sock_pair =3D None
-> +        if self._qtest is not None:
-> +            self._qtest.close()
->          super()._post_shutdown()
->
->      def qtest(self, cmd: str) -> str:
-> --
-> 2.49.0
->
+As an example of the current state, consider mixing error and
+log output today:
+
+- Default context:
+
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
+                       -d 'trace:qcrypto*'
+  qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55ac6d97f700 dir=fish
+  qcrypto_tls_creds_get_path TLS creds path creds=0x55ac6d97f700 filename=ca-cert.pem path=<none>
+  qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+- Full context:
+
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
+                       -d 'trace:qcrypto*' \
+                       -msg guest-name=on,timestamp=on \
+                       -name "fish food"
+  2025-08-19T20:14:16.791413Z qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55e9a3458d10 dir=fish
+  2025-08-19T20:14:16.791429Z qcrypto_tls_creds_get_path TLS creds path creds=0x55e9a3458d10 filename=ca-cert.pem path=<none>
+  2025-08-19T20:14:16.791433Z fish food qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+And after this series is complete:
+
+- Default context:
+
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
+                      -d 'trace:qcrypto*'
+  qemu-system-x86_64(1184284:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55a24ad5cb30 dir=fish
+  qemu-system-x86_64(1184284:main): qcrypto_tls_creds_get_path TLS creds path creds=0x55a24ad5cb30 filename=ca-cert.pem path=<none>
+  qemu-system-x86_64(1184284:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+- Full context:
+
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
+                      -d 'trace:qcrypto*' \
+                      -msg guest-name=on,timestamp=on \
+                      -name "fish food"
+  2025-08-19T20:12:50.211823Z [fish food] qemu-system-x86_64(1168876:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x5582183d8760 dir=fish
+  2025-08-19T20:12:50.211842Z [fish food] qemu-system-x86_64(1168876:main): qcrypto_tls_creds_get_path TLS creds path creds=0x5582183d8760 filename=ca-cert.pem path=<none>
+  2025-08-19T20:12:50.211846Z [fish food] qemu-system-x86_64(1168876:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+The main things to note:
+
+ * error_report/warn_report/qemu_log share the same
+   output format and -msg applies to both
+
+ * -msg debug-threads=on is now unconditionally enabled
+   and thus the param is deprecated & ignored
+
+ * Thread ID and name are unconditionally enabled
+
+ * Guest name is surrounded in [...] brackets
+
+ * The default output lines are typically 15 chars
+   wider given that we always include the thread
+   ID + name now
+
+ * This takes the liberty of assigning the new file
+   to the existing error-report.c maintainer (Markus)
+   Since splitting it off into message.c instead of
+   putting it all in error-report.c felt slightly
+   nicer.
+
+One thing I didn't tackle is making the location
+info get reported for qemu_log. This is used to
+give context for error messages when parsing some
+CLI args, and could be interesting for log messages
+associated with those same CLI args.
+
+I'm not too happy with the constructor priority
+logic, but I don't see a better option, as I don't
+think it is practical to order .o files passed to
+the linker in a way that nicely guarantees the order
+of constructor execution.
+
+Daniel P. Berrangé (12):
+  include: define constant for early constructor priority
+  monitor: initialize global data from a constructor
+  system: unconditionally enable thread naming
+  util: set the name for the 'main' thread
+  util: add API to fetch the current thread id
+  util: add API to fetch the current thread name
+  util: introduce common helper for error-report & log code
+  util: convert error-report & log to message API for timestamp
+  util: add support for formatting a workload name in messages
+  util: add support for formatting a program name in messages
+  util: add support for formatting thread info in messages
+  util: add brackets around guest name in message context
+
+ MAINTAINERS                          |  2 +
+ docs/about/deprecated.rst            |  7 +++
+ include/qemu/compiler.h              |  8 +++
+ include/qemu/error-report.h          |  4 --
+ include/qemu/message.h               | 52 +++++++++++++++++
+ include/qemu/thread.h                |  3 +-
+ meson.build                          | 21 +++++++
+ monitor/monitor.c                    | 14 +++--
+ storage-daemon/qemu-storage-daemon.c |  6 ++
+ system/vl.c                          | 30 +++++++---
+ tests/qemu-iotests/041               |  2 +-
+ tests/qemu-iotests/common.filter     |  2 +-
+ tests/unit/test-error-report.c       |  6 +-
+ util/error-report.c                  | 29 +---------
+ util/log.c                           | 20 +++----
+ util/meson.build                     |  1 +
+ util/message.c                       | 69 ++++++++++++++++++++++
+ util/qemu-thread-posix.c             | 60 ++++++++++++++-----
+ util/qemu-thread-win32.c             | 86 ++++++++++++++++++++--------
+ 19 files changed, 321 insertions(+), 101 deletions(-)
+ create mode 100644 include/qemu/message.h
+ create mode 100644 util/message.c
+
+-- 
+2.50.1
 
 
