@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD5DB2CDCF
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 22:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A0DB2CDCC
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 22:28:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoSvw-00047K-TA; Tue, 19 Aug 2025 16:27:52 -0400
+	id 1uoSw1-00049P-Fm; Tue, 19 Aug 2025 16:27:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uoSvu-00046Z-Ow
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:27:51 -0400
+ id 1uoSvz-00048m-Kz
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:27:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uoSvt-0006T0-5C
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:27:50 -0400
+ id 1uoSvy-0006Tm-4M
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 16:27:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755635268;
+ s=mimecast20190719; t=1755635273;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BXu5lN1E+5tzwo8qodDlWec0scY5oqa/D81vjz0gKO8=;
- b=VpWnnUMXXvTDmpFaTHZUgLCUnKbs9KinBl333R753t937KH4qX1QInGRb3tJq+Alu7Z9mc
- Vh2AOU00N/TSb64LBoYtBLx4T9onlQg3OqjhBndEBB/c4SXF+LKCWj7SVb8MKCbc6S4G77
- Zi8cs1zMCu9WQap4wynzGiSOBPT80WA=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=+JngSOVRcj7j3a39al930RGL/WH5Ch8VPH2AvafffrI=;
+ b=SdediuHbj7J7iO2UTUzwncrbQ+QNwanKL3W1yXCUT9uDQs6M/XXy5pwIhj362Mz8FCzjkC
+ vIJmQ6mwoFW+VhjuqpLkCY8lfv/vRnrOAO6aEu7fSLDUu2zsL0N791ENw6TaidkAgmHDss
+ UIZMn2ZMOjlpk2lPFpDzKKlEnRPT0i0=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-592-LMdAHSS7MrCY2JREtS6jBg-1; Tue,
- 19 Aug 2025 16:27:45 -0400
-X-MC-Unique: LMdAHSS7MrCY2JREtS6jBg-1
-X-Mimecast-MFC-AGG-ID: LMdAHSS7MrCY2JREtS6jBg_1755635263
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-372-LOfRCt73OmiFuMIQOJCVZA-1; Tue,
+ 19 Aug 2025 16:27:51 -0400
+X-MC-Unique: LOfRCt73OmiFuMIQOJCVZA-1
+X-Mimecast-MFC-AGG-ID: LOfRCt73OmiFuMIQOJCVZA_1755635270
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C809F195608E; Tue, 19 Aug 2025 20:27:43 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C0BAC19560B0; Tue, 19 Aug 2025 20:27:49 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.237])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4C32619560B0; Tue, 19 Aug 2025 20:27:39 +0000 (UTC)
+ id 4D84319560B0; Tue, 19 Aug 2025 20:27:44 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -56,9 +56,10 @@ Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Stefan Weil <sw@weilnetz.de>, qemu-block@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 06/12] util: add API to fetch the current thread name
-Date: Tue, 19 Aug 2025 21:27:02 +0100
-Message-ID: <20250819202708.1185594-7-berrange@redhat.com>
+Subject: [PATCH 07/12] util: introduce common helper for error-report & log
+ code
+Date: Tue, 19 Aug 2025 21:27:03 +0100
+Message-ID: <20250819202708.1185594-8-berrange@redhat.com>
 In-Reply-To: <20250819202708.1185594-1-berrange@redhat.com>
 References: <20250819202708.1185594-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -90,190 +91,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will be used to include the thread name in error reports
-in a later patch. It returns a const string stored in a thread
-local to avoid memory allocation on POSIX platforms, at the
-cost of having to store an allocated string pointer on Windows.
+The error-report and log code both have a need to add prefixes
+to messages they are printing, with the current example being
+a timestamp.
+
+The format and configuration they use should be consistent, so
+providing a common helper will ensure this is always the case.
+Initially the helper only emits a timestamp, but future patches
+will expand this.
+
+This takes the liberty of assigning the new file to the same
+maintainer as the existing error-report.c file, given it will
+be extracting some functionality from the latter.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/qemu/thread.h    |  1 +
- meson.build              | 21 +++++++++++++++++
- util/qemu-thread-posix.c | 25 +++++++++++++++++++-
- util/qemu-thread-win32.c | 50 ++++++++++++++++++++++++++++++++++++----
- 4 files changed, 92 insertions(+), 5 deletions(-)
+ MAINTAINERS            |  2 ++
+ include/qemu/message.h | 40 ++++++++++++++++++++++++++++++++++++++++
+ util/meson.build       |  1 +
+ util/message.c         | 32 ++++++++++++++++++++++++++++++++
+ 4 files changed, 75 insertions(+)
+ create mode 100644 include/qemu/message.h
+ create mode 100644 util/message.c
 
-diff --git a/include/qemu/thread.h b/include/qemu/thread.h
-index 96eee82679..0366cb743d 100644
---- a/include/qemu/thread.h
-+++ b/include/qemu/thread.h
-@@ -216,6 +216,7 @@ void qemu_thread_get_self(QemuThread *thread);
- bool qemu_thread_is_self(QemuThread *thread);
- G_NORETURN void qemu_thread_exit(void *retval);
- uint64_t qemu_thread_get_id(void);
-+const char *qemu_thread_get_name(void);
- 
- struct Notifier;
- /**
-diff --git a/meson.build b/meson.build
-index 50c774a195..ebdcb5d65d 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2920,6 +2920,27 @@ config_host_data.set('CONFIG_PTHREAD_SET_NAME_NP', cc.links(osdep_prefix + '''
-     pthread_set_name_np(thread, "QEMU");
-     return 0;
-   }''', dependencies: threads))
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a07086ed76..3cc6c0b409 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3169,9 +3169,11 @@ M: Markus Armbruster <armbru@redhat.com>
+ S: Supported
+ F: include/qapi/error.h
+ F: include/qemu/error-report.h
++F: include/qemu/message.h
+ F: qapi/error.json
+ F: util/error.c
+ F: util/error-report.c
++F: util/message.c
+ F: scripts/coccinelle/err-bad-newline.cocci
+ F: scripts/coccinelle/error-use-after-free.cocci
+ F: scripts/coccinelle/error_propagate_null.cocci
+diff --git a/include/qemu/message.h b/include/qemu/message.h
+new file mode 100644
+index 0000000000..160bee8417
+--- /dev/null
++++ b/include/qemu/message.h
+@@ -0,0 +1,40 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
-+config_host_data.set('CONFIG_PTHREAD_GETNAME_NP', cc.links(osdep_prefix + '''
-+  #include <pthread.h>
++#ifndef QEMU_MESSAGE_H
++#define QEMU_MESSAGE_H
 +
-+  int main(void)
-+  {
-+    char buf[16];
-+    pthread_getname_np(pthread_self(), buf, sizeof(buf));
-+    return 0;
-+  }''', dependencies: threads))
-+config_host_data.set('CONFIG_PTHREAD_GET_NAME_NP', cc.links(osdep_prefix + '''
-+  #include <pthread.h>
-+  #include <pthread_np.h>
++enum QMessageFormatFlags {
++    QMESSAGE_FORMAT_TIMESTAMP = (1 << 0),
++};
 +
-+  int main(void)
-+  {
-+    char buf[16];
-+    pthread_get_name_np(pthread_self(), buf, sizeof(buf));
-+    return 0;
-+  }''', dependencies: threads))
++/*
++ * qmessage_set_format:
++ * @flags: the message information to emit
++ *
++ * Select which pieces of information to
++ * emit for messages
++ */
++void qmessage_set_format(int flags);
 +
- config_host_data.set('CONFIG_PTHREAD_CONDATTR_SETCLOCK', cc.links(osdep_prefix + '''
-   #include <pthread.h>
- 
-diff --git a/util/qemu-thread-posix.c b/util/qemu-thread-posix.c
-index f240a93632..282802bc39 100644
---- a/util/qemu-thread-posix.c
-+++ b/util/qemu-thread-posix.c
-@@ -18,7 +18,7 @@
- #include "qemu/tsan.h"
- #include "qemu/bitmap.h"
- 
--#ifdef CONFIG_PTHREAD_SET_NAME_NP
-+#if defined(CONFIG_PTHREAD_SET_NAME_NP) || defined(CONFIG_PTHREAD_GET_NAME_NP)
- #include <pthread_np.h>
- #endif
- 
-@@ -543,3 +543,26 @@ uint64_t qemu_thread_get_id(void)
-     return (uint64_t)pthread_self();
- #endif
- }
++enum QMessageContextFlags {
++    QMESSAGE_CONTEXT_SKIP_MONITOR = (1 << 0),
++};
 +
-+#ifndef PTHREAD_MAX_NAMELEN_NP
-+#define PTHREAD_MAX_NAMELEN_NP 16
-+#endif
++/*
++ * qmessage_context:
++ * @flags: the message formatting control flags
++ *
++ * Format a message prefix with the information
++ * previously selected by a call to
++ * qmessage_set_format.
++ *
++ * If @flags contains QMESSAGE_CONTEXT_SKIP_MONITOR
++ * an empty string will be returned if running in
++ * the context of a HMP command
++ *
++ * Returns: a formatted message prefix, or empty string;
++ * to be freed by the caller.
++ */
++char *qmessage_context(int flags);
 +
-+static __thread char namebuf[PTHREAD_MAX_NAMELEN_NP];
++#endif /* QEMU_MESSAGE_H */
+diff --git a/util/meson.build b/util/meson.build
+index 35029380a3..f5365e3b4f 100644
+--- a/util/meson.build
++++ b/util/meson.build
+@@ -40,6 +40,7 @@ util_ss.add(files('host-utils.c'))
+ util_ss.add(files('bitmap.c', 'bitops.c'))
+ util_ss.add(files('fifo8.c'))
+ util_ss.add(files('cacheflush.c'))
++util_ss.add(files('message.c'))
+ util_ss.add(files('error.c', 'error-report.c'))
+ util_ss.add(files('qemu-print.c'))
+ util_ss.add(files('id.c'))
+diff --git a/util/message.c b/util/message.c
+new file mode 100644
+index 0000000000..4c7eeb75e2
+--- /dev/null
++++ b/util/message.c
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
-+const char *qemu_thread_get_name(void)
++#include "qemu/osdep.h"
++
++#include "qemu/message.h"
++#include "monitor/monitor.h"
++
++static int message_format;
++
++void qmessage_set_format(int flags)
 +{
-+    int rv;
-+# if defined(CONFIG_PTHREAD_GETNAME_NP)
-+    rv = pthread_getname_np(pthread_self(), namebuf, sizeof(namebuf));
-+# elif defined(CONFIG_PTHREAD_GET_NAME_NP)
-+    rv = pthread_get_name_np(pthread_self(), namebuf, sizeof(namebuf));
-+# else
-+    rv = -1;
-+# endif
-+    if (rv != 0) {
-+        strncpy(namebuf, "unnamed", sizeof(namebuf) - 1);
-+        namebuf[sizeof(namebuf) - 1] = '\0';
-+    }
-+    return namebuf;
++    message_format = flags;
 +}
-diff --git a/util/qemu-thread-win32.c b/util/qemu-thread-win32.c
-index f6956717b2..c31a8a6bc8 100644
---- a/util/qemu-thread-win32.c
-+++ b/util/qemu-thread-win32.c
-@@ -19,10 +19,13 @@
- 
- typedef HRESULT (WINAPI *pSetThreadDescription) (HANDLE hThread,
-                                                  PCWSTR lpThreadDescription);
-+typedef HRESULT (WINAPI *pGetThreadDescription) (HANDLE hThread,
-+                                                 PWSTR *lpThreadDescription);
- static pSetThreadDescription SetThreadDescriptionFunc;
-+static pGetThreadDescription GetThreadDescriptionFunc;
- static HMODULE kernel32_module;
- 
--static bool load_set_thread_description(void)
-+static bool load_thread_description(void)
- {
-     static gsize _init_once = 0;
- 
-@@ -32,14 +35,17 @@ static bool load_set_thread_description(void)
-             SetThreadDescriptionFunc =
-                 (pSetThreadDescription)GetProcAddress(kernel32_module,
-                                                       "SetThreadDescription");
--            if (!SetThreadDescriptionFunc) {
-+            GetThreadDescriptionFunc =
-+                (pGetThreadDescription)GetProcAddress(kernel32_module,
-+                                                      "GetThreadDescription");
-+            if (!SetThreadDescriptionFunc || !GetThreadDescriptionFunc) {
-                 FreeLibrary(kernel32_module);
-             }
-         }
-         g_once_init_leave(&_init_once, 1);
-     }
- 
--    return !!SetThreadDescriptionFunc;
-+    return !!(SetThreadDescriptionFunc && GetThreadDescriptionFunc);
- }
- 
- static void error_exit(int err, const char *msg)
-@@ -320,7 +326,7 @@ static void set_thread_description(HANDLE h, const char *name)
- {
-     g_autofree wchar_t *namew = NULL;
- 
--    if (!load_set_thread_description()) {
-+    if (!load_thread_description()) {
-         return;
-     }
- 
-@@ -417,3 +423,39 @@ uint64_t qemu_thread_get_id(void)
- {
-     return (uint64_t)GetCurrentThreadId();
- }
 +
-+static __thread char *namebuf;
-+
-+const char *qemu_thread_get_name(void)
++char *qmessage_context(int flags)
 +{
-+    HRESULT hr;
-+    wchar_t *namew = NULL;
-+    g_autofree char *name = NULL;
++    g_autofree char *timestr = NULL;
 +
-+    if (!load_thread_description()) {
-+        goto error;
++    if ((flags & QMESSAGE_CONTEXT_SKIP_MONITOR) &&
++        monitor_cur()) {
++        return g_strdup("");
 +    }
 +
-+    hr = GetThreadDescriptionFunc(GetCurrentThread(), &namew);
-+    if (!SUCCEEDED(hr)) {
-+        goto error;
++    if (message_format & QMESSAGE_FORMAT_TIMESTAMP) {
++        g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
++        timestr = g_date_time_format_iso8601(dt);
 +    }
 +
-+    g_free(namebuf);
-+    namebuf = g_utf16_to_utf8(namew, -1, NULL, NULL, NULL);
-+    if (!namebuf) {
-+        goto error;
-+    }
-+
-+ cleanup:
-+    if (namew) {
-+        LocalFree(namew);
-+    }
-+    return namebuf;
-+
-+ error:
-+    if (!namebuf) {
-+        namebuf = g_strdup("unnamed");
-+    }
-+    goto cleanup;
++    return g_strdup_printf("%s%s",
++                           timestr ? timestr : "",
++                           timestr ? " " : "");
 +}
 -- 
 2.50.1
