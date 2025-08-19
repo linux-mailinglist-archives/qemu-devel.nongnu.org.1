@@ -2,83 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDAA2B2BCC1
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 11:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED9EB2BD29
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 11:24:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoIQc-0007A5-Rk; Tue, 19 Aug 2025 05:14:50 -0400
+	id 1uoIYp-0000ou-6c; Tue, 19 Aug 2025 05:23:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uoIQZ-00079E-6O
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 05:14:47 -0400
-Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uoIQX-0005Ob-D7
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 05:14:46 -0400
-Received: by mail-yb1-xb2c.google.com with SMTP id
- 3f1490d57ef6-e94d86cae3aso1330350276.3
- for <qemu-devel@nongnu.org>; Tue, 19 Aug 2025 02:14:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755594884; x=1756199684; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=CESW7VGCTTHnAq7au0SyavWSIW2u3mzYgkLlj/DVA/Y=;
- b=mfS28n740q1lhBnmPCAUsdCPzxWTdfsLmmxww686aSplUCHdZlrdcK/KdggItA9Q5i
- v7b3AYd3bsskH2mb8Lonq2xzwTi3mBAs0G1/ijVv4fqxmqft6ZgqEjmTn5cgt91Ze5oD
- p8rvKboUWM6GvhTkUeM3FPEhOFcj7X6h4Cyyf0Sg2hB1yPNsGCVZrw79p5HOMYo2tsNs
- q4GL3vEwGwdV6eA7e1ZRP06OQwLtAQaSnoZz3thgiGfkBz/xqRZeuR4ETiLJAb02B52D
- upzm0NVr9Rw5C0hCtwRxhadvza5KCKJqCT2csHXXpR8EHxTq3sZCHYp1U5nnXaEKX3Iu
- KosA==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uoIYl-0000oY-RA
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 05:23:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uoIYj-0006TM-3Z
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 05:23:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1755595387;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=xBcXX6og9tYcPyrAzUBTB+eoBsY0fFhXf8lmvu8EFfw=;
+ b=dHMbrfeXUQwAhXzwpUpzfIi4s1GWpvqZQqWMvMR8tP16FM4BS99lwqmlKj1xCADqX0BvVj
+ 9H3RmlEkVrnyfEqCU1hmwoKEAlG692brh/QPn9SB47A+b/Va4OeJkWnxNzHHEh7NpWMOHk
+ FMh5Tr4xTjtxU8BJslAv2WEVSDSNuZU=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-329-ICZlxFIfM2az8C-RUpHV_Q-1; Tue, 19 Aug 2025 05:23:03 -0400
+X-MC-Unique: ICZlxFIfM2az8C-RUpHV_Q-1
+X-Mimecast-MFC-AGG-ID: ICZlxFIfM2az8C-RUpHV_Q_1755595381
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-45a1b0cc989so29545855e9.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Aug 2025 02:23:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755594884; x=1756199684;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1755595381; x=1756200181;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=CESW7VGCTTHnAq7au0SyavWSIW2u3mzYgkLlj/DVA/Y=;
- b=JLrwshrivigJThmXEOtiH1Vna5K/d+/fh4vihFMGMOHXDp1j0KPSNNfeg8JJqGYoJx
- FO/ncbZW7ZD/T5jNvNFK0ffWuly1+QKm0dhVxCvZ8/zArdbPvhrVPauLrxkniZjF7I+W
- Ez4N14/0ZtPVVkZ0r2c2z4yRpx6G7D++GevKUbo0g7s27uclR32pbkUj353mlWBwqRbt
- Pkqtgyj7Hgt+PB4DdoyOb2QJJXWeBRfc08ZeRopNsZBGoWLx0NNvUF1etwitq+7wBCcB
- 0Ls2L/p97R0HqxqLoUkU5xr8U6Zyu+QTcJZopvdNj+mE+bYTlU9P9CyHr9SKtNIK7I8f
- HEsw==
-X-Gm-Message-State: AOJu0YwI029D5oz+XH99q3OOz/ihm6aKfDSRVSMsT5T4ynTWEhFCbzxG
- PsE7XC4GBAa7DnlNMV0SnmOCYHH0p0CkaA8DdZNOJK7xYwPJiILZQ9BnLLlp1sixuQN0MO0jzNL
- uw1r8phk2wLdutkrKlRbUIb8qKezHjqCoTDtJB5trHw==
-X-Gm-Gg: ASbGncvZSmPPGqnEdj7APyjMnOb7IotRSHxT5yHr9EapvPe0bG63EWrNINMZDVPlvnZ
- rn10dbDWsm96RNhaA4M3GArQ/Dh10BbgKjVnV/9xGOykxO+pboxhi1U9+a18SZQFtzkW1mEoWjA
- UohrMTLnSmSYx09snT/W3g6BOn4StUA0yd9Cn2JDCsF3iHYMv2otf2fj5CGFrma2lWq05XK6Dcr
- 6dAkoNZ
-X-Google-Smtp-Source: AGHT+IEmoCDuM3gQk98t6riysE7U9ElvVemLAg02113KVnk6EXHCYnXxiM5MnL1w9fiJQNlsO61ZSsZ1RXdpZt2IuwY=
-X-Received: by 2002:a05:6902:3202:b0:e93:3c43:543f with SMTP id
- 3f1490d57ef6-e94e613bfdfmr1882051276.3.1755594883992; Tue, 19 Aug 2025
- 02:14:43 -0700 (PDT)
+ bh=xBcXX6og9tYcPyrAzUBTB+eoBsY0fFhXf8lmvu8EFfw=;
+ b=ZNKiGqnhEGp4YON8pAnwYmnJPoCaFYdkIXlRE+x7veFc4gv6HDTbuiHOZdAEBx/knt
+ XjDqu+SWWTzDV1TgnA7SNuEIKSzhQ+/8n/AE+5YoNL9350YKH13qa+iO8xx7y+Tjkq4d
+ R4dhkGUQMEV4lKpjsUeXtikJEGernI+otw/gWF1JXWaort0rxJHqn1+J0+PRtKW6goZ1
+ guAe/C7dWoi0m5V0MkPuJSlYGaxBwRGaiMiyTuiPJWcFyg06/z/F/GxEt3HzR82z5wYa
+ jsMfhrljlS+/Lx5t3TlB5BknBY3XOaAqasL17p3fHiSMkfDzVXdzlZBhyKrmVOjkIE+e
+ 3lJg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVp5yf70/2n10yKXTq38f2lTi7HUJpOULbUb4uiCVzU4FWhgvWn6IcMPfL4W8sjLfuwhOduyYLTbr2m@nongnu.org
+X-Gm-Message-State: AOJu0YyPEMdjcfWYfTbpQZA71H/MHLbQTHg/qn626R1M29K2/ofxukqF
+ AOsLBnw6oQhMrUs/Xmf57fgb8puuYySzLBOnQ4PNbeWrcu1PlgUTI4yIJBQjyJ+lBm1zcMs6WJt
+ Ge0zh+kYYfq91F+EJQjxdTfiDmL+vcXo7j5wvUunhGK9szJyfa65Y+Yci
+X-Gm-Gg: ASbGncvoMBhbhRJU6rljYA99Ldj9ArzT37EwKDXhhUTCTKMHybLQWG0ItrHIDJcYQEn
+ BocyTIhWVo12XC86s4BC+9jPEiMuZ8BXdi8XJU/YZjI3PuTfTm9y+k9KkYafszBOj7+fq7MT05e
+ X5h4WmhPuY2gqioX8coCu8us9GOqJYfZ0P4KtFI5wjyceho1ZVJWLRooQw3ED/C9Jd6JsNrSW6E
+ XB9PVg8acr1LQBQ/GJ5CMUSuEHuaw//NX6a/nPoAlD+lgpsSL6SkHXUxDNLm70ALZh5In5PyIAR
+ pJozsPoCiW+84pCQsefIdmbln7XPO0DaR0F39oPb6a+yLUOzpruil3IHxUx4lt6TBPHQgZpcl7B
+ iBDf10qWyUsLdl3JnelzU4NjQV95GVnipP4b3fSDXE1fLRvDQMb/Ykkzs6EwIskhKCAk=
+X-Received: by 2002:a5d:5f50:0:b0:3b8:d138:41d3 with SMTP id
+ ffacd0b85a97d-3c0ec7566b9mr1344386f8f.56.1755595380839; 
+ Tue, 19 Aug 2025 02:23:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGEdEMSRo6MLpqy/PDBVt9NPFyP/aLZs5Nq8qRrF7RPRKAQDrGs915Tr/0Tb3KyRZGS0t/IHA==
+X-Received: by 2002:a5d:5f50:0:b0:3b8:d138:41d3 with SMTP id
+ ffacd0b85a97d-3c0ec7566b9mr1344354f8f.56.1755595380408; 
+ Tue, 19 Aug 2025 02:23:00 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f07:8700:71be:5385:87b8:5a98?
+ (p200300d82f07870071be538587b85a98.dip0.t-ipconnect.de.
+ [2003:d8:2f07:8700:71be:5385:87b8:5a98])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3c074d43ba5sm2994305f8f.22.2025.08.19.02.22.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Aug 2025 02:22:59 -0700 (PDT)
+Message-ID: <dab1805a-aea6-42a5-bdbf-a58a0b87d868@redhat.com>
+Date: Tue, 19 Aug 2025 11:22:58 +0200
 MIME-Version: 1.0
-References: <20250811193654.4012878-1-vacha.bhavsar@oss.qualcomm.com>
- <20250811193654.4012878-2-vacha.bhavsar@oss.qualcomm.com>
-In-Reply-To: <20250811193654.4012878-2-vacha.bhavsar@oss.qualcomm.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 19 Aug 2025 10:14:32 +0100
-X-Gm-Features: Ac12FXwBV9AMK0jSwH-MAYhFWdW4E4idjQJrI9VqRKFN0uXsr5KZBtcwinaLDjg
-Message-ID: <CAFEAcA8NxNssTqcE5rgeZfetVKbtHXkGEVLfHP0xyFYmayPU1A@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] target/arm: Increase MAX_PACKET_LENGTH for SME ZA
-To: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2c.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/8] vhost-user: Add VirtIO Shared Memory map request
+To: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, hi@alyssa.is, jasowang@redhat.com, 
+ Laurent Vivier <lvivier@redhat.com>, dbassey@redhat.com,
+ Stefano Garzarella <sgarzare@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, stefanha@redhat.com, stevensd@chromium.org,
+ Fabiano Rosas <farosas@suse.de>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, slp@redhat.com
+References: <20250818100353.1560655-1-aesteve@redhat.com>
+ <20250818100353.1560655-2-aesteve@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250818100353.1560655-2-aesteve@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,59 +161,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 11 Aug 2025 at 20:37, Vacha Bhavsar
-<vacha.bhavsar@oss.qualcomm.com> wrote:
->
-> This patch increases the value of the MAX_PACKET_LEGNTH to
-> 131104 from 4096 to allow the GDBState.line_buf to be large enough
-> to accommodate the full contents of the SME ZA storage when the
-> vector length is maximal. This is in preparation for a related
-> patch that allows SME register visibility through remote GDB
-> debugging.
->
-> Signed-off-by: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-> ---
-> Changes since v4:
-> - the value for MAX_PACKET_LENGTH is changed from 131100 to
-> 131104 to align with a similar update made to gdbserver
-> ---
->  gdbstub/internals.h | 22 +++++++++++++++++++++-
->  1 file changed, 21 insertions(+), 1 deletion(-)
->
-> diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-> index bf5a5c6302..87f64b6318 100644
-> --- a/gdbstub/internals.h
-> +++ b/gdbstub/internals.h
-> @@ -11,7 +11,27 @@
->
->  #include "exec/cpu-common.h"
->
-> -#define MAX_PACKET_LENGTH 4096
-> +/*
-> +* Most "large" transfers (e.g. memory reads, feature XML
-> +* transfer) have mechanisms in the gdb protocol for splitting
-> +* them. However, register values in particular cannot currently
-> +* be split. This packet size must therefore be at least big enough
-> +* for the worst-case register size. Currently that is Arm SME
-> +* ZA storage with a 256x256 byte value. We also must account
-> +* for the conversion from raw data to hex in gdb_memtohex(),
-> +* which writes 2 * size bytes, and for other protocol overhead
-> +* including command, register number and checksum which add
-> +* another 4 bytes of overhead. However, to be consistent with
-> +* the changes made in gdbserver to address this same requirement,
-> +* we add a total of 32 bytes to account for protocol overhead
-> +* (unclear why specifically 32 bytes), bringing the value of
-> +* MAX_PACKET_LENGTH to 2 * 256 * 256 + 32 = 131104.
-> +*
-> +* The commit making this change for gdbserver can be found here:
-> +* https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=
-> +* b816042e88583f280ad186ff124ab84d31fb592b
-> +*/
-> +#define MAX_PACKET_LENGTH 131104
+On 18.08.25 12:03, Albert Esteve wrote:
+> Add SHMEM_MAP/UNMAP requests to vhost-user for
+> dynamic management of VIRTIO Shared Memory mappings.
+> 
+> This implementation introduces VhostUserShmemObject
+> as an intermediate QOM parent for MemoryRegions
+> created for SHMEM_MAP requests. This object
+> provides reference-counted lifecycle management
+> with automatic cleanup.
+> 
+> This request allows backends to dynamically map
+> file descriptors into a VIRTIO Shared Memory
+> Regions identified by their shmid. Maps are created
+> using memory_region_init_ram_device_ptr() with
+> configurable read/write permissions, and the resulting
+> MemoryRegions are added as subregions to the shmem
+> container region. The mapped memory is then advertised
+> to the guest VIRTIO drivers as a base address plus
+> offset for reading and writting according
+> to the requested mmap flags.
+> 
+> The backend can unmap memory ranges within a given
+> VIRTIO Shared Memory Region to free resources.
+> Upon receiving this message, the frontend removes
+> the MemoryRegion as a subregion and automatically
+> unreferences the associated VhostUserShmemObject,
+> triggering cleanup if no other references exist.
+> 
+> Error handling has been improved to ensure consistent
+> behavior across handlers that manage their own
+> vhost_user_send_resp() calls. Since these handlers
+> clear the VHOST_USER_NEED_REPLY_MASK flag, explicit
+> error checking ensures proper connection closure on
+> failures, maintaining the expected error flow.
+> 
+> Note the memory region commit for these
+> operations needs to be delayed until after we
+> respond to the backend to avoid deadlocks.
 
+Just a general comment: feel free to use up to 72 chars per line. 
+Currently you're just a bit over 50.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+-- 
+Cheers
 
-thanks
--- PMM
+David / dhildenb
+
 
