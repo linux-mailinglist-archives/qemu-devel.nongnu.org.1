@@ -2,49 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851E9B2C939
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 18:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDCFAB2C56A
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 15:25:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoOxF-00067o-SZ; Tue, 19 Aug 2025 12:13:03 -0400
+	id 1uoMKQ-0006Qt-H6; Tue, 19 Aug 2025 09:24:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chao.liu@zevorn.cn>)
- id 1uoMSh-0001E4-Ke; Tue, 19 Aug 2025 09:33:15 -0400
-Received: from [115.124.28.65] (helo=out28-65.mail.aliyun.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chao.liu@zevorn.cn>)
- id 1uoMSc-00025y-DS; Tue, 19 Aug 2025 09:33:15 -0400
-Received: from ZEVORN-PC(mailfrom:chao.liu@zevorn.cn
- fp:SMTPD_---.eJvbAZK_1755609824 cluster:ay29) by smtp.aliyun-inc.com;
- Tue, 19 Aug 2025 21:23:45 +0800
-From: Chao Liu <chao.liu@zevorn.cn>
-To: richard.henderson@linaro.org, paolo.savini@embecosm.com,
- ebiggers@kernel.org, dbarboza@ventanamicro.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, Chao Liu <chao.liu@yeah.net>,
- Chao Liu <chao.liu@zevorn.cn>
-Subject: [PATCH v5 2/2] tests/tcg/riscv64: Add test for vlsseg8e32 instruction
-Date: Tue, 19 Aug 2025 21:23:40 +0800
-Message-ID: <bcce2c86e72882c49de87a1a7473c42b64d4dff1.1755609029.git.chao.liu@zevorn.cn>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1755609029.git.chao.liu@zevorn.cn>
-References: <cover.1755609029.git.chao.liu@zevorn.cn>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uoMK8-0006PZ-Gl
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 09:24:25 -0400
+Received: from mail-yb1-xb2b.google.com ([2607:f8b0:4864:20::b2b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uoMK5-0001A4-IE
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 09:24:23 -0400
+Received: by mail-yb1-xb2b.google.com with SMTP id
+ 3f1490d57ef6-e94eec0de32so317201276.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Aug 2025 06:24:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1755609859; x=1756214659; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=LMinEjCbiigB/Wv0BKtvA8XYhpLXZtX+Rgam8GgX/kE=;
+ b=BosDZxKRVInUU9y+5GeWcfesizZWOQkLl7VEIehuP3hntHKlrPPaKPG38c8fZmqSaL
+ vvrH+FLnn6bC0f2rUQec0uEJ5OVOWe/pzWCbywzPoga9pi46EN0MO8RKpAoLuh3oJNWE
+ EAgOdcWrWLPdle//7aErP4SQ5PnD2jbRuAjSrsJJ2wo9XqNzHhFdWzvV/fan4e/yyB1l
+ spIZEwXdEJp32ql308NVq1CspJhIwKps9P/SM1oNHp9PHH/+3pcbwgtT02fdKoBmludO
+ eyPrxn7dP9kcWF77up302zHuI5LsY03Va7eEZ0ji5XtZ19RiGWGI2wgouLhlSjlrsOij
+ lCAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1755609859; x=1756214659;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LMinEjCbiigB/Wv0BKtvA8XYhpLXZtX+Rgam8GgX/kE=;
+ b=rW/WR3lgAER1vWCjpqnsthwf5jlSFD2ePJARBkAw1nn7wsZrsdJhGhpL2eCHjFwxgQ
+ 3Fa5+j6XkqtXD/UARx0JTg6D4Az6MlmLp+VrGmxxcXjHxFuUv85X1uSQ7E45hWxBBAsc
+ lE+3Egbt30g5oLr/EFfRXlqUrkYKY5Wb2zgBkhzcy4yvCb/q3p/VVvS89dZd8yN8ao9M
+ SIHH3DLHIbsBxljYh2TGE+n2hhZOO2RJxJyDr5T9vx8gmAjlC9VwVWfi1dVwZ0pmFy9o
+ rPH8HQ7rM+y1+1oihgOTpAJ4EqNzxc7pcJY2oDinZsLSA94xGl9VY8zMI9ltipQci2rb
+ IvAQ==
+X-Gm-Message-State: AOJu0Yx43B8qa+JYEA8G7ioC3Qek8C6+q1fL2DVebab1BhjRDXRmHIyV
+ ReKNZJgXg5vUzRVGOGawx8Hhj9hU/KoSielA1lcpZ87aaqXDje2na7be0breOlH0wEZVYgtLK6j
+ JJGb4R9l3bm2DISMPFkhkoHutIRSpAw0+48BbFIoH8A==
+X-Gm-Gg: ASbGncuhicMbjEI3mxQnkG3gt1qct6OY7AzKcDUxN3EzZ1BLuVDVeZIl6dMpZcY26D8
+ fMPKQH6OO5hJ1Kcal24bIyvlJQivXGyOXqzYqjCLbigDExDUe5/A/HiesQFawy+7zKi12yzONaz
+ ZvgrULuY1IU5NWzmZSoXfOb+/u3afIqu9lw/G8PNE5KpIlrjEX+WdvHyyeZW07YE5I7BBUi1vI0
+ wO//5Ejak2nj/6IBEw=
+X-Google-Smtp-Source: AGHT+IHji7XyJ4OvwbYw1BL2nsbRVYRNV54vGoPjANdobtK7tAAHvelLrFU0o9gRQ5y3QWVBlPE440BViy5VF11ZPFQ=
+X-Received: by 2002:a05:6902:318a:b0:e93:3f08:86e6 with SMTP id
+ 3f1490d57ef6-e94e6108048mr3116783276.5.1755609859234; Tue, 19 Aug 2025
+ 06:24:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 115.124.28.65 (deferred)
-Received-SPF: pass client-ip=115.124.28.65; envelope-from=chao.liu@zevorn.cn;
- helo=out28-65.mail.aliyun.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=no autolearn_force=no
+References: <20250808065419.47415-1-mohamed@unpredictable.fr>
+ <20250808065419.47415-16-mohamed@unpredictable.fr>
+In-Reply-To: <20250808065419.47415-16-mohamed@unpredictable.fr>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 19 Aug 2025 14:24:07 +0100
+X-Gm-Features: Ac12FXws_rBETXjrcWqjmDL6MGULYbrN9gXbrfcfhBvnHNbO1IbmgxOG8yS-K-M
+Message-ID: <CAFEAcA9iQnrKWXPXw2wG3c6gmevOMFQtt48HsJdx8GZz2sd+4Q@mail.gmail.com>
+Subject: Re: [PATCH v5 15/18] whpx: arm64: implement -cpu host
+To: Mohamed Mediouni <mohamed@unpredictable.fr>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Igor Mammedov <imammedo@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan <phil@philjordan.eu>,
+ Ani Sinha <anisinha@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Alexander Graf <agraf@csgraf.de>,
+ Mads Ynddal <mads@ynddal.dk>, 
+ Sunil Muthuswamy <sunilmut@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org, 
+ Yanan Wang <wangyanan55@huawei.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 19 Aug 2025 12:12:32 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,162 +107,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chao Liu <chao.liu@yeah.net>
+On Fri, 8 Aug 2025 at 07:55, Mohamed Mediouni <mohamed@unpredictable.fr> wrote:
+>
+> OpenProcessorKey and ReadRegU64 adapted from:
+> https://github.com/FEX-Emu/FEX/blob/e6de17e72ef03aa88ba14fa0ec13163061608c74/Source/Windows/Common/CPUFeatures.cpp#L62
+>
+> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 
-This case, it copied 64 bytes from a0 to a1 with vlsseg8e32.
+> +    /*
+> +     * MIDR_EL1 is not a global register on WHPX
+> +     * As such, read the CPU0 from the registry to get a consistent value.
+> +     * Otherwise, on heterogenous systems, you'll get variance between CPUs.
+> +     */
+> +    HKEY ProcessorKey = OpenProcessorKey();
 
-Signed-off-by: Chao Liu <chao.liu@zevorn.cn>
----
- tests/tcg/riscv64/Makefile.softmmu-target |   8 +-
- tests/tcg/riscv64/test-vlsseg8e32.S       | 107 ++++++++++++++++++++++
- 2 files changed, 113 insertions(+), 2 deletions(-)
- create mode 100644 tests/tcg/riscv64/test-vlsseg8e32.S
 
-diff --git a/tests/tcg/riscv64/Makefile.softmmu-target b/tests/tcg/riscv64/Makefile.softmmu-target
-index 3ca595335d..384c291554 100644
---- a/tests/tcg/riscv64/Makefile.softmmu-target
-+++ b/tests/tcg/riscv64/Makefile.softmmu-target
-@@ -7,14 +7,14 @@ VPATH += $(TEST_SRC)
- 
- LINK_SCRIPT = $(TEST_SRC)/semihost.ld
- LDFLAGS = -T $(LINK_SCRIPT)
--CFLAGS += -g -Og
-+CFLAGS += -march=rv64gcv -mabi=lp64d -g -Og
- 
- %.o: %.S
- 	$(CC) $(CFLAGS) $< -Wa,--noexecstack -c -o $@
- %: %.o $(LINK_SCRIPT)
- 	$(LD) $(LDFLAGS) $< -o $@
- 
--QEMU_OPTS += -M virt -display none -semihosting -device loader,file=
-+QEMU_OPTS += -M virt -cpu rv64,v=true -display none -semihosting -device loader,file=
- 
- EXTRA_RUNS += run-issue1060
- run-issue1060: issue1060
-@@ -24,5 +24,9 @@ EXTRA_RUNS += run-test-mepc-masking
- run-test-mepc-masking: test-mepc-masking
- 	$(call run-test, $<, $(QEMU) $(QEMU_OPTS)$<)
- 
-+EXTRA_RUNS += run-vlsseg8e32
-+run-vlsseg8e32: test-vlsseg8e32
-+	$(call run-test, $<, $(QEMU) $(QEMU_OPTS)$<)
-+
- # We don't currently support the multiarch system tests
- undefine MULTIARCH_TESTS
-diff --git a/tests/tcg/riscv64/test-vlsseg8e32.S b/tests/tcg/riscv64/test-vlsseg8e32.S
-new file mode 100644
-index 0000000000..bbc79d5e8d
---- /dev/null
-+++ b/tests/tcg/riscv64/test-vlsseg8e32.S
-@@ -0,0 +1,107 @@
-+#
-+# QEMU RISC-V Vector Strided Load Instruction testcase
-+#
-+# Copyright (c) 2025 Chao Liu chao.liu@yeah.net
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+	.option	norvc
-+
-+	.section .data
-+	.align 4
-+source_data:
-+	.asciz "Test the vssseg8e32 insn by copy 64b and verifying correctness."
-+	.equ source_len, 64
-+
-+	.text
-+	.global _start
-+_start:
-+	lla	t0, trap
-+	csrw	mtvec, t0
-+
-+enable_rvv:
-+
-+	li	x15, 0x800000000024112d
-+	csrw	0x301, x15
-+	li	x1, 0x2200
-+	csrr	x2, mstatus
-+	or	x2, x2, x1
-+	csrw	mstatus, x2
-+
-+rvv_test_func:
-+	la	a0, source_data
-+	li	a1, 0x80020000
-+	vsetivli	zero, 1, e32, m1, ta, ma
-+	li	t0, 64
-+
-+	vlsseg8e32.v	v0, (a0), t0
-+	addi	a0, a0, 32
-+	vlsseg8e32.v	v8, (a0), t0
-+
-+	vssseg8e32.v	v0, (a1), t0
-+	addi	a1, a1, 32
-+	vssseg8e32.v	v8, (a1), t0
-+
-+compare_start:
-+	la	a0, source_data
-+	li	a1, 0x80020000
-+	li	t0, 0
-+	li	t1, source_len
-+
-+compare_loop:
-+	# when t0 >= len, compare end
-+	bge	 t0, t1, compare_done
-+
-+	lb	t2, 0(a0)
-+	lb	t3, 0(a1)
-+	bne	t2, t3, compare_fail
-+
-+	addi	a0, a0, 1
-+	addi	a1, a1, 1
-+	addi	t0, t0, 1
-+	j	compare_loop
-+
-+compare_done:
-+	# compare ok, return 0
-+	li	a0, 0
-+	j	_exit
-+
-+compare_fail:
-+	# compare failed, return 2
-+	li	a0, 2
-+	j	_exit
-+
-+trap:
-+	# When an instruction traps, compare it to the insn in memory.
-+	csrr	t0, mepc
-+	csrr	t1, mtval
-+	lwu	t2, 0(t0)
-+	bne	t1, t2, fail
-+
-+	# Skip the insn and continue.
-+	addi	t0, t0, 4
-+	csrw	mepc, t0
-+	mret
-+
-+fail:
-+	li	a0, 1
-+
-+# Exit code in a0
-+_exit:
-+	lla	a1, semiargs
-+	li	t0, 0x20026	# ADP_Stopped_ApplicationExit
-+	sd	t0, 0(a1)
-+	sd	a0, 8(a1)
-+	li	a0, 0x20	# TARGET_SYS_EXIT_EXTENDED
-+
-+	# Semihosting call sequence
-+	.balign	16
-+	slli	zero, zero, 0x1f
-+	ebreak
-+	srai	zero, zero, 0x7
-+	j	.
-+
-+	.data
-+	.balign	16
-+semiargs:
-+	.space	16
--- 
-2.50.1
+Can you follow the QEMU coding style, please (here and elsewhere)?
+Variables and function names should be all lower case,
+and variable declarations go at the start of a C code
+block, not in the middle of one.
 
+thanks
+-- PMM
 
