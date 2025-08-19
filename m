@@ -2,97 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA84AB2C7E2
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 17:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 230C6B2C7E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 17:05:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoNrV-0001hr-UU; Tue, 19 Aug 2025 11:02:59 -0400
+	id 1uoNsy-0002MO-DG; Tue, 19 Aug 2025 11:04:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uoNrO-0001gf-U4
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 11:02:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uoNrM-00037E-2a
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 11:02:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755615763;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=kQ9lT1OjonXDE7ojtwUvyJ+YuUi3YecpWmE7wW/xZos=;
- b=DinsaILk7PRzavFSdVf2GkQyD6UCMQTMhBLfiPqWFxI9rDPzChe3uZvOTxQKyoXlqC6+yH
- G0FT9Gfa9sgSKv+KTbZ4UeTseqR9tUtIZTWEyqjUiUin8dRui6jbCgPKu0a2QCzL7RPsw8
- Kt9MrzgIVEEeAU8/SK2t00EkgLwzwTQ=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-256-9h8BQ-7YNfyi4h1iDxF53g-1; Tue, 19 Aug 2025 11:02:39 -0400
-X-MC-Unique: 9h8BQ-7YNfyi4h1iDxF53g-1
-X-Mimecast-MFC-AGG-ID: 9h8BQ-7YNfyi4h1iDxF53g_1755615758
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3b9dc5c2ba0so2520441f8f.1
- for <qemu-devel@nongnu.org>; Tue, 19 Aug 2025 08:02:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uoNsv-0002K6-47
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 11:04:25 -0400
+Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uoNst-0003JT-05
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 11:04:24 -0400
+Received: by mail-yb1-xb2e.google.com with SMTP id
+ 3f1490d57ef6-e934c8f9757so2436547276.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Aug 2025 08:04:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1755615862; x=1756220662; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=IGfn9RS1Bu04ZR6L8dA94ph9BmQBYpiMXe5Y+YWdxlI=;
+ b=mESmMqyVKD/1+tarjAXZNI1NeYLA7xfhFVKGVC8R8R7g2UUBRuqvw6edx7eBxGVXWa
+ ayAkWwF4msiGS+DQ5f5UtX5LKZeUOg4gdHcNgGRSW7gILVbbpRjAkQLNclxTGc2uWObg
+ cUoRydw9nHn26u+FAICgpvD5bmPbUSpIMFtYLNUU4aePYOgMdlhrqmGXnMEc5GY+CmR3
+ /McfEoEsl6z0AMSKELBpvtdG3tmFzlbxMPx/otB/Nn75yn/oezDK9bDQDZol1hlBW4+K
+ UAzfXGSiN9CZf70hO5LCE+yxhp71fqvYvyqPDfY5uo9mC9HeudnIyx0NyW4sKgihPZ3U
+ xeqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755615758; x=1756220558;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1755615862; x=1756220662;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=kQ9lT1OjonXDE7ojtwUvyJ+YuUi3YecpWmE7wW/xZos=;
- b=fNmymtp4MoibB3Yyf2pkENe9i3o3rncKVHqbZ6EyaDmb535gIPwY04yMTJ+neN/ZZO
- mw33EZ1uTSs6ILOrI1/dGw3ezYQOUr+b58ownWjgXV+XzfWphnXn4sVWg/EkhjC97v2I
- YwdkDNAIZy2MfjhwDv0bQRC88ybgj+km6C+0kMwTEHsw4qI3bO/9EUTuOL3RB1xqU6ZK
- b46jJ915EwnmtZ4gNVPqkEIrG7lTrZqZLYBgyrKgbHp0CehxzdFfZh5TagLKaiiEXQX0
- Jhz5ZEJ9bvwNkQkrwshzOlMQ4obyREamxi+YyZjaPowPOB3TS53lwkzdu8Rvcj7+K8uG
- HrSA==
-X-Gm-Message-State: AOJu0YyhO0t75w9MgH2tATUKL7W51ht7gSVY5OYkBJq1nNilqGlhGe+6
- xfAesjDPeZ2swZaRn9GT9dVkkmQZ97prPGIAcU915E1tBfTtoZJN2kh0iImTcd/vedHyrQyx708
- YAebAxjgLbAjw6SUf4TckiGY/zeyhm/fpFsi7R4eO8TYsJmnKC+TBSRdDCZW7vOcKE0fpfwE6FE
- qFLrm8K6kSLqZLotv0JVqVGanKCGRzPjKZhsfGzdGZ
-X-Gm-Gg: ASbGncvKAwLUwt0n8Iw1UlcahhutODMS9IrxK3h6hJhmA8u87bIjvdrwGHDchNp99V8
- YMh+q9lK9NBy4ZHcO8N+Vg9WwuOYGI7ac/KrIfwTjL69lWit7S/6LBXXjtL9rFx0LHiNGBQDT6C
- 4zc8Ahs0ArnUd2qgzmko/wEAWOzxzmPB05pnFpd5qcZxQ+THarwVzXCJIe0TMyjtAKDYIKdzU27
- +YSt0gwDBaWtgX+yNj1UM3/e6ro3PpRTF8RcnGYVrHtAUQGyychqTiKITpsnyYnQAojLsndPHmp
- kduEuFS+QWEEyF3ANu8azrxvwCeLsAtV3ybD03F0cQ==
-X-Received: by 2002:a05:6000:288d:b0:3b9:53c:24a4 with SMTP id
- ffacd0b85a97d-3c0ec660816mr2218555f8f.39.1755615757687; 
- Tue, 19 Aug 2025 08:02:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEbWaEW2Y+DdROqNsohhfADL+SQQamwgdgzbrFYgcLJ7bN0NnupxqVAuYZMLcGp9S8ytD51qQ==
-X-Received: by 2002:a05:6000:288d:b0:3b9:53c:24a4 with SMTP id
- ffacd0b85a97d-3c0ec660816mr2218514f8f.39.1755615757138; 
- Tue, 19 Aug 2025 08:02:37 -0700 (PDT)
-Received: from [192.168.10.3] ([151.95.56.250])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3c077789c92sm3954741f8f.52.2025.08.19.08.02.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Aug 2025 08:02:36 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com,
- "Christian A. Ehrhardt" <christian.ehrhardt@canonical.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH 10.1?] Revert "i386/cpu: Warn about why CPUID_EXT_PDCM is not
- available"
-Date: Tue, 19 Aug 2025 17:02:35 +0200
-Message-ID: <20250819150235.785559-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.50.1
+ bh=IGfn9RS1Bu04ZR6L8dA94ph9BmQBYpiMXe5Y+YWdxlI=;
+ b=iEDVXVqH/Lta97X4LGsHrUYDjmh4mN3MIOWGqE3oEfA+fokKCD0JOwK96cBX/YclKe
+ 478c55jilZ/fsQaMdsmrNZ/OBW+m0+jwNsVYx3sqzU0tfSKrXAOLVQdEJQDg/xrkNbXg
+ v8MSdDvdst/wSq5uZ5xAcDakmCXv6tibHFuhjHp3wZbrnlCEN2nH/Q1laltvmaFb55mO
+ JJt2lV3Rps8EXjkfx/kiAegMiiFJSfHyhH+mGdKooHdF3z4yAT9fXC8H75swwUKBNiE8
+ Ra8DpruScqcCaRbFS+yWQOkpYqyBIqUV33CLxHcCAv6LZJzcGPeTBUXF37ZtOygUPNdk
+ RqWw==
+X-Gm-Message-State: AOJu0YxqYONkefG2SwVSD/gGSQI+EoP3Xqk7a1MkwfY7vq8vicEkv/El
+ Bbl6LVeSYtkO38PO1IT60L7iX3V2h+cW1eZVIg6beHmeBzYKf/Y4D0XJfKP5QoGbQAeNJMzHkka
+ EJ8fzcK6PPtpm8ZkIIg1AFY856sjU2g5guu7SQqowrA==
+X-Gm-Gg: ASbGncs6SR4SPhqns0fo5yEVvo0rXRZIOhiHdCGdyJgRrTYUE18g7xvl47sAzFe5m67
+ av7KRqlFBTE/RCp8waBLC/JkzN0qDUXhpsKO6AiMVuhi67DYTCaWZ/aU3Kugd6gS95yuTy+lVQS
+ xbck5x0ZpKT3t938EDQ5gRX5lpkMFOvu0WbzHHhHvkKl39aiiBcqaVyhFp9xTPqOhxmSQif0Gs1
+ fs2baJ7HJoB5qGF/JI=
+X-Google-Smtp-Source: AGHT+IH9GLN3G7YILzmKcSzrFNCNy/Oe5I0Z0zjCrMTijTBTrUzhcs0i5wnIdGLCPRBVDpnJ+gyyiWxEXHaK7dxZskM=
+X-Received: by 2002:a05:6902:154d:b0:e93:47b2:752 with SMTP id
+ 3f1490d57ef6-e94e62a4c16mr3666207276.34.1755615861581; Tue, 19 Aug 2025
+ 08:04:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20250808065419.47415-1-mohamed@unpredictable.fr>
+ <20250808065419.47415-9-mohamed@unpredictable.fr>
+In-Reply-To: <20250808065419.47415-9-mohamed@unpredictable.fr>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 19 Aug 2025 16:04:09 +0100
+X-Gm-Features: Ac12FXzSBe1DHLCX_ytlkJ9BuV9ZQ4rc-mxnEGrgfcl1f9gTnywcpZ_XiLR_gmA
+Message-ID: <CAFEAcA_ZokV90NRuWY7PGgk_Jwh-ZfZfNO+Ubss0F8AWDBTwoQ@mail.gmail.com>
+Subject: Re: [PATCH v5 08/18] whpx: interrupt controller support
+To: Mohamed Mediouni <mohamed@unpredictable.fr>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Igor Mammedov <imammedo@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan <phil@philjordan.eu>,
+ Ani Sinha <anisinha@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Alexander Graf <agraf@csgraf.de>,
+ Mads Ynddal <mads@ynddal.dk>, 
+ Sunil Muthuswamy <sunilmut@microsoft.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org, 
+ Yanan Wang <wangyanan55@huawei.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,38 +107,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit 00268e00027459abede448662f8794d78eb4b0a4.
-(The only conflict is in the !is_tdx_vm() part of the condition,
-which is safe to keep).
+On Fri, 8 Aug 2025 at 07:54, Mohamed Mediouni <mohamed@unpredictable.fr> wrote:
+>
+> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+>
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-mark_unavailable_features() actively blocks usage of the feature,
-so it is a functional change, not merely a emitting warning.
-The commit was intended to merely warn if PDCM was enabled when
-the performance counters are not, so revert it.
 
-Reported-by: Christian A. Ehrhardt <christian.ehrhardt@canonical.com>
-Analyzed-by: Daniel P. Berrangé <berrange@redhat.com>
-Analyzed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/cpu.c | 3 ---
- 1 file changed, 3 deletions(-)
+> +static void whpx_gicv3_put_cpu(CPUState *cpu_state, run_on_cpu_data arg)
+> +{
+> +}
+> +
+> +static void whpx_gicv3_put(GICv3State *s)
+> +{
+> +    int ncpu;
+> +
+> +    whpx_gicv3_check(s);
+> +
+> +    for (ncpu = 0; ncpu < s->num_cpu; ncpu++) {
+> +        run_on_cpu_data data;
+> +        data.host_ptr = &s->cpu[ncpu];
+> +        run_on_cpu(s->cpu[ncpu].cpu, whpx_gicv3_put_cpu, data);
+> +    }
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 673f8583c80..6d85149e6e1 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -8946,9 +8946,6 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
- 
-     /* PDCM is fixed1 bit for TDX */
-     if (!cpu->enable_pmu && !is_tdx_vm()) {
--        mark_unavailable_features(cpu, FEAT_1_ECX,
--                                  env->user_features[FEAT_1_ECX] & CPUID_EXT_PDCM,
--                                  "This feature is not available due to PMU being disabled");
-         env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
-     }
- 
--- 
-2.50.1
+Why are we calling run_on_cpu() and telling it to do nothing?
 
+Also, run_on_cpu() implicitly drops the big kernel lock --
+I'm not sure that is valid to do from the pre-save/post-load
+routines or in a reset handler.
+
+thanks
+-- PMM
 
