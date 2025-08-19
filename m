@@ -2,101 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0941EB2CE8A
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 23:31:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B388DB2CE86
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 23:30:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoTty-0007Qu-Ut; Tue, 19 Aug 2025 17:29:55 -0400
+	id 1uoTu2-0007So-FP; Tue, 19 Aug 2025 17:29:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1uoTtx-0007QJ-AH; Tue, 19 Aug 2025 17:29:53 -0400
+ id 1uoTu0-0007Rw-MH; Tue, 19 Aug 2025 17:29:56 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1uoTtv-0006pk-KN; Tue, 19 Aug 2025 17:29:53 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57JLIHBZ014523;
- Tue, 19 Aug 2025 21:29:49 GMT
+ id 1uoTtz-0006qO-0j; Tue, 19 Aug 2025 17:29:56 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57JJ8YEM018279;
+ Tue, 19 Aug 2025 21:29:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=F6msv1cPb6ggL+C6G
- 0VWSwBOirJ0oTMBqDxuAz9Aybs=; b=r62kEYs/+m1wnIWRsQTV3E+2Y3S5IMOLf
- 2mkvldsg3/Tg5l3CfWrZCLemB3RKIpKLSGZWW9Oeqxzhiq4wuv8ii2H8YwCEuhSy
- /DAU6IMk9Jdaq2JQMmGc1nXIC69vYFn6kB8LFo8VVdJ7BGjqjbol1//Pda5pw4W4
- GNze4AOHY1Rnw7AN+b5W5eIc2dqel8TSroohnmKa5fmskStB8LVG4PXrY5evHxMo
- ngYaUz5Cm/PP/zlXh/OFYxtj6bLtWBfXi3ckivGin1CUJIibCsbRzHiuKFOgASQc
- igeTAXhk8vGDmiSosMKPz1SB2w/oA5jB3uubGAmtQcGuHbBb9FCdg==
+ :mime-version:references:subject:to; s=pp1; bh=aN023FXOP01KI1YVM
+ 08x3W37aBtLvsDDKGGQ9kNvh8U=; b=tCdYZDFlX/PGlMS1j2/YxfEW3pt0JXpMI
+ qosUrTePOpsJLABVMkfyRTKtkKsHkkbHuVAInc4yUSEpW8Ee+Jh4CmRrw13Ln6rN
+ tF5uiOEZem4WHJM/3jJ68xfbo0ypJymsi6rL3sUjxshA5jy8UQktYGWF1gxWG4qN
+ g8GBaZ7c5L82fWGc2nSPFmxPfHRhfiw9mjjfFMTchKEDeBCnS4Kj3mC64w8c8eR4
+ x9b8mFmfmmFe99cA5QQybP6Ar1Ie0TJ5juO3S8XgG2nf7kvDMOXD61iwkvlERct0
+ tEdloHYZmM5+jzFCIFVA25nZwZuzawCx8Fp1lFpAws8XPm70oZ0Mw==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48n12ng17w-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jge40xa2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Aug 2025 21:29:49 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57JLTngt004222;
- Tue, 19 Aug 2025 21:29:49 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48n12ng17v-1
+ Tue, 19 Aug 2025 21:29:53 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57JLERge016511;
+ Tue, 19 Aug 2025 21:29:53 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48jge40x9y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Aug 2025 21:29:49 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57JJ70gP027184;
- Tue, 19 Aug 2025 21:29:48 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48my4w0egv-1
+ Tue, 19 Aug 2025 21:29:52 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57JJ9BJJ032003;
+ Tue, 19 Aug 2025 21:29:52 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48my5y0e42-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Aug 2025 21:29:48 +0000
+ Tue, 19 Aug 2025 21:29:52 +0000
 Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
  [10.39.53.233])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 57JLTlTo20316724
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 57JLTo5028770868
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Aug 2025 21:29:47 GMT
+ Tue, 19 Aug 2025 21:29:51 GMT
 Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 06BFB5804E;
- Tue, 19 Aug 2025 21:29:47 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id C718B58056;
+ Tue, 19 Aug 2025 21:29:50 +0000 (GMT)
 Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 37B785803F;
- Tue, 19 Aug 2025 21:29:46 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id EF7815803F;
+ Tue, 19 Aug 2025 21:29:49 +0000 (GMT)
 Received: from mglenn-KVM.. (unknown [9.10.239.198])
  by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 19 Aug 2025 21:29:46 +0000 (GMT)
+ Tue, 19 Aug 2025 21:29:49 +0000 (GMT)
 From: Glenn Miles <milesg@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: Glenn Miles <milesg@linux.ibm.com>, qemu-ppc@nongnu.org, clg@redhat.com,
  npiggin@gmail.com, harshpb@linux.ibm.com, thuth@redhat.com,
  rathc@linux.ibm.com, richard.henderson@linaro.org
-Subject: [PATCH 3/4] hw/ppc: Add a test machine for the IBM PPE42 CPU
-Date: Tue, 19 Aug 2025 16:28:47 -0500
-Message-ID: <20250819212856.219932-4-milesg@linux.ibm.com>
+Subject: [PATCH 4/4] tests/functional: Add test for IBM PPE42 instructions
+Date: Tue, 19 Aug 2025 16:28:48 -0500
+Message-ID: <20250819212856.219932-5-milesg@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250819212856.219932-1-milesg@linux.ibm.com>
 References: <20250819212856.219932-1-milesg@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5OCBTYWx0ZWRfXywAOLgHv4bBx
- BlKDOgBq2Bo9WztWMOwOmLaVgcad4SnJgRo5x4NzJdUb+CdGibRaFVUNbdo6juey9gQCr+N3XXi
- UFgzBo/E3vSQrUzf6yKfPnQlcL6TB+a+7XzuTnlPJbbDLM8zp62vUGeaZ86Y4glRklcOfump+/T
- g1+wNlLfFh88+PhHo03N6MbtuGAvBiQu5Xpr0pAav3qf1W9YoUMboGNxGB7qjbMmfaiLJ2KTWzQ
- Nz1X5d2+seWTa4oLivpx3nlw3VkAvTP0wzAAIMvk94xojZkw5eS+MG8nZC6+1LF3TQDmVjsHthy
- jl+MBfiuj5LlrgNqqDYMhNFuC73nXKoPdQPiDu0ZjHdcAVINZVM2KayOnVCKsnsSENGvaLBmBgF
- blQx/6Zgm6nvXzuyfCK+FEyrGvSVoA==
-X-Authority-Analysis: v=2.4 cv=H7+CA+Yi c=1 sm=1 tr=0 ts=68a4eccd cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=evqTDFjjXuFHBGdgQ8UA:9
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: xUfq9Atc8Iq36n4Et50ptnz8t7fhs5SU
-X-Proofpoint-GUID: SHib10qWZZ9PXuY7yVWkM-rp3teRgfpw
+X-Authority-Analysis: v=2.4 cv=FcM3xI+6 c=1 sm=1 tr=0 ts=68a4ecd1 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=2OwXVqhp2XgA:10 a=NEAV23lmAAAA:8 a=VnNF1IyMAAAA:8 a=WP5zsaevAAAA:8
+ a=NUakdCcs51WeiAtREWwA:9 a=t8Kx07QrZZTALmIZmm-o:22
+X-Proofpoint-GUID: vvoITcok_tKw1jzhKzOvj9Gn5j52p819
+X-Proofpoint-ORIG-GUID: xSFqLeiDi5BrLO478kP8wZXBGlCWVVI6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAxMSBTYWx0ZWRfXz5Rid6RAHqOc
+ gW2+no/ttzb6r0OtdZE/gFnqQKQS6vY2Vw9gVi/oMbhS4V1c7kIKnFJvjo+Vyu4jfXf+uo5MNpD
+ rTMuYDFDLHlPkMZ1morQiv4NJ6LddoKjZETq7UUnvxmHWmpKAscsUduCQsFf0JYkN98fqLFKEBJ
+ WrnLyKqWQ2CsVdwn6vMKMqiB6uwwIjsrTLjOBQvjKdZ1glddotuFsRJRlU2eVGjbsD+/9J2ulLt
+ MpCXCvRjNkdAd3EiqwhWIMT1/KUjUJebbJjh97Qi7nNfpirAYuEqg6pRD/N7EiCGIQcnihcQ3Ls
+ 9TbGpB2a3UpGhS9IZ5sIcyYpr1RKFBBYJY03dLo2h3UPZKlWISUPU0Be3CMxNh5/rQOXx1FLZ1r
+ 7nffJp/2
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-19_03,2025-08-14_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1011 malwarescore=0
- adultscore=0 impostorscore=0 priorityscore=1501 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2508110000 definitions=main-2508190198
+ bulkscore=0 malwarescore=0 priorityscore=1501 suspectscore=0 adultscore=0
+ phishscore=0 clxscore=1011 impostorscore=0 spamscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508160011
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=milesg@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -122,162 +122,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds a test machine for the IBM PPE42 processor, including a
-DEC, FIT, WDT and 1MB of ram.
+Adds a functional test for the IBM PPE42 instructions which
+downloads a test image from a public github repo and then
+loads and executes the image.
+(see https://github.com/milesg-github/ppe42-tests for details)
 
-The purpose of this machine is only to provide a generic platform
-for testing instructions of the recently  added PPE42 processor
-model which is used extensively in the IBM Power9, Power10 and
-future Power server processors.
+Test status is checked by periodically issuing 'info register'
+commands and checking the NIP value.  If the NIP is 0xFFF80200
+then the test successfully executed to completion.  If the
+machine stops before the test completes or if a 90 second
+timeout is reached, then the test is marked as having failed.
+
+This test does not test any PowerPC instructions as it is
+expected that these instructions are well covered in other
+tests.  Only instructions that are unique to the IBM PPE42
+processor are tested.
 
 Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
 ---
- hw/ppc/Kconfig         |  9 ++++++
- hw/ppc/meson.build     |  2 ++
- hw/ppc/ppc_booke.c     |  7 ++++-
- hw/ppc/ppe42_machine.c | 69 ++++++++++++++++++++++++++++++++++++++++++
- include/hw/ppc/ppc.h   |  1 +
- 5 files changed, 87 insertions(+), 1 deletion(-)
- create mode 100644 hw/ppc/ppe42_machine.c
+ tests/functional/meson.build       |  1 +
+ tests/functional/test_ppc_ppe42.py | 79 ++++++++++++++++++++++++++++++
+ 2 files changed, 80 insertions(+)
+ create mode 100644 tests/functional/test_ppc_ppe42.py
 
-diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-index ced6bbc740..3fdea5919c 100644
---- a/hw/ppc/Kconfig
-+++ b/hw/ppc/Kconfig
-@@ -44,6 +44,15 @@ config POWERNV
-     select SSI_M25P80
-     select PNV_SPI
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 311c6f1806..ddfef55bd2 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -233,6 +233,7 @@ tests_ppc_system_quick = [
+ ]
  
-+config PPC405
-+    bool
-+    default y
-+    depends on PPC
-+    select M48T59
-+    select PFLASH_CFI02
-+    select PPC4XX
-+    select SERIAL
-+
- config PPC440
-     bool
-     default y
-diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
-index 9893f8adeb..170b90ae7d 100644
---- a/hw/ppc/meson.build
-+++ b/hw/ppc/meson.build
-@@ -57,6 +57,8 @@ ppc_ss.add(when: 'CONFIG_POWERNV', if_true: files(
-   'pnv_n1_chiplet.c',
- ))
- # PowerPC 4xx boards
-+ppc_ss.add(when: 'CONFIG_PPC405', if_true: files(
-+  'ppe42_machine.c'))
- ppc_ss.add(when: 'CONFIG_PPC440', if_true: files(
-   'ppc440_bamboo.c',
-   'ppc440_uc.c'))
-diff --git a/hw/ppc/ppc_booke.c b/hw/ppc/ppc_booke.c
-index 3872ae2822..13403a56b1 100644
---- a/hw/ppc/ppc_booke.c
-+++ b/hw/ppc/ppc_booke.c
-@@ -352,7 +352,12 @@ void ppc_booke_timers_init(PowerPCCPU *cpu, uint32_t freq, uint32_t flags)
-     booke_timer = g_new0(booke_timer_t, 1);
- 
-     cpu->env.tb_env = tb_env;
--    tb_env->flags = flags | PPC_TIMER_BOOKE | PPC_DECR_ZERO_TRIGGERED;
-+    if (flags & PPC_TIMER_PPE) {
-+        /* PPE's use a modified version of the booke behavior */
-+        tb_env->flags = flags | PPC_DECR_UNDERFLOW_TRIGGERED;
-+    } else {
-+        tb_env->flags = flags | PPC_TIMER_BOOKE | PPC_DECR_ZERO_TRIGGERED;
-+    }
- 
-     tb_env->tb_freq    = freq;
-     tb_env->decr_freq  = freq;
-diff --git a/hw/ppc/ppe42_machine.c b/hw/ppc/ppe42_machine.c
+ tests_ppc_system_thorough = [
++  'ppc_ppe42',
+   'ppc_40p',
+   'ppc_amiga',
+   'ppc_bamboo',
+diff --git a/tests/functional/test_ppc_ppe42.py b/tests/functional/test_ppc_ppe42.py
 new file mode 100644
-index 0000000000..0bc295da28
+index 0000000000..26bbe11b2d
 --- /dev/null
-+++ b/hw/ppc/ppe42_machine.c
-@@ -0,0 +1,69 @@
++++ b/tests/functional/test_ppc_ppe42.py
+@@ -0,0 +1,79 @@
++#!/usr/bin/env python3
++#
++# Functional tests for the IBM PPE42 processor
++#
++# Copyright (c) 2025, IBM Corporation
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+/*
-+ * Test Machine for the IBM PPE42 processor
-+ *
-+ * Copyright (c) 2025, IBM Corporation.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
++from qemu_test import QemuSystemTest, Asset
++import asyncio
 +
-+#include "qemu/osdep.h"
-+#include "qemu/units.h"
-+#include "qemu/error-report.h"
-+#include "system/address-spaces.h"
-+#include "hw/boards.h"
-+#include "hw/ppc/ppc.h"
-+#include "system/system.h"
-+#include "system/reset.h"
-+#include "system/kvm.h"
++class Ppe42Machine(QemuSystemTest):
 +
-+static void main_cpu_reset(void *opaque)
-+{
-+    PowerPCCPU *cpu = opaque;
++    timeout = 90
++    poll_period = 1.0
 +
-+    cpu_reset(CPU(cpu));
-+}
++    ASSET_PPE42_TEST_IMAGE = Asset(
++        ('https://github.com/milesg-github/ppe42-tests/raw/refs/heads/main/'
++         'images/ppe42-test.out'),
++        '03c1ac0fb7f6c025102a02776a93b35101dae7c14b75e4eab36a337e39042ea8')
 +
-+static void ppe42_machine_init(MachineState *machine)
-+{
-+    PowerPCCPU *cpu;
-+    CPUPPCState *env;
++    def _test_completed(self):
++        self.log.info("Checking for test completion...")
++        try:
++            output = self.vm.cmd('human-monitor-command',
++                                 command_line='info registers')
++        except Exception as err:
++            self.log.debug(f"'info registers' cmd failed due to {err=},"
++                            " {type(err)=}")
++            raise
 +
-+    if (kvm_enabled()) {
-+        error_report("machine %s does not support the KVM accelerator",
-+                     MACHINE_GET_CLASS(machine)->name);
-+        exit(EXIT_FAILURE);
-+    }
++        self.log.info(output)
++        if "NIP fff80200" in output:
++            self.log.info("<test completed>")
++            return True
++        else:
++            self.log.info("<test not completed>")
++            return False
 +
-+    /* init CPU */
-+    cpu = POWERPC_CPU(cpu_create(machine->cpu_type));
-+    env = &cpu->env;
-+    if (PPC_INPUT(env) != PPC_FLAGS_INPUT_PPE42) {
-+        error_report("Incompatible CPU, only PPE42 bus supported");
-+        exit(1);
-+    }
++    def _wait_pass_fail(self, timeout):
++        while not self._test_completed():
++            if timeout >= self.poll_period:
++                timeout = timeout - self.poll_period
++                self.log.info(f"Waiting {self.poll_period} seconds for test"
++                               " to complete...")
++                e = None
++                try:
++                    e = self.vm.event_wait('STOP', self.poll_period)
 +
-+    qemu_register_reset(main_cpu_reset, cpu);
++                except asyncio.TimeoutError:
++                    self.log.info("Poll period ended.")
++                    pass
 +
-+    /* This sets the decrementer timebase */
-+    ppc_booke_timers_init(cpu, 37500000, PPC_TIMER_PPE);
++                except Exception as err:
++                    self.log.debug(f"event_wait() failed due to {err=},"
++                                    " {type(err)=}")
++                    raise
 +
-+    /* RAM */
-+    if (machine->ram_size > 2 * GiB) {
-+        error_report("RAM size more than 2 GiB is not supported");
-+        exit(1);
-+    }
-+    memory_region_add_subregion(get_system_memory(), 0xfff80000, machine->ram);
-+}
++                if e != None:
++                    self.log.debug(f"Execution stopped: {e}")
++                    self.log.debug("Exiting due to test failure")
++                    self.fail("Failure detected!")
++                    break
++            else:
++                self.fail("Timed out waiting for test completion.")
 +
++    def test_ppe42_instructions(self):
++        self.set_machine('ppe42_machine')
++        self.require_accelerator("tcg")
++        image_path = self.ASSET_PPE42_TEST_IMAGE.fetch()
++        self.vm.add_args('-nographic')
++        self.vm.add_args('-device', f'loader,file={image_path}')
++        self.vm.add_args('-device', 'loader,addr=0xfff80040,cpu-num=0')
++        self.vm.add_args('-action', 'panic=pause')
++        self.vm.launch()
++        self._wait_pass_fail(self.timeout)
 +
-+static void ppe42_machine_class_init(MachineClass *mc)
-+{
-+    mc->desc = "PPE42 Test Machine";
-+    mc->init = ppe42_machine_init;
-+    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("PPE42XM");
-+    mc->default_ram_id = "ram";
-+    mc->default_ram_size = 1 * MiB;
-+}
-+
-+DEFINE_MACHINE("ppe42_machine", ppe42_machine_class_init)
-diff --git a/include/hw/ppc/ppc.h b/include/hw/ppc/ppc.h
-index 8a14d623f8..cb51d704c6 100644
---- a/include/hw/ppc/ppc.h
-+++ b/include/hw/ppc/ppc.h
-@@ -52,6 +52,7 @@ struct ppc_tb_t {
- #define PPC_DECR_UNDERFLOW_LEVEL     (1 << 4) /* Decr interrupt active when
-                                                * the most significant bit is 1.
-                                                */
-+#define PPC_TIMER_PPE                (1 << 5) /* Enable PPE support */
- 
- uint64_t cpu_ppc_get_tb(ppc_tb_t *tb_env, uint64_t vmclk, int64_t tb_offset);
- void cpu_ppc_tb_init(CPUPPCState *env, uint32_t freq);
++if __name__ == '__main__':
++    QemuSystemTest.main()
 -- 
 2.43.0
 
