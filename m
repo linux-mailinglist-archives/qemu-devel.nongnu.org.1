@@ -2,92 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D039B2C50E
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 15:17:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F18B2C55B
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 15:23:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoMBN-0007Gu-7S; Tue, 19 Aug 2025 09:15:21 -0400
+	id 1uoMI4-0005XR-29; Tue, 19 Aug 2025 09:22:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1uoMBA-0006wk-AU
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 09:15:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uoMHu-0005Wc-Iy
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 09:22:08 -0400
+Received: from p-east1-cluster3-host9-snip4-3.eps.apple.com ([57.103.91.214]
+ helo=outbound.ci.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1uoMB5-0007jY-Mb
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 09:15:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755609301;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=KOjGwKnHXPyPha+LoIO6Lfude4PLyYCOBrGW4SnURiw=;
- b=T0+VNx4hC44TtqwSJCN9DZUnDnJQE03frXHgUFwuHwpqFGUHKc9oZB0CVtU+F1DZdiidpy
- /uuRxCkNINb1tcFJQzwu5yhRtXdLwptyz0ShJevMFpo0ytbUnUKLhC9ohO+dO42h74o0xq
- rm67Hj7fTHNVs+BLx6t6Rd2AAnC3seM=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-345-y9npDz5rO9m2u6y8DvzdIA-1; Tue, 19 Aug 2025 09:14:59 -0400
-X-MC-Unique: y9npDz5rO9m2u6y8DvzdIA-1
-X-Mimecast-MFC-AGG-ID: y9npDz5rO9m2u6y8DvzdIA_1755609298
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-6195c331d9eso3264396a12.2
- for <qemu-devel@nongnu.org>; Tue, 19 Aug 2025 06:14:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755609298; x=1756214098;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KOjGwKnHXPyPha+LoIO6Lfude4PLyYCOBrGW4SnURiw=;
- b=lgISFVB3VgWubrms91EBabTqPrdnE0UMJdzE+zjR6GHetHql05hTPcsEk28NBORG0v
- rhRhBnviZsgcP1F/EmbGXc+/sUt7MWcgqq1g6ouiTjusOgNUflyqFJeC+QLqQhPauSzV
- LCGy48rHIHC52sKw6/0MiB6th02eBfLOYYJPpkVEHp9ZPPT4qQ2mzEXcGb1dkIjHNvq9
- BBOOWR0XmDM6sJeC4ogAuOXVyHfsZ2ZECl42UmUL53tXnFmofADHb5xr42Y/lHfmoYUM
- xybAm83OV09NgLor/GGCdXt129qIjSmLLy+bE6KEpV5M2xLcodIlOmHgQUJgS3TaWcoK
- 4ibw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUXFA/poHEujQmwlLLVMDvb6JuWcv3ZrD/wKAIl34PCsxakiBiEfRDX8hZIxxkD52rZ/MgazYiES/kP@nongnu.org
-X-Gm-Message-State: AOJu0YxdYzbM9iT02+zjIrEAasEpkq0X91cqKqh6SMeGTRXBtO1W2R8E
- 88GTCIKIaDn3MfkSb7GlDYTiaWP5D/jeuYw7EaoMSWMUKp1ETELrdSmEQ7NgQK7RoBXGA7Q43iy
- HlNGqte0i3cuaPCcecnNR6L2aTICfjqI/v+uK40SequQciXSCStaNoihG4ZLNoAbmTRNy2JLNth
- rhcjlJedX5W6aWvQn7POPco77RFK/Hyv8=
-X-Gm-Gg: ASbGncuD91qWlkUC6kzHURz8YQHO3BkwJNmnenavgx//jsNQuK2+8bkii093TXaYhIS
- OFJk+dcL73aV/jvXilw6VY08Txtj8wJKQxYRnryjcBnBCItPhqhw0RTgU98izK0z0EGksZdSJr3
- jD9Ax+A+WJQ1VuX5EqQnO5wg==
-X-Received: by 2002:a05:6402:40ca:b0:615:2769:88bb with SMTP id
- 4fb4d7f45d1cf-61a7e757039mr1876660a12.34.1755609297669; 
- Tue, 19 Aug 2025 06:14:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+bbJuA+GzweL2myCdgP7zV3ywuzIFT6UPayaK2pBwJm/LAquHzzjG4bELJ6Blip6nO4tFw23AewdG0BSegak=
-X-Received: by 2002:a05:6402:40ca:b0:615:2769:88bb with SMTP id
- 4fb4d7f45d1cf-61a7e757039mr1876642a12.34.1755609297233; Tue, 19 Aug 2025
- 06:14:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250818140645.27904-1-vsementsov@yandex-team.ru>
- <CACGkMEvHXy0=vwAGS+2S7jCa5TjLxOso-SYb15TTE5q=VtPA2A@mail.gmail.com>
- <bcc0adcc-4d50-454c-abf9-334e15c712e4@yandex-team.ru>
-In-Reply-To: <bcc0adcc-4d50-454c-abf9-334e15c712e4@yandex-team.ru>
-From: Lei Yang <leiyang@redhat.com>
-Date: Tue, 19 Aug 2025 21:14:20 +0800
-X-Gm-Features: Ac12FXw7gUvkk4HtktJw2770g8mLaLzArC--TEYybcS72jmmwhsxfOv23te482g
-Message-ID: <CAPpAL=zQ-PQo78TeqmYgvGRnGeQFy0g-BAd2R405pdBbtCJQpw@mail.gmail.com>
-Subject: Re: [PATCH 00/19] TAP initialization refactoring
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000086e01a063cb7a46e"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uoMHs-0000nG-Sr
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 09:22:06 -0400
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-central-1k-20-percent-1 (Postfix) with ESMTPS id
+ 46CDA1800223; Tue, 19 Aug 2025 13:22:01 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+ bh=CdhKC+5IRorrZAK3611ZzOgZ9jDP7nS5VaEZFEuI+BM=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
+ b=YZ0V7Ixwb5sdfiCl9nr8HlkD9+EM93geY+ALsxyaIzklyPNC81a4RhXpAkCUn5birHKfE1ZmIJhWc8rYOLWQzfFqlIYztmcvrgP0W+VXePz1UlWv9GDDFXHucEGVe0b/3Nq5C7OUd9XtrScpU7RLbkoY5VHd3DXe2VggoC5iLbCz44tUOI3IN290jK2XUurHg1icFc2R5LkKZhek19G9oXLeZLI1W64sXn9R01Aj56GPALfk391hjZCYSoPFlUG+DRBPI6JwQgNPIITekigXvZj7NFe/UQzAX4YMWhprppCKExzFStHsMWZRmIXhLEZsePxZvrwiHhZ2FK6O9Xb0ag==
+X-Client-IP: 194.62.217.67
+Received: from smtpclient.apple (ci-asmtp-me-k8s.p00.prod.me.com
+ [17.57.156.36])
+ by p00-icloudmta-asmtp-us-central-1k-20-percent-1 (Postfix) with ESMTPSA id
+ 4AE941801308; Tue, 19 Aug 2025 13:21:59 +0000 (UTC)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 04/13] hw/intc: Add hvf vGIC interrupt controller
+ support
+From: Mads Ynddal <mads@ynddal.dk>
+In-Reply-To: <20832F49-1F5C-4023-9E0C-0D51A87A1770@unpredictable.fr>
+Date: Tue, 19 Aug 2025 15:21:47 +0200
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Igor Mammedov <imammedo@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
+ Cameron Esfahani <dirty@apple.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <62C5CA36-E0DB-48DA-96D9-74EA5794ACC8@ynddal.dk>
+References: <20250808070137.48716-1-mohamed@unpredictable.fr>
+ <20250808070137.48716-5-mohamed@unpredictable.fr>
+ <40259CA2-A38D-41C1-A726-5144FB9EA166@ynddal.dk>
+ <20832F49-1F5C-4023-9E0C-0D51A87A1770@unpredictable.fr>
+To: Mohamed Mediouni <mohamed@unpredictable.fr>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-Proofpoint-ORIG-GUID: pnrck2MjLpoiauWvjBIGs-jqP5Cxhh4n
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDEyNSBTYWx0ZWRfX/JCEZUd98/qx
+ jdUPqNLzDMOAPstZjE4lrzDN3+z/ttJTwAO8brRqML/fIXFExBGikpltQbKFV+gsu3KczCRW5D2
+ s4GVUnpk6r3vKNc7i/U3PB15rtCGsiop3QBrUDHUKosjU+0wgpocMHBK1XUj6lqDw1R9Ai2RJbW
+ 4bcEYv7RDUUjhBWFakTG65MgBZrmKtYJBOm0mgOJCHeImojF8GA38jPdqTvSfzRLrLSatFf92qJ
+ 3Mzc3sHD+/6nquDv8ORYNBOrN9hieX6rQWAQKJYSYHFpGHUkRxwU1wlywdRBik0QZsloHy5n4=
+X-Proofpoint-GUID: pnrck2MjLpoiauWvjBIGs-jqP5Cxhh4n
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-19_02,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ suspectscore=0 phishscore=0 malwarescore=0 spamscore=0 mlxlogscore=860
+ adultscore=0 clxscore=1030 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506270000 definitions=main-2508190125
+X-JNJ: AAAAAAAB9p+5CO/Av3JkYhTudQ3GjXQADrQApyG5uXnEQX5uRS8nzy2yGJw4iBaX2zurYkujfquG5tELRT44AG54nqBSYniTttGm4qJ8TivUy72YD+ZSb8DDQ9Z3Vt65ilZqX5Pn96aa17Qr241kopsu0MgZRKTKu/M+opZ5qwOQgVDHG+IJObei7pKmjcx6u/tkkQO+K77lc4wX720AdRzUSMuZz6ANUgYJYWX2KLs49sf3WjXdNvAeyLp4NfW2D4XkFiSvVRAAYLpT31qf2WRhBkZ1BqhfdaGY2vwXaxG1QlgVI4Jp7XEm79c10tjnbg87oMWdZ+oWsfQ/Ry/+/Ts3uJhRmK8y59d3TDL7eEtpNAq7px0EYkAa8dZIilEUirZpvQvwI4AbbAbBSY1mxthq/B3RpfVRSW9D6LMyhelzLmcj5zjYPb88U3DuIkbSOM7JT7CIs4a8gTS6IHL5Sql++I+7VaBKs5NG5YU2104oMpMmZJKwKnk5+l4wD2UjvZEaX+aSj4JY76FBok3Ms/znfR0qtdD4nDNAAGiIU0zJ2PG3rlKIpmEPfBiBGjpfLy9vlpagPrXOjuZPsD6JqF6jekqlWQ==
+Received-SPF: pass client-ip=57.103.91.214; envelope-from=mads@ynddal.dk;
+ helo=outbound.ci.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,110 +92,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000086e01a063cb7a46e
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Vladimir
+> On which chip/macOS release did you see this failure?
 
-From the QE perspective, this series of patches cause a regression issues
-for multi queues:
-[qemu output] qemu-system-x86_64: -netdev ..."vhostfds": "20:21:22:23",
-"fds": "10:16:17:19" : vhostfds=3D is invalid if fds=3D wasn't specified
-
-Thanks
-Lei
-
-
-On Tue, Aug 19, 2025 at 4:42=E2=80=AFPM Vladimir Sementsov-Ogievskiy <
-vsementsov@yandex-team.ru> wrote:
-
-> On 19.08.25 05:45, Jason Wang wrote:
-> > On Mon, Aug 18, 2025 at 10:06=E2=80=AFPM Vladimir Sementsov-Ogievskiy
-> > <vsementsov@yandex-team.ru> wrote:
-> >>
-> >> Hi all!
-> >>
-> >> As preparation for further development of TAP live local migration
-> >> (passing open fds through unix socket),
-> >
-> > I'm not sure I understand this, but I think it has been supported now,
-> > or anything I miss?
-> >
->
-> Hmm, may be I missing something, but where?
->
-> I see no code which put TAP fd into migration channel. Nothing about
-> migration in tap.c at all.
->
-> So, normally, to make local migration with TAP device, you have to create
-> a new TAP for new QEMU
-> process.
->
-> I want to add a migration state, which will include needed part of
-> TAPState, including fd,
-> to continue using same TAP device in target process, avoiding also any
-> initialization steps
-> on that fd.
->
-> --
-> Best regards,
-> Vladimir
->
->
-
---00000000000086e01a063cb7a46e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi Vladimir<br><br>From the QE perspective, this series of=
- patches cause a regression issues for multi queues:<br>[qemu output] qemu-=
-system-x86_64: -netdev ...&quot;vhostfds&quot;: &quot;20:21:22:23&quot;, &q=
-uot;fds&quot;: &quot;10:16:17:19&quot; : vhostfds=3D is invalid if fds=3D w=
-asn&#39;t specified<div><br></div><div>Thanks</div><div>Lei</div></div><br>=
-<br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=
-=3D"gmail_attr">On Tue, Aug 19, 2025 at 4:42=E2=80=AFPM Vladimir Sementsov-=
-Ogievskiy &lt;<a href=3D"mailto:vsementsov@yandex-team.ru">vsementsov@yande=
-x-team.ru</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">On 19.08.25 05:45, Jason Wang wrote:<br>
-&gt; On Mon, Aug 18, 2025 at 10:06=E2=80=AFPM Vladimir Sementsov-Ogievskiy<=
-br>
-&gt; &lt;<a href=3D"mailto:vsementsov@yandex-team.ru" target=3D"_blank">vse=
-mentsov@yandex-team.ru</a>&gt; wrote:<br>
-&gt;&gt;<br>
-&gt;&gt; Hi all!<br>
-&gt;&gt;<br>
-&gt;&gt; As preparation for further development of TAP live local migration=
-<br>
-&gt;&gt; (passing open fds through unix socket),<br>
-&gt; <br>
-&gt; I&#39;m not sure I understand this, but I think it has been supported =
-now,<br>
-&gt; or anything I miss?<br>
-&gt; <br>
-<br>
-Hmm, may be I missing something, but where?<br>
-<br>
-I see no code which put TAP fd into migration channel. Nothing about migrat=
-ion in tap.c at all.<br>
-<br>
-So, normally, to make local migration with TAP device, you have to create a=
- new TAP for new QEMU<br>
-process.<br>
-<br>
-I want to add a migration state, which will include needed part of TAPState=
-, including fd,<br>
-to continue using same TAP device in target process, avoiding also any init=
-ialization steps<br>
-on that fd.<br>
-<br>
--- <br>
-Best regards,<br>
-Vladimir<br>
-<br>
-</blockquote></div>
-
---00000000000086e01a063cb7a46e--
-
+This was on Apple M3 Pro. Must have been macOS 15.6.
 
