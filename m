@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41DA4B2CBD3
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 20:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFCA0B2CC18
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 20:33:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoQyl-0004p2-AK; Tue, 19 Aug 2025 14:22:39 -0400
+	id 1uoQyt-0004r7-Rf; Tue, 19 Aug 2025 14:22:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uoQyi-0004oc-Hz; Tue, 19 Aug 2025 14:22:36 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1uoQyq-0004qE-JV; Tue, 19 Aug 2025 14:22:44 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uoQyf-0003ju-KL; Tue, 19 Aug 2025 14:22:36 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-24458194d83so41695985ad.2; 
- Tue, 19 Aug 2025 11:22:30 -0700 (PDT)
+ id 1uoQyo-0003km-Dg; Tue, 19 Aug 2025 14:22:44 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-2449788923eso16448135ad.2; 
+ Tue, 19 Aug 2025 11:22:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1755627749; x=1756232549; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=92TETm6+waoLP9/8MAcz9xIrPcM6NwvuenQZi4Cum9g=;
- b=mxYoteychs3kac9Dd6fJugblH9R2kF5/LPY9egkinlgdND9FLt2du5QFV+ZkCyRtok
- KrpIOqp73ZU+JJLXlL3BFPoT8N0UjDL4tJdJ7ZPnj7R8vouvql3szP1YfFVHACre7Yfm
- 6osp48no1xHRXhq3k2VzyMTY5PC1DTJGuimeLSxjj6/GxWszKyy+N78kmF+70Oin/DBT
- YKfelMaRt+rMM1RFydIfCv/w6xRBxsxB913kHanAloD1Brjcj47Y60P5G5+Hq9cWyOQw
- 1c9+AeprVadN7X/UfS7QeqA8el/2Vum7BEFs1GNY8Q4SLODYrIKn1ohP/hFjA//044H/
- n8JA==
+ d=gmail.com; s=20230601; t=1755627760; x=1756232560; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+FbK9ZmTXg2xQSJZsVexzLKV577HxgsyGAmP/Gwi0cg=;
+ b=Pu3YEvS8M+QWRbHejBl6Lg9oG2OhbT6LqbgUxD6m3bbfN5zDfQOSGqcSs9pjGafcCT
+ Wk5qBp0ZLBF/UgixEBXNH2g62tpJTBpV+6uz61AU20z1gzHgXwod87j40rUL13geaCS6
+ u9xDkbmL6CvdYR9XAFOk4XZx74c3S6M3PEVqMEdOrSEMJfjEczJoCGEz8buolOcRyzKk
+ 4T7v8J9UVLYFdKcPYGVaRDcJWIDm7/gDx2bgcqgNOkp3FEWtqwnjlDeq73xkyEoM9JDg
+ 2fxipDESxESQMQV2b147Nlu3aG+cd8pXKMPNVnvgodXKOpy4Izd5VZt8EtDbWwu6Z63v
+ JK5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755627749; x=1756232549;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=92TETm6+waoLP9/8MAcz9xIrPcM6NwvuenQZi4Cum9g=;
- b=OpV60onPw+msZskR+Eh/Y1y6MNI7wb8yx3LEHr8mUETduSQm2OH/S6JeYpq/e/k1Fo
- fy0EwVVBCVAMXJP/h7WUMxMNnNLD0u/3yqHqb9noowDSPQa0tCPzZsyHjwFdGnGRxNkN
- qbMVVdtccmwnDC1EYn3ZQoh77Of1RopKzE477fXEGqqd4yEQlZh0+ZWrSpNCM+DWG2D0
- WxOPrSPVIB1JKJlmPDBZ3XCEURCGd+Jz+0ZnP0vJ2/G5BAP0/ADDqmO0kBUaPzqLDPTF
- fyYi8jOK2GjagPVZ0X7h928jufV9eDDx1FVQjmNRgpHdh7qLZe8Ig3ZBm/txgQP0Sm14
- /hUw==
+ d=1e100.net; s=20230601; t=1755627760; x=1756232560;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+FbK9ZmTXg2xQSJZsVexzLKV577HxgsyGAmP/Gwi0cg=;
+ b=ItmKB1GIxSEcjmu3f+kb7FTo/xMbxHeI7rc7WX6hsgc56eFJm8KCumAjNrKPsHxVVI
+ MW8iCUmYOp61N02XeMGf4SKRiBDRBTo5hTp76zU7M+XmmInP8uthemmzpMkWLGm+3tg1
+ wtG+UlJj29Ppw7IxvZcXMsyWXPGCvo8P/gm0J+1zbj5J93BrBoGFL+YYAQfhBHm6PH/w
+ 6Q9mneri6Xz84p8sTsvyPNh+KCYZC3Hz10VwitNH4Fhms7JZjhCDF1BirpGp7bQ/8LMZ
+ GVt3LXi6713zFJhee1Jfd5idZKGBi31zonYh56/RROWsvjaMlGOFpOxFUcyOUlD2Is+i
+ wUWg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUm9Hij5FzU8/b6+Nio5hgDjROdzIH9TZ2xgfGggJ4CjIMmx2Ze39/Xpnc5YQXXRkYieYf5xysaX9NCIA==@nongnu.org,
- AJvYcCVEFnvqVTRLZzxki2cfgTy1juHshKpYr/WrVbzOhxsPfml8lpMJUALjfxK/K/PtPjcLLOymMLr/hw==@nongnu.org
-X-Gm-Message-State: AOJu0YyRpyBA2IPm1AwwpAeUnzJX1gSyLiWUns9zyYPXkP7sNsQzTSz4
- f7QAgnz/prhku2ZsHsS9X0CXtD0rKqrCSL9jaEFABUQ74L0NCBUz5JK4nW49l3wI
-X-Gm-Gg: ASbGncsrMUfFd/EOUSzVq/eboSlNwtegc9TqsdywqwVQLe4LTdIf20PDpCpaIPzdbvk
- OWnYPimvTJJiCzcAoswRoQJ/BzRzv11zfIf1MYhJlQE3/4DOuPwI2FaCfPxDSRZW6IcCLk7vG3f
- bCXtW9D1Sr/twQzGCGkNlkqKr+AClhRvb4DKK47XxGuH5DQ/oYqKoV5XVZZtfgsSCrcJs+Z5Kz3
- BH1bgR75LShEAVwggNEG+or3CRva+B5PTgHA2/TaePlLVarRp5zpzDQCsg8r2+1uXhxwcWuXhYr
- LlZzD2+Hl3pAcKe7iL8zv618KtYHB4l/+wRuHUbGa/McyVZt7LgKf0ogl6dGpfX2yaUJHktDhiV
- sbD71yfN/nWBl1Sx9Hfgc8nUgguKpsGO4
-X-Google-Smtp-Source: AGHT+IFF2BsKR17wRFLvZ3ojMw+l1L135a/YraV++ORd2vjqBm5EvfBHx/Yiq16Tq8Bh+hdab+Ah+g==
-X-Received: by 2002:a17:903:2d0:b0:240:981d:a4f5 with SMTP id
- d9443c01a7336-245e056dbd5mr34318285ad.42.1755627749014; 
- Tue, 19 Aug 2025 11:22:29 -0700 (PDT)
+ AJvYcCUZSXII99Xz+rqH5PesdLbGpvVpau31gxZK2hJ1ZLDX5f0AeNKBzHBkMxV2jVOH8ikYqtd0PzAKsw==@nongnu.org,
+ AJvYcCVFkhJ3V1VRjDaTjjEHP9kQWI9+l8re0V225WhXC5rIYOKWjgfTGdJODnBp8v9UhqPv5C+1I5hzeDRs6Q==@nongnu.org
+X-Gm-Message-State: AOJu0YzpWwBMFBiv8bla+MZ6hRrZ4P4BHdOxRCh9A9/pIMctZuIMF86R
+ hyzppBxfz6GKDyvXAHBrDoHzi1vbz1N4wOGPVUxqCceMBJLyWoveG/Rw6R4g9lsY
+X-Gm-Gg: ASbGncs/W/8vl78xUmDya22B+VXTG2qlg1V7VJSScG/BlGVnizJxL21VCi5BTzEUS2V
+ ryv57xSZ9WIDNYjqGRmBO5+tBGHkeTP4p+6nFlC1cHgZ8baTwEJ4EdBClI0IJGBQKwQ84VJ11WS
+ on0zwRZvRZ7OSy7xa7sp6f0F/TUrvmnUBpU+dqtJeNRlki6+tgNmMx6/129AC8s6E4pPTrwkS1r
+ PB0y5hC3nQst7iK3NI+CMbbvQ2sZtNuv8oudvoPR1slj0t1XqXcHlp/SJ4QF/gPU5kxoP928G0l
+ s8Z/TbW4JoINqcqRs2S0fyUYUKdNa/A1JpJlUbyadXQYdM/zK81t0tXfR92ozuuVjBGhAViujvx
+ dxTePukelu3GKdrKSfL4/YcWXwQOl8HIW
+X-Google-Smtp-Source: AGHT+IEDH6izQI/U6+5s+QiG5ryEh4M4Zw+H4hvy/7aeTEr0e6FPH6hKsGVlP8FRZJvogGt+aAtfKA==
+X-Received: by 2002:a17:902:ef07:b0:235:f143:9b07 with SMTP id
+ d9443c01a7336-245e04347c9mr42010395ad.5.1755627760155; 
+ Tue, 19 Aug 2025 11:22:40 -0700 (PDT)
 Received: from ktock.. ([240d:1a:3b6:8b00:29ce:ef58:c2c9:e52f])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-245ed33b4c2sm3725125ad.25.2025.08.19.11.22.23
+ d9443c01a7336-245ed33b4c2sm3725125ad.25.2025.08.19.11.22.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Aug 2025 11:22:28 -0700 (PDT)
+ Tue, 19 Aug 2025 11:22:39 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -77,15 +78,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, ktokunaga.mail@gmail.com
-Subject: [PATCH 00/35] wasm: Add Wasm TCG backend based on wasm64
-Date: Wed, 20 Aug 2025 03:21:29 +0900
-Message-ID: <cover.1755623521.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH 01/35] meson: Add wasm64 support to the --cpu flag
+Date: Wed, 20 Aug 2025 03:21:30 +0900
+Message-ID: <fcfdf0cc933aa46c4c3767bd8f23eadd31ab6865.1755623521.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1755623521.git.ktokunaga.mail@gmail.com>
+References: <cover.1755623521.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,194 +110,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch series adds a TCG backend for WebAssembly. Unlike eariler
-attempts [1], it is implemented using Emscripten's wasm64 target to support
-64bit guests.
+wasm64 target enables 64bit pointers using Emscripten's -sMEMORY64=1
+flag[1]. This enables QEMU to run 64bit guests.
 
-The first four commits are temporarily imported from a separated patch
-series which enables 64bit guests using wasm64 [2]. These commits are under
-review in that series and are included here only to allow subsequent patches
-to build. Please ignore them when reviewing this series.
+Although the configure script uses "uname -m" as the fallback value when
+"cpu" is empty, this can't be used for Emscripten which targets to Wasm.
+So, in wasm build, this commit fixes configure to require --cpu flag to be
+explicitly specified by the user.
 
-# New TCG Backend for Browsers
+[1] https://emscripten.org/docs/tools_reference/settings_reference.html#memory64
 
-A new TCG backend translates IR instructions into Wasm instructions and runs
-them using the browser's WebAssembly APIs (WebAssembly.Module and
-WebAssembly.instantiate). To minimize compilation overhead and avoid hitting
-the browser's limitation of the number of instances, this backend integrates
-a forked TCI. TBs run on TCI by default, with frequently executed TBs
-compiled into WebAssembly.
+Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ configure   | 6 +++++-
+ meson.build | 4 ++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-# 64bit guests support by wasm64
+V1:
+- This commit is under review in another patch series so please ignore it
+  here.
 
-Support for 64bit guests is being reviewed in a separated patch series [2],
-which enables QEMU to use 64bit pointers by compiling with the --cpu=wasm64
-flag. The Wasm TCG backend is based on this feature and also requires
---cpu=wasm64.
-
-QEMU compiled with --cpu=wasm64 runs on wasm64-capable engines. To support
-engines which don't support wasm64 (e.g. Safari), the Wasm backend can use
-the compatibility flag "--enable-wasm64-32bit-address-limit" also introduced
-in [2]. This flag enables 64bit pointers in the C code while Emscripten
-lowers the output binary to wasm32 and limits the maximum memory size to
-4GB. As a result, the Wasm backend can run on wasm32 engiens while
-supporting 64bit guests.
-
-Note: The flag was originally named --wasm64-32bit-address-limit but this
-patch series moved it from the configure script into meson_options.txt. To
-follow Meson's naming conventions, it was renamed to
---enable-wasm64-32bit-address-limit.
-
-# Overview of build process
-
-To compile QEMU with Emscripten, the following dependencies are required.
-The emsdk-wasm-cross.docker environment includes all necessary components
-and can be used as the build environment:
-
-- Emscripten SDK (emsdk) v4.0.10
-- Libraries cross-compiled with Emscripten (please see also
-  emsdk-wasm-cross.docker for build steps)
-  - GLib v2.84.0
-  - zlib v1.3.1
-  - libffi v3.5.2
-  - Pixman v0.44.2
-
-The configure script supports --cpu=wasm64 flag to compile QEMU with 64bit
-pointer support.
-
-emconfigure ./configure --cpu=wasm64 \
-                        --static --disable-tools \
-                        --target-list=x86_64-softmmu
-emmake make -j$(nproc)
-
-If the output needs to run on wasm32 engines, use
-"--enable-wasm64-32bit-address-limit" flag.
-
-emconfigure ./configure --cpu=wasm64 --enable-wasm64-32bit-address-limit \
-                        --static --disable-tools \
-                        --target-list=x86_64-softmmu
-emmake make -j$(nproc)
-
-Either of the above commands generates the following files:
-
-- qemu-system-x86_64.js
-- qemu-system-x86_64.wasm
-
-Guest images can be packaged using Emscripten's file_packager.py tool.
-For example, if the images are stored in a directory named "pack", the
-following command packages them, allowing QEMU to access them through
-Emscripten's virtual filesystem:
-
-/path/to/file_packager.py qemu-system-x86_64.data --preload pack > load.js
-
-This process generates the following files:
-
-- qemu-system-x86_64.data
-- load.js
-
-Emscripten allows passing arguments to the QEMU command via the Module
-object in JavaScript:
-
-Module['arguments'] = [
-    '-nographic', '-m', '512M',
-    '-L', 'pack/',
-    '-drive', 'if=virtio,format=raw,file=pack/rootfs.bin',
-    '-kernel', 'pack/bzImage',
-    '-append', 'earlyprintk=ttyS0 console=ttyS0 root=/dev/vda loglevel=7',
-];
-
-The sample repository [3] (tcgdev64 branch) provides a complete setup,
-including an HTML file that implements a terminal UI.
-
-[1] https://patchew.org/QEMU/cover.1747744132.git.ktokunaga.mail@gmail.com/
-[2] https://patchew.org/QEMU/cover.1754534225.git.ktokunaga.mail@gmail.com/
-[3] https://github.com/ktock/qemu-wasm-sample/tree/tcgdev64
-
-Kohei Tokunaga (35):
-  meson: Add wasm64 support to the --cpu flag
-  configure: Enable to propagate -sMEMORY64 flag to Emscripten
-  dockerfiles: Add support for wasm64 to the wasm Dockerfile
-  .gitlab-ci.d: Add build tests for wasm64
-  tcg: Fork TCI for wasm backend
-  tcg/wasm: Do not use TCI disassembler in Wasm backend
-  tcg/wasm: Set TCG_TARGET_REG_BITS to 64
-  meson: Enable to build wasm backend
-  tcg/wasm: Set TCG_TARGET_INSN_UNIT_SIZE to 1
-  tcg/wasm: Add and/or/xor instructions
-  tcg/wasm: Add add/sub/mul instructions
-  tcg/wasm: Add shl/shr/sar instructions
-  tcg/wasm: Add setcond/negsetcond/movcond instructions
-  tcg/wasm: Add deposit/sextract/extract instrcutions
-  tcg/wasm: Add load and store instructions
-  tcg/wasm: Add mov/movi instructions
-  tcg/wasm: Add ext instructions
-  tcg/wasm: Add bswap instructions
-  tcg/wasm: Add rem/div instructions
-  tcg/wasm: Add andc/orc/eqv/nand/nor instructions
-  tcg/wasm: Add neg/not/ctpop instructions
-  tcg/wasm: Add rot/clz/ctz instructions
-  tcg/wasm: Add br/brcond instructions
-  tcg/wasm: Add exit_tb/goto_tb/goto_ptr instructions
-  tcg/wasm: Add call instruction
-  tcg/wasm: Add qemu_ld/qemu_st instructions
-  tcg/wasm: Mark unimplemented instructions as C_NotImplemented
-  tcg/wasm: Add initialization of fundamental registers
-  tcg/wasm: Write wasm binary to TB
-  tcg/wasm: Implement instantiation of Wasm binary
-  tcg/wasm: Allow switching coroutine from a helper
-  tcg/wasm: Enable instantiation of TBs executed many times
-  tcg/wasm: Enable TLB lookup
-  meson: Propagate optimization flag for linking on Emscripten
-  .gitlab-ci.d: build wasm backend in CI
-
- .gitlab-ci.d/buildtest.yml                    |   26 +-
- .gitlab-ci.d/container-cross.yml              |   20 +-
- .gitlab-ci.d/container-template.yml           |    4 +-
- MAINTAINERS                                   |    9 +-
- configure                                     |   14 +-
- include/accel/tcg/getpc.h                     |    2 +-
- include/tcg/helper-info.h                     |    4 +-
- include/tcg/tcg.h                             |    2 +-
- meson.build                                   |   14 +-
- meson_options.txt                             |    3 +
- scripts/meson-buildoptions.sh                 |    5 +
- tcg/aarch64/tcg-target.c.inc                  |   11 +
- tcg/arm/tcg-target.c.inc                      |   11 +
- tcg/i386/tcg-target.c.inc                     |   11 +
- tcg/loongarch64/tcg-target.c.inc              |   11 +
- tcg/meson.build                               |    5 +
- tcg/mips/tcg-target.c.inc                     |   11 +
- tcg/ppc/tcg-target.c.inc                      |   11 +
- tcg/region.c                                  |   10 +-
- tcg/riscv/tcg-target.c.inc                    |   11 +
- tcg/s390x/tcg-target.c.inc                    |   11 +
- tcg/sparc64/tcg-target.c.inc                  |   11 +
- tcg/tcg.c                                     |   23 +-
- tcg/tci/tcg-target.c.inc                      |   11 +
- tcg/wasm.c                                    | 1112 ++++++
- tcg/wasm.h                                    |  119 +
- tcg/wasm/tcg-target-con-set.h                 |   21 +
- tcg/wasm/tcg-target-con-str.h                 |   11 +
- tcg/wasm/tcg-target-has.h                     |   22 +
- tcg/wasm/tcg-target-mo.h                      |   17 +
- tcg/wasm/tcg-target-opc.h.inc                 |   15 +
- tcg/wasm/tcg-target-reg-bits.h                |   15 +
- tcg/wasm/tcg-target.c.inc                     | 3167 +++++++++++++++++
- tcg/wasm/tcg-target.h                         |   77 +
- ...2-cross.docker => emsdk-wasm-cross.docker} |   29 +-
- 35 files changed, 4822 insertions(+), 34 deletions(-)
- create mode 100644 tcg/wasm.c
- create mode 100644 tcg/wasm.h
- create mode 100644 tcg/wasm/tcg-target-con-set.h
- create mode 100644 tcg/wasm/tcg-target-con-str.h
- create mode 100644 tcg/wasm/tcg-target-has.h
- create mode 100644 tcg/wasm/tcg-target-mo.h
- create mode 100644 tcg/wasm/tcg-target-opc.h.inc
- create mode 100644 tcg/wasm/tcg-target-reg-bits.h
- create mode 100644 tcg/wasm/tcg-target.c.inc
- create mode 100644 tcg/wasm/tcg-target.h
- rename tests/docker/dockerfiles/{emsdk-wasm32-cross.docker => emsdk-wasm-cross.docker} (85%)
-
+diff --git a/configure b/configure
+index 825057ebf1..7f3893a42f 100755
+--- a/configure
++++ b/configure
+@@ -365,7 +365,6 @@ elif check_define __APPLE__; then
+   host_os=darwin
+ elif check_define EMSCRIPTEN ; then
+   host_os=emscripten
+-  cpu=wasm32
+   cross_compile="yes"
+ else
+   # This is a fatal error, but don't report it yet, because we
+@@ -425,6 +424,8 @@ elif check_define __aarch64__ ; then
+   cpu="aarch64"
+ elif check_define __loongarch64 ; then
+   cpu="loongarch64"
++elif check_define EMSCRIPTEN ; then
++  error_exit "wasm32 or wasm64 must be specified to the cpu flag"
+ else
+   # Using uname is really broken, but it is just a fallback for architectures
+   # that are going to use TCI anyway
+@@ -535,6 +536,9 @@ case "$cpu" in
+   wasm32)
+     CPU_CFLAGS="-m32"
+     ;;
++  wasm64)
++    CPU_CFLAGS="-m64 -sMEMORY64=1"
++    ;;
+ esac
+ 
+ if test -n "$host_arch" && {
+diff --git a/meson.build b/meson.build
+index e53cd5b413..291fe3f0d0 100644
+--- a/meson.build
++++ b/meson.build
+@@ -52,7 +52,7 @@ qapi_trace_events = []
+ bsd_oses = ['gnu/kfreebsd', 'freebsd', 'netbsd', 'openbsd', 'dragonfly', 'darwin']
+ supported_oses = ['windows', 'freebsd', 'netbsd', 'openbsd', 'darwin', 'sunos', 'linux', 'emscripten']
+ supported_cpus = ['ppc', 'ppc64', 's390x', 'riscv32', 'riscv64', 'x86', 'x86_64',
+-  'arm', 'aarch64', 'loongarch64', 'mips', 'mips64', 'sparc64', 'wasm32']
++  'arm', 'aarch64', 'loongarch64', 'mips', 'mips64', 'sparc64', 'wasm32', 'wasm64']
+ 
+ cpu = host_machine.cpu_family()
+ 
+@@ -916,7 +916,7 @@ if have_tcg
+     if not get_option('tcg_interpreter')
+       error('Unsupported CPU @0@, try --enable-tcg-interpreter'.format(cpu))
+     endif
+-  elif host_arch == 'wasm32'
++  elif host_arch == 'wasm32' or host_arch == 'wasm64'
+     if not get_option('tcg_interpreter')
+       error('WebAssembly host requires --enable-tcg-interpreter')
+     endif
 -- 
 2.43.0
 
