@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493D7B2C069
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 13:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31BDAB2C05F
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 13:28:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoKSR-0003LR-TX; Tue, 19 Aug 2025 07:24:51 -0400
+	id 1uoKSV-0003MH-CJ; Tue, 19 Aug 2025 07:24:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uoKSP-0003L7-BP
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 07:24:49 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uoKSS-0003Lq-OZ
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 07:24:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uoKSN-0007DT-Ja
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 07:24:49 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uoKSQ-0007Dq-Lz
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 07:24:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755602686;
+ s=mimecast20190719; t=1755602689;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=37f/MBwp4xYxV9/nxTWENZ/sCx/KB8pbU1hl/skyZfM=;
- b=GSAAb4OS16CrNVWIc/PoO7a9KrPol7Gdm48J+4hublMKIYoLKPbAiT2cG5SGPpK9OZJqFF
- RzYM7twqxi2M1InDIQEy21+bL3qnjzom2lXAgETfSn7memJRiTkKl7jHRFek7Kv6vUo0Ji
- MQj3C2cJsx5DEBxyMtfwxp93v96yn9I=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=sGTent8QSS487E+ljeGvXDMi5sNeOiWf44lZu6YYlJ8=;
+ b=bSgsiCcYb4/6DFVw8Z26o90Cxc2lTEz1+wbUKz5jpaA0gUpLj6vN1h0PH7jTPyE6GyCBn5
+ uaCetxsHiBSdBxAq5+kj0QBPb4DiuNRgRV+1rn6sUelkUOPaBmrW/TVzMDL6TnDE8YCMaX
+ iFaCfSfXiYAOvIzTTMYGD04xZbBCjjI=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-218-uR4wor8ON_2WeLf0vU4qug-1; Tue,
- 19 Aug 2025 07:24:43 -0400
-X-MC-Unique: uR4wor8ON_2WeLf0vU4qug-1
-X-Mimecast-MFC-AGG-ID: uR4wor8ON_2WeLf0vU4qug_1755602682
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-528-WqT8E6Q3Ppu7JaIIa5jYSw-1; Tue,
+ 19 Aug 2025 07:24:46 -0400
+X-MC-Unique: WqT8E6Q3Ppu7JaIIa5jYSw-1
+X-Mimecast-MFC-AGG-ID: WqT8E6Q3Ppu7JaIIa5jYSw_1755602685
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8212E1800289; Tue, 19 Aug 2025 11:24:42 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 499231955D78; Tue, 19 Aug 2025 11:24:45 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.251])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E49DB30001A8; Tue, 19 Aug 2025 11:24:39 +0000 (UTC)
+ id 3749D30001A8; Tue, 19 Aug 2025 11:24:42 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 11/25] tests/functional: Move loongarch64 tests into
- architecture specific folder
-Date: Tue, 19 Aug 2025 13:23:48 +0200
-Message-ID: <20250819112403.432587-12-thuth@redhat.com>
+Subject: [PATCH v2 12/25] tests/functional: Move m68k tests into architecture
+ specific folder
+Date: Tue, 19 Aug 2025 13:23:49 +0200
+Message-ID: <20250819112403.432587-13-thuth@redhat.com>
 In-Reply-To: <20250819112403.432587-1-thuth@redhat.com>
 References: <20250819112403.432587-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -86,71 +86,130 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Thomas Huth <thuth@redhat.com>
 
 The tests/functional folder has become quite crowded, thus move the
-loongarch64 tests into a target-specific subfolder.
+m68k tests into a target-specific subfolder.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- MAINTAINERS                                                  | 2 +-
- tests/functional/loongarch64/meson.build                     | 5 +++++
- .../{test_loongarch64_virt.py => loongarch64/test_virt.py}   | 0
- tests/functional/meson.build                                 | 5 +----
- 4 files changed, 7 insertions(+), 5 deletions(-)
- create mode 100644 tests/functional/loongarch64/meson.build
- rename tests/functional/{test_loongarch64_virt.py => loongarch64/test_virt.py} (100%)
+ MAINTAINERS                                              | 8 ++++----
+ tests/functional/m68k/meson.build                        | 9 +++++++++
+ .../{test_m68k_mcf5208evb.py => m68k/test_mcf5208evb.py} | 0
+ .../{test_m68k_nextcube.py => m68k/test_nextcube.py}     | 0
+ .../functional/{test_m68k_q800.py => m68k/test_q800.py}  | 0
+ .../{test_m68k_replay.py => m68k/test_replay.py}         | 0
+ .../{test_m68k_tuxrun.py => m68k/test_tuxrun.py}         | 0
+ tests/functional/meson.build                             | 9 +--------
+ 8 files changed, 14 insertions(+), 12 deletions(-)
+ create mode 100644 tests/functional/m68k/meson.build
+ rename tests/functional/{test_m68k_mcf5208evb.py => m68k/test_mcf5208evb.py} (100%)
+ rename tests/functional/{test_m68k_nextcube.py => m68k/test_nextcube.py} (100%)
+ rename tests/functional/{test_m68k_q800.py => m68k/test_q800.py} (100%)
+ rename tests/functional/{test_m68k_replay.py => m68k/test_replay.py} (100%)
+ rename tests/functional/{test_m68k_tuxrun.py => m68k/test_tuxrun.py} (100%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 2b109ecc18c..716127e831d 100644
+index 716127e831d..e188de813fb 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -258,7 +258,7 @@ M: Song Gao <gaosong@loongson.cn>
- S: Maintained
- F: target/loongarch/
- F: tests/tcg/loongarch64/
--F: tests/functional/test_loongarch64_virt.py
-+F: tests/functional/loongarch64/test_virt.py
+@@ -1312,7 +1312,7 @@ F: hw/m68k/mcf_intc.c
+ F: hw/char/mcf_uart.c
+ F: hw/net/mcf_fec.c
+ F: include/hw/m68k/mcf*.h
+-F: tests/functional/test_m68k_mcf5208evb.py
++F: tests/functional/m68k/test_mcf5208evb.py
  
- M68K TCG CPUs
+ NeXTcube
+ M: Thomas Huth <huth@tuxfamily.org>
+@@ -1320,7 +1320,7 @@ S: Odd Fixes
+ F: hw/m68k/next-*.c
+ F: hw/display/next-fb.c
+ F: include/hw/m68k/next-cube.h
+-F: tests/functional/test_m68k_nextcube.py
++F: tests/functional/m68k/test_nextcube.py
+ 
+ q800
  M: Laurent Vivier <laurent@vivier.eu>
-diff --git a/tests/functional/loongarch64/meson.build b/tests/functional/loongarch64/meson.build
+@@ -1346,7 +1346,7 @@ F: include/hw/m68k/q800-glue.h
+ F: include/hw/misc/djmemc.h
+ F: include/hw/misc/iosb.h
+ F: include/hw/audio/asc.h
+-F: tests/functional/test_m68k_q800.py
++F: tests/functional/m68k/test_q800.py
+ 
+ virt
+ M: Laurent Vivier <laurent@vivier.eu>
+@@ -1361,7 +1361,7 @@ F: include/hw/intc/goldfish_pic.h
+ F: include/hw/intc/m68k_irqc.h
+ F: include/hw/misc/virt_ctrl.h
+ F: docs/specs/virt-ctlr.rst
+-F: tests/functional/test_m68k_tuxrun.py
++F: tests/functional/m68k/test_tuxrun.py
+ 
+ MicroBlaze Machines
+ -------------------
+diff --git a/tests/functional/m68k/meson.build b/tests/functional/m68k/meson.build
 new file mode 100644
-index 00000000000..d1687176a3d
+index 00000000000..e29044a6d73
 --- /dev/null
-+++ b/tests/functional/loongarch64/meson.build
-@@ -0,0 +1,5 @@
++++ b/tests/functional/m68k/meson.build
+@@ -0,0 +1,9 @@
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+tests_loongarch64_system_thorough = [
-+  'virt',
++tests_m68k_system_thorough = [
++  'mcf5208evb',
++  'nextcube',
++  'replay',
++  'q800',
++  'tuxrun',
 +]
-diff --git a/tests/functional/test_loongarch64_virt.py b/tests/functional/loongarch64/test_virt.py
+diff --git a/tests/functional/test_m68k_mcf5208evb.py b/tests/functional/m68k/test_mcf5208evb.py
 similarity index 100%
-rename from tests/functional/test_loongarch64_virt.py
-rename to tests/functional/loongarch64/test_virt.py
+rename from tests/functional/test_m68k_mcf5208evb.py
+rename to tests/functional/m68k/test_mcf5208evb.py
+diff --git a/tests/functional/test_m68k_nextcube.py b/tests/functional/m68k/test_nextcube.py
+similarity index 100%
+rename from tests/functional/test_m68k_nextcube.py
+rename to tests/functional/m68k/test_nextcube.py
+diff --git a/tests/functional/test_m68k_q800.py b/tests/functional/m68k/test_q800.py
+similarity index 100%
+rename from tests/functional/test_m68k_q800.py
+rename to tests/functional/m68k/test_q800.py
+diff --git a/tests/functional/test_m68k_replay.py b/tests/functional/m68k/test_replay.py
+similarity index 100%
+rename from tests/functional/test_m68k_replay.py
+rename to tests/functional/m68k/test_replay.py
+diff --git a/tests/functional/test_m68k_tuxrun.py b/tests/functional/m68k/test_tuxrun.py
+similarity index 100%
+rename from tests/functional/test_m68k_tuxrun.py
+rename to tests/functional/m68k/test_tuxrun.py
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index f1fc01717c3..e2e66dcf523 100644
+index e2e66dcf523..d32dd4a371f 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -15,6 +15,7 @@ subdir('arm')
- subdir('avr')
+@@ -16,6 +16,7 @@ subdir('avr')
  subdir('hppa')
  subdir('i386')
-+subdir('loongarch64')
+ subdir('loongarch64')
++subdir('m68k')
  
  test_mips_timeouts = {
    'mips_malta' : 480,
-@@ -80,10 +81,6 @@ tests_generic_linuxuser = [
+@@ -81,14 +82,6 @@ tests_generic_linuxuser = [
  tests_generic_bsduser = [
  ]
  
--tests_loongarch64_system_thorough = [
--  'loongarch64_virt',
+-tests_m68k_system_thorough = [
+-  'm68k_mcf5208evb',
+-  'm68k_nextcube',
+-  'm68k_replay',
+-  'm68k_q800',
+-  'm68k_tuxrun',
 -]
 -
- tests_m68k_system_thorough = [
-   'm68k_mcf5208evb',
-   'm68k_nextcube',
+ tests_microblaze_system_thorough = [
+   'microblaze_replay',
+   'microblaze_s3adsp1800'
 -- 
 2.50.1
 
