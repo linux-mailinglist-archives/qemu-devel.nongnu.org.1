@@ -2,96 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11BAB2C30D
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 14:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77EE0B2C36C
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Aug 2025 14:24:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoLH1-00045t-IU; Tue, 19 Aug 2025 08:17:07 -0400
+	id 1uoLMl-0006Oq-1W; Tue, 19 Aug 2025 08:23:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1uoLGz-00045S-5a
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 08:17:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uoLMi-0006OK-23
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 08:23:00 -0400
+Received: from p-east1-cluster6-host5-snip4-3.eps.apple.com ([57.103.90.174]
+ helo=outbound.ci.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1uoLGx-0005Up-5M
- for qemu-devel@nongnu.org; Tue, 19 Aug 2025 08:17:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755605822;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wb8qbCFZdCnguq8WjhGBs83P4FdX0C1YhbTBGK0SBRk=;
- b=fB9lyrlerIfXYu6xTREUOvBZyLdfl0t/ruRfgY22pl6UHhPW6aAu7289U1gfhj9AvAjFvM
- J8abT3znhfH3fsne57H/26oK+YPK7/UXiVXRY5p2tOMGd+XN0pmJgtF2e4sUxDXdC5sY1k
- xFQNx0IA6CXJy9yuQAI6NJgpF2tf7Q8=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-482-MQbVjFkONuSSKepsAxjg4w-1; Tue, 19 Aug 2025 08:17:01 -0400
-X-MC-Unique: MQbVjFkONuSSKepsAxjg4w-1
-X-Mimecast-MFC-AGG-ID: MQbVjFkONuSSKepsAxjg4w_1755605820
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-244581187c6so60324245ad.1
- for <qemu-devel@nongnu.org>; Tue, 19 Aug 2025 05:17:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755605820; x=1756210620;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wb8qbCFZdCnguq8WjhGBs83P4FdX0C1YhbTBGK0SBRk=;
- b=HR1u44nS/UlGmzfmaRJKbVYyU0K09efpOssoKP2oE4ZUWovwXYnfGcA8vGHcJLQ3/S
- dpU4l7gvIMdxcqeN/Jze9TRBWKmnJ/R6jWL24biAbKfKvZRy/VIMdWzfPKztmOT5IDQd
- XqGUq0Gvt78b68shByobA9I2m8opMEHAU3Ir07cvS3m2QGusJfalXd8PMqTOCwOb+pH9
- /BXJ/Y1kmCeCnJiFKihFLfxcV55qVw2xlYPpUpI9XFHSEMUguKPO4bG1Vt/am2b1/S12
- WmiT6Gu4yabbKryAccRjH/QmIgPpeNhXUcgK9GWZdX3gz+ia363hCYmQwUz4UWf2r5sn
- qC3g==
-X-Gm-Message-State: AOJu0Yz9KLSMlPLph7H6WLkjmrs1uUbm3vyVzaO7a2BBSSEOocnlpqP/
- SZu317D/91yDX6hcL8wSuJw7OAi2aAXvBTh55RENFEQHgIuoLwKxzM++yBnG3Ad+Z5ixjODcvO3
- m0libD7iFKcVPkA80ynkZCKu2GISr2T5hHhTbpqz5KLq0h1dTFCIF0bYrA30aJSmNulVUcFgUjW
- Bx0A43tjEgRafCteW1+ScfI1Fa6fL/0eo=
-X-Gm-Gg: ASbGncuOpCp/mRf6H4dq/x3EXysQx2GYOgM9tyqEu3JR48OV+Cp56fJCkd7oIlLvEJp
- IiuqXat0nynxxFeYtUTCiXE2wIBb2cBra9RE+9TrZ4odFgDCH3VAucBdl9rICJwBzmA4F9gyHdD
- 1wiijNHkdxV1zaOIlz+vgT
-X-Received: by 2002:a17:903:41c3:b0:235:e76c:4362 with SMTP id
- d9443c01a7336-245e03103c9mr31140375ad.18.1755605819677; 
- Tue, 19 Aug 2025 05:16:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+GNmTDqBBFHRuq8ZCyGGjivIQZBo0ae52XwPbuVtGHluSe9DY5aUDfJH0vKcGl1x6eg/xQ+lSVjgJS5Abvrg=
-X-Received: by 2002:a17:903:41c3:b0:235:e76c:4362 with SMTP id
- d9443c01a7336-245e03103c9mr31139985ad.18.1755605819224; Tue, 19 Aug 2025
- 05:16:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250818100353.1560655-1-aesteve@redhat.com>
- <20250818100353.1560655-7-aesteve@redhat.com>
- <20250818231438.GA30271@fedora>
-In-Reply-To: <20250818231438.GA30271@fedora>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Tue, 19 Aug 2025 14:16:47 +0200
-X-Gm-Features: Ac12FXyAIGjzFEDr8EGogLKNyLvGUqWzdUQf_V1um2enM_Cnm_5R2PiSVFd6FSE
-Message-ID: <CADSE00J61r4Wt94s6OfCqt9V8sVaisgDajvKEYFmG1FJKdVfng@mail.gmail.com>
-Subject: Re: [PATCH v7 6/8] tests/qtest: Add GET_SHMEM validation test
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, david@redhat.com, 
- "Michael S. Tsirkin" <mst@redhat.com>, hi@alyssa.is, jasowang@redhat.com, 
- Laurent Vivier <lvivier@redhat.com>, dbassey@redhat.com, 
- Stefano Garzarella <sgarzare@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- stevensd@chromium.org, Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, slp@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uoLMg-0006P7-AE
+ for qemu-devel@nongnu.org; Tue, 19 Aug 2025 08:22:59 -0400
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-central-1k-60-percent-5 (Postfix) with ESMTPS id
+ 1585918001BF; Tue, 19 Aug 2025 12:22:49 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+ bh=H25lEFx3jpZ5j67JzjHMBzcGjUcRK3xA3JhFxZLrGVA=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
+ b=O5mqadboS97LEt6JNYeb9Dp5zTC5INAmrZ8Y6uRFCA++en38nECM5SJ1Sjx/e2n4C4z3S84eXwY7GeIaakAs2MAzBDl0QqXLE5HTlIMIDrYCVmTzezD7QJD807IleFOe2UDuwLlBvodpq2iBMSciuhYt5/oF9MWv0ABIsb6gjfHNCIhISFj39+AA5tFIkyqH3fP5myI15IFTsTV3Mx5nTZFomcufv4PXvyVB7Gi8xmz6wbE65wYd7R5PJ3V/urckCRku4JVhj9j4vSnk+fq6nI/Q16uKjTdvjJXXPt66zpgWLw63nDP4ylGwHfD2bf5ZkNjkMmdOoW3fyrTIq9cstQ==
+X-Client-IP: 194.62.217.67
+Received: from smtpclient.apple (ci-asmtp-me-k8s.p00.prod.me.com
+ [17.57.156.36])
+ by p00-icloudmta-asmtp-us-central-1k-60-percent-5 (Postfix) with ESMTPSA id
+ 7B1C618000AF; Tue, 19 Aug 2025 12:22:47 +0000 (UTC)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 13/13] target/arm: hvf: add asserts for code paths not
+ leveraged when using the vGIC
+From: Mads Ynddal <mads@ynddal.dk>
+In-Reply-To: <20250808070137.48716-14-mohamed@unpredictable.fr>
+Date: Tue, 19 Aug 2025 14:22:35 +0200
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Igor Mammedov <imammedo@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Alexander Graf <agraf@csgraf.de>,
+ Cameron Esfahani <dirty@apple.com>
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Message-Id: <AE220921-4154-4EC1-B675-C235585F841A@ynddal.dk>
+References: <20250808070137.48716-1-mohamed@unpredictable.fr>
+ <20250808070137.48716-14-mohamed@unpredictable.fr>
+To: Mohamed Mediouni <mohamed@unpredictable.fr>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-Proofpoint-GUID: _VFgiOvF7xkXNuj5RKtAqN-OgSfqV5ev
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDExNyBTYWx0ZWRfX3DiRh5KcaM5I
+ ONBGFETErmARvSrFd0dgTa0asgy6fqDpTv1EN6fjJ2Ruj6JAAENfHHIom36WLBsHqVid4x979gT
+ kRI+etruse+1l6tAcIMQIpOp5mDEwPXYO/0dj0sEjE6aOwhSGER17csBM0b1KS2zLFdA63yrSok
+ 3TCFfuGABQwozZ8lnCr2GVYocY+0kvK1S/3wkcf0FR62ICwYSJd60kvn/LHLyjBPwf/PuVPAH8t
+ 2ibbsXmN6W9w5JX1tWIQUkEXnhu3x4RgW2Kh7Gy3+pnq5YeXKNOd4Xi+XDIivaMFeX3GYyR0E=
+X-Proofpoint-ORIG-GUID: _VFgiOvF7xkXNuj5RKtAqN-OgSfqV5ev
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-19_02,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
+ phishscore=0 suspectscore=0 mlxlogscore=770 bulkscore=0 adultscore=0
+ malwarescore=0 spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506270000 definitions=main-2508190117
+X-JNJ: AAAAAAABrmImtAAabBlX83xbb900CyxIvwgbyi/I0EieV8Lw7NsL1dD8z/Lwg1HRsyNg9Md9NsDKY5YjdZ6F1lJo1QV23rrZuwbh51USzYeBWpwRsLPwnKrDF5c16D0l81iTEhWAYwZoqO4xQ6i3qj4X7ls+aLnQBtMduMJFr7hvcXNvngl+fiC/MbP9ontZfxTDge9RdgYRsI4iR9jnsTgxPeF5sjdAYCAgmxkRLF+LNMQRcEzH0TBkLaWWelX1SvXl+ye2q2lTkicc2GegcTsmmZTauUfR/B1BQkZlCnRDh3753c/ViGTMYe9kn+mk1lKv5Nk1eXWkH34wL4vCA5f7rQ49WEuDwZ9n9UtT/q7X8tKNPJD/wG3CzWEZv+w6Yg6kZWAeYZkpXKM+6U8pC4p4T5UL19AVZNbOnvhno2NAupM+D7i5dfgTIbTcyV9vYxcfOUo4sp7lj/zblOKYNw88k7JtOH/qpi9MEEqtLx1p2wEItxC0rWWlYWUvyayAF4ylic7y1Am4uVJnH2ehZeFlOWkg8fyt2EJePurP8tWw+KzOzkaC3WOrp1t5ndI6XlEmUSNwjlx9hvbkPsDe/FvLQlZIaa495g==
+Received-SPF: pass client-ip=57.103.90.174; envelope-from=mads@ynddal.dk;
+ helo=outbound.ci.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,225 +90,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 19, 2025 at 12:42=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.c=
-om> wrote:
->
-> On Mon, Aug 18, 2025 at 12:03:51PM +0200, Albert Esteve wrote:
-> > Improve vhost-user-test to properly validate
-> > VHOST_USER_GET_SHMEM_CONFIG message handling by
-> > directly simulating the message exchange.
-> >
-> > The test manually triggers the
-> > VHOST_USER_GET_SHMEM_CONFIG message by calling
-> > chr_read() with a crafted VhostUserMsg, allowing direct
-> > validation of the shmem configuration response handler.
->
-> It looks like this test case invokes its own chr_read() function without
-> going through QEMU, so I don't understand what this is testing?
 
-I spent some time trying to test it, but in the end I could not
-instatiate vhost-user-device because it is non user_creatable. I did
-not find any test for vhost-user-device anywhere else either. But I
-had already added most of the infrastructure here so I fallback to
-chr_read() communication to avoid having to delete everything. My
-though was that once we have other devices that use shared memory,
-they could tweak the test to instantiate the proper device and test
-this and the map/unmap operations.
+> On 8 Aug 2025, at 09.01, Mohamed Mediouni <mohamed@unpredictable.fr> =
+wrote:
+>=20
+> When using the vGIC, timers are directly handled by the platform.
+> No vmexits ought to happen in that case. Abort if reaching those code =
+paths.
+>=20
+> Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
+> ---
+> target/arm/hvf/hvf.c | 3 +++
+> 1 file changed, 3 insertions(+)
 
-Although after writing this, I think other devices will actually a
-specific layout for their shared memory. So
-VHOST_USER_GET_SHMEM_CONFIG is only ever going to be used by
-vhost-user-device.
+Makes good sense to verify this.
 
-In general, trying to test this patch series has been a headache other
-than trying with external device code I have. If you have an idea that
-I could try to test this, I can try. Otherwise, probably is best to
-remove this commit from the series and wait for another vhost-user
-device that uses map/unmap to land to be able to test it.
-
-
-
->
-> >
-> > Added TestServerShmem structure to track shmem
-> > configuration state, including nregions_sent and
-> > sizes_sent arrays for comprehensive validation.
-> > The test verifies that the response contains the expected
-> > number of shared memory regions and their corresponding
-> > sizes.
-> >
-> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
-> > ---
-> >  tests/qtest/vhost-user-test.c | 91 +++++++++++++++++++++++++++++++++++
-> >  1 file changed, 91 insertions(+)
-> >
-> > diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-tes=
-t.c
-> > index 75cb3e44b2..44a5e90b2e 100644
-> > --- a/tests/qtest/vhost-user-test.c
-> > +++ b/tests/qtest/vhost-user-test.c
-> > @@ -88,6 +88,7 @@ typedef enum VhostUserRequest {
-> >      VHOST_USER_SET_VRING_ENABLE =3D 18,
-> >      VHOST_USER_GET_CONFIG =3D 24,
-> >      VHOST_USER_SET_CONFIG =3D 25,
-> > +    VHOST_USER_GET_SHMEM_CONFIG =3D 44,
-> >      VHOST_USER_MAX
-> >  } VhostUserRequest;
-> >
-> > @@ -109,6 +110,20 @@ typedef struct VhostUserLog {
-> >      uint64_t mmap_offset;
-> >  } VhostUserLog;
-> >
-> > +#define VIRTIO_MAX_SHMEM_REGIONS 256
-> > +
-> > +typedef struct VhostUserShMemConfig {
-> > +    uint32_t nregions;
-> > +    uint32_t padding;
-> > +    uint64_t memory_sizes[VIRTIO_MAX_SHMEM_REGIONS];
-> > +} VhostUserShMemConfig;
-> > +
-> > +typedef struct TestServerShmem {
-> > +    bool test_enabled;
-> > +    uint32_t nregions_sent;
-> > +    uint64_t sizes_sent[VIRTIO_MAX_SHMEM_REGIONS];
-> > +} TestServerShmem;
-> > +
-> >  typedef struct VhostUserMsg {
-> >      VhostUserRequest request;
-> >
-> > @@ -124,6 +139,7 @@ typedef struct VhostUserMsg {
-> >          struct vhost_vring_addr addr;
-> >          VhostUserMemory memory;
-> >          VhostUserLog log;
-> > +        VhostUserShMemConfig shmem;
-> >      } payload;
-> >  } QEMU_PACKED VhostUserMsg;
-> >
-> > @@ -170,6 +186,7 @@ typedef struct TestServer {
-> >      bool test_fail;
-> >      int test_flags;
-> >      int queues;
-> > +    TestServerShmem shmem;
-> >      struct vhost_user_ops *vu_ops;
-> >  } TestServer;
-> >
-> > @@ -513,6 +530,31 @@ static void chr_read(void *opaque, const uint8_t *=
-buf, int size)
-> >          qos_printf("set_vring(%d)=3D%s\n", msg.payload.state.index,
-> >                     msg.payload.state.num ? "enabled" : "disabled");
-> >          break;
-> > +
-> > +    case VHOST_USER_GET_SHMEM_CONFIG:
-> > +        if (!s->shmem.test_enabled) {
-> > +            /* Reply with error if shmem feature not enabled */
-> > +            msg.flags |=3D VHOST_USER_REPLY_MASK;
-> > +            msg.size =3D sizeof(uint64_t);
-> > +            msg.payload.u64 =3D -1; /* Error */
-> > +            qemu_chr_fe_write_all(chr, (uint8_t *) &msg, VHOST_USER_HD=
-R_SIZE + msg.size);
-> > +        } else {
-> > +            /* Reply with test shmem configuration */
-> > +            msg.flags |=3D VHOST_USER_REPLY_MASK;
-> > +            msg.size =3D sizeof(VhostUserShMemConfig);
-> > +            msg.payload.shmem.nregions =3D 2; /* Test with 2 regions *=
-/
-> > +            msg.payload.shmem.padding =3D 0;
-> > +            msg.payload.shmem.memory_sizes[0] =3D 0x100000; /* 1MB */
-> > +            msg.payload.shmem.memory_sizes[1] =3D 0x200000; /* 2MB */
-> > +
-> > +            /* Record what we're sending for test validation */
-> > +            s->shmem.nregions_sent =3D msg.payload.shmem.nregions;
-> > +            s->shmem.sizes_sent[0] =3D msg.payload.shmem.memory_sizes[=
-0];
-> > +            s->shmem.sizes_sent[1] =3D msg.payload.shmem.memory_sizes[=
-1];
-> > +
-> > +            qemu_chr_fe_write_all(chr, (uint8_t *) &msg, VHOST_USER_HD=
-R_SIZE + msg.size);
-> > +        }
-> > +        break;
-> >
-> >      default:
-> >          qos_printf("vhost-user: un-handled message: %d\n", msg.request=
-);
-> > @@ -809,6 +851,22 @@ static void *vhost_user_test_setup_shm(GString *cm=
-d_line, void *arg)
-> >      return server;
-> >  }
-> >
-> > +static void *vhost_user_test_setup_shmem_config(GString *cmd_line, voi=
-d *arg)
-> > +{
-> > +    TestServer *server =3D test_server_new("vhost-user-test", arg);
-> > +    test_server_listen(server);
-> > +
-> > +    /* Enable shmem testing for this server */
-> > +    server->shmem.test_enabled =3D true;
-> > +
-> > +    append_mem_opts(server, cmd_line, 256, TEST_MEMFD_SHM);
-> > +    server->vu_ops->append_opts(server, cmd_line, "");
-> > +
-> > +    g_test_queue_destroy(vhost_user_test_cleanup, server);
-> > +
-> > +    return server;
-> > +}
-> > +
-> >  static void test_read_guest_mem(void *obj, void *arg, QGuestAllocator =
-*alloc)
-> >  {
-> >      TestServer *server =3D arg;
-> > @@ -1089,6 +1147,33 @@ static struct vhost_user_ops g_vu_net_ops =3D {
-> >      .get_protocol_features =3D vu_net_get_protocol_features,
-> >  };
-> >
-> > +/* Test function for VHOST_USER_GET_SHMEM_CONFIG message */
-> > +static void test_shmem_config(void *obj, void *arg, QGuestAllocator *a=
-lloc)
-> > +{
-> > +    TestServer *s =3D arg;
-> > +
-> > +    g_assert_true(s->shmem.test_enabled);
-> > +
-> > +    g_mutex_lock(&s->data_mutex);
-> > +    s->shmem.nregions_sent =3D 0;
-> > +    s->shmem.sizes_sent[0] =3D 0;
-> > +    s->shmem.sizes_sent[1] =3D 0;
-> > +    g_mutex_unlock(&s->data_mutex);
-> > +
-> > +    VhostUserMsg msg =3D {
-> > +        .request =3D VHOST_USER_GET_SHMEM_CONFIG,
-> > +        .flags =3D VHOST_USER_VERSION,
-> > +        .size =3D 0,
-> > +    };
-> > +    chr_read(s, (uint8_t *) &msg, VHOST_USER_HDR_SIZE);
-> > +
-> > +    g_mutex_lock(&s->data_mutex);
-> > +    g_assert_cmpint(s->shmem.nregions_sent, =3D=3D, 2);
-> > +    g_assert_cmpint(s->shmem.sizes_sent[0], =3D=3D, 0x100000); /* 1MB =
-*/
-> > +    g_assert_cmpint(s->shmem.sizes_sent[1], =3D=3D, 0x200000); /* 2MB =
-*/
-> > +    g_mutex_unlock(&s->data_mutex);
-> > +}
-> > +
-> >  static void register_vhost_user_test(void)
-> >  {
-> >      QOSGraphTestOptions opts =3D {
-> > @@ -1136,6 +1221,12 @@ static void register_vhost_user_test(void)
-> >      qos_add_test("vhost-user/multiqueue",
-> >                   "virtio-net",
-> >                   test_multiqueue, &opts);
-> > +
-> > +    opts.before =3D vhost_user_test_setup_shmem_config;
-> > +    opts.edge.extra_device_opts =3D "";
-> > +    qos_add_test("vhost-user/shmem-config",
-> > +                 "virtio-net",
-> > +                 test_shmem_config, &opts);
-> >  }
-> >  libqos_init(register_vhost_user_test);
-> >
-> > --
-> > 2.49.0
-> >
-
+Reviewed-by: Mads Ynddal <mads@ynddal.dk>=
 
