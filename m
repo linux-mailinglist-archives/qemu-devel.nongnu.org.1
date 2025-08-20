@@ -2,111 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1FCB2E6C9
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 22:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D5FB2E6F0
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 22:48:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uopdS-0003Fh-RQ; Wed, 20 Aug 2025 16:42:18 -0400
+	id 1uopjA-0006cm-Ry; Wed, 20 Aug 2025 16:48:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uopdL-0003Cv-6r
- for qemu-devel@nongnu.org; Wed, 20 Aug 2025 16:42:11 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uopdI-0000CF-Sg
- for qemu-devel@nongnu.org; Wed, 20 Aug 2025 16:42:10 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-afcb7a8dd3dso46875766b.3
- for <qemu-devel@nongnu.org>; Wed, 20 Aug 2025 13:42:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755722527; x=1756327327; darn=nongnu.org;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=eLh9wwCo7gDE5L1QyDe5pZgnNu4fYB65zqPEPfpbezU=;
- b=E3AWogF6hIVIZIV/xd8LrwCizjyL3iSaScZ7/sIsvRuUUaLa7PW3AwastjYeO2r9dg
- rbc+Lluioqaqrnp73NNtlWuv9UvR/gCuB4eHBSWYu17pSpquFa5eoDuYg6C2gsciAJjD
- mmA3spISe9gW9hnoKtix+ALlE4VOUiJTAHUOlwfpMnpy7LIl0H8hnRFlYDmUKNm+w4cL
- hspVzaH6wI2MAAWggkQ29g+RRhj3fonMUB+HoXJBDFUwWdYgTPWciA8qFu2o3HMYgBz8
- cflAuam18RUi0TfgeHB2quWSB8S5xxtiMEFz1kbpIW6ncfVdU7TqL5+F3jV8xucvBeGD
- Cy5w==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uopj8-0006cV-GM
+ for qemu-devel@nongnu.org; Wed, 20 Aug 2025 16:48:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uopj5-0000yx-Tn
+ for qemu-devel@nongnu.org; Wed, 20 Aug 2025 16:48:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1755722885;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=GW20dLEGR68H+oApIwT1Y+Q6vkZKpumVQvcyFCuE82YSVipBG6WIaWO2CvQKcXsIYeUkMm
+ 0rtEfSmOXS3y7H1S5iRaD0ZydCEmppZclZ/tAvf+sOzN4h4YkR7bEi0Nh2J6lY3oYOQUqt
+ tXvkceT7as1T5UGNu7D++c6hlBbtUUg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-434-0wX9rhrnMcGYXBXEMcAS0A-1; Wed, 20 Aug 2025 16:48:03 -0400
+X-MC-Unique: 0wX9rhrnMcGYXBXEMcAS0A-1
+X-Mimecast-MFC-AGG-ID: 0wX9rhrnMcGYXBXEMcAS0A_1755722882
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-45b467f5173so1525405e9.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Aug 2025 13:48:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755722527; x=1756327327;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1755722882; x=1756327682;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eLh9wwCo7gDE5L1QyDe5pZgnNu4fYB65zqPEPfpbezU=;
- b=p7URmw37IpwlQ0yFwDYTFhXbZtnxlvC+ehrHI/uxrLDfL9vuLf9rSq9B5fVM+xXFO/
- 3hnhUkNzZe7CYi444toq8s9QDva7RDWSPd52d3YT7xC6krEcTU8jhhQlsrkmdVhqO5ie
- LEww1tBaHEx0zUWcQOuMKoy95U5fjE8NVkmqx0jcUQwPBjOFXQnhl56WWz5jXA1hQCsw
- xiG38+TZOg8mfq/ReAUVwy4qOHJFqRT8oDkmgiB5vsPgbzJ96dZdP2sBWq5FuIPGCUQJ
- ZvWm58ucIChjm59QpiAi4U4xKi61eHsxmeWFCj1Oz2PiJ54gzf/DP8ZgcPYLxOMb0dQ1
- pkdA==
-X-Gm-Message-State: AOJu0YxA73+sOsXhFjZZqHoidKeoges7zUTYKgFAkX0fM1Fa1eYIBXVa
- dcPyM3CVKoSn7q6SSDBTGxPe7SeuEb4j23R0RSlaZXIsi+3WSKny628409Ddr97D+/cYxkz/vl2
- ++sVjWQE=
-X-Gm-Gg: ASbGncsrvZJ81D4mKAVLCKMl0IlUU+64kTn2IgjhxDmtfgtzzriHJEmHQ3dYqPWilWi
- vR+rn1LOnP81ipWPbfIWF6dq734NU8MANl9JPNaqhHo7650mEWuiAfYMfIU91UAS5GdkvZ5iXt1
- hFLalNu3EM5xzJVDsHicqvoac75LbM6Ym0RmfpB8kYjhvQuHIEV9ww2SfkldLagUq7HPuWhpEt2
- 3trQokxRHAMfsPijQlGq70XCO4nuwAKlGX35VmTjzkLvfC0EUad6dE/LyCUuzuf7qPSKfevBgqb
- fdnZYrECQCL3Sru1qVqBPvHUQqgG0iVVg/xMwlCShBvh/GXrmQZcjoCNsU0k05pGErw/CXV0+qE
- cQd+yOoIBR3UaMZ4k3MFcSKtEbKIqpu6jwvTVaeL2PZ7ijzHP9TumLd1OEEGFNWRP+v9I
-X-Google-Smtp-Source: AGHT+IHF4H0bF0ByEBMx6Zu3A9wjRJdqEYuMct6GSxIxgeSyq/ZIWVsITiR4Q3soYSJb9ZtirH18Gg==
-X-Received: by 2002:a17:907:6096:b0:af9:5a60:3319 with SMTP id
- a640c23a62f3a-afe07b0667amr16120166b.19.1755722527263; 
- Wed, 20 Aug 2025 13:42:07 -0700 (PDT)
-Received: from [127.0.1.1] (athedsl-4441256.home.otenet.gr. [79.129.180.152])
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=WYshrg9IXHrGbEXCXg2arfzjvxN4jG51IKQcJf2VS+LY8INEQdlui/MXbzVky+v/Es
+ Mg6azfiP9k6W9KLjdNFsldWY1U6lGV9PGdHV+me1Qii2dmrNtR2RLSFYM4d38DTN3N95
+ VhBdcPvimEnowLSuOpdosdiUz5Uz/6A/Nm6fXI69tl+Xbetg4Lut3tBJy1Q8OTcYOvSk
+ GnYCq22SIyIQ+e9TZ9lo62324z9607jRBoH0MEHvFbapj0f6ULxz1EBHVgXbU6oiqgfh
+ r1S4kfLLoEwy5PgtS4cvEUeCsSxFBBMgUdFPyLM52Syz1XxC40mmXwwUiw/0mGpq85WW
+ zFqw==
+X-Gm-Message-State: AOJu0YzbmgddyxmeHqFSvYhPZ5EJp1Cj/skCA5uKA16XgctP8JZiCcrc
+ AOePtlpWGRJuD0s1sa5gKrVOUrU+sZ73EYnNQTykL4lBWv5EIRTG1/TxAZILrPHBDiP3CrU+Mhc
+ nZfvBdLsxiBxyOp+TzUqoxqs1WoqfgoZ6ye4/o8ZqIc1vAQ/9MT9GwVd0
+X-Gm-Gg: ASbGnct+L3+JCjyoO5gRCGXRRsd2JG1pFMFg+5hiXhXkjPmpe9CbSLutUwYCAq9WeK4
+ WthZOquVrgSRYjOICNqVWVbtDLD5hx050p/FiTXFveoXkBh4VZFQiANsGeyZ1nVPEe16oPO9R8S
+ YrD/T5+TJi9e77dZFvyqjITu0+NkIId+PcCmn+iX1/acPaTIc52m6HevTnXPbJolAKjYf0mkjLU
+ bnMOKnGHR0xAsuhfz3EzOtLx+b88aHLGr2yC0yueSshVat6R4RjMF4B6dk+IgZOkK4UTlT+Ryl7
+ qlM7q+AR76+HaW7f9mSZipJHeMO9Mqcm9QDQiCLr9A==
+X-Received: by 2002:a05:600c:b86:b0:459:d9a2:e927 with SMTP id
+ 5b1f17b1804b1-45b4acff99cmr28162215e9.5.1755722881855; 
+ Wed, 20 Aug 2025 13:48:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHuoAewrBNnzGm2hSCaUriZzqV+MiOKLl9SnHfqKG67YGuNoXbAEvkG4lp6WKECmF7YjR/3XA==
+X-Received: by 2002:a05:600c:b86:b0:459:d9a2:e927 with SMTP id
+ 5b1f17b1804b1-45b4acff99cmr28162105e9.5.1755722881497; 
+ Wed, 20 Aug 2025 13:48:01 -0700 (PDT)
+Received: from [192.168.10.3] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-afded5353cdsm246888166b.106.2025.08.20.13.42.05
+ 5b1f17b1804b1-45b47c310efsm50431555e9.7.2025.08.20.13.48.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Aug 2025 13:42:06 -0700 (PDT)
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Wed, 20 Aug 2025 23:41:57 +0300
-Subject: [PATCH 2/2] scripts/minikconf.py: s/Error/KconfigParserError
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250820-scripts-minikconf-fixes-v1-2-252041a9125e@linaro.org>
-References: <20250820-scripts-minikconf-fixes-v1-0-252041a9125e@linaro.org>
+ Wed, 20 Aug 2025 13:48:00 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>
+Subject: Re: [PATCH 0/2] Two minor minikconf.py fixes
+Date: Wed, 20 Aug 2025 22:47:56 +0200
+Message-ID: <20250820204756.1039443-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250820-scripts-minikconf-fixes-v1-0-252041a9125e@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=966;
- i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
- bh=yphRVw1Go9B4J30Undf6o7YQ+oa9+w4fsSjGrOvBOnY=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
- 25RQWNzbVlnQm9wak1iY3NWY3Bmb3FtM2JML0RSOGd5L1dyckorCnJadDQ2a21Ib2REemxZWTRx
- Z1NKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUtZekd3QUt
- DUkIzS2Nkd2YzNEowR1VxRC80c2pmdzNVUWQ0Qm9kdExiMWtPMG9aZy9oNS9TREY1TDVaTFNMZg
- prYXRBNCtsdHpSOU1aOGlZaU1NY2xtWlBrUjgvUDRnaGpXRDNGaklYKzJoQ3Jka3RSZ0c1QWdub
- TY5YWpJbGZ1CkNGTVh3eEkvMHBna3BnRC9QeFZoa1UrTzJRdkNNUjAvWnlHbUd1cGUrZmZHTnM2
- a0xOdVhhYWU4a0Vscm5tOVAKN2p2WU5pcEVQelFFcnl6ZVBnVTJ4VHArYWhHTlpRYmRZUVFVM3R
- YdXhILzZtcHhQN1hTeWpCZm0xdzl0SzNCVwovSnVyTys2OGxyN3NCaU5uamt6ZFJKQVN1VlZnMm
- 5WVElHZEwzNS9BdThPUkdNczNYTUIyWStYdlVkY05qNEhhCk5RcXA2ZEZJbFIwZ1VmSUhtQWt5Y
- VZ2YnFYa0QxZTAybVpMblBaZHloV3QrcysxZm52bHdDakVBWkhNZDdUcGwKamRZTnhzTTVGTmFM
- ZDZlWDQzVGl0MFhzTzdLQXNyaEh2aTdsU21aTXUyS01ZY1BDQytETU9qaTdST3VzVmpHZAoyM01
- BWjFLaGpaUWYxMm5aWUowNTZ5VTVCWHk1R3hqR3gyVUVJTkErak51NUdkcXR5cUlGWWRLcE1nRG
- hvWExBClpxZnFhZTkxRVA4VjVYVnQrYmxzOUlyVDR2S05yNkVHeWRYaURZK1hqbFdQNmlqVStSM
- 0dCNWRKM0Uxb05WVXQKTVJNYXFXZFM5c0NOc3ZZS0x0ZElwMWtZeEoveXAyWnRhYjFhVm9HOHJk
- VTZyTDNZekhtQ0tVVGZLOExiNnRhRApNV05nRzNQR1JDZzFDWUlMM0k4NTd3Z3VMaVJna3JLaU5
- TYmJKSEZmZjZsM3FUcktCdG1lSWM1dWtKMDlpMjNpCmJtR0Z6dz09Cj11SEZTCi0tLS0tRU5EIF
- BHUCBNRVNTQUdFLS0tLS0K
-X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
- fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x62d.google.com
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,31 +106,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Error is not defined in this script, raise KconfigParserError instead.
+Queued, thanks.
 
-Fixes: 82f5181777ebe04b550fd94a1d04c49dd3f012dc ("kconfig: introduce kconfig files")
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- scripts/minikconf.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/minikconf.py b/scripts/minikconf.py
-index 2a4694fb6a3891e152342d29b37661fe964cea37..4de5aeed11a226d4df094b9b3a44837f2f4fe003 100644
---- a/scripts/minikconf.py
-+++ b/scripts/minikconf.py
-@@ -363,7 +363,9 @@ def parse_file(self, fp):
- 
-     def do_assignment(self, var, val):
-         if not var.startswith("CONFIG_"):
--            raise Error('assigned variable should start with CONFIG_')
-+            raise KconfigParserError(
-+                self, "assigned variable should start with CONFIG_"
-+            )
-         var = self.data.do_var(var[7:])
-         self.data.do_assignment(var, val)
- 
-
--- 
-2.47.2
+Paolo
 
 
