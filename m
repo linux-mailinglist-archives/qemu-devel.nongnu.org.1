@@ -2,142 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE6CB2E5DB
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 21:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A18A5B2E5EB
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 21:57:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoool-0006ca-LO; Wed, 20 Aug 2025 15:49:55 -0400
+	id 1uoovX-00011X-TM; Wed, 20 Aug 2025 15:56:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1uoooh-0006Zx-Q6
- for qemu-devel@nongnu.org; Wed, 20 Aug 2025 15:49:51 -0400
-Received: from mail-dm6nam12on2072.outbound.protection.outlook.com
- ([40.107.243.72] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1uoood-0000sY-SE
- for qemu-devel@nongnu.org; Wed, 20 Aug 2025 15:49:50 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qpl7Er6R8mZqllS7lSMLgg/etNewl1J1AQBPwEw2MCuslNgEt1P2hjBVvA8GX36xvUVSFKS82TXxv0EXnF9pcyIadr3oyRrlQyLlX6XI70cGhmzzqu8O384KSsy6iMsCPXggi0mNhb2SDEpx2QSBIzKxDE/EcTeCvTRxsVbz2nolpGgS68IFjAg6wREmCXugsomQPvvldnUFr4YW0UM3b8POL2OPyPFCP9alQXbp9NX0CkxX+R0CMoUPXDmBtK5esiR+TlMlax9Q0wzmQpapvZ1jiIdl22yzzd3iioX3TGMI9Qfs1x/cAhMjhRmKhxkL3jSLaM5Sv68W2A28IBOIaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OBq6OlmmuGd/roUJ+6FsRaPZ5L9exjQdA6Tf5HZUSow=;
- b=Gux8gm2UVmEnulD8wGRQ1leCkqaFWTccC/CfqUizOtlw1nO7VxNwMEnGxYHZiCQGmWFFqLk7kjJXsnKbubK4t4CbkiYG640HkKzsKMnlmPAZZVXdON0oZ7gGadqdNETyjvjHrMjCRlfRkJTQZjVOH23KXfBOepRKCc6sevsHCSY7Ki6I+unMQIviNYdfeu6YDFp27Vl8uznuyecN8w6YlmtggOr5e3nlwFlqoALxalOVAAjTNI6JcBwXDqGxEB7F37bbHMyOnNuQH6GN9Yx6o1LjJ+66GsPPGd6rDVZi8NiAkAxgh9p8trFMIT0TUqY5g3Y7d9w/4SWnsXGREjvubg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OBq6OlmmuGd/roUJ+6FsRaPZ5L9exjQdA6Tf5HZUSow=;
- b=wxYyojFW+fzGaCtBz1oswyZDj9YqLsRI4T2pPqjUvUzTsedLrDtN7OdvhwyRWnEFvRpJLlpJqpSmEDTh/6XvcBViu5D0k46lPKaL/BvT82feyJ3hZk6CO7b37hgYHbN3Uj+xpgXxdkZKiX9w6sOjIR1AnwSxzzQQndWwX7Mp+m4=
-Received: from DM5PR08CA0033.namprd08.prod.outlook.com (2603:10b6:4:60::22) by
- SA1PR12MB5657.namprd12.prod.outlook.com (2603:10b6:806:234::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.14; Wed, 20 Aug
- 2025 19:44:38 +0000
-Received: from DS3PEPF000099DB.namprd04.prod.outlook.com
- (2603:10b6:4:60:cafe::71) by DM5PR08CA0033.outlook.office365.com
- (2603:10b6:4:60::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.14 via Frontend Transport; Wed,
- 20 Aug 2025 19:44:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS3PEPF000099DB.mail.protection.outlook.com (10.167.17.197) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9052.8 via Frontend Transport; Wed, 20 Aug 2025 19:44:37 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 20 Aug
- 2025 14:44:37 -0500
-Content-Type: text/plain; charset="utf-8"
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uoovO-00011B-5J
+ for qemu-devel@nongnu.org; Wed, 20 Aug 2025 15:56:47 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uoovM-0001iY-3b
+ for qemu-devel@nongnu.org; Wed, 20 Aug 2025 15:56:45 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3b9edf0e4efso169563f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 20 Aug 2025 12:56:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1755719802; x=1756324602; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=SUCwqd44Qvcng06lI8Kd9VZpkd8nFai0eG7YBGJxu6A=;
+ b=MyblF2NpFzY7QPxhUgHdRefPS15iKAjSIlujE5P8cNrej/BGpy4iQ66ng6SjhZEZ7e
+ Q9ncLYvJFil1b9Wh8Dk9gJE6yXcOv0JG2Z93VLZA0HDTdhCGDpVwIkW1Y0R3VWada3Kp
+ JDsrUf+GIMwXOLva/0/bWFdO2f70ixbtcI8CO5YjOWI0npVReEEx/BqwRCIAntC/YyTD
+ lTxSGU7w3n3ns2gH0IC/HPj0CxWnv6C5sMhiSwK0BfvZNU06fDZkPfpAU4iJgzgo8Uzf
+ Ym9yZd3uYHx5D05pyp/Cg5QxQ5ksrfIJKBAt5418rb133LJ2pS6x2OxoIIcUQ3kPL5Mk
+ mpxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1755719802; x=1756324602;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SUCwqd44Qvcng06lI8Kd9VZpkd8nFai0eG7YBGJxu6A=;
+ b=DrSgRMEC2MkX/3faoJERL90w7vScREhDYL4rD08NrD5qhHxF3n2uuFdQBWbJcicRn5
+ 6QwbnpIFh3xyIw14T27hAxVSSMMwGwV4kEOW3aYxZ5XJBbN+NtjEEVThhKtNGY16fFlJ
+ Knggej/p0GN/BS/9aFKgrVDmIVc948PVlT+G1E590pcF1qJTGaQPtPIwaw5OwS+vxeZK
+ zFhSDuyb6tLyXPCg8b294T+NG/7Fdj8t+QWUwSsel5Gb7edLPJJ79Xo2FW6B156pfQpm
+ z+kOMykhjUQ7IEnJR2Uul7kcsCGv+I2AIY5qCGGlHLK86N0yLLDCwXbhqAhQfM/PBCif
+ Ex1w==
+X-Gm-Message-State: AOJu0YyguynDw4HNzau7+IdgkQ2JWr+hqlZQlNRjvaVZY+ZVX1JIw1r7
+ 28QYp8byPvjzhospFR+5JMks908HWusvY2ZgGYGmukF1t5TpT4gKt2T1QnbiakIe0nY=
+X-Gm-Gg: ASbGncvVXKZI/ZjuLzFqIopXTxAljEMnM3j5I5lauVX3tzIaiV87deO0oFjALwMlQHj
+ VDZU6gVvvL/npE1MH9CRC9xPUStjxMSQVJrItbtHGZyJreWA+sCX8nfM3Plnv2ZGEYxnB5HA5S0
+ b+CIZNwMUEsOTIXxEcS6pXQazcRP6J9k1ZSvqLF7AReXA8aBVRwbkib0QBSl+KvOB832B+uqJmI
+ At32ZnGZA43pzmUfIZ5rwyCoREY84MZxZT+gpar1E4ajK9fUI4GG9t8suK0W0JaLpV5A43ItxRN
+ 3QwQUFB9wWjjcW2ZSntc+HojFtpchk7lD8Y/VkLCa+PPHl+g20jbfErm8hg8T42obj8kLhTNwsm
+ KmbVnAe22YxYB6/92eYBXDLs=
+X-Google-Smtp-Source: AGHT+IGDZdZRUFWjAgiYhJvErSFqRNbD927CciZx5N8I4uk6mZtPvymlkqA/n3K4NN5aSwJ2gCm6fQ==
+X-Received: by 2002:a05:6000:290d:b0:3b7:9ae1:eb9 with SMTP id
+ ffacd0b85a97d-3c4953a804cmr61327f8f.23.1755719801761; 
+ Wed, 20 Aug 2025 12:56:41 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3c074d439adsm8950064f8f.21.2025.08.20.12.56.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Aug 2025 12:56:40 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 1C2CC5F898;
+ Wed, 20 Aug 2025 20:56:40 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [RFC PATCH] hw/virtio: rename vhost-user-device and make user
+ creatable
+Date: Wed, 20 Aug 2025 20:56:32 +0100
+Message-ID: <20250820195632.1956795-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: [ANNOUNCE] QEMU 10.1.0-rc4 is now available
-From: Michael Roth <michael.roth@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: Stefan Hajnoczi <stefanha@redhat.com>
-Date: Wed, 20 Aug 2025 14:42:18 -0500
-Message-ID: <175571893859.41801.10552877216758241885@amd.com>
-User-Agent: alot/0.9
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099DB:EE_|SA1PR12MB5657:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3158088f-52f7-42c4-337b-08dde021ff5d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|82310400026|36860700013|376014|13003099007; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Yy9ZN3NZc28vMTlBejY0cGk0OXFCZ0RYdE1LK2NiQmdvQkJ2cjJaV2ZseWVu?=
- =?utf-8?B?YitiMmVWN21XRWFKYzFQS0NUVENRSTJ2UktYdmJ3NjgzSkVJbSthSU1acmRY?=
- =?utf-8?B?N3FGYTV4Unc3Ymc4cmJXbUxNQTcrQnJuSkN2ZGdueldpek5vdGYxNGJjS0lJ?=
- =?utf-8?B?R2hRaDJ4TDFGRFBxVE52M2lSQ0wrTjNRMlpjREErSzlKbU4yTER2U1pPa21u?=
- =?utf-8?B?UFg5eHdHRW95d2hRNkI3aEdieWFzakFHOHVzOHBxbmNNak9nU0NHM2twbnFU?=
- =?utf-8?B?aUVSbkJxRHVHUk9rN3dZaStvUXBUYTcxS3puUERFUFFFeE4rODFZV2lGK1pj?=
- =?utf-8?B?elVjdjY0aHlQcU80dFlrVkJrK1FYUXhYYXRHZTRqSGtTcy9XNEJqbG9KMEdn?=
- =?utf-8?B?MnNrTW9SdEx5U0VmT0ZPaWN2VDhIeGo5eHB2d1dUb0xybllqSE5udlErT2Zq?=
- =?utf-8?B?Yk45R1FzY3E5emUzMTBIWXMvMW9LSSt1YkgwZWpXa3p5RXhRbDQybkpXNE5y?=
- =?utf-8?B?NjhRTjRzd1UvT1AxVzFjVGxSU2NTbTdyVUs0cnhzQUlucGFJRUhuVlUzdFFx?=
- =?utf-8?B?K3g2OUM1eXpGOFlpekFnM0xDVnpxK1FCdTV2RHNkcEkwZU1LUU5jVU1zRVdz?=
- =?utf-8?B?dktrMkhpK2tCR0hyM0V0OXZ6ZElFc2xBWmRLOUY5RHZVNVN1Q3FJUTdoL2JH?=
- =?utf-8?B?OUthajh1ZUY2dG1FRW1XRG41aDhScDcwajZMN0hFSCtsSWNjYi82Z1dSU3pi?=
- =?utf-8?B?ZDZoRkY2aHo0T0xLNDU3U2RWN0NsckppRmdYcDRKOXhhN1JuSm13T3hCSjlo?=
- =?utf-8?B?aFg1SDVpays4b0M1TGZhTVZ4aWZjUWdPdEs1aldQY09uQnYvQXdVdnlLVHpN?=
- =?utf-8?B?NE5aL0hEUmw0OHY4QjRSRWNwUmV0bVE0dmlWY1FqK0Q3a0VCdkliRVA4Q05m?=
- =?utf-8?B?enFKa29QVEl5VFROYkNlZjRkQlY3VWhyOE4xNUN6cWU5UHMyNEtKKzRlbEhl?=
- =?utf-8?B?akZZaHgyUGpBSmhxVU1MNlNDMVk0aUNaWHV2bU1memkrNy9YeFFKVFpBdXI3?=
- =?utf-8?B?NjE3amtQdVVncForemMwWCsvWEN5YjlsVkZHTkRQS0hpaFdjZGswSEpobDJR?=
- =?utf-8?B?emNIcWdzUzlMTk5OZzMzck8wd2NtQ3pXeVBJWUI0K0RwdUdmV0RwejFNVkZv?=
- =?utf-8?B?VExnVEsyTGNUVzh6NWl6UWNvc1Uwek90MlhTUS9mbnpJRENNeVluN0pKbmhG?=
- =?utf-8?B?NVl6YXFHcGJVZ01TTWNsNDZLMXp2OHExYnJ3em9EYzVNZlUyOXpHamR1aHla?=
- =?utf-8?B?bmtDeElwOU90VUVIbjBTNTVrR2xpdUZyNzZQdENNaDlpcXE1T2hpOVJKWGFJ?=
- =?utf-8?B?NkM0ZUpWam5jUzNTVkwyeWxLMnFUWDUyaVY1VHJCd09BOGZxWlNINVdzYzRH?=
- =?utf-8?B?MVZES3dTbVluYVNoL2NKRzF2WGxyZEFzY1JqR3JHM1grVjhtanArVUpBOEsw?=
- =?utf-8?B?VDQ3QzRERkZmYVVNak9TQXdUcXpkckFmd01CWVFQWC9XVXplWXAzV3IySVRC?=
- =?utf-8?B?YUp5VlpXVHIyUzFQT01makdXTTRnYWJHMkIrOE8reVlpNmlrMEMwTEZMWWlk?=
- =?utf-8?B?Z2RSc2RSM1lzM3lmNFUwSGJBUHU0K2hCdmtMNGU3OEx5eCtFTWt3M0ZVTlgv?=
- =?utf-8?B?cDNwYmxqdXdSbHNRQUtTTlBaWFpscWhKb2ZVdktjTlVBRjJtd29Ga243MkZO?=
- =?utf-8?B?NHNvcjkwUDUvK3ZiWCtCalBGdDkzdy8xbThDTkRTNmZVOFFxMHhSMEFWWC8y?=
- =?utf-8?B?ZHRGM1dhTHFqS2NGVlJWSzg4M2wxVTg3UzJLY2ZxTlV5V1d1RzdWaWhYb3gy?=
- =?utf-8?B?d0szaTNwdzJZQVdUeWxNcWh5T05sR0FTZlM4ZzUvNUwrUElxSFFJdlBMMUpv?=
- =?utf-8?B?WWgwR2NxQWVBZUtjemFaSjFvakdObWU1TjlSQnZWQ21ZTDJaNHBxTUs2Um9y?=
- =?utf-8?B?eDJrUUoxOTNnPT0=?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014)(13003099007);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2025 19:44:37.8513 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3158088f-52f7-42c4-337b-08dde021ff5d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099DB.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5657
-Received-SPF: permerror client-ip=40.107.243.72;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM12-DM6-obe.outbound.protection.outlook.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,39 +101,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+We didn't make the device user creatable in the first place because we
+were worried users might get confused. Rename the device to make its
+nature as a test device even more explicit. While we are at it add a
+Kconfig variable so it can be skipped for those that want to thin out
+their build configuration even further.
 
-On behalf of the QEMU Team, I'd like to announce the availability of the
-fifth release candidate for the QEMU 10.1 release. This release is meant
-for testing purposes and should not be used in a production environment.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ docs/system/devices/vhost-user.rst            | 20 +++++++------------
+ include/hw/virtio/vhost-user-base.h           |  2 +-
+ ...ice-pci.c => vhost-user-test-device-pci.c} | 17 +++++++---------
+ ...user-device.c => vhost-user-test-device.c} |  9 +++------
+ hw/virtio/Kconfig                             |  5 +++++
+ hw/virtio/meson.build                         |  5 +++--
+ 6 files changed, 26 insertions(+), 32 deletions(-)
+ rename hw/virtio/{vhost-user-device-pci.c => vhost-user-test-device-pci.c} (77%)
+ rename hw/virtio/{vhost-user-device.c => vhost-user-test-device.c} (87%)
 
-  http://download.qemu.org/qemu-10.1.0-rc4.tar.xz
-  http://download.qemu.org/qemu-10.1.0-rc4.tar.xz.sig
+diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/vhost-user.rst
+index 35259d8ec7c..bddf8df5ed5 100644
+--- a/docs/system/devices/vhost-user.rst
++++ b/docs/system/devices/vhost-user.rst
+@@ -62,26 +62,20 @@ platform details for what sort of virtio bus to use.
+ The referenced *daemons* are not exhaustive, any conforming backend
+ implementing the device and using the vhost-user protocol should work.
+ 
+-vhost-user-device
+-^^^^^^^^^^^^^^^^^
++vhost-user-test-device
++^^^^^^^^^^^^^^^^^^^^^^
+ 
+-The vhost-user-device is a generic development device intended for
+-expert use while developing new backends. The user needs to specify
+-all the required parameters including:
++The vhost-user-test-device is a generic development device intended
++for expert use while developing new backends. The user needs to
++specify all the required parameters including:
+ 
+   - Device ``virtio-id``
+   - The ``num_vqs`` it needs and their ``vq_size``
+   - The ``config_size`` if needed
+ 
+ .. note::
+-  To prevent user confusion you cannot currently instantiate
+-  vhost-user-device without first patching out::
+-
+-    /* Reason: stop inexperienced users confusing themselves */
+-    dc->user_creatable = false;
+-
+-  in ``vhost-user-device.c`` and ``vhost-user-device-pci.c`` file and
+-  rebuilding.
++  While this is a useful device for development it is not recommended
++  for production use.
+ 
+ vhost-user daemon
+ =================
+diff --git a/include/hw/virtio/vhost-user-base.h b/include/hw/virtio/vhost-user-base.h
+index 51d0968b893..387e434b804 100644
+--- a/include/hw/virtio/vhost-user-base.h
++++ b/include/hw/virtio/vhost-user-base.h
+@@ -44,6 +44,6 @@ struct VHostUserBaseClass {
+ };
+ 
+ 
+-#define TYPE_VHOST_USER_DEVICE "vhost-user-device"
++#define TYPE_VHOST_USER_TEST_DEVICE "vhost-user-test-device"
+ 
+ #endif /* QEMU_VHOST_USER_BASE_H */
+diff --git a/hw/virtio/vhost-user-device-pci.c b/hw/virtio/vhost-user-test-device-pci.c
+similarity index 77%
+rename from hw/virtio/vhost-user-device-pci.c
+rename to hw/virtio/vhost-user-test-device-pci.c
+index f10bac874e7..d6a9ca2101d 100644
+--- a/hw/virtio/vhost-user-device-pci.c
++++ b/hw/virtio/vhost-user-test-device-pci.c
+@@ -18,13 +18,13 @@ struct VHostUserDevicePCI {
+     VHostUserBase vub;
+ };
+ 
+-#define TYPE_VHOST_USER_DEVICE_PCI "vhost-user-device-pci-base"
++#define TYPE_VHOST_USER_TEST_DEVICE_PCI "vhost-user-test-device-pci"
+ 
+-OBJECT_DECLARE_SIMPLE_TYPE(VHostUserDevicePCI, VHOST_USER_DEVICE_PCI)
++OBJECT_DECLARE_SIMPLE_TYPE(VHostUserDevicePCI, VHOST_USER_TEST_DEVICE_PCI)
+ 
+ static void vhost_user_device_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
+ {
+-    VHostUserDevicePCI *dev = VHOST_USER_DEVICE_PCI(vpci_dev);
++    VHostUserDevicePCI *dev = VHOST_USER_TEST_DEVICE_PCI(vpci_dev);
+     DeviceState *vdev = DEVICE(&dev->vub);
+ 
+     vpci_dev->nvectors = 1;
+@@ -38,9 +38,6 @@ static void vhost_user_device_pci_class_init(ObjectClass *klass,
+     VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
+     PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
+ 
+-    /* Reason: stop users confusing themselves */
+-    dc->user_creatable = false;
+-
+     k->realize = vhost_user_device_pci_realize;
+     set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
+     pcidev_k->vendor_id = PCI_VENDOR_ID_REDHAT_QUMRANET;
+@@ -51,15 +48,15 @@ static void vhost_user_device_pci_class_init(ObjectClass *klass,
+ 
+ static void vhost_user_device_pci_instance_init(Object *obj)
+ {
+-    VHostUserDevicePCI *dev = VHOST_USER_DEVICE_PCI(obj);
++    VHostUserDevicePCI *dev = VHOST_USER_TEST_DEVICE_PCI(obj);
+ 
+     virtio_instance_init_common(obj, &dev->vub, sizeof(dev->vub),
+-                                TYPE_VHOST_USER_DEVICE);
++                                TYPE_VHOST_USER_TEST_DEVICE);
+ }
+ 
+ static const VirtioPCIDeviceTypeInfo vhost_user_device_pci_info = {
+-    .base_name = TYPE_VHOST_USER_DEVICE_PCI,
+-    .non_transitional_name = "vhost-user-device-pci",
++    .base_name = TYPE_VHOST_USER_TEST_DEVICE_PCI,
++    .non_transitional_name = "vhost-user-test-device-pci",
+     .instance_size = sizeof(VHostUserDevicePCI),
+     .instance_init = vhost_user_device_pci_instance_init,
+     .class_init = vhost_user_device_pci_class_init,
+diff --git a/hw/virtio/vhost-user-device.c b/hw/virtio/vhost-user-test-device.c
+similarity index 87%
+rename from hw/virtio/vhost-user-device.c
+rename to hw/virtio/vhost-user-test-device.c
+index 3939bdf7552..1b98ea3e488 100644
+--- a/hw/virtio/vhost-user-device.c
++++ b/hw/virtio/vhost-user-test-device.c
+@@ -1,5 +1,5 @@
+ /*
+- * Generic vhost-user-device implementation for any vhost-user-backend
++ * Generic vhost-user-test-device implementation for any vhost-user-backend
+  *
+  * This is a concrete implementation of vhost-user-base which can be
+  * configured via properties. It is useful for development and
+@@ -25,7 +25,7 @@
+  */
+ 
+ static const VMStateDescription vud_vmstate = {
+-    .name = "vhost-user-device",
++    .name = "vhost-user-test-device",
+     .unmigratable = 1,
+ };
+ 
+@@ -41,16 +41,13 @@ static void vud_class_init(ObjectClass *klass, const void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+ 
+-    /* Reason: stop inexperienced users confusing themselves */
+-    dc->user_creatable = false;
+-
+     device_class_set_props(dc, vud_properties);
+     dc->vmsd = &vud_vmstate;
+     set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
+ }
+ 
+ static const TypeInfo vud_info = {
+-    .name = TYPE_VHOST_USER_DEVICE,
++    .name = TYPE_VHOST_USER_TEST_DEVICE,
+     .parent = TYPE_VHOST_USER_BASE,
+     .class_init = vud_class_init,
+ };
+diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
+index 7648a2d68da..10f5c53ac09 100644
+--- a/hw/virtio/Kconfig
++++ b/hw/virtio/Kconfig
+@@ -126,3 +126,8 @@ config VHOST_USER_SCMI
+     bool
+     default y
+     depends on VIRTIO && VHOST_USER && ARM
++
++config VHOST_USER_TEST
++    bool
++    default y
++    depends on VIRTIO && VHOST_USER
+diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
+index 3ea7b3cec83..48b9fedfa56 100644
+--- a/hw/virtio/meson.build
++++ b/hw/virtio/meson.build
+@@ -22,7 +22,7 @@ if have_vhost
+     system_virtio_ss.add(files('vhost-user-base.c'))
+ 
+     # MMIO Stubs
+-    system_virtio_ss.add(files('vhost-user-device.c'))
++    system_virtio_ss.add(when: 'CONFIG_VHOST_USER_TEST', if_true: files('vhost-user-test-device.c'))
+     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_GPIO', if_true: files('vhost-user-gpio.c'))
+     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user-i2c.c'))
+     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user-rng.c'))
+@@ -30,7 +30,8 @@ if have_vhost
+     system_virtio_ss.add(when: 'CONFIG_VHOST_USER_INPUT', if_true: files('vhost-user-input.c'))
+ 
+     # PCI Stubs
+-    system_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('vhost-user-device-pci.c'))
++    system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_TEST'],
++                         if_true: files('vhost-user-test-device-pci.c'))
+     system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_GPIO'],
+                          if_true: files('vhost-user-gpio-pci.c'))
+     system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_I2C'],
+-- 
+2.47.2
 
-You can help improve the quality of the QEMU 10.1 release by testing this
-release and reporting bugs using our GitLab issue tracker:
-
-  https://gitlab.com/qemu-project/qemu/-/milestones/16
-
-The release plan, as well a documented known issues for release
-candidates, are available at:
-
-  http://wiki.qemu.org/Planning/10.1
-
-Please add entries to the ChangeLog for the 10.1 release below:
-
-  http://wiki.qemu.org/ChangeLog/10.1
-
-Thank you to everyone involved!
-
-Changes since rc3:
-
-88f72048d2: Update version for the v10.1.0-rc4 release (Stefan Hajnoczi)
-faaaf017d5: Revert "i386/cpu: Warn about why CPUID_EXT_PDCM is not availabl=
-e" (Paolo Bonzini)
-040237436f: hw/uefi: open json file in binary mode (Gerd Hoffmann)
-fc8ee8fe58: hw/uefi: check access for first variable (Gerd Hoffmann)
-88e5a28d5a: hw/uefi: return success for notifications (Gerd Hoffmann)
-f757d9d90d: hw/uefi: clear uefi-vars buffer in uefi_vars_write callback (Ma=
-uro Matteo Cascella)
 
