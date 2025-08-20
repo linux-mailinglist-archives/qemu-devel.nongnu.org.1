@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC87B2E767
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 23:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA85B2E76B
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 23:21:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoqDw-0005Jo-Lt; Wed, 20 Aug 2025 17:20:00 -0400
+	id 1uoqDx-0005KW-Ht; Wed, 20 Aug 2025 17:20:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uoqDt-0005HW-8g; Wed, 20 Aug 2025 17:19:57 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ id 1uoqDu-0005IS-Lf; Wed, 20 Aug 2025 17:19:58 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uoqDq-00050N-Re; Wed, 20 Aug 2025 17:19:56 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-6188b5be5deso486645a12.0; 
- Wed, 20 Aug 2025 14:19:53 -0700 (PDT)
+ id 1uoqDr-00050e-SL; Wed, 20 Aug 2025 17:19:58 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-61aa702c9ebso756519a12.3; 
+ Wed, 20 Aug 2025 14:19:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1755724792; x=1756329592; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1755724793; x=1756329593; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/YJr7HnvTI2L5V2VOYjQO2NQfngAH/j+ZgHqnkWMtYI=;
- b=IG1HKTvzTLzHsWTicVOjgwUDuy5zFJ0rDZRZKAQA8b4O43OuKg9BX6Bog38DlncLR8
- zyrp/VN7taRw3PXmtl47kR1ne0zj4P44bkezpAJcPdwMJ06Zmw5O0cHZQ0oIGfQ8zhy+
- Ykham+7LPxhgLvxpYs89vLmT4lKOTGd55XxeeJytFSCEv5ZGlwaKBCotj5IHjniwceZ5
- r+d22XXAxoTvVrejGDPzVyWs158txxlDOyEJ8YZAfoVtxqrO/ZyWsMevRQxoo4oxTED0
- X6KQEnN64ZtH4oua+B2zb9+GHDv/nefslmDaPqItyJOjKUgoGj0fiY2x1iIPyQo+ZP+j
- RTLg==
+ bh=JnU/2XOvhfKf0py0byocSk1ZC/ukvx07ErFoqRV6J40=;
+ b=Ld/V4Nrj5kBCXYtdW91b4Hbh3ua5Korjw1rTmTuDewj+FGiKBMZopQrNAWkL0TEkdA
+ DvA70Nsjhh2DD7Vg4UPWoRpNmeeYMdTOq8NHNcqYPEWvgPUE3NMrTbu7/vFO/C9NBlzJ
+ UrvDNhzZZutzNmUNGRIzF8FZGxswtRlErRf8rqi66AxCNd7mH9wvZMuIy/ef4g34baEp
+ qBQNR+kLmGO2J3FUdFvFRpQzaN2BC7qDnQ53hNm+XmVxiZSjFzB7QmvyUhZ0UDybXnZf
+ 0auv2NeV1UC8BP1IM/nJk1hQePvhuhVPxKO+JJz7gmWCAB+LU64x6TLELkYP6t4ksjSW
+ RR+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755724792; x=1756329592;
+ d=1e100.net; s=20230601; t=1755724793; x=1756329593;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/YJr7HnvTI2L5V2VOYjQO2NQfngAH/j+ZgHqnkWMtYI=;
- b=R8t2CgM3rT6mcES87HGdWYxYz2q65aBQQ5b78j9kBDEGTY7lba09a0PfxFrzjg0xgN
- kDErkBwmo1ND3K6bgRHkGQ27YacLz/ojsR1k2DefTSHqWF5F05lGIp6996Fd4Zyfwx1s
- qfTFovbTfSm3lechJlLqZT/qZ5BH+tiy3AisK/KT5nEaT0Ug0m63ya6Q1A01271oIuBf
- twyZMOMbKCUUN/kWuxadldMfO6t+eQTIuZTHphPHYH7ZRpqozuDKfMzJVrLnkHRNdd6l
- SzfbaQfzHWwebrdJau6Q94wAAnWTIY63w+7zBjlY3Ovgp36WShid/NJlTfm0mAL7uWO9
- 5isA==
+ bh=JnU/2XOvhfKf0py0byocSk1ZC/ukvx07ErFoqRV6J40=;
+ b=LHG3iFpC0PE9qik5Yf9CbzCxQuouXBvHSbUUsmRE2ZM97Nq6JRuO9cUpfqBCPkvESD
+ tNgw7apqyrgF6TxOalcXimrJYI0j7qTEabtzdGPdHlQ1rEQQ49fN+mi31rWajpd4jaUq
+ KOP8MSvR9jg0lDbo9Jbc33j3wMPQCEBPi+f0HoB1aXYdAqsWIQ3/yDvu2UsMmbYLDNXY
+ +cnc0Op4WL0hHVICVBUQIx3gOC9JmDxJuT7Xub2qa9BTDg+lxkJtyk3p2HW7mXUXS5uz
+ Wo0fufHuAiWbzEdNWhKTGxEZSayvhggVnWXj2OSqyomfR/QtWeoMWCARa/bmC7Kbt2+k
+ K1KA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVwd0O1um+4eqF4VXXvISTKY7tpvavwcZI2j3qg1kslzZpwYJD4y0Iy8d/5D7/+3ddcwfZAnK4Kjg==@nongnu.org
-X-Gm-Message-State: AOJu0YyFTrG2aTnXMTxZXpcyel0D5PllHHgbJsP1HSxbOpup/2kmuPQr
- A5CLKxtp/pkTdb1CW58oD/knsoLgViQZwvgjnzag0BA/okHH/A4nPvkikUcazVDM
-X-Gm-Gg: ASbGncviHudb5B1AzxNKb88eAMB7wPOPVVFf0KZ3Ej1BAJZMdkWrGOv7JTIR3UejZ4Y
- JFYCT6Fx5djyT+9z/DUpv+gTK/tlHnpakI0ZCamaSxY1DnlL/4W5IhztDFBy+NxToD36Fbk3hcq
- TQY4wv1OngTgclzazjjdISRhc4CeSgeQPWt8ft/ecxBP5EQR12tbGPTVwS/rGD5ZhZnnF5G1UIb
- 8vhsEGurn3rvJ2pfpgMK3cWjFqujBTyyVsMbD2HmeH1AGQwBO1GDBnpmQElim92MN9Gop3jZDt7
- TQnPxsK6TVLZoIOCUC5Wu3IV/htzMj+Os8hjU65jfDon9Vvqsha5x4r+bWLDIMsOjWYcRAbXQgx
- 03Pd2dtRLWb22duFxaCt73NOWPM9PHIszUmM6BAWeRgbyxN5VOYPOeWX7qQ3cLyXDRfgv/wiOda
- 5rms1RagjVbYMuzbdgqwzjyv5XjNTcAC9aNgmbEmQWTb8=
-X-Google-Smtp-Source: AGHT+IH63uGdlgaoL0L2Gf64QLQr9qOImnp5sQ4hQtAOnigxRKxMo+03U++LTt6qokt2o+7ATwWlVw==
-X-Received: by 2002:a05:6402:270b:b0:618:6a59:5500 with SMTP id
- 4fb4d7f45d1cf-61bf86dfae7mr115773a12.1.1755724792245; 
- Wed, 20 Aug 2025 14:19:52 -0700 (PDT)
+ AJvYcCXdNhMjnbEGCI9Ng5SuuQfjBcMbavbsGcsPM/lP0+g1bC35hlIUxPgUfgJ1fnh7H6Gv5v0Ski7Z5w==@nongnu.org
+X-Gm-Message-State: AOJu0YySuTArBpFBRFvIeqQIm9cBUotXapt4D8BmgPoIIGG68/D1PZLl
+ 5VcHy4H1mRhPpCKJiaTKCEsYZdGrso4CCiCSrYP+rWgs7QPBSFf9M9edLc9zGoyv
+X-Gm-Gg: ASbGncvgFyuES/E+qdwh0wOU4qFrblqqYx1FaO9kOsLzmK7MzQbmP8Ytv1E5ZaVs4zx
+ GmoYyink/1YOHr/4fehyJOHEakV9IdX91hUpc9jfHRfNXyNVaUrjv20cIXtq1TkZAVuZBl+69zD
+ OCDhUGOj7Z7GV/undw1TRmD9nxSjvdZ15sd9S01Ia2CQw3yYIhHbxCPz0UvWNzmxeInhJjTUVdJ
+ gLdDl/44ynyx16lGtqQrxaMvFq34qXaAUjKfd2ojtu7GhuFL6s7AB0lDeEiwm4eUrQuUwDKSnEF
+ cWm53ECJpibvvIa/tStf5FEMOX93vpdKOoHXz8sUuj4u4akbtESqQdzbQzEjZ/Xq+6Y8uS5PQCv
+ 22nE/BzPk0O8OQ2ZC3QRw3RpOHEE/kYjsiGhsqJIIDca/R32SkrDcABAwT8B3TQNwrub9Ei8mTP
+ Nmt7I+bMl+mMrH91Y67J2+YGkPcBV6O7DHrk3i0ypZD915cnZLq8DwgQ==
+X-Google-Smtp-Source: AGHT+IFQHGKeaSYft7dH2jM93EepuEEFy+w+oXiIrjA+tRB5gAMmAJWgGYHJVXOLPqfDf4YZDO3dVA==
+X-Received: by 2002:a05:6402:23d8:b0:618:6615:30df with SMTP id
+ 4fb4d7f45d1cf-61bf86efce5mr122543a12.15.1755724793200; 
+ Wed, 20 Aug 2025 14:19:53 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-2a02-3100-249c-be00-0219-99ff-feb2-2458.310.pool.telefonica.de.
  [2a02:3100:249c:be00:219:99ff:feb2:2458])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-61a755d9cfasm4161182a12.9.2025.08.20.14.19.50
+ 4fb4d7f45d1cf-61a755d9cfasm4161182a12.9.2025.08.20.14.19.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Aug 2025 14:19:51 -0700 (PDT)
+ Wed, 20 Aug 2025 14:19:52 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
  Bernhard Beschow <shentey@gmail.com>, Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 04/10] hw/pci-host/designware: Distinguish stronger between
- viewport memory types
-Date: Wed, 20 Aug 2025 23:19:26 +0200
-Message-ID: <20250820211932.27302-5-shentey@gmail.com>
+Subject: [PATCH 05/10] hw/pci-host/designware: Implement I/O space
+Date: Wed, 20 Aug 2025 23:19:27 +0200
+Message-ID: <20250820211932.27302-6-shentey@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250820211932.27302-1-shentey@gmail.com>
 References: <20250820211932.27302-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,80 +102,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a preparation for implementing I/O space support. At the same
-time, unimplemented memory types and guest errors are logged.
+Mapping I/O space works via viewports in this device but isn't
+implemented in the model. Fix that.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/pci-host/designware.c | 27 ++++++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+ hw/pci-host/designware.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-index 2a676c65a2..5ad7574924 100644
+index 5ad7574924..7342207eb3 100644
 --- a/hw/pci-host/designware.c
 +++ b/hw/pci-host/designware.c
-@@ -44,7 +44,11 @@
- #define DESIGNWARE_PCIE_ATU_VIEWPORT               0x900
- #define DESIGNWARE_PCIE_ATU_REGION_INBOUND         BIT(31)
- #define DESIGNWARE_PCIE_ATU_CR1                    0x904
--#define DESIGNWARE_PCIE_ATU_TYPE_MEM               (0x0 << 0)
-+#define DESIGNWARE_PCIE_ATU_TYPE_MEM               0x0
-+#define DESIGNWARE_PCIE_ATU_TYPE_IO                0x2
-+#define DESIGNWARE_PCIE_ATU_TYPE_CFG0              0x4
-+#define DESIGNWARE_PCIE_ATU_TYPE_CFG1              0x5
-+#define DESIGNWARE_PCIE_ATU_TYPE_MSG               0x10
- #define DESIGNWARE_PCIE_ATU_CR2                    0x908
- #define DESIGNWARE_PCIE_ATU_ENABLE                 BIT(31)
- #define DESIGNWARE_PCIE_ATU_LOWER_BASE             0x90C
-@@ -268,6 +272,7 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
-     const uint64_t target = viewport->target;
-     const uint64_t base   = viewport->base;
-     const uint64_t size   = (uint64_t)viewport->limit - base + 1;
-+    const int iatu_type   = viewport->cr[0];
-     const bool enabled    = viewport->cr[1] & DESIGNWARE_PCIE_ATU_ENABLE;
- 
-     if (memory_region_is_mapped(&viewport->mem)) {
-@@ -276,7 +281,8 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
-     object_unparent(OBJECT(&viewport->mem));
- 
+@@ -283,6 +283,7 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
      if (enabled) {
--        if (viewport->cr[0] == DESIGNWARE_PCIE_ATU_TYPE_MEM) {
-+        switch (iatu_type) {
-+        case DESIGNWARE_PCIE_ATU_TYPE_MEM:
+         switch (iatu_type) {
+         case DESIGNWARE_PCIE_ATU_TYPE_MEM:
++        case DESIGNWARE_PCIE_ATU_TYPE_IO:
              if (viewport->inbound) {
                  /*
                   * Configure MemoryRegion implementing PCI -> CPU memory
-@@ -298,7 +304,10 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
+@@ -298,9 +299,12 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
+                  * Configure MemoryRegion implementing CPU -> PCI memory
+                  * access
+                  */
++                MemoryRegion *mr = iatu_type == DESIGNWARE_PCIE_ATU_TYPE_IO
++                                       ? &host->pci.io
++                                       : &host->pci.memory;
++
+                 memory_region_init_alias(&viewport->mem, OBJECT(root),
+-                                         viewport->name, &host->pci.memory,
+-                                         target, size);
++                                         viewport->name, mr, target, size);
                  memory_region_add_subregion(get_system_memory(), base,
                                              &viewport->mem);
              }
--        } else {
-+            break;
-+
-+        case DESIGNWARE_PCIE_ATU_TYPE_CFG0:
-+        case DESIGNWARE_PCIE_ATU_TYPE_CFG1:
-             if (!viewport->inbound) {
-                 /*
-                  * Configure MemoryRegion implementing access to configuration
-@@ -321,6 +330,18 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
-                                   (int)busnum, (int)devfn);
-                 }
+@@ -332,7 +336,6 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
              }
-+            break;
-+
-+        case DESIGNWARE_PCIE_ATU_TYPE_IO:
-+        case DESIGNWARE_PCIE_ATU_TYPE_MSG:
-+            qemu_log_mask(LOG_UNIMP, "%s: Unimplemented iATU type %d", __func__,
-+                          iatu_type);
-+            break;
-+
-+        default:
-+            qemu_log_mask(LOG_GUEST_ERROR, "%s: Illegal iATU type %d", __func__,
-+                          iatu_type);
-+            break;
-         }
-     }
- }
+             break;
+ 
+-        case DESIGNWARE_PCIE_ATU_TYPE_IO:
+         case DESIGNWARE_PCIE_ATU_TYPE_MSG:
+             qemu_log_mask(LOG_UNIMP, "%s: Unimplemented iATU type %d", __func__,
+                           iatu_type);
 -- 
 2.50.1
 
