@@ -2,80 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 722AFB2E212
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 18:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7838DB2E5E3
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 21:53:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uolSU-0000Q6-Cw; Wed, 20 Aug 2025 12:14:42 -0400
+	id 1uoorg-0007rh-MR; Wed, 20 Aug 2025 15:52:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uolSQ-0000ND-Bk
- for qemu-devel@nongnu.org; Wed, 20 Aug 2025 12:14:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uolSN-0005PQ-RD
- for qemu-devel@nongnu.org; Wed, 20 Aug 2025 12:14:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755706474;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kBhoHfYsyu8k+ejTIQs10bDgznHOCS1klKszn64gSbc=;
- b=X1aG2wTdU1Ij7e3RxZ+n1bLfv0Q/vEkk2aTXizrXOHAt7Jq5svKUO1JRqo8SPzA96nBtI9
- pnEATRqwIeOJIki+cCG10dfflbZ07PK457ROEPJROoS9p1Mr283b6n4BMOkiU+3yMPTam4
- FSXQDuKpOqlQFyRtoly2LKBgNuKz8TY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-137-lojLfP5ZNYGtUl_x1YkBJg-1; Wed,
- 20 Aug 2025 12:14:32 -0400
-X-MC-Unique: lojLfP5ZNYGtUl_x1YkBJg-1
-X-Mimecast-MFC-AGG-ID: lojLfP5ZNYGtUl_x1YkBJg_1755706471
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EF019180035F; Wed, 20 Aug 2025 16:14:30 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.164])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2E49F3000198; Wed, 20 Aug 2025 16:14:27 +0000 (UTC)
-Date: Wed, 20 Aug 2025 17:14:24 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: John Levon <john.levon@nutanix.com>
-Cc: qemu-devel@nongnu.org, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Thanos Makatos <thanos.makatos@nutanix.com>,
- Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: Re: [PATCH 3/3] tests/functional: add a vfio-user smoke test
-Message-ID: <aKX0YEEuAXZQvmTa@redhat.com>
-References: <20250818110546.2159622-1-john.levon@nutanix.com>
- <20250818110546.2159622-4-john.levon@nutanix.com>
+ (Exim 4.90_1) (envelope-from <blast@llvm>) id 1uolZT-00025p-QI
+ for qemu-devel@nongnu.org; Wed, 20 Aug 2025 12:21:55 -0400
+Received: from 2001-b011-3808-3444-a66b-b6ff-fe3d-469a.dynamic-ip6.hinet.net
+ ([2001:b011:3808:3444:a66b:b6ff:fe3d:469a] helo=llvm)
+ by eggs.gnu.org with esmtp (Exim 4.90_1) (envelope-from <blast@llvm>)
+ id 1uolZR-0006Fn-VV
+ for qemu-devel@nongnu.org; Wed, 20 Aug 2025 12:21:55 -0400
+Received: from blast (uid 1001) (envelope-from blast@llvm) id 2abde
+ by llvm (DragonFly Mail Agent v0.13+ on llvm);
+ Wed, 20 Aug 2025 12:16:41 -0400
+From: ShengYi Hung <aokblast@FreeBSD.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ ShengYi Hung <aokblast@FreeBSD.org>
+Subject: [PATCH] ii6300esb: fix incorrect mask for interrupt type
+Date: Wed, 20 Aug 2025 12:16:41 -0400
+Message-ID: <20250820161641.25789-1-aokblast@FreeBSD.org>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250818110546.2159622-4-john.levon@nutanix.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2001:b011:3808:3444:a66b:b6ff:fe3d:469a;
+ envelope-from=blast@llvm; helo=llvm
+X-Spam_score_int: 29
+X-Spam_score: 2.9
+X-Spam_bar: ++
+X-Spam_report: (2.9 / 5.0 requ) BAYES_00=-1.9, FSL_HELO_NON_FQDN_1=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.029, HELO_NO_DOMAIN=0.001,
+ KHOP_HELO_FCRDNS=0.4, RCVD_IN_PBL=3.335, RDNS_DYNAMIC=0.982, SPF_NONE=0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 20 Aug 2025 15:52:52 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,33 +52,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 18, 2025 at 12:05:46PM +0100, John Levon wrote:
-> From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-> 
-> Add a basic test of the vfio-user PCI client implementation.
-> 
-> Co-authored-by: John Levon <john.levon@nutanix.com>
-> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-> Signed-off-by: John Levon <john.levon@nutanix.com>
-> ---
->  MAINTAINERS                               |   1 +
->  tests/functional/meson.build              |   1 +
->  tests/functional/test_vfio_user_client.py | 407 ++++++++++++++++++++++
->  3 files changed, 409 insertions(+)
->  create mode 100755 tests/functional/test_vfio_user_client.py
+According to Intel 6300ESB Controller Hub Datasheet 14.4.15, the interrupt type
+mask should be 0x03 (0b11) instead of 0x11. In the original
+implementation, when we want to disable all interrupt by setting the
+value to 0x03, we will get 0x01 which will be incorrect when we reading
+the value again. However, there is no problem since 0x1 is reserved and
+unused.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: ShengYi Hung <aokblast@FreeBSD.org>
+Sponsored by:   The FreeBSD Foundation
+---
+ hw/watchdog/wdt_i6300esb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-With regards,
-Daniel
+diff --git a/hw/watchdog/wdt_i6300esb.c b/hw/watchdog/wdt_i6300esb.c
+index bb8a2766b6..3aa01b8d68 100644
+--- a/hw/watchdog/wdt_i6300esb.c
++++ b/hw/watchdog/wdt_i6300esb.c
+@@ -55,7 +55,7 @@
+ /* Config register bits */
+ #define ESB_WDT_REBOOT  (0x01 << 5)   /* Enable reboot on timeout          */
+ #define ESB_WDT_FREQ    (0x01 << 2)   /* Decrement frequency               */
+-#define ESB_WDT_INTTYPE (0x11 << 0)   /* Interrupt type on timer1 timeout  */
++#define ESB_WDT_INTTYPE (0x03 << 0)   /* Interrupt type on timer1 timeout  */
+ 
+ /* Reload register bits */
+ #define ESB_WDT_RELOAD  (0x01 << 8)    /* prevent timeout                   */
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.50.1
 
 
