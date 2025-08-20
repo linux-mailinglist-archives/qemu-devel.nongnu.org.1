@@ -2,73 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D76B2D95D
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 11:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9115DB2D9F7
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 12:24:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uofWZ-0002nw-1w; Wed, 20 Aug 2025 05:54:31 -0400
+	id 1uofyd-0002ak-RY; Wed, 20 Aug 2025 06:23:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uofWX-0002nh-FZ
- for qemu-devel@nongnu.org; Wed, 20 Aug 2025 05:54:29 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uofyZ-0002ZV-BT
+ for qemu-devel@nongnu.org; Wed, 20 Aug 2025 06:23:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uofWT-00051F-MA
- for qemu-devel@nongnu.org; Wed, 20 Aug 2025 05:54:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755683666; x=1787219666;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=wJQmnOq2D2pcZJWZwWK0W5P28bHEmZQwHSq6N8mGZ8w=;
- b=DWD38SEnx7KCBihK7LGBXbXQyzBahGpv2jt7q5mWwRG4mMSxw2qHfUlF
- LviKw9b7d4f77HeQkLsW0MmCjMCfeweHr9mR97vwJsp+DCBODpyx63m2+
- LOFAlDRb9k+tYzN5/hnNWrE1r28A8qPA7YpdigF87hONziqQTnNCAIKdJ
- qLiixYdUZjj2ZJB9o7qP5iS1P9MyTBIewTkGgBs/TsMJW7NhWWcKbJasz
- 1NwuwVTzBn4YapxNDzwuIP6ObcnTlx2AP5ugt2G920mm45Laq7mEFuT+o
- xZlN/Y5lCAH2h3qAc5uuovHmf+TKvCWytHs9AGjk8eAxa3UMuii/dpSEh w==;
-X-CSE-ConnectionGUID: 8Xn98B1lRXKYB5dCwAojKQ==
-X-CSE-MsgGUID: tlRgYK8TTEW7wWc5WUDN+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="80539210"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="80539210"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2025 02:54:23 -0700
-X-CSE-ConnectionGUID: LkGHCPLKRaSQB4PteMt8LA==
-X-CSE-MsgGUID: 1pYh0kqtQtG2no3Ul1q74g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="191776249"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 20 Aug 2025 02:54:21 -0700
-Date: Wed, 20 Aug 2025 18:16:05 +0800
-From: "zhao1.liu@intel.com" <zhao1.liu@intel.com>
-To: "Wangxin (Alexander)" <wangxinxin.wang@huawei.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Wang Xin via <qemu-devel@nongnu.org>,
- "Huangweidong (C)" <weidong.huang@huawei.com>, xietuo <xietuo@huawei.com>
-Subject: Re: [PATCH] target/i386: Add support save/load exception error_code
-Message-ID: <aKWgZRwKpAx+3o3h@intel.com>
-References: <20250819145834.3998-1-wangxinxin.wang@huawei.com>
- <20250819152817.789959-2-pbonzini@redhat.com>
- <e4018c7b70ef4d81bafcc7395551e735@huawei.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uofyW-0000XQ-3f
+ for qemu-devel@nongnu.org; Wed, 20 Aug 2025 06:23:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1755685402;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=ZcLPlTV+Sb7mNLGkb4kxXry/6Iho3cQnuYGyjSpANK8=;
+ b=a3D8RPYJbWGi4Dm+ps6t6L62GIh2uH0BP3ukPZdG4kjySfNf6GCTGYvLhzP65Fd0JvqaO9
+ qibInFfHdTeWTBpZLkEwqfK25RP3VzINTIrOimtWq6mm/xY5Oyn8Z9nAjbbdHda+O+9bim
+ 0IEIs6rktjMkafyu0cyRbaT2kqNzUWk=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-321-wTRb5ocSM1291Hs4Admpjg-1; Wed,
+ 20 Aug 2025 06:23:16 -0400
+X-MC-Unique: wTRb5ocSM1291Hs4Admpjg-1
+X-Mimecast-MFC-AGG-ID: wTRb5ocSM1291Hs4Admpjg_1755685394
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A21B0195608E; Wed, 20 Aug 2025 10:23:13 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.164])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0779A19560B0; Wed, 20 Aug 2025 10:23:08 +0000 (UTC)
+Date: Wed, 20 Aug 2025 11:23:04 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Eli Schwartz <eschwartz93@gmail.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+ Kostiantyn Kostiuk <kkostiuk@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "open list:Rust-related patc..." <qemu-rust@nongnu.org>
+Subject: Re: [PATCH] meson: set test programs to not build by default
+Message-ID: <aKWiCBbEKwn5zLRz@redhat.com>
+References: <20250819154940.2137965-1-eschwartz@gentoo.org>
+ <aKSmyWRB_Gi3kru_@redhat.com>
+ <eda4ade9-ba07-4e6e-adf8-e308a9ec3435@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e4018c7b70ef4d81bafcc7395551e735@huawei.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <eda4ade9-ba07-4e6e-adf8-e308a9ec3435@gmail.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,35 +89,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 20, 2025 at 02:18:21AM +0000, Wangxin (Alexander) wrote:
-> Date: Wed, 20 Aug 2025 02:18:21 +0000
-> From: "Wangxin (Alexander)" <wangxinxin.wang@huawei.com>
-> Subject: RE: [PATCH] target/i386: Add support save/load exception error_code
+On Wed, Aug 20, 2025 at 01:12:35AM -0400, Eli Schwartz wrote:
+> But your proposal runs counter to existing code already in qemu's build
+> system, i.e. the comment I've updated. So I don't think it's entirely
+> fair to raise an objection to my patch at all -- better you should raise
+> a meta-discussion about this to discuss changing the existing
+> build_by_defaults.
+
+The comment in tests/functional/meson.build is a special case rule
+that isn't building anything. Rather that precache logic is using a
+custom target to download several GB of disk images needed by tests,
+such that the tests themselves won't hit a timeout downloading images
+on first run. That use of  "build_by_default: false" would be fine.
+
+> > If we want the ability to opt-out of building tests by default
+> > so reduce build time, IMHO that should be behind a 'configure'
+> > flag / meson_options.txt setting.
 > 
-> > 
-> > Queued, thanks.  But please let me know what's the correct signed off by chain;
-> > either Tuo created the patch, and then you should have "--author" for him and
-> > his SoB first; or you did, and then Tuo's SoB is unnecessary.
-> > 
-> > Paolo
-> > 
 > 
-> The author is me,
+> There is anyways no point in this being a meson_options.txt setting and
+> complexifying all test programs via conditionals. As explained in my
+> link, you can have Makefile itself read a configure option and run:
 
-But if Tuo co-worked with you, his SoB is also necessary to keep:
+AFAICT, it shouldn't be more complex than anything else we're doing
+with meson option handling. eg instead of hardcoding 'false', do
+something like:
 
-"git commits will usually be expected to have a ``Signed-off-by``
- line for each contributor involved in creation of the patch."
+  build_by_default: get_option('tests')
 
-In this case, ¡°Co-developed-by¡± is not necessary for now.
+where the option defaults to 'true'.
 
-I think the reason of confusion is, as the person sending the patch,
-you'd have put your SoB on the last line.
+> Either way it is definitely of interest to users running a build +
+> install of a tagged release, to skip building tests they won't run. e.g.
+> many linux distros make the test phase of packaging be optional.
 
-Thanks,
-Zhao
+FWIW, I would really strongly suggest to *always* run QEMU's tests
+from release tarball, and most especially for distro packaging.
+There are just way too many moving parts in our 3rd party deps to
+be confident everything in QEMU works correctly without having run
+the tests.
+
+> Automake works the same way -- tests can be excluded from `make && make
+> install`, but get built on demand by `make check`.
+
+When we still used automake in libvirt, we overrode that behaviuor to
+always build tests, as it was causing too frequent problems with
+contributors overlooking that a patch had broken test compile.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
