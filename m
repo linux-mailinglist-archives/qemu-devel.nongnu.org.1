@@ -2,141 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D90B2D66C
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 10:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE4EB2D697
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 10:35:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoeCF-00028o-WF; Wed, 20 Aug 2025 04:29:28 -0400
+	id 1uoeAe-0007Y2-Vl; Wed, 20 Aug 2025 04:27:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1uoeAo-0007qo-UV; Wed, 20 Aug 2025 04:28:03 -0400
-Received: from mail-mw2nam04on2060d.outbound.protection.outlook.com
- ([2a01:111:f403:240a::60d]
- helo=NAM04-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1uoeAh-0001Bl-IE; Wed, 20 Aug 2025 04:27:58 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NpcrT4/noJ1gc6EKNJDiyIMzG2ucABz448yf1p5xGELpkGcPJRZ/akcD7ItGYc+SFsPxKXsaaeTAwupdM99WCbcRsk95TP0esD5XD26jW0eJnC2GHNhm1sp6mroEnghfLqEQZVH142oApA8tNRxU091IFIvULya5kK5QstdtWtnw5pFIyqOiZoaz2dkcG76qLtMzwVezHXamfoQIB1+xsqIC64jgpmNQk6pTSbREHY3R6CjbYkun8zjKkKSijXF0h18q8EjnnYC9GYNTy2Ds0vnn1qnETciVOQipCxmFzujOt8KCmyIMzxuQxJaZOL6UqprejW94PN1RZzwOmkMs8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EggKcBPTWSvlw60MLxVeyUG1ivURX6FGREj7MFM66Fo=;
- b=ZFUSon9EQUr8UdrE2HU3NvWjdZARd1NgPIbAc9dy6DRhhzTtF/dSPQnAi/4ZqbLBV4GtoHp3+iEt3l5qEghTo1pP710X63AH7No3/6/Uxa1EygjJQpoxUFG66oi8IWfm+2Q2HHXQZn6AycBuCD1BWgHfSZaHMyZXrxY1kVC7ZXeIVFeMPSRvCo4q+7oCK9iEzqM2NQDEHyVq4gLQd9QTk6e/aF1UTDJM5Y5RWYbTgTwdPhgELowLfzL148R675SwUNXxlmkhuphdne+LwY9jY8F4ZqUOQrUpDih0nzQpT/cg/tZzCVG4s9fKso3XronqN0agTutR7nKXdowhBL0edw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EggKcBPTWSvlw60MLxVeyUG1ivURX6FGREj7MFM66Fo=;
- b=mzcfOIMl2bTFCjygps+mfYU8uWjkNxqUXW3+kbWB6smVGy51w0IF4RtVdfjCUgsNOrmBhLskrccm3XJ4Eyh+5jVkk5tpOfkX2DnmsVqJLXQujDVvLCcWDYW/275yzqCp86njHn74lv25AJ/u5uhcmYvyCZztUJSfXG3TKf2T3PQ=
-Received: from SJ0PR05CA0179.namprd05.prod.outlook.com (2603:10b6:a03:339::34)
- by IA0PR12MB8207.namprd12.prod.outlook.com (2603:10b6:208:401::8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Wed, 20 Aug
- 2025 08:27:42 +0000
-Received: from CO1PEPF000075ED.namprd03.prod.outlook.com
- (2603:10b6:a03:339:cafe::a2) by SJ0PR05CA0179.outlook.office365.com
- (2603:10b6:a03:339::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.13 via Frontend Transport; Wed,
- 20 Aug 2025 08:27:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CO1PEPF000075ED.mail.protection.outlook.com (10.167.249.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9052.8 via Frontend Transport; Wed, 20 Aug 2025 08:27:41 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 20 Aug
- 2025 03:27:41 -0500
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Wed, 20 Aug
- 2025 01:27:40 -0700
-Received: from XFR-LUMICHEL-L2.xilinx.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Wed, 20 Aug 2025 03:27:39 -0500
-From: Luc Michel <luc.michel@amd.com>
-To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: Luc Michel <luc.michel@amd.com>, Peter Maydell <peter.maydell@linaro.org>, 
- Francisco Iglesias <francisco.iglesias@amd.com>, "Edgar E . Iglesias"
- <edgar.iglesias@amd.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Alistair Francis <alistair@alistair23.me>, "Frederic
- Konrad" <frederic.konrad@amd.com>, Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-Subject: [PATCH v2 47/47] tests/functional/test_aarch64_xlnx_versal: test the
- versal2 machine
-Date: Wed, 20 Aug 2025 10:25:46 +0200
-Message-ID: <20250820082549.69724-48-luc.michel@amd.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250820082549.69724-1-luc.michel@amd.com>
-References: <20250820082549.69724-1-luc.michel@amd.com>
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1uoeAS-0006sk-Pt; Wed, 20 Aug 2025 04:27:37 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1uoeAN-00016H-1e; Wed, 20 Aug 2025 04:27:36 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-b474a38b25cso2359112a12.0; 
+ Wed, 20 Aug 2025 01:27:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1755678448; x=1756283248; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=V7fAKMSbTNa9ntikrP+lYZirQUgGeZAh7FsOcE/UtIs=;
+ b=UvfZFgSd9ZSZKG6Lw7T1yJ/3DogMghew1uItLHF0DsTq6CbPMAWnSkdYEqu2ux78Gn
+ PJXWwtNXdIp7S99I4b0/V256mjL99rjMSQlmmNLdNTRTYadDG+dsVsIMA/PAXg9n+fZU
+ cxSR6HZqaR3Ndx3a4gHxkw7cL2teuHQTP8rx1TWzq64IBMl13OEZ+0eQB1tMCgc8LftI
+ wcg3IJbIgJi5kMI/lF1UARs9y+w5eLNKigt37iXK+1fAfQHdXIIp68EEffSqP/+qzW3R
+ 4cbquE/MU187RSx/9VYddY+kYpsTzz2r8YsUNTUcn4ZSZ/tZzBthkAyUUhqLan3Fh7sw
+ UJTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1755678448; x=1756283248;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=V7fAKMSbTNa9ntikrP+lYZirQUgGeZAh7FsOcE/UtIs=;
+ b=QL+DiWWK0jHlt5OIdM4NDL9rfr3LcpjGTxChOyiY5IkBJS5PPn51Nne6KjEd4FkSHu
+ WeI40Xi6Ez/qUdVmT3M5aEHwOLfUA5DSMNmRAnei/lZxj762h1NMLKYcfbTKt5RcyTSL
+ Liolw0SbfLSoFEJXVq6oSUKL9jgN3uuZsEyfGnfWNriLNdcpom71jQ21DhcpoxnaA2uh
+ XC8xgVe/W5eIOQQZKUv8WezrkjdnyUQrRUXpBpiEIFDCKyH9wHswfWQSW/3CMZxnIxEw
+ 35ylYj3behkvovE4/d41gUaFHEm9nZx3FYxThq+Ca9/QaxPr06Msnj6gRRm7HpbtqHda
+ HfIg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUCPif1UAeoOxvJJG4tTde7ILKEMQsKghD6vw+dmUZnCMzceZUiaNnF5idewu4svGX35OqnRyB+uw==@nongnu.org,
+ AJvYcCUkFpmk5xM4bScTbNbgX4J/LYfl2MzM5TYT38dzwdKP7MgHftmKnasy0mEWaLQWvT7ihRdywwB78zj7uA==@nongnu.org,
+ AJvYcCXABOxge7rf8Y4KJ1RY8rxzPL/q+bZyL7QhtFqxezLJsp3aZmIh65B9ntj5F4Wtr07D4EsQaqNFHu4LOA==@nongnu.org
+X-Gm-Message-State: AOJu0Yw4XffJ6kBoPz+2HyWxgdIi7qKad4Ursehc6XtRFNyVMUKALiaD
+ 00On1qh1srA+8scCMuUK/dCabcybv7nSEzyq5JY9pLepTdQg+7kyGOD/q5Pe/ub0h2gktfZaohA
+ KgcYuSw1KENuX2Xl8rmcfeMISqobzMg0=
+X-Gm-Gg: ASbGncuB5wN7RGQxiQXG3LfSmKjMY0Jw6w7vrbsAvebze5tGU8npqowObwVKybfuquG
+ wbm23W/4qUIlXP2Ji62BUqP2Ngxvo9buT9V9rZA4ywbuy/lj5lC/qy7cNrK/DuRGM2pvwHNHNxf
+ 4UFp5mMbYH9wfiku8hEQhV7Rs4PPWHA0ZxazxSArktVMpytsWFGo4VnfKtXQRrpnmPt3FZ0pMwg
+ m3vLkqCfkxxbKB0K1YnZFYNnneMnxOrGJIBXx0F9fbeRWbi
+X-Google-Smtp-Source: AGHT+IH1nsUb28CHqWUeZgZdTKrAL/O6lBCk9HZlgPtf6sIqdp3ca0S9KDAFHYiMQAA/4nlFHO4lvJCuhyOwVO/HCF8=
+X-Received: by 2002:a17:903:228c:b0:23f:df36:5f0c with SMTP id
+ d9443c01a7336-245ef22772emr23663335ad.29.1755678447798; Wed, 20 Aug 2025
+ 01:27:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000075ED:EE_|IA0PR12MB8207:EE_
-X-MS-Office365-Filtering-Correlation-Id: a729b098-a9da-4b28-c17a-08dddfc36e5e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|82310400026|36860700013|1800799024|13003099007; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?wqaUzHqmldiWJkwHaAZMqCzFPoNchPOW3utyQLNkmVDxNFvDEi7sUMhZDDPw?=
- =?us-ascii?Q?8OgnmgvAuRWdGuCOIe9+imB26hNVHbis9nQCTmg7K6lRnQLCTGl0l3pskmaH?=
- =?us-ascii?Q?Xzua8PRxFkhkCNa32HDECGHnc9vr3U3cTNhERF0bLMtKaYh2jY+8FQDkncPB?=
- =?us-ascii?Q?WKlDWpOzsz6wj2bumNXVchJVlpl4i0WvwA94KlUlMD1+JWxCEqQqYhRJsowp?=
- =?us-ascii?Q?mS58v5OsTG5PtwDrs90UORUKgn0zXT9RFZ1E0lkO6+LnYo8swybobq+/rV6l?=
- =?us-ascii?Q?oTON9s8pD0VODWmkM2hZ4xFy/gGNX635B4Dju9mgLJPbplnIK7PHhHzuTFqP?=
- =?us-ascii?Q?730k78gQZaavO4L6MuLbXA6MnC1MRerUhmP7+MZkC4FhkoqdBngYH8UNYMG1?=
- =?us-ascii?Q?JzKXXEq8xz91x+jaYss7KSogVJ/4K1uX0fHpSPYwNuNSXeNlyEWa7q4njkPM?=
- =?us-ascii?Q?bFSsvl74Lb1ro3b122slb2t+mrCnAYHJrscLEiQOeFd7/W4fCIx2whpHkeML?=
- =?us-ascii?Q?WmbwGeb+75uU5UVWpwSqbxMHx1WPkVH5Hil/Jt9Lvk5DXGKXB4/LOUS7MLaP?=
- =?us-ascii?Q?QX4lOFWfrzhJHw1i71+y+sSLULcc1CXkYh0/QJc/h1uBYkJBClgzWnFKDgAk?=
- =?us-ascii?Q?0J17wrrGbNxl3S/NIoYWrz1Bd6I01xOn565cefdcrlo5rmRZc02PbkHdyJ46?=
- =?us-ascii?Q?ZdWGmzxFmdIioW/dANK3A9l5QTRIQpXJpApGsKWaHNtlwElyTohZ3nNM53ts?=
- =?us-ascii?Q?QWm6HMa3GDMLWf7vkPnbc3hDSWpe5YK53stFmSD7UiKUaKnwnK6PGQAdFzqF?=
- =?us-ascii?Q?Ambht7Z2pLpyLDJ9m36fcs5ZU94icUgarUr8YBDe5UKyvhYGsI/IXSKnj/7W?=
- =?us-ascii?Q?5EBCcZ8Y0b5T+i+i7EI6Dt/GkMEyMP713E3oNL4ETO8XhPkcfuCrPIHQ1I3/?=
- =?us-ascii?Q?tJ+LOX5HOB/oWlilO0kafA7iihSe8uuEO0hXY8dl4tac1U0d53oZ0btvvjKo?=
- =?us-ascii?Q?2H7T9xdRR1q3PdzezvTtzRr58r33vCSXGiR+Pmnh8Rk+QigbL8zVEiUBd9Kk?=
- =?us-ascii?Q?B2s3Mj7IadY6FogOSUmBLboWZNtlf9kwwyuRkd8CL5vP4YD8mB4HNtl3IwRh?=
- =?us-ascii?Q?CqVIxhpCifKoh7MKg/ied7g9Mvt7tv4wvU2GybwcQJvV0cCuK8RYxNeJ1lE/?=
- =?us-ascii?Q?wG9n4ZBlQGAHaJXbs3Tw54v2sBJr8MVqvPRRo2MZLO66ZtLNOuSOE9OdHONY?=
- =?us-ascii?Q?9MeC1ZqcsXc3GnI8IJXquxSWaEa8axixVod7PinkvjhI4qS9rGeXrOBeZtil?=
- =?us-ascii?Q?t9OTWCbtub0qcmmMRF2rLKMP3ef0h/V0fs36tfZIVXtXTfVqUxqosoX8yMCa?=
- =?us-ascii?Q?vviY1XiARdOY5VXPJVla2EEqZe5rIhl82R7Qeu6eIHQfqjhMMpEVuf9v0Hiy?=
- =?us-ascii?Q?y3BmY4DZFuIU5VYu7IZkqAn7Cnlf0Qc4CZ4+5uCNanRW/dNgzwXrzA=3D=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024)(13003099007);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2025 08:27:41.8424 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a729b098-a9da-4b28-c17a-08dddfc36e5e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000075ED.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8207
-Received-SPF: permerror client-ip=2a01:111:f403:240a::60d;
- envelope-from=Luc.Michel@amd.com;
- helo=NAM04-MW2-obe.outbound.protection.outlook.com
+References: <cover.1755623521.git.ktokunaga.mail@gmail.com>
+ <cf283ca6c957d3c454facb228000129c171c904f.1755623522.git.ktokunaga.mail@gmail.com>
+ <ac5ac33d-26a7-4be6-bf02-75fa61d3ad9a@linaro.org>
+In-Reply-To: <ac5ac33d-26a7-4be6-bf02-75fa61d3ad9a@linaro.org>
+From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Date: Wed, 20 Aug 2025 17:27:16 +0900
+X-Gm-Features: Ac12FXzEH5igDaer4Lkq1pe4jEyNIefHUYYyQ9KTo6xtAmGNGg3VVLUN1b2noeQ
+Message-ID: <CAEDrbUZo33Ay4efVr==sYmq+V_ya5NDXs6O9c_dHpLHOnDXc_w@mail.gmail.com>
+Subject: Re: [PATCH 20/35] tcg/wasm: Add andc/orc/eqv/nand/nor instructions
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ WANG Xuerui <git@xen0n.name>, Aurelien Jarno <aurelien@aurel32.net>, 
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Aleksandar Rikalo <arikalo@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <Alistair.Francis@wdc.com>, Stefan Weil <sw@weilnetz.de>,
+ qemu-arm@nongnu.org, 
+ qemu-riscv@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000388da6063cc7be76"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -152,49 +105,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a test for the amd-versal2-virt machine using the same command line,
-kernel, initrd than the ones used for amd-versal-virt.
+--000000000000388da6063cc7be76
+Content-Type: text/plain; charset="UTF-8"
 
-Signed-off-by: Luc Michel <luc.michel@amd.com>
-Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
----
- tests/functional/test_aarch64_xlnx_versal.py | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Hi Richard,
 
-diff --git a/tests/functional/test_aarch64_xlnx_versal.py b/tests/functional/test_aarch64_xlnx_versal.py
-index 4b9c49e5d64..f32d904ef7e 100755
---- a/tests/functional/test_aarch64_xlnx_versal.py
-+++ b/tests/functional/test_aarch64_xlnx_versal.py
-@@ -18,12 +18,12 @@ class XlnxVersalVirtMachine(LinuxKernelTest):
-         ('http://ports.ubuntu.com/ubuntu-ports/dists/bionic-updates/main/'
-          'installer-arm64/20101020ubuntu543.19/images/netboot/'
-          '/ubuntu-installer/arm64/initrd.gz'),
-         'e7a5e716b6f516d8be315c06e7331aaf16994fe4222e0e7cfb34bc015698929e')
- 
--    def test_aarch64_xlnx_versal_virt(self):
--        self.set_machine('xlnx-versal-virt')
-+    def common_aarch64_amd_versal_virt(self, machine):
-+        self.set_machine(machine)
-         kernel_path = self.ASSET_KERNEL.fetch()
-         initrd_path = self.ASSET_INITRD.fetch()
- 
-         self.vm.set_console()
-         self.vm.add_args('-m', '2G',
-@@ -31,7 +31,13 @@ def test_aarch64_xlnx_versal_virt(self):
-                          '-kernel', kernel_path,
-                          '-initrd', initrd_path)
-         self.vm.launch()
-         self.wait_for_console_pattern('Checked W+X mappings: passed')
- 
-+    def test_aarch64_amd_versal_virt(self):
-+        self.common_aarch64_amd_versal_virt('amd-versal-virt')
-+
-+    def test_aarch64_amd_versal2_virt(self):
-+        self.common_aarch64_amd_versal_virt('amd-versal2-virt')
-+
- if __name__ == '__main__':
-     LinuxKernelTest.main()
--- 
-2.50.1
+> On 8/20/25 04:21, Kohei Tokunaga wrote:
+> > This commit implements andc, orc, eqv, nand and nor operations using
+Wasm
+> > instructions.
+> >
+> > Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+> > ---
+> >   tcg/wasm/tcg-target.c.inc | 55 +++++++++++++++++++++++++++++++++++++++
+> >   1 file changed, 55 insertions(+)
+> >
+> > diff --git a/tcg/wasm/tcg-target.c.inc b/tcg/wasm/tcg-target.c.inc
+> > index 01ef7d32f3..3c0374cd01 100644
+> > --- a/tcg/wasm/tcg-target.c.inc
+> > +++ b/tcg/wasm/tcg-target.c.inc
+> > @@ -449,6 +449,56 @@ static void tcg_wasm_out_cond(
+> >       }
+> >   }
+> >
+> > +static void tcg_wasm_out_andc(
+> > +    TCGContext *s, TCGReg ret, TCGReg arg1, TCGReg arg2)
+> > +{
+> > +    tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(arg1));
+> > +    tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(arg2));
+> > +    tcg_wasm_out_op_not(s);
+> > +    tcg_wasm_out_op(s, OPC_I64_AND);
+> > +    tcg_wasm_out_op_idx(s, OPC_GLOBAL_SET, REG_IDX(ret));
+> > +}
+>
+> Don't implement stuff that's not present in the ISA.
+> This will be handled generically.
 
+Thank you for the feedback. I'll remove them and rely on the default
+expansion.
+
+Regards,
+Kohei
+
+--000000000000388da6063cc7be76
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi Richard,<br><br>&gt; On 8/20/25 04:21,=
+ Kohei Tokunaga wrote:<br>&gt; &gt; This commit implements andc, orc, eqv, =
+nand and nor operations using Wasm<br>&gt; &gt; instructions.<br>&gt; &gt; =
+<br>&gt; &gt; Signed-off-by: Kohei Tokunaga &lt;<a href=3D"mailto:ktokunaga=
+.mail@gmail.com">ktokunaga.mail@gmail.com</a>&gt;<br>&gt; &gt; ---<br>&gt; =
+&gt; =C2=A0 tcg/wasm/tcg-target.c.inc | 55 ++++++++++++++++++++++++++++++++=
++++++++<br>&gt; &gt; =C2=A0 1 file changed, 55 insertions(+)<br>&gt; &gt; <=
+br>&gt; &gt; diff --git a/tcg/wasm/tcg-target.c.inc b/tcg/wasm/tcg-target.c=
+.inc<br>&gt; &gt; index 01ef7d32f3..3c0374cd01 100644<br>&gt; &gt; --- a/tc=
+g/wasm/tcg-target.c.inc<br>&gt; &gt; +++ b/tcg/wasm/tcg-target.c.inc<br>&gt=
+; &gt; @@ -449,6 +449,56 @@ static void tcg_wasm_out_cond(<br>&gt; &gt; =C2=
+=A0 =C2=A0 =C2=A0 }<br>&gt; &gt; =C2=A0 }<br>&gt; &gt; =C2=A0 <br>&gt; &gt;=
+ +static void tcg_wasm_out_andc(<br>&gt; &gt; + =C2=A0 =C2=A0TCGContext *s,=
+ TCGReg ret, TCGReg arg1, TCGReg arg2)<br>&gt; &gt; +{<br>&gt; &gt; + =C2=
+=A0 =C2=A0tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(arg1));<br>&gt; &g=
+t; + =C2=A0 =C2=A0tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(arg2));<br=
+>&gt; &gt; + =C2=A0 =C2=A0tcg_wasm_out_op_not(s);<br>&gt; &gt; + =C2=A0 =C2=
+=A0tcg_wasm_out_op(s, OPC_I64_AND);<br>&gt; &gt; + =C2=A0 =C2=A0tcg_wasm_ou=
+t_op_idx(s, OPC_GLOBAL_SET, REG_IDX(ret));<br>&gt; &gt; +}<br>&gt; <br>&gt;=
+ Don&#39;t implement stuff that&#39;s not present in the ISA.<br>&gt; This =
+will be handled generically.<br><br>Thank you for the feedback. I&#39;ll re=
+move them and rely on the default<br>expansion.<br><br>Regards,<br>Kohei<br=
+><br></div></div>
+
+--000000000000388da6063cc7be76--
 
