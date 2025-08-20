@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBEAEB2E768
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AAC1B2E766
 	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 23:21:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoqE2-0005O2-Rb; Wed, 20 Aug 2025 17:20:06 -0400
+	id 1uoqE3-0005O5-9D; Wed, 20 Aug 2025 17:20:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uoqE0-0005N0-42; Wed, 20 Aug 2025 17:20:04 -0400
+ id 1uoqE0-0005NK-Tk; Wed, 20 Aug 2025 17:20:04 -0400
 Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uoqDy-00052D-7d; Wed, 20 Aug 2025 17:20:03 -0400
+ id 1uoqDz-00052a-A0; Wed, 20 Aug 2025 17:20:04 -0400
 Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-61a94bd82a5so607537a12.1; 
- Wed, 20 Aug 2025 14:20:01 -0700 (PDT)
+ 4fb4d7f45d1cf-6188b73bef3so654856a12.3; 
+ Wed, 20 Aug 2025 14:20:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1755724800; x=1756329600; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1755724801; x=1756329601; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=l1wUmDXrznirFi3ssCzqlRjHMYNyodcpLnP8rDITPzM=;
- b=aFH6F4S5iD8fjAIPTLj7Z8pIcUpzMbS2O96Qqoh0qk0kJgEV8+EQiMvUe8YJJe0Non
- uW67rc5JOnmXTbmk8N8OJx+86ToI5hvHxuM5jPDvckHLSTIGjtECs10zTdZdwG/APnFJ
- nBheU/RkKv6+KwX1qD8PREZLVexVwPuUkr+DmEd5mnFX9DBvPS+/MZ2i9E3in0mZAZme
- cJyZNsfJTk4R28tXnWAfFm4o3qsc5hNRXT2/nXzgpNKCluZz3rOv46mh5uT0ifQgMCA4
- y4bMqCVCeYlTlbS0vUfA/RPmPBhd7wfY1E5VLpnOZqsaMNRVuQtbVQxzpL87JHGtS0aL
- K15g==
+ bh=PeVRfk3VsZf+so/2hf9x9CGHxpMR/23OVPq3yUxSLhA=;
+ b=dRvLZOXAEa8SfZgzATNncEFryELaOnhuRm7seTHoOPzZmeUzTwefgRfobzgle6XMpx
+ KcMjeveqnFFmsSxfB2O9PpRbNaJWYAspFKFMIDrRFDqFWA5+36Wq0Nij+IiX4Y2RumgF
+ BizHGEszRrhyB7A5BpSiYuXQ8Ge77sDVF310DgF/oIMIjYMOZJVnEQi61lroYLs/832m
+ fUSa9ma7TSUtA25fvCQXe/Dm1mPBgq8Dw8BnnuKMpd6hh/8h0qkGbPHLQ8smVEbRhmdz
+ aFQ5JKYZqbmq4KenkBRHDagfoYpw8bye15jWRTEZ+aGggf3PDV6GJgSJGYL0ss5+xRHj
+ OfcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755724800; x=1756329600;
+ d=1e100.net; s=20230601; t=1755724801; x=1756329601;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=l1wUmDXrznirFi3ssCzqlRjHMYNyodcpLnP8rDITPzM=;
- b=aba4i8z9h76R4wHWYZu0ASJEDRvre3vr/ho1T3J9NoCG+f4syUL7QqG5+dtSYtRBxH
- Uaxw6SI8mfGgXhPl5de2kPAtB72PVbqIejwSSr9YJ9mRFqhnGXurDji1PJcmRcQeV70q
- W8Wtq/XO9uIra5lSohYEq1BqowxUrrWEjx2kD8tqgw65FxPLuSgB+gakgHtZGIqCGOHs
- InrFD7Hmq1IUNUubwnqVBnx9Wc2zh0AhFkON6L6XN7sHe/2+c1CZlzRI1atzmxPWjzll
- VNcD8CJvGdmYz41P7FkKFx+tqmqth/bVwYXkikB6Mgxnqxb8XEr1XHhFPZqKQXcWTtXr
- skPQ==
+ bh=PeVRfk3VsZf+so/2hf9x9CGHxpMR/23OVPq3yUxSLhA=;
+ b=hm217y+HHVakCQiaCom2m6aLIW+JjJdExsyKAEPnoLVAyR9gTJmzXY9NCsAM+iJ6Ye
+ JUOQpfZK4xEiWsSiMXSbXxqg+KjXAF9nmlcyDF1G6/Vb/D7Tz798FcqXxsXcUBdBnIAm
+ NeoUi4PA2pSeaDwCTTAe0n/6/Ia06HwP4F7TemsUXwhqnlqYVze3wWpRffZaq3xkAfvU
+ nlgJajb4Gooh+fc/skX3Id/aKVnJra7rI1djaJCl2lyyGG8BYhaUT1mKG8ZFualIgFR3
+ /cI/WPfgkt72HihPMe7XNhrGn6hrhQUssx/u3J4Tgt588xofIHFGKvmN3ZYAE9oy8LeV
+ jcMg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW+A0vuveszxZMTDLv1oXLKDqj/KPCWcj8JTJG6iHK+FwxPw9Doav6nCO5tp5veXOkqZF9bWhIL3Q==@nongnu.org
-X-Gm-Message-State: AOJu0Yyz54EpAiV/TFtb5l0iIBJGBx/npRIP+tnmwKN/M7SsSABjEPlD
- I15wInZ19+kuKWZm66jC0PdAvTLGmXb8o3rmj8IgExFQ1Bwl6Jz4M3McJrouuvwo
-X-Gm-Gg: ASbGnctlAWX8OVoSwYUJd4t+BTuCoYzkDtp76kI/Si5dOvwrlFYAD3xkNkrCWPU+mJR
- XsUx5F4E75OXVFullJGd9xrJxKd0BXHdeRKGhWIWYhPb0nX5po84bjDj8xBZ9TnUyU9HMrbCKKm
- JGr539Wx4UaFRyfIgbifS16of3+UZI2ws4iJ3db1l/eHJoMSzmlNIksT1Bzm5clsMdc79TzGNfn
- PI5ipCl3Gc2K2VprovyzD9UAzaRAjKzHrzVNq2VROxEQ7Dqy4CMmBkiCOI6jO5EfZPb/rhWa+yM
- fYGsABwcw9fXBNeD23x12G8oVe44dTlD5ztVFPquWYpRY3fz3vawLXMQGgSY9QI4v6OWYafz/wV
- RlxWktqTI8muDFOMmu23p7F3Rqv2z+/xfTU//8d/7TZ3crIZS+WDgDHo8KtTVZFVTQdyn+Dao6B
- 9/I92USuggBsLkV1Q8n9MmUGsQgBMnziKZ0EkhTuZMp8A=
-X-Google-Smtp-Source: AGHT+IGqmvMcMH9RDtXumyLD7pc3S1CLzkg9GzC1R7mQvyqCdG+00MsmwT/hcqQZby3HK1aYyiSXJg==
-X-Received: by 2002:a05:6402:3511:b0:61a:1fb2:3278 with SMTP id
- 4fb4d7f45d1cf-61bf87362a8mr101791a12.30.1755724799982; 
- Wed, 20 Aug 2025 14:19:59 -0700 (PDT)
+ AJvYcCXLaMGU4hqvTsZLWCGVQlniIdo9RwausY8Ps2Sl/pH4kMwyBu3NmldVxkPtJVDfp1EWUjkFOq4NbA==@nongnu.org
+X-Gm-Message-State: AOJu0Yw7ZbkTgJPYFOVIuebV0RvxuopFh11HI9KRMpY3pRT3OJfeOloJ
+ 9hxw5t70cdaQnq4vVL/beYkEvx5yFC/Ge/s27M/BxAOYk/hCuqqf1/oYNlNoH/14
+X-Gm-Gg: ASbGncu8vnoouMs4vMHRWZpVH2pi+XFJM/N0+4byen+pFGKck/uBjjDHTM5JjU8T/ge
+ MXL+MhPJlFoz0jtXkXs+MHIa2lm4PbT+9X26irH4sjRpGJ06lrkLAul78EtzgVCG46HxOjQ8420
+ zfJsvO0dJf2Y435ONkRQSbws0FrfRdBLud1ZMOR7LD4q0gQ82cIoE76QBN9wPSs44XIFt44GnIg
+ YbeQupwCar+USQ4iNKyny+CVpqW/niL3c2BAkYs1XYsDI8CAQQcoaYyWdikJH6czcWTRzY98ocF
+ pcr6C3FzTqTG2vZtGntOxDpt+enHb544RDN3ZQVqttTOH+LqyrdYjV8JkCRCCqBFHmF/wodFEOL
+ iJfLhdbLTgoVL3SywemF0eRUMF9tDnkja3f9kI6hRsXL1Grg2xR6l3OkO4/YbfUVb9ENEXkluwt
+ iJ3ZWfscYONaS1Tr+BkgZeUIWi4kOgbMRFRggIKv/Xl6EQxDPphOC9OA==
+X-Google-Smtp-Source: AGHT+IGd6MFMtd+Deaef2YizMDx8hhPfbLZYMq+9A3+3dqqPiaX8bsIFq8g6eYFK67HFUAAmszoH/w==
+X-Received: by 2002:a05:6402:524d:b0:61a:87c8:1b2c with SMTP id
+ 4fb4d7f45d1cf-61bf87355aemr131371a12.27.1755724800973; 
+ Wed, 20 Aug 2025 14:20:00 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-2a02-3100-249c-be00-0219-99ff-feb2-2458.310.pool.telefonica.de.
  [2a02:3100:249c:be00:219:99ff:feb2:2458])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-61a755d9cfasm4161182a12.9.2025.08.20.14.19.57
+ 4fb4d7f45d1cf-61a755d9cfasm4161182a12.9.2025.08.20.14.20.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Aug 2025 14:19:58 -0700 (PDT)
+ Wed, 20 Aug 2025 14:20:00 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
  Bernhard Beschow <shentey@gmail.com>, Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 09/10] hw/pci-host/designware: Implement device reset
-Date: Wed, 20 Aug 2025 23:19:31 +0200
-Message-ID: <20250820211932.27302-10-shentey@gmail.com>
+Subject: [PATCH 10/10] hw/arm/fsl-imx8mp: Do not map PCI window as
+ unimplemented
+Date: Wed, 20 Aug 2025 23:19:32 +0200
+Message-ID: <20250820211932.27302-11-shentey@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250820211932.27302-1-shentey@gmail.com>
 References: <20250820211932.27302-1-shentey@gmail.com>
@@ -102,85 +103,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes the memory mapping to be cleared during reset, like real hardware would
-do.
+Now that populating the PCI window via iATUs is functional, it's no longer
+necessary to cover the PCI window with an unimplemented memory region.
+Previously, this workaround was required because the device model failed to map
+all configured memory regions, which caused Linux to emit backtraces during
+access attempts.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/pci-host/designware.c | 33 ++++++++++++++++++++++-----------
- 1 file changed, 22 insertions(+), 11 deletions(-)
+ hw/arm/fsl-imx8mp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-index d71133a456..2dd4937e52 100644
---- a/hw/pci-host/designware.c
-+++ b/hw/pci-host/designware.c
-@@ -442,11 +442,6 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
-     DesignwarePCIERoot *root = DESIGNWARE_PCIE_ROOT(dev);
-     DesignwarePCIEHost *host = designware_pcie_root_to_host(root);
-     PCIBridge *br = PCI_BRIDGE(dev);
--    /*
--     * Dummy values used for initial configuration of MemoryRegions
--     * that belong to a given viewport
--     */
--    const hwaddr dummy_offset = 0;
- 
-     br->bus_name  = "dw-pcie";
- 
-@@ -484,6 +479,26 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
-             DesignwarePCIEViewport *viewport = &root->viewports[i][j];
-             viewport->name    = names[i][j];
-             viewport->inbound = i == DESIGNWARE_PCIE_VIEWPORT_INBOUND;
-+        }
-+    }
-+
-+    memory_region_init_io(&root->msi.iomem, OBJECT(root),
-+                          &designware_pci_host_msi_ops,
-+                          root, "pcie-msi", 0x4);
-+    memory_region_add_subregion(&host->pci.memory, 0, &root->msi.iomem);
-+}
-+
-+static void designware_pcie_root_reset(DeviceState *dev)
-+{
-+    DesignwarePCIERoot *root = DESIGNWARE_PCIE_ROOT(dev);
-+    DesignwarePCIEViewport *viewport;
-+
-+    pci_bridge_reset(dev);
-+
-+    for (int i = 0; i < ARRAY_SIZE(root->viewports); i++) {
-+        for (int j = 0; j < DESIGNWARE_PCIE_NUM_VIEWPORTS; j++) {
-+            viewport = &root->viewports[i][j];
-+
-             viewport->base    = 0x0000000000000000ULL;
-             viewport->target  = 0x0000000000000000ULL;
-             viewport->limit   = UINT32_MAX;
-@@ -494,17 +509,13 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
-         }
-     }
- 
--    memory_region_init_io(&root->msi.iomem, OBJECT(root),
--                          &designware_pci_host_msi_ops,
--                          root, "pcie-msi", 0x4);
-     /*
-      * We initially place MSI interrupt I/O region at address 0 and
-      * disable it. It'll be later moved to correct offset and enabled
-      * in designware_pcie_root_update_msi_mapping() as a part of
-      * initialization done by guest OS
-      */
--    memory_region_add_subregion(&host->pci.memory, dummy_offset,
--                                &root->msi.iomem);
-+    memory_region_set_address(&root->msi.iomem, 0);
-     memory_region_set_enabled(&root->msi.iomem, false);
- }
- 
-@@ -602,7 +613,7 @@ static void designware_pcie_root_class_init(ObjectClass *klass,
-     k->config_read = designware_pcie_root_config_read;
-     k->config_write = designware_pcie_root_config_write;
- 
--    device_class_set_legacy_reset(dc, pci_bridge_reset);
-+    device_class_set_legacy_reset(dc, designware_pcie_root_reset);
-     /*
-      * PCI-facing part of the host bridge, not usable without the
-      * host-facing part, which can't be device_add'ed, yet.
+diff --git a/hw/arm/fsl-imx8mp.c b/hw/arm/fsl-imx8mp.c
+index 866f4d1d74..d66783c101 100644
+--- a/hw/arm/fsl-imx8mp.c
++++ b/hw/arm/fsl-imx8mp.c
+@@ -669,6 +669,7 @@ static void fsl_imx8mp_realize(DeviceState *dev, Error **errp)
+         case FSL_IMX8MP_I2C1 ... FSL_IMX8MP_I2C6:
+         case FSL_IMX8MP_OCRAM:
+         case FSL_IMX8MP_PCIE1:
++        case FSL_IMX8MP_PCIE1_MEM:
+         case FSL_IMX8MP_PCIE_PHY1:
+         case FSL_IMX8MP_RAM:
+         case FSL_IMX8MP_SNVS_HP:
 -- 
 2.50.1
 
