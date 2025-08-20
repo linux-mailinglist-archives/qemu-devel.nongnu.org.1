@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2DDB2E769
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 23:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BD4B2E765
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 23:21:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uoqDy-0005Lc-IL; Wed, 20 Aug 2025 17:20:02 -0400
+	id 1uoqE0-0005MS-5Z; Wed, 20 Aug 2025 17:20:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uoqDv-0005Jk-Tw; Wed, 20 Aug 2025 17:19:59 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1uoqDx-0005L0-Eu; Wed, 20 Aug 2025 17:20:01 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uoqDu-00051J-AE; Wed, 20 Aug 2025 17:19:59 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-61a2a5b06cdso647554a12.1; 
- Wed, 20 Aug 2025 14:19:57 -0700 (PDT)
+ id 1uoqDv-00051X-LV; Wed, 20 Aug 2025 17:20:01 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-6188b7550c0so522348a12.2; 
+ Wed, 20 Aug 2025 14:19:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1755724796; x=1756329596; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1755724797; x=1756329597; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8JUtot82YvSwyf3aXIjcJBWwXAuoQGNyUhMh8fZ0EZY=;
- b=KP4hnxjv78mMp71ZA8MKofgqCJPLZDwD3wcWMCEwgXH84kxqNM/wgca3rDe84DxTMa
- DaxilM/YBoYLt1fFDpOBhNquLrU5Nj9eLQ3V29REJj9zoYyqzYOnOwnvaTzF15TgpkgV
- ZTKs9+qQ+Vpo759VgCecnpd8NkicgVaNI4hNrjLYaUgjbYyggYOshyNxR6V0prduXfT2
- EXdJVFtW3z1eKFtdh+euWxRRQffdYtYh+SfiiA5DmVDJe2mR5H4rxwl+gRlgX8UGFjdI
- 96YoHMVaX0IHtirlP5n9SFYUnH/rVxKQVAkEkLMaCon5MDAuDRWgWY8NU5490FKnEOlf
- L7Xg==
+ bh=erIPPZ0BDsRCUdIVCLWmsfKr2++tLsVOASTjdmVI5yc=;
+ b=YBbOKNpfp9LF6wqvn8eZ0U6NThkb4auFhWQa0diYcc6jTN2llYT2v7DLeS//0PvqFT
+ J4q1CSk6lFTj7bfXBwZfzzJfIHU/HpMyRRr607nBQkuaK9EjrQQpONo83L7h1q+gZzn1
+ fL4muHTpWvhao6RHxJIel5GbQuD4NO/FXb7JuwRkth881mufst5w2swGDrmkmLTcMclK
+ VpDMKa6QswZdUbJ69euMGN9R5Al9Iq89olYNb0g29dRKH2f8i7YoLM6cdvWDwiY25+sh
+ Ql8nikAPKADNOGKezyWVkyb93RXLY7IMBNsuiFZEMlla3MqZHv//PgRM/3WGVTxV8PxX
+ G8rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755724796; x=1756329596;
+ d=1e100.net; s=20230601; t=1755724797; x=1756329597;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8JUtot82YvSwyf3aXIjcJBWwXAuoQGNyUhMh8fZ0EZY=;
- b=NNl/7lMEw+2fBkLYAKg6iKcU63eV6s3JDQ3AI0iSVyEGgDFi6nq4WByeZoJGKF5URC
- q4z5+x2/nnfiBeQKpoM/VIN0IsquFTVIHu6E7ZSbVuL5TtCjGupPNbOGZ931smbF5ewG
- a4IMIoxEgFa9pjl08fTJ8NeZ0lI1MHb+7YnWYHCcbPVjLQ49kb0y3c0AMMPzELQf4VXw
- NWOkADRMxpgJYwaDCr6yBRHXj7tEhQvAXIpnxkaw6TqjNOWV8RfXaK/w+jdD1PPUzL7I
- +1RmlNYyhvOBhzsGeulRhaM3dNdNIHFBhq57xSe38ZOYDKb1PI3HtiqWtE2IIzdOeGB+
- 60pg==
+ bh=erIPPZ0BDsRCUdIVCLWmsfKr2++tLsVOASTjdmVI5yc=;
+ b=pAQejMq1UvzZWmKo+u65m8ysvCn1rVj0T8t2sm+6/rC/HbXQtE754NK3LNGmRMbNKG
+ K0Uz8N3ov3+RJ1hw2igK13T5h+m17qUsk1x6dd3yvxYEgiaeMnH5OpVp0JX4NOsgr9i3
+ 48Fm6TjQ9YvoBqI2/I2dTuJ+YrxHTM6E3DJeCPfH57bUBt7wKo+E9YZQy113P6MoBW1e
+ XvBKDpMud2UzC1oj1T3SGO2y6eWDf8VtEdFGgKZStrqR+vtM/8m9L6LV2YRONoLcvesU
+ WA/Jswez/4kesTYCpdzM0j+AbLaR+e/jDtNA1z+WBvTY1i/yluRVpGIb22ne1ZCwXUcI
+ +VdA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVg+TpB946OwDJtVZCxEsppShebMA8T5MFTeV3V9y5veE4FgiSt8+Bj+LK1O6vRbolF4N/A0rMujg==@nongnu.org
-X-Gm-Message-State: AOJu0Yx8dCbtD5spT1eUHZR0NisVi43z7rpuVRgdh5uQFkIXGtnFCZZx
- y2Vnu3ERVeCTQnm/NY+p006hGSjYJFDafsO+QOCWnRXBT12/3O/l66CTlHtKNAIl
-X-Gm-Gg: ASbGncvDZ5md26DpIXHTjLpsYNhSMZoR38KZqe9UCepsGrKBOKZza3VwYJu6cl6rSjs
- XTTRFrPLAMBmxY9gAdYOi4AcMxKIC+MlVaL/wjlSatpWKOCJj5bEKs4dUwzXuloRCa80hFjcAv/
- pOzoaRXwhLTnYYFWkVxJ5aHv76WberGoCBYkvW9oTVVlMzIjmazfhLnYTj1X+r+5+/pudVgnWQG
- ZqAny1OEDKotEOk0Ur7xcp4NNZykv87AbX404I24m3tDTCZDJoEooRqrcqhlsZuu03hdEvIFDNx
- tT2OOJDJsezTMQtzJbe8sb6erVmewDXj9YkiN6aAcjOrda+pD3RECP3h/SfAMovq4QZ7dWxhBWl
- QFLd/JQdebIB3qIucUFo3rt2Ci0NRPYhXOLluD50jX9hpJrP5m26pedkLi7DEnHJCqKeiFwcJww
- Iccq3iHizjEPfkWW1XeDrX3iTrN9zurMtQN88hfCIClBY=
-X-Google-Smtp-Source: AGHT+IFt58OrVR9gr38S9PgFLB8xA861Rr+G7Xsrqf4pF6NeMy4JJbmTpaxhffrkWfRt3MCCjraLBw==
-X-Received: by 2002:a05:6402:2551:b0:61a:8e5c:f4ef with SMTP id
- 4fb4d7f45d1cf-61bf872606cmr117418a12.18.1755724796135; 
- Wed, 20 Aug 2025 14:19:56 -0700 (PDT)
+ AJvYcCVWw5u5I1Sg3KYhM4Fwpfsqm9cs9AovOET0LuS7nHvZs0DgSpJhYXlNePAYOEliDk8Gs0KXg6aUVw==@nongnu.org
+X-Gm-Message-State: AOJu0YzcO57cTz1tRc90onBgWx1GFkpjnBaUfwsCayiCHsjMcj9DcgJI
+ 5c7BGnJkvUgu+tmNj+RvYDW51FCtpK9xDJuw/nDPyv624s2GjhxTY0SFq7j2W1Fy
+X-Gm-Gg: ASbGncvg0SDI7/xsxXbftAky4HOUA/G+R5+YA7YxX2oyt4tInuNBTB3wWt5bokwEioG
+ klcGvw1sNPk2oNqQihoxPf49v/CRVzuHTz8VSJOjauK4Jjc5tRoWF0keTIqOYr2lx1e4Ng9ZzF6
+ 4bofroO+Xoh0UGcKbFql6ow0zoby3yKXrCWWCVRDI5+IcfSNrtgpOrwkBK30RC4wLP11a6stWDb
+ pBnbrdQTBIitmtL04v+FH04nWXsVNOed6H1rw0Hhj/ndb2+zGTikXH+6EvTM4FlXdL72VPN8H8D
+ FPFsluNy0UWckFEDBms9PggMsPvwa/hrv7Ghpm4lN6a2+0QoIiSftPBk/hUPtYqk3NjXaiNl0P8
+ tdZH5jaPg2bsPFlX/7JlPaWw1TP008FmhRmHgOwx2KZt/ZggQzrv2/e8gs2jE3Qe5Z0QMvuY4eM
+ FBQ5a2mp2n0MpB2l/fbxrRAUnjlBKN3ML8NiQZe8VXGnw=
+X-Google-Smtp-Source: AGHT+IES/X3jCpVFBPW5Fsn92ctVYmmPEMPSTxTY0WFkFFZKPEj8f2/e09b38dVW/YzW7cnyR8Jyqg==
+X-Received: by 2002:a05:6402:2749:b0:615:6a10:f048 with SMTP id
+ 4fb4d7f45d1cf-61bf88481dfmr122754a12.33.1755724797160; 
+ Wed, 20 Aug 2025 14:19:57 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-2a02-3100-249c-be00-0219-99ff-feb2-2458.310.pool.telefonica.de.
  [2a02:3100:249c:be00:219:99ff:feb2:2458])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-61a755d9cfasm4161182a12.9.2025.08.20.14.19.54
+ 4fb4d7f45d1cf-61a755d9cfasm4161182a12.9.2025.08.20.14.19.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Aug 2025 14:19:54 -0700 (PDT)
+ Wed, 20 Aug 2025 14:19:56 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org,
  Bernhard Beschow <shentey@gmail.com>, Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 07/10] hw/pci-host/designware: Don't map PCI memory space into
- PCI inbound window
-Date: Wed, 20 Aug 2025 23:19:29 +0200
-Message-ID: <20250820211932.27302-8-shentey@gmail.com>
+Subject: [PATCH 08/10] hw/pci-host/designware: Fix default inbound viewport
+ mapping
+Date: Wed, 20 Aug 2025 23:19:30 +0200
+Message-ID: <20250820211932.27302-9-shentey@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250820211932.27302-1-shentey@gmail.com>
 References: <20250820211932.27302-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,34 +103,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The real device has a default mapping which disappears as soon as an inbound
-iATU is configured. Furthermore, inbound and outbound mappings are entirely
-defined by iATUs. Remove the hardcoded mapping of PCI memory space to match
-real hardware.
-
-Note that the device model attempts to implement the default inbound mapping
-by reusing an inbound iATU. However, Linux clears all iATUs during boot,
-including the one purposefully set up by the device model, resulting in no
-default mapping. This will be fixed in the next patch.
+Linux clears all inbound viewport mappings which results in the default mapping
+set up during realize() to be cleared. Fix that by introducing a fallback
+memory region which gets enabled if no inbound viewports are configured, as the
+real HW would do.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/pci-host/designware.c | 2 --
- 1 file changed, 2 deletions(-)
+ include/hw/pci-host/designware.h |  1 +
+ hw/pci-host/designware.c         | 30 +++++++++++++++++-------------
+ 2 files changed, 18 insertions(+), 13 deletions(-)
 
+diff --git a/include/hw/pci-host/designware.h b/include/hw/pci-host/designware.h
+index 34beee1285..342b09fd08 100644
+--- a/include/hw/pci-host/designware.h
++++ b/include/hw/pci-host/designware.h
+@@ -86,6 +86,7 @@ struct DesignwarePCIEHost {
+     struct {
+         AddressSpace address_space;
+         MemoryRegion address_space_root;
++        MemoryRegion address_space_root_default;
+ 
+         MemoryRegion memory;
+         MemoryRegion io;
 diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-index 1e29b7e6be..2fd60a4817 100644
+index 2fd60a4817..d71133a456 100644
 --- a/hw/pci-host/designware.c
 +++ b/hw/pci-host/designware.c
-@@ -703,8 +703,6 @@ static void designware_pcie_host_realize(DeviceState *dev, Error **errp)
-                        OBJECT(s),
-                        "pcie-bus-address-space-root",
-                        UINT64_MAX);
--    memory_region_add_subregion(&s->pci.address_space_root,
--                                0x0, &s->pci.memory);
+@@ -347,6 +347,17 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
+             break;
+         }
+     }
++
++    bool one_mapped = false;
++    for (int j = 0; j < DESIGNWARE_PCIE_NUM_VIEWPORTS; j++) {
++        one_mapped |= memory_region_is_mapped(&root->viewports[DESIGNWARE_PCIE_VIEWPORT_INBOUND][j].mem);
++    }
++
++    /*
++     * If no inbound iATU windows are configured, HW defaults to
++     * letting inbound TLPs to pass in.
++     */
++    memory_region_set_enabled(&host->pci.address_space_root_default, !one_mapped);
+ }
+ 
+ static void designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
+@@ -477,19 +488,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
+             viewport->target  = 0x0000000000000000ULL;
+             viewport->limit   = UINT32_MAX;
+             viewport->cr[0]   = DESIGNWARE_PCIE_ATU_TYPE_MEM;
+-
+-            /*
+-             * If no inbound iATU windows are configured, HW defaults to
+-             * letting inbound TLPs to pass in. We emulate that by explicitly
+-             * configuring first inbound window to cover all of target's
+-             * address space.
+-             *
+-             * NOTE: This will not work correctly for the case when first
+-             * configured inbound window is window 0
+-             */
+-            viewport->cr[1]   = (viewport->inbound && j == 0)
+-                                  ? DESIGNWARE_PCIE_ATU_ENABLE
+-                                  : 0;
++            viewport->cr[1]   = 0;
+ 
+             designware_pcie_update_viewport(root, viewport);
+         }
+@@ -706,6 +705,11 @@ static void designware_pcie_host_realize(DeviceState *dev, Error **errp)
      address_space_init(&s->pci.address_space,
                         &s->pci.address_space_root,
                         "pcie-bus-address-space");
++    memory_region_init_alias(&s->pci.address_space_root_default, OBJECT(s),
++                             "pcie-bus-inbound-default", get_system_memory(),
++                             0, UINT32_MAX);
++    memory_region_add_subregion_overlap(&s->pci.address_space_root, 0,
++                                        &s->pci.address_space_root_default, -10);
+     pci_setup_iommu(pci->bus, &designware_iommu_ops, s);
+ 
+     qdev_realize(DEVICE(&s->root), BUS(pci->bus), &error_fatal);
 -- 
 2.50.1
 
