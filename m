@@ -2,74 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8EFB2E6B6
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 22:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C2AB2E6CA
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Aug 2025 22:43:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uopXa-00018J-S3; Wed, 20 Aug 2025 16:36:14 -0400
+	id 1uopdO-0003EP-OO; Wed, 20 Aug 2025 16:42:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uopXX-00017l-Qn
- for qemu-devel@nongnu.org; Wed, 20 Aug 2025 16:36:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uopXW-0007h8-8F
- for qemu-devel@nongnu.org; Wed, 20 Aug 2025 16:36:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755722169;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=SPxi9fCQLQzzZSVIdZN3G83N2/H1ZnJQin2Ay5j8TfY=;
- b=ilGlXBqUVe9/C75/l8qckaAI6QJ1WGLa/Hfb2GzAy2npDjn0F6fguM18L0Er3UCmE6K5wr
- OKdEmJAjQtDED1anlAepm/TyjzZ90mMT3wnS06Vw4bmz4RXoenaUICA6fthagM+eKiDQAa
- 0VMbkjG7VxHLuDtr4h7bMIGrZsyYHaw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-538-YiKLZWEHPUmCXupGfinHYA-1; Wed,
- 20 Aug 2025 16:36:07 -0400
-X-MC-Unique: YiKLZWEHPUmCXupGfinHYA-1
-X-Mimecast-MFC-AGG-ID: YiKLZWEHPUmCXupGfinHYA_1755722165
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 85A191800280; Wed, 20 Aug 2025 20:36:05 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.103])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9985019560B2; Wed, 20 Aug 2025 20:36:04 +0000 (UTC)
-Date: Wed, 20 Aug 2025 16:35:58 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH] hw/virtio: rename vhost-user-device and make user
- creatable
-Message-ID: <20250820203558.GA131655@fedora>
-References: <20250820195632.1956795-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uopdK-0003CV-77
+ for qemu-devel@nongnu.org; Wed, 20 Aug 2025 16:42:10 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uopdI-0000Bz-MM
+ for qemu-devel@nongnu.org; Wed, 20 Aug 2025 16:42:09 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-afcb7aea37cso40115866b.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Aug 2025 13:42:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1755722525; x=1756327325; darn=nongnu.org;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0OxLqEEJqYAqri093pp4yMwxSVTDwskPahJePkHdh4Q=;
+ b=esyM4q43a15A6C9AMgVYhmiWLHjqqhFmgmNHqTpPnBor0k16wrKzDUUeQGPSLxi8/N
+ xvt84Glbnb7sal4nRDAooUmWqs2b7dCPW/o3OpzQI/v2u6A7c3APBSilljZ/I/a5slFM
+ a3O8UYk8MrqawDVL8LBmDESxFJBatK7wgNYdYHR3DFJF08Oi/IiUWs5G7h+pPm5XWLZs
+ pEp5yYW21YpTG969KWfwy4EH/idcMqneYvjXnG768msmz6glh4TqIy8reSJa2C1b0VG8
+ Si4nMv8mYwa4eMAN1j9QQ+DDFkwSFekmTfk8A9tyFwi0KMjnodnxuIz8Rim76CHwOk8i
+ Vk/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1755722525; x=1756327325;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0OxLqEEJqYAqri093pp4yMwxSVTDwskPahJePkHdh4Q=;
+ b=gWAjf+27lhyn87HezxqPRXhOdn4ibWTDZ4WWo5SP+WK1OKhs63X8Kf4gA+b3ajfWgz
+ Y+V4bAsLGWsw5vGabKFMD/w8O0eL9lu5KAifBb8EyhCH+GWVu+f0SdLgqRBZ/l3JxUbO
+ XdzF9ONoP3d9QaliWUkqUf123I8YJrIBE2zZVcHG/5c0Ys4krHqQclQ9nHGQL06IyKpP
+ FjU5Q9tW6ycp9I8HV6OOEIkmkhmaWyV8SCpgAbA/tDEkWyBM4jNBcb53s4JZ9CuNhDY6
+ mdtwCyxUFIIpWgqqjtXnQJ3pbvAVS37PQEDxv0Qulbz0zJGHhoKyFNeLGrNvyvhpvm+b
+ RphQ==
+X-Gm-Message-State: AOJu0Yx3EpZ9Ur3OAtvQvW3SlmTf/cEHXjtySxc3O+UxrKNx2QsoBPbQ
+ YtGDtKvCZ8e2uBU/7LUDjj+u/l6c9lNmvbgSO6xnNdTWTB6Lt2TvqwAMJ6nlFN62KJYh0K6vb5v
+ NhJvyVko=
+X-Gm-Gg: ASbGncuSWcb76Jg85YtWOt4psqkC8r23nL8VGeHiBLMJjZ6/CUSXk0J2USO78hDY7XH
+ QzVOAUIWZ6FrRW6yrDcKh2+UxxXf2hICYVtIBhgDNAS/ns2YWUcv2woQNxR91+5Klyzn8Vme8Wg
+ 1YyjC326obTY45hSITvvC2364jdGyRbkyE1h6K11IB/tWq1pJYCQlIvp3IVd8WkxWGLFXvRJ6nw
+ +wyi0d2M1MH6Ivz36lKNQRLtG1OkVUs2MXZnmRAQemR6Pf8G/WpJ0kOqymwNIpqGpWdZJQHR0KB
+ GmHJcfqFM3LhV3FvilET04dMh86nCcJO0FuFfbMDQH5Xm3yIZxOJsFO/QteM7i1IdtYB6Xq8hx2
+ nrtxbJQ+Z+GjBlLVjWoBI6cFhea9NOhE/fpfsTlymzXmLtRMYzl2btynp/D6me959BIzswtXBSD
+ oFaTY=
+X-Google-Smtp-Source: AGHT+IGLPHvES/xrLt2Wz1HHF2m0q065bIj64zByM9mMhbjWrSTD4pJ/DRheMjS3/kqSkWkcnRvhqw==
+X-Received: by 2002:a17:907:72d4:b0:af9:406d:f0a8 with SMTP id
+ a640c23a62f3a-afe07a1f90emr17495266b.23.1755722524774; 
+ Wed, 20 Aug 2025 13:42:04 -0700 (PDT)
+Received: from [127.0.1.1] (athedsl-4441256.home.otenet.gr. [79.129.180.152])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-afded5353cdsm246888166b.106.2025.08.20.13.42.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Aug 2025 13:42:04 -0700 (PDT)
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PATCH 0/2] Two minor minikconf.py fixes
+Date: Wed, 20 Aug 2025 23:41:55 +0300
+Message-Id: <20250820-scripts-minikconf-fixes-v1-0-252041a9125e@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="m/Bxad+RBNy/9uYR"
-Content-Disposition: inline
-In-Reply-To: <20250820195632.1956795-1-alex.bennee@linaro.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIABMzpmgC/x3L0QpAQBBA0V/RPJta0xJ+RR60ZplkaUdSm3+3e
+ TzdbgLlKKzQFwki36JyhIyqLMCtU1gYZc4GMlSblgyqi3JeirsE2dwRPHp5WJEbmshY6nxtId9
+ n5D/keRjf9wOVh4SKaQAAAA==
+X-Change-ID: 20250820-scripts-minikconf-fixes-e62a20429f54
+To: qemu-devel@nongnu.org
+Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=629;
+ i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
+ bh=Ib/3u1w1IUYsgmigAHwnxjaHBX7yBqQ9/naW04suRvQ=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
+ 25RQWNzbVlnQm9wak1iNzRDWTYwc2VDZmZxaW9WV0MrQWVuM0o5CjJUZ3F1clZpdUg4YXF6Rll5
+ SktKQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUtZekd3QUt
+ DUkIzS2Nkd2YzNEowQnpIRC8wVU9QZUpITWJrczZNZlpJQVhwNHVXMS80ZVBrOXRWUllsKy9QVA
+ pMYkRsYlVDaDR2MWdScEFIREZmVHVMRVlpemJWQ3JQRzJQRHd5SldjakwrTEtCL1dyWXBad0R5T
+ y9XWVh5MG1FCjBqcnRHaG5FcHUrNU15ZXpweUEwdEc5TzV1Z3hmOTBmUUY4WWRGRGVMRmIycFhz
+ elEraHRna2YxczBDZ0ZCS28KQzRzV2x2WHQwcTNob05ySmV6UVA3cDBxTlh5SGhreE1sMXFFM1N
+ GUVpkcVpIakc1bFd5NFd4RDF4UTQ2Kzk4WQpQUStFQllxM1VUdEw0Wnp2b3I3ZlIwUGtrT1BmRE
+ 5kMjBydWRlK3FLOElnUXRzSWk3M1VYUGl6QjhYYXZidVc2Cmwxc1BzV1dGYTJqU0tXYVMvcGlJb
+ m5UWXZ5Q2VaYmMyU1hORFZ6T2lEbVJzeWpCbmM1VExIOTE5VGZmS3F5dFUKYzMxRG9uVlIzQWVO
+ bS9CcHZ6blFvZ0ludVFQckZCalF2eWROcjFrdlZKcXlZOW9kdmRJdGdkZFM3eUZEQlIrWQp2Vy9
+ nbXF5QVI0VlFMRXhxR2lFZm9pWC8rKzA4WXFoazZnZWZjS1BaUGZidmI1dUpiK3k3bXhCNUdhb0
+ dyWHZtCndrZnZ0bGE4YWlOSEc5elJEWG41ZGZlK1RxUytRVFZCR2JMbHRieDhMbVVqVFRYVDUzY
+ W1LdHpRUFJHYkVOS2EKblBYRGt6Y2tmcTVUTG1HSlVVUVV6ellQSStSN2ZDOUVsd2k0dks5Qklq
+ dUcrcXl4Vyt6emVxRVhtUkE5NFV1egpRVFYvbE9yWnN5YU9xUmZIYW5Xbk5nZHE1VmFDV0hnajZ
+ zVnJJeGN0ZTZNYWlNNnBVako2RW0rbnlwK0t2R1RYCjJLRWlndz09Cj1Id2ZnCi0tLS0tRU5EIF
+ BHUCBNRVNTQUdFLS0tLS0K
+X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
+ fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,53 +125,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Fixes for two minor errors found randomly while running `ty check scripts/*.py`.
 
---m/Bxad+RBNy/9uYR
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Since both seem to be 6 years old, they must be very hard to trigger in
+practice.
 
-On Wed, Aug 20, 2025 at 08:56:32PM +0100, Alex Benn=E9e wrote:
-> We didn't make the device user creatable in the first place because we
-> were worried users might get confused. Rename the device to make its
-> nature as a test device even more explicit. While we are at it add a
-> Kconfig variable so it can be skipped for those that want to thin out
-> their build configuration even further.
->=20
-> Signed-off-by: Alex Benn=E9e <alex.bennee@linaro.org>
-> ---
->  docs/system/devices/vhost-user.rst            | 20 +++++++------------
->  include/hw/virtio/vhost-user-base.h           |  2 +-
->  ...ice-pci.c =3D> vhost-user-test-device-pci.c} | 17 +++++++---------
->  ...user-device.c =3D> vhost-user-test-device.c} |  9 +++------
->  hw/virtio/Kconfig                             |  5 +++++
->  hw/virtio/meson.build                         |  5 +++--
->  6 files changed, 26 insertions(+), 32 deletions(-)
->  rename hw/virtio/{vhost-user-device-pci.c =3D> vhost-user-test-device-pc=
-i.c} (77%)
->  rename hw/virtio/{vhost-user-device.c =3D> vhost-user-test-device.c} (87=
-%)
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+---
+Manos Pitsidianakis (2):
+      scripts/minikconf.py: fix invalid attribute access
+      scripts/minikconf.py: s/Error/KconfigParserError
 
-It's okay to rename this device since no one today can use
-vhost-user-device without modifying QEMU's source code anyway.
+ scripts/minikconf.py | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+---
+base-commit: 88f72048d2f5835a1b9eaba690c7861393aef283
+change-id: 20250820-scripts-minikconf-fixes-e62a20429f54
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-
---m/Bxad+RBNy/9uYR
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmimMa4ACgkQnKSrs4Gr
-c8iOtwf8CQqY3A6ByLX/skN50UknbwuwCayKmADniv85ObtDyKPlEjeRfq5JwYS7
-uaAp2F2hPaZS43HeByVGyihJaZNQiQU9KpekiJF4UJ+as8mxa2lFzdI1dJof0D1A
-iiDF6q+BhOogpAFq8t+/L61l1xLvvryU1WoP+TkAzuH03CAFhGPsnX5J64rGD8si
-XhVA46bdEt3l8gbCEEEaqSVxS7AbyL9ci/EjI4rku4bIgYR8xR44cneRLE1+r7QP
-gatB8+cyWgcvM+CscKeTJTuGqBSgTQu6Zh0TxOjx59p1F/0H3nK0hx8QIcexBAJ4
-8eHb/SyR6bVIPxvVqeOfsMBlJwrU3w==
-=XrFb
------END PGP SIGNATURE-----
-
---m/Bxad+RBNy/9uYR--
+--
+γαῖα πυρί μιχθήτω
 
 
