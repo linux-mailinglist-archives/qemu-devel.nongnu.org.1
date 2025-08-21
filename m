@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0000B2FEA4
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 17:39:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B58B2FEBE
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 17:42:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1up7Mn-0005Y9-Br; Thu, 21 Aug 2025 11:38:17 -0400
+	id 1up7PT-0006lk-CF; Thu, 21 Aug 2025 11:41:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1up7Mj-0005Xe-Uj; Thu, 21 Aug 2025 11:38:14 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1up7PQ-0006l5-5X
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 11:41:00 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1up7Mh-0006XG-FB; Thu, 21 Aug 2025 11:38:13 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-76e1ff326bbso1746725b3a.1; 
- Thu, 21 Aug 2025 08:38:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1up7PO-0006xi-BG
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 11:40:59 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-45b4d89217aso4540515e9.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Aug 2025 08:40:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1755790688; x=1756395488; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
- :reply-to; bh=nFz56e8utBP595P1f8WNuvE3xc+Fv/jEZxgUDV6xr2g=;
- b=mqqQcdpVgFrSA8lW6WGcvugixbztcc7E3bo2ZOPOXGPZ5Czk0OOrrVOUIf1yr4WdpG
- 4H1I2ffyQHNS6fKgJLhV1h+0soZpPpl97DDHdCWU9LHljmYRZ5rLFfODqZg8RpeD3zkb
- VfIUZdH/GMHewdl3V2K/f9GgZKes69K8UbeAHA6rlOUUwa9zxlH4H6M1trZ+s3nweX7x
- McFpiTe+W3kUS87gQ1mjISVOibpaQ/MrM5rU1p3kcU9UlGvtOt3Rilb3GTovFyOfo9yX
- SyprpQm2SoEoCkrSwvuIH3FssO5TQOYPc9jCTA+CGFyKO4gs+FLKwX5lJCvywMlW58U/
- 4HMw==
+ d=linaro.org; s=google; t=1755790856; x=1756395656; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ivyq8HIrADRss3L+Kc6mo9FT93tCIt9/qyePlgGYjoA=;
+ b=Gdy/mcdWcvhrm90GxM31Q7Rhvr0GYSuaUR8kXGRxeGKqX8FouhmoZTJmYfuP9JsYJO
+ W7Vdu1kAi3noe3Pc29pA66SOxuShr36FgCt4Zvtkk98IjoHqqdRTEsWzgIKG+RwtrnKh
+ ckq1RA8KuD7X1kCNmJvXn1AAZBt9jdJWjWuUipAscMXLvxnRFm3jFdO8xQwwPkrhmuxF
+ 5XuwmT9oNyq9sv6QqBNRGmgPV+F3MpsBU7d8brp8nC9ZCXfA7Icfd3/y1UTUGUSes4FF
+ 7/VrfCMLMbVIdhDS+FAAoPDDch37KKkDSX5IljGUqz1pJmtTPYMeguJM2ACPLX7u7kDP
+ 39Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755790688; x=1756395488;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nFz56e8utBP595P1f8WNuvE3xc+Fv/jEZxgUDV6xr2g=;
- b=YM8m1LTIBRIEMH9v36k0tfju5aYh/GiEUEopxrzbkAyDMYBfGcBQmg89VEDKk3chXP
- nNGc79jcvM66wcbVK4TGTHXmBB/4tBR1tKy8uQ6FpQuZVl6a9uStAcx2JJTgICtDY6aK
- WqOBDLS0WVLQpJ5NDDQhkAklqgkDaGcyYvlXDqrmpcUbLLKtMwHJW6Z/UssT/+Nn32D+
- F/31LFlnGMIr2cxj5zcmpAIILHskwo18155EbtvgFk9D1QI/vCZKnV9iIbJWGgkk3mkL
- u96NLjMWT/cGOOs/9mr+hPe4hgX/pb7I1YlJgzL9Fn97ZXQ/2v4nqawlMjxFr29AAIEX
- +8Tg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWmKQMLvdLMC/hCISjTCCPhTupwDJPDsBid5XuikxqFcnHX26cAMFzcg1ObeSbfpUnaIWbrLSIehg==@nongnu.org
-X-Gm-Message-State: AOJu0Yz/M9kJnO/8+6pQ1YQRuC6V+2zu3P0ifaPli3ZG5uZcSMvXByyh
- bOHy4/7fvpdiT7zDAPDQH5HO6oG9u/Knlon3h0ZgWELKBNcZssVZc970
-X-Gm-Gg: ASbGncskjyq+ngu6A0LAJtpMfATW7ZlqfbaSZXDcXmVNavay4e4O4vLFHjU9Us2XbNs
- 8uOCtGYG7u62naVyHBe40MkjUTu6rz5V6yAYFXBfaKFU1MaJdXg3g0nugN/Bvb4uwrxvusGn3vz
- lozxhKUK4Nb0406St+jdd1TqU+UNtd4u6teMEyuCBx4o8zgPKkBONvt2Lyo1Vrjr1UWacwK5yd1
- LA1SMlPjvlzp6lJYjy4/pmZ87pgsA76AvfuIh2Lp8p/UP6PJbsvyvC7i5d9y33GYVVu2kHTRKHW
- HORytgn4ZsSg7QKXalVh0Gcbi0rCojt8uzxlngrzx3IecUQ74JCeH6aPp3qUUNyxrpmwE+78IZ2
- WUPCAYvAG1HquX4imG4vf+nv6j89FKsSkUakkUu7H6g1gKQ==
-X-Google-Smtp-Source: AGHT+IF4PgyBFTDizi0d/oULfVTONEhqwLlffcQs02/Xv0cHYuQ/wdVrDuVdoX+bTWLvIa9hlQPW3g==
-X-Received: by 2002:a05:6a20:6d17:b0:23f:f729:2e72 with SMTP id
- adf61e73a8af0-243306582c7mr2726989637.1.1755790687733; 
- Thu, 21 Aug 2025 08:38:07 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+ d=1e100.net; s=20230601; t=1755790856; x=1756395656;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ivyq8HIrADRss3L+Kc6mo9FT93tCIt9/qyePlgGYjoA=;
+ b=RQY7+KYasKCwuy19F6VARqnT51C+GobHbgNnqwKMgl1vX6NmqwFpdvC61VxPG50F4y
+ XdOdXcaN+3yMoLJ6p6Zhi6sfhPiQUzWSmbMBbl6QDX1LMBxA/3JdVbOsmmW7/X7+JEze
+ 6a49QVhKwSxrEhbE7p+4tOVWSi+oC0gqgynbqX25LjFR6ZO024BQ9VnaQIxHYzwSO9aq
+ dbxKSWKHvU+/OZDqD7oz7aWdSW3+7uCOvmkKa8vruh9C4Dlgr+R7RAKvnUU6R99N5biE
+ Z9T66iJv43PXBNRjiEQHvSd9gHaVlxdbxKaQLLk6IV7jJ7sz41GXCtRpyNPZ+psxP+zT
+ QxEg==
+X-Gm-Message-State: AOJu0YyGygSRTNFF2wEnyUk0SZdiKq8OF6DgzEkGr4OIIS5OEJvP8r4U
+ xqV5Y21qSs/9WX6xm1AV0HrE5Gg/dL3EPf6hiommcKBR6p5NyXS7nB6jhKmudzHw9y8c2grGMMZ
+ uc6JS
+X-Gm-Gg: ASbGncs8kNI/U/vC2ZlY5pA85rStlIoqAMx8l2rksDVVVN/kHrFu+rhbrDr5xWYkZtT
+ c3ggkj1a/rCNNa461BDbqZCHkpEdBEfBadwbemJ9WwyYB7Mm1s5e7Gx7Dw7ZK+5XaZl5/hweGUG
+ ge27MGNfc5+aYMqnkxDqiCJlqFiuGalCyxCW01qRDkGfAySkWGPUx8VhgzFiSDheN+rROIUNf6T
+ QJZjbthHDj4V7H0XSOWQbIUM4R9v6wKJisU3WsyCwY1dvhooZIv8eJ4N8lpaoBN7NzkRuQpAUNh
+ jqK8tO3X3SIcgtrpnN2kmaggoVPAc3sngu1kqkVs+N5MJrfxuLQ7eiDtJ+3w6VUUKR2HtrreMg/
+ 3y7XBllTb/dS4p8tSDYmiwqFAkFtqASmnSUjDdMw=
+X-Google-Smtp-Source: AGHT+IF5XM6WDSnOlD6tYNvIXU35S7OPEy+Yqxk/qlj89png5ZDK1WNtlfKHMW05QnQlmjrMSPuTlw==
+X-Received: by 2002:a05:600c:3b14:b0:459:ddad:a3a3 with SMTP id
+ 5b1f17b1804b1-45b4d855353mr25672555e9.25.1755790856360; 
+ Thu, 21 Aug 2025 08:40:56 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b4764003537sm5115122a12.25.2025.08.21.08.38.06
+ 5b1f17b1804b1-45b50e0a479sm1443285e9.21.2025.08.21.08.40.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Aug 2025 08:38:07 -0700 (PDT)
-Date: Thu, 21 Aug 2025 08:38:06 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Andrey Smirnov <andrew.smirnov@gmail.com>, qemu-arm@nongnu.org
-Subject: Re: [PATCH 00/10] Designware PCIe host fixes
-Message-ID: <4968ffcd-20bf-4ad3-84d4-043e74b4e0b6@roeck-us.net>
-References: <20250820211932.27302-1-shentey@gmail.com>
- <7804e625-2421-473f-9320-89fa0cc0d085@roeck-us.net>
- <D1762D97-2253-4503-9BD9-E4BF6BED1EAE@gmail.com>
+ Thu, 21 Aug 2025 08:40:55 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/3] hw: Fix qemu_init_irq() leaks
+Date: Thu, 21 Aug 2025 16:40:50 +0100
+Message-ID: <20250821154053.2417090-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D1762D97-2253-4503-9BD9-E4BF6BED1EAE@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=groeck7@gmail.com; helo=mail-pf1-x42c.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.058, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,90 +96,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 21, 2025 at 10:24:02AM +0000, Bernhard Beschow wrote:
-> 
-> 
-> Am 21. August 2025 03:36:44 UTC schrieb Guenter Roeck <linux@roeck-us.net>:
-> >On 8/20/25 14:19, Bernhard Beschow wrote:
-> >> This series fixes the Designware PCIe host to work with cards other than
-> >> virio-net-pci, e.g. e1000. It was tested on the imx8mp-evk machine.
-> >> 
-> >> The series is structured as follows: The first part refactors the device
-> >> model to create memory regions for inbound/outbound PCI mappings on demand
-> >> rather than upfront since this approach doesn't scale for adding I/O space
-> >> support. The second part consists of fixing the memory mapping by adding I/O
-> >> space support and fixing default inbound viewport mapping. The third part
-> >> concludes the series by implementing device reset and cleaning up the imx8mp SoC
-> >> implementation.
-> >> 
-> >> Testing done:
-> >> * Boot imx8mp-evk machine with Buildroot while having an e1000 card attached.
-> >> Observe that it gets an IP address via DHCP and allows for downloading an HTML
-> >> file via HTTP.
-> >> 
-> >Crashing for me even if no PCIe card is attached. This is with the series applied
-> >on top of 10.1.0-rc4 or 10.0.3. I have not tried to track down the problem.
-> >
-> >Guenter
-> 
-> Hi Guenther,
-> 
-> Thanks for testing this series! I can reproduce the issue with Buildroot while the functional test passes...
-> 
-> I guess that I was too optimistic in having resolved the issue mentioned in the last patch. Does it work for you if you omit it?
-> 
-I'll give it another try tonight.
+The qemu_init_irq() method initializes an IRQ object, but
+the caller is responsible for eventually freeing it by calling
+qemu_free_irq(). Generally we don't remember to do this.
 
-Guenter
+Implement a harder-to-misuse API, qemu_init_irq_child().  This is to
+qemu_init_irq() what object_initialize_child() is to
+object_initialize(): it both initializes the object and makes it a
+child of the parent QOM object.  If you use this in a device's
+realize or instance_init method then the IRQ will be automatically
+freed when the device is destroyed.
 
-> Thanks,
-> Bernhard
-> 
-> >
-> >---
-> >Build reference: v6.17-rc1-287-g685de850cabf
-> >Compiler version: aarch64-linux-gcc (GCC) 13.4.0
-> >Qemu version: 10.0.94 (v10.1.0-rc4-55-g320ed12bd9)
-> >
-> >[    7.748393] Internal error: synchronous external abort: 0000000096000010 [#1]  SMP
-> >[    7.748917] Modules linked in:
-> >[    7.749533] CPU: 3 UID: 0 PID: 12 Comm: kworker/u16:0 Tainted: G   M             N  6.17.0-rc2-g685de850cabf #1 PREEMPT
-> >[    7.749689] Tainted: [M]=MACHINE_CHECK, [N]=TEST
-> >[    7.749745] Hardware name: NXP i.MX8MPlus EVK board (DT)
-> >[    7.750118]         ok 1 block_bits=10 cluster_bits=3 blocks_per_group=8192 group_count=4 desc_size=64
-> >[    7.749922] Workqueue: async async_run_entry_fn
-> >[    7.751174] pstate: 200000c5 (nzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> >[    7.751267] pc : pci_generic_config_read+0x38/0xb8
-> >[    7.751370] lr : pci_generic_config_read+0x24/0xb8
-> >[    7.751474] sp : ffff8000845fb730
-> >[    7.751532] x29: ffff8000845fb730 x28: 00000000000000ff x27: 0000000000000000
-> >[    7.751686] x26: 0000000000000001 x25: ffff80008290c008 x24: ffff8000832cbe80
-> >[    7.751770] x23: 0000000000000000 x22: ffff8000845fb844 x21: ffff000008a73800
-> >[    7.751859] x20: ffff8000845fb7a4 x19: 0000000000000004 x18: 00000000ffffffff
-> >[    7.751942] x17: ffff800080e2f918 x16: ffff800080e2f7ac x15: ffff800080e2e6d8
-> >[    7.752027] x14: 0000000000000000 x13: 0000000000000000 x12: ffff80008427cab8
-> >[    7.752120] x11: 0000000000000326 x10: 0000000000000326 x9 : 00000000000c0326
-> >[    7.752225] x8 : 000000006973b6c5 x7 : ffff800085c00000 x6 : 0000000000000000
-> >[    7.752320] x5 : ffff000007cc5080 x4 : 0000000000000000 x3 : 0000000000000000
-> >[    7.752403] x2 : 0000000000000000 x1 : ffff000004bf5680 x0 : ffff800085900000
-> >[    7.752577] Call trace:
-> >[    7.752694]  pci_generic_config_read+0x38/0xb8 (P)
-> >[    7.752794]  dw_pcie_rd_other_conf+0x38/0xb0
-> >[    7.752851]  pci_bus_read_config_dword+0x80/0xe4
-> >[    7.752903]  pci_bus_generic_read_dev_vendor_id+0x30/0x190
-> >[    7.752964]  pci_scan_device+0xdc/0x184
-> >[    7.753010]  pci_scan_slot+0xe0/0x23c
-> >[    7.753056]  pci_scan_child_bus_extend+0x44/0x2cc
-> >[    7.753110]  pci_scan_bridge_extend+0x514/0x598
-> >[    7.753166]  pci_scan_child_bus_extend+0x104/0x2cc
-> >[    7.753220]  pci_scan_root_bus_bridge+0x64/0xd8
-> >[    7.753273]  pci_host_probe+0x34/0x10c
-> >[    7.753328]  dw_pcie_host_init+0x2f0/0x4b0
-> >[    7.753376]  imx_pcie_probe+0x33c/0x70c
-> >[    7.753439]  platform_probe+0x5c/0x9c
-> >[    7.753485]  really_probe+0xc0/0x390
-> >[    7.753530]  __driver_probe_device+0x7c/0x15c
-> >[    7.753581]  driver_probe_device+0x3c/0x110
-> >[    7.753633]  __device_attach_driver+0xbc/0x158
-> >
+Patch 1 is the new function; patches 2 and 3 are bugfixes for
+leaks that show up with ASAN in device-introspect-test (which
+does an instance_init -> deinit on every device).
+
+The other callers of qemu_init_irq() could also be changed over
+to use this new function, but they don't cause in-practice
+leaks because they call the function in realize, and they
+are devices which are never unrealized.
+
+thanks
+-- PMM
+
+Peter Maydell (3):
+  hw/irq: New qemu_init_irq_child() function
+  hw/char/serial-pci-multi: Use qemu_init_irq_child() to avoid leak
+  hw/ide/ich.c: Use qemu_init_irq_child() to avoid memory leak
+
+ include/hw/irq.h           | 23 ++++++++++++++++++++++-
+ hw/char/serial-pci-multi.c |  4 +++-
+ hw/core/irq.c              |  8 ++++++++
+ hw/ide/ich.c               |  3 ++-
+ 4 files changed, 35 insertions(+), 3 deletions(-)
+
+-- 
+2.43.0
+
 
