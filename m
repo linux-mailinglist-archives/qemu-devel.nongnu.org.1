@@ -2,92 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220DEB2FB00
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 15:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD87FB2FB2B
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 15:50:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1up5c9-00014D-Jo; Thu, 21 Aug 2025 09:46:01 -0400
+	id 1up5fZ-0003Ce-A1; Thu, 21 Aug 2025 09:49:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1up5c5-00013o-A7
- for qemu-devel@nongnu.org; Thu, 21 Aug 2025 09:45:58 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1up5fV-0003B8-WC
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 09:49:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1up5c3-00017X-3s
- for qemu-devel@nongnu.org; Thu, 21 Aug 2025 09:45:56 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1up5fT-0001MH-Jn
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 09:49:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755783951;
+ s=mimecast20190719; t=1755784166;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=LNX8DFuQfc4fgSWU7U10ikxsemDb3m7zjOCAua2xYvY=;
- b=Oer1R9dK2Ol/Ff17cIjBAcNTHtfyxtOeCsv8tQWEKbr/iqNe+rcxrOVRgW22h7C0DqN2In
- CfU7H5KFFoiDi6i2Fbmy5n/mKOWY9iPqQZ4WqWFSvJKYxf5qBGXUUIvepcxbbm29kpoxLj
- idE0pQ3r5IeiJooEpX6QQqS7mUnnsM0=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VCuE9avvXSYo5aEE6qxecyDsEbW2wP+S8MoxLSQCKp4=;
+ b=W6Ip5nYFbvOO/GnrGGPHggJcAXXzxDRF2KbI9d/ps5opAvhCIGLKuOL5PnUIRvENpkZz69
+ Lc/+s/wRgc3PhFviQjeyQQAazl3Q89c8OyH264dOXfINfcvfjS2N3fOZaZxj5uB2DTtCrg
+ 8N6nYtwXUa7qsO4VJQMR6HNPxQs1QGo=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-220-Bqfy5v1vOmey2KzxeentBQ-1; Thu, 21 Aug 2025 09:45:50 -0400
-X-MC-Unique: Bqfy5v1vOmey2KzxeentBQ-1
-X-Mimecast-MFC-AGG-ID: Bqfy5v1vOmey2KzxeentBQ_1755783950
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7e8704e0264so271194685a.1
- for <qemu-devel@nongnu.org>; Thu, 21 Aug 2025 06:45:50 -0700 (PDT)
+ us-mta-518-VJ5y8KKwOrytFK7CnXnTqA-1; Thu, 21 Aug 2025 09:49:22 -0400
+X-MC-Unique: VJ5y8KKwOrytFK7CnXnTqA-1
+X-Mimecast-MFC-AGG-ID: VJ5y8KKwOrytFK7CnXnTqA_1755784162
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-70a928dc378so23321656d6.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Aug 2025 06:49:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755783950; x=1756388750;
+ d=1e100.net; s=20230601; t=1755784162; x=1756388962;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LNX8DFuQfc4fgSWU7U10ikxsemDb3m7zjOCAua2xYvY=;
- b=PSudF4XVC4kUAnVH19sFIKj3n+SIGyIzLYxSOPYsVembONLmcBA8vT1dLelMPqyaaI
- X/pmf+7cwDzvD81JRLPO2lv2l5nOb6J1RSiOwYaCKXZdlA2tCRAQSLmjSZxG1SfblADe
- lJF5pjOI3pVxKyprCoawX3OYnb6+8XdXcngnYqfcBF5u9Ed5F5qGFnGV3zT0hvxgXnvw
- 5wHiFdbNS/+JRErb8rjDfw3Z4ZWNtEElf7+g5EG8gcZBmFobeSIdnk7UrleYCXnwl73R
- ka3s/Y1JoApswtlO9sJpkAR/8wF+IIZ/c6fWwFJFDna+NUt5CL3DUEgfHVz5c4SRGMJB
- FQLA==
+ bh=VCuE9avvXSYo5aEE6qxecyDsEbW2wP+S8MoxLSQCKp4=;
+ b=PWCfs8r3idO+WtxWvFgaU+OOOIQT6ufFKSTApHHjDL2puJnjpnQIS/rfnatm8a6ptF
+ OJiX9O8DyPj6KYOtBLNda3G+nIe5eBQiayrODG/hIS/m350JoZs1WZsdXkbeO75LfvuX
+ 0937811eM7OXJQHHadUBnCOj0VDXS7ilyw5wcR/0YD7qUWyw1QLJW5ZyrQm65Nwcgxnz
+ CLV61gAGa7w+epXxHTWbiWsq3Qs/iHFT2j++rztvDZcFaXgY1a6R+4IkAtFB03f8W6uP
+ Y3+7zCDFzanSofeA/N0HBfS7m6Sgi++2Z2km5agdsXLIcCXgwqXaDErtt+R/cqxhu6sL
+ 9rhg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXcQ2Iy0uOJRgw07GTxe/N8mhHrVqOWaMB4imfozM84TdZHhr5tQ0sAGpomqR+4jewTsXLUKrWBQf2l@nongnu.org
-X-Gm-Message-State: AOJu0Yx9kZY3xDJ1ja7eMY/nrHVRsJZEmGkATy5/H5ieeiQkJmLMl/Lo
- oc+BU2uUyzzQ0c+oKLBwxggRxB3Obdp6eqkIGlT6ekYwVGPhlpoGZ/N4JdDfQ+KhPEi7HmX8qHO
- FO6HscZpZgnr5Fh4DyaAEk0mCZbsHTV1lfInwGsNyYP9TzB4clg0ywAmH
-X-Gm-Gg: ASbGncuvAsrReEN2VbJb0I3xV8GvSKvYaDlV0ac9wKtjVVDtsnjtF/GK3uYaCkzLuhp
- YMij+wmeTnf0b/PQibL5Ky5ud9dxXTUr0PCV690X4ucx5acOd9OyaModXfBY3H778lkcj6haMJ4
- +cJTHqhFzHztwLmQfHX2CvMzf0GsScC0Uqcqk3av4QnJgDrTdKXjmx1couPhH8SHkh+2BPH9tu8
- tJCI4+DHUf/nOwcWlzGXl9xtmVRdjQ+5cRhite23JwwAZUvG1L2uopUSGzUgGe4KN+sYuaOhQlu
- 0+M+xUnszKVdzxqw0tCynXdWZ5NkDbpx
-X-Received: by 2002:a05:620a:44c4:b0:7e8:3f25:d8e2 with SMTP id
- af79cd13be357-7ea08e63506mr210602785a.62.1755783949637; 
- Thu, 21 Aug 2025 06:45:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHk6UfWDBG/PLfa4I+xpxi/RUVyV6N0cvhDsZFGxT1LOnKT+MH1Yn9QS/7RILZjRjKWmteLPA==
-X-Received: by 2002:a05:620a:44c4:b0:7e8:3f25:d8e2 with SMTP id
- af79cd13be357-7ea08e63506mr210597785a.62.1755783949095; 
- Thu, 21 Aug 2025 06:45:49 -0700 (PDT)
+ AJvYcCWflD3SD0159vCYqxR7/6dj+kH9ANsu0Eo54GOj9sFGxqsoBQjKp+LT3r8h3XTN66Rtqtzk5G0hBlNq@nongnu.org
+X-Gm-Message-State: AOJu0YxBhSqqeC6Z7QUkkvqTJcUOBIivXm5B9DbMLM2I6v0x0oLq7qrN
+ Da435+bWgqFOPx4iUUBPR2BXjIfDSE0GrCQggLA7Uk5HnNYHGl+QQfQfHiTa2gN9aiPkXNZbBdt
+ 1rbBLkfVQDjbmSciqSHuQCTOsLA1shnLTer/ms1ooMU7aX3LGP3mjuBrt
+X-Gm-Gg: ASbGncvivQKj+CHAzmN0ac9RGvQT+MZ9+QEyr/i27IQl9oZdDlPJ+GB7EKgKAIh7oc8
+ eZZF4/o6xDiKx9T7K0aCkS+Wr/Au8KlCUwTFnHQlavDUlcZwOTg7pzo5Vxew+TEtu4L896xHKPg
+ kKItOytEuux+fVBAc0g5fOi6yN1Z8BR1yEyblg0fij8V2UbNYkQG/tHM2FMMADDUdKR97GLob5h
+ bmhJaCFkhmGsiIziUYtb/F5Q4KUfo/NJn2V46DTWl5UbTSYpzcThv01PrvY5BDyBJkQK8KtjNWi
+ CcOjKPZoidqzpXMD9XO3e0MPbQlEtkPe
+X-Received: by 2002:a05:6214:5017:b0:704:f396:913a with SMTP id
+ 6a1803df08f44-70d88f6bd8emr24392106d6.42.1755784162206; 
+ Thu, 21 Aug 2025 06:49:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHzwOYTFiw7eSMOsDLCyCYu8cDSM5YP43SovTB3WZUuafH6RNFaYSjcWtaKkUYxJMi8MvMYug==
+X-Received: by 2002:a05:6214:5017:b0:704:f396:913a with SMTP id
+ 6a1803df08f44-70d88f6bd8emr24391856d6.42.1755784161804; 
+ Thu, 21 Aug 2025 06:49:21 -0700 (PDT)
 Received: from x1.local ([174.89.135.121]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7e87e07381dsm1145605085a.29.2025.08.21.06.45.47
+ 6a1803df08f44-70ba934cf82sm105123186d6.51.2025.08.21.06.49.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Aug 2025 06:45:48 -0700 (PDT)
-Date: Thu, 21 Aug 2025 09:45:36 -0400
+ Thu, 21 Aug 2025 06:49:21 -0700 (PDT)
+Date: Thu, 21 Aug 2025 09:49:09 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- mst@redhat.com, farosas@suse.de, raphael@enfabrica.net,
+Cc: mst@redhat.com, farosas@suse.de, raphael@enfabrica.net,
  sgarzare@redhat.com, marcandre.lureau@redhat.com,
  pbonzini@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
- eblake@redhat.com, armbru@redhat.com, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, steven.sistare@oracle.com,
- den-plotnikov@yandex-team.ru
-Subject: Re: [PATCH 26/33] io/channel-socket: introduce
- qio_channel_socket_keep_nonblock()
-Message-ID: <aKcjAIVheXDJpWgV@x1.local>
+ berrange@redhat.com, eblake@redhat.com, armbru@redhat.com,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ steven.sistare@oracle.com, den-plotnikov@yandex-team.ru
+Subject: Re: [PATCH 27/33] migration/socket: keep fds non-block
+Message-ID: <aKcj1coyywvbtW-h@x1.local>
 References: <20250813164856.950363-1-vsementsov@yandex-team.ru>
- <20250813164856.950363-27-vsementsov@yandex-team.ru>
- <aKXNLfKWzHKUhGaz@x1.local> <aKXRGiDQlyPyhNsh@redhat.com>
- <e3c67e47-8a5e-459f-8d76-a00032b7e013@yandex-team.ru>
+ <20250813164856.950363-28-vsementsov@yandex-team.ru>
+ <aKXN4bykrOFE6_cX@x1.local>
+ <f52081b6-bb8b-4d2c-86f4-1c0b1fa5ac57@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <e3c67e47-8a5e-459f-8d76-a00032b7e013@yandex-team.ru>
+In-Reply-To: <f52081b6-bb8b-4d2c-86f4-1c0b1fa5ac57@yandex-team.ru>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -113,41 +111,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 21, 2025 at 03:07:57PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> What I dislike in the way, when we reset to blocking always, and set
-> non-blocking again where needed:
+On Thu, Aug 21, 2025 at 03:15:24PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> On 20.08.25 16:30, Peter Xu wrote:
+> > On Wed, Aug 13, 2025 at 07:48:48PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> > > For migration channel keep fds non-blocking property as is.
+> > > It's needed for future local migration of fds.
+> > 
+> > It is pretty risky.  This changes the attribute for all the iochannels that
+> > migration incoming side uses, including multifd / postcopy / ...
 > 
-> 1. Extra fcntl calls for nothing (I think actually, in most cases, for
-> fds passed through migration stream(s) we'll want to keep fd as is)
->
-> 2. When we reset to blocking on target, it's visible on source and may
-> break things.
->
-> In these series it's probably doesn't really matter, as at the time when
-> we get the descriptor on target, it should not be used anymore on source.
->
-> But for example, in CPR-transfer, where descriptors are passed in the
-> preliminary stage, and source is running and use the descriptors, we
-> shouldn't change the non-blocking status of fd on target. Probably,
-> CPR-transfer for now only works with fds which are blpcking, so we don't
-> have a problem.
->
-> So, I think, that better default is preserve state of the flag for fds
-> passed through migration stream. And backends may modify it if needed (I
-> think, in most cases - they will not need).
+> But for now nobody (except CPR-transfer) really pass fds through migration,
+> and for CPR-transfer it's obviously better to preserve the state by default (see
+> my answer in previous patch).
+> 
+> So I think, we are in a point, where we can chose the good default, and
+> document it.
+> 
+> > 
+> > I left comment in previous patch as a pure question trying to understand
+> > whether the feature is needed.  If it is, here it might still be good to:
+> > 
+> >    - Above the line add a comment explaning why
+> >    - Only apply it to whatever channel that matters.  In this case, IIUC
+> >      only the main channel matters
+> > 
+> 
+> I still think that preserving non-blocking flag "as is" is good default for migration,
+> please look at my answer in previous patch. However, in this series I may adopt
+> to any approach.
 
-I agree having that as a default iochannel behavior is questionable.
+I also commented in the previous patch, let's see whether we can make it
+not only the default for migration, but the default for iochannels (hence,
+any chance to drop the new feature flag completely..).
 
-If it was defined for any fd-passing protocols making sure nonblocking
-status is predictable (in this case, fds will be always blocking), IMHO it
-should be done in the protocol layer either constantly setting or clearing
-NONBLOCK flag before sending the fds, rather than having it silently
-processed in iochannel internals.
+If that won't fly, I think this is fine.  In that case, please explicitly
+mention that it's intentional to change all iochannels that migration uses
+in the commit message, and we can also add a comment inline explaining why
+we set this default for all migration channels.
 
-Do we know how many existing users are relying such behavior?  I wonder if
-we could still push this operation to the protocols that will need it, then
-we can avoid this slightly awkward iochannel feature flag, because the
-iochannel user will simply always have full control.
+Thanks,
 
 -- 
 Peter Xu
