@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F5BB2F2E5
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 10:53:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53EE4B2F2E2
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 10:53:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1up0zO-0002R4-3e; Thu, 21 Aug 2025 04:49:42 -0400
+	id 1up0zm-0003Rv-Fz; Thu, 21 Aug 2025 04:50:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1up0yy-0001Bb-KY
- for qemu-devel@nongnu.org; Thu, 21 Aug 2025 04:49:20 -0400
+ id 1up0z8-0001Tk-TA
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 04:49:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1up0yr-0001m0-Gt
- for qemu-devel@nongnu.org; Thu, 21 Aug 2025 04:49:16 -0400
+ id 1up0z3-0001np-IG
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 04:49:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755766145;
+ s=mimecast20190719; t=1755766158;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/ZCYI6K3iXE4GW6reyp1ubly6Xab6A8JbLkV2fGk7yU=;
- b=cnropKcVU60edQhVpQuZjbEt66KoQSIWn7MwAJjYckhCM/SwuqFwPhmgemnIwhttIbTgUm
- 4bApYer/EkoASLV1a5lIaSLktlEKVM19KeU+Asyss4KLMV2fjO+iWhSBpgySnHbMg6sUSh
- 8RHLAZH/xJTAy/rUSGjOEe6zI38fHqk=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aYLt2RSeJxxoQwGBQ8XY2RieBB0inql96aCo0zoBdoA=;
+ b=CTaf47pim3CERQP0zbAJl7dpm1mQsu+LRgYFUruJirsbnpirHu02paezyXc3lENBEjNGDL
+ XRNpQJxTAhFXrEYEVudqlFmstgHnltStZgF39s/Ia2gLkmKJnt7mA+bLthqJJ6tIGrDHhJ
+ e05wHcft/72N+Rcct7Pf4Oa6nS0v3cY=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-567-jawu4eKqNuWb4ZIdyLcHeg-1; Thu, 21 Aug 2025 04:49:04 -0400
-X-MC-Unique: jawu4eKqNuWb4ZIdyLcHeg-1
-X-Mimecast-MFC-AGG-ID: jawu4eKqNuWb4ZIdyLcHeg_1755766143
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-244582c20e7so9226785ad.3
- for <qemu-devel@nongnu.org>; Thu, 21 Aug 2025 01:49:04 -0700 (PDT)
+ us-mta-679-ovQ1zUNwNC2JfAXCEpur7w-1; Thu, 21 Aug 2025 04:49:15 -0400
+X-MC-Unique: ovQ1zUNwNC2JfAXCEpur7w-1
+X-Mimecast-MFC-AGG-ID: ovQ1zUNwNC2JfAXCEpur7w_1755766154
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-2445820337cso8896185ad.3
+ for <qemu-devel@nongnu.org>; Thu, 21 Aug 2025 01:49:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755766143; x=1756370943;
+ d=1e100.net; s=20230601; t=1755766154; x=1756370954;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/ZCYI6K3iXE4GW6reyp1ubly6Xab6A8JbLkV2fGk7yU=;
- b=kObOAff5GujIN7ZZJKaL38BqWSK4d7BZD8nDqpJDWZy3f9eRPEEzmSLO3vgGJNQqyD
- 6jGVymXz6aSMabqHN27oGK8tY/SyxGtc4bt903kzGh04NG4bJHJc1J30RKqmEevsUgj3
- HvO5BaMmHLGT8jb+B4UNqCHTnVphiwaRccCfWE1lC158nkZ+GuC5yPOv3F17FgLJesZp
- P2H9tPkqoprO87WgxDlM5t2umOLAA8TSM1id7Q8csDSgzCQ4XBu+qahUw7wG4cFFgG1v
- SgwcZ9yG+weYm8xJKSAmHVpY8qfdP0YRUkuaFYp5xYIvcgMreL12NCLn6gEwpKXLQ9JG
- cnXw==
-X-Gm-Message-State: AOJu0Yw+PXQe/wH2H5mItA2ukd3JTU4SKWqdLUp4uOi4ZRCTLB2eLuuE
- GurcRVDzM7yTNhEpgsmHomr5aNKRHmlqWlm77H7vnAVqju1GKwnL2P3oEXLB+yO37Ielq3vV4Op
- ylPYm77WBzbeOmuvdmF5L9Izrurl1yOSORFa8PAGZLJgrOp+9mVd0P6+9
-X-Gm-Gg: ASbGnctA1AABUct8iCfRtfkbGYHmMkvUhO8uE1faDiw/i7KnRv7nEwbdQP53gAZid9w
- A1dKaBF/qigKd8g5RAQkiPf1w79fQEQ2V0KiEZgoaA+8dtkt+bONKbEjMBdEqEaMplxjLHjbBlQ
- 4bBC1EfOIljCnBlipeF3OYlMfhhcb6coqk0TYaWgBhyT0/b3h0H8SChdpainiION/O/UZqjUnTl
- 1M6cTkr8bZytCz5gbuQ2oG9JZ5X4H07OGsTxu5JnBJUN1gvfpV54ClEoLL8SOGd8/TsZM+kjlEu
- xByfwJUdLzldaOVkVDb+mkHrl3z5MFOoXLiYXYtk+eymlFf0i7Tk
-X-Received: by 2002:a17:902:f145:b0:240:7247:f738 with SMTP id
- d9443c01a7336-245febef16fmr16520125ad.1.1755766143048; 
- Thu, 21 Aug 2025 01:49:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHb7GeBLCkgCd74HKKpvYkcI2LVdHsj3x41Gpwe4M2BJGbgeLEdbNpUQW4BoWTr/grzboPGqQ==
-X-Received: by 2002:a17:902:f145:b0:240:7247:f738 with SMTP id
- d9443c01a7336-245febef16fmr16519915ad.1.1755766142640; 
- Thu, 21 Aug 2025 01:49:02 -0700 (PDT)
+ bh=aYLt2RSeJxxoQwGBQ8XY2RieBB0inql96aCo0zoBdoA=;
+ b=KGyavOgyXFKjMqXyNP0nqo6x5Be/Uev26/MeYZ5PZLoMhMvuVeto2QIWL24QW2NmVg
+ csO4xgujFLOCYOa3OuGOwsW1RsaUGGFDPQRv9U7Ud3fb8/TknTnCqVVf60O2i6s30/P/
+ YJIgSLxb2hKgDMEQlC4624NNUVSLbQ2lJ0QE6TJUQL4VMk11juixS1Z++BTEANENgIXO
+ Z2uKSk7I1vQPmtGZOCQhOssnwQUf4HlGoAGVRSpwPwxbUltObSEmUd+4ScbxKGAZ53v4
+ Ocx52MkR40qAK0kUL6Px33/N77sJwldjmJ5duy2MOpqcLZjtHzbRl6t3cLMy4z2fiyRW
+ 8+oA==
+X-Gm-Message-State: AOJu0YzuiXUWAOa/yG0xKqYRki/HptUCxri1qMVAuFTk/c5sO1B3igsq
+ bxuLoelfcfMWZr1n6i5W8bJ0Bwq7af/cywSLFXx9JaZXDugMwRUCB783XG6yNyZnEpghcRJIAUL
+ QZpDOjMkcPnikIZlVA4zkHL4PC3fpRPjNtR+arDM5Jg3X4AJG5b6r+Dy8
+X-Gm-Gg: ASbGncvrGMg2RLdUCp0bCrkUshh5PtO142lII3vMbnqw8x1z2D42i9lU338nn151BB2
+ 9H+B7+GzlNSnpRbImtrK5dEUlFSDeab8gdIUVi+ovyRtCTLHIEMbWbYf+gO/aydH5kW2wA6mzDs
+ 3afXKJWaSj/P1yX5przqiAM/LiTOc+aFUKDeN8uPDveJNR4KS6upGmBzYIHIi8l46MQ9qCm6Zwz
+ p5K5sSDxWs+7GHexlx6ug5tHnFj1fNPoK8jmZPsGkn8qBl46IqZToFYtL7BApnAxC3fftHodLiD
+ 057Ez45ZxTT/0lvFabiZJdRgxfBsStd+cVaY/x+p6h58GEtkC4gb
+X-Received: by 2002:a17:903:1b47:b0:242:b315:dda7 with SMTP id
+ d9443c01a7336-245febef6famr22067275ad.3.1755766154313; 
+ Thu, 21 Aug 2025 01:49:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEKEjR4yLtD2g3vFKzQvwvjCahP1aDWJeIdTUgc2rf2ecTI+7mZQTewNBD0zo2na2oa3Pznew==
+X-Received: by 2002:a17:903:1b47:b0:242:b315:dda7 with SMTP id
+ d9443c01a7336-245febef6famr22066945ad.3.1755766153847; 
+ Thu, 21 Aug 2025 01:49:13 -0700 (PDT)
 Received: from armenon-kvm.bengluru.csb ([49.47.192.65])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-245ed33e05dsm48789985ad.3.2025.08.21.01.48.51
+ d9443c01a7336-245ed33e05dsm48789985ad.3.2025.08.21.01.49.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Aug 2025 01:49:02 -0700 (PDT)
+ Thu, 21 Aug 2025 01:49:13 -0700 (PDT)
 From: Arun Menon <armenon@redhat.com>
-Date: Thu, 21 Aug 2025 14:14:19 +0530
-Subject: [PATCH v12 25/27] migration: Rename post_save() to cleanup_save()
- and make it void
+Date: Thu, 21 Aug 2025 14:14:20 +0530
+Subject: [PATCH v12 26/27] migration: Add error-parameterized function
+ variants in VMSD struct
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250821-propagate_tpm_error-v12-25-72b803e707dc@redhat.com>
+Message-Id: <20250821-propagate_tpm_error-v12-26-72b803e707dc@redhat.com>
 References: <20250821-propagate_tpm_error-v12-0-72b803e707dc@redhat.com>
 In-Reply-To: <20250821-propagate_tpm_error-v12-0-72b803e707dc@redhat.com>
 To: qemu-devel@nongnu.org
@@ -105,12 +105,12 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
  Arun Menon <armenon@redhat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6394; i=armenon@redhat.com;
- h=from:subject:message-id; bh=zehcboaF91FwyPsalgHoxud342famdeh+VS9Qdvq/hA=;
- b=owGbwMvMwCWWVaVqcZPfqI/xtFoSQ8ayO6nx19yrz3K5t7p8tTV2u7GsoWVHVd5l7RmKE5wvM
- F7eZ7y/o5SFQYyLQVZMkaXha4BsU0BhRKTty+swc1iZQIYwcHEKwETyWBn+8ApsNdIXua/fnPj+
- s/mas5VHGmdu/3S/mGXVf315jbcSHowMXzc2ebqd6I2IqX95MfnHeV2GsmmNy6cbRt1dwxyi6mX
- AAwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6573; i=armenon@redhat.com;
+ h=from:subject:message-id; bh=bA8w2RL2yE8W1o0oSEdgk2K28Sd2PPEUffHlP5NWeZU=;
+ b=owGbwMvMwCWWVaVqcZPfqI/xtFoSQ8ayO6mOJ4wrhUQXLQxfOiV7yhXmOMvTH+9mr+e1Vtt4M
+ Vn38cOSjlIWBjEuBlkxRZaGrwGyTQGFEZG2L6/DzGFlAhnCwMUpABOpv83IcPP7ufTuoB1ya+Z+
+ Cq3XPbDtZexVFtbmPXzH6k226pvp6DEyXLrjwaLF0NQ8PZF1+cbTjHsmzAv7sS4mwTBtumdED68
+ JJwA=
 X-Developer-Key: i=armenon@redhat.com; a=openpgp;
  fpr=80F5501D82507158593DE9D76A7A2538D90F328E
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armenon@redhat.com;
@@ -120,9 +120,9 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -138,173 +138,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The post_save() function call is responsible for cleaning up resources
-after the device state has been saved.
-Currently it is infallible, and does not return an error.
-
-It is called regardless of whether there is a preceding error from
-save or subsection save. That is, save and post_save() together are
-considered to be an atomic logical operation.
-
-It should not be confused as a counterpart of the post_load() function
-because post_load() does some sanity checks and returns an error if it
-fails. This commit, therefore, renames post_save() to cleanup_save()
-and makes it a void function.
+- We need to have good error reporting in the callbacks in
+  VMStateDescription struct. Specifically pre_save, pre_load
+  and post_load callbacks.
+- It is not possible to change these functions everywhere in one
+  patch, therefore, we introduce a duplicate set of callbacks
+  with Error object passed to them.
+- So, in this commit, we implement 'errp' variants of these callbacks,
+  introducing an explicit Error object parameter.
+- This is a functional step towards transitioning the entire codebase
+  to the new error-parameterized functions.
+- Deliberately called in mutual exclusion from their counterparts,
+  to prevent conflicts during the transition.
+- New impls should preferentally use 'errp' variants of
+  these methods, and existing impls incrementally converted.
+  The variants without 'errp' are intended to be removed
+  once all usage is converted.
 
 Signed-off-by: Arun Menon <armenon@redhat.com>
 ---
- docs/devel/migration/main.rst |  2 +-
- hw/ppc/spapr_pci.c            |  5 ++---
- include/migration/vmstate.h   |  2 +-
- migration/savevm.c            |  5 ++---
- migration/vmstate.c           | 12 ++++--------
- target/arm/machine.c          |  6 ++----
- 6 files changed, 12 insertions(+), 20 deletions(-)
+ docs/devel/migration/main.rst | 19 +++++++++++++++++++
+ include/migration/vmstate.h   | 14 ++++++++++++++
+ migration/vmstate.c           | 30 +++++++++++++++++++++++++++---
+ 3 files changed, 60 insertions(+), 3 deletions(-)
 
 diff --git a/docs/devel/migration/main.rst b/docs/devel/migration/main.rst
-index 6493c1d2bca48a2fa34d92f6c0979c215c56b8d5..a39fec2e21c26c4315c0cf13b105176d70679d4d 100644
+index a39fec2e21c26c4315c0cf13b105176d70679d4d..93620102ae875e7477af2e26eeffe636ca0cdbca 100644
 --- a/docs/devel/migration/main.rst
 +++ b/docs/devel/migration/main.rst
-@@ -439,7 +439,7 @@ The functions to do that are inside a vmstate definition, and are called:
- 
-   This function is called before we save the state of one device.
- 
--- ``int (*post_save)(void *opaque);``
-+- ``void (*cleanup_save)(void *opaque);``
- 
+@@ -444,6 +444,25 @@ The functions to do that are inside a vmstate definition, and are called:
    This function is called after we save the state of one device
    (even upon failure, unless the call to pre_save returned an error).
-diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
-index 1ac1185825e84ca908fd878f6cbe7e8cacac1d89..135265f075dff502af59fbc91babca1f9a26c54d 100644
---- a/hw/ppc/spapr_pci.c
-+++ b/hw/ppc/spapr_pci.c
-@@ -2118,14 +2118,13 @@ static int spapr_pci_pre_save(void *opaque)
-     return 0;
- }
  
--static int spapr_pci_post_save(void *opaque)
-+static void spapr_pci_cleanup_save(void *opaque)
- {
-     SpaprPhbState *sphb = opaque;
++Following are the errp variants of these functions.
++
++- ``int (*pre_load_errp)(void *opaque, Error **errp);``
++
++  This function is called before we load the state of one device.
++
++- ``int (*post_load_errp)(void *opaque, int version_id, Error **errp);``
++
++  This function is called after we load the state of one device.
++
++- ``int (*pre_save_errp)(void *opaque, Error **errp);``
++
++  This function is called before we save the state of one device.
++
++New impls should preferentally use 'errp' variants of these
++methods and existing impls incrementally converted.
++The variants without 'errp' are intended to be removed
++once all usage is converted.
++
+ Example: You can look at hpet.c, that uses the first three functions
+ to massage the state that is transferred.
  
-     g_free(sphb->msi_devs);
-     sphb->msi_devs = NULL;
-     sphb->msi_devs_num = 0;
--    return 0;
- }
- 
- static int spapr_pci_post_load(void *opaque, int version_id)
-@@ -2152,7 +2151,7 @@ static const VMStateDescription vmstate_spapr_pci = {
-     .version_id = 2,
-     .minimum_version_id = 2,
-     .pre_save = spapr_pci_pre_save,
--    .post_save = spapr_pci_post_save,
-+    .cleanup_save = spapr_pci_cleanup_save,
-     .post_load = spapr_pci_post_load,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT64_EQUAL(buid, SpaprPhbState, NULL),
 diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index 5fe9bbf39058d0cf97c1adab54cc516dbe8dc32a..c1d8e5b7a7d9d544fc8ce181372660f5538ef66b 100644
+index c1d8e5b7a7d9d544fc8ce181372660f5538ef66b..647d7a35ce5f2c8b8ca5fdb15b54c10a0896cea8 100644
 --- a/include/migration/vmstate.h
 +++ b/include/migration/vmstate.h
-@@ -208,7 +208,7 @@ struct VMStateDescription {
+@@ -200,14 +200,28 @@ struct VMStateDescription {
+      * exclusive. For this reason, also early_setup VMSDs are migrated in a
+      * QEMU_VM_SECTION_FULL section, while save_setup() data is migrated in
+      * a QEMU_VM_SECTION_START section.
++     *
++     * There are duplicate impls of the post/pre save/load hooks.
++     * New impls should preferentally use 'errp' variants of these
++     * methods and existing impls incrementally converted.
++     * The variants without 'errp' are intended to be removed
++     * once all usage is converted.
++     *
++     * For the errp variants,
++     * Returns: 0 on success,
++     *          <0 on error where -value is an error number from errno.h
+      */
++
+     bool early_setup;
+     int version_id;
+     int minimum_version_id;
+     MigrationPriority priority;
      int (*pre_load)(void *opaque);
++    int (*pre_load_errp)(void *opaque, Error **errp);
      int (*post_load)(void *opaque, int version_id);
++    int (*post_load_errp)(void *opaque, int version_id, Error **errp);
      int (*pre_save)(void *opaque);
--    int (*post_save)(void *opaque);
-+    void (*cleanup_save)(void *opaque);
++    int (*pre_save_errp)(void *opaque, Error **errp);
+     void (*cleanup_save)(void *opaque);
      bool (*needed)(void *opaque);
      bool (*dev_unplug_pending)(void *opaque);
- 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 46339b4944f0350024c130aba872483d0988fea5..99ae5b20a5c9796766ca4a79f2eed9f329f3dbd6 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -322,14 +322,13 @@ static int configuration_pre_save(void *opaque)
-     return 0;
- }
- 
--static int configuration_post_save(void *opaque)
-+static void configuration_cleanup_save(void *opaque)
- {
-     SaveState *state = opaque;
- 
-     g_free(state->capabilities);
-     state->capabilities = NULL;
-     state->caps_count = 0;
--    return 0;
- }
- 
- static int configuration_pre_load(void *opaque)
-@@ -544,7 +543,7 @@ static const VMStateDescription vmstate_configuration = {
-     .pre_load = configuration_pre_load,
-     .post_load = configuration_post_load,
-     .pre_save = configuration_pre_save,
--    .post_save = configuration_post_save,
-+    .cleanup_save = configuration_cleanup_save,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(len, SaveState),
-         VMSTATE_VBUFFER_ALLOC_UINT32(name, SaveState, 0, NULL, len),
 diff --git a/migration/vmstate.c b/migration/vmstate.c
-index 93b703cd61d811875e05880714a0d5113a4136d4..283b5c48d39d572c1b19819ed1860c68e118d674 100644
+index 283b5c48d39d572c1b19819ed1860c68e118d674..5fd19acc410123be2ad23aadeb28e3ad708762e5 100644
 --- a/migration/vmstate.c
 +++ b/migration/vmstate.c
-@@ -533,8 +533,8 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                 if (ret) {
-                     error_setg(errp, "Save of field %s/%s failed",
-                                 vmsd->name, field->name);
--                    if (vmsd->post_save) {
--                        vmsd->post_save(opaque);
-+                    if (vmsd->cleanup_save) {
-+                        vmsd->cleanup_save(opaque);
-                     }
-                     return ret;
-                 }
-@@ -561,12 +561,8 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
- 
-     ret = vmstate_subsection_save(f, vmsd, opaque, vmdesc, errp);
- 
--    if (vmsd->post_save) {
--        int ps_ret = vmsd->post_save(opaque);
--        if (!ret && ps_ret) {
--            ret = ps_ret;
--            error_setg(errp, "post-save failed: %s", vmsd->name);
--        }
-+    if (vmsd->cleanup_save) {
-+        vmsd->cleanup_save(opaque);
+@@ -153,7 +153,16 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
+         trace_vmstate_load_state_end(vmsd->name, "too old", -EINVAL);
+         return -EINVAL;
      }
-     return ret;
- }
-diff --git a/target/arm/machine.c b/target/arm/machine.c
-index 6986915bee876402c1bd2efb92f41ca1298c66a3..d070114da15de85fd50af71e1d8caa84f25846d8 100644
---- a/target/arm/machine.c
-+++ b/target/arm/machine.c
-@@ -903,15 +903,13 @@ static int cpu_pre_save(void *opaque)
-     return 0;
- }
- 
--static int cpu_post_save(void *opaque)
-+static void cpu_cleanup_save(void *opaque)
+-    if (vmsd->pre_load) {
++    if (vmsd->pre_load_errp) {
++        ret = vmsd->pre_load_errp(opaque, errp);
++        if (ret < 0) {
++            error_prepend(errp, "pre load hook failed for: '%s', "
++                          "version_id: %d, minimum version_id: %d, "
++                          "ret: %d: ", vmsd->name, vmsd->version_id,
++                          vmsd->minimum_version_id, ret);
++            return ret;
++        }
++    } else if (vmsd->pre_load) {
+         ret = vmsd->pre_load(opaque);
+         if (ret) {
+             error_setg(errp, "pre load hook failed for: '%s', "
+@@ -249,7 +258,14 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
+         qemu_file_set_error(f, ret);
+         return ret;
+     }
+-    if (vmsd->post_load) {
++    if (vmsd->post_load_errp) {
++        ret = vmsd->post_load_errp(opaque, version_id, errp);
++        if (ret < 0) {
++            error_prepend(errp, "post load hook failed for: %s, version_id: "
++                          "%d, minimum_version: %d, ret: %d: ", vmsd->name,
++                          vmsd->version_id, vmsd->minimum_version_id, ret);
++        }
++    } else if (vmsd->post_load) {
+         ret = vmsd->post_load(opaque, version_id);
+         if (ret < 0) {
+             error_setg(errp,
+@@ -418,12 +434,20 @@ int vmstate_save_state(QEMUFile *f, const VMStateDescription *vmsd,
+ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+                          void *opaque, JSONWriter *vmdesc, int version_id, Error **errp)
  {
-     ARMCPU *cpu = opaque;
++    ERRP_GUARD();
+     int ret = 0;
+     const VMStateField *field = vmsd->fields;
  
-     if (!kvm_enabled()) {
-         pmu_op_finish(&cpu->env);
-     }
--
--    return 0;
- }
+     trace_vmstate_save_state_top(vmsd->name);
  
- static int cpu_pre_load(void *opaque)
-@@ -1048,7 +1046,7 @@ const VMStateDescription vmstate_arm_cpu = {
-     .version_id = 22,
-     .minimum_version_id = 22,
-     .pre_save = cpu_pre_save,
--    .post_save = cpu_post_save,
-+    .cleanup_save = cpu_cleanup_save,
-     .pre_load = cpu_pre_load,
-     .post_load = cpu_post_load,
-     .fields = (const VMStateField[]) {
+-    if (vmsd->pre_save) {
++    if (vmsd->pre_save_errp) {
++        ret = vmsd->pre_save_errp(opaque, errp);
++        trace_vmstate_save_state_pre_save_res(vmsd->name, ret);
++        if (ret < 0) {
++            error_prepend(errp, "pre-save for %s failed, ret: %d: ",
++                          vmsd->name, ret);
++        }
++    } else if (vmsd->pre_save) {
+         ret = vmsd->pre_save(opaque);
+         trace_vmstate_save_state_pre_save_res(vmsd->name, ret);
+         if (ret) {
 
 -- 
 2.50.1
