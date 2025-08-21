@@ -2,143 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1B3B2FA04
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 15:19:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED78EB2FA9A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 15:36:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1up50a-0004nm-HD; Thu, 21 Aug 2025 09:07:12 -0400
+	id 1up5R2-0005vo-S5; Thu, 21 Aug 2025 09:34:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1up4zG-0002da-Q9; Thu, 21 Aug 2025 09:05:50 -0400
-Received: from mail-mw2nam10on2061f.outbound.protection.outlook.com
- ([2a01:111:f403:2412::61f]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1up4zA-0003Gh-5u; Thu, 21 Aug 2025 09:05:49 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DZfMXny88maRPnjhsus0mWb21dV3sX52aEXf/LtLTEQec3Y9C6yPZ4cuSBqo3JjyH7Ce5KARSbp4cb43IRQZLO810iwArEBPwWz4MNmZVGDOyjl7aRqyEgKBdAm/oaeKq8RZox57XGFmDs4kHEYgLfwh6X60/284hlxXeF4l+VS0TvY3685U00iRoQQypeRCHqv0yoT9zzLKg9j2/LCyzPedCx6bQwdpfmGgoSMsZ52E/fJT3xyj1HALXHEn9nAc7j7BkwuWM4LQ1xDC90ilLfqO+C3Xc2iTzhu0T/PE5HlUpK86DgMvcGy7lIditKeovpuurEsHlpT/e/d4k5ZADA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yX1i5QXUicDE++m4MNj1pW+sh0I2BoPJKAHDLy7Qr+I=;
- b=crnwk6dNvoIrn5yErbyUf4+V+FyhZTgS172piXufJnqX5mrs4J285WSp24PyWNuG4g2Ppo0bJqhtJN4sxuy9d6MqaDjyIQ0tYO2JV19i+pcnpN2HyY0O/Ve9WGOmgEBTlds0vQpRkZtE5pJCaUHxOp3Qi0AVxwLnYjvSzukyVA7Y5dvscYwXXc2/swAodPQ3ZaEzgWKXWfTHpfhMDNDSMsQunwX8A9TFkQuyXdeSBWrsfbPBDMo6EYV4zraCYIdiwHUiLrvZyWTcmqqbJ0eDR4ejNeu6pZKQvJJ8LWCWxdUEf9T2Gra6ASmuiGkPr+n7O+sCH4bNdgK58bDn/Dvy2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yX1i5QXUicDE++m4MNj1pW+sh0I2BoPJKAHDLy7Qr+I=;
- b=3FrzMT0R7JMsqFFSzYTnLaNZufO89ou9eL+Ry3PRb3wDbiUBxP6w6iUtFgCKU2kULk0jLmDI2nn8DiQGIBHC0aMT+nrFf/P2fkdEqq/VcILNoCFLon4GvHcREcUySuDG/Aq2R0ZxhZWXHhbmT6xF+WglCou2RRkxsDOLiir4+Ts=
-Received: from SJ0PR03CA0093.namprd03.prod.outlook.com (2603:10b6:a03:333::8)
- by DS7PR12MB6336.namprd12.prod.outlook.com (2603:10b6:8:93::8) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9031.24; Thu, 21 Aug 2025 13:05:33 +0000
-Received: from SJ5PEPF000001D5.namprd05.prod.outlook.com
- (2603:10b6:a03:333:cafe::8) by SJ0PR03CA0093.outlook.office365.com
- (2603:10b6:a03:333::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.16 via Frontend Transport; Thu,
- 21 Aug 2025 13:05:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ5PEPF000001D5.mail.protection.outlook.com (10.167.242.57) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9052.8 via Frontend Transport; Thu, 21 Aug 2025 13:05:33 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 21 Aug
- 2025 08:05:33 -0500
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 21 Aug
- 2025 08:05:32 -0500
-Received: from XFR-LUMICHEL-L2.xilinx.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Thu, 21 Aug 2025 08:05:31 -0500
-From: Luc Michel <luc.michel@amd.com>
-To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: Luc Michel <luc.michel@amd.com>, Peter Maydell <peter.maydell@linaro.org>, 
- Francisco Iglesias <francisco.iglesias@amd.com>, "Edgar E . Iglesias"
- <edgar.iglesias@amd.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Alistair Francis <alistair@alistair23.me>, "Frederic
- Konrad" <frederic.konrad@amd.com>, Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-Subject: [PATCH v3 47/47] tests/functional/test_aarch64_xlnx_versal: test the
- versal2 machine
-Date: Thu, 21 Aug 2025 15:03:46 +0200
-Message-ID: <20250821130354.125971-48-luc.michel@amd.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250821130354.125971-1-luc.michel@amd.com>
-References: <20250821130354.125971-1-luc.michel@amd.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1up5Qv-0005uc-Kx
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 09:34:25 -0400
+Received: from mail-yb1-xb34.google.com ([2607:f8b0:4864:20::b34])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1up5Qk-0007WC-PU
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 09:34:23 -0400
+Received: by mail-yb1-xb34.google.com with SMTP id
+ 3f1490d57ef6-e932ded97easo950742276.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Aug 2025 06:34:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1755783251; x=1756388051; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NA8UuRK7Z8vFSoVZJv/ETYK9qWmnvctPtmXZp4pFYko=;
+ b=SV7AfYPsZWNw1hDjrrLxHSauDDQOP90yzsNdYMUD8kK2o85bKzT7zpX/ocftIF0X+/
+ EFRVy9JEv95vqdJEw/XoT9cohkDogdhHctzcrLPRm5tBzWxujxNlUvvH/TcsNObdHMLQ
+ WOahVd1kkIWkR6zQPbLlRyOwXCfBXViSXYPKoC0OM6F9AVGqlPxWSgPeLPbdcUCZX10V
+ lU4Np1FvsWdSEJ20VhHPzKkezymMIZL+jIkJqCsfeJoeVh2hKfVDEqf8a5/7nbmOdLW+
+ Vw4u9+zJHM7J3He/tIRVMrRjt9sVrc55DMkdqhTsxnaEBGXIetfaKruj7hWN1LATyMpW
+ fbCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1755783251; x=1756388051;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NA8UuRK7Z8vFSoVZJv/ETYK9qWmnvctPtmXZp4pFYko=;
+ b=rgpbyF9ocqK+02lf19IkwPecgaNRY2iHdkVKIPhiafteAV2RJqzLwEwQngVjfHF7E5
+ l2W76/D+J9lWInDIgWDKDzqsg+RThwzEv/HX3+7/Duf0Cz+5/qH026KtYzSGJ4UYdreA
+ DYyTy+acboYe1iDoHrWi1zgO19H4fajOPzOqOLtASQlWgDNLgt943v988a5US+82mTTR
+ UAg4zEoV8tjwAo6yI1nHMLRHhV1eeSoEzA5mNtNTIcCp2fkS4akpXfm8JYEW+ZaGoZu7
+ k/SbHa+x/fiV2jScYnP7XBS9OF7O3wfkY/iD8/vNES800nkMoDDHY+d18y64F08j9QVp
+ +0CQ==
+X-Gm-Message-State: AOJu0Yy0xa7jqOszfm1tJRHtAq43jFgXWucaN84lAFthzAriTb+j2e0L
+ 7bunXt1ap3Vqzn6ZYEB4hmzL0Ozg7LQvT0WSZGqUmnutFYq/lVap0wRXBJzeP3Sxxyxx5dyHOyp
+ BD2+Jdadb5o50a2B5xG97BOZFYecUa3zaN6Xr+7/lRw==
+X-Gm-Gg: ASbGncseB5DQ01S5l1o9pUbOa0azHGXTeyaB7AWOfvTwMclEujsYjgWb+osHljMwaY7
+ bg5eiAFBfuE1IvGl7lNVHX2530ybIW3sVAB5vbVx5jC3G/XdpuQXWDrDfcS9woHuPcqV5P9cV0F
+ 84jmzi2GA9GhbcZo4fJCPGNERKYPA/bdCRz2N5VdG+BqlwpXSSjqBVU68bOodo9Qza0I3/2aFqC
+ iQLE52s
+X-Google-Smtp-Source: AGHT+IFph+fuA14X7mTMyKtF93GC1qA7HNa1A5shgDlsysZ71bYlqOJ2jffoA2ntrPYqjnAiz3D/0KQ7FL9AtLgD/G8=
+X-Received: by 2002:a05:6902:2689:b0:e93:46dc:41f2 with SMTP id
+ 3f1490d57ef6-e9509a831f8mr2776167276.47.1755783250932; Thu, 21 Aug 2025
+ 06:34:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB05.amd.com: luc.michel@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D5:EE_|DS7PR12MB6336:EE_
-X-MS-Office365-Filtering-Correlation-Id: 03d6a8fd-eafa-4ae6-f2d0-08dde0b369da
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|82310400026|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?ZE8H5k2n/zcItNK6oIKxVr6mD/xSkOhNjeDx9sEqnD+i3OSu0KvmAEVOzg31?=
- =?us-ascii?Q?lJPVqSWBPcik6ackEEpn/PaodIRjFxBema4NfviRxUqjKPRSUo1sFtBSNeKL?=
- =?us-ascii?Q?dF+LqcqzASEcQpL6BTbc84SP0xvy0cw7R2SO2gVZ6uk4cKNN+fIUU5C8vB7B?=
- =?us-ascii?Q?JLb5H7WUC9cVCsrBXdZS8fTYj9Qe6BI4VjOvyYlGMJwDnQIb0sbGl3HZXcZS?=
- =?us-ascii?Q?Jog8ENwvvfG4bkdNoEde6tuG8wPSwC4qoMSw0v0/dwsktKJ5qhrWE+6fG454?=
- =?us-ascii?Q?gHy+qEzDwXq4uE/PJwIpjHNVz0Mz4ugraqADzt8JQTLNBeM4eGgFyX6W/Fsp?=
- =?us-ascii?Q?zBw3EuI7gRLi1zFleffIA/x1GHq2k6AdH82QLrFYHY/OMK0xr1fKwqgpClCe?=
- =?us-ascii?Q?NMqoJXgiX5KdMCEyK3+z8rPIJb+UMisv3LkjnaafUF6z+Nb/XEz1xk5aZfqz?=
- =?us-ascii?Q?uHvCH0sOgVZxIH71SHVz58AvydnFctyCefFVUPvAmuzbXfSjmDCjLDeiU8wr?=
- =?us-ascii?Q?ivEL0udwuCySQ7WAoWqq+6JEmBiEF0IA3CQSpOUnlmxDcES/P9I80A5/6fj6?=
- =?us-ascii?Q?tkqpeH+tP0Rxh/8hTLJNtYOVPivXDFtpR+CkrZ+x9czpNF43w7xyPZfEmZbt?=
- =?us-ascii?Q?AUQZnmlewZSS7pJJCIX43r/IebaLctRxD6VolUqVCaHHh5rwowAfym07eMWe?=
- =?us-ascii?Q?RajxFh+pivlPf3rpEg7SrnGrg6KB0T56kJxqjMCB3/rjgk4/PZlwJ8YpZY5G?=
- =?us-ascii?Q?+SHjuqf+LbmlG0WK3QXPXPE/swQRn3qr+Up6i/HN+fnjMVxsfqyH0nfSMAV8?=
- =?us-ascii?Q?TgZ0N4RowGzUUBjYfsQq0XW0vBaLPgFDOnX0UdCYahhwKYYm4S6cReImv/ip?=
- =?us-ascii?Q?d5b6jcCn5R3wRyKCJn7oVljARu2dMB3wJ+NZWWtQbn1YDIPwry/A/r3Y4Dsm?=
- =?us-ascii?Q?CuHV4wTPq0Tk8fpLPc2zyW71V7VjgDaUWHjzcZVVqTIokaS6rTiDXYWiaZ/c?=
- =?us-ascii?Q?sVZYLyevjIOCjBVFmFFkS8rq5hlEguWeFbiNl6PaS6U43oJx/w3UQZxRLLHY?=
- =?us-ascii?Q?pFqnGhFajG+zRf01obEvGUF99p2nbQ5hA3T1cOkBszmSx2PsP65O78uuXc+X?=
- =?us-ascii?Q?5qIM+4z2nndtzov5GFo4I8k2VfPQGwTPTrfsmE0zLitVfqp2IQERGc/YpjWp?=
- =?us-ascii?Q?sK2SY8cr5zzE1lamWlzjHJizmIr/fdtyaxVRGcuCbFDb7zGtl/x9bIa86+oH?=
- =?us-ascii?Q?00PBM6Vta+I+0m3gCdLzhc9hZ+Rb3JDPIK8Ip/RuF6aOtERoaW1yAsBlr4yh?=
- =?us-ascii?Q?TMZ1emLqMZaK3V/70V4zMllNj5l0KsBPaUBUdLXwLASUmatjVAzQ1kIwkBWT?=
- =?us-ascii?Q?o9/iV16D6w5iePjdn9lgv5t///cmx7u2OOtV0TJ3ybZykUkj8f0qLTf7glhc?=
- =?us-ascii?Q?lvLMBYDi4h+1jfn0ney118mPt0WvSEAx/A/Q3E7kmq2++MPtpC0aGw=3D=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2025 13:05:33.4861 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03d6a8fd-eafa-4ae6-f2d0-08dde0b369da
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ5PEPF000001D5.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6336
-Received-SPF: permerror client-ip=2a01:111:f403:2412::61f;
- envelope-from=Luc.Michel@amd.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
+References: <20240216110313.17039-1-philmd@linaro.org>
+ <20240216110313.17039-17-philmd@linaro.org>
+In-Reply-To: <20240216110313.17039-17-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 21 Aug 2025 14:33:59 +0100
+X-Gm-Features: Ac12FXwGwOTkFp-IDxMtSb_SwGpeJUw61kCK6Ylt6WVhAINpl-CeU5xZrb54e1U
+Message-ID: <CAFEAcA-aR5Hhd5uJUtptBa4wnyLUDPqbwLWdgNMfrGxo-SfDVg@mail.gmail.com>
+Subject: Re: [PATCH 16/21] hw/net/can/versal: Prefer object_initialize_child
+ over object_initialize
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org, 
+ qemu-ppc@nongnu.org, qemu-block@nongnu.org, 
+ Pavel Pisa <pisa@cmp.felk.cvut.cz>, Vikram Garhwal <fnu.vikram@xilinx.com>, 
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Jason Wang <jasowang@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b34;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -154,49 +98,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a test for the amd-versal2-virt machine using the same command line,
-kernel, initrd than the ones used for amd-versal-virt.
+On Fri, 16 Feb 2024 at 11:08, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> When the QOM parent is available, prefer object_initialize_child()
+> over object_initialize(), since it create the parent relationship.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/net/can/xlnx-versal-canfd.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canf=
+d.c
+> index 47a14cfe63..f8e4bd75e4 100644
+> --- a/hw/net/can/xlnx-versal-canfd.c
+> +++ b/hw/net/can/xlnx-versal-canfd.c
+> @@ -1900,7 +1900,7 @@ static int canfd_populate_regarray(XlnxVersalCANFDS=
+tate *s,
+>          int index =3D rae[i].addr / 4;
+>          RegisterInfo *r =3D &s->reg_info[index];
+>
+> -        object_initialize(r, sizeof(*r), TYPE_REGISTER);
+> +        object_initialize_child(OBJECT(s), "reg[*]", r, TYPE_REGISTER);
+>
+>          *r =3D (RegisterInfo) {
+>              .data =3D &s->regs[index],
+> --
 
-Signed-off-by: Luc Michel <luc.michel@amd.com>
-Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
----
- tests/functional/test_aarch64_xlnx_versal.py | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Hi -- I was just looking at this function since ASAN
+reports a leak in it. I notice that this patch never got
+applied -- any reason why?
 
-diff --git a/tests/functional/test_aarch64_xlnx_versal.py b/tests/functional/test_aarch64_xlnx_versal.py
-index 95e5c44771f..45aa6e1b881 100755
---- a/tests/functional/test_aarch64_xlnx_versal.py
-+++ b/tests/functional/test_aarch64_xlnx_versal.py
-@@ -18,12 +18,12 @@ class AmdVersalVirtMachine(LinuxKernelTest):
-         ('http://ports.ubuntu.com/ubuntu-ports/dists/bionic-updates/main/'
-          'installer-arm64/20101020ubuntu543.19/images/netboot/'
-          '/ubuntu-installer/arm64/initrd.gz'),
-         'e7a5e716b6f516d8be315c06e7331aaf16994fe4222e0e7cfb34bc015698929e')
- 
--    def test_aarch64_amd_versal_virt(self):
--        self.set_machine('amd-versal-virt')
-+    def common_aarch64_amd_versal_virt(self, machine):
-+        self.set_machine(machine)
-         kernel_path = self.ASSET_KERNEL.fetch()
-         initrd_path = self.ASSET_INITRD.fetch()
- 
-         self.vm.set_console()
-         self.vm.add_args('-m', '2G',
-@@ -31,7 +31,13 @@ def test_aarch64_amd_versal_virt(self):
-                          '-kernel', kernel_path,
-                          '-initrd', initrd_path)
-         self.vm.launch()
-         self.wait_for_console_pattern('Checked W+X mappings: passed')
- 
-+    def test_aarch64_amd_versal_virt(self):
-+        self.common_aarch64_amd_versal_virt('amd-versal-virt')
-+
-+    def test_aarch64_amd_versal2_virt(self):
-+        self.common_aarch64_amd_versal_virt('amd-versal2-virt')
-+
- if __name__ == '__main__':
-     LinuxKernelTest.main()
--- 
-2.50.1
+Also, though, we call object_initialize(r, ...) and then
+we immediately do "*r =3D { some struct }" which entirely
+overwrites the initialization we just did. I guess that
+should instead be initializing the individual fields...
 
+-- PMM
 
