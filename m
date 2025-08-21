@@ -2,150 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA25B2FC09
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 16:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7E5B2FC31
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 16:19:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1up62N-0005Sh-Vp; Thu, 21 Aug 2025 10:13:08 -0400
+	id 1up67T-0000Un-J5; Thu, 21 Aug 2025 10:18:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Edgar.Iglesias@amd.com>)
- id 1up620-0005KM-0Z; Thu, 21 Aug 2025 10:12:44 -0400
-Received: from mail-bn8nam12on2060b.outbound.protection.outlook.com
- ([2a01:111:f403:2418::60b]
- helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <fanyihao@rt-thread.org>)
+ id 1up67N-0000SZ-Qu
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 10:18:18 -0400
+Received: from mail-m49232.qiye.163.com ([45.254.49.232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Edgar.Iglesias@amd.com>)
- id 1up61v-0004Jn-Jc; Thu, 21 Aug 2025 10:12:43 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LX8Js/95Hq3JYrMstD/l9PgXQyh7K7PM+v1kVaEUONGLS9m1VsyV721eUPbSZ1ADXqpZbTh0cYYMVUg5Kc49eh3fqyXsLaoZjp+lSCIen3kkGEQRZXTUBQq7ioHuT1iKAMxNl01ZZZGWqtrUMc9uvjw3fXEqMHsxk3M7cDi07+mK96KyZ2/z8MGAKOTRSxgjz/1MoGotjlBGbuR2VpX/rqmOLgxNGNkXc5EQnynZcK+ulFkJ71rm1sTv2jNAo7qwYzBC+IywsfVAWW2IMmFMtmit1G5Yv1qrREQ3y+Wg5sU8W/vXHnoEz3b3HFIDAq9zkJD2j8dMniuCuDAxPUZDEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cKEtuv7jLsp5Zid3j3xcDRo3tXmBOgjmTYJEeQ0PSVg=;
- b=Ezxj73pNC3DnI7hCk20UyF7d/0gs9wP7mH4yVqVKtqugoIoTx3i/EO4ejFvk3T4q7oAqMpTz1ToKBywAKzL0wOSoSjDNJ6dwv2WZ0MWd+ARkSHnKn/C7jB7i9t7sM3VjYGaEMln6YahXBETNVK9MqEQUQ4hyDKi10SGW4luyZ33tPI18PHx9oJM2pPFTviUFhW37VcfRADAFNikjw3qoshAy+zil2QL1y5Tp+ZwRKwev3yeCQNYTmthHt3YbjuP2iVvSTbDzEpus/KlVoIoOcY30R2PJ2OCQ3PunwRTMh0AfGEMuEOrd9zCOBxfo/8L0MkLiAjbdsSh3dIG7leGj2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cKEtuv7jLsp5Zid3j3xcDRo3tXmBOgjmTYJEeQ0PSVg=;
- b=kUi7AfjpMQIjuoo9xss0mBd8qEySGUpGBLeNwwhYWaA/MRc1St5nsYrZPcHcUnlmoKuSc/Tds4Gdi9IltLZHm6MSHyIr/c5naZnbk+Iy0iCl6hQ2BDLws36NPfi4qbFvUtekvS/BDB1JgjZ9BrxgCLEuPukeeKcA5uLdckiDjeM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM6PR12MB4090.namprd12.prod.outlook.com (2603:10b6:5:217::11)
- by SJ0PR12MB6854.namprd12.prod.outlook.com (2603:10b6:a03:47c::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Thu, 21 Aug
- 2025 14:12:30 +0000
-Received: from DM6PR12MB4090.namprd12.prod.outlook.com
- ([fe80::671d:f94e:1c92:2f5d]) by DM6PR12MB4090.namprd12.prod.outlook.com
- ([fe80::671d:f94e:1c92:2f5d%3]) with mapi id 15.20.9052.014; Thu, 21 Aug 2025
- 14:12:30 +0000
-Date: Thu, 21 Aug 2025 16:12:27 +0200
-From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
-To: Luc Michel <luc.michel@amd.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Alistair Francis <alistair@alistair23.me>,
- Frederic Konrad <frederic.konrad@amd.com>,
- Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-Subject: Re: [PATCH v3 03/47] hw/arm/xlnx-versal: uart: refactor creation
-Message-ID: <aKcpS4pHAZvGJXqH@zapote>
-References: <20250821130354.125971-1-luc.michel@amd.com>
- <20250821130354.125971-4-luc.michel@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250821130354.125971-4-luc.michel@amd.com>
-User-Agent: Mutt/2.2.14+84 (2efcabc4) (2025-03-23)
-X-ClientProxiedBy: MM0P280CA0063.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:8::27) To DM6PR12MB4090.namprd12.prod.outlook.com
- (2603:10b6:5:217::11)
+ (Exim 4.90_1) (envelope-from <fanyihao@rt-thread.org>)
+ id 1up67K-0004qO-Ku
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 10:18:17 -0400
+Content-Type: multipart/alternative;
+ BOUNDARY="=_Part_480692_518683843.1755785764002"
+Message-ID: <AN6AmQDLJZJxtS3pCF4nJapc.3.1755785764002.Hmail.fanyihao@rt-thread.org>
+To: Peter Maydell  <peter.maydell@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MiAzLzNdIEFkZCBTVE0zMkY0eHggVVNBUlQgZGV2aWNlIG1vZGVs?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
+ Sirius_WEB_WIN_1.53.1
+X-Originating-IP: 240e:360:931b:aa00:cd61:ec6e:ec87:2cb6
+In-Reply-To: <CAFEAcA82eVxnvGomgzSegXBBqcc3_wtPQhV3b4cLcxikfTK13w@mail.gmail.com>
+References: <20250721201134.13270-1-fanyihao@rt-thread.org>
+ <20250721201134.13270-4-fanyihao@rt-thread.org>
+ <CAFEAcA82eVxnvGomgzSegXBBqcc3_wtPQhV3b4cLcxikfTK13w@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4090:EE_|SJ0PR12MB6854:EE_
-X-MS-Office365-Filtering-Correlation-Id: d510dcdd-3dd2-4d18-4d09-08dde0bcc3da
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?zuRNrEwUyRVu8P8tkg5xMroKFn2DWWYXRyTnasV4ZkRSi2eRRDAS2mJlxc0q?=
- =?us-ascii?Q?xUKoqQw12FG2xhjsceJboQEBx2Fo+6qGST3Ti7kClAUlUcdKlSrFtxXeiG1x?=
- =?us-ascii?Q?Ix5ISu5f7cc6/+1/xrGkmblnQByFdkX4YmKLuTni3DpoFwMECEcRB5G7jx0w?=
- =?us-ascii?Q?c6YEG/If8HRODJBR9yjffHvLcYNDzazrdr+qxyG5RGBkXYkpxzzEX2coOGnQ?=
- =?us-ascii?Q?G5Vp0R5jQoXR7iyd52rWDfQeR7d6prjuP3Y2zSc+7uzclGixSMDVZB3qpwEZ?=
- =?us-ascii?Q?sbuez8Xax3m0oOX9mlBg50hGhezaNDevvAD7o22eHBojRldgpW7/uMpryRf1?=
- =?us-ascii?Q?plU3EnktAGnJpeAyAokaHqPiKxZPaVX382iCg8yLT6SOBgSQx9b0bC3xQs5f?=
- =?us-ascii?Q?PVVskig6E4xPvFkLdIwomzLQAzmnkrBabKMWmekHZ7BjuQ56XpGdOTdkwWzt?=
- =?us-ascii?Q?wRtVpVhxheL2UU7hqf6z1AGIt6jydfSkBjgGxEIz8eYRbivoRutgQEEUr6w4?=
- =?us-ascii?Q?iItvq2pdXkMNMOSXl/gACaA8PW4HPvPQcJj7QPcFDxmqY4xsqjKWEE2BMzs/?=
- =?us-ascii?Q?IyhOfn3jcZDQzTbAMgCyuDUUINl96VwCo32DzzLVNxxFGKTo3AuGpiNu7CHi?=
- =?us-ascii?Q?WQGf4l19TFfO0mPOzOtLcjRPhHGYyzHWfqw9msD4mQe1KKwYAV05EWcXFnl2?=
- =?us-ascii?Q?VVNVHInj0xJFx/sneiPeHrs9QfdeJYJpQ8ZXkIXlYmQLE1KJ8sJk3+5JpB5y?=
- =?us-ascii?Q?EYQ+jwP3dg6dLXfg/vAOZXG3T1gcskiKT49Q90Uo3WL5o3mU7w0SRx0rU2lG?=
- =?us-ascii?Q?Sb6zvd/YkLRRZj7Ad0OLUpwC20dhX1hH/TvGISyD0VM/g/GW6t+2wiWx/fxS?=
- =?us-ascii?Q?chKVYTJo7Q46fZ7UwXD3+Hi8JfGYAgCP04+bFswvRwpAPOa0CUMngpCIkUN/?=
- =?us-ascii?Q?Ib1ZxXviqJXj98+37co/qdpZlsaZ/Rapz152CCVi8IQw0tMuGEiFKpktF6Ly?=
- =?us-ascii?Q?SbLEHgH5ePOltu1qhlptfT9CT/UbyWpeykWBwRW6ZU2+BwAyqieAfxW5ccFc?=
- =?us-ascii?Q?CZtsS2Y+x2WqjpqzGDp5jT7qvOO7+ll6DNp5h1ve+Q0+97xOTxSqztDA9RzX?=
- =?us-ascii?Q?MwVt1S3Rt5u558NPeVohM4USkCD/2J3KO/lBmo2QN92ccT1VRI9DP27Dz60A?=
- =?us-ascii?Q?mRR1rxsv68R9gcIlBN7cKcreUOJk98z+YWZKsXgjniSp1525Et1JqullrBeo?=
- =?us-ascii?Q?cPZHe+K/8tOnopBDtekIpnNk555eKLI6TIOx5q9/4bFlhAsvovQGLLQC8NMQ?=
- =?us-ascii?Q?KVt2Nvy2Qz/K2z+GWXvGHBONecd/d8UULcKF9mYBwbqyxvg16xFKFPPNrJSK?=
- =?us-ascii?Q?HC3FaKHcZXxO0mj1q3A2ZQOpCl3cEfOnKBm9HWuKPSHDj0wPYqqmwP2YiBqO?=
- =?us-ascii?Q?4GTSzBVL9uc=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR12MB4090.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Ks5xJHeqj1H5IX+LrjA0qJUtB7s3XDnqgvDN2GpxuyuOcTtFkxFJtiKU7VSw?=
- =?us-ascii?Q?Xk/MomPO1yE4XoaGVbqwEnw903PhJ+o6QlReAbgfjgMwS9LAeh4sOy/3AvMs?=
- =?us-ascii?Q?044W/05iKwm0nGBowF+V5bOGds+7cwIKqhLuUIjkYQ7bzNF7xRGjxQlF6+2Q?=
- =?us-ascii?Q?smIAgBsAKpf52HAEttgb8tg9o3dkzxudNjMcLIL0uOV6olYiKkrPEyeOzwlz?=
- =?us-ascii?Q?dMSm+tBY7Iy8xJkhzNPkYaFpNKQNHEPbAEJa6WcY4cBsu/ruTEXzo7HmVVv3?=
- =?us-ascii?Q?Tfq+Z8OAvd7dKgZat4Pk/9mzoZdVllo8H2aECl3dQhEzc/keN3fi9MfYGYAt?=
- =?us-ascii?Q?OKfirKViU9AKnU3ZcNeRF/LuUcqzApJuVKi3Jhl4va3M30usoILC3ViXZkuY?=
- =?us-ascii?Q?i40yIv2ncsufyS3Y/5XEWpSXBX4dTu5eAphn6A4ysn6xojOlf7LdL2sU2p/y?=
- =?us-ascii?Q?F0UoCdHEwTaW9CC/uvXljGRLlPB3Bv9wq4Vwkyf2N7jEPXDMOV+Hp/S15jIK?=
- =?us-ascii?Q?TMERrIjVLbztGKR430qR6o6lurh9oe3k/FaWaS9qDkyRwq7XjsNeRWeM1fpm?=
- =?us-ascii?Q?i5HLJRmPgh/jDhybeQU6dmepTcEsyUCPiZ5viTxu3AeYFvBqJVpaGePsJWDw?=
- =?us-ascii?Q?damOvjQV2lJ0kukm6xXDkEzNAtYXI8fkRPtLbLeO+taoG9NWWpuokvTEFuFj?=
- =?us-ascii?Q?Y9/LxTKTqOm7y77RhAjIxdmH/qUL5bEn3R3R7/1PxQOhhky0C4CfXie6b4ED?=
- =?us-ascii?Q?XpnIHQrQR27JDgoEjbL1sUGQe1TRxvDwqnXykbfAnnWwPr4lftlBh4fgDRb2?=
- =?us-ascii?Q?m4nBGm+C4nfcAspWp84LlijdC+7sN4+hElpbqUwk4P2EVFH4+gJLbsnOkTrJ?=
- =?us-ascii?Q?bpqfgxyFZWgE8rdzi5aEAbCGuHPWn+tLEbl3CAC2z4py9BjTncukezxps9cM?=
- =?us-ascii?Q?yhAokCmP9kSxpgojj76qJiql6m3uPkxdK8WxjYDrUFRLAADcFRbUQRs3vyY/?=
- =?us-ascii?Q?mF8hIw8jzVNFm444DvW3WRR0WyMrwCXlmzYVnKvKtedXvy4V017bLVcA2RWc?=
- =?us-ascii?Q?Ta0nWiqEaMj1JyKhC0QiguIcL/vwvW5MPe8T4RKn5GyB29FFfg//Vb8r1KQt?=
- =?us-ascii?Q?Yq9audzXfHM7ZiZQEK+pLJmhUpAgqKOa5Qdu/QyKmZxwDekGEaAGx6PZDqTX?=
- =?us-ascii?Q?6P7YtwGatEKayrI/mP/OhHWTM47Yjj41n0ZzCCfKXe5K39csChxF2oomqffS?=
- =?us-ascii?Q?Pv1DHDp+ULpOqQFX3CC/1njRlLKDFV1pyYwUYUfUG5+QkjjPPcD1M7+IrYJI?=
- =?us-ascii?Q?7VXu+e/qIfeSRAokl5iRDuxscZvR0ssu8NMsgy7fE8muey5S6Qihy6JY+/j2?=
- =?us-ascii?Q?glfUSOY0yTcmEf6j51ustryASHbpyyuUEiyHkfth3z8oSJIEjYbn1Q89ZCyq?=
- =?us-ascii?Q?fYM207A34+4zU+y1Gj6bGj683gTkAze8GWctY1z0UDF7KbdjErfj3/9wIFdO?=
- =?us-ascii?Q?zk2WWSbE4F9YZ/KvOWLEvqFaZtdVmOYzp7Fx1BApQOqyHn5/hI6jBT/omTUK?=
- =?us-ascii?Q?4NOLbBb4p0coDJ/1eB0=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d510dcdd-3dd2-4d18-4d09-08dde0bcc3da
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4090.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2025 14:12:30.2209 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MZOe7s035vEhzTjQywgqcOIvEzB89DbxI3y7gmSCdyrouaA2q+w8KQXICPt2afro
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6854
-Received-SPF: permerror client-ip=2a01:111:f403:2418::60b;
- envelope-from=Edgar.Iglesias@amd.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
+Received: from fanyihao@rt-thread.org(
+ [240e:360:931b:aa00:cd61:ec6e:ec87:2cb6] ) by ajax-webmail ( [127.0.0.1] ) ;
+ Thu, 21 Aug 2025 22:16:04 +0800 (GMT+08:00)
+From: =?UTF-8?B?6IyD6Im66LGq?= <fanyihao@rt-thread.org>
+Date: Thu, 21 Aug 2025 22:16:04 +0800 (GMT+08:00)
+X-HM-Tid: 0a98ccfc9c0502f2kunmef0f409f42521
+X-HM-MType: 1
+X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMYBSeVkCuDgEtMK2I7Iz00qensNJKpr13iP1kR
+ QhqmkIB0JsRL95DITp428yHXGpwKLvB4Y+XROSHNZiSvJBimXomaO6MzU8SLOCVGqeUZYWk7FoN3
+ 5Vglp1HUK9Mw5+Qx26/Go7faYN/YK6jxLNyp8=
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+ tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCSR0ZVh5JSkNNGUhJS0oYSlYVFAkWGhdVEwETFh
+ oSFyQUDg9ZV1kYEgtZQVlJT0seQUhNS0FCSEoZQRoaS0tBGB9NSkEeGE0eQR4YQ0xBSRgZTVlXWR
+ YaDxIVHRRZQVlPS0hVQkJJTkpVSktLVUpCS0JZBg++
+DKIM-Signature: a=rsa-sha256;
+ b=X+pBA/1QFAjuWj4rD90C8lDKugJtdwXEUo+Jug8iVycXjMP+nCE3PgRmvKj1NKQOPLXBOoZ6ha5SkU/416Nk7A8t2xvpNuePXcMbefIlASNZ4tIUbDLe1iIBSA46RmnRNXIypTToBCjal5mSUwet5XGUw7WtRMHECgKURYm5LlRCRxWsW/2eLtNzWh5ETmnhU9rclPhCJKZ0crfgIhi0vffOAq5vazD7KPmPegsia84CMRrAb2lWbCoqf+Lo33iP2AUzWWbjpUEmht/qu/JXmzCT2xqQpeTo5+PvTuxxYLE8f5hKbQyFBZlpGd/jbj8gEUayuQp5gMK8FyVzaYK6LA==;
+ s=default; c=relaxed/relaxed; d=rt-thread.org; v=1; 
+ bh=btQ0wz4fS8jF0+rVICGo5C2jMCTwQZFvBllp11BrTlU=;
+ h=date:mime-version:subject:message-id:from;
+Received-SPF: pass client-ip=45.254.49.232;
+ envelope-from=fanyihao@rt-thread.org; helo=mail-m49232.qiye.163.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ MSGID_FROM_MTA_HEADER=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -161,363 +78,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 21, 2025 at 03:03:02PM +0200, Luc Michel wrote:
-> Refactor the UARTs creations. The VersalMap struct is now used to
-> describe the SoC and its peripherals. For now it contains the two UARTs
-> mapping information. The creation function now embeds the FDT creation
-> logic as well. The devices are now created dynamically using qdev_new
-> and (qdev|sysbus)_realize_and_unref.
-> 
-> This will allow to rely entirely on the VersalMap structure to create
-> the SoC and allow easy addition of new SoCs of the same family (like
-> versal2 coming with next commits).
-> 
-> Note that the connection to the CRL is removed for now and will be
-> re-added by next commits.
+--=_Part_480692_518683843.1755785764002
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
+SGksCgpUaGUgRjR4eCBVU0FSVCBpcyBsYXJnZWx5IHNpbWlsYXIgdG8gdGhlIEYyeHguIFRoZSBp
+bXBsZW1lbnRhdGlvbiBjYW4gbW9zdGx5IGJlIHNoYXJlZCwKd2l0aCBGNC1zcGVjaWZpYyBmZWF0
+dXJlcyBhZGRlZCBzZXBhcmF0ZWx5LCBhbGxvd2luZyBhIGNvbW1vbiBiYXNlIHdoaWxlIGtlZXBp
+bmcgZGlmZmVyZW5jZXMgaXNvbGF0ZWQuCknigJlsbCBjb25zaWRlciBzaGFyaW5nIGEgY29tbW9u
+IGJhc2UgaW4gdGhlIG5leHQgcmV2aXNpb24uCgpCZXN0IHdpc2hlcywKLS0gWWloYW8gRmFuCgoK
+CgoKCgoKIOiMg+iJuuixqgpmYW55aWhhb0BydC10aHJlYWQub3JnCgoKCgoKCgoKCgpPcmlnaW5h
+bDoKRnJvbe+8mlBldGVyIE1heWRlbGwgPHBldGVyLm1heWRlbGxAbGluYXJvLm9yZz5EYXRl77ya
+MjAyNS0wOC0xNiAwMTo0NjowNijkuK3lm70gKEdNVCswODowMCkpVG/vvJpmYW55aWhhbzxmYW55
+aWhhb0BydC10aHJlYWQub3JnPkNj77yacWVtdS1kZXZlbDxxZW11LWRldmVsQG5vbmdudS5vcmc+
+U3ViamVjdO+8mlJlOiBbUEFUQ0ggdjIgMy8zXSBBZGQgU1RNMzJGNHh4IFVTQVJUIGRldmljZSBt
+b2RlbE9uIE1vbiwgMjEgSnVsIDIwMjUgYXQgMjE6MTEsIDxmYW55aWhhb0BydC10aHJlYWQub3Jn
+PiB3cm90ZToKPgo+IEZyb206IFlpaGFvIEZhbiA8ZmFueWloYW9AcnQtdGhyZWFkLm9yZz4KPgo+
+IFRoaXMgcGF0Y2ggYWRkcyBzdXBwb3J0IGZvciB0aGUgU1RNMzJGNDA3IFVTQVJUIGNvbnRyb2xs
+ZXJzIGRldmljZSBtb2RlbC4KPgo+IFNpZ25lZC1vZmYtYnk6IFlpaGFvIEZhbiA8ZmFueWloYW9A
+cnQtdGhyZWFkLm9yZz4KPiAtLS0KPiAgTUFJTlRBSU5FUlMgICAgICAgICAgICAgICAgICAgICAg
+IHwgICAyICsKPiAgaHcvYXJtL0tjb25maWcgICAgICAgICAgICAgICAgICAgIHwgICAxICsKPiAg
+aHcvYXJtL3N0bTMyZjQwN19zb2MuYyAgICAgICAgICAgIHwgIDI1ICsrKwo+ICBody9jaGFyL0tj
+b25maWcgICAgICAgICAgICAgICAgICAgfCAgIDMgKwo+ICBody9jaGFyL21lc29uLmJ1aWxkICAg
+ICAgICAgICAgICAgfCAgIDEgKwo+ICBody9jaGFyL3N0bTMyZjR4eF91c2FydC5jICAgICAgICAg
+fCAyMzYgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCj4gIGluY2x1ZGUvaHcvYXJtL3N0
+bTMyZjQwN19zb2MuaCAgICB8ICAgOCArCj4gIGluY2x1ZGUvaHcvY2hhci9zdG0zMmY0eHhfdXNh
+cnQuaCB8ICA2MCArKysrKysrKwoKV2UgZ2VuZXJhbGx5IHByZWZlciB0d28gc2VwYXJhdGUgcGF0
+Y2hlcyBmb3IgdGhpczoKKDEpIGltcGxlbWVudGF0aW9uIG9mIHRoZSBuZXcgZGV2aWNlCigyKSBh
+ZGQgdGhlIG5ldyBkZXZpY2UgdG8gdGhlIFNvQwoKPiAtLS0gL2Rldi9udWxsCj4gKysrIGIvaHcv
+Y2hhci9zdG0zMmY0eHhfdXNhcnQuYwo+IEBAIC0wLDAgKzEsMjM2IEBACj4gKy8qIFNQRFgtTGlj
+ZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyICovCj4gKyNpbmNsdWRlICJxZW11L29z
+ZGVwLmgiCj4gKyNpbmNsdWRlICJody9jaGFyL3N0bTMyZjR4eF91c2FydC5oIgo+ICsjaW5jbHVk
+ZSAicWVtdS9sb2cuaCIKPiArI2luY2x1ZGUgImh3L2lycS5oIgo+ICsjaW5jbHVkZSAiaHcvcWRl
+di1wcm9wZXJ0aWVzLmgiCj4gKyNpbmNsdWRlICJody9xZGV2LXByb3BlcnRpZXMtc3lzdGVtLmgi
+Cj4gKyNpbmNsdWRlICJxZW11L21vZHVsZS5oIgoKVGhpcyBsb29rcyB2ZXJ5IHNpbWlsYXIgdG8g
+dGhlIGV4aXN0aW5nIHN0bTMyZjJ4eCBVU0FSVC4KSG93IGRpZmZlcmVudCBhcmUgdGhlc2UgdHdv
+IGRldmljZXM/IENvdWxkIHdlIHNoYXJlCmNvZGUgYnkgaGF2aW5nIHRoZW0gYmUgdHdvIGNoaWxk
+IGNsYXNzZXMgd2hpY2ggYWRqdXN0CndoYXQgZmVhdHVyZXMgdGhlIGRldmljZSBleHBvc2VzPwoK
+dGhhbmtzCi0gUE1NCgoKCgoNCg0K
+--=_Part_480692_518683843.1755785764002
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-Hi Luc,
-
-I see the following on this patch:
-Starting program: /home/edgar/src/c/qemu/patchew/build/qemu-system-aarch64 -M xlnx-versal-virt -m 2g -serial stdio -display none -net nic,model=cadence_gem,netdev=n0 -netdev user,id=n0 -kernel Image -device virtio-blk-device,drive=d0 -drive format=qcow2,if=none,file=rootfs.qcow2,id=d0 -append root=/dev/vda1\ console=ttyAMA0
-[Thread debugging using libthread_db enabled]
-Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
-[New Thread 0x7ffff5a4c640 (LWP 130095)]
-[New Thread 0x7ffff4889640 (LWP 130096)]
-
-Thread 1 "qemu-system-aar" received signal SIGSEGV, Segmentation fault.
-arm_cpu_mp_affinity (cpu=cpu@entry=0x0) at ../qemu/target/arm/cpu.c:1446
-1446        return cpu->mp_affinity;
-(gdb) bt
-#0  arm_cpu_mp_affinity (cpu=cpu@entry=0x0) at ../qemu/target/arm/cpu.c:1446
-#1  0x0000555555d8517d in fdt_add_cpu_nodes (psci_conduit=1, s=0x7ffff4a7b010)
-    at ../qemu/hw/arm/xlnx-versal-virt.c:114
-#2  versal_virt_init (machine=0x7ffff4a7b010) at ../qemu/hw/arm/xlnx-versal-virt.c:682
-#3  0x00005555559b766d in machine_run_board_init
-    (machine=<optimized out>, mem_path=<optimized out>, errp=<optimized out>,
-    errp@entry=0x555557602858 <error_fatal>) at ../qemu/hw/core/machine.c:1694
-#4  0x0000555555bfda6c in qemu_init_board () at ../qemu/system/vl.c:2710
-#5  qmp_x_exit_preconfig (errp=0x555557602858 <error_fatal>) at ../qemu/system/vl.c:2804
-#6  0x0000555555c013de in qemu_init (argc=<optimized out>, argv=<optimized out>) at ../qemu/system/vl.c:3840
-#7  0x000055555590253d in main (argc=<optimized out>, argv=<optimized out>) at ../qemu/system/main.c:71
-(gdb)
-
-
-
-> 
-> Signed-off-by: Luc Michel <luc.michel@amd.com>
-> Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
-> ---
->  include/hw/arm/xlnx-versal.h |   2 -
->  hw/arm/xlnx-versal-virt.c    |  36 +--------
->  hw/arm/xlnx-versal.c         | 142 ++++++++++++++++++++++++++++-------
->  3 files changed, 117 insertions(+), 63 deletions(-)
-> 
-> diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
-> index f2a62b43552..b01ddeb1423 100644
-> --- a/include/hw/arm/xlnx-versal.h
-> +++ b/include/hw/arm/xlnx-versal.h
-> @@ -16,11 +16,10 @@
->  #include "hw/sysbus.h"
->  #include "hw/cpu/cluster.h"
->  #include "hw/or-irq.h"
->  #include "hw/sd/sdhci.h"
->  #include "hw/intc/arm_gicv3.h"
-> -#include "hw/char/pl011.h"
->  #include "hw/dma/xlnx-zdma.h"
->  #include "hw/net/cadence_gem.h"
->  #include "hw/rtc/xlnx-zynqmp-rtc.h"
->  #include "qom/object.h"
->  #include "hw/usb/xlnx-usb-subsystem.h"
-> @@ -78,11 +77,10 @@ struct Versal {
->  
->      struct {
->          MemoryRegion mr_ocm;
->  
->          struct {
-> -            PL011State uart[XLNX_VERSAL_NR_UARTS];
->              CadenceGEMState gem[XLNX_VERSAL_NR_GEMS];
->              OrIRQState gem_irq_orgate[XLNX_VERSAL_NR_GEMS];
->              XlnxZDMA adma[XLNX_VERSAL_NR_ADMAS];
->              VersalUsb2 usb;
->              CanBusState *canbus[XLNX_VERSAL_NR_CANFD];
-> diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
-> index 69f3bb401b9..06cc5bae8b0 100644
-> --- a/hw/arm/xlnx-versal-virt.c
-> +++ b/hw/arm/xlnx-versal-virt.c
-> @@ -75,10 +75,11 @@ static void fdt_create(VersalVirt *s)
->  
->      s->phandle.usb = qemu_fdt_alloc_phandle(s->fdt);
->      s->phandle.dwc = qemu_fdt_alloc_phandle(s->fdt);
->      /* Create /chosen node for load_dtb.  */
->      qemu_fdt_add_subnode(s->fdt, "/chosen");
-> +    qemu_fdt_add_subnode(s->fdt, "/aliases");
->  
->      /* Header */
->      qemu_fdt_setprop_cell(s->fdt, "/", "interrupt-parent", s->phandle.gic);
->      qemu_fdt_setprop_cell(s->fdt, "/", "#size-cells", 0x2);
->      qemu_fdt_setprop_cell(s->fdt, "/", "#address-cells", 0x2);
-> @@ -206,44 +207,10 @@ static void fdt_add_usb_xhci_nodes(VersalVirt *s)
->      qemu_fdt_setprop_cell(s->fdt, name, "phandle", s->phandle.dwc);
->      qemu_fdt_setprop_string(s->fdt, name, "maximum-speed", "high-speed");
->      g_free(name);
->  }
->  
-> -static void fdt_add_uart_nodes(VersalVirt *s)
-> -{
-> -    uint64_t addrs[] = { MM_UART1, MM_UART0 };
-> -    unsigned int irqs[] = { VERSAL_UART1_IRQ_0, VERSAL_UART0_IRQ_0 };
-> -    const char compat[] = "arm,pl011\0arm,sbsa-uart";
-> -    const char clocknames[] = "uartclk\0apb_pclk";
-> -    int i;
-> -
-> -    for (i = 0; i < ARRAY_SIZE(addrs); i++) {
-> -        char *name = g_strdup_printf("/uart@%" PRIx64, addrs[i]);
-> -        qemu_fdt_add_subnode(s->fdt, name);
-> -        qemu_fdt_setprop_cell(s->fdt, name, "current-speed", 115200);
-> -        qemu_fdt_setprop_cells(s->fdt, name, "clocks",
-> -                               s->phandle.clk_125Mhz, s->phandle.clk_125Mhz);
-> -        qemu_fdt_setprop(s->fdt, name, "clock-names",
-> -                         clocknames, sizeof(clocknames));
-> -
-> -        qemu_fdt_setprop_cells(s->fdt, name, "interrupts",
-> -                               GIC_FDT_IRQ_TYPE_SPI, irqs[i],
-> -                               GIC_FDT_IRQ_FLAGS_LEVEL_HI);
-> -        qemu_fdt_setprop_sized_cells(s->fdt, name, "reg",
-> -                                     2, addrs[i], 2, 0x1000);
-> -        qemu_fdt_setprop(s->fdt, name, "compatible",
-> -                         compat, sizeof(compat));
-> -        qemu_fdt_setprop(s->fdt, name, "u-boot,dm-pre-reloc", NULL, 0);
-> -
-> -        if (addrs[i] == MM_UART0) {
-> -            /* Select UART0.  */
-> -            qemu_fdt_setprop_string(s->fdt, "/chosen", "stdout-path", name);
-> -        }
-> -        g_free(name);
-> -    }
-> -}
-> -
->  static void fdt_add_canfd_nodes(VersalVirt *s)
->  {
->      uint64_t addrs[] = { MM_CANFD1, MM_CANFD0 };
->      uint32_t size[] = { MM_CANFD1_SIZE, MM_CANFD0_SIZE };
->      unsigned int irqs[] = { VERSAL_CANFD1_IRQ_0, VERSAL_CANFD0_IRQ_0 };
-> @@ -700,11 +667,10 @@ static void versal_virt_init(MachineState *machine)
->                               &error_abort);
->  
->      fdt_create(s);
->      versal_set_fdt(&s->soc, s->fdt);
->      fdt_add_gem_nodes(s);
-> -    fdt_add_uart_nodes(s);
->      fdt_add_canfd_nodes(s);
->      fdt_add_gic_nodes(s);
->      fdt_add_timer_nodes(s);
->      fdt_add_zdma_nodes(s);
->      fdt_add_usb_xhci_nodes(s);
-> diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
-> index 7bb55751e5c..87468cbc291 100644
-> --- a/hw/arm/xlnx-versal.c
-> +++ b/hw/arm/xlnx-versal.c
-> @@ -24,18 +24,96 @@
->  #include "qemu/log.h"
->  #include "target/arm/cpu-qom.h"
->  #include "target/arm/gtimer.h"
->  #include "system/device_tree.h"
->  #include "hw/arm/fdt.h"
-> +#include "hw/char/pl011.h"
->  
->  #define XLNX_VERSAL_ACPU_TYPE ARM_CPU_TYPE_NAME("cortex-a72")
->  #define XLNX_VERSAL_RCPU_TYPE ARM_CPU_TYPE_NAME("cortex-r5f")
->  #define GEM_REVISION        0x40070106
->  
->  #define VERSAL_NUM_PMC_APB_IRQS 18
->  #define NUM_OSPI_IRQ_LINES 3
->  
-> +typedef struct VersalSimplePeriphMap {
-> +    uint64_t addr;
-> +    int irq;
-> +} VersalSimplePeriphMap;
-> +
-> +typedef struct VersalMap {
-> +    VersalSimplePeriphMap uart[2];
-> +    size_t num_uart;
-> +} VersalMap;
-> +
-> +static const VersalMap VERSAL_MAP = {
-> +    .uart[0] = { 0xff000000, 18 },
-> +    .uart[1] = { 0xff010000, 19 },
-> +    .num_uart = 2,
-> +};
-> +
-> +static const VersalMap *VERSION_TO_MAP[] = {
-> +    [VERSAL_VER_VERSAL] = &VERSAL_MAP,
-> +};
-> +
-> +static inline VersalVersion versal_get_version(Versal *s)
-> +{
-> +    return XLNX_VERSAL_BASE_GET_CLASS(s)->version;
-> +}
-> +
-> +static inline const VersalMap *versal_get_map(Versal *s)
-> +{
-> +    return VERSION_TO_MAP[versal_get_version(s)];
-> +}
-> +
-> +
-> +static qemu_irq versal_get_irq(Versal *s, int irq_idx)
-> +{
-> +    return qdev_get_gpio_in(DEVICE(&s->fpd.apu.gic), irq_idx);
-> +}
-> +
-> +static void versal_sysbus_connect_irq(Versal *s, SysBusDevice *sbd,
-> +                                      int sbd_idx, int irq_idx)
-> +{
-> +    qemu_irq irq = versal_get_irq(s, irq_idx);
-> +
-> +    if (irq == NULL) {
-> +        return;
-> +    }
-> +
-> +    sysbus_connect_irq(sbd, sbd_idx, irq);
-> +}
-> +
-> +static inline char *versal_fdt_add_subnode(Versal *s, const char *path,
-> +                                           uint64_t at, const char *compat,
-> +                                           size_t compat_sz)
-> +{
-> +    char *p;
-> +
-> +    p = g_strdup_printf("%s@%" PRIx64, path, at);
-> +    qemu_fdt_add_subnode(s->cfg.fdt, p);
-> +
-> +    if (!strncmp(compat, "memory", compat_sz)) {
-> +        qemu_fdt_setprop(s->cfg.fdt, p, "device_type", compat, compat_sz);
-> +    } else {
-> +        qemu_fdt_setprop(s->cfg.fdt, p, "compatible", compat, compat_sz);
-> +    }
-> +
-> +    return p;
-> +}
-> +
-> +static inline char *versal_fdt_add_simple_subnode(Versal *s, const char *path,
-> +                                                  uint64_t addr, uint64_t len,
-> +                                                  const char *compat,
-> +                                                  size_t compat_sz)
-> +{
-> +    char *p = versal_fdt_add_subnode(s, path, addr, compat, compat_sz);
-> +
-> +    qemu_fdt_setprop_sized_cells(s->cfg.fdt, p, "reg", 2, addr, 2, len);
-> +    return p;
-> +}
-> +
->  static void versal_create_apu_cpus(Versal *s)
->  {
->      int i;
->  
->      object_initialize_child(OBJECT(s), "apu-cluster", &s->fpd.apu.cluster,
-> @@ -165,32 +243,48 @@ static void versal_create_rpu_cpus(Versal *s)
->      }
->  
->      qdev_realize(DEVICE(&s->lpd.rpu.cluster), NULL, &error_fatal);
->  }
->  
-> -static void versal_create_uarts(Versal *s, qemu_irq *pic)
-> +static void versal_create_uart(Versal *s,
-> +                               const VersalSimplePeriphMap *map,
-> +                               int chardev_idx)
->  {
-> -    int i;
-> +    DeviceState *dev;
-> +    MemoryRegion *mr;
-> +    g_autofree char *node;
-> +    g_autofree char *alias;
-> +    const char compatible[] = "arm,pl011\0arm,sbsa-uart";
-> +    const char clocknames[] = "uartclk\0apb_pclk";
->  
-> -    for (i = 0; i < ARRAY_SIZE(s->lpd.iou.uart); i++) {
-> -        static const int irqs[] = { VERSAL_UART0_IRQ_0, VERSAL_UART1_IRQ_0};
-> -        static const uint64_t addrs[] = { MM_UART0, MM_UART1 };
-> -        char *name = g_strdup_printf("uart%d", i);
-> -        DeviceState *dev;
-> -        MemoryRegion *mr;
-> +    dev = qdev_new(TYPE_PL011);
-> +    object_property_add_child(OBJECT(s), "uart[*]", OBJECT(dev));
-> +    qdev_prop_set_chr(dev, "chardev", serial_hd(chardev_idx));
-> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->  
-> -        object_initialize_child(OBJECT(s), name, &s->lpd.iou.uart[i],
-> -                                TYPE_PL011);
-> -        dev = DEVICE(&s->lpd.iou.uart[i]);
-> -        qdev_prop_set_chr(dev, "chardev", serial_hd(i));
-> -        sysbus_realize(SYS_BUS_DEVICE(dev), &error_fatal);
-> +    mr = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0);
-> +    memory_region_add_subregion(&s->mr_ps, map->addr, mr);
->  
-> -        mr = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0);
-> -        memory_region_add_subregion(&s->mr_ps, addrs[i], mr);
-> +    versal_sysbus_connect_irq(s, SYS_BUS_DEVICE(dev), 0, map->irq);
->  
-> -        sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[irqs[i]]);
-> -        g_free(name);
-> +    node = versal_fdt_add_simple_subnode(s, "/uart", map->addr, 0x1000,
-> +                                         compatible, sizeof(compatible));
-> +    qemu_fdt_setprop_cell(s->cfg.fdt, node, "current-speed", 115200);
-> +    qemu_fdt_setprop_cells(s->cfg.fdt, node, "clocks",
-> +                           s->phandle.clk_125mhz, s->phandle.clk_125mhz);
-> +    qemu_fdt_setprop(s->cfg.fdt, node, "clock-names", clocknames,
-> +                     sizeof(clocknames));
-> +    qemu_fdt_setprop_cells(s->cfg.fdt, node, "interrupts",
-> +                           GIC_FDT_IRQ_TYPE_SPI, map->irq,
-> +                           GIC_FDT_IRQ_FLAGS_LEVEL_HI);
-> +    qemu_fdt_setprop(s->cfg.fdt, node, "u-boot,dm-pre-reloc", NULL, 0);
-> +
-> +    alias = g_strdup_printf("serial%d", chardev_idx);
-> +    qemu_fdt_setprop_string(s->cfg.fdt, "/aliases", alias, node);
-> +
-> +    if (chardev_idx == 0) {
-> +        qemu_fdt_setprop_string(s->cfg.fdt, "/chosen", "stdout-path", node);
->      }
->  }
->  
->  static void versal_create_canfds(Versal *s, qemu_irq *pic)
->  {
-> @@ -781,18 +875,10 @@ static void versal_create_crl(Versal *s, qemu_irq *pic)
->          object_property_set_link(OBJECT(&s->lpd.crl),
->                                   name, OBJECT(&s->lpd.iou.adma[i]),
->                                   &error_abort);
->      }
->  
-> -    for (i = 0; i < ARRAY_SIZE(s->lpd.iou.uart); i++) {
-> -        g_autofree gchar *name = g_strdup_printf("uart[%d]", i);
-> -
-> -        object_property_set_link(OBJECT(&s->lpd.crl),
-> -                                 name, OBJECT(&s->lpd.iou.uart[i]),
-> -                                 &error_abort);
-> -    }
-> -
->      object_property_set_link(OBJECT(&s->lpd.crl),
->                               "usb", OBJECT(&s->lpd.iou.usb),
->                               &error_abort);
->  
->      sysbus_realize(sbd, &error_fatal);
-> @@ -955,11 +1041,15 @@ static void versal_realize(DeviceState *dev, Error **errp)
->      s->phandle.clk_125mhz = fdt_add_clk_node(s, "/clk125", 125 * 1000 * 1000);
->  
->      versal_create_apu_cpus(s);
->      versal_create_apu_gic(s, pic);
->      versal_create_rpu_cpus(s);
-> -    versal_create_uarts(s, pic);
-> +
-> +    for (i = 0; i < map->num_uart; i++) {
-> +        versal_create_uart(s, &map->uart[i], i);
-> +    }
-> +
->      versal_create_canfds(s, pic);
->      versal_create_usbs(s, pic);
->      versal_create_gems(s, pic);
->      versal_create_admas(s, pic);
->      versal_create_sds(s, pic);
-> -- 
-> 2.50.1
-> 
+PGhlYWQ+PC9oZWFkPjxib2R5PjxwPkhpLDwvcD48cD48L3A+PHA+VGhlIEY0eHggVVNBUlQgaXMg
+bGFyZ2VseSBzaW1pbGFyIHRvIHRoZSBGMnh4LiBUaGUgaW1wbGVtZW50YXRpb24gY2FuIG1vc3Rs
+eSBiZSBzaGFyZWQsIDwvcD48cD53aXRoIEY0LXNwZWNpZmljIGZlYXR1cmVzIGFkZGVkIHNlcGFy
+YXRlbHksICBhbGxvd2luZyBhIGNvbW1vbiBiYXNlIHdoaWxlIGtlZXBpbmcgZGlmZmVyZW5jZXMg
+aXNvbGF0ZWQuPC9wPjxwPknigJlsbCBjb25zaWRlciBzaGFyaW5nIGEgY29tbW9uIGJhc2UgaW4g
+dGhlIG5leHQgcmV2aXNpb24uPC9wPjxwPjwvcD48cD5CZXN0IHdpc2hlcyw8L3A+PHA+LS0gWWlo
+YW8gRmFuPC9wPjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OlNvdXJjZSBIYW4gU2Fucztmb250LXNp
+emU6MTRweDtsaW5lLWhlaWdodDoxLjU7CiAgICAgICIgZGF0YS1tY2Utc3R5bGU9ImZvbnQtZmFt
+aWx5OlNvdXJjZSBIYW4gU2Fucztmb250LXNpemU6MTRweDtsaW5lLWhlaWdodDoxLjU7CiAgICAg
+ICI+PGJyPjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OlNvdXJjZSBIYW4gU2Fucztmb250
+LXNpemU6MTRweDtsaW5lLWhlaWdodDoxLjU7CiAgICAgICIgZGF0YS1tY2Utc3R5bGU9ImZvbnQt
+ZmFtaWx5OlNvdXJjZSBIYW4gU2Fucztmb250LXNpemU6MTRweDtsaW5lLWhlaWdodDoxLjU7CiAg
+ICAgICI+PGJyPjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OlNvdXJjZSBIYW4gU2Fucztm
+b250LXNpemU6MTRweDtsaW5lLWhlaWdodDoxLjU7CiAgICAgICIgZGF0YS1tY2Utc3R5bGU9ImZv
+bnQtZmFtaWx5OlNvdXJjZSBIYW4gU2Fucztmb250LXNpemU6MTRweDtsaW5lLWhlaWdodDoxLjU7
+CiAgICAgICI+PGJyPjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OlNvdXJjZSBIYW4gU2Fu
+cztmb250LXNpemU6MTRweDtsaW5lLWhlaWdodDoxLjU7CiAgICAgICIgZGF0YS1tY2Utc3R5bGU9
+ImZvbnQtZmFtaWx5OlNvdXJjZSBIYW4gU2Fucztmb250LXNpemU6MTRweDtsaW5lLWhlaWdodDox
+LjU7CiAgICAgICI+PGJyPjwvZGl2PjxkaXYgY2xhc3M9Im1haWwtc2lnbmF0dXJlIj4gICAgIDxk
+aXYgY2xhc3M9Imxpbmd4aS1zaWduYXR1cmUtY29udGFpbmVyIiBzdHlsZT0iZm9udC1mYW1pbHk6
+IFBpbmdGYW5nLFNvdXJjZSBIYW4gU2FucyxzYW5zLXNlcmlmOyI+ICAgICAgICAgIDwhLS0g5qC3
+5byP5LiA77yM5a6M5pW054mIIC0tPiAgICAgICAgICA8dGFibGUgc3R5bGU9ImJvcmRlci1jb2xs
+YXBzZTogY29sbGFwc2U7d2lkdGg6IDEwMCU7dGV4dC1zaXplLWFkanVzdDpub25lICFpbXBvcnRh
+bnQ7dGFibGUtbGF5b3V0OiBmaXhlZDsiPiAgICAgICAgICAgICAgIDx0Ym9keSBzdHlsZT0idGV4
+dC1zaXplLWFkanVzdDpub25lICFpbXBvcnRhbnQ7d29yZC13cmFwOmJyZWFrLXdvcmQ7IHdvcmQt
+YnJlYWs6YnJlYWstYWxsOyI+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3Ri
+b2R5PiAgICAgICAgICA8L3RhYmxlPiAgICAgICAgICA8IS0tIOagt+W8j+S6jO+8jOaXoOWktOWD
+jyAtLT4gICAgICAgICAgPGRpdiBpZD0ibGluZ3hpLXNpZ25hdHVyZS12Mi1ibG9jayIgc3R5bGU9
+IndpZHRoOiAxMDAlO3RleHQtZGVjb3JhdGlvbjogbm9uZTt0ZXh0LXVuZGVybGluZTogbm9uZTsi
+PiAgICAgICAgICAgICAgIDxkaXYgaWQ9Imxpbmd4aS1zaWduYXR1cmUtdjItY29udGVudCIgaXRl
+bWlkPSJpZCIgc3R5bGU9Im1heC13aWR0aDogOTUlO2ZvbnQtc2l6ZTogMTRweDtsaW5lLWhlaWdo
+dDogMTZweDtjb2xvcjogIzdBODU5OTtwYWRkaW5nOiAxNnB4IDE2cHggNHB4IDBweDttYXJnaW4t
+bGVmdDogMHB4OyIgaXRlbXByb3A9Ijk4MzAwMDMiPiAgICAgICAgICAgICAgICAgICAgPGRpdiBz
+dHlsZT0iY29sb3I6ICMyMzJENDc7Ym9yZGVyOiBub25lO21hcmdpbi1ib3R0b206NHB4O2ZvbnQt
+c2l6ZTogMTZweDtsaW5lLWhlaWdodDogMjBweDt0ZXh0LXVuZGVybGluZTogbm9uZTtmb250LXdl
+aWdodDogYm9sZGVyOyIgaXRlbWlkPSJuYW1lIj7ojIPoibrosao8L2Rpdj4gICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IHN0eWxl
+PSJib3JkZXI6IG5vbmU7bWFyZ2luLWJvdHRvbTo4cHg7dGV4dC11bmRlcmxpbmU6IG5vbmU7Ij5m
+YW55aWhhb0BydC10aHJlYWQub3JnPC9kaXY+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+ICAgICAg
+ICAgIDwvZGl2PiAgICAgICAgICA8IS0t5Yqe5YWs5ZOB54mMLS0+ICAgICAgICAgICAgICAgPC9k
+aXY+PC9kaXY+PGRpdiBjbGFzcz0icHJlLW1haWwtY29udGVudCI+PGRpdiBzdHlsZT0iZm9udC1m
+YW1pbHk6U291cmNlIEhhbiBTYW5zO2ZvbnQtc2l6ZToxNHB4O2xpbmUtaGVpZ2h0OjEuNTsKICAg
+ICAgIiBkYXRhLW1jZS1zdHlsZT0iZm9udC1mYW1pbHk6U291cmNlIEhhbiBTYW5zO2ZvbnQtc2l6
+ZToxNHB4O2xpbmUtaGVpZ2h0OjEuNTsKICAgICAgIj48YnI+PC9kaXY+PGRpdiBzdHlsZT0iZm9u
+dC1mYW1pbHk6U291cmNlIEhhbiBTYW5zO2ZvbnQtc2l6ZToxNHB4O2xpbmUtaGVpZ2h0OjEuNTsK
+ICAgICAgIiBkYXRhLW1jZS1zdHlsZT0iZm9udC1mYW1pbHk6U291cmNlIEhhbiBTYW5zO2ZvbnQt
+c2l6ZToxNHB4O2xpbmUtaGVpZ2h0OjEuNTsKICAgICAgIj48YnI+PC9kaXY+PGRpdiBzdHlsZT0i
+Zm9udC1mYW1pbHk6U291cmNlIEhhbiBTYW5zO2ZvbnQtc2l6ZToxNHB4O2xpbmUtaGVpZ2h0OjEu
+NTsKICAgICAgIiBkYXRhLW1jZS1zdHlsZT0iZm9udC1mYW1pbHk6U291cmNlIEhhbiBTYW5zO2Zv
+bnQtc2l6ZToxNHB4O2xpbmUtaGVpZ2h0OjEuNTsKICAgICAgIj48YnI+PC9kaXY+PGRpdiBpZD0i
+aXNSZXBseUNvbnRlbnQiIHN0eWxlPSJtYXJnaW46IDA7Ij48ZGl2IHN0eWxlPSJjb2xvcjogIzdk
+ODA4NSI+T3JpZ2luYWw6PC9kaXY+PHVsIHN0eWxlPSJjb2xvcjogIzdkODA4NTsgZm9udC1zaXpl
+OjEycHg7IHBhZGRpbmctbGVmdDogMjBweCI+PGxpPkZyb23vvJpQZXRlciBNYXlkZWxsICZsdDs8
+YSBocmVmPSJtYWlsdG86cGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnIj5wZXRlci5tYXlkZWxsQGxp
+bmFyby5vcmc8L2E+Jmd0OzwvbGk+PGxpPkRhdGXvvJoyMDI1LTA4LTE2IDAxOjQ2OjA2KOS4reWb
+vSAoR01UKzA4OjAwKSk8L2xpPjxsaT5Ub++8mmZhbnlpaGFvJmx0OzxhIGhyZWY9Im1haWx0bzpm
+YW55aWhhb0BydC10aHJlYWQub3JnIj5mYW55aWhhb0BydC10aHJlYWQub3JnPC9hPiZndDs8L2xp
+PjxsaT5DY++8mnFlbXUtZGV2ZWwmbHQ7PGEgaHJlZj0ibWFpbHRvOnFlbXUtZGV2ZWxAbm9uZ251
+Lm9yZyI+cWVtdS1kZXZlbEBub25nbnUub3JnPC9hPiZndDs8L2xpPjxsaT5TdWJqZWN077yaUmU6
+IFtQQVRDSCB2MiAzLzNdIEFkZCBTVE0zMkY0eHggVVNBUlQgZGV2aWNlIG1vZGVsPC9saT48L3Vs
+PjxwcmU+T24gTW9uLCAyMSBKdWwgMjAyNSBhdCAyMToxMSwgJmx0O2ZhbnlpaGFvQHJ0LXRocmVh
+ZC5vcmcmZ3Q7IHdyb3RlOgomZ3Q7CiZndDsgRnJvbTogWWloYW8gRmFuICZsdDtmYW55aWhhb0By
+dC10aHJlYWQub3JnJmd0OwomZ3Q7CiZndDsgVGhpcyBwYXRjaCBhZGRzIHN1cHBvcnQgZm9yIHRo
+ZSBTVE0zMkY0MDcgVVNBUlQgY29udHJvbGxlcnMgZGV2aWNlIG1vZGVsLgomZ3Q7CiZndDsgU2ln
+bmVkLW9mZi1ieTogWWloYW8gRmFuICZsdDtmYW55aWhhb0BydC10aHJlYWQub3JnJmd0OwomZ3Q7
+IC0tLQomZ3Q7ICBNQUlOVEFJTkVSUyAgICAgICAgICAgICAgICAgICAgICAgfCAgIDIgKwomZ3Q7
+ICBody9hcm0vS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgfCAgIDEgKwomZ3Q7ICBody9hcm0v
+c3RtMzJmNDA3X3NvYy5jICAgICAgICAgICAgfCAgMjUgKysrCiZndDsgIGh3L2NoYXIvS2NvbmZp
+ZyAgICAgICAgICAgICAgICAgICB8ICAgMyArCiZndDsgIGh3L2NoYXIvbWVzb24uYnVpbGQgICAg
+ICAgICAgICAgICB8ICAgMSArCiZndDsgIGh3L2NoYXIvc3RtMzJmNHh4X3VzYXJ0LmMgICAgICAg
+ICB8IDIzNiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKJmd0OyAgaW5jbHVkZS9ody9h
+cm0vc3RtMzJmNDA3X3NvYy5oICAgIHwgICA4ICsKJmd0OyAgaW5jbHVkZS9ody9jaGFyL3N0bTMy
+ZjR4eF91c2FydC5oIHwgIDYwICsrKysrKysrCgpXZSBnZW5lcmFsbHkgcHJlZmVyIHR3byBzZXBh
+cmF0ZSBwYXRjaGVzIGZvciB0aGlzOgooMSkgaW1wbGVtZW50YXRpb24gb2YgdGhlIG5ldyBkZXZp
+Y2UKKDIpIGFkZCB0aGUgbmV3IGRldmljZSB0byB0aGUgU29DCgomZ3Q7IC0tLSAvZGV2L251bGwK
+Jmd0OyArKysgYi9ody9jaGFyL3N0bTMyZjR4eF91c2FydC5jCiZndDsgQEAgLTAsMCArMSwyMzYg
+QEAKJmd0OyArLyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXIgKi8K
+Jmd0OyArI2luY2x1ZGUgInFlbXUvb3NkZXAuaCIKJmd0OyArI2luY2x1ZGUgImh3L2NoYXIvc3Rt
+MzJmNHh4X3VzYXJ0LmgiCiZndDsgKyNpbmNsdWRlICJxZW11L2xvZy5oIgomZ3Q7ICsjaW5jbHVk
+ZSAiaHcvaXJxLmgiCiZndDsgKyNpbmNsdWRlICJody9xZGV2LXByb3BlcnRpZXMuaCIKJmd0OyAr
+I2luY2x1ZGUgImh3L3FkZXYtcHJvcGVydGllcy1zeXN0ZW0uaCIKJmd0OyArI2luY2x1ZGUgInFl
+bXUvbW9kdWxlLmgiCgpUaGlzIGxvb2tzIHZlcnkgc2ltaWxhciB0byB0aGUgZXhpc3Rpbmcgc3Rt
+MzJmMnh4IFVTQVJULgpIb3cgZGlmZmVyZW50IGFyZSB0aGVzZSB0d28gZGV2aWNlcz8gQ291bGQg
+d2Ugc2hhcmUKY29kZSBieSBoYXZpbmcgdGhlbSBiZSB0d28gY2hpbGQgY2xhc3NlcyB3aGljaCBh
+ZGp1c3QKd2hhdCBmZWF0dXJlcyB0aGUgZGV2aWNlIGV4cG9zZXM/Cgp0aGFua3MKLSBQTU0KCjwv
+cHJlPjwvZGl2PjwvZGl2Pjxicj48L2JvZHk+
+--=_Part_480692_518683843.1755785764002--
 
