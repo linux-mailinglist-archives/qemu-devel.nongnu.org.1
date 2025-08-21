@@ -2,129 +2,199 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644C7B2F2EA
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 10:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1891B2F29B
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 10:45:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1up0zu-00049r-6n; Thu, 21 Aug 2025 04:50:15 -0400
+	id 1up0sm-00013f-Rn; Thu, 21 Aug 2025 04:42:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1up0zK-0002L6-Ey
- for qemu-devel@nongnu.org; Thu, 21 Aug 2025 04:49:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1up0sk-00013F-E3
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 04:42:50 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armenon@redhat.com>)
- id 1up0zB-0001pB-MF
- for qemu-devel@nongnu.org; Thu, 21 Aug 2025 04:49:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755766168;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IrmyOFbIa0k81LCSi2crfagyGp2pAVLdS4CCVD46SsM=;
- b=BRsYmAi9famwxR5ifsAcphsT21TsMR3IQDKV5ZLkOgiFIa3GXOTQ0ZvhehmUzC/w75hd1b
- Pcccx7U49VKgvj4Qq2Ls0ijCha4KdZOwhHZkHe89d0Q3Xlr8TktIXg6w8kpwzIfyGB7vNz
- im/gINPKTgW2hJbU4xVcgMdO7XyUdqM=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-387-mKMlg5E0N9KfKpOJRf96vA-1; Thu, 21 Aug 2025 04:49:26 -0400
-X-MC-Unique: mKMlg5E0N9KfKpOJRf96vA-1
-X-Mimecast-MFC-AGG-ID: mKMlg5E0N9KfKpOJRf96vA_1755766165
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-244581187c6so11052715ad.1
- for <qemu-devel@nongnu.org>; Thu, 21 Aug 2025 01:49:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755766165; x=1756370965;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IrmyOFbIa0k81LCSi2crfagyGp2pAVLdS4CCVD46SsM=;
- b=diJ0v1EWyetZ+G05mbgyGxE16wF5XUsCCOY2sxF061h21mVAyPybWbO9aWXzBBI7rl
- nS5Cl5Q+zkyoKxpmc7GhFQOq5ZGUHWUWFfYy30pMELuTLoyCN3OKeh+9L9PoBvT9jkxL
- J2ohv1WrrZdk9tCt/mnYA9mMCW8ZHY9E1rsQJ6ImhqXIr8VponOtbTku7TGcZwf0Rdpc
- rhrZaDswDa7kJnr+FMI/JmZnJmzMimKg5m5zJsRGUglS8GiOTJ4d55vANsO3SXsXMdD+
- FJfFD6kzdoR/i6diNcKD8bY6ZweO/vVDcC+H2FNN69OjcER8Q4Ul3NzwSXfwYSxHUIs+
- KHtQ==
-X-Gm-Message-State: AOJu0YykzCBUep8u8j+7Jav+Qn8Qc1c1eTVQyaxzAfzmn7e5zRlN06/C
- fsE7wxCMdBXgfvF4aEWBZMOE2CjXoOBSeq75Xu+oybGb9aRcDWCASZISATNQbGT9PccFj3F5dwX
- kEnrOQw9tWpODQvSKf20cfhl/gyjZ4lyHHOEevJ1SXJEi7o3/i6zuqAE3f18WI4oJ
-X-Gm-Gg: ASbGncv/9wy8MlSf6PnWsW2X5ts1zE8qnmo5dFhLltGlWNL1IYddKX7cJEiJkSw/qUd
- KVpaz5wHMGhyJHRWIygL1VfM5K4egtewb8NhZtsEiGG/8WpjIOyHRhkG9PBVY/XKLiHHc6SbqBf
- 2l/12Ft/ELZFoq42ajwv8ROfo+WV9RjiuYA1wZPSN0/woQRkqlDm7ZdbZ+OGmtrf6/EN4pbZsFw
- Gp7nUWTmyrpM3JNUMsGtSKVO2imsb+fDEXI8uLX/2BMbC/3z5DFmJV6fUzDcWQd1e+I07vSHalU
- Bd3HSRuLE+dPxO/30ea2SbQ6Q7fqeMzBbSR5rfRxd9LYD0pQcFtG
-X-Received: by 2002:a17:902:e945:b0:240:763d:e999 with SMTP id
- d9443c01a7336-245fed7d1a4mr21732775ad.29.1755766164912; 
- Thu, 21 Aug 2025 01:49:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IELsoSd1Ft8mZKfa4ozKlB1OUzuJGZBpbSuOdrCcMzeCg3VC/p6ep/p6GmCONhTwqGp/qF1Hw==
-X-Received: by 2002:a17:902:e945:b0:240:763d:e999 with SMTP id
- d9443c01a7336-245fed7d1a4mr21732445ad.29.1755766164524; 
- Thu, 21 Aug 2025 01:49:24 -0700 (PDT)
-Received: from armenon-kvm.bengluru.csb ([49.47.192.65])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-245ed33e05dsm48789985ad.3.2025.08.21.01.49.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Aug 2025 01:49:24 -0700 (PDT)
-From: Arun Menon <armenon@redhat.com>
-Date: Thu, 21 Aug 2025 14:14:21 +0530
-Subject: [PATCH v12 27/27] backends/tpm: Propagate vTPM error on migration
- failure
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+ (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
+ id 1up0sf-0000dR-PQ
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 04:42:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1755765766; x=1787301766;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=xYjSf7a49wGgF9/GPGvaLC17CpSsH7tTajZbSQViKjs=;
+ b=TnH2tOCewUdJ9XNzLE9cg9qsD5g6RQR5t9Sea9ISbgSjaeXyEnPjMk/V
+ /JvoK+QAWsv7zGN4fkAZ+NfjCjPmRjWJcN7dkS1zYzBoeWCcI2IqoipXr
+ 2KnSXNGwBeUJwPTCytyIWEtJHya8GiBKykUbXAyhBj5fQzB4sZ8zEqSWT
+ 4kyK3NKWeWE8gVnnkVy2s+mUIehbQInO0inL8Mg8LbF7jWvtmjSKSS4ZJ
+ EERGlG44cYAs6hHHBsqOB4l9MAxY0sDU6vXpX29p6UukgJZwUmhyXdN5S
+ 4CvEA8fSOu/OwjD8W+WhtxptaTVymLw+f9uMzgxqohr/nqS+PwiS2IyGN g==;
+X-CSE-ConnectionGUID: wdchmIzjSCmImSF7sx3i7w==
+X-CSE-MsgGUID: FTDJ/QyIRuGKLnxRTzkXjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="69489058"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="69489058"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2025 01:42:35 -0700
+X-CSE-ConnectionGUID: ezrQcR1YR3GZfEISE1xiKA==
+X-CSE-MsgGUID: DgBsA9H2TLmcfZcBw+3mjw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="167583456"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2025 01:42:35 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 21 Aug 2025 01:42:34 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Thu, 21 Aug 2025 01:42:34 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (40.107.237.69)
+ by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 21 Aug 2025 01:42:33 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w1uvKnSwQsSVb9MvNKOzymZyFkWuGJjrwbpbqJLaPdYgq2HCX4YMA2riM+nieCWKD+kFHJ1KvEAzffHMILwoRl3SVcGs7WdB0tz/UNhFRjk7qhcytDDjEEDU7QvrkM8oLQnHxzHt/JLjET+y0nil6jYOJuHxccGy9il8WhELV/OB8s18pe0J4+v1UzHpU6udoAt1QwSaWIwfJsW5n9i7tOUVaKqbb+b4sw8JE01o6qDVl9622bXqCeg26HBqjUUxBRFOqm0yhSy+c7ttzIDU6LcJ0/YdNUYio0TFz18OxYZpTXfxW4WcO9yy/jEKciSOlK0P404AyTkUJdsT+KWKxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k8zwNd4emqjsgsxiOlF98vWBUPOK+IDRzs8XSsWcndE=;
+ b=Zf024Lsm97scnJfgcc3lNUQgiE4rptQ5UhrIVHKdIiaqCF5XWZz08+kU/4tWzd8v6jFdd3a8gD+4ThvFEiGVVY5+znfs59kWjH9vhW/0tbIK9/PZUO+p0HKw5TNNJWegW0t+eqddwXLzryWKg9VWLguYIOx+ISYm3p8or05qagaA8PFrUYdS6TJlAEKnWxLfDb9YCNCfTDQS6jyKPMxLFOXFuo+fsiZMczulhQiHRLICcEFXN4LLrqXAr+kKHKQlxhcscu83IwjRW4zGchWjweBccrtA9mL7nMwUnwi0Rp0Cylr4UMdnpOAD5Sano8stnR0FF5ZRHmdzvU2/z/Wjaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BY5PR11MB3974.namprd11.prod.outlook.com (2603:10b6:a03:183::29)
+ by PH7PR11MB8600.namprd11.prod.outlook.com (2603:10b6:510:30a::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.15; Thu, 21 Aug
+ 2025 08:42:31 +0000
+Received: from BY5PR11MB3974.namprd11.prod.outlook.com
+ ([fe80::fe0b:26f7:75b4:396]) by BY5PR11MB3974.namprd11.prod.outlook.com
+ ([fe80::fe0b:26f7:75b4:396%5]) with mapi id 15.20.9052.013; Thu, 21 Aug 2025
+ 08:42:31 +0000
+Message-ID: <c70bd3a7-62bb-478c-ab30-7f96159f6f12@intel.com>
+Date: Thu, 21 Aug 2025 16:49:04 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vfio: Report an error when the 'dma_max_mappings' limit
+ is reached
+To: Alex Williamson <alex.williamson@redhat.com>
+CC: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, <qemu-devel@nongnu.org>
+References: <20250814153419.1643897-1-clg@redhat.com>
+ <70d6d913-239d-42a4-8a88-a492bf5e569f@intel.com>
+ <20250815082009.2ed1d2a0.alex.williamson@redhat.com>
+Content-Language: en-US
+From: Yi Liu <yi.l.liu@intel.com>
+In-Reply-To: <20250815082009.2ed1d2a0.alex.williamson@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250821-propagate_tpm_error-v12-27-72b803e707dc@redhat.com>
-References: <20250821-propagate_tpm_error-v12-0-72b803e707dc@redhat.com>
-In-Reply-To: <20250821-propagate_tpm_error-v12-0-72b803e707dc@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>, 
- Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Matthew Rosato <mjrosato@linux.ibm.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>, 
- Alex Williamson <alex.williamson@redhat.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Steve Sistare <steven.sistare@oracle.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, 
- Hailiang Zhang <zhanghailiang@xfusion.com>, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
- Arun Menon <armenon@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6695; i=armenon@redhat.com;
- h=from:subject:message-id; bh=qkfEA7ojmGiLCP4BOBgR+X9tFhQoPaG7uEYFJBJjL/Q=;
- b=owGbwMvMwCWWVaVqcZPfqI/xtFoSQ8ayO6mNp7hFtDmWPrVY68O70oqnNf5O39Ty7gXHe7ZJL
- 455/lm2o5SFQYyLQVZMkaXha4BsU0BhRKTty+swc1iZQIYwcHEKwESqJzL8r5B5afPH1sYj6UVP
- bOdntv1lcxtaMlY//+vobP56eaxKC8MvpjNaLXsdDcK8X3bmSJ+WmMHzuHDNsXYT5addAp8a1un
- yAwA=
-X-Developer-Key: i=armenon@redhat.com; a=openpgp;
- fpr=80F5501D82507158593DE9D76A7A2538D90F328E
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armenon@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-ClientProxiedBy: SG2P153CA0029.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::16)
+ To BY5PR11MB3974.namprd11.prod.outlook.com
+ (2603:10b6:a03:183::29)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR11MB3974:EE_|PH7PR11MB8600:EE_
+X-MS-Office365-Filtering-Correlation-Id: 441de0bc-9f34-47ae-5308-08dde08eaac5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0; ARA:13230040|42112799006|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YjdDZ0hTZUJnaGZWRGxwR1oxZU1DcitTTkZPdjI5cHgxSGk2bngvN3k2eEhN?=
+ =?utf-8?B?R08wN1FDRi9hRlA4Rm9iRmJIN04zbTNyUFNqS2h0YUI5Y1RxalRLbS95SUF5?=
+ =?utf-8?B?S294VXVjZU40SWE4aU5LWkdvbTlvYllOSTBGb0dIeTlnZXR5THdQeEpaVEM5?=
+ =?utf-8?B?dEdFWm1NV3o2a2RDOFUvd05NVnV0dTNaMjVEVkt1K1hFQmwyeXQ4bjViOTFm?=
+ =?utf-8?B?WEV6Z294QVdZQUdlS3l0UisvRVNwNlZlSDlEd3NpbVp2Mit3QnRidU9LcGxi?=
+ =?utf-8?B?VkJnU2xQc0g5K3BRbGtTY0E0WlVYcGlPTUw3ZUdaZW12T3BJOU5HVUFIbFBX?=
+ =?utf-8?B?K0hUeVBtYWF2T3ZTSklwTWhOK3NxOSt0Y3kzdDdUSVAraDR4bEk4MFRVR3Jz?=
+ =?utf-8?B?Tmx4VzM5RytLSTFWdElKZTJLdThNRDVzZlFaNkVpcURtaTZxMDZYUC9Yd2Jx?=
+ =?utf-8?B?ME52M3NaRUwxcmVZd1dtMllUcThpWnRVUTZDWk1YNFpaejNGanhIOEMxYWxw?=
+ =?utf-8?B?d2RzVWdTMWhNNFo0dHNtRDZmTzJySUxPMFVscVU2LzNyNEJDRkJmSG02ZUpn?=
+ =?utf-8?B?NzNlMGhOc3BlWWY4aUxNaFhTTVhrQmtjUXhTVkdDWkVGNG1WN3hQaHFjUHJF?=
+ =?utf-8?B?alFOYWxIOHk0QnhyalcrbTRFOTFnbUpWUjJObE51c0pYaUxqbHJtVkt4Mktw?=
+ =?utf-8?B?SUZCLzdFNVFFRU9oTmQ5amRyTWlGeFNmWjh5WCs0N2dTalQ2WjAxNkp5aFJl?=
+ =?utf-8?B?VXNsZXltQjdVeHdwMlFSazZqTmZydDgyWjRjczV0VWJRa01iZXpLYUFTczUw?=
+ =?utf-8?B?ZW41bisyeFNZV0JLcGVTRXh6Yks4Ty9keE5yVk5tdzFiTVBGSjNWbWJtK2h5?=
+ =?utf-8?B?eE1YYlEzdWUralp1UnNQZ0Jabm5tbVdQWXh4c0QyNmlidlY0UEhDTVZaTjhX?=
+ =?utf-8?B?ZTZ6Kzh2amhLNlcxb1FyZXpnNHBqKzgzQzNmZFR5bURXMEg1TzlzRVBwa29L?=
+ =?utf-8?B?Y3VWd3VZZzg2bTVZQ0hRNlZrK2xBbmJ6OE1BT1dOMDI3a3lSN0NUVFB0YnRY?=
+ =?utf-8?B?Zm5LSGVYQ3EwdnpkWm43b29DMW5LK0R1Vm5FRXJtNVBianl3aVBmcWx6SFZi?=
+ =?utf-8?B?dFhEeXNxOWJFc0FOem4yQk9VMjJOdVRmbXovYlMvRWp5UWtBb3N2VTVwRXJI?=
+ =?utf-8?B?RXFyZFUza3o1TG84VzBwZDlCRFEyMEZkZVgweE5ndWNiczBIYVRJOFk2TDNO?=
+ =?utf-8?B?ZUplNDRXWnI2Z3AvVG5XOG8yN3hyUzhwZHc4NDRoL3lTNUZEa01OdW9SSkZj?=
+ =?utf-8?B?RWZRVlN3aVVzMUZFdkhEczBDTGZFZ0Z6bkMwTGEzSnZ4RjdPemQyWGhtc0pt?=
+ =?utf-8?B?TVNZVkU5QXFYVnRmWS9aeG9hNzRUYXNXYXppQlU2cHhUVmNnbkMycVArRXE2?=
+ =?utf-8?B?TmFZTzlpQ3Jqc09iSlN4d2poVFNYbmh4bEdFOHBlTVlKcGR5VGdWWjNKMTcr?=
+ =?utf-8?B?dm1TcEJPUTlrTWJJN2hvMCtPcWpCa080YzdFQ20xZ2J4aEJTL2Z6dFFMV3Fw?=
+ =?utf-8?B?czU1cStRY3F1bGM4TFN6R1UvdHFBckhxU2x5RTl3Rit0Z3N1c2puLzNLcStZ?=
+ =?utf-8?B?aDI0L2x0eHJqKzIzbXA5UGVXZEFxWjE4dlMySVN1MmdrT096NDFSN3BxUStI?=
+ =?utf-8?B?V3NaZTVKa2pmNTBlZUFmenRiUjRBakUxTjBRQVFJYlR3UG1ISDR4cWFuTHNP?=
+ =?utf-8?B?RlFHdmRpN296Yll0emEvVXV4VGxMYzlLMmYyaExnU3doN05kTGNmMEpMeXlC?=
+ =?utf-8?B?MVo5L05NMFF1WXpselZnWkczMjRzdzFtdUI5YXltREEvNEcwWXpvUXpVVTdk?=
+ =?utf-8?B?VkpZcTJqem1raDU0UXlXd2s1MmJIc2hxcTF4MDd1b2ZnL1YxNUFXVDdVeFM3?=
+ =?utf-8?Q?M4vgII/VJd0=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BY5PR11MB3974.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(42112799006)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T3l3T3NJbVVSQmd6ZzNuTVFBZXZmZDkzUXN5aUNEM2xvcUFxMVVtQkt1S1oz?=
+ =?utf-8?B?ZmYvWjNFQ3FiSEhCSk9uczRUMWlIOXo3Q2ZkU1ZhTXN2d1JYUmc0UUFTUU10?=
+ =?utf-8?B?cG96ZzBwNHd0YXhoWWo2MGFFdllhTGV0U1ZSRHJZdlp4RVZYYW5YZnFyM29I?=
+ =?utf-8?B?dFp1YjB1bDg4MDJxUzhhWXJYcDZTTWtPMm1DR050ajVDcnNtNm9sbndnVkF4?=
+ =?utf-8?B?Mk5jTlh3QkRsZ2JkTXl4SjZ6TENmQjN3UTNwcndHOVVpc0c3WkV3L2cwWUpB?=
+ =?utf-8?B?UVcySUZuNjBzUkJzczl6VS9sVkc3TEpPcVpJNkhrZGNheU1rbWt5QnlUaU9p?=
+ =?utf-8?B?VXc0VXY3V2h0MlJIVG55NmQ2RHZwSXN3Q1R0MmVuaXdMTGY3VlMzUmcxbU1V?=
+ =?utf-8?B?N1N1TCtRMXdOYVBlSng2OEhndzRRZVcxTjkzaDNKTi9ZRWhhbWQ1RWNHRHAw?=
+ =?utf-8?B?VDAxYy9ZL3JJa28wV1ZqSVdoTi85MTk0OTZGQ0g5V2FZQjFhUFBSYlppWFov?=
+ =?utf-8?B?MGFmNWY3Mjd3ai9YUUhNYmVmeWNpTGE5bmREaFM1aE9Eb2J4cXA1elduQk95?=
+ =?utf-8?B?ZW1zamFBcDBNQjlQQjgwUXpOQ2hqWGlXZTNVWU1lWi9xVmRMczd3bWVQdjdN?=
+ =?utf-8?B?NzhsWGlwVnJhMENWSkcrQitxaldVb2ZiWVhZeERFK3ZRYmRob3c0RXoxbm5L?=
+ =?utf-8?B?eDNLOXl6YjJpeTJSZG5OeWVhUlRwZmFsL2hvaE1BUGNMVjhJLzV2NG9LTjZa?=
+ =?utf-8?B?dWVjZ3dMbm02YmtyWjB2azZydkM5dXc5QXBhNkJZR0RyZ1VSR1FqaEpkTXZk?=
+ =?utf-8?B?eEpUNTdEWDAyRHl1SUszWFFmL0lad0FWWVF6S3NsZExTd2lBL0FLVHpCbDM2?=
+ =?utf-8?B?cmMxOTZDMmFnOWlEZ3pQKyt6ZE14eVk3NStJTlQrWEF6L243dWVMZVcxM3dn?=
+ =?utf-8?B?MVR5QVhydDUzKzh5STN6UFAvMFp0RXkxM2VrdVNvdThrMFp4Y0kyaW9rWDhr?=
+ =?utf-8?B?NGFIbWx0eTFRa3VZNnc5ZmJDM0FaSnhEbGVYZ3pvdlJ1L1dpRU1HejZXalN4?=
+ =?utf-8?B?WDVQcTVoLzdpOE1GbXAzYVhjbWQvS3NDNnJEM084SGxlV3UyRndLYmEyU2I0?=
+ =?utf-8?B?K1JVWGViOS9URmZHZXRweFlOQkIyd3l2SzdybXYzMGg0eEl2Um1uZklpQVVa?=
+ =?utf-8?B?dWQ0dW1ZTkkraEJScml6VENPWnVvS0VwODZLZHcvU3duc1B5cmE2aGZGOU1E?=
+ =?utf-8?B?MmxMdlNLUUg4UmJZZzFyNW5ablhWSitUTXBTYmRGdy8rdG5EV1QxRGx4MTNE?=
+ =?utf-8?B?QnRFbEJTVWJUZzNaL2liZC9TSW1Wc1FRZVFsMWwvalU1RnVPRW9zU255aGlN?=
+ =?utf-8?B?L29jL1JRL3l3VDMrcUx1OHpjdUFXVllRVldqamIvT0F6NldBcXZjZ2VUbGZI?=
+ =?utf-8?B?S0xtUXJjV2ZveVdpZDlOMi8zOXZ2VHFPeG5rd2Q0OXJDY09vS3o3b3NMVkR3?=
+ =?utf-8?B?VXVOT01mYjBUdUJvTEFRbllWdHE0ODg1b1JkYi9Mdkc4NmdMR2NNM0w3eU53?=
+ =?utf-8?B?MUt0ZXhBb25GQS8wNXgwSzluUXZhQWIwN09NbDhFQWZUQjdRcElENE5ZM210?=
+ =?utf-8?B?Vk14M3pZL1pLQWMyQzI3VE9uRm01bFAzNEF1bUlQZVRmTUJBKzZ4VUJjZmJx?=
+ =?utf-8?B?NE1hd2VMbjFuYUJjSW1rYWNoQitPQlhsVWIremptTWgrQzI2Ri92cDBqcmI5?=
+ =?utf-8?B?c2FKVFU0OHlheVBlekszaGxSK2l3aGkwL2xjT0ZMeVBlNEk5dW1MZG9ZamlG?=
+ =?utf-8?B?QUh2aHd1ak5NcVozdE5lWlc3K013am0rWURFVytWcFlaRFlTalQ4RXd0eUR3?=
+ =?utf-8?B?TENybnJtMTVkeVVlcmRnaXM5RHlkM01KTFg1NUY2Q2lFK041d3I0d0k5cHJK?=
+ =?utf-8?B?MUlKMmtaZlJMNk5KRzhCdTJxOEczNkRZSytpcDRQR2FUWENOZk9TWllXcW9y?=
+ =?utf-8?B?RFJFOHcyUVphYi9rYk5Vem9BTjZHQVV1bktGNStZQjdSNDhBZGN0Q0lObTdj?=
+ =?utf-8?B?Z1dWbmc3ZWlod3haK2cxNVY0U1lOTVNEQ1BpY2lheVptQ2Njb2RDaXZnc05M?=
+ =?utf-8?Q?7y9Vrfht7UICXrKzfmEzNRQye?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 441de0bc-9f34-47ae-5308-08dde08eaac5
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB3974.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2025 08:42:31.4418 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: H+vVGLHMSTxSaXQqQ5OMhcKuLQoYwnPxZ3yDdxAkt5SzAFNCfCiemNx5CQitkKgzwRNYCTzwzQCT00bpcP09mQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8600
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=yi.l.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -140,146 +210,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- When migration of a VM with encrypted vTPM fails on the
-  destination host, (e.g., due to a mismatch in secret values),
-  the error message displayed on the source host is generic and unhelpful.
-- For example, a typical error looks like this:
-  "operation failed: job 'migration out' failed: Sibling indicated error 1.
-  operation failed: job 'migration in' failed: load of migration failed:
-  Input/output error"
-- Such generic errors are logged using error_report(), which prints to
-  the console/monitor but does not make the detailed error accessible via
-  the QMP query-migrate command.
-- This change, along with the set of changes of passing errp Error object
-  to the VM state loading functions, help in addressing the issue.
-  We use the post_load_errp hook of VMStateDescription to propagate errors
-  by setting Error **errp objects in case of failure in the TPM backend.
-- It can then be retrieved using QMP command:
-  {"execute" : "query-migrate"}
+On 2025/8/15 22:20, Alex Williamson wrote:
+> On Fri, 15 Aug 2025 18:49:22 +0800
+> Yi Liu <yi.l.liu@intel.com> wrote:
+> 
+>> On 2025/8/14 23:34, Cédric Le Goater wrote:
+>>> The VFIO IOMMU Type1 kernel driver enforces a default IOMMU mapping
+>>> limit of 65535, which is configurable via the 'dma_max_mappings'
+>>
+>> @Alex, I've a long standing question, could you share why 65535 is the
+>> magic number? :)
+> 
+> 640^Hk is enough for anyone, right? ;)
+> 
+> We added this in response to a security issue where a user could
+> allocate an unlimited number of vfio_dma objects and, iirc, the thought
+> was that 64k entries was an absurdly high number for all typical cases
+> where we're making relatively few, relatively static DMA mappings,
+> which is effectively what the type1 interface is designed for.  It
+> would be insanely inefficient to map the entire VM with 4K pages with
+> type1, right?!  Enter confidential device assignment...
 
-Buglink: https://issues.redhat.com/browse/RHEL-82826
+yes. I remember there were some NIC passthrough scenarios hit the 65535
+limit in the before and passed after opt a larger dma_max_mappings value.
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Arun Menon <armenon@redhat.com>
----
- backends/tpm/tpm_emulator.c | 40 +++++++++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 19 deletions(-)
+> It's still a bad idea to use type1 this way, I'm just waiting for the
+> reports of slow VM startup with large memory VMs, however we might be
+> able to mitigate the security issue if we allocated the vfio_dma
+> objects with GFP_KERNEL_ACCOUNT.  However, I think we also compounded
+> the problem in QEMU when looking for the number of available mapping
+> entries it assumes 64k if the limit capability isn't found, rather than
+> unlimited.
 
-diff --git a/backends/tpm/tpm_emulator.c b/backends/tpm/tpm_emulator.c
-index 4a234ab2c0b19b2604bf0dd8cb5f4540c72a9438..dacfca5ab7eb0445ddc1ced97513068501b468bf 100644
---- a/backends/tpm/tpm_emulator.c
-+++ b/backends/tpm/tpm_emulator.c
-@@ -819,7 +819,8 @@ static int tpm_emulator_get_state_blobs(TPMEmulator *tpm_emu)
- static int tpm_emulator_set_state_blob(TPMEmulator *tpm_emu,
-                                        uint32_t type,
-                                        TPMSizedBuffer *tsb,
--                                       uint32_t flags)
-+                                       uint32_t flags,
-+                                       Error **errp)
- {
-     ssize_t n;
-     ptm_setstate pss;
-@@ -838,17 +839,18 @@ static int tpm_emulator_set_state_blob(TPMEmulator *tpm_emu,
-     /* write the header only */
-     if (tpm_emulator_ctrlcmd(tpm_emu, CMD_SET_STATEBLOB, &pss,
-                              offsetof(ptm_setstate, u.req.data), 0, 0) < 0) {
--        error_report("tpm-emulator: could not set state blob type %d : %s",
--                     type, strerror(errno));
-+        error_setg_errno(errp, errno,
-+                         "tpm-emulator: could not set state blob type %d",
-+                         type);
-         return -1;
-     }
- 
-     /* now the body */
-     n = qemu_chr_fe_write_all(&tpm_emu->ctrl_chr, tsb->buffer, tsb->size);
-     if (n != tsb->size) {
--        error_report("tpm-emulator: Writing the stateblob (type %d) "
--                     "failed; could not write %u bytes, but only %zd",
--                     type, tsb->size, n);
-+        error_setg(errp, "tpm-emulator: Writing the stateblob (type %d) "
-+                   "failed; could not write %u bytes, but only %zd",
-+                   type, tsb->size, n);
-         return -1;
-     }
- 
-@@ -856,17 +858,17 @@ static int tpm_emulator_set_state_blob(TPMEmulator *tpm_emu,
-     n = qemu_chr_fe_read_all(&tpm_emu->ctrl_chr,
-                              (uint8_t *)&pss, sizeof(pss.u.resp));
-     if (n != sizeof(pss.u.resp)) {
--        error_report("tpm-emulator: Reading response from writing stateblob "
--                     "(type %d) failed; expected %zu bytes, got %zd", type,
--                     sizeof(pss.u.resp), n);
-+        error_setg(errp, "tpm-emulator: Reading response from writing "
-+                   "stateblob (type %d) failed; expected %zu bytes, "
-+                   "got %zd", type, sizeof(pss.u.resp), n);
-         return -1;
-     }
- 
-     tpm_result = be32_to_cpu(pss.u.resp.tpm_result);
-     if (tpm_result != 0) {
--        error_report("tpm-emulator: Setting the stateblob (type %d) failed "
--                     "with a TPM error 0x%x %s", type, tpm_result,
--                     tpm_emulator_strerror(tpm_result));
-+        error_setg(errp, "tpm-emulator: Setting the stateblob (type %d) "
-+                   "failed with a TPM error 0x%x %s", type, tpm_result,
-+                   tpm_emulator_strerror(tpm_result));
-         return -1;
-     }
- 
-@@ -880,7 +882,7 @@ static int tpm_emulator_set_state_blob(TPMEmulator *tpm_emu,
-  *
-  * Returns a negative errno code in case of error.
-  */
--static int tpm_emulator_set_state_blobs(TPMBackend *tb)
-+static int tpm_emulator_set_state_blobs(TPMBackend *tb, Error **errp)
- {
-     TPMEmulator *tpm_emu = TPM_EMULATOR(tb);
-     TPMBlobBuffers *state_blobs = &tpm_emu->state_blobs;
-@@ -894,13 +896,13 @@ static int tpm_emulator_set_state_blobs(TPMBackend *tb)
- 
-     if (tpm_emulator_set_state_blob(tpm_emu, PTM_BLOB_TYPE_PERMANENT,
-                                     &state_blobs->permanent,
--                                    state_blobs->permanent_flags) < 0 ||
-+                                    state_blobs->permanent_flags, errp) < 0 ||
-         tpm_emulator_set_state_blob(tpm_emu, PTM_BLOB_TYPE_VOLATILE,
-                                     &state_blobs->volatil,
--                                    state_blobs->volatil_flags) < 0 ||
-+                                    state_blobs->volatil_flags, errp) < 0 ||
-         tpm_emulator_set_state_blob(tpm_emu, PTM_BLOB_TYPE_SAVESTATE,
-                                     &state_blobs->savestate,
--                                    state_blobs->savestate_flags) < 0) {
-+                                    state_blobs->savestate_flags, errp) < 0) {
-         return -EIO;
-     }
- 
-@@ -948,12 +950,12 @@ static void tpm_emulator_vm_state_change(void *opaque, bool running,
-  *
-  * Returns negative errno codes in case of error.
-  */
--static int tpm_emulator_post_load(void *opaque, int version_id)
-+static int tpm_emulator_post_load(void *opaque, int version_id, Error **errp)
- {
-     TPMBackend *tb = opaque;
-     int ret;
- 
--    ret = tpm_emulator_set_state_blobs(tb);
-+    ret = tpm_emulator_set_state_blobs(tb, errp);
-     if (ret < 0) {
-         return ret;
-     }
-@@ -969,7 +971,7 @@ static const VMStateDescription vmstate_tpm_emulator = {
-     .name = "tpm-emulator",
-     .version_id = 0,
-     .pre_save = tpm_emulator_pre_save,
--    .post_load = tpm_emulator_post_load,
-+    .post_load_errp = tpm_emulator_post_load,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(state_blobs.permanent_flags, TPMEmulator),
-         VMSTATE_UINT32(state_blobs.permanent.size, TPMEmulator),
+yeah, admin can program a smaller dma_max_mappings value on an eld
+kernel (a version before dma_avail cap is reported). If so, existing
+QEMU may hit the dma_max_mapping limit while it believes it has not yet.
 
--- 
-2.50.1
+> So to unwind ourselves out of this jam, we might choose to
+> report UINT32_MAX and some additional mechanism to report unlimited, or
+> let QEMU fix itself, or we just advise that type1 is a bad interface
+> for this and needing to adjust the limit is an indication or that and
+> such use cases should migrate to better interfaces in IOMMUFD.  Thanks,
 
+thanks for the the explanation. :)
+
+Regards,
+Yi Liu
 
