@@ -2,65 +2,147 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E20DB2FA53
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 15:28:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD49B2F78D
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Aug 2025 14:09:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1up5JI-00010Q-3a; Thu, 21 Aug 2025 09:26:32 -0400
+	id 1up446-0007gQ-M4; Thu, 21 Aug 2025 08:06:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d.zhebryakov@yandex.ru>)
- id 1up3YX-000764-Bi; Thu, 21 Aug 2025 07:34:09 -0400
-Received: from forward102b.mail.yandex.net ([2a02:6b8:c02:900:1:45:d181:d102])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1up43m-0007eT-50
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 08:06:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d.zhebryakov@yandex.ru>)
- id 1up3YQ-0008Kf-L7; Thu, 21 Aug 2025 07:34:09 -0400
-Received: from mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:ba25:0:640:6c71:0])
- by forward102b.mail.yandex.net (Yandex) with ESMTPS id A8B82C0093;
- Thu, 21 Aug 2025 14:33:53 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net
- (smtp/Yandex) with ESMTPSA id mXRF5KIMdSw0-BMapU0UN; 
- Thu, 21 Aug 2025 14:33:53 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
- t=1755776033; bh=GAkEQW9/oBNuV+QIcNUtxT7Jhur2BTbBORvnpc90fP4=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=snyOKz5VqAWrVUt+1cmuDSTg+LzvR903W2VxuVatWTZXzjUBNEAcExnPJi+GrNHhb
- Z0aMzeQ7m6dB+WmpL1RdSBNgzaapvls4ePNlkvIbbGzHZwXf2IzYAZmawUbv8PpKKO
- OVGyq0RhYAgUvPGpEjnNPcyFqHWUx4+FXzVziqKY=
-Authentication-Results: mail-nwsmtp-smtp-production-main-95.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex.ru
-From: Danila Zhebryakov <d.zhebryakov@yandex.ru>
-To: qemu-devel@nongnu.org
-Cc: Chinmay Rath <rathc@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Riku Voipio <riku.voipio@iki.fi>, Ilya Leoshkevich <iii@linux.ibm.com>,
- qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org,
- Laurent Vivier <laurent@vivier.eu>, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Danila Zhebryakov <d.zhebryakov@yandex.ru>
-Subject: [PATCH 3/3] target/ppc: fix GDB stub to work correctly with LE pages
-Date: Thu, 21 Aug 2025 14:33:47 +0300
-Message-ID: <20250821113348.91339-4-d.zhebryakov@yandex.ru>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250821113348.91339-1-d.zhebryakov@yandex.ru>
-References: <20250821113348.91339-1-d.zhebryakov@yandex.ru>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1up43Z-0003yG-OK
+ for qemu-devel@nongnu.org; Thu, 21 Aug 2025 08:06:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1755777965;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=W7ePDPZtFOyie7Xoq8Sr/Nyvy229UeRBnB12FjONwrY=;
+ b=KvRaLyy+7t/gm/X4tw1rxidFXvosUcBXDNNHfu1Lgob4snc1wSjReh75+KlpClpxrN44Rz
+ ajYetYeu16cUVuiTnuJe65irxA4LJxLxyynwO6BXVnbDcyxiTlxmMUk2a79/MldIJ9IR3a
+ 7DrrWBFAcu5qtKO2tiyXHSHLwk1uZRY=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-194-aiqG6eRuPbq52w7CLCLSoQ-1; Thu, 21 Aug 2025 08:06:03 -0400
+X-MC-Unique: aiqG6eRuPbq52w7CLCLSoQ-1
+X-Mimecast-MFC-AGG-ID: aiqG6eRuPbq52w7CLCLSoQ_1755777963
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-70a94f3bbdbso20196436d6.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Aug 2025 05:06:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1755777963; x=1756382763;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=W7ePDPZtFOyie7Xoq8Sr/Nyvy229UeRBnB12FjONwrY=;
+ b=svNpLGGX399h2WgfzJpLr9zDJxaZXRaot9BdKnocb/6qZlxK+gfSD2ZEQr5pq1AoSI
+ 32DNB1+RbQHdsPAQHcPrXMnilPzHDLFrcHipSPB8MS+UFIR7GLmZj1QFCWjNCnCpCavd
+ NVZuvPuMb/LxXNnvc3gIVXyCmNKPNI5GuXDP15PManMkqk8YrgY53Q+2w+d9+qK+AN+r
+ LlM0m4VVm2bMmkNnBv5HKyQdEeGHAFAkA15ELJqex5d7rFVt+W3cNR39ZXKD5ZuaW9ws
+ Xnmtdf/jKbWJ1penUoYvEcehOn8pE4rhTMtcvClpU2ugsabDv/Tx1LTVx8Lr5gimTSr+
+ B1Nw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUCz5RcLMeGPNMm3CWn5fv8gaP5dweFb8kJ8hr1oSDOzSY4nFxRuwmeMp56qe36YI1+MH+TS2orcPIk@nongnu.org
+X-Gm-Message-State: AOJu0YyXwnqgzsB1ck+nCF7eWh8AVJ94300nF62eAi7fiJ6W9ltCXFJM
+ jU/mjA/yXMyE5ZJRbBjCdHhyQWm+kuJ5Wy2EH3SKgOrMe8O+M1IhdYt4hAtIFv77oHNEhOYkuNf
+ MTxAKiTRVZlFbHtg5S/i+UOMjqiHuxz/EILjU27HKm8mIC5E32SECrUEe
+X-Gm-Gg: ASbGncvxYbXHZrALzn2lCvqMTdeOIUW+rUnGfGJRRTSiLqcxWQWduXjtCa16tGhvfMZ
+ sBbI2wYT4pIhEFVPVTmazLhVLsaMreizusotVcY6SnWN3BRpIgfNMy7Pr7/UAFx6Eh/ZsBNc4Cs
+ KQgWcE3YnAQwGDoNz8KKjZyIryTJGGXt2VUB0EX5xvnaT2wm9sJQHrwKBguJKm9eEdo3758Fc4h
+ IDjLY347Yxiq8PMv/xHL8r9fGF6klWFMJ0dDoprq/5XkZvwxgOHVV/GBBRyzKxXuBxwp0Oo+2am
+ WLZfhe0TPOfU21plbrBRAC64itgnTz+q5Dkrd/fFwu23nikp+5lgS9TWcYPoJJP/KeoHhM8GIDP
+ 073M=
+X-Received: by 2002:ad4:5cec:0:b0:70b:a0c5:5688 with SMTP id
+ 6a1803df08f44-70d88e725f3mr23057026d6.8.1755777963195; 
+ Thu, 21 Aug 2025 05:06:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGK7674djb/kJDq8AThR2+k5RjpictDvH2XYahN5w3VaUjk3A4G6cjl8kKagcM8yoD78wAGBA==
+X-Received: by 2002:ad4:5cec:0:b0:70b:a0c5:5688 with SMTP id
+ 6a1803df08f44-70d88e725f3mr23056266d6.8.1755777962578; 
+ Thu, 21 Aug 2025 05:06:02 -0700 (PDT)
+Received: from [192.168.0.6] (ltea-047-064-112-073.pools.arcor-ip.net.
+ [47.64.112.73]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-70ba959f401sm103670276d6.69.2025.08.21.05.05.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Aug 2025 05:06:02 -0700 (PDT)
+Message-ID: <f7a8b91e-e2df-4c11-818e-f244f8e648ad@redhat.com>
+Date: Thu, 21 Aug 2025 14:05:57 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:d102;
- envelope-from=d.zhebryakov@yandex.ru; helo=forward102b.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fix: Fix build error with CONFIG_POWERNV disabled
+To: Aditya Gupta <adityag@linux.ibm.com>, Nicholas Piggin
+ <npiggin@gmail.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Chinmay Rath <rathc@linux.ibm.com>
+Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20250820122516.949766-2-adityag@linux.ibm.com>
+ <3xbdwul3qwdb246pk5xeeduotfvyeyjr6qkozzatb7h2zdrxlb@pcuu3ewglrjj>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <3xbdwul3qwdb246pk5xeeduotfvyeyjr6qkozzatb7h2zdrxlb@pcuu3ewglrjj>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 21 Aug 2025 09:26:26 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,49 +157,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GDB is expected to be set to the endianness of the currently running code, which may be in LE page. Bswap the registers accordingly.
+On 21/08/2025 12.53, Aditya Gupta wrote:
+> On 25/08/20 05:55PM, Aditya Gupta wrote:
+>> Currently when CONFIG_POWERNV is not enabled, the build fails, such as
+>> with --without-default-devices:
+>>
+>>      $ ./configure --without-default-devices
+>>      $ make
+>>
+>>      [281/283] Linking target qemu-system-ppc64
+>>      FAILED: qemu-system-ppc64
+>>      cc -m64 @qemu-system-ppc64.rsp
+>>      /usr/bin/ld: libqemu-ppc64-softmmu.a.p/target_ppc_misc_helper.c.o: in function `helper_load_sprd':
+>>      .../target/ppc/misc_helper.c:335:(.text+0xcdc): undefined reference to `pnv_chip_find_core'
+>>      /usr/bin/ld: libqemu-ppc64-softmmu.a.p/target_ppc_misc_helper.c.o: in function `helper_store_sprd':
+>>      .../target/ppc/misc_helper.c:375:(.text+0xdf4): undefined reference to `pnv_chip_find_core'
+>>      collect2: error: ld returned 1 exit status
+>>      ...
+>>
+>>> <...snip...>
+> 
+> The following is also sufficient to fix the compilation issue. Wasn't
+> sure if #ifdef POWERNV looks good there:
+> 
+>      diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+>      index e7d94625185c..a8e55b2937c7 100644
+>      --- a/target/ppc/misc_helper.c
+>      +++ b/target/ppc/misc_helper.c
+>      @@ -323,6 +323,7 @@ void helper_store_sprc(CPUPPCState *env, target_ulong val)
+>       
+>       target_ulong helper_load_sprd(CPUPPCState *env)
+>       {
+>      +#ifdef CONFIG_POWERNV
+>           /*
+>            * SPRD is a HV-only register for Power CPUs, so this will only be
+>            * accessed by powernv machines.
+>      @@ -361,11 +362,14 @@ target_ulong helper_load_sprd(CPUPPCState *env)
+>                                         TARGET_FMT_lx"\n", sprc);
+>               break;
+>           }
+>      +#endif
 
-Signed-off-by: Danila Zhebryakov <d.zhebryakov@yandex.ru>
----
- target/ppc/gdbstub.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+I don't think this is a good patch, it likely always disables the code, even 
+if the POWERNV machine is available? At least it lacks the #include 
+CONFIG_DEVICES that would be required here.
 
-diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
-index 3b28d4e21c..89c783894c 100644
---- a/target/ppc/gdbstub.c
-+++ b/target/ppc/gdbstub.c
-@@ -19,6 +19,8 @@
-  */
- #include "qemu/osdep.h"
- #include "cpu.h"
-+#include "accel/tcg/probe.h"
-+#include "exec/tlb-flags.h"
- #include "exec/gdbstub.h"
- #include "gdbstub/helpers.h"
- #include "internal.h"
-@@ -84,7 +86,20 @@ static int ppc_gdb_register_len(int n)
- void ppc_maybe_bswap_register(CPUPPCState *env, uint8_t *mem_buf, int len)
- {
- #ifndef CONFIG_USER_ONLY
--    if (!FIELD_EX64(env->msr, MSR, LE)) {
-+    bool le_page = false;
-+
-+    if (env->mmu_model == POWERPC_MMU_BOOKE206) {
-+        CPUTLBEntryFull *full;
-+        void *host;
-+        int mmu_idx = ppc_env_mmu_index(env, true);
-+
-+        probe_access_full_mmu(env, env->nip, 0, MMU_INST_FETCH, mmu_idx,
-+                              &host, &full);
-+
-+        le_page = full->tlb_fill_flags & TLB_BSWAP;
-+    }
-+
-+    if (!le_page && !FIELD_EX64(env->msr, MSR, LE)) {
-         /* do nothing */
-     } else if (len == 4) {
-         bswap32s((uint32_t *)mem_buf);
--- 
-2.47.2
+  Thomas
 
 
