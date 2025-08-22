@@ -2,100 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC95B31218
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 10:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1BAB31A6A
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 15:58:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upNO7-0001hd-Ly; Fri, 22 Aug 2025 04:44:43 -0400
+	id 1upSDX-0005vD-F9; Fri, 22 Aug 2025 09:54:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1upNO5-0001gt-MS
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 04:44:41 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1D-0005U2-EU
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:07 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1upNNx-0000uM-6n
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 04:44:41 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-45a15fd04d9so19504035e9.1
- for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 01:44:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1A-0006vm-EG
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:07 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-b4717ba0d5dso1359485a12.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 02:25:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755852271; x=1756457071; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qQbFyyOMI3SbqLeipVtF5lyvm6jyjtSixpUHUD6wGlM=;
- b=blo70OorBwnvDDNpZ1DyNAoMwTqGf0NAS60UXeNfuNJXrHnWta6duvHPYd87IYRJ1M
- pqfSMTsN1zO5tG5cesexCsSVwkfYyaixTqwvMNlM8YeMIKwqmvF29e42CPcuuJactr3l
- e/+iRSGvSESNKsQ40QN/xjwsva3iLW2xxDIHcOv4Pwlc2TnVWmr9iU5o4ewlcIVvXifR
- vbKYVHcNos0dH75jkO8wbdxWWpFpJ7oWfvy2K65fsDsgNP4ynGPHYQVq8vVcB7v812ud
- hEWLcfPy5OKxS5MdfDQy2FGV5+d4hd9WG4oM6IqK4Y4IvyM8zCUZBc8YtKWZsWkNS6ML
- vSAQ==
+ d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1755854701; x=1756459501;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=e9eBitP7K4gzBbpURUzN39E/6vJxUXguw7XhNrGy6Qo=;
+ b=KVz3g6wlTySl6gIybszKsqx7XD2PzelIr0orOjkxxC49HQrFKBkfKeqgt8uCcR0BEO
+ i50Cq6dus6wmnQXvE8iAFhkmPZ/I4K9MFJ+/v9kg5nxFXuxbxQF2C37seY1PpOk4Oi08
+ seA9ExxaDW8qoZwDq9EZBCFdCgMLaomHfu89OonPteEvgYvbX8vXi6onkFFX9ybKZ9wk
+ /BWdHDe7/j192oB38UgbRgSffuAs8TWLknB2X7U3e1hEp2v6+sFYPjqEHYioc9joZ+hx
+ MKJ0/89EdE8ozJp0mfPI+uvUxZSEWeuK89Kckrt232S9JkRvJbdC/dUQhlZ1aZriA4au
+ j29g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755852271; x=1756457071;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=qQbFyyOMI3SbqLeipVtF5lyvm6jyjtSixpUHUD6wGlM=;
- b=Uo1Zzv1ZwNhaBZ+jTjxg4QHq8Buo3MUp/keuthHQxtjG9ZJ4cTr9c5P4kwDCnqShC6
- 2OJeBcoHZMNMCcChDWz2MqJHD0DaHuFtzZg6ajNOBBDUJHYS/tzNUEb7tPwBSzT8O4Af
- l/HEzc3TZfrq6On6rlai+YuTSBD/tqsbIKSFF0+Z9Y0tIggelqpF1XB5RfwOk9vxJiZW
- gYsVscuXnmkjY7z+OkcswYtKb4QpwweEM/iQzZ0tJwbbqoQ6uITJYkSqPQfTjRf/VkMZ
- FJjbVqYlKjmVR7wUN63JOHoNAxcpixXRFFyq3JOVUF+dxQ7J9QhjR8qBPoyy0i7tlJrA
- 66jw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU5bISGZddxWczeexws7t69k5oEzfEXos+JQRswRg8oXkVD+A+uSaG+oTy6zi6TY74dViz2+lAxdPSq@nongnu.org
-X-Gm-Message-State: AOJu0YytOorlQn17G5TWcUsmPNzqmqLTfexPqQtdJ0WmNjmWDOCYsMF0
- IGV1AENz5hsX8yHzpUKI1ZuXmqmi8p/iVIlId/ZadMQ7IqdmFCB0cyck11+0Sfj5IyA=
-X-Gm-Gg: ASbGncsqYD7AOe68fkJDlAGlbZ6hdUzS2y25guIClBWcnqUtgovoAflGFVy0pclEVVU
- P1KXsHGKAyNFyKEiosk1mdKvLX8GbvBW+Nk+uycmTU+rhYYTVqPPGAcRbgaXOJ3OSGifWuwpVN1
- kcWsf5Mpkhwkck6lajgCz2D2hGv3lDTAwRYMVfKZGSB7xEuFrqs63wUqvuueA0daBDUB6G6r0lg
- t+ToCjEMBNWDP5SymgBY3qoziOC+ZIxcyyFcmPkWE3yr3EJgpIoxAdUIJZbg1tXaW3i75dh9PD6
- iYT47+V7CkZiD5DiA4+X34g62en73358AHmXmkGNQ4FbaBsh2pYTARUd1bW9YEOdl57I4e5aBp/
- FYU5bceq60Km/DpfNv0zVKnc=
-X-Google-Smtp-Source: AGHT+IF8UCp2CIS7Par/Uk/Iu6yOYbrGcfkTvsDiwv/4Dzi3WIai2jZWbdG6Ut6FaIF+i/oJv+BMsQ==
-X-Received: by 2002:a05:6000:2512:b0:3b7:931d:37a0 with SMTP id
- ffacd0b85a97d-3c4aee0f93fmr4414555f8f.9.1755852270584; 
- Fri, 22 Aug 2025 01:44:30 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3c520d37833sm4331633f8f.45.2025.08.22.01.44.29
+ d=1e100.net; s=20230601; t=1755854701; x=1756459501;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=e9eBitP7K4gzBbpURUzN39E/6vJxUXguw7XhNrGy6Qo=;
+ b=hcVYWcUGDu58ctJSh4aL1Tww2G4d5yCRgvRZxQAmf2ZFK6tYE6DaYA3PNf4uvMlTjg
+ 5z6h2WOyxygYV9kPKqWdQvysqiQOnb3uyrHiKX0feQmjlcW90cLJEMAsEDdfzvEcPprN
+ HHyFVJmNn2k1NpNkX0gN28hYtT4/vg6+zOSUzF9buq8F3vZJ3fY196yyyU/1+wP5IyHk
+ KETaP4uUj2GWJa2dzzWO79YAJKydH1mwPhOZJoRXohy2Kb+wJUyyCqkmgHFp9BySMk/I
+ HHTLALMJOgGG2urzh0bYIMxmBYijvApw7sXhjEsYDmfSNC2FbE2nvZ06G0Xqz1ay5kRW
+ rQlg==
+X-Gm-Message-State: AOJu0Ywx8Ir7NT5Rsg8DeQjGooXsyzLwGMFvAxI2Zz43XNZo5VubCsUj
+ AjBtuMkYS7J5hb+b64G4egd9oTRtXeW+SIJqrYYoLqd0vMrvOUp+bJ2vzMh3EtnugIFb1fWZDs6
+ pedbO018=
+X-Gm-Gg: ASbGncsK0N+T8rsmkcevUHDYmYzoywbWWRU+3ZR6067ZsARwmEys0LAEndNVVdm8Dvp
+ q3aSylelZiH1RIAQ2qO6FEDEu/diI+Y6crrrpJ9UvuwinuJLUcTPIyAm2vxTXThD7ZRJinX0HUj
+ 4EHqOIv0//VuTgFzk33XCRVmcKlzk0Bzi/B8B1BzTXOWdQ1fCP3Fz6mbhxVBNiQnuFEeKkfg/TP
+ AkJX7hPCz312x+IsRd40ixpNoFTACmWkvZzRZRN8ziAMW6mjd2Jm2+yuUy8KMGGD8934lyIa5qX
+ zkHsO0kSBokkriwpzriiCNdFXznh6ghnz8jtm40P04+8ELdIIcI7+43ucKWhRJMp723wJQQaz/0
+ lMJ1Z4aMsM81dxz64Hg8AZTuCB+o8QpkMUrsJrNb2L4fHmaUExYsL
+X-Google-Smtp-Source: AGHT+IHUjT25cL6Ye+/M0/xL7jrZC0CxZBcZW1JxH5z4bA9UDvkCc9HvscfT/H/a7OKRNzVEhfv+wQ==
+X-Received: by 2002:a17:902:cec2:b0:244:9912:8353 with SMTP id
+ d9443c01a7336-2463292c8a8mr32673245ad.6.1755854701081; 
+ Fri, 22 Aug 2025 02:25:01 -0700 (PDT)
+Received: from warg.hq.igel.co.jp (napt.igel.co.jp. [219.106.231.132])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-245ed4c6fb7sm78560215ad.89.2025.08.22.02.24.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Aug 2025 01:44:29 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0DBC45F810;
- Fri, 22 Aug 2025 09:44:29 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Florian Hofhammer <florian.hofhammer@epfl.ch>
-Cc: pierrick.bouvier@linaro.org,  qemu-devel@nongnu.org,
- richard.henderson@linaro.org,  laurent@vivier.eu,  imp@bsdimp.com
-Subject: Re: New capabilities for plugins
-In-Reply-To: <7e0bd15e-d022-4de1-814b-9d9bb6513934@epfl.ch> (Florian
- Hofhammer's message of "Thu, 21 Aug 2025 18:02:26 +0200")
-References: <205e6753-53a4-4739-99ed-26344403a437@epfl.ch>
- <87tt2n5az1.fsf@draig.linaro.org>
- <1016eeb7-57d8-4d80-ba25-42cda2d63b0f@epfl.ch>
- <874iul26rp.fsf@draig.linaro.org>
- <73d56742-5e6e-4e1f-8d8c-2b9783d0ddea@epfl.ch>
- <87y0rxzsz4.fsf@draig.linaro.org>
- <7e0bd15e-d022-4de1-814b-9d9bb6513934@epfl.ch>
-User-Agent: mu4e 1.12.12; emacs 30.1
-Date: Fri, 22 Aug 2025 09:44:29 +0100
-Message-ID: <87v7mfkaoi.fsf@draig.linaro.org>
+ Fri, 22 Aug 2025 02:25:00 -0700 (PDT)
+From: CJ Chen <cjchen@igel.co.jp>
+To: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ Tomoyuki Hirose <hrstmyk811m@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, CJ Chen <cjchen@igel.co.jp>
+Subject: [RFC PATCH v2 0/9] support unaligned access to xHCI Capability
+Date: Fri, 22 Aug 2025 18:24:01 +0900
+Message-Id: <20250822092410.25833-1-cjchen@igel.co.jp>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=cjchen@igel.co.jp; helo=mail-pg1-x530.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 22 Aug 2025 09:53:58 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,45 +109,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Florian Hofhammer <florian.hofhammer@epfl.ch> writes:
+This patch set aims to support unaligned access to xHCI Capability
+Registers.
 
-> Hi Alex,
->
-> Sorry for the late reply, I've been out of office and did not check my
-> mail.
->
-> On 05/08/2025 17:30, Alex Benn=C3=A9e wrote:
->> I think to read the PC we would just need to make sure we properly
->> resolve it - internally QEMU does this for faults with:
->>      tb =3D tcg_tb_lookup(retaddr);
->>      cpu_restore_state_from_tb(cpu, tb, retaddr);
->> where retaddr is the address of the translated code. We just need to
->> special case PC handling in the read path.
->> *snip* No need - we just need to exit the loop via
->> cpu_loop_exit_restore() and
->> the code will do the right thing. However we probably don't want to
->> trigger that via register write as we would surprise the plugin -
->> especially if there are other hooks still to run. So we would want an
->> explicit helper to do it.
->
-> Is this something the QEMU maintainers would be interested in? If yes,
-> I'm happy to dig into the codebase and submit some patches for review.
-> But this of course depends on whether such a feature is even desirable
-> in QEMU (cf. the parallel discussion thread).
+To achieve this, we introduce the emulation of an unaligned access
+through multiple aligned accesses. This patch set also adds a test
+device and several tests using this device to verify that the
+emulation functions correctly.
 
-I think writing the patches would be a useful exercise anyway. The way
-the plugin code is structured should mean you can keep the changes
-fairly localised which would reduce the burden of maintaining an
-out-of-tree patch if it isn't accepted. This wasn't really possible
-pre-plugins as instrumentation was often deep in the frontends which is
-actively maintained code with constant changes making re-basing a
-nightmare.
+Using these changes, unaligned access to xHCI Capability Registers is
+now supported.
 
->
-> Best regards,
-> Florian
+During development, I required a lot of 'MemoryRegionOps' structs with
+its own read/write functions for tests. In the QEMU project, a large
+number of similar functions or structs are often written in '.inc'
+files. I followed this approach for the test functions but would
+appreciate feedback on whether this is appropriate.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+---
+v1 ... v2:
+   - Fix the typo of ops size of big-l-valid.
+   - Replaced the huge macro blocks with dynamic loops that fill in
+     the `MemoryRegionOps` arrays at runtime.
+   - Remove test cases valid.unaligned = false,impl.unaligned = true.
+   - Modification to the memory document about the alignment issue.
+   - Update the npcm7xx_fiu, mx_pic and risc-v-iommu configuration 
+     to align with the unaligned-access policy.
+   - Document memory.rst clarify that .valid=true,.impl=false causes
+     split unaligned accesses (may have side effects); forbid 
+	 .valid=false,.impl=true via assertion.
+
+---
+ CJ Chen (4):
+  doc/devel/memory.rst: additional explanation for unaligned access
+  hw/riscv: iommu-trap: remove .impl.unaligned = true
+  hw: npcm7xx_fiu and mx_pic change .impl.unaligned = true
+  system/memory: assert on invalid unaligned combo
+
+Tomoyuki Hirose (5):
+  hw/nvme/ctrl: specify the 'valid' field in MemoryRegionOps
+  system/memory: support unaligned access
+  hw/usb/hcd-xhci: allow unaligned access to Capability Registers
+  hw/misc: add test device for memory access
+  tests/qtest: add test for memory region access
+
+ docs/devel/memory.rst               |  18 +
+ hw/misc/Kconfig                     |   4 +
+ hw/misc/memaccess-testdev.c         | 331 +++++++++++++++
+ hw/misc/meson.build                 |   1 +
+ hw/nvme/ctrl.c                      |   5 +
+ hw/riscv/riscv-iommu.c              |   1 -
+ hw/ssi/npcm7xx_fiu.c                |   3 +
+ hw/usb/hcd-xhci.c                   |   4 +-
+ hw/xtensa/mx_pic.c                  |   3 +
+ include/hw/misc/memaccess-testdev.h | 104 +++++
+ system/memory.c                     | 148 +++++--
+ system/physmem.c                    |   8 -
+ tests/qtest/memaccess-test.c        | 597 ++++++++++++++++++++++++++++
+ tests/qtest/meson.build             |   9 +
+ 14 files changed, 1198 insertions(+), 38 deletions(-)
+ create mode 100644 hw/misc/memaccess-testdev.c
+ create mode 100644 include/hw/misc/memaccess-testdev.h
+ create mode 100644 tests/qtest/memaccess-test.c
+
+base-commit: 5836af0783213b9355a6bbf85d9e6bc4c9c9363f
+-- 
+2.25.1
 
