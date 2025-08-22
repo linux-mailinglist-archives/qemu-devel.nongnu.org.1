@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4E7B317C9
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 14:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFC0B317D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 14:29:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upQrY-0004pL-Ug; Fri, 22 Aug 2025 08:27:21 -0400
+	id 1upQrV-0004om-MS; Fri, 22 Aug 2025 08:27:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1upQrQ-0004n6-D5
+ id 1upQrQ-0004ms-2u
  for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1upQrN-0002OZ-LW
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:12 -0400
+ id 1upQrN-0002Oh-LE
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755865627;
+ s=mimecast20190719; t=1755865628;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZlzoW6M/0aXbQfw1PTP04J7KpMpVHxRdNHZMfZSstto=;
- b=eLMKYSarSZCZykP2NqgqlM2cZnFITBp/yCDZdRYfUQFJzId05vZ9FYyep1d/8ZVyrE3GDq
- bEC5x6qMVXa2HOICN2jMAoXIWVRjaMzeQW+FF5I1U5/a7nC5SpdY4V0uu/Snrrl3MVIU40
- UTnZ98k+5yxpy1YJU0+oG4DJj5sclK8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=htCTYY64s3u4/mbjf2jvp3grVQQ9g94LDvTznIBDP58=;
+ b=BzJfljh5Dgnc4ULlzeKAppvWc+jPilNZKq21v1Rs1KybEmy79oEp13GAAx6xIG7ZduuZrc
+ 10wupO3Pz9bO4p9h86w2IGuhwq1+89rC7xYDD8ZHN9dmYwrHby8JMIeoH+WXyil4kVHM3R
+ vvf4zrirhuJaNaMIkY3Zl6ilxaPUG3U=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-333-ubauZtstNLaomhqzrDYPdg-1; Fri, 22 Aug 2025 08:27:05 -0400
-X-MC-Unique: ubauZtstNLaomhqzrDYPdg-1
-X-Mimecast-MFC-AGG-ID: ubauZtstNLaomhqzrDYPdg_1755865624
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3c68ac7e19dso117659f8f.2
- for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 05:27:05 -0700 (PDT)
+ us-mta-664-EVTudWHEO9KrmiLl0LUlSg-1; Fri, 22 Aug 2025 08:27:07 -0400
+X-MC-Unique: EVTudWHEO9KrmiLl0LUlSg-1
+X-Mimecast-MFC-AGG-ID: EVTudWHEO9KrmiLl0LUlSg_1755865626
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3c380aa1ac0so824124f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 05:27:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755865623; x=1756470423;
+ d=1e100.net; s=20230601; t=1755865625; x=1756470425;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZlzoW6M/0aXbQfw1PTP04J7KpMpVHxRdNHZMfZSstto=;
- b=dfci7mnLwFMPsoYb3CtqGfaq53afRetsO2lQzMYdvuydP6fMNbUqsWmZ24c+5W6/lv
- 0Rf0A3lGX5yki95bMiJHMRq0tN6Y4whDV5cs2Ztw16CIpxwNS0jmhjRhJh8O38eQDfXj
- I/ie2euT9X3K1ID/vyEU/GXFY6UUAoyypmHKi/GhpCWisb3qk3G3E4ucznxq9lAqOGUz
- N03kYz4FIkNPhewyNPtSXi1BdiApOJC98Lrc/Gf9mM7j10YUmGxD57vZ+KW41I1k6cBv
- 7AZnEognFEsjRLHjqVjG0kw+jVr72lsht91+t0eqDn4uYXB+xj/NQgozwIcuCnymhO8O
- Ai9Q==
-X-Gm-Message-State: AOJu0Ywxxg8ogpZXuAGr2dCyafFlJkjBG/d6qXUcgeJIQWil3ZcqwF5u
- DHQNslXLpdk5Pf46lB6NgeQWQ2hbrxJlkmIf1gYy94sh5a8tHIMihaYuuJ2+lvNvVWWKNXtbtR9
- UD5TsKtjph0yC2NUdZnftvKA0EupSD3y9DkFDibnN2GzNc6gqjNRmzEfNmS+oZTQN/qVMsYTisz
- v+WNzOvhACu3GW4NylwHSyUoNkqNy+l5mBhVMh4LIX
-X-Gm-Gg: ASbGncuGSbkwOIY/5tdoAuBW9YtDHUeOKroEfKEOLoH8aL1VRtZtrivZZ1KchI0mKKk
- k1MhULPGoL178XKtYmZ6m44mrcnHbZjMYmM9jQ7Kj+obc9DmKKZZM4TZnffVAmevjgMlwvbXAgQ
- rdrbqtkeET+byFN9gInJfg26Y/atiG9gaDwjvRfaXPDntGNjtjQw1eb98vrHbIYLWTGeTuwigPo
- uURmCbbrOr/HOCZnxA3VoEvIA5MgZzFcxfCNkalcZEnV9fGQf0W4Xn7eVR6otemKVCYL/7CwcTa
- aJUsjdBFyUZ3ZrF4//SkTn+s5w+MyE0GIDdElWoSK/RAIJGLfwqc+GVD6ACyHvUMXZ398n9oLNr
- xAynejvURsX5a/B0aYFJz/zoeSvU4wm4AxA/41QzReQ==
-X-Received: by 2002:a05:6000:2387:b0:3b7:8d70:e0ad with SMTP id
- ffacd0b85a97d-3c5dc7351d2mr1890659f8f.32.1755865623287; 
- Fri, 22 Aug 2025 05:27:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF+U0k3mY07gVFgLSeWkZwcd5Dg76g+mSinldGirnhMC2X33FZX8Aj+kMJxAmQRhAuJKvGdQ==
-X-Received: by 2002:a05:6000:2387:b0:3b7:8d70:e0ad with SMTP id
- ffacd0b85a97d-3c5dc7351d2mr1890637f8f.32.1755865622763; 
- Fri, 22 Aug 2025 05:27:02 -0700 (PDT)
+ bh=htCTYY64s3u4/mbjf2jvp3grVQQ9g94LDvTznIBDP58=;
+ b=g/XAcGOT/10N9yjVf/DoC4wIQjAvoDygXQFp7ze/uyLSTVTR0JGn+yf9fARY6wB6rv
+ RROZhUTtNJ/SIEz9a7RxzWxKw4NlxEl4uRlNNXuGSUjvDPu9HmQYLOrBVeMHbLPqpVRj
+ 9bcV7ns38GNbMm0KEYZccY6brxHg2NDYNJXMHaybqyJAkdfm5uErmjmontgDgTohocRg
+ iEgULg88oic4QaUDXbjCGFpunfTXiLb6pAl8RYvDLWbVFAQ2eIcVhxaniEFukg1y3UTs
+ CSydfur+lO9Evd6RPcQ57S/ShB8hPF3XbGrKfd5dmlBpfB4jjSAzUw19tr28wJkTC41N
+ wKiA==
+X-Gm-Message-State: AOJu0YwwXqFVpxHJvEbWlWFpWA8yvoPZwsGBPigZ6BKuwGUmF/0V3H4w
+ FMQeM5BmAbySKVGE/RqoWt+4ZfqUQN/8V9yGggC1Dkaf7PkuugJJyNa7RiylNHm0BOBCT6oEs7M
+ gPRIFEdw6kv0owrAygSvClEVWkPcApT8P9DcWq74rMKO32hD26YRXdSLRtTwwOUd0JSKHSb7GHw
+ Qxyj+ebm3zJr8tsApSR3Gu+N9SG0L+RqZ/3WQ0EUTh
+X-Gm-Gg: ASbGnctHy6tRxCk8mDxjn+Q5CgskeH0Icz6ta2smUqfPCDgRzuJBzTPcerW9EeCpASt
+ 9flHfx/fIKA0WLgfteP6yVycbfnM7YDZoE8aslfqywtRjPgMYFZ2CV2k3o5BG53aEBbHbi93VMm
+ wQF0NG41WPv1TwH2ZQsMKordM6XPOm1EtkSHK0et2cfKWaEssfT6bcDjhnrrzjLU0ydKh5SEQsb
+ awFTP5Eed3W3OyBl6q6cuTsWVmpaQHznDGNSwhufFm85gcK6vLxB/ZJKC8Otk352EsMLwkDu3Nb
+ ef9m9aGuNCFFAIdIyzFoSrzwFNTOfMJuaiggLQ7AtGNqKb9IbeToWildwBk8o3UkbQqgKEwIFk9
+ tAbOXHhJla5kfeNEVaOqhJRZtjKtKmeQJMFbN8HiUdQ==
+X-Received: by 2002:a5d:64ed:0:b0:3b5:dafc:1525 with SMTP id
+ ffacd0b85a97d-3c5dc7313famr2232948f8f.33.1755865625477; 
+ Fri, 22 Aug 2025 05:27:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQbW6N9z46fAHU8L3UM37qtfoMuXROTfx9wqhUf4We2fCk7h6vboMTDv3txs3DawzRLROv6w==
+X-Received: by 2002:a5d:64ed:0:b0:3b5:dafc:1525 with SMTP id
+ ffacd0b85a97d-3c5dc7313famr2232922f8f.33.1755865624986; 
+ Fri, 22 Aug 2025 05:27:04 -0700 (PDT)
 Received: from [192.168.10.3] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3c0748797acsm14717254f8f.10.2025.08.22.05.27.01
+ ffacd0b85a97d-3c077789c92sm15156979f8f.52.2025.08.22.05.27.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Aug 2025 05:27:01 -0700 (PDT)
+ Fri, 22 Aug 2025 05:27:03 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: tanishdesai37@gmail.com, stefanha@redhat.com, berrange@redhat.com,
  mads@ynddal.dk
-Subject: [PATCH 02/14] rust: move dependencies to rust/Cargo.toml
-Date: Fri, 22 Aug 2025 14:26:43 +0200
-Message-ID: <20250822122655.1353197-3-pbonzini@redhat.com>
+Subject: [PATCH 03/14] trace/ftrace: move snprintf+write from tracepoints to
+ ftrace.c
+Date: Fri, 22 Aug 2025 14:26:44 +0200
+Message-ID: <20250822122655.1353197-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250822122655.1353197-1-pbonzini@redhat.com>
 References: <20250822122655.1353197-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,48 +109,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As more crates start using the same dependencies, it's better to not
-repeat the versions and move the dependency declarations to the workspace.
+This simplifies the Python code and reduces the size of the tracepoints.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/Cargo.toml          | 5 +++++
- rust/qemu-api/Cargo.toml | 6 +++---
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ tests/tracetool/ftrace.h            | 28 ++++++----------------------
+ trace/ftrace.h                      |  1 +
+ trace/ftrace.c                      | 15 +++++++++++++++
+ scripts/tracetool/backend/ftrace.py | 12 ++----------
+ 4 files changed, 24 insertions(+), 32 deletions(-)
 
-diff --git a/rust/Cargo.toml b/rust/Cargo.toml
-index 682184cb158..99c275f2d9f 100644
---- a/rust/Cargo.toml
-+++ b/rust/Cargo.toml
-@@ -15,6 +15,11 @@ license = "GPL-2.0-or-later"
- repository = "https://gitlab.com/qemu-project/qemu/"
- rust-version = "1.83.0"
+diff --git a/tests/tracetool/ftrace.h b/tests/tracetool/ftrace.h
+index fe22ea0f09f..1dfe4239413 100644
+--- a/tests/tracetool/ftrace.h
++++ b/tests/tracetool/ftrace.h
+@@ -21,18 +21,10 @@ extern uint16_t _TRACE_TEST_WIBBLE_DSTATE;
  
-+[workspace.dependencies]
-+anyhow = "~1.0"
-+foreign = "~0.3.1"
-+libc = "0.2.162"
+ static inline void trace_test_blah(void *context, const char *filename)
+ {
+-    {
+-        char ftrace_buf[MAX_TRACE_STRLEN];
+-        int unused __attribute__ ((unused));
+-        int trlen;
+-        if (trace_event_get_state(TRACE_TEST_BLAH)) {
++    if (trace_event_get_state(TRACE_TEST_BLAH)) {
+ #line 4 "trace-events"
+-            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,
+-                             "test_blah " "Blah context=%p filename=%s" "\n" , context, filename);
+-#line 33 "ftrace.h"
+-            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);
+-            unused = write(trace_marker_fd, ftrace_buf, trlen);
+-        }
++        ftrace_write("test_blah " "Blah context=%p filename=%s" "\n" , context, filename);
++#line 28 "ftrace.h"
+     }
+ }
+ 
+@@ -42,18 +34,10 @@ static inline void trace_test_blah(void *context, const char *filename)
+ 
+ static inline void trace_test_wibble(void *context, int value)
+ {
+-    {
+-        char ftrace_buf[MAX_TRACE_STRLEN];
+-        int unused __attribute__ ((unused));
+-        int trlen;
+-        if (trace_event_get_state(TRACE_TEST_WIBBLE)) {
++    if (trace_event_get_state(TRACE_TEST_WIBBLE)) {
+ #line 5 "trace-events"
+-            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,
+-                             "test_wibble " "Wibble context=%p value=%d" "\n" , context, value);
+-#line 54 "ftrace.h"
+-            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);
+-            unused = write(trace_marker_fd, ftrace_buf, trlen);
+-        }
++        ftrace_write("test_wibble " "Wibble context=%p value=%d" "\n" , context, value);
++#line 41 "ftrace.h"
+     }
+ }
+ #endif /* TRACE_TESTSUITE_GENERATED_TRACERS_H */
+diff --git a/trace/ftrace.h b/trace/ftrace.h
+index cb5e35d2171..16c122816d1 100644
+--- a/trace/ftrace.h
++++ b/trace/ftrace.h
+@@ -8,5 +8,6 @@
+ extern int trace_marker_fd;
+ 
+ bool ftrace_init(void);
++G_GNUC_PRINTF(1, 2) void ftrace_write(const char *fmt, ...);
+ 
+ #endif /* TRACE_FTRACE_H */
+diff --git a/trace/ftrace.c b/trace/ftrace.c
+index 9749543d9b2..6875faedb9c 100644
+--- a/trace/ftrace.c
++++ b/trace/ftrace.c
+@@ -38,6 +38,21 @@ static int find_mount(char *mount_point, const char *fstype)
+     return ret;
+ }
+ 
++void ftrace_write(const char *fmt, ...)
++{
++    char ftrace_buf[MAX_TRACE_STRLEN];
++    int unused __attribute__ ((unused));
++    int trlen;
++    va_list ap;
 +
- [workspace.lints.rust]
- unexpected_cfgs = { level = "deny", check-cfg = [
-     'cfg(MESON)', 'cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)',
-diff --git a/rust/qemu-api/Cargo.toml b/rust/qemu-api/Cargo.toml
-index db7000dee44..c07a17a28b0 100644
---- a/rust/qemu-api/Cargo.toml
-+++ b/rust/qemu-api/Cargo.toml
-@@ -15,9 +15,9 @@ rust-version.workspace = true
++    va_start(ap, fmt);
++    trlen = vsnprintf(ftrace_buf, MAX_TRACE_STRLEN, fmt, ap);
++    va_end(ap);
++
++    trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);
++    unused = write(trace_marker_fd, ftrace_buf, trlen);
++}
++
+ bool ftrace_init(void)
+ {
+     char mount_point[PATH_MAX];
+diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/backend/ftrace.py
+index 5fa30ccc08e..a07f8a9dfd8 100644
+--- a/scripts/tracetool/backend/ftrace.py
++++ b/scripts/tracetool/backend/ftrace.py
+@@ -28,18 +28,10 @@ def generate_h(event, group):
+     if len(event.args) > 0:
+         argnames = ", " + argnames
  
- [dependencies]
- qemu_api_macros = { path = "../qemu-api-macros" }
--anyhow = "~1.0"
--libc = "0.2.162"
--foreign = "~0.3.1"
-+anyhow = { workspace = true }
-+foreign = { workspace = true }
-+libc = { workspace = true }
- 
- [features]
- default = ["debug_cell"]
+-    out('    {',
+-        '        char ftrace_buf[MAX_TRACE_STRLEN];',
+-        '        int unused __attribute__ ((unused));',
+-        '        int trlen;',
+-        '        if (trace_event_get_state(%(event_id)s)) {',
++    out('    if (trace_event_get_state(%(event_id)s)) {',
+         '#line %(event_lineno)d "%(event_filename)s"',
+-        '            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,',
+-        '                             "%(name)s " %(fmt)s "\\n" %(argnames)s);',
++        '        ftrace_write("%(name)s " %(fmt)s "\\n" %(argnames)s);',
+         '#line %(out_next_lineno)d "%(out_filename)s"',
+-        '            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);',
+-        '            unused = write(trace_marker_fd, ftrace_buf, trlen);',
+-        '        }',
+         '    }',
+         name=event.name,
+         args=event.args,
 -- 
 2.50.1
 
