@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB90EB31A5D
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 15:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D9CB31A5E
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 15:57:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upSDW-0005tF-HM; Fri, 22 Aug 2025 09:54:06 -0400
+	id 1upSDY-0005vP-Co; Fri, 22 Aug 2025 09:54:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1M-0005aD-4t
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:16 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1Q-0005cm-1M
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:20 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1F-00077Z-Ja
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:15 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-245f19aab74so14594105ad.0
- for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 02:25:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1M-000792-Cj
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:19 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-b49c622e598so137810a12.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 02:25:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1755854707; x=1756459507;
+ d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1755854714; x=1756459514;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zCby+eLrg4GAHoTlGaZ+HvxqNUEpTOhGwkTAgVF2XVQ=;
- b=smxz4qOjekaPlYatmjCZX2+1yw+qAm94ZfmUiUPcX/WHVhSgyqKf+by/sMgJkBSeCv
- U+qp4xqfXgCTmXQix+L592Zlb2LwcJDwiUOEdJQ3gcT8FG/sO2ha/7wWxrzEkrQr5f23
- UP+riUrwkxrJLTE1ubbrHwhEZX2LssEd22KLjP24bJmpVjmYvFm1lLCuvKbJamoOirF/
- xLoAbWg4HTQJ8fIShFRkQ7tZhn7OCQeeJPc5LofnQFD9g+uEejzPZaW/kk30zO5E504/
- 5dWyQ8RXMo0wVN7IJ0sNrddkST75BpW529zgk41lAfBths9vOMPpWQZbyRmIe3BpKrUE
- 7fmA==
+ bh=mlo0VNE2LkX+k6ixV83bmWbI8LIl4VVBBmVNmXeQQcY=;
+ b=gHlpWm/esdPlDf6OBTQA7j9IL58URUKNJ0ypl7KeyPyy08LqL136YGcVIR5dnkvhRM
+ D31OB5pb2A36D7g9zEb8ePHOJPr7cdsNh17PgXh4SQaLp6GvjkAuKeD1qVoL2XvDPueB
+ LmmTrstfjrYf8b+fKHtwP01Ch/obmqPSUI5hebbJ86QYdt0qHVYzHlQsa3u+1z5AiF/k
+ nyyE5JhkLvgRS/cOnxTLmoMavA4IARyEM0sbEzJdzHfZqnQwAOXJtF2AvR8QnPmHnpY+
+ 80ufSJoKrpnPDXps6WynkWrmvAtTbD+qjVzBLInJun54WGVFd8lC2xmW+hhRGTPUaCmq
+ fY2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755854707; x=1756459507;
+ d=1e100.net; s=20230601; t=1755854714; x=1756459514;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zCby+eLrg4GAHoTlGaZ+HvxqNUEpTOhGwkTAgVF2XVQ=;
- b=C7tdF8p7CpTddQnHXF8rYMSFmuQlxE71ShJx+8kLsbIHV+8n7uxLiogpimQQXDYjfv
- N/g/o3/ifq22tU4jr1LymVv0g/VPLpopkYdRX6/sF9BLWoZe5s1XblK33xeytczOrlBt
- k6JWhfag+Rev/Z4GFsf3396qWTRllJ+IuXNu0TIyiTuHrOYs+XqG6G/v9Xe0GHupi7nS
- UzTxePirVjD7MAm0f2lGRtChiE8wh2zkWE/tUyNwyaLGXrOThVNH5DUicGxGHJyGvyhC
- Z5SyWB87uV9jG1T72Cbf7z8XY77FPwt44qa4eNeThyPnGm33tiFJJuy/6b24rxw8RusB
- T3hQ==
-X-Gm-Message-State: AOJu0YyW2iHmXI/U0nFpZnZx/tmJ9jKgkENSC6Z9uX5yZUcLJfCwIGYx
- 6Vp4EkeLMWJHnlE/3vdfWmf6K/OOL9/N10I7mnrV2gD22VsWzN9nthLJMRI91fg7ZXm1XpfKWXQ
- 12l+9AEE=
-X-Gm-Gg: ASbGncsJtoM9Cz4di8+g6beqfR/i26CoHgAz60NSva8Fg4yLAWbUAtPkHJ0QLH66MDi
- z+YSkF1RAe5ioIxPsR6tXHRxM2hy5UNisAmJMIyzhMkH3QJ+t9brA/AVJ1Zot9jfppUnTnfjNDR
- iYSaUv8qirYz6eABosZqD33zSuR6ea+4IVUDGJ3WWaFToXawvKqfMIaLYBaenFEFIzD6s80XbXU
- v/4IRiGZDOupUOBb3sEG3PBx4Qv/cczwpTdcpYjfCIZb9LnARqjCys97JFlHUB3gByO48sFvHiV
- YCb9V1b74KdHM3baVswvjOtyohoZRfPzVB/S0QhynSs2zVlVwEZJNyQ/6Ib/WF3Pl4/UarACmeQ
- c23qUzl2YG7TE22E+sskVAQpnPvE+t7ngK0ujQ1TZGA==
-X-Google-Smtp-Source: AGHT+IF0Xwuu5LZYmRduWk25dRQ4N23vj9IjGYBGoJ9IRke8ciqE9vsRzsdrjU7wgvFYWKAZPSqDoA==
-X-Received: by 2002:a17:903:1ac4:b0:240:66ff:b253 with SMTP id
- d9443c01a7336-2462ef93318mr30091655ad.46.1755854707455; 
- Fri, 22 Aug 2025 02:25:07 -0700 (PDT)
+ bh=mlo0VNE2LkX+k6ixV83bmWbI8LIl4VVBBmVNmXeQQcY=;
+ b=v4TtVMhs1NzXghMduwyd2VdC7j31A0Oi5mAKxA9zvh/Yq9u8tsu5QLDqKuUXkXq7a/
+ birS3llMyzz/cTLFPiSIQh06x5QZppScz3Icy2P2ODEhGAI31vjRfzlUUY0+b1nH2788
+ HaDnlCu5UybNFxlJj/DiEaeONrpQOyUuF2ELkmK/erBxZuDEC8V79KPZbvaWcXXux1Kh
+ VZRMFHz8C58lKMXB+F2/i/eV0kn3/7a6L+ucsZn0L5Sjus50WspNMPpIRXcMymqOYja3
+ ofk1ajT3YOBmGD6QZuSbrRoQZG/LIf5hzMNabhIMFPeF7OHLnc1OjRiKezSph5OMD292
+ zr2Q==
+X-Gm-Message-State: AOJu0YxzE7kRNh+QgXb5W4Wc+rqPlE4UmXN1rJRm8PI8bGXv59Yw7WX9
+ EVdm8tspIbXPTsgbnhZO1Epm6/5dWFO1IQKEUliFiHQ1lWSO8/bEEnmO5PRO4AIwUCGTCkA4bpI
+ SOX3IkIk=
+X-Gm-Gg: ASbGncvlesa3rpUoGqKN1YPQ8ul8yyhFscQ2vmUVY3UBlvsUB2kANyH4PuowY0p3JnS
+ Edq2pcXZGFveKrMccyZr/jdIFhRWn8u9rhtH5bsLvRyaNxHgAYCFgoAxVJv1ednOdBHLV6lwAZd
+ RYH3VssI1HhnKcvquK1vAlkdZkb26lbDr0MvoWR805vPBWDXEoQ+X8DKg+0SEOU/noA6iIWlHms
+ m9r/3fUXtJ6LAR4qcRBgw8Z3YThKE5VqUqv2Eq1wuCrWj1TjLLW7DBHasZfrBB8K63n76Xt1Icg
+ aRFOl/2zju5xIx+JsjgpjaPrTWsEnssgVZJ5K8hAtSdhdcjox7tLLwJg5rp2/Va0HYoQgQQ+5pQ
+ hVeuhrCVglAa/FQbFcKBLlKpuOQu1IgpZJyb2nk2+EwoSWXicV8dP+l0EXciVbQQ=
+X-Google-Smtp-Source: AGHT+IEqxrEnh0zkYioghUeAJylIvzfIK34NEJeRhP+7uR5uCgzNq3nYAwgrwA28HLoaAtq27/RD1g==
+X-Received: by 2002:a17:903:2302:b0:240:3b9e:dd4c with SMTP id
+ d9443c01a7336-2462ef446b7mr34309165ad.36.1755854714249; 
+ Fri, 22 Aug 2025 02:25:14 -0700 (PDT)
 Received: from warg.hq.igel.co.jp (napt.igel.co.jp. [219.106.231.132])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-245ed4c6fb7sm78560215ad.89.2025.08.22.02.25.01
+ d9443c01a7336-245ed4c6fb7sm78560215ad.89.2025.08.22.02.25.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Aug 2025 02:25:07 -0700 (PDT)
+ Fri, 22 Aug 2025 02:25:13 -0700 (PDT)
 From: CJ Chen <cjchen@igel.co.jp>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-riscv@nongnu.org,
  qemu-arm@nongnu.org
@@ -79,18 +79,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Keith Busch <kbusch@kernel.org>,
  Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
  Tomoyuki Hirose <hrstmyk811m@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>, CJ Chen <cjchen@igel.co.jp>
-Subject: [RFC PATCH v2 1/9] doc/devel/memory.rst: additional explanation for
- unaligned access
-Date: Fri, 22 Aug 2025 18:24:02 +0900
-Message-Id: <20250822092410.25833-2-cjchen@igel.co.jp>
+Subject: [RFC PATCH v2 2/9] hw/riscv: iommu-trap: remove .impl.unaligned = true
+Date: Fri, 22 Aug 2025 18:24:03 +0900
+Message-Id: <20250822092410.25833-3-cjchen@igel.co.jp>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250822092410.25833-1-cjchen@igel.co.jp>
 References: <20250822092410.25833-1-cjchen@igel.co.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=cjchen@igel.co.jp; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=cjchen@igel.co.jp; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -113,51 +111,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add documentation to clarify that if `.valid.unaligned = true` but
-`.impl.unaligned = false`, QEMU’s memory core will automatically split
-unaligned guest accesses into multiple aligned accesses. This helps
-devices avoid implementing their own unaligned logic, but can be
-problematic for devices with side-effect-heavy registers. Also note
-that setting `.valid.unaligned = false` together with
-`.impl.unaligned = true` is invalid, as it contradicts itself and
-will trigger an assertion.
+Since riscv-iommu does not support unaligned accesses, drop
+`.impl.unaligned = true` to avoid the contradictory pairing with
+`.valid.unaligned = false`.  This makes QEMU reject unaligned accesses
+for this device and prevents the assertion in memory.c that previously
+caused `make check` to fail.
 
 Signed-off-by: CJ Chen <cjchen@igel.co.jp>
+Tested-by: CJ Chen <cjchen@igel.co.jp>
 Acked-by: Tomoyuki Hirose <hrstmyk811m@gmail.com>
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Reported-by: Tomoyuki Hirose <hrstmyk811m@gmail.com>
 ---
- docs/devel/memory.rst | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ hw/riscv/riscv-iommu.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/docs/devel/memory.rst b/docs/devel/memory.rst
-index 57fb2aec76..71d7de7ae5 100644
---- a/docs/devel/memory.rst
-+++ b/docs/devel/memory.rst
-@@ -365,6 +365,24 @@ callbacks are called:
- - .impl.unaligned specifies that the *implementation* supports unaligned
-   accesses; if false, unaligned accesses will be emulated by two aligned
-   accesses.
-+- Additionally, if .valid.unaligned = true but .impl.unaligned = false, the
-+  memory core will emulate each unaligned guest access by splitting it into
-+  multiple aligned sub-accesses. This ensures that devices which only handle
-+  aligned requests do not need to implement unaligned logic themselves. For
-+  example, see xhci_cap_ops in hw/usb/hcd-xhci.c: it sets  .valid.unaligned
-+  = true so guests can do unaligned reads on the xHCI Capability Registers,
-+  while keeping .impl.unaligned = false to rely on the core splitting logic.
-+  However, if a device’s registers have side effects on read or write, this
-+  extra splitting can introduce undesired behavior. Specifically, for devices
-+  whose registers trigger state changes on each read/write, splitting an access
-+  can lead to reading or writing bytes beyond the originally requested subrange
-+  thereby triggering repeated or otherwise unintended register side effects.
-+  In such cases, one should set .valid.unaligned = false to reject unaligned
-+  accesses entirely.
-+- Conversely, if .valid.unaligned = false but .impl.unaligned = true,
-+  that setting is considered invalid; it claims unaligned access is allowed
-+  by the implementation yet disallowed for the device. QEMU enforces this with
-+  an assertion to prevent contradictory usage.
- 
- API Reference
- -------------
+diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
+index a877e5da84..277746598a 100644
+--- a/hw/riscv/riscv-iommu.c
++++ b/hw/riscv/riscv-iommu.c
+@@ -2288,7 +2288,6 @@ static const MemoryRegionOps riscv_iommu_trap_ops = {
+     .impl = {
+         .min_access_size = 4,
+         .max_access_size = 8,
+-        .unaligned = true,
+     },
+     .valid = {
+         .min_access_size = 4,
 -- 
 2.25.1
 
