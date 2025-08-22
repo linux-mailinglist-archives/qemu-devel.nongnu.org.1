@@ -2,95 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97633B31BA6
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 16:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B34B31BAD
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 16:33:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upSo9-0004a5-BH; Fri, 22 Aug 2025 10:31:57 -0400
+	id 1upSpF-0005Cr-9U; Fri, 22 Aug 2025 10:33:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1upSnu-0004YJ-Mn
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 10:31:45 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1upSom-0004ud-Ky
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 10:32:38 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1upSni-0001SL-B8
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 10:31:40 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-76e2ea94c7dso2266065b3a.2
- for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 07:31:29 -0700 (PDT)
+ id 1upSoh-0001Xk-JB
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 10:32:36 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-76e93370ab8so2299184b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 07:32:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755873087; x=1756477887; darn=nongnu.org;
+ d=linaro.org; s=google; t=1755873147; x=1756477947; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=46NHqqnDVFeCyTicknz7UWSyUHI1/BQZRAEyvIm08Hg=;
- b=AxnyGsgpxk6p9Kd8dA1a6H+rbmnB7PjHMFksXpEj402P2A1pvOPZP8pdeiI7ttC3ES
- ciD6wrwGtY8bQgIsILOQ9tI7Rk42FIja8Xp9oJdsKoU2N6bIkrJCHenYgK/mY//Saiov
- 3BgyXmYJ3AMe+uZ+4MOWytauiug6K2OC3Xjunx2gJL3jcjD6KHhJPzDSTBD1EDXmkXu8
- F6oD0UOgDbVTA1mdyC/LG8pVtOUtUFXPpp8N7mFNC4fA8xkk9V3+IjpbgpYkqSB58KVL
- E3yEEHjTyid1LU/3vpvKswfiR6S1TithJlOgSAF+6BijHeJ5R369ZvtWqgrVRasMMwJV
- whig==
+ bh=czIEl6Q1hMwSZhztmSiFYg4JXrUQeTiTPeUCEoyMxX8=;
+ b=TUer9hG48+CpTRWWCXZ/MORXixTOF3MvH7PAC6pYeka7cjOwa0PSF9lrLzG/61gb5E
+ zpzZxYRGKO1HmDyGytzUuHpcn7Xwit/C0L6OWvXsIajGOxnWbUlpcd0fz/iylOf9le/u
+ 0oVjhwyF1QhkcwbhOO+3NX4jRPBztPstWsCScqKdgnu1fmuGF6osjbzhMyzDKxSvGRvz
+ WEME7/DfzROzVLBwXk53tfizlUiIid5kUsg51hHWMdsG5wrQ6GxKntGEn8YD3NnHDqaT
+ fKF9a+EunW/HvAmqYWWZVv2H20KoiLUeStYDMpIVFyX+N+6d538YZ7uX+5GIw1FufnYS
+ m47Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755873087; x=1756477887;
+ d=1e100.net; s=20230601; t=1755873147; x=1756477947;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=46NHqqnDVFeCyTicknz7UWSyUHI1/BQZRAEyvIm08Hg=;
- b=kqZqcvDSnzSD29dQAR404JuVrxqgEmmMDIAnZ2ODkK2rh6z5CzqsmqutuVE9D3fPoU
- KEnSKWfFOCQmK3GFjevBGP7MB/ziq9oYd+NgwuLD4axcDWHgyl6pgWrYB/gTZG7oLo0a
- ux7oX4i+9dcGusoSiTwiwrwNGkuRIVCJdyPv5mAq+R7ujX/n+mNhHJK4GyVOB+25EqQ+
- g5nR+/A3CDGZU2PiApY/CCVyYhOtFzRdoHRHBMOl9KzSsmoV3ECjA7VpWdPCv5su9kDb
- yw4mLnKbyEtMrckKyjM1i97SdES3sJuBV9wWe1ShNo0QrsA8UhohKXQiQa2Ee89X4tlH
- 3GnQ==
-X-Gm-Message-State: AOJu0Yyi3K/K6qmwYWGTofhnUpdp911eWwtg9JnFH2iVoRMDvZU5SFJT
- DuUNzVXsG39LXfSnyvlq9k1SKGQ7Pk3Uw3pgUI8ZsgIkKLREu4WLluS4z5+4NIt4vJhe/S6unW2
- DqhGSzEhpWA==
-X-Gm-Gg: ASbGncsbG3tOxeR2OT/d3GkQ0PW/suPTO5uu2UDUR7MBavu+LDelsCF1h1UjWSTRRhp
- RGFIPzXtGNnyVoZMK8hLVEgYLoVsTkoaHzzuF3MA7bmx71UE8WTD2NUp7JPMDIciebSHpzSrB5+
- 8VOW2IYxyEbWzR3bPoyi5XPmD1xDODHCx5TSAIygcoFet8ag3dbjkHpAKICVwiTXrHUQPPOUJ5H
- ZtlAOP4xa/piPmXsA3BhKM7LuND/kQ908A6Syqomd5zL6Ax8uVSMhOVFbgpDgmaKWuC/RT2C0p8
- pUO+1RR9AenmMdh7SdAvJVvC9G48DuRJ27oapn2w28Ce1U1tMCUUOHfotIyWlPoBrCdXpblnblI
- 84rwJzA7Y9KfoO3pSIglR58jFcF45u2CwQ1yV6W4MT4CtU2Y=
-X-Google-Smtp-Source: AGHT+IGR0EQMdaROLezv0fCFPKPSL1XwVNeSqoTLrWCnV4drqCyPAOArMWGTn4WL4JoVHWUIEMsKNg==
-X-Received: by 2002:a05:6a00:2e95:b0:76b:d746:733a with SMTP id
- d2e1a72fcca58-7702fadbe8bmr4547699b3a.21.1755873086738; 
- Fri, 22 Aug 2025 07:31:26 -0700 (PDT)
+ bh=czIEl6Q1hMwSZhztmSiFYg4JXrUQeTiTPeUCEoyMxX8=;
+ b=XRWgiE4A5wFb9moyir1gmxoq7eOAHQN4hRBks7H22yQftPu0YuendX+6fEm37RK3os
+ /i+1/r0C/eEwTtNatv9Irvnj1vnxQCkx1Pi2eHjDU9x9StL93k4Nu3Upt6xoUqgnHM72
+ nN20Zu2GyIDMdJaWCmJer8TgkowCPSEOYcJHONqcmCKk8rfJuKAEKpj2CtUXgr1P2KNd
+ M8t4rExUMfIToxTvGH3uBU8Co9Zo071iDR41t9zD1p7L2QtI2flRxhAUJCZxyrsWrnos
+ qWmaZ3NQZZRnMTTvKaNfQyvjQDXsIAzIf8BLDkwn8vwqGtTyE6/cGXhWpKtfvKmGcwOI
+ vwGQ==
+X-Gm-Message-State: AOJu0YziMuxmj3Ze1k8nRznR72cpLa3u92/1aIKuQrhZXJOib15FQRfF
+ 3Q1QfzzTLKusHZ6DvJzkMeXq6my7nf/xIqKuXqi9uT+F/jZbA/FXzkdw0fHpkiW87GnQXVcRXPi
+ YIog6AKgaJg==
+X-Gm-Gg: ASbGncut/Q57R0eQx24eyYCfwW5lipsWGkxfumdMp2ipR0AJW0UjdERDHNPBTpioNbp
+ TVd5Svy2PvYrSfmAVQVq66raOHPFT6qd5FntJSFbRy7S17jXedblRmysQ8aZUAblU8D/rOyU/8m
+ gYtdn3jiAve6y4rPSRR4Pv9SvNXymlTCbuunyR10QEAtEMOxlCOcepKvwAX5VE1zoPkFq+1iQ/F
+ 9WKgoPi7X/Mw4CJEBvS5goCY4D8qHWLQWz0dBD8Op7OzC6DrG5WwXl/qVAzN/MK4Q4daEjaATzU
+ rn3NQzjYPtNR/e5Qq5cZVHXone2pfYFTNnD+JuKbrNdmAgj62GwcfrDP5IH78uu4Y4r9weFDw7i
+ DSroAVjGZRcVdMafDSN/iZ8qc4EFlUWmIYEMT
+X-Google-Smtp-Source: AGHT+IEU8scoK87WHf0Tx3kCVvkpCemtbnx2/RKLRBE1iPahRbq4xzNwzwnF2R+Z81ScwaljRlr8zg==
+X-Received: by 2002:a17:903:4b07:b0:240:6d9b:59ff with SMTP id
+ d9443c01a7336-2462ef46b14mr40282005ad.33.1755873146625; 
+ Fri, 22 Aug 2025 07:32:26 -0700 (PDT)
 Received: from [192.168.1.111] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-77040215981sm86919b3a.87.2025.08.22.07.31.25
+ d9443c01a7336-24632677489sm25281265ad.98.2025.08.22.07.32.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Aug 2025 07:31:26 -0700 (PDT)
-Message-ID: <7c026d43-04b4-4615-8478-639393b640c2@linaro.org>
-Date: Fri, 22 Aug 2025 07:31:24 -0700
+ Fri, 22 Aug 2025 07:32:26 -0700 (PDT)
+Message-ID: <a39236c9-d6e7-4ff3-81a0-bf83b579475d@linaro.org>
+Date: Fri, 22 Aug 2025 07:32:24 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/12] single-binary: compile once semihosting
+Subject: Re: [PATCH v6 0/9] contrib/plugins: uftrace
 Content-Language: en-US
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, philmd@linaro.org, Weiwei Li
- <liwei1518@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- richard.henderson@linaro.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Peter Maydell <peter.maydell@linaro.org>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-arm@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20250804183950.3147154-1-pierrick.bouvier@linaro.org>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, rowan Hart <rowanbhart@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
+ <ma.mandourr@gmail.com>, Richard Henderson <richard.henderson@linaro.org>
+References: <20250808204156.659715-1-pierrick.bouvier@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250804183950.3147154-1-pierrick.bouvier@linaro.org>
+In-Reply-To: <20250808204156.659715-1-pierrick.bouvier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,62 +105,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025-08-04 11:39, Pierrick Bouvier wrote:
-> This series compiles once semihosting files in system mode.
-> The most complicated file was semihosting/arm-compat-semi.c, which was carefully
-> cleaned in easy to understand steps.
+On 2025-08-08 13:41, Pierrick Bouvier wrote:
+> This plugin generates a binary trace compatible with the excellent uftrace:
+> https://github.com/namhyung/uftrace
 > 
-> v2
+> In short, it tracks all function calls performed during execution, based on
+> frame pointer analysis. A big advantage over "uftrace record" is that it works
+> in system mode, allowing to trace a full system execution, which was the
+> original goal. It works as well in user mode, but uftrace itself already does
+> this. It's implemented for aarch64 and x86_64.
+> 
+> Let's start with concrete examples of the result.
+> 
+> First, in system mode, booting a stack using TF-A + U-boot + Linux:
+> - Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
+> https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
+> - Stat and open syscalls in kernel
+> https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
+> - Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
+> https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
+> 
+> Full trace is available here:
+> https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz
+> You can download and open it on https://ui.perfetto.dev/ to explore it.
+> 
+> Second, in user mode, tracing qemu-aarch64 (itself) running git --help:
+> - Loading program and its interpreter
+> https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
+> - TB creation
+> https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
+> 
+> Full trace is available here:
+> https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz
+> 
+> If you had curiosity and now you're ready to give some attention, most of the
+> details you want to read are included in the documentation patch (final one).
+> 
+> Overhead is around x5-x15, and long traces can be directly filtered with uftrace
+> if needed.
+> 
+> I hope this plugin can help people trying to understand what happens out of the
+> user space, and get a better grasp of how firmwares, bootloader, and kernel
+> interact behind the curtain.
+> 
+> v6
 > --
 > 
-> - use vaddr for syscalls.c/.h
-> - static qualifier for console_{in,out}_gf
-> - use vaddr for arm-compat-semi.c
-> - semihosting/arm-compat-semi: fix cast for common_semi_set_ret
+> - fix types and spelling mistakes
+> - use _MAX for privilege level enums
+> - uftrace info file: use empty strings
+> - trace flush: assert we wrote all data
+> - doc: added style for keyboard keys
+> - added URL to document uftrace entry format
+> - updated comment in vcpu_tb_trans to explain why we always instrument the first
+>    instruction in tb
+> 
+> v5
+> --
+> 
+> - addressed Alex comments
+> - split plugin implementation in several commits
+> - removed instruction based timestamps (only use time based timestamps)
+> - removed sampling implementation
+> 
+> v4
+> --
+> 
+> - add support for x64
 > 
 > v3
 > --
 > 
-> - keep common_semi_sys_exit_extended (Peter)
+> - fix missing include unistd.h (build failed on MacOS only)
 > 
-> Pierrick Bouvier (12):
->    semihosting/syscalls: compile once in system and per target for user
->      mode
->    semihosting/syscalls: replace uint64_t with vaddr where appropriate
->    semihosting/guestfd: compile once for system/user
->    semihosting/arm-compat-semi: change common_semi_sys_exit_extended
->    target/riscv/common-semi-target: remove sizeof(target_ulong)
->    target/{arm,riscv}/common-semi-target: eradicate target_ulong
->    include/semihosting/common-semi: extract common_semi API
->    semihosting/arm-compat-semi: eradicate sizeof(target_ulong)
->    semihosting/arm-compat-semi: replace target_ulong with uint64_t
->    semihosting/arm-compat-semi: eradicate target_long
->    semihosting/arm-compat-semi: remove dependency on cpu.h
->    semihosting/arm-compat-semi: compile once in system and per target for
->      user mode
+> v2
+> --
 > 
->   include/semihosting/common-semi.h             |   6 +
->   include/semihosting/guestfd.h                 |   7 --
->   include/semihosting/semihost.h                |   2 +
->   include/semihosting/syscalls.h                |  30 ++---
->   semihosting/arm-compat-semi-stub.c            |  19 +++
->   semihosting/arm-compat-semi.c                 |  65 ++++++++---
->   semihosting/guestfd.c                         |  26 +----
->   semihosting/syscalls.c                        | 109 +++++++++---------
->   ...mon-semi-target.h => common-semi-target.c} |  22 ++--
->   ...mon-semi-target.h => common-semi-target.c} |  27 +++--
->   semihosting/meson.build                       |  18 +--
->   target/arm/meson.build                        |   4 +
->   target/riscv/meson.build                      |   4 +
->   13 files changed, 190 insertions(+), 149 deletions(-)
->   create mode 100644 semihosting/arm-compat-semi-stub.c
->   rename target/arm/{common-semi-target.h => common-semi-target.c} (59%)
->   rename target/riscv/{common-semi-target.h => common-semi-target.c} (53%)
+> - trace active stacks on exit
+> - do not erase map generated in system_emulation
+> - add documentation to generate restricted visual traces around specific events
+>    of execution
+> 
+> Pierrick Bouvier (9):
+>    contrib/plugins/uftrace: skeleton file
+>    contrib/plugins/uftrace: define cpu operations and implement aarch64
+>    contrib/plugins/uftrace: track callstack
+>    contrib/plugins/uftrace: implement tracing
+>    contrib/plugins/uftrace: implement privilege level tracing
+>    contrib/plugins/uftrace: generate additional files for uftrace
+>    contrib/plugins/uftrace: implement x64 support
+>    contrib/plugins/uftrace_symbols.py
+>    contrib/plugins/uftrace: add documentation
+> 
+>   docs/about/emulation.rst           | 199 +++++++
+>   contrib/plugins/uftrace.c          | 876 +++++++++++++++++++++++++++++
+>   contrib/plugins/meson.build        |   3 +-
+>   contrib/plugins/uftrace_symbols.py | 152 +++++
+>   4 files changed, 1229 insertions(+), 1 deletion(-)
+>   create mode 100644 contrib/plugins/uftrace.c
+>   create mode 100755 contrib/plugins/uftrace_symbols.py
 > 
 
 Ping on this series.
-I'll be out next week, but it should be ready to be pulled once the 
-trunk reopens.
+Comments from reviewers have been addressed.
+Alex, are there other changes you would like before pulling this?
 
 Regards,
 Pierrick
