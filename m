@@ -2,95 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028DDB31D59
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 17:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2BFB31E20
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 17:19:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upTLV-0006in-AV; Fri, 22 Aug 2025 11:06:26 -0400
+	id 1upTVP-0007V2-Ph; Fri, 22 Aug 2025 11:16:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1upTKb-0006OK-Hk
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 11:05:36 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1upTKX-0005ej-On
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 11:05:28 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-24615b3445dso11780395ad.0
- for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 08:05:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755875118; x=1756479918; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dS+zgdCpAYFGUoKW0yLhg60e3pstpN/f2LpdahNz4mc=;
- b=Tk2kn8+TIsXFE2GYxnpK0Mr3iEPYvrfZHt9pYtmuO0s5SYzKgXOajDXwSvKQDfQ2QR
- g2riPIltmtPi73q0GTPqn6Boasl6o9uQyKkXjLNCRkRo92YpnGcTluusEEdBNUIlOKMs
- nrWznVt+2M+FxrRZJBtvE1iEIHmW/2iW+snQZ+MACAycyBNHqiE9GR5l4GLWsQ6uo01/
- bkpvka/PtT4mMNhAkyLOf+ZauuVGTPnS+2MTizi+IiaH3pNgK5YOEZSM4/LnasOPZb10
- GZuZPpBR4yxohBRh5udAFUFth90gK0jgZHD3nX6JW25ZFPFeHNmLOg7OfLdZ5/05qujc
- TAzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755875118; x=1756479918;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dS+zgdCpAYFGUoKW0yLhg60e3pstpN/f2LpdahNz4mc=;
- b=ZJoC7r/9Hqsd/1KfA04QQjfh+xyQinNi0JvFmZNLv12eAsclrXUHKVfeD3BU5jC8K1
- VbhWhOlsjTV1UeKQKRu4nU6qSY/ymB0R5TXZYz5I8kr1PQd/BRMc/+SROXT2ag/ZGQ6H
- qs20EfDBkx8/9r9m1nUQnZYDPt3iSHcrbnqGkPzECD4JwHR5Y0Ns6aED5C+0sIPTpJOq
- kHvn4RrQmbpJDjF9K4W4GrFArnqYRnbpnWSQ1PAP8nOf8f7URiIlY7mbgJ8nSMXz7OjX
- 5PW4eJZixRjYXBpiQBkSJKncxC/j0m7iAG8TZyyadHcIscE4PHRoSri2c8M89/hrGCHa
- qhMQ==
-X-Gm-Message-State: AOJu0Yxc9O0rp+GVIiybksYF+kPxH3unDnizss3LYUElmzfyP01eWVtA
- 2vhYpq9QS9hH0aFJu2XBRIZSN2L7BHuZkTeDeUBI5f7rf2z5e8RzTi3OOWrxAJ6PjrL48rDJEtL
- 6isTBZpKBXg==
-X-Gm-Gg: ASbGnctWvMf0c+5UbuztvalA7PWDsJZZEVFLiitRE1pE2ytoep7DVjd4by6LrdQ92bX
- uBiEDorRWeHMY2H+kFkBGgC2hzwJaCisr99l0KODS/WAF1pMsPOdIZt8VWKkujrQW7Bbbzv0u40
- c54ku1n2EOrUwd7itASRF6OXeJT9bXVX6bpwRgx4q64c771wdL95LwaJSY3Er0C3hWILV6hG70c
- 4rF+iLSKdpEsHOVtU3mIA4f98wctWnTWtsmSVT32rP9d9OUnMPQXJtNxSK0Qu3VUFi0Rn5dYFYL
- KnO7lrDLLVMn3Pgn6P6LR64R94zUjNO0VjHbKQZR1gdA5VBrC8z84pOeZUSmJnjM4gCGnwhpr8d
- /7zTFIrs2FoO69uHS4b7XMXP+1FjQ95Xvz8Dq
-X-Google-Smtp-Source: AGHT+IGwmVzt4v7vtICSxFyeNLhu8d2iYdGZCJun6cCI7hb9syFdiuvxMEYfvu+Q196s15zxdgdXXA==
-X-Received: by 2002:a17:902:d48f:b0:237:e696:3d56 with SMTP id
- d9443c01a7336-2462ef037d8mr40854575ad.32.1755875117868; 
- Fri, 22 Aug 2025 08:05:17 -0700 (PDT)
-Received: from [192.168.1.111] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-245f0d86c05sm79796045ad.93.2025.08.22.08.05.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Aug 2025 08:05:16 -0700 (PDT)
-Message-ID: <40cf55e8-b7d5-49ee-8c0e-10c32a1df00f@linaro.org>
-Date: Fri, 22 Aug 2025 08:05:15 -0700
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1upTVO-0007Ul-Gv; Fri, 22 Aug 2025 11:16:38 -0400
+Received: from mail-bn8nam11on20602.outbound.protection.outlook.com
+ ([2a01:111:f403:2414::602]
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1upTVK-00076D-1y; Fri, 22 Aug 2025 11:16:38 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=U57W6LPN/feRyF25P00taUVvpE395lGdCmnGtG/TvVipg2IJvwnf2kgZpgeoUzOVbK8r3OlPtaI6CFyMKvi0k9WAX47+pS+gtaYPQDmBwOIOKFAwktgJp6B4ClISOr3+C4mVeIKxhsNjMdhytEVS9p+fAD9+9tHvpcKczNE4E+HvNrrN4LR6ohFeei8Vvst7N8FqyDyY31hfD62NVYEGHfB1tggcLBCjGZvfnml0Ek4JHkmvLSvokhJWWJHQDNcOF9OZRp+EJL03sOlBi0FvL1D7G/Ef2IbfawOEvdYwoSOKYsR5C4wKUEwqJaMnMYKIkdPZ4w5+5GJRY0srtp3Y/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c3LbXuLp/N6gjzse6GGImV9crlpriD7T17nP0TWmtlA=;
+ b=eOUdjPDVrsz5yBnSzFKLgODFqU+sR66OtwOtGCDVFrSQTO0Jarc04JL/I1b+4/NxArQCyu8T7dPUseuDlX+U4xzR5XXfwUhjg8bpdhQMuBrT53GRptX3WdaAW9xlEUInama7rPO2HfBzEBCkaEJ7sFqDs5IZaEhIJYsKWA3RC7FC1SNkCORaot7u/7n/w321nZqmjO3B6le3FTCrop9qJMJNwP3b2paXOFUmLxQny0AlrguvLrgNiMimaChgfVhDW1pSuR1dGbNwUguTiXwSE/VGbsHUHA5+P7YRAP8txT184IaXoMWBWbpd/Exw8eg9GcAFLTHujOJmEvzb6AEZug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c3LbXuLp/N6gjzse6GGImV9crlpriD7T17nP0TWmtlA=;
+ b=5ZFiHzcadq7oJB/kii2S05+UlvdSIorf176KJeBVsxEnBo58QkZDp0mAfMaa1XphUdSuNH8xrAsctosfDtuQGM/DpJPMiH2hCtYi3kqAf1hzDS1K4V19wpxcNLrv0vAATDuqYqbMaLdnvDytXp2AVcMB3RoK7UAo74lJMgtpUsQ=
+Received: from DM6PR12CA0013.namprd12.prod.outlook.com (2603:10b6:5:1c0::26)
+ by DS7PR12MB6239.namprd12.prod.outlook.com (2603:10b6:8:95::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.14; Fri, 22 Aug
+ 2025 15:16:25 +0000
+Received: from DS2PEPF0000343E.namprd02.prod.outlook.com
+ (2603:10b6:5:1c0:cafe::16) by DM6PR12CA0013.outlook.office365.com
+ (2603:10b6:5:1c0::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.18 via Frontend Transport; Fri,
+ 22 Aug 2025 15:16:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS2PEPF0000343E.mail.protection.outlook.com (10.167.18.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9052.8 via Frontend Transport; Fri, 22 Aug 2025 15:16:24 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 22 Aug
+ 2025 10:16:24 -0500
+Received: from XFR-LUMICHEL-L2.xilinx.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
+ via Frontend Transport; Fri, 22 Aug 2025 10:16:22 -0500
+From: Luc Michel <luc.michel@amd.com>
+To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: Luc Michel <luc.michel@amd.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ Francisco Iglesias <francisco.iglesias@amd.com>, "Edgar E . Iglesias"
+ <edgar.iglesias@amd.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Alistair Francis <alistair@alistair23.me>, "Frederic
+ Konrad" <frederic.konrad@amd.com>, Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+Subject: [PATCH v4 00/47] AMD Versal Gen 2 support
+Date: Fri, 22 Aug 2025 17:15:25 +0200
+Message-ID: <20250822151614.187856-1-luc.michel@amd.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/12] single-binary: compile once semihosting
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- qemu-riscv@nongnu.org, richard.henderson@linaro.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, philmd@linaro.org,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20250822150058.18692-1-pierrick.bouvier@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250822150058.18692-1-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: None (SATLEXMB04.amd.com: luc.michel@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF0000343E:EE_|DS7PR12MB6239:EE_
+X-MS-Office365-Filtering-Correlation-Id: ebe7ed04-02b7-4711-39f4-08dde18edc18
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|82310400026|376014|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?U2w0NGNKbGZYWWNHSUYxdWN1TWxPZy9obUZwNWR1QnIxa3Yyc09ORUQxNVdC?=
+ =?utf-8?B?VnlPQllyRXhSemdxTFhlU0svQ2Q5M2hCYzFNRjdzaXlZNyt4MnVGMkN2aGVB?=
+ =?utf-8?B?MDE0KzN5U1BqYjFsNUtjaGUrOW5CczJBT3h4VDdrWllWaUJiM0ZIRXBLR1NM?=
+ =?utf-8?B?T282Myt4Wnd6ampHdkZMSFdlS2YrVzRaS05Yb2xydjNXSHRBZ1h4ditMc0Zm?=
+ =?utf-8?B?bHVYOU5vMVlUTUE5YkFPajlKOGJYVWZXMFgrQXhvNUd4ZzdiOGpOSkFPYUdS?=
+ =?utf-8?B?NE9XejVINmlPZEhOWkE0NUl4UnMzR3dWc3VhaG1VMXVpWEF5VytQMUNYVDlt?=
+ =?utf-8?B?WFBrMzB0Rkl6ZTdXZHdHbjB1MTBBZmw4aHQrQ3lZSURYWEh5cG9ScTZacTVD?=
+ =?utf-8?B?Tjlkc3JDNXludHhCbzRwVlp2QVdkekdtdGc0dkNRaTlLS3BxVkVEbXVwTE9h?=
+ =?utf-8?B?cXpiR21ZZmJqWTZDZEh2bFY1VGFnZ0dCK3NFWlJ6WHZSMDlhdFZ6WkFtNTMx?=
+ =?utf-8?B?MFNCQVlGR1FvbGpoT1pnNUJaQ2FXMWVWY0NqdEgyZDZJSlRUU1NUZU1VREsr?=
+ =?utf-8?B?ZzN0M21FNW52TUZFYVk1QXhhVXpwRy9jQzlZY3dSRjc1ZkYxRUROMHhRWUgw?=
+ =?utf-8?B?YkxhOTlrNFlBajQ5NmU5VjNsdmNMdkRNOXVQR25CNFdQdmhmbUpKSVcvNjdV?=
+ =?utf-8?B?UEREcngvbDVLZVdJbWZGZHZUblFvbWttVjNtOFFGM2VxeFZZaW92UGswaVpZ?=
+ =?utf-8?B?cHlGZC9tbllrVGVHMEtpWG1GL3pBNGNuQTlpU2NsK0hiVkNqYm5QajBhUW9H?=
+ =?utf-8?B?K21qS1p4SWZkelNkR05rVy9sd3NmNVdyMm1mc1BuVFdoVWVvUWxzWlJKMUN0?=
+ =?utf-8?B?MWpJTlUvWkJrMzJ0RkNXSS9VWU1sT3hwdnh5bmhJS1BPamdzNTBXejdaaTF0?=
+ =?utf-8?B?c0RkV3l6c2pCZm01OW95U2tQcGU1V1E2RTFoZVI1SXhhS0tGaTFZUGoxVk9D?=
+ =?utf-8?B?NFdzRU5qcGdiYk12ZXFYTVlWVGdlcXFUOWx5Y09jVHVCUmRibEE3Syt5UGs4?=
+ =?utf-8?B?L2JSSGJ0OTFLWHpkdkNpOE5JSGw1MFBkWjE4Vm5zeXNrN2l4VzIwbXk2MEpX?=
+ =?utf-8?B?TkU1Ym9mNjdvVXZPbGpqRHdWZngwN1BsMUM2M1FCUUhKOEt1dXVmR0tsOHBL?=
+ =?utf-8?B?d0JPVk1yVGZ0TnlxTEJ4VkRZYW02S2tmbmpTcFlycUYrTFF2WjQ3aG9CdkV4?=
+ =?utf-8?B?NVZMV3NZajMyanlMMnVnM1RleTBFOWdxNWtFU09YRUNJT0FHbFVlUWt2WXE0?=
+ =?utf-8?B?MzI2T3ZwN2JGZG9hZmNoRG1XSUpXRkFOcTZsdWpUQmR2cUV4bkhVcTlSUGU4?=
+ =?utf-8?B?dGZZTEZ2NlE4amFLem1xR2NqMGlaMVhIc1hqbnJqY3YrVkR4Q08wWlRpNEJu?=
+ =?utf-8?B?dE52MkhHNXVqazVCRmpqL2xZbXpWOHJmVVlWOVVEcHVxUXRjUkdOYUZkTWMx?=
+ =?utf-8?B?ZTVLVXdGYkxUTE5YdDVvM2gxUjZYZjVPalc0U04vMHRvVEtBNHJqekhqeURk?=
+ =?utf-8?B?UXJQTzByV001ZURxL2g2ZzdUWlhpaGQ5Q3FUN3pZTkRWTDdEK3U0aVkyb2R3?=
+ =?utf-8?B?RW9jeVN5VFFObmZHSG9Sb2cxbDNuQ05kODBJNVN1a3hmOE9XNWkxWnd4ajBI?=
+ =?utf-8?B?em5yMEFRWDE2RUVOK3V3dmJ3dEJaaVZEVGxxSVVVNnljS0p6WWRNbmhhYTZI?=
+ =?utf-8?B?KzlKditRSUhUV2N4OFh5UWR1WlZ5V1NkTXIydTFOVkJNNlBsWWx5aHg1Yjdo?=
+ =?utf-8?B?a0s3UnZYOHJlR0JUNDBMZUV3NENRTEw1QXlWSU5MTVUwVGMzcVl2MzZaNnNv?=
+ =?utf-8?B?djQvcTAvWXo0alkzcC8vMmtsWitQTUJDRnMxajRTN3lWQ0FkYzNEZmJnQndY?=
+ =?utf-8?B?cDRKWTFPSDFSUmJSemFzWTRjWlBlVWpFR1FmVE12UC9xMURpL0ZCc3ordk42?=
+ =?utf-8?B?dThvckdENGpwdTZPUFR5MkhLSXFWNTdCdnNTNGV4cVdLaTMvMXBjRFpaSG9u?=
+ =?utf-8?Q?qDbHG4?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2025 15:16:24.9854 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ebe7ed04-02b7-4711-39f4-08dde18edc18
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF0000343E.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6239
+Received-SPF: permerror client-ip=2a01:111:f403:2414::602;
+ envelope-from=Luc.Michel@amd.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,68 +157,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025-08-22 08:00, Pierrick Bouvier wrote:
-> This series compiles once semihosting files in system mode.
-> The most complicated file was semihosting/arm-compat-semi.c, which was carefully
-> cleaned in easy to understand steps.
-> 
-> v2
-> --
-> 
-> - use vaddr for syscalls.c/.h
-> - static qualifier for console_{in,out}_gf
-> - use vaddr for arm-compat-semi.c
-> - semihosting/arm-compat-semi: fix cast for common_semi_set_ret
-> 
-> v3
-> --
-> 
-> - keep common_semi_sys_exit_extended (Peter)
-> 
-> v4
-> --
-> 
-> - fix patch 9 commit message to s/uint64_t/vaddr (Phil)
-> 
-> Pierrick Bouvier (12):
->    semihosting/syscalls: compile once in system and per target for user
->      mode
->    semihosting/syscalls: replace uint64_t with vaddr where appropriate
->    semihosting/guestfd: compile once for system/user
->    semihosting/arm-compat-semi: change common_semi_sys_exit_extended
->    target/riscv/common-semi-target: remove sizeof(target_ulong)
->    target/{arm,riscv}/common-semi-target: eradicate target_ulong
->    include/semihosting/common-semi: extract common_semi API
->    semihosting/arm-compat-semi: eradicate sizeof(target_ulong)
->    semihosting/arm-compat-semi: replace target_ulong with vaddr
->    semihosting/arm-compat-semi: eradicate target_long
->    semihosting/arm-compat-semi: remove dependency on cpu.h
->    semihosting/arm-compat-semi: compile once in system and per target for
->      user mode
-> 
->   include/semihosting/common-semi.h             |   6 +
->   include/semihosting/guestfd.h                 |   7 --
->   include/semihosting/semihost.h                |   2 +
->   include/semihosting/syscalls.h                |  30 ++---
->   semihosting/arm-compat-semi-stub.c            |  19 +++
->   semihosting/arm-compat-semi.c                 |  65 ++++++++---
->   semihosting/guestfd.c                         |  26 +----
->   semihosting/syscalls.c                        | 109 +++++++++---------
->   ...mon-semi-target.h => common-semi-target.c} |  22 ++--
->   ...mon-semi-target.h => common-semi-target.c} |  27 +++--
->   semihosting/meson.build                       |  18 +--
->   target/arm/meson.build                        |   4 +
->   target/riscv/meson.build                      |   4 +
->   13 files changed, 190 insertions(+), 149 deletions(-)
->   create mode 100644 semihosting/arm-compat-semi-stub.c
->   rename target/arm/{common-semi-target.h => common-semi-target.c} (59%)
->   rename target/riscv/{common-semi-target.h => common-semi-target.c} (53%)
-> 
+v4:
+  - Fixed compilation issues and runtime crashes in 3 intermediate
+    patches. [Edgar]
+  - Introduced a small hack to keep the GEM FDT node order as it was
+    before. This is to avoid kernel iface name swapping (eth0 <-> eth1)
+    in Versal. [Edgar]
 
-Ping on this series.
-I'll be out next week, but it should be ready to be pulled once the
-trunk reopens.
+v3:
+  - Dropped qemu_get_cpu() usage in the machine code. Added an getter on
+    the SoC interface to retrieve the boot CPU instead. [Phil]
+  - Cleaned the mp_affinity logic. Drop the mask attribute and assume
+    it's always 0xff (the Affx fields in MPIDR are 8 bits long). Use the
+    ARM_AFFx_SHIFT constant instead of hardcoded values in .mp_affinity
+    description. [Phil]
+  - Avocado test renaming in patch 41 instead of 47. [Phil]
+  - Documentation tweak. [Phil]
 
-Regards,
-Pierrick
+v2:
+  - Addressed formatting/typo issues [Francisco]
+  - Patch 23: GICv3 first-cpu-idx: addressed the KVM case by bailing
+    out if not 0 at realize. I chose this path as I don't have a clear
+    view of what it means to implement that for KVM. It seems to make
+    sense anyway as this property is meant to be used for modeling of
+    non-SMP systems. [Peter]
+  - Patch 39: added a comment to clarify cortex-a78ae != cortex-a78 [Peter]
+
+Hello,
+
+This series brings support for the AMD Versal Gen 2 (versal2) SoC in
+QEMU. This SoC is the next iteration of the existing Versal SoC.
+
+It is organized as follows:
+  - The first and biggest part of the series performs refactoring of the
+    existing versal SoC implementation. This consists in:
+       - splitting existing device types into base/concrete classes,
+       - moving from an in-place to dynamic device creation approach in
+         the SoC code for flexibility,
+       - describing the SoC using a new structure called VersalMap,
+       - moving the DTB creation logic in the SoC code itself alongside
+         device creation.
+    Patches are split such that each device is individually converted to
+    use this new approach. Behaviour changes are minimal and are
+    emphasised in the commit messages. This gets the SoC code ready for
+    versal2 addition and leverage the fact that Versal family SoCs are
+    quite similar in term of architecture.
+
+  - versal2 SoC support is then added by adding the corresponding
+    VersalMap description. This allows to reuse the existing code
+    without duplication and almost no special case.
+
+  - The amd-versal2-virt machine is finally added, following the same
+    idea as amd-versal-virt. The documentation and tests are updated
+    accordingly.
+
+Note that the xlnx-versal-virt machine is renamed amd-versal-virt to
+follow current branding guidelines and stay coherent with the new
+amd-versal2-virt machine. The xlnx-versal-virt name is kept as an alias
+to amd-versal-virt for command line backward compatibility.
+
+Thanks
+
+Luc
+
+Francisco Iglesias (1):
+  hw/intc/arm_gicv3: Introduce a 'first-cpu-index' property
+
+Luc Michel (46):
+  hw/arm/xlnx-versal: split the xlnx-versal type
+  hw/arm/xlnx-versal: prepare for FDT creation
+  hw/arm/xlnx-versal: uart: refactor creation
+  hw/arm/xlnx-versal: canfd: refactor creation
+  hw/arm/xlnx-versal: sdhci: refactor creation
+  hw/arm/xlnx-versal: gem: refactor creation
+  hw/arm/xlnx-versal: adma: refactor creation
+  hw/arm/xlnx-versal: xram: refactor creation
+  hw/arm/xlnx-versal: usb: refactor creation
+  hw/arm/xlnx-versal: efuse: refactor creation
+  hw/arm/xlnx-versal: ospi: refactor creation
+  hw/arm/xlnx-versal: VersalMap: add support for OR'ed IRQs
+  hw/arm/xlnx-versal: PMC IOU SCLR: refactor creation
+  hw/arm/xlnx-versal: bbram: refactor creation
+  hw/arm/xlnx-versal: trng: refactor creation
+  hw/arm/xlnx-versal: rtc: refactor creation
+  hw/arm/xlnx-versal: cfu: refactor creation
+  hw/arm/xlnx-versal: crl: refactor creation
+  hw/arm/xlnx-versal-virt: virtio: refactor creation
+  hw/arm/xlnx-versal: refactor CPU cluster creation
+  hw/arm/xlnx-versal: add the mp_affinity property to the CPU mapping
+  hw/arm/xlnx-versal: instantiate the GIC ITS in the APU
+  hw/arm/xlnx-versal: add support for multiple GICs
+  hw/arm/xlnx-versal: add support for GICv2
+  hw/arm/xlnx-versal: rpu: refactor creation
+  hw/arm/xlnx-versal: ocm: refactor creation
+  hw/arm/xlnx-versal: ddr: refactor creation
+  hw/arm/xlnx-versal: add the versal_get_num_cpu accessor
+  hw/misc/xlnx-versal-crl: remove unnecessary include directives
+  hw/misc/xlnx-versal-crl: split into base/concrete classes
+  hw/misc/xlnx-versal-crl: refactor device reset logic
+  hw/arm/xlnx-versal: reconnect the CRL to the other devices
+  hw/arm/xlnx-versal: use hw/arm/bsa.h for timer IRQ indices
+  hw/arm/xlnx-versal: tidy up
+  hw/misc/xlnx-versal-crl: add the versal2 version
+  hw/arm/xlnx-versal: add a per_cluster_gic switch to
+    VersalCpuClusterMap
+  hw/arm/xlnx-versal: add the target field in IRQ descriptor
+  target/arm/tcg/cpu64: add the cortex-a78ae CPU
+  hw/arm/xlnx-versal: add versal2 SoC
+  hw/arm/xlnx-versal-virt: rename the machine to amd-versal-virt
+  hw/arm/xlnx-versal-virt: split into base/concrete classes
+  hw/arm/xlnx-versal-virt: tidy up
+  docs/system/arm/xlnx-versal-virt: update supported devices
+  docs/system/arm/xlnx-versal-virt: add a note about dumpdtb
+  hw/arm/xlnx-versal-virt: add the xlnx-versal2-virt machine
+  tests/functional/test_aarch64_xlnx_versal: test the versal2 machine
+
+ docs/system/arm/xlnx-versal-virt.rst         |   80 +-
+ include/hw/arm/xlnx-versal-version.h         |   16 +
+ include/hw/arm/xlnx-versal.h                 |  342 +--
+ include/hw/intc/arm_gicv3_common.h           |    1 +
+ include/hw/misc/xlnx-versal-crl.h            |  378 ++-
+ hw/arm/xlnx-versal-virt.c                    |  741 ++----
+ hw/arm/xlnx-versal.c                         | 2465 +++++++++++++-----
+ hw/intc/arm_gicv3_common.c                   |    3 +-
+ hw/intc/arm_gicv3_cpuif.c                    |    2 +-
+ hw/intc/arm_gicv3_kvm.c                      |    6 +
+ hw/misc/xlnx-versal-crl.c                    |  602 ++++-
+ target/arm/tcg/cpu64.c                       |   79 +
+ tests/functional/test_aarch64_xlnx_versal.py |   12 +-
+ 13 files changed, 3067 insertions(+), 1660 deletions(-)
+ create mode 100644 include/hw/arm/xlnx-versal-version.h
+
+-- 
+2.50.1
+
 
