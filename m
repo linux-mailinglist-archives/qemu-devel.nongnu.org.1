@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D9CB31A5E
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 15:57:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B7BB31A53
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 15:56:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upSDY-0005vP-Co; Fri, 22 Aug 2025 09:54:09 -0400
+	id 1upSDc-0005z3-Dv; Fri, 22 Aug 2025 09:54:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1Q-0005cm-1M
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:20 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1W-0005hk-Ll
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:26 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1M-000792-Cj
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:19 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-b49c622e598so137810a12.1
- for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 02:25:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1T-0007Af-1B
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:26 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-24458194d83so16197505ad.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 02:25:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1755854714; x=1756459514;
+ d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1755854721; x=1756459521;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mlo0VNE2LkX+k6ixV83bmWbI8LIl4VVBBmVNmXeQQcY=;
- b=gHlpWm/esdPlDf6OBTQA7j9IL58URUKNJ0ypl7KeyPyy08LqL136YGcVIR5dnkvhRM
- D31OB5pb2A36D7g9zEb8ePHOJPr7cdsNh17PgXh4SQaLp6GvjkAuKeD1qVoL2XvDPueB
- LmmTrstfjrYf8b+fKHtwP01Ch/obmqPSUI5hebbJ86QYdt0qHVYzHlQsa3u+1z5AiF/k
- nyyE5JhkLvgRS/cOnxTLmoMavA4IARyEM0sbEzJdzHfZqnQwAOXJtF2AvR8QnPmHnpY+
- 80ufSJoKrpnPDXps6WynkWrmvAtTbD+qjVzBLInJun54WGVFd8lC2xmW+hhRGTPUaCmq
- fY2A==
+ bh=CPBXmwU1P2JOttDvf/F4AUriHtbYHkfUE8krSjFXNTI=;
+ b=0hyhumnHT+wzjxI3l5lQ9w0ReGx82Z/8UJBX6STsFLkQFkhwawLw0/dGvjvrhxs7v5
+ 9MW2s+0D0fWAQKH5SZQENaXmS71uF+FfJDu+pQqoNNemiw4c13CWb/Ec99L6iX49yQLw
+ 9EGCOpA5xDTW+lRicn0IxN6hDpbR6VbcK3WsB8ieV2DcL743e7eu8AzqtcNnvFIBvrNj
+ YVm7wP/GJKDHCDSPA6s0KjFaO6V60xBClkkTk6Zb4AoEPKYnk/A3NLq9A6gczX+hd+H/
+ d0RHzTUDG2/m3GKGFl5I3bx3b0BvrwIfbIXRQX3w/9mOZHQVIM0x01CERVWSP1MRSdMr
+ 3biA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755854714; x=1756459514;
+ d=1e100.net; s=20230601; t=1755854721; x=1756459521;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mlo0VNE2LkX+k6ixV83bmWbI8LIl4VVBBmVNmXeQQcY=;
- b=v4TtVMhs1NzXghMduwyd2VdC7j31A0Oi5mAKxA9zvh/Yq9u8tsu5QLDqKuUXkXq7a/
- birS3llMyzz/cTLFPiSIQh06x5QZppScz3Icy2P2ODEhGAI31vjRfzlUUY0+b1nH2788
- HaDnlCu5UybNFxlJj/DiEaeONrpQOyUuF2ELkmK/erBxZuDEC8V79KPZbvaWcXXux1Kh
- VZRMFHz8C58lKMXB+F2/i/eV0kn3/7a6L+ucsZn0L5Sjus50WspNMPpIRXcMymqOYja3
- ofk1ajT3YOBmGD6QZuSbrRoQZG/LIf5hzMNabhIMFPeF7OHLnc1OjRiKezSph5OMD292
- zr2Q==
-X-Gm-Message-State: AOJu0YxzE7kRNh+QgXb5W4Wc+rqPlE4UmXN1rJRm8PI8bGXv59Yw7WX9
- EVdm8tspIbXPTsgbnhZO1Epm6/5dWFO1IQKEUliFiHQ1lWSO8/bEEnmO5PRO4AIwUCGTCkA4bpI
- SOX3IkIk=
-X-Gm-Gg: ASbGncvlesa3rpUoGqKN1YPQ8ul8yyhFscQ2vmUVY3UBlvsUB2kANyH4PuowY0p3JnS
- Edq2pcXZGFveKrMccyZr/jdIFhRWn8u9rhtH5bsLvRyaNxHgAYCFgoAxVJv1ednOdBHLV6lwAZd
- RYH3VssI1HhnKcvquK1vAlkdZkb26lbDr0MvoWR805vPBWDXEoQ+X8DKg+0SEOU/noA6iIWlHms
- m9r/3fUXtJ6LAR4qcRBgw8Z3YThKE5VqUqv2Eq1wuCrWj1TjLLW7DBHasZfrBB8K63n76Xt1Icg
- aRFOl/2zju5xIx+JsjgpjaPrTWsEnssgVZJ5K8hAtSdhdcjox7tLLwJg5rp2/Va0HYoQgQQ+5pQ
- hVeuhrCVglAa/FQbFcKBLlKpuOQu1IgpZJyb2nk2+EwoSWXicV8dP+l0EXciVbQQ=
-X-Google-Smtp-Source: AGHT+IEqxrEnh0zkYioghUeAJylIvzfIK34NEJeRhP+7uR5uCgzNq3nYAwgrwA28HLoaAtq27/RD1g==
-X-Received: by 2002:a17:903:2302:b0:240:3b9e:dd4c with SMTP id
- d9443c01a7336-2462ef446b7mr34309165ad.36.1755854714249; 
- Fri, 22 Aug 2025 02:25:14 -0700 (PDT)
+ bh=CPBXmwU1P2JOttDvf/F4AUriHtbYHkfUE8krSjFXNTI=;
+ b=cpj73OZlm4bDuDQrB+Z8YK7CEZj4nn2YKt7O9eIMoeKzq/u6KWQnWpeByiwmYPQrRJ
+ nQhkt9+nLzLVzERgfce910Fz+fd3W1A1d8akAZ4xBFyIoUkB1qhw9GsPQIWASzFHxiDJ
+ YkB6WCvrCAHcnTU0e4GO+eKGrVUcVvpXXaqbXDXndVb5k+lx9FMZb+2/N7tDTgEGSG34
+ QOb26uF4wmf7Is7C6RwO0ymfvd2S207DPueo02C3y5/iaOUpVxJbOsANfI1FeObjICvD
+ arai83vmHRkSgOdDsZBWf6xu5/EdPOHDM8cLY0iey73r5/7Syt4Zv2NnSPR/9yw6DThK
+ y7qQ==
+X-Gm-Message-State: AOJu0YwTIdA9FwM9asMffYZRBAMJcLt5baZcLZWbGjydv3kFeFwNU7L+
+ zxsGTflTXX+O0g5V+5ObryyiJdOyGve61R+87gbdsuRYBK9G12zVJBcwfC+jYVRNLYPLIzLTQaW
+ qkUu8zt4=
+X-Gm-Gg: ASbGncvTdMMOfuJXMG/ikp+C94Kd4r/DfS1JvB89pauLOQyPZKTJs3rD5BLmjwGlSAa
+ T8Ud+Z3V5g2Hb2MxuCXn5PMW3roWaIVf7a8rKlkI3Ep8ZtU4RdrPVODUQ9dyBcsGwHctELUhZ56
+ aG0o5oV1pmPd9Sn45Yt8mF1ynfR/yAO/fidcHRcJicl4eT69zCNhZPpzFQNCYba32NEpcq/06sq
+ /NkwGqZQWvPNJE4cRSMHNehUcaqxN0cCyxFLEB5hxtLyHPaXZMZwAlKQInETEWTaOLwP0vu+97Q
+ 31LoqL4CnJeuFKJ2pq89JhM7mdDcqh1ihnVDTgudur0cui9IWqp0IO9Sgr9gy5EDeqKwsFUoaQA
+ lrk1YYcjTdywyJ5tobmvwqaK1gczd4+8Y88qgwAqjkxJeB1/S6gNv
+X-Google-Smtp-Source: AGHT+IFjvo9bWFDlURrx68v+zTGIpikr6/j0R2yKpRo9yWHk3zInG5YNv7tU7I9P2qs4WDy/XMZHDA==
+X-Received: by 2002:a17:902:da85:b0:234:c8f6:1afb with SMTP id
+ d9443c01a7336-2462eb37ab9mr32227985ad.0.1755854720839; 
+ Fri, 22 Aug 2025 02:25:20 -0700 (PDT)
 Received: from warg.hq.igel.co.jp (napt.igel.co.jp. [219.106.231.132])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-245ed4c6fb7sm78560215ad.89.2025.08.22.02.25.08
+ d9443c01a7336-245ed4c6fb7sm78560215ad.89.2025.08.22.02.25.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Aug 2025 02:25:13 -0700 (PDT)
+ Fri, 22 Aug 2025 02:25:20 -0700 (PDT)
 From: CJ Chen <cjchen@igel.co.jp>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-riscv@nongnu.org,
  qemu-arm@nongnu.org
@@ -79,16 +79,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Keith Busch <kbusch@kernel.org>,
  Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
  Tomoyuki Hirose <hrstmyk811m@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>, CJ Chen <cjchen@igel.co.jp>
-Subject: [RFC PATCH v2 2/9] hw/riscv: iommu-trap: remove .impl.unaligned = true
-Date: Fri, 22 Aug 2025 18:24:03 +0900
-Message-Id: <20250822092410.25833-3-cjchen@igel.co.jp>
+Subject: [RFC PATCH v2 3/9] hw: npcm7xx_fiu and mx_pic change .impl.unaligned
+ = true
+Date: Fri, 22 Aug 2025 18:24:04 +0900
+Message-Id: <20250822092410.25833-4-cjchen@igel.co.jp>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250822092410.25833-1-cjchen@igel.co.jp>
 References: <20250822092410.25833-1-cjchen@igel.co.jp>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=cjchen@igel.co.jp; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=cjchen@igel.co.jp; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -111,32 +112,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since riscv-iommu does not support unaligned accesses, drop
-`.impl.unaligned = true` to avoid the contradictory pairing with
-`.valid.unaligned = false`.  This makes QEMU reject unaligned accesses
-for this device and prevents the assertion in memory.c that previously
-caused `make check` to fail.
+By setting .impl.unaligned = true, we allow QEMU to pass along
+unaligned requests directly as-is, rather than splitting them into
+multiple aligned sub-requests that might cause repeated device
+callbacks or unintended side effects.
 
 Signed-off-by: CJ Chen <cjchen@igel.co.jp>
 Tested-by: CJ Chen <cjchen@igel.co.jp>
 Acked-by: Tomoyuki Hirose <hrstmyk811m@gmail.com>
 Reported-by: Tomoyuki Hirose <hrstmyk811m@gmail.com>
 ---
- hw/riscv/riscv-iommu.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/ssi/npcm7xx_fiu.c | 3 +++
+ hw/xtensa/mx_pic.c   | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index a877e5da84..277746598a 100644
---- a/hw/riscv/riscv-iommu.c
-+++ b/hw/riscv/riscv-iommu.c
-@@ -2288,7 +2288,6 @@ static const MemoryRegionOps riscv_iommu_trap_ops = {
-     .impl = {
-         .min_access_size = 4,
+diff --git a/hw/ssi/npcm7xx_fiu.c b/hw/ssi/npcm7xx_fiu.c
+index 056ce13394..10ee4deb31 100644
+--- a/hw/ssi/npcm7xx_fiu.c
++++ b/hw/ssi/npcm7xx_fiu.c
+@@ -255,6 +255,9 @@ static const MemoryRegionOps npcm7xx_fiu_flash_ops = {
          .max_access_size = 8,
--        .unaligned = true,
+         .unaligned = true,
      },
++    .impl = {
++        .unaligned = true,
++    },
+ };
+ 
+ /* Control register read handler. */
+diff --git a/hw/xtensa/mx_pic.c b/hw/xtensa/mx_pic.c
+index 8211c993eb..6bf524a918 100644
+--- a/hw/xtensa/mx_pic.c
++++ b/hw/xtensa/mx_pic.c
+@@ -270,6 +270,9 @@ static const MemoryRegionOps xtensa_mx_pic_ops = {
      .valid = {
-         .min_access_size = 4,
+         .unaligned = true,
+     },
++    .impl = {
++        .unaligned = true,
++    },
+ };
+ 
+ MemoryRegion *xtensa_mx_pic_register_cpu(XtensaMxPic *mx,
 -- 
 2.25.1
 
