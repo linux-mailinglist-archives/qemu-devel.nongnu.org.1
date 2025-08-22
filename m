@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95318B317C5
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 14:28:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9271EB317D6
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 14:31:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upQrc-0004qh-10; Fri, 22 Aug 2025 08:27:24 -0400
+	id 1upQrf-0004rY-7c; Fri, 22 Aug 2025 08:27:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1upQrZ-0004q8-T1
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1upQrc-0004qz-Rp
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1upQrT-0002PV-4T
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:21 -0400
+ id 1upQrV-0002Pg-UD
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755865633;
+ s=mimecast20190719; t=1755865636;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HHrA/UsW2DzabHAW3AoasOy3GBNC6W8fjR2RtT6A+zs=;
- b=DjatiRTE5HfHMX+LtMR7fouUF494X7jcrDEpMGk/6bftUncQ70a4nSDNL7/WOtp7gRL9UA
- mrztnqtBkBBtikuSV5RSjKCnObAeQYB+7g+a83d1pzjfXTQAA2/LT2lAUFopEA5AbkExir
- 02wHaSjUGRsv1lmu9LhNBgiRh04QsrU=
+ bh=aZ0GqsB7rEuShiZCOdvD7xOIhTFHs+MwUr0NXVgYiTA=;
+ b=BpF4lrwuBx1zU75VrPbnebwA/xL+L3OAmbGjUE/LopISP1l+vv2U0vbGFCVtFX4I6xFFhZ
+ 65KQDZf51gKJhb1yu3c+sNL8c92tZvOsYf7FYXfJa++1oFP+sQCD7K5MtFDJtJ/8+qgiQ7
+ Zl5COXU//AbMsVORKmrdaQRp/m/42eg=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-472-wpQCJlxxNtWea6T_f1PdMQ-1; Fri, 22 Aug 2025 08:27:12 -0400
-X-MC-Unique: wpQCJlxxNtWea6T_f1PdMQ-1
-X-Mimecast-MFC-AGG-ID: wpQCJlxxNtWea6T_f1PdMQ_1755865631
+ us-mta-353--Fy4e3oRNHe1dg__KpcaWQ-1; Fri, 22 Aug 2025 08:27:14 -0400
+X-MC-Unique: -Fy4e3oRNHe1dg__KpcaWQ-1
+X-Mimecast-MFC-AGG-ID: -Fy4e3oRNHe1dg__KpcaWQ_1755865634
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45a1b0cb0aaso16100085e9.3
- for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 05:27:12 -0700 (PDT)
+ 5b1f17b1804b1-45a1b0ccb6cso10960545e9.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 05:27:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755865630; x=1756470430;
+ d=1e100.net; s=20230601; t=1755865633; x=1756470433;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HHrA/UsW2DzabHAW3AoasOy3GBNC6W8fjR2RtT6A+zs=;
- b=OOmHiqSLi+xUp0ek9nQqaaIhSUgSN7X5urxaEHxkHnCUe2Hwda3nFSFnqMyAvTFvtC
- afvMt/LW5nnKn67ZCaTjXVkDmxDlREg/qsvyCGMf3Vwxk2C/ZSff3OHPsOzpBtqrlHjh
- 5ZqlbnrAm1OHIMBYILmhRinscngWKfEicVbHdrYQZj2vqpyfa4hA7Qr0WrNc+7fUFknu
- sK01YgvGpH+Xr9KWCpG1FiA7F+/KcdqrTMhdBODU6dfB9I4QuztgrTO6EXYdgJm7Fz6f
- PhgouYrlmi7Q8JUsyC1wGxjKTfa6n3qLib67NfOy0CJuJ7pA/Asy0MwRvbmR7PsXqtVe
- csqQ==
-X-Gm-Message-State: AOJu0Yzujjln7UeQOUPGhmGvx8dpmP2u77gHuOvpDwWXFHVoggFQq35x
- 07HyqkCdzdVKs4uYoANi+z7G6mO79o4t/wEx+S/hSPcfkyYkc2y2H+7hhSmM600sfw8gmuax7Dk
- 5KL97Dg7zMe4PpflCl7L99wa9AUJW1MW6vc+/EWNKta5PpztekFujjtiW9uKAQjrRsJOZcmIXt5
- ni2ByAOg0yJ6wzP1WsuIEnRO/Ibxm8nftlgfpP9GfE
-X-Gm-Gg: ASbGncvdm30PfbaTTps5tt8/GXvEBFr3MGzwMw5TYGVFXFL2M2v84hsC6pz3Rk1pd5l
- i8vZsQ9+UyglH8IWzBMCdUSUSMEwhwMmbKhqZIN5wQjvoy3VRAsr9cBBs4/8hYFKYBE0aqRn5mG
- SignaiZPMIz0gZ/JVJSu74PAQU4QoXaLBzwnO1ChjZgKKFiXPPfV13RCe56qMwFqSQY60mAO3ol
- 2DweeDbKi6f3HWzUu6jnaTPjDNgbOfYZ9BgMqOcdsctetcjNu4dLzjbPSLPmfjdR+DE6JJ0StCu
- PTJnQexH+nNFbrtYDdxCtXMqU962xjcTssRFi5d4b+qxnoC1DYyj+J/u3dPonOeQzeewsoXmE2N
- qNedYJGy8GYOtodJnZMHiP3FlvXvaeCxOPfOKphm+2A==
-X-Received: by 2002:a05:600c:c87:b0:459:dd34:52fb with SMTP id
- 5b1f17b1804b1-45b5179ebb2mr26048735e9.12.1755865630527; 
- Fri, 22 Aug 2025 05:27:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGUb4hAy9c5J9cOEAHkKQBB5FTbnN9DtgPHEf5YCMRJxxP+C1M/9T/eeYANdUFFxP9gTPWUkA==
-X-Received: by 2002:a05:600c:c87:b0:459:dd34:52fb with SMTP id
- 5b1f17b1804b1-45b5179ebb2mr26048395e9.12.1755865630046; 
- Fri, 22 Aug 2025 05:27:10 -0700 (PDT)
+ bh=aZ0GqsB7rEuShiZCOdvD7xOIhTFHs+MwUr0NXVgYiTA=;
+ b=wYF3a9Dq2buLjdAZt3xyP6+ksaGSUqALBo+jYsAC06epxFPu8VfE4PAa0WO/oaL1Di
+ 4SygTHl7PuQSGkUx9oGPVPZnzLHWeelYEARwt8OIZPb7lTfhjACpaocq/PpvawPcTutr
+ ZDPxJqEShT9OaSSzudkQxb4YxUdpHSyBMKLgMLrcAlr5UPFWaLPE2yON+F/qjW5VR3sW
+ A90YjG/DhLVwmlEyru7bmHQMw/DNzGc/wZcAGycD9ZYlRuVT9QCtmGeDY1jsH0FvEe0M
+ xVJ8c77Ny7tFggle7a2L3/Tg8n9PnT8dr2JkWFEzWG8CzsmEdrQ8dqWqU+xtWI02H4QW
+ 9xBw==
+X-Gm-Message-State: AOJu0YwXnINv8INamQdT+omaTUNfus7DB1KTBGIyklbuxclE1DZ9rmnf
+ Ocbkh+qE/TjRO1XZFyvGypIVVvjHI1oQvXedLLc+EBga3wJo2sT0MqB0GkNDQON7wNbJfM0q5nu
+ f3I0pTZsW8SNmBAWo9GVlYRPzZB46tfOjJQHPzpyq3uJ20RiwOfIyLeIN+NEeLstxVckvGBTs6A
+ x2oiynpAF3JslYl20MXW6Kr/SfVNgn3SsJUyXsJE+i
+X-Gm-Gg: ASbGncuYjJsbZl+HFKv68TXIOCy57VewG+Ss2MjnDi85jDJVmjCSwkeD4RNiiWVpvCz
+ BlHhbYIpMSTYVKZQnWC3YOlXDr8aK60AfaYyi6i5LpIbhAB163h6K6G8gsZAIhuvvb1iTKj07RR
+ l1oVrOYx7LMYr7WI/aB2B116pDRP9U9E1OdfI6/OIu1/0tkIQebRlgIWNqFar0GE8N5huxpbUMY
+ gnibyMBMdeKZexlx9bNcu8WfwbC0TQO96jECqwrLfsfs3Zhjdavdy6FeeNMUQk962KwVixZrJGG
+ l86GmAKxU2zxBSySzZM1BQd3qvFL344wGjAYmU0wpCgR4Y+FrhY09QI5M/8phi/fKVeTvUikA3Y
+ AlfyCTg5NLx45HTW4VFNb0lBVZw/eYfMAmw51KLzwdg==
+X-Received: by 2002:a05:600c:198c:b0:456:1a69:94fd with SMTP id
+ 5b1f17b1804b1-45b51726dfemr23864675e9.0.1755865633177; 
+ Fri, 22 Aug 2025 05:27:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF4MHdc4iNiigULTPInEOvp7YDcbXX31Cz8aY8YhsgnDyezJyEqtj1movYA48Eefz6V7Gn/Qg==
+X-Received: by 2002:a05:600c:198c:b0:456:1a69:94fd with SMTP id
+ 5b1f17b1804b1-45b51726dfemr23864355e9.0.1755865632632; 
+ Fri, 22 Aug 2025 05:27:12 -0700 (PDT)
 Received: from [192.168.10.3] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b50e11ab8sm36112395e9.24.2025.08.22.05.27.07
+ ffacd0b85a97d-3c3c89cd4d4sm9401148f8f.42.2025.08.22.05.27.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Aug 2025 05:27:08 -0700 (PDT)
+ Fri, 22 Aug 2025 05:27:10 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: tanishdesai37@gmail.com, stefanha@redhat.com, berrange@redhat.com,
  mads@ynddal.dk
-Subject: [PATCH 05/14] tracetool/backend: remove redundant trace event checks
-Date: Fri, 22 Aug 2025 14:26:46 +0200
-Message-ID: <20250822122655.1353197-6-pbonzini@redhat.com>
+Subject: [PATCH 06/14] tracetool: Add Rust format support
+Date: Fri, 22 Aug 2025 14:26:47 +0200
+Message-ID: <20250822122655.1353197-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250822122655.1353197-1-pbonzini@redhat.com>
 References: <20250822122655.1353197-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -91,8 +91,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,173 +110,300 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tanish Desai <tanishdesai37@gmail.com>
 
-Use CHECK_TRACE_EVENT_GET_STATE in log, syslog, dtrace and simple
-backend, so that the "if (trace_event_get_state)" is created from common
-code and unified when multiple backends are active.
+Generating .rs files makes it possible to support tracing in rust.
+This support comprises a new format, and common code that converts
+the C expressions in trace-events to Rust.  In particular, types
+need to be converted, and PRI macros expanded.  Fortunately, all
+common platforms have a known mapping of 8/16/32/64-bit integers
+to char/short/int/"long long": even if int64_t is equal to long,
+it is fine to change the format string from PRIx64's expansion
+"%lx" to "%llx".  This makes it possible to have a static mapping
+from PRI macros to their expansion.
 
-When a single backend is active there is no code change (except
-for the log backend, as shown in tests/tracetool/log.h), but the
-code in the backends is simpler.
+As of this commit no backend generates Rust code, but it is already
+possible to use tracetool to generate Rust sources; they are not
+functional but they compile and contain tracepoint functions.
 
 Signed-off-by: Tanish Desai <tanishdesai37@gmail.com>
+[Move Rust argument conversion from Event to Arguments; string
+ support. - Paolo]
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/tracetool/log.h               | 16 ++++++++++------
- scripts/tracetool/backend/ftrace.py |  6 ++----
- scripts/tracetool/backend/log.py    | 10 ++++------
- scripts/tracetool/backend/simple.py |  8 ++------
- scripts/tracetool/backend/syslog.py |  8 ++------
- 5 files changed, 20 insertions(+), 28 deletions(-)
+ scripts/tracetool/__init__.py  | 156 +++++++++++++++++++++++++++++++++
+ scripts/tracetool/format/rs.py |  76 ++++++++++++++++
+ 2 files changed, 232 insertions(+)
+ create mode 100644 scripts/tracetool/format/rs.py
 
-diff --git a/tests/tracetool/log.h b/tests/tracetool/log.h
-index edcc7f9d47c..c7795871f85 100644
---- a/tests/tracetool/log.h
-+++ b/tests/tracetool/log.h
-@@ -21,10 +21,12 @@ extern uint16_t _TRACE_TEST_WIBBLE_DSTATE;
+diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
+index 1d5238a0843..0b8ec707332 100644
+--- a/scripts/tracetool/__init__.py
++++ b/scripts/tracetool/__init__.py
+@@ -31,6 +31,49 @@ def error(*lines):
+     error_write(*lines)
+     sys.exit(1)
  
- static inline void trace_test_blah(void *context, const char *filename)
- {
--    if (trace_event_get_state(TRACE_TEST_BLAH) && qemu_loglevel_mask(LOG_TRACE)) {
-+    if (trace_event_get_state(TRACE_TEST_BLAH)) {
-+        if (qemu_loglevel_mask(LOG_TRACE)) {
- #line 4 "trace-events"
--        qemu_log("test_blah " "Blah context=%p filename=%s" "\n", context, filename);
--#line 28 "log.h"
-+            qemu_log("test_blah " "Blah context=%p filename=%s" "\n", context, filename);
-+#line 29 "log.h"
-+        }
-     }
- }
++FMT_TOKEN = re.compile(r'''(?:
++                       " ( (?: [^"\\] | \\[\\"abfnrt] |            # a string literal
++                               \\x[0-9a-fA-F][0-9a-fA-F]) *? ) "
++                       | ( PRI [duixX] (?:8|16|32|64|PTR|MAX) )    # a PRIxxx macro
++                       | \s+                                       # spaces (ignored)
++                       )''', re.X)
++
++PRI_SIZE_MAP = {
++    '8':  'hh',
++    '16': 'h',
++    '32': '',
++    '64': 'll',
++    'PTR': 't',
++    'MAX': 'j',
++}
++
++def expand_format_string(c_fmt, prefix=""):
++    def pri_macro_to_fmt(pri_macro):
++        assert pri_macro.startswith("PRI")
++        fmt_type = pri_macro[3]  # 'd', 'i', 'u', or 'x'
++        fmt_size = pri_macro[4:]  # '8', '16', '32', '64', 'PTR', 'MAX'
++
++        size = PRI_SIZE_MAP.get(fmt_size, None)
++        if size is None:
++            raise Exception(f"unknown macro {pri_macro}")
++        return size + fmt_type
++
++    result = prefix
++    pos = 0
++    while pos < len(c_fmt):
++        m = FMT_TOKEN.match(c_fmt, pos)
++        if not m:
++            print("No match at position", pos, ":", repr(c_fmt[pos:]), file=sys.stderr)
++            raise Exception("syntax error in trace file")
++        if m[1]:
++            substr = m[1]
++        elif m[2]:
++            substr = pri_macro_to_fmt(m[2])
++        else:
++            substr = ""
++        result += substr
++        pos = m.end()
++    return result
  
-@@ -34,10 +36,12 @@ static inline void trace_test_blah(void *context, const char *filename)
+ out_lineno = 1
+ out_filename = '<none>'
+@@ -90,6 +133,48 @@ def out(*lines, **kwargs):
+     "ptrdiff_t",
+ ]
  
- static inline void trace_test_wibble(void *context, int value)
- {
--    if (trace_event_get_state(TRACE_TEST_WIBBLE) && qemu_loglevel_mask(LOG_TRACE)) {
-+    if (trace_event_get_state(TRACE_TEST_WIBBLE)) {
-+        if (qemu_loglevel_mask(LOG_TRACE)) {
- #line 5 "trace-events"
--        qemu_log("test_wibble " "Wibble context=%p value=%d" "\n", context, value);
--#line 41 "log.h"
-+            qemu_log("test_wibble " "Wibble context=%p value=%d" "\n", context, value);
-+#line 44 "log.h"
-+        }
-     }
- }
- #endif /* TRACE_TESTSUITE_GENERATED_TRACERS_H */
-diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/backend/ftrace.py
-index a07f8a9dfd8..432f216ea2b 100644
---- a/scripts/tracetool/backend/ftrace.py
-+++ b/scripts/tracetool/backend/ftrace.py
-@@ -16,6 +16,7 @@
++C_TYPE_KEYWORDS = {"int", "short", "long", "unsigned", "char"}
++
++C_TO_RUST_TYPE_MAP = {
++    "int": "std::ffi::c_int",
++    "long": "std::ffi::c_long",
++    "long long": "std::ffi::c_longlong",
++    "short": "std::ffi::c_short",
++    "char": "std::ffi::c_char",
++    "bool": "bool",
++    "unsigned": "std::ffi::c_uint",
++    "unsigned long": "std::ffi::c_long",
++    "unsigned long long": "std::ffi::c_ulonglong",
++    "unsigned short": "std::ffi::c_ushort",
++    "unsigned char": "u8",
++    "int8_t": "i8",
++    "uint8_t": "u8",
++    "int16_t": "i16",
++    "uint16_t": "u16",
++    "int32_t": "i32",
++    "uint32_t": "u32",
++    "int64_t": "i64",
++    "uint64_t": "u64",
++    "void": "()",
++    "size_t": "usize",
++    "ssize_t": "isize",
++    "uintptr_t": "usize",
++    "ptrdiff_t": "isize",
++}
++
++# Rust requires manual casting of <32-bit types when passing them to
++# variable-argument functions.
++RUST_VARARGS_SMALL_TYPES = {
++    "std::ffi::c_short",
++    "std::ffi::c_ushort",
++    "std::ffi::c_char",
++    "i8",
++    "u8",
++    "i16",
++    "u16",
++    "bool",
++}
++
+ def validate_type(name):
+     bits = name.split(" ")
+     for bit in bits:
+@@ -105,6 +190,40 @@ def validate_type(name):
+                              "other complex pointer types should be "
+                              "declared as 'void *'" % name)
  
++def c_type_to_rust(name):
++    ptr = False
++    const = False
++    name = name.rstrip()
++    if name[-1] == '*':
++        name = name[:-1].rstrip()
++        ptr = True
++        if name[-1] == '*':
++            # pointers to pointers are the same as void*
++            name = "void"
++
++    bits = iter(name.split())
++    bit = next(bits)
++    if bit == "const":
++        const = True
++        bit = next(bits)
++
++    if bit in C_TYPE_KEYWORDS:
++        if bit == 'signed':
++            bit = ''
++        rest = list(bits)
++        if rest and rest[-1] == 'int':
++            rest = rest[:-1]
++        name = bit + ' ' + ' '.join(rest)
++    else:
++        if list(bits):
++            raise ValueError("Invalid type '%s'." % name)
++        name = bit
++
++    ty = C_TO_RUST_TYPE_MAP[name.strip()]
++    if ptr:
++        ty = f'*{"const" if const else "mut"} {ty}'
++    return ty
++
+ class Arguments:
+     """Event arguments description."""
  
- PUBLIC = True
-+CHECK_TRACE_EVENT_GET_STATE = True
+@@ -197,6 +316,43 @@ def casted(self):
+         """List of argument names casted to their type."""
+         return ["(%s)%s" % (type_, name) for type_, name in self._args]
  
++    def rust_decl_extern(self):
++        """Return a Rust argument list for an extern "C" function"""
++        return ", ".join((f"_{name}: {c_type_to_rust(type_)}"
++                          for type_, name in self._args))
++
++    def rust_decl(self):
++        """Return a Rust argument list for a tracepoint function"""
++        def decl_type(type_):
++            if type_ == "const char *":
++                return "&std::ffi::CStr"
++            return c_type_to_rust(type_)
++
++        return ", ".join((f"_{name}: {decl_type(type_)}"
++                          for type_, name in self._args))
++
++    def rust_call_extern(self):
++        """Return a Rust argument list for a call to an extern "C" function"""
++        def rust_cast(name, type_):
++            if type_ == "const char *":
++                return f"_{name}.as_ptr()"
++            return "_{name}"
++
++        return ", ".join((rust_cast(name, type_) for type_, name in self._args))
++
++    def rust_call_varargs(self):
++        """Return a Rust argument list for a call to a C varargs function"""
++        def rust_cast(name, type_):
++            if type_ == "const char *":
++                return f"_{name}.as_ptr()"
++
++            type_ = c_type_to_rust(type_)
++            if type_ in RUST_VARARGS_SMALL_TYPES:
++                return f"_{name} as std::ffi::c_int"
++            return f"_{name} /* as {type_} */"
++
++        return ", ".join((rust_cast(name, type_) for type_, name in self._args))
++
  
- def generate_h_begin(events, group):
-@@ -28,14 +29,11 @@ def generate_h(event, group):
-     if len(event.args) > 0:
-         argnames = ", " + argnames
- 
--    out('    if (trace_event_get_state(%(event_id)s)) {',
--        '#line %(event_lineno)d "%(event_filename)s"',
-+    out('#line %(event_lineno)d "%(event_filename)s"',
-         '        ftrace_write("%(name)s " %(fmt)s "\\n" %(argnames)s);',
-         '#line %(out_next_lineno)d "%(out_filename)s"',
--        '    }',
-         name=event.name,
-         args=event.args,
--        event_id="TRACE_" + event.name.upper(),
-         event_lineno=event.lineno,
-         event_filename=event.filename,
-         fmt=event.fmt.rstrip("\n"),
-diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/backend/log.py
-index eb50ceea34c..2aa180f4b47 100644
---- a/scripts/tracetool/backend/log.py
-+++ b/scripts/tracetool/backend/log.py
-@@ -16,6 +16,7 @@
- 
- 
- PUBLIC = True
-+CHECK_TRACE_EVENT_GET_STATE = True
- 
- 
- def generate_h_begin(events, group):
-@@ -28,14 +29,11 @@ def generate_h(event, group):
-     if len(event.args) > 0:
-         argnames = ", " + argnames
- 
--    cond = "trace_event_get_state(%s)" % ("TRACE_" + event.name.upper())
--
--    out('    if (%(cond)s && qemu_loglevel_mask(LOG_TRACE)) {',
-+    out('        if (qemu_loglevel_mask(LOG_TRACE)) {',
-         '#line %(event_lineno)d "%(event_filename)s"',
--        '        qemu_log("%(name)s " %(fmt)s "\\n"%(argnames)s);',
-+        '            qemu_log("%(name)s " %(fmt)s "\\n"%(argnames)s);',
-         '#line %(out_next_lineno)d "%(out_filename)s"',
--        '    }',
--        cond=cond,
-+        '        }',
-         event_lineno=event.lineno,
-         event_filename=event.filename,
-         name=event.name,
-diff --git a/scripts/tracetool/backend/simple.py b/scripts/tracetool/backend/simple.py
-index 7c84c06b200..a8afc977a20 100644
---- a/scripts/tracetool/backend/simple.py
-+++ b/scripts/tracetool/backend/simple.py
-@@ -16,6 +16,7 @@
- 
- 
- PUBLIC = True
-+CHECK_TRACE_EVENT_GET_STATE = True
- 
- 
- def is_string(arg):
-@@ -36,13 +37,8 @@ def generate_h_begin(events, group):
- 
- 
- def generate_h(event, group):
--    event_id = 'TRACE_' + event.name.upper()
--    cond = "trace_event_get_state(%s)" % event_id
--    out('    if (%(cond)s) {',
--        '        _simple_%(api)s(%(args)s);',
--        '    }',
-+    out('        _simple_%(api)s(%(args)s);',
-         api=event.api(),
--        cond=cond,
-         args=", ".join(event.args.names()))
- 
- 
-diff --git a/scripts/tracetool/backend/syslog.py b/scripts/tracetool/backend/syslog.py
-index 3f82e54aabf..04ec85717a3 100644
---- a/scripts/tracetool/backend/syslog.py
-+++ b/scripts/tracetool/backend/syslog.py
-@@ -16,6 +16,7 @@
- 
- 
- PUBLIC = True
-+CHECK_TRACE_EVENT_GET_STATE = True
- 
- 
- def generate_h_begin(events, group):
-@@ -28,14 +29,9 @@ def generate_h(event, group):
-     if len(event.args) > 0:
-         argnames = ", " + argnames
- 
--    cond = "trace_event_get_state(%s)" % ("TRACE_" + event.name.upper())
--
--    out('    if (%(cond)s) {',
--        '#line %(event_lineno)d "%(event_filename)s"',
-+    out('#line %(event_lineno)d "%(event_filename)s"',
-         '        syslog(LOG_INFO, "%(name)s " %(fmt)s %(argnames)s);',
-         '#line %(out_next_lineno)d "%(out_filename)s"',
--        '    }',
--        cond=cond,
-         event_lineno=event.lineno,
-         event_filename=event.filename,
-         name=event.name,
+ class Event(object):
+     """Event description.
+diff --git a/scripts/tracetool/format/rs.py b/scripts/tracetool/format/rs.py
+new file mode 100644
+index 00000000000..bc8b2be5971
+--- /dev/null
++++ b/scripts/tracetool/format/rs.py
+@@ -0,0 +1,76 @@
++# -*- coding: utf-8 -*-
++
++"""
++trace-DIR.rs
++"""
++
++__author__     = "Tanish Desai <tanishdesai37@gmail.com>"
++__copyright__  = "Copyright 2025, Tanish Desai <tanishdesai37@gmail.com>"
++__license__    = "GPL version 2 or (at your option) any later version"
++
++__maintainer__ = "Stefan Hajnoczi"
++__email__      = "stefanha@redhat.com"
++
++
++from tracetool import out
++
++
++def generate(events, backend, group):
++    out('// This file is autogenerated by tracetool, do not edit.',
++        '',
++        '#[allow(unused_imports)]',
++        'use std::ffi::c_char;',
++        '#[allow(unused_imports)]',
++        'use qemu_api::bindings;',
++        '',
++        '#[inline(always)]',
++        'fn trace_event_get_state_dynamic_by_id(_id: u16) -> bool {',
++        '    unsafe { (trace_events_enabled_count != 0) && (_id != 0) }',
++        '}',
++        '',
++        'extern "C" {',
++        '    static mut trace_events_enabled_count: u32;',
++        '}',)
++
++    out('extern "C" {')
++
++    for e in events:
++        out('    static mut %s: u16;' % e.api(e.QEMU_DSTATE))
++    out('}')
++
++    # static state
++    for e in events:
++        if 'disable' in e.properties:
++            enabled = "false"
++        else:
++            enabled = "true"
++        if "tcg-exec" in e.properties:
++            # a single define for the two "sub-events"
++            out('const _TRACE_%(name)s_ENABLED: bool = %(enabled)s;',
++                name=e.original.name.upper(),
++				enabled=enabled)
++        out('const _TRACE_%s_ENABLED: bool = %s;' % (e.name.upper(), enabled))
++
++    backend.generate_begin(events, group)
++
++    for e in events:
++        out('',
++			'#[inline(always)]',
++            '#[allow(dead_code)]',
++            'pub fn %(api)s(%(args)s)',
++            '{',
++            api=e.api(e.QEMU_TRACE),
++            args=e.args.rust_decl())
++
++        if "disable" not in e.properties:
++            backend.generate(e, group, check_trace_event_get_state=False)
++            if backend.check_trace_event_get_state:
++                event_id = 'TRACE_' + e.name.upper()
++                out('    if trace_event_get_state_dynamic_by_id(unsafe { _%(event_id)s_DSTATE}) {',
++                    event_id = event_id,
++                    api=e.api())
++                backend.generate(e, group, check_trace_event_get_state=True)
++                out('    }')
++        out('}')
++
++    backend.generate_end(events, group)
 -- 
 2.50.1
 
