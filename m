@@ -2,201 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E02FDB3177C
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 14:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 729C7B317C2
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 14:27:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upQgS-0002Cr-FY; Fri, 22 Aug 2025 08:16:01 -0400
+	id 1upQrU-0004ne-2l; Fri, 22 Aug 2025 08:27:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.caveayland@nutanix.com>)
- id 1upQfk-0001v6-KL
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:15:10 -0400
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1upQrP-0004ma-9b
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.caveayland@nutanix.com>)
- id 1upQfd-0000qd-21
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:15:04 -0400
-Received: from pps.filterd (m0127838.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 57MA7uhL2824419; Fri, 22 Aug 2025 05:14:56 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- proofpoint20171006; bh=Kch221Ty1TNCyV8Np/NBxaD/6LyFYzy/nMX8c2x3+
- TQ=; b=VFVcnp5/yLPLhsSWo1z+2dg1ubBeUzgUx6CW2haae4hQnqG2UsuY+y2+T
- lc4mxkNjiYV1FjLwNyhelLEUVdYULk2ZYssTlXKnpp28HfnNQAJyRf5Uab5y19KI
- diJVmypC4bROmOOHPmp869/8bIxxSoKax6gYldhVqlYXkuND9pamzty4ddnC6Kyz
- LsqGRspDke4V3hPyPxAVVm1SaVKKlGhrBpwTVYAK4+QPdMpXT0b4OyV7PkIrIUPC
- pxi6zQ7cpS+Ksm4tDie5ZO2d42VHD+3lggBqgfe1H/1o8NnwsiB/IIjTSO8pdn10
- GZf3jZCV7d3QGqAnJ8MG/M+B6AK+Q==
-Received: from nam11-co1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2095.outbound.protection.outlook.com [40.107.220.95])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 48pphe080n-3
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Fri, 22 Aug 2025 05:14:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dYEpSvpRShpdn6OjD39+uo/r2EhokV7FlYGnGYQeu7ltKJUgU/CEIGW5bvBPLAvEQZ6guAKGQbsRSFPF+6gPSRP4LyppFPBrol13BOkfHkPF6sW7PVl6cuV+IA3N12IISuhU+a8j64EYYlQqfxcyJBa5F0RLw3VUgwrjQOGfybBr9LuMEib3q6UEKwJGZ1OxKRepFeB+uC4EXaBiM3qPV+6uhooEEISLoUMLPLZROn9yObQqpH+edpnjHQdsAA3yU5Eo5FCeIbdCrobYeDOM9RuDC8EBMqlZyTLf5fMd5jAQ/8g86OMluz6tsBmyBjQF8U2Dzag6wH2HFdYFcbi52g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Kch221Ty1TNCyV8Np/NBxaD/6LyFYzy/nMX8c2x3+TQ=;
- b=FekTCMFCywm8mBCS6tpl+JXxjLDUm9fxmhpLhvP0nSkWHYg7tIMgbNUDNAztGPHpGsZ3PoRBDMoNVcmdP/8p+Quj2NOnTFxDR5Z6uPxcw2WUkw0WxxgINTpBdmYjc/IBvkVEcoEZg81H0RtWZW8SbB8O/ZOXfZsHzq5JOxvFI7hFGEIiQvBg943YRFXUtpkv8qKTlGVtbAiBD9aPCoMo3+Nv2AhuOHgl32GVaXZ05JkzmIkI57kJXre/1WZQqSSbvMlG6eFRimXCkAeDoAX+9aPd1cEoMbtsDILtsXhrh7Am0YWUNBB+75d7Fl3Szz156/5BIcHVICxvwpo43l0Byg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Kch221Ty1TNCyV8Np/NBxaD/6LyFYzy/nMX8c2x3+TQ=;
- b=UNiOVgEAQG+LVgZqDja2eJkJ2SRWdmxLc2M3l/vP1QTFwco7jBTHi4NhPD4eAdKH0rsxyruAHZ0OV4WGrBZBhd+moB9PPgkg4sl0Gho5ul5aqpRJGhkmc+9SaAnn8ZiglO6yKKRb5bqkcVk75JtPEZ6esySZjpFHDi7DMq/t57Ut1+NXdILK0JOiRYjAnn6IJxiterCYDJb036s3q4KUrMzBaxFW77SatDrYNDO0OSKW9mk2VnE0aWeILVLMoQINzGT02knbLIo1BCqn8kBGDQAjcmLdxu5u6nsOC5QghoWFkTGEhGhjGtR8/AnHAXjtEsROWdx8vXsr2vU2s0Hgjg==
-Received: from PH0PR02MB7159.namprd02.prod.outlook.com (2603:10b6:510:16::8)
- by SJ0PR02MB7725.namprd02.prod.outlook.com (2603:10b6:a03:322::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Fri, 22 Aug
- 2025 12:14:53 +0000
-Received: from PH0PR02MB7159.namprd02.prod.outlook.com
- ([fe80::6cf9:b35c:b143:bb88]) by PH0PR02MB7159.namprd02.prod.outlook.com
- ([fe80::6cf9:b35c:b143:bb88%3]) with mapi id 15.20.9052.014; Fri, 22 Aug 2025
- 12:14:53 +0000
-From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-To: pbonzini@redhat.com, mst@redhat.com, marcel.apfelbaum@gmail.com,
- eduardo@habkost.net, imammedo@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH v6 19/19] hw/i386/isapc.c: replace rom_memory with
- system_memory
-Date: Fri, 22 Aug 2025 13:12:05 +0100
-Message-ID: <20250822121342.894223-20-mark.caveayland@nutanix.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250822121342.894223-1-mark.caveayland@nutanix.com>
-References: <20250822121342.894223-1-mark.caveayland@nutanix.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AM0PR01CA0180.eurprd01.prod.exchangelabs.com
- (2603:10a6:208:aa::49) To PH0PR02MB7159.namprd02.prod.outlook.com
- (2603:10b6:510:16::8)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1upQrK-0002O6-Dw
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1755865621;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Ih3TeQsWVbzgbpL3DG1NgNzT/OnGGkYdr8cnBJyUJsI=;
+ b=SSdWNhvUIeY1u+EUeEv7iEBOksle7hlicA0JecwgMI1NLzPY/VO8IFcoXhI4c48ywcq6Kh
+ yjPqlDPV/bFXHImTq4lTpCkP6oNNhOFhM3s8grpPd4yDRRtj+hfUj+XyAEdhPVLvaXWzqt
+ 6GfJpYBPvdLk1i2yNRbtFlofw/M3sXo=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-156-tnpqz0-HMT-U7p3hcvm8fQ-1; Fri, 22 Aug 2025 08:27:00 -0400
+X-MC-Unique: tnpqz0-HMT-U7p3hcvm8fQ-1
+X-Mimecast-MFC-AGG-ID: tnpqz0-HMT-U7p3hcvm8fQ_1755865619
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-45a1b05d31cso10846865e9.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 05:27:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1755865618; x=1756470418;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ih3TeQsWVbzgbpL3DG1NgNzT/OnGGkYdr8cnBJyUJsI=;
+ b=cAoFt7PoW+LUV3yXKqaHb7pn2PrzaJHOOC6A7R5+4wZ0U+NYf4JJoJDFadr7uNLVH6
+ LVlZ6pkSL7XDRNArf0Itl98TMII8M2mRwLLGtG6Nr3HpD6e589wIf3HSxEVbpvr4Ek+t
+ q0HcbI99KMAmm6Xx/nR3IPMJo4HAlsoy6/x1JJfa2e7BSsw8RAJqblJBdW+cHVn2wnEd
+ 2/4gLzUpdUTXcPCocxfGtoFfjsgrc0H1f4mFuYgRH9igDiPSbDZsEydByVmJXwPAbBL0
+ yFhFLdGNYmL88j2Ny3RCrBZkoq66sY2njnIX3StOpQH4iJ/IdYbvxnXKaht/RShfNicc
+ b4Yg==
+X-Gm-Message-State: AOJu0YyCPKxtewKYIG25h8BjxlPp4GA4LBjApfI+ts02a2XLzw4SQLe/
+ JPcXxIrH5FAeLR/6zLzZjCTOyN/hSW9HKFo59HnZCRdIP/ebInuCuYivaXP84BBPmhgKhYfU5+Z
+ +F7H0qYa8TGWleOq1AjXQc6BMDoJRrQFQLnGpUxVuFxrYTyQwWjk51upRkdc9T9LL56NjYaH/by
+ vtDqIA+q2RPttmrV4kQkiVLCJhMw3WDH2vUUepjp80
+X-Gm-Gg: ASbGncuO0b5JQZj6USTQF5Rf4bMZiDSTKLCFKYXx//t27wAsyFVbzEAeoEln4Ffhl5X
+ 01Wj8YLWZY5Q4cXbs9vozrZ5mfjWv1/9CKA1U5iI9lc9avUdYTfyP209tnmbCVUPfQBjMo1gdIH
+ 9GShDjvFf2+YHUUjbwKW3DdcDShXA4ZO0hxLANMVNKUYqHsxzi5ffkdgWdX9NW7TS2rq2y1I7lx
+ +CHImX8fv9sGDYHPRD8PhULwTYxy4kHEufMgjdcaeU/3eZjZmK5DI8TYpyDd/D/vF34/AGpzKrp
+ 8jGngpBE86VfG7nRE7cAg/jJxCmB4pRlg791gVr3TmSevwLmAGZDFUI1VQy4IkVg9Wy813ZUARK
+ Dg0ks3Rpb/88eTeQWMs+hGxUN+IKEyGcvtIIvLuJ7RQ==
+X-Received: by 2002:a05:600c:a344:b0:459:443e:b180 with SMTP id
+ 5b1f17b1804b1-45b51f30f97mr23833615e9.8.1755865618397; 
+ Fri, 22 Aug 2025 05:26:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHpHWt1iViDpgZe9rM+O2LuN6tlKn3tIOEgUT5Mf9BlloTWvvCDzQcet10zFmXDCoxM7VyAGw==
+X-Received: by 2002:a05:600c:a344:b0:459:443e:b180 with SMTP id
+ 5b1f17b1804b1-45b51f30f97mr23833295e9.8.1755865617797; 
+ Fri, 22 Aug 2025 05:26:57 -0700 (PDT)
+Received: from [192.168.10.3] ([151.95.56.250])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b50e3a323sm34281125e9.17.2025.08.22.05.26.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 22 Aug 2025 05:26:57 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: tanishdesai37@gmail.com, stefanha@redhat.com, berrange@redhat.com,
+ mads@ynddal.dk
+Subject: [RFC PATCH 00/14] tracetool: add Rust support
+Date: Fri, 22 Aug 2025 14:26:41 +0200
+Message-ID: <20250822122655.1353197-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR02MB7159:EE_|SJ0PR02MB7725:EE_
-X-MS-Office365-Filtering-Correlation-Id: a9b9ca9a-8130-4e0b-085b-08dde1758016
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?dExNWm8yVzdOSm85Sk1yT3pDMEtlWFh2U1BUMnowSjVEdWRZZUp5YmF6NUEz?=
- =?utf-8?B?ZEc3dW9PR1had2lxelhGU1RoajhXZ2VlVVVxcUNzbERoT2lQTzFPa2NRWloy?=
- =?utf-8?B?ak1WMnN3dFE5eTd6VzZFUmNabDhvUWpuaW1WNlBMcFJiVExyaktkNTljcFBR?=
- =?utf-8?B?UGZsUGRSbjBPQ08xWm1vN202ajV6RElRT2ZuTkxJU1FXc1RhaldTc1NJZlBs?=
- =?utf-8?B?ckVMUEtwbXlpTzJYbnpmeC9SZnRDRW5hV290LzN4cnRNYnk3WStIeExLa0Nw?=
- =?utf-8?B?TGlnWHNtNU9wNU55WWlkbi9Pem5iVFhPZU1xUGJNcW9nWFJJTjNQa3BHcXVS?=
- =?utf-8?B?WXR1bklNdFpjNHJCNUkxdHlHTTBHTGVMSkxXNlpvcDkxRkNWN3VydXBuUjFO?=
- =?utf-8?B?SkQ4c2ZEYVppTTNneE1lWmpMZlhxdUZWVkxDOS8rVEZLaVNYTlFWSXRnaTcw?=
- =?utf-8?B?UmUwenVjNndVL2RaR2tGWEkrNXJSZUxlQUUwZUxnUUhxZVpDOWJpQ1RyWWwy?=
- =?utf-8?B?RE41dU40NGVLRFJ3eklPYmlVdDk1cHdpZ2lwdFNKU1c3cVZwRGlITDg3djVt?=
- =?utf-8?B?YmhZWDB0UkhqbDFJR29XVFRMcnB0YlR4bElLVjFFV0FiTk9yeERZWFVLUkJW?=
- =?utf-8?B?WGRuK2RuQVRiTWJiamxJMjllaU9GSjFDYm1QbGNHNGczZFBjcHRidnEzOXRJ?=
- =?utf-8?B?Q1ZjZWl2cTUzRlZvd0NGc2gyQWpZaVZsbFFRRmMxejJVV3REQTRwUWh1WGJ6?=
- =?utf-8?B?UzY0YlpuNVY1MFUwT0JrOUI5Q0lVcmVycVFnUHFsdUV0YkhxMXUxNVpVZk01?=
- =?utf-8?B?empHZDhxVjRFZFoxd3I2NE9UVGE0ZUp1c3k5bTRhQ0lOUDdaTzJwNFNkOFUx?=
- =?utf-8?B?RjdNZnB3SDlmRGdSUE9Kb2JscHVGYnp0TDVRZEFMU1czby84eE1OLzRzbHhZ?=
- =?utf-8?B?bHpsNXpDUjhmdDVtTHpSQzZlS1RlQ0l2d3ZyUUx3UHNrOGJ5dmpBc0RYVHh1?=
- =?utf-8?B?eHJqRWwzQjNTREowcHpjeGV5V1RQZFRxUDNsc2IxVVM1cS9IeWZJT2pqMkpi?=
- =?utf-8?B?LzZJSGRpU0dPSGprT0FOQmx5VUpDVS9NNjR0UTBCZDZVM0xJS2NwclgwQ0hh?=
- =?utf-8?B?VEtQckRxbFB1cXgxWkIrb3ZSUnVIRHhDMzVQWjJxaHZIL0tHaWlsYjJQQnhG?=
- =?utf-8?B?U1lkN3BVSHNsdjdrTG5YQlNZOU40SkpjS0ptdlBrcEo0ZWlVQ0oyV2VvV3NP?=
- =?utf-8?B?eWtnQ1dLSWpCdndPQXhsbndDTjAzOUE2VUJ1YjNTdm5CNnhzak9DTGJLNG5q?=
- =?utf-8?B?UldYOU8vOW44VXpoaDZqaDVKN0NaWktZS3grWGlDUVcrS1Z6bHNXYStJZ0Rx?=
- =?utf-8?B?bFlyWWtZbDV2NVhtblhZMXRzVVNxM2xyUzNqUUZDWG9iZVpLV2RqTjdhbTl2?=
- =?utf-8?B?Qzh5Q1hXYmh6Y2g1Snk1YUREMEJRNGo5TkRveDVvM1Q0dDBlV1B6c3hQMG1T?=
- =?utf-8?B?dXlMUnlxTldtOFNmTmErYjVaTzNCQ3NGM2g0N0N1L1ExYnBkMWVYQUNTRTR6?=
- =?utf-8?B?bFdpalY2YWEyREdxTFhyZ1BGbGw5R1dVc1RXVzBBTVdOcW1HaktGMVp2bDNv?=
- =?utf-8?B?Q1M0d1BHK2JHb2lNaUI0VTZ5Y2VkVllpTmVwOFZRQWFoekt1WVJiZkZPK3cx?=
- =?utf-8?B?QURlTExmOTNrR3FROFZleE4wTGRWVTJhM2NlZUVaYjFVVDAvVzJPMkpiZEhU?=
- =?utf-8?B?eTdvdEpnRXJOa1VYZE9odHdWTFJmREp2bjdneW9rdFJ3RXMvam9jV3kwK0lG?=
- =?utf-8?B?anhxWTBrM0xzaG5aZ05zVnRQeWtXQjBxbENFaFJpVDlEWmRBbWFCWGFQMXlo?=
- =?utf-8?B?RktpL296elZvVWlOTVA3RTJacmo5bmltMUJ5MitvODgvOFFBMU9rVElOajRV?=
- =?utf-8?Q?5FTocXbeGDw=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR02MB7159.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y1BzdGdzdW5lYXBaakRHQ28zVGYyaEZwTFpuSE9ISmpINE5nNzVURFRpVjE4?=
- =?utf-8?B?MSt0S0loaTkzRDFYb24zeEY2NzJGOEJiMWNwSzVMbFVzZ3BCUGF3ZFBTanZk?=
- =?utf-8?B?dENBT3VpM1ZqUGh2MFEwWW1PWHVLdGpJeE85V3M2akRkN3piY0FuUmtYNmIy?=
- =?utf-8?B?RmVZaElmWmgxbFNqT1NOYnlITjBzZTRrdWl2MG8zQ2toUDYxYnp1WUFwaGlI?=
- =?utf-8?B?VHFWSFFZeWlaR3BoQThFZWRFcllhVXZEcTdqbFhvVTgrWTJJZXIxMmZPWnk0?=
- =?utf-8?B?ckJJZFA0OG9hRk5wNXpneUIrZHk3eU40NGZ4eVc4SC9HRjJveHlVTGljUWRk?=
- =?utf-8?B?MWVab3UxV09BbG56YVNkMjdmUU5DbmEyQ1JzajBtRlYwQ3RUbmhiVmtWTkRu?=
- =?utf-8?B?Q3E4VXgzaGFiemdBbmJMejZiWHFGT0dPQjhjK2RIT2c2VTFQdnhrOUtDT3U2?=
- =?utf-8?B?dmxZMGZHQmo3YmhubXJMNmJJVWlyRGk5RnF4emlGU0lUaTVNdUZGazAzYkhh?=
- =?utf-8?B?OUdTQ0h6R2RYcVd2Qm45dVVtYnFkbjBJRlkrQms5VHJmS0dtSEtiZmdMOS9l?=
- =?utf-8?B?cE1ZK1JKcWxxTDh3bzNaR0lJMm1RU2tkK2xtSC9yVzhzTXRyL0E4OSt4N3Ir?=
- =?utf-8?B?ZFd2b0pjbjF5MmREWFVZOGQ1c204SlQ0NVJwUXJCamJUckJQTHlQa2lSSERG?=
- =?utf-8?B?bmZzQ1MyUE5PM3QxRHh0Y21uTzhpeGg1TWdueGRsdDMyaGlna0RSY2pmcXo0?=
- =?utf-8?B?ZkRsSFFkZU5ONmNJWk1xTjQ3c251UFI1UE16ZHkvOTZScTRRRDN0a09XMG5h?=
- =?utf-8?B?cHVoQXRKeFVaNGtkMG53Y1d0emlmNktNOEkrQlFyTnlLYlJQWVZ5NnFuaEhV?=
- =?utf-8?B?czRuMDhWSG0xOTBKanFDWHZtaXprL1U0cTlaaHd0eWdoMTRweG01UEtCZDVw?=
- =?utf-8?B?K1ZiSnRuMUNycklaYmlWdmNNVTZ1N2k1SHgvNUJHeFlyVjJINmo5KzBHOE85?=
- =?utf-8?B?aGtJa2NUMXl1WGxEbi95UjBpL0FGaXJSdGVZd0EwaFFZdXNQdkxKQUFLMHVD?=
- =?utf-8?B?ZXoxa1p3UHhjaDlnN21PSVg0bFd3QllUYTBSVCtmRndPdmczM3F5Q0ppclc4?=
- =?utf-8?B?SU56L3hVN0xVTmZMR1c3WTBaVC9pell2VDkwczAyc2FQbVdEUVNhSmdrK3RV?=
- =?utf-8?B?NjJMZGZuTGpqdEd5RHB1Uzl5aThBNVFxaDRaUm00SXY4eHdsZE8rRGQrMjRy?=
- =?utf-8?B?eXh4RzVKY0tJSnRTM1F3MjlhQzZCNGdrY0loM0NZOXFoZ3B1UmhyTHVBNzVw?=
- =?utf-8?B?KzVUL1R6L01UUU82R0NjaFRnOWhtanhCN0lBajNmc2JwNmFqeFRkdncweFpi?=
- =?utf-8?B?UUJiVUlsK3hId0ZJV1pabHlUdFVrbVp6WTQrRkdmb1c0dHZaclVwOWJjbUxQ?=
- =?utf-8?B?M3NIRXMvVU85VFYrWXdDbnVDWmhrUlRISGdsRzFDeWFtR2psamR4QzF1Q2hK?=
- =?utf-8?B?NDlnM2lTS0crdHptbWpzZitONTVFdzNEeWdrQ0FTTUpCUVFYK1pXMlNXY2RN?=
- =?utf-8?B?eHNRR2hWMWNIQktOQjRKb0thcFhLSmtXNkhFa0JJNUpGVE5mMHkvR0tRQjc3?=
- =?utf-8?B?WFFEV0lpQ1c2d1IydFdLaDV5VXJwRGlsM1F2VXYwNDFwbUlxODlHTGVJdzla?=
- =?utf-8?B?dnFLNWR2WGpDaVhmOFQ1OVJ4Vm5TZVYrWTZ1YjhuV2o4SXFEdG95d2FNK2R2?=
- =?utf-8?B?SzdSajgwUGxrV2JZSHBMK3hjVEtRVmhiTU5yQkJQRHlaUzVsa2Eva3daUisv?=
- =?utf-8?B?L1J4M1IrSUMwT1V4YlcwK1Jid1BERGJ2UFBUbjZpalE5R0xJbitIS0E1Rmpm?=
- =?utf-8?B?ZG0vWWpWRmpHNzNpSGxzS3NjZHhSditwVmIzTjh3OHV1QXpzMXpWQytGenRU?=
- =?utf-8?B?OGVIZ0xISmp0VWJOTS8xUmdYOSswT3BnRUhaeHkwa1dVcHQ1c1U0MFV0d2ZK?=
- =?utf-8?B?K1Y4WGNzdFliWVhmWklGZFNzaGtxOUNsRXlKU1VpNFcvS21JbjZxczN3Rk0v?=
- =?utf-8?B?cEJmeWkxb2ljWTVOd2NQaElWUk1HRm96YkVMNEFCZ21qdkFZSElpQmVlSHVw?=
- =?utf-8?B?NWptSDRoTGZMdHFjaEc4L2wvK054ai96MytiYU01OTJodGgycktrY3JPdzlx?=
- =?utf-8?B?T3c9PQ==?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a9b9ca9a-8130-4e0b-085b-08dde1758016
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR02MB7159.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2025 12:14:53.5503 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sIeM7zBJlcOokkLebJaCdGL9Z7BmIIoK6k0/RN3Dho9tAwSlUhta9pnnaiVKQ8N5I6yA64N0Y5BSOCFZypQk2/uAIX+qiLVIYRITYbe4OKM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB7725
-X-Authority-Analysis: v=2.4 cv=PvLKrwM3 c=1 sm=1 tr=0 ts=68a85f40 cx=c_pps
- a=YKE8LuPMBYZ6rjMuwm3XPg==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=0kUYKlekyDsA:10
- a=64Cc0HZtAAAA:8 a=KKAkSRfTAAAA:8 a=k_ivhQKdL2eqRxG3LxMA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: srxCYTzWeqSoLtx7c1WFURb1LhnJ9_Oj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIyMDExNCBTYWx0ZWRfX/UL+wEFplASw
- 6gg4p+F/4JvLbcdsrTABju2K1oJOhIPXNVn9ZnvAMeFt/aJY+tMVK8bJXkKPzj7D3ePNxPWJkBx
- GE9xw9LBaavt7PnJGpGTI5EorqY0h4FYh9HGfOZTTEA3ylz5jxvcmk8LZe/s/xAXD3RvgRaJsGK
- LSKMpe+vP+Sk382Fe2i++kaHTs+lPbVBEvFtbGiSZwpeFgGGAkqySaHqg9VtAknMYtghrXFppyM
- U7UFw38reCQcDLrDl9qmDKXMTsLuocilutT9zZ7B3ls/MxU9CYmvlc8OzyOBWVxEbzWxadUiDig
- dVCT3OMPpsY6egFXd0II9TJLa8S/Pd1UvuRd4AYZ2yAKy2b9K+dufl7eh1Y4UIbZ69BnaSwzpdp
- BFKzSIo3famMRAn9k8JNKwPVkO9Bug==
-X-Proofpoint-ORIG-GUID: srxCYTzWeqSoLtx7c1WFURb1LhnJ9_Oj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-22_04,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68;
- envelope-from=mark.caveayland@nutanix.com; helo=mx0a-002c1b01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -212,38 +105,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we can guarantee the isapc machine will never have a PCI bus, any
-instances of rom_memory can be replaced by system_memory and rom_memory
-removed completely.
+This is the result of the summer project of Tanish Desai.  It mostly
+consists of changes to tracetool, which I used to add tracepoint support
+to the pl011 device.  All the backends are supported except dtrace and
+ust; support for Linux in dtrace should be easy using the "probe" crate,
+the rest (ust, and dtrace on macOS or Solaris) less so.
 
-Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/i386/isapc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Patches 1-2 are cleanups that could be committed separately.
 
-diff --git a/hw/i386/isapc.c b/hw/i386/isapc.c
-index 62acdada3e..87193beb44 100644
---- a/hw/i386/isapc.c
-+++ b/hw/i386/isapc.c
-@@ -37,7 +37,6 @@ static void pc_init_isa(MachineState *machine)
-     ISABus *isa_bus;
-     GSIState *gsi_state;
-     MemoryRegion *ram_memory;
--    MemoryRegion *rom_memory = system_memory;
-     DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
-     uint32_t irq;
-     int i;
-@@ -76,7 +75,7 @@ static void pc_init_isa(MachineState *machine)
- 
-     /* allocate ram and load rom/bios */
-     if (!xen_enabled()) {
--        pc_memory_init(pcms, system_memory, rom_memory, 0);
-+        pc_memory_init(pcms, system_memory, system_memory, 0);
-     } else {
-         assert(machine->ram_size == x86ms->below_4g_mem_size +
-                                     x86ms->above_4g_mem_size);
+Patches 3-5 are tracetool patches that have been posted before, now
+rebased on top of the "make check-tracetool" series.  Their purpose
+is to simplify .h code generation for tracetool backends, and these
+simplifications translate directly to the new .rs code generation.
+
+Patches 6-7 add the minimal support for adding tracepoint functions
+in Rust, albeit with no content and thus no actual tracing.
+
+Patches 8-9 add back tracepoints to the Rust pl011 device model.
+
+Patches 10-14 finally add Rust code generation to the supported
+tracing backends.
+
+Many thanks to Daniel for his tracetool testsuite.  It was very
+useful and did indeed improve reviewability!
+
+Paolo
+
+Based-on: <20250819161053.464641-1-berrange@redhat.com>
+
+Paolo Bonzini (6):
+  treewide: write "unsigned long int" instead of "long unsigned int"
+  rust: move dependencies to rust/Cargo.toml
+  trace/ftrace: move snprintf+write from tracepoints to ftrace.c
+  rust: qdev: add minimal clock bindings
+  rust: pl011: add tracepoints
+  log: change qemu_loglevel to unsigned
+
+Tanish Desai (8):
+  tracetool: add CHECK_TRACE_EVENT_GET_STATE
+  tracetool/backend: remove redundant trace event checks
+  tracetool: Add Rust format support
+  rust: add trace crate
+  tracetool/simple: add Rust support
+  tracetool/log: add Rust support
+  tracetool/ftrace: add Rust support
+  tracetool/syslog: add Rust support
+
+ include/qemu/log-for-trace.h          |   4 +-
+ include/qemu/log.h                    |  44 ++++----
+ rust/qemu-api/wrapper.h               |   1 +
+ tests/tracetool/ftrace.h              |  28 +----
+ tests/tracetool/log.h                 |  16 ++-
+ trace/ftrace.h                        |   1 +
+ crypto/pbkdf-gcrypt.c                 |   2 +-
+ crypto/pbkdf-gnutls.c                 |   2 +-
+ crypto/pbkdf-nettle.c                 |   2 +-
+ hw/display/exynos4210_fimd.c          |   2 +-
+ hw/misc/imx7_src.c                    |   4 +-
+ hw/net/can/can_sja1000.c              |   4 +-
+ trace/ftrace.c                        |  15 +++
+ util/log.c                            |   2 +-
+ hw/char/trace-events                  |  14 +--
+ hw/xen/trace-events                   |   4 +-
+ rust/Cargo.lock                       |   8 ++
+ rust/Cargo.toml                       |   6 +
+ rust/hw/char/pl011/Cargo.toml         |   1 +
+ rust/hw/char/pl011/meson.build        |   1 +
+ rust/hw/char/pl011/src/device.rs      |  57 +++++++---
+ rust/meson.build                      |   2 +-
+ rust/qemu-api/Cargo.toml              |   6 +-
+ rust/qemu-api/src/log.rs              |   2 +-
+ rust/qemu-api/src/qdev.rs             |  33 ++++++
+ rust/trace/Cargo.toml                 |  19 ++++
+ rust/trace/meson.build                |  19 ++++
+ rust/trace/src/lib.rs                 |  27 +++++
+ scripts/tracetool/__init__.py         | 156 ++++++++++++++++++++++++++
+ scripts/tracetool/backend/__init__.py |  39 +++++--
+ scripts/tracetool/backend/ftrace.py   |  24 ++--
+ scripts/tracetool/backend/log.py      |  20 ++--
+ scripts/tracetool/backend/simple.py   |  15 ++-
+ scripts/tracetool/backend/syslog.py   |  15 +--
+ scripts/tracetool/format/h.py         |  11 +-
+ scripts/tracetool/format/rs.py        |  76 +++++++++++++
+ tests/tracetool/ftrace.rs             |  41 +++++++
+ tests/tracetool/log.rs                |  45 ++++++++
+ tests/tracetool/simple.rs             |  41 +++++++
+ tests/tracetool/syslog.rs             |  41 +++++++
+ tests/tracetool/tracetool-test.py     |   2 +
+ trace/meson.build                     |   8 +-
+ 42 files changed, 718 insertions(+), 142 deletions(-)
+ create mode 100644 rust/trace/Cargo.toml
+ create mode 100644 rust/trace/meson.build
+ create mode 100644 rust/trace/src/lib.rs
+ create mode 100644 scripts/tracetool/format/rs.py
+ create mode 100644 tests/tracetool/ftrace.rs
+ create mode 100644 tests/tracetool/log.rs
+ create mode 100644 tests/tracetool/simple.rs
+ create mode 100644 tests/tracetool/syslog.rs
+
 -- 
-2.43.0
+2.50.1
 
 
