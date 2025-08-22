@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B754AB31A69
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 15:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8592B31A52
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 15:56:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upSDa-0005zD-3S; Fri, 22 Aug 2025 09:54:10 -0400
+	id 1upSDS-0005sv-Qw; Fri, 22 Aug 2025 09:54:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1s-0005yT-H8
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:49 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1z-00063w-Oz
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:55 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1m-0007FE-Da
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:45 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2445806d44fso15713685ad.1
- for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 02:25:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <cjchen@igel.co.jp>) id 1upO1u-0007HH-4F
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 05:25:55 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-b47175d02dcso1480337a12.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 02:25:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1755854740; x=1756459540;
+ d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1755854746; x=1756459546;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zXgebig47wIeXfp8dqO8PzqCbna3KM2O0dfho6ysf2U=;
- b=s/Cgb1xvvuIYGLC7pCYhMY1IUYSqPoaLPxBvg4u4rNHfKsRQKbiANocmZSTH9+78Xe
- b6GkLk6qgRgPSRstzJstnsCaniqmPZuu8C7uyh6Cbick9HorvmEu5H0GqvsxWx71BVVf
- R6/Nu94ZLOmcaptn1S3+pRScE+FGCjLiAl638PKqe5KS1ZCkjWSImLNnQeP4luk/hvXb
- ESo0JPJ2HtDkmwBMkjXPCfZ4bVbRKYEzQuNbHsZfbSlnnXBYmKmjmEVCKFuoXOH0E3/+
- n9FdAPAFsqVDJ4/x+LWLfT+ENb0458VJ76PqAwFXa+iO+dvwMDeeYI2cb6jR3CX2fM1O
- /JLg==
+ bh=vh5PW27wq4M7UAgJQHpY8LHqZa1HVp12yT5xQoyQ7OE=;
+ b=DE2oWXZ2aGdAGKT9Je46/ChaN2UK301u/Fg2GH9etR1f1kbpIXdQiauuwHTp7nXeiG
+ AFMSCKpEJC0ELUQV6kfG0oFEcW34txbkT67WlZ/07Rf62rV8CghV4WiytBdH81lTHs2m
+ LOzwZFuZ7+lAP6w6Jx2POBYb9YyhX/79T63Vgs1+hYbrhuW9Giw6C3RF5JtxLJjh2YrO
+ XDToyH7O2Wbr5X8i8KLR9mgO9CV9LOYj2exkI80/sCYDm/rdwBKFDYiQKA4D9iLrJJIO
+ GBrg+ijM6ByFdO7cFTMTB8b/RyhLSHTt6BzylfRabKZsz4FlxIKKY+IhYd07bmHddV7a
+ 1THQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755854740; x=1756459540;
+ d=1e100.net; s=20230601; t=1755854746; x=1756459546;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zXgebig47wIeXfp8dqO8PzqCbna3KM2O0dfho6ysf2U=;
- b=EouyKHItNkW9Hg6jmSeilyrKeZ0oR3+/HNMIvsTGhFPCgnjL4CY8aC5I0GoUR4nWDU
- HAj0d+24Y/dj0s9V12YlpO1uURS0EoxvG6LYPr5WByJdsNQvzyHwZTihC6yQ3wUQXnN6
- HnyweIb2vqaZtvXThY3q6Rx4mu0YwJvL88szWZuERKhNyIYlX8cO0nshWL9RWG4ntVfx
- zk+6o4KXXgYCO/A45bJ4NzK7iHbK9wx1jIPvMP7Wg4Ge7D6sVBs5ARxtxIcVK+GRl3Sk
- PK+m1uwhfpjQb5/qiJeW3ZWxTeZ8iN3sewos+lHrRX9/2FXAzxZtimvJyDqxyEQvBMur
- HxIQ==
-X-Gm-Message-State: AOJu0YyqoIDXkeLmbF8VVfzvYzLroO/imiCwpmlLu/+UCVhRrk+IrEWh
- pTEyenLBPz+3mKZ9lZLxu7oSbN3u5QW6GWtsjo/ARh86s1JknNFPzCy04Yeb+FKKfcLbPgHCwCp
- 3T5MZ8Sk=
-X-Gm-Gg: ASbGncuItaI/m++IOt1WqHJnw6ORv3jJU3RZXSHVwb+O9jfpi7QxVs5dwUeoKbMFU74
- VPniJR4D2cF78z5AsQcnSTMSyYFhWQIKOa4RPcUH4OTFF968gTd892pf7XEVgKAGxF5xA+kzfVL
- vDoZwCaLQmVHULMPjGb2hA3DpAg9aS8hqG6BJVfPCROIZRTZGvDR1BtjU0Q/bzzjYD9Q+SdPdMf
- Op+HGjui3IMZTOjDDww6UvrZTyAUPtsIext1UX8mjHfN2opYgWVgi5Ejnh19Z2wB433X0aT2X6N
- n6duJIByL5VdS5NsPYUXpMtW7mOpwQires5dN4TdWO0S6j/18jNqBl1TaqLxMswkmrQABP4xg8R
- Dn3F9XX5DDOjppKKnamHnpreJ8gzG3namX2OenoZdSw==
-X-Google-Smtp-Source: AGHT+IH8pYTJbnXf7rKnNIsoHQG2QKG2X9mf+U2mWDZhwdN/zTCzSXTLAS1lHezYzzhePUW/JC2CJA==
-X-Received: by 2002:a17:902:f70c:b0:246:1c53:6739 with SMTP id
- d9443c01a7336-2462edfad58mr35900195ad.21.1755854740220; 
- Fri, 22 Aug 2025 02:25:40 -0700 (PDT)
+ bh=vh5PW27wq4M7UAgJQHpY8LHqZa1HVp12yT5xQoyQ7OE=;
+ b=cdcXyUTBQvBbob8RMASGyY+WJf7fh3P/SGMnIKTYsVivIGJSZOpSMLI+esXFI+Fc/B
+ N11tw30z2MzYglah+L7P4EVEIh+CarjU9QxobvcNQIWmdccstjjmh2OVInKE63xEbl/f
+ 0vL4X/QlPgOLykeX39aNqnk9udI7iIETiMJG5mOyiaqRoK/LfQ/4rDD+mHT7Rky7pRRi
+ n7CvOHrdmwrJdhhuqPzvf5pyfG4uIN3q5LrHrf4aWBImDQCr6bnHf22SNe5RDxnfQjRE
+ GBl6H/i1KajCH5y5FpNkydYEEQ5LLPlK4NzAaiJh/WVvVwAIuEFLMf+CtdBYJAzvfaHJ
+ Ko5g==
+X-Gm-Message-State: AOJu0YxPWUARNEJ2RlyXZXoO7JDjT7chwBrzSp+O0JP5oyKUBMtXgo4A
+ VFmk5E1OINPCUfwtBwGYQO9bHgDx4iG02YIqKHzHfSUpnR/ZF8BVTiDT5L7xIukwVWz64M86jbW
+ HEw3p3nQ=
+X-Gm-Gg: ASbGnctqDJbnzlTlUlxcM0rO0pdGZ6ViHFDKiGc9pHTnIOOZsidyh2FTP6LvJKN3EvW
+ nVhZWCTdIqpAFi/V/ldXdyimHpU7pS4Bi53Ya9ZZ2xUVP2OZe+mnmaVlAT74RlJF/OBV7+cp2m9
+ p/LG4a69t2r/q0TM8WULHJX1hbheZjKt8Yb1fBjGubBZQ6V1ItjFtGpgx1z7dqj82UVmLYM1/PA
+ 5Gwl2opjJjH+71g/IjQ0XRJs7sTCBEi2WbiNf3nQw0slvUsdKztxvHpZIn+yRek73O/JTNEF/O1
+ 9n5TgHTCZuodv9eX3FhpKQe2KB6K3HwThdyzIxbJKOl9s6F6wvQ/AVPGKDhDZtv6fsSIfNA9cHR
+ 0AEz4dN0nnt+1IjU786jgQ8V1DIt8Wd4fb19i3a///Q==
+X-Google-Smtp-Source: AGHT+IFqrkDmltRg7rBvuIoosHiBNJHGiYIXbN8rlbL3FhYZHp7oXOt3yH4etsE7arp7mbrFo0zW5g==
+X-Received: by 2002:a17:902:f68e:b0:243:7cf:9bcf with SMTP id
+ d9443c01a7336-2462ee0be0bmr37041655ad.2.1755854746463; 
+ Fri, 22 Aug 2025 02:25:46 -0700 (PDT)
 Received: from warg.hq.igel.co.jp (napt.igel.co.jp. [219.106.231.132])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-245ed4c6fb7sm78560215ad.89.2025.08.22.02.25.34
+ d9443c01a7336-245ed4c6fb7sm78560215ad.89.2025.08.22.02.25.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Aug 2025 02:25:39 -0700 (PDT)
+ Fri, 22 Aug 2025 02:25:46 -0700 (PDT)
 From: CJ Chen <cjchen@igel.co.jp>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-riscv@nongnu.org,
  qemu-arm@nongnu.org
@@ -79,17 +79,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Keith Busch <kbusch@kernel.org>,
  Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
  Tomoyuki Hirose <hrstmyk811m@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>, CJ Chen <cjchen@igel.co.jp>
-Subject: [RFC PATCH v2 6/9] hw/usb/hcd-xhci: allow unaligned access to
- Capability Registers
-Date: Fri, 22 Aug 2025 18:24:07 +0900
-Message-Id: <20250822092410.25833-7-cjchen@igel.co.jp>
+Subject: [RFC PATCH v2 7/9] system/memory: assert on invalid unaligned combo
+Date: Fri, 22 Aug 2025 18:24:08 +0900
+Message-Id: <20250822092410.25833-8-cjchen@igel.co.jp>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250822092410.25833-1-cjchen@igel.co.jp>
 References: <20250822092410.25833-1-cjchen@igel.co.jp>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=cjchen@igel.co.jp; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=cjchen@igel.co.jp; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -112,43 +111,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tomoyuki Hirose <hrstmyk811m@gmail.com>
+When it comes to this pattern: .valid.unaligned = false and
+impl.unaligned = true, is effectlvely contradictory. The .valid
+structure indicates that unaligned access should be rejected at
+the access validation phase, yet .impl suggests the underlying
+device implementation can handle unaligned operations. As a result,
+the upper-layer code will never even reach the .impl logic, leading
+to confusion.
 
-According to xHCI spec rev 1.2, unaligned access to xHCI Host
-Controller Capability Registers is not prohibited. In addition, the
-limit of access size is also unspecified. Actually, some real devices
-allow unaligned access and 8-byte access to these registers.
-
-This commit makes it possible to unaligned access and 8-byte access to
-Host Controller Capability Registers.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/143
-
-Based-on-a-patch-by: Tomoyuki Hirose <hrstmyk811m@gmail.com>
 Signed-off-by: CJ Chen <cjchen@igel.co.jp>
 Tested-by: CJ Chen <cjchen@igel.co.jp>
-Reported-by: Tomoyuki Hirose <hrstmyk811m@gmail.com>
+Suggested-by: Peter Xu <peterx@redhat.com>
+Acked-by: Tomoyuki Hirose <hrstmyk811m@gmail.com>
 ---
- hw/usb/hcd-xhci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ system/memory.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index 292c378bfc..81e91e6ffb 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -3190,9 +3190,11 @@ static const MemoryRegionOps xhci_cap_ops = {
-     .read = xhci_cap_read,
-     .write = xhci_cap_write,
-     .valid.min_access_size = 1,
--    .valid.max_access_size = 4,
-+    .valid.max_access_size = 8,
-+    .valid.unaligned = true,
-     .impl.min_access_size = 4,
-     .impl.max_access_size = 4,
-+    .impl.unaligned = false,
-     .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
+diff --git a/system/memory.c b/system/memory.c
+index d6071b4414..b536a62ce9 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1654,6 +1654,7 @@ void memory_region_init_io(MemoryRegion *mr,
+                            const char *name,
+                            uint64_t size)
+ {
++    g_assert(!ops || !(ops->impl.unaligned && !ops->valid.unaligned));
+     memory_region_init(mr, owner, name, size);
+     mr->ops = ops ? ops : &unassigned_mem_ops;
+     mr->opaque = opaque;
 -- 
 2.25.1
 
