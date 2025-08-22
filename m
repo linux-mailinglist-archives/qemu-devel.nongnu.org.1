@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFC0B317D1
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 14:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3731B317CF
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 14:29:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upQrV-0004om-MS; Fri, 22 Aug 2025 08:27:17 -0400
+	id 1upQra-0004pc-Gb; Fri, 22 Aug 2025 08:27:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1upQrQ-0004ms-2u
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:12 -0400
+ id 1upQrU-0004p0-NN
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1upQrN-0002Oh-LE
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:11 -0400
+ id 1upQrS-0002PQ-62
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755865628;
+ s=mimecast20190719; t=1755865632;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=htCTYY64s3u4/mbjf2jvp3grVQQ9g94LDvTznIBDP58=;
- b=BzJfljh5Dgnc4ULlzeKAppvWc+jPilNZKq21v1Rs1KybEmy79oEp13GAAx6xIG7ZduuZrc
- 10wupO3Pz9bO4p9h86w2IGuhwq1+89rC7xYDD8ZHN9dmYwrHby8JMIeoH+WXyil4kVHM3R
- vvf4zrirhuJaNaMIkY3Zl6ilxaPUG3U=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ezw6poP6EwT3xiTZZdGt7/8xcnpH4DkcNhY/uPr1oxc=;
+ b=UfORFCORuhFXinND9L9l4CRQ19/tJM9h8k9CHP0aNt6X9PVD57DiTVwrgsBvcfhpZ8jGrM
+ LHOmeFNY2Pn7GXiZwIK0M//825A7ZxprJJihA6ur2hy/bS7aPLc7c2V86utS+j1FYiUBfE
+ e5zDCnY232yJp6xw591HHcSTX6zbXEo=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-EVTudWHEO9KrmiLl0LUlSg-1; Fri, 22 Aug 2025 08:27:07 -0400
-X-MC-Unique: EVTudWHEO9KrmiLl0LUlSg-1
-X-Mimecast-MFC-AGG-ID: EVTudWHEO9KrmiLl0LUlSg_1755865626
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3c380aa1ac0so824124f8f.0
- for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 05:27:07 -0700 (PDT)
+ us-mta-452-9YdAeCBqM2WK1JK9fSa30g-1; Fri, 22 Aug 2025 08:27:10 -0400
+X-MC-Unique: 9YdAeCBqM2WK1JK9fSa30g-1
+X-Mimecast-MFC-AGG-ID: 9YdAeCBqM2WK1JK9fSa30g_1755865629
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45a1b0bd6a9so10663875e9.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 05:27:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755865625; x=1756470425;
+ d=1e100.net; s=20230601; t=1755865628; x=1756470428;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=htCTYY64s3u4/mbjf2jvp3grVQQ9g94LDvTznIBDP58=;
- b=g/XAcGOT/10N9yjVf/DoC4wIQjAvoDygXQFp7ze/uyLSTVTR0JGn+yf9fARY6wB6rv
- RROZhUTtNJ/SIEz9a7RxzWxKw4NlxEl4uRlNNXuGSUjvDPu9HmQYLOrBVeMHbLPqpVRj
- 9bcV7ns38GNbMm0KEYZccY6brxHg2NDYNJXMHaybqyJAkdfm5uErmjmontgDgTohocRg
- iEgULg88oic4QaUDXbjCGFpunfTXiLb6pAl8RYvDLWbVFAQ2eIcVhxaniEFukg1y3UTs
- CSydfur+lO9Evd6RPcQ57S/ShB8hPF3XbGrKfd5dmlBpfB4jjSAzUw19tr28wJkTC41N
- wKiA==
-X-Gm-Message-State: AOJu0YwwXqFVpxHJvEbWlWFpWA8yvoPZwsGBPigZ6BKuwGUmF/0V3H4w
- FMQeM5BmAbySKVGE/RqoWt+4ZfqUQN/8V9yGggC1Dkaf7PkuugJJyNa7RiylNHm0BOBCT6oEs7M
- gPRIFEdw6kv0owrAygSvClEVWkPcApT8P9DcWq74rMKO32hD26YRXdSLRtTwwOUd0JSKHSb7GHw
- Qxyj+ebm3zJr8tsApSR3Gu+N9SG0L+RqZ/3WQ0EUTh
-X-Gm-Gg: ASbGnctHy6tRxCk8mDxjn+Q5CgskeH0Icz6ta2smUqfPCDgRzuJBzTPcerW9EeCpASt
- 9flHfx/fIKA0WLgfteP6yVycbfnM7YDZoE8aslfqywtRjPgMYFZ2CV2k3o5BG53aEBbHbi93VMm
- wQF0NG41WPv1TwH2ZQsMKordM6XPOm1EtkSHK0et2cfKWaEssfT6bcDjhnrrzjLU0ydKh5SEQsb
- awFTP5Eed3W3OyBl6q6cuTsWVmpaQHznDGNSwhufFm85gcK6vLxB/ZJKC8Otk352EsMLwkDu3Nb
- ef9m9aGuNCFFAIdIyzFoSrzwFNTOfMJuaiggLQ7AtGNqKb9IbeToWildwBk8o3UkbQqgKEwIFk9
- tAbOXHhJla5kfeNEVaOqhJRZtjKtKmeQJMFbN8HiUdQ==
-X-Received: by 2002:a5d:64ed:0:b0:3b5:dafc:1525 with SMTP id
- ffacd0b85a97d-3c5dc7313famr2232948f8f.33.1755865625477; 
- Fri, 22 Aug 2025 05:27:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHQbW6N9z46fAHU8L3UM37qtfoMuXROTfx9wqhUf4We2fCk7h6vboMTDv3txs3DawzRLROv6w==
-X-Received: by 2002:a5d:64ed:0:b0:3b5:dafc:1525 with SMTP id
- ffacd0b85a97d-3c5dc7313famr2232922f8f.33.1755865624986; 
- Fri, 22 Aug 2025 05:27:04 -0700 (PDT)
+ bh=ezw6poP6EwT3xiTZZdGt7/8xcnpH4DkcNhY/uPr1oxc=;
+ b=hULCuuRMb7ewctFm6Ff4KPZlu195n7Z3UFH8YuJ653Ym5YMlgtOgCH/X9k5cvQnZto
+ spDOZnwAXrC9Egy7kI6TdKKiePcpbyWheHMHvCZ1t1a5vxfnv7xeA0BbzaG/LKZ2n6Uf
+ 6kf4ndktT01JOZr4+WgwaPF4H8UVbVit4pBOjEafIxUrdLApEuAMrudX/WLwCMJShf0Q
+ NMEFR6GtCC2aHCD0sHDO/7INFI1ZPKEuNIhMXC7wuTgPxW6Ycn21WUfuN0x+ykXtibhl
+ mAm6YTE0zT0/Xkx/Pgsby57h3bubKmpvv1fAurUQwBQTkZAl5CAtjKDL3ilnpueKonWr
+ BL4w==
+X-Gm-Message-State: AOJu0YzFTry+PFyCaatVFqCR854PD/o6uLE+Ke+IaFmwdXurFXhlSSFn
+ QjbVw9yrHsiwe0/EUEsJ61uxxuiszciwpP+/iwZUX7s1r3mmxO1nxUaYEvZWoMAXkYTW8nHTfN8
+ tJjEnO6rDjaLraauw3YafNWyRFOnRoBWVFpTHJlH8YUL5iUCAwkrBsQgeNkEBkEUDQ8W4lWqJhY
+ WpHYM8JdeCu7QJRDpcnb4m7l4xLuFA9tQ2J2JUqAIv
+X-Gm-Gg: ASbGncvtRdczAPlof/LF/SDtVFTE5SGx/vy5RvL27JykDMb7NeI0aJt+WHy/hfWZj28
+ zNzAWPs7OtrAPr8idVWbE38F3zlIZLsxJCgHSkycWUWzg5HBkeNPQv91VkQifsVkd/o6VUqPP9h
+ TwzIDUtW22ejigH9OmwfBcog6hz2k5MPH1nVhnaVfJXOfANVVaY++I8JxVaSyYsmenQMUxm3Iil
+ RhvfVBbr0rPSKirNteIiUQ8d7yM07VQ8zaBMAQHVHZQHB4pqNlzHvTfzvT7s2N8/8D0lKCzC3BS
+ 4CgJLswhtuYAGII6sOkGaeS5FN5KXLgbLiH/AqyWrFSRvLXHSxuHVdKL5SfPuNVMpfDZ+B7d/aF
+ MMKjaCyG5cFTeLgDgeBxF/PXJE2DA5iX5J7msCz4cWw==
+X-Received: by 2002:a05:600c:1c87:b0:456:173c:8a53 with SMTP id
+ 5b1f17b1804b1-45b5179cdd5mr19509245e9.2.1755865628020; 
+ Fri, 22 Aug 2025 05:27:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGV+54LzJpzwiBDs+4j+CTQdQ3igqP641t7NzVQPwCCEU8J+IOpaxS9gpqYIIgrpPh0cAWfSA==
+X-Received: by 2002:a05:600c:1c87:b0:456:173c:8a53 with SMTP id
+ 5b1f17b1804b1-45b5179cdd5mr19509005e9.2.1755865627351; 
+ Fri, 22 Aug 2025 05:27:07 -0700 (PDT)
 Received: from [192.168.10.3] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3c077789c92sm15156979f8f.52.2025.08.22.05.27.03
+ 5b1f17b1804b1-45b5096fb01sm24583025e9.1.2025.08.22.05.27.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Aug 2025 05:27:03 -0700 (PDT)
+ Fri, 22 Aug 2025 05:27:05 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: tanishdesai37@gmail.com, stefanha@redhat.com, berrange@redhat.com,
  mads@ynddal.dk
-Subject: [PATCH 03/14] trace/ftrace: move snprintf+write from tracepoints to
- ftrace.c
-Date: Fri, 22 Aug 2025 14:26:44 +0200
-Message-ID: <20250822122655.1353197-4-pbonzini@redhat.com>
+Subject: [PATCH 04/14] tracetool: add CHECK_TRACE_EVENT_GET_STATE
+Date: Fri, 22 Aug 2025 14:26:45 +0200
+Message-ID: <20250822122655.1353197-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250822122655.1353197-1-pbonzini@redhat.com>
 References: <20250822122655.1353197-1-pbonzini@redhat.com>
@@ -109,126 +108,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This simplifies the Python code and reduces the size of the tracepoints.
+From: Tanish Desai <tanishdesai37@gmail.com>
 
+Add a new attribute CHECK_TRACE_EVENT_GET_STATE to the backends.
+When present and True, the code generated by the generate function
+is wrapped in a conditional that checks whether the event is enabled;
+this removes the need for repeating the same conditional in multiple
+backends.
+
+Signed-off-by: Tanish Desai <tanishdesai37@gmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/tracetool/ftrace.h            | 28 ++++++----------------------
- trace/ftrace.h                      |  1 +
- trace/ftrace.c                      | 15 +++++++++++++++
- scripts/tracetool/backend/ftrace.py | 12 ++----------
- 4 files changed, 24 insertions(+), 32 deletions(-)
+ scripts/tracetool/backend/__init__.py | 39 ++++++++++++++++++---------
+ scripts/tracetool/format/h.py         | 11 +++++---
+ 2 files changed, 35 insertions(+), 15 deletions(-)
 
-diff --git a/tests/tracetool/ftrace.h b/tests/tracetool/ftrace.h
-index fe22ea0f09f..1dfe4239413 100644
---- a/tests/tracetool/ftrace.h
-+++ b/tests/tracetool/ftrace.h
-@@ -21,18 +21,10 @@ extern uint16_t _TRACE_TEST_WIBBLE_DSTATE;
+diff --git a/scripts/tracetool/backend/__init__.py b/scripts/tracetool/backend/__init__.py
+index 7bfcc86cc53..273c8bbba3b 100644
+--- a/scripts/tracetool/backend/__init__.py
++++ b/scripts/tracetool/backend/__init__.py
+@@ -19,11 +19,15 @@
+ Backend attributes
+ ------------------
  
- static inline void trace_test_blah(void *context, const char *filename)
- {
--    {
--        char ftrace_buf[MAX_TRACE_STRLEN];
--        int unused __attribute__ ((unused));
--        int trlen;
--        if (trace_event_get_state(TRACE_TEST_BLAH)) {
-+    if (trace_event_get_state(TRACE_TEST_BLAH)) {
- #line 4 "trace-events"
--            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,
--                             "test_blah " "Blah context=%p filename=%s" "\n" , context, filename);
--#line 33 "ftrace.h"
--            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);
--            unused = write(trace_marker_fd, ftrace_buf, trlen);
--        }
-+        ftrace_write("test_blah " "Blah context=%p filename=%s" "\n" , context, filename);
-+#line 28 "ftrace.h"
-     }
- }
+-========= ====================================================================
+-Attribute Description
+-========= ====================================================================
+-PUBLIC    If exists and is set to 'True', the backend is considered "public".
+-========= ====================================================================
++=========================== ====================================================
++Attribute                   Description
++=========================== ====================================================
++PUBLIC                      If exists and is set to 'True', the backend is
++                            considered "public".
++CHECK_TRACE_EVENT_GET_STATE If exists and is set to 'True', the backend-specific
++                            code inside the tracepoint is emitted within an
++                            ``if trace_event_get_state()`` conditional.
++=========================== ====================================================
  
-@@ -42,18 +34,10 @@ static inline void trace_test_blah(void *context, const char *filename)
  
- static inline void trace_test_wibble(void *context, int value)
- {
--    {
--        char ftrace_buf[MAX_TRACE_STRLEN];
--        int unused __attribute__ ((unused));
--        int trlen;
--        if (trace_event_get_state(TRACE_TEST_WIBBLE)) {
-+    if (trace_event_get_state(TRACE_TEST_WIBBLE)) {
- #line 5 "trace-events"
--            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,
--                             "test_wibble " "Wibble context=%p value=%d" "\n" , context, value);
--#line 54 "ftrace.h"
--            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);
--            unused = write(trace_marker_fd, ftrace_buf, trlen);
--        }
-+        ftrace_write("test_wibble " "Wibble context=%p value=%d" "\n" , context, value);
-+#line 41 "ftrace.h"
-     }
- }
- #endif /* TRACE_TESTSUITE_GENERATED_TRACERS_H */
-diff --git a/trace/ftrace.h b/trace/ftrace.h
-index cb5e35d2171..16c122816d1 100644
---- a/trace/ftrace.h
-+++ b/trace/ftrace.h
-@@ -8,5 +8,6 @@
- extern int trace_marker_fd;
+ Backend functions
+@@ -101,22 +105,33 @@ class Wrapper:
+     def __init__(self, backends, format):
+         self._backends = [backend.replace("-", "_") for backend in backends]
+         self._format = format.replace("-", "_")
++        self.check_trace_event_get_state = False
+         for backend in self._backends:
+             assert exists(backend)
+         assert tracetool.format.exists(self._format)
++        for backend in self.backend_modules():
++            check_trace_event_get_state = getattr(backend, "CHECK_TRACE_EVENT_GET_STATE", False)
++            self.check_trace_event_get_state = self.check_trace_event_get_state or check_trace_event_get_state
  
- bool ftrace_init(void);
-+G_GNUC_PRINTF(1, 2) void ftrace_write(const char *fmt, ...);
- 
- #endif /* TRACE_FTRACE_H */
-diff --git a/trace/ftrace.c b/trace/ftrace.c
-index 9749543d9b2..6875faedb9c 100644
---- a/trace/ftrace.c
-+++ b/trace/ftrace.c
-@@ -38,6 +38,21 @@ static int find_mount(char *mount_point, const char *fstype)
-     return ret;
- }
- 
-+void ftrace_write(const char *fmt, ...)
-+{
-+    char ftrace_buf[MAX_TRACE_STRLEN];
-+    int unused __attribute__ ((unused));
-+    int trlen;
-+    va_list ap;
+-    def _run_function(self, name, *args, **kwargs):
++    def backend_modules(self):
+         for backend in self._backends:
+-            func = tracetool.try_import("tracetool.backend." + backend,
+-                                        name % self._format, None)[1]
+-            if func is not None:
+-                func(*args, **kwargs)
++             module = tracetool.try_import("tracetool.backend." + backend)[1]
++             if module is not None:
++                 yield module
 +
-+    va_start(ap, fmt);
-+    trlen = vsnprintf(ftrace_buf, MAX_TRACE_STRLEN, fmt, ap);
-+    va_end(ap);
-+
-+    trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);
-+    unused = write(trace_marker_fd, ftrace_buf, trlen);
-+}
-+
- bool ftrace_init(void)
- {
-     char mount_point[PATH_MAX];
-diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/backend/ftrace.py
-index 5fa30ccc08e..a07f8a9dfd8 100644
---- a/scripts/tracetool/backend/ftrace.py
-+++ b/scripts/tracetool/backend/ftrace.py
-@@ -28,18 +28,10 @@ def generate_h(event, group):
-     if len(event.args) > 0:
-         argnames = ", " + argnames
++    def _run_function(self, name, *args, check_trace_event_get_state=None, **kwargs):
++        for backend in self.backend_modules():
++            func = getattr(backend, name % self._format, None)
++            if func is not None and \
++                (check_trace_event_get_state is None or
++                 check_trace_event_get_state == getattr(backend, 'CHECK_TRACE_EVENT_GET_STATE', False)):
++                    func(*args, **kwargs)
  
--    out('    {',
--        '        char ftrace_buf[MAX_TRACE_STRLEN];',
--        '        int unused __attribute__ ((unused));',
--        '        int trlen;',
--        '        if (trace_event_get_state(%(event_id)s)) {',
-+    out('    if (trace_event_get_state(%(event_id)s)) {',
-         '#line %(event_lineno)d "%(event_filename)s"',
--        '            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,',
--        '                             "%(name)s " %(fmt)s "\\n" %(argnames)s);',
-+        '        ftrace_write("%(name)s " %(fmt)s "\\n" %(argnames)s);',
-         '#line %(out_next_lineno)d "%(out_filename)s"',
--        '            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);',
--        '            unused = write(trace_marker_fd, ftrace_buf, trlen);',
--        '        }',
-         '    }',
-         name=event.name,
-         args=event.args,
+     def generate_begin(self, events, group):
+         self._run_function("generate_%s_begin", events, group)
+ 
+-    def generate(self, event, group):
+-        self._run_function("generate_%s", event, group)
++    def generate(self, event, group, check_trace_event_get_state=None):
++        self._run_function("generate_%s", event, group, check_trace_event_get_state=check_trace_event_get_state)
+ 
+     def generate_backend_dstate(self, event, group):
+         self._run_function("generate_%s_backend_dstate", event, group)
+diff --git a/scripts/tracetool/format/h.py b/scripts/tracetool/format/h.py
+index b42a8268a81..20cbacfe843 100644
+--- a/scripts/tracetool/format/h.py
++++ b/scripts/tracetool/format/h.py
+@@ -60,7 +60,6 @@ def generate(events, backend, group):
+ 
+         out('    false)')
+ 
+-        # tracer without checks
+         out('',
+             'static inline void %(api)s(%(args)s)',
+             '{',
+@@ -68,11 +67,17 @@ def generate(events, backend, group):
+             args=e.args)
+ 
+         if "disable" not in e.properties:
+-            backend.generate(e, group)
++            backend.generate(e, group, check_trace_event_get_state=False)
+ 
++            if backend.check_trace_event_get_state:
++                event_id = 'TRACE_' + e.name.upper()
++                cond = "trace_event_get_state(%s)" % event_id
++                out('    if (%(cond)s) {',
++                        cond=cond)
++                backend.generate(e, group, check_trace_event_get_state=True)
++                out('    }')
+         out('}')
+ 
+-
+     backend.generate_end(events, group)
+ 
+     out('#endif /* TRACE_%s_GENERATED_TRACERS_H */' % group.upper())
 -- 
 2.50.1
 
