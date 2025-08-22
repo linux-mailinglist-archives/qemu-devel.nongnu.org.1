@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729C7B317C2
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 14:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F23DB317D2
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Aug 2025 14:29:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upQrU-0004ne-2l; Fri, 22 Aug 2025 08:27:16 -0400
+	id 1upQrT-0004nU-8r; Fri, 22 Aug 2025 08:27:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1upQrP-0004ma-9b
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:11 -0400
+ id 1upQrO-0004mO-BP
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1upQrK-0002O6-Dw
- for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:10 -0400
+ id 1upQrL-0002OJ-66
+ for qemu-devel@nongnu.org; Fri, 22 Aug 2025 08:27:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1755865621;
+ s=mimecast20190719; t=1755865624;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=Ih3TeQsWVbzgbpL3DG1NgNzT/OnGGkYdr8cnBJyUJsI=;
- b=SSdWNhvUIeY1u+EUeEv7iEBOksle7hlicA0JecwgMI1NLzPY/VO8IFcoXhI4c48ywcq6Kh
- yjPqlDPV/bFXHImTq4lTpCkP6oNNhOFhM3s8grpPd4yDRRtj+hfUj+XyAEdhPVLvaXWzqt
- 6GfJpYBPvdLk1i2yNRbtFlofw/M3sXo=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=QlReG/+hxnj7VCu+zXagdieQwy6JVPcB87iHElBDdfk=;
+ b=EywJyYNl6D75FdQfwBDmUHqMszwIK5bthV/1jyWgUU4sQDh4xV0fdsTrL4t3f1gvCN7DYG
+ rOgqOS5BN56bgxlYBT+3TJB1wv1v6xroUPVcfHylY5l0fXW9M9EGJ2p1vO/ol7oUpZ0UJF
+ HN8GXuO8FGakrZQY8MpCkEM67JSq69o=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-tnpqz0-HMT-U7p3hcvm8fQ-1; Fri, 22 Aug 2025 08:27:00 -0400
-X-MC-Unique: tnpqz0-HMT-U7p3hcvm8fQ-1
-X-Mimecast-MFC-AGG-ID: tnpqz0-HMT-U7p3hcvm8fQ_1755865619
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-45a1b05d31cso10846865e9.1
- for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 05:27:00 -0700 (PDT)
+ us-mta-310-FucmeFcdP9Kr9QvG93SowQ-1; Fri, 22 Aug 2025 08:27:03 -0400
+X-MC-Unique: FucmeFcdP9Kr9QvG93SowQ-1
+X-Mimecast-MFC-AGG-ID: FucmeFcdP9Kr9QvG93SowQ_1755865622
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3b9edf5b346so863748f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Aug 2025 05:27:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755865618; x=1756470418;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Ih3TeQsWVbzgbpL3DG1NgNzT/OnGGkYdr8cnBJyUJsI=;
- b=cAoFt7PoW+LUV3yXKqaHb7pn2PrzaJHOOC6A7R5+4wZ0U+NYf4JJoJDFadr7uNLVH6
- LVlZ6pkSL7XDRNArf0Itl98TMII8M2mRwLLGtG6Nr3HpD6e589wIf3HSxEVbpvr4Ek+t
- q0HcbI99KMAmm6Xx/nR3IPMJo4HAlsoy6/x1JJfa2e7BSsw8RAJqblJBdW+cHVn2wnEd
- 2/4gLzUpdUTXcPCocxfGtoFfjsgrc0H1f4mFuYgRH9igDiPSbDZsEydByVmJXwPAbBL0
- yFhFLdGNYmL88j2Ny3RCrBZkoq66sY2njnIX3StOpQH4iJ/IdYbvxnXKaht/RShfNicc
- b4Yg==
-X-Gm-Message-State: AOJu0YyCPKxtewKYIG25h8BjxlPp4GA4LBjApfI+ts02a2XLzw4SQLe/
- JPcXxIrH5FAeLR/6zLzZjCTOyN/hSW9HKFo59HnZCRdIP/ebInuCuYivaXP84BBPmhgKhYfU5+Z
- +F7H0qYa8TGWleOq1AjXQc6BMDoJRrQFQLnGpUxVuFxrYTyQwWjk51upRkdc9T9LL56NjYaH/by
- vtDqIA+q2RPttmrV4kQkiVLCJhMw3WDH2vUUepjp80
-X-Gm-Gg: ASbGncuO0b5JQZj6USTQF5Rf4bMZiDSTKLCFKYXx//t27wAsyFVbzEAeoEln4Ffhl5X
- 01Wj8YLWZY5Q4cXbs9vozrZ5mfjWv1/9CKA1U5iI9lc9avUdYTfyP209tnmbCVUPfQBjMo1gdIH
- 9GShDjvFf2+YHUUjbwKW3DdcDShXA4ZO0hxLANMVNKUYqHsxzi5ffkdgWdX9NW7TS2rq2y1I7lx
- +CHImX8fv9sGDYHPRD8PhULwTYxy4kHEufMgjdcaeU/3eZjZmK5DI8TYpyDd/D/vF34/AGpzKrp
- 8jGngpBE86VfG7nRE7cAg/jJxCmB4pRlg791gVr3TmSevwLmAGZDFUI1VQy4IkVg9Wy813ZUARK
- Dg0ks3Rpb/88eTeQWMs+hGxUN+IKEyGcvtIIvLuJ7RQ==
-X-Received: by 2002:a05:600c:a344:b0:459:443e:b180 with SMTP id
- 5b1f17b1804b1-45b51f30f97mr23833615e9.8.1755865618397; 
- Fri, 22 Aug 2025 05:26:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHpHWt1iViDpgZe9rM+O2LuN6tlKn3tIOEgUT5Mf9BlloTWvvCDzQcet10zFmXDCoxM7VyAGw==
-X-Received: by 2002:a05:600c:a344:b0:459:443e:b180 with SMTP id
- 5b1f17b1804b1-45b51f30f97mr23833295e9.8.1755865617797; 
- Fri, 22 Aug 2025 05:26:57 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1755865621; x=1756470421;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=QlReG/+hxnj7VCu+zXagdieQwy6JVPcB87iHElBDdfk=;
+ b=fMjsRy9KzSV/KFPW/vT8HooFOS58FshhftciaD58ZV4QxhgLweUcGxXeDBHSEH8Cwp
+ /4gbMcBTqubi0WdaQriBcbKnXmxx1gJtsz4rOmOXWfjgh+rOISEsLpOwcXl5giGtGGZN
+ 2eCfzz3Wi/LKb5G82NGhI0Gs84HfzqgxxF/fsRjeOIu/Ahcu28i+5ynE9AS/FHh8REjP
+ 3FLw4Xp2sPMfb4GzcMJtJnwhBeI9q78npmhqH4+neLMOeVgkfltXlECkJ9IcrdeLl6UR
+ BVnpBgzOIDdzXps/XcdNPgOJy0SxHjSg+ZuNJbO3y9tdj2lXviTf0OfP/66qGq9og0kH
+ sZcg==
+X-Gm-Message-State: AOJu0YyNx5D6tXhayhR3cNopXJH+aC+zgDATA7XvRHbUY+WhoIj16q0h
+ 5vf202nziczpPxBlxzA8bLohGWF/Sc5afhFxly0GhzUqRJzPPejpWPnxmkL2id20oUHeHjM/yzV
+ 2w8SAB+YXUjjkOu/FaAzFyT+y6uwTnrQHwMT/OPOYU8/ydshKjNpFA/yQacHpWWdpW2mVyuvucN
+ HVJc/rgWkJwRkIibdY8fB7Fol65YNAstkQDiHvufhs
+X-Gm-Gg: ASbGncvVBCIOwmjvf68vklRDI7x8RGe19NG19xOt1tjIztMWEfDjpNv11l7Gx0gMBng
+ VA6nyGtp7pELUGdRPykJ1R+jJx3Q932FlvYAojX/h5ucmX75yLMglcES+vHujWv7Nhs/Yl8PDjT
+ CJ/OF2NRRZKTt5sJNjSX8FCm7Gtoc9VMvH5UBbKbr0EmNqClaefvFVsladTjKOhGu4/CPtbWBIo
+ i+lWbR/+tLCyIvMHQuAIgLw3djySsE6s4cpIpOIumgD+5vc2BcshszIZ7RYnz3iMZIUYeizSb5V
+ 4KaaenwtuqIaFi3r4+ZsUgaeukE4u/qtVIzDdCpYez8u9N7OM2kDhHHYyBRKAHmJRglD4HOcKS7
+ qBNA2n9xdez6myIIz37bbukKvRs6Emf3JHOlR5F4UwQ==
+X-Received: by 2002:a05:6000:2084:b0:3b7:931d:3789 with SMTP id
+ ffacd0b85a97d-3c5da54e877mr1740190f8f.4.1755865620674; 
+ Fri, 22 Aug 2025 05:27:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHFHLCc76kFJLaNN5uE6YBztuhQlFjvYkXW0Bs26F9yF3XRMmwniv9Lq+QqVZ+LwGlm5frZAA==
+X-Received: by 2002:a05:6000:2084:b0:3b7:931d:3789 with SMTP id
+ ffacd0b85a97d-3c5da54e877mr1740170f8f.4.1755865620128; 
+ Fri, 22 Aug 2025 05:27:00 -0700 (PDT)
 Received: from [192.168.10.3] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b50e3a323sm34281125e9.17.2025.08.22.05.26.56
+ ffacd0b85a97d-3c077c5767fsm15405123f8f.62.2025.08.22.05.26.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Aug 2025 05:26:57 -0700 (PDT)
+ Fri, 22 Aug 2025 05:26:58 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: tanishdesai37@gmail.com, stefanha@redhat.com, berrange@redhat.com,
  mads@ynddal.dk
-Subject: [RFC PATCH 00/14] tracetool: add Rust support
-Date: Fri, 22 Aug 2025 14:26:41 +0200
-Message-ID: <20250822122655.1353197-1-pbonzini@redhat.com>
+Subject: [PATCH 01/14] treewide: write "unsigned long int" instead of "long
+ unsigned int"
+Date: Fri, 22 Aug 2025 14:26:42 +0200
+Message-ID: <20250822122655.1353197-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250822122655.1353197-1-pbonzini@redhat.com>
+References: <20250822122655.1353197-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -105,104 +109,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is the result of the summer project of Tanish Desai.  It mostly
-consists of changes to tracetool, which I used to add tracepoint support
-to the pl011 device.  All the backends are supported except dtrace and
-ust; support for Linux in dtrace should be easy using the "probe" crate,
-the rest (ust, and dtrace on macOS or Solaris) less so.
+Putting "unsigned" in anything but the first position is weird.  As such,
+tracetool's Rust type conversion will not support it.  Remove it from
+the whole of QEMU's source code, not just trace-events.
 
-Patches 1-2 are cleanups that could be committed separately.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ crypto/pbkdf-gcrypt.c        | 2 +-
+ crypto/pbkdf-gnutls.c        | 2 +-
+ crypto/pbkdf-nettle.c        | 2 +-
+ hw/display/exynos4210_fimd.c | 2 +-
+ hw/misc/imx7_src.c           | 4 ++--
+ hw/net/can/can_sja1000.c     | 4 ++--
+ hw/xen/trace-events          | 4 ++--
+ 7 files changed, 10 insertions(+), 10 deletions(-)
 
-Patches 3-5 are tracetool patches that have been posted before, now
-rebased on top of the "make check-tracetool" series.  Their purpose
-is to simplify .h code generation for tracetool backends, and these
-simplifications translate directly to the new .rs code generation.
-
-Patches 6-7 add the minimal support for adding tracepoint functions
-in Rust, albeit with no content and thus no actual tracing.
-
-Patches 8-9 add back tracepoints to the Rust pl011 device model.
-
-Patches 10-14 finally add Rust code generation to the supported
-tracing backends.
-
-Many thanks to Daniel for his tracetool testsuite.  It was very
-useful and did indeed improve reviewability!
-
-Paolo
-
-Based-on: <20250819161053.464641-1-berrange@redhat.com>
-
-Paolo Bonzini (6):
-  treewide: write "unsigned long int" instead of "long unsigned int"
-  rust: move dependencies to rust/Cargo.toml
-  trace/ftrace: move snprintf+write from tracepoints to ftrace.c
-  rust: qdev: add minimal clock bindings
-  rust: pl011: add tracepoints
-  log: change qemu_loglevel to unsigned
-
-Tanish Desai (8):
-  tracetool: add CHECK_TRACE_EVENT_GET_STATE
-  tracetool/backend: remove redundant trace event checks
-  tracetool: Add Rust format support
-  rust: add trace crate
-  tracetool/simple: add Rust support
-  tracetool/log: add Rust support
-  tracetool/ftrace: add Rust support
-  tracetool/syslog: add Rust support
-
- include/qemu/log-for-trace.h          |   4 +-
- include/qemu/log.h                    |  44 ++++----
- rust/qemu-api/wrapper.h               |   1 +
- tests/tracetool/ftrace.h              |  28 +----
- tests/tracetool/log.h                 |  16 ++-
- trace/ftrace.h                        |   1 +
- crypto/pbkdf-gcrypt.c                 |   2 +-
- crypto/pbkdf-gnutls.c                 |   2 +-
- crypto/pbkdf-nettle.c                 |   2 +-
- hw/display/exynos4210_fimd.c          |   2 +-
- hw/misc/imx7_src.c                    |   4 +-
- hw/net/can/can_sja1000.c              |   4 +-
- trace/ftrace.c                        |  15 +++
- util/log.c                            |   2 +-
- hw/char/trace-events                  |  14 +--
- hw/xen/trace-events                   |   4 +-
- rust/Cargo.lock                       |   8 ++
- rust/Cargo.toml                       |   6 +
- rust/hw/char/pl011/Cargo.toml         |   1 +
- rust/hw/char/pl011/meson.build        |   1 +
- rust/hw/char/pl011/src/device.rs      |  57 +++++++---
- rust/meson.build                      |   2 +-
- rust/qemu-api/Cargo.toml              |   6 +-
- rust/qemu-api/src/log.rs              |   2 +-
- rust/qemu-api/src/qdev.rs             |  33 ++++++
- rust/trace/Cargo.toml                 |  19 ++++
- rust/trace/meson.build                |  19 ++++
- rust/trace/src/lib.rs                 |  27 +++++
- scripts/tracetool/__init__.py         | 156 ++++++++++++++++++++++++++
- scripts/tracetool/backend/__init__.py |  39 +++++--
- scripts/tracetool/backend/ftrace.py   |  24 ++--
- scripts/tracetool/backend/log.py      |  20 ++--
- scripts/tracetool/backend/simple.py   |  15 ++-
- scripts/tracetool/backend/syslog.py   |  15 +--
- scripts/tracetool/format/h.py         |  11 +-
- scripts/tracetool/format/rs.py        |  76 +++++++++++++
- tests/tracetool/ftrace.rs             |  41 +++++++
- tests/tracetool/log.rs                |  45 ++++++++
- tests/tracetool/simple.rs             |  41 +++++++
- tests/tracetool/syslog.rs             |  41 +++++++
- tests/tracetool/tracetool-test.py     |   2 +
- trace/meson.build                     |   8 +-
- 42 files changed, 718 insertions(+), 142 deletions(-)
- create mode 100644 rust/trace/Cargo.toml
- create mode 100644 rust/trace/meson.build
- create mode 100644 rust/trace/src/lib.rs
- create mode 100644 scripts/tracetool/format/rs.py
- create mode 100644 tests/tracetool/ftrace.rs
- create mode 100644 tests/tracetool/log.rs
- create mode 100644 tests/tracetool/simple.rs
- create mode 100644 tests/tracetool/syslog.rs
-
+diff --git a/crypto/pbkdf-gcrypt.c b/crypto/pbkdf-gcrypt.c
+index e89b8b1c768..f93996f674c 100644
+--- a/crypto/pbkdf-gcrypt.c
++++ b/crypto/pbkdf-gcrypt.c
+@@ -66,7 +66,7 @@ int qcrypto_pbkdf2(QCryptoHashAlgo hash,
+     if (iterations > ULONG_MAX) {
+         error_setg_errno(errp, ERANGE,
+                          "PBKDF iterations %llu must be less than %lu",
+-                         (long long unsigned)iterations, ULONG_MAX);
++                         (unsigned long long)iterations, ULONG_MAX);
+         return -1;
+     }
+ 
+diff --git a/crypto/pbkdf-gnutls.c b/crypto/pbkdf-gnutls.c
+index f34423f918b..46a3a869994 100644
+--- a/crypto/pbkdf-gnutls.c
++++ b/crypto/pbkdf-gnutls.c
+@@ -62,7 +62,7 @@ int qcrypto_pbkdf2(QCryptoHashAlgo hash,
+     if (iterations > ULONG_MAX) {
+         error_setg_errno(errp, ERANGE,
+                          "PBKDF iterations %llu must be less than %lu",
+-                         (long long unsigned)iterations, ULONG_MAX);
++                         (unsigned long long)iterations, ULONG_MAX);
+         return -1;
+     }
+ 
+diff --git a/crypto/pbkdf-nettle.c b/crypto/pbkdf-nettle.c
+index 3ef9c1b52c4..3c8bbaf9f17 100644
+--- a/crypto/pbkdf-nettle.c
++++ b/crypto/pbkdf-nettle.c
+@@ -66,7 +66,7 @@ int qcrypto_pbkdf2(QCryptoHashAlgo hash,
+     if (iterations > UINT_MAX) {
+         error_setg_errno(errp, ERANGE,
+                          "PBKDF iterations %llu must be less than %u",
+-                         (long long unsigned)iterations, UINT_MAX);
++                         (unsigned long long)iterations, ULONG_MAX);
+         return -1;
+     }
+ 
+diff --git a/hw/display/exynos4210_fimd.c b/hw/display/exynos4210_fimd.c
+index c61e0280a7c..5632aa1388c 100644
+--- a/hw/display/exynos4210_fimd.c
++++ b/hw/display/exynos4210_fimd.c
+@@ -1380,7 +1380,7 @@ static void exynos4210_fimd_write(void *opaque, hwaddr offset,
+     uint32_t old_value;
+ 
+     DPRINT_L2("write offset 0x%08x, value=%llu(0x%08llx)\n", offset,
+-            (long long unsigned int)val, (long long unsigned int)val);
++            (unsigned long long)val, (unsigned long long)val);
+ 
+     switch (offset) {
+     case FIMD_VIDCON0:
+diff --git a/hw/misc/imx7_src.c b/hw/misc/imx7_src.c
+index df0b0a69057..817c95bf65b 100644
+--- a/hw/misc/imx7_src.c
++++ b/hw/misc/imx7_src.c
+@@ -169,7 +169,7 @@ static void imx7_src_write(void *opaque, hwaddr offset, uint64_t value,
+ {
+     IMX7SRCState *s = (IMX7SRCState *)opaque;
+     uint32_t index = offset >> 2;
+-    long unsigned int change_mask;
++    uint32_t change_mask;
+     uint32_t current_value = value;
+ 
+     if (index >= SRC_MAX) {
+@@ -180,7 +180,7 @@ static void imx7_src_write(void *opaque, hwaddr offset, uint64_t value,
+ 
+     trace_imx7_src_write(imx7_src_reg_name(SRC_A7RCR0), s->regs[SRC_A7RCR0]);
+ 
+-    change_mask = s->regs[index] ^ (uint32_t)current_value;
++    change_mask = s->regs[index] ^ current_value;
+ 
+     switch (index) {
+     case SRC_A7RCR0:
+diff --git a/hw/net/can/can_sja1000.c b/hw/net/can/can_sja1000.c
+index 5b6ba9df6c4..545c520c3b4 100644
+--- a/hw/net/can/can_sja1000.c
++++ b/hw/net/can/can_sja1000.c
+@@ -750,8 +750,8 @@ uint64_t can_sja_mem_read(CanSJA1000State *s, hwaddr addr, unsigned size)
+             break;
+         }
+     }
+-    DPRINTF("read addr 0x%02x, %d bytes, content 0x%02lx\n",
+-            (int)addr, size, (long unsigned int)temp);
++    DPRINTF("read addr 0x%02x, %d bytes, content 0x%02x\n",
++            (int)addr, size, (unsigned)temp);
+ 
+     return temp;
+ }
+diff --git a/hw/xen/trace-events b/hw/xen/trace-events
+index b67942d07b4..3b71ee641ff 100644
+--- a/hw/xen/trace-events
++++ b/hw/xen/trace-events
+@@ -57,8 +57,8 @@ cpu_ioreq_config_read(void *req, uint32_t sbdf, uint32_t reg, uint32_t size, uin
+ cpu_ioreq_config_write(void *req, uint32_t sbdf, uint32_t reg, uint32_t size, uint32_t data) "I/O=%p sbdf=0x%x reg=%u size=%u data=0x%x"
+ cpu_get_ioreq_from_shared_memory_req_not_ready(int state, int data_is_ptr, uint64_t addr, uint64_t data, uint32_t count, uint32_t size) "I/O request not ready: 0x%x, ptr: 0x%x, port: 0x%"PRIx64", data: 0x%"PRIx64", count: %u, size: %u"
+ xen_main_loop_prepare_init_cpu(int id, void *cpu) "cpu_by_vcpu_id[%d]=%p"
+-xen_map_ioreq_server_shared_page(long unsigned int ioreq_pfn) "shared page at pfn 0x%lx"
+-xen_map_ioreq_server_buffered_io_page(long unsigned int ioreq_pfn) "buffered io page at pfn 0x%lx"
++xen_map_ioreq_server_shared_page(unsigned long int ioreq_pfn) "shared page at pfn 0x%lx"
++xen_map_ioreq_server_buffered_io_page(unsigned long int ioreq_pfn) "buffered io page at pfn 0x%lx"
+ xen_map_ioreq_server_buffered_io_evtchn(int bufioreq_evtchn) "buffered io evtchn is 0x%x"
+ destroy_hvm_domain_cannot_acquire_handle(void) "Cannot acquire xenctrl handle"
+ destroy_hvm_domain_failed_action(const char *action, int sts, char *errno_s) "xc_domain_shutdown failed to issue %s, sts %d, %s"
 -- 
 2.50.1
 
