@@ -2,90 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB47B32B72
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Aug 2025 20:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 254A0B32C1C
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Aug 2025 23:49:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upskF-0006Ob-Hu; Sat, 23 Aug 2025 14:13:39 -0400
+	id 1upw6H-0004Xh-SN; Sat, 23 Aug 2025 17:48:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1upsk9-0006OF-Je
- for qemu-devel@nongnu.org; Sat, 23 Aug 2025 14:13:33 -0400
-Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1upsk7-000136-OJ
- for qemu-devel@nongnu.org; Sat, 23 Aug 2025 14:13:33 -0400
-Received: by mail-yw1-x112d.google.com with SMTP id
- 00721157ae682-71d605a70bdso21843897b3.3
- for <qemu-devel@nongnu.org>; Sat, 23 Aug 2025 11:13:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1755972809; x=1756577609; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=j54QpuXTFqkjpnANd0IvJVoslxJkKZt+a9oamCFvCe0=;
- b=LpAhY8ghJ5SCZzH5tBmS5G4rW6LeEC7hRO27atPXlRkAH8vTb8Zu8fvjej7e//qAGQ
- TwXbXoIvkLyfZlZ6Go1G+tuqHgfOWoTIPajfpWDjMOyHIIMso66VPb6ty5Jbxme5GNp0
- jwNTo7W9oqawaDvOzSnPobqPlxUuPdNegRhz4MhzACORsUX90qApHb65Ou3bHRIKRGoW
- /M/49vACmhfCQlJ2hddTXhXdtLtoxjmgI+fPxcPEMQ/y2pBsYxxkTrMbyFi7jxgt82wu
- pZ/LiBVCvItZzHasbHoS7eafEq3IbTkHcO1pRNVbi3hzulbUXhxarB1/D/uZdt8NN/Nk
- awEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1755972809; x=1756577609;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=j54QpuXTFqkjpnANd0IvJVoslxJkKZt+a9oamCFvCe0=;
- b=dZ8SCYC1GqjZKSzLneMqjM0vsR+sNzrOGDomgALtV2swgMiJVJZDaH4BwpX+bwJ+9j
- RvREVw0zqlxEbxksGe1TsEbmtkcsEUrzdTW+/RcYReFwbNZFQFBo6d+Z6vkAfQIO2WA6
- YA8mf0k+yNtWPKmqgfCMkUTKUPeB6vDvejd847g0yXTZj0Td1jR8wmzn8qwMLMdYtEZ7
- hQ2D5XsIHtWC48GIYPgMy7IZAi5h1jSuxVSJGTQ8wc4x+Gt4oPSulZrC8OcMarwLj812
- J0aanoPccnf+uHjVAMdhCSsT1b6LU06jIqDYLe7mn9C8CY8fvNcAYb2IYUDrpHqR9SpR
- PbIA==
-X-Gm-Message-State: AOJu0YyzAOgw0urmlD7PQH124SDh6zAj1JIZMvPyJ6LSJ7DO8TsPCxwT
- 7IGWuxDfTnSIn41J0ZKU/n/RVsjd6KtRnj7VijkYs6C12X/7NAl62KyFNl8nJxTL3tQ7UMEY1V1
- 6P27ylQNM0fDwKCms+KiZ9Q7LU6Rxt5B9YAj5pyFxLg==
-X-Gm-Gg: ASbGncugypILYaK1DIAlB8e1GvKAelxTI7uXIJ+kGApWpov3c4+38G1868tE6MzO2hg
- Jr1gbp+h4+GIu0k+ZVe12YoHbe5oSIuvnYZx8ub6S5yP+q4G4Vh92TiVJPaPIgQ8TRoWO2fe+IA
- kOZteIXP2DctOdPduYpyFJouYs0x+QbkEyBSWOcuI4sYt+lTxtPrXolW7vHegFYE4yafA+fPCTY
- 77ZXv4v
-X-Google-Smtp-Source: AGHT+IF+9yiOtGZ4E12AEEF/XLg59GizlWvCcIigLCDcRRxXhOdC7DRPLImG1MHZvhu2EHcDG6LvdWrGeCk7PdjGT7I=
-X-Received: by 2002:a05:690c:7487:b0:71f:f942:8474 with SMTP id
- 00721157ae682-71ff9428641mr25497187b3.49.1755972808638; Sat, 23 Aug 2025
- 11:13:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1upw6D-0004Up-Te
+ for qemu-devel@nongnu.org; Sat, 23 Aug 2025 17:48:34 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1upw69-00053t-Mn
+ for qemu-devel@nongnu.org; Sat, 23 Aug 2025 17:48:33 -0400
+Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c21:2d8b:0:640:7d49:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 549C78073C;
+ Sun, 24 Aug 2025 00:48:25 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a5d::1:36])
+ by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id Nmd3dr0GuSw0-0KWdIOvx; Sun, 24 Aug 2025 00:48:24 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1755985704;
+ bh=wbBorqqEWfXJJFpeUpfDGfqpsSY88A9+GV2LqkdQv9s=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=NDKUuIGF+7Co4O9UQdkZ/bNp+7I7utvmVpzA8WV/DnMmLGoUQcdi+hG8NBS2o5vZ9
+ jM1Jl8IQBvI8xeUfn5WNsN0X4Kug/inNldKFtnGs5iAYIWmwNSog3KRczLrkkyAtBm
+ oM+7txnDxGpWzMhAcDHUbghkG1QzzIDhSvOTPTmk=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: jasowang@redhat.com
+Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
+ steven.sistare@oracle.com, peterx@redhat.com, mst@redhat.com,
+ farosas@suse.de, yc-core@yandex-team.ru
+Subject: [RFC 0/7] virtio-net: live-TAP local migration
+Date: Sun, 24 Aug 2025 00:48:14 +0300
+Message-ID: <20250823214821.48342-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-References: <20250811193654.4012878-1-vacha.bhavsar@oss.qualcomm.com>
- <20250811193654.4012878-5-vacha.bhavsar@oss.qualcomm.com>
- <CAFEAcA8FchF06dGdixBwY8GWSF3kREuL72ZmeyG_cYqzAmuEjA@mail.gmail.com>
- <CAEWVDmsqgrnXgte0Sb+uzHmu=jHkXWvfHhYme-9hwng3XvrwVA@mail.gmail.com>
-In-Reply-To: <CAEWVDmsqgrnXgte0Sb+uzHmu=jHkXWvfHhYme-9hwng3XvrwVA@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 23 Aug 2025 19:13:17 +0100
-X-Gm-Features: Ac12FXzHFJOGQj6E60pls10-fh9mBBHF4NjkUm1RGw1mVrRyWsNlcFH2GyYYmsM
-Message-ID: <CAFEAcA9Bf7kWL20hzCQP5GSAN1AkX0FnqZv_TdTOpQFLSTCdeA@mail.gmail.com>
-Subject: Re: [PATCH v5 4/4] target/arm: Added test case for SME register
- exposure
-To: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112d.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -97,48 +71,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 22 Aug 2025 at 18:32, Vacha Bhavsar
-<vacha.bhavsar@oss.qualcomm.com> wrote:
->
-> Hi,
->
-> We have tried to replicate this issue on our end and it
-> seems to stem from the int casting of gdb.Value type of
-> a 128bit integer. We have run the test with different
-> host architectures, gdb versions and python versions
-> both with and without the int casting. The results are
-> as follows.
->
-> gdb     gdb target           python   host          int cast status
-> version support              version  architecture
-> 16.3 --enable-targets=all 3.11.13   x86        yes        pass
-> 16.3 --enable-targets=all 3.11.13   x86         no        pass
-> 16.3 --enable-targets=all 3.10.18   x86        yes        pass
-> 16.3 --enable-targets=all 3.10.18   x86         no        pass
-> 16.3 --enable-targets=all 3.8.10    x86        yes        pass
-> 16.3 --enable-targets=all 3.8.10    x86          no        pass
->
-> 16.3 aarch64             3.11.0rc1 aarch64      yes        pass
-> 16.3 aarch64             3.11.0rc1 aarch64       no        pass
-> 16.3 aarch64             3.10.12   aarch64      yes        pass
-> 16.3 aarch64             3.10.12   aarch64       no        pass
->
-> 15.0 multiarch           3.10.12   aarch64      yes        fail
-> 15.0 multiarch           3.10.12   aarch64      no        pass
-> 15.0 multiarch          3.11.0rc1 aarch64      yes        fail
-> 15.0 multiarch          3.11.0rc1 aarch64      no        pass
->
-> 15.0 multiarch          3.8.10      x86            yes        fail
-> 15.0 multiarch          3.8.10      x86             no        pass
-> 15.0 multiarch        3.11.13      x86            yes        fail
-> 15.0 multiarch        3.11.13      x86             no        pass
-> 15.0 multiarch        3.10.18      x86            yes        fail
-> 15.0 multiarch        3.10.18     x86             no        pass
->
-> Could we get some more information about your testing environment?
+Hi all!
 
-It's just stock Ubuntu 24.04.3 LTS on x86-64; gdb is gdb-multiarch
-GNU gdb (Ubuntu 15.0.50.20240403-0ubuntu1) 15.0.50.20240403-git
+That's a kind of alternative to
+[RFC V2 0/8] Live update: tap and vhost
+https://patchew.org/QEMU/1752777568-236368-1-git-send-email-steven.sistare@oracle.com/
 
--- PMM
+Instead of using CPR with additional stage and channel to pass FDs,
+we just pass everything we need (including FDs) through main
+migration channel (of-course, it should be unix socket). So,
+it's similar to live-backend vhost-user-blk migration which I propose in
+[PATCH 00/33] vhost-user-blk: live-backend local migration
+https://patchew.org/QEMU/20250813164856.950363-1-vsementsov@yandex-team.ru/
+
+The series is based on
+[PATCH 00/33] vhost-user-blk: live-backend local migration
+and
+[PATCH v2 00/20] TAP initialization refactoring
+
+The series is also pushed to tag up-tap-fd-migration-v1 here:
+https://gitlab.com/vsementsov/qemu/-/tree/up-tap-fd-migration-v1?ref_type=tags
+
+The series is working draft, so marked as RFC. Next steps would be
+implementing a test, and smarter migration of vhostnet
+(without reinitialization of vhost).
+
+The last patch provides a kind of stand to test these series, and it
+also can help with testing "[RFC V2 0/8] Live update: tap and vhost"
+
+Based-on: <20250823160323.20811-1-vsementsov@yandex-team.ru>
+Based-on: <20250823160323.20811-1-vsementsov@yandex-team.ru>
+
+Vladimir Sementsov-Ogievskiy (7):
+  net/tap: add some trace points
+  net/tap: keep exit notifier only when downscript set
+  qapi: add interface for local TAP migration
+  net/tap: implement interfaces for local migration
+  virtio-net: support local tap migration
+  net/tap: experimental support for vhost in local tap migration
+  RFC: add python/tap-migration-stand.py
+
+ hw/net/virtio-net.c            | 100 +++++++++-
+ include/hw/virtio/virtio-net.h |   2 +
+ include/net/tap.h              |   4 +
+ migration/options.c            |   7 +
+ migration/options.h            |   1 +
+ net/tap.c                      | 226 ++++++++++++++++-----
+ net/trace-events               |   7 +
+ python/qemu/machine/machine.py |  37 ++--
+ python/tap-migration-stand.py  | 348 +++++++++++++++++++++++++++++++++
+ qapi/migration.json            |   9 +-
+ qapi/net.json                  |  12 +-
+ 11 files changed, 681 insertions(+), 72 deletions(-)
+ create mode 100755 python/tap-migration-stand.py
+
+-- 
+2.48.1
+
 
