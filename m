@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF60B32C21
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Aug 2025 23:50:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 761D4B32C1D
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Aug 2025 23:49:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upw6E-0004Um-Pl; Sat, 23 Aug 2025 17:48:34 -0400
+	id 1upw6G-0004WV-CN; Sat, 23 Aug 2025 17:48:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1upw6C-0004Td-F9
+ id 1upw6C-0004Te-GO
  for qemu-devel@nongnu.org; Sat, 23 Aug 2025 17:48:32 -0400
 Received: from forwardcorp1b.mail.yandex.net
  ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1upw69-000546-MC
+ id 1upw69-00054A-MK
  for qemu-devel@nongnu.org; Sat, 23 Aug 2025 17:48:32 -0400
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c21:2d8b:0:640:7d49:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 69500807BA;
- Sun, 24 Aug 2025 00:48:27 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 023F8807C8;
+ Sun, 24 Aug 2025 00:48:28 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a5d::1:36])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id Nmd3dr0GuSw0-9aPBcEQy; Sun, 24 Aug 2025 00:48:26 +0300
+ ESMTPSA id Nmd3dr0GuSw0-GTo45y1a; Sun, 24 Aug 2025 00:48:27 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1755985707;
- bh=qskqYXjap40rdYlZ1SzEptRV2plpL6riqRQlHCIbGiU=;
+ bh=GftTvKuCJ/20RJKBye2/TezLhjc0gyXvfMSFYxlvOO8=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=UAXOp5wLYIikFaL3N8x3CWkjURXAqpxNtDpiBMfqGNys80psO2wHV5X1p//bWjWZ3
- nX7ATMU+Yl5CdGNnkFyXnQbzQIMDrpsQPFI35x+yoowK0m6k4YTB1i91UX2Y9Z/xdy
- lz1GaW/ndbpbL6ikMZmO9EMPfyAbUNZwZi4hQkrE=
+ b=g3YFHIXSZo+X5vcdph5+hatcE8swRJisd//UZvpUjdAd/WXLkxzgzUY0WdBQYhJ+k
+ JDPGwaSHXNIi77Avmy2sCQpKtHl6g3J8AWnRuJpSGZBNywqyhqYPwJA1JtcUro0Gy+
+ 5phtS+PFSS6Sq/9xOnHOOgTgkMGFToRqhf2K/1Jk=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -43,9 +43,9 @@ To: jasowang@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
  steven.sistare@oracle.com, peterx@redhat.com, mst@redhat.com,
  farosas@suse.de, yc-core@yandex-team.ru
-Subject: [RFC 4/7] net/tap: implement interfaces for local migration
-Date: Sun, 24 Aug 2025 00:48:18 +0300
-Message-ID: <20250823214821.48342-5-vsementsov@yandex-team.ru>
+Subject: [RFC 5/7] virtio-net: support local tap migration
+Date: Sun, 24 Aug 2025 00:48:19 +0300
+Message-ID: <20250823214821.48342-6-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250823214821.48342-1-vsementsov@yandex-team.ru>
 References: <20250823214821.48342-1-vsementsov@yandex-team.ru>
@@ -73,227 +73,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle local-incoming option:
-
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- include/net/tap.h |   4 ++
- net/tap.c         | 129 ++++++++++++++++++++++++++++++++++------------
- 2 files changed, 99 insertions(+), 34 deletions(-)
+ hw/net/virtio-net.c            | 100 ++++++++++++++++++++++++++++++++-
+ include/hw/virtio/virtio-net.h |   2 +
+ 2 files changed, 101 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/tap.h b/include/net/tap.h
-index 6f34f13eae..3ef2e2dbae 100644
---- a/include/net/tap.h
-+++ b/include/net/tap.h
-@@ -30,7 +30,11 @@
- 
- int tap_enable(NetClientState *nc);
- int tap_disable(NetClientState *nc);
-+bool tap_local_incoming(NetClientState *nc);
- 
- int tap_get_fd(NetClientState *nc);
- 
-+int tap_load(NetClientState *nc, QEMUFile *f);
-+int tap_save(NetClientState *nc, QEMUFile *f);
-+
- #endif /* QEMU_NET_TAP_H */
-diff --git a/net/tap.c b/net/tap.c
-index c07af762b0..4d3cdc0662 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -35,6 +35,8 @@
- #include "net/eth.h"
- #include "net/net.h"
- #include "clients.h"
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 6b5b5dace3..874e349fee 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -38,6 +38,8 @@
+ #include "qapi/qapi-events-migration.h"
+ #include "hw/virtio/virtio-access.h"
+ #include "migration/misc.h"
 +#include "migration/migration.h"
-+#include "migration/qemu-file.h"
- #include "monitor/monitor.h"
++#include "migration/options.h"
+ #include "standard-headers/linux/ethtool.h"
  #include "system/system.h"
- #include "qapi/error.h"
-@@ -81,6 +83,7 @@ typedef struct TAPState {
-     VHostNetState *vhost_net;
-     unsigned host_vnet_hdr_len;
-     Notifier exit;
-+    bool local_incoming;
- } TAPState;
+ #include "system/replay.h"
+@@ -2999,7 +3001,13 @@ static void virtio_net_set_multiqueue(VirtIONet *n, int multiqueue)
+     n->multiqueue = multiqueue;
+     virtio_net_change_num_queues(n, max * 2 + 1);
  
- static void launch_script(const char *setup_script, const char *ifname,
-@@ -727,21 +730,25 @@ static int net_tap_open_one(const Netdev *netdev,
-         vnet_hdr_required = 0;
-     }
- 
--    fd = RETRY_ON_EINTR(tap_open(ifname, ifname_sz, &vnet_hdr,
--                                 vnet_hdr_required, mq_required, errp));
--    if (fd < 0) {
--        return -1;
--    }
--
--    if (script &&
--        script[0] != '\0' &&
--        strcmp(script, "no") != 0) {
--        launch_script(script, ifname, fd, &err);
--        if (err) {
--            error_propagate(errp, err);
--            close(fd);
-+    if (tap->local_incoming) {
-+        fd = -1;
-+    } else {
-+        fd = RETRY_ON_EINTR(tap_open(ifname, ifname_sz, &vnet_hdr,
-+                                     vnet_hdr_required, mq_required, errp));
-+        if (fd < 0) {
-             return -1;
-         }
-+
-+        if (script &&
-+            script[0] != '\0' &&
-+            strcmp(script, "no") != 0) {
-+            launch_script(script, ifname, fd, &err);
-+            if (err) {
-+                error_propagate(errp, err);
-+                close(fd);
-+                return -1;
-+            }
-+        }
-     }
- 
-     ret = net_tap_fd_init_common(netdev, peer, "tap", name, ifname,
-@@ -757,6 +764,42 @@ static int net_tap_open_one(const Netdev *netdev,
- 
- #define MAX_TAP_QUEUES 1024
- 
-+int tap_save(NetClientState *nc, QEMUFile *f)
-+{
-+    TAPState *s = DO_UPCAST(TAPState, nc, nc);
-+
-+    qemu_file_put_fd(f, s->fd);
-+    qemu_put_byte(f, s->using_vnet_hdr);
-+    qemu_put_byte(f, s->has_ufo);
-+    qemu_put_byte(f, s->has_uso);
-+    qemu_put_byte(f, s->enabled);
-+    qemu_put_be32(f, s->host_vnet_hdr_len);
-+
-+    return 0;
-+}
-+
-+int tap_load(NetClientState *nc, QEMUFile *f)
-+{
-+    TAPState *s = DO_UPCAST(TAPState, nc, nc);
-+
-+    s->fd = qemu_file_get_fd(f);
-+    if (s->fd < 0) {
-+        return -1;
+-    virtio_net_set_queue_pairs(n);
++    /*
++     * Called from set_features(0) on reset, when on target we
++     * doesn't have fds yet
++     */
++    if (!n->tap_wait_incoming) {
++        virtio_net_set_queue_pairs(n);
 +    }
-+
-+    s->using_vnet_hdr = qemu_get_byte(f);
-+    s->has_ufo = qemu_get_byte(f);
-+    s->has_uso = qemu_get_byte(f);
-+    s->enabled = qemu_get_byte(f);
-+    qemu_get_be32s(f, &s->host_vnet_hdr_len);
-+
-+    tap_read_poll(s, true);
-+    s->exit.notify = tap_exit_notify;
-+    qemu_add_exit_notifier(&s->exit);
-+
-+    return 0;
-+}
-+
- static int net_tap_fd_init_common(const Netdev *netdev, NetClientState *peer,
-                                   const char *model, const char *name,
-                                   const char *ifname, const char *script,
-@@ -764,30 +807,40 @@ static int net_tap_fd_init_common(const Netdev *netdev, NetClientState *peer,
-                                   const char *vhostfdname,
-                                   int vnet_hdr, int fd, Error **errp)
- {
--    const NetdevTapOptions *tap;
-+    const NetdevTapOptions *tap = NULL;
-     int ret;
-     NetClientState *nc;
-     TAPState *s;
-+    bool local_incoming = false;
-+
-+    if (netdev->type == NET_CLIENT_DRIVER_TAP) {
-+        tap = &netdev->u.tap;
-+        local_incoming = tap->local_incoming;
-+    }
- 
-     nc = qemu_new_net_client(&net_tap_info, peer, model, name);
- 
-     s = DO_UPCAST(TAPState, nc, nc);
--
--    s->fd = fd;
--    s->host_vnet_hdr_len = vnet_hdr ? sizeof(struct virtio_net_hdr) : 0;
--    s->using_vnet_hdr = false;
--    s->has_ufo = tap_probe_has_ufo(s->fd);
--    s->has_uso = tap_probe_has_uso(s->fd);
--    s->enabled = true;
--    tap_set_offload(&s->nc, 0, 0, 0, 0, 0, 0, 0);
--    /*
--     * Make sure host header length is set correctly in tap:
--     * it might have been modified by another instance of qemu.
--     */
--    if (vnet_hdr) {
--        tap_fd_set_vnet_hdr_len(s->fd, s->host_vnet_hdr_len);
-+    s->local_incoming = local_incoming;
-+
-+    if (!local_incoming) {
-+        s->fd = fd;
-+        s->host_vnet_hdr_len = vnet_hdr ? sizeof(struct virtio_net_hdr) : 0;
-+        s->using_vnet_hdr = false;
-+        s->has_ufo = tap_probe_has_ufo(s->fd);
-+        s->has_uso = tap_probe_has_uso(s->fd);
-+        s->enabled = true;
-+        tap_set_offload(&s->nc, 0, 0, 0, 0, 0, 0, 0);
-+        /*
-+         * Make sure host header length is set correctly in tap:
-+         * it might have been modified by another instance of qemu.
-+         */
-+        if (vnet_hdr) {
-+            tap_fd_set_vnet_hdr_len(s->fd, s->host_vnet_hdr_len);
-+        }
-+        tap_read_poll(s, true);
-     }
--    tap_read_poll(s, true);
-+
-     s->vhost_net = NULL;
-     s->exit.notify = NULL;
- 
-@@ -799,9 +852,8 @@ static int net_tap_fd_init_common(const Netdev *netdev, NetClientState *peer,
-     }
- 
-     assert(netdev->type == NET_CLIENT_DRIVER_TAP);
--    tap = &netdev->u.tap;
- 
--    if (tap_set_sndbuf(s->fd, tap, errp) < 0) {
-+    if (!local_incoming && tap_set_sndbuf(s->fd, tap, errp) < 0) {
-         goto failed;
-     }
- 
-@@ -822,9 +874,11 @@ static int net_tap_fd_init_common(const Netdev *netdev, NetClientState *peer,
-         }
-     }
- 
--    ret = net_tap_setup_vhost(s, tap, vhostfdname, errp);
--    if (ret < 0) {
--        goto failed;
-+    if (!local_incoming) {
-+        ret = net_tap_setup_vhost(s, tap, vhostfdname, errp);
-+        if (ret < 0) {
-+            goto failed;
-+        }
-     }
- 
-     return 0;
-@@ -1081,3 +1135,10 @@ int tap_disable(NetClientState *nc)
-         return ret;
-     }
  }
-+
-+bool tap_local_incoming(NetClientState *nc)
+ 
+ static int virtio_net_pre_load_queues(VirtIODevice *vdev, uint32_t n)
+@@ -3009,6 +3017,19 @@ static int virtio_net_pre_load_queues(VirtIODevice *vdev, uint32_t n)
+     return 0;
+ }
+ 
++static int virtio_net_pre_save_device(void *opaque)
 +{
-+    TAPState *s = DO_UPCAST(TAPState, nc, nc);
++    VirtIONet *n = opaque;
++    int i, r;
 +
-+    return s->local_incoming && runstate_check(RUN_STATE_INMIGRATE);
++    for (i = 0; i < n->curr_queue_pairs; i++) {
++        r = peer_detach(n, i);
++        assert(!r);
++    }
++
++    return 0;
 +}
++
+ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
+                                         Error **errp)
+ {
+@@ -3028,6 +3049,11 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
+ 
+     virtio_add_feature(&features, VIRTIO_NET_F_MAC);
+ 
++    if (n->tap_wait_incoming) {
++        /* Excessive feature set is OK for early initialization */
++        return features;
++    }
++
+     if (!peer_has_vnet_hdr(n)) {
+         virtio_clear_feature(&features, VIRTIO_NET_F_CSUM);
+         virtio_clear_feature(&features, VIRTIO_NET_F_HOST_TSO4);
+@@ -3494,11 +3520,69 @@ static const VMStateDescription vhost_user_net_backend_state = {
+     }
+ };
+ 
++static int virtio_net_tap_save(QEMUFile *f, void *pv, size_t size,
++                                     const VMStateField *field,
++                                     JSONWriter *vmdesc)
++{
++    VirtIONet *n = pv;
++    int i;
++
++    for (i = 0; i < n->max_queue_pairs; i++) {
++        NetClientState *nc = qemu_get_subqueue(n->nic, i);
++        assert(nc->peer->info->type == NET_CLIENT_DRIVER_TAP);
++
++        tap_save(nc->peer, f);
++    }
++
++    return 0;
++}
++
++static int virtio_net_tap_load(QEMUFile *f, void *pv, size_t size,
++                                     const VMStateField *field)
++{
++    VirtIONet *n = pv;
++    VirtIODevice *vdev = VIRTIO_DEVICE(n);
++    VirtioDeviceClass *vdc = VIRTIO_DEVICE_GET_CLASS(vdev);
++    Error *local_err = NULL;
++    int i;
++
++    for (i = 0; i < n->max_queue_pairs; i++) {
++        NetClientState *nc = qemu_get_subqueue(n->nic, i);
++        assert(nc->peer->info->type == NET_CLIENT_DRIVER_TAP);
++
++        tap_load(nc->peer, f);
++    }
++
++    peer_test_vnet_hdr(n);
++    n->tap_wait_incoming = false;
++
++    vdev->host_features = vdc->get_features(vdev, vdev->host_features,
++                                            &local_err);
++    if (local_err) {
++        error_report_err(local_err);
++        return -EINVAL;
++    }
++
++    return 0;
++}
++
++static bool virtio_net_is_tap_local(void *opaque, int version_id)
++{
++    VirtIONet *n = opaque;
++    NetClientState *nc;
++
++    nc = qemu_get_queue(n->nic);
++
++    return migrate_local_tap() && nc->peer &&
++        nc->peer->info->type == NET_CLIENT_DRIVER_TAP;
++}
++
+ static const VMStateDescription vmstate_virtio_net_device = {
+     .name = "virtio-net-device",
+     .version_id = VIRTIO_NET_VM_VERSION,
+     .minimum_version_id = VIRTIO_NET_VM_VERSION,
+     .post_load = virtio_net_post_load_device,
++    .pre_save = virtio_net_pre_save_device,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT8_ARRAY(mac, VirtIONet, ETH_ALEN),
+         VMSTATE_STRUCT_POINTER(vqs, VirtIONet,
+@@ -3525,6 +3609,15 @@ static const VMStateDescription vmstate_virtio_net_device = {
+          * but based on the uint.
+          */
+         VMSTATE_BUFFER_POINTER_UNSAFE(vlans, VirtIONet, 0, MAX_VLAN >> 3),
++        {
++            .name = "tap",
++            .info = &(const VMStateInfo) {
++                .name = "virtio-net vhost-user backend state",
++                .get = virtio_net_tap_load,
++                .put = virtio_net_tap_save,
++            },
++            .field_exists = virtio_net_is_tap_local,
++        },
+         VMSTATE_WITH_TMP(VirtIONet, struct VirtIONetMigTmp,
+                          vmstate_virtio_net_has_vnet),
+         VMSTATE_UINT8(mac_table.multi_overflow, VirtIONet),
+@@ -3954,6 +4047,11 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+         vhost_net_set_config(get_vhost_net(nc->peer),
+             (uint8_t *)&netcfg, 0, ETH_ALEN, VHOST_SET_CONFIG_TYPE_FRONTEND);
+     }
++
++    if (nc->peer && nc->peer->info->type == NET_CLIENT_DRIVER_TAP) {
++        n->tap_wait_incoming = tap_local_incoming(nc->peer);
++    }
++
+     QTAILQ_INIT(&n->rsc_chains);
+     n->qdev = dev;
+ 
+diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
+index 73fdefc0dc..04ae0e4c06 100644
+--- a/include/hw/virtio/virtio-net.h
++++ b/include/hw/virtio/virtio-net.h
+@@ -231,6 +231,8 @@ struct VirtIONet {
+     struct EBPFRSSContext ebpf_rss;
+     uint32_t nr_ebpf_rss_fds;
+     char **ebpf_rss_fds;
++
++    bool tap_wait_incoming;
+ };
+ 
+ size_t virtio_net_handle_ctrl_iov(VirtIODevice *vdev,
 -- 
 2.48.1
 
