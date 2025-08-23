@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6827B32A68
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Aug 2025 18:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D80FB32A46
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Aug 2025 18:05:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upqil-0005QK-VV; Sat, 23 Aug 2025 12:04:00 -0400
+	id 1upqio-0005Rk-P2; Sat, 23 Aug 2025 12:04:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1upqiP-0005Kz-PC
+ id 1upqiP-0005Ky-MN
  for qemu-devel@nongnu.org; Sat, 23 Aug 2025 12:03:42 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1upqiL-0000Hn-NS
+ id 1upqiL-0000Hj-0c
  for qemu-devel@nongnu.org; Sat, 23 Aug 2025 12:03:37 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c23:36c1:0:640:5f85:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 60D1580629;
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id DEA6B80636;
  Sat, 23 Aug 2025 19:03:28 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:c91::1:b])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id Q3YUrj0Gl8c0-dUguLtR1; Sat, 23 Aug 2025 19:03:27 +0300
+ ESMTPSA id Q3YUrj0Gl8c0-FG1CDEro; Sat, 23 Aug 2025 19:03:28 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1755965008;
- bh=XZ907GoTMSukCC5aa7hwWOOYOieaiLj2RzPVyep6PXA=;
+ bh=kmfQHM8TLUvJTk/2iH8NlzJJp/mIQx68htlSJAODbrY=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=0t6W0nQnMN9WznUVosvyiRGX3IQdE8Pj+wUFqeDWkI1/MCB71YTh6HnHDXy8BWT3Y
- 7HW5KNApu4YR41atLlQr3zrtOirspQb37MNN+t776FGq+zg3i37+Ijq16H9JvVcO1m
- zSULVdPo8MWtn6KHlqedUVcAYoaJXe1TkGS8pvDI=
+ b=IVX30jzSnOOZ1wg0Z6fwK+O8gcFWe8O5bN7iiDgX9rYtSXcXyWHrb+pPlmMvnDZJ5
+ 3ZHK2gqYfFvsOE+Stc+XbRvH50eveV8Bbb7CzuoYPExVV3eFyjsXTRHPu3iWA54tJ9
+ hK7AC0oa4jMWjffWinEtddhLqoKhz3vyq9ZTZkfc=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: jasowang@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
  steven.sistare@oracle.com
-Subject: [PATCH v2 02/20] net/tap: add set_fd_nonblocking() helper
-Date: Sat, 23 Aug 2025 19:03:05 +0300
-Message-ID: <20250823160323.20811-3-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 03/20] net/tap: tap_set_sndbuf(): add return value
+Date: Sat, 23 Aug 2025 19:03:06 +0300
+Message-ID: <20250823160323.20811-4-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250823160323.20811-1-vsementsov@yandex-team.ru>
 References: <20250823160323.20811-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.136;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,101 +72,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Follow common recommendations to avoid error propagation.
+
+Probably, it would also be good to use bool as a return type
+(switching to true/false as success/failure instead of 0/-1). But
+seems almost all functions (including a lot of them with errp
+argument) have 0/-1 semantics in net/, so making exclusions doesn't
+seem good. If we want such a switch, we should update the whole
+net/ directory.
+
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- net/tap.c | 34 +++++++++++++++++++---------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ net/tap-linux.c | 5 ++++-
+ net/tap.c       | 4 +---
+ net/tap_int.h   | 2 +-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/tap.c b/net/tap.c
-index 531ef75e91..ba2731ee8a 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -609,6 +609,18 @@ static int net_bridge_run_helper(const char *helper, const char *bridge,
+diff --git a/net/tap-linux.c b/net/tap-linux.c
+index 22ec2f45d2..3625379c58 100644
+--- a/net/tap-linux.c
++++ b/net/tap-linux.c
+@@ -140,7 +140,7 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+  */
+ #define TAP_DEFAULT_SNDBUF 0
+ 
+-void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
++int tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+ {
+     int sndbuf;
+ 
+@@ -154,7 +154,10 @@ void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+ 
+     if (ioctl(fd, TUNSETSNDBUF, &sndbuf) == -1 && tap->has_sndbuf) {
+         error_setg_errno(errp, errno, "TUNSETSNDBUF ioctl failed");
++        return -1;
      }
++
++    return 0;
  }
  
-+static bool set_fd_nonblocking(int fd, const char *note, Error **errp)
-+{
-+    bool ok = g_unix_set_fd_nonblocking(fd, true, NULL);
-+
-+    if (!ok) {
-+        error_setg_errno(errp, errno, "Failed to set fd %d (%s) nonblocking",
-+                         fd, note);
-+    }
-+
-+    return ok;
-+}
-+
- int net_init_bridge(const Netdev *netdev, const char *name,
-                     NetClientState *peer, Error **errp)
- {
-@@ -627,10 +639,10 @@ int net_init_bridge(const Netdev *netdev, const char *name,
-         return -1;
+ int tap_probe_vnet_hdr(int fd, Error **errp)
+diff --git a/net/tap.c b/net/tap.c
+index ba2731ee8a..0258ac8574 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -702,9 +702,7 @@ static int net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+     TAPState *s = net_tap_fd_init(peer, model, name, fd, vnet_hdr);
+     int vhostfd;
+ 
+-    tap_set_sndbuf(s->fd, tap, &err);
+-    if (err) {
+-        error_propagate(errp, err);
++    if (tap_set_sndbuf(s->fd, tap, errp) < 0) {
+         goto failed;
      }
  
--    if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
--        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+    if (!set_fd_nonblocking(fd, name, errp)) {
-         return -1;
-     }
-+
-     vnet_hdr = tap_probe_vnet_hdr(fd, errp);
-     if (vnet_hdr < 0) {
-         close(fd);
-@@ -729,9 +741,7 @@ static int net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-                 error_propagate(errp, err);
-                 goto failed;
-             }
--            if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
--                error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
--                                 name, fd);
-+            if (!set_fd_nonblocking(vhostfd, vhostfdname, errp)) {
-                 goto failed;
-             }
-         } else {
-@@ -741,8 +751,7 @@ static int net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-                                  "tap: open vhost char device failed");
-                 goto failed;
-             }
--            if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
--                error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+            if (!set_fd_nonblocking(vhostfd, "opened /dev/vhost-net", errp)) {
-                 goto failed;
-             }
-         }
-@@ -839,9 +848,7 @@ int net_init_tap(const Netdev *netdev, const char *name,
-             return -1;
-         }
+diff --git a/net/tap_int.h b/net/tap_int.h
+index 8857ff299d..d21acf8486 100644
+--- a/net/tap_int.h
++++ b/net/tap_int.h
+@@ -33,7 +33,7 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
  
--        if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
--            error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
--                             name, fd);
-+        if (!set_fd_nonblocking(fd, tap->fd, errp)) {
-             close(fd);
-             return -1;
-         }
-@@ -893,10 +900,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
-                 goto free_fail;
-             }
+ ssize_t tap_read_packet(int tapfd, uint8_t *buf, int maxlen);
  
--            if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
-+            if (!set_fd_nonblocking(fd, fds[i], errp)) {
-                 ret = -1;
--                error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
--                                 name, fd);
-                 goto free_fail;
-             }
- 
-@@ -948,8 +953,7 @@ free_fail:
-             return -1;
-         }
- 
--        if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
--            error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+        if (!set_fd_nonblocking(fd, name, errp)) {
-             return -1;
-         }
-         vnet_hdr = tap_probe_vnet_hdr(fd, errp);
+-void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
++int tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
+ int tap_probe_vnet_hdr(int fd, Error **errp);
+ int tap_probe_has_ufo(int fd);
+ int tap_probe_has_uso(int fd);
 -- 
 2.48.1
 
