@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F15B32DFA
-	for <lists+qemu-devel@lfdr.de>; Sun, 24 Aug 2025 09:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E181B32DF3
+	for <lists+qemu-devel@lfdr.de>; Sun, 24 Aug 2025 09:30:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uq59p-0006Pb-Pe; Sun, 24 Aug 2025 03:28:53 -0400
+	id 1uq59w-0006TS-EF; Sun, 24 Aug 2025 03:29:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-202508240718413748b289bd8334bda8-BdXSN3@rts-flowmailer.siemens.com>)
- id 1uq59n-0006Oe-A5
- for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:51 -0400
-Received: from mta-64-225.siemens.flowmailer.net ([185.136.64.225])
+ <fm-294854-20250824071842a0ee870884e7748f26-W4clp6@rts-flowmailer.siemens.com>)
+ id 1uq59r-0006RV-IE
+ for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:56 -0400
+Received: from mta-64-226.siemens.flowmailer.net ([185.136.64.226])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-202508240718413748b289bd8334bda8-BdXSN3@rts-flowmailer.siemens.com>)
- id 1uq59k-0005Me-KT
- for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:51 -0400
-Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id
- 202508240718413748b289bd8334bda8 for <qemu-devel@nongnu.org>;
+ <fm-294854-20250824071842a0ee870884e7748f26-W4clp6@rts-flowmailer.siemens.com>)
+ id 1uq59k-0005Ma-Vw
+ for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:55 -0400
+Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id
+ 20250824071842a0ee870884e7748f26 for <qemu-devel@nongnu.org>;
  Sun, 24 Aug 2025 09:18:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
  d=siemens.com; i=jan.kiszka@siemens.com;
  h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=G+jTwrh/Tv10lyU83TPYT5+VrS51epr9jsr352ZMXzk=;
- b=hq0J2dXNanr2ZwiUa/vIEjLl+uGfbxwsY/guly6JU/8FnCOJ20tZNIGX7bcsSqbQE6+wke
- gQNVj+Uw6a0GXsC97wLtfwkiXCIn8/o4dVRJ74GAdNmj1Y3BegWbkdgQb1CiqLt2SAiOCXMq
- nZzIANE0jJemcNbVWDBYUx2g822cFEqM1u48Xlleqso/3wGBu9l2iVQijwR4htuZ77avyoiX
- u0WKTKFGFAzoFY3grscV2xUmVWj4Y4PXpsAh1iY3Aqq/hMKK0+IvkqNrs+nNQZxEcy1JNGxY
- DOFCQ8H2UH+WKmbV9G+s82Mz71wTfNBHp2/pPpWmGVfIzgEcc+RXdUAQ==;
+ bh=xFI1VA5/EHO61KzQO5OccwT8cCfNkw46hYpCrq2jLa0=;
+ b=VkFgVEFz3u/y3QKL+e5074X69mMHfJwiuUPPbLqvOHRg8OmlViy1BSF5heTTFzUZ0UJ7+i
+ fvaUFdImDQIRvtEFMwwHf5/2jnNlQymcZo/rE6armZdwwID+wId6gwN69SjKQeHkrzX5E1tb
+ 48Hl8MsG2Cz/V2kl+1vyLn+SNmVGTL2fXx2CohuNMceGZKI/nL5qRx215xXgFqYMMPM3fxe0
+ mw5TmFQkw6hxul4WQHjlZdb7jm9jX2hZr2nhbcMQ+dwkVzhgphj5vfONbXLeCvfqoFdA0zjC
+ YSTKFJ+ry3U+lEdRnC0dC8e7OW3dJplX8oRGtYU1zDGbCVAxVcyFWpbQ==;
 From: Jan Kiszka <jan.kiszka@siemens.com>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
  Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [PATCH 2/8] hw/sd/sdcard: Add validation for boot-partition-size
-Date: Sun, 24 Aug 2025 09:18:34 +0200
-Message-ID: <e9f85cfabad79c4afbacff896b012ff9940895ac.1756019920.git.jan.kiszka@siemens.com>
+Subject: [PATCH 3/8] hw/sd/sdcard: Allow user-instantiated eMMC
+Date: Sun, 24 Aug 2025 09:18:35 +0200
+Message-ID: <a644d667530df9011ff808b4ae6f1a19d79980af.1756019920.git.jan.kiszka@siemens.com>
 In-Reply-To: <cover.1756019920.git.jan.kiszka@siemens.com>
 References: <cover.1756019920.git.jan.kiszka@siemens.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Flowmailer-Platform: Siemens
 Feedback-ID: 519:519-294854:519-21489:flowmailer
-Received-SPF: pass client-ip=185.136.64.225;
- envelope-from=fm-294854-202508240718413748b289bd8334bda8-BdXSN3@rts-flowmailer.siemens.com;
- helo=mta-64-225.siemens.flowmailer.net
+Received-SPF: pass client-ip=185.136.64.226;
+ envelope-from=fm-294854-20250824071842a0ee870884e7748f26-W4clp6@rts-flowmailer.siemens.com;
+ helo=mta-64-226.siemens.flowmailer.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -56,7 +56,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,35 +74,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jan Kiszka <jan.kiszka@siemens.com>
 
-Make sure we are not silently rounding down or even wrapping around,
-causing inconsistencies with the provided image.
+Enable user-instantiation so that PCI-attached eMMCs can be created for
+virt machines, for QA purposes for the eMMC model itself and for complex
+firmware/OS integrations using the upcoming RPMB partition support.
 
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- hw/sd/sd.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ hw/sd/sd.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 16aee210b4..834392b0a8 100644
+index 834392b0a8..8a4f58295b 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -2818,6 +2818,16 @@ static void sd_realize(DeviceState *dev, Error **errp)
-         }
-         blk_set_dev_ops(sd->blk, &sd_block_ops, sd);
-     }
-+    if (sd->boot_part_size % (128 * KiB) ||
-+        sd->boot_part_size > 255 * 128 * KiB) {
-+        char *size_str = size_to_str(sd->boot_part_size);
-+
-+        error_setg(errp, "Invalid boot partition size: %s", size_str);
-+        g_free(size_str);
-+        error_append_hint(errp,
-+                          "The boot partition size must be multiples of 128K"
-+                          "and not larger than 32640K.\n");
-+    }
- }
+@@ -2912,8 +2912,6 @@ static void emmc_class_init(ObjectClass *klass, const void *data)
+     dc->desc = "eMMC";
+     dc->realize = emmc_realize;
+     device_class_set_props(dc, emmc_properties);
+-    /* Reason: Soldered on board */
+-    dc->user_creatable = false;
  
- static void emmc_realize(DeviceState *dev, Error **errp)
+     sc->proto = &sd_proto_emmc;
+ 
 -- 
 2.43.0
 
