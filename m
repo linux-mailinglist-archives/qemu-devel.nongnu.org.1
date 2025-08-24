@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A38D0B32DF7
-	for <lists+qemu-devel@lfdr.de>; Sun, 24 Aug 2025 09:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F15B32DFA
+	for <lists+qemu-devel@lfdr.de>; Sun, 24 Aug 2025 09:30:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uq59r-0006QG-0Z; Sun, 24 Aug 2025 03:28:55 -0400
+	id 1uq59p-0006Pb-Pe; Sun, 24 Aug 2025 03:28:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-202508240718414885864b8a27f75731-l29l51@rts-flowmailer.siemens.com>)
- id 1uq59o-0006Oy-Or
- for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:52 -0400
-Received: from mta-65-227.siemens.flowmailer.net ([185.136.65.227])
+ <fm-294854-202508240718413748b289bd8334bda8-BdXSN3@rts-flowmailer.siemens.com>)
+ id 1uq59n-0006Oe-A5
+ for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:51 -0400
+Received: from mta-64-225.siemens.flowmailer.net ([185.136.64.225])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-202508240718414885864b8a27f75731-l29l51@rts-flowmailer.siemens.com>)
- id 1uq59k-0005Mh-WE
- for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:52 -0400
-Received: by mta-65-227.siemens.flowmailer.net with ESMTPSA id
- 202508240718414885864b8a27f75731 for <qemu-devel@nongnu.org>;
- Sun, 24 Aug 2025 09:18:41 +0200
+ <fm-294854-202508240718413748b289bd8334bda8-BdXSN3@rts-flowmailer.siemens.com>)
+ id 1uq59k-0005Me-KT
+ for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:51 -0400
+Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id
+ 202508240718413748b289bd8334bda8 for <qemu-devel@nongnu.org>;
+ Sun, 24 Aug 2025 09:18:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
  d=siemens.com; i=jan.kiszka@siemens.com;
  h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=M2h/EoMUlU9fk3MINaoT2/hg0rjYpm0aZBDmEdaeq6E=;
- b=dDE8NQQqtUaNtiY0QUNl2fun+T/hxXDbAlj5X6V5FoTv4DrAfVKvEJYLEUbE0ESzLnayQm
- biTH1JGqo1erMAtZQnCRpLkbAvZ9Q1ziK33bileGHm3qI/ITGO0Z+4Yjt278Lv8WEJlPymou
- rRVOuOBLEaHJ8vPL8DclpIBR0y02LeGlhEPVUnzy7QicZa8vVclZ890PCjMWB+SP7aFVmlvx
- mMUDguYBbQX+wZMS5fncyuk6kgwNMSklgwNLrbdYuauVmhUvnREaQTbQTUSUz/gYxAo5Pcm2
- 2fIwcTUy1xmlBJGFQ7bUIkU4kkXFyIenpieDHcKlI3+wixG86neyiYnA==;
+ bh=G+jTwrh/Tv10lyU83TPYT5+VrS51epr9jsr352ZMXzk=;
+ b=hq0J2dXNanr2ZwiUa/vIEjLl+uGfbxwsY/guly6JU/8FnCOJ20tZNIGX7bcsSqbQE6+wke
+ gQNVj+Uw6a0GXsC97wLtfwkiXCIn8/o4dVRJ74GAdNmj1Y3BegWbkdgQb1CiqLt2SAiOCXMq
+ nZzIANE0jJemcNbVWDBYUx2g822cFEqM1u48Xlleqso/3wGBu9l2iVQijwR4htuZ77avyoiX
+ u0WKTKFGFAzoFY3grscV2xUmVWj4Y4PXpsAh1iY3Aqq/hMKK0+IvkqNrs+nNQZxEcy1JNGxY
+ DOFCQ8H2UH+WKmbV9G+s82Mz71wTfNBHp2/pPpWmGVfIzgEcc+RXdUAQ==;
 From: Jan Kiszka <jan.kiszka@siemens.com>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
  Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [PATCH 1/8] hw/sd/sdcard: Fix size check for backing block image
-Date: Sun, 24 Aug 2025 09:18:33 +0200
-Message-ID: <0d95cffa6131a06404f3cd6ef5951720ce01c37e.1756019920.git.jan.kiszka@siemens.com>
+Subject: [PATCH 2/8] hw/sd/sdcard: Add validation for boot-partition-size
+Date: Sun, 24 Aug 2025 09:18:34 +0200
+Message-ID: <e9f85cfabad79c4afbacff896b012ff9940895ac.1756019920.git.jan.kiszka@siemens.com>
 In-Reply-To: <cover.1756019920.git.jan.kiszka@siemens.com>
 References: <cover.1756019920.git.jan.kiszka@siemens.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Flowmailer-Platform: Siemens
 Feedback-ID: 519:519-294854:519-21489:flowmailer
-Received-SPF: pass client-ip=185.136.65.227;
- envelope-from=fm-294854-202508240718414885864b8a27f75731-l29l51@rts-flowmailer.siemens.com;
- helo=mta-65-227.siemens.flowmailer.net
+Received-SPF: pass client-ip=185.136.64.225;
+ envelope-from=fm-294854-202508240718413748b289bd8334bda8-BdXSN3@rts-flowmailer.siemens.com;
+ helo=mta-64-225.siemens.flowmailer.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -74,28 +74,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jan Kiszka <jan.kiszka@siemens.com>
 
-The power-of-2 rule applies to the user data area, not the complete
-block image. The latter can be concatenation of boot partition images
-and the user data.
+Make sure we are not silently rounding down or even wrapping around,
+causing inconsistencies with the provided image.
 
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- hw/sd/sd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/sd/sd.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 8c290595f0..16aee210b4 100644
+index 16aee210b4..834392b0a8 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -2789,7 +2789,7 @@ static void sd_realize(DeviceState *dev, Error **errp)
-             return;
+@@ -2818,6 +2818,16 @@ static void sd_realize(DeviceState *dev, Error **errp)
          }
+         blk_set_dev_ops(sd->blk, &sd_block_ops, sd);
+     }
++    if (sd->boot_part_size % (128 * KiB) ||
++        sd->boot_part_size > 255 * 128 * KiB) {
++        char *size_str = size_to_str(sd->boot_part_size);
++
++        error_setg(errp, "Invalid boot partition size: %s", size_str);
++        g_free(size_str);
++        error_append_hint(errp,
++                          "The boot partition size must be multiples of 128K"
++                          "and not larger than 32640K.\n");
++    }
+ }
  
--        blk_size = blk_getlength(sd->blk);
-+        blk_size = blk_getlength(sd->blk) - sd->boot_part_size * 2;
-         if (blk_size > 0 && !is_power_of_2(blk_size)) {
-             int64_t blk_size_aligned = pow2ceil(blk_size);
-             char *blk_size_str;
+ static void emmc_realize(DeviceState *dev, Error **errp)
 -- 
 2.43.0
 
