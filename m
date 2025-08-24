@@ -2,45 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710F5B32CB1
-	for <lists+qemu-devel@lfdr.de>; Sun, 24 Aug 2025 02:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA41B32DF4
+	for <lists+qemu-devel@lfdr.de>; Sun, 24 Aug 2025 09:30:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1upyLL-0006Wt-EC; Sat, 23 Aug 2025 20:12:19 -0400
+	id 1uq59t-0006SB-Pe; Sun, 24 Aug 2025 03:28:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1upyLJ-0006Wd-7A; Sat, 23 Aug 2025 20:12:17 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from
+ <fm-294854-20250824071841485422ae674ac5725e-TTqTVf@rts-flowmailer.siemens.com>)
+ id 1uq59q-0006Qb-Ia
+ for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:54 -0400
+Received: from mta-64-226.siemens.flowmailer.net ([185.136.64.226])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1upyLG-0001Af-Vh; Sat, 23 Aug 2025 20:12:16 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EF21D148E67;
- Sun, 24 Aug 2025 03:11:30 +0300 (MSK)
-Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 83E2F266BCD;
- Sun, 24 Aug 2025 03:11:51 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
-	qemu-stable@qemu.org
-Subject: [PATCH] block/curl: fix curl internal handles handling
-Date: Sun, 24 Aug 2025 03:11:42 +0300
-Message-ID: <20250824001144.2001882-1-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.2
+ (Exim 4.90_1) (envelope-from
+ <fm-294854-20250824071841485422ae674ac5725e-TTqTVf@rts-flowmailer.siemens.com>)
+ id 1uq59k-0005Mc-Vw
+ for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:54 -0400
+Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id
+ 20250824071841485422ae674ac5725e for <qemu-devel@nongnu.org>;
+ Sun, 24 Aug 2025 09:18:41 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=jan.kiszka@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=0IgGBl8zk9dlfXhR7OssMbfV5Q9+CrUBnj8atJAtLIg=;
+ b=fASK/vrMgbM5q3BC30I0pZhaAC4Sl05++zyOFU58tx7S9ukiB9XQIUpbJWmqG0snRdivtu
+ gS5wyFJmKVg+XemyMnYutJ91Ftx/OkeoM5iKwDqlTQaAbUdTpXn7ETiEOaLr4CPHF5723ZpP
+ PxdFMqgUJkfG2vjfN6k3jKA2663A1JwKhNFEoh3cp8R49lUFaYDjmHnLCRJ57/FiYgoyYPYn
+ dw0vEpI7yWURqPkS6zSLT96tJDlpnjIWCa79t1wd7PLx0i1ZozvlY8pmt5D+Nqumv90WdN6m
+ TO4tgvpg1qY5toUhCOfFTvurPbjlcIrDLG8lbd0ZBig+1t9jgSTqBaOw==;
+From: Jan Kiszka <jan.kiszka@siemens.com>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 0/8] sd: Add RPMB emulation to eMMC model
+Date: Sun, 24 Aug 2025 09:18:32 +0200
+Message-ID: <cover.1756019920.git.jan.kiszka@siemens.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-294854:519-21489:flowmailer
+Received-SPF: pass client-ip=185.136.64.226;
+ envelope-from=fm-294854-20250824071841485422ae674ac5725e-TTqTVf@rts-flowmailer.siemens.com;
+ helo=mta-64-226.siemens.flowmailer.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,56 +72,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-block/curl.c uses CURLMOPT_SOCKETFUNCTION to register a socket callback.
-According to the documentation, this callback is called not just with
-application-created sockets but also with internal curl sockets, - and
-for such sockets, user data pointer is not set by the application, so
-the result qemu crashing.
+This closes an old gap in system integration testing for the very
+complex ARM firmware stacks by adding fairly advanced Replay Protected
+Memory Block (RPMB) emulation to the eMMC device model. Key programming
+and message authentication are working, so is the write counter. Known
+users are happy with the result. What is missing, but not only for RPMB-
+related registers, is state persistence across QEMU restarts. This is OK
+at this stage for most test scenarios, though, and could still be added
+later on.
 
-Pass BDRVCURLState directly to the callback function as user pointer,
-instead of relying on CURLINFO_PRIVATE.
+What can already be done with it is demonstrated in the WIP branch of
+isar-cip-core at [1]: TF-A + OP-TEE + StandaloneMM TA + fTPM TA, used by
+U-Boot and Linux for UEFI variable storage and TPM scenarios. If you
+want to try: build qemu-arm64 target for trixie with 6.12-cip *head*
+kernel, enable secure boot and disk encryption, then run
 
-This problem started happening with update of libcurl from 8.9 to 8.10 --
-apparently with this change curl started using private handles more.
+$ QEMU_PATH=/path/to/qemu-build/ ./start-qemu.sh
 
-(CURLINFO_PRIVATE is used in one more place, in curl_multi_check_completion() -
-it might need a similar fix too)
+Deploy snakeoil keys into PK, KEK and db after first boot to enable
+secure booting:
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3081
-Cc: qemu-stable@qemu.org
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- block/curl.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+root@demo:~# cert-to-efi-sig-list PkKek-1-snakeoil.pem PK.esl
+root@demo:~# sign-efi-sig-list -k PkKek-1-snakeoil.key -c PkKek-1-snakeoil.pem PK PK.esl PK.auth
+root@demo:~# efi-updatevar -f PK.auth db
+root@demo:~# efi-updatevar -f PK.auth KEK
+root@demo:~# efi-updatevar -f PK.auth PK
 
-diff --git a/block/curl.c b/block/curl.c
-index 5467678024..00b949ea45 100644
---- a/block/curl.c
-+++ b/block/curl.c
-@@ -162,13 +162,9 @@ static int curl_timer_cb(CURLM *multi, long timeout_ms, void *opaque)
- static int curl_sock_cb(CURL *curl, curl_socket_t fd, int action,
-                         void *userp, void *sp)
- {
--    BDRVCURLState *s;
--    CURLState *state = NULL;
-+    BDRVCURLState *s = userp;
-     CURLSocket *socket;
- 
--    curl_easy_getinfo(curl, CURLINFO_PRIVATE, (char **)&state);
--    s = state->s;
--
-     socket = g_hash_table_lookup(s->sockets, GINT_TO_POINTER(fd));
-     if (!socket) {
-         socket = g_new0(CURLSocket, 1);
-@@ -605,6 +601,7 @@ static void curl_attach_aio_context(BlockDriverState *bs,
-     assert(!s->multi);
-     s->multi = curl_multi_init();
-     s->aio_context = new_context;
-+    curl_multi_setopt(s->multi, CURLMOPT_SOCKETDATA, s);
-     curl_multi_setopt(s->multi, CURLMOPT_SOCKETFUNCTION, curl_sock_cb);
-     curl_multi_setopt(s->multi, CURLMOPT_TIMERDATA, s);
-     curl_multi_setopt(s->multi, CURLMOPT_TIMERFUNCTION, curl_timer_cb);
+Note that emulation is a bit slow in general, and specifically the
+partition encryption on first boot is taking 20 min. - we should
+probably reduce its size or understand if there is still something to
+optimize.
+
+Jan
+
+[1] https://gitlab.com/cip-project/cip-core/isar-cip-core/-/commits/wip/qemu-rpmb
+
+Cc: "Daniel P. Berrangé" <berrange@redhat.com>
+
+Jan Kiszka (8):
+  hw/sd/sdcard: Fix size check for backing block image
+  hw/sd/sdcard: Add validation for boot-partition-size
+  hw/sd/sdcard: Allow user-instantiated eMMC
+  hw/sd/sdcard: Refactor sd_bootpart_offset
+  hw/sd/sdcard: Add basic support for RPMB partition
+  crypto/hmac: Allow to build hmac over multiple
+    qcrypto_gnutls_hmac_bytes[v] calls
+  hw/sd/sdcard: Handle RPMB MAC field
+  scripts: Add helper script to generate eMMC block device images
+
+ crypto/hmac-gcrypt.c   |   4 +-
+ crypto/hmac-glib.c     |   4 +-
+ crypto/hmac-gnutls.c   |   4 +-
+ crypto/hmac-nettle.c   |   4 +-
+ hw/sd/sd.c             | 314 ++++++++++++++++++++++++++++++++++++++---
+ hw/sd/sdmmc-internal.h |  24 +++-
+ hw/sd/trace-events     |   2 +
+ include/crypto/hmac.h  |  12 ++
+ scripts/mkemmc.sh      | 185 ++++++++++++++++++++++++
+ 9 files changed, 530 insertions(+), 23 deletions(-)
+ create mode 100755 scripts/mkemmc.sh
+
 -- 
-2.47.2
+2.43.0
 
 
