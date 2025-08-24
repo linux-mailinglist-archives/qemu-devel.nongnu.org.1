@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E181B32DF3
+	by mail.lfdr.de (Postfix) with ESMTPS id 84DBDB32DF6
 	for <lists+qemu-devel@lfdr.de>; Sun, 24 Aug 2025 09:30:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uq59w-0006TS-EF; Sun, 24 Aug 2025 03:29:00 -0400
+	id 1uq59q-0006Py-AG; Sun, 24 Aug 2025 03:28:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-20250824071842a0ee870884e7748f26-W4clp6@rts-flowmailer.siemens.com>)
- id 1uq59r-0006RV-IE
- for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:56 -0400
-Received: from mta-64-226.siemens.flowmailer.net ([185.136.64.226])
+ <fm-294854-202508240718420868d079eb3c9494bb-9ZY4a9@rts-flowmailer.siemens.com>)
+ id 1uq59o-0006P4-Sc
+ for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:52 -0400
+Received: from mta-64-228.siemens.flowmailer.net ([185.136.64.228])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-20250824071842a0ee870884e7748f26-W4clp6@rts-flowmailer.siemens.com>)
- id 1uq59k-0005Ma-Vw
- for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:55 -0400
-Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id
- 20250824071842a0ee870884e7748f26 for <qemu-devel@nongnu.org>;
+ <fm-294854-202508240718420868d079eb3c9494bb-9ZY4a9@rts-flowmailer.siemens.com>)
+ id 1uq59l-0005Mj-00
+ for qemu-devel@nongnu.org; Sun, 24 Aug 2025 03:28:52 -0400
+Received: by mta-64-228.siemens.flowmailer.net with ESMTPSA id
+ 202508240718420868d079eb3c9494bb for <qemu-devel@nongnu.org>;
  Sun, 24 Aug 2025 09:18:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
  d=siemens.com; i=jan.kiszka@siemens.com;
  h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=xFI1VA5/EHO61KzQO5OccwT8cCfNkw46hYpCrq2jLa0=;
- b=VkFgVEFz3u/y3QKL+e5074X69mMHfJwiuUPPbLqvOHRg8OmlViy1BSF5heTTFzUZ0UJ7+i
- fvaUFdImDQIRvtEFMwwHf5/2jnNlQymcZo/rE6armZdwwID+wId6gwN69SjKQeHkrzX5E1tb
- 48Hl8MsG2Cz/V2kl+1vyLn+SNmVGTL2fXx2CohuNMceGZKI/nL5qRx215xXgFqYMMPM3fxe0
- mw5TmFQkw6hxul4WQHjlZdb7jm9jX2hZr2nhbcMQ+dwkVzhgphj5vfONbXLeCvfqoFdA0zjC
- YSTKFJ+ry3U+lEdRnC0dC8e7OW3dJplX8oRGtYU1zDGbCVAxVcyFWpbQ==;
+ bh=B/6oZFnmwCIpqTfzfVRrR5p/3zxY5QTA0qdDWoXlR60=;
+ b=OQknCdA4dCQiF/RVYFC5Swjys+RMaACiDrJdHKO5V9B8CADCMzhUOup7h0sE82XNZu8uEk
+ 82ugVpu3vJufPt3A37kPn2i94ZX61kZCD3OvAwlknGrUI+CxPawuf4TPCT2bfD0WjZ5iImb8
+ img0oBajEEpxLfw2QODmBMeM4hHBJOYq/pSKS4WY8xcIiLx8QzX/vLjDaud0L9d0kLuiTt2L
+ A3JlBSYdE95B3N7ohMcgs8wF+QOAryLAGNq58+bGIfbua2u1Bfe53UuetTh7GFX/SthHxK6p
+ uNO8sukPhecPpxTFrGgFOCg24AuwgUpz/Kv0y41F/m101KxizjE6KpnA==;
 From: Jan Kiszka <jan.kiszka@siemens.com>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
  Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [PATCH 3/8] hw/sd/sdcard: Allow user-instantiated eMMC
-Date: Sun, 24 Aug 2025 09:18:35 +0200
-Message-ID: <a644d667530df9011ff808b4ae6f1a19d79980af.1756019920.git.jan.kiszka@siemens.com>
+Subject: [PATCH 4/8] hw/sd/sdcard: Refactor sd_bootpart_offset
+Date: Sun, 24 Aug 2025 09:18:36 +0200
+Message-ID: <ed81074b51bd85d51930424ed0e9ff24654a95c1.1756019920.git.jan.kiszka@siemens.com>
 In-Reply-To: <cover.1756019920.git.jan.kiszka@siemens.com>
 References: <cover.1756019920.git.jan.kiszka@siemens.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Flowmailer-Platform: Siemens
 Feedback-ID: 519:519-294854:519-21489:flowmailer
-Received-SPF: pass client-ip=185.136.64.226;
- envelope-from=fm-294854-20250824071842a0ee870884e7748f26-W4clp6@rts-flowmailer.siemens.com;
- helo=mta-64-226.siemens.flowmailer.net
+Received-SPF: pass client-ip=185.136.64.228;
+ envelope-from=fm-294854-202508240718420868d079eb3c9494bb-9ZY4a9@rts-flowmailer.siemens.com;
+ helo=mta-64-228.siemens.flowmailer.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -74,28 +74,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jan Kiszka <jan.kiszka@siemens.com>
 
-Enable user-instantiation so that PCI-attached eMMCs can be created for
-virt machines, for QA purposes for the eMMC model itself and for complex
-firmware/OS integrations using the upcoming RPMB partition support.
+This function provides the offset for any partition in the block image,
+not only the boot partitions, therefore rename it. Align the constant
+names with the numbering scheme in the standard and use constants for
+both boot partitions for consistency reasons. There is also no reason to
+return early if boot_part_size is zero because the existing code will
+provide the right value in that case as well.
 
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- hw/sd/sd.c | 2 --
- 1 file changed, 2 deletions(-)
+ hw/sd/sd.c             | 16 ++++++++--------
+ hw/sd/sdmmc-internal.h |  3 ++-
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 834392b0a8..8a4f58295b 100644
+index 8a4f58295b..b727a37d06 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -2912,8 +2912,6 @@ static void emmc_class_init(ObjectClass *klass, const void *data)
-     dc->desc = "eMMC";
-     dc->realize = emmc_realize;
-     device_class_set_props(dc, emmc_properties);
--    /* Reason: Soldered on board */
--    dc->user_creatable = false;
+@@ -838,14 +838,14 @@ static uint32_t sd_blk_len(SDState *sd)
  
-     sc->proto = &sd_proto_emmc;
+ /*
+  * This requires a disk image that has two boot partitions inserted at the
+- * beginning of it. The size of the boot partitions is the "boot-size"
+- * property.
++ * beginning of it, followed by an RPMB partition. The size of the boot
++ * partitions is the "boot-partition-size" property.
+  */
+-static uint32_t sd_bootpart_offset(SDState *sd)
++static uint32_t sd_part_offset(SDState *sd)
+ {
+     unsigned partition_access;
  
+-    if (!sd->boot_part_size || !sd_is_emmc(sd)) {
++    if (!sd_is_emmc(sd)) {
+         return 0;
+     }
+ 
+@@ -854,9 +854,9 @@ static uint32_t sd_bootpart_offset(SDState *sd)
+     switch (partition_access) {
+     case EXT_CSD_PART_CONFIG_ACC_DEFAULT:
+         return sd->boot_part_size * 2;
+-    case EXT_CSD_PART_CONFIG_ACC_BOOT0:
++    case EXT_CSD_PART_CONFIG_ACC_BOOT1:
+         return 0;
+-    case EXT_CSD_PART_CONFIG_ACC_BOOT0 + 1:
++    case EXT_CSD_PART_CONFIG_ACC_BOOT2:
+         return sd->boot_part_size * 1;
+     default:
+          g_assert_not_reached();
+@@ -1057,7 +1057,7 @@ static const VMStateDescription sd_vmstate = {
+ static void sd_blk_read(SDState *sd, uint64_t addr, uint32_t len)
+ {
+     trace_sdcard_read_block(addr, len);
+-    addr += sd_bootpart_offset(sd);
++    addr += sd_part_offset(sd);
+     if (!sd->blk || blk_pread(sd->blk, addr, len, sd->data, 0) < 0) {
+         fprintf(stderr, "sd_blk_read: read error on host side\n");
+     }
+@@ -1066,7 +1066,7 @@ static void sd_blk_read(SDState *sd, uint64_t addr, uint32_t len)
+ static void sd_blk_write(SDState *sd, uint64_t addr, uint32_t len)
+ {
+     trace_sdcard_write_block(addr, len);
+-    addr += sd_bootpart_offset(sd);
++    addr += sd_part_offset(sd);
+     if (!sd->blk || blk_pwrite(sd->blk, addr, len, sd->data, 0) < 0) {
+         fprintf(stderr, "sd_blk_write: write error on host side\n");
+     }
+diff --git a/hw/sd/sdmmc-internal.h b/hw/sd/sdmmc-internal.h
+index 91eb5b6b2f..ce6bc4e6ec 100644
+--- a/hw/sd/sdmmc-internal.h
++++ b/hw/sd/sdmmc-internal.h
+@@ -116,7 +116,8 @@ DECLARE_OBJ_CHECKERS(SDState, SDCardClass, SDMMC_COMMON, TYPE_SDMMC_COMMON)
+ 
+ #define EXT_CSD_PART_CONFIG_ACC_MASK            (0x7)
+ #define EXT_CSD_PART_CONFIG_ACC_DEFAULT         (0x0)
+-#define EXT_CSD_PART_CONFIG_ACC_BOOT0           (0x1)
++#define EXT_CSD_PART_CONFIG_ACC_BOOT1           (0x1)
++#define EXT_CSD_PART_CONFIG_ACC_BOOT2           (0x2)
+ 
+ #define EXT_CSD_PART_CONFIG_EN_MASK             (0x7 << 3)
+ #define EXT_CSD_PART_CONFIG_EN_BOOT0            (0x1 << 3)
 -- 
 2.43.0
 
