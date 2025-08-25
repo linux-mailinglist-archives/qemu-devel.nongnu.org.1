@@ -2,92 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34E6B33B0E
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 11:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E867AB33B51
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 11:41:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqTTf-0003cf-LT; Mon, 25 Aug 2025 05:26:59 -0400
+	id 1uqTg5-00071e-9r; Mon, 25 Aug 2025 05:39:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uqTTc-0003cM-Kk
- for qemu-devel@nongnu.org; Mon, 25 Aug 2025 05:26:56 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uqTTa-0007SR-5m
- for qemu-devel@nongnu.org; Mon, 25 Aug 2025 05:26:56 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CC20114A7ED;
- Mon, 25 Aug 2025 12:26:26 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id D37B7267E50;
- Mon, 25 Aug 2025 12:26:49 +0300 (MSK)
-Message-ID: <0ca1b15b-911d-44e1-a327-4c72f2274154@tls.msk.ru>
-Date: Mon, 25 Aug 2025 12:26:49 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uqTfi-0006zM-P7
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 05:39:29 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uqTfe-0000Ow-25
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 05:39:25 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3c7ba6c2b2cso895252f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Aug 2025 02:39:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756114758; x=1756719558; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=uL4MewPfGpmAXSTAGgHX+e6JFT0fYLvCPKi7tGEA830=;
+ b=KmoDq2JHSl+9qOsaC9okSYHTAyfdq4aVXrxO3WtwGWgW0Yw9G79pXTf2kF6vk3g2Wh
+ X1hrZP/OY5zRN2pVhbI+eXlmpKrYtHI6bLyfB26wvE6FU+RgCeV5Q+LqE1RrWrpIf9tD
+ G7KCAjGPQ6ESpH4Gx5Js/YdqDicYOFZ8ZazUHfXMuSmbq2Ia5NwUIGmlPQO1+Pt6aIMX
+ dhebPUSILk9YrGu2fsNPEzcL49nQuQtViOX7VstVOpSOYqEt9MNerWW/vHvMpEybkyt6
+ GYo4PUAhy6IUDG4EpDbWSkHGbyZEgYXw8ZWSRQrXxoOsGcvKxR0K4mTbcpd0MsZiqeMX
+ 3h/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756114758; x=1756719558;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uL4MewPfGpmAXSTAGgHX+e6JFT0fYLvCPKi7tGEA830=;
+ b=Wqyd6TUgai79Zb3PVKaiR4rMdrRMTjdqXROn63juufbRvhRAC3oeqrsXRJCfkumR3D
+ F4jVWtpAj/TWBis9AJKS92gc9zVQyPuo8OQPYZV9JvFDP1sYV5RNDUJb3PBD50mS+irf
+ XXLfcZQcAh00HRSTBDf9XQ7p4/tbDduMxke97ceeRMPIXXBUFbbfz8g+O3zgoBT0Oodk
+ phfy10nuI8lsSOKQ/+IwjcrT7P1HbmBO5Mt57JnIp8N88Tc4ngixFachOer/lFKRIgO7
+ wXT8bvR9W/l2wkanZYAX0eV6jp1D7y7wVjQj6f18cIje6p6Op2h7o/vkObp8QxS/+Adc
+ v0rQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXlFOilIhnjS6GCsMsum4x33Uxw/1XVtC2sZf8Wob/zlHElBwcVjv8rBfCZ5ZZsOeSrS5Ydg7/howN+@nongnu.org
+X-Gm-Message-State: AOJu0YxdvCtAKnpk3N1U+naTzFviwiZ4kSJKbOLodvwNmNd38JwUK2jZ
+ nzwwBlpuR5sCHFIX7wuknTsEtAO8cghIwLIdNT6+5CkqOUKBipruIpd27yMGapK0/p8=
+X-Gm-Gg: ASbGncvDOefDbNhb6Km/VJCC09/+vQS3mhNvuBKXC9d6Wk8Br0+UEpbFR4sFKUTn64f
+ GPYdLZllgfOaPdOxXH30BPOQ048Y+jXit9wvGEE2l3H4HBkhVsunuZ2o2lS+Fze+ZALka8LYMS5
+ i3BgKCpabyzRdpfDbtyOkc69P/Vwwoioohp/FsP4lF9khtBGSvpGDYzl5L1cdGQonG5CIc8jsmX
+ HluyOBjyBuxV/jSNJUtlt7pWSPFAaC8RcXI7kH94dHy+/IjhLkyQEPBAtbZeeZR4UOqcyDOj/MN
+ rkOpISO9xKqdOSRh1evnCoRsUW/W3JUuMYC7scGlkKbtUs8BdQfZEELlHBoGPpWrgP8pUm4xeD5
+ aJSlWFtM4MOnJNCIl+maoE848qPfT7Fkpa4mfejcxoKTRwOjKqx6tbz33QpOmNqdtuA==
+X-Google-Smtp-Source: AGHT+IFH7uUbxr6eUdjiBdUJmskjnnkgLBniP+B7sguOqZHqkI5ioNblKBq7M5V51eMzKtl7J37/+g==
+X-Received: by 2002:a05:6000:2384:b0:3ca:267f:2a18 with SMTP id
+ ffacd0b85a97d-3ca267f2c67mr1099308f8f.46.1756114757847; 
+ Mon, 25 Aug 2025 02:39:17 -0700 (PDT)
+Received: from [192.168.69.208] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3c70e4b9e1fsm11424049f8f.14.2025.08.25.02.39.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 25 Aug 2025 02:39:17 -0700 (PDT)
+Message-ID: <6fbcb266-83d0-496f-9ef2-bf00dd9b2629@linaro.org>
+Date: Mon, 25 Aug 2025 11:39:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: qemu-user + binfmt Credential flag, again
-To: Helge Deller <deller@gmx.de>, QEMU Development <qemu-devel@nongnu.org>
-References: <f1a22d84-142e-4bc6-8ef0-c05156dcc20a@tls.msk.ru>
- <50e6ca70-5144-45ed-9afc-f15d45274a7b@gmx.de>
- <c70e4ae2-09a6-4287-bd0c-fc8c3ae97180@tls.msk.ru>
- <b76abf1c-7a9e-4236-ac7f-bc200646fbd0@gmx.de>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <b76abf1c-7a9e-4236-ac7f-bc200646fbd0@gmx.de>
+Subject: Re: [PATCH 1/8] hw/sd/sdcard: Fix size check for backing block image
+To: Jan Kiszka <jan.kiszka@siemens.com>, qemu-devel <qemu-devel@nongnu.org>
+Cc: Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>
+References: <cover.1756019920.git.jan.kiszka@siemens.com>
+ <0d95cffa6131a06404f3cd6ef5951720ce01c37e.1756019920.git.jan.kiszka@siemens.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <0d95cffa6131a06404f3cd6ef5951720ce01c37e.1756019920.git.jan.kiszka@siemens.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,90 +101,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25.08.2025 11:42, Helge Deller wrote:
-> On 8/24/25 13:54, Michael Tokarev wrote:
->> On 24.08.2025 13:59, Helge Deller wrote:
->>
->>> In general, just if someone can shoot himself into the foot you should
->>> not remove features.
->>> Instead, disabling it by default, and adding a big fat warning if people
->>> enable it is a good way forward.
->>
->> It is not "someone can shoot himself into the foot".
->>
->> We don't ship a configuration option to make /bin/sh suid root.
->> This would make a lot of use cases to work, this will simplify a lot
->> of stuff, etc.  But we don't have such option.  This is done for a
->> reason, - it breaks whole system security concept, entirely.  You
->> can chmod u+s /bin/sh on any of your system, but this "configuration
->> item" is not even described in any official docs.
->>
->> Unfortunately, qemu's C flag is of this same theme.  It requires a
->> tiny effort to get root, compared with `chmod u+s /bin/sh`, but it's
->> a trivial way still, just one extra step.  In short, qemu-user C flag
->> breaks whole system security concept.
+On 24/8/25 09:18, Jan Kiszka wrote:
+> From: Jan Kiszka <jan.kiszka@siemens.com>
 > 
-> I think we all are clear why there is a potential security issue.
+> The power-of-2 rule applies to the user data area, not the complete
+> block image. The latter can be concatenation of boot partition images
+> and the user data.
+> 
+> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+> ---
+>   hw/sd/sd.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-It is not potential.  It is right there, very much real, -- that's the
-whole difference.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-We've, for example, wireshark which is a big complex GUI app often
-installed suid-root to be able to watch network traffic.  There's also
-a huge difference between wireshark and qemu, -- while wireshark is
-complex and all, and sure has bugs, it *tries* to be as careful as
-possible, and drops privs once network sockets are open, etc.
-
-Qemu, on the other hand, has never been designed to be run in suid
-mode, and does not perform even minimal input sanitizing, it blindly
-follows what the user specified.  Before suid mode can *ever* be
-enabled, we should at least try some minimum to filter env. vars and
-whatnot, so that it is not trivial to own whole system just by running
-a foreign binary.
-
-Until this is done, option to run it with suid binaries should not
-exist.
-
-BTW, I think we can do a bit better here when I thought.
-
-qemu-linux-user can detect if it's running a suid binary, and if yes,
-*and* if any option/environment is specified, just *refuse* to run
-(or drop privs back to euid/egid), instead of trying to sanitize them.
-
-With that, we can *try* to enable credentials flag with binfmt, with
-a big fat warning.. maybe.  At least we can think about the possibility.
-
-But not before.  I think.
-
-...
-
-> As you know, for those need Qemu's credential flag,
-> the "chmod u+s /bin/sh" generates many more implications than Qemu's flag,
-> so they would prefer the qemu credential flag.
-
-It doesn't matter how good or useful this flag is in qemu-user context.
-Right now, qemu is not prepared to handle it in any sensible way.  And
-with that, it doesn't matter how important or useful these use cases
-are: we just don't have what people want, it simply doesn't exist...
-
-Maybe a better comparison is not having /bin/sh suid-root, but having
-a *copy* of /bin/sh, say, /bin/suid-sh, which is suid-root.  This is
-what qemu-user currently is - it is not usual system interpreter, it
-is an "alternative" system interpreter, ready to be used when "needed" -
-by anyone, including any evil person.
-
-This is not the beginning of this discussion, - first was similar
-arguments on debian mailing lists, following the debian security
-announce of qemu-user dropping the credentials flag.  People also
-started suggesting (or demanding) to have an option to return this
-flag back on.  No, this wont be done, this is not discussable - until
-qemu has at least minimal input sanitizing, such mode simply does not
-exist, so there's nothing to enable.
-
-I'm really surprised, even shocked, why people don't understand such
-simple things.
-
-Thanks,
-
-/mjt
 
