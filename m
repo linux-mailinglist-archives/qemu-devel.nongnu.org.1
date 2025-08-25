@@ -2,91 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40718B33BB0
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 11:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CED4B33B30
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 11:35:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqTr9-0003mJ-4e; Mon, 25 Aug 2025 05:51:15 -0400
+	id 1uqTZm-00051k-43; Mon, 25 Aug 2025 05:33:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uqTr7-0003m1-06
- for qemu-devel@nongnu.org; Mon, 25 Aug 2025 05:51:13 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uqTr4-0001dI-5r
- for qemu-devel@nongnu.org; Mon, 25 Aug 2025 05:51:12 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3c7edd71bbfso1629705f8f.0
- for <qemu-devel@nongnu.org>; Mon, 25 Aug 2025 02:51:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756115468; x=1756720268; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GRGNyw4orMeu0KGkqhcsF9EvE4ABgISS+prpghx0NVE=;
- b=OSsgttt9I3WJs+LdALjsEWnpdwiDTpmSo98hafF3q8wLXYa3nYO9eVaQEhUdTixEUR
- XosgTTb9U3aIH99amgevCGmj5WInx15JSpXLWcI83XfuX42bNbpOkf6io62iXYOSD686
- MEQR4zXOwG72cMtxLSvrmQFxD8HazZpb6JqeWhNOuTGAxwb7rMWfPq8hQk5FJr2YjUTx
- ZjRzgOW8RWe6EhWXXOV4hftsa2tbIwW3M6e6uKwm1UOYFpx3rfVO8KDbONIrCJlXZq/8
- a98uX0hLQ9UX5+o2CIjN7I/EwdBkKrCABkTiyF9axhYpfX2rcBwog3xtOlSgY+/Dgodr
- zNiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756115468; x=1756720268;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GRGNyw4orMeu0KGkqhcsF9EvE4ABgISS+prpghx0NVE=;
- b=o5zsWlPK7TbXQdh805MXW4brt0YZqPHm1M3wQyuW/H2lbRWGsNlm+X3WehxDloEvQf
- yp3JLAcksRgMZe7BZFVfdjEzLF/Dz7KLLmHI2XByH6d/6hPbawr2ZRFCOD80sD69AP6W
- 0SlQf4wTjEkmFHq1j3g+wfss93SNVrO4FIuWdR0RvgwgNwIiY0gVxN9aeGTdienc5nid
- q+IpuYYGdYA/lWJPOiKPEcCLqV6bIk4D9EXSZ21mbqhQ/NnuW8Dcld/uXTgv4L3fDO2z
- 6pD54zgzfzukPMt+m6eNg+OjnwnS7+7PecBRrC3k/1GVxdFnwWK11K/4w1MD+sA278pM
- W64g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVHdMtP4B3gv3tjDxRyFpd4DuhN+fyMcsppb0YFkYKNWVa3RsGeKjDhLDB53QpK6IKG4KzfK+yxpV1P@nongnu.org
-X-Gm-Message-State: AOJu0YywrT2rQ70DR9kylmScbNsBFY3kYS48jn6Wz1dUgY/va7q1FC1y
- wzvauVeyNa444jdTaBA2mC/3yVOyUNfkhFjIH2jIfgYuZ6gskY6XTWE7pHNWsJRNvaXmJz4qE+m
- JB1Qv
-X-Gm-Gg: ASbGnctAvj5sV6HcKbPmvxlwTTCrwE22jk6GOWlmnUPLMa9GJS9tRXYCRC31HXNY/wK
- wJv1DnbFiivaCYdi/1tnRJpa/LMtFG7XCbArONe+5yi4dMsAJvtFbW7oMPFFKC9yN7pGdaoGXBj
- Aje2h3qcnAcTjaU3TGPDAj4T+NQvsUu5CAhwJXXzNB9u50Jpri8tg2pKE+z+A0sOMsNtQBrF659
- BJlYl8zmbmN0gfEVuVHdw0d8D54ZpyPQuEfC71rCyv0ODFhBjOWtqbVyNwhmjxVd2Wtl4V2ZRG0
- /yN9ongCdlnVi7akk7syuo4yqQPi/4PWFxqWCqcA++i+Bx2Tzz28BJLTXyktFsHPO1lJV78Cj4k
- nURnuz7i1KrQDUpe2QVTKKNZ9Q/2dFB7lC3HMa6/m61PApJ56SeitGEf+imG9rjZ9Lw==
-X-Google-Smtp-Source: AGHT+IHSw2S5aSVuOGAXlsC8S4vrX+OJSSLXFl3qYdK0ZZF2bQfEuCx0BMVZPZ7jsdgGFGo4yCzAJw==
-X-Received: by 2002:a05:6000:2a0c:b0:3c6:c737:d382 with SMTP id
- ffacd0b85a97d-3c6c737dc6fmr7314295f8f.35.1756115467688; 
- Mon, 25 Aug 2025 02:51:07 -0700 (PDT)
-Received: from [192.168.69.208] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3c7117d5747sm10741910f8f.48.2025.08.25.02.51.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 25 Aug 2025 02:51:07 -0700 (PDT)
-Message-ID: <f30dd13f-7657-460e-89ee-ce2f958fd2c1@linaro.org>
-Date: Mon, 25 Aug 2025 11:51:06 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uqTZh-00050x-Nr
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 05:33:13 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uqTZa-00087m-Kp
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 05:33:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1756114386; x=1787650386;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=p0hMioeV02n2xJ99grAeHjV1AMAAU4W1bDFUcK9uEog=;
+ b=IOy/c2w+WneJM2cnEPNpbt1yag7EIqpVfgxjXJM3yijT0ceJXhEVSacX
+ 1CUXqABN0GT0L5ZjKSm1yc8HYjXN31pKXeP/CP/l6cPrpEl+62SVNAmhR
+ KVUCWLVXaHP3lXiNQ3HjMZPXBk1rIaAJDJj5hwBSQ411ae/Guh8Q1riC6
+ dx4J+txfBSg8LfT45rtBrZcXPPt2gUskMIiqfGbnFY/slNdLQD2ojkbDR
+ oC1Nqs1epdhlXZNdtPoOVyVIr5MKiJriLrgiOEsX0zYuKJiD+HATspKr4
+ g9GWkeT+EXGCSwsFbvqfWYc/jBKrAwSijHkkAWIkqtUej3IHTaSHclfyf Q==;
+X-CSE-ConnectionGUID: WFNuEqtoTbuFXKmh4+5e5A==
+X-CSE-MsgGUID: 0T2yNzDsTMu5SXU8jAz44A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11532"; a="68591545"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="68591545"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Aug 2025 02:33:02 -0700
+X-CSE-ConnectionGUID: pn6k/TFvSrm3gnabKz4xQQ==
+X-CSE-MsgGUID: vtQfJptmRASde5Na9HH/DQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="200143886"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa001.fm.intel.com with ESMTP; 25 Aug 2025 02:33:00 -0700
+Date: Mon, 25 Aug 2025 17:54:46 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, tanishdesai37@gmail.com, stefanha@redhat.com,
+ berrange@redhat.com, mads@ynddal.dk
+Subject: Re: [PATCH 07/14] rust: add trace crate
+Message-ID: <aKwy5joqsgmBPOFI@intel.com>
+References: <20250822122655.1353197-1-pbonzini@redhat.com>
+ <20250822122655.1353197-8-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/8] scripts: Add helper script to generate eMMC block
- device images
-To: Jan Kiszka <jan.kiszka@siemens.com>, qemu-devel <qemu-devel@nongnu.org>
-Cc: Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>
-References: <cover.1756019920.git.jan.kiszka@siemens.com>
- <c8ee22c72a87c6bd8d9495995868cb22a633de41.1756019920.git.jan.kiszka@siemens.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <c8ee22c72a87c6bd8d9495995868cb22a633de41.1756019920.git.jan.kiszka@siemens.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250822122655.1353197-8-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,37 +82,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/8/25 09:18, Jan Kiszka wrote:
-> From: Jan Kiszka <jan.kiszka@siemens.com>
-> 
-> As an eMMC block device image may consist of more than just the user
-> data partition, provide a helper script that can compose the image from
-> boot partitions, an RPMB partition and the user data image. The script
-> also does the required size validation and/or rounding.
-> 
-> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-> ---
->   scripts/mkemmc.sh | 185 ++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 185 insertions(+)
->   create mode 100755 scripts/mkemmc.sh
-> 
-> diff --git a/scripts/mkemmc.sh b/scripts/mkemmc.sh
-> new file mode 100755
-> index 0000000000..5d40c2889b
+> diff --git a/rust/trace/src/lib.rs b/rust/trace/src/lib.rs
+> new file mode 100644
+> index 00000000000..9b931ddf1de
 > --- /dev/null
-> +++ b/scripts/mkemmc.sh
-> @@ -0,0 +1,185 @@
-> +#!/bin/sh -e
-> +#
-> +# Create eMMC block device image from boot, RPMB and user data images
-> +#
-> +# Copyright (c) Siemens, 2025
-> +#
-> +# Authors:
-> +#  Jan Kiszka <jan.kiszka@siemens.com>
-> +#
-> +# This work is licensed under the terms of the GNU GPL version 2.
-> +# See the COPYING file in the top-level directory.
+> +++ b/rust/trace/src/lib.rs
+> @@ -0,0 +1,23 @@
+> +//! This crate provides macros that aid in using QEMU's tracepoint
+> +//! functionality.
+> +
+> +#[macro_export]
+> +/// Define the trace-points from the named directory (which should have slashes
+> +/// replaced by underscore characters) as functions in a module called `trace`.
+> +///
+> +/// ```ignore
+> +/// ::trace::include_trace!("hw_char");
+> +/// // ...
+> +/// trace::trace_pl011_read_fifo_rx_full();
+> +/// ```
+> +macro_rules! include_trace {
+> +    ($name:literal) => {
+> +        mod trace {
+> +            #[cfg(not(MESON))]
+> +            include!(concat!(env!("MESON_BUILD_ROOT"), "/trace/", $name, ".rs"));
 
-We now require SPDX tags, otherwise LGTM!
+nit: missing the "trace-" prefix~
+
+include!(concat!(env!("MESON_BUILD_ROOT"), "/trace/", "trace-", $name, ".rs"));
+
+> +            #[cfg(MESON)]
+> +            include!(concat!("@MESON_BUILD_ROOT@/trace/", $name, ".rs"));
+
+ditto
+
+> +        }
+> +    };
+> +}
+
+this is the nice work!
+
+(but it breaks the doing `cargo build` directly without meson virt env.
+ For `cfd(not(MESON)) case`, could we support placing trace files under
+ local folder? like
+
+ include!(concat!(env!("CARGO_MANIFEST_DIR"), "src/", "trace-", $name, ".rs"));
+
+ Or should we add a build.rs like qemu-api does?)
+
+Thanks,
+Zhao
+
 
