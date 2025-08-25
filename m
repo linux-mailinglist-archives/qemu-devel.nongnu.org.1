@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63811B33699
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 08:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 128FAB33730
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 09:04:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqQsg-0008T6-VN; Mon, 25 Aug 2025 02:40:39 -0400
+	id 1uqRFk-0005J2-VM; Mon, 25 Aug 2025 03:04:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uqQsd-0008SW-R1
- for qemu-devel@nongnu.org; Mon, 25 Aug 2025 02:40:35 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1uqRFi-0005If-Jc
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 03:04:27 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uqQsa-00058p-Jb
- for qemu-devel@nongnu.org; Mon, 25 Aug 2025 02:40:35 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-61c325a4d18so2798605a12.0
- for <qemu-devel@nongnu.org>; Sun, 24 Aug 2025 23:40:30 -0700 (PDT)
+ id 1uqRFc-0007xY-Dm
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 03:04:25 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-61c24250b38so3008376a12.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Aug 2025 00:04:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756104027; x=1756708827; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756105454; x=1756710254; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aNLyJ6pKs3Dl7uFCsBXk8Xnojnmb0ojvB8uY6u5ID6E=;
- b=f3YGZaMJ6SzUWGipbNEqkxpCX95H+e1+tIWDtKZSoRXFXcjGOKwvEkVzdXr2HUosPU
- PoX7mBeQ1YeXKCtym2iDCP339hOfFdkyDPAtndgcYNRfw8YswO6E04Y19reOW0o57kue
- Cd4qFgDBU9UDlqMzPOW5X/6w60cZIh1orbFo2OX6QaWwWhmPCwQfOmcR8NRvMvOP5NUZ
- 28P/z5VURjXQZWtXqfe/Fvf53Ig+UUtLQZrYZ/0b/uyn/Jk9V/fNqkCqvjwC+GYz7NFe
- ObzfwQtzcWehKkiHbk+hJKJvIqQ28f4J21QNhtViskTvItGS2eVTVTIOQwmclUf6ML8I
- KvBw==
+ bh=aVEtpKjxbKlVMq1uVdbr2WR6KUD4h6VK9ocYUlkin5A=;
+ b=MdzL5ELKW7zloI7Lmx5BoZAy8x2hQ9oEVOAHLi/VLYfHgvAQ2zmQBVK5L9XEVUw0Gc
+ zilqI1hrPM2Bz90RNP9kX3HKm8izo4XNBtYD8SJcrqIB1L/6VnazmagZzuUpRrQYOQ3g
+ hILm9H6qhzbNtWex3dMT04lS8O4vOzdU2U0C4xoordjsQLgDc5wu0DGNrvauVhIBZZ2y
+ dukH1r8aRy3YkG2dHJcf9xxC90SDsLeidtp8u260KXJQ9za47vs7Ly6fFkdB+Na3gCCa
+ lMaqYz0fYF8+qTwLxtkCbMCQFmdOFx5GB+t8jm+WulR8B+C+SrM6XDK1IvUAOoJbRrBD
+ 8PfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756104027; x=1756708827;
+ d=1e100.net; s=20230601; t=1756105454; x=1756710254;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aNLyJ6pKs3Dl7uFCsBXk8Xnojnmb0ojvB8uY6u5ID6E=;
- b=XkWyVqkVvZNe8z0ebJ881fFfvjnuUT6fYdEZIxHZ0NSPcsgtjuHC8TOBh8Zhd2Chts
- zIgBj7h+Efm+PfRKxg4mgG2r35ppAlDUsZeOjrU93b0XvPGI/RR9RAOTZteUhM/W2igo
- xzlQFba0G6hHiQpzKNbAb36Z9vmaLtL/GLP+EcG2JI4YQpGb29ywDvR9oTGXTngEYduu
- SsrhIr6V7bJP6UP1XVzII0X7faaDJQNW2J1l1yCw300fel6G0KPVQ5UmLxnkR7JST+KI
- alGkcA61kOxy6BaiQsNQBMeFWTuYJzh2ZekKQNSW7N3p950rMnkbC+mj21MvJzzlqGfz
- w69w==
-X-Gm-Message-State: AOJu0YzzGaXGCrMUwi8zzI5JBUkQxTHr165Z9jrTLb6ZA4oHOQLEVsBU
- iTiQvC/o3NAIp3EW9GWg9rhA8Dksl6S52x2z9EQhp2amW28whbH5WfF9ufFZS7mUq5bW+kD64sc
- GvmRpH4dN9klEEqo/RewOIJRa8uJWlHMryw4BZqCohw==
-X-Gm-Gg: ASbGncu4/Yt7omTCD/8Osg3ukw4ZDYnR7pOz55PxpAjkiu0H2O4/iVAOqWX/saebQ3t
- Yz1FyF6jTSc8Dz9nHLwNc99sZmVHSJqgAl4lEfRsPachSOkICs0Qmy2zNSR4+S2K7us20idVllf
- lzvEXRY9o6MGN1uEUt4s3nJOOL/Q2fp5FtF6w4r5wCGnpDMCH0q4vB0SoMcWRWr6AGM8oGhER0p
- Y2ZuykTej0hBIbufV8=
-X-Google-Smtp-Source: AGHT+IG+KfdIguG4Yjz/WcZlCD9UfD7DdlKtZkIImOPF2LMoQTDlSSrkGBioEgNBmBngAeGtLIJcMmeFr3iNiWFgRwM=
-X-Received: by 2002:a05:6402:5192:b0:61c:3848:8a51 with SMTP id
- 4fb4d7f45d1cf-61c3857cf1emr6029289a12.37.1756104027405; Sun, 24 Aug 2025
- 23:40:27 -0700 (PDT)
+ bh=aVEtpKjxbKlVMq1uVdbr2WR6KUD4h6VK9ocYUlkin5A=;
+ b=nAO3BotgHq7nVDfUfXGPWrKvHdAITDsPB5IPKtN6fYdZ2MVA8HAS36XmGa5px/il/6
+ ScUOk7mhtrbBnZ/cOd8O/t2e8tLjc6Bl1bB1IJ2NIAmn7QxHbEqRJVK20G6MtzLmvHGW
+ GEicpbm52auJ6zwMmJxoLYVjikDTJtYC7GpJ7X1/5oqhpfowVm7lo4nHNFgUltB2yXP4
+ GT/yK4DVbHyYnIguTotgUKyfsO4q/UvSCX9jIHamNSpPXKKQ3x1mY0hEfA1UT8J4egiW
+ 4639A5eAjw+BJkUkof/ljr5YDVGBQobMDSHs2BftlI12ntLv9KtZ9yCdfEsJnIalqNaE
+ otwA==
+X-Gm-Message-State: AOJu0YwIZ95XtIZGgFWeO6KyZropWeybImEy1Z2NE49XcgRl4tBpFC/D
+ MqcgqB/WRTzjbf6TiNZNJWrBjclh0/FWNlMKROWNUdhiU8RzERXBq+c8vSC3/aIRayAunVvI1dx
+ wHG67SAwy1Yog/p4rqmBY++MWFpUA4jWTzbEozVBkbg==
+X-Gm-Gg: ASbGncvYvndZ4YXyShtRXJlUkzYMnhLHPR9AUNdwnk2doaUnjylN9DMXjoAqtHCjsJ3
+ FpL9lghxtsk/jhLi+CyFeIpjOrqVFvKK9D0pP/VGLtgVgvPA16D4fkULl9KR/++Oq/PYW+e5WhN
+ efILXBkruEtpXEtNdXh4G/NYVSdTfDklluZWaOzMLN7I9lsimIYL98IC7V5ELUUDqcY7oEElNU5
+ 6lqcQ1d
+X-Google-Smtp-Source: AGHT+IGUW5jPCd226ya5nedVdbb3BnEuXoBW3gxVcSGJNbZi3IoS7eAbm66b2pY4E7iDlD4vdRxbF/yObkx+tpSfaHs=
+X-Received: by 2002:a05:6402:35c3:b0:61c:61bb:e836 with SMTP id
+ 4fb4d7f45d1cf-61c61bbec87mr2266855a12.11.1756105454149; Mon, 25 Aug 2025
+ 00:04:14 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250822122655.1353197-1-pbonzini@redhat.com>
- <20250822122655.1353197-2-pbonzini@redhat.com>
-In-Reply-To: <20250822122655.1353197-2-pbonzini@redhat.com>
+ <20250822122655.1353197-7-pbonzini@redhat.com>
+In-Reply-To: <20250822122655.1353197-7-pbonzini@redhat.com>
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Mon, 25 Aug 2025 09:40:00 +0300
-X-Gm-Features: Ac12FXx_zk9ZBUOpH0aU25xT3UvzefFjiZCmhJsja5Es-MC9US5SeJ661EqajmI
-Message-ID: <CAAjaMXZbYXTiy5jQ-iNrWersX8Ggdd6M7FhrOUYvt6hjY4PbRA@mail.gmail.com>
-Subject: Re: [PATCH 01/14] treewide: write "unsigned long int" instead of
- "long unsigned int"
+Date: Mon, 25 Aug 2025 10:03:47 +0300
+X-Gm-Features: Ac12FXyuc8w_J3wNH5Do_FaQ0N259hVzXcybqBzSsP1G1pP4JIzrFiTwrXNdzO4
+Message-ID: <CAAjaMXb=HseHy3vW+5W+f2uVR01c0NV9QKmOhQuB7BkW0Topkg@mail.gmail.com>
+Subject: Re: [PATCH 06/14] tracetool: Add Rust format support
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, tanishdesai37@gmail.com, stefanha@redhat.com, 
  berrange@redhat.com, mads@ynddal.dk
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,159 +94,344 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 22, 2025 at 3:28=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+On Fri, Aug 22, 2025 at 3:31=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
  wrote:
 >
-> Putting "unsigned" in anything but the first position is weird.  As such,
-> tracetool's Rust type conversion will not support it.  Remove it from
-> the whole of QEMU's source code, not just trace-events.
+> From: Tanish Desai <tanishdesai37@gmail.com>
 >
-
-Hm weird C quirk indeed.
-
-Why can't tracetool support this? Can't we just add the permutations
-in the C_TO_RUST_TYPE_MAP dict in "[PATCH 06/14] tracetool: Add Rust
-format support"?
-
-+    "unsigned long long": "std::ffi::c_ulonglong",
-+    "long unsigned long": "std::ffi::c_ulonglong",
-+    "long long unsigned": "std::ffi::c_ulonglong",
-
-
-
+> Generating .rs files makes it possible to support tracing in rust.
+> This support comprises a new format, and common code that converts
+> the C expressions in trace-events to Rust.  In particular, types
+> need to be converted, and PRI macros expanded.  Fortunately, all
+> common platforms have a known mapping of 8/16/32/64-bit integers
+> to char/short/int/"long long": even if int64_t is equal to long,
+> it is fine to change the format string from PRIx64's expansion
+> "%lx" to "%llx".  This makes it possible to have a static mapping
+> from PRI macros to their expansion.
+>
+> As of this commit no backend generates Rust code, but it is already
+> possible to use tracetool to generate Rust sources; they are not
+> functional but they compile and contain tracepoint functions.
+>
+> Signed-off-by: Tanish Desai <tanishdesai37@gmail.com>
+> [Move Rust argument conversion from Event to Arguments; string
+>  support. - Paolo]
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  crypto/pbkdf-gcrypt.c        | 2 +-
->  crypto/pbkdf-gnutls.c        | 2 +-
->  crypto/pbkdf-nettle.c        | 2 +-
->  hw/display/exynos4210_fimd.c | 2 +-
->  hw/misc/imx7_src.c           | 4 ++--
->  hw/net/can/can_sja1000.c     | 4 ++--
->  hw/xen/trace-events          | 4 ++--
->  7 files changed, 10 insertions(+), 10 deletions(-)
+>  scripts/tracetool/__init__.py  | 156 +++++++++++++++++++++++++++++++++
+>  scripts/tracetool/format/rs.py |  76 ++++++++++++++++
+>  2 files changed, 232 insertions(+)
+>  create mode 100644 scripts/tracetool/format/rs.py
 >
-> diff --git a/crypto/pbkdf-gcrypt.c b/crypto/pbkdf-gcrypt.c
-> index e89b8b1c768..f93996f674c 100644
-> --- a/crypto/pbkdf-gcrypt.c
-> +++ b/crypto/pbkdf-gcrypt.c
-> @@ -66,7 +66,7 @@ int qcrypto_pbkdf2(QCryptoHashAlgo hash,
->      if (iterations > ULONG_MAX) {
->          error_setg_errno(errp, ERANGE,
->                           "PBKDF iterations %llu must be less than %lu",
-> -                         (long long unsigned)iterations, ULONG_MAX);
-> +                         (unsigned long long)iterations, ULONG_MAX);
->          return -1;
->      }
+> diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.p=
+y
+> index 1d5238a0843..0b8ec707332 100644
+> --- a/scripts/tracetool/__init__.py
+> +++ b/scripts/tracetool/__init__.py
+> @@ -31,6 +31,49 @@ def error(*lines):
+>      error_write(*lines)
+>      sys.exit(1)
 >
-> diff --git a/crypto/pbkdf-gnutls.c b/crypto/pbkdf-gnutls.c
-> index f34423f918b..46a3a869994 100644
-> --- a/crypto/pbkdf-gnutls.c
-> +++ b/crypto/pbkdf-gnutls.c
-> @@ -62,7 +62,7 @@ int qcrypto_pbkdf2(QCryptoHashAlgo hash,
->      if (iterations > ULONG_MAX) {
->          error_setg_errno(errp, ERANGE,
->                           "PBKDF iterations %llu must be less than %lu",
-> -                         (long long unsigned)iterations, ULONG_MAX);
-> +                         (unsigned long long)iterations, ULONG_MAX);
->          return -1;
->      }
+> +FMT_TOKEN =3D re.compile(r'''(?:
+> +                       " ( (?: [^"\\] | \\[\\"abfnrt] |            # a s=
+tring literal
+> +                               \\x[0-9a-fA-F][0-9a-fA-F]) *? ) "
+> +                       | ( PRI [duixX] (?:8|16|32|64|PTR|MAX) )    # a P=
+RIxxx macro
+> +                       | \s+                                       # spa=
+ces (ignored)
+> +                       )''', re.X)
+> +
+> +PRI_SIZE_MAP =3D {
+> +    '8':  'hh',
+> +    '16': 'h',
+> +    '32': '',
+> +    '64': 'll',
+> +    'PTR': 't',
+> +    'MAX': 'j',
+> +}
+> +
+> +def expand_format_string(c_fmt, prefix=3D""):
+
+(Pedantic comment) let's put type annotations in function signatures
+when possible, these seem to handle `str` mostly so this should be
+simple. This should catch basic errors like passing/returning `str |
+None` or wrong types altogether.
+
+> +    def pri_macro_to_fmt(pri_macro):
+> +        assert pri_macro.startswith("PRI")
+> +        fmt_type =3D pri_macro[3]  # 'd', 'i', 'u', or 'x'
+> +        fmt_size =3D pri_macro[4:]  # '8', '16', '32', '64', 'PTR', 'MAX=
+'
+> +
+> +        size =3D PRI_SIZE_MAP.get(fmt_size, None)
+> +        if size is None:
+> +            raise Exception(f"unknown macro {pri_macro}")
+> +        return size + fmt_type
+> +
+> +    result =3D prefix
+> +    pos =3D 0
+> +    while pos < len(c_fmt):
+> +        m =3D FMT_TOKEN.match(c_fmt, pos)
+> +        if not m:
+> +            print("No match at position", pos, ":", repr(c_fmt[pos:]), f=
+ile=3Dsys.stderr)
+> +            raise Exception("syntax error in trace file")
+> +        if m[1]:
+> +            substr =3D m[1]
+> +        elif m[2]:
+> +            substr =3D pri_macro_to_fmt(m[2])
+> +        else:
+> +            substr =3D ""
+> +        result +=3D substr
+> +        pos =3D m.end()
+> +    return result
 >
-> diff --git a/crypto/pbkdf-nettle.c b/crypto/pbkdf-nettle.c
-> index 3ef9c1b52c4..3c8bbaf9f17 100644
-> --- a/crypto/pbkdf-nettle.c
-> +++ b/crypto/pbkdf-nettle.c
-> @@ -66,7 +66,7 @@ int qcrypto_pbkdf2(QCryptoHashAlgo hash,
->      if (iterations > UINT_MAX) {
->          error_setg_errno(errp, ERANGE,
->                           "PBKDF iterations %llu must be less than %u",
-> -                         (long long unsigned)iterations, UINT_MAX);
-> +                         (unsigned long long)iterations, ULONG_MAX);
->          return -1;
->      }
+>  out_lineno =3D 1
+>  out_filename =3D '<none>'
+> @@ -90,6 +133,48 @@ def out(*lines, **kwargs):
+>      "ptrdiff_t",
+>  ]
 >
-> diff --git a/hw/display/exynos4210_fimd.c b/hw/display/exynos4210_fimd.c
-> index c61e0280a7c..5632aa1388c 100644
-> --- a/hw/display/exynos4210_fimd.c
-> +++ b/hw/display/exynos4210_fimd.c
-> @@ -1380,7 +1380,7 @@ static void exynos4210_fimd_write(void *opaque, hwa=
-ddr offset,
->      uint32_t old_value;
+> +C_TYPE_KEYWORDS =3D {"int", "short", "long", "unsigned", "char"}
+> +
+> +C_TO_RUST_TYPE_MAP =3D {
+> +    "int": "std::ffi::c_int",
+> +    "long": "std::ffi::c_long",
+> +    "long long": "std::ffi::c_longlong",
+> +    "short": "std::ffi::c_short",
+> +    "char": "std::ffi::c_char",
+> +    "bool": "bool",
+> +    "unsigned": "std::ffi::c_uint",
+> +    "unsigned long": "std::ffi::c_long",
+> +    "unsigned long long": "std::ffi::c_ulonglong",
+> +    "unsigned short": "std::ffi::c_ushort",
+> +    "unsigned char": "u8",
+> +    "int8_t": "i8",
+> +    "uint8_t": "u8",
+> +    "int16_t": "i16",
+> +    "uint16_t": "u16",
+> +    "int32_t": "i32",
+> +    "uint32_t": "u32",
+> +    "int64_t": "i64",
+> +    "uint64_t": "u64",
+> +    "void": "()",
+> +    "size_t": "usize",
+> +    "ssize_t": "isize",
+> +    "uintptr_t": "usize",
+> +    "ptrdiff_t": "isize",
+> +}
+> +
+> +# Rust requires manual casting of <32-bit types when passing them to
+> +# variable-argument functions.
+> +RUST_VARARGS_SMALL_TYPES =3D {
+> +    "std::ffi::c_short",
+> +    "std::ffi::c_ushort",
+> +    "std::ffi::c_char",
+> +    "i8",
+> +    "u8",
+> +    "i16",
+> +    "u16",
+> +    "bool",
+> +}
+> +
+>  def validate_type(name):
+>      bits =3D name.split(" ")
+>      for bit in bits:
+> @@ -105,6 +190,40 @@ def validate_type(name):
+>                               "other complex pointer types should be "
+>                               "declared as 'void *'" % name)
 >
->      DPRINT_L2("write offset 0x%08x, value=3D%llu(0x%08llx)\n", offset,
-> -            (long long unsigned int)val, (long long unsigned int)val);
-> +            (unsigned long long)val, (unsigned long long)val);
+> +def c_type_to_rust(name):
+> +    ptr =3D False
+> +    const =3D False
+> +    name =3D name.rstrip()
+> +    if name[-1] =3D=3D '*':
+> +        name =3D name[:-1].rstrip()
+> +        ptr =3D True
+> +        if name[-1] =3D=3D '*':
+> +            # pointers to pointers are the same as void*
+> +            name =3D "void"
+> +
+> +    bits =3D iter(name.split())
+> +    bit =3D next(bits)
+> +    if bit =3D=3D "const":
+> +        const =3D True
+> +        bit =3D next(bits)
+> +
+> +    if bit in C_TYPE_KEYWORDS:
+> +        if bit =3D=3D 'signed':
+> +            bit =3D ''
+> +        rest =3D list(bits)
+> +        if rest and rest[-1] =3D=3D 'int':
+> +            rest =3D rest[:-1]
+> +        name =3D bit + ' ' + ' '.join(rest)
+> +    else:
+> +        if list(bits):
+> +            raise ValueError("Invalid type '%s'." % name)
+> +        name =3D bit
+> +
+> +    ty =3D C_TO_RUST_TYPE_MAP[name.strip()]
+> +    if ptr:
+> +        ty =3D f'*{"const" if const else "mut"} {ty}'
+> +    return ty
+> +
+>  class Arguments:
+>      """Event arguments description."""
 >
->      switch (offset) {
->      case FIMD_VIDCON0:
-> diff --git a/hw/misc/imx7_src.c b/hw/misc/imx7_src.c
-> index df0b0a69057..817c95bf65b 100644
-> --- a/hw/misc/imx7_src.c
-> +++ b/hw/misc/imx7_src.c
-> @@ -169,7 +169,7 @@ static void imx7_src_write(void *opaque, hwaddr offse=
-t, uint64_t value,
->  {
->      IMX7SRCState *s =3D (IMX7SRCState *)opaque;
->      uint32_t index =3D offset >> 2;
-> -    long unsigned int change_mask;
-> +    uint32_t change_mask;
->      uint32_t current_value =3D value;
+> @@ -197,6 +316,43 @@ def casted(self):
+>          """List of argument names casted to their type."""
+>          return ["(%s)%s" % (type_, name) for type_, name in self._args]
 >
->      if (index >=3D SRC_MAX) {
-> @@ -180,7 +180,7 @@ static void imx7_src_write(void *opaque, hwaddr offse=
-t, uint64_t value,
+> +    def rust_decl_extern(self):
+> +        """Return a Rust argument list for an extern "C" function"""
+> +        return ", ".join((f"_{name}: {c_type_to_rust(type_)}"
+> +                          for type_, name in self._args))
+> +
+> +    def rust_decl(self):
+> +        """Return a Rust argument list for a tracepoint function"""
+> +        def decl_type(type_):
+> +            if type_ =3D=3D "const char *":
+> +                return "&std::ffi::CStr"
+> +            return c_type_to_rust(type_)
+> +
+> +        return ", ".join((f"_{name}: {decl_type(type_)}"
+> +                          for type_, name in self._args))
+> +
+> +    def rust_call_extern(self):
+> +        """Return a Rust argument list for a call to an extern "C" funct=
+ion"""
+> +        def rust_cast(name, type_):
+> +            if type_ =3D=3D "const char *":
+> +                return f"_{name}.as_ptr()"
+> +            return "_{name}"
+> +
+> +        return ", ".join((rust_cast(name, type_) for type_, name in self=
+._args))
+> +
+> +    def rust_call_varargs(self):
+> +        """Return a Rust argument list for a call to a C varargs functio=
+n"""
+> +        def rust_cast(name, type_):
+> +            if type_ =3D=3D "const char *":
+> +                return f"_{name}.as_ptr()"
+> +
+> +            type_ =3D c_type_to_rust(type_)
+> +            if type_ in RUST_VARARGS_SMALL_TYPES:
+> +                return f"_{name} as std::ffi::c_int"
+> +            return f"_{name} /* as {type_} */"
+> +
+> +        return ", ".join((rust_cast(name, type_) for type_, name in self=
+._args))
+> +
 >
->      trace_imx7_src_write(imx7_src_reg_name(SRC_A7RCR0), s->regs[SRC_A7RC=
-R0]);
->
-> -    change_mask =3D s->regs[index] ^ (uint32_t)current_value;
-> +    change_mask =3D s->regs[index] ^ current_value;
->
->      switch (index) {
->      case SRC_A7RCR0:
-> diff --git a/hw/net/can/can_sja1000.c b/hw/net/can/can_sja1000.c
-> index 5b6ba9df6c4..545c520c3b4 100644
-> --- a/hw/net/can/can_sja1000.c
-> +++ b/hw/net/can/can_sja1000.c
-> @@ -750,8 +750,8 @@ uint64_t can_sja_mem_read(CanSJA1000State *s, hwaddr =
-addr, unsigned size)
->              break;
->          }
->      }
-> -    DPRINTF("read addr 0x%02x, %d bytes, content 0x%02lx\n",
-> -            (int)addr, size, (long unsigned int)temp);
-> +    DPRINTF("read addr 0x%02x, %d bytes, content 0x%02x\n",
-> +            (int)addr, size, (unsigned)temp);
->
->      return temp;
->  }
-> diff --git a/hw/xen/trace-events b/hw/xen/trace-events
-> index b67942d07b4..3b71ee641ff 100644
-> --- a/hw/xen/trace-events
-> +++ b/hw/xen/trace-events
-> @@ -57,8 +57,8 @@ cpu_ioreq_config_read(void *req, uint32_t sbdf, uint32_=
-t reg, uint32_t size, uin
->  cpu_ioreq_config_write(void *req, uint32_t sbdf, uint32_t reg, uint32_t =
-size, uint32_t data) "I/O=3D%p sbdf=3D0x%x reg=3D%u size=3D%u data=3D0x%x"
->  cpu_get_ioreq_from_shared_memory_req_not_ready(int state, int data_is_pt=
-r, uint64_t addr, uint64_t data, uint32_t count, uint32_t size) "I/O reques=
-t not ready: 0x%x, ptr: 0x%x, port: 0x%"PRIx64", data: 0x%"PRIx64", count: =
-%u, size: %u"
->  xen_main_loop_prepare_init_cpu(int id, void *cpu) "cpu_by_vcpu_id[%d]=3D=
-%p"
-> -xen_map_ioreq_server_shared_page(long unsigned int ioreq_pfn) "shared pa=
-ge at pfn 0x%lx"
-> -xen_map_ioreq_server_buffered_io_page(long unsigned int ioreq_pfn) "buff=
-ered io page at pfn 0x%lx"
-> +xen_map_ioreq_server_shared_page(unsigned long int ioreq_pfn) "shared pa=
-ge at pfn 0x%lx"
-> +xen_map_ioreq_server_buffered_io_page(unsigned long int ioreq_pfn) "buff=
-ered io page at pfn 0x%lx"
->  xen_map_ioreq_server_buffered_io_evtchn(int bufioreq_evtchn) "buffered i=
-o evtchn is 0x%x"
->  destroy_hvm_domain_cannot_acquire_handle(void) "Cannot acquire xenctrl h=
-andle"
->  destroy_hvm_domain_failed_action(const char *action, int sts, char *errn=
-o_s) "xc_domain_shutdown failed to issue %s, sts %d, %s"
+>  class Event(object):
+>      """Event description.
+> diff --git a/scripts/tracetool/format/rs.py b/scripts/tracetool/format/rs=
+.py
+> new file mode 100644
+> index 00000000000..bc8b2be5971
+> --- /dev/null
+> +++ b/scripts/tracetool/format/rs.py
+> @@ -0,0 +1,76 @@
+> +# -*- coding: utf-8 -*-
+
+This was probably copied verbatim from other tracetool files, but IIUC
+it's not needed, utf-8 is the default encoding if there's no `coding`
+declaration.
+
+Also, missing SPDX header as a new file
+
+> +
+> +"""
+> +trace-DIR.rs
+
+(what's "trace-DIR"?)
+
+> +"""
+> +
+> +__author__     =3D "Tanish Desai <tanishdesai37@gmail.com>"
+> +__copyright__  =3D "Copyright 2025, Tanish Desai <tanishdesai37@gmail.co=
+m>"
+> +__license__    =3D "GPL version 2 or (at your option) any later version"
+> +
+> +__maintainer__ =3D "Stefan Hajnoczi"
+> +__email__      =3D "stefanha@redhat.com"
+> +
+> +
+> +from tracetool import out
+> +
+> +
+> +def generate(events, backend, group):
+> +    out('// This file is autogenerated by tracetool, do not edit.',
+
+Let's use `@generated comments` https://generated.at/
+
+> +        '',
+> +        '#[allow(unused_imports)]',
+> +        'use std::ffi::c_char;',
+> +        '#[allow(unused_imports)]',
+> +        'use qemu_api::bindings;',
+> +        '',
+> +        '#[inline(always)]',
+> +        'fn trace_event_get_state_dynamic_by_id(_id: u16) -> bool {',
+> +        '    unsafe { (trace_events_enabled_count !=3D 0) && (_id !=3D 0=
+) }',
+> +        '}',
+> +        '',
+> +        'extern "C" {',
+> +        '    static mut trace_events_enabled_count: u32;',
+> +        '}',)
+> +
+> +    out('extern "C" {')
+> +
+> +    for e in events:
+> +        out('    static mut %s: u16;' % e.api(e.QEMU_DSTATE))
+> +    out('}')
+> +
+> +    # static state
+> +    for e in events:
+> +        if 'disable' in e.properties:
+> +            enabled =3D "false"
+> +        else:
+> +            enabled =3D "true"
+> +        if "tcg-exec" in e.properties:
+> +            # a single define for the two "sub-events"
+> +            out('const _TRACE_%(name)s_ENABLED: bool =3D %(enabled)s;',
+> +                name=3De.original.name.upper(),
+
+What's the difference between e.original.name and e.name?
+
+> +                               enabled=3Denabled)
+> +        out('const _TRACE_%s_ENABLED: bool =3D %s;' % (e.name.upper(), e=
+nabled))
+> +
+> +    backend.generate_begin(events, group)
+> +
+> +    for e in events:
+> +        out('',
+> +                       '#[inline(always)]',
+> +            '#[allow(dead_code)]',
+> +            'pub fn %(api)s(%(args)s)',
+> +            '{',
+> +            api=3De.api(e.QEMU_TRACE),
+> +            args=3De.args.rust_decl())
+> +
+> +        if "disable" not in e.properties:
+> +            backend.generate(e, group, check_trace_event_get_state=3DFal=
+se)
+> +            if backend.check_trace_event_get_state:
+> +                event_id =3D 'TRACE_' + e.name.upper()
+> +                out('    if trace_event_get_state_dynamic_by_id(unsafe {=
+ _%(event_id)s_DSTATE}) {',
+> +                    event_id =3D event_id,
+> +                    api=3De.api())
+> +                backend.generate(e, group, check_trace_event_get_state=
+=3DTrue)
+> +                out('    }')
+> +        out('}')
+> +
+> +    backend.generate_end(events, group)
 > --
 > 2.50.1
 >
