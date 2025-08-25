@@ -2,85 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7096B339F9
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 10:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C24DB33995
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 10:41:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqSwE-0002Iy-Uh; Mon, 25 Aug 2025 04:52:27 -0400
+	id 1uqSjT-0007FD-En; Mon, 25 Aug 2025 04:39:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uqSwB-0002IN-Nm
- for qemu-devel@nongnu.org; Mon, 25 Aug 2025 04:52:24 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uqSw4-0003lh-Ap
- for qemu-devel@nongnu.org; Mon, 25 Aug 2025 04:52:23 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-61c325a4d18so2972497a12.0
- for <qemu-devel@nongnu.org>; Mon, 25 Aug 2025 01:52:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756111931; x=1756716731; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1DEWMotYYmuQk801sO2UKS+L2PAlvCSgTfbE6N8UY/I=;
- b=qMN/oggZ5Cbx2/Wc5C3kfNm1rlZKfHxFXdBK83GKGTIs/Ib8N06nH2KR0lLF1SHIzr
- L8OZl66rE29O/toxdxqR5hIIbgyOplcCcr10fDm3Cn8VSUlVi0MImK5iMx2S/dU4GCg9
- 7YtxtRCOHV+n7sVo4wL7o9o32gFgOt6MVw5fDb0UUl9SS/u2zAbOJ6UFYM3Z62ryKXN2
- YtUodiK0GFZXxd6wBpB0wpDAiBiMxPbWqlZzJYOQq8MV7qWPupJtHYWKuWzRKLt3PstT
- rc0Uh4Eh1rE6ehbct36JohioZrfFv8UdrQQ9/z084rwXFgi0kbLsvQObA5bv06o1SdAC
- xEQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756111931; x=1756716731;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1DEWMotYYmuQk801sO2UKS+L2PAlvCSgTfbE6N8UY/I=;
- b=kJU6GwYnSqIYVftHNeew6Xy4/MM26zZVDTm96/+/1kmeUfa72V+zWODGRe9cxhTxth
- 0zwi/LthY35AwXUA83xhHonmXQZQw+JdaXjdU3nKbqBcFsNgyryV1KeVgx6nshhu3mWH
- +Ei7lna+5J5RpjoOdt9hBWbbIAQVxWjK5ox86fJ+J8Le/bzu6qfIcehZsvrtMMLpY38F
- Gs69+rCiH77gfxROXoKKqpZTc9NqcsbtEnUJ7aEJb4krDn4pvB+6NMcWNR4XyRpQkYWD
- N4heb9YxhRMefQH44BkVb3A+9a7/Z3AQ3Gn5hW5siqTQS5Y4p7zkHaifcrW6toh2jJeW
- OtdQ==
-X-Gm-Message-State: AOJu0Yzea0dEUzWXxQsVmv+Q8RJvsym2G2jr4MHm5jWgTfnkWiL1L/Mw
- UmHUZcgjX2XRvgwjxyvvrs0lKYU4QcTJxf6ANU7EnwIir6p/VZgHTmTKO11684T5SsFTilyoZRC
- gFmgDmCw13fK9wvMzE33FT+LhiUab0p6GPMEQuyv3aA==
-X-Gm-Gg: ASbGncvDOp+lOZiUhbSUys/QozUrYbRY49QD/+4SWja6ncqR+9zHNvPl3EjPLicuvpr
- Gz/jVM7Aje1ouMSPm8yZP/ouqRZl8JJyaHKq90szQkLK5kz3Afydud/wklG60LW12jMrmXhNyrV
- VJ1sdqjytiybeMwfiCUBE42GdMR7MJA+//aAx1YnDINK93KnHekyRCmJM/juu27YdZ55QJQWT7L
- PqG+2mQ
-X-Google-Smtp-Source: AGHT+IHSzAVXFemsQm2A7rR+pA9FGZDc6P8bqRtujRHksdKLDbUm7kCDNf4yD8OE7GA9Cf5DCf4UqSMjMCqRZIXgtJk=
-X-Received: by 2002:a05:6402:848:b0:618:1e1:c204 with SMTP id
- 4fb4d7f45d1cf-61c1b3ec069mr8505022a12.12.1756111930440; Mon, 25 Aug 2025
- 01:52:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uqSjQ-0007Dx-37
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 04:39:12 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uqSjK-0002SN-2d
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 04:39:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1756111146; x=1787647146;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=GDxET9Yp7oaB/P42wGmos9DXGJ+MmUvr/BvNv4odSx0=;
+ b=eefvZl9t80xhNrV9OTtNVKJ2tk3xUKebx2abXfXmwI+3z1jyXEgeVm6C
+ cZU+K2qoDBXdcAE95ZqdKP+OwCTQa8DUinXdajFcWCRdmM1iJIpRHI4HY
+ Lq82fwSOPSKKbv/orStSYnxEhIkPm/sWrdFUVIowM1EPvaJXKnIagtLRF
+ y2qFVMPbyRIllypG3/ZEEXH7J4fSfyV71fjViw5qGEoB4aX3ew0Umjxj1
+ wrF1BBdCYMSchV34qUybgcT1dhJYnjUCfOMw6ee970ykVlhjs13Rq1Shy
+ iIJeKVYHuCnmHP2KqYLy7PVseoOp6SUWknUbFyNv8ZGERcqipVR3N1el8 Q==;
+X-CSE-ConnectionGUID: pg9Tk5ytTZG7iw6naMBjKw==
+X-CSE-MsgGUID: FZBmk+obRgW6MFPcstJmtw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11532"; a="69029101"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="69029101"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Aug 2025 01:38:58 -0700
+X-CSE-ConnectionGUID: gHWMqCMZQ1ayhRMHCeyPTA==
+X-CSE-MsgGUID: +8wGIC0MQ025lD7wYc6tSQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="169427614"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa008.jf.intel.com with ESMTP; 25 Aug 2025 01:38:56 -0700
+Date: Mon, 25 Aug 2025 17:00:42 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, tanishdesai37@gmail.com, stefanha@redhat.com,
+ berrange@redhat.com, mads@ynddal.dk
+Subject: Re: [PATCH 03/14] trace/ftrace: move snprintf+write from tracepoints
+ to ftrace.c
+Message-ID: <aKwmOgPPcu3fUOuH@intel.com>
+References: <20250822122655.1353197-1-pbonzini@redhat.com>
+ <20250822122655.1353197-4-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20250821094735.804210-1-thuth@redhat.com>
- <CAAjaMXYt4UBS-2wB2OiSCE_DA77STWAjWvPdv=NtEGsUoSyFPA@mail.gmail.com>
- <b60a9e7e-6f79-442d-8a4c-2acfbbf0688b@redhat.com>
-In-Reply-To: <b60a9e7e-6f79-442d-8a4c-2acfbbf0688b@redhat.com>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Mon, 25 Aug 2025 11:51:44 +0300
-X-Gm-Features: Ac12FXxxf8IR7QeqTL_RrYBPeQVGH8wk-k9CEGC-Xf_-wFUZSMRyv3l4FqWRkbw
-Message-ID: <CAAjaMXY1fcTZ517dmrd+nAt4WUEcR3U2bbmM3ZytDkXREEX6TA@mail.gmail.com>
-Subject: Re: [PATCH] tests/functional: Use more fine-grained locking when
- looking for free ports
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250822122655.1353197-4-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,43 +83,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 25, 2025 at 11:47=E2=80=AFAM Thomas Huth <thuth@redhat.com> wro=
-te:
->
-> On 25/08/2025 09.30, Manos Pitsidianakis wrote:
-> > On Thu, Aug 21, 2025 at 12:49=E2=80=AFPM Thomas Huth <thuth@redhat.com>=
- wrote:
-> >>
-> >> From: Thomas Huth <thuth@redhat.com>
-> >>
-> >> Currently, we have one lock that is held while a test is looking for
-> >> free ports. However, we are also using different ranges for looking
-> >> for free ports nowadays (PORTS_START is based on the PID of the proces=
-s),
-> >> so instead of using only one lock, we should rather use a lock per
-> >> range instead. This should help to allow running more tests in paralle=
-l.
-> >>
-> >> While we're at it, also create the lock files without executable bit
-> >> (mode is 0o777 by default).
-> >>
-> >
-> > (Unrelated to this patch but the file itself)
-> >
-> > Hm. AF_INET supports binding to port 0 to connect to any available
-> > port (see man 7 ip). Is this not portable?
->
-> No clue ... but in that case, we'd need to go back to only use one lock f=
-or
-> all tests that are running in parallel, so it might cause some more conte=
-ntion?
+On Fri, Aug 22, 2025 at 02:26:44PM +0200, Paolo Bonzini wrote:
+> Date: Fri, 22 Aug 2025 14:26:44 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 03/14] trace/ftrace: move snprintf+write from tracepoints
+>  to ftrace.c
+> X-Mailer: git-send-email 2.50.1
+> 
+> This simplifies the Python code and reduces the size of the tracepoints.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  tests/tracetool/ftrace.h            | 28 ++++++----------------------
+>  trace/ftrace.h                      |  1 +
+>  trace/ftrace.c                      | 15 +++++++++++++++
+>  scripts/tracetool/backend/ftrace.py | 12 ++----------
+>  4 files changed, 24 insertions(+), 32 deletions(-)
 
-IIUC there would be no need for locking, since the kernel would return
-a free port for each process.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-I can submit a patch btw, but thought I could ask first.
-
---=20
-Manos Pitsidianakis
-Emulation and Virtualization Engineer at Linaro Ltd
 
