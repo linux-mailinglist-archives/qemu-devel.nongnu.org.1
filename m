@@ -2,63 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBCEB34404
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 16:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 895F5B34380
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 16:23:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqYGh-0003tn-DN; Mon, 25 Aug 2025 10:33:55 -0400
+	id 1uqY59-0006zU-SX; Mon, 25 Aug 2025 10:22:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uqYGY-0003ri-MK; Mon, 25 Aug 2025 10:33:47 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uqY56-0006y9-BT
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 10:21:56 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uqYGN-0001lr-Pz; Mon, 25 Aug 2025 10:33:46 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 6AA0056F303;
- Mon, 25 Aug 2025 16:33:27 +0200 (CEST)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id 57juYtJ6uTE7; Mon, 25 Aug 2025 16:33:25 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 45BFE56F2CA; Mon, 25 Aug 2025 16:33:25 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 4368B56F2AE;
- Mon, 25 Aug 2025 16:33:25 +0200 (CEST)
-Date: Mon, 25 Aug 2025 16:33:25 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Harsh Prateek Bora <harshpb@linux.ibm.com>
-cc: Thomas Huth <thuth@redhat.com>, Glenn Miles <milesg@linux.ibm.com>, 
- qemu-devel@nongnu.org, qemu-ppc@nongnu.org, clg@redhat.com, 
- npiggin@gmail.com, rathc@linux.ibm.com, richard.henderson@linaro.org, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: Re: [PATCH 1/4] target/ppc: Add IBM PPE42 family of processors
-In-Reply-To: <e946e0f7-cc9f-40fa-bd41-3044510ce261@linux.ibm.com>
-Message-ID: <cee8e481-8cfa-a86c-bca6-10ac3fbcffb6@eik.bme.hu>
-References: <20250819212856.219932-1-milesg@linux.ibm.com>
- <20250819212856.219932-2-milesg@linux.ibm.com>
- <0d2c9aa2-2dcc-4c22-8f33-e5ecac907cf4@linux.ibm.com>
- <c13f63a6-5fef-42f2-89fe-946f71498f51@redhat.com>
- <fd855a38-976f-430e-9db1-1bdce1cf869d@linux.ibm.com>
- <dc6dc7db-f4c3-4641-9707-383737e2b678@redhat.com>
- <0b6d96c7-b28f-42c0-93db-579d80f0298b@linux.ibm.com>
- <fd6f2788-b1a8-41af-88b5-9eb2ebdfd9d8@redhat.com>
- <e946e0f7-cc9f-40fa-bd41-3044510ce261@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uqY4s-00009B-Ra
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 10:21:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1756131703; x=1787667703;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=soHQT2XDSKmb9Ao5/45S7jWsuFcQiY3vokX8Xm3zERU=;
+ b=aJ/iFY4RT1AHJU4tPZG0el9sQ6qxCRjkBjYfeeICedoDqoCSiWMAFfTD
+ ATlqP5kL/IJdnBNHQ7XSug6r1mrY7vbl4CSX5kC0reCaBKGzzNSPg/oNf
+ Cad0Njh4LvqXOyD3S9xyL5jojjs0Z4wbe0h3ASatTvqWZnpdL6pZC9YkD
+ vzRCa1duzjwpfVWGZ5onZrMEARiTue69q4MNqSf4XmUef6EPj4oa6OhKv
+ em5pxmCydyGTJh6EgQIkt7UYbpm+/Fce5sc54wYmsb4pmmZww6210MSFz
+ e6TsIe8F9camGeqRPVOmh2zreejeLjKhYtaCt7RAw8P8TfGzQzCK6ZjE8 w==;
+X-CSE-ConnectionGUID: DZhqrB64TjOhiIglYLWNSw==
+X-CSE-MsgGUID: tfjcEfAiTOGOiVIYAVYIyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="58414310"
+X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="58414310"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Aug 2025 07:21:32 -0700
+X-CSE-ConnectionGUID: RRKdyBx4S+q+uHT1ClFI1w==
+X-CSE-MsgGUID: Gh+GC/ULTA+kpDvGEkJGnA==
+X-ExtLoop1: 1
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa003.fm.intel.com with ESMTP; 25 Aug 2025 07:21:30 -0700
+Date: Mon, 25 Aug 2025 22:43:14 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ mtosatti@redhat.com
+Subject: Re: [PATCH v4 3/8] hpet: switch to fain-grained device locking
+Message-ID: <aKx2glRrPLUt8iUu@intel.com>
+References: <20250814160600.2327672-1-imammedo@redhat.com>
+ <20250814160600.2327672-4-imammedo@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-248834919-1756132405=:84819"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250814160600.2327672-4-imammedo@redhat.com>
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,96 +81,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Thu, Aug 14, 2025 at 06:05:55PM +0200, Igor Mammedov wrote:
+> Date: Thu, 14 Aug 2025 18:05:55 +0200
+> From: Igor Mammedov <imammedo@redhat.com>
+> Subject: [PATCH v4 3/8] hpet: switch to fain-grained device locking
+> 
+> as a step towards lock-less HPET counter read,
+> use per device locking instead of BQL.
+> 
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> ---
+>  hw/timer/hpet.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 
---3866299591-248834919-1756132405=:84819
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-On Mon, 25 Aug 2025, Harsh Prateek Bora wrote:
-> On 8/25/25 17:52, Thomas Huth wrote:
->> On 25/08/2025 14.08, Harsh Prateek Bora wrote:
->>> On 8/25/25 17:28, Thomas Huth wrote:
->>>> As I said, qemu-system-ppc64 is currently a full superset of qemu-system- 
->>>> ppc. The ppc64 binary contains all the 32-bit code, you can perfectly run 
->>>> a "g3beige" or "bamboo" machine with qemu-system-ppc64, too. By disabling 
->>>> the ppe42 code in the ppc64 binary, this would now introduce an execption 
->>>> to that unwritten rule, so I'd expect that we'd not rather want to do 
->>>> this now.
->>> 
->>> My understanding is that above holds true only for default builds which
->>> builds all targets. We certainly do not build 32 bit ppc code when using
->>> --configure target-list=ppc64-softmmu. (we have ppc-softmmu for 32 bit 
->>> though)
-
-We do build 32-bit machines in ppc64-softmmu but leave out 64-bit from 
-ppc-softmmu so it's only one way.
-
->> Just give it a try:
->>
->>   ./configure --target-list=ppc64-softmmu --disable-docs
->>   make -j$(nproc)
->>   ./qemu-system-ppc64 -M g3beige
->> 
->> ... works perfectly fine for me.
->> 
-> This would work because the respective code is not restricted with #ifndef 
-> TARGET_PPC64.
->
-> However, there are instance like below in hw/ppc/mac_oldworld.c:
->
-> static void heathrow_class_init(ObjectClass *oc, const void *data)
-> {
->    MachineClass *mc = MACHINE_CLASS(oc);
->    FWPathProviderClass *fwc = FW_PATH_PROVIDER_CLASS(oc);
->
->    mc->desc = "Heathrow based PowerMac";
->    mc->init = ppc_heathrow_init;
->    mc->block_default_type = IF_IDE;
->    /* SMP is not supported currently */
->    mc->max_cpus = 1;
-> #ifndef TARGET_PPC64
->    mc->is_default = true;
-> #endif
-
-This is only because the default machine for ppc64-softmmu is different 
-than for ppc-softmmu as the 64-bit machines don't exist in ppc-softmmu but 
-ppc64-softmmu had different default machine before machines from 
-qemu-system-ppc got included in qemu-system-ppc64 so it kept that. (Looks 
-like the default used to be mac_newworld before commit 159f8286b760dea but 
-wasn't changed to match but to something else.) The default machines are 
-arbitrary, we could make "none" the default and always require users to 
-supply -machine but that would break existing command lines so this wasn't 
-done.
-
-> Similarly, we have multiple instances with #else block for #ifdef
-> TARGET_PPC64 which doesnt get compiled with ppc64-softmmu, but only with
-> ppc-softmmu meant for 32-bit targets. See target/ppc/excp_helper.c for 
-> example.
-
-This is again leaving out 64-bit code from ppc-softmmu but as Thomas says 
-32-bit machines are always included in qemu-softmmu-ppc64. I can't find 
-the commit which changed this, previously we had these to be separate and 
-since some types are different in ppc64-softmmu it wasn't clear if that 
-could cause any problems for 32-bit CPUs and machines so ppc-softmmu was 
-kept until that's cleaned up which never happened. There are also some 
-pecularities in some machines like mac_newworld that behaves differently 
-in qemu-system-ppc and qemu-system-ppc64 and the potentially lower 
-performance of qemu-system-ppc64 in emulating 32-bit machines which is why 
-we still have ppc-softmmu.
-
-Regards,
-BALATON Zoltan
-
-> regards,
-> Harsh
->
->> AFAIK we don't have a switch to disable 32-bit code in the ppc64 binary.
->>
->>   Thomas
->> 
->
->
---3866299591-248834919-1756132405=:84819--
 
