@@ -2,102 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507E1B34DFB
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 23:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2251B34DFE
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 23:27:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqegj-00022e-TX; Mon, 25 Aug 2025 17:25:13 -0400
+	id 1uqeh6-0002Nv-Os; Mon, 25 Aug 2025 17:25:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1uqegZ-0001xW-0C; Mon, 25 Aug 2025 17:25:04 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1uqegI-0001qz-No; Mon, 25 Aug 2025 17:25:02 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57PH1WpE012568;
- Mon, 25 Aug 2025 21:24:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=KPf82vw/8oEiIJA5+
- H5k6bSmA5+UulS3EUMUpwaiZeI=; b=cHRsnZ0Uei4Iwj6DnY03UQWLYCr55WxX5
- nV+jKZk0nEA6Os4QjK90T5hYj4zOrTpoXFn4tS2VSZmLou7/GOQlGdGAkjTDyP/0
- SpZv8FEoeuL67vErcZ5vxeylYfgD6+6zlqKJ8wjbYqoP0PF/Jw1XYY7fMdPfNW5/
- U3+ECvu/eX/jShlnVFzKnISwzXJcYsFI49trlDzrzupJljaVNAP6CijtRjEf+Mkh
- QaOwFG2xHdkq6KAOrSS3eZ8pav1tUv9dugWjkWs8O5GDnnrVK4HvXgBMD0PDRlsY
- +8a8/lHgH8K0c1dkPvnhEkF8yHf+fnYAUkiNOuqeNCutJnNZD5xmA==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5hpu3ug-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 25 Aug 2025 21:24:39 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57PLBgcj007458;
- Mon, 25 Aug 2025 21:24:38 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qqyu80gd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 25 Aug 2025 21:24:38 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 57PLOce625100946
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 25 Aug 2025 21:24:38 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0C89758043;
- Mon, 25 Aug 2025 21:24:38 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6FF5358059;
- Mon, 25 Aug 2025 21:24:37 +0000 (GMT)
-Received: from IBM-D32RQW3.ibm.com (unknown [9.61.255.253])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 25 Aug 2025 21:24:37 +0000 (GMT)
-From: Farhan Ali <alifm@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: alifm@linux.ibm.com, mjrosato@linux.ibm.com, thuth@redhat.com,
- alex.williamson@redhat.com, clg@redhat.com
-Subject: [PATCH v2 4/4] s390x/pci: Reset a device in error state
-Date: Mon, 25 Aug 2025 14:24:33 -0700
-Message-ID: <20250825212434.2255-5-alifm@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250825212434.2255-1-alifm@linux.ibm.com>
-References: <20250825212434.2255-1-alifm@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uqegj-00028F-IY
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 17:25:13 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uqegV-0001sK-Rq
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 17:25:13 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-45a1b065d59so27024995e9.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Aug 2025 14:24:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756157088; x=1756761888; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=aJ3kJocUM+DJlT90WxsNWrj3cpUD1SBN0JVovFA8CZA=;
+ b=Aciby6Ec57FPGI82XI5FVo3K6W0Sj5ghitl7x4IEOJtYcH5UJ0YCEJy0CtlqsIRU9a
+ wQ4LrLd44ADKXP4hxrV8pXd1gL6LgZbxk9eOSkKhXzzjKfQnDn4pnqLILZr+zGYF45YN
+ SlkVHGbeGzmejEP3IRPjiMFG0Vevqo6aFn2K1sR/HPoNt2n19JcLOOH+7a461kQvuSbx
+ e97eaQk9FVsZkT035Y0YwSnLZ0Wm++Oy5Cv3b0xPLxgHanO+2X9HynPqI1TMNCpHPmxS
+ bPGF4pCm/I9e85DgUgYAYHeDlY3HGM5Lw/+Tj+SjYs56/cY6nJkYSUqkDSLtASs4ItHL
+ YUzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756157088; x=1756761888;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=aJ3kJocUM+DJlT90WxsNWrj3cpUD1SBN0JVovFA8CZA=;
+ b=U8FDu0d84sJAdDofXjGEb0s7i5Rtkf8BFZojxKbAW2aimkINOb/YMt7N1RR/Y/zrtI
+ 74CuVjCdptLk00fG0GX3j35fusMRV/kz+ArzckhnzmG4iy8jS0+xNgjQNNmd1qYWLGDf
+ xi6wk/d1Gflr+sM/dDIKtgvjg5dT7Z1WwfaAC1rrBd1NxIEGOu3Lk6J9aRVbCVL/c4yQ
+ PJuSJ+amY0OO1e06rqdo059c5z4EhgKjGphU03JM/io4+8rOdpiDjj5ZSUIVHTNXJgIx
+ FRGBgbMFS3GQVz+d1FYC7jCsIRnZo1bXHvyaQTJARfJxVW3xd4Kceswb/EeMzSQpnlYh
+ lZqA==
+X-Gm-Message-State: AOJu0Yy4vpYM9q5PoDVpzYPbGurWAfHIDAnz8jEjZCLkxgv979QmmH36
+ R3vOT+cJkKLyi6EEznqBBBL697UccUboXTW0BHPrd1/+aRtcnQ7cPzrESbHStIZP5Wg=
+X-Gm-Gg: ASbGncuM++lmHXtLS8yYxoJj2WY1tOMXGyLywuTszQnA7mTVbz1p2wxC1HtauHrwOWu
+ GFDo4Y7+SEDG235kp1nXf0ziU/Kj4oY+Hka40Wq/lpwK+1tEX+krEev10WfRK0+fNXtCb1Y9kam
+ HAGpn0ScMxH8JKQctVzB4eTH3AUuU+SWsfh+CF+Y48DSd3cJ5LRGN/zoCa+fVje9CVSyazvZF56
+ CDgXmWQeGcYWpnSkJRStuSAu2b8gqFTPLg5oeH+JHaHlRfWnT7qyXJowhlmlI2dO1SE8sjTT2ro
+ 9ZNYDTKlEJdvs61F0cAeBsA7ePnuRuGhW5cAE/EctKlTbooq4naFZ1Bb4Dgq4bqcTTUilB+ScTK
+ 4jgAV9lynAgFJgsAPbSXwUdE=
+X-Google-Smtp-Source: AGHT+IFkqLG2Plvgz+opVLvk2AxNJZ/KMo1Utzmz9FrH2bus4uHav8rR8W5C4nk7eGwUl/YUg1xPwA==
+X-Received: by 2002:a05:600c:a09:b0:459:dde3:1a55 with SMTP id
+ 5b1f17b1804b1-45b517c2f63mr112981025e9.24.1756157088415; 
+ Mon, 25 Aug 2025 14:24:48 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b57592db0sm123332925e9.26.2025.08.25.14.24.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 25 Aug 2025 14:24:47 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 17A8B5F7CB;
+ Mon, 25 Aug 2025 22:24:46 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Gustavo Romero <gustavo.romero@linaro.org>
+Cc: qemu-devel@nongnu.org,  thuth@redhat.com,  qemu-arm@nongnu.org,
+ 1844144@gmail.com
+Subject: Re: [PATCH 1/4] tests/guest-debug: Make QEMU optional in run-test.py
+In-Reply-To: <3ba9ea8d-1590-4f87-8758-1b18bad0d3b8@linaro.org> (Gustavo
+ Romero's message of "Mon, 25 Aug 2025 14:30:10 -0300")
+References: <20250819143916.4138035-1-gustavo.romero@linaro.org>
+ <20250819143916.4138035-2-gustavo.romero@linaro.org>
+ <875xeb2v4w.fsf@draig.linaro.org>
+ <afd31a15-d4ed-477d-9f72-9c9a23b64047@linaro.org>
+ <3ba9ea8d-1590-4f87-8758-1b18bad0d3b8@linaro.org>
+User-Agent: mu4e 1.12.12; emacs 30.1
+Date: Mon, 25 Aug 2025 22:24:46 +0100
+Message-ID: <87zfbn14dd.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyMSBTYWx0ZWRfX3yNmuHlS3tZd
- 2wano0kaUJ1vMKsS5veCWPhb6sUajzV4qjUTHEbNzXh20Jo00+l8abGDzRKJXPw9JghGBEpN3sG
- YXwxuJWPtAgL3cduolQNpXg07b0ikPppe0WQKkJtHGA9Wf1TeAmpbgFLNsjMT/wLvJX9uHyTyp+
- TntLRNubG0k4Zvlq4NqHkp7Y4UCvA0WUkhq5UOawLrhg4h+o+IMBwjQi/3Uw0xxMQWbW8O/AxWP
- 1ILMD/VrYZymMicBhgL0kn4MRFX3FMJcZ3nVVwuvZOr9J+IePk0GpdZtmftm2JyBkTdm4OYWtMM
- jSVlMQl+oOIdVY3ZJM1mVTWpBcsbTd+gIWR2XUA1AjsX27ZlJap5XVJ0hKSGYxdRpnXMZHmCF9w
- QJpP7HfS
-X-Proofpoint-ORIG-GUID: 3b4i2HD6k8c-F_VsKhAZ6wM0Io-jbRZP
-X-Proofpoint-GUID: 3b4i2HD6k8c-F_VsKhAZ6wM0Io-jbRZP
-X-Authority-Analysis: v=2.4 cv=Ndbm13D4 c=1 sm=1 tr=0 ts=68acd497 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=A6rq8h5Md1LYvE6mRIYA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-25_10,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 clxscore=1015 phishscore=0 malwarescore=0
- suspectscore=0 bulkscore=0 spamscore=0 adultscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508230021
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=alifm@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,81 +106,300 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For passthrough devices in error state, for a guest driven reset of the
-device we can attempt a reset to recover the device. A reset of the device
-will trigger a CLP disable/enable cycle on the host to bring the device
-into a recovered state.
+Gustavo Romero <gustavo.romero@linaro.org> writes:
 
-Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
----
- hw/s390x/s390-pci-bus.c          | 7 +++++++
- hw/s390x/s390-pci-vfio.c         | 6 ++++++
- include/hw/s390x/s390-pci-vfio.h | 2 ++
- 3 files changed, 15 insertions(+)
+> Hi Alex,
+>
+> On 8/25/25 14:26, Gustavo Romero wrote:
+>> Hi Alex!
+>> On 8/25/25 14:01, Alex Benn=C3=A9e wrote:
+>>> Gustavo Romero <gustavo.romero@linaro.org> writes:
+>>>
+>>>> This commit makes QEMU optional in run-test.py, allowing it to be used
+>>>> as a GDB runner, i.e., to call GDB and pass a test script to it without
+>>>> launching QEMU. In this configuration, it is the test script=E2=80=99s=
+ duty to
+>>>> configure and run the VMs that GDB connects to.
+>>>>
+>>>> The --binary option continues to be required when --qemu is passed.
+>>>> sys.argv now includes the full path to the test script in addition to
+>>>> the script=E2=80=99s arguments, which allows unittest introspection to=
+ work
+>>>> properly in case it is used in the test script.
+>>>>
+>>>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+>>>> ---
+>>>> =C2=A0 tests/guest-debug/run-test.py | 81 +++++++++++++++++++---------=
+-------
+>>>> =C2=A0 1 file changed, 45 insertions(+), 36 deletions(-)
+>>>>
+>>>> diff --git a/tests/guest-debug/run-test.py b/tests/guest-debug/run-tes=
+t.py
+>>>> index 75e9c92e03..7fa17aedca 100755
+>>>> --- a/tests/guest-debug/run-test.py
+>>>> +++ b/tests/guest-debug/run-test.py
+>>>> @@ -22,10 +22,10 @@
+>>>> =C2=A0 def get_args():
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 parser =3D argparse.ArgumentParser(desc=
+ription=3D"A gdbstub test runner")
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 parser.add_argument("--qemu", help=3D"Q=
+emu binary for test",
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 requi=
+red=3DTrue)
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 requi=
+red=3DFalse)
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 parser.add_argument("--qargs", help=3D"=
+Qemu arguments for test")
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 parser.add_argument("--binary", help=3D=
+"Binary to debug",
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 requi=
+red=3DTrue)
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 requi=
+red=3DFalse)
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 parser.add_argument("--binary", help=3D"Binary=
+ to debug",
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ required=3D'--qemu' in sys.argv)
+>>>
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 parser.add_argument("--test", help=3D"G=
+DB test script")
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 parser.add_argument('test_args', nargs=
+=3D'*',
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 help=3D"Additional args for GDB test script. "
+>>>> @@ -53,7 +53,7 @@ def log(output, msg):
+>>>> =C2=A0 if __name__ =3D=3D '__main__':
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 args =3D get_args()
+>>>> -=C2=A0=C2=A0=C2=A0 # Search for a gdb we can use
+>>>> +=C2=A0=C2=A0=C2=A0 # Search for a gdb we can use.
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if not args.gdb:
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 args.gdb =3D sh=
+util.which("gdb-multiarch")
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if not args.gdb:
+>>>> @@ -73,41 +73,49 @@ def log(output, msg):
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 socket_dir =3D TemporaryDirectory("qemu=
+-gdbstub")
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 socket_name =3D os.path.join(socket_dir=
+.name, "gdbstub.socket")
+>>>> -=C2=A0=C2=A0=C2=A0 # Launch QEMU with binary
+>>>> -=C2=A0=C2=A0=C2=A0 if "system" in args.qemu:
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if args.no_suspend:
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 su=
+spend =3D ''
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 else:
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 su=
+spend =3D ' -S'
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cmd =3D f'{args.qemu} {arg=
+s.qargs} {args.binary}' \
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 f'=
+{suspend} -gdb unix:path=3D{socket_name},server=3Don'
+>>>> -=C2=A0=C2=A0=C2=A0 else:
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if args.no_suspend:
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 su=
+spend =3D ',suspend=3Dn'
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 else:
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 su=
+spend =3D ''
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cmd =3D f'{args.qemu} {arg=
+s.qargs} -g {socket_name}{suspend}' \
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 f'=
+ {args.binary}'
+>>>> -
+>>>> -=C2=A0=C2=A0=C2=A0 log(output, "QEMU CMD: %s" % (cmd))
+>>>> -=C2=A0=C2=A0=C2=A0 inferior =3D subprocess.Popen(shlex.split(cmd))
+>>>> +=C2=A0=C2=A0=C2=A0 if args.qemu and not args.binary:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 print("QEMU needs a binary=
+ to run, but no binary provided")
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 exit(-1)
+>>>
+>>> then we can avoid this.
+>> Sure, thanks for the suggestion. I'm fixing it in v2.
+>>=20
+>>>> -=C2=A0=C2=A0=C2=A0 # Now launch gdb with our test and collect the res=
+ult
+>>>> -=C2=A0=C2=A0=C2=A0 gdb_cmd =3D "%s %s" % (args.gdb, args.binary)
+>>>> +=C2=A0=C2=A0=C2=A0 if args.qemu:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Launch QEMU with binary.
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if "system" in args.qemu:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if=
+ args.no_suspend:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 suspend =3D ''
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 el=
+se:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 suspend =3D ' -S'
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cm=
+d =3D f'{args.qemu} {args.qargs} {args.binary}' \
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 f'{suspend} -gdb unix:path=3D{socket_name},server=3Do=
+n'
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 else:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if=
+ args.no_suspend:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 suspend =3D ',suspend=3Dn'
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 el=
+se:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 suspend =3D ''
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cm=
+d =3D f'{args.qemu} {args.qargs} -g {socket_name}{suspend}' \
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 f' {args.binary}'
+>>>> +
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 log(output, "QEMU CMD: %s"=
+ % (cmd))
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 inferior =3D subprocess.Po=
+pen(shlex.split(cmd))
+>>>> +
+>>>> +=C2=A0=C2=A0=C2=A0 # Now launch gdb with our test and collect the res=
+ult.
+>>>> +=C2=A0=C2=A0=C2=A0 gdb_cmd =3D args.gdb
+>>>> +=C2=A0=C2=A0=C2=A0 if args.binary:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_cmd +=3D " %s" % (args=
+.binary)
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if args.gdb_args:
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_cmd +=3D " =
+%s" % (args.gdb_args)
+>>>> -=C2=A0=C2=A0=C2=A0 # run quietly and ignore .gdbinit
+>>>> +=C2=A0=C2=A0=C2=A0 # Run quietly and ignore .gdbinit.
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_cmd +=3D " -q -n -batch"
+>>>> -=C2=A0=C2=A0=C2=A0 # disable pagination
+>>>> +=C2=A0=C2=A0=C2=A0 # Disable pagination.
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_cmd +=3D " -ex 'set pagination off'"
+>>>> -=C2=A0=C2=A0=C2=A0 # disable prompts in case of crash
+>>>> +=C2=A0=C2=A0=C2=A0 # Disable prompts in case of crash.
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_cmd +=3D " -ex 'set confirm off'"
+>>>
+>>> The re-formatting makes the diffs very noisy. If you want to clean up
+>>> the captilization of stuff do that in another commit.
+>> OK.
+>>=20
+>>>> -=C2=A0=C2=A0=C2=A0 # connect to remote
+>>>> -=C2=A0=C2=A0=C2=A0 gdb_cmd +=3D " -ex 'target remote %s'" % (socket_n=
+ame)
+>>>> -=C2=A0=C2=A0=C2=A0 # finally the test script itself
+>>>> +=C2=A0=C2=A0=C2=A0 # Connect automatically to remote only if QEMU is =
+launched.
+>>>> +=C2=A0=C2=A0=C2=A0 if args.qemu:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_cmd +=3D " -ex 'target=
+ remote %s'" % (socket_name)
+>>>> +=C2=A0=C2=A0=C2=A0 # Finally the test script itself.
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if args.test:
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if args.test_args:
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gd=
+b_cmd +=3D f" -ex \"py sys.argv=3D{args.test_args}\""
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 argv =3D [args.test] + arg=
+s.test_args
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_cmd +=3D f" -ex \"py s=
+ys.argv=3D{argv}\""
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_cmd +=3D " =
+-x %s" % (args.test)
+>>>
+>>> I can see this echoes from:
+>>>
+>>> =C2=A0=C2=A0=C2=A0 env QEMU_TEST_FLAKY_TESTS=3D1 ./pyvenv/bin/meson tes=
+t --suite thorough func-aarch64-aarch64_reverse_debug --verbose
+>>>
+>>> Shows:
+>>>
+>>> =C2=A0=C2=A0 GDB CMD: /usr/bin/gdb-multiarch -q -n -batch -ex 'set pagi=
+nation
+>>> off' -ex 'set confirm off' -ex "py
+>>> sys.argv=3D['/home/alex/lsrc/qemu.git/tests/functional/test_aarch64_rev=
+erse_debug.py']"
+>>> -x
+>>> /home/alex/lsrc/qemu.git/tests/functional/test_aarch64_reverse_debug.py
+>>>
+>>> But trying to piece that together on my the command line:
+>>>
+>>> =C2=A0=C2=A0 env
+>>> PYTHONPATH=3D/home/alex/lsrc/qemu.git/python:/home/alex/lsrc/qemu.git/t=
+ests/functional
+>>> /usr/bin/gdb-multiarch -q -n -batch -ex 'set pagination off' -ex
+>>> 'set confirm off' -ex "py
+>>> sys.argv=3D['/home/alex/lsrc/qemu.git/tests/functional/test_aarch64_rev=
+erse_debug.py']"
+>>> -x
+>>> /home/alex/lsrc/qemu.git/tests/functional/test_aarch64_reverse_debug.py
+>>> Python Exception <class 'ModuleNotFoundError'>: No module named 'pycota=
+p'
+>>> Error occurred in Python: No module named 'pycotap'
+>>>
+>>> What am I missing?
+>> meson.build in tests/functional is properly setting PYTHONPATH in
+>> the env
+>> when meson runs this command. libpython called from gdb binary will insp=
+ect
+>> PYTHONPATH later. It's meson that knows where site-packages from the pyv=
+env
+>> is located, so that's why meson is setting PYTHONPATH and that's why it =
+works
+>> when run by meson.
+>> We should never need to put pieces together to run QEMU tests, I
+>> really
+>> hate it (see my previous reply to Thomas about why using Avocado GDB for
+>> test like this is not a good idea IMO).
+>
+> ah, and I can think of some way to avoid having to put command pieces
+> together to re-run the test after we agree in the other more fundamental
+> aspects of this series, e.g., ok to kept it in tests/functional, ok to
+> use GDB Python API, etc.
 
-diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-index af42eb9938..c9c2d775f0 100644
---- a/hw/s390x/s390-pci-bus.c
-+++ b/hw/s390x/s390-pci-bus.c
-@@ -1493,6 +1493,8 @@ static void s390_pci_device_reset(DeviceState *dev)
-         return;
-     case ZPCI_FS_STANDBY:
-         break;
-+    case ZPCI_FS_ERROR:
-+        break;
-     default:
-         pbdev->fh &= ~FH_MASK_ENABLE;
-         pbdev->state = ZPCI_FS_DISABLED;
-@@ -1505,6 +1507,11 @@ static void s390_pci_device_reset(DeviceState *dev)
-     } else if (pbdev->summary_ind) {
-         pci_dereg_irqs(pbdev);
-     }
-+
-+    if (pbdev->state == ZPCI_FS_ERROR) {
-+        s390_pci_reset(pbdev);
-+    }
-+
-     if (pbdev->iommu->enabled) {
-         pci_dereg_ioat(pbdev->iommu);
-     }
-diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
-index 87ecd06a81..a11ec770a7 100644
---- a/hw/s390x/s390-pci-vfio.c
-+++ b/hw/s390x/s390-pci-vfio.c
-@@ -158,6 +158,12 @@ static void s390_pci_err_handler(VFIOPCIDevice *vfio_pci)
-     return;
- }
- 
-+void s390_pci_reset(S390PCIBusDevice *pbdev)
-+{
-+    VFIOPCIDevice *vfio_pci = container_of(pbdev->pdev, VFIOPCIDevice, pdev);
-+    ioctl(vfio_pci->vbasedev.fd, VFIO_DEVICE_RESET);
-+}
-+
- static void s390_pci_read_base(S390PCIBusDevice *pbdev,
-                                struct vfio_device_info *info)
- {
-diff --git a/include/hw/s390x/s390-pci-vfio.h b/include/hw/s390x/s390-pci-vfio.h
-index 66b274293c..c28dafeed8 100644
---- a/include/hw/s390x/s390-pci-vfio.h
-+++ b/include/hw/s390x/s390-pci-vfio.h
-@@ -23,6 +23,7 @@ void s390_pci_end_dma_count(S390pciState *s, S390PCIDMACount *cnt);
- bool s390_pci_get_host_fh(S390PCIBusDevice *pbdev, uint32_t *fh);
- void s390_pci_get_clp_info(S390PCIBusDevice *pbdev);
- void s390_pci_setup_err_handler(S390PCIBusDevice *pbdev);
-+void s390_pci_reset(S390PCIBusDevice *pbdev);
- #else
- static inline bool s390_pci_update_dma_avail(int fd, unsigned int *avail)
- {
-@@ -41,6 +42,7 @@ static inline bool s390_pci_get_host_fh(S390PCIBusDevice *pbdev, uint32_t *fh)
- }
- static inline void s390_pci_get_clp_info(S390PCIBusDevice *pbdev) { }
- static inline void s390_pci_setup_err_handler(S390PCIBusDevice *pbdev) { }
-+void s390_pci_reset(S390PCIBusDevice *pbdev) { }
- #endif
- 
- #endif
--- 
-2.43.0
+Hmm could meson devenv help?
 
+>
+> Cheers,
+> Gustavo
+>
+>> That said, try to add the site-packages from your pyvenv set in your
+>> build dir to PYTHONPATH:
+>> gromero@gromero0:/mnt/git/qemu_/build$ ls -l
+>> ./pyvenv/lib/python3.10/site-packages
+>> total 16
+>> drwxrwxr-x=C2=A0 3 gromero gromero 4096 Aug 25 12:47 meson-1.8.1.dist-in=
+fo
+>> drwxrwxr-x 17 gromero gromero 4096 Aug 25 12:47 mesonbuild
+>> drwxrwxr-x=C2=A0 3 gromero gromero 4096 Aug 25 12:47 pycotap
+>> drwxrwxr-x=C2=A0 2 gromero gromero 4096 Aug 25 12:47 pycotap-1.3.1.dist-=
+info
+>> This is where the pycotap and other potential modules reside.
+>> Cheers,
+>> Gustavo
+>>=20
+>>>> @@ -129,10 +137,11 @@ def log(output, msg):
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 log(output, "GD=
+B crashed? (%d, %d) SKIPPING" % (result, result - 128))
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 exit(0)
+>>>> -=C2=A0=C2=A0=C2=A0 try:
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 inferior.wait(2)
+>>>> -=C2=A0=C2=A0=C2=A0 except subprocess.TimeoutExpired:
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 log(output, "GDB never con=
+nected? Killed guest")
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 inferior.kill()
+>>>> +=C2=A0=C2=A0=C2=A0 if args.qemu:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 try:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 in=
+ferior.wait(2)
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 except subprocess.TimeoutE=
+xpired:
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 lo=
+g(output, "GDB never connected? Killed guest")
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 in=
+ferior.kill()
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 exit(result)
+>>>
+>>=20
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
