@@ -2,70 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E0AB3372F
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 09:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBD4B337D6
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Aug 2025 09:32:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqREI-0004Cr-1y; Mon, 25 Aug 2025 03:02:58 -0400
+	id 1uqRfv-0006hk-G6; Mon, 25 Aug 2025 03:31:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uqREF-0004Cj-U0
- for qemu-devel@nongnu.org; Mon, 25 Aug 2025 03:02:56 -0400
-Received: from mgamail.intel.com ([198.175.65.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uqREC-0007pI-Kc
- for qemu-devel@nongnu.org; Mon, 25 Aug 2025 03:02:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756105373; x=1787641373;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=8VCksnUANnZpWCksBnUQSvpA2J6PwDmkE0ptSQKnaCE=;
- b=BpwsJOiHlqVFAzhXr8Iy2nRjZuLNXjEmhzjKw9VTEIDWzgXL4oJv3ZTM
- nQXDhnCMLr3HEJRfahBl+1or8vVnqJYUbGPwq/N8L2NyIe1I8/sN0Xb6l
- 8tHQG+pwFqp1/MZrd8nFoumtR/x3OLm5MadR/FdRtQ0uuGe5T7B2BxAsS
- rSqI13df2iHpbH/3M44/BFg9CNL9Woe61dhBCIo9ZG5c8wBUkBhVFG0Ce
- uZLGtPCZTBS/669421yUo2j53XaguvHU1NGFTsFtOCG+nOc4mesc69bEi
- 4McaV68YG/EVulqh9/bXmnKijlLnE29i/oZpgUuVWrWEDRBpPikmDwItK w==;
-X-CSE-ConnectionGUID: O8adKopoQPmZV5G+0IRzJA==
-X-CSE-MsgGUID: +OEo+d1cRYa6h6UNb89RaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11532"; a="69414427"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="69414427"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Aug 2025 00:02:50 -0700
-X-CSE-ConnectionGUID: aQc6LoVCRlWXwfjH2nYzBQ==
-X-CSE-MsgGUID: Y3jAWNLuScas4KZx7wHMbw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="173622457"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa004.jf.intel.com with ESMTP; 25 Aug 2025 00:02:47 -0700
-Date: Mon, 25 Aug 2025 15:24:33 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, tanishdesai37@gmail.com, stefanha@redhat.com,
- berrange@redhat.com, mads@ynddal.dk
-Subject: Re: [PATCH 02/14] rust: move dependencies to rust/Cargo.toml
-Message-ID: <aKwPsY7sg0YAOMbE@intel.com>
-References: <20250822122655.1353197-1-pbonzini@redhat.com>
- <20250822122655.1353197-3-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uqRfl-0006fu-A5
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 03:31:26 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uqRfi-0002T1-13
+ for qemu-devel@nongnu.org; Mon, 25 Aug 2025 03:31:21 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-61a8c134533so8463459a12.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Aug 2025 00:31:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756107075; x=1756711875; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EoYCQ1Zzi1zMkWPu85yEEKE4OX5nuRb+55rTKf0ZFFE=;
+ b=znpbfZmQunh3D8Mf3mMVjAVi21j5VpzP2TWTK+ketwcFGrs/xo2tnUzQVbjnni7sl6
+ KWKAKv2+pb1l4D5lJzNaiQKIwdeCb8by7bQWBx0gKomWxrm9cXprqGuk/yGNcogUJshc
+ w98bN68gOuTk7yJepqNhzsVycw4/RKDPqq+kKLqWuIH/C8nx2HaU1Vq+SDjXaZubvTOI
+ w0hjjAtxU6CNsDsaX/MEENtTpynsDlSTZ/O8GbJYJCvC86dh7Ut0aWWuSVZDrtlAIfyj
+ nC3EU1TYsEz3HXGy4l7ydOb4cI7g3uANp/1BK8DztWQmEfDq3KjKS5S0w45+uYaawQQN
+ 2T2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756107075; x=1756711875;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EoYCQ1Zzi1zMkWPu85yEEKE4OX5nuRb+55rTKf0ZFFE=;
+ b=LsxNK61u5rB40PL0omcv7WvS291HtJRiTUuSMHJa2jDaOyvVrmpn5A1TLVMYwBDNbE
+ MIOSDvL909keDWtS+ZBqPciRnh1/PITRI4++ztTvYrcRrJsteudtq3c5tDeppxjkHio8
+ StGIwow7Oi2HqpT5BF2e05zzIXUJdExQIhqBxWb8Xsefcw6PLP3Yzz5nJMXaxsPA23Fw
+ IOqVBBb6fXCXveKIxHit4ziV7z9xDUSDStYoO7p9g6ladcHY9JO7d6F+6hOHiu2CiFP8
+ VVzzbRAHeOHkyvaQmCG2FiGGyFm8VRYuZ73EfDlTnRALnsjr7zOhbzxBMenv3iUczCGB
+ B49g==
+X-Gm-Message-State: AOJu0Yx24B9g61bBhDmhvurNez4TXSB8kx+JCa5W3D3TIS/MvXxXdCXg
+ ztKdVk5dM919D9ZtH8XnDbCZsEZD8Wh0mmXf5UAUZbTtcvAh1+FnuHMHHhbFuxVzjf8D+dAOeE1
+ Tt94K6wIbu8GvPrnec3A3hf09CA7spxFNrUjNVjlAVg==
+X-Gm-Gg: ASbGncs/2JnYZ2pnqssYsRk/R9n3Ao6FyYBK4OnuJ1ow6Ikgo1TClKct65YFFMVu5zu
+ QwpRMl7AAHMBHr7noXCca8ph6PET0Nd9/utDoGycF/A5v6xTRnC9hhrMHMolbe6ZX2FhOScJPGQ
+ TEgM2i3mSMw62P8OGHmdQmnJTYADv529ddhNnhULvs/yKYcWC5dRnKQPsn271NtUn2tJrQ4eCWr
+ fD+8Ash
+X-Google-Smtp-Source: AGHT+IHpeEcFzwwJlwE7Ra7L+7vHpeUrD9QCXqLiH254mkIjpnaJ8qO5p7G93IjD+y10WN50T21dJSetHRJaQGGGh2s=
+X-Received: by 2002:a05:6402:518d:b0:61c:3c58:7128 with SMTP id
+ 4fb4d7f45d1cf-61c3c587537mr4632165a12.18.1756107074702; Mon, 25 Aug 2025
+ 00:31:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250822122655.1353197-3-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20250821094735.804210-1-thuth@redhat.com>
+In-Reply-To: <20250821094735.804210-1-thuth@redhat.com>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Mon, 25 Aug 2025 10:30:47 +0300
+X-Gm-Features: Ac12FXxH_KlXhKf7I7gX3CxUYmh8yx_YAr9SLbNF32NoWJ5Wng4jdnct3OYlXyk
+Message-ID: <CAAjaMXYt4UBS-2wB2OiSCE_DA77STWAjWvPdv=NtEGsUoSyFPA@mail.gmail.com>
+Subject: Re: [PATCH] tests/functional: Use more fine-grained locking when
+ looking for free ports
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,21 +95,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 22, 2025 at 02:26:43PM +0200, Paolo Bonzini wrote:
-> Date: Fri, 22 Aug 2025 14:26:43 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 02/14] rust: move dependencies to rust/Cargo.toml
-> X-Mailer: git-send-email 2.50.1
-> 
-> As more crates start using the same dependencies, it's better to not
-> repeat the versions and move the dependency declarations to the workspace.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+On Thu, Aug 21, 2025 at 12:49=E2=80=AFPM Thomas Huth <thuth@redhat.com> wro=
+te:
+>
+> From: Thomas Huth <thuth@redhat.com>
+>
+> Currently, we have one lock that is held while a test is looking for
+> free ports. However, we are also using different ranges for looking
+> for free ports nowadays (PORTS_START is based on the PID of the process),
+> so instead of using only one lock, we should rather use a lock per
+> range instead. This should help to allow running more tests in parallel.
+>
+> While we're at it, also create the lock files without executable bit
+> (mode is 0o777 by default).
+>
+
+(Unrelated to this patch but the file itself)
+
+Hm. AF_INET supports binding to port 0 to connect to any available
+port (see man 7 ip). Is this not portable?
+
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  rust/Cargo.toml          | 5 +++++
->  rust/qemu-api/Cargo.toml | 6 +++---
->  2 files changed, 8 insertions(+), 3 deletions(-)
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+>  tests/functional/qemu_test/ports.py | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/tests/functional/qemu_test/ports.py b/tests/functional/qemu_=
+test/ports.py
+> index 631b77abf6b..81174a61532 100644
+> --- a/tests/functional/qemu_test/ports.py
+> +++ b/tests/functional/qemu_test/ports.py
+> @@ -23,8 +23,9 @@ class Ports():
+>      PORTS_END =3D PORTS_START + PORTS_RANGE_SIZE
+>
+>      def __enter__(self):
+> -        lock_file =3D os.path.join(BUILD_DIR, "tests", "functional", "po=
+rt_lock")
+> -        self.lock_fh =3D os.open(lock_file, os.O_CREAT)
+> +        lock_file =3D os.path.join(BUILD_DIR, "tests", "functional",
+> +                                 f".port_lock.{self.PORTS_START}")
+> +        self.lock_fh =3D os.open(lock_file, os.O_CREAT, mode=3D0o666)
+>          fcntl.flock(self.lock_fh, fcntl.LOCK_EX)
+>          return self
+>
+> --
+> 2.50.1
+>
+>
 
