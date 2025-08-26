@@ -2,84 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA848B3580C
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 11:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38454B35928
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 11:38:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqpdN-0007J2-KE; Tue, 26 Aug 2025 05:06:31 -0400
+	id 1uqq5e-00076E-37; Tue, 26 Aug 2025 05:35:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uqpd3-0007H5-EO; Tue, 26 Aug 2025 05:06:09 -0400
-Received: from mgamail.intel.com ([198.175.65.18])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uqq5Z-000761-K1
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 05:35:37 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uqpcr-00049Y-NX; Tue, 26 Aug 2025 05:06:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756199158; x=1787735158;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=VX51ebEyrWm0HdDAd809OGo61vSaBYsgcvkQMbax4Z8=;
- b=IxAeoNIXy1RQMvNaKbFf4oHUFQksegWSFg+BUL30gfochu/qF7Ln/59E
- RA5QfEI66x76Sulizh15gcZq7Z4Y43Y1810P6Scd1SQmCVD8SoDaqY6TM
- GywxXh4g6wbXggg/WhTkcUKNBRNtLoIKY1hKGyhighAs/sSO4POJSB7Rg
- TZWwr38hWyLE8XAtcBHEE9rKi+hoFbH1Bsmei+xA7WhlsbqZbLcU+YV6h
- LFN28ai/bgqzU044Xfv7yc8vb9jcGzithC6jiNWWCToR+I0Q7uVeZAmoo
- dIz18uIL609aLKMQ5vGvy0Hr6c1qvackE/aNzsY+UW6/FW/vKVborltkK Q==;
-X-CSE-ConnectionGUID: Ci4VCt2BR0yDVjuch4E4Eg==
-X-CSE-MsgGUID: 4a8MVIlyRgm6RdEUhmT57A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="58483348"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="58483348"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 02:05:50 -0700
-X-CSE-ConnectionGUID: NUVChn6JT9e22n0N2AiNYw==
-X-CSE-MsgGUID: 7/Vr3fU1RqWA85ZPsXek2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="170346575"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa010.fm.intel.com with ESMTP; 26 Aug 2025 02:05:41 -0700
-Date: Tue, 26 Aug 2025 17:27:27 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, peterx@redhat.com,
- mst@redhat.com, mtosatti@redhat.com, richard.henderson@linaro.org,
- riku.voipio@iki.fi, thuth@redhat.com, pasic@linux.ibm.com,
- borntraeger@linux.ibm.com, david@redhat.com, jjherne@linux.ibm.com,
- shorne@gmail.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
- philmd@linaro.org, wangyanan55@huawei.com, peter.maydell@linaro.org,
- agraf@csgraf.de, mads@ynddal.dk, mrolnik@gmail.com, deller@gmx.de,
- dirty@apple.com, rbolshakov@ddn.com, phil@philjordan.eu,
- reinoud@netbsd.org, sunilmut@microsoft.com, gaosong@loongson.cn,
- laurent@vivier.eu, edgar.iglesias@gmail.com, aurelien@aurel32.net,
- jiaxun.yang@flygoat.com, arikalo@gmail.com, chenhuacai@kernel.org,
- npiggin@gmail.com, rathc@linux.ibm.com, harshpb@linux.ibm.com,
- yoshinori.sato@nifty.com, iii@linux.ibm.com,
- mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
- qemu-s390x@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org
-Subject: Re: [PATCH v5 6/8] add cpu_test_interrupt()/cpu_set_interrupt()
- helpers and use them tree wide
-Message-ID: <aK19/6P9325hYBO9@intel.com>
-References: <20250814160600.2327672-7-imammedo@redhat.com>
- <20250821155603.2422553-1-imammedo@redhat.com>
- <aKyBFlCtnxnP9kt/@intel.com> <20250825171912.1bc7b841@fedora>
- <aK1mHGan+n9NSAOk@intel.com> <20250826104731.1440e3ed@fedora>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uqq5S-00008C-Vb
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 05:35:37 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cB2Yf0JNyz6GDX8;
+ Tue, 26 Aug 2025 17:34:30 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 97A191402F5;
+ Tue, 26 Aug 2025 17:34:59 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 26 Aug
+ 2025 11:34:58 +0200
+Date: Tue, 26 Aug 2025 10:34:57 +0100
+To: Wilfred Mallawa <wilfred.opensource@gmail.com>
+CC: Alistair Francis <alistair.francis@wdc.com>, Keith Busch
+ <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>, Jesper Devantier
+ <foss@defmacro.it>, Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng
+ <fam@euphon.net>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
+ <hreitz@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, "Marcel
+ Apfelbaum" <marcel.apfelbaum@gmail.com>, <qemu-devel@nongnu.org>,
+ <qemu-block@nongnu.org>, Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Subject: Re: [PATCH 1/4] spdm-socket: add seperate send/recv functions
+Message-ID: <20250826103457.0000698e@huawei.com>
+In-Reply-To: <20250826054630.222052-2-wilfred.opensource@gmail.com>
+References: <20250826054630.222052-1-wilfred.opensource@gmail.com>
+ <20250826054630.222052-2-wilfred.opensource@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250826104731.1440e3ed@fedora>
-Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,58 +73,152 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > Behind this helper, I mainly considerred the case of multiple writers:
-> > 
-> >    thread 0      .        thread 1
-> >                  .
-> > load:  x         .
-> > OR:    x | a     .
-> >                  .
-> >                  .      load:  x
-> >                  .      OR:    x | b
-> >                  .      store: x | b
-> >                  .
-> > store: x | a     .      (x | b is missed)
-> > 
-> > In the above case, "load" means the direct access:
-> > cpu->interrupt_request w/o protection, and "store" is done by
-> > qatomic_store_release.
-> > 
-> > The memory order is guaranteed, but the operation result of thread 1
-> > seems lost. Only BQL or other mutex could avoid such case.
-> > 
-> > qatomic_store_release is already a great step to avoid issues outside
-> > BQL, so I'm not sure if it's worth going further to ensure atomicity,
-> > especifically for multiple writers (my initial understanding is that
-> > iothread or callback may have multiple writers, but I'm also a bit
-> > unsure.). The overhead is also indeed an issue.
+On Tue, 26 Aug 2025 15:46:27 +1000
+Wilfred Mallawa <wilfred.opensource@gmail.com> wrote:
+
+> From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 > 
-> it looks like we are always holding BQL when setting interrupt.
->
-> However currently we also have places that check interrupts
-> without BQL but without using any atomics. This patch aims to ensure
-> that proper barriers are in place when checking for interrupts
-> and introduces release/acquire pair helpers for cpu->interrupt_request,
-> to ensure it's don consistently.
+Hi Wilfred,
 
-I see. this makes sense and qatomic_store_release is enough. 
+Great to see this support.
 
-> While overhead might be issue, it's better to have correcteness 1st.
-> (that's why blanket tree wide change to make sure we don't miss places that
-> set/test interrupts).
+> This is to support uni-directional transports such as SPDM
+> over Storage. As specified by the DMTF DSP0286.
+
+Trivial, wrap commit closer to 75 chars.
+
 > 
-> Then if performance issues were found somewhere, as was suggested
-> in previous reviews, we may opencode that place without barriers
-> with a mandatory comment/justification why it's okey doing so.
-> (well, at least that's the plan)
+> Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+> ---
+>  backends/spdm-socket.c       | 27 ++++++++++++++++++++++++---
+>  include/system/spdm-socket.h | 35 +++++++++++++++++++++++++++++++++++
+>  2 files changed, 59 insertions(+), 3 deletions(-)
+> 
+> diff --git a/backends/spdm-socket.c b/backends/spdm-socket.c
+> index 2c709c68c8..bab1b512c8 100644
+> --- a/backends/spdm-socket.c
+> +++ b/backends/spdm-socket.c
+> @@ -184,6 +184,29 @@ int spdm_socket_connect(uint16_t port, Error **errp)
+>      return client_socket;
+>  }
+>  
+> +uint32_t spdm_socket_receive(const int socket, uint32_t transport_type,
+> +                             void *rsp, uint32_t rsp_len)
+> +{
+> +    uint32_t command;
+> +    bool result;
+> +
+> +    result = receive_platform_data(socket, transport_type, &command,
+> +                                   (uint8_t *)rsp, &rsp_len);
+> +
+> +    if (!result || command == 0) {
 
-I agree (and sorry for my misleading words; my initial thought is
-qatomic_fetch_or has worse perfermance.)
+Comment on why command == 0 is good even if result is a fail.
+In the existing code, there is an assert if result is true and command != 0,
+why don't we need similar here?  Might be worth adding a comment on that
+special case to the existing code as I for one can't remember what it is for :(
+Ah I see you modify it below. 
 
-Thanks,
-Zhao
+
+> +        return 0;
+> +    }
+> +
+> +    return rsp_len;
+> +}
+> +
+> +bool spdm_socket_send(const int socket, uint32_t socket_cmd,
+> +                      uint32_t transport_type, void *req, uint32_t req_len)
+> +{
+> +    return send_platform_data(socket, transport_type,
+> +                              socket_cmd, req, req_len);
+> +}
+> +
+>  uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
+>                           void *req, uint32_t req_len,
+>                           void *rsp, uint32_t rsp_len)
+> @@ -200,12 +223,10 @@ uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
+>  
+>      result = receive_platform_data(socket, transport_type, &command,
+>                                     (uint8_t *)rsp, &rsp_len);
+> -    if (!result) {
+> +    if (!result || command == 0) {
+
+Add a comment here as well on 'why'.  Or can we have socket_rsp just call spdm_socket_send
++ spdm_socket_receive?  That would at least put the comment in just one place.
+
+>          return 0;
+>      }
+>  
+> -    assert(command != 0);
+> -
+>      return rsp_len;
+>  }
+>  
+> diff --git a/include/system/spdm-socket.h b/include/system/spdm-socket.h
+> index 5d8bd9aa4e..2b7d03f82d 100644
+> --- a/include/system/spdm-socket.h
+> +++ b/include/system/spdm-socket.h
+> @@ -50,6 +50,35 @@ uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
+>                           void *req, uint32_t req_len,
+>                           void *rsp, uint32_t rsp_len);
+>  
+> +/**
+> + * spdm_socket_rsp: Receive a message from an SPDM server
+> + * @socket: socket returned from spdm_socket_connect()
+> + * @transport_type: SPDM_SOCKET_TRANSPORT_TYPE_* macro
+> + * @rsp: response buffer
+> + * @rsp_len: response buffer length
+> + *
+> + * Receives a message from the SPDM server and returns the number of bytes
+> + * received or 0 on failure. This can be used to receive a message from the SPDM
+> + * server without sending anything first.
+> + */
+> +uint32_t spdm_socket_receive(const int socket, uint32_t transport_type,
+> +                             void *rsp, uint32_t rsp_len);
+> +
+> +/**
+> + * spdm_socket_rsp: Sends a message to an SPDM server
+> + * @socket: socket returned from spdm_socket_connect()
+> + * @socket_cmd: socket command type (normal/if_recv/if_send etc...)
+> + * @transport_type: SPDM_SOCKET_TRANSPORT_TYPE_* macro
+> + * @req: request buffer
+> + * @req_len: request buffer length
+> + *
+> + * Sends platform data to a SPDM server on socket, returns true on success.
+> + * The response from the server must then be fetched by using
+> + * spdm_socket_receive().
+> + */
+> +bool spdm_socket_send(const int socket, uint32_t socket_cmd,
+> +                      uint32_t transport_type, void *req, uint32_t req_len);
+> +
+>  /**
+>   * spdm_socket_close: send a shutdown command to the server
+>   * @socket: socket returned from spdm_socket_connect()
+> @@ -60,6 +89,9 @@ uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
+>  void spdm_socket_close(const int socket, uint32_t transport_type);
+>  
+>  #define SPDM_SOCKET_COMMAND_NORMAL                0x0001
+> +#define SPDM_SOCKET_STORAGE_CMD_IF_SEND           0x0002
+> +#define SPDM_SOCKET_STORAGE_CMD_IF_RECV           0x0003
+> +#define SOCKET_SPDM_STORAGE_ACK_STATUS            0x0004
+>  #define SPDM_SOCKET_COMMAND_OOB_ENCAP_KEY_UPDATE  0x8001
+>  #define SPDM_SOCKET_COMMAND_CONTINUE              0xFFFD
+>  #define SPDM_SOCKET_COMMAND_SHUTDOWN              0xFFFE
+> @@ -68,7 +100,10 @@ void spdm_socket_close(const int socket, uint32_t transport_type);
+>  
+>  #define SPDM_SOCKET_TRANSPORT_TYPE_MCTP           0x01
+>  #define SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE        0x02
+> +#define SPDM_SOCKET_TRANSPORT_TYPE_SCSI           0x03
+> +#define SPDM_SOCKET_TRANSPORT_TYPE_NVME           0x04
+>  
+>  #define SPDM_SOCKET_MAX_MESSAGE_BUFFER_SIZE       0x1200
+> +#define SPDM_SOCKET_MAX_MSG_STATUS_LEN            0x02
+>  
+>  #endif
 
 
