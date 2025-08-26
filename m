@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30E5B357F5
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 11:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05094B3583B
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 11:11:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqpZv-00061o-Ub; Tue, 26 Aug 2025 05:02:55 -0400
+	id 1uqpgF-0008U2-GA; Tue, 26 Aug 2025 05:09:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yvugenfi@redhat.com>)
- id 1uqpZs-0005zi-Sr
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 05:02:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uqpgD-0008TU-A8
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 05:09:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yvugenfi@redhat.com>)
- id 1uqpZp-0003gP-5J
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 05:02:51 -0400
+ id 1uqpg6-0004Qq-Ju
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 05:09:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756198966;
+ s=mimecast20190719; t=1756199353;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=g4Lxk8aHwYpTBo+mDoutrKRjfhyWunw2NpvDy5Qek0s=;
- b=gklppJvpR1HE8kHp+b5wvgH4sS1hut63T70BuQBXmNc20XOjOaVNeGOg94WNu49buYQmcX
- 3JCnYUVJOag0/4DFLFF5gySDffYVWn1kIyvOJjrqeSPrYMyGSClvMobsAIlcN/W6ET0JPi
- OlsZ5rD/2waXtkWP80h6O+xNsm8g+KQ=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/cfDsxZe4qv/ganmSR9RYxMQCiiSFV1f4aPgNcl94gQ=;
+ b=bpiujDsDkMLtZze5OZ/+nHu8NCxY/eoPP8dM2U87/Dp3kWZSETM27/0vcACxFuLdVkr7lS
+ FCjlIxMUkLCRcLsQd4JlAe7FcSWHomCRs//EXJvpKI8Qi6LGbLar/YVndrdD+4HV0+nudA
+ csN6KGThMdzSXTVlbuDOY6jF6gPeFyU=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-323-k_j81v3WPqmtSE8NlKIPzQ-1; Tue, 26 Aug 2025 05:02:40 -0400
-X-MC-Unique: k_j81v3WPqmtSE8NlKIPzQ-1
-X-Mimecast-MFC-AGG-ID: k_j81v3WPqmtSE8NlKIPzQ_1756198960
-Received: by mail-yw1-f199.google.com with SMTP id
- 00721157ae682-71d603bf1c4so65281267b3.1
- for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 02:02:40 -0700 (PDT)
+ us-mta-362-pzsREr58M6WrMl9UgOFyDQ-1; Tue, 26 Aug 2025 05:09:12 -0400
+X-MC-Unique: pzsREr58M6WrMl9UgOFyDQ-1
+X-Mimecast-MFC-AGG-ID: pzsREr58M6WrMl9UgOFyDQ_1756199351
+Received: by mail-yw1-f200.google.com with SMTP id
+ 00721157ae682-7200af345a5so28460137b3.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 02:09:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756198959; x=1756803759;
+ d=1e100.net; s=20230601; t=1756199351; x=1756804151;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g4Lxk8aHwYpTBo+mDoutrKRjfhyWunw2NpvDy5Qek0s=;
- b=XJSiejBd1hA5hllzbWxTbiFq3EERVnb0PRFR67+cp1pxU1MW2qJZerNrMZREgnJgDs
- 64w5U6KLXI/RF3F6sp5s4gr4z5i2mLDhgKmItCNV3DRWnV7URZPZ82VuBAR5Nv6xZpMZ
- xhi42QiYiEpl+I3KD8d6LxjgPb93gXp4HlzuGVlqevgT4FR5mh1xBa3dWZD1i4i3FLKG
- HuBfla7LC7P8BpeFW7X6v+NyhVGxJDvoap4dBbs4ARUFFNeBq5pxUCEyTCJ7zBJAYePF
- DEDZoPf9AfLVNgdPQ5lJXgW1zyRTsUJ9qJ9KwkWx07fMNLhDuy6RA7wi0m1Lt3S+5M3p
- ZUCg==
-X-Gm-Message-State: AOJu0Yzvo/gX34Qa7NJnLxDnELUK9Q0Me5pDP0OjTfEMNWla+eBMgSU3
- L8YIBqEQZd9nYi0kZsCtu0E2CBFwgMkepZsO7VF/bLIfc5XZovp6cAve93mi64hyz0CajOV7zlx
- ha+qY9R/5Abab7voWLtxjYfh3dDVCEgHQf0E0/7Xex3t2JSR9Vu1oP/Vr7RyAokDAbEfH8H2vT4
- +HRq+k7ZJj622YVVAjKVKgWdbJJkhYpYJTiJ1kM2Y=
-X-Gm-Gg: ASbGnctMGNmq7R29MBrRX+ajP7YBwbUS4ib0dXfJZNLx03bJfqIZMCkOTn46mEyI5uM
- OJhfaOuw/+pmtPfXPnIW2aMhGjBPgN5GGajkdatMRrY5f4gTZVDQUhM/S1mYIhIhJRMvyepH7Vc
- q/03w3uV1TzqYgyF6k38k+ySonKhXnJqzm6KVmTSj3ubDtF3YpTw==
-X-Received: by 2002:a05:690c:4d84:b0:71f:b944:101c with SMTP id
- 00721157ae682-71fdc57fe50mr147321537b3.46.1756198959346; 
- Tue, 26 Aug 2025 02:02:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGe4Mn45XXIsVG32eIUEaV4ex5XI56pJUDSBv9sdjU4JqiTynZ2wHfAxCoG4HC32OsjwT52rS8zrPmPzbHS9lQ=
-X-Received: by 2002:a05:690c:4d84:b0:71f:b944:101c with SMTP id
- 00721157ae682-71fdc57fe50mr147321387b3.46.1756198958982; Tue, 26 Aug 2025
- 02:02:38 -0700 (PDT)
+ bh=/cfDsxZe4qv/ganmSR9RYxMQCiiSFV1f4aPgNcl94gQ=;
+ b=exBvxUtu0wKpnO0f6cdFEGiylz5DCZi/aOHkpbQC+qh3HJ4RpU2M4sUTK4i/zHP1ni
+ l+WHtdzyMzx+fiKO528McgFLEENyX47x9C2tNJUvdGlAf3pdU+S3IQAV1EfmxXSfLZDC
+ MuZhcnvmdxpeA1pJr5yV78Njlg4qqWywUokOnEe4JQ8ccLZ0Kqy/EErBP6UKC6SOHW3e
+ 19C0xZ6OJvJEPiEMkNNB1P/T7h5/Z2cT8Ltrdnf2XToOiI8EYhykVZT2zeGjVepJrPWZ
+ VmFsSTK44Eupb6krwYo1WFN41KHzbnI916wcJcNzNTJoQU/VDs5eBsYla7PWk0U3EInp
+ GQ9g==
+X-Gm-Message-State: AOJu0YzkfxeiY3HNguSP1qUNJLpNamFnOOn4CR3SZc4R7bDPWvspQiS2
+ 7KSuvfiKG66uIzOhchQwra/pTjcSGaQ0Sf8I+sQ1ZMu1N3fBIxWTSLWzPqpss3hkNxfd+lliAPJ
+ qaNLF3YxsOJs+nX0J+tPF7Uga71Y0Lkfce6qDvep2TbOPdW/AmIcniBP7MApX0fX94kGORw08rY
+ 3cQ5jE6YXVj6bVOHrEehHWX3bFyk+qZY8=
+X-Gm-Gg: ASbGncsFQEPDaiuinYiJ/Yj+s3pcIOj2of+2ZjO+LUWjwzUiloisFim0MWBSjiN2MVs
+ qWGz7NLEt1SA+8H9HJoD7dJTsQSPrtBjfqG6V+KV+XRwjsNEy9ZjH94s5tnG7Qp+Ir+Ct3CYHdn
+ avh1+oNdmF45lFoEJwFOzKfromQhuVJZnMoaJlqvo5zLxRMkaaew==
+X-Received: by 2002:a05:690c:6c83:b0:71c:1a46:48f9 with SMTP id
+ 00721157ae682-71fdc3d0a53mr159842957b3.33.1756199351174; 
+ Tue, 26 Aug 2025 02:09:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEEP2H6MHG05/HcLrAq14EgMwZwuLDqDTzHVKXgtt61qbR0NPrppYW2ultsz8jz1SRucug3opZ29mP5mZbPWYs=
+X-Received: by 2002:a05:690c:6c83:b0:71c:1a46:48f9 with SMTP id
+ 00721157ae682-71fdc3d0a53mr159842737b3.33.1756199350570; Tue, 26 Aug 2025
+ 02:09:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250825135311.138330-1-kkostiuk@redhat.com>
-In-Reply-To: <20250825135311.138330-1-kkostiuk@redhat.com>
+References: <20250825145241.170717-1-kkostiuk@redhat.com>
+ <20250825145241.170717-2-kkostiuk@redhat.com>
+In-Reply-To: <20250825145241.170717-2-kkostiuk@redhat.com>
 From: Yan Vugenfirer <yvugenfi@redhat.com>
-Date: Tue, 26 Aug 2025 12:02:26 +0300
-X-Gm-Features: Ac12FXxBqJZ14GgXMCsIBE0LUpy1DZXVC5lOE7Z8RfssRhw1PoeMDzxXun9nQEw
-Message-ID: <CAGoVJZy6m3=JdwF502A1Y+q7N8g5nC93qufrwGEo6V36YZD_8w@mail.gmail.com>
-Subject: Re: [PATCH] qga-vss: Write hex value of error in log
+Date: Tue, 26 Aug 2025 12:08:59 +0300
+X-Gm-Features: Ac12FXzVWe7CCrOlRKI7S9yPGPmogN9cIiu8ozzEyokwr1_FEfBk6-sTWlHZUl8
+Message-ID: <CAGoVJZwBEJ86fszad4j5AhOwmm_YURNhmYSJZrjGx_bAAbD-Zg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] qga-vss: Replace asserts with condition and report
+ error
 To: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=yvugenfi@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=yvugenfi@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,64 +102,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 25, 2025 at 4:53=E2=80=AFPM Kostiantyn Kostiuk <kkostiuk@redhat=
+On Mon, Aug 25, 2025 at 5:52=E2=80=AFPM Kostiantyn Kostiuk <kkostiuk@redhat=
 .com> wrote:
->
-> QGA-VSS writes error using error_setg_win32_internal,
-> which call g_win32_error_message.
->
-> g_win32_error_message - translate a Win32 error code
-> (as returned by GetLastError()) into the corresponding message.
->
-> In the same time, we call error_setg_win32_internal with
-> error codes from different Windows componets like VSS or
-> Performance monitor that provides different codes and
-> can't be converted with g_win32_error_message. In this
-> case, the empty suffix will be returned so error will be
-> masked.
->
-> This commit directly add hex value of error code.
->
-> Reproduce:
->  - Run QGA command: {"execute": "guest-fsfreeze-freeze-list", "arguments"=
-: {"mountpoints": ["D:"]}}
->
-> QGA error example:
->  - before changes:
->   {"error": {"class": "GenericError", "desc": "failed to add D: to snapsh=
-ot set: "}}
->  - after changes:
->   {"error": {"class": "GenericError", "desc": "failed to add D: to snapsh=
-ot set: Windows error 0x8004230e: "}}
 >
 > Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 > ---
->  qga/vss-win32/requester.cpp | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  qga/vss-win32/requester.cpp | 19 ++++++++++++++++---
+>  1 file changed, 16 insertions(+), 3 deletions(-)
 >
 > diff --git a/qga/vss-win32/requester.cpp b/qga/vss-win32/requester.cpp
-> index 4401d55e3a..644514fb95 100644
+> index 4401d55e3a..bc260abb96 100644
 > --- a/qga/vss-win32/requester.cpp
 > +++ b/qga/vss-win32/requester.cpp
-> @@ -28,8 +28,9 @@
+> @@ -347,7 +347,12 @@ void requester_freeze(int *num_vols, void *mountpoin=
+ts, ErrorSet *errset)
+>          goto out;
+>      }
 >
->  #define err_set(e, err, fmt, ...) {                                     =
-    \
->      (e)->error_setg_win32_wrapper((e)->errp, __FILE__, __LINE__, __func_=
-_,  \
-> -                                   err, fmt, ## __VA_ARGS__);           =
-    \
-> -    qga_debug(fmt, ## __VA_ARGS__);                                     =
-    \
-> +                                   err, fmt ": Windows error 0x%lx",    =
-    \
-> +                                   ## __VA_ARGS__, err);                =
-    \
-> +    qga_debug(fmt ": Windows error 0x%lx", ## __VA_ARGS__, err);        =
-    \
->  }
->  /* Bad idea, works only when (e)->errp !=3D NULL: */
->  #define err_is_set(e) ((e)->errp && *(e)->errp)
+> -    assert(pCreateVssBackupComponents !=3D NULL);
+> +    if (!pCreateVssBackupComponents) {
+> +        err_set(errset, (HRESULT)ERROR_PROC_NOT_FOUND,
+> +                "CreateVssBackupComponents proc address absent. Did you =
+call requester_init()?");
+> +        goto out;
+> +    }
+> +
+>      hr =3D pCreateVssBackupComponents(&vss_ctx.pVssbc);
+>      if (FAILED(hr)) {
+>          err_set(errset, hr, "failed to create VSS backup components");
+> @@ -579,8 +584,16 @@ void requester_thaw(int *num_vols, void *mountpints,=
+ ErrorSet *errset)
+>      /* Tell the provider that the snapshot is finished. */
+>      SetEvent(vss_ctx.hEventThaw);
+>
+> -    assert(vss_ctx.pVssbc);
+> -    assert(vss_ctx.pAsyncSnapshot);
+> +    if (!vss_ctx.pVssbc) {
+> +        err_set(errset, (HRESULT)VSS_E_BAD_STATE,
+> +                "CreateVssBackupComponents is missing. Did you freeze th=
+e volumes?");
+> +        return;
+> +    }
+> +    if (!vss_ctx.pAsyncSnapshot) {
+> +        err_set(errset, (HRESULT)VSS_E_BAD_STATE,
+> +                "AsyncSnapshot set is missing. Did you freeze the volume=
+s?");
+> +        return;
+> +    }
+>
+>      HRESULT hr =3D WaitForAsync(vss_ctx.pAsyncSnapshot);
+>      switch (hr) {
 > --
 > 2.50.1
 >
