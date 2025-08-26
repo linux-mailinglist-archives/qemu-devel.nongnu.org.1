@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03553B37011
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 18:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66723B36FE5
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 18:18:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqwJy-0008O3-GP; Tue, 26 Aug 2025 12:14:54 -0400
+	id 1uqwKC-0000so-0q; Tue, 26 Aug 2025 12:15:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uqwJO-00079M-Hl; Tue, 26 Aug 2025 12:14:22 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1uqwJV-0007BF-OV; Tue, 26 Aug 2025 12:14:31 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uqwJK-0008Dp-Jv; Tue, 26 Aug 2025 12:14:17 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-b4c1d79bd64so2135340a12.0; 
- Tue, 26 Aug 2025 09:14:06 -0700 (PDT)
+ id 1uqwJM-0008Es-1S; Tue, 26 Aug 2025 12:14:22 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-244582738b5so52755045ad.3; 
+ Tue, 26 Aug 2025 09:14:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1756224844; x=1756829644; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1756224850; x=1756829650; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=u90TE4W9+kdIv6GRCsihWP4/5wy4t0Kr3jO5bu5VrJI=;
- b=LDfS/Fqua28RxwVZAmupvHPkrLQhr44cVnz2XPrwRx6JsxdVp/IcU9mqshxCSLQ6XG
- f0RCWylgRCHsrMtHDpPXr+1N71cIVLBh+nGD+yY7ywrDrV4xq4rZHwM4dxXozmQsqZJN
- KfGUdtPrL+A/62GIvYsYwxMp3GPLJpobEu1mcLXc47/HzvNfRIhNHLKO8AtbDJqclA2B
- COOEwSgiOHOADeIGNciZzCN/E02/kLUP+xX0QsO4EjGaQ3djsaeYGeqOlqOdwdJ5Y73W
- ZY4z+Z8lam//fHQlHPjsgwR3KBUDcntBMrSoMJgMfUPO2egDhsiIcCvAL7ztVUylyo9j
- 1LOg==
+ bh=QmHEGXX25Xp5I1MM8WX8B83+pgojb2vRh/cS3EC2mCA=;
+ b=l/YB0b4Uw/BEQOXwC5dpzw+lhI/9vnpb1Rqqg4ZkUCxMxUcwNYtKkR7sOHdmVAIWID
+ MjHe+yGVtwgUNMOXLSdCfsycavbjRXHwOydri/LHQuSkWwjqt3Iq87FNulw/HvdJxwML
+ LQWA0lEAbHXe21R+3D78m0LiW0ODWQu8TS2eTSUZkW7DowS41dqF09Wz4gi08DSyc247
+ FFz+dJZI5SSRCMK9eRWuR/opoJFab68Uf0Z18/xVwkbEKi3PwjeFugPDPYbXRvsePPku
+ 7uc1BkeBD5dg1p3PK7REyPDF3u7uZl0+QeZkFBwqCvqPx6FD9C1xGOId6gtyEGBYJI4M
+ BTGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756224844; x=1756829644;
+ d=1e100.net; s=20230601; t=1756224850; x=1756829650;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u90TE4W9+kdIv6GRCsihWP4/5wy4t0Kr3jO5bu5VrJI=;
- b=MlK1jKphGbdAcVQI7X7oftFwHdw6+dIXy9+8vQaXnR8WCIwe1pXJqdFDZdBFChGJQ4
- wA/puP8WNIDCVKevW9Lg+7mY68hdP6o29nVVHosFeDYF1iPGyTzALgDet0x/OJQ6yV/a
- D+/eBT9zOHyayMJehjAeyrA/4PCnjRu28Ju5tfhUSDXKZttZnvddYHXU7jJrdxfBF6E5
- HL03/OdYglxGGxaGdfqRgGYjo5Tve1qZOV9whlZxhKj+2Nch2Z/cV210lj6BE+kdlmm1
- 3TWkecX1vBE62zKm5ccz1uw2rbNSMZmz/KohwJGJwWqFzV+MHF9/BCLOvpwJZMkAXtkJ
- 7lew==
+ bh=QmHEGXX25Xp5I1MM8WX8B83+pgojb2vRh/cS3EC2mCA=;
+ b=X9CmBHCH9g1mV/BibBqqmmmWADLalWAMgh7c9InjY7rI4rPH/PEAB0rslEkjgKatsD
+ pFh1G2fK4ktwNAgdbKbprhzymjYcDYUIfDJt7blmlh4CHV7jgiGQI6aqpwtJyBJThBQb
+ CjovaEdisxSinUK3aPVMfdaIEqbLgxNaNOKMwTewoGTbooGELUHPqr2GuS2VxlROOjza
+ nMlEQ56EHRzR7ZtMeggwZunv4vcJZ8Sbkzvgsm9iNFfRlR3+3lqFptU7cR4a8vf20fXR
+ bsSA7HNY+TkzOkvNgnbNaGLZfFOiPO6PJwj62Je1Z5lkeaBWZWgCnvq2QMFkZSNMIYky
+ QIlg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVgngwJVZ5Z85lr855jdQGTYemqS8m7odKgDHLdNWoKztkucj7MWGzzT+wmSB83ZTjSj5SqwvaXSg==@nongnu.org,
- AJvYcCXaU78sS/GuN+Oefxh3CRXQzPuV9YhzH/eJrxzYnuSWMQu/vVULXYwgwrV6SadB6yAsN87VVuTYmoDz7g==@nongnu.org
-X-Gm-Message-State: AOJu0YziE5rV0J3zUFvEsFPOYE4TyfRNRRqcGcuAStJHLeaLJ1xixeBP
- YDaBkeGEVtfszyUsBxiD3E/ZKkQNo3pZhAytDjwBc5etVU+VldtfgDqF4D4xmA==
-X-Gm-Gg: ASbGnctvkbWexlmbL7Ds79Q36wXd44Y8rlahxMhL1tpw+9jQ0we+4u+neGfTeFH3MU1
- hFZlOOPFfdRhpOL/V6tGMwUWpCK2zfHiws6JvhdHk/kUclNNu2W9DPvEyYJlQ0Ha7VW3kX9P2Qs
- lRVJuVw2IlgCJ17sf8hk7c5AmUhpNEK+FF3JSMzw6PvleEsnQFpFMqpAX34vj4E+BI7JSeEVqp1
- pB2fZvLbrF8LywOfHtSmYzm+ISvLBIdFI1agCCyj5YQ05iunsvDyqVZFKxf2DTUOEMcwagN0o5W
- 8zyesJ+CiMppzdPzNypxBnFuT8ltfjFfQE9QHSu/lDEorNZ8cLeYD2JX/TkggQIh+/DCe37GCLH
- ZBewAB6HsxNTLdL4/jsMz0w==
-X-Google-Smtp-Source: AGHT+IGzKBFnyg2DKR2ni7gF5O1uvk6YZy4qarhJdtJOOvorox8ZuszTfCwcVjnfgZsZpj4G2POydQ==
-X-Received: by 2002:a17:902:d4ca:b0:246:c421:62f9 with SMTP id
- d9443c01a7336-246c4216469mr121680815ad.16.1756224844417; 
- Tue, 26 Aug 2025 09:14:04 -0700 (PDT)
+ AJvYcCUbNh57eEJ6CGddmpLq/y67Xx9+qWsBNiFinsOxjBwU0QKJzNvJy17MuNEhLO8lnCuqOoVZEO7rSg==@nongnu.org,
+ AJvYcCV7VKq2qBZBMnfivmM5sgT4tz5vyLDvNghk3SW536/apeGZNy2RBbR2TcrEARu8OHhDz2Cyu3FCAJ6fZg==@nongnu.org
+X-Gm-Message-State: AOJu0YwiZNaXID2qgpWbDsS5/EnbfJNkECNVf6gc1eBdkR3RSo8FGbXM
+ jGhygVIzvWyv0cuV1Qw+Yu3sYdyoIOMo2zK6PbyytEJmO3AfrEUOSybzVZz5eQ==
+X-Gm-Gg: ASbGncul4X31jXJT/3CcWvv4TJvZByRK2Axtmuo088D/l7/CbuMS/orLlBH5xWzR7uW
+ utoOrAZpp0s82rMqYa1nIcCFi+mL+eFQ+UNeHpx2bM7uHDDImRAyL9FZmf00CDlShyUbwZezhQJ
+ wf3UW8NMMdp5PtHFEbQpg/p3JwGkoPhoEfUt6bw1nbyhU6kY98xTuxNV1PUXYNsRERExoo2Pgpu
+ lbUtTkEWwJzmy9ILMiKm0WixsVO/f2oNRYUD4wrCVf1DH0/34bOYhgPNLnTk4pttkLQLxrIhmJD
+ wQHEq3IiKSOdsgx5rfw32A0NxojlBdjvUnNWfYAincpal+0nq4RqQWqWnWba1JQMzUhRVniiIX3
+ 1AtiWtS/LKxJj0SZCPpNCcw==
+X-Google-Smtp-Source: AGHT+IHuYVwuXF72RhTnlXCgMfE9F9cr0K60/BbKuL0ubB/0mTcJs2tzfpP/XmvcfQco3Qa6+t02fw==
+X-Received: by 2002:a17:903:a8b:b0:246:c0ae:4836 with SMTP id
+ d9443c01a7336-246c0ae632amr105731985ad.41.1756224850157; 
+ Tue, 26 Aug 2025 09:14:10 -0700 (PDT)
 Received: from ktock.. ([240d:1a:3b6:8b00:561f:1400:11f5:714b])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-32750bc341asm1749747a91.19.2025.08.26.09.13.58
+ 98e67ed59e1d1-32750bc341asm1749747a91.19.2025.08.26.09.14.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Aug 2025 09:14:03 -0700 (PDT)
+ Tue, 26 Aug 2025 09:14:09 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -78,24 +78,23 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, ktokunaga.mail@gmail.com
-Subject: [PATCH v2 30/35] tcg/wasm: Enable instantiation of TBs executed many
- times
-Date: Wed, 27 Aug 2025 01:10:35 +0900
-Message-ID: <9051ee1caff3d49d199abc82f788d8abdcdeeffc.1756216429.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH v2 31/35] tcg/wasm: Enable TLB lookup
+Date: Wed, 27 Aug 2025 01:10:36 +0900
+Message-ID: <ee9da4758ebf1df08072cf3b29ff9371b36394ce.1756216429.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1756216429.git.ktokunaga.mail@gmail.com>
 References: <cover.1756216429.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,454 +110,352 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit enables the instantiation and execution of TBs in wasm.c. As in
-TCI, the tcg_qemu_tb_exec function serves as the entrypoint for the TB
-execution, handling both instantiation and invocation of the Wasm
-module. Since browsers cause out of memory error if too many Wasm instances
-are created, this commit restricts instantiation to TBs that are called many
-times.
-
-This commit adds a counter (or its array if there are multiple threads) to
-the TB. Each time a TB is executed on TCI, the counter on TB is
-incremented. If it reaches to a threshold, that TB is instantiated as Wasm
-via instantiate_wasm.
-
-The total number of instances are tracked by the instances_global variable
-and its maximum number is limited by MAX_INSTANCES. When a Wasm module is
-instantiated, instances_global is incremented and the instance's function
-pointer is recorded to an array of WasmInstanceInfo.
-
-Each TB refers to the WasmInstanceInfo entry via WasmTBHeader's info_ptr (or
-its array if there are multiple threads). This allows tcg_qemu_tb_exec to
-resolve the instance's function pointer from the TB.
-
-When a new instantiation would exceed the limit, the Wasm backend doesn't
-perform instantiation (i.e. TB continues execution on TCI). Instead, it
-triggers the removal of older Wasm instances using Emscripten's
-removeFunction function. Once the removal is completed and detected via
-FinalizationRegistry API[1], instances_global is decremented, allowing new
-modules to be instantiated.
-
-[1] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry
+This commit enables Wasm module's qemu_ld and qemu_st to perform TLB
+lookups, following the approach used in other backends such as
+RISC-V. Unlike other backends, the Wasm backend cannot use ldst labels, as
+jumping to specific code addresses (e.g. raddr) is not possible in
+Wasm. Instead, each TLB lookup is followed by a if branch: if the lookup
+succeeds, the memory is accessed directly; otherwise, a fallback helper
+function is invoked. Support for MO_BSWAP is not yet implemented, so
+has_memory_bswap is set to false.
 
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 ---
- tcg/wasm.c                | 244 +++++++++++++++++++++++++++++++++++++-
- tcg/wasm.h                |  45 +++++++
- tcg/wasm/tcg-target.c.inc |  21 ++++
- 3 files changed, 307 insertions(+), 3 deletions(-)
+ tcg/wasm/tcg-target.c.inc | 225 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 222 insertions(+), 3 deletions(-)
 
-V2:
-- Added the tcg_target_qemu_prologue stub function.
-
-diff --git a/tcg/wasm.c b/tcg/wasm.c
-index 82987e9dff..9980a9712b 100644
---- a/tcg/wasm.c
-+++ b/tcg/wasm.c
-@@ -24,6 +24,10 @@
- #include "tcg/helper-info.h"
- #include <ffi.h>
- #include <emscripten.h>
-+#include "wasm.h"
-+
-+/* TBs executed more than this value will be compiled to wasm */
-+#define INSTANTIATE_NUM 1500
- 
- #define EM_JS_PRE(ret, name, args, body...) EM_JS(ret, name, args, body)
- 
-@@ -61,6 +65,8 @@ EM_JS_PRE(void*, instantiate_wasm, (void *wasm_begin,
-             "helper" : helper,
-     });
- 
-+    Module.__wasm_tb.inst_gc_registry.register(inst, "tbinstance");
-+
-     return ENC_PTR(addFunction(inst.exports.start, 'ii'));
- });
- 
-@@ -288,9 +294,53 @@ static void tci_qemu_st(CPUArchState *env, uint64_t taddr, uint64_t val,
-     }
- }
- 
--static uintptr_t tcg_qemu_tb_exec_tci(CPUArchState *env, const void *v_tb_ptr)
-+static __thread int thread_idx;
-+
-+static inline int32_t get_counter_local(void *tb_ptr)
-+{
-+    return get_counter(tb_ptr, thread_idx);
-+}
-+
-+static inline void set_counter_local(void *tb_ptr, int v)
-+{
-+    set_counter(tb_ptr, thread_idx, v);
-+}
-+
-+static inline struct WasmInstanceInfo *get_info_local(void *tb_ptr)
-+{
-+    return get_info(tb_ptr, thread_idx);
-+}
-+
-+static inline void set_info_local(void *tb_ptr, struct WasmInstanceInfo *info)
-+{
-+    set_info(tb_ptr, thread_idx, info);
-+}
-+
-+/*
-+ * inc_counter increments the execution counter in the specified TB.
-+ * If the counter reaches the limit, it returns true otherwise returns false.
-+ */
-+static inline bool inc_counter(void *tb_ptr)
- {
--    const uint32_t *tb_ptr = v_tb_ptr;
-+    int32_t counter = get_counter_local(tb_ptr);
-+    if ((counter >= 0) && (counter < INSTANTIATE_NUM)) {
-+        set_counter_local(tb_ptr, counter + 1);
-+    } else {
-+        return true; /* enter to wasm TB */
-+    }
-+    return false;
-+}
-+
-+static __thread struct WasmContext ctx = {
-+    .tb_ptr = 0,
-+    .stack = NULL,
-+    .do_init = 1,
-+    .buf128 = NULL,
-+};
-+
-+static uintptr_t tcg_qemu_tb_exec_tci(CPUArchState *env)
-+{
-+    uint32_t *tb_ptr = get_tci_ptr(ctx.tb_ptr);
-     tcg_target_ulong regs[TCG_TARGET_NB_REGS];
-     uint64_t stack[(TCG_STATIC_CALL_ARGS_SIZE + TCG_STATIC_FRAME_SIZE)
-                    / sizeof(uint64_t)];
-@@ -583,18 +633,32 @@ static uintptr_t tcg_qemu_tb_exec_tci(CPUArchState *env, const void *v_tb_ptr)
-             break;
-         case INDEX_op_exit_tb:
-             tci_args_l(insn, tb_ptr, &ptr);
-+            ctx.tb_ptr = 0;
-             return (uintptr_t)ptr;
-         case INDEX_op_goto_tb:
-             tci_args_l(insn, tb_ptr, &ptr);
--            tb_ptr = *(void **)ptr;
-+            if (tb_ptr != *(void **)ptr) {
-+                tb_ptr = *(void **)ptr;
-+                ctx.tb_ptr = tb_ptr;
-+                if (inc_counter(tb_ptr)) {
-+                    return 0; /* enter to wasm TB */
-+                }
-+                tb_ptr = get_tci_ptr(tb_ptr);
-+            }
-             break;
-         case INDEX_op_goto_ptr:
-             tci_args_r(insn, &r0);
-             ptr = (void *)regs[r0];
-             if (!ptr) {
-+                ctx.tb_ptr = 0;
-                 return 0;
-             }
-             tb_ptr = ptr;
-+            ctx.tb_ptr = tb_ptr;
-+            if (inc_counter(tb_ptr)) {
-+                return 0; /* enter to wasm TB */
-+            }
-+            tb_ptr = get_tci_ptr(tb_ptr);
-             break;
-         case INDEX_op_qemu_ld:
-             tci_args_rrm(insn, &r0, &r1, &oi);
-@@ -615,3 +679,177 @@ static uintptr_t tcg_qemu_tb_exec_tci(CPUArchState *env, const void *v_tb_ptr)
-         }
-     }
- }
-+
-+/*
-+ * The maximum number of instances that can exist simultaneously
-+ *
-+ * If this limit is reached and a new instance is required, older instances are
-+ * removed to allow creation of new ones without exceeding the browser's limit.
-+ */
-+#define MAX_INSTANCES 15000
-+
-+static int instances_global;
-+
-+/* Avoid overwrapping of begin/end pointers */
-+#define INSTANCES_BUF_MAX (MAX_INSTANCES + 1)
-+
-+static __thread struct WasmInstanceInfo instances[INSTANCES_BUF_MAX];
-+static __thread int instances_begin;
-+static __thread int instances_end;
-+
-+static void add_instance(wasm_tb_func tb_func, void *tb_ptr)
-+{
-+    instances[instances_end].tb_func = tb_func;
-+    instances[instances_end].tb_ptr = tb_ptr;
-+    set_info_local(tb_ptr, &(instances[instances_end]));
-+    instances_end  = (instances_end + 1) % INSTANCES_BUF_MAX;
-+
-+    qatomic_inc(&instances_global);
-+}
-+
-+static __thread int instance_pending_gc;
-+static __thread int instance_done_gc;
-+
-+static void remove_old_instances(void)
-+{
-+    int num;
-+    if (instance_pending_gc > 0) {
-+        return;
-+    }
-+    if (instances_begin <= instances_end) {
-+        num = instances_end - instances_begin;
-+    } else {
-+        num = instances_end + (INSTANCES_BUF_MAX - instances_begin);
-+    }
-+    /* removes the half of the oldest instances in the buffer */
-+    num /= 2;
-+    for (int i = 0; i < num; i++) {
-+        EM_ASM({ removeFunction($0); }, instances[instances_begin].tb_func);
-+        instances[instances_begin].tb_ptr = NULL;
-+        instances_begin = (instances_begin + 1) % INSTANCES_BUF_MAX;
-+    }
-+    instance_pending_gc += num;
-+}
-+
-+static bool can_add_instance(void)
-+{
-+    return qatomic_read(&instances_global) < MAX_INSTANCES;
-+}
-+
-+static wasm_tb_func get_instance_from_tb(void *tb_ptr)
-+{
-+    struct WasmInstanceInfo *elm = get_info_local(tb_ptr);
-+    if (elm == NULL) {
-+        return NULL;
-+    }
-+    if (elm->tb_ptr != tb_ptr) {
-+        /*
-+         * This TB was instantiated before, but has been removed. Set counter to
-+         * the max value so that this will be instantiated.
-+         */
-+        set_counter_local(tb_ptr, INSTANTIATE_NUM);
-+        set_info_local(tb_ptr, NULL);
-+        return NULL;
-+    }
-+    return elm->tb_func;
-+}
-+
-+static void check_gc_completion(void)
-+{
-+    if (instance_done_gc > 0) {
-+        qatomic_sub(&instances_global, instance_done_gc);
-+        instance_pending_gc -= instance_done_gc;
-+        instance_done_gc = 0;
-+    }
-+}
-+
-+EM_JS_PRE(void, init_wasm_js, (void *instance_done_gc),
-+{
-+    Module.__wasm_tb = {
-+        inst_gc_registry: new FinalizationRegistry((i) => {
-+            if (i == "tbinstance") {
-+                const memory_v = new DataView(HEAP8.buffer);
-+                let v = memory_v.getInt32(instance_done_gc, true);
-+                memory_v.setInt32(instance_done_gc, v + 1, true);
-+            }
-+        })
-+    };
-+});
-+
-+#define MAX_EXEC_NUM 50000
-+static __thread int exec_cnt = MAX_EXEC_NUM;
-+static inline void trysleep(void)
-+{
-+    /*
-+     * Even during running TBs continuously, try to return the control
-+     * to the browser periodically and allow browsers doing tasks.
-+     */
-+    if (--exec_cnt == 0) {
-+        if (!can_add_instance()) {
-+            emscripten_sleep(0);
-+            check_gc_completion();
-+        }
-+        exec_cnt = MAX_EXEC_NUM;
-+    }
-+}
-+
-+static int thread_idx_max;
-+
-+static void init_wasm(void)
-+{
-+    thread_idx = qatomic_fetch_inc(&thread_idx_max);
-+    ctx.stack = g_malloc(TCG_STATIC_CALL_ARGS_SIZE + TCG_STATIC_FRAME_SIZE);
-+    ctx.buf128 = g_malloc(16);
-+    ctx.tci_tb_ptr = (uint32_t *)&tci_tb_ptr;
-+    init_wasm_js(&instance_done_gc);
-+}
-+
-+static __thread bool initdone;
-+
-+uintptr_t tcg_qemu_tb_exec(CPUArchState *env, const void *v_tb_ptr)
-+{
-+    if (!initdone) {
-+        init_wasm();
-+        initdone = true;
-+    }
-+    ctx.env = env;
-+    ctx.tb_ptr = (void *)v_tb_ptr;
-+    while (true) {
-+        trysleep();
-+        uintptr_t res;
-+        wasm_tb_func tb_func = get_instance_from_tb(ctx.tb_ptr);
-+        if (tb_func) {
-+            /*
-+             * Call the Wasm instance
-+             */
-+            res = call_wasm_tb(tb_func, &ctx);
-+        } else if (!inc_counter(ctx.tb_ptr)) {
-+            /*
-+             * Run it on TCI because the counter value is small
-+             */
-+            res = tcg_qemu_tb_exec_tci(env);
-+        } else if (!can_add_instance()) {
-+            /*
-+             * Too many instances has been created, try removing older
-+             * instances and keep running this TB on TCI
-+             */
-+            remove_old_instances();
-+            check_gc_completion();
-+            res = tcg_qemu_tb_exec_tci(env);
-+        } else {
-+            /*
-+             * Instantiate and run the Wasm module
-+             */
-+            struct WasmTBHeader *header = (struct WasmTBHeader *)ctx.tb_ptr;
-+            tb_func = (wasm_tb_func)instantiate_wasm(header->wasm_ptr,
-+                                                     header->wasm_size,
-+                                                     header->import_ptr,
-+                                                     header->import_size);
-+            add_instance(tb_func, ctx.tb_ptr);
-+            res = call_wasm_tb(tb_func, &ctx);
-+        }
-+        if (!ctx.tb_ptr) {
-+            return res;
-+        }
-+    }
-+}
-diff --git a/tcg/wasm.h b/tcg/wasm.h
-index fdde908557..88163c28df 100644
---- a/tcg/wasm.h
-+++ b/tcg/wasm.h
-@@ -46,6 +46,14 @@ static inline uintptr_t call_wasm_tb(wasm_tb_func f, struct WasmContext *ctx)
-     return f(ctx);
- }
- 
-+/*
-+ * WasmInstanceInfo holds the relationship between TB and Wasm instance.
-+ */
-+struct WasmInstanceInfo {
-+    void *tb_ptr;
-+    wasm_tb_func tb_func;
-+};
-+
- /*
-  * A TB of the Wasm backend starts from a header which contains pointers for
-  * each data stored in the following region in the TB.
-@@ -67,6 +75,43 @@ struct WasmTBHeader {
-      */
-     void *import_ptr;
-     int import_size;
-+
-+    /*
-+     * Counter holds how many times the TB is executed before the instantiation
-+     * for each thread.
-+     */
-+    int32_t *counter_ptr;
-+
-+    /*
-+     * Pointer to the instance information on each thread.
-+     */
-+    struct WasmInstanceInfo **info_ptr;
- };
- 
-+static inline void *get_tci_ptr(void *tb_ptr)
-+{
-+    return ((struct WasmTBHeader *)tb_ptr)->tci_ptr;
-+}
-+
-+static inline int32_t get_counter(void *tb_ptr, int idx)
-+{
-+    return ((struct WasmTBHeader *)tb_ptr)->counter_ptr[idx];
-+}
-+
-+static inline void set_counter(void *tb_ptr, int idx, int v)
-+{
-+    ((struct WasmTBHeader *)tb_ptr)->counter_ptr[idx] = v;
-+}
-+
-+static inline struct WasmInstanceInfo *get_info(void *tb_ptr, int idx)
-+{
-+    return ((struct WasmTBHeader *)tb_ptr)->info_ptr[idx];
-+}
-+
-+static inline void set_info(void *tb_ptr, int idx,
-+                            struct WasmInstanceInfo *info)
-+{
-+    ((struct WasmTBHeader *)tb_ptr)->info_ptr[idx] = info;
-+}
-+
- #endif
 diff --git a/tcg/wasm/tcg-target.c.inc b/tcg/wasm/tcg-target.c.inc
-index 6af4d6eb07..784df9e630 100644
+index 784df9e630..25691307b4 100644
 --- a/tcg/wasm/tcg-target.c.inc
 +++ b/tcg/wasm/tcg-target.c.inc
-@@ -28,6 +28,9 @@
- #include "qemu/queue.h"
- #include "../wasm.h"
+@@ -3,8 +3,12 @@
+  * Tiny Code Generator for QEMU
+  *
+  * Copyright (c) 2009, 2011 Stefan Weil
++ * Copyright (c) 2018 SiFive, Inc
++ * Copyright (c) 2008-2009 Arnaud Patard <arnaud.patard@rtp-net.org>
++ * Copyright (c) 2009 Aurelien Jarno <aurelien@aurel32.net>
++ * Copyright (c) 2008 Fabrice Bellard
+  *
+- * Based on tci/tcg-target.c.inc
++ * Based on tci/tcg-target.c.inc and riscv/tcg-target.c.inc
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a copy
+  * of this software and associated documentation files (the "Software"), to deal
+@@ -154,6 +158,11 @@ static const uint8_t tcg_target_reg_index[TCG_TARGET_NB_REGS] = {
+ /* Local variable pointing to WasmContext */
+ #define CTX_IDX 0
  
-+/* This is included to get the number of threads via tcg_max_ctxs. */
-+#include "../tcg-internal.h"
++/* Temporary local variables */
++#define TMP32_LOCAL_0_IDX 1
++#define TMP64_LOCAL_0_IDX 2
++#define TMP64_LOCAL_1_IDX 3
 +
- /* Used for function call generation. */
- #define TCG_TARGET_CALL_STACK_OFFSET 0
- #define TCG_TARGET_STACK_ALIGN       8
-@@ -2295,6 +2298,11 @@ static void tcg_out_set_carry(TCGContext *s)
-     g_assert_not_reached();
+ /* Function index */
+ #define CHECK_UNWINDING_IDX 0 /* A function to check the Asyncify status */
+ #define HELPER_IDX_START 1 /* The first index of helper functions */
+@@ -170,6 +179,8 @@ typedef enum {
+     OPC_RETURN = 0x0f,
+     OPC_CALL = 0x10,
+     OPC_LOCAL_GET = 0x20,
++    OPC_LOCAL_SET = 0x21,
++    OPC_LOCAL_TEE = 0x22,
+     OPC_GLOBAL_GET = 0x23,
+     OPC_GLOBAL_SET = 0x24,
+ 
+@@ -1217,11 +1228,156 @@ static void *qemu_ld_helper_ptr(uint32_t oi)
+     }
  }
  
-+/* Generate global QEMU prologue and epilogue code. */
-+static inline void tcg_target_qemu_prologue(TCGContext *s)
++#define MIN_TLB_MASK_TABLE_OFS INT_MIN
++
++static uint8_t prepare_host_addr_wasm(TCGContext *s, uint8_t *hit_var,
++                                      TCGReg addr_reg, MemOpIdx oi,
++                                      bool is_ld)
 +{
++    MemOp opc = get_memop(oi);
++    TCGAtomAlign aa;
++    unsigned a_mask;
++    unsigned s_bits = opc & MO_SIZE;
++    unsigned s_mask = (1u << s_bits) - 1;
++    int mem_index = get_mmuidx(oi);
++    int fast_ofs = tlb_mask_table_ofs(s, mem_index);
++    int mask_ofs = fast_ofs + offsetof(CPUTLBDescFast, mask);
++    int table_ofs = fast_ofs + offsetof(CPUTLBDescFast, table);
++    int add_off = offsetof(CPUTLBEntry, addend);
++    tcg_target_long compare_mask;
++    int offset;
++
++    uint8_t tmp1 = TMP64_LOCAL_0_IDX;
++    uint8_t tmp2 = TMP64_LOCAL_1_IDX;
++
++    if (!tcg_use_softmmu) {
++        g_assert_not_reached();
++    }
++
++    *hit_var = TMP32_LOCAL_0_IDX;
++    tcg_wasm_out_op_const(s, OPC_I32_CONST, 0);
++    tcg_wasm_out_op_idx(s, OPC_LOCAL_SET, *hit_var);
++
++    aa = atom_and_align_for_opc(s, opc, MO_ATOM_IFALIGN, false);
++    a_mask = (1u << aa.align) - 1;
++
++    /* Get the CPUTLBEntry offset */
++    tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(addr_reg));
++    tcg_wasm_out_op_const(s, OPC_I64_CONST,
++                          TARGET_PAGE_BITS - CPU_TLB_ENTRY_BITS);
++    tcg_wasm_out_op(s, OPC_I64_SHR_U);
++
++    tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(TCG_AREG0));
++    offset = tcg_wasm_out_norm_ptr(s, mask_ofs);
++    tcg_wasm_out_op_ldst(s, OPC_I64_LOAD, 0, offset);
++    tcg_wasm_out_op(s, OPC_I64_AND);
++
++    /* Get the pointer to the target CPUTLBEntry */
++    tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(TCG_AREG0));
++    offset = tcg_wasm_out_norm_ptr(s, table_ofs);
++    tcg_wasm_out_op_ldst(s, OPC_I64_LOAD, 0, offset);
++    tcg_wasm_out_op(s, OPC_I64_ADD);
++    tcg_wasm_out_op_idx(s, OPC_LOCAL_TEE, tmp1);
++
++    /* Load the tlb copmarator */
++    offset = tcg_wasm_out_norm_ptr(s, is_ld ? offsetof(CPUTLBEntry, addr_read)
++                                   : offsetof(CPUTLBEntry, addr_write));
++    tcg_wasm_out_op_ldst(s, OPC_I64_LOAD, 0, offset);
++
++    /*
++     * For aligned accesses, we check the first byte and include the
++     * alignment bits within the address.  For unaligned access, we
++     * check that we don't cross pages using the address of the last
++     * byte of the access.
++     */
++    tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(addr_reg));
++    if (a_mask < s_mask) {
++        tcg_wasm_out_op_const(s, OPC_I64_CONST, s_mask - a_mask);
++        tcg_wasm_out_op(s, OPC_I64_ADD);
++    }
++    compare_mask = (uint64_t)TARGET_PAGE_MASK | a_mask;
++    tcg_wasm_out_op_const(s, OPC_I64_CONST, compare_mask);
++    tcg_wasm_out_op(s, OPC_I64_AND);
++
++    /* Compare masked address with the TLB entry. */
++    tcg_wasm_out_op(s, OPC_I64_EQ);
++
++    tcg_wasm_out_op_block(s, OPC_IF, BLOCK_NORET);
++
++    /* TLB Hit - translate address using addend.  */
++    tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, tmp1);
++    offset = tcg_wasm_out_norm_ptr(s, add_off);
++    tcg_wasm_out_op_ldst(s, OPC_I64_LOAD, 0, offset);
++    tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(addr_reg));
++    tcg_wasm_out_op(s, OPC_I64_ADD);
++    tcg_wasm_out_op_idx(s, OPC_LOCAL_SET, tmp2);
++    tcg_wasm_out_op_const(s, OPC_I32_CONST, 1);
++    tcg_wasm_out_op_idx(s, OPC_LOCAL_SET, *hit_var);
++
++    tcg_wasm_out_op(s, OPC_END);
++
++    return tmp2;
 +}
 +
- static const uint8_t mod_1[] = {
-     0x0, 0x61, 0x73, 0x6d, /* magic */
-     0x01, 0x0, 0x0, 0x0,   /* version */
-@@ -2443,6 +2451,7 @@ static int write_mod_code(TCGContext *s)
- 
- static void tcg_out_tb_start(TCGContext *s)
++static void tcg_wasm_out_qemu_ld_direct(
++    TCGContext *s, TCGReg r, uint8_t base, MemOp opc)
++{
++    intptr_t ofs;
++    switch (opc & (MO_SSIZE)) {
++    case MO_UB:
++        tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, base);
++        ofs = tcg_wasm_out_norm_ptr(s, 0);
++        tcg_wasm_out_op_ldst(s, OPC_I64_LOAD8_U, 0, ofs);
++        tcg_wasm_out_op_idx(s, OPC_GLOBAL_SET, REG_IDX(r));
++        break;
++    case MO_SB:
++        tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, base);
++        ofs = tcg_wasm_out_norm_ptr(s, 0);
++        tcg_wasm_out_op_ldst(s, OPC_I64_LOAD8_S, 0, ofs);
++        tcg_wasm_out_op_idx(s, OPC_GLOBAL_SET, REG_IDX(r));
++        break;
++    case MO_UW:
++        tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, base);
++        ofs = tcg_wasm_out_norm_ptr(s, 0);
++        tcg_wasm_out_op_ldst(s, OPC_I64_LOAD16_U, 0, ofs);
++        tcg_wasm_out_op_idx(s, OPC_GLOBAL_SET, REG_IDX(r));
++        break;
++    case MO_SW:
++        tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, base);
++        ofs = tcg_wasm_out_norm_ptr(s, 0);
++        tcg_wasm_out_op_ldst(s, OPC_I64_LOAD16_S, 0, ofs);
++        tcg_wasm_out_op_idx(s, OPC_GLOBAL_SET, REG_IDX(r));
++        break;
++    case MO_UL:
++        tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, base);
++        ofs = tcg_wasm_out_norm_ptr(s, 0);
++        tcg_wasm_out_op_ldst(s, OPC_I64_LOAD32_U, 0, ofs);
++        tcg_wasm_out_op_idx(s, OPC_GLOBAL_SET, REG_IDX(r));
++        break;
++    case MO_SL:
++        tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, base);
++        ofs = tcg_wasm_out_norm_ptr(s, 0);
++        tcg_wasm_out_op_ldst(s, OPC_I64_LOAD32_S, 0, ofs);
++        tcg_wasm_out_op_idx(s, OPC_GLOBAL_SET, REG_IDX(r));
++        break;
++    case MO_UQ:
++        tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, base);
++        ofs = tcg_wasm_out_norm_ptr(s, 0);
++        tcg_wasm_out_op_ldst(s, OPC_I64_LOAD, 0, ofs);
++        tcg_wasm_out_op_idx(s, OPC_GLOBAL_SET, REG_IDX(r));
++        break;
++    default:
++        g_assert_not_reached();
++    }
++}
++
+ static void tcg_wasm_out_qemu_ld(TCGContext *s, TCGReg data_reg,
+                                  TCGReg addr_reg, MemOpIdx oi)
  {
-+    int size;
-     intptr_t ofs;
-     struct WasmTBHeader *h;
+     intptr_t helper_idx;
+     int64_t func_idx;
++    MemOp mop = get_memop(oi);
++    uint8_t base_var, hit_var;
  
-@@ -2457,6 +2466,18 @@ static void tcg_out_tb_start(TCGContext *s)
-     h = (struct WasmTBHeader *)(s->code_ptr);
-     s->code_ptr += sizeof(struct WasmTBHeader);
+     helper_idx = (intptr_t)qemu_ld_helper_ptr(oi);
+     func_idx = get_helper_idx(s, helper_idx);
+@@ -1230,6 +1386,14 @@ static void tcg_wasm_out_qemu_ld(TCGContext *s, TCGReg data_reg,
+         gen_func_type_qemu_ld(s, oi);
+     }
  
-+    /* locate counters */
-+    h->counter_ptr = (int32_t *)s->code_ptr;
-+    size = tcg_max_ctxs * sizeof(int32_t);
-+    memset(s->code_ptr, 0, size);
-+    s->code_ptr += size;
++    base_var = prepare_host_addr_wasm(s, &hit_var, addr_reg, oi, true);
++    tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, hit_var);
++    tcg_wasm_out_op_const(s, OPC_I32_CONST, 1);
++    tcg_wasm_out_op(s, OPC_I32_EQ);
++    tcg_wasm_out_op_block(s, OPC_IF, BLOCK_NORET);
++    tcg_wasm_out_qemu_ld_direct(s, data_reg, base_var, mop); /* fast path */
++    tcg_wasm_out_op(s, OPC_END);
 +
-+    /* locate the instance information */
-+    h->info_ptr = (struct WasmInstanceInfo **)s->code_ptr;
-+    size = tcg_max_ctxs * sizeof(void *);
-+    memset(s->code_ptr, 0, size);
-+    s->code_ptr += size;
-+
-     /* Followed by TCI code */
-     h->tci_ptr = s->code_ptr;
+     /*
+      * update the block index so that the possible rewinding will
+      * skip this block
+@@ -1238,6 +1402,10 @@ static void tcg_wasm_out_qemu_ld(TCGContext *s, TCGReg data_reg,
+     tcg_wasm_out_op_idx(s, OPC_GLOBAL_SET, BLOCK_IDX);
+     tcg_wasm_out_new_block(s);
  
++    tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, hit_var);
++    tcg_wasm_out_op(s, OPC_I32_EQZ);
++    tcg_wasm_out_op_block(s, OPC_IF, BLOCK_NORET);
++
+     /* call the target helper */
+     tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(TCG_AREG0));
+     tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(addr_reg));
+@@ -1247,6 +1415,8 @@ static void tcg_wasm_out_qemu_ld(TCGContext *s, TCGReg data_reg,
+     tcg_wasm_out_op_idx(s, OPC_CALL, func_idx);
+     tcg_wasm_out_op_idx(s, OPC_GLOBAL_SET, REG_IDX(data_reg));
+     tcg_wasm_out_handle_unwinding(s);
++
++    tcg_wasm_out_op(s, OPC_END);
+ }
+ 
+ static void *qemu_st_helper_ptr(uint32_t oi)
+@@ -1266,12 +1436,47 @@ static void *qemu_st_helper_ptr(uint32_t oi)
+     }
+ }
+ 
++static void tcg_wasm_out_qemu_st_direct(
++    TCGContext *s, TCGReg lo, uint8_t base, MemOp opc)
++{
++    intptr_t ofs;
++    switch (opc & (MO_SSIZE)) {
++    case MO_8:
++        tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, base);
++        ofs = tcg_wasm_out_norm_ptr(s, 0);
++        tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(lo));
++        tcg_wasm_out_op_ldst(s, OPC_I64_STORE8, 0, ofs);
++        break;
++    case MO_16:
++        tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, base);
++        ofs = tcg_wasm_out_norm_ptr(s, 0);
++        tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(lo));
++        tcg_wasm_out_op_ldst(s, OPC_I64_STORE16, 0, ofs);
++        break;
++    case MO_32:
++        tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, base);
++        ofs = tcg_wasm_out_norm_ptr(s, 0);
++        tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(lo));
++        tcg_wasm_out_op_ldst(s, OPC_I64_STORE32, 0, ofs);
++        break;
++    case MO_64:
++        tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, base);
++        ofs = tcg_wasm_out_norm_ptr(s, 0);
++        tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(lo));
++        tcg_wasm_out_op_ldst(s, OPC_I64_STORE, 0, ofs);
++        break;
++    default:
++        g_assert_not_reached();
++    }
++}
++
+ static void tcg_wasm_out_qemu_st(TCGContext *s, TCGReg data_reg,
+                                  TCGReg addr_reg, MemOpIdx oi)
+ {
+     intptr_t helper_idx;
+     int64_t func_idx;
+     MemOp mop = get_memop(oi);
++    uint8_t base_var, hit_var;
+ 
+     helper_idx = (intptr_t)qemu_st_helper_ptr(oi);
+     func_idx = get_helper_idx(s, helper_idx);
+@@ -1280,6 +1485,14 @@ static void tcg_wasm_out_qemu_st(TCGContext *s, TCGReg data_reg,
+         gen_func_type_qemu_st(s, oi);
+     }
+ 
++    base_var = prepare_host_addr_wasm(s, &hit_var, addr_reg, oi, false);
++    tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, hit_var);
++    tcg_wasm_out_op_const(s, OPC_I32_CONST, 1);
++    tcg_wasm_out_op(s, OPC_I32_EQ);
++    tcg_wasm_out_op_block(s, OPC_IF, BLOCK_NORET);
++    tcg_wasm_out_qemu_st_direct(s, data_reg, base_var, mop); /* fast path */
++    tcg_wasm_out_op(s, OPC_END);
++
+     /*
+      * update the block index so that the possible rewinding will
+      * skip this block
+@@ -1288,6 +1501,10 @@ static void tcg_wasm_out_qemu_st(TCGContext *s, TCGReg data_reg,
+     tcg_wasm_out_op_idx(s, OPC_GLOBAL_SET, BLOCK_IDX);
+     tcg_wasm_out_new_block(s);
+ 
++    tcg_wasm_out_op_idx(s, OPC_LOCAL_GET, hit_var);
++    tcg_wasm_out_op(s, OPC_I32_EQZ);
++    tcg_wasm_out_op_block(s, OPC_IF, BLOCK_NORET);
++
+     /* call the target helper */
+     tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(TCG_AREG0));
+     tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(addr_reg));
+@@ -1305,6 +1522,8 @@ static void tcg_wasm_out_qemu_st(TCGContext *s, TCGReg data_reg,
+ 
+     tcg_wasm_out_op_idx(s, OPC_CALL, func_idx);
+     tcg_wasm_out_handle_unwinding(s);
++
++    tcg_wasm_out_op(s, OPC_END);
+ }
+ 
+ static void tcg_out_op_l(TCGContext *s, TCGOpcode op, TCGLabel *l0)
+@@ -2152,7 +2371,7 @@ static const TCGOutOpQemuLdSt outop_qemu_st = {
+ 
+ bool tcg_target_has_memory_bswap(MemOp memop)
+ {
+-    return true;
++    return false;
+ }
+ 
+ static bool tcg_out_qemu_ld_slow_path(TCGContext *s, TCGLabelQemuLdst *l)
+@@ -2384,7 +2603,7 @@ static const uint8_t mod_3[] = {
+     0x80, 0x80, 0x80, 0x80, 0x00, /* placeholder for section size*/
+     1,                            /* num of codes */
+     0x80, 0x80, 0x80, 0x80, 0x00, /* placeholder for code size */
+-    0x0,                          /* local variables (none) */
++    0x2, 0x1, 0x7f, 0x2, 0x7e,    /* local variables (32bit*1, 64bit*2) */
+ };
+ 
+ #define MOD_3_PH_EXPORT_START_FUNC_IDX 102
 -- 
 2.43.0
 
