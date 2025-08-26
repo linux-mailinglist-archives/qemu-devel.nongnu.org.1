@@ -2,92 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6885B373EA
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 22:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0E3B3741B
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 22:57:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ur0La-0003ev-VA; Tue, 26 Aug 2025 16:32:51 -0400
+	id 1ur0hp-0000br-Fy; Tue, 26 Aug 2025 16:55:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ur0LT-0003ZV-AO; Tue, 26 Aug 2025 16:32:45 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ur0LQ-0006fk-9Y; Tue, 26 Aug 2025 16:32:43 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C56A314BB1F;
- Tue, 26 Aug 2025 23:31:54 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4DB5C26896E;
- Tue, 26 Aug 2025 23:32:20 +0300 (MSK)
-Message-ID: <dc23eaca-15f5-40be-89d0-2247cfe1f716@tls.msk.ru>
-Date: Tue, 26 Aug 2025 23:32:20 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: farosas@suse.de
-Cc: Marco.Cavenati@eurecom.fr, mjt@tls.msk.ru, peterx@redhat.com,
- qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-References: <871pudmlmj.fsf@suse.de>
-Subject: Re: [PATCH] migration: fix SEEK_CUR offset calculation in
- qio_channel_block_seek
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <871pudmlmj.fsf@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from
+ <3Rx-uaAwKCoo1opwvs67sto1u22uzs.q204s08-rs9sz121u18.25u@flex--nabihestefan.bounces.google.com>)
+ id 1ur0hl-0000bd-IX
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 16:55:45 -0400
+Received: from mail-pj1-x1049.google.com ([2607:f8b0:4864:20::1049])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3Rx-uaAwKCoo1opwvs67sto1u22uzs.q204s08-rs9sz121u18.25u@flex--nabihestefan.bounces.google.com>)
+ id 1ur0hg-0001pH-G3
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 16:55:44 -0400
+Received: by mail-pj1-x1049.google.com with SMTP id
+ 98e67ed59e1d1-32515e8e4cbso9233176a91.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 13:55:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1756241735; x=1756846535; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=nbmcAIAZ6/DPPcrsP4qNVWLydqfMFaRTzpSq/MghovY=;
+ b=hHEPZQGohpHuLLEfVflBCXGh81OZSqJu2sbGYYXBmow9n+UUWYxiqgZCL1qg4m4Gq/
+ MDZydsEx7FuanNyPOkSnXMXwX3djSnw+hyaWM8Yj4NsQB4ATBMGSGL4jsrYwXgY8yPRJ
+ Fk+CF+BpLXbAU10sWYOfAT9HIZ1IfB8kDwgB1I9vPO/Xx3X5gG7EOlji0fEnsU0nighS
+ 9EmHY1ct7JR+YwV5LoXHPJYGEIFKNhy8Ya9kShq6xsdsveYjVqrieAnh+MxmU4SbhRmG
+ dIF4kmUjkyXEBKZwAcufnXvtQJGMhEIXEHgk47r9C5p9CkOn2CDNb4jLJTuc0ctEjXme
+ djYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756241735; x=1756846535;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nbmcAIAZ6/DPPcrsP4qNVWLydqfMFaRTzpSq/MghovY=;
+ b=vABa2Kf1+cDIrnP4C3fd9ukDAeIJJkvZKnP7i16MSLU7sQvk1OsIryknOO476SFj4g
+ PPl4XGrs8QCCrp/AMlKlD+7g6F5AybIb8990zB9NKikIEI+r36Zdy4H2Y9bE+ZDSpJgq
+ uc74d2ectCaPx3/B6HsAcJygaG2qexrYTJt0A1X7oiWjrspwuYOsK4e1WHu85cbC09vE
+ G3kK1d6Lg4OjhqOKdYUP2o+G7H4wzaREx0GCasMaBlLMs6XNZH2AeCBjbC7OVtDQl5tr
+ yw7IiPj28TnMXsarSHieIZQbLynoNKYpF+7/rkgjpRFosme9x6Q6rXcjU6SA0A27CZN5
+ E5rw==
+X-Gm-Message-State: AOJu0YyAGjsEPkAgmANbgAIIR+NH6YhaotNbJGYe0Xb7y6xZvvLVT/Mx
+ fbL7RzRlRb2sxbuYzQMNdJJJ4ldknCBpsNJrXgbgjOPda8UMo43YWb2dGiVuK32SI++WU4n3znB
+ ER6C33ceVzOxZRJzmzo4RT8C/gUB3RL9U2VhAMmkq9XGXIOzsArJk7l/UhmRelK5qj94CownTNO
+ nJlXTOAl/6lnXGVg8Qi4Dfpwbjso0S1USZuV1RhTjp+AZNwZFnfvxYA7n8Cl4enYwVtL0=
+X-Google-Smtp-Source: AGHT+IECga+8es0M0mPKi9XpgQMy+4foPnxBPtkzA+lhpJ7UkSkUeEG5QYNHL6tcbpn9hnP8xB77vUDsegfIwIzjQ9M=
+X-Received: from pji14.prod.google.com ([2002:a17:90b:3fce:b0:327:6474:a285])
+ (user=nabihestefan job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:2d8a:b0:31f:6f8c:6c92 with SMTP id
+ 98e67ed59e1d1-32515e412b2mr18741507a91.11.1756241735260; 
+ Tue, 26 Aug 2025 13:55:35 -0700 (PDT)
+Date: Tue, 26 Aug 2025 20:55:30 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.318.gd7df087d1a-goog
+Message-ID: <20250826205532.1500639-1-nabihestefan@google.com>
+Subject: [PATCH 0/2] hw/pci-bridge: Create PLX Virtual Switch Device
+From: Nabih Estefan <nabihestefan@google.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, mst@redhat.com, marcel.apfelbaum@gmail.com, 
+ venture@google.com, nabihestefan@google.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1049;
+ envelope-from=3Rx-uaAwKCoo1opwvs67sto1u22uzs.q204s08-rs9sz121u18.25u@flex--nabihestefan.bounces.google.com;
+ helo=mail-pj1-x1049.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,27 +90,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi!
+Create a PLX PEX PCIe Virtual Switch implementation that can be used
+for modeling trays. This is a generalized version of the xio3130 switch where
+we can set the PCI information on creation, allowing us to model different
+trays without creating specific devices for all of them. It is used the same
+way the xio3130 switch is used + the PCI Signature information.
 
-This is
+The idea is to minimize the difficulty of creating different trays whose
+only difference is recognition by some daemon through PCI signatures.
+Instead of having to create 8 different versions of xio3130 that have
+the same functionality but different PCI Signatures, we create one
+general version where you can declare the PCI Signature information,
+while keeping the same base functionality. This is not meant to fully
+replace xio3130 since that is easier to use without knowledge of the PCI
+Signature, this is meant to decrease the difficulty of creating switch
+trays that require certain PCI information for recognition without any
+significant change from a normal PLX Virtual Switch functionality.
 
-commit c0b32426ce56182c1ce2a12904f3a702c2ecc460
-Author: Marco Cavenati <Marco.Cavenati@eurecom.fr>
-Date:   Wed Mar 26 17:22:30 2025 +0100
+Changes from v1&2: Updating different formatting and API changes that
+ocurred QEMU-wide since these patches were first staged in 8.1.
 
-     migration: fix SEEK_CUR offset calculation in qio_channel_block_seek
+Signed-off-by: Nabih Estefan <nabihestefan@google.com>
+Signed-off-by: Patrick Venture <venture@google.com>
 
-which went to 10.0.0-rc2, and has been cherry-picked to
-7.2 and 9.2 stable series.
+Nabih Estefan (2):
+  hw/pci-bridge: Create Initial revision for PLX Virtual Switch
+  MAINTAINERS: Add entry for PLX VSwitches
 
-Reportedly it breaks migration in 7.2.18 and up.  Which is
-kinda strange, as it shouldn't do any harm?
+ MAINTAINERS                            |   6 +
+ hw/pci-bridge/Kconfig                  |   5 +
+ hw/pci-bridge/meson.build              |   1 +
+ hw/pci-bridge/plx_vswitch_downstream.c | 188 +++++++++++++++++++++++++
+ hw/pci-bridge/plx_vswitch_upstream.c   | 178 +++++++++++++++++++++++
+ include/hw/pci-bridge/plx_vswitch.h    |  43 ++++++
+ 6 files changed, 421 insertions(+)
+ create mode 100644 hw/pci-bridge/plx_vswitch_downstream.c
+ create mode 100644 hw/pci-bridge/plx_vswitch_upstream.c
+ create mode 100644 include/hw/pci-bridge/plx_vswitch.h
 
-https://bugs.debian.org/1112044
+-- 
+2.51.0.318.gd7df087d1a-goog
 
-any guess what's going on?
-
-Thanks,
-
-/mjt
 
