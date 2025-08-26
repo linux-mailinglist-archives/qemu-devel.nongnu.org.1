@@ -2,75 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1AAB358BC
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 11:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA848B3580C
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 11:07:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqpsU-0003J9-JK; Tue, 26 Aug 2025 05:22:06 -0400
+	id 1uqpdN-0007J2-KE; Tue, 26 Aug 2025 05:06:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uqpsP-0003IA-0i
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 05:22:01 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uqpd3-0007H5-EO; Tue, 26 Aug 2025 05:06:09 -0400
+Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uqpsF-0006R5-6p
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 05:22:00 -0400
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uqpcr-00049Y-NX; Tue, 26 Aug 2025 05:06:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756200111; x=1787736111;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=OpSBory3olZYVeJo7xvJG/y5BVJG+TbiJTNaBTF1klI=;
- b=MTAXC9dP+YI47m67pEVDI14CQM30UQaT7dzxz5HD4Ee7ojzoEF5V6aGA
- mPzSvfNd7c92a/+fiCHnDjL/Gzt6mUTm/VeU2CSHKL8BSOKun28vPLoBY
- X++NwhJwsJtUyiFVxK3DQRwU3bRzwIWwxoCFzReqv3eSO7EeQyP8oigQr
- PCuQOenjaeNdp1T49qhYbPJ8dA1NpGoN7sRyHypwlfQ0twwOAJgrkFtx6
- kKtlPLbnbBvfp93fim8pQIh/Xz/qG/QBIurs8ZkGWCKNQquHuflNSPJwN
- EASh80FYALgm4DQS2Kxvje4V1kAayEfR9kwHo4qg8n9Bv00LZtJvN4s/H g==;
-X-CSE-ConnectionGUID: Jo4qVwwIRbiv9KW4cW+MEA==
-X-CSE-MsgGUID: fFXAB9FUR/2rt1wklhKh6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="58347497"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="58347497"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 02:21:46 -0700
-X-CSE-ConnectionGUID: yu7KJY14TtOFxtV86ZGcXg==
-X-CSE-MsgGUID: ypNEKOthRdGOov3ylz7Q4Q==
+ t=1756199158; x=1787735158;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=VX51ebEyrWm0HdDAd809OGo61vSaBYsgcvkQMbax4Z8=;
+ b=IxAeoNIXy1RQMvNaKbFf4oHUFQksegWSFg+BUL30gfochu/qF7Ln/59E
+ RA5QfEI66x76Sulizh15gcZq7Z4Y43Y1810P6Scd1SQmCVD8SoDaqY6TM
+ GywxXh4g6wbXggg/WhTkcUKNBRNtLoIKY1hKGyhighAs/sSO4POJSB7Rg
+ TZWwr38hWyLE8XAtcBHEE9rKi+hoFbH1Bsmei+xA7WhlsbqZbLcU+YV6h
+ LFN28ai/bgqzU044Xfv7yc8vb9jcGzithC6jiNWWCToR+I0Q7uVeZAmoo
+ dIz18uIL609aLKMQ5vGvy0Hr6c1qvackE/aNzsY+UW6/FW/vKVborltkK Q==;
+X-CSE-ConnectionGUID: Ci4VCt2BR0yDVjuch4E4Eg==
+X-CSE-MsgGUID: 4a8MVIlyRgm6RdEUhmT57A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="58483348"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="58483348"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 02:05:50 -0700
+X-CSE-ConnectionGUID: NUVChn6JT9e22n0N2AiNYw==
+X-CSE-MsgGUID: 7/Vr3fU1RqWA85ZPsXek2g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="169030649"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14])
- ([10.124.238.14])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 02:21:44 -0700
-Message-ID: <010b2b2e-7d88-42b1-ad5e-ccd1518777af@intel.com>
-Date: Tue, 26 Aug 2025 17:21:40 +0800
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="170346575"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa010.fm.intel.com with ESMTP; 26 Aug 2025 02:05:41 -0700
+Date: Tue, 26 Aug 2025 17:27:27 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, peterx@redhat.com,
+ mst@redhat.com, mtosatti@redhat.com, richard.henderson@linaro.org,
+ riku.voipio@iki.fi, thuth@redhat.com, pasic@linux.ibm.com,
+ borntraeger@linux.ibm.com, david@redhat.com, jjherne@linux.ibm.com,
+ shorne@gmail.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ philmd@linaro.org, wangyanan55@huawei.com, peter.maydell@linaro.org,
+ agraf@csgraf.de, mads@ynddal.dk, mrolnik@gmail.com, deller@gmx.de,
+ dirty@apple.com, rbolshakov@ddn.com, phil@philjordan.eu,
+ reinoud@netbsd.org, sunilmut@microsoft.com, gaosong@loongson.cn,
+ laurent@vivier.eu, edgar.iglesias@gmail.com, aurelien@aurel32.net,
+ jiaxun.yang@flygoat.com, arikalo@gmail.com, chenhuacai@kernel.org,
+ npiggin@gmail.com, rathc@linux.ibm.com, harshpb@linux.ibm.com,
+ yoshinori.sato@nifty.com, iii@linux.ibm.com,
+ mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
+ qemu-s390x@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org
+Subject: Re: [PATCH v5 6/8] add cpu_test_interrupt()/cpu_set_interrupt()
+ helpers and use them tree wide
+Message-ID: <aK19/6P9325hYBO9@intel.com>
+References: <20250814160600.2327672-7-imammedo@redhat.com>
+ <20250821155603.2422553-1-imammedo@redhat.com>
+ <aKyBFlCtnxnP9kt/@intel.com> <20250825171912.1bc7b841@fedora>
+ <aK1mHGan+n9NSAOk@intel.com> <20250826104731.1440e3ed@fedora>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 04/19] hw/i386/pc_piix.c: duplicate pc_init1() into
- pc_isa_init()
-To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, pbonzini@redhat.com,
- mst@redhat.com, marcel.apfelbaum@gmail.com, eduardo@habkost.net,
- imammedo@redhat.com, qemu-devel@nongnu.org
-References: <20250822121342.894223-1-mark.caveayland@nutanix.com>
- <20250822121342.894223-5-mark.caveayland@nutanix.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250822121342.894223-5-mark.caveayland@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=xiaoyao.li@intel.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250826104731.1440e3ed@fedora>
+Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -36
-X-Spam_score: -3.7
-X-Spam_bar: ---
-X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.703, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,53 +96,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/22/2025 8:11 PM, Mark Cave-Ayland wrote:
-> This is to prepare for splitting the isapc machine into its own separate file.
+> > Behind this helper, I mainly considerred the case of multiple writers:
+> > 
+> >    thread 0      .        thread 1
+> >                  .
+> > load:  x         .
+> > OR:    x | a     .
+> >                  .
+> >                  .      load:  x
+> >                  .      OR:    x | b
+> >                  .      store: x | b
+> >                  .
+> > store: x | a     .      (x | b is missed)
+> > 
+> > In the above case, "load" means the direct access:
+> > cpu->interrupt_request w/o protection, and "store" is done by
+> > qatomic_store_release.
+> > 
+> > The memory order is guaranteed, but the operation result of thread 1
+> > seems lost. Only BQL or other mutex could avoid such case.
+> > 
+> > qatomic_store_release is already a great step to avoid issues outside
+> > BQL, so I'm not sure if it's worth going further to ensure atomicity,
+> > especifically for multiple writers (my initial understanding is that
+> > iothread or callback may have multiple writers, but I'm also a bit
+> > unsure.). The overhead is also indeed an issue.
 > 
-> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/i386/pc_piix.c | 261 +++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 260 insertions(+), 1 deletion(-)
+> it looks like we are always holding BQL when setting interrupt.
+>
+> However currently we also have places that check interrupts
+> without BQL but without using any atomics. This patch aims to ensure
+> that proper barriers are in place when checking for interrupts
+> and introduces release/acquire pair helpers for cpu->interrupt_request,
+> to ensure it's don consistently.
+
+I see. this makes sense and qatomic_store_release is enough. 
+
+> While overhead might be issue, it's better to have correcteness 1st.
+> (that's why blanket tree wide change to make sure we don't miss places that
+> set/test interrupts).
 > 
-> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index 071bf7412e..5b97ad2cea 100644
-> --- a/hw/i386/pc_piix.c
-> +++ b/hw/i386/pc_piix.c
+> Then if performance issues were found somewhere, as was suggested
+> in previous reviews, we may opencode that place without barriers
+> with a mandatory comment/justification why it's okey doing so.
+> (well, at least that's the plan)
 
-...
+I agree (and sorry for my misleading words; my initial thought is
+qatomic_fetch_or has worse perfermance.)
 
-> +    if (piix4_pm) {
-> +        smi_irq = qemu_allocate_irq(pc_acpi_smi_interrupt, first_cpu, 0);
-> +
-> +        qdev_connect_gpio_out_named(DEVICE(piix4_pm), "smi-irq", 0, smi_irq);
-> +        pcms->smbus = I2C_BUS(qdev_get_child_bus(DEVICE(piix4_pm), "i2c"));
-> +        /* TODO: Populate SPD eeprom data.  */
-> +        smbus_eeprom_init(pcms->smbus, 8, NULL, 0);
-> +
-> +        object_property_add_link(OBJECT(machine), PC_MACHINE_ACPI_DEVICE_PROP,
-> +                                 TYPE_HOTPLUG_HANDLER,
-> +                                 (Object **)&x86ms->acpi_dev,
-> +                                 object_property_allow_set_link,
-> +                                 OBJ_PROP_LINK_STRONG);
-> +        object_property_set_link(OBJECT(machine), PC_MACHINE_ACPI_DEVICE_PROP,
-> +                                 piix4_pm, &error_abort);
-> +    }
-> +
-> +    if (machine->nvdimms_state->is_enabled) {
-> +        nvdimm_init_acpi_state(machine->nvdimms_state, system_io,
-> +                               x86_nvdimm_acpi_dsmio,
-> +                               x86ms->fw_cfg, OBJECT(pcms));
-> +    }
-
-IGVM support was merged recently and the rebase of this series doesn't 
-catch it.
-
-I think we need to copy the IGVM related code as well, in this patch.
-We can remove it later in a separate patch if it's unnecessary for isapc.
-
->   }
->   #endif
->   
+Thanks,
+Zhao
 
 
