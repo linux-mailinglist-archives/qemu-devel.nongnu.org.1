@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 745AEB37278
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 20:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73DBEB37279
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 20:47:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqyfg-0004vX-4H; Tue, 26 Aug 2025 14:45:28 -0400
+	id 1uqyfk-0004y4-3Q; Tue, 26 Aug 2025 14:45:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vacha.bhavsar@oss.qualcomm.com>)
- id 1uqyfb-0004un-Fa
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 14:45:23 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ id 1uqyfe-0004w7-Kv
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 14:45:26 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vacha.bhavsar@oss.qualcomm.com>)
- id 1uqyfU-0008Sv-0b
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 14:45:23 -0400
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57QCRS1q004082
- for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 18:45:12 GMT
+ id 1uqyfW-0008T4-5I
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 14:45:25 -0400
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57QD1vk2028616
+ for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 18:45:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=qcppdkim1; bh=N/cJ1VigX5T
- amwRxQg27K5ECt0YK3rjIAflQIFqgDpE=; b=ga0rQ9zhXMkM6gR5QZZ7qtIGbJF
- 4oKO+nFIJtmYSSni+7GoGxxvR4ygnWhZFpdMaHmaR2XcSEqEEuMgFdydq0bDbNEH
- 6DHNOAh0xfuW7Jsu0WsIMxuq3c79keqyNdzHJB6T0KjNRG9JsjziaW4/TuLQB7yB
- ke2lLEMlX9G0IvyOdI4hrq7zGT3vqfjJJgg5bdJnYRQ+raLKDHG45rrAe3bZWHTh
- nb/UAmjxrfC2s98hv9JpIJs0rLMwFOc0OyRpnP7jgsWt8Sf+guj1NjrODwxoQidR
- sJSXizqGvQVNf8o0JiQ8XgbLF6eqYTj5uV+hBtNSbr3IS2/R+E/gpuDh7LA==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48q5xpt6qq-1
+ :mime-version:references:subject:to; s=qcppdkim1; bh=GZr6fKIuBP+
+ n56Ge2gnAV7k/J3Lgs0gnOtTgNmdTKt4=; b=GhKunerxvNicJTn52Mb7Ju8u12X
+ M5B1uJ9ixKLxuoGe5yjWj8M/5uff4zCoBvNvpgOQod93WjZLdVjKeVFVivuBKOSr
+ TQy89oX+uvD1HD3MdzoeOObjFKGSKc3ZZMZ/lFdkOFPDdSeW/Av4NAOkUcqVlJvo
+ 0eQcYgxQGwt4zEuEb0McdLuGr2N9CmEvgL0wUCfSanNf0o3yOiZTfVHJvcPDl/En
+ X7TjiDeb5CPbmC0HgYfMIr1grUNQLcT2fhMI1ar6IDollCRD3rCg9+nnUhG2HxPN
+ zSvkvWTCMGV0ZLgVviCj+mn06BtC5xfdJX7cvA8oA/nDQrqdhkGySah///A==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48q5we1v99-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 18:45:12 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-246f49067bdso23372545ad.0
- for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 11:45:12 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 18:45:14 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-32326e72dfbso8654620a91.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 11:45:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756233911; x=1756838711;
+ d=1e100.net; s=20230601; t=1756233913; x=1756838713;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=N/cJ1VigX5TamwRxQg27K5ECt0YK3rjIAflQIFqgDpE=;
- b=c/JtWCE6b9by7XMopE6SpDxHZpkanlt4MpGxYJTt4296h6O7aHmNJ2vvk4i4lJx1SM
- JUWF1k/945C0F5Gqzsj/47CVgvsmgjfuCSMuPNg1eqAqRS4gS92sbg+lve0JGl4K2xfx
- dTFtNmqyPuydXD+ieEL9TAkfqa76Hp1F3jaFtLvuZfH60pbxKk79x5Hc0TBFEN2RBVq/
- bm3TjOGavrnUMIEsQTxh6rF7ObzGkmS0CqQUHnmwSGNHiTxuysl1W19+vC4GLiRmObzC
- ClcXTJWGk51hZoCUjoxg/EF4/AHSehvMHcs3KtIPzC17nx4DP8atANo0v0PYdQoAw+Oi
- DEYg==
-X-Gm-Message-State: AOJu0YzivwWzWZLEqOKYCyupunaDfKSaWOzxQSVF9FA2Jtv1HVos8Y6x
- qJSpjAzvUINAa4N6cm2rw7Dx9wohMjGNkJe8uRLtkVovfPscP7nzib0DNJ7AWzDiTg2QfJf2C4w
- J3efPoZjt9sv29zs2RTCKieYuhfpTCjirw/PefXNeQXv7x3fsSuu5RlRKCGpVgxTAbFV9
-X-Gm-Gg: ASbGncuy7PZcrMyOZV7EMtZPgsaMGN9s/Fcl/LAgcbH64BO/DHDnKcZzaNIVKTsDIcc
- frSY3RRlYD0FwRmvGuYx9O4gqw39VI9eASlBMjqGqg7ldizrNPLl9gF3TmA9bKXol5xXdbP56n0
- zgi2FUdppFHlkGqsz18JjvrHYzzYxE1CGPLmgxvixmuWi5fSFiMAZvqRg/kL9LUnNhbZKjGmKhD
- uwG5ysm4AFbzPJJ3Lhefj47j7UjgXoY7mXS0U+ppcijtp97TJ8amQsmxhnArRenmXQXZ0jkwoJ1
- YMOY1CWKQjSoFgs1QmKGiAqudVjP40aGhh/YDAFlxWQhNb1YXOfLReLmFePblkMNsw8fdfcLSMx
- PdDorjG//Q/Joysc=
-X-Received: by 2002:a17:902:e786:b0:246:80b1:8c87 with SMTP id
- d9443c01a7336-24680b190famr149128375ad.43.1756233911044; 
- Tue, 26 Aug 2025 11:45:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH9HnvJ9dEZOIKH20ityDwao35hmppm9k0kcAS/YV/wZgjhfUi73rgdrU6+DJL1x89N1dULnA==
-X-Received: by 2002:a17:902:e786:b0:246:80b1:8c87 with SMTP id
- d9443c01a7336-24680b190famr149127965ad.43.1756233910507; 
- Tue, 26 Aug 2025 11:45:10 -0700 (PDT)
+ bh=GZr6fKIuBP+n56Ge2gnAV7k/J3Lgs0gnOtTgNmdTKt4=;
+ b=PsBUhDmp9o+nVyfyAqhvyrgkZMwlpgUs6CibnT0dtD7EU3Gy29syifBsLy+wGCZyqp
+ zvyACuqbPSxcA8+TsgqXZ5yH0TZUINyskbWS+nQtRRxB8LoA1PLrIGBxF6aoSSSGKAqV
+ R5BhC39pgoplK7fChVKPK6wInwYAZXWeEg7ERH2g5zHKAFhOLP1GiTdRDKf1dP6Zgydb
+ wFdMkGenaNUv0az//x7K5+qcxMHoKzRsSZZCHxh60nH7BgEQ0RMvO7FMYncfmKDeZ7nH
+ TgVjYLbcsVfe6qahTHX587dBx/006M1R+/UTnVrF+g0WGWNvsGW8zazbs2xpSiqLKPbe
+ Rtxw==
+X-Gm-Message-State: AOJu0Yz/R5ZS8pakAFHit+TAxL3VlKpTmtPNjh/OIDO0oGk91d7//2h8
+ IAXFSiLLPQ4xGys8vL9yLyrRTIH7ODrDELdLISip4zKZ70FN5CfMnAvGFyTt7Vt98XCRKek7+dO
+ i7PlMvEdBHsVt7VczMQ9kvfLOhtGFFtBOFtVdag0skDMQ0lIgJ85R6xjdwwa6+ssCkweU
+X-Gm-Gg: ASbGncvNona96QnfXzcrN+roMYnAFWiR+YTyLhzH64LrmVSUXgkpZAaUrZ+XuE+i3on
+ ONajtw2GME3oL4dd6dasclHISDOfKzQpndltoITKlhYOuPqXP9w/ZkMbr3p46F/3NLL5kyrQ/B6
+ MTbM6IZdL/x5DbleAvJoND7TIUsX0o52aMpzxnoAqm4K+vGmCYJq6Hn4PD5xoaq7XKPhN+QeOGT
+ khPaOqwjqIr+p2kb2atGY9dv3FeZsjFJ9BZ08jX7AYif9TcHqm4jq/Ka/bHF0weyIYhaoYgJSxx
+ irN91q+04hIvXUUc2bOtyUHS5IetAOoRp7wwe/uOqhOvAKjEzY9th5UDMTntLxzFS8CfqjLGxAW
+ QupNhzdJKyjkZC3I=
+X-Received: by 2002:a17:90a:d60d:b0:324:e3cc:d224 with SMTP id
+ 98e67ed59e1d1-32515ee54c6mr24462178a91.4.1756233912679; 
+ Tue, 26 Aug 2025 11:45:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHw59f7XyhG6WglB2EH1+eozjdh1SVOUOxSaVdHEa4Kj9otQLbtySDs+RdCaqDTriwQqcrgYg==
+X-Received: by 2002:a17:90a:d60d:b0:324:e3cc:d224 with SMTP id
+ 98e67ed59e1d1-32515ee54c6mr24462136a91.4.1756233912183; 
+ Tue, 26 Aug 2025 11:45:12 -0700 (PDT)
 Received: from admin15.qualcomm.com (i-global254.qualcomm.com.
  [199.106.103.254]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3276aeef8b8sm220661a91.21.2025.08.26.11.45.08
+ 98e67ed59e1d1-3276aeef8b8sm220661a91.21.2025.08.26.11.45.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Aug 2025 11:45:09 -0700 (PDT)
+ Tue, 26 Aug 2025 11:45:11 -0700 (PDT)
 From: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
@@ -79,45 +79,45 @@ Cc: qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-Subject: [PATCH v6 2/3] target/arm: Added support for SME register exposure to
- GDB
-Date: Tue, 26 Aug 2025 18:45:03 +0000
-Message-Id: <20250826184504.510279-3-vacha.bhavsar@oss.qualcomm.com>
+Subject: [PATCH v6 3/3] target/arm: Added test case for SME register exposure
+ to GDB
+Date: Tue, 26 Aug 2025 18:45:04 +0000
+Message-Id: <20250826184504.510279-4-vacha.bhavsar@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250826184504.510279-1-vacha.bhavsar@oss.qualcomm.com>
 References: <20250826184504.510279-1-vacha.bhavsar@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=KOlaDEFo c=1 sm=1 tr=0 ts=68ae00b8 cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=JRRW1ReKSft4RaJC_60A:9
- a=1OuFwYUASf3TG4hYMiVC:22
-X-Proofpoint-GUID: T_HCbiUH8wKIjC16wDFY0z24qc_V_ri2
-X-Proofpoint-ORIG-GUID: T_HCbiUH8wKIjC16wDFY0z24qc_V_ri2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMyBTYWx0ZWRfXz54XwALcxT4h
- Iz4WzepBYkMXaWoyWBTVUzJR6U+Mpb6dUJIkbK813r5hQgSqfeFKNTIq/jaeFPWNzYU7mWqBIYG
- /HKMvgatKjDwuOIPAeoUB5FAq483osAWwSQIQmuqOxTuB8APDBvmvBC/yCH52fpRomf5BUZzsTv
- DIIsA0dE/bjixnREMO1l5bYw+Sf01SweFc/eDE5s/3Zzh00+h638NOGsJ0RA8EoJW+FYTy2G/5I
- gzj3KfQFCYQqSFR6dg0Qlaqz7RZ7/LxICslFqqsYVO3gzSTJS2fQLQaLyVbxBDXS+YF/uJrpthy
- e9DiYVCyNiPFumif1z3NwixsQ5ZZU6/codCJ+KkfBZxdGUWHq7jgtCFj12Ctmx0klZlpAhnKlX2
- E+Z3FnpQ
+X-Proofpoint-GUID: ZrORalPsGNMt0Xhj5evq91Ay7LZxnbsL
+X-Proofpoint-ORIG-GUID: ZrORalPsGNMt0Xhj5evq91Ay7LZxnbsL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMyBTYWx0ZWRfX1tIW7kj3Jnob
+ 0o2RrD9Sb9Zl1Y73+oDN+ED/7s6weQY31gTpOkzfbNOsGQZOE4aEI4Bzhw0M0wOfe5sSP8bR1FY
+ 6GiKG6JL+QrhjddoMjOC2jPs7p5kmblSqo8rWDFJRpOW+KY9sKkHgk4RHIYTAvV6yAnBm/9pEgI
+ 74xIRw8wUvs9wvrSZ5qh3+t+EvfP/+pIL+z4URaUiuhGGowhJNPMHQu84bpq910HihXsPCkO3P+
+ GAOLkXll749St60+Ta5WOh+U1RBvK3TXBFzwfBxbkOlEkaM8R0lzQBjLvKKtELK/8LNMru6Qd1U
+ D+k58GyPDMO9deCHLrNwvlV4ESEVzj8jiIhL6rhzjTsWgbjUwuKHJR+frpDq9hH/hIx1URIF4/T
+ dEAhw/F5
+X-Authority-Analysis: v=2.4 cv=BJazrEQG c=1 sm=1 tr=0 ts=68ae00ba cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=NuJLd7iFDieCY-iTVAkA:9
+ a=iS9zxrgQBfv6-_F4QbHw:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-26_02,2025-08-26_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 bulkscore=0 adultscore=0 phishscore=0
- impostorscore=0 spamscore=0 suspectscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230033
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=vacha.bhavsar@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
+ malwarescore=0 adultscore=0 priorityscore=1501 clxscore=1015 impostorscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 spamscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508230033
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=vacha.bhavsar@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,225 +133,263 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The QEMU GDB stub does not expose the ZA storage SME register to GDB via
-the remote serial protocol, which can be a useful functionality to debug SME
-code. To provide this functionality in Aarch64 target, this patch registers the
-SME register set with the GDB stub. To do so, this patch implements the
-aarch64_gdb_get_sme_reg() and aarch64_gdb_set_sme_reg() functions to
-specify how to get and set the SME registers, and the
-arm_gen_dynamic_smereg_feature() function to generate the target
-description in XML format to indicate the target architecture supports SME.
-Finally, this patch includes a dyn_smereg_feature structure to hold this
-GDB XML description of the SME registers for each CPU.
+This patch adds a test case to test SME register exposure to
+a remote gdb debugging session. This test simply sets and
+reads SME registers.
 
 Signed-off-by: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
 ---
 Changes since v5:
-- added code to handle the case when we have SME without SVE
-- added comments to indicate th cases in aarch64_gdb_get/set_sme_reg
-- added/removed braces where necessary
-- corrected capitalization in comments
+- added copyright and SPDX line
+- added functionality to avoid casting a gdb.Value object
+to int when testing the za quadwords to address bug found
+during review, this change is declared to users via a
+warning message included in the test results file
+run-gdbstub-sysregs-sme.out
 ---
- target/arm/cpu.h       |   1 +
- target/arm/gdbstub.c   |   9 ++-
- target/arm/gdbstub64.c | 121 +++++++++++++++++++++++++++++++++++++++++
- target/arm/internals.h |   3 +
- 4 files changed, 133 insertions(+), 1 deletion(-)
+ configure                             |  11 ++
+ tests/tcg/aarch64/Makefile.target     |  33 +++++-
+ tests/tcg/aarch64/gdbstub/test-sme.py | 165 ++++++++++++++++++++++++++
+ 3 files changed, 208 insertions(+), 1 deletion(-)
+ create mode 100644 tests/tcg/aarch64/gdbstub/test-sme.py
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index dc9b6dce4c..8bd66d7049 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -933,6 +933,7 @@ struct ArchCPU {
+diff --git a/configure b/configure
+index 274a778764..9e2ae174dc 100755
+--- a/configure
++++ b/configure
+@@ -1839,6 +1839,17 @@ for target in $target_list; do
+           echo "GDB=$gdb_bin" >> $config_target_mak
+       fi
  
-     DynamicGDBFeatureInfo dyn_sysreg_feature;
-     DynamicGDBFeatureInfo dyn_svereg_feature;
-+    DynamicGDBFeatureInfo dyn_smereg_feature;
-     DynamicGDBFeatureInfo dyn_m_systemreg_feature;
-     DynamicGDBFeatureInfo dyn_m_secextreg_feature;
++      if test "${gdb_arches#*$arch}" != "$gdb_arches" && version_ge $gdb_version 14.1; then
++          echo "GDB_HAS_SME_TILES=y" >> $config_target_mak
++          if test "$gdb_version" = "15.0.50.20240403-git"; then
++            echo "GDB_HAS_INT_CAST_SUPPORT=n" >> $config_target_mak
++          else
++            echo "GDB_HAS_INT_CAST_SUPPORT=y" >> $config_target_mak
++          fi
++       else
++          echo "GDB_HAS_SME_TILES=n" >> $config_target_mak
++      fi
++
+       if test "${gdb_arches#*aarch64}" != "$gdb_arches" && version_ge $gdb_version 15.1; then
+           echo "GDB_HAS_MTE=y" >> $config_target_mak
+       fi
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 16ddcf4f88..f9304d29cf 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -132,7 +132,38 @@ run-gdbstub-sve-ioctls: sve-ioctls
+ 		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sve-ioctl.py, \
+ 	basic gdbstub SVE ZLEN support)
  
-diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-index ce4497ad7c..110258ec18 100644
---- a/target/arm/gdbstub.c
-+++ b/target/arm/gdbstub.c
-@@ -527,7 +527,7 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
-          * registers so we don't need to include both.
-          */
- #ifdef TARGET_AARCH64
--        if (isar_feature_aa64_sve(&cpu->isar)) {
-+        if (isar_feature_aa64_sve(&cpu->isar) || isar_feature_aa64_sme(&cpu->isar)) {
-             GDBFeature *feature = arm_gen_dynamic_svereg_feature(cs, cs->gdb_num_regs);
-             gdb_register_coprocessor(cs, aarch64_gdb_get_sve_reg,
-                                      aarch64_gdb_set_sve_reg, feature, 0);
-@@ -537,6 +537,13 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
-                                      gdb_find_static_feature("aarch64-fpu.xml"),
-                                      0);
-         }
+-EXTRA_RUNS += run-gdbstub-sysregs run-gdbstub-sve-ioctls
++ifneq ($(CROSS_AS_HAS_ARMV9_SME),)
++# SME gdbstub test
++ifeq ($(GDB_HAS_SME_TILES),y)
++ifeq ($(GDB_HAS_INT_CAST_SUPPORT),y)
++run-gdbstub-sysregs-sme: sysregs
++	$(call run-test, $@, $(GDB_SCRIPT) \
++		--gdb $(GDB) \
++		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
++		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sme.py \
++		-- test_sme --gdb_sme_tile_support --gdb_int_cast_support, \
++	basic gdbstub SME support)
++else
++run-gdbstub-sysregs-sme: sysregs
++	$(call run-test, $@, $(GDB_SCRIPT) \
++		--gdb $(GDB) \
++		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
++		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sme.py \
++		-- test_sme --gdb_sme_tile_support, \
++	basic gdbstub SME support)
++endif
++else
++run-gdbstub-sysregs-sme: sysregs
++	$(call run-test, $@, $(GDB_SCRIPT) \
++		--gdb $(GDB) \
++		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
++		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sme.py, \
++	basic gdbstub SME support)
 +
-+        if (isar_feature_aa64_sme(&cpu->isar)) {
-+            GDBFeature *sme_feature = arm_gen_dynamic_smereg_feature(cs,
-+                cs->gdb_num_regs);
-+            gdb_register_coprocessor(cs, aarch64_gdb_get_sme_reg,
-+                aarch64_gdb_set_sme_reg, sme_feature, 0);
-+        }
-         /*
-          * Note that we report pauth information via the feature name
-          * org.gnu.gdb.aarch64.pauth_v2, not org.gnu.gdb.aarch64.pauth.
-diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-index 08e2858539..d3fd94b93d 100644
---- a/target/arm/gdbstub64.c
-+++ b/target/arm/gdbstub64.c
-@@ -249,6 +249,90 @@ int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg)
-     return 0;
- }
++endif
++endif
++
++EXTRA_RUNS += run-gdbstub-sysregs run-gdbstub-sve-ioctls run-gdbstub-sysregs-sme
  
-+int aarch64_gdb_get_sme_reg(CPUState *cs, GByteArray *buf, int reg)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
+ ifeq ($(GDB_HAS_MTE),y)
+ run-gdbstub-mte: mte-8
+diff --git a/tests/tcg/aarch64/gdbstub/test-sme.py b/tests/tcg/aarch64/gdbstub/test-sme.py
+new file mode 100644
+index 0000000000..e27a37631b
+--- /dev/null
++++ b/tests/tcg/aarch64/gdbstub/test-sme.py
+@@ -0,0 +1,165 @@
++#
++# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+    switch (reg) {
-+    case 0: /* svg register */
-+    {
-+        int vq = 0;
-+        if (FIELD_EX64(env->svcr, SVCR, SM)) {
-+            vq = sve_vqm1_for_el_sm(env, arm_current_el(env),
-+                     FIELD_EX64(env->svcr, SVCR, SM)) + 1;
-+        }
-+        /* svg = vector granules (2 * vector quardwords) in streaming mode */
-+        return gdb_get_reg64(buf, vq * 2);
-+    }
-+    case 1: /* svcr register */
-+        return gdb_get_reg64(buf, env->svcr);
-+    case 2: /* za register */
-+    {
-+        int len = 0;
-+        int vq = cpu->sme_max_vq;
-+        int svl = vq * 16;
-+        for (int i = 0; i < svl; i++) {
-+            for (int q = 0; q < vq; q++) {
-+                len += gdb_get_reg128(buf,
-+                           env->za_state.za[i].d[q * 2 + 1],
-+                           env->za_state.za[i].d[q * 2]);
-+            }
-+        }
-+        return len;
-+    }
-+    default:
-+        /* gdbstub asked for something out of range */
-+        qemu_log_mask(LOG_UNIMP, "%s: out of range register %d", __func__, reg);
-+        break;
-+    }
++from __future__ import print_function
++#
++# Test the SME registers are visible and changeable via gdbstub
++#
++# This is launched via tests/guest-debug/run-test.py
++#
 +
-+    return 0;
-+}
++import argparse
++import gdb
++from test_gdbstub import main, report
 +
-+int aarch64_gdb_set_sme_reg(CPUState *cs, uint8_t *buf, int reg)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
++MAGIC = 0x01020304
++INT_CAST_SUPPORT = 0
 +
-+    switch (reg) {
-+    case 0: /* svg register */
-+        /* cannot set svg via gdbstub */
-+        return 8;
-+    case 1: /* svcr register */
-+        aarch64_set_svcr(env, ldq_le_p(buf),
-+            R_SVCR_SM_MASK | R_SVCR_ZA_MASK);
-+        return 8;
-+    case 2: /* za register */
-+    {
-+        int len = 0;
-+        int vq = cpu->sme_max_vq;
-+        int svl = vq * 16;
-+        for (int i = 0; i < svl; i++) {
-+            for (int q = 0; q < vq; q++) {
-+                if (target_big_endian()) {
-+                    env->za_state.za[i].d[q * 2 + 1] = ldq_p(buf);
-+                    buf += 8;
-+                    env->za_state.za[i].d[q * 2] = ldq_p(buf);
-+                } else{
-+                    env->za_state.za[i].d[q * 2] = ldq_p(buf);
-+                    buf += 8;
-+                    env->za_state.za[i].d[q * 2 + 1] = ldq_p(buf);
-+                }
-+                buf += 8;
-+                len += 16;
-+            }
-+        }
-+        return len;
-+    }
-+    default:
-+        /* gdbstub asked for something out of range */
-+        break;
-+    }
++def run_test():
++    "Run through the tests one by one"
 +
-+    return 0;
-+}
++    frame = gdb.selected_frame()
++    rname = "za"
++    za = frame.read_register(rname)
++    report(True, "Reading %s" % rname)
 +
- int aarch64_gdb_get_pauth_reg(CPUState *cs, GByteArray *buf, int reg)
- {
-     ARMCPU *cpu = ARM_CPU(cs);
-@@ -413,6 +497,43 @@ GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int base_reg)
-     return &cpu->dyn_svereg_feature.desc;
- }
- 
-+GDBFeature *arm_gen_dynamic_smereg_feature(CPUState *cs, int base_reg)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    int vq = cpu->sme_max_vq;
-+    int svl = vq * 16;
-+    GDBFeatureBuilder builder;
-+    int reg = 0;
++    for i in range(0, 16):
++        for j in range(0, 16):
++            cmd = "set $za[%d][%d] = 0x01" % (i, j)
++            gdb.execute(cmd)
++            report(True, "%s" % cmd)
++    for i in range(0, 16):
++        for j in range(0, 16):
++            reg = "$za[%d][%d]" % (i, j)
++            v = gdb.parse_and_eval(reg)
++            report(str(v.type) == "uint8_t",
++                    "size of %s" % (reg))
++            report(int(v) == 0x1, "%s is 0x%x" % (reg, 0x1))
 +
-+    gdb_feature_builder_init(&builder, &cpu->dyn_smereg_feature.desc,
-+        "org.gnu.gdb.aarch64.sme", "sme-registers.xml", base_reg);
++def run_test_slices():
++    "Run through the tests one by one"
++
++    frame = gdb.selected_frame()
++    rname = "za"
++    za = frame.read_register(rname)
++    report(True, "Reading %s" % rname)
++
++    for i in range(0, 16):
++        for j in range(0, 16):
++            cmd = "set $za[%d][%d] = 0x01" % (i, j)
++            gdb.execute(cmd)
++            report(True, "%s" % cmd)
++    for i in range(0, 16):
++        for j in range(0, 16):
++            reg = "$za[%d][%d]" % (i, j)
++            v = gdb.parse_and_eval(reg)
++            report(str(v.type) == "uint8_t",
++                    "size of %s" % (reg))
++            report(int(v) == 0x1, "%s is 0x%x" % (reg, 0x1))
++
++    if INT_CAST_SUPPORT:
++        for i in range(0, 4):
++            for j in range(0, 4):
++                for k in range(0, 4):
++                    cmd = "set $za%dhq%d[%d] = 0x%x" % (i, j, k, MAGIC)
++                    gdb.execute(cmd)
++                    report(True, "%s" % cmd)
++            for j in range(0, 4):
++                for k in range(0, 4):
++                    reg = "$za%dhq%d[%d]" % (i, j, k)
++                    v = gdb.parse_and_eval(reg)
++                    report(str(v.type) == "uint128_t",
++                        "size of %s" % (reg))
++                    report(int(v) == MAGIC, "%s is 0x%x" % (reg, MAGIC))
++            
++            for j in range(0, 4):
++                for k in range(0, 4):
++                    cmd = "set $za%dvq%d[%d] = 0x%x" % (i, j, k, MAGIC)
++                    gdb.execute(cmd)
++                    report(True, "%s" % cmd)
++            for j in range(0, 4):
++                for k in range(0, 4):
++                    reg = "$za%dvq%d[%d]" % (i, j, k)
++                    v = gdb.parse_and_eval(reg)
++                    report(str(v.type) == "uint128_t",
++                        "size of %s" % (reg))
++                    report(int(v) == MAGIC, "%s is 0x%x" % (reg, MAGIC))
++
++    else:
++        for i in range(0, 4):
++            for j in range(0, 4):
++                for k in range(0, 4):
++                    cmd = "set $za%dhq%d[%d] = 0x%x" % (i, j, k, MAGIC)
++                    gdb.execute(cmd)
++                    report(True, "%s" % cmd)
++            for j in range(0, 4):
++                for k in range(0, 4):
++                    reg = "$za%dhq%d[%d]" % (i, j, k)
++                    v = gdb.parse_and_eval(reg)
++                    report(str(v.type) == "uint128_t",
++                        "size of %s" % (reg))
++                    report(v == MAGIC, "%s is 0x%x" % (reg, MAGIC))
++            
++            for j in range(0, 4):
++                for k in range(0, 4):
++                    cmd = "set $za%dvq%d[%d] = 0x%x" % (i, j, k, MAGIC)
++                    gdb.execute(cmd)
++                    report(True, "%s" % cmd)
++            for j in range(0, 4):
++                for k in range(0, 4):
++                    reg = "$za%dvq%d[%d]" % (i, j, k)
++                    v = gdb.parse_and_eval(reg)
++                    report(str(v.type) == "uint128_t",
++                        "size of %s" % (reg))
++                    report(v == MAGIC, "%s is 0x%x" % (reg, MAGIC))
++
++    for i in range(0, 4):
++        for j in range(0, 4):
++            for k in range(0, 4):
++                cmd = "set $za%dhd%d[%d] = 0x%x" % (i, j, k, MAGIC)
++                gdb.execute(cmd)
++                report(True, "%s" % cmd)
++        for j in range(0, 4):
++            for k in range(0, 4):
++                reg = "$za%dhd%d[%d]" % (i, j, k)
++                v = gdb.parse_and_eval(reg)
++                report(str(v.type) == "uint64_t",
++                    "size of %s" % (reg))
++                report(int(v) == MAGIC, "%s is 0x%x" % (reg, MAGIC))
++        
++        for j in range(0, 4):
++            for k in range(0, 4):
++                cmd = "set $za%dvd%d[%d] = 0x%x" % (i, j, k, MAGIC)
++                gdb.execute(cmd)
++                report(True, "%s" % cmd)
++        for j in range(0, 4):
++            for k in range(0, 4):
++                reg = "$za%dvd%d[%d]" % (i, j, k)
++                v = gdb.parse_and_eval(reg)
++                report(str(v.type) == "uint64_t",
++                    "size of %s" % (reg))
++                report(int(v) == MAGIC, "%s is 0x%x" % (reg, MAGIC))
 +
 +
-+    /* Create the sme_bv vector type. */
-+    gdb_feature_builder_append_tag(&builder,
-+        "<vector id=\"sme_bv\" type=\"uint8\" count=\"%d\"/>",
-+        svl);
++parser = argparse.ArgumentParser(description="A gdbstub test for SME support")
++parser.add_argument("--gdb_sme_tile_support", help="GDB support for SME tiles", \
++                    action="store_true")
++parser.add_argument("--gdb_int_cast_support", 
++                    help="GDB support for 128bit int cast", \
++                    action="store_true")
++args = parser.parse_args()
 +
-+    /* Create the sme_bvv vector type. */
-+    gdb_feature_builder_append_tag(
-+        &builder, "<vector id=\"sme_bvv\" type=\"sme_bv\" count=\"%d\"/>",
-+        svl);
-+
-+    /* Define the svg, svcr, and za registers. */
-+
-+    /* fpscr & status registers */
-+    gdb_feature_builder_append_reg(&builder, "svg", 64, reg++,
-+        "int", NULL);
-+    gdb_feature_builder_append_reg(&builder, "svcr", 64, reg++,
-+        "int", NULL);
-+    gdb_feature_builder_append_reg(&builder, "za", svl * svl * 8, reg++,
-+        "sme_bvv", NULL);
-+
-+    gdb_feature_builder_end(&builder);
-+
-+    return &cpu->dyn_smereg_feature.desc;
-+}
-+
- #ifdef CONFIG_USER_ONLY
- int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int reg)
- {
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 1b3d0244fd..41e05066b9 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1802,8 +1802,11 @@ static inline uint64_t pmu_counter_mask(CPUARMState *env)
- }
- 
- GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cpu, int base_reg);
-+GDBFeature *arm_gen_dynamic_smereg_feature(CPUState *cpu, int base_reg);
- int aarch64_gdb_get_sve_reg(CPUState *cs, GByteArray *buf, int reg);
- int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg);
-+int aarch64_gdb_get_sme_reg(CPUState *cs, GByteArray *buf, int reg);
-+int aarch64_gdb_set_sme_reg(CPUState *cs, uint8_t *buf, int reg);
- int aarch64_gdb_get_fpu_reg(CPUState *cs, GByteArray *buf, int reg);
- int aarch64_gdb_set_fpu_reg(CPUState *cs, uint8_t *buf, int reg);
- int aarch64_gdb_get_pauth_reg(CPUState *cs, GByteArray *buf, int reg);
++if args.gdb_sme_tile_support:
++    if args.gdb_int_cast_support:
++        INT_CAST_SUPPORT = 1
++    else:
++        print("WARNING: The version of gdb used (15.0.50.20240403-git)\n"
++        "does not support casting a gdb.Value object to 128 bit python\n"
++        "integer. Thus, the testing for the ZA quadwords will be done\n"
++        "without int casting. Refer to tests/tcg/aarch64/gdbstub/test-sme.py\n"
++        "for details.")
++    main(run_test_slices, expected_arch="aarch64")
++else:
++    main(run_test, expected_arch="aarch64")
 -- 
 2.34.1
 
