@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC53B371BA
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 19:51:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADABFB371BB
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 19:52:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqxoI-0007hN-Mo; Tue, 26 Aug 2025 13:50:18 -0400
+	id 1uqxoG-0007ez-47; Tue, 26 Aug 2025 13:50:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uqxoD-0007ea-Rz
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 13:50:14 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1uqxoC-0007eA-05
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 13:50:12 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uqxo8-0007IM-2G
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 13:50:13 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-45b627ea685so15996315e9.1
- for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 10:50:02 -0700 (PDT)
+ id 1uqxo8-0007JR-LV
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 13:50:11 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-45b629c8035so13892545e9.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 10:50:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756230600; x=1756835400; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756230602; x=1756835402; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SewMXGS3C9PprrRoXFBooAU8hl2KOU7xEuIS5b5fjQw=;
- b=P8n8numi0yUWS2kvPHsgq1NTakECXiQAdtxsuogyR2qzBP8zz2P3F4rE5VQDGvm6Wf
- HXqR60DufQgvRuWQMb8lAl3SVjURSA5/QeVYXFhzLjsw+CqPpz36IJ35m3QTDOw/i8C6
- uLt+CarH21zeuS+sij24kFlfYkOrgnM+BZWSGo3iDFeRnJ5eI+fUvBYL5ZzhfIf8jOBb
- CqEAstRK50rglIy6Ehba3/QijmKoJlFp0SfcBSg9E1uodn+lgxUot5fxdGkqojg8roXe
- 1MgxrwNFBL7mY9zZEO+ItSwFRDTPD8IFkT9cl3XqcOI0Ly+m/zVHCeOtoqkHNpXU6N1q
- TPEQ==
+ bh=V1HfxVQSdyJU0XBGoJ8Qiv44nVAIeSbVvsYi/MkYoFA=;
+ b=w7/uw8zzcIjWR9YCuCdBcHeLaypW0FkZ+ehLdgIrwHFq41N851u17goEz1o1zO0KyF
+ uNf6qaMhYKCnCjbSqotE+6lU7Mgpk8GyGzLFBjzMqlyLmbNkRmeIkxOiely6VxUEnKcA
+ M6YqytsX1DXNszip5L0kkXBho6ZVnJCTEktEGZczKH31NqNxeOm3uknQb2jnx6mIVBuq
+ qi+5yFWS44/kadpAoh0w+fLt3x2ePyTVZnD9/QzuRtTUnoYhmwBC78htYAIT8bUgG5jM
+ HqKVp/+jlEQBQhtRqrSNTIuKwKK/pCcGRHr6NxTd21hTbt5hvleCquXq/+XngsfWxwye
+ pzuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756230600; x=1756835400;
+ d=1e100.net; s=20230601; t=1756230602; x=1756835402;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SewMXGS3C9PprrRoXFBooAU8hl2KOU7xEuIS5b5fjQw=;
- b=sPkMVF6xMXKa9a8XW+yYAQXE6h4uSwAMiw8Y0F9xLPSD/4Up7xYVdsYDBGAmGLzqg8
- b+26pvZ2e6n+BZce3QpjkF769WEgMb+DiGU2TJb56kS5WF2zOEG/6bgaQlfEHxBL1dAd
- jrE37mD335hwUWUtgJNp0mhIeEooxTnP1Gf62SOF1eNJEzt12uLRiWDA1WZnpsCYx0e0
- npbShaW4BqDOppSjLJjPryC1ickpb1lX4Jf8fFCPh3UztIaYutyKyocc8HnzNnBfdj3t
- SfyANGZVx5aGUxynGuf0RAlo2BVrktzfUKihBsgOZEeM9fvv5zNxrBTjkqacOacFoEsy
- FIFw==
+ bh=V1HfxVQSdyJU0XBGoJ8Qiv44nVAIeSbVvsYi/MkYoFA=;
+ b=bO6Qopu2g0ioSz90SxcNcFFIXg3Lj0Roi34j5l0vQViTY1th+8PXJsTocb1g0k4Sxq
+ 4WeQkcd7aoYq+srt4JzTfCkSwFGhDa+zUEsu09UoheTkLNH4AU8NlzHagQzvibZYq42C
+ /xIjYisIWtcun0rgzHwJ0RBNTRMgFkpJuZpKHM0ZQwz8ODf6XebLv6AA+1/6asQcS5pk
+ kP0dm2NvPek8KGPeF9p5ijWzYFNdjTonF39k+5mbPaoSYMzwPXAPJzMZJQ4dtdSeOinN
+ +UevKkH5M3pG8vWN412+cDNDOeZJUO88qWfKfSEl9d+R44ntWjfN0rN+idMg+Z1tbbwv
+ Hzww==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVSbPWkIrnZ/jO6ZHTFOKZgFmtRDAK3g9vz5ivq5L3l1yBfIuX4w6UQO7Ca1HlxTXzBA/mddGgeYvBT@nongnu.org
-X-Gm-Message-State: AOJu0YxlJYT7qCZuzfrlE3vQXcL0CKJAhyLaZlb1laLsk5Zclvi4GqVy
- vBBYae6xNFI4BiMDLlEZMEjQFHPrPq877vAma7KE3TJaODF5EPj05oyFeuHdWAMllZA=
-X-Gm-Gg: ASbGncvDkJkgO++YAK2uB+nPuhPj8HUcT4Ixb7h1h0hDpFyo2A/wV6IywvoLWrzew01
- xLJh7FdtUq1KTMsBgJoHFAyWe0d1ueO47Yaz232OJuf9kbknU13opWNuYwhd4A8ZbzEv9SKrAHj
- bpjgKEklX9l3lHDxWaShNV97f4EnHGuXkzpLgbJka6C/xjsAzG2hjzjvq2iNwubqs9nz/DnEhO5
- CLovMnRbGkF7sHe+1VF2G4v2EXlHicfO7tts8MduAOxr1MyIT7FaQ1YUaVvo0hiG77apEAZ8vH9
- ig0VZMSrefo7re4LgIZFc/k3uZKEAWNe2DQxzp3qr9apylvLi0eJlEh+c3C54UX7lveJyec3TsT
- 3B+qPOeD+zS0EFIXYy89JQLL5ixZ8
-X-Google-Smtp-Source: AGHT+IFHjIcnpaePc0el3LVWE2E82mR2SxTjA7Coypu8hPUxMgYwwsV0gYQ7b7oVnd884rexKSbsXw==
-X-Received: by 2002:a05:600c:1381:b0:45b:6b57:5308 with SMTP id
- 5b1f17b1804b1-45b6b575361mr4639525e9.7.1756230600150; 
- Tue, 26 Aug 2025 10:50:00 -0700 (PDT)
+ AJvYcCU+RIo2mtTz4FwUuRcAMApWz2D1meE1JWPBAN0MMa4jZmLOxLk16mSaarvyPUiARrQrYBAISY+LjR/L@nongnu.org
+X-Gm-Message-State: AOJu0YwwBAWwYhC2TGoxRVN1axUQ499+3H0z9f3KMo/TJkWmRyZtQ6Li
+ ZAaBJxs1XEZtE6iV1Dyk6S+d3Euf9YqqHMSdgjIRZ/N4p94jyTlWmeSYSRT0IIvjLw4=
+X-Gm-Gg: ASbGncsoMoxfUD3dqMYqyWQ9G4KcvhR0/+/zRsAUsvf6BYb7+7VZUo19L3OXH8JH4Q6
+ 3RaLg/U0Pubeg2B+/W4VZ+zX0c25bsJfQGtF/rDDPtb2cuTerH7evP/XxKJPNYOnfY9QYF9hrak
+ fXgTaA1sUgeO3GE0OAPeI8rsBfK1ImJJi8H2YovKGZ15j00Gexc54Qc+BW83OUzwVL7HL2nDBNE
+ oMG5yrtH8fZ/nHUYFuD3QrUu0lOmZxRe77TqBzZbvNKeHbVkoKIs1g2oIq/Nss8Fin606++y3My
+ jPTxeF04Q8GG1U1kSKbS+yTx3So5BYlMPDexQyj0oJ1iiR1HAK2ylRmu1YOTafw+AQOHka25O2S
+ BpzYAKIjOKDpexAIOZlKWWcpQ0OpgKFYTu/IHRrERV+XpclE0Xw==
+X-Google-Smtp-Source: AGHT+IGAeP4yyb8pKmZ9PabKABgqh7hvmUCViyJAXfxrBhuvTANVF9HkEBHxvZFcZQcOuscu2+QQBQ==
+X-Received: by 2002:a05:600c:45c8:b0:45b:627a:60c7 with SMTP id
+ 5b1f17b1804b1-45b627a62e6mr70324575e9.6.1756230601829; 
+ Tue, 26 Aug 2025 10:50:01 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b6c5356a7sm2593435e9.15.2025.08.26.10.49.58
+ 5b1f17b1804b1-45b6c5356a7sm2593435e9.15.2025.08.26.10.50.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Aug 2025 10:49:58 -0700 (PDT)
+ Tue, 26 Aug 2025 10:50:00 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Alistair Francis <alistair@alistair23.me>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Francisco Iglesias <francisco.iglesias@amd.com>
-Subject: [PATCH 1/2] hw/misc/xlnx-versal-cframe-reg: Free FIFO,
- g_tree on deinit
-Date: Tue, 26 Aug 2025 18:49:55 +0100
-Message-ID: <20250826174956.3010274-2-peter.maydell@linaro.org>
+Subject: [PATCH 2/2] hw/display/xlnx_dp: Don't leak dpcd and edid objects
+Date: Tue, 26 Aug 2025 18:49:56 +0100
+Message-ID: <20250826174956.3010274-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250826174956.3010274-1-peter.maydell@linaro.org>
 References: <20250826174956.3010274-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,61 +102,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the xlnx-versal-cframe-reg device we create a FIFO in
-instance_init but don't destroy it on deinit, causing ASAN
-to report a leak in the device-introspect-test:
+In the xnlx_dp_init() function we create the s->dpcd and
+s->edid objects with qdev_new(); then in xlnx_dp_realize()
+we realize the dpcd with qdev_realize() and the edid with
+qdev_realize_and_unref().
 
-Direct leak of 400 byte(s) in 1 object(s) allocated from:
-    #0 0x5aded4d54e23 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-aarch64+0x24ffe23) (BuildId: 9f1e6c53fecd904ba5fc1f521d7da080a0e4103b)
-    #1 0x71fbfac9bb09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
-    #2 0x5aded850059d in fifo8_create /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../util/fifo8.c:27:18
-    #3 0x5aded582b9e4 in fifo32_create /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/include/qemu/fifo32.h:35:5
-    #4 0x5aded582b326 in cframe_reg_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/misc/xlnx-versal-cframe-reg.c:693:5
+This is inconsistent, and both ways result in a memory
+leak for the instance_init -> deinit lifecycle tested
+by device-introspect-test:
 
-Similarly, we don't clean up the g_tree we create:
-Direct leak of 48 byte(s) in 1 object(s) allocated from:
+Indirect leak of 1968 byte(s) in 1 object(s) allocated from:
     #0 0x5aded4d54e23 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-aarch64+0x24ffe23) (BuildId: 9f1e6c5
 3fecd904ba5fc1f521d7da080a0e4103b)
     #1 0x71fbfac9bb09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
-    #2 0x71fbfaccc799 in g_tree_new_full (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x93799) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d7
-5)
-    #3 0x5aded582b21a in cframe_reg_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/misc/xlnx-versal-cframe-reg.c:691:18
+    #2 0x5aded7b9211c in object_new_with_type /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:767:15
+    #3 0x5aded7b92240 in object_new /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:789:12
+    #4 0x5aded7b773e4 in qdev_new /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/core/qdev.c:149:19
+    #5 0x5aded54458be in xlnx_dp_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/display/xlnx_dp.c:1272:20
 
-Add an instance_finalize method to clean up what we
-allocated in instance_init.
+Direct leak of 344 byte(s) in 1 object(s) allocated from:
+    #0 0x5aded4d54e23 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-aarch64+0x24ffe23) (BuildId: 9f1e6c53fecd904ba5fc1f521d7da080a0e4103b)
+    #1 0x71fbfac9bb09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
+    #2 0x5aded7b9211c in object_new_with_type /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:767:15
+    #3 0x5aded7b92240 in object_new /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:789:12
+    #4 0x5aded7b773e4 in qdev_new /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/core/qdev.c:149:19
+    #5 0x5aded5445a56 in xlnx_dp_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/display/xlnx_dp.c:1275:22
+
+Instead, explicitly object_unref() after we have added the objects as
+child properties of the device.  This means they will automatically
+be freed when this device is deinited.  When we do this,
+qdev_realize() is the correct way to realize them in
+xlnx_dp_realize().
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/misc/xlnx-versal-cframe-reg.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ hw/display/xlnx_dp.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/hw/misc/xlnx-versal-cframe-reg.c b/hw/misc/xlnx-versal-cframe-reg.c
-index 1ce083e2409..95e167b9213 100644
---- a/hw/misc/xlnx-versal-cframe-reg.c
-+++ b/hw/misc/xlnx-versal-cframe-reg.c
-@@ -693,6 +693,14 @@ static void cframe_reg_init(Object *obj)
-     fifo32_create(&s->new_f_data, FRAME_NUM_WORDS);
- }
+diff --git a/hw/display/xlnx_dp.c b/hw/display/xlnx_dp.c
+index 7c980ee6423..ef73e1815fc 100644
+--- a/hw/display/xlnx_dp.c
++++ b/hw/display/xlnx_dp.c
+@@ -1267,14 +1267,18 @@ static void xlnx_dp_init(Object *obj)
+     s->aux_bus = aux_bus_init(DEVICE(obj), "aux");
  
-+static void cframe_reg_finalize(Object *obj)
-+{
-+    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(obj);
-+
-+    fifo32_destroy(&s->new_f_data);
-+    g_tree_destroy(s->cframes);
-+}
-+
- static const VMStateDescription vmstate_cframe = {
-     .name = "cframe",
-     .version_id = 1,
-@@ -833,6 +841,7 @@ static const TypeInfo cframe_reg_info = {
-     .instance_size = sizeof(XlnxVersalCFrameReg),
-     .class_init    = cframe_reg_class_init,
-     .instance_init = cframe_reg_init,
-+    .instance_finalize = cframe_reg_finalize,
-     .interfaces = (const InterfaceInfo[]) {
-         { TYPE_XLNX_CFI_IF },
-         { }
+     /*
+-     * Initialize DPCD and EDID..
++     * Initialize DPCD and EDID. Once we have added the objects as
++     * child properties of this device, we can drop the reference we
++     * hold to them, leaving the child-property as the only reference.
+      */
+     s->dpcd = DPCD(qdev_new("dpcd"));
+     object_property_add_child(OBJECT(s), "dpcd", OBJECT(s->dpcd));
++    object_unref(s->dpcd);
+ 
+     s->edid = I2CDDC(qdev_new("i2c-ddc"));
+     i2c_slave_set_address(I2C_SLAVE(s->edid), 0x50);
+     object_property_add_child(OBJECT(s), "edid", OBJECT(s->edid));
++    object_unref(s->edid);
+ 
+     fifo8_create(&s->rx_fifo, 16);
+     fifo8_create(&s->tx_fifo, 16);
+@@ -1311,8 +1315,8 @@ static void xlnx_dp_realize(DeviceState *dev, Error **errp)
+     qdev_realize(DEVICE(s->dpcd), BUS(s->aux_bus), &error_fatal);
+     aux_map_slave(AUX_SLAVE(s->dpcd), 0x0000);
+ 
+-    qdev_realize_and_unref(DEVICE(s->edid), BUS(aux_get_i2c_bus(s->aux_bus)),
+-                           &error_fatal);
++    qdev_realize(DEVICE(s->edid), BUS(aux_get_i2c_bus(s->aux_bus)),
++                 &error_fatal);
+ 
+     s->console = graphic_console_init(dev, 0, &xlnx_dp_gfx_ops, s);
+     surface = qemu_console_surface(s->console);
 -- 
 2.43.0
 
