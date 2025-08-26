@@ -2,98 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E900B36EBC
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 17:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F8FB36FDC
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 18:17:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqvvW-0003EA-62; Tue, 26 Aug 2025 11:49:38 -0400
+	id 1uqwGu-0003iu-1t; Tue, 26 Aug 2025 12:11:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uqvvQ-0003DY-On
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 11:49:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uqvvL-0003da-GA
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 11:49:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756223358;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tnAw/Dtiq2M0v56dg1IIzRHeysoBF0QQldpC31nZcQo=;
- b=YoBykQX72mZnrUgqPb01gRv7RSGOhuxag6Pa4NKd5bYSsAWpXh4t4GP/GkaBr1xpRoakXc
- idfEFYOmUmWeA3pvCfDG3gUC4g9a+RHw4LRMaCcq0xWlRP2A9DO7RTpTls0AeB2IevS6j8
- XppHZuFG7UG1xPV/dcgYJH3shK7lPQ8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-_GCsfY8nOO6L3de2yfG8nA-1; Tue, 26 Aug 2025 11:49:16 -0400
-X-MC-Unique: _GCsfY8nOO6L3de2yfG8nA-1
-X-Mimecast-MFC-AGG-ID: _GCsfY8nOO6L3de2yfG8nA_1756223355
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-45b612dbc28so14654285e9.0
- for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 08:49:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1uqwGe-0003di-AS; Tue, 26 Aug 2025 12:11:28 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1uqwGW-0007jI-V7; Tue, 26 Aug 2025 12:11:26 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-b49d6f8f347so2673499a12.0; 
+ Tue, 26 Aug 2025 09:11:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1756224670; x=1756829470; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AhbLYMshYAUBc3POZs0F74KQaPEz55+loE8jlkKBrEA=;
+ b=YSbV85diLpUKrfrsm8n5JyM/jIpJ6RR+EN5/tkwcsbVLOaZg+3axb9kHJVFcvHPXzJ
+ QnqeS8BGezEgW0hZzZ/gpeDwKXRTL/Nf3bqk+nWSpVGk7FpCiIoFb5Lmmf5XhcenTyt5
+ a8aGovpWCpAlP2oE40W3ZaiRyEMtZRlUdLkAlCPLTmQj0uGN357byHptrcSxtpjiZh8+
+ KHZEFQkJYHD6ffMF2EPNVKay8T5OQObCJA30ChHwTBOYWT4XBuPMl9cavxwrjk5MKBUi
+ AnvC46BrJSdvoE1vyODhBEtfeHp/c4ypJIhe4nn49PYGPkF3VpF0rJc8dwVuaP2pQw1J
+ RYHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756223355; x=1756828155;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tnAw/Dtiq2M0v56dg1IIzRHeysoBF0QQldpC31nZcQo=;
- b=g0OfdtThxN9u0dveEmmDDxCBeYmb7WH59LUT+AlVYdzgZtgsDK4vFVgiFDKFoBZpWJ
- NQM5cQpzTO7Ecw6UCwnXIJ/7aErZhSHK8VGMatOob0xj14ARhlo90lu3cXS5lz3J2PBK
- /EocjieiHLJrjNVeItXE5vaFhib672bY4ehHU4gSgjjMfNVwmRPUcZ6tmebf14MWRipU
- myO6ZCLvBbuDa0h8yeqGOdDt9jkKK/H0afW1YaAODI1ZEaoW8KbTYozM12Y7t/knQpwI
- IzywB0TmZiVk6fbNyjecY/U3fhOlVMjDyzw/FYECq5k7WdwmcVY9olH6Kq3Wp6H2D8MM
- 2ROw==
-X-Gm-Message-State: AOJu0YxRzq0EWPovswdVJfy5yF9sg6wabh7dH9ufyeLCQGO6VFPvPYkt
- VrJ68KRo1WiBfKXuc4YHqEgIoJSzjsvYpFxwLk4Ui219PbA9EiUKNTI7d1hH53dllSIW3U4+bu8
- 2q5bIDiSYU4qDNlQhGJKnsmqtgwguBP213K5Q2GmpxmXPN0DGq5Vgd1yH
-X-Gm-Gg: ASbGncvN2hLfhQSmtC1nFKAbtsg0HdWDnuazd3X7IfljuZHhttdYpY+E4Al6SAvPkvd
- lyPPnpP7D1djXGWiV/4Vryjd5eRs/6yEBieO2fHZ0ji9hWcRbU0Pj3qtnr+JSqMDFcctB2xg5pa
- 9mCoffMrwvsu5POMh7jL1kdos5YYwVrc5d54B6o0CpO7LywqOLTgpxqJMgFR3PVhrbEsW6047R5
- fh35pgQ7McEuxg2tnA0gL4FmjIJwxfHgLGpFT5t8pj3lUDUEmMRe6UbOe2mbIR+Bf9CCyPuPu1b
- BdjS2lRrb0p1NYuyHFYJ0p8PKrNH6s4=
-X-Received: by 2002:a05:600c:46d3:b0:450:cabd:b4a9 with SMTP id
- 5b1f17b1804b1-45b517d2733mr124123575e9.29.1756223355413; 
- Tue, 26 Aug 2025 08:49:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGtd4QHwNqK+KCUJDfWt0qhH9oHrFBPu1LUpT4pFXRN3hbOp2qIS+YqrhrgD2gK/hjU0vL6Rw==
-X-Received: by 2002:a05:600c:46d3:b0:450:cabd:b4a9 with SMTP id
- 5b1f17b1804b1-45b517d2733mr124123355e9.29.1756223354916; 
- Tue, 26 Aug 2025 08:49:14 -0700 (PDT)
-Received: from redhat.com ([185.137.39.227]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b5753503esm154595765e9.1.2025.08.26.08.49.13
+ d=1e100.net; s=20230601; t=1756224670; x=1756829470;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=AhbLYMshYAUBc3POZs0F74KQaPEz55+loE8jlkKBrEA=;
+ b=Z5ytF61M5xuDN4tbJeX1D83ohxWDTa8LTNNs8IRWx6/Gzth6QCcLiZsJvWDNZkOpEg
+ dkRtWf69QiOtvMkUFqwliqdSHIbmK69HvgLH2nxhfDb5BTgHgWaKbY5X1tfI8kK1y1Z1
+ 6l5phpQDKYQySRWrVVU4FypddwGtqoRrFOaKr5Hb8teVZQjj+yb2qkzutet9zDOtcHPj
+ WUPJHT9ddrQUmWLHfF8CMkAmfF4t1h65wOmZnVjl1zU323Sb5DFOFRK/4K64pQQBfXV0
+ Zehn73R7y/FMJScjvpZmzsqTBKbZNc7Ox+TaQnWbVzAfGWryoTCZfYUTlxAjvzMVRxUC
+ IThA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVm9LiWRUILflK9Bli3XmVdKcGp4DzLPSU8mzPC+c+AY2v2H9TcVkVXs0GFlqFHILQZSp+2kJsqhg==@nongnu.org,
+ AJvYcCWTJT7YoQu6KQVQmhQQDgu7EONsrBVPfWVjvzxT49tyG9cw4wZkZtCKMzTrGYgCryBzHeiivgtmmmSM5A==@nongnu.org
+X-Gm-Message-State: AOJu0YwJBoKZXNQy8xjVaK9uiK552Bbo9Mf60D77A/vFHBuyW4rENr5f
+ QaFxSilTtC354xu3R0R4Et4akgFeeDPLHmHl5NTmxzaD7f7Q+aYQf2p8nLLipQ==
+X-Gm-Gg: ASbGncuqMEAOEwoQRKAm8mZO2jae/V48WHEmluuzoIko8wkmSrsV9JrcwommBZDxzbK
+ OAXDE0PQfmfqy3loZQ9zUN/TvVoZcxgK+8X3owXRg/IkqqMjf7gvqAtgHrLOzLyYIQe7sBqtR7+
+ ih4b4pacDHrfe7zlwgBxgvffzqlUxKfEmkRAaa6SiymI42Nr2qrUYMwm3o/18gq9toyrwhHoADM
+ SjlTdci9ScaUTHbL1IvnxvAVnIvg39mb4agda2lr73k1KBHeQepIeo0Ss6lJypAlOWDsBoF84ju
+ NPmq9uN2cxWr7NX6t92/oL1iVbAjSSuYV/7mUVyfGitXaNfcfz44GyozK6DtLCfbA4WalbSQx1J
+ SEI0IPjtoeqMO8KuiAg5zyA==
+X-Google-Smtp-Source: AGHT+IFQWwLCA/juWOF1czhFawogvI/Pf19u10kCZ+xfnl0r5+tAN4bwO9GuF/YuyLJQZvojKYYnVw==
+X-Received: by 2002:a17:90b:5386:b0:313:176b:3d4b with SMTP id
+ 98e67ed59e1d1-32515eab5demr19170688a91.22.1756224670221; 
+ Tue, 26 Aug 2025 09:11:10 -0700 (PDT)
+Received: from ktock.. ([240d:1a:3b6:8b00:561f:1400:11f5:714b])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-32750bc341asm1749747a91.19.2025.08.26.09.11.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Aug 2025 08:49:14 -0700 (PDT)
-Date: Tue, 26 Aug 2025 11:49:11 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- "odaki@rsg.ci.i.u-tokyo.ac.jp" <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- "sriram.yagnaraman@ericsson.com" <sriram.yagnaraman@ericsson.com>,
- DAMIEN BERGAMINI <damien.bergamini@eviden.com>
-Subject: Re: [PATCH] pcie_sriov: Fix broken MMIO accesses from SR-IOV VFs
-Message-ID: <20250826114836-mutt-send-email-mst@kernel.org>
-References: <20250820083953.439635-1-clement.mathieu--drif@eviden.com>
- <8eaba1a296152a4750ac581172fa6ba150d5c8c3.camel@eviden.com>
+ Tue, 26 Aug 2025 09:11:09 -0700 (PDT)
+From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ WANG Xuerui <git@xen0n.name>, Aurelien Jarno <aurelien@aurel32.net>,
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <arikalo@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <Alistair.Francis@wdc.com>, Stefan Weil <sw@weilnetz.de>,
+ qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, ktokunaga.mail@gmail.com
+Subject: [PATCH v2 00/35] wasm: Add Wasm TCG backend based on wasm64
+Date: Wed, 27 Aug 2025 01:10:05 +0900
+Message-ID: <cover.1756216429.git.ktokunaga.mail@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <8eaba1a296152a4750ac581172fa6ba150d5c8c3.camel@eviden.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL=0.141, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,155 +108,218 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 26, 2025 at 03:11:58PM +0000, CLEMENT MATHIEU--DRIF wrote:
-> Hi all,
-> 
-> Kindly ping,  
-> do you think we could have a look at this issue after the release of 10.1?
-> 
-> Thanks  
-> \>cmd
+V2:
 
-indeed.
+- Reorganized commits to implement the backend incrementally from a clean
+  state.
+- Removed the andc, orc, eqv, nand and nor operations to rely on default
+  expansion.
+- Removed the bswap operations to use default expansion.
+- Removed the extract and deposit oprations to use default expansion.
+- Updated the sextract to emit only when the corresponding Wasm instruction
+  is available
+- Removed the not operation to rely on default expansion.
+- Fixed the neg implementation to "ret = 0 - arg"
+- Added Wasm implementation of the mb operation using the atomic.fence
+  instruction.
 
-> On Wed, 2025-08-20 at 08:41 +0000, CLEMENT MATHIEU--DRIF wrote:
-> > From: Damien Bergamini <[damien.bergamini@eviden.com](mailto:damien.bergamini@eviden.com)>
-> > 
-> > Starting with commit cab1398a60eb, SR-IOV VFs are realized as soon as  
-> > pcie_sriov_pf_init() is called.  Because pcie_sriov_pf_init() must be  
-> > called before pcie_sriov_pf_init_vf_bar(), the VF BARs types won't be  
-> > known when the VF realize function calls pcie_sriov_vf_register_bar().
-> > 
-> > This breaks the memory regions of the VFs (for instance with igbvf):
-> > 
-> > $ lspci  
-> > ...  
-> >     Region 0: Memory at 281a00000 (64-bit, prefetchable) [virtual] [size=16K]  
-> >     Region 3: Memory at 281a20000 (64-bit, prefetchable) [virtual] [size=16K]
-> > 
-> > $ info mtree  
-> > ...  
-> > address-space: pci_bridge_pci_mem  
-> >   0000000000000000-ffffffffffffffff (prio 0, i/o): pci_bridge_pci  
-> >     0000000081a00000-0000000081a03fff (prio 1, i/o): igbvf-mmio  
-> >     0000000081a20000-0000000081a23fff (prio 1, i/o): igbvf-msix
-> > 
-> > and causes MMIO accesses to fail:
-> > 
-> >     Invalid write at addr 0x281A01520, size 4, region '(null)', reason: rejected  
-> >     Invalid read at addr 0x281A00C40, size 4, region '(null)', reason: rejected
-> > 
-> > To fix this, a type parameter is added to pcie_sriov_vf_register_bar()  
-> > to indicate the BAR type. It should be set to the same value as in the  
-> > pcie_sriov_pf_init_vf_bar() call.
-> > 
-> > Fixes: cab1398a60eb ("pcie_sriov: Reuse SR-IOV VF device instances")  
-> > Signed-off-by: Damien Bergamini <[damien.bergamini@eviden.com](mailto:damien.bergamini@eviden.com)>  
-> > Signed-off-by: Clement Mathieu--Drif <[clement.mathieu--drif@eviden.com](mailto:clement.mathieu--drif@eviden.com)>  
-> > ---  
-> >  docs/pcie_sriov.txt         | 2 +-  
-> >  hw/net/igbvf.c              | 8 ++++++--  
-> >  hw/nvme/ctrl.c              | 4 +++-  
-> >  hw/pci/pci.c                | 3 ---  
-> >  hw/pci/pcie_sriov.c         | 6 ++----  
-> >  include/hw/pci/pcie_sriov.h | 2 +-  
-> >  6 files changed, 13 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/docs/pcie_sriov.txt b/docs/pcie_sriov.txt  
-> > index ab2142807f..77d618b36f 100644  
-> > --- a/docs/pcie_sriov.txt  
-> > +++ b/docs/pcie_sriov.txt  
-> > @@ -83,7 +83,7 @@ setting up a BAR for a VF.  
-> >        pcie_ari_init(d, 0x100);  
-> >        ...  
-> >        memory_region_init(mr, ... )  
-> > -      pcie_sriov_vf_register_bar(d, bar_nr, mr);  
-> > +      pcie_sriov_vf_register_bar(d, bar_nr, bar_type, mr);  
-> >        ...  
-> >     }  
-> >    
-> > diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c  
-> > index 31d72c4977..88dd8fb516 100644  
-> > --- a/hw/net/igbvf.c  
-> > +++ b/hw/net/igbvf.c  
-> > @@ -251,10 +251,14 @@ static void igbvf_pci_realize(PCIDevice *dev, Error **errp)  
-> >    
-> >      memory_region_init_io(&s->mmio, OBJECT(dev), &mmio_ops, s, "igbvf-mmio",  
-> >          IGBVF_MMIO_SIZE);  
-> > -    pcie_sriov_vf_register_bar(dev, IGBVF_MMIO_BAR_IDX, &s->mmio);  
-> > +    pcie_sriov_vf_register_bar(dev, IGBVF_MMIO_BAR_IDX,  
-> > +                               PCI_BASE_ADDRESS_MEM_TYPE_64 |  
-> > +                               PCI_BASE_ADDRESS_MEM_PREFETCH, &s->mmio);  
-> >    
-> >      memory_region_init(&s->msix, OBJECT(dev), "igbvf-msix", IGBVF_MSIX_SIZE);  
-> > -    pcie_sriov_vf_register_bar(dev, IGBVF_MSIX_BAR_IDX, &s->msix);  
-> > +    pcie_sriov_vf_register_bar(dev, IGBVF_MSIX_BAR_IDX,  
-> > +                               PCI_BASE_ADDRESS_MEM_TYPE_64 |  
-> > +                               PCI_BASE_ADDRESS_MEM_PREFETCH, &s->msix);  
-> >    
-> >      ret = msix_init(dev, IGBVF_MSIX_VEC_NUM, &s->msix, IGBVF_MSIX_BAR_IDX, 0,  
-> >          &s->msix, IGBVF_MSIX_BAR_IDX, 0x2000, 0x70, errp);  
-> > diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c  
-> > index f5ee6bf260..35a82d2037 100644  
-> > --- a/hw/nvme/ctrl.c  
-> > +++ b/hw/nvme/ctrl.c  
-> > @@ -8709,7 +8709,9 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)  
-> >          memory_region_add_subregion(&n->bar0, 0, &n->iomem);  
-> >    
-> >          if (pci_is_vf(pci_dev)) {  
-> > -            pcie_sriov_vf_register_bar(pci_dev, 0, &n->bar0);  
-> > +            pcie_sriov_vf_register_bar(pci_dev, 0,  
-> > +                                       PCI_BASE_ADDRESS_SPACE_MEMORY |  
-> > +                                       PCI_BASE_ADDRESS_MEM_TYPE_64, &n->bar0);  
-> >          } else {  
-> >              pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY |  
-> >                               PCI_BASE_ADDRESS_MEM_TYPE_64, &n->bar0);  
-> > diff --git a/hw/pci/pci.c b/hw/pci/pci.c  
-> > index c70b5ceeba..4fe2626f9e 100644  
-> > --- a/hw/pci/pci.c  
-> > +++ b/hw/pci/pci.c  
-> > @@ -1490,9 +1490,6 @@ void pci_register_bar(PCIDevice *pci_dev, int region_num,  
-> >                          : pci_get_bus(pci_dev)->address_space_mem;  
-> >    
-> >      if (pci_is_vf(pci_dev)) {  
-> > -        PCIDevice *pf = pci_dev->exp.sriov_vf.pf;  
-> > -        assert(!pf || type == pf->exp.sriov_pf.vf_bar_type[region_num]);  
-> > -  
-> >          r->addr = pci_bar_address(pci_dev, region_num, r->type, r->size);  
-> >          if (r->addr != PCI_BAR_UNMAPPED) {  
-> >              memory_region_add_subregion_overlap(r->address_space,  
-> > diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c  
-> > index 8a4bf0d6f7..eedce6be1d 100644  
-> > --- a/hw/pci/pcie_sriov.c  
-> > +++ b/hw/pci/pcie_sriov.c  
-> > @@ -242,13 +242,11 @@ void pcie_sriov_pf_init_vf_bar(PCIDevice *dev, int region_num,  
-> >      dev->exp.sriov_pf.vf_bar_type[region_num] = type;  
-> >  }  
-> >    
-> > +/* `type` must match the type passed to pcie_sriov_pf_init_vf_bar() */  
-> >  void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,  
-> > -                                MemoryRegion *memory)  
-> > +                                uint8_t type, MemoryRegion *memory)  
-> >  {  
-> > -    uint8_t type;  
-> > -  
-> >      assert(dev->exp.sriov_vf.pf);  
-> > -    type = dev->exp.sriov_vf.pf->exp.sriov_pf.vf_bar_type[region_num];  
-> >    
-> >      return pci_register_bar(dev, region_num, type, memory);  
-> >  }  
-> > diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h  
-> > index aeaa38cf34..b67449f8ba 100644  
-> > --- a/include/hw/pci/pcie_sriov.h  
-> > +++ b/include/hw/pci/pcie_sriov.h  
-> > @@ -39,7 +39,7 @@ void pcie_sriov_pf_init_vf_bar(PCIDevice *dev, int region_num,  
-> >    
-> >  /* Instantiate a bar for a VF */  
-> >  void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,  
-> > -                                MemoryRegion *memory);  
-> > +                                uint8_t type, MemoryRegion *memory);  
-> >    
-> >  /**  
-> >   * pcie_sriov_pf_init_from_user_created_vfs() - Initialize PF with user-created
+Note:
+The first four commits are temporarily imported from a separated patch
+series which enables 64bit guests using wasm64 [2]. These commits are under
+review in that series and are included here only to allow subsequent patches
+to build. Please ignore them when reviewing this series.
+
+V1:
+
+This patch series adds a TCG backend for WebAssembly. Unlike eariler
+attempts [1], it is implemented using Emscripten's wasm64 target to support
+64bit guests.
+
+The first four commits are temporarily imported from a separated patch
+series which enables 64bit guests using wasm64 [2]. These commits are under
+review in that series and are included here only to allow subsequent patches
+to build. Please ignore them when reviewing this series.
+
+# New TCG Backend for Browsers
+
+A new TCG backend translates IR instructions into Wasm instructions and runs
+them using the browser's WebAssembly APIs (WebAssembly.Module and
+WebAssembly.instantiate). To minimize compilation overhead and avoid hitting
+the browser's limitation of the number of instances, this backend integrates
+a forked TCI. TBs run on TCI by default, with frequently executed TBs
+compiled into WebAssembly.
+
+# 64bit guests support by wasm64
+
+Support for 64bit guests is being reviewed in a separated patch series [2],
+which enables QEMU to use 64bit pointers by compiling with the --cpu=wasm64
+flag. The Wasm TCG backend is based on this feature and also requires
+--cpu=wasm64.
+
+QEMU compiled with --cpu=wasm64 runs on wasm64-capable engines. To support
+engines which don't support wasm64 (e.g. Safari), the Wasm backend can use
+the compatibility flag "--enable-wasm64-32bit-address-limit" also introduced
+in [2]. This flag enables 64bit pointers in the C code while Emscripten
+lowers the output binary to wasm32 and limits the maximum memory size to
+4GB. As a result, the Wasm backend can run on wasm32 engiens while
+supporting 64bit guests.
+
+Note: The flag was originally named --wasm64-32bit-address-limit but this
+patch series moved it from the configure script into meson_options.txt. To
+follow Meson's naming conventions, it was renamed to
+--enable-wasm64-32bit-address-limit.
+
+# Overview of build process
+
+To compile QEMU with Emscripten, the following dependencies are required.
+The emsdk-wasm-cross.docker environment includes all necessary components
+and can be used as the build environment:
+
+- Emscripten SDK (emsdk) v4.0.10
+- Libraries cross-compiled with Emscripten (please see also
+  emsdk-wasm-cross.docker for build steps)
+  - GLib v2.84.0
+  - zlib v1.3.1
+  - libffi v3.5.2
+  - Pixman v0.44.2
+
+The configure script supports --cpu=wasm64 flag to compile QEMU with 64bit
+pointer support.
+
+emconfigure ./configure --cpu=wasm64 \
+                        --static --disable-tools \
+                        --target-list=x86_64-softmmu
+emmake make -j$(nproc)
+
+If the output needs to run on wasm32 engines, use
+"--enable-wasm64-32bit-address-limit" flag.
+
+emconfigure ./configure --cpu=wasm64 --enable-wasm64-32bit-address-limit \
+                        --static --disable-tools \
+                        --target-list=x86_64-softmmu
+emmake make -j$(nproc)
+
+Either of the above commands generates the following files:
+
+- qemu-system-x86_64.js
+- qemu-system-x86_64.wasm
+
+Guest images can be packaged using Emscripten's file_packager.py tool.
+For example, if the images are stored in a directory named "pack", the
+following command packages them, allowing QEMU to access them through
+Emscripten's virtual filesystem:
+
+/path/to/file_packager.py qemu-system-x86_64.data --preload pack > load.js
+
+This process generates the following files:
+
+- qemu-system-x86_64.data
+- load.js
+
+Emscripten allows passing arguments to the QEMU command via the Module
+object in JavaScript:
+
+Module['arguments'] = [
+    '-nographic', '-m', '512M',
+    '-L', 'pack/',
+    '-drive', 'if=virtio,format=raw,file=pack/rootfs.bin',
+    '-kernel', 'pack/bzImage',
+    '-append', 'earlyprintk=ttyS0 console=ttyS0 root=/dev/vda loglevel=7',
+];
+
+The sample repository [3] (tcgdev64 branch) provides a complete setup,
+including an HTML file that implements a terminal UI.
+
+[1] https://patchew.org/QEMU/cover.1747744132.git.ktokunaga.mail@gmail.com/
+[2] https://patchew.org/QEMU/cover.1754534225.git.ktokunaga.mail@gmail.com/
+[3] https://github.com/ktock/qemu-wasm-sample/tree/tcgdev64
+
+Kohei Tokunaga (35):
+  meson: Add wasm64 support to the --cpu flag
+  configure: Enable to propagate -sMEMORY64 flag to Emscripten
+  dockerfiles: Add support for wasm64 to the wasm Dockerfile
+  .gitlab-ci.d: Add build tests for wasm64
+  tcg/wasm: Add tcg-target.h and tcg-target-reg-bits.h
+  tcg/wasm: Add register-related definitions
+  tcg/wasm: Add constraint definitions
+  tcg/wasm: Add relocation callbacks
+  tcg/wasm: Add and/or/xor instructions
+  tcg/wasm: Add add/sub/mul instructions
+  tcg/wasm: Add shl/shr/sar instructions
+  tcg/wasm: Add setcond/negsetcond/movcond instructions
+  tcg/wasm: Add sextract instruction
+  tcg/wasm: Add load and store instructions
+  tcg/wasm: Add mov/movi instructions
+  tcg/wasm: Add ext instructions
+  tcg/wasm: Add div/rem instructions
+  tcg/wasm: Add neg/ctpop instructions
+  tcg/wasm: Add rot/clz/ctz instructions
+  tcg/wasm: Add br/brcond instructions
+  tcg/wasm: Add exit_tb/goto_tb/goto_ptr instructions
+  tcg/wasm: Add call instruction
+  tcg/wasm: Add qemu_ld/qemu_st instructions
+  tcg/wasm: Add mb instruction
+  tcg/wasm: Mark unimplemented instructions
+  tcg/wasm: Add initialization of fundamental registers
+  tcg/wasm: Write wasm binary to TB
+  tcg/wasm: Implement instantiation of Wasm binary
+  tcg/wasm: Allow switching coroutine from a helper
+  tcg/wasm: Enable instantiation of TBs executed many times
+  tcg/wasm: Enable TLB lookup
+  tcg/wasm: Add tcg_target_init function
+  meson.build: enable to build Wasm backend
+  meson.build: Propagate optimization flag for linking on Emscripten
+  .gitlab-ci.d: build wasm backend in CI
+
+ .gitlab-ci.d/buildtest.yml                    |   26 +-
+ .gitlab-ci.d/container-cross.yml              |   20 +-
+ .gitlab-ci.d/container-template.yml           |    4 +-
+ MAINTAINERS                                   |    9 +-
+ configure                                     |   14 +-
+ include/accel/tcg/getpc.h                     |    2 +-
+ include/tcg/helper-info.h                     |    4 +-
+ include/tcg/tcg.h                             |    2 +-
+ meson.build                                   |   16 +-
+ meson_options.txt                             |    3 +
+ scripts/meson-buildoptions.sh                 |    5 +
+ tcg/aarch64/tcg-target.c.inc                  |   11 +
+ tcg/arm/tcg-target.c.inc                      |   11 +
+ tcg/i386/tcg-target.c.inc                     |   11 +
+ tcg/loongarch64/tcg-target.c.inc              |   11 +
+ tcg/meson.build                               |    5 +
+ tcg/mips/tcg-target.c.inc                     |   11 +
+ tcg/ppc/tcg-target.c.inc                      |   11 +
+ tcg/region.c                                  |   10 +-
+ tcg/riscv/tcg-target.c.inc                    |   11 +
+ tcg/s390x/tcg-target.c.inc                    |   11 +
+ tcg/sparc64/tcg-target.c.inc                  |   11 +
+ tcg/tcg.c                                     |   21 +-
+ tcg/tci/tcg-target.c.inc                      |   11 +
+ tcg/wasm.c                                    |  855 +++++
+ tcg/wasm.h                                    |  117 +
+ tcg/wasm/tcg-target-con-set.h                 |   19 +
+ tcg/wasm/tcg-target-con-str.h                 |   14 +
+ tcg/wasm/tcg-target-has.h                     |   14 +
+ tcg/wasm/tcg-target-mo.h                      |   20 +
+ tcg/wasm/tcg-target-opc.h.inc                 |   18 +
+ tcg/wasm/tcg-target-reg-bits.h                |   11 +
+ tcg/wasm/tcg-target.c.inc                     | 2843 +++++++++++++++++
+ tcg/wasm/tcg-target.h                         |   61 +
+ ...2-cross.docker => emsdk-wasm-cross.docker} |   29 +-
+ 35 files changed, 4218 insertions(+), 34 deletions(-)
+ create mode 100644 tcg/wasm.c
+ create mode 100644 tcg/wasm.h
+ create mode 100644 tcg/wasm/tcg-target-con-set.h
+ create mode 100644 tcg/wasm/tcg-target-con-str.h
+ create mode 100644 tcg/wasm/tcg-target-has.h
+ create mode 100644 tcg/wasm/tcg-target-mo.h
+ create mode 100644 tcg/wasm/tcg-target-opc.h.inc
+ create mode 100644 tcg/wasm/tcg-target-reg-bits.h
+ create mode 100644 tcg/wasm/tcg-target.c.inc
+ create mode 100644 tcg/wasm/tcg-target.h
+ rename tests/docker/dockerfiles/{emsdk-wasm32-cross.docker => emsdk-wasm-cross.docker} (85%)
+
+-- 
+2.43.0
 
 
