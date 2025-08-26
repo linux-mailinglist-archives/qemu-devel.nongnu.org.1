@@ -2,99 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3BEB37012
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 18:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 383F8B36FDF
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 18:17:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqwKm-0001gM-Nf; Tue, 26 Aug 2025 12:15:46 -0400
+	id 1uqwGy-0003oQ-Bs; Tue, 26 Aug 2025 12:11:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uqwJq-00083e-Eu; Tue, 26 Aug 2025 12:14:47 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uqwGl-0003gA-Gr
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 12:11:36 -0400
+Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uqwJi-0008Il-AQ; Tue, 26 Aug 2025 12:14:46 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-244582738b5so52761755ad.3; 
- Tue, 26 Aug 2025 09:14:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uqwGg-0007la-N3
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 12:11:35 -0400
+Received: by mail-yb1-xb2c.google.com with SMTP id
+ 3f1490d57ef6-e95230750ceso54094276.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 09:11:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1756224873; x=1756829673; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oCoav4mrpfqHaiFY4ajN/hsX2ml/OjgBByRUO4LMbYo=;
- b=ixel1rGR2u7y2Jpq6tR8IVhDetpBV4haWTsqIZwkqdk7lgCJaBlzPKtBzijm4YtFX7
- FWc7b8hvvPAEyJduNQuwyyFHkX2F9zyqQ0Lw8uMUKKAQlsIXuAMgRDFYlG/4zAxskad5
- +4WOFtuTH+WCcLpr5Ne4SS4QLKIaSdqHfdW5nhzy60FosM+lW6VwA0EpJGgmkcF2heFs
- D6LZ08Rjbnw71Sokyw7y1TgpCAnCEIVsYsACibASjlIO37l4I3iRd+oJKteIqR0s3Fea
- XH/9wxL9GcxpW5n7359MvWVpuCFvfy1d6AmFOmbGNJnLDIDmTO0yRxpVbYeWAR0DLGu/
- HaJA==
+ d=linaro.org; s=google; t=1756224686; x=1756829486; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=O7kJUl2HyHWeiIs/wOtzDyPGPHNcnUTzf0SB6Hkr2Tw=;
+ b=po4URwlcOHaVStiGSbgxnQg6H3c0ebyxbC4wuUTwrCFjn9ot0KwEh8j072wtvOGKTo
+ iX5vpv7M05co2osLUZxX+4h0txVBRL20a0o1Mbj0PcV8aXMP2m1HKvQlVLabvcyx0PmU
+ CCQh602brl8AmVKf9CrGcADUk3ZsIpVaPgZ6wONU2jvQGraM9aflfK5+oezWjlMTDLaF
+ HXlx4n3L25k5tZcqA3Br2ZK/fSnf+LKa2Ez++L6dGh2BnrTsZqeujr2xb7kKVf4Mvnyq
+ cUcexEoHzj22f11nbwOywutre18rhX3uV1svqVuBOb/QlQpxd8f92N6lwWOoxzm6j3kn
+ QlUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756224873; x=1756829673;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oCoav4mrpfqHaiFY4ajN/hsX2ml/OjgBByRUO4LMbYo=;
- b=vFuAWeE/5TaS5/eRB8IWq0RYPucrXq33azMhY69KhkNqvB9x2neztNk9K9xg+R0zoM
- CCTBv/tx/bbdVIHhqKB6XJuZxuBpjK9KbbRqY3si+oJH1xyh9MQfNpgmbYapNZ9WywuJ
- xuxjznBMnPOWNlgM/jNzyhMSIjCsx4GcwxzggN8ai9PsE20l6ts8FHzHyZetfJ8fiYWQ
- Vl01sEk+RgEGSlmrlRqxgyY6Xcuw+7ElVpCfEbsGZrfMDD+4pJEytRNKlord67jrrrUK
- zdV7LAdaNmlP/q+66OqZuTIP6ojhXg6JT0uqIpk3NuKuXPT/yyfCl2QLMMOAj0sve4nE
- lyig==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUS3g3do1pKYvKRG25njV7WKEP59lhgwYktrDgSU3hkcf7FZa6qd2GAo3JWbmufbg/HoN/DdsI/iTfdcg==@nongnu.org,
- AJvYcCWJnK/dXn83sTRS6tzm4hjcDX+JUL8+z9Z9yEnA1IuFUaakwueEu/+nXL1rCvVSMJwQCyoCxgcLqQ==@nongnu.org
-X-Gm-Message-State: AOJu0YxNJvZJqttMvVtPBRj79cBzO+JQIAkcTU26oxWTQVUGIqe/XRoK
- +MZNQVm7Lh3/CtDIU4BmXVc3zu4I9hz/tMoxK+H59R44h5pJ8uZgqe0Ik+YESA==
-X-Gm-Gg: ASbGncsnAGj0j/axQWkZH/h9p7ypiOSqXjzu0sE8akA6wR+HwdTBilpcC8j/XKvRfGP
- TXjqF4/VKm18QWbFm11IH23K9r8c8m33TWZck01cJAwIBsWE4e6vXzeTVFosbQfTH3q0qHerat2
- vaYIiKX/c6+Je1glO5Yz726YH0fTyS2IMOhiVHiV8XEH4KXR3qGaldMcJK2b6AmIClsPmPJQffD
- JHStv2W68EuB+PUvIIzY1Pwyh3IrwFr4cM0gg5Uefsie6W4LJhi0dXy4zDBE65Z/T4oxJotfBv6
- w2WHRjQRrXWyUzDt+4V0iJSeHDfcGoHECLXtgd/DRSaYFthl693Vr7DkMYH08gm4y10Va7Gdmfg
- Tl0OAve5OBl6Rq6Ll5dAYZg==
-X-Google-Smtp-Source: AGHT+IFRCmQWJ9CogmZARXKjErIvYcf/SsL7dJP/MWxh/uQL54ZxQUozCMki9/gXZkOinrrsjTDwHA==
-X-Received: by 2002:a17:902:ce8b:b0:240:52c8:2564 with SMTP id
- d9443c01a7336-2462ee8e8f4mr243377115ad.26.1756224873418; 
- Tue, 26 Aug 2025 09:14:33 -0700 (PDT)
-Received: from ktock.. ([240d:1a:3b6:8b00:561f:1400:11f5:714b])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-32750bc341asm1749747a91.19.2025.08.26.09.14.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Aug 2025 09:14:32 -0700 (PDT)
-From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- WANG Xuerui <git@xen0n.name>, Aurelien Jarno <aurelien@aurel32.net>,
- Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <Alistair.Francis@wdc.com>, Stefan Weil <sw@weilnetz.de>,
- qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, ktokunaga.mail@gmail.com
-Subject: [PATCH v2 35/35] .gitlab-ci.d: build wasm backend in CI
-Date: Wed, 27 Aug 2025 01:10:40 +0900
-Message-ID: <3592577fc7a8cbed09c94cf873357dc374dab260.1756216429.git.ktokunaga.mail@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1756216429.git.ktokunaga.mail@gmail.com>
-References: <cover.1756216429.git.ktokunaga.mail@gmail.com>
+ d=1e100.net; s=20230601; t=1756224686; x=1756829486;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=O7kJUl2HyHWeiIs/wOtzDyPGPHNcnUTzf0SB6Hkr2Tw=;
+ b=bElGEP+zmSC9t/C7B7MbkwrN2KTi914F2CWMxRJ1qfRxMNTrRW0mQF3/NmDOsjSTsY
+ NHeGHFVldJWcGSpitZKUfvgZq4RZ46cONRsMkP+2RpXlTLPOj8UbtWt+gatoNdNEuPPl
+ SSuHUd1WCXmEUGVCLEWSowf4428NCWHoXOQ0VILcDQfPFdOF2MoycS5EARBK+qo6DOm7
+ qoaHcpVWrq8+zxfDXWyKfp9OtsA4MP6so1xU1ZZ3khgENR/qjAcmK5au6zQ+clOgiMEX
+ WZfafiAG6NHmj5uOaPhc2mDzvgPK4kF8vs3WCJkq9+jonUHQY3a2n9cn9JiKKPUuqt1R
+ +XaQ==
+X-Gm-Message-State: AOJu0Yy51HWyQfMF9DGmyCXb8j8t3W2IH89G2HnFR8G2oRNTgyHKecBX
+ NtVUHuisuP1pHajpibCwiZGF82jELFg3CDoNq2whoikkdycQ9QVKK1lwlkHPrSPZUUsWldPHSgU
+ PYsPGVRmaEEsBkEBKeSoBhIDCsePGpVw/av5L5RPjZw==
+X-Gm-Gg: ASbGncvxIJ2NPWPzLe66orR0fUG2DE7luJGHDogpWEhIGjAuY4skigpYf5m7KS20m6P
+ mn2wjIuyyPsSH2LQlkf7mfjQVFX1G1mmdcyiUznmXrqb99LZkpFZ39eM+a5UoNcQD/jwC9JPggk
+ MaIo3yNr5GZmyvhvdbRK/IGxEATtfkS9V2UAJvxjwHwOMdOM2FFyaYPYeWGZq2hPl1mV3kU4vV4
+ 4tzjOOfzsXZsvpEQyI=
+X-Google-Smtp-Source: AGHT+IHbb3JolvfDuLXQHx9QUpprqqMsHT2lAocXVfm11lFsoGgBdDafvPBLgKElsOcRfCPBS7v8giOBG4Jvn49kjwc=
+X-Received: by 2002:a25:aaf0:0:b0:e96:c3a2:995e with SMTP id
+ 3f1490d57ef6-e96e4792dd5mr1290368276.4.1756224686361; Tue, 26 Aug 2025
+ 09:11:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x62b.google.com
+References: <20250803014019.416797-1-richard.henderson@linaro.org>
+ <20250803014019.416797-6-richard.henderson@linaro.org>
+In-Reply-To: <20250803014019.416797-6-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 26 Aug 2025 17:11:14 +0100
+X-Gm-Features: Ac12FXycyYvLKNvj4520RkDABjBoNQ_XWqFfNXrE6Qw3crTmxb81c9sNn73PIcQ
+Message-ID: <CAFEAcA9-KHXiLbYvoxjanLgheU5Y9B2LNfz8QZpjO6aHXHUVXQ@mail.gmail.com>
+Subject: Re: [PATCH 05/11] target/arm: Implement CTZ, CNT, ABS
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,33 +91,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds the build tests for the wasm backend.
+On Sun, 3 Aug 2025 at 02:41, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  target/arm/tcg/translate-a64.c | 31 +++++++++++++++++++++++++++++++
+>  target/arm/tcg/a64.decode      |  4 ++++
+>  2 files changed, 35 insertions(+)
+>
+> diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+> index 64a845d5fb..0c78d4bb79 100644
+> --- a/target/arm/tcg/translate-a64.c
+> +++ b/target/arm/tcg/translate-a64.c
+> @@ -8304,6 +8304,37 @@ static void gen_cls32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
+>  TRANS(CLZ, gen_rr, a->rd, a->rn, a->sf ? gen_clz64 : gen_clz32)
+>  TRANS(CLS, gen_rr, a->rd, a->rn, a->sf ? tcg_gen_clrsb_i64 : gen_cls32)
+>
+> +static void gen_ctz32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
+> +{
+> +    TCGv_i32 t32 = tcg_temp_new_i32();
+> +
+> +    tcg_gen_extrl_i64_i32(t32, tcg_rn);
+> +    tcg_gen_ctzi_i32(t32, t32, 32);
+> +    tcg_gen_extu_i32_i64(tcg_rd, t32);
+> +}
+> +
+> +static void gen_ctz64(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
+> +{
+> +    tcg_gen_ctzi_i64(tcg_rd, tcg_rn, 64);
+> +}
+> +
+> +static void gen_cnt32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
+> +{
+> +    gen_wrap2_i32(tcg_rn, tcg_rn, tcg_gen_ctpop_i32);
+> +}
+> +
+> +static void gen_abs32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
+> +{
+> +    gen_wrap2_i32(tcg_rn, tcg_rn, tcg_gen_abs_i32);
+> +}
 
-Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
----
- .gitlab-ci.d/buildtest.yml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I'm squashing in the following trivial fix:
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index a97bb89714..16a3322277 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -803,7 +803,7 @@ build-wasm64-64bit:
-     job: wasm64-64bit-emsdk-cross-container
-   variables:
-     IMAGE: emsdk-wasm64-64bit-cross
--    CONFIGURE_ARGS: --static --cpu=wasm64 --disable-tools --enable-debug --enable-tcg-interpreter
-+    CONFIGURE_ARGS: --static --cpu=wasm64 --disable-tools --enable-debug
- 
- build-wasm64-32bit:
-   extends: .wasm_build_job_template
-@@ -812,4 +812,4 @@ build-wasm64-32bit:
-     job: wasm64-32bit-emsdk-cross-container
-   variables:
-     IMAGE: emsdk-wasm64-32bit-cross
--    CONFIGURE_ARGS: --static --cpu=wasm64 --enable-wasm64-32bit-address-limit --disable-tools --enable-debug --enable-tcg-interpreter
-+    CONFIGURE_ARGS: --static --cpu=wasm64 --enable-wasm64-32bit-address-limit --disable-tools --enable-debug
--- 
-2.43.0
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -8324,12 +8324,12 @@ static void gen_ctz64(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
 
+ static void gen_cnt32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
+ {
+-    gen_wrap2_i32(tcg_rn, tcg_rn, tcg_gen_ctpop_i32);
++    gen_wrap2_i32(tcg_rd, tcg_rn, tcg_gen_ctpop_i32);
+ }
+
+ static void gen_abs32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
+ {
+-    gen_wrap2_i32(tcg_rn, tcg_rn, tcg_gen_abs_i32);
++    gen_wrap2_i32(tcg_rd, tcg_rn, tcg_gen_abs_i32);
+ }
+
+ TRANS_FEAT(CTZ, aa64_cssc, gen_rr, a->rd, a->rn,
+
+-- PMM
 
