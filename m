@@ -2,80 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383F8B36FDF
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 18:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A6CB36FA5
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 18:13:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqwGy-0003oQ-Bs; Tue, 26 Aug 2025 12:11:48 -0400
+	id 1uqwHO-00045a-FA; Tue, 26 Aug 2025 12:12:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uqwGl-0003gA-Gr
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 12:11:36 -0400
-Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uqwGg-0007la-N3
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 12:11:35 -0400
-Received: by mail-yb1-xb2c.google.com with SMTP id
- 3f1490d57ef6-e95230750ceso54094276.0
- for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 09:11:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756224686; x=1756829486; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=O7kJUl2HyHWeiIs/wOtzDyPGPHNcnUTzf0SB6Hkr2Tw=;
- b=po4URwlcOHaVStiGSbgxnQg6H3c0ebyxbC4wuUTwrCFjn9ot0KwEh8j072wtvOGKTo
- iX5vpv7M05co2osLUZxX+4h0txVBRL20a0o1Mbj0PcV8aXMP2m1HKvQlVLabvcyx0PmU
- CCQh602brl8AmVKf9CrGcADUk3ZsIpVaPgZ6wONU2jvQGraM9aflfK5+oezWjlMTDLaF
- HXlx4n3L25k5tZcqA3Br2ZK/fSnf+LKa2Ez++L6dGh2BnrTsZqeujr2xb7kKVf4Mvnyq
- cUcexEoHzj22f11nbwOywutre18rhX3uV1svqVuBOb/QlQpxd8f92N6lwWOoxzm6j3kn
- QlUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756224686; x=1756829486;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=O7kJUl2HyHWeiIs/wOtzDyPGPHNcnUTzf0SB6Hkr2Tw=;
- b=bElGEP+zmSC9t/C7B7MbkwrN2KTi914F2CWMxRJ1qfRxMNTrRW0mQF3/NmDOsjSTsY
- NHeGHFVldJWcGSpitZKUfvgZq4RZ46cONRsMkP+2RpXlTLPOj8UbtWt+gatoNdNEuPPl
- SSuHUd1WCXmEUGVCLEWSowf4428NCWHoXOQ0VILcDQfPFdOF2MoycS5EARBK+qo6DOm7
- qoaHcpVWrq8+zxfDXWyKfp9OtsA4MP6so1xU1ZZ3khgENR/qjAcmK5au6zQ+clOgiMEX
- WZfafiAG6NHmj5uOaPhc2mDzvgPK4kF8vs3WCJkq9+jonUHQY3a2n9cn9JiKKPUuqt1R
- +XaQ==
-X-Gm-Message-State: AOJu0Yy51HWyQfMF9DGmyCXb8j8t3W2IH89G2HnFR8G2oRNTgyHKecBX
- NtVUHuisuP1pHajpibCwiZGF82jELFg3CDoNq2whoikkdycQ9QVKK1lwlkHPrSPZUUsWldPHSgU
- PYsPGVRmaEEsBkEBKeSoBhIDCsePGpVw/av5L5RPjZw==
-X-Gm-Gg: ASbGncvxIJ2NPWPzLe66orR0fUG2DE7luJGHDogpWEhIGjAuY4skigpYf5m7KS20m6P
- mn2wjIuyyPsSH2LQlkf7mfjQVFX1G1mmdcyiUznmXrqb99LZkpFZ39eM+a5UoNcQD/jwC9JPggk
- MaIo3yNr5GZmyvhvdbRK/IGxEATtfkS9V2UAJvxjwHwOMdOM2FFyaYPYeWGZq2hPl1mV3kU4vV4
- 4tzjOOfzsXZsvpEQyI=
-X-Google-Smtp-Source: AGHT+IHbb3JolvfDuLXQHx9QUpprqqMsHT2lAocXVfm11lFsoGgBdDafvPBLgKElsOcRfCPBS7v8giOBG4Jvn49kjwc=
-X-Received: by 2002:a25:aaf0:0:b0:e96:c3a2:995e with SMTP id
- 3f1490d57ef6-e96e4792dd5mr1290368276.4.1756224686361; Tue, 26 Aug 2025
- 09:11:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1uqwHM-00042b-8f
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 12:12:12 -0400
+Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1uqwHI-0007s0-9c
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 12:12:12 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1756224711; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=oIgY4wP+n+J0RuHiEpxnuDCbQyJmEgf+ELDsixTID0KvXYCR9zk0o7XC9YLS+9Wd9D6GgzGnaXUNZRUeKB+FyxxQSOeCoZHPHap+npUkzUaiWVa2+H1FncXqPXQnpCl1YsGoVkoVAytYUMF0HtaBpeh5o3s98qNBE8Qr0v/rw2Q=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1756224711;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=YUDA0L4U1Vf1e3PJBNHvJc2zWuNcqsgNP1gSSwsEPOs=; 
+ b=GPp1FfS0pPsNP4qKRW8/wu1p2OBQnL9njqoA+18soF3YA1t51J5uJTowu7XTWoTz1CiBSrPE250cfGy2FCT+8WJN8WyOYH8qyLPyfgQPXc3EnXaTUBUUdHvbzXnz6GqO0JnKouTHeL6pZq5Blsl0Di1Fe9d9suPADTU09zRDfWE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+ dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756224711; 
+ s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=YUDA0L4U1Vf1e3PJBNHvJc2zWuNcqsgNP1gSSwsEPOs=;
+ b=fTyuJ+2WiYDT1Ytms0hooqp3JZ0Y6wO557eNrGhY5HJSyfwJUocR5zgYnH8ofdcO
+ YnfhQ/xYARSGyCr/gLBDR71jkhEG0nM9wVAmg2eyomW8QCccbveZRkVhpNMyX35sbaB
+ 5QWr7dx/tdrUfxlVSSSOU+AA2s8wg4Cz/CeEdi88=
+Received: by mx.zohomail.com with SMTPS id 1756224708787629.6723358167159;
+ Tue, 26 Aug 2025 09:11:48 -0700 (PDT)
+Message-ID: <98f97bda-3936-4025-b706-61ac6136493c@collabora.com>
+Date: Tue, 26 Aug 2025 19:11:45 +0300
 MIME-Version: 1.0
-References: <20250803014019.416797-1-richard.henderson@linaro.org>
- <20250803014019.416797-6-richard.henderson@linaro.org>
-In-Reply-To: <20250803014019.416797-6-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 26 Aug 2025 17:11:14 +0100
-X-Gm-Features: Ac12FXycyYvLKNvj4520RkDABjBoNQ_XWqFfNXrE6Qw3crTmxb81c9sNn73PIcQ
-Message-ID: <CAFEAcA9-KHXiLbYvoxjanLgheU5Y9B2LNfz8QZpjO6aHXHUVXQ@mail.gmail.com>
-Subject: Re: [PATCH 05/11] target/arm: Implement CTZ, CNT, ABS
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2c.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/functional/test_aarch64_virt_gpu: Skip test if EGL
+ won't initialize
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+References: <20250826123455.2856988-1-peter.maydell@linaro.org>
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20250826123455.2856988-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+Received-SPF: pass client-ip=136.143.188.112;
+ envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,66 +80,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 3 Aug 2025 at 02:41, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On 8/26/25 15:34, Peter Maydell wrote:
+> If you are using the Nvidia drivers and have installed new versions
+> of those packages but have not yet rebooted the host kernel,
+> attempting to use the egl-headless display will cause QEMU to fail to
+> start with
+> 
+> $ qemu-system-aarch64 -M virt -display egl-headless
+> qemu-system-aarch64: egl: eglInitialize failed: EGL_NOT_INITIALIZED
+> qemu-system-aarch64: egl: render node init failed
+> 
+> together with this complaint in the host kernel dmesg:
+> 
+> [7874777.555649] NVRM: API mismatch: the client has the version 535.247.01, but
+>                  NVRM: this kernel module has the version 535.230.02.  Please
+>                  NVRM: make sure that this kernel module and all NVIDIA driver
+>                  NVRM: components have the same version.
+> 
+> This isn't a problem with QEMU itself, so reporting this as a test
+> failure is misleading.  Instead skip the tests, as we already do for
+> various other kinds of "host system can't actually run the EGL
+> display" situation.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->  target/arm/tcg/translate-a64.c | 31 +++++++++++++++++++++++++++++++
->  target/arm/tcg/a64.decode      |  4 ++++
->  2 files changed, 35 insertions(+)
->
-> diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-> index 64a845d5fb..0c78d4bb79 100644
-> --- a/target/arm/tcg/translate-a64.c
-> +++ b/target/arm/tcg/translate-a64.c
-> @@ -8304,6 +8304,37 @@ static void gen_cls32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
->  TRANS(CLZ, gen_rr, a->rd, a->rn, a->sf ? gen_clz64 : gen_clz32)
->  TRANS(CLS, gen_rr, a->rd, a->rn, a->sf ? tcg_gen_clrsb_i64 : gen_cls32)
->
-> +static void gen_ctz32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
-> +{
-> +    TCGv_i32 t32 = tcg_temp_new_i32();
-> +
-> +    tcg_gen_extrl_i64_i32(t32, tcg_rn);
-> +    tcg_gen_ctzi_i32(t32, t32, 32);
-> +    tcg_gen_extu_i32_i64(tcg_rd, t32);
-> +}
-> +
-> +static void gen_ctz64(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
-> +{
-> +    tcg_gen_ctzi_i64(tcg_rd, tcg_rn, 64);
-> +}
-> +
-> +static void gen_cnt32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
-> +{
-> +    gen_wrap2_i32(tcg_rn, tcg_rn, tcg_gen_ctpop_i32);
-> +}
-> +
-> +static void gen_abs32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
-> +{
-> +    gen_wrap2_i32(tcg_rn, tcg_rn, tcg_gen_abs_i32);
-> +}
+> I run into this fairly often so I got fed up with just ignoring the
+> spurious test failure messages...
+> ---
+>  tests/functional/test_aarch64_virt_gpu.py | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/tests/functional/test_aarch64_virt_gpu.py b/tests/functional/test_aarch64_virt_gpu.py
+> index 38447278579..4e50887c3e9 100755
+> --- a/tests/functional/test_aarch64_virt_gpu.py
+> +++ b/tests/functional/test_aarch64_virt_gpu.py
+> @@ -76,6 +76,8 @@ def _launch_virt_gpu(self, gpu_device):
+>                  self.skipTest("egl-headless support is not available")
+>              elif "'type' does not accept value 'dbus'" in excp.output:
+>                  self.skipTest("dbus display support is not available")
+> +            elif "eglInitialize failed: EGL_NOT_INITIALIZED" in excp.output:
+> +                self.skipTest("EGL failed to initialize on this host")
+>              else:
+>                  self.log.info("unhandled launch failure: %s", excp.output)
+>                  raise excp
 
-I'm squashing in the following trivial fix:
+Acked-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -8324,12 +8324,12 @@ static void gen_ctz64(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
-
- static void gen_cnt32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
- {
--    gen_wrap2_i32(tcg_rn, tcg_rn, tcg_gen_ctpop_i32);
-+    gen_wrap2_i32(tcg_rd, tcg_rn, tcg_gen_ctpop_i32);
- }
-
- static void gen_abs32(TCGv_i64 tcg_rd, TCGv_i64 tcg_rn)
- {
--    gen_wrap2_i32(tcg_rn, tcg_rn, tcg_gen_abs_i32);
-+    gen_wrap2_i32(tcg_rd, tcg_rn, tcg_gen_abs_i32);
- }
-
- TRANS_FEAT(CTZ, aa64_cssc, gen_rr, a->rd, a->rn,
-
--- PMM
+-- 
+Best regards,
+Dmitry
 
