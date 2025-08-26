@@ -2,104 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC735B371A6
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 19:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B52CB371B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Aug 2025 19:51:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uqxkS-0005xs-MS; Tue, 26 Aug 2025 13:46:21 -0400
+	id 1uqxoB-0007dg-AZ; Tue, 26 Aug 2025 13:50:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uqxkJ-0005tW-Th
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 13:46:14 -0400
-Received: from mail-yb1-xb29.google.com ([2607:f8b0:4864:20::b29])
+ id 1uqxo7-0007dG-L6
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 13:50:09 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uqxk7-0006S8-La
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 13:46:11 -0400
-Received: by mail-yb1-xb29.google.com with SMTP id
- 3f1490d57ef6-e96d65194c1so1576890276.1
- for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 10:45:58 -0700 (PDT)
+ id 1uqxo5-0007ID-3m
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 13:50:07 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-45a1b05ac1eso32316645e9.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 10:50:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756230356; x=1756835156; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=JnB79UeR1JR2QHdamVbJtuX1Gne8UdhR6ShXKkmGj+Q=;
- b=Pp9uWG7UaXNTMujmKvK6xCHiE7UNDcN3a5KI5Mwb/bvJEfcEiSWJz+xdF5xsEZsoOk
- pwMSfER593ch6VJt6vKo4+XlWNpGv6BYhC9pCuEYlQO0/OlGKDaXDMpKUwTrIL8QFqSR
- UAJMAJHOM0cHjusdkHg++w5oLge6sOiIe+X3uWj8u65BB+/GoozksPkZ1umeFC1lqWI2
- B3mdng503SG+W/oPqWnQ4D+EMU05S2vYx0afQYuXEqihBoq3sghq/MX0ttMzxRiL+vV0
- BAV/rSbDw0xR/tSSrNdm3KVlX7mrzoNHqeMJwceG598MpLtcGomrU2qdI9u9I7nSwMwi
- eqsw==
+ d=linaro.org; s=google; t=1756230598; x=1756835398; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZR/RUH7irZ6A1UiT0VeZJ2PP4cGJptOqXwQzMuavR84=;
+ b=RBRs9wfpfxdMlQ5tQro2GylQypWIdmij8gnMgyZXIT77FU+GuqyFEdQ15W2BSGXuZW
+ lkZoJzKDt1biAd4them2xOtHJiwtBNGq3dR7QUjRqcoe9acqS9555PHIJB6ks/XeSrTb
+ 5aL4hRG+OKf4SOZANpVe3MDWsm/1vUBMYk5A2MtQ9BeEiv+vak7c30zhOX6RNdCiZq0Y
+ kaXpeFpzx0g2riYQ8o+b3rXJGNpaWdiXOJBj2/FrvpyGw3q3LFR9IA0Wwr24DCQyEH5I
+ 5FpPm/a33W/5WBGtsI+vRAl4mIbNZGQN95REQnR9HNhLHYuF+226mPnFYsMnLXALnboF
+ XT6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756230356; x=1756835156;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1756230598; x=1756835398;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=JnB79UeR1JR2QHdamVbJtuX1Gne8UdhR6ShXKkmGj+Q=;
- b=Bcjb42+M8o3b+H7H8gUNUP471NGlzRYBRTvSSPy8iDK0q37q2ji5VLuuKG1+a1D87Y
- EKFBgDijf5YGqiksAa6Uxps9v2iNkCTe9iT1VJPj2ooJdC05sG4BHq9xy7eyuOXTxrqV
- HvakGhgSwPl5fPCPRH1xOFznDMlmPirVH5et5KVDJSwofsVF+sFX74q3zbXRqePhdtz0
- ViEmS3IsDQtU7gmAFWGg0fjQpxCt9lMF0h+Lqc8xhyVBXT9oA7aUN8IdDc6HYUvkC91z
- 2uwnaVV7djtMcIoZTkJicmnuHflz28j3EQNK5Yu76/qoQXzYTMFB4542dWKOZAKtSs9U
- hE0w==
+ bh=ZR/RUH7irZ6A1UiT0VeZJ2PP4cGJptOqXwQzMuavR84=;
+ b=SBEq5GdG44mCch+uQqKQOXGT84h0gLokWUckzLSBj1ksV6NBieOZmES+FflUZLt4aO
+ jMhbASKIUrEHd6+Y3EPlDDS1Viyc8OkQ7D1ztANU408gHqRCPKkGM+okr0jDsHGOzpEq
+ 7qZc1jkQYD24nQmSkubPhqoCqHTE+LIr01XKiLL/sDSIZA+mpVFGytwE2Uy4nRp7boW1
+ mTIvp5becolJGjRmf5DP4R5UFv8uJskh8PdQTPNMLCHEMKPfNTKqcDqUK36wO26Ije4x
+ O7BL3Ff7KbRyyfAARNfrFcaPTy+F2Wmoo457Z3uIRKjhCgns3O0o8XUoP1jebiarArJX
+ vDeQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXpahwP1Mb5y0u2z1WhIf90gFdBNhaaOZ5bznYsyTfIrWi1D8n3hOjQx9icvL5HKOlpqmidfUENFlCE@nongnu.org
-X-Gm-Message-State: AOJu0YySHFH9+7lRMSUETbSh4zlZD9tBgXuf2HbHF1Cys+pJva9gXmPf
- se13ZyMThqW5imyfnVQAmR05B03wxrpJjoMS+U3x0TZyU75PtM41aS33jBCPBbdcwhq5JYLDKz3
- C1q535QunBLAJplaSdvwo9LaNkGs7OJU4xjac4iyOoQ==
-X-Gm-Gg: ASbGncslAWOGSNav3enVwvnoY9xlGlyPsNNyk+I1uWViQc8Y3b8wT0P+TGqGeKEIrV4
- fMhKjv1O2wt7taooLChgV+bWBICjJFbSEErYR0DYDMAO3qLKJV8+UaoV7DayYYVY/cqWzHOISqF
- j6FDDbKbY2sMtSI37cLLDrVRaZHqCWH6IgJlZ04ZPKqKQwnHM35IlakxGHN+SwKGkbp+dSiwG/C
- AoqKL6tz7Bk4HWw8cI=
-X-Google-Smtp-Source: AGHT+IGgs89pFH1ao75VYrI7xULLR9SIG/Ps//4C4VeI636bW2tosrmBKGv4VHaP53q1qbtUTYv4mYetbQHhp0ZQ4vU=
-X-Received: by 2002:a05:6902:3103:b0:e85:e81d:9e20 with SMTP id
- 3f1490d57ef6-e951c2c8547mr15084023276.8.1756230355778; Tue, 26 Aug 2025
- 10:45:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250110-san-v8-0-57a5a1be1bcf@daynix.com>
- <20250110-san-v8-2-57a5a1be1bcf@daynix.com>
- <CAFEAcA-aTYebu-5s4AeBfE3oLQfxTwCpeosoj0TU8E_XPu_ZDg@mail.gmail.com>
- <CAFEAcA-ygHuA5BH+oftCGDKZOh8CHbiUKE4v=-iXvCaKzG4kHQ@mail.gmail.com>
- <aKctCjv8newNIX71@x1.local>
- <CAFEAcA8DV40fGsci76r4yeP1P-SP_QjNRDD2OzPxjx5wRs0GEg@mail.gmail.com>
- <aKdizYeNGocXvTzv@x1.local>
-In-Reply-To: <aKdizYeNGocXvTzv@x1.local>
+ AJvYcCUxlkLP0zGDRfiUnba9aYpCDtu7HP98MgipSJlhf/vMwS37lEgp4Jal/fsmyUmdy+kV6VOBf97b8njX@nongnu.org
+X-Gm-Message-State: AOJu0YwKRGBg5/ARSHqSU9/YVC7cAUu156YwZk8uZYWdmHi3XbxAQMBo
+ xKpNHJFaJiplKdJDAObUi28sj1GkQOhPWXc/eCS99M497U7hbbF5W2l7E0DV5owil9w=
+X-Gm-Gg: ASbGncsA2j4ZIqcs9kU3RqfFppahm+uPAOZIlueI3YwtDZDgFHVs63X56rfk13trC3I
+ Okn7MXZNGuPDeOPOVwe1bbZWTnkHm7/YYFu4YF+d7VbceZMzPXH3Otcj6xQWv+cs3WSfBOktx0D
+ qiuDIZJqhPFGCF5pHXo4RYpsAexlB9BR55pTfsqHgcyaIyWneTk/9fwUo7n2XUXOWhXVOJxuoki
+ p25scH2hxeyKR/0DMH8Xo0P3AChnDpgzrS381Cs/6yTksA9QtvueR2+sH478ddVNfSUzOgp+g9A
+ sVldFRHouvPwu4HpoqnTQSBi4Nx88Eij7ITJb402lOzhPGTRK3Q/Ssrxx8PhZ0alkQ0dVuWvX/H
+ NIbW/n9itd2Wy904QnadQV5JKlC4TPMWsUC3JCK8=
+X-Google-Smtp-Source: AGHT+IEbP3Rx/b48mBVvzwN1uckzNsWH1kGq3/1OhcH78QB9OacwBFE1ArCegs10pus07ZYVDJQMjA==
+X-Received: by 2002:a05:600c:5251:b0:459:df07:6da4 with SMTP id
+ 5b1f17b1804b1-45b5179cc97mr137309045e9.5.1756230598512; 
+ Tue, 26 Aug 2025 10:49:58 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b6c5356a7sm2593435e9.15.2025.08.26.10.49.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 26 Aug 2025 10:49:57 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 26 Aug 2025 18:45:43 +0100
-X-Gm-Features: Ac12FXwbHF0IcY3qkjG8MwMWRb2CfvAn1eqpRbrKYzB85B0dUz-BnOMGItlMk-4
-Message-ID: <CAFEAcA8dKu3mSuD=rJkwDPcvqQASsOpFPdpG4Ht59GrTb+AywA@mail.gmail.com>
-Subject: Re: [PATCH v8 2/2] memory: Do not create circular reference with
- subregion
-To: Peter Xu <peterx@redhat.com>
-Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>, 
- BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Alexey Kardashevskiy <aik@ozlabs.ru>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, 
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, 
- qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
- devel@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b29;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb29.google.com
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Francisco Iglesias <francisco.iglesias@amd.com>
+Subject: [PATCH 0/2] hw: fix some leaks in xlnx devices
+Date: Tue, 26 Aug 2025 18:49:54 +0100
+Message-ID: <20250826174956.3010274-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,111 +99,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 21 Aug 2025 at 19:18, Peter Xu <peterx@redhat.com> wrote:
-> I remember I provided a draft somewhere during the discussion, anyway.. I
-> redid it, and attached a formal patch below that will contain the removal
-> of the mr->container check (plus auto-detach when it happens).  The hope is
-> this should work.. and comparing to the v8 of Akihiko's, it won't make MR's
-> own refcount any more complicated.
->
-> If necessary, I can send a formal patch.
-
-This patch seems to work, in that it fixes the memory-region
-related leaks I previously was seeing. Review comments below
-(which are only about the commit message and docs).
-
-I also can't remember the details of the previous discussions about
-these patches, so I'm reviewing the one below essentially from
-scratch. Apologies in advance if we end up going back around
-a conversation loop that we've already had...
-
-> Thanks,
->
-> ===8<===
-> From f985c54af3e276b175bcb02725a5fb996c3f5fe5 Mon Sep 17 00:00:00 2001
-> From: Peter Xu <peterx@redhat.com>
-> Date: Thu, 21 Aug 2025 12:59:02 -0400
-> Subject: [PATCH] memory: Fix leaks due to owner-shared MRs circular references
->
-> Currently, QEMU refcounts the MR by always taking it from the owner.
->
-> It should be non-issue if all the owners of MRs will properly detach all
-> the MRs from their parents by memory_region_del_subregion() when the owner
-> will be freed.  However, it turns out many of the device emulations do not
-> do that properly.  It might be a challenge to fix all of such occurances.
-
-I think that it's not really right to cast this as "some devices
-don't do this right". The pattern of "a device has a container MR C
-and some other MRs A, B... which it puts into C" is a legitimate one.
-If you do this then (with the current code in QEMU) there is *no*
-place where a device emulation can do a manual "remove A, B.. from
-the container C so the refcounts go down": the place where devices
-undo what they did in instance_init is instance_deinit, but we
-will never call instance_deinit because the refcount of the owning
-device never goes to 0.
-
-Further, even if we had some place where devices could somehow
-undo the "put A, B... in the container so the refcounts go down
-correctly", it is better API design to have the memory.c code
-automatically handle this situation. "This just works" is more
-reliable than "this works if you do cleanup step X", because it's
-impossible to have the bug where you forget to write the code to
-do the cleanup step.
-
-> Without fixing it, QEMU faces circular reference issue when an owner can
-> contain more than one MRs, then when they are linked within each other in
-> form of subregions, those links keep the owner alive forever, causing
-> memory leaks even if all the external refcounts are released for the owner.
->
-> To fix that, teach memory API to stop refcount on MRs that share the same
-> owner because if they share the lifecycle of the owner, then they share the
-> same lifecycle between themselves.
->
-> Meanwhile, allow auto-detachments of MRs during finalize() of MRs even
-> against its container, as long as they belong to the same owner.
->
-> The latter is needed because now it's possible to have MR finalize() happen
-> in any order when they exactly share the same lifespan.  In this case, we
-> should allow finalize() to happen in any order of either the parent or
-> child MR, however it should be guaranteed that the mr->container shares the
-> same owner of this MR to be finalized.
->
-> Proper document this behavior in code.
->
-> This patch is heavily based on the work done by Akihiko Odaki:
->
-> https://lore.kernel.org/r/CAFEAcA8DV40fGsci76r4yeP1P-SP_QjNRDD2OzPxjx5wRs0GEg@mail.gmail.com
->
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  docs/devel/memory.rst |  9 +++++++--
->  system/memory.c       | 45 ++++++++++++++++++++++++++++++++++---------
->  2 files changed, 43 insertions(+), 11 deletions(-)
->
-> diff --git a/docs/devel/memory.rst b/docs/devel/memory.rst
-> index 57fb2aec76..1367c7caf7 100644
-> --- a/docs/devel/memory.rst
-> +++ b/docs/devel/memory.rst
-> @@ -158,8 +158,13 @@ ioeventfd) can be changed during the region lifecycle.  They take effect
->  as soon as the region is made visible.  This can be immediately, later,
->  or never.
->
-> -Destruction of a memory region happens automatically when the owner
-> -object dies.
-> +Destruction of a memory region happens automatically when the owner object
-> +dies.  Note that the MRs under the same owner can be destroyed in any order
-> +when the owner object dies.  It's because the MRs will share the same
-> +lifespan of the owner, no matter if its a container or child MR.  It's
-> +suggested to always cleanly detach the MRs under the owner object when the
-> +owner object is going to be destroyed, however it is not required, as the
-> +memory core will automatically detach the links when MRs are destroyed.
-
-I think we should not say "we suggest you always cleanly detach the MRs":
-instead we should say "you can rely on this happening, so you don't
-need to write manual code to do it".
-
-The actual code changes look OK to me.
+These patches fix some minor leaks in xlnx devices detected
+by running 'make check' under ASAN.
 
 thanks
 -- PMM
+
+Peter Maydell (2):
+  hw/misc/xlnx-versal-cframe-reg: Free FIFO, g_tree on deinit
+  hw/display/xlnx_dp: Don't leak dpcd and edid objects
+
+ hw/display/xlnx_dp.c             | 10 +++++++---
+ hw/misc/xlnx-versal-cframe-reg.c |  9 +++++++++
+ 2 files changed, 16 insertions(+), 3 deletions(-)
+
+-- 
+2.43.0
+
 
