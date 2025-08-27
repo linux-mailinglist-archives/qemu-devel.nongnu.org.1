@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE1CB37D24
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B032B37D25
 	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 10:11:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urBEQ-0000wn-5h; Wed, 27 Aug 2025 04:10:10 -0400
+	id 1urBEF-0000jc-6m; Wed, 27 Aug 2025 04:09:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1urBE2-0000bL-Jh
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 04:09:48 -0400
+ id 1urBE1-0000ar-Vl
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 04:09:46 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1urBDy-0004BK-Tb
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 04:09:46 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1urBDy-0004BL-Gt
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 04:09:45 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8BxXNI6va5obrADAA--.7285S3;
+ by gateway (Coremail) with SMTP id _____8DxM9A6va5ocbADAA--.7195S3;
  Wed, 27 Aug 2025 16:09:30 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJCxXME4va5oWKVrAA--.18662S6;
- Wed, 27 Aug 2025 16:09:29 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowJCxXME4va5oWKVrAA--.18662S7;
+ Wed, 27 Aug 2025 16:09:30 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v3 04/12] target/loongarch: Add function sptw_prepare_tlb
- before adding tlb entry
-Date: Wed, 27 Aug 2025 16:09:19 +0800
-Message-Id: <20250827080927.1644016-5-maobibo@loongson.cn>
+Subject: [PATCH v3 05/12] target/loongarch: Add common function
+ get_tlb_random_index()
+Date: Wed, 27 Aug 2025 16:09:20 +0800
+Message-Id: <20250827080927.1644016-6-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250827080927.1644016-1-maobibo@loongson.cn>
 References: <20250827080927.1644016-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJCxXME4va5oWKVrAA--.18662S6
+X-CM-TRANSID: qMiowJCxXME4va5oWKVrAA--.18662S7
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -65,102 +65,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With software page table walker, tlb entry comes from CSR registers.
-however with hardware page table walker, tlb entry comes from page
-table entry information directly, TLB CSR registers are not necessary.
+With software PTW system, tlb index is calculated randomly when new
+TLB entry is added. For hardware PTW, it is the same logic to add
+new TLB entry.
 
-Here add function sptw_prepare_context(), get tlb entry information
-from TLB CSR registers.
+Here common function get_tlb_random_index() is added to get random
+tlb index when adding new TLB entry.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- target/loongarch/cpu-mmu.h        |  1 +
- target/loongarch/tcg/tlb_helper.c | 37 ++++++++++++++++++++-----------
- 2 files changed, 25 insertions(+), 13 deletions(-)
+ target/loongarch/tcg/tlb_helper.c | 39 +++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 15 deletions(-)
 
-diff --git a/target/loongarch/cpu-mmu.h b/target/loongarch/cpu-mmu.h
-index e4f3199f44..c3e869234a 100644
---- a/target/loongarch/cpu-mmu.h
-+++ b/target/loongarch/cpu-mmu.h
-@@ -27,6 +27,7 @@ typedef struct MMUContext {
-     int           prot;
-     int           tlb_index;
-     int           mmu_index;
-+    uint64_t      pte_buddy[2];
- } MMUContext;
- 
- static inline bool cpu_has_ptw(CPULoongArchState *env)
 diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 10c01ead3f..fa216b92fd 100644
+index fa216b92fd..67b8f95849 100644
 --- a/target/loongarch/tcg/tlb_helper.c
 +++ b/target/loongarch/tcg/tlb_helper.c
-@@ -174,42 +174,53 @@ static void invalidate_tlb(CPULoongArchState *env, int index)
-     tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 0);
+@@ -390,31 +390,21 @@ void helper_tlbwr(CPULoongArchState *env)
+     old->tlb_entry1 = new.tlb_entry1;
  }
  
--static void fill_tlb_entry(CPULoongArchState *env, LoongArchTLB *tlb)
-+/* Prepare tlb entry information in software PTW mode */
-+static void sptw_prepare_context(CPULoongArchState *env, MMUContext *context)
+-void helper_tlbfill(CPULoongArchState *env)
++static int get_tlb_random_index(CPULoongArchState *env, vaddr addr, int ps)
  {
--    uint64_t lo0, lo1, csr_vppn;
--    uint16_t csr_asid;
--    uint8_t csr_ps;
-+    uint64_t csr_vppn;
+-    uint64_t address, entryhi;
++    vaddr address;
+     int index, set, i, stlb_idx;
+-    uint16_t pagesize, stlb_ps;
++    uint16_t stlb_ps;
+     uint16_t asid, tlb_asid;
+     LoongArchTLB *tlb;
+     uint8_t tlb_e;
  
-     if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
--        csr_ps = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
-+        context->ps = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
-         if (is_la64(env)) {
-             csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_64, VPPN);
-         } else {
-             csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_32, VPPN);
+-    if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
+-        entryhi = env->CSR_TLBREHI;
+-        /* Validity of pagesize is checked in helper_ldpte() */
+-        pagesize = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
+-    } else {
+-        entryhi = env->CSR_TLBEHI;
+-        /* Validity of pagesize is checked in helper_tlbrd() */
+-        pagesize = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
+-    }
+-
+     /* Validity of stlb_ps is checked in helper_csrwr_stlbps() */
+     stlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS, PS);
+     asid = FIELD_EX64(env->CSR_ASID, CSR_ASID, ASID);
+-    if (pagesize == stlb_ps) {
++    if (ps == stlb_ps) {
+         /* Only write into STLB bits [47:13] */
+-        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_64_VPPN_SHIFT);
++        address = addr & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_64_VPPN_SHIFT);
+         set = -1;
+         stlb_idx = (address >> (stlb_ps + 1)) & 0xff; /* [0,255] */
+         for (i = 0; i < 8; ++i) {
+@@ -459,6 +449,25 @@ void helper_tlbfill(CPULoongArchState *env)
          }
--        lo0 = env->CSR_TLBRELO0;
--        lo1 = env->CSR_TLBRELO1;
-+        context->pte_buddy[0] = env->CSR_TLBRELO0;
-+        context->pte_buddy[1] = env->CSR_TLBRELO1;
-     } else {
--        csr_ps = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
-+        context->ps = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
-         if (is_la64(env)) {
-             csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_64, VPPN);
-         } else {
-             csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_32, VPPN);
-         }
--        lo0 = env->CSR_TLBELO0;
--        lo1 = env->CSR_TLBELO1;
-+        context->pte_buddy[0] = env->CSR_TLBELO0;
-+        context->pte_buddy[1] = env->CSR_TLBELO1;
      }
  
-+    context->addr  = csr_vppn << R_TLB_MISC_VPPN_SHIFT;
++    return index;
 +}
 +
-+static void fill_tlb_entry(CPULoongArchState *env, LoongArchTLB *tlb)
++void helper_tlbfill(CPULoongArchState *env)
 +{
-+    uint64_t csr_vppn;
-+    uint16_t csr_asid;
-+    MMUContext context;
++    uint64_t entryhi;
++    int index, pagesize;
 +
-+    sptw_prepare_context(env, &context);
-+    csr_vppn = context.addr >> R_TLB_MISC_VPPN_SHIFT;
++    if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
++        entryhi = env->CSR_TLBREHI;
++        /* Validity of pagesize is checked in helper_ldpte() */
++        pagesize = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
++    } else {
++        entryhi = env->CSR_TLBEHI;
++        /* Validity of pagesize is checked in helper_tlbrd() */
++        pagesize = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
++    }
 +
-     /* Store page size in field PS */
-     tlb->tlb_misc = 0;
--    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, PS, csr_ps);
-+    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, PS, context.ps);
-     tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, VPPN, csr_vppn);
-     tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 1);
-     csr_asid = FIELD_EX64(env->CSR_ASID, CSR_ASID, ASID);
-     tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, ASID, csr_asid);
- 
--    tlb->tlb_entry0 = lo0;
--    tlb->tlb_entry1 = lo1;
-+    tlb->tlb_entry0 = context.pte_buddy[0];
-+    tlb->tlb_entry1 = context.pte_buddy[1];
++    index = get_tlb_random_index(env, entryhi, pagesize);
+     invalidate_tlb(env, index);
+     fill_tlb_entry(env, env->tlb + index);
  }
- 
- /* Return an random value between low and high */
 -- 
 2.39.3
 
