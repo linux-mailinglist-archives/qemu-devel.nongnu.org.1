@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7441BB3898F
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 20:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3AE7B38997
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 20:31:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urKsb-0006YN-A0; Wed, 27 Aug 2025 14:28:22 -0400
+	id 1urKsL-0005mq-MW; Wed, 27 Aug 2025 14:28:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1urKr0-00052o-9o
+ id 1urKr1-00053G-2a
  for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1urKqp-0005rx-5T
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:35 -0400
+ id 1urKqu-0005sX-B9
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756319183;
+ s=mimecast20190719; t=1756319186;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DznUdjNOyIWbRJG/98qm0Xg/nsiZRE997Fa9oQK3UAg=;
- b=ZBbL6/Uy40m16SxdfcFCZUBiTTj0Us4EF62ucNO02lLZJ2ziwTCL6r5ZsxfQaIXXHCaXNJ
- 8P5QTvC3T+uCx/Vwr9jLPhwPoPN9k9Nen1E/Az+kkP/PWCkP2yRtgEFXL3DhmtYoRoE1+H
- s52Eg9NVShYuNOA2WMzDMeL5wjNO7vg=
+ bh=mv9H/MsUUPau2pitXzSJwug9yy3jNWy54GNz6saS/c4=;
+ b=V3dN1dX1JVurAGRd5tGjfsg7d5jO9ZcQnw5BeKd8Y89bVi+TyTL/EgSQZHD/Y0WV3v2esE
+ 58jAYCWJnFP3En7gx58XOagFDbuZwMLBlPDs5Ys9h9dMU7Ez0FHtUpEEQUVjtysSonO5sy
+ EI6IqWrm1G2gyGKyt6jQ7WYxgWIMkGI=
 Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
  [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-512-Lk4vHeHnNuSdworDKfn4fA-1; Wed, 27 Aug 2025 14:26:22 -0400
-X-MC-Unique: Lk4vHeHnNuSdworDKfn4fA-1
-X-Mimecast-MFC-AGG-ID: Lk4vHeHnNuSdworDKfn4fA_1756319181
+ us-mta-493-4yudRQd6MrKMsS7sYNk4Tw-1; Wed, 27 Aug 2025 14:26:25 -0400
+X-MC-Unique: 4yudRQd6MrKMsS7sYNk4Tw-1
+X-Mimecast-MFC-AGG-ID: 4yudRQd6MrKMsS7sYNk4Tw_1756319184
 Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3cd2c0effddso49589f8f.3
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 11:26:21 -0700 (PDT)
+ ffacd0b85a97d-3cd34034c02so78318f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 11:26:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756319180; x=1756923980;
+ d=1e100.net; s=20230601; t=1756319183; x=1756923983;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DznUdjNOyIWbRJG/98qm0Xg/nsiZRE997Fa9oQK3UAg=;
- b=Z9MtDcHpbN0D5X7LRj0E7nbH7jURXl54RHrYeGskMoeEd5JKIzrkAKxpJ4EmCX2jog
- trw9JqM6gm426M4abSmkv3+T14m8k+EzNsr+nQLR+TjyO0kxsiopAKE+61nIXspxp0NI
- sBiauZ6/f3EEPl8xhPpyMvcA7iZhLNWXkD/Fy2ecSaYoEplGjLn5QnyRwHEMGqCrLVHj
- T2QNQ8WlPBCn9+wMVfxlhy8334cQ7MYDLFtiAjRPbE3Z6G0hTGxxMFU7Pta7yj10zbD9
- cm7FQUCAtlcsW1rEeFA4XJWlxYlFUqNO5YsX4Ss3NGAdkpRfgEA99ZDcN5IzO2Az0N3w
- zu2w==
-X-Gm-Message-State: AOJu0YynBGPyeysnkONaLjAPoCQ2x+iDLnogFQbWknPoxwUwLJfb1wwW
- aJoPzHze5xtQ8gYfwcNPJtOgKpi5XrG75TpvxSs1Fnuov1bTEcnPuim/D0d99u3P8t5frlBA0ir
- aCVCkXqLXHnCyAT4ZhExWhx9HaCSW/wAp9VOcW73iDCEUR3ifqQwegwOidz2DbJt+hUYNJ+TGZg
- yQT3/wmZNNZue8N7eKAnEQ/HW0YH4dhEPkLXWa6F2H
-X-Gm-Gg: ASbGncuF04RYeIR2WA+IljIBOtCcbhtNU13dACRgnW/Qn0K9Q1MQfIRlIrMvv82WJGx
- Nr5gRKLMaBRrxAOoW66e02oOTjy0fUJodRYXtp6KjdqITHw37Ds04oQpC0AHgUAz9uxbEKmKn/N
- eSm1GRIE0o72/iIv0J3Hqv4joHcSUqTdDaLuHUxdokzIRuslV+yrEDDJCFTFipZJ+8EtRGA43TD
- c/MMySKqJJQMOPjC9q6FNB1t0XRvu248sUGVJ6Gd6zUZzdja1+qoGWmA2zfSPPhGswmJp8bvCW9
- hw2Xq+IuH8EFYmTXUmVcHu8dTEwzqQEAFsQR5pSUfoGFsADjgCZqYm91hqEuqOt+H+u6onu6cBD
- y+QmkmUNFAHflgBov3S2OkvaIsF+SiJBq3zIrejXBXy8=
-X-Received: by 2002:a05:6000:2004:b0:3c7:caf5:f9af with SMTP id
- ffacd0b85a97d-3c7cb0542b2mr13809420f8f.57.1756319180226; 
- Wed, 27 Aug 2025 11:26:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IESvaM4e1LlUuB20tw4KebihFZWqAWun27TYBPdTU6Xnpdd3HvS7ok1h6kjKDUOWV16/stJvQ==
-X-Received: by 2002:a05:6000:2004:b0:3c7:caf5:f9af with SMTP id
- ffacd0b85a97d-3c7cb0542b2mr13809401f8f.57.1756319179740; 
- Wed, 27 Aug 2025 11:26:19 -0700 (PDT)
+ bh=mv9H/MsUUPau2pitXzSJwug9yy3jNWy54GNz6saS/c4=;
+ b=m69eu+FD5Me/AadYdfhu5j5BxbH/cObMjkrqSKu15iJ/Nhuw480RyPktR+9RralrBy
+ A2Ykz0vbipOWyCk7xyT+TaxjfCauc8pzogssIeNIaKeiTFhS4a65OxpYYb4ji8V5HTyg
+ W5mDiCD/0Pp/57lwOYZgxeEdd3LRkFg+aNifdkhDO7e5PBJLNb79DtXvIN0FbG3Kxu7B
+ Yz/sUTtb3EnDz6ZhYlMGKTiOLn6lDlAf2rBSCrup5/OnrClEIfp1lqYMDnIZOKJvYFqH
+ SCEKG9aVFacodxgjZnAHDIlHk2HILz9Jn5CeFI55F7RKvaQ0TkVbnfxBHxr7lljyPGxC
+ 4aow==
+X-Gm-Message-State: AOJu0YzpSClUqTlDTNDNgNp9BOg3YmejPrwNTv5eSCIm4wTTuhgz4vkO
+ dMyzQ9VQzMxDx56ERZcZ0rSIT6eILZw5TRrjifhlYhuH7AwzCVXbMgg+oWgFLFUB2+xzQVGiJ0u
+ 3VeYOxzVN58liFw/IG2mfdOr/gZe8Ors1Dk+Po48G1nTgJ3rOjN3bEexJSM5x1FLNQAKIR1Aw6L
+ eDMG/mBxky63d7nc/dwMh1ws9+Xg8wnH+hBNTWVGLT
+X-Gm-Gg: ASbGnctrcgQ1C85zyY8o/Ni9gphnfrojsjKvrUhzA3RkOGnyopnNsmFVM9pcskU1QhF
+ JUNYwPvtAdxtmh04TZIp838nc6c3Zi638v9fphUSXFbKLho0EMO4L9RxxM/oCldhS8k1XAUbQib
+ GDgcTN96Y8O1CPoT4DQxT97vVoD9218mYOAK1uY/ALIDSvTLhYp7wmAytEwdUQjZD/gMtOSugqC
+ Y5aY9YP357loOFffeuqWULKRvhuF9h3Owka41dYGk2wHW1g32vvVjkJdpU4WaQvh+SXH+ket2Du
+ 0P/Gv0KSt/9YVt8+1VLbsRgvMk7IYixU9+TFihTTRbtt4h4aCDto4L33stnEoXmFux9DK7UbtTA
+ E/usIaNlXObZCaoNLax1Y5/2UNvXtcEMms4G/fql3l9w=
+X-Received: by 2002:a5d:5d10:0:b0:3c5:8300:978d with SMTP id
+ ffacd0b85a97d-3cbb15ca07fmr5046434f8f.22.1756319183138; 
+ Wed, 27 Aug 2025 11:26:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1slRJ544V5y7IaMNJytZ0LZUOSMlDr1Uniu489CpKr/MQicxJQiZbNxdzixmNxV61GVJpEA==
+X-Received: by 2002:a5d:5d10:0:b0:3c5:8300:978d with SMTP id
+ ffacd0b85a97d-3cbb15ca07fmr5046420f8f.22.1756319182685; 
+ Wed, 27 Aug 2025 11:26:22 -0700 (PDT)
 Received: from [10.163.96.123] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b6f30fe02sm38812525e9.18.2025.08.27.11.26.17
+ 5b1f17b1804b1-45b6f2f3383sm38242065e9.26.2025.08.27.11.26.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Aug 2025 11:26:17 -0700 (PDT)
+ Wed, 27 Aug 2025 11:26:20 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 12/14] rust/qemu-api-macros: make derive(Object) friendly when
- missing parent
-Date: Wed, 27 Aug 2025 20:25:30 +0200
-Message-ID: <20250827182533.854476-13-pbonzini@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 13/14] rust: declare self as qemu_api for proc-macros
+Date: Wed, 27 Aug 2025 20:25:31 +0200
+Message-ID: <20250827182533.854476-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250827182533.854476-1-pbonzini@redhat.com>
 References: <20250827182533.854476-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,36 +107,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Link: https://lore.kernel.org/r/20250826133132.4064478-5-marcandre.lureau@redhat.com
+Fix an outstanding TODO.
+
+Declaring `extern crate self as qemu_api` allows use of `qemu_api`
+within the qemu_api crate; this allows the Wrapper derive macro and
+future proc macros to be used interchangeably in the qemu_api crate and
+other crates. This is not required currently and is only for
+future-proofing.
+
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Link: https://lore.kernel.org/r/20250728-self-as-qemu_api-v1-1-001c339cccc8@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api-macros/src/lib.rs | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ rust/qemu-api-macros/src/lib.rs | 14 ++++++--------
+ rust/qemu-api/src/lib.rs        |  4 ++++
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
-index b525d89c09e..a6147418891 100644
+index a6147418891..959726efe6d 100644
 --- a/rust/qemu-api-macros/src/lib.rs
 +++ b/rust/qemu-api-macros/src/lib.rs
-@@ -85,7 +85,15 @@ fn derive_object_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream
-     is_c_repr(&input, "#[derive(Object)]")?;
+@@ -123,23 +123,21 @@ fn derive_opaque_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream
+     let field = &get_unnamed_field(&input, "#[derive(Wrapper)]")?;
+     let typ = &field.ty;
  
-     let name = &input.ident;
--    let parent = &get_fields(&input, "#[derive(Object)]")?[0].ident;
-+    let parent = &get_fields(&input, "#[derive(Object)]")?
-+        .get(0)
-+        .ok_or_else(|| {
-+            Error::new(
-+                input.ident.span(),
-+                "#[derive(Object)] requires a parent field",
-+            )
-+        })?
-+        .ident;
- 
+-    // TODO: how to add "::qemu_api"?  For now, this is only used in the
+-    // qemu_api crate so it's not a problem.
      Ok(quote! {
-         ::qemu_api::assert_field_type!(#name, #parent,
+-        unsafe impl crate::cell::Wrapper for #name {
+-            type Wrapped = <#typ as crate::cell::Wrapper>::Wrapped;
++        unsafe impl ::qemu_api::cell::Wrapper for #name {
++            type Wrapped = <#typ as ::qemu_api::cell::Wrapper>::Wrapped;
+         }
+         impl #name {
+-            pub unsafe fn from_raw<'a>(ptr: *mut <Self as crate::cell::Wrapper>::Wrapped) -> &'a Self {
++            pub unsafe fn from_raw<'a>(ptr: *mut <Self as ::qemu_api::cell::Wrapper>::Wrapped) -> &'a Self {
+                 let ptr = ::std::ptr::NonNull::new(ptr).unwrap().cast::<Self>();
+                 unsafe { ptr.as_ref() }
+             }
+ 
+-            pub const fn as_mut_ptr(&self) -> *mut <Self as crate::cell::Wrapper>::Wrapped {
++            pub const fn as_mut_ptr(&self) -> *mut <Self as ::qemu_api::cell::Wrapper>::Wrapped {
+                 self.0.as_mut_ptr()
+             }
+ 
+-            pub const fn as_ptr(&self) -> *const <Self as crate::cell::Wrapper>::Wrapped {
++            pub const fn as_ptr(&self) -> *const <Self as ::qemu_api::cell::Wrapper>::Wrapped {
+                 self.0.as_ptr()
+             }
+ 
+@@ -147,7 +145,7 @@ pub const fn as_void_ptr(&self) -> *mut ::core::ffi::c_void {
+                 self.0.as_void_ptr()
+             }
+ 
+-            pub const fn raw_get(slot: *mut Self) -> *mut <Self as crate::cell::Wrapper>::Wrapped {
++            pub const fn raw_get(slot: *mut Self) -> *mut <Self as ::qemu_api::cell::Wrapper>::Wrapped {
+                 slot.cast()
+             }
+         }
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index 86dcd8ef17a..bcb51c7986a 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -32,6 +32,10 @@
+ pub mod vmstate;
+ pub mod zeroable;
+ 
++// Allow proc-macros to refer to `::qemu_api` inside the `qemu_api` crate (this
++// crate).
++extern crate self as qemu_api;
++
+ use std::{
+     alloc::{GlobalAlloc, Layout},
+     ffi::c_void,
 -- 
 2.51.0
 
