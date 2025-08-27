@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDCEB3769A
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 03:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A00C5B376AA
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 03:16:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ur4dm-0008LF-Jn; Tue, 26 Aug 2025 21:07:54 -0400
+	id 1ur4dI-0006nE-NM; Tue, 26 Aug 2025 21:07:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ur4cj-0004wg-Lx
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 21:06:50 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1ur4ce-0004qI-Ig
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 21:06:45 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ur4cT-0007KV-EZ
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 21:06:48 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-771e987b4e6so2234698b3a.2
- for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 18:05:53 -0700 (PDT)
+ id 1ur4cS-0007L2-Ph
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 21:06:42 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-76e4f2e4c40so5591021b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 18:05:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756256752; x=1756861552; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756256756; x=1756861556; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JIkeU3rXeazXD0joqAFpWiHN3iI9fKZ4K7whY5dqlfg=;
- b=kctRrk+ngPr3gFJnMlBQrsMgrQXT+LG+JcHqqAdZD1uo7gd1EWs7fuyZyDEmh4pOho
- NBlIc2nYarTpN5TUL41WKcwya9zfkpH8Qv/8POKLljaWf+S88piWx8RRsZmCTpxhN8Nx
- QE4GWc+h4c2X81xiBRnHTkelVQ1gntn4oa131JpwbU3cze0MAiLWu93i/zTIte02KvcV
- AlsvMvk84zMT35ODHxIWjQmoPivyENW+G6lACZaDuJj9RG093B/PDO69yISadajoTkUS
- aUNpMNCGz+tNnVRHIH4R06Wj1lff8bwxggVYdRfSPincvq1NqRcBubKipzyGCxl/wgBK
- ljhA==
+ bh=q73+ly4FjnvQ2ESSfwdG4UgRILSHXmkXXwonIPerI+k=;
+ b=UwQY6+t2v7KzwNhBiTkYXx8VgKCTmT6DRaiEnJ8IDdVN0qYOPDRhqy6bPwWX1rW6qu
+ i1ol+7DpdYLzGAu38Sll9wOwebuJgSM0algUaednd79LXz5h20L9HR6Sr4GU/j8ehV/9
+ ZmH5vSfkuh4TROYlFk34qnCefwt78JcNJJeUDZxOs6ZtGtMdbINBCIkhZKxvkGhcq6m/
+ PWL2+Q4tglxcQ/XyJt0gfHFdZoEN/SZ3Am+IpuoOWAN6OMNeoRwNiwrEXJ7XUuRE1f0L
+ 0OVivbgAvqx8toxpJ3Hr1QVMd7O3wOo9xQEa2VIXNI32sYLfQL9JCS4SNNZJipOcoYAq
+ gvRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756256752; x=1756861552;
+ d=1e100.net; s=20230601; t=1756256756; x=1756861556;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JIkeU3rXeazXD0joqAFpWiHN3iI9fKZ4K7whY5dqlfg=;
- b=taHwcbjTae59B6doYuGeiEOHAZam0Akipt3VVhxc/aVUuDIcXsR10zKtqoUNIij9H6
- jS8tGvTKQ4HKZ5bwEIK+L4oBEtan8oM/Kzli/DSJ6X0aOqyv6b/+ePM7vY9d9pq6cc35
- /WO9gUHK9BC9AKtjwTlGuvcTVLg0J/GBCGcG53AqKNC16cXJQ8EAL2VONFlHFW1TfT7b
- 6T6LPyGe2AYz+oSG+8XnzX9LicOV3zSTfhWDt8K/fGc6Uahn7KOD4oPEk7FL6AON4yue
- /SVr8mzVbnM81oo3EFfhSIHQb/GEEbs3JoUfLjuYIl9i7nAGaWuoQa1F0MaRVSm6PoNs
- 1qwQ==
-X-Gm-Message-State: AOJu0YySqTfh+W2fE7OamYhb1CtCDKsz4IXHU3SqL65qRnRs4GFoMQGs
- aR3U/8RK3whAhxPPS/B5mgbTax/Rehtn+RYkK0Sh7Y+ZJrZUcjlB7HRoFz/UVKJNJAQXFbObS0l
- 9/CjeX4A=
-X-Gm-Gg: ASbGncvRotk0OzH3Jp4vwJ5Tg9wfY3Vwoh4ejm6HyaTq30XhZTYVVa9HoM7tLJ5qNQ9
- Cg9WpO6WnGHWsN6K/HPdfw74y1DECLV6E6F8JzR4+aGXe7zl0Bf0ugIrhCKyKq1UUI0RngGdP8z
- 63JzD9l5Tz6UzF1c1JDv3vHHQ8sbS1UAoVQPs3UTgGQzCeL72Y9Ti8g2UqjhRwR8o1/X6FQgeZ5
- Tk4sjy02HIXif+kUkNBEubX+P5LvhJQLcnaCqDcGEgvAsdegNHbO4nK38HS8+fsjiE8L3jwcI7G
- uknzXpW8/NEcBctLGUAdLkjGgJEu2BJUpZnWzaD9aIqyIjj9+emenrJGdrQNdu0qAaenpL7MEJO
- 8+5WqU0fRLeN3F8jOuvWrKtzKyQ==
-X-Google-Smtp-Source: AGHT+IGq53fAtfQ9WKrngq87nWSvsvyjcpUdxHmpVrB7JN0jGslnRkl/4oLHs803/u1K4niu+LQT6w==
-X-Received: by 2002:a05:6a00:a8e:b0:76c:1eae:fd30 with SMTP id
- d2e1a72fcca58-7702fa02d0fmr23844538b3a.12.1756256751598; 
- Tue, 26 Aug 2025 18:05:51 -0700 (PDT)
+ bh=q73+ly4FjnvQ2ESSfwdG4UgRILSHXmkXXwonIPerI+k=;
+ b=DOcyBPDNPb5Xt094YrrzQxZqTYAH/Ms3LXk6aUBmBHHw12cDSTYqQpd6uahr5kobfW
+ s4BwY5l1tMbvQUZTfB2kAxma4q0xQeiEK+mQOwtx4w2s79N1y9JIcm7H5Z/IH3gbOrrg
+ 9LY/D4TyfBXXKHhA1djudwwgdN53pFFZrPt8UJIa7/9vcjJB6EQRlVMNpJwJNiB9gIxu
+ NGJrAqJLm7PjmMpq6c3CV1Ob7PeSV0LVAnslGjVShtYBx1OcCdeHzFHOB8/0fHDbxwnw
+ 8k5ElVWXWQH0KlA8CAsB11tFtcawERGCVHyVhyTqxA8c9WneouKI7lsJIfWRlTJ1e6m9
+ BAZw==
+X-Gm-Message-State: AOJu0YzeYc8BDzVbjPK2KH9/pMCY4YuRG2yaW0Va+xFYoaXiRZcjXyPt
+ OXJ5RCMqMNzugKiNMyQ7TWA0LecbHk5HvKuFUnGp5Wah/705NCJVIpRx8jCEpXH6ljix+mZRmY/
+ aND0LWvg=
+X-Gm-Gg: ASbGncujNL0wEqmbSIQDq2V3Zj2MH1RKNOBJ/KkxyavAo7Yre1lTtMOoWmgb6nWjniL
+ 5VUd3I+mqZX9UJpcWyVvC27d709gA/YNmY31K7Q4hiaKbf7BusapHoIsS5/icvDrTtJC0PEG3Oq
+ CicEJM02twg0HDsJZmg1QwMPbRWxtDX6Kc5F1UY28QtA+WOljTGDNk0sFnYc04+zWviaGC1ufkR
+ /N3u1hgiHfGBILg+110ooADRKsh+vyOAc7kZF3Qcrkr/bjJ9+v7wiboM6S468fTk5cEujPkLpm/
+ yKnlQqjOhmZQtaHUhV6f2HjiB0Ke8yai+ttt2RK7SEmkfLFAPA5LAKlDIdIZEcUZ3HgpYTT+hKo
+ xR29jCVPJYlLcoQtkuBuAPlQM2A==
+X-Google-Smtp-Source: AGHT+IFLzPHGqNmsFcWOoVNdSenEulSR80ObvM5WYd1ZiVGYbsHoq4pOOE9wsy/jYbT8cPk52uHEgQ==
+X-Received: by 2002:a05:6a00:4f83:b0:748:ffaf:9b53 with SMTP id
+ d2e1a72fcca58-7702fadb5c7mr20099354b3a.16.1756256756027; 
+ Tue, 26 Aug 2025 18:05:56 -0700 (PDT)
 Received: from stoup.. ([144.6.121.55]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7720274534esm1419241b3a.47.2025.08.26.18.05.48
+ d2e1a72fcca58-7720274534esm1419241b3a.47.2025.08.26.18.05.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Aug 2025 18:05:51 -0700 (PDT)
+ Tue, 26 Aug 2025 18:05:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 7/7] target/arm/hvf: Sort the cpreg_indexes array
-Date: Wed, 27 Aug 2025 11:03:58 +1000
-Message-ID: <20250827010453.4059782-12-richard.henderson@linaro.org>
+Subject: [PATCH 08/61] target/arm/hvf: Sort the cpreg_indexes array
+Date: Wed, 27 Aug 2025 11:03:59 +1000
+Message-ID: <20250827010453.4059782-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250827010453.4059782-1-richard.henderson@linaro.org>
 References: <20250827010453.4059782-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,7 +103,7 @@ Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 647eb675ef..88ed96be11 100644
+index 37d8f795eb..5f19347bc5 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
 @@ -925,6 +925,9 @@ int hvf_arch_init_vcpu(CPUState *cpu)
