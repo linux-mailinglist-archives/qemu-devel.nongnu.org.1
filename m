@@ -2,111 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B77B38BA5
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 23:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3207B38BFE
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 00:03:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urO1L-0000zX-Ey; Wed, 27 Aug 2025 17:49:31 -0400
+	id 1urOD7-0006hM-Nn; Wed, 27 Aug 2025 18:01:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1urO1H-0000y3-HT; Wed, 27 Aug 2025 17:49:27 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1urO1E-0005hD-SP; Wed, 27 Aug 2025 17:49:27 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57RC0ThS008379;
- Wed, 27 Aug 2025 21:49:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=GDhAeu
- it4ePtbM+JUXvZIG23xLuH30s5tY0VPIK+/aY=; b=PN6Po1SatedgY6ypnfS12H
- O8RdYs70c6UlzYi6mN63+VdXo9FPar0J01TAr2Dp3PZ6RjFqImgcK1M5wkg/3jAa
- mNLt9TyqsOZrUY7s7g0V2a5mxJYTMHUF76vcfquc5X/gbwgIzuMt7dKCMqkLUJfv
- DbKagmKXTjXaoWsjk5nGuhoKqpNvLhK93yv091zNrT52o1BSdUx4i9388MbKwmC0
- 9Dugp6HiSBGTV01Uy8rypEdj778rmveLBLioFhi1D5WzUjjoZuweO2w+YLBA2WBY
- bmEv0rLgtABv+cXDLCbYbhXKnEc9JKgfaIpnr7y4UvT1DEUsOSo2Ur9DCsnu3bCA
- ==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q42j6ck9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 27 Aug 2025 21:49:20 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57RIQvtC007474;
- Wed, 27 Aug 2025 21:49:19 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qqyuj6c9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 27 Aug 2025 21:49:19 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
- [10.241.53.101])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 57RLnIXn4981764
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 27 Aug 2025 21:49:18 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7C95B5805A;
- Wed, 27 Aug 2025 21:49:18 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 54D9E58051;
- Wed, 27 Aug 2025 21:49:17 +0000 (GMT)
-Received: from [9.61.245.55] (unknown [9.61.245.55])
- by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 27 Aug 2025 21:49:17 +0000 (GMT)
-Message-ID: <537aa1cf-7135-471e-874e-a4cd3796b5bc@linux.ibm.com>
-Date: Wed, 27 Aug 2025 14:49:17 -0700
+ (Exim 4.90_1) (envelope-from <lb.workbox@gmail.com>)
+ id 1urOCy-0006eV-W9
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 18:01:33 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <lb.workbox@gmail.com>)
+ id 1urOCw-0007dy-5F
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 18:01:32 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-45a1b066b5eso1436445e9.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 15:01:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1756332088; x=1756936888; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QwvFQletpVNX8GiBuI/ugiqp5mFwp3F4H0YL0Nrucjo=;
+ b=S2X48AtVfLhYcEWNY+QeJwQHyJVKSBzaUlFo66TGR08WYKnTr5fXFKlh364IUG1al/
+ bBq6C9rPW84e8tHb2nsLD5kFVgFRSHWs709HZRY2QuzjhBTv1AxTiQgkETMgRuVjdkDg
+ RMzyXy1HrKoe6GFi3gMFxLA5Q5IG95OQb7Z9JZLhzmezHDt/TGigC6IVWwYNBmvH0rQz
+ KsbNEBGrf5DiNmCt/IfWSpwl2SVCm2A3ck/YIuGiMbJFPtWkQfCAtX8cOUGK10+D1gbn
+ iJdykhAgmMY6KOwQ/VCNkRFlYFdRJwAyRnBpush+MReRKv2QYn4iK4ZdlBGaDGA0lAwl
+ IMgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756332088; x=1756936888;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QwvFQletpVNX8GiBuI/ugiqp5mFwp3F4H0YL0Nrucjo=;
+ b=pY7DTaIe9LKwlemXVBZmh46Va/6I8+wZtdM4jtfdc6GGt7g9wOiPAE95rOlDfr2no3
+ d/6az42COe0nrjNzbxkY+ekTwC+Ymlmdn2kx8beI+PVrAHO1F08CyZJ8apTpKupr5XvW
+ b8jQXHMCja8v95y5JKodHJyrM54sgWg4sJF+vBQ16z80bZx9+j/dXAH3cDUMvocCrWW+
+ /+KUxzVQ9bsdbShGwo60C21J886NlaUUtzhHz+/YEFUwr6WZWIXvx2uD63OfPzi9MMSX
+ Eehpk23Hp4kMWDeDWVRlN6ETlSC2t5K3PPNTaQoAeEAhIMpe0pE95PGrJWU+nt6X1V6W
+ AlMw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVErhFjiyGGDgAt7zmjhmOozMZOh4FD5W2DMvA834yX+bpLhw9c/KVhOD8yMe91L1Yw+qojbyJNnWgA@nongnu.org
+X-Gm-Message-State: AOJu0Yxv8tjha7VV5fX5gYGYWu+5JgiNOpGTrYyf6kxF3aZvnIsWnJhH
+ 5MqfONBiDsKUVJeGgo86c5HGHILBcfvxlTn+yNsbYNWZg2zdHj9T27P9
+X-Gm-Gg: ASbGncuv5qgmtD5QSwSiteBqTKM6GF0jJESDNYrNWpmK6MPWhk+hdpRyiGKxp/AgNRA
+ OesdPzvZyef4kVD+Lsb2N+/ApEQ+/LdDqFUHgp9ndI9v/3VbiKUzAtv/dXcC4Mof1bMIlHjfp4/
+ Ps4NcsFqgATOilnbTM3F0c1OtHKpCn5oJRjWgvXYFG00GnV59B7FttaMourtlxdgj+dScQMPPCC
+ 4d4+yYDqUgH9AetXSZQXmGUsqcISU4dN4XKYWaFPBQoEWv3Rx8xxQSxof5ZquRCftt2RClzqU28
+ /yYZWQP+0g8sDa8KLbFVnDi3+ZH2Ve2B61bk6gvcrV6ioQNnVeD8mHW4Naajm6e1cLHo7YTgAv+
+ BRCy/cQZsskmyJldLxxKikEfLP82v5MyxFihBEzni9/RVFEzV9jArpdcS/DAR6qKV6LgBlspfJ4
+ CRCWKj+By74w==
+X-Google-Smtp-Source: AGHT+IGWnIXNg4l3Z9gc14eublFreCWGC1Upn8tP+Nv/xMig/Th939wMK03+x9CAoYEiZ218d4vCjA==
+X-Received: by 2002:a05:600c:530e:b0:45b:615c:cd2 with SMTP id
+ 5b1f17b1804b1-45b615c0df5mr109108895e9.8.1756332087486; 
+ Wed, 27 Aug 2025 15:01:27 -0700 (PDT)
+Received: from localhost.localdomain (46-116-237-160.bb.netvision.net.il.
+ [46.116.237.160]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b797ce2b8sm4116755e9.12.2025.08.27.15.01.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 27 Aug 2025 15:01:26 -0700 (PDT)
+From: Leonid Bloch <lb.workbox@gmail.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <ehabkost@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>
+Cc: Leonid Bloch <lb.workbox@gmail.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH v3 0/4] Introduce a battery, AC adapter, and lid button
+Date: Thu, 28 Aug 2025 01:00:46 +0300
+Message-ID: <20250827220054.37268-1-lb.workbox@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 07/29] s390x/diag: Implement DIAG 320 subcode 1
-To: Zhuoying Cai <zycai@linux.ibm.com>, thuth@redhat.com, berrange@redhat.com, 
- richard.henderson@linaro.org, david@redhat.com, jrossi@linux.ibm.com,
- qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
- borntraeger@linux.ibm.com, farman@linux.ibm.com,
- mjrosato@linux.ibm.com, iii@linux.ibm.com, eblake@redhat.com,
- armbru@redhat.com
-References: <20250818214323.529501-1-zycai@linux.ibm.com>
- <20250818214323.529501-8-zycai@linux.ibm.com>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <20250818214323.529501-8-zycai@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAxMCBTYWx0ZWRfX1kpojvK5wLkx
- h+6YKG2ljjR/DUYgE8AZ1hTcLBsdX0ICTaEYqZGTY/0GszZ1guD8dsh1yJqc6MB2I6MesSoxdo+
- AP01ZPafU/mncDCDnIvxfn99s0saESXEprnr8q3PKJ2sQvxTvzFj0Het44fhKSq7hVlr8yNR6cm
- cChcMk0EMb4GYS8vv2dsCmDxhATLJmpiqS+u52rUm5PoamlMcfwt0uxVUoj/N815BvhulwmA6c5
- xFeoo6gafc8iMnu81IkdNLJvDW6Z6N8ZGcx4uhHYo5MXBQjgkCvZ2oWWPMyMt19dIDOTLNjWCf5
- oLvvpzs6FtEyna3QQc7k3V2pzPSYeiEXl/IlFjsPjzmWRfvNMiS2iqosoD4vwp2QHeUw3heVeSV
- I/GFVYqg
-X-Proofpoint-ORIG-GUID: Og2roixrnSj2HR68BXm_MrLjGYjUBVqB
-X-Proofpoint-GUID: Og2roixrnSj2HR68BXm_MrLjGYjUBVqB
-X-Authority-Analysis: v=2.4 cv=evffzppX c=1 sm=1 tr=0 ts=68af7d60 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=P-IC7800AAAA:8 a=VnNF1IyMAAAA:8
- a=FAZsi83HLsRZ-jeIq-0A:9 a=QEXdDO2ut3YA:10 a=d3PnA9EDa4IxuAV0gXij:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-27_04,2025-08-26_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 malwarescore=0 spamscore=0 bulkscore=0
- impostorscore=0 clxscore=1011 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230010
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=alifm@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=lb.workbox@gmail.com; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,90 +106,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This series introduces three ACPI devices that are particularly useful
+for laptop/mobile virtualization:
 
-On 8/18/2025 2:43 PM, Zhuoying Cai wrote:
-> DIAG 320 subcode 1 provides information needed to determine
-> the amount of storage to store one or more certificates from the
-> certificate store.
->
-> Upon successful completion, this subcode returns information of the current
-> cert store, such as the number of certificates stored and allowed in the cert
-> store, amount of space may need to be allocate to store a certificate,
-> etc for verification-certificate blocks (VCBs).
->
-> The subcode value is denoted by setting the left-most bit
-> of an 8-byte field.
->
-> The verification-certificate-storage-size block (VCSSB) contains
-> the output data when the operation completes successfully. A VCSSB
-> length of 4 indicates that no certificate are available in the cert
-> store.
->
-> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
-> ---
->   docs/specs/s390x-secure-ipl.rst | 10 ++++++
->   include/hw/s390x/ipl/diag320.h  | 22 +++++++++++++
->   target/s390x/diag.c             | 56 ++++++++++++++++++++++++++++++++-
->   3 files changed, 87 insertions(+), 1 deletion(-)
->
-> diff --git a/docs/specs/s390x-secure-ipl.rst b/docs/specs/s390x-secure-ipl.rst
-> index 70e9a66fe0..ddc15f0322 100644
-> --- a/docs/specs/s390x-secure-ipl.rst
-> +++ b/docs/specs/s390x-secure-ipl.rst
-> @@ -23,3 +23,13 @@ Subcode 0 - query installed subcodes
->       Returns a 256-bit installed subcodes mask (ISM) stored in the installed
->       subcodes block (ISB). This mask indicates which sucodes are currently
->       installed and available for use.
-> +
-> +Subcode 1 - query verification certificate storage information
-> +    Provides the information required to determine the amount of memory needed to
-> +    store one or more verification-certificates (VCs) from the certificate store (CS).
-> +
-> +    Upon successful completion, this subcode returns various storage size values for
-> +    verification-certificate blocks (VCBs).
-> +
-> +    The output is returned in the verification-certificate-storage-size block (VCSSB).
-> +    A VCSSB length of 4 indicates that no certificates are available in the CS.
-> diff --git a/include/hw/s390x/ipl/diag320.h b/include/hw/s390x/ipl/diag320.h
-> index aa04b699c6..6e4779c699 100644
-> --- a/include/hw/s390x/ipl/diag320.h
-> +++ b/include/hw/s390x/ipl/diag320.h
-> @@ -11,10 +11,32 @@
->   #define S390X_DIAG320_H
->   
->   #define DIAG_320_SUBC_QUERY_ISM     0
-> +#define DIAG_320_SUBC_QUERY_VCSI    1
->   
->   #define DIAG_320_RC_OK              0x0001
->   #define DIAG_320_RC_NOT_SUPPORTED   0x0102
-> +#define DIAG_320_RC_INVAL_VCSSB_LEN 0x0202
->   
->   #define DIAG_320_ISM_QUERY_SUBCODES 0x80000000
-> +#define DIAG_320_ISM_QUERY_VCSI     0x40000000
-> +
-> +#define VCSSB_NO_VC     4
-> +#define VCSSB_MIN_LEN   128
-> +#define VCE_HEADER_LEN  128
-> +#define VCB_HEADER_LEN  64
-> +
-> +struct VCStorageSizeBlock {
-> +    uint32_t length;
-> +    uint8_t reserved0[3];
-> +    uint8_t version;
-> +    uint32_t reserved1[6];
-> +    uint16_t total_vc_ct;
-> +    uint16_t max_vc_ct;
-> +    uint32_t reserved3[11];
-> +    uint32_t max_single_vcb_len;
-> +    uint32_t total_vcb_len;
-> +    uint32_t reserved4[10];
-> +};
-> +typedef struct VCStorageSizeBlock VCStorageSizeBlock;
->   
-Should this be a packed structure? The Linux kernel defines it as packed 
-https://elixir.bootlin.com/linux/v6.17-rc3/source/arch/s390/kernel/cert_store.c#L81
+* Battery
+* AC adapter
+* Laptop lid button
 
-Thanks
-Farhan
+Link to v2: https://lists.gnu.org/archive/html/qemu-devel/2025-08/msg03166.html
+Link to GitHub PR, for ease of review: https://github.com/blochl/qemu/pull/3
+
+Changes in v3:
+--------------
+* Rebased on latest master
+* Addressed the v2 review by Igor Mammedov
+
+Changes in v2:
+--------------
+Based on the feedback from Philippe Mathieu-Daudé and Michael S. Tsirkin:
+
+* Complete redesign with dual-mode operation:
+  - QMP control mode (default): Devices are controlled via QMP commands,
+    providing deterministic behavior essential for migration and CI/testing
+  - Host mirroring mode (opt-in): Original sysfs/procfs monitoring behavior,
+    now disabled by default
+
+* Migrated to modern QEMU ACPI architecture:
+  - Devices now implement ACPI_DEV_AML_IF interface
+  - AML generation moved from centralized acpi-build.c to device files
+
+* Added a QMP interface:
+  - battery-set-state/query-battery
+  - ac-adapter-set-state/query-ac-adapter
+  - lid-button-set-state/query-lid-button
+
+* Documentation improvements:
+  - Converted to .rst format
+  - Added examples for both QMP and "fake" sysfs/procfs testing
+
+The dual-mode design ensures these devices are migration-safe and
+deterministic by default, while still allowing host state mirroring
+when explicitly requested for desktop use cases.
+
+Use cases:
+----------
+1. Testing: CI systems can programmatically control power states
+2. Cloud: Expose virtual battery for usage-based resource limiting
+3. Desktop virtualization: Mirror host laptop state to guest (opt-in)
+4. Development: Test power management without physical hardware
+
+Example usage:
+--------------
+# Default QMP-controlled battery
+qemu-system-x86_64 -device battery
+
+# Mirror host battery
+qemu-system-x86_64 -device battery,use-qmp=false,enable-sysfs=true
+
+# Control via QMP
+{"execute": "battery-set-state",
+ "arguments": {"state": {"present": true, "charging": false,
+                         "discharging": true, "charge-percent": 42,
+                         "rate": 500}}}
+
+The series has been tested with Windows and Linux guests, correctly
+showing battery status, AC adapter state, and lid button events in
+guest UIs and triggering appropriate power management actions.
+
+Thanks again for your patience and feedback.
+Leonid.
+
+Leonid Bloch (4):
+  hw/acpi: Support extended GPE handling for additional ACPI devices
+  hw/acpi: Introduce the QEMU Battery
+  hw/acpi: Introduce the QEMU AC adapter
+  hw/acpi: Introduce the QEMU lid button
+
+ MAINTAINERS                          |  18 +
+ docs/specs/acad.rst                  | 195 +++++++
+ docs/specs/battery.rst               | 225 ++++++++
+ docs/specs/button.rst                | 189 +++++++
+ docs/specs/index.rst                 |   3 +
+ hw/acpi/Kconfig                      |  12 +
+ hw/acpi/acad.c                       | 447 ++++++++++++++++
+ hw/acpi/battery.c                    | 735 +++++++++++++++++++++++++++
+ hw/acpi/button.c                     | 438 ++++++++++++++++
+ hw/acpi/core.c                       |  17 +-
+ hw/acpi/meson.build                  |   3 +
+ hw/acpi/trace-events                 |  15 +
+ hw/i386/Kconfig                      |   3 +
+ hw/i386/acpi-build.c                 |   1 +
+ include/hw/acpi/acad.h               |  27 +
+ include/hw/acpi/acpi_dev_interface.h |   3 +
+ include/hw/acpi/battery.h            |  33 ++
+ include/hw/acpi/button.h             |  25 +
+ qapi/acpi.json                       | 171 +++++++
+ 19 files changed, 2558 insertions(+), 2 deletions(-)
+ create mode 100644 docs/specs/acad.rst
+ create mode 100644 docs/specs/battery.rst
+ create mode 100644 docs/specs/button.rst
+ create mode 100644 hw/acpi/acad.c
+ create mode 100644 hw/acpi/battery.c
+ create mode 100644 hw/acpi/button.c
+ create mode 100644 include/hw/acpi/acad.h
+ create mode 100644 include/hw/acpi/battery.h
+ create mode 100644 include/hw/acpi/button.h
+
+-- 
+2.51.0
 
 
