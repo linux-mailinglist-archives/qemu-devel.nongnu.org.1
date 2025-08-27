@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D03A9B38832
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:05:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4919B38838
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:06:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urJZQ-0005sb-6b; Wed, 27 Aug 2025 13:04:24 -0400
+	id 1urJZX-0005x6-H3; Wed, 27 Aug 2025 13:04:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJZI-0005ol-8v; Wed, 27 Aug 2025 13:04:16 -0400
+ id 1urJZQ-0005t9-CQ; Wed, 27 Aug 2025 13:04:24 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJZF-0007c8-0Z; Wed, 27 Aug 2025 13:04:15 -0400
+ id 1urJZL-0007cd-3n; Wed, 27 Aug 2025 13:04:24 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 152B514C724;
+ by isrv.corpit.ru (Postfix) with ESMTP id 28ACE14C725;
  Wed, 27 Aug 2025 20:03:29 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 219E42698EA;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 364712698EB;
  Wed, 27 Aug 2025 20:03:56 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- "Jason A. Donenfeld" <Jason@zx2c4.com>, Guenter Roeck <linux@roeck-us.net>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 02/18] target/i386: fix width of third operand of
- VINSERTx128
-Date: Wed, 27 Aug 2025 20:03:37 +0300
-Message-ID: <20250827170356.2698446-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.20 03/18] target/arm/sme: Reorg SME access handling in
+ handle_msr_i()
+Date: Wed, 27 Aug 2025 20:03:38 +0300
+Message-ID: <20250827170356.2698446-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 References: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -44,7 +45,7 @@ X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,48 +61,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Table A-5 of the Intel manual incorrectly lists the third operand of
-VINSERTx128 as Wqq, but it is actually a 128-bit value.  This is
-visible when W is a memory operand close to the end of the page.
-
-Fixes the recently-added poly1305_kunit test in linux-next.
-
-(No testcase yet, but I plan to modify test-avx2 to use memory
-close to the end of the page.  This would work because the test
-vectors correctly have the memory operand as xmm2/m128).
-
-Reported-by: Eric Biggers <ebiggers@kernel.org>
-Tested-by: Eric Biggers <ebiggers@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: qemu-stable@nongnu.org
-Fixes: 79068477686 ("target/i386: reimplement 0x0f 0x3a, add AVX", 2022-10-18)
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit feea87cd6b645d5166bdd304aac88f47f63dc2ef)
-(Mjt: adjust for 7.2.x due to lack of v8.1.0-2167-ge000687f12
- "target/i386: validate VEX.W for AVX instructions")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20230112102436.1913-2-philmd@linaro.org
+Message-Id: <20230112004322.161330-1-richard.henderson@linaro.org>
+[PMD: Split patch in multiple tiny steps]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 535ca76425fc1ffa4311b3a47518b06c596a55c6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 88de92ed16..c99f9ab249 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -598,10 +598,10 @@ static const X86OpEntry opcodes_0F3A[256] = {
-     [0x0e] = X86_OP_ENTRY4(VPBLENDW,   V,x,  H,x,  W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
-     [0x0f] = X86_OP_ENTRY4(PALIGNR,    V,x,  H,x,  W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
+diff --git a/target/arm/translate-a64.c b/target/arm/translate-a64.c
+index 7210a9cc4d..b66561a5cf 100644
+--- a/target/arm/translate-a64.c
++++ b/target/arm/translate-a64.c
+@@ -1855,18 +1855,20 @@ static void handle_msr_i(DisasContext *s, uint32_t insn,
+             goto do_unallocated;
+         }
+         if (sme_access_check(s)) {
+-            bool i = crm & 1;
+-            bool changed = false;
++            int old = s->pstate_sm | (s->pstate_za << 1);
++            int new = (crm & 1) * 3;
++            int msk = (crm >> 1) & 3;
  
--    [0x18] = X86_OP_ENTRY4(VINSERTx128,  V,qq, H,qq, W,qq, vex6 cpuid(AVX) p_66),
-+    [0x18] = X86_OP_ENTRY4(VINSERTx128,  V,qq, H,qq, W,dq, vex6 cpuid(AVX) p_66),
-     [0x19] = X86_OP_ENTRY3(VEXTRACTx128, W,dq, V,qq, I,b,  vex6 cpuid(AVX) p_66),
- 
--    [0x38] = X86_OP_ENTRY4(VINSERTx128,  V,qq, H,qq, W,qq, vex6 cpuid(AVX2) p_66),
-+    [0x38] = X86_OP_ENTRY4(VINSERTx128,  V,qq, H,qq, W,dq, vex6 cpuid(AVX2) p_66),
-     [0x39] = X86_OP_ENTRY3(VEXTRACTx128, W,dq, V,qq, I,b,  vex6 cpuid(AVX2) p_66),
- 
-     /* Listed incorrectly as type 4 */
+-            if ((crm & 2) && i != s->pstate_sm) {
+-                gen_helper_set_pstate_sm(cpu_env, tcg_constant_i32(i));
+-                changed = true;
+-            }
+-            if ((crm & 4) && i != s->pstate_za) {
+-                gen_helper_set_pstate_za(cpu_env, tcg_constant_i32(i));
+-                changed = true;
+-            }
+-            if (changed) {
++            if ((old ^ new) & msk) {
++                /* At least one bit changes. */
++                bool i = crm & 1;
++
++                if ((crm & 2) && i != s->pstate_sm) {
++                    gen_helper_set_pstate_sm(cpu_env, tcg_constant_i32(i));
++                }
++                if ((crm & 4) && i != s->pstate_za) {
++                    gen_helper_set_pstate_za(cpu_env, tcg_constant_i32(i));
++                }
+                 gen_rebuild_hflags(s);
+             } else {
+                 s->base.is_jmp = DISAS_NEXT;
 -- 
 2.47.2
 
