@@ -2,59 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F564B37CA7
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 10:00:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B06B37C9B
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 09:58:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urB1s-0007PL-3G; Wed, 27 Aug 2025 03:57:12 -0400
+	id 1urB1w-0007jd-3a; Wed, 27 Aug 2025 03:57:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urB1R-0006WB-QU
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:56:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urB1Z-0006qW-NU
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:56:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urB1O-00027j-U6
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:56:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urB1R-000283-RP
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:56:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756281401;
+ s=mimecast20190719; t=1756281404;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VRq6CMh6hKB/wHqvvgD7Qig0ilrepfijfp9MgM0G3s0=;
- b=cz8s00VNJlFkNlpFeyTur5bpglgzn0aRIBrIKBaaaMs/LE+5nOh7xyCs4SDZRtWI2E++h7
- LonnlFAdCH6AvfROzS8ygKMpDuIx9lPXErurH9KZA9fpSC7s/+OBuHyeAOn46SK0ArrbGZ
- s8Pruxl+V0/VmnNvDWnqxho4VhE3qjk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=AGdeCSjL/KR9yyKUfp+DlneaugzmhjFs3LpG/Lba2Ms=;
+ b=ZQsS+zQjfoAnEtjROjJTZQv0YB1CMpwqkD1dZs90YovcRWwTIhDXBHfnnE7B1pgARtFINQ
+ NaHr3J05uqSct6RqarmfyRIXNhP1vmsWWkTnppjgbyEU7SyV8Ri1e9sEhWaOkqxWVKb8RC
+ wF/dxPlDz2SEZ0uB2PtXNAUMB44hKmc=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-635-j4g_CxbvPgG8HLfLT4WXYg-1; Wed,
- 27 Aug 2025 03:56:38 -0400
-X-MC-Unique: j4g_CxbvPgG8HLfLT4WXYg-1
-X-Mimecast-MFC-AGG-ID: j4g_CxbvPgG8HLfLT4WXYg_1756281397
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-651--ehMKGiaPC-ZVtrKVqfzVw-1; Wed,
+ 27 Aug 2025 03:56:42 -0400
+X-MC-Unique: -ehMKGiaPC-ZVtrKVqfzVw-1
+X-Mimecast-MFC-AGG-ID: -ehMKGiaPC-ZVtrKVqfzVw_1756281401
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D7F9E18002C1; Wed, 27 Aug 2025 07:56:37 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2952D1956096; Wed, 27 Aug 2025 07:56:41 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.40])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BEFFE1955F24; Wed, 27 Aug 2025 07:56:35 +0000 (UTC)
+ id 60EA7195419F; Wed, 27 Aug 2025 07:56:38 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 30/31] MAINTAINERS: Adjust wildcards for the migration,
- multiprocess and replay tests
-Date: Wed, 27 Aug 2025 09:54:40 +0200
-Message-ID: <20250827075443.559712-31-thuth@redhat.com>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 31/31] tests/functional: Mark main in QemuBaseTest class as a
+ static method
+Date: Wed, 27 Aug 2025 09:54:41 +0200
+Message-ID: <20250827075443.559712-32-thuth@redhat.com>
 In-Reply-To: <20250827075443.559712-1-thuth@redhat.com>
 References: <20250827075443.559712-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -82,54 +85,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Now that we moved the tests into subfolders, we have to adjust the
-wildcards accordingly.
+The main() method in the QemuBaseTest class has no parameters but is
+defined as a regular method. Currently, this does not cause any issues
+because in the functional tests main() is always called directly from
+QemuBaseTest (never from instances), but the way this method is defined
+makes its signature wrong, implying a 'self'. Hence, it's best practice
+to define such a method as a static method, so decorate it with
+@staticmethod.
 
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Message-ID: <20250819143916.4138035-4-gustavo.romero@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250819112403.432587-26-thuth@redhat.com>
 ---
- MAINTAINERS | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ tests/functional/qemu_test/testcase.py | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 625fe67b41d..a64b5b849b5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3604,7 +3604,8 @@ F: include/migration/
- F: include/qemu/userfaultfd.h
- F: migration/
- F: scripts/vmstate-static-checker.py
--F: tests/functional/*migration.py
-+F: tests/functional/migration.py
-+F: tests/functional/*/*migration.py
- F: tests/vmstate-static-checker-data/
- F: tests/qtest/migration/
- F: tests/qtest/migration-*
-@@ -3773,8 +3774,10 @@ F: include/system/replay.h
- F: docs/devel/replay.rst
- F: docs/system/replay.rst
- F: stubs/replay.c
--F: tests/functional/*reverse_debug*.py
--F: tests/functional/*replay*.py
-+F: tests/functional/replay_kernel.py
-+F: tests/functional/reverse_debugging.py
-+F: tests/functional/*/*replay*.py
-+F: tests/functional/*/*reverse_debug*.py
- F: qapi/replay.json
+diff --git a/tests/functional/qemu_test/testcase.py b/tests/functional/qemu_test/testcase.py
+index 5caf7b13fe3..fbeb1710587 100644
+--- a/tests/functional/qemu_test/testcase.py
++++ b/tests/functional/qemu_test/testcase.py
+@@ -235,6 +235,7 @@ def tearDown(self):
+         self.log.removeHandler(self._log_fh)
+         self._log_fh.close()
  
- IOVA Tree
-@@ -4293,7 +4296,8 @@ F: hw/remote/vfio-user-obj.c
- F: include/hw/remote/vfio-user-obj.h
- F: hw/remote/iommu.c
- F: include/hw/remote/iommu.h
--F: tests/functional/*multiprocess.py
-+F: tests/functional/multiprocess.py
-+F: tests/functional/*/*multiprocess.py
- 
- VFIO-USER:
- M: John Levon <john.levon@nutanix.com>
++    @staticmethod
+     def main():
+         warnings.simplefilter("default")
+         os.environ["PYTHONWARNINGS"] = "default"
 -- 
 2.50.1
 
