@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7069CB38031
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 12:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25CDCB38049
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 12:49:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urDe4-0007sF-Ck; Wed, 27 Aug 2025 06:44:52 -0400
+	id 1urDeM-0008M4-7K; Wed, 27 Aug 2025 06:45:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1urDdf-0007Ez-GW
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 06:44:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1urDdk-0007TR-9I
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 06:44:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1urDdU-0003Ey-I4
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 06:44:23 -0400
+ id 1urDde-0003Gm-SA
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 06:44:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756291450;
+ s=mimecast20190719; t=1756291458;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kfTgIazqm/Krf/uWj69/5+APvJm5aUhOmGhmHIRGBkE=;
- b=eu685tuKGJo1ujycdTCZ+EmrjoVm7oGtxdFM/zQzo/VDcgt+Y007ZuKDHirgKnDVSRwFuS
- nlfEm1xhNUzQkp4kIfPLIBU/htu2WB7toDNUoJTxLy3oM211fFYStz7VNjDsRDIJKTTmYI
- Etb3iSOod4OjNuOdJrNc+gv6pdOhLwY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=SdbOCiZ2T18wrfYG1QPoqXLktqgQGw1aQoAxzY5A+t8=;
+ b=afu6gP0SkrY/UqYYAe0tfNqnfTwIXX6jRLHExJylQSI/Vza8Uq+TEussIeDvF06Z+CoQpQ
+ 7Ao/5e44sfdiL9yKgqaj8musEtexMElQ47MUv8iRNLSXm90x2+bka3Yc4SEc5rHsrRYG6x
+ oR4sQVxTcibt5cfvU6JS36QwTpqwNl0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-132-u1iMhdCuMoaJpeVwoRa6Dg-1; Wed,
- 27 Aug 2025 06:44:08 -0400
-X-MC-Unique: u1iMhdCuMoaJpeVwoRa6Dg-1
-X-Mimecast-MFC-AGG-ID: u1iMhdCuMoaJpeVwoRa6Dg_1756291447
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-ftfFArt1PweNQyAqrWBkdg-1; Wed,
+ 27 Aug 2025 06:44:15 -0400
+X-MC-Unique: ftfFArt1PweNQyAqrWBkdg-1
+X-Mimecast-MFC-AGG-ID: ftfFArt1PweNQyAqrWBkdg_1756291454
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 409B11955F02; Wed, 27 Aug 2025 10:44:07 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 891F619541AA; Wed, 27 Aug 2025 10:44:14 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.16])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8FA6F19560AB; Wed, 27 Aug 2025 10:44:04 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A93D530001A6; Wed, 27 Aug 2025 10:44:12 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org,
@@ -53,16 +53,16 @@ Cc: qemu-rust@nongnu.org,
  pbonzini@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH 17/22] rust/hpet: drop now unneeded qemu_api dep
-Date: Wed, 27 Aug 2025 14:41:39 +0400
-Message-ID: <20250827104147.717203-18-marcandre.lureau@redhat.com>
+Subject: [PATCH 18/22] rust/pl011: drop dependency on qemu_api
+Date: Wed, 27 Aug 2025 14:41:40 +0400
+Message-ID: <20250827104147.717203-19-marcandre.lureau@redhat.com>
 In-Reply-To: <20250827104147.717203-1-marcandre.lureau@redhat.com>
 References: <20250827104147.717203-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -92,16 +92,81 @@ From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- rust/Cargo.lock                | 1 -
- rust/hw/timer/hpet/Cargo.toml  | 1 -
- rust/hw/timer/hpet/meson.build | 1 -
- 3 files changed, 3 deletions(-)
+ rust/hw/char/pl011/wrapper.h       | 51 ++++++++++++++++++++++++++++++
+ rust/Cargo.lock                    |  1 -
+ rust/hw/char/pl011/Cargo.toml      |  1 -
+ rust/hw/char/pl011/build.rs        |  1 +
+ rust/hw/char/pl011/meson.build     | 27 ++++++++++++++--
+ rust/hw/char/pl011/src/bindings.rs | 27 ++++++++++++++++
+ rust/hw/char/pl011/src/device.rs   |  2 +-
+ rust/hw/char/pl011/src/lib.rs      |  1 +
+ 8 files changed, 106 insertions(+), 5 deletions(-)
+ create mode 100644 rust/hw/char/pl011/wrapper.h
+ create mode 120000 rust/hw/char/pl011/build.rs
+ create mode 100644 rust/hw/char/pl011/src/bindings.rs
 
+diff --git a/rust/hw/char/pl011/wrapper.h b/rust/hw/char/pl011/wrapper.h
+new file mode 100644
+index 0000000000..87a5a589c8
+--- /dev/null
++++ b/rust/hw/char/pl011/wrapper.h
+@@ -0,0 +1,51 @@
++/*
++ * QEMU System Emulator
++ *
++ * Copyright (c) 2024 Linaro Ltd.
++ *
++ * Authors: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the "Software"), to deal
++ * in the Software without restriction, including without limitation the rights
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
++ */
++
++
++/*
++ * This header file is meant to be used as input to the `bindgen` application
++ * in order to generate C FFI compatible Rust bindings.
++ */
++
++#ifndef __CLANG_STDATOMIC_H
++#define __CLANG_STDATOMIC_H
++/*
++ * Fix potential missing stdatomic.h error in case bindgen does not insert the
++ * correct libclang header paths on its own. We do not use stdatomic.h symbols
++ * in QEMU code, so it's fine to declare dummy types instead.
++ */
++typedef enum memory_order {
++  memory_order_relaxed,
++  memory_order_consume,
++  memory_order_acquire,
++  memory_order_release,
++  memory_order_acq_rel,
++  memory_order_seq_cst,
++} memory_order;
++#endif /* __CLANG_STDATOMIC_H */
++
++#include "qemu/osdep.h"
++#include "hw/char/pl011.h"
 diff --git a/rust/Cargo.lock b/rust/Cargo.lock
-index 91f137d75c..80ad6f0fc6 100644
+index 80ad6f0fc6..d0299dc262 100644
 --- a/rust/Cargo.lock
 +++ b/rust/Cargo.lock
-@@ -93,7 +93,6 @@ dependencies = [
+@@ -149,7 +149,6 @@ dependencies = [
   "common",
   "hwcore",
   "migration",
@@ -109,30 +174,128 @@ index 91f137d75c..80ad6f0fc6 100644
   "qemu_macros",
   "qom",
   "system",
-diff --git a/rust/hw/timer/hpet/Cargo.toml b/rust/hw/timer/hpet/Cargo.toml
-index 68e8187bb8..08bf97af55 100644
---- a/rust/hw/timer/hpet/Cargo.toml
-+++ b/rust/hw/timer/hpet/Cargo.toml
-@@ -17,7 +17,6 @@ migration = { path = "../../../migration" }
- bql = { path = "../../../bql" }
- qom = { path = "../../../qom" }
+diff --git a/rust/hw/char/pl011/Cargo.toml b/rust/hw/char/pl011/Cargo.toml
+index 9e451fc0aa..285d25c217 100644
+--- a/rust/hw/char/pl011/Cargo.toml
++++ b/rust/hw/char/pl011/Cargo.toml
+@@ -24,7 +24,6 @@ qom = { path = "../../../qom" }
+ chardev = { path = "../../../chardev" }
  system = { path = "../../../system" }
+ hwcore = { path = "../../../hw/core" }
 -qemu_api = { path = "../../../qemu-api" }
  qemu_macros = { path = "../../../qemu-macros" }
- hwcore = { path = "../../../hw/core" }
  
-diff --git a/rust/hw/timer/hpet/meson.build b/rust/hw/timer/hpet/meson.build
-index b2eee01faf..8ab26630d9 100644
---- a/rust/hw/timer/hpet/meson.build
-+++ b/rust/hw/timer/hpet/meson.build
-@@ -8,7 +8,6 @@ _libhpet_rs = static_library(
+ [lints]
+diff --git a/rust/hw/char/pl011/build.rs b/rust/hw/char/pl011/build.rs
+new file mode 120000
+index 0000000000..5f5060db35
+--- /dev/null
++++ b/rust/hw/char/pl011/build.rs
+@@ -0,0 +1 @@
++../../../util/build.rs
+\ No newline at end of file
+diff --git a/rust/hw/char/pl011/meson.build b/rust/hw/char/pl011/meson.build
+index 7d90f2aad6..a14993f692 100644
+--- a/rust/hw/char/pl011/meson.build
++++ b/rust/hw/char/pl011/meson.build
+@@ -1,6 +1,30 @@
++# TODO: Remove this comment when the clang/libclang mismatch issue is solved.
++#
++# Rust bindings generation with `bindgen` might fail in some cases where the
++# detected `libclang` does not match the expected `clang` version/target. In
++# this case you must pass the path to `clang` and `libclang` to your build
++# command invocation using the environment variables CLANG_PATH and
++# LIBCLANG_PATH
++_libpl011_bindings_inc_rs = rust.bindgen(
++  input: 'wrapper.h',
++  dependencies: common_ss.all_dependencies(),
++  output: 'bindings.inc.rs',
++  include_directories: bindings_incdir,
++  bindgen_version: ['>=0.60.0'],
++  args: bindgen_args_common,
++)
++
+ _libpl011_rs = static_library(
+   'pl011',
+-  files('src/lib.rs'),
++  structured_sources(
++    [
++      'src/lib.rs',
++      'src/bindings.rs',
++      'src/device.rs',
++      'src/registers.rs',
++    ],
++    {'.' : _libpl011_bindings_inc_rs},
++  ),
+   override_options: ['rust_std=2021', 'build.rust_std=2021'],
+   rust_abi: 'rust',
+   dependencies: [
+@@ -11,7 +35,6 @@ _libpl011_rs = static_library(
      util_rs,
      migration_rs,
      bql_rs,
 -    qemu_api,
      qemu_macros,
      qom_rs,
-     system_rs,
+     chardev_rs,
+diff --git a/rust/hw/char/pl011/src/bindings.rs b/rust/hw/char/pl011/src/bindings.rs
+new file mode 100644
+index 0000000000..bd5ea840cb
+--- /dev/null
++++ b/rust/hw/char/pl011/src/bindings.rs
+@@ -0,0 +1,27 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++#![allow(
++    dead_code,
++    improper_ctypes_definitions,
++    improper_ctypes,
++    non_camel_case_types,
++    non_snake_case,
++    non_upper_case_globals,
++    unnecessary_transmutes,
++    unsafe_op_in_unsafe_fn,
++    clippy::pedantic,
++    clippy::restriction,
++    clippy::style,
++    clippy::missing_const_for_fn,
++    clippy::ptr_offset_with_cast,
++    clippy::useless_transmute,
++    clippy::missing_safety_doc,
++    clippy::too_many_arguments
++)]
++
++//! `bindgen`-generated declarations.
++
++#[cfg(MESON)]
++include!("bindings.inc.rs");
++
++#[cfg(not(MESON))]
++include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index b7c1cb68a2..5ce39b002e 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -134,7 +134,7 @@ pub struct PL011State {
+ // structs, so the size of the Rust version must not be any larger
+ // than the size of the C one. If this assert triggers you need to
+ // expand the padding_for_rust[] array in the C PL011State struct.
+-static_assert!(size_of::<PL011State>() <= size_of::<qemu_api::bindings::PL011State>());
++static_assert!(size_of::<PL011State>() <= size_of::<crate::bindings::PL011State>());
+ 
+ qom_isa!(PL011State : SysBusDevice, DeviceState, Object);
+ 
+diff --git a/rust/hw/char/pl011/src/lib.rs b/rust/hw/char/pl011/src/lib.rs
+index 2b70d2ff56..0c19b708c0 100644
+--- a/rust/hw/char/pl011/src/lib.rs
++++ b/rust/hw/char/pl011/src/lib.rs
+@@ -12,6 +12,7 @@
+ //! See [`PL011State`](crate::device::PL011State) for the device model type and
+ //! the [`registers`] module for register types.
+ 
++mod bindings;
+ mod device;
+ mod registers;
+ 
 -- 
 2.50.1
 
