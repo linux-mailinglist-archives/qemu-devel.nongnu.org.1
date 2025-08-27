@@ -2,61 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8055B37C53
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 09:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7216CB37CB0
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 10:02:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urAzw-0005Az-KR; Wed, 27 Aug 2025 03:55:12 -0400
+	id 1urB05-0005Iq-8c; Wed, 27 Aug 2025 03:55:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urAzs-00059O-O9
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urB01-0005GK-2m
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urAzq-0001vE-2f
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urAzw-0001wE-5A
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756281304;
+ s=mimecast20190719; t=1756281310;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DTHkrphn6aT0KFyL/MGHbt70b0rU4V14d4mnDHgMn5k=;
- b=WWkt1+cCx/1CdoACsEwm1hq+A5wcm2p3QZqvIeaEUuIShHNFp6VBxFmOs6KULYUdsh72VH
- TYAm0k95sVYExYnluQOFb52v8yODb0GwaOylX1caHn1EYktP5HFk7/CkjXCfvf+BtEFAxq
- AFQ3mV2DfYvnbeE4JFlOcBqSdi0U+fk=
+ bh=5gQzJ90qET6RhRj461NrORejjWHb983qUtY+6T5oBsM=;
+ b=E6UMGEPIo+BWAvzF45unNrgXuTVv2SCnIkYxa6qyxY5JhrtjqJIUe/kK/nWp1gPTrSZpU2
+ APSP35jRRQ3rqrGw0rXrRYH/Z1hX5Emvc9dzz+iOkCXfMKISQTwRBLsN+l3/5/vDtM9Z9b
+ 0bPwxHS8v7G8FLP07gSh8YqBwZnnzFY=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-150-twk544HqNvqdqBN1wIUw2A-1; Wed,
- 27 Aug 2025 03:54:57 -0400
-X-MC-Unique: twk544HqNvqdqBN1wIUw2A-1
-X-Mimecast-MFC-AGG-ID: twk544HqNvqdqBN1wIUw2A_1756281296
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-85_bX24FPd2ImyD8vrvZ5A-1; Wed,
+ 27 Aug 2025 03:55:03 -0400
+X-MC-Unique: 85_bX24FPd2ImyD8vrvZ5A-1
+X-Mimecast-MFC-AGG-ID: 85_bX24FPd2ImyD8vrvZ5A_1756281301
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 30B431800340; Wed, 27 Aug 2025 07:54:56 +0000 (UTC)
+ id B351A180036E; Wed, 27 Aug 2025 07:55:01 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.40])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 14C53195419F; Wed, 27 Aug 2025 07:54:52 +0000 (UTC)
+ id B0EE01955F24; Wed, 27 Aug 2025 07:54:56 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Stefan Weil <sw@weilnetz.de>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 02/31] CI: Use mingw-w64-x86_64-curl-winssl instead of
- mingw-w64-x86_64-curl for Windows build
-Date: Wed, 27 Aug 2025 09:54:12 +0200
-Message-ID: <20250827075443.559712-3-thuth@redhat.com>
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Subject: [PULL 03/31] tests/functional/test_aarch64_virt_gpu: Skip test if EGL
+ won't initialize
+Date: Wed, 27 Aug 2025 09:54:13 +0200
+Message-ID: <20250827075443.559712-4-thuth@redhat.com>
 In-Reply-To: <20250827075443.559712-1-thuth@redhat.com>
 References: <20250827075443.559712-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -84,31 +86,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Weil <sw@weilnetz.de>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-mingw-w64-x86_64-curl-winssl is required for https connections.
+If you are using the Nvidia drivers and have installed new versions
+of those packages but have not yet rebooted the host kernel,
+attempting to use the egl-headless display will cause QEMU to fail to
+start with
 
-Signed-off-by: Stefan Weil <sw@weilnetz.de>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20250806200909.507803-1-sw@weilnetz.de>
+$ qemu-system-aarch64 -M virt -display egl-headless
+qemu-system-aarch64: egl: eglInitialize failed: EGL_NOT_INITIALIZED
+qemu-system-aarch64: egl: render node init failed
+
+together with this complaint in the host kernel dmesg:
+
+[7874777.555649] NVRM: API mismatch: the client has the version 535.247.01, but
+                 NVRM: this kernel module has the version 535.230.02.  Please
+                 NVRM: make sure that this kernel module and all NVIDIA driver
+                 NVRM: components have the same version.
+
+This isn't a problem with QEMU itself, so reporting this as a test
+failure is misleading.  Instead skip the tests, as we already do for
+various other kinds of "host system can't actually run the EGL
+display" situation.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Message-ID: <20250826123455.2856988-1-peter.maydell@linaro.org>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Acked-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/windows.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/functional/test_aarch64_virt_gpu.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
-index 45ed0c96fea..beac39e5bde 100644
---- a/.gitlab-ci.d/windows.yml
-+++ b/.gitlab-ci.d/windows.yml
-@@ -77,7 +77,7 @@ msys2-64bit:
-       git grep make sed
-       mingw-w64-x86_64-binutils
-       mingw-w64-x86_64-ccache
--      mingw-w64-x86_64-curl
-+      mingw-w64-x86_64-curl-winssl
-       mingw-w64-x86_64-gcc
-       mingw-w64-x86_64-glib2
-       mingw-w64-x86_64-libnfs
+diff --git a/tests/functional/test_aarch64_virt_gpu.py b/tests/functional/test_aarch64_virt_gpu.py
+index 38447278579..4e50887c3e9 100755
+--- a/tests/functional/test_aarch64_virt_gpu.py
++++ b/tests/functional/test_aarch64_virt_gpu.py
+@@ -76,6 +76,8 @@ def _launch_virt_gpu(self, gpu_device):
+                 self.skipTest("egl-headless support is not available")
+             elif "'type' does not accept value 'dbus'" in excp.output:
+                 self.skipTest("dbus display support is not available")
++            elif "eglInitialize failed: EGL_NOT_INITIALIZED" in excp.output:
++                self.skipTest("EGL failed to initialize on this host")
+             else:
+                 self.log.info("unhandled launch failure: %s", excp.output)
+                 raise excp
 -- 
 2.50.1
 
