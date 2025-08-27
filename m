@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39FCEB38F17
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 01:22:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28971B38F35
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 01:27:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urPRe-0001V1-L2; Wed, 27 Aug 2025 19:20:46 -0400
+	id 1urPRj-0001Xu-CL; Wed, 27 Aug 2025 19:20:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urPRc-0001S6-42
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:20:44 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1urPRg-0001WH-Ss
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:20:48 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urPRa-00047o-BY
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:20:43 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-76e2ea933b7so343309b3a.1
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 16:20:41 -0700 (PDT)
+ id 1urPRd-00048G-P6
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:20:48 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-76e4f2e4c40so418533b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 16:20:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756336840; x=1756941640; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756336844; x=1756941644; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qyfttuYrb2FmFhaTWAEnRHcv+c+b5Ku1UMCZw0CnHd8=;
- b=HGnVQo2HMhSAWAwNZ9VEMs+yus2JmQOLaKhfw3Uovo7T8/3RNpzMc17Ho6vrcSvYj1
- 1rwZ7cd4lgNy2BbIyXteBHiU5MotAscOaU1iLnphF+/L4aXcwsCSspKgRe1I/mr+OyQx
- EsPkeK+lEWb+nAm9fGj3KiTKOk/bzNwzh/OQ5d0SKQYHI1BwEdr225EnezL2i8Vh212c
- wCYyrC+dxHv6Ega+JzFRmtE40kzlvgB05FHrDMvR956RugARDuEkgTJK2POaF+Kaz1Qn
- 7+cPRZWUx/zgcYWTBYCezbwoZDVt83CTMM60ZtqlBgrxUb3rH77W/gikeHpRtTl5oFE8
- tc6A==
+ bh=eoPWka5IGjXwmhHjvxnZ9KVWvPEaQtzh37FeYd1Lbz4=;
+ b=KruK0YPb2Idd7X64GTsEMV+HokaTvyBsMPdfqpIffapZZ9ssvHPIdnR/tpvxvr5FUM
+ pYjpkedaF18mLBNGFnEjcrvIfRZtCAKMMIt9LH3R2+OKCyIMI/Drv4cT588x1CG6tSIf
+ qF/Yq0rm6fw7PWxseDQqxc1n49OLraHi3xwz9uK52AGMZP9DvRfQASOiuDTXqlB6BbzI
+ HLZIYX3IVP+xyrvHWpQTXLBpgJ0CHQrT1JPkv5yGm852WobzOT3yAXfjuXolw5I0xJSh
+ Hs7H3qeguqf4vX2s5ByhyQKvedoEABuPzfz7blh60a9pvzx3x1gXuMc5Z96pRmzUzoat
+ 6fKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756336840; x=1756941640;
+ d=1e100.net; s=20230601; t=1756336844; x=1756941644;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qyfttuYrb2FmFhaTWAEnRHcv+c+b5Ku1UMCZw0CnHd8=;
- b=YryLwhpaxszEjO+p+cz3WJbZhlfG73GZqx/T3/vTmDZtuFf4RXVwS1U5dk4S5nKdhu
- HyfSK4XJyIlEKYYoLBBpXF5eFZLxI7cUX+zNNs33d64CG5WdmYizxoMH6MEq9prd2fnk
- B3YrYp9ukMojRWz3Sph2gXfyNTGlCaGaYm5KEqgqLrIuurfJ74VS7EiOS2MvLo+c361D
- TsAWiTY+E4mBeAm+M9Vw+uyQjE5Eq1tjXww+5TVXg2Y19hHiylG7UV8ND6XGBPOahVwC
- Cxo06zQ846iJR2w5YPY68QDYZS4l4niyZqFHPMuM3U7RVJvD36l3AyWJtsUAB7y7ocpN
- eBsQ==
-X-Gm-Message-State: AOJu0Yzq2T3JBUbotazQxWn2MAEvudSppK8sw+0H4attVSD5R4+Rlg/U
- 3UovBRqoTDwrTxlN2b11uWL/rwNqjNftA7wYLPYi81fn4TL5FIMygwfl4bLxQLrXjkVJyQV1A1a
- zHlR3/Gw=
-X-Gm-Gg: ASbGncuGRSyU6O1nMQaw3/Jlbaf4xEOI/yB9RbjghpbqJeGcNVEbWP5do8PgjO9SGHc
- GbLQuebJlwvdORL9oiSaB7KzO17jHGd4FE3n0cI948ki+t+lzTBhqLdo1p2mc95sOwAnfpknmKk
- JHxxE2+3+PIdSWx53AaXtuYrsoFGVE6YInkLPm5Rf9pfu9aQBggS9BJi4l9eQKC7CitXjMs05ik
- zZnKnsAEYHVAPAnUVawI43zAOE+DOiQN+ZYC9xDugSEurPSUd01J21kfTa8Em63r633PAgDXyz9
- eIGtB/uHwmiG1q2rT1lrE+VR4UCJjiuTyYiEmLQA18UNtyG+BnKXhY8pifWK9vfTO3+xxI62pgo
- GhqG6+LZDGQaduuUE/ni/3OSCWA==
-X-Google-Smtp-Source: AGHT+IGwR1nndh/yCqx3qKqeXTIGz242sb8KTpasaaEsXm7l7tScuAUJvJi07rhTyDJUsQAq7skqYQ==
-X-Received: by 2002:a05:6a00:1789:b0:770:3dc0:a4ad with SMTP id
- d2e1a72fcca58-771fc292de2mr8743767b3a.5.1756336840323; 
- Wed, 27 Aug 2025 16:20:40 -0700 (PDT)
+ bh=eoPWka5IGjXwmhHjvxnZ9KVWvPEaQtzh37FeYd1Lbz4=;
+ b=W+/36eajrgjNZptKHi6btV+xoLyQpp3JcII4shnEqfkaXAcjWDhzvE1dPdSrF07Y6j
+ 70x7k7PgPsphwDxU3RdX+nNzo1QhYqsb03ems8A0ZDtQhQursTNPr/QwDDr/rySaoRHB
+ qS+01h4yruLSnY7Xlofp9dZFF5vH2/4+CPYIULtPJYktWmyTWd/Wo37bS2xFe7yM6h9c
+ /ezt7udlfofUVu709kZgniYJPjjwF88YKzOwu8o4vANdMLYHK7DxsjvDzHxXJx5rpgmC
+ H/dzwD6C5nZMJ02DiP1ggWsky55Oe06dUvfKCPtq0q+DG/ca2BB6WnhRexAVlC5ocCgj
+ 5jJg==
+X-Gm-Message-State: AOJu0Yw8csQVFlfl4bCaxejuLQ8jeKw2VrFPgDQC6kn5zg4Dy8lXFzMm
+ JK9bHrz4fgUljFnZdfGOSlol4yUSafzUh5VtnfVK7jT0LR9CrIJZTF3U9sUiJGU6PacZhRyLFmt
+ GNtccAio=
+X-Gm-Gg: ASbGnctXGjvVcI+CplQAv6qsZuqrYM9Mty9HG/zK/K5LOHSqfECUIm6JYNm1Q074kMD
+ 7XncBadJldMyF21MY/zuHjbvAQ6kW8j0WTRtXWQhQFgbi7CRazS4SRpApqlQxMCv6swqYjqBbv9
+ 4ytTezKPyZlA37u14n6XPRJ6+HuHX95/m4DiqdQnM7+qkKoUGUWTrJ0ZWci5JGCZYcfeCssauX5
+ fypr7YWNFcuu1QZdCeb1z0n4VtIunQ3V/B3YBZ3kYIGgifb2scLBVm2rshanQPT3R+KKA9mnSij
+ cCmjFZ+ak6GVKJ7FoYZDvdkHwE7xqLPw+S+o/QVNZqW44UP8wizTSnKCR1UrhIMq+HoOZgqg7Fl
+ cMVDbOuOMnBX6UEhM+/paEzL8AA==
+X-Google-Smtp-Source: AGHT+IHnsmy2kCAy/d2dMjQpqMy7BAkvYWdedIcJRhVTDW3i57VZ41yqLH02RQqNkhot+cbey6Y68A==
+X-Received: by 2002:a05:6a00:3495:b0:771:fcd7:ad0 with SMTP id
+ d2e1a72fcca58-771fcd710b9mr9067965b3a.22.1756336843538; 
+ Wed, 27 Aug 2025 16:20:43 -0700 (PDT)
 Received: from stoup.. ([144.6.121.55]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7703ffebd33sm13986886b3a.29.2025.08.27.16.20.38
+ d2e1a72fcca58-7703ffebd33sm13986886b3a.29.2025.08.27.16.20.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Aug 2025 16:20:40 -0700 (PDT)
+ Wed, 27 Aug 2025 16:20:43 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 04/46] linux-user: Move ppc uabi/asm/elf.h workaround to osdep.h
-Date: Thu, 28 Aug 2025 09:19:41 +1000
-Message-ID: <20250827232023.50398-5-richard.henderson@linaro.org>
+Subject: [PULL 05/46] linux-user: Move get_elf_cpu_model to target/elfload.c
+Date: Thu, 28 Aug 2025 09:19:42 +1000
+Message-ID: <20250827232023.50398-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250827232023.50398-1-richard.henderson@linaro.org>
 References: <20250827232023.50398-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,77 +97,781 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the workaround out of linux-user/elfload.c, so that
-we don't have to replicate it in many places.  Place it
-immediately after the include of <signal.h>, which draws
-in the relevant symbols.
+Rename from cpu_get_model to emphasize that this is an elf-specific
+function.  Declare the function once in loader.h.
 
-Note that ARCH_DLINFO is not defined by the kernel header,
-and so there's no need to undef it either.
+This frees up target_elf.h for other uses.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/osdep.h |  8 ++++++++
- hw/core/loader.c     |  4 ----
- linux-user/elfload.c | 10 ----------
- 3 files changed, 8 insertions(+), 14 deletions(-)
+ linux-user/aarch64/target_elf.h     |  5 +---
+ linux-user/alpha/target_elf.h       |  5 +---
+ linux-user/arm/target_elf.h         |  5 +---
+ linux-user/hexagon/target_elf.h     | 29 -------------------
+ linux-user/hppa/target_elf.h        |  5 +---
+ linux-user/i386/target_elf.h        |  5 +---
+ linux-user/loader.h                 |  3 ++
+ linux-user/loongarch64/target_elf.h |  5 +---
+ linux-user/m68k/target_elf.h        |  9 ------
+ linux-user/microblaze/target_elf.h  |  5 +---
+ linux-user/mips/target_elf.h        | 11 +-------
+ linux-user/mips64/target_elf.h      | 27 +-----------------
+ linux-user/openrisc/target_elf.h    |  5 +---
+ linux-user/ppc/target_elf.h         |  9 +-----
+ linux-user/riscv/target_elf.h       |  5 +---
+ linux-user/s390x/target_elf.h       |  5 +---
+ linux-user/sh4/target_elf.h         |  5 +---
+ linux-user/sparc/target_elf.h       |  9 +-----
+ linux-user/x86_64/target_elf.h      |  5 +---
+ linux-user/xtensa/target_elf.h      |  5 ----
+ linux-user/aarch64/elfload.c        | 10 +++++++
+ linux-user/alpha/elfload.c          | 10 +++++++
+ linux-user/arm/elfload.c            | 10 +++++++
+ linux-user/hexagon/elfload.c        | 34 +++++++++++++++++++++++
+ linux-user/hppa/elfload.c           | 10 +++++++
+ linux-user/i386/elfload.c           | 10 +++++++
+ linux-user/loongarch64/elfload.c    | 10 +++++++
+ linux-user/m68k/elfload.c           | 17 ++++++++++++
+ linux-user/main.c                   |  3 +-
+ linux-user/microblaze/elfload.c     | 10 +++++++
+ linux-user/mips/elfload.c           | 43 +++++++++++++++++++++++++++++
+ linux-user/openrisc/elfload.c       | 10 +++++++
+ linux-user/ppc/elfload.c            | 14 ++++++++++
+ linux-user/riscv/elfload.c          | 10 +++++++
+ linux-user/s390x/elfload.c          | 10 +++++++
+ linux-user/sh4/elfload.c            | 10 +++++++
+ linux-user/sparc/elfload.c          | 14 ++++++++++
+ linux-user/x86_64/elfload.c         | 10 +++++++
+ linux-user/xtensa/elfload.c         | 10 +++++++
+ 39 files changed, 272 insertions(+), 145 deletions(-)
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 96fe51bc39..be3460b32f 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -133,6 +133,14 @@ QEMU_EXTERN_C int daemon(int, int);
- #include <setjmp.h>
- #include <signal.h>
+diff --git a/linux-user/aarch64/target_elf.h b/linux-user/aarch64/target_elf.h
+index a7eb962fba..d955b3d07f 100644
+--- a/linux-user/aarch64/target_elf.h
++++ b/linux-user/aarch64/target_elf.h
+@@ -7,8 +7,5 @@
  
-+/*
-+ * Avoid conflict with linux/arch/powerpc/include/uapi/asm/elf.h, included
-+ * from <asm/sigcontext.h>, but we might as well do this unconditionally.
-+ */
-+#undef ELF_CLASS
-+#undef ELF_DATA
-+#undef ELF_ARCH
+ #ifndef AARCH64_TARGET_ELF_H
+ #define AARCH64_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return "any";
+-}
 +
- #ifdef CONFIG_IOVEC
- #include <sys/uio.h>
  #endif
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index e7056ba4bd..524af6f14a 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -295,10 +295,6 @@ static void *load_at(int fd, off_t offset, size_t size)
-     return ptr;
- }
+diff --git a/linux-user/alpha/target_elf.h b/linux-user/alpha/target_elf.h
+index b77d638f6d..52b68680ad 100644
+--- a/linux-user/alpha/target_elf.h
++++ b/linux-user/alpha/target_elf.h
+@@ -7,8 +7,5 @@
  
--#ifdef ELF_CLASS
--#undef ELF_CLASS
--#endif
+ #ifndef ALPHA_TARGET_ELF_H
+ #define ALPHA_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return "ev67";
+-}
++
+ #endif
+diff --git a/linux-user/arm/target_elf.h b/linux-user/arm/target_elf.h
+index 58ff6a0986..2abb27a733 100644
+--- a/linux-user/arm/target_elf.h
++++ b/linux-user/arm/target_elf.h
+@@ -7,8 +7,5 @@
+ 
+ #ifndef ARM_TARGET_ELF_H
+ #define ARM_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return "any";
+-}
++
+ #endif
+diff --git a/linux-user/hexagon/target_elf.h b/linux-user/hexagon/target_elf.h
+index 36056fc9f0..eccf207f6b 100644
+--- a/linux-user/hexagon/target_elf.h
++++ b/linux-user/hexagon/target_elf.h
+@@ -18,33 +18,4 @@
+ #ifndef HEXAGON_TARGET_ELF_H
+ #define HEXAGON_TARGET_ELF_H
+ 
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    static char buf[32];
+-    int err;
 -
- #define ELF_CLASS   ELFCLASS32
+-    /* For now, treat anything newer than v5 as a v73 */
+-    /* FIXME - Disable instructions that are newer than the specified arch */
+-    if (eflags == 0x04 ||    /* v5  */
+-        eflags == 0x05 ||    /* v55 */
+-        eflags == 0x60 ||    /* v60 */
+-        eflags == 0x61 ||    /* v61 */
+-        eflags == 0x62 ||    /* v62 */
+-        eflags == 0x65 ||    /* v65 */
+-        eflags == 0x66 ||    /* v66 */
+-        eflags == 0x67 ||    /* v67 */
+-        eflags == 0x8067 ||  /* v67t */
+-        eflags == 0x68 ||    /* v68 */
+-        eflags == 0x69 ||    /* v69 */
+-        eflags == 0x71 ||    /* v71 */
+-        eflags == 0x8071 ||  /* v71t */
+-        eflags == 0x73       /* v73 */
+-       ) {
+-        return "v73";
+-    }
+-
+-    err = snprintf(buf, sizeof(buf), "unknown (0x%x)", eflags);
+-    return err >= 0 && err < sizeof(buf) ? buf : "unknown";
+-}
+-
+ #endif
+diff --git a/linux-user/hppa/target_elf.h b/linux-user/hppa/target_elf.h
+index 19cae8bd65..5826ca2cd2 100644
+--- a/linux-user/hppa/target_elf.h
++++ b/linux-user/hppa/target_elf.h
+@@ -7,8 +7,5 @@
+ 
+ #ifndef HPPA_TARGET_ELF_H
+ #define HPPA_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return "hppa";
+-}
++
+ #endif
+diff --git a/linux-user/i386/target_elf.h b/linux-user/i386/target_elf.h
+index 238a9aba73..e6f0d8fa4e 100644
+--- a/linux-user/i386/target_elf.h
++++ b/linux-user/i386/target_elf.h
+@@ -7,8 +7,5 @@
+ 
+ #ifndef I386_TARGET_ELF_H
+ #define I386_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return "max";
+-}
++
+ #endif
+diff --git a/linux-user/loader.h b/linux-user/loader.h
+index e102e6f410..75ee9975a0 100644
+--- a/linux-user/loader.h
++++ b/linux-user/loader.h
+@@ -98,6 +98,9 @@ abi_long memcpy_to_target(abi_ulong dest, const void *src,
+ 
+ extern unsigned long guest_stack_size;
+ 
++/* Note that Elf32 and Elf64 use uint32_t for e_flags. */
++const char *get_elf_cpu_model(uint32_t eflags);
++
+ #if defined(TARGET_S390X) || defined(TARGET_AARCH64) || defined(TARGET_ARM)
+ uint32_t get_elf_hwcap(void);
+ const char *elf_hwcap_str(uint32_t bit);
+diff --git a/linux-user/loongarch64/target_elf.h b/linux-user/loongarch64/target_elf.h
+index 95c3f05a46..39a08d35d9 100644
+--- a/linux-user/loongarch64/target_elf.h
++++ b/linux-user/loongarch64/target_elf.h
+@@ -5,8 +5,5 @@
+ 
+ #ifndef LOONGARCH_TARGET_ELF_H
+ #define LOONGARCH_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return "la464";
+-}
++
+ #endif
+diff --git a/linux-user/m68k/target_elf.h b/linux-user/m68k/target_elf.h
+index 998fe0fe2f..62ff9d38d4 100644
+--- a/linux-user/m68k/target_elf.h
++++ b/linux-user/m68k/target_elf.h
+@@ -7,14 +7,5 @@
+ 
+ #ifndef M68K_TARGET_ELF_H
+ #define M68K_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    if (eflags == 0 || (eflags & EF_M68K_M68000)) {
+-        /* 680x0 */
+-        return "m68040";
+-    }
+ 
+-    /* Coldfire */
+-    return "any";
+-}
+ #endif
+diff --git a/linux-user/microblaze/target_elf.h b/linux-user/microblaze/target_elf.h
+index 8a8f1debff..bfe2997fd2 100644
+--- a/linux-user/microblaze/target_elf.h
++++ b/linux-user/microblaze/target_elf.h
+@@ -7,8 +7,5 @@
+ 
+ #ifndef MICROBLAZE_TARGET_ELF_H
+ #define MICROBLAZE_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return "any";
+-}
++
+ #endif
+diff --git a/linux-user/mips/target_elf.h b/linux-user/mips/target_elf.h
+index 71a32315a8..febf710c7a 100644
+--- a/linux-user/mips/target_elf.h
++++ b/linux-user/mips/target_elf.h
+@@ -7,14 +7,5 @@
+ 
+ #ifndef MIPS_TARGET_ELF_H
+ #define MIPS_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    if ((eflags & EF_MIPS_ARCH) == EF_MIPS_ARCH_32R6) {
+-        return "mips32r6-generic";
+-    }
+-    if (eflags & EF_MIPS_NAN2008) {
+-        return "P5600";
+-    }
+-    return "24Kf";
+-}
++
+ #endif
+diff --git a/linux-user/mips64/target_elf.h b/linux-user/mips64/target_elf.h
+index 502af9d278..02e6d14840 100644
+--- a/linux-user/mips64/target_elf.h
++++ b/linux-user/mips64/target_elf.h
+@@ -7,30 +7,5 @@
+ 
+ #ifndef MIPS64_TARGET_ELF_H
+ #define MIPS64_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    switch (eflags & EF_MIPS_MACH) {
+-    case EF_MIPS_MACH_OCTEON:
+-    case EF_MIPS_MACH_OCTEON2:
+-    case EF_MIPS_MACH_OCTEON3:
+-        return "Octeon68XX";
+-    case EF_MIPS_MACH_LS2E:
+-        return "Loongson-2E";
+-    case EF_MIPS_MACH_LS2F:
+-        return "Loongson-2F";
+-    case EF_MIPS_MACH_LS3A:
+-        return "Loongson-3A1000";
+-    default:
+-        break;
+-    }
+-    switch (eflags & EF_MIPS_ARCH) {
+-    case EF_MIPS_ARCH_64R6:
+-        return "I6400";
+-    case EF_MIPS_ARCH_64R2:
+-        return "MIPS64R2-generic";
+-    default:
+-        break;
+-    }
+-    return "5KEf";
+-}
++
+ #endif
+diff --git a/linux-user/openrisc/target_elf.h b/linux-user/openrisc/target_elf.h
+index 265ecd3079..b34f2ff672 100644
+--- a/linux-user/openrisc/target_elf.h
++++ b/linux-user/openrisc/target_elf.h
+@@ -7,8 +7,5 @@
+ 
+ #ifndef OPENRISC_TARGET_ELF_H
+ #define OPENRISC_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return "any";
+-}
++
+ #endif
+diff --git a/linux-user/ppc/target_elf.h b/linux-user/ppc/target_elf.h
+index 0616618854..8c0a8ea431 100644
+--- a/linux-user/ppc/target_elf.h
++++ b/linux-user/ppc/target_elf.h
+@@ -7,12 +7,5 @@
+ 
+ #ifndef PPC_TARGET_ELF_H
+ #define PPC_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-#ifdef TARGET_PPC64
+-    return "POWER9";
+-#else
+-    return "750";
+-#endif
+-}
++
+ #endif
+diff --git a/linux-user/riscv/target_elf.h b/linux-user/riscv/target_elf.h
+index dedd5956f3..bfe86105d0 100644
+--- a/linux-user/riscv/target_elf.h
++++ b/linux-user/riscv/target_elf.h
+@@ -7,8 +7,5 @@
+ 
+ #ifndef RISCV_TARGET_ELF_H
+ #define RISCV_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return "max";
+-}
++
+ #endif
+diff --git a/linux-user/s390x/target_elf.h b/linux-user/s390x/target_elf.h
+index 8114b59c1d..e51b053339 100644
+--- a/linux-user/s390x/target_elf.h
++++ b/linux-user/s390x/target_elf.h
+@@ -7,8 +7,5 @@
+ 
+ #ifndef S390X_TARGET_ELF_H
+ #define S390X_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return "qemu";
+-}
++
+ #endif
+diff --git a/linux-user/sh4/target_elf.h b/linux-user/sh4/target_elf.h
+index f485e0cef2..d17011bd75 100644
+--- a/linux-user/sh4/target_elf.h
++++ b/linux-user/sh4/target_elf.h
+@@ -7,8 +7,5 @@
+ 
+ #ifndef SH4_TARGET_ELF_H
+ #define SH4_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return "sh7785";
+-}
++
+ #endif
+diff --git a/linux-user/sparc/target_elf.h b/linux-user/sparc/target_elf.h
+index a510ceb612..7e46748d26 100644
+--- a/linux-user/sparc/target_elf.h
++++ b/linux-user/sparc/target_elf.h
+@@ -7,12 +7,5 @@
+ 
+ #ifndef SPARC_TARGET_ELF_H
+ #define SPARC_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-#ifdef TARGET_SPARC64
+-    return "TI UltraSparc II";
+-#else
+-    return "Fujitsu MB86904";
+-#endif
+-}
++
+ #endif
+diff --git a/linux-user/x86_64/target_elf.h b/linux-user/x86_64/target_elf.h
+index 3f628f8d66..5849f96350 100644
+--- a/linux-user/x86_64/target_elf.h
++++ b/linux-user/x86_64/target_elf.h
+@@ -7,8 +7,5 @@
+ 
+ #ifndef X86_64_TARGET_ELF_H
+ #define X86_64_TARGET_ELF_H
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return "max";
+-}
++
+ #endif
+diff --git a/linux-user/xtensa/target_elf.h b/linux-user/xtensa/target_elf.h
+index a9a3fabd89..2c55c22e14 100644
+--- a/linux-user/xtensa/target_elf.h
++++ b/linux-user/xtensa/target_elf.h
+@@ -8,9 +8,4 @@
+ #ifndef XTENSA_TARGET_ELF_H
+ #define XTENSA_TARGET_ELF_H
+ 
+-static inline const char *cpu_get_model(uint32_t eflags)
+-{
+-    return XTENSA_DEFAULT_CPU_MODEL;
+-}
+-
+ #endif
+diff --git a/linux-user/aarch64/elfload.c b/linux-user/aarch64/elfload.c
+index 73fa78ef14..b92442dfeb 100644
+--- a/linux-user/aarch64/elfload.c
++++ b/linux-user/aarch64/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return "any";
++}
+diff --git a/linux-user/alpha/elfload.c b/linux-user/alpha/elfload.c
+index 73fa78ef14..1e44475c47 100644
+--- a/linux-user/alpha/elfload.c
++++ b/linux-user/alpha/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return "ev67";
++}
+diff --git a/linux-user/arm/elfload.c b/linux-user/arm/elfload.c
+index 73fa78ef14..b92442dfeb 100644
+--- a/linux-user/arm/elfload.c
++++ b/linux-user/arm/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return "any";
++}
+diff --git a/linux-user/hexagon/elfload.c b/linux-user/hexagon/elfload.c
+index 73fa78ef14..d8b545032a 100644
+--- a/linux-user/hexagon/elfload.c
++++ b/linux-user/hexagon/elfload.c
+@@ -1 +1,35 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    static char buf[32];
++    int err;
++
++    /* For now, treat anything newer than v5 as a v73 */
++    /* FIXME - Disable instructions that are newer than the specified arch */
++    if (eflags == 0x04 ||    /* v5  */
++        eflags == 0x05 ||    /* v55 */
++        eflags == 0x60 ||    /* v60 */
++        eflags == 0x61 ||    /* v61 */
++        eflags == 0x62 ||    /* v62 */
++        eflags == 0x65 ||    /* v65 */
++        eflags == 0x66 ||    /* v66 */
++        eflags == 0x67 ||    /* v67 */
++        eflags == 0x8067 ||  /* v67t */
++        eflags == 0x68 ||    /* v68 */
++        eflags == 0x69 ||    /* v69 */
++        eflags == 0x71 ||    /* v71 */
++        eflags == 0x8071 ||  /* v71t */
++        eflags == 0x73       /* v73 */
++       ) {
++        return "v73";
++    }
++
++    err = snprintf(buf, sizeof(buf), "unknown (0x%x)", eflags);
++    return err >= 0 && err < sizeof(buf) ? buf : "unknown";
++}
+diff --git a/linux-user/hppa/elfload.c b/linux-user/hppa/elfload.c
+index 73fa78ef14..2274fcbde4 100644
+--- a/linux-user/hppa/elfload.c
++++ b/linux-user/hppa/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return "hppa";
++}
+diff --git a/linux-user/i386/elfload.c b/linux-user/i386/elfload.c
+index 73fa78ef14..f92adb7308 100644
+--- a/linux-user/i386/elfload.c
++++ b/linux-user/i386/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return "max";
++}
+diff --git a/linux-user/loongarch64/elfload.c b/linux-user/loongarch64/elfload.c
+index 73fa78ef14..874dc4c230 100644
+--- a/linux-user/loongarch64/elfload.c
++++ b/linux-user/loongarch64/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return "la464";
++}
+diff --git a/linux-user/m68k/elfload.c b/linux-user/m68k/elfload.c
+index 73fa78ef14..561ac5b3b3 100644
+--- a/linux-user/m68k/elfload.c
++++ b/linux-user/m68k/elfload.c
+@@ -1 +1,18 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++#include "elf.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    if (eflags == 0 || (eflags & EF_M68K_M68000)) {
++        /* 680x0 */
++        return "m68040";
++    }
++
++    /* Coldfire */
++    return "any";
++}
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 68972f00a1..ad1a29d198 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -49,7 +49,6 @@
+ #include "qemu/guest-random.h"
  #include "elf.h"
+ #include "trace/control.h"
+-#include "target_elf.h"
+ #include "user/cpu_loop.h"
+ #include "crypto/init.h"
+ #include "fd-trans.h"
+@@ -809,7 +808,7 @@ int main(int argc, char **argv, char **envp)
+     }
  
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index ea214105ff..4ca8c39dc2 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -35,16 +35,6 @@
- #include "target/arm/cpu-features.h"
- #endif
+     if (cpu_model == NULL) {
+-        cpu_model = cpu_get_model(get_elf_eflags(execfd));
++        cpu_model = get_elf_cpu_model(get_elf_eflags(execfd));
+     }
+     cpu_type = parse_cpu_option(cpu_model);
  
--#ifdef _ARCH_PPC64
--#undef ARCH_DLINFO
--#undef ELF_PLATFORM
--#undef ELF_HWCAP
--#undef ELF_HWCAP2
--#undef ELF_CLASS
--#undef ELF_DATA
--#undef ELF_ARCH
--#endif
--
- #ifndef TARGET_ARCH_HAS_SIGTRAMP_PAGE
- #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 0
- #endif
+diff --git a/linux-user/microblaze/elfload.c b/linux-user/microblaze/elfload.c
+index 73fa78ef14..b92442dfeb 100644
+--- a/linux-user/microblaze/elfload.c
++++ b/linux-user/microblaze/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return "any";
++}
+diff --git a/linux-user/mips/elfload.c b/linux-user/mips/elfload.c
+index 73fa78ef14..04e3b76740 100644
+--- a/linux-user/mips/elfload.c
++++ b/linux-user/mips/elfload.c
+@@ -1 +1,44 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++#include "elf.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++#ifdef TARGET_MIPS64
++    switch (eflags & EF_MIPS_MACH) {
++    case EF_MIPS_MACH_OCTEON:
++    case EF_MIPS_MACH_OCTEON2:
++    case EF_MIPS_MACH_OCTEON3:
++        return "Octeon68XX";
++    case EF_MIPS_MACH_LS2E:
++        return "Loongson-2E";
++    case EF_MIPS_MACH_LS2F:
++        return "Loongson-2F";
++    case EF_MIPS_MACH_LS3A:
++        return "Loongson-3A1000";
++    default:
++        break;
++    }
++    switch (eflags & EF_MIPS_ARCH) {
++    case EF_MIPS_ARCH_64R6:
++        return "I6400";
++    case EF_MIPS_ARCH_64R2:
++        return "MIPS64R2-generic";
++    default:
++        break;
++    }
++    return "5KEf";
++#else
++    if ((eflags & EF_MIPS_ARCH) == EF_MIPS_ARCH_32R6) {
++        return "mips32r6-generic";
++    }
++    if (eflags & EF_MIPS_NAN2008) {
++        return "P5600";
++    }
++    return "24Kf";
++#endif
++}
+diff --git a/linux-user/openrisc/elfload.c b/linux-user/openrisc/elfload.c
+index 73fa78ef14..b92442dfeb 100644
+--- a/linux-user/openrisc/elfload.c
++++ b/linux-user/openrisc/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return "any";
++}
+diff --git a/linux-user/ppc/elfload.c b/linux-user/ppc/elfload.c
+index 73fa78ef14..7775dc06fa 100644
+--- a/linux-user/ppc/elfload.c
++++ b/linux-user/ppc/elfload.c
+@@ -1 +1,15 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++#ifdef TARGET_PPC64
++    return "POWER9";
++#else
++    return "750";
++#endif
++}
+diff --git a/linux-user/riscv/elfload.c b/linux-user/riscv/elfload.c
+index 73fa78ef14..f92adb7308 100644
+--- a/linux-user/riscv/elfload.c
++++ b/linux-user/riscv/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return "max";
++}
+diff --git a/linux-user/s390x/elfload.c b/linux-user/s390x/elfload.c
+index 73fa78ef14..989953a247 100644
+--- a/linux-user/s390x/elfload.c
++++ b/linux-user/s390x/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return "qemu";
++}
+diff --git a/linux-user/sh4/elfload.c b/linux-user/sh4/elfload.c
+index 73fa78ef14..546034ec07 100644
+--- a/linux-user/sh4/elfload.c
++++ b/linux-user/sh4/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return "sh7785";
++}
+diff --git a/linux-user/sparc/elfload.c b/linux-user/sparc/elfload.c
+index 73fa78ef14..243e6f9b66 100644
+--- a/linux-user/sparc/elfload.c
++++ b/linux-user/sparc/elfload.c
+@@ -1 +1,15 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++#ifdef TARGET_SPARC64
++    return "TI UltraSparc II";
++#else
++    return "Fujitsu MB86904";
++#endif
++}
+diff --git a/linux-user/x86_64/elfload.c b/linux-user/x86_64/elfload.c
+index 73fa78ef14..f92adb7308 100644
+--- a/linux-user/x86_64/elfload.c
++++ b/linux-user/x86_64/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return "max";
++}
+diff --git a/linux-user/xtensa/elfload.c b/linux-user/xtensa/elfload.c
+index 73fa78ef14..e35ba69a10 100644
+--- a/linux-user/xtensa/elfload.c
++++ b/linux-user/xtensa/elfload.c
+@@ -1 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "loader.h"
++
++
++const char *get_elf_cpu_model(uint32_t eflags)
++{
++    return XTENSA_DEFAULT_CPU_MODEL;
++}
 -- 
 2.43.0
 
