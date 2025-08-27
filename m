@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF23BB38678
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B374B385F2
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:13:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHhX-0003VZ-5I; Wed, 27 Aug 2025 11:04:39 -0400
+	id 1urHiH-0004cC-36; Wed, 27 Aug 2025 11:05:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHhH-00036J-FQ; Wed, 27 Aug 2025 11:04:23 -0400
+ id 1urHhe-0003vq-89; Wed, 27 Aug 2025 11:04:49 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHhF-0004tU-31; Wed, 27 Aug 2025 11:04:23 -0400
+ id 1urHhb-0004tr-PX; Wed, 27 Aug 2025 11:04:45 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6F7E814C538;
+ by isrv.corpit.ru (Postfix) with ESMTP id 81E4214C539;
  Wed, 27 Aug 2025 18:02:57 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5AA7D269840;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6D100269841;
  Wed, 27 Aug 2025 18:03:24 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -28,10 +28,10 @@ Cc: qemu-stable@nongnu.org, Jay Chang <jay.chang@sifive.com>,
  Frank Chang <frank.chang@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Nutty Liu <liujingqi@lanxincomputing.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 16/59] target/riscv: Restrict mideleg/medeleg/medelegh
- access to S-mode harts
-Date: Wed, 27 Aug 2025 18:02:21 +0300
-Message-ID: <20250827150323.2694101-16-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 17/59] target/riscv: Restrict midelegh access to
+ S-mode harts
+Date: Wed, 27 Aug 2025 18:02:22 +0300
+Message-ID: <20250827150323.2694101-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -62,49 +62,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jay Chang <jay.chang@sifive.com>
 
-RISC-V Privileged Spec states:
-"In harts with S-mode, the medeleg and mideleg registers must exist, and
-setting a bit in medeleg or mideleg will delegate the corresponding trap
-, when occurring in S-mode or U-mode, to the S-mode trap handler. In
-harts without S-mode, the medeleg and mideleg registers should not
-exist."
+RISC-V AIA Spec states:
+"For a machine-level environment, extension Smaia encompasses all added
+CSRs and all modifications to interrupt response behavior that the AIA
+specifies for a hart, over all privilege levels. For a supervisor-level
+environment, extension Ssaia is essentially the same as Smaia except
+excluding the machine-level CSRs and behavior not directly visible to
+supervisor level."
 
-Add smode predicate to ensure these CSRs are only accessible when S-mode
-is supported.
+Since midelegh is an AIA machine-mode CSR, add Smaia extension check in
+aia_smode32 predicate.
 
 Reviewed-by: Frank Chang <frank.chang@sifive.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Jay Chang <jay.chang@sifive.com>
 Reviewed-by: Nutty Liu<liujingqi@lanxincomputing.com>
-Message-ID: <20250701030021.99218-2-jay.chang@sifive.com>
+Message-ID: <20250701030021.99218-3-jay.chang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit e443ba03361b63218e6c3aa4f73d2cb5b9b1d372)
+(cherry picked from commit 86bc3a0abf10072081cddd8dff25aa72c60e67b8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index f1c4c8c1b8..7fe6ac7ea2 100644
+index 7fe6ac7ea2..66d572af1f 100644
 --- a/target/riscv/csr.c
 +++ b/target/riscv/csr.c
-@@ -5783,8 +5783,8 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
-                           NULL,                read_mstatus_i128           },
-     [CSR_MISA]        = { "misa",       any,   read_misa,    write_misa,
-                           NULL,                read_misa_i128              },
--    [CSR_MIDELEG]     = { "mideleg",    any,   NULL, NULL,   rmw_mideleg   },
--    [CSR_MEDELEG]     = { "medeleg",    any,   read_medeleg, write_medeleg },
-+    [CSR_MIDELEG]     = { "mideleg",    smode,   NULL, NULL,   rmw_mideleg   },
-+    [CSR_MEDELEG]     = { "medeleg",    smode,   read_medeleg, write_medeleg },
-     [CSR_MIE]         = { "mie",        any,   NULL, NULL,   rmw_mie       },
-     [CSR_MTVEC]       = { "mtvec",      any,   read_mtvec,   write_mtvec   },
-     [CSR_MCOUNTEREN]  = { "mcounteren", umode, read_mcounteren,
-@@ -5792,7 +5792,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+@@ -372,8 +372,11 @@ static RISCVException aia_smode(CPURISCVState *env, int csrno)
+ static RISCVException aia_smode32(CPURISCVState *env, int csrno)
+ {
+     int ret;
++    int csr_priv = get_field(csrno, 0x300);
  
-     [CSR_MSTATUSH]    = { "mstatush",   any32, read_mstatush,
-                           write_mstatush                                   },
--    [CSR_MEDELEGH]    = { "medelegh",   any32, read_zero, write_ignore,
-+    [CSR_MEDELEGH]    = { "medelegh",   smode32, read_zero, write_ignore,
-                           .min_priv_ver = PRIV_VERSION_1_13_0              },
-     [CSR_HEDELEGH]    = { "hedelegh",   hmode32, read_hedelegh, write_hedelegh,
-                           .min_priv_ver = PRIV_VERSION_1_13_0              },
+-    if (!riscv_cpu_cfg(env)->ext_ssaia) {
++    if (csr_priv == PRV_M && !riscv_cpu_cfg(env)->ext_smaia) {
++        return RISCV_EXCP_ILLEGAL_INST;
++    } else if (!riscv_cpu_cfg(env)->ext_ssaia) {
+         return RISCV_EXCP_ILLEGAL_INST;
+     }
+ 
+@@ -5832,7 +5835,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+     [CSR_MVIP]     = { "mvip",     aia_any, NULL, NULL, rmw_mvip    },
+ 
+     /* Machine-Level High-Half CSRs (AIA) */
+-    [CSR_MIDELEGH] = { "midelegh", aia_any32, NULL, NULL, rmw_midelegh },
++    [CSR_MIDELEGH] = { "midelegh", aia_smode32, NULL, NULL, rmw_midelegh },
+     [CSR_MIEH]     = { "mieh",     aia_any32, NULL, NULL, rmw_mieh     },
+     [CSR_MVIENH]   = { "mvienh",   aia_any32, NULL, NULL, rmw_mvienh   },
+     [CSR_MVIPH]    = { "mviph",    aia_any32, NULL, NULL, rmw_mviph    },
 -- 
 2.47.2
 
