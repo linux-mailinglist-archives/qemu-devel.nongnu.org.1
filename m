@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D19B385BC
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A528B385AD
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:04:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHge-0002cC-Gv; Wed, 27 Aug 2025 11:03:44 -0400
+	id 1urHgf-0002dQ-Ka; Wed, 27 Aug 2025 11:03:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHgb-0002aA-03; Wed, 27 Aug 2025 11:03:41 -0400
+ id 1urHgc-0002be-I7; Wed, 27 Aug 2025 11:03:42 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHgZ-0004nA-66; Wed, 27 Aug 2025 11:03:40 -0400
+ id 1urHga-0004nh-KG; Wed, 27 Aug 2025 11:03:42 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AB4C014C52E;
+ by isrv.corpit.ru (Postfix) with ESMTP id BC94914C52F;
  Wed, 27 Aug 2025 18:02:56 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8EE52269836;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A8F5B269837;
  Wed, 27 Aug 2025 18:03:23 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 06/59] docs/user: clarify user-mode expects the same OS
-Date: Wed, 27 Aug 2025 18:02:11 +0300
-Message-ID: <20250827150323.2694101-6-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 07/59] target/mips: Only update MVPControl.EVP bit if
+ executed by master VPE
+Date: Wed, 27 Aug 2025 18:02:12 +0300
+Message-ID: <20250827150323.2694101-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -60,33 +62,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+From: Philippe Mathieu-Daudé <f4bug@amsat.org>
 
-While we somewhat cover this later when we talk about supported
-operating systems make it clear in the front matter.
+According to the 'MIPS MT Application-Speciﬁc Extension' manual:
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250725154517.3523095-2-alex.bennee@linaro.org>
-(cherry picked from commit 8d6c7de1cc71207ccc047583df0c84363a5da16b)
+  If the VPE executing the instruction is not a Master VPE,
+  with the MVP bit of the VPEConf0 register set, the EVP bit
+  is unchanged by the instruction.
+
+Modify the DVPE/EVPE opcodes to only update the MVPControl.EVP bit
+if executed on a master VPE.
+
+Cc: qemu-stable@nongnu.org
+Reported-by: Hansni Bu
+Buglink: https://bugs.launchpad.net/qemu/+bug/1926277
+Fixes: f249412c749 ("mips: Add MT halting and waking of VPEs")
+Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Message-ID: <20210427133343.159718-1-f4bug@amsat.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit e895095c78ab877d40df2dd31ee79d85757d963b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/docs/user/index.rst b/docs/user/index.rst
-index 782d27cda2..2307580cb9 100644
---- a/docs/user/index.rst
-+++ b/docs/user/index.rst
-@@ -5,8 +5,9 @@ User Mode Emulation
- -------------------
+diff --git a/target/mips/tcg/system/cp0_helper.c b/target/mips/tcg/system/cp0_helper.c
+index 78e422b0ca..97b7fb5e67 100644
+--- a/target/mips/tcg/system/cp0_helper.c
++++ b/target/mips/tcg/system/cp0_helper.c
+@@ -1561,12 +1561,14 @@ target_ulong helper_dvpe(CPUMIPSState *env)
+     CPUState *other_cs = first_cpu;
+     target_ulong prev = env->mvp->CP0_MVPControl;
  
- This section of the manual is the overall guide for users using QEMU
--for user-mode emulation.  In this mode, QEMU can launch
--processes compiled for one CPU on another CPU.
-+for user-mode emulation. In this mode, QEMU can launch programs
-+compiled for one CPU architecture on the same Operating System (OS)
-+but running on a different CPU architecture.
+-    CPU_FOREACH(other_cs) {
+-        MIPSCPU *other_cpu = MIPS_CPU(other_cs);
+-        /* Turn off all VPEs except the one executing the dvpe.  */
+-        if (&other_cpu->env != env) {
+-            other_cpu->env.mvp->CP0_MVPControl &= ~(1 << CP0MVPCo_EVP);
+-            mips_vpe_sleep(other_cpu);
++    if (env->CP0_VPEConf0 & (1 << CP0VPEC0_MVP)) {
++        CPU_FOREACH(other_cs) {
++            MIPSCPU *other_cpu = MIPS_CPU(other_cs);
++            /* Turn off all VPEs except the one executing the dvpe.  */
++            if (&other_cpu->env != env) {
++                other_cpu->env.mvp->CP0_MVPControl &= ~(1 << CP0MVPCo_EVP);
++                mips_vpe_sleep(other_cpu);
++            }
+         }
+     }
+     return prev;
+@@ -1577,15 +1579,17 @@ target_ulong helper_evpe(CPUMIPSState *env)
+     CPUState *other_cs = first_cpu;
+     target_ulong prev = env->mvp->CP0_MVPControl;
  
- .. toctree::
-    :maxdepth: 2
+-    CPU_FOREACH(other_cs) {
+-        MIPSCPU *other_cpu = MIPS_CPU(other_cs);
++    if (env->CP0_VPEConf0 & (1 << CP0VPEC0_MVP)) {
++        CPU_FOREACH(other_cs) {
++            MIPSCPU *other_cpu = MIPS_CPU(other_cs);
+ 
+-        if (&other_cpu->env != env
+-            /* If the VPE is WFI, don't disturb its sleep.  */
+-            && !mips_vpe_is_wfi(other_cpu)) {
+-            /* Enable the VPE.  */
+-            other_cpu->env.mvp->CP0_MVPControl |= (1 << CP0MVPCo_EVP);
+-            mips_vpe_wake(other_cpu); /* And wake it up.  */
++            if (&other_cpu->env != env
++                /* If the VPE is WFI, don't disturb its sleep.  */
++                && !mips_vpe_is_wfi(other_cpu)) {
++                /* Enable the VPE.  */
++                other_cpu->env.mvp->CP0_MVPControl |= (1 << CP0MVPCo_EVP);
++                mips_vpe_wake(other_cpu); /* And wake it up.  */
++            }
+         }
+     }
+     return prev;
 -- 
 2.47.2
 
