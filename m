@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1E6B38844
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D05B3883A
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:07:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urJa3-0006Ga-AE; Wed, 27 Aug 2025 13:05:04 -0400
+	id 1urJaz-0006qp-6q; Wed, 27 Aug 2025 13:06:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJZx-0006DZ-5l; Wed, 27 Aug 2025 13:04:57 -0400
+ id 1urJa3-0006KN-5X; Wed, 27 Aug 2025 13:05:04 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJZn-0007i1-Jg; Wed, 27 Aug 2025 13:04:56 -0400
+ id 1urJZs-0007jY-NM; Wed, 27 Aug 2025 13:05:02 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 94BE614C72B;
+ by isrv.corpit.ru (Postfix) with ESMTP id A5A1D14C72C;
  Wed, 27 Aug 2025 20:03:29 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A431A2698F1;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B543E2698F2;
  Wed, 27 Aug 2025 20:03:56 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 09/18] target/arm/sme: Unify set_pstate() SM/ZA
- helpers as set_svcr()
-Date: Wed, 27 Aug 2025 20:03:44 +0300
-Message-ID: <20250827170356.2698446-9-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.20 10/18] linux-user/aarch64: Support TPIDR2_MAGIC signal
+ frame record
+Date: Wed, 27 Aug 2025 20:03:45 +0300
+Message-ID: <20250827170356.2698446-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 References: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,91 +60,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Unify the two helper_set_pstate_{sm,za} in this function.
-Do not call helper_* functions from svcr_write.
+FEAT_SME adds the TPIDR2 userspace-accessible system register, which
+is used as part of the procedure calling standard's lazy saving
+scheme for the ZA registers:
+ https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst#66the-za-lazy-saving-scheme
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230112102436.1913-8-philmd@linaro.org
-Message-Id: <20230112004322.161330-1-richard.henderson@linaro.org>
-[PMD: Split patch in multiple tiny steps]
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The Linux kernel has a signal frame record for saving
+and restoring this value when calling signal handlers, but
+we forgot to implement this. The result is that code which
+tries to unwind an exception out of a signal handler will
+not work correctly.
+
+Add support for the missing record.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 78011586b90d1 ("target/arm: Enable SME for user-only")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 5c922ec5b136b452fe9d21e7581c99554ce650ed)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250725175510.3864231-3-peter.maydell@linaro.org>
+(cherry picked from commit 99870aff907b1c863cd32558b543f0ab0d0e74ba)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/helper-sme.h b/target/arm/helper-sme.h
-index d33fbcd8fd..d22bf9d21b 100644
---- a/target/arm/helper-sme.h
-+++ b/target/arm/helper-sme.h
-@@ -17,8 +17,7 @@
-  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-  */
+diff --git a/linux-user/aarch64/signal.c b/linux-user/aarch64/signal.c
+index b265cfd470..17865356d8 100644
+--- a/linux-user/aarch64/signal.c
++++ b/linux-user/aarch64/signal.c
+@@ -120,6 +120,13 @@ struct target_za_context {
+ #define TARGET_ZA_SIG_CONTEXT_SIZE(VQ) \
+     TARGET_ZA_SIG_ZAV_OFFSET(VQ, VQ * TARGET_SVE_VQ_BYTES)
  
--DEF_HELPER_FLAGS_2(set_pstate_sm, TCG_CALL_NO_RWG, void, env, i32)
--DEF_HELPER_FLAGS_2(set_pstate_za, TCG_CALL_NO_RWG, void, env, i32)
-+DEF_HELPER_FLAGS_3(set_svcr, TCG_CALL_NO_RWG, void, env, i32, i32)
- 
- DEF_HELPER_FLAGS_3(sme_zero, TCG_CALL_NO_RWG, void, env, i32, i32)
- 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 4628b192f9..05e55aaeeb 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -6469,8 +6469,6 @@ void aarch64_set_svcr(CPUARMState *env, uint64_t new, uint64_t mask)
- static void svcr_write(CPUARMState *env, const ARMCPRegInfo *ri,
-                        uint64_t value)
- {
--    helper_set_pstate_sm(env, FIELD_EX64(value, SVCR, SM));
--    helper_set_pstate_za(env, FIELD_EX64(value, SVCR, ZA));
-     aarch64_set_svcr(env, value, -1);
++#define TARGET_TPIDR2_MAGIC 0x54504902
++
++struct target_tpidr2_context {
++    struct target_aarch64_ctx head;
++    uint64_t tpidr2;
++};
++
+ struct target_rt_sigframe {
+     struct target_siginfo info;
+     struct target_ucontext uc;
+@@ -252,6 +259,14 @@ static void target_setup_za_record(struct target_za_context *za,
+     }
  }
  
-diff --git a/target/arm/sme_helper.c b/target/arm/sme_helper.c
-index bbda651974..3b7c6cd317 100644
---- a/target/arm/sme_helper.c
-+++ b/target/arm/sme_helper.c
-@@ -29,14 +29,9 @@
- #include "vec_internal.h"
- #include "sve_ldst_internal.h"
- 
--void helper_set_pstate_sm(CPUARMState *env, uint32_t i)
-+void helper_set_svcr(CPUARMState *env, uint32_t val, uint32_t mask)
++static void target_setup_tpidr2_record(struct target_tpidr2_context *tpidr2,
++                                       CPUARMState *env)
++{
++    __put_user(TARGET_TPIDR2_MAGIC, &tpidr2->head.magic);
++    __put_user(sizeof(struct target_tpidr2_context), &tpidr2->head.size);
++    __put_user(env->cp15.tpidr2_el0, &tpidr2->tpidr2);
++}
++
+ static void target_restore_general_frame(CPUARMState *env,
+                                          struct target_rt_sigframe *sf)
  {
--    aarch64_set_svcr(env, 0, R_SVCR_SM_MASK);
--}
--
--void helper_set_pstate_za(CPUARMState *env, uint32_t i)
--{
--    aarch64_set_svcr(env, 0, R_SVCR_ZA_MASK);
-+    aarch64_set_svcr(env, val, mask);
+@@ -402,6 +417,12 @@ static bool target_restore_za_record(CPUARMState *env,
+     return true;
  }
  
- void helper_sme_zero(CPUARMState *env, uint32_t imm, uint32_t svl)
-diff --git a/target/arm/translate-a64.c b/target/arm/translate-a64.c
-index fa568aa647..9830fe70cf 100644
---- a/target/arm/translate-a64.c
-+++ b/target/arm/translate-a64.c
-@@ -1861,14 +1861,8 @@ static void handle_msr_i(DisasContext *s, uint32_t insn,
++static void target_restore_tpidr2_record(CPUARMState *env,
++                                         struct target_tpidr2_context *tpidr2)
++{
++    __get_user(env->cp15.tpidr2_el0, &tpidr2->tpidr2);
++}
++
+ static int target_restore_sigframe(CPUARMState *env,
+                                    struct target_rt_sigframe *sf)
+ {
+@@ -409,6 +430,7 @@ static int target_restore_sigframe(CPUARMState *env,
+     struct target_fpsimd_context *fpsimd = NULL;
+     struct target_sve_context *sve = NULL;
+     struct target_za_context *za = NULL;
++    struct target_tpidr2_context *tpidr2 = NULL;
+     uint64_t extra_datap = 0;
+     bool used_extra = false;
+     int sve_size = 0;
+@@ -459,6 +481,14 @@ static int target_restore_sigframe(CPUARMState *env,
+             za_size = size;
+             break;
  
-             if ((old ^ new) & msk) {
-                 /* At least one bit changes. */
--                bool i = crm & 1;
--
--                if ((crm & 2) && i != s->pstate_sm) {
--                    gen_helper_set_pstate_sm(cpu_env, tcg_constant_i32(i));
--                }
--                if ((crm & 4) && i != s->pstate_za) {
--                    gen_helper_set_pstate_za(cpu_env, tcg_constant_i32(i));
--                }
-+                gen_helper_set_svcr(cpu_env, tcg_constant_i32(new),
-+                                    tcg_constant_i32(msk));
-             } else {
-                 s->base.is_jmp = DISAS_NEXT;
-             }
++        case TARGET_TPIDR2_MAGIC:
++            if (tpidr2 || size != sizeof(struct target_tpidr2_context) ||
++                !cpu_isar_feature(aa64_sme, env_archcpu(env))) {
++                goto err;
++            }
++            tpidr2 = (struct target_tpidr2_context *)ctx;
++            break;
++
+         case TARGET_EXTRA_MAGIC:
+             if (extra || size != sizeof(struct target_extra_context)) {
+                 goto err;
+@@ -496,6 +526,9 @@ static int target_restore_sigframe(CPUARMState *env,
+     if (za && !target_restore_za_record(env, za, za_size, &svcr)) {
+         goto err;
+     }
++    if (tpidr2) {
++        target_restore_tpidr2_record(env, tpidr2);
++    }
+     if (env->svcr != svcr) {
+         env->svcr = svcr;
+         arm_rebuild_hflags(env);
+@@ -567,8 +600,8 @@ static void target_setup_frame(int usig, struct target_sigaction *ka,
+         .total_size = offsetof(struct target_rt_sigframe,
+                                uc.tuc_mcontext.__reserved),
+     };
+-    int fpsimd_ofs, fr_ofs, sve_ofs = 0, za_ofs = 0;
+-    int sve_size = 0, za_size = 0;
++    int fpsimd_ofs, fr_ofs, sve_ofs = 0, za_ofs = 0, tpidr2_ofs = 0;
++    int sve_size = 0, za_size = 0, tpidr2_size = 0;
+     struct target_rt_sigframe *frame;
+     struct target_rt_frame_record *fr;
+     abi_ulong frame_addr, return_addr;
+@@ -584,6 +617,8 @@ static void target_setup_frame(int usig, struct target_sigaction *ka,
+         sve_ofs = alloc_sigframe_space(sve_size, &layout);
+     }
+     if (cpu_isar_feature(aa64_sme, env_archcpu(env))) {
++        tpidr2_size = sizeof(struct target_tpidr2_context);
++        tpidr2_ofs = alloc_sigframe_space(tpidr2_size, &layout);
+         /* ZA state needs saving only if it is enabled.  */
+         if (FIELD_EX64(env->svcr, SVCR, ZA)) {
+             za_size = TARGET_ZA_SIG_CONTEXT_SIZE(sme_vq(env));
+@@ -643,6 +678,9 @@ static void target_setup_frame(int usig, struct target_sigaction *ka,
+     if (za_ofs) {
+         target_setup_za_record((void *)frame + za_ofs, env, za_size);
+     }
++    if (tpidr2_ofs) {
++        target_setup_tpidr2_record((void *)frame + tpidr2_ofs, env);
++    }
+ 
+     /* Set up the stack frame for unwinding.  */
+     fr = (void *)frame + fr_ofs;
 -- 
 2.47.2
 
