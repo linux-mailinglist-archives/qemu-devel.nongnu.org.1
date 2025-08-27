@@ -2,42 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4691B385C8
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:09:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 215C1B385BE
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:06:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHgT-0002T6-KD; Wed, 27 Aug 2025 11:03:33 -0400
+	id 1urHgW-0002WX-Vf; Wed, 27 Aug 2025 11:03:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHgQ-0002RU-B6; Wed, 27 Aug 2025 11:03:30 -0400
+ id 1urHgU-0002UZ-FX; Wed, 27 Aug 2025 11:03:34 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHgN-0004ja-9B; Wed, 27 Aug 2025 11:03:29 -0400
+ id 1urHgS-0004kg-6c; Wed, 27 Aug 2025 11:03:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4F16C14C529;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5B12F14C52A;
  Wed, 27 Aug 2025 18:02:56 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3AFC1269831;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4B8C6269832;
  Wed, 27 Aug 2025 18:03:23 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 01/59] host-utils: Drop workaround for buggy Apple
- Clang __builtin_subcll()
-Date: Wed, 27 Aug 2025 18:02:06 +0300
-Message-ID: <20250827150323.2694101-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [Stable-10.0.4 02/59] hw/display/qxl-render.c: fix
+ qxl_unpack_chunks() chunk size calculation
+Date: Wed, 27 Aug 2025 18:02:07 +0300
+Message-ID: <20250827150323.2694101-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,69 +58,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+In case of multiple chunks, code in qxl_unpack_chunks() takes size of the
+wrong (next in the chain) chunk, instead of using current chunk size.
+This leads to wrong number of bytes being copied, and to crashes if next
+chunk size is larger than the current one.
 
-In commit b0438861efe ("host-utils: Avoid using __builtin_subcll on
-buggy versions of Apple Clang") we added a workaround for a bug in
-Apple Clang 14 where its __builtin_subcll() implementation was wrong.
-This bug was only present in Apple Clang 14, not in upstream clang,
-and is not present in Apple Clang versions 15 and newer.
+Based on the code by Gao Yong.
 
-Since commit 4e035201 we have required at least Apple Clang 15, so we
-no longer build with the buggy versions.  We can therefore drop the
-workaround. This is effectively a revert of b0438861efe.
-
-This should not be backported to stable branches, which may still
-need to support Apple Clang 14.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3030
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1628
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250714145033.1908788-1-peter.maydell@linaro.org
-(cherry picked from commit e74aad9f81cc2bfee2057086610e21bd98e9c5a5)
-(Mjt: 10.0 already requres clang 15+, so it's okay to backport
- this change to 10.0 branch)
+(cherry picked from commit b8882becd572d3afb888c836a6ffc7f92c17d1c5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-index 496dac5ac1..33b425dcf3 100644
---- a/include/qemu/compiler.h
-+++ b/include/qemu/compiler.h
-@@ -182,19 +182,6 @@
- #define QEMU_DISABLE_CFI
- #endif
+diff --git a/hw/display/qxl-render.c b/hw/display/qxl-render.c
+index eda6d3de37..c6a9ac1da1 100644
+--- a/hw/display/qxl-render.c
++++ b/hw/display/qxl-render.c
+@@ -222,6 +222,7 @@ static void qxl_unpack_chunks(void *dest, size_t size, PCIQXLDevice *qxl,
+     uint32_t max_chunks = 32;
+     size_t offset = 0;
+     size_t bytes;
++    QXLPHYSICAL next_chunk_phys = 0;
  
--/*
-- * Apple clang version 14 has a bug in its __builtin_subcll(); define
-- * BUILTIN_SUBCLL_BROKEN for the offending versions so we can avoid it.
-- * When a version of Apple clang which has this bug fixed is released
-- * we can add an upper bound to this check.
-- * See https://gitlab.com/qemu-project/qemu/-/issues/1631
-- * and https://gitlab.com/qemu-project/qemu/-/issues/1659 for details.
-- * The bug never made it into any upstream LLVM releases, only Apple ones.
-- */
--#if defined(__apple_build_version__) && __clang_major__ >= 14
--#define BUILTIN_SUBCLL_BROKEN
--#endif
--
- #if __has_attribute(annotate)
- #define QEMU_ANNOTATE(x) __attribute__((annotate(x)))
- #else
-diff --git a/include/qemu/host-utils.h b/include/qemu/host-utils.h
-index 4d28fa22cf..dd558589cb 100644
---- a/include/qemu/host-utils.h
-+++ b/include/qemu/host-utils.h
-@@ -677,7 +677,7 @@ static inline uint64_t uadd64_carry(uint64_t x, uint64_t y, bool *pcarry)
-  */
- static inline uint64_t usub64_borrow(uint64_t x, uint64_t y, bool *pborrow)
- {
--#if __has_builtin(__builtin_subcll) && !defined(BUILTIN_SUBCLL_BROKEN)
-+#if __has_builtin(__builtin_subcll)
-     unsigned long long b = *pborrow;
-     x = __builtin_subcll(x, y, b, &b);
-     *pborrow = b & 1;
+     for (;;) {
+         bytes = MIN(size - offset, chunk->data_size);
+@@ -230,7 +231,15 @@ static void qxl_unpack_chunks(void *dest, size_t size, PCIQXLDevice *qxl,
+         if (offset == size) {
+             return;
+         }
+-        chunk = qxl_phys2virt(qxl, chunk->next_chunk, group_id,
++        next_chunk_phys = chunk->next_chunk;
++        /* fist time, only get the next chunk's data size */
++        chunk = qxl_phys2virt(qxl, next_chunk_phys, group_id,
++                              sizeof(QXLDataChunk));
++        if (!chunk) {
++            return;
++        }
++        /* second time, check data size and get data */
++        chunk = qxl_phys2virt(qxl, next_chunk_phys, group_id,
+                               sizeof(QXLDataChunk) + chunk->data_size);
+         if (!chunk) {
+             return;
 -- 
 2.47.2
 
