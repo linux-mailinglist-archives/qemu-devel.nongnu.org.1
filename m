@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E539B385D4
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:11:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3605B385F8
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:14:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHlw-000283-OX; Wed, 27 Aug 2025 11:09:13 -0400
+	id 1urHlz-0002bp-9X; Wed, 27 Aug 2025 11:09:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHjp-0007Ev-Eg; Wed, 27 Aug 2025 11:07:02 -0400
+ id 1urHjt-0007GP-4g; Wed, 27 Aug 2025 11:07:10 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHjm-0005Wf-D0; Wed, 27 Aug 2025 11:07:01 -0400
+ id 1urHjr-0005XT-6u; Wed, 27 Aug 2025 11:07:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2717C14C550;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3A3AE14C551;
  Wed, 27 Aug 2025 18:02:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 10087269858;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 23B5E269859;
  Wed, 27 Aug 2025 18:03:26 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Glenn Miles <milesg@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Kowal <kowal@linux.ibm.com>,
+Cc: qemu-stable@nongnu.org, Michael Kowal <kowal@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Glenn Miles <milesg@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 40/59] ppc/xive2: Fix calculation of END queue sizes
-Date: Wed, 27 Aug 2025 18:02:45 +0300
-Message-ID: <20250827150323.2694101-40-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 41/59] ppc/xive2: Remote VSDs need to match on
+ forwarding address
+Date: Wed, 27 Aug 2025 18:02:46 +0300
+Message-ID: <20250827150323.2694101-41-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -62,97 +63,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.ibm.com>
+From: Michael Kowal <kowal@linux.ibm.com>
 
-The queue size of an Event Notification Descriptor (END)
-is determined by the 'cl' and QsZ fields of the END.
-If the cl field is 1, then the queue size (in bytes) will
-be the size of a cache line 128B * 2^QsZ and QsZ is limited
-to 4.  Otherwise, it will be 4096B * 2^QsZ with QsZ limited
-to 12.
+In a multi chip environment there will be remote/forwarded VSDs.  The check
+to find a matching INT controller (XIVE) of the remote block number was
+checking the INTs chip number.  Block numbers are not tied to a chip number.
+The matching remote INT is the one that matches the forwarded VSD address
+with VSD types associated MMIO BAR.
 
-Fixes: f8a233dedf2 ("ppc/xive2: Introduce a XIVE2 core framework")
-Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
+Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-4-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-5-npiggin@gmail.com
+[ clg: Fixed log format in pnv_xive2_get_remote() ]
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit f16697292add6c3c15014a20fd5fce70b8c56734)
+(cherry picked from commit e8cf73b849879cd93b1d1b5fd3bde79fb42064dc)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 7d584dfafa..790152a2a6 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -188,12 +188,27 @@ void xive2_eas_pic_print_info(Xive2Eas *eas, uint32_t lisn, GString *buf)
-                            (uint32_t) xive_get_field64(EAS2_END_DATA, eas->w));
+diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+index 0b81dad6ba..92e62b3e5f 100644
+--- a/hw/intc/pnv_xive2.c
++++ b/hw/intc/pnv_xive2.c
+@@ -101,12 +101,10 @@ static uint32_t pnv_xive2_block_id(PnvXive2 *xive)
  }
  
-+#define XIVE2_QSIZE_CHUNK_CL    128
-+#define XIVE2_QSIZE_CHUNK_4k   4096
-+/* Calculate max number of queue entries for an END */
-+static uint32_t xive2_end_get_qentries(Xive2End *end)
-+{
-+    uint32_t w3 = end->w3;
-+    uint32_t qsize = xive_get_field32(END2_W3_QSIZE, w3);
-+    if (xive_get_field32(END2_W3_CL, w3)) {
-+        g_assert(qsize <= 4);
-+        return (XIVE2_QSIZE_CHUNK_CL << qsize) / sizeof(uint32_t);
-+    } else {
-+        g_assert(qsize <= 12);
-+        return (XIVE2_QSIZE_CHUNK_4k << qsize) / sizeof(uint32_t);
-+    }
-+}
-+
- void xive2_end_queue_pic_print_info(Xive2End *end, uint32_t width, GString *buf)
+ /*
+- * Remote access to controllers. HW uses MMIOs. For now, a simple scan
+- * of the chips is good enough.
+- *
+- * TODO: Block scope support
++ * Remote access to INT controllers. HW uses MMIOs(?). For now, a simple
++ * scan of all the chips INT controller is good enough.
+  */
+-static PnvXive2 *pnv_xive2_get_remote(uint8_t blk)
++static PnvXive2 *pnv_xive2_get_remote(uint32_t vsd_type, hwaddr fwd_addr)
  {
-     uint64_t qaddr_base = xive2_end_qaddr(end);
--    uint32_t qsize = xive_get_field32(END2_W3_QSIZE, end->w3);
-     uint32_t qindex = xive_get_field32(END2_W1_PAGE_OFF, end->w1);
--    uint32_t qentries = 1 << (qsize + 10);
-+    uint32_t qentries = xive2_end_get_qentries(end);
+     PnvMachineState *pnv = PNV_MACHINE(qdev_get_machine());
      int i;
+@@ -115,10 +113,23 @@ static PnvXive2 *pnv_xive2_get_remote(uint8_t blk)
+         Pnv10Chip *chip10 = PNV10_CHIP(pnv->chips[i]);
+         PnvXive2 *xive = &chip10->xive;
  
-     /*
-@@ -223,8 +238,7 @@ void xive2_end_pic_print_info(Xive2End *end, uint32_t end_idx, GString *buf)
-     uint64_t qaddr_base = xive2_end_qaddr(end);
-     uint32_t qindex = xive_get_field32(END2_W1_PAGE_OFF, end->w1);
-     uint32_t qgen = xive_get_field32(END2_W1_GENERATION, end->w1);
--    uint32_t qsize = xive_get_field32(END2_W3_QSIZE, end->w3);
--    uint32_t qentries = 1 << (qsize + 10);
-+    uint32_t qentries = xive2_end_get_qentries(end);
+-        if (pnv_xive2_block_id(xive) == blk) {
++        /*
++         * Is this the XIVE matching the forwarded VSD address is for this
++         * VSD type
++         */
++        if ((vsd_type == VST_ESB   && fwd_addr == xive->esb_base) ||
++            (vsd_type == VST_END   && fwd_addr == xive->end_base)  ||
++            ((vsd_type == VST_NVP ||
++              vsd_type == VST_NVG) && fwd_addr == xive->nvpg_base) ||
++            (vsd_type == VST_NVC   && fwd_addr == xive->nvc_base)) {
+             return xive;
+         }
+     }
++
++    qemu_log_mask(LOG_GUEST_ERROR,
++                 "XIVE: >>>>> %s vsd_type %u  fwd_addr 0x%"HWADDR_PRIx
++                  " NOT FOUND\n",
++                  __func__, vsd_type, fwd_addr);
+     return NULL;
+ }
  
-     uint32_t nvx_blk = xive_get_field32(END2_W6_VP_BLOCK, end->w6);
-     uint32_t nvx_idx = xive_get_field32(END2_W6_VP_OFFSET, end->w6);
-@@ -341,13 +355,12 @@ void xive2_nvgc_pic_print_info(Xive2Nvgc *nvgc, uint32_t nvgc_idx, GString *buf)
- static void xive2_end_enqueue(Xive2End *end, uint32_t data)
- {
-     uint64_t qaddr_base = xive2_end_qaddr(end);
--    uint32_t qsize = xive_get_field32(END2_W3_QSIZE, end->w3);
-     uint32_t qindex = xive_get_field32(END2_W1_PAGE_OFF, end->w1);
-     uint32_t qgen = xive_get_field32(END2_W1_GENERATION, end->w1);
+@@ -251,8 +262,7 @@ static uint64_t pnv_xive2_vst_addr(PnvXive2 *xive, uint32_t type, uint8_t blk,
  
-     uint64_t qaddr = qaddr_base + (qindex << 2);
-     uint32_t qdata = cpu_to_be32((qgen << 31) | (data & 0x7fffffff));
--    uint32_t qentries = 1 << (qsize + 10);
-+    uint32_t qentries = xive2_end_get_qentries(end);
+     /* Remote VST access */
+     if (GETFIELD(VSD_MODE, vsd) == VSD_MODE_FORWARD) {
+-        xive = pnv_xive2_get_remote(blk);
+-
++        xive = pnv_xive2_get_remote(type, (vsd & VSD_ADDRESS_MASK));
+         return xive ? pnv_xive2_vst_addr(xive, type, blk, idx) : 0;
+     }
  
-     if (dma_memory_write(&address_space_memory, qaddr, &qdata, sizeof(qdata),
-                          MEMTXATTRS_UNSPECIFIED)) {
-diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
-index b11395c563..3c28de8a30 100644
---- a/include/hw/ppc/xive2_regs.h
-+++ b/include/hw/ppc/xive2_regs.h
-@@ -87,6 +87,7 @@ typedef struct Xive2End {
- #define END2_W2_EQ_ADDR_HI         PPC_BITMASK32(8, 31)
-         uint32_t       w3;
- #define END2_W3_EQ_ADDR_LO         PPC_BITMASK32(0, 24)
-+#define END2_W3_CL                 PPC_BIT32(27)
- #define END2_W3_QSIZE              PPC_BITMASK32(28, 31)
-         uint32_t       w4;
- #define END2_W4_END_BLOCK          PPC_BITMASK32(4, 7)
 -- 
 2.47.2
 
