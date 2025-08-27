@@ -2,141 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62831B37CCC
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 10:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E0FB37D2D
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 10:11:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urB9A-0005ju-95; Wed, 27 Aug 2025 04:04:44 -0400
+	id 1urBED-0000fr-9Q; Wed, 27 Aug 2025 04:09:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urB8f-0005Xk-OM
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 04:04:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urB8Z-0003Rf-L8
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 04:04:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756281845;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=LE+P3bRUP2E1+CDMzNLWyM2HXRUT6ojfbcwqmem+oM0=;
- b=TmT2unxJzCCUPbwn5c4Ro+1q/dLnnZDLvAzMHoCpB/YLKaeAzfpadxDgCpiSszBrQt/+cE
- l/HJltto6X6SEgdBkhR8XkvulsxO+P/kocMPhtdNYH1uiswcltAKiLPZVL3ICF3i7ZJdlh
- UB4RT9fqR5SZ8Pk/03txm7AnRve8pG8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-qKezM0RTNi-zQWNXLmESpA-1; Wed, 27 Aug 2025 04:04:03 -0400
-X-MC-Unique: qKezM0RTNi-zQWNXLmESpA-1
-X-Mimecast-MFC-AGG-ID: qKezM0RTNi-zQWNXLmESpA_1756281842
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3cca50781ddso305833f8f.2
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 01:04:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756281842; x=1756886642;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LE+P3bRUP2E1+CDMzNLWyM2HXRUT6ojfbcwqmem+oM0=;
- b=Y+PGp5KS7NzJCwRxlNBKYOwwXxosqggu4jI7pL8WIi3DRHuw8JFQ1WljNy1eCfwwYS
- S15oLMkEZPRz2l1liUcUiMm1T72H36mnEiEX5IqnXFUMit+oxqKPFC/Dr6R4eSkN8W6v
- hSYymeLoA0nh0mqgJj4o35MteHUeZyPhiw78QUhJkZgS6c4yu2ayodEuVxNnNYs5Oto9
- miNXEXFjC7I/7lhavdfSTBql+DXHYpNah2Beh2pVBu06OKALdJrlTr5vjQzfVZStfPpV
- e1y4RXzNMNLM0dSoKWnHOc5vyD83qJ7XUXQKkhBOdV4BLKTBHae2IskK1+Lj68dh/+de
- O0zQ==
-X-Gm-Message-State: AOJu0YyKzi3IdVOzOhGR89CXPahPjPJHC8pZmf5X02QZ0QmD5W65rLSO
- lIZ33V/b5AIYSriuUhWvsnfuyPmQzDFTDJXRpSGvbvu7mhWxpK0FN/UYYoRbAOAZbyIdA47y512
- 9+QIIlD6XXTaiRYI76MpAsgQKYk2jm95XAKb+hbzXYTR7UGep40wX3tnf
-X-Gm-Gg: ASbGncsKmm7AKI5MIqkn5wyWOxvlDnMAiT0ZFRnwT52AmS56Qf1aKWPj2rnoxKSU8Mx
- CVn0hArKEkEJpdzwdJJnxYzA9UzdJ6J7Rw7ujHZNKud9PTqXLDtUzbV+qrkHhqWMBPdrj4LaVnA
- 5bURBPmuOytW9IUVqZr5JHXk+K5Y2AwmfQdzNVMoDqCwRl9zhyoKMem/M+nCCBvzjRBJPGTG1jo
- p23i+B2NPmDU+DWP339jFvj54NC/gCDobmNL90Dz848Xei5bnfNiEj/3wkvBwVGW+Uz1k3TfMJz
- tfr1wV8k39Fg7XI1g2G4HMFNzP0bCf9GQL1s4ggtaEicaBjYdAQovdrHzYaa7Flg+jqBp4p2tl3
- LOMCi
-X-Received: by 2002:a05:6000:4383:b0:3c5:9e0f:7607 with SMTP id
- ffacd0b85a97d-3c5dc734286mr13427451f8f.33.1756281841780; 
- Wed, 27 Aug 2025 01:04:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEXWUxumYr7retucVGT8tJoNIjREdTtbh3QALl4HJjZToU8rtyWxR1HkARGxfcErte8h3/8jQ==
-X-Received: by 2002:a05:6000:4383:b0:3c5:9e0f:7607 with SMTP id
- ffacd0b85a97d-3c5dc734286mr13427420f8f.33.1756281841307; 
- Wed, 27 Aug 2025 01:04:01 -0700 (PDT)
-Received: from [192.168.0.6] (ltea-047-064-113-247.pools.arcor-ip.net.
- [47.64.113.247]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3c70e4ba078sm21348825f8f.4.2025.08.27.01.04.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Aug 2025 01:04:00 -0700 (PDT)
-Message-ID: <cd274edb-fd19-4e06-806c-cc8f30b6f32f@redhat.com>
-Date: Wed, 27 Aug 2025 10:03:59 +0200
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1urBE2-0000at-2S
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 04:09:46 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1urBDy-0004BG-JE
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 04:09:45 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8Cxrr84va5oYrADAA--.6279S3;
+ Wed, 27 Aug 2025 16:09:28 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowJCxXME4va5oWKVrAA--.18662S2;
+ Wed, 27 Aug 2025 16:09:28 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH v3 00/12] Add hardware page table walk support
+Date: Wed, 27 Aug 2025 16:09:15 +0800
+Message-Id: <20250827080927.1644016-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: fix typo in xive doc
-To: Aditya Gupta <adityag@linux.ibm.com>,
- Gautam Menghani <gautam@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- QEMU Trivial <qemu-trivial@nongnu.org>
-References: <20250827053228.519707-1-adityag@linux.ibm.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250827053228.519707-1-adityag@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowJCxXME4va5oWKVrAA--.18662S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -152,30 +62,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/08/2025 07.32, Aditya Gupta wrote:
-> "Interrupt Pending Buffer" IPB, which got written as IBP due to typo.
-> 
-> The "IPB" register is also mentioned in same doc multiple times.
-> 
-> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-> ---
->   docs/specs/ppc-xive.rst | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/docs/specs/ppc-xive.rst b/docs/specs/ppc-xive.rst
-> index 83d43f658b90..968cc760d466 100644
-> --- a/docs/specs/ppc-xive.rst
-> +++ b/docs/specs/ppc-xive.rst
-> @@ -157,7 +157,7 @@ Interrupt flow from an O/S perspective
->   
->   After an event data has been enqueued in the O/S Event Queue, the IVPE
->   raises the bit corresponding to the priority of the pending interrupt
-> -in the register IBP (Interrupt Pending Buffer) to indicate that an
-> +in the register IPB (Interrupt Pending Buffer) to indicate that an
->   event is pending in one of the 8 priority queues. The Pending
->   Interrupt Priority Register (PIPR) is also updated using the IPB. This
->   register represent the priority of the most favored pending
+Hardware page table walk (PTW for short) is one feature supported in
+Loongson 3C6000 system. With hardware PTW supported, if there is an TLB
+miss, hardware will take PTW and fill it in TLB if matched, report TLB
+exception if not matched.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+With hardware PTW supported, bit Present and Write in pte entry is HW bit.
+Bit Present means that the page is valid, and bit Write means that the
+page is writable. At the same time HW will set bit Valid with read access,
+bit Dirty will be set with write access.
+---
+v2 ... v3:
+  1. Reserve high 48-63 bit PTE attribute with huge page, which is
+     discard and converted to physical address wrongly.
+  2. Reload PTE entry rather than restart hardware PTW if PTE entry is
+    updated with other CPUs and qatomic_cmpxchg() fails.
+  3. Since Huge page bit is the same with Global bit, judge huge page from
+     page table level rather than Huge page bit.
+
+v1 ... v2:
+  1. Add wrapper function loongarch_cmpxchg_phys(), and use
+     qatomic_cmpxchg() API to update PTW access/dirty bit.
+  2. Add restart hardware PTW if qatomic_cmpxchg() fails
+  3. Rename loongarch_page_table_walker() with loongarch_ptw().
+  4. Add debug parameter in loongarch_ptw(), with debug mode it is to
+     get physical address only. With normal mode, bit Valid and Dirty
+     will be update.
+
+---
+Bibo Mao (12):
+  target/loongarch: Use auto method with PTW feature
+  target/loongarch: Add CSR_PWCH write helper function
+  target/loongarch: Add present and write bit with pte entry
+  target/loongarch: Add function sptw_prepare_tlb before adding tlb
+    entry
+  target/loongarch: Add common function get_tlb_random_index()
+  target/loongarch: Add MMUContext parameter in fill_tlb_entry()
+  target/loongarch: Add debug parameter with
+    loongarch_page_table_walker()
+  target/loongarch: Reserve higher 48 bit PTE attribute with huge page
+  target/loongarch: Move last PTE lookup into page table walker loop
+  target/loongarch: Add basic hardware PTW support
+  target/loongarch: Update matched ptw bit A/D with PTW supported
+  target/loongarch: Add bit A/D checking in TLB entry with PTW supported
+
+ target/loongarch/cpu-csr.h                    |   4 +
+ target/loongarch/cpu-mmu.h                    |  60 ++++++++
+ target/loongarch/cpu.c                        |  22 +++
+ target/loongarch/cpu.h                        |   2 +
+ target/loongarch/cpu_helper.c                 | 140 +++++++++++++++---
+ target/loongarch/tcg/csr_helper.c             |  15 ++
+ target/loongarch/tcg/helper.h                 |   1 +
+ .../tcg/insn_trans/trans_privileged.c.inc     |   1 +
+ target/loongarch/tcg/tlb_helper.c             | 139 ++++++++++++-----
+ 9 files changed, 326 insertions(+), 58 deletions(-)
+
+
+base-commit: e013d94c0fd78e88ca78bc90d323626c97076fd3
+-- 
+2.39.3
 
 
