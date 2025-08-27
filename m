@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8CD1B38F43
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 01:28:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A5FB38F3F
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 01:28:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urPWn-0008SY-Sf; Wed, 27 Aug 2025 19:26:05 -0400
+	id 1urPWn-0008SN-SU; Wed, 27 Aug 2025 19:26:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urPWh-0008JT-0n
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:26:00 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1urPWg-0008HZ-2T
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:25:58 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urPWa-0005BX-5y
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:25:58 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-248cb0b37dfso3286675ad.3
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 16:25:51 -0700 (PDT)
+ id 1urPWd-0005C0-QU
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:25:57 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-b4c29d2ea05so1101648a12.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 16:25:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756337150; x=1756941950; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756337154; x=1756941954; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=haA2NtyjzC37WFb40NMVWFRJEWFIj1glU6vfYtJmd2g=;
- b=TW5CTJFSZgqEX7jYmZor8/ILq5VMaEFbdGpshR8MrVN/zQBUygsG5FIeIfK3/V+DLD
- Yld991x6T+RDlKN6RKk0pzKVsb3YVw44G6KG8w0YMO6Tnq2VVPhIRHKzbpsuXmQJ3t4e
- xHp9y4S+eimcPf07ASA0gtON/vNabCeQU7rC+jhj4CmZqvqxPPKwwvxExxsA4fIyDkUp
- 2qMbOVgVvQAy1xqXHfeRBJq8Y/c3Paa64k9YuT7XPQixhaomlj3sZZBZGzFLizSNpfcU
- 5BMMoKNkA3FthEkuoXBMyMMOPGYpMIZcfSvPU5x2h/cOMZcEIhlgxY9elrx6AUg5jsB5
- XcXg==
+ bh=NGGtyPIF9xqz++XIAVqkzNlT+hk2ClPUujJ2E0FOM70=;
+ b=NCfWsbeAsQqUzRrxu3w3p24tdUUgJf56hKT/lX/gSx5ZsN68tb7b+cnYTbY7aySTfR
+ e/FCNveF4uHwD1l9WmJIqwTRyEupZ5v6c4dWZlCa8dUX3J9426urTpiuAf2i9yctq0UU
+ /qK9A5So3cOuUpA1tIppA3tuCWIqY2GVSdvToREYnIip6W4bBrkOTNzcNppEMGJePeri
+ 6P1PDDwU0gjN3NhGHUM9wTG623MVL4IBvh73ZLT9NLsllFLxSQPTlLgDyRhKPgE0kL+r
+ oZf7MWGTKIdm9fFsJthu1AZ2TssVOXUHhwmaXRCd7Trz4Rd71EAObKVasN8qd7M1Wb0/
+ +rGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756337150; x=1756941950;
+ d=1e100.net; s=20230601; t=1756337154; x=1756941954;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=haA2NtyjzC37WFb40NMVWFRJEWFIj1glU6vfYtJmd2g=;
- b=azVkMyrPPP6qoYpUk+CSV1ZM7vLZXH8IX5PAjspuVyj0zN7TmO/IspbaNeoezzBPvN
- KBFftb1z9LQs1DDj0xoKohp6LJiRRECpuZSmBM0+zGuT/Er1Yy2h4r3mOCxymuc3Dr4f
- tukBmWFeqiqaw7E3AYWMFEbsLqeRR8BUXSK63ytaRRVedJWhu8qQ3gQHdT6sdWoXVxZu
- NEl3QnUaqwP3KDNtPsBoIW2SSHfnTFjIsXuPilYp6N3Jq3L6dex55Mz6uNtHIUarR72A
- vxpRVYpFQInBmcOxCSfPTxNSnf0RvfEKfLmzbVgE9c+no9Ik7k41x5gu2EXoyiOOxCx0
- 5Vng==
-X-Gm-Message-State: AOJu0YxvKv4Aa0iatbHoB6cyFTYy43Ev3XnuksqeVQ6sRe9ezcsUtBER
- hOm7Huo54cbNEre893A7szPh6SyU+2uG9BpHyrXTvF6hHnqRiVxi4lyezOK5QlKE51R76U2qNPw
- vbMBV35k=
-X-Gm-Gg: ASbGncsAQdGIC854TMfLfNSnIGndHk+hZKNWWkiNn0q5zIc3xVIV4rFCGpWyjKbN3XC
- OTX/oPYTYZ9ZdEZrBRwStP7UEHVx/EvBsOuHv3UQtfQ5wINoxPC/E9hFBQN9iahZ4N6jcmgYfZx
- q/T2zdpNQvcb7NGr0FqiTfsRspZ040mxGLblkhlT64FVYbymZCsbhjdKKF7qQtjWYkKggg7xaIF
- LQ4RigLCcYr++tS9iE0S52LDinVet3YxZz2usNG4Y9N+fvrYg82kzvlOnOp5s40Aqv8Gr2g0eA3
- njJKQP54n3rUpBxl1kJGw0RiafpPn5vv2otlmZIaSeC6QF/we6QYnur7Wwu3Si1VwHjfFqIyld4
- daCWB0qpQZAIyGWADvlBK8pqkoRfffGf6AP2d
-X-Google-Smtp-Source: AGHT+IFtR7ouaDwumS40uehw9I3SFpCeqZGyCMaxDTku8bGG9OQ9Dp1/gCvfzek1NV/UbSqS/fE18A==
-X-Received: by 2002:a17:902:e78b:b0:248:98a6:fb55 with SMTP id
- d9443c01a7336-24898a6fc9dmr55281535ad.16.1756337150510; 
- Wed, 27 Aug 2025 16:25:50 -0700 (PDT)
+ bh=NGGtyPIF9xqz++XIAVqkzNlT+hk2ClPUujJ2E0FOM70=;
+ b=HYv1WrqbazUw/QxTN4Naac7pMwierycOy4O9izo3/2J1xep9egX2W8XR18PfKLwd/V
+ 7xYysnDKQdFvWc/306moVahzh+N8WptmBpChs0aRAruT6vYR83BMG8jrJpNW8uom5kDz
+ h/mpebJXm7cNKAz60XMErZLxqjm+2tREGAFwtYzsbXsT2yQbNz04smqKt4kCwhMX4DOK
+ yJvbLOKX+LgT2By9sQLuD5POY+MXoBU3fTh1F/1oNFPOyKwckZ+toP2QjPuqN2ZtJo4X
+ 6nCx/oXfXbHKamWrzbauMRxug7wG4GLorhNmyVVEY6d/pQI6MI9q/liOfzWHvT+iMq2i
+ tFKw==
+X-Gm-Message-State: AOJu0Yxd6Hu5s3RfM9G7SYxbg7ZEHCa4JyaZSm1QkHewyLDWk2oobgxB
+ t0Bs6Q/FIZAz+uL5QYDV1TzHXbp0lyYiG2pFRkAmWoIRzZJvHXcxEbO9rOh7eMjwHuhezw+n1CT
+ 0erc/jj0=
+X-Gm-Gg: ASbGnculGe2ee/l4UlzHZ2XQmhzuc3bJb1SPxvASlcXzzzkzcYOS2L64EmbCZL8KVer
+ tFF+goTK6uYYF8P2UMYQtHKQoOL6aWaJXLK9y4KtDKNeFrvBA3wyPalTlR6ut+6Zz+ZIvjLywhn
+ 4072k37IrEFfgUE0SahwL8XGtMPqN9EBfQPm+lqA7QhFyPKEff8cPArEcZieeCeKu/7Pcp7nl2A
+ b5s5zAkwnLEdmGftMZh4usKNuGxwOcxrg8A0y1hhF1oZvpFdndStAqEfxRlatdImAfj+z8eT7zd
+ psyoviriuGRfK5PQrW1Fx61xGLk8SjnvWGyrPBZ9APluKRP7vd0ujkxlW9FnYEyfz5BZJIjPgdd
+ 2LzILGxpwKuLk4H58PrYzlQKM4w==
+X-Google-Smtp-Source: AGHT+IHWAnWk48OHvWODzxhqiFX7GbA3PRUVGlNteV1/XTwFl9dK+tapwH3fnLi9Iz6o1bvS+dM5lA==
+X-Received: by 2002:a17:903:11c7:b0:246:d5b3:6303 with SMTP id
+ d9443c01a7336-248753a2961mr91270325ad.5.1756337154092; 
+ Wed, 27 Aug 2025 16:25:54 -0700 (PDT)
 Received: from stoup.. ([144.6.121.55]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-248cd627e40sm7282025ad.94.2025.08.27.16.25.45
+ d9443c01a7336-248cd627e40sm7282025ad.94.2025.08.27.16.25.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Aug 2025 16:25:50 -0700 (PDT)
+ Wed, 27 Aug 2025 16:25:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Joel Stanley <joel@jms.id.au>
-Subject: [PULL 45/46] linux-user: Add strace for rseq
-Date: Thu, 28 Aug 2025 09:20:22 +1000
-Message-ID: <20250827232023.50398-46-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?=C5=81ukasz=20Stelmach?= <l.stelmach@samsung.com>
+Subject: [PULL 46/46] linux-user: do not print IP socket options by default
+Date: Thu, 28 Aug 2025 09:20:23 +1000
+Message-ID: <20250827232023.50398-47-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250827232023.50398-1-richard.henderson@linaro.org>
 References: <20250827232023.50398-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,35 +98,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joel Stanley <joel@jms.id.au>
+From: Łukasz Stelmach <l.stelmach@samsung.com>
 
- build/qemu-riscv64 -cpu rv64,v=on -d strace  build/tests/tcg/riscv64-linux-user/test-vstart-overflow
- 1118081 riscv_hwprobe(0xffffbc038200,1,0,0,0,0) = 0
- 1118081 brk(NULL) = 0x0000000000085000
- 1118081 brk(0x0000000000085b00) = 0x0000000000085b00
- 1118081 set_tid_address(0x850f0) = 1118081
- 1118081 set_robust_list(0x85100,24) = -1 errno=38 (Function not implemented)
- 1118081 rseq(0x857c0,32,0,0xf1401073) = -1 errno=38 (Function not implemented)
+IP protocols should not be printed unless the socket is an IPv4 or
+IPv6 one. Current arrangement erroneously prints IPPROTO_IP for Unix
+domain sockets.
 
-Signed-off-by: Joel Stanley <joel@jms.id.au>
+Signed-off-by: Łukasz Stelmach <l.stelmach@samsung.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250826060341.1118670-1-joel@jms.id.au>
+Message-ID: <20250827095412.2348821-1-l.stelmach@samsung.com>
 ---
- linux-user/strace.list | 3 +++
- 1 file changed, 3 insertions(+)
+ linux-user/strace.c | 36 ++++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
-diff --git a/linux-user/strace.list b/linux-user/strace.list
-index ab818352a9..51b5ead969 100644
---- a/linux-user/strace.list
-+++ b/linux-user/strace.list
-@@ -1719,3 +1719,6 @@
- #ifdef TARGET_NR_riscv_hwprobe
- { TARGET_NR_riscv_hwprobe, "riscv_hwprobe" , "%s(%p,%d,%d,%d,%d,%d)", NULL, NULL },
- #endif
-+#ifdef TARGET_NR_rseq
-+{ TARGET_NR_rseq, "rseq" , "%s(%p,%u,%d,%#x)", NULL, NULL },
-+#endif
+diff --git a/linux-user/strace.c b/linux-user/strace.c
+index 3b744ccd4a..786354627a 100644
+--- a/linux-user/strace.c
++++ b/linux-user/strace.c
+@@ -586,23 +586,27 @@ print_socket_protocol(int domain, int type, int protocol)
+         return;
+     }
+ 
+-    switch (protocol) {
+-    case IPPROTO_IP:
+-        qemu_log("IPPROTO_IP");
+-        break;
+-    case IPPROTO_TCP:
+-        qemu_log("IPPROTO_TCP");
+-        break;
+-    case IPPROTO_UDP:
+-        qemu_log("IPPROTO_UDP");
+-        break;
+-    case IPPROTO_RAW:
+-        qemu_log("IPPROTO_RAW");
+-        break;
+-    default:
+-        qemu_log("%d", protocol);
+-        break;
++    if (domain == AF_INET || domain == AF_INET6) {
++        switch (protocol) {
++        case IPPROTO_IP:
++            qemu_log("IPPROTO_IP");
++            break;
++        case IPPROTO_TCP:
++            qemu_log("IPPROTO_TCP");
++            break;
++        case IPPROTO_UDP:
++            qemu_log("IPPROTO_UDP");
++            break;
++        case IPPROTO_RAW:
++            qemu_log("IPPROTO_RAW");
++            break;
++        default:
++            qemu_log("%d", protocol);
++            break;
++        }
++        return;
+     }
++    qemu_log("%d", protocol);
+ }
+ 
+ 
 -- 
 2.43.0
 
