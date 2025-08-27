@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8690B385FE
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1B9B38600
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:14:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHiH-0004cR-4l; Wed, 27 Aug 2025 11:05:27 -0400
+	id 1urHiz-0005vx-04; Wed, 27 Aug 2025 11:06:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHhj-00040R-AU; Wed, 27 Aug 2025 11:04:53 -0400
+ id 1urHhl-00043E-5r; Wed, 27 Aug 2025 11:04:54 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHhg-0004wj-TG; Wed, 27 Aug 2025 11:04:50 -0400
+ id 1urHhh-0004x4-Pu; Wed, 27 Aug 2025 11:04:52 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A35FC14C53B;
+ by isrv.corpit.ru (Postfix) with ESMTP id B8EF714C53C;
  Wed, 27 Aug 2025 18:02:57 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8D63F269843;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A0784269844;
  Wed, 27 Aug 2025 18:03:24 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jonah Palmer <jonah.palmer@oracle.com>,
- terrynini <terrynini38514@gmail.com>, Si-Wei Liu <si-wei.liu@oracle.com>,
- Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 19/59] virtio: fix off-by-one and invalid access in
- virtqueue_ordered_fill
-Date: Wed, 27 Aug 2025 18:02:24 +0300
-Message-ID: <20250827150323.2694101-19-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
+ Tingting Mao <timao@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>, Lei Yang <leiyang@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 20/59] vhost: Do not abort on log-start error
+Date: Wed, 27 Aug 2025 18:02:25 +0300
+Message-ID: <20250827150323.2694101-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -60,85 +60,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonah Palmer <jonah.palmer@oracle.com>
+From: Hanna Czenczek <hreitz@redhat.com>
 
-Commit b44135daa372 introduced virtqueue_ordered_fill for
-VIRTIO_F_IN_ORDER support but had a few issues:
+Commit 3688fec8923 ("memory: Add Error** argument to .log_global_start()
+handler") enabled vhost_log_global_start() to return a proper error, but
+did not change it to do so; instead, it still aborts the whole process
+on error.
 
-* Conditional while loop used 'steps <= max_steps' but should've been
-  'steps < max_steps' since reaching steps == max_steps would indicate
-  that we didn't find an element, which is an error. Without this
-  change, the code would attempt to read invalid data at an index
-  outside of our search range.
+This crash can be reproduced by e.g. killing a virtiofsd daemon before
+initiating migration.  In such a case, qemu should not crash, but just
+make the attempted migration fail.
 
-* Incremented 'steps' using the next chain's ndescs instead of the
-  current one.
-
-This patch corrects the loop bounds and synchronizes 'steps' and index
-increments.
-
-We also add a defensive sanity check against malicious or invalid
-descriptor counts to avoid a potential infinite loop and DoS.
-
-Fixes: b44135daa372 ("virtio: virtqueue_ordered_fill - VIRTIO_F_IN_ORDER support")
-Reported-by: terrynini <terrynini38514@gmail.com>
-Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
-Message-Id: <20250721150208.2409779-1-jonah.palmer@oracle.com>
-Reviewed-by: Si-Wei Liu <si-wei.liu@oracle.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Buglink: https://issues.redhat.com/browse/RHEL-94534
+Reported-by: Tingting Mao <timao@redhat.com>
+Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+Message-Id: <20250724125928.61045-2-hreitz@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 6fcf5ebafad65adc19a616260ca7dc90005785d1)
+(cherry picked from commit c1997099dc26d95eb9f2249f2894aabf4cf0bf8b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index ec54573feb..b756f49867 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -929,18 +929,18 @@ static void virtqueue_packed_fill(VirtQueue *vq, const VirtQueueElement *elem,
- static void virtqueue_ordered_fill(VirtQueue *vq, const VirtQueueElement *elem,
-                                    unsigned int len)
- {
--    unsigned int i, steps, max_steps;
-+    unsigned int i, steps, max_steps, ndescs;
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 99d31cc1b4..26e5a67653 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1111,7 +1111,8 @@ static bool vhost_log_global_start(MemoryListener *listener, Error **errp)
  
-     i = vq->used_idx % vq->vring.num;
-     steps = 0;
-     /*
--     * We shouldn't need to increase 'i' by more than the distance
--     * between used_idx and last_avail_idx.
-+     * We shouldn't need to increase 'i' by more than or equal to
-+     * the distance between used_idx and last_avail_idx (max_steps).
-      */
-     max_steps = (vq->last_avail_idx - vq->used_idx) % vq->vring.num;
- 
-     /* Search for element in vq->used_elems */
--    while (steps <= max_steps) {
-+    while (steps < max_steps) {
-         /* Found element, set length and mark as filled */
-         if (vq->used_elems[i].index == elem->index) {
-             vq->used_elems[i].len = len;
-@@ -948,8 +948,18 @@ static void virtqueue_ordered_fill(VirtQueue *vq, const VirtQueueElement *elem,
-             break;
-         }
- 
--        i += vq->used_elems[i].ndescs;
--        steps += vq->used_elems[i].ndescs;
-+        ndescs = vq->used_elems[i].ndescs;
-+
-+        /* Defensive sanity check */
-+        if (unlikely(ndescs == 0 || ndescs > vq->vring.num)) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: %s invalid ndescs %u at position %u\n",
-+                          __func__, vq->vdev->name, ndescs, i);
-+            return;
-+        }
-+
-+        i += ndescs;
-+        steps += ndescs;
- 
-         if (i >= vq->vring.num) {
-             i -= vq->vring.num;
+     r = vhost_migration_log(listener, true);
+     if (r < 0) {
+-        abort();
++        error_setg_errno(errp, -r, "vhost: Failed to start logging");
++        return false;
+     }
+     return true;
+ }
 -- 
 2.47.2
 
