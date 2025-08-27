@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0C2B3867D
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4246B38647
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:19:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHoa-0000O0-2S; Wed, 27 Aug 2025 11:11:56 -0400
+	id 1urHnn-0006RL-1q; Wed, 27 Aug 2025 11:11:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHkL-00086k-SF; Wed, 27 Aug 2025 11:07:34 -0400
+ id 1urHkM-0008Bi-I4; Wed, 27 Aug 2025 11:07:35 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHkK-0005eQ-1I; Wed, 27 Aug 2025 11:07:33 -0400
+ id 1urHkK-0005eS-KR; Wed, 27 Aug 2025 11:07:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8EF2214C556;
+ by isrv.corpit.ru (Postfix) with ESMTP id A3DCB14C557;
  Wed, 27 Aug 2025 18:02:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 76DC826985D;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8C56726985E;
  Wed, 27 Aug 2025 18:03:26 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -30,10 +30,9 @@ Cc: qemu-stable@nongnu.org, Glenn Miles <milesg@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 45/59] ppc/xive2: Fix irq preempted by lower priority
- group irq
-Date: Wed, 27 Aug 2025 18:02:50 +0300
-Message-ID: <20250827150323.2694101-45-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 46/59] ppc/xive2: Fix treatment of PIPR in CPPR update
+Date: Wed, 27 Aug 2025 18:02:51 +0300
+Message-ID: <20250827150323.2694101-46-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -65,41 +64,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Glenn Miles <milesg@linux.ibm.com>
 
-A problem was seen where uart interrupts would be lost resulting in the
-console hanging. Traces showed that a lower priority interrupt was
-preempting a higher priority interrupt, which would result in the higher
-priority interrupt never being handled.
+According to the XIVE spec, updating the CPPR should also update the
+PIPR. The final value of the PIPR depends on other factors, but it
+should never be set to a value that is above the CPPR.
 
-The new interrupt's priority was being compared against the CPPR
-(Current Processor Priority Register) instead of the PIPR (Post
-Interrupt Priority Register), as was required by the XIVE spec.
-This allowed for a window between raising an interrupt and ACK'ing
-the interrupt where a lower priority interrupt could slip in.
+Also added support for redistributing an active group interrupt when it
+is precluded as a result of changing the CPPR value.
 
-Fixes: 26c55b99418 ("ppc/xive2: Process group backlog when updating the CPPR")
 Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-10-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-11-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit 8d373176181fbc11f8d8eae2b4532b867f083ea6)
+(cherry picked from commit d4720a7faf4bb415f3fe7f10e5c888212b81316a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 453fe37f18..2b4d0f51be 100644
+index 2b4d0f51be..1971c05fa1 100644
 --- a/hw/intc/xive2.c
 +++ b/hw/intc/xive2.c
-@@ -1283,7 +1283,7 @@ bool xive2_tm_irq_precluded(XiveTCTX *tctx, int ring, uint8_t priority)
-      * priority to know if the thread can take the interrupt now or if
-      * it is precluded.
-      */
--    if (priority < alt_regs[TM_CPPR]) {
-+    if (priority < alt_regs[TM_PIPR]) {
-         return false;
+@@ -995,7 +995,9 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+             }
+         }
      }
-     return true;
+-    regs[TM_PIPR] = pipr_min;
++
++    /* PIPR should not be set to a value greater than CPPR */
++    regs[TM_PIPR] = (pipr_min > cppr) ? cppr : pipr_min;
+ 
+     rc = xive2_tctx_get_nvp_indexes(tctx, ring_min, &nvp_blk, &nvp_idx);
+     if (rc) {
 -- 
 2.47.2
 
