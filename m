@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D67DB385CA
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:10:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D67F0B385FC
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:14:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHme-00047Z-Gc; Wed, 27 Aug 2025 11:09:56 -0400
+	id 1urHod-00010d-Rd; Wed, 27 Aug 2025 11:11:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHkQ-0008I6-3h; Wed, 27 Aug 2025 11:07:41 -0400
+ id 1urHkl-00006K-0j; Wed, 27 Aug 2025 11:08:02 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHkO-0005fs-0P; Wed, 27 Aug 2025 11:07:37 -0400
+ id 1urHki-0005gO-Fd; Wed, 27 Aug 2025 11:07:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B474914C558;
+ by isrv.corpit.ru (Postfix) with ESMTP id C50B314C559;
  Wed, 27 Aug 2025 18:02:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A138D26985F;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B1BC7269860;
  Wed, 27 Aug 2025 18:03:26 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, William Hu <purplearmadillo77@proton.me>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: qemu-stable@nongnu.org, WANG Rui <wangrui@loongson.cn>,
+ Zhou Qiankang <wszqkzqk@qq.com>, Song Gao <gaosong@loongson.cn>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 47/59] ui/curses: Fix infinite loop on windows
-Date: Wed, 27 Aug 2025 18:02:52 +0300
-Message-ID: <20250827150323.2694101-47-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 48/59] target/loongarch: Fix [X]VLDI raising exception
+ incorrectly
+Date: Wed, 27 Aug 2025 18:02:53 +0300
+Message-ID: <20250827150323.2694101-48-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,58 +59,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: William Hu <purplearmadillo77@proton.me>
+From: WANG Rui <wangrui@loongson.cn>
 
-Replace -1 comparisons for wint_t with WEOF to fix infinite loop caused by a
-65535 == -1 comparison.
+According to the specification, [X]VLDI should trigger an invalid instruction
+exception only when Bit[12] is 1 and Bit[11:8] > 12. This patch fixes an issue
+where an exception was incorrectly raised even when Bit[12] was 0.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2905
-Signed-off-by: William Hu <purplearmadillo77@proton.me>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-[ Marc-André - Add missing similar code change, remove a comment ]
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <tSO5to8--iex6QMThG3Z8ElfnNOUahK_yitw2G2tEVRPoMKV936CBdrpyfbeNpVEpziKqeQ1ShBwPOoDkofgApM8YWwnPKJR_JrPDThV8Bc=@proton.me>
-(cherry picked from commit c7ac771ee750e37808928b62388fd27dcbf00f46)
+Test case:
+
+```
+    .global main
+main:
+    vldi    $vr0, 3328
+    ret
+```
+
+Reported-by: Zhou Qiankang <wszqkzqk@qq.com>
+Signed-off-by: WANG Rui <wangrui@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-ID: <20250804132212.4816-1-wangrui@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+(cherry picked from commit e66644c48e96e81848c6aa94b185f59fc212d080)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/curses.c b/ui/curses.c
-index a39aee8762..161f78c35c 100644
---- a/ui/curses.c
-+++ b/ui/curses.c
-@@ -265,7 +265,8 @@ static int curses2foo(const int _curses2foo[], const int _curseskey2foo[],
+diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+index 78730029cb..38bccf2838 100644
+--- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+@@ -3585,7 +3585,9 @@ static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
+     int sel, vece;
+     uint64_t value;
  
- static void curses_refresh(DisplayChangeListener *dcl)
- {
--    int chr, keysym, keycode, keycode_alt;
-+    wint_t chr = 0;
-+    int keysym, keycode, keycode_alt;
-     enum maybe_keycode maybe_keycode = CURSES_KEYCODE;
+-    if (!check_valid_vldi_mode(a)) {
++    sel = (a->imm >> 12) & 0x1;
++
++    if (sel && !check_valid_vldi_mode(a)) {
+         generate_exception(ctx, EXCCODE_INE);
+         return true;
+     }
+@@ -3594,8 +3596,6 @@ static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
+         return true;
+     }
  
-     curses_winch_check();
-@@ -284,8 +285,9 @@ static void curses_refresh(DisplayChangeListener *dcl)
-         /* while there are any pending key strokes to process */
-         chr = console_getch(&maybe_keycode);
- 
--        if (chr == -1)
-+        if (chr == WEOF) {
-             break;
-+        }
- 
- #ifdef KEY_RESIZE
-         /* this shouldn't occur when we use a custom SIGWINCH handler */
-@@ -304,9 +306,9 @@ static void curses_refresh(DisplayChangeListener *dcl)
-         /* alt or esc key */
-         if (keycode == 1) {
-             enum maybe_keycode next_maybe_keycode = CURSES_KEYCODE;
--            int nextchr = console_getch(&next_maybe_keycode);
-+            wint_t nextchr = console_getch(&next_maybe_keycode);
- 
--            if (nextchr != -1) {
-+            if (nextchr != WEOF) {
-                 chr = nextchr;
-                 maybe_keycode = next_maybe_keycode;
-                 keycode_alt = ALT;
+-    sel = (a->imm >> 12) & 0x1;
+-
+     if (sel) {
+         value = vldi_get_value(ctx, a->imm);
+         vece = MO_64;
 -- 
 2.47.2
 
