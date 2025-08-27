@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CAB6B38601
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8489B385F9
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:14:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHmg-00047d-Cg; Wed, 27 Aug 2025 11:09:58 -0400
+	id 1urHnG-0004jO-AV; Wed, 27 Aug 2025 11:10:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHjG-0006gR-1y; Wed, 27 Aug 2025 11:06:29 -0400
+ id 1urHjJ-0006k8-QY; Wed, 27 Aug 2025 11:06:31 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHjE-0005Qa-40; Wed, 27 Aug 2025 11:06:25 -0400
+ id 1urHjH-0005RL-Pm; Wed, 27 Aug 2025 11:06:29 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A978914C54A;
+ by isrv.corpit.ru (Postfix) with ESMTP id BDA2314C54B;
  Wed, 27 Aug 2025 18:02:58 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9628E269852;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A6A09269853;
  Wed, 27 Aug 2025 18:03:25 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+Cc: qemu-stable@nongnu.org, Chuang Xu <xuchuangxclwt@bytedance.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Guixiong Wei <weiguixiong@bytedance.com>,
+ Yipeng Yin <yinyipeng@bytedance.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 34/59] i386/cpu: Move adjustment of CPUID_EXT_PDCM
- before feature_dependencies[] check
-Date: Wed, 27 Aug 2025 18:02:39 +0300
-Message-ID: <20250827150323.2694101-34-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 35/59] i386/cpu: Fix number of addressable IDs field
+ for CPUID.01H.EBX[23:16]
+Date: Wed, 27 Aug 2025 18:02:40 +0300
+Message-ID: <20250827150323.2694101-35-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -59,49 +60,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Chuang Xu <xuchuangxclwt@bytedance.com>
 
-There is one entry relates to CPUID_EXT_PDCM in feature_dependencies[].
-So it needs to get correct value of CPUID_EXT_PDCM before using
-feature_dependencies[] to apply dependencies.
+When QEMU is started with:
+-cpu host,migratable=on,host-cache-info=on,l3-cache=off
+-smp 180,sockets=2,dies=1,cores=45,threads=2
 
-Besides, it also ensures CPUID_EXT_PDCM value is tracked in
-env->features[FEAT_1_ECX].
+On Intel platform:
+CPUID.01H.EBX[23:16] is defined as "max number of addressable IDs for
+logical processors in the physical package".
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+When executing "cpuid -1 -l 1 -r" in the guest, we obtain a value of 90 for
+CPUID.01H.EBX[23:16], whereas the expected value is 128. Additionally,
+executing "cpuid -1 -l 4 -r" in the guest yields a value of 63 for
+CPUID.04H.EAX[31:26], which matches the expected result.
+
+As (1+CPUID.04H.EAX[31:26]) rounds up to the nearest power-of-2 integer,
+it's necessary to round up CPUID.01H.EBX[23:16] to the nearest power-of-2
+integer too. Otherwise there would be unexpected results in guest with
+older kernel.
+
+For example, when QEMU is started with CLI above and xtopology is disabled,
+guest kernel 5.15.120 uses CPUID.01H.EBX[23:16]/(1+CPUID.04H.EAX[31:26]) to
+calculate threads-per-core in detect_ht(). Then guest will get "90/(1+63)=1"
+as the result, even though threads-per-core should actually be 2.
+
+And on AMD platform:
+CPUID.01H.EBX[23:16] is defined as "Logical processor count". Current
+result meets our expectation.
+
+So round up CPUID.01H.EBX[23:16] to the nearest power-of-2 integer only
+for Intel platform to solve the unexpected result.
+
+Use the "x-vendor-cpuid-only-v2" compat option to fix this issue.
+
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250304052450.465445-2-xiaoyao.li@intel.com
+Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
+Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
+Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20250714080859.1960104-5-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit e68ec2980901c8e7f948f3305770962806c53f0b)
-(Mjt: this simple cleanup is not strictly necessary for 10.0,
- but pick it up so subsequent changes in this area applies cleanly)
+(cherry picked from commit f985a1195ba2d9c6f6f33e83fe2e419a7e8acb60)
+(Mjt: this change refers to cpu->vendor_cpuid_only_v2 which is introduced
+ after 10.0, but this reference is removed later.  Replace it with false
+ for now, so effectively this commit is a no-op, but prepares the code
+ for the next change in this area and keeps historical references)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 46619288ed..d3e3ca13ca 100644
+index d3e3ca13ca..ed262edcc8 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -6837,9 +6837,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         if (threads_per_pkg > 1) {
-             *ebx |= threads_per_pkg << 16;
+@@ -6835,7 +6835,17 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
          }
--        if (!cpu->enable_pmu) {
--            *ecx &= ~CPUID_EXT_PDCM;
--        }
+         *edx = env->features[FEAT_1_EDX];
+         if (threads_per_pkg > 1) {
+-            *ebx |= threads_per_pkg << 16;
++            /*
++             * For CPUID.01H.EBX[Bits 23-16], AMD requires logical processor
++             * count, but Intel needs maximum number of addressable IDs for
++             * logical processors per package.
++             */
++            if (/*10.0: cpu->vendor_cpuid_only_v2*/ false &&
++                (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
++                *ebx |= 1 << apicid_pkg_offset(topo_info) << 16;
++            } else {
++                *ebx |= threads_per_pkg << 16;
++            }
+         }
          break;
      case 2:
-         /* cache info: needed for Pentium Pro compatibility */
-@@ -7829,6 +7826,10 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         }
-     }
- 
-+    if (!cpu->enable_pmu) {
-+        env->features[FEAT_1_ECX] &= ~CPUID_EXT_PDCM;
-+    }
-+
-     for (i = 0; i < ARRAY_SIZE(feature_dependencies); i++) {
-         FeatureDep *d = &feature_dependencies[i];
-         if (!(env->features[d->from.index] & d->from.mask)) {
 -- 
 2.47.2
 
