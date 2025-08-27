@@ -2,52 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1EBDB3883C
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF703B38866
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:15:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urJbH-0000F3-H9; Wed, 27 Aug 2025 13:06:20 -0400
+	id 1urJjf-0004iQ-5B; Wed, 27 Aug 2025 13:14:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJae-0006vR-EP; Wed, 27 Aug 2025 13:05:44 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1urJjb-0004gt-B2
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 13:14:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJab-000811-IM; Wed, 27 Aug 2025 13:05:40 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 328E914C734;
- Wed, 27 Aug 2025 20:03:30 +0300 (MSK)
-Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4072E2698FA;
- Wed, 27 Aug 2025 20:03:57 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Guenter Roeck <linux@roeck-us.net>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 18/18] hw/sd/ssi-sd: Return noise (dummy byte) when no
- card connected
-Date: Wed, 27 Aug 2025 20:03:53 +0300
-Message-ID: <20250827170356.2698446-18-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
-References: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1urJjX-0001Jt-VK
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 13:14:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756314886;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vZ0w3wgUp+bocnfozpMpppiSvKiDWQu4zJ9c97AIZyg=;
+ b=LC18IJT0hLGwLCwwtpRs9WEM2S0mO19+Psjce9eBig5mbjveAmuHP/DOqfyBbsQ3Ust2TM
+ eelEw5oyJPyb9HsClWDeiqhz53/YHcd872PPkeOdzANK1ktMInsjwprd70kUEf6yA/fOLd
+ dPiona5UF1sTEzACmzEPSqQkNdZuyic=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-421-rknsjoGJOM-AHcpm4SZB6g-1; Wed, 27 Aug 2025 13:14:44 -0400
+X-MC-Unique: rknsjoGJOM-AHcpm4SZB6g-1
+X-Mimecast-MFC-AGG-ID: rknsjoGJOM-AHcpm4SZB6g_1756314884
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-45b645707f1so178055e9.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 10:14:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756314883; x=1756919683;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vZ0w3wgUp+bocnfozpMpppiSvKiDWQu4zJ9c97AIZyg=;
+ b=X35flq46AUrQvnUUZ4MfuMT8GlK9zXMMnP1V2CJIu65sUOvUc+lPpAeQW+dxfXZ5ZR
+ LRGA3Lz5gIbHDVyfA+QU1Ai29PPIgjh36jumkKICaUL2nw+JNcTgfYfj2qMr7lAWZmQi
+ 5OIOY7hySSUOHrmu7eF+Vnurzm/SgGxvFUVzOEhZY29kl/NczgKiI/jcPefJZKpaOER4
+ djmbKZDmrtyD703Dwyj9tlAA91vVpVO2qzGCtwydYzDx8FXP9kChRpC4fBv79zwZr0Be
+ WLXIr+wX2aGk2YJgZW8KW1Iq9BDZdxzoUVzudCNFj9vIO53peMCwBTUQDqdpvAaFR+yu
+ CVtg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWIUbqz73pg4bgOfBXm4B/xBhDQfpswMpZzDQpXCnulq3dii1HhJoyUGnSjWZ5EwKYM7Tg7HGfyVoES@nongnu.org
+X-Gm-Message-State: AOJu0YxQCELFmfv/gtzYYndeqqHJ5cyKcqtrdzCEKzo41cUkT6fy25sW
+ CCYAqCTLrRPn0+Q0zfibd9d0Evq0K2aP0Wgeznyb0flPEJW99mVe3PuKpwRTVTx2m0+F1m1Mw/f
+ +szgf16aQfnoUCca5HdLfZpqeG77l/68tJkT+Vpa/g5GvJPS6ZVIaOSWn
+X-Gm-Gg: ASbGncvvp/J7RSgeLuI/3rAand9vdJ158QxWBfekbQFXVDvGcGMNxbQqWE9pHti1Z87
+ oNQRY0tki1eZWc/Cv+5bvHwZyc37PjyspgVVO6wtXtLXsrCfXIJ+SJfIagwxSm4eMBBz2eZK15+
+ 8pDbbtXmlTcOmMKxNlB6vP02fYF1HLxLSzOkLVN3ekgMpjxadjeIKDxwwuanrA9Tw9eAI9hKa5K
+ C6F9bcwKh6MEKvCEaGfbOxslODLV9JbHVG2gcB8oEpQexpD0OTh3WqsCaHObXwmg2tZ/igRcdIA
+ nC2GWtwuhHxXmjMgT/eTgLb9kcEmHdF6gXWBYIRUf2AE/vCZreot7Gfpe/hAkUuGrpjKZqZ6uYI
+ hIBMmy0+c4Po=
+X-Received: by 2002:a05:600c:1e85:b0:456:1560:7c5f with SMTP id
+ 5b1f17b1804b1-45b5179d004mr152355135e9.14.1756314883593; 
+ Wed, 27 Aug 2025 10:14:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHDj3U84I0chPxSeMAtEl+LG/nrBuFFZps1pdrnFQSc4p2o8Du61498esK9Z8v4mr1/NivhYQ==
+X-Received: by 2002:a05:600c:1e85:b0:456:1560:7c5f with SMTP id
+ 5b1f17b1804b1-45b5179d004mr152354845e9.14.1756314883146; 
+ Wed, 27 Aug 2025 10:14:43 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b6ee67251sm43520765e9.0.2025.08.27.10.14.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 27 Aug 2025 10:14:42 -0700 (PDT)
+Message-ID: <d223683d-d7ab-4e66-8e7c-907ad1ba7457@redhat.com>
+Date: Wed, 27 Aug 2025 19:14:41 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 14/21] intel_iommu: Stick to system MR for IOMMUFD
+ backed host device when x-fls=on
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com,
+ clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ chao.p.peng@intel.com
+References: <20250822064101.123526-1-zhenzhong.duan@intel.com>
+ <20250822064101.123526-15-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20250822064101.123526-15-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,46 +116,85 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hi Zhenzhong,
 
-Commit 1585ab9f1ba ("hw/sd/sdcard: Fill SPI response bits in card
-code") exposed a bug in the SPI adapter: if no SD card is plugged,
-we are returning "there is a card with an error". This is wrong,
-we shouldn't return any particular packet response, but the noise
-shifted on the MISO line. Return the dummy byte, otherwise we get:
+On 8/22/25 8:40 AM, Zhenzhong Duan wrote:
+> When guest in scalable mode and x-flts=on, we stick to system MR for IOMMUFD
+when x-flts is set on the iommu and guest uses scalable mode we don't
+want to use IOMMU MR but rather continue using the system MR or
+something alike
 
-  qemu-system-riscv64: ../hw/sd/ssi-sd.c:160: ssi_sd_transfer: Assertion `s->arglen > 0' failed.
+To me this deserves more explanation about we don't want IOMMU MR
+anymore, from a qemu infrastructure point of view.
+> backed host device. Then its default hwpt contains GPA->HPA mappings which is
+> used directly if PGTT=PT and used as nested parent if PGTT=FLT. Otherwise
+> fallback to original processing.
+>
+> Suggested-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>  hw/i386/intel_iommu.c | 34 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 34 insertions(+)
+>
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index af384ce7f0..15582977b8 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -1773,6 +1773,28 @@ static bool vtd_dev_pt_enabled(IntelIOMMUState *s, VTDContextEntry *ce,
+>  
+>  }
+>  
+> +static VTDHostIOMMUDevice *vtd_find_hiod_iommufd(IntelIOMMUState *s,
+> +                                                 VTDAddressSpace *as)
+> +{
+> +    struct vtd_as_key key = {
+> +        .bus = as->bus,
+> +        .devfn = as->devfn,
+> +    };
+> +    VTDHostIOMMUDevice *vtd_hiod = g_hash_table_lookup(s->vtd_host_iommu_dev,
+> +                                                       &key);
+> +
+> +    if (vtd_hiod && vtd_hiod->hiod &&
+> +        object_dynamic_cast(OBJECT(vtd_hiod->hiod),
+> +                            TYPE_HOST_IOMMU_DEVICE_IOMMUFD)) {
+> +        return vtd_hiod;
+> +    }
+> +    return NULL;
+> +}
+> +
+> +/*
+> + * vtd_switch_address_space() calls vtd_as_pt_enabled() to determine which
+> + * MR to switch to. Switch to system MR if return true, iommu MR otherwise.
+I would use a proper doc comment and refer to this function first
+> + */
+>  static bool vtd_as_pt_enabled(VTDAddressSpace *as)
+>  {
+>      IntelIOMMUState *s;
+> @@ -1781,6 +1803,18 @@ static bool vtd_as_pt_enabled(VTDAddressSpace *as)
+>      assert(as);
+>  
+>      s = as->iommu_state;
+> +
+> +    /*
+> +     * When guest in scalable mode and x-flts=on, we stick to system MR
+> +     * for IOMMUFD backed host device. Then its default hwpt contains
+> +     * GPA->HPA mappings which is used directly if PGTT=PT and used as
+> +     * nested parent if PGTT=FLT. Otherwise fallback to original
+> +     * processing.
+> +     */
+> +    if (s->root_scalable && s->flts && vtd_find_hiod_iommufd(s, as)) {
+> +        return true;
+> +    }
+> +
+>      if (vtd_dev_to_context_entry(s, pci_bus_num(as->bus), as->devfn,
+>                                   &ce)) {
+>          /*
+Thanks
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Fixes: 775616c3ae8 ("Partial SD card SPI mode support")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250812140415.70153-2-philmd@linaro.org>
-(cherry picked from commit e262646e12acd6c1132e03d57fea20680a503251)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/hw/sd/ssi-sd.c b/hw/sd/ssi-sd.c
-index 167c03b780..a912f40f68 100644
---- a/hw/sd/ssi-sd.c
-+++ b/hw/sd/ssi-sd.c
-@@ -106,6 +106,10 @@ static uint32_t ssi_sd_transfer(SSIPeripheral *dev, uint32_t val)
-     SDRequest request;
-     uint8_t longresp[16];
- 
-+    if (!sdbus_get_inserted(&s->sdbus)) {
-+        return SSI_DUMMY;
-+    }
-+
-     /*
-      * Special case: allow CMD12 (STOP TRANSMISSION) while reading data.
-      *
--- 
-2.47.2
+Eric
 
 
