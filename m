@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93884B385DF
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C7DB38681
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:25:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHoS-0007g9-FS; Wed, 27 Aug 2025 11:11:48 -0400
+	id 1urHnr-0006VV-DM; Wed, 27 Aug 2025 11:11:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHlF-0000UT-5Z; Wed, 27 Aug 2025 11:08:33 -0400
+ id 1urHlb-0000x9-G6; Wed, 27 Aug 2025 11:08:52 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHlA-0005sQ-Vy; Wed, 27 Aug 2025 11:08:28 -0400
+ id 1urHlZ-0005te-RD; Wed, 27 Aug 2025 11:08:51 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4040614C560;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5006F14C561;
  Wed, 27 Aug 2025 18:03:00 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 2CB98269867;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3D70D269868;
  Wed, 27 Aug 2025 18:03:27 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "Sv. Lockal" <lockalsash@gmail.com>,
- John Snow <jsnow@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+Cc: qemu-stable@nongnu.org, Mauro Matteo Cascella <mcascell@redhat.com>,
+ ZDI <zdi-disclosures@trendmicro.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 55/59] mkvenv: Support pip 25.2
-Date: Wed, 27 Aug 2025 18:03:00 +0300
-Message-ID: <20250827150323.2694101-55-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 56/59] hw/uefi: clear uefi-vars buffer in
+ uefi_vars_write callback
+Date: Wed, 27 Aug 2025 18:03:01 +0300
+Message-ID: <20250827150323.2694101-56-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -58,132 +59,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Sv. Lockal" <lockalsash@gmail.com>
+From: Mauro Matteo Cascella <mcascell@redhat.com>
 
-Fix compilation with pip-25.2 due to missing distlib.version
+When the guest writes to register UEFI_VARS_REG_BUFFER_SIZE, the .write
+callback `uefi_vars_write` is invoked. The function allocates a
+heap buffer without zeroing the memory, leaving the buffer filled with
+residual data from prior allocations. When the guest later reads from
+register UEFI_VARS_REG_PIO_BUFFER_TRANSFER, the .read callback
+`uefi_vars_read` returns leftover metadata or other sensitive process
+memory from the previously allocated buffer, leading to an information
+disclosure vulnerability.
 
-Bug: https://gitlab.com/qemu-project/qemu/-/issues/3062
-
-Signed-off-by: Sv. Lockal <lockalsash@gmail.com>
-[Edits: Type "safety" whackamole --js]
-Signed-off-by: John Snow <jsnow@redhat.com>
-Message-ID: <20250811190159.237321-1-jsnow@redhat.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-(cherry picked from commit 6ad034e71232c2929ed546304c9d249312bb632f)
+Fixes: CVE-2025-8860
+Fixes: 90ca4e03c27d ("hw/uefi: add var-service-core.c")
+Reported-by: ZDI <zdi-disclosures@trendmicro.com>
+Suggested-by: Gerd Hoffmann <kraxel@redhat.com>
+Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
+Message-ID: <20250811101128.17661-1-mcascell@redhat.com>
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+(cherry picked from commit f757d9d90d19b914d4023663bfc4da73bbbf007e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index 8ac5b0b2a0..f102527c4d 100644
---- a/python/scripts/mkvenv.py
-+++ b/python/scripts/mkvenv.py
-@@ -84,6 +84,7 @@
-     Sequence,
-     Tuple,
-     Union,
-+    cast,
- )
- import venv
- 
-@@ -94,17 +95,39 @@
- HAVE_DISTLIB = True
- try:
-     import distlib.scripts
--    import distlib.version
- except ImportError:
-     try:
-         # Reach into pip's cookie jar.  pylint and flake8 don't understand
-         # that these imports will be used via distlib.xxx.
-         from pip._vendor import distlib
-         import pip._vendor.distlib.scripts  # noqa, pylint: disable=unused-import
--        import pip._vendor.distlib.version  # noqa, pylint: disable=unused-import
-     except ImportError:
-         HAVE_DISTLIB = False
- 
-+# pip 25.2 does not vendor distlib.version, but it uses vendored
-+# packaging.version
-+HAVE_DISTLIB_VERSION = True
-+try:
-+    import distlib.version  # pylint: disable=ungrouped-imports
-+except ImportError:
-+    try:
-+        # pylint: disable=unused-import,ungrouped-imports
-+        import pip._vendor.distlib.version  # noqa
-+    except ImportError:
-+        HAVE_DISTLIB_VERSION = False
-+
-+HAVE_PACKAGING_VERSION = True
-+try:
-+    # Do not bother importing non-vendored packaging, because it is not
-+    # in stdlib.
-+    from pip._vendor import packaging
-+    # pylint: disable=unused-import
-+    import pip._vendor.packaging.requirements  # noqa
-+    import pip._vendor.packaging.version  # noqa
-+except ImportError:
-+    HAVE_PACKAGING_VERSION = False
-+
-+
- # Try to load tomllib, with a fallback to tomli.
- # HAVE_TOMLLIB is checked below, just-in-time, so that mkvenv does not fail
- # outside the venv or before a potential call to ensurepip in checkpip().
-@@ -133,6 +156,39 @@ class Ouch(RuntimeError):
-     """An Exception class we can't confuse with a builtin."""
- 
- 
-+class Matcher:
-+    """Compatibility appliance for version/requirement string parsing."""
-+    def __init__(self, name_and_constraint: str):
-+        """Create a matcher from a requirement-like string."""
-+        if HAVE_DISTLIB_VERSION:
-+            self._m = distlib.version.LegacyMatcher(name_and_constraint)
-+        elif HAVE_PACKAGING_VERSION:
-+            self._m = packaging.requirements.Requirement(name_and_constraint)
-+        else:
-+            raise Ouch("found neither distlib.version nor packaging.version")
-+        self.name = self._m.name
-+
-+    def match(self, version_str: str) -> bool:
-+        """Return True if `version` satisfies the stored constraint."""
-+        if HAVE_DISTLIB_VERSION:
-+            return cast(
-+                bool,
-+                self._m.match(distlib.version.LegacyVersion(version_str))
-+            )
-+
-+        assert HAVE_PACKAGING_VERSION
-+        return cast(
-+            bool,
-+            self._m.specifier.contains(
-+                packaging.version.Version(version_str), prereleases=True
-+            )
-+        )
-+
-+    def __repr__(self) -> str:
-+        """Stable debug representation delegated to the backend."""
-+        return repr(self._m)
-+
-+
- class QemuEnvBuilder(venv.EnvBuilder):
-     """
-     An extension of venv.EnvBuilder for building QEMU's configure-time venv.
-@@ -669,7 +725,7 @@ def _do_ensure(
-     canary = None
-     for name, info in group.items():
-         constraint = _make_version_constraint(info, False)
--        matcher = distlib.version.LegacyMatcher(name + constraint)
-+        matcher = Matcher(name + constraint)
-         print(f"mkvenv: checking for {matcher}", file=sys.stderr)
- 
-         dist: Optional[Distribution] = None
-@@ -683,7 +739,7 @@ def _do_ensure(
-             # Always pass installed package to pip, so that they can be
-             # updated if the requested version changes
-             or not _is_system_package(dist)
--            or not matcher.match(distlib.version.LegacyVersion(dist.version))
-+            or not matcher.match(dist.version)
-         ):
-             absent.append(name + _make_version_constraint(info, True))
-             if len(absent) == 1:
+diff --git a/hw/uefi/var-service-core.c b/hw/uefi/var-service-core.c
+index 4836a0cb81..92fc121fe7 100644
+--- a/hw/uefi/var-service-core.c
++++ b/hw/uefi/var-service-core.c
+@@ -259,8 +259,8 @@ static void uefi_vars_write(void *opaque, hwaddr addr, uint64_t val, unsigned si
+         uv->buf_size = val;
+         g_free(uv->buffer);
+         g_free(uv->pio_xfer_buffer);
+-        uv->buffer = g_malloc(uv->buf_size);
+-        uv->pio_xfer_buffer = g_malloc(uv->buf_size);
++        uv->buffer = g_malloc0(uv->buf_size);
++        uv->pio_xfer_buffer = g_malloc0(uv->buf_size);
+         break;
+     case UEFI_VARS_REG_DMA_BUFFER_ADDR_LO:
+         uv->buf_addr_lo = val;
 -- 
 2.47.2
 
