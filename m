@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A39B38985
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 20:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33208B38992
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 20:30:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urKqf-0004g8-GC; Wed, 27 Aug 2025 14:26:19 -0400
+	id 1urKqy-0004t3-JI; Wed, 27 Aug 2025 14:26:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1urKqV-0004cm-7M
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1urKqZ-0004gO-74
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1urKqL-0005l3-Tr
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:05 -0400
+ id 1urKqP-0005lR-6r
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756319148;
+ s=mimecast20190719; t=1756319149;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HDoZ1uvmrTV/DdB448feJ5ObS0XAOiDAlIQV3OW0ud8=;
- b=AMGOoxGVZ2JOma62KSC5y0kiKXOT+LN9rPQH+vdXX5Ljsvdv699R3o8MMZJPKv2IE/cySc
- AxRjnHcXXNCQjGDqiYwIuGDqcJeJupJjPGnD05b8rBYJxTybsH/aBEIL2XwdgSl8cdC72a
- f98KRf0saR4CvLDSxEEnABCsOyoUBGE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BYZBzbSuHz1ck9mAe9qDxSmyxZe5JBQ+ptoP0h/no4E=;
+ b=C0v0O2KVnGg7FHxS9aBLe+kaaOYe8fzSvwN+4RRdn3+T7mAnS+kH6bi3Xn5oANKr3DSkIG
+ LQ2WQKfDIO3T8Vn0mU1lraoHMzKQTZP7wcRRP6VMnWDHd0+tH3eirh/tcROorTXpHsDOUJ
+ CrkeGlhg1zkuaieTNm6NprmG0HdCBzc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-423-Sn-f3-THNhGnBACRWEz8_w-1; Wed, 27 Aug 2025 14:25:43 -0400
-X-MC-Unique: Sn-f3-THNhGnBACRWEz8_w-1
-X-Mimecast-MFC-AGG-ID: Sn-f3-THNhGnBACRWEz8_w_1756319143
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-45a15f10f31so8218975e9.0
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 11:25:43 -0700 (PDT)
+ us-mta-258-OnyVD0O6Of2n3xQ2Y0t3XQ-1; Wed, 27 Aug 2025 14:25:48 -0400
+X-MC-Unique: OnyVD0O6Of2n3xQ2Y0t3XQ-1
+X-Mimecast-MFC-AGG-ID: OnyVD0O6Of2n3xQ2Y0t3XQ_1756319147
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-45b612dbc28so723135e9.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 11:25:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756319140; x=1756923940;
+ d=1e100.net; s=20230601; t=1756319145; x=1756923945;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HDoZ1uvmrTV/DdB448feJ5ObS0XAOiDAlIQV3OW0ud8=;
- b=QMuSJg4LGFPtV/nhD3yFe/HNFMUoCmmCB7yNjgPVhmNsdRU8AmukdxJDCslDZrM6l8
- m/lQkeEAg0W5r7PoxRQaBVuT3MT5bh0F2nY4E3cRa+QPUNuKWGPLDsdylUC3JA6uuhNT
- /2Z8BZMyvkF7c086kzrCxphtZgjQA/YTKwJiM8/2MCsPw5aYZsWvRM3/Gj5XBspW8sT9
- zjEuFSrvHQ4gmzFEZ88Qt/DOXpM3H4OweSFuINF05/AQGXt+c7wRRlZczL04fvWMo42c
- bw1M+guebd86eU0wL7TCr6MsV7OKYoXSOluAEZIomYcxwGmsCfkcFvNUW9uUA9nEtd96
- r2ow==
-X-Gm-Message-State: AOJu0Yxmtkl4gZvK5STmMh1+Rbm84zgLPiGWcxh1ZoQGLumNJARvnrty
- bR7w0yudQLciueAFSNpPaRigjOxO3xoJk3lq586MMojjmfpxpkfMhbHS0xaeF3Uzb4LzX/0lKuC
- BhQk+yOEvsvZPs2fYo5hvBc37mjAzp/0I0pjGaO/IuKdo/ib48Xj5RQV/k9mzciY2ftxuMWJHFs
- 8aXCAWnhiBPTFKYD2OrvMk8a4yo+z/dYpsT3v0G9dX
-X-Gm-Gg: ASbGncu8tTsVdpWIioeYBLpwMGtKAqw/h2pjI5heHCFziiaHh3smnURGkzodLubEDvz
- 4jzpL900ido+KK2FZ16icpX/VDbzaoGQi4ft/+BBLmpdYLEi8UPJUxkgR2J7dB2HiKA5HykQic/
- v4Hd+lFgOsX6Kf+sOThU1ZI/mNboQLBM8Y0gdEokgAiQivXT3jDF9qb3Eu4HHG3IRFc/FJ5bB+D
- LLiXqoGIc41l31Y7/IGaiBthv/K2NHDVqk/FK5kOdARsoQJWGf/OY0nxk2xKGhOo1SYZE6jc3+o
- /J/vKb/EgSVRL4uIMcRt0xVbvJAl81UHA4IZ1uyomC7QD+lSMFbpZhw1INre2xTihma7OE7mRNc
- DhyaXpANswPHaU1i+5P5DudxP3KPWwnKvJls7Rzi3pUQ=
-X-Received: by 2002:a05:6000:220b:b0:3c5:921a:f440 with SMTP id
- ffacd0b85a97d-3cbb15ca670mr5406361f8f.12.1756319139904; 
- Wed, 27 Aug 2025 11:25:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGU2PCJubqhiMf/KsrL1+SM7yIijvbShakLR5O7kb3Runf/nOf9dbzLs7Z7zCzSs1gI4eUFwQ==
-X-Received: by 2002:a05:6000:220b:b0:3c5:921a:f440 with SMTP id
- ffacd0b85a97d-3cbb15ca670mr5406335f8f.12.1756319139257; 
- Wed, 27 Aug 2025 11:25:39 -0700 (PDT)
+ bh=BYZBzbSuHz1ck9mAe9qDxSmyxZe5JBQ+ptoP0h/no4E=;
+ b=cuWKJH1mh77L2CUTbT6PH4F85UspQCBP7xKrUPiNeHpr/eZuydo2bGnlXQqzFm3IX1
+ 7VXVpieNU4FQaIH822UOQA/EoaD0La2Enu/Kbh52WdpJG1pbt5hQ42GeeI08LeHIlcFA
+ wjFnr5bDm4Fhr3Ege86/3lZTVRUWbgJZuP7MSEEiV7lfgE4slZs5eEJOi1xFZUSF6YHQ
+ kP/F9GIRsiAGebt6I8+5guYubUQXbTu0wg4AW+8GISSaahfkWR5cRMEuNiEg4iJFRY28
+ 5JPyakXWWS3VnCH0oU+QUHy43L1FXVS3nDR7v90L+2aojNnWcmLVIIOzevJs3+AKraNd
+ 0EvQ==
+X-Gm-Message-State: AOJu0YyQpEKONyJTSQM47K/Z5V/oSJnVGiwmpLOmifD+Nh++ET/ykVGt
+ WrEYg4kNb880g8omGriUkf+AmfO6Hbd6WPAcuoTG54ltN5nkTfgbILYVdTtltF4IWvw96l1FPpe
+ kUbX1F1lty37duQGO45jWf1H8yBGbksn6wGSw088f+OgmaFfI+PZ0oSl9foUWLxUYx8sJIFyQH/
+ KSgdZjkOOAyg+sBMdH0MeXeI0FzwMyqYZwoyT/H/O3
+X-Gm-Gg: ASbGnctdkBYb/kMIEvg2ypgWQRdq5GChCHRj7b9J4gd3Puh80RjUsiTjmGka/25DbvB
+ m7LZ0qdB2/2FM+50Tv34zn4U0f/2o1u03O68ovldm1PaR/oVEdus8z3tHeNjLWut0ck0XEwQEPK
+ HhgVYD5dmB7CjGWWXQVYFA3L0Ir7A/39s028LI0lMduhdfhHeOiJ09Q7wf5kCYWTevNjOr/iEBX
+ EoGl34Liyo65h4NR32fwOANEch++hFIb6VIPgh6G/dycly0uL9pffCu2wsDhpxtJpE27rbu0H09
+ iokHLC8CYY8b+xfhDEDqv8MMzKKq8tHPdLMDtw0rtxzEAa+Qfv8nmf9ONqbwkMJ6vAaRQejaxHe
+ 3eeIa34iAgCciP9/jOsPu0N5xpdg4z9qA02jBgP+VA7Q=
+X-Received: by 2002:a05:600c:3baa:b0:45b:7699:fe6d with SMTP id
+ 5b1f17b1804b1-45b7699ff37mr2668465e9.17.1756319145535; 
+ Wed, 27 Aug 2025 11:25:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkA2x4fl3Zds+J8KrosOJepd6JN97I3W0c54Zg9TmOizRHK2RyhQU13VIdQTBoMsddcG8AEA==
+X-Received: by 2002:a05:600c:3baa:b0:45b:7699:fe6d with SMTP id
+ 5b1f17b1804b1-45b7699ff37mr2668315e9.17.1756319145023; 
+ Wed, 27 Aug 2025 11:25:45 -0700 (PDT)
 Received: from [10.163.96.123] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b6b1bb9fbsm24123835e9.1.2025.08.27.11.25.36
+ 5b1f17b1804b1-45b69b7529asm29941395e9.0.2025.08.27.11.25.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Aug 2025 11:25:37 -0700 (PDT)
+ Wed, 27 Aug 2025 11:25:40 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xin Wang <wangxinxin.wang@huawei.com>
-Subject: [PULL 01/14] target/i386: Add support for save/load of exception
- error code
-Date: Wed, 27 Aug 2025 20:25:19 +0200
-Message-ID: <20250827182533.854476-2-pbonzini@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 02/14] scripts/minikconf.py: fix invalid attribute access
+Date: Wed, 27 Aug 2025 20:25:20 +0200
+Message-ID: <20250827182533.854476-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250827182533.854476-1-pbonzini@redhat.com>
 References: <20250827182533.854476-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,67 +107,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xin Wang <wangxinxin.wang@huawei.com>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-For now, qemu save/load CPU exception info(such as exception_nr and
-has_error_code), while the exception error_code is ignored. This will
-cause the dest hypervisor reinject a vCPU exception with error_code(0),
-potentially causing a guest kernel panic.
+Fix parse method to use `defconfig` global variable instead of the
+non-existent KconfigParser class attribute
 
-For instance, if src VM stopped with an user-mode write #PF (error_code 6),
-the dest hypervisor will reinject an #PF with error_code(0) when vCPU resume,
-then guest kernel panic as:
-  BUG: unable to handle page fault for address: 00007f80319cb010
-  #PF: supervisor read access in user mode
-  #PF: error_code(0x0000) - not-present page
-  RIP: 0033:0x40115d
-
-To fix it, support save/load exception error_code.
-
-Signed-off-by: Xin Wang <wangxinxin.wang@huawei.com>
-Link: https://lore.kernel.org/r/20250819145834.3998-1-wangxinxin.wang@huawei.com
+Fixes: f349474920d80838ecea3d421531fdb0660b8740 ("minikconfig: implement allnoconfig and defconfig modes")
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Link: https://lore.kernel.org/r/20250820-scripts-minikconf-fixes-v1-1-252041a9125e@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/machine.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ scripts/minikconf.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/machine.c b/target/i386/machine.c
-index dd2dac1d443..45b7cea80aa 100644
---- a/target/i386/machine.c
-+++ b/target/i386/machine.c
-@@ -462,6 +462,24 @@ static const VMStateDescription vmstate_exception_info = {
-     }
- };
+diff --git a/scripts/minikconf.py b/scripts/minikconf.py
+index 6f7f43b2918..2a4694fb6a3 100644
+--- a/scripts/minikconf.py
++++ b/scripts/minikconf.py
+@@ -340,7 +340,7 @@ class KconfigParser:
  
-+static bool cpu_errcode_needed(void *opaque)
-+{
-+    X86CPU *cpu = opaque;
-+
-+    return cpu->env.has_error_code != 0;
-+}
-+
-+static const VMStateDescription vmstate_error_code = {
-+    .name = "cpu/error_code",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = cpu_errcode_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_INT32(env.error_code, X86CPU),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- /* Poll control MSR enabled by default */
- static bool poll_control_msr_needed(void *opaque)
- {
-@@ -1746,6 +1764,7 @@ const VMStateDescription vmstate_x86_cpu = {
-     },
-     .subsections = (const VMStateDescription * const []) {
-         &vmstate_exception_info,
-+        &vmstate_error_code,
-         &vmstate_async_pf_msr,
-         &vmstate_async_pf_int_msr,
-         &vmstate_pv_eoi_msr,
+     @classmethod
+     def parse(self, fp, mode=None):
+-        data = KconfigData(mode or KconfigParser.defconfig)
++        data = KconfigData(mode or defconfig)
+         parser = KconfigParser(data)
+         parser.parse_file(fp)
+         return data
 -- 
 2.51.0
 
