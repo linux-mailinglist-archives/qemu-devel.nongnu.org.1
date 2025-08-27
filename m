@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE2EB38620
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:16:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CAC9B3867A
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:22:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHoX-0008NE-85; Wed, 27 Aug 2025 11:11:53 -0400
+	id 1urHoO-0007Jw-UC; Wed, 27 Aug 2025 11:11:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHld-0000yi-2T; Wed, 27 Aug 2025 11:08:56 -0400
+ id 1urHlg-0000zy-4a; Wed, 27 Aug 2025 11:08:57 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHlb-0005to-Du; Wed, 27 Aug 2025 11:08:52 -0400
+ id 1urHle-0005wo-Gr; Wed, 27 Aug 2025 11:08:55 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 680E714C562;
+ by isrv.corpit.ru (Postfix) with ESMTP id 818EC14C563;
  Wed, 27 Aug 2025 18:03:00 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4CEAF269869;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 651F326986A;
  Wed, 27 Aug 2025 18:03:27 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 57/59] hw/uefi: return success for notifications
-Date: Wed, 27 Aug 2025 18:03:02 +0300
-Message-ID: <20250827150323.2694101-57-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 58/59] hw/uefi: check access for first variable
+Date: Wed, 27 Aug 2025 18:03:03 +0300
+Message-ID: <20250827150323.2694101-58-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -61,34 +61,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gerd Hoffmann <kraxel@redhat.com>
 
-Set status to SUCCESS for ready-to-boot and exit-boot-services
-notification calls.
+When listing variables (via get-next-variable-name) only the names of
+variables which can be accessed will be returned.  That check was
+missing for the first variable though.  Add it.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20250811130110.820958-2-kraxel@redhat.com>
-(cherry picked from commit 88e5a28d5aabb57f44c1805fbba0a458023f5106)
+Message-ID: <20250811130110.820958-3-kraxel@redhat.com>
+(cherry picked from commit fc8ee8fe58ad410f27fca64e4ad212c5a3eabe00)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/uefi/var-service-vars.c b/hw/uefi/var-service-vars.c
-index 7f98d77a38..58ae560d6e 100644
+index 58ae560d6e..e382fb2813 100644
 --- a/hw/uefi/var-service-vars.c
 +++ b/hw/uefi/var-service-vars.c
-@@ -702,12 +702,14 @@ uint32_t uefi_vars_mm_vars_proto(uefi_vars_state *uv)
-     case SMM_VARIABLE_FUNCTION_READY_TO_BOOT:
-         trace_uefi_event("ready-to-boot");
-         uv->ready_to_boot = true;
-+        mvar->status = EFI_SUCCESS;
-         length = 0;
-         break;
- 
-     case SMM_VARIABLE_FUNCTION_EXIT_BOOT_SERVICE:
-         trace_uefi_event("exit-boot-service");
-         uv->exit_boot_service = true;
-+        mvar->status = EFI_SUCCESS;
-         length = 0;
-         break;
- 
+@@ -357,6 +357,9 @@ uefi_vars_mm_get_next_variable(uefi_vars_state *uv, mm_header *mhdr,
+     if (uefi_strlen(name, nv->name_size) == 0) {
+         /* empty string -> first */
+         var = QTAILQ_FIRST(&uv->variables);
++        while (var && !check_access(uv, var)) {
++            var = QTAILQ_NEXT(var, next);
++        }
+         if (!var) {
+             return uefi_vars_mm_error(mhdr, mvar, EFI_NOT_FOUND);
+         }
 -- 
 2.47.2
 
