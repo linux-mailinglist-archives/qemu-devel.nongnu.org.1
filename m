@@ -2,107 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE7F7B381B4
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 13:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD11B381B9
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 13:52:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urEeP-00027f-SJ; Wed, 27 Aug 2025 07:49:13 -0400
+	id 1urEgO-0003lT-Vj; Wed, 27 Aug 2025 07:51:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1urEe5-00022k-2K
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 07:48:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1urEgF-0003gx-Nh
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 07:51:09 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1urEdv-0005tZ-34
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 07:48:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756295319;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=L+UVQ7WJeOjwQL4HUQJyBYv5r5tBcm29gvCyjnwOE4g=;
- b=RaP4dBded4Ph+IEIO5GjEJH+hOP71tLPCNj5fnFuWeanjqndtBC7N1W85g2rNXkRSv1b58
- r8K/f/k9Y6qi+mWrkXgJPybqTG2hNAK6Y/DebrnH0pkFJ/RwwkkR5uXjTM5d8csNBV3xp1
- Bikt4mHnZO4LKz3Kuq0DVDs21rWfLiY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-281-IShCyc-PM3SBJPQr3iLnpA-1; Wed, 27 Aug 2025 07:48:37 -0400
-X-MC-Unique: IShCyc-PM3SBJPQr3iLnpA-1
-X-Mimecast-MFC-AGG-ID: IShCyc-PM3SBJPQr3iLnpA_1756295317
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-45a1b0511b3so40024835e9.1
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 04:48:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756295316; x=1756900116;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=L+UVQ7WJeOjwQL4HUQJyBYv5r5tBcm29gvCyjnwOE4g=;
- b=oAEdzNuOdWjcOc3MRme6LeKu22am8u8rSX+rdlTbtYtzQnxUcoGn8Ewt/W4Az+bELT
- FWHfLVPmH5DGs1zbfOvHHcfMR0QU+LQV0qXdG3R4p75reY+4jtxVs1DYK5UdvzLS/BIq
- 6zROsL/2ty0ANw6sFVqfTbWgKtj0ALHy2xOWeBWGyb3eCk5RcrZz6mSaPqZkmOVFawu6
- OzpnAOcKkfbW5PO9jbJbwMimeoF0m782czeDCA9+aButSCaxcysZSPwgBZUPYfi8WaZC
- HFGzd0JaciiLlVUtPUFDze2mC7B0HX/oxNg0HUKNIn9QeADyMHKROUIvyCZgPbY6xEJ/
- O56g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWF/USRcTYyIhDYEBKMvZCOjvEdu9rfdvM4DRiEVuCo4Ezxio+ulwhzKjHtoopBU0NxvfjwAny6b6vH@nongnu.org
-X-Gm-Message-State: AOJu0Yywy1ts+qRTMEYiEgVRytgRU8JoreiNNoNmMDniu7r9Xsl+UuyT
- RDqux5vz/IXxWgkGfxVh3XkK7nx86En8De1Dq2IaT8QIbTa14PVM4O6oYtTYZSfh4hN+MJK+l1i
- w8Osdqn1Yj/RYOZYFKxdXEDgzVKWwEBaO234FaAQXVGXMxNs5xg2zQJUZ5LHScrLBLx4=
-X-Gm-Gg: ASbGncumIlBcPJvjFPtiEzqVvQgOGyVLGrbgV13AFo0gwGvMr/cTp22MBbtr9+BakF/
- 2Qibhx5tgqS96LKofOaLgWViiywXuGVqLyE+uYiRcbUVAWDZyM/pQmYvwDqB2bA6WCO9ejZI8CT
- I6Y5vvKga+W3XG9shMWpXG7u8YvYu7Wzz6u3swuH6/eaj2TNsjDTWU9t4JaRKZrq2nuaQxHIMyR
- fpypdgsjTANTPPZHdvGTtHo2Xs8+46m3sK7NZ0p+03CkwkP4qfW4KrMKpORbSA+CAyfKSfKIIvw
- BfuqtPdjthi8kdS3L33AkmM2vPI6B+Pr/eLgR7uIr77E+hoftjp9ItXScW+14pYgLExHFSNyKqE
- 4JIvSZCwBJ2I=
-X-Received: by 2002:a05:600c:1c23:b0:459:d9a2:e92d with SMTP id
- 5b1f17b1804b1-45b57d530b8mr135391305e9.5.1756295315752; 
- Wed, 27 Aug 2025 04:48:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGrnrYEw+m+Bp8EMaIjO1zY78h4OXXUz7nW4RlQpcKe7xaIccBw3HOdqpI4hOTcXJ7mhYoanw==
-X-Received: by 2002:a05:600c:1c23:b0:459:d9a2:e92d with SMTP id
- 5b1f17b1804b1-45b57d530b8mr135391085e9.5.1756295315332; 
- Wed, 27 Aug 2025 04:48:35 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b6f334c95sm27382445e9.25.2025.08.27.04.48.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Aug 2025 04:48:34 -0700 (PDT)
-Message-ID: <93a7a387-ae57-488e-b341-2beea67bf78e@redhat.com>
-Date: Wed, 27 Aug 2025 13:48:32 +0200
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1urEg8-0006Ls-HY
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 07:51:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1756295460; x=1787831460;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=4Tvv9/Ts6beT8qdTQx1aR0LLVxS52gR3r/GM8mf/5sA=;
+ b=gjHJxpLY9Fxd2byFv0K4kzXoEkP3elnagLnRS5KxTMA/EoEIG5zOVChX
+ JmT2i07vpaQehiyUvHqdRU3D/0R/CPVw/Y3b1xLiyCPXxqVSgW/7RvTuS
+ Dtm/epkZAFNZeBcYPQgnODiBPu9D5f17A1w99IGqs+5sW6HjT/BfPJ7+r
+ kfrq7Yf7WZCaCpDiCrT0pu42o0iW0g0Vp0PskGpnUJlCz3aZYVBL8wwB0
+ tbN0+Fn9Rw46gjsBNJ3knulyyGqiIYZkn9w+OfFswM8mnErKdTPIK3ftx
+ fgl0sOfCYIN/khtOjF2XlD8ITuNbr9SEEq0cf6csjReymfcTwF/MmkHs2 w==;
+X-CSE-ConnectionGUID: 0D1LkQrSTbOwzbhKIgqCvQ==
+X-CSE-MsgGUID: Qh3RjVRAQl+noWZDjap7KQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="69640688"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="69640688"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2025 04:50:56 -0700
+X-CSE-ConnectionGUID: CZEQewQRTg+VO4zBp0OV1g==
+X-CSE-MsgGUID: wopZ3+N1T3WsY0y1yt1HzQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="169339877"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14])
+ ([10.124.238.14])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2025 04:50:53 -0700
+Message-ID: <a37565e6-77fc-4bf2-8c6b-6f1b22f6c01f@intel.com>
+Date: Wed, 27 Aug 2025 19:50:51 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 05/21] vfio/iommufd: Force creating nested parent domain
+Subject: Re: [PATCH v6 01/19] hw/i386/pc_piix.c: restrict isapc machine to
+ 32-bit CPUs
+To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, pbonzini@redhat.com,
+ mst@redhat.com, marcel.apfelbaum@gmail.com, eduardo@habkost.net,
+ imammedo@redhat.com, qemu-devel@nongnu.org
+References: <20250822121342.894223-1-mark.caveayland@nutanix.com>
+ <20250822121342.894223-2-mark.caveayland@nutanix.com>
+ <3c2e9fbc-db80-4dd6-a1a5-deeabb8c0194@intel.com>
+ <58c515a4-292e-4aec-b57e-73be89b9c322@nutanix.com>
 Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
- jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com,
- clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com
-References: <20250822064101.123526-1-zhenzhong.duan@intel.com>
- <20250822064101.123526-6-zhenzhong.duan@intel.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250822064101.123526-6-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <58c515a4-292e-4aec-b57e-73be89b9c322@nutanix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.675, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,103 +85,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhenzhong,
+On 8/27/2025 7:10 PM, Mark Cave-Ayland wrote:
+> On 26/08/2025 08:25, Xiaoyao Li wrote:
+> 
+>> On 8/22/2025 8:11 PM, Mark Cave-Ayland wrote:
+>>> The isapc machine represents a legacy ISA PC with a 486 CPU. Whilst 
+>>> it is
+>>> possible to specify any CPU via -cpu on the command line, it makes no
+>>> sense to allow modern 64-bit CPUs to be used.
+>>>
+>>> Restrict the isapc machine to the available 32-bit CPUs, taking care to
+>>> handle the case where if a user inadvertently uses -cpu max then the 
+>>> "best"
+>>> 32-bit CPU is used (in this case the pentium3).
+>>>
+>>> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+>>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>   hw/i386/pc_piix.c | 26 ++++++++++++++++++++++++++
+>>>   1 file changed, 26 insertions(+)
+>>>
+>>> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+>>> index c03324281b..5720b6b556 100644
+>>> --- a/hw/i386/pc_piix.c
+>>> +++ b/hw/i386/pc_piix.c
+>>> @@ -436,6 +436,19 @@ static void pc_set_south_bridge(Object *obj, int 
+>>> value, Error **errp)
+>>>   #ifdef CONFIG_ISAPC
+>>>   static void pc_init_isa(MachineState *machine)
+>>>   {
+>>> +    /*
+>>> +     * There is a small chance that someone unintentionally passes 
+>>> "- cpu max"
+>>> +     * for the isapc machine, which will provide a much more modern 
+>>> 32-bit
+>>> +     * CPU than would be expected for an ISA-era PC. If the "max" 
+>>> cpu type has
+>>> +     * been specified, choose the "best" 32-bit cpu possible which 
+>>> we consider
+>>> +     * be the pentium3 (deliberately choosing an Intel CPU given 
+>>> that the
+>>> +     * default 486 CPU for the isapc machine is also an Intel CPU).
+>>> +     */
+>>> +    if (!strcmp(machine->cpu_type, X86_CPU_TYPE_NAME("max"))) {
+>>> +        machine->cpu_type = X86_CPU_TYPE_NAME("pentium3");
+>>> +        warn_report("-cpu max is invalid for isapc machine, using 
+>>> pentium3");
+>>> +    }
+>>
+>> Do we need to handle the case of "-cpu host"?
+> 
+> I don't believe so. I wasn't originally planning to support "-cpu max" 
+> for isapc, however Daniel mentioned that it could possibly be generated 
+> from libvirt so it makes sense to add the above check to warn in this 
+> case and then continue.
 
-On 8/22/25 8:40 AM, Zhenzhong Duan wrote:
-> Call pci_device_get_viommu_cap() to get if vIOMMU supports VIOMMU_CAP_HW_NESTED,
-> if yes, create nested parent domain which could be reused by vIOMMU to create
-> nested domain.
->
-> Introduce helper vfio_device_viommu_get_nested to facilitate this
-> implementation.
->
-> It is safe because even if VIOMMU_CAP_HW_NESTED is returned, s->flts is
-> forbidden and VFIO device fails in set_iommu_device() call, until we support
-> passthrough device with x-flts=on.
->
-> Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
-> Suggested-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->  include/hw/vfio/vfio-device.h |  2 ++
->  hw/vfio/device.c              | 12 ++++++++++++
->  hw/vfio/iommufd.c             |  8 ++++++++
->  3 files changed, 22 insertions(+)
->
-> diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-> index 6e4d5ccdac..ecd82c16c7 100644
-> --- a/include/hw/vfio/vfio-device.h
-> +++ b/include/hw/vfio/vfio-device.h
-> @@ -257,6 +257,8 @@ void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainerBase *bcontainer,
->  
->  void vfio_device_unprepare(VFIODevice *vbasedev);
->  
-> +bool vfio_device_viommu_get_nested(VFIODevice *vbasedev);
-I would suggest vfio_device_viommu_has_feature_hw_nested or something alike
-get usually means tou take a ref count associated with a put
-> +
->  int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
->                                  struct vfio_region_info **info);
->  int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t type,
-> diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-> index 08f12ac31f..3eeb71bd51 100644
-> --- a/hw/vfio/device.c
-> +++ b/hw/vfio/device.c
-> @@ -23,6 +23,7 @@
->  
->  #include "hw/vfio/vfio-device.h"
->  #include "hw/vfio/pci.h"
-> +#include "hw/iommu.h"
->  #include "hw/hw.h"
->  #include "trace.h"
->  #include "qapi/error.h"
-> @@ -504,6 +505,17 @@ void vfio_device_unprepare(VFIODevice *vbasedev)
->      vbasedev->bcontainer = NULL;
->  }
->  
-> +bool vfio_device_viommu_get_nested(VFIODevice *vbasedev)
-> +{
-> +    VFIOPCIDevice *vdev = vfio_pci_from_vfio_device(vbasedev);
-> +
-> +    if (vdev) {
-> +        return !!(pci_device_get_viommu_cap(&vdev->pdev) &
-> +                  VIOMMU_CAP_HW_NESTED);
-> +    }
-> +    return false;
-> +}
-> +
->  /*
->   * Traditional ioctl() based io
->   */
-> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-> index 8c27222f75..e503c232e1 100644
-> --- a/hw/vfio/iommufd.c
-> +++ b/hw/vfio/iommufd.c
-> @@ -379,6 +379,14 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
->          flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
->      }
->  
-> +    /*
-> +     * If vIOMMU supports stage-1 translation, force to create nested parent
-I would rather not use another terminology here. You previously used
-hw_nested, I think that's better. Also bear in mind that smmu supports
-S1, S2 and S1+S2 in emulated code.
+"host" cpu type is the child of "max", so "-cpu host" will pass in the 
+is_cpu_type_supported(), the same as "max".
 
-Thanks
-
-Eric
-> +     * domain which could be reused by vIOMMU to create nested domain.
-> +     */
-> +    if (vfio_device_viommu_get_nested(vbasedev)) {
-> +        flags |= IOMMU_HWPT_ALLOC_NEST_PARENT;
-> +    }
-> +
->      if (cpr_is_incoming()) {
->          hwpt_id = vbasedev->cpr.hwpt_id;
->          goto skip_alloc;
-
+While we are changing "max" to "pentium3", I think it needs to do the 
+same for "host". Otherwise, "-cpu host" won't get any warning and expose 
+the native features to the VMs that are mostly not supposed to exist for 
+isapc, e.g., the LM CUPID bit.
 
