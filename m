@@ -2,42 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03EEDB38845
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 135D6B38848
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:11:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urJb3-000754-2R; Wed, 27 Aug 2025 13:06:05 -0400
+	id 1urJbA-00088L-PI; Wed, 27 Aug 2025 13:06:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJaB-0006QR-GB; Wed, 27 Aug 2025 13:05:14 -0400
+ id 1urJaD-0006WW-N0; Wed, 27 Aug 2025 13:05:19 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJa6-0007n4-TM; Wed, 27 Aug 2025 13:05:09 -0400
+ id 1urJa8-0007xe-7w; Wed, 27 Aug 2025 13:05:11 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C7C2E14C72E;
+ by isrv.corpit.ru (Postfix) with ESMTP id D6A2214C72F;
  Wed, 27 Aug 2025 20:03:29 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id D60342698F4;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E878B2698F5;
  Wed, 27 Aug 2025 20:03:56 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Luc Michel <luc.michel@amd.com>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 12/18] hw/net/cadence_gem: fix register mask
- initialization
-Date: Wed, 27 Aug 2025 20:03:47 +0300
-Message-ID: <20250827170356.2698446-12-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Zenghui Yu <zenghui.yu@linux.dev>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.20 13/18] hw/intc/arm_gicv3_kvm: Write all 1's to clear
+ enable/active
+Date: Wed, 27 Aug 2025 20:03:48 +0300
+Message-ID: <20250827170356.2698446-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 References: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,42 +58,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Luc Michel <luc.michel@amd.com>
+From: Zenghui Yu <zenghui.yu@linux.dev>
 
-The gem_init_register_masks function was called at init time but it
-relies on the num-priority-queues property. Call it at realize time
-instead.
+KVM's userspace access interface to the GICD enable and active bits
+is via set/clear register pairs which implement the hardware's "write
+1s to the clear register to clear the 0 bits, and write 1s to the set
+register to set the 1 bits" semantics.  We didn't get this right,
+because we were writing 0 to the clear register.
+
+Writing 0 to GICD_IC{ENABLE,ACTIVE}R architecturally has no effect on
+interrupt status (all writes are simply ignored by KVM) and doesn't
+comply with the intention of "first write to the clear-reg to clear
+all bits".
+
+Write all 1's to actually clear the enable/active status.
+
+This didn't have any adverse effects on migration because there
+we start with a clean VM state; it would be guest-visible when
+doing a system reset, but since Linux always cleans up the
+register state of the GIC during bootup before it enables it
+most users won't have run into a problem here.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 4c70e32f05f ("net: cadence_gem: Define access permission for interrupt registers")
-Signed-off-by: Luc Michel <luc.michel@amd.com>
-Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
-Reviewed-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-Message-ID: <20250716095432.81923-2-luc.michel@amd.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 2bfcd27e00a49da2efa5d703121b94cd9cd4948b)
+Fixes: 367b9f527bec ("hw/intc/arm_gicv3_kvm: Implement get/put functions")
+Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
+Message-id: 20250729161650.43758-3-zenghui.yu@linux.dev
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit b10bd4bd17ac8628ede8735a08ad82dc3b721c64)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c
-index cb61a76417..338a42daab 100644
---- a/hw/net/cadence_gem.c
-+++ b/hw/net/cadence_gem.c
-@@ -1630,6 +1630,7 @@ static void gem_realize(DeviceState *dev, Error **errp)
-         sysbus_init_irq(SYS_BUS_DEVICE(dev), &s->irq[i]);
-     }
- 
-+    gem_init_register_masks(s);
-     qemu_macaddr_default_if_unset(&s->conf.macaddr);
- 
-     s->nic = qemu_new_nic(&net_gem_info, &s->conf,
-@@ -1650,7 +1651,6 @@ static void gem_init(Object *obj)
- 
-     DB_PRINT("\n");
- 
--    gem_init_register_masks(s);
-     memory_region_init_io(&s->iomem, OBJECT(s), &gem_ops, s,
-                           "enet", sizeof(s->regs));
- 
+diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
+index 3ca643ecba..6d98dafc02 100644
+--- a/hw/intc/arm_gicv3_kvm.c
++++ b/hw/intc/arm_gicv3_kvm.c
+@@ -294,7 +294,7 @@ static void kvm_dist_putbmp(GICv3State *s, uint32_t offset,
+          * the 1 bits.
+          */
+         if (clroffset != 0) {
+-            reg = 0;
++            reg = ~0;
+             kvm_gicd_access(s, clroffset, &reg, true);
+             clroffset += 4;
+         }
 -- 
 2.47.2
 
