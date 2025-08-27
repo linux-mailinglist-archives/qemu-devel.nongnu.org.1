@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C59B38F21
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 01:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D8CB38F1A
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 01:22:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urPTF-0005N0-Qq; Wed, 27 Aug 2025 19:22:25 -0400
+	id 1urPT9-0004pA-OP; Wed, 27 Aug 2025 19:22:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urPSn-0004Bv-Ew
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:21:59 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1urPSp-0004Cu-5S
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:22:00 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urPSh-0004IF-Hj
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:21:57 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-7704f3c46ceso329544b3a.2
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 16:21:50 -0700 (PDT)
+ id 1urPSj-0004Ij-7W
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:21:58 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-771e15ce64eso333222b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 16:21:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756336908; x=1756941708; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756336910; x=1756941710; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sLWZcll6BBWWPhJe3hiHwSDE6R9zCUM8RT/HK5CodU8=;
- b=a6i4lfOYt7JwTnn0gYmcNQGzsLALe/iJK82J1kw67JNf+zIojoFvodXWO8sN+QfaMh
- oUkt+JcWUV/0bgqdorToDjWJpQVakjsHb4P3mnnVFlvUVKhNG4zq0lngCNGjqVUXfFR0
- Ui6s8P8/gm+1KrwcCYOvnrOoI00w9WkBiWAtXoHYJbbyoCrdFMDVAe9svymjkq98xIFT
- ua04wqgt+C3pI6iW7VTvQ7M/dojgcDa3RZ4Pn8F+qFYuchDrsUkiyBj3lH4tkkTxU3Mk
- U+TBAb+aB/HmKpwjOHHwkDrkinvF9rq91LxRvvp5rgAncLNpU3chJKMoMQPN3Ybbx4tW
- PweQ==
+ bh=WSVqd0uuUJulTp/+1527diZnoWMaHN/H9TVCfEJDaRI=;
+ b=xr5B8yZ4U9OJb1E1vmQBXlFDGUkW4rPEJcH5spjQGqxWOkZZ20h4Y+EKehmSu/5quz
+ 1DkamLimHKbBNyZNgkwkkOOEpYvu8wj6AUNW1nMgZBbDCyuT9HqYzE/inSyOQX0zN+oq
+ W+Aq+2KRek5pdicUMK/WGloJ3oo0sI6R+gOTQ69M24d8HIFesTo5K4mjSGHdHhVrcysv
+ m0k7I3JxizX5D9eIbGgo9x6AG7nnQlY2qJa4QsPxZ0D4GW9YbLrprOLtNWCuOOyWaSeI
+ Ale+wK0YUch+R1gJ6Sm7t2CiAYPa0ODNYZ99IXJcefPxYvzhGxgvk0lN+6gjyHW/5EZ4
+ QmPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756336908; x=1756941708;
+ d=1e100.net; s=20230601; t=1756336910; x=1756941710;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sLWZcll6BBWWPhJe3hiHwSDE6R9zCUM8RT/HK5CodU8=;
- b=pNvLjiR8Yg1HjBmWLXjKAz/aTMsHbcfdkVte2SDIcL25z3G1osi4BSKgh/WRjeZQuZ
- BPLrbvr7pXryHzeZ7mOItR7Jw4QQWtFskWy3l9dwnrmrMtV4ej+C/UYNgploN36yt2rF
- M0qjfEVKsk5Ghbrt3QnaNR1xJbYr9idoDx7ArX67BMUMcUVLRLU8NdFXTcoK2sglDVOZ
- Ivtfs4wOuA3VX7HgeQ/SJ89vISz2MllFa0IMBvNC+wBNNEpKGInyMKbfl6kEx8/riWv0
- lTF57Bg3SLwI/96Iw00sFEBRphC/sf2n9uUAWdFrzGM8SNKbxsKap8pq+6F9U39Ksk1c
- V/mQ==
-X-Gm-Message-State: AOJu0Yyqa/8DYeT+XlyICJFw1sNfVOzmhy8dE49S2Cr+VCQCZB8FSazZ
- 8Yz/9Thb+/mI5YVbzozO6k6yNzRSSqdX53itSalAg+2h+xV31mFEpCYL9QtNzqKskLcnGtvh5R4
- uKOtrM8U=
-X-Gm-Gg: ASbGncuFaT6/0ua8aBfwnOxJT1+gavLaOhJiFcuIFBwgq+m/v+fHiZLW4zyTt0uVk8F
- SekSjsT9CtDyto0qVHRTxSHZqbmoFv3saJDZ4l5BzKj8raCUOzsQIXbSFetg2bM9MbhOXaIWNnM
- AUQcmWavCujws/wg4xPE9CgR2ZsbljnoAmU14QaackxPG5mnAVam2icYj99f+dZMpk3gZQy0PQk
- tWZgrbWXy1Al2I2HD3AyBXITDfUvxr0bDWK/V2fVjqBVUjPq2Slw9K2iXs93Ci5iCKuAVcSCxhS
- JEhSU3PyuTg5zITg5KlUKQP0deRL0Ol/bVWA9qNRTX7Jn08x3FToEJfgs3wP1UcPCE8KKDh7EP+
- tUBJUHcT69wJCcqi7p5N6WToNnw==
-X-Google-Smtp-Source: AGHT+IGi8Wa5Hs4WOIwWVfUR+AIk5dk8CHtrcsUyoKxmn2236ldg6Mx5XwiIteAuvXRZyfsh4T6AEA==
-X-Received: by 2002:a05:6a00:2989:b0:772:775:88c9 with SMTP id
- d2e1a72fcca58-77207758ab4mr4917533b3a.19.1756336907974; 
- Wed, 27 Aug 2025 16:21:47 -0700 (PDT)
+ bh=WSVqd0uuUJulTp/+1527diZnoWMaHN/H9TVCfEJDaRI=;
+ b=dNoNRkuhx/tgpbRszcexXepBljY0gndoJCPfkR2JTOZSEqBVmC/yeS/43uxN8vgV1y
+ xtvolnHAm/niyQK5myXnFvUKxgxP7qQEyu9eRXHzsOEL4xE9ze08EwJY1lXF2wOhVrri
+ q0qSBE/G8jDDoe4WJ+nMan08XCHYExWXTg452Z6dmwk9sHf9w9TLyrdjugRXXljhiXZ9
+ 1lN7mO9pCy5BXq8DTcQw0ndH/S9j5CepJRTJijhxsAFnKyqvCWNFVKagwqe/XOqcSJ7H
+ bjrZcxkIrdNU036E0wzWZksbpq3kayz319ZAixc3O45/zSeHkBeew3FEzaBtZAOuW3c/
+ D6bA==
+X-Gm-Message-State: AOJu0YwYznvigz5O4MGhVjqBEVqwZVBCWwuu5L0FiZsSQz/5C9Uf/mXH
+ b8S5utRVDK8x6Fw4WNzgr2Wyxv+YAzxasD+xGwvbs8pOSMEfGiZgq6CD82ITG2uNI6/xYoZyTII
+ vKCoTFMg=
+X-Gm-Gg: ASbGnctHnG1A0HUuwbAedqt+2iXEi00jpaBqjJixwErk261z6FKd7EveZ+gRicCouAU
+ EoeQ3FSA9656HMEqwSXuBOZvsiRWAT/5yxGl/E62H0p8heJYB0vMsZzp5nYNZH2bYNJZSyZ/571
+ sTx5M8udhDxdIAkxC067COaTSA6cyJC1ILVW6PQYoLXS93OGzhmzHz1N6cobxodM7LazFXYbOK+
+ xKBb0oENPige7A+CitLHQbpTHQwwPkriv+ttKomjMoQOsnWUfKhNwH6ku4ZhCh980uFVjhxb8wu
+ hJ0xGlrQEfLrm1U7Ir1xiL/cIsxpJ4L/jZpYw+hYhuMYmzTkWDw4LC278tmGgQ2hpwD388QkqJM
+ rZOSesF0wUrN5F5qn3SQ9UgM6Ig==
+X-Google-Smtp-Source: AGHT+IGsu9g81Wemy2pp1RCMtXzXe3vD3RsvfOUZ9X/bGAFp8yd9AFgPzpdl9p9B2whqmq+fGDwX+g==
+X-Received: by 2002:a05:6a00:2e21:b0:771:e935:9a0 with SMTP id
+ d2e1a72fcca58-771e9351f1bmr17706151b3a.13.1756336910392; 
+ Wed, 27 Aug 2025 16:21:50 -0700 (PDT)
 Received: from stoup.. ([144.6.121.55]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7703ffebd33sm13986886b3a.29.2025.08.27.16.21.45
+ d2e1a72fcca58-7703ffebd33sm13986886b3a.29.2025.08.27.16.21.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Aug 2025 16:21:47 -0700 (PDT)
+ Wed, 27 Aug 2025 16:21:49 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 27/46] linux-user/arm: Create init_main_thread
-Date: Thu, 28 Aug 2025 09:20:04 +1000
-Message-ID: <20250827232023.50398-28-richard.henderson@linaro.org>
+Subject: [PULL 28/46] linux-user/arm: Remove a.out startup remenents
+Date: Thu, 28 Aug 2025 09:20:05 +1000
+Message-ID: <20250827232023.50398-29-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250827232023.50398-1-richard.henderson@linaro.org>
 References: <20250827232023.50398-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,132 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Merge init_thread and target_cpu_copy_regs.
-There's no point going through a target_pt_regs intermediate.
+The setting of r1/r2 was removed in kernel commit acfdd4b1f7590d0
+("ARM: 7791/1: a.out: remove partial a.out support"), and the
+kernel commit message explains the history.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/arm/cpu_loop.c | 51 ++++++++++++++++++++++++++++++++-------
- linux-user/elfload.c      | 41 +------------------------------
- 2 files changed, 43 insertions(+), 49 deletions(-)
+ linux-user/arm/cpu_loop.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
-index 9d54422736..739e1607e3 100644
+index 739e1607e3..9aeb9b0087 100644
 --- a/linux-user/arm/cpu_loop.c
 +++ b/linux-user/arm/cpu_loop.c
-@@ -480,17 +480,50 @@ void cpu_loop(CPUARMState *env)
-     }
- }
+@@ -492,10 +492,6 @@ void init_main_thread(CPUState *cs, struct image_info *info)
+     env->regs[15] = entry & 0xfffffffe;
+     env->regs[13] = stack;
  
--void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
-+void init_main_thread(CPUState *cs, struct image_info *info)
- {
--    CPUState *cpu = env_cpu(env);
--    TaskState *ts = get_task_state(cpu);
--    struct image_info *info = ts->info;
--    int i;
-+    CPUARMState *env = cpu_env(cs);
-+    abi_ptr stack = info->start_stack;
-+    abi_ptr entry = info->entry;
- 
--    cpsr_write(env, regs->uregs[16], CPSR_USER | CPSR_EXEC,
--               CPSRWriteByInstr);
--    for(i = 0; i < 16; i++) {
--        env->regs[i] = regs->uregs[i];
-+    cpsr_write(env, ARM_CPU_MODE_USR | (entry & 1 ? CPSR_T : 0),
-+               CPSR_USER | CPSR_EXEC, CPSRWriteByInstr);
-+
-+    env->regs[15] = entry & 0xfffffffe;
-+    env->regs[13] = stack;
-+
-+    /* FIXME - what to for failure of get_user()? */
-+    get_user_ual(env->regs[2], stack + 8); /* envp */
-+    get_user_ual(env->regs[1], stack + 4); /* envp */
-+
-+    /*
-+     * Per the SVR4 ABI, r0 contains a pointer to a function to be
-+     * registered with atexit.  A value of 0 means we have no such handler.
-+     */
-+    env->regs[0] = 0;
-+
-+    /* For uClinux PIC binaries.  */
-+    /* XXX: Linux does this only on ARM with no MMU (do we care?) */
-+    env->regs[10] = info->start_data;
-+
-+    /* Support ARM FDPIC.  */
-+    if (info_is_fdpic(info)) {
-+        /*
-+         * As described in the ABI document, r7 points to the loadmap info
-+         * prepared by the kernel. If an interpreter is needed, r8 points
-+         * to the interpreter loadmap and r9 points to the interpreter
-+         * PT_DYNAMIC info. If no interpreter is needed, r8 is zero, and
-+         * r9 points to the main program PT_DYNAMIC info.
-+         */
-+        env->regs[7] = info->loadmap_addr;
-+        if (info->interpreter_loadmap_addr) {
-+            /* Executable is dynamically loaded.  */
-+            env->regs[8] = info->interpreter_loadmap_addr;
-+            env->regs[9] = info->interpreter_pt_dynamic_addr;
-+        } else {
-+            env->regs[8] = 0;
-+            env->regs[9] = info->pt_dynamic_addr;
-+        }
-     }
- 
-     if (TARGET_BIG_ENDIAN) {
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 89f3972253..9586873954 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -293,46 +293,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
- #define ELF_CLASS       ELFCLASS32
- #define EXSTACK_DEFAULT true
- 
--static inline void init_thread(struct target_pt_regs *regs,
--                               struct image_info *infop)
--{
--    abi_long stack = infop->start_stack;
--    memset(regs, 0, sizeof(*regs));
--
--    regs->uregs[16] = ARM_CPU_MODE_USR;
--    if (infop->entry & 1) {
--        regs->uregs[16] |= CPSR_T;
--    }
--    regs->uregs[15] = infop->entry & 0xfffffffe;
--    regs->uregs[13] = infop->start_stack;
 -    /* FIXME - what to for failure of get_user()? */
--    get_user_ual(regs->uregs[2], stack + 8); /* envp */
--    get_user_ual(regs->uregs[1], stack + 4); /* envp */
--    /* XXX: it seems that r0 is zeroed after ! */
--    regs->uregs[0] = 0;
--    /* For uClinux PIC binaries.  */
--    /* XXX: Linux does this only on ARM with no MMU (do we care ?) */
--    regs->uregs[10] = infop->start_data;
+-    get_user_ual(env->regs[2], stack + 8); /* envp */
+-    get_user_ual(env->regs[1], stack + 4); /* envp */
 -
--    /* Support ARM FDPIC.  */
--    if (info_is_fdpic(infop)) {
--        /* As described in the ABI document, r7 points to the loadmap info
--         * prepared by the kernel. If an interpreter is needed, r8 points
--         * to the interpreter loadmap and r9 points to the interpreter
--         * PT_DYNAMIC info. If no interpreter is needed, r8 is zero, and
--         * r9 points to the main program PT_DYNAMIC info.
--         */
--        regs->uregs[7] = infop->loadmap_addr;
--        if (infop->interpreter_loadmap_addr) {
--            /* Executable is dynamically loaded.  */
--            regs->uregs[8] = infop->interpreter_loadmap_addr;
--            regs->uregs[9] = infop->interpreter_pt_dynamic_addr;
--        } else {
--            regs->uregs[8] = 0;
--            regs->uregs[9] = infop->pt_dynamic_addr;
--        }
--    }
--}
-+#define HAVE_INIT_MAIN_THREAD
- 
- #define ELF_NREG    18
- typedef target_elf_greg_t  target_elf_gregset_t[ELF_NREG];
+     /*
+      * Per the SVR4 ABI, r0 contains a pointer to a function to be
+      * registered with atexit.  A value of 0 means we have no such handler.
 -- 
 2.43.0
 
