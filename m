@@ -2,40 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56405B385FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C81AB38604
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:15:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHm0-0002XP-Hl; Wed, 27 Aug 2025 11:09:16 -0400
+	id 1urHm7-00033z-0a; Wed, 27 Aug 2025 11:09:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHin-0005v5-4R; Wed, 27 Aug 2025 11:05:58 -0400
+ id 1urHim-0005v4-UT; Wed, 27 Aug 2025 11:05:58 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHil-0005Jl-BB; Wed, 27 Aug 2025 11:05:56 -0400
+ id 1urHij-0005Jw-65; Wed, 27 Aug 2025 11:05:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 58C6A14C545;
+ by isrv.corpit.ru (Postfix) with ESMTP id 670AC14C546;
  Wed, 27 Aug 2025 18:02:58 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4734526984D;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 55F5826984E;
  Wed, 27 Aug 2025 18:03:25 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 29/59] hw/ssi/aspeed_smc: Fix incorrect FMC_WDT2
- register read on AST1030
-Date: Wed, 27 Aug 2025 18:02:34 +0300
-Message-ID: <20250827150323.2694101-29-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Alex Richardson <alexrichardson@google.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 30/59] target/arm: add support for 64-bit PMCCNTR in
+ AArch32 mode
+Date: Wed, 27 Aug 2025 18:02:35 +0300
+Message-ID: <20250827150323.2694101-30-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,38 +58,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jamin Lin <jamin_lin@aspeedtech.com>
+From: Alex Richardson <alexrichardson@google.com>
 
-On AST1030, reading the FMC_WDT2 register always returns 0xFFFFFFFF.
-This issue is due to the aspeed_smc_read function, which checks for the
-ASPEED_SMC_FEATURE_WDT_CONTROL feature. Since AST1030 was missing this
-feature flag, the read operation fails and returns -1.
+In the PMUv3, a new AArch32 64-bit (MCRR/MRRC) accessor for the
+PMCCNTR was added. In QEMU we forgot to implement this, so only
+provide the 32-bit accessor. Since we have a 64-bit PMCCNTR
+sysreg for AArch64, adding the 64-bit AArch32 version is easy.
 
-To resolve this, add the WDT_CONTROL feature to AST1030's feature set
-so that FMC_WDT2 can be correctly accessed by firmware.
+We add the PMCCNTR to the v8_cp_reginfo because PMUv3 was added
+in the ARMv8 architecture. This is consistent with how we
+handle the existing PMCCNTR support, where we always implement
+it for all v7 CPUs. This is arguably something we should
+clean up so it is gated on ARM_FEATURE_PMU and/or an ID
+register check for the relevant PMU version, but we should
+do that as its own tidyup rather than being inconsistent between
+this PMCCNTR accessor and the others.
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Fixes: 2850df6a81bcdc2e063dfdd56751ee2d11c58030 ("aspeed/smc: Add AST1030 support ")
-Link: https://lore.kernel.org/qemu-devel/20250804014633.512737-1-jamin_lin@aspeedtech.com
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit 13ed972b4ce57198914a37217251d30fbec20e41)
+Since the register name is the same as the 32-bit PMCCNTR, we set
+ARM_CP_NO_GDB on the 32-bit one to avoid generating an invalid GDB XML.
+
+See https://developer.arm.com/documentation/ddi0601/2024-06/AArch32-Registers/PMCCNTR--Performance-Monitors-Cycle-Count-Register?lang=en
+
+Note for potential backporting:
+ * this code in cpregs-pmu.c will be in helper.c on stable
+   branches that don't have commit ae2086426d37
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Alex Richardson <alexrichardson@google.com>
+Message-id: 20250725170136.145116-1-alexrichardson@google.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit cd9f752fee75238f842a91be1146c988bd16a010)
+(Mjt: moved code to target/arm/helper.c and modified it for 10.0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
-index faef1a8e5b..b4a17a52a3 100644
---- a/hw/ssi/aspeed_smc.c
-+++ b/hw/ssi/aspeed_smc.c
-@@ -1857,7 +1857,8 @@ static void aspeed_1030_fmc_class_init(ObjectClass *klass, void *data)
-     asc->resets            = aspeed_1030_fmc_resets;
-     asc->flash_window_base = 0x80000000;
-     asc->flash_window_size = 0x10000000;
--    asc->features          = ASPEED_SMC_FEATURE_DMA;
-+    asc->features          = ASPEED_SMC_FEATURE_DMA |
-+                             ASPEED_SMC_FEATURE_WDT_CONTROL;
-     asc->dma_flash_mask    = 0x0FFFFFFC;
-     asc->dma_dram_mask     = 0x000BFFFC;
-     asc->dma_start_length  = 1;
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index bb445e30cd..4f89eaa2c2 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -1946,11 +1946,6 @@ static const ARMCPRegInfo v7_cp_reginfo[] = {
+       .fgt = FGT_PMSELR_EL0,
+       .fieldoffset = offsetof(CPUARMState, cp15.c9_pmselr),
+       .writefn = pmselr_write, .raw_writefn = raw_write, },
+-    { .name = "PMCCNTR", .cp = 15, .crn = 9, .crm = 13, .opc1 = 0, .opc2 = 0,
+-      .access = PL0_RW, .resetvalue = 0, .type = ARM_CP_ALIAS | ARM_CP_IO,
+-      .fgt = FGT_PMCCNTR_EL0,
+-      .readfn = pmccntr_read, .writefn = pmccntr_write32,
+-      .accessfn = pmreg_access_ccntr },
+     { .name = "PMCCNTR_EL0", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 3, .crn = 9, .crm = 13, .opc2 = 0,
+       .access = PL0_RW, .accessfn = pmreg_access_ccntr,
+@@ -6849,9 +6844,26 @@ static void define_pmu_regs(ARMCPU *cpu)
+         .readfn = pmcr_read, .raw_readfn = raw_read,
+         .writefn = pmcr_write, .raw_writefn = raw_write,
+     };
++    /*
++     * 32-bit AArch32 PMCCNTR. We don't expose this to GDB if the
++     * new-in-v8 PMUv3 64-bit AArch32 PMCCNTR register is implemented
++     * (as that will provide the GDB user's view of "PMCCNTR").
++     */
++    ARMCPRegInfo pmccntr = {
++        .name = "PMCCNTR",
++        .cp = 15, .crn = 9, .crm = 13, .opc1 = 0, .opc2 = 0,
++        .access = PL0_RW, .accessfn = pmreg_access_ccntr,
++        .resetvalue = 0, .type = ARM_CP_ALIAS | ARM_CP_IO,
++        .fgt = FGT_PMCCNTR_EL0,
++        .readfn = pmccntr_read, .writefn = pmccntr_write32,
++    };
++    if (arm_feature(&cpu->env, ARM_FEATURE_V8)) {
++        pmccntr.type |= ARM_CP_NO_GDB;
++    }
+ 
+     define_one_arm_cp_reg(cpu, &pmcr);
+     define_one_arm_cp_reg(cpu, &pmcr64);
++    define_one_arm_cp_reg(cpu, &pmccntr);
+     for (i = 0; i < pmcrn; i++) {
+         char *pmevcntr_name = g_strdup_printf("PMEVCNTR%d", i);
+         char *pmevcntr_el0_name = g_strdup_printf("PMEVCNTR%d_EL0", i);
+@@ -8162,6 +8174,13 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+               .access = PL0_R, .accessfn = pmreg_access, .type = ARM_CP_CONST,
+               .fgt = FGT_PMCEIDN_EL0,
+               .resetvalue = cpu->pmceid1 },
++            /* AArch32 64-bit PMCCNTR view: added in PMUv3 with Armv8 */
++            { .name = "PMCCNTR", .state = ARM_CP_STATE_AA32,
++              .cp = 15, .crm = 9, .opc1 = 0,
++              .access = PL0_RW, .accessfn = pmreg_access_ccntr, .resetvalue = 0,
++              .type = ARM_CP_ALIAS | ARM_CP_IO | ARM_CP_64BIT,
++              .fgt = FGT_PMCCNTR_EL0, .readfn = pmccntr_read,
++              .writefn = pmccntr_write,  },
+         };
+ #ifdef CONFIG_USER_ONLY
+         static const ARMCPRegUserSpaceInfo v8_user_idregs[] = {
 -- 
 2.47.2
 
