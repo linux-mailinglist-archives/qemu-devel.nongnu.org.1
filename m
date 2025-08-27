@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1599B38F42
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 01:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AF1FB38F18
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 01:22:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urPT7-0004PV-0H; Wed, 27 Aug 2025 19:22:17 -0400
+	id 1urPSy-00045p-Qc; Wed, 27 Aug 2025 19:22:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urPSk-0003zw-Do
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:21:54 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1urPSj-0003yY-Lk
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:21:53 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urPSb-0004H6-3l
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:21:54 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-771ff6f117aso385670b3a.2
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 16:21:42 -0700 (PDT)
+ id 1urPSc-0004HF-3H
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 19:21:53 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-771e987b4e6so322183b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 16:21:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756336900; x=1756941700; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756336901; x=1756941701; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WnH7EpbfqSiddTyYEjwsuEsAObJWFo46bJT3sgyKWcQ=;
- b=K2RWP97rFwXk/tOjBJlAYLeMakA8H9ewLOzhsRoyp7vuS6KCxiVUxoTwF7bqAf4QMj
- oj/iw77eE1g1DwLN2ut2r+UAiCM1j4JFt3bYcV14epMNXQ+uxUWA+EcE0zB4ZjQiKnS9
- TwU+UChWHc4TZ/HNQ9Snd11xwcTP1DHOnCfnFdXJy34BgPL/diH4fw0r/oUXVOqXi6uE
- cxM+B3xi86K0jO92tSuu4855ciNH9h06KyPWEHw1gZ07pvAmRu7LxVlL4n3Wi8AQhUWy
- luGuNmH4bhl4Igio4i7LvW/5fJo7nj/RLSLsld3MMS1qnJF6rdErko1hOBJZwbd6JVA3
- QoAA==
+ bh=HyBW6oXpw96252KnNIM84sqTDSbPQVUWR0A1KOUJqIw=;
+ b=PvUSDkD7lpXbMMsd1qokRLhdhhplaDdvQ+rxc9RdsETMoWMrg2+tZzwxEuTRycSwCJ
+ 3NEVJYF5Ce6ZVRHLHpw7Xfgu7VG52XT5LXFBxnX/DpnBJP9wVBRA+NJtPqVUoEIFWL8W
+ iFF90jLGoZF8F8veG+3zfR34pRRr6SWoOh0IZsXVrEWA+ctP6HyjkUCaekt5Djfu5L4/
+ QYAMsb7VxvIAQ6qgy53C6sWaelfoEOtlfUgMtsQ0I/lCOFdPlYdlltskvHhxGn7agXxb
+ 0QB598+GBtKUVfmQ23IKGsc2KJ2dnb/MZJT9brwA8V5lBQHE59jGlOpa1huqovjjujHz
+ anLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756336900; x=1756941700;
+ d=1e100.net; s=20230601; t=1756336901; x=1756941701;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WnH7EpbfqSiddTyYEjwsuEsAObJWFo46bJT3sgyKWcQ=;
- b=Io3zkNParyWVZVwkLaNCxoKF0lLI/IDpymHH4jKUNZBpbYR3odepn3O4hOIZ88mxs5
- r1cOM2c18bCTXznrSfwqODfwNMgRiD1/k8hGxmSTY4OzdUIDWthnCw3ANscuDchpPzkn
- iclJ0+v7opSop1GonickDhrcvdDbsTLinLqbPoWuiLR7tYQ1dvLxgyHMjF9eIGXzWOew
- AUoCOXnFCBp22vc8iMUAaoAPjlAYw0TSdjrvYwmkjXCLCTx87BnvTbSrP33+Qq3fSZZW
- nqUhCRl1waaPXJ4g8IccKaIFJ62OUeUSzy/37i3T5AFBNugoCciRkTmjHMNnHBelJhzW
- D50A==
-X-Gm-Message-State: AOJu0YwDNW4kgS3T5fgmpvu5PaAIZiDUVQQ9ObJg6ZuMQIWk9ArOjAg3
- 3U0hQXd5rVJDFpuku8NDQN8RyhcjVs5ytgNvL/BFud1hWNCEAQUGsr0ST+qSgJA2DB2RGK4RlMl
- eY2Mqij8=
-X-Gm-Gg: ASbGncvG9wQnZMWNkofbtCiog6jsBIEz5I+ictFRY51c+4mL/WgKjwb2yQ2pFWStsgi
- BIW1ofrKwbPv5hZTAYQ8BnZ2dh65ptPssbwnRfFSuLyuaQB7f00VZYB2Oc8wySKIP49fa+NTz4c
- s60Asl9Zlb6w6ac/iwltJvP36XTzB2ZDtHb6PH8VMS6f6ldAJF3wM50lVPZvXYGC9Sfk7s9YoK5
- 55nNyAMUNxdfWVM2Tprb4e9u0yWYdqSuTpyffczg/KknrVTEN+Wmk067MjffIZpFbxd3MtS3Gzq
- 2XmWO+ElgOgEX2idBgGLGnKgMLLYm64Sz/2oHSV9xoCC0nAzoj18DjaXEamfBU3WOx/uyJf9gjT
- ski4SYvPCZYFBDfJuywTDmjyIiw==
-X-Google-Smtp-Source: AGHT+IGr47SfIM8DkzP+bQ39qgC6Y8D47UMrFeEDQU1XC0r8DOShqVz+skNfgYh2Wn1JwJRS2O8mFQ==
-X-Received: by 2002:a05:6a00:3909:b0:76e:8bcd:b6f4 with SMTP id
- d2e1a72fcca58-7702faa5fd2mr23916471b3a.20.1756336899475; 
- Wed, 27 Aug 2025 16:21:39 -0700 (PDT)
+ bh=HyBW6oXpw96252KnNIM84sqTDSbPQVUWR0A1KOUJqIw=;
+ b=saMkOaZqd6m1eIzbOgCT8xaul0uJdXwd/Q4eLTE7bh7VBgaFooSmu/P38xN1HiRmUB
+ N1LT7t4p7YBebqSm//vnq3Ee3UiNJRfSiuORUOhX7O4rZEZthgCxnwPetWszZoI1oqvN
+ jLKsc+L3BSITHyBq9KkiYWi41aB4ojyKpSCEsE9gJhPapjB9EtQE6jjxzCsomEU2CB8m
+ A7zpsjpyPiEBzzygyAeNUFbym2wxXrL0XfBiPb4UwAs4Rw4na4Vg9/jQO/kMnNilQA+R
+ a8eb6+EOHraDRrpjWKrtq2MVpaLqBORWNzUzMBRFkc4g6vf90sbznd4pd0muRkSsdAlt
+ T3sA==
+X-Gm-Message-State: AOJu0YzYwM2JPVbcGchshNCrPpT9UZn9J5U+SWRpl8+kjzxCZxZX2oxB
+ wszaCwzqVuiqmRrFRKU1g/T5/wJ4tvX95duDoN2pJk7bDaZOWoiengEv+8JZrdrl07Ofdwb8js6
+ m4vaE72g=
+X-Gm-Gg: ASbGncuEsZYuTrjZsffbZrOVjMkuXkV7xNizzvHs2gWWdCJrkKcv7aj2FbSG5gdUHr6
+ 1mXbBg3kjQgbHLBPWQMHarmMs1GlpGzQqaWS1GqK+goy/3IU34w54eDfLQCqBg/AG+AlmpDQfK6
+ TNNgg8PaJGmk5bAKlhzXhK02vcBlr6I7x34YO8tBNXdww3Bk38kNiKOqJZIK6FGL4/EW1XJWCLu
+ D3J/aEOmMPJHBLd7B99r6Vdt5j6qmIE0/r/F/3VtblSFcXVdAABBFhQMxX8kIk/JetAg0f4JzFU
+ BuPoV7Cl/AIPS2vFKdmQhPB4ldt5sX1Nn+bmGoSBgdgLiQUAPp+1YzHKxl4pSQMHM4RtFYvxGsR
+ E4RJpTELP36EaW21X/2miHLlLzg==
+X-Google-Smtp-Source: AGHT+IHoAOxHfqDWnJhBdNUX30IoYubCAQKCve3Zak8Hnsw+95Ko8TP2YPGKV1eusF9V9hys8Yzkzw==
+X-Received: by 2002:a05:6a00:9a4:b0:772:a60:6c04 with SMTP id
+ d2e1a72fcca58-7720a606d90mr4844730b3a.2.1756336901438; 
+ Wed, 27 Aug 2025 16:21:41 -0700 (PDT)
 Received: from stoup.. ([144.6.121.55]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7703ffebd33sm13986886b3a.29.2025.08.27.16.21.37
+ d2e1a72fcca58-7703ffebd33sm13986886b3a.29.2025.08.27.16.21.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Aug 2025 16:21:39 -0700 (PDT)
+ Wed, 27 Aug 2025 16:21:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 23/46] linux-user: Move get_elf_base_platform to mips/elfload.c
-Date: Thu, 28 Aug 2025 09:20:00 +1000
-Message-ID: <20250827232023.50398-24-richard.henderson@linaro.org>
+Subject: [PULL 24/46] linux-user: Move target_cpu_copy_regs decl to qemu.h
+Date: Thu, 28 Aug 2025 09:20:01 +1000
+Message-ID: <20250827232023.50398-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250827232023.50398-1-richard.henderson@linaro.org>
 References: <20250827232023.50398-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,163 +97,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass in CPUState; define HAVE_ELF_BASE_PLATFORM.
-Since this was the only instance of ELF_BASE_PLATFORM, go ahead and
-provide the stub definition for other platforms.
+The function is not used by bsd-user, so placement
+within include/user/cpu_loop.h is not ideal.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/loader.h            |  1 +
- linux-user/mips/target_elf.h   |  1 +
- linux-user/mips64/target_elf.h |  1 +
- linux-user/elfload.c           | 40 ++++------------------------------
- linux-user/mips/elfload.c      | 30 +++++++++++++++++++++++++
- 5 files changed, 37 insertions(+), 36 deletions(-)
+ include/user/cpu_loop.h | 4 ----
+ linux-user/qemu.h       | 3 +++
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/linux-user/loader.h b/linux-user/loader.h
-index 440871466c..42cba90dea 100644
---- a/linux-user/loader.h
-+++ b/linux-user/loader.h
-@@ -106,5 +106,6 @@ abi_ulong get_elf_hwcap2(CPUState *cs);
- const char *elf_hwcap_str(uint32_t bit);
- const char *elf_hwcap2_str(uint32_t bit);
- const char *get_elf_platform(CPUState *cs);
-+const char *get_elf_base_platform(CPUState *cs);
+diff --git a/include/user/cpu_loop.h b/include/user/cpu_loop.h
+index ad8a1d711f..346e37ede8 100644
+--- a/include/user/cpu_loop.h
++++ b/include/user/cpu_loop.h
+@@ -81,8 +81,4 @@ void target_exception_dump(CPUArchState *env, const char *fmt, int code);
+ #define EXCP_DUMP(env, fmt, code) \
+     target_exception_dump(env, fmt, code)
  
- #endif /* LINUX_USER_LOADER_H */
-diff --git a/linux-user/mips/target_elf.h b/linux-user/mips/target_elf.h
-index 877f8347d7..08e699c085 100644
---- a/linux-user/mips/target_elf.h
-+++ b/linux-user/mips/target_elf.h
-@@ -9,5 +9,6 @@
- #define MIPS_TARGET_ELF_H
- 
- #define HAVE_ELF_HWCAP          1
-+#define HAVE_ELF_BASE_PLATFORM  1
- 
+-typedef struct target_pt_regs target_pt_regs;
+-
+-void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs);
+-
  #endif
-diff --git a/linux-user/mips64/target_elf.h b/linux-user/mips64/target_elf.h
-index c0347e5cb6..24bb7fcd3f 100644
---- a/linux-user/mips64/target_elf.h
-+++ b/linux-user/mips64/target_elf.h
-@@ -9,5 +9,6 @@
- #define MIPS64_TARGET_ELF_H
+diff --git a/linux-user/qemu.h b/linux-user/qemu.h
+index 4d6fad28c6..0c3cfe93a1 100644
+--- a/linux-user/qemu.h
++++ b/linux-user/qemu.h
+@@ -359,4 +359,7 @@ void *lock_user_string(abi_ulong guest_addr);
+ /* Clone cpu state */
+ CPUArchState *cpu_copy(CPUArchState *env);
  
- #define HAVE_ELF_HWCAP          1
-+#define HAVE_ELF_BASE_PLATFORM  1
- 
- #endif
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index d2d73b06fc..4facaa7e27 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -679,37 +679,6 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
- #define elf_check_abi(x) (!((x) & EF_MIPS_ABI2))
- #endif
- 
--#define ELF_BASE_PLATFORM get_elf_base_platform()
--
--#define MATCH_PLATFORM_INSN(_flags, _base_platform)      \
--    do { if ((cpu->env.insn_flags & (_flags)) == _flags) \
--    { return _base_platform; } } while (0)
--
--static const char *get_elf_base_platform(void)
--{
--    MIPSCPU *cpu = MIPS_CPU(thread_cpu);
--
--    /* 64 bit ISAs goes first */
--    MATCH_PLATFORM_INSN(CPU_MIPS64R6, "mips64r6");
--    MATCH_PLATFORM_INSN(CPU_MIPS64R5, "mips64r5");
--    MATCH_PLATFORM_INSN(CPU_MIPS64R2, "mips64r2");
--    MATCH_PLATFORM_INSN(CPU_MIPS64R1, "mips64");
--    MATCH_PLATFORM_INSN(CPU_MIPS5, "mips5");
--    MATCH_PLATFORM_INSN(CPU_MIPS4, "mips4");
--    MATCH_PLATFORM_INSN(CPU_MIPS3, "mips3");
--
--    /* 32 bit ISAs */
--    MATCH_PLATFORM_INSN(CPU_MIPS32R6, "mips32r6");
--    MATCH_PLATFORM_INSN(CPU_MIPS32R5, "mips32r5");
--    MATCH_PLATFORM_INSN(CPU_MIPS32R2, "mips32r2");
--    MATCH_PLATFORM_INSN(CPU_MIPS32R1, "mips32");
--    MATCH_PLATFORM_INSN(CPU_MIPS2, "mips2");
--
--    /* Fallback */
--    return "mips";
--}
--#undef MATCH_PLATFORM_INSN
--
- static inline void init_thread(struct target_pt_regs *regs,
-                                struct image_info *infop)
- {
-@@ -1169,10 +1138,6 @@ static inline void init_thread(struct target_pt_regs *regs,
- 
- #endif /* TARGET_HEXAGON */
- 
--#ifndef ELF_BASE_PLATFORM
--#define ELF_BASE_PLATFORM (NULL)
--#endif
--
- #ifndef ELF_MACHINE
- #define ELF_MACHINE ELF_ARCH
- #endif
-@@ -1219,6 +1184,9 @@ abi_ulong get_elf_hwcap2(CPUState *cs) { g_assert_not_reached(); }
- #ifndef HAVE_ELF_PLATFORM
- const char *get_elf_platform(CPUState *cs) { return NULL; }
- #endif
-+#ifndef HAVE_ELF_BASE_PLATFORM
-+const char *get_elf_base_platform(CPUState *cs) { return NULL; }
-+#endif
- 
- #include "elf.h"
- 
-@@ -1673,7 +1641,7 @@ static abi_ulong create_elf_tables(abi_ulong p, int argc, int envc,
-     }
- 
-     u_base_platform = 0;
--    k_base_platform = ELF_BASE_PLATFORM;
-+    k_base_platform = get_elf_base_platform(thread_cpu);
-     if (k_base_platform) {
-         size_t len = strlen(k_base_platform) + 1;
-         if (STACK_GROWS_DOWN) {
-diff --git a/linux-user/mips/elfload.c b/linux-user/mips/elfload.c
-index 739f71c21b..c353ccc1ad 100644
---- a/linux-user/mips/elfload.c
-+++ b/linux-user/mips/elfload.c
-@@ -92,3 +92,33 @@ abi_ulong get_elf_hwcap(CPUState *cs)
- #undef GET_FEATURE_REG_EQU
- #undef GET_FEATURE_REG_SET
- #undef GET_FEATURE_INSN
++typedef struct target_pt_regs target_pt_regs;
++void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs);
 +
-+#define MATCH_PLATFORM_INSN(_flags, _base_platform)      \
-+    do { if ((cpu->env.insn_flags & (_flags)) == _flags) \
-+    { return _base_platform; } } while (0)
-+
-+const char *get_elf_base_platform(CPUState *cs)
-+{
-+    MIPSCPU *cpu = MIPS_CPU(cs);
-+
-+    /* 64 bit ISAs goes first */
-+    MATCH_PLATFORM_INSN(CPU_MIPS64R6, "mips64r6");
-+    MATCH_PLATFORM_INSN(CPU_MIPS64R5, "mips64r5");
-+    MATCH_PLATFORM_INSN(CPU_MIPS64R2, "mips64r2");
-+    MATCH_PLATFORM_INSN(CPU_MIPS64R1, "mips64");
-+    MATCH_PLATFORM_INSN(CPU_MIPS5, "mips5");
-+    MATCH_PLATFORM_INSN(CPU_MIPS4, "mips4");
-+    MATCH_PLATFORM_INSN(CPU_MIPS3, "mips3");
-+
-+    /* 32 bit ISAs */
-+    MATCH_PLATFORM_INSN(CPU_MIPS32R6, "mips32r6");
-+    MATCH_PLATFORM_INSN(CPU_MIPS32R5, "mips32r5");
-+    MATCH_PLATFORM_INSN(CPU_MIPS32R2, "mips32r2");
-+    MATCH_PLATFORM_INSN(CPU_MIPS32R1, "mips32");
-+    MATCH_PLATFORM_INSN(CPU_MIPS2, "mips2");
-+
-+    /* Fallback */
-+    return "mips";
-+}
-+
-+#undef MATCH_PLATFORM_INSN
+ #endif /* QEMU_H */
 -- 
 2.43.0
 
