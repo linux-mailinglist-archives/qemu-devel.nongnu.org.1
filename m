@@ -2,146 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261C3B38BF4
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 00:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 271DCB38DFD
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 00:20:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urOCn-0006R6-9t; Wed, 27 Aug 2025 18:01:21 -0400
+	id 1urOTa-0008KW-5i; Wed, 27 Aug 2025 18:18:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urOCl-0006Qh-C7
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 18:01:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
+ id 1urOTX-0008JE-AT; Wed, 27 Aug 2025 18:18:39 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urOCi-0007cL-Ek
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 18:01:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756332074;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=9LbhoLffTINf3bGY0XMLc1aTrpoReWQ/vHYPvIA3gK0=;
- b=hdQLRuuYyNw1tMvwVcGLcfXWBJTimh+X8CNuSoe+LP6fLhH6AppUYT7jgLos4ddYcIhzBM
- JY/nBSjj5WpLT62GYOSnoUrjW3fT7FR0iGFfMctcFHL4xGPmhqBND04QBgLInf00MiXa2b
- y70AvpX/bsuq/r96PcHuM7bCYbwSSBs=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-115-EsJL0UHeNBqxuzgK3VE1lw-1; Wed, 27 Aug 2025 18:01:12 -0400
-X-MC-Unique: EsJL0UHeNBqxuzgK3VE1lw-1
-X-Mimecast-MFC-AGG-ID: EsJL0UHeNBqxuzgK3VE1lw_1756332071
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-afe81959e5cso23547166b.1
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 15:01:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756332071; x=1756936871;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9LbhoLffTINf3bGY0XMLc1aTrpoReWQ/vHYPvIA3gK0=;
- b=lelwnCCXmNe8pQBW4kXwBYgvsAIbkTgMUW1/4AbmYdrkot7in6laHvd95LQcITEMYS
- lfc6gii61t1bri3zUogD0UP7vw4vFsdGBJS84dMeaalw7Gz3kIjOEUBEXt0rm0vkVahE
- dK3Flv4N6KpO7i6P51kUsERZ6F5W5N/Ei/ctGYvsrHRqgIxKWzkgSjaOSZIq/Krn5BCf
- 3dipfowEXdOZ1yUSAnY96Li/4ah1JxuRbgdISGbnIdPyIoxQtPwbG5VqVlYTOLSahAoy
- 4YGg0PbiQU/8VLZkdtobsKobRZ/V+cJsFhjVGOCwhKR/33JsXX0lOqz1guObWGziKfKp
- ARbA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU+StQO6XOJzvXU4az+zf9Y7vobZZOjfBTYA2zcH3S3T1Kc0Uvw5GzM3upRGDcdSV5f1T15gywJp0Se@nongnu.org
-X-Gm-Message-State: AOJu0Yz3aRsJhyzAT/lI7o5CztoeLIcZHesfBJ995ZnlnqRgeoeJSvb9
- SbPOj5lOVWDdIzIfM/39+0wQDECWY+NiD2YtIs1ExvssaLfFXUcujPoC3ZU5EFXHiMM/6x2wAYo
- 4fNNlpHm4PeV26PmBMF4N6gcRg2h0WXz3Zh3Vk1XCIH9nKpOlHwrQiZ7k
-X-Gm-Gg: ASbGncv8+oz/jaioVKt7TxC92K9EN6MF81TSC178Ez39i/8MQurKd3eRnifpqTS8b0R
- goKlcxsngg6JsrxC475hfiikcQtK2uzLA5EllmBtIDBg9IX7EOLTXigo29FoV/qJ8wAmGrJhBd6
- GV3ab1DN9JgMFgbCe3nsAI5RPwiOPTuw3js+B4ehEoJyihkcOKxz2D+L+13N2ZX8egoDZhKj8wv
- WXEl+krzqtN/8jhd4HKQs6wMC5qBGVmebEZ4pC1A9S1ISqbGf5M0MT/WsxcZLloNZ8xOaE0iqk2
- MsDPpmUnqCJtr8C2b+g1FxxRgvY0RSDwCukWs+EtF+zPaE1tXIzzjd/hRL6cr5j38miDqinQjee
- vtmrZ
-X-Received: by 2002:a05:6402:274c:b0:61c:d7b6:6218 with SMTP id
- 4fb4d7f45d1cf-61cd7b663edmr142529a12.13.1756332071187; 
- Wed, 27 Aug 2025 15:01:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHsOSZra7uurPCCy7aAXX3rgY/oVsERtX4enePQESCM4nixPZK7+1ehCrFkVb6wTn4iLZnGLg==
-X-Received: by 2002:a05:6402:274c:b0:61c:d7b6:6218 with SMTP id
- 4fb4d7f45d1cf-61cd7b663edmr142237a12.13.1756332066019; 
- Wed, 27 Aug 2025 15:01:06 -0700 (PDT)
-Received: from [192.168.0.6] (ltea-047-064-113-247.pools.arcor-ip.net.
- [47.64.113.247]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-61c90ffd657sm4201272a12.44.2025.08.27.15.01.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Aug 2025 15:01:04 -0700 (PDT)
-Message-ID: <ff5a3203-6afb-4202-b59a-1021f0d949db@redhat.com>
-Date: Thu, 28 Aug 2025 00:01:03 +0200
+ (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
+ id 1urOTU-0001Pv-BA; Wed, 27 Aug 2025 18:18:39 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57RJZ4Mo020682;
+ Wed, 27 Aug 2025 22:18:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=ji/38/
+ QPBsTkgF8BdRxBb92eq920TNTunO+rGoPzaLk=; b=rjjt+0+qmD3UeXd36UBaIz
+ d/ekq/s46/dwHOIT6/BC5kQ9ccEAIF6DOK6R8cggBF9bIdqr08pKtJ3Azl4Hrfc/
+ DAJZwsvX7HOXIVEneeNHjZAQkR2NSM1oYncNpyjPvRtKQlG19rOIyiq1SoY/btVm
+ MfbKPkYtpA5qitjVtAnoOVVJdeLcdEdEWoKWdrQDOZtaOyVOhMTtJchRrwZlOcnC
+ zQ/HWy8bFr9MCR7ok2UEo2cGWoQ/qcZrsbDbWr7dGD3CrIHqkeB8DMxKNi6DLR6Y
+ uls/c0h5lsos+1YOMFtwJQCvNpt8XBxEAa+LBH4xwEfhmOiLEmuttqfKvGLcJezw
+ ==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5avphgd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Aug 2025 22:18:32 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57RJIM1A007459;
+ Wed, 27 Aug 2025 22:18:30 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qqyuja2u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Aug 2025 22:18:30 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 57RMISwF27132622
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 27 Aug 2025 22:18:29 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CCA7C58051;
+ Wed, 27 Aug 2025 22:18:28 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B1BF45805A;
+ Wed, 27 Aug 2025 22:18:27 +0000 (GMT)
+Received: from [9.61.245.55] (unknown [9.61.245.55])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 27 Aug 2025 22:18:27 +0000 (GMT)
+Message-ID: <b0dc190d-db0e-46a2-8fac-563845e293c1@linux.ibm.com>
+Date: Wed, 27 Aug 2025 15:18:27 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 07/29] s390x/diag: Implement DIAG 320 subcode 1
-To: Farhan Ali <alifm@linux.ibm.com>, Zhuoying Cai <zycai@linux.ibm.com>,
- berrange@redhat.com, richard.henderson@linaro.org, david@redhat.com,
- jrossi@linux.ibm.com, qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v5 12/29] s390x/diag: Implement DIAG 508 subcode 1 for
+ signature verification
+To: Zhuoying Cai <zycai@linux.ibm.com>, thuth@redhat.com, berrange@redhat.com, 
+ richard.henderson@linaro.org, david@redhat.com, jrossi@linux.ibm.com,
+ qemu-s390x@nongnu.org, qemu-devel@nongnu.org
 Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
- borntraeger@linux.ibm.com, farman@linux.ibm.com, mjrosato@linux.ibm.com,
- iii@linux.ibm.com, eblake@redhat.com, armbru@redhat.com
+ borntraeger@linux.ibm.com, farman@linux.ibm.com,
+ mjrosato@linux.ibm.com, iii@linux.ibm.com, eblake@redhat.com,
+ armbru@redhat.com
 References: <20250818214323.529501-1-zycai@linux.ibm.com>
- <20250818214323.529501-8-zycai@linux.ibm.com>
- <537aa1cf-7135-471e-874e-a4cd3796b5bc@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
+ <20250818214323.529501-13-zycai@linux.ibm.com>
 Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <537aa1cf-7135-471e-874e-a4cd3796b5bc@linux.ibm.com>
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <20250818214323.529501-13-zycai@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 9unElqf6JW3rfB-1rT1AtPHFgiJED0aS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyMSBTYWx0ZWRfXz79xGUCrZG/V
+ TYAHHUkfoSlJl9ojNfN+WtOejWFt7jvayWR3TYOmyO+9Gb5LqIeywwBoUeDSLD2LdeYENlnnAGF
+ TNDF1zRcrZfEco0Jy+XGHHqK9ByOyg9IwmDQjNOf07pK7BhuD9rmf9D+x7FkEy2jRwMbIJ5qN3v
+ /d8FXvCftqhJBgeOu3scFvLajlDe6kqhVeRfdJzsOWxeVJlvkPMl7vqaSkfgriEEfmmCigJ3MZt
+ TkG96udppKdmjo75v+fUcBE6o6xB3b7hq5RA7+C/HhRzZ2dYEY8KS5TcilVIXaSvGrbjskrROZg
+ 2FEOsyxcwZRRkCss4TBPQHDbeLGIo1Z0UJBpDnI/ABfyayxh0VzLhZxlk+PfYbVdwqzfURT+56h
+ p4YxFTEB
+X-Proofpoint-ORIG-GUID: 9unElqf6JW3rfB-1rT1AtPHFgiJED0aS
+X-Authority-Analysis: v=2.4 cv=SNNCVPvH c=1 sm=1 tr=0 ts=68af8438 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=14SE_xoyt5txGEo4rJ8A:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-27_04,2025-08-26_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 bulkscore=0 phishscore=0 clxscore=1015
+ impostorscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230021
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=alifm@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,103 +123,230 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/08/2025 23.49, Farhan Ali wrote:
-> 
-> On 8/18/2025 2:43 PM, Zhuoying Cai wrote:
->> DIAG 320 subcode 1 provides information needed to determine
->> the amount of storage to store one or more certificates from the
->> certificate store.
->>
->> Upon successful completion, this subcode returns information of the current
->> cert store, such as the number of certificates stored and allowed in the cert
->> store, amount of space may need to be allocate to store a certificate,
->> etc for verification-certificate blocks (VCBs).
->>
->> The subcode value is denoted by setting the left-most bit
->> of an 8-byte field.
->>
->> The verification-certificate-storage-size block (VCSSB) contains
->> the output data when the operation completes successfully. A VCSSB
->> length of 4 indicates that no certificate are available in the cert
->> store.
->>
->> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
->> ---
->>   docs/specs/s390x-secure-ipl.rst | 10 ++++++
->>   include/hw/s390x/ipl/diag320.h  | 22 +++++++++++++
->>   target/s390x/diag.c             | 56 ++++++++++++++++++++++++++++++++-
->>   3 files changed, 87 insertions(+), 1 deletion(-)
->>
->> diff --git a/docs/specs/s390x-secure-ipl.rst b/docs/specs/s390x-secure- 
->> ipl.rst
->> index 70e9a66fe0..ddc15f0322 100644
->> --- a/docs/specs/s390x-secure-ipl.rst
->> +++ b/docs/specs/s390x-secure-ipl.rst
->> @@ -23,3 +23,13 @@ Subcode 0 - query installed subcodes
->>       Returns a 256-bit installed subcodes mask (ISM) stored in the installed
->>       subcodes block (ISB). This mask indicates which sucodes are currently
->>       installed and available for use.
->> +
->> +Subcode 1 - query verification certificate storage information
->> +    Provides the information required to determine the amount of memory 
->> needed to
->> +    store one or more verification-certificates (VCs) from the 
->> certificate store (CS).
->> +
->> +    Upon successful completion, this subcode returns various storage size 
->> values for
->> +    verification-certificate blocks (VCBs).
->> +
->> +    The output is returned in the verification-certificate-storage-size 
->> block (VCSSB).
->> +    A VCSSB length of 4 indicates that no certificates are available in 
->> the CS.
->> diff --git a/include/hw/s390x/ipl/diag320.h b/include/hw/s390x/ipl/diag320.h
->> index aa04b699c6..6e4779c699 100644
->> --- a/include/hw/s390x/ipl/diag320.h
->> +++ b/include/hw/s390x/ipl/diag320.h
->> @@ -11,10 +11,32 @@
->>   #define S390X_DIAG320_H
->>   #define DIAG_320_SUBC_QUERY_ISM     0
->> +#define DIAG_320_SUBC_QUERY_VCSI    1
->>   #define DIAG_320_RC_OK              0x0001
->>   #define DIAG_320_RC_NOT_SUPPORTED   0x0102
->> +#define DIAG_320_RC_INVAL_VCSSB_LEN 0x0202
->>   #define DIAG_320_ISM_QUERY_SUBCODES 0x80000000
->> +#define DIAG_320_ISM_QUERY_VCSI     0x40000000
->> +
->> +#define VCSSB_NO_VC     4
->> +#define VCSSB_MIN_LEN   128
->> +#define VCE_HEADER_LEN  128
->> +#define VCB_HEADER_LEN  64
->> +
->> +struct VCStorageSizeBlock {
->> +    uint32_t length;
->> +    uint8_t reserved0[3];
->> +    uint8_t version;
->> +    uint32_t reserved1[6];
->> +    uint16_t total_vc_ct;
->> +    uint16_t max_vc_ct;
->> +    uint32_t reserved3[11];
->> +    uint32_t max_single_vcb_len;
->> +    uint32_t total_vcb_len;
->> +    uint32_t reserved4[10];
->> +};
->> +typedef struct VCStorageSizeBlock VCStorageSizeBlock;
-> Should this be a packed structure? The Linux kernel defines it as packed 
-> https://elixir.bootlin.com/linux/v6.17-rc3/source/arch/s390/kernel/ 
-> cert_store.c#L81
 
-Packed structs should be avoided in user space code that might get compiled 
-on different host architectures, we've hit related problems a couple of 
-times in the past already (doing a quick search, I came up with 
-https://lists.gnu.org/archive/html/qemu-devel//2017-03/msg05316.html for 
-example, but I remember we had similar problems in the s390x code once, too).
+On 8/18/2025 2:43 PM, Zhuoying Cai wrote:
+> From: Collin Walling <walling@linux.ibm.com>
+>
+> DIAG 508 subcode 1 performs signature-verification on signed components.
+> A signed component may be a Linux kernel image, or any other signed
+> binary. **Verification of initrd is not supported.**
+>
+> The instruction call expects two item-pairs: an address of a device
+> component, an address of the analogous signature file (in PKCS#7 DER format),
+> and their respective lengths. All of this data should be encapsulated
+> within a Diag508SignatureVerificationBlock, with the CertificateStoreInfo
+> fields ignored. The DIAG handler will read from the provided addresses
+> to retrieve the necessary data, parse the signature file, then
+> perform the signature-verification. Because there is no way to
+> correlate a specific certificate to a component, each certificate
+> in the store is tried until either verification succeeds, or all
+> certs have been exhausted.
+>
+> The subcode value is denoted by setting the second-to-left-most bit of
+> a 2-byte field.
+>
+> A return code of 1 indicates success, and the index and length of the
+> corresponding certificate will be set in the CertificateStoreInfo
+> portion of the SigVerifBlock. The following values indicate failure:
+>
+> 	0x0102: certificate not available
+> 	0x0202: component data is invalid
+> 	0x0302: signature is not in PKCS#7 format
+> 	0x0402: signature-verification failed
+>
+> Signed-off-by: Collin Walling <walling@linux.ibm.com>
+> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
+> ---
+>   docs/specs/s390x-secure-ipl.rst |   5 ++
+>   include/hw/s390x/ipl/diag508.h  |  23 +++++++
+>   target/s390x/diag.c             | 112 +++++++++++++++++++++++++++++++-
+>   3 files changed, 139 insertions(+), 1 deletion(-)
+>
+> diff --git a/docs/specs/s390x-secure-ipl.rst b/docs/specs/s390x-secure-ipl.rst
+> index 6b3249173f..385f8d85a8 100644
+> --- a/docs/specs/s390x-secure-ipl.rst
+> +++ b/docs/specs/s390x-secure-ipl.rst
+> @@ -64,3 +64,8 @@ that requires assistance from QEMU.
+>   
+>   Subcode 0 - query installed subcodes
+>       Returns a 64-bit mask indicating which subcodes are supported.
+> +
+> +Subcode 1 - perform signature verification
+> +    Perform signature-verification on a signed component, using certificates
+> +    from the certificate store and leveraging qcrypto libraries to perform
+> +    this operation.
+> diff --git a/include/hw/s390x/ipl/diag508.h b/include/hw/s390x/ipl/diag508.h
+> index 6281ad8299..c99c6705c0 100644
+> --- a/include/hw/s390x/ipl/diag508.h
+> +++ b/include/hw/s390x/ipl/diag508.h
+> @@ -11,5 +11,28 @@
+>   #define S390X_DIAG508_H
+>   
+>   #define DIAG_508_SUBC_QUERY_SUBC    0x0000
+> +#define DIAG_508_SUBC_SIG_VERIF     0x8000
+> +
+> +#define DIAG_508_RC_OK              0x0001
+> +#define DIAG_508_RC_NO_CERTS        0x0102
+> +#define DIAG_508_RC_INVAL_COMP_DATA 0x0202
+> +#define DIAG_508_RC_INVAL_PKCS7_SIG 0x0302
+> +#define DIAG_508_RC_FAIL_VERIF      0x0402
+> +
+> +struct Diag508CertificateStoreInfo {
+> +    uint8_t  idx;
+> +    uint8_t  reserved[7];
+> +    uint64_t len;
+> +};
+> +typedef struct Diag508CertificateStoreInfo Diag508CertificateStoreInfo;
+> +
+> +struct Diag508SignatureVerificationBlock {
+> +    Diag508CertificateStoreInfo csi;
+> +    uint64_t comp_len;
+> +    uint64_t comp_addr;
+> +    uint64_t sig_len;
+> +    uint64_t sig_addr;
+> +};
+> +typedef struct Diag508SignatureVerificationBlock Diag508SignatureVerificationBlock;
+>   
+>   #endif
+> diff --git a/target/s390x/diag.c b/target/s390x/diag.c
+> index 6519a3cedc..2fe25a2c66 100644
+> --- a/target/s390x/diag.c
+> +++ b/target/s390x/diag.c
+> @@ -573,9 +573,107 @@ void handle_diag_320(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
+>       }
+>   }
+>   
+> +static int diag_508_verify_sig(uint8_t *cert, size_t cert_size,
+> +                              uint8_t *comp, size_t comp_size,
+> +                              uint8_t *sig, size_t sig_size)
+> +{
+> +    g_autofree uint8_t *sig_pem = NULL;
+> +    size_t sig_size_pem;
+> +    int rc;
+> +
+> +    /*
+> +     * PKCS#7 signature with DER format
+> +     * Convert to PEM format for signature verification
+> +     */
+> +    rc = qcrypto_pkcs7_convert_sig_pem(sig, sig_size, &sig_pem, &sig_size_pem, NULL);
+> +    if (rc < 0) {
+> +        return -1;
+> +    }
+> +
+> +    /*
+> +     * Ignore errors from signature format convertion and verification,
+> +     * because currently in the certificate lookup process.
+> +     *
+> +     * Any error is treated as a verification failure,
+> +     * and the final result (verified or not) will be reported later.
+> +     */
 
-In this struct here, all fields are naturally aligned, so the packed should 
-not be necessary. Just add a size check with QEMU_BUILD_BUG_ON to make sure 
-that there is really no unexpected padding here.
+The comment here seems misleading as we are checking the return code 
+from qcrypto_x509_verify_sig and not ignoring the error here. Is it 
+meant for the handle_diag508_sig_verif function where we are looping 
+through the certs?
 
-  Thomas
+Thanks Farhan
 
+> +    rc = qcrypto_x509_verify_sig(cert, cert_size,
+> +                                 comp, comp_size,
+> +                                 sig_pem, sig_size_pem, NULL);
+> +    if (rc < 0) {
+> +        return -1;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +static int handle_diag508_sig_verif(uint64_t addr, size_t csi_size, size_t svb_size,
+> +                                    S390IPLCertificateStore *qcs)
+> +{
+> +    int rc;
+> +    int verified;
+> +    uint64_t comp_len, comp_addr;
+> +    uint64_t sig_len, sig_addr;
+> +    g_autofree uint8_t *svb_comp = NULL;
+> +    g_autofree uint8_t *svb_sig = NULL;
+> +    g_autofree Diag508SignatureVerificationBlock *svb = NULL;
+> +
+> +    if (!qcs || !qcs->count) {
+> +        return DIAG_508_RC_NO_CERTS;
+> +    }
+> +
+> +    svb = g_new0(Diag508SignatureVerificationBlock, 1);
+> +    cpu_physical_memory_read(addr, svb, svb_size);
+> +
+> +    comp_len = be64_to_cpu(svb->comp_len);
+> +    comp_addr = be64_to_cpu(svb->comp_addr);
+> +    sig_len = be64_to_cpu(svb->sig_len);
+> +    sig_addr = be64_to_cpu(svb->sig_addr);
+> +
+> +    if (!comp_len || !comp_addr) {
+> +        return DIAG_508_RC_INVAL_COMP_DATA;
+> +    }
+> +
+> +    if (!sig_len || !sig_addr) {
+> +        return DIAG_508_RC_INVAL_PKCS7_SIG;
+> +    }
+> +
+> +    svb_comp = g_malloc0(comp_len);
+> +    cpu_physical_memory_read(comp_addr, svb_comp, comp_len);
+> +
+> +    svb_sig = g_malloc0(sig_len);
+> +    cpu_physical_memory_read(sig_addr, svb_sig, sig_len);
+> +
+> +    rc = DIAG_508_RC_FAIL_VERIF;
+> +    /*
+> +     * It is uncertain which certificate contains
+> +     * the analogous key to verify the signed data
+> +     */
+> +    for (int i = 0; i < qcs->count; i++) {
+> +        verified = diag_508_verify_sig(qcs->certs[i].raw,
+> +                                       qcs->certs[i].size,
+> +                                       svb_comp, comp_len,
+> +                                       svb_sig, sig_len);
+> +        if (verified == 0) {
+> +            svb->csi.idx = i;
+> +            svb->csi.len = cpu_to_be64(qcs->certs[i].der_size);
+> +            cpu_physical_memory_write(addr, &svb->csi, be32_to_cpu(csi_size));
+> +            rc = DIAG_508_RC_OK;
+> +            break;
+> +       }
+> +    }
+> +
+> +    return rc;
+> +}
+> +
+> +QEMU_BUILD_BUG_MSG(sizeof(Diag508SignatureVerificationBlock) != 48,
+> +                   "size of Diag508SignatureVerificationBlock is wrong");
+> +
+>   void handle_diag_508(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
+>   {
+> +    S390IPLCertificateStore *qcs = s390_ipl_get_certificate_store();
+>       uint64_t subcode = env->regs[r3];
+> +    uint64_t addr = env->regs[r1];
+>       int rc;
+>   
+>       if (env->psw.mask & PSW_MASK_PSTATE) {
+> @@ -590,7 +688,19 @@ void handle_diag_508(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
+>   
+>       switch (subcode) {
+>       case DIAG_508_SUBC_QUERY_SUBC:
+> -        rc = 0;
+> +        rc = DIAG_508_SUBC_SIG_VERIF;
+> +        break;
+> +    case DIAG_508_SUBC_SIG_VERIF:
+> +        size_t csi_size = sizeof(Diag508CertificateStoreInfo);
+> +        size_t svb_size = sizeof(Diag508SignatureVerificationBlock);
+> +
+> +        if (!diag_parm_addr_valid(addr, svb_size, false) ||
+> +            !diag_parm_addr_valid(addr, csi_size, true)) {
+> +            s390_program_interrupt(env, PGM_ADDRESSING, ra);
+> +            return;
+> +        }
+> +
+> +        rc = handle_diag508_sig_verif(addr, csi_size, svb_size, qcs);
+>           break;
+>       default:
+>           s390_program_interrupt(env, PGM_SPECIFICATION, ra);
 
