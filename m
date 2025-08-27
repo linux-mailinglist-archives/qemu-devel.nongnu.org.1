@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA42B3884A
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1350B38840
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:09:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urJZV-0005uU-1I; Wed, 27 Aug 2025 13:04:29 -0400
+	id 1urJZc-0005zL-0k; Wed, 27 Aug 2025 13:04:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJZP-0005sq-SU; Wed, 27 Aug 2025 13:04:23 -0400
+ id 1urJZZ-0005yL-Ax; Wed, 27 Aug 2025 13:04:33 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJZL-0007cu-3m; Wed, 27 Aug 2025 13:04:23 -0400
+ id 1urJZV-0007dp-63; Wed, 27 Aug 2025 13:04:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3BB4F14C726;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4D4AD14C727;
  Wed, 27 Aug 2025 20:03:29 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 49D3D2698EC;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5CE772698ED;
  Wed, 27 Aug 2025 20:03:56 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -28,10 +28,9 @@ Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 04/18] target/arm/sme: Rebuild hflags in set_pstate()
- helpers
-Date: Wed, 27 Aug 2025 20:03:39 +0300
-Message-ID: <20250827170356.2698446-4-mjt@tls.msk.ru>
+Subject: [Stable-7.2.20 05/18] target/arm/sme: Introduce aarch64_set_svcr()
+Date: Wed, 27 Aug 2025 20:03:40 +0300
+Message-ID: <20250827170356.2698446-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 References: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
@@ -66,46 +65,103 @@ From: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230112102436.1913-3-philmd@linaro.org
+Message-id: 20230112102436.1913-4-philmd@linaro.org
 Message-Id: <20230112004322.161330-1-richard.henderson@linaro.org>
 [PMD: Split patch in multiple tiny steps]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 3c9ee548948870c14235e3fa8fb235c0c1c20822)
+(cherry picked from commit 2a8af3825958e5d8c98b3ca92ac42a10e25db9e1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
+diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
+index 9875d609a9..d53742e10b 100644
+--- a/linux-user/aarch64/cpu_loop.c
++++ b/linux-user/aarch64/cpu_loop.c
+@@ -93,8 +93,8 @@ void cpu_loop(CPUARMState *env)
+              * On syscall, PSTATE.ZA is preserved, along with the ZA matrix.
+              * PSTATE.SM is cleared, per SMSTOP, which does ResetSVEState.
+              */
++            aarch64_set_svcr(env, 0, R_SVCR_SM_MASK);
+             if (FIELD_EX64(env->svcr, SVCR, SM)) {
+-                env->svcr = FIELD_DP64(env->svcr, SVCR, SM, 0);
+                 arm_rebuild_hflags(env);
+                 arm_reset_sve_state(env);
+             }
+diff --git a/linux-user/aarch64/signal.c b/linux-user/aarch64/signal.c
+index 6a2c6e06d2..b6e4dcb494 100644
+--- a/linux-user/aarch64/signal.c
++++ b/linux-user/aarch64/signal.c
+@@ -669,11 +669,11 @@ static void target_setup_frame(int usig, struct target_sigaction *ka,
+      * Invoke the signal handler with both SM and ZA disabled.
+      * When clearing SM, ResetSVEState, per SMSTOP.
+      */
++    aarch64_set_svcr(env, 0, R_SVCR_SM_MASK | R_SVCR_ZA_MASK);
+     if (FIELD_EX64(env->svcr, SVCR, SM)) {
+         arm_reset_sve_state(env);
+     }
+     if (env->svcr) {
+-        env->svcr = 0;
+         arm_rebuild_hflags(env);
+     }
+ 
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 32b0bf8e2d..8acfd3af4c 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1118,6 +1118,7 @@ int aarch64_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
+ void aarch64_sve_narrow_vq(CPUARMState *env, unsigned vq);
+ void aarch64_sve_change_el(CPUARMState *env, int old_el,
+                            int new_el, bool el0_a64);
++void aarch64_set_svcr(CPUARMState *env, uint64_t new, uint64_t mask);
+ void arm_reset_sve_state(CPUARMState *env);
+ 
+ /*
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 6cffbcb276..86b97daf7e 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -6429,11 +6429,19 @@ static CPAccessResult access_esm(CPUARMState *env, const ARMCPRegInfo *ri,
+     return CP_ACCESS_OK;
+ }
+ 
++void aarch64_set_svcr(CPUARMState *env, uint64_t new, uint64_t mask)
++{
++    uint64_t change = (env->svcr ^ new) & mask;
++
++    env->svcr ^= change;
++}
++
+ static void svcr_write(CPUARMState *env, const ARMCPRegInfo *ri,
+                        uint64_t value)
+ {
+     helper_set_pstate_sm(env, FIELD_EX64(value, SVCR, SM));
+     helper_set_pstate_za(env, FIELD_EX64(value, SVCR, ZA));
++    aarch64_set_svcr(env, value, -1);
+     arm_rebuild_hflags(env);
+ }
+ 
 diff --git a/target/arm/sme_helper.c b/target/arm/sme_helper.c
-index e8b4ca38ff..8ba3f3a247 100644
+index 8ba3f3a247..7717dab64f 100644
 --- a/target/arm/sme_helper.c
 +++ b/target/arm/sme_helper.c
-@@ -45,6 +45,7 @@ void helper_set_pstate_sm(CPUARMState *env, uint32_t i)
+@@ -43,7 +43,7 @@ void helper_set_pstate_sm(CPUARMState *env, uint32_t i)
+     if (i == FIELD_EX64(env->svcr, SVCR, SM)) {
+         return;
      }
-     env->svcr ^= R_SVCR_SM_MASK;
+-    env->svcr ^= R_SVCR_SM_MASK;
++    aarch64_set_svcr(env, 0, R_SVCR_SM_MASK);
      arm_reset_sve_state(env);
-+    arm_rebuild_hflags(env);
+     arm_rebuild_hflags(env);
  }
- 
- void helper_set_pstate_za(CPUARMState *env, uint32_t i)
-@@ -65,6 +66,7 @@ void helper_set_pstate_za(CPUARMState *env, uint32_t i)
-     if (i) {
-         memset(env->zarray, 0, sizeof(env->zarray));
+@@ -53,7 +53,7 @@ void helper_set_pstate_za(CPUARMState *env, uint32_t i)
+     if (i == FIELD_EX64(env->svcr, SVCR, ZA)) {
+         return;
      }
-+    arm_rebuild_hflags(env);
- }
+-    env->svcr ^= R_SVCR_ZA_MASK;
++    aarch64_set_svcr(env, 0, R_SVCR_ZA_MASK);
  
- void helper_sme_zero(CPUARMState *env, uint32_t imm, uint32_t svl)
-diff --git a/target/arm/translate-a64.c b/target/arm/translate-a64.c
-index b66561a5cf..fa568aa647 100644
---- a/target/arm/translate-a64.c
-+++ b/target/arm/translate-a64.c
-@@ -1869,7 +1869,6 @@ static void handle_msr_i(DisasContext *s, uint32_t insn,
-                 if ((crm & 4) && i != s->pstate_za) {
-                     gen_helper_set_pstate_za(cpu_env, tcg_constant_i32(i));
-                 }
--                gen_rebuild_hflags(s);
-             } else {
-                 s->base.is_jmp = DISAS_NEXT;
-             }
+     /*
+      * ResetSMEState.
 -- 
 2.47.2
 
