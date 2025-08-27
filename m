@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33208B38992
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 20:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3EFCB38986
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 20:28:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urKqy-0004t3-JI; Wed, 27 Aug 2025 14:26:36 -0400
+	id 1urKr1-00051i-Ic; Wed, 27 Aug 2025 14:26:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1urKqZ-0004gO-74
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1urKqd-0004nu-Nc
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1urKqP-0005lR-6r
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:08 -0400
+ id 1urKqV-0005m2-41
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756319149;
+ s=mimecast20190719; t=1756319155;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BYZBzbSuHz1ck9mAe9qDxSmyxZe5JBQ+ptoP0h/no4E=;
- b=C0v0O2KVnGg7FHxS9aBLe+kaaOYe8fzSvwN+4RRdn3+T7mAnS+kH6bi3Xn5oANKr3DSkIG
- LQ2WQKfDIO3T8Vn0mU1lraoHMzKQTZP7wcRRP6VMnWDHd0+tH3eirh/tcROorTXpHsDOUJ
- CrkeGlhg1zkuaieTNm6NprmG0HdCBzc=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=S+VhgY0cIUaYQiWgozPEinNSa9szANgEuQJdQ6/e0AM=;
+ b=aKFCflw/P9jPuLpcQWNCdhqqJs62QuIC+Bd+j3V/7G1ZtxBYfuJfG/uVRH8b5YAbC03XCH
+ OmcC4W46e3pnVz9lxD+U3vk3rGzdBhhOpr7OJO1niIjb1H1XgV3f9TMk31XRE/0F7p7NEv
+ pNlRVQwrEFoYeogWwLN3LPnAX9ewcHc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-258-OnyVD0O6Of2n3xQ2Y0t3XQ-1; Wed, 27 Aug 2025 14:25:48 -0400
-X-MC-Unique: OnyVD0O6Of2n3xQ2Y0t3XQ-1
-X-Mimecast-MFC-AGG-ID: OnyVD0O6Of2n3xQ2Y0t3XQ_1756319147
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-45b612dbc28so723135e9.0
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 11:25:47 -0700 (PDT)
+ us-mta-499-PWrnWhCqOl2yAOOhmzjDWQ-1; Wed, 27 Aug 2025 14:25:54 -0400
+X-MC-Unique: PWrnWhCqOl2yAOOhmzjDWQ-1
+X-Mimecast-MFC-AGG-ID: PWrnWhCqOl2yAOOhmzjDWQ_1756319153
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-45a1b0cb0aaso560635e9.3
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 11:25:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756319145; x=1756923945;
+ d=1e100.net; s=20230601; t=1756319151; x=1756923951;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BYZBzbSuHz1ck9mAe9qDxSmyxZe5JBQ+ptoP0h/no4E=;
- b=cuWKJH1mh77L2CUTbT6PH4F85UspQCBP7xKrUPiNeHpr/eZuydo2bGnlXQqzFm3IX1
- 7VXVpieNU4FQaIH822UOQA/EoaD0La2Enu/Kbh52WdpJG1pbt5hQ42GeeI08LeHIlcFA
- wjFnr5bDm4Fhr3Ege86/3lZTVRUWbgJZuP7MSEEiV7lfgE4slZs5eEJOi1xFZUSF6YHQ
- kP/F9GIRsiAGebt6I8+5guYubUQXbTu0wg4AW+8GISSaahfkWR5cRMEuNiEg4iJFRY28
- 5JPyakXWWS3VnCH0oU+QUHy43L1FXVS3nDR7v90L+2aojNnWcmLVIIOzevJs3+AKraNd
- 0EvQ==
-X-Gm-Message-State: AOJu0YyQpEKONyJTSQM47K/Z5V/oSJnVGiwmpLOmifD+Nh++ET/ykVGt
- WrEYg4kNb880g8omGriUkf+AmfO6Hbd6WPAcuoTG54ltN5nkTfgbILYVdTtltF4IWvw96l1FPpe
- kUbX1F1lty37duQGO45jWf1H8yBGbksn6wGSw088f+OgmaFfI+PZ0oSl9foUWLxUYx8sJIFyQH/
- KSgdZjkOOAyg+sBMdH0MeXeI0FzwMyqYZwoyT/H/O3
-X-Gm-Gg: ASbGnctdkBYb/kMIEvg2ypgWQRdq5GChCHRj7b9J4gd3Puh80RjUsiTjmGka/25DbvB
- m7LZ0qdB2/2FM+50Tv34zn4U0f/2o1u03O68ovldm1PaR/oVEdus8z3tHeNjLWut0ck0XEwQEPK
- HhgVYD5dmB7CjGWWXQVYFA3L0Ir7A/39s028LI0lMduhdfhHeOiJ09Q7wf5kCYWTevNjOr/iEBX
- EoGl34Liyo65h4NR32fwOANEch++hFIb6VIPgh6G/dycly0uL9pffCu2wsDhpxtJpE27rbu0H09
- iokHLC8CYY8b+xfhDEDqv8MMzKKq8tHPdLMDtw0rtxzEAa+Qfv8nmf9ONqbwkMJ6vAaRQejaxHe
- 3eeIa34iAgCciP9/jOsPu0N5xpdg4z9qA02jBgP+VA7Q=
-X-Received: by 2002:a05:600c:3baa:b0:45b:7699:fe6d with SMTP id
- 5b1f17b1804b1-45b7699ff37mr2668465e9.17.1756319145535; 
- Wed, 27 Aug 2025 11:25:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkA2x4fl3Zds+J8KrosOJepd6JN97I3W0c54Zg9TmOizRHK2RyhQU13VIdQTBoMsddcG8AEA==
-X-Received: by 2002:a05:600c:3baa:b0:45b:7699:fe6d with SMTP id
- 5b1f17b1804b1-45b7699ff37mr2668315e9.17.1756319145023; 
- Wed, 27 Aug 2025 11:25:45 -0700 (PDT)
+ bh=S+VhgY0cIUaYQiWgozPEinNSa9szANgEuQJdQ6/e0AM=;
+ b=tTL8F5rYlDNY3bK4OM6odDBykJZ3xGZ2ZFaepI/yj8mHzJ+rLoLmaW8SDT+9ULUe/j
+ n6AaGl0ERh3leDq6wfm0/ycQkNoBapybLAJz1Cacj02+agWtyYlttDtDS5ceH8XboSV4
+ 1uuHfKoi+aNzhXHQGpmV/tyiXg0X9jvnWesC6B1w2NyrAteRiFesYCtPkqG5BRIPM2H1
+ rT/w71xI2GF+oczLnyidFE1NwU8pS0m9NKYZJzGQ2vdOrqffvlqytxBejoHOaamEHjKM
+ myNPii3mwsH3Xgo8Rum7oCGbtmEum+Hj3sezkacTTB7Y7jwhR12QFUZIc5kSAfpvFBqM
+ LN4A==
+X-Gm-Message-State: AOJu0YxIHOv2zsWDU+0UzbZdZUInJZDmp3cLdwPSzHOAzSMKrMSwG25m
+ i9lujsEnE7JpaY9WrZ4Co8V3zBtCe1KrXb/cZAcCUy3yr9UxlV0blQT1u1HqlVpVm7I24PNp3w6
+ Xo88WbYhxHlSlwomDgvOO3oMyyqnncqRRxCoy/0VTPjdAT6IKii1YugxSxNzTONGkkT4EmRHOuY
+ QdvWpzsrZkSm6UqwfKVHCYQAV/4BqoOScfHM4IpeFm
+X-Gm-Gg: ASbGnctuvxJq+XdnOfxmpySABC334y0T5cdkIEYFT6hI9+30m//Y1P+KNg0+n50IOH4
+ E6maFQ8NDKKIwjBAG/ZJDYyTKs4KkkXAUjTmdXls1l8FZHPGswYY8hUoW8TJkG5dnRvOXCi+rG1
+ AmCQ0s8KYg+ZgUEo/ENrPacuX0kxw1VLMOioX5s9iDy09qArBdcM/L3P37jR9L3FZ5P5yNUGuuk
+ ju/YybQZtryssYxnpRfAOuWgCbM/PDi+n9fZAfU6gcAH2VjltvFozH151m7cinujJhssvVAH4lA
+ jzICeSeodsos8FeNnenA6hfRepgGiQ/mByXebopdcPltXLkK2qKnBbhG3RMXQZgicHOK3OA7C3/
+ ry+2u579YL/BnCr/wqbqfjA7oXUX4Uzqlv9XCVrMA+dk=
+X-Received: by 2002:a05:6000:1446:b0:3c7:f0fb:82e with SMTP id
+ ffacd0b85a97d-3c7f0fb0b0cmr11459495f8f.56.1756319151018; 
+ Wed, 27 Aug 2025 11:25:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwLr1GNeDUcspXXlHF9KXJ+G+4+JN7+a5BDUyBZwCJBXhtowGtaRdn9EfPtFiKi8d5+IJsrQ==
+X-Received: by 2002:a05:6000:1446:b0:3c7:f0fb:82e with SMTP id
+ ffacd0b85a97d-3c7f0fb0b0cmr11459476f8f.56.1756319150441; 
+ Wed, 27 Aug 2025 11:25:50 -0700 (PDT)
 Received: from [10.163.96.123] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b69b7529asm29941395e9.0.2025.08.27.11.25.40
+ 5b1f17b1804b1-45b6f306c22sm39388635e9.13.2025.08.27.11.25.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Aug 2025 11:25:40 -0700 (PDT)
+ Wed, 27 Aug 2025 11:25:46 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 02/14] scripts/minikconf.py: fix invalid attribute access
-Date: Wed, 27 Aug 2025 20:25:20 +0200
-Message-ID: <20250827182533.854476-3-pbonzini@redhat.com>
+Subject: [PULL 03/14] scripts/minikconf.py: s/Error/KconfigParserError
+Date: Wed, 27 Aug 2025 20:25:21 +0200
+Message-ID: <20250827182533.854476-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250827182533.854476-1-pbonzini@redhat.com>
 References: <20250827182533.854476-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,30 +109,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Fix parse method to use `defconfig` global variable instead of the
-non-existent KconfigParser class attribute
+Error is not defined in this script, raise KconfigParserError instead.
 
-Fixes: f349474920d80838ecea3d421531fdb0660b8740 ("minikconfig: implement allnoconfig and defconfig modes")
+Fixes: 82f5181777ebe04b550fd94a1d04c49dd3f012dc ("kconfig: introduce kconfig files")
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Link: https://lore.kernel.org/r/20250820-scripts-minikconf-fixes-v1-1-252041a9125e@linaro.org
+Link: https://lore.kernel.org/r/20250820-scripts-minikconf-fixes-v1-2-252041a9125e@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/minikconf.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/minikconf.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/scripts/minikconf.py b/scripts/minikconf.py
-index 6f7f43b2918..2a4694fb6a3 100644
+index 2a4694fb6a3..4de5aeed11a 100644
 --- a/scripts/minikconf.py
 +++ b/scripts/minikconf.py
-@@ -340,7 +340,7 @@ class KconfigParser:
+@@ -363,7 +363,9 @@ def parse_file(self, fp):
  
-     @classmethod
-     def parse(self, fp, mode=None):
--        data = KconfigData(mode or KconfigParser.defconfig)
-+        data = KconfigData(mode or defconfig)
-         parser = KconfigParser(data)
-         parser.parse_file(fp)
-         return data
+     def do_assignment(self, var, val):
+         if not var.startswith("CONFIG_"):
+-            raise Error('assigned variable should start with CONFIG_')
++            raise KconfigParserError(
++                self, "assigned variable should start with CONFIG_"
++            )
+         var = self.data.do_var(var[7:])
+         self.data.do_assignment(var, val)
+ 
 -- 
 2.51.0
 
