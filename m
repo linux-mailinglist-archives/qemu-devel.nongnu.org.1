@@ -2,39 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041A2B38837
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1EBDB3883C
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:07:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urJbJ-0000Hn-8L; Wed, 27 Aug 2025 13:06:21 -0400
+	id 1urJbH-0000F3-H9; Wed, 27 Aug 2025 13:06:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJaV-0006qN-HC; Wed, 27 Aug 2025 13:05:35 -0400
+ id 1urJae-0006vR-EP; Wed, 27 Aug 2025 13:05:44 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJaS-00080D-MQ; Wed, 27 Aug 2025 13:05:31 -0400
+ id 1urJab-000811-IM; Wed, 27 Aug 2025 13:05:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1F91814C733;
+ by isrv.corpit.ru (Postfix) with ESMTP id 328E914C734;
  Wed, 27 Aug 2025 20:03:30 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 307852698F9;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4072E2698FA;
  Wed, 27 Aug 2025 20:03:57 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Werner Fink <werner@suse.de>,
- Kevin Wolf <kwolf@redhat.com>, Martin Kletzander <mkletzan@redhat.com>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Guenter Roeck <linux@roeck-us.net>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 17/18] qemu-iotests: Ignore indentation in Killed
- messages
-Date: Wed, 27 Aug 2025 20:03:52 +0300
-Message-ID: <20250827170356.2698446-17-mjt@tls.msk.ru>
+Subject: [Stable-7.2.20 18/18] hw/sd/ssi-sd: Return noise (dummy byte) when no
+ card connected
+Date: Wed, 27 Aug 2025 20:03:53 +0300
+Message-ID: <20250827170356.2698446-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 References: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,117 +63,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Werner Fink <werner@suse.de>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-New bash 5.3 uses a different padding for reporting job status.
+Commit 1585ab9f1ba ("hw/sd/sdcard: Fill SPI response bits in card
+code") exposed a bug in the SPI adapter: if no SD card is plugged,
+we are returning "there is a card with an error". This is wrong,
+we shouldn't return any particular packet response, but the noise
+shifted on the MISO line. Return the dummy byte, otherwise we get:
 
-Resolves: boo#1246830
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3050
-Signed-off-by: Werner Fink <werner@suse.de>
-Message-ID: <aJL8RH8ePPNEteMg@boole.nue2.suse.org>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Tested-by: Martin Kletzander <mkletzan@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit c0df98ab1f3d348bc05f09d1c093abc529f2b530)
+  qemu-system-riscv64: ../hw/sd/ssi-sd.c:160: ssi_sd_transfer: Assertion `s->arglen > 0' failed.
+
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 775616c3ae8 ("Partial SD card SPI mode support")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20250812140415.70153-2-philmd@linaro.org>
+(cherry picked from commit e262646e12acd6c1132e03d57fea20680a503251)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/qemu-iotests/039.out b/tests/qemu-iotests/039.out
-index e52484d4be..8fdbcc528a 100644
---- a/tests/qemu-iotests/039.out
-+++ b/tests/qemu-iotests/039.out
-@@ -11,7 +11,7 @@ No errors were found on the image.
- Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=134217728
- wrote 512/512 bytes at offset 0
- 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
-+./common.rc: Killed ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- incompatible_features     [0]
- ERROR cluster 5 refcount=0 reference=1
- ERROR OFLAG_COPIED data cluster: l2_entry=8000000000050000 refcount=0
-@@ -46,7 +46,7 @@ read 512/512 bytes at offset 0
- Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=134217728
- wrote 512/512 bytes at offset 0
- 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
-+./common.rc: Killed ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- incompatible_features     [0]
- ERROR cluster 5 refcount=0 reference=1
- Rebuilding refcount structure
-@@ -60,7 +60,7 @@ incompatible_features     []
- Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=134217728
- wrote 512/512 bytes at offset 0
- 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
-+./common.rc: Killed ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- incompatible_features     []
- No errors were found on the image.
+diff --git a/hw/sd/ssi-sd.c b/hw/sd/ssi-sd.c
+index 167c03b780..a912f40f68 100644
+--- a/hw/sd/ssi-sd.c
++++ b/hw/sd/ssi-sd.c
+@@ -106,6 +106,10 @@ static uint32_t ssi_sd_transfer(SSIPeripheral *dev, uint32_t val)
+     SDRequest request;
+     uint8_t longresp[16];
  
-@@ -79,7 +79,7 @@ No errors were found on the image.
- Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=134217728
- wrote 512/512 bytes at offset 0
- 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
-+./common.rc: Killed ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- incompatible_features     [0]
- ERROR cluster 5 refcount=0 reference=1
- ERROR OFLAG_COPIED data cluster: l2_entry=8000000000050000 refcount=0
-@@ -89,7 +89,7 @@ Data may be corrupted, or further writes to the image may corrupt it.
- Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=134217728
- wrote 512/512 bytes at offset 0
- 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
-+./common.rc: Killed ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- incompatible_features     []
- No errors were found on the image.
- *** done
-diff --git a/tests/qemu-iotests/061.out b/tests/qemu-iotests/061.out
-index 24c33add7c..951c6bf3e6 100644
---- a/tests/qemu-iotests/061.out
-+++ b/tests/qemu-iotests/061.out
-@@ -118,7 +118,7 @@ No errors were found on the image.
- Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
- wrote 131072/131072 bytes at offset 0
- 128 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
-+./common.rc: Killed ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- magic                     0x514649fb
- version                   3
- backing_file_offset       0x0
-@@ -304,7 +304,7 @@ No errors were found on the image.
- Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
- wrote 131072/131072 bytes at offset 0
- 128 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
-+./common.rc: Killed ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- magic                     0x514649fb
- version                   3
- backing_file_offset       0x0
-diff --git a/tests/qemu-iotests/137.out b/tests/qemu-iotests/137.out
-index 86377c80cd..e19df5b6ba 100644
---- a/tests/qemu-iotests/137.out
-+++ b/tests/qemu-iotests/137.out
-@@ -35,7 +35,7 @@ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
- qemu-io: Unsupported value 'blubb' for qcow2 option 'overlap-check'. Allowed are any of the following: none, constant, cached, all
- wrote 512/512 bytes at offset 0
- 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--./common.rc: Killed                  ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
-+./common.rc: Killed ( VALGRIND_QEMU="${VALGRIND_QEMU_IO}" _qemu_proc_exec "${VALGRIND_LOGFILE}" "$QEMU_IO_PROG" $QEMU_IO_ARGS "$@" )
- OK: Dirty bit not set
- Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
- qemu-io: Parameter 'lazy-refcounts' expects 'on' or 'off'
-diff --git a/tests/qemu-iotests/common.filter b/tests/qemu-iotests/common.filter
-index cc9f1a5891..e8694d34df 100644
---- a/tests/qemu-iotests/common.filter
-+++ b/tests/qemu-iotests/common.filter
-@@ -74,7 +74,7 @@ _filter_qemu_io()
- {
-     _filter_win32 | \
-     gsed -e "s/[0-9]* ops\; [0-9/:. sec]* ([0-9/.inf]* [EPTGMKiBbytes]*\/sec and [0-9/.inf]* ops\/sec)/X ops\; XX:XX:XX.X (XXX YYY\/sec and XXX ops\/sec)/" \
--        -e "s/: line [0-9][0-9]*:  *[0-9][0-9]*\( Aborted\| Killed\)/:\1/" \
-+        -e "s/: line [0-9][0-9]*:  *[0-9][0-9]*\( Aborted\| Killed\) \{2,\}/:\1 /" \
-         -e "s/qemu-io> //g"
- }
- 
++    if (!sdbus_get_inserted(&s->sdbus)) {
++        return SSI_DUMMY;
++    }
++
+     /*
+      * Special case: allow CMD12 (STOP TRANSMISSION) while reading data.
+      *
 -- 
 2.47.2
 
