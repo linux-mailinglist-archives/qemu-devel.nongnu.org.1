@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C02A5B385D5
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A33A9B38652
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:20:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHm5-0002zL-Bk; Wed, 27 Aug 2025 11:09:21 -0400
+	id 1urHmd-00042R-IS; Wed, 27 Aug 2025 11:09:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHjt-0007GY-I9; Wed, 27 Aug 2025 11:07:11 -0400
+ id 1urHkH-0007pj-6S; Wed, 27 Aug 2025 11:07:29 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHjr-0005Xc-RG; Wed, 27 Aug 2025 11:07:05 -0400
+ id 1urHkF-0005Y9-1B; Wed, 27 Aug 2025 11:07:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4E96314C552;
+ by isrv.corpit.ru (Postfix) with ESMTP id 63AEF14C553;
  Wed, 27 Aug 2025 18:02:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 37CCF26985A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4B8EC26985B;
  Wed, 27 Aug 2025 18:03:26 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Glenn Miles <milesg@linux.ibm.com>, Caleb Schlossin <calebs@linux.ibm.com>,
+ Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
+ Caleb Schlossin <calebs@linux.ibm.com>,
  Gautam Menghani <gautam@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 42/59] ppc/xive2: fix context push calculation of IPB
- priority
-Date: Wed, 27 Aug 2025 18:02:47 +0300
-Message-ID: <20250827150323.2694101-42-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 43/59] ppc/xive: Fix PHYS NSR ring matching
+Date: Wed, 27 Aug 2025 18:02:48 +0300
+Message-ID: <20250827150323.2694101-43-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -64,35 +64,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-Pushing a context and loading IPB from NVP is defined to merge ('or')
-that IPB into the TIMA IPB register. PIPR should therefore be calculated
-based on the final IPB value, not just the NVP value.
+Test that the NSR exception bit field is equal to the pool ring value,
+rather than any common bits set, which is more correct (although there
+is no practical bug because the LSI NSR type is not implemented and
+POOL/PHYS NSR are encoded with exclusive bits).
 
-Fixes: 9d2b6058c5b ("ppc/xive2: Add grouping level to notification")
+Fixes: 4c3ccac636 ("pnv/xive: Add special handling for pool targets")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
+Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-6-npiggin@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250512031100.439842-7-npiggin@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit d1023a296c8297454fc4b207d58707c0a5e62e0a)
+(cherry picked from commit bde8c148bb22b99cb84cda800fa555851b8cb358)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 790152a2a6..4dd04a0398 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -835,8 +835,9 @@ static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
-         nvp.w2 = xive_set_field32(NVP2_W2_IPB, nvp.w2, 0);
-         xive2_router_write_nvp(xrtr, nvp_blk, nvp_idx, &nvp, 2);
-     }
-+    /* IPB bits in the backlog are merged with the TIMA IPB bits */
-     regs[TM_IPB] |= ipb;
--    backlog_prio = xive_ipb_to_pipr(ipb);
-+    backlog_prio = xive_ipb_to_pipr(regs[TM_IPB]);
-     backlog_level = 0;
+diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+index 80b07a0afe..cebe409a1a 100644
+--- a/hw/intc/xive.c
++++ b/hw/intc/xive.c
+@@ -54,7 +54,8 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring)
+         uint8_t *alt_regs;
  
-     first_group = xive_get_field32(NVP2_W0_PGOFIRST, nvp.w0);
+         /* POOL interrupt uses IPB in QW2, POOL ring */
+-        if ((ring == TM_QW3_HV_PHYS) && (nsr & (TM_QW3_NSR_HE_POOL << 6))) {
++        if ((ring == TM_QW3_HV_PHYS) &&
++            ((nsr & TM_QW3_NSR_HE) == (TM_QW3_NSR_HE_POOL << 6))) {
+             alt_ring = TM_QW2_HV_POOL;
+         } else {
+             alt_ring = ring;
 -- 
 2.47.2
 
