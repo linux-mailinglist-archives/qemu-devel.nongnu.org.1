@@ -2,74 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8C6B37838
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 04:38:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF99CB37950
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 06:54:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ur61v-0007Ve-91; Tue, 26 Aug 2025 22:36:55 -0400
+	id 1ur88Q-0007Lb-Jx; Wed, 27 Aug 2025 00:51:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ur61r-0007O9-6K; Tue, 26 Aug 2025 22:36:52 -0400
-Received: from mgamail.intel.com ([192.198.163.7])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ur61j-0004m4-Tr; Tue, 26 Aug 2025 22:36:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756262204; x=1787798204;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=rts/0Q3cR6nRJCzrtg2wLNXiZ3VhT8rRBY6bKGvvPhM=;
- b=g98aK682eJ7+a/3JenardCkseMH7f1P6keKa85CzdkikkMa0PjhEy9ne
- eMAkEabp+OiddVUiAqUAFudYpfY3zDqzeAyU0bomuobpGPEmzMLsYylDt
- fKsZKYJghWgwyv72sv2Ip+G4dzeoUMKXaUZhDIM9cQvCcq4Mh/1uwuqoQ
- PirN1H6baqK8siamWkvnb9KHs+M3ZfQB8eB91c3QLQFGZYi5W2/aD/dTF
- qPP4Ngtwm6aqh/jwn28VPgncTprbjlzRfEIVQfzc+DnlRNUYz0844LUcW
- Wf59aRBrZ815a95I4leikux/F5nR33xhlQNsLHf4Hm5Q30IXGHxVqoGvD g==;
-X-CSE-ConnectionGUID: X7sCn0yURRyu9Q3mfCC0fg==
-X-CSE-MsgGUID: w6lLkgNBR4mK/5dVYyW8lg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="83914131"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="83914131"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 19:36:34 -0700
-X-CSE-ConnectionGUID: dhwEPE02R5uZErxgBfvP+w==
-X-CSE-MsgGUID: 4KzYpUURSOm63wBRRO4j4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="169641087"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 26 Aug 2025 19:36:32 -0700
-Date: Wed, 27 Aug 2025 10:58:18 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- pbonzini@redhat.com, qemu-rust@nongnu.org
-Subject: Re: [PATCH 4/4] rust/qemu-api-macros: make derive(Object) friendly
- when missing parent
-Message-ID: <aK50Sjm595hUDJXB@intel.com>
-References: <20250826133132.4064478-1-marcandre.lureau@redhat.com>
- <20250826133132.4064478-5-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ur88L-0007LK-TZ
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 00:51:42 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ur88G-0008Iu-CU
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 00:51:41 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-324fb2bb058so4747210a91.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 21:51:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756270291; x=1756875091; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3bNPfUocClaAiiuisWVX53oIO7+rfN2/xpiwTvrSO4s=;
+ b=sXIvVVRz05IULH2MY2MUH1OmXw/jEqkUmDtB02CUKcxfBVRhbr00rRD7Ln22BhDR8q
+ cMpW2jAZ3fJy2JK1VanuNl5yZ9Qjml1WpwYIxS0FTNDuppTqIqNa6uIuAALIm2aVNIUQ
+ ENiA4U6vPZzW0m2OkILgl3sU9CumkpWolV6Ee86LeLnAOYYP7uPYVc3woMXEC/ZguYFO
+ Zf13wSXQQKfbYD9rWYjCdeYT29yXkCshMEiThN6LT2xUueOC3Bfkd1VbT16h+xS6QQga
+ 5B9j2tzgv9qWtJ0Uo1oOf3guJt5AfxJthlgCwiCtaXkOCqwvrsD1AYOUxwha242ZS9X0
+ cdJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756270291; x=1756875091;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3bNPfUocClaAiiuisWVX53oIO7+rfN2/xpiwTvrSO4s=;
+ b=FPeYNm62TSWTxbGbCHqNytht//p5v/FDshn7lkxUXElIfZNRPtNZSw0q2GV9Ak+RaR
+ 7xhhnXNjbuM/M28TXw9SqPEDb6g1FQb6bnbbrAEU47rly0LrISli69hS3yHWJxBJ85/L
+ YTbM7e58UxeTsfhMHUpCw4Bc8CxNW1bhJOeo0b92FMfXSw1MoTg+ax+YU6/Hb25zr8IT
+ bB9vlG9YN4H0A8XOsvXNMaDgVn9A2t/dbBzFVncSsB4cuRurJDlIej8/5Qlu27TInq4T
+ Jwmv7XCqC0gpqxO0r5Y3Us9ABnv6noHJZbU/XuEP9EJqbntzXvWd79if6EDrPagy9q1C
+ /FsA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWKTaTxpPZdVloq6QEEroxYFYSLavhNz37FQq98WrI0w9wSDQA6U1EtDimaP42wTXBNR7IEDSMr9wpU@nongnu.org
+X-Gm-Message-State: AOJu0YwNlqYCbJ7WLi5ZYeTPo+owIdMeV8JcMAllLPfNYn4iUVk0tAW7
+ b/B4zexWutnfO62159BZpAtM6Oh6BHZ8hYfeat2LosnoyMROChQaYHhdBHGwEWo6e6o=
+X-Gm-Gg: ASbGnctoYMzWqZvm9xF58II+mIVBGjG+snKMBQXUYicIAjcZAiEreYaEvlkZNt8XtcC
+ PsAuVCP75l3tAFBKPW2RVNieSo1SGhaMUZTFtHf6umTrrY0nzlUTzj2loIXjiWZDsZMtyB/WWT5
+ naN+93mLD2zJTm9VoYxeQyT2fYuqZ0NVH2Hfpp6ZFzEl+QwDJHFPOP8TFSgS5Sm5A8iRD7TuQUP
+ YaNgQPEgN/KNk9y32r/sqiC6cXzsM/3IWdgKvjDUU5hG4tgAlLIMSdJ7wIBEln3IyhefhOER54M
+ TqTjqcUwkBuYMRyciMyqWZMB0xbgcesqvWbhrmX0J49OGWYlWr6FCXP9VHf4r9DaCNh4YPay38A
+ kzFhmbN7auTChczqabre6fvo/GxbogNFasbtX
+X-Google-Smtp-Source: AGHT+IFh7c446Ez3pXXYnCgmPlAQWH12fQ1ZRxVFxYMVMXvnSP2HjTKmcqaXM5iSCdNADdSXbDpU3Q==
+X-Received: by 2002:a17:90b:1fc7:b0:327:7c8e:8735 with SMTP id
+ 98e67ed59e1d1-3277c8eb561mr268834a91.31.1756270290772; 
+ Tue, 26 Aug 2025 21:51:30 -0700 (PDT)
+Received: from [192.168.0.195] ([144.6.121.55])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-3276fcd3285sm844969a91.14.2025.08.26.21.51.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 Aug 2025 21:51:30 -0700 (PDT)
+Message-ID: <88284cce-ec2e-4641-9581-0e3bb1f9b6dd@linaro.org>
+Date: Wed, 27 Aug 2025 14:51:23 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250826133132.4064478-5-marcandre.lureau@redhat.com>
-Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/riscv: do not use translator_ldl in opcode_at
+To: Vladimir Isaev <vladimir.isaev@syntacore.com>, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+References: <20250815140633.86920-1-vladimir.isaev@syntacore.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20250815140633.86920-1-vladimir.isaev@syntacore.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,19 +103,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 26, 2025 at 05:31:32PM +0400, marcandre.lureau@redhat.com wrote:
-> Date: Tue, 26 Aug 2025 17:31:32 +0400
-> From: marcandre.lureau@redhat.com
-> Subject: [PATCH 4/4] rust/qemu-api-macros: make derive(Object) friendly
->  when missing parent
+On 8/16/25 00:06, Vladimir Isaev wrote:
+> opcode_at is used only in semihosting checks to match opcodes with expected pattern.
 > 
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> This is not a translator and if we got following assert if page is not in TLB:
+> qemu-system-riscv64: ../accel/tcg/translator.c:363: record_save: Assertion `offset == db->record_start + db->record_len' failed.
 > 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Fixes: 1f9c4462334f ("target/riscv: Use translator_ld* for everything")
+> Signed-off-by: Vladimir Isaev <vladimir.isaev@syntacore.com>
 > ---
->  rust/qemu-api-macros/src/lib.rs | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+>   target/riscv/translate.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+> index b1e41cdbf1f6..980a67ea855e 100644
+> --- a/target/riscv/translate.c
+> +++ b/target/riscv/translate.c
+> @@ -25,6 +25,7 @@
+>   #include "exec/helper-gen.h"
+>   
+>   #include "exec/translator.h"
+> +#include "exec/cpu_ldst.h"
+>   #include "exec/log.h"
+>   #include "semihosting/semihost.h"
+>   
+> @@ -1143,7 +1144,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
+>       CPUState *cpu = ctx->cs;
+>       CPURISCVState *env = cpu_env(cpu);
+>   
+> -    return translator_ldl(env, &ctx->base, pc);
+> +    return cpu_ldl_code(env, pc);
+>   }
+>   
+>   #define SS_MMU_INDEX(ctx) (ctx->mem_idx | MMU_IDX_SS_WRITE)
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
+r~
 
