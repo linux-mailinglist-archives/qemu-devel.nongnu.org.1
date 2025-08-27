@@ -2,63 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7216CB37CB0
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 10:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AAAB37C52
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 09:56:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urB05-0005Iq-8c; Wed, 27 Aug 2025 03:55:21 -0400
+	id 1urB01-0005Ca-2q; Wed, 27 Aug 2025 03:55:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urB01-0005GK-2m
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:18 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urAzx-0005BJ-Lx
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urAzw-0001wE-5A
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:16 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urAzu-0001w2-L1
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756281310;
+ s=mimecast20190719; t=1756281308;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5gQzJ90qET6RhRj461NrORejjWHb983qUtY+6T5oBsM=;
- b=E6UMGEPIo+BWAvzF45unNrgXuTVv2SCnIkYxa6qyxY5JhrtjqJIUe/kK/nWp1gPTrSZpU2
- APSP35jRRQ3rqrGw0rXrRYH/Z1hX5Emvc9dzz+iOkCXfMKISQTwRBLsN+l3/5/vDtM9Z9b
- 0bPwxHS8v7G8FLP07gSh8YqBwZnnzFY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=J2En/X5EXlvShLVJ3TurFWQek/PTm/n4vab/AnQwpac=;
+ b=J6dFo6OQXFe07Wf8TofCGtQKdT7w9M+6AK4jTZDzXiU377gaEnxzyc5YSQwk4fuS2ZRXdQ
+ f7hNuYhr8quFBpB2md5ZX+prQu1Y5mM7TuUg4Q8HYser9ubFlG/7bdyHYXm2zJW3kOY+cQ
+ sbxhdrnLHg44n/dQRns0ogFYd8lbAxY=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-85_bX24FPd2ImyD8vrvZ5A-1; Wed,
- 27 Aug 2025 03:55:03 -0400
-X-MC-Unique: 85_bX24FPd2ImyD8vrvZ5A-1
-X-Mimecast-MFC-AGG-ID: 85_bX24FPd2ImyD8vrvZ5A_1756281301
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-538-Qb5Bbhg5NhCEt7AlOPIkjg-1; Wed,
+ 27 Aug 2025 03:55:06 -0400
+X-MC-Unique: Qb5Bbhg5NhCEt7AlOPIkjg-1
+X-Mimecast-MFC-AGG-ID: Qb5Bbhg5NhCEt7AlOPIkjg_1756281305
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B351A180036E; Wed, 27 Aug 2025 07:55:01 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 669C419560BB; Wed, 27 Aug 2025 07:55:05 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.40])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B0EE01955F24; Wed, 27 Aug 2025 07:54:56 +0000 (UTC)
+ id 70E181977687; Wed, 27 Aug 2025 07:55:01 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: [PULL 03/31] tests/functional/test_aarch64_virt_gpu: Skip test if EGL
- won't initialize
-Date: Wed, 27 Aug 2025 09:54:13 +0200
-Message-ID: <20250827075443.559712-4-thuth@redhat.com>
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 04/31] tests/functional: Fix reverse_debugging asset precaching
+Date: Wed, 27 Aug 2025 09:54:14 +0200
+Message-ID: <20250827075443.559712-5-thuth@redhat.com>
 In-Reply-To: <20250827075443.559712-1-thuth@redhat.com>
 References: <20250827075443.559712-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -86,52 +83,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-If you are using the Nvidia drivers and have installed new versions
-of those packages but have not yet rebooted the host kernel,
-attempting to use the egl-headless display will cause QEMU to fail to
-start with
+This commit fixes the asset precaching in the reverse_debugging test on
+aarch64.
 
-$ qemu-system-aarch64 -M virt -display egl-headless
-qemu-system-aarch64: egl: eglInitialize failed: EGL_NOT_INITIALIZED
-qemu-system-aarch64: egl: render node init failed
+QemuBaseTest.main() precaches assets (kernel, rootfs, DT blobs, etc.)
+that are defined in variables with the ASSET_ prefix. This works because
+it ultimately calls Asset.precache_test(), which relies on introspection
+to locate these variables.
 
-together with this complaint in the host kernel dmesg:
+If an asset variable is not named with the ASSET_ prefix, precache_test
+cannot find the asset and precaching silently fails. Hence, fix the
+asset precaching by fixing the asset variable name.
 
-[7874777.555649] NVRM: API mismatch: the client has the version 535.247.01, but
-                 NVRM: this kernel module has the version 535.230.02.  Please
-                 NVRM: make sure that this kernel module and all NVIDIA driver
-                 NVRM: components have the same version.
-
-This isn't a problem with QEMU itself, so reporting this as a test
-failure is misleading.  Instead skip the tests, as we already do for
-various other kinds of "host system can't actually run the EGL
-display" situation.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20250826123455.2856988-1-peter.maydell@linaro.org>
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
-Acked-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Message-ID: <20250827001008.22112-1-gustavo.romero@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/test_aarch64_virt_gpu.py | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/functional/test_aarch64_reverse_debug.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/functional/test_aarch64_virt_gpu.py b/tests/functional/test_aarch64_virt_gpu.py
-index 38447278579..4e50887c3e9 100755
---- a/tests/functional/test_aarch64_virt_gpu.py
-+++ b/tests/functional/test_aarch64_virt_gpu.py
-@@ -76,6 +76,8 @@ def _launch_virt_gpu(self, gpu_device):
-                 self.skipTest("egl-headless support is not available")
-             elif "'type' does not accept value 'dbus'" in excp.output:
-                 self.skipTest("dbus display support is not available")
-+            elif "eglInitialize failed: EGL_NOT_INITIALIZED" in excp.output:
-+                self.skipTest("EGL failed to initialize on this host")
-             else:
-                 self.log.info("unhandled launch failure: %s", excp.output)
-                 raise excp
+diff --git a/tests/functional/test_aarch64_reverse_debug.py b/tests/functional/test_aarch64_reverse_debug.py
+index 58d45328350..8bc91ccfde7 100755
+--- a/tests/functional/test_aarch64_reverse_debug.py
++++ b/tests/functional/test_aarch64_reverse_debug.py
+@@ -21,7 +21,7 @@ class ReverseDebugging_AArch64(ReverseDebugging):
+ 
+     REG_PC = 32
+ 
+-    KERNEL_ASSET = Asset(
++    ASSET_KERNEL = Asset(
+         ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
+          'releases/29/Everything/aarch64/os/images/pxeboot/vmlinuz'),
+         '7e1430b81c26bdd0da025eeb8fbd77b5dc961da4364af26e771bd39f379cbbf7')
+@@ -30,7 +30,7 @@ class ReverseDebugging_AArch64(ReverseDebugging):
+     def test_aarch64_virt(self):
+         self.set_machine('virt')
+         self.cpu = 'cortex-a53'
+-        kernel_path = self.KERNEL_ASSET.fetch()
++        kernel_path = self.ASSET_KERNEL.fetch()
+         self.reverse_debugging(args=('-kernel', kernel_path))
+ 
+ 
 -- 
 2.50.1
 
