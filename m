@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67F0B385FC
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4A53B385E5
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:13:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHod-00010d-Rd; Wed, 27 Aug 2025 11:11:59 -0400
+	id 1urHnP-0005Tb-EM; Wed, 27 Aug 2025 11:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHkl-00006K-0j; Wed, 27 Aug 2025 11:08:02 -0400
+ id 1urHko-0000Bu-Dz; Wed, 27 Aug 2025 11:08:04 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHki-0005gO-Fd; Wed, 27 Aug 2025 11:07:58 -0400
+ id 1urHkm-0005iB-BS; Wed, 27 Aug 2025 11:08:01 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C50B314C559;
+ by isrv.corpit.ru (Postfix) with ESMTP id D344314C55A;
  Wed, 27 Aug 2025 18:02:59 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B1BC7269860;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C2573269861;
  Wed, 27 Aug 2025 18:03:26 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, WANG Rui <wangrui@loongson.cn>,
- Zhou Qiankang <wszqkzqk@qq.com>, Song Gao <gaosong@loongson.cn>,
+Cc: qemu-stable@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
+ Jesper Wendel Devantier <foss@defmacro.it>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 48/59] target/loongarch: Fix [X]VLDI raising exception
- incorrectly
-Date: Wed, 27 Aug 2025 18:02:53 +0300
-Message-ID: <20250827150323.2694101-48-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 49/59] hw/nvme: fix namespace attachment
+Date: Wed, 27 Aug 2025 18:02:54 +0300
+Message-ID: <20250827150323.2694101-49-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -59,53 +58,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: WANG Rui <wangrui@loongson.cn>
+From: Klaus Jensen <k.jensen@samsung.com>
 
-According to the specification, [X]VLDI should trigger an invalid instruction
-exception only when Bit[12] is 1 and Bit[11:8] > 12. This patch fixes an issue
-where an exception was incorrectly raised even when Bit[12] was 0.
+Commit 6ccca4b6bb9f ("hw/nvme: rework csi handling") introduced a bug in
+Namespace Attachment, causing it to
 
-Test case:
+  a) not allow a controller to attach namespaces to other controllers
+  b) assert if a valid non-attached namespace is detached
 
-```
-    .global main
-main:
-    vldi    $vr0, 3328
-    ret
-```
+This fixes both issues.
 
-Reported-by: Zhou Qiankang <wszqkzqk@qq.com>
-Signed-off-by: WANG Rui <wangrui@loongson.cn>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-ID: <20250804132212.4816-1-wangrui@loongson.cn>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-(cherry picked from commit e66644c48e96e81848c6aa94b185f59fc212d080)
+Fixes: 6ccca4b6bb9f ("hw/nvme: rework csi handling")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2976
+Reviewed-by: Jesper Wendel Devantier <foss@defmacro.it>
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+(cherry picked from commit 31b737b19dca4d50758f5e9834d27b683102f2f1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-index 78730029cb..38bccf2838 100644
---- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-+++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
-@@ -3585,7 +3585,9 @@ static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
-     int sel, vece;
-     uint64_t value;
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index d6b77d4fbc..669fff41c7 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -6816,7 +6816,7 @@ static uint16_t nvme_ns_attachment(NvmeCtrl *n, NvmeRequest *req)
  
--    if (!check_valid_vldi_mode(a)) {
-+    sel = (a->imm >> 12) & 0x1;
+         switch (sel) {
+         case NVME_NS_ATTACHMENT_ATTACH:
+-            if (nvme_ns(n, nsid)) {
++            if (nvme_ns(ctrl, nsid)) {
+                 return NVME_NS_ALREADY_ATTACHED | NVME_DNR;
+             }
+ 
+@@ -6824,7 +6824,7 @@ static uint16_t nvme_ns_attachment(NvmeCtrl *n, NvmeRequest *req)
+                 return NVME_NS_PRIVATE | NVME_DNR;
+             }
+ 
+-            if (!nvme_csi_supported(n, ns->csi)) {
++            if (!nvme_csi_supported(ctrl, ns->csi)) {
+                 return NVME_IOCS_NOT_SUPPORTED | NVME_DNR;
+             }
+ 
+@@ -6834,6 +6834,10 @@ static uint16_t nvme_ns_attachment(NvmeCtrl *n, NvmeRequest *req)
+             break;
+ 
+         case NVME_NS_ATTACHMENT_DETACH:
++            if (!nvme_ns(ctrl, nsid)) {
++                return NVME_NS_NOT_ATTACHED | NVME_DNR;
++            }
 +
-+    if (sel && !check_valid_vldi_mode(a)) {
-         generate_exception(ctx, EXCCODE_INE);
-         return true;
-     }
-@@ -3594,8 +3596,6 @@ static bool gen_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
-         return true;
-     }
+             nvme_detach_ns(ctrl, ns);
+             nvme_update_dsm_limits(ctrl, NULL);
  
--    sel = (a->imm >> 12) & 0x1;
--
-     if (sel) {
-         value = vldi_get_value(ctx, a->imm);
-         vece = MO_64;
 -- 
 2.47.2
 
