@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A963CB38B31
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 23:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1F73B38B2D
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 23:01:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urNG0-0006sP-5h; Wed, 27 Aug 2025 17:00:36 -0400
+	id 1urNG1-0006tQ-3T; Wed, 27 Aug 2025 17:00:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1urNFd-0006iu-Da
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 17:00:15 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1urNFh-0006kE-4n
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 17:00:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1urNFX-0006rO-7M
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 17:00:09 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1urNFd-0006s6-5m
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 17:00:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756328406;
+ s=mimecast20190719; t=1756328408;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LWSJYlk138FmAFVvxr4mdnjck2zH0Iu2R9tmAoocuGM=;
- b=JEFdfcYujQTCEfl8hxb/qZ+FiXKjGt99cyDqqYl26dDsWanwmj5zMQb67LiHoITcHuCs9c
- lurzh2ziYebVUHyRikFKeUuwrWExcxakk7w0Oo5Urbnc5F5npyvJbZRdQuQAgamPcGBzGy
- pGSxO62/oKrXcyQTJBqPByytaWUyQns=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=i0rL3mXXfqHBhyeJ127a2ssZ77MbnTaaoR6sQ91RNEU=;
+ b=CA+vNVi4QFuH4BEvr/MmzEvOZlmuOhPZqVeCnrTrF/eSkMtr/biHz+MoAB3ZN9Xs6FTViW
+ 967a5hyySpdkYX2LON9pNarGMx2wpImLCQzH86M3NfJgBobF8MIeknkVVUn5TozvxHKKxQ
+ B2mMqGqhgJXBu3JyAHxjn6mhGKuk12I=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-s1_5xZwVPLKBQ71b0HpkYA-1; Wed, 27 Aug 2025 17:00:04 -0400
-X-MC-Unique: s1_5xZwVPLKBQ71b0HpkYA-1
-X-Mimecast-MFC-AGG-ID: s1_5xZwVPLKBQ71b0HpkYA_1756328404
-Received: by mail-yw1-f199.google.com with SMTP id
- 00721157ae682-71d605339dbso3010507b3.2
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 14:00:04 -0700 (PDT)
+ us-mta-354-FOWu-MbGPKmTpdOJDxDmIw-1; Wed, 27 Aug 2025 17:00:06 -0400
+X-MC-Unique: FOWu-MbGPKmTpdOJDxDmIw-1
+X-Mimecast-MFC-AGG-ID: FOWu-MbGPKmTpdOJDxDmIw_1756328406
+Received: by mail-yb1-f198.google.com with SMTP id
+ 3f1490d57ef6-e96d57eb1d0so242233276.3
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 14:00:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756328403; x=1756933203;
+ d=1e100.net; s=20230601; t=1756328406; x=1756933206;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LWSJYlk138FmAFVvxr4mdnjck2zH0Iu2R9tmAoocuGM=;
- b=Et2hHt3zautpasWgBYWDbZKcebA5YEASGK2SfZv7CJXhr/g08qO8uT/SDAKif+uvHD
- YyJ7EdgxVncOMQjb+Ji6HD/cJuF3pWOnI8Yso0rH7Hh/tu993SiUqfFSZZI5wzjLca2R
- SG6EQPu/ape+SRst0BFYVvvrNfSAxikKORIbEKicksoo3M6XJTkTvM4vPUq8/uk6Hxg7
- /btSv3/ldw9OChYjhuOkNVogh9AKoPMuW09eY+0YDSx/v1lQP9fjVecXhWXQTfj1pR7l
- JP2zw75lOz/rQLirLbeIE6iAIjZc4EclTtOaNo5A6+9AMorPR5bf95wE79czxLpLRrVR
- 0K/g==
-X-Gm-Message-State: AOJu0YwGZtcWqyFgBN7J4O8c3sK0taEmhZgTrmfFe5pfNr6gNYdYgpeL
- uc39UqDvdnohjRXV+VU+vjkkfjsfwKkeh/k1t3/cSfyHFxzqN7zjZIUeR81J6+qckdxvaxRwGe+
- Y7J3vq+S4WG0JYkXStnmPQB4YsEiwoMnw1ZKPhG4NixH0/VlSyRBlUxmLk4QqIiQtg3IulpFGKC
- OITCEd7xcyHo3vpOXsirUMEMTOlwNembb3HEV0GQ==
-X-Gm-Gg: ASbGncukBQ5uU8GunxYL4adu+j6Yniicjl5hMkrIyVjZ1KZA9P4ZKeqh2X4dhALyW/3
- 18JdiVGC4gzl+4BgfqP1PsUfSBCmA35KHWHGKZ1HCng3XEbXjvusQqN2+4o57bix8UIUX1tEeJI
- nWEM9KNLXOTsclUFIfXpdTA4tbaj4A7+KHORx3uMaUV37qSdqmvbao+T976Ev3C40Da+XxiZ7L+
- YalX6kJXdirolDuIV9CbHLfTD/Qxd8JkooUkNtbmWn5jWSKXd/aomzmZPR2TAJ/BZEBUv0/IrzQ
- JCVpulh0j2fxksZAGwQmsf4rTXTDkLiuPqPyy49VrcIVtAMZFPIGQQJoKcdOyQT2REvZh5DoBR0
- 1PDqqsXsGRLqBmgcnIvg=
-X-Received: by 2002:a05:6902:110e:b0:e95:34cf:9b55 with SMTP id
- 3f1490d57ef6-e9534cfa905mr19201920276.12.1756328403472; 
- Wed, 27 Aug 2025 14:00:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHkpx0budwaHrDidhF7vzeiefKfIffbE7jmdijfNTP7rqs5nhQI/GsOctMgsj45yLrZwawenQ==
-X-Received: by 2002:a05:6902:110e:b0:e95:34cf:9b55 with SMTP id
- 3f1490d57ef6-e9534cfa905mr19201850276.12.1756328402854; 
- Wed, 27 Aug 2025 14:00:02 -0700 (PDT)
+ bh=i0rL3mXXfqHBhyeJ127a2ssZ77MbnTaaoR6sQ91RNEU=;
+ b=sH1R1y7xGr2xgvXd6Tx70rzhZSp9xNPa49zFTbAcXkfQo7zXxXUC7lzeH9chFTaBMr
+ 7Xvm7NnPDCrfuj/PCeBQDy012sbSU0aa8FKC77cii22fYj7wrsgjLWE0CgUTFt25f2fM
+ k6LsAEaQyNjdImC59innHIYV6Cd5xKF0mDhhu3NlZiGWzsqNuQ0xX6HPS6Xdg01s5CYY
+ EXWtOG1FxFS5rnpVBKake+NQ8PeAq9WFiSfB5Nfeejio7sqbxEO9//qDTXOA8+WL3xNd
+ z5ZNPYjS5dSxNP3i1AOntAlvj0s03Y/8o6Mr/UFrOELIp1PiKCp0Yz7bfCA40WsScCoo
+ CCOw==
+X-Gm-Message-State: AOJu0Yw4HDHgqj/+dhk+jqZh4MJ37icwafR5BbYLpTmqDmyK1TPtdRcD
+ /HSpIbmV8XTfUmA/ioY6sHKBoBf8+3sdV1nFHBoF+RnYGq5PRxnKJWtvv7ZTfdFVhXK5fWUsQ6O
+ HKgBifBiIqxkwVclU9We2CRH6uOB14BOa0P+OyuAeY/KmRKjJmFk/Vn/Jw01W9RzVk8+qjqqOvP
+ IGdaS3ki+u1r0oeBAfns4WvNIKNqk+owbhkVADMg==
+X-Gm-Gg: ASbGncuJO8K9g9CsstLlvZYntvZploNXrUFuSOcu/pVlxXMy81qNOT4yVRqDHhqyvUZ
+ 7zqoLcjZFce4Sr7dx4G0qDm448Lp1FfGtPrTo5tFcZ1gdHILJ6xyClyUX8vhwYZXBcE1lHbbgBg
+ 3FkQqAez4/8SYzgbVte9Ywlvck3K9VyNEWjhiS6Xk2V8bcip/NYhrx29YAZhz6CYAzj5CXbg8ub
+ xnPZndg8Z64mOymkPrfcc4BlAHDnnNupc0UKig4s7/UtEnng7LBb4ws5RIrlXIo7sdsfRxQbTO5
+ jfU6FvCMdhr4kB7jATu9JKD6UVXe/h39SC9LOXy/N4SjgYlL9ezwpSLtkjf5M36Xyrt2jUSHETT
+ YZYwZXBRdIbd2++atUt0=
+X-Received: by 2002:a05:6902:1145:b0:e95:3636:fec7 with SMTP id
+ 3f1490d57ef6-e953637041bmr14363086276.3.1756328405695; 
+ Wed, 27 Aug 2025 14:00:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHpI/rLDdMeIg/XupM0lqAJf/9rUSqM2ymCzFKJaxl/Wt2t7IMda1Z5qm8Qk4hX+9j5vihTlw==
+X-Received: by 2002:a05:6902:1145:b0:e95:3636:fec7 with SMTP id
+ 3f1490d57ef6-e953637041bmr14363024276.3.1756328405060; 
+ Wed, 27 Aug 2025 14:00:05 -0700 (PDT)
 Received: from x1.com
  (bras-base-aurron9134w-grc-11-174-89-135-121.dsl.bell.ca. [174.89.135.121])
  by smtp.gmail.com with ESMTPSA id
- 3f1490d57ef6-e96e5530a32sm1389846276.17.2025.08.27.14.00.00
+ 3f1490d57ef6-e96e5530a32sm1389846276.17.2025.08.27.14.00.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Aug 2025 14:00:01 -0700 (PDT)
+ Wed, 27 Aug 2025 14:00:04 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Dr . David Alan Gilbert" <dave@treblig.org>, peterx@redhat.com,
@@ -81,10 +81,10 @@ Cc: "Dr . David Alan Gilbert" <dave@treblig.org>, peterx@redhat.com,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Prasad Pandit <ppandit@redhat.com>, Zhang Chen <zhangckid@gmail.com>,
  Li Zhijian <lizhijian@fujitsu.com>, Juraj Marcin <jmarcin@redhat.com>
-Subject: [PATCH RFC 6/9] migration/rdma: Remove coroutine path in
- qemu_rdma_wait_comp_channel
-Date: Wed, 27 Aug 2025 16:59:45 -0400
-Message-ID: <20250827205949.364606-7-peterx@redhat.com>
+Subject: [PATCH RFC 7/9] migration/postcopy: Remove workaround on wait preempt
+ channel
+Date: Wed, 27 Aug 2025 16:59:46 -0400
+Message-ID: <20250827205949.364606-8-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250827205949.364606-1-peterx@redhat.com>
 References: <20250827205949.364606-1-peterx@redhat.com>
@@ -115,159 +115,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now after threadified dest VM load during precopy, we will always in a
-thread context rather than within a coroutine.  We can remove this path
-now.
+This reverts commit 7afbdada7effbc2b97281bfbce0c6df351a3cf88.
 
-With that, migration_started_on_destination can go away too.
+Now after switching to a thread in loadvm process, the main thread should
+be able to accept() even if loading the package could cause a page fault in
+userfaultfd path.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/rdma.c | 102 +++++++++++++++++++----------------------------
- 1 file changed, 41 insertions(+), 61 deletions(-)
+ migration/savevm.c | 21 ---------------------
+ 1 file changed, 21 deletions(-)
 
-diff --git a/migration/rdma.c b/migration/rdma.c
-index 2b995513aa..7751262460 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -29,7 +29,6 @@
- #include "qemu/rcu.h"
- #include "qemu/sockets.h"
- #include "qemu/bitmap.h"
--#include "qemu/coroutine.h"
- #include "system/memory.h"
- #include <sys/socket.h>
- #include <netdb.h>
-@@ -357,13 +356,6 @@ typedef struct RDMAContext {
-     /* Index of the next RAMBlock received during block registration */
-     unsigned int    next_src_index;
+diff --git a/migration/savevm.c b/migration/savevm.c
+index ad606c5425..8018f7ad31 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2425,27 +2425,6 @@ static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis,
+ 
+     QEMUFile *packf = qemu_file_new_input(QIO_CHANNEL(bioc));
  
 -    /*
--     * Migration on *destination* started.
--     * Then use coroutine yield function.
--     * Source runs in a thread, so we don't care.
+-     * Before loading the guest states, ensure that the preempt channel has
+-     * been ready to use, as some of the states (e.g. via virtio_load) might
+-     * trigger page faults that will be handled through the preempt channel.
+-     * So yield to the main thread in the case that the channel create event
+-     * hasn't been dispatched.
+-     *
+-     * TODO: if we can move migration loadvm out of main thread, then we
+-     * won't block main thread from polling the accept() fds.  We can drop
+-     * this as a whole when that is done.
 -     */
--    int migration_started_on_destination;
+-    do {
+-        if (!migrate_postcopy_preempt() || !qemu_in_coroutine() ||
+-            mis->postcopy_qemufile_dst) {
+-            break;
+-        }
 -
-     int total_registrations;
-     int total_writes;
- 
-@@ -1353,66 +1345,55 @@ static int qemu_rdma_wait_comp_channel(RDMAContext *rdma,
-     struct rdma_cm_event *cm_event;
- 
-     /*
--     * Coroutine doesn't start until migration_fd_process_incoming()
--     * so don't yield unless we know we're running inside of a coroutine.
-+     * This is the source or dest side, either during precopy or
-+     * postcopy.  We're always in a separate thread when reaching here.
-+     * Poll the fd.  We need to be able to handle 'cancel' or an error
-+     * without hanging forever.
-      */
--    if (rdma->migration_started_on_destination &&
--        migration_incoming_get_current()->state == MIGRATION_STATUS_ACTIVE &&
--        qemu_in_coroutine()) {
--        yield_until_fd_readable(comp_channel->fd);
--    } else {
--        /* This is the source side, we're in a separate thread
--         * or destination prior to migration_fd_process_incoming()
--         * after postcopy, the destination also in a separate thread.
--         * we can't yield; so we have to poll the fd.
--         * But we need to be able to handle 'cancel' or an error
--         * without hanging forever.
--         */
--        while (!rdma->errored && !rdma->received_error) {
--            GPollFD pfds[2];
--            pfds[0].fd = comp_channel->fd;
--            pfds[0].events = G_IO_IN | G_IO_HUP | G_IO_ERR;
--            pfds[0].revents = 0;
+-        aio_co_schedule(qemu_get_current_aio_context(), qemu_coroutine_self());
+-        qemu_coroutine_yield();
+-    } while (1);
 -
--            pfds[1].fd = rdma->channel->fd;
--            pfds[1].events = G_IO_IN | G_IO_HUP | G_IO_ERR;
--            pfds[1].revents = 0;
--
--            /* 0.1s timeout, should be fine for a 'cancel' */
--            switch (qemu_poll_ns(pfds, 2, 100 * 1000 * 1000)) {
--            case 2:
--            case 1: /* fd active */
--                if (pfds[0].revents) {
--                    return 0;
--                }
-+    while (!rdma->errored && !rdma->received_error) {
-+        GPollFD pfds[2];
-+        pfds[0].fd = comp_channel->fd;
-+        pfds[0].events = G_IO_IN | G_IO_HUP | G_IO_ERR;
-+        pfds[0].revents = 0;
-+
-+        pfds[1].fd = rdma->channel->fd;
-+        pfds[1].events = G_IO_IN | G_IO_HUP | G_IO_ERR;
-+        pfds[1].revents = 0;
-+
-+        /* 0.1s timeout, should be fine for a 'cancel' */
-+        switch (qemu_poll_ns(pfds, 2, 100 * 1000 * 1000)) {
-+        case 2:
-+        case 1: /* fd active */
-+            if (pfds[0].revents) {
-+                return 0;
-+            }
- 
--                if (pfds[1].revents) {
--                    if (rdma_get_cm_event(rdma->channel, &cm_event) < 0) {
--                        return -1;
--                    }
-+            if (pfds[1].revents) {
-+                if (rdma_get_cm_event(rdma->channel, &cm_event) < 0) {
-+                    return -1;
-+                }
- 
--                    if (cm_event->event == RDMA_CM_EVENT_DISCONNECTED ||
--                        cm_event->event == RDMA_CM_EVENT_DEVICE_REMOVAL) {
--                        rdma_ack_cm_event(cm_event);
--                        return -1;
--                    }
-+                if (cm_event->event == RDMA_CM_EVENT_DISCONNECTED ||
-+                    cm_event->event == RDMA_CM_EVENT_DEVICE_REMOVAL) {
-                     rdma_ack_cm_event(cm_event);
-+                    return -1;
-                 }
--                break;
-+                rdma_ack_cm_event(cm_event);
-+            }
-+            break;
- 
--            case 0: /* Timeout, go around again */
--                break;
-+        case 0: /* Timeout, go around again */
-+            break;
- 
--            default: /* Error of some type -
--                      * I don't trust errno from qemu_poll_ns
--                     */
--                return -1;
--            }
-+        default: /* Error of some type -
-+                  * I don't trust errno from qemu_poll_ns
-+                  */
-+            return -1;
-+        }
- 
--            if (migrate_get_current()->state == MIGRATION_STATUS_CANCELLING) {
--                /* Bail out and let the cancellation happen */
--                return -1;
--            }
-+        if (migrate_get_current()->state == MIGRATION_STATUS_CANCELLING) {
-+            /* Bail out and let the cancellation happen */
-+            return -1;
-         }
-     }
- 
-@@ -3817,7 +3798,6 @@ static void rdma_accept_incoming_migration(void *opaque)
-         return;
-     }
- 
--    rdma->migration_started_on_destination = 1;
-     migration_fd_process_incoming(f);
- }
- 
+     ret = qemu_loadvm_state_main(packf, mis, bql_held);
+     trace_loadvm_handle_cmd_packaged_main(ret);
+     qemu_fclose(packf);
 -- 
 2.50.1
 
