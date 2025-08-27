@@ -2,97 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8BAB38BF2
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 00:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 261C3B38BF4
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 00:02:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urODB-0006l4-4B; Wed, 27 Aug 2025 18:01:45 -0400
+	id 1urOCn-0006R6-9t; Wed, 27 Aug 2025 18:01:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lb.workbox@gmail.com>)
- id 1urOD8-0006j1-53
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 18:01:42 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lb.workbox@gmail.com>)
- id 1urOD3-0007f0-DQ
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 18:01:41 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3cd59c5a953so237637f8f.0
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 15:01:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1756332096; x=1756936896; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3X0sfvJ9BISpbpisYuLRIvvZ2RbhH0HSOpBQPIHzEpE=;
- b=Ju1ykz19Her+ft4JMgn4uh6D4qpBBF4s7WjxFgIVErCESJWCOBYHi3yumFxGtO6jyI
- pwjAVT6AG5O2k6wi+0kCxxBg9NdFeF4nEXHNzlzwrSlybHIeQNqPZCN2dsLHUvM8tFNq
- n/WHRy3IbzuNCPgtH8E7aNFjzbslf/On+mQDewEdL9/KKMbZjrl5ZdhPtGQ/R4EoDVOW
- EowQLLVUXDgXp+2cyukTWW73dZhrdTvGm4uptAZiEytKFN1FvTYBkWcOWGtjXgDHBDhA
- aTbt9GI8uofjKWlct4kWI+bSkwkWavMhUmwJfMvAmWmqdq8tnQJZDs81lIQUzPi5QtQt
- H7XA==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urOCl-0006Qh-C7
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 18:01:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urOCi-0007cL-Ek
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 18:01:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756332074;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=9LbhoLffTINf3bGY0XMLc1aTrpoReWQ/vHYPvIA3gK0=;
+ b=hdQLRuuYyNw1tMvwVcGLcfXWBJTimh+X8CNuSoe+LP6fLhH6AppUYT7jgLos4ddYcIhzBM
+ JY/nBSjj5WpLT62GYOSnoUrjW3fT7FR0iGFfMctcFHL4xGPmhqBND04QBgLInf00MiXa2b
+ y70AvpX/bsuq/r96PcHuM7bCYbwSSBs=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-115-EsJL0UHeNBqxuzgK3VE1lw-1; Wed, 27 Aug 2025 18:01:12 -0400
+X-MC-Unique: EsJL0UHeNBqxuzgK3VE1lw-1
+X-Mimecast-MFC-AGG-ID: EsJL0UHeNBqxuzgK3VE1lw_1756332071
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-afe81959e5cso23547166b.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 15:01:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756332096; x=1756936896;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3X0sfvJ9BISpbpisYuLRIvvZ2RbhH0HSOpBQPIHzEpE=;
- b=XbendQZgi83cxisATbn0oZvk5RawUQYqzKJZCQjyH7GMaIqdKrG6HqhL+2c3d0sYyE
- zKYBRpc1CYNPj7NqVKoLP3ThmFyZ37SRiogSH5zePQfaNTTutIRLzCCYdqS0FdBWpTuq
- Cz0EnXUe1mCW8jYrCTIwxck1cN76H5VCFVKgs5hzxN9briWgrdJQBQxrWRg5FhcpsEfG
- 5LGA3V0JVCY7khIV0P3mmcudtmmFYxBDqi4XcArAlvUAFBCDIWCv0RtMZB2lk5HZNai2
- tC+PhTl2SmoXeYlWhqOIT1Fj2IedAKWyphDLzt15hjCRLfElFFRziXSF+5ke+ojnJHmA
- Vp0g==
+ d=1e100.net; s=20230601; t=1756332071; x=1756936871;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9LbhoLffTINf3bGY0XMLc1aTrpoReWQ/vHYPvIA3gK0=;
+ b=lelwnCCXmNe8pQBW4kXwBYgvsAIbkTgMUW1/4AbmYdrkot7in6laHvd95LQcITEMYS
+ lfc6gii61t1bri3zUogD0UP7vw4vFsdGBJS84dMeaalw7Gz3kIjOEUBEXt0rm0vkVahE
+ dK3Flv4N6KpO7i6P51kUsERZ6F5W5N/Ei/ctGYvsrHRqgIxKWzkgSjaOSZIq/Krn5BCf
+ 3dipfowEXdOZ1yUSAnY96Li/4ah1JxuRbgdISGbnIdPyIoxQtPwbG5VqVlYTOLSahAoy
+ 4YGg0PbiQU/8VLZkdtobsKobRZ/V+cJsFhjVGOCwhKR/33JsXX0lOqz1guObWGziKfKp
+ ARbA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWqqe5Dxa34QnjOJEyBhFbu7us5OGHNNVDyJ/xDwfgGCcM0GgLNhK9Yy92w47ysUmw+BU86a3NTO3fC@nongnu.org
-X-Gm-Message-State: AOJu0YxKVjRsp01aQZk4UFSDNykcZcFxCBuKDNhx+60BcDrYkoL54sWM
- +djSqWY1kGepyOJrkkm21Kkui0bikOm37UY0fESunNeaLlVqkqgGEXvM
-X-Gm-Gg: ASbGnctxagKPlifAE5ejSTDf6rGel9SpmYQENQmN6jV5Z9DXtWmliGRvsDuuXX3iQoj
- PBwCaQawMlpz0UaKtbSKGsSI2sAaRp//gnAUvjg+zBgrci8vM0bF40bp+S8f61KpTIlrVKmOKgx
- Ud2cP16B281EnAVDU5h07NqZ3uDwQD8Y0fOjedOUFTFrvc/4Z4JYV1Cq7vaZyg+f8osZLRTthDo
- g7FIMCcQj4Xgeatpl85mALC7TjDGuYIIHom38LbX6aVp1JCtxnxQsg7UgMftJsixIzkKQ21Cwbm
- 9N37K/oRFGm6Gl/pGDj2AamacJzVSMUHj3IG6+iSNpByPEbYJZ288mT1sBDDvHwoN8tUpthqRfG
- m6y9FNWcElJoSXfA5NFMN8gsIy0vtemcva2mhhpZIrtvoX67zlXP+pS4i2qg8FR4nSUTdPkeF+d
- o5mmWSLZDxPse+/rPd4xtu
-X-Google-Smtp-Source: AGHT+IFXwYG5x4tyJa3Pb67+Yky00D86IvuNjyFZ8FkGg6rmY/zaEj8IK3TwpXm9SI+LBX+HJEey4A==
-X-Received: by 2002:a05:6000:2c0e:b0:3ca:4b59:2714 with SMTP id
- ffacd0b85a97d-3ca4b592c7fmr9143905f8f.10.1756332095530; 
- Wed, 27 Aug 2025 15:01:35 -0700 (PDT)
-Received: from localhost.localdomain (46-116-237-160.bb.netvision.net.il.
- [46.116.237.160]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b797ce2b8sm4116755e9.12.2025.08.27.15.01.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Aug 2025 15:01:34 -0700 (PDT)
-From: Leonid Bloch <lb.workbox@gmail.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <ehabkost@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>
-Cc: Leonid Bloch <lb.workbox@gmail.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH v3 4/4] hw/acpi: Introduce the QEMU lid button
-Date: Thu, 28 Aug 2025 01:00:50 +0300
-Message-ID: <20250827220054.37268-5-lb.workbox@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250827220054.37268-1-lb.workbox@gmail.com>
-References: <20250827220054.37268-1-lb.workbox@gmail.com>
+ AJvYcCU+StQO6XOJzvXU4az+zf9Y7vobZZOjfBTYA2zcH3S3T1Kc0Uvw5GzM3upRGDcdSV5f1T15gywJp0Se@nongnu.org
+X-Gm-Message-State: AOJu0Yz3aRsJhyzAT/lI7o5CztoeLIcZHesfBJ995ZnlnqRgeoeJSvb9
+ SbPOj5lOVWDdIzIfM/39+0wQDECWY+NiD2YtIs1ExvssaLfFXUcujPoC3ZU5EFXHiMM/6x2wAYo
+ 4fNNlpHm4PeV26PmBMF4N6gcRg2h0WXz3Zh3Vk1XCIH9nKpOlHwrQiZ7k
+X-Gm-Gg: ASbGncv8+oz/jaioVKt7TxC92K9EN6MF81TSC178Ez39i/8MQurKd3eRnifpqTS8b0R
+ goKlcxsngg6JsrxC475hfiikcQtK2uzLA5EllmBtIDBg9IX7EOLTXigo29FoV/qJ8wAmGrJhBd6
+ GV3ab1DN9JgMFgbCe3nsAI5RPwiOPTuw3js+B4ehEoJyihkcOKxz2D+L+13N2ZX8egoDZhKj8wv
+ WXEl+krzqtN/8jhd4HKQs6wMC5qBGVmebEZ4pC1A9S1ISqbGf5M0MT/WsxcZLloNZ8xOaE0iqk2
+ MsDPpmUnqCJtr8C2b+g1FxxRgvY0RSDwCukWs+EtF+zPaE1tXIzzjd/hRL6cr5j38miDqinQjee
+ vtmrZ
+X-Received: by 2002:a05:6402:274c:b0:61c:d7b6:6218 with SMTP id
+ 4fb4d7f45d1cf-61cd7b663edmr142529a12.13.1756332071187; 
+ Wed, 27 Aug 2025 15:01:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHsOSZra7uurPCCy7aAXX3rgY/oVsERtX4enePQESCM4nixPZK7+1ehCrFkVb6wTn4iLZnGLg==
+X-Received: by 2002:a05:6402:274c:b0:61c:d7b6:6218 with SMTP id
+ 4fb4d7f45d1cf-61cd7b663edmr142237a12.13.1756332066019; 
+ Wed, 27 Aug 2025 15:01:06 -0700 (PDT)
+Received: from [192.168.0.6] (ltea-047-064-113-247.pools.arcor-ip.net.
+ [47.64.113.247]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-61c90ffd657sm4201272a12.44.2025.08.27.15.01.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 27 Aug 2025 15:01:04 -0700 (PDT)
+Message-ID: <ff5a3203-6afb-4202-b59a-1021f0d949db@redhat.com>
+Date: Thu, 28 Aug 2025 00:01:03 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 07/29] s390x/diag: Implement DIAG 320 subcode 1
+To: Farhan Ali <alifm@linux.ibm.com>, Zhuoying Cai <zycai@linux.ibm.com>,
+ berrange@redhat.com, richard.henderson@linaro.org, david@redhat.com,
+ jrossi@linux.ibm.com, qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
+ borntraeger@linux.ibm.com, farman@linux.ibm.com, mjrosato@linux.ibm.com,
+ iii@linux.ibm.com, eblake@redhat.com, armbru@redhat.com
+References: <20250818214323.529501-1-zycai@linux.ibm.com>
+ <20250818214323.529501-8-zycai@linux.ibm.com>
+ <537aa1cf-7135-471e-874e-a4cd3796b5bc@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <537aa1cf-7135-471e-874e-a4cd3796b5bc@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=lb.workbox@gmail.com; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,868 +157,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The lid button device communicates laptop lid state to the guest via ACPI.
-It supports two modes of operation:
+On 27/08/2025 23.49, Farhan Ali wrote:
+> 
+> On 8/18/2025 2:43 PM, Zhuoying Cai wrote:
+>> DIAG 320 subcode 1 provides information needed to determine
+>> the amount of storage to store one or more certificates from the
+>> certificate store.
+>>
+>> Upon successful completion, this subcode returns information of the current
+>> cert store, such as the number of certificates stored and allowed in the cert
+>> store, amount of space may need to be allocate to store a certificate,
+>> etc for verification-certificate blocks (VCBs).
+>>
+>> The subcode value is denoted by setting the left-most bit
+>> of an 8-byte field.
+>>
+>> The verification-certificate-storage-size block (VCSSB) contains
+>> the output data when the operation completes successfully. A VCSSB
+>> length of 4 indicates that no certificate are available in the cert
+>> store.
+>>
+>> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
+>> ---
+>>   docs/specs/s390x-secure-ipl.rst | 10 ++++++
+>>   include/hw/s390x/ipl/diag320.h  | 22 +++++++++++++
+>>   target/s390x/diag.c             | 56 ++++++++++++++++++++++++++++++++-
+>>   3 files changed, 87 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/docs/specs/s390x-secure-ipl.rst b/docs/specs/s390x-secure- 
+>> ipl.rst
+>> index 70e9a66fe0..ddc15f0322 100644
+>> --- a/docs/specs/s390x-secure-ipl.rst
+>> +++ b/docs/specs/s390x-secure-ipl.rst
+>> @@ -23,3 +23,13 @@ Subcode 0 - query installed subcodes
+>>       Returns a 256-bit installed subcodes mask (ISM) stored in the installed
+>>       subcodes block (ISB). This mask indicates which sucodes are currently
+>>       installed and available for use.
+>> +
+>> +Subcode 1 - query verification certificate storage information
+>> +    Provides the information required to determine the amount of memory 
+>> needed to
+>> +    store one or more verification-certificates (VCs) from the 
+>> certificate store (CS).
+>> +
+>> +    Upon successful completion, this subcode returns various storage size 
+>> values for
+>> +    verification-certificate blocks (VCBs).
+>> +
+>> +    The output is returned in the verification-certificate-storage-size 
+>> block (VCSSB).
+>> +    A VCSSB length of 4 indicates that no certificates are available in 
+>> the CS.
+>> diff --git a/include/hw/s390x/ipl/diag320.h b/include/hw/s390x/ipl/diag320.h
+>> index aa04b699c6..6e4779c699 100644
+>> --- a/include/hw/s390x/ipl/diag320.h
+>> +++ b/include/hw/s390x/ipl/diag320.h
+>> @@ -11,10 +11,32 @@
+>>   #define S390X_DIAG320_H
+>>   #define DIAG_320_SUBC_QUERY_ISM     0
+>> +#define DIAG_320_SUBC_QUERY_VCSI    1
+>>   #define DIAG_320_RC_OK              0x0001
+>>   #define DIAG_320_RC_NOT_SUPPORTED   0x0102
+>> +#define DIAG_320_RC_INVAL_VCSSB_LEN 0x0202
+>>   #define DIAG_320_ISM_QUERY_SUBCODES 0x80000000
+>> +#define DIAG_320_ISM_QUERY_VCSI     0x40000000
+>> +
+>> +#define VCSSB_NO_VC     4
+>> +#define VCSSB_MIN_LEN   128
+>> +#define VCE_HEADER_LEN  128
+>> +#define VCB_HEADER_LEN  64
+>> +
+>> +struct VCStorageSizeBlock {
+>> +    uint32_t length;
+>> +    uint8_t reserved0[3];
+>> +    uint8_t version;
+>> +    uint32_t reserved1[6];
+>> +    uint16_t total_vc_ct;
+>> +    uint16_t max_vc_ct;
+>> +    uint32_t reserved3[11];
+>> +    uint32_t max_single_vcb_len;
+>> +    uint32_t total_vcb_len;
+>> +    uint32_t reserved4[10];
+>> +};
+>> +typedef struct VCStorageSizeBlock VCStorageSizeBlock;
+> Should this be a packed structure? The Linux kernel defines it as packed 
+> https://elixir.bootlin.com/linux/v6.17-rc3/source/arch/s390/kernel/ 
+> cert_store.c#L81
 
-1. QMP control mode (default): Lid state is controlled programmatically
-   via QMP commands for consistent behavior across environments.
+Packed structs should be avoided in user space code that might get compiled 
+on different host architectures, we've hit related problems a couple of 
+times in the past already (doing a quick search, I came up with 
+https://lists.gnu.org/archive/html/qemu-devel//2017-03/msg05316.html for 
+example, but I remember we had similar problems in the s390x code once, too).
 
-2. Host mirroring mode (optional): The device reflects the host's lid
-   button state from procfs (/proc/acpi/button/lid/*/state). State
-   changes trigger ACPI notifications to the guest.
+In this struct here, all fields are naturally aligned, so the packed should 
+not be necessary. Just add a size check with QEMU_BUILD_BUG_ON to make sure 
+that there is really no unexpected padding here.
 
-Properties:
-- 'use-qmp': Enable QMP control mode (default: true)
-- 'enable-procfs': Enable host lid button mirroring (default: false)
-- 'probe_interval': Probe interval in ms for procfs mode (default: 2000)
-- 'procfs_path': Override default procfs path /proc/acpi/button
-
-The device implements the ACPI_DEV_AML_IF interface to generate its
-own AML code, placing the LID0 device directly under \_SB scope.
-
-QMP commands:
-- lid-button-set-state: Set lid open/closed state
-- query-lid-button: Query current lid state
-
-Signed-off-by: Leonid Bloch <lb.workbox@gmail.com>
----
- MAINTAINERS                          |   6 +
- docs/specs/button.rst                | 189 ++++++++++++
- docs/specs/index.rst                 |   1 +
- hw/acpi/Kconfig                      |   4 +
- hw/acpi/button.c                     | 438 +++++++++++++++++++++++++++
- hw/acpi/meson.build                  |   1 +
- hw/acpi/trace-events                 |   5 +
- hw/i386/Kconfig                      |   1 +
- include/hw/acpi/acpi_dev_interface.h |   1 +
- include/hw/acpi/button.h             |  25 ++
- qapi/acpi.json                       |  49 +++
- 11 files changed, 720 insertions(+)
- create mode 100644 docs/specs/button.rst
- create mode 100644 hw/acpi/button.c
- create mode 100644 include/hw/acpi/button.h
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 19bea634c7..eb876803eb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2940,6 +2940,12 @@ S: Maintained
- F: hw/acpi/acad.*
- F: docs/specs/acad.rst
- 
-+Button
-+M: Leonid Bloch <lb.workbox@gmail.com>
-+S: Maintained
-+F: hw/acpi/button.*
-+F: docs/specs/button.rst
-+
- Subsystems
- ----------
- Overall Audio backends
-diff --git a/docs/specs/button.rst b/docs/specs/button.rst
-new file mode 100644
-index 0000000000..10a940b9f5
---- /dev/null
-+++ b/docs/specs/button.rst
-@@ -0,0 +1,189 @@
-+.. SPDX-License-Identifier: GPL-2.0-or-later
-+
-+========================
-+Laptop Lid Button Device
-+========================
-+
-+The button device provides laptop lid button state information to the guest.
-+It supports two operating modes:
-+
-+1. **QMP Control Mode** (default): Lid state is controlled via QMP commands,
-+   providing deterministic control for testing and migration safety.
-+2. **Procfs Mode**: Lid state mirrors the host's physical lid button, useful
-+   for desktop virtualization where the guest should see the host's lid state.
-+
-+Configuration
-+-------------
-+
-+The lid button device is created as an ISA device using ``-device button``.
-+
-+Operating Modes
-+~~~~~~~~~~~~~~~
-+
-+**QMP Control Mode** (``use-qmp=true``, default)
-+  Lid state is controlled via QMP commands. This mode is recommended for:
-+
-+  * Production environments requiring migration support
-+  * Testing with predictable lid states
-+  * Environments without host lid button access
-+  * Security-sensitive deployments
-+
-+**Procfs Mode** (``enable-procfs=true``)
-+  Lid mirrors the host's physical lid button. This mode is useful for:
-+
-+  * Desktop virtualization on laptops
-+  * Development and testing with real lid button behavior
-+
-+  Note: Procfs mode reads host files and runs timers, which may impact
-+  security and migration. Use with caution in production.
-+
-+Properties
-+~~~~~~~~~~
-+
-+``ioport`` (default: 0x53d)
-+  I/O port base address for the lid button device register.
-+
-+``use-qmp`` (default: true)
-+  Enable QMP control mode. When true, lid state is controlled via
-+  QMP commands. Cannot be used together with ``enable-procfs=true``.
-+
-+``enable-procfs`` (default: false)
-+  Enable procfs mode to mirror the host's lid button. Cannot be used together
-+  with ``use-qmp=true``.
-+
-+``probe_interval`` (default: 2000)
-+  Time interval between periodic probes in milliseconds (procfs mode only).
-+  The minimum allowed value is 10ms to prevent excessive polling.
-+
-+``procfs_path`` (default: /proc/acpi/button)
-+  Path to the host's lid button procfs directory (procfs mode only). The device
-+  will automatically scan this directory to find the lid state file. Use this
-+  property to specify a different path or to provide a custom location for
-+  testing purposes.
-+
-+Host Lid Button Detection
-+-------------------------
-+
-+The host's lid button information is taken from::
-+
-+    /proc/acpi/button/lid/*/state
-+
-+This file is expected to be formatted as:
-+
-+- ``state:      open`` (if the lid is open)
-+- ``state:      closed`` (if the lid is closed)
-+
-+These formats are based on the Linux 'button' driver.
-+
-+The device automatically scans the ``/proc/acpi/button/lid/`` directory
-+for subdirectories containing a readable ``state`` file. If the procfs path
-+differs, a different lid button needs to be probed, or even if a "fake" host
-+lid button is to be provided, the ``procfs_path`` property allows overriding
-+the default detection.
-+
-+ACPI Interface
-+--------------
-+
-+The lid button device is exposed to the guest as an ACPI device with:
-+
-+- **HID**: ``PNP0C0D`` (Lid Device)
-+- **Device Path**: ``\_SB.LID0``
-+- **Notification Values**:
-+
-+  - ``0x80``: Status change (lid opened/closed)
-+
-+ACPI Methods
-+~~~~~~~~~~~~
-+
-+``_LID`` (Lid Status)
-+  Returns the current lid state (0 = closed, 1 = open).
-+
-+I/O Interface
-+-------------
-+
-+The device uses a single I/O port register:
-+
-+- **Port**: ``ioport`` property value (default 0x53d)
-+- **Size**: 1 byte
-+- **Access**: Read-only
-+
-+Register Layout
-+~~~~~~~~~~~~~~~
-+
-+**LIDS** (offset 0x00, 1 byte)
-+  Current lid state:
-+
-+  - ``0x00``: Lid closed
-+  - ``0x01``: Lid open
-+
-+QMP Commands
-+------------
-+
-+When using QMP control mode (default), the following commands are available:
-+
-+``lid-button-set-state``
-+  Set the lid button state.
-+
-+  * ``open``: Whether the lid is open (boolean)
-+
-+  Example::
-+
-+    -> { "execute": "lid-button-set-state",
-+         "arguments": { "open": true }}
-+    <- { "return": {} }
-+
-+``query-lid-button``
-+  Query the current lid button state.
-+
-+  Example::
-+
-+    -> { "execute": "query-lid-button" }
-+    <- { "return": { "open": true }}
-+
-+Examples
-+--------
-+
-+QMP control mode (default - recommended)::
-+
-+  # Start with QMP control
-+  qemu-system-x86_64 -device button -qmp tcp:localhost:4444,server,wait=off
-+
-+  # From another terminal, set lid state via QMP:
-+  echo '{"execute":"qmp_capabilities"}
-+        {"execute":"lid-button-set-state",
-+         "arguments":{"open":false}}' | \
-+  nc -N localhost 4444
-+
-+Procfs mode (mirror host lid button)::
-+
-+  # Enable procfs mode to mirror host lid button
-+  qemu-system-x86_64 -device button,use-qmp=false,enable-procfs=true
-+
-+  # Custom probe interval (5 seconds)
-+  qemu-system-x86_64 -device button,use-qmp=false,enable-procfs=true,probe_interval=5000
-+
-+  # Custom procfs path
-+  qemu-system-x86_64 -device button,use-qmp=false,enable-procfs=true,procfs_path=/custom/path
-+
-+Testing with fake lid button::
-+
-+  # Create fake lid button files for testing
-+  mkdir -p /tmp/fake_lid/lid/LID0
-+  echo "state:      open" > /tmp/fake_lid/lid/LID0/state    # Format: "state:      open" or "state:      closed"
-+
-+  # Use fake lid button in procfs mode
-+  qemu-system-x86_64 -device button,use-qmp=false,enable-procfs=true,procfs_path=/tmp/fake_lid
-+
-+  # Update lid state while VM is running (from another terminal)
-+  echo "state:      closed" > /tmp/fake_lid/lid/LID0/state  # Close lid
-+  echo "state:      open" > /tmp/fake_lid/lid/LID0/state    # Open lid
-+
-+Combined with other laptop devices::
-+
-+  # QMP mode (recommended)
-+  qemu-system-x86_64 -device battery -device acad -device button
-+
-+  # Procfs/sysfs mode (desktop virtualization)
-+  qemu-system-x86_64 -device battery,use-qmp=false,enable-sysfs=true \
-+                     -device acad,use-qmp=false,enable-sysfs=true \
-+                     -device button,use-qmp=false,enable-procfs=true
-diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-index e144afcd90..e1c9b91b7b 100644
---- a/docs/specs/index.rst
-+++ b/docs/specs/index.rst
-@@ -24,6 +24,7 @@ guest hardware that is specific to QEMU.
-    acpi_erst
-    acad
-    battery
-+   button
-    sev-guest-firmware
-    fw_cfg
-    fsi
-diff --git a/hw/acpi/Kconfig b/hw/acpi/Kconfig
-index 9d28c3addf..6600685855 100644
---- a/hw/acpi/Kconfig
-+++ b/hw/acpi/Kconfig
-@@ -73,6 +73,10 @@ config AC_ADAPTER
-     bool
-     depends on ACPI
- 
-+config BUTTON
-+    bool
-+    depends on ACPI
-+
- config ACPI_HW_REDUCED
-     bool
-     select ACPI
-diff --git a/hw/acpi/button.c b/hw/acpi/button.c
-new file mode 100644
-index 0000000000..dfe86af713
---- /dev/null
-+++ b/hw/acpi/button.c
-@@ -0,0 +1,438 @@
-+/*
-+ * QEMU emulated lid button device
-+ *
-+ * Copyright (c) 2019 Janus Technologies, Inc. (http://janustech.com)
-+ *
-+ * Authors:
-+ *     Leonid Bloch <lb.workbox@gmail.com>
-+ *     Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-+ *     Dmitry Fleytman <dmitry.fleytman@gmail.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "trace.h"
-+#include "hw/isa/isa.h"
-+#include "hw/acpi/acpi.h"
-+#include "hw/nvram/fw_cfg.h"
-+#include "qapi/error.h"
-+#include "qemu/error-report.h"
-+#include "hw/qdev-properties.h"
-+#include "migration/vmstate.h"
-+#include "hw/acpi/acpi_aml_interface.h"
-+#include "qapi/qapi-commands-acpi.h"
-+
-+#include "hw/acpi/button.h"
-+
-+#define BUTTON_DEVICE(obj) OBJECT_CHECK(BUTTONState, (obj), \
-+                                        TYPE_BUTTON)
-+
-+#define BUTTON_STA_ADDR            0
-+
-+#define PROCFS_PATH                "/proc/acpi/button"
-+#define LID_DIR                    "lid"
-+#define LID_STATE_FILE             "state"
-+#define MIN_BUTTON_PROBE_INTERVAL  10  /* ms */
-+#define MAX_ALLOWED_LINE_LENGTH    32  /* For convenience when comparing */
-+
-+enum {
-+    LID_CLOSED = 0,
-+    LID_OPEN = 1,
-+};
-+
-+static const char *lid_state[] = { "closed", "open" };
-+
-+typedef struct BUTTONState {
-+    ISADevice dev;
-+    MemoryRegion io;
-+    uint16_t ioport;
-+    uint8_t lid_state;
-+    bool use_qmp_control;
-+    bool qmp_lid_open;
-+    bool enable_procfs;
-+
-+    QEMUTimer *probe_state_timer;
-+    uint64_t probe_state_interval;
-+
-+    char *button_path;
-+    char lid_dir[MAX_ALLOWED_LINE_LENGTH];
-+} BUTTONState;
-+
-+static inline bool button_file_accessible(char *path, const char *dir,
-+                                          char *subdir, const char *file)
-+{
-+    char full_path[PATH_MAX];
-+    int path_len;
-+
-+    path_len = snprintf(full_path, PATH_MAX, "%s/%s/%s/%s", path, dir, subdir,
-+                        file);
-+    if (path_len < 0 || path_len >= PATH_MAX) {
-+        return false;
-+    }
-+
-+    if (access(full_path, R_OK) == 0) {
-+        return true;
-+    }
-+    return false;
-+}
-+
-+static void button_get_lid_state(BUTTONState *s)
-+{
-+    char file_path[PATH_MAX];
-+    int path_len;
-+    char line[MAX_ALLOWED_LINE_LENGTH];
-+    FILE *ff;
-+
-+    path_len = snprintf(file_path, PATH_MAX, "%s/%s/%s/%s", s->button_path,
-+                        LID_DIR, s->lid_dir, LID_STATE_FILE);
-+    if (path_len < 0 || path_len >= PATH_MAX) {
-+        warn_report("Could not read the lid state.");
-+        return;
-+    }
-+
-+    ff = fopen(file_path, "r");
-+    if (ff == NULL) {
-+        warn_report("Could not read the lid state.");
-+        return;
-+    }
-+
-+    if (fgets(line, MAX_ALLOWED_LINE_LENGTH, ff) == NULL) {
-+        warn_report("Lid state unreadable.");
-+    } else {
-+        if (strstr(line, lid_state[LID_OPEN]) != NULL) {
-+            s->lid_state = LID_OPEN;
-+        } else if (strstr(line, lid_state[LID_CLOSED]) != NULL) {
-+            s->lid_state = LID_CLOSED;
-+        } else {
-+            warn_report("Lid state undetermined.");
-+        }
-+    }
-+
-+    fclose(ff);
-+}
-+
-+static void button_get_dynamic_status(BUTTONState *s)
-+{
-+    trace_button_get_dynamic_status();
-+
-+    if (s->use_qmp_control) {
-+        s->lid_state = s->qmp_lid_open ? LID_OPEN : LID_CLOSED;
-+    } else if (s->enable_procfs) {
-+        button_get_lid_state(s);
-+    } else {
-+        s->lid_state = LID_CLOSED;
-+    }
-+}
-+
-+static void button_probe_state(void *opaque)
-+{
-+    BUTTONState *s = opaque;
-+
-+    uint8_t lid_state_before = s->lid_state;
-+
-+    button_get_dynamic_status(s);
-+
-+    if (lid_state_before != s->lid_state) {
-+        Object *obj = object_resolve_path_type("", TYPE_ACPI_DEVICE_IF, NULL);
-+        acpi_send_event(DEVICE(obj), ACPI_BUTTON_CHANGE_STATUS);
-+    }
-+    timer_mod(s->probe_state_timer, qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL) +
-+              s->probe_state_interval);
-+}
-+
-+static void button_probe_state_timer_init(BUTTONState *s)
-+{
-+    if (s->enable_procfs && s->probe_state_interval > 0) {
-+        s->probe_state_timer = timer_new_ms(QEMU_CLOCK_VIRTUAL,
-+                                            button_probe_state, s);
-+        timer_mod(s->probe_state_timer, qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL) +
-+                  s->probe_state_interval);
-+    }
-+}
-+
-+static inline bool button_verify_lid_procfs(char *path, char *lid_subdir)
-+{
-+    return button_file_accessible(path, LID_DIR, lid_subdir, LID_STATE_FILE);
-+}
-+
-+static bool button_get_lid_dir(BUTTONState *s, char *path)
-+{
-+    DIR *dir;
-+    char lid_path[PATH_MAX];
-+    int path_len;
-+    struct dirent *ent;
-+
-+    path_len = snprintf(lid_path, PATH_MAX, "%s/%s", path, LID_DIR);
-+    if (path_len < 0 || path_len >= PATH_MAX) {
-+        return false;
-+    }
-+
-+    dir = opendir(lid_path);
-+    if (dir == NULL) {
-+        return false;
-+    }
-+
-+    ent = readdir(dir);
-+    while (ent != NULL) {
-+        if (ent->d_name[0] != '.') {
-+            if (button_verify_lid_procfs(path, ent->d_name)) {
-+                path_len = snprintf(s->lid_dir, strlen(ent->d_name) + 1, "%s",
-+                                    ent->d_name);
-+                if (path_len < 0 || path_len > strlen(ent->d_name)) {
-+                    return false;
-+                }
-+                closedir(dir);
-+                return true;
-+            }
-+        }
-+        ent = readdir(dir);
-+    }
-+    closedir(dir);
-+    return false;
-+}
-+
-+static bool get_button_path(DeviceState *dev)
-+{
-+    BUTTONState *s = BUTTON_DEVICE(dev);
-+    char procfs_path[PATH_MAX];
-+    int path_len;
-+
-+    if (s->button_path) {
-+        path_len = snprintf(procfs_path, strlen(s->button_path) + 1, "%s",
-+                            s->button_path);
-+        if (path_len < 0 || path_len > strlen(s->button_path)) {
-+            return false;
-+        }
-+    } else {
-+        path_len = snprintf(procfs_path, sizeof(PROCFS_PATH), "%s",
-+                            PROCFS_PATH);
-+        if (path_len < 0 || path_len >= sizeof(PROCFS_PATH)) {
-+            return false;
-+        }
-+    }
-+
-+    if (button_get_lid_dir(s, procfs_path)) {
-+        qdev_prop_set_string(dev, BUTTON_PATH_PROP, procfs_path);
-+        return true;
-+    }
-+
-+    return false;
-+}
-+
-+static void button_realize(DeviceState *dev, Error **errp)
-+{
-+    ISADevice *d = ISA_DEVICE(dev);
-+    BUTTONState *s = BUTTON_DEVICE(dev);
-+    FWCfgState *fw_cfg = fw_cfg_find();
-+    uint16_t *button_port;
-+    char err_details[32] = {};
-+
-+    trace_button_realize();
-+
-+    if (s->use_qmp_control && s->enable_procfs) {
-+        error_setg(errp, "Cannot enable both QMP control and procfs mode");
-+        return;
-+    }
-+
-+    /* Initialize lid to open by default when in QMP mode */
-+    if (s->use_qmp_control) {
-+        s->qmp_lid_open = true;
-+    }
-+
-+    if (s->probe_state_interval < MIN_BUTTON_PROBE_INTERVAL) {
-+        error_setg(errp, "'probe_state_interval' must be greater than %d ms",
-+                   MIN_BUTTON_PROBE_INTERVAL);
-+        return;
-+    }
-+
-+    if (s->enable_procfs) {
-+        if (!s->button_path) {
-+            strcpy(err_details, " Try using 'procfs_path='");
-+        }
-+
-+        if (!get_button_path(dev)) {
-+            error_setg(errp, "Button procfs path not found or unreadable.%s",
-+                       err_details);
-+            return;
-+        }
-+    }
-+
-+    isa_register_ioport(d, &s->io, s->ioport);
-+
-+    button_probe_state_timer_init(s);
-+
-+    if (!fw_cfg) {
-+        return;
-+    }
-+
-+    button_port = g_malloc(sizeof(*button_port));
-+    *button_port = cpu_to_le16(s->ioport);
-+    fw_cfg_add_file(fw_cfg, "etc/button-port", button_port,
-+                    sizeof(*button_port));
-+}
-+
-+static const Property button_device_properties[] = {
-+    DEFINE_PROP_UINT16(BUTTON_IOPORT_PROP, BUTTONState, ioport, 0x53d),
-+    DEFINE_PROP_BOOL("use-qmp", BUTTONState, use_qmp_control, true),
-+    DEFINE_PROP_BOOL("enable-procfs", BUTTONState, enable_procfs, false),
-+    DEFINE_PROP_UINT64(BUTTON_PROBE_STATE_INTERVAL, BUTTONState,
-+                       probe_state_interval, 2000),
-+    DEFINE_PROP_STRING(BUTTON_PATH_PROP, BUTTONState, button_path),
-+};
-+
-+static const VMStateDescription button_vmstate = {
-+    .name = "button",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT16(ioport, BUTTONState),
-+        VMSTATE_UINT64(probe_state_interval, BUTTONState),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static void build_button_aml(AcpiDevAmlIf *adev, Aml *scope)
-+{
-+    Aml *dev, *field, *method;
-+    Aml *button_state;
-+    Aml *sb_scope;
-+    BUTTONState *s = BUTTON_DEVICE(adev);
-+
-+    button_state = aml_local(0);
-+
-+    sb_scope = aml_scope("\\_SB");
-+    dev = aml_device("LID0");
-+    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0C0D")));
-+
-+    aml_append(dev, aml_operation_region("LSTA", AML_SYSTEM_IO,
-+                                         aml_int(s->ioport),
-+                                         BUTTON_LEN));
-+    field = aml_field("LSTA", AML_BYTE_ACC, AML_NOLOCK, AML_PRESERVE);
-+    aml_append(field, aml_named_field("LIDS", 8));
-+    aml_append(dev, field);
-+
-+    method = aml_method("_LID", 0, AML_NOTSERIALIZED);
-+    aml_append(method, aml_store(aml_name("LIDS"), button_state));
-+    aml_append(method, aml_return(button_state));
-+    aml_append(dev, method);
-+
-+    aml_append(sb_scope, dev);
-+    aml_append(scope, sb_scope);
-+
-+    /* Status Change */
-+    method = aml_method("\\_GPE._E0B", 0, AML_NOTSERIALIZED);
-+    aml_append(method, aml_notify(aml_name("\\_SB.LID0"), aml_int(0x80)));
-+    aml_append(scope, method);
-+}
-+
-+static void button_class_init(ObjectClass *class, const void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(class);
-+    AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(class);
-+
-+    dc->realize = button_realize;
-+    device_class_set_props(dc, button_device_properties);
-+    dc->vmsd = &button_vmstate;
-+    adevc->build_dev_aml = build_button_aml;
-+}
-+
-+static uint64_t button_ioport_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    BUTTONState *s = opaque;
-+
-+    button_get_dynamic_status(s);
-+
-+    switch (addr) {
-+    case BUTTON_STA_ADDR:
-+        return s->lid_state;
-+    default:
-+        warn_report("Button: guest read unknown value.");
-+        trace_button_ioport_read_unknown();
-+        return 0;
-+    }
-+}
-+
-+static const MemoryRegionOps button_ops = {
-+    .read = button_ioport_read,
-+    .impl = {
-+        .min_access_size = 1,
-+        .max_access_size = 1,
-+    },
-+};
-+
-+static void button_instance_init(Object *obj)
-+{
-+    BUTTONState *s = BUTTON_DEVICE(obj);
-+
-+    memory_region_init_io(&s->io, obj, &button_ops, s, "button",
-+                          BUTTON_LEN);
-+}
-+
-+static const TypeInfo button_info = {
-+    .name          = TYPE_BUTTON,
-+    .parent        = TYPE_ISA_DEVICE,
-+    .instance_size = sizeof(BUTTONState),
-+    .class_init    = button_class_init,
-+    .instance_init = button_instance_init,
-+    .interfaces = (InterfaceInfo[]) {
-+        { TYPE_ACPI_DEV_AML_IF },
-+        { },
-+    },
-+};
-+
-+static BUTTONState *find_button_device(void)
-+{
-+    Object *o = object_resolve_path_type("", TYPE_BUTTON, NULL);
-+    if (!o) {
-+        return NULL;
-+    }
-+    return BUTTON_DEVICE(o);
-+}
-+
-+void qmp_lid_button_set_state(bool open, Error **errp)
-+{
-+    BUTTONState *s = find_button_device();
-+
-+    if (!s) {
-+        error_setg(errp, "No lid button device found");
-+        return;
-+    }
-+
-+    s->qmp_lid_open = open;
-+
-+    Object *obj = object_resolve_path_type("", TYPE_ACPI_DEVICE_IF, NULL);
-+    if (obj) {
-+        acpi_send_event(DEVICE(obj), ACPI_BUTTON_CHANGE_STATUS);
-+    }
-+}
-+
-+LidButtonInfo *qmp_query_lid_button(Error **errp)
-+{
-+    BUTTONState *s = find_button_device();
-+    LidButtonInfo *ret;
-+
-+    if (!s) {
-+        error_setg(errp, "No lid button device found");
-+        return NULL;
-+    }
-+
-+    ret = g_new0(LidButtonInfo, 1);
-+
-+    if (s->use_qmp_control) {
-+        ret->open = s->qmp_lid_open;
-+    } else {
-+        button_get_dynamic_status(s);
-+        ret->open = (s->lid_state == LID_OPEN);
-+    }
-+
-+    return ret;
-+}
-+
-+static void button_register_types(void)
-+{
-+    type_register_static(&button_info);
-+}
-+
-+type_init(button_register_types)
-diff --git a/hw/acpi/meson.build b/hw/acpi/meson.build
-index 2b24951f28..94993ecb9a 100644
---- a/hw/acpi/meson.build
-+++ b/hw/acpi/meson.build
-@@ -33,6 +33,7 @@ if have_tpm
- endif
- acpi_ss.add(when: 'CONFIG_BATTERY', if_true: files('battery.c'))
- acpi_ss.add(when: 'CONFIG_AC_ADAPTER', if_true: files('acad.c'))
-+acpi_ss.add(when: 'CONFIG_BUTTON', if_true: files('button.c'))
- system_ss.add(when: 'CONFIG_ACPI', if_false: files('acpi-stub.c', 'aml-build-stub.c', 'ghes-stub.c', 'acpi_interface.c'))
- system_ss.add(when: 'CONFIG_ACPI_PCI_BRIDGE', if_false: files('pci-bridge-stub.c'))
- system_ss.add_all(when: 'CONFIG_ACPI', if_true: acpi_ss)
-diff --git a/hw/acpi/trace-events b/hw/acpi/trace-events
-index 68ac6e9701..816f027bb3 100644
---- a/hw/acpi/trace-events
-+++ b/hw/acpi/trace-events
-@@ -97,3 +97,8 @@ battery_ioport_read_unknown(void) "Battery read unknown"
- acad_realize(void) "AC adapter device realize entry"
- acad_get_dynamic_status(uint8_t state) "AC adapter read state: %"PRIu8
- acad_ioport_read_unknown(void) "AC adapter read unknown"
-+
-+# button.c
-+button_realize(void) "Button device realize entry"
-+button_get_dynamic_status(void) "Button read dynamic status entry"
-+button_ioport_read_unknown(void) "Button read unknown"
-diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
-index baab382a2e..1d2d809028 100644
---- a/hw/i386/Kconfig
-+++ b/hw/i386/Kconfig
-@@ -41,6 +41,7 @@ config PC
-     imply FDC_ISA
-     imply BATTERY
-     imply AC_ADAPTER
-+    imply BUTTON
-     select I8259
-     select I8254
-     select PCKBD
-diff --git a/include/hw/acpi/acpi_dev_interface.h b/include/hw/acpi/acpi_dev_interface.h
-index 588fbbd05f..4f5bcc15da 100644
---- a/include/hw/acpi/acpi_dev_interface.h
-+++ b/include/hw/acpi/acpi_dev_interface.h
-@@ -15,6 +15,7 @@ typedef enum {
-     ACPI_POWER_DOWN_STATUS = 64,
-     ACPI_BATTERY_CHANGE_STATUS = 128,
-     ACPI_AC_ADAPTER_CHANGE_STATUS = 1024,
-+    ACPI_BUTTON_CHANGE_STATUS = 2048,
- } AcpiEventStatusBits;
- 
- #define TYPE_ACPI_DEVICE_IF "acpi-device-interface"
-diff --git a/include/hw/acpi/button.h b/include/hw/acpi/button.h
-new file mode 100644
-index 0000000000..fa5f7001b2
---- /dev/null
-+++ b/include/hw/acpi/button.h
-@@ -0,0 +1,25 @@
-+/*
-+ * QEMU emulated button device.
-+ *
-+ * Copyright (c) 2019 Janus Technologies, Inc. (http://janustech.com)
-+ *
-+ * Authors:
-+ *     Leonid Bloch <lb.workbox@gmail.com>
-+ *     Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-+ *     Dmitry Fleytman <dmitry.fleytman@gmail.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ */
-+
-+#ifndef HW_ACPI_BUTTON_H
-+#define HW_ACPI_BUTTON_H
-+
-+#define TYPE_BUTTON                  "button"
-+#define BUTTON_IOPORT_PROP           "ioport"
-+#define BUTTON_PATH_PROP             "procfs_path"
-+#define BUTTON_PROBE_STATE_INTERVAL  "probe_interval"
-+
-+#define BUTTON_LEN                   1
-+
-+#endif
-diff --git a/qapi/acpi.json b/qapi/acpi.json
-index 52e151f0e6..bcbddbfbd5 100644
---- a/qapi/acpi.json
-+++ b/qapi/acpi.json
-@@ -264,3 +264,52 @@
- ##
- { 'command': 'query-ac-adapter',
-   'returns': 'AcAdapterInfo' }
-+
-+##
-+# @lid-button-set-state:
-+#
-+# Set the state of the emulated laptop lid button device
-+#
-+# @open: whether the lid is open
-+#
-+
-+#
-+# Since: 10.2
-+#
-+# .. qmp-example::
-+#
-+#     -> { "execute": "lid-button-set-state",
-+#          "arguments": { "open": true } }
-+#     <- { "return": {} }
-+##
-+{ 'command': 'lid-button-set-state',
-+  'data': { 'open': 'bool' } }
-+
-+##
-+# @LidButtonInfo:
-+#
-+# Lid button state information
-+#
-+# @open: whether the lid is open
-+#
-+# Since: 10.2
-+##
-+{ 'struct': 'LidButtonInfo',
-+  'data': { 'open': 'bool' } }
-+
-+##
-+# @query-lid-button:
-+#
-+# Query the current state of the emulated laptop lid button device
-+#
-+# Returns: lid button state
-+#
-+# Since: 10.2
-+#
-+# .. qmp-example::
-+#
-+#     -> { "execute": "query-lid-button" }
-+#     <- { "return": { "open": true } }
-+##
-+{ 'command': 'query-lid-button',
-+  'returns': 'LidButtonInfo' }
--- 
-2.51.0
+  Thomas
 
 
