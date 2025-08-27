@@ -2,72 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A3BB384BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 16:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F160FB38580
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 16:54:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urGwl-0006BN-QM; Wed, 27 Aug 2025 10:16:24 -0400
+	id 1urHWq-0005jg-Im; Wed, 27 Aug 2025 10:53:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1urGwg-00069J-OE; Wed, 27 Aug 2025 10:16:15 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1urHWl-0005ib-Th
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 10:53:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1urGwe-0005Pv-4K; Wed, 27 Aug 2025 10:16:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756304172; x=1787840172;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=QZcgxXn/WefyHuhkOr0kLRoJkiy4L49DP7WrUMKn3q4=;
- b=k6hFREW05iAJzJy1JIe4ZIqAzgjZA13HbG6G0ZEOdenDq2W99oY0yWjP
- /IUBTWrOipKCyRkjyTue8jycq0FOytfVVkKmWbbGYWnJby/t/zzl5KibO
- c3DWSDtRKky14flltulHlu40pIVfssGbI65WfaGo+zrd2gG7u0ScHvf3L
- RK5vYVwAIHF2P4CKYXkqH8MGFRo1nqgPb57Kfn9UuuKgGQIPeqVuZL5ll
- fPpqP9uWUIhHdLs+HhvFoJ0dtrEK0Bh/zdY3lkEMsxnMrFf1sj4M1W0AL
- 2jNo+KZXsKeC8qeCJMMcNcHNufPE/ZzxMypmfgkf8QWUrGpzOUeMyR5F6 Q==;
-X-CSE-ConnectionGUID: Zk5AcQHyQue/suS/stVgfQ==
-X-CSE-MsgGUID: jEJr/ORYR8KH+K4NryGWFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="69149403"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="69149403"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2025 07:16:06 -0700
-X-CSE-ConnectionGUID: hMdQxRrsQaerlcl0NbxHdQ==
-X-CSE-MsgGUID: CvfpyM80Q1SIw/cuNSslPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="175152822"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 27 Aug 2025 07:16:03 -0700
-Date: Wed, 27 Aug 2025 22:37:50 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- pbonzini@redhat.com, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: Re: [PATCH 01/22] docs/rust: update msrv
-Message-ID: <aK8YPt8vt5XN0vDI@intel.com>
-References: <20250827104147.717203-1-marcandre.lureau@redhat.com>
- <20250827104147.717203-2-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1urHWj-00036K-Gx
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 10:53:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756306405;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vbHHeknEsZl6F+kgG0EA6Cce+BFXRbEJHNnPRKfG+7w=;
+ b=HNRjsGehZnx7+oQrnnh8fLCigup5/hIaizyuopNlyoU6ZN/vNzQ0iP86Cpyv0WnjiIZsA0
+ kJd9S0F70It2fDR8sDYOcc3qRzZdfvbEm6HUedTKIZHIh45wDjL8e9YlFIPOI9dgprV5cR
+ EHTr2kiR6eEnzwweEFjdAuTuNYBkWrg=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-56-wkmeklUONyG7vJutt4jm1g-1; Wed, 27 Aug 2025 10:53:24 -0400
+X-MC-Unique: wkmeklUONyG7vJutt4jm1g-1
+X-Mimecast-MFC-AGG-ID: wkmeklUONyG7vJutt4jm1g_1756306403
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4b2d09814efso56676831cf.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 07:53:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756306403; x=1756911203;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:in-reply-to
+ :mime-version:references:from:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=vbHHeknEsZl6F+kgG0EA6Cce+BFXRbEJHNnPRKfG+7w=;
+ b=NBAoGM8Lo8MMxjy14Iu5BiL2SexE955g9y8q73bV4e00YwMSIyUJPrj1HfKR2T55eR
+ MVJua0RJ5AyybBrLUCn2rWRhGqNzUGbJPtPLCQw79reLYDthmkuaxqazztFEos7GRPZl
+ y3C3ggO+DMn1mGcyn1Rw9Kk3lMOIPgqj0JFPJZEJfvBw5S5kNDTiAU1GlbKdU+7Fq5Xz
+ XYrL46mpsOi4IPNU+IqQF6q1gCPKGNXWWF+OZYejbheFIjEfH9StiN8rb6YjqUvdb0wn
+ pHiM3jknTkeeXyW2d5Gn48cQ5NehCTf0NZfaTu5JF9pRswnK5BZf43Q47z4Uq3Q1sjTQ
+ qBaQ==
+X-Gm-Message-State: AOJu0Yz7prlSSid6bwjG2anAsyNHr96+fU1eeC8Pw01Dt6iU6YcxcBk2
+ LqNSiu/vZEuXPpfrlGGWnU/ddhOsi9If/N9FAVDh74TeYLyT2LGpHa7d66vDpX/gwnlsuArRgcj
+ l+ICm0vO+2GPtpzeL+89R7HwPONX19cLVvyKZ+a/VQDVmn/r6vGieExoch0n57NhY1jbAieBvC7
+ bHVJ77SCFg/ZX0bPpoE0IdUbPLaHb1cD/MuolO6pE=
+X-Gm-Gg: ASbGncudR4nzvE4PrapzdS9s77C+QEjO7Eu710STQu+q3zEVT4aYllXOa70UpuIPKks
+ cp1C01WypageGipnEseeOhUGMZsF246vj8I+QPpS4BcyMEub2sKDjVpAkI/cWmqFo8IVFRqjeqf
+ 7evxJkFQZ9DnW92661GORkfA==
+X-Received: by 2002:ac8:5ac7:0:b0:4b2:8ac4:ef93 with SMTP id
+ d75a77b69052e-4b2aab694a8mr239138661cf.78.1756306402595; 
+ Wed, 27 Aug 2025 07:53:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyibpN68iauMRsWOreIE91OVrOYnAXUvfrX6qquBoyNw8ATQGhbYqj071EZ8Be0hGpY2y9dEo8Txw072Q4Vek=
+X-Received: by 2002:ac8:5ac7:0:b0:4b2:8ac4:ef93 with SMTP id
+ d75a77b69052e-4b2aab694a8mr239138381cf.78.1756306402044; Wed, 27 Aug 2025
+ 07:53:22 -0700 (PDT)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 27 Aug 2025 09:53:20 -0500
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 27 Aug 2025 09:53:20 -0500
+From: Andrea Bolognani <abologna@redhat.com>
+References: <CABJz62PiQ9ipaJqr+X6AQvTJWZdAug5--4LOXa0i95DZkorNHw@mail.gmail.com>
+ <f920ea53-c75f-4a45-9e30-e49af3c7bd44@oss.qualcomm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250827104147.717203-2-marcandre.lureau@redhat.com>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <f920ea53-c75f-4a45-9e30-e49af3c7bd44@oss.qualcomm.com>
+Date: Wed, 27 Aug 2025 09:53:20 -0500
+X-Gm-Features: Ac12FXwZKHyQQsWs9W5pdOMc63aCqLVRiuo3PSpBMnpO9F1zr-0bNLAnUHZM1lY
+Message-ID: <CABJz62O6JGk__PrAsW31t8ToCrkbtcSiPWV7z1jbAb=5RWWGhA@mail.gmail.com>
+Subject: Re: PGP keysigning at KVM Forum 2025
+To: Brian Cain <brian.cain@oss.qualcomm.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=abologna@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,44 +105,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 27, 2025 at 02:41:23PM +0400, marcandre.lureau@redhat.com wrote:
-> Date: Wed, 27 Aug 2025 14:41:23 +0400
-> From: marcandre.lureau@redhat.com
-> Subject: [PATCH 01/22] docs/rust: update msrv
-> 
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
->  docs/devel/rust.rst | 2 +-
->  rust/Cargo.toml     | 1 +
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
-> index b6737536c6..f52da6f97e 100644
-> --- a/docs/devel/rust.rst
-> +++ b/docs/devel/rust.rst
-> @@ -1,4 +1,4 @@
-> -.. |msrv| replace:: 1.63.0
-> +.. |msrv| replace:: 1.77.0
+On Tue, Aug 26, 2025 at 02:17:31PM -0500, Brian Cain wrote:
+> On 8/25/2025 7:17 AM, Andrea Bolognani wrote:
+> > If you are attending KVM Forum and are interested in strenghtening
+> > the PGP web of trust, prepare little paper slips with your key's
+> > details on them ahead of time and bring them to the conference; then,
 >
->  Rust in QEMU
->  ============
-> diff --git a/rust/Cargo.toml b/rust/Cargo.toml
-> index 0868e1b426..56cfe07791 100644
-> --- a/rust/Cargo.toml
-> +++ b/rust/Cargo.toml
-> @@ -13,6 +13,7 @@ edition = "2021"
->  homepage = "https://www.qemu.org"
->  license = "GPL-2.0-or-later"
->  repository = "https://gitlab.com/qemu-project/qemu/"
-> +# don't forget to update docs/devel/rust.rst msrv
+> Specifically what information should be on the slips?=C2=A0 uids, fingerp=
+rint,
+> and ... anything else?
 
-Good comment!
+The output of `gpg --list-keys YOURKEY` is all you need.
 
->  rust-version = "1.77.0"
->  
+> Is there a quick command to maybe dump gpg output to a pdf with N copies =
+of
+> this info on a page?
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Apparently there used to exist one or more websites that would
+generate this for you, but they're not longer operational due to
+the... Unfortunate state of the keyserver network.
+
+Last year I created my own template using LibreOffice Writer. I was
+able to fit 2x13 copies per A4 page, and it only took maybe 15
+minutes to prepare the whole thing.
+
+--=20
+Andrea Bolognani / Red Hat / Virtualization
 
 
