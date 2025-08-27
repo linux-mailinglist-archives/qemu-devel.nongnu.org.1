@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4AAAB37C52
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 09:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C14AB37C51
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 09:56:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urB01-0005Ca-2q; Wed, 27 Aug 2025 03:55:17 -0400
+	id 1urB04-0005IH-0c; Wed, 27 Aug 2025 03:55:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urAzx-0005BJ-Lx
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:13 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urB02-0005Hm-75
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urAzu-0001w2-L1
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:12 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urB00-0001ws-2j
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756281308;
+ s=mimecast20190719; t=1756281314;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=J2En/X5EXlvShLVJ3TurFWQek/PTm/n4vab/AnQwpac=;
- b=J6dFo6OQXFe07Wf8TofCGtQKdT7w9M+6AK4jTZDzXiU377gaEnxzyc5YSQwk4fuS2ZRXdQ
- f7hNuYhr8quFBpB2md5ZX+prQu1Y5mM7TuUg4Q8HYser9ubFlG/7bdyHYXm2zJW3kOY+cQ
- sbxhdrnLHg44n/dQRns0ogFYd8lbAxY=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=dxJQpFbbYeRuHliRU7B9j87TQVdGAHwNZ/OGelceeqA=;
+ b=HUbxTDgU2K9S1UaIrsvxrEmLD3xsjUlVPbTba/LFvHYm0TFsv/ZSsS42dRTjiS0x/S1BXv
+ ALfPuL7gc3jBSVOSJMWokfbFSOQzk29lG5/SR3OwImse8XXrA6SNKCCDxqJtIMz5h9cW1S
+ 02X8KzkK1XEkiu9l3fOE01h6Un7ARUY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-538-Qb5Bbhg5NhCEt7AlOPIkjg-1; Wed,
- 27 Aug 2025 03:55:06 -0400
-X-MC-Unique: Qb5Bbhg5NhCEt7AlOPIkjg-1
-X-Mimecast-MFC-AGG-ID: Qb5Bbhg5NhCEt7AlOPIkjg_1756281305
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-670-gzTC59JCNXym-dykcLn9JA-1; Wed,
+ 27 Aug 2025 03:55:10 -0400
+X-MC-Unique: gzTC59JCNXym-dykcLn9JA-1
+X-Mimecast-MFC-AGG-ID: gzTC59JCNXym-dykcLn9JA_1756281309
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 669C419560BB; Wed, 27 Aug 2025 07:55:05 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4689819560A2; Wed, 27 Aug 2025 07:55:09 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.40])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 70E181977687; Wed, 27 Aug 2025 07:55:01 +0000 (UTC)
+ id 808B41955F24; Wed, 27 Aug 2025 07:55:05 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 04/31] tests/functional: Fix reverse_debugging asset precaching
-Date: Wed, 27 Aug 2025 09:54:14 +0200
-Message-ID: <20250827075443.559712-5-thuth@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 05/31] tests/functional: Use more fine-grained locking when
+ looking for free ports
+Date: Wed, 27 Aug 2025 09:54:15 +0200
+Message-ID: <20250827075443.559712-6-thuth@redhat.com>
 In-Reply-To: <20250827075443.559712-1-thuth@redhat.com>
 References: <20250827075443.559712-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -83,50 +84,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gustavo Romero <gustavo.romero@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 
-This commit fixes the asset precaching in the reverse_debugging test on
-aarch64.
+Currently, we have one lock that is held while a test is looking for
+free ports. However, we are also using different ranges for looking
+for free ports nowadays (PORTS_START is based on the PID of the process),
+so instead of using only one lock, we should rather use a lock per
+range instead. This should help to allow running more tests in parallel.
 
-QemuBaseTest.main() precaches assets (kernel, rootfs, DT blobs, etc.)
-that are defined in variables with the ASSET_ prefix. This works because
-it ultimately calls Asset.precache_test(), which relies on introspection
-to locate these variables.
+While we're at it, also create the lock files without executable bit
+(mode is 0o777 by default).
 
-If an asset variable is not named with the ASSET_ prefix, precache_test
-cannot find the asset and precaching silently fails. Hence, fix the
-asset precaching by fixing the asset variable name.
-
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-ID: <20250827001008.22112-1-gustavo.romero@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250821094735.804210-1-thuth@redhat.com>
 ---
- tests/functional/test_aarch64_reverse_debug.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/functional/qemu_test/ports.py | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tests/functional/test_aarch64_reverse_debug.py b/tests/functional/test_aarch64_reverse_debug.py
-index 58d45328350..8bc91ccfde7 100755
---- a/tests/functional/test_aarch64_reverse_debug.py
-+++ b/tests/functional/test_aarch64_reverse_debug.py
-@@ -21,7 +21,7 @@ class ReverseDebugging_AArch64(ReverseDebugging):
+diff --git a/tests/functional/qemu_test/ports.py b/tests/functional/qemu_test/ports.py
+index 631b77abf6b..81174a61532 100644
+--- a/tests/functional/qemu_test/ports.py
++++ b/tests/functional/qemu_test/ports.py
+@@ -23,8 +23,9 @@ class Ports():
+     PORTS_END = PORTS_START + PORTS_RANGE_SIZE
  
-     REG_PC = 32
- 
--    KERNEL_ASSET = Asset(
-+    ASSET_KERNEL = Asset(
-         ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
-          'releases/29/Everything/aarch64/os/images/pxeboot/vmlinuz'),
-         '7e1430b81c26bdd0da025eeb8fbd77b5dc961da4364af26e771bd39f379cbbf7')
-@@ -30,7 +30,7 @@ class ReverseDebugging_AArch64(ReverseDebugging):
-     def test_aarch64_virt(self):
-         self.set_machine('virt')
-         self.cpu = 'cortex-a53'
--        kernel_path = self.KERNEL_ASSET.fetch()
-+        kernel_path = self.ASSET_KERNEL.fetch()
-         self.reverse_debugging(args=('-kernel', kernel_path))
- 
+     def __enter__(self):
+-        lock_file = os.path.join(BUILD_DIR, "tests", "functional", "port_lock")
+-        self.lock_fh = os.open(lock_file, os.O_CREAT)
++        lock_file = os.path.join(BUILD_DIR, "tests", "functional",
++                                 f".port_lock.{self.PORTS_START}")
++        self.lock_fh = os.open(lock_file, os.O_CREAT, mode=0o666)
+         fcntl.flock(self.lock_fh, fcntl.LOCK_EX)
+         return self
  
 -- 
 2.50.1
