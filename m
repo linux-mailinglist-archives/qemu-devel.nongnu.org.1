@@ -2,34 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215C1B385BE
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:06:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88001B385AE
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:04:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHgW-0002WX-Vf; Wed, 27 Aug 2025 11:03:37 -0400
+	id 1urHgV-0002U3-54; Wed, 27 Aug 2025 11:03:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHgU-0002UZ-FX; Wed, 27 Aug 2025 11:03:34 -0400
+ id 1urHgS-0002TN-UC; Wed, 27 Aug 2025 11:03:32 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHgS-0004kg-6c; Wed, 27 Aug 2025 11:03:34 -0400
+ id 1urHgR-0004kp-5k; Wed, 27 Aug 2025 11:03:32 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5B12F14C52A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6E57514C52B;
  Wed, 27 Aug 2025 18:02:56 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4B8C6269832;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 57AA6269833;
  Wed, 27 Aug 2025 18:03:23 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Thomas Huth <thuth@redhat.com>
-Subject: [Stable-10.0.4 02/59] hw/display/qxl-render.c: fix
- qxl_unpack_chunks() chunk size calculation
-Date: Wed, 27 Aug 2025 18:02:07 +0300
-Message-ID: <20250827150323.2694101-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, Guenter Roeck <linux@roeck-us.net>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 03/59] target/i386: fix width of third operand of
+ VINSERTx128
+Date: Wed, 27 Aug 2025 18:02:08 +0300
+Message-ID: <20250827150323.2694101-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -58,48 +60,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In case of multiple chunks, code in qxl_unpack_chunks() takes size of the
-wrong (next in the chain) chunk, instead of using current chunk size.
-This leads to wrong number of bytes being copied, and to crashes if next
-chunk size is larger than the current one.
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-Based on the code by Gao Yong.
+Table A-5 of the Intel manual incorrectly lists the third operand of
+VINSERTx128 as Wqq, but it is actually a 128-bit value.  This is
+visible when W is a memory operand close to the end of the page.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1628
+Fixes the recently-added poly1305_kunit test in linux-next.
+
+(No testcase yet, but I plan to modify test-avx2 to use memory
+close to the end of the page.  This would work because the test
+vectors correctly have the memory operand as xmm2/m128).
+
+Reported-by: Eric Biggers <ebiggers@kernel.org>
+Tested-by: Eric Biggers <ebiggers@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: qemu-stable@nongnu.org
+Fixes: 79068477686 ("target/i386: reimplement 0x0f 0x3a, add AVX", 2022-10-18)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit feea87cd6b645d5166bdd304aac88f47f63dc2ef)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit b8882becd572d3afb888c836a6ffc7f92c17d1c5)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/display/qxl-render.c b/hw/display/qxl-render.c
-index eda6d3de37..c6a9ac1da1 100644
---- a/hw/display/qxl-render.c
-+++ b/hw/display/qxl-render.c
-@@ -222,6 +222,7 @@ static void qxl_unpack_chunks(void *dest, size_t size, PCIQXLDevice *qxl,
-     uint32_t max_chunks = 32;
-     size_t offset = 0;
-     size_t bytes;
-+    QXLPHYSICAL next_chunk_phys = 0;
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index cda32ee678..f4cfc196b8 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -878,10 +878,10 @@ static const X86OpEntry opcodes_0F3A[256] = {
+     [0x0e] = X86_OP_ENTRY4(VPBLENDW,   V,x,  H,x,  W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
+     [0x0f] = X86_OP_ENTRY4(PALIGNR,    V,x,  H,x,  W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
  
-     for (;;) {
-         bytes = MIN(size - offset, chunk->data_size);
-@@ -230,7 +231,15 @@ static void qxl_unpack_chunks(void *dest, size_t size, PCIQXLDevice *qxl,
-         if (offset == size) {
-             return;
-         }
--        chunk = qxl_phys2virt(qxl, chunk->next_chunk, group_id,
-+        next_chunk_phys = chunk->next_chunk;
-+        /* fist time, only get the next chunk's data size */
-+        chunk = qxl_phys2virt(qxl, next_chunk_phys, group_id,
-+                              sizeof(QXLDataChunk));
-+        if (!chunk) {
-+            return;
-+        }
-+        /* second time, check data size and get data */
-+        chunk = qxl_phys2virt(qxl, next_chunk_phys, group_id,
-                               sizeof(QXLDataChunk) + chunk->data_size);
-         if (!chunk) {
-             return;
+-    [0x18] = X86_OP_ENTRY4(VINSERTx128,  V,qq, H,qq, W,qq, vex6 chk(W0) cpuid(AVX) p_66),
++    [0x18] = X86_OP_ENTRY4(VINSERTx128,  V,qq, H,qq, W,dq, vex6 chk(W0) cpuid(AVX) p_66),
+     [0x19] = X86_OP_ENTRY3(VEXTRACTx128, W,dq, V,qq, I,b,  vex6 chk(W0) cpuid(AVX) p_66),
+ 
+-    [0x38] = X86_OP_ENTRY4(VINSERTx128,  V,qq, H,qq, W,qq, vex6 chk(W0) cpuid(AVX2) p_66),
++    [0x38] = X86_OP_ENTRY4(VINSERTx128,  V,qq, H,qq, W,dq, vex6 chk(W0) cpuid(AVX2) p_66),
+     [0x39] = X86_OP_ENTRY3(VEXTRACTx128, W,dq, V,qq, I,b,  vex6 chk(W0) cpuid(AVX2) p_66),
+ 
+     /* Listed incorrectly as type 4 */
 -- 
 2.47.2
 
