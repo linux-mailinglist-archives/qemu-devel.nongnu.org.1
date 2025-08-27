@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA4EB38030
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 12:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E149BB3801A
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 12:43:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urDbs-0003wO-5k; Wed, 27 Aug 2025 06:42:32 -0400
+	id 1urDbz-00040t-LS; Wed, 27 Aug 2025 06:42:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1urDbm-0003ta-K8
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 06:42:28 -0400
+ id 1urDbw-0003zP-JZ
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 06:42:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1urDbi-0002xD-Dy
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 06:42:24 -0400
+ id 1urDbs-0002zZ-Cr
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 06:42:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756291340;
+ s=mimecast20190719; t=1756291351;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AH/0NEagMSH65Fn1K4i6N+lAPAe9QFXw4Yt07/Zr5OA=;
- b=g2cjVY1SQ985LOgnfbrGLOLeidgwgg314uKTDAytCDn4E0oKj+FfA7d4biyy6WYpFe1Ght
- OPHUo2PDQ2NK6D8rcz8QcfrP3/peThHrViVBJhfCMqGmmvB8p+7ISIodh0h+7w89IfwPBb
- hCzeCPFLXDsWDQiWp/VxtjKNALof+EE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=Yis1+3I1eI5V2+RGPR1Visnh840oFWxlG3qreZ9Q9Tg=;
+ b=QF+61bcb4ib4/OLAi+31pGjn5/WLfPqj6XtSBKFGbq2782d78qo8fAnETeIa9a21I/1auK
+ qNhihvuZ+wN3XYc/gnMh6TBrRocLTpEOfDmzUz4RfRZewbdSZVZpc1wCwJt1/o5I0Bgum6
+ ZX9E5kQ/SKVXU2bwgpuVI9NltdLa1xg=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-44-va_UOuO_N7eRH9c_Wd4OyA-1; Wed,
- 27 Aug 2025 06:42:18 -0400
-X-MC-Unique: va_UOuO_N7eRH9c_Wd4OyA-1
-X-Mimecast-MFC-AGG-ID: va_UOuO_N7eRH9c_Wd4OyA_1756291337
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-106-tAAZ3kZSN3CJ5ybKyZj-7g-1; Wed,
+ 27 Aug 2025 06:42:26 -0400
+X-MC-Unique: tAAZ3kZSN3CJ5ybKyZj-7g-1
+X-Mimecast-MFC-AGG-ID: tAAZ3kZSN3CJ5ybKyZj-7g_1756291345
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9C4ED180044F; Wed, 27 Aug 2025 10:42:17 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2616B1956087; Wed, 27 Aug 2025 10:42:25 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.16])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 72F551955F24; Wed, 27 Aug 2025 10:42:14 +0000 (UTC)
+ id 475181955F24; Wed, 27 Aug 2025 10:42:22 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org,
@@ -53,9 +53,9 @@ Cc: qemu-rust@nongnu.org,
  pbonzini@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH 03/22] rust: add workspace authors
-Date: Wed, 27 Aug 2025 14:41:25 +0400
-Message-ID: <20250827104147.717203-4-marcandre.lureau@redhat.com>
+Subject: [PATCH 04/22] rust: make build.rs generic over various ./rust/projects
+Date: Wed, 27 Aug 2025 14:41:26 +0400
+Message-ID: <20250827104147.717203-5-marcandre.lureau@redhat.com>
 In-Reply-To: <20250827104147.717203-1-marcandre.lureau@redhat.com>
 References: <20250827104147.717203-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -72,7 +72,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,23 +90,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+Guess the name of the subdir from the manifest directory, instead of
+hard-coding it. In the following commits, other crates can then link to
+this file, instead of maintaining their own copy.
+
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- rust/Cargo.toml | 1 +
- 1 file changed, 1 insertion(+)
+ rust/qemu-api/build.rs | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/rust/Cargo.toml b/rust/Cargo.toml
-index 8b878775ce..15c80fdbf4 100644
---- a/rust/Cargo.toml
-+++ b/rust/Cargo.toml
-@@ -15,6 +15,7 @@ license = "GPL-2.0-or-later"
- repository = "https://gitlab.com/qemu-project/qemu/"
- # don't forget to update docs/devel/rust.rst msrv
- rust-version = "1.77.0"
-+authors = ["The QEMU Project Developers <qemu-devel@nongnu.org>"]
+diff --git a/rust/qemu-api/build.rs b/rust/qemu-api/build.rs
+index 29d0945625..92237183ec 100644
+--- a/rust/qemu-api/build.rs
++++ b/rust/qemu-api/build.rs
+@@ -9,12 +9,14 @@
+ use std::{env, fs::remove_file, io::Result, path::Path};
  
- [workspace.lints.rust]
- unexpected_cfgs = { level = "deny", check-cfg = [
+ fn main() -> Result<()> {
++    let manifest_dir = env!("CARGO_MANIFEST_DIR");
+     let file = if let Ok(root) = env::var("MESON_BUILD_ROOT") {
+-        format!("{root}/rust/qemu-api/bindings.inc.rs")
++        let sub = get_rust_subdir(manifest_dir).unwrap();
++        format!("{root}/{sub}/bindings.inc.rs")
+     } else {
+         // Placing bindings.inc.rs in the source directory is supported
+         // but not documented or encouraged.
+-        format!("{}/src/bindings.inc.rs", env!("CARGO_MANIFEST_DIR"))
++        format!("{}/src/bindings.inc.rs", manifest_dir)
+     };
+ 
+     let file = Path::new(&file);
+@@ -41,3 +43,7 @@ fn main() -> Result<()> {
+     println!("cargo:rerun-if-changed=build.rs");
+     Ok(())
+ }
++
++fn get_rust_subdir(path: &str) -> Option<&str> {
++    path.find("/rust").map(|index| &path[index + 1..])
++}
 -- 
 2.50.1
 
