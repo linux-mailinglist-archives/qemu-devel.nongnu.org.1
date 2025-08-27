@@ -2,34 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B07AB38631
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:18:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8690B385FE
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:14:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHhy-0004Kf-ET; Wed, 27 Aug 2025 11:05:06 -0400
+	id 1urHiH-0004cR-4l; Wed, 27 Aug 2025 11:05:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHhg-0003z5-5y; Wed, 27 Aug 2025 11:04:51 -0400
+ id 1urHhj-00040R-AU; Wed, 27 Aug 2025 11:04:53 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHhd-0004u7-TW; Wed, 27 Aug 2025 11:04:47 -0400
+ id 1urHhg-0004wj-TG; Wed, 27 Aug 2025 11:04:50 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9025414C53A;
+ by isrv.corpit.ru (Postfix) with ESMTP id A35FC14C53B;
  Wed, 27 Aug 2025 18:02:57 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7F171269842;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8D63F269843;
  Wed, 27 Aug 2025 18:03:24 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bibo Mao <maobibo@loongson.cn>,
- Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 18/59] target/loongarch: Fix valid virtual address
- checking
-Date: Wed, 27 Aug 2025 18:02:23 +0300
-Message-ID: <20250827150323.2694101-18-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Jonah Palmer <jonah.palmer@oracle.com>,
+ terrynini <terrynini38514@gmail.com>, Si-Wei Liu <si-wei.liu@oracle.com>,
+ Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 19/59] virtio: fix off-by-one and invalid access in
+ virtqueue_ordered_fill
+Date: Wed, 27 Aug 2025 18:02:24 +0300
+Message-ID: <20250827150323.2694101-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -58,55 +60,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Jonah Palmer <jonah.palmer@oracle.com>
 
-On LoongArch64 system, the high 32 bit of 64 bit virtual address should be
-0x00000[0-7]yyy or 0xffff8yyy. The bit from 47 to 63 should be all 0 or
-all 1.
+Commit b44135daa372 introduced virtqueue_ordered_fill for
+VIRTIO_F_IN_ORDER support but had a few issues:
 
-Function get_physical_address() only checks bit 48 to 63, there will be
-problem with the following test case. On physical machine, there is bus
-error report and program exits abnormally. However on qemu TCG system
-emulation mode, the program runs normally. The virtual address
-0xffff000000000000ULL + addr and addr are treated the same on TLB entry
-checking. This patch fixes this issue.
+* Conditional while loop used 'steps <= max_steps' but should've been
+  'steps < max_steps' since reaching steps == max_steps would indicate
+  that we didn't find an element, which is an error. Without this
+  change, the code would attempt to read invalid data at an index
+  outside of our search range.
 
-void main()
-{
-        void *addr, *addr1;
-        int val;
+* Incremented 'steps' using the next chain's ndescs instead of the
+  current one.
 
-        addr = malloc(100);
-        *(int *)addr = 1;
-        addr1 = 0xffff000000000000ULL + addr;
-        val = *(int *)addr1;
-        printf("val %d \n", val);
-}
+This patch corrects the loop bounds and synchronizes 'steps' and index
+increments.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Acked-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-ID: <20250714015446.746163-1-maobibo@loongson.cn>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-(cherry picked from commit caab7ac83507e3e9a5fe2f37be5cfa759e766ba2)
+We also add a defensive sanity check against malicious or invalid
+descriptor counts to avoid a potential infinite loop and DoS.
+
+Fixes: b44135daa372 ("virtio: virtqueue_ordered_fill - VIRTIO_F_IN_ORDER support")
+Reported-by: terrynini <terrynini38514@gmail.com>
+Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
+Message-Id: <20250721150208.2409779-1-jonah.palmer@oracle.com>
+Reviewed-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 6fcf5ebafad65adc19a616260ca7dc90005785d1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
-index 930466ca48..8c332d74a5 100644
---- a/target/loongarch/cpu_helper.c
-+++ b/target/loongarch/cpu_helper.c
-@@ -299,8 +299,8 @@ int get_physical_address(CPULoongArchState *env, hwaddr *physical,
-     }
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index ec54573feb..b756f49867 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -929,18 +929,18 @@ static void virtqueue_packed_fill(VirtQueue *vq, const VirtQueueElement *elem,
+ static void virtqueue_ordered_fill(VirtQueue *vq, const VirtQueueElement *elem,
+                                    unsigned int len)
+ {
+-    unsigned int i, steps, max_steps;
++    unsigned int i, steps, max_steps, ndescs;
  
-     /* Check valid extension */
--    addr_high = sextract64(address, TARGET_VIRT_ADDR_SPACE_BITS, 16);
--    if (!(addr_high == 0 || addr_high == -1)) {
-+    addr_high = (int64_t)address >> (TARGET_VIRT_ADDR_SPACE_BITS - 1);
-+    if (!(addr_high == 0 || addr_high == -1ULL)) {
-         return TLBRET_BADADDR;
-     }
+     i = vq->used_idx % vq->vring.num;
+     steps = 0;
+     /*
+-     * We shouldn't need to increase 'i' by more than the distance
+-     * between used_idx and last_avail_idx.
++     * We shouldn't need to increase 'i' by more than or equal to
++     * the distance between used_idx and last_avail_idx (max_steps).
+      */
+     max_steps = (vq->last_avail_idx - vq->used_idx) % vq->vring.num;
  
+     /* Search for element in vq->used_elems */
+-    while (steps <= max_steps) {
++    while (steps < max_steps) {
+         /* Found element, set length and mark as filled */
+         if (vq->used_elems[i].index == elem->index) {
+             vq->used_elems[i].len = len;
+@@ -948,8 +948,18 @@ static void virtqueue_ordered_fill(VirtQueue *vq, const VirtQueueElement *elem,
+             break;
+         }
+ 
+-        i += vq->used_elems[i].ndescs;
+-        steps += vq->used_elems[i].ndescs;
++        ndescs = vq->used_elems[i].ndescs;
++
++        /* Defensive sanity check */
++        if (unlikely(ndescs == 0 || ndescs > vq->vring.num)) {
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          "%s: %s invalid ndescs %u at position %u\n",
++                          __func__, vq->vdev->name, ndescs, i);
++            return;
++        }
++
++        i += ndescs;
++        steps += ndescs;
+ 
+         if (i >= vq->vring.num) {
+             i -= vq->vring.num;
 -- 
 2.47.2
 
