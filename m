@@ -2,137 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82308B3875C
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 18:08:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2000B386F6
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:50:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urIft-0004al-5H; Wed, 27 Aug 2025 12:07:01 -0400
+	id 1urIOP-0001Nr-2B; Wed, 27 Aug 2025 11:48:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1urIfq-0004a3-87
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 12:06:58 -0400
-Received: from mail-mw2nam04on2060e.outbound.protection.outlook.com
- ([2a01:111:f403:240a::60e]
- helo=NAM04-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1urIfm-0007iU-Ul
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 12:06:57 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v8Tt6ImqytEatHpggcmptivCbNAssW65yWJQA4AZebgRSEIXjsY9UeRAknPzzmYbBbwSazZgygIGJT0R5dL4gj9BvXwjNhClw89KlLLAAHkHLbyLKQAdv6HYgWMRib3479tMF83koy5x4+OfaowZLWXSKwuSycwOx4EuxkvF5WSC8w6EN8ACvLSFFswH8CApDlZUnok1iSSMRkgOFMqBxeBKI8X0voHii/WXFTrt4Par4MHpIOON4e1YQwc1zcGAYh1K6g5jKVgQoFWdTd+41rRY/W2mCCnIKepAFlBd7leDtJIWpgfftqDp6hjP79VdNZNibdc/1/q3gknkVN1xaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z0jHTs+OgwpIjOcyUahbDp7ZPCCSgr3DD056DpuPfc8=;
- b=JmkXt91vqTOMzZOz+bgt883bpkd2tzI4GEvEBoDWzC4s3JNsTy7y8THWsRY+91UUJgLyuarbTm9vV3d/lIQFirTUtwGkTuoNKGBbxHIteGNNmH5wZw7CMfOOeXaDMSfS2imqWYM96fD/0iVpAFUGl3/w7esE94aU+Sy9/ajJdWWA6wEucDws1xczeylWOdsfKl9EpobfG/wzDa8DJnBdUlp7iBc8RBJ/rVO11B8jNWChDCmIUr2nSqn1MHmx3wFbVb7SA6cA1uVZ3hPVLUo8RV48sY8fed6EGcgvCOsvkSPR878XmsZhOm1UJSIpq3Vncmd8oJQPYkTiAFiSzZoYsw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z0jHTs+OgwpIjOcyUahbDp7ZPCCSgr3DD056DpuPfc8=;
- b=FM9rhSEk9f4pF1tyXsCMn+qhgna0cctp5lQjaP9HvesRVQVINVfwCnBNj5dqFMqiNbx1nFwpy4ov3/brkNM47BHxXfnBF2RWhWn0H0iCVMvZFGTCj6zBb+ln/A+5bRY046k57VCwgqL6hP2W6bdXW4ioxPynSN0/1CzF6aMbvEk=
-Received: from SA9PR03CA0001.namprd03.prod.outlook.com (2603:10b6:806:20::6)
- by SA0PR12MB4413.namprd12.prod.outlook.com (2603:10b6:806:9e::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.13; Wed, 27 Aug
- 2025 16:06:49 +0000
-Received: from SA2PEPF00001508.namprd04.prod.outlook.com
- (2603:10b6:806:20:cafe::f9) by SA9PR03CA0001.outlook.office365.com
- (2603:10b6:806:20::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.14 via Frontend Transport; Wed,
- 27 Aug 2025 16:06:49 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF00001508.mail.protection.outlook.com (10.167.242.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9073.11 via Frontend Transport; Wed, 27 Aug 2025 16:06:48 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 27 Aug
- 2025 11:06:47 -0500
-Date: Wed, 27 Aug 2025 10:45:35 -0500
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-CC: Xiaoyao Li <xiaoyao.li@intel.com>, <qemu-devel@nongnu.org>, Stefan
- Hajnoczi <stefanha@redhat.com>
-Subject: Re: [ANNOUNCE] QEMU 10.1.0 is now available
-Message-ID: <20250827154535.sqeanvqc4bz3ccf5@amd.com>
-References: <175625036608.469964.4138433906168641553@amd.com>
- <4b53880f-cef2-421c-bdd2-5c963c316958@intel.com>
- <aK7Yl4c9ARijYz0S@redhat.com>
+ (Exim 4.90_1) (envelope-from <ankeesler@google.com>)
+ id 1urION-0001NY-7b
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 11:48:55 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ankeesler@google.com>)
+ id 1urIOK-0004uR-9H
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 11:48:54 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-55ce5243f6dso7493775e87.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 08:48:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1756309729; x=1756914529; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=BbuLO2coDQyaj7K2TF8p+6eb2pTXAry3II0nSqiYNqE=;
+ b=LVdV83j9EG5+6I/d+JdIbp3ExU0HoLUBwx+faO6LLTZ7A5e/UHMMebEw9Upjtx/uUl
+ oxjeEMFUqRsLEkD9dWUFhzfZxD+E/S4WgMxAdYadiG+8CLl5jItpOlc0dmE/qb8nv1i6
+ AzYih9A40cNJCbdiSmvrAm3mT1L0RTZgp605dS3IXYJZO+0WdF8P1eUJlTtxZNWrRhQS
+ YpFgTfuL302VS5OyamlwasZ/++H9g5diM86Xa376ATSDgAGDTEMOkUMzwc+BtOEs1JeN
+ jbLfkzlR/EwXdiKhX7Sdm+YmOrh6Z/ji/S9IPQH+Vum++U3gJZ31Jb0pcMsd66qASeBZ
+ nfKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756309729; x=1756914529;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BbuLO2coDQyaj7K2TF8p+6eb2pTXAry3II0nSqiYNqE=;
+ b=JOC4QhC2mpt0KyccwoiFh9sIvpHYczMAHEhkc1uqjnVOzWoJSNzqQpOc5esjMI/wTP
+ cImMBmePGPV4GIzpeEjKCQ48ZsO6KdCc7KEXz8gaK0q84dqUd0GidGx0iszY5L+vrRFw
+ x09QARZdF6NThrj6AMAqv4bHufSKq4ih02HQSA/AnGjaLdkoR92FPCV2vBNk1Pvm/+hK
+ SeqzTT0/pyGG32444QhlDJbVOAqqLNcw04gXhdVeyavNslBjlL/7Oo+C2fZ4EIVdVVsw
+ 3jdDwQA5i3pdUVN8HIPHYqMldUnBMoMv1h6PkdHK8rrPKlFXsrIDm0VuyktE3D7DUwxm
+ hBpQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWLc0T3REYAXPP3kP60P0guxRM7IRsAdDZUR0PJmP+6kzmR2fsqmlcF3NJtvzJR1KET6ThhffzZ+tjN@nongnu.org
+X-Gm-Message-State: AOJu0YwLp9CqWkLfcdn0lMEZZf8nkUNocs4xKak2JrYQmAnPx2epPPTc
+ RKqHNwegpjnnurV9HP94/O42JDsszLVQ+hxKOU8G4hEqumV5d0NbP34MmQiPGttx6wMToy1Y6Pe
+ LhTP4Vkqtl9m4dgzuisGnUmfQ1MAPviIE1LRTeIM=
+X-Gm-Gg: ASbGncvKMkVFSpXKcYdUHTufP5HMFPiqoJtq6EqShSsQTVW2I7rEQEP8Mvb1HnK7Xgk
+ 4VDKNRpy+UkmRJca+rgJSkTDsVsMQtVR9ft3YaeuLlCYY7gLF3wgKUuwFtEGyuk3L19ezLF/LUc
+ ss8eLVhJtD8FLLT19t7aXrU3jGnklF2iiBIxT/0+dMFYCGx+UWjNAvfJFgjIMsitxdKUE0wZ8Uh
+ RKejzh8UM1UNay5Jp9i6lwECYPt+5xQJSU02ORW0A==
+X-Google-Smtp-Source: AGHT+IEiSCgHX2MjSDHEjmdWJYYRHhT1CWHrycwL5ApS+LVdJTC2RKfBr8+kXvrwSusjbWTEwjVEQaRsVmDfgRKGFd8=
+X-Received: by 2002:a05:6512:6410:b0:55b:7582:28d0 with SMTP id
+ 2adb3069b0e04-55f0c6b4ed3mr5282966e87.21.1756309729023; Wed, 27 Aug 2025
+ 08:48:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aK7Yl4c9ARijYz0S@redhat.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001508:EE_|SA0PR12MB4413:EE_
-X-MS-Office365-Filtering-Correlation-Id: 163ee735-088e-4e10-4f4e-08dde583ba63
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|82310400026|376014|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?jw0qy1u/XwnbNtTtavuzUl7t/VjFoN0iebPaFBbgOHr1vjPAl4/CGoYH4e?=
- =?iso-8859-1?Q?3/Dfp/tYiGgZBvNy9k1XEksS4d7CZEHVNT8pdtzpe/1iu6rhWziSLTlsUk?=
- =?iso-8859-1?Q?Ewa7nbdA9q6fnnZpliXuttpgDv8SntC8CWvkX1ZS+jpwW9lzrld+Zl3ymU?=
- =?iso-8859-1?Q?i6pAz6g/kj62X62anhqTzlr4JNsO7LyxtpmoIpV7l1gLb3nwe3UZB+KxoP?=
- =?iso-8859-1?Q?TWu0VzbtH9hfwQaGm3jWw7PHV7qm7Gt8dSSA/6zGHLI8JdDwv4RIGV452i?=
- =?iso-8859-1?Q?lf1I2jBtss0Mv5ordv4jD1NftSikRgfTlvvyy9OzYQm8ar143zoMDCZgHH?=
- =?iso-8859-1?Q?dEuYiPskOrEbTyNRjihfz3XSi61+D3DBMUTpgF00j6MgIA2tssOJwaxq1/?=
- =?iso-8859-1?Q?h7LAKd4SkxPHmvoDHNTwy1hFmyOMBwq4GYYnGbxirK69FRuSzv1zhBiZRi?=
- =?iso-8859-1?Q?kXLhNuC4h8otyKjqrhYwkuwiBeKsnaV6wSHhoDAJonN0l0xILNxNUOQIXM?=
- =?iso-8859-1?Q?wRjS2wrr0K56CpUkM7uzP8/cNo20cw7bfzngZhu7iu7eg+7ErkoNN5dr4X?=
- =?iso-8859-1?Q?Os68sg+r7+xt7ck5D/uvxurGkFjD9VElUGOw70kAJeUbimqkDnip3rdz+k?=
- =?iso-8859-1?Q?a8z9Eod7lgSLYWvHy0Itrh8v2h/xMtkbMuPD/U+MNG+5DcMeBfdkHIBIZB?=
- =?iso-8859-1?Q?HLELbl4q5cVfxVkt92jFXtd3OKZW+Hb/Yx/gHXMSSV+2+1/RV9UmhAsplK?=
- =?iso-8859-1?Q?phYx/Ps6YTD6Cu0rs32zooEpidk9tfvM9da7e5AXNkepp4OPUXFiU0F9Do?=
- =?iso-8859-1?Q?8X9oHp4kW7HodOw+uavGeLBz6t/RNGaP5juRvN3iNfaQe3ZdKupWHxxB4O?=
- =?iso-8859-1?Q?b0tE+ZhzzSLNTmFf/Eb/SHO9iPFSGP/5Ltclu2sTnOHkMG5q6AZE1DtOgb?=
- =?iso-8859-1?Q?thNvywWkEbaCmm6Gusiidg0RweHSkrTbyGqsjKhf782oVJjvdfI6nOQymV?=
- =?iso-8859-1?Q?gbSiNpEWlZEpHCUahYjlHYJtag4TxB0CRguaWKNhET3FisZqUa8qSFpEa2?=
- =?iso-8859-1?Q?7Xm9MPHNTThhwxh5PBNPi8e1++7M7Tutjdth9LYe0fHXICRQqgMj1+Plwc?=
- =?iso-8859-1?Q?bROslDiPou4lF8OaPedxrFPUd9C8grSDBQAvR4atU0TWTEDRvMlyp4UgmJ?=
- =?iso-8859-1?Q?S1zobTBEWvOK9e5JALEHDXeD3oS+7rQAY82ip0pP7TRQyDoRzLTqGK90LI?=
- =?iso-8859-1?Q?ukcIXhM8YdeoNExOm+JhqXA6MQDkj6ix4BkMSrkGLNuljLSh4ITWvnoRlE?=
- =?iso-8859-1?Q?qGV7Gek6OXrZEEufSsLmeyPMSBBCTl/4N8nUu7sxPy3CXyz0oQoMHsFXWG?=
- =?iso-8859-1?Q?SduFC68krVCCq9ZpOEq1S9/VrAOTi6PMv8NaR4IvwZR9y+q2FoDv7j5ATy?=
- =?iso-8859-1?Q?qLqWsIgfv5qhsESNZ58FMfEciFDE8uZvqsPF/K6LLXxGtbh68QpB2Y3BYf?=
- =?iso-8859-1?Q?b9o/Bf/GDLAlXPhgatQ1RBhzCakcmFAMS+yNYS/fsBUg=3D=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 16:06:48.6348 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 163ee735-088e-4e10-4f4e-08dde583ba63
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00001508.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4413
-Received-SPF: permerror client-ip=2a01:111:f403:240a::60e;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM04-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20250722190824.3419413-1-ankeesler@google.com>
+ <20250722190824.3419413-2-ankeesler@google.com> <aK8MHGgp-Dm_Lkmb@redhat.com>
+In-Reply-To: <aK8MHGgp-Dm_Lkmb@redhat.com>
+From: Andrew Keesler <ankeesler@google.com>
+Date: Wed, 27 Aug 2025 11:48:34 -0400
+X-Gm-Features: Ac12FXy2ircp5It8o5FsCCNFm-pwb1KalSyjndggnkCxk4JaTh9XVy2lpi-OPDU
+Message-ID: <CAGZECHOL=v50aV0vcCHdFxb69TmH7mXry2NEhu+EZZnWztRO-A@mail.gmail.com>
+Subject: Re: [PATCH 1/1] hw/display: Support per-head resolutions with
+ virtio-gpu
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: marcandre.lureau@gmail.com, qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="00000000000083dd24063d5ab929"
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=ankeesler@google.com; helo=mail-lf1-x136.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,38 +92,438 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Michael Roth <michael.roth@amd.com>
-From:  Michael Roth via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 27, 2025 at 11:06:15AM +0100, Daniel P. Berrangé wrote:
-> On Wed, Aug 27, 2025 at 09:40:29AM +0800, Xiaoyao Li wrote:
-> > On 8/27/2025 7:19 AM, Michael Roth wrote:
-> > >   * x86: Support for initializing confidential TDX or SEV-SNP virtual
-> > >     machines using the IGVM file format
-> > 
-> > Can IGVM really work for TDX?
-> 
-> I doubt it. Early versions of the IGVM patches had some TDX code in them,
-> but this was all removed since QEMU lacked TDX support, and I don't see
-> any TDX references re-added to the IGVM code in QEMU that was merged.
+--00000000000083dd24063d5ab929
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-That's unfortunate. I'd pulled that from https://wiki.qemu.org/ChangeLog/10.1
-but looking through the code I indeed only see SEV enablement, so maybe that
-changelog entry was out of sync with what actually went upstream.
+Sending again (replying all this time).
 
-The ship has sailed on the announcement email obviously but I'll fix it up in
-the blog post at least.
+> IIUC from the current code, xres/yres are only set against the
+> first head. The 2nd and later heads are left undefined by the
+> virtio-gpu-base code at least - I'm unclear if something else
+> in QEMU will fill in defaults later, or if they set to 0x0.
 
--Mike
+That is correct - xres/yres are only set against the first head in the
+current code. The wording in my commit message (and cover letter) was
+misleading. I will fix that to say that "If no
+virtio_gpu_base_conf.outputs are provided,
+virtio_gpu_base_conf.xres/virtio_gpu_base_conf.yres will still be
+respected _for the first head_ for backwards compatibility".
 
-> 
+The only way I could get QEMU to fill in xres/yres for a 2nd and later
+head was to trigger virtio_gpu_ops.ui_info via a VNC client.
+
+> Is it relevant to set xres/yres on outputs, even when they are
+> not (yet) enabled ?  Perhaps we should have an explicit 'enabled: bool'
+> property in the 'outputs' struct ?
+
+Maybe you might want to set xres/yres on an output, but not enable it
+yet? I don't have any concrete examples of when you might want to do
+that, maybe you have some examples?
+
+I feel like I could see a user setting xres/yres on an output,
+forgetting to set enabled on that output, and then being confused why
+their head is blank. Because of this, my vote would be to default to
+enabling an output when it has configuration. I am easily swayed by
+your guidance, though.
+
+> I think we should probably report an error if xres / yres
+> are set at the global level and also set against any individual
+> output, so the two approaches are mutually exclusive.
+
+ACK - fixed for the next patch.
+
+> Sorry, we missed the boat for 10.1, so these two new properties
+> will require an explicit "Since 10.2" tag against them, separate
+> from the overall struct versrion below.
+
+ACK - fixed for the next patch.
+
+> This is a backcompat problem, because xres/yres are mandatory if
+> 'outputs' is present.
+
+ACK - fixed for the next patch.
+
+On Wed, Aug 27, 2025 at 9:46=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com>
+wrote:
+
+> On Tue, Jul 22, 2025 at 07:08:24PM +0000, Andrew Keesler wrote:
+> > In 454f4b0f, we started down the path of supporting separate
+> > configurations per display head (e.g., you have 2 heads - one with
+> > EDID name "AAA" and the other with EDID name "BBB").
+> >
+> > In this change, we add resolution to this configuration surface (e.g.,
+> > you have 2 heads - one with resolution 111x222 and the other with
+> > resolution 333x444).
+> >
+> >   -display vnc=3Dlocalhost:0,id=3Daaa,display=3Dvga,head=3D0 \
+> >   -display vnc=3Dlocalhost:1,id=3Dbbb,display=3Dvga,head=3D1 \
+> >   -device '{"driver":"virtio-vga",
+> >             "max_outputs":2,
+> >             "id":"vga",
+> >             "outputs":[
+> >               {
+> >                  "name":"AAA",
+> >                  "xres":111,
+> >                  "yres":222
+> >               },
+> >               {
+> >                  "name":"BBB",
+> >                  "xres":333,
+> >                  "yres":444
+> >               }
+> >             ]}'
+> >
+> > If no virtio_gpu_base_conf.outputs are provided, then
+> > virtio_gpu_base_conf.xres/virtio_gpu_base_conf.yres will still be
+> > respected, preserving backwards compatibility.
+>
+> IIUC from the current code, xres/yres are only set against the
+> first head. The 2nd and later heads are left undefined by the
+> virtio-gpu-base code at least - I'm unclear if something else
+> in QEMU will fill in defaults later, or if they set to 0x0.
+>
+> > Otherwise, if any virtio_gpu_base_conf.outputs are provided, then
+> > virtio_gpu_base_conf.outputs.xres/virtio_gpu_base_conf.outputs.yres
+> > will take precedence. In this case,
+> > virtio_gpu_base_conf.outputs.xres/virtio_gpu_base_conf.outputs.yres
+> > must be non-zero.
+>
+> Makes sense.
+>
+> > Signed-off-by: Andrew Keesler <ankeesler@google.com>
+> > ---
+> >  hw/display/virtio-gpu-base.c | 12 ++++++++++++
+> >  qapi/virtio.json             |  6 +++++-
+> >  2 files changed, 17 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.=
+c
+> > index 7269477a1c..1fc879cc93 100644
+> > --- a/hw/display/virtio-gpu-base.c
+> > +++ b/hw/display/virtio-gpu-base.c
+> > @@ -206,6 +206,10 @@ virtio_gpu_base_device_realize(DeviceState *qdev,
+> >                         node->value->name, EDID_NAME_MAX_LENGTH);
+> >              return false;
+> >          }
+> > +        if (node->value && !(node->value->xres && node->value->yres)) =
+{
+> > +            error_setg(errp, "invalid resolution =3D=3D 0");
+> > +            return false;
+> > +        }
+> >      }
+> >
+> >      if (virtio_gpu_virgl_enabled(g->conf)) {
+> > @@ -233,6 +237,14 @@ virtio_gpu_base_device_realize(DeviceState *qdev,
+> >      g->req_state[0].width =3D g->conf.xres;
+> >      g->req_state[0].height =3D g->conf.yres;
+> >
+> > +    for (output_idx =3D 0, node =3D g->conf.outputs;
+> > +         node && output_idx < g->conf.max_outputs;
+> > +         output_idx++, node =3D node->next) {
+> > +        g->enabled_output_bitmask |=3D (1 << output_idx);
+>
+> This change means that all heads are enabled by default if the 'outputs'
+> property array is set, which is a semantic difference from the previous
+> behaviour before xres/yres are added as properties.
+>
+> Is it relevant to set xres/yres on outputs, even when they are
+> not (yet) enabled ?  Perhaps we should have an explicit 'enabled: bool'
+> property in the 'outputs' struct ?
+>
+> > +        g->req_state[output_idx].width =3D node->value->xres;
+> > +        g->req_state[output_idx].height =3D node->value->yres;
+> > +    }
+>
+> For head 0, this is overwriting the defaults set a few lines
+> earlier.
+>
+> I think we should probably report an error if xres / yres
+> are set at the global level and also set against any individual
+> output, so the two approaches are mutually exclusive.
+>
+> >      g->hw_ops =3D &virtio_gpu_ops;
+> >      for (i =3D 0; i < g->conf.max_outputs; i++) {
+> >          g->scanout[i].con =3D
+> > diff --git a/qapi/virtio.json b/qapi/virtio.json
+> > index 9d652fe4a8..36581690c7 100644
+> > --- a/qapi/virtio.json
+> > +++ b/qapi/virtio.json
+> > @@ -970,11 +970,15 @@
+> >  #
+> >  # @name: the name of the output
+> >  #
+> > +# @xres: horizontal resolution of the output in pixels
+> > +#
+> > +# @yres: vertical resolution of the output in pixels
+> > +#
+>
+> Sorry, we missed the boat for 10.1, so these two new properties
+> will require an explicit "Since 10.2" tag against them, separate
+> from the overall struct versrion below.
+>
+> >  # Since: 10.1
+> >  ##
+> >
+> >  { 'struct': 'VirtIOGPUOutput',
+> > -  'data': { 'name': 'str' } }
+> > +  'data': { 'name': 'str', 'xres': 'uint16', 'yres': 'uint16' } }
+>
+> This is a backcompat problem, because xres/yres are mandatory if
+> 'outputs' is present.
+>
+> $ ./qemu-system-x86_64 -device
+> '{"driver":"virtio-vga","outputs":[{"name":"AAA"},{"name":"BBB"}],"max_ou=
+tputs":2,"id":"v0"}'
+> qemu-system-x86_64: -device
+> {"driver":"virtio-vga","outputs":[{"name":"AAA"},{"name":"BBB"}],"max_out=
+puts":2,"id":"v0"}:
+> Parameter 'outputs[0].xres' is missing
+>
+> These need to be marked optional, to be compatible with existing use
+> of 'outputs' from the 10.1.0 release.
+>
 > With regards,
 > Daniel
-> -- 
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-> 
+> --
+> |: https://berrange.com      -o-
+> https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-
+> https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-
+> https://www.instagram.com/dberrange :|
+>
+>
+
+--00000000000083dd24063d5ab929
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Sending again (replying all this time).</div><div><br=
+></div>&gt; IIUC from the current code, xres/yres are only set against the<=
+br>&gt; first head. The 2nd and later heads are left undefined by the<br>&g=
+t; virtio-gpu-base code at least - I&#39;m unclear if something else<br>&gt=
+; in QEMU will fill in defaults later, or if they set to 0x0.<br><br>That i=
+s correct - xres/yres are only set against the first head in the<br>current=
+ code. The wording in my commit message (and cover letter) was<br>misleadin=
+g. I will fix that to say that &quot;If no<br>virtio_gpu_base_conf.outputs =
+are provided,<br>virtio_gpu_base_conf.xres/virtio_gpu_base_conf.yres will s=
+till be<br>respected _for the first head_ for backwards compatibility&quot;=
+.<br><br>The only way I could get QEMU to fill in xres/yres for a 2nd and l=
+ater<br>head was to trigger virtio_gpu_ops.ui_info via a VNC client.<br><br=
+>&gt; Is it relevant to set xres/yres on outputs, even when they are<br>&gt=
+; not (yet) enabled ?=C2=A0 Perhaps we should have an explicit &#39;enabled=
+: bool&#39;<br>&gt; property in the &#39;outputs&#39; struct ?<br><br>Maybe=
+ you might want to set xres/yres on an output, but not enable it<br>yet? I =
+don&#39;t have any concrete examples of when you might want to do<br>that, =
+maybe you have some examples?<br><br>I feel like I could see a user setting=
+ xres/yres on an output,<br>forgetting to set enabled on that output, and t=
+hen being confused why<br>their head is blank. Because of this, my vote wou=
+ld be to default to<br>enabling an output when it has configuration. I am e=
+asily swayed by<br>your guidance, though.<br><br>&gt; I think we should pro=
+bably report an error if xres / yres<br>&gt; are set at the global level an=
+d also set against any individual<br>&gt; output, so the two approaches are=
+ mutually exclusive.<br><br>ACK - fixed for the next patch.<br><br>&gt; Sor=
+ry, we missed the boat for 10.1, so these two new properties<br>&gt; will r=
+equire an explicit &quot;Since 10.2&quot; tag against them, separate<br>&gt=
+; from the overall struct versrion below.<br><br>ACK - fixed for the next p=
+atch.<br><br>&gt; This is a backcompat problem, because xres/yres are manda=
+tory if<br>&gt; &#39;outputs&#39; is present.<br><br>ACK - fixed for the ne=
+xt patch.</div><br><div class=3D"gmail_quote gmail_quote_container"><div di=
+r=3D"ltr" class=3D"gmail_attr">On Wed, Aug 27, 2025 at 9:46=E2=80=AFAM Dani=
+el P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.com">berrange@red=
+hat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"=
+margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-lef=
+t:1ex">On Tue, Jul 22, 2025 at 07:08:24PM +0000, Andrew Keesler wrote:<br>
+&gt; In 454f4b0f, we started down the path of supporting separate<br>
+&gt; configurations per display head (e.g., you have 2 heads - one with<br>
+&gt; EDID name &quot;AAA&quot; and the other with EDID name &quot;BBB&quot;=
+).<br>
+&gt; <br>
+&gt; In this change, we add resolution to this configuration surface (e.g.,=
+<br>
+&gt; you have 2 heads - one with resolution 111x222 and the other with<br>
+&gt; resolution 333x444).<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0-display vnc=3Dlocalhost:0,id=3Daaa,display=3Dvga,head=3D0=
+ \<br>
+&gt;=C2=A0 =C2=A0-display vnc=3Dlocalhost:1,id=3Dbbb,display=3Dvga,head=3D1=
+ \<br>
+&gt;=C2=A0 =C2=A0-device &#39;{&quot;driver&quot;:&quot;virtio-vga&quot;,<b=
+r>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;max_outputs&quot;=
+:2,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;id&quot;:&quot;vg=
+a&quot;,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;outputs&quot;:[<b=
+r>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0{<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;na=
+me&quot;:&quot;AAA&quot;,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;xr=
+es&quot;:111,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;yr=
+es&quot;:222<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0},<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0{<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;na=
+me&quot;:&quot;BBB&quot;,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;xr=
+es&quot;:333,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;yr=
+es&quot;:444<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0]}&#39;<br>
+&gt; <br>
+&gt; If no virtio_gpu_base_conf.outputs are provided, then<br>
+&gt; virtio_gpu_base_conf.xres/virtio_gpu_base_conf.yres will still be<br>
+&gt; respected, preserving backwards compatibility.<br>
+<br>
+IIUC from the current code, xres/yres are only set against the<br>
+first head. The 2nd and later heads are left undefined by the<br>
+virtio-gpu-base code at least - I&#39;m unclear if something else<br>
+in QEMU will fill in defaults later, or if they set to 0x0.<br>
+<br>
+&gt; Otherwise, if any virtio_gpu_base_conf.outputs are provided, then<br>
+&gt; virtio_gpu_base_conf.outputs.xres/virtio_gpu_base_conf.outputs.yres<br=
+>
+&gt; will take precedence. In this case,<br>
+&gt; virtio_gpu_base_conf.outputs.xres/virtio_gpu_base_conf.outputs.yres<br=
+>
+&gt; must be non-zero.<br>
+<br>
+Makes sense.<br>
+<br>
+&gt; Signed-off-by: Andrew Keesler &lt;<a href=3D"mailto:ankeesler@google.c=
+om" target=3D"_blank">ankeesler@google.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 hw/display/virtio-gpu-base.c | 12 ++++++++++++<br>
+&gt;=C2=A0 qapi/virtio.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+|=C2=A0 6 +++++-<br>
+&gt;=C2=A0 2 files changed, 17 insertions(+), 1 deletion(-)<br>
+&gt; <br>
+&gt; diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base=
+.c<br>
+&gt; index 7269477a1c..1fc879cc93 100644<br>
+&gt; --- a/hw/display/virtio-gpu-base.c<br>
+&gt; +++ b/hw/display/virtio-gpu-base.c<br>
+&gt; @@ -206,6 +206,10 @@ virtio_gpu_base_device_realize(DeviceState *qdev,=
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0node-&gt;value-&gt;name, EDID_NAME_MAX_LENGTH);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return false;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (node-&gt;value &amp;&amp; !(node-&gt;=
+value-&gt;xres &amp;&amp; node-&gt;value-&gt;yres)) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg(errp, &quot;inva=
+lid resolution =3D=3D 0&quot;);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return false;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 if (virtio_gpu_virgl_enabled(g-&gt;conf)) {<br>
+&gt; @@ -233,6 +237,14 @@ virtio_gpu_base_device_realize(DeviceState *qdev,=
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 g-&gt;req_state[0].width =3D g-&gt;conf.xres;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 g-&gt;req_state[0].height =3D g-&gt;conf.yres;<br>
+&gt;=C2=A0 <br>
+&gt; +=C2=A0 =C2=A0 for (output_idx =3D 0, node =3D g-&gt;conf.outputs;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0node &amp;&amp; output_idx &lt; g-&=
+gt;conf.max_outputs;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0output_idx++, node =3D node-&gt;nex=
+t) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 g-&gt;enabled_output_bitmask |=3D (1 &lt;=
+&lt; output_idx);<br>
+<br>
+This change means that all heads are enabled by default if the &#39;outputs=
+&#39;<br>
+property array is set, which is a semantic difference from the previous<br>
+behaviour before xres/yres are added as properties.<br>
+<br>
+Is it relevant to set xres/yres on outputs, even when they are<br>
+not (yet) enabled ?=C2=A0 Perhaps we should have an explicit &#39;enabled: =
+bool&#39;<br>
+property in the &#39;outputs&#39; struct ?<br>
+<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 g-&gt;req_state[output_idx].width =3D nod=
+e-&gt;value-&gt;xres;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 g-&gt;req_state[output_idx].height =3D no=
+de-&gt;value-&gt;yres;<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+<br>
+For head 0, this is overwriting the defaults set a few lines<br>
+earlier.<br>
+<br>
+I think we should probably report an error if xres / yres<br>
+are set at the global level and also set against any individual<br>
+output, so the two approaches are mutually exclusive.<br>
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 g-&gt;hw_ops =3D &amp;virtio_gpu_ops;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 for (i =3D 0; i &lt; g-&gt;conf.max_outputs; i++) =
+{<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 g-&gt;scanout[i].con =3D<br>
+&gt; diff --git a/qapi/virtio.json b/qapi/virtio.json<br>
+&gt; index 9d652fe4a8..36581690c7 100644<br>
+&gt; --- a/qapi/virtio.json<br>
+&gt; +++ b/qapi/virtio.json<br>
+&gt; @@ -970,11 +970,15 @@<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # @name: the name of the output<br>
+&gt;=C2=A0 #<br>
+&gt; +# @xres: horizontal resolution of the output in pixels<br>
+&gt; +#<br>
+&gt; +# @yres: vertical resolution of the output in pixels<br>
+&gt; +#<br>
+<br>
+Sorry, we missed the boat for 10.1, so these two new properties<br>
+will require an explicit &quot;Since 10.2&quot; tag against them, separate<=
+br>
+from the overall struct versrion below.<br>
+<br>
+&gt;=C2=A0 # Since: 10.1<br>
+&gt;=C2=A0 ##<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 { &#39;struct&#39;: &#39;VirtIOGPUOutput&#39;,<br>
+&gt; -=C2=A0 &#39;data&#39;: { &#39;name&#39;: &#39;str&#39; } }<br>
+&gt; +=C2=A0 &#39;data&#39;: { &#39;name&#39;: &#39;str&#39;, &#39;xres&#39=
+;: &#39;uint16&#39;, &#39;yres&#39;: &#39;uint16&#39; } }<br>
+<br>
+This is a backcompat problem, because xres/yres are mandatory if<br>
+&#39;outputs&#39; is present.<br>
+<br>
+$ ./qemu-system-x86_64 -device &#39;{&quot;driver&quot;:&quot;virtio-vga&qu=
+ot;,&quot;outputs&quot;:[{&quot;name&quot;:&quot;AAA&quot;},{&quot;name&quo=
+t;:&quot;BBB&quot;}],&quot;max_outputs&quot;:2,&quot;id&quot;:&quot;v0&quot=
+;}&#39;<br>
+qemu-system-x86_64: -device {&quot;driver&quot;:&quot;virtio-vga&quot;,&quo=
+t;outputs&quot;:[{&quot;name&quot;:&quot;AAA&quot;},{&quot;name&quot;:&quot=
+;BBB&quot;}],&quot;max_outputs&quot;:2,&quot;id&quot;:&quot;v0&quot;}: Para=
+meter &#39;outputs[0].xres&#39; is missing<br>
+<br>
+These need to be marked optional, to be compatible with existing use<br>
+of &#39;outputs&#39; from the 10.1.0 release.<br>
+<br>
+With regards,<br>
+Daniel<br>
+-- <br>
+|: <a href=3D"https://berrange.com" rel=3D"noreferrer" target=3D"_blank">ht=
+tps://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D"http=
+s://www.flickr.com/photos/dberrange" rel=3D"noreferrer" target=3D"_blank">h=
+ttps://www.flickr.com/photos/dberrange</a> :|<br>
+|: <a href=3D"https://libvirt.org" rel=3D"noreferrer" target=3D"_blank">htt=
+ps://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com" rel=3D"n=
+oreferrer" target=3D"_blank">https://fstop138.berrange.com</a> :|<br>
+|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer" target=3D"_bla=
+nk">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D=
+"https://www.instagram.com/dberrange" rel=3D"noreferrer" target=3D"_blank">=
+https://www.instagram.com/dberrange</a> :|<br>
+<br>
+</blockquote></div>
+
+--00000000000083dd24063d5ab929--
 
