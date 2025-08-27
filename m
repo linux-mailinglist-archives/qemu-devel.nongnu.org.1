@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E12B38983
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 20:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 276D3B38996
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 20:31:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urKqk-0004qK-JC; Wed, 27 Aug 2025 14:26:22 -0400
+	id 1urKsM-00067M-Dc; Wed, 27 Aug 2025 14:28:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1urKqb-0004jU-20
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1urKqy-000513-BQ
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1urKqX-0005nw-8P
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:11 -0400
+ id 1urKqj-0005qG-BI
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 14:26:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756319165;
+ s=mimecast20190719; t=1756319175;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zcf8TqjQ3/yb5B8qCAtMZmdycxDGMaqAUOgRT7KKKOI=;
- b=UJiC3IJLKQ3IVj8wslx+2MKAc2tn3dN1FnzlnBV1sVv7iTtjX2AyzrYrveidjj5pzO2AnU
- Qrr70kAiwQnbczLLQc00Q0o+buDQJt1odAKmqwEAUYFK6oA6o7QzQVmDU+b45PlwV43DvM
- R3UWG+nIpwxkjK4DvUqvvlk3UCnvKTs=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3/uc1qYC35Kqg7WBhThcqVbG6uu5j1gWEoCb6hPoniI=;
+ b=Mge2+KcWGWC6RV7QfotuJuD1zU5sZIujzkFz/jX7Znb17gNonXL7Re3v3+TYUoE1x6fpLz
+ zA/miT8jO17EZuJZd8LzUU2CzYX94SjPbqNhWQy0x+Dugh5Y4EnPBzXDGk0YzfcKh/InvX
+ znqBEmBm2y5tlSphldq0NEIVsUn/3Qg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-520-vxIS8HAIOiumjZOAiiTGqw-1; Wed, 27 Aug 2025 14:26:03 -0400
-X-MC-Unique: vxIS8HAIOiumjZOAiiTGqw-1
-X-Mimecast-MFC-AGG-ID: vxIS8HAIOiumjZOAiiTGqw_1756319162
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-45b51411839so652805e9.0
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 11:26:02 -0700 (PDT)
+ us-mta-149-SIqtEin8NgqXan5g3NMgHA-1; Wed, 27 Aug 2025 14:26:12 -0400
+X-MC-Unique: SIqtEin8NgqXan5g3NMgHA-1
+X-Mimecast-MFC-AGG-ID: SIqtEin8NgqXan5g3NMgHA_1756319170
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-45a1b0b14daso442565e9.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 11:26:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756319161; x=1756923961;
+ d=1e100.net; s=20230601; t=1756319165; x=1756923965;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zcf8TqjQ3/yb5B8qCAtMZmdycxDGMaqAUOgRT7KKKOI=;
- b=ezgVioqD0mq/xgeJRvnwpIWZi/c+peIrEPlM8z5c4OKkkXCvqaBuwbzLnRcq3oe0xs
- epNX/58+LpuPX8B/jjClKSAWzqhvn1RoCI7nz6mkkX7ju3M+gOBMi/KNXTJOjDSEGnBz
- jPgtXradH+MVfMGon389WLvR8gWVrFXqvKEArhilmepCDcxe2ed3/iVv8XKYnG/lNuVw
- zhSl0C8J6FyxTLgp/etSnCftrryS8qo/nBfF7uOmssXVHS+8TMo4g6HEtdqnHtqmcQ8z
- 9KVYiwsQ0kKJxTvyfeeSiXObc7xkMd1ejsaw35Hbfz2+BvEUlCqJ4ZKEu/LTQHvjNhPc
- LazA==
-X-Gm-Message-State: AOJu0YyT9hw3Ft+1Il7j8ktA91iKtpgdyHP9SNeK0BEywh//YUozQ+Ke
- NKqavUNZLvPbupVK2s8MyzymIFt0BapMvIkT7ivb65q79PjmaC5q341LSao64zHARqlWh8WYOLx
- fkZRdoUJhFEogEQDy7I4nVbw2xDKcVp0QmLEQ9ALigRlXdL5vK77y1I/3HuYyviralucsaH+jr5
- X2+DlEgpajizLm/bOO/PuNwstf3xC+jkBWwJbafrHL
-X-Gm-Gg: ASbGncuWclG5uPMtNooDGLgY/rtzwGAJs0RvXAmpTrL6d26mHnrVrWYE6fgWPURFFXy
- 4AiDHrN0ygYmipF6GSvDAz22/98X5/fQVoYjVY48c7PthdzNb4MRIF/gPNPqgyznDBXhXV+7S13
- 7NZG2fNkNG6tCseKU7zvSyvUdTDTii1MQCUntGTZhd4bH+CC2hdDZaGKDGhvM/sLrnAgFOmmCfD
- MtDFYD29yBemnAT8PQS+wV1tZVjmqpGqA1xmkjME7/QJPiDd6ETHeExczGJeda9+tNilBm7esO3
- HII6Ve3ysriBOhtdCCPQr9M2pRbOfcV1DOSO6v8NCCTYmBDQ21tIqhJufd9gaAnArFzlYKPXzGG
- 4dBA+6VY/jRqBhlvQvPTfITs/xdrWaMyW2HziEEn98wU=
-X-Received: by 2002:a05:600c:1c23:b0:459:d9a2:e92d with SMTP id
- 5b1f17b1804b1-45b57d530b8mr147297645e9.5.1756319160967; 
- Wed, 27 Aug 2025 11:26:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFAESM1hvvADAtV4o1RJO12uttPD6Ve4etAhTTuf7HneCqEJx6M52AXNuC4wdhresoYSl7ERw==
-X-Received: by 2002:a05:600c:1c23:b0:459:d9a2:e92d with SMTP id
- 5b1f17b1804b1-45b57d530b8mr147297515e9.5.1756319160468; 
- Wed, 27 Aug 2025 11:26:00 -0700 (PDT)
+ bh=3/uc1qYC35Kqg7WBhThcqVbG6uu5j1gWEoCb6hPoniI=;
+ b=EmBhF/+KyST0oSQrW5lON/cjT/gR0KmH3m7KxzBdhHc6rvKpp0f63v0zawIJjbB3Cz
+ S2ToQ28OAr9JIJLd8lAAvnLtOVGO0aPWLAsZXsIxKudpMG9ivARFQ3/1fudPRr8ZKyDY
+ 1M+o1ciMeW83lrqCWtJsuOnM0GC//ZOQXSnTSX7Q0YdqVD7JtoT5wWUL17dgVWPOn2ec
+ MpBmQJIqHoZAlRm2sOAHfMoeuQ+Ibm5gXP7J8AenjkAuLJH8boDpmRBnPyU6swNf86+y
+ rrPi2zqeq7ejToUETDuWhvu8u5UhTrqUnI+siNE/KaMipM79QjculmTOEZbOE9qFsqGM
+ rgQg==
+X-Gm-Message-State: AOJu0YxtpUA+CiZxY+3f37cvKg7sUMltCer8fLdDbSIT4k5OcNiQqure
+ M8W3/+6NvWhm25buINqxtCI8ZHPNvkIJLQW8CAriEVXbwv7z0L5fLJPAVy42Sf8U2tWr4tkezuC
+ JH75uTSWQ8RwNAJGhrWGVtfHCddHimZBZh4cr+efsrTMG/1xweFYMWXNvWQPXk14RYs3TXrtGsJ
+ MLPFVkfKBTk3usvOwk5QDYIaNIbGc0vZ8hJB3tqbD8
+X-Gm-Gg: ASbGncsXQImZRRBAGVifmEBVinhh2Q06dBUQQlUNgI2BJoFfPZla4XPr+9R2FUqT1i8
+ 1xf2vLEgcVvNT5eqcbfHKbsmKVMAzgQLxlN0OV4dZiCnz77FYoMbUevN85bnu3YQtkqZlVbWLzp
+ pAt57SFkDUhW63KIMcmiBK4o8L+mHnle6whXtLoEv4hejD7KeISPuEOqrQGlXU1Msu6A8442tUJ
+ e3dV1+p3YUr9wt9EMwvfOB0VwS5iLuAOZS9k4uhLpPNAt8A6PTkuaQQpeYgJ7/1Mf2oZVdCWA9H
+ BiNoTdgTkf1O4BcMXpmZlMNwsgt5F+MmqFrBVkuZaQPhXYPg2Api+4rAWNE+xIxPeq+ttDFaXyX
+ cGZt/9n+esf2VaUEf0H3krKsBTneJgwfLjuKGm7df8sY=
+X-Received: by 2002:a05:600c:3149:b0:456:28f4:a576 with SMTP id
+ 5b1f17b1804b1-45b517dd9a3mr156841035e9.27.1756319164909; 
+ Wed, 27 Aug 2025 11:26:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRdhCR1ll4NZa0A7fixYVw/l3hw1dMLIZe/tVXX6jmP4tsrMKXDpkOau3TNfgqMwp+1wcRMQ==
+X-Received: by 2002:a05:600c:3149:b0:456:28f4:a576 with SMTP id
+ 5b1f17b1804b1-45b517dd9a3mr156840675e9.27.1756319164302; 
+ Wed, 27 Aug 2025 11:26:04 -0700 (PDT)
 Received: from [10.163.96.123] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b6cbd435bsm21719385e9.2.2025.08.27.11.25.56
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-45b6f0e048asm39534665e9.11.2025.08.27.11.26.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Aug 2025 11:25:56 -0700 (PDT)
+ Wed, 27 Aug 2025 11:26:02 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/14] MAINTAINERS: add a few more files to "Top Level Makefile
- and configure"
-Date: Wed, 27 Aug 2025 20:25:23 +0200
-Message-ID: <20250827182533.854476-6-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+	Vikrant Garg <vikrant1garg@gmail.com>
+Subject: [PULL 06/14] x86/loader: Don't update kernel header for CoCo VMs
+Date: Wed, 27 Aug 2025 20:25:24 +0200
+Message-ID: <20250827182533.854476-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250827182533.854476-1-pbonzini@redhat.com>
 References: <20250827182533.854476-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -93,7 +92,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,36 +108,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A few files in scripts, and the list of packages in pythondeps.toml, are
-strictly related to the toplevel build scripts.  Add them to the
-MAINTAINERS file stanza.
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
+Update the header makes it different from the original kernel that user
+provides via "-kernel", which leads to a different hash and breaks the
+attestation, e.g., for TDX.
+
+We already skip it for SEV VMs. Instead of adding another check of
+is_tdx_vm() to cover the TDX case, check machine->cgs to cover all the
+confidential computing case for x86.
+
+Reported-by: Vikrant Garg <vikrant1garg@gmail.com>
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://lore.kernel.org/r/20250814092111.2353598-1-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- MAINTAINERS | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/i386/x86-common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a07086ed762..0f3e55b51e8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4392,7 +4392,6 @@ R: Philippe Mathieu-Daudé <philmd@linaro.org>
- S: Maintained
- F: meson.build
- F: meson_options.txt
--F: scripts/meson-buildoptions.*
- F: scripts/check_sparse.py
- F: scripts/symlink-install-tree.py
- 
-@@ -4403,6 +4402,9 @@ R: Thomas Huth <thuth@redhat.com>
- S: Maintained
- F: Makefile
- F: configure
-+F: pythondeps.toml
-+F: scripts/git-submodule.sh
-+F: scripts/meson-buildoptions.*
- F: scripts/mtest2make.py
- F: tests/Makefile.include
+diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+index b1b5f11e739..7512be64d67 100644
+--- a/hw/i386/x86-common.c
++++ b/hw/i386/x86-common.c
+@@ -952,7 +952,7 @@ void x86_load_linux(X86MachineState *x86ms,
+      * kernel on the other side of the fw_cfg interface matches the hash of the
+      * file the user passed in.
+      */
+-    if (!sev_enabled() && protocol > 0) {
++    if (!MACHINE(x86ms)->cgs && protocol > 0) {
+         memcpy(setup, header, MIN(sizeof(header), setup_size));
+     }
  
 -- 
 2.51.0
