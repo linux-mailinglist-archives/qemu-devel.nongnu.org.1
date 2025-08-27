@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1544B38610
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5081B38675
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:22:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHkp-0007zB-Gj; Wed, 27 Aug 2025 11:08:08 -0400
+	id 1urHk8-0007BW-7P; Wed, 27 Aug 2025 11:07:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHiD-00057e-6N; Wed, 27 Aug 2025 11:05:24 -0400
+ id 1urHiF-00059B-5C; Wed, 27 Aug 2025 11:05:24 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHiB-0005DY-57; Wed, 27 Aug 2025 11:05:20 -0400
+ id 1urHiC-0005E3-VQ; Wed, 27 Aug 2025 11:05:22 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0F5B314C540;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1F91914C541;
  Wed, 27 Aug 2025 18:02:58 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id F2BF7269848;
- Wed, 27 Aug 2025 18:03:24 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 0D092269849;
+ Wed, 27 Aug 2025 18:03:25 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, David Woodhouse <dwmw@amazon.co.uk>,
- "Michael S. Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 24/59] intel_iommu: Allow both Status Write and
- Interrupt Flag in QI wait
-Date: Wed, 27 Aug 2025 18:02:29 +0300
-Message-ID: <20250827150323.2694101-24-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Sairaj Kodilkar <sarunkod@amd.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 25/59] hw/i386/amd_iommu: Move IOAPIC memory region
+ initialization to the end
+Date: Wed, 27 Aug 2025 18:02:30 +0300
+Message-ID: <20250827150323.2694101-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -58,72 +59,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Sairaj Kodilkar <sarunkod@amd.com>
 
-FreeBSD does both, and this appears to be perfectly valid. The VT-d
-spec even talks about the ordering (the status write should be done
-first, unsurprisingly).
+Setting up IOAPIC memory region requires mr_sys and mr_ir. Currently
+these two memory regions are setup after the initializing the IOAPIC
+memory region, which cause `amdvi_host_dma_iommu()` to use unitialized
+mr_sys and mr_ir.
 
-We certainly shouldn't assert() and abort QEMU if the guest asks for
-both.
+Move the IOAPIC memory region initialization to the end in order to use
+the mr_sys and mr_ir regions after they are fully initialized.
 
-Fixes: ed7b8fbcfb88 ("intel-iommu: add supports for queued invalidation interface")
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/3028
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Message-Id: <0122cbabc0adcc3cf878f5fd7834d8f258c7a2f2.camel@infradead.org>
+Fixes: 577c470f4326 ("x86_iommu/amd: Prepare for interrupt remap support")
+Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Message-Id: <20250801060507.3382-4-sarunkod@amd.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit e8145dcd311b58921f3a45121792cbfab38fd2f6)
+(cherry picked from commit a7842d94067cddc80b47ac42fb6e49e2fc02a3c5)
+(Mjt: context fix due to missing v10.0.0-833-gf864a3235ea1
+ "hw/i386/amd_iommu: Isolate AMDVI-PCI from amd-iommu device
+ to allow full control over the PCI device creation")
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index dffd7ee885..a117a0b6b1 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -2830,6 +2830,7 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
- {
-     uint64_t mask[4] = {VTD_INV_DESC_WAIT_RSVD_LO, VTD_INV_DESC_WAIT_RSVD_HI,
-                         VTD_INV_DESC_ALL_ONE, VTD_INV_DESC_ALL_ONE};
-+    bool ret = true;
- 
-     if (!vtd_inv_desc_reserved_check(s, inv_desc, mask, false,
-                                      __func__, "wait")) {
-@@ -2841,8 +2842,6 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
-         uint32_t status_data = (uint32_t)(inv_desc->lo >>
-                                VTD_INV_DESC_WAIT_DATA_SHIFT);
- 
--        assert(!(inv_desc->lo & VTD_INV_DESC_WAIT_IF));
--
-         /* FIXME: need to be masked with HAW? */
-         dma_addr_t status_addr = inv_desc->hi;
-         trace_vtd_inv_desc_wait_sw(status_addr, status_data);
-@@ -2851,18 +2850,22 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
-                              &status_data, sizeof(status_data),
-                              MEMTXATTRS_UNSPECIFIED)) {
-             trace_vtd_inv_desc_wait_write_fail(inv_desc->hi, inv_desc->lo);
--            return false;
-+            ret = false;
-         }
--    } else if (inv_desc->lo & VTD_INV_DESC_WAIT_IF) {
-+    }
-+
-+    if (inv_desc->lo & VTD_INV_DESC_WAIT_IF) {
-         /* Interrupt flag */
-         vtd_generate_completion_event(s);
--    } else {
-+    }
-+
-+    if (!(inv_desc->lo & (VTD_INV_DESC_WAIT_IF | VTD_INV_DESC_WAIT_SW))) {
-         error_report_once("%s: invalid wait desc: hi=%"PRIx64", lo=%"PRIx64
-                           " (unknown type)", __func__, inv_desc->hi,
-                           inv_desc->lo);
-         return false;
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index f773653487..37447dca25 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1620,9 +1620,6 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+         return;
      }
--    return true;
-+    return ret;
- }
  
- static bool vtd_process_context_cache_desc(IntelIOMMUState *s,
+-    /* Pseudo address space under root PCI bus. */
+-    x86ms->ioapic_as = amdvi_host_dma_iommu(bus, s, AMDVI_IOAPIC_SB_DEVID);
+-
+     /* set up MMIO */
+     memory_region_init_io(&s->mr_mmio, OBJECT(s), &mmio_mem_ops, s,
+                           "amdvi-mmio", AMDVI_MMIO_SIZE);
+@@ -1645,6 +1642,9 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+     memory_region_add_subregion_overlap(&s->mr_sys, AMDVI_INT_ADDR_FIRST,
+                                         &s->mr_ir, 1);
+ 
++    /* Pseudo address space under root PCI bus. */
++    x86ms->ioapic_as = amdvi_host_dma_iommu(bus, s, AMDVI_IOAPIC_SB_DEVID);
++
+     if (kvm_enabled() && x86ms->apic_id_limit > 255 && !s->xtsup) {
+         error_report("AMD IOMMU with x2APIC configuration requires xtsup=on");
+         exit(EXIT_FAILURE);
 -- 
 2.47.2
 
