@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66CEB3769B
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 03:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F18B37672
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 03:07:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ur4d1-00054P-4L; Tue, 26 Aug 2025 21:07:08 -0400
+	id 1ur4cx-0004zz-4n; Tue, 26 Aug 2025 21:07:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ur4cR-0004Ne-8s
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 21:06:32 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1ur4cU-0004Qg-Lt
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 21:06:34 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ur4bh-0007Iy-Ks
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 21:05:49 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-76e434a0118so7242778b3a.0
- for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 18:05:43 -0700 (PDT)
+ id 1ur4cH-0007Jx-5Q
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 21:06:33 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-323267872f3so4976055a91.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 18:05:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756256742; x=1756861542; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756256748; x=1756861548; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RWOUahuffRODKn11bwqIgWpsGqBtiathLmHpxPmSXXk=;
- b=lFiBRuajLbgyyASD2ewo+hcp7c8cxtW0XuYM+mxJpiGEoITkh9xDOy5upNB90QTWjX
- meJq/0wt5fKDMp4yFO8e4apunWRWoJmjynQIp8KInRJnQ7DLm8QVW4K5wbgwu9bcTHim
- 7KGZF67qdjNBLN1KTs7w5vYY9FL3c77812j+bBcy+yDudKGn5gldSaWetcsEEJJNMDJc
- IP44nweyCcn3VyUPedgoQIUjiaEgd+N0yrHODiBWw5Buu/IVKtxFPDYtmDPb+NsQkpKN
- 09lrOsq3wm4OLuOW47VGFxy2Wl37q8eiQWh3C52hnrhedbAYhnnraqm+XcfKVcW0+niO
- DDTw==
+ bh=kSe8riRjhb8O3kX08ti8qa14kSiIJuoOb2wA1l/P/pk=;
+ b=znDACpFXCAMxv5DzqX86DZhnao1GjF6A7WeRKoV90I2Vskk3A1DELyufIb8sSYa4ta
+ xw06VdUr/sDqFbySdAruz++qqtj/QYqQMo1arNdcIXNqTXAlre4gGl1c9+0n8apf70Q1
+ J8+P30sXGRRFXGyad3+a2eGlREsFec0+0TDuQAm05I9d+6hy8UYpdv6JiQTH+inrjEwF
+ UQ2O2COiEVCP4QALvFwj4Xx1BJbLDE5AZmqSBZmng/rPqY367m4E6nFybmwPo2g9+KxQ
+ NqnLo/cPqDYo3lw2CtuUGf9meW/WKvITpFmaEwpgmd/Uj3YDemOTlcJJHe4j4FQhcQXZ
+ eeZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756256742; x=1756861542;
+ d=1e100.net; s=20230601; t=1756256748; x=1756861548;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RWOUahuffRODKn11bwqIgWpsGqBtiathLmHpxPmSXXk=;
- b=ni5vAoSiYjI87L+risiWewosafxZ96RCGoI7qa1IVNZQtz0/P7BetPW6moTE3yXX37
- uaDhCv3xwytYoykwwtwYpolwC4VujM0bGF5tNL5ktzo1d/xpxV19L1+cI4IMT2RtdxeI
- sCILngx3aWuhi6VbRV3vCW2LxcmC5isT9rdDEQnViloPVmAjOswMdJk8uAYp5wsTG2lI
- nupIgrZQxQACm1iF+owSDGlJZkZc0jiv13hIIFqWKcOQvkPZB7/S6kfKJo6vbtbd2UE5
- CALXTpE89VNd61Prd9s10miV9D2Bhx8DpbWNOHTu3zw/+Cml3MEd/CKHubwrm6771fBi
- ubGQ==
-X-Gm-Message-State: AOJu0Yxt8Gl0qWW8w2+lzUnDeZfWAQXpnrB+7+EZbdDlE8bh1Wn4XBy0
- tPz2kP6q9/ezK5r/bV9e7ehoUPAozJlpll67owWGuJ1FtoE+bU4jgk1MsQ5pRZafVVQzBTuIKZc
- UeZpPiIc=
-X-Gm-Gg: ASbGncthqCjsyNAmOK60ys3q+hkvlIgDg7fVi/W4WFOe8Gw2SC4oRToDgEe1S45DkBt
- YPzUG0AktGHPA7ikiwN4NSSxhPCyw51jjBWcJz7T/ZvQLBrbx+mdj66bIHQALStUt69ViPE5he5
- OSK6cFupexVDH18S30OVHbiRfTxbZsR9edSk1PPfTGW1TpDeE+mH/XqHhhRa5mvg0kYHnqsHF2s
- f5MUwXcPb47ZIzcEPDpH2DpoO8VZjsmYsyo0IwOIfLbsRagWmcFs1c6HBx1buFkc3wkl+SHHg3Z
- EfUowfh7y9WhqR5xGJNrwgOANpGVyHXDxSt6pk5bTUNKyH7SfLbA4Jd00ZQt657HpCPHu7uyXjN
- Dp/73Auwn4sPX84ezM6yy3VDmXA==
-X-Google-Smtp-Source: AGHT+IG2Md/ERToJJ89SckfrF77Y+ttmZlxzYDlrmMK8aEKe3Drst8M8vh36j5mWke8knPeLxNIO5w==
-X-Received: by 2002:a05:6a00:2ea3:b0:771:e3d7:4320 with SMTP id
- d2e1a72fcca58-771e3d752b9mr10636260b3a.19.1756256741782; 
- Tue, 26 Aug 2025 18:05:41 -0700 (PDT)
+ bh=kSe8riRjhb8O3kX08ti8qa14kSiIJuoOb2wA1l/P/pk=;
+ b=kjmaABR7RRRHQ60fF/0M8Ze+z2sY1vqxCTnGNjEqE4iIkuPTMCcTzLWmTHH5oVaU+V
+ l93+WqEkoXNolZjA23dL+eDXh1Rr7m9X1cvlwcxJ3rwCH5trfRCxmI/wSeyJfWOjRA2F
+ YGOiEH32adCxr5ZI6mHmXsmnfNjWq5kURqH4hJF9f42LXvoLSCassHWFj0Y2rkisLgtT
+ CTVClspa+KXDdnyWl4mmwSTrZQzMJLIeWTe0sImo72o6xduSzTJVn/QKX7E62zDxiXgG
+ peIKBe7ENYAmjjBOibgcZGs8rZBQRfgjLyC4gq2BlKyVs2hHSHCtwSCYoXTf6cPegb2B
+ 0xEg==
+X-Gm-Message-State: AOJu0YxAv6eHotNyG6i5S1yG52tvikDpIcQEHXXfrbkOJ/3cZdQJajHv
+ BCrtJ6Lyuv6dWme+6j2/pJv+mC0HenLrt2Sigl+H2RmscPyzyWYFgFDtUimsDCWUjIPtK+jb6u8
+ WC+xEPdE=
+X-Gm-Gg: ASbGncuvfvswmHcz+wzGEN9j4B64bROuTH5hZYv/bQUdoit0VVYKPYw+jXwES33EmCo
+ t3sODpiCWLj4enBDC9+VjRi3tjumj3Cg1ISP3bvnYHaHZwNQtSVjLyOfw/e/VzSHlG6YId+ARr7
+ txhkAh0A8xG0g0nI0wNYWpLeBgq/pWb9jSjdVZao42mVJyvuSjG4PH92cpVD7Rkb8nLWkStkSqd
+ sUzNI+X1LE7SYgpG4oMUYD6TSyk449RWMdKSrpnDkMT6PtBciK/4tpotHtRDvciTtS5AEJB0g8B
+ GEOBFfBS20C2Em/pG7QtGJNr1dqueQ/Dy0lNnEjJ3e2UDOeDEcI+QTON9REeXv9BHgpgqQig95F
+ QjwzW9dSs0szC3QFhHyxTh7a9FTiUG/aEE7sS
+X-Google-Smtp-Source: AGHT+IFA5oZPxNUGizV7wFeIpe/aYobhUrWo8IuE1XqMukiwfiDEPQpgcf/0sgIX4oYI4d63JmXxOQ==
+X-Received: by 2002:a17:90a:e707:b0:31f:150:e045 with SMTP id
+ 98e67ed59e1d1-32515ed147emr22149559a91.32.1756256747890; 
+ Tue, 26 Aug 2025 18:05:47 -0700 (PDT)
 Received: from stoup.. ([144.6.121.55]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7720274534esm1419241b3a.47.2025.08.26.18.05.38
+ d2e1a72fcca58-7720274534esm1419241b3a.47.2025.08.26.18.05.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Aug 2025 18:05:41 -0700 (PDT)
+ Tue, 26 Aug 2025 18:05:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 6/7] target/arm/hvf: Replace hvf_sreg_match with hvf_sreg_list
-Date: Wed, 27 Aug 2025 11:03:56 +1000
-Message-ID: <20250827010453.4059782-10-richard.henderson@linaro.org>
+Subject: [PATCH 07/61] target/arm/hvf: Replace hvf_sreg_match with
+ hvf_sreg_list
+Date: Wed, 27 Aug 2025 11:03:57 +1000
+Message-ID: <20250827010453.4059782-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250827010453.4059782-1-richard.henderson@linaro.org>
 References: <20250827010453.4059782-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,7 +113,7 @@ Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
  1 file changed, 15 insertions(+), 30 deletions(-)
 
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 46e52e8d34..647eb675ef 100644
+index 5fcfa9a999..37d8f795eb 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
 @@ -394,11 +394,6 @@ static const struct hvf_reg_match hvf_fpreg_match[] = {
@@ -131,8 +132,8 @@ index 46e52e8d34..647eb675ef 100644
  
  #undef DEF_SYSREG
  
--#define DEF_SYSREG(HVF_ID, crn, crm, op0, op1, op2)  { HVF_ID },
-+#define DEF_SYSREG(HVF_ID, crn, crm, op0, op1, op2)  HVF_ID,
+-#define DEF_SYSREG(HVF_ID, op0, op1, crn, crm, op2)  { HVF_ID },
++#define DEF_SYSREG(HVF_ID, op0, op1, crn, crm, op2)  HVF_ID,
  
 -static struct hvf_sreg_match hvf_sreg_match[] = {
 +static const hv_sys_reg_t hvf_sreg_list[] = {
