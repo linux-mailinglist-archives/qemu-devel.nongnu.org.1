@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B374B385F2
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B07AB38631
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:18:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHiH-0004cC-36; Wed, 27 Aug 2025 11:05:26 -0400
+	id 1urHhy-0004Kf-ET; Wed, 27 Aug 2025 11:05:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHhe-0003vq-89; Wed, 27 Aug 2025 11:04:49 -0400
+ id 1urHhg-0003z5-5y; Wed, 27 Aug 2025 11:04:51 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHhb-0004tr-PX; Wed, 27 Aug 2025 11:04:45 -0400
+ id 1urHhd-0004u7-TW; Wed, 27 Aug 2025 11:04:47 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 81E4214C539;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9025414C53A;
  Wed, 27 Aug 2025 18:02:57 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6D100269841;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7F171269842;
  Wed, 27 Aug 2025 18:03:24 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jay Chang <jay.chang@sifive.com>,
- Frank Chang <frank.chang@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Nutty Liu <liujingqi@lanxincomputing.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 17/59] target/riscv: Restrict midelegh access to
- S-mode harts
-Date: Wed, 27 Aug 2025 18:02:22 +0300
-Message-ID: <20250827150323.2694101-17-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Bibo Mao <maobibo@loongson.cn>,
+ Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 18/59] target/loongarch: Fix valid virtual address
+ checking
+Date: Wed, 27 Aug 2025 18:02:23 +0300
+Message-ID: <20250827150323.2694101-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -60,54 +58,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jay Chang <jay.chang@sifive.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-RISC-V AIA Spec states:
-"For a machine-level environment, extension Smaia encompasses all added
-CSRs and all modifications to interrupt response behavior that the AIA
-specifies for a hart, over all privilege levels. For a supervisor-level
-environment, extension Ssaia is essentially the same as Smaia except
-excluding the machine-level CSRs and behavior not directly visible to
-supervisor level."
+On LoongArch64 system, the high 32 bit of 64 bit virtual address should be
+0x00000[0-7]yyy or 0xffff8yyy. The bit from 47 to 63 should be all 0 or
+all 1.
 
-Since midelegh is an AIA machine-mode CSR, add Smaia extension check in
-aia_smode32 predicate.
+Function get_physical_address() only checks bit 48 to 63, there will be
+problem with the following test case. On physical machine, there is bus
+error report and program exits abnormally. However on qemu TCG system
+emulation mode, the program runs normally. The virtual address
+0xffff000000000000ULL + addr and addr are treated the same on TLB entry
+checking. This patch fixes this issue.
 
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Signed-off-by: Jay Chang <jay.chang@sifive.com>
-Reviewed-by: Nutty Liu<liujingqi@lanxincomputing.com>
-Message-ID: <20250701030021.99218-3-jay.chang@sifive.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 86bc3a0abf10072081cddd8dff25aa72c60e67b8)
+void main()
+{
+        void *addr, *addr1;
+        int val;
+
+        addr = malloc(100);
+        *(int *)addr = 1;
+        addr1 = 0xffff000000000000ULL + addr;
+        val = *(int *)addr1;
+        printf("val %d \n", val);
+}
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Acked-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-ID: <20250714015446.746163-1-maobibo@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+(cherry picked from commit caab7ac83507e3e9a5fe2f37be5cfa759e766ba2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 7fe6ac7ea2..66d572af1f 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -372,8 +372,11 @@ static RISCVException aia_smode(CPURISCVState *env, int csrno)
- static RISCVException aia_smode32(CPURISCVState *env, int csrno)
- {
-     int ret;
-+    int csr_priv = get_field(csrno, 0x300);
- 
--    if (!riscv_cpu_cfg(env)->ext_ssaia) {
-+    if (csr_priv == PRV_M && !riscv_cpu_cfg(env)->ext_smaia) {
-+        return RISCV_EXCP_ILLEGAL_INST;
-+    } else if (!riscv_cpu_cfg(env)->ext_ssaia) {
-         return RISCV_EXCP_ILLEGAL_INST;
+diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
+index 930466ca48..8c332d74a5 100644
+--- a/target/loongarch/cpu_helper.c
++++ b/target/loongarch/cpu_helper.c
+@@ -299,8 +299,8 @@ int get_physical_address(CPULoongArchState *env, hwaddr *physical,
      }
  
-@@ -5832,7 +5835,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
-     [CSR_MVIP]     = { "mvip",     aia_any, NULL, NULL, rmw_mvip    },
+     /* Check valid extension */
+-    addr_high = sextract64(address, TARGET_VIRT_ADDR_SPACE_BITS, 16);
+-    if (!(addr_high == 0 || addr_high == -1)) {
++    addr_high = (int64_t)address >> (TARGET_VIRT_ADDR_SPACE_BITS - 1);
++    if (!(addr_high == 0 || addr_high == -1ULL)) {
+         return TLBRET_BADADDR;
+     }
  
-     /* Machine-Level High-Half CSRs (AIA) */
--    [CSR_MIDELEGH] = { "midelegh", aia_any32, NULL, NULL, rmw_midelegh },
-+    [CSR_MIDELEGH] = { "midelegh", aia_smode32, NULL, NULL, rmw_midelegh },
-     [CSR_MIEH]     = { "mieh",     aia_any32, NULL, NULL, rmw_mieh     },
-     [CSR_MVIENH]   = { "mvienh",   aia_any32, NULL, NULL, rmw_mvienh   },
-     [CSR_MVIPH]    = { "mviph",    aia_any32, NULL, NULL, rmw_mviph    },
 -- 
 2.47.2
 
