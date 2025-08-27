@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80B8B38849
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD64B3883D
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:08:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urJbA-00088E-PT; Wed, 27 Aug 2025 13:06:13 -0400
+	id 1urJbE-0008SM-7Q; Wed, 27 Aug 2025 13:06:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJaP-0006lY-64; Wed, 27 Aug 2025 13:05:25 -0400
+ id 1urJaY-0006sC-Ad; Wed, 27 Aug 2025 13:05:38 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJaL-0007yf-Ld; Wed, 27 Aug 2025 13:05:24 -0400
+ id 1urJaR-0007zu-6I; Wed, 27 Aug 2025 13:05:32 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0058814C731;
+ by isrv.corpit.ru (Postfix) with ESMTP id 0F42C14C732;
  Wed, 27 Aug 2025 20:03:30 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 11CDE2698F7;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 216112698F8;
  Wed, 27 Aug 2025 20:03:57 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 15/18] target/arm: Fix handling of setting SVE
- registers from gdb
-Date: Wed, 27 Aug 2025 20:03:50 +0300
-Message-ID: <20250827170356.2698446-15-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Jamin Lin <jamin_lin@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.20 16/18] hw/ssi/aspeed_smc: Fix incorrect FMC_WDT2
+ register read on AST1030
+Date: Wed, 27 Aug 2025 20:03:51 +0300
+Message-ID: <20250827170356.2698446-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 References: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -42,7 +44,7 @@ X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,70 +60,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-The code to handle setting SVE registers via the gdbstub is broken:
- * it sets each pair of elements in the zregs[].d[] array in the
-   wrong order for the most common (little endian) case: the least
-   significant 64-bit value comes first
- * it makes no attempt to handle target_endian()
- * it does a simple copy out of the (target endian) gdbstub buffer
-   into the (host endan) zregs data structure, which is wrong on
-   big endian hosts
+On AST1030, reading the FMC_WDT2 register always returns 0xFFFFFFFF.
+This issue is due to the aspeed_smc_read function, which checks for the
+ASPEED_SMC_FEATURE_WDT_CONTROL feature. Since AST1030 was missing this
+feature flag, the read operation fails and returns -1.
 
-Fix all these problems:
- * use ldq_p() to read from the gdbstub buffer
- * check target_big_endian() to see if we need to handle the
-   128-bit values the opposite way around
+To resolve this, add the WDT_CONTROL feature to AST1030's feature set
+so that FMC_WDT2 can be correctly accessed by firmware.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-Message-id: 20250722173736.2332529-3-vacha.bhavsar@oss.qualcomm.com
-[PMM: adjusted commit message, fixed spacing]
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 97b3d732afec9b165c33697452e31267a845338f)
-(Mjt: s/target_big_endian/target_words_bigendian/ due to missing
- v10.0.0-277-gb939b8e42a "exec: Rename target_words_bigendian() -> target_big_endian()")
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Fixes: 2850df6a81bcdc2e063dfdd56751ee2d11c58030 ("aspeed/smc: Add AST1030 support ")
+Link: https://lore.kernel.org/qemu-devel/20250804014633.512737-1-jamin_lin@aspeedtech.com
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+(cherry picked from commit 13ed972b4ce57198914a37217251d30fbec20e41)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-index 2dc058fcd6..fdbe6ffbd0 100644
---- a/target/arm/gdbstub64.c
-+++ b/target/arm/gdbstub64.c
-@@ -188,10 +188,17 @@ int arm_gdb_set_svereg(CPUARMState *env, uint8_t *buf, int reg)
-     case 0 ... 31:
-     {
-         int vq, len = 0;
--        uint64_t *p = (uint64_t *) buf;
-         for (vq = 0; vq < cpu->sve_max_vq; vq++) {
--            env->vfp.zregs[reg].d[vq * 2 + 1] = *p++;
--            env->vfp.zregs[reg].d[vq * 2] = *p++;
-+            if (target_words_bigendian()) {
-+                env->vfp.zregs[reg].d[vq * 2 + 1] = ldq_p(buf);
-+                buf += 8;
-+                env->vfp.zregs[reg].d[vq * 2] = ldq_p(buf);
-+            } else{
-+                env->vfp.zregs[reg].d[vq * 2] = ldq_p(buf);
-+                buf += 8;
-+                env->vfp.zregs[reg].d[vq * 2 + 1] = ldq_p(buf);
-+            }
-+            buf += 8;
-             len += 16;
-         }
-         return len;
-@@ -206,9 +213,9 @@ int arm_gdb_set_svereg(CPUARMState *env, uint8_t *buf, int reg)
-     {
-         int preg = reg - 34;
-         int vq, len = 0;
--        uint64_t *p = (uint64_t *) buf;
-         for (vq = 0; vq < cpu->sve_max_vq; vq = vq + 4) {
--            env->vfp.pregs[preg].p[vq / 4] = *p++;
-+            env->vfp.pregs[preg].p[vq / 4] = ldq_p(buf);
-+            buf += 8;
-             len += 8;
-         }
-         return len;
+diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
+index 22df4be528..194df7df77 100644
+--- a/hw/ssi/aspeed_smc.c
++++ b/hw/ssi/aspeed_smc.c
+@@ -1761,7 +1761,8 @@ static void aspeed_1030_fmc_class_init(ObjectClass *klass, void *data)
+     asc->resets            = aspeed_1030_fmc_resets;
+     asc->flash_window_base = 0x80000000;
+     asc->flash_window_size = 0x10000000;
+-    asc->features          = ASPEED_SMC_FEATURE_DMA;
++    asc->features          = ASPEED_SMC_FEATURE_DMA |
++                             ASPEED_SMC_FEATURE_WDT_CONTROL;
+     asc->dma_flash_mask    = 0x0FFFFFFC;
+     asc->dma_dram_mask     = 0x000BFFFC;
+     asc->nregs             = ASPEED_SMC_R_MAX;
 -- 
 2.47.2
 
