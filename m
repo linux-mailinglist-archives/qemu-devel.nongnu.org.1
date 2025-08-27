@@ -2,158 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A1EB38113
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 13:30:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F6BB37E3C
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 10:59:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urEKt-00065f-CI; Wed, 27 Aug 2025 07:29:03 -0400
+	id 1urByF-0000Hk-Ak; Wed, 27 Aug 2025 04:57:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1urBsr-0006TZ-Q4
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 04:51:58 -0400
-Received: from mail-dm6nam11on20625.outbound.protection.outlook.com
- ([2a01:111:f403:2415::625]
- helo=NAM11-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1urByC-0000Gz-T3
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 04:57:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1urBso-0002TQ-Q7
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 04:51:57 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ymCKFuJGPZ4ORrE8OPBKGO3EWVrRLFuI9rNPVMQW6VXGLc5l0It4Uw48tzAjVfWU5HnTA8m6mKkCnKlIDgOoN930hKhyng7fKqvJ7jThEPvlH7kDAXqEg+OoZuwJfVP7E//JQOh4bM3CV8g7yt4KXhGaSG9Y9q+IjsLiEyWSnWCs0eQ6YXe6m7WYld0Hmf6ZQKzPuX+PrtvL2oQazK3xBeEVdiTAFJA4BHTMuB3ZTXve2DSpEUTY3nPi+rQjAF9hU6FIFyh0NxEV8QJVpzfKS2BavE29fjoLXprSDtV5rEBlNIx4RiAjzzjH1F1LSboor8XctDqDxkIsBBfMdecKGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7Rz7/sSFQHvQMWf44QOnmDwWza+V5eCUTjRIyokt+2c=;
- b=Mh9xDPv9LIj1A89rafBHyPcl29esk/43/c9PeBitUPr3rqxThStsmYT7LscaPsmpDZiGsvN+/Y3dMnW1NQ210CkVgNULAruRRoa55MbIA6VZwG86vxOOANQj8bBpmdu9MFZHNI3x8Z0Uyt6khJQWGeX2y4XQ/iG8mFS1NfQEy1WcL0z7Q57GK6Ivl+TfC7WtwjDlVnfQB99uwtohKpYv2g90t6IL5v8fh3FGjr306xM0QOxu0mIXvlV/I3owxgliQ170If2BQwaZvG87GkXnP8+VKVLCsd2lveq0bpt4K/lrGQ9PlWywBBW6QHm3ybC+rABIY+ytuSgdkuh/m6tgrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7Rz7/sSFQHvQMWf44QOnmDwWza+V5eCUTjRIyokt+2c=;
- b=frbynJiF0zPKm/4P5R5PqEIgDH1mvGNB/56DKojBVSsg74hJ6NoGoxLscyEjv5SjXEj6K7HL6cM9BMk53oCJSXQnaU0TN+TFkupCrGFi6Lg4yHx9DrbPU17/IrZy0WLzFvwkEFrT+SDkbeq/iq4gZ1QLw/XvxDrELvhQXmcrYP+ibQvZYiwPC+ZUtfzpqI5npRXRdQ7OMDr2D/Z7t6ELQXq6a/vDAE11i9pWz6rVCH+aIOb85SaMLchXGAzFwlbnnqMeQDeOd4SoPDS0TA8z1gTMhoqyOntA/3bnGssRJzYUITJ484g7mKkiGk7Rxfwnzjm5LaSId7Sp1vd1eB7x9g==
-Received: from MN2PR07CA0015.namprd07.prod.outlook.com (2603:10b6:208:1a0::25)
- by SJ5PPF8AECCE022.namprd12.prod.outlook.com
- (2603:10b6:a0f:fc02::99c) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Wed, 27 Aug
- 2025 08:51:46 +0000
-Received: from BN2PEPF00004FC1.namprd04.prod.outlook.com
- (2603:10b6:208:1a0:cafe::8f) by MN2PR07CA0015.outlook.office365.com
- (2603:10b6:208:1a0::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.14 via Frontend Transport; Wed,
- 27 Aug 2025 08:51:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN2PEPF00004FC1.mail.protection.outlook.com (10.167.243.187) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9073.11 via Frontend Transport; Wed, 27 Aug 2025 08:51:46 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 27 Aug
- 2025 01:51:24 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 27 Aug
- 2025 01:51:24 -0700
-Received: from Asurada-Nvidia (10.127.8.14) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Wed, 27 Aug 2025 01:51:23 -0700
-Date: Wed, 27 Aug 2025 01:51:21 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-CC: "Liu, Yi L" <yi.l.liu@intel.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "alex.williamson@redhat.com"
- <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "mst@redhat.com"
- <mst@redhat.com>, "jasowang@redhat.com" <jasowang@redhat.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "ddutile@redhat.com"
- <ddutile@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
- "clement.mathieu--drif@eviden.com" <clement.mathieu--drif@eviden.com>, "Tian, 
- Kevin" <kevin.tian@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
-Subject: Re: [PATCH v5 07/21] intel_iommu: Introduce a new structure
- VTDHostIOMMUDevice
-Message-ID: <aK7HCQFFNz6KLL6l@Asurada-Nvidia>
-References: <20250822064101.123526-1-zhenzhong.duan@intel.com>
- <20250822064101.123526-8-zhenzhong.duan@intel.com>
- <aK3tAUUn5t61VPyk@Asurada-Nvidia>
- <IA3PR11MB913642ABC862B837CF0DF4359238A@IA3PR11MB9136.namprd11.prod.outlook.com>
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1urByA-0003Fy-0U
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 04:57:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756285044;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hOj0GMoZUJLr+gp3ACtbZj71ye6Vm/4oNrCYZrjr4Zo=;
+ b=GAA03GtzS1/7EoIy02FZx0khAMFc1bOp67NIpHFobovdqhuCfnwqeRxYqKTGYJBe2D4L2R
+ uxeJLQdFm/+Hq1CbgGj497l6L+d0Spyw6gch9F/s5Lg0iS5/XAHaoO4PYucWxdZvOuXltf
+ YWAVEXeZ6UIELi9Z/oRy5hh6v4NEEeE=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-359-zRU2gX3OPbGuergxMqo_kw-1; Wed, 27 Aug 2025 04:57:21 -0400
+X-MC-Unique: zRU2gX3OPbGuergxMqo_kw-1
+X-Mimecast-MFC-AGG-ID: zRU2gX3OPbGuergxMqo_kw_1756285040
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-771f28ed113so2165934b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 01:57:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756285040; x=1756889840;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hOj0GMoZUJLr+gp3ACtbZj71ye6Vm/4oNrCYZrjr4Zo=;
+ b=Be4VCgpMuJOi2eBLCSP147i+A7ALhJmgnUxrANRRMjKGOJqCwe+9Aj1ErJpshBM0G+
+ lbEVYTTEI/svqdwoC+bzhkmQRvAnrRSarwECZhZHInBQO5op7tJySiROAQmKo/HA666n
+ uBnc1Lfv6ztZioVp2sq1OTAfS8JIfsH45447YEoQOCZg+mprMgR0dGqcKoUoGYE3b0iX
+ Kr3nOQiKlTvxloM5LM9CJ7zCSYD7j4jA1Y2Bie6fEBcInpCNp44xIUHe3lhz3izgsG+h
+ oGDus70xMuPDRvCkuBdSXZgXgsSyyZn/vR7n32XoxaTTSf82ZcNcnGqxJQ1dviOydGJ3
+ D5Nw==
+X-Gm-Message-State: AOJu0YyDKMZGNE5Jwn4zG7mTC3Rfjb+OI+KV+0G1VKks+pjow6wNjglj
+ BUn8+cc5Uqi2vteCJv77JSt/bvAthWyy31qZngegaCke+gpTFqm7yCHkcvrTPFNIyCnEWhIUgiW
+ xAWNEZ54gebujEitxJUKq7dmritX86uaHQs3OiagFMptR/sUAeG6MOVRoMMOiPHwcr6IjK8lHvi
+ 8s5brvrbCwKyIjzE7XVU3UmLLicxR0UyY=
+X-Gm-Gg: ASbGnct0SHBV7x1j3HaX5ZPYsQl9ZESpmCyMUbDdH6AZJeAUf6sOkXip3brFq4ABxOt
+ dh6O9oDS1CV6ZrvmdrPZ3+S2gTljH3mr3QOH+RGGe/x+uFoBffEttyQDmjSwkFZk7HJSXu1rLMq
+ brhIefYI88mnh8h3fptYdyvq0/0LmBm62G2R2d/wDz6DuKbTJJGagkxg==
+X-Received: by 2002:a05:6a20:1596:b0:243:78a:827e with SMTP id
+ adf61e73a8af0-24340dbe972mr26755394637.54.1756285040042; 
+ Wed, 27 Aug 2025 01:57:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEFD/1dxnzM9c4Y1sfysbBUWX4kEELJkDlhSlLJ4mG/U8n75DvR/cVJ2gwCUOlWa5SIjcDi+dsyICyAgcL+rCE=
+X-Received: by 2002:a05:6a20:1596:b0:243:78a:827e with SMTP id
+ adf61e73a8af0-24340dbe972mr26755364637.54.1756285039566; Wed, 27 Aug 2025
+ 01:57:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <IA3PR11MB913642ABC862B837CF0DF4359238A@IA3PR11MB9136.namprd11.prod.outlook.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF00004FC1:EE_|SJ5PPF8AECCE022:EE_
-X-MS-Office365-Filtering-Correlation-Id: 131c4b83-2404-4fac-6363-08dde546f415
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|82310400026|1800799024|7416014|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?uQugsNvAbRXcg3zG6IMU1fPwP3F7TZYrtcMClTzb5r1VkDB82hnWP1qRLgT2?=
- =?us-ascii?Q?2Cnbe47ZpusOTg04kfRSa3xBvqvOKkfv4TmGMCtbCf4QYCMhjCf9iUNPCxnj?=
- =?us-ascii?Q?F+YxJyYA7w2WGMC+yQTiZgtvkykX/AZmgb1rLrS+TflQ98RCK85kVnGvRopn?=
- =?us-ascii?Q?4PiyUmzrCkBbic+RZvCd1QoyA481pW2HSBpeqI3/6EceF3ntqvTP7I/1vkQ4?=
- =?us-ascii?Q?TNuONxq17IKyIonUYExa7MyoJIs9BmbYJzcIJwSQcXJb/cYRvozzkJfSK0kT?=
- =?us-ascii?Q?mUgNOquHpIm5tYBj43te8qCZWU5m6QY0VS9HWcCyYB1o/7iMXuZ9mYlRhp+X?=
- =?us-ascii?Q?On0MjXdUG3vYUQwd2n3clhgoJQX86Nk31WXgcHWQZKvJTVX1IgjHY2WO1JWl?=
- =?us-ascii?Q?8fuUER39R6Jpc8+g8gmj58HQkWb/15OlVFdvIoZHMkOYcQe+k2I9Q+jWTjP4?=
- =?us-ascii?Q?TWYNinRSDjMjo1cVg8nVK7nWbPxfmcDPiWDmMbL/oMYCzh3qsiSXKrH0hebM?=
- =?us-ascii?Q?ykLuJyCi0Ooemkhxy/RDzvlvZ/ZoBwMJ5ZpLzv8KdT+TMspoTMsGmqb1L+tS?=
- =?us-ascii?Q?Svf8fVuyX6ud6ovAxqUHcw613L/ozGjtXDe8tg65UZ9+8wAhz9O04865hk4V?=
- =?us-ascii?Q?oNg09hDEdIKSQh6RmCz1JrfiUp7qcZlAUyQxGDO42GIHGvVMCEmsGdCkvC3C?=
- =?us-ascii?Q?2tz4ChGymGgV8J2SEWWfXLJFOwPd1sCMcMB2XrbriSqqgj5ymv39tvqjIGM9?=
- =?us-ascii?Q?hb/Kms7Hu94LxJoBiXkk+xX+O/VE6usXBUta9THp/Ru1lvhScSpvdd/LFtsQ?=
- =?us-ascii?Q?4Pon/geTQLaqWycBYN4T3vFHdMIJ8V9viJy9/625vtyIwlVTAtV/lyHhwtUP?=
- =?us-ascii?Q?Y9IY+2p+OH25uoHDHYpoXmJxXbdu1eRB3CUa2UJWXCu6+RA64ma2nmmAwtwq?=
- =?us-ascii?Q?dYlHdlVlKoVwVRW7N1jKYlyD1PgZ8ZK84fnA5KBts/hDAmIx3kac3ZbabiWv?=
- =?us-ascii?Q?vSp0SSz4OGFKXA5TwBwCzPDgTFzT6nv9gBov2RuKPE3DBqdSkxVJpTasyL7l?=
- =?us-ascii?Q?TzX9LeMSX9V0b2XKVI7E+lYStpzjJGNO3FdmSfwxcsNPumCa9esCc4NqN//z?=
- =?us-ascii?Q?Y0Bp3elf+JAxYxDIDDQkgKktY+9m9gMGH8PYyoWJ9MdLxejLE+rpVl02ikvC?=
- =?us-ascii?Q?/pB2Wtb1zRaOY/EDeujdsKmV109hHHqOqSBhyi8TgqeJyWw5mnNWZKinTTCp?=
- =?us-ascii?Q?hB0IaM5ZbydqNDZaY0BxQAxayEYd5yYhcmLiv+a/J/fkh15kvqEmvict7uSE?=
- =?us-ascii?Q?J1TQ1h8WDJsVFpH7RET3NzJs3FpNA34jOJJT4abUpXQKxj9tiUHRRXrdgLFL?=
- =?us-ascii?Q?g2XJXNTfJIe1P+sG1WHJEGgIH8HarFo/jVoCqbyr2/SQKsRvLoXEtCXhkFDf?=
- =?us-ascii?Q?20/8gjidxT7827i+OgD+mg2PiFIilzuUanHewvHzTwCNIfLI2AdI5zjdffL0?=
- =?us-ascii?Q?rK1BBHs+fxcARZIxwzLkfQqMcL+HCt+msPIf?=
-X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
- SFS:(13230040)(36860700013)(82310400026)(1800799024)(7416014)(376014); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 08:51:46.0141 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 131c4b83-2404-4fac-6363-08dde546f415
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF00004FC1.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF8AECCE022
-Received-SPF: permerror client-ip=2a01:111:f403:2415::625;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM11-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20250826140449.4190022-1-marcandre.lureau@redhat.com>
+ <20250826140449.4190022-11-marcandre.lureau@redhat.com>
+ <aK6r0AytZGSOkWYF@intel.com>
+In-Reply-To: <aK6r0AytZGSOkWYF@intel.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Wed, 27 Aug 2025 12:57:07 +0400
+X-Gm-Features: Ac12FXyYebGOrLuiflTZLojTojoyj0qpqhBoxVe8T0vJ_M2hk0XgJ8bFIpfSeKc
+Message-ID: <CAMxuvaxeqgtpKDPwxuRd-bqdy5We=pEpy_FKRo0AysKKFa9kHg@mail.gmail.com>
+Subject: Re: [RFC 10/18] rust: split "qom" crate
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ qemu-rust@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000e87e2f063d54f92f"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FORGED_SPF_HELO=1, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 27 Aug 2025 07:28:55 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -168,86 +105,298 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 27, 2025 at 06:45:42AM +0000, Duan, Zhenzhong wrote:
-> Hi
-> 
-> >-----Original Message-----
-> >From: Nicolin Chen <nicolinc@nvidia.com>
-> >Subject: Re: [PATCH v5 07/21] intel_iommu: Introduce a new structure
-> >VTDHostIOMMUDevice
-> >
-> >Hi Zhenzhong/Yi,
-> >
-> >On Fri, Aug 22, 2025 at 02:40:45AM -0400, Zhenzhong Duan wrote:
-> >> @@ -4371,6 +4374,7 @@ static bool vtd_dev_set_iommu_device(PCIBus
-> >*bus, void *opaque, int devfn,
-> >>                                       HostIOMMUDevice *hiod,
-> >Error **errp)
-> >>  {
-> >>      IntelIOMMUState *s = opaque;
-> >> +    VTDHostIOMMUDevice *vtd_hiod;
-> >>      struct vtd_as_key key = {
-> >>          .bus = bus,
-> >>          .devfn = devfn,
-> >
-> >I wonder if the bus/devfn here would always reflect the actual BDF
-> >numbers in this function, on an x86 VM.
-> 
-> devfn is enumerated by QEMU, see do_pci_register_device(),
+--000000000000e87e2f063d54f92f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Oh, thanks for the direction.
+Hi
 
-> bus number is enumerated in BIOS or kernel.
-> So we can't use BDF number as key, we use PCIBus pointer + devfn
-> as the key instead.
+On Wed, Aug 27, 2025 at 10:33=E2=80=AFAM Zhao Liu <zhao1.liu@intel.com> wro=
+te:
 
-Yea, I figured that out.
+> > diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/
+> device.rs
+> > index 7cffb894a8..a3bcd1297a 100644
+> > --- a/rust/hw/char/pl011/src/device.rs
+> > +++ b/rust/hw/char/pl011/src/device.rs
+> > @@ -21,10 +21,13 @@
+> >      memory::{hwaddr, MemoryRegion, MemoryRegionOps,
+> MemoryRegionOpsBuilder},
+> >      prelude::*,
+> >      qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, Property,
+> ResetType, ResettablePhasesImpl},
+> > -    qom::{ObjectImpl, Owned, ParentField, ParentInit},
+> >      sysbus::{SysBusDevice, SysBusDeviceImpl},
+> >      vmstate_clock,
+> >  };
+> > +use qom::{
+> > +    qom_isa, IsA, Object, ObjectClassMethods, ObjectDeref, ObjectImpl,
+> ObjectMethods, ObjectType,
+> > +    Owned, ParentField, ParentInit,
+> > +};
+>
+> These QOM parts are frequently used and very common. at least for qom,
+> I think prelude would help a lot.
 
-> >With ARM, when the device is attached to a pxb bus, the bus/devfn
-> >here are both 0, so PCI_BUILD_BDF() using these two returns 0 too.
-> >
-> >QEMU command for the device:
-> > -device pxb-pcie,id=pcie.1,bus_nr=1,bus=pcie.0 \
-> > -device arm-smmuv3,primary-bus=pcie.1,id=smmuv3.1,accel=on \
-> > -device pcie-root-port,id=pcie.port1,bus=pcie.1,chassis=1,io-reserve=0 \
-> > -device
-> >vfio-pci-nohotplug,host=0009:01:00.0,bus=pcie.port1,rombar=0,id=dev0,iom
-> >mufd=iommufd0
-> >
-> >QEMU log:
-> >smmuv3_accel_set_iommu_device: bus=0, devfn=0, sid=0
-> 
-> There is only one device under pcie.port1, devfn is initialized to 0,
-> bus number isn't enumerated yet during realize() so 0.
 
-That's a pain for ARM... It needs to set BDF number early for some
-use case. Shameer's current solution is doing after the guest kernel
-boots, very late. So we might want to move it forward..
+ack
 
-So, it'd be very ideal to have BDF in the set_iommu_device callback.
-Otherwise, we'd have to add something like set_iommu_vdevice op to
-invoke in the PCI core.
 
-> >The set_iommu_device op is invoked by vfio_pci_realize() where the
-> >the BDF number won't get ready for this kind of PCI setup until a
-> >later stage that I can't identify yet..
-> >
-> >Given that VTD wants the BDF number too, I start to wonder whether
-> >the set_iommu_device op is invoked in the right place or not..
-> >
-> >Maybe VTD works because it saves the bus pointer v.s. bus_num(=0),
-> >so its bus_num would be updated when later code calculates the BDF
-> >number using the saved bus pointer (in the key). Nonetheless, the
-> >saved devfn (in the key) is 0, which wouldn't be updated later as
-> >the bus_num. So, if the device is supposed to have a devfn (!=0),
-> >this wouldn't work?
-> 
-> Both PCIBus pointer and devfn are fixed value for a QEMU instance,
-> never changed.
+> A qom prelude could help reduce the changes in other parts (pl011/
+> hpet/memory...).
+>
+> > diff --git a/rust/qom/meson.build b/rust/qom/meson.build
+> > new file mode 100644
+> > index 0000000000..6e95d75fa0
+> > --- /dev/null
+> > +++ b/rust/qom/meson.build
+> > @@ -0,0 +1,61 @@
+> > +_qom_cfg =3D run_command(rustc_args,
+> > +  '--config-headers', config_host_h, '--features', files('Cargo.toml')=
+,
+> > +  capture: true, check: true).stdout().strip().splitlines()
+> > +
+> > +# TODO: Remove this comment when the clang/libclang mismatch issue is
+> solved.
+> > +#
+> > +# Rust bindings generation with `bindgen` might fail in some cases
+> where the
+> > +# detected `libclang` does not match the expected `clang`
+> version/target. In
+> > +# this case you must pass the path to `clang` and `libclang` to your
+> build
+> > +# command invocation using the environment variables CLANG_PATH and
+> > +# LIBCLANG_PATH
+> > +_qom_bindings_inc_rs =3D rust.bindgen(
+> > +  input: 'wrapper.h',
+> > +  dependencies: common_ss.all_dependencies(),
+> > +  output: 'bindings.inc.rs',
+>
+> There're many binding files with the same name. What about adding a prefi=
+x
+> like "qom-bindings" to distinguish it? This can help search and locate
+> specific binding file.
+>
 
-I see. devfn wouldn't be changed. Only the bus_num will be updated
-in the later stage. So, it's not a problem for Intel.
+they are already under different directories :)
 
-Thanks
-Nicolin
+
+>
+> > +  include_directories: bindings_incdir,
+> > +  bindgen_version: ['>=3D0.60.0'],
+> > +  args: bindgen_args_common,
+> > +)
+>
+> ...
+>
+> > diff --git a/rust/qom/tests/tests.rs b/rust/qom/tests/tests.rs
+> > new file mode 100644
+> > index 0000000000..49f1cbecf5
+> > --- /dev/null
+> > +++ b/rust/qom/tests/tests.rs
+> > @@ -0,0 +1,47 @@
+> > +use std::{ffi::CStr, sync::LazyLock};
+>
+> LazyLock is useful, but it became stable since v1.80. So if Paolo
+> decide pick this series after v1.83 support, it's fine.
+>
+
+ah, right. I wonder why rust-version didn't warn me about this. I'll check
+
+>
+> > +use qom::{qom_isa, Object, ObjectClassMethods, ObjectImpl, ObjectType,
+> ParentField};
+> > +use util::bindings::{module_call_init, module_init_type};
+>
+> ...
+>
+> > +fn init_qom() {
+> > +    static ONCE: LazyLock<()> =3D LazyLock::new(|| unsafe {
+> > +        module_call_init(module_init_type::MODULE_INIT_QOM);
+> > +    });
+>
+> But for now, we can still use a static BqlCell<bool> as the workaround,
+> just like rust/hwcore/tests/tests.rs did, to decouple with MSRV
+> dependency.
+>
+> And it seems rust/hwcore/tests/tests.rs has already covered this test
+> case, do we still need this test?
+>
+
+I wanted a simpler test that focuses on QOM only. But this may not be
+desirable after all.
+
+
+>
+> If so, then it's better to add this new test in a seperate patch, which
+> makes current patch focus on the splitting :-).
+>
+
+Agree, I'll drop it for now.
+
+
+>
+> > +    bql::start_test();
+> > +    LazyLock::force(&ONCE);
+> > +}
+> > +
+>
+> Otherwise, LGTM,
+>
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+>
+>
+
+--000000000000e87e2f063d54f92f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi</div><br><div class=3D"gmail_quote gma=
+il_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Aug 27, 2=
+025 at 10:33=E2=80=AFAM Zhao Liu &lt;<a href=3D"mailto:zhao1.liu@intel.com"=
+>zhao1.liu@intel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
+te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
+);padding-left:1ex">&gt; diff --git a/rust/hw/char/pl011/src/<a href=3D"htt=
+p://device.rs" rel=3D"noreferrer" target=3D"_blank">device.rs</a> b/rust/hw=
+/char/pl011/src/<a href=3D"http://device.rs" rel=3D"noreferrer" target=3D"_=
+blank">device.rs</a><br>
+&gt; index 7cffb894a8..a3bcd1297a 100644<br>
+&gt; --- a/rust/hw/char/pl011/src/<a href=3D"http://device.rs" rel=3D"noref=
+errer" target=3D"_blank">device.rs</a><br>
+&gt; +++ b/rust/hw/char/pl011/src/<a href=3D"http://device.rs" rel=3D"noref=
+errer" target=3D"_blank">device.rs</a><br>
+&gt; @@ -21,10 +21,13 @@<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 memory::{hwaddr, MemoryRegion, MemoryRegionOps, Me=
+moryRegionOpsBuilder},<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 prelude::*,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 qdev::{Clock, ClockEvent, DeviceImpl, DeviceState,=
+ Property, ResetType, ResettablePhasesImpl},<br>
+&gt; -=C2=A0 =C2=A0 qom::{ObjectImpl, Owned, ParentField, ParentInit},<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 sysbus::{SysBusDevice, SysBusDeviceImpl},<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 vmstate_clock,<br>
+&gt;=C2=A0 };<br>
+&gt; +use qom::{<br>
+&gt; +=C2=A0 =C2=A0 qom_isa, IsA, Object, ObjectClassMethods, ObjectDeref, =
+ObjectImpl, ObjectMethods, ObjectType,<br>
+&gt; +=C2=A0 =C2=A0 Owned, ParentField, ParentInit,<br>
+&gt; +};<br>
+<br>
+These QOM parts are frequently used and very common. at least for qom,<br>
+I think prelude would help a lot.=C2=A0</blockquote><div><br></div><div>ack=
+</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0p=
+x 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+A qom prelude could help reduce the changes in other parts (pl011/<br>
+hpet/memory...).<br>
+<br>
+&gt; diff --git a/rust/qom/meson.build b/rust/qom/meson.build<br>
+&gt; new file mode 100644<br>
+&gt; index 0000000000..6e95d75fa0<br>
+&gt; --- /dev/null<br>
+&gt; +++ b/rust/qom/meson.build<br>
+&gt; @@ -0,0 +1,61 @@<br>
+&gt; +_qom_cfg =3D run_command(rustc_args,<br>
+&gt; +=C2=A0 &#39;--config-headers&#39;, config_host_h, &#39;--features&#39=
+;, files(&#39;Cargo.toml&#39;),<br>
+&gt; +=C2=A0 capture: true, check: true).stdout().strip().splitlines()<br>
+&gt; +<br>
+&gt; +# TODO: Remove this comment when the clang/libclang mismatch issue is=
+ solved.<br>
+&gt; +#<br>
+&gt; +# Rust bindings generation with `bindgen` might fail in some cases wh=
+ere the<br>
+&gt; +# detected `libclang` does not match the expected `clang` version/tar=
+get. In<br>
+&gt; +# this case you must pass the path to `clang` and `libclang` to your =
+build<br>
+&gt; +# command invocation using the environment variables CLANG_PATH and<b=
+r>
+&gt; +# LIBCLANG_PATH<br>
+&gt; +_qom_bindings_inc_rs =3D rust.bindgen(<br>
+&gt; +=C2=A0 input: &#39;wrapper.h&#39;,<br>
+&gt; +=C2=A0 dependencies: common_ss.all_dependencies(),<br>
+&gt; +=C2=A0 output: &#39;<a href=3D"http://bindings.inc.rs" rel=3D"norefer=
+rer" target=3D"_blank">bindings.inc.rs</a>&#39;,<br>
+<br>
+There&#39;re many binding files with the same name. What about adding a pre=
+fix<br>
+like &quot;qom-bindings&quot; to distinguish it? This can help search and l=
+ocate<br>
+specific binding file.<br></blockquote><div><br></div><div>they are already=
+ under different directories :)=C2=A0</div><div>=C2=A0</div><blockquote cla=
+ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid =
+rgb(204,204,204);padding-left:1ex">
+<br>
+&gt; +=C2=A0 include_directories: bindings_incdir,<br>
+&gt; +=C2=A0 bindgen_version: [&#39;&gt;=3D0.60.0&#39;],<br>
+&gt; +=C2=A0 args: bindgen_args_common,<br>
+&gt; +)<br>
+<br>
+...<br>
+<br>
+&gt; diff --git a/rust/qom/tests/<a href=3D"http://tests.rs" rel=3D"norefer=
+rer" target=3D"_blank">tests.rs</a> b/rust/qom/tests/<a href=3D"http://test=
+s.rs" rel=3D"noreferrer" target=3D"_blank">tests.rs</a><br>
+&gt; new file mode 100644<br>
+&gt; index 0000000000..49f1cbecf5<br>
+&gt; --- /dev/null<br>
+&gt; +++ b/rust/qom/tests/<a href=3D"http://tests.rs" rel=3D"noreferrer" ta=
+rget=3D"_blank">tests.rs</a><br>
+&gt; @@ -0,0 +1,47 @@<br>
+&gt; +use std::{ffi::CStr, sync::LazyLock};<br>
+<br>
+LazyLock is useful, but it became stable since v1.80. So if Paolo<br>
+decide pick this series after v1.83 support, it&#39;s fine.<br></blockquote=
+><div><br></div><div>ah, right. I wonder why rust-version didn&#39;t warn m=
+e about this. I&#39;ll check=C2=A0</div><blockquote class=3D"gmail_quote" s=
+tyle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pad=
+ding-left:1ex">
+<br>
+&gt; +use qom::{qom_isa, Object, ObjectClassMethods, ObjectImpl, ObjectType=
+, ParentField};<br>
+&gt; +use util::bindings::{module_call_init, module_init_type};<br>
+<br>
+...<br>
+<br>
+&gt; +fn init_qom() {<br>
+&gt; +=C2=A0 =C2=A0 static ONCE: LazyLock&lt;()&gt; =3D LazyLock::new(|| un=
+safe {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 module_call_init(module_init_type::MODULE=
+_INIT_QOM);<br>
+&gt; +=C2=A0 =C2=A0 });<br>
+<br>
+But for now, we can still use a static BqlCell&lt;bool&gt; as the workaroun=
+d,<br>
+just like rust/hwcore/tests/<a href=3D"http://tests.rs" rel=3D"noreferrer" =
+target=3D"_blank">tests.rs</a> did, to decouple with MSRV<br>
+dependency.<br>
+<br>
+And it seems rust/hwcore/tests/<a href=3D"http://tests.rs" rel=3D"noreferre=
+r" target=3D"_blank">tests.rs</a> has already covered this test<br>
+case, do we still need this test?<br></blockquote><div><br></div><div>I wan=
+ted a simpler test that focuses on QOM only. But this may not be desirable =
+after all.</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D=
+"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
+ft:1ex">
+<br>
+If so, then it&#39;s better to add this new test in a seperate patch, which=
+<br>
+makes current patch focus on the splitting :-).<br></blockquote><div><br></=
+div><div>Agree, I&#39;ll drop it for now.</div><div>=C2=A0</div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex">
+<br>
+&gt; +=C2=A0 =C2=A0 bql::start_test();<br>
+&gt; +=C2=A0 =C2=A0 LazyLock::force(&amp;ONCE);<br>
+&gt; +}<br>
+&gt; +<br>
+<br>
+Otherwise, LGTM,<br>
+<br>
+Reviewed-by: Zhao Liu &lt;<a href=3D"mailto:zhao1.liu@intel.com" target=3D"=
+_blank">zhao1.liu@intel.com</a>&gt;<br>
+<br>
+</blockquote></div></div>
+
+--000000000000e87e2f063d54f92f--
+
 
