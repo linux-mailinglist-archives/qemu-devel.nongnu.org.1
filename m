@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504B5B3868A
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:26:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1544B38610
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:15:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHiv-0005Sd-MD; Wed, 27 Aug 2025 11:06:06 -0400
+	id 1urHkp-0007zB-Gj; Wed, 27 Aug 2025 11:08:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHiA-00056H-Vu; Wed, 27 Aug 2025 11:05:24 -0400
+ id 1urHiD-00057e-6N; Wed, 27 Aug 2025 11:05:24 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHi8-0004yc-QU; Wed, 27 Aug 2025 11:05:18 -0400
+ id 1urHiB-0005DY-57; Wed, 27 Aug 2025 11:05:20 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0229114C53F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 0F5B314C540;
  Wed, 27 Aug 2025 18:02:58 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E3A2C269847;
+ by tsrv.corpit.ru (Postfix) with ESMTP id F2BF7269848;
  Wed, 27 Aug 2025 18:03:24 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Corentin BAYET <corentin.bayet@reversetactics.com>,
+Cc: qemu-stable@nongnu.org, David Woodhouse <dwmw@amazon.co.uk>,
  "Michael S. Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 23/59] pcie_sriov: Fix configuration and state
- synchronization
-Date: Wed, 27 Aug 2025 18:02:28 +0300
-Message-ID: <20250827150323.2694101-23-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 24/59] intel_iommu: Allow both Status Write and
+ Interrupt Flag in QI wait
+Date: Wed, 27 Aug 2025 18:02:29 +0300
+Message-ID: <20250827150323.2694101-24-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -59,117 +58,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Fix issues in PCIe SR-IOV configuration register handling that caused
-inconsistent internal state due to improper write mask handling and
-incorrect migration behavior.
+FreeBSD does both, and this appears to be perfectly valid. The VT-d
+spec even talks about the ordering (the status write should be done
+first, unsurprisingly).
 
-Two main problems were identified:
+We certainly shouldn't assert() and abort QEMU if the guest asks for
+both.
 
-1. VF Enable bit write mask handling:
-   pcie_sriov_config_write() incorrectly assumed that its val parameter
-   was already masked, causing it to ignore the actual write mask.
-   This led to the VF Enable bit being processed even when masked,
-   resulting in incorrect VF registration/unregistration. It is
-   identified as CVE-2025-54567.
-
-2. Migration state inconsistency:
-   pcie_sriov_pf_post_load() unconditionally called register_vfs()
-   regardless of the VF Enable bit state, creating inconsistent
-   internal state when VFs should not be enabled. Additionally,
-   it failed to properly update the NumVFs write mask based on
-   the current configuration. It is identified as CVE-2025-54566.
-
-Root cause analysis revealed that both functions relied on incorrect
-special-case assumptions instead of properly reading and consuming
-the actual configuration values. This change introduces a unified
-consume_config() function that reads actual configuration values and
-synchronize the internal state without special-case assumptions.
-
-The solution only adds register read overhead in non-hot-path code
-while ensuring correct SR-IOV state management across configuration
-writes and migration scenarios.
-
-Fixes: 5e7dd17e4348 ("pcie_sriov: Remove num_vfs from PCIESriovPF")
-Fixes: f9efcd47110d ("pcie_sriov: Register VFs after migration")
-Fixes: CVE-2025-54566
-Fixes: CVE-2025-54567
-Cc: qemu-stable@nongnu.org
-Reported-by: Corentin BAYET <corentin.bayet@reversetactics.com>
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Message-Id: <20250727-wmask-v2-1-394910b1c0b6@rsg.ci.i.u-tokyo.ac.jp>
+Fixes: ed7b8fbcfb88 ("intel-iommu: add supports for queued invalidation interface")
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/3028
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Message-Id: <0122cbabc0adcc3cf878f5fd7834d8f258c7a2f2.camel@infradead.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit cad9aa6fbdccd95e56e10cfa57c354a20a333717)
-(Mjt: context fix)
+(cherry picked from commit e8145dcd311b58921f3a45121792cbfab38fd2f6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index 1eb4358256..dd4fbaea46 100644
---- a/hw/pci/pcie_sriov.c
-+++ b/hw/pci/pcie_sriov.c
-@@ -211,6 +211,27 @@ static void unregister_vfs(PCIDevice *dev)
-     pci_set_word(dev->wmask + dev->exp.sriov_cap + PCI_SRIOV_NUM_VF, 0xffff);
- }
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index dffd7ee885..a117a0b6b1 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -2830,6 +2830,7 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+ {
+     uint64_t mask[4] = {VTD_INV_DESC_WAIT_RSVD_LO, VTD_INV_DESC_WAIT_RSVD_HI,
+                         VTD_INV_DESC_ALL_ONE, VTD_INV_DESC_ALL_ONE};
++    bool ret = true;
  
-+static void consume_config(PCIDevice *dev)
-+{
-+    uint8_t *cfg = dev->config + dev->exp.sriov_cap;
-+
-+    if (pci_get_word(cfg + PCI_SRIOV_CTRL) & PCI_SRIOV_CTRL_VFE) {
-+        register_vfs(dev);
-+    } else {
-+        uint8_t *wmask = dev->wmask + dev->exp.sriov_cap;
-+        uint16_t num_vfs = pci_get_word(cfg + PCI_SRIOV_NUM_VF);
-+        uint16_t wmask_val = PCI_SRIOV_CTRL_MSE | PCI_SRIOV_CTRL_ARI;
-+
-+        unregister_vfs(dev);
-+
-+        if (num_vfs <= pci_get_word(cfg + PCI_SRIOV_TOTAL_VF)) {
-+            wmask_val |= PCI_SRIOV_CTRL_VFE;
-+        }
-+
-+        pci_set_word(wmask + PCI_SRIOV_CTRL, wmask_val);
+     if (!vtd_inv_desc_reserved_check(s, inv_desc, mask, false,
+                                      __func__, "wait")) {
+@@ -2841,8 +2842,6 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+         uint32_t status_data = (uint32_t)(inv_desc->lo >>
+                                VTD_INV_DESC_WAIT_DATA_SHIFT);
+ 
+-        assert(!(inv_desc->lo & VTD_INV_DESC_WAIT_IF));
+-
+         /* FIXME: need to be masked with HAW? */
+         dma_addr_t status_addr = inv_desc->hi;
+         trace_vtd_inv_desc_wait_sw(status_addr, status_data);
+@@ -2851,18 +2850,22 @@ static bool vtd_process_wait_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+                              &status_data, sizeof(status_data),
+                              MEMTXATTRS_UNSPECIFIED)) {
+             trace_vtd_inv_desc_wait_write_fail(inv_desc->hi, inv_desc->lo);
+-            return false;
++            ret = false;
+         }
+-    } else if (inv_desc->lo & VTD_INV_DESC_WAIT_IF) {
 +    }
-+}
 +
- void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
-                              uint32_t val, int len)
- {
-@@ -228,30 +249,13 @@ void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
-     trace_sriov_config_write(dev->name, PCI_SLOT(dev->devfn),
-                              PCI_FUNC(dev->devfn), off, val, len);
- 
--    if (range_covers_byte(off, len, PCI_SRIOV_CTRL)) {
--        if (val & PCI_SRIOV_CTRL_VFE) {
--            register_vfs(dev);
--        } else {
--            unregister_vfs(dev);
--        }
--    } else if (range_covers_byte(off, len, PCI_SRIOV_NUM_VF)) {
--        uint8_t *cfg = dev->config + sriov_cap;
--        uint8_t *wmask = dev->wmask + sriov_cap;
--        uint16_t num_vfs = pci_get_word(cfg + PCI_SRIOV_NUM_VF);
--        uint16_t wmask_val = PCI_SRIOV_CTRL_MSE | PCI_SRIOV_CTRL_ARI;
--
--        if (num_vfs <= pci_get_word(cfg + PCI_SRIOV_TOTAL_VF)) {
--            wmask_val |= PCI_SRIOV_CTRL_VFE;
--        }
--
--        pci_set_word(wmask + PCI_SRIOV_CTRL, wmask_val);
--    }
-+    consume_config(dev);
- }
- 
- void pcie_sriov_pf_post_load(PCIDevice *dev)
- {
-     if (dev->exp.sriov_cap) {
--        register_vfs(dev);
-+        consume_config(dev);
++    if (inv_desc->lo & VTD_INV_DESC_WAIT_IF) {
+         /* Interrupt flag */
+         vtd_generate_completion_event(s);
+-    } else {
++    }
++
++    if (!(inv_desc->lo & (VTD_INV_DESC_WAIT_IF | VTD_INV_DESC_WAIT_SW))) {
+         error_report_once("%s: invalid wait desc: hi=%"PRIx64", lo=%"PRIx64
+                           " (unknown type)", __func__, inv_desc->hi,
+                           inv_desc->lo);
+         return false;
      }
+-    return true;
++    return ret;
  }
  
+ static bool vtd_process_context_cache_desc(IntelIOMMUState *s,
 -- 
 2.47.2
 
