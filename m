@@ -2,131 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F2A4B37BEB
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 09:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 980E7B37CA4
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 09:59:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urAhI-0005NF-23; Wed, 27 Aug 2025 03:35:56 -0400
+	id 1urAzs-00058W-2b; Wed, 27 Aug 2025 03:55:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1urAh2-0005LI-Hc
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:35:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urAzp-000589-8b
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1urAgy-0007K8-Gc
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:35:38 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urAzj-0001hs-1d
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 03:55:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756280117;
+ s=mimecast20190719; t=1756281294;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=4N4b34oFspQ+PKrZHcJjsYddOlFF/nRmzx7u9zfgifE=;
- b=Aa+O9pScGM+Xa5nzEa9wuugOfMixivJsgiZcglx5RGx+Hbycp66KRJdhQabfXdl4Q8zK05
- EKCmwk5jLhE5GN1la0E09y8gc+ozeH3Nobutuuq2pqShnx0d6qeSOqrppG9549zIjquGPg
- sw7V+OEGWmK+rNVvbEvJTKc81uJ7+/k=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-206-Gtko79QCMqC2vLNMnf20Ow-1; Wed, 27 Aug 2025 03:35:15 -0400
-X-MC-Unique: Gtko79QCMqC2vLNMnf20Ow-1
-X-Mimecast-MFC-AGG-ID: Gtko79QCMqC2vLNMnf20Ow_1756280114
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3cd34034c02so80143f8f.1
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 00:35:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756280114; x=1756884914;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4N4b34oFspQ+PKrZHcJjsYddOlFF/nRmzx7u9zfgifE=;
- b=SBTpIyIrV69bvWDYGGYJJ8SgP6GaglsxHz6yjJBDxh8x0z8oO23CyHNrIDfK3Y5V/l
- U5P1RP1to0sSvJkvV76VPTW5/YWSn1kKon5gezTpezqixzYXxIRS7fIfO71wN7j90rHk
- 8fAqxSfDStS/qJR2COJG5+DzpjicYKxN5kG9u4kLO3+4h43NwZWKywK8eVek6nZP8vnh
- FxxbthnDF6sYKXcrcIpGdyMjgNVqHUz4CQthFFNejIL8t/Ljlxr53q0ZfhO1Rv27Imj/
- uvYYhp/Wvk/2Z9K+OjMJ5U2UalhQSJh6vLB3MbyCCGYtP2lIs5Va52uP7IaUf2sXdZiK
- PsYA==
-X-Gm-Message-State: AOJu0Yw3rkID38+5n2uKScaX4yoLON4/D2Ebr6vxB7nIzUDtJ+lPOO/K
- 3WvPV+94olD3cpchHIy2Bru+twCGzJOcG3towODW3KGDlt9oHvY7rZU6u6/HkLYF1dQdXi33hyl
- m7f6oMGvqGFjmzHcOxqxAycJHa51Dk7wCIA19nxDGoP/wkr+62zpHIXmM
-X-Gm-Gg: ASbGncvLBWymR1IkmmYdsuI69trFovrJVceiFSlhfwketCWTnu+f31YujKKMyY8R5cq
- mVDuWSFySbsyjdohV9yP3vrASsMUH/5+3WLLsHXG8X/lqQczD9fPhDATMBAZiS8qkeXKKAjZw70
- YWXAZpcdbceUS+rPIwX47uzw96pjKFAzzOjluv2jSXKfNxCKyJsT98S7HYGgbw2FIbTqzb/skL8
- Q42Dqf9G8tmcvJwwUKFjOqiX2r0QhyP2dj4L9eAXnfDYT5pKi2ateSBRnF8OQhdceksAuL59q1d
- FsmIyFU0Uk65OprTNvB20tZsih0UHjNA96Hn/+QyKx/oTo7un9U+Ilj3ZtkV04Dy27tc/f5yQx/
- A+f7G78RLkN0zvERnjk7jUwkUuwUPjVRLncZtCCyaNRcAEQKw8IwDtyzGuzP59OMjULAMaAOFQA
- I=
-X-Received: by 2002:a05:6000:25c2:b0:3c9:c344:1652 with SMTP id
- ffacd0b85a97d-3cbb15ca08amr3101045f8f.6.1756280113908; 
- Wed, 27 Aug 2025 00:35:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFnnOBtzQuaPMm3PN0NQ+vZRJTWKlcAc3y5uK54/ifu0qhSfzl70pOpam7wVVffnPzZcMmLSw==
-X-Received: by 2002:a05:6000:25c2:b0:3c9:c344:1652 with SMTP id
- ffacd0b85a97d-3cbb15ca08amr3101019f8f.6.1756280113480; 
- Wed, 27 Aug 2025 00:35:13 -0700 (PDT)
-Received: from [10.163.96.123] (93-40-78-231.ip37.fastwebnet.it.
- [93.40.78.231]) by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-3c70b634943sm19228601f8f.0.2025.08.27.00.35.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Aug 2025 00:35:12 -0700 (PDT)
-Message-ID: <8a5741dc-7ce3-487d-8991-3e16a2327948@redhat.com>
-Date: Wed, 27 Aug 2025 09:35:10 +0200
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6mrGWLORdsHm0UvZI037ZS4U5gfb7DYYHfKaX7tajbo=;
+ b=MZBHOFN3GguruImgW+i46coW7YpScVPmvioAvDX0JsN/A3OgliowNkeAwf520t5OyiFbhe
+ J0Q3RVHGjPJ0kSPB/jzGXS2jrYBjOc60NSK3Up3AmhRg9I9vPvWu01hRGtBvkU8nW+2Ump
+ CZEjQgv0PWZsJ9krdeeTo/HO5b94nrM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-I9EaovwfM62C2oc-GQ2nrw-1; Wed,
+ 27 Aug 2025 03:54:49 -0400
+X-MC-Unique: I9EaovwfM62C2oc-GQ2nrw-1
+X-Mimecast-MFC-AGG-ID: I9EaovwfM62C2oc-GQ2nrw_1756281288
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7F2421800352; Wed, 27 Aug 2025 07:54:48 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.45.224.40])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id C72C11955F24; Wed, 27 Aug 2025 07:54:45 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 00/31] First pull request with functional tests patches for
+ QEMU 10.2
+Date: Wed, 27 Aug 2025 09:54:10 +0200
+Message-ID: <20250827075443.559712-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 07/18] rust: move Cell vmstate impl
-To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, qemu-rust@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-References: <20250826140449.4190022-1-marcandre.lureau@redhat.com>
- <20250826140449.4190022-8-marcandre.lureau@redhat.com>
- <456e56b3-00d5-48af-b757-79037ab8185a@redhat.com>
- <CAMxuvayw7zLYB0OY3=rR5QeEUj_p_d443zJkcExDDb43ha+8XA@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <CAMxuvayw7zLYB0OY3=rR5QeEUj_p_d443zJkcExDDb43ha+8XA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -151,42 +80,461 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/26/25 21:06, Marc-André Lureau wrote:
-> Hi
-> 
-> On Tue, Aug 26, 2025 at 10:28 PM Paolo Bonzini <pbonzini@redhat.com 
-> <mailto:pbonzini@redhat.com>> wrote:
-> 
->     On 8/26/25 16:04, marcandre.lureau@redhat.com
->     <mailto:marcandre.lureau@redhat.com> wrote:
->      > From: Marc-André Lureau <marcandre.lureau@redhat.com
->     <mailto:marcandre.lureau@redhat.com>>
->      >
->      > This will allow to split vmstate to a standalone crate next.
-> 
->     Can you explain why this is needed?  Could "migration" depend on "bql"
->     (or even, "bql" could stay in util), and keep the implementation of
->     VMState for cells, just like you do for Opaque?
-> 
-> 
-> vmstate doesn't require bql. Why should we enforce it at rust level?
+ Hi!
 
-In some sense it does: pre_load/post_load/pre_save/post_save run inside 
-the BQL.  It doesn't require it at the language level, but it does at 
-the conceptual level.
+The following changes since commit 88f72048d2f5835a1b9eaba690c7861393aef283:
 
-Anyhow the code is fine, I just wanted to understand if there was 
-something else.
+  Update version for the v10.1.0-rc4 release (2025-08-19 14:05:56 -0400)
 
-> If we merge bql in util, then sure we can make vmstate keep the VMState 
-> impl for BqlCells. But why should we do that? To save one crate? I think 
-> it will more future proof if we have a lower-level util crate without 
-> bql, and higher-level crates that rely on it. Perhaps "bql" should be 
-> renamed though (qemu-loop/iothread or something?)
+are available in the Git repository at:
 
-I'm okay with keeping bql separate, no problem. event_loop is also okay 
-as the name.
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-08-27
 
-Paolo
+for you to fetch changes up to 0ac3c314130eff8e3ea9860fe3202908a7746225:
+
+  tests/functional: Mark main in QemuBaseTest class as a static method (2025-08-27 09:46:55 +0200)
+
+----------------------------------------------------------------
+* Add v10.2 compat machines
+* Move functional tests to target specific subfolders
+* Fix some issues in functional tests
+
+----------------------------------------------------------------
+Cornelia Huck (1):
+      hw: add compat machines for 10.2
+
+Gustavo Romero (2):
+      tests/functional: Fix reverse_debugging asset precaching
+      tests/functional: Mark main in QemuBaseTest class as a static method
+
+Peter Maydell (1):
+      tests/functional/test_aarch64_virt_gpu: Skip test if EGL won't initialize
+
+Stefan Weil (1):
+      CI: Use mingw-w64-x86_64-curl-winssl instead of mingw-w64-x86_64-curl for Windows build
+
+Thomas Huth (26):
+      tests/functional: Use more fine-grained locking when looking for free ports
+      tests/functional: Rework the migration test to have target-specific files
+      tests/functional: Rework the multiprocess test to have target-specific files
+      tests/functional/meson.build: Split timeout settings by target
+      tests/functional/meson.build: Allow tests to reside in subfolders
+      tests/functional: Move aarch64 tests into architecture specific folder
+      tests/functional: Move alpha tests into architecture specific folder
+      tests/functional: Move arm tests into architecture specific folder
+      tests/functional: Move avr tests into architecture specific folder
+      tests/functional: Move hppa tests into architecture specific folder
+      tests/functional: Move i386 tests into architecture specific folder
+      tests/functional: Move loongarch64 tests into architecture specific folder
+      tests/functional: Move m68k tests into architecture specific folder
+      tests/functional: Move microblaze tests into architecture specific folder
+      tests/functional: Move mips tests into target-specific folders
+      tests/functional: Move or1k tests into target-specific folders
+      tests/functional: Move ppc/ppc64 tests into target-specific folders
+      tests/functional: Move riscv32/riscv64 tests into target-specific folders
+      tests/functional: Move rx test into target-specific folders
+      tests/functional: Move s390x tests into target-specific folders
+      tests/functional: Move sh4/sh4eb tests into target-specific folders
+      tests/functional: Move sparc/sparc64 tests into target-specific folders
+      tests/functional: Move x86_64 tests into target-specific folder
+      tests/functional: Move xtensa tests into target-specific folder
+      tests/functional: Move the generic tests to a subfolder
+      MAINTAINERS: Adjust wildcards for the migration, multiprocess and replay tests
+
+ MAINTAINERS                                        | 203 +++++------
+ include/hw/boards.h                                |   3 +
+ include/hw/i386/pc.h                               |   3 +
+ hw/arm/virt.c                                      |   9 +-
+ hw/core/machine.c                                  |   3 +
+ hw/i386/pc.c                                       |   3 +
+ hw/i386/pc_piix.c                                  |  13 +-
+ hw/i386/pc_q35.c                                   |  13 +-
+ hw/m68k/virt.c                                     |   9 +-
+ hw/ppc/spapr.c                                     |  15 +-
+ hw/s390x/s390-virtio-ccw.c                         |  14 +-
+ .gitlab-ci.d/windows.yml                           |   2 +-
+ tests/functional/aarch64/meson.build               |  48 +++
+ .../test_aspeed_ast2700.py}                        |   0
+ .../test_aspeed_ast2700fc.py}                      |   0
+ .../test_device_passthrough.py}                    |   0
+ .../test_hotplug_pci.py}                           |   0
+ .../test_imx8mp_evk.py}                            |   0
+ .../{test_aarch64_kvm.py => aarch64/test_kvm.py}   |   0
+ tests/functional/aarch64/test_migration.py         |  26 ++
+ tests/functional/aarch64/test_multiprocess.py      |  31 ++
+ .../test_raspi3.py}                                |   0
+ .../test_raspi4.py}                                |   0
+ .../test_replay.py}                                |   0
+ .../test_reverse_debug.py}                         |   4 +-
+ .../test_rme_sbsaref.py}                           |   2 +-
+ .../test_rme_virt.py}                              |   0
+ .../test_sbsaref.py}                               |   0
+ .../test_sbsaref_alpine.py}                        |   2 +-
+ .../test_sbsaref_freebsd.py}                       |   2 +-
+ .../{test_aarch64_smmu.py => aarch64/test_smmu.py} |   0
+ .../test_tcg_plugins.py}                           |   0
+ .../test_tuxrun.py}                                |   0
+ .../{test_aarch64_virt.py => aarch64/test_virt.py} |   0
+ .../test_virt_gpu.py}                              |   2 +
+ .../{test_aarch64_xen.py => aarch64/test_xen.py}   |   0
+ .../test_xlnx_versal.py}                           |   0
+ tests/functional/alpha/meson.build                 |  10 +
+ .../test_clipper.py}                               |   0
+ tests/functional/alpha/test_migration.py           |  26 ++
+ .../{test_alpha_replay.py => alpha/test_replay.py} |   0
+ tests/functional/arm/meson.build                   |  62 ++++
+ .../test_aspeed_ast1030.py}                        |   0
+ .../test_aspeed_ast2500.py}                        |   0
+ .../test_aspeed_ast2600.py}                        |   0
+ .../test_aspeed_bletchley.py}                      |   0
+ .../test_aspeed_catalina.py}                       |   0
+ .../test_aspeed_gb200nvl_bmc.py}                   |   0
+ .../test_aspeed_palmetto.py}                       |   0
+ .../test_aspeed_rainier.py}                        |   0
+ .../test_aspeed_romulus.py}                        |   0
+ .../test_aspeed_witherspoon.py}                    |   0
+ .../{test_arm_bflt.py => arm/test_bflt.py}         |   0
+ .../{test_arm_bpim2u.py => arm/test_bpim2u.py}     |   0
+ .../test_canona1100.py}                            |   0
+ .../{test_arm_collie.py => arm/test_collie.py}     |   0
+ .../test_cubieboard.py}                            |   0
+ .../test_emcraft_sf2.py}                           |   0
+ .../test_integratorcp.py}                          |   0
+ .../test_max78000fthr.py}                          |   0
+ .../{test_arm_microbit.py => arm/test_microbit.py} |   0
+ tests/functional/arm/test_migration.py             |  26 ++
+ .../{test_arm_orangepi.py => arm/test_orangepi.py} |   0
+ .../test_quanta_gsj.py}                            |   0
+ .../{test_arm_raspi2.py => arm/test_raspi2.py}     |   0
+ .../{test_arm_realview.py => arm/test_realview.py} |   0
+ .../{test_arm_replay.py => arm/test_replay.py}     |   0
+ .../{test_arm_smdkc210.py => arm/test_smdkc210.py} |   0
+ .../test_stellaris.py}                             |   0
+ .../{test_arm_sx1.py => arm/test_sx1.py}           |   0
+ .../{test_arm_tuxrun.py => arm/test_tuxrun.py}     |   0
+ .../{test_arm_vexpress.py => arm/test_vexpress.py} |   0
+ .../{test_arm_virt.py => arm/test_virt.py}         |   0
+ tests/functional/avr/meson.build                   |   6 +
+ .../{test_avr_mega2560.py => avr/test_mega2560.py} |   0
+ .../{test_avr_uno.py => avr/test_uno.py}           |   0
+ tests/functional/generic/meson.build               |  14 +
+ .../{ => generic}/test_empty_cpu_model.py          |   0
+ .../functional/{ => generic}/test_info_usernet.py  |   0
+ tests/functional/{ => generic}/test_version.py     |   0
+ tests/functional/{ => generic}/test_vnc.py         |   0
+ tests/functional/hppa/meson.build                  |   5 +
+ .../{test_hppa_seabios.py => hppa/test_seabios.py} |   0
+ tests/functional/i386/meson.build                  |  10 +
+ tests/functional/i386/test_migration.py            |  26 ++
+ .../{test_i386_replay.py => i386/test_replay.py}   |   0
+ .../{test_i386_tuxrun.py => i386/test_tuxrun.py}   |   0
+ tests/functional/loongarch64/meson.build           |   5 +
+ .../test_virt.py}                                  |   0
+ tests/functional/m68k/meson.build                  |   9 +
+ .../test_mcf5208evb.py}                            |   0
+ .../test_nextcube.py}                              |   0
+ .../{test_m68k_q800.py => m68k/test_q800.py}       |   0
+ .../{test_m68k_replay.py => m68k/test_replay.py}   |   0
+ .../{test_m68k_tuxrun.py => m68k/test_tuxrun.py}   |   0
+ tests/functional/meson.build                       | 382 +++------------------
+ tests/functional/microblaze/meson.build            |   6 +
+ .../test_replay.py}                                |   0
+ .../test_s3adsp1800.py}                            |   0
+ tests/functional/microblazeel/meson.build          |   5 +
+ .../test_s3adsp1800.py}                            |   2 +-
+ .../functional/{test_migration.py => migration.py} |  35 +-
+ tests/functional/mips/meson.build                  |  11 +
+ .../{test_mips_malta.py => mips/test_malta.py}     |   0
+ .../{test_mips_replay.py => mips/test_replay.py}   |   0
+ .../{test_mips_tuxrun.py => mips/test_tuxrun.py}   |   0
+ tests/functional/mips64/meson.build                |  10 +
+ .../{test_mips64_malta.py => mips64/test_malta.py} |   2 +-
+ .../test_tuxrun.py}                                |   0
+ tests/functional/mips64el/meson.build              |  14 +
+ .../test_fuloong2e.py}                             |   0
+ .../test_loongson3v.py}                            |   0
+ .../test_malta.py}                                 |   4 +-
+ .../test_replay.py}                                |   0
+ .../test_tuxrun.py}                                |   0
+ tests/functional/mipsel/meson.build                |  12 +
+ .../{test_mipsel_malta.py => mipsel/test_malta.py} |   2 +-
+ .../test_replay.py}                                |   0
+ .../test_tuxrun.py}                                |   0
+ .../{test_multiprocess.py => multiprocess.py}      |  40 +--
+ tests/functional/or1k/meson.build                  |   6 +
+ .../{test_or1k_replay.py => or1k/test_replay.py}   |   0
+ .../{test_or1k_sim.py => or1k/test_sim.py}         |   0
+ tests/functional/ppc/meson.build                   |  22 ++
+ .../{test_ppc_40p.py => ppc/test_40p.py}           |   0
+ .../{test_ppc_74xx.py => ppc/test_74xx.py}         |   0
+ .../{test_ppc_amiga.py => ppc/test_amiga.py}       |   0
+ .../{test_ppc_bamboo.py => ppc/test_bamboo.py}     |   0
+ .../{test_ppc_mac.py => ppc/test_mac.py}           |   0
+ tests/functional/ppc/test_migration.py             |  26 ++
+ .../test_mpc8544ds.py}                             |   0
+ .../{test_ppc_replay.py => ppc/test_replay.py}     |   0
+ .../{test_ppc_sam460ex.py => ppc/test_sam460ex.py} |   0
+ .../{test_ppc_tuxrun.py => ppc/test_tuxrun.py}     |   0
+ .../test_virtex_ml507.py}                          |   0
+ tests/functional/ppc64/meson.build                 |  25 ++
+ .../{test_ppc64_e500.py => ppc64/test_e500.py}     |   0
+ .../{test_ppc64_hv.py => ppc64/test_hv.py}         |   0
+ .../{test_ppc64_mac99.py => ppc64/test_mac99.py}   |   0
+ tests/functional/ppc64/test_migration.py           |  26 ++
+ .../test_powernv.py}                               |   0
+ .../test_pseries.py}                               |   0
+ .../{test_ppc64_replay.py => ppc64/test_replay.py} |   0
+ .../test_reverse_debug.py}                         |   0
+ .../{test_ppc64_tuxrun.py => ppc64/test_tuxrun.py} |   0
+ tests/functional/qemu_test/ports.py                |   5 +-
+ tests/functional/qemu_test/testcase.py             |   1 +
+ tests/functional/riscv32/meson.build               |  10 +
+ tests/functional/riscv32/test_migration.py         |  26 ++
+ tests/functional/riscv32/test_opensbi.py           |  10 +
+ .../test_tuxrun.py}                                |   0
+ tests/functional/riscv64/meson.build               |  15 +
+ tests/functional/riscv64/test_migration.py         |  26 ++
+ .../test_opensbi.py}                               |   0
+ .../test_sifive_u.py}                              |   0
+ .../test_tuxrun.py}                                |   0
+ tests/functional/rx/meson.build                    |   5 +
+ .../{test_rx_gdbsim.py => rx/test_gdbsim.py}       |   0
+ tests/functional/s390x/meson.build                 |  13 +
+ .../test_ccw_virtio.py}                            |   0
+ .../test_pxelinux.py}                              |   0
+ .../{test_s390x_replay.py => s390x/test_replay.py} |   0
+ .../test_topology.py}                              |   0
+ .../{test_s390x_tuxrun.py => s390x/test_tuxrun.py} |   0
+ tests/functional/sh4/meson.build                   |  10 +
+ .../{test_sh4_r2d.py => sh4/test_r2d.py}           |   0
+ .../{test_sh4_tuxrun.py => sh4/test_tuxrun.py}     |   0
+ tests/functional/sh4eb/meson.build                 |   5 +
+ .../{test_sh4eb_r2d.py => sh4eb/test_r2d.py}       |   0
+ tests/functional/sparc/meson.build                 |  10 +
+ tests/functional/sparc/test_migration.py           |  26 ++
+ .../{test_sparc_replay.py => sparc/test_replay.py} |   0
+ .../{test_sparc_sun4m.py => sparc/test_sun4m.py}   |   0
+ tests/functional/sparc64/meson.build               |  10 +
+ tests/functional/sparc64/test_migration.py         |  26 ++
+ .../test_sun4u.py}                                 |   0
+ .../test_tuxrun.py}                                |   0
+ tests/functional/x86_64/meson.build                |  36 ++
+ tests/functional/{ => x86_64}/test_acpi_bits.py    |   0
+ .../test_cpu_model_versions.py}                    |   0
+ tests/functional/{ => x86_64}/test_cpu_queries.py  |   0
+ .../test_hotplug_blk.py}                           |   0
+ .../test_hotplug_cpu.py}                           |   0
+ tests/functional/{ => x86_64}/test_intel_iommu.py  |   0
+ .../test_kvm_xen.py}                               |   0
+ tests/functional/{ => x86_64}/test_linux_initrd.py |   0
+ .../functional/{ => x86_64}/test_mem_addr_space.py |   0
+ tests/functional/{ => x86_64}/test_memlock.py      |   0
+ tests/functional/x86_64/test_migration.py          |  26 ++
+ tests/functional/x86_64/test_multiprocess.py       |  31 ++
+ .../functional/{ => x86_64}/test_netdev_ethtool.py |   0
+ .../{ => x86_64}/test_pc_cpu_hotplug_props.py      |   0
+ .../test_replay.py}                                |   0
+ .../test_reverse_debug.py}                         |   0
+ .../test_tuxrun.py}                                |   0
+ .../functional/{ => x86_64}/test_virtio_balloon.py |   0
+ tests/functional/{ => x86_64}/test_virtio_gpu.py   |   0
+ .../functional/{ => x86_64}/test_virtio_version.py |   0
+ tests/functional/xtensa/meson.build                |   6 +
+ .../{test_xtensa_lx60.py => xtensa/test_lx60.py}   |   0
+ .../test_replay.py}                                |   0
+ 201 files changed, 1008 insertions(+), 525 deletions(-)
+ create mode 100644 tests/functional/aarch64/meson.build
+ rename tests/functional/{test_aarch64_aspeed_ast2700.py => aarch64/test_aspeed_ast2700.py} (100%)
+ rename tests/functional/{test_aarch64_aspeed_ast2700fc.py => aarch64/test_aspeed_ast2700fc.py} (100%)
+ rename tests/functional/{test_aarch64_device_passthrough.py => aarch64/test_device_passthrough.py} (100%)
+ rename tests/functional/{test_aarch64_hotplug_pci.py => aarch64/test_hotplug_pci.py} (100%)
+ rename tests/functional/{test_aarch64_imx8mp_evk.py => aarch64/test_imx8mp_evk.py} (100%)
+ rename tests/functional/{test_aarch64_kvm.py => aarch64/test_kvm.py} (100%)
+ create mode 100755 tests/functional/aarch64/test_migration.py
+ create mode 100755 tests/functional/aarch64/test_multiprocess.py
+ rename tests/functional/{test_aarch64_raspi3.py => aarch64/test_raspi3.py} (100%)
+ rename tests/functional/{test_aarch64_raspi4.py => aarch64/test_raspi4.py} (100%)
+ rename tests/functional/{test_aarch64_replay.py => aarch64/test_replay.py} (100%)
+ rename tests/functional/{test_aarch64_reverse_debug.py => aarch64/test_reverse_debug.py} (93%)
+ rename tests/functional/{test_aarch64_rme_sbsaref.py => aarch64/test_rme_sbsaref.py} (98%)
+ rename tests/functional/{test_aarch64_rme_virt.py => aarch64/test_rme_virt.py} (100%)
+ rename tests/functional/{test_aarch64_sbsaref.py => aarch64/test_sbsaref.py} (100%)
+ rename tests/functional/{test_aarch64_sbsaref_alpine.py => aarch64/test_sbsaref_alpine.py} (97%)
+ rename tests/functional/{test_aarch64_sbsaref_freebsd.py => aarch64/test_sbsaref_freebsd.py} (97%)
+ rename tests/functional/{test_aarch64_smmu.py => aarch64/test_smmu.py} (100%)
+ rename tests/functional/{test_aarch64_tcg_plugins.py => aarch64/test_tcg_plugins.py} (100%)
+ rename tests/functional/{test_aarch64_tuxrun.py => aarch64/test_tuxrun.py} (100%)
+ rename tests/functional/{test_aarch64_virt.py => aarch64/test_virt.py} (100%)
+ rename tests/functional/{test_aarch64_virt_gpu.py => aarch64/test_virt_gpu.py} (97%)
+ rename tests/functional/{test_aarch64_xen.py => aarch64/test_xen.py} (100%)
+ rename tests/functional/{test_aarch64_xlnx_versal.py => aarch64/test_xlnx_versal.py} (100%)
+ create mode 100644 tests/functional/alpha/meson.build
+ rename tests/functional/{test_alpha_clipper.py => alpha/test_clipper.py} (100%)
+ create mode 100755 tests/functional/alpha/test_migration.py
+ rename tests/functional/{test_alpha_replay.py => alpha/test_replay.py} (100%)
+ create mode 100644 tests/functional/arm/meson.build
+ rename tests/functional/{test_arm_aspeed_ast1030.py => arm/test_aspeed_ast1030.py} (100%)
+ rename tests/functional/{test_arm_aspeed_ast2500.py => arm/test_aspeed_ast2500.py} (100%)
+ rename tests/functional/{test_arm_aspeed_ast2600.py => arm/test_aspeed_ast2600.py} (100%)
+ rename tests/functional/{test_arm_aspeed_bletchley.py => arm/test_aspeed_bletchley.py} (100%)
+ mode change 100644 => 100755
+ rename tests/functional/{test_arm_aspeed_catalina.py => arm/test_aspeed_catalina.py} (100%)
+ rename tests/functional/{test_arm_aspeed_gb200nvl_bmc.py => arm/test_aspeed_gb200nvl_bmc.py} (100%)
+ mode change 100644 => 100755
+ rename tests/functional/{test_arm_aspeed_palmetto.py => arm/test_aspeed_palmetto.py} (100%)
+ rename tests/functional/{test_arm_aspeed_rainier.py => arm/test_aspeed_rainier.py} (100%)
+ rename tests/functional/{test_arm_aspeed_romulus.py => arm/test_aspeed_romulus.py} (100%)
+ rename tests/functional/{test_arm_aspeed_witherspoon.py => arm/test_aspeed_witherspoon.py} (100%)
+ mode change 100644 => 100755
+ rename tests/functional/{test_arm_bflt.py => arm/test_bflt.py} (100%)
+ rename tests/functional/{test_arm_bpim2u.py => arm/test_bpim2u.py} (100%)
+ rename tests/functional/{test_arm_canona1100.py => arm/test_canona1100.py} (100%)
+ rename tests/functional/{test_arm_collie.py => arm/test_collie.py} (100%)
+ rename tests/functional/{test_arm_cubieboard.py => arm/test_cubieboard.py} (100%)
+ rename tests/functional/{test_arm_emcraft_sf2.py => arm/test_emcraft_sf2.py} (100%)
+ rename tests/functional/{test_arm_integratorcp.py => arm/test_integratorcp.py} (100%)
+ rename tests/functional/{test_arm_max78000fthr.py => arm/test_max78000fthr.py} (100%)
+ rename tests/functional/{test_arm_microbit.py => arm/test_microbit.py} (100%)
+ create mode 100755 tests/functional/arm/test_migration.py
+ rename tests/functional/{test_arm_orangepi.py => arm/test_orangepi.py} (100%)
+ rename tests/functional/{test_arm_quanta_gsj.py => arm/test_quanta_gsj.py} (100%)
+ rename tests/functional/{test_arm_raspi2.py => arm/test_raspi2.py} (100%)
+ rename tests/functional/{test_arm_realview.py => arm/test_realview.py} (100%)
+ rename tests/functional/{test_arm_replay.py => arm/test_replay.py} (100%)
+ rename tests/functional/{test_arm_smdkc210.py => arm/test_smdkc210.py} (100%)
+ rename tests/functional/{test_arm_stellaris.py => arm/test_stellaris.py} (100%)
+ rename tests/functional/{test_arm_sx1.py => arm/test_sx1.py} (100%)
+ rename tests/functional/{test_arm_tuxrun.py => arm/test_tuxrun.py} (100%)
+ rename tests/functional/{test_arm_vexpress.py => arm/test_vexpress.py} (100%)
+ rename tests/functional/{test_arm_virt.py => arm/test_virt.py} (100%)
+ create mode 100644 tests/functional/avr/meson.build
+ rename tests/functional/{test_avr_mega2560.py => avr/test_mega2560.py} (100%)
+ rename tests/functional/{test_avr_uno.py => avr/test_uno.py} (100%)
+ create mode 100644 tests/functional/generic/meson.build
+ rename tests/functional/{ => generic}/test_empty_cpu_model.py (100%)
+ rename tests/functional/{ => generic}/test_info_usernet.py (100%)
+ rename tests/functional/{ => generic}/test_version.py (100%)
+ rename tests/functional/{ => generic}/test_vnc.py (100%)
+ create mode 100644 tests/functional/hppa/meson.build
+ rename tests/functional/{test_hppa_seabios.py => hppa/test_seabios.py} (100%)
+ create mode 100644 tests/functional/i386/meson.build
+ create mode 100755 tests/functional/i386/test_migration.py
+ rename tests/functional/{test_i386_replay.py => i386/test_replay.py} (100%)
+ rename tests/functional/{test_i386_tuxrun.py => i386/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/loongarch64/meson.build
+ rename tests/functional/{test_loongarch64_virt.py => loongarch64/test_virt.py} (100%)
+ create mode 100644 tests/functional/m68k/meson.build
+ rename tests/functional/{test_m68k_mcf5208evb.py => m68k/test_mcf5208evb.py} (100%)
+ rename tests/functional/{test_m68k_nextcube.py => m68k/test_nextcube.py} (100%)
+ rename tests/functional/{test_m68k_q800.py => m68k/test_q800.py} (100%)
+ rename tests/functional/{test_m68k_replay.py => m68k/test_replay.py} (100%)
+ rename tests/functional/{test_m68k_tuxrun.py => m68k/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/microblaze/meson.build
+ rename tests/functional/{test_microblaze_replay.py => microblaze/test_replay.py} (100%)
+ rename tests/functional/{test_microblaze_s3adsp1800.py => microblaze/test_s3adsp1800.py} (100%)
+ create mode 100644 tests/functional/microblazeel/meson.build
+ rename tests/functional/{test_microblazeel_s3adsp1800.py => microblazeel/test_s3adsp1800.py} (92%)
+ rename tests/functional/{test_migration.py => migration.py} (74%)
+ mode change 100755 => 100644
+ create mode 100644 tests/functional/mips/meson.build
+ rename tests/functional/{test_mips_malta.py => mips/test_malta.py} (100%)
+ rename tests/functional/{test_mips_replay.py => mips/test_replay.py} (100%)
+ rename tests/functional/{test_mips_tuxrun.py => mips/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/mips64/meson.build
+ rename tests/functional/{test_mips64_malta.py => mips64/test_malta.py} (96%)
+ rename tests/functional/{test_mips64_tuxrun.py => mips64/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/mips64el/meson.build
+ rename tests/functional/{test_mips64el_fuloong2e.py => mips64el/test_fuloong2e.py} (100%)
+ rename tests/functional/{test_mips64el_loongson3v.py => mips64el/test_loongson3v.py} (100%)
+ rename tests/functional/{test_mips64el_malta.py => mips64el/test_malta.py} (98%)
+ rename tests/functional/{test_mips64el_replay.py => mips64el/test_replay.py} (100%)
+ rename tests/functional/{test_mips64el_tuxrun.py => mips64el/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/mipsel/meson.build
+ rename tests/functional/{test_mipsel_malta.py => mipsel/test_malta.py} (98%)
+ rename tests/functional/{test_mipsel_replay.py => mipsel/test_replay.py} (100%)
+ mode change 100644 => 100755
+ rename tests/functional/{test_mipsel_tuxrun.py => mipsel/test_tuxrun.py} (100%)
+ rename tests/functional/{test_multiprocess.py => multiprocess.py} (58%)
+ mode change 100755 => 100644
+ create mode 100644 tests/functional/or1k/meson.build
+ rename tests/functional/{test_or1k_replay.py => or1k/test_replay.py} (100%)
+ rename tests/functional/{test_or1k_sim.py => or1k/test_sim.py} (100%)
+ create mode 100644 tests/functional/ppc/meson.build
+ rename tests/functional/{test_ppc_40p.py => ppc/test_40p.py} (100%)
+ rename tests/functional/{test_ppc_74xx.py => ppc/test_74xx.py} (100%)
+ rename tests/functional/{test_ppc_amiga.py => ppc/test_amiga.py} (100%)
+ rename tests/functional/{test_ppc_bamboo.py => ppc/test_bamboo.py} (100%)
+ rename tests/functional/{test_ppc_mac.py => ppc/test_mac.py} (100%)
+ create mode 100755 tests/functional/ppc/test_migration.py
+ rename tests/functional/{test_ppc_mpc8544ds.py => ppc/test_mpc8544ds.py} (100%)
+ rename tests/functional/{test_ppc_replay.py => ppc/test_replay.py} (100%)
+ rename tests/functional/{test_ppc_sam460ex.py => ppc/test_sam460ex.py} (100%)
+ mode change 100644 => 100755
+ rename tests/functional/{test_ppc_tuxrun.py => ppc/test_tuxrun.py} (100%)
+ rename tests/functional/{test_ppc_virtex_ml507.py => ppc/test_virtex_ml507.py} (100%)
+ create mode 100644 tests/functional/ppc64/meson.build
+ rename tests/functional/{test_ppc64_e500.py => ppc64/test_e500.py} (100%)
+ rename tests/functional/{test_ppc64_hv.py => ppc64/test_hv.py} (100%)
+ rename tests/functional/{test_ppc64_mac99.py => ppc64/test_mac99.py} (100%)
+ create mode 100755 tests/functional/ppc64/test_migration.py
+ rename tests/functional/{test_ppc64_powernv.py => ppc64/test_powernv.py} (100%)
+ rename tests/functional/{test_ppc64_pseries.py => ppc64/test_pseries.py} (100%)
+ rename tests/functional/{test_ppc64_replay.py => ppc64/test_replay.py} (100%)
+ rename tests/functional/{test_ppc64_reverse_debug.py => ppc64/test_reverse_debug.py} (100%)
+ rename tests/functional/{test_ppc64_tuxrun.py => ppc64/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/riscv32/meson.build
+ create mode 100755 tests/functional/riscv32/test_migration.py
+ create mode 100755 tests/functional/riscv32/test_opensbi.py
+ rename tests/functional/{test_riscv32_tuxrun.py => riscv32/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/riscv64/meson.build
+ create mode 100755 tests/functional/riscv64/test_migration.py
+ rename tests/functional/{test_riscv_opensbi.py => riscv64/test_opensbi.py} (100%)
+ rename tests/functional/{test_riscv64_sifive_u.py => riscv64/test_sifive_u.py} (100%)
+ rename tests/functional/{test_riscv64_tuxrun.py => riscv64/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/rx/meson.build
+ rename tests/functional/{test_rx_gdbsim.py => rx/test_gdbsim.py} (100%)
+ create mode 100644 tests/functional/s390x/meson.build
+ rename tests/functional/{test_s390x_ccw_virtio.py => s390x/test_ccw_virtio.py} (100%)
+ rename tests/functional/{test_s390x_pxelinux.py => s390x/test_pxelinux.py} (100%)
+ rename tests/functional/{test_s390x_replay.py => s390x/test_replay.py} (100%)
+ rename tests/functional/{test_s390x_topology.py => s390x/test_topology.py} (100%)
+ rename tests/functional/{test_s390x_tuxrun.py => s390x/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/sh4/meson.build
+ rename tests/functional/{test_sh4_r2d.py => sh4/test_r2d.py} (100%)
+ rename tests/functional/{test_sh4_tuxrun.py => sh4/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/sh4eb/meson.build
+ rename tests/functional/{test_sh4eb_r2d.py => sh4eb/test_r2d.py} (100%)
+ create mode 100644 tests/functional/sparc/meson.build
+ create mode 100755 tests/functional/sparc/test_migration.py
+ rename tests/functional/{test_sparc_replay.py => sparc/test_replay.py} (100%)
+ rename tests/functional/{test_sparc_sun4m.py => sparc/test_sun4m.py} (100%)
+ create mode 100644 tests/functional/sparc64/meson.build
+ create mode 100755 tests/functional/sparc64/test_migration.py
+ rename tests/functional/{test_sparc64_sun4u.py => sparc64/test_sun4u.py} (100%)
+ rename tests/functional/{test_sparc64_tuxrun.py => sparc64/test_tuxrun.py} (100%)
+ create mode 100644 tests/functional/x86_64/meson.build
+ rename tests/functional/{ => x86_64}/test_acpi_bits.py (100%)
+ rename tests/functional/{test_x86_cpu_model_versions.py => x86_64/test_cpu_model_versions.py} (100%)
+ rename tests/functional/{ => x86_64}/test_cpu_queries.py (100%)
+ rename tests/functional/{test_x86_64_hotplug_blk.py => x86_64/test_hotplug_blk.py} (100%)
+ rename tests/functional/{test_x86_64_hotplug_cpu.py => x86_64/test_hotplug_cpu.py} (100%)
+ rename tests/functional/{ => x86_64}/test_intel_iommu.py (100%)
+ rename tests/functional/{test_x86_64_kvm_xen.py => x86_64/test_kvm_xen.py} (100%)
+ rename tests/functional/{ => x86_64}/test_linux_initrd.py (100%)
+ rename tests/functional/{ => x86_64}/test_mem_addr_space.py (100%)
+ rename tests/functional/{ => x86_64}/test_memlock.py (100%)
+ create mode 100755 tests/functional/x86_64/test_migration.py
+ create mode 100755 tests/functional/x86_64/test_multiprocess.py
+ rename tests/functional/{ => x86_64}/test_netdev_ethtool.py (100%)
+ rename tests/functional/{ => x86_64}/test_pc_cpu_hotplug_props.py (100%)
+ rename tests/functional/{test_x86_64_replay.py => x86_64/test_replay.py} (100%)
+ rename tests/functional/{test_x86_64_reverse_debug.py => x86_64/test_reverse_debug.py} (100%)
+ rename tests/functional/{test_x86_64_tuxrun.py => x86_64/test_tuxrun.py} (100%)
+ rename tests/functional/{ => x86_64}/test_virtio_balloon.py (100%)
+ rename tests/functional/{ => x86_64}/test_virtio_gpu.py (100%)
+ rename tests/functional/{ => x86_64}/test_virtio_version.py (100%)
+ create mode 100644 tests/functional/xtensa/meson.build
+ rename tests/functional/{test_xtensa_lx60.py => xtensa/test_lx60.py} (100%)
+ rename tests/functional/{test_xtensa_replay.py => xtensa/test_replay.py} (100%)
 
 
