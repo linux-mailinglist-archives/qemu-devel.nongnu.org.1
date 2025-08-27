@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5081B38675
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D80B385C9
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:09:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHk8-0007BW-7P; Wed, 27 Aug 2025 11:07:21 -0400
+	id 1urHkL-0007cL-DG; Wed, 27 Aug 2025 11:07:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHiF-00059B-5C; Wed, 27 Aug 2025 11:05:24 -0400
+ id 1urHiG-00059e-Vt; Wed, 27 Aug 2025 11:05:26 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHiC-0005E3-VQ; Wed, 27 Aug 2025 11:05:22 -0400
+ id 1urHiF-0005EY-94; Wed, 27 Aug 2025 11:05:24 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1F91914C541;
+ by isrv.corpit.ru (Postfix) with ESMTP id 2D97E14C542;
  Wed, 27 Aug 2025 18:02:58 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0D092269849;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1C30126984A;
  Wed, 27 Aug 2025 18:03:25 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Sairaj Kodilkar <sarunkod@amd.com>,
- Vasant Hegde <vasant.hegde@amd.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 25/59] hw/i386/amd_iommu: Move IOAPIC memory region
- initialization to the end
-Date: Wed, 27 Aug 2025 18:02:30 +0300
-Message-ID: <20250827150323.2694101-25-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Zenghui Yu <zenghui.yu@linux.dev>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 26/59] hw/intc/arm_gicv3_kvm: Write all 1's to clear
+ enable/active
+Date: Wed, 27 Aug 2025 18:02:31 +0300
+Message-ID: <20250827150323.2694101-26-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -59,52 +58,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sairaj Kodilkar <sarunkod@amd.com>
+From: Zenghui Yu <zenghui.yu@linux.dev>
 
-Setting up IOAPIC memory region requires mr_sys and mr_ir. Currently
-these two memory regions are setup after the initializing the IOAPIC
-memory region, which cause `amdvi_host_dma_iommu()` to use unitialized
-mr_sys and mr_ir.
+KVM's userspace access interface to the GICD enable and active bits
+is via set/clear register pairs which implement the hardware's "write
+1s to the clear register to clear the 0 bits, and write 1s to the set
+register to set the 1 bits" semantics.  We didn't get this right,
+because we were writing 0 to the clear register.
 
-Move the IOAPIC memory region initialization to the end in order to use
-the mr_sys and mr_ir regions after they are fully initialized.
+Writing 0 to GICD_IC{ENABLE,ACTIVE}R architecturally has no effect on
+interrupt status (all writes are simply ignored by KVM) and doesn't
+comply with the intention of "first write to the clear-reg to clear
+all bits".
 
-Fixes: 577c470f4326 ("x86_iommu/amd: Prepare for interrupt remap support")
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Message-Id: <20250801060507.3382-4-sarunkod@amd.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit a7842d94067cddc80b47ac42fb6e49e2fc02a3c5)
-(Mjt: context fix due to missing v10.0.0-833-gf864a3235ea1
- "hw/i386/amd_iommu: Isolate AMDVI-PCI from amd-iommu device
- to allow full control over the PCI device creation")
+Write all 1's to actually clear the enable/active status.
+
+This didn't have any adverse effects on migration because there
+we start with a clean VM state; it would be guest-visible when
+doing a system reset, but since Linux always cleans up the
+register state of the GIC during bootup before it enables it
+most users won't have run into a problem here.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 367b9f527bec ("hw/intc/arm_gicv3_kvm: Implement get/put functions")
+Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
+Message-id: 20250729161650.43758-3-zenghui.yu@linux.dev
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit b10bd4bd17ac8628ede8735a08ad82dc3b721c64)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index f773653487..37447dca25 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -1620,9 +1620,6 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
--    /* Pseudo address space under root PCI bus. */
--    x86ms->ioapic_as = amdvi_host_dma_iommu(bus, s, AMDVI_IOAPIC_SB_DEVID);
--
-     /* set up MMIO */
-     memory_region_init_io(&s->mr_mmio, OBJECT(s), &mmio_mem_ops, s,
-                           "amdvi-mmio", AMDVI_MMIO_SIZE);
-@@ -1645,6 +1642,9 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion_overlap(&s->mr_sys, AMDVI_INT_ADDR_FIRST,
-                                         &s->mr_ir, 1);
- 
-+    /* Pseudo address space under root PCI bus. */
-+    x86ms->ioapic_as = amdvi_host_dma_iommu(bus, s, AMDVI_IOAPIC_SB_DEVID);
-+
-     if (kvm_enabled() && x86ms->apic_id_limit > 255 && !s->xtsup) {
-         error_report("AMD IOMMU with x2APIC configuration requires xtsup=on");
-         exit(EXIT_FAILURE);
+diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
+index 8e17cab2a0..d6e23426c0 100644
+--- a/hw/intc/arm_gicv3_kvm.c
++++ b/hw/intc/arm_gicv3_kvm.c
+@@ -294,7 +294,7 @@ static void kvm_dist_putbmp(GICv3State *s, uint32_t offset,
+          * the 1 bits.
+          */
+         if (clroffset != 0) {
+-            reg = 0;
++            reg = ~0;
+             kvm_gicd_access(s, clroffset, &reg, true);
+             clroffset += 4;
+         }
 -- 
 2.47.2
 
