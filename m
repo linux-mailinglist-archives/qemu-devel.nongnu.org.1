@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D660B376DF
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 03:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CB5B376DD
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 03:23:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ur4j8-00038w-EE; Tue, 26 Aug 2025 21:13:26 -0400
+	id 1ur4jO-00042l-A0; Tue, 26 Aug 2025 21:13:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ur4hd-0001TC-SZ
+ id 1ur4hb-0001M1-Bl
  for qemu-devel@nongnu.org; Tue, 26 Aug 2025 21:11:54 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ur4hP-0000Ap-Ur
- for qemu-devel@nongnu.org; Tue, 26 Aug 2025 21:11:53 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-24626e06f04so40715925ad.2
- for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 18:11:37 -0700 (PDT)
+ id 1ur4hR-0000CC-Vl
+ for qemu-devel@nongnu.org; Tue, 26 Aug 2025 21:11:51 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-77053017462so2570445b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Aug 2025 18:11:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756257096; x=1756861896; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756257100; x=1756861900; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NBOnBkxFaEwe2K3Bn4cTXQl/fQtmv3u9jbbXCvu41Ds=;
- b=CV80/sSCt7fcdxW7SHqsAhpP0WvRn2SAnhwqWqd9xmyGY1CBuCo3jYaI7HdeTeIxU2
- 3PpN7JrrpzUrwDlzxjZfMSo9mIN6lck+bRkcK/vAHENofMxGZJCh0er3OaiKTrFIwE5a
- mYeq5pRs57nOszvmfPEKXuxvGlzDgXwSk9OC5tvz560IlQG5+ETNQpXWLzOT9oIAQy2n
- FM2+WZZ+j2AghYY4zTGfA5h/omm68iiCRIKEzkmB2hMTVUNTa7WpBAhkY+SxGh8nGW9G
- 9F1NURy7DmMqroeirMGOR++uYpz5j5RRmak13FldAwhls9gRKTUbBdnooqKZQbfuUbuq
- BwMg==
+ bh=l0SOJUj38Cm9fmgkJjIjX/37+2seZZfp+KIwKY3yN64=;
+ b=dEYHFAovoENHh3pcnJcpmgwkKgpyv9l5L29SCIYvfe2dkpf+IhG4Y/TX099Lp6LTPZ
+ Ge89DgwwBuvXG2V4N4ip7jbW33l/GNYrDwkA0iaCs01/aS1vfSUToD3RnZbzhLJ5B5r0
+ wA1NaR5IDVP84et1U/6nDZv+u5pavs4IYwHa9VlHaz3lao1Qye/J77088ACJ9N9yPK/I
+ O1W/yMfWRdnKavSlXf35KEWqY5hbc7x8w7Zy771BwwUv29TGSO+P4d4/9vmAlBfZvlN5
+ XLUyay74JEPsgxNi/YsoioIRRaRjufdG2I/IcmTL97IXT2WEf82Jcr9EQ+HzX2JE4jxM
+ 3crw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756257096; x=1756861896;
+ d=1e100.net; s=20230601; t=1756257100; x=1756861900;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NBOnBkxFaEwe2K3Bn4cTXQl/fQtmv3u9jbbXCvu41Ds=;
- b=Xf/TQR3Kqkioa5TRMk2uku4ioTSYuPrSqlxCYio2W948G7dXDHKDUHJzlAzCVTLk1p
- sDfMRmg184TNiX6lR+lL0ntPXN3aGyQ+gHO1grr0WDjaaLTDWPSEyxlxILMd1s4cEXal
- pwtZZHNs4apLTLC1qDqTUHQLtLBgo6pLvuAL4wWJdQ9UHrNb1B/KaEXUbsH+fzt6PQeM
- 1iRgIpZ1oDonpV4GfWOW//sZ98dCcJSJV0uhilS22G9YggzXz15azyl6JCb2YTfv4XrK
- 5+KYaBdLPHZv1ja304hxJQYxvYatDVnSQJD5i4pXid6GU+k5jZcI+sRvDcWRHAa+TlHI
- BbPg==
-X-Gm-Message-State: AOJu0YyD4budhoP8HtJ5TjSyy3lTGMZAL+sddI6K6Cjlr2RywqNcQ9Go
- MCTS7RoB04j951wf1dOBtFjHCGL1jxr0Npi81Nt4Uv1P+sG9CA3Gu8szEGjqwHbMuxFTK38EwvG
- Upw2VJBc=
-X-Gm-Gg: ASbGnctbFfRTcV07K+L78KDI/SAQzHVjSqIfz3PWtqRtz96YbtTLegkbzr8NQPuzh/X
- 6Zmp32LwJBX6HiPl2EREM91uizoDDzFyeyNKbMkV8xrAyyVsF/KjYy39iQA92qQz4OT8N9hY4bL
- al34d/zZw6zfiZ1+FtOmcRMaiXWBeZs3wmMSBCeZcrgFculm1s6+cQQr9QFm4IOAqnPc7Vw6ziC
- J3Wm+ikSDnNTJlP+7iI/JpGqdqjc/JD27fWXlulVt1v6/vfi7e9TwvgqVOe7hhDGhquP7SbgRJo
- yx2mwJczjreIU2wbcTPCKvfEUt7inUhlzuvhm4fsfZBLH1RrxOqVbN+yLCmFcACZA7gCnqUdkyf
- jmMbpj6ZS9BDxgElpgYrVaZorOqiGLEM21Ikr
-X-Google-Smtp-Source: AGHT+IH/zMfczHEuoM7jzSkWFJSo4yMbbQ7zHhsJ/G+n+LuTnOIoWsq+VUUjnfR0aMph1uP23F3TZw==
-X-Received: by 2002:a17:902:e784:b0:246:42a9:d38b with SMTP id
- d9443c01a7336-24642a9d45fmr162358605ad.21.1756257095733; 
- Tue, 26 Aug 2025 18:11:35 -0700 (PDT)
+ bh=l0SOJUj38Cm9fmgkJjIjX/37+2seZZfp+KIwKY3yN64=;
+ b=Bl9YOfDIokOwDA46YeuPULiGK7pplfE4QzGHGAm66En6T9Bqt9QTzsleAoGwc1msxC
+ NKCA/xEOSArbnyUQiMl/yYQjvLlI+5+VIJZ4lWCPZzymRpOCyYo0Jo+A/nXOY2I/I/FA
+ AwnDscKSNL3BAmUG1AUjUtEyNnAVBl3HzFWWzn6ZZXNc+U6G1Af1Vvw4vOuaVdqGXnup
+ zlXrEG7erZrcCPChJWyp9+ne0a5pW3I4hqPi3fa7MsI5XLFlNxQUDA7KoNvJEvJpEZLj
+ L9V4zykcaAFVXC9VTm4Ur4pLrJRZwe02OY70KdTi8E7s1mf2uQWJm71/hOmGBGo5poIK
+ RYSQ==
+X-Gm-Message-State: AOJu0YyKD+lEZZR3Ym7KoEyIhSR2t2QNFsKEkFQk5JoWUK1/mZl8pkyK
+ ms8WuKQoG7p1f4lLGS9r+b4vBkZEw0qlwU3ZK8bHTi61Dzs0RyiOYFBlgFN9QhWlrotqSF7QNat
+ zZuFwZQQ=
+X-Gm-Gg: ASbGncs2bPhJqgzobilfux9UDbpcHPM3fWwJcoC73uXRGZSGK0/WUh8aobdtSN1Tx7t
+ dBXL7WQm1UubhOsP2ZkVJH3XvynPuGisgCsCgXFZaU9jnl7s3Tsv21YGbiNKiqGLfsXpJeoyIvf
+ +VzH9ciYHQWwjoxDPqp7FFCiQLgAbMgtYBKj7eFoZmI4MzsLRaaDWfHTJuEHbSJLUv3ZIRlnAck
+ VTvmWq5XuCLZkP6ABKc68J0bf3J8JTTHcboXk1BxqjQYMG5XgQt1EnVgKOYSsZHYo6LBLYIZWBl
+ upuQhQ/cDQCGUFCRFXnLMD+k8AxtJXAJcmdVgrMJCCbZrkdL5HRC9+/4RPqzb22mS4GJ+AKPFmd
+ dRiUI8Uge8hh8a9rx3Qe7UUa7XYHM47D+FDtD
+X-Google-Smtp-Source: AGHT+IEguu268E/bLNIFrGQE3A0kNMMNWLSwhR7II1EAMwXpC4yq+UDO8pOSB+99KDwMsnybCClzTg==
+X-Received: by 2002:a05:6a00:400d:b0:770:3b56:7939 with SMTP id
+ d2e1a72fcca58-7703b568016mr18884173b3a.2.1756257099742; 
+ Tue, 26 Aug 2025 18:11:39 -0700 (PDT)
 Received: from stoup.. ([144.6.121.55]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-771f2b2d2bfsm4348408b3a.93.2025.08.26.18.11.33
+ d2e1a72fcca58-771f2b2d2bfsm4348408b3a.93.2025.08.26.18.11.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Aug 2025 18:11:35 -0700 (PDT)
+ Tue, 26 Aug 2025 18:11:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 48/61] target/arm: Migrate cpreg128 registers
-Date: Wed, 27 Aug 2025 11:04:39 +1000
-Message-ID: <20250827010453.4059782-53-richard.henderson@linaro.org>
+Subject: [PATCH 49/61] target/arm: Add syn_aa64_sysreg128trap
+Date: Wed, 27 Aug 2025 11:04:40 +1000
+Message-ID: <20250827010453.4059782-54-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250827010453.4059782-1-richard.henderson@linaro.org>
 References: <20250827010453.4059782-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,93 +97,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+System register access with MRRS/MSRR use a different
+exception class.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/machine.c | 50 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ target/arm/syndrome.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/target/arm/machine.c b/target/arm/machine.c
-index 6986915bee..35ff28cc30 100644
---- a/target/arm/machine.c
-+++ b/target/arm/machine.c
-@@ -868,6 +868,34 @@ static const VMStateInfo vmstate_powered_off = {
-     .put = put_power,
- };
- 
-+static bool sysreg128_needed(void *opaque)
-+{
-+    ARMCPU *cpu = opaque;
-+    return cpu->cpreg128_array_len != 0;
-+}
-+
-+static const VMStateDescription vmstate_sysreg128 = {
-+    .name = "cpu/sysreg128",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = sysreg128_needed,
-+    .fields = (const VMStateField[]) {
-+        /*
-+         * The length-check must come before the arrays to avoid
-+         * incoming data possibly overflowing the array.
-+         */
-+        VMSTATE_INT32_POSITIVE_LE(cpreg128_vmstate_array_len, ARMCPU),
-+        VMSTATE_VARRAY_INT32(cpreg128_vmstate_indexes, ARMCPU,
-+                             cpreg128_vmstate_array_len,
-+                             0, vmstate_info_uint64, uint64_t),
-+        VMSTATE_VARRAY_INT32(cpreg128_vmstate_values, ARMCPU,
-+                             cpreg128_vmstate_array_len,
-+                             0, vmstate_info_int128, Int128),
-+
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-+
- static int cpu_pre_save(void *opaque)
- {
-     ARMCPU *cpu = opaque;
-@@ -900,6 +928,12 @@ static int cpu_pre_save(void *opaque)
-     memcpy(cpu->cpreg_vmstate_values, cpu->cpreg_values,
-            cpu->cpreg_array_len * sizeof(uint64_t));
- 
-+    cpu->cpreg128_vmstate_array_len = cpu->cpreg128_array_len;
-+    memcpy(cpu->cpreg128_vmstate_indexes, cpu->cpreg128_indexes,
-+           cpu->cpreg128_array_len * sizeof(uint64_t));
-+    memcpy(cpu->cpreg128_vmstate_values, cpu->cpreg128_values,
-+           cpu->cpreg128_array_len * sizeof(Int128));
-+
-     return 0;
+diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
+index c48d3b8587..c65678e820 100644
+--- a/target/arm/syndrome.h
++++ b/target/arm/syndrome.h
+@@ -45,6 +45,7 @@ enum arm_exception_class {
+     EC_AA32_SVC               = 0x11,
+     EC_AA32_HVC               = 0x12,
+     EC_AA32_SMC               = 0x13,
++    EC_SYSTEMREGISTER128TRAP  = 0x14,
+     EC_AA64_SVC               = 0x15,
+     EC_AA64_HVC               = 0x16,
+     EC_AA64_SMC               = 0x17,
+@@ -169,6 +170,15 @@ static inline uint32_t syn_aa64_sysregtrap(int op0, int op1, int op2,
+         | (crm << 1) | isread;
  }
  
-@@ -994,6 +1028,21 @@ static int cpu_post_load(void *opaque, int version_id)
-         v++;
-     }
- 
-+    for (i = 0, v = 0; i < cpu->cpreg128_array_len
-+             && v < cpu->cpreg128_vmstate_array_len; i++) {
-+        if (cpu->cpreg128_vmstate_indexes[v] > cpu->cpreg128_indexes[i]) {
-+            /* register in our list but not incoming : skip it */
-+            continue;
-+        }
-+        if (cpu->cpreg128_vmstate_indexes[v] < cpu->cpreg128_indexes[i]) {
-+            /* register in their list but not ours: fail migration */
-+            return -1;
-+        }
-+        /* matching register, copy the value over */
-+        cpu->cpreg128_values[i] = cpu->cpreg128_vmstate_values[v];
-+        v++;
-+    }
++static inline uint32_t syn_aa64_sysreg128trap(int op0, int op1, int op2,
++                                              int crn, int crm, int rt,
++                                              int isread)
++{
++    return (EC_SYSTEMREGISTER128TRAP << ARM_EL_EC_SHIFT) | ARM_EL_IL
++        | (op0 << 20) | (op2 << 17) | (op1 << 14) | (crn << 10) | (rt << 5)
++        | (crm << 1) | isread;
++}
 +
-     if (kvm_enabled()) {
-         if (!kvm_arm_cpu_post_load(cpu)) {
-             return -1;
-@@ -1119,6 +1168,7 @@ const VMStateDescription vmstate_arm_cpu = {
-         &vmstate_serror,
-         &vmstate_irq_line_state,
-         &vmstate_wfxt_timer,
-+        &vmstate_sysreg128,
-         NULL
-     }
- };
+ static inline uint32_t syn_cp14_rt_trap(int cv, int cond, int opc1, int opc2,
+                                         int crn, int crm, int rt, int isread,
+                                         bool is_16bit)
 -- 
 2.43.0
 
