@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3207B38BFE
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 00:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E31F9B38BF5
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 00:02:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urOD7-0006hM-Nn; Wed, 27 Aug 2025 18:01:41 -0400
+	id 1urOD5-0006fz-EO; Wed, 27 Aug 2025 18:01:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lb.workbox@gmail.com>)
- id 1urOCy-0006eV-W9
+ id 1urOCz-0006f2-Hx
  for qemu-devel@nongnu.org; Wed, 27 Aug 2025 18:01:33 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <lb.workbox@gmail.com>)
- id 1urOCw-0007dy-5F
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 18:01:32 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-45a1b066b5eso1436445e9.1
- for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 15:01:29 -0700 (PDT)
+ id 1urOCw-0007eB-Sp
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 18:01:33 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-45b4d8921f2so2339595e9.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Aug 2025 15:01:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1756332088; x=1756936888; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=QwvFQletpVNX8GiBuI/ugiqp5mFwp3F4H0YL0Nrucjo=;
- b=S2X48AtVfLhYcEWNY+QeJwQHyJVKSBzaUlFo66TGR08WYKnTr5fXFKlh364IUG1al/
- bBq6C9rPW84e8tHb2nsLD5kFVgFRSHWs709HZRY2QuzjhBTv1AxTiQgkETMgRuVjdkDg
- RMzyXy1HrKoe6GFi3gMFxLA5Q5IG95OQb7Z9JZLhzmezHDt/TGigC6IVWwYNBmvH0rQz
- KsbNEBGrf5DiNmCt/IfWSpwl2SVCm2A3ck/YIuGiMbJFPtWkQfCAtX8cOUGK10+D1gbn
- iJdykhAgmMY6KOwQ/VCNkRFlYFdRJwAyRnBpush+MReRKv2QYn4iK4ZdlBGaDGA0lAwl
- IMgQ==
+ d=gmail.com; s=20230601; t=1756332089; x=1756936889; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BYDCRX59FanNn5HNp7EQuX7HSdi+9rNxfs8qelh7zGc=;
+ b=RClTksj5Di1aFYsIBSdFQxSBTAa5vLJ6GTJY7+d7BdcHJfEJXV90TAmrzA/OBIVvm0
+ OTzYP/zd26fvJjhI3Z61fHjIsPuhqT3DJ9w9COD6ADRN/j7M51/g39pQTFCJUw8cU6ai
+ GYBU/B+cHh4h2HEhxDCcCAmlPrfHhazGWMNojVSmT8H2oDgn4Xdh0+aQWVKrmdJK0YA8
+ /1IcgvNybau6aCJp+5hrY21z1lyThW9sMQ8uB+jTQGZRWDpJ0W8K56C2YuC8eMVq98Gd
+ dtQkcvVGeo54HAtvj9gSEusmaAaR5mG9+zmws5cHeEc7RTZU1tRIDJ7eBxLo1aZYcXUv
+ tysg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756332088; x=1756936888;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=QwvFQletpVNX8GiBuI/ugiqp5mFwp3F4H0YL0Nrucjo=;
- b=pY7DTaIe9LKwlemXVBZmh46Va/6I8+wZtdM4jtfdc6GGt7g9wOiPAE95rOlDfr2no3
- d/6az42COe0nrjNzbxkY+ekTwC+Ymlmdn2kx8beI+PVrAHO1F08CyZJ8apTpKupr5XvW
- b8jQXHMCja8v95y5JKodHJyrM54sgWg4sJF+vBQ16z80bZx9+j/dXAH3cDUMvocCrWW+
- /+KUxzVQ9bsdbShGwo60C21J886NlaUUtzhHz+/YEFUwr6WZWIXvx2uD63OfPzi9MMSX
- Eehpk23Hp4kMWDeDWVRlN6ETlSC2t5K3PPNTaQoAeEAhIMpe0pE95PGrJWU+nt6X1V6W
- AlMw==
+ d=1e100.net; s=20230601; t=1756332089; x=1756936889;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=BYDCRX59FanNn5HNp7EQuX7HSdi+9rNxfs8qelh7zGc=;
+ b=GxHUJeyeD5Xb3DNodth4qccHEIxSKKddNWhE8bREyiLxpm1i/MQSZI0k4W8SUOk3u7
+ 83qBZrUbrrjIRis1Y51OTQbGZt9Do6KfGj159/a8NjxU6S8MAEl2WxrN6O61ScXa9Uha
+ IsRX4z36v/9hR/3M/BxvO90SgLxuaGuGOxQX8xamtxGCOGY2zcX1wSzJ+gfr7dHZ55Tq
+ 0kiyE8yYqE/JEp/tC60ph/kiTduYIVR9D4FUUuLGYSmKG9GUUjA37WFcuYz/i6hVkKyN
+ hrTZjU9V6SvrBZG5Ekztq8dn+rL2UJagnJetUrowTQ8xr/XwR2DSzfFtgSVOEf9PPXSn
+ 8Mnw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVErhFjiyGGDgAt7zmjhmOozMZOh4FD5W2DMvA834yX+bpLhw9c/KVhOD8yMe91L1Yw+qojbyJNnWgA@nongnu.org
-X-Gm-Message-State: AOJu0Yxv8tjha7VV5fX5gYGYWu+5JgiNOpGTrYyf6kxF3aZvnIsWnJhH
- 5MqfONBiDsKUVJeGgo86c5HGHILBcfvxlTn+yNsbYNWZg2zdHj9T27P9
-X-Gm-Gg: ASbGncuv5qgmtD5QSwSiteBqTKM6GF0jJESDNYrNWpmK6MPWhk+hdpRyiGKxp/AgNRA
- OesdPzvZyef4kVD+Lsb2N+/ApEQ+/LdDqFUHgp9ndI9v/3VbiKUzAtv/dXcC4Mof1bMIlHjfp4/
- Ps4NcsFqgATOilnbTM3F0c1OtHKpCn5oJRjWgvXYFG00GnV59B7FttaMourtlxdgj+dScQMPPCC
- 4d4+yYDqUgH9AetXSZQXmGUsqcISU4dN4XKYWaFPBQoEWv3Rx8xxQSxof5ZquRCftt2RClzqU28
- /yYZWQP+0g8sDa8KLbFVnDi3+ZH2Ve2B61bk6gvcrV6ioQNnVeD8mHW4Naajm6e1cLHo7YTgAv+
- BRCy/cQZsskmyJldLxxKikEfLP82v5MyxFihBEzni9/RVFEzV9jArpdcS/DAR6qKV6LgBlspfJ4
- CRCWKj+By74w==
-X-Google-Smtp-Source: AGHT+IGWnIXNg4l3Z9gc14eublFreCWGC1Upn8tP+Nv/xMig/Th939wMK03+x9CAoYEiZ218d4vCjA==
-X-Received: by 2002:a05:600c:530e:b0:45b:615c:cd2 with SMTP id
- 5b1f17b1804b1-45b615c0df5mr109108895e9.8.1756332087486; 
- Wed, 27 Aug 2025 15:01:27 -0700 (PDT)
+ AJvYcCUdcW0VfYOXem7xaefCTSFEofPeVDBQpvT5jw4pUwE0H7HQSBN5uWu5Ov6M69IoSCr+vwJqTKSWJDGj@nongnu.org
+X-Gm-Message-State: AOJu0Yy+flhHCA0I2sprYAJwG4m2+Z5iy02rNxMXVH4jNrOwCkvu8CNl
+ QNP/dAMvXxOMdZSV3sqkBybDJFYdk4HB5878e0kf1sTl1QTTiuTldneJyXoS17fs
+X-Gm-Gg: ASbGncsRitTKKeqQ/OrVreCDvtMrPChKKX1OlUetdtTEgRZC+ajjcpvpHxHh2M5b/6H
+ hJhDmYIvI403KQNJfbJjb6Gic/P3VR4Se7QBYibbs/WohMSlpA/AAig3mTzrI2h2RsKpJLmXjsD
+ dIntXJv+mHoOV7OtLj3DEfHi6E7tjTJ66aBHiy88ZwygSJgfnu5Xn0fbXeaf6rHBLvOYrxxB/KU
+ 887kNO8PR8kDYysIguoKpSok+PrPhcrBZqv/czC6folb7kxs7fw1DB9ML+ISas5r8vjLH7SdOcF
+ GTOUSQpSI3t9KFdQUev8Lf85q8cwJoTIBX3pwvSseDiiOs5Rb8jSUlgFkvCdbVlYRxuetL4B68l
+ lnI2aMagW34gz9R0bTDNE9wvRuyb8JmnbIuIS3MMgG4tPcf71E1/njus/9fbswDsQJzWdGUrJki
+ z6Qv3MIaAgvQ==
+X-Google-Smtp-Source: AGHT+IEDVo47DbeBWfQC+qCr0SIZsS/rbEQO8X1f/71St4548tp5XGzMg04Y490MKDvzWbeN52w0ig==
+X-Received: by 2002:a05:600c:a46:b0:456:1bca:7faf with SMTP id
+ 5b1f17b1804b1-45b517ad840mr251749995e9.16.1756332089058; 
+ Wed, 27 Aug 2025 15:01:29 -0700 (PDT)
 Received: from localhost.localdomain (46-116-237-160.bb.netvision.net.il.
  [46.116.237.160]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b797ce2b8sm4116755e9.12.2025.08.27.15.01.24
+ 5b1f17b1804b1-45b797ce2b8sm4116755e9.12.2025.08.27.15.01.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Aug 2025 15:01:26 -0700 (PDT)
+ Wed, 27 Aug 2025 15:01:28 -0700 (PDT)
 From: Leonid Bloch <lb.workbox@gmail.com>
 To: "Michael S . Tsirkin" <mst@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -75,15 +76,17 @@ To: "Michael S . Tsirkin" <mst@redhat.com>,
  Dmitry Fleytman <dmitry.fleytman@gmail.com>
 Cc: Leonid Bloch <lb.workbox@gmail.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v3 0/4] Introduce a battery, AC adapter, and lid button
-Date: Thu, 28 Aug 2025 01:00:46 +0300
-Message-ID: <20250827220054.37268-1-lb.workbox@gmail.com>
+Subject: [PATCH v3 1/4] hw/acpi: Support extended GPE handling for additional
+ ACPI devices
+Date: Thu, 28 Aug 2025 01:00:47 +0300
+Message-ID: <20250827220054.37268-2-lb.workbox@gmail.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250827220054.37268-1-lb.workbox@gmail.com>
+References: <20250827220054.37268-1-lb.workbox@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=lb.workbox@gmail.com; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=lb.workbox@gmail.com; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,112 +109,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series introduces three ACPI devices that are particularly useful
-for laptop/mobile virtualization:
+This patch extends the GPE (General Purpose Event) handling to support
+the maximum number of interrupts available based on the machine's GPE
+register length, rather than being limited to the first 8 bits.
 
-* Battery
-* AC adapter
-* Laptop lid button
+This change is needed to support additional ACPI devices that will be
+introduced in subsequent patches (Battery, AC adapter, and button devices).
+These new devices require GPE event bits beyond the first 8, which were
+previously not being properly handled by the event sending and SCI
+(System Control Interrupt) update mechanisms.
 
-Link to v2: https://lists.gnu.org/archive/html/qemu-devel/2025-08/msg03166.html
-Link to GitHub PR, for ease of review: https://github.com/blochl/qemu/pull/3
+The actual number of available GPE interrupts varies by machine type:
+- PIIX4: GPE_LEN = 4 (32 bits total across status and enable registers)
+- ICH9: ICH9_PMIO_GPE0_LEN = 16 (128 bits total)
 
-Changes in v3:
---------------
-* Rebased on latest master
-* Addressed the v2 review by Igor Mammedov
+The patch modifies:
+- acpi_send_gpe_event(): Now properly propagates status bits across all
+  available GPE registers based on the machine's gpe.len value
+- acpi_update_sci(): Checks all GPE registers for pending interrupts,
+  not just the first byte
 
-Changes in v2:
---------------
-Based on the feedback from Philippe Mathieu-Daudé and Michael S. Tsirkin:
+Note: A future enhancement could refactor the GPE handling to use the
+bitmap API from bitops.h instead of the current manual bit manipulation,
+which would provide a cleaner interface for these operations.
 
-* Complete redesign with dual-mode operation:
-  - QMP control mode (default): Devices are controlled via QMP commands,
-    providing deterministic behavior essential for migration and CI/testing
-  - Host mirroring mode (opt-in): Original sysfs/procfs monitoring behavior,
-    now disabled by default
+Signed-off-by: Leonid Bloch <lb.workbox@gmail.com>
+---
+ hw/acpi/core.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-* Migrated to modern QEMU ACPI architecture:
-  - Devices now implement ACPI_DEV_AML_IF interface
-  - AML generation moved from centralized acpi-build.c to device files
-
-* Added a QMP interface:
-  - battery-set-state/query-battery
-  - ac-adapter-set-state/query-ac-adapter
-  - lid-button-set-state/query-lid-button
-
-* Documentation improvements:
-  - Converted to .rst format
-  - Added examples for both QMP and "fake" sysfs/procfs testing
-
-The dual-mode design ensures these devices are migration-safe and
-deterministic by default, while still allowing host state mirroring
-when explicitly requested for desktop use cases.
-
-Use cases:
-----------
-1. Testing: CI systems can programmatically control power states
-2. Cloud: Expose virtual battery for usage-based resource limiting
-3. Desktop virtualization: Mirror host laptop state to guest (opt-in)
-4. Development: Test power management without physical hardware
-
-Example usage:
---------------
-# Default QMP-controlled battery
-qemu-system-x86_64 -device battery
-
-# Mirror host battery
-qemu-system-x86_64 -device battery,use-qmp=false,enable-sysfs=true
-
-# Control via QMP
-{"execute": "battery-set-state",
- "arguments": {"state": {"present": true, "charging": false,
-                         "discharging": true, "charge-percent": 42,
-                         "rate": 500}}}
-
-The series has been tested with Windows and Linux guests, correctly
-showing battery status, AC adapter state, and lid button events in
-guest UIs and triggering appropriate power management actions.
-
-Thanks again for your patience and feedback.
-Leonid.
-
-Leonid Bloch (4):
-  hw/acpi: Support extended GPE handling for additional ACPI devices
-  hw/acpi: Introduce the QEMU Battery
-  hw/acpi: Introduce the QEMU AC adapter
-  hw/acpi: Introduce the QEMU lid button
-
- MAINTAINERS                          |  18 +
- docs/specs/acad.rst                  | 195 +++++++
- docs/specs/battery.rst               | 225 ++++++++
- docs/specs/button.rst                | 189 +++++++
- docs/specs/index.rst                 |   3 +
- hw/acpi/Kconfig                      |  12 +
- hw/acpi/acad.c                       | 447 ++++++++++++++++
- hw/acpi/battery.c                    | 735 +++++++++++++++++++++++++++
- hw/acpi/button.c                     | 438 ++++++++++++++++
- hw/acpi/core.c                       |  17 +-
- hw/acpi/meson.build                  |   3 +
- hw/acpi/trace-events                 |  15 +
- hw/i386/Kconfig                      |   3 +
- hw/i386/acpi-build.c                 |   1 +
- include/hw/acpi/acad.h               |  27 +
- include/hw/acpi/acpi_dev_interface.h |   3 +
- include/hw/acpi/battery.h            |  33 ++
- include/hw/acpi/button.h             |  25 +
- qapi/acpi.json                       | 171 +++++++
- 19 files changed, 2558 insertions(+), 2 deletions(-)
- create mode 100644 docs/specs/acad.rst
- create mode 100644 docs/specs/battery.rst
- create mode 100644 docs/specs/button.rst
- create mode 100644 hw/acpi/acad.c
- create mode 100644 hw/acpi/battery.c
- create mode 100644 hw/acpi/button.c
- create mode 100644 include/hw/acpi/acad.h
- create mode 100644 include/hw/acpi/battery.h
- create mode 100644 include/hw/acpi/button.h
-
+diff --git a/hw/acpi/core.c b/hw/acpi/core.c
+index 58f8964e13..3240ec185e 100644
+--- a/hw/acpi/core.c
++++ b/hw/acpi/core.c
+@@ -729,19 +729,32 @@ uint32_t acpi_gpe_ioport_readb(ACPIREGS *ar, uint32_t addr)
+ void acpi_send_gpe_event(ACPIREGS *ar, qemu_irq irq,
+                          AcpiEventStatusBits status)
+ {
+-    ar->gpe.sts[0] |= status;
++    int i;
++    AcpiEventStatusBits st = status;
++
++    for (i = 0; i < ar->gpe.len / 2; i++) {
++        ar->gpe.sts[i] |= st;
++        st >>= TYPE_WIDTH(ar->gpe.sts[0]);
++    }
++
+     acpi_update_sci(ar, irq);
+ }
+ 
+ void acpi_update_sci(ACPIREGS *regs, qemu_irq irq)
+ {
+     int sci_level, pm1a_sts;
++    bool gpe_sci = false;
++    int i;
+ 
+     pm1a_sts = acpi_pm1_evt_get_sts(regs);
+ 
++    for (i = 0; i < regs->gpe.len / 2; i++) {
++        gpe_sci = gpe_sci || !!(regs->gpe.sts[i] & regs->gpe.en[i]);
++    }
++
+     sci_level = ((pm1a_sts &
+                   regs->pm1.evt.en & ACPI_BITMASK_PM1_COMMON_ENABLED) != 0) ||
+-                ((regs->gpe.sts[0] & regs->gpe.en[0]) != 0);
++                gpe_sci;
+ 
+     qemu_set_irq(irq, sci_level);
+ 
 -- 
 2.51.0
 
