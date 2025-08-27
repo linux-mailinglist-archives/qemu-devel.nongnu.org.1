@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6409CB385B6
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14215B3867F
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:24:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHh4-0002j7-Nf; Wed, 27 Aug 2025 11:04:14 -0400
+	id 1urHhM-00035H-0r; Wed, 27 Aug 2025 11:04:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHgl-0002gu-0l; Wed, 27 Aug 2025 11:03:51 -0400
+ id 1urHh3-0002xV-FQ; Wed, 27 Aug 2025 11:04:12 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHgf-0004ol-Sd; Wed, 27 Aug 2025 11:03:50 -0400
+ id 1urHh1-0004pF-NU; Wed, 27 Aug 2025 11:04:09 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EA5AB14C532;
- Wed, 27 Aug 2025 18:02:56 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1019A14C533;
+ Wed, 27 Aug 2025 18:02:57 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id DAD6326983A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E762326983B;
  Wed, 27 Aug 2025 18:03:23 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [Stable-10.0.4 10/59] roms/Makefile: fix npcmNxx_bootrom build rules
-Date: Wed, 27 Aug 2025 18:02:15 +0300
-Message-ID: <20250827150323.2694101-10-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 11/59] linux-user/strace.list: add riscv_hwprobe entry
+Date: Wed, 27 Aug 2025 18:02:16 +0300
+Message-ID: <20250827150323.2694101-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,42 +60,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 70ce076fa6dff60, the actual rom source dirs
-are subdirs of vbootrom/ submodule, not in top-level of it.
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Fixes: 70ce076fa6dff60 "roms: Update vbootrom to 1287b6e"
-Fixes: 269b7effd90 ("pc-bios: Add NPCM8XX vBootrom")
+We're missing a strace entry for riscv_hwprobe, and using -strace will
+report it as "Unknown syscall 258".
 
-Cc: qemu-stable@nongnu.org
+After this patch we'll have:
+
+$ ./build/qemu-riscv64 -strace test_mutex_riscv
+110182 riscv_hwprobe(0x7f207efdc700,1,0,0,0,0) = 0
+110182 brk(NULL) = 0x0000000000082000
+(...)
+
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250728170633.113384-1-dbarboza@ventanamicro.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+(cherry picked from commit e111ffe48b29ca8abd450af9ee5dd71af3f93536)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250727215511.807880-1-mjt@tls.msk.ru>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 653a75a9d7f957c4ba9387d1a54bccfdce49cb9c)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/roms/Makefile b/roms/Makefile
-index beff58d9d5..6af68a922f 100644
---- a/roms/Makefile
-+++ b/roms/Makefile
-@@ -193,12 +193,12 @@ qboot:
- 	cp qboot/build/bios.bin ../pc-bios/qboot.rom
- 
- npcm7xx_bootrom:
--	$(MAKE) -C vbootrom CROSS_COMPILE=$(arm_cross_prefix)
--	cp vbootrom/npcm7xx_bootrom.bin ../pc-bios/npcm7xx_bootrom.bin
-+	$(MAKE) -C vbootrom/npcm7xx CROSS_COMPILE=$(arm_cross_prefix)
-+	cp vbootrom/npcm7xx/npcm7xx_bootrom.bin ../pc-bios/npcm7xx_bootrom.bin
- 
- npcm8xx_bootrom:
--	$(MAKE) -C vbootrom CROSS_COMPILE=$(aarch64_cross_prefix)
--	cp vbootrom/npcm8xx_bootrom.bin ../pc-bios/npcm8xx_bootrom.bin
-+	$(MAKE) -C vbootrom/npcm8xx CROSS_COMPILE=$(aarch64_cross_prefix)
-+	cp vbootrom/npcm8xx/npcm8xx_bootrom.bin ../pc-bios/npcm8xx_bootrom.bin
- 
- hppa-firmware:
- 	$(MAKE) -C seabios-hppa parisc
+diff --git a/linux-user/strace.list b/linux-user/strace.list
+index fdf94ef32a..ab818352a9 100644
+--- a/linux-user/strace.list
++++ b/linux-user/strace.list
+@@ -1716,3 +1716,6 @@
+ { TARGET_NR_clock_gettime64, "clock_gettime64" , NULL, print_clock_gettime64,
+                            print_syscall_ret_clock_gettime64 },
+ #endif
++#ifdef TARGET_NR_riscv_hwprobe
++{ TARGET_NR_riscv_hwprobe, "riscv_hwprobe" , "%s(%p,%d,%d,%d,%d,%d)", NULL, NULL },
++#endif
 -- 
 2.47.2
 
