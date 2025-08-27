@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C6AB38836
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:06:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C96AB38833
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:05:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urJZL-0005pl-Ac; Wed, 27 Aug 2025 13:04:19 -0400
+	id 1urJZJ-0005nV-1V; Wed, 27 Aug 2025 13:04:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJZG-0005nf-Cg; Wed, 27 Aug 2025 13:04:14 -0400
+ id 1urJZE-0005mY-5t; Wed, 27 Aug 2025 13:04:12 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJZ5-0007b1-Cu; Wed, 27 Aug 2025 13:04:14 -0400
+ id 1urJZ5-0007b3-Qo; Wed, 27 Aug 2025 13:04:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E86F414C722;
- Wed, 27 Aug 2025 20:03:28 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0086214C723;
+ Wed, 27 Aug 2025 20:03:29 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 059972698E8;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 13E062698E9;
  Wed, 27 Aug 2025 20:03:56 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 00/18] Patch Round-up for stable 7.2.20,
- freeze on 2025-09-06
-Date: Wed, 27 Aug 2025 20:03:35 +0300
-Message-ID: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [Stable-7.2.20 01/18] hw/display/qxl-render.c: fix
+ qxl_unpack_chunks() chunk size calculation
+Date: Wed, 27 Aug 2025 20:03:36 +0300
+Message-ID: <20250827170356.2698446-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
+References: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,59 +58,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v7.2.20:
+In case of multiple chunks, code in qxl_unpack_chunks() takes size of the
+wrong (next in the chain) chunk, instead of using current chunk size.
+This leads to wrong number of bytes being copied, and to crashes if next
+chunk size is larger than the current one.
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+Based on the code by Gao Yong.
 
-Patch freeze is 2025-09-06, and the release is planned for 2025-09-08:
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1628
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit b8882becd572d3afb888c836a6ffc7f92c17d1c5)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-  https://wiki.qemu.org/Planning/7.2
+diff --git a/hw/display/qxl-render.c b/hw/display/qxl-render.c
+index fcfd40c3ac..6d1df16fa4 100644
+--- a/hw/display/qxl-render.c
++++ b/hw/display/qxl-render.c
+@@ -222,6 +222,7 @@ static void qxl_unpack_chunks(void *dest, size_t size, PCIQXLDevice *qxl,
+     uint32_t max_chunks = 32;
+     size_t offset = 0;
+     size_t bytes;
++    QXLPHYSICAL next_chunk_phys = 0;
+ 
+     for (;;) {
+         bytes = MIN(size - offset, chunk->data_size);
+@@ -230,7 +231,15 @@ static void qxl_unpack_chunks(void *dest, size_t size, PCIQXLDevice *qxl,
+         if (offset == size) {
+             return;
+         }
+-        chunk = qxl_phys2virt(qxl, chunk->next_chunk, group_id,
++        next_chunk_phys = chunk->next_chunk;
++        /* fist time, only get the next chunk's data size */
++        chunk = qxl_phys2virt(qxl, next_chunk_phys, group_id,
++                              sizeof(QXLDataChunk));
++        if (!chunk) {
++            return;
++        }
++        /* second time, check data size and get data */
++        chunk = qxl_phys2virt(qxl, next_chunk_phys, group_id,
+                               sizeof(QXLDataChunk) + chunk->data_size);
+         if (!chunk) {
+             return;
+-- 
+2.47.2
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
-
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
-
-Thanks!
-
-/mjt
-
---------------------------------------
-01 b8882becd572 Michael Tokarev:
-   hw/display/qxl-render.c: fix qxl_unpack_chunks() chunk size calculation
-02 feea87cd6b64 Paolo Bonzini:
-   target/i386: fix width of third operand of VINSERTx128
-03 535ca76425fc Richard Henderson:
-   target/arm/sme: Reorg SME access handling in handle_msr_i()
-04 3c9ee5489488 Richard Henderson:
-   target/arm/sme: Rebuild hflags in set_pstate() helpers
-05 2a8af3825958 Richard Henderson:
-   target/arm/sme: Introduce aarch64_set_svcr()
-06 7f2a01e7368f Richard Henderson:
-   target/arm/sme: Reset SVE state in aarch64_set_svcr()
-07 fccb49182e23 Richard Henderson:
-   target/arm/sme: Reset ZA state in aarch64_set_svcr()
-08 f43185571491 Richard Henderson:
-   target/arm/sme: Rebuild hflags in aarch64_set_svcr()
-09 5c922ec5b136 Richard Henderson:
-   target/arm/sme: Unify set_pstate() SM/ZA helpers as set_svcr()
-10 99870aff907b Peter Maydell:
-   linux-user/aarch64: Support TPIDR2_MAGIC signal frame record
-11 e895095c78ab Philippe Mathieu-Daudé:
-   target/mips: Only update MVPControl.EVP bit if executed by master VPE
-12 2bfcd27e00a4 Luc Michel:
-   hw/net/cadence_gem: fix register mask initialization
-13 b10bd4bd17ac Zenghui Yu:
-   hw/intc/arm_gicv3_kvm: Write all 1's to clear enable/active
-14 35cca0f95ff5 Vacha Bhavsar:
-   target/arm: Fix big-endian handling of NEON gdb remote debugging
-15 97b3d732afec Vacha Bhavsar:
-   target/arm: Fix handling of setting SVE registers from gdb
-16 13ed972b4ce5 Jamin Lin:
-   hw/ssi/aspeed_smc: Fix incorrect FMC_WDT2 register read on AST1030
-17 c0df98ab1f3d Werner Fink:
-   qemu-iotests: Ignore indentation in Killed messages
-18 e262646e12ac Philippe Mathieu-Daudé:
-   hw/sd/ssi-sd: Return noise (dummy byte) when no card connected
 
