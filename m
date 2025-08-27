@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A1DB38020
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 12:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AF8B3801E
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 12:44:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urDcO-0004CZ-3l; Wed, 27 Aug 2025 06:43:04 -0400
+	id 1urDcY-0004Qk-Mf; Wed, 27 Aug 2025 06:43:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1urDcM-0004Bu-1U
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 06:43:02 -0400
+ id 1urDcW-0004Pj-Rg
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 06:43:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1urDcJ-000349-Pq
- for qemu-devel@nongnu.org; Wed, 27 Aug 2025 06:43:01 -0400
+ id 1urDcT-00035N-KY
+ for qemu-devel@nongnu.org; Wed, 27 Aug 2025 06:43:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756291378;
+ s=mimecast20190719; t=1756291388;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=o2GQ5VjLakir0/k6HgSkaXNO8ljFlfMT2OkBfKsfPEU=;
- b=DkyPpf1ddshN6vvlR+sFBtruhS5P1yUMVSzNWFf1H8C66vb6+xnlynW1BFebL1uAeO3MS/
- WtLGJSRlUB8xVG96luvLW+H2Y8wTDxXRqirUueTTsOWW8WSEucedA+PViPbv3LmLhk3DMs
- iStQIQUliWCN6IJIRBeabXQriQLCf3I=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=cmT1dEKaRl4M6Vu85AUODd3c7+AYcnMdCM+EQuaUcmg=;
+ b=TFwXUC/Ei7THZek7oORj4txPmGGr/rachcxIW2kO7v1dM4EkdRQtxSA6LCu1XR0gvcQPoW
+ cik8EYKTEBOKsIHA8hNNKTrAArh1A1pr63wMsWDAmIMeaC/SrRReQdfWstADjViI6OA8Jf
+ 4XQ6Pl2zfZm9V9xuSDdofjCRZiHkA7g=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-316-bek8UwGfOKChoChkDMFHBQ-1; Wed,
- 27 Aug 2025 06:42:57 -0400
-X-MC-Unique: bek8UwGfOKChoChkDMFHBQ-1
-X-Mimecast-MFC-AGG-ID: bek8UwGfOKChoChkDMFHBQ_1756291376
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-544-cZbxyK_DP-aCbiJpqBw9Ug-1; Wed,
+ 27 Aug 2025 06:43:04 -0400
+X-MC-Unique: cZbxyK_DP-aCbiJpqBw9Ug-1
+X-Mimecast-MFC-AGG-ID: cZbxyK_DP-aCbiJpqBw9Ug_1756291383
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 26012195419B; Wed, 27 Aug 2025 10:42:56 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 743771800359; Wed, 27 Aug 2025 10:43:03 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.16])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 73F4C19560AB; Wed, 27 Aug 2025 10:42:53 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 9B4791800446; Wed, 27 Aug 2025 10:43:01 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org,
@@ -53,15 +53,15 @@ Cc: qemu-rust@nongnu.org,
  pbonzini@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH 08/22] rust: move VMState handling to QOM module
-Date: Wed, 27 Aug 2025 14:41:30 +0400
-Message-ID: <20250827104147.717203-9-marcandre.lureau@redhat.com>
+Subject: [PATCH 09/22] rust: move Cell vmstate impl
+Date: Wed, 27 Aug 2025 14:41:31 +0400
+Message-ID: <20250827104147.717203-10-marcandre.lureau@redhat.com>
 In-Reply-To: <20250827104147.717203-1-marcandre.lureau@redhat.com>
 References: <20250827104147.717203-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -94,66 +94,75 @@ This will allow to split vmstate to a standalone crate next.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- rust/qemu-api/src/qom.rs     |  3 +++
- rust/qemu-api/src/vmstate.rs | 10 +++++-----
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ rust/qemu-api/src/cell.rs    |  5 ++++-
+ rust/qemu-api/src/vmstate.rs | 16 +++++++---------
+ 2 files changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index c2f9a682bb..56feff3e17 100644
---- a/rust/qemu-api/src/qom.rs
-+++ b/rust/qemu-api/src/qom.rs
-@@ -110,6 +110,7 @@
-         object_get_typename, object_new, object_ref, object_unref, TypeInfo,
-     },
-     cell::bql_locked,
-+    impl_vmstate_pointer,
+diff --git a/rust/qemu-api/src/cell.rs b/rust/qemu-api/src/cell.rs
+index 98d720caf9..4bce526e45 100644
+--- a/rust/qemu-api/src/cell.rs
++++ b/rust/qemu-api/src/cell.rs
+@@ -152,7 +152,7 @@
+     ptr::NonNull,
  };
  
- /// A safe wrapper around [`bindings::Object`].
-@@ -949,3 +950,5 @@ fn debug_fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+-use crate::bindings;
++use crate::{bindings, impl_vmstate_transparent};
  
- impl<T> ObjectClassMethods for T where T: IsA<Object> {}
- impl<R: ObjectDeref> ObjectMethods for R where R::Target: IsA<Object> {}
+ /// An internal function that is used by doctests.
+ pub fn bql_start_test() {
+@@ -866,3 +866,6 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+         (**self).fmt(f)
+     }
+ }
 +
-+impl_vmstate_pointer!(Owned<T> where T: VMState + ObjectType);
++impl_vmstate_transparent!(BqlCell<T> where T: VMState);
++impl_vmstate_transparent!(BqlRefCell<T> where T: VMState);
 diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index ff64d2c6a2..c1e2b06390 100644
+index c1e2b06390..9d33997c57 100644
 --- a/rust/qemu-api/src/vmstate.rs
 +++ b/rust/qemu-api/src/vmstate.rs
-@@ -29,8 +29,8 @@
+@@ -29,8 +29,7 @@
  
  use common::{callbacks::FnCall, Zeroable};
  
-+use crate::bindings::VMStateFlags;
- pub use crate::bindings::{VMStateDescription, VMStateField};
--use crate::{bindings::VMStateFlags, prelude::*, qom::Owned};
+-use crate::bindings::VMStateFlags;
+-pub use crate::bindings::{VMStateDescription, VMStateField};
++pub use crate::bindings::{VMStateDescription, VMStateField, VMStateFlags};
  
  /// This macro is used to call a function with a generic argument bound
  /// to the type of a field.  The function must take a
-@@ -396,11 +396,12 @@ unsafe impl VMState for $type {
- // Note that references are not supported, though references to cells
- // could be allowed.
+@@ -325,15 +324,16 @@ unsafe impl $crate::vmstate::VMState for $tuple {
+ 
+ // Transparent wrappers: just use the internal type
  
 +#[macro_export]
- macro_rules! impl_vmstate_pointer {
+ macro_rules! impl_vmstate_transparent {
      ($type:ty where $base:tt: VMState $($where:tt)*) => {
 -        unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
--            const SCALAR_TYPE: VMStateFieldType = <T as VMState>::SCALAR_TYPE;
--            const BASE: VMStateField = <$base as VMState>::BASE.with_pointer_flag();
+-            const SCALAR_TYPE: VMStateFieldType = <$base as VMState>::SCALAR_TYPE;
+-            const BASE: VMStateField = VMStateField {
 +        unsafe impl<$base> $crate::vmstate::VMState for $type where $base: $crate::vmstate::VMState $($where)* {
-+            const SCALAR_TYPE: $crate::vmstate::VMStateFieldType = <T as $crate::vmstate::VMState>::SCALAR_TYPE;
-+            const BASE: $crate::vmstate::VMStateField = <$base as $crate::vmstate::VMState>::BASE.with_pointer_flag();
++            const SCALAR_TYPE: $crate::vmstate::VMStateFieldType = <$base as $crate::vmstate::VMState>::SCALAR_TYPE;
++            const BASE: $crate::vmstate::VMStateField = $crate::vmstate::VMStateField {
+                 size: mem::size_of::<$type>(),
+-                ..<$base as VMState>::BASE
++                ..<$base as $crate::vmstate::VMState>::BASE
+             };
+-            const VARRAY_FLAG: VMStateFlags = <$base as VMState>::VARRAY_FLAG;
++            const VARRAY_FLAG: $crate::vmstate::VMStateFlags = <$base as $crate::vmstate::VMState>::VARRAY_FLAG;
          }
      };
  }
-@@ -412,7 +413,6 @@ unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
- // Unlike C pointers, Box is always non-null therefore there is no need
- // to specify VMS_ALLOC.
- impl_vmstate_pointer!(Box<T> where T: VMState);
--impl_vmstate_pointer!(Owned<T> where T: VMState + ObjectType);
+@@ -341,8 +341,6 @@ unsafe impl<$base> VMState for $type where $base: VMState $($where)* {
+ impl_vmstate_transparent!(std::cell::Cell<T> where T: VMState);
+ impl_vmstate_transparent!(std::cell::UnsafeCell<T> where T: VMState);
+ impl_vmstate_transparent!(std::pin::Pin<T> where T: VMState);
+-impl_vmstate_transparent!(crate::cell::BqlCell<T> where T: VMState);
+-impl_vmstate_transparent!(crate::cell::BqlRefCell<T> where T: VMState);
+ impl_vmstate_transparent!(::common::Opaque<T> where T: VMState);
  
- // Arrays using the underlying type's VMState plus
- // VMS_ARRAY/VMS_ARRAY_OF_POINTER
+ #[macro_export]
 -- 
 2.50.1
 
