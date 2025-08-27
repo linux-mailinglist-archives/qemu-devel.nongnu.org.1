@@ -2,48 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E458B38679
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ECD5B38550
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 16:46:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHoV-0007vz-3z; Wed, 27 Aug 2025 11:11:51 -0400
+	id 1urHOI-0002NE-Id; Wed, 27 Aug 2025 10:44:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHli-00012T-G8; Wed, 27 Aug 2025 11:09:00 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1urHOC-0002LR-Bh; Wed, 27 Aug 2025 10:44:40 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHle-0005x7-Ik; Wed, 27 Aug 2025 11:08:57 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 99B4F14C564;
- Wed, 27 Aug 2025 18:03:00 +0300 (MSK)
-Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7EA6E26986B;
- Wed, 27 Aug 2025 18:03:27 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 59/59] hw/uefi: open json file in binary mode
-Date: Wed, 27 Aug 2025 18:03:04 +0300
-Message-ID: <20250827150323.2694101-59-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
-References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1urHO5-0001de-FC; Wed, 27 Aug 2025 10:44:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1756305874; x=1787841874;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=mRi7teFjtyQ0V5zHbFF5pZ28nyknigHSLJ/UIbQgA7w=;
+ b=EWv5PcpLnvS01ZaxhB8DFAu/9QaZMXySs4zCwJZpHbRHJARaZ2c4pWPA
+ mYA0iG8c7ZBM70nLbt75MUeWTJBRPHQlmcuspNkme16PDuBc9I3rpUtZl
+ 61Sro/+bda6LyjbuAomX4Pj4UwFs72vrhQA4moQsB3bSPk9BPQ5kFfjQB
+ EGkhKa2V9HZqGLmEu5bklqHTWCdrfaasThPMNAir7JH8ZKhBtQ2uTBsNE
+ rFGGVsr5GrUwyyh7H0VOzahTN1s5mQp+DvS/0ie9OlVlL1VL8h+7HaSX3
+ P2suVODsCPrXzxFgRJqq9hKBDFYjvLUCVTV6DdJZqTj8VWhC43MhqaCPN A==;
+X-CSE-ConnectionGUID: AGVUuqojR269Q5THaH4UWw==
+X-CSE-MsgGUID: wcoClQ4oTo+x/fXIBeowZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="83964581"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="83964581"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2025 07:44:30 -0700
+X-CSE-ConnectionGUID: rIduckGPTkGOgm84N5v8Vw==
+X-CSE-MsgGUID: ybQy4QXcSju/CADQdsg5Xw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="169147453"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa010.jf.intel.com with ESMTP; 27 Aug 2025 07:44:28 -0700
+Date: Wed, 27 Aug 2025 23:06:14 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ pbonzini@redhat.com, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: Re: [PATCH 04/22] rust: make build.rs generic over various
+ ./rust/projects
+Message-ID: <aK8e5uTtY5Mcs1XN@intel.com>
+References: <20250827104147.717203-1-marcandre.lureau@redhat.com>
+ <20250827104147.717203-5-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20250827104147.717203-5-marcandre.lureau@redhat.com>
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,32 +84,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gerd Hoffmann <kraxel@redhat.com>
+On Wed, Aug 27, 2025 at 02:41:26PM +0400, marcandre.lureau@redhat.com wrote:
+> Date: Wed, 27 Aug 2025 14:41:26 +0400
+> From: marcandre.lureau@redhat.com
+> Subject: [PATCH 04/22] rust: make build.rs generic over various
+>  ./rust/projects
+> 
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> Guess the name of the subdir from the manifest directory, instead of
+> hard-coding it. In the following commits, other crates can then link to
+> this file, instead of maintaining their own copy.
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>  rust/qemu-api/build.rs | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)> 
 
-Fixes file length discrepancies due to line ending conversions
-on windows hosts.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3058
-Reviewed-by: Philippe Mathieu-DaudÃ© <philmd@linaro.org>
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20250811130110.820958-4-kraxel@redhat.com>
-(cherry picked from commit 040237436f423253f3397547aa78d449394dfbca)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/hw/uefi/var-service-json.c b/hw/uefi/var-service-json.c
-index ad3462cd15..f5f1556833 100644
---- a/hw/uefi/var-service-json.c
-+++ b/hw/uefi/var-service-json.c
-@@ -172,7 +172,7 @@ static GString *uefi_vars_to_json(uefi_vars_state *uv)
- void uefi_vars_json_init(uefi_vars_state *uv, Error **errp)
- {
-     if (uv->jsonfile) {
--        uv->jsonfd = qemu_create(uv->jsonfile, O_RDWR, 0666, errp);
-+        uv->jsonfd = qemu_create(uv->jsonfile, O_RDWR | O_BINARY, 0666, errp);
-     }
- }
- 
--- 
-2.47.2
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
