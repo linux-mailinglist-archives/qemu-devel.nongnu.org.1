@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DEEB385B8
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:05:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF23BB38678
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:22:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHhN-0003Bf-5D; Wed, 27 Aug 2025 11:04:29 -0400
+	id 1urHhX-0003VZ-5I; Wed, 27 Aug 2025 11:04:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHhF-00033N-V2; Wed, 27 Aug 2025 11:04:22 -0400
+ id 1urHhH-00036J-FQ; Wed, 27 Aug 2025 11:04:23 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHhD-0004t7-DI; Wed, 27 Aug 2025 11:04:21 -0400
+ id 1urHhF-0004tU-31; Wed, 27 Aug 2025 11:04:23 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5D39214C537;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6F7E814C538;
  Wed, 27 Aug 2025 18:02:57 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 49B2926983F;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5AA7D269840;
  Wed, 27 Aug 2025 18:03:24 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Yang Jialong <z_bajeer@yeah.net>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: qemu-stable@nongnu.org, Jay Chang <jay.chang@sifive.com>,
+ Frank Chang <frank.chang@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 15/59] intc/riscv_aplic: Fix target register read when
- source is inactive
-Date: Wed, 27 Aug 2025 18:02:20 +0300
-Message-ID: <20250827150323.2694101-15-mjt@tls.msk.ru>
+ Nutty Liu <liujingqi@lanxincomputing.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 16/59] target/riscv: Restrict mideleg/medeleg/medelegh
+ access to S-mode harts
+Date: Wed, 27 Aug 2025 18:02:21 +0300
+Message-ID: <20250827150323.2694101-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
@@ -60,44 +60,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yang Jialong <z_bajeer@yeah.net>
+From: Jay Chang <jay.chang@sifive.com>
 
-The RISC-V Advanced interrupt Architecture:
-4.5.16. Interrupt targets:
-If interrupt source i is inactive in this domain, register target[i] is
-read-only zero.
+RISC-V Privileged Spec states:
+"In harts with S-mode, the medeleg and mideleg registers must exist, and
+setting a bit in medeleg or mideleg will delegate the corresponding trap
+, when occurring in S-mode or U-mode, to the S-mode trap handler. In
+harts without S-mode, the medeleg and mideleg registers should not
+exist."
 
-Signed-off-by: Yang Jialong <z_bajeer@yeah.net>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20250728055114.252024-1-z_bajeer@yeah.net>
+Add smode predicate to ensure these CSRs are only accessible when S-mode
+is supported.
+
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Jay Chang <jay.chang@sifive.com>
+Reviewed-by: Nutty Liu<liujingqi@lanxincomputing.com>
+Message-ID: <20250701030021.99218-2-jay.chang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit b6f1244678bebaf7e2c775cfc66d452f95678ebf)
+(cherry picked from commit e443ba03361b63218e6c3aa4f73d2cb5b9b1d372)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
-index 5964cde7e0..cab8f0cd4d 100644
---- a/hw/intc/riscv_aplic.c
-+++ b/hw/intc/riscv_aplic.c
-@@ -628,7 +628,7 @@ static void riscv_aplic_request(void *opaque, int irq, int level)
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index f1c4c8c1b8..7fe6ac7ea2 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -5783,8 +5783,8 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+                           NULL,                read_mstatus_i128           },
+     [CSR_MISA]        = { "misa",       any,   read_misa,    write_misa,
+                           NULL,                read_misa_i128              },
+-    [CSR_MIDELEG]     = { "mideleg",    any,   NULL, NULL,   rmw_mideleg   },
+-    [CSR_MEDELEG]     = { "medeleg",    any,   read_medeleg, write_medeleg },
++    [CSR_MIDELEG]     = { "mideleg",    smode,   NULL, NULL,   rmw_mideleg   },
++    [CSR_MEDELEG]     = { "medeleg",    smode,   read_medeleg, write_medeleg },
+     [CSR_MIE]         = { "mie",        any,   NULL, NULL,   rmw_mie       },
+     [CSR_MTVEC]       = { "mtvec",      any,   read_mtvec,   write_mtvec   },
+     [CSR_MCOUNTEREN]  = { "mcounteren", umode, read_mcounteren,
+@@ -5792,7 +5792,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
  
- static uint64_t riscv_aplic_read(void *opaque, hwaddr addr, unsigned size)
- {
--    uint32_t irq, word, idc;
-+    uint32_t irq, word, idc, sm;
-     RISCVAPLICState *aplic = opaque;
- 
-     /* Reads must be 4 byte words */
-@@ -696,6 +696,10 @@ static uint64_t riscv_aplic_read(void *opaque, hwaddr addr, unsigned size)
-     } else if ((APLIC_TARGET_BASE <= addr) &&
-             (addr < (APLIC_TARGET_BASE + (aplic->num_irqs - 1) * 4))) {
-         irq = ((addr - APLIC_TARGET_BASE) >> 2) + 1;
-+        sm = aplic->sourcecfg[irq] & APLIC_SOURCECFG_SM_MASK;
-+        if (sm == APLIC_SOURCECFG_SM_INACTIVE) {
-+            return 0;
-+        }
-         return aplic->target[irq];
-     } else if (!aplic->msimode && (APLIC_IDC_BASE <= addr) &&
-             (addr < (APLIC_IDC_BASE + aplic->num_harts * APLIC_IDC_SIZE))) {
+     [CSR_MSTATUSH]    = { "mstatush",   any32, read_mstatush,
+                           write_mstatush                                   },
+-    [CSR_MEDELEGH]    = { "medelegh",   any32, read_zero, write_ignore,
++    [CSR_MEDELEGH]    = { "medelegh",   smode32, read_zero, write_ignore,
+                           .min_priv_ver = PRIV_VERSION_1_13_0              },
+     [CSR_HEDELEGH]    = { "hedelegh",   hmode32, read_hedelegh, write_hedelegh,
+                           .min_priv_ver = PRIV_VERSION_1_13_0              },
 -- 
 2.47.2
 
