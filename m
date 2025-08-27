@@ -2,43 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A8FEB38629
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93884B385DF
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:12:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHnT-0005q6-21; Wed, 27 Aug 2025 11:10:47 -0400
+	id 1urHoS-0007g9-FS; Wed, 27 Aug 2025 11:11:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHlE-0000UL-8E; Wed, 27 Aug 2025 11:08:33 -0400
+ id 1urHlF-0000UT-5Z; Wed, 27 Aug 2025 11:08:33 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHlB-0005sN-0D; Wed, 27 Aug 2025 11:08:27 -0400
+ id 1urHlA-0005sQ-Vy; Wed, 27 Aug 2025 11:08:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2F3AE14C55F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4040614C560;
  Wed, 27 Aug 2025 18:03:00 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1AC0E269866;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2CB98269867;
  Wed, 27 Aug 2025 18:03:27 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Guenter Roeck <linux@roeck-us.net>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
+Cc: qemu-stable@nongnu.org, "Sv. Lockal" <lockalsash@gmail.com>,
+ John Snow <jsnow@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 54/59] hw/sd/ssi-sd: Return noise (dummy byte) when no
- card connected
-Date: Wed, 27 Aug 2025 18:02:59 +0300
-Message-ID: <20250827150323.2694101-54-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 55/59] mkvenv: Support pip 25.2
+Date: Wed, 27 Aug 2025 18:03:00 +0300
+Message-ID: <20250827150323.2694101-55-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,42 +58,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: "Sv. Lockal" <lockalsash@gmail.com>
 
-Commit 1585ab9f1ba ("hw/sd/sdcard: Fill SPI response bits in card
-code") exposed a bug in the SPI adapter: if no SD card is plugged,
-we are returning "there is a card with an error". This is wrong,
-we shouldn't return any particular packet response, but the noise
-shifted on the MISO line. Return the dummy byte, otherwise we get:
+Fix compilation with pip-25.2 due to missing distlib.version
 
-  qemu-system-riscv64: ../hw/sd/ssi-sd.c:160: ssi_sd_transfer: Assertion `s->arglen > 0' failed.
+Bug: https://gitlab.com/qemu-project/qemu/-/issues/3062
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Fixes: 775616c3ae8 ("Partial SD card SPI mode support")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20250812140415.70153-2-philmd@linaro.org>
-(cherry picked from commit e262646e12acd6c1132e03d57fea20680a503251)
+Signed-off-by: Sv. Lockal <lockalsash@gmail.com>
+[Edits: Type "safety" whackamole --js]
+Signed-off-by: John Snow <jsnow@redhat.com>
+Message-ID: <20250811190159.237321-1-jsnow@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+(cherry picked from commit 6ad034e71232c2929ed546304c9d249312bb632f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/sd/ssi-sd.c b/hw/sd/ssi-sd.c
-index c4a58da0ab..fbbcb5c750 100644
---- a/hw/sd/ssi-sd.c
-+++ b/hw/sd/ssi-sd.c
-@@ -106,6 +106,10 @@ static uint32_t ssi_sd_transfer(SSIPeripheral *dev, uint32_t val)
-     SDRequest request;
-     uint8_t longresp[16];
+diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
+index 8ac5b0b2a0..f102527c4d 100644
+--- a/python/scripts/mkvenv.py
++++ b/python/scripts/mkvenv.py
+@@ -84,6 +84,7 @@
+     Sequence,
+     Tuple,
+     Union,
++    cast,
+ )
+ import venv
  
-+    if (!sdbus_get_inserted(&s->sdbus)) {
-+        return SSI_DUMMY;
-+    }
+@@ -94,17 +95,39 @@
+ HAVE_DISTLIB = True
+ try:
+     import distlib.scripts
+-    import distlib.version
+ except ImportError:
+     try:
+         # Reach into pip's cookie jar.  pylint and flake8 don't understand
+         # that these imports will be used via distlib.xxx.
+         from pip._vendor import distlib
+         import pip._vendor.distlib.scripts  # noqa, pylint: disable=unused-import
+-        import pip._vendor.distlib.version  # noqa, pylint: disable=unused-import
+     except ImportError:
+         HAVE_DISTLIB = False
+ 
++# pip 25.2 does not vendor distlib.version, but it uses vendored
++# packaging.version
++HAVE_DISTLIB_VERSION = True
++try:
++    import distlib.version  # pylint: disable=ungrouped-imports
++except ImportError:
++    try:
++        # pylint: disable=unused-import,ungrouped-imports
++        import pip._vendor.distlib.version  # noqa
++    except ImportError:
++        HAVE_DISTLIB_VERSION = False
 +
-     /*
-      * Special case: allow CMD12 (STOP TRANSMISSION) while reading data.
-      *
++HAVE_PACKAGING_VERSION = True
++try:
++    # Do not bother importing non-vendored packaging, because it is not
++    # in stdlib.
++    from pip._vendor import packaging
++    # pylint: disable=unused-import
++    import pip._vendor.packaging.requirements  # noqa
++    import pip._vendor.packaging.version  # noqa
++except ImportError:
++    HAVE_PACKAGING_VERSION = False
++
++
+ # Try to load tomllib, with a fallback to tomli.
+ # HAVE_TOMLLIB is checked below, just-in-time, so that mkvenv does not fail
+ # outside the venv or before a potential call to ensurepip in checkpip().
+@@ -133,6 +156,39 @@ class Ouch(RuntimeError):
+     """An Exception class we can't confuse with a builtin."""
+ 
+ 
++class Matcher:
++    """Compatibility appliance for version/requirement string parsing."""
++    def __init__(self, name_and_constraint: str):
++        """Create a matcher from a requirement-like string."""
++        if HAVE_DISTLIB_VERSION:
++            self._m = distlib.version.LegacyMatcher(name_and_constraint)
++        elif HAVE_PACKAGING_VERSION:
++            self._m = packaging.requirements.Requirement(name_and_constraint)
++        else:
++            raise Ouch("found neither distlib.version nor packaging.version")
++        self.name = self._m.name
++
++    def match(self, version_str: str) -> bool:
++        """Return True if `version` satisfies the stored constraint."""
++        if HAVE_DISTLIB_VERSION:
++            return cast(
++                bool,
++                self._m.match(distlib.version.LegacyVersion(version_str))
++            )
++
++        assert HAVE_PACKAGING_VERSION
++        return cast(
++            bool,
++            self._m.specifier.contains(
++                packaging.version.Version(version_str), prereleases=True
++            )
++        )
++
++    def __repr__(self) -> str:
++        """Stable debug representation delegated to the backend."""
++        return repr(self._m)
++
++
+ class QemuEnvBuilder(venv.EnvBuilder):
+     """
+     An extension of venv.EnvBuilder for building QEMU's configure-time venv.
+@@ -669,7 +725,7 @@ def _do_ensure(
+     canary = None
+     for name, info in group.items():
+         constraint = _make_version_constraint(info, False)
+-        matcher = distlib.version.LegacyMatcher(name + constraint)
++        matcher = Matcher(name + constraint)
+         print(f"mkvenv: checking for {matcher}", file=sys.stderr)
+ 
+         dist: Optional[Distribution] = None
+@@ -683,7 +739,7 @@ def _do_ensure(
+             # Always pass installed package to pip, so that they can be
+             # updated if the requested version changes
+             or not _is_system_package(dist)
+-            or not matcher.match(distlib.version.LegacyVersion(dist.version))
++            or not matcher.match(dist.version)
+         ):
+             absent.append(name + _make_version_constraint(info, True))
+             if len(absent) == 1:
 -- 
 2.47.2
 
