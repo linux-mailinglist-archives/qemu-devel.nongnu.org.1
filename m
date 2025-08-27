@@ -2,72 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C6CB37A7A
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 08:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF67B37B24
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 09:02:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ur9j1-0005Tc-Vh; Wed, 27 Aug 2025 02:33:40 -0400
+	id 1urA8k-00012o-OA; Wed, 27 Aug 2025 03:00:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ur9iy-0005Sv-Jz; Wed, 27 Aug 2025 02:33:36 -0400
-Received: from mgamail.intel.com ([192.198.163.7])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1urA8a-00010e-1Y; Wed, 27 Aug 2025 03:00:04 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ur9iu-0006Gf-RN; Wed, 27 Aug 2025 02:33:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756276413; x=1787812413;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=1awMoRt/9bEJOAxlg7Rue9aCbtQiImxN+y6fkTrBK3Q=;
- b=eelm5O1iJujHeyVs+oYAfCeA29Rxfn1F9RMhEHVTEjd/YIbgi1a4BG5l
- OoUAE6zwrblFb4HyGZOOZhc2ADoaB43bUDsZxz1PRZEa98F5FMrRKNFrf
- bR/jOYArV0gou4CHPASTWRvfZTvCXvhufM406B32nrU7dtYkxXHsPal6j
- 8OknLrbTzTuyjNHR0yKtVDyZ5459sePdm9UdCzf5gbxJTxx8oaW0fXDu6
- olRm4/ptH1R1W168CXcPzHuGH2KSRElbDxTpNF8yhDQpgPjk7Hg8u9k6w
- y4L9tGsqtDYgytn9K+l4kei0mBsq960BbOpaLNddOq2hpN3T0YmANYUHU A==;
-X-CSE-ConnectionGUID: oyAIWLd7Q8GN+7uoqY66AA==
-X-CSE-MsgGUID: ZgaUcK4fTuSVBovzqFMx5g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="83928421"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="83928421"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 23:33:28 -0700
-X-CSE-ConnectionGUID: nlJSvG1kTUayAA6vGwvn4Q==
-X-CSE-MsgGUID: S/rQD60jSz+knFCzj4+jrQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="169712908"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 26 Aug 2025 23:33:26 -0700
-Date: Wed, 27 Aug 2025 14:55:12 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-rust@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: Re: [RFC 10/18] rust: split "qom" crate
-Message-ID: <aK6r0AytZGSOkWYF@intel.com>
-References: <20250826140449.4190022-1-marcandre.lureau@redhat.com>
- <20250826140449.4190022-11-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1urA8W-0001i2-LZ; Wed, 27 Aug 2025 03:00:03 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 095F814C017;
+ Wed, 27 Aug 2025 09:59:28 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id D24A5269534;
+ Wed, 27 Aug 2025 09:59:53 +0300 (MSK)
+Message-ID: <348e96f0-532e-449e-a928-b4fd1b4f9f70@tls.msk.ru>
+Date: Wed, 27 Aug 2025 09:59:52 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250826140449.4190022-11-marcandre.lureau@redhat.com>
-Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] virtio: Call set_features during reset (was: migration:
+ fix SEEK_CUR offset calculation in qio_channel_block_seek)
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Marco.Cavenati@eurecom.fr, peterx@redhat.com, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+References: <871pudmlmj.fsf@suse.de>
+ <dc23eaca-15f5-40be-89d0-2247cfe1f716@tls.msk.ru> <87plchkaxo.fsf@suse.de>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <87plchkaxo.fsf@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,100 +104,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-> index 7cffb894a8..a3bcd1297a 100644
-> --- a/rust/hw/char/pl011/src/device.rs
-> +++ b/rust/hw/char/pl011/src/device.rs
-> @@ -21,10 +21,13 @@
->      memory::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder},
->      prelude::*,
->      qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, Property, ResetType, ResettablePhasesImpl},
-> -    qom::{ObjectImpl, Owned, ParentField, ParentInit},
->      sysbus::{SysBusDevice, SysBusDeviceImpl},
->      vmstate_clock,
->  };
-> +use qom::{
-> +    qom_isa, IsA, Object, ObjectClassMethods, ObjectDeref, ObjectImpl, ObjectMethods, ObjectType,
-> +    Owned, ParentField, ParentInit,
-> +};
+On 27.08.2025 00:52, Fabiano Rosas wrote:
+> Michael Tokarev <mjt@tls.msk.ru> writes:
+> 
+> +CC Akihiko
+> 
+>> Hi!
+>>
+>> This is
+>>
+>> commit c0b32426ce56182c1ce2a12904f3a702c2ecc460
+>> Author: Marco Cavenati <Marco.Cavenati@eurecom.fr>
+>> Date:   Wed Mar 26 17:22:30 2025 +0100
+>>
+>>       migration: fix SEEK_CUR offset calculation in qio_channel_block_seek
+>>
+>> which went to 10.0.0-rc2, and has been cherry-picked to
+>> 7.2 and 9.2 stable series.
+>>
+>> Reportedly it breaks migration in 7.2.18 and up.  Which is
+>> kinda strange, as it shouldn't do any harm?
+>>
+> 
+> Yeah, this is not it. Unless you're using colo or mapped-ram.
+> 
+>> https://bugs.debian.org/1112044
+>>
+>> any guess what's going on?
+>>
+> 
+> The virtio changes are probably the issue. One of them touches
+> mhdr.num_buffers, under mergeable_rx_bufs, which is migrated state. The
+> flag in turn depends on VIRTIO_NET_F_MRG_RXBUF, which is set on the
+> cmdline with -device virtio-net-pci,mrg_rxbuf= but also reset by
+> virtio_set_features_nocheck, if I'm reading this right.
+> 
+> Let's ask Akihiko.
 
-These QOM parts are frequently used and very common. at least for qom,
-I think prelude would help a lot.
+The reporter just reported that they used the wrong commit id, --
+actually, the issue is caused by ce1431615292dc735597db4062834b:
 
-A qom prelude could help reduce the changes in other parts (pl011/
-hpet/memory...).
+commit ce1431615292dc735597db4062834bfb271381bc
+Author: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Date:   Mon Apr 21 21:17:20 2025 +0900
 
-> diff --git a/rust/qom/meson.build b/rust/qom/meson.build
-> new file mode 100644
-> index 0000000000..6e95d75fa0
-> --- /dev/null
-> +++ b/rust/qom/meson.build
-> @@ -0,0 +1,61 @@
-> +_qom_cfg = run_command(rustc_args,
-> +  '--config-headers', config_host_h, '--features', files('Cargo.toml'),
-> +  capture: true, check: true).stdout().strip().splitlines()
-> +
-> +# TODO: Remove this comment when the clang/libclang mismatch issue is solved.
-> +#
-> +# Rust bindings generation with `bindgen` might fail in some cases where the
-> +# detected `libclang` does not match the expected `clang` version/target. In
-> +# this case you must pass the path to `clang` and `libclang` to your build
-> +# command invocation using the environment variables CLANG_PATH and
-> +# LIBCLANG_PATH
-> +_qom_bindings_inc_rs = rust.bindgen(
-> +  input: 'wrapper.h',
-> +  dependencies: common_ss.all_dependencies(),
-> +  output: 'bindings.inc.rs',
+     virtio: Call set_features during reset
 
-There're many binding files with the same name. What about adding a prefix
-like "qom-bindings" to distinguish it? This can help search and locate
-specific binding file.
+     virtio-net expects set_features() will be called when the feature set
+     used by the guest changes to update the number of virtqueues but it is
+     not called during reset, which will clear all features, leaving the
+     queues added for VIRTIO_NET_F_MQ or VIRTIO_NET_F_RSS. Not only these
+     extra queues are visible to the guest, they will cause segmentation
+     fault during migration.
 
-> +  include_directories: bindings_incdir,
-> +  bindgen_version: ['>=0.60.0'],
-> +  args: bindgen_args_common,
-> +)
+     Call set_features() during reset to remove those queues for virtio-net
+     as we call set_status(). It will also prevent similar bugs for
+     virtio-net and other devices in the future.
 
-...
+     Fixes: f9d6dbf0bf6e ("virtio-net: remove virtio queues if the guest 
+doesn't support multiqueue")
+     Buglink: https://issues.redhat.com/browse/RHEL-73842
+     Cc: qemu-stable@nongnu.org
+     Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+     Message-Id: <20250421-reset-v2-1-e4c1ead88ea1@daynix.com>
+     Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+     Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+     (cherry picked from commit 0caed25cd171c611781589b5402161d27d57229c)
+     Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-> diff --git a/rust/qom/tests/tests.rs b/rust/qom/tests/tests.rs
-> new file mode 100644
-> index 0000000000..49f1cbecf5
-> --- /dev/null
-> +++ b/rust/qom/tests/tests.rs
-> @@ -0,0 +1,47 @@
-> +use std::{ffi::CStr, sync::LazyLock};
+(so commit 0caed25cd171c611781589b5402161 in master).
 
-LazyLock is useful, but it became stable since v1.80. So if Paolo
-decide pick this series after v1.83 support, it's fine.
+So yes, this one looks much more real in this context.
 
-> +use qom::{qom_isa, Object, ObjectClassMethods, ObjectImpl, ObjectType, ParentField};
-> +use util::bindings::{module_call_init, module_init_type};
+Thanks,
 
-...
-
-> +fn init_qom() {
-> +    static ONCE: LazyLock<()> = LazyLock::new(|| unsafe {
-> +        module_call_init(module_init_type::MODULE_INIT_QOM);
-> +    });
-
-But for now, we can still use a static BqlCell<bool> as the workaround,
-just like rust/hwcore/tests/tests.rs did, to decouple with MSRV
-dependency.
-
-And it seems rust/hwcore/tests/tests.rs has already covered this test
-case, do we still need this test?
-
-If so, then it's better to add this new test in a seperate patch, which
-makes current patch focus on the splitting :-).
-
-> +    bql::start_test();
-> +    LazyLock::force(&ONCE);
-> +}
-> +
-
-Otherwise, LGTM,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+/mjt
 
