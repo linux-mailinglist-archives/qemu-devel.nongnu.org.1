@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C7DB38681
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE2EB38620
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:16:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHnr-0006VV-DM; Wed, 27 Aug 2025 11:11:14 -0400
+	id 1urHoX-0008NE-85; Wed, 27 Aug 2025 11:11:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHlb-0000x9-G6; Wed, 27 Aug 2025 11:08:52 -0400
+ id 1urHld-0000yi-2T; Wed, 27 Aug 2025 11:08:56 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHlZ-0005te-RD; Wed, 27 Aug 2025 11:08:51 -0400
+ id 1urHlb-0005to-Du; Wed, 27 Aug 2025 11:08:52 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5006F14C561;
+ by isrv.corpit.ru (Postfix) with ESMTP id 680E714C562;
  Wed, 27 Aug 2025 18:03:00 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3D70D269868;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4CEAF269869;
  Wed, 27 Aug 2025 18:03:27 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Mauro Matteo Cascella <mcascell@redhat.com>,
- ZDI <zdi-disclosures@trendmicro.com>, Gerd Hoffmann <kraxel@redhat.com>,
+Cc: qemu-stable@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 56/59] hw/uefi: clear uefi-vars buffer in
- uefi_vars_write callback
-Date: Wed, 27 Aug 2025 18:03:01 +0300
-Message-ID: <20250827150323.2694101-56-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 57/59] hw/uefi: return success for notifications
+Date: Wed, 27 Aug 2025 18:03:02 +0300
+Message-ID: <20250827150323.2694101-57-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,42 +59,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mauro Matteo Cascella <mcascell@redhat.com>
+From: Gerd Hoffmann <kraxel@redhat.com>
 
-When the guest writes to register UEFI_VARS_REG_BUFFER_SIZE, the .write
-callback `uefi_vars_write` is invoked. The function allocates a
-heap buffer without zeroing the memory, leaving the buffer filled with
-residual data from prior allocations. When the guest later reads from
-register UEFI_VARS_REG_PIO_BUFFER_TRANSFER, the .read callback
-`uefi_vars_read` returns leftover metadata or other sensitive process
-memory from the previously allocated buffer, leading to an information
-disclosure vulnerability.
+Set status to SUCCESS for ready-to-boot and exit-boot-services
+notification calls.
 
-Fixes: CVE-2025-8860
-Fixes: 90ca4e03c27d ("hw/uefi: add var-service-core.c")
-Reported-by: ZDI <zdi-disclosures@trendmicro.com>
-Suggested-by: Gerd Hoffmann <kraxel@redhat.com>
-Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
-Message-ID: <20250811101128.17661-1-mcascell@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-(cherry picked from commit f757d9d90d19b914d4023663bfc4da73bbbf007e)
+Message-ID: <20250811130110.820958-2-kraxel@redhat.com>
+(cherry picked from commit 88e5a28d5aabb57f44c1805fbba0a458023f5106)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/uefi/var-service-core.c b/hw/uefi/var-service-core.c
-index 4836a0cb81..92fc121fe7 100644
---- a/hw/uefi/var-service-core.c
-+++ b/hw/uefi/var-service-core.c
-@@ -259,8 +259,8 @@ static void uefi_vars_write(void *opaque, hwaddr addr, uint64_t val, unsigned si
-         uv->buf_size = val;
-         g_free(uv->buffer);
-         g_free(uv->pio_xfer_buffer);
--        uv->buffer = g_malloc(uv->buf_size);
--        uv->pio_xfer_buffer = g_malloc(uv->buf_size);
-+        uv->buffer = g_malloc0(uv->buf_size);
-+        uv->pio_xfer_buffer = g_malloc0(uv->buf_size);
+diff --git a/hw/uefi/var-service-vars.c b/hw/uefi/var-service-vars.c
+index 7f98d77a38..58ae560d6e 100644
+--- a/hw/uefi/var-service-vars.c
++++ b/hw/uefi/var-service-vars.c
+@@ -702,12 +702,14 @@ uint32_t uefi_vars_mm_vars_proto(uefi_vars_state *uv)
+     case SMM_VARIABLE_FUNCTION_READY_TO_BOOT:
+         trace_uefi_event("ready-to-boot");
+         uv->ready_to_boot = true;
++        mvar->status = EFI_SUCCESS;
+         length = 0;
          break;
-     case UEFI_VARS_REG_DMA_BUFFER_ADDR_LO:
-         uv->buf_addr_lo = val;
+ 
+     case SMM_VARIABLE_FUNCTION_EXIT_BOOT_SERVICE:
+         trace_uefi_event("exit-boot-service");
+         uv->exit_boot_service = true;
++        mvar->status = EFI_SUCCESS;
+         length = 0;
+         break;
+ 
 -- 
 2.47.2
 
