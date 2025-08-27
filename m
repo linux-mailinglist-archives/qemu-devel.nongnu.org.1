@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135D6B38848
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 921F0B38835
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 19:06:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urJbA-00088L-PI; Wed, 27 Aug 2025 13:06:13 -0400
+	id 1urJbB-0008F8-VE; Wed, 27 Aug 2025 13:06:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJaD-0006WW-N0; Wed, 27 Aug 2025 13:05:19 -0400
+ id 1urJaN-0006kH-9Z; Wed, 27 Aug 2025 13:05:23 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urJa8-0007xe-7w; Wed, 27 Aug 2025 13:05:11 -0400
+ id 1urJaG-0007yP-Vd; Wed, 27 Aug 2025 13:05:23 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D6A2214C72F;
+ by isrv.corpit.ru (Postfix) with ESMTP id E4EC914C730;
  Wed, 27 Aug 2025 20:03:29 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E878B2698F5;
- Wed, 27 Aug 2025 20:03:56 +0300 (MSK)
+ by tsrv.corpit.ru (Postfix) with ESMTP id 032322698F6;
+ Wed, 27 Aug 2025 20:03:57 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Zenghui Yu <zenghui.yu@linux.dev>,
+Cc: qemu-stable@nongnu.org, Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 13/18] hw/intc/arm_gicv3_kvm: Write all 1's to clear
- enable/active
-Date: Wed, 27 Aug 2025 20:03:48 +0300
-Message-ID: <20250827170356.2698446-13-mjt@tls.msk.ru>
+Subject: [Stable-7.2.20 14/18] target/arm: Fix big-endian handling of NEON gdb
+ remote debugging
+Date: Wed, 27 Aug 2025 20:03:49 +0300
+Message-ID: <20250827170356.2698446-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
 References: <qemu-stable-7.2.20-20250827180339@cover.tls.msk.ru>
@@ -58,49 +58,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zenghui Yu <zenghui.yu@linux.dev>
+From: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
 
-KVM's userspace access interface to the GICD enable and active bits
-is via set/clear register pairs which implement the hardware's "write
-1s to the clear register to clear the 0 bits, and write 1s to the set
-register to set the 1 bits" semantics.  We didn't get this right,
-because we were writing 0 to the clear register.
+In the code for allowing the gdbstub to set the value of an AArch64
+FP/SIMD register, we weren't accounting for target_big_endian()
+being true. This meant that for aarch64_be-linux-user we would
+set the two halves of the FP register the wrong way around.
+The much more common case of a little-endian guest is not affected;
+nor are big-endian hosts.
 
-Writing 0 to GICD_IC{ENABLE,ACTIVE}R architecturally has no effect on
-interrupt status (all writes are simply ignored by KVM) and doesn't
-comply with the intention of "first write to the clear-reg to clear
-all bits".
-
-Write all 1's to actually clear the enable/active status.
-
-This didn't have any adverse effects on migration because there
-we start with a clean VM state; it would be guest-visible when
-doing a system reset, but since Linux always cleans up the
-register state of the GIC during bootup before it enables it
-most users won't have run into a problem here.
+Correct the handling of this case.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 367b9f527bec ("hw/intc/arm_gicv3_kvm: Implement get/put functions")
-Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
-Message-id: 20250729161650.43758-3-zenghui.yu@linux.dev
+Signed-off-by: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
+Message-id: 20250722173736.2332529-2-vacha.bhavsar@oss.qualcomm.com
+[PMM: added comment, expanded commit message, fixed missing space]
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit b10bd4bd17ac8628ede8735a08ad82dc3b721c64)
+(cherry picked from commit 35cca0f95ff5345f54c11d116efc8940a0dab8aa)
+(Mjt: s/target_big_endian/target_words_bigendian/ due to missing
+ v10.0.0-277-gb939b8e42a "exec: Rename target_words_bigendian() -> target_big_endian()")
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
-index 3ca643ecba..6d98dafc02 100644
---- a/hw/intc/arm_gicv3_kvm.c
-+++ b/hw/intc/arm_gicv3_kvm.c
-@@ -294,7 +294,7 @@ static void kvm_dist_putbmp(GICv3State *s, uint32_t offset,
-          * the 1 bits.
-          */
-         if (clroffset != 0) {
--            reg = 0;
-+            reg = ~0;
-             kvm_gicd_access(s, clroffset, &reg, true);
-             clroffset += 4;
+diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
+index 07a6746944..2dc058fcd6 100644
+--- a/target/arm/gdbstub64.c
++++ b/target/arm/gdbstub64.c
+@@ -99,8 +99,22 @@ int aarch64_fpu_gdb_set_reg(CPUARMState *env, uint8_t *buf, int reg)
+         /* 128 bit FP register */
+         {
+             uint64_t *q = aa64_vfp_qreg(env, reg);
+-            q[0] = ldq_le_p(buf);
+-            q[1] = ldq_le_p(buf + 8);
++
++            /*
++             * On the wire these are target-endian 128 bit values.
++             * In the CPU state these are host-order uint64_t values
++             * with the least-significant one first. This means they're
++             * the other way around for target_words_bigendian() (which is
++             * only true for us for aarch64_be-linux-user).
++             */
++            if (target_words_bigendian()) {
++                q[1] = ldq_p(buf);
++                q[0] = ldq_p(buf + 8);
++            } else{
++                q[0] = ldq_p(buf);
++                q[1] = ldq_p(buf + 8);
++            }
++
+             return 16;
          }
+     case 32:
 -- 
 2.47.2
 
