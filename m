@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC13B38651
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9D6B385FD
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Aug 2025 17:14:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urHnZ-0006IW-AY; Wed, 27 Aug 2025 11:10:53 -0400
+	id 1urHnP-0005TN-EF; Wed, 27 Aug 2025 11:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHjM-0006oU-QK; Wed, 27 Aug 2025 11:06:35 -0400
+ id 1urHjO-0006pk-FV; Wed, 27 Aug 2025 11:06:36 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1urHjK-0005Ro-Tq; Wed, 27 Aug 2025 11:06:32 -0400
+ id 1urHjM-0005S5-2V; Wed, 27 Aug 2025 11:06:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CFF7914C54C;
+ by isrv.corpit.ru (Postfix) with ESMTP id E18BC14C54D;
  Wed, 27 Aug 2025 18:02:58 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id BA9E3269854;
+ by tsrv.corpit.ru (Postfix) with ESMTP id CD6A4269855;
  Wed, 27 Aug 2025 18:03:25 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Qian Wen <qian.wen@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 36/59] i386/cpu: Fix cpu number overflow in
- CPUID.01H.EBX[23:16]
-Date: Wed, 27 Aug 2025 18:02:41 +0300
-Message-ID: <20250827150323.2694101-36-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ Michael Tokarev <mjt@tls.msk.ru>, Chuang Xu <xuchuangxclwt@bytedance.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [Stable-10.0.4 37/59] target/i386/cpu: Move addressable ID encoding
+ out of compat property in CPUID[0x1]
+Date: Wed, 27 Aug 2025 18:02:42 +0300
+Message-ID: <20250827150323.2694101-37-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,77 +60,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Qian Wen <qian.wen@intel.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-The legacy topology enumerated by CPUID.1.EBX[23:16] is defined in SDM
-Vol2:
+Currently, the addressable ID encoding for CPUID[0x1].EBX[bits 16-23]
+(Maximum number of addressable IDs for logical processors in this
+physical package) is covered by vendor_cpuid_only_v2 compat property.
+The previous consideration was to avoid breaking migration and this
+compat property makes it unfriendly to backport the commit f985a1195ba2
+("i386/cpu: Fix number of addressable IDs field for CPUID.01H.EBX
+[23:16]").
 
-Bits 23-16: Maximum number of addressable IDs for logical processors in
-this physical package.
+However, NetBSD booting is broken since the commit 88dd4ca06c83
+("i386/cpu: Use APIC ID info to encode cache topo in CPUID[4]"),
+because NetBSD calculates smt information via `lp_max` / `core_max` for
+legacy Intel CPUs which doesn't support 0xb leaf, where `lp_max` is from
+CPUID[0x1].EBX.bits[16-23] and `core_max` is from CPUID[0x4].0x0.bits[26
+-31].
 
-When threads_per_socket > 255, it will 1) overwrite bits[31:24] which is
-apic_id, 2) bits [23:16] get truncated.
+The commit 88dd4ca0 changed the encoding rule of `core_max` but didn't
+update `lp_max`, so that NetBSD would get the wrong smt information,
+which leads to the module loading failure.
 
-Specifically, if launching the VM with -smp 256, the value written to
-EBX[23:16] is 0 because of data overflow. If the guest only supports
-legacy topology, without V2 Extended Topology enumerated by CPUID.0x1f
-or Extended Topology enumerated by CPUID.0x0b to support over 255 CPUs,
-the return of the kernel invoking cpu_smt_allowed() is false and APs
-(application processors) will fail to bring up. Then only CPU 0 is online,
-and others are offline.
+Luckily, the commit f985a1195ba2 ("i386/cpu: Fix number of addressable
+IDs field for CPUID.01H.EBX[23:16]") updated the encoding rule for
+`lp_max` and accidentally fixed the NetBSD issue too. This also shows
+that using CPUID[0x1] and CPUID[0x4].0x0 to calculate HT/SMT information
+is a common practice to detect CPU topology on legacy Intel CPUs.
 
-For example, launch VM via:
-qemu-system-x86_64 -M q35,accel=kvm,kernel-irqchip=split \
-    -cpu qemu64,cpuid-0xb=off -smp 256 -m 32G \
-    -drive file=guest.img,if=none,id=virtio-disk0,format=raw \
-    -device virtio-blk-pci,drive=virtio-disk0,bootindex=1 --nographic
+Therefore, it's necessary to backport the commit f985a1195ba2 to
+previous stable QEMU to help address the similar issues as well. Then
+the compat property is not needed any more since all stable QEMUs will
+follow the same encoding way.
 
-The guest shows:
-    CPU(s):               256
-    On-line CPU(s) list:  0
-    Off-line CPU(s) list: 1-255
+So, in CPUID[0x1], move addressable ID encoding out of compat property.
 
-To avoid this issue caused by overflow, limit the max value written to
-EBX[23:16] to 255 as the HW does.
-
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Qian Wen <qian.wen@intel.com>
+Reported-by: Michael Tokarev <mjt@tls.msk.ru>
+Inspired-by: Chuang Xu <xuchuangxclwt@bytedance.com>
+Fixes: commit f985a1195ba2 ("i386/cpu: Fix number of addressable IDs field for CPUID.01H.EBX[23:16]")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3061
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250714080859.1960104-6-zhao1.liu@intel.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit a62fef58299562aae6667b8d8552247423e886b3)
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Tested-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-ID: <20250804053548.1808629-1-zhao1.liu@intel.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit 4e5d58969ed6927a7f1b08ba6223c34c8b990c92)
+(Mjt: when picking up commit f985a1195ba2d9c6f6f33e83fe2e419a7e8acb60
+ "i386/cpu: Fix number of addressable IDs field for CPUID.01H.EBX[23:16]"
+ to 10.0, I commented out the condition (vendor_cpuid_only_v2 comparison)
+ which is now being removed)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index ed262edcc8..56af1857b9 100644
+index 56af1857b9..58c62ff5b5 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -6835,6 +6835,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         }
-         *edx = env->features[FEAT_1_EDX];
-         if (threads_per_pkg > 1) {
-+            uint32_t num;
-+
-             /*
-              * For CPUID.01H.EBX[Bits 23-16], AMD requires logical processor
+@@ -6842,8 +6842,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
               * count, but Intel needs maximum number of addressable IDs for
-@@ -6842,10 +6844,13 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+              * logical processors per package.
               */
-             if (/*10.0: cpu->vendor_cpuid_only_v2*/ false &&
-                 (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
--                *ebx |= 1 << apicid_pkg_offset(topo_info) << 16;
-+                num = 1 << apicid_pkg_offset(topo_info);
+-            if (/*10.0: cpu->vendor_cpuid_only_v2*/ false &&
+-                (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
++            if ((IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
+                 num = 1 << apicid_pkg_offset(topo_info);
              } else {
--                *ebx |= threads_per_pkg << 16;
-+                num = threads_per_pkg;
-             }
-+
-+            /* Fixup overflow: max value for bits 23-16 is 255. */
-+            *ebx |= MIN(num, 255) << 16;
-         }
-         break;
-     case 2:
+                 num = threads_per_pkg;
 -- 
 2.47.2
 
