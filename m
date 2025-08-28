@@ -2,101 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0FF7B3A8EB
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39A0CB3A8C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:51:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgJD-00005N-KE; Thu, 28 Aug 2025 13:21:11 -0400
+	id 1urgIV-0007Yp-2K; Thu, 28 Aug 2025 13:20:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1urdpm-0001qI-Sr
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:42:39 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1urdpk-0000xH-9M
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:42:38 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3cd59c5a953so673653f8f.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 07:42:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756392152; x=1756996952; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XlIA4USyAQE65RJp1YZjEvdIlB4v9w1UDqYnJWiMLo0=;
- b=wM4/FdnmJvNSsnYCZhu5yrMc59cw7bP0GDsjJOJPpavFeXOy2cX5mCl6NKqFY7bJxA
- CzcsnUdCHukUT/QglfWBt6G+p43UP+AxzEMxOaQJLqfVpFgK+yA4t1JLI/MQ8HVVTyMz
- n2b8G/q3XwUh/PkPVmIEPkfO8rImmd+OuRJIi1sedBplIZNMx2D43AgC18LRJOEx7UaK
- 1qR1m2beJRlpFW2hwzY6a4/4+b162GALjHJyM36XAB8XhAwD5DVMnFscoIWAx4ycogfO
- jtxaOLP0UdSeyXw4dd/j+J7sPazoNxVYCbSnybSkuK32TlZPkf01eCUxyQHmU4MQj0VV
- Hi0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756392152; x=1756996952;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XlIA4USyAQE65RJp1YZjEvdIlB4v9w1UDqYnJWiMLo0=;
- b=t5/Pjj3pY9JYQNqZZezTp9u58z2A6rm0/zLLh4YYzztfZGdaGNaccGY2PfSBZb3F/C
- +4SC6CRaZlGThYMBId5wIlAzn4mvcN9p+PDw/AEPGAPnG1Tzd+vFU/PNo7pMdXe+roGl
- c+I60O+YB5DTQwbpRq7cqMAIDi4TV1l+jJoTiwWOoRe3zlu0fyDL9c7vB3gtOD6wpdeu
- C7+us/8Egj5VJdEOAClKEpZ7kms8Q4TFnT0LGm+Nz3g1cGK6gkcfOqia5rPVdVdLeez0
- XSk/+BKHVdFNhiSz/4a4jPrQh/O6rirc9k4sycNKNeLdodBInbTm/7VkZC3DI4BW/b4Z
- //5A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWFZqjZ+euTLG6z6IAylfDJrkzJ6mVfdO0/w2cUPctFyLwvSXq+uIH6fBQlV/djOrTR7BwrB3G8/CDI@nongnu.org
-X-Gm-Message-State: AOJu0YzD/v91LRfJlJuN9ddjYZWUrZqYSgQ/C2aJ9w+wIXW9Gmo2fs4/
- WkwaX0jTuSm/NEk3aJFEDt3M7YdRAgs8YY0zCXw0+zKs6IWJZv5hiS11ab8nGCyaKqc=
-X-Gm-Gg: ASbGncvaHeRfLTYVKzS0017YIPeS1waxEBTMmDAV5yb565464K1XhAS6tu9gKty+UpS
- fZujzmvTdJueGeHYBavcOgtyPvc6Zj89j2URTOsnxFi9zJP3kpg9adGneh9550Vm01F8T4ONwyD
- deyWJ+58Q4GG3rX9x58PbV8j2U7bzckWWfGHQ4XMKOyp0MQS5tUM70c8AFZswso96zSv+UPdzsZ
- V1zV8e0Eamj0DudP+ko5fs60Mr4wxeZKo6TDj9u7Ui0S2L1FebJs073u9Ac0PcNFgwNG1YbsSV9
- yFt0K+9/7dPVvLkFUtbLwe4n8ll3eu0TszDbSM1KuJUYfSnSzKasV4KF76Mx+IzfJcC8Vb6Fr9U
- QPh0Yknt1TuMDmRTPhHpcvCVp78z5FWsehJKnnfbd5mkqQi+gLijUlLdMgcg3aIzPLXBvdcgQs2
- /P7RB/hp2ZutUt1erYXAGnPrsRi3/f78m6WHGz6ngJVbHJVUY3hT+4V+N1cS8Y+tj1BT2m6tHLf
- ZlMXwkD30TinkY=
-X-Google-Smtp-Source: AGHT+IFhU0RjfxzQX4gyiUiU2u/z7+mj3ER82ZBafxLsUk5C+WMMU7+rsozf/bDZtt8oBKi1jUBBUQ==
-X-Received: by 2002:a05:6000:188e:b0:3cd:9794:cbcf with SMTP id
- ffacd0b85a97d-3cd9794cc94mr3646605f8f.60.1756392152425; 
- Thu, 28 Aug 2025 07:42:32 -0700 (PDT)
-Received: from ?IPV6:2a01:cb09:d021:8fd6:94b3:f1b:6ece:2fef?
- (2a01cb09d0218fd694b30f1b6ece2fef.ipv6.abo.wanadoo.fr.
- [2a01:cb09:d021:8fd6:94b3:f1b:6ece:2fef])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cbf1f5fc1bsm10014291f8f.54.2025.08.28.07.42.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Aug 2025 07:42:32 -0700 (PDT)
-Message-ID: <c0acee85-eabc-4093-a74d-f54ecd6e4335@linaro.org>
-Date: Thu, 28 Aug 2025 16:42:28 +0200
+ (Exim 4.90_1) (envelope-from <jtomko@redhat.com>) id 1urdrc-0002eF-Ig
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:44:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jtomko@redhat.com>) id 1urdra-00014g-7I
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:44:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756392265;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=RGHBPU+lcJo189CbJtshkPrbtOEHMe1Xxjnbkb5lhso=;
+ b=GAXg2g8YOhSiRe9xv+jzOM1V1yUQ0f1BKueCHg+7R6xmFeQG2JTpAiErohhzBbnxzyB589
+ d98O3GsLlq/whb5RtJI9F3DHoiy4Ab396gD9SGrTm2uog2RuNjAAmFLmZWtvHQOp3Wep/F
+ WpZHnJiwdrUcMl4KL/NCLQH+PrynZQ4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-438-sPlFbFC_P1qDfizSc_5KRg-1; Thu,
+ 28 Aug 2025 10:43:06 -0400
+X-MC-Unique: sPlFbFC_P1qDfizSc_5KRg-1
+X-Mimecast-MFC-AGG-ID: sPlFbFC_P1qDfizSc_5KRg_1756392185
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AEBE4180034F; Thu, 28 Aug 2025 14:43:04 +0000 (UTC)
+Received: from fedora (unknown [10.44.32.52])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B25E730001A7; Thu, 28 Aug 2025 14:43:01 +0000 (UTC)
+Date: Thu, 28 Aug 2025 16:42:58 +0200
+From: =?iso-8859-1?B?SuFu?= Tomko <jtomko@redhat.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, devel@lists.libvirt.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: Re: [PATCH 0/2] hw/mips: Remove mipssim machine and mipsnet device
+Message-ID: <aLBq8uo--L5qK30z@fedora>
+References: <20250828143800.49842-1-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 2/6] tests/functional/test_aarch64_rme: update image
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org
-References: <20250727074202.83141-1-richard.henderson@linaro.org>
- <20250727074202.83141-3-richard.henderson@linaro.org>
- <CAFEAcA_ZQ13qMRUQsieJiEPV=ULrDbz8=EJaW4_kw=yEysob0w@mail.gmail.com>
- <87349s4kfz.fsf@draig.linaro.org>
- <3d59d45f-79f1-4701-ad3b-402513ce4e72@linaro.org>
- <CAFEAcA9ryysJQK8hxNxpF=00yC=t3==aFqt2pubD3CjM9T+WLg@mail.gmail.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <CAFEAcA9ryysJQK8hxNxpF=00yC=t3==aFqt2pubD3CjM9T+WLg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x42c.google.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="HGWPRM29bkXxGMUL"
+Content-Disposition: inline
+In-Reply-To: <20250828143800.49842-1-philmd@linaro.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jtomko@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,52 +82,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025-08-28 10:27, Peter Maydell wrote:
-> On Sat, 16 Aug 2025 at 01:09, Pierrick Bouvier
-> <pierrick.bouvier@linaro.org> wrote:
->>
->> On 8/15/25 9:29 AM, Alex Bennée wrote:
->>> Peter Maydell <peter.maydell@linaro.org> writes:
->>>
->>>> On Sun, 27 Jul 2025 at 08:42, Richard Henderson
->>>> <richard.henderson@linaro.org> wrote:
->>>>>
->>>>> From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>>>>
->>>>> TF-A needs to be patched to enable support for FEAT_TCR2 and
->>>>> FEAT_SCTLR2. This new image contains updated firmware.
->>>>>
->>>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->>>>> Message-ID: <20250719035838.2284029-3-pierrick.bouvier@linaro.org>
->>>>
->>>> I see this test failing in local runs of 'make check-functional'
->>>> sometimes, complaining that it can't create the scratch/out/EFI
->>>> directory because it already exists:
->>>>
->>>> stderr:
->>>> Traceback (most recent call last):
->>>>     File "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/functional/test_aarch64_rme_sbsaref.py",
->>>> line 49, in test_aarch64_rme_sbsaref
->>>>       os.mkdir(efi)
->>>
->>>     os.makedirs(efi, exist_ok=True)
->>>
->>> would solve that.
->>>
->>
->> Yes, probably safer to add that if we can't guarantee correctly that
->> scratch folder gets deleted everytime. I wrote the test assuming this
->> behaviour.
-> 
-> I folded the os.makedirs() fix into my copy of this patch in
-> target-arm.next.
+
+--HGWPRM29bkXxGMUL
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On a Thursday in 2025, Philippe Mathieu-Daud=E9 wrote:
+>mipssim machine (single user of  mipsnet device) is
+>deprecated since v10.0; remove for 10.2.
+>
+>Philippe Mathieu-Daud=E9 (2):
+>  hw/mips: Remove mipssim machine
+>  hw/net: Remove mipsnet device model
+>
+> MAINTAINERS                             |   6 -
+> docs/about/deprecated.rst               |  12 -
+> docs/about/removed-features.rst         |   5 +
+> docs/system/target-mips.rst             |  11 -
+> configs/devices/mips-softmmu/common.mak |   1 -
+> hw/mips/mipssim.c                       | 249 --------------------
+> hw/net/mipsnet.c                        | 297 ------------------------
+> hw/mips/Kconfig                         |   7 -
+> hw/mips/meson.build                     |   1 -
+> hw/net/Kconfig                          |   3 -
+> hw/net/meson.build                      |   1 -
+> hw/net/trace-events                     |   7 -
+> 12 files changed, 5 insertions(+), 595 deletions(-)
+> delete mode 100644 hw/mips/mipssim.c
+> delete mode 100644 hw/net/mipsnet.c
 >
 
-Thanks Peter, you did well.
+Reviewed-by: J=E1n Tomko <jtomko@redhat.com>
 
-Pierrick
+Jano
 
-> -- PMM
+--HGWPRM29bkXxGMUL
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQT+Rn5j0qdK2hQgnuAU0rOr/y4PvAUCaLBq8gAKCRAU0rOr/y4P
+vDGfAQDEw2xJFLiAQCF9cnmNiaUhsHHcpgWSQPNRa/iTonsijQD/QadQN4x5KB3z
+cvgQ5+Z8XhJkwiCRtgmKaWzDgyzzrw4=
+=aKYJ
+-----END PGP SIGNATURE-----
+
+--HGWPRM29bkXxGMUL--
 
 
