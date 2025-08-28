@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0799AB3A88D
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA512B3A7F4
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:28:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgIY-0007ju-72; Thu, 28 Aug 2025 13:20:30 -0400
+	id 1urgIb-0007qa-1W; Thu, 28 Aug 2025 13:20:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urdtL-0003Sf-OV
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:46:24 -0400
-Received: from [2607:f8b0:4864:20::b12e] (helo=mail-yx1-xb12e.google.com)
+ id 1urdtZ-0003WM-1C
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:46:33 -0400
+Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urdtC-0001Mo-PM
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:46:16 -0400
-Received: by mail-yx1-xb12e.google.com with SMTP id
- 956f58d0204a3-5fe42994547so312847d50.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 07:46:09 -0700 (PDT)
+ id 1urdtS-0001Qr-8B
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:46:32 -0400
+Received: by mail-yw1-x1133.google.com with SMTP id
+ 00721157ae682-71d6083cc69so8851347b3.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 07:46:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756392367; x=1756997167; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756392382; x=1756997182; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vjJfXl4jttb4KKwarRwrXGeqfwHtBXFQ0xRBk5/6NBc=;
- b=ZPBEBSuiTkmkSmk7k09DfT4Zrna5jjHElT6vdkwh8QxF5zuMf0uzBNx8qzMy6l+mky
- 7C54RP8IPjwPLqgfRakHOijLm1mrI8ADkcnP49kmw+l9uQ8A+Bf/+CrWSU1CCRQWFZEk
- jrtgQ1PISzkRHcl40bA/KxIPEdNHmcbhi1ryRjFzchXJ6UBZlqtCZcxKboy1cQ8o2Whv
- CIrtRqrOpOIkkvvdun3OI0RIRA7rXNT8G6yJ1Dzcc9pHlyUCqvJq91z5bW5pw8D85xHK
- BpZ15NM7Gu0nMbLudWtqaS4ggY0ZtoQCRvZPCPd/H/N1EyWv7TTv5+Ex+xqylQM+GLfx
- 7iDQ==
+ bh=/PvnfJkYlKRQ+gNghYmvwVCQPAaYQQkcyCTNgaBZ/AE=;
+ b=Eh39Ri65QZzUb0V7ZCd8zHEOPeW7Ta59mJECQnTlcvUM+7WQy6SwGdp06Mfff308K8
+ eJ0/BxpWxG9duBeLeve5pkqvmfPK5zc6AaLfBux5IcPDWG3t7DHcqrYW8ABbPiw1hUiR
+ CSfaPahvZoIb6fVyPL0MWHzs5tyLQacVTg7WHD8XAskgQy88r2IbNCd/TJrktxzSUA/1
+ UEfqREZSCYhYzyHDMeMlwMTWubs9GCn+6FjSc5NaJ1oZ69FpYC1Fytq8vZ/zIedyDXZ3
+ AqIxd8mG+YSKpiO/fUd2zayVSdzr2vicHj0Gb2bZQ8cF8+ItIF1WDokedJ5xYaDttdv8
+ 1YjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756392367; x=1756997167;
+ d=1e100.net; s=20230601; t=1756392382; x=1756997182;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=vjJfXl4jttb4KKwarRwrXGeqfwHtBXFQ0xRBk5/6NBc=;
- b=Ju5rqHqzT9AyJlkzD0X86KmpaAlZNlyYZzuBNiWaVABHnPl0ZQc6jiCechL1hkyMPy
- 85Ee3ItMcZwRSM6SPx6e46THUq+Yt5cA4YFzxC+JkFzOA53IX/tQ9Ly0b4G7Mr5AhiEx
- AcdwcrDS/IDJHBAhIiY96GPs6QFUNjKvVEbpP03+LBplEaTMfZJUpHJag+355d3Hujmi
- 4PPPNENOE6Rv6vzqmPaHxpL5aBGvGYFzwsWokIt/qsr6V/6v/m8brb1WSpZsMtFwGjjE
- IAgq4eWxdbPeahifdZD9Y5YBKmV5o4SX0kaL2WNPE3Ro1C7R3C9tGWyfay1/m79qkOab
- FaUg==
-X-Gm-Message-State: AOJu0Yyf+vyoZbK57gECZnN9rhf55y6W4vmNT5bRx1Z1nhDFAz/3jf8t
- CXmLO8/1RGj32c7kt65ZokjU64xjoRs+ni2rhuDkfYQyFgoXz2aCVhfUQRngX9t5RdqQ9mtQuw4
- EhOJsRU4qG3ducpJ5oTUA2XXn7/oLy8dd2sYyY0VkeJKcrz7wjQNN
-X-Gm-Gg: ASbGnctLXiWpOOWLQpPNolpzUQJFVW+eYCAwvWLbGolBo86SZSRQiRo1QAOEIAri1Sl
- tQZAm6TLijpNLfus2uaVVYLNUSAbJTu8avEn1BV9omAJoLMlzZBPBjSA5UI/d0H2QVsT3fDrMU6
- znknlDHq935l0QTNNGB/IyFKp9JlGVWYbnzp+TmWrdarl6fxo9mgQphTgz3OxPfyJk02lygLMzW
- +d2HRwlf7AEbnXiE84=
-X-Google-Smtp-Source: AGHT+IHq3GxvTBSbabrpnW2/rDRzEjPQIAzgbV/1n24GFfeZV2u0Dku4y9dGGOMu1s6ykaWGIxdFILEaBU2dv+W5UkY=
-X-Received: by 2002:a05:690c:f90:b0:721:80a:abce with SMTP id
- 00721157ae682-721080ab0eamr177040697b3.9.1756392367246; Thu, 28 Aug 2025
- 07:46:07 -0700 (PDT)
+ bh=/PvnfJkYlKRQ+gNghYmvwVCQPAaYQQkcyCTNgaBZ/AE=;
+ b=ZERo96P9/HQDi9arhUnq+RHE+DCZvC21XJF4+kGUXga7kViy1+DEdExxwzTJCiPzLk
+ uAmXeEWaT/8TJvO/2b9bKqV/uNH8tPK0hv+d4Iy4xvqZcWpNnZ/sXDk2GeDPKud4dGug
+ GrPDVkPRbLguj16XhhKIsAGZEP7qoAqobvr5Pbje0A2wu04oD4YmBdWTMLMwu4Ux9+8O
+ va7XCN2ble1e1taFmXi39TH5+O8+XZU2ApXOtNjpiKtw/48VWJiImbWw+Xf7+ea9cqZn
+ PI+jccYXUjiDzYSJAq2VWGc+gxAclS9JwausXOMsbbzpUolEBRBl3Qxl8jD1Jm6wXrle
+ mkRQ==
+X-Gm-Message-State: AOJu0Yy2k0yeicvAqk4WqfvduKgZ1+UoawDXDPbjdtniPOMMzw+YTy5K
+ ecTz5vmuR/MMNsv441kIR+4EYdGPBFDO5iAFd3+LhEFkVFBZWGKlQFzzRa0FywYSLysfQlzARdv
+ pAOa7/Z4f7IwzHtKq/PFBFDheZGuxmIAZfFXt+jrlwDGeO+Y2mciB
+X-Gm-Gg: ASbGnctHb1fr7smo4xWckQs7cqBDzcViCXq+UatMB1pHKC3wiqxKPrG2WW7Ad+JdQlN
+ xiQOwmH7IVCirJyXEdOUWojjuuNCY1uO17Z/1A9+aSfBBxW1U93WfHHOh8+y2ZV7NxNmhdjJIXB
+ IZbRldYVZAXZ1U6MdqHE5rN66WH7FeGVeTXxVVccM33FRSrPT5EIXlxdKEfJLYe4HQsGvXJQZAQ
+ W7/8Zci
+X-Google-Smtp-Source: AGHT+IGIduuEv5VLTRDvkyfJ5RUe2Yyn37zynFxZjnHIEaqKnmlbF9hqBF5pTdOpppR7rHuuhryl6BKIFVQNj9ljUpA=
+X-Received: by 2002:a05:690c:6182:b0:721:30a5:3bf1 with SMTP id
+ 00721157ae682-72130a53f15mr113791317b3.16.1756392381747; Thu, 28 Aug 2025
+ 07:46:21 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250828120836.195358-1-richard.henderson@linaro.org>
- <20250828120836.195358-35-richard.henderson@linaro.org>
-In-Reply-To: <20250828120836.195358-35-richard.henderson@linaro.org>
+ <20250828120836.195358-36-richard.henderson@linaro.org>
+In-Reply-To: <20250828120836.195358-36-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 28 Aug 2025 15:45:55 +0100
-X-Gm-Features: Ac12FXycsx_ZmeDvmAQl3HPvRdOKkdQthS7NWiAw3Xj096FEF0ZE_1bqBCuSYFU
-Message-ID: <CAFEAcA8KkuLBBX2N95KXShO69mxgtMCeVgjZ7oaDQpw5SOa8fA@mail.gmail.com>
-Subject: Re: [PATCH v3 34/87] linux-user/x86_64: Fix dump of fs_base, gs_base
+Date: Thu, 28 Aug 2025 15:46:10 +0100
+X-Gm-Features: Ac12FXylQO5xV7YftUeauaDoiQJzXseJKnS19U9HkYdh1n1ht4H_yijERTeb_L0
+Message-ID: <CAFEAcA-NPu_6b4RFVPwAfneC6spPpbqBjzwf0VQpCnG3xcwT=A@mail.gmail.com>
+Subject: Re: [PATCH v3 35/87] linux-user/aarch64: Create target_ptrace.h
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:f8b0:4864:20::b12e
- (failed)
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12e.google.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RDNS_NONE=0.793,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1133.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,12 +94,15 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Thu, 28 Aug 2025 at 13:10, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> We were storing the selector, not the base.
+> Move the target_pt_regs structure from target_syscall.h, and
+> rename to target_user_pt_regs, to match what's in ptrace.h.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  linux-user/x86_64/elfload.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  linux-user/aarch64/target_ptrace.h  | 14 ++++++++++++++
+>  linux-user/aarch64/target_syscall.h |  7 -------
+>  2 files changed, 14 insertions(+), 7 deletions(-)
+>  create mode 100644 linux-user/aarch64/target_ptrace.h
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
