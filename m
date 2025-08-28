@@ -2,50 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E671B3A8EA
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD1FB3A8C8
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:52:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgEf-0007Zu-S6; Thu, 28 Aug 2025 13:16:31 -0400
+	id 1urgFY-0000rk-1C; Thu, 28 Aug 2025 13:17:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1urdT8-0000en-LK; Thu, 28 Aug 2025 10:19:14 -0400
+ id 1urdTD-0000hJ-20; Thu, 28 Aug 2025 10:19:19 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1urdT4-0005qI-Si; Thu, 28 Aug 2025 10:19:14 -0400
+ id 1urdT5-0005q4-Tk; Thu, 28 Aug 2025 10:19:18 -0400
 Received: from [192.168.10.111] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
  (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 57SEICLK097958
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 57SEICLL097958
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Thu, 28 Aug 2025 23:18:24 +0900 (JST)
+ Thu, 28 Aug 2025 23:18:25 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=7hINc+siy0L/C8+kFQTnrlvRNXJm/VGbmuKid1T4BLM=; 
+DKIM-Signature: a=rsa-sha256; bh=jzogqJfWs1YAWF0gs/a83AXvrISG0uG/DVCnqKIQt4E=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=From:Subject:Date:Message-Id:To;
+ h=From:Date:Subject:Message-Id:To;
  s=rs20250326; t=1756390705; v=1;
- b=VEhczf7r2EaELgO4AH03u1MJ6S1nz5HTYF6751M4mpHkESN3bweNmmwDn1C7k6ts
- n3Gz/QI7sRsUp0aWz9XUPrWF/G6foRi45L2hrXxUv0p2vHtKCKCrWZ6MSPX+Wen6
- 7xtQU020XRQqDRbJx/OYhvMognCf2IbY/xjZEPCo3gYzqovbqGadU8PIlKBRwMtl
- Bfud/OooXS5cIYqHS+CD8yz4FNnWZ5jFwUd0t24bPFWoBLySIj4XTQVH62pA1iKi
- 8A5hg0u6dHXO+Pwg2lFhm6r5UbfJxeVVgjHCx8UOc/6H742L6nHoAGM0BgIWkSds
- 8jsdjq4I1YI0o8M+dRx+IA==
+ b=X+o+lfgUy+NckM5J9mBAk4+4xCuPwCAAkeh+zTDIc44Qua1iJ4UdOlhK6WYA4um2
+ bFavsb+yK2jnpvyiwoTWCPozwWN47gC92pTClSqgzVj8L2AbEi0RUDn6zGAp5AEf
+ uMrgklOKb1Nlg7g1jMlF3j2awi0KiS//9/AOmvEVW/lzoZQ/uuoKXs8EEWNutfvT
+ X2AH+M6Pc4b5cYcKIk4ny+Potp+RrcvYA+SEMNtcaGsc5GTcFnaRNBIXMJmoO8uS
+ TfvSqI+LGRhszXZRvEa5smY0opNhVozEyazSMF++rHneemjrv3+Nwd+GLGAQF0FI
+ car65A3Lu1We7YOZKga4Og==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Subject: [PATCH v9 0/2] Fix check-qtest-ppc64 sanitizer errors
-Date: Thu, 28 Aug 2025 23:18:10 +0900
-Message-Id: <20250828-san-v9-0-c0dff4b8a487@rsg.ci.i.u-tokyo.ac.jp>
+Date: Thu, 28 Aug 2025 23:18:11 +0900
+Subject: [PATCH v9 1/2] memory: Update inline documentation
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIACJlsGgC/2XQz2rDMAwG8FcpPi9DtuV/O+09xg62Yq8+LBnJC
- C0l7z41pjQjx0/o9yF0E3Oeap7F2+kmprzUuY4Dh/ByEnSOw1fuas9ZKFAIVplujkMHwcUSCxZ
- JSvDmz5RLvWwtH5+cz3X+HafrVrrI+/Th7eYX2UFXNBEqDUr68N7H61AvrzR+i3vBovbINaQYO
- QMpQUDbp/6A9BM58A1pRgl0sU4SAtkDwifySjeEjKJCsn2JSDkdkHkgAxKwIcPIJ9SAxvGJx/P
- sHrVHLpaRlIW8CSmE5A7I7VFoyDEKmlCr6Ph/eEB+hyQ05BkZF02UKctE5R9a1/UPtYx4wgoCA
- AA=
-X-Change-ID: 20240625-san-097afaf4f1c2
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250828-san-v9-1-c0dff4b8a487@rsg.ci.i.u-tokyo.ac.jp>
+References: <20250828-san-v9-0-c0dff4b8a487@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20250828-san-v9-0-c0dff4b8a487@rsg.ci.i.u-tokyo.ac.jp>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -90,95 +85,243 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I saw various sanitizer errors when running check-qtest-ppc64. While
-I could just turn off sanitizers, I decided to tackle them this time.
+Do not refer to "memory region's reference count"
+-------------------------------------------------
 
-Unfortunately, GLib versions older than 2.81.0 do not free test data in
-some cases so some sanitizer errors remain. All sanitizer errors will be
-gone with this patch series combined with the following change for GLib:
-https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4120
+Now MemoryRegions do have their own reference counts, but they will not
+be used when their owners are not themselves. However, the documentation
+of memory_region_ref() says it adds "1 to a memory region's reference
+count", which is confusing. Avoid referring to "memory region's
+reference count" and just say: "Add a reference to a memory region".
+Make a similar change to memory_region_unref() too.
+
+Refer to docs/devel/memory.rst for "owner"
+------------------------------------------
+
+memory_region_ref() and memory_region_unref() used to have their own
+descriptions of "owner", but they are somewhat out-of-date and
+misleading.
+
+In particular, they say "whenever memory regions are accessed outside
+the BQL, they need to be preserved against hot-unplug", but protecting
+against hot-unplug is not mandatory if it is known that they will never
+be hot-unplugged. They also say "MemoryRegions actually do not have
+their own reference count", but they actually do. They just will not be
+used unless their owners are not themselves.
+
+Refer to docs/devel/memory.rst as the single source of truth instead of
+maintaining duplicate descriptions of "owner".
+
+Clarify that owner may be missing
+
+---------------------------------
+A memory region may not have an owner, and memory_region_ref() and
+memory_region_unref() do nothing for such.
+
+memory: Clarify owner must not call memory_region_ref()
+--------------------------------------------------------
+
+The owner must not call this function as it results in a circular
+reference.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
-Changes in v9:
-- Fixed a NULL pointer dereference.
-- Link to v8: https://lore.kernel.org/r/20250110-san-v8-0-57a5a1be1bcf@daynix.com
-
-Changes in v8:
-- Clarified that the memory region should be passed to object_ref()
-  when creating a reference internal to owner.
-- Link to v7: https://lore.kernel.org/r/20250109-san-v7-0-93c432a73024@daynix.com
-
-Changes in v7:
-- Don't open code memory_region_ref(). (Peter Xu)
-- Link to v6: https://lore.kernel.org/r/20250105-san-v6-0-11fc859b99b7@daynix.com
-
-Changes in v6:
-- Avoid referring owner as "the object that tracks the region's
-  reference count".
-- Noted that memroy_region_ref() and memroy_region_unref() do nothing
-  if the owner is not present.
-- Explicitly stated that memory_region_unref() may destroy the owner
-  along with the memory region itself.
-- Link to v5: https://lore.kernel.org/r/20250104-san-v5-0-8b430457b09d@daynix.com
-
-Changes in v5:
-- Rebased.
-- Merged four patches to update inline documentation into one
-- Link to v4: https://lore.kernel.org/r/20240823-san-v4-0-a24c6dfa4ceb@daynix.com
-
-Changes in v4:
-- Changed to create a reference to the subregion instead of its owner
-  when its owner equals to the container's owner.
-- Dropped R-b from patch "memory: Do not create circular reference with
-  subregion".
-- Rebased.
-- Link to v3: https://lore.kernel.org/r/20240708-san-v3-0-b03f671c40c6@daynix.com
-
-Changes in v3:
-- Added patch "memory: Clarify that we use owner's reference count".
-- Added patch "memory: Refer to docs/devel/memory.rst for 'owner'".
-- Fixed the message of patch
-  "memory: Do not create circular reference with subregion".
-- Dropped patch "cpu: Free cpu_ases" in favor of:
-  https://lore.kernel.org/r/20240607115649.214622-7-salil.mehta@huawei.com/
-  ("[PATCH V13 6/8] physmem: Add helper function to destroy CPU
-  AddressSpace")
-- Dropped patches "hw/ide: Convert macio ide_irq into GPIO line" and
-  "hw/ide: Remove internal DMA qemu_irq" in favor of commit efb359346c7a
-  ("hw/ide/macio: switch from using qemu_allocate_irq() to qdev input
-  GPIOs")
-- Dropped patch "hw/isa/vt82c686: Define a GPIO line between vt82c686
-  and i8259" in favor of:
-  https://patchew.org/QEMU/20240704205854.18537-1-shentey@gmail.com/
-  ("[PATCH 0/3] Resolve vt82c686 and piix4 qemu_irq memory leaks")
-- Dropped pulled patches.
-- Link to v2: https://lore.kernel.org/r/20240627-san-v2-0-750bb0946dbd@daynix.com
-
-Changes in v2:
-- Rebased to "[PATCH] cpu: fix memleak of 'halt_cond' and 'thread'".
-  (Philippe Mathieu-Daudé)
-- Converted IRQs into GPIO lines and removed one qemu_irq usage.
-  (Peter Maydell)
-- s/suppresses/fixes/ (Michael S. Tsirkin)
-- Corrected title of patch "hw/virtio: Free vqs after vhost_dev_cleanup()"
-  (was "hw/virtio: Free vqs before vhost_dev_cleanup()")
-- Link to v1: https://lore.kernel.org/r/20240626-san-v1-0-f3cc42302189@daynix.com
-
----
-Akihiko Odaki (2):
-      memory: Update inline documentation
-      memory: Do not create circular reference with subregion
-
  include/system/memory.h | 59 +++++++++++++++++++++++--------------------------
- system/memory.c         | 39 ++++++++++++++++++++++++++------
- 2 files changed, 60 insertions(+), 38 deletions(-)
----
-base-commit: e5859141b9b6aec9e0a14dacedc9f02fe2f15844
-change-id: 20240625-san-097afaf4f1c2
+ 1 file changed, 28 insertions(+), 31 deletions(-)
 
-Best regards,
+diff --git a/include/system/memory.h b/include/system/memory.h
+index e2cd6ed126144abaed6f3035e3ef091d747b4c34..06d6abaa7a9d85e650ff7a9df3f76f4535e8c4aa 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -1307,7 +1307,7 @@ static inline bool memory_region_section_intersect_range(MemoryRegionSection *s,
+  * memory_region_add_subregion() to add subregions.
+  *
+  * @mr: the #MemoryRegion to be initialized
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @name: used for debugging; not visible to the user or ABI
+  * @size: size of the region; any subregions beyond this size will be clipped
+  */
+@@ -1317,29 +1317,26 @@ void memory_region_init(MemoryRegion *mr,
+                         uint64_t size);
+ 
+ /**
+- * memory_region_ref: Add 1 to a memory region's reference count
++ * memory_region_ref: Add a reference to the owner of a memory region
+  *
+- * Whenever memory regions are accessed outside the BQL, they need to be
+- * preserved against hot-unplug.  MemoryRegions actually do not have their
+- * own reference count; they piggyback on a QOM object, their "owner".
+- * This function adds a reference to the owner.
+- *
+- * All MemoryRegions must have an owner if they can disappear, even if the
+- * device they belong to operates exclusively under the BQL.  This is because
+- * the region could be returned at any time by memory_region_find, and this
+- * is usually under guest control.
++ * This function adds a reference to the owner of a memory region to keep the
++ * memory region alive. It does nothing if the owner is not present as a memory
++ * region without owner will never die.
++ * For references internal to the owner, pass the memory region to object_ref()
++ * instead of using this function to avoid a circular reference.
++ * See docs/devel/memory.rst to know about owner.
+  *
+  * @mr: the #MemoryRegion
+  */
+ void memory_region_ref(MemoryRegion *mr);
+ 
+ /**
+- * memory_region_unref: Remove 1 to a memory region's reference count
++ * memory_region_unref: Remove a reference to the memory region of the owner
+  *
+- * Whenever memory regions are accessed outside the BQL, they need to be
+- * preserved against hot-unplug.  MemoryRegions actually do not have their
+- * own reference count; they piggyback on a QOM object, their "owner".
+- * This function removes a reference to the owner and possibly destroys it.
++ * This function removes a reference to the owner of a memory region and
++ * possibly destroys the owner along with the memory region. It does nothing if
++ * the owner is not present.
++ * See docs/devel/memory.rst to know about owner.
+  *
+  * @mr: the #MemoryRegion
+  */
+@@ -1352,7 +1349,7 @@ void memory_region_unref(MemoryRegion *mr);
+  * if @size is nonzero, subregions will be clipped to @size.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @ops: a structure containing read and write callbacks to be used when
+  *       I/O is performed on the region.
+  * @opaque: passed to the read and write callbacks of the @ops structure.
+@@ -1372,7 +1369,7 @@ void memory_region_init_io(MemoryRegion *mr,
+  *                                    directly.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @name: Region name, becomes part of RAMBlock name used in migration stream
+  *        must be unique within any device
+  * @size: size of the region.
+@@ -1395,7 +1392,7 @@ bool memory_region_init_ram_nomigrate(MemoryRegion *mr,
+  *                                          modify memory directly.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @name: Region name, becomes part of RAMBlock name used in migration stream
+  *        must be unique within any device
+  * @size: size of the region.
+@@ -1425,7 +1422,7 @@ bool memory_region_init_ram_flags_nomigrate(MemoryRegion *mr,
+  *                                     canceled.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @name: Region name, becomes part of RAMBlock name used in migration stream
+  *        must be unique within any device
+  * @size: used size of the region.
+@@ -1454,7 +1451,7 @@ bool memory_region_init_resizeable_ram(MemoryRegion *mr,
+  *                                    mmap-ed backend.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @name: Region name, becomes part of RAMBlock name used in migration stream
+  *        must be unique within any device
+  * @size: size of the region.
+@@ -1487,7 +1484,7 @@ bool memory_region_init_ram_from_file(MemoryRegion *mr,
+  *                                  mmap-ed backend.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @name: the name of the region.
+  * @size: size of the region.
+  * @ram_flags: RamBlock flags. Supported flags: RAM_SHARED, RAM_PMEM,
+@@ -1518,7 +1515,7 @@ bool memory_region_init_ram_from_fd(MemoryRegion *mr,
+  *                              region will modify memory directly.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @name: Region name, becomes part of RAMBlock name used in migration stream
+  *        must be unique within any device
+  * @size: size of the region.
+@@ -1546,7 +1543,7 @@ void memory_region_init_ram_ptr(MemoryRegion *mr,
+  * skip_dump flag.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @name: the name of the region.
+  * @size: size of the region.
+  * @ptr: memory to be mapped; must contain at least @size bytes.
+@@ -1566,7 +1563,7 @@ void memory_region_init_ram_device_ptr(MemoryRegion *mr,
+  *                           part of another memory region.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @name: used for debugging; not visible to the user or ABI
+  * @orig: the region to be referenced; @mr will be equivalent to
+  *        @orig between @offset and @offset + @size - 1.
+@@ -1592,7 +1589,7 @@ void memory_region_init_alias(MemoryRegion *mr,
+  * of the caller.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @name: Region name, becomes part of RAMBlock name used in migration stream
+  *        must be unique within any device
+  * @size: size of the region.
+@@ -1615,7 +1612,7 @@ bool memory_region_init_rom_nomigrate(MemoryRegion *mr,
+  * of the caller.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @ops: callbacks for write access handling (must not be NULL).
+  * @opaque: passed to the read and write callbacks of the @ops structure.
+  * @name: Region name, becomes part of RAMBlock name used in migration stream
+@@ -1651,7 +1648,7 @@ bool memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
+  * @_iommu_mr: the #IOMMUMemoryRegion to be initialized
+  * @instance_size: the IOMMUMemoryRegion subclass instance size
+  * @mrtypename: the type name of the #IOMMUMemoryRegion
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @name: used for debugging; not visible to the user or ABI
+  * @size: size of the region.
+  */
+@@ -1667,7 +1664,7 @@ void memory_region_init_iommu(void *_iommu_mr,
+  *                          region will modify memory directly.
+  *
+  * @mr: the #MemoryRegion to be initialized
+- * @owner: the object that tracks the region's reference count (must be
++ * @owner: the object that keeps the region alive (must be
+  *         TYPE_DEVICE or a subclass of TYPE_DEVICE, or NULL)
+  * @name: name of the memory region
+  * @size: size of the region in bytes
+@@ -1713,7 +1710,7 @@ bool memory_region_init_ram_guest_memfd(MemoryRegion *mr,
+  * If you pass a non-NULL non-device @owner then we will assert.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @name: Region name, becomes part of RAMBlock name used in migration stream
+  *        must be unique within any device
+  * @size: size of the region.
+@@ -1744,7 +1741,7 @@ bool memory_region_init_rom(MemoryRegion *mr,
+  * If you pass a non-NULL non-device @owner then we will assert.
+  *
+  * @mr: the #MemoryRegion to be initialized.
+- * @owner: the object that tracks the region's reference count
++ * @owner: the object that keeps the region alive
+  * @ops: callbacks for write access handling (must not be NULL).
+  * @opaque: passed to the read and write callbacks of the @ops structure.
+  * @name: Region name, becomes part of RAMBlock name used in migration stream
+
 -- 
-Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+2.51.0
 
 
