@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5B8B3A775
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 548D4B3A839
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:36:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgBj-0002XK-RA; Thu, 28 Aug 2025 13:13:27 -0400
+	id 1urgBm-0002YW-Mh; Thu, 28 Aug 2025 13:13:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urdbt-0004GE-81
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:28:17 -0400
-Received: from [2607:f8b0:4864:20::b12d] (helo=mail-yx1-xb12d.google.com)
+ id 1urdcG-0004QT-R4
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:28:40 -0400
+Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urdbo-0007Q7-A6
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:28:16 -0400
-Received: by mail-yx1-xb12d.google.com with SMTP id
- 956f58d0204a3-5fe42994547so299550d50.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 07:28:09 -0700 (PDT)
+ id 1urdcB-0007SI-OH
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:28:40 -0400
+Received: by mail-yb1-xb2e.google.com with SMTP id
+ 3f1490d57ef6-e96e1c82b01so674716276.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 07:28:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756391288; x=1756996088; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756391312; x=1756996112; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=8YxGLNKt7U4WZBhYc2rV2fxXrZOQFjgUj9wtt7CR9Vs=;
- b=Ma2ZlZSho6seSsxr0FRgSx0a4VKo16hIWVFCT+WVdmYHuV4PzweJ8Mw+6ZALQs4DVJ
- K1GaQ8NXYtGeWFWIhKIBaxrYLD4OixGJ2NHGXSnBmbLLAQKDLl5qIlMURVOJNhj+f+SN
- NSLIoRNRH8VgsagcqYZLDJzmMsNceJ17BKOz1Rlkw1POw8wd/eMcJRX3LBnc8S7ANm+7
- gZrlsnASbg0yH9ynjuumTtSn7KAutLuRJG3/xn0O8OX48koZe7RVpcwtOWcGOt9Ysz0+
- zP8cSGESNeMmdMgbWE5TE5HEbi6mkzH8IEs5cU9hFdbwSwcfMjV8btBZZ8LQw8KTH4xg
- fp1w==
+ bh=b6rLyGWwMmSLoeWHTjBmyMPVlXBBUjLkLrA2HwylDb8=;
+ b=oV0byu+dPUWXoJPETV15pX1bUbU/GJuio1a7U7KTrVST8RUEM0M17TlA1QS/G1PACG
+ UvcC5rFACHHQ7MbsHFe9u3zE/8+ZTOgaKNK6RTIqWyFPhc1GOjAs2k33zL2U9kzl8fjT
+ zMyvkgxd4AZK41HjqWiyhWLqJG7dED4h2SC5q3BZH9Eh3fn9UlpMespnlQ9s4ZyzhdBj
+ 450/te7kH2MSf1aCmULT+MegoaTiViims9Ckp5LUnp37sUZGEBgj2hCarCIIxmtup4qA
+ 74qxidEP/uvk3ZfFhhDO9t0QMbB1PGglkmO2lvFuWRlNQC31T7J3fQwsuvI+T5IfWynw
+ GIKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756391288; x=1756996088;
+ d=1e100.net; s=20230601; t=1756391312; x=1756996112;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=8YxGLNKt7U4WZBhYc2rV2fxXrZOQFjgUj9wtt7CR9Vs=;
- b=Qza3uus8Nm70E8ohFHUW4aJ8K9ldi02n95NycR1wzZjVJ7scQQCzTpc1Axabd+cQnh
- QTX5s5XApcexzQ8lkG7aeOj5b9JDKXUGxrBbuju+EOlDqgBGTnj0L3Hl8xkpp60ql8vg
- WPADaQF/IaO3KUGvQN2SOnLTKKw+MwC3ZzmUNtTZj4TjeCT/16Dr2YvpRlTN7sD4Bb6S
- TcSev7Ufhr5IZ8DTV5NZLiLxr05CDAVccftb4Gq2MxarACb3cQZHB9Ju4EZLkN0SQ1o/
- I2S/NNPwKFIhMRDpX1KnIwrxyEIi6r7TxzJmgsW3N9VsJz9+HYr/J0GkBEvLU/lnbHv0
- 2Gag==
-X-Gm-Message-State: AOJu0YzXZTPzKrTM50AQX5538o9qzkWvY11OeDYh2RMNcFL+iQr6OeRO
- +FLmI+210plbq9w4hIUX6TdVsyrftpRCB67RtBClglMD+6CundupbMCUuWPExCckX/6K69zHqKH
- x2NNQd/HHbVx2YFGus/KSaONL8Edu3m65lSdITKIB4LynEfg3rsvf
-X-Gm-Gg: ASbGncthOS9uneES3qffLj7P31uJxvWBg9EiYnwxHNtwWwUYxoatGpd24jpyCC/MKai
- R/yDVDQHLGc2WPiFjjiZrECE4V0VcSOAnDfF/GS2hoNPpa5oPdC23LdNZlJoyKC9Ggbq04NKvh4
- 4IiyRfq2bd/jkm00/AVv6cuoT7yIaDkB3ivltkRbBTcQGVNzl2VgTH74yJa41dmXNT6hFt+uc58
- zJXEwyG3TGaSyeKXKs=
-X-Google-Smtp-Source: AGHT+IGc0o5FSmtNSs+zGeKh11LgJs94DyATQliEgZl5YMu8sv7ko3ZLhsmlg4FeYziZnpipo/BrA8ynv3ywMnbitMw=
-X-Received: by 2002:a05:690c:6d07:b0:71e:84d6:afc4 with SMTP id
- 00721157ae682-71fdc2e296emr272993787b3.14.1756391287144; Thu, 28 Aug 2025
- 07:28:07 -0700 (PDT)
+ bh=b6rLyGWwMmSLoeWHTjBmyMPVlXBBUjLkLrA2HwylDb8=;
+ b=L3x7yC8rLSeGlA53G4pk9VeHOOHRl4WnSNNxRlWXU+bIVVzBQ8Iq6YYykA6dKCBefj
+ 8/XhKPPEX7YbHv8/VWhy8x190bAnw0zc9zYiqsaRUrldlywb4B1dYIdq+TxLjz514ilH
+ 8go2U1zveAEbRBUy/6FHmTSha3hqFULoGwvYXeLy3InUrgjNbpXqz4eD0bAuQ6K0kojR
+ kdV77mrRquHglHlYdqikuKYnrqw9Q5LbBubklXi+Uj21FyqSsYD/U0jnM0f4YIUqKhrk
+ oow/PbyP/TSQ17nXfnGXecKcStKeIuVaTSa4o5Zi6ltYqTa9Sp5nLrei16UefBZMiLR+
+ 4x6w==
+X-Gm-Message-State: AOJu0Ywke1JfCXgiwu2FuS6RhaGrU0pRAn22MuXgU+0tD1yjXqLca1fb
+ 1xLU7NWmim/KO+rV7d2myHlzzeFxtoGC83UZSJht55aZE7LKfXbBa5+AC4DiTE3TWBwjjMxJ+mA
+ ed3+d7UQ1t7fOc5kFACeZBrzc2ySy/+418xeL/8X8d44X+l3PkHhy
+X-Gm-Gg: ASbGncvdU6TZ8N84pjS8LrVFkTW/WBLb4BwSIqMhCNNmWV/XjaKi29Rp6+wdXJbhaYX
+ 9fgvCfiBCrlbJU2IrOgKEs5ruGkpDjhm4OMZ1vauW1qZNH5/eSPWfionHz1lD5b/5gREqMc90jE
+ Nzi/gWrlrboUTmGZ6O8VXkRP4hdeg6vNhBVOy5LnaWda7Loy5KnEZNTtE2pHrJK2h3Bzm90rust
+ ekeUttCoTkXzYArtLQ=
+X-Google-Smtp-Source: AGHT+IHRp+JrGarI8Pp7+YDn5PyS8wJ70Tv9uV9ySE5jGIBISfUd4SUaZ0jjijjoYhcHZ2ER8yMxNNkCfIcfw/A4/vc=
+X-Received: by 2002:a05:690c:4b03:b0:71f:b944:1016 with SMTP id
+ 00721157ae682-71fdc55e08emr271259547b3.49.1756391311804; Thu, 28 Aug 2025
+ 07:28:31 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250828120836.195358-1-richard.henderson@linaro.org>
- <20250828120836.195358-15-richard.henderson@linaro.org>
-In-Reply-To: <20250828120836.195358-15-richard.henderson@linaro.org>
+ <20250828120836.195358-16-richard.henderson@linaro.org>
+In-Reply-To: <20250828120836.195358-16-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 28 Aug 2025 15:27:55 +0100
-X-Gm-Features: Ac12FXz8ni7c9nQopqB9_WkZZ3ZxiNjOojeBVQW1dBgjHpiXBKwV8o6_y4-oj9U
-Message-ID: <CAFEAcA-Mg6UxJn9WLGa6ZT4Fntn8DSFjSysifJ_mMUrrzQDFdQ@mail.gmail.com>
-Subject: Re: [PATCH v3 14/87] linux-user: Update comment for
- target_elf_gregset_t
+Date: Thu, 28 Aug 2025 15:28:20 +0100
+X-Gm-Features: Ac12FXy9Zt2ga7lstwZ45V5So_m1fLofZtpGdjhJ6rfTB0H4wbkNC5oMVNtk0Xs
+Message-ID: <CAFEAcA_MyPS3Jhbn7HcBFr2O5v35M79MsrsE-dMk62R4Dh0k9g@mail.gmail.com>
+Subject: Re: [PATCH v3 15/87] linux-user: Declare elf_core_copy_regs in
+ loader.h
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:f8b0:4864:20::b12d
- (failed)
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12d;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12d.google.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RDNS_NONE=0.793,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,12 +95,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Thu, 28 Aug 2025 at 13:09, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> The only thing now used by generic core dump code is
-> target_elf_gregset_t; ELF_NREG and target_elf_greg_t
-> are now private to the implementation.
+> Drop the static from all implementations.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
+>  linux-user/loader.h  |  3 +++
+>  linux-user/elfload.c | 33 ++++++++++++++-------------------
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
