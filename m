@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B030B3A8CA
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1987EB3A8DE
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:54:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgEs-0000Be-14; Thu, 28 Aug 2025 13:16:42 -0400
+	id 1urgJB-0008Tv-UV; Thu, 28 Aug 2025 13:21:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urdla-0000B0-MW
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:38:18 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urdlg-0000EH-BA
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:38:24 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urdlS-0000LK-Vh
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:38:18 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-45b5d49ae47so5818085e9.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 07:38:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urdla-0000Mk-Ex
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:38:23 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-45a1b0bde14so6418715e9.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 07:38:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756391888; x=1756996688; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756391893; x=1756996693; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DFz5nCVDg2e/2aTQCTO6IU8fJD+uaf9zZYuYYJ541aE=;
- b=SGyQ9p8djMA7JEXSr4v20aYmBhTzU/bga7O0pk4XTrvD0B13DvrAcuhML3bAzQZ1S8
- /MIw81MavTkadOY0GVcIR5OyHqQXO49lW/FobsrqWhiUCJJ7oZIG1E6aZxcuNRW8KOXO
- BFrdQM1VFTjuH1sOgYVSQuRAiFpxEIn7jKNEOwZY6r1eEFG3BVFsvAxVmK79MZ7rIvT0
- iLBGGrP+ikxG1tGn1es2J3knJU+ji4JzecM/pkoLtGEpFrhy/KDrcYbUvC3hac1kNxw1
- ERuGjpd13+LP1y+/6kDIO3jTPVuhuXD75iF85g7hofbaCWUaCXJK3ZbSo9l2I4NuIpMF
- J6jA==
+ bh=s1kz5AIExByLWtCTCBKM3lTyxgVVh7J2ReArYeuqvwk=;
+ b=Y7kIMduX5eN3W3kamDIyfIHIs7tQaoaotiT9opguC/WkZ4AYDImiYaWKiP3798UEVs
+ lRVDim8bHBpjoO9RuXvv5iZf7Albk+ReCy3CZy0Ddj8kG9SCYXGxx5EKO9iJGfyb+fTK
+ 1Qxqv3LWdoIRafWshBnTM/ExyuWceT1YBwnipZc4bUcmhdLYsByzB9ChCqJFQgnLIk/9
+ vWbo8NPxP9uZvPPEuQLLi041OHMciOgMUwT1yr3AuzxIkcV6Vl70SOFTl55YhB7sUGG4
+ lJI2tZJpuIrGqm0BHHNSU0pINrKQE97FwHF6wxMUwlzVIIWlb9CyhefeJDnha4d1uCdc
+ S8vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756391888; x=1756996688;
+ d=1e100.net; s=20230601; t=1756391893; x=1756996693;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DFz5nCVDg2e/2aTQCTO6IU8fJD+uaf9zZYuYYJ541aE=;
- b=oTHzMI6QCNsCwM9/FCJ+eHd28bz94pUmzOwDlbaGNYS1aSVvijEdr5t+EpM9bHlX2l
- bx602GLLuTEF4DMx1nZeLtvM00Xm7zZ0V+3D/MelPjV6xrw2xz0DXXqu/NpX5vaSZwR8
- cO9j9IrFYViPO0sgGKl4+DblZQwRo/DN4Q7U62EsEGQQQPxSwnCZFPaPZIQ3kSsZsJcX
- OP7yZ+bhD1Zni97ncsRHpZrr4cTewBhjEyiHE9J2YjJym6ShZ+V7fK1TH9ZvWIu7l2AL
- rtaxswmcITkkdPo0n6tX0J8Q7R6WLbUvMYYtT+CjhBcKJ0LdoDbbi9ODsJlU7YAeBH4I
- ndvA==
-X-Gm-Message-State: AOJu0YzhFvqGpSY+CuRvu96x2n9lXxftXIsVbLE1tIFXAtBSsdKBRzJF
- MylXMTePte5SWb3yN5DGDlDpZvtctufgpWQZCu3HImASmLIPuAqqGYR4VbsBUx2Lj4+IDrFe0W6
- Biw9vKXA=
-X-Gm-Gg: ASbGncuvjPLla6xZQLfxi6/M4yDH6gsK+Z236P3J+XoDc3t4ZfsjkL8Rz0HF1yFmfkM
- LSosoSU9UE08Aj7+CU5XJTQqTpeQfK9mw5NJcmBdDdSRiWOugpacfM0YhAxbhu2UNaZ61OqvZV1
- ujmGD40ZxN6lqx4p4fOLWqs18K7iScCZXuZl5rbK3YrSRjzvPxHbYewC3zNVER72H6ddZjJHHC6
- mHU7E7YGFG/vWlJj/oFNPVU3EHLIDVuGNu4Fgj3PauQ908dVuV+ZVLWaonZfSyYtB1k5eJ8Q4SV
- tDrSULuMUM7z3fBNUs1F+oBdo3nrra5tnUxH8o9uILxJgrG+5Umfk+Yf4vwA4c6H4oJb5WRDcN6
- Hcgpv4JP0UlCuk8b4XOJjrqFWbh9mAyoO1WTpzgsraPV0To/ttQ8M38lin0grL/aUF737wPJ2Mp
- rySNW0Vco=
-X-Google-Smtp-Source: AGHT+IE+XmHraI3zfF0DTS+QUeYLgDbLdJG5/meZ7/jEN9VBWLTl5aBxPTAmCLJeco7kMmhXBT1wUw==
-X-Received: by 2002:a05:600c:1911:b0:453:23fe:ca86 with SMTP id
- 5b1f17b1804b1-45b5178e8a9mr199394835e9.4.1756391887403; 
- Thu, 28 Aug 2025 07:38:07 -0700 (PDT)
+ bh=s1kz5AIExByLWtCTCBKM3lTyxgVVh7J2ReArYeuqvwk=;
+ b=Hn8snIZJicreqIlCqo2L+GITNAqdPFU65DM/1lQo1h/Ee9ouEO+0SQ+xOy1iPbjzvZ
+ pkNlDdCSVSlhmh9GcZK3T4Tw3xNVEauRD6VKDpsRh+jfcmitdKYDskYqPB6neHThYcyH
+ b8YMNWgWuScR6BRV96ZnuvtrqZhNInZZgZ1UeW5GznSOkZOZNkqWh07p2fdKrbt9Mzlb
+ cxCKLuNRvccAwxq5kpSgx1ytJZPb9T8FYFxGhLvoo9QJQ7o8+tkjqroegmUTGzpeHykr
+ Vpc+xScPtfQefpV+IKM4b8/QWUAeylAdhjCNJU1N+Xh0sbGEUEm6nLOeXS2iNsE3ba5S
+ DQzA==
+X-Gm-Message-State: AOJu0Yzfy1L3MRkD2fwUlgTxPbtfByuyZwtbe0/RMLIxJ/EZVKiqFSWO
+ 3sOQKLxs10J/WdicfqxrIB/oUknTeKDLC6iekZBWZgkW/niAwWAWONWAerRKHOV/WaoF0qW62j7
+ 7egxloTo=
+X-Gm-Gg: ASbGnctaPSJJOQIjyCyJ+wd44Yra0b4uL72zTZSwnIXfOXHGM0T4YQiPG5QI8iWcZ1M
+ 8rPaEZh/62/gJMtD2uvTDASzplZ1mX3pMi0i7EsyBOwrrxZ/h6NML0UB+jLBEEHYmQBCgqmeHWg
+ DfV8VRW3EyIG+DbDW423D1KOJkLQYxdW8c3WuLpqDMjbcYegwYVjWesuYlcu2yeAjdpDMGPE5PS
+ p/iIFSxan9YBH1xFKAp6j9a9cNh+jdqMVjW+PyUC7LTYb1184ks4cU0THDOHQS0iLcXjWcJ5ckr
+ 3BIzIX0WppRal0CUlWHdo2OWr6SSVEMATBEquIdlrK+GzwaiTD4A+Dz1SgfTxD4tJKj3mDi6d8Q
+ 0h727sz6sxNY6whjRJy6N+LnB18FVeNCRQXwWhPMwAo+4MLJIHd/SjjA/OMJGd6ZGeMDZRYEtLQ
+ hhAOmX7jI=
+X-Google-Smtp-Source: AGHT+IHt05bLg/soxREVQb1vmYQ3O9PYBoGqnFlV6Lt8AxvUtSl0MJ+5qBjcuPleuBemifDeSIJRvA==
+X-Received: by 2002:a05:600c:3b1e:b0:45b:79fd:cb3d with SMTP id
+ 5b1f17b1804b1-45b79fdcd1bmr27389175e9.36.1756391893085; 
+ Thu, 28 Aug 2025 07:38:13 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b71c10e3csm77350225e9.20.2025.08.28.07.38.06
+ 5b1f17b1804b1-45b66cdb5d1sm54646765e9.8.2025.08.28.07.38.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 28 Aug 2025 07:38:06 -0700 (PDT)
+ Thu, 28 Aug 2025 07:38:11 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: devel@lists.libvirt.org, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 1/2] hw/mips: Remove mipssim machine
-Date: Thu, 28 Aug 2025 16:37:59 +0200
-Message-ID: <20250828143800.49842-2-philmd@linaro.org>
+Subject: [PATCH 2/2] hw/net: Remove mipsnet device model
+Date: Thu, 28 Aug 2025 16:38:00 +0200
+Message-ID: <20250828143800.49842-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250828143800.49842-1-philmd@linaro.org>
 References: <20250828143800.49842-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,397 +101,382 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "mipssim" machine is deprecated since commit facfc943cb9
-("hw/mips: Mark the "mipssim" machine as deprecated"), released
-in v10.0; time to remove.
+The mipsnet device model was only used by the mipssim machine,
+which just got removed. Remove as now dead code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS                             |   1 -
- docs/about/deprecated.rst               |  12 --
- docs/about/removed-features.rst         |   5 +
- docs/system/target-mips.rst             |  11 --
- configs/devices/mips-softmmu/common.mak |   1 -
- hw/mips/mipssim.c                       | 249 ------------------------
- hw/mips/Kconfig                         |   7 -
- hw/mips/meson.build                     |   1 -
- 8 files changed, 5 insertions(+), 282 deletions(-)
- delete mode 100644 hw/mips/mipssim.c
+ MAINTAINERS         |   5 -
+ hw/net/mipsnet.c    | 297 --------------------------------------------
+ hw/net/Kconfig      |   3 -
+ hw/net/meson.build  |   1 -
+ hw/net/trace-events |   7 --
+ 5 files changed, 313 deletions(-)
+ delete mode 100644 hw/net/mipsnet.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 8f074e43712..6a2d3aa43bf 100644
+index 6a2d3aa43bf..e293dfdb20d 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1414,7 +1414,6 @@ F: tests/functional/mips*/test_tuxrun.py
- Mipssim
- R: Aleksandar Rikalo <arikalo@gmail.com>
- S: Orphan
--F: hw/mips/mipssim.c
- F: hw/net/mipsnet.c
+@@ -1411,11 +1411,6 @@ F: include/hw/southbridge/piix.h
+ F: tests/functional/mips*/test_malta.py
+ F: tests/functional/mips*/test_tuxrun.py
  
+-Mipssim
+-R: Aleksandar Rikalo <arikalo@gmail.com>
+-S: Orphan
+-F: hw/net/mipsnet.c
+-
  Fuloong 2E
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index d50645a0711..1b1e3f16337 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -323,18 +323,6 @@ and serves as the initial engineering sample rather than a production version.
- A newer revision, A1, is now supported, and the ``ast2700a1-evb`` should
- replace the older A0 version.
- 
--Mips ``mipssim`` machine (since 10.0)
--'''''''''''''''''''''''''''''''''''''
--
--Linux dropped support for this virtual machine type in kernel v3.7, and
--there does not seem to be anybody around who is still using this board
--in QEMU: Most former MIPS-related people are working on other architectures
--in their everyday job nowadays, and we are also not aware of anybody still
--using old binaries with this board (i.e. there is also no binary available
--online to check that this board did not completely bitrot yet). It is
--recommended to use another MIPS machine for future MIPS code development
--instead.
--
- RISC-V default machine option (since 10.0)
- ''''''''''''''''''''''''''''''''''''''''''
- 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index d7c2113fc3e..2a277fac047 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -1099,6 +1099,11 @@ were added for little endian CPUs. Big endian support was never tested
- and likely never worked. Starting with QEMU v10.1, the machines are now
- only available as little-endian machines.
- 
-+Mips ``mipssim`` machine (removed in 10.2)
-+''''''''''''''''''''''''''''''''''''''''''
-+
-+Linux dropped support for this virtual machine type in kernel v3.7, and
-+there was also no binary available online to use with that board.
- 
- linux-user mode CPUs
- --------------------
-diff --git a/docs/system/target-mips.rst b/docs/system/target-mips.rst
-index 9028c3b304d..2a152e13380 100644
---- a/docs/system/target-mips.rst
-+++ b/docs/system/target-mips.rst
-@@ -12,8 +12,6 @@ machine types are emulated:
- 
- -  An ACER Pica \"pica61\". This machine needs the 64-bit emulator.
- 
---  MIPS emulator pseudo board \"mipssim\"
--
- -  A MIPS Magnum R4000 machine \"magnum\". This machine needs the
-    64-bit emulator.
- 
-@@ -80,15 +78,6 @@ The Loongson-3 virtual platform emulation supports:
- 
- -  Both KVM and TCG supported
- 
--The mipssim pseudo board emulation provides an environment similar to
--what the proprietary MIPS emulator uses for running Linux. It supports:
--
---  A range of MIPS CPUs, default is the 24Kf
--
---  PC style serial port
--
---  MIPSnet network emulation
--
- .. include:: cpu-models-mips.rst.inc
- 
- .. _nanoMIPS-System-emulator:
-diff --git a/configs/devices/mips-softmmu/common.mak b/configs/devices/mips-softmmu/common.mak
-index b50107feafe..cdeae7ce450 100644
---- a/configs/devices/mips-softmmu/common.mak
-+++ b/configs/devices/mips-softmmu/common.mak
-@@ -6,4 +6,3 @@
- 
- # Boards are selected by default, uncomment to keep out of the build.
- # CONFIG_MALTA=n
--# CONFIG_MIPSSIM=n
-diff --git a/hw/mips/mipssim.c b/hw/mips/mipssim.c
+ M: Huacai Chen <chenhuacai@kernel.org>
+ M: Philippe Mathieu-Daudé <philmd@linaro.org>
+diff --git a/hw/net/mipsnet.c b/hw/net/mipsnet.c
 deleted file mode 100644
-index e843307b9b6..00000000000
---- a/hw/mips/mipssim.c
+index 583aa1c7de6..00000000000
+--- a/hw/net/mipsnet.c
 +++ /dev/null
-@@ -1,249 +0,0 @@
--/*
-- * QEMU/mipssim emulation
-- *
-- * Emulates a very simple machine model similar to the one used by the
-- * proprietary MIPS emulator.
-- *
-- * Copyright (c) 2007 Thiemo Seufer
-- *
-- * Permission is hereby granted, free of charge, to any person obtaining a copy
-- * of this software and associated documentation files (the "Software"), to deal
-- * in the Software without restriction, including without limitation the rights
-- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-- * copies of the Software, and to permit persons to whom the Software is
-- * furnished to do so, subject to the following conditions:
-- *
-- * The above copyright notice and this permission notice shall be included in
-- * all copies or substantial portions of the Software.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-- * THE SOFTWARE.
-- */
--
+@@ -1,297 +0,0 @@
 -#include "qemu/osdep.h"
--#include "qapi/error.h"
--#include "qemu/datadir.h"
--#include "system/address-spaces.h"
--#include "hw/clock.h"
--#include "hw/mips/mips.h"
--#include "hw/char/serial-mm.h"
--#include "net/net.h"
--#include "system/system.h"
--#include "hw/boards.h"
--#include "hw/loader.h"
--#include "elf.h"
--#include "hw/sysbus.h"
+-#include "hw/irq.h"
 -#include "hw/qdev-properties.h"
--#include "qemu/error-report.h"
--#include "system/qtest.h"
--#include "system/reset.h"
--#include "cpu.h"
+-#include "net/net.h"
+-#include "qemu/module.h"
+-#include "trace.h"
+-#include "hw/sysbus.h"
+-#include "migration/vmstate.h"
+-#include "qom/object.h"
 -
--#define BIOS_SIZE (4 * MiB)
+-/* MIPSnet register offsets */
 -
--static struct _loaderparams {
--    int ram_size;
--    const char *kernel_filename;
--    const char *kernel_cmdline;
--    const char *initrd_filename;
--} loaderparams;
+-#define MIPSNET_DEV_ID          0x00
+-#define MIPSNET_BUSY            0x08
+-#define MIPSNET_RX_DATA_COUNT   0x0c
+-#define MIPSNET_TX_DATA_COUNT   0x10
+-#define MIPSNET_INT_CTL         0x14
+-# define MIPSNET_INTCTL_TXDONE          0x00000001
+-# define MIPSNET_INTCTL_RXDONE          0x00000002
+-# define MIPSNET_INTCTL_TESTBIT         0x80000000
+-#define MIPSNET_INTERRUPT_INFO  0x18
+-#define MIPSNET_RX_DATA_BUFFER  0x1c
+-#define MIPSNET_TX_DATA_BUFFER  0x20
 -
--typedef struct ResetData {
--    MIPSCPU *cpu;
--    uint64_t vector;
--} ResetData;
+-#define MAX_ETH_FRAME_SIZE      1514
 -
--static uint64_t load_kernel(void)
+-#define TYPE_MIPS_NET "mipsnet"
+-OBJECT_DECLARE_SIMPLE_TYPE(MIPSnetState, MIPS_NET)
+-
+-struct MIPSnetState {
+-    SysBusDevice parent_obj;
+-
+-    uint32_t busy;
+-    uint32_t rx_count;
+-    uint32_t rx_read;
+-    uint32_t tx_count;
+-    uint32_t tx_written;
+-    uint32_t intctl;
+-    uint8_t rx_buffer[MAX_ETH_FRAME_SIZE];
+-    uint8_t tx_buffer[MAX_ETH_FRAME_SIZE];
+-    MemoryRegion io;
+-    qemu_irq irq;
+-    NICState *nic;
+-    NICConf conf;
+-};
+-
+-static void mipsnet_reset(MIPSnetState *s)
 -{
--    uint64_t entry, kernel_high, initrd_size;
--    long kernel_size;
--    ram_addr_t initrd_offset;
+-    s->busy = 1;
+-    s->rx_count = 0;
+-    s->rx_read = 0;
+-    s->tx_count = 0;
+-    s->tx_written = 0;
+-    s->intctl = 0;
+-    memset(s->rx_buffer, 0, MAX_ETH_FRAME_SIZE);
+-    memset(s->tx_buffer, 0, MAX_ETH_FRAME_SIZE);
+-}
 -
--    kernel_size = load_elf(loaderparams.kernel_filename, NULL,
--                           cpu_mips_kseg0_to_phys, NULL,
--                           &entry, NULL,
--                           &kernel_high, NULL,
--                           TARGET_BIG_ENDIAN ? ELFDATA2MSB : ELFDATA2LSB,
--                           EM_MIPS, 1, 0);
--    if (kernel_size < 0) {
--        error_report("could not load kernel '%s': %s",
--                     loaderparams.kernel_filename,
--                     load_elf_strerror(kernel_size));
--        exit(1);
+-static void mipsnet_update_irq(MIPSnetState *s)
+-{
+-    int isr = !!s->intctl;
+-    trace_mipsnet_irq(isr, s->intctl);
+-    qemu_set_irq(s->irq, isr);
+-}
+-
+-static int mipsnet_buffer_full(MIPSnetState *s)
+-{
+-    if (s->rx_count >= MAX_ETH_FRAME_SIZE) {
+-        return 1;
+-    }
+-    return 0;
+-}
+-
+-static int mipsnet_can_receive(NetClientState *nc)
+-{
+-    MIPSnetState *s = qemu_get_nic_opaque(nc);
+-
+-    if (s->busy) {
+-        return 0;
+-    }
+-    return !mipsnet_buffer_full(s);
+-}
+-
+-static ssize_t mipsnet_receive(NetClientState *nc,
+-                               const uint8_t *buf, size_t size)
+-{
+-    MIPSnetState *s = qemu_get_nic_opaque(nc);
+-
+-    trace_mipsnet_receive(size);
+-    if (!mipsnet_can_receive(nc)) {
+-        return 0;
 -    }
 -
--    /* load initrd */
--    initrd_size = 0;
--    initrd_offset = 0;
--    if (loaderparams.initrd_filename) {
--        initrd_size = get_image_size(loaderparams.initrd_filename);
--        if (initrd_size > 0) {
--            initrd_offset = ROUND_UP(kernel_high, INITRD_PAGE_SIZE);
--            if (initrd_offset + initrd_size > loaderparams.ram_size) {
--                error_report("memory too small for initial ram disk '%s'",
--                             loaderparams.initrd_filename);
--                exit(1);
+-    if (size >= sizeof(s->rx_buffer)) {
+-        return 0;
+-    }
+-    s->busy = 1;
+-
+-    /* Just accept everything. */
+-
+-    /* Write packet data. */
+-    memcpy(s->rx_buffer, buf, size);
+-
+-    s->rx_count = size;
+-    s->rx_read = 0;
+-
+-    /* Now we can signal we have received something. */
+-    s->intctl |= MIPSNET_INTCTL_RXDONE;
+-    mipsnet_update_irq(s);
+-
+-    return size;
+-}
+-
+-static uint64_t mipsnet_ioport_read(void *opaque, hwaddr addr,
+-                                    unsigned int size)
+-{
+-    MIPSnetState *s = opaque;
+-    int ret = 0;
+-
+-    addr &= 0x3f;
+-    switch (addr) {
+-    case MIPSNET_DEV_ID:
+-        ret = be32_to_cpu(0x4d495053);          /* MIPS */
+-        break;
+-    case MIPSNET_DEV_ID + 4:
+-        ret = be32_to_cpu(0x4e455430);          /* NET0 */
+-        break;
+-    case MIPSNET_BUSY:
+-        ret = s->busy;
+-        break;
+-    case MIPSNET_RX_DATA_COUNT:
+-        ret = s->rx_count;
+-        break;
+-    case MIPSNET_TX_DATA_COUNT:
+-        ret = s->tx_count;
+-        break;
+-    case MIPSNET_INT_CTL:
+-        ret = s->intctl;
+-        s->intctl &= ~MIPSNET_INTCTL_TESTBIT;
+-        break;
+-    case MIPSNET_INTERRUPT_INFO:
+-        /* XXX: This seems to be a per-VPE interrupt number. */
+-        ret = 0;
+-        break;
+-    case MIPSNET_RX_DATA_BUFFER:
+-        if (s->rx_count) {
+-            s->rx_count--;
+-            ret = s->rx_buffer[s->rx_read++];
+-            if (mipsnet_can_receive(s->nic->ncs)) {
+-                qemu_flush_queued_packets(qemu_get_queue(s->nic));
 -            }
--            initrd_size = load_image_targphys(loaderparams.initrd_filename,
--                initrd_offset, loaderparams.ram_size - initrd_offset);
 -        }
--        if (initrd_size == (target_ulong) -1) {
--            error_report("could not load initial ram disk '%s'",
--                         loaderparams.initrd_filename);
--            exit(1);
+-        break;
+-    /* Reads as zero. */
+-    case MIPSNET_TX_DATA_BUFFER:
+-    default:
+-        break;
+-    }
+-    trace_mipsnet_read(addr, ret);
+-    return ret;
+-}
+-
+-static void mipsnet_ioport_write(void *opaque, hwaddr addr,
+-                                 uint64_t val, unsigned int size)
+-{
+-    MIPSnetState *s = opaque;
+-
+-    addr &= 0x3f;
+-    trace_mipsnet_write(addr, val);
+-    switch (addr) {
+-    case MIPSNET_TX_DATA_COUNT:
+-        s->tx_count = (val <= MAX_ETH_FRAME_SIZE) ? val : 0;
+-        s->tx_written = 0;
+-        break;
+-    case MIPSNET_INT_CTL:
+-        if (val & MIPSNET_INTCTL_TXDONE) {
+-            s->intctl &= ~MIPSNET_INTCTL_TXDONE;
+-        } else if (val & MIPSNET_INTCTL_RXDONE) {
+-            s->intctl &= ~MIPSNET_INTCTL_RXDONE;
+-        } else if (val & MIPSNET_INTCTL_TESTBIT) {
+-            mipsnet_reset(s);
+-            s->intctl |= MIPSNET_INTCTL_TESTBIT;
+-        } else if (!val) {
+-            /* ACK testbit interrupt, flag was cleared on read. */
 -        }
+-        s->busy = !!s->intctl;
+-        mipsnet_update_irq(s);
+-        if (mipsnet_can_receive(s->nic->ncs)) {
+-            qemu_flush_queued_packets(qemu_get_queue(s->nic));
+-        }
+-        break;
+-    case MIPSNET_TX_DATA_BUFFER:
+-        s->tx_buffer[s->tx_written++] = val;
+-        if ((s->tx_written >= MAX_ETH_FRAME_SIZE)
+-            || (s->tx_written == s->tx_count)) {
+-            /* Send buffer. */
+-            trace_mipsnet_send(s->tx_written);
+-            qemu_send_packet(qemu_get_queue(s->nic),
+-                                s->tx_buffer, s->tx_written);
+-            s->tx_count = s->tx_written = 0;
+-            s->intctl |= MIPSNET_INTCTL_TXDONE;
+-            s->busy = 1;
+-            mipsnet_update_irq(s);
+-        }
+-        break;
+-    /* Read-only registers */
+-    case MIPSNET_DEV_ID:
+-    case MIPSNET_BUSY:
+-    case MIPSNET_RX_DATA_COUNT:
+-    case MIPSNET_INTERRUPT_INFO:
+-    case MIPSNET_RX_DATA_BUFFER:
+-    default:
+-        break;
 -    }
--    return entry;
 -}
 -
--static void main_cpu_reset(void *opaque)
+-static const VMStateDescription vmstate_mipsnet = {
+-    .name = "mipsnet",
+-    .version_id = 0,
+-    .minimum_version_id = 0,
+-    .fields = (const VMStateField[]) {
+-        VMSTATE_UINT32(busy, MIPSnetState),
+-        VMSTATE_UINT32(rx_count, MIPSnetState),
+-        VMSTATE_UINT32(rx_read, MIPSnetState),
+-        VMSTATE_UINT32(tx_count, MIPSnetState),
+-        VMSTATE_UINT32(tx_written, MIPSnetState),
+-        VMSTATE_UINT32(intctl, MIPSnetState),
+-        VMSTATE_BUFFER(rx_buffer, MIPSnetState),
+-        VMSTATE_BUFFER(tx_buffer, MIPSnetState),
+-        VMSTATE_END_OF_LIST()
+-    }
+-};
+-
+-static NetClientInfo net_mipsnet_info = {
+-    .type = NET_CLIENT_DRIVER_NIC,
+-    .size = sizeof(NICState),
+-    .receive = mipsnet_receive,
+-};
+-
+-static const MemoryRegionOps mipsnet_ioport_ops = {
+-    .read = mipsnet_ioport_read,
+-    .write = mipsnet_ioport_write,
+-    .impl.min_access_size = 1,
+-    .impl.max_access_size = 4,
+-};
+-
+-static void mipsnet_realize(DeviceState *dev, Error **errp)
 -{
--    ResetData *s = (ResetData *)opaque;
--    CPUMIPSState *env = &s->cpu->env;
+-    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+-    MIPSnetState *s = MIPS_NET(dev);
 -
--    cpu_reset(CPU(s->cpu));
--    env->active_tc.PC = s->vector & ~(target_ulong)1;
--    if (s->vector & 1) {
--        env->hflags |= MIPS_HFLAG_M16;
--    }
+-    memory_region_init_io(&s->io, OBJECT(dev), &mipsnet_ioport_ops, s,
+-                          "mipsnet-io", 36);
+-    sysbus_init_mmio(sbd, &s->io);
+-    sysbus_init_irq(sbd, &s->irq);
+-
+-    s->nic = qemu_new_nic(&net_mipsnet_info, &s->conf,
+-                          object_get_typename(OBJECT(dev)), dev->id,
+-                          &dev->mem_reentrancy_guard, s);
+-    qemu_format_nic_info_str(qemu_get_queue(s->nic), s->conf.macaddr.a);
 -}
 -
--static void mipsnet_init(int base, qemu_irq irq)
+-static void mipsnet_sysbus_reset(DeviceState *dev)
 -{
--    DeviceState *dev;
--    SysBusDevice *s;
--
--    dev = qemu_create_nic_device("mipsnet", true, NULL);
--    if (!dev) {
--        return;
--    }
--
--    s = SYS_BUS_DEVICE(dev);
--    sysbus_realize_and_unref(s, &error_fatal);
--    sysbus_connect_irq(s, 0, irq);
--    memory_region_add_subregion(get_system_io(),
--                                base,
--                                sysbus_mmio_get_region(s, 0));
+-    MIPSnetState *s = MIPS_NET(dev);
+-    mipsnet_reset(s);
 -}
 -
--static void
--mips_mipssim_init(MachineState *machine)
+-static const Property mipsnet_properties[] = {
+-    DEFINE_NIC_PROPERTIES(MIPSnetState, conf),
+-};
+-
+-static void mipsnet_class_init(ObjectClass *klass, const void *data)
 -{
--    const char *kernel_filename = machine->kernel_filename;
--    const char *kernel_cmdline = machine->kernel_cmdline;
--    const char *initrd_filename = machine->initrd_filename;
--    const char *bios_name = TARGET_BIG_ENDIAN ? "mips_bios.bin"
--                                              : "mipsel_bios.bin";
--    char *filename;
--    MemoryRegion *address_space_mem = get_system_memory();
--    MemoryRegion *isa = g_new(MemoryRegion, 1);
--    MemoryRegion *bios = g_new(MemoryRegion, 1);
--    Clock *cpuclk;
--    MIPSCPU *cpu;
--    CPUMIPSState *env;
--    ResetData *reset_info;
--    int bios_size;
+-    DeviceClass *dc = DEVICE_CLASS(klass);
 -
--    cpuclk = clock_new(OBJECT(machine), "cpu-refclk");
--#ifdef TARGET_MIPS64
--    clock_set_hz(cpuclk, 6000000); /* 6 MHz */
--#else
--    clock_set_hz(cpuclk, 12000000); /* 12 MHz */
--#endif
--
--    /* Init CPUs. */
--    cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk,
--                                     TARGET_BIG_ENDIAN);
--    env = &cpu->env;
--
--    reset_info = g_new0(ResetData, 1);
--    reset_info->cpu = cpu;
--    reset_info->vector = env->active_tc.PC;
--    qemu_register_reset(main_cpu_reset, reset_info);
--
--    /* Allocate RAM. */
--    memory_region_init_rom(bios, NULL, "mips_mipssim.bios", BIOS_SIZE,
--                           &error_fatal);
--
--    memory_region_add_subregion(address_space_mem, 0, machine->ram);
--
--    /* Map the BIOS / boot exception handler. */
--    memory_region_add_subregion(address_space_mem, 0x1fc00000LL, bios);
--    /* Load a BIOS / boot exception handler image. */
--    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS,
--                              machine->firmware ?: bios_name);
--    if (filename) {
--        bios_size = load_image_targphys(filename, 0x1fc00000LL, BIOS_SIZE);
--        g_free(filename);
--    } else {
--        bios_size = -1;
--    }
--    if ((bios_size < 0 || bios_size > BIOS_SIZE) &&
--        machine->firmware && !qtest_enabled()) {
--        /* Bail out if we have neither a kernel image nor boot vector code. */
--        error_report("Could not load MIPS bios '%s'", machine->firmware);
--        exit(1);
--    } else {
--        /* We have a boot vector start address. */
--        env->active_tc.PC = (target_long)(int32_t)0xbfc00000;
--    }
--
--    if (kernel_filename) {
--        loaderparams.ram_size = machine->ram_size;
--        loaderparams.kernel_filename = kernel_filename;
--        loaderparams.kernel_cmdline = kernel_cmdline;
--        loaderparams.initrd_filename = initrd_filename;
--        reset_info->vector = load_kernel();
--    }
--
--    /* Init CPU internal devices. */
--    cpu_mips_irq_init_cpu(cpu);
--    cpu_mips_clock_init(cpu);
--
--    /*
--     * Register 64 KB of ISA IO space at 0x1fd00000.  But without interrupts
--     * (except for the hardcoded serial port interrupt) -device cannot work,
--     * so do not expose the ISA bus to the user.
--     */
--    memory_region_init_alias(isa, NULL, "isa_mmio",
--                             get_system_io(), 0, 0x00010000);
--    memory_region_add_subregion(get_system_memory(), 0x1fd00000, isa);
--
--    /*
--     * A single 16450 sits at offset 0x3f8. It is attached to
--     * MIPS CPU INT2, which is interrupt 4.
--     */
--    if (serial_hd(0)) {
--        DeviceState *dev = qdev_new(TYPE_SERIAL_MM);
--
--        qdev_prop_set_chr(dev, "chardev", serial_hd(0));
--        qdev_prop_set_uint8(dev, "regshift", 0);
--        qdev_prop_set_uint8(dev, "endianness", DEVICE_LITTLE_ENDIAN);
--        sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
--        sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, env->irq[4]);
--        memory_region_add_subregion(get_system_io(), 0x3f8,
--                      sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0));
--    }
--
--    /* MIPSnet uses the MIPS CPU INT0, which is interrupt 2. */
--    mipsnet_init(0x4200, env->irq[2]);
+-    dc->realize = mipsnet_realize;
+-    set_bit(DEVICE_CATEGORY_NETWORK, dc->categories);
+-    dc->desc = "MIPS Simulator network device";
+-    device_class_set_legacy_reset(dc, mipsnet_sysbus_reset);
+-    dc->vmsd = &vmstate_mipsnet;
+-    device_class_set_props(dc, mipsnet_properties);
 -}
 -
--static void mips_mipssim_machine_init(MachineClass *mc)
+-static const TypeInfo mipsnet_info = {
+-    .name          = TYPE_MIPS_NET,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_size = sizeof(MIPSnetState),
+-    .class_init    = mipsnet_class_init,
+-};
+-
+-static void mipsnet_register_types(void)
 -{
--    mc->desc = "MIPS MIPSsim platform";
--    mc->init = mips_mipssim_init;
--#ifdef TARGET_MIPS64
--    mc->default_cpu_type = MIPS_CPU_TYPE_NAME("5Kf");
--#else
--    mc->default_cpu_type = MIPS_CPU_TYPE_NAME("24Kf");
--#endif
--    mc->default_ram_id = "mips_mipssim.ram";
+-    type_register_static(&mipsnet_info);
 -}
 -
--DEFINE_MACHINE("mipssim", mips_mipssim_machine_init)
-diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
-index f84fffcd323..b59cb2f1114 100644
---- a/hw/mips/Kconfig
-+++ b/hw/mips/Kconfig
-@@ -13,13 +13,6 @@ config MALTA
-     select SERIAL_MM
-     select SMBUS_EEPROM
- 
--config MIPSSIM
--    bool
--    default y
--    depends on MIPS
--    select SERIAL_MM
--    select MIPSNET
--
- config JAZZ
+-type_init(mipsnet_register_types)
+diff --git a/hw/net/Kconfig b/hw/net/Kconfig
+index 7f80218d10f..2b513d68958 100644
+--- a/hw/net/Kconfig
++++ b/hw/net/Kconfig
+@@ -82,9 +82,6 @@ config OPENCORES_ETH
+ config XGMAC
      bool
-     default y
-diff --git a/hw/mips/meson.build b/hw/mips/meson.build
-index 31dbd2bf4d9..390f0fd7f9d 100644
---- a/hw/mips/meson.build
-+++ b/hw/mips/meson.build
-@@ -8,7 +8,6 @@ mips_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('cps.c'))
  
- if 'CONFIG_TCG' in config_all_accel
- mips_ss.add(when: 'CONFIG_JAZZ', if_true: files('jazz.c'))
--mips_ss.add(when: 'CONFIG_MIPSSIM', if_true: files('mipssim.c'))
- mips_ss.add(when: 'CONFIG_FULOONG', if_true: files('fuloong2e.c'))
- mips_ss.add(when: 'CONFIG_MIPS_BOSTON', if_true: files('boston.c'))
- endif
+-config MIPSNET
+-    bool
+-
+ config ALLWINNER_EMAC
+     bool
+ 
+diff --git a/hw/net/meson.build b/hw/net/meson.build
+index e6759e26ca6..913eaedbc52 100644
+--- a/hw/net/meson.build
++++ b/hw/net/meson.build
+@@ -23,7 +23,6 @@ system_ss.add(when: 'CONFIG_LAN9118_PHY', if_true: files('lan9118_phy.c'))
+ system_ss.add(when: 'CONFIG_NE2000_ISA', if_true: files('ne2000-isa.c'))
+ system_ss.add(when: 'CONFIG_OPENCORES_ETH', if_true: files('opencores_eth.c'))
+ system_ss.add(when: 'CONFIG_XGMAC', if_true: files('xgmac.c'))
+-system_ss.add(when: 'CONFIG_MIPSNET', if_true: files('mipsnet.c'))
+ system_ss.add(when: 'CONFIG_XILINX_AXI', if_true: files('xilinx_axienet.c'))
+ system_ss.add(when: 'CONFIG_ALLWINNER_EMAC', if_true: files('allwinner_emac.c'))
+ system_ss.add(when: 'CONFIG_ALLWINNER_SUN8I_EMAC', if_true: files('allwinner-sun8i-emac.c'))
+diff --git a/hw/net/trace-events b/hw/net/trace-events
+index 72b69c4a8bb..e82d7490c33 100644
+--- a/hw/net/trace-events
++++ b/hw/net/trace-events
+@@ -20,13 +20,6 @@ lan9118_phy_reset(void) ""
+ lance_mem_readw(uint64_t addr, uint32_t ret) "addr=0x%"PRIx64"val=0x%04x"
+ lance_mem_writew(uint64_t addr, uint32_t val) "addr=0x%"PRIx64"val=0x%04x"
+ 
+-# mipsnet.c
+-mipsnet_send(uint32_t size) "sending len=%u"
+-mipsnet_receive(uint32_t size) "receiving len=%u"
+-mipsnet_read(uint64_t addr, uint32_t val) "read addr=0x%" PRIx64 " val=0x%x"
+-mipsnet_write(uint64_t addr, uint64_t val) "write addr=0x%" PRIx64 " val=0x%" PRIx64
+-mipsnet_irq(uint32_t isr, uint32_t intctl) "set irq to %d (0x%02x)"
+-
+ # ne2000.c
+ ne2000_read(uint64_t addr, uint64_t val) "read addr=0x%" PRIx64 " val=0x%" PRIx64
+ ne2000_write(uint64_t addr, uint64_t val) "write addr=0x%" PRIx64 " val=0x%" PRIx64
 -- 
 2.51.0
 
