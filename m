@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 919A2B3A86C
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C9AB3A7DB
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:25:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgIK-0006q7-9U; Thu, 28 Aug 2025 13:20:16 -0400
+	id 1urgFw-00035L-GC; Thu, 28 Aug 2025 13:17:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1urbvL-0003bV-Fg
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:40:18 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ id 1urbwb-0004Q7-EP
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:41:33 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1urbvI-00062B-MV
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:40:14 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-afe775db944so294843766b.1
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:40:11 -0700 (PDT)
+ id 1urbwZ-0006DC-KR
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:41:33 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-61c4f73cf20so1566951a12.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:41:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756384810; x=1756989610; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756384890; x=1756989690; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AlIvv6RMizbq/9wRX53R6SQBitlqtBGFxJsGtLvgQaI=;
- b=ZmWXeyen+m28ek+b8lhb9jEtyl0A4VopzSuaOawQXrZEYa599fEf/pDLarc35XUS4t
- vbV2P2H7PuuDqmdJWpDaaoIPaJec/Qcrea6QUHjW5FU17g19cILq/k2WWOBj+MgRxKGg
- hR8266KKxjq8UNluk2FgBery7rCpPG9bAjDJBODR1N8SQTzNRUNPYy/tB+vesHT+ueTX
- 74XiOgdN3YomYOLSzDasSflnx9jV71y0sCTs6mOCcH92jU3/9nK21wkqNqhoFCTZ/Fik
- QUXf4K5tFwmOuU9/PONZkjos7wtcItPIE3uEzn8X4o6fTGRpfdesfOYLAgK+E4mrs9XW
- jJbw==
+ bh=JMQ6mNN1qJHOswDd/UqFQ1lKqurpQQ1An6/zOUe9OOU=;
+ b=JWH7T0Ht3PF/H6sKGdwDslRHw1egXza8bHY7JBjwpaXis2H+yDClcbd6DzOOPDoVyY
+ bQZG/IPLM+WOp/tARF1TNVdeKiXfAYRTVjGLw4cR4q0lJ1eunKN+H8su3v5py6HTMtB3
+ encUx+LkZa9+X2vt6AOcOYceoaUar0gEaI/FvzpMp7ALaAnGv6ck1DFTYU6itwK/qoDM
+ 3QJpT87VP7rssbJ3GA99PHgOsnYNOO/5o1VFbUSYuduj44HeKf/hImc/npCm/fhXmZe5
+ TQNhQr6p9Fhvb7PsrBjS2h9numSFoSFw33CP8QLMebjgFGqHv+uw25J2RduPjXShy/Rh
+ E4vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756384810; x=1756989610;
+ d=1e100.net; s=20230601; t=1756384890; x=1756989690;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AlIvv6RMizbq/9wRX53R6SQBitlqtBGFxJsGtLvgQaI=;
- b=pMc/xWznxIHPppLa/pwkC5pPMRhHSL/cQlccCBWEuSUoOWLC0cPVpXPpH//FfALngy
- a3gHL0VvNSHhS67U9Kzf8DnMxfqRYi0+J3Fqbj07ndQ4gSolvPlk8vtsPpR7xxgO5wVV
- Qzrnr/qjzyztPwX/t5gUmg9ty1SaSKT0B9i8CH9JcG47mPJshqCvMfTUWq0f3zwO3R43
- qH0GkX3ptZ6H/NWfMPDyAArpRMcOoOyP+8IM0DdE+D6Z9ParoFGPOlyQFent+zNnrg+0
- OXKpC96l+ZzzlIeRghJaanMu+LKxr77z4fyyF5IjLTdyJmvuM22juCsabexyOkBxqdUr
- NyrA==
-X-Gm-Message-State: AOJu0Ywg4egmAUiHaW9mnMwBHYnVNmwS/PVWxCIDMHt45G8XWS80XbiB
- EBnTw6QLWRwudLwhCQpTyta6vCk2aHoi+86/oCLjSJUm70zpwLAKvs4zEOlRz2u02lQBp+nXc40
- 5hz9R9TjtBMihQTXYjwC9KKAx1tq0VKSYrcNCThXKmQ==
-X-Gm-Gg: ASbGncsCiaDCEc7VFHWDWaxix6OEtQjwj+iYY6vrYDZCrOHJd/Hel1gY31BFrUtsg8v
- HK1YVlpvIENI3ImXtDL+XR7SFjw9FTdleEX0rrf6CtXXknThCMVByz4ohx4OCU1L0QDSd8mNg2S
- 1j2W9uDvubx3GLpiOlWXsXuRaBcbd7G57/pwWqtQnSL9aUK4E4kxftiZHX8Z/XmaGN76VMSCbjP
- +sFbZPXPU9gl1qZNQFhmfCfAS+blw==
-X-Google-Smtp-Source: AGHT+IHGrQlnN89D5g1kHrKr2djF/XTjDycItYNHa7sxSPqMpoyHP32Fmlm3WV+XCLR3lPudwbNzd4E7E/LrYusiRqM=
-X-Received: by 2002:a17:906:1c02:b0:afe:d5bb:f444 with SMTP id
- a640c23a62f3a-afed5bc15a2mr254275666b.32.1756384810210; Thu, 28 Aug 2025
- 05:40:10 -0700 (PDT)
+ bh=JMQ6mNN1qJHOswDd/UqFQ1lKqurpQQ1An6/zOUe9OOU=;
+ b=l7AC2EbJp30hI1eD6gGdBhkLX2A4q8eWgrIfwVCwhvL+CNeXuH1l5ncsX3w4RkB0J5
+ fula8P8bkMZXC1aKrGDUVg/jgYgPF9mpXYaqI/Bch7Wgp2T0GksaVWtF1Znybaxnv2du
+ uVdcTQz47YYQrpZ9XE8UfQ2cr1oojvxs0ZqDQzrkuJ/xxt10vII/eNcott/Kn9yVlPJi
+ aUHJl2NSAjQfISAdTaI2xyGkr95eLcCl1SRYCKT+2q6r99nj5+P//ZMAfaXwcTjFWKzk
+ nsC4iFao2+iL2sc0TVJN8vcOnIV9wX3TPfQOZswERYy4Cpu46VCCfNDAonM+cAc/Ql25
+ RDOQ==
+X-Gm-Message-State: AOJu0Yw4qjcmaE4p4vB9sRhFiuCbPMfuNzcH1v+Pr46DGyDf4B4cQ69C
+ FqChlzq/MWyOfXYzHr/KX5bPL19I5BTU+6k5I/cZV9VhcfTFpRpzI3KVqsDgtH207wLMD67gECz
+ Xm2/xLwbi0XQ1AFlqLrIPHxUGJ3Xzv2mITM6lLYiWJn3VPKaST91hHlZsOQ==
+X-Gm-Gg: ASbGnct27RZrZ7B3phUsagLMEqoqKd/Z4DX2O31OTDCnhykhN6iMmFCS1E1bTNGrHau
+ NTvflBVM35iWIMuDWnk+1FDbt6JGdn0cqgC387L5uBxRTuCmTAdFHbv8Xq63AquG7oVCYY+yT/5
+ 4O6k/vtCSuG4SN613cQY6KNvrafphjWhLWMI0fD+1gbA0SGU27YzYUQpghFbwcNdKj/3LpgW44D
+ B1WTBVAW38aZjRcr34zBw6UVjuTCw==
+X-Google-Smtp-Source: AGHT+IF3yyptflGVFifRVKc7BOGQDbOBUK+7uTMBa8kL11nVQ6QW0qWE7P9cJBIQwqUgeqgxDN6ddceRpkO5sSkbAN8=
+X-Received: by 2002:a17:906:c10f:b0:afe:e03c:2d70 with SMTP id
+ a640c23a62f3a-afee03c325dmr243322566b.16.1756384889786; Thu, 28 Aug 2025
+ 05:41:29 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250827010453.4059782-1-richard.henderson@linaro.org>
- <20250827010453.4059782-38-richard.henderson@linaro.org>
-In-Reply-To: <20250827010453.4059782-38-richard.henderson@linaro.org>
+ <20250827010453.4059782-16-richard.henderson@linaro.org>
+In-Reply-To: <20250827010453.4059782-16-richard.henderson@linaro.org>
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 28 Aug 2025 15:39:43 +0300
-X-Gm-Features: Ac12FXy6xrXQr6fme5Wny4aNUq8j3m5PZIPtB69qIzWe-3BEw8_Z3FkYInlqsLo
-Message-ID: <CAAjaMXb1KMo9h=nz8+P3ddzHnFiLTgcXju4hW5ZoQqsym+xZdw@mail.gmail.com>
-Subject: Re: [PATCH 33/61] target/arm: Redirect VHE FOO_EL1 -> FOO_EL2 during
- translation
+Date: Thu, 28 Aug 2025 15:41:03 +0300
+X-Gm-Features: Ac12FXxMSxBk14S28-wEQWcGRZlgWItJO6EZpFvGWInyvQwR6xdhl7772GVKw_0
+Message-ID: <CAAjaMXYjJsxhBY=W6J7yaG20MiAszRjrUJGWbC6=ZYDhs42EUQ@mail.gmail.com>
+Subject: Re: [PATCH 11/61] target/arm: Rename all ARMCPRegInfo from opaque to
+ ri
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,156 +97,88 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Wed, Aug 27, 2025 at 4:11=E2=80=AFAM Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
+> These pointers are no opaque, they have a specific type.
+>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  target/arm/cpregs.h            |  6 ++++
->  target/arm/gdbstub.c           |  5 ++++
->  target/arm/helper.c            | 53 +---------------------------------
->  target/arm/tcg/translate-a64.c |  9 ++++++
->  4 files changed, 21 insertions(+), 52 deletions(-)
+
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+
+>  target/arm/cpregs.h | 10 +++++-----
+>  target/arm/helper.c |  6 +++---
+>  2 files changed, 8 insertions(+), 8 deletions(-)
 >
 > diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
-> index 7bdf6cf847..d34ed0d40b 100644
+> index c9506aa6d5..3344a02bd3 100644
 > --- a/target/arm/cpregs.h
 > +++ b/target/arm/cpregs.h
-> @@ -911,6 +911,12 @@ struct ARMCPRegInfo {
->       */
->      uint32_t nv2_redirect_offset;
+> @@ -841,15 +841,15 @@ typedef struct ARMCPRegInfo ARMCPRegInfo;
+>   * Access functions for coprocessor registers. These cannot fail and
+>   * may not raise exceptions.
+>   */
+> -typedef uint64_t CPReadFn(CPUARMState *env, const ARMCPRegInfo *opaque);
+> -typedef void CPWriteFn(CPUARMState *env, const ARMCPRegInfo *opaque,
+> +typedef uint64_t CPReadFn(CPUARMState *env, const ARMCPRegInfo *ri);
+> +typedef void CPWriteFn(CPUARMState *env, const ARMCPRegInfo *ri,
+>                         uint64_t value);
+>  /* Access permission check functions for coprocessor registers. */
+>  typedef CPAccessResult CPAccessFn(CPUARMState *env,
+> -                                  const ARMCPRegInfo *opaque,
+> +                                  const ARMCPRegInfo *ri,
+>                                    bool isread);
+>  /* Hook function for register reset */
+> -typedef void CPResetFn(CPUARMState *env, const ARMCPRegInfo *opaque);
+> +typedef void CPResetFn(CPUARMState *env, const ARMCPRegInfo *ri);
 >
-> +    /*
-> +     * With VHE, with E2H, at EL2, access to this EL0/EL1 reg redirects
-> +     * to the EL2 reg with the specified key.
-> +     */
-> +    uint32_t vhe_redir_to_el2;
-> +
->      /* This is used only by VHE. */
->      void *opaque;
->      /*
-> diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-> index e2fc389170..3727dc01af 100644
-> --- a/target/arm/gdbstub.c
-> +++ b/target/arm/gdbstub.c
-> @@ -249,6 +249,11 @@ static int arm_gdb_get_sysreg(CPUState *cs, GByteArr=
-ay *buf, int reg)
->      if (ri) {
->          switch (cpreg_field_type(ri)) {
->          case MO_64:
-> +            if (ri->vhe_redir_to_el2 &&
-> +                (arm_hcr_el2_eff(env) & HCR_E2H) &&
-> +                arm_current_el(env) =3D=3D 2) {
-> +                ri =3D get_arm_cp_reginfo(cpu->cp_regs, ri->vhe_redir_to=
-_el2);
-> +            }
->              return gdb_get_reg64(buf, (uint64_t)read_raw_cp_reg(env, ri)=
-);
->          case MO_32:
->              return gdb_get_reg32(buf, (uint32_t)read_raw_cp_reg(env, ri)=
-);
+>  #define CP_ANY 0xff
+>
+> @@ -1075,7 +1075,7 @@ void raw_write(CPUARMState *env, const ARMCPRegInfo=
+ *ri, uint64_t value);
+>   * CPResetFn that does nothing, for use if no reset is required even
+>   * if fieldoffset is non zero.
+>   */
+> -void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *opaque);
+> +void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *ri);
+>
+>  /*
+>   * Return true if this reginfo struct's field in the cpu state struct
 > diff --git a/target/arm/helper.c b/target/arm/helper.c
-> index d0ccc23811..3f69ce6cb5 100644
+> index d230f9e766..e03cbc0394 100644
 > --- a/target/arm/helper.c
 > +++ b/target/arm/helper.c
-> @@ -4441,47 +4441,6 @@ static CPAccessResult access_el1nvvct(CPUARMState =
-*env, const ARMCPRegInfo *ri,
->      return e2h_access(env, ri, isread);
->  }
+> @@ -1067,7 +1067,7 @@ static const ARMCPRegInfo v6k_cp_reginfo[] =3D {
+>        .resetvalue =3D 0 },
+>  };
 >
-> -/* Test if system register redirection is to occur in the current state.=
-  */
-> -static bool redirect_for_e2h(CPUARMState *env)
-> -{
-> -    return arm_current_el(env) =3D=3D 2 && (arm_hcr_el2_eff(env) & HCR_E=
-2H);
-> -}
-> -
-> -static uint64_t el2_e2h_read(CPUARMState *env, const ARMCPRegInfo *ri)
-> -{
-> -    CPReadFn *readfn;
-> -
-> -    if (redirect_for_e2h(env)) {
-> -        /* Switch to the saved EL2 version of the register.  */
-> -        ri =3D ri->opaque;
-> -        readfn =3D ri->readfn;
-> -    } else {
-> -        readfn =3D ri->orig_readfn;
-> -    }
-> -    if (readfn =3D=3D NULL) {
-> -        readfn =3D raw_read;
-> -    }
-> -    return readfn(env, ri);
-> -}
-> -
-> -static void el2_e2h_write(CPUARMState *env, const ARMCPRegInfo *ri,
-> -                          uint64_t value)
-> -{
-> -    CPWriteFn *writefn;
-> -
-> -    if (redirect_for_e2h(env)) {
-> -        /* Switch to the saved EL2 version of the register.  */
-> -        ri =3D ri->opaque;
-> -        writefn =3D ri->writefn;
-> -    } else {
-> -        writefn =3D ri->orig_writefn;
-> -    }
-> -    if (writefn =3D=3D NULL) {
-> -        writefn =3D raw_write;
-> -    }
-> -    writefn(env, ri, value);
-> -}
-> -
->  static uint64_t el2_e2h_e12_read(CPUARMState *env, const ARMCPRegInfo *r=
-i)
+> -static void arm_gt_cntfrq_reset(CPUARMState *env, const ARMCPRegInfo *op=
+aque)
+> +static void arm_gt_cntfrq_reset(CPUARMState *env, const ARMCPRegInfo *ri=
+)
 >  {
->      /* Pass the EL1 register accessor its ri, not the EL12 alias ri */
-> @@ -4657,17 +4616,7 @@ static void define_arm_vh_e2h_redirects_aliases(AR=
-MCPU *cpu)
->                                   (gpointer)(uintptr_t)a->new_key, new_re=
-g);
->          g_assert(ok);
+>      ARMCPU *cpu =3D env_archcpu(env);
 >
-> -        src_reg->opaque =3D dst_reg;
-> -        src_reg->orig_readfn =3D src_reg->readfn ?: raw_read;
-> -        src_reg->orig_writefn =3D src_reg->writefn ?: raw_write;
-> -        if (!src_reg->raw_readfn) {
-> -            src_reg->raw_readfn =3D raw_read;
-> -        }
-> -        if (!src_reg->raw_writefn) {
-> -            src_reg->raw_writefn =3D raw_write;
-> -        }
-> -        src_reg->readfn =3D el2_e2h_read;
-> -        src_reg->writefn =3D el2_e2h_write;
-> +        src_reg->vhe_redir_to_el2 =3D a->dst_key;
->      }
+> @@ -5407,7 +5407,7 @@ static const ARMCPRegInfo rndr_reginfo[] =3D {
+>        .access =3D PL0_R, .readfn =3D rndr_readfn },
+>  };
+>
+> -static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
+> +static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *ri,
+>                            uint64_t value)
+>  {
+>  #ifdef CONFIG_TCG
+> @@ -7730,7 +7730,7 @@ uint64_t arm_cp_read_zero(CPUARMState *env, const A=
+RMCPRegInfo *ri)
+>      return 0;
 >  }
->  #endif
-> diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a6=
-4.c
-> index 8303f0dac2..8fcc74d151 100644
-> --- a/target/arm/tcg/translate-a64.c
-> +++ b/target/arm/tcg/translate-a64.c
-> @@ -2573,6 +2573,15 @@ static void handle_sys(DisasContext *s, bool isrea=
-d,
->          }
->      }
 >
-> +    if (ri->vhe_redir_to_el2 && s->current_el =3D=3D 2 && s->e2h) {
-> +        /*
-> +         * This one of the FOO_EL1 registers which redirect to FOO_EL2
-> +         * from EL2 when HCR_EL2.E2H is set.
-> +         */
-> +        key =3D ri->vhe_redir_to_el2;
-> +        ri =3D redirect_cpreg(s, key, isread);
-> +    }
-> +
->      if (ri->accessfn || (ri->fgt && s->fgt_active)) {
->          /* Emit code to perform further access permissions checks at
->           * runtime; this may result in an exception.
+> -void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *opaque)
+> +void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *ri)
+>  {
+>      /* Helper coprocessor reset function for do-nothing-on-reset registe=
+rs */
+>  }
 > --
 > 2.43.0
 >
 >
-
-This looks much better
-
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
