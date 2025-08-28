@@ -2,91 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB71B3CE88
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 20:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21968B3CCE7
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:23:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usOe1-0006Zy-3H; Sat, 30 Aug 2025 12:41:37 -0400
+	id 1usO5k-0004Kh-Ks; Sat, 30 Aug 2025 12:06:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkcG-00045s-PS
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 17:57:08 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1urkia-0005P4-Aj
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:03:41 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkcE-0000aL-Et
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 17:57:08 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-45a1b0cbbbaso12329775e9.3
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 14:57:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1urkiY-0002tW-Dp
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:03:40 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-b4c738ee2fbso658260a12.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 15:03:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756418224; x=1757023024; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FfpYSdrfi4pNl2fkKCYvcekdrOfXAWNAC/gIlpg8QxA=;
- b=sfMC+//3ylqbWwabOsxAyG2PAGBA7c+jWVunLCM9YBJ8M+13OeQE2ezN5PxRelSiG3
- ZSaFB8VPTmDJUWLQic8yFz3eCbGYvutGwvZbznQOmNZJxjOyUHPhhOTiAwUE1F4yhE7n
- KcOgYf15Z4DxVYg/C8kTM3Hg1d6VtabZmRr9f2c5cWAuZg8chSCsUsRvUN8Z3Wz5/44M
- vUtXZ1BPPYqDLCTWh8WFODkTo3bvX8nREis0UcnCqHXe5qMFGn1kvjLUlqsuTnFFY8Zb
- Q1nuvr5Nkzp1ZvuR2FIqqnynkNKPr3viKNLE/VM3vHW/pAqDegDgErVRZp7ayMyMgghB
- F0wQ==
+ d=linaro.org; s=google; t=1756418615; x=1757023415; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=4M9cm8Aazb+KJpA5IGIdk2z8pOTonrvhPx7widSniyM=;
+ b=UgMpIIAh8fsA126b2mU0h9YjiYxPaKTwvHDJi5o4/lI8UifirYIViLb4/vvJrSMo7i
+ MHr/BjU06GLIQQ/SVbgXBNWwFQymOfq20o/Q7TVFsuWtFOxHmkWBqGU38gGvEf+mKKtS
+ 2ADxBv16lXYFf+CPjlZUV8FEUTEOKZFzL9fImBrg+JiwToGRJPFvEWvOZGCpKAyOg6ZA
+ M86jLGMqoYMHlG6rahaPzzH9GaSdu+v+Ruw057HpLB+4Zj6rL31thmm1pazryELLfNrM
+ OCx2VJsjEyW3ZpMJrdkOzoWq1bSfmaPRpx6roHq8Me8634Rg0IU2qDXH/UzZjWNxBSkb
+ sDHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756418224; x=1757023024;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1756418615; x=1757023415;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FfpYSdrfi4pNl2fkKCYvcekdrOfXAWNAC/gIlpg8QxA=;
- b=wMRZoZ5xdHBRY1t+yKDbo4m7pbEr9sTMFQ6TvxqrL1YsUzoWJE4D690zkeV3mek2X3
- Cu6eJ0OC661iCe4BfI4zVkTgX7E2+MHFEvj0nxVRk0GF1vT28qxbOqmRhCiJPeNCRCRc
- gF5HkFGPoyKySFZsZ3MFl1JA32HAO8Jo2TPyNvXk9zoN0uhwTqoL/Hmt+Rjrs02UkmmI
- uGEG0U/ZSgzoXep81YqSCl2HoAz2rF8Ax+dilQv4lavj9mx1qIh8OqXw3gpF5kXh/ez9
- tuO0Wn+W9XLLFPJwZ0l/aWGOUW/QOXWGI8Z0z9dWVISsmHe9vVUQ75BhZQchM3mF7Y8i
- HOhQ==
-X-Gm-Message-State: AOJu0Yxu6lxEhs5zPCeJETstpDdd6kL0g036TrwHl+0gNvC7jywqa07J
- TeJboQqSvW5oO2kpWXw7VaGXxuEFUkhz/24me18hT5puYTx42S8QYQbSUTNd+/ReWPkVlnKpDVI
- 3FAId
-X-Gm-Gg: ASbGncvmqzbFjwl7dzblYJ4o6H3goHOQTdwc+mm+j4oIjYugAFtv38eTunGvUHelPYS
- 1jZ2HP5hTL/f3HgXmxmCYezZMYVowvksGUEL0eTHWrn9iyVDr6Jm+ZsV1lDAoMJh41T+hLc+tdL
- BtqLiGUXVGs2ZjVLh9mdzVr1VF9ouh2Z7BrSj62/Gz0FjNRlMYr0sNTHwyBMQCg8HqIlgNLEGwR
- bH9pnPZLFGvHA+iiWIVXNLiz9HHaAFfkAD4elafedUg+Z7kmiqUjhubfj9waywZN03r0AzWnmv8
- 3RPfoQerWyquahoy/WDqvLVxjfBqVvEPaNmxW88cwR+6ii4xmCqlmrCEmfSA8CqBXSjuIvykraj
- HF9VbziAiPFiOMxVc/78T2tM3+POe2ce3X9RpfMSceatmnhhh6Ut3hQx76PEiGONfha7JRF36n3
- sqgxXvudWMlK0=
-X-Google-Smtp-Source: AGHT+IGEMllIfPn8029orEoVzsPXGxFO5qKjhoDSTL0/oYQE60HHGnOmtntpze37dnrddLpWslJKEA==
-X-Received: by 2002:a05:6000:401e:b0:3cf:2700:6814 with SMTP id
- ffacd0b85a97d-3cf27006a1bmr481863f8f.30.1756418224065; 
- Thu, 28 Aug 2025 14:57:04 -0700 (PDT)
-Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf1a2560c3sm838302f8f.0.2025.08.28.14.57.03
+ bh=4M9cm8Aazb+KJpA5IGIdk2z8pOTonrvhPx7widSniyM=;
+ b=dC+gYFGBx05VN1uNwJulGnKTyJRDS3+0xSVQ6Z544nqsHUirkC+ULF8yXnjcU0orTG
+ 5BLg48zUQOpvAldWdVM3yDi802aG8q22rBKYGRL7XFtuJiPqbs4PxecAmVH8CqSRR1uQ
+ O/VdPUo/49+5pGISztfSv4AzYgX2Qtn4qv9FvTNztL/u05dmuxaiNwA1ZxVZ1lj0ei/O
+ bIKM1JZ858TO6ItwnM4ZSyBWjdfi2IZ8Lahf7qBixWVG9CEvR1sI1XR4XoSbVg7sj1Hg
+ FxhoorRwvahUDzYgPQuBvz1C/4242rUt5YtHsRaG0bPnfsf5BpPK8Pk3M02zTlDunCQq
+ 1keg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUo0CAmdhlRW0Y1Y/pnZVcAaNjkDdEtzVPbSHnDm1b1l3jkpqDbab3BZtFtpf55NXQf//BW/YJYPVpn@nongnu.org
+X-Gm-Message-State: AOJu0YxvSTm2/7iDndzqSNA7pftFoU9RS0Yt8Ym016Py+wqrbQ9NrfrA
+ EpP0+4L3GvrrNQI0Lrio5wid9R/fakuQ86Czxr3zmo+LuvGgia9DTWFapzBzA/VY9XONMNj4mte
+ 5GyB2WVk=
+X-Gm-Gg: ASbGncsy4XJeBgEVmkgD/d/VOrsocAVAy8jJHKFGaeFPjkKbH4tTGtf75Zri6asHWXk
+ 6VOTwRPMWYNLEuvIuqV56W+5+rHP88QjQ3U9E07KU3/khu94jegGc4IZ+uU6+nGVdTdMxP9+ozU
+ TMOwczUMXfX4zMGzQba1mU8gBXH+ai8ollIoUzP+nd44GZ4QeNkhbQYVlSOdMrR/l4J6hjCwXM2
+ 0sxXi3S+FHkg4TMNWALcZ6VY/rSsFbaAmA5juLJgVTn4DXyXk46Uz83gEIr9EHCASC+SJR6w1Il
+ N+V8rFoaj0jTPSGhwMXLWQBWgR51WKqq18pA29ywVwcTrnz1q8SZkqon2DHFYOU5M/cd4WXCR1f
+ lsCegQw21PNXUQpVlaOjHNQw/uwuIYPbVvSQi
+X-Google-Smtp-Source: AGHT+IH77HgtphMfUjDHKo0mPZwZLG1fwVuEfdqHuo1XrojWzDdV3y1JPJ/b6Odi6n+kC0DrGfpXwQ==
+X-Received: by 2002:a17:902:f543:b0:246:7a11:3775 with SMTP id
+ d9443c01a7336-2467a113b1amr258167335ad.48.1756418614818; 
+ Thu, 28 Aug 2025 15:03:34 -0700 (PDT)
+Received: from [192.168.0.195] ([144.6.121.55])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-249065d1ef4sm5032555ad.134.2025.08.28.15.03.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Aug 2025 14:57:03 -0700 (PDT)
-Message-ID: <787f7e70-e3fb-4ab0-a879-780247066157@linaro.org>
-Date: Thu, 28 Aug 2025 23:57:02 +0200
+ Thu, 28 Aug 2025 15:03:34 -0700 (PDT)
+Message-ID: <fec1ee2a-f141-4c5f-b7a8-debe404b9d47@linaro.org>
+Date: Fri, 29 Aug 2025 08:03:26 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] hw/core: Dump cpu_reset in the reset.exit phase
-To: Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Henk van der Laak <henk@laaksoft.nl>
-References: <20250827053822.4094239-1-richard.henderson@linaro.org>
- <20250827053822.4094239-2-richard.henderson@linaro.org>
- <CAFEAcA9YC1772qpnT4eT=WP8=pmoACkx0k-a1p8fuXYZh54z=Q@mail.gmail.com>
+Subject: Re: [PATCH 0/5] target/arm: Remove deprecated pxa CPUs and
+ xscale/iwmmxt code
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20250828140422.3271703-1-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA9YC1772qpnT4eT=WP8=pmoACkx0k-a1p8fuXYZh54z=Q@mail.gmail.com>
+In-Reply-To: <20250828140422.3271703-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,45 +103,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/8/25 17:24, Peter Maydell wrote:
-> On Wed, 27 Aug 2025 at 06:39, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> During reset.hold, the cpu is in an inconsistent state,
->> where the leaf class has not had a chance to initialize
->> state at all.
->>
->> This is visible as a SIGSEGV in "qemu-system-sparc64 -d cpu_reset".
->>
->> Move the dump to the exit phase, where all initialization
->> is certain to be complete.
->>
->> Reported-by: Henk van der Laak <henk@laaksoft.nl>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   hw/core/cpu-common.c | 16 +++++++++++-----
->>   1 file changed, 11 insertions(+), 5 deletions(-)
+On 8/29/25 00:04, Peter Maydell wrote:
+> Peter Maydell (5):
+>    target/arm: Remove deprecated pxa CPU family
+>    target/arm: Remove XScale and iWMMXt translate.c code
+>    target/arm: Remove iwmmxt helper functions
+>    target/arm: Drop ARM_FEATURE_XSCALE handling
+>    target/arm: Drop ARM_FEATURE_IWMMXT handling
 
+Woohoo!
 
->> @@ -380,6 +385,7 @@ static void cpu_common_class_init(ObjectClass *klass, const void *data)
->>       dc->realize = cpu_common_realizefn;
->>       dc->unrealize = cpu_common_unrealizefn;
->>       rc->phases.hold = cpu_common_reset_hold;
->> +    rc->phases.exit = cpu_common_reset_exit;
->>       cpu_class_init_props(dc);
->>       /*
->>        * Reason: CPUs still need special care by board code: wiring up
-> 
-> If we ever have CPUs that actually update their state in
-> the reset exit phase (e.g. if we manage to complete the refactoring
-> that would let us implement M-profile "load starting PC and SP
-> from memory" in reset-exit after rom blob loading rather than
-> having a hack to do it in reset-hold), this won't capture that.
-> But it's clearly better than trying to do it in the common
-> reset-hold method...
-> 
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+r~
 
