@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43471B39BB7
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B63B39BB9
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:37:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urau0-0003Ge-4i; Thu, 28 Aug 2025 07:34:48 -0400
+	id 1urau0-0003F0-3d; Thu, 28 Aug 2025 07:34:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uratp-0003BO-VB
+ id 1uratr-0003Cz-MP
  for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:39 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uratn-0005bW-L1
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:37 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-45a1b066b5eso4390635e9.1
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:35 -0700 (PDT)
+ id 1uratp-0005c9-EH
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:39 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3c854b644c1so580118f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756380874; x=1756985674; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756380875; x=1756985675; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5NYkoNij4e1g8y7W2fjcFu3t+VJEH8mC1LfM/lquNuQ=;
- b=ZNEhQp7HsTjcUVE1yzF0pPWeV6PW6W1Ku+1OZR3uuntRigR71C7zAYWi8/RCGNfRnW
- RHXCPFWVHRShgRwD3sngqcFDvpdxpWMr0u/uQ4NOYIfIX18npxf9kazT/hUKynDi8pMQ
- tyoCzuC5xOxIkPAikJYwMo5bkYNfQbaiOA9Sn19oYq14+2gzY9hiiNshmf5RH9iUZBxf
- XwLgfJeUZHXdXhfPapbaac0LYa76tRG0m2q/NFzMgvDn5o4mloS7ISZvrwxISLxs6Zhz
- vTk0TsCaUXR4k+/UsXzidVEw0bw3j9S4YZN7O2zPGzAQXbCURX19k+hKmvBIHB/0S2Yt
- QWhg==
+ :reply-to; bh=g+Lwtf9Dc+UeK2oirT2wByiuRWQQHV3LBajiD+TT9Lo=;
+ b=vuhfuTZQq83XwNSJuBG9+09UzP86FIPFCeuRumrYK7bEIXhDq+qinJQk2s9bkytuB7
+ LNmeN7z11VhnD8Fo8UadpESWZxJPktWSFwIIjtLGUBOeZeUnwebz0x3WI0QGXZJRlekX
+ jo3KV7UxPu9Wb2de02gxoHg3aY0sMJW3VEZAlTAM5qrH6nJq2gObFRlUYr2kWuhdkKu/
+ Zf8DVdf7hNxcs91U2WOe5ODFBGqSPSuhcuOLq7EFEc3Z3+f4TCzbLbnA4pwMyT9nTJEG
+ NhXvJs6t63wlLv1rN6e+3sNuzG1uAqSTOCD6Cb1pKc0NWMoVRD76ETgXFZRyXV56PbuR
+ O6hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756380874; x=1756985674;
+ d=1e100.net; s=20230601; t=1756380875; x=1756985675;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5NYkoNij4e1g8y7W2fjcFu3t+VJEH8mC1LfM/lquNuQ=;
- b=BGNWsmnI2aDwBaPiXHe314iX7AbtoEdkvY8qXbvGnlItpxyzLRuNbojIZ0A67EMod5
- TK6jcUU/HnHUHTtaqjNQO99y60Gy59Be7QV4DDMBsGgM+0VYf5JVUiQBIN4jT5SOMjRI
- qm1574Q4mNAncvgzfmvuZ98D3ld2leWZjORy31DhSNaSSGTZ+H/I77x8fpF1Hppi/mX+
- /MhFizlGdbUXWbG7K2/Rcqa+9Up85/JXzTjGhCfJdr4TmeL7dkFGYMx1k0ifOvoYAYjg
- q7U9pa8qY5EYo75pK/H3UBGandXw6azo9k1gL5NsOQ2y/0y+ZZIHCyaScyaEXy7gRzic
- T3kw==
-X-Gm-Message-State: AOJu0Yz0w7LyqT3Wa6JxTTHSqLPGTFb8sSxGKrnRUakU59gFvl9e/4VD
- 7au7mlXYg2zogSTLnTg56uXFY96Fn28iY6Rt9tuEMOH+aqyjPSXzwarwo1r5Og17tbO5mSxoyzo
- nYsNN
-X-Gm-Gg: ASbGncs78pegISWxJf5OgIjrLMnVB3Nr2eUR09Skq8WuM/O6nc32+WkxY5Z+zNFWjZx
- ngFerbQzkAAlK5LsgOMp0RePt5EJDPTUsqRF/vO5YmUEOGp43nvd5ag7RFC/ElkH9Z5RrGezRJL
- XfN0G1zyL318uyYtLn1uO5lPe9Ut0PLr6mxAvEgelaUdBOa9gO6g9tu9eOjb8i+lW8gHOwZpzwf
- kjMzmnUrQw0Wt+l1lZe1RcVGATEp12bsDwRIxNRUH4xYrBw06LEXv+xKwAR2eRRh97Ed9WoIBHO
- bk4vlCfhcJGchj0c9NeGnPf89ssjN5xaxTu/i1qIn+ENfpeN/0FBlfep9r4kScrMRGpf/8lgxV+
- 0c9No+6p1uwpNcPftoeoNoARkJpbNloYghWrJJE4=
-X-Google-Smtp-Source: AGHT+IFHeICz5Ipcyh6m2s5kfYPyoZ3DWx8Dr0vpfoFKBwHEKcTKybSqPzBfR3V3+Qpf4Qbw4SnAuw==
-X-Received: by 2002:a05:600c:1d26:b0:45b:7c20:5709 with SMTP id
- 5b1f17b1804b1-45b7c205c14mr14202225e9.12.1756380873937; 
- Thu, 28 Aug 2025 04:34:33 -0700 (PDT)
+ bh=g+Lwtf9Dc+UeK2oirT2wByiuRWQQHV3LBajiD+TT9Lo=;
+ b=S3heykD0woJl6UEOfVGIbFiX4GHJS1k7C68gFSxXT/YQhM66Qxl72gZuCiT4HS3ygm
+ 7RWBPTpJd5Yz8hCoO+1K8RbNxHlxI7mhD/1FE8SqMRi8UbIivMziHJt7AW7yStgfMPJF
+ 2MX7JYD8kAlR6Y2Dhy02tYg0d2ZPdl3NB8CYJizpPVU99fkK9zgc4hifgPzAaMNIdqRZ
+ kx2ss0ikpOHdkqDs3rX2qxd47DuhlE+nnxnlV5LHOYRGpojHNrb0Y+3EV8CaH0g5Ca2X
+ LGnAKzCoJdk22d+QfCG34MhjxUGl9EyukhNY3pIaFl1zRcLnxBo08fEb4YKcO3ZcEc++
+ zHbw==
+X-Gm-Message-State: AOJu0YzY25+ut8TkTDb2vsU6c8nLe+NlH99l/iimJOYMxItVfYSlCC6U
+ akiyE6aq9I25CxJaLH3h0bIXstJOI7rUzGUjMRxbXv0gkgujD+nqHqu8XIzQiBQ+si3kNaup8ma
+ QC/7b
+X-Gm-Gg: ASbGncu00lT58DDow7QyORnKIF5mFVYmy064NH7qkkx/4VgOvFcRnG4INlqWlK2+M4L
+ KmFkzgh87R1yFvS7J7C47HPHRZE8uUokx3F0FLb8If8T7E5vj9zdbLdmigLykLfnLNYixeCqKmY
+ +mfUVsfUTsbHcgDAvh0qdb71Hv8spYd3gl05Y5Es3FO3bugFcCgppy/8IrL/piCb62JIlJOK6NU
+ DuJBJbj2tZArJIK0LIOU8n+IVTCtDOsToEiTdlbxavpU1smdb3nRr20Y5uOBCPxxnYpXu/zCAHz
+ Hngy8SKjWsqL7rq1DRAQqlrE6aAuZpfbc6d6HHEq5XEpTRWCPec3JRI8DFco49/iHRxaAdlcy+5
+ b+9oB2t/2shU1XXK4N9i8wdUSfNAtDAiQUPvT7W8=
+X-Google-Smtp-Source: AGHT+IEm8Nwu7YjSNPM2yT7tmqkI82DwZY7HTuf7JD/zCCDMhHFj5jI3OGHE5Rjw2pDvhd5ICWuamg==
+X-Received: by 2002:a05:6000:647:b0:3cc:a43e:722e with SMTP id
+ ffacd0b85a97d-3cca43e747cmr3304121f8f.24.1756380874983; 
+ Thu, 28 Aug 2025 04:34:34 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.32
+ 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.34
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 04:34:32 -0700 (PDT)
+ Thu, 28 Aug 2025 04:34:34 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/32] target/arm: Clean up of register field definitions
-Date: Thu, 28 Aug 2025 12:33:58 +0100
-Message-ID: <20250828113430.3214314-2-peter.maydell@linaro.org>
+Subject: [PULL 02/32] tests/functional/test_aarch64_device_passthrough: update
+ image
+Date: Thu, 28 Aug 2025 12:33:59 +0100
+Message-ID: <20250828113430.3214314-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828113430.3214314-1-peter.maydell@linaro.org>
 References: <20250828113430.3214314-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,77 +98,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gustavo Romero <gustavo.romero@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Clean up the definitions of NSW and NSA fields in the VTCR register.
-These two fields are already defined properly using FIELD() so they are
-actually duplications. Also, define the NSW and NSA fields in the
-VSTCR register using FIELD() and remove their definitions based on VTCR
-fields.
+TF-A needs to be patched to enable support for FEAT_TCR2 and
+FEAT_SCTLR2. This new image contains updated firmware.
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Message-id: 20250725014755.2122579-1-gustavo.romero@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250727074202.83141-2-richard.henderson@linaro.org
+Message-ID: <20250719035838.2284029-2-pierrick.bouvier@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/internals.h | 8 +++-----
- target/arm/ptw.c       | 8 ++++----
- 2 files changed, 7 insertions(+), 9 deletions(-)
+ .../aarch64/test_device_passthrough.py        | 27 ++++++++++---------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 1b3d0244fd6..3f86b070447 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -113,11 +113,6 @@ FIELD(DBGWCR, WT, 20, 1)
- FIELD(DBGWCR, MASK, 24, 5)
- FIELD(DBGWCR, SSCE, 29, 1)
+diff --git a/tests/functional/aarch64/test_device_passthrough.py b/tests/functional/aarch64/test_device_passthrough.py
+index 1f3f158a9ff..17437784bbe 100755
+--- a/tests/functional/aarch64/test_device_passthrough.py
++++ b/tests/functional/aarch64/test_device_passthrough.py
+@@ -9,7 +9,7 @@
+ #
+ # SPDX-License-Identifier: GPL-2.0-or-later
  
--#define VTCR_NSW (1u << 29)
--#define VTCR_NSA (1u << 30)
--#define VSTCR_SW VTCR_NSW
--#define VSTCR_SA VTCR_NSA
--
- /* Bit definitions for CPACR (AArch32 only) */
- FIELD(CPACR, CP10, 20, 2)
- FIELD(CPACR, CP11, 22, 2)
-@@ -220,6 +215,9 @@ FIELD(VTCR, NSA, 30, 1)
- FIELD(VTCR, DS, 32, 1)
- FIELD(VTCR, SL2, 33, 1)
+-import os
++from os.path import join
  
-+FIELD(VSTCR, SW, 29, 1)
-+FIELD(VSTCR, SA, 30, 1)
-+
- #define HCRX_ENAS0    (1ULL << 0)
- #define HCRX_ENALS    (1ULL << 1)
- #define HCRX_ENASR    (1ULL << 2)
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 561bf2678e5..ed5c728eab6 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -193,9 +193,9 @@ static ARMMMUIdx ptw_idx_for_stage_2(CPUARMState *env, ARMMMUIdx stage2idx)
-         return ARMMMUIdx_Phys_Realm;
-     case ARMSS_Secure:
-         if (stage2idx == ARMMMUIdx_Stage2_S) {
--            s2walk_secure = !(env->cp15.vstcr_el2 & VSTCR_SW);
-+            s2walk_secure = !(env->cp15.vstcr_el2 & R_VSTCR_SW_MASK);
-         } else {
--            s2walk_secure = !(env->cp15.vtcr_el2 & VTCR_NSW);
-+            s2walk_secure = !(env->cp15.vtcr_el2 & R_VTCR_NSW_MASK);
-         }
-         return s2walk_secure ? ARMMMUIdx_Phys_S : ARMMMUIdx_Phys_NS;
-     default:
-@@ -3372,9 +3372,9 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-      */
-     if (in_space == ARMSS_Secure) {
-         result->f.attrs.secure =
--            !(env->cp15.vstcr_el2 & (VSTCR_SA | VSTCR_SW))
-+            !(env->cp15.vstcr_el2 & (R_VSTCR_SA_MASK | R_VSTCR_SW_MASK))
-             && (ipa_secure
--                || !(env->cp15.vtcr_el2 & (VTCR_NSA | VTCR_NSW)));
-+                || !(env->cp15.vtcr_el2 & (R_VTCR_NSA_MASK | R_VTCR_NSW_MASK)));
-         result->f.attrs.space = arm_secure_to_space(result->f.attrs.secure);
-     }
+ from qemu_test import QemuSystemTest, Asset
+ from qemu_test import exec_command, wait_for_console_pattern
+@@ -77,15 +77,16 @@
  
+ class Aarch64DevicePassthrough(QemuSystemTest):
+ 
+-    # https://github.com/pbo-linaro/qemu-linux-stack
++    # https://github.com/pbo-linaro/qemu-linux-stack/tree/device_passthrough
++    # $ ./build.sh && ./archive_artifacts.sh out.tar.xz
+     #
+     # Linux kernel is compiled with defconfig +
+     # IOMMUFD + VFIO_DEVICE_CDEV + ARM_SMMU_V3_IOMMUFD
+     # https://docs.kernel.org/driver-api/vfio.html#vfio-device-cde
+     ASSET_DEVICE_PASSTHROUGH_STACK = Asset(
+-        ('https://fileserver.linaro.org/s/fx5DXxBYme8dw2G/'
+-         'download/device_passthrough.tar.xz'),
+-         '812750b664d61c2986f2b149939ae28cafbd60d53e9c7e4b16e97143845e196d')
++        ('https://github.com/pbo-linaro/qemu-linux-stack/'
++         'releases/download/build/device_passthrough-c3fb84a.tar.xz'),
++         '15ac2b02bed0c0ea8e3e007de0bcfdaf6fd51c1ba98213f841dc7d01d6f72f04')
+ 
+     # This tests the device passthrough implementation, by booting a VM
+     # supporting it with two nvme disks attached, and launching a nested VM
+@@ -96,16 +97,16 @@ def test_aarch64_device_passthrough(self):
+ 
+         self.vm.set_console()
+ 
+-        stack_path_tar_gz = self.ASSET_DEVICE_PASSTHROUGH_STACK.fetch()
+-        self.archive_extract(stack_path_tar_gz, format="tar")
++        stack_path_tar = self.ASSET_DEVICE_PASSTHROUGH_STACK.fetch()
++        self.archive_extract(stack_path_tar, format="tar")
+ 
+         stack = self.scratch_file('out')
+-        kernel = os.path.join(stack, 'Image.gz')
+-        rootfs_host = os.path.join(stack, 'host.ext4')
+-        disk_vfio = os.path.join(stack, 'disk_vfio')
+-        disk_iommufd = os.path.join(stack, 'disk_iommufd')
+-        guest_cmd = os.path.join(stack, 'guest.sh')
+-        nested_guest_cmd = os.path.join(stack, 'nested_guest.sh')
++        kernel = join(stack, 'Image.gz')
++        rootfs_host = join(stack, 'host.ext4')
++        disk_vfio = join(stack, 'disk_vfio')
++        disk_iommufd = join(stack, 'disk_iommufd')
++        guest_cmd = join(stack, 'guest.sh')
++        nested_guest_cmd = join(stack, 'nested_guest.sh')
+         # we generate two random disks
+         with open(disk_vfio, "wb") as d: d.write(randbytes(512))
+         with open(disk_iommufd, "wb") as d: d.write(randbytes(1024))
 -- 
 2.43.0
 
