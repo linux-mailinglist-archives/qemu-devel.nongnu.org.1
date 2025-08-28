@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8478DB3A79C
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C059EB3A7B6
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:20:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgE0-0005WO-Cv; Thu, 28 Aug 2025 13:15:48 -0400
+	id 1urgFJ-0000L0-7b; Thu, 28 Aug 2025 13:17:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1urc26-0007Vk-Ek
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:47:14 -0400
+ id 1urc6Y-0001DG-SU
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:51:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1urc23-000755-FO
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:47:14 -0400
+ id 1urc6X-00080m-C1
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:51:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756385229;
+ s=mimecast20190719; t=1756385507;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LQHCXqjm4zIM8dZntivUPtrmx6PsmOO0Jbe3R2x3L2Q=;
- b=IDuSVLnf93sJDU2UQ7Au3cfeli+ef/rv0wiUL24NfZpnEE0vnSv0DPxUo0h6E7EqI7L6/y
- GYDO6goSg3RSD91Ou/9XTvAyhOehHoqNMAhGL4NxhYEtdfCq63Y56ZdnMUShq3iqGj37D2
- Uq4qIvzvpPmEVOUfg5E3vU3QG1DkPpQ=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4S1oH5XEC1cWvETWWJ5LtYxybZWNTrEDO/B1jMqo/B0=;
+ b=X6POX8LR7yjWEfdL5i4AsYtFll+YnFOjs7hg5B9Xyb2lWeGZBNTHTxitAIDJsFYmoU3DVg
+ Br5SRPDgi44TAU/z4AkOFXqOGORhcDGRQteexh+YaISwqbpmZlxi9V+Rg66DpWmI4ZSELP
+ 3p/9Y129k9MWFrTFkEBLq4TWtiBFX+I=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-539-38kp50sEPgiMg6oAMjRBGw-1; Thu, 28 Aug 2025 08:47:07 -0400
-X-MC-Unique: 38kp50sEPgiMg6oAMjRBGw-1
-X-Mimecast-MFC-AGG-ID: 38kp50sEPgiMg6oAMjRBGw_1756385227
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7f6a341c9b8so235540285a.2
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:47:07 -0700 (PDT)
+ us-mta-113-xxKpqB6DNk6PlFGRw8ozKQ-1; Thu, 28 Aug 2025 08:51:45 -0400
+X-MC-Unique: xxKpqB6DNk6PlFGRw8ozKQ-1
+X-Mimecast-MFC-AGG-ID: xxKpqB6DNk6PlFGRw8ozKQ_1756385505
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4b29a0b8a6aso23485461cf.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:51:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756385227; x=1756990027;
+ d=1e100.net; s=20230601; t=1756385505; x=1756990305;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=LQHCXqjm4zIM8dZntivUPtrmx6PsmOO0Jbe3R2x3L2Q=;
- b=jgmjuleVlYORTBlrS0CGMydNUK8itCCawJaKnD/ED/TqjMLglZUx98LBi5h8vn9JV6
- ELeDhyYNhnl6aqwMemnMQG7BlKDs0mCHA0S5osTwdv+81fIRJ58Hf4z07s5ZOoJ4bbSQ
- 87yA+IC2Rw482IiRTZVYAVGVdYciSm7NsvguqIXyoL+5VdeU9Ko8GG9GLgzITFW6KLTz
- V/LPnmQf5QKFOSiymC9qDUEYhSjiwjtCkia4OxMDf/kml+u5kvmLmY1RH3TGxcbosNuK
- fT2iZBdzONsCal7xe+EoFyixnJJn9FEggIK8gtNV+pD77VV3xNHTr9LufICefCq4cIAy
- QapA==
+ bh=4S1oH5XEC1cWvETWWJ5LtYxybZWNTrEDO/B1jMqo/B0=;
+ b=L78zuXpXiwZ46l6S5EdrirOEN0wqTh6XcYmfPyTVkvjJgAfY2/qHcNwQdx7r7lQwS/
+ 07Ehn2w5kJIJhcXaOs12+FZdRIcwFOXVqz64l7ZSmGmNCqH6WD1zg3SkN61I5JOEcQzi
+ T0IWMFyjOsvxTpO9QQbIIUR0nLK/DnWzAZAGd7BXTO48PlXptaqp9uabZdVdKRYcTr7u
+ mdvqA0UdcwsHSJPxGXcKp6i/fMQvoUV903vgsVjkC1aCtyu6oheKAaiGFz41DL7X2jr2
+ 1OGpG6QjSdMwto/vGX9oSreWdmcSgh2xhtsG7xv4Wk0cFELaJnzR8mx4bY7iuEER3OPx
+ zwXg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWnqJv3SzRn9fQVP84XcJTe2Gn6VBehm6J/tsIxxyvL9KDFiUSHc3hBrFOUOaSMC3YiY+RppUaRz+Ux@nongnu.org
-X-Gm-Message-State: AOJu0YySaCug7VoZ8FrS+2VN6d+St/Jr/rCw1WO4/1nxpcF9r6Wo8aqG
- 3SoBWNMJSNfCtOkV1LGWmwQY8xEV7SYQGoy15ea59quD8kH4Vbrv4XDWWd2EAeN14Pzdm/sB5GO
- l2dzVV60xaQqgNy6VL2+hywzpoFgRRdYNmbQe5SPDETCG1JXb+Q2rKaC5
-X-Gm-Gg: ASbGncv1l2tISsI1WhizUbJp4TfHlyOKbIetLQ09fTJogMzM7zb2h/Ih6TpUKVfZlYC
- QUOTMqwveZ41leM7/TSQKUD1t+tManr3kOAbMSV9vASOjiQc57UEeFYyTjkRKlJQXfOmXrwGsme
- bWv5sDE2XI5hJJ5mdEyJ6BLbJB4/1GIBghyNitC55WGY2sReziPPOBAgsv8EN+eKoMT+0YJBMoJ
- ty+7DAcOqRv4OLzrh8wS15uYOhXs1rn4XccJJblzqMVkuw3RCWg1xdZv0xjl1Kznksfh009BkSy
- hX9E+4dHv8c8A8bvbp2M7+8jJ0cOs7CFwk9B6rhPkMIdAyJMPTsfnzNrPmN2c02xZqG96TnXHku
- PSO6yHDaPbBI=
-X-Received: by 2002:a05:620a:c4e:b0:7e7:fd8a:ae7c with SMTP id
- af79cd13be357-7ea10fa1446mr2405198885a.7.1756385226623; 
- Thu, 28 Aug 2025 05:47:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH4VdNbBmYNEP+DUi1v0PM8gQvy8TOYo+o/bH3CHCTQfKOHQ6w1g2MM/UAsd7NQy0hyiyqNcw==
-X-Received: by 2002:a05:620a:c4e:b0:7e7:fd8a:ae7c with SMTP id
- af79cd13be357-7ea10fa1446mr2405196185a.7.1756385226186; 
- Thu, 28 Aug 2025 05:47:06 -0700 (PDT)
+ AJvYcCVsaAdzWTMFA4vR8jVIn6cZmoiCHvIWYxvxw8cUX+aEqcfbOkfqRNEvHn/32oAhr+rpvXOoVwnjlKtb@nongnu.org
+X-Gm-Message-State: AOJu0YybpM+Yn0dwx+F2KKrDKRy7jg61k3XwAg7nFhyIqMZoNzxFV74w
+ uWywyjFD7N6rh21ii+dAXvXVFc7oFfdBAF47Vca+4YVxnFtV+hVzpCMBYLE6/mFdEM6QZxRuwJJ
+ ZGuUssdrLwxgXBGYl+KncuKI4xdCrOvtXATghhzRkoYmgNQ0L34wDV+0q
+X-Gm-Gg: ASbGncv+q46GGeWWWxTrF0ufGIaMwe/5gjg6QzfEU0riMabjwxLUzYfPaxQJWSf4Rg1
+ pvLDj9ECGk13o/CXdwBFhEPG/0svt8vN0p6sDQgrrP9HL//yubZvv0QzqfhNZPg+yIkYWQR09Ke
+ loNsUQk9Jbuw/l4kG1doy69YPPaxuoDzzbJ48R/R6p4A2cY4MrA3TxBbqGGAQsP83r6mKJ/VgOi
+ vB43E4/+X5jC+xrwmCUqEp7sSvh0gVwKgvBQSnjOfhuAbGnoOikJ+NUsf5hocxPgcKfVOiDq7kV
+ 8PWO3Lg6SQTV0rXXSTA2Q+wCFLdYAAlgCjS7y9RoaQ2f+Z1tvmMClpiBcfg8gWlvRocQHRHqirn
+ BYQVMo656m5g=
+X-Received: by 2002:a05:622a:1b07:b0:4b0:6b76:723d with SMTP id
+ d75a77b69052e-4b2aaa19110mr247336361cf.7.1756385505101; 
+ Thu, 28 Aug 2025 05:51:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFBVshJyhFBFAB/RLWyIDgXwfy304reW63zfnIowrhs80Bmtf9x3ZWIt8DtAeWkJP8alm+zBA==
+X-Received: by 2002:a05:622a:1b07:b0:4b0:6b76:723d with SMTP id
+ d75a77b69052e-4b2aaa19110mr247336031cf.7.1756385504682; 
+ Thu, 28 Aug 2025 05:51:44 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
  ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-70da72ca086sm103138106d6.61.2025.08.28.05.47.02
+ af79cd13be357-7f07c87a894sm846114585a.25.2025.08.28.05.51.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Aug 2025 05:47:04 -0700 (PDT)
-Message-ID: <0ff48782-4e89-40c0-b233-d36d69724786@redhat.com>
-Date: Thu, 28 Aug 2025 14:47:00 +0200
+ Thu, 28 Aug 2025 05:51:43 -0700 (PDT)
+Message-ID: <eed9d8f2-ad13-4125-851e-353db20a0d5f@redhat.com>
+Date: Thu, 28 Aug 2025 14:51:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 19/21] vfio: Add a new element bypass_ro in
- VFIOContainerBase
+Subject: Re: [PATCH v5 21/21] intel_iommu: Enable host device when x-flts=on
+ in scalable mode
 Content-Language: en-US
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
@@ -89,9 +89,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com
 References: <20250822064101.123526-1-zhenzhong.duan@intel.com>
- <20250822064101.123526-20-zhenzhong.duan@intel.com>
+ <20250822064101.123526-22-zhenzhong.duan@intel.com>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250822064101.123526-20-zhenzhong.duan@intel.com>
+In-Reply-To: <20250822064101.123526-22-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124;
@@ -120,105 +120,34 @@ Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhenzhong,
+
 
 On 8/22/25 8:40 AM, Zhenzhong Duan wrote:
-> When bypass_ro is true, readonly memory section is bypassed from
-> mapping in the container.
->
-> This is a preparing patch to workaround Intel ERRATA_772415.
-I would explain what this ERRATA needs to implement
-
-Thanks
-
-Eric
+> Now that all infrastructures of supporting passthrough device running
+> with stage-1 translation are there, enable it now.
 >
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->  include/hw/vfio/vfio-container-base.h |  1 +
->  hw/vfio/listener.c                    | 21 ++++++++++++++-------
->  2 files changed, 15 insertions(+), 7 deletions(-)
+>  hw/i386/intel_iommu.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-> index bded6e993f..31fd784d76 100644
-> --- a/include/hw/vfio/vfio-container-base.h
-> +++ b/include/hw/vfio/vfio-container-base.h
-> @@ -51,6 +51,7 @@ typedef struct VFIOContainerBase {
->      QLIST_HEAD(, VFIODevice) device_list;
->      GList *iova_ranges;
->      NotifierWithReturn cpr_reboot_notifier;
-> +    bool bypass_ro;
->  } VFIOContainerBase;
->  
->  typedef struct VFIOGuestIOMMU {
-> diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-> index 903dfd8bf2..5fa2bb7f1a 100644
-> --- a/hw/vfio/listener.c
-> +++ b/hw/vfio/listener.c
-> @@ -76,8 +76,13 @@ static bool vfio_log_sync_needed(const VFIOContainerBase *bcontainer)
->      return true;
->  }
->  
-> -static bool vfio_listener_skipped_section(MemoryRegionSection *section)
-> +static bool vfio_listener_skipped_section(MemoryRegionSection *section,
-> +                                          bool bypass_ro)
->  {
-> +    if (bypass_ro && section->readonly) {
-> +        return true;
-> +    }
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index f9cb13e945..04a412d460 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -5222,6 +5222,8 @@ static bool vtd_check_hiod(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
+>                     "when x-flts=on");
+>          return false;
+>      }
 > +
->      return (!memory_region_is_ram(section->mr) &&
->              !memory_region_is_iommu(section->mr)) ||
->             memory_region_is_protected(section->mr) ||
-> @@ -365,9 +370,9 @@ static bool vfio_known_safe_misalignment(MemoryRegionSection *section)
->  }
+> +    return true;
+The easiest one ;-)
+
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+
+Eric
+>  #endif
 >  
->  static bool vfio_listener_valid_section(MemoryRegionSection *section,
-> -                                        const char *name)
-> +                                        bool bypass_ro, const char *name)
->  {
-> -    if (vfio_listener_skipped_section(section)) {
-> +    if (vfio_listener_skipped_section(section, bypass_ro)) {
->          trace_vfio_listener_region_skip(name,
->                  section->offset_within_address_space,
->                  section->offset_within_address_space +
-> @@ -494,7 +499,8 @@ void vfio_container_region_add(VFIOContainerBase *bcontainer,
->      int ret;
->      Error *err = NULL;
->  
-> -    if (!vfio_listener_valid_section(section, "region_add")) {
-> +    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
-> +                                     "region_add")) {
->          return;
->      }
->  
-> @@ -655,7 +661,8 @@ static void vfio_listener_region_del(MemoryListener *listener,
->      int ret;
->      bool try_unmap = true;
->  
-> -    if (!vfio_listener_valid_section(section, "region_del")) {
-> +    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
-> +                                     "region_del")) {
->          return;
->      }
->  
-> @@ -812,7 +819,7 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
->          container_of(listener, VFIODirtyRangesListener, listener);
->      hwaddr iova, end;
->  
-> -    if (!vfio_listener_valid_section(section, "tracking_update") ||
-> +    if (!vfio_listener_valid_section(section, false, "tracking_update") ||
->          !vfio_get_section_iova_range(dirty->bcontainer, section,
->                                       &iova, &end, NULL)) {
->          return;
-> @@ -1206,7 +1213,7 @@ static void vfio_listener_log_sync(MemoryListener *listener,
->      int ret;
->      Error *local_err = NULL;
->  
-> -    if (vfio_listener_skipped_section(section)) {
-> +    if (vfio_listener_skipped_section(section, false)) {
->          return;
->      }
->  
+>      error_setg(errp, "host IOMMU is incompatible with stage-1 translation");
 
 
