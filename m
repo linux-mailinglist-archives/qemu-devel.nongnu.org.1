@@ -2,94 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F3F7B39526
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 09:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9C0AB3957B
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 09:39:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urX23-0004XP-3i; Thu, 28 Aug 2025 03:26:51 -0400
+	id 1urXD3-0003Nq-7F; Thu, 28 Aug 2025 03:38:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wilfred.opensource@gmail.com>)
- id 1urX1i-0004T7-JU; Thu, 28 Aug 2025 03:26:31 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wilfred.opensource@gmail.com>)
- id 1urX1e-0005PF-JT; Thu, 28 Aug 2025 03:26:29 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-248e3ef1641so1290445ad.3; 
- Thu, 28 Aug 2025 00:26:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1756365985; x=1756970785; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rVc3ZDMgKX2lqgZgsOWCoFWzd0mHTx09FG8yv2UWhzY=;
- b=Tt8ZlVlyUCTvHclsZiOHst24rX0rRWx6PT+zQfJRgSkQFWvQ+LEaQoc0BdBjMsYinI
- VnZMOheC3qHFxkN2UfCTUsHryI4TD/pTdmx5fgY2OIk146sHbA/o971S4bCHEjaGRyMY
- m3cRU9SJ2+4mEUHMDbJqRwKKZdUkONJ7o9Aog9vT4QRv5c7bAZ6lq5XyV/UtAw2Uxalg
- yCPrv6Ch1j16bxAmu5k5gkp8HIPWFutv5p2SHHAywdZ13kEfvrCdaSCpWJUgiTN75dv0
- Iuqxq7zniTkXBS4a0n7t1iJpFZtnp829OXwjwC1+MPuqBtOBXWaeIV7aBkGpevLbnZym
- dPoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756365985; x=1756970785;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rVc3ZDMgKX2lqgZgsOWCoFWzd0mHTx09FG8yv2UWhzY=;
- b=pqi2U6ylrMXy9j96nTopJD2DA4yXFTaO2cXxUah4O23SsYOSP5I6Ze29r4bg4uPbTX
- 0R7MXg42CPfmGth6QAjMuF37OXBUcILvMVDeuVDT6mO6eY5MQlkeH3dkbEWyUx6P2eS5
- iOOat2v1mjS3yvKDYAgcUgEtWyOYKyPgLNapDyJ/whXODYNEPw6sqWfqavCljQrgSMR9
- gN/rcCcS9pH2ng5EwzhIwg6JC3fvvQYD1jkdUlIVHP4K6QkHg+Zg9AzFZT580B7eFS2D
- XvuoQLQrV1E+hv6rF6vV4EYdUNuhwFhQ28ibn7uEXPOvMP/0EemL5WENKLP1ytyuurA2
- knsQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUZTymvAVqYq9LMfN3cg7/1IZY3N3rWCOl4HfkmMD5Hz2Q4TYUqTLkoMOEk5dXjQFk84jXAvLQsW3xi@nongnu.org,
- AJvYcCXvReQ3+qSGQ8GJda+Mod/B1s5u0TunwQ1sssHmG3lvEb2jekepSXFxg3Vr+p/5hDyYP2ZbBaShNcGXQg==@nongnu.org
-X-Gm-Message-State: AOJu0Yzwx3jiU1hMBQpAuxb9qMuoOkmpB7sqxp8kgLkyD/1hNKFj2vY7
- BtIotq+qUswPYOBIEZ4EGHJ3+6M3Ot54u7ANytNCOeuB0c/spvz1Qjyc
-X-Gm-Gg: ASbGncvCBTq61odcJRfYUHQMjdRTxDM/hIY74DX/Jela1g3fLkXquzKID4ejIfuw/RG
- 8She7WpnXLRSTc5ExWRRrmw5fOM6Y8FCC1cU1Crc/a3j6L5QgBQHfnl6Y+Z0P7rVwW1FP94OzAi
- ooXeqGOeJcoN076ycdzRyf6GIeb05Kn/ShV/pq91OK81kuJpT4e488SD86VuaZ+fZ9yrGRWG8Ru
- AuuoZhxo6Uj6zom3GLkSjhqx2A4yfOHINHcCiNOAX0gejYC+X6sFNK2XB9Imufa8mbIh3Bullr3
- TQh4PoFUBbRM+x9YoHCq5XU3X6sFqETZuBX4nk9jzs1KSaFHAjOFFxByQxxD7Rn0fLpRltr5dcY
- C+p5d/OtepaAKwq2GC2/ehmgyAIwKwJOurYmv
-X-Google-Smtp-Source: AGHT+IH2xSp3bvAWurtxpJuguxYbJ5Swhjwn8WQp6JHft+eIg///HbPRYJeIC6SqU7lFuHBlk5T7yA==
-X-Received: by 2002:a17:902:db0e:b0:246:edc9:3a80 with SMTP id
- d9443c01a7336-246edc93d95mr178979595ad.5.1756365984717; 
- Thu, 28 Aug 2025 00:26:24 -0700 (PDT)
-Received: from fedora ([159.196.5.243]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-24884a629fcsm51009775ad.19.2025.08.28.00.26.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 00:26:23 -0700 (PDT)
-From: Wilfred Mallawa <wilfred.opensource@gmail.com>
-To: Alistair Francis <alistair.francis@wdc.com>
-Cc: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
- Jesper Devantier <foss@defmacro.it>, Stefan Hajnoczi <stefanha@redhat.com>,
- Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Subject: [PATCH v2 5/5] hw/nvme: connect SPDM over NVMe Security Send/Recv
-Date: Thu, 28 Aug 2025 17:25:33 +1000
-Message-ID: <20250828072532.425592-7-wilfred.opensource@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250828072532.425592-2-wilfred.opensource@gmail.com>
-References: <20250828072532.425592-2-wilfred.opensource@gmail.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1urXCy-0003N8-VH; Thu, 28 Aug 2025 03:38:08 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1urXCs-00073y-J8; Thu, 28 Aug 2025 03:38:08 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 78ED714CB50;
+ Thu, 28 Aug 2025 10:37:18 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8B555269D46;
+ Thu, 28 Aug 2025 10:37:46 +0300 (MSK)
+Message-ID: <cc833433-ab4a-4a89-8e36-2a4636cd9487@tls.msk.ru>
+Date: Thu, 28 Aug 2025 10:37:46 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=wilfred.opensource@gmail.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 101/163] tcg: Convert deposit to TCGOutOpDeposit
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20250415192515.232910-1-richard.henderson@linaro.org>
+ <20250415192515.232910-102-richard.henderson@linaro.org>
+Content-Language: en-US, ru-RU
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ qemu-stable <qemu-stable@nongnu.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20250415192515.232910-102-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,165 +103,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+On 15.04.2025 22:24, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/tcg.c                        | 33 ++++++++++++++
+>   tcg/tci.c                        |  8 ++--
+>   tcg/aarch64/tcg-target.c.inc     | 30 +++++--------
+>   tcg/arm/tcg-target.c.inc         | 29 ++++++------
+>   tcg/i386/tcg-target.c.inc        | 76 ++++++++++++++++----------------
+>   tcg/loongarch64/tcg-target.c.inc | 27 +++++++-----
+>   tcg/mips/tcg-target.c.inc        | 27 +++++++-----
+>   tcg/ppc/tcg-target.c.inc         | 44 +++++++++---------
+>   tcg/riscv/tcg-target.c.inc       |  4 ++
+>   tcg/s390x/tcg-target.c.inc       | 60 +++++++++++++------------
+>   tcg/sparc64/tcg-target.c.inc     |  4 ++
+>   tcg/tci/tcg-target.c.inc         | 19 ++++----
+>   12 files changed, 206 insertions(+), 155 deletions(-)
 
-This patch extends the existing support we have for NVMe with only DoE
-to also add support to SPDM over the NVMe Security Send/Recv commands.
+This commit (cf4905c03135f1181e8 on master) broke tcg linux-user
+on 32bit arm host.
 
-With the new definition of the `spdm-trans` argument, users can specify
-`spdm_trans=nvme` or `spdm_trans=doe`. This allows us to select the SPDM
-transport respectively. SPDM over the NVMe Security Send/Recv commands
-are defined in the DMTF DSP0286.
+Running armel binary (busybox) on armhf host or armhf binary on
+armel host gives:
 
-Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
----
- docs/specs/spdm.rst         | 10 +++++++--
- hw/nvme/ctrl.c              | 45 ++++++++++++++++++++++++++++---------
- include/hw/pci/pci_device.h |  2 ++
- 3 files changed, 44 insertions(+), 13 deletions(-)
+$ ./qemu-arm -L ~/q ~/q/busybox-armhf
+Inconsistency detected by ld.so: dl-sort-maps.c: 229: _dl_sort_maps_dfs: 
+Assertion `rpo_head == rpo' failed!
 
-diff --git a/docs/specs/spdm.rst b/docs/specs/spdm.rst
-index f7de080ff0..dd6cfbbd68 100644
---- a/docs/specs/spdm.rst
-+++ b/docs/specs/spdm.rst
-@@ -98,7 +98,7 @@ Then you can add this to your QEMU command line:
- .. code-block:: shell
- 
-     -drive file=blknvme,if=none,id=mynvme,format=raw \
--        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323
-+        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323,spdm_trans=doe
- 
- At which point QEMU will try to connect to the SPDM server.
- 
-@@ -113,7 +113,13 @@ of the default. So the entire QEMU command might look like this
-         -append "root=/dev/vda console=ttyS0" \
-         -net none -nographic \
-         -drive file=blknvme,if=none,id=mynvme,format=raw \
--        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323
-+        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323,spdm_trans=doe
-+
-+The `spdm_trans` argument defines the underlying transport type that is emulated
-+by QEMU. For an PCIe NVMe controller, both "doe" and "nvme" are supported. Where,
-+"doe" does SPDM transport over the PCIe extended capability Data Object Exchange
-+(DOE), and "nvme" uses the NVMe Admin Security Send/Receive commands to
-+implement the SPDM transport.
- 
- .. _DMTF:
-    https://www.dmtf.org/standards/SPDM
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 9358c9e540..3ddaea6cd5 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8932,19 +8932,31 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
- 
-     pcie_cap_deverr_init(pci_dev);
- 
--    /* DOE Initialisation */
-+    /* SPDM Initialisation */
-     if (pci_dev->spdm_port) {
--        uint16_t doe_offset = n->params.sriov_max_vfs ?
--                                  PCI_CONFIG_SPACE_SIZE + PCI_ARI_SIZEOF
--                                  : PCI_CONFIG_SPACE_SIZE;
-+        switch  (pci_dev->spdm_trans) {
-+        case SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE:
-+            uint16_t doe_offset = n->params.sriov_max_vfs ?
-+                                    PCI_CONFIG_SPACE_SIZE + PCI_ARI_SIZEOF
-+                                    : PCI_CONFIG_SPACE_SIZE;
- 
--        pcie_doe_init(pci_dev, &pci_dev->doe_spdm, doe_offset,
--                      doe_spdm_prot, true, 0);
-+            pcie_doe_init(pci_dev, &pci_dev->doe_spdm, doe_offset,
-+                          doe_spdm_prot, true, 0);
- 
--        pci_dev->doe_spdm.spdm_socket = spdm_socket_connect(pci_dev->spdm_port,
--                                                            errp);
-+            pci_dev->doe_spdm.spdm_socket =
-+                spdm_socket_connect(pci_dev->spdm_port, errp);
- 
--        if (pci_dev->doe_spdm.spdm_socket < 0) {
-+            if (pci_dev->doe_spdm.spdm_socket < 0) {
-+                return false;
-+            }
-+            break;
-+        case SPDM_SOCKET_TRANSPORT_TYPE_NVME:
-+            n->spdm_socket = spdm_socket_connect(pci_dev->spdm_port, errp);
-+            if (n->spdm_socket < 0) {
-+                return false;
-+            }
-+            break;
-+        default:
-             return false;
-         }
-     }
-@@ -9235,11 +9247,17 @@ static void nvme_exit(PCIDevice *pci_dev)
-         g_free(n->cmb.buf);
-     }
- 
-+    /* Only one of the `spdm_socket` below would have been setup */
-     if (pci_dev->doe_spdm.spdm_socket > 0) {
-         spdm_socket_close(pci_dev->doe_spdm.spdm_socket,
-                           SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE);
-     }
- 
-+    if (n->spdm_socket > 0) {
-+        spdm_socket_close(pci_dev->doe_spdm.spdm_socket,
-+                          SPDM_SOCKET_TRANSPORT_TYPE_NVME);
-+    }
-+
-     if (n->pmr.dev) {
-         host_memory_backend_set_mapped(n->pmr.dev, false);
-     }
-@@ -9292,6 +9310,7 @@ static const Property nvme_props[] = {
-                      false),
-     DEFINE_PROP_UINT16("mqes", NvmeCtrl, params.mqes, 0x7ff),
-     DEFINE_PROP_UINT16("spdm_port", PCIDevice, spdm_port, 0),
-+    DEFINE_PROP_SPDM_TRANS_NODEFAULT("spdm_trans", PCIDevice, spdm_trans),
-     DEFINE_PROP_BOOL("ctratt.mem", NvmeCtrl, params.ctratt.mem, false),
-     DEFINE_PROP_BOOL("atomic.dn", NvmeCtrl, params.atomic_dn, 0),
-     DEFINE_PROP_UINT16("atomic.awun", NvmeCtrl, params.atomic_awun, 0),
-@@ -9367,7 +9386,9 @@ static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
- {
-     uint16_t old_num_vfs = pcie_sriov_num_vfs(dev);
- 
--    if (pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE)) {
-+    /* DOE is only initialised if SPDM over DOE is used */
-+    if (pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE) &&
-+        dev->spdm_trans == SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE) {
-         pcie_doe_write_config(&dev->doe_spdm, address, val, len);
-     }
-     pci_default_write_config(dev, address, val, len);
-@@ -9378,7 +9399,9 @@ static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
- static uint32_t nvme_pci_read_config(PCIDevice *dev, uint32_t address, int len)
- {
-     uint32_t val;
--    if (dev->spdm_port && pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE)) {
-+
-+    if (dev->spdm_port && pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE) &&
-+        (dev->spdm_trans == SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE)) {
-         if (pcie_doe_read_config(&dev->doe_spdm, address, len, &val)) {
-             return val;
-         }
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index eee0338568..88ccea5011 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -4,6 +4,7 @@
- #include "hw/pci/pci.h"
- #include "hw/pci/pcie.h"
- #include "hw/pci/pcie_doe.h"
-+#include "system/spdm-socket.h"
- 
- #define TYPE_PCI_DEVICE "pci-device"
- typedef struct PCIDeviceClass PCIDeviceClass;
-@@ -166,6 +167,7 @@ struct PCIDevice {
- 
-     /* SPDM */
-     uint16_t spdm_port;
-+    SpdmTransportType spdm_trans;
- 
-     /* DOE */
-     DOECap doe_spdm;
--- 
-2.51.0
+Running i386 binary on armhf or armel host gives:
+
+$ ./qemu-i386 -L ~/q ~/q/busybox-i386
+/home/mjt/q/busybox-i386: symbol lookup error: linux-gate.so.1: 
+undefined symbol: __vdso_clock_gettime, version LINUX_2.6
+
+
+Yes, I know 32bit arm is deprecated as host.  But it should work
+with qemu 10.1 still.  Or should it not?
+
+Unfortunately I haven't noticed this before.
+
+Thanks,
+
+/mjt
 
 
