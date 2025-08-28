@@ -2,93 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656B5B3CE63
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:51:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81899B3CEA4
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 20:19:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usOh7-0005Z2-By; Sat, 30 Aug 2025 12:44:49 -0400
+	id 1usOeU-0008SR-TT; Sat, 30 Aug 2025 12:42:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urkng-0006Px-Or
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:08:56 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkpI-0006mn-D1
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:10:36 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urknd-0004jN-W6
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:08:56 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-248a61a27acso11555425ad.1
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 15:08:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkpG-0005Wp-9R
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:10:36 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-45b55ed86b9so8331145e9.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 15:10:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756418929; x=1757023729; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
+ d=linaro.org; s=google; t=1756419032; x=1757023832; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=yTeUFN5//J9p2+jkIE73D0Qq2fiCq5Y0YOl43PavdRQ=;
- b=zG4zLiLox1cgemMNjDKkaAIkdC0pZcQyy8DSCTw87+0X5EnJx/9BhzEU9kVIfN6yaD
- UDs5iZwjdfUNY+A6RKNprwByKLJC1AGJOd+j0W8NG5Gyayuhpxm4UunBHUZ7Kkjc0tGw
- e6wzMBSKVBh5B2flrvl3jPf2OlSWGdP9P9bQ9DRrsqfoC8EUlBeB7745qnBtltXOjxSm
- 2eK+hOzExM9mTa01KfRsN0Ihr7GtinR3Ly+WVUHlCivYKVxTYdI6vqIvOJ1GvZZ7kq+n
- pVAlf6l8sM4Xe37UQ0RrN0BMKBpqG/4Xvj59p8oyV5bfwHWRtT95gEi+885s1N5S/0/1
- OYyw==
+ bh=4IgyS4bdUdJEXom4nT0B8vFEDGGCP198DulKAudY4JM=;
+ b=h07LdAOCELZFnR7Eq4HZtIErdMdAV2NuhlINLzm2Y+QmqaE1QKeJWAbx0Jd2Vzejqm
+ Dn3zAX0Ifjc0/+JJ2ICToyA28byxum7P1FLWJAFEgKuWq1OsD6yYNEqCIvp1LMbHI79M
+ YyKQPo8pFL/SqeHzJ6nJJQpcCJ43AdRmxWolDOkixsSs9baORSpJeFJTBHNaQVnCeIG8
+ 3h4zWXm7wR4uq17ONzS55T+hjYp12CUNyCoLSXxYvg6o2Gm+4c7L55TiriNPOQuZagLj
+ y/XJwhAcKoP2YJk5JfiZVqOZ5xruJ41CUcH3d4kHwV1BZZp/3Aj1lABkAXY1WsqNLLOt
+ WvOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756418929; x=1757023729;
- h=content-transfer-encoding:in-reply-to:content-language:from
+ d=1e100.net; s=20230601; t=1756419032; x=1757023832;
+ h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yTeUFN5//J9p2+jkIE73D0Qq2fiCq5Y0YOl43PavdRQ=;
- b=DfoZzqmMlJr0Nt7FTqYhiKXXjWzOu/E513XvuYKJbvoJceuNCYutF13DTCde1UmBg/
- APhmZ/hABuymFjlOjt8MUwrw1c3Q0WDlB1VKJDZkvkCZbT+gF0T8NqgUhwdmzHgY/WYH
- ZeUtTeYMEovdR5XqSS3Hs/1WRDVDZpHyVAUQf6x28ksXWWW5vAn67qnNX8Po9BiEQo1V
- XRsw+OuQ0FsaQZnU21bzMrxEvOvHdBSJ/tUfZDyh8D/LYV1WCKKBQ+X/TgPntgRnJEpx
- JY0bG1vimR6HQTJI4l+7g6CertVOcuOOjJBWnWjY4T55HqdP8UF8kC69Fb1NMi+Nk/jj
- gvrg==
+ bh=4IgyS4bdUdJEXom4nT0B8vFEDGGCP198DulKAudY4JM=;
+ b=nccgR5fY72vrpfRe3cOhFRDQvDSP5I58buKsVn2S8JktrJD2vgDrzKm3iwBhy8j+Sn
+ IhgSGwuJNAS85P0YvTlHTCkI0w4Rkpch4q5amjSSuSIewD3EsSUMSGZF7ra1HBdMDmMU
+ 6er38e7GhF8gYC7dXRXGKmpiOXpQ/9/RH0DsqIPGRkBBgWMAOA5ytQwc0IXI3CyG48uF
+ kfwV3B73HU0UoAIbs/VwIvcqoGwKyA92p7JB6LayLE4pQ3DdbE7zWjcFsIdF3JJJ8psb
+ rR9KEbjjR5Krd1Bew6mWyaqSWj2+X4pOiJkJu/sQpmGl0oefxX59ciwVIOYtVkhUriNY
+ yfvg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUg3Ncg7afRwZtb6RywZ7m+2AUlS0ebZRbwGl9QwSdBgq+g/rU5hyakwJE/H3eHyM4KZDQZT6bY2TxL@nongnu.org
-X-Gm-Message-State: AOJu0YxKWAduFPfpiMY5T2u3DRWXJ19SAOnWy5o0YR8S9XAp4STJqMky
- DAp1wa56wDdGQtMWgBG0wpekJaXvKYz1WtVtRzwPH0HGGKzJvGJCkL0uy/oICVZzoac=
-X-Gm-Gg: ASbGncudYpSmEdwGoLOTtrp4GB9NdWX9KtFFfKnKIp8vLf6de08PLrKN/0j8oxYHWEe
- 3ShehbxXEARMepqbbSsiwLgRnGNaFAKfvVoRTgr8dsNjlACV7BSZg/kvlS9sUeWkfnw5E0MZIpX
- buYTbEZlAGYgt/VVSLfrMCZDCThjlay5IUeBRoXYROZzcdrzO4R1PmB+SsyIm8eFYn6/cYo9J5D
- Z9bAuDCSfHeYmXSwjY7WUlmRtJuv2cWgjPStw+b8YMuzQ4ssuRjuXEDtcbUOykKdgfwMYQ/yvmL
- 4jT+ivhm4NkcZSIzzvNYsjKp0tOaBJPx/tmCAfUTatVm4/hs2iAXlFo/ksZrRB0aSHdg1/HIUNN
- 6wKARph/qzBZG6TzqZFOVPR3vEXUbsurrRzaL
-X-Google-Smtp-Source: AGHT+IG503sJOwEaOHopVj2DXiwKLBBkvWpTbVRcS6Bl4sWpWVTzV7/BfTo3luOtaWlsdIvyXYzG1A==
-X-Received: by 2002:a17:903:238a:b0:245:f860:80b1 with SMTP id
- d9443c01a7336-248753a264dmr141217015ad.11.1756418929437; 
- Thu, 28 Aug 2025 15:08:49 -0700 (PDT)
-Received: from [192.168.0.195] ([144.6.121.55])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-249066dcb44sm5087145ad.138.2025.08.28.15.08.44
+ AJvYcCV7JnZzryzyWP2r8xhX6vQbZ3iXv8vO4KQ/WZhfrvpT53hJll5c5vwUBQ7ECQhDIWA50lTWlOEUuHol@nongnu.org
+X-Gm-Message-State: AOJu0YxTeVghPpS9J5OjUFH4JosSSMSJgkiQPcZCyQ++eMwtLQrXQyT5
+ xXqtCozqf9/rqvwj4X1fT3BZdIuerRLyTRcCLNz2EdDbl/+9jOgcVPH6m9vAX3eNRUs=
+X-Gm-Gg: ASbGncsXW8x4GR/i6MwT4c9/hGak+E+dVycTJg5eox+Kz42oCMNYbiKaqUgzGlPMYJT
+ lyJ6A0cJR+C3wKOThuNpKCaztH6VnZ8dBVuAl955O3TUtkO0H744dFJqubEgTdPhJgWp8Bx0Zah
+ qYtFHmq1HtUSeRBDnN6mtiHQlUY/oHxJV7VJDjn/Sdkos2Q58u99IDjH7MzWOLExrKCt5CGbyB6
+ tGi8VKzNY8p9nBLzrF8/PQ6SC7zJj1yNWBnQwje3uIYTJiYInNjI7IEeVX1Dmq4p55Oce7yNld8
+ BhB7eDqkBF9VVqt1NgdvvSGmno5JZDRKgJlc/9BboOy3WuWMCYyUlCONaRrbdS3DsWeR/4ruOHH
+ i3FrYoKl4Pqh/gvBQzbPejgKWGIdlm7+LhiWwvZX0biZf49pogeVAHMYwj3FEfJCCO6zvx86uDd
+ 9R
+X-Google-Smtp-Source: AGHT+IHScl1KSy8c6rgO/fZq1i52I8Tb+tOJ0kvl4c72DlD6QicoGVNLCVHONIw9rIcPPOjYu4mJTA==
+X-Received: by 2002:a05:6000:2508:b0:3c7:df1d:3d9 with SMTP id
+ ffacd0b85a97d-3c7df1d0518mr13968837f8f.39.1756419031814; 
+ Thu, 28 Aug 2025 15:10:31 -0700 (PDT)
+Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3cf346811b3sm794670f8f.63.2025.08.28.15.10.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Aug 2025 15:08:48 -0700 (PDT)
-Message-ID: <889ec17c-2f3b-4ca0-ae45-dbb16df1c468@linaro.org>
-Date: Fri, 29 Aug 2025 08:08:39 +1000
+ Thu, 28 Aug 2025 15:10:31 -0700 (PDT)
+Message-ID: <5ae93843-0059-4077-8158-6fd272f2e10d@linaro.org>
+Date: Fri, 29 Aug 2025 00:10:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] hw/mips: Remove mipssim machine and mipsnet device
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: devel@lists.libvirt.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20250828143800.49842-1-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v4 12/47] hw/arm/xlnx-versal: VersalMap: add support for
+ OR'ed IRQs
+To: Luc Michel <luc.michel@amd.com>, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Frederic Konrad <frederic.konrad@amd.com>,
+ Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+References: <20250822151614.187856-1-luc.michel@amd.com>
+ <20250822151614.187856-13-luc.michel@amd.com>
 Content-Language: en-US
-In-Reply-To: <20250828143800.49842-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250822151614.187856-13-luc.michel@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,12 +107,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/29/25 00:37, Philippe Mathieu-Daudé wrote:
-> Philippe Mathieu-Daudé (2):
->    hw/mips: Remove mipssim machine
->    hw/net: Remove mipsnet device model
+On 22/8/25 17:15, Luc Michel wrote:
+> Improve the IRQ index in the VersalMap structure to turn it into a
+> descriptor:
+>     - the lower 16 bits still represent the IRQ index
+>     - bit 18 is used to indicate a shared IRQ connected to a OR gate
+>     - bits 19 to 22 indicate the index on the OR gate.
+> 
+> This allows to share an IRQ among multiple devices. An OR gate is
+> created to connect the devices to the actual IRQ pin.
+> 
+> Signed-off-by: Luc Michel <luc.michel@amd.com>
+> Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+> ---
+>   hw/arm/xlnx-versal.c | 63 +++++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 62 insertions(+), 1 deletion(-)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Nice.
 
-r~
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
