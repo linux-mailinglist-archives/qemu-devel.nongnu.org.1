@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6781CB39BC5
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA7EB39BAA
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:35:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urau7-0003Nb-Kj; Thu, 28 Aug 2025 07:34:55 -0400
+	id 1urauA-0003Qw-RS; Thu, 28 Aug 2025 07:34:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urau5-0003MX-72
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:53 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1urau6-0003N4-8K
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:54 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urau3-0005lp-Fy
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:52 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-45a1b05a59fso6040515e9.1
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:51 -0700 (PDT)
+ id 1urau4-0005mH-Ft
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:54 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3c380aa1ad0so414695f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756380890; x=1756985690; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756380891; x=1756985691; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=S+zSf5gKYyiBX8RYazhXjiVCPsv19NY1x2MGbwfSWFo=;
- b=JOMn4hzZQoQ4k7845Pl0Vd7o316UBqfcBKCbxbFr3edNTkaFCNwI7Dnopk3VTDdwe4
- kjVms/dq1RWjbOmJpb6Sc1PVNLc5kwAt2KV0eZodkZzM+Uy6nqPOU2U3UC7mOXP3id4X
- Ff0bIBkbjqZ7T6w6GzdYqi9k++YWNheatnfES6YZaYDhW9rsiTwQhBTpi7UZZsJdG7yX
- 6kBt9lNU59NnvJAQbGXKaVkf29nXalomYDvmGbkx8+CaNPCLOE1zPMK8LXJOvsMk6FPE
- j+FgbxgXWKs1ZVIOBikKP0NFF3AbqEr6xkIBPFlW5fxYOGr/aI6+0Rss6Nap5NZHl/KK
- mvBQ==
+ :reply-to; bh=b8ajJViGCAPLZDLfex9Nz79/xy+FoUmGUxGAj6rowos=;
+ b=P8RtFVvFWcHXayJ0YacnwLRc9+ZCGT55V+4Wii6kE1Zx2RF6sQCkEo1bOsaIFVrsVD
+ 0lG1DQOx0K42o5LOFZri66S2sw4Kqv9RAvACtuz+4QY9NAQJJyy9KOTeReyYjBqWRGLh
+ PgJ1NSaCKbVKKr/Zm0yERDSEg1uz9I972tGnI/uIKUxExnCmdHnJ1jJUK2WdMurbBCE6
+ 2XD34IXft007lY2U33XJswcrXIL/1OgqEFx9AIFW2pXIKPJJaPpVuVuJgth+EPXLlxyU
+ dsSba/pOjhozXofFqjxIgR5ahlXUt9anjXLXxFbUvalilR4ca1UD+b5dDhPYipDNwYj5
+ m9hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756380890; x=1756985690;
+ d=1e100.net; s=20230601; t=1756380891; x=1756985691;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S+zSf5gKYyiBX8RYazhXjiVCPsv19NY1x2MGbwfSWFo=;
- b=XlPe0EbjyiNOZwp9WZm9n+TkPFEfHob/rytR5ul0DqOWOscXJBVqhVWwhTTLLru4p7
- y14sKafKlTWPgQ5sHH0PFgJK/GWB66xIKRbukgJjMVb0hfTQZup0jNdOp2ptiYcXrq5N
- /aHdocqgo+gWQvIhwj254H7CIvUOVvdMcjgvNHUCgbSTSy4l8eTtS9xR1tN/ozuZsDN6
- rFfxSXg76o34tQDB8uD7u3Qs77mSnQAoi0tBNA+aeZCZXDxfKP8e2h/lnEfMiZuo7eUV
- Kh0DU94ab+o6qsmgBsvhE6VEd3PBJLdg+mD2oBwqaptC0cgf61hgzcQwUrvzMxoYGNJY
- 1FCQ==
-X-Gm-Message-State: AOJu0Yy/oVFpV2Son6nsesXTGt8/YoIM8Nqj5HaxhCfLLM7ejb/xVB7m
- 8Q97xgM9npMCFXi8WoCkUy5EMK3FYU+SowJmHjCcst+l9KYiKvcoGcXG5ibyMZebhkdTounzli9
- xhYtu
-X-Gm-Gg: ASbGncs6Jqha/LwaaViemzed8HU2xHFUhz++bY4bXOzbCYP65xvLIyq+sUFjVs8A35W
- MBuSKhbrKDP0yr9q96bOlya0w026lQo5mBrDYMS0UtQomnAZYUye0PGZDIgBkidH/GT+WO4a372
- HWO9ISJ1TNjNTleGZ2noZUejXB7JIAfWZzrbHMfyn++B1K5T4VFI8CKknsgalDjHHWQI9Mbt/88
- p8hlSL8a+9gX4q3962dOQrXd+G/eRagDWQ1eZ4AktD9Qk1YoILZ5yAZpJY9eNPSzbsCI4NzB58J
- Dfq7Yd8pYg/4/H/KtAeN7OvBODELUbk51LrMNgDQAzgv3fDbr2yztrHGR5T242QK3KC2KLkmaRR
- hQSbXRRdq6y2YA1YHjFoC2JWfwj1s9fQxeaovnvQ=
-X-Google-Smtp-Source: AGHT+IHCxIRmghgd5YWev+N653pMKjUbocl/9emiHYoEgLRyNtDVp7cYAdDQpRc6uhvAln0EUoz9vg==
-X-Received: by 2002:a05:600c:4fc8:b0:45b:7be1:be1f with SMTP id
- 5b1f17b1804b1-45b7be1bfcemr11182345e9.32.1756380889613; 
- Thu, 28 Aug 2025 04:34:49 -0700 (PDT)
+ bh=b8ajJViGCAPLZDLfex9Nz79/xy+FoUmGUxGAj6rowos=;
+ b=JRz1EqtuXfKwvu/lxF/EyEB/e037Z1s5IAvXPWdF/q6XiHrweaqn6xsPUBitew7VaI
+ ykGUC13SKCC4v+M/fN0WQCTXlN/9PCRB8FLI5ikSKi5ZxkDM1kUaZ3Z+hejzXV5uUsM5
+ 1sPs2SEhGuF1qpSMiWEjFjzS8uq6TremvN4du6RufKR5M1BiNM5HYKJhG9s1kalcjayj
+ 0G8XebDRQxF43E9z3BB0MJ9nyDBFAviVw6KzTm4BNQ/thN+PBVP3mpAv6bwc3vEvKgOr
+ sniq+S71Bp5A7or+jqopLLZ1sH+mM/5KvASLnC/1Wab4+lIjAZaEPoBXZ3exBvG3DLcy
+ MVvw==
+X-Gm-Message-State: AOJu0YyCjZyuH3dpCieud6vlMGnFoeV3fyA3rAPafApvmXQfHE7JvfYG
+ HB5IYaDWvUoHvY+S8u59GKHzVsSAD7d+dAQpx/YZYmRRxAOaBcwY7j+2ejvwnRFPmCIQaYWgT5Q
+ /UJXj
+X-Gm-Gg: ASbGncu8BJynG59h1+ob8iqB1pI6O83FTuWz/TVjZKlTJrOmm/83YBEtENf78jGhybx
+ Y82KY1Ij27Zr5jqpUDTeZ6jDKCl554HwUXfh8myJK37CHB3UVAjc339u+78nybrRGqQPxn+rtCz
+ l6mHtQZ0LX2HyPnZQ8WCl7lx0gbuayWpbFVz6JkpzDc5TDnH8U5VrxkhLh0idzLtukgzDHkycdJ
+ 0xVz8nrjh0wNQE9VjJmqWRT1r/s5nCbYSBvslQ47VKZpftR5EDhlfyS2gm7/kgpXUB6TA/gs4NA
+ rrG30ARZPAgh0Te8Nog6d01RZiLPvBJhYvv4tqNhnR5LCTCsYDoottzKxwtsM2bor+Zl4fV2L+P
+ ZILi4LhzBrOBzV/+WvNYZgZX4aKHeAE9fK8xAieE=
+X-Google-Smtp-Source: AGHT+IFAeSI5GNTUXewe4bTR1E5szjXbERv4PTa6rRXhSrFnGH2FI00CNCfJ2GyeGsRxWrTr3gYvQw==
+X-Received: by 2002:a05:6000:2013:b0:3c8:152d:a707 with SMTP id
+ ffacd0b85a97d-3c8152dad20mr13764707f8f.53.1756380890553; 
+ Thu, 28 Aug 2025 04:34:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.48
+ 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.49
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 04:34:48 -0700 (PDT)
+ Thu, 28 Aug 2025 04:34:49 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/32] scripts/kernel-doc: Avoid new Perl precedence warning
-Date: Thu, 28 Aug 2025 12:34:12 +0100
-Message-ID: <20250828113430.3214314-16-peter.maydell@linaro.org>
+Subject: [PULL 16/32] docs/sphinx/kerneldoc.py: Handle new LINENO syntax
+Date: Thu, 28 Aug 2025 12:34:13 +0100
+Message-ID: <20250828113430.3214314-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828113430.3214314-1-peter.maydell@linaro.org>
 References: <20250828113430.3214314-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,71 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Newer versions of Perl (5.41.x and up) emit a warning for code in
-kernel-doc:
- Possible precedence problem between ! and pattern match (m//) at /scripts/kernel-doc line 1597.
+The new upstream kernel-doc that we plan to update to uses a different
+syntax for the LINENO directives that the Sphinx extension parses:
+instead of
+  #define LINENO 86
+it has
+  .. LINENO 86
 
-This is because the code does:
-            if (!$param =~ /\w\.\.\.$/) {
+Update the kerneldoc.py extension to handle both syntaxes, so
+that it will work with both the old and the new kernel-doc.
 
-In Perl, the !  operator has higher precedence than the =~
-pattern-match binding, so the effect of this condition is to first
-logically-negate the string $param into a true-or-false value and
-then try to pattern match it against the regex, which in this case
-will always fail.  This is almost certainly not what the author
-intended.
-
-In the new Python version of kernel-doc in the Linux kernel,
-the equivalent code is written:
-
-            if KernRe(r'\w\.\.\.$').search(param):
-                # For named variable parameters of the form `x...`,
-                # remove the dots
-                param = param[:-3]
-            else:
-                # Handles unnamed variable parameters
-                param = "..."
-
-which is a more sensible way of writing the behaviour you would
-get if you put in brackets to make the regex match first and
-then negate the result.
-
-Take this as the intended behaviour, and update the Perl to match.
-
-For QEMU, this produces no change in output, presumably because we
-never used the "unnamed variable parameters" syntax.
-
-Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Message-id: 20250819115648.2125709-1-peter.maydell@linaro.org
+Message-id: 20250814171324.1614516-2-peter.maydell@linaro.org
 ---
- scripts/kernel-doc | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ docs/sphinx/kerneldoc.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/kernel-doc b/scripts/kernel-doc
-index fec83f53eda..117ec8fcd1f 100755
---- a/scripts/kernel-doc
-+++ b/scripts/kernel-doc
-@@ -1594,13 +1594,12 @@ sub push_parameter($$$$$) {
+diff --git a/docs/sphinx/kerneldoc.py b/docs/sphinx/kerneldoc.py
+index 3aa972f2e89..30bb3431983 100644
+--- a/docs/sphinx/kerneldoc.py
++++ b/docs/sphinx/kerneldoc.py
+@@ -127,7 +127,7 @@ def run(self):
+             result = ViewList()
  
- 	if ($type eq "" && $param =~ /\.\.\.$/)
- 	{
--	    if (!$param =~ /\w\.\.\.$/) {
--	      # handles unnamed variable parameters
--	      $param = "...";
--	    }
--	    elsif ($param =~ /\w\.\.\.$/) {
-+	    if ($param =~ /\w\.\.\.$/) {
- 	      # for named variable parameters of the form `x...`, remove the dots
- 	      $param =~ s/\.\.\.$//;
-+	    } else {
-+	      # handles unnamed variable parameters
-+	      $param = "...";
- 	    }
- 	    if (!defined $parameterdescs{$param} || $parameterdescs{$param} eq "") {
- 		$parameterdescs{$param} = "variable arguments";
+             lineoffset = 0;
+-            line_regex = re.compile("^#define LINENO ([0-9]+)$")
++            line_regex = re.compile(r"^(?:\.\.|#define) LINENO ([0-9]+)$")
+             for line in lines:
+                 match = line_regex.search(line)
+                 if match:
 -- 
 2.43.0
 
