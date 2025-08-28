@@ -2,77 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA06CB3A828
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66258B3A859
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:39:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgH8-0004Sz-JU; Thu, 28 Aug 2025 13:19:08 -0400
+	id 1urgGi-00040m-SG; Thu, 28 Aug 2025 13:18:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uretR-0002Zg-M1
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 11:50:29 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1urfD5-0004OA-Sp
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 12:10:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uretK-0003IO-GW
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 11:50:29 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1urfCv-0007A2-Hd
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 12:10:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756396216;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=aDabViE7kmq5QQOlR4//G1ztLS6JiCNZGP5+NSPQb+A=;
- b=FR+XTj+ac1kzZInGZW9sSGVvUAPTLLsDjEr1ewVv62GIFSBUie0+2NtFMU9DN8rdCnYjDc
- Sl4qdqhDC4dktf36bmzQonxnnIP2nUkOopBCtTqvkTdJQsxUQv/GonjVfiby9AQ6RAfB3D
- qqrMvdWDWGfyqxeeVxB14YMWghuAONk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-158-sXLUx5LzMqazxijsjnv53Q-1; Thu,
- 28 Aug 2025 11:50:14 -0400
-X-MC-Unique: sXLUx5LzMqazxijsjnv53Q-1
-X-Mimecast-MFC-AGG-ID: sXLUx5LzMqazxijsjnv53Q_1756396213
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 29F5718002CD; Thu, 28 Aug 2025 15:50:13 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.130])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0366B180029A; Thu, 28 Aug 2025 15:50:11 +0000 (UTC)
-Date: Thu, 28 Aug 2025 16:50:08 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Andrew Keesler <ankeesler@google.com>
-Cc: marcandre.lureau@gmail.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/1] hw/display: Support per-head resolutions with
- virtio-gpu
-Message-ID: <aLB6sC6qI1RN_dr4@redhat.com>
-References: <20250722190824.3419413-1-ankeesler@google.com>
- <20250722190824.3419413-2-ankeesler@google.com>
- <aK8MHGgp-Dm_Lkmb@redhat.com>
- <CAGZECHOL=v50aV0vcCHdFxb69TmH7mXry2NEhu+EZZnWztRO-A@mail.gmail.com>
- <aK81yUqtwoZ9_29l@redhat.com>
- <CAGZECHNkRo=Oejh9CgAAV+Qa8f_PgdhvyOy+rAGNRG29Datt1Q@mail.gmail.com>
+ s=mimecast20190719; t=1756397433;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oDERzEzBHnJXU1xhba4X/mrF4LFYKd9iDT3MmhX+84o=;
+ b=SKdL97E+z95ZcPLm1n1PS7jFIYCpoXR7CcYkswUicxCom2ZwIAsjlSH1giGHIdzr20ARft
+ xa1BptCWJ5oCYX2LpHt/+vJZPKyozBNCdEHkKZWLgRWs80oW4OO1Zp48QjRlQ4On/+7LCH
+ rB9exq2KpRpOcswMdjO4FGKgedsBvr4=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-690-fE-B3N9kN2Wpl0FQnED6pg-1; Thu, 28 Aug 2025 12:10:31 -0400
+X-MC-Unique: fE-B3N9kN2Wpl0FQnED6pg-1
+X-Mimecast-MFC-AGG-ID: fE-B3N9kN2Wpl0FQnED6pg_1756397431
+Received: by mail-yw1-f197.google.com with SMTP id
+ 00721157ae682-7200579b490so14704727b3.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 09:10:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756397431; x=1757002231;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oDERzEzBHnJXU1xhba4X/mrF4LFYKd9iDT3MmhX+84o=;
+ b=JVjTkR4HUP4+KqrMt3m/PV5RcfMVvAT0X0bJV7qM1SZYjxA2pv35V22oBzuMYc/4mJ
+ lNdYGOuPQ+JCYSFPmACRTAtHAFzzgZTyUzieouw03xyY9VrXZPsAQK6RAG0JQN6mHhcH
+ uZYdvbLQG2/LrZmry0pLszEuN+2esr9kq1bJd/FcH90lu9ydXLrMHsPI2gnP3UWG7zEu
+ Q0eQuofsAJ85otCKV+Chs+jNLcj0eiN0+awBE29a4skVMClv7QPJFW31xJf5bsYrndZQ
+ 4OVo/oyHVdZv7pRgwfvVxxegK9gQXtqF8U1gT1fSV8rcf+G6LFcADdgayNUn11+1W2v1
+ shSQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVd7ub6zYWjk2D/cgk+yZWJkwLLctLD+Ll7+ApiQ+pUFbvgQ5ea4PTiXLhwKC2Cubd1AlrpqSwixdEG@nongnu.org
+X-Gm-Message-State: AOJu0Yz0izNgt8RZGOhORyIupCFcXyrlxGwEAkcCzPD1cGrCugKhSCkk
+ kF/X7RQjvN/FTwdRtboapwg9lBeJnoETfHWMksvw6iTMizxEc697z4B9UXbXu24AOdIeCholfKf
+ 1Hc6D+Cd85GJdPFwKXsiI2dj6A4TqnAeLo1BN9NgP2YtT7p5dyfnzAYvI
+X-Gm-Gg: ASbGncvcL8aFIAq3ljuFPIWy6oedS1Z4qHgK/QyMNqVTTnIZVZJCWk1+m0capDDOjQT
+ p3NHqHgJhm9Xw9V8bCRlQDY+uypr8UbIxiHRKv+ciOK9xWrOriv9+OZ2sbKAY1es+h5XUC0PSyK
+ FcA+eEvI7URFr2pIWvMfxpqtjlNr4DgHwI+mlaDDcjFWDXqzzuzITDr/5lBoLZrTkHSwx90vrIt
+ zxq6GvDkcW3QiecBPUMioXiaFQ5qDBOwQWNxl4qrLca4BHYHxacJY3QSnnReM8KjGhIlTnrSy0D
+ zo3n2nNHe2AOOPHh9JUtKBgog6HHiZ4Q
+X-Received: by 2002:a05:690c:7401:b0:71e:7907:7b49 with SMTP id
+ 00721157ae682-71fdc2ea7demr274947887b3.14.1756397431199; 
+ Thu, 28 Aug 2025 09:10:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHuYExElLnfjtVRrMpzw+tR5E8Ja0u2iCfHxqP09K3DJkDuValsY2MLsWzGKlYAAccsX0Sjuw==
+X-Received: by 2002:a05:690c:7401:b0:71e:7907:7b49 with SMTP id
+ 00721157ae682-71fdc2ea7demr274946897b3.14.1756397429998; 
+ Thu, 28 Aug 2025 09:10:29 -0700 (PDT)
+Received: from x1.local ([174.89.135.121]) by smtp.gmail.com with ESMTPSA id
+ 00721157ae682-721c634bb45sm353257b3.22.2025.08.28.09.10.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Aug 2025 09:10:29 -0700 (PDT)
+Date: Thu, 28 Aug 2025 12:10:15 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
+ devel@daynix.com
+Subject: Re: [PATCH v7 1/2] memory: Update inline documentation
+Message-ID: <aLB_ZwL7v9Uzvc2s@x1.local>
+References: <Z4U30j9w1kPnKX9U@x1n>
+ <5dc54c92-0382-4a70-9dad-588572698eed@daynix.com>
+ <Z4aYpo0VEgaQedKp@x1n>
+ <CAFEAcA_mpWZO8V9cE74bKzveEEZDXkqE+XbOFFdhmKUKO3dmSw@mail.gmail.com>
+ <Z4a3GxEbz1jjCDc5@x1n>
+ <CAFEAcA87oYqMj1t+yriXHLuTg3G-=eRwOvt4-n4uJmeNujTBxQ@mail.gmail.com>
+ <d9acf231-829e-4a9c-7429-282fcc2ae756@eik.bme.hu>
+ <2fe8b128-dda1-40af-89ac-e86ba53138f5@daynix.com>
+ <CAFEAcA8A97ocOfv72KeSEgFkchmAOfc=GiX8QmvRui5=DDF=qQ@mail.gmail.com>
+ <878qj3zitv.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAGZECHNkRo=Oejh9CgAAV+Qa8f_PgdhvyOy+rAGNRG29Datt1Q@mail.gmail.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <878qj3zitv.fsf@draig.linaro.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,39 +126,47 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 28, 2025 at 11:47:23AM -0400, Andrew Keesler wrote:
-> > > I think we should probably report an error if xres / yres
-> > > are set at the global level and also set against any individual
-> > > output, so the two approaches are mutually exclusive.
-> 
-> > ACK - fixed for the next patch.
-> 
-> Doh, I ran into an error. Seems like if I don't set xres/yres, then it
-> gets defaulted to 1280x800.
-> 
-> 
-> https://gitlab.com/qemu-project/qemu/-/blob/master/include/hw/virtio/virtio-gpu.h#L175-176
-> 
-> So...could we just get away with documenting that if you set xres/yres
-> and outputs[0].xres/yres, then the later is going to overwrite the
-> former? I'm not sure how to detect if xres/yres has been set globally
-> to 1280x800, or if we are just getting the defaults.
-> 
-> What do you think?
+On Thu, Aug 28, 2025 at 02:17:32PM +0100, Alex Bennée wrote:
+> The virtio-gpu blobs are a special MR which we handle clumsily at the
+> moment as they are backed by separate thread (virglrenderer) and we need
+> to jump through hoops (c.f. virtio_gpu_virgl_hostmem_region_free) to
+> make sure it is done with the memory before we can free the container.
 
-Oh it probably isn't worth the hassle for a mere error report. Instead
-just document that per-output takes priority if both are set.
+I remember looking at that path when discussing this problem.
 
+Using virtio_gpu_virgl_hostmem_region_free overwrites the object->free is
+pretty tricky.  Same on having MR->owner points to itself..
 
-With regards,
-Daniel
+Is it possible to make virtio_gpu_virgl_hostmem_region an object, then make
+it as the owner of virtio_gpu_virgl_hostmem_region.mr?
+
+In general, whenever a MR needs serious refcounts on its own besides the
+device to be emulated, IMHO the simplest way (which still 100% follow the
+current QEMU's MR refcount design), is to create an umbrella object, making
+that to be the owner instead.
+
+We recently also have another discussion on how to achieve similar dynamic
+MRs in vhost-user's SHMEM_MAP series:
+
+https://lore.kernel.org/all/20250805081123.137064-1-aesteve@redhat.com/#r
+
+Ultimately, Albert went on with the VhostUserShmemObject approach, looks
+like it works all fine, it's used in his latest post:
+
+https://lore.kernel.org/all/20250818100353.1560655-2-aesteve@redhat.com/#t
+
+In that work, TYPE_VHOST_USER_SHMEM_OBJECT still dynamically allocates the
+MR, but then it needs an explicit object_unparent() in finalize().  IIUC it
+can be an embeded MR inside the owner object then object_unparent() isn't
+needed either.
+
+I may not have the full picture of virgl here, but not sure if this can be
+solved in the similiar way to avoid the hacks.
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Peter Xu
 
 
