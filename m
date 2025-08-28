@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0EAB3A7C6
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC9AB3A7DF
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:26:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgFn-0002Lh-PV; Thu, 28 Aug 2025 13:17:40 -0400
+	id 1urgGM-0003Yn-QB; Thu, 28 Aug 2025 13:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urdhX-0006rY-HY
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:34:09 -0400
-Received: from mail-yb1-xb34.google.com ([2607:f8b0:4864:20::b34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urdhU-0008A9-AV
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:34:06 -0400
-Received: by mail-yb1-xb34.google.com with SMTP id
- 3f1490d57ef6-e94d678e116so868956276.2
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 07:34:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756391641; x=1756996441; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=JdW0FAikDnlYvC1ZJ5NjdjCS7rBoSnw11YgFEcbLqJ4=;
- b=kgtErnY3Gjh5DIOvm/o9/fDtRy6OpnAPso9iNspsNbwFH46OR/5xWtl6sZOTUqJukn
- l0gn8SSYeGy+LrpGniVWIHTdpti7nralkuZoTSCzxYGGWk1cf5LiWRw6ATra7Ihot6pE
- RDyiUICOtF3rn8m+cvk1+R/9v/8NHIM2J0qsv0cYKrRc+Zcs+t8mTnTfCqJelATNti5N
- 4qFKhfSVoxomfYZFhYFZmrDqIRIen1IxJ4+JfXs8+EyqMnGdnOC6RL2+IMA1KABhTA7C
- JDyr2boPi084iORj2A07lFvcNPgZ18wmdJ3uMXjQllXwcWh++ThGXBEt2ZPGGN80Bn9Q
- hdOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756391641; x=1756996441;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=JdW0FAikDnlYvC1ZJ5NjdjCS7rBoSnw11YgFEcbLqJ4=;
- b=TahQvzN/ELSA3QScNfmdCJr6I774s37JvE4gJlnt6RtbQhGj9/c41iRiZP9Om8YxLW
- +vET4W6F7foSgHURWdv3U3xgnIq/l9GH94lyGOOTYuqF9A5aoCL8yZFrNKBjiWC3ADiV
- s/RER22Absj0UsSzFzr9BZguSxakI/GEba9bOZtqmHav5/8XF720M/UMuOtx0LvPE1T4
- a4a+fDhU5l1t68UkxvjSdoHOiXQBRKMsyfhZUEyC9+BQIjXzEJY9zZTSHurBQcV7E2HC
- FrhM1K9TKplHryIh/0BRj+lWP2px450ZgD+IUvacvjy7FPYxaCGj1sMRjjuJYB+D4fbJ
- h+cw==
-X-Gm-Message-State: AOJu0Ywh65bHrxBUJomyvfls97fXBIVEmpG0MaAaGZ5erdbgSZFH5R9+
- v1rKC5PfW2/EHQ7oAEy4UuMsexbpzA5jO71+LZfL4dco/U+ZKdXSI8unQrl0QMGqQgzszSKzg+F
- Xg5noYh1hU/cK/w4lxqijTe10/YxltVlRvhrT119dFTPpIH1D5+8J
-X-Gm-Gg: ASbGncthxTAx3wveqOdgKtnT9bQMzmDD3pVbRb6I5+O9URJmX/vFojQBGpAUB1k2pPi
- YtEaXrD2t9IQJnZxyBpXapsHABSrh9c7uuSJ+ytP7MIDANGbUghh4qww7GOevCKcJCk8IGwamPg
- 335onyfqYuOkdg/931dGk8l8FdHCV3J0BzIH9B0zL5LXLnE2D7VLNDrzC7YopPTYIaTd+oI6E7N
- 0PcZfWFVHu2mjgzXdo=
-X-Google-Smtp-Source: AGHT+IGyQikb/HfBAOrb6D4Iyc9MeaTTolDnPyDVRpSdDSnGhWK1m0UcfhIcX6TGlhM4+2XmPW5V53ON5bgNHA4qOoQ=
-X-Received: by 2002:a05:690c:4a01:b0:71f:f359:6c9d with SMTP id
- 00721157ae682-71ff3597064mr240129067b3.11.1756391641172; Thu, 28 Aug 2025
- 07:34:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1urdjc-0007qP-1k; Thu, 28 Aug 2025 10:36:16 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1urdjU-00005F-A0; Thu, 28 Aug 2025 10:36:15 -0400
+Received: from [192.168.10.111] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 57SEZDTH003241
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Thu, 28 Aug 2025 23:35:13 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=CP09GhtH7NOR18r1J8PJ0M0HApPz8eN8Q+zfZcMFpb8=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1756391714; v=1;
+ b=Z2XCvYm8H5kdjETqk5J0VI6O8o9POe9TBmxLwU11xbRaHPbWNUEU1eCoFHMiJu4g
+ ucSEubepSzVKTUh6vJkpDxAnPJwTHgp5b12ws9uIEg/wzMA1Sv9eQ2STW7D0wUxU
+ w+o4WyS5N/TruKhPrO1yutsVqwA3MhPv5hPANbGyPBzx+pb7okmHXHPjh7xLqZ48
+ b4adUPSkhkyWXQ/YkXwiaDi2oqefs1Vm2lr4ldH6sBWI/oi99TB7S2WdsSP5GUu0
+ S9F059dBOhlAra5I6tUxR+xbvf1C3lX5K6L6YN62NfZ9itWhxCLXcZ5vFfPljBT6
+ gsj4emQ1TzGT4oj5TObyIA==
+Message-ID: <aeb2f1b1-dcf6-41b0-88f9-49ec4ffe8234@rsg.ci.i.u-tokyo.ac.jp>
+Date: Thu, 28 Aug 2025 23:35:13 +0900
 MIME-Version: 1.0
-References: <20250828120836.195358-1-richard.henderson@linaro.org>
- <20250828120836.195358-30-richard.henderson@linaro.org>
-In-Reply-To: <20250828120836.195358-30-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 28 Aug 2025 15:33:49 +0100
-X-Gm-Features: Ac12FXxQT-zLnanGaQaAne4tuZczNe4uuAWLyOcNgc6YXxOMguw363-_P4HNnvg
-Message-ID: <CAFEAcA-DSpLNLN8WdFfN0L4huf-HT6UqEY2uyzJ7PqBHvngcrA@mail.gmail.com>
-Subject: Re: [PATCH v3 29/87] linux-user: Remove target_elf_greg_t, tswapreg
- from elfload.c
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b34;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb34.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/2] memory: Do not create circular reference with
+ subregion
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Peter Xu <peterx@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, qemu-ppc@nongnu.org, devel@daynix.com
+References: <20250110-san-v8-0-57a5a1be1bcf@daynix.com>
+ <20250110-san-v8-2-57a5a1be1bcf@daynix.com>
+ <CAFEAcA-aTYebu-5s4AeBfE3oLQfxTwCpeosoj0TU8E_XPu_ZDg@mail.gmail.com>
+ <CAFEAcA-ygHuA5BH+oftCGDKZOh8CHbiUKE4v=-iXvCaKzG4kHQ@mail.gmail.com>
+ <aKctCjv8newNIX71@x1.local>
+ <CAFEAcA8DV40fGsci76r4yeP1P-SP_QjNRDD2OzPxjx5wRs0GEg@mail.gmail.com>
+ <aKdizYeNGocXvTzv@x1.local>
+ <CAFEAcA8dKu3mSuD=rJkwDPcvqQASsOpFPdpG4Ht59GrTb+AywA@mail.gmail.com>
+ <aK4tuhRfotpndpa8@x1.local>
+ <e4e0b75a-0990-4108-88f9-f49a346f515b@rsg.ci.i.u-tokyo.ac.jp>
+ <CAFEAcA8o6abCbdL9nPqAfeh2BJmy8KmGeW8hrqqshm+BBriqkA@mail.gmail.com>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <CAFEAcA8o6abCbdL9nPqAfeh2BJmy8KmGeW8hrqqshm+BBriqkA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,18 +95,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 28 Aug 2025 at 13:09, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> These are no longer used within the generic file.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  linux-user/elfload.c | 8 --------
->  1 file changed, 8 deletions(-)
+On 2025/08/28 18:54, Peter Maydell wrote:
+> On Thu, 28 Aug 2025 at 02:13, Akihiko Odaki
+> <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+>> I'm not in favor of the change. There was a long discussion in the past,
+>> but I think the following email is the most comprehensive description of
+>> my point and includes comparison between the two approaches:
+>> https://lore.kernel.org/qemu-devel/2fe8b128-dda1-40af-89ac-e86ba53138f5@daynix.com/
+>>
+>> So please check the email and reply it.
+> 
+> Do you have a version of your patch which works (i.e. doesn't
+> segfault) ?
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Sorry, I missed the context. And indeed v7 and v8 do not work; It seems 
+I failed to test v7.
 
-thanks
--- PMM
+I posted v9, which fixes the NULL dereference.
+
+Regards,
+Akihiko Odaki
 
