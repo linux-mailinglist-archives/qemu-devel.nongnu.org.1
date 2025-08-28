@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9995FB39BB5
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8AAB39BC1
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:39:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urau5-0003M5-IN; Thu, 28 Aug 2025 07:34:53 -0400
+	id 1urauA-0003QV-N7; Thu, 28 Aug 2025 07:34:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urau3-0003Ks-7q
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:51 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1urau4-0003Lz-Li
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:52 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urau1-0005kq-Cr
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:50 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3c7edd71bbfso591181f8f.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:48 -0700 (PDT)
+ id 1urau2-0005lX-R2
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:52 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3c6743a10e3so419586f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756380887; x=1756985687; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756380889; x=1756985689; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=EnGGrcv97B1m9Yhyyzk0TCrzPdK4iabw1UUxjeGtLm0=;
- b=EELQuHTRxwpjAy+S4mh+yNqrsogCTx7fxObZODrlQIkcvyI/FlA04Qci0xqzmBidih
- gE/0Z1cnFHcbEbmaz2Lkn6PtH2FgqbFvBCz7zps0HmR18epsw3KBkUhwtOxd28N3Y1iH
- LSEt0z5FLkgiloCAweBgANMqqpYMJ81xAuSbOLnNXeQX0BnQPONgRIYs5HzDcmg352I3
- m19gaekeBiM8OdPNoCEITHU4BaD/ms1SxRyjlD5hSopw2LmdEY2/jV0sW/jhlbsbCMHh
- dX+mWrfnb21HCjqGHRNQMOlS/Pv5d/vkBCMsO0+CqPVv/wE0wu1Ky5Ukjg8H1EXCMpd+
- Vc8w==
+ :reply-to; bh=iam1hDuVEJ4IEWHLRQN0p7qFdPnVJgerGQJU7wZLLt8=;
+ b=IIyJ8wGuotb0l+sdSf9Cj6iOlzc4rNsEMugoAwmP7QFiQFUFRujBq3ZOvR1+MH6iyC
+ 9uN0Kj9rXku0aWQhxHAiHj+/Y49qUFxgU0eFmNOKWZ/e9CthTzLdzkio2q93DQYjGTX4
+ xuL4z50YihRialZ80mopWxkCkPGFb1TlIZP0B+CjEEQ973fwVanANMJy57qWk6sLqWqv
+ 9IpwUIqLlp2PwiAQN9x1kn/ay+4SByWoOSGdlC/n0MeSkTRnDm3s35dfipP5nYME+TJT
+ 00/rOZlwzSbEDW8YxSIODyyRBmNEa31RbsQAw/8wBUVBhrJDOUrylt9btjK2vquBtcek
+ EWTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756380887; x=1756985687;
+ d=1e100.net; s=20230601; t=1756380889; x=1756985689;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EnGGrcv97B1m9Yhyyzk0TCrzPdK4iabw1UUxjeGtLm0=;
- b=YZfYhMHNtgDSm4kfFGQXmDwgtEmKdTk5ZvbU2BknEZaPmVz5dNEHlxTiuEoo+CquQq
- F2dudaSLqFqGA3ehyeFi4DoKBcIMfnqj4+4pH3NUAQp5SmAkHOEZyk9tfLolpwfNiGEo
- HKQ6S6yLf6PSqmmbbmUdUcPERHBp7yQ3U0s6ssO1Lio9I+1prjidSFJEsyp1bwdkSY7Z
- wJb689dUIfWlmnaEgu/VmEEGtiTJ01mmQTTT64ppHOzK7n0B9CQuDR89hrWWWZJwsXu+
- C7OnkOB4I1cRN9k7E3mFd6kNmMdd/CdJ8+ZYcC7G46DiZjIj6mavXDHpxibRYRTCdY1W
- De3A==
-X-Gm-Message-State: AOJu0Yz48LCcs0C08d243vtTwCHrSCi4iBeAJQfaibPw4gxtSmHRM6C7
- wwf9GXFl3fstCTNsNxpN0mB87B6i34OEX046P3l14pmme+/J6bLXvggRwCBbwpXJSsgBIdKB33y
- 7acq9
-X-Gm-Gg: ASbGncvObE+tnbkzGwXURsjyt2GVerZ0PJZKP/199OX0BPY+E0Ji4yB7MIFBGLdjV9v
- /N5Oj8VvolqDUMmb1dTu+bGWGZhB9zv73T3EUBaw/rpmlw22XKOKqG/TDGaj6lv5u6wAMV1ypcl
- sUDrt2+uXdb93nYae3rwg6LhJpdiDDqjDbo9/M8PQQKsnJixV/5IEZpu1V1dMWXSx6dDdEwo+b/
- H89/nQlqFbz8aNS6l1WYOId0x5xja3a5JvAiofkSBahICNrM5OvscSVSO5jn8/JxrVMP2O+M6+d
- Z0aDYKp9lqxsLB/PqH4Y5+4Lv5qWXrbCGokh7F0fsnwWVd/dbnwsd3fDOhth7DFcALQTigDxmis
- hgU4TECRNwFN0YSK46/d+OIO8Hen4rodFOQPUfTA=
-X-Google-Smtp-Source: AGHT+IEK3Jn6RMpgrGSjsU4+RCTgzWAVF8xAIPG9vm94prJO6lX3c4c3qChjik9DnvFxvyxTCYOYaw==
-X-Received: by 2002:a5d:5d0c:0:b0:3cb:46fc:8ea8 with SMTP id
- ffacd0b85a97d-3cb46fc9040mr6613020f8f.3.1756380887507; 
- Thu, 28 Aug 2025 04:34:47 -0700 (PDT)
+ bh=iam1hDuVEJ4IEWHLRQN0p7qFdPnVJgerGQJU7wZLLt8=;
+ b=LD73U4QxblA7f2cdPOrpUdwezXQOrStvvrKpzl7a3YBl+lltQAKkYl5y304bI02T9O
+ fREEXDri93FJXLtyzCJ1T83maeT9KeKxwom6T62osGWLvCKTUDkDYwtZf+F0jxmXWasB
+ MrIT6PWDUDYMKJQo6smLdjZxQr1SAsIlfhcpQJcsbYWo29zPrgKU4gKmlSNkgbcvtKSC
+ jjigPNwnmli6Wyl4CrrYDw109mo4gBvNaGQxmIm3AVMbhx5Wd1IyoDFHuNcVjn1S4pHr
+ jL7HpNblTIb4yjlQmz9VJ0f9AyT05V08JU6G0dni14p8xkE9tCvZeCVWdsnsra8+aBkm
+ shMg==
+X-Gm-Message-State: AOJu0YxQyXeOw+Nl4Mrp67CtHZaLqLLL6c80BGSqIEkGHVP7LH+xJub8
+ //U6HoUnC6wnj2qCuzvggsAnv7tdjO5UG9DQxkw7RVxu1383q1VpkhXvSMhv2Scrg3xDCkdHkcF
+ /X92o
+X-Gm-Gg: ASbGncsp0cmGzbOv6OybOtlwtHf9LiiwlbpXul0KihHyFwWOJnRewaoQKgouKblGEKL
+ oV4z+wS6pFfSJFVhrVF0omsFbLRr8xEN63Kb8O6bvUL8zy5MrbTS+UFW2tXGFS/O5PW6s6No8bf
+ 6dCwYYFMK5gDtXkM9H9BpThmIQMz0OJfSgjTRDyjOaCt4f9/Sqz64chGOQLHiS1hifo7s7dWdGk
+ anUUwyI7VTngpElDzV2GOMCQ1k/t1l7OfpYBJ7pX4yU5sElEV0wnJ19dyelykUWcAvAL7imFNzp
+ FD+6QzQw3bWeIrNofqxixyY7SS7jNyJNJpxfmaaATa18vzLqBU5SWcrVePWhajJiw2wxGpEpCrT
+ X6uiWIvzhjFguLggLIQVG4zcLKkYg
+X-Google-Smtp-Source: AGHT+IFss20RtRhdpwVp4fhbVZimEoadZXjKPdC6oLoKnl5A/duv7BW4/sKyi/MOKw20BMPXgMm0gA==
+X-Received: by 2002:a5d:64e7:0:b0:3ca:6584:be0b with SMTP id
+ ffacd0b85a97d-3ca6584c142mr10246675f8f.20.1756380888653; 
+ Thu, 28 Aug 2025 04:34:48 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.46
+ 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 04:34:46 -0700 (PDT)
+ Thu, 28 Aug 2025 04:34:47 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/32] target/arm: Enable FEAT_CSSC for -cpu max
-Date: Thu, 28 Aug 2025 12:34:10 +0100
-Message-ID: <20250828113430.3214314-14-peter.maydell@linaro.org>
+Subject: [PULL 14/32] hw/arm: add static NVDIMMs in device tree
+Date: Thu, 28 Aug 2025 12:34:11 +0100
+Message-ID: <20250828113430.3214314-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828113430.3214314-1-peter.maydell@linaro.org>
 References: <20250828113430.3214314-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,55 +97,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+NVDIMM is used for fast rootfs with EROFS, for example by kata
+containers. To allow booting with static NVDIMM memory, add them to the
+device tree in arm virt machine.
+
+This allows users to boot directly with nvdimm memory devices without
+having to rely on ACPI and hotplug.
+
+Verified to work with command invocation:
+
+./qemu-system-aarch64 \
+  -M virt,nvdimm=on \
+  -cpu cortex-a57 \
+  -m 4G,slots=2,maxmem=8G \
+  -object memory-backend-file,id=mem1,share=on,mem-path=/tmp/nvdimm,size=4G,readonly=off \
+  -device nvdimm,id=nvdimm1,memdev=mem1,unarmed=off \
+  -drive file=./debian-12-nocloud-arm64-commited.qcow2,format=qcow2 \
+  -kernel ./vmlinuz-6.1.0-13-arm64 \
+  -append "root=/dev/vda1 console=ttyAMA0,115200 acpi=off"
+  -initrd ./initrd.img-6.1.0-13-arm64 \
+  -nographic \
+  -serial mon:stdio
+
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Message-id: 20250807-nvdimm_arm64_virt-v2-1-b8054578bea8@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20250803014019.416797-7-richard.henderson@linaro.org
-[PMM: rebased to handle linux-user elfload.c refactor]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/emulation.rst | 1 +
- linux-user/aarch64/elfload.c  | 1 +
- target/arm/tcg/cpu64.c        | 1 +
- 3 files changed, 3 insertions(+)
+ hw/arm/boot.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ hw/arm/virt.c |  8 +++++---
+ 2 files changed, 47 insertions(+), 3 deletions(-)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 1c597d86738..b12f013b4fc 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -30,6 +30,7 @@ the following architecture extensions:
- - FEAT_CMOW (Control for cache maintenance permission)
- - FEAT_CRC32 (CRC32 instructions)
- - FEAT_Crypto (Cryptographic Extension)
-+- FEAT_CSSC (Common Short Sequence Compression instructions)
- - FEAT_CSV2 (Cache speculation variant 2)
- - FEAT_CSV2_1p1 (Cache speculation variant 2, version 1.1)
- - FEAT_CSV2_1p2 (Cache speculation variant 2, version 1.2)
-diff --git a/linux-user/aarch64/elfload.c b/linux-user/aarch64/elfload.c
-index 1030cb80947..482c0df2d7f 100644
---- a/linux-user/aarch64/elfload.c
-+++ b/linux-user/aarch64/elfload.c
-@@ -212,6 +212,7 @@ abi_ulong get_elf_hwcap2(CPUState *cs)
-     GET_FEATURE_ID(aa64_sme_b16b16, ARM_HWCAP2_A64_SME_B16B16);
-     GET_FEATURE_ID(aa64_sme_f16f16, ARM_HWCAP2_A64_SME_F16F16);
-     GET_FEATURE_ID(aa64_sve_b16b16, ARM_HWCAP2_A64_SVE_B16B16);
-+    GET_FEATURE_ID(aa64_cssc, ARM_HWCAP2_A64_CSSC);
- 
-     return hwcaps;
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index d391cd01bb1..1e57c4ab9ee 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -25,6 +25,7 @@
+ #include "hw/boards.h"
+ #include "system/reset.h"
+ #include "hw/loader.h"
++#include "hw/mem/memory-device.h"
+ #include "elf.h"
+ #include "system/device_tree.h"
+ #include "qemu/config-file.h"
+@@ -515,6 +516,29 @@ static void fdt_add_psci_node(void *fdt, ARMCPU *armcpu)
+     qemu_fdt_setprop_cell(fdt, "/psci", "migrate", migrate_fn);
  }
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 4eb51420ef6..eaf8846a6a5 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1178,6 +1178,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64ISAR2, MOPS, 1);     /* FEAT_MOPS */
-     t = FIELD_DP64(t, ID_AA64ISAR2, BC, 1);       /* FEAT_HBC */
-     t = FIELD_DP64(t, ID_AA64ISAR2, WFXT, 2);     /* FEAT_WFxT */
-+    t = FIELD_DP64(t, ID_AA64ISAR2, CSSC, 1);     /* FEAT_CSSC */
-     SET_IDREG(isar, ID_AA64ISAR2, t);
  
-     t = GET_IDREG(isar, ID_AA64PFR0);
++static int fdt_add_pmem_node(void *fdt, uint32_t acells, uint32_t scells,
++                             int64_t mem_base, int64_t size, int64_t node)
++{
++    int ret;
++
++    g_autofree char *nodename = g_strdup_printf("/pmem@%" PRIx64, mem_base);
++
++    qemu_fdt_add_subnode(fdt, nodename);
++    qemu_fdt_setprop_string(fdt, nodename, "compatible", "pmem-region");
++    ret = qemu_fdt_setprop_sized_cells(fdt, nodename, "reg", acells,
++                                       mem_base, scells, size);
++    if (ret) {
++        return ret;
++    }
++
++    if (node >= 0) {
++        return qemu_fdt_setprop_cell(fdt, nodename, "numa-node-id",
++                                     node);
++    }
++
++    return 0;
++}
++
+ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
+                  hwaddr addr_limit, AddressSpace *as, MachineState *ms,
+                  ARMCPU *cpu)
+@@ -525,6 +549,7 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
+     unsigned int i;
+     hwaddr mem_base, mem_len;
+     char **node_path;
++    g_autofree MemoryDeviceInfoList *md_list = NULL;
+     Error *err = NULL;
+ 
+     if (binfo->dtb_filename) {
+@@ -628,6 +653,23 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
+         }
+     }
+ 
++    md_list = qmp_memory_device_list();
++    for (MemoryDeviceInfoList *m = md_list; m != NULL; m = m->next) {
++        MemoryDeviceInfo *mi = m->value;
++
++        if (mi->type == MEMORY_DEVICE_INFO_KIND_NVDIMM) {
++            PCDIMMDeviceInfo *di = mi->u.nvdimm.data;
++
++            rc = fdt_add_pmem_node(fdt, acells, scells,
++                                   di->addr, di->size, di->node);
++            if (rc < 0) {
++                fprintf(stderr, "couldn't add NVDIMM /pmem@%"PRIx64" node\n",
++                        di->addr);
++                goto fail;
++            }
++        }
++    }
++
+     rc = fdt_path_offset(fdt, "/chosen");
+     if (rc < 0) {
+         qemu_fdt_add_subnode(fdt, "/chosen");
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 9326cfc895f..1e63f40fbec 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2917,7 +2917,7 @@ static void virt_memory_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+     const MachineState *ms = MACHINE(hotplug_dev);
+     const bool is_nvdimm = object_dynamic_cast(OBJECT(dev), TYPE_NVDIMM);
+ 
+-    if (!vms->acpi_dev) {
++    if (!vms->acpi_dev && !(is_nvdimm && !dev->hotplugged)) {
+         error_setg(errp,
+                    "memory hotplug is not enabled: missing acpi-ged device");
+         return;
+@@ -2949,8 +2949,10 @@ static void virt_memory_plug(HotplugHandler *hotplug_dev,
+         nvdimm_plug(ms->nvdimms_state);
+     }
+ 
+-    hotplug_handler_plug(HOTPLUG_HANDLER(vms->acpi_dev),
+-                         dev, &error_abort);
++    if (vms->acpi_dev) {
++        hotplug_handler_plug(HOTPLUG_HANDLER(vms->acpi_dev),
++                             dev, &error_abort);
++    }
+ }
+ 
+ static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
 -- 
 2.43.0
 
