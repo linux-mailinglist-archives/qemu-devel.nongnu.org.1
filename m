@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA7EB39BAA
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:35:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E54B39BA8
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:35:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urauA-0003Qw-RS; Thu, 28 Aug 2025 07:34:58 -0400
+	id 1urau9-0003Pn-LX; Thu, 28 Aug 2025 07:34:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urau6-0003N4-8K
+ id 1urau6-0003NS-PL
  for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:54 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urau4-0005mH-Ft
+ id 1urau5-0005mZ-5Z
  for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:54 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3c380aa1ad0so414695f8f.3
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-45a20c51c40so6758635e9.3
  for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1756380891; x=1756985691; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=b8ajJViGCAPLZDLfex9Nz79/xy+FoUmGUxGAj6rowos=;
- b=P8RtFVvFWcHXayJ0YacnwLRc9+ZCGT55V+4Wii6kE1Zx2RF6sQCkEo1bOsaIFVrsVD
- 0lG1DQOx0K42o5LOFZri66S2sw4Kqv9RAvACtuz+4QY9NAQJJyy9KOTeReyYjBqWRGLh
- PgJ1NSaCKbVKKr/Zm0yERDSEg1uz9I972tGnI/uIKUxExnCmdHnJ1jJUK2WdMurbBCE6
- 2XD34IXft007lY2U33XJswcrXIL/1OgqEFx9AIFW2pXIKPJJaPpVuVuJgth+EPXLlxyU
- dsSba/pOjhozXofFqjxIgR5ahlXUt9anjXLXxFbUvalilR4ca1UD+b5dDhPYipDNwYj5
- m9hw==
+ :reply-to; bh=PJHqiXggFgAiWZxXmkBYzyTnpBKCQII/0oqdzzevA9c=;
+ b=rmo4zaZzEHlB9MQFJV+nlXzSoUQtBckp2aE3IuRm2nkDljgtl8qq4GHAKECNRNC+XX
+ +eGjcI7jRpE9T4zKbZitFlYFqmkRUCSEW2kp/IeeVTfseaRwdcX9kVnqlq4sMZCdjBMN
+ 03sM9rpZtG4Ue7WRwykgfxY1J/sKNK7EYC/Dov0PaJBwvVz6azA/9aL/RcZiRmTrhLtB
+ RnvV0YDWPDpnfOXuwrx8lSy+W4UjbgZWKfi9hbN2ebxNkrbtATbs8LmjJAysF5TQkT+w
+ VDCDYMkD0UEStGkWPv1NO0ZnKaYo2RvqSs3njxwqEXCA6bvCc5/iRv01oBWq4lZcvvcL
+ KlQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1756380891; x=1756985691;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b8ajJViGCAPLZDLfex9Nz79/xy+FoUmGUxGAj6rowos=;
- b=JRz1EqtuXfKwvu/lxF/EyEB/e037Z1s5IAvXPWdF/q6XiHrweaqn6xsPUBitew7VaI
- ykGUC13SKCC4v+M/fN0WQCTXlN/9PCRB8FLI5ikSKi5ZxkDM1kUaZ3Z+hejzXV5uUsM5
- 1sPs2SEhGuF1qpSMiWEjFjzS8uq6TremvN4du6RufKR5M1BiNM5HYKJhG9s1kalcjayj
- 0G8XebDRQxF43E9z3BB0MJ9nyDBFAviVw6KzTm4BNQ/thN+PBVP3mpAv6bwc3vEvKgOr
- sniq+S71Bp5A7or+jqopLLZ1sH+mM/5KvASLnC/1Wab4+lIjAZaEPoBXZ3exBvG3DLcy
- MVvw==
-X-Gm-Message-State: AOJu0YyCjZyuH3dpCieud6vlMGnFoeV3fyA3rAPafApvmXQfHE7JvfYG
- HB5IYaDWvUoHvY+S8u59GKHzVsSAD7d+dAQpx/YZYmRRxAOaBcwY7j+2ejvwnRFPmCIQaYWgT5Q
- /UJXj
-X-Gm-Gg: ASbGncu8BJynG59h1+ob8iqB1pI6O83FTuWz/TVjZKlTJrOmm/83YBEtENf78jGhybx
- Y82KY1Ij27Zr5jqpUDTeZ6jDKCl554HwUXfh8myJK37CHB3UVAjc339u+78nybrRGqQPxn+rtCz
- l6mHtQZ0LX2HyPnZQ8WCl7lx0gbuayWpbFVz6JkpzDc5TDnH8U5VrxkhLh0idzLtukgzDHkycdJ
- 0xVz8nrjh0wNQE9VjJmqWRT1r/s5nCbYSBvslQ47VKZpftR5EDhlfyS2gm7/kgpXUB6TA/gs4NA
- rrG30ARZPAgh0Te8Nog6d01RZiLPvBJhYvv4tqNhnR5LCTCsYDoottzKxwtsM2bor+Zl4fV2L+P
- ZILi4LhzBrOBzV/+WvNYZgZX4aKHeAE9fK8xAieE=
-X-Google-Smtp-Source: AGHT+IFAeSI5GNTUXewe4bTR1E5szjXbERv4PTa6rRXhSrFnGH2FI00CNCfJ2GyeGsRxWrTr3gYvQw==
-X-Received: by 2002:a05:6000:2013:b0:3c8:152d:a707 with SMTP id
- ffacd0b85a97d-3c8152dad20mr13764707f8f.53.1756380890553; 
- Thu, 28 Aug 2025 04:34:50 -0700 (PDT)
+ bh=PJHqiXggFgAiWZxXmkBYzyTnpBKCQII/0oqdzzevA9c=;
+ b=O0UZRkQmzcUL1xbBfS3hzoPmTuuyTvWazA+sUealGxc89miJJyYP1iyKm3kOTb4Bcj
+ JWWQHQUQEgLA1ddFhNq8TPU8hmS5Wa8xAlambksHVjIxuScvcfSrBG+MhGmIVylfenog
+ RHNIW/nwmUWnyGFpxNobV5zy9Gv1rrV7nLU1XC/lOu8UPlkPUcBoYcNkk28Mvh8HNlI/
+ lhPzZIM40SNU5VLPOu4eyVQv589HIERMIgjw3ckabdNO5BW6BHgcQjmXMCivwMKvzLz+
+ UXqCR8yewB+wgEulT808SJlyLb6TU4ahBIktGoFEqRSSp0oZ3erX7AjoVG1FB2a747AZ
+ c2Vw==
+X-Gm-Message-State: AOJu0Yy1iV2EDakxxgjtXHfmcuRBQ76RlojC3fuEV8W7X6EcLUAk8Q4o
+ OcgemsGvEKr165q8sy6TcWaFXt8diNoKDjlEXdXVqM9n/f8v2r4CuGegTrXyukJHjXqqwYDDMlC
+ vclia
+X-Gm-Gg: ASbGnctljjf4KMj62+J0Gdtcv3XwKMBLs/igLznoYPvx6jC+17HEits+zCw8rc6mjvX
+ eyGshxjtiRh7jUMYow9jDlSTepSfUshD8mZ/0GltKRr5bfI31UymU32BohSSYhvr/ebG42hN+6g
+ faM5v0GQofyFl+ZJhHHIt22KAPvJ0Gt24YRiWs+x7a+AGux4XbI9wWCNEYbmQoO6udUih2mEiPT
+ nsR5cHg3YiNRz4+mJbt0g04gThm5v7vz3g3yg388yZo+ykjloMauLwkjoPx91R9G0SeDNn0QSGv
+ 3/KeepDwWtli/bd2mNSTwFrab0poB+n/GMkLt01KQ+SXFC+nmqqqqcrWARARMKXyOnrtMZq91x3
+ NGn3qg+CUvPgND34L9Wsyd5AfEQ85cSVxvxI2430=
+X-Google-Smtp-Source: AGHT+IFB+sFJAUaChuPcDFX5JqYs4RCC4BdAfhhswTjcOhS3gLndld4L6BU/lhG7HhxGDNiZF6+PIw==
+X-Received: by 2002:a05:600c:4747:b0:45b:627a:60cf with SMTP id
+ 5b1f17b1804b1-45b627a62cbmr132447825e9.24.1756380891492; 
+ Thu, 28 Aug 2025 04:34:51 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.49
+ 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 04:34:49 -0700 (PDT)
+ Thu, 28 Aug 2025 04:34:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/32] docs/sphinx/kerneldoc.py: Handle new LINENO syntax
-Date: Thu, 28 Aug 2025 12:34:13 +0100
-Message-ID: <20250828113430.3214314-17-peter.maydell@linaro.org>
+Subject: [PULL 17/32] tests/qtest/libqtest.h: Remove stray space from doc
+ comment
+Date: Thu, 28 Aug 2025 12:34:14 +0100
+Message-ID: <20250828113430.3214314-18-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828113430.3214314-1-peter.maydell@linaro.org>
 References: <20250828113430.3214314-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,37 +98,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The new upstream kernel-doc that we plan to update to uses a different
-syntax for the LINENO directives that the Sphinx extension parses:
-instead of
-  #define LINENO 86
-it has
-  .. LINENO 86
+The doc comment for qtest_cb_for_every_machine has a stray
+space at the start of its description, which makes kernel-doc
+think that this line is part of the documentation of the
+skip_old_versioned argument. The result is that the HTML
+doesn't have a "Description" section and the text is instead
+put in the wrong place.
 
-Update the kerneldoc.py extension to handle both syntaxes, so
-that it will work with both the old and the new kernel-doc.
+Remove the stray space.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Message-id: 20250814171324.1614516-2-peter.maydell@linaro.org
+Message-id: 20250814171324.1614516-3-peter.maydell@linaro.org
 ---
- docs/sphinx/kerneldoc.py | 2 +-
+ tests/qtest/libqtest.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/sphinx/kerneldoc.py b/docs/sphinx/kerneldoc.py
-index 3aa972f2e89..30bb3431983 100644
---- a/docs/sphinx/kerneldoc.py
-+++ b/docs/sphinx/kerneldoc.py
-@@ -127,7 +127,7 @@ def run(self):
-             result = ViewList()
- 
-             lineoffset = 0;
--            line_regex = re.compile("^#define LINENO ([0-9]+)$")
-+            line_regex = re.compile(r"^(?:\.\.|#define) LINENO ([0-9]+)$")
-             for line in lines:
-                 match = line_regex.search(line)
-                 if match:
+diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
+index b3f2e7fbefd..fd27521a9c7 100644
+--- a/tests/qtest/libqtest.h
++++ b/tests/qtest/libqtest.h
+@@ -977,7 +977,7 @@ void qtest_qmp_fds_assert_success(QTestState *qts, int *fds, size_t nfds,
+  * @cb: Pointer to the callback function
+  * @skip_old_versioned: true if versioned old machine types should be skipped
+  *
+- *  Call a callback function for every name of all available machines.
++ * Call a callback function for every name of all available machines.
+  */
+ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
+                                 bool skip_old_versioned);
 -- 
 2.43.0
 
