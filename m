@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A43B39BB6
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 439F6B39BD5
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:43:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urau3-0003Js-8s; Thu, 28 Aug 2025 07:34:51 -0400
+	id 1urau2-0003Ic-1C; Thu, 28 Aug 2025 07:34:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uratz-0003Gr-Bg
+ id 1uratz-0003Gn-B9
  for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:47 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uratv-0005fN-5Q
+ id 1uratw-0005fp-2a
  for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:45 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-45b49f7aaf5so4645385e9.2
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:42 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-45b7c01a708so1555895e9.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756380881; x=1756985681; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756380882; x=1756985682; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=M4pBND/JQTcCccX+raHz6psiQqmFDrMciZMnw68mDqI=;
- b=REl/iDF2jMslMdCKJQ5WMkfd+7ZKztwRD82Y91Z1g8bj1JriTK3HmJQd8jMWyOZ7rB
- mxjUd1T1CxzZQIkx83zA0igVGVZ410tqLkjZ2ZHvIGBvqYE8H6105TnOEvL2q3Ksu6vm
- vBdcR9EWzfm9T3TUuKMQHapENYWTB8vVk5uPQ46aXXQ4i0qqORad9vS+eysfmo3Zx48A
- svmyiyNJUR5B0ieZq/jJ/cHjUb7X5EXCR7LRuy1dgKM0KFIJM4WN9QN2rHKcj78ROu+N
- iYWu+Zfda69CC9a4X6v9XDf5Aww8oWrTKEYjXkIWN5+LKiFD1l4uM0Z7QcQlmhSBGjyw
- 0qxA==
+ :reply-to; bh=xuy/HnGxlj+ennOmSNrgDfp/IdNzHUoZQxb6SbArPQ4=;
+ b=lIliu+sprZ63H49zSKTiB6eR/r6yxOvG1lOvMsGtvUuoA2UT7wp2VpgakLqvsoFBEY
+ UlnJwqcwDTZeRmBQfANYXeSOW3q8U3Wt6+zOBDIQhaU7KWjVdcXKe1fJ/UZD4PuT4u/O
+ 0dXOEacu23yr+e7Eb3WM7N/zzrjiG5LVsC+EzGUjQWt7DftXH9XkTAmpXsxqlh2Z8mdr
+ mNcDa4GgalP2IQkIPQOmxIY0fW/gVvkDjhJvx8JKWT4+LKqw5IFRXAcSM0m7TF3dE4/o
+ JHBGjkUO01rkp6VP71jSaEVm0yXzI+2Bd7pHV+bPTLTYBptC5cjJweoRVV/CbrkRcCs9
+ WggA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756380881; x=1756985681;
+ d=1e100.net; s=20230601; t=1756380882; x=1756985682;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M4pBND/JQTcCccX+raHz6psiQqmFDrMciZMnw68mDqI=;
- b=w370jZ0pe+xtqyHiPOBYowmXrMSVHXch+ciP5DNA/8vORo8UVQTstzUjCzF2HIRwHV
- ldzgCiZNpjyM0zyuderJ6V9wuTBsu1G0e5bdlq8YORG/CSIe1Kv1tDdULSsOH/MUUT4l
- dPOKl0YI++0PhoZ0/9Z+mkWtf4tXIkrGpxWp9oJx/kPYo4e7LqkPu2Cxw+0bDwRWBaD7
- BctjJjYh0h70xnyjoUjH0Hu1YoP01z/CF4aW7dzGn8ylU9WGYUgWGcS4MMeBQv/4sEZh
- yqfeOUmwnX2DVtFJB1XfVPhh9CMomSQeeaC5ez9Q0d42d7S8bl3ddzgGIO6N/eU9xrM2
- uOrg==
-X-Gm-Message-State: AOJu0YwAwr3iDtVwQURDmPzUDNtbGyFrxTtKPnmePW6zBkuK3sVWu3ck
- fQJCw71nuA8GbMqAaj6uzfD0+9yzipy3PqZyv+2xuY6RqLJFg5Ko5rsHSCbuUjIGysVZEP2DDLp
- WUiLW
-X-Gm-Gg: ASbGncvyaXmGPoy4ZzDaAOCV/kPntNhBSFcXFSPlOLbk3AZIxAn6Z55RMqGCPn3gLQV
- pA0eFUGiXzjcsKITU1c6a58LIz9TjXkufaYt21kYQeCXlfAO/7SdZyUV91M5eQfZnBLZXf5ul+T
- vp0Y5cCICt0dS0W+uEb3KGfWHmO8BckidtwxVs0pRRBh348SQrD0YZ2/9txA8SjtGrTEG9fGvYX
- 8RUuVYd6GpTT8184lpxSlm8+GfZP68Pf1hNLoQ85768Z6IInH5C+YAnAVJZ6yJbuwdTV1KaNN0a
- kWK7hNrROqjhpGR/adPz+xsRkwKPRZSBxQU0T1mR8DJwO1UF+fQ+ZDhLiDPw/Wu8Esb7OKDztYK
- 6V92SHH72bRL8AFpb+2ggir6IKX5UlrOTSRlokJM=
-X-Google-Smtp-Source: AGHT+IEdz0Exd+tkPMLH2LsoXlF4kG4ph21pBUUVCxtfqqVsAifWP67pZKynIer5qdJZhvL0+R5acQ==
-X-Received: by 2002:a05:600c:5247:b0:45b:7580:6f46 with SMTP id
- 5b1f17b1804b1-45b75807d2fmr31059455e9.20.1756380881316; 
- Thu, 28 Aug 2025 04:34:41 -0700 (PDT)
+ bh=xuy/HnGxlj+ennOmSNrgDfp/IdNzHUoZQxb6SbArPQ4=;
+ b=u9wcCrpoy49Uo+GJV4HJxmAzkLH4NUZE0YOMc7EOoM5drTHCsJLw0rpdowcMEQtMaP
+ 8RYl6mv7KEEAwH5RsAZCed61kO/hiix5N6mLSdaDLAncZ/wgOuhB+vElx6HZPrYg55eD
+ SM6wDpAQgHoJoq5cBCLLFHIrYL2mQjykQ5aqG2qEA2hUcrQKInSkPZh02hw8Y6krvPn/
+ 6ctrrrwEOi+TtbBglvCVJ2AkBJNTzT2s0qhaAZ5RUGe6xbjDRzn/qDBdC2YjYjAQXgmN
+ na5O/ULL7Blpm5YrJDV/YAJRVLx2X2opoKeXCGOVFjEw+J4+HbpgdTDLVbwc2YXtLugt
+ KhVA==
+X-Gm-Message-State: AOJu0YxZ+OvA8eWGQR5R5mVjnkMERaeImOP93ooTlF4u/hzN69llKgvv
+ 00LcjjM4qzrlh5nMQOx0d20xZofunGtwOSed9LMj8sg2U7NqNJkpMYuZpqouCUlRhBDKxc4gis/
+ /1ALb
+X-Gm-Gg: ASbGncvCmrT65XbaXH2q22H76COjaIaroxjAATXanEc/9kvqIgmQZgy5AH/Y4mP2N2m
+ xCQ4siBx5+RxcDXhqWsIaa1EMuhATvE34CWBf7DeRCnZNGgnmKiglV17AIU54kv5nzsBEVJcTFN
+ DrTpqwDVUp1D1mM6v4bIU25hf6j6X8iOiu4iS+qp0A+T6gmA9GWGpQKR/LMXFJraMRGBrGpLhE4
+ ZJprJHvw02j06eJpXq96OrxkOeYQHzVChj2gquEYnHhr9uObCsZXU2et2WMKZghPvidGcyNEGRk
+ U9cdZHMAIXoYefZiqUkiRGHEUuS4hYQUpeZsJmDugfN4jD+m/e0m7rSu5goIHfv8LsNOCqEnntM
+ Az+OW8tDfpbIJea4RgO4BXXr+GXzl
+X-Google-Smtp-Source: AGHT+IG3BunqCNMxuxLJOnSKpfKKFmxQHSX687x2mI50vc1GNqfJG1sZV4B+wFCoT3jnynIkc2ZshA==
+X-Received: by 2002:a05:600c:1911:b0:453:23fe:ca86 with SMTP id
+ 5b1f17b1804b1-45b5178e8a9mr194268595e9.4.1756380882283; 
+ Thu, 28 Aug 2025 04:34:42 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.40
+ 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.41
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 04:34:40 -0700 (PDT)
+ Thu, 28 Aug 2025 04:34:41 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/32] target/arm: Trap PMCR when MDCR_EL2.TPMCR is set
-Date: Thu, 28 Aug 2025 12:34:04 +0100
-Message-ID: <20250828113430.3214314-8-peter.maydell@linaro.org>
+Subject: [PULL 08/32] target/arm: Add feature predicate for FEAT_CSSC
+Date: Thu, 28 Aug 2025 12:34:05 +0100
+Message-ID: <20250828113430.3214314-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828113430.3214314-1-peter.maydell@linaro.org>
 References: <20250828113430.3214314-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,97 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Smail AIDER <smail.aider@huawei.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Trap PMCR_EL0 or PMCR accesses to EL2 when MDCR_EL2.TPMCR is set.
-Similar to MDCR_EL2.TPM, MDCR_EL2.TPMCR allows trapping EL0 and EL1
-accesses to the PMCR register to EL2.
-
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Smail AIDER <smail.aider@huawei.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250811112143.1577055-2-smail.aider@huawei.com
-Message-Id: <20250722131925.2119169-1-smail.aider@huawei.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20250803014019.416797-2-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpregs-pmu.c | 34 ++++++++++++++++++++++++++--------
- 1 file changed, 26 insertions(+), 8 deletions(-)
+ target/arm/cpu-features.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/target/arm/cpregs-pmu.c b/target/arm/cpregs-pmu.c
-index 9c4431c18ba..31c01eddc87 100644
---- a/target/arm/cpregs-pmu.c
-+++ b/target/arm/cpregs-pmu.c
-@@ -228,22 +228,27 @@ static bool event_supported(uint16_t number)
-     return supported_event_map[number] != UNSUPPORTED_EVENT;
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 8ec8c3feb3d..41511d08350 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -604,6 +604,11 @@ static inline bool isar_feature_aa64_rpres(const ARMISARegisters *id)
+     return FIELD_EX64_IDREG(id, ID_AA64ISAR2, RPRES);
  }
  
--static CPAccessResult pmreg_access(CPUARMState *env, const ARMCPRegInfo *ri,
--                                   bool isread)
-+static CPAccessResult do_pmreg_access(CPUARMState *env, bool is_pmcr)
++static inline bool isar_feature_aa64_cssc(const ARMISARegisters *id)
++{
++    return FIELD_EX64_IDREG(id, ID_AA64ISAR2, CSSC) != 0;
++}
++
+ static inline bool isar_feature_aa64_lut(const ARMISARegisters *id)
  {
-     /*
-      * Performance monitor registers user accessibility is controlled
--     * by PMUSERENR. MDCR_EL2.TPM and MDCR_EL3.TPM allow configurable
-+     * by PMUSERENR. MDCR_EL2.TPM/TPMCR and MDCR_EL3.TPM allow configurable
-      * trapping to EL2 or EL3 for other accesses.
-      */
-     int el = arm_current_el(env);
--    uint64_t mdcr_el2 = arm_mdcr_el2_eff(env);
- 
-     if (el == 0 && !(env->cp15.c9_pmuserenr & 1)) {
-         return CP_ACCESS_TRAP_EL1;
-     }
--    if (el < 2 && (mdcr_el2 & MDCR_TPM)) {
--        return CP_ACCESS_TRAP_EL2;
-+    if (el < 2) {
-+        uint64_t mdcr_el2 = arm_mdcr_el2_eff(env);
-+
-+        if (mdcr_el2 & MDCR_TPM) {
-+            return CP_ACCESS_TRAP_EL2;
-+        }
-+        if (is_pmcr && (mdcr_el2 & MDCR_TPMCR)) {
-+            return CP_ACCESS_TRAP_EL2;
-+        }
-     }
-     if (el < 3 && (env->cp15.mdcr_el3 & MDCR_TPM)) {
-         return CP_ACCESS_TRAP_EL3;
-@@ -252,6 +257,19 @@ static CPAccessResult pmreg_access(CPUARMState *env, const ARMCPRegInfo *ri,
-     return CP_ACCESS_OK;
- }
- 
-+static CPAccessResult pmreg_access(CPUARMState *env, const ARMCPRegInfo *ri,
-+                                   bool isread)
-+{
-+    return do_pmreg_access(env, false);
-+}
-+
-+static CPAccessResult pmreg_access_pmcr(CPUARMState *env,
-+                                        const ARMCPRegInfo *ri,
-+                                        bool isread)
-+{
-+    return do_pmreg_access(env, true);
-+}
-+
- static CPAccessResult pmreg_access_xevcntr(CPUARMState *env,
-                                            const ARMCPRegInfo *ri,
-                                            bool isread)
-@@ -1187,14 +1205,14 @@ void define_pm_cpregs(ARMCPU *cpu)
-             .fgt = FGT_PMCR_EL0,
-             .type = ARM_CP_IO | ARM_CP_ALIAS,
-             .fieldoffset = offsetoflow32(CPUARMState, cp15.c9_pmcr),
--            .accessfn = pmreg_access,
-+            .accessfn = pmreg_access_pmcr,
-             .readfn = pmcr_read, .raw_readfn = raw_read,
-             .writefn = pmcr_write, .raw_writefn = raw_write,
-         };
-         const ARMCPRegInfo pmcr64 = {
-             .name = "PMCR_EL0", .state = ARM_CP_STATE_AA64,
-             .opc0 = 3, .opc1 = 3, .crn = 9, .crm = 12, .opc2 = 0,
--            .access = PL0_RW, .accessfn = pmreg_access,
-+            .access = PL0_RW, .accessfn = pmreg_access_pmcr,
-             .fgt = FGT_PMCR_EL0,
-             .type = ARM_CP_IO,
-             .fieldoffset = offsetof(CPUARMState, cp15.c9_pmcr),
+     return FIELD_EX64_IDREG(id, ID_AA64ISAR2, LUT);
 -- 
 2.43.0
 
