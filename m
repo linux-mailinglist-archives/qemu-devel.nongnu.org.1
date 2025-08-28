@@ -2,217 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 193CAB3A7F9
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 919A2B3A86C
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:41:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgEQ-0007eJ-OO; Thu, 28 Aug 2025 13:16:16 -0400
+	id 1urgIK-0006q7-9U; Thu, 28 Aug 2025 13:20:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1urbkM-000482-SX
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:28:57 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1urbkJ-0003Go-Ni
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:28:54 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57S8tqOr017709;
- Thu, 28 Aug 2025 12:28:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=pW3RyN6doQ/iF2qM9O8dQge6hsNdkMy103SjwNpRGSc=; b=
- J2q+LIpQBTj75/r540nPf9D2ANamlQa5q+NALCBj5EgmkUcrg1ys2KgTCQv2BDD6
- C6eHDFyo3eIc74YCB3Ou5OzGn5f4KJekW3UaVr3Jr4oZY1A4fc8BB40kEv8xRux6
- 8YKaoo8fv/oqu96C7n2lAz9zQ6P1uaBsh1u9zWsqlfo+2jjKBHIxAB13+lAaTiYB
- 65pOGDMLAuKKe/xmvUYtgTR70ipgKZT0Sr55rHb9yPW9X2Zp7vEdjVQp3v6NrJS4
- aWsWkv69sD7KFMYctyTFcZ5sT+1n4wLEpeYYY4O1TjljJUHVy1tjbEYS3GgEIKKG
- tLOnPt7DkxKo8zqwfQEByQ==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48q48erfpc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 28 Aug 2025 12:28:48 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 57SC3TVU005068; Thu, 28 Aug 2025 12:28:47 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2047.outbound.protection.outlook.com [40.107.93.47])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 48q43by44w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 28 Aug 2025 12:28:47 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jSKPHqE/p5ap0afyYihZOoaUETqkRK8kw6i7Yj9mFIa2drqvlEqvBLsOJXFVFU5tvB8KQqLI8v22X4UDuWy23dAd2nnnLhKh0L4uf3lMNj7rK7av/sfl/4li9VjwwG0kLtHa7ByEmGgm1sbH+f3f87gNQlJ+scp4ZFH+twJivUhapM9Pn6LEbsrUrUJw2gkP/WH/HjdD+JHfMqrgEWrUBFwFrLS7vWMwuv7BPsNu48m6reebofYUXXWZIX5Np4osYWGBH+9cp9LYoVwwyvbmgnubsIyY5H0RJ8Hep53Qw6T6yGIrW0VMFo/YNk2aiBEvEEWqEjavEIVi2FJy7Npu6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pW3RyN6doQ/iF2qM9O8dQge6hsNdkMy103SjwNpRGSc=;
- b=LFMxxGULdH/TtgbjsS75GDXcD1A1mwmAQ/AXczNgUdQFoLnvAd01zqLzY2bpMHUcn4XnoajwjWpj+Y5B2Mf5JADonXk+0HnzFsuecbjAC1wwh4PCBfMgpDBKrrC+K4L6hpSfVcC5rhYIbPLcq2cUERuQKNpCAUWDr0MGa+EB5ko0TkMsR9WQOxA1HUvpXDyUO9nIno6oJm22wyINX11SNvodVDcQeaUUa91PeOL1fgLBt2s7Fm6lEy/vUgTvWjXcArd0MMRYDKUdoEc7jplQ+SiZyzm3kkCv4fxGjBEdEOrk+H8NEMR929Xdw8EkxDDxFnp29osh0wEtJ3VYYIOcuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1urbvL-0003bV-Fg
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:40:18 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1urbvI-00062B-MV
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:40:14 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-afe775db944so294843766b.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:40:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pW3RyN6doQ/iF2qM9O8dQge6hsNdkMy103SjwNpRGSc=;
- b=A+JTSjcoqAgzQH7OkjXS6hKsObOt+e/l9PnBUJgWBZeWdgQPDz/F9qNYTQdjp/dNqxgmvqKEGxftZD5PjcwYur4MnOVUR5AcdhEmF2cuhA/l/nRRVZD99fyoICtNK+VOwEARlktD4sWyfyDIJCt1lBYJOU4qBP0tEAZ7JfUmYxg=
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
- by PH8PR10MB6454.namprd10.prod.outlook.com (2603:10b6:510:22e::8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Thu, 28 Aug
- 2025 12:28:41 +0000
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572%7]) with mapi id 15.20.9052.019; Thu, 28 Aug 2025
- 12:28:40 +0000
-Message-ID: <0286f864-9aaa-4a49-8975-cb1af3bb1270@oracle.com>
-Date: Thu, 28 Aug 2025 08:28:36 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vfio/container: Remap only populated parts in a section
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com
-References: <20250814032414.301387-1-zhenzhong.duan@intel.com>
-Content-Language: en-US
-From: Steven Sistare <steven.sistare@oracle.com>
-In-Reply-To: <20250814032414.301387-1-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PH8P220CA0034.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:348::17) To IA1PR10MB7447.namprd10.prod.outlook.com
- (2603:10b6:208:44c::10)
+ d=linaro.org; s=google; t=1756384810; x=1756989610; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AlIvv6RMizbq/9wRX53R6SQBitlqtBGFxJsGtLvgQaI=;
+ b=ZmWXeyen+m28ek+b8lhb9jEtyl0A4VopzSuaOawQXrZEYa599fEf/pDLarc35XUS4t
+ vbV2P2H7PuuDqmdJWpDaaoIPaJec/Qcrea6QUHjW5FU17g19cILq/k2WWOBj+MgRxKGg
+ hR8266KKxjq8UNluk2FgBery7rCpPG9bAjDJBODR1N8SQTzNRUNPYy/tB+vesHT+ueTX
+ 74XiOgdN3YomYOLSzDasSflnx9jV71y0sCTs6mOCcH92jU3/9nK21wkqNqhoFCTZ/Fik
+ QUXf4K5tFwmOuU9/PONZkjos7wtcItPIE3uEzn8X4o6fTGRpfdesfOYLAgK+E4mrs9XW
+ jJbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756384810; x=1756989610;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AlIvv6RMizbq/9wRX53R6SQBitlqtBGFxJsGtLvgQaI=;
+ b=pMc/xWznxIHPppLa/pwkC5pPMRhHSL/cQlccCBWEuSUoOWLC0cPVpXPpH//FfALngy
+ a3gHL0VvNSHhS67U9Kzf8DnMxfqRYi0+J3Fqbj07ndQ4gSolvPlk8vtsPpR7xxgO5wVV
+ Qzrnr/qjzyztPwX/t5gUmg9ty1SaSKT0B9i8CH9JcG47mPJshqCvMfTUWq0f3zwO3R43
+ qH0GkX3ptZ6H/NWfMPDyAArpRMcOoOyP+8IM0DdE+D6Z9ParoFGPOlyQFent+zNnrg+0
+ OXKpC96l+ZzzlIeRghJaanMu+LKxr77z4fyyF5IjLTdyJmvuM22juCsabexyOkBxqdUr
+ NyrA==
+X-Gm-Message-State: AOJu0Ywg4egmAUiHaW9mnMwBHYnVNmwS/PVWxCIDMHt45G8XWS80XbiB
+ EBnTw6QLWRwudLwhCQpTyta6vCk2aHoi+86/oCLjSJUm70zpwLAKvs4zEOlRz2u02lQBp+nXc40
+ 5hz9R9TjtBMihQTXYjwC9KKAx1tq0VKSYrcNCThXKmQ==
+X-Gm-Gg: ASbGncsCiaDCEc7VFHWDWaxix6OEtQjwj+iYY6vrYDZCrOHJd/Hel1gY31BFrUtsg8v
+ HK1YVlpvIENI3ImXtDL+XR7SFjw9FTdleEX0rrf6CtXXknThCMVByz4ohx4OCU1L0QDSd8mNg2S
+ 1j2W9uDvubx3GLpiOlWXsXuRaBcbd7G57/pwWqtQnSL9aUK4E4kxftiZHX8Z/XmaGN76VMSCbjP
+ +sFbZPXPU9gl1qZNQFhmfCfAS+blw==
+X-Google-Smtp-Source: AGHT+IHGrQlnN89D5g1kHrKr2djF/XTjDycItYNHa7sxSPqMpoyHP32Fmlm3WV+XCLR3lPudwbNzd4E7E/LrYusiRqM=
+X-Received: by 2002:a17:906:1c02:b0:afe:d5bb:f444 with SMTP id
+ a640c23a62f3a-afed5bc15a2mr254275666b.32.1756384810210; Thu, 28 Aug 2025
+ 05:40:10 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|PH8PR10MB6454:EE_
-X-MS-Office365-Filtering-Correlation-Id: a997ff17-5686-42b6-bf5c-08dde62e6b9d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?QUw0dzVwTXhoL0krNmZJUXRlZURWd0toR3hIQ3BmeitNbmxTM3JLeGluU1Jm?=
- =?utf-8?B?R2hySzhDeGlJUzdkelR1OU1BNUhCQXQyTjdyRHhJQ01xQTJwK04vVUJxUXJP?=
- =?utf-8?B?eEdLTTVGb1QzRDBhWU9CY0gxZC9sSnVOQWEwZVpjTlVHQW52SXlmYmdJbEFX?=
- =?utf-8?B?QmRyOFpyeFNlM2JId1M2YVpZZDVxSCtDV1dIRVVxdm1BREFTbFllWmtqRUtS?=
- =?utf-8?B?RkpOVUhvN2w1WmJLalF6eUR5RzU1ZFhNaWxZZHd2YmpOOVFtTkRrRmVjV2ZK?=
- =?utf-8?B?VWlUeXlSYnVWNURpSDkrRGl4TzRKVy8zNVJOcEtDdzZoY2RBRjBvdlNBTUxW?=
- =?utf-8?B?d2VLWStyT3k1ZlhJNU85aGUyNXc3ZWhkRG9uQzBJUW5sRloyZDRRcU9oSFBr?=
- =?utf-8?B?NGtiZlp6d0hVQUllc05kbXlIdzNUNFlEOXhub3UwdUhldElRSzRobWJNVWF6?=
- =?utf-8?B?dUUyYm1HVFJ3TWF4UVRlbTc0dHJzZ2luc1BjWEw2SFZrZGlxSWU0NjBRTGVL?=
- =?utf-8?B?Z2FXYWgwdkxYM2JBbUV3dTJEajEwblcwVGFPUUpXOEZuRW1GY3lFQmw4K3FF?=
- =?utf-8?B?M3NYY1RvbzROUWRLSll5U01vLzB2SkF2RGZjZEZYSnBnb0hRbjNPYzZDSkdy?=
- =?utf-8?B?K2FYQ21hZWo0WGY5c1QweVdmWkU5eXZLd2FUUnV3SVE1ZkVLN1k1VVNSN1RU?=
- =?utf-8?B?VHNsTjlCaVduOGVuMHMrRDdyeGZkVlAwakx5aXJsUDlBaUNMMkRoZlhMWG1S?=
- =?utf-8?B?dldoNDZPYnlzbkw2WE90NlkyY3AyQnVUNTY3cXlJMGFoRno4YUNTU2lIa0xU?=
- =?utf-8?B?SUtoMkw0YlUrclk4T0l5Zk5CRm9EaWNsUTVhTE5wQk1jWjczaFJMaGJHU0dF?=
- =?utf-8?B?dm1MU0tHUzFBcjVTNVNFNGtXcXZ5UlpDMzJmb1FiUmpCZHVlSUpIbnpyZ1gy?=
- =?utf-8?B?aEt3NmI0UnQzZ0UwbDlQSTFoUVk0TFQ4bkluZWNVL0k3L24vOGJKemQyUmRV?=
- =?utf-8?B?aVVXaHpiUWkwZmlRVFlhNXFwMnM0Ym9ZYjcrRDROOFhmcEVhNEZPeDlsK00r?=
- =?utf-8?B?RndqOFc0TUZhT1ZnVGJFTVBtaDdXM2lSRmtBelA1ekNvU2c0UEFMNDBnLzha?=
- =?utf-8?B?UzZuNmNXbldxb09qNG1nNW1ibUhITmQ3OTF4WE8vdGZiemlwSUthcGgzUjBh?=
- =?utf-8?B?eDdscGVLSnZCb3VqeG5KMTY3RmFBMkJQSWtLeVJxdDBzRjF0NW00enNIWkJI?=
- =?utf-8?B?eWRpdEFtUFcxN1pmbk9BNUFjcU44eXBWSjFMR3pZYlFBOHFEUjFlQzNvakVh?=
- =?utf-8?B?TWRaRU0xQ1hmTTBJWDlESnJpdGU5N2VCRUFkV1VNVWRHQ0dFd3Q1eVpvK09y?=
- =?utf-8?B?SlpieWQ1TGdhTThudE1wY0JKVDdzMEEzbE1IM0FWZnp3MkxDZDJGWUo1cXBW?=
- =?utf-8?B?NFFtL3pIQW1zMHc4THJxOFBzZDFMR1ZQTFRJM1Z3dElSL245TlphWXo0cWk3?=
- =?utf-8?B?ejVrdWZEeG9DaHFtK25LVDI5T2ZWUEZxVDBaZmxIWGROc2w2aDhCeEd6UTJu?=
- =?utf-8?B?aUVJRElqSWltR0tzeEh3Q3JsbW5mK2loS29ON2EvV0ZCZndFY3hYbzYyVXNF?=
- =?utf-8?B?a0NoNyt6b3BmRTVjbjNVc0VtN1ZkV3RMaXRZK0hhck5BeEY4WG42V3duRFQ3?=
- =?utf-8?B?SDJsVUhENkhoYVQya1RZUWpWK3hpcmp2ZGN6cnowVUdwQ3pyMUdjWU13Vjhn?=
- =?utf-8?B?Rm9aT2E5M1BVdFFkblpEdG1oUkNWM1lLYWlQRFlSVy9kTmp0SjlEcVpVU1ha?=
- =?utf-8?B?THYxUGNsUU5xcEk0TkRHY1NhbzJWaEV5SkJnR0Z5bnF4T2RWLzNOY3B5SmpH?=
- =?utf-8?B?OENDK3NGMzRPUEVIUFc2QnZSa0RCeW41WlBQSURYaE5Cd01KNktXa3F5UWlK?=
- =?utf-8?Q?dxx/hv6zwdo=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(7053199007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VHZ5ZEhQUDNMeHVxNEs5SW9sMVM0bWpuNXdYOW5GQS9uczUrNzBOdGd3VHln?=
- =?utf-8?B?dU5vKzNlY3h3dG9Sd2ttQkI5VG1jcEYvcERPcndPSzduRVhPT050bWk2UHdQ?=
- =?utf-8?B?azQySzlsY1pGU3lXb056QWg1QmZndmhILzFaalNhaUdKdUlJZFNEb2VqRkg4?=
- =?utf-8?B?WHFpVkd0ZDFoSkZUcTdVcGliRmpWWXJzN1dRdGc5eVloOWxSVjRpOE44ZHYr?=
- =?utf-8?B?T2dybXB0RlNvOVVYTVh2RmR0UUtpUFk0QnNQR3VUak50c0pYdW9xZ3cvU2Z5?=
- =?utf-8?B?Wi82cDVMOW9iQkxGUlJtZUtzOXRaY1hnUFZuRVhjWERXZWFWaDZpUFNQWWxT?=
- =?utf-8?B?eFpWaU84UXBZR3BxQWVMdjdkdlYyV1pRM3o3eTh3dnkySWNlaE5iT0liclB2?=
- =?utf-8?B?bzJKNXQzMHErVUVVZFZMdTRCTjh0aC9qejJrL3BpbFZtdCtGTjlLc3A3T2h0?=
- =?utf-8?B?dUkyUS9kVjJ0bVNGbDZxWkZQMkpIVk92aTNoZG5qMW1IL1A5UTN0aGU4c280?=
- =?utf-8?B?UWFEK3UzVVlBeGxZOEVtd3hmTUkwcGNnamJQZ0xZRG41KzNYdExKUGlXVjh5?=
- =?utf-8?B?TEZFd2FEazQrQi9MQnhVbEhxbWM2a29acHFvSHlLR3JKdGE5RCticXIwcnVK?=
- =?utf-8?B?ZWJVYWVEbEoyTjlNNlZhZVYvZzRUeGxwZ2VvckxjRTdEcjhUdGlOVzNuZzBF?=
- =?utf-8?B?WkM4U3ViYkVFcXNacVMvdXNjSnJXMnJyZGlSTFdCdUR5Znc0WVRKbmxyeUls?=
- =?utf-8?B?TGxJdWFoL3pINmJMMFBrWmVCM2o5dkFDRjNWMGkxMmxiRFFQbFkrcTlSak85?=
- =?utf-8?B?NnpEekE0dUM5cE9pZWgyNFdlcnBIV2VleFB2QnRRZDdSS0dxZEVLUVZjc3FX?=
- =?utf-8?B?Lzd3N1pCTHBjZldIa3BKMkY3QkVmL2ljWm5mV2FGWThlUnQ4ZFdCTlF4b25Z?=
- =?utf-8?B?bFlQVFZuMlgwdUg3NnJ6Vk1mLzdXL00rZ09MK2VBNHZTb21mcithUkVMeklQ?=
- =?utf-8?B?NWpYY0tONGl5TjBoTW9KMzBTcWtLTWFpaGpVZFR1ckxHQWpxNXQ0eTByaG5I?=
- =?utf-8?B?VUxTZjd5UHhKdG5HU2FsV1M2c1JkUTFxY3N3bmxxaFo1UW1CUWFqRlRIcG1w?=
- =?utf-8?B?Mktoa3VaUW1lc01WTlBnYVk0dGJPZVVFQXdDWDhDUEp0T1NCT0JWMEJGUkx6?=
- =?utf-8?B?NW9WUjZjSkxEaWJHL3hLMndzVzBPYkhzUzZHbnlUcXozeUR2bTZId1NqYThw?=
- =?utf-8?B?c000bVMzSHB2Tlc1ZFpLdk1TNTFpQ29iNXVjbGZjWGlhMHRyVlVFNmZlNU9j?=
- =?utf-8?B?dFZlLzcyMUk4bkUrc3EvQ3FNRWhWWUxDTS9pT2dRSVBNNXNNMlp3bktCQlli?=
- =?utf-8?B?QnlNVFlzd1E0Zit2ZnZTSnpOMjZHWGFWU29EWGhxUVZkNUhYTlRFSzU4dE9L?=
- =?utf-8?B?VlFOa2c1ZGNEMWVJTVhhOTkvNUJlellhMkQ4c2lWOFQ0eENObDZKUk1ESlFp?=
- =?utf-8?B?aGVOc2g1WExkSURvR1JzSDRCeVpOMEtaNnN0c3BZVDBzYWxPNEhvRkpDREJR?=
- =?utf-8?B?cis2eThNblBHUE03UVFZeGsrem9JRnBkTCt3bGU5eUtyaVF3SDFNVU9jbnNh?=
- =?utf-8?B?T1NNZkVlRXhBcUt2NlluVDlEejkvUCtJR2thbG5nQXFpZlFXT1A3Nlg2Ynhw?=
- =?utf-8?B?a0tCUmdheTh1cWJqNHhJWU56UnNHQUc3ZmNzbnJxanA2M2dCYnNxOVFWV0cv?=
- =?utf-8?B?ZWFuMVpmdkJMbXZCYlMwWTVyeWFYeGJvelFRR2paaXRhditDSWZwWHNIL3VK?=
- =?utf-8?B?RkxuVWJQbnFqY0U1N0d6MlNYQi9xZCtaRW9jZ083OTJGQ2NkNzExeE9tczZN?=
- =?utf-8?B?T05sRUV3NDVYMGIvZktqTS93RkRCaVZ0b2pXS0YvQ1Y2ZDcwYVNLc2RwYlN1?=
- =?utf-8?B?dU5PYnZFTU1oMkFuZ283NC9BNHFPS0wyQVBJWXdKdi9NSEpFRkx1ak9RYWVM?=
- =?utf-8?B?c255Q0wzcGs1bm9MdzZaVTdQQkEvVFM4UlpqOEYzZFZ6RkxNZ3J1K01vVi9S?=
- =?utf-8?B?c1k2RSs3V25lMThNNGQwOVVEVXhoL3RRUE5ZdlJKNmNJWkUyLzV2dWVXZWtJ?=
- =?utf-8?B?WlIwSkw2Vlk5SmFUSEVuZiswNWw2MWQ0WXZtK2dSMWpyYUlTNmdRU2ZoMzJx?=
- =?utf-8?B?V2c9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: x1cM+G4VPzilpDmtIliUDLZoQzoO7tqKtfmjV7z850BNGEE4c8T+mJm2r714tJWtN5RapcUwBdjFtEAmVpmeU0Eid87F7UYzXAm82GEHwmucoiP9BooaBxu05UPr69NbLnxzc6zynqXdpJiAd8b7gpxX7TK+Rc7pZ0ypWD1qpuw9Jb82LGploniPFTqdXJi9J/nePft/gi6VY8x8sX7umHOXvo57sDaQFI6TLicpcHMBRZa0oafn1isdXO/46m6pc5PLfuJzIIaYij2GSukpoDQ+VGJBNASQOmF9bN4XeY9gZ3ff2ukGonvznHL/HAXG8AoV4k/F1dmbfKmWCZssWgCRHYvVWVd9ZREWx8TdreuNUKNcTfHrCCmGrKd73pA3cjozgPTxYFYVtaMN+iL9sAAA36bwaICiZzH/C9g1gw7fDaxAYuhxx4G47Xyc08RRkRfVSxx+AbDqyNQJvkCPj9nOrcQtB28m1PWpIQHQbtFP2qCHJfPl61EE/43n9RxUmYd7cFm1UJMlEJwd5efP17jk++7Pzgds+iKfJ4+M+hd14VfwaxBQK+llykb0aFX4btO36tWQMQOkUscHW6FMtE9vMGE11tq3D/QLa6hjO8I=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a997ff17-5686-42b6-bf5c-08dde62e6b9d
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 12:28:40.8886 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ayNuuSHaDaCLsAuNZwD8aiDxaRGuLTolZ8EazbYTF73Eyf44SxPHGDLOTN89GZjGFSsqanM661g8UZj2lV8TmsqIgKyzEVVIYcSp/Ecmk0U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR10MB6454
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-28_04,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- bulkscore=0
- mlxlogscore=999 spamscore=0 suspectscore=0 malwarescore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2508280104
-X-Proofpoint-GUID: -eukFZqUwE3W6_j9_BfxLPYi7jLnvsw-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAxNCBTYWx0ZWRfX27JggZufMuR2
- QWgaX9n1IZBfefbB4EEd2KAIutYiTZv9Ge2/HZWvaccwiQ3j0ZDx9o3ILwrDDWR0XrsFkMshd/A
- Fq5u5S9GbscxVJrgjtae9SOF9NzqWLPxowkH6cvWj6m1it5uVLBUiaMAT3/PVtmhrzLjnJDt3QB
- zsGgUX7wAUnOKFc5rMM+i+oQoJXqnuvbm07s42py4HB0PiJ3vMmNIW9HXRNEcAol/hP3znfKlXz
- rwUaPT3hfv/EmITlT/M7o8lDFoyIGK80JRcaXWJAsbbRyX9jHHF1R8UNAR4up4wi2aewiY/FC1M
- qsURoNBgXwV+GW3T1yKYjTBYmKJ/cnLjyQnxnBVqm22XljoJ3DCKHaN+8AJ+XgHmu8lCuevOE95
- wD/4MTO9
-X-Authority-Analysis: v=2.4 cv=FtgF/3rq c=1 sm=1 tr=0 ts=68b04b80 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117
- a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=QyXUC8HyAAAA:8 a=QC_ezbJ6CxWCFPOl7q8A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: -eukFZqUwE3W6_j9_BfxLPYi7jLnvsw-
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20250827010453.4059782-1-richard.henderson@linaro.org>
+ <20250827010453.4059782-38-richard.henderson@linaro.org>
+In-Reply-To: <20250827010453.4059782-38-richard.henderson@linaro.org>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Thu, 28 Aug 2025 15:39:43 +0300
+X-Gm-Features: Ac12FXy6xrXQr6fme5Wny4aNUq8j3m5PZIPtB69qIzWe-3BEw8_Z3FkYInlqsLo
+Message-ID: <CAAjaMXb1KMo9h=nz8+P3ddzHnFiLTgcXju4hW5ZoQqsym+xZdw@mail.gmail.com>
+Subject: Re: [PATCH 33/61] target/arm: Redirect VHE FOO_EL1 -> FOO_EL2 during
+ translation
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -228,148 +94,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/13/2025 11:24 PM, Zhenzhong Duan wrote:
-> If there are multiple containers and unmap-all fails for some container, we
-> need to remap vaddr for the other containers for which unmap-all succeeded.
-> When ram discard is enabled, we should only remap populated parts in a
-> section instead of the whole section.
-> 
-> Export vfio_ram_discard_notify_populate() and use it to do population.
-> 
-> Fixes: eba1f657cbb1 ("vfio/container: recover from unmap-all-vaddr failure")
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+On Wed, Aug 27, 2025 at 4:11=E2=80=AFAM Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
-> btw: I didn't find easy to test this corner case, only code inspecting
-
-Thanks Zhenzhong, this looks correct.
-
-However, I never liked patch
-   eba1f657cbb1 ("vfio/container: recover from unmap-all-vaddr failure")
-
-I think it adds too much complexity for a rare case.  In fact, if we
-examine all the possible error return codes, I believe they all would
-be caused by other qemu application bugs, or kernel bugs:
-
-vfio_dma_do_unmap()
-   returns -EBUSY if an mdev exists.  qemu blocks live update blocker
-     when mdev is present.  If this occurs, the blocker has a bug.
-   returns -EINVAL if the vaddr was already invalidated.  qemu already
-     invalidated it, or never remapped the vaddr after a previous live
-     update.  Both are qemu bugs.
-
-iopt_unmap_all
-   iopt_unmap_iova_range
-     -EBUSY - qemu is concurrently performing other dma map or unmap
-              operations.  a bug.
-
-     -EDEADLOCK - Something is not responding to unmap requests.
-
-Therefore, I think we should just revert eba1f657cbb1, and assert that
-the qemu vfio_dma_unmap_vaddr_all() call succeeds.
-
-Thoughts?
-
-- Steve
-
->   include/hw/vfio/vfio-container-base.h |  3 +++
->   include/hw/vfio/vfio-cpr.h            |  2 +-
->   hw/vfio/cpr-legacy.c                  | 19 ++++++++++++++-----
->   hw/vfio/listener.c                    |  8 ++++----
->   4 files changed, 22 insertions(+), 10 deletions(-)
-> 
-> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-> index bded6e993f..3f0c085143 100644
-> --- a/include/hw/vfio/vfio-container-base.h
-> +++ b/include/hw/vfio/vfio-container-base.h
-> @@ -269,6 +269,9 @@ struct VFIOIOMMUClass {
->       void (*release)(VFIOContainerBase *bcontainer);
->   };
->   
-> +int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
-> +                                     MemoryRegionSection *section);
+>  target/arm/cpregs.h            |  6 ++++
+>  target/arm/gdbstub.c           |  5 ++++
+>  target/arm/helper.c            | 53 +---------------------------------
+>  target/arm/tcg/translate-a64.c |  9 ++++++
+>  4 files changed, 21 insertions(+), 52 deletions(-)
+>
+> diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
+> index 7bdf6cf847..d34ed0d40b 100644
+> --- a/target/arm/cpregs.h
+> +++ b/target/arm/cpregs.h
+> @@ -911,6 +911,12 @@ struct ARMCPRegInfo {
+>       */
+>      uint32_t nv2_redirect_offset;
+>
+> +    /*
+> +     * With VHE, with E2H, at EL2, access to this EL0/EL1 reg redirects
+> +     * to the EL2 reg with the specified key.
+> +     */
+> +    uint32_t vhe_redir_to_el2;
 > +
->   VFIORamDiscardListener *vfio_find_ram_discard_listener(
->       VFIOContainerBase *bcontainer, MemoryRegionSection *section);
->   
-> diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
-> index d37daffbc5..fb32a5f873 100644
-> --- a/include/hw/vfio/vfio-cpr.h
-> +++ b/include/hw/vfio/vfio-cpr.h
-> @@ -67,7 +67,7 @@ bool vfio_cpr_container_match(struct VFIOContainer *container,
->   void vfio_cpr_giommu_remap(struct VFIOContainerBase *bcontainer,
->                              MemoryRegionSection *section);
->   
-> -bool vfio_cpr_ram_discard_register_listener(
-> +bool vfio_cpr_ram_discard_replay_populated(
->       struct VFIOContainerBase *bcontainer, MemoryRegionSection *section);
->   
->   void vfio_cpr_save_vector_fd(struct VFIOPCIDevice *vdev, const char *name,
-> diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
-> index 553b203e9b..6909c0a616 100644
-> --- a/hw/vfio/cpr-legacy.c
-> +++ b/hw/vfio/cpr-legacy.c
-> @@ -224,22 +224,31 @@ void vfio_cpr_giommu_remap(VFIOContainerBase *bcontainer,
->       memory_region_iommu_replay(giommu->iommu_mr, &giommu->n);
->   }
->   
-> +static int vfio_cpr_rdm_remap(MemoryRegionSection *section, void *opaque)
-> +{
-> +    RamDiscardListener *rdl = opaque;
-> +    return vfio_ram_discard_notify_populate(rdl, section);
-> +}
+>      /* This is used only by VHE. */
+>      void *opaque;
+>      /*
+> diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+> index e2fc389170..3727dc01af 100644
+> --- a/target/arm/gdbstub.c
+> +++ b/target/arm/gdbstub.c
+> @@ -249,6 +249,11 @@ static int arm_gdb_get_sysreg(CPUState *cs, GByteArr=
+ay *buf, int reg)
+>      if (ri) {
+>          switch (cpreg_field_type(ri)) {
+>          case MO_64:
+> +            if (ri->vhe_redir_to_el2 &&
+> +                (arm_hcr_el2_eff(env) & HCR_E2H) &&
+> +                arm_current_el(env) =3D=3D 2) {
+> +                ri =3D get_arm_cp_reginfo(cpu->cp_regs, ri->vhe_redir_to=
+_el2);
+> +            }
+>              return gdb_get_reg64(buf, (uint64_t)read_raw_cp_reg(env, ri)=
+);
+>          case MO_32:
+>              return gdb_get_reg32(buf, (uint32_t)read_raw_cp_reg(env, ri)=
+);
+> diff --git a/target/arm/helper.c b/target/arm/helper.c
+> index d0ccc23811..3f69ce6cb5 100644
+> --- a/target/arm/helper.c
+> +++ b/target/arm/helper.c
+> @@ -4441,47 +4441,6 @@ static CPAccessResult access_el1nvvct(CPUARMState =
+*env, const ARMCPRegInfo *ri,
+>      return e2h_access(env, ri, isread);
+>  }
+>
+> -/* Test if system register redirection is to occur in the current state.=
+  */
+> -static bool redirect_for_e2h(CPUARMState *env)
+> -{
+> -    return arm_current_el(env) =3D=3D 2 && (arm_hcr_el2_eff(env) & HCR_E=
+2H);
+> -}
+> -
+> -static uint64_t el2_e2h_read(CPUARMState *env, const ARMCPRegInfo *ri)
+> -{
+> -    CPReadFn *readfn;
+> -
+> -    if (redirect_for_e2h(env)) {
+> -        /* Switch to the saved EL2 version of the register.  */
+> -        ri =3D ri->opaque;
+> -        readfn =3D ri->readfn;
+> -    } else {
+> -        readfn =3D ri->orig_readfn;
+> -    }
+> -    if (readfn =3D=3D NULL) {
+> -        readfn =3D raw_read;
+> -    }
+> -    return readfn(env, ri);
+> -}
+> -
+> -static void el2_e2h_write(CPUARMState *env, const ARMCPRegInfo *ri,
+> -                          uint64_t value)
+> -{
+> -    CPWriteFn *writefn;
+> -
+> -    if (redirect_for_e2h(env)) {
+> -        /* Switch to the saved EL2 version of the register.  */
+> -        ri =3D ri->opaque;
+> -        writefn =3D ri->writefn;
+> -    } else {
+> -        writefn =3D ri->orig_writefn;
+> -    }
+> -    if (writefn =3D=3D NULL) {
+> -        writefn =3D raw_write;
+> -    }
+> -    writefn(env, ri, value);
+> -}
+> -
+>  static uint64_t el2_e2h_e12_read(CPUARMState *env, const ARMCPRegInfo *r=
+i)
+>  {
+>      /* Pass the EL1 register accessor its ri, not the EL12 alias ri */
+> @@ -4657,17 +4616,7 @@ static void define_arm_vh_e2h_redirects_aliases(AR=
+MCPU *cpu)
+>                                   (gpointer)(uintptr_t)a->new_key, new_re=
+g);
+>          g_assert(ok);
+>
+> -        src_reg->opaque =3D dst_reg;
+> -        src_reg->orig_readfn =3D src_reg->readfn ?: raw_read;
+> -        src_reg->orig_writefn =3D src_reg->writefn ?: raw_write;
+> -        if (!src_reg->raw_readfn) {
+> -            src_reg->raw_readfn =3D raw_read;
+> -        }
+> -        if (!src_reg->raw_writefn) {
+> -            src_reg->raw_writefn =3D raw_write;
+> -        }
+> -        src_reg->readfn =3D el2_e2h_read;
+> -        src_reg->writefn =3D el2_e2h_write;
+> +        src_reg->vhe_redir_to_el2 =3D a->dst_key;
+>      }
+>  }
+>  #endif
+> diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a6=
+4.c
+> index 8303f0dac2..8fcc74d151 100644
+> --- a/target/arm/tcg/translate-a64.c
+> +++ b/target/arm/tcg/translate-a64.c
+> @@ -2573,6 +2573,15 @@ static void handle_sys(DisasContext *s, bool isrea=
+d,
+>          }
+>      }
+>
+> +    if (ri->vhe_redir_to_el2 && s->current_el =3D=3D 2 && s->e2h) {
+> +        /*
+> +         * This one of the FOO_EL1 registers which redirect to FOO_EL2
+> +         * from EL2 when HCR_EL2.E2H is set.
+> +         */
+> +        key =3D ri->vhe_redir_to_el2;
+> +        ri =3D redirect_cpreg(s, key, isread);
+> +    }
 > +
->   /*
->    * In old QEMU, VFIO_DMA_UNMAP_FLAG_VADDR may fail on some mapping after
->    * succeeding for others, so the latter have lost their vaddr.  Call this
-> - * to restore vaddr for a section with a RamDiscardManager.
-> + * to restore vaddr for populated parts in a section with a RamDiscardManager.
->    *
-> - * The ram discard listener already exists.  Call its populate function
-> + * The ram discard listener already exists.  Call its replay_populated function
->    * directly, which calls vfio_legacy_cpr_dma_map.
->    */
-> -bool vfio_cpr_ram_discard_register_listener(VFIOContainerBase *bcontainer,
-> -                                            MemoryRegionSection *section)
-> +bool vfio_cpr_ram_discard_replay_populated(VFIOContainerBase *bcontainer,
-> +                                           MemoryRegionSection *section)
->   {
-> +    RamDiscardManager *rdm = memory_region_get_ram_discard_manager(section->mr);
->       VFIORamDiscardListener *vrdl =
->           vfio_find_ram_discard_listener(bcontainer, section);
->   
->       g_assert(vrdl);
-> -    return vrdl->listener.notify_populate(&vrdl->listener, section) == 0;
-> +    return ram_discard_manager_replay_populated(rdm, section,
-> +                                                vfio_cpr_rdm_remap,
-> +                                                &vrdl->listener) == 0;
->   }
->   
->   int vfio_cpr_group_get_device_fd(int d, const char *name)
-> diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-> index f498e23a93..74837c1122 100644
-> --- a/hw/vfio/listener.c
-> +++ b/hw/vfio/listener.c
-> @@ -215,8 +215,8 @@ static void vfio_ram_discard_notify_discard(RamDiscardListener *rdl,
->       }
->   }
->   
-> -static int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
-> -                                            MemoryRegionSection *section)
-> +int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
-> +                                     MemoryRegionSection *section)
->   {
->       VFIORamDiscardListener *vrdl = container_of(rdl, VFIORamDiscardListener,
->                                                   listener);
-> @@ -572,8 +572,8 @@ void vfio_container_region_add(VFIOContainerBase *bcontainer,
->       if (memory_region_has_ram_discard_manager(section->mr)) {
->           if (!cpr_remap) {
->               vfio_ram_discard_register_listener(bcontainer, section);
-> -        } else if (!vfio_cpr_ram_discard_register_listener(bcontainer,
-> -                                                           section)) {
-> +        } else if (!vfio_cpr_ram_discard_replay_populated(bcontainer,
-> +                                                          section)) {
->               goto fail;
->           }
->           return;
+>      if (ri->accessfn || (ri->fgt && s->fgt_active)) {
+>          /* Emit code to perform further access permissions checks at
+>           * runtime; this may result in an exception.
+> --
+> 2.43.0
+>
+>
 
+This looks much better
+
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
