@@ -2,83 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8D89B3CE67
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C56D6B3CE72
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:58:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usOhB-0005mt-G6; Sat, 30 Aug 2025 12:44:54 -0400
+	id 1usO7R-0006dm-6z; Sat, 30 Aug 2025 12:07:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urkso-0007Pk-98
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:14:14 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkvF-0007us-Sb
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:16:45 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urksl-0006oH-Qc
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:14:14 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-7704799d798so1261065b3a.3
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 15:14:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkvB-0007gQ-Qw
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:16:44 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-45a1b05ac1eso7802475e9.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 15:16:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756419248; x=1757024048; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
+ d=linaro.org; s=google; t=1756419399; x=1757024199; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QleH+kn2l6mkCsEVw1sGTpJNqVermfngu9IR1SevNGU=;
- b=Epu6sBqSGMQaCO7jki4z/ydCWYGewCWfzMp+qLlEIOat0ccA46jd2ZfBrk88LhNMrN
- siGgjcylJK5KiNiTVr4q14QXIJ2oXZYMU/bpMzHzpF+grK/gVg56mpwPh4pMcnIQfebd
- 9HL4fGMDp126wlUoWlJGJzczP+kK9MSPDgn5OPCczKOXNsWB66jcDubM7aZcR2579+iW
- gy0wJChMBgwai8dPEKZPGUXN/XZQPe+AXKgy9yfCln9tnLuBUVjA1YvGBEVU8tuYbQmm
- tUuPGbbDb+PStLRCS97An/xHl5QaKQaHENTVNNZxA5o6wmaGpJkqBPqFC6qi4X1cm+4c
- obzA==
+ bh=z72tKFweJRb7XkCpknvHl5t2yNXAYpWjnXkbNnxdkPM=;
+ b=OsHA0K/7E271dGxjmFevJ5iqCtY2bM0IX/IDzTxj1Tow/ERw/1NuXHerrzYgzrbEL/
+ gsojUTicYtynJRJxPzmc6j5laZchZ2S/+z1XjlSNgXYXPXeWSuNSsIrr/wSO7SqYLyQw
+ LBy6FN7npa3z/eeK3BdSPA8Xi2DMctSKIR2fMl9X1xwQljOmYYz9gyp84hOfec0oOAWc
+ 0244jc9k1tguZrEa63n6XTQGZUxsQpL7e2fzQTHMzRWZOMO0MxKYB56SlPqVLDEIGaOL
+ t4xsLvrhMiJeojaTXUG7HrrMQAqzoryH1nkIwHDsEc8pMIq7tpnqNzxOQdr6SueU59A3
+ JU/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756419248; x=1757024048;
- h=content-transfer-encoding:in-reply-to:content-language:from
+ d=1e100.net; s=20230601; t=1756419399; x=1757024199;
+ h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QleH+kn2l6mkCsEVw1sGTpJNqVermfngu9IR1SevNGU=;
- b=TH7WJKNl74ugq/tcJw/GMQOUMgrCw/LtiwGGtJ4ojLMryXWC4yV/xTTJetWsovEe8+
- SYYkJWm92cKRZC11fiQ5ScYQ3HEo5ud+M5/dHZ6p75TiwixC9DjQt0ZCyaCY5kfq1Sar
- xYGc+rVIMfV+QmrBoeXujfTy/eD4S5Ti6PVQnk3ijMlKjMCxXXodjVE/mdBqueTEeNDu
- ynUOBxYg+FJinySB1FaFeOi9cPw0XeIV5mU8ReKq8qQR6tVoblySYF2wlGr1IhjbGUK9
- adFxmBykLjWH502JevMxY6gaM9MPzjWCnurEDKJZKjzjcx+mlS20Rb84ph4ER98Wr6ec
- vcMg==
-X-Gm-Message-State: AOJu0YwIlvhfflX2MsVYKl05jjW0uyTc6QfxgxopBxfquz/nJnisBLxm
- rUMJa6hCV6QdKElFTDmiuQCA4I5zrN7WbcAjL26dqzOoy3PuGquGR9T493OZEVokLcs=
-X-Gm-Gg: ASbGncuqdatEvtkx4xuG7HA5ARoWC431SS1A6c8q7swdiW9PZxH96Fhz4wlwC+sypwH
- Bj8ErVi/1NfzVr62q2mIOTYMSjBgVdfL5POovNhsyp3YEjoK9yyD7rs6vU0+UOKmlQ3zeEoSiR9
- y1WrQSi3salcQVXkelrxziWrz9Q1aIPNwM+XGGGUmOk1Pz2Zm0OJF3XLEieuXFmG5aEoxjcRa3T
- JKdW0Ws4Saa2QEc6zoDqEfMA2nkjfEiVIT6cA/0DQ/UWSGfjPxgnapWvtjfvpbAPIMtSDiAhb0y
- aPTWXNfgGUsaDC9EOsCGHz4z6mYApYAIoFvtP0uUUZRjAoLeJZ2cuehKzrvtz/llBom4kr3W2up
- JIYPrb1AnCZWo9lWwzuZNw3zIBnuS5S5vFysmCnl9DbkhuLY=
-X-Google-Smtp-Source: AGHT+IFHkISrWfT3a05kqLTgzW3P+eDeNhNEE/LXSvi2n+YQeTAIF+B80YfjAzHO7Hf28ua6K1D6rA==
-X-Received: by 2002:a05:6a20:7d9f:b0:21f:ee3f:8ad5 with SMTP id
- adf61e73a8af0-24340b27e92mr36319552637.20.1756419248538; 
- Thu, 28 Aug 2025 15:14:08 -0700 (PDT)
-Received: from [192.168.0.195] ([144.6.121.55])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b4cd28b37dfsm392165a12.25.2025.08.28.15.14.06
+ bh=z72tKFweJRb7XkCpknvHl5t2yNXAYpWjnXkbNnxdkPM=;
+ b=B/8cCzriCCzyNgql/LL2MgNLEWS+YBbTkqV5VnukNiaovRcwPmeNy0AtMrjNFxJxVT
+ wH2aKir3f0XGwGTYnvYCbGDD+x7RS/6kR5lcrFD3yy2Flu8uFKo4khdcdvfuPy3h7wkQ
+ 5N+Q6+hZMSEgPc6RBWwnWhhnnx5/7BDOwC8x6NzmXp4aRP/JdmAs8lbZ0frWD9Cp3lPu
+ YkcJEDy9CEyryNHqM/A879AllASLiVqe+yeXxql3XJ2YZxgfC47PPnvEparVXGHSATAA
+ xZ0FXx9dja9szDIconP2JhAzuEP8tQedGihVTdBMx6RvsMminwG8Fu8L7VGP/eOcYRj4
+ nPiw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWFNWlVvYtE6fNCiRMqA5Is0N3yDc6nFyIvM47xl1SbyH8uEajOP4bEGlZdT4UkFT6iLw9YAtTbf9kl@nongnu.org
+X-Gm-Message-State: AOJu0Yz+fXA1gMp/IuAhkewUTmUtReRis4zdW+S/wTYPSrnhsnNcVTmP
+ iX9Z54k7ckrBLZJCV/WFQ+Ra05ZQ2Op0PYUOSpvk+8vA3n7x/LC0P46F6Qtt3jPYqK0=
+X-Gm-Gg: ASbGncslYDimiOtFYeJ7LZGGUFK7K3Gqd0jGAZsZ9+6YWjTZ+iPhO00aUok8LR3tZge
+ FCv33tNpXpnJKwsCSbhmDgS7JOE9VQ89APMeQZw+yi+YYTZg1s/oH96Za1wSGwd6McOTMb+JFoj
+ gRAb2m5+IWEDu4TzfubbuNJPgSR4AUcIe1rLYfulBk9CavUNGjatrJDbBbjbbuMdIX3QfQwlI3Y
+ R9XNiKJKAMCcRz7oriSW7YD6nKTvzMOL02cpect/PTlreaNY+4ryCv7MStFbRmnWofo07jN8CRa
+ 9gT1j4/uhZQxd/8t5F5rhrAoxAlDxcjWYfmYhtuTQKAy7F+8qTwlm3xiuMQBljWW1GAf1oC2HZ9
+ jGKAaGKxE6EJ4Fmlr3DqeM/Xau4FOyAUtmo4EbJIRc381VpJFO+TKA/nXFtZGS2OXPw==
+X-Google-Smtp-Source: AGHT+IE9PHzRmrjZCiBc6JvuPWelSPwE+dERNowkWNcV6U6qGISzVTZSL6pkRQnBjVm7IciAPM8B4A==
+X-Received: by 2002:a05:600c:4f12:b0:459:dde3:1a37 with SMTP id
+ 5b1f17b1804b1-45b66343ea2mr101661815e9.25.1756419398733; 
+ Thu, 28 Aug 2025 15:16:38 -0700 (PDT)
+Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3cf34491a65sm778717f8f.56.2025.08.28.15.16.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Aug 2025 15:14:07 -0700 (PDT)
-Message-ID: <fa015de3-3d90-4c2a-9746-0337e53fac89@linaro.org>
-Date: Fri, 29 Aug 2025 08:14:02 +1000
+ Thu, 28 Aug 2025 15:16:38 -0700 (PDT)
+Message-ID: <dd70c16b-9b46-407a-af8b-b6dcb7608def@linaro.org>
+Date: Fri, 29 Aug 2025 00:16:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 30/87] linux-user/i386: Create target_ptrace.h
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20250828120836.195358-1-richard.henderson@linaro.org>
- <20250828120836.195358-31-richard.henderson@linaro.org>
- <CAFEAcA9AbA4pa9EjOnkmrGMOOC-4nS+FNqni91bfDDkH1wOAbA@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v4 20/47] hw/arm/xlnx-versal: refactor CPU cluster creation
+To: Luc Michel <luc.michel@amd.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Frederic Konrad <frederic.konrad@amd.com>,
+ Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+References: <20250822151614.187856-1-luc.michel@amd.com>
+ <20250822151614.187856-21-luc.michel@amd.com>
 Content-Language: en-US
-In-Reply-To: <CAFEAcA9AbA4pa9EjOnkmrGMOOC-4nS+FNqni91bfDDkH1wOAbA@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250822151614.187856-21-luc.michel@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,27 +107,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/29/25 00:42, Peter Maydell wrote:
-> On Thu, 28 Aug 2025 at 13:09, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->> +/*
->> + * Compare linux arch/x86/include/uapi/asm/ptrace.h (struct pt_regs) and
->> + * arch/x86/include/asm/user_32.h (struct user_regs_struct).
->> + * The structure layouts are identical; the user_regs_struct names are better.
->> + */
+On 22/8/25 17:15, Luc Michel wrote:
+> Refactor the CPU cluster creation using the VersalMap structure. There
+> is no functional change. The clusters properties are now described in
+> the VersalMap structure. For now only the APU is converted. The RPU will
+> be taken care of by next commits.
 > 
-> Why do you think the user_regs_struct names are better?
-> "bx" suggests a 16-bit register, but these are 32-bit, right?
+> Signed-off-by: Luc Michel <luc.michel@amd.com>
+> Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+> ---
+>   include/hw/arm/xlnx-versal.h |  12 +-
+>   hw/arm/xlnx-versal-virt.c    |  80 +-------
+>   hw/arm/xlnx-versal.c         | 352 ++++++++++++++++++++++++++---------
+>   3 files changed, 275 insertions(+), 169 deletions(-)
 
-Mostly I really don't like xds etc.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> Commit message should say something about why we're changing
-> the types (though clearly here the target-specific types are
-> more sensible than the host-specific ones).
-
-Oops, yes.  There are quite a lot of error across the various target_pt_regs structures 
-that we never caught because they were never used.
+> diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
+> index b981d012558..27594f78c8f 100644
+> --- a/hw/arm/xlnx-versal-virt.c
+> +++ b/hw/arm/xlnx-versal-virt.c
 
 
-r~
+> @@ -394,20 +328,18 @@ static void versal_virt_init(MachineState *machine)
+>       fdt_create(s);
+>       versal_set_fdt(&s->soc, s->fdt);
+>       sysbus_realize(SYS_BUS_DEVICE(&s->soc), &error_fatal);
+>       create_virtio_regions(s);
+>   
+> -    fdt_add_gic_nodes(s);
+> -    fdt_add_timer_nodes(s);
+> -    fdt_add_cpu_nodes(s, psci_conduit);
+>       fdt_add_clk_node(s, "/old-clk125", 125000000, s->phandle.clk_125Mhz);
+>       fdt_add_clk_node(s, "/old-clk25", 25000000, s->phandle.clk_25Mhz);
+>   
+> -    /* Make the APU cpu address space visible to virtio and other
+> -     * modules unaware of multiple address-spaces.  */
+> -    memory_region_add_subregion_overlap(get_system_memory(),
+> -                                        0, &s->soc.fpd.apu.mr, 0);
+> +    /*
+> +     * Map the SoC address space onto system memory. This will allow virtio and
+> +     * other modules unaware of multiple address-spaces to work.
+> +     */
+> +    memory_region_add_subregion(get_system_memory(), 0, &s->soc.mr_ps);
+
+I was not aware of that shortcoming (Cc'ing Manos & Alex).
+
 
