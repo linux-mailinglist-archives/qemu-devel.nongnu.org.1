@@ -2,72 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACDB3B39441
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 08:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8D0B39521
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 09:27:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urWUo-0000dR-9D; Thu, 28 Aug 2025 02:52:30 -0400
+	id 1urX1Y-0004GD-Vt; Thu, 28 Aug 2025 03:26:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1urWUm-0000ce-4c; Thu, 28 Aug 2025 02:52:28 -0400
-Received: from mgamail.intel.com ([192.198.163.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1urWUh-00080O-Fh; Thu, 28 Aug 2025 02:52:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756363943; x=1787899943;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=7wwSM/QgRCu1i/KZOqVDJmmLgbesqWKyyhQSawNEvv8=;
- b=MHNT+BzZ3j4X9Yls5MqMBii3Ad62MA4GAdDeKEIBwPF7OaPNqFEWCftN
- E44xCbvFdwpuCfZcbeRnsd49EoGmJj1b4mTHTiqSzfUw+unQJxUo0hcvg
- 4h+xqHdQdU7IPB8dwB4dA1c/gHWicM18mNnAxs4gkzT7bV2swfpMe6x4g
- nttFeGuvShnnvX5ogxo+pxBBUfot87a2GZtmOa1gJMBz1IUpNYTpblDhM
- wCDYkfknbb6jGvHghre2xAIfWZckTc0DK0EkhP4eg0JUvM5+z9qCOEH39
- cpD0loBu579HFsGE40qWETpEtFIIRjql2MPCfRQJtgL8flz0KbsTtIVN6 g==;
-X-CSE-ConnectionGUID: 99IZcuhsQ7mzUclhOhV8yQ==
-X-CSE-MsgGUID: CDfPgU8GQpiEWS64VXc7Lg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="58554077"
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="58554077"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2025 23:52:21 -0700
-X-CSE-ConnectionGUID: iemhMvoMS023zvux7Ghrpg==
-X-CSE-MsgGUID: pzrAf6FiQTKSBZizJkAGGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="175307235"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa004.fm.intel.com with ESMTP; 27 Aug 2025 23:52:19 -0700
-Date: Thu, 28 Aug 2025 15:14:06 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- pbonzini@redhat.com, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: Re: [PATCH 04/22] rust: make build.rs generic over various
- ./rust/projects
-Message-ID: <aLABvvuKnrdpGQrg@intel.com>
-References: <20250827104147.717203-1-marcandre.lureau@redhat.com>
- <20250827104147.717203-5-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <wilfred.opensource@gmail.com>)
+ id 1urX1I-0004FN-CG; Thu, 28 Aug 2025 03:26:04 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wilfred.opensource@gmail.com>)
+ id 1urX1F-0005MH-SX; Thu, 28 Aug 2025 03:26:03 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-b471737b347so457832a12.1; 
+ Thu, 28 Aug 2025 00:25:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1756365956; x=1756970756; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VKtLunagY1QESZQoSB7dxK22AzBeHX0dHDUaM5QgB4o=;
+ b=R3dsu6bbTRbbJ1Xh7xBvDJq1nLeB8jYwjln8lfar+q/c7KkWVai0n8aMUaiq8XHHPT
+ Lpo+b4aSEoMcNtCQqcttYxfH7rkFWFJ5XCIbYbHWAq4r+lx6Yo6j7TzRFZGrJDnRow8l
+ 3n3bX3Cjkk+G0sFmgHC3SpXUWwEzbRBWgNFSkXzQpobd8FG+nMTa6enNj2BUII3wDKAp
+ KV600rpcn8eliTNORQR2OAGZcLaUCLNpt3rpUxDT5VML+Z8x8lAUkLy0XwIqWkDfMvSM
+ EsFE1Pjgy8MorJ3b+1X6IFWIbH2bKOXbZyBwZMw99Krbve6lJIUuGN3b+1bw0dUj2P5s
+ LYYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756365956; x=1756970756;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VKtLunagY1QESZQoSB7dxK22AzBeHX0dHDUaM5QgB4o=;
+ b=M7Tq8icNKh2kYYujt8pzSwJuBSac3VhY3Pe86g81xRJBcQRPLp+aIzIQf2/N/jwuaR
+ CoodcaWB1+FdzkqcRUCGBG3VwAAnQ3C7Ud2+7ya3A6CKqDNYx22EKy5r1O/Qze0I9uwz
+ OOKIiflNt1l3ttP0d0C2izhrvPY5rT2aJqCDOxy6fXKoZf3B8CLVnmXJ/baf5baJlqb+
+ mX6Y3ujGkQZuA2cJYqrF6sXtNVhz11nsL1T0gDMGfihnJ5jZHUePJ3TI7HEsgR/7AD9t
+ +4b8M6KXDS2/fNjwR4Z7lCrdahVaG/iFXnPQT/OAjM0MgV+nGe1Q/mcCWs82thGAfzrz
+ TO8A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVAZK9vAlWKANylrjB78apJpOrIV/d/b2Hd0zC9rTxzOzq6t8cmVv9ZKjHTSIz9TJb6faun1js9hjDz@nongnu.org,
+ AJvYcCW4FIfz2jc78PorwMSqo+OqXXIxrPtKdV91ujN5FB4LfmI/jf5M6mVbe3sH+A/mDcVS9sX8SHiDCsya/A==@nongnu.org
+X-Gm-Message-State: AOJu0Yz2X726Kz6GqcLnvMYGT5dV2dfloyXR5Sfglh9ZImBDd6AuUxMD
+ 2yJl7+bk42uEO3BKcBIghmSoMsitnCYyMgKNLVe+WQEKuSu/aEa8na65
+X-Gm-Gg: ASbGncvPqGx8V4jzBrPLfRUyuxJq+ufvbCFx15DJdFyCYT1NPn00gSY3aHkbKd3WmOQ
+ rheDxSu+v0yPoMTFv1ZYfuJtlNfOc8WMmi3Ssgl6S1SFQWF+dbwQOAZk2U24XNO4lstzrUPTWsQ
+ jbN70kpwBZhhhHKnvGnlGxkcjLqJXjw72sMo8biuOwq09GUCHGJ5SmvTENt4ZTCZZ5tQGByuZD3
+ iQEhLk8n/8hhMOru/jm9UpAabsDR3ordclMCIHTdxsi3HbrWcjzIky8bFO8iJ3X5kVNbc4e4eFH
+ 6Qe+ZvGOYHn+ZJ2ygkOqwpLp1bh4IJJYGbQ3nF8RftyGGcgJWrmSAlS9OL1J/c0f9KqtZIpSmxw
+ zUx82jU0tabWF0Ug1JvGCSRyG/g==
+X-Google-Smtp-Source: AGHT+IFbi2w7IsPUlbM+B5wBwfScb8mfYMeSjdtjaGgzsM2OguQI+JNPrxjVh6eLlz+fT9dpkkaA5Q==
+X-Received: by 2002:a17:903:37ce:b0:248:e0a2:aa31 with SMTP id
+ d9443c01a7336-248e0a2b09cmr9750775ad.32.1756365955584; 
+ Thu, 28 Aug 2025 00:25:55 -0700 (PDT)
+Received: from fedora ([159.196.5.243]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-24884a629fcsm51009775ad.19.2025.08.28.00.25.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Aug 2025 00:25:54 -0700 (PDT)
+From: Wilfred Mallawa <wilfred.opensource@gmail.com>
+To: Alistair Francis <alistair.francis@wdc.com>
+Cc: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+ Jesper Devantier <foss@defmacro.it>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Fam Zheng <fam@euphon.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Subject: [PATCH v2 0/5] NVMe: Add SPDM over the storage transport support
+Date: Thu, 28 Aug 2025 17:25:28 +1000
+Message-ID: <20250828072532.425592-2-wilfred.opensource@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250827104147.717203-5-marcandre.lureau@redhat.com>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=wilfred.opensource@gmail.com; helo=mail-pg1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,46 +102,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 27, 2025 at 02:41:26PM +0400, marcandre.lureau@redhat.com wrote:
-> Date: Wed, 27 Aug 2025 14:41:26 +0400
-> From: marcandre.lureau@redhat.com
-> Subject: [PATCH 04/22] rust: make build.rs generic over various
->  ./rust/projects
-> 
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> 
-> Guess the name of the subdir from the manifest directory, instead of
-> hard-coding it. In the following commits, other crates can then link to
-> this file, instead of maintaining their own copy.
-> 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
->  rust/qemu-api/build.rs | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/rust/qemu-api/build.rs b/rust/qemu-api/build.rs
-> index 29d0945625..92237183ec 100644
-> --- a/rust/qemu-api/build.rs
-> +++ b/rust/qemu-api/build.rs
-> @@ -9,12 +9,14 @@
->  use std::{env, fs::remove_file, io::Result, path::Path};
->  
->  fn main() -> Result<()> {
-> +    let manifest_dir = env!("CARGO_MANIFEST_DIR");
->      let file = if let Ok(root) = env::var("MESON_BUILD_ROOT") {
-> -        format!("{root}/rust/qemu-api/bindings.inc.rs")
-> +        let sub = get_rust_subdir(manifest_dir).unwrap();
-> +        format!("{root}/{sub}/bindings.inc.rs")
->      } else {
->          // Placing bindings.inc.rs in the source directory is supported
->          // but not documented or encouraged.
-> -        format!("{}/src/bindings.inc.rs", env!("CARGO_MANIFEST_DIR"))
-> +        format!("{}/src/bindings.inc.rs", manifest_dir)
+From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 
-Only a nit: cargo clippy suggests this inline style:
+This series extends the existing SPDM support in QEMU to support the DSP0286
+SPDM Storage Transport [1] for NVMe. SPDM Storage Transport uses the NVMe
+Admin Security Send/Receive commands, as such, support for these commands have
+also been added.
 
-format!("{manifest_dir}/src/bindings.inc.rs")
+With the addition of a new `spdm-trans` CLI argument for NVMe controllers,
+users can specify `spdm_trans=nvme` or `spdm_trans=doe`. This allows for the
+selection of the SPDM transport. The `doe` option is the current default,
+`nvme` would select SPDM Storage Transport for the controller, where SPDM
+communication happens over the NVMe Admin Security Send/Receive commands.
 
->      };
-  
+Support for DSP0286 already exists in `libspdm` [2] and support for the QEMU
+SPDM server is being upstreamed for `spdm-utils` [3]. This series was tested by
+using `spdm-utils` as the qemu SPDM server with SPDM Storage Transport support
+built with `libspdm` v3.8.0, and `spdm-utils` also as the SPDM requester.
+
+Changes V1 -> V2:
+	- spdm_socket_rsp() now uses the new spdm_socket_send/receive()
+	  functions. spdm_socket_command_valid() is added to parse the
+	  command value incase some bytes were received (result = true) but
+	  with an invalid command.
+
+	- Added inline comments to describe fields of
+	  StorageSpdmTransportHeader. Checkpatch generates warnings, but lots of
+	  existing code does this. The QEMU_PACKED attribute now follows the
+	  StorageSpdmTransportHeader struct definition.
+
+	- Use extract32() instead of manual shifting/masking in
+	  nvme_sec_prot_spdm_send/recv().
+
+	- Use g_autofree for send/recv buffer allocation
+	  in nvme_sec_prot_spdm_send/recv().
+	
+	- Added explicit fallthrough comment for checking `secp` in
+	  nvme_security_receive()
+	
+	- Added enum support for SPDM transport type, such that a user defined
+	  transport type string, can be mapped to the respective enum for
+	  internal use.
+
+Wilfred Mallawa (5):
+  spdm-socket: add seperate send/recv functions
+  spdm: add spdm storage transport virtual header
+  hw/nvme: add NVMe Admin Security SPDM support
+  spdm: define SPDM transport enum types
+  hw/nvme: connect SPDM over NVMe Security Send/Recv
+
+ backends/spdm-socket.c       |  79 ++++++++++--
+ docs/specs/spdm.rst          |  10 +-
+ hw/nvme/ctrl.c               | 242 +++++++++++++++++++++++++++++++++--
+ hw/nvme/nvme.h               |   5 +
+ include/block/nvme.h         |  15 +++
+ include/hw/pci/pci_device.h  |   2 +
+ include/system/spdm-socket.h |  66 +++++++++-
+ 7 files changed, 391 insertions(+), 28 deletions(-)
+
+-- 
+2.51.0
+
 
