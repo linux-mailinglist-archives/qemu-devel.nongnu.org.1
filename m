@@ -2,80 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1341EB3CE4B
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23948B3CE7A
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 20:01:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usOWL-0001I3-Ua; Sat, 30 Aug 2025 12:33:42 -0400
+	id 1usOcU-0003XD-Sv; Sat, 30 Aug 2025 12:40:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3z6SwaAgKCigFLMPPMIVKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--bhillier.bounces.google.com>)
- id 1urhh7-0008Nu-2Q
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 14:49:57 -0400
-Received: from mail-pl1-x649.google.com ([2607:f8b0:4864:20::649])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkAQ-0003bq-U0
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 17:28:22 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3z6SwaAgKCigFLMPPMIVKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--bhillier.bounces.google.com>)
- id 1urhh5-0005Vz-Ac
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 14:49:56 -0400
-Received: by mail-pl1-x649.google.com with SMTP id
- d9443c01a7336-248942647c5so24239405ad.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 11:49:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkAO-0006Zo-DE
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 17:28:22 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-45b629c8035so9028395e9.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 14:28:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1756406991; x=1757011791; darn=nongnu.org;
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=eZmDu3jdm85zT/kkoUu6drjP5lcoEw7fmNxr6cvxvOc=;
- b=xIoPD+cqITqybP+7BMN73F3CzbXoLpDUOhVtvJJb/WhY+dg4DPJvI7+uPfMyVXG0hS
- n/N8QcPg5LgScGIwxURr3CdDKTmjYLAdwDxAHYeoLB/6zfVJNcrujPBaQZKgpYZhQOjr
- dh6w1+ZAFP4l/UjSzz0GP2MspTS4YrKGCRhCFYyxgZdUe1ucCgYuW1l2ZQ3uuufAmyp9
- Bx09XaKW5EBUzY+qI+BQxG42wHCeUhReMtC6/pcB9XsjaQbsALZWbB8nS91vAriH3QJN
- D1NM4ItAOmj78V1MxuqIUJO7fdfwYIH+nde/P6wvfbwcOLadWFHYSK1c32ioFhwegJ10
- fE1g==
+ d=linaro.org; s=google; t=1756416498; x=1757021298; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=BlDpQGDeexgL4ACGGabqUtWDKUNnzKeqB7cELlVQs+8=;
+ b=eGhyHlhsLBkSjgs5Aygf9/52QDZm9JG6urvZlwDRDxce1sXg7wOnwfQYen96HdGRpg
+ b/hNJ37VljzAety5WdRH2aeyMnOqX3Ecj5knJET7Pdti6BmoebsxauyHcj1ZHK/tSC3b
+ KaFgPpm0dCfPlx9xrlZZ4TqM/A6a4Rm/mVj1K5iOrhU6T9CGUHNcGFwo0rmlgPmQW4AU
+ GNnkAVvW8URmGaT3w4QX3QKWMsvlp42HuBmlJ/97yH1D3FAxxGUYVuv7VFyw4bEQQNa/
+ JnEuwB9iFdZFVKv0F+FaabAR30if74Z3Uh0N0MfBIPio9IzVWtA8refFPHoVPEmfzAF6
+ 9k5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756406991; x=1757011791;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=eZmDu3jdm85zT/kkoUu6drjP5lcoEw7fmNxr6cvxvOc=;
- b=uK8o6/izxi04gbZswSVg55QWEWsedvyyOYLqz9ECEJVim+3mAqOePGLL50xu3z8Qi1
- ZZdM6EnTVjDSvy5Kmay+k5kcVuOt7kwIjFZ8lCkkQWZzWvSY8micpDZ8/lHD6y0pXPUQ
- UcHQr6+DEHOyT2zoqDsEnaxGx8DurwrYlsIppyH0hHlWr+sUyl4OEe4XNTNvmiKjm2Do
- 4FQH8nJW1gUUWefxfD+3QLDY6l3Rf+CLhvVwPES4tit5TecH2Hdi4h8E/ABlrdeESHUb
- 1TeICYVv805K87rGm1+IWzrzwPEuuN0dM6ia3xn3vDXnpDy5EYVS64+7nVQhSIPMqt9V
- y9sA==
+ d=1e100.net; s=20230601; t=1756416498; x=1757021298;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BlDpQGDeexgL4ACGGabqUtWDKUNnzKeqB7cELlVQs+8=;
+ b=lIZvWn1w7Q7LE7bbHSjNAAKuKyMuwiOOq9il1kzu4o24Ajo8H/xqcuv2m2WQ2uYm6w
+ bQSpoulaSjhyjOfq2/S+YpLC5NPtr2E+7DJpTIqVGKPVMV6ES1bXGlxnB1DeowbePHAR
+ 0kNxIyA5VA60z9jopGxxQ6Sx63i6mUi/L00wYnimC2QjW3IrEAoEp0w9n7FglD4OYRZ6
+ AJ/S0nQJHZRdvzCcHZvL6oMF4h7oEb5rPfhISw5GXhDFKXvunHg4oapxfiOUOHKuEJLA
+ 3ajS3fBiMM2cILkd2V0S3+OxvQcDWsceLqy2ZqkJVsWFycSUu97tZrM03zghWCuW8SF1
+ 5Cuw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUzq6G7vo1nBHIZgWysG0QrAmNLWwpeDvQY48Y0mwcubMS27MRrnOJKG3GrEISkpgtdD4vTIVXizvUY@nongnu.org
-X-Gm-Message-State: AOJu0Yx0qWdk2Mqv1f3WTdyeF6wHuZW6ZB6HKl2XI1aAf6XbNGiL2Vf9
- JjHUTKH7FphovupMlrcRUdsGAzh21drZwOqGHlRj9hgDf94BpV6PaJfjO/Unwrq1OKCIPCGPw5Y
- Ey/NtyRx59KzSYQ==
-X-Google-Smtp-Source: AGHT+IFFN1RUSe+6N2gyNpYf2PINpcV8AlhKuNHHRTeOId8d2OcXFzH4KBrNVJtnpd8mKrZF9+Ii9+tFlpdVSg==
-X-Received: from plhy6.prod.google.com ([2002:a17:902:d646:b0:240:11bf:3c68])
- (user=bhillier job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:11c7:b0:246:ac9e:6fbe with SMTP id
- d9443c01a7336-2487539f6aamr133968785ad.10.1756406991128; 
- Thu, 28 Aug 2025 11:49:51 -0700 (PDT)
-Date: Thu, 28 Aug 2025 18:49:39 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.318.gd7df087d1a-goog
-Message-ID: <20250828184939.3140841-1-bhillier@google.com>
-Subject: [PATCH v2] hw/sensor: add stub for ADM1266 blackbox
-From: Ben Hillier <bhillier@google.com>
-To: wuhaotsh@google.com, kfting@nuvoton.com
-Cc: philmd@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Titus Rwantare <titusr@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::649;
- envelope-from=3z6SwaAgKCigFLMPPMIVKSSKPI.GSQUIQY-HIZIPRSRKRY.SVK@flex--bhillier.bounces.google.com;
- helo=mail-pl1-x649.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
+ AJvYcCVxOVfvapIpqMXmcjqRF3+ugJfBh+C0GbJzAsjeoQa5t0ttax5K0EwuHKZoR8YUnEFgztkpB9gilWhF@nongnu.org
+X-Gm-Message-State: AOJu0YzfCbqaa5n8reT4wU2uTNKUdroQqlQNsetwqYtOrqE36VeqQnld
+ 2r3SYTk12ZWEXp/gfs4UnDmNLwZ2SabbBhflGYWiZJEh9rZUm7kRhRyZOUA1b26fcxA=
+X-Gm-Gg: ASbGnctluHwl8p9cfz7Tna2JpSm/dJgsvwiSW6hWaIRSRLHW7Lw0zMyMcwAU9qwpTU1
+ ROeBKaXzZmSmXFcw1kRGaa4n1KQt3EZNucETJ8K5Zu8rsoExgknYanhBuQtDNI2567iU0NzkGZ/
+ mfz719d+n1abCMBgdkNDl9jPFrGNGwvIGuuKKXi9DZD5FSJU7TFgHHhK6nK/WHGsipQ3eQdVLy0
+ o/jM+T03M1SXEAAuGjQtqsKFcOwC2U6tPQZwMNwfZgCpGLz9AzgxMyVAhtZgQSx/XudwZxuZgu6
+ FTLS+QdIWUE8sRdL1V8GMcCV+42M1fj/5lo5FBVVl19770bi3R4kam4y0sQUBR9r3Bk7QpAHFy7
+ 6Eq0CDp0KhmOgMcn/vtFn+Nm0GMioUafnT65NiiaP7fEdf4DrMobIPWBRJdxdp5D/8ctRH0t09a
+ ufqGD4pCUWWq4=
+X-Google-Smtp-Source: AGHT+IGDHOLM+tjMssymUkWg8aQ5/CY+ews9bcwv7CsYLI0owO/EK0aksL+ggx8eAgmGenbiJEGbtw==
+X-Received: by 2002:a05:600c:8b47:b0:456:19eb:2e09 with SMTP id
+ 5b1f17b1804b1-45b521ca71emr240993555e9.8.1756416497841; 
+ Thu, 28 Aug 2025 14:28:17 -0700 (PDT)
+Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b7e7f0dfasm9828025e9.7.2025.08.28.14.28.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 28 Aug 2025 14:28:17 -0700 (PDT)
+Message-ID: <23ec53e6-6cf3-4677-87a5-44063c5b0aa2@linaro.org>
+Date: Thu, 28 Aug 2025 23:28:15 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] target/arm: Remove deprecated pxa CPU family
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20250828140422.3271703-1-peter.maydell@linaro.org>
+ <20250828140422.3271703-2-peter.maydell@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250828140422.3271703-2-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,61 +101,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Titus Rwantare <titusr@google.com>
+On 28/8/25 16:04, Peter Maydell wrote:
+> In 10.0 we deprecated the pxa CPU family (pxa250, pxa255, pxa260
+> pxa261, pxa262, pxa270-a0, pxa270-a1, pxa270, pxa270-b0, pxa270-b1,
+> pxa270-c0, pxa270-c5).  Now we have released 10.1 we can remove them.
+> 
+> This commit removes only the top level CPU definitions and updates
+> the documentation. Removing the CPUs means that there is now a lot
+> of dead iwMMXt code, which we will delete in subsequent commits.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   docs/about/deprecated.rst       |  21 ----
+>   docs/about/removed-features.rst |  14 +++
+>   target/arm/tcg/cpu32.c          | 163 --------------------------------
+>   3 files changed, 14 insertions(+), 184 deletions(-)
 
-This patch fixes a bug that causes a kernel panic when calling ADM1266_BLACKBOX_INFORMATION.
-
-Log Message:
-
-adm1266 5-0042: Could not read blackbox!
-Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: adm1266_nvmem_read+0x168/0x170
-
-Signed-off-by: Titus Rwantare <titusr@google.com>
----
- hw/sensor/adm1266.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/hw/sensor/adm1266.c b/hw/sensor/adm1266.c
-index 9017ce6116..cd11526c2b 100644
---- a/hw/sensor/adm1266.c
-+++ b/hw/sensor/adm1266.c
-@@ -75,6 +75,7 @@ typedef struct ADM1266State {
- static const uint8_t adm1266_ic_device_id[] = {0x03, 0x41, 0x12, 0x66};
- static const uint8_t adm1266_ic_device_rev[] = {0x08, 0x01, 0x08, 0x07, 0x0,
-                                                 0x0, 0x07, 0x41, 0x30};
-+static const uint8_t adm1266_blackbox_info[] = {0x04, 0x00, 0x00, 0x00, 0x00};
- 
- static void adm1266_exit_reset(Object *obj, ResetType type)
- {
-@@ -125,6 +126,17 @@ static uint8_t adm1266_read_byte(PMBusDevice *pmdev)
-         pmbus_send(pmdev, adm1266_ic_device_rev, sizeof(adm1266_ic_device_rev));
-         break;
- 
-+    case ADM1266_BLACKBOX_CONFIG:
-+        return 0;
-+
-+    case ADM1266_READ_BLACKBOX:
-+        return 0;
-+
-+    case ADM1266_BLACKBOX_INFORMATION:
-+        pmbus_send(pmdev, adm1266_blackbox_info,
-+                   sizeof(adm1266_blackbox_info));
-+        break;
-+
-     default:
-         qemu_log_mask(LOG_UNIMP,
-                       "%s: reading from unimplemented register: 0x%02x\n",
-@@ -154,6 +166,9 @@ static int adm1266_write_data(PMBusDevice *pmdev, const uint8_t *buf,
-         pmbus_receive_block(pmdev, (uint8_t *)s->mfr_rev, sizeof(s->mfr_rev));
-         break;
- 
-+    case ADM1266_BLACKBOX_CONFIG:
-+    case ADM1266_READ_BLACKBOX:
-+    case ADM1266_BLACKBOX_INFORMATION:
-     case ADM1266_SET_RTC:   /* do nothing */
-         break;
- 
--- 
-2.51.0.rc0.155.g4a0f42376b-goog
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
