@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23D5B39BB3
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7986B39BCA
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:42:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urauI-0003Yp-R9; Thu, 28 Aug 2025 07:35:06 -0400
+	id 1urauK-0003cw-41; Thu, 28 Aug 2025 07:35:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urauD-0003UL-UG
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:35:02 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1urauF-0003Vr-2G
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:35:03 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urauB-0005pr-V0
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:35:01 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3ceb830dd58so66531f8f.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:59 -0700 (PDT)
+ id 1urauD-0005r5-5m
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:35:02 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-45b7d497ab9so1635915e9.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:35:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756380898; x=1756985698; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756380899; x=1756985699; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aFlNi84zHV+DQWq3I7X+awnNfmQLP9zzDTB0j2InexA=;
- b=VftZQsTz8arM7vHrrrACvbYJgWh/JIt2KIsIlLsZYUsfRsXNfEbLmH6pS6mXmfc/TP
- Xgr/n5oj9H5U+oNtab+pAPaD9RTH+KynbEUoobYuMYekPog3yYJyQ7iIZxRvtycxL0tB
- yXEGVnO+Nm1OAAJ6njS4rrR3XqnhrNJrXLdssC8oP/oAgHsxnXOmIXaV1ppn5GPVvHGO
- OahwWirZquxHZD/CjnHTqKOQCjBOPs92mThlNSSkgr3p3k934K1tYzQrOzpPr6LLqeq5
- 3VQJ8o/d89NlZGzNKJmOQDi/DUM0p7a460oueUr9zn53z0yFKxQW4SUhkjdDoPuOn/zt
- 3zyA==
+ :reply-to; bh=jYyNxAEYuDq5SIsEhCR5IeKunK9WAoYLVLlbeucS6+w=;
+ b=KE57gZxbR6q6V4WK+4z7Pr1YzD8gNf7eGPrfnwmhNSvk5MyafIzhZM6F/FSwL+2CZi
+ zlquqjTumOk41rzHbr2AW0ze6vLyhbpNPe34sbQHCSPvh+00nynRgTtXBmCUcmt9EO9A
+ keRM+hxRxPH47dyztNpUT0j3pJLqHx7aCfMo2RNVgOS8Mt9/63hb15/g0bysOOBr94Hl
+ BPA0lfgDBE1394b4bu2Hc6AhjubGFaEFN0e7OMIfHTAJHjiZfr+t2i3yi25J68/roesB
+ CbS1HOGU+t80UwCSqN2P0fWxC5KmKtJZ3lfZ3n3T0otQaHvwkNGxTOdtjQc9uU/kk22Q
+ hCYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756380898; x=1756985698;
+ d=1e100.net; s=20230601; t=1756380899; x=1756985699;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aFlNi84zHV+DQWq3I7X+awnNfmQLP9zzDTB0j2InexA=;
- b=trxaAwstsq7hq6N2tAwQeVnB/1EtMG+Nlk28ipIDHN4ZB/No+D/Mpa2CWPkM4XnHrv
- s09OC9+rIz7ReK2YJWboBio8pzVhywqzYOrSGmzfNuRtcFN25oMaKbqzxZ7Sqmof55a5
- s0chU+0rzFm1ijXlw7iFHZE4nrm+aUyRP+ekSMvEhPkVqaYXuTnUF/dLJqBvKiiFpAoY
- 5cw9ctkDZ/VhX/crH3hoZ/IrR0hfQzysR2D6Pgidn4AdJX6C48nUYOEmyFJ8A4DIUHGZ
- qL3HzcRXHrEVvyETj14rkBqM1j0rX/k5qykGVAy/VxlvFZ888IUe+z2SsEPid4M7Z1xH
- zmfg==
-X-Gm-Message-State: AOJu0Yz866gdU2hHUfY6FIeKMrzalCQiz5fWPA739ky454HaCU7TlP6s
- d1RkGyv5s6ToEg6EfU1VoYaxL8b9KPG87BxhtnNaciLhR4wZOYgmPnepCXFNApWCcGRNGQJ6cES
- muAoU
-X-Gm-Gg: ASbGnctbX2M7SbQxBlPJ9DtO2bsq4KsvyYfOPsm1NZ2tNe/lGRBRd6jSDHusq4mleWg
- A9fhtc63LQ5nTDSH7rRX4p4BXEX4228ytBdalFvAYk7ItxHvj2SLvG8KhV/5MF2V2LOip6ciYh3
- yZb0Bm+vO9bax6ysMkJqqyHKWFGcGyb6fMgPd/QAGbXj4IXDtGcZyWB9TpbO2ytHVOk1XKTKrP2
- zuKELt2bN81zK3tzFLrdUXKKsLnOWlEAEHoqK54vZ/fbhnZ7WODI61ZgVzX/f4Yl1/VMgpkPvVm
- 5FjZz0gZKvXYQFJC/PAyI2YnjRPDUs5WaxNElqWy2vDis3Ikm+EUXw+nTetihz5DyI23ZCjwXFv
- O7Ea8/ZFGk5gu1zYsC8srnCaIGrbxieiSWDCSysY=
-X-Google-Smtp-Source: AGHT+IEfmyEPNcbFz4decERQggBDX/a08LH19W9Gp5h0QPxhqPxrZUdQZc/myLWPbE7i8nB79UuUVg==
-X-Received: by 2002:a05:6000:26cc:b0:3c9:83f3:bdb7 with SMTP id
- ffacd0b85a97d-3cbb15c9df6mr7802537f8f.30.1756380898230; 
- Thu, 28 Aug 2025 04:34:58 -0700 (PDT)
+ bh=jYyNxAEYuDq5SIsEhCR5IeKunK9WAoYLVLlbeucS6+w=;
+ b=ZjTmrLeUxlZ1wiLFHl9sgQaifAjmBR8GCDSoYbEqTQ4NT5yM5Eb6nfuqzuRtnEQex/
+ TOPiFc4zPO0A0jE41/Q2X/uoCm6IlRKqXGPGKkf+WSg31zB1CzwSr+8q7IJSEJ7ygXgf
+ RYUOipBKsP2qu+xBWhNZ1JYdoV7y9V7itedKM6EgLck8XOWx186Q8kcz61SprO+v+l8m
+ BTvo6BAWCXRKIN1jwmXTbZVQI+lDQEjL1LTn7gZva0LjRDgeCjvQEKEqcWSo5RS9Es4e
+ P4Mv6IcvfVUWtWwTya6Dy/LXy1ZO+GS2bHyBqIzMTiImWSIj2Qk8toYzLCRGEMMs9dOM
+ pAaA==
+X-Gm-Message-State: AOJu0Ywnj30rUUqJzEQ6xMR3DXMnTip0Pr1ZKS6KgukWch1/LovpkrxR
+ o9lQX5UIFt4Q6vSgl65ZTEECTMHmw24ElwjQNQMkiV8nQl5I48Rwm1Bf2etLIfwLWQgZHOEZiF8
+ 3+R4K
+X-Gm-Gg: ASbGnctlxwAD6n2HbJal+aoJ+PTn/Z71rMsrRehh+gZSxPL9V7ybt1n1opVcjC3LMrN
+ V04fRv/78u+dhr0r/0kbW57z4caakjnpDq9GO8lmWmhzNaw94ZQjDM0N1S1uv73DuwpL7vgm+Ju
+ wEoPb20vAwQ9AsdkQUwJkpOxlOkZDT9iimawDCwKSLx4YTEomYzrvxukVzQE86AMyNGNuc3TM2S
+ oNYhgBLMTaaonAcSS9WTzDdryUQK4itxYYML5WKId1AR0wJ+7e87N6yd5UmFkUAhByKYJZ0zy4d
+ l/QLKBRk0FYrlzNnXlkPKiiJ2x3pQlloJ8E4N0E6g5t0TeimO0O8F402+JDB0QSdwYqXdMhV4Bn
+ vYPwbNPcIG2nl4PKKIq3AcMDn4yIAJ+GZMJ9ahQQ=
+X-Google-Smtp-Source: AGHT+IHyoLvA+DFB0hWaLwNqkE4u1309DYmCa8J5R1JQswG9t/tmTVn7k4fKeimLpfJXWjXtLk2+eQ==
+X-Received: by 2002:a05:600c:3b26:b0:456:1ac8:cac8 with SMTP id
+ 5b1f17b1804b1-45b517ad6c8mr196832655e9.15.1756380899179; 
+ Thu, 28 Aug 2025 04:34:59 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.57
+ 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 04:34:57 -0700 (PDT)
+ Thu, 28 Aug 2025 04:34:58 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/32] MAINTAINERS: Put kernel-doc under the "docs build
- machinery" section
-Date: Thu, 28 Aug 2025 12:34:20 +0100
-Message-ID: <20250828113430.3214314-24-peter.maydell@linaro.org>
+Subject: [PULL 24/32] target/arm: Correct condition of aa64_atomics feature
+ function
+Date: Thu, 28 Aug 2025 12:34:21 +0100
+Message-ID: <20250828113430.3214314-25-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828113430.3214314-1-peter.maydell@linaro.org>
 References: <20250828113430.3214314-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,43 +98,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We never had a MAINTAINERS entry for the old kernel-doc script; add
-the files for the new Python kernel-doc under "Sphinx documentation
-configuration and build machinery", as the most appropriate
-subsection.
+The ARMv8.1-Atomics feature (renamed FEAT_LSE in more modern versions
+of the Arm ARM) has always ben indicated by ID_AA64ISAR0.ATOMIC being
+0b0010 or greater; 0b0001 is a reserved unused value.
 
-Mauro has kindly volunteered to help with maintenance/review
-of this area of the codebase, so add him as a maintainer.
+We were incorrectly checking for != 0; this had no harmful effects
+because all the CPUs set their value for this field to either 0
+(for not having the feature) or 2 (if they do have it), but it's
+better to match what the architecture specifies here.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Message-id: 20250814171324.1614516-9-peter.maydell@linaro.org
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250819145659.2165160-1-peter.maydell@linaro.org
 ---
- MAINTAINERS | 3 +++
- 1 file changed, 3 insertions(+)
+ target/arm/cpu-features.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8f074e43712..8147fff3523 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4441,6 +4441,7 @@ F: po/*.po
- Sphinx documentation configuration and build machinery
- M: John Snow <jsnow@redhat.com>
- M: Peter Maydell <peter.maydell@linaro.org>
-+M: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
- S: Maintained
- F: docs/conf.py
- F: docs/*/conf.py
-@@ -4449,6 +4450,8 @@ F: docs/sphinx/
- F: docs/_templates/
- F: docs/devel/docs.rst
- F: docs/devel/qapi-domain.rst
-+F: scripts/kernel-doc
-+F: scripts/lib/kdoc/
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 41511d08350..d48754bcf27 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -408,7 +408,7 @@ static inline bool isar_feature_aa64_crc32(const ARMISARegisters *id)
  
- Rust build system integration
- M: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ static inline bool isar_feature_aa64_atomics(const ARMISARegisters *id)
+ {
+-    return FIELD_EX64_IDREG(id, ID_AA64ISAR0, ATOMIC) != 0;
++    return FIELD_EX64_IDREG(id, ID_AA64ISAR0, ATOMIC) >= 2;
+ }
+ 
+ static inline bool isar_feature_aa64_rdm(const ARMISARegisters *id)
 -- 
 2.43.0
 
