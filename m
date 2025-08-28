@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19894B3A770
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3707CB3A76A
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:15:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgBU-0002Tg-SW; Thu, 28 Aug 2025 13:13:14 -0400
+	id 1urgBg-0002UU-PQ; Thu, 28 Aug 2025 13:13:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urdEz-0003r3-5q
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:04:37 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1urdF0-0003rQ-9M
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:04:38 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urdEu-0002th-9V
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:04:36 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3c84925055aso764522f8f.2
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 07:04:31 -0700 (PDT)
+ id 1urdEv-0002ty-Nh
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:04:38 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-45b618b7d33so8403465e9.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 07:04:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756389870; x=1756994670; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756389872; x=1756994672; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fugM9PHy2tclelvvYQOdAG0IRRSDsWvkqc8Uh7CBDc8=;
- b=FOqhcx57qaHpJWU+CGihKfigV+0CRpG4ItIIja2nJjLAVfFz1tc5AoQ79hwdxpL4jy
- FBievLgySGCuPBcB6FEyvS7KxDtuLAzmAoLvyuqJBNt5rI4+6TY4/0Ow7TB9mTJUq7/L
- UjaAtXG8S+0cSp9BYi8BmSR/JHSmkGxcqicZrPGwfXnM+kM5N97Dld3GleZWNJCkmMkQ
- GXrHaKxWsiG/+uxloyNLoO0kayvEVkIveb8Iji5zYT7eAISOK30nq2DWv59GGAzSvXG1
- 9FRU0upEGDNRHgK1Hwje/fsYJ2gQDEVvYtKsH/M39TAUBsaZBXRCZSQz8lOU6E4+NwpI
- iUXQ==
+ :reply-to; bh=6mb2pIzaDFDV/cuuHoxH84dLN2RLBxFwE/L5iLlVFCI=;
+ b=v0VbfPUxpdgk5//WPDOLrcJrKMvm4UWmRS1EPiTt4Co3yS7BnUYn6cEtjpHhfYFBqA
+ EVkg+vu6F7XruaHchFHO2D1+kD+/hWwdfjM6fV2DU8okesuuXs8jySLfHl8/dklS7Cds
+ ImbhUZ+CKryk51TqSSPumg8STjZSm3wn7qk0aDSxLEYxfASw0fSHWyc5zWFmXHTFdIxl
+ W1v1VgYDRZgshNa1XLUiTyZxABXvpXV8PGHg+qzVe+Tf5WMWdtFeOalPHKgZscxM2LYv
+ AYSDGgQaZSliz8JOz8xKr/SUwibxg052fz4bCZfV9VND1RJGtIYsQz9YAUsc1Y4VYOj3
+ Epnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756389870; x=1756994670;
+ d=1e100.net; s=20230601; t=1756389872; x=1756994672;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fugM9PHy2tclelvvYQOdAG0IRRSDsWvkqc8Uh7CBDc8=;
- b=mggHkOJ8iXUQeNJllRUZ0dL3u9wIyzs63m1czci2qH7yOzuUs9AT4JWWQ1Sl/2yF8s
- Hy0CcOL3nz9X/KpLGVRix018Pvos7U7VQtBfxLmwcXD0d/IKO6o5bx94MgrWkt6/yp5g
- /2U8twzZ96uKvDzVkb1kHMelui3N9MSaNTiem0BzCTfVOzM2ZM4sZyVNQl+UotZ71y9V
- bGE1H1sUwNcvTxMEFQUDzVZznnQsdxrTneGwIXggKzuZxgE2kq8OiiShZaecEq6rlnbk
- xboz8eCqD0TCb7tFKPhl+8ZUAtAn56zvhOpqeKaaiarsrrkGfxBJtzZ1QDPOTfvAviKL
- A+sw==
+ bh=6mb2pIzaDFDV/cuuHoxH84dLN2RLBxFwE/L5iLlVFCI=;
+ b=GXuE0eItbWq03bJh6tthOY16gtOWLJ9p2ugSXghGm4qvA13HBXysj8RWRr9qAYz9Nw
+ IjwsSU1Fp+5Ngs7QKJQMHlSxMbC2cxfC9t63t86R1XuB8gc+LJPw3dCo+9IbKx6EhOxp
+ KLZqJmGp+GuFy5cKRcdL7myepgaUIi0i4cGdeRx7gZAkDNw38/3NmW22+XZiylrdqL/9
+ UY4ZZuEVOykON9i8wwLpJNarExGw3J7oUVONxhAhMqYQrvLoRaoeAxBFI7dX3w1v6nYx
+ JHh9VPJyWCnT4nShPeazPKW8MCtHmSiGzCgQwsGNtqzzdtvNWKxyg5QJiJxbw40gasIb
+ gRXw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVNaVWmi/L6vcTEnLpCQdadCJJcVPpyeF1SP57lyFJgTWJWf7TlN9vIbz3k9SUvsx5hudbhnmGUyvm7@nongnu.org
-X-Gm-Message-State: AOJu0Yy26SYpEFLt++tkNImUraK2sw1uHkw52Fwfi0BVSSgZ7VSNPnBB
- wLRpyePlByW2aHkZRXLlGRXb/spMoYGTZZobWyMS9KUIBhMe/q2nMkdj/RO+ByYa/CM=
-X-Gm-Gg: ASbGncvcvaxYy9f68JKVAQdi1f6l2M1IhR6/Y/vj5Zo1S4hRRM4s7OO/TU2PvjYOtzv
- TgsXR2qgcZ6ayt/Tx2gtTa7hsLEfbv0sKErRa2/TbzNdtVRBb8OKf/KIHT47lPLvpwrBE6QD3u+
- xS+tXwtK7OHxiGFLjYyOd+bAfVWF89SQ12q0/W2pE0U0p8DtnVOBR+CVcDiVG6R3htfcfo0KTba
- qBlCKAfzNVm3FLpiKYy6FVIIiOMpY0WzckE7f9FdaiCLw9ixIXRpjgoPQb0IlDiz2j+jBkDMWk4
- Ypp0DeKj8R8WYWZEX0SsFrlZx7XZ4rGgMUha8jYfNGZbXMZ3VK6rAb1UpsqMtoMIh4XNdtZeAPv
- CGkJwiub8GzJG5Lw/7GbUNzSk2TqkijJOvARxJJM=
-X-Google-Smtp-Source: AGHT+IH7E+ywXeCVND5fc2Q87QhfOnCVshrj6Px4I2XmLpRupFCVcId7dN352tcHgOZud6lAKghT2g==
-X-Received: by 2002:a5d:4392:0:b0:3cc:3d4b:7fb1 with SMTP id
- ffacd0b85a97d-3cc3d4b813emr4256767f8f.49.1756389870134; 
- Thu, 28 Aug 2025 07:04:30 -0700 (PDT)
+ AJvYcCUGQ2ylekz2jJCuOEAvxS1VZWYxhifxJNygCI90yXhN20mt0e9Qi7RAD+pPR2XuNS6zyo6c1C1JoCJb@nongnu.org
+X-Gm-Message-State: AOJu0YzBrVGYlZwwQh+rvnm0QomAACc0aumpy25Op7+l64kGdJaT0aCI
+ qnH1+W9ZTZdHWN8364oi9daR+ZG7GLeXyDWsmgLbu/NZeJtxU0yNqtv1UmJ+6BZX1WdZNTVnKie
+ 8k53i
+X-Gm-Gg: ASbGncv91Nmn9CjZauuwUNPO6GBmlyANDzGYIYkGSFvHnsIGM6Bc7MD9HSjE3/caSa/
+ gdIocNP+JQ0Juk9mdUVr6oggykrx7B69v6trysdf5lodu3qdAqBwvPFWCe7xQvAVCSFmeQKO0c/
+ 9/cIuGQnmd7wOi83dM/Vqcq6N9HGxuT9AkIzwZsoUYrbARqW1dfyag2jRwyL/Kf4n9cuoO1kgMt
+ hZcc6msMC+R6Iu7S129NFUx5jgqbIHT+ibQHSSUx3AUpmdlQDMdoDt52+ul48HL76S7NQxBTodJ
+ XA/PWU8UK47yHoxcGQYZLMaqAMVjLutkjGzeNiLHT+j9Dy720rVsFKtAOQP9qiZPhSBbBeGNzgX
+ RneHEADANoFvdhchwsHCBiObQ0wBO
+X-Google-Smtp-Source: AGHT+IGQJK737hihmtAvUoBKLGYG7lUQUHf96z9M1qVbCqxS8UKsAyzRslSOQzy/tLg+2yCWEfqy8g==
+X-Received: by 2002:a05:600c:4fc7:b0:456:25aa:e9b0 with SMTP id
+ 5b1f17b1804b1-45b517ad57emr299091305e9.16.1756389871605; 
+ Thu, 28 Aug 2025 07:04:31 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cce1724939sm6947712f8f.26.2025.08.28.07.04.29
+ ffacd0b85a97d-3cce1724939sm6947712f8f.26.2025.08.28.07.04.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 07:04:29 -0700 (PDT)
+ Thu, 28 Aug 2025 07:04:30 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 4/5] target/arm: Drop ARM_FEATURE_XSCALE handling
-Date: Thu, 28 Aug 2025 15:04:21 +0100
-Message-ID: <20250828140422.3271703-5-peter.maydell@linaro.org>
+Subject: [PATCH 5/5] target/arm: Drop ARM_FEATURE_IWMMXT handling
+Date: Thu, 28 Aug 2025 15:04:22 +0100
+Message-ID: <20250828140422.3271703-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828140422.3271703-1-peter.maydell@linaro.org>
 References: <20250828140422.3271703-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,200 +100,264 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 We have now removed all the CPU types which had the Intel XScale
-extensions indicated via ARM_FEATURE_XSCALE, so this feature bit
+extensions indicated via ARM_FEATURE_IWMMXT, so this feature bit
 is never set. Remove all the code that can only be reached when
 using this flag.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.h           |  3 ---
- target/arm/cpu.c           | 13 ---------
- target/arm/helper.c        | 54 --------------------------------------
- target/arm/ptw.c           |  7 +++--
- target/arm/tcg/op_helper.c |  6 -----
- 5 files changed, 3 insertions(+), 80 deletions(-)
+ bsd-user/arm/target_arch_elf.h |  1 -
+ target/arm/cpu.h               | 19 ----------
+ linux-user/arm/elfload.c       |  1 -
+ linux-user/arm/signal.c        | 67 ----------------------------------
+ target/arm/cpu.c               |  8 ----
+ target/arm/machine.c           | 21 -----------
+ 6 files changed, 117 deletions(-)
 
+diff --git a/bsd-user/arm/target_arch_elf.h b/bsd-user/arm/target_arch_elf.h
+index b1c0fd2b320..b54bf5fbc69 100644
+--- a/bsd-user/arm/target_arch_elf.h
++++ b/bsd-user/arm/target_arch_elf.h
+@@ -86,7 +86,6 @@ static uint32_t get_elf_hwcap(void)
+     /* probe for the extra features */
+     /* EDSP is in v5TE and above */
+     GET_FEATURE(ARM_FEATURE_V5, ARM_HWCAP_ARM_EDSP);
+-    GET_FEATURE(ARM_FEATURE_IWMMXT, ARM_HWCAP_ARM_IWMMXT);
+     GET_FEATURE(ARM_FEATURE_THUMB2EE, ARM_HWCAP_ARM_THUMBEE);
+     GET_FEATURE(ARM_FEATURE_NEON, ARM_HWCAP_ARM_NEON);
+     GET_FEATURE(ARM_FEATURE_V6K, ARM_HWCAP_ARM_TLS);
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index d6e8e99f191..0cfe23c1238 100644
+index 0cfe23c1238..391b29ef3c0 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -340,7 +340,6 @@ typedef struct CPUArchState {
-         uint64_t vsctlr; /* Virtualization System control register. */
-         uint64_t cpacr_el1; /* Architectural feature access control register */
-         uint64_t cptr_el[4];  /* ARMv8 feature trap registers */
--        uint32_t c1_xscaleauxcr; /* XScale auxiliary control register.  */
-         uint64_t sder; /* Secure debug enable register. */
-         uint32_t nsacr; /* Non-secure access control register. */
-         union { /* MMU translation table base 0. */
-@@ -511,7 +510,6 @@ typedef struct CPUArchState {
-         uint64_t cntvoff_el2; /* Counter Virtual Offset register */
-         uint64_t cntpoff_el2; /* Counter Physical Offset register */
-         ARMGenericTimer c14_timer[NUM_GTIMERS];
--        uint32_t c15_cpar; /* XScale Coprocessor Access Register */
-         uint32_t c15_ticonfig; /* TI925T configuration byte.  */
-         uint32_t c15_i_max; /* Maximum D-cache dirty line index.  */
-         uint32_t c15_i_min; /* Minimum D-cache dirty line index.  */
-@@ -2427,7 +2425,6 @@ QEMU_BUILD_BUG_ON(ARRAY_SIZE(((ARMCPU *)0)->ccsidr) <= R_V7M_CSSELR_INDEX_MASK);
+@@ -695,14 +695,6 @@ typedef struct CPUArchState {
+      */
+     uint64_t exclusive_high;
+ 
+-    /* iwMMXt coprocessor state.  */
+-    struct {
+-        uint64_t regs[16];
+-        uint64_t val;
+-
+-        uint32_t cregs[16];
+-    } iwmmxt;
+-
+     struct {
+         ARMPACKey apia;
+         ARMPACKey apib;
+@@ -1846,16 +1838,6 @@ enum arm_cpu_mode {
+ /* QEMU-internal value meaning "FPSCR, but we care only about NZCV" */
+ #define QEMU_VFP_FPSCR_NZCV 0xffff
+ 
+-/* iwMMXt coprocessor control registers.  */
+-#define ARM_IWMMXT_wCID  0
+-#define ARM_IWMMXT_wCon  1
+-#define ARM_IWMMXT_wCSSF 2
+-#define ARM_IWMMXT_wCASF 3
+-#define ARM_IWMMXT_wCGR0 8
+-#define ARM_IWMMXT_wCGR1 9
+-#define ARM_IWMMXT_wCGR2 10
+-#define ARM_IWMMXT_wCGR3 11
+-
+ /* V7M CCR bits */
+ FIELD(V7M_CCR, NONBASETHRDENA, 0, 1)
+ FIELD(V7M_CCR, USERSETMPEND, 1, 1)
+@@ -2425,7 +2407,6 @@ QEMU_BUILD_BUG_ON(ARRAY_SIZE(((ARMCPU *)0)->ccsidr) <= R_V7M_CSSELR_INDEX_MASK);
   */
  enum arm_features {
      ARM_FEATURE_AUXCR,  /* ARM1026 Auxiliary control register.  */
--    ARM_FEATURE_XSCALE, /* Intel XScale extensions.  */
-     ARM_FEATURE_IWMMXT, /* Intel iwMMXt extension.  */
+-    ARM_FEATURE_IWMMXT, /* Intel iwMMXt extension.  */
      ARM_FEATURE_V6,
      ARM_FEATURE_V6K,
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index e2b2337399c..ad39b216a44 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -349,11 +349,6 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
-     env->uncached_cpsr = ARM_CPU_MODE_USR;
-     /* For user mode we must enable access to coprocessors */
-     env->vfp.xregs[ARM_VFP_FPEXC] = 1 << 30;
--    if (arm_feature(env, ARM_FEATURE_IWMMXT)) {
--        env->cp15.c15_cpar = 3;
--    } else if (arm_feature(env, ARM_FEATURE_XSCALE)) {
--        env->cp15.c15_cpar = 1;
--    }
- #else
+     ARM_FEATURE_V7,
+diff --git a/linux-user/arm/elfload.c b/linux-user/arm/elfload.c
+index 7de1f13f4be..f0be9d4232f 100644
+--- a/linux-user/arm/elfload.c
++++ b/linux-user/arm/elfload.c
+@@ -72,7 +72,6 @@ abi_ulong get_elf_hwcap(CPUState *cs)
  
-     /*
-@@ -2253,14 +2248,6 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
-     }
+     /* EDSP is in v5TE and above, but all our v5 CPUs are v5TE */
+     GET_FEATURE(ARM_FEATURE_V5, ARM_HWCAP_ARM_EDSP);
+-    GET_FEATURE(ARM_FEATURE_IWMMXT, ARM_HWCAP_ARM_IWMMXT);
+     GET_FEATURE(ARM_FEATURE_THUMB2EE, ARM_HWCAP_ARM_THUMBEE);
+     GET_FEATURE(ARM_FEATURE_NEON, ARM_HWCAP_ARM_NEON);
+     GET_FEATURE(ARM_FEATURE_V6K, ARM_HWCAP_ARM_TLS);
+diff --git a/linux-user/arm/signal.c b/linux-user/arm/signal.c
+index 8db1c4b2338..3b387cd6d78 100644
+--- a/linux-user/arm/signal.c
++++ b/linux-user/arm/signal.c
+@@ -76,21 +76,7 @@ struct target_vfp_sigframe {
+     struct target_user_vfp_exc ufp_exc;
+ } __attribute__((__aligned__(8)));
  
- 
--    /*
--     * We rely on no XScale CPU having VFP so we can use the same bits in the
--     * TB flags field for VECSTRIDE and XSCALE_CPAR.
--     */
--    assert(arm_feature(env, ARM_FEATURE_AARCH64) ||
--           !cpu_isar_feature(aa32_vfp_simd, cpu) ||
--           !arm_feature(env, ARM_FEATURE_XSCALE));
+-struct target_iwmmxt_sigframe {
+-    abi_ulong magic;
+-    abi_ulong size;
+-    uint64_t regs[16];
+-    /* Note that not all the coprocessor control registers are stored here */
+-    uint32_t wcssf;
+-    uint32_t wcasf;
+-    uint32_t wcgr0;
+-    uint32_t wcgr1;
+-    uint32_t wcgr2;
+-    uint32_t wcgr3;
+-} __attribute__((__aligned__(8)));
 -
- #ifndef CONFIG_USER_ONLY
-     {
-         int pagebits;
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 0c1299ff841..746eb1d51ef 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -2917,39 +2917,6 @@ static const ARMCPRegInfo omap_cp_reginfo[] = {
-       .type = ARM_CP_CONST | ARM_CP_OVERRIDE, .resetvalue = 0 },
- };
+ #define TARGET_VFP_MAGIC 0x56465001
+-#define TARGET_IWMMXT_MAGIC 0x12ef842a
  
--static void xscale_cpar_write(CPUARMState *env, const ARMCPRegInfo *ri,
--                              uint64_t value)
--{
--    env->cp15.c15_cpar = value & 0x3fff;
--}
--
--static const ARMCPRegInfo xscale_cp_reginfo[] = {
--    { .name = "XSCALE_CPAR",
--      .cp = 15, .crn = 15, .crm = 1, .opc1 = 0, .opc2 = 0, .access = PL1_RW,
--      .fieldoffset = offsetof(CPUARMState, cp15.c15_cpar), .resetvalue = 0,
--      .writefn = xscale_cpar_write, },
--    { .name = "XSCALE_AUXCR",
--      .cp = 15, .crn = 1, .crm = 0, .opc1 = 0, .opc2 = 1, .access = PL1_RW,
--      .fieldoffset = offsetof(CPUARMState, cp15.c1_xscaleauxcr),
--      .resetvalue = 0, },
--    /*
--     * XScale specific cache-lockdown: since we have no cache we NOP these
--     * and hope the guest does not really rely on cache behaviour.
--     */
--    { .name = "XSCALE_LOCK_ICACHE_LINE",
--      .cp = 15, .opc1 = 0, .crn = 9, .crm = 1, .opc2 = 0,
--      .access = PL1_W, .type = ARM_CP_NOP },
--    { .name = "XSCALE_UNLOCK_ICACHE",
--      .cp = 15, .opc1 = 0, .crn = 9, .crm = 1, .opc2 = 1,
--      .access = PL1_W, .type = ARM_CP_NOP },
--    { .name = "XSCALE_DCACHE_LOCK",
--      .cp = 15, .opc1 = 0, .crn = 9, .crm = 2, .opc2 = 0,
--      .access = PL1_RW, .type = ARM_CP_NOP },
--    { .name = "XSCALE_UNLOCK_DCACHE",
--      .cp = 15, .opc1 = 0, .crn = 9, .crm = 2, .opc2 = 1,
--      .access = PL1_W, .type = ARM_CP_NOP },
--};
--
- static const ARMCPRegInfo dummy_c15_cp_reginfo[] = {
-     /*
-      * RAZ/WI the whole crn=15 space, when we don't have a more specific
-@@ -3340,16 +3307,6 @@ static void sctlr_write(CPUARMState *env, const ARMCPRegInfo *ri,
- 
-     /* This may enable/disable the MMU, so do a TLB flush.  */
-     tlb_flush(CPU(cpu));
--
--    if (tcg_enabled() && ri->type & ARM_CP_SUPPRESS_TB_END) {
--        /*
--         * Normally we would always end the TB on an SCTLR write; see the
--         * comment in ARMCPRegInfo sctlr initialization below for why Xscale
--         * is special.  Setting ARM_CP_SUPPRESS_TB_END also stops the rebuild
--         * of hflags from the translator, so do it here.
--         */
--        arm_rebuild_hflags(env);
--    }
+ struct sigframe
+ {
+@@ -267,25 +253,6 @@ static abi_ulong *setup_sigframe_vfp(abi_ulong *regspace, CPUARMState *env)
+     return (abi_ulong*)(vfpframe+1);
  }
  
- static void mdcr_el3_write(CPUARMState *env, const ARMCPRegInfo *ri,
-@@ -6753,9 +6710,6 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-     if (arm_feature(env, ARM_FEATURE_STRONGARM)) {
-         define_arm_cp_regs(cpu, strongarm_cp_reginfo);
-     }
--    if (arm_feature(env, ARM_FEATURE_XSCALE)) {
--        define_arm_cp_regs(cpu, xscale_cp_reginfo);
+-static abi_ulong *setup_sigframe_iwmmxt(abi_ulong *regspace, CPUARMState *env)
+-{
+-    int i;
+-    struct target_iwmmxt_sigframe *iwmmxtframe;
+-    iwmmxtframe = (struct target_iwmmxt_sigframe *)regspace;
+-    __put_user(TARGET_IWMMXT_MAGIC, &iwmmxtframe->magic);
+-    __put_user(sizeof(*iwmmxtframe), &iwmmxtframe->size);
+-    for (i = 0; i < 16; i++) {
+-        __put_user(env->iwmmxt.regs[i], &iwmmxtframe->regs[i]);
 -    }
-     if (arm_feature(env, ARM_FEATURE_DUMMY_C15_REGS)) {
-         define_arm_cp_regs(cpu, dummy_c15_cp_reginfo);
+-    __put_user(env->vfp.xregs[ARM_IWMMXT_wCSSF], &iwmmxtframe->wcssf);
+-    __put_user(env->vfp.xregs[ARM_IWMMXT_wCASF], &iwmmxtframe->wcssf);
+-    __put_user(env->vfp.xregs[ARM_IWMMXT_wCGR0], &iwmmxtframe->wcgr0);
+-    __put_user(env->vfp.xregs[ARM_IWMMXT_wCGR1], &iwmmxtframe->wcgr1);
+-    __put_user(env->vfp.xregs[ARM_IWMMXT_wCGR2], &iwmmxtframe->wcgr2);
+-    __put_user(env->vfp.xregs[ARM_IWMMXT_wCGR3], &iwmmxtframe->wcgr3);
+-    return (abi_ulong*)(iwmmxtframe+1);
+-}
+-
+ static void setup_sigframe(struct target_ucontext *uc,
+                            target_sigset_t *set, CPUARMState *env)
+ {
+@@ -306,9 +273,6 @@ static void setup_sigframe(struct target_ucontext *uc,
+     if (cpu_isar_feature(aa32_vfp_simd, env_archcpu(env))) {
+         regspace = setup_sigframe_vfp(regspace, env);
      }
-@@ -7104,14 +7058,6 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-             .writefn = sctlr_write, .resetvalue = cpu->reset_sctlr,
-             .raw_writefn = raw_write,
-         };
--        if (arm_feature(env, ARM_FEATURE_XSCALE)) {
--            /*
--             * Normally we would always end the TB on an SCTLR write, but Linux
--             * arch/arm/mach-pxa/sleep.S expects two instructions following
--             * an MMU enable to execute from cache.  Imitate this behaviour.
--             */
--            sctlr.type |= ARM_CP_SUPPRESS_TB_END;
+-    if (arm_feature(env, ARM_FEATURE_IWMMXT)) {
+-        regspace = setup_sigframe_iwmmxt(regspace, env);
+-    }
+ 
+     /* Write terminating magic word */
+     __put_user(0, regspace);
+@@ -435,31 +399,6 @@ static abi_ulong *restore_sigframe_vfp(CPUARMState *env, abi_ulong *regspace)
+     return (abi_ulong*)(vfpframe + 1);
+ }
+ 
+-static abi_ulong *restore_sigframe_iwmmxt(CPUARMState *env,
+-                                          abi_ulong *regspace)
+-{
+-    int i;
+-    abi_ulong magic, sz;
+-    struct target_iwmmxt_sigframe *iwmmxtframe;
+-    iwmmxtframe = (struct target_iwmmxt_sigframe *)regspace;
+-
+-    __get_user(magic, &iwmmxtframe->magic);
+-    __get_user(sz, &iwmmxtframe->size);
+-    if (magic != TARGET_IWMMXT_MAGIC || sz != sizeof(*iwmmxtframe)) {
+-        return 0;
+-    }
+-    for (i = 0; i < 16; i++) {
+-        __get_user(env->iwmmxt.regs[i], &iwmmxtframe->regs[i]);
+-    }
+-    __get_user(env->vfp.xregs[ARM_IWMMXT_wCSSF], &iwmmxtframe->wcssf);
+-    __get_user(env->vfp.xregs[ARM_IWMMXT_wCASF], &iwmmxtframe->wcssf);
+-    __get_user(env->vfp.xregs[ARM_IWMMXT_wCGR0], &iwmmxtframe->wcgr0);
+-    __get_user(env->vfp.xregs[ARM_IWMMXT_wCGR1], &iwmmxtframe->wcgr1);
+-    __get_user(env->vfp.xregs[ARM_IWMMXT_wCGR2], &iwmmxtframe->wcgr2);
+-    __get_user(env->vfp.xregs[ARM_IWMMXT_wCGR3], &iwmmxtframe->wcgr3);
+-    return (abi_ulong*)(iwmmxtframe + 1);
+-}
+-
+ static int do_sigframe_return(CPUARMState *env,
+                               target_ulong context_addr,
+                               struct target_ucontext *uc)
+@@ -482,12 +421,6 @@ static int do_sigframe_return(CPUARMState *env,
+             return 1;
+         }
+     }
+-    if (arm_feature(env, ARM_FEATURE_IWMMXT)) {
+-        regspace = restore_sigframe_iwmmxt(env, regspace);
+-        if (!regspace) {
+-            return 1;
 -        }
-         define_one_arm_cp_reg(cpu, &sctlr);
+-    }
  
-         if (arm_feature(env, ARM_FEATURE_PMSA) &&
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 561bf2678e5..440daffff60 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -1061,11 +1061,10 @@ static bool get_phys_addr_v5(CPUARMState *env, S1Translate *ptw,
-             ap = (desc >> (4 + ((address >> 9) & 6))) & 3;
-             result->f.lg_page_size = 12;
-             break;
--        case 3: /* 1k page, or ARMv6/XScale "extended small (4k) page" */
-+        case 3: /* 1k page, or ARMv6 "extended small (4k) page" */
-             if (type == 1) {
--                /* ARMv6/XScale extended small page format */
--                if (arm_feature(env, ARM_FEATURE_XSCALE)
--                    || arm_feature(env, ARM_FEATURE_V6)) {
-+                /* ARMv6 extended small page format */
-+                if (arm_feature(env, ARM_FEATURE_V6)) {
-                     phys_addr = (desc & 0xfffff000) | (address & 0xfff);
-                     result->f.lg_page_size = 12;
-                 } else {
-diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index 575e566280b..5373e0e998c 100644
---- a/target/arm/tcg/op_helper.c
-+++ b/target/arm/tcg/op_helper.c
-@@ -768,12 +768,6 @@ const void *HELPER(access_check_cp_reg)(CPUARMState *env, uint32_t key,
+     target_restore_altstack(&uc->tuc_stack, env);
  
-     assert(ri != NULL);
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index ad39b216a44..457bde07abb 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -247,10 +247,6 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
  
--    if (arm_feature(env, ARM_FEATURE_XSCALE) && ri->cp < 14
--        && extract32(env->cp15.c15_cpar, ri->cp, 1) == 0) {
--        res = CP_ACCESS_UNDEFINED;
--        goto fail;
+     cpu->power_state = cs->start_powered_off ? PSCI_OFF : PSCI_ON;
+ 
+-    if (arm_feature(env, ARM_FEATURE_IWMMXT)) {
+-        env->iwmmxt.cregs[ARM_IWMMXT_wCID] = 0x69051000 | 'Q';
 -    }
 -
-     if (ri->accessfn) {
-         res = ri->accessfn(env, ri, isread);
+     if (arm_feature(env, ARM_FEATURE_AARCH64)) {
+         /* 64 bit CPUs always start in 64 bit mode */
+         env->aarch64 = true;
+@@ -2604,14 +2600,10 @@ static const Property arm_cpu_properties[] = {
+ static const gchar *arm_gdb_arch_name(CPUState *cs)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+-    CPUARMState *env = &cpu->env;
+ 
+     if (arm_gdbstub_is_aarch64(cpu)) {
+         return "aarch64";
      }
+-    if (arm_feature(env, ARM_FEATURE_IWMMXT)) {
+-        return "iwmmxt";
+-    }
+     return "arm";
+ }
+ 
+diff --git a/target/arm/machine.c b/target/arm/machine.c
+index 6986915bee8..6666a0c50c4 100644
+--- a/target/arm/machine.c
++++ b/target/arm/machine.c
+@@ -221,26 +221,6 @@ static const VMStateDescription vmstate_vfp = {
+     }
+ };
+ 
+-static bool iwmmxt_needed(void *opaque)
+-{
+-    ARMCPU *cpu = opaque;
+-    CPUARMState *env = &cpu->env;
+-
+-    return arm_feature(env, ARM_FEATURE_IWMMXT);
+-}
+-
+-static const VMStateDescription vmstate_iwmmxt = {
+-    .name = "cpu/iwmmxt",
+-    .version_id = 1,
+-    .minimum_version_id = 1,
+-    .needed = iwmmxt_needed,
+-    .fields = (const VMStateField[]) {
+-        VMSTATE_UINT64_ARRAY(env.iwmmxt.regs, ARMCPU, 16),
+-        VMSTATE_UINT32_ARRAY(env.iwmmxt.cregs, ARMCPU, 16),
+-        VMSTATE_END_OF_LIST()
+-    }
+-};
+-
+ /* The expression ARM_MAX_VQ - 2 is 0 for pure AArch32 build,
+  * and ARMPredicateReg is actively empty.  This triggers errors
+  * in the expansion of the VMSTATE macros.
+@@ -1102,7 +1082,6 @@ const VMStateDescription vmstate_arm_cpu = {
+     },
+     .subsections = (const VMStateDescription * const []) {
+         &vmstate_vfp,
+-        &vmstate_iwmmxt,
+         &vmstate_m,
+         &vmstate_thumb2ee,
+         /* pmsav7_rnr must come before pmsav7 so that we have the
 -- 
 2.43.0
 
