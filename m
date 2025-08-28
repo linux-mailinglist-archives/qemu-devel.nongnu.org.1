@@ -2,96 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2554BB3CDF6
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E71A2B3CD3B
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:40:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usO66-0004qf-7n; Sat, 30 Aug 2025 12:06:34 -0400
+	id 1usO6C-0005T6-12; Sat, 30 Aug 2025 12:06:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urklA-0005xq-VD
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:06:20 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1urkmI-0006Ak-Dm
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:07:30 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkl8-0003w2-0W
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:06:20 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3cf48bde952so179580f8f.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 15:06:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1urkmA-0004GF-UV
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:07:30 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-248de53d12dso7642245ad.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 15:07:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756418775; x=1757023575; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SQERPfGXdIzlO77ltl62NC78xJe8fEdI0otSa33hJaY=;
- b=xeJ5AcJ7ifBjyRTVax6vyq0QMiSctboQMX8aSnZ89q7Pizc6S1yF60l1pWCjCHRh+u
- 1EfwXvYU9YgtaWEZb9rFZ39QUuytfPKzzCRjjHhUYcdwNvbXy8wSAG3rZsM7ew/yUoxy
- IwFZB3sDSnus/yOwWjKFL8t/M2w9kYvw+po9aped8O1CF2LomTPjPJGDDjMaWsvYLmct
- gEDgEmpb3+6W8vjJxa+hmRUsloqugzuNd7mhAddFY/4GUrYhF590RhBeiCmQTAIdrsks
- xL/i5uLu4kJJXyVcWSDiG4aGalUodSWveKpctS8b6XNicULUy9LV15fgGyhLUfMh2SYW
- I84w==
+ d=linaro.org; s=google; t=1756418841; x=1757023641; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=c7vY++mSU2EqQPLqYut58DFvA/idUVgIu8VvjYm5UYE=;
+ b=kM8HwMBoa3O4hxTJMGyepsYEIwyv3rdJZvLA8la1FZQNZurvB05ISDH26Tv/faFYaw
+ 9D5NgQkD/v0gEPPA/WENuEKN8QlyRb2DmljjR5Lr/ZZN4Mnoehk9lEw+2ZdsOBtBk92d
+ 7XIPrCRJElV7yUi7wtCrdqs8F7QI3+3lsaECgPg2hL1GzUBH5iqjz21c3GpOBKsrj5hc
+ 3m7eJ+pIlzQiUcH0y41+1iMMJgXZRGYjVveDSBCfsPz8nhx7nfSiz0nVNOqUwjoh8XOM
+ ooVsJ/XxRSQwZWFqUh+7ALVfDq1Z7s1A8COwbZglgzA58Vw5ISjZO3SvDRax/yRAbXRp
+ u48A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756418775; x=1757023575;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1756418841; x=1757023641;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SQERPfGXdIzlO77ltl62NC78xJe8fEdI0otSa33hJaY=;
- b=m+kNE3P4SvbRdHlVhsz2D2kEUOUtQlg5GgCZRlrgNvTMQ6drg7RjqJIbd9pdn6tRRS
- NcsqAe82Cz5VbQ57jf/UtMrZ+G4p1CirUyBNo0PoKghRAbVvSeHyPyi9SIXPfDdtqGzZ
- JjmefXsvDN78B07jneg3jbiXnrAoNqBYM9Gz4Lw0XOSg3IQR5ccdn2AFZI5C3DjZHhpt
- KVYYXz9JrFF+XhIsRykd7humOxrNol44WwBFQNyE4C9f0NXWufrL/sCsYDXmXzTLcM6G
- 54L1taqf+leGfU05RDu5Mne090N8DNTk7Vkl0f0cwDZGarBypt6vk2fIzQrOzu3OkKQY
- D4Fg==
+ bh=c7vY++mSU2EqQPLqYut58DFvA/idUVgIu8VvjYm5UYE=;
+ b=G27CVxj0I2y/3bjPqEa4bwyM/NbJ8CCfh8FIvh37cQ8URkFH1jvcd09jYGq/QYVkxU
+ 0Yk/yzh71jUPwew527ZDl4iXzI/F7iBjpS+FBRyY6wYnC+tscl3h//9sxgrmS11YMIp0
+ DknSOaw53dmlc8wCpteI9UD09PskSQ+DoqbSwgwf6MAH2GBkBlSukbdMob+arqKKcr9J
+ AOBMY+6loueXjrkdHjGEmF9AKNJ9ZOF0KsaqVz1nL/i2ZO8t+FqAxVSapa/UH9HKk6nX
+ mc1LjFYbY0SbW/1j2O4F+F6Ke4jBQmYKE0jKxI+yEAAVMigUrN6ZNqngj6vPnopHoH/G
+ ZubQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXZ+PuzFAgKCmXuUx6ssgLza1KuDPC0c86WD5jIjiXTMd/ImMvv6W+2fk1tMju/+nU9TnAwl6UN+hK7@nongnu.org
-X-Gm-Message-State: AOJu0YxtvGD2c32fxS+g9hOeuZLEdqKPCYW+GAEX/VWLM5zfdNamr6Ej
- NOdOTjNZkJSMUsscVb97DtHHMwykAz93AM7rPfOGWY+Trp7micHthJ59ktBQILpu4Ng=
-X-Gm-Gg: ASbGncv0kG90jFU5vyIX+IPstlc2nl/f680/UuJtgTBQNw9CUVRUZJH1awRBccPws/s
- RKUi/W5t6HvuhyBIXSX8/1kjiYbstOlxbwADOMy73t86kXk9bHszx1pc5wFQl6M4gJgTehdBcBk
- F0+4QSnF1Uoqa7S8+B9p+9bix994t9R8wLk6+24fiLdCpJYXRu/1ZmR8wGnQXZoi6QzqTZQU6l6
- xb5J9sKTLKjK8EQsTQZ+ovMYw4yB1434iIoLE/eL/PwRl+RgGM6T05uDk460tUH4dJxnf0beWp6
- MsIZQ4JrwTPo/Lv4iKwbOUszkJ2vQCBFUlCDI1MzZzVe6YHeco4Qy3FTP2e8NiZ0LjEdFVP1DnL
- JJO5ldRT6IDkKBMnWlHfGYITeTUEP+Q2eiCArVJaqFpbQ0vytjjVJ6gv5ffIGwugdWNA3rsRc3j
- aIPleZ06KyAaA=
-X-Google-Smtp-Source: AGHT+IG4E7Re26hFZMAwIrLsBg9A7pMvaMPOZfPCWWp1+RqUkTHy9qcE5RJ0uqQjeKlq7DDk8R8XJQ==
-X-Received: by 2002:a5d:5f8e:0:b0:3cd:cf31:d760 with SMTP id
- ffacd0b85a97d-3cdcf31d9e1mr3446500f8f.36.1756418775113; 
- Thu, 28 Aug 2025 15:06:15 -0700 (PDT)
-Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf33add294sm832386f8f.29.2025.08.28.15.06.14
+ AJvYcCXoT1GfdWjFJcMMV4YD96tKwaa5khNj5iIJ1gNkmC1ZH656hg5qXeZSGPThdAzXac7C3oR6GKMevR+p@nongnu.org
+X-Gm-Message-State: AOJu0Yxf8Oabp57wFiEwGm65GV+S7HQXtFwkadSFFK69X1+BEU3DVVlp
+ 9dWXfjtOYqvt74I6sNeS51mS6G5pmzUowL1kLQ/YMWVO/AlRHjGtrNWw7osaYySgFMo=
+X-Gm-Gg: ASbGncs7yMG/HPKx6P4C6UoVIgPcQJLaukA5iKuWi839uRUAvM9hdOj28uvOTZa7lWC
+ ZVa3EpB17DXTASnrbKRN/8HvSMpCZeWFZ5D+kuR82XWUkBZuhPyrbZ7hHtdjUECYd3B/HnY5JVb
+ uGTMUWdJRBmUdhH5hsWnFSUV+4TIQV+e5UwoLgc7PpE6ThpxE8e9QYDu1cmbRvS8NN7wnQd53la
+ 1W/WEYYcDl6wsTaqAWI20r3mt8S3ZJlkyX+MAVSsbTJCAQ0yWQ2AvT8HuHpPK2+K0XC0zcHih0D
+ JKa8JlLDpMozqaMgqIM6Z6UW0jiBSj9FRuyZI0Jhxg7BxXX66t0oZAJSKdAN/3NQgmI7lH2tDXh
+ kkRYj+tuswz0llkqmrEagBUI+oJmWS/MzhObf
+X-Google-Smtp-Source: AGHT+IEfJ3aWx8r9bNObYOWEYvp3Go8oWXHk3yZmd/N9ORSzR6faJh3dls2IQL/B+6QIxkl5Uru70Q==
+X-Received: by 2002:a17:902:d4c8:b0:249:f33:116a with SMTP id
+ d9443c01a7336-2490f331503mr2303125ad.17.1756418840638; 
+ Thu, 28 Aug 2025 15:07:20 -0700 (PDT)
+Received: from [192.168.0.195] ([144.6.121.55])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7722a2f0ac8sm456356b3a.45.2025.08.28.15.07.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Aug 2025 15:06:14 -0700 (PDT)
-Message-ID: <28aa3b22-e6a5-4aaf-8301-6adb066cee57@linaro.org>
-Date: Fri, 29 Aug 2025 00:06:13 +0200
+ Thu, 28 Aug 2025 15:07:20 -0700 (PDT)
+Message-ID: <96de96f5-b45f-48d2-929d-a76398c8dc02@linaro.org>
+Date: Fri, 29 Aug 2025 08:07:05 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 37/47] hw/arm/xlnx-versal: add a per_cluster_gic switch
- to VersalCpuClusterMap
-To: Luc Michel <luc.michel@amd.com>, qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
- Alistair Francis <alistair@alistair23.me>,
- Frederic Konrad <frederic.konrad@amd.com>,
- Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-References: <20250822151614.187856-1-luc.michel@amd.com>
- <20250822151614.187856-38-luc.michel@amd.com>
+Subject: Re: [PATCH] system: drop the -old-param option
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20250828162700.3308812-1-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250822151614.187856-38-luc.michel@amd.com>
+In-Reply-To: <20250828162700.3308812-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,18 +101,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/8/25 17:16, Luc Michel wrote:
-> Add the per_cluster_gic switch to the VersalCpuClusterMap structure.
-> When set, this indicates that a GIC instance should by created
-> per-cluster instead of globally for the whole RPU or APU. This is in
-> preparation for versal2.
+On 8/29/25 02:27, Peter Maydell wrote:
+> We deprecated the command line option -old-param for the 10.0
+> release, which allows us to drop it in 10.2.  This option was used to
+> boot Arm targets with a very old boot protocol using the
+> 'param_struct' ABI.  We only ever needed this on a handful of board
+> types which have all now been removed from QEMU.
 > 
-> Signed-off-by: Luc Michel <luc.michel@amd.com>
-> Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   hw/arm/xlnx-versal.c | 15 +++++++++++++--
->   1 file changed, 13 insertions(+), 2 deletions(-)
+>   docs/about/deprecated.rst       | 13 ------
+>   docs/about/removed-features.rst | 12 +++++
+>   include/system/system.h         |  1 -
+>   hw/arm/boot.c                   | 81 +--------------------------------
+>   system/globals.c                |  1 -
+>   system/vl.c                     |  4 --
+>   qemu-options.hx                 |  7 ---
+>   7 files changed, 13 insertions(+), 106 deletions(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
+
+r~
 
