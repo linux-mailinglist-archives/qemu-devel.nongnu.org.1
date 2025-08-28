@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF802B3CE4E
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B29F6B3CDC2
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:04:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usOgW-0002Hn-Jy; Sat, 30 Aug 2025 12:44:12 -0400
+	id 1usOgc-0002bY-BT; Sat, 30 Aug 2025 12:44:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkEJ-0004M7-M5
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 17:32:23 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkFn-0004hG-No
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 17:33:56 -0400
 Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkEG-00087F-QX
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 17:32:22 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkFk-0000F6-G2
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 17:33:55 -0400
 Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-45b7e69570bso2148515e9.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 14:32:19 -0700 (PDT)
+ 5b1f17b1804b1-45a1b0cbbbaso12223125e9.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 14:33:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756416734; x=1757021534; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756416823; x=1757021623; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=/dNzAE06fiYRsxFXdP0nWLTdBPhF/t/Du0Zyr0GctJ8=;
- b=YnThAwZIsQtv9AgwZLBc8QxVFThG2aOVVCowqheluxDf68WmL4Woe/pugapbgmUvBX
- 6BhgZQ/oF2BqiXIO2djcyB4/lwHjRCkn1uYK+6UQZ2FEk8nPp+eRCJMXsRXEgymdmDTX
- aUaSiO/1AXtZ2lo6U0r6iEr6g2/7y99V0NW5Nc9Gmbs3k/TYcz8RcprHBFfCWp1i8pub
- 8HEe6N+VEzrFcSbjXULwO6zWpSANOd9AqSU7WvgS3wEKjFa9gcEtgycXaO4EgtAV6PCX
- XJ25IFcj01rF8FAhUC3hDzDz7l7Ww7m5t2eFTArLtWupYXbaZ+iyVssDr6xSp86WYsU1
- Qd/w==
+ bh=1gWxpHyKEj4tPIOvIfIseg/VE5rC6C7cQ29V0XK0b3c=;
+ b=YjUupWR/9hY7eKPmh1GB693fw6rFs89FwuguuP3asGAvMgxP4ngIUrRjNjV6MN1g7K
+ amlLCB+iyMpSWSklaK5QtAy5UKaA/3yvpzg3tYX6XfsI4RaIK0FqO7F+jnoaL1VAAY/y
+ eDzxGCSoKUM9LOvGbG2uahrCTFkpoV0nUb14XbzkHf9QdOOsb5kPKaP02i2g+8agNh9k
+ lwP5i4NB4U6lM/FUiaxt4oLxXBvsGk1JDIfzSLWEEqzkDU1F7DQM7ji+RnlfsrXdqQS9
+ Fm7r0JEQUxbGJA8MempQRf1eFr8bmXVJ5sbGBEKlRBHqy5wis2IZf9fX0gjAsMtxCOzI
+ twvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756416734; x=1757021534;
+ d=1e100.net; s=20230601; t=1756416823; x=1757021623;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/dNzAE06fiYRsxFXdP0nWLTdBPhF/t/Du0Zyr0GctJ8=;
- b=cuTR7tFEM7zINX2Ab36RZdtjOP8sgP9sT2m8STXvte/VvFPnU7hr/CgSFWmrTWLuSV
- LTJDAdyleH8RwQaazF1BUlCzTpa1ZuAOSCphsuBVmuQwbECburomTVN6e14dzNsFZiLz
- QHb+4+ha14E0bZl/JL2xRQxLMulq37ughmQXUPcBDLWBIM7GeQaDdIwkOvS78f2HqK1g
- BEaLqczK+Z1v9vfRA0aGxesQh11NBxkGXKRM/XuR5lFJ08eDGjTXjktyVNWr8LFi7b+z
- MKi8JKg/6jL/SzUbJZWQKKMQSYIb597B+CCbzoTKyDrEz1epRGc5GBEHeIM772nP5rgW
- GvuA==
+ bh=1gWxpHyKEj4tPIOvIfIseg/VE5rC6C7cQ29V0XK0b3c=;
+ b=hhuyQUXj9ui8Hi4duRk7+kV43bE7+uYZ3etbsy3ZN1jKqDUj6iqx6EEt7sSBVwrAbe
+ KVkBvSzy79di8G2eaAv7rBdZaNJwFd9Lx3MAP5LFXfQvDZvutyLml9CHywABFg6ufXy3
+ 3zo68B8rH8OHOVZ0MIFIxuSTGFnGQS6CahHJUTkjW7OYRV5XhYnAqH+EXzNkOjgcCVj8
+ N12c9aKNwkIHE5fB3Np+pWUtPuxmsowQGMaHZLAf0cE6jJ4XXCfGuxVr+AVUhh96GZeV
+ Cq6N13AmCr20EAdcqBY9yiiP1N3oqVhggLwA5cw9YClxGAebAMcabYkMwVbiQ8iGJMU1
+ 8zIg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV/uxibi/ryQbnZTd8tdMp6179vEugqDr2mWD7FRyoAss8kJ3LpYLGtXqr2xzMhYpPlSPumvpx7un4/@nongnu.org
-X-Gm-Message-State: AOJu0YyaZllSYa2oDM5cEdMQ+QSPyqy2tKC0y7sca84e1jinOzFtnivq
- HelQPnM543PNvP/SWbu5YV+gAlwZZCSdMuExuOHjwhfg0d/CbWeE/VtC1zZeq0vlUvJM44rQ3ZP
- YHNqd
-X-Gm-Gg: ASbGnctb4sV8JVoqvBQQmyVwccqP+ySIEpyiQiFYYOXk56tcq5bEXpFkxzsh7mF6pcc
- hhRoVwgsuJOJV0gFcRra+98mgbuU3Qnd8iLAVPCVH2a8+7d5vHKkWwdvg4lAxTFiPLach5LKKXW
- km438r+QpY+rj2JQPF4A3VrUT5kVjaXonwHnxOlmj9eVDNUMp5vN/9guYGZ7j7wTtDpw+p7meWF
- 6LBmQ872z85FF6rq1kfskYjET8reaI4ZD+b+bNN5fspiQYc2LFKwMG8ubXeW4KU8M6giubzufOo
- YfkfXXv585qSp56jCvRn+rgKyT22mFREHe3Jdte/CDqMhryBcwFoEhvGVbkLWcepjyCAYX8pfUw
- qhn7DPycOnVcLtIbwZnpQAZvhSFREGwXTWdOplW+gWaUIvhi/Qw6yWLuS18YdwEoHMCepHpi3Zu
- Un
-X-Google-Smtp-Source: AGHT+IGa2OnwqIfeh4CKrY3jPPfmNJJrOUcCSIf/kiOJXZZKhZjyyIm5dZAJojxx8yKZYOgfJwwlgQ==
-X-Received: by 2002:a05:600c:4e90:b0:458:a559:a693 with SMTP id
- 5b1f17b1804b1-45b517b957emr235780905e9.18.1756416734222; 
- Thu, 28 Aug 2025 14:32:14 -0700 (PDT)
+ AJvYcCXRhxwjiKbWLyjFXVsYjeosfSBs7UTaub7+7B9Pid225VKVqyOY6trVadpKMIUEbilHW3/iEpSKWqK+@nongnu.org
+X-Gm-Message-State: AOJu0YyFOU8o3zQealCNea+UREypPP7vJvB66axcfEE6V6gk/7iff9ak
+ LlctK5YHw3mMhrhl9AneFeoUEo7dglRFssO76qjPthJ1j7mcrbm8IvG/BsezIgDzpy4=
+X-Gm-Gg: ASbGncvla5dPIrdwL56YPFhs3Q2gVW1wkP+L6a3uN+34di1fucC2Fg7ma099etKgxT3
+ BHXZbyEoAm6BKCiaR+tZTJrJcz8yEVax/xGTra1v3iSDTvEyUBo/rjw8iTVWXHh+mqg/UWFpWbe
+ Rimuotuu4QQ7b/wDiS0XR40x+YC/wUqMnBmW4zmtPjDKShXlaR0wdfzlzR4gFZa8BXwNvYBE0vD
+ t8wMUuGjvPMVSAhqFZjry7IWbSZ7QOih6F0FGkAkWJ36oGMrTY7wefGIdDLAZPV4YlQ9z/IucUU
+ mbBwvbh713IpAWpQFrsqLfbxtFLxbM5RGELkv1E9lyGs2Jbf3JZM0PmYwtV3Jy59MlBEcXGVHwO
+ ILdSea23rxtiI0WXe/Gie0pprycfViP6zOyG98EQMOLVZxQqPoYXITpbJd0qbzX68yMUGkHSkKZ
+ uh
+X-Google-Smtp-Source: AGHT+IEFczyYM1HHNVWdVvqlSWDiuRIFmZd+LZnC47rc2oOxEUtejZ5NjHHs42MvDybFT0imOL3pYA==
+X-Received: by 2002:a05:600c:1f83:b0:456:1c4a:82b2 with SMTP id
+ 5b1f17b1804b1-45b517ad803mr217863785e9.10.1756416822736; 
+ Thu, 28 Aug 2025 14:33:42 -0700 (PDT)
 Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b6f3098c7sm89822345e9.15.2025.08.28.14.32.13
+ ffacd0b85a97d-3cf33fbd6a2sm714749f8f.52.2025.08.28.14.33.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Aug 2025 14:32:13 -0700 (PDT)
-Message-ID: <80e866f2-7c97-49cd-b0e2-d28f2f1aed0b@linaro.org>
-Date: Thu, 28 Aug 2025 23:32:13 +0200
+ Thu, 28 Aug 2025 14:33:42 -0700 (PDT)
+Message-ID: <38b5ddc2-e2cc-4be5-b5f0-efe3de43043b@linaro.org>
+Date: Thu, 28 Aug 2025 23:33:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] target/arm: Drop ARM_FEATURE_XSCALE handling
+Subject: Re: [PATCH 5/5] target/arm: Drop ARM_FEATURE_IWMMXT handling
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20250828140422.3271703-1-peter.maydell@linaro.org>
- <20250828140422.3271703-5-peter.maydell@linaro.org>
+ <20250828140422.3271703-6-peter.maydell@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250828140422.3271703-5-peter.maydell@linaro.org>
+In-Reply-To: <20250828140422.3271703-6-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::331;
@@ -104,18 +103,19 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 28/8/25 16:04, Peter Maydell wrote:
 > We have now removed all the CPU types which had the Intel XScale
-> extensions indicated via ARM_FEATURE_XSCALE, so this feature bit
+> extensions indicated via ARM_FEATURE_IWMMXT, so this feature bit
 > is never set. Remove all the code that can only be reached when
 > using this flag.
 > 
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   target/arm/cpu.h           |  3 ---
->   target/arm/cpu.c           | 13 ---------
->   target/arm/helper.c        | 54 --------------------------------------
->   target/arm/ptw.c           |  7 +++--
->   target/arm/tcg/op_helper.c |  6 -----
->   5 files changed, 3 insertions(+), 80 deletions(-)
+>   bsd-user/arm/target_arch_elf.h |  1 -
+>   target/arm/cpu.h               | 19 ----------
+>   linux-user/arm/elfload.c       |  1 -
+>   linux-user/arm/signal.c        | 67 ----------------------------------
+>   target/arm/cpu.c               |  8 ----
+>   target/arm/machine.c           | 21 -----------
+>   6 files changed, 117 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
