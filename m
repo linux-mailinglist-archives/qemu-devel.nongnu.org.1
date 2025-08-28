@@ -2,206 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B08DB39C2E
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 14:05:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D365B3A8A0
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:49:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urbNV-0007tI-Oj; Thu, 28 Aug 2025 08:05:17 -0400
+	id 1urgE2-0005c8-2n; Thu, 28 Aug 2025 13:15:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
- id 1urbNS-0007rs-1y
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:05:14 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
- id 1urbNO-0006HU-8h
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:05:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756382710; x=1787918710;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=f0JtJNCiu23D2gc1HjXQ+bNz4DLWzwSCovgup4ENt0U=;
- b=Bi7hJ33beqH+QNJYzcKnRwZ/o3kljPKSWWp2xZkungsfhyXXMIxPkXWn
- qR2LNLiU6oR4gsOQ5LppBK06GMOJWWY+YwBq04FpAWKwsL4A+NYGXZXOk
- QBsYAQv7m02qJS4NDRWqTuBzSjSTWu7tHOYDlscSrv5q6rHSS1zkeUJZ0
- cbTQIUiPGkDQA/himU+yRqESXQFoXjhGrOXdasUxTV+SAK2DiK3ZAtlkO
- mN0LjfYre4G+zaqPCLvMu7PMN9dolKawj+V9l/bRMgTHqMvvIHCLZjyph
- 2BJfafdbc4Y1C+1JQbFgyr78AmePlPsC74f/vbPyTIf0MeAu9Wq3OWymN A==;
-X-CSE-ConnectionGUID: DzOEuAj4RDiEcaRFdC7hkA==
-X-CSE-MsgGUID: 5pzPS0R5SeKViaGdlWeY3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="58358591"
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="58358591"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2025 05:05:02 -0700
-X-CSE-ConnectionGUID: F1MLxWl8Temwr7n2NTjQ6A==
-X-CSE-MsgGUID: 83jqxBb5TKurtAjDUgGhOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="169997187"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2025 05:05:02 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 28 Aug 2025 05:05:01 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Thu, 28 Aug 2025 05:05:01 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.76)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 28 Aug 2025 05:05:00 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V6kIUhvAZIPCoaCpidfmSoL/yTik/VcJjOPa8fyi4SKbEUQIVoz40uzamgZkECzKGobIG4nGINkNuxSbg5HuMkYd+ztu6Q2Mf+s/T4s26GA9LTiIG8nLswSAkJd894xWj8iKYSKL/7AlYUhQVEh/FiBbFfI3+0qyHI0NmaKm6xb9Poiu9Wk3JHs6e/LwG9e2Qa+I/UUyIGMRgaLq9RiCpMP+O/BsHo0F6L+hAWhou8Kd/H6ogiliZ8tYZ7z60YlUlsDvt25TFH0tK4Rdp7zt6ufB1gtrv65j+yDpdlZ8fg7c9wIIOT35aGH3VpJFtSETmWGswAGNqV5ZcxfeflhlDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xHdmrw/OnXFqEXIpu+pFlOETxMDV9nsiso4dXYsN2HM=;
- b=Y6mUTs4UVCgL57upUUbXA35ekXzthg7TKuG///SbhfN6oYlPIiAhv6HOk/CvubGG42h3umKTddV9yoqXSTpp2nJGsIRZjBxto78vx4/ShYgYFnHjvL09l92TZEDjeceXgoT4hCW467XP1t6n3vGEb5SwKiTeX9GkbN/TdpHJlJnCqEXUyBpBlpikeMoGtFnx1yb0mZMEtrCi3urODUIqssot8a5lL6/Ml8xqNkDDEB+gH/2ESi1scVN0Q3K2oLzAdMIuMjZ+hpXYUsK48aBlzPcU21dLwG64/le6wObyjbEpepQoGvhk/j6FJ54iWimoNVjO7LXYjdQP/oieJaiEZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BY5PR11MB3974.namprd11.prod.outlook.com (2603:10b6:a03:183::29)
- by SJ5PPF1A7C623DA.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::816) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Thu, 28 Aug
- 2025 12:04:53 +0000
-Received: from BY5PR11MB3974.namprd11.prod.outlook.com
- ([fe80::fe0b:26f7:75b4:396]) by BY5PR11MB3974.namprd11.prod.outlook.com
- ([fe80::fe0b:26f7:75b4:396%5]) with mapi id 15.20.9073.010; Thu, 28 Aug 2025
- 12:04:53 +0000
-Message-ID: <4a03da89-512a-43c6-878d-435c1108e001@intel.com>
-Date: Thu, 28 Aug 2025 20:11:23 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 17/21] intel_iommu: Propagate PASID-based iotlb
- invalidation to host
-To: <eric.auger@redhat.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- <qemu-devel@nongnu.org>
-CC: <alex.williamson@redhat.com>, <clg@redhat.com>, <mst@redhat.com>,
- <jasowang@redhat.com>, <peterx@redhat.com>, <ddutile@redhat.com>,
- <jgg@nvidia.com>, <nicolinc@nvidia.com>, <joao.m.martins@oracle.com>,
- <clement.mathieu--drif@eviden.com>, <kevin.tian@intel.com>,
- <chao.p.peng@intel.com>, Yi Sun <yi.y.sun@linux.intel.com>
-References: <20250822064101.123526-1-zhenzhong.duan@intel.com>
- <20250822064101.123526-18-zhenzhong.duan@intel.com>
- <7d979fe7-95ba-4216-8cb9-05a047673e35@redhat.com>
-Content-Language: en-US
-From: Yi Liu <yi.l.liu@intel.com>
-In-Reply-To: <7d979fe7-95ba-4216-8cb9-05a047673e35@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2P153CA0018.APCP153.PROD.OUTLOOK.COM (2603:1096:4:140::9)
- To BY5PR11MB3974.namprd11.prod.outlook.com
- (2603:10b6:a03:183::29)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1urba4-0005ct-Bg
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:18:18 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1urba1-0000ff-UC
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:18:16 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-61cb4370e7bso1381004a12.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:18:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756383491; x=1756988291; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2GPzimTqwEa24oqv/kYioM8KtTLlIhF5c5I5z2xJwoY=;
+ b=x8Pzp2n6QRtl/Tn/0BK1MUNUOiFo5+8VWWSczsVvNvWoMdVA+YcrB0MTiYFaRLCTcV
+ HbE/ofdUeITE6H1k5De1lvg2fSeLF9FKFfh+CIrJgZSfgT9Z4pAEjqeDZ+97raaK5SyA
+ QYpWLTOk0KCs7UF+DcVNJaCVAJRa8VATMx0KUpQgjEyN7v5HRMVv6r5NVj9Vrq/KDEPx
+ eU6r0QOL5o6GRm63lv98Fc/aO3Kq6ZPc4M2oQz7n20CzUJ9ZtM6SlQl1HqXUNHBM8kf/
+ c35TpMmxDU0My66v7NFnQQu0asUn5rUb9nCmSqm1barh9xj5pQOLScp8B6FOPK5Obk6C
+ 5+0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756383491; x=1756988291;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=2GPzimTqwEa24oqv/kYioM8KtTLlIhF5c5I5z2xJwoY=;
+ b=IPq8o536LJPBjPb2gjqTnm62TGyjL3yyhfKh28ekgovwU/MSw6laUSp5tZyeLCkGeP
+ 5IepflV3OqBhu0/1GHRgA4oo7eUmuORXP/Ki9eKg4/CiksvAeVAY8rnb+vOUN2vFyiKY
+ pYee1zd9GUf0umRAi1090u22y1mfX7DVn0swoLrLvgzeshxClYd6BY5DossLr59B7Ovc
+ q3UJET7ii6jE5EjaoRKrcSEQliPbjrhzesIwYFkSbaK+/1TtbotrdyipEyQF+60z+ACE
+ 5AhtBQWqv+TIXg17GtGdgO6SMa6Yz5NnFJQitaBL953OuxPW2PKOhGiYnYaUQ3YjwCo7
+ MoQA==
+X-Gm-Message-State: AOJu0YxScFME/6sFpPtTpKRYZ4ilPh9qQk7mrlmBkFwF47qEX2Hix97N
+ 81VQwTxjmbyZCXf6UPqNNPo2aMYEEVPhz9oZijpQ9EQhbFOLuZlNr4rATxXyiwldCDA+Q2a/mVC
+ 4nYoyyGKkSdgomJCEoVsYn3zaXgJ2un2NAPKfXX2c7g==
+X-Gm-Gg: ASbGncs4IQAlRbWhxuf6bDnVAlK/pRjCuNxhGApswIcRgH5rPm8uV/xnl5VfT5e7yU6
+ hWavGFiEMKy4Osa8VhEXx2pb3we1qGdtqbXyCm/j6p+t8Ir0Omj1gJFrfMFnn47qbj/xUyHzUft
+ VbVo2KeeQj8axuwOTdcynM3rqmYrFWG+Tg7P07NQEhznohRvygBEsaSN0nMeD/9hrazmPCCxSsz
+ dRyOjDbFjGtqGZdbpI=
+X-Google-Smtp-Source: AGHT+IHFBrGbrY6O11ccNmpnJD4dCkn+8IB38DGL8l2+IMFev10ZjCGx87YJ+eqlHkMAdtj6fnYZZsTw7xM0SeOsmvs=
+X-Received: by 2002:a17:906:66c5:b0:afe:98cb:e624 with SMTP id
+ a640c23a62f3a-afe98cbeaa7mr827087366b.51.1756383490849; Thu, 28 Aug 2025
+ 05:18:10 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR11MB3974:EE_|SJ5PPF1A7C623DA:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d60973c-73b8-49ab-252a-08dde62b18bd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|7416014|376014|366016|42112799006; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SGg2bFEzNnJMMDJJYktERnB3UHZyWm5nMEE2OU9RT0hGenlXRjlvb3ZPTUJh?=
- =?utf-8?B?YVBEdmZmbEk5S2cyNmVxWVphcHR2VklCZW9PQUhaZG9WOW9NUkRwVjJ4MnJD?=
- =?utf-8?B?RDBDazVxSTZ0RHh0d3dCVlhMWUU5M0V5bDM3enNPOGMrREQ5cEVsNUtVTWFo?=
- =?utf-8?B?b0VjaTVpQlBJZUlkSktMZDJBQ1pPZ0dhanBWQVE1RlhnUml0Y1NUcjFJSVJZ?=
- =?utf-8?B?enhWUkhzR0lkc3lmYUtoSStXVGgyTzVOT1NMU3ROTzNhYm5PN28vcXRuZUEv?=
- =?utf-8?B?dlNKcDZMdzU4dlYxRFJwR0ptNXptazd2MEQ4ZzRrejdkTzVZd1lDK3NUYVRH?=
- =?utf-8?B?Y0pzdndleSswbHY0VStseU9pRXR2MjJ0YkYvU0p1VHoya2phLzlKQUhkYlJx?=
- =?utf-8?B?WUFhTit1UGk4OWFBZHN1NC9GTUE0dEpPZXp1S1FPUzFoSVZRVlZYczNtOEg0?=
- =?utf-8?B?V3AzY3VieWVlNCthdFpBK1FFcW1KUjFOWWt1cW5BNW9XMVpPTFZqNG84YTRH?=
- =?utf-8?B?UFptdW5DdklsanFMNEI1cm4yZ3FpdHA0M3AzUGJ1ZkxPOWhJc29LQkNSdDdS?=
- =?utf-8?B?SGNMZ2FzNjh5ZVpEVGJjNkZKd25GZTJsWmcxcEhmWWx4c3liTUhkVFZuRjkw?=
- =?utf-8?B?MjZoQmdGYU8rbE45NTlyR0diSTY5d3hiYkR0d0JHNGd6M1JJcTlHbDZFdjZI?=
- =?utf-8?B?dzJWMkRHM2l6TTM0UlNNVGxldnVwN0REai9iYjFTUER2QVhVK2JZN05iY0Nn?=
- =?utf-8?B?aCtZVTdSVjNiRWNrQzFlN1VMc3dWSG1kUHNxRTR1RnEwK1E2TitVYUlxOWpB?=
- =?utf-8?B?NmJ2M2ZpUXdqOWZlbVZzM3hKOHRraFdiU1BPSURUczNzRnhEanY5NCsza1hw?=
- =?utf-8?B?L3NmTG9HdWlJWm85dW8xYjhxWVdtMUtsd2QyMFNtemFKYXpzM3ZhcXE4cnRB?=
- =?utf-8?B?ZlNWeU9VOUN2dTNjSy9OZ2lLLy9sVXJpeFBWWXBNTCszSWVVa3JhVk5rT2ZQ?=
- =?utf-8?B?bnNFc3MrandCZDVFbWQwVk8vOE5lQU9QdEh4eE52YnZpRE9zc1BWUVRHOElu?=
- =?utf-8?B?dmJRSHRVdXJMRmc0ZGQrZnl2cUkrYWRxUG9xYXhXK1VtVTFyRVhFYTFyTzMr?=
- =?utf-8?B?Z3BWcno0WU1zUDlHMGlMRUFtdm5NQmlhSUtUbnB6NXVHRlgwc1NRUWtqTTh6?=
- =?utf-8?B?Ly9JS21qbDZMUDI3UzJGMjlsOUZ1czlPakVMM0pXT3ZyT2t3eWJQV0VFL00r?=
- =?utf-8?B?YzRiMG01VG5TVW5xOGdrSTlQM0lubGJRZ2Ftc1VzczZjTisxM3hNU0NBN0N3?=
- =?utf-8?B?NGxoMExEU2pQZ2M4ZHcybjJQT1J1b2pudG1TaXlOMTVHUGJnTGNVNjZicG9I?=
- =?utf-8?B?Snl2cWtOaFhqMytob0Z0WnkwRG1UQWJjZUFBNnpIVW16aVBUQit0RndOaVJl?=
- =?utf-8?B?SjJTb1hRdG02T1NSTkp4K3J0VWFTRXdLRkRLSm53RjZUZUJHaU54KzJ3WTl0?=
- =?utf-8?B?VzdmVC9aZzZ2NmN0TGhrQklFdVJYd1V6T2pQVWhxRHNjYjdIYUVLM0pZSlI5?=
- =?utf-8?B?NlJydk1LRlpnZUx6WTllTmEzSk9jc3RUWktRZHpnN2RzMVhYUDZ3SVh5VEdn?=
- =?utf-8?B?N0hEOGFnamVGSUY0dFY3NUtnQ05QcVdMS1dJN2huZjJ4eENiRXNkSVFQU05Q?=
- =?utf-8?B?MHJoZWZoQzcvR3UyQlhwQUFqTFZQS2VjTTEyRmJIT2t2ZE9HYndPKzBwanBE?=
- =?utf-8?B?YUJmRkllc0xJWWJsUXNLcXFMWVhDZW5lQWg4MGtGNS8vMmZWK09lZHlsRisw?=
- =?utf-8?B?MzFnUUNRVU5lTzZ5YllEN3RMR1o2TVpCbStMa3czWVR3OGg3R1ZvT3RqTkhz?=
- =?utf-8?B?Ty95b21sU3RjQVNWNFlKUnJSVGVSdktKaE92Q29lR2NxYlM3b3RwSXpobU5K?=
- =?utf-8?Q?A8VlG5IvDTs=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BY5PR11MB3974.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(7416014)(376014)(366016)(42112799006); DIR:OUT;
- SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Mm5nSWZ6OUFzSnV1d0hGemxvRDlTRmtvakxvQWluNVNkQXJXViszSmdNSlVE?=
- =?utf-8?B?UEgwQVBTT0hoYVEySWk3c1ZkVXE1amR5TU1helhpZ29LeGdERmkxWFBwTkdx?=
- =?utf-8?B?Y0FWZVA4dWFRV0EzSWJGMWhZcVhRRzBDdEM2Umk2V0d4bFJ4YnpyMDhzZkl1?=
- =?utf-8?B?dkRobXAyZjlpQmZIYnFiRmNjQUlLdEtCbkNDWnQ5bnBFSXcrcTBXTjN0WnJu?=
- =?utf-8?B?WVV3cnc1bTZjQXM0dmlNeUxBNzR0REJUeGc5eElmRFN3aitpdDUxVTRnckVP?=
- =?utf-8?B?SHFmZ2kvcndZMHltY3RxU09UWHJyZVRFSDVYV0Ftci9kdG1lMEt5UWQrSnBq?=
- =?utf-8?B?NEZhdk1XMUlUOFRaTnV6TXZSbHNhSkg5UG0zbmdXcit6cVQ4M0NybnA2czBW?=
- =?utf-8?B?Qy9tOHdWM3AxQk9MSUU1bVovc2cvdXRxdkV1QUFGT1Vvc05tUHF1OWJjUEFa?=
- =?utf-8?B?cEZKbUgwanJmQ1Rzd0xSakRZQVJ6eWdaMVlDNytPblE4dyt4cXBXbnNRNUt0?=
- =?utf-8?B?Z3k0MFp2aWJhOGorU2M3RnczZEVDSGRTQUE0dTIyTlVyY3lXNTRKMmQ1UG5x?=
- =?utf-8?B?UW9YcTNNY2t0MDF0Sld6WEZwUEtkWGRDbDBobDkyYy94WTN3RkVGZ0V6dEJO?=
- =?utf-8?B?ckF6eE5yWnNncEhodHBXeVU2eC8rV2J2MmIzSTd6U0hwS3puQUVpR1NBUjdW?=
- =?utf-8?B?VDhEbnpKWUdldnZFaUhRZ2UreXN3eFFURDVZUWtmQ0VybFdaUGtuaGxNOCtl?=
- =?utf-8?B?SVFBaFVGMkxvaEVzV0t5OVAvdnRURXBMYWsvZ1dOVndCaXpkZ2QxaktJN1I2?=
- =?utf-8?B?dHJvMjZwOFNCUzlGWFZyTnNqdWs4Vlp6eDc1RlhBWEVhZk5ZaVBLYS82NDMy?=
- =?utf-8?B?UjhqVUIyL2RDNmFmTUROb2d3UzhLczh0WWRFN0NuZUc2dHZKT1hDRnlBRmdr?=
- =?utf-8?B?MmdKc2lBNU8rdkh0aUVJRW1MbEJzR3BiaGlzOXJpT1RKZ2QrOWhsMjJqWEY0?=
- =?utf-8?B?NzJoeFVQNkt0TU8zb2JUVkFvb0RtWU9tWmxKZWgveXB3SjZBczdLYWdNVkNX?=
- =?utf-8?B?NGZuUnhPc3FLRDNNNVN4RkJmbE5BVjNhQVphaTJDckN6c3gwanpRVWM5ZU5i?=
- =?utf-8?B?bjAxOG1hcWpVUTZUNW96RmYrUkpDMHJtK2RTNVM1eVdON3YvNEJQODhqSWZZ?=
- =?utf-8?B?Mm1TaWlUOEE5a2MrVWJxMnhaRDdlUUZzelMxVHJDTHN3TjNzVkpLdmRhR0tz?=
- =?utf-8?B?Vms2dWJwQ1BaTG43cTZidVhyeTEwSTl2NW5aUjEvU29QVVFoRkNmRitCNzV6?=
- =?utf-8?B?SStndFhXejY4cFA1di9KTWFuWVlGYjFNOWNNRUExSHR4cG9PY2ZIZGdrajI1?=
- =?utf-8?B?cmJFRGlsc2NKSWtxNjl5WWxXUTAzekR1bUEveUVydUZ0cnhKZ0tIRE1NY3pI?=
- =?utf-8?B?RTkxMXRrK2xhekxHLzNhdE9iQTI2ZTFFeU4yM3VXT3dmZktDT28rRW85Q0FV?=
- =?utf-8?B?Z0hHcEdBdDNKWVIzb2UxdDBSUDJkZnY1N3RMK2FIYTlubTIyejJnSzExdjk4?=
- =?utf-8?B?cGpGNEF4c2hkR0lmTlZOVjNsemVmRkhQNlVtS25pdXQyZEczUjN0VWE1THZh?=
- =?utf-8?B?UmtPWjVVRTUrU09KV01pMDg4eStJc21hUldqVW1mQ25WYlc5OEFhMG9kall6?=
- =?utf-8?B?QVFqRkl5TTFQamxtRE5VejZWdWtTN2VWb3B0dzVrcHV6aDA4aDJEdkdpOUxV?=
- =?utf-8?B?UlordWVRME95WEV5aStMbFFubUU3SU1DRTBHeUtta0VwdUpTTmU4enhwVFVB?=
- =?utf-8?B?Yng1Rk9aQzVpQUxsbFVvQytmL0Z2dFQ3Q1FpdmlWSm5td0N5QTdrampZTWdJ?=
- =?utf-8?B?YVloYWl3QmxLdEZiVmdwRGhIY3VROWFDckNUT2QyYXQ0eER1TzBrSzdvWkVK?=
- =?utf-8?B?akFJTlFhN0wxaWVWWnZkNzBiYmU5UUlobktsRnJHZnVXRVNaYzFnL2VYbXNG?=
- =?utf-8?B?NWo5Nkt1dGp4bjV6dGo1U1duV2NGOEExNUw5cFBSSEtYWUNXTXJMajdNUUVx?=
- =?utf-8?B?ZlhjSG1INVY4RkUxWjFhdjh0UlBOUDFXRlFab0pjemV5bmY5Mk1qNEM1NXc4?=
- =?utf-8?Q?dZLumek97/As0J7U8uazopIJR?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d60973c-73b8-49ab-252a-08dde62b18bd
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB3974.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 12:04:53.2498 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HFDDMzD0uVQC28YNJxh5iloO3+o0YdGSZucGs9p8iDlL4RyqkPv4/lkmrpShyai2ld/U0EWz+KQnP/1jF8gd1A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF1A7C623DA
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=yi.l.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250827010453.4059782-1-richard.henderson@linaro.org>
+ <20250827010453.4059782-6-richard.henderson@linaro.org>
+In-Reply-To: <20250827010453.4059782-6-richard.henderson@linaro.org>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Thu, 28 Aug 2025 15:17:44 +0300
+X-Gm-Features: Ac12FXzz-CBq93IBOsEj5dMABK0wBWo0MIHThSd8k8d9CHkdH760Or68lJtKpAk
+Message-ID: <CAAjaMXaQ=pQorbiMLUhGGsr4-bozAO8UkbNSnFdb1ka+2PsOYA@mail.gmail.com>
+Subject: Re: [PATCH 04/61] target/arm/hvf: Reorder DEF_SYSREG arguments
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x533.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -217,72 +93,307 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/8/28 18:00, Eric Auger wrote:
-> 
-> 
-> On 8/22/25 8:40 AM, Zhenzhong Duan wrote:
->> From: Yi Liu <yi.l.liu@intel.com>
->>
->> This traps the guest PASID-based iotlb invalidation request and propagate it
->> to host.
->>
->> Intel VT-d 3.0 supports nested translation in PASID granularity. Guest SVA
->> support could be implemented by configuring nested translation on specific
->> pasid. This is also known as dual stage DMA translation.
->>
->> Under such configuration, guest owns the GVA->GPA translation which is
->> configured as stage-1 page table on host side for a specific pasid, and host
->> owns GPA->HPA translation. As guest owns stage-1 translation table, piotlb
->> invalidation should be propagated to host since host IOMMU will cache first
->> level page table related mappings during DMA address translation.
->>
->> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
->> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->> ---
->>   hw/i386/intel_iommu_internal.h |  6 +++
->>   hw/i386/intel_iommu.c          | 95 +++++++++++++++++++++++++++++++++-
->>   2 files changed, 99 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
->> index 8af1004888..c1a9263651 100644
->> --- a/hw/i386/intel_iommu_internal.h
->> +++ b/hw/i386/intel_iommu_internal.h
->> @@ -596,6 +596,12 @@ typedef struct VTDPASIDCacheInfo {
->>       uint16_t devfn;
->>   } VTDPASIDCacheInfo;
->>   
->> +typedef struct VTDPIOTLBInvInfo {
->> +    uint16_t domain_id;
->> +    uint32_t pasid;
->> +    struct iommu_hwpt_vtd_s1_invalidate *inv_data;
->> +} VTDPIOTLBInvInfo;
->> +
->>   /* PASID Table Related Definitions */
->>   #define VTD_PASID_DIR_BASE_ADDR_MASK  (~0xfffULL)
->>   #define VTD_PASID_TABLE_BASE_ADDR_MASK (~0xfffULL)
->> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
->> index 6c0e502d1c..7efa22f4ec 100644
->> --- a/hw/i386/intel_iommu.c
->> +++ b/hw/i386/intel_iommu.c
->> @@ -2611,12 +2611,99 @@ static int vtd_bind_guest_pasid(VTDAddressSpace *vtd_as, VTDPASIDOp op,
->>   
->>       return ret;
->>   }
->> +
->> +static void
->> +vtd_invalidate_piotlb_locked(VTDAddressSpace *vtd_as,
->> +                             struct iommu_hwpt_vtd_s1_invalidate *cache)
->> +{
->> +    IntelIOMMUState *s = vtd_as->iommu_state;
->> +    VTDHostIOMMUDevice *vtd_hiod = vtd_find_hiod_iommufd(s, vtd_as);
->> +    HostIOMMUDeviceIOMMUFD *idev;
->> +    uint32_t entry_num = 1; /* Only implement one request for simplicity */
-> can you remind me what it is used for. What 1?
+On Wed, Aug 27, 2025 at 4:06=E2=80=AFAM Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> The order of the parameters in the Arm ARM is
+>
+>   op0, op1, crn, crm, op2
+>
+> Reorder the arguments of DEF_SYSREG to match.
+> Mechanical change to sysreg.c.inc using
+>
+>   sed 's/\([^,]*\),\([^,]*\),\([^,]*\),\([^,]*\),\([^,]*\)/\1,\4,\5,\2,\3=
+/'
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
 
-the iommufd cache invalidation interface supports passing an array
-of invalidation requests. For simplicity, we start with 1.
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Regards,
-Yi Liu
+>  target/arm/hvf/hvf.c        |   2 +-
+>  target/arm/hvf/sysreg.c.inc | 224 ++++++++++++++++++------------------
+>  2 files changed, 113 insertions(+), 113 deletions(-)
+>
+> diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+> index f0e4b75e6a..7b0413093d 100644
+> --- a/target/arm/hvf/hvf.c
+> +++ b/target/arm/hvf/hvf.c
+> @@ -403,7 +403,7 @@ struct hvf_sreg_match {
+>      uint32_t cp_idx;
+>  };
+>
+> -#define DEF_SYSREG(HVF_ID, crn, crm, op0, op1, op2) \
+> +#define DEF_SYSREG(HVF_ID, op0, op1, crn, crm, op2) \
+>      { HVF_ID, HVF_SYSREG(crn, crm, op0, op1, op2) },
+>
+>  static struct hvf_sreg_match hvf_sreg_match[] =3D {
+> diff --git a/target/arm/hvf/sysreg.c.inc b/target/arm/hvf/sysreg.c.inc
+> index 222698f1d1..f2276d534e 100644
+> --- a/target/arm/hvf/sysreg.c.inc
+> +++ b/target/arm/hvf/sysreg.c.inc
+> @@ -1,146 +1,146 @@
+>  /* SPDX-License-Identifier: GPL-2.0-or-later */
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR0_EL1, 0, 0, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR0_EL1, 0, 0, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR0_EL1, 0, 0, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR0_EL1, 0, 0, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR0_EL1, 2, 0, 0, 0, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR0_EL1, 2, 0, 0, 0, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR0_EL1, 2, 0, 0, 0, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR0_EL1, 2, 0, 0, 0, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR1_EL1, 0, 1, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR1_EL1, 0, 1, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR1_EL1, 0, 1, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR1_EL1, 0, 1, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR1_EL1, 2, 0, 0, 1, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR1_EL1, 2, 0, 0, 1, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR1_EL1, 2, 0, 0, 1, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR1_EL1, 2, 0, 0, 1, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR2_EL1, 0, 2, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR2_EL1, 0, 2, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR2_EL1, 0, 2, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR2_EL1, 0, 2, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR2_EL1, 2, 0, 0, 2, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR2_EL1, 2, 0, 0, 2, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR2_EL1, 2, 0, 0, 2, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR2_EL1, 2, 0, 0, 2, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR3_EL1, 0, 3, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR3_EL1, 0, 3, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR3_EL1, 0, 3, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR3_EL1, 0, 3, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR3_EL1, 2, 0, 0, 3, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR3_EL1, 2, 0, 0, 3, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR3_EL1, 2, 0, 0, 3, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR3_EL1, 2, 0, 0, 3, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR4_EL1, 0, 4, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR4_EL1, 0, 4, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR4_EL1, 0, 4, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR4_EL1, 0, 4, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR4_EL1, 2, 0, 0, 4, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR4_EL1, 2, 0, 0, 4, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR4_EL1, 2, 0, 0, 4, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR4_EL1, 2, 0, 0, 4, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR5_EL1, 0, 5, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR5_EL1, 0, 5, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR5_EL1, 0, 5, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR5_EL1, 0, 5, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR5_EL1, 2, 0, 0, 5, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR5_EL1, 2, 0, 0, 5, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR5_EL1, 2, 0, 0, 5, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR5_EL1, 2, 0, 0, 5, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR6_EL1, 0, 6, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR6_EL1, 0, 6, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR6_EL1, 0, 6, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR6_EL1, 0, 6, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR6_EL1, 2, 0, 0, 6, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR6_EL1, 2, 0, 0, 6, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR6_EL1, 2, 0, 0, 6, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR6_EL1, 2, 0, 0, 6, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR7_EL1, 0, 7, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR7_EL1, 0, 7, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR7_EL1, 0, 7, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR7_EL1, 0, 7, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR7_EL1, 2, 0, 0, 7, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR7_EL1, 2, 0, 0, 7, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR7_EL1, 2, 0, 0, 7, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR7_EL1, 2, 0, 0, 7, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR8_EL1, 0, 8, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR8_EL1, 0, 8, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR8_EL1, 0, 8, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR8_EL1, 0, 8, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR8_EL1, 2, 0, 0, 8, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR8_EL1, 2, 0, 0, 8, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR8_EL1, 2, 0, 0, 8, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR8_EL1, 2, 0, 0, 8, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR9_EL1, 0, 9, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR9_EL1, 0, 9, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR9_EL1, 0, 9, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR9_EL1, 0, 9, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR9_EL1, 2, 0, 0, 9, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR9_EL1, 2, 0, 0, 9, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR9_EL1, 2, 0, 0, 9, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR9_EL1, 2, 0, 0, 9, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR10_EL1, 0, 10, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR10_EL1, 0, 10, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR10_EL1, 0, 10, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR10_EL1, 0, 10, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR10_EL1, 2, 0, 0, 10, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR10_EL1, 2, 0, 0, 10, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR10_EL1, 2, 0, 0, 10, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR10_EL1, 2, 0, 0, 10, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR11_EL1, 0, 11, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR11_EL1, 0, 11, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR11_EL1, 0, 11, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR11_EL1, 0, 11, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR11_EL1, 2, 0, 0, 11, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR11_EL1, 2, 0, 0, 11, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR11_EL1, 2, 0, 0, 11, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR11_EL1, 2, 0, 0, 11, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR12_EL1, 0, 12, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR12_EL1, 0, 12, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR12_EL1, 0, 12, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR12_EL1, 0, 12, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR12_EL1, 2, 0, 0, 12, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR12_EL1, 2, 0, 0, 12, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR12_EL1, 2, 0, 0, 12, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR12_EL1, 2, 0, 0, 12, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR13_EL1, 0, 13, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR13_EL1, 0, 13, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR13_EL1, 0, 13, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR13_EL1, 0, 13, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR13_EL1, 2, 0, 0, 13, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR13_EL1, 2, 0, 0, 13, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR13_EL1, 2, 0, 0, 13, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR13_EL1, 2, 0, 0, 13, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR14_EL1, 0, 14, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR14_EL1, 0, 14, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR14_EL1, 0, 14, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR14_EL1, 0, 14, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR14_EL1, 2, 0, 0, 14, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR14_EL1, 2, 0, 0, 14, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR14_EL1, 2, 0, 0, 14, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR14_EL1, 2, 0, 0, 14, 7)
+>
+> -DEF_SYSREG(HV_SYS_REG_DBGBVR15_EL1, 0, 15, 2, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_DBGBCR15_EL1, 0, 15, 2, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_DBGWVR15_EL1, 0, 15, 2, 0, 6)
+> -DEF_SYSREG(HV_SYS_REG_DBGWCR15_EL1, 0, 15, 2, 0, 7)
+> +DEF_SYSREG(HV_SYS_REG_DBGBVR15_EL1, 2, 0, 0, 15, 4)
+> +DEF_SYSREG(HV_SYS_REG_DBGBCR15_EL1, 2, 0, 0, 15, 5)
+> +DEF_SYSREG(HV_SYS_REG_DBGWVR15_EL1, 2, 0, 0, 15, 6)
+> +DEF_SYSREG(HV_SYS_REG_DBGWCR15_EL1, 2, 0, 0, 15, 7)
+>
+>  #ifdef SYNC_NO_RAW_REGS
+>  /*
+>   * The registers below are manually synced on init because they are
+>   * marked as NO_RAW. We still list them to make number space sync easier=
+.
+>   */
+> -DEF_SYSREG(HV_SYS_REG_MDCCINT_EL1, 0, 2, 2, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_MIDR_EL1, 0, 0, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_MPIDR_EL1, 0, 0, 3, 0, 5)
+> -DEF_SYSREG(HV_SYS_REG_ID_AA64PFR0_EL1, 0, 4, 3, 0, 0)
+> +DEF_SYSREG(HV_SYS_REG_MDCCINT_EL1, 2, 0, 0, 2, 0)
+> +DEF_SYSREG(HV_SYS_REG_MIDR_EL1, 3, 0, 0, 0, 0)
+> +DEF_SYSREG(HV_SYS_REG_MPIDR_EL1, 3, 0, 0, 0, 5)
+> +DEF_SYSREG(HV_SYS_REG_ID_AA64PFR0_EL1, 3, 0, 0, 4, 0)
+>  #endif
+>
+> -DEF_SYSREG(HV_SYS_REG_ID_AA64PFR1_EL1, 0, 4, 3, 0, 1)
+> -DEF_SYSREG(HV_SYS_REG_ID_AA64DFR0_EL1, 0, 5, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_ID_AA64DFR1_EL1, 0, 5, 3, 0, 1)
+> -DEF_SYSREG(HV_SYS_REG_ID_AA64ISAR0_EL1, 0, 6, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_ID_AA64ISAR1_EL1, 0, 6, 3, 0, 1)
+> +DEF_SYSREG(HV_SYS_REG_ID_AA64PFR1_EL1, 3, 0, 0, 4, 1)
+> +DEF_SYSREG(HV_SYS_REG_ID_AA64DFR0_EL1, 3, 0, 0, 5, 0)
+> +DEF_SYSREG(HV_SYS_REG_ID_AA64DFR1_EL1, 3, 0, 0, 5, 1)
+> +DEF_SYSREG(HV_SYS_REG_ID_AA64ISAR0_EL1, 3, 0, 0, 6, 0)
+> +DEF_SYSREG(HV_SYS_REG_ID_AA64ISAR1_EL1, 3, 0, 0, 6, 1)
+>
+>  #ifdef SYNC_NO_MMFR0
+>  /* We keep the hardware MMFR0 around. HW limits are there anyway */
+> -DEF_SYSREG(HV_SYS_REG_ID_AA64MMFR0_EL1, 0, 7, 3, 0, 0)
+> +DEF_SYSREG(HV_SYS_REG_ID_AA64MMFR0_EL1, 3, 0, 0, 7, 0)
+>  #endif
+>
+> -DEF_SYSREG(HV_SYS_REG_ID_AA64MMFR1_EL1, 0, 7, 3, 0, 1)
+> -DEF_SYSREG(HV_SYS_REG_ID_AA64MMFR2_EL1, 0, 7, 3, 0, 2)
+> +DEF_SYSREG(HV_SYS_REG_ID_AA64MMFR1_EL1, 3, 0, 0, 7, 1)
+> +DEF_SYSREG(HV_SYS_REG_ID_AA64MMFR2_EL1, 3, 0, 0, 7, 2)
+>  /* Add ID_AA64MMFR3_EL1 here when HVF supports it */
+>
+> -DEF_SYSREG(HV_SYS_REG_MDSCR_EL1, 0, 2, 2, 0, 2)
+> -DEF_SYSREG(HV_SYS_REG_SCTLR_EL1, 1, 0, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_CPACR_EL1, 1, 0, 3, 0, 2)
+> -DEF_SYSREG(HV_SYS_REG_TTBR0_EL1, 2, 0, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_TTBR1_EL1, 2, 0, 3, 0, 1)
+> -DEF_SYSREG(HV_SYS_REG_TCR_EL1, 2, 0, 3, 0, 2)
+> +DEF_SYSREG(HV_SYS_REG_MDSCR_EL1, 2, 0, 0, 2, 2)
+> +DEF_SYSREG(HV_SYS_REG_SCTLR_EL1, 3, 0, 1, 0, 0)
+> +DEF_SYSREG(HV_SYS_REG_CPACR_EL1, 3, 0, 1, 0, 2)
+> +DEF_SYSREG(HV_SYS_REG_TTBR0_EL1, 3, 0, 2, 0, 0)
+> +DEF_SYSREG(HV_SYS_REG_TTBR1_EL1, 3, 0, 2, 0, 1)
+> +DEF_SYSREG(HV_SYS_REG_TCR_EL1, 3, 0, 2, 0, 2)
+>
+> -DEF_SYSREG(HV_SYS_REG_APIAKEYLO_EL1, 2, 1, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_APIAKEYHI_EL1, 2, 1, 3, 0, 1)
+> -DEF_SYSREG(HV_SYS_REG_APIBKEYLO_EL1, 2, 1, 3, 0, 2)
+> -DEF_SYSREG(HV_SYS_REG_APIBKEYHI_EL1, 2, 1, 3, 0, 3)
+> -DEF_SYSREG(HV_SYS_REG_APDAKEYLO_EL1, 2, 2, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_APDAKEYHI_EL1, 2, 2, 3, 0, 1)
+> -DEF_SYSREG(HV_SYS_REG_APDBKEYLO_EL1, 2, 2, 3, 0, 2)
+> -DEF_SYSREG(HV_SYS_REG_APDBKEYHI_EL1, 2, 2, 3, 0, 3)
+> -DEF_SYSREG(HV_SYS_REG_APGAKEYLO_EL1, 2, 3, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_APGAKEYHI_EL1, 2, 3, 3, 0, 1)
+> +DEF_SYSREG(HV_SYS_REG_APIAKEYLO_EL1, 3, 0, 2, 1, 0)
+> +DEF_SYSREG(HV_SYS_REG_APIAKEYHI_EL1, 3, 0, 2, 1, 1)
+> +DEF_SYSREG(HV_SYS_REG_APIBKEYLO_EL1, 3, 0, 2, 1, 2)
+> +DEF_SYSREG(HV_SYS_REG_APIBKEYHI_EL1, 3, 0, 2, 1, 3)
+> +DEF_SYSREG(HV_SYS_REG_APDAKEYLO_EL1, 3, 0, 2, 2, 0)
+> +DEF_SYSREG(HV_SYS_REG_APDAKEYHI_EL1, 3, 0, 2, 2, 1)
+> +DEF_SYSREG(HV_SYS_REG_APDBKEYLO_EL1, 3, 0, 2, 2, 2)
+> +DEF_SYSREG(HV_SYS_REG_APDBKEYHI_EL1, 3, 0, 2, 2, 3)
+> +DEF_SYSREG(HV_SYS_REG_APGAKEYLO_EL1, 3, 0, 2, 3, 0)
+> +DEF_SYSREG(HV_SYS_REG_APGAKEYHI_EL1, 3, 0, 2, 3, 1)
+>
+> -DEF_SYSREG(HV_SYS_REG_SPSR_EL1, 4, 0, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_ELR_EL1, 4, 0, 3, 0, 1)
+> -DEF_SYSREG(HV_SYS_REG_SP_EL0, 4, 1, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_AFSR0_EL1, 5, 1, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_AFSR1_EL1, 5, 1, 3, 0, 1)
+> -DEF_SYSREG(HV_SYS_REG_ESR_EL1, 5, 2, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_FAR_EL1, 6, 0, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_PAR_EL1, 7, 4, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_MAIR_EL1, 10, 2, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_AMAIR_EL1, 10, 3, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_VBAR_EL1, 12, 0, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_CONTEXTIDR_EL1, 13, 0, 3, 0, 1)
+> -DEF_SYSREG(HV_SYS_REG_TPIDR_EL1, 13, 0, 3, 0, 4)
+> -DEF_SYSREG(HV_SYS_REG_CNTKCTL_EL1, 14, 1, 3, 0, 0)
+> -DEF_SYSREG(HV_SYS_REG_CSSELR_EL1, 0, 0, 3, 2, 0)
+> -DEF_SYSREG(HV_SYS_REG_TPIDR_EL0, 13, 0, 3, 3, 2)
+> -DEF_SYSREG(HV_SYS_REG_TPIDRRO_EL0, 13, 0, 3, 3, 3)
+> -DEF_SYSREG(HV_SYS_REG_CNTV_CTL_EL0, 14, 3, 3, 3, 1)
+> -DEF_SYSREG(HV_SYS_REG_CNTV_CVAL_EL0, 14, 3, 3, 3, 2)
+> -DEF_SYSREG(HV_SYS_REG_SP_EL1, 4, 1, 3, 4, 0)
+> +DEF_SYSREG(HV_SYS_REG_SPSR_EL1, 3, 0, 4, 0, 0)
+> +DEF_SYSREG(HV_SYS_REG_ELR_EL1, 3, 0, 4, 0, 1)
+> +DEF_SYSREG(HV_SYS_REG_SP_EL0, 3, 0, 4, 1, 0)
+> +DEF_SYSREG(HV_SYS_REG_AFSR0_EL1, 3, 0, 5, 1, 0)
+> +DEF_SYSREG(HV_SYS_REG_AFSR1_EL1, 3, 0, 5, 1, 1)
+> +DEF_SYSREG(HV_SYS_REG_ESR_EL1, 3, 0, 5, 2, 0)
+> +DEF_SYSREG(HV_SYS_REG_FAR_EL1, 3, 0, 6, 0, 0)
+> +DEF_SYSREG(HV_SYS_REG_PAR_EL1, 3, 0, 7, 4, 0)
+> +DEF_SYSREG(HV_SYS_REG_MAIR_EL1, 3, 0, 10, 2, 0)
+> +DEF_SYSREG(HV_SYS_REG_AMAIR_EL1, 3, 0, 10, 3, 0)
+> +DEF_SYSREG(HV_SYS_REG_VBAR_EL1, 3, 0, 12, 0, 0)
+> +DEF_SYSREG(HV_SYS_REG_CONTEXTIDR_EL1, 3, 0, 13, 0, 1)
+> +DEF_SYSREG(HV_SYS_REG_TPIDR_EL1, 3, 0, 13, 0, 4)
+> +DEF_SYSREG(HV_SYS_REG_CNTKCTL_EL1, 3, 0, 14, 1, 0)
+> +DEF_SYSREG(HV_SYS_REG_CSSELR_EL1, 3, 2, 0, 0, 0)
+> +DEF_SYSREG(HV_SYS_REG_TPIDR_EL0, 3, 3, 13, 0, 2)
+> +DEF_SYSREG(HV_SYS_REG_TPIDRRO_EL0, 3, 3, 13, 0, 3)
+> +DEF_SYSREG(HV_SYS_REG_CNTV_CTL_EL0, 3, 3, 14, 3, 1)
+> +DEF_SYSREG(HV_SYS_REG_CNTV_CVAL_EL0, 3, 3, 14, 3, 2)
+> +DEF_SYSREG(HV_SYS_REG_SP_EL1, 3, 4, 4, 1, 0)
+> --
+> 2.43.0
+>
+>
 
