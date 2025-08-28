@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8AAB39BC1
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:39:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6781CB39BC5
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:41:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urauA-0003QV-N7; Thu, 28 Aug 2025 07:34:58 -0400
+	id 1urau7-0003Nb-Kj; Thu, 28 Aug 2025 07:34:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urau4-0003Lz-Li
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:52 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1urau5-0003MX-72
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:53 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urau2-0005lX-R2
+ id 1urau3-0005lp-Fy
  for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:52 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3c6743a10e3so419586f8f.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:50 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-45a1b05a59fso6040515e9.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756380889; x=1756985689; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756380890; x=1756985690; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=iam1hDuVEJ4IEWHLRQN0p7qFdPnVJgerGQJU7wZLLt8=;
- b=IIyJ8wGuotb0l+sdSf9Cj6iOlzc4rNsEMugoAwmP7QFiQFUFRujBq3ZOvR1+MH6iyC
- 9uN0Kj9rXku0aWQhxHAiHj+/Y49qUFxgU0eFmNOKWZ/e9CthTzLdzkio2q93DQYjGTX4
- xuL4z50YihRialZ80mopWxkCkPGFb1TlIZP0B+CjEEQ973fwVanANMJy57qWk6sLqWqv
- 9IpwUIqLlp2PwiAQN9x1kn/ay+4SByWoOSGdlC/n0MeSkTRnDm3s35dfipP5nYME+TJT
- 00/rOZlwzSbEDW8YxSIODyyRBmNEa31RbsQAw/8wBUVBhrJDOUrylt9btjK2vquBtcek
- EWTQ==
+ :reply-to; bh=S+zSf5gKYyiBX8RYazhXjiVCPsv19NY1x2MGbwfSWFo=;
+ b=JOMn4hzZQoQ4k7845Pl0Vd7o316UBqfcBKCbxbFr3edNTkaFCNwI7Dnopk3VTDdwe4
+ kjVms/dq1RWjbOmJpb6Sc1PVNLc5kwAt2KV0eZodkZzM+Uy6nqPOU2U3UC7mOXP3id4X
+ Ff0bIBkbjqZ7T6w6GzdYqi9k++YWNheatnfES6YZaYDhW9rsiTwQhBTpi7UZZsJdG7yX
+ 6kBt9lNU59NnvJAQbGXKaVkf29nXalomYDvmGbkx8+CaNPCLOE1zPMK8LXJOvsMk6FPE
+ j+FgbxgXWKs1ZVIOBikKP0NFF3AbqEr6xkIBPFlW5fxYOGr/aI6+0Rss6Nap5NZHl/KK
+ mvBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756380889; x=1756985689;
+ d=1e100.net; s=20230601; t=1756380890; x=1756985690;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iam1hDuVEJ4IEWHLRQN0p7qFdPnVJgerGQJU7wZLLt8=;
- b=LD73U4QxblA7f2cdPOrpUdwezXQOrStvvrKpzl7a3YBl+lltQAKkYl5y304bI02T9O
- fREEXDri93FJXLtyzCJ1T83maeT9KeKxwom6T62osGWLvCKTUDkDYwtZf+F0jxmXWasB
- MrIT6PWDUDYMKJQo6smLdjZxQr1SAsIlfhcpQJcsbYWo29zPrgKU4gKmlSNkgbcvtKSC
- jjigPNwnmli6Wyl4CrrYDw109mo4gBvNaGQxmIm3AVMbhx5Wd1IyoDFHuNcVjn1S4pHr
- jL7HpNblTIb4yjlQmz9VJ0f9AyT05V08JU6G0dni14p8xkE9tCvZeCVWdsnsra8+aBkm
- shMg==
-X-Gm-Message-State: AOJu0YxQyXeOw+Nl4Mrp67CtHZaLqLLL6c80BGSqIEkGHVP7LH+xJub8
- //U6HoUnC6wnj2qCuzvggsAnv7tdjO5UG9DQxkw7RVxu1383q1VpkhXvSMhv2Scrg3xDCkdHkcF
- /X92o
-X-Gm-Gg: ASbGncsp0cmGzbOv6OybOtlwtHf9LiiwlbpXul0KihHyFwWOJnRewaoQKgouKblGEKL
- oV4z+wS6pFfSJFVhrVF0omsFbLRr8xEN63Kb8O6bvUL8zy5MrbTS+UFW2tXGFS/O5PW6s6No8bf
- 6dCwYYFMK5gDtXkM9H9BpThmIQMz0OJfSgjTRDyjOaCt4f9/Sqz64chGOQLHiS1hifo7s7dWdGk
- anUUwyI7VTngpElDzV2GOMCQ1k/t1l7OfpYBJ7pX4yU5sElEV0wnJ19dyelykUWcAvAL7imFNzp
- FD+6QzQw3bWeIrNofqxixyY7SS7jNyJNJpxfmaaATa18vzLqBU5SWcrVePWhajJiw2wxGpEpCrT
- X6uiWIvzhjFguLggLIQVG4zcLKkYg
-X-Google-Smtp-Source: AGHT+IFss20RtRhdpwVp4fhbVZimEoadZXjKPdC6oLoKnl5A/duv7BW4/sKyi/MOKw20BMPXgMm0gA==
-X-Received: by 2002:a5d:64e7:0:b0:3ca:6584:be0b with SMTP id
- ffacd0b85a97d-3ca6584c142mr10246675f8f.20.1756380888653; 
- Thu, 28 Aug 2025 04:34:48 -0700 (PDT)
+ bh=S+zSf5gKYyiBX8RYazhXjiVCPsv19NY1x2MGbwfSWFo=;
+ b=XlPe0EbjyiNOZwp9WZm9n+TkPFEfHob/rytR5ul0DqOWOscXJBVqhVWwhTTLLru4p7
+ y14sKafKlTWPgQ5sHH0PFgJK/GWB66xIKRbukgJjMVb0hfTQZup0jNdOp2ptiYcXrq5N
+ /aHdocqgo+gWQvIhwj254H7CIvUOVvdMcjgvNHUCgbSTSy4l8eTtS9xR1tN/ozuZsDN6
+ rFfxSXg76o34tQDB8uD7u3Qs77mSnQAoi0tBNA+aeZCZXDxfKP8e2h/lnEfMiZuo7eUV
+ Kh0DU94ab+o6qsmgBsvhE6VEd3PBJLdg+mD2oBwqaptC0cgf61hgzcQwUrvzMxoYGNJY
+ 1FCQ==
+X-Gm-Message-State: AOJu0Yy/oVFpV2Son6nsesXTGt8/YoIM8Nqj5HaxhCfLLM7ejb/xVB7m
+ 8Q97xgM9npMCFXi8WoCkUy5EMK3FYU+SowJmHjCcst+l9KYiKvcoGcXG5ibyMZebhkdTounzli9
+ xhYtu
+X-Gm-Gg: ASbGncs6Jqha/LwaaViemzed8HU2xHFUhz++bY4bXOzbCYP65xvLIyq+sUFjVs8A35W
+ MBuSKhbrKDP0yr9q96bOlya0w026lQo5mBrDYMS0UtQomnAZYUye0PGZDIgBkidH/GT+WO4a372
+ HWO9ISJ1TNjNTleGZ2noZUejXB7JIAfWZzrbHMfyn++B1K5T4VFI8CKknsgalDjHHWQI9Mbt/88
+ p8hlSL8a+9gX4q3962dOQrXd+G/eRagDWQ1eZ4AktD9Qk1YoILZ5yAZpJY9eNPSzbsCI4NzB58J
+ Dfq7Yd8pYg/4/H/KtAeN7OvBODELUbk51LrMNgDQAzgv3fDbr2yztrHGR5T242QK3KC2KLkmaRR
+ hQSbXRRdq6y2YA1YHjFoC2JWfwj1s9fQxeaovnvQ=
+X-Google-Smtp-Source: AGHT+IHCxIRmghgd5YWev+N653pMKjUbocl/9emiHYoEgLRyNtDVp7cYAdDQpRc6uhvAln0EUoz9vg==
+X-Received: by 2002:a05:600c:4fc8:b0:45b:7be1:be1f with SMTP id
+ 5b1f17b1804b1-45b7be1bfcemr11182345e9.32.1756380889613; 
+ Thu, 28 Aug 2025 04:34:49 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.47
+ 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.48
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 04:34:47 -0700 (PDT)
+ Thu, 28 Aug 2025 04:34:48 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/32] hw/arm: add static NVDIMMs in device tree
-Date: Thu, 28 Aug 2025 12:34:11 +0100
-Message-ID: <20250828113430.3214314-15-peter.maydell@linaro.org>
+Subject: [PULL 15/32] scripts/kernel-doc: Avoid new Perl precedence warning
+Date: Thu, 28 Aug 2025 12:34:12 +0100
+Message-ID: <20250828113430.3214314-16-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828113430.3214314-1-peter.maydell@linaro.org>
 References: <20250828113430.3214314-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,139 +98,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Newer versions of Perl (5.41.x and up) emit a warning for code in
+kernel-doc:
+ Possible precedence problem between ! and pattern match (m//) at /scripts/kernel-doc line 1597.
 
-NVDIMM is used for fast rootfs with EROFS, for example by kata
-containers. To allow booting with static NVDIMM memory, add them to the
-device tree in arm virt machine.
+This is because the code does:
+            if (!$param =~ /\w\.\.\.$/) {
 
-This allows users to boot directly with nvdimm memory devices without
-having to rely on ACPI and hotplug.
+In Perl, the !  operator has higher precedence than the =~
+pattern-match binding, so the effect of this condition is to first
+logically-negate the string $param into a true-or-false value and
+then try to pattern match it against the regex, which in this case
+will always fail.  This is almost certainly not what the author
+intended.
 
-Verified to work with command invocation:
+In the new Python version of kernel-doc in the Linux kernel,
+the equivalent code is written:
 
-./qemu-system-aarch64 \
-  -M virt,nvdimm=on \
-  -cpu cortex-a57 \
-  -m 4G,slots=2,maxmem=8G \
-  -object memory-backend-file,id=mem1,share=on,mem-path=/tmp/nvdimm,size=4G,readonly=off \
-  -device nvdimm,id=nvdimm1,memdev=mem1,unarmed=off \
-  -drive file=./debian-12-nocloud-arm64-commited.qcow2,format=qcow2 \
-  -kernel ./vmlinuz-6.1.0-13-arm64 \
-  -append "root=/dev/vda1 console=ttyAMA0,115200 acpi=off"
-  -initrd ./initrd.img-6.1.0-13-arm64 \
-  -nographic \
-  -serial mon:stdio
+            if KernRe(r'\w\.\.\.$').search(param):
+                # For named variable parameters of the form `x...`,
+                # remove the dots
+                param = param[:-3]
+            else:
+                # Handles unnamed variable parameters
+                param = "..."
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-id: 20250807-nvdimm_arm64_virt-v2-1-b8054578bea8@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+which is a more sensible way of writing the behaviour you would
+get if you put in brackets to make the regex match first and
+then negate the result.
+
+Take this as the intended behaviour, and update the Perl to match.
+
+For QEMU, this produces no change in output, presumably because we
+never used the "unnamed variable parameters" syntax.
+
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Message-id: 20250819115648.2125709-1-peter.maydell@linaro.org
 ---
- hw/arm/boot.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- hw/arm/virt.c |  8 +++++---
- 2 files changed, 47 insertions(+), 3 deletions(-)
+ scripts/kernel-doc | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index d391cd01bb1..1e57c4ab9ee 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -25,6 +25,7 @@
- #include "hw/boards.h"
- #include "system/reset.h"
- #include "hw/loader.h"
-+#include "hw/mem/memory-device.h"
- #include "elf.h"
- #include "system/device_tree.h"
- #include "qemu/config-file.h"
-@@ -515,6 +516,29 @@ static void fdt_add_psci_node(void *fdt, ARMCPU *armcpu)
-     qemu_fdt_setprop_cell(fdt, "/psci", "migrate", migrate_fn);
- }
+diff --git a/scripts/kernel-doc b/scripts/kernel-doc
+index fec83f53eda..117ec8fcd1f 100755
+--- a/scripts/kernel-doc
++++ b/scripts/kernel-doc
+@@ -1594,13 +1594,12 @@ sub push_parameter($$$$$) {
  
-+static int fdt_add_pmem_node(void *fdt, uint32_t acells, uint32_t scells,
-+                             int64_t mem_base, int64_t size, int64_t node)
-+{
-+    int ret;
-+
-+    g_autofree char *nodename = g_strdup_printf("/pmem@%" PRIx64, mem_base);
-+
-+    qemu_fdt_add_subnode(fdt, nodename);
-+    qemu_fdt_setprop_string(fdt, nodename, "compatible", "pmem-region");
-+    ret = qemu_fdt_setprop_sized_cells(fdt, nodename, "reg", acells,
-+                                       mem_base, scells, size);
-+    if (ret) {
-+        return ret;
-+    }
-+
-+    if (node >= 0) {
-+        return qemu_fdt_setprop_cell(fdt, nodename, "numa-node-id",
-+                                     node);
-+    }
-+
-+    return 0;
-+}
-+
- int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
-                  hwaddr addr_limit, AddressSpace *as, MachineState *ms,
-                  ARMCPU *cpu)
-@@ -525,6 +549,7 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
-     unsigned int i;
-     hwaddr mem_base, mem_len;
-     char **node_path;
-+    g_autofree MemoryDeviceInfoList *md_list = NULL;
-     Error *err = NULL;
- 
-     if (binfo->dtb_filename) {
-@@ -628,6 +653,23 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
-         }
-     }
- 
-+    md_list = qmp_memory_device_list();
-+    for (MemoryDeviceInfoList *m = md_list; m != NULL; m = m->next) {
-+        MemoryDeviceInfo *mi = m->value;
-+
-+        if (mi->type == MEMORY_DEVICE_INFO_KIND_NVDIMM) {
-+            PCDIMMDeviceInfo *di = mi->u.nvdimm.data;
-+
-+            rc = fdt_add_pmem_node(fdt, acells, scells,
-+                                   di->addr, di->size, di->node);
-+            if (rc < 0) {
-+                fprintf(stderr, "couldn't add NVDIMM /pmem@%"PRIx64" node\n",
-+                        di->addr);
-+                goto fail;
-+            }
-+        }
-+    }
-+
-     rc = fdt_path_offset(fdt, "/chosen");
-     if (rc < 0) {
-         qemu_fdt_add_subnode(fdt, "/chosen");
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 9326cfc895f..1e63f40fbec 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2917,7 +2917,7 @@ static void virt_memory_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
-     const MachineState *ms = MACHINE(hotplug_dev);
-     const bool is_nvdimm = object_dynamic_cast(OBJECT(dev), TYPE_NVDIMM);
- 
--    if (!vms->acpi_dev) {
-+    if (!vms->acpi_dev && !(is_nvdimm && !dev->hotplugged)) {
-         error_setg(errp,
-                    "memory hotplug is not enabled: missing acpi-ged device");
-         return;
-@@ -2949,8 +2949,10 @@ static void virt_memory_plug(HotplugHandler *hotplug_dev,
-         nvdimm_plug(ms->nvdimms_state);
-     }
- 
--    hotplug_handler_plug(HOTPLUG_HANDLER(vms->acpi_dev),
--                         dev, &error_abort);
-+    if (vms->acpi_dev) {
-+        hotplug_handler_plug(HOTPLUG_HANDLER(vms->acpi_dev),
-+                             dev, &error_abort);
-+    }
- }
- 
- static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
+ 	if ($type eq "" && $param =~ /\.\.\.$/)
+ 	{
+-	    if (!$param =~ /\w\.\.\.$/) {
+-	      # handles unnamed variable parameters
+-	      $param = "...";
+-	    }
+-	    elsif ($param =~ /\w\.\.\.$/) {
++	    if ($param =~ /\w\.\.\.$/) {
+ 	      # for named variable parameters of the form `x...`, remove the dots
+ 	      $param =~ s/\.\.\.$//;
++	    } else {
++	      # handles unnamed variable parameters
++	      $param = "...";
+ 	    }
+ 	    if (!defined $parameterdescs{$param} || $parameterdescs{$param} eq "") {
+ 		$parameterdescs{$param} = "variable arguments";
 -- 
 2.43.0
 
