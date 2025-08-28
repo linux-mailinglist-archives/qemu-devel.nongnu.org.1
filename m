@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E63B39BC6
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE65B39BBD
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:38:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uraui-0004JK-4x; Thu, 28 Aug 2025 07:35:32 -0400
+	id 1urauk-0004Sm-IE; Thu, 28 Aug 2025 07:35:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urauM-0003hI-E1
+ id 1urauM-0003hO-Sa
  for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:35:14 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urauK-00065y-5B
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:35:09 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3c6743a10e3so419766f8f.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:35:07 -0700 (PDT)
+ id 1urauK-00066U-UX
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:35:10 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-45a1b065d59so5403325e9.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:35:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756380906; x=1756985706; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756380907; x=1756985707; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ZQrm7QYldVzvYXlm3oou4nEhjLJT00tZjC2U4TRau+Y=;
- b=I1ftlSUJoh4cF1/lbx/+xlt/FG4MsQzDK7pJwqqC0cn3xseWNObpoI/NUmwHuYjNsG
- qjS4HYiTf9j+h7QsX4QuzD50V1jhDm0oc3Y6rVNpEGDZ3VsOsVAHId2FMtDuKR3ER421
- lWVwH2qm5qYupkpQ4UOGE8dFmh4tURjJHAXegfRqQuVcjzEPn49GIREEWb6/u01OELnC
- VKYZBp9nnqj4dn86sUMq7vll5MywNcT1CriMaoMHj+t5UuJe8QckJPJrJBczSi2f6Vub
- TR99vxDSjCWMzvnSdicAo0Lz90imVj9j20AD2TLkXjqiRbfUUQnMk89NMKudUcZyKqna
- rLXQ==
+ :reply-to; bh=+iibDeZh9Q26h4uiIWhGZyfyeeD8dI+3eoknboruTG8=;
+ b=eUZ4Oixo6oDLCqWSPmFgC1YvrjS2hgzD6EwMs7vziDuRZaDp9Tsavh32LATWFFQb2c
+ 5j/wPNghLkdacszuN27gJTqw5rLheQnZ2WaHmse6WJJXPJC/TKiKP4G2BnLkHG4B/bdC
+ rtHZM+r24CHzeCv4/1Bg4YrOBI18YULdy9xv7s+Mhxlld3Wqow/CfpVrURX7OQQ6o97J
+ acV30r2j3EwqLJuIMcxqar0pLqkv8GaCLMJCdrrIVRbdZHa0Upv5MFp2XqtiXsKkMRxn
+ +7so59No/EYy34sdcy1fvxUO+TYcjR15D1OFpn0JhNc5jtYpMHRV0Z5tX7U0M1YVYFek
+ yLdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756380906; x=1756985706;
+ d=1e100.net; s=20230601; t=1756380907; x=1756985707;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZQrm7QYldVzvYXlm3oou4nEhjLJT00tZjC2U4TRau+Y=;
- b=hS7Ww7b1ipsX1ds/cP0a4zcM8XFVWAk57YpIG8bl7gPmX22rMCStpEE8+0CtaibhUX
- nLeRUvPbjGl7CRlx2RYit+Z2KoHjtBGAO00EA3+dEc6YKZSPtqp1AAfEV5xOmpQULBhf
- 5DFvaw6xp5gWLmdD+fVPDWI2aPhuvd0mgXAfDSHV0skYYJfVY+inYbq2nF5l7T1I2GLG
- MiuHshQfWUAIU+tMbEmGW3Z5vPqKvrg2WnZpxkXNdxD4ZXKyjFOeQwJxgVi8bNn++uKe
- kFtaQcQncQD9wjrZhAHAjw4zZGf/+lLs7wRF3iReMFdIRsYZtlU4Mcp09OXQMwjIMDMv
- KjbA==
-X-Gm-Message-State: AOJu0YwUYiZadXe//3W3gXYnUA7az2IEp8v1Xv9xNVQI7psmPiWCyPiH
- LSYniyTc6Hr3P++pl0kjvIfI8f9iDpGRsplL7jAbRslCUxWiQGS5G+8JqaYHd+REIWUAiwR4ItX
- QzeDW
-X-Gm-Gg: ASbGnctoFSz+H8R94TW3jmazloIoG0k1PzGSV3P4UX+y5aZQkUtxh2T8P0c/GqDdVMe
- ASHctUfn02KyEsg/1NvG4su6+CX6/Yf1r0Nmj38vMOA2fpnlirTXcQiXgjKHAYnVtLBIn2ZNMAu
- BFZ09RfklsU94mbsP1w/NcuWS+QYpiIds2i/wFcrpq46lJ9SINa+vdi8mhwiMGa0stl0bHioTue
- 3iCRB/EMhX3lARvyyNKMIvJKOzXIxJuCmsw9SrBK1tusp18Bc8Hw6wUaUDx7mE1cktpKo2v37j0
- /KbGGLImXtq7ydMQzjWSrV6BKdHinnqbUwJQlld1BLMeBIZm7yz11Y3LdxRMHeeiliXWuVard91
- ruiZm+N1BfTKaap8RTyXrLmx22jOhiloPDdGCAqcJMx5Vo9Oe6Q==
-X-Google-Smtp-Source: AGHT+IF3SUjYvhzkWMCFiaLv4kCOZT9jDQxvu7JjXvT6ZDtd0zTnX5W4f1WnItvYpZBphCKkzCk63Q==
-X-Received: by 2002:a05:6000:40dd:b0:3b7:dd87:d730 with SMTP id
- ffacd0b85a97d-3c5dcd03eecmr16610257f8f.52.1756380906081; 
+ bh=+iibDeZh9Q26h4uiIWhGZyfyeeD8dI+3eoknboruTG8=;
+ b=Lr7Znoj7DRIYu+8kkHyQN/l5r+32X8A6yMV7/WFmFop4OZCKl6nAwoxLAhZ9Fa7X8S
+ LsBOejp8uymgF2RK/GwOh0hRY2+GR4gGDyN8fEgdXYlFKM0zVHMJA2z3P264EHh+RpSf
+ RKyb1X9nzqYlmisIwNDrH6k6qw2z+iQHJeu63QSJCHigrAAmNOiYw0NQI2iM04EtRJuY
+ lQJYXzHEk6Qj2aFX67gPoGl7Wcx7xd8brc96wJJkuPB5BnQa9KNC7/7Oj5b1eho0TOKK
+ qNNBU8LNUz3PgFQ7PxHDqBLANW3Hoqtd6ksofDiBcAaHnv8ZcyVAhBusqxts1ToOBHO7
+ qgQw==
+X-Gm-Message-State: AOJu0Yyj4TrH9ZOXx5A3aXcELJCkIzRvuDwJg7PNmqhDB/BESSjSaS06
+ a0NgYYgpgk28aHOorb9Jg+ycXydxsiakGXJpKFb4e/lksefbXNerlDwJy98xestcCKgL1m/SHDG
+ jvMsH
+X-Gm-Gg: ASbGncv1DlaP8SCmzNLdoCcwMM0ZtAOO5FbA9TK9gDmggEjUR6V6OHoAJkBw8Ohx63l
+ CTWbYwANZN9OkxVBrHyt4HeDxY281EOG98rO5djOzhkQS+GTmm+0wWVWO+Kr9t5CThPuS/BtsXl
+ nlNU3Fd611DD+15TDZev9gxvzSSJHr6lInfeBIjl/pF0kDAM1exPTJ94JwOh8dmYNrVuxIqvyI+
+ Wg/r6ywI3pU8P+TeKuYd11wSrkgdikzanhY25XwkLX+nSflSGI1rS9k9Gd4g6QI1TMEEJ1GWkHR
+ 4b/RBVrE09Qeco56WBRaBpI+jYyzScwe19iQSnxocmB56uaF3jVhLpv/4hWTULw29+prmpBS7MR
+ YXmSlxSeYiS+O0FZtZl2Q7EH67pKk
+X-Google-Smtp-Source: AGHT+IFtlg2qqPip0bUM+8An8mFv53/fw63gMNjBi80oUK+1V4poFQx4/JLLYDg/vI1meZCoByeQow==
+X-Received: by 2002:a05:600c:1c0f:b0:45b:6365:7957 with SMTP id
+ 5b1f17b1804b1-45b68bc7a0bmr74390865e9.33.1756380906995; 
  Thu, 28 Aug 2025 04:35:06 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.35.04
+ 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.35.06
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 04:35:05 -0700 (PDT)
+ Thu, 28 Aug 2025 04:35:06 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 30/32] target/arm: Implement FEAT_LSE128
-Date: Thu, 28 Aug 2025 12:34:27 +0100
-Message-ID: <20250828113430.3214314-31-peter.maydell@linaro.org>
+Subject: [PULL 31/32] target/arm: Enable FEAT_LSE128 for -cpu max
+Date: Thu, 28 Aug 2025 12:34:28 +0100
+Message-ID: <20250828113430.3214314-32-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828113430.3214314-1-peter.maydell@linaro.org>
 References: <20250828113430.3214314-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,112 +99,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-This feature contains the LDCLRP, LDSETP, and SWPP instructions.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20250815122653.701782-7-richard.henderson@linaro.org
+Message-id: 20250815122653.701782-8-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu-features.h      |  5 ++++
- target/arm/tcg/a64.decode      |  7 +++++
- target/arm/tcg/translate-a64.c | 49 ++++++++++++++++++++++++++++++++++
- 3 files changed, 61 insertions(+)
+ docs/system/arm/emulation.rst | 1 +
+ linux-user/aarch64/elfload.c  | 1 +
+ target/arm/tcg/cpu64.c        | 2 +-
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index 451b37b5b39..e49e0ae3af0 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -411,6 +411,11 @@ static inline bool isar_feature_aa64_lse(const ARMISARegisters *id)
-     return FIELD_EX64_IDREG(id, ID_AA64ISAR0, ATOMIC) >= 2;
+diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
+index b12f013b4fc..4e8aca8b5d5 100644
+--- a/docs/system/arm/emulation.rst
++++ b/docs/system/arm/emulation.rst
+@@ -89,6 +89,7 @@ the following architecture extensions:
+ - FEAT_LRCPC2 (Load-acquire RCpc instructions v2)
+ - FEAT_LSE (Large System Extensions)
+ - FEAT_LSE2 (Large System Extensions v2)
++- FEAT_LSE128 (128-bit Atomics)
+ - FEAT_LVA (Large Virtual Address space)
+ - FEAT_MixedEnd (Mixed-endian support)
+ - FEAT_MixedEndEL0 (Mixed-endian support at EL0)
+diff --git a/linux-user/aarch64/elfload.c b/linux-user/aarch64/elfload.c
+index 0bec43d8c38..ec81363c920 100644
+--- a/linux-user/aarch64/elfload.c
++++ b/linux-user/aarch64/elfload.c
+@@ -213,6 +213,7 @@ abi_ulong get_elf_hwcap2(CPUState *cs)
+     GET_FEATURE_ID(aa64_sme_f16f16, ARM_HWCAP2_A64_SME_F16F16);
+     GET_FEATURE_ID(aa64_sve_b16b16, ARM_HWCAP2_A64_SVE_B16B16);
+     GET_FEATURE_ID(aa64_cssc, ARM_HWCAP2_A64_CSSC);
++    GET_FEATURE_ID(aa64_lse128, ARM_HWCAP2_A64_LSE128);
+ 
+     return hwcaps;
  }
- 
-+static inline bool isar_feature_aa64_lse128(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64_IDREG(id, ID_AA64ISAR0, ATOMIC) >= 3;
-+}
-+
- static inline bool isar_feature_aa64_rdm(const ARMISARegisters *id)
- {
-     return FIELD_EX64_IDREG(id, ID_AA64ISAR0, RDM) != 0;
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 766c610c019..55ff6c504f1 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -546,6 +546,13 @@ SWP             .. 111 0 00 . . 1 ..... 1000 00 ..... ..... @atomic
- 
- LDAPR           sz:2 111 0 00 1 0 1 11111 1100 00 rn:5 rt:5
- 
-+# Atomic 128-bit memory operations
-+&atomic128      rn rt rt2 a r
-+@atomic128      ........ a:1 r:1 . rt2:5 ...... rn:5 rt:5   &atomic128
-+LDCLRP          00011001 .   .   1 ..... 000100 ..... ..... @atomic128
-+LDSETP          00011001 .   .   1 ..... 001100 ..... ..... @atomic128
-+SWPP            00011001 .   .   1 ..... 100000 ..... ..... @atomic128
-+
- # Load/store register (pointer authentication)
- 
- # LDRA immediate is 10 bits signed and scaled, but the bits aren't all contiguous
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 0ba537268cd..37bedc3780b 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -3753,6 +3753,55 @@ TRANS_FEAT(LDUMAX, aa64_lse, do_atomic_ld, a, tcg_gen_atomic_fetch_umax_i64, 0,
- TRANS_FEAT(LDUMIN, aa64_lse, do_atomic_ld, a, tcg_gen_atomic_fetch_umin_i64, 0, false)
- TRANS_FEAT(SWP, aa64_lse, do_atomic_ld, a, tcg_gen_atomic_xchg_i64, 0, false)
- 
-+typedef void Atomic128ThreeOpFn(TCGv_i128, TCGv_i64, TCGv_i128, TCGArg, MemOp);
-+
-+static bool do_atomic128_ld(DisasContext *s, arg_atomic128 *a,
-+                            Atomic128ThreeOpFn *fn, bool invert)
-+{
-+    MemOp mop;
-+    int rlo, rhi;
-+    TCGv_i64 clean_addr, tlo, thi;
-+    TCGv_i128 t16;
-+
-+    if (a->rt == 31 || a->rt2 == 31 || a->rt == a->rt2) {
-+        return false;
-+    }
-+    if (a->rn == 31) {
-+        gen_check_sp_alignment(s);
-+    }
-+    mop = check_atomic_align(s, a->rn, MO_128);
-+    clean_addr = gen_mte_check1(s, cpu_reg_sp(s, a->rn), false,
-+                                a->rn != 31, mop);
-+
-+    rlo = (s->be_data == MO_LE ? a->rt : a->rt2);
-+    rhi = (s->be_data == MO_LE ? a->rt2 : a->rt);
-+
-+    tlo = read_cpu_reg(s, rlo, true);
-+    thi = read_cpu_reg(s, rhi, true);
-+    if (invert) {
-+        tcg_gen_not_i64(tlo, tlo);
-+        tcg_gen_not_i64(thi, thi);
-+    }
-+    /*
-+     * The tcg atomic primitives are all full barriers.  Therefore we
-+     * can ignore the Acquire and Release bits of this instruction.
-+     */
-+    t16 = tcg_temp_new_i128();
-+    tcg_gen_concat_i64_i128(t16, tlo, thi);
-+
-+    fn(t16, clean_addr, t16, get_mem_index(s), mop);
-+
-+    tcg_gen_extr_i128_i64(cpu_reg(s, rlo), cpu_reg(s, rhi), t16);
-+    return true;
-+}
-+
-+TRANS_FEAT(LDCLRP, aa64_lse128, do_atomic128_ld,
-+           a, tcg_gen_atomic_fetch_and_i128, true)
-+TRANS_FEAT(LDSETP, aa64_lse128, do_atomic128_ld,
-+           a, tcg_gen_atomic_fetch_or_i128, false)
-+TRANS_FEAT(SWPP, aa64_lse128, do_atomic128_ld,
-+           a, tcg_gen_atomic_xchg_i128, false)
-+
- static bool trans_LDAPR(DisasContext *s, arg_LDAPR *a)
- {
-     bool iss_sf = ldst_iss_sf(a->sz, false, false);
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index eaf8846a6a5..b8b1981e702 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1145,7 +1145,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+     t = FIELD_DP64(t, ID_AA64ISAR0, SHA1, 1);     /* FEAT_SHA1 */
+     t = FIELD_DP64(t, ID_AA64ISAR0, SHA2, 2);     /* FEAT_SHA512 */
+     t = FIELD_DP64(t, ID_AA64ISAR0, CRC32, 1);    /* FEAT_CRC32 */
+-    t = FIELD_DP64(t, ID_AA64ISAR0, ATOMIC, 2);   /* FEAT_LSE */
++    t = FIELD_DP64(t, ID_AA64ISAR0, ATOMIC, 3);   /* FEAT_LSE, FEAT_LSE128 */
+     t = FIELD_DP64(t, ID_AA64ISAR0, RDM, 1);      /* FEAT_RDM */
+     t = FIELD_DP64(t, ID_AA64ISAR0, SHA3, 1);     /* FEAT_SHA3 */
+     t = FIELD_DP64(t, ID_AA64ISAR0, SM3, 1);      /* FEAT_SM3 */
 -- 
 2.43.0
 
