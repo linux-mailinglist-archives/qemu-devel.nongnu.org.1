@@ -2,83 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C9AB3A7DB
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8478DB3A79C
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:18:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgFw-00035L-GC; Thu, 28 Aug 2025 13:17:49 -0400
+	id 1urgE0-0005WO-Cv; Thu, 28 Aug 2025 13:15:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1urbwb-0004Q7-EP
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:41:33 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1urbwZ-0006DC-KR
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:41:33 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-61c4f73cf20so1566951a12.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:41:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756384890; x=1756989690; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JMQ6mNN1qJHOswDd/UqFQ1lKqurpQQ1An6/zOUe9OOU=;
- b=JWH7T0Ht3PF/H6sKGdwDslRHw1egXza8bHY7JBjwpaXis2H+yDClcbd6DzOOPDoVyY
- bQZG/IPLM+WOp/tARF1TNVdeKiXfAYRTVjGLw4cR4q0lJ1eunKN+H8su3v5py6HTMtB3
- encUx+LkZa9+X2vt6AOcOYceoaUar0gEaI/FvzpMp7ALaAnGv6ck1DFTYU6itwK/qoDM
- 3QJpT87VP7rssbJ3GA99PHgOsnYNOO/5o1VFbUSYuduj44HeKf/hImc/npCm/fhXmZe5
- TQNhQr6p9Fhvb7PsrBjS2h9numSFoSFw33CP8QLMebjgFGqHv+uw25J2RduPjXShy/Rh
- E4vg==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1urc26-0007Vk-Ek
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:47:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1urc23-000755-FO
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:47:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756385229;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LQHCXqjm4zIM8dZntivUPtrmx6PsmOO0Jbe3R2x3L2Q=;
+ b=IDuSVLnf93sJDU2UQ7Au3cfeli+ef/rv0wiUL24NfZpnEE0vnSv0DPxUo0h6E7EqI7L6/y
+ GYDO6goSg3RSD91Ou/9XTvAyhOehHoqNMAhGL4NxhYEtdfCq63Y56ZdnMUShq3iqGj37D2
+ Uq4qIvzvpPmEVOUfg5E3vU3QG1DkPpQ=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-539-38kp50sEPgiMg6oAMjRBGw-1; Thu, 28 Aug 2025 08:47:07 -0400
+X-MC-Unique: 38kp50sEPgiMg6oAMjRBGw-1
+X-Mimecast-MFC-AGG-ID: 38kp50sEPgiMg6oAMjRBGw_1756385227
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7f6a341c9b8so235540285a.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:47:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756384890; x=1756989690;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JMQ6mNN1qJHOswDd/UqFQ1lKqurpQQ1An6/zOUe9OOU=;
- b=l7AC2EbJp30hI1eD6gGdBhkLX2A4q8eWgrIfwVCwhvL+CNeXuH1l5ncsX3w4RkB0J5
- fula8P8bkMZXC1aKrGDUVg/jgYgPF9mpXYaqI/Bch7Wgp2T0GksaVWtF1Znybaxnv2du
- uVdcTQz47YYQrpZ9XE8UfQ2cr1oojvxs0ZqDQzrkuJ/xxt10vII/eNcott/Kn9yVlPJi
- aUHJl2NSAjQfISAdTaI2xyGkr95eLcCl1SRYCKT+2q6r99nj5+P//ZMAfaXwcTjFWKzk
- nsC4iFao2+iL2sc0TVJN8vcOnIV9wX3TPfQOZswERYy4Cpu46VCCfNDAonM+cAc/Ql25
- RDOQ==
-X-Gm-Message-State: AOJu0Yw4qjcmaE4p4vB9sRhFiuCbPMfuNzcH1v+Pr46DGyDf4B4cQ69C
- FqChlzq/MWyOfXYzHr/KX5bPL19I5BTU+6k5I/cZV9VhcfTFpRpzI3KVqsDgtH207wLMD67gECz
- Xm2/xLwbi0XQ1AFlqLrIPHxUGJ3Xzv2mITM6lLYiWJn3VPKaST91hHlZsOQ==
-X-Gm-Gg: ASbGnct27RZrZ7B3phUsagLMEqoqKd/Z4DX2O31OTDCnhykhN6iMmFCS1E1bTNGrHau
- NTvflBVM35iWIMuDWnk+1FDbt6JGdn0cqgC387L5uBxRTuCmTAdFHbv8Xq63AquG7oVCYY+yT/5
- 4O6k/vtCSuG4SN613cQY6KNvrafphjWhLWMI0fD+1gbA0SGU27YzYUQpghFbwcNdKj/3LpgW44D
- B1WTBVAW38aZjRcr34zBw6UVjuTCw==
-X-Google-Smtp-Source: AGHT+IF3yyptflGVFifRVKc7BOGQDbOBUK+7uTMBa8kL11nVQ6QW0qWE7P9cJBIQwqUgeqgxDN6ddceRpkO5sSkbAN8=
-X-Received: by 2002:a17:906:c10f:b0:afe:e03c:2d70 with SMTP id
- a640c23a62f3a-afee03c325dmr243322566b.16.1756384889786; Thu, 28 Aug 2025
- 05:41:29 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1756385227; x=1756990027;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LQHCXqjm4zIM8dZntivUPtrmx6PsmOO0Jbe3R2x3L2Q=;
+ b=jgmjuleVlYORTBlrS0CGMydNUK8itCCawJaKnD/ED/TqjMLglZUx98LBi5h8vn9JV6
+ ELeDhyYNhnl6aqwMemnMQG7BlKDs0mCHA0S5osTwdv+81fIRJ58Hf4z07s5ZOoJ4bbSQ
+ 87yA+IC2Rw482IiRTZVYAVGVdYciSm7NsvguqIXyoL+5VdeU9Ko8GG9GLgzITFW6KLTz
+ V/LPnmQf5QKFOSiymC9qDUEYhSjiwjtCkia4OxMDf/kml+u5kvmLmY1RH3TGxcbosNuK
+ fT2iZBdzONsCal7xe+EoFyixnJJn9FEggIK8gtNV+pD77VV3xNHTr9LufICefCq4cIAy
+ QapA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWnqJv3SzRn9fQVP84XcJTe2Gn6VBehm6J/tsIxxyvL9KDFiUSHc3hBrFOUOaSMC3YiY+RppUaRz+Ux@nongnu.org
+X-Gm-Message-State: AOJu0YySaCug7VoZ8FrS+2VN6d+St/Jr/rCw1WO4/1nxpcF9r6Wo8aqG
+ 3SoBWNMJSNfCtOkV1LGWmwQY8xEV7SYQGoy15ea59quD8kH4Vbrv4XDWWd2EAeN14Pzdm/sB5GO
+ l2dzVV60xaQqgNy6VL2+hywzpoFgRRdYNmbQe5SPDETCG1JXb+Q2rKaC5
+X-Gm-Gg: ASbGncv1l2tISsI1WhizUbJp4TfHlyOKbIetLQ09fTJogMzM7zb2h/Ih6TpUKVfZlYC
+ QUOTMqwveZ41leM7/TSQKUD1t+tManr3kOAbMSV9vASOjiQc57UEeFYyTjkRKlJQXfOmXrwGsme
+ bWv5sDE2XI5hJJ5mdEyJ6BLbJB4/1GIBghyNitC55WGY2sReziPPOBAgsv8EN+eKoMT+0YJBMoJ
+ ty+7DAcOqRv4OLzrh8wS15uYOhXs1rn4XccJJblzqMVkuw3RCWg1xdZv0xjl1Kznksfh009BkSy
+ hX9E+4dHv8c8A8bvbp2M7+8jJ0cOs7CFwk9B6rhPkMIdAyJMPTsfnzNrPmN2c02xZqG96TnXHku
+ PSO6yHDaPbBI=
+X-Received: by 2002:a05:620a:c4e:b0:7e7:fd8a:ae7c with SMTP id
+ af79cd13be357-7ea10fa1446mr2405198885a.7.1756385226623; 
+ Thu, 28 Aug 2025 05:47:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH4VdNbBmYNEP+DUi1v0PM8gQvy8TOYo+o/bH3CHCTQfKOHQ6w1g2MM/UAsd7NQy0hyiyqNcw==
+X-Received: by 2002:a05:620a:c4e:b0:7e7:fd8a:ae7c with SMTP id
+ af79cd13be357-7ea10fa1446mr2405196185a.7.1756385226186; 
+ Thu, 28 Aug 2025 05:47:06 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-70da72ca086sm103138106d6.61.2025.08.28.05.47.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 28 Aug 2025 05:47:04 -0700 (PDT)
+Message-ID: <0ff48782-4e89-40c0-b233-d36d69724786@redhat.com>
+Date: Thu, 28 Aug 2025 14:47:00 +0200
 MIME-Version: 1.0
-References: <20250827010453.4059782-1-richard.henderson@linaro.org>
- <20250827010453.4059782-16-richard.henderson@linaro.org>
-In-Reply-To: <20250827010453.4059782-16-richard.henderson@linaro.org>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 28 Aug 2025 15:41:03 +0300
-X-Gm-Features: Ac12FXxMSxBk14S28-wEQWcGRZlgWItJO6EZpFvGWInyvQwR6xdhl7772GVKw_0
-Message-ID: <CAAjaMXYjJsxhBY=W6J7yaG20MiAszRjrUJGWbC6=ZYDhs42EUQ@mail.gmail.com>
-Subject: Re: [PATCH 11/61] target/arm: Rename all ARMCPRegInfo from opaque to
- ri
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x531.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 19/21] vfio: Add a new element bypass_ro in
+ VFIOContainerBase
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com,
+ clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ chao.p.peng@intel.com
+References: <20250822064101.123526-1-zhenzhong.duan@intel.com>
+ <20250822064101.123526-20-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20250822064101.123526-20-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,94 +116,109 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 27, 2025 at 4:11=E2=80=AFAM Richard Henderson
-<richard.henderson@linaro.org> wrote:
+Hi Zhenzhong,
+
+On 8/22/25 8:40 AM, Zhenzhong Duan wrote:
+> When bypass_ro is true, readonly memory section is bypassed from
+> mapping in the container.
 >
-> These pointers are no opaque, they have a specific type.
+> This is a preparing patch to workaround Intel ERRATA_772415.
+I would explain what this ERRATA needs to implement
+
+Thanks
+
+Eric
 >
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
-
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-
->  target/arm/cpregs.h | 10 +++++-----
->  target/arm/helper.c |  6 +++---
->  2 files changed, 8 insertions(+), 8 deletions(-)
+>  include/hw/vfio/vfio-container-base.h |  1 +
+>  hw/vfio/listener.c                    | 21 ++++++++++++++-------
+>  2 files changed, 15 insertions(+), 7 deletions(-)
 >
-> diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
-> index c9506aa6d5..3344a02bd3 100644
-> --- a/target/arm/cpregs.h
-> +++ b/target/arm/cpregs.h
-> @@ -841,15 +841,15 @@ typedef struct ARMCPRegInfo ARMCPRegInfo;
->   * Access functions for coprocessor registers. These cannot fail and
->   * may not raise exceptions.
->   */
-> -typedef uint64_t CPReadFn(CPUARMState *env, const ARMCPRegInfo *opaque);
-> -typedef void CPWriteFn(CPUARMState *env, const ARMCPRegInfo *opaque,
-> +typedef uint64_t CPReadFn(CPUARMState *env, const ARMCPRegInfo *ri);
-> +typedef void CPWriteFn(CPUARMState *env, const ARMCPRegInfo *ri,
->                         uint64_t value);
->  /* Access permission check functions for coprocessor registers. */
->  typedef CPAccessResult CPAccessFn(CPUARMState *env,
-> -                                  const ARMCPRegInfo *opaque,
-> +                                  const ARMCPRegInfo *ri,
->                                    bool isread);
->  /* Hook function for register reset */
-> -typedef void CPResetFn(CPUARMState *env, const ARMCPRegInfo *opaque);
-> +typedef void CPResetFn(CPUARMState *env, const ARMCPRegInfo *ri);
->
->  #define CP_ANY 0xff
->
-> @@ -1075,7 +1075,7 @@ void raw_write(CPUARMState *env, const ARMCPRegInfo=
- *ri, uint64_t value);
->   * CPResetFn that does nothing, for use if no reset is required even
->   * if fieldoffset is non zero.
->   */
-> -void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *opaque);
-> +void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *ri);
->
->  /*
->   * Return true if this reginfo struct's field in the cpu state struct
-> diff --git a/target/arm/helper.c b/target/arm/helper.c
-> index d230f9e766..e03cbc0394 100644
-> --- a/target/arm/helper.c
-> +++ b/target/arm/helper.c
-> @@ -1067,7 +1067,7 @@ static const ARMCPRegInfo v6k_cp_reginfo[] =3D {
->        .resetvalue =3D 0 },
->  };
->
-> -static void arm_gt_cntfrq_reset(CPUARMState *env, const ARMCPRegInfo *op=
-aque)
-> +static void arm_gt_cntfrq_reset(CPUARMState *env, const ARMCPRegInfo *ri=
-)
->  {
->      ARMCPU *cpu =3D env_archcpu(env);
->
-> @@ -5407,7 +5407,7 @@ static const ARMCPRegInfo rndr_reginfo[] =3D {
->        .access =3D PL0_R, .readfn =3D rndr_readfn },
->  };
->
-> -static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
-> +static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *ri,
->                            uint64_t value)
->  {
->  #ifdef CONFIG_TCG
-> @@ -7730,7 +7730,7 @@ uint64_t arm_cp_read_zero(CPUARMState *env, const A=
-RMCPRegInfo *ri)
->      return 0;
+> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+> index bded6e993f..31fd784d76 100644
+> --- a/include/hw/vfio/vfio-container-base.h
+> +++ b/include/hw/vfio/vfio-container-base.h
+> @@ -51,6 +51,7 @@ typedef struct VFIOContainerBase {
+>      QLIST_HEAD(, VFIODevice) device_list;
+>      GList *iova_ranges;
+>      NotifierWithReturn cpr_reboot_notifier;
+> +    bool bypass_ro;
+>  } VFIOContainerBase;
+>  
+>  typedef struct VFIOGuestIOMMU {
+> diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+> index 903dfd8bf2..5fa2bb7f1a 100644
+> --- a/hw/vfio/listener.c
+> +++ b/hw/vfio/listener.c
+> @@ -76,8 +76,13 @@ static bool vfio_log_sync_needed(const VFIOContainerBase *bcontainer)
+>      return true;
 >  }
->
-> -void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *opaque)
-> +void arm_cp_reset_ignore(CPUARMState *env, const ARMCPRegInfo *ri)
+>  
+> -static bool vfio_listener_skipped_section(MemoryRegionSection *section)
+> +static bool vfio_listener_skipped_section(MemoryRegionSection *section,
+> +                                          bool bypass_ro)
 >  {
->      /* Helper coprocessor reset function for do-nothing-on-reset registe=
-rs */
+> +    if (bypass_ro && section->readonly) {
+> +        return true;
+> +    }
+> +
+>      return (!memory_region_is_ram(section->mr) &&
+>              !memory_region_is_iommu(section->mr)) ||
+>             memory_region_is_protected(section->mr) ||
+> @@ -365,9 +370,9 @@ static bool vfio_known_safe_misalignment(MemoryRegionSection *section)
 >  }
-> --
-> 2.43.0
->
->
+>  
+>  static bool vfio_listener_valid_section(MemoryRegionSection *section,
+> -                                        const char *name)
+> +                                        bool bypass_ro, const char *name)
+>  {
+> -    if (vfio_listener_skipped_section(section)) {
+> +    if (vfio_listener_skipped_section(section, bypass_ro)) {
+>          trace_vfio_listener_region_skip(name,
+>                  section->offset_within_address_space,
+>                  section->offset_within_address_space +
+> @@ -494,7 +499,8 @@ void vfio_container_region_add(VFIOContainerBase *bcontainer,
+>      int ret;
+>      Error *err = NULL;
+>  
+> -    if (!vfio_listener_valid_section(section, "region_add")) {
+> +    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
+> +                                     "region_add")) {
+>          return;
+>      }
+>  
+> @@ -655,7 +661,8 @@ static void vfio_listener_region_del(MemoryListener *listener,
+>      int ret;
+>      bool try_unmap = true;
+>  
+> -    if (!vfio_listener_valid_section(section, "region_del")) {
+> +    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
+> +                                     "region_del")) {
+>          return;
+>      }
+>  
+> @@ -812,7 +819,7 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
+>          container_of(listener, VFIODirtyRangesListener, listener);
+>      hwaddr iova, end;
+>  
+> -    if (!vfio_listener_valid_section(section, "tracking_update") ||
+> +    if (!vfio_listener_valid_section(section, false, "tracking_update") ||
+>          !vfio_get_section_iova_range(dirty->bcontainer, section,
+>                                       &iova, &end, NULL)) {
+>          return;
+> @@ -1206,7 +1213,7 @@ static void vfio_listener_log_sync(MemoryListener *listener,
+>      int ret;
+>      Error *local_err = NULL;
+>  
+> -    if (vfio_listener_skipped_section(section)) {
+> +    if (vfio_listener_skipped_section(section, false)) {
+>          return;
+>      }
+>  
+
 
