@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17966B3A7F1
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4AD8B3A83B
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:36:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgG4-0003RA-BK; Thu, 28 Aug 2025 13:17:57 -0400
+	id 1urgGj-00040W-D4; Thu, 28 Aug 2025 13:18:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ureCl-0003zY-HE
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 11:06:23 -0400
-Received: from mail-yw1-x1131.google.com ([2607:f8b0:4864:20::1131])
+ id 1ureH4-0006AF-Mv
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 11:10:51 -0400
+Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ureCj-0004ad-Fu
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 11:06:23 -0400
-Received: by mail-yw1-x1131.google.com with SMTP id
- 00721157ae682-71d60110772so7964127b3.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 08:06:20 -0700 (PDT)
+ id 1ureH0-0005Kj-Cp
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 11:10:49 -0400
+Received: by mail-yw1-x112e.google.com with SMTP id
+ 00721157ae682-71d603a269cso7685787b3.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 08:10:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756393578; x=1756998378; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756393843; x=1756998643; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=IjcbSHCZrDkytvJaf38SMhSlxohPnup9zrxec1mnV8M=;
- b=auSyLxpNkMZNjhw9M79PZlAVbqhHcxne/FwcbExJYRkcIAIHe122A7/dqxLuR/7kOE
- YTikgcNNn8RLHSN0ljCcRPQKCMGypXyoS6hRG7nfnaAKfNJ41GClYAOrZ3nZ+P8jB13K
- 32ZmjPL0ioWFz5s8oVhR2z/5LAZBdP3JbCLY3zJO7WglBD2nw4cHnzEBpbuNrDu4bH8c
- J+pveKlBFQYomf3nltlu86+lSqLBvPHKt5iK6sKF6fncdgqr1XsrzZqPQ67Lt2830NS8
- FAPQ4JLVaraQofv3U0iS3zhY8ct8n4sptxRb18zCp0iQMfu46D8sz0VVHxUP9YHMj0s+
- xAgA==
+ bh=sQK3mnn7pBQpcDfw0AGuQzsNWoTfZhgB1Skf8gC6LqY=;
+ b=G9QbSx9I23HcbODDXqTwAYd1eCEdnFilTMNMPo10l+8/eTKXNf/nCey3sxl3geDcux
+ IRlJN/p7/uRXodQg8cdQkvjwkU5pr0EwicNh2I/zxirmLcaAt7X3fdmcOeewceo5wKtO
+ HmirldxAi6TvbSHUNa9ElvoaFM8o5ciiSOiJNAhM+bKOZke7G04w7yYne2nU25qVk95d
+ LsY9a3YtKH7RdcKzj81DVSITSlVLLFS2CqbxU1XyYeAHnyHrtw7JBGO3SLvRBsoa/YEj
+ oYzFP+HxVvsifke7uk9itXuCb52i0S86ZzD6uMhZTssoPk95/hCQ9Fs2Q3KNFVnVhkSr
+ YkrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756393578; x=1756998378;
+ d=1e100.net; s=20230601; t=1756393843; x=1756998643;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=IjcbSHCZrDkytvJaf38SMhSlxohPnup9zrxec1mnV8M=;
- b=Q0FbNbVepEB4Wg3S+zp+R2cQa6qZbvVH79yzT+PDrB8+nFF43kAJW//SLJz3xoicrm
- Lh8bulDAy5DuXWkYgqM3ZNkrWLoM1xmKLh2qcInWWI20W80XwXL1V82pD+H8hcHN7b8a
- c/22q2P+xKZpCC+ewhv+uamKkHVRqXWMGgLwyEzFOXB7Vpg/M+K2GQCqUmqS5L4KKpq4
- +ZAiRz+rakty1XzVHo0wXKMr1WL9FYEohHLOn/bOoLeSfAnQX+2LA5SWFGYRXkQ75pRs
- wYtggaVXWdADbteU3d7jhM0B28f7gDcbH/pOQLUbxMKEa56Cwj8CvqCdm8DWeuYQJPuq
- 0evQ==
-X-Gm-Message-State: AOJu0YzEV4JR78Sg54HdoWWuWg5h7xcgruQsZRHujkOLdyo5ORhODhxO
- jx+eRJoG4rSw0v1m709mK4O0HX/2pMIzZt94Cztzi+cuhiDGXvhXG8YlNqETxeQ92wUKQ4kS6Yv
- Jq98bbgvfD3p06gQbpHVJ6RuvH5GmQF/zmKPCHTEVZQ==
-X-Gm-Gg: ASbGnct8wJnuLWb/GadSINk8lRFpHJ3OgpNJXRfSH+Ph3qm3ajZ/ZaUF69tv0sFp994
- yKbsjIvnZn0yIklzqAjhoSQKlCs8Z4eA1AMJVQ+7r169rWnPGtVHSmULKRJacjyIwBBjoFUPnJT
- mD4AymPPNLAm6KRAko/MJvPimOm4Q4u1eEzGboLdkxRpw1K5HbUp1/cmhjd6x0VGqUE9QGR7Qse
- deeoI29682guIPrspc=
-X-Google-Smtp-Source: AGHT+IEQU92ZZufOKf95F+A8YNAbYb+wU7v8f5hTFbNR1XvzmWhjZszyA43s7CvSfcWQ2iYtzWioneUgNyTzbhTbqqs=
-X-Received: by 2002:a05:690c:fc2:b0:71f:ff0c:c95b with SMTP id
- 00721157ae682-71fff0cf3b0mr222732717b3.14.1756393578498; Thu, 28 Aug 2025
- 08:06:18 -0700 (PDT)
+ bh=sQK3mnn7pBQpcDfw0AGuQzsNWoTfZhgB1Skf8gC6LqY=;
+ b=ATBIixmM3t+vTbwfC0hWJDk00ZpPn/1ctwKXTP/hqUAn5Yb3PDFFCIds1BpORG54A+
+ tb/JNCLzLBlMYK8IPRF2fXjodcW4QWNKyCIl7DASxziJtjQ7ylLRwa33jNInU3AFmXFf
+ m+Oudrl3+sw806fcflQILcyzA2xhIHJMLZttTz0wzc+/wj2BfgW2GbfsgZYxr6W7+l9P
+ ok3ck8xw3ms4J4afD03lhsL/lbEpMiuNj450p2z9OLkBHWfVR1osNHJ6iZjfEGmLvGDL
+ L/gNVA2dV0w9tvEI7V+hUYHB9h5Wdmr7i/G/8IG+zOqQftYMVudt5ZYNy2qgfSa+ULyc
+ E5fg==
+X-Gm-Message-State: AOJu0Yzpdsp5MkF3qwjhLrtM6s+varD75rdxC+rwl1g9utbTXXDcdcA7
+ ITaVeQZgijj7lhnkZAGvn5lLOHwEybIwbVt4VqPQCt0qCws6c1ymTJ7XiqVXU/g+xox7fAVKahN
+ wczmUkoHAuXwh8S0aIBiEtqj9gVWn8syqpWTH36rQ0Q==
+X-Gm-Gg: ASbGncte56aPjniae1Jlu5+4mtKVoyr7ajFYUi8d9H0pkUnTalh05/5oJgrKR/3Fr+M
+ HgLMKNLxUG2xCj1Sku1uPuj66rX+70swsSHt9JeuPy95su9gIEN2wLqh2ChLBUsSd2bx2aBQhqu
+ UdpzvWlUgiKveR1SVYy+58Q7Jgebe+pMJ4MHa0MsnI9xtLJxKRVIm2WG4ZApHMxgn2egy9V+U9I
+ nGwoXai
+X-Google-Smtp-Source: AGHT+IFbHZ5H1Vr8zLMpt/TRrIPn56pHYrNTpjtKROZeOvVxCxg2kkINo7Ec8zMvDXQ1eLgUGF/l/voI453Xw/7fcSw=
+X-Received: by 2002:a05:690c:fcc:b0:720:b6a:ff2d with SMTP id
+ 00721157ae682-7200b6b83cfmr185210097b3.14.1756393842645; Thu, 28 Aug 2025
+ 08:10:42 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250828120836.195358-1-richard.henderson@linaro.org>
- <20250828120836.195358-51-richard.henderson@linaro.org>
-In-Reply-To: <20250828120836.195358-51-richard.henderson@linaro.org>
+ <20250828120836.195358-52-richard.henderson@linaro.org>
+In-Reply-To: <20250828120836.195358-52-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 28 Aug 2025 16:06:06 +0100
-X-Gm-Features: Ac12FXxcUp9Ijpqb614-0GxWlnDVlq-3f3YksQ_gAX-hsZhuBa3kHdLFMogAE88
-Message-ID: <CAFEAcA9J3U+D3n_VUx_NUjbhmzF=hVvtysxLa-YGq+Z73=LSKQ@mail.gmail.com>
-Subject: Re: [PATCH v3 50/87] linux-user/ppc: Expand target_elf_gregset_t
+Date: Thu, 28 Aug 2025 16:10:31 +0100
+X-Gm-Features: Ac12FXxGvuempjnClys839j3IA-GKMQlSo18KbmJ_oTeJOhzFnnjCOatAPwMBOY
+Message-ID: <CAFEAcA8p_8nELWFhiO9GsSqq7q+7gMCYgBnKmH42ziLjTnXfMw@mail.gmail.com>
+Subject: Re: [PATCH v3 51/87] linux-user/s390x: Create target_ptrace.h
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1131;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1131.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,14 +91,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 28 Aug 2025 at 13:13, Richard Henderson
+On Thu, 28 Aug 2025 at 13:14, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> Make use of the fact that target_elf_gregset_t is a proper structure.
-> Drop ELF_NREG, target_elf_greg_t, and tswapreg.
+> Move target_psw_t to target_ptrace.h.
+> Remove the target_pt_regs; add target_s390x_reg to target_ptrace.h,
+> which matches what is actually used.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  linux-user/s390x/target_ptrace.h  | 18 ++++++++++++++++++
+>  linux-user/s390x/target_syscall.h | 22 ----------------------
+>  linux-user/s390x/signal.c         |  1 +
+>  3 files changed, 19 insertions(+), 22 deletions(-)
+>  create mode 100644 linux-user/s390x/target_ptrace.h
+>
+> diff --git a/linux-user/s390x/target_ptrace.h b/linux-user/s390x/target_ptrace.h
+> new file mode 100644
+> index 0000000000..a5ceb75a74
+> --- /dev/null
+> +++ b/linux-user/s390x/target_ptrace.h
+> @@ -0,0 +1,18 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +
+> +#ifndef S390X_TARGET_PTRACE_H
+> +#define S390X_TARGET_PTRACE_H
+> +
+> +typedef struct {
+> +    abi_ulong mask;
+> +    abi_ulong addr;
+> +} target_psw_t;
+> +
+> +struct target_s390_regs {
+> +    target_psw_t psw;
+> +    abi_ulong gprs[16];
+> +    abi_uint acrs[16];
+> +    abi_ulong orig_gpr2;
+> +};
+> +
+> +#endif /* S390X_TARGET_PTRACE_H */
+> diff --git a/linux-user/s390x/target_syscall.h b/linux-user/s390x/target_syscall.h
+> index 4018988a25..f01f9a0baa 100644
+> --- a/linux-user/s390x/target_syscall.h
+> +++ b/linux-user/s390x/target_syscall.h
+> @@ -1,28 +1,6 @@
+>  #ifndef S390X_TARGET_SYSCALL_H
+>  #define S390X_TARGET_SYSCALL_H
+>
+> -/* this typedef defines how a Program Status Word looks like */
+> -typedef struct {
+> -    abi_ulong mask;
+> -    abi_ulong addr;
+> -} __attribute__ ((aligned(8))) target_psw_t;
 
+You might mention in the commit message that abi_ulong
+already has an aligned attribute which for s390 will be 8,
+so it's OK to drop the attribute on the struct here.
+
+Otherwise
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
