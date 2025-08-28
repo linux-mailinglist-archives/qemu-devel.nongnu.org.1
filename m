@@ -2,94 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 354BAB3CE18
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E0FB3CE64
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:51:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usOhw-0006S0-VY; Sat, 30 Aug 2025 12:45:41 -0400
+	id 1usOfw-00016j-59; Sat, 30 Aug 2025 12:43:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1url1D-0000U6-Dn
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:22:55 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1url7I-0001Xr-AE
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:29:12 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1url18-00013R-HK
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:22:55 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3c7ba0f6983so914132f8f.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 15:22:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1url79-0002fE-K9
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:29:08 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-771e987b4e6so1191407b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 15:28:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756419767; x=1757024567; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
+ d=linaro.org; s=google; t=1756420130; x=1757024930; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=mNQRzSAzy6KyWZYfTJ0AVWqmvWU67KGsSIif9jZcJ9k=;
- b=CinL5wQdiQBJVHT0c0FlRrfHAnIS+2Qs9dT7tC10QpmieDRNakMLqLhkOfz7DlOHHT
- IlzLth2cg9flarWVhfVjikuxsR1a5ftDERAhYsDRg3XA5sRtRAfY0MWHINVJK4xq0nTh
- OaL7QcItCRxHxPh/+jtf5RccfynjPs/9LVeUhF9gW6/hhemPpiqCuKh7FoUpXftMekI5
- PsVHPvkndHG4yE5RIgYSjmeCj78W6ZXbrlnzqW/i29v119PzWeK5IodrC0FQ+cQbQ8KR
- hHaf7VdervOS26wU18bG9ugRiJNZqmt3K/epHZP+8xNdN7Lec+WvawvutNPE7ZufSg6m
- 5EFw==
+ bh=NEO214mYjsiaIagF7XRj11rivGelrTcbqrCQ3eJf0gM=;
+ b=pNL/RQdRxv9ycAcnzy94GpaedpnGPc4JVZWohU7arkUO/9ops2gct3DfddyakoRTRQ
+ 9baRLGJ68CPVkfLa03vQnPmGS22xwcIfxbERP4PCyAUTcAESZRf/HDa/FWaLr6lo6b9h
+ rMN5xcpB3WUHaC7q9OK/k1zTb3eWHHIrv4PkbN4klxH5dQq7s9jT2LmSOUXcoczDAzSb
+ lnRrvITGgl2u8//QI0d0MzmOhB9MVtOJHeb+7OHgq7z2hL3/Ruf/+3Lob3hrrT2pswjl
+ wa8JjRJsPnnJnmu0UffG5O+mPW06u7vPTN1M7obImFLsQpON6nOzP5LHgqdlsxOfvuXd
+ DOwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756419767; x=1757024567;
- h=content-transfer-encoding:in-reply-to:from:content-language
+ d=1e100.net; s=20230601; t=1756420130; x=1757024930;
+ h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mNQRzSAzy6KyWZYfTJ0AVWqmvWU67KGsSIif9jZcJ9k=;
- b=JaAypurE9364uc47Uhw3qJv3BWP7IbSJnaSS7yGFp/RhVBAqB5Dkcq5bGzNbJuct7o
- hLxxFHSHIa8eKUfKAlDuw0MwS0faP27k0UFL1LX4iQa8o5w17vXdEVvJIAIPXy7RCjSu
- zgnZd+7tmos9Lk/aohVcw0uHNm+quDBkpxcsYGMfZ1kqFD8/+HWpAOZo9r8a+0rLv/rm
- A3NdDePPtNmqVOT7bd93xi2faeDWPH2HF6Z/+vVPMZf0ZiqQvd/eSJ2+iZsp5dG/uKun
- ldddgkCtfNyg/OZxdgIRLbSqqKW8Q6riyxXji3sO4bt/PdBwrNQSI/v8fNe/KT1FEji9
- s2Tw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUC29w+Eu14vAcUWaWylD4Q0s5WVhWIBZXN3ExTk0xPlxyPOePj3MU3gVZDqOzsYT2oEyN3k/FKRDuI@nongnu.org
-X-Gm-Message-State: AOJu0Yz4k2IeVqREqau4lMHmwnmRmjj0dFWOP485ClGe1L1v499Z607W
- +aiPfDgum4A9OXUqBxV6dBBFQ9gV2UA2e56sZbjaKCdiQwaqDN2AN5ETTCqRHrsaRXs=
-X-Gm-Gg: ASbGncvdW4oWAMP3/gbLYLpC/TSyysgqjYpHyne5Mix93OuJpxs11HtnbUIVykISWaF
- kRtDsfvOS+SjVjNQjiLn5q0LBcTRMWD59KUO26BwW3P+XhNButwV5jW99LXqKFb9B8Ixuw/wBKY
- rpt1z32EW4ETSzPcke3gingX44mNBx8gQwBatn0Zi5uy5bGhkIEmC5cJXuKBZHgeU5ZFyPZy6b0
- CAn4jH6VTzHh4dSWW/fyM0eyCzmOXIO5JVN8JNvK1C9rQq8gXXFXCJFmEs4UxCyvsSg4TU218yf
- wD48gHP3v1oZ5robeIS1KZN2ytuHVoyW3zXeCvw9bu/DZArhNNiXkCTRzqdbhsN8tzMxRNz65qU
- qJikQdC4pLUtto3/4DR4NgXvPY/XG6GFrVVbts3qOJ3GvCKi16VQk48+SUGaa1HaANQ==
-X-Google-Smtp-Source: AGHT+IEmvQ6v4+OqIhe7+M0xUh5l0EQtWrbLQrwa4BM1RyiwlGGaZu36YO0k5fbUFIFjx1l9JyHqBA==
-X-Received: by 2002:a05:6000:24c6:b0:3b9:14f2:7edf with SMTP id
- ffacd0b85a97d-3cbb15c9fd1mr6976120f8f.1.1756419766703; 
- Thu, 28 Aug 2025 15:22:46 -0700 (PDT)
-Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf34491a65sm792450f8f.56.2025.08.28.15.22.44
+ bh=NEO214mYjsiaIagF7XRj11rivGelrTcbqrCQ3eJf0gM=;
+ b=NwEJVIXfikq/z+ArQ1HHvSN2OsSrRvrk5sTu2O01coJL2u+6OjC912Mu6wahz5HGeh
+ 2k+G+ghJTcwgjCAL2UASOF+py6KG1/OFGY4Gn2H/yYXyq/AuLRUS9Egp3I6zDwubGTt5
+ DzDKbaS3XmSfaVaUWKHUZbwnBK+FPKKYTeSDMDc6T0DyDNWtqPC9rKdOakJe32hmJWRk
+ FE70AdqlIw8O1hJosf0uF8mmynNAHs66b+oQ4lvTHtVy8BHipu6DJb6uK97v9LrVOdYA
+ OpbBlc+pwhAjaP8n/vXcC3zz5+U/noew/oFXh0wHwWAZvW9c/S2XJUiSNwPd5giiqWFl
+ /bcw==
+X-Gm-Message-State: AOJu0Yw0qp+mk2J7TqPREg0hLlOFy01OoA5cWB5tN0F31dOD9Ld/oVFB
+ xTFlGsP7s7ROSKoYD47BDwbNhqAmW6S9qtM0tQosxjZwVZZhPh96njQzKYK74ZpM1QzgMidzlKU
+ VSHw6JRI=
+X-Gm-Gg: ASbGncshFEoX2FUjAbQbg8Y59tvDxw7yacKpevtgFku4p8Vm1Mletujvtz+KWvGURuH
+ D9ovkd3gcdR/gKx4K+SeurDyK9UPEYtIOaDmW1TPV0jCe/Q9eLs9pNrzPsgrrrc4MkJIKuY99TU
+ 84oNhmBRxtYVvm0eOLHPWG4wLnGY/OY3ke4Xk+YitBYqSrvaJBin03iUN+3lBr9v15mb3vt3It2
+ e47QttdQZcYOjz0OxNchSyciTd4aP1ThzemfKJUhi8XNPXUbNCKxpzUlRYaCy6gSHCCeC5ZpJkS
+ bDC+NSJxgnzBFtZcYofbIOrxB3EeFOGO8WqboQkx+QwDhDjAK00WjfABhLqpijjoiaRV5nvamFe
+ Yqc9DKrma4v2ZnOdcn3ggD7Q++clPPvXxfw9W
+X-Google-Smtp-Source: AGHT+IFv3bIhbSIInNNUim/Y9PmYzQTaCxONQ7Rm8pecyboFeualwmVRz8c3tg0kGEiXrrP+TfY2IQ==
+X-Received: by 2002:a05:6a20:258c:b0:243:a27e:5995 with SMTP id
+ adf61e73a8af0-243a27e5bfcmr10028329637.32.1756420130411; 
+ Thu, 28 Aug 2025 15:28:50 -0700 (PDT)
+Received: from [192.168.0.195] ([144.6.121.55])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b4cd347e359sm403185a12.48.2025.08.28.15.28.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Aug 2025 15:22:45 -0700 (PDT)
-Message-ID: <f5aeb950-47b6-47e2-8b6d-cdd01004f1f6@linaro.org>
-Date: Fri, 29 Aug 2025 00:22:44 +0200
+ Thu, 28 Aug 2025 15:28:49 -0700 (PDT)
+Message-ID: <e5ff8c1a-4f6e-42f3-9ff5-38dcee98cefd@linaro.org>
+Date: Fri, 29 Aug 2025 08:28:43 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 36/47] hw/misc/xlnx-versal-crl: add the versal2 version
-To: Luc Michel <luc.michel@amd.com>, qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
- Alistair Francis <alistair@alistair23.me>,
- Frederic Konrad <frederic.konrad@amd.com>,
- Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-References: <20250822151614.187856-1-luc.michel@amd.com>
- <20250822151614.187856-37-luc.michel@amd.com>
+Subject: Re: [PATCH v3 38/87] linux-user/arm: Expand target_elf_gregset_t
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20250828120836.195358-1-richard.henderson@linaro.org>
+ <20250828120836.195358-39-richard.henderson@linaro.org>
+ <CAFEAcA_a-G1hgeefCxdZQMxcGv4=-23fRMM8TifPTuBCJcbKVw@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250822151614.187856-37-luc.michel@amd.com>
+In-Reply-To: <CAFEAcA_a-G1hgeefCxdZQMxcGv4=-23fRMM8TifPTuBCJcbKVw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,71 +102,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/8/25 17:16, Luc Michel wrote:
-> Add the versal2 version of the CRL device. For the implemented part, it
-> is similar to the versal version but drives reset line of more devices.
+On 8/29/25 00:47, Peter Maydell wrote:
+> On Thu, 28 Aug 2025 at 13:10, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> Make use of the fact that target_elf_gregset_t is a proper structure.
+>> Drop ELF_NREG, target_elf_greg_t, and tswapreg.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   linux-user/arm/target_elf.h | 11 +++++++----
+>>   linux-user/arm/elfload.c    |  8 +++-----
+>>   2 files changed, 10 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/linux-user/arm/target_elf.h b/linux-user/arm/target_elf.h
+>> index 94db3738e8..fa8f8af2f3 100644
+>> --- a/linux-user/arm/target_elf.h
+>> +++ b/linux-user/arm/target_elf.h
+>> @@ -8,16 +8,19 @@
+>>   #ifndef ARM_TARGET_ELF_H
+>>   #define ARM_TARGET_ELF_H
+>>
+>> +#include "target_ptrace.h"
+>> +
+>>   #define HAVE_ELF_HWCAP          1
+>>   #define HAVE_ELF_HWCAP2         1
+>>   #define HAVE_ELF_PLATFORM       1
+>>   #define HAVE_ELF_CORE_DUMP      1
+>>
+>> -typedef abi_ulong target_elf_greg_t;
+>> -
+>> -#define ELF_NREG                18
+>> +/*
+>> + * See linux kernel: arch/arm/include/asm/elf.h, where
+>> + * elf_gregset_t is mapped to struct pt_regs via sizeof.
+>> + */
+>>   typedef struct target_elf_gregset_t {
+>> -    target_elf_greg_t regs[ELF_NREG];
+>> +    struct target_pt_regs pt;
+>>   } target_elf_gregset_t;
+>>
+>>   #endif
+>> diff --git a/linux-user/arm/elfload.c b/linux-user/arm/elfload.c
+>> index 47fe16a1a6..726d3ec25c 100644
+>> --- a/linux-user/arm/elfload.c
+>> +++ b/linux-user/arm/elfload.c
+>> @@ -201,13 +201,11 @@ const char *get_elf_platform(CPUState *cs)
+>>   #undef END
+>>   }
+>>
+>> -#define tswapreg(ptr)   tswapal(ptr)
+>> -
+>>   void elf_core_copy_regs(target_elf_gregset_t *r, const CPUARMState *env)
+>>   {
+>>       for (int i = 0; i < 16; ++i) {
+>> -        r->regs[i] = tswapreg(env->regs[i]);
+>> +        r->pt.regs[i] = tswapal(env->regs[i]);
+>>       }
+>> -    r->regs[16] = tswapreg(cpsr_read((CPUARMState *)env));
+>> -    r->regs[17] = tswapreg(env->regs[0]); /* XXX */
+>> +    r->pt.cpsr = tswapal(cpsr_read((CPUARMState *)env));
+>> +    r->pt.orig_r0 = tswapal(env->regs[0]);
 > 
-> Signed-off-by: Luc Michel <luc.michel@amd.com>
-> Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
-> ---
->   include/hw/arm/xlnx-versal-version.h |   1 +
->   include/hw/misc/xlnx-versal-crl.h    | 329 ++++++++++++++++++++++
->   hw/misc/xlnx-versal-crl.c            | 392 +++++++++++++++++++++++++++
->   3 files changed, 722 insertions(+)
+> Why is it OK to drop the "XXX" comment here ?
+
+I assumed XXX meant "what is this", and the answer is orig_r0.
+I'm not even sure the value is wrong as-is, due to the way we process syscalls.
 
 
-> +static DeviceState **versal2_decode_periph_rst(XlnxVersalCRLBase *s,
-> +                                               hwaddr addr, size_t *count)
-> +{
-> +    size_t idx;
-> +    XlnxVersal2CRL *xvc = XLNX_VERSAL2_CRL(s);
-> +
-> +    *count = 1;
-> +
-> +    switch (addr) {
-> +    case A_VERSAL2_RST_RPU_A ... A_VERSAL2_RST_RPU_E:
-> +        idx = (addr - A_VERSAL2_RST_RPU_A) / sizeof(uint32_t);
-> +        idx *= 2; /* two RPUs per RST_RPU_x registers */
-> +        return xvc->cfg.rpu + idx;
-> +
-> +    case A_VERSAL2_RST_ADMA:
-> +        /* A single register fans out to all DMA reset inputs */
-> +        *count = ARRAY_SIZE(xvc->cfg.adma);
-> +        return xvc->cfg.adma;
-> +
-> +    case A_VERSAL2_RST_SDMA:
-> +        *count = ARRAY_SIZE(xvc->cfg.sdma);
-> +        return xvc->cfg.sdma;
-> +
-> +    case A_VERSAL2_RST_UART0 ... A_VERSAL2_RST_UART1:
-> +        idx = (addr - A_VERSAL2_RST_UART0) / sizeof(uint32_t);
-> +        return xvc->cfg.uart + idx;
-> +
-> +    case A_VERSAL2_RST_GEM0 ... A_VERSAL2_RST_GEM1:
-> +        idx = (addr - A_VERSAL2_RST_GEM0) / sizeof(uint32_t);
-> +        return xvc->cfg.gem + idx;
-> +
-> +    case A_VERSAL2_RST_USB0 ... A_VERSAL2_RST_USB1:
-> +        idx = (addr - A_VERSAL2_RST_USB0) / sizeof(uint32_t);
-> +        return xvc->cfg.usb + idx;
-> +
-> +    case A_VERSAL2_RST_CAN0 ... A_VERSAL2_RST_CAN3:
-> +        idx = (addr - A_VERSAL2_RST_CAN0) / sizeof(uint32_t);
-> +        return xvc->cfg.can + idx;
-> +
-> +    default:
-> +        /* invalid or unimplemented */
- > +        return NULL;
-
-Can that happen?
-
-Note count=1 when returning. Should we set to 0?
-
-> +    }
-> +}
-
-Otherwise,
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+r~
 
