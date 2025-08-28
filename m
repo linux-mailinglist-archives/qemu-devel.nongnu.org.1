@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F44B3A7BF
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD65B3A85E
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:39:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgIL-0006v8-5h; Thu, 28 Aug 2025 13:20:17 -0400
+	id 1urgIO-00072Y-E7; Thu, 28 Aug 2025 13:20:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urbas-0006hj-GF
+ id 1urbat-0006kC-6s
  for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:19:09 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urbaq-0000oq-7X
+ id 1urbar-0000pA-Gw
  for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:19:06 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-7720c7cbcabso641698b3a.3
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:19:03 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-24622df0d95so6564965ad.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:19:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756383542; x=1756988342; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756383544; x=1756988344; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8WjM1vxXQ4hTMsgbOuNurVqo634njinTp8OegjizR4w=;
- b=EQY0nfI1EmoGhbMEOk7NfexAluoSLDtXAdA95YU5VJrk9WF3bhaZkqWXkY0zsFxtYN
- 2N781zAL6zdKb8buVjjgbUP3FJ/ohLxjcfEHcntht9d5m5HogA2SkMHP6f3cHutixcB6
- vQK9+1wNeYSnbT4DiCeIGlNI6yE1Opn0VrsrTu7vMa+2N2cDBSag36+XygsMQSlxNz5V
- AyHPqSwmXYXO0xy/LXfk6DEmDV5eQHIUic54r3t9UVjrSP/s8ch5eYjmf9MBEIU92Tlr
- Nz6Z/XurAg5bJi9LmvMEGLGI/e0DIXw1VnIiQT6eptXb8/7lnjNKf039bLXmSIyEJCvV
- KcCA==
+ bh=BoVMQWkfhaQ7L6Kax3GY1GgkjInKIWLCkTwFOcDdNSI=;
+ b=IVLtatyMrFDoMi+Da/R4v++B/+sOST3sfDJB9+N6QVyTR9sP5ObIiEdoysxGnY1E52
+ xGCILf4eVXq75qcbjBcTM5w/awp3W2FawNlUiir2xDJGQWm/FGEukm25jq7OJGjTPUj0
+ qAE430J2L3d0KwkGo1MPWJ3E86egH2Hd/at+GTPLHdgEuqT2UYnB6MBKMTDybUud7aU6
+ V0SdoIRxKWXVfyjZS1wMeqEfF5DQRJxKzzfB17widSeJ1xHaU+tb/5V83djus8DnqF+2
+ Gv7hZ2g3JOP2Oen/77kvmhm53NPeDc2/e5Be3Kq+nG1iia1G/Kl34v48j6If6T1EPGYc
+ E4zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756383542; x=1756988342;
+ d=1e100.net; s=20230601; t=1756383544; x=1756988344;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8WjM1vxXQ4hTMsgbOuNurVqo634njinTp8OegjizR4w=;
- b=pfOjUFTZFqDBYVjx9kvsuESSRhYA5C6XBagYbObhY7BMwhKxC7O1WWX6VgCF91CYZ4
- mx+1hXy8QknR7nxkkTtpuetpT4oanMv2+Dq05gZsulaAAEX9OBw7IkPKqrNu0Z7kb9hR
- Y4zFDSmycFQ3ZdhpZ6FbAvntJQYB8N2hfxICmVkt4K0FGhP0GGgIL+/Cie+Av7/avemh
- C/Mn+SkhpoMSXzg9xMIgp4uux+E+MoTEcZBwOloMPO5720cd57YzVengTErBAbUDflG+
- bBEGW896hSpVuyg0ymQ76GUQ6Z+XOn2TuptcFDl5JYd0+fz7LTis0RA7A8nVXYzEhJBs
- B8mg==
-X-Gm-Message-State: AOJu0YyaZCRYVv76+y0gbrwIgtO+PhQamFjHAz0+Ghsd/NY1G5FLhdT3
- C9Y4Vcgbp7a0s8Y2UF37n0z6BTWncnQafRJuUWDPa+5hjR9FNpDWMvqqRPwZLSJjwQel/TvQvsH
- JR6h4Ibs=
-X-Gm-Gg: ASbGnct+lAQ/EHjzGI8iagsDuNEQsCkkcNp8UkwYiwaH7D34AaX/JNrYpmJLYSIeBRu
- FDGMe9HrQusm9TVnAwTyIawrDDMiAzONp3tJqV5OuLAtxp7TzaN8Domlwm44HhfrUXGd/CCWSYo
- RK9AOEAygwKF9WkDfa2dbZEzuGapQjk1WaFyve7DW5EXeQc4TAi28QF0Nj95JIWI6ODoN8lRLXq
- 4Wp/YxBDVoUQ8Iauzb83WodvRz/RmgYrl3P+fGM57z2/kn4KV1KGPWY+DRoRWE3zj4sGPfrjQNj
- zdYyT9XLXjmB6qMMU3HCe49DEipsUltsX1o3FY8LvMx/5SvqovzDuBy8ywYk6sVOO4OWOtJ3e8u
- jJp1cPPDa7nSXj+ZYiquNYJEl7pZ5cdO2spJm
-X-Google-Smtp-Source: AGHT+IGi3KS5OKPIC7SbPuHNqhAHqzheEs3zHfNBhBd9v3mUOFl2H+dqWv3Bsmk03GgLl+iu5nuNSg==
-X-Received: by 2002:a17:903:94e:b0:246:ae6e:e5db with SMTP id
- d9443c01a7336-246ae6ee847mr220964005ad.42.1756383541654; 
- Thu, 28 Aug 2025 05:19:01 -0700 (PDT)
+ bh=BoVMQWkfhaQ7L6Kax3GY1GgkjInKIWLCkTwFOcDdNSI=;
+ b=rOjLsbAt7efDXXTZWv8xyEXN9w73QUJmUmwLysFM8lcs6pE5DpewjtUdtMI/3yWWLA
+ QM3BB5eJQ032OXMjNaHFGSw4D5ub689xnNcgjapOoxHj6xPAwMZJiicabQ/RM72+4015
+ cTqoLgA6VVAZvEC3aizTQd6WAr0IqADVrLjgd5LIzErZRzNeZMvgxBwSeE8tPSdqNwmj
+ 4Wdi/+MmQH8tEQ1iDDsmRZLzYFil/LXtFgbHgqLJ4dhwGMDAeqSQ67Zhbw8QsjMKmBUt
+ rovidq01KPWcZ/JppXL2+d5NrgdQ9b5cQGrrVm/gKUghlaR/mBDAvI0+WLCU7G2hPWC9
+ fHUw==
+X-Gm-Message-State: AOJu0Yyadl2xNHxync4Xg8cu7+8CN86bQIBIel9e+u8KNrI8y6XD8Mm2
+ RUxPGQ72p3vTP535NdK8QMj1WymslhDeCNumKEk+pGpr8jLNSE4PXUEP5Z2kKh0vVq9KKBaRphM
+ HRPWZVf4=
+X-Gm-Gg: ASbGncsFosEUENd13TQ1UwF7peeLARz0pct6zq3TqqUkfe5yHLt8Auj5f+E1+FGMzX6
+ VDJYqVQFPE6g0uO9P5Boq7RlGDYDbNiV8EKd8Lu8RV7GKReyEdrLNw6MauAHVMKpdqx/sGmQnWl
+ 35pXqAnnDxiSWZul5d5Q+KZnm87nemHpJC55+yzHdV6ewPPb4Ob3hHuZrg/mhdNRKMPaI4VriHD
+ ljm74w2pFk2JQCiENWnZ0OtWQHcxk/m22z4kjJsmghrShp1hpZbeWlQEfbFksJd6f7FjjnLTY3m
+ fSG+8IuF+SnPIMsqKLiK1UM3LATosq+M3gm4MoqNef3gfiyYO2pbmCGNcEWso5z07SSFBe4i/uM
+ eNxJZRlLbMSlEPjlbiRO2gv4ySgUiEuuyEvBV
+X-Google-Smtp-Source: AGHT+IGpSfQR6cNz0bGNy3Qe1mdFU6ZPIL+Qw/uyuJR5DSjeSQWFXm8z1NoUQYn16AI53Z43mCGZjw==
+X-Received: by 2002:a17:902:e788:b0:246:80ef:87fc with SMTP id
+ d9443c01a7336-24680ef8bc7mr251621355ad.45.1756383543941; 
+ Thu, 28 Aug 2025 05:19:03 -0700 (PDT)
 Received: from stoup.. ([144.6.121.55]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-248953dc1f4sm48898735ad.30.2025.08.28.05.18.59
+ d9443c01a7336-248953dc1f4sm48898735ad.30.2025.08.28.05.19.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 05:19:01 -0700 (PDT)
+ Thu, 28 Aug 2025 05:19:03 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH v3 80/87] linux-user: Standardize on ELF_MACHINE not ELF_ARCH
-Date: Thu, 28 Aug 2025 22:08:29 +1000
-Message-ID: <20250828120836.195358-81-richard.henderson@linaro.org>
+Subject: [PATCH v3 81/87] linux-user: Rename elf_check_arch
+Date: Thu, 28 Aug 2025 22:08:30 +1000
+Message-ID: <20250828120836.195358-82-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828120836.195358-1-richard.henderson@linaro.org>
 References: <20250828120836.195358-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,318 +97,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PowerPC was the one outlier that defined both ELF_ARCH and
-ELF_MACHINE; ELF_ARCH was defined incorrectly, necessitating
-the definition of elf_check_arch.
-
-However, the elf file header field in question is called
-e_machine, so ELF_MACHINE is in fact the better name.
-
-Mechanically change most target/target_elf.h files,
-then adjust ppc/target_elf.h manually.
-
-Do not provide a default for ELF_MACHINE.
+Rename to elf_check_machine to match ELF_MACHINE.
+Remove the unnecessary definition for loongarch64.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/aarch64/target_elf.h     | 2 +-
- linux-user/alpha/target_elf.h       | 2 +-
- linux-user/arm/target_elf.h         | 2 +-
- linux-user/hexagon/target_elf.h     | 2 +-
- linux-user/hppa/target_elf.h        | 2 +-
  linux-user/i386/target_elf.h        | 2 +-
- linux-user/loongarch64/target_elf.h | 2 +-
- linux-user/m68k/target_elf.h        | 2 +-
+ linux-user/loongarch64/target_elf.h | 1 -
  linux-user/microblaze/target_elf.h  | 2 +-
- linux-user/mips/target_elf.h        | 2 +-
- linux-user/mips64/target_elf.h      | 2 +-
- linux-user/openrisc/target_elf.h    | 2 +-
- linux-user/ppc/target_elf.h         | 2 --
- linux-user/riscv/target_elf.h       | 2 +-
- linux-user/s390x/target_elf.h       | 2 +-
- linux-user/sh4/target_elf.h         | 2 +-
- linux-user/sparc/target_elf.h       | 4 ++--
- linux-user/x86_64/target_elf.h      | 2 +-
- linux-user/xtensa/target_elf.h      | 2 +-
- linux-user/elfload.c                | 6 +-----
- 20 files changed, 20 insertions(+), 26 deletions(-)
+ linux-user/sparc/target_elf.h       | 2 +-
+ linux-user/elfload.c                | 6 +++---
+ 5 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/linux-user/aarch64/target_elf.h b/linux-user/aarch64/target_elf.h
-index 3c9fef9378..9ec51f6237 100644
---- a/linux-user/aarch64/target_elf.h
-+++ b/linux-user/aarch64/target_elf.h
-@@ -10,7 +10,7 @@
- 
- #include "target_ptrace.h"
- 
--#define ELF_ARCH                EM_AARCH64
-+#define ELF_MACHINE             EM_AARCH64
- #define ELF_CLASS               ELFCLASS64
- 
- #define HAVE_ELF_HWCAP          1
-diff --git a/linux-user/alpha/target_elf.h b/linux-user/alpha/target_elf.h
-index f9d6372c9f..864dc6e2e6 100644
---- a/linux-user/alpha/target_elf.h
-+++ b/linux-user/alpha/target_elf.h
-@@ -9,6 +9,6 @@
- #define ALPHA_TARGET_ELF_H
- 
- #define ELF_CLASS               ELFCLASS64
--#define ELF_ARCH                EM_ALPHA
-+#define ELF_MACHINE             EM_ALPHA
- 
- #endif
-diff --git a/linux-user/arm/target_elf.h b/linux-user/arm/target_elf.h
-index d871d6d665..12cdc8e5a7 100644
---- a/linux-user/arm/target_elf.h
-+++ b/linux-user/arm/target_elf.h
-@@ -10,7 +10,7 @@
- 
- #include "target_ptrace.h"
- 
--#define ELF_ARCH                EM_ARM
-+#define ELF_MACHINE             EM_ARM
- #define ELF_CLASS               ELFCLASS32
- #define EXSTACK_DEFAULT         true
- 
-diff --git a/linux-user/hexagon/target_elf.h b/linux-user/hexagon/target_elf.h
-index a9f6d77fc6..f81ae3895a 100644
---- a/linux-user/hexagon/target_elf.h
-+++ b/linux-user/hexagon/target_elf.h
-@@ -19,6 +19,6 @@
- #define HEXAGON_TARGET_ELF_H
- 
- #define ELF_CLASS               ELFCLASS32
--#define ELF_ARCH                EM_HEXAGON
-+#define ELF_MACHINE             EM_HEXAGON
- 
- #endif
-diff --git a/linux-user/hppa/target_elf.h b/linux-user/hppa/target_elf.h
-index 9b6363a0a7..76930c9369 100644
---- a/linux-user/hppa/target_elf.h
-+++ b/linux-user/hppa/target_elf.h
-@@ -9,7 +9,7 @@
- #define HPPA_TARGET_ELF_H
- 
- #define ELF_CLASS               ELFCLASS32
--#define ELF_ARCH                EM_PARISC
-+#define ELF_MACHINE             EM_PARISC
- 
- #define HAVE_ELF_PLATFORM       1
- 
 diff --git a/linux-user/i386/target_elf.h b/linux-user/i386/target_elf.h
-index 99a95ee45b..bb7571f6cb 100644
+index bb7571f6cb..33ce82ab2f 100644
 --- a/linux-user/i386/target_elf.h
 +++ b/linux-user/i386/target_elf.h
-@@ -11,7 +11,7 @@
- #include "target_ptrace.h"
+@@ -31,7 +31,7 @@ typedef struct target_elf_gregset_t {
+ /*
+  * This is used to ensure we don't load something for the wrong architecture.
+  */
+-#define elf_check_arch(x)       ((x) == EM_386 || (x) == EM_486)
++#define elf_check_machine(x)    ((x) == EM_386 || (x) == EM_486)
  
- #define ELF_CLASS               ELFCLASS32
--#define ELF_ARCH                EM_386
-+#define ELF_MACHINE             EM_386
- #define EXSTACK_DEFAULT         true
- #define VDSO_HEADER             "vdso.c.inc"
- 
+ /*
+  * i386 is the only target which supplies AT_SYSINFO for the vdso.
 diff --git a/linux-user/loongarch64/target_elf.h b/linux-user/loongarch64/target_elf.h
-index 47bf51a41c..b988592993 100644
+index b988592993..3aa8c83958 100644
 --- a/linux-user/loongarch64/target_elf.h
 +++ b/linux-user/loongarch64/target_elf.h
-@@ -9,7 +9,7 @@
- #include "target_ptrace.h"
- 
+@@ -11,7 +11,6 @@
  #define ELF_CLASS               ELFCLASS64
--#define ELF_ARCH                EM_LOONGARCH
-+#define ELF_MACHINE             EM_LOONGARCH
+ #define ELF_MACHINE             EM_LOONGARCH
  #define EXSTACK_DEFAULT         true
- #define elf_check_arch(x)       ((x) == EM_LOONGARCH)
+-#define elf_check_arch(x)       ((x) == EM_LOONGARCH)
  #define VDSO_HEADER             "vdso.c.inc"
-diff --git a/linux-user/m68k/target_elf.h b/linux-user/m68k/target_elf.h
-index 073c85becc..b997fa0b6d 100644
---- a/linux-user/m68k/target_elf.h
-+++ b/linux-user/m68k/target_elf.h
-@@ -9,7 +9,7 @@
- #define M68K_TARGET_ELF_H
  
- #define ELF_CLASS               ELFCLASS32
--#define ELF_ARCH                EM_68K
-+#define ELF_MACHINE             EM_68K
- 
- #define HAVE_ELF_CORE_DUMP      1
- 
+ #define HAVE_ELF_HWCAP          1
 diff --git a/linux-user/microblaze/target_elf.h b/linux-user/microblaze/target_elf.h
-index a622cd8e43..1ec91ea5a9 100644
+index 1ec91ea5a9..7b3ef70d23 100644
 --- a/linux-user/microblaze/target_elf.h
 +++ b/linux-user/microblaze/target_elf.h
-@@ -11,7 +11,7 @@
- #include "target_ptrace.h"
- 
+@@ -13,7 +13,7 @@
  #define ELF_CLASS               ELFCLASS32
--#define ELF_ARCH                EM_MICROBLAZE
-+#define ELF_MACHINE             EM_MICROBLAZE
+ #define ELF_MACHINE             EM_MICROBLAZE
  
- #define elf_check_arch(x)   ((x) == EM_MICROBLAZE || (x) == EM_MICROBLAZE_OLD)
- 
-diff --git a/linux-user/mips/target_elf.h b/linux-user/mips/target_elf.h
-index f400bc2fdb..157306f7a0 100644
---- a/linux-user/mips/target_elf.h
-+++ b/linux-user/mips/target_elf.h
-@@ -11,7 +11,7 @@
- #include "target_ptrace.h"
- 
- #define ELF_CLASS               ELFCLASS32
--#define ELF_ARCH                EM_MIPS
-+#define ELF_MACHINE             EM_MIPS
- #define EXSTACK_DEFAULT         true
- 
- #define HAVE_ELF_HWCAP          1
-diff --git a/linux-user/mips64/target_elf.h b/linux-user/mips64/target_elf.h
-index c455985a76..061471a0f1 100644
---- a/linux-user/mips64/target_elf.h
-+++ b/linux-user/mips64/target_elf.h
-@@ -11,7 +11,7 @@
- #include "target_ptrace.h"
- 
- #define ELF_CLASS               ELFCLASS64
--#define ELF_ARCH                EM_MIPS
-+#define ELF_MACHINE             EM_MIPS
- #define EXSTACK_DEFAULT         true
- 
- #ifdef TARGET_ABI_MIPSN32
-diff --git a/linux-user/openrisc/target_elf.h b/linux-user/openrisc/target_elf.h
-index ed9739380f..e8554f5339 100644
---- a/linux-user/openrisc/target_elf.h
-+++ b/linux-user/openrisc/target_elf.h
-@@ -10,7 +10,7 @@
- 
- #include "target_ptrace.h"
- 
--#define ELF_ARCH                EM_OPENRISC
-+#define ELF_MACHINE             EM_OPENRISC
- #define ELF_CLASS               ELFCLASS32
+-#define elf_check_arch(x)   ((x) == EM_MICROBLAZE || (x) == EM_MICROBLAZE_OLD)
++#define elf_check_machine(x) ((x) == EM_MICROBLAZE || (x) == EM_MICROBLAZE_OLD)
  
  #define HAVE_ELF_CORE_DUMP      1
-diff --git a/linux-user/ppc/target_elf.h b/linux-user/ppc/target_elf.h
-index 9a47f18fb8..22854cf52f 100644
---- a/linux-user/ppc/target_elf.h
-+++ b/linux-user/ppc/target_elf.h
-@@ -13,13 +13,11 @@
- #define ELF_MACHINE             PPC_ELF_MACHINE
  
- #ifdef TARGET_PPC64
--# define elf_check_arch(x)      ((x) == EM_PPC64)
- # define ELF_CLASS              ELFCLASS64
- #else
- # define ELF_CLASS              ELFCLASS32
- # define EXSTACK_DEFAULT        true
- #endif
--#define ELF_ARCH                EM_PPC
- 
- #define HAVE_ELF_HWCAP          1
- #define HAVE_ELF_HWCAP2         1
-diff --git a/linux-user/riscv/target_elf.h b/linux-user/riscv/target_elf.h
-index 51b8def1d1..dbbfdf54d3 100644
---- a/linux-user/riscv/target_elf.h
-+++ b/linux-user/riscv/target_elf.h
-@@ -8,7 +8,7 @@
- #ifndef RISCV_TARGET_ELF_H
- #define RISCV_TARGET_ELF_H
- 
--#define ELF_ARCH                EM_RISCV
-+#define ELF_MACHINE             EM_RISCV
- 
- #ifdef TARGET_RISCV32
- #define ELF_CLASS               ELFCLASS32
-diff --git a/linux-user/s390x/target_elf.h b/linux-user/s390x/target_elf.h
-index b23e46ab46..ef5edbd860 100644
---- a/linux-user/s390x/target_elf.h
-+++ b/linux-user/s390x/target_elf.h
-@@ -11,7 +11,7 @@
- #include "target_ptrace.h"
- 
- #define ELF_CLASS               ELFCLASS64
--#define ELF_ARCH                EM_S390
-+#define ELF_MACHINE             EM_S390
- #define VDSO_HEADER             "vdso.c.inc"
- 
- #define HAVE_ELF_HWCAP          1
-diff --git a/linux-user/sh4/target_elf.h b/linux-user/sh4/target_elf.h
-index 61aea237c4..d9e253d425 100644
---- a/linux-user/sh4/target_elf.h
-+++ b/linux-user/sh4/target_elf.h
-@@ -11,7 +11,7 @@
- #include "target_ptrace.h"
- 
- #define ELF_CLASS               ELFCLASS32
--#define ELF_ARCH                EM_SH
-+#define ELF_MACHINE             EM_SH
- 
- #define HAVE_ELF_HWCAP          1
- #define HAVE_ELF_CORE_DUMP      1
 diff --git a/linux-user/sparc/target_elf.h b/linux-user/sparc/target_elf.h
-index f89c708c46..6b0cac3caf 100644
+index 6b0cac3caf..7827767bcb 100644
 --- a/linux-user/sparc/target_elf.h
 +++ b/linux-user/sparc/target_elf.h
-@@ -10,13 +10,13 @@
- 
- #ifndef TARGET_SPARC64
- # define ELF_CLASS              ELFCLASS32
--# define ELF_ARCH               EM_SPARC
-+# define ELF_MACHINE            EM_SPARC
+@@ -13,7 +13,7 @@
+ # define ELF_MACHINE            EM_SPARC
  #elif defined(TARGET_ABI32)
  # define ELF_CLASS              ELFCLASS32
- # define elf_check_arch(x)      ((x) == EM_SPARC32PLUS || (x) == EM_SPARC)
+-# define elf_check_arch(x)      ((x) == EM_SPARC32PLUS || (x) == EM_SPARC)
++# define elf_check_machine(x)   ((x) == EM_SPARC32PLUS || (x) == EM_SPARC)
  #else
  # define ELF_CLASS              ELFCLASS64
--# define ELF_ARCH               EM_SPARCV9
-+# define ELF_MACHINE            EM_SPARCV9
- #endif
- 
- #define HAVE_ELF_HWCAP          1
-diff --git a/linux-user/x86_64/target_elf.h b/linux-user/x86_64/target_elf.h
-index f3c09bb8da..840bddf5ec 100644
---- a/linux-user/x86_64/target_elf.h
-+++ b/linux-user/x86_64/target_elf.h
-@@ -11,7 +11,7 @@
- #include "target_ptrace.h"
- 
- #define ELF_CLASS               ELFCLASS64
--#define ELF_ARCH                EM_X86_64
-+#define ELF_MACHINE             EM_X86_64
- #define VDSO_HEADER             "vdso.c.inc"
- 
- #define HAVE_ELF_HWCAP          1
-diff --git a/linux-user/xtensa/target_elf.h b/linux-user/xtensa/target_elf.h
-index 0689e79be5..1bf8f2a14a 100644
---- a/linux-user/xtensa/target_elf.h
-+++ b/linux-user/xtensa/target_elf.h
-@@ -11,7 +11,7 @@
- #include "target_ptrace.h"
- 
- #define ELF_CLASS               ELFCLASS32
--#define ELF_ARCH                EM_XTENSA
-+#define ELF_MACHINE             EM_XTENSA
- 
- #define HAVE_ELF_CORE_DUMP      1
- 
+ # define ELF_MACHINE            EM_SPARCV9
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 33c4214c95..c481759710 100644
+index c481759710..aa0eed6dea 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -130,12 +130,8 @@ typedef abi_uint        target_gid_t;
+@@ -130,8 +130,8 @@ typedef abi_uint        target_gid_t;
  #endif
  typedef abi_int         target_pid_t;
  
--#ifndef ELF_MACHINE
--#define ELF_MACHINE ELF_ARCH
--#endif
--
- #ifndef elf_check_arch
--#define elf_check_arch(x) ((x) == ELF_ARCH)
-+#define elf_check_arch(x) ((x) == ELF_MACHINE)
+-#ifndef elf_check_arch
+-#define elf_check_arch(x) ((x) == ELF_MACHINE)
++#ifndef elf_check_machine
++#define elf_check_machine(x) ((x) == ELF_MACHINE)
  #endif
  
  #ifndef elf_check_abi
+@@ -346,7 +346,7 @@ static bool elf_check_ident(struct elfhdr *ehdr)
+    This has to wait until after bswapping the header.  */
+ static bool elf_check_ehdr(struct elfhdr *ehdr)
+ {
+-    return (elf_check_arch(ehdr->e_machine)
++    return (elf_check_machine(ehdr->e_machine)
+             && elf_check_abi(ehdr->e_flags)
+             && ehdr->e_ehsize == sizeof(struct elfhdr)
+             && ehdr->e_phentsize == sizeof(struct elf_phdr)
 -- 
 2.43.0
 
