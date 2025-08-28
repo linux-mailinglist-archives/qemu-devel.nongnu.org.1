@@ -2,73 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B296B3A8C7
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A620B3A81C
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:30:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgDs-0004bU-PB; Thu, 28 Aug 2025 13:15:42 -0400
+	id 1urgEk-0008HI-Tc; Thu, 28 Aug 2025 13:16:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urdvC-00046Z-DC
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:48:14 -0400
-Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1urdvx-0004No-5L
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:49:01 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1urdv4-0001cQ-LE
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:48:13 -0400
-Received: by mail-yb1-xb2a.google.com with SMTP id
- 3f1490d57ef6-e9532a90f71so936148276.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 07:48:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1urdvs-0001hv-IU
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 10:48:59 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-45b4d892175so6650685e9.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 07:48:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756392481; x=1756997281; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=otB5+cRbz+QfFf0Kz+3spcYY0ElDQPoumduLdGLmsQo=;
- b=hHpf6R9tbRYXQJbeOYp6e+He+3Q5CnOine7TAdd8Ml8cQF+Hnmucp0fkr9i1+oFnIV
- WdEndN7uZlkVo2+xHlHucYDGFfs3mm0p6IRtrBxGCJVB02I2IsuRA9wmX2THgtp9qIza
- 5ak1oF8gFqR9hWXMj8dpDamaran774n3aKJVaXhJZx9tUs21M18ojQR94dBMnaJtj13j
- DFjLCgnqSBmgE/Q/ynEaLAddDjfEUd69UkCi3diN3LrRXl9iRtmYS+kAkDUSKuRi3zJU
- pxkNUrcYNektL9tSAdSizuXAJ9sh4cykc8LJOmS6XyqqLbEHim8ASaWkGOgTD/4SpxVG
- /nbA==
+ d=linaro.org; s=google; t=1756392532; x=1756997332; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=20rhRhSoCiq08+MNEHWT6JrwnW53MD1cP6RaKUG734A=;
+ b=gij/tyVJifwGUUE8c+nd6ZAdF02zbFUf9MTzU9hT4+EkVK9Tq7EB3P92TsFDA0caCg
+ TdAkgeNVayRZA+ZLDU4l3cRrLZIPuzceL6fTAH/FMCI9HG48PzTy1R9Ih+B+KEBslihg
+ DhfGtsmqkO9C26Sz6q6sIFxN5lVoVRZxsHw51diu8s1vJ5sy399BDJiZB6h0ldY7fe1D
+ 0uAAC+sDlrnc5C8umTrqk5VwZECP0aA+PHhq80esskcUpQKWoU5FnQ8ONICpid192VSo
+ b1yQBjrGwsDE/wI+Vfhdri2Pve9zBGDg78SBPJLcMBfnC6x7leyYKanaRVK6wbMRMnwI
+ l10g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756392481; x=1756997281;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=otB5+cRbz+QfFf0Kz+3spcYY0ElDQPoumduLdGLmsQo=;
- b=lN0XpmmiBBcb6Fcy8XQDTolHbBZH2OZ5T2ZwjTcJ1Hbe4G4ivW1feh0WRQ1/qF0MXF
- FiIU5/W3gSPgwK2ystN7WVKtz8gJgY9+l0jhY0YR7uCg7ZkNXIcj5+BP50sF4uFt2//P
- 0JYLKtujrN7SCCFgdDOyZpXdq2JjbzeNEezRyK32ZAuzHFRTewsJgvKGUbzPVfk0AOWR
- X0KF4hv17/JuiI9fnts9EPVzB1xkhxJt5EkF7UCei1xZ21LmvVCcTidPtzrSTP3D2YYe
- mvZtPjAYXg3Eqq9dkvIdMHl4QTe2TQ7OS7V0nNyBylwClnFswXwzvq0zG9YW0PjtYLtO
- nqyQ==
-X-Gm-Message-State: AOJu0Yww0YqC5K8W8EPe3u9YfpLvmDq9dNeeTRGj5PMPOgNyfjm60XIB
- fcL33KlImC066uL/+w2yidExjnFTjueZ9t7lFsY7MKPMLQcgh0a3rxNx7AJGI3azW/4B9Yw+OUg
- cZYLCFOjCS6fL1EKlOxJ5tFhEJVpEHoXLxZ8Ylmktiw==
-X-Gm-Gg: ASbGncu/84p5WMO9d3rXBLDSTR480G3PBn4UyGAcxypATr9kCcSAtX7+dDKl+WgEGl+
- BMpqRkC0WgS01bFM/UKSyASKY6gW1BN3Y0fuo9uQ0rUUl3Uhh9coGoytrunbNtkklB+MPzSlAo2
- x+cIAuD6G50flF2urhz+bd7Ow3ZPubeOBIcLJ6LTuHhg8WeFJOBg+sXFWrYqkqMDe5EMxjhyfVr
- XaMKFuD
-X-Google-Smtp-Source: AGHT+IGoLWGo8TK0PMBaVNuCYJmnNVyEVY4zaFtMjqYUw3TAJMp/whtxYTkIDNu8xjs6OcwscRYx4mQ750QwZp4MVTw=
-X-Received: by 2002:a05:690c:620b:b0:721:21ea:844f with SMTP id
- 00721157ae682-72121ea849cmr148175517b3.31.1756392481226; Thu, 28 Aug 2025
- 07:48:01 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1756392532; x=1756997332;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=20rhRhSoCiq08+MNEHWT6JrwnW53MD1cP6RaKUG734A=;
+ b=UBGQeylvmwkRDRKFtFybbEP9MiFJdNgN4PUaj+2iSyLeNSvliUS1h86rw6ZM11PJUO
+ d5f+leKuCTpcvJi4qgq90lDOWxdeI7uCFxj7NERAHw5DNq2UN2ilcurykhE/l3Iln7st
+ V4ht2XkjeA9dKLpUd/SBMzb5aVuJMgq0ME2WY7ynBmshi597zEwVjJ2Ka5A6hKzSy/62
+ v/kPM9QKzBMi6r1eUGbo1zeDfHH3qapMFcXefwGC1jj4KI8mCC1aEvrZ8GMSXNG/sy8B
+ 0PlOMYeNdaT25Up/VHYJO9jwcuBUCpiHfbPRYl6cjGwZpjaQlAc9ar9/X5vEkL3Z/Mwk
+ kN3Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUtZPXHfTRK9xlQ+rLq/qY2FRzJbCdw+0c1yJkBsXSOFi0aSEV4sAccaC/etFKoFwRO17RmiaS9fC6k@nongnu.org
+X-Gm-Message-State: AOJu0Ywser8wHWAa56UEAC1NOiZNBn0s5acbpugFOwFPBBvdwOT/UYEw
+ YLhS5d1iSLqcXixx/tm+SMTkgSaGfxsSWRrBvT0i+k8iGZQrJS3GwDjy/+TU9zppzCI=
+X-Gm-Gg: ASbGncuBA2Ega797G4ANRyERgJ00pUBzxlajx0WSWqil/kIg/KL9yn3CRTn3o2Aq357
+ nVz0b1hYrLQJAyxl7onVHvMgXTBiopS0xvriEGv+4BQATZKGXWNrid2OHhjXnNJEilDqGb9YQju
+ XFCHL2ezXVFqSPCJr59yAzEvVDuGz3CIELCQrerwHlWT15R4xcVb6mkzYk8HO3I8B0S8DEuzk19
+ oJ1c9MuYVMIn5dcgmG+g9k9+9Sa4oNkSZnmvSWXumjr24XjRbGy8PQllJ8M7h9MIeS6k1eNT+C+
+ uz8AkI7Erit3py/tNjOdCEGbpPgAiVi1Uezg1qGNUn4zggZMkejZgGkkSMhHcXA3aFe1sZclJWF
+ dQ6hGGJAZMe8lZjqN3CFM37rVlK8hN2qvJLUITJoGlZECSv78DqlDYpdebyp+ET/qjGqKf7K97N
+ 6lzx/ZRNbvmSw9cK+YWBo1aFqilMIeQDewuP81PSbNvppuOsKHZONQpPX9+NfWi5ZMSdUPS9om0
+ 6Iu
+X-Google-Smtp-Source: AGHT+IE8pe3cBB23s7tvDc2YMVQTUYgPcgRXpRtS3nilMPGrpwaJPJmJvTp4kImNXK3QpuAf56lkYA==
+X-Received: by 2002:a05:6000:1acf:b0:3c8:c89d:6b5b with SMTP id
+ ffacd0b85a97d-3c8c89d6f7dmr12451511f8f.48.1756392532177; 
+ Thu, 28 Aug 2025 07:48:52 -0700 (PDT)
+Received: from ?IPV6:2a01:cb09:d021:8fd6:94b3:f1b:6ece:2fef?
+ (2a01cb09d0218fd694b30f1b6ece2fef.ipv6.abo.wanadoo.fr.
+ [2a01:cb09:d021:8fd6:94b3:f1b:6ece:2fef])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b797d1a67sm40618515e9.15.2025.08.28.07.48.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 28 Aug 2025 07:48:51 -0700 (PDT)
+Message-ID: <76ee9b6c-1bbd-4a77-8b00-bdfda7dbf870@linaro.org>
+Date: Thu, 28 Aug 2025 16:48:46 +0200
 MIME-Version: 1.0
-References: <20250828120836.195358-1-richard.henderson@linaro.org>
- <20250828120836.195358-39-richard.henderson@linaro.org>
-In-Reply-To: <20250828120836.195358-39-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 28 Aug 2025 15:47:49 +0100
-X-Gm-Features: Ac12FXyYyDnjUXvdqTDwcb7eSO6mKW1Mm5XCHAJTs1w4h8Ss2be36Qsr0Jayw48
-Message-ID: <CAFEAcA_a-G1hgeefCxdZQMxcGv4=-23fRMM8TifPTuBCJcbKVw@mail.gmail.com>
-Subject: Re: [PATCH v3 38/87] linux-user/arm: Expand target_elf_gregset_t
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2a.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] target/ppc: Add IBM PPE42 family of processors
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Cc: Thomas Huth <thuth@redhat.com>, Glenn Miles <milesg@linux.ibm.com>,
+ qemu-devel@nongnu.org, qemu-ppc@nongnu.org, clg@redhat.com,
+ npiggin@gmail.com, rathc@linux.ibm.com, richard.henderson@linaro.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20250819212856.219932-1-milesg@linux.ibm.com>
+ <20250819212856.219932-2-milesg@linux.ibm.com>
+ <0d2c9aa2-2dcc-4c22-8f33-e5ecac907cf4@linux.ibm.com>
+ <c13f63a6-5fef-42f2-89fe-946f71498f51@redhat.com>
+ <fd855a38-976f-430e-9db1-1bdce1cf869d@linux.ibm.com>
+ <dc6dc7db-f4c3-4641-9707-383737e2b678@redhat.com>
+ <0b6d96c7-b28f-42c0-93db-579d80f0298b@linux.ibm.com>
+ <fd6f2788-b1a8-41af-88b5-9eb2ebdfd9d8@redhat.com>
+ <e946e0f7-cc9f-40fa-bd41-3044510ce261@linux.ibm.com>
+ <cee8e481-8cfa-a86c-bca6-10ac3fbcffb6@eik.bme.hu>
+ <9b0253e4-a906-4be4-ab46-df41bea0f054@linux.ibm.com>
+ <62de0cb3-c4de-fc5a-e770-1bebb4423628@eik.bme.hu>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <62de0cb3-c4de-fc5a-e770-1bebb4423628@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,72 +120,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 28 Aug 2025 at 13:10, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On 2025-08-26 14:12, BALATON Zoltan wrote:
+> On Tue, 26 Aug 2025, Harsh Prateek Bora wrote:
+>> On 8/25/25 20:03, BALATON Zoltan wrote:
+>>> On Mon, 25 Aug 2025, Harsh Prateek Bora wrote:
+>>>> On 8/25/25 17:52, Thomas Huth wrote:
+>>>>> On 25/08/2025 14.08, Harsh Prateek Bora wrote:
+>>>>>> On 8/25/25 17:28, Thomas Huth wrote:
+>>>>>>> As I said, qemu-system-ppc64 is currently a full superset of
+>>>>>>> qemu-system- ppc. The ppc64 binary contains all the 32-bit code, you
+>>>>>>> can perfectly run a "g3beige" or "bamboo" machine with
+>>>>>>> qemu-system-ppc64, too. By disabling the ppe42 code in the ppc64
+>>>>>>> binary, this would now introduce an execption to that unwritten rule,
+>>>>>>> so I'd expect that we'd not rather want to do this now.
+>>>>>>
+>>>>>> My understanding is that above holds true only for default builds which
+>>>>>> builds all targets. We certainly do not build 32 bit ppc code when using
+>>>>>> --configure target-list=ppc64-softmmu. (we have ppc-softmmu for 32 bit
+>>>>>> though)
+>>>
+>>> We do build 32-bit machines in ppc64-softmmu but leave out 64-bit from
+>>> ppc-softmmu so it's only one way.
+>>>
+>>>>> Just give it a try:
+>>>>>
+>>>>>    ./configure --target-list=ppc64-softmmu --disable-docs
+>>>>>    make -j$(nproc)
+>>>>>    ./qemu-system-ppc64 -M g3beige
+>>>>>
+>>>>> ... works perfectly fine for me.
+>>>>>
+>>>> This would work because the respective code is not restricted with #ifndef
+>>>> TARGET_PPC64.
+>>>>
+>>>> However, there are instance like below in hw/ppc/mac_oldworld.c:
+>>>>
+>>>> static void heathrow_class_init(ObjectClass *oc, const void *data)
+>>>> {
+>>>>     MachineClass *mc = MACHINE_CLASS(oc);
+>>>>     FWPathProviderClass *fwc = FW_PATH_PROVIDER_CLASS(oc);
+>>>>
+>>>>     mc->desc = "Heathrow based PowerMac";
+>>>>     mc->init = ppc_heathrow_init;
+>>>>     mc->block_default_type = IF_IDE;
+>>>>     /* SMP is not supported currently */
+>>>>     mc->max_cpus = 1;
+>>>> #ifndef TARGET_PPC64
+>>>>     mc->is_default = true;
+>>>> #endif
+>>>
+>>> This is only because the default machine for ppc64-softmmu is different
+>>> than for ppc-softmmu as the 64-bit machines don't exist in ppc-softmmu but
+>>> ppc64-softmmu had different default machine before machines from
+>>> qemu-system-ppc got included in qemu-system-ppc64 so it kept that. (Looks
+>>> like the default used to be mac_newworld before commit 159f8286b760dea but
+>>> wasn't changed to match but to something else.) The default machines are
+>>> arbitrary, we could make "none" the default and always require users to
+>>> supply -machine but that would break existing command lines so this wasn't
+>>> done.
+>>>
+>>>> Similarly, we have multiple instances with #else block for #ifdef
+>>>> TARGET_PPC64 which doesnt get compiled with ppc64-softmmu, but only with
+>>>> ppc-softmmu meant for 32-bit targets. See target/ppc/excp_helper.c for
+>>>> example.
+>>>
+>>> This is again leaving out 64-bit code from ppc-softmmu but as Thomas says
+>>> 32-bit machines are always included in qemu-softmmu-ppc64. I can't find the
+>>> commit which changed this, previously we had these to be separate and since
+>>> some types are different in ppc64-softmmu it wasn't clear if that could
+>>> cause any problems for 32-bit CPUs and machines so ppc-softmmu was kept
+>>> until that's cleaned up which never happened. There are also some
+>>> pecularities in some machines like mac_newworld that behaves differently in
+>>> qemu-system-ppc and qemu-system-ppc64 and the potentially lower performance
+>>> of qemu-system-ppc64 in emulating 32-bit machines which is why we still
+>>> have ppc-softmmu.
+>>>
+>>
+>> Ok, I see. So, if we wish to keep the 32-bit machines supported with
+>> qemu-system-ppc64, we will have them co-exist with run-time checks for !ppc64
+>> and/or "unlikely" operations in the hot path routines, which wouldnt be
+>> needed otherwise. I hope we can deal with run-time checks for !ppc64 if such
+>> ops increase.
+> 
+> I guess this will only get worse with the single binary that will also add
+> if target == checks and removes some of the optimisations that assumed
+> endianness and word size. It would be good if somebody could do some tests
+> to check performance issues which could be made part of the test suite so
+> we at least notice these changes. I'm not sure what would be a good set of
+> benchmarks, I've used STREAM to check memory access and exceptions/MMU and
+> lame some.waw some.mp3 to check FPU and vector instructions speed before
+> but maybe there are better tools.
+> 
+> I've also tried adding function pointers to CPU class for different
+> exception models to remove the switch from the beginning of excp handling
+> functions that call out to PPC64 specific versions but I found that to be
+> slower than the current switch at least on x86_64 host.
 >
-> Make use of the fact that target_elf_gregset_t is a proper structure.
-> Drop ELF_NREG, target_elf_greg_t, and tswapreg.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  linux-user/arm/target_elf.h | 11 +++++++----
->  linux-user/arm/elfload.c    |  8 +++-----
->  2 files changed, 10 insertions(+), 9 deletions(-)
->
-> diff --git a/linux-user/arm/target_elf.h b/linux-user/arm/target_elf.h
-> index 94db3738e8..fa8f8af2f3 100644
-> --- a/linux-user/arm/target_elf.h
-> +++ b/linux-user/arm/target_elf.h
-> @@ -8,16 +8,19 @@
->  #ifndef ARM_TARGET_ELF_H
->  #define ARM_TARGET_ELF_H
->
-> +#include "target_ptrace.h"
-> +
->  #define HAVE_ELF_HWCAP          1
->  #define HAVE_ELF_HWCAP2         1
->  #define HAVE_ELF_PLATFORM       1
->  #define HAVE_ELF_CORE_DUMP      1
->
-> -typedef abi_ulong target_elf_greg_t;
-> -
-> -#define ELF_NREG                18
-> +/*
-> + * See linux kernel: arch/arm/include/asm/elf.h, where
-> + * elf_gregset_t is mapped to struct pt_regs via sizeof.
-> + */
->  typedef struct target_elf_gregset_t {
-> -    target_elf_greg_t regs[ELF_NREG];
-> +    struct target_pt_regs pt;
->  } target_elf_gregset_t;
->
->  #endif
-> diff --git a/linux-user/arm/elfload.c b/linux-user/arm/elfload.c
-> index 47fe16a1a6..726d3ec25c 100644
-> --- a/linux-user/arm/elfload.c
-> +++ b/linux-user/arm/elfload.c
-> @@ -201,13 +201,11 @@ const char *get_elf_platform(CPUState *cs)
->  #undef END
->  }
->
-> -#define tswapreg(ptr)   tswapal(ptr)
-> -
->  void elf_core_copy_regs(target_elf_gregset_t *r, const CPUARMState *env)
->  {
->      for (int i = 0; i < 16; ++i) {
-> -        r->regs[i] = tswapreg(env->regs[i]);
-> +        r->pt.regs[i] = tswapal(env->regs[i]);
->      }
-> -    r->regs[16] = tswapreg(cpsr_read((CPUARMState *)env));
-> -    r->regs[17] = tswapreg(env->regs[0]); /* XXX */
-> +    r->pt.cpsr = tswapal(cpsr_read((CPUARMState *)env));
-> +    r->pt.orig_r0 = tswapal(env->regs[0]);
 
-Why is it OK to drop the "XXX" comment here ?
+Having performance tests would be a great addition to the QEMU test 
+suite, whether it's for the single binary or any other change.
 
-otherwise
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Concerning the single binary, we have no plan to modify ppc target code 
+for now. As well, most of other architecture already handle 32 vs 64bits 
+and endianness with runtime paths, and it has not been a problem so far.
 
-thanks
--- PMM
+I still think it's better to write proper code and eventually optimize 
+parts identified by proper profiling. But impacting architecture and use 
+preprocessor heavily before any proof that is needed has been found is 
+premature optimization IMHO.
+
+Regards,
+Pierrick
 
