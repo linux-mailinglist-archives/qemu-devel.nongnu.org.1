@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF30B39BD2
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A43B39BB6
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 13:37:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urau7-0003NQ-D4; Thu, 28 Aug 2025 07:34:55 -0400
+	id 1urau3-0003Js-8s; Thu, 28 Aug 2025 07:34:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uratw-0003FH-Gm
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:45 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1uratz-0003Gr-Bg
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:47 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uratt-0005eB-OR
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:43 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-45b618e067eso13387775e9.1
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:41 -0700 (PDT)
+ id 1uratv-0005fN-5Q
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 07:34:45 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-45b49f7aaf5so4645385e9.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 04:34:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756380880; x=1756985680; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756380881; x=1756985681; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=xhFp3A0M7NqYmjAgeESERQoIMPKzgUxo8xQ4836NcD4=;
- b=gyAAsLzbv485uv0C81jzbKs7t2PgQ4tWnmXFly1zw8PrYSePeG0d5PkuvI5B2tnBqd
- Th46gxFvxdkpT4kJiD5nJwROuYZNGLnwAWTfN1IekyfaYOoNdEtdK4coOh+Houmr/TNX
- sLTlKLGXFlzN7m8O5HXLYTQZB/iChlCem1v4lY/a/N0aVjpoiLuCtw+NHjCro9pxU8+L
- owosuKuPlQZA+D2hO405ebx79jfQPHzHl77ylNfW/0ipGptag6BDPpePjMDe+0EsJ72i
- oFRIqnyeEkFpmajDtnRPopp6tg2Q1lBaBVFXh9LyEuGxTzMwx2nSMQ/Ujhn3ThOT/rhW
- 1TdA==
+ :reply-to; bh=M4pBND/JQTcCccX+raHz6psiQqmFDrMciZMnw68mDqI=;
+ b=REl/iDF2jMslMdCKJQ5WMkfd+7ZKztwRD82Y91Z1g8bj1JriTK3HmJQd8jMWyOZ7rB
+ mxjUd1T1CxzZQIkx83zA0igVGVZ410tqLkjZ2ZHvIGBvqYE8H6105TnOEvL2q3Ksu6vm
+ vBdcR9EWzfm9T3TUuKMQHapENYWTB8vVk5uPQ46aXXQ4i0qqORad9vS+eysfmo3Zx48A
+ svmyiyNJUR5B0ieZq/jJ/cHjUb7X5EXCR7LRuy1dgKM0KFIJM4WN9QN2rHKcj78ROu+N
+ iYWu+Zfda69CC9a4X6v9XDf5Aww8oWrTKEYjXkIWN5+LKiFD1l4uM0Z7QcQlmhSBGjyw
+ 0qxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756380880; x=1756985680;
+ d=1e100.net; s=20230601; t=1756380881; x=1756985681;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xhFp3A0M7NqYmjAgeESERQoIMPKzgUxo8xQ4836NcD4=;
- b=i+Wd7njt5khvok25A/r9yLVwD7CFJA6nYiuX3vjp4DiNw2Fk+lfvTffNvzH4/Kg4ii
- JLCn8eMJ2J6OSmlieGItRJWGHW6Fzp3dmk8A2y+5ZU9wKEWbRoPcfmRvFRUqHv0/hMhW
- +hA45T4lvP6oT5A2FPSSl5tBrBIiKQnv21+ihaTyE7Ruj479jMALPsGXvoaScln1xaXG
- 2vXtfpDJT7y9C6PTIAQFBXPAUoepWzud7H0q0pI69kKw8S6AW2JEjdj+RqW0Uuav5HPF
- eXbTjrgGuDBmNWVGBMz8qDa5v8LZ9rQZ2B2fj2G0MHYatGQXQXo7RfSdRglUSGsGoaJ4
- 59xw==
-X-Gm-Message-State: AOJu0YzW9AG9rblVsnL320SH2mIHSuoselObJdC9m69NUhtiLivOKM7S
- OM9VdTUtZUw5bTfASlajB+fq71ek4sxigBOKtdi2kyRpwftLgvtQe77Tw3d7ZdQ8riQfjC0Ymnp
- EFNG4
-X-Gm-Gg: ASbGncv+YT9ZzfIpx4poqjWunYCgKWkej1U7eyadh6Yp6vokyYx4cwnrsYgAcp8mQUu
- N6ELn3BspTHVooTsOlfCaOCERWXsx56LuFSk9n4rwDa9neVsw0m+XClucDcD8vPS0F9d9uUJLIR
- BKeEXzoufw9Tui0n6CeK8iGpgR7L1QW+wNmVIYrqy5KGtH+F/4GE6HaMapsHm48dVik/yQA437Z
- A9fImhJqmZxJyrzP9iIim0RWdIclQ9vBCYVx239eA3UX/XG5a9VqyDeFI+dj7Nr+MJ99DrMbxQI
- KKrx4RztQYvqjoK5OpcOO3RAibOGxZDqs4X3wJy9h5SBMxaXb69hKlAvBqVks0LTtRq4b3BVemr
- uApLucZRWVWRo1RveHqajU0cAZTBxuIxwzt3rleI=
-X-Google-Smtp-Source: AGHT+IE+zQAdDMlrczfTqIG+WvesPJLS53lGoFS0Z5fiV/FLP4ybheUC2LX7jKez0L80Vuf9VMiklA==
-X-Received: by 2002:a05:600d:114:b0:45b:7585:9f95 with SMTP id
- 5b1f17b1804b1-45b7585a756mr19207265e9.3.1756380880108; 
- Thu, 28 Aug 2025 04:34:40 -0700 (PDT)
+ bh=M4pBND/JQTcCccX+raHz6psiQqmFDrMciZMnw68mDqI=;
+ b=w370jZ0pe+xtqyHiPOBYowmXrMSVHXch+ciP5DNA/8vORo8UVQTstzUjCzF2HIRwHV
+ ldzgCiZNpjyM0zyuderJ6V9wuTBsu1G0e5bdlq8YORG/CSIe1Kv1tDdULSsOH/MUUT4l
+ dPOKl0YI++0PhoZ0/9Z+mkWtf4tXIkrGpxWp9oJx/kPYo4e7LqkPu2Cxw+0bDwRWBaD7
+ BctjJjYh0h70xnyjoUjH0Hu1YoP01z/CF4aW7dzGn8ylU9WGYUgWGcS4MMeBQv/4sEZh
+ yqfeOUmwnX2DVtFJB1XfVPhh9CMomSQeeaC5ez9Q0d42d7S8bl3ddzgGIO6N/eU9xrM2
+ uOrg==
+X-Gm-Message-State: AOJu0YwAwr3iDtVwQURDmPzUDNtbGyFrxTtKPnmePW6zBkuK3sVWu3ck
+ fQJCw71nuA8GbMqAaj6uzfD0+9yzipy3PqZyv+2xuY6RqLJFg5Ko5rsHSCbuUjIGysVZEP2DDLp
+ WUiLW
+X-Gm-Gg: ASbGncvyaXmGPoy4ZzDaAOCV/kPntNhBSFcXFSPlOLbk3AZIxAn6Z55RMqGCPn3gLQV
+ pA0eFUGiXzjcsKITU1c6a58LIz9TjXkufaYt21kYQeCXlfAO/7SdZyUV91M5eQfZnBLZXf5ul+T
+ vp0Y5cCICt0dS0W+uEb3KGfWHmO8BckidtwxVs0pRRBh348SQrD0YZ2/9txA8SjtGrTEG9fGvYX
+ 8RUuVYd6GpTT8184lpxSlm8+GfZP68Pf1hNLoQ85768Z6IInH5C+YAnAVJZ6yJbuwdTV1KaNN0a
+ kWK7hNrROqjhpGR/adPz+xsRkwKPRZSBxQU0T1mR8DJwO1UF+fQ+ZDhLiDPw/Wu8Esb7OKDztYK
+ 6V92SHH72bRL8AFpb+2ggir6IKX5UlrOTSRlokJM=
+X-Google-Smtp-Source: AGHT+IEdz0Exd+tkPMLH2LsoXlF4kG4ph21pBUUVCxtfqqVsAifWP67pZKynIer5qdJZhvL0+R5acQ==
+X-Received: by 2002:a05:600c:5247:b0:45b:7580:6f46 with SMTP id
+ 5b1f17b1804b1-45b75807d2fmr31059455e9.20.1756380881316; 
+ Thu, 28 Aug 2025 04:34:41 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.39
+ 5b1f17b1804b1-45b79799c33sm28691015e9.5.2025.08.28.04.34.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 04:34:39 -0700 (PDT)
+ Thu, 28 Aug 2025 04:34:40 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/32] hw/intc/arm_gicv3_kvm: preserve pending interrupts
- during cpr
-Date: Thu, 28 Aug 2025 12:34:03 +0100
-Message-ID: <20250828113430.3214314-7-peter.maydell@linaro.org>
+Subject: [PULL 07/32] target/arm: Trap PMCR when MDCR_EL2.TPMCR is set
+Date: Thu, 28 Aug 2025 12:34:04 +0100
+Message-ID: <20250828113430.3214314-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828113430.3214314-1-peter.maydell@linaro.org>
 References: <20250828113430.3214314-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,93 +97,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Steve Sistare <steven.sistare@oracle.com>
+From: Smail AIDER <smail.aider@huawei.com>
 
-Close a race condition that causes cpr-transfer to lose VFIO
-interrupts on ARM.
-
-CPR stops VCPUs but does not disable VFIO interrupts, which may continue
-to arrive throughout the transition to new QEMU.
-
-CPR calls kvm_irqchip_remove_irqfd_notifier_gsi in old QEMU to force
-future interrupts to the producer eventfd, where they are preserved.
-Old QEMU then destroys the old KVM instance.  However, interrupts may
-already be pending in KVM state.  To preserve them, call ioctl
-KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES to flush them to guest RAM, where
-they will be picked up when the new KVM+VCPU instance is created.
+Trap PMCR_EL0 or PMCR accesses to EL2 when MDCR_EL2.TPMCR is set.
+Similar to MDCR_EL2.TPM, MDCR_EL2.TPMCR allows trapping EL0 and EL1
+accesses to the PMCR register to EL2.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-id: 1754936384-278328-1-git-send-email-steven.sistare@oracle.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Smail AIDER <smail.aider@huawei.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250811112143.1577055-2-smail.aider@huawei.com
+Message-Id: <20250722131925.2119169-1-smail.aider@huawei.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/intc/arm_gicv3_common.h |  3 +++
- hw/intc/arm_gicv3_kvm.c            | 15 +++++++++++++++
- 2 files changed, 18 insertions(+)
+ target/arm/cpregs-pmu.c | 34 ++++++++++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
 
-diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index c18503869f9..572d971d22c 100644
---- a/include/hw/intc/arm_gicv3_common.h
-+++ b/include/hw/intc/arm_gicv3_common.h
-@@ -27,6 +27,7 @@
- #include "hw/sysbus.h"
- #include "hw/intc/arm_gic_common.h"
- #include "qom/object.h"
-+#include "qemu/notify.h"
- 
- /*
-  * Maximum number of possible interrupts, determined by the GIC architecture.
-@@ -271,6 +272,8 @@ struct GICv3State {
-     GICv3CPUState *cpu;
-     /* List of all ITSes connected to this GIC */
-     GPtrArray *itslist;
-+
-+    NotifierWithReturn cpr_notifier;
- };
- 
- #define GICV3_BITMAP_ACCESSORS(BMP)                                     \
-diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
-index 6166283cd1a..0cd14d78a75 100644
---- a/hw/intc/arm_gicv3_kvm.c
-+++ b/hw/intc/arm_gicv3_kvm.c
-@@ -31,6 +31,7 @@
- #include "gicv3_internal.h"
- #include "vgic_common.h"
- #include "migration/blocker.h"
-+#include "migration/misc.h"
- #include "qom/object.h"
- #include "target/arm/cpregs.h"
- 
-@@ -776,6 +777,17 @@ static void vm_change_state_handler(void *opaque, bool running,
-     }
+diff --git a/target/arm/cpregs-pmu.c b/target/arm/cpregs-pmu.c
+index 9c4431c18ba..31c01eddc87 100644
+--- a/target/arm/cpregs-pmu.c
++++ b/target/arm/cpregs-pmu.c
+@@ -228,22 +228,27 @@ static bool event_supported(uint16_t number)
+     return supported_event_map[number] != UNSUPPORTED_EVENT;
  }
  
-+static int kvm_arm_gicv3_notifier(NotifierWithReturn *notifier,
-+                                  MigrationEvent *e, Error **errp)
-+{
-+    if (e->type == MIG_EVENT_PRECOPY_DONE) {
-+        GICv3State *s = container_of(notifier, GICv3State, cpr_notifier);
-+        return kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
-+                                 KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES,
-+                                 NULL, true, errp);
-+    }
-+    return 0;
-+}
- 
- static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
+-static CPAccessResult pmreg_access(CPUARMState *env, const ARMCPRegInfo *ri,
+-                                   bool isread)
++static CPAccessResult do_pmreg_access(CPUARMState *env, bool is_pmcr)
  {
-@@ -917,6 +929,9 @@ static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
-     if (kvm_device_check_attr(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CTRL,
-                               KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES)) {
-         qemu_add_vm_change_state_handler(vm_change_state_handler, s);
-+        migration_add_notifier_mode(&s->cpr_notifier,
-+                                    kvm_arm_gicv3_notifier,
-+                                    MIG_MODE_CPR_TRANSFER);
+     /*
+      * Performance monitor registers user accessibility is controlled
+-     * by PMUSERENR. MDCR_EL2.TPM and MDCR_EL3.TPM allow configurable
++     * by PMUSERENR. MDCR_EL2.TPM/TPMCR and MDCR_EL3.TPM allow configurable
+      * trapping to EL2 or EL3 for other accesses.
+      */
+     int el = arm_current_el(env);
+-    uint64_t mdcr_el2 = arm_mdcr_el2_eff(env);
+ 
+     if (el == 0 && !(env->cp15.c9_pmuserenr & 1)) {
+         return CP_ACCESS_TRAP_EL1;
      }
+-    if (el < 2 && (mdcr_el2 & MDCR_TPM)) {
+-        return CP_ACCESS_TRAP_EL2;
++    if (el < 2) {
++        uint64_t mdcr_el2 = arm_mdcr_el2_eff(env);
++
++        if (mdcr_el2 & MDCR_TPM) {
++            return CP_ACCESS_TRAP_EL2;
++        }
++        if (is_pmcr && (mdcr_el2 & MDCR_TPMCR)) {
++            return CP_ACCESS_TRAP_EL2;
++        }
+     }
+     if (el < 3 && (env->cp15.mdcr_el3 & MDCR_TPM)) {
+         return CP_ACCESS_TRAP_EL3;
+@@ -252,6 +257,19 @@ static CPAccessResult pmreg_access(CPUARMState *env, const ARMCPRegInfo *ri,
+     return CP_ACCESS_OK;
  }
  
++static CPAccessResult pmreg_access(CPUARMState *env, const ARMCPRegInfo *ri,
++                                   bool isread)
++{
++    return do_pmreg_access(env, false);
++}
++
++static CPAccessResult pmreg_access_pmcr(CPUARMState *env,
++                                        const ARMCPRegInfo *ri,
++                                        bool isread)
++{
++    return do_pmreg_access(env, true);
++}
++
+ static CPAccessResult pmreg_access_xevcntr(CPUARMState *env,
+                                            const ARMCPRegInfo *ri,
+                                            bool isread)
+@@ -1187,14 +1205,14 @@ void define_pm_cpregs(ARMCPU *cpu)
+             .fgt = FGT_PMCR_EL0,
+             .type = ARM_CP_IO | ARM_CP_ALIAS,
+             .fieldoffset = offsetoflow32(CPUARMState, cp15.c9_pmcr),
+-            .accessfn = pmreg_access,
++            .accessfn = pmreg_access_pmcr,
+             .readfn = pmcr_read, .raw_readfn = raw_read,
+             .writefn = pmcr_write, .raw_writefn = raw_write,
+         };
+         const ARMCPRegInfo pmcr64 = {
+             .name = "PMCR_EL0", .state = ARM_CP_STATE_AA64,
+             .opc0 = 3, .opc1 = 3, .crn = 9, .crm = 12, .opc2 = 0,
+-            .access = PL0_RW, .accessfn = pmreg_access,
++            .access = PL0_RW, .accessfn = pmreg_access_pmcr,
+             .fgt = FGT_PMCR_EL0,
+             .type = ARM_CP_IO,
+             .fieldoffset = offsetof(CPUARMState, cp15.c9_pmcr),
 -- 
 2.43.0
 
