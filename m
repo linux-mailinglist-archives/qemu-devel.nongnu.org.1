@@ -2,118 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66258B3A859
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E61B3A872
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:41:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgGi-00040m-SG; Thu, 28 Aug 2025 13:18:37 -0400
+	id 1urgC5-0002fR-T6; Thu, 28 Aug 2025 13:13:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1urfD5-0004OA-Sp
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 12:10:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1urfCv-0007A2-Hd
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 12:10:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756397433;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oDERzEzBHnJXU1xhba4X/mrF4LFYKd9iDT3MmhX+84o=;
- b=SKdL97E+z95ZcPLm1n1PS7jFIYCpoXR7CcYkswUicxCom2ZwIAsjlSH1giGHIdzr20ARft
- xa1BptCWJ5oCYX2LpHt/+vJZPKyozBNCdEHkKZWLgRWs80oW4OO1Zp48QjRlQ4On/+7LCH
- rB9exq2KpRpOcswMdjO4FGKgedsBvr4=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-fE-B3N9kN2Wpl0FQnED6pg-1; Thu, 28 Aug 2025 12:10:31 -0400
-X-MC-Unique: fE-B3N9kN2Wpl0FQnED6pg-1
-X-Mimecast-MFC-AGG-ID: fE-B3N9kN2Wpl0FQnED6pg_1756397431
-Received: by mail-yw1-f197.google.com with SMTP id
- 00721157ae682-7200579b490so14704727b3.2
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 09:10:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1urfMM-0007pL-9X
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 12:20:22 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1urfMI-0003yJ-5E
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 12:20:21 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-45b6b5ccad6so6850945e9.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 09:20:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756398015; x=1757002815; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=DDd2OozNZz4+6MaekqAmY3f6RjG9TC2sT7ply03DQP8=;
+ b=BBsW8X1tQs9wlJaJT0vY9pKGlRW4arOVbvzBRuXgD1Az/XpbfxPiVV3symhHHQaJ+A
+ ToWSCPRUUDTJAx1NMEPnIQjBQ+GaVph0e0iQdZSCPDMc5TuD6+dty723IGlwJvTU2OVr
+ Li5ZED31yPzRfMi67I+GqR6I4x9p/GCkLxhrsBNO8rnR5SH5+9X8hqFgAMJ6T1T5gFye
+ e9FJAl6Fqag9vU8VI13qOPgngBlF61IYCmJEugt/SSNhF7kihYqiKyAVKxeYRnZzXT4z
+ +cEamDi1MwgAUoSjEyp4dINOU8vqcm7cL4dUDPRM9Kjz1B8DxB+CDTMsZE6mLuwUENSH
+ tdbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756397431; x=1757002231;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oDERzEzBHnJXU1xhba4X/mrF4LFYKd9iDT3MmhX+84o=;
- b=JVjTkR4HUP4+KqrMt3m/PV5RcfMVvAT0X0bJV7qM1SZYjxA2pv35V22oBzuMYc/4mJ
- lNdYGOuPQ+JCYSFPmACRTAtHAFzzgZTyUzieouw03xyY9VrXZPsAQK6RAG0JQN6mHhcH
- uZYdvbLQG2/LrZmry0pLszEuN+2esr9kq1bJd/FcH90lu9ydXLrMHsPI2gnP3UWG7zEu
- Q0eQuofsAJ85otCKV+Chs+jNLcj0eiN0+awBE29a4skVMClv7QPJFW31xJf5bsYrndZQ
- 4OVo/oyHVdZv7pRgwfvVxxegK9gQXtqF8U1gT1fSV8rcf+G6LFcADdgayNUn11+1W2v1
- shSQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVd7ub6zYWjk2D/cgk+yZWJkwLLctLD+Ll7+ApiQ+pUFbvgQ5ea4PTiXLhwKC2Cubd1AlrpqSwixdEG@nongnu.org
-X-Gm-Message-State: AOJu0Yz0izNgt8RZGOhORyIupCFcXyrlxGwEAkcCzPD1cGrCugKhSCkk
- kF/X7RQjvN/FTwdRtboapwg9lBeJnoETfHWMksvw6iTMizxEc697z4B9UXbXu24AOdIeCholfKf
- 1Hc6D+Cd85GJdPFwKXsiI2dj6A4TqnAeLo1BN9NgP2YtT7p5dyfnzAYvI
-X-Gm-Gg: ASbGncvcL8aFIAq3ljuFPIWy6oedS1Z4qHgK/QyMNqVTTnIZVZJCWk1+m0capDDOjQT
- p3NHqHgJhm9Xw9V8bCRlQDY+uypr8UbIxiHRKv+ciOK9xWrOriv9+OZ2sbKAY1es+h5XUC0PSyK
- FcA+eEvI7URFr2pIWvMfxpqtjlNr4DgHwI+mlaDDcjFWDXqzzuzITDr/5lBoLZrTkHSwx90vrIt
- zxq6GvDkcW3QiecBPUMioXiaFQ5qDBOwQWNxl4qrLca4BHYHxacJY3QSnnReM8KjGhIlTnrSy0D
- zo3n2nNHe2AOOPHh9JUtKBgog6HHiZ4Q
-X-Received: by 2002:a05:690c:7401:b0:71e:7907:7b49 with SMTP id
- 00721157ae682-71fdc2ea7demr274947887b3.14.1756397431199; 
- Thu, 28 Aug 2025 09:10:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHuYExElLnfjtVRrMpzw+tR5E8Ja0u2iCfHxqP09K3DJkDuValsY2MLsWzGKlYAAccsX0Sjuw==
-X-Received: by 2002:a05:690c:7401:b0:71e:7907:7b49 with SMTP id
- 00721157ae682-71fdc2ea7demr274946897b3.14.1756397429998; 
- Thu, 28 Aug 2025 09:10:29 -0700 (PDT)
-Received: from x1.local ([174.89.135.121]) by smtp.gmail.com with ESMTPSA id
- 00721157ae682-721c634bb45sm353257b3.22.2025.08.28.09.10.28
+ d=1e100.net; s=20230601; t=1756398015; x=1757002815;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=DDd2OozNZz4+6MaekqAmY3f6RjG9TC2sT7ply03DQP8=;
+ b=UpAOSFWBS5VWw0MgGun2XSZRR+sM3k0EskHAp/8X7MBs1qT8nsqOP7cHI/3RSZK8S5
+ kdiJDCEgexYkE6x8Bd8eRiFjczHF2gs8Qo/z2+QmfD728VQh+2JZsHUOsaXMWNNb2NQB
+ rqYFRHfkIFIbmBdGOUtx7vtpiBS8lpJbpDQN9QL+23VYQjtH8kkCEpxayjK8t8axC5J4
+ 1NyU8v/HeikeNUgT4gTBt3zQYCRgS0spNtqrFnS43m/lpO/MX0hwnohdDXlXLZLwoP8U
+ VP2P8+jLWYVbL2phbqmWETdy2wgnYCVmBjMZOiGNMbfyhiE3Ll9/TlbrXTDYrGfReywu
+ M2Yw==
+X-Gm-Message-State: AOJu0YzVMO3DHh86AUOdoRt/9C5Hq1KEWUdYazSzY21UF78RQxPgOAUz
+ 5r9ubgpeebCtHFxb79STftMzXTl4w93Fe7Dzf0UqUoYlWM4DXmzsP6+zxrlU6N8dyPgIKrKWrJV
+ SUk9g
+X-Gm-Gg: ASbGncsq/R5P/2b1vQn6C7DMPd9JySClbK8NKFj34ORh3xr7zbTfkVikGSa4qpY5nah
+ pzW5iNw5WOi5vVnjrQbc11rR5KsG0bsX8t0f58ZoI9yob2u4aKm2FFcmCHHbeUsyHmg9baMTSIK
+ Jr2yTMHYJr0sSkvH8BeYgorB0UDl6MG8ZWihtj5dMAAWDME8akHakUkRrSTGSz9R5Pj2OEBl6HH
+ OllaZnL/2ZCveWySOJATA/CFqbGxBrom3rNulVGXX/MXRrOZ3yb7ObBW5c96+dgNvb5+NV0hwfM
+ uM//t2i0lr1wJH+t0OvzmzQCdc2jTYfFVZYqP8Q+iSRDEtY0SJqzt5x8teVQfmPIk7AVz0EeQqI
+ XMqC3m1P62rfA0yP8gUUEw+tJmC1KB63D8jZFMaE=
+X-Google-Smtp-Source: AGHT+IGNUJQb3qZ57Zt1EkOqA56gTHKV3QWn53B7oqTUjiRTWNUMVXSbLD8jO33ea6r+YgXf+DmzyQ==
+X-Received: by 2002:a05:600c:1d07:b0:459:e025:8c40 with SMTP id
+ 5b1f17b1804b1-45b5179e897mr204379445e9.10.1756398014681; 
+ Thu, 28 Aug 2025 09:20:14 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3c711211b19sm25977595f8f.39.2025.08.28.09.20.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 09:10:29 -0700 (PDT)
-Date: Thu, 28 Aug 2025 12:10:15 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
- devel@daynix.com
-Subject: Re: [PATCH v7 1/2] memory: Update inline documentation
-Message-ID: <aLB_ZwL7v9Uzvc2s@x1.local>
-References: <Z4U30j9w1kPnKX9U@x1n>
- <5dc54c92-0382-4a70-9dad-588572698eed@daynix.com>
- <Z4aYpo0VEgaQedKp@x1n>
- <CAFEAcA_mpWZO8V9cE74bKzveEEZDXkqE+XbOFFdhmKUKO3dmSw@mail.gmail.com>
- <Z4a3GxEbz1jjCDc5@x1n>
- <CAFEAcA87oYqMj1t+yriXHLuTg3G-=eRwOvt4-n4uJmeNujTBxQ@mail.gmail.com>
- <d9acf231-829e-4a9c-7429-282fcc2ae756@eik.bme.hu>
- <2fe8b128-dda1-40af-89ac-e86ba53138f5@daynix.com>
- <CAFEAcA8A97ocOfv72KeSEgFkchmAOfc=GiX8QmvRui5=DDF=qQ@mail.gmail.com>
- <878qj3zitv.fsf@draig.linaro.org>
+ Thu, 28 Aug 2025 09:20:13 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
+ Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH] linux-user: Drop deprecated -p option
+Date: Thu, 28 Aug 2025 17:20:12 +0100
+Message-ID: <20250828162012.3307647-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <878qj3zitv.fsf@draig.linaro.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,44 +97,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 28, 2025 at 02:17:32PM +0100, Alex Bennée wrote:
-> The virtio-gpu blobs are a special MR which we handle clumsily at the
-> moment as they are backed by separate thread (virglrenderer) and we need
-> to jump through hoops (c.f. virtio_gpu_virgl_hostmem_region_free) to
-> make sure it is done with the memory before we can free the container.
+The user-mode '-p' option has been deprecated since 9.0 and
+doesn't do anything except emit a warning. We are well past
+our minimum deprecation period, so drop the option.
 
-I remember looking at that path when discussing this problem.
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ docs/about/deprecated.rst       | 10 ----------
+ docs/about/removed-features.rst |  8 ++++++++
+ bsd-user/main.c                 |  8 --------
+ linux-user/main.c               | 12 ------------
+ 4 files changed, 8 insertions(+), 30 deletions(-)
 
-Using virtio_gpu_virgl_hostmem_region_free overwrites the object->free is
-pretty tricky.  Same on having MR->owner points to itself..
-
-Is it possible to make virtio_gpu_virgl_hostmem_region an object, then make
-it as the owner of virtio_gpu_virgl_hostmem_region.mr?
-
-In general, whenever a MR needs serious refcounts on its own besides the
-device to be emulated, IMHO the simplest way (which still 100% follow the
-current QEMU's MR refcount design), is to create an umbrella object, making
-that to be the owner instead.
-
-We recently also have another discussion on how to achieve similar dynamic
-MRs in vhost-user's SHMEM_MAP series:
-
-https://lore.kernel.org/all/20250805081123.137064-1-aesteve@redhat.com/#r
-
-Ultimately, Albert went on with the VhostUserShmemObject approach, looks
-like it works all fine, it's used in his latest post:
-
-https://lore.kernel.org/all/20250818100353.1560655-2-aesteve@redhat.com/#t
-
-In that work, TYPE_VHOST_USER_SHMEM_OBJECT still dynamically allocates the
-MR, but then it needs an explicit object_unparent() in finalize().  IIUC it
-can be an embeded MR inside the owner object then object_unparent() isn't
-needed either.
-
-I may not have the full picture of virgl here, but not sure if this can be
-solved in the similiar way to avoid the hacks.
-
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 58bce715f9c..dfb7882e3da 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -68,16 +68,6 @@ configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
+ marked deprecated since 9.0, users have to ensure that all the topology members
+ described with -smp are supported by the target machine.
+ 
+-User-mode emulator command line arguments
+------------------------------------------
+-
+-``-p`` (since 9.0)
+-''''''''''''''''''
+-
+-The ``-p`` option pretends to control the host page size.  However,
+-it is not possible to change the host page size, and using the
+-option only causes failures.
+-
+ QEMU Machine Protocol (QMP) commands
+ ------------------------------------
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index b1b3d1b1b3f..06f186991ac 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -583,6 +583,14 @@ The ``-singlestep`` option has been given a name that better reflects
+ what it actually does. For both linux-user and bsd-user, use the
+ ``-one-insn-per-tb`` option instead.
+ 
++``-p`` (removed in 10.2)
++''''''''''''''''''''''''
++
++The ``-p`` option pretends to control the host page size.  However,
++it is not possible to change the host page size; we stopped trying
++to do anything with the option except print a warning from 9.0,
++and now the option is removed entirely.
++
+ 
+ QEMU Machine Protocol (QMP) commands
+ ------------------------------------
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index 7e5d4bbce09..9ba69642f50 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -367,14 +367,6 @@ int main(int argc, char **argv)
+             }
+         } else if (!strcmp(r, "L")) {
+             interp_prefix = argv[optind++];
+-        } else if (!strcmp(r, "p")) {
+-            unsigned size, want = qemu_real_host_page_size();
+-
+-            r = argv[optind++];
+-            if (qemu_strtoui(r, NULL, 10, &size) || size != want) {
+-                warn_report("Deprecated page size option cannot "
+-                            "change host page size (%u)", want);
+-            }
+         } else if (!strcmp(r, "g")) {
+             gdbstub = g_strdup(argv[optind++]);
+         } else if (!strcmp(r, "r")) {
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 6edeeecef38..7b0ccb6fd60 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -340,16 +340,6 @@ static void handle_arg_ld_prefix(const char *arg)
+     interp_prefix = strdup(arg);
+ }
+ 
+-static void handle_arg_pagesize(const char *arg)
+-{
+-    unsigned size, want = qemu_real_host_page_size();
+-
+-    if (qemu_strtoui(arg, NULL, 10, &size) || size != want) {
+-        warn_report("Deprecated page size option cannot "
+-                    "change host page size (%u)", want);
+-    }
+-}
+-
+ static void handle_arg_seed(const char *arg)
+ {
+     seed_optarg = arg;
+@@ -522,8 +512,6 @@ static const struct qemu_argument arg_table[] = {
+      "range[,...]","filter logging based on address range"},
+     {"D",          "QEMU_LOG_FILENAME", true, handle_arg_log_filename,
+      "logfile",     "write logs to 'logfile' (default stderr)"},
+-    {"p",          "QEMU_PAGESIZE",    true,  handle_arg_pagesize,
+-     "pagesize",   "deprecated change to host page size"},
+     {"one-insn-per-tb",
+                    "QEMU_ONE_INSN_PER_TB",  false, handle_arg_one_insn_per_tb,
+      "",           "run with one guest instruction per emulated TB"},
 -- 
-Peter Xu
+2.43.0
 
 
