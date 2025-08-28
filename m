@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21968B3CCE7
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A374B3CD8C
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:55:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usO5k-0004Kh-Ks; Sat, 30 Aug 2025 12:06:13 -0400
+	id 1usOh2-0005GO-Jq; Sat, 30 Aug 2025 12:44:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urkia-0005P4-Aj
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:03:41 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkjz-0005fe-8n
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:05:07 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urkiY-0002tW-Dp
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:03:40 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-b4c738ee2fbso658260a12.3
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 15:03:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1urkjv-0003L3-9p
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 18:05:06 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-45b7d485173so5945665e9.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 15:05:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756418615; x=1757023415; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=4M9cm8Aazb+KJpA5IGIdk2z8pOTonrvhPx7widSniyM=;
- b=UgMpIIAh8fsA126b2mU0h9YjiYxPaKTwvHDJi5o4/lI8UifirYIViLb4/vvJrSMo7i
- MHr/BjU06GLIQQ/SVbgXBNWwFQymOfq20o/Q7TVFsuWtFOxHmkWBqGU38gGvEf+mKKtS
- 2ADxBv16lXYFf+CPjlZUV8FEUTEOKZFzL9fImBrg+JiwToGRJPFvEWvOZGCpKAyOg6ZA
- M86jLGMqoYMHlG6rahaPzzH9GaSdu+v+Ruw057HpLB+4Zj6rL31thmm1pazryELLfNrM
- OCx2VJsjEyW3ZpMJrdkOzoWq1bSfmaPRpx6roHq8Me8634Rg0IU2qDXH/UzZjWNxBSkb
- sDHQ==
+ d=linaro.org; s=google; t=1756418701; x=1757023501; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=u4K+eWzK88L/l8rxX7vzJ5F8HAu28QXPtpWi+TLyHio=;
+ b=jQB3eShYAk6Ts1CQf8MGPyEBJGweiC16IJHEJmVKyVUasW7308566zVSBN+cXppi+Z
+ JtzZ1UiYZCY27GPvcLbYutZ6bo/Lje2wzNsoUuydDpwUI7T4hQ3s/ocHKflMHJohlrOv
+ FjxFwEDlR0DdXjfQ/mu1BIh1usJAI8YRm1SkAV4t0u8i882J/+UGWpfvwYzcMK3s7dWG
+ +zI0dXFxYKSLPdKXMpAQlSxCxPlp5N3M1edNd9i3sdEKj2gcjqrIw+m7CM9Zit55LmOu
+ mh2D01/OfqSwCN/rtde3dbGXG93RAdWUpjDI+kER7NkIWOT8Mll5E0PZBi13krgxDxZW
+ lGag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756418615; x=1757023415;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1756418701; x=1757023501;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4M9cm8Aazb+KJpA5IGIdk2z8pOTonrvhPx7widSniyM=;
- b=dC+gYFGBx05VN1uNwJulGnKTyJRDS3+0xSVQ6Z544nqsHUirkC+ULF8yXnjcU0orTG
- 5BLg48zUQOpvAldWdVM3yDi802aG8q22rBKYGRL7XFtuJiPqbs4PxecAmVH8CqSRR1uQ
- O/VdPUo/49+5pGISztfSv4AzYgX2Qtn4qv9FvTNztL/u05dmuxaiNwA1ZxVZ1lj0ei/O
- bIKM1JZ858TO6ItwnM4ZSyBWjdfi2IZ8Lahf7qBixWVG9CEvR1sI1XR4XoSbVg7sj1Hg
- FxhoorRwvahUDzYgPQuBvz1C/4242rUt5YtHsRaG0bPnfsf5BpPK8Pk3M02zTlDunCQq
- 1keg==
+ bh=u4K+eWzK88L/l8rxX7vzJ5F8HAu28QXPtpWi+TLyHio=;
+ b=ock6MI5qBquHvoDxNHRtlYvJxhPKwmFjF3ZL377g2rLt/I0C6AmvudAemGVUXUwSSC
+ PLWMY4Y5ogmcAgBEF9rDGDGoKrd3kggpNFZxhlV+6C4Uhdfy12YKYATkoCVotTFJVGJg
+ fGzKWJmSY3c03EIkpJqjxSaHf4FZatr08OFo9n6DTGudyO0su1oan8fLGH5i4FWXwjb0
+ 4fAX3+4SXQr/AKm/zMR4z33CWsF9pEBKO1CPK3a4X6M1EWK6MOUeYAZzWnXht3hL4vuu
+ PmrKmFq5WwjdGct/5iAWDdNBOTs3uGLwslGelq7LXJeY0xi/qtxvlBF8MT/pmcgvholI
+ MpbQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUo0CAmdhlRW0Y1Y/pnZVcAaNjkDdEtzVPbSHnDm1b1l3jkpqDbab3BZtFtpf55NXQf//BW/YJYPVpn@nongnu.org
-X-Gm-Message-State: AOJu0YxvSTm2/7iDndzqSNA7pftFoU9RS0Yt8Ym016Py+wqrbQ9NrfrA
- EpP0+4L3GvrrNQI0Lrio5wid9R/fakuQ86Czxr3zmo+LuvGgia9DTWFapzBzA/VY9XONMNj4mte
- 5GyB2WVk=
-X-Gm-Gg: ASbGncsy4XJeBgEVmkgD/d/VOrsocAVAy8jJHKFGaeFPjkKbH4tTGtf75Zri6asHWXk
- 6VOTwRPMWYNLEuvIuqV56W+5+rHP88QjQ3U9E07KU3/khu94jegGc4IZ+uU6+nGVdTdMxP9+ozU
- TMOwczUMXfX4zMGzQba1mU8gBXH+ai8ollIoUzP+nd44GZ4QeNkhbQYVlSOdMrR/l4J6hjCwXM2
- 0sxXi3S+FHkg4TMNWALcZ6VY/rSsFbaAmA5juLJgVTn4DXyXk46Uz83gEIr9EHCASC+SJR6w1Il
- N+V8rFoaj0jTPSGhwMXLWQBWgR51WKqq18pA29ywVwcTrnz1q8SZkqon2DHFYOU5M/cd4WXCR1f
- lsCegQw21PNXUQpVlaOjHNQw/uwuIYPbVvSQi
-X-Google-Smtp-Source: AGHT+IH77HgtphMfUjDHKo0mPZwZLG1fwVuEfdqHuo1XrojWzDdV3y1JPJ/b6Odi6n+kC0DrGfpXwQ==
-X-Received: by 2002:a17:902:f543:b0:246:7a11:3775 with SMTP id
- d9443c01a7336-2467a113b1amr258167335ad.48.1756418614818; 
- Thu, 28 Aug 2025 15:03:34 -0700 (PDT)
-Received: from [192.168.0.195] ([144.6.121.55])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-249065d1ef4sm5032555ad.134.2025.08.28.15.03.30
+ AJvYcCXkGvW7HRDejtm/oDXl6VTV28pWt6Y7UwAo5V782aD2wyfRPtmrjaE4Gba9UeYlHdxwoP50C0j7YDHb@nongnu.org
+X-Gm-Message-State: AOJu0Yz+s01KTUT7wdGUNl1Elc9kcTDh7eD+UDcIxL2KNIzQSrOlwUI2
+ Rd0I5eojI+nHN9XaAlZ4br+0DdtXrXoyQUxanoAooMRFxl4fEUnlHlrHhxhTzGMJWng=
+X-Gm-Gg: ASbGncvldIb2gF9kIIGslNIFjx+EF2udFH06TnYdYaiMr+wEwcVD57pokmuH9epySKb
+ /kqLa67RG1nBljcCulvadFPYM4LJmZVwinFzf3pWfeXUU2X2VdQz6HTvDmvv/CHQ+XfsCLJvcjv
+ W812bt+ARLYWLRMsKA0ZWR9HQMUfTkeLW8p3Jjn8sLYNX2SNQnVs9lcOPOXqooD7gmIFzKhUPDo
+ GsyrRNZ85fBP/x3ga08Q1d37QO6TCGOp5bjtKdP54m+3f2f8ltBSyLtAKw+dQbaRa/tX0E66p4a
+ njgAZIuKACKVifOeLp+Rx4rCx91JuWEA7UhgjdS7CZ6aSSKMI7TIkEXTu0jZqYtFcA0KXfi5Oce
+ HTQtjqQa1wlYzQ0LMJ/AeIZ1tI8fOmNsuF8EAm3PDmDXd8794Sk9bABULl2+rJrbQLg==
+X-Google-Smtp-Source: AGHT+IEW8/4xQuWFGgJtc1ykUI19JormtQ244fCXfHvBPu8h+HzsOIGsiBq7ltSgFPUiu6HPXxH2mw==
+X-Received: by 2002:a05:600c:4e90:b0:450:d37d:7c with SMTP id
+ 5b1f17b1804b1-45b517cb8b3mr199084225e9.21.1756418700647; 
+ Thu, 28 Aug 2025 15:05:00 -0700 (PDT)
+Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3cf276d5e5fsm814066f8f.27.2025.08.28.15.04.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Aug 2025 15:03:34 -0700 (PDT)
-Message-ID: <fec1ee2a-f141-4c5f-b7a8-debe404b9d47@linaro.org>
-Date: Fri, 29 Aug 2025 08:03:26 +1000
+ Thu, 28 Aug 2025 15:04:59 -0700 (PDT)
+Message-ID: <03c4a8d0-6246-418a-b55b-d7047b7844c6@linaro.org>
+Date: Fri, 29 Aug 2025 00:04:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] target/arm: Remove deprecated pxa CPUs and
- xscale/iwmmxt code
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20250828140422.3271703-1-peter.maydell@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v4 40/47] hw/arm/xlnx-versal: add versal2 SoC
+To: Luc Michel <luc.michel@amd.com>, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Frederic Konrad <frederic.konrad@amd.com>,
+ Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+References: <20250822151614.187856-1-luc.michel@amd.com>
+ <20250822151614.187856-41-luc.michel@amd.com>
 Content-Language: en-US
-In-Reply-To: <20250828140422.3271703-1-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250822151614.187856-41-luc.michel@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,17 +105,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/29/25 00:04, Peter Maydell wrote:
-> Peter Maydell (5):
->    target/arm: Remove deprecated pxa CPU family
->    target/arm: Remove XScale and iWMMXt translate.c code
->    target/arm: Remove iwmmxt helper functions
->    target/arm: Drop ARM_FEATURE_XSCALE handling
->    target/arm: Drop ARM_FEATURE_IWMMXT handling
+On 22/8/25 17:16, Luc Michel wrote:
+> Add the Versal Gen 2 (versal2) version of the Versal SoC family.
+> This version embeds up to 8 Cortex-A78AE cores (split into 4 clusters)
+> and 10 Cortex-R52 cores (split into 5 clusters). The similarities
+> between versal and versal2 in term of architecture allow to reuse the
+> VersalMap structure to almost fully describe the implemented parts of
+> versal2.
+> 
+> The versal2 eFuse device differs quite a lot from the versal one and is
+> left as future work.
+> 
+> Signed-off-by: Luc Michel <luc.michel@amd.com>
+> Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+> ---
+>   include/hw/arm/xlnx-versal.h |  17 ++-
+>   hw/arm/xlnx-versal.c         | 207 ++++++++++++++++++++++++++++++++---
+>   2 files changed, 209 insertions(+), 15 deletions(-)
 
-Woohoo!
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-r~
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
