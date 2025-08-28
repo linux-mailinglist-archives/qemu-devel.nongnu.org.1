@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B01B3A7D6
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 579F0B3A8E0
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:54:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgCT-0003DP-KP; Thu, 28 Aug 2025 13:14:13 -0400
+	id 1urgJD-00005h-Qm; Thu, 28 Aug 2025 13:21:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urbWS-00088D-Ud
+ id 1urbWU-00089V-2F
  for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:14:37 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urbWO-0008La-IQ
+ id 1urbWP-0008MA-6z
  for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:14:31 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-b49cf21320aso1032894a12.1
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:14:24 -0700 (PDT)
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-b49db86cac4so650265a12.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:14:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756383264; x=1756988064; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756383267; x=1756988067; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iohwGQx+PJHpsLcgRWLe+gDcmZ33+kolO8wPf1tJJvc=;
- b=P5zBD3WI4BlIYxxLghBd59zbyl4n53QxVfqIbmw54DROYnhLXtyu0iLKAbtWtpeBXT
- FmfhC0YfJXlKa18ZIUbLgTgQkin/+JNOEzUlZzWbIQH7juz/Bd61q1iLbN4EeE9gNdXk
- wUnd/wF8v87RuKc+Ci/XcOJ35y7sPOiYU783XgQhR2C0n6DP4XpgLaq54BGaITBPSs15
- 265ezNCVB46Gsh1jcgn8ulGImHKIC8tToKbDffWk4wfE8o4pzvt9Y8DfSXJ4hZwRBnWW
- 90GfyvSKZslggEo2U/kofD/0D0QdkffkOhi36XUhaq1mByDIJhty3rVfxGMwyVw6uPR+
- iIQA==
+ bh=/5ZB4KmZVQ2PXnRTjB721lcPMBvmO4keQCU+w332d1U=;
+ b=qWcJ0lYXdnsLk7XJiudsbQ8DPUp2imGhfzqr4LZQ2Cgc6kKBaHWL3C6QzzbDLna0vv
+ uasjt02fZJm8B4HXx8xuvMifLgIxaK5xs48ipglcy8Nn/ldPOK42lvt4ctgywO9oZ1Io
+ LrOhdUvA70iapMcDHGTKWFDYcy2c0hZUUVj3mxl4N2LdEK/WJHNLdOUu4zdZMdbCIQIi
+ P8I8j0ZWvWBJi6+UyX4elzs41h0y7jz3qEDCJME6AjeMhjsrhSlnXaEZtB82JtsYksg2
+ DHYbq2PKd424UVfAnPSXAaO+720w9tOcmKe0xswGmA1IOAALINFRGEj8JSR6r8MzUXVs
+ 33uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756383264; x=1756988064;
+ d=1e100.net; s=20230601; t=1756383267; x=1756988067;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iohwGQx+PJHpsLcgRWLe+gDcmZ33+kolO8wPf1tJJvc=;
- b=dGK8LMWZRKYq4ZrUggmwdETtvb3eD+9iIIyO/UO212hBgKZUHrksWMNvYrVkVDUG3H
- oNN4EqGyPRl8y/37IgQODGYHMv7ul+DQpVZ/cJyo77PYY40GgOyZ+w3DmC4b0jvjhQeX
- RPrCQWtDNy8XxNXR4yTIQOS7mM0bDpJVkL997SFbu45nbdHPGh2YFZ55+SR8Zk6Gd/f2
- mukDkk6Q2jEZ/UZ13CUKHt8SM7B5byAXPkEa2hFuLLbBcK8qar587rAqAoWubIEH2x6f
- yTmud7R2xIKKHTWx6UtaDMvvvPO9C6DvwvRNQ6g39zPxv+6ZIf6/CafQ/HGnFMebEOO1
- +srg==
-X-Gm-Message-State: AOJu0YziUGW42qzEt6LF+7SMOJwsazYlhoB7p+tt728mBzuI0c+3fNs4
- tewCGMFVSNDI7qEMm4a0Y22+qSEPi8jMdzkvZprKTciMm1lp0wq+45ouNgCR1DmfIqIgCiqrBew
- tMKEtHPw=
-X-Gm-Gg: ASbGncuw3++B3823OIONOxIZqcLxUddZXjzOOzLdggc0y3/v1xkrckwaX5DIhpNee9k
- QQpl2TqoVxdMCmCM1Am6K9GOhbYQLMCY/1g2irdK+7henMnkVBlLHG+1JjbIyicINbqtLl1jIPf
- sDQRUd1WaZNfgFa++zmujlAIXHeUN2lzgZ49MfJK7mWS/C94N+He3QxabMCzkBgz8528EKFmkTr
- l2GngLsVEXy1S38qdmwsWZ0WkI4cNRuvZD1xoesLKV1scFooD5zVLAMBV1UkryPN15MmlHR306/
- k9OKAH940P184GOtbvRKBMR1oG9QHbx4Q2J3RbMgGOrnZ4ld1SV+oO0Zfw5+5ntZBwKUB82EZXR
- Wfc8z/ev4TQ7NavtlN6fIvEk2VhWYicZvVtcEbXnbAAwJOHw=
-X-Google-Smtp-Source: AGHT+IE0GVi0OBeMfdw8EANZyzg1IEhChw4uDGfK3cwP/feacIDbaJRsJvsWhwewMPeFs4Zt3TVEzw==
-X-Received: by 2002:a17:902:e552:b0:247:b86:548f with SMTP id
- d9443c01a7336-2470b86560amr148579125ad.11.1756383263795; 
- Thu, 28 Aug 2025 05:14:23 -0700 (PDT)
+ bh=/5ZB4KmZVQ2PXnRTjB721lcPMBvmO4keQCU+w332d1U=;
+ b=DSv41h3Xqwrb2ef3kOvLeTdDamIbyetf7G+J8mifhGbIutnvzz5LCa3W6bRIBfM0Nm
+ LJZBGg7otzLjnafm2ptoNjM50RxAYQ+/4ZvOPb90OGnuK4ObWeWZF7XmmN5REG+mAaY8
+ x5b2PCMJSEItNTovgoOYHqkLk0WG4nRBMvg/BSWo+ykoynehm8+Lg6QbAmzdf9X/XH3u
+ znOzZsXJ+MCRjsg/nXalKpb97xH+6uMcx3Z6DN3sa+kOy9pfFrmy01UyLcqJld+lOXSM
+ UIUo9GGuSLoUQfZmMRbymSmScr4E6ivElMTV7n62gr+M4wstRidjCkg6QBRnApSDTT8g
+ N7Sg==
+X-Gm-Message-State: AOJu0YynmmlaV6NgsMk6w+10/YsqV9J23b49BHTOwj7WfvRmkPKOVjhc
+ K4Aq6pvadjduhCrFuXoEZWHOWWrRXVHEUU19fkXQxg1uFa4ZM/FYrw9ErypstosuhgdYQR/BOo6
+ +gVrHRsM=
+X-Gm-Gg: ASbGncs1T6Mc+aKt+Y39xoE7R9bLq2A6wP+eRDlj3xzUnNF7AO3MvaSivbbTv3foeCw
+ qSP1z3SsqkAINVGP3J4VNh6/yvHORUGmlz8jtfBCeZ/s2aqNcugbJxJE/bUjDs4rhUGUlsDl86H
+ Rj5TAgQKGACHFM/NHkkJKtleEaAcZKlYu8ALpM6mYnkFMv9p1hsIhMNIcvCYcYMRkOD4Voe7Gxk
+ 9ZDhqSqzlMm8bBhXHz6V8f9Y4mmNWQbw29/UIpeZRG5UiafhnD5sw+3uWK21DIOlWLfj5E0DeM+
+ J3ID31F6BTg7qnE3Q/KQiSUNFokYYivKEhsuMqCNFNvfyGuP/9ge9nqJs7HA5e1wxdexUuTUGmn
+ TwKAY0jVM5UXQbgtWIng8rZVOoA==
+X-Google-Smtp-Source: AGHT+IHiydx4F/Pal7RjFuCVgVCn7vpzSxxpU/U6vIO1+G7eOLWzAKWxqZHZAU1Ro7hU9db69P5wkw==
+X-Received: by 2002:a17:902:da87:b0:248:c109:be14 with SMTP id
+ d9443c01a7336-248c109bec2mr51335595ad.11.1756383267282; 
+ Thu, 28 Aug 2025 05:14:27 -0700 (PDT)
 Received: from stoup.. ([144.6.121.55]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-248e3e0b75esm15129025ad.8.2025.08.28.05.14.21
+ d9443c01a7336-248e3e0b75esm15129025ad.8.2025.08.28.05.14.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 05:14:23 -0700 (PDT)
+ Thu, 28 Aug 2025 05:14:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH v3 59/87] linux-user: Move init_guest_commpage to
- hppa/elfload.c
-Date: Thu, 28 Aug 2025 22:08:08 +1000
-Message-ID: <20250828120836.195358-60-richard.henderson@linaro.org>
+Subject: [PATCH v3 60/87] linux-user: Replace init_guest_commpage macro with
+ function
+Date: Thu, 28 Aug 2025 22:08:09 +1000
+Message-ID: <20250828120836.195358-61-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828120836.195358-1-richard.henderson@linaro.org>
 References: <20250828120836.195358-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,129 +98,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Turn the fallback macro into a function.  This will produce
+a link error if the other macros are set up incorrectly.
+
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/hppa/target_elf.h |  2 ++
- linux-user/loader.h          |  2 --
- linux-user/elfload.c         | 32 --------------------------------
- linux-user/hppa/elfload.c    | 31 +++++++++++++++++++++++++++++++
- 4 files changed, 33 insertions(+), 34 deletions(-)
+ linux-user/elfload.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/linux-user/hppa/target_elf.h b/linux-user/hppa/target_elf.h
-index 85be00584d..b654758afa 100644
---- a/linux-user/hppa/target_elf.h
-+++ b/linux-user/hppa/target_elf.h
-@@ -10,4 +10,6 @@
- 
- #define HAVE_ELF_PLATFORM       1
- 
-+#define LO_COMMPAGE             0
-+
- #endif
-diff --git a/linux-user/loader.h b/linux-user/loader.h
-index 0c2cc556c3..c3b8f92e23 100644
---- a/linux-user/loader.h
-+++ b/linux-user/loader.h
-@@ -105,9 +105,7 @@ const char *elf_hwcap_str(uint32_t bit);
- const char *elf_hwcap2_str(uint32_t bit);
- const char *get_elf_platform(CPUState *cs);
- const char *get_elf_base_platform(CPUState *cs);
--#if defined(TARGET_X86_64) || defined(TARGET_ARM)
- bool init_guest_commpage(void);
--#endif
- 
- struct target_elf_gregset_t;
- void elf_core_copy_regs(struct target_elf_gregset_t *, const CPUArchState *);
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 2281853c57..25f29e60de 100644
+index 25f29e60de..81bf05f581 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -415,38 +415,6 @@ static const VdsoImageInfo *vdso_image_info(uint32_t elf_flags)
+@@ -1115,7 +1115,7 @@ static abi_ulong create_elf_tables(abi_ulong p, int argc, int envc,
+ #define HI_COMMPAGE 0
+ #define LO_COMMPAGE -1
+ #ifndef HAVE_GUEST_COMMPAGE
+-#define init_guest_commpage() true
++bool init_guest_commpage(void) { return true; }
+ #endif
+ #endif
  
- #define VDSO_HEADER "vdso.c.inc"
- 
--#define LO_COMMPAGE  0
--
--static bool init_guest_commpage(void)
--{
--    /* If reserved_va, then we have already mapped 0 page on the host. */
--    if (!reserved_va) {
--        void *want, *addr;
--
--        want = g2h_untagged(LO_COMMPAGE);
--        addr = mmap(want, TARGET_PAGE_SIZE, PROT_NONE,
--                    MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED_NOREPLACE, -1, 0);
--        if (addr == MAP_FAILED) {
--            perror("Allocating guest commpage");
--            exit(EXIT_FAILURE);
--        }
--        if (addr != want) {
--            return false;
--        }
--    }
--
--    /*
--     * On Linux, page zero is normally marked execute only + gateway.
--     * Normal read or write is supposed to fail (thus PROT_NONE above),
--     * but specific offsets have kernel code mapped to raise permissions
--     * and implement syscalls.  Here, simply mark the page executable.
--     * Special case the entry points during translation (see do_page_zero).
--     */
--    page_set_flags(LO_COMMPAGE, LO_COMMPAGE | ~TARGET_PAGE_MASK,
--                   PAGE_EXEC | PAGE_VALID);
--    return true;
--}
--
- #endif /* TARGET_HPPA */
- 
- #ifdef TARGET_XTENSA
-diff --git a/linux-user/hppa/elfload.c b/linux-user/hppa/elfload.c
-index 9dd3fe092a..018034f244 100644
---- a/linux-user/hppa/elfload.c
-+++ b/linux-user/hppa/elfload.c
-@@ -3,6 +3,7 @@
- #include "qemu/osdep.h"
- #include "qemu.h"
- #include "loader.h"
-+#include "target_elf.h"
- 
- 
- const char *get_elf_cpu_model(uint32_t eflags)
-@@ -14,3 +15,33 @@ const char *get_elf_platform(CPUState *cs)
- {
-     return "PARISC";
- }
-+
-+bool init_guest_commpage(void)
-+{
-+    /* If reserved_va, then we have already mapped 0 page on the host. */
-+    if (!reserved_va) {
-+        void *want, *addr;
-+
-+        want = g2h_untagged(LO_COMMPAGE);
-+        addr = mmap(want, TARGET_PAGE_SIZE, PROT_NONE,
-+                    MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED_NOREPLACE, -1, 0);
-+        if (addr == MAP_FAILED) {
-+            perror("Allocating guest commpage");
-+            exit(EXIT_FAILURE);
-+        }
-+        if (addr != want) {
-+            return false;
-+        }
-+    }
-+
-+    /*
-+     * On Linux, page zero is normally marked execute only + gateway.
-+     * Normal read or write is supposed to fail (thus PROT_NONE above),
-+     * but specific offsets have kernel code mapped to raise permissions
-+     * and implement syscalls.  Here, simply mark the page executable.
-+     * Special case the entry points during translation (see do_page_zero).
-+     */
-+    page_set_flags(LO_COMMPAGE, LO_COMMPAGE | ~TARGET_PAGE_MASK,
-+                   PAGE_EXEC | PAGE_VALID);
-+    return true;
-+}
 -- 
 2.43.0
 
