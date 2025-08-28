@@ -2,99 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C059EB3A7B6
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F58B3A7B8
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:21:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgFJ-0000L0-7b; Thu, 28 Aug 2025 13:17:13 -0400
+	id 1urgBQ-0002TT-G7; Thu, 28 Aug 2025 13:13:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1urc6Y-0001DG-SU
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:51:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1urcFf-0004v9-4X
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 09:01:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1urc6X-00080m-C1
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:51:50 -0400
+ id 1urcFc-0000rU-Pg
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 09:01:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756385507;
+ s=mimecast20190719; t=1756386068;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4S1oH5XEC1cWvETWWJ5LtYxybZWNTrEDO/B1jMqo/B0=;
- b=X6POX8LR7yjWEfdL5i4AsYtFll+YnFOjs7hg5B9Xyb2lWeGZBNTHTxitAIDJsFYmoU3DVg
- Br5SRPDgi44TAU/z4AkOFXqOGORhcDGRQteexh+YaISwqbpmZlxi9V+Rg66DpWmI4ZSELP
- 3p/9Y129k9MWFrTFkEBLq4TWtiBFX+I=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2FSHSriAEkJkOMz1ICxZHuNRqzraCwOGW/4wAlLiDXk=;
+ b=V35aXZzczLMgMceEzPuO/y8kMTZNxv14O+iUkrDRV8oDTnmJslBZFDg7VJn+sA611Wa/d8
+ vsNGr7w2oendMphBTVQU9Ktpbf6XuWR7t9GNuZe6M3jTeOwW8f4XuKiMCeie9jnCR3euIG
+ J5BoOyN0gtxECtfO5ZK8FY+PPp/HsGk=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113-xxKpqB6DNk6PlFGRw8ozKQ-1; Thu, 28 Aug 2025 08:51:45 -0400
-X-MC-Unique: xxKpqB6DNk6PlFGRw8ozKQ-1
-X-Mimecast-MFC-AGG-ID: xxKpqB6DNk6PlFGRw8ozKQ_1756385505
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-4b29a0b8a6aso23485461cf.0
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:51:45 -0700 (PDT)
+ us-mta-156-k8mvxsW9MuqI0td4hkf2vw-1; Thu, 28 Aug 2025 09:01:07 -0400
+X-MC-Unique: k8mvxsW9MuqI0td4hkf2vw-1
+X-Mimecast-MFC-AGG-ID: k8mvxsW9MuqI0td4hkf2vw_1756386067
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-70d7c7e972eso22364016d6.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 06:01:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756385505; x=1756990305;
+ d=1e100.net; s=20230601; t=1756386066; x=1756990866;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=4S1oH5XEC1cWvETWWJ5LtYxybZWNTrEDO/B1jMqo/B0=;
- b=L78zuXpXiwZ46l6S5EdrirOEN0wqTh6XcYmfPyTVkvjJgAfY2/qHcNwQdx7r7lQwS/
- 07Ehn2w5kJIJhcXaOs12+FZdRIcwFOXVqz64l7ZSmGmNCqH6WD1zg3SkN61I5JOEcQzi
- T0IWMFyjOsvxTpO9QQbIIUR0nLK/DnWzAZAGd7BXTO48PlXptaqp9uabZdVdKRYcTr7u
- mdvqA0UdcwsHSJPxGXcKp6i/fMQvoUV903vgsVjkC1aCtyu6oheKAaiGFz41DL7X2jr2
- 1OGpG6QjSdMwto/vGX9oSreWdmcSgh2xhtsG7xv4Wk0cFELaJnzR8mx4bY7iuEER3OPx
- zwXg==
+ bh=2FSHSriAEkJkOMz1ICxZHuNRqzraCwOGW/4wAlLiDXk=;
+ b=T131kD8MgN9deJ1rgFPj+t5iHYPDcx9lFqmrsgGbUtnbMYkh5xAYDZj8BBBY+NwqkG
+ 7f7igl0QY3QoVqhGJpofqku30P4vz9J7BZo5BZyWcluKfjmBEBOhtxJvUPKk1ySILCpK
+ hiZUN2NBOtPZ3pjcfyNj+eWuDoREARufikEKrc9pXoeGn+gbLOe+Gbt8odL9jZxhkBDj
+ 7sGidIWmXA3KRYwWloJIhlQ0NyVP4x23kM6lYHRJygJ7lKr6JZ8JvlodJaaAt+YyEQtL
+ 4UX1AAySL1Retz5x09D3c/yfueUZCKthRg7UVziAqBy+xPhoB3EfFaENzq89DZtdNEMB
+ /6hQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVsaAdzWTMFA4vR8jVIn6cZmoiCHvIWYxvxw8cUX+aEqcfbOkfqRNEvHn/32oAhr+rpvXOoVwnjlKtb@nongnu.org
-X-Gm-Message-State: AOJu0YybpM+Yn0dwx+F2KKrDKRy7jg61k3XwAg7nFhyIqMZoNzxFV74w
- uWywyjFD7N6rh21ii+dAXvXVFc7oFfdBAF47Vca+4YVxnFtV+hVzpCMBYLE6/mFdEM6QZxRuwJJ
- ZGuUssdrLwxgXBGYl+KncuKI4xdCrOvtXATghhzRkoYmgNQ0L34wDV+0q
-X-Gm-Gg: ASbGncv+q46GGeWWWxTrF0ufGIaMwe/5gjg6QzfEU0riMabjwxLUzYfPaxQJWSf4Rg1
- pvLDj9ECGk13o/CXdwBFhEPG/0svt8vN0p6sDQgrrP9HL//yubZvv0QzqfhNZPg+yIkYWQR09Ke
- loNsUQk9Jbuw/l4kG1doy69YPPaxuoDzzbJ48R/R6p4A2cY4MrA3TxBbqGGAQsP83r6mKJ/VgOi
- vB43E4/+X5jC+xrwmCUqEp7sSvh0gVwKgvBQSnjOfhuAbGnoOikJ+NUsf5hocxPgcKfVOiDq7kV
- 8PWO3Lg6SQTV0rXXSTA2Q+wCFLdYAAlgCjS7y9RoaQ2f+Z1tvmMClpiBcfg8gWlvRocQHRHqirn
- BYQVMo656m5g=
-X-Received: by 2002:a05:622a:1b07:b0:4b0:6b76:723d with SMTP id
- d75a77b69052e-4b2aaa19110mr247336361cf.7.1756385505101; 
- Thu, 28 Aug 2025 05:51:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBVshJyhFBFAB/RLWyIDgXwfy304reW63zfnIowrhs80Bmtf9x3ZWIt8DtAeWkJP8alm+zBA==
-X-Received: by 2002:a05:622a:1b07:b0:4b0:6b76:723d with SMTP id
- d75a77b69052e-4b2aaa19110mr247336031cf.7.1756385504682; 
- Thu, 28 Aug 2025 05:51:44 -0700 (PDT)
+ AJvYcCWpTHwV/Q+2yFGDlPUV40RM2JjubV+ST9mW10D6z34JjzXwGHxBWQNMC6S4Ale6P65whphy6HOtdEcu@nongnu.org
+X-Gm-Message-State: AOJu0YwieGAMWi9TVsIdeZdf5vPWA/8A9mE5PRpWXRVBc49qFO1RNeMH
+ kkenq/ApJXWw+EgRa0tpgCBcddNqGP4StFKWjQ0Le4CLY716FtMCOn84VfiC6X+swLbdNEV/EAo
+ xJPF1KNpwCFTdmB02botlId77KW6PyMc87vQY5siGcrF7xjWd9bl0leZ5
+X-Gm-Gg: ASbGncu6hUdtEi57iz1fI1Vus0b8wrCCN3xKwv9kNqcXB6oRXj/3Xf2KuGDZVGeOEjO
+ Zwym8fqDlW6ltYyZUjmE6tBXHC5E1MNC6XIdx3XF06OtWg4JGJErxmFbUKnD+C1Wjr7yxL7dmJk
+ Hgi5mglH1E1MOr+isnE207KhXYjlqi+GJPzT07bZjfFnk5U06sVVuGJLiUXutTaOAjmi+aLBZyr
+ g9qvmFovWW9LMQmK+o7E36Y52lBYY4u/0VBzSG9Ibz4PK7jMMlGOzF/7d6Y9lJXY2pzR+iQ0A/8
+ haHp4yYzUFqtQNRZXVgJX0Kk5lau9IlWffOv7ORI2xdBzd3huDjC04gcaDcxYZ48QArQabPS27M
+ Yhjus8o/h15s=
+X-Received: by 2002:a05:6214:5191:b0:70d:6de2:50d5 with SMTP id
+ 6a1803df08f44-70d972153bamr264903596d6.66.1756386066506; 
+ Thu, 28 Aug 2025 06:01:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFTX7iu2SSYp7lyAL22K2f7XpgBmpyccaeINyh6fOmPk9PG3qCxwefbyL/0PlXXSH0YsbxarA==
+X-Received: by 2002:a05:6214:5191:b0:70d:6de2:50d5 with SMTP id
+ 6a1803df08f44-70d972153bamr264896416d6.66.1756386061198; 
+ Thu, 28 Aug 2025 06:01:01 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
  ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7f07c87a894sm846114585a.25.2025.08.28.05.51.42
+ 6a1803df08f44-70da728a11asm105183076d6.46.2025.08.28.06.00.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Aug 2025 05:51:43 -0700 (PDT)
-Message-ID: <eed9d8f2-ad13-4125-851e-353db20a0d5f@redhat.com>
-Date: Thu, 28 Aug 2025 14:51:41 +0200
+ Thu, 28 Aug 2025 06:00:59 -0700 (PDT)
+Message-ID: <ff8022d1-6363-43c7-b095-cf8f0a692a16@redhat.com>
+Date: Thu, 28 Aug 2025 15:00:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 21/21] intel_iommu: Enable host device when x-flts=on
- in scalable mode
+Subject: Re: [PATCH v5 05/21] vfio/iommufd: Force creating nested parent domain
 Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
- jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com,
- clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>, "mst@redhat.com" <mst@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "ddutile@redhat.com" <ddutile@redhat.com>, "jgg@nvidia.com"
+ <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
+ "clement.mathieu--drif@eviden.com" <clement.mathieu--drif@eviden.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>
 References: <20250822064101.123526-1-zhenzhong.duan@intel.com>
- <20250822064101.123526-22-zhenzhong.duan@intel.com>
+ <20250822064101.123526-6-zhenzhong.duan@intel.com>
+ <93a7a387-ae57-488e-b341-2beea67bf78e@redhat.com>
+ <IA3PR11MB9136E928181D1B95F5AD39AB923BA@IA3PR11MB9136.namprd11.prod.outlook.com>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250822064101.123526-22-zhenzhong.duan@intel.com>
+In-Reply-To: <IA3PR11MB9136E928181D1B95F5AD39AB923BA@IA3PR11MB9136.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -122,32 +129,128 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 8/22/25 8:40 AM, Zhenzhong Duan wrote:
-> Now that all infrastructures of supporting passthrough device running
-> with stage-1 translation are there, enable it now.
+On 8/28/25 11:53 AM, Duan, Zhenzhong wrote:
+> Hi Eric,
 >
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->  hw/i386/intel_iommu.c | 2 ++
->  1 file changed, 2 insertions(+)
+>> -----Original Message-----
+>> From: Eric Auger <eric.auger@redhat.com>
+>> Subject: Re: [PATCH v5 05/21] vfio/iommufd: Force creating nested parent
+>> domain
+>>
+>> Hi Zhenzhong,
+>>
+>> On 8/22/25 8:40 AM, Zhenzhong Duan wrote:
+>>> Call pci_device_get_viommu_cap() to get if vIOMMU supports
+>> VIOMMU_CAP_HW_NESTED,
+>>> if yes, create nested parent domain which could be reused by vIOMMU to
+>> create
+>>> nested domain.
+>>>
+>>> Introduce helper vfio_device_viommu_get_nested to facilitate this
+>>> implementation.
+>>>
+>>> It is safe because even if VIOMMU_CAP_HW_NESTED is returned, s->flts is
+>>> forbidden and VFIO device fails in set_iommu_device() call, until we support
+>>> passthrough device with x-flts=on.
+>>>
+>>> Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
+>>> Suggested-by: Yi Liu <yi.l.liu@intel.com>
+>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>>> ---
+>>>  include/hw/vfio/vfio-device.h |  2 ++
+>>>  hw/vfio/device.c              | 12 ++++++++++++
+>>>  hw/vfio/iommufd.c             |  8 ++++++++
+>>>  3 files changed, 22 insertions(+)
+>>>
+>>> diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
+>>> index 6e4d5ccdac..ecd82c16c7 100644
+>>> --- a/include/hw/vfio/vfio-device.h
+>>> +++ b/include/hw/vfio/vfio-device.h
+>>> @@ -257,6 +257,8 @@ void vfio_device_prepare(VFIODevice *vbasedev,
+>> VFIOContainerBase *bcontainer,
+>>>  void vfio_device_unprepare(VFIODevice *vbasedev);
+>>>
+>>> +bool vfio_device_viommu_get_nested(VFIODevice *vbasedev);
+>> I would suggest vfio_device_viommu_has_feature_hw_nested or something
+>> alike
+>> get usually means tou take a ref count associated with a put
+> Sure.
 >
-> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> index f9cb13e945..04a412d460 100644
-> --- a/hw/i386/intel_iommu.c
-> +++ b/hw/i386/intel_iommu.c
-> @@ -5222,6 +5222,8 @@ static bool vtd_check_hiod(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hiod,
->                     "when x-flts=on");
->          return false;
->      }
-> +
-> +    return true;
-The easiest one ;-)
-
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+>>> +
+>>>  int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
+>>>                                  struct vfio_region_info **info);
+>>>  int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t
+>> type,
+>>> diff --git a/hw/vfio/device.c b/hw/vfio/device.c
+>>> index 08f12ac31f..3eeb71bd51 100644
+>>> --- a/hw/vfio/device.c
+>>> +++ b/hw/vfio/device.c
+>>> @@ -23,6 +23,7 @@
+>>>
+>>>  #include "hw/vfio/vfio-device.h"
+>>>  #include "hw/vfio/pci.h"
+>>> +#include "hw/iommu.h"
+>>>  #include "hw/hw.h"
+>>>  #include "trace.h"
+>>>  #include "qapi/error.h"
+>>> @@ -504,6 +505,17 @@ void vfio_device_unprepare(VFIODevice
+>> *vbasedev)
+>>>      vbasedev->bcontainer = NULL;
+>>>  }
+>>>
+>>> +bool vfio_device_viommu_get_nested(VFIODevice *vbasedev)
+>>> +{
+>>> +    VFIOPCIDevice *vdev = vfio_pci_from_vfio_device(vbasedev);
+>>> +
+>>> +    if (vdev) {
+>>> +        return !!(pci_device_get_viommu_cap(&vdev->pdev) &
+>>> +                  VIOMMU_CAP_HW_NESTED);
+>>> +    }
+>>> +    return false;
+>>> +}
+>>> +
+>>>  /*
+>>>   * Traditional ioctl() based io
+>>>   */
+>>> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+>>> index 8c27222f75..e503c232e1 100644
+>>> --- a/hw/vfio/iommufd.c
+>>> +++ b/hw/vfio/iommufd.c
+>>> @@ -379,6 +379,14 @@ static bool
+>> iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+>>>          flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
+>>>      }
+>>>
+>>> +    /*
+>>> +     * If vIOMMU supports stage-1 translation, force to create nested
+>> parent
+>> I would rather not use another terminology here. You previously used
+>> hw_nested, I think that's better. Also bear in mind that smmu supports
+>> S1, S2 and S1+S2 in emulated code.
+> What about 'nesting parent' to match kernel side terminology, per Nicolin's suggestion:
+>
+> In kernel kdoc/uAPI, we use:
+>  - "nesting parent" for stage-2 object
+>  - "nested hwpt", "nested domain" for stage-1 object
+I still think that since you queried the HW_NESTED cap it makes sense to
+continue using it. This can come along with the kernel terminology though.
 
 Eric
->  #endif
->  
->      error_setg(errp, "host IOMMU is incompatible with stage-1 translation");
+>
+> Thanks
+> Zhenzhong
+>> Thanks
+>>
+>> Eric
+>>> +     * domain which could be reused by vIOMMU to create nested
+>> domain.
+>>> +     */
+>>> +    if (vfio_device_viommu_get_nested(vbasedev)) {
+>>> +        flags |= IOMMU_HWPT_ALLOC_NEST_PARENT;
+>>> +    }
+>>> +
+>>>      if (cpr_is_incoming()) {
+>>>          hwpt_id = vbasedev->cpr.hwpt_id;
+>>>          goto skip_alloc;
 
 
