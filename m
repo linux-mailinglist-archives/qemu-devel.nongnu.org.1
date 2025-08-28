@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD20B3A7B2
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E433B3A81F
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Aug 2025 19:31:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1urgBn-0002ZN-RM; Thu, 28 Aug 2025 13:13:32 -0400
+	id 1urgHd-0005Ra-Jp; Thu, 28 Aug 2025 13:19:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urbVU-0007VC-Tk
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:13:39 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1urbVf-0007cv-2A
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:13:45 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1urbVS-0008BC-VI
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:13:32 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-b471756592cso598085a12.3
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:13:30 -0700 (PDT)
+ id 1urbVX-0008CK-SC
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 08:13:41 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2489c65330aso8534775ad.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 05:13:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756383209; x=1756988009; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756383214; x=1756988014; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b9WlSjF0+HjwhfJFeJ6DVK0cBfr4XpFmhJQo+afKF+s=;
- b=Fc5wCtUD09BZ7j46w6arblK+OdzvLEClCYOktwmroLPOZ7/LlyjLlMEPH4+sy2KDbG
- rF1bsSJiyjNnO1d53xNFgxtbX/LDgEF98dsKY7kyEHhkwD+DszvNvfVVLavjnhKaYE5/
- yI8ZM3GiAFDrjGONU2DkjsoSwUc1ljfIMcXyUffUVKlrNUYYbpR4rzwB8kvP8OHBVT0Y
- FZ5Iyd9VegTTtbDoztgIWmBg/IgrMTWETl7leRmljblteNBFtbFDoOd3JYH2iLaHNQX2
- jwArOzXXyBN97nOMruN9JZ/O/l7gAXJ/hWxga8rtHys4JqDs07hqZw/5htaFrN2yv+e8
- +frA==
+ bh=I9aPcmtBMNORt6gmFP2dhBOnn0gYGPdCmjOMx0sPWOA=;
+ b=k+VzjfD/yPLq7BONZIbhE6fi7H1I+vYIn/qVOwB1cE0498EVRQdoxEUDFxJwnZxlaP
+ 8TWsWyiScYc8lOuVrcsezM2cRn4/azEGwXW/lfqVonHL3JrphadjkwvyT6Mwz4Iysz2X
+ IlYX8csgdDpknxuldsJ8LhZlXY7Q5SQ+S/TYWLu5JXPqcOCuYZGX5hoytuYGFvyvYemz
+ gtmEVvsUyTKOGfNCaZ6NsVxJEcwzm2MFtz10qrpgHG6vXGnCkdGDqOyu1BOkEUx0PGYa
+ d/GqljcUwog3dvpwYfX1fpaQ4qtJaUkhunJjf0pyGJFWO8Z1YdfofCCdHY0r2qwfmfCj
+ KRig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756383209; x=1756988009;
+ d=1e100.net; s=20230601; t=1756383214; x=1756988014;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b9WlSjF0+HjwhfJFeJ6DVK0cBfr4XpFmhJQo+afKF+s=;
- b=ZjR4XnsF9jK8qU9PMlP3oYBlZpV6BtCUN8I3lilXD3GfQuEcuEIW6SagUJ+/+S6/An
- 9VE/De2/rk8zS0BcebBKc69t7lTGhosrKiQEk2ObJ4Mc8JUZfSHJLr6eVTUAE7iwziYk
- Q+qrwZ2QG2FkV1wUKOFmM4MQouUkZyZeoAK1OR2oLeqFMk+t7NvYp1szhfs0qQOJmQj6
- biQFa7GVlVA/4iMe3CKlnTC3NWAyTmimBE+GFKMcPuWwjqCPviws3kxjFqVNnlUwA0BW
- JfX5IZBUQkZW3ppGykd1TSM+Sx62lb2piKDZ6DRsWsHrlyKjTufGtor5XVP3phTKwwCf
- 5SPQ==
-X-Gm-Message-State: AOJu0Yw5VzdDizSd1/ciFf3gA2SKDA3FWG4bAjlBEVtl5Z0LjRXeke4n
- zmVJBx4H2W901m42YMgBILT8xprKQ0MGKOTOn+GN4/gEyjUj1cdlOTJqXAAFWkby8+OJjMOeIne
- vRYF6MWA=
-X-Gm-Gg: ASbGncusEBuB7ww8qZtWQkHzBNUX37gTwkoF/M0DQV9/XdKTNiY6Urn7I448C0Cu+Zi
- UwQi9ASIAM/TvpzBbz2DVbG1LBu1DYVmAHkWGzx2c73hU5EX5skdOQBTWvvUslzVgYSzosz6NvQ
- kgEVOWD+vi7JxOYB1K48ABj9SgruSI1zmUqHJytvvo5SQV92HuHHEeB355R3f0XCnR/7F/KxY1Y
- IMgbNqYRtGodiMg+SfRPzfdwFdHDaI59enIjc+i0g/ASe8Y2YkCEQqfbYZa86j1EQAuHMX16pMm
- 9znLnZG7FYdwC0XOfBN7GAGO+hOkfDY1Mr3faoWRi5iixT7fiih77IbOibv8jmDWKlKB3YZvXsC
- zlfbXvZEgRPTaeh/NS1TOJBus3XiyfkjbBYEn
-X-Google-Smtp-Source: AGHT+IEYP/ILgr4L4QmKcULUOk2t7mhr0of12kX8Kaxru8fohKz5l1ABc5LA1Y3uqk+lWqR4ngmjiA==
-X-Received: by 2002:a17:902:f542:b0:248:7b7e:11e8 with SMTP id
- d9443c01a7336-2487b7e1af0mr121236745ad.18.1756383209000; 
- Thu, 28 Aug 2025 05:13:29 -0700 (PDT)
+ bh=I9aPcmtBMNORt6gmFP2dhBOnn0gYGPdCmjOMx0sPWOA=;
+ b=uFfcIXBTRpOb4h26X2FCUH8R+8iwwEXTsg0rWzoUC4zOKvGq8fxEvQC0/qe6KZ2SuI
+ HvVO6nIwuA3d8P8ymhow2QSR3m9NeLDdSkPJcdQXWx6FumpxQMC/VcnLajW2EpCvhwxJ
+ Wv1Lylcg9vaMndXAvJtDH0QuyUR5kV4UGm3R70HrLdi4XqxgqqyJNsDvhfXPo9dGuCB8
+ x3y/wqrz/4lE2gntLnBqWRgswXpCmO3nh3UERmeSj9rp1At5YWZaaNDxDsUW3e8MDI03
+ /FGv5Kwat1Rf2pOjPIinnSsfMl8RrsaoIAlDGdMXU2wVK1q5GCzpSIqzUV070wnDCG8H
+ zwYA==
+X-Gm-Message-State: AOJu0YwV3MsBZtOsUXML9uIkhmiuECcBDiiB+HaIPNTvRGQP9Gw6DecS
+ Bbkx1s3li7JmdfDt2g1sp46jzHJJtUd9WTEEDnlt44lMLkz/ndg4OpyGTtEX+AIMJq1yMk9khqh
+ SiEdIlYQ=
+X-Gm-Gg: ASbGncvtQGgQ36oTHo+aPYjyq8Etrqe53ZBQ2hMovq5pub3nhKlBp0Yga1ijPNypRGv
+ bhP0sQx4YKdAvghuUjkMYY95JuhZj6At5f4kJdDz6OJKTtlFexmGlH8wPSbq5lixIrMeGjPeWKi
+ w8ahi/x41He9f0nvRGDu8Ka2zZTQ1RxY2qzJg0T9S0qRpMTlTYCb9rBDIwYZqW8hs0QrfO1fqaG
+ SAM+3hiFxZ4W/GWog3JiXVTMLORTyZV5fOPSAe/XRxVzbV0w9RgIBVuC0O20WCNrljV41X7JhjD
+ O81Zws9d5/QgnhwtKpuvP8JljykszZ+LYZstyjNPcyNel0nVYQKazl24FGRbe/TP6pzC3shl5m3
+ DBqiBmyQoq2t0cFKqz/HYhz2aM0GAvOkS6agk
+X-Google-Smtp-Source: AGHT+IHBgmDtCBb/LUpNKZ4l+Dn9TjgW+okM2SMJMSAR3cto0AmPcN6QZBivChxSKgiOu76LGdYb2g==
+X-Received: by 2002:a17:902:c94d:b0:245:f002:d67c with SMTP id
+ d9443c01a7336-2462eeb6325mr276128885ad.30.1756383214058; 
+ Thu, 28 Aug 2025 05:13:34 -0700 (PDT)
 Received: from stoup.. ([144.6.121.55]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-248e3e0b75esm15129025ad.8.2025.08.28.05.13.24
+ d9443c01a7336-248e3e0b75esm15129025ad.8.2025.08.28.05.13.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 05:13:28 -0700 (PDT)
+ Thu, 28 Aug 2025 05:13:33 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH v3 41/87] linux-user/m68k: Expand target_elf_gregset_t
-Date: Thu, 28 Aug 2025 22:07:50 +1000
-Message-ID: <20250828120836.195358-42-richard.henderson@linaro.org>
+Subject: [PATCH v3 42/87] linux-user/microblaze: Create target_ptrace.h
+Date: Thu, 28 Aug 2025 22:07:51 +1000
+Message-ID: <20250828120836.195358-43-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250828120836.195358-1-richard.henderson@linaro.org>
 References: <20250828120836.195358-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,104 +97,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make use of the fact that target_elf_gregset_t is a proper structure.
-Drop ELF_NREG, target_elf_greg_t, and tswapreg.
+Move the target_pt_regs structure from target_syscall.h.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/m68k/target_elf.h | 24 ++++++++++++++++-----
- linux-user/m68k/elfload.c    | 42 +++++++++++++++++-------------------
- 2 files changed, 39 insertions(+), 27 deletions(-)
+ linux-user/microblaze/target_ptrace.h  | 50 ++++++++++++++++++++++++++
+ linux-user/microblaze/target_syscall.h | 44 -----------------------
+ linux-user/microblaze/signal.c         |  1 +
+ 3 files changed, 51 insertions(+), 44 deletions(-)
+ create mode 100644 linux-user/microblaze/target_ptrace.h
 
-diff --git a/linux-user/m68k/target_elf.h b/linux-user/m68k/target_elf.h
-index cd6908ab57..0737412cee 100644
---- a/linux-user/m68k/target_elf.h
-+++ b/linux-user/m68k/target_elf.h
-@@ -10,12 +10,26 @@
+diff --git a/linux-user/microblaze/target_ptrace.h b/linux-user/microblaze/target_ptrace.h
+new file mode 100644
+index 0000000000..a46c8cb7bc
+--- /dev/null
++++ b/linux-user/microblaze/target_ptrace.h
+@@ -0,0 +1,50 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#ifndef MICROBLAZE_TARGET_PTRACE_H
++#define MICROBLAZE_TARGET_PTRACE_H
++
++/* We use microblaze_reg_t to keep things similar to the kernel sources.  */
++typedef uint32_t microblaze_reg_t;
++
++struct target_pt_regs {
++    microblaze_reg_t r0;
++    microblaze_reg_t r1;
++    microblaze_reg_t r2;
++    microblaze_reg_t r3;
++    microblaze_reg_t r4;
++    microblaze_reg_t r5;
++    microblaze_reg_t r6;
++    microblaze_reg_t r7;
++    microblaze_reg_t r8;
++    microblaze_reg_t r9;
++    microblaze_reg_t r10;
++    microblaze_reg_t r11;
++    microblaze_reg_t r12;
++    microblaze_reg_t r13;
++    microblaze_reg_t r14;
++    microblaze_reg_t r15;
++    microblaze_reg_t r16;
++    microblaze_reg_t r17;
++    microblaze_reg_t r18;
++    microblaze_reg_t r19;
++    microblaze_reg_t r20;
++    microblaze_reg_t r21;
++    microblaze_reg_t r22;
++    microblaze_reg_t r23;
++    microblaze_reg_t r24;
++    microblaze_reg_t r25;
++    microblaze_reg_t r26;
++    microblaze_reg_t r27;
++    microblaze_reg_t r28;
++    microblaze_reg_t r29;
++    microblaze_reg_t r30;
++    microblaze_reg_t r31;
++    microblaze_reg_t pc;
++    microblaze_reg_t msr;
++    microblaze_reg_t ear;
++    microblaze_reg_t esr;
++    microblaze_reg_t fsr;
++    uint32_t kernel_mode;
++};
++
++#endif /* MICROBLAZE_TARGET_PTRACE_H */
+diff --git a/linux-user/microblaze/target_syscall.h b/linux-user/microblaze/target_syscall.h
+index 43362a1664..66f5a9ebe2 100644
+--- a/linux-user/microblaze/target_syscall.h
++++ b/linux-user/microblaze/target_syscall.h
+@@ -4,50 +4,6 @@
+ #define UNAME_MACHINE "microblaze"
+ #define UNAME_MINIMUM_RELEASE "2.6.32"
  
- #define HAVE_ELF_CORE_DUMP      1
- 
--typedef abi_ulong target_elf_greg_t;
+-/* We use microblaze_reg_t to keep things similar to the kernel sources.  */
+-typedef uint32_t microblaze_reg_t;
 -
--/* See linux kernel: arch/m68k/include/asm/elf.h.  */
--#define ELF_NREG                20
-+/*
-+ * See linux kernel: arch/m68k/include/asm/elf.h, where
-+ * elf_gregset_t is mapped to struct user_regs_struct via sizeof.
-+ *
-+ * Note that user_regs_struct has
-+ *    short stkadj, sr;
-+ *    ...
-+ *    short fmtvec, __fill;
-+ * but ELF_CORE_COPY_REGS writes to unsigned longs.
-+ * Therefore adjust the sr and fmtvec fields to match.
-+ */
- typedef struct target_elf_gregset_t {
--    target_elf_greg_t regs[ELF_NREG];
-+    abi_ulong d1, d2, d3, d4, d5, d6, d7;
-+    abi_ulong a0, a1, a2, a3, a4, a5, a6;
-+    abi_ulong d0;
-+    abi_ulong usp;
-+    abi_ulong orig_d0;
-+    abi_ulong sr;
-+    abi_ulong pc;
-+    abi_ulong fmtvec;
- } target_elf_gregset_t;
- 
- #endif
-diff --git a/linux-user/m68k/elfload.c b/linux-user/m68k/elfload.c
-index 2970ff7dec..423d1f680a 100644
---- a/linux-user/m68k/elfload.c
-+++ b/linux-user/m68k/elfload.c
-@@ -18,28 +18,26 @@ const char *get_elf_cpu_model(uint32_t eflags)
-     return "any";
- }
- 
--#define tswapreg(ptr)   tswapal(ptr)
+-struct target_pt_regs {
+-        microblaze_reg_t r0;
+-        microblaze_reg_t r1;
+-        microblaze_reg_t r2;
+-        microblaze_reg_t r3;
+-        microblaze_reg_t r4;
+-        microblaze_reg_t r5;
+-        microblaze_reg_t r6;
+-        microblaze_reg_t r7;
+-        microblaze_reg_t r8;
+-        microblaze_reg_t r9;
+-        microblaze_reg_t r10;
+-        microblaze_reg_t r11;
+-        microblaze_reg_t r12;
+-        microblaze_reg_t r13;
+-        microblaze_reg_t r14;
+-        microblaze_reg_t r15;
+-        microblaze_reg_t r16;
+-        microblaze_reg_t r17;
+-        microblaze_reg_t r18;
+-        microblaze_reg_t r19;
+-        microblaze_reg_t r20;
+-        microblaze_reg_t r21;
+-        microblaze_reg_t r22;
+-        microblaze_reg_t r23;
+-        microblaze_reg_t r24;
+-        microblaze_reg_t r25;
+-        microblaze_reg_t r26;
+-        microblaze_reg_t r27;
+-        microblaze_reg_t r28;
+-        microblaze_reg_t r29;
+-        microblaze_reg_t r30;
+-        microblaze_reg_t r31;
+-        microblaze_reg_t pc;
+-        microblaze_reg_t msr;
+-        microblaze_reg_t ear;
+-        microblaze_reg_t esr;
+-        microblaze_reg_t fsr;
+-        uint32_t kernel_mode;
+-};
 -
- void elf_core_copy_regs(target_elf_gregset_t *r, const CPUM68KState *env)
- {
--    r->regs[0] = tswapreg(env->dregs[1]);
--    r->regs[1] = tswapreg(env->dregs[2]);
--    r->regs[2] = tswapreg(env->dregs[3]);
--    r->regs[3] = tswapreg(env->dregs[4]);
--    r->regs[4] = tswapreg(env->dregs[5]);
--    r->regs[5] = tswapreg(env->dregs[6]);
--    r->regs[6] = tswapreg(env->dregs[7]);
--    r->regs[7] = tswapreg(env->aregs[0]);
--    r->regs[8] = tswapreg(env->aregs[1]);
--    r->regs[9] = tswapreg(env->aregs[2]);
--    r->regs[10] = tswapreg(env->aregs[3]);
--    r->regs[11] = tswapreg(env->aregs[4]);
--    r->regs[12] = tswapreg(env->aregs[5]);
--    r->regs[13] = tswapreg(env->aregs[6]);
--    r->regs[14] = tswapreg(env->dregs[0]);
--    r->regs[15] = tswapreg(env->aregs[7]);
--    r->regs[16] = tswapreg(env->dregs[0]); /* FIXME: orig_d0 */
--    r->regs[17] = tswapreg(env->sr);
--    r->regs[18] = tswapreg(env->pc);
--    r->regs[19] = 0;  /* FIXME: regs->format | regs->vector */
-+    r->d1 = tswapal(env->dregs[1]);
-+    r->d2 = tswapal(env->dregs[2]);
-+    r->d3 = tswapal(env->dregs[3]);
-+    r->d4 = tswapal(env->dregs[4]);
-+    r->d5 = tswapal(env->dregs[5]);
-+    r->d6 = tswapal(env->dregs[6]);
-+    r->d7 = tswapal(env->dregs[7]);
-+    r->a0 = tswapal(env->aregs[0]);
-+    r->a1 = tswapal(env->aregs[1]);
-+    r->a2 = tswapal(env->aregs[2]);
-+    r->a3 = tswapal(env->aregs[3]);
-+    r->a4 = tswapal(env->aregs[4]);
-+    r->a5 = tswapal(env->aregs[5]);
-+    r->a6 = tswapal(env->aregs[6]);
-+    r->d0 = tswapal(env->dregs[0]);
-+    r->usp = tswapal(env->aregs[7]);
-+    r->orig_d0 = tswapal(env->dregs[0]); /* FIXME */
-+    r->sr = tswapal(env->sr);
-+    r->pc = tswapal(env->pc);
-+    /* FIXME: regs->format | regs->vector */
- }
+ #define TARGET_CLONE_BACKWARDS
+ #define TARGET_MCL_CURRENT 1
+ #define TARGET_MCL_FUTURE  2
+diff --git a/linux-user/microblaze/signal.c b/linux-user/microblaze/signal.c
+index f6d47d76ff..7aef781314 100644
+--- a/linux-user/microblaze/signal.c
++++ b/linux-user/microblaze/signal.c
+@@ -21,6 +21,7 @@
+ #include "user-internals.h"
+ #include "signal-common.h"
+ #include "linux-user/trace.h"
++#include "target_ptrace.h"
+ 
+ struct target_sigcontext {
+     struct target_pt_regs regs;  /* needs to be first */
 -- 
 2.43.0
 
