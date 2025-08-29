@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C4FB3CC02
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C615AB3CBFD
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:31:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNOZ-0003kK-7l; Sat, 30 Aug 2025 11:21:35 -0400
+	id 1usNOZ-0003mY-Uz; Sat, 30 Aug 2025 11:21:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1us14a-0001kn-Uz
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:31:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1us14c-0001lI-AF
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:31:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1us14Y-0000UE-73
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:31:28 -0400
+ id 1us14Y-0000UN-6n
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:31:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756481482;
+ s=mimecast20190719; t=1756481484;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ngp7yieopXFSA/+lQJw7TEMgciyxdXPlsW+grRCDpfI=;
- b=arF2I2AxU20XlomJJLZF3nTyUZEdoXNm2zGF51YjMMjunhvCDoS1XT4V753e08B3RqxKEK
- 7owLPYKwkNJ+BjNeNEvVPV1GhZ/N+e1OWuoVIlAY/1mZMpL4R+e8i3yAEu+eVVHjFF+tl9
- 13iRdZpZ9ilrEpF+pfPEVAkF/wrTV8M=
+ bh=lX8mWkosrGmPbwi/WpQDO7oQxNxUyrkC8dHYRHFRmnU=;
+ b=QoTcUVg8Ns8uShvem40Z9vCPORTjIN5BEDpyRS72MInVzldL9j+8yoexFwtc1ANxlRslLJ
+ tR9FAbm+SK3FXSegbMfSAjVi434eSczT4cJH/+jvgzWrSjJmrP9dZfkouaSgxj2ei8JpXY
+ 5TR988l4nfxJH6gBeCYOzWjbO06sq4Q=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-CP3NVr3NO9CAe98yracTyA-1; Fri, 29 Aug 2025 11:31:21 -0400
-X-MC-Unique: CP3NVr3NO9CAe98yracTyA-1
-X-Mimecast-MFC-AGG-ID: CP3NVr3NO9CAe98yracTyA_1756481479
+ us-mta-149-uBhFo_5EMBmDgR4m689LSQ-1; Fri, 29 Aug 2025 11:31:22 -0400
+X-MC-Unique: uBhFo_5EMBmDgR4m689LSQ-1
+X-Mimecast-MFC-AGG-ID: uBhFo_5EMBmDgR4m689LSQ_1756481481
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-45a1ad21752so13548755e9.1
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 08:31:19 -0700 (PDT)
+ 5b1f17b1804b1-45b71eef08eso11826335e9.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 08:31:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756481478; x=1757086278;
+ d=1e100.net; s=20230601; t=1756481481; x=1757086281;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ngp7yieopXFSA/+lQJw7TEMgciyxdXPlsW+grRCDpfI=;
- b=moBkRRF679/dxHgtkfIWWv0F14Sq+pQmBBVIqoXjKmoOzu9q0Ucqh4UYncr1OtNzhS
- uzZEawT4vFz2hx49Ml3d82TRs0Tz8GlWQlIOarxBZ+QXUTCeKYe86WzKwDxaqHsGItQ5
- BobDBk5JZH95oMmzWY8KYZOTmAHwrlvxyq2PQCRRxsXwsHdr3nVMg5gLXXaD2qjQkxCm
- 11L6aFSViJw16lGXTNXe5VcBSDxm6Zd3p1NbUV/KXFJSfKLd3kviuAgDeE1os1zeF83/
- x1SaRT7+7wNaMielzOUzFv83Cw5/60gERLqLDJHafrHty2oF45GgSqCx3/hhjDwCISvo
- hd7g==
-X-Gm-Message-State: AOJu0YxWeNz7AOgExVIFen1W9zXwM7oR/DDUyEH+yNv4hkxJ0JEwx2tq
- aPOXaG6YIUk95uHRsfTuv9tEL07CtN4gafARYSbqNM8UpU7iAUOOY5ahlb7sPgJvTNSlzA4vwxc
- I8tkOI/fjNIcqzi3aRjOxw8VIFKAQcpv/JxGjdY0jE7BUmR0q9PA+hQ+OmwtmiEiWc3YpLWNygu
- jJjXzv2o88srANkxZpeGF4RyuH3m6F6aDai2HkaKE5
-X-Gm-Gg: ASbGncsU4T7s/t1XFFxLbFb71AM745JyNGu4EE20Z8I+MhhCRkHIq3I2WIl/SY4eTRf
- 8dp9aXRbHlJ5ntR5Zv8qKb5o0Zh7i9d9S2SpLDfJXdN6jz8yG8zjNnPsWdhp3NyTnRGHKu9tXkC
- rQo93dX70PKo+4750y1ESlYZPt6VJbmxpPf+VtaXYtKF9+EabCbX3HKir6WTAuewCsaqfIOj70J
- 5YoxM8YNo9jRS88fE6cBI1Au4b9adyl80OMJcz7XzooTbjaCcXYsGHNM0LfaAkoMzWiYB1+sz+m
- 3yg5FkXtUyrIsMGzmX+/dEtkvtu6vCDGQ35UKFZ3ONIrCwHgneDF7csZRz6WaUCwE2eIB4UC+WI
- f61hU3GYP7Fl7m6U+7PWTHoA/2rDEdGZE0qScZB4OsGM=
-X-Received: by 2002:a05:600c:4588:b0:45b:47e1:ef7c with SMTP id
- 5b1f17b1804b1-45b68714514mr117243135e9.18.1756481478091; 
- Fri, 29 Aug 2025 08:31:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHxlFDxF7dRX9RJdG01km0RtGgW67kMB4cmwu8jDL1TDPA9sCP9ygSYa5CE/ODaeMewI6EE/g==
-X-Received: by 2002:a05:600c:4588:b0:45b:47e1:ef7c with SMTP id
- 5b1f17b1804b1-45b68714514mr117242715e9.18.1756481477534; 
- Fri, 29 Aug 2025 08:31:17 -0700 (PDT)
+ bh=lX8mWkosrGmPbwi/WpQDO7oQxNxUyrkC8dHYRHFRmnU=;
+ b=MsfWrvvGCNTTrRyVOdyUEiWHZW40tOWkPxVbZo4NbpdIZCwh2e+mghkcyH8vCIb78i
+ RvuD4o953aeezREpBooKDhaaqlT1VbifVwwhVpcKpp5ii1O/waCHrs9jC7Mif5kK2giG
+ ksBycPZkOhqh1k7ncayW3r9txPnKT67i7bp98tKQSTCniY+RJJWVqMrgf7m7Jq3gm3dV
+ 0yKWPz6YmfFGDTnDbyfRC70J+35tq1DVtJqsdapPEJpJDh9Rw/2Fbnuysti5vnY42rA7
+ PHeH3DwyIn3ebjOiZj/qGD20IDmocFP4GNcX+GpKsBR5KxcqUsHX2elS5ZxTjjfhW1XS
+ Ryjg==
+X-Gm-Message-State: AOJu0YwiAiRASUCIDHmNczpPYVD8pTsRfSr/fkMIdPTD8aIbES4DzXkz
+ phkovHj4lIzNuaCDuMGZcfLO10f9rHwzcvspKDAmgJk5Cp5mYD97Mkz870SaHD/J4pZnugo+k0T
+ L2p0XcV19Kq5L93YMXeJvjJQ/LK6iK3QbPeAtvec8Fn2lyT0Uy7/wa69DeJ0Ip6DYKpMHPnSbQY
+ qlPmfHXpAdHvyMvOOi0n3afsOY5/ZBmEKkbYGU8yWo
+X-Gm-Gg: ASbGncu0Jo8qC15Ap6jiLgYfPtLnS81xgl7CttwhtkkzvoYoLRx7I7tbtPLLkHAaFfU
+ b3uDsr8PFhfOMSw8BTDY95K2Q6/wCxHrucQT525nho6n0ao8VsTijwZHS/I6LFI0d1tKUAQhOgL
+ i6IMQR/W4yw3sdZD20/vE3A86l5N8Z8l0erC4ltAYje5H/BHhWilpu0c5KCcOLvJ4YfwVb/3HoT
+ CDANRlFmA3Mait2tUBe4DIPFxdI3NnFw5YaZLiHcMh0561E143zi1OoGJ8p3dGjgjcCeLHE1UHc
+ D3z3p4KiMFBWpw0bnWji/xwAIljfHSE1+V3VYkZiJDckx+FQrFAIxoqIoFQm14IKhd7lgzv4Rs0
+ N7gHEAlj3q2J2qaDG5G7ODoocbqOgR+gm2nxlyjjJQII=
+X-Received: by 2002:a05:600c:3ba2:b0:45b:47e1:ef70 with SMTP id
+ 5b1f17b1804b1-45b74421339mr71147945e9.35.1756481480506; 
+ Fri, 29 Aug 2025 08:31:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH4pnXjdjae26KsNNna/M9pbXsMegsxYKYCRIqMon2WAjdS+qepPmiv/UAMQR80NUE6k1zhww==
+X-Received: by 2002:a05:600c:3ba2:b0:45b:47e1:ef70 with SMTP id
+ 5b1f17b1804b1-45b74421339mr71147455e9.35.1756481479849; 
+ Fri, 29 Aug 2025 08:31:19 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3d164a57097sm555536f8f.40.2025.08.29.08.31.15
+ 5b1f17b1804b1-45b7e7d1319sm47407925e9.5.2025.08.29.08.31.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 08:31:16 -0700 (PDT)
+ Fri, 29 Aug 2025 08:31:18 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com,
 	richard.henderson@linaro.org,
 	imammedo@redhat.com
-Subject: [PATCH 05/18] user-exec: remove cpu_interrupt() stub
-Date: Fri, 29 Aug 2025 17:31:02 +0200
-Message-ID: <20250829153115.1590048-1-pbonzini@redhat.com>
+Subject: [PATCH 06/18] treewide: clear bits of cs->interrupt_request with
+ cpu_reset_interrupt()
+Date: Fri, 29 Aug 2025 17:31:03 +0200
+Message-ID: <20250829153115.1590048-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829152909.1589668-1-pbonzini@redhat.com>
 References: <20250829152909.1589668-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,27 +110,411 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/tcg/user-exec.c | 5 -----
- 1 file changed, 5 deletions(-)
+ accel/tcg/cpu-exec.c                |  6 +++---
+ hw/core/cpu-system.c                |  2 +-
+ target/avr/helper.c                 |  4 ++--
+ target/i386/hvf/x86hvf.c            |  8 ++++----
+ target/i386/kvm/kvm.c               | 14 +++++++-------
+ target/i386/nvmm/nvmm-all.c         | 10 +++++-----
+ target/i386/tcg/system/seg_helper.c | 13 ++++++-------
+ target/i386/tcg/system/svm_helper.c |  2 +-
+ target/i386/whpx/whpx-all.c         | 12 ++++++------
+ target/openrisc/sys_helper.c        |  2 +-
+ target/rx/helper.c                  |  4 ++--
+ target/s390x/tcg/excp_helper.c      |  2 +-
+ 12 files changed, 39 insertions(+), 40 deletions(-)
 
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 748bfab04a7..66c25fba7dd 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -46,11 +46,6 @@ __thread uintptr_t helper_retaddr;
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 8491e5badd1..508d2d2d9e2 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -784,7 +784,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
+     if (unlikely(cpu_test_interrupt(cpu, ~0))) {
+         bql_lock();
+         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_DEBUG)) {
+-            cpu->interrupt_request &= ~CPU_INTERRUPT_DEBUG;
++            cpu_reset_interrupt(cpu, CPU_INTERRUPT_DEBUG);
+             cpu->exception_index = EXCP_DEBUG;
+             bql_unlock();
+             return true;
+@@ -793,7 +793,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
+             /* Do nothing */
+         } else if (cpu_test_interrupt(cpu, CPU_INTERRUPT_HALT)) {
+             replay_interrupt();
+-            cpu->interrupt_request &= ~CPU_INTERRUPT_HALT;
++            cpu_reset_interrupt(cpu, CPU_INTERRUPT_HALT);
+             cpu->halted = 1;
+             cpu->exception_index = EXCP_HLT;
+             bql_unlock();
+@@ -840,7 +840,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
+             }
+         }
+         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_EXITTB)) {
+-            cpu->interrupt_request &= ~CPU_INTERRUPT_EXITTB;
++            cpu_reset_interrupt(cpu, CPU_INTERRUPT_EXITTB);
+             /* ensure that no TB jump will be modified as
+                the program flow was changed */
+             *last_tb = NULL;
+diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
+index a975405d3a0..09c928c1f92 100644
+--- a/hw/core/cpu-system.c
++++ b/hw/core/cpu-system.c
+@@ -204,7 +204,7 @@ static int cpu_common_post_load(void *opaque, int version_id)
+          * 0x01 was CPU_INTERRUPT_EXIT. This line can be removed when the
+          * version_id is increased.
+          */
+-        cpu->interrupt_request &= ~0x01;
++        cpu_reset_interrupt(cpu, 0x01);
  
- //#define DEBUG_SIGNAL
+         tlb_flush(cpu);
  
--void cpu_interrupt(CPUState *cpu, int mask)
--{
--    g_assert_not_reached();
--}
--
- /*
-  * Adjust the pc to pass to cpu_restore_state; return the memop type.
-  */
+diff --git a/target/avr/helper.c b/target/avr/helper.c
+index b9cd6d5ef27..4b29ab35263 100644
+--- a/target/avr/helper.c
++++ b/target/avr/helper.c
+@@ -47,7 +47,7 @@ bool avr_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+             cs->exception_index = EXCP_RESET;
+             avr_cpu_do_interrupt(cs);
+ 
+-            cs->interrupt_request &= ~CPU_INTERRUPT_RESET;
++            cpu_reset_interrupt(cs, CPU_INTERRUPT_RESET);
+             return true;
+         }
+     }
+@@ -59,7 +59,7 @@ bool avr_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+ 
+             env->intsrc &= env->intsrc - 1; /* clear the interrupt */
+             if (!env->intsrc) {
+-                cs->interrupt_request &= ~CPU_INTERRUPT_HARD;
++                cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
+             }
+             return true;
+         }
+diff --git a/target/i386/hvf/x86hvf.c b/target/i386/hvf/x86hvf.c
+index 9e05e0e5765..a502437c303 100644
+--- a/target/i386/hvf/x86hvf.c
++++ b/target/i386/hvf/x86hvf.c
+@@ -397,7 +397,7 @@ bool hvf_inject_interrupts(CPUState *cs)
+ 
+     if (cpu_test_interrupt(cs, CPU_INTERRUPT_NMI)) {
+         if (!(env->hflags2 & HF2_NMI_MASK) && !(info & VMCS_INTR_VALID)) {
+-            cs->interrupt_request &= ~CPU_INTERRUPT_NMI;
++            cpu_reset_interrupt(cs, CPU_INTERRUPT_NMI);
+             info = VMCS_INTR_VALID | VMCS_INTR_T_NMI | EXCP02_NMI;
+             wvmcs(cs->accel->fd, VMCS_ENTRY_INTR_INFO, info);
+         } else {
+@@ -409,7 +409,7 @@ bool hvf_inject_interrupts(CPUState *cs)
+         cpu_test_interrupt(cs, CPU_INTERRUPT_HARD) &&
+         (env->eflags & IF_MASK) && !(info & VMCS_INTR_VALID)) {
+         int line = cpu_get_pic_interrupt(env);
+-        cs->interrupt_request &= ~CPU_INTERRUPT_HARD;
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
+         if (line >= 0) {
+             wvmcs(cs->accel->fd, VMCS_ENTRY_INTR_INFO, line |
+                   VMCS_INTR_VALID | VMCS_INTR_T_HWINTR);
+@@ -437,7 +437,7 @@ int hvf_process_events(CPUState *cs)
+     }
+ 
+     if (cpu_test_interrupt(cs, CPU_INTERRUPT_POLL)) {
+-        cs->interrupt_request &= ~CPU_INTERRUPT_POLL;
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_POLL);
+         apic_poll_irq(cpu->apic_state);
+     }
+     if ((cpu_test_interrupt(cs, CPU_INTERRUPT_HARD) &&
+@@ -450,7 +450,7 @@ int hvf_process_events(CPUState *cs)
+         do_cpu_sipi(cpu);
+     }
+     if (cpu_test_interrupt(cs, CPU_INTERRUPT_TPR)) {
+-        cs->interrupt_request &= ~CPU_INTERRUPT_TPR;
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_TPR);
+         cpu_synchronize_state(cs);
+         apic_handle_tpr_access_report(cpu->apic_state, env->eip,
+                                       env->tpr_access_type);
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 306430a0521..8420c4090ef 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -5066,7 +5066,7 @@ static int kvm_put_vcpu_events(X86CPU *cpu, int level)
+              */
+             events.smi.pending = cs->interrupt_request & CPU_INTERRUPT_SMI;
+             events.smi.latched_init = cs->interrupt_request & CPU_INTERRUPT_INIT;
+-            cs->interrupt_request &= ~(CPU_INTERRUPT_INIT | CPU_INTERRUPT_SMI);
++            cpu_reset_interrupt(cs, CPU_INTERRUPT_INIT | CPU_INTERRUPT_SMI);
+         } else {
+             /* Keep these in cs->interrupt_request.  */
+             events.smi.pending = 0;
+@@ -5456,7 +5456,7 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
+     if (cpu_test_interrupt(cpu, CPU_INTERRUPT_NMI | CPU_INTERRUPT_SMI)) {
+         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_NMI)) {
+             bql_lock();
+-            cpu->interrupt_request &= ~CPU_INTERRUPT_NMI;
++            cpu_reset_interrupt(cpu, CPU_INTERRUPT_NMI);
+             bql_unlock();
+             DPRINTF("injected NMI\n");
+             ret = kvm_vcpu_ioctl(cpu, KVM_NMI);
+@@ -5467,7 +5467,7 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
+         }
+         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_SMI)) {
+             bql_lock();
+-            cpu->interrupt_request &= ~CPU_INTERRUPT_SMI;
++            cpu_reset_interrupt(cpu, CPU_INTERRUPT_SMI);
+             bql_unlock();
+             DPRINTF("injected SMI\n");
+             ret = kvm_vcpu_ioctl(cpu, KVM_SMI);
+@@ -5502,7 +5502,7 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
+ 
+             bql_lock();
+ 
+-            cpu->interrupt_request &= ~CPU_INTERRUPT_HARD;
++            cpu_reset_interrupt(cpu, CPU_INTERRUPT_HARD);
+             irq = cpu_get_pic_interrupt(env);
+             if (irq >= 0) {
+                 struct kvm_interrupt intr;
+@@ -5597,7 +5597,7 @@ int kvm_arch_process_async_events(CPUState *cs)
+         /* We must not raise CPU_INTERRUPT_MCE if it's not supported. */
+         assert(env->mcg_cap);
+ 
+-        cs->interrupt_request &= ~CPU_INTERRUPT_MCE;
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_MCE);
+ 
+         kvm_cpu_synchronize_state(cs);
+ 
+@@ -5627,7 +5627,7 @@ int kvm_arch_process_async_events(CPUState *cs)
+     }
+ 
+     if (cpu_test_interrupt(cs, CPU_INTERRUPT_POLL)) {
+-        cs->interrupt_request &= ~CPU_INTERRUPT_POLL;
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_POLL);
+         apic_poll_irq(cpu->apic_state);
+     }
+     if ((cpu_test_interrupt(cs, CPU_INTERRUPT_HARD) &&
+@@ -5640,7 +5640,7 @@ int kvm_arch_process_async_events(CPUState *cs)
+         do_cpu_sipi(cpu);
+     }
+     if (cpu_test_interrupt(cs, CPU_INTERRUPT_TPR)) {
+-        cs->interrupt_request &= ~CPU_INTERRUPT_TPR;
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_TPR);
+         kvm_cpu_synchronize_state(cs);
+         apic_handle_tpr_access_report(cpu->apic_state, env->eip,
+                                       env->tpr_access_type);
+diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
+index c1ac74c4f04..e1151b04c6e 100644
+--- a/target/i386/nvmm/nvmm-all.c
++++ b/target/i386/nvmm/nvmm-all.c
+@@ -419,7 +419,7 @@ nvmm_vcpu_pre_run(CPUState *cpu)
+ 
+     if (!has_event && cpu_test_interrupt(cpu, CPU_INTERRUPT_NMI)) {
+         if (nvmm_can_take_nmi(cpu)) {
+-            cpu->interrupt_request &= ~CPU_INTERRUPT_NMI;
++            cpu_reset_interrupt(cpu, CPU_INTERRUPT_NMI);
+             event->type = NVMM_VCPU_EVENT_INTR;
+             event->vector = 2;
+             has_event = true;
+@@ -428,7 +428,7 @@ nvmm_vcpu_pre_run(CPUState *cpu)
+ 
+     if (!has_event && cpu_test_interrupt(cpu, CPU_INTERRUPT_HARD)) {
+         if (nvmm_can_take_int(cpu)) {
+-            cpu->interrupt_request &= ~CPU_INTERRUPT_HARD;
++            cpu_reset_interrupt(cpu, CPU_INTERRUPT_HARD);
+             event->type = NVMM_VCPU_EVENT_INTR;
+             event->vector = cpu_get_pic_interrupt(env);
+             has_event = true;
+@@ -437,7 +437,7 @@ nvmm_vcpu_pre_run(CPUState *cpu)
+ 
+     /* Don't want SMIs. */
+     if (cpu_test_interrupt(cpu, CPU_INTERRUPT_SMI)) {
+-        cpu->interrupt_request &= ~CPU_INTERRUPT_SMI;
++        cpu_reset_interrupt(cpu, CPU_INTERRUPT_SMI);
+     }
+ 
+     if (sync_tpr) {
+@@ -697,7 +697,7 @@ nvmm_vcpu_loop(CPUState *cpu)
+         /* set int/nmi windows back to the reset state */
+     }
+     if (cpu_test_interrupt(cpu, CPU_INTERRUPT_POLL)) {
+-        cpu->interrupt_request &= ~CPU_INTERRUPT_POLL;
++        cpu_reset_interrupt(cpu, CPU_INTERRUPT_POLL);
+         apic_poll_irq(x86_cpu->apic_state);
+     }
+     if ((cpu_test_interrupt(cpu, CPU_INTERRUPT_HARD) &&
+@@ -710,7 +710,7 @@ nvmm_vcpu_loop(CPUState *cpu)
+         do_cpu_sipi(x86_cpu);
+     }
+     if (cpu_test_interrupt(cpu, CPU_INTERRUPT_TPR)) {
+-        cpu->interrupt_request &= ~CPU_INTERRUPT_TPR;
++        cpu_reset_interrupt(cpu, CPU_INTERRUPT_TPR);
+         nvmm_cpu_synchronize_state(cpu);
+         apic_handle_tpr_access_report(x86_cpu->apic_state, env->eip,
+             env->tpr_access_type);
+diff --git a/target/i386/tcg/system/seg_helper.c b/target/i386/tcg/system/seg_helper.c
+index 794a23ddfc4..38072e51d72 100644
+--- a/target/i386/tcg/system/seg_helper.c
++++ b/target/i386/tcg/system/seg_helper.c
+@@ -178,7 +178,7 @@ bool x86_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+      */
+     switch (interrupt_request) {
+     case CPU_INTERRUPT_POLL:
+-        cs->interrupt_request &= ~CPU_INTERRUPT_POLL;
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_POLL);
+         apic_poll_irq(cpu->apic_state);
+         break;
+     case CPU_INTERRUPT_SIPI:
+@@ -186,23 +186,22 @@ bool x86_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+         break;
+     case CPU_INTERRUPT_SMI:
+         cpu_svm_check_intercept_param(env, SVM_EXIT_SMI, 0, 0);
+-        cs->interrupt_request &= ~CPU_INTERRUPT_SMI;
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_SMI);
+         do_smm_enter(cpu);
+         break;
+     case CPU_INTERRUPT_NMI:
+         cpu_svm_check_intercept_param(env, SVM_EXIT_NMI, 0, 0);
+-        cs->interrupt_request &= ~CPU_INTERRUPT_NMI;
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_NMI);
+         env->hflags2 |= HF2_NMI_MASK;
+         do_interrupt_x86_hardirq(env, EXCP02_NMI, 1);
+         break;
+     case CPU_INTERRUPT_MCE:
+-        cs->interrupt_request &= ~CPU_INTERRUPT_MCE;
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_MCE);
+         do_interrupt_x86_hardirq(env, EXCP12_MCHK, 0);
+         break;
+     case CPU_INTERRUPT_HARD:
+         cpu_svm_check_intercept_param(env, SVM_EXIT_INTR, 0, 0);
+-        cs->interrupt_request &= ~(CPU_INTERRUPT_HARD |
+-                                   CPU_INTERRUPT_VIRQ);
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD | CPU_INTERRUPT_VIRQ);
+         intno = cpu_get_pic_interrupt(env);
+         qemu_log_mask(CPU_LOG_INT,
+                       "Servicing hardware INT=0x%02x\n", intno);
+@@ -215,7 +214,7 @@ bool x86_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+         qemu_log_mask(CPU_LOG_INT,
+                       "Servicing virtual hardware INT=0x%02x\n", intno);
+         do_interrupt_x86_hardirq(env, intno, 1);
+-        cs->interrupt_request &= ~CPU_INTERRUPT_VIRQ;
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_VIRQ);
+         env->int_ctl &= ~V_IRQ_MASK;
+         break;
+     }
+diff --git a/target/i386/tcg/system/svm_helper.c b/target/i386/tcg/system/svm_helper.c
+index 3569196bdda..505788b0e26 100644
+--- a/target/i386/tcg/system/svm_helper.c
++++ b/target/i386/tcg/system/svm_helper.c
+@@ -824,7 +824,7 @@ void do_vmexit(CPUX86State *env)
+     env->intercept_exceptions = 0;
+ 
+     /* Clears the V_IRQ and V_INTR_MASKING bits inside the processor. */
+-    cs->interrupt_request &= ~CPU_INTERRUPT_VIRQ;
++    cpu_reset_interrupt(cs, CPU_INTERRUPT_VIRQ);
+     env->int_ctl = 0;
+ 
+     /* Clears the TSC_OFFSET inside the processor. */
+diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
+index 878cdd1668c..c09a0a64f22 100644
+--- a/target/i386/whpx/whpx-all.c
++++ b/target/i386/whpx/whpx-all.c
+@@ -1471,14 +1471,14 @@ static void whpx_vcpu_pre_run(CPUState *cpu)
+     if (!vcpu->interruption_pending &&
+         cpu_test_interrupt(cpu, CPU_INTERRUPT_NMI | CPU_INTERRUPT_SMI)) {
+         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_NMI)) {
+-            cpu->interrupt_request &= ~CPU_INTERRUPT_NMI;
++            cpu_reset_interrupt(cpu, CPU_INTERRUPT_NMI);
+             vcpu->interruptable = false;
+             new_int.InterruptionType = WHvX64PendingNmi;
+             new_int.InterruptionPending = 1;
+             new_int.InterruptionVector = 2;
+         }
+         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_SMI)) {
+-            cpu->interrupt_request &= ~CPU_INTERRUPT_SMI;
++            cpu_reset_interrupt(cpu, CPU_INTERRUPT_SMI);
+         }
+     }
+ 
+@@ -1502,7 +1502,7 @@ static void whpx_vcpu_pre_run(CPUState *cpu)
+             vcpu->interruptable && (env->eflags & IF_MASK)) {
+             assert(!new_int.InterruptionPending);
+             if (cpu_test_interrupt(cpu, CPU_INTERRUPT_HARD)) {
+-                cpu->interrupt_request &= ~CPU_INTERRUPT_HARD;
++                cpu_reset_interrupt(cpu, CPU_INTERRUPT_HARD);
+                 irq = cpu_get_pic_interrupt(env);
+                 if (irq >= 0) {
+                     new_int.InterruptionType = WHvX64PendingInterrupt;
+@@ -1520,7 +1520,7 @@ static void whpx_vcpu_pre_run(CPUState *cpu)
+         }
+     } else if (vcpu->ready_for_pic_interrupt &&
+                cpu_test_interrupt(cpu, CPU_INTERRUPT_HARD)) {
+-        cpu->interrupt_request &= ~CPU_INTERRUPT_HARD;
++        cpu_reset_interrupt(cpu, CPU_INTERRUPT_HARD);
+         irq = cpu_get_pic_interrupt(env);
+         if (irq >= 0) {
+             reg_names[reg_count] = WHvRegisterPendingEvent;
+@@ -1607,7 +1607,7 @@ static void whpx_vcpu_process_async_events(CPUState *cpu)
+     }
+ 
+     if (cpu_test_interrupt(cpu, CPU_INTERRUPT_POLL)) {
+-        cpu->interrupt_request &= ~CPU_INTERRUPT_POLL;
++        cpu_reset_interrupt(cpu, CPU_INTERRUPT_POLL);
+         apic_poll_irq(x86_cpu->apic_state);
+     }
+ 
+@@ -1623,7 +1623,7 @@ static void whpx_vcpu_process_async_events(CPUState *cpu)
+     }
+ 
+     if (cpu_test_interrupt(cpu, CPU_INTERRUPT_TPR)) {
+-        cpu->interrupt_request &= ~CPU_INTERRUPT_TPR;
++        cpu_reset_interrupt(cpu, CPU_INTERRUPT_TPR);
+         whpx_cpu_synchronize_state(cpu);
+         apic_handle_tpr_access_report(x86_cpu->apic_state, env->eip,
+                                       env->tpr_access_type);
+diff --git a/target/openrisc/sys_helper.c b/target/openrisc/sys_helper.c
+index d96b41a01c2..b091a9c6685 100644
+--- a/target/openrisc/sys_helper.c
++++ b/target/openrisc/sys_helper.c
+@@ -196,7 +196,7 @@ void HELPER(mtspr)(CPUOpenRISCState *env, target_ulong spr, target_ulong rb)
+                 env->ttmr = (rb & ~TTMR_IP) | ip;
+             } else {    /* Clear IP bit.  */
+                 env->ttmr = rb & ~TTMR_IP;
+-                cs->interrupt_request &= ~CPU_INTERRUPT_TIMER;
++                cpu_reset_interrupt(cs, CPU_INTERRUPT_TIMER);
+             }
+             cpu_openrisc_timer_update(cpu);
+             bql_unlock();
+diff --git a/target/rx/helper.c b/target/rx/helper.c
+index ce003af4219..41c9606fd1d 100644
+--- a/target/rx/helper.c
++++ b/target/rx/helper.c
+@@ -63,7 +63,7 @@ void rx_cpu_do_interrupt(CPUState *cs)
+             env->bpsw = save_psw;
+             env->pc = env->fintv;
+             env->psw_ipl = 15;
+-            cs->interrupt_request &= ~CPU_INTERRUPT_FIR;
++            cpu_reset_interrupt(cs, CPU_INTERRUPT_FIR);
+             qemu_set_irq(env->ack, env->ack_irq);
+             qemu_log_mask(CPU_LOG_INT, "fast interrupt raised\n");
+         } else if (do_irq & CPU_INTERRUPT_HARD) {
+@@ -73,7 +73,7 @@ void rx_cpu_do_interrupt(CPUState *cs)
+             cpu_stl_data(env, env->isp, env->pc);
+             env->pc = cpu_ldl_data(env, env->intb + env->ack_irq * 4);
+             env->psw_ipl = env->ack_ipl;
+-            cs->interrupt_request &= ~CPU_INTERRUPT_HARD;
++            cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
+             qemu_set_irq(env->ack, env->ack_irq);
+             qemu_log_mask(CPU_LOG_INT,
+                           "interrupt 0x%02x raised\n", env->ack_irq);
+diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
+index e4c75d0ce01..4c7faeee82b 100644
+--- a/target/s390x/tcg/excp_helper.c
++++ b/target/s390x/tcg/excp_helper.c
+@@ -559,7 +559,7 @@ try_deliver:
+ 
+     /* we might still have pending interrupts, but not deliverable */
+     if (!env->pending_int && !qemu_s390_flic_has_any(flic)) {
+-        cs->interrupt_request &= ~CPU_INTERRUPT_HARD;
++        cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
+     }
+ 
+     /* WAIT PSW during interrupt injection or STOP interrupt */
 -- 
 2.51.0
 
