@@ -2,78 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A4BB3CC37
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 952B2B3CD39
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:40:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usND0-00009B-B0; Sat, 30 Aug 2025 11:09:38 -0400
+	id 1usND3-0000Rh-3g; Sat, 30 Aug 2025 11:09:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1urv66-0006YV-B4
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 05:08:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uruqK-0001z4-Ua; Fri, 29 Aug 2025 04:52:20 -0400
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1urv5y-0004jL-O7
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 05:08:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756458508;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3LRun1w+RtPNxJXGPeXD1A1Ywizv4pgYsknnrFow5y8=;
- b=AKyQOrhT5yhnZUQIUBHYeM4ivNdPC5glV8MfBlWe9UX6faVaIGInuXGWvZne3HqF/Ak+yr
- LnsQB6TZ+aFI1TiwAjzGJSo80Fp0zl/kg9IVNYiELSovVxnu6CoZFK+V9/nNgqe7DmmeuP
- q7nKalr3mfrisyKy+HpaRo3JYueUHIw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-gMlLvIaAN66jKpI6A4pUZg-1; Fri,
- 29 Aug 2025 05:08:18 -0400
-X-MC-Unique: gMlLvIaAN66jKpI6A4pUZg-1
-X-Mimecast-MFC-AGG-ID: gMlLvIaAN66jKpI6A4pUZg_1756458497
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 39D94195E928; Fri, 29 Aug 2025 09:08:17 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.108])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BEF7718003FC; Fri, 29 Aug 2025 09:08:15 +0000 (UTC)
-Date: Fri, 29 Aug 2025 10:08:12 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH 3/3] tests/functional: handle URLError when fetching assets
-Message-ID: <aLFt_KcyYpd3CyYt@redhat.com>
-References: <20250829083156.2570137-1-berrange@redhat.com>
- <20250829083156.2570137-4-berrange@redhat.com>
- <801f322a-6151-40ab-879a-f64e117d6d04@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uruqI-0002Ph-3y; Fri, 29 Aug 2025 04:52:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1756457538; x=1787993538;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=l7b+q34d0sKKs/7TOEfdd7HLVy9j9TxG1Cvc6YBvK6s=;
+ b=i1msZhYgelfDP/Yd6TgfXJ4Bl3Z2v0ZsHgxV4oYYEm2IKuCgTeDlKCMd
+ 3LoJIXPLp0XHzfpodImsN7RLEx7GRz3vjvnm1FVQioc3F1z+Pjmp7A0gD
+ dlQfIo81p76qN8Tnb3JUNqfLqtfHq+iOmICCRYBkXzRwVKIhR8+g/XO4S
+ TVGFuJrp5+cL3jmRg5A7OHnW9X/r1Y6v1xJmpsyVaLOjLIMLV1dIgPM34
+ BIZqzS8BnyTNzy1ygKvvUs18FCwJ1lH2D44SjylSPH7S/w4O5HrepOLlF
+ fAVpGSkeAJYacwk7D55CoKm5fqyAAJPRp0CqWgNa1SAPqGv3w63Rh9D+g w==;
+X-CSE-ConnectionGUID: wGPKlSqhTVWF/g2iDsDiaQ==
+X-CSE-MsgGUID: 4u23em37Sx6zLKrnjG/iSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="57764792"
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="57764792"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Aug 2025 01:52:12 -0700
+X-CSE-ConnectionGUID: 4cFlMhq5RCOU+hjbs3v/bw==
+X-CSE-MsgGUID: gcogKTgYT26UtqDIAamb0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="174504351"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa003.jf.intel.com with ESMTP; 29 Aug 2025 01:52:11 -0700
+Date: Fri, 29 Aug 2025 17:13:57 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ pbonzini@redhat.com, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: Re: [PATCH 11/22] rust: split "bql" crate
+Message-ID: <aLFvVW1FsH/j3SMS@intel.com>
+References: <20250827104147.717203-1-marcandre.lureau@redhat.com>
+ <20250827104147.717203-12-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <801f322a-6151-40ab-879a-f64e117d6d04@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <20250827104147.717203-12-marcandre.lureau@redhat.com>
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,77 +80,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 29, 2025 at 11:00:12AM +0200, Thomas Huth wrote:
-> On 29/08/2025 10.31, Daniel P. BerrangÃ© wrote:
-> > We treat most HTTP errors as non-fatal when fetching assets,
-> > but forgot to handle network level errors. This adds catching
-> > of URLError so that we retry on failure, and will ultimately
-> > trigger graceful skipping in the pre-cache task.
-> > 
-> > Signed-off-by: Daniel P. BerrangÃ© <berrange@redhat.com>
-> > ---
-> >   tests/functional/qemu_test/asset.py | 9 ++++++++-
-> >   1 file changed, 8 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-> > index ae2bec3ea5..36f64fe2f6 100644
-> > --- a/tests/functional/qemu_test/asset.py
-> > +++ b/tests/functional/qemu_test/asset.py
-> > @@ -15,7 +15,7 @@
-> >   from time import sleep
-> >   from pathlib import Path
-> >   from shutil import copyfileobj
-> > -from urllib.error import HTTPError
-> > +from urllib.error import HTTPError, URLError
-> >   class AssetError(Exception):
-> >       def __init__(self, asset, msg, transient=False):
-> > @@ -171,6 +171,13 @@ def fetch(self):
-> >                       raise AssetError(self, "Unable to download %s: "
-> >                                        "HTTP error %d" % (self.url, e.code))
-> >                   continue
-> > +            except URLError as e:
-> > +                # This is typically a network/service level error
-> > +                # eg urlopen error [Errno 110] Connection timed out>
-> > +                tmp_cache_file.unlink()
-> > +                self.log.error("Unable to download %s: URL error %s",
-> > +                               self.url, e)
-> > +                continue
+On Wed, Aug 27, 2025 at 02:41:33PM +0400, marcandre.lureau@redhat.com wrote:
+> Date: Wed, 27 Aug 2025 14:41:33 +0400
+> From: marcandre.lureau@redhat.com
+> Subject: [PATCH 11/22] rust: split "bql" crate
 > 
-> Hmm, I don't think we should retry on each and every URLError. For example
-> if you have a typo in the server name, you get a "Name or service not known"
-> URLError, and it does not make sense to retry in that case.
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Also, in case of the server being down, it takes a minute or two 'til the
-> urllib gives up, so if you retry multiple times in that case, you can easily
-> extend the test time by > 5 minutes (as you can see by the timestamps in the
-> example in your cover letter), which is unfortunate, too (considering that
-> there is also a timeout setting for the gitlab CI jobs).
+> Unfortunately, an example had to be compile-time disabled, since it
+> relies on higher level crates (qdev, irq etc). The alternative is
+> probably to move that code to an example in qemu-api or elsewere and
+> make a link to it, or include_str.
 > 
-> I think I'd maybe rather do something like this instead, without retrying
-> the download, just marking certain errors as transient:
-> 
->        except URLError as e:
->            tmp_cache_file.unlink()
->            msg = str(e.reason)
->            self.log.error("Unable to download %s: URL error %s",
->                           self.url, msg)
->            raise AssetError(self, msg,
->                             transient=("Network is unreachable" in msg))
-> 
-> WDYT?
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
 
-Ok, yes, we can do that instead.
+[snip]
 
+> index 0000000000..ef08221e9c
+> --- /dev/null
+> +++ b/rust/bql/src/lib.rs
+> @@ -0,0 +1,29 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +mod bindings;
+> +use bindings::{bql_block_unlock, bql_locked, rust_bql_mock_lock};
+> +
+> +mod cell;
+> +pub use cell::*;
+> +
+> +/// An internal function that is used by doctests.
+> +pub fn start_test() {
+> +    // SAFETY: integration tests are run with --test-threads=1, while
+> +    // unit tests and doctests are not multithreaded and do not have
+> +    // any BQL-protected data.  Just set bql_locked to true.
+> +    unsafe {
+> +        rust_bql_mock_lock();
+> +    }
+> +}
+> +
+> +pub fn is_locked() -> bool {
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+I prefer the original names: bql_locked()...
+
+> +    // SAFETY: the function does nothing but return a thread-local bool
+> +    unsafe { bql_locked() }
+> +}
+> +
+> +pub fn block_unlock(increase: bool) {
+
+... and bql_block_unlock.
+
+> +    // SAFETY: this only adjusts a counter
+> +    unsafe {
+> +        bql_block_unlock(increase);
+> +    }
+> +}
+
+The consistent naming can help C developers become familiar with the
+same interfaces in Rust.
+
+And we will have more and more lock bindings - add lock name in the
+method name could help avoid confusion.
+
+Others LGTM, so
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
