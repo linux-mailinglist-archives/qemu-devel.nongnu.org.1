@@ -2,93 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BEF8B3CDF5
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47767B3CC01
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:33:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNg8-0007fm-Kt; Sat, 30 Aug 2025 11:39:44 -0400
+	id 1usNE7-0003dO-H9; Sat, 30 Aug 2025 11:10:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us5p0-0005Hl-4Q
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 16:35:42 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <andrew.cooper@cloud.com>)
+ id 1urw0P-0003if-0o
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 06:06:50 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us5oy-0002dh-JR
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 16:35:41 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-77033293ed8so2296059b3a.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 13:35:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <andrew.cooper@cloud.com>)
+ id 1urw0M-0005hE-M2
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 06:06:48 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-45b7d497abaso9332775e9.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 03:06:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756499738; x=1757104538; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=n3hAh1vvE5/5Bt/BWpyuzvDztQhRPCBEBCTLFQPijQM=;
- b=ELNDTStWrmz9MryFXYjS/4AqgK5CUspT7IySgK36vjXc4U9Q/9hsFza3ynXWclKasG
- D+IzAOq0N/wqr2H0crNIfW+X900BeXKXyznmT8nx1CeBhyoKzdw7htnf2NDsRIdnoZDs
- 9L6Sai1esc3juC4YB45cJgfVve+JeLv7OSbRPe656WusHiyGX+DTLC0ZdZZCUaNb2ypc
- OwEif/nmptrcO7PLinQuFcef8mZ8qjhrRtO0NiNpgrYnNhRam7vO/K1Lx08o3EbST42R
- T75/9+Tui0ynT12l1sQEvq+uU6NhELKC71T85aczrlf2QGVBxTX7R075wz/xUA4zHqHz
- dvsw==
+ d=citrix.com; s=google; t=1756462002; x=1757066802; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :references:cc:to:from:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=NnHst8fQ5mRv6zK7zD6Olwvh2vi7kOV/xIF1vaOH5VE=;
+ b=eJHmcsNbJWL4H0jvW3gQda+T/dQbtBzclc7efDzvXO+iRl0Iu/8RP1VmPDHq4R8azy
+ Yn6T5Kfq4qZSVati+LwFHla9U4KbnFUwj3+88mMOmBmW9XbLLA2K0LEHu21+VSyfekcK
+ pQdmlfeDpIfqTMQrDoXOc4VlX07O4ZAwdGXoU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756499738; x=1757104538;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=n3hAh1vvE5/5Bt/BWpyuzvDztQhRPCBEBCTLFQPijQM=;
- b=Y/DU1D8MQVtlTKevnmhfxmXTzhwHRd31ZayDQpzAtXycVxlEyMP3wpWBUZtv9KDRFE
- rPhmT3Hvr3lO42g0aA0kykZ8XBNsziCQbJZlf8MQRnRs1s71DbObPgQW/x2e1ovC08u8
- XYEvJrWFPmYYsljo2uKp4UFOxxEzG1ZOL/2spqp+Y3fnACvn7cAUAdvmItsm0iDdMp4i
- eu6UeQLfNhc7ME9cDpyQeNQEkQqLvIQW30uTGvY1HxPu+OTfdmG5qtGTLU0Vnf5Flui6
- 98IiC4snGDj01B+Zu9OcgR0NCbRS3Ujekklty9cQ/7k74avixqGiIudarTUjabRXgRtY
- Vs3g==
-X-Gm-Message-State: AOJu0YyOelvr86Y032Rer4GVHQ7rPQ+Lqi6iWgSBvWUa2gtKQT8TEqcK
- PXANcJc78PnhIg1B6AzPn70qmYXwVoZJYidk4EVO8NWYFwK9zV6P/QYGREuQ97V+xrU=
-X-Gm-Gg: ASbGnct5981mj5ypdsQWjrge9q7JD65nF2SQEb0JArwnZk5zJ5/sVMrXYO0U91I3heI
- K36Ym82wqWpQ+nKh5phlWoQgC9MlcakhTuCbqYXRUXebV4YWdgA0RodNHt6B92szVNsjrZKeT17
- HfzpX+dcuVRs720xBs4XVH7u/V14DMUafZajQ1IbvuG1MiVbSNc47zQBaxri3TU/wVjcK1Mj5FX
- 7hOjfSQvrRRarp++tX5aUws1H7KbHW5sZfz+WTT4qhTHDt35vi6eeWtj4/EELWwAQN+CyINeYHp
- mDvXdgfMI5Swjrz/Kxl3n58XRB0naIDhukM1gP8+VP3teI7/fmh6XVQq3DqfxSNMJjpNDCIox9O
- Q8EUKUx7sR+gzbrbsfzRtD2YsIww5ztnlhfstGQOjYHa6GnhwUy3zSzk1Bj43Pw7mmdjuykwlRt
- 7z9oLHrI8=
-X-Google-Smtp-Source: AGHT+IHnlIgxeImVA7YaPEACD2FcX2OVSzkioCaJdcwfM/Kb7b3EmG2yaLU2lLMj0Aucxxe5MtTSyw==
-X-Received: by 2002:a05:6a00:2e07:b0:771:e4e5:2ea0 with SMTP id
- d2e1a72fcca58-771e4e53316mr20930338b3a.10.1756499738173; 
- Fri, 29 Aug 2025 13:35:38 -0700 (PDT)
-Received: from [10.118.1.198] (122-150-204-179.dyn.ip.vocus.au.
- [122.150.204.179]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7722a2b2f56sm3210585b3a.26.2025.08.29.13.35.36
+ d=1e100.net; s=20230601; t=1756462002; x=1757066802;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :references:cc:to:from:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NnHst8fQ5mRv6zK7zD6Olwvh2vi7kOV/xIF1vaOH5VE=;
+ b=VFPIaPd9Y1yhlEk3a5aL/uN6DdPj3ivwK9fJ2uEKByJiOxDTZtUf8nk6RhLsEwNf47
+ dmg8i6UUtyBChlIvAbDfMA5SijjSDZLJLptr7SSrVqc7LfiHRFW8R+dQ5h4smhm4Y6IQ
+ zY2sSR37DQPWDOs+oGqtZD8hBmghA+HFkoD9MdFnct7MRaAY9MrfolTk1JlN0PeaqvoS
+ 0MwfgywM95kIf8ASyp035JeKM8nfXAHbLzEzM955WfDqH/MTYKuhs60JinEto7/d35kj
+ noPt3ck5eRF+0YKHZ8TkddcivFSxL4LhdKb10AuOBOi4jNkJPc4Zrr01vVgjFpXWOkgw
+ oLWg==
+X-Gm-Message-State: AOJu0YyOkR3Zwb+6ETQPtkoozq7HG+8LCCpVkcg7Zidp5gqRfKliQVSF
+ Pwc4XtHT2sF3c2JlkqO3S31v0+RXkVhCB4nkXqxUXYlxXjfqcSQFLi7JC+5oQE+9NCnksSPKmXS
+ BYCSb
+X-Gm-Gg: ASbGnctBoXNJgksti2Sfez2iPpIwJatrPr4BPOi9RNfnYdxAPa70fwVk4AnAf4UkGt+
+ Zs6hlRmHiX8q1gjfrWcmLTX6tjpKQ5XiZbrNHABweo+lYY6juJEJgI+vzUgPP6uTy+wPiSUFi9u
+ 4/7QOQtyomDKRXc+48jPKwdYAiq7GwA+LxqiZ4fFub+R5rcO04JvZ02xrlxaC+JzhaN1lSlr1O+
+ jrzp9h7mviGoakmzaB6BMxsV4Azq6HpwpIx31ONNVdxVR61Uj5QB/Jr8WFcXmX/xek4SBS+ywNp
+ jJz39O88ieehokQn/1sq+jpco6+YYxIdF5cETs0tAUyq8oBNMq4wvgyc8QtH3yxzAqhQBT2QkSS
+ HlJfSRvFnVWsBKgtUPsUCPkocn/tuOdSYfe9Vr4yIInD9MSt59A9QtPW96scjSj6P2+YwcPXypi
+ KBFdU=
+X-Google-Smtp-Source: AGHT+IFaF3Fp1aTZ/GsrQhMLanNiao9KvZ+tiwb0q6lP/rvnopgS3uE5iyNsWeoMR2Si34FZ8ZlarA==
+X-Received: by 2002:a05:600c:1e8a:b0:45b:47e1:ef74 with SMTP id
+ 5b1f17b1804b1-45b517df2f9mr224657515e9.35.1756462002161; 
+ Fri, 29 Aug 2025 03:06:42 -0700 (PDT)
+Received: from [192.168.1.183] (host-195-149-20-212.as13285.net.
+ [195.149.20.212]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3cf276d204asm2783653f8f.24.2025.08.29.03.06.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Aug 2025 13:35:37 -0700 (PDT)
-Message-ID: <ee00c8da-47a5-4add-9237-c8907891ec26@linaro.org>
-Date: Fri, 29 Aug 2025 20:03:41 +1000
+ Fri, 29 Aug 2025 03:06:41 -0700 (PDT)
+Message-ID: <3ea1f256-4ac6-407c-9fc3-d5acfd517459@citrix.com>
+Date: Fri, 29 Aug 2025 11:06:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 38/87] linux-user/arm: Expand target_elf_gregset_t
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20250828120836.195358-1-richard.henderson@linaro.org>
- <20250828120836.195358-39-richard.henderson@linaro.org>
- <CAFEAcA_a-G1hgeefCxdZQMxcGv4=-23fRMM8TifPTuBCJcbKVw@mail.gmail.com>
- <e5ff8c1a-4f6e-42f3-9ff5-38dcee98cefd@linaro.org>
- <CAFEAcA_8uPM5rkRfqp3AKM5J6vkswAAuZDVTyiEs1J56jvzHug@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <CAFEAcA_8uPM5rkRfqp3AKM5J6vkswAAuZDVTyiEs1J56jvzHug@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: [PING ^ 2] Re: [PATCH] target/i386: Fix #GP error code for INT
+ instructions
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Cameron Esfahani <dirty@apple.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Phil Dennis-Jordan
+ <phil@philjordan.eu>, Wei Liu <wei.liu@kernel.org>
+References: <20250312000603.3666083-1-andrew.cooper3@citrix.com>
+ <7d9801e5-5be1-42db-a6db-92e89ab11f1d@citrix.com>
+ <2217b23a-1b99-4471-9983-74cee9ca09f7@citrix.com>
+Content-Language: en-GB
+Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
+ 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
+ 6+ahAA==
+In-Reply-To: <2217b23a-1b99-4471-9983-74cee9ca09f7@citrix.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=andrew.cooper@cloud.com; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,15 +150,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/29/25 18:35, Peter Maydell wrote:
-> Compare the "FIXME" comment in the m68k elf_core_copy_regs(),
-> and contrast the way our x86 code is explicitly
-> putting some other value in orig_ax. Are these different
-> kinds of orig_foo, or are we doing unnecessary work on
-> x86, or missing something for arm and m68k?
-I really don't know the answer to that one.
-I'll put a fixme back here for now.
+Trying some other x86 maintainers this time...
 
+~Andrew
 
-r~
+On 25/07/2025 1:01 pm, Andrew Cooper wrote:
+> Ping again?
+>
+> ~Andrew
+>
+> On 20/05/2025 5:32 pm, Andrew Cooper wrote:
+>> Ping?
+>>
+>> On 12/03/2025 12:06 am, Andrew Cooper wrote:
+>>> While the (intno << shift) expression is correct for indexing the IDT based on
+>>> whether Long Mode is active, the error code itself was unchanged with AMD64,
+>>> and is still the index with 3 bits of metadata in the bottom.
+>>>
+>>> Found when running a Xen unit test, all under QEMU.  The unit test objected to
+>>> being told there was an error with IDT index 256 when INT $0x80 (128) was the
+>>> problem instruction:
+>>>
+>>>   ...
+>>>   Error: Unexpected fault 0x800d0802, #GP[IDT[256]]
+>>>   ...
+>>>
+>>> Fixes: d2fd1af76777 ("x86_64 linux user emulation")
+>>> Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+>>> ---
+>>> CC: Paolo Bonzini <pbonzini@redhat.com>
+>>> CC: Richard Henderson <richard.henderson@linaro.org>
+>>> CC: Eduardo Habkost <eduardo@habkost.net>
+>>> ---
+>>>  target/i386/tcg/user/seg_helper.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/target/i386/tcg/user/seg_helper.c b/target/i386/tcg/user/seg_helper.c
+>>> index c45f2ac2ba68..ff328b2a9522 100644
+>>> --- a/target/i386/tcg/user/seg_helper.c
+>>> +++ b/target/i386/tcg/user/seg_helper.c
+>>> @@ -64,7 +64,7 @@ static void do_interrupt_user(CPUX86State *env, int intno, int is_int,
+>>>          cpl = env->hflags & HF_CPL_MASK;
+>>>          /* check privilege if software int */
+>>>          if (dpl < cpl) {
+>>> -            raise_exception_err(env, EXCP0D_GPF, (intno << shift) + 2);
+>>> +            raise_exception_err(env, EXCP0D_GPF, intno * 8 + 2);
+>>>          }
+>>>      }
+>>>  
+>>>
+>>> base-commit: 825b96dbcee23d134b691fc75618b59c5f53da32
+
 
