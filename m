@@ -2,72 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EEE8B3CC41
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7ABFB3CEAB
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 20:28:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usN9K-0003MZ-LG; Sat, 30 Aug 2025 11:05:50 -0400
+	id 1usN8R-0001l0-5O; Sat, 30 Aug 2025 11:04:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1urtwC-0005di-Vg
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:54:22 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1urtw8-00079R-BF
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:54:19 -0400
-Received: from loongson.cn (unknown [10.20.42.126])
- by gateway (Coremail) with SMTP id _____8AxSNGiXLFoUn8EAA--.9215S3;
- Fri, 29 Aug 2025 15:54:10 +0800 (CST)
-Received: from [10.20.42.126] (unknown [10.20.42.126])
- by front1 (Coremail) with SMTP id qMiowJBxZOSfXLFoTTdwAA--.21919S3;
- Fri, 29 Aug 2025 15:54:09 +0800 (CST)
-Subject: Re: Re: [PATCH] hw/loongarch/virt: Add reset interface for
- virt-machine
-To: maobibo <maobibo@loongson.cn>, Peter Maydell <peter.maydell@linaro.org>
-Cc: Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- qemu-devel@nongnu.org
-References: <20241031065418.3111892-1-maobibo@loongson.cn>
- <CAFEAcA_4PabxEui-wbztw+nDpHsoAJNi-HWJU4opax54HgAo5w@mail.gmail.com>
- <c6a29d72-763b-69b6-c5e2-3f5c3828f6ea@loongson.cn>
-From: lixianglai <lixianglai@loongson.cn>
-Message-ID: <bc03fd77-ef72-e871-da36-c745bac5d0a8@loongson.cn>
-Date: Fri, 29 Aug 2025 15:53:00 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uru8g-0002e7-83
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:07:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uru8c-0001Vz-F6
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:07:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756454824;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=dDlKdHrChKNTu87N9kOxbM51RRf5R1hoyAkG4YmmBS/Fj443xhUgxo/rsz1v82QYxgf3Y6
+ w9AoBOd8x+Dkd+yOJzCuCcKdygDzbqXN9RVH7V9vIIVeaR98tsPtj7kiaUCf4fl2MvBiBE
+ fAkYWK4vf85mK1mtuxNUeoNsoryi7oI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-280-esiVzZJPPWuTlW4eKCku-w-1; Fri, 29 Aug 2025 04:07:02 -0400
+X-MC-Unique: esiVzZJPPWuTlW4eKCku-w-1
+X-Mimecast-MFC-AGG-ID: esiVzZJPPWuTlW4eKCku-w_1756454822
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3c6ae25997cso1063025f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 01:07:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756454822; x=1757059622;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=Bi9/G5Y1E3q3s8b+ZH2XPiewQeS5DnpvfLDD0YIT78+lJAzSyXl3FrH3Cwwhd0uWca
+ Mm3qJbjIbpF+spWGXrg0oItjbmJGzT65TRQXwc0fku6Xqfm648V4Xe5tAMcKRyjE8Tto
+ hhf/bZraw5cEwcfwpdZhT6TTAWrsPphXeD3XqnBCuHXUgXsSlhN/qw63S2X9PHyILRF+
+ 1h1Gd92UF34A4yPLFrPFEFScDQHC791BFIyLbPX8TWwtf2YmKIxu8Sk1dsZJwwHmc9LC
+ eDAPbbXwEx86+x5/KBrcMOg0/t0qqaoh+iOxWJ872OrBIkdvIU23ooCZLXidFcmbeEeM
+ 4nIg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWwX9sgtkza+M8VYv1PuhnInJaZOQgXFYUYDcHj2NopFn04ywSAFcDp8hY+CepbiQ0kZEhorQdjBazB@nongnu.org
+X-Gm-Message-State: AOJu0Yx44XRt59sEXIgX6QAte3siC3555b8AyJzwI3PNJZVuJPBBoS/c
+ IhkqJdj/gZSh8fbyIucHq1v5rZr3boyc6pGboeDBeckAuYtySRKwl71gZsKo7qlV9nZF/C0OL2U
+ yl6puPq4oBU49yd44dZZfxxh1Eb9IGZKTN5/95M/z5asE3YkdfesNvKwz
+X-Gm-Gg: ASbGnctoqVjsN9wJOOxdrLw/W4TaGNoXEjlPCIHD0XBqYw1vfuozMKD6k3PJaYTCbzC
+ Qvm1Qay+VrRstSjvRUXimd6wH/bL87bG6MnC5GXt7r2lipGOhVhbTinhG774PyWKUHWciT2ucch
+ v1LLxsJr6Uy84nlzj77HV0FPJAXf07z4WyDeIH6e9pr0BloXOM4soVc8lprjvxY+SFB8f28N6gs
+ TI6wQURYMjPA+zWW8NP6gYGs+XHYbO1Cftubafq2/l4RWqtJkYfbOQFFzuRuU2B8fI9lyZE6nGB
+ gk9iuvOyhiptqsxVAGrJZtjiwY8fO++HOADX3gs+hvCyAhK5vrNpGes3vE8B6QgmVmug0n8UadY
+ xFiGjKDMLZCq6n6nz3gW3ctt/Y5oKoNzUDnc5MjrAfuM=
+X-Received: by 2002:a05:6000:2204:b0:3cd:6c09:1692 with SMTP id
+ ffacd0b85a97d-3cd6c0920e9mr5717001f8f.63.1756454821569; 
+ Fri, 29 Aug 2025 01:07:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFg8wWtmDIVg+JsFDLKlSM4WJ46mzB9Nw7BkIDAoZDYGAdr2DRLkrLaLDTebKoAJ6FnRy5fNQ==
+X-Received: by 2002:a05:6000:2204:b0:3cd:6c09:1692 with SMTP id
+ ffacd0b85a97d-3cd6c0920e9mr5716967f8f.63.1756454821092; 
+ Fri, 29 Aug 2025 01:07:01 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.56.250])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3cf1a2560c3sm2392057f8f.0.2025.08.29.01.07.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 29 Aug 2025 01:07:00 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Cc: pbonzini@redhat.com, mst@redhat.com, marcel.apfelbaum@gmail.com,
+ eduardo@habkost.net, imammedo@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v7 00/19] hw/i386: separate isapc out from pc_piix
+Date: Fri, 29 Aug 2025 10:06:59 +0200
+Message-ID: <20250829080659.1422019-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250828111057.468712-1-mark.caveayland@nutanix.com>
+References: 
 MIME-Version: 1.0
-In-Reply-To: <c6a29d72-763b-69b6-c5e2-3f5c3828f6ea@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowJBxZOSfXLFoTTdwAA--.21919S3
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW3ArW3Jr13Zr1rJF1rAF18Zwc_yoWxXr1Dpr
- ykAF45JrZ5Wrn7Jw42ga4UuFyqyr1xKa1aqF1xtFy0kFsFgryjgr4jqryq9F1DAw48WF1Y
- vr15Cw13ZF45X3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7_MaUUUU
- U
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.357,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,170 +109,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter:
->> On Thu, 31 Oct 2024 at 06:55, Bibo Mao <maobibo@loongson.cn> wrote:
->>>
->>> With generic cpu reset interface, pc register is entry of FLASH for
->>> UEFI BIOS. However with direct kernel booting requirement, there is
->>> little different, pc register of primary cpu is entry address of ELF
->>> file.
->>>
->>> At the same time with requirement of cpu hotplug, hot-added CPU should
->>> register reset interface for this cpu object. Now reset callback is
->>> not registered for hot-added CPU.
->>>
->>> With this patch reset callback for CPU is register when CPU instance
->>> is created, and reset interface is added for virt-machine board. In
->>> reset interface of virt-machine, reset for direct kernel booting
->>> requirement is called.
->>>
->>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->>> ---
->>>   hw/loongarch/boot.c         |  9 +--------
->>>   hw/loongarch/virt.c         | 14 ++++++++++++++
->>>   include/hw/loongarch/boot.h |  1 +
->>>   target/loongarch/cpu.c      | 10 ++++++++++
->>>   4 files changed, 26 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
->>> index cb668703bd..cbb4e3737d 100644
->>> --- a/hw/loongarch/boot.c
->>> +++ b/hw/loongarch/boot.c
->>> @@ -216,12 +216,11 @@ static int64_t load_kernel_info(struct 
->>> loongarch_boot_info *info)
->>>       return kernel_entry;
->>>   }
->>>
->>> -static void reset_load_elf(void *opaque)
->>> +void reset_load_elf(void *opaque)
->>>   {
->>>       LoongArchCPU *cpu = opaque;
->>>       CPULoongArchState *env = &cpu->env;
->>>
->>> -    cpu_reset(CPU(cpu));
->>>       if (env->load_elf) {
->>>          if (cpu == LOONGARCH_CPU(first_cpu)) {
->>>               env->gpr[4] = env->boot_info->a0;
->>> @@ -320,12 +319,6 @@ static void loongarch_direct_kernel_boot(struct 
->>> loongarch_boot_info *info)
->>>   void loongarch_load_kernel(MachineState *ms, struct 
->>> loongarch_boot_info *info)
->>>   {
->>>       LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
->>> -    int i;
->>> -
->>> -    /* register reset function */
->>> -    for (i = 0; i < ms->smp.cpus; i++) {
->>> -        qemu_register_reset(reset_load_elf, 
->>> LOONGARCH_CPU(qemu_get_cpu(i)));
->>> -    }
->>>
->>>       info->kernel_filename = ms->kernel_filename;
->>>       info->kernel_cmdline = ms->kernel_cmdline;
->>> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
->>> index 9a635d1d3d..80680d178c 100644
->>> --- a/hw/loongarch/virt.c
->>> +++ b/hw/loongarch/virt.c
->>> @@ -1434,6 +1434,19 @@ static int64_t 
->>> virt_get_default_cpu_node_id(const MachineState *ms, int idx)
->>>       }
->>>   }
->>>
->>> +static void virt_reset(MachineState *machine, ResetType type)
->>> +{
->>> +    CPUState *cs;
->>> +
->>> +    /* Reset all devices including CPU devices */
->>> +    qemu_devices_reset(type);
->>> +
->>> +    /* Reset PC and register context for kernel direct booting 
->>> method */
->>> +    CPU_FOREACH(cs) {
->>> +        reset_load_elf(LOONGARCH_CPU(cs));
->>> +    }
->>> +}
->>> +
->>>   static void virt_class_init(ObjectClass *oc, void *data)
->>>   {
->>>       MachineClass *mc = MACHINE_CLASS(oc);
->>> @@ -1457,6 +1470,7 @@ static void virt_class_init(ObjectClass *oc, 
->>> void *data)
->>>       mc->auto_enable_numa_with_memdev = true;
->>>       mc->get_hotplug_handler = virt_get_hotplug_handler;
->>>       mc->default_nic = "virtio-net-pci";
->>> +    mc->reset = virt_reset;
->>>       hc->plug = virt_device_plug_cb;
->>>       hc->pre_plug = virt_device_pre_plug;
->>>       hc->unplug_request = virt_device_unplug_request;
->>> diff --git a/include/hw/loongarch/boot.h b/include/hw/loongarch/boot.h
->>> index b3b870df1f..c7020ec9bb 100644
->>> --- a/include/hw/loongarch/boot.h
->>> +++ b/include/hw/loongarch/boot.h
->>> @@ -115,5 +115,6 @@ struct memmap_entry {
->>>   };
->>>
->>>   void loongarch_load_kernel(MachineState *ms, struct 
->>> loongarch_boot_info *info);
->>> +void reset_load_elf(void *opaque);
->>>
->>>   #endif /* HW_LOONGARCH_BOOT_H */
->>> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
->>> index 7212fb5f8f..f7f8fcc024 100644
->>> --- a/target/loongarch/cpu.c
->>> +++ b/target/loongarch/cpu.c
->>> @@ -592,6 +592,13 @@ static void 
->>> loongarch_cpu_disas_set_info(CPUState *s, disassemble_info *info)
->>>       info->print_insn = print_insn_loongarch;
->>>   }
->>>
->>> +#ifndef CONFIG_USER_ONLY
->>> +static void loongarch_cpu_reset_cb(void *opaque)
->>> +{
->>> +    cpu_reset((CPUState *) opaque);
->>> +}
->>> +#endif
->>> +
->>>   static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
->>>   {
->>>       CPUState *cs = CPU(dev);
->>> @@ -607,6 +614,9 @@ static void loongarch_cpu_realizefn(DeviceState 
->>> *dev, Error **errp)
->>>       loongarch_cpu_register_gdb_regs_for_features(cs);
->>>
->>>       cpu_reset(cs);
->>> +#ifndef CONFIG_USER_ONLY
->>> +    qemu_register_reset(loongarch_cpu_reset_cb, dev);
->>> +#endif
->>
->> Please don't add new uses of qemu_register_reset().
->> I know that CPU reset is currently rather awkward (because
->> we don't automatically-reset CPU objects the way we do most
->> device objects), but generally what should happen is that
->> the machine model should arrange to reset the CPU objects
->> it creates. (Which is what it looks like the code you're
->> removing in this patch was doing already.)
-> Currently the machine model does not register reset callback for 
-> hot-added CPUs, so we put reset callback registration on CPU object 
-> created stage, that works for hot-added CPUs.
->
+Queued, thanks.
 
-I see this comment has been around for a long time. Can this patch be 
-merged? Recently,
-I also encountered the same problem, so I submitted a patch.
-However, I found that this patch was a bit better than the one I submitted.
-So, I wonder what the final conclusion of this patch is.
-
-Thanks!
-Xianglai.
-
-> Regards
-> Bibo Mao
->>
->> thanks
->> -- PMM
->>
->
->
->
+Paolo
 
 
