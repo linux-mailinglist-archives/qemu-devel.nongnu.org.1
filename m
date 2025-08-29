@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C22CB3CE78
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:59:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0C15B3CE9E
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 20:16:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNmN-0006f4-G3; Sat, 30 Aug 2025 11:46:11 -0400
+	id 1usNmN-0006Pr-EV; Sat, 30 Aug 2025 11:46:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7br-0004rH-CI
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:30:15 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1us7bu-0004sO-N4
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:30:18 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7bp-0003vO-1M
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:30:15 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-772301f8ae2so956414b3a.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:30:12 -0700 (PDT)
+ id 1us7bs-0003vz-MU
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:30:18 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-32326e2f0b3so2136002a91.2
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:30:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756506611; x=1757111411; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756506613; x=1757111413; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aJ5D76Lv5/JEWH6fy1PlED+PdSmiXzdOglOZPBl9O+8=;
- b=f4eK4rsYCkGXfgp+oTuvliwrJzOGy0hGkE/aRQIF4kRqaxolW/a+En9Tsulcg9qt03
- dJ+EseXCbo3pdALjLEhKd56nDBRuwSORC3iUVjL4bTRNkINg1xXmOZs/nx53aKu9FOxq
- 1r8uZiBYbVlm0RSOa/gbFUX+YYqUCDrr4dJcEYJxMu5ow5eI8sVxO5aWIovarYTXtUmh
- xiGangUVAjIkbTTcpmeyhuAPMtr8yQcxkYGNYyIJuSoqOBCIz1L8tOWwA23/u0Fwa7g8
- xjtSgW1kPZW9w8Zb8+0qn+Z+N6KWaAIECpvh4efrmLP28iRXVXZ+eX3CsZamMIJwSqoa
- N8vQ==
+ bh=suVoDXWExnW7HRwC1OURW6XQc8WcncInBLooRnaEt8k=;
+ b=uaRCzHQoZ5DjNhu8BHVoXhY0w6LfdEEHxy5mZL1+e2Gmzq8SYvHi0PBDLX0NDCj4wv
+ yvNzL40f38kGIwhVyV8XIyzPriucwcb/OPVu3OcWjK2ovm7YMP2hXIdk6CGmLFPga6ys
+ nAUZCNT/WETa8JZNjnzZ7Yyv0Paq1da7Ecc+dZbsUxPoGLTEhxpdCi4W6gpmDht+JEbO
+ V9qgdnClL9SCpYNf4fyxQfnpGnLUX3bwaUWF8J8DXD0Q5RpYOcuZ+KX6suWE4uc82/n0
+ y6zkBXdWPSQq1fwHw9/34YpmbIC/9i06zXAtirJLIMvfcIaZinUXSLwz5b12gnkI2CI/
+ TWPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756506611; x=1757111411;
+ d=1e100.net; s=20230601; t=1756506613; x=1757111413;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aJ5D76Lv5/JEWH6fy1PlED+PdSmiXzdOglOZPBl9O+8=;
- b=t0fA35PQZ9JXP3s005pqYy02cpo5OTzcHBpcx0mQOaRoc8RWQtz0D2OUbbh4Yvvd9k
- Rf5EZ4ssqAokbRohB2BQkKMOZ9XE71/yFQyKaMzX5n2O3iVUpaOAvHodLA6IVtKWCvuD
- N7kQz+xrejRx3SC17Lt/tnQe3MM5hQURBvCABdi9U6wq8AcnjS/MD3JStobSZcW5VhUO
- DCvMEn3x940B7btefj+TkHDp5jB42bPzliTj5mI1Egcuwkh8RhIdYLxX+p31Gwm2b1ia
- g6Wlk3UaLb78/e/Pv0BU864lQOQLaggDdHLEjx5M/Khsw5M3m9gQnlXkQyJ8CoRTm1Fk
- Ofxw==
-X-Gm-Message-State: AOJu0YyTDNXr1Qz2AWvJYzewflgrFUJOa2nPYe+alh9Fty79jiRVaPPO
- 2sONJ7/t2aVqPMLH2gMDBfBH8XB3O8eZjO4Gqqqmqel/G59+VqUC/kfzqYOyd+RnWM00ynlgBuA
- r5Rx1234=
-X-Gm-Gg: ASbGncvygG3Mnfxz+d6z2xzCRTvJ1xrmuYNUNpSfVbMDD72TFrf3nxX3ttDzUdM2qWF
- 6j9of9Johu/zvreuhcnhJF6w57ILbLaP2iCAC8zh/EUDTrJ3ZM+fFINrVYVCt9Q0KSRei/4Q2qI
- bequwJ0QxdD1zhBOFo4rEvKhXXQPKwCjouLfChfbmLFCETFJv6LmLkvQmL/f+fwxTPnRn11YU40
- gGqGtP55HvFQP0XxEqm24lLj4010qfCeEm36Zf74vMRSocINFArwp/2CvptF9B6PcdUwl79CD17
- ZU3Nss6w6TBb8GAiUFpi7wC/Ne0ReinWA5P86IQSryElISkhwavgLzKhVymgFmaptzT1eY82G+m
- 0CZ4RT2DxAcMKX0+QQEk2HOvt3UoamdL4lsK4HeJzagSqjQ8WK079aUd8suo7voY=
-X-Google-Smtp-Source: AGHT+IEpowwrHFZcLyyHfRkXbdBN2JNVx61pj1DgboF4W162iRzTXMY0pSsk/Ns09PDHNc3YZLCVuA==
-X-Received: by 2002:a05:6a20:431a:b0:243:a682:9d1f with SMTP id
- adf61e73a8af0-243d6dff535mr323263637.19.1756506611116; 
- Fri, 29 Aug 2025 15:30:11 -0700 (PDT)
+ bh=suVoDXWExnW7HRwC1OURW6XQc8WcncInBLooRnaEt8k=;
+ b=O53t5gyf+aOyEIsSFLENlE/YTQfzaYoMp2Yb5mgCj/Qxa2CAz6ikchg6Q38icCiIMs
+ zK2AsUbHVT3oYXDBjjXWV1VeSxP0xQnEz7SJsN2YspIuqmMiJcaowR0wmEO0O40jzS5A
+ DaM6TVOYgPa1TkZzthPYNOnB/KoEDW4h2vrKFoKc6cqRKmPFWw2KrIaKNWpZzrNxu0Vx
+ KNNvt2HK6CqnxfBff8caq3oxEf2NUs6+Qvz6Xnjt8IFQGKIMKo6shGs/nevPL406DEzw
+ JdL87ddeCTrD4bJyyMuSlpJxNJZJ0sjO+6sk3ToGPFZ8Bg+/sUglWJQRuBRQT6ofL0G8
+ gcTQ==
+X-Gm-Message-State: AOJu0YwieuMz0swdIat6ma9Xz/Bz/Kbn4THnhlgDsn4janKVoTcGhV8K
+ PtgS8bcNCdrqUbsuaq91YU+H4UuA24oFoBjx0VZskyAB/q8JwCjaXDLs6OkAapU1+0lAhp/WX5g
+ 63w9hBkY=
+X-Gm-Gg: ASbGncuJ4zOX1soU9jPWW7GvYUm/1AcuJuWwogl8g08h+0jZDkqWnzmWe9mvyl2zK/h
+ 5lOY2AbBSzJBciFVNFhTf5EA+a+PdTmBe0MaeiZnl5dTh/ZVo6ALUWulZ/XuM1FdA08eMqGh4zC
+ qKGs7AQBHU3htN/4zcb49AP7rd0WPaM03JYavqJuXZS3uusiClJR7j8A7dAFxrAN0uYgdN6UrDd
+ 5CduA+acMWm257ynzGRAa+XLPucBM47BZnR5mP/kdI+b+PCanB08Gpu8ltm26Zxm4si1iDpxkpr
+ MTccJNgiNQ+R3wMz5gmqu6xjIB1tKvKn4oZjVlBlgadVIzFHaGi4qQm2IxIoq5ShPVkTIBQoBQq
+ qBXMBTKG0xiQNryd3+7SGFqOVph5ZMwz36tUQgf5B2wSgn8EkX+ZKwa6l0Id4jSE=
+X-Google-Smtp-Source: AGHT+IHTWlwfLuZcPbwgDHx2mkbAw9zI2JXZ+8E7s3rKZsdBH3yHNEN2AH/BV0+s2OV4HtkWM3lLew==
+X-Received: by 2002:a17:90b:1b12:b0:323:7e80:8818 with SMTP id
+ 98e67ed59e1d1-328156e5627mr326129a91.37.1756506613530; 
+ Fri, 29 Aug 2025 15:30:13 -0700 (PDT)
 Received: from stoup.. (122-150-204-179.dyn.ip.vocus.au. [122.150.204.179])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7722a4bb5dasm3364297b3a.55.2025.08.29.15.30.09
+ d2e1a72fcca58-7722a4bb5dasm3364297b3a.55.2025.08.29.15.30.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 15:30:10 -0700 (PDT)
+ Fri, 29 Aug 2025 15:30:13 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 65/91] linux-user: Move get_vdso_image_info to arm/elfload.c
-Date: Sat, 30 Aug 2025 08:24:01 +1000
-Message-ID: <20250829222427.289668-66-richard.henderson@linaro.org>
+Subject: [PULL 66/91] linux-user: Remove ELF_EXEC_PAGESIZE
+Date: Sat, 30 Aug 2025 08:24:02 +1000
+Message-ID: <20250829222427.289668-67-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250829222427.289668-1-richard.henderson@linaro.org>
 References: <20250829222427.289668-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,163 +98,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename from vdso_image_info to avoid a symbol clash.
-Define HAVE_VDSO_IMAGE_INFO to signal the external definition exists.
-Provide fallback versions for other targets.
+Use TARGET_PAGE_SIZE instead.  If the target page size may vary,
+using a different fixed size is wrong.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/arm/target_elf.h |  1 +
- linux-user/loader.h         | 12 +++++++++++
- linux-user/arm/elfload.c    | 20 ++++++++++++++++++
- linux-user/elfload.c        | 41 ++++++++-----------------------------
- 4 files changed, 42 insertions(+), 32 deletions(-)
+ linux-user/elfload.c | 32 ++------------------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
-diff --git a/linux-user/arm/target_elf.h b/linux-user/arm/target_elf.h
-index 5f81a43efb..19fdfa2f2c 100644
---- a/linux-user/arm/target_elf.h
-+++ b/linux-user/arm/target_elf.h
-@@ -14,6 +14,7 @@
- #define HAVE_ELF_HWCAP2         1
- #define HAVE_ELF_PLATFORM       1
- #define HAVE_ELF_CORE_DUMP      1
-+#define HAVE_VDSO_IMAGE_INFO    1
- 
- #define HI_COMMPAGE             ((intptr_t)0xffff0f00u)
- 
-diff --git a/linux-user/loader.h b/linux-user/loader.h
-index c3b8f92e23..2175dd4e0a 100644
---- a/linux-user/loader.h
-+++ b/linux-user/loader.h
-@@ -110,4 +110,16 @@ bool init_guest_commpage(void);
- struct target_elf_gregset_t;
- void elf_core_copy_regs(struct target_elf_gregset_t *, const CPUArchState *);
- 
-+typedef struct {
-+    const uint8_t *image;
-+    const uint32_t *relocs;
-+    unsigned image_size;
-+    unsigned reloc_count;
-+    unsigned sigreturn_ofs;
-+    unsigned rt_sigreturn_ofs;
-+} VdsoImageInfo;
-+
-+/* Note that both Elf32_Word and Elf64_Word are uint32_t. */
-+const VdsoImageInfo *get_vdso_image_info(uint32_t elf_flags);
-+
- #endif /* LINUX_USER_LOADER_H */
-diff --git a/linux-user/arm/elfload.c b/linux-user/arm/elfload.c
-index 1205687976..308ed23fcb 100644
---- a/linux-user/arm/elfload.c
-+++ b/linux-user/arm/elfload.c
-@@ -7,6 +7,7 @@
- #include "target_elf.h"
- #include "target/arm/cpu-features.h"
- #include "target_elf.h"
-+#include "elf.h"
- 
- 
- const char *get_elf_cpu_model(uint32_t eflags)
-@@ -255,3 +256,22 @@ void elf_core_copy_regs(target_elf_gregset_t *r, const CPUARMState *env)
-     r->pt.cpsr = tswapal(cpsr_read((CPUARMState *)env));
-     r->pt.orig_r0 = tswapal(env->regs[0]); /* FIXME */
- }
-+
-+#if TARGET_BIG_ENDIAN
-+# include "vdso-be8.c.inc"
-+# include "vdso-be32.c.inc"
-+#else
-+# include "vdso-le.c.inc"
-+#endif
-+
-+const VdsoImageInfo *get_vdso_image_info(uint32_t elf_flags)
-+{
-+#if TARGET_BIG_ENDIAN
-+    return (EF_ARM_EABI_VERSION(elf_flags) >= EF_ARM_EABI_VER4
-+            && (elf_flags & EF_ARM_BE8)
-+            ? &vdso_be8_image_info
-+            : &vdso_be32_image_info);
-+#else
-+    return &vdso_image_info;
-+#endif
-+}
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 81bf05f581..aed390ebb3 100644
+index aed390ebb3..59e6605e36 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -40,15 +40,6 @@
- #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 0
- #endif
+@@ -167,8 +167,6 @@ typedef abi_int         target_pid_t;
  
--typedef struct {
--    const uint8_t *image;
--    const uint32_t *relocs;
--    unsigned image_size;
--    unsigned reloc_count;
--    unsigned sigreturn_ofs;
--    unsigned rt_sigreturn_ofs;
--} VdsoImageInfo;
+ #define VDSO_HEADER "vdso.c.inc"
+ 
+-#define ELF_EXEC_PAGESIZE       4096
 -
- #define ELF_OSABI   ELFOSABI_SYSV
+ #endif /* TARGET_I386 */
  
- /* from personality.h */
-@@ -191,23 +182,6 @@ typedef abi_int         target_pid_t;
+ #ifdef TARGET_ARM
+@@ -180,16 +178,12 @@ typedef abi_int         target_pid_t;
+ #define ELF_CLASS       ELFCLASS32
+ #define EXSTACK_DEFAULT true
  
- #define ELF_EXEC_PAGESIZE       4096
- 
--#if TARGET_BIG_ENDIAN
--#include "elf.h"
--#include "vdso-be8.c.inc"
--#include "vdso-be32.c.inc"
--
--static const VdsoImageInfo *vdso_image_info(uint32_t elf_flags)
--{
--    return (EF_ARM_EABI_VERSION(elf_flags) >= EF_ARM_EABI_VER4
--            && (elf_flags & EF_ARM_BE8)
--            ? &vdso_be8_image_info
--            : &vdso_be32_image_info);
--}
--#define vdso_image_info vdso_image_info
--#else
--# define VDSO_HEADER  "vdso-le.c.inc"
--#endif
+-#define ELF_EXEC_PAGESIZE       4096
 -
  #else
  /* 64 bit ARM definitions */
  
-@@ -1973,14 +1947,17 @@ static void load_elf_interp(const char *filename, struct image_info *info,
-     load_elf_image(filename, &src, info, &ehdr, NULL);
- }
+ #define ELF_ARCH        EM_AARCH64
+ #define ELF_CLASS       ELFCLASS64
  
--#ifndef vdso_image_info
-+#ifndef HAVE_VDSO_IMAGE_INFO
-+const VdsoImageInfo *get_vdso_image_info(uint32_t elf_flags)
-+{
- #ifdef VDSO_HEADER
- #include VDSO_HEADER
--#define  vdso_image_info(flags)  &vdso_image_info
-+    return &vdso_image_info;
+-#define ELF_EXEC_PAGESIZE       4096
+-
+ #if TARGET_BIG_ENDIAN
+ # define VDSO_HEADER  "vdso-be.c.inc"
  #else
--#define  vdso_image_info(flags)  NULL
--#endif /* VDSO_HEADER */
--#endif /* vdso_image_info */
-+    return NULL;
-+#endif
-+}
-+#endif /* HAVE_VDSO_IMAGE_INFO */
+@@ -258,8 +252,6 @@ typedef abi_int         target_pid_t;
+         NEW_AUX_ENT(AT_UCACHEBSIZE, 0);                 \
+     } while (0)
  
- static void load_elf_vdso(struct image_info *info, const VdsoImageInfo *vdso)
- {
-@@ -2311,7 +2288,7 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
-      * Load a vdso if available, which will amongst other things contain the
-      * signal trampolines.  Otherwise, allocate a separate page for them.
-      */
--    const VdsoImageInfo *vdso = vdso_image_info(info->elf_flags);
-+    const VdsoImageInfo *vdso = get_vdso_image_info(info->elf_flags);
-     if (vdso) {
-         load_elf_vdso(&vdso_info, vdso);
-         info->vdso = vdso_info.load_bias;
+-#define ELF_EXEC_PAGESIZE       4096
+-
+ #ifndef TARGET_PPC64
+ # define VDSO_HEADER  "vdso-32.c.inc"
+ #elif TARGET_BIG_ENDIAN
+@@ -280,8 +272,6 @@ typedef abi_int         target_pid_t;
+ 
+ #define VDSO_HEADER "vdso.c.inc"
+ 
+-#define ELF_EXEC_PAGESIZE        4096
+-
+ #endif /* TARGET_LOONGARCH64 */
+ 
+ #ifdef TARGET_MIPS
+@@ -300,8 +290,6 @@ typedef abi_int         target_pid_t;
+ #define elf_check_abi(x) (!((x) & EF_MIPS_ABI2))
+ #endif
+ 
+-#define ELF_EXEC_PAGESIZE        4096
+-
+ #endif /* TARGET_MIPS */
+ 
+ #ifdef TARGET_MICROBLAZE
+@@ -311,8 +299,6 @@ typedef abi_int         target_pid_t;
+ #define ELF_CLASS   ELFCLASS32
+ #define ELF_ARCH    EM_MICROBLAZE
+ 
+-#define ELF_EXEC_PAGESIZE        4096
+-
+ #endif /* TARGET_MICROBLAZE */
+ 
+ #ifdef TARGET_OPENRISC
+@@ -321,8 +307,6 @@ typedef abi_int         target_pid_t;
+ #define ELF_CLASS ELFCLASS32
+ #define ELF_DATA  ELFDATA2MSB
+ 
+-#define ELF_EXEC_PAGESIZE 8192
+-
+ #endif /* TARGET_OPENRISC */
+ 
+ #ifdef TARGET_SH4
+@@ -330,8 +314,6 @@ typedef abi_int         target_pid_t;
+ #define ELF_CLASS ELFCLASS32
+ #define ELF_ARCH  EM_SH
+ 
+-#define ELF_EXEC_PAGESIZE        4096
+-
+ #endif
+ 
+ #ifdef TARGET_M68K
+@@ -339,8 +321,6 @@ typedef abi_int         target_pid_t;
+ #define ELF_CLASS       ELFCLASS32
+ #define ELF_ARCH        EM_68K
+ 
+-#define ELF_EXEC_PAGESIZE       8192
+-
+ #endif
+ 
+ #ifdef TARGET_ALPHA
+@@ -348,8 +328,6 @@ typedef abi_int         target_pid_t;
+ #define ELF_CLASS      ELFCLASS64
+ #define ELF_ARCH       EM_ALPHA
+ 
+-#define ELF_EXEC_PAGESIZE        8192
+-
+ #endif /* TARGET_ALPHA */
+ 
+ #ifdef TARGET_S390X
+@@ -358,8 +336,6 @@ typedef abi_int         target_pid_t;
+ #define ELF_DATA	ELFDATA2MSB
+ #define ELF_ARCH	EM_S390
+ 
+-#define ELF_EXEC_PAGESIZE 4096
+-
+ #define VDSO_HEADER "vdso.c.inc"
+ 
+ #endif /* TARGET_S390X */
+@@ -376,8 +352,6 @@ typedef abi_int         target_pid_t;
+ #define VDSO_HEADER "vdso-64.c.inc"
+ #endif
+ 
+-#define ELF_EXEC_PAGESIZE 4096
+-
+ #endif /* TARGET_RISCV */
+ 
+ #ifdef TARGET_HPPA
+@@ -396,8 +370,6 @@ typedef abi_int         target_pid_t;
+ #define ELF_CLASS       ELFCLASS32
+ #define ELF_ARCH        EM_XTENSA
+ 
+-#define ELF_EXEC_PAGESIZE       4096
+-
+ #endif /* TARGET_XTENSA */
+ 
+ #ifdef TARGET_HEXAGON
+@@ -2697,7 +2669,7 @@ static int wmr_fill_region_phdr(void *opaque, vaddr start,
+     phdr->p_flags = (flags & PAGE_READ ? PF_R : 0)
+                   | (flags & PAGE_WRITE_ORG ? PF_W : 0)
+                   | (flags & PAGE_EXEC ? PF_X : 0);
+-    phdr->p_align = ELF_EXEC_PAGESIZE;
++    phdr->p_align = TARGET_PAGE_SIZE;
+ 
+     bswap_phdr(phdr, 1);
+     d->phdr = phdr + 1;
+@@ -2805,7 +2777,7 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+     offset += size_note("CORE", sizeof(struct target_elf_prpsinfo));
+     offset += size_note("CORE", sizeof(struct target_elf_prstatus)) * cpus;
+     note_size = offset - note_offset;
+-    data_offset = ROUND_UP(offset, ELF_EXEC_PAGESIZE);
++    data_offset = TARGET_PAGE_ALIGN(offset);
+ 
+     /* Do not dump if the corefile size exceeds the limit. */
+     if (dumpsize.rlim_cur != RLIM_INFINITY
 -- 
 2.43.0
 
