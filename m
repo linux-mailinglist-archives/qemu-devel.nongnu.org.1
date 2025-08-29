@@ -2,59 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F476B3CCDE
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CCCB3CC0A
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:35:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNNA-0000Vp-QW; Sat, 30 Aug 2025 11:20:09 -0400
+	id 1usNMq-0006xT-3P; Sat, 30 Aug 2025 11:19:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1us03l-0002WS-3t
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 10:26:34 -0400
+ id 1us03n-0002XV-3a
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 10:26:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1us03g-0003iX-Ay
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 10:26:31 -0400
+ id 1us03h-0003jK-B3
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 10:26:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756477584;
+ s=mimecast20190719; t=1756477587;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=AcCUi87z7t9GF0Ysx99vdQYv+rTU41jhVQXXmpeaZtY=;
- b=X65Ximcwv+w0NVHvWls+3+49QQevkkC8oEewyqHdVXQYMLC6Mu4+lf1HUozDSAGy8Etl40
- KaXkFiXJV3AOv/JFKRCo3A+tHtyl9VzYFwso3yjQV+yPC6OCW3e02Z6YTgIlYNdpERYUqz
- 44Pvt4Zi6yfGDpp/oPHaqmvOen23X3w=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=HuBKOreAJjpsRciiHv2A7v//ZlojqYaVBFPLZDMn5jA=;
+ b=ZOkmC1GeikSH774BddAHhBt7KqS3CXVZ9c7bPl/+VpG788oioYc7MSLH4qOzrBzg0klCRS
+ PDkIb8Yxpl45k3SzySqycgWH6HSPcXEnYfHSKC8FE6LJjJpHyElyGspyZB6D194wuMlia4
+ 1s6/rk3fZIvpP8JTC4jF1Vqbil1atOI=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-275-xUaVLUJUMYW9sFeSCzubpg-1; Fri,
- 29 Aug 2025 10:26:21 -0400
-X-MC-Unique: xUaVLUJUMYW9sFeSCzubpg-1
-X-Mimecast-MFC-AGG-ID: xUaVLUJUMYW9sFeSCzubpg_1756477580
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-321-J_BpfztAO26oS1IJUFFgnA-1; Fri,
+ 29 Aug 2025 10:26:24 -0400
+X-MC-Unique: J_BpfztAO26oS1IJUFFgnA-1
+X-Mimecast-MFC-AGG-ID: J_BpfztAO26oS1IJUFFgnA_1756477583
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 459C419560AE; Fri, 29 Aug 2025 14:26:20 +0000 (UTC)
+ id CD8C5195608A; Fri, 29 Aug 2025 14:26:22 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.108])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8D45F1955E89; Fri, 29 Aug 2025 14:26:18 +0000 (UTC)
+ id D54A019560BC; Fri, 29 Aug 2025 14:26:20 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 0/3] tests/functional: improve handling flaky downloads
-Date: Fri, 29 Aug 2025 15:26:13 +0100
-Message-ID: <20250829142616.2633254-1-berrange@redhat.com>
+Subject: [PATCH v2 1/3] tests/functional: enable force refresh of cached assets
+Date: Fri, 29 Aug 2025 15:26:14 +0100
+Message-ID: <20250829142616.2633254-2-berrange@redhat.com>
+In-Reply-To: <20250829142616.2633254-1-berrange@redhat.com>
+References: <20250829142616.2633254-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
@@ -82,38 +85,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This fixes the functional-system-debian job with the currently
-awol archive.openwrt.org server.
+If the 'QEMU_TEST_REFRESH_CACHE' environment variable is set, then
+ignore any existing cached asset and download a fresh copy.
 
-  https://gitlab.com/berrange/qemu/-/jobs/11173491503
+This can be used to selectively refresh assets if set before running
+a single test script.
 
-We can see the download fail & retry, and then gracefully
-skip pre-cache:
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ docs/devel/testing/functional.rst   | 3 +++
+ tests/functional/qemu_test/asset.py | 4 ++++
+ 2 files changed, 7 insertions(+)
 
-2025-08-29 15:10:11,242 - qemu-test - INFO - Attempting to cache '/var/home/berrange/.cache/qemu/download/d3a01037f33e7512d46d50975588d5c3a0e0cbf25f37afab44775c2a2be523e6'
-2025-08-29 15:10:11,242 - qemu-test - INFO - Downloading https://archive.openwrt.org/chaos_calmer/15.05.1/realview/generic/openwrt-15.05.1-realview-vmlinux-initramfs.elf to /var/home/berrange/.cache/qemu/download/d3a01037f33e7512d46d50975588d5c3a0e0cbf25f37afab44775c2a2be523e6...
-2025-08-29 15:12:24,116 - qemu-test - ERROR - Unable to download https://archive.openwrt.org/chaos_calmer/15.05.1/realview/generic/openwrt-15.05.1-realview-vmlinux-initramfs.elf: URL error [Errno 110] Connection timed out
-2025-08-29 15:12:24,116 - qemu-test - ERROR - https://archive.openwrt.org/chaos_calmer/15.05.1/realview/generic/openwrt-15.05.1-realview-vmlinux-initramfs.elf: Unable to download: URL error [Errno 110] Connection timed out: skipping asset precache
-
-And then later the test itself is skipped:
-
-55/67 qemu:func-thorough+func-arm-thorough+thorough / func-arm-realview            SKIP              0.11s   0 subtests passed
-
-Changed in v2:
-
- - Simplifiy patch 2 - adding the URL was NOT in fact needed,
-   as AssetError adds that automatically
- - Avoid retries on URLError failures
-
-Daniel P. Berrangé (3):
-  tests/functional: enable force refresh of cached assets
-  tests/functional: fix formatting of exception args
-  tests/functional: handle URLError when fetching assets
-
- docs/devel/testing/functional.rst   |  3 +++
- tests/functional/qemu_test/asset.py | 16 ++++++++++++++--
- 2 files changed, 17 insertions(+), 2 deletions(-)
-
+diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
+index 3728bab6c0..fdeaebaadc 100644
+--- a/docs/devel/testing/functional.rst
++++ b/docs/devel/testing/functional.rst
+@@ -312,6 +312,9 @@ The cache is populated in the ``~/.cache/qemu/download`` directory by
+ default, but the location can be changed by setting the
+ ``QEMU_TEST_CACHE_DIR`` environment variable.
+ 
++To force the test suite to re-download the cache, even if still valid,
++set the ``QEMU_TEST_REFRESH_CACHE`` environment variable.
++
+ Skipping tests
+ --------------
+ 
+diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
+index 704b84d0ea..b5a6136d36 100644
+--- a/tests/functional/qemu_test/asset.py
++++ b/tests/functional/qemu_test/asset.py
+@@ -72,6 +72,10 @@ def _check(self, cache_file):
+         return self.hash == hl.hexdigest()
+ 
+     def valid(self):
++        if os.getenv("QEMU_TEST_REFRESH_CACHE", None) is not None:
++            self.log.info("Force refresh of asset %s", self.url)
++            return False
++
+         return self.cache_file.exists() and self._check(self.cache_file)
+ 
+     def fetchable(self):
 -- 
 2.50.1
 
