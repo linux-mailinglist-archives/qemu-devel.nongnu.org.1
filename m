@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647D8B3CC48
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CCEB3CC11
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:38:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNH1-00088y-Uq; Sat, 30 Aug 2025 11:13:47 -0400
+	id 1usNGi-0007Oz-81; Sat, 30 Aug 2025 11:13:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryiE-000182-0S
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:00:15 -0400
+ id 1uryiN-0001B9-4B
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:00:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryiC-0008Bv-2L
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:00:13 -0400
+ id 1uryiF-0008Cx-OX
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:00:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756472411;
+ s=mimecast20190719; t=1756472414;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aNgBnsocI3GR7Pw0K8L2VSK+KTUjcI66uLxSDZZqK5U=;
- b=cNtDXdxz2rTPm6NVYZvq2e1XDpFCBDy3mqJOSlUDWlQLQ/NiKkYDfurQ/LAE6cTQjt5pj5
- 7O0YRixoDZi5GSH4BAqx0cD7mL1f5PHyCaYpnDStAx/LTbEjdAjKBifFZiNO7w04bIKuyu
- MPq2HKWHxA62jrj4KloGHMCJcIgzAeo=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jtKc/6E/RbNiUG2cnBtKwsWzbtnSHz0rkgbelCKjpIE=;
+ b=ZILVrag0nSG1Xdtq3PKyY8982HYqFLHF5ycpZ293zoKi7BKu6t5evgS/49VC/JaWKTwnD3
+ b5+akFA+/nJscL+AWb8wCEOwncsjNVbPqdlf91fkgNCbfdnK1si6dVdK4ze2s30rYUJ+RB
+ uzb+oRO+7+mmI2Md+w6TIWky8DRLA+s=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-128-ApmVIgcfOqCvjfr_9g990w-1; Fri, 29 Aug 2025 09:00:09 -0400
-X-MC-Unique: ApmVIgcfOqCvjfr_9g990w-1
-X-Mimecast-MFC-AGG-ID: ApmVIgcfOqCvjfr_9g990w_1756472408
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3cbe70a7861so1524579f8f.3
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 06:00:08 -0700 (PDT)
+ us-mta-176-rFtJkVNZOvCPV02F2a0cSg-1; Fri, 29 Aug 2025 09:00:12 -0400
+X-MC-Unique: rFtJkVNZOvCPV02F2a0cSg-1
+X-Mimecast-MFC-AGG-ID: rFtJkVNZOvCPV02F2a0cSg_1756472411
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-45b7d485153so11514745e9.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 06:00:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756472407; x=1757077207;
+ d=1e100.net; s=20230601; t=1756472410; x=1757077210;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aNgBnsocI3GR7Pw0K8L2VSK+KTUjcI66uLxSDZZqK5U=;
- b=RBWnLaSHvdnQ4JjmDDr33+NJszz/6fYLOKZTjduOa1jnV9SWQuDAiKvEOV5ld/4lPu
- jWeO1ZWB0Ztu3ZGhT9QYL6tycg2d97pa3aeCs5ZUMx5PLOX1FCUYpEUm22rg2jj7QAza
- pFwnMcHcd4H9OiIuuYjnO9Bp3lZYhJzgVw5DySxQeaNUFkj/7DtQgPgwO0HWHOIRZPXC
- 4KjLWFsC+0GXb587zXHmONHoSc7RErbtr7pPTmBS14cc2bKNwmqTCv/Jp16zvvycSuxW
- S9xICrvvl5AMNGMcNTlV4Mei/maol5ef5IQLq60Ae9rxpTvYBiJnH+8VN5WXzxpkFe2l
- KspA==
-X-Gm-Message-State: AOJu0Yzo8DSQDi1ayzE+JJzyzY+CnJC0BjxLEmQGumk/oNMVriV5VfWG
- Zp+3suh5kTfhR35OnEHscS75psWmIMCHWqmNArSxBBP3VHJz8iKrkRakH9wJ+Z8TCE4nWGENq4/
- ay4PCx2ZnYztnOu5f12Qd6dMEA0GNmlshS6i/ycEt3BPUUV60Gla6+I5w7lLtLdY9yjD8C2gESD
- IZLxnqY/2QsqedibhlEieBWiKYuanwvWOwoZYooCia
-X-Gm-Gg: ASbGncv65rLvt5DzstxIUFtL9R9a4MKO1Mi5Rpsaea+jvr7d7EfpG+z0z/4L42bqL5A
- eo8Uf2neQmpj8wR22aOoDE5pheW+Q0NntzO2AVHhy+fXYcimpy+11coVBIZo+vxdOA30M+YAmGr
- HL2oB+A+u/iJS/loTcv4fB+dlFW36ye6zedsgTyh5/UdqWWwWnnQFkX/xAGQIgn5TeXvQqM8/3M
- 5mSTQG8HacKLcYB4bGqaLASVElgpjS9rPpiw58bBHy+5fFxHrP6YaUuZ6TD8RN6hWX9G91C5j/1
- Gbl6vL6rOHTe6OWZtaSxhtYZAKzFep9KVxEjOJGA+u2Rq5+VwBuQ7V3jLz5Z2nvrzsONF/wt5U1
- Gm5jtjEASrHeNL6FZddvbQKHa8x2gZacgkCr78Kn13E4=
-X-Received: by 2002:a05:6000:178b:b0:3c9:a722:e189 with SMTP id
- ffacd0b85a97d-3c9a722e3e6mr13429075f8f.62.1756472406536; 
- Fri, 29 Aug 2025 06:00:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHeRExpKznG0FMDzIDcV7empYGImPiru2lwiaqSFyXZr9Lf9EUeIxynWnRcR61ivvoyNeEtMw==
-X-Received: by 2002:a05:6000:178b:b0:3c9:a722:e189 with SMTP id
- ffacd0b85a97d-3c9a722e3e6mr13429039f8f.62.1756472405790; 
- Fri, 29 Aug 2025 06:00:05 -0700 (PDT)
+ bh=jtKc/6E/RbNiUG2cnBtKwsWzbtnSHz0rkgbelCKjpIE=;
+ b=biKo3G75l29bBImq9aip44om+K1v1Nj0znij20npPjKiBThLBwYu30mPkq1MmuL0Zl
+ 5V1dhGfZPrP6+4gwdIQavFoK6EBcV82ZY1uSf6ZzWS/p86YTyv9mtuVgya1IsqsMAZFR
+ 1GV/8yZwoJ+W3XiX2EpROyOzuoITkBS11/q580VI+lqAM5EMSRhbdsruu00VkSCuQHIs
+ q0Edn1iRMqpYTrD9iMjUA+5n2mDOYYHkF4e2lBywlDnKUweiVrpAqk89/UrN7i+y0Jb4
+ XtR/XbT15MH/Y/M+inW7maXWMaN4eYcj/vB//8KASYyrWGlu9hMIYuXkGWVoAOmtjyiz
+ 30uw==
+X-Gm-Message-State: AOJu0YxEEGaxkREhNuHlVt+sKsvdHCnWkXyf+LNIt2BXp+NzO0a1pTIj
+ QhEqzy90urC2m3YoEZHrJLpWxv1AFsi2IeZKcOONgg11GKCKqSW9d8paAlmSz/LBcOXN61aeyi5
+ Tv4lBKTpwd2yTKCkAZTxjvB0buoxMSGrEpmq+BD4//4glvG2btB7a5p9tmlwmE0Oi+3QaLM70Qy
+ 1yTyYG85sdif8unO7DrzNpz4JcsS/jovK780FNJerv
+X-Gm-Gg: ASbGncuQoPO8PhXc5sqiqC/9J1/BT4MnHxhN1ckz4NWafLb64EVG76a2t4rOiEBSmzP
+ 81Xf0Ho+bgfDMsrUUAf97sIOW8/MHHMQkoVC/lN9TJS/4eWCaCsVHU+mdg7Ab92e2QQKRVHPQmk
+ qV+CETZcNTOxbjX2D5PZbDlWcwT7SkhzWvCsoYJDvxkblvL8/d9zupIQxtz2KKflUoy+xJN/yQB
+ waULK4gaQJg8U2K6R/U0NKppWUUZ4qMxJKm+yhp9AZlZkaUXsxjcpa2uLPJ9kCx+maX5vT2OiNp
+ 835PbJVaiEPUBhAuIaCxWB4QaUWY2mRmuqpqU3j8vBVHC5wcCTSvDmzpWDhRj6IXB3GT6arUQ0V
+ jzXBOcn8uy9Y9R+75vg/58LIm3T1TkVsdQNcQWbr3w6Y=
+X-Received: by 2002:a05:600c:4511:b0:456:10a8:ff7 with SMTP id
+ 5b1f17b1804b1-45b517dd3admr225707805e9.28.1756472409802; 
+ Fri, 29 Aug 2025 06:00:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFX+JoRBf+P/lbVcUBADTBMTlEdHqi1xnX586DfxEksSoVDWPSvH7YGXB8suNz7FTMMm2eKqw==
+X-Received: by 2002:a05:600c:4511:b0:456:10a8:ff7 with SMTP id
+ 5b1f17b1804b1-45b517dd3admr225707315e9.28.1756472409190; 
+ Fri, 29 Aug 2025 06:00:09 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3d12c90a01bsm876081f8f.31.2025.08.29.06.00.03
+ ffacd0b85a97d-3cf276d5e5fsm3388364f8f.27.2025.08.29.06.00.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 06:00:04 -0700 (PDT)
+ Fri, 29 Aug 2025 06:00:06 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 11/28] hw/i386/pc_piix.c: simplify RAM size logic in
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 12/28] hw/i386/pc_piix.c: hardcode hole64_size to 0 in
  pc_init_isa()
-Date: Fri, 29 Aug 2025 14:59:18 +0200
-Message-ID: <20250829125935.1526984-12-pbonzini@redhat.com>
+Date: Fri, 29 Aug 2025 14:59:19 +0200
+Message-ID: <20250829125935.1526984-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829125935.1526984-1-pbonzini@redhat.com>
 References: <20250829125935.1526984-1-pbonzini@redhat.com>
@@ -112,99 +113,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 
-All isapc machines must have 32-bit CPUs and so the RAM split logic can be hardcoded
-accordingly.
+All isapc machines must have 32-bit CPUs and have no PCI 64-bit hole so it can be
+hardcoded to 0.
 
 Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20250828111057.468712-12-mark.caveayland@nutanix.com
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://lore.kernel.org/r/20250828111057.468712-13-mark.caveayland@nutanix.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/pc_piix.c | 58 ++++-------------------------------------------
- 1 file changed, 4 insertions(+), 54 deletions(-)
+ hw/i386/pc_piix.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index daf63a326b6..0bc033943ca 100644
+index 0bc033943ca..66dc4a5186e 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
 @@ -445,7 +445,6 @@ static void pc_init_isa(MachineState *machine)
      GSIState *gsi_state;
      MemoryRegion *ram_memory;
      MemoryRegion *rom_memory = system_memory;
--    ram_addr_t lowmem;
-     uint64_t hole64_size = 0;
+-    uint64_t hole64_size = 0;
  
      /*
-@@ -480,65 +479,16 @@ static void pc_init_isa(MachineState *machine)
-     }
+      * There is a small chance that someone unintentionally passes "-cpu max"
+@@ -499,7 +498,7 @@ static void pc_init_isa(MachineState *machine)
  
-     /*
--     * Calculate ram split, for memory below and above 4G.  It's a bit
--     * complicated for backward compatibility reasons ...
--     *
--     *  - Traditional split is 3.5G (lowmem = 0xe0000000).  This is the
--     *    default value for max_ram_below_4g now.
--     *
--     *  - Then, to gigabyte align the memory, we move the split to 3G
--     *    (lowmem = 0xc0000000).  But only in case we have to split in
--     *    the first place, i.e. ram_size is larger than (traditional)
--     *    lowmem.  And for new machine types (gigabyte_align = true)
--     *    only, for live migration compatibility reasons.
--     *
--     *  - Next the max-ram-below-4g option was added, which allowed to
--     *    reduce lowmem to a smaller value, to allow a larger PCI I/O
--     *    window below 4G.  qemu doesn't enforce gigabyte alignment here,
--     *    but prints a warning.
--     *
--     *  - Finally max-ram-below-4g got updated to also allow raising lowmem,
--     *    so legacy non-PAE guests can get as much memory as possible in
--     *    the 32bit address space below 4G.
--     *
--     *  - Note that Xen has its own ram setup code in xen_ram_init(),
--     *    called via xen_hvm_init_pc().
--     *
--     * Examples:
--     *    qemu -M pc-1.7 -m 4G    (old default)    -> 3584M low,  512M high
--     *    qemu -M pc -m 4G        (new default)    -> 3072M low, 1024M high
--     *    qemu -M pc,max-ram-below-4g=2G -m 4G     -> 2048M low, 2048M high
--     *    qemu -M pc,max-ram-below-4g=4G -m 3968M  -> 3968M low (=4G-128M)
-+     * There is no RAM split for the isapc machine
-      */
-     if (xen_enabled()) {
-         xen_hvm_init_pc(pcms, &ram_memory);
+     /* allocate ram and load rom/bios */
+     if (!xen_enabled()) {
+-        pc_memory_init(pcms, system_memory, rom_memory, hole64_size);
++        pc_memory_init(pcms, system_memory, rom_memory, 0);
      } else {
-         ram_memory = machine->ram;
--        if (!pcms->max_ram_below_4g) {
--            pcms->max_ram_below_4g = 0xe0000000; /* default: 3.5G */
--        }
--        lowmem = pcms->max_ram_below_4g;
--        if (machine->ram_size >= pcms->max_ram_below_4g) {
--            if (pcmc->gigabyte_align) {
--                if (lowmem > 0xc0000000) {
--                    lowmem = 0xc0000000;
--                }
--                if (lowmem & (1 * GiB - 1)) {
--                    warn_report("Large machine and max_ram_below_4g "
--                                "(%" PRIu64 ") not a multiple of 1G; "
--                                "possible bad performance.",
--                                pcms->max_ram_below_4g);
--                }
--            }
--        }
- 
--        if (machine->ram_size >= lowmem) {
--            x86ms->above_4g_mem_size = machine->ram_size - lowmem;
--            x86ms->below_4g_mem_size = lowmem;
--        } else {
--            x86ms->above_4g_mem_size = 0;
--            x86ms->below_4g_mem_size = machine->ram_size;
--        }
-+        pcms->max_ram_below_4g = 3.5 * GiB;
-+        x86ms->above_4g_mem_size = 0;
-+        x86ms->below_4g_mem_size = machine->ram_size;
-     }
- 
-     x86_cpus_init(x86ms, pcmc->default_cpu_version);
+         assert(machine->ram_size == x86ms->below_4g_mem_size +
+                                     x86ms->above_4g_mem_size);
 -- 
 2.51.0
 
