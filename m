@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D57DB3CC69
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:55:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2D4B3CC0D
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:37:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNOc-0003zJ-Ly; Sat, 30 Aug 2025 11:21:39 -0400
+	id 1usNOb-0003vQ-JE; Sat, 30 Aug 2025 11:21:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1us14i-0001nh-El
+ id 1us14i-0001ni-GN
  for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:31:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1us14c-0000V4-4V
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:31:34 -0400
+ id 1us14f-0000Ve-UX
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:31:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756481488;
+ s=mimecast20190719; t=1756481492;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EsZtj6B4xNxRbWQ2j10KIrPfvYq1rdhUBi92bjvMMmM=;
- b=M54fA2GZmlWqH1cGEh/IydbM6QeXHH8Ny/cmEWFj0WS2O6uf7BhBxzxGQYn2W8BwNCInL0
- UEYUnErihKCfavZrKGv39EXw3huC3CxmIZHv87tCvw4JEA/CG1dno64R5ERUjHF+025wCl
- 7mi7o50xCWADHRalOUGckFvDUkQR8P8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wHiXTdD+JdkJ3K5Wgrb7J368fVXnGUo4N+Ao9AD46aI=;
+ b=YXlOI1TEWGP48olXruYUx3CWUR+hHxtQt53bES/r/YOJuKZgUfyp9pLcl5poWWs20nBKBj
+ kj99YdN5VHGUDDqEJMRG7TgLo+gY7k1t7DpyghuJeR+Gq3dHwx15isp69wayNuch1s2FeF
+ SSjNKpmlwKJaT6yIkOMRYgZrYqksHF0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-CSDzsGIjMRG3MmLPlKuLpw-1; Fri, 29 Aug 2025 11:31:26 -0400
-X-MC-Unique: CSDzsGIjMRG3MmLPlKuLpw-1
-X-Mimecast-MFC-AGG-ID: CSDzsGIjMRG3MmLPlKuLpw_1756481484
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-45b71fe31ffso12933055e9.2
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 08:31:25 -0700 (PDT)
+ us-mta-668-gFFm9Sz3Pp23zpMc3XgYTA-1; Fri, 29 Aug 2025 11:31:30 -0400
+X-MC-Unique: gFFm9Sz3Pp23zpMc3XgYTA-1
+X-Mimecast-MFC-AGG-ID: gFFm9Sz3Pp23zpMc3XgYTA_1756481489
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-45a1b05a59cso14966165e9.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 08:31:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756481484; x=1757086284;
+ d=1e100.net; s=20230601; t=1756481488; x=1757086288;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EsZtj6B4xNxRbWQ2j10KIrPfvYq1rdhUBi92bjvMMmM=;
- b=fAEnEO8pxj6cLbc8npRRDn74e3B6TpSQhgeqPtL9qUm0g4KYKDaT3/tynP51EVBbY4
- ppGbtPrfr31CorjbCR8MJjJJlK/GTGEBtpbvUV8w14RcGhqXJ29hNKcKMZM7KteXIIek
- dX5u95prMSIoCx5vIgDU2JtN124EoIzEGm23+V/g4miGfdh3P4MH7Wj32sUNpYwUgrat
- hf16j0S8ZaeVcEZ39cxCo+RPeXf1HbIFhrmLHZTnDBRAoSNDzWPWJzuA2xIgLtW35Arw
- ExQ2vD7sQtuv6rQPn+zFfReQ25Q5cqKrTIoUjc65apC4cSHLL/XT4MyM0ixTUcVK+gkd
- 6wew==
-X-Gm-Message-State: AOJu0YyrcIEIaOpAmu7rZLw8bW7SXQ4WOA7Q+3VPz0bjtckaCAGSlV8c
- nGjr/N8TC9EneN+2nQPlo9v7uaYSn2YSRGP2fT1+QBRMamXE1PyglY3VfLS+SuMRMlMUFG2lpdl
- ny7JpTQTneOZOb792S5oAImQeiZKBesQjKNGPH23l9UNF9GHouLcgBm0FbNWygs+aSIB5CzNT+4
- y8FWGl5AWMmsPEFm3u8GaZw7tP0RvHHiW6dDiUXODo
-X-Gm-Gg: ASbGncsnH/NH246W+Eb3EqoFSyn74quQVroXWSvtK7fsOC1vD8XRWdobAJ8Yi14cptD
- rTKD4oG1OsjCaRw4+dEXlTZ8gBxHJy6BJctNTslt8lnhJIMjWYXYSA9QcIgQUvtLIbYVh+C5HV4
- JwrOfjNdX80oOqaXS2SEKYob59CPgxAARYJhM/cnLzVprtJz3EWI3ebwPQLJ8gMvwLpUqT7EKml
- UH9YixhcPeJU+a99JRUcyAaOSQf1CbEDm+luFSupT+o3A8ApgPeGi+A0UP/12MXd5r6CLAd19Kz
- nJpPVW141H6jAJlFtV2Plqnl7dOkyOSnTMxj6Pse1D/fljoNyVmyM+YCcF6V+lTeSv1Iz4xu3FK
- 8nHbW1277znltjdJVcqywCVlZ0APbLhcNNJpVktb+Llo=
-X-Received: by 2002:a05:600c:3b8b:b0:45b:7951:92a2 with SMTP id
- 5b1f17b1804b1-45b795195c9mr54607835e9.18.1756481483626; 
- Fri, 29 Aug 2025 08:31:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH45wRzNb7t0IxQi75lcnXmWWtTjS7Pv6ApygqocKPXnWv0MkgD33L8EbCi5JtzBKvDyJaTUw==
-X-Received: by 2002:a05:600c:3b8b:b0:45b:7951:92a2 with SMTP id
- 5b1f17b1804b1-45b795195c9mr54607495e9.18.1756481483080; 
- Fri, 29 Aug 2025 08:31:23 -0700 (PDT)
+ bh=wHiXTdD+JdkJ3K5Wgrb7J368fVXnGUo4N+Ao9AD46aI=;
+ b=Y46A5wUnyzSFdB8wb8xumvOSNcZcM/zkmptZNFkSbsYpukc5sf0kIkNLj+qCs6MdU0
+ nmf/J2oX1x2Ew+8hU0HH8FdxqOWqcscbx9g0YCLIDJlEHuN/MbGvSkQzcOFi5r5hpv7M
+ ND9FGmM8Rz9JlXVKU23UstSo3wEufhk9e5RcG1olYflwqX+waPpMbaDic+elDnuSZyOs
+ oECk1zwDEOQC6i7gYoT78nD0kq9u1/I2G/6hZGBeoEr4gM/9FlQgqeFe/SU9O7U25nzQ
+ Vk21uR+plXtKJ/pATYeiAgunjY1Luj5WeEoBrcJKZ5SPkDwrsf752u3zEHftjpgMkbAJ
+ OODg==
+X-Gm-Message-State: AOJu0YyqLD78ZMZjrcRUqmFG+PeV0gA0Ro2BOhjBg8swun8dH1Q6yvfk
+ tBDaRZ4PX+rcP5P0x/2lmOmhg/IbLoJSDj70L4J/jCohChrkUd+AIyA168RqckYWYIIGf/wmfKL
+ qcbYiNCRydII6b+nkwBVTjYzHQjhE/6jd2WMPgHlU/tJTT2NzBdAC1igsI5GmGEuJB8OJTyDo1Q
+ SrU1drrMUDsv+aGbj+ikc6tR+/NRD4aPLBjZ8d68yR
+X-Gm-Gg: ASbGncux2ZNjJphdGrbmGfoLGc6Zg01dsJiaPsMvWmmWl6TEgrw6k5+ZzagS2TYT1Jb
+ 8hKW72xJtwzQVzItMHeYY0kNDFgN4okRsoXJOKLkh5pgIJLK35nZY3d9pBfvLgF8Pr7tQ++pTX1
+ p8ST4aHrTqDwlKAlfjWl/tjFGSAqt+3Fg+jOGwe2tEOOpkvjqIskp3b5Vbxb+YGGg2Tohy5iMx+
+ J2ufhZUQchkyVCrAkZru8EySN69UujBesjIPcJbieMpf4Fg4+ldTnJOVFhPZ1xcAp0YwZw7BPCb
+ pNZzZ6vBFOicpwK6sg6dPSi3vfsMtZHxsn7NrRDR2PZ3nabZQGTXLbeL/Uiz6O+/l0qWb5QI5qr
+ TR8+DcT5Ozv9CrITJplnFtS6aGVAQ6Z5ZrlkWOUPfyR0=
+X-Received: by 2002:a05:600c:4617:b0:45b:7deb:3f07 with SMTP id
+ 5b1f17b1804b1-45b7deb495fmr29290095e9.5.1756481488635; 
+ Fri, 29 Aug 2025 08:31:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEqIpqtDTEzUzErYWJ417I16eY0x9D/bMIsQx2SY1DYNWVLkPhv5Owh18nRxW8wOpwO1kCo0A==
+X-Received: by 2002:a05:600c:4617:b0:45b:7deb:3f07 with SMTP id
+ 5b1f17b1804b1-45b7deb495fmr29289835e9.5.1756481488143; 
+ Fri, 29 Aug 2025 08:31:28 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3d0c344f6casm2718163f8f.36.2025.08.29.08.31.20
+ ffacd0b85a97d-3cf270fd2dfsm3926917f8f.3.2025.08.29.08.31.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 08:31:20 -0700 (PDT)
+ Fri, 29 Aug 2025 08:31:24 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com,
 	richard.henderson@linaro.org,
 	imammedo@redhat.com
-Subject: [PATCH 07/18] cpu-common: use atomic access for interrupt_request
-Date: Fri, 29 Aug 2025 17:31:04 +0200
-Message-ID: <20250829153115.1590048-3-pbonzini@redhat.com>
+Subject: [PATCH 08/18] cpus: document that qemu_cpu_kick() can be used for
+ BQL-less operation
+Date: Fri, 29 Aug 2025 17:31:05 +0200
+Message-ID: <20250829153115.1590048-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829152909.1589668-1-pbonzini@redhat.com>
 References: <20250829152909.1589668-1-pbonzini@redhat.com>
@@ -109,70 +110,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Writes to interrupt_request used non-atomic accesses, but there are a
-few cases where the access was not protected by the BQL.  Now that
-there is a full set of helpers, it's easier to guarantee that
-interrupt_request accesses are fully atomic, so just drop the
-requirement instead of fixing them.
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/core/cpu.h |  1 -
- hw/core/cpu-common.c  | 12 +-----------
- system/cpus.c         |  3 +--
- 3 files changed, 2 insertions(+), 14 deletions(-)
+ include/hw/core/cpu.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index b01a0cffd64..23bd02277f4 100644
+index 23bd02277f4..8b57bcd92c9 100644
 --- a/include/hw/core/cpu.h
 +++ b/include/hw/core/cpu.h
-@@ -495,7 +495,6 @@ struct CPUState {
-     bool exit_request;
-     int exclusive_context_count;
-     uint32_t cflags_next_tb;
--    /* updates protected by BQL */
-     uint32_t interrupt_request;
-     int singlestep_enabled;
-     int64_t icount_budget;
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index 39e674aca21..9ea1f3764a8 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -67,19 +67,9 @@ CPUState *cpu_create(const char *typename)
-     return cpu;
- }
+@@ -829,7 +829,8 @@ bool qemu_cpu_is_self(CPUState *cpu);
+  * qemu_cpu_kick:
+  * @cpu: The vCPU to kick.
+  *
+- * Kicks @cpu's thread.
++ * Kicks @cpu's thread to exit the accelerator.  For accelerators that
++ * can do that, the target vCPU thread will try not to take the BQL.
+  */
+ void qemu_cpu_kick(CPUState *cpu);
  
--/* Resetting the IRQ comes from across the code base so we take the
-- * BQL here if we need to.  cpu_interrupt assumes it is held.*/
- void cpu_reset_interrupt(CPUState *cpu, int mask)
- {
--    bool need_lock = !bql_locked();
--
--    if (need_lock) {
--        bql_lock();
--    }
--    cpu->interrupt_request &= ~mask;
--    if (need_lock) {
--        bql_unlock();
--    }
-+    qatomic_and(&cpu->interrupt_request, ~mask);
- }
- 
- void cpu_exit(CPUState *cpu)
-diff --git a/system/cpus.c b/system/cpus.c
-index 437848b5eb4..9bfbe2b0607 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -257,8 +257,7 @@ int64_t cpus_get_elapsed_ticks(void)
- void cpu_set_interrupt(CPUState *cpu, int mask)
- {
-     /* Pairs with cpu_test_interrupt(). */
--    qatomic_store_release(&cpu->interrupt_request,
--        cpu->interrupt_request | mask);
-+    qatomic_or(&cpu->interrupt_request, mask);
- }
- 
- void generic_handle_interrupt(CPUState *cpu, int mask)
 -- 
 2.51.0
 
