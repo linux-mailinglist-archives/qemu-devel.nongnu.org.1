@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5E0B3CD2A
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:36:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A768CB3CDF0
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:12:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNgq-00009B-Qb; Sat, 30 Aug 2025 11:40:35 -0400
+	id 1usNiK-0003KC-0O; Sat, 30 Aug 2025 11:42:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us6X8-0000Oi-0A
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 17:21:18 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1us6i2-00039N-B7
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 17:32:38 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us6X6-0003qf-9K
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 17:21:17 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-772301f8ae2so933019b3a.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 14:21:15 -0700 (PDT)
+ id 1us6hz-000738-QH
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 17:32:34 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-770530175a6so1705143b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 14:32:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756502474; x=1757107274; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756503149; x=1757107949; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=yb4Y2tQ0VlRDKRHRGy8HmnWrB6L4HDppjYoRYBU1HSQ=;
- b=v1j7CrqmD5WuJ4o0psCYiJy45LAo55PGkfYdkhYRc466woN+Q6CkyxMCHj5dsE2w7F
- SrGk7IHm6ToY7lpY6rD/1gxXaYWQnaWganvK+wWItQtAhggB2n/imxM0PuGBeXTh8BoR
- Ycd50oNEqmqP2VojIjMCOzn1bTENkmni/X4VTi4SmDATWoNQs2gpcLuFKDGB+iN1h1jU
- SfyIXt+ptFeqkjQIrb1hsyhLeq70/63idweMmlMfaT/AL3H0Fnn2QDFT4Ph1RapwIti0
- X4wC0G/RVNrLU3npp7XYiTlSiW3BGmJ6CIJzhShFlmJObN33EXuK+bmFf8iDKTwa2mg7
- YBqQ==
+ bh=5Hqlc6/a7x2Z1czMBEiMziHSyqqwjw6QoDJsF0k2VYo=;
+ b=yq+tdNad2ae7SOOA79IFRjQBgdth06DBKzuLA016RbaUPO7dDLCV1GLAZtgpUHwKR0
+ gI/+530ZQTZ5odjTvZzLA/M/Bj97+PhMhekWVYrYVQiuKhbwxqFA951MK2DNHAhVGifx
+ CrLXxp5z8LxJXKZ+YwXATUuxW/nTiYQf49MbfTZ0AjHK5qKoBg+IeoqqLs6tb2nRzCTr
+ 6i5ZNFehPgRGggoGjQjjGCeMTk+uufuyitVS8IJ2WO6w9zQPguD3oul8gkKBD91CXRet
+ rtlQ+KYQ6Gra+y2kgaQbPhm59lJBzfyAfe1ujVl8WXVh2stYI1RLKkCK+fZo7zrOCU+Y
+ 7Tvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756502474; x=1757107274;
+ d=1e100.net; s=20230601; t=1756503149; x=1757107949;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yb4Y2tQ0VlRDKRHRGy8HmnWrB6L4HDppjYoRYBU1HSQ=;
- b=XNdK4JXB7Qm1od8cybtv7LJvspjeD3ZP9VvzC+zV+1Pe3ESetakyWCQVwf0Ftc+bFg
- KwtLjXDlyDIQ4sq1Ld9bb/w3FoDow989J+E1QaCIlvtHKh9kldb7COwWfXTnHWdcXh+f
- R8Qis9kNOvvZ1wDBCWJw0NSV23MBYcEKwnGn5jinxYJO9TmCs3yZ6Ndgvd6UPmKDw+LP
- C5SmCrtuNAeL1EOElJww0ojzgzR8JZrrwQv6ANkNRenjb75hNNuog7VfLA6ZEOcwia9B
- 3zR8kPYMWRqq1mMCsFLeUzKxXxq9Fi7H5HuPiOyS3nrlTn02y+Xy9V/4mJwbst6N0G/W
- k6Cw==
+ bh=5Hqlc6/a7x2Z1czMBEiMziHSyqqwjw6QoDJsF0k2VYo=;
+ b=xEKHVNUp3gNhEwUX7F+EVyUKJt6KyykA9NsaoqgZWq/9j1T9qi39S0sjDRK1rxolqI
+ 5c6T/almstVt3+X4/YxEX3J/wn4HLHuWnC1Dx0kri0vBUKFEv5k/WfWQQmhGWNKZGwwP
+ YS7sbWP38Z/+db6Rv40xz6X1L7pflIEwFYlCDNRToKBwEkU6M1XY7QleVwPD/N0xCimu
+ PgUPwwLu4q4M3D2r0Dqi1jSl7KuXrv1hYFgSOOlnlnLfbPJIVBEk9UP5FXoCxGRW3b4x
+ oJ4JbYCcVS5Li7Jmibs6J+jszM1d0fN9BejAZcTLn1j8L3oEwCVrOuku7d7MDAtrCHsn
+ lRqg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU3l8ecjGQwSYHrcJIyshOBH8Bk/BAkseAmxAuskfvmGjOzhtEs3uhlERMV+lTbzKhKdBKuvcueK/ra@nongnu.org
-X-Gm-Message-State: AOJu0Yw5XFvFMvK9mXi9D296hkuMg/HmxP4IcgsTr7R8+kzfBFTjrihR
- McCBbDR+RnsUjnENoZQnjrzG5fvHS+oYSDfONg0Hb3YT1CcZ2XAvz7MBCRG3kvBwkV4=
-X-Gm-Gg: ASbGncs7vZ2B8KZCuyVQxQZr5uy6CqKFBk2tLHkt70V7DAei9Hm6Ms1JJlsRxNuxumi
- qM263xUazODycXV76+l1zFOpWvQLtCKWc7lsJX5Dp0J2MirJ/McZUGIr8dUvt/TE3Hj7bDqPAN/
- mekTYWzyqliklYp1XK68isuTULT9Sy2RycD0NOLHOMn96qkKftLOR1kL0lPKEX3nqP3Yfga029g
- Ber3pSMubPHWPS/dd5vojSq7WxlVJH+zmAHFOVWuajI6w7hrDeaz8JXFC8lI36qCHU2LhP+84xn
- 4KVUO5yZW5w9/SYsrJ+ZzULaTjzyNUpRHukgp+M3T3z0N+ME+N7d0FMsQbBZhbjq9/WC7xYR/5g
- Wxl+LzyeZp+8tiJEwbtDJPzJLU5TDUNyyoRcVX2CN+mFR19JOT8XwVWCPrF+xxLvU6hiiEg==
-X-Google-Smtp-Source: AGHT+IFMgflbIMIe7ACtlL8c+95ogtft0gMyVVLYHQZEy3FP4zKPreOu/TtKvPQn7EzDBN1b6nidqQ==
-X-Received: by 2002:a05:6a00:b96:b0:770:4d54:6234 with SMTP id
- d2e1a72fcca58-7723e1f4471mr103529b3a.3.1756502473888; 
- Fri, 29 Aug 2025 14:21:13 -0700 (PDT)
-Received: from [10.118.1.198] (122-150-204-64.dyn.ip.vocus.au.
- [122.150.204.64]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7722a4e3fa1sm3187467b3a.83.2025.08.29.14.21.11
+ AJvYcCVcfT4JZBAsPcAvqrPE2FuTy121SfsXeo71Q7l7HdUxno5BQTDsGo90tYmHgWleo/im1fQjcidNEXvt@nongnu.org
+X-Gm-Message-State: AOJu0Yx9sKe8BJcYT3E2hnv8WeZBg1/ktxtD6Sj7+qmBEajQoJvXKTOl
+ CB6TWlKeWbCOHtnVlnbkZIqKxdal7i4qMAMFNvSZQyG7brYWZWVxK94PCOZfqbW++8CBbYL5MFl
+ JddYA+xA=
+X-Gm-Gg: ASbGncsZ7BSmVXoUbWWK2mL1w6EWeJmrblcq8iRDBNyKQZyQm4zQjnKhFOLKLWCwxkz
+ KyLJrk4viHZRUthmL99IUhcBJuuO844NLXjuWrb8GqncBle4CKJSkA1p19yH1tlODFLZZ3UbYms
+ J+f3ekaXSm/N66SOkDsVzxD64A3ZgbL/DsX2/LqQv7wdHAUq4UkO/GflZ/73h2e4mdo1KBG+81p
+ hO9s/0pyYUrRW2jmwG3v6ARIFaNoBH6Ju3wsK1x7BrwlNAa/cmfWf+zpFCP31cNqzItpAaD/vmj
+ rnFbcDjM5fguMCkTcfW7ehE8MEDpVdbReI/9ND+AaxN/6B+mjslurkJ7rhO2uf97M3+0ym62dhR
+ 8erT8ULyLokvmp8+VndR0SSbZsvApO8didwQJ9Ow1mpoM10d/PcYR7V/JiluuJDs/wOMFpg==
+X-Google-Smtp-Source: AGHT+IFdaEOvtaQpJYpqdmQyUnM9VKAKiP5R6Dc+pSThBmK3sAtiPvKWw54V0xmWk7oV7QTfw9vUqQ==
+X-Received: by 2002:a05:6a20:394b:b0:240:489:be9a with SMTP id
+ adf61e73a8af0-243d6e0110emr133717637.23.1756503149116; 
+ Fri, 29 Aug 2025 14:32:29 -0700 (PDT)
+Received: from [10.118.1.198] (122-150-204-48.dyn.ip.vocus.au.
+ [122.150.204.48]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7722a2d2ea5sm3297560b3a.38.2025.08.29.14.32.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Aug 2025 14:21:13 -0700 (PDT)
-Message-ID: <f95cf1c1-9f86-451c-8592-43b38f43148f@linaro.org>
-Date: Sat, 30 Aug 2025 07:21:08 +1000
+ Fri, 29 Aug 2025 14:32:28 -0700 (PDT)
+Message-ID: <56152a48-0297-4654-9934-7ca17e0e9416@linaro.org>
+Date: Sat, 30 Aug 2025 07:32:23 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] tests/functional: handle URLError when fetching
- assets
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-References: <20250829142616.2633254-1-berrange@redhat.com>
- <20250829142616.2633254-4-berrange@redhat.com>
+Subject: Re: [PATCH 01/18] target/ppc: limit cpu_interrupt_exittb to system
+ emulation
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, imammedo@redhat.com
+References: <20250829152909.1589668-1-pbonzini@redhat.com>
+ <20250829152909.1589668-2-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20250829142616.2633254-4-berrange@redhat.com>
+In-Reply-To: <20250829152909.1589668-2-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,16 +104,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/25 00:26, Daniel P. Berrangé wrote:
-> We treat most HTTP errors as non-fatal when fetching assets,
-> but forgot to handle network level errors. This adds catching
-> of URLError so that we retry on failure, and will ultimately
-> trigger graceful skipping in the pre-cache task.
+On 8/30/25 01:28, Paolo Bonzini wrote:
+> It is not used by user-mode emulation and is the only caller of
+> cpu_interrupt() in qemu-ppc* binaries.
 > 
-> Signed-off-by: Daniel P. Berrangé<berrange@redhat.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   tests/functional/qemu_test/asset.py | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
+>   target/ppc/helper_regs.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
+> index 7e5726871e5..5f217397490 100644
+> --- a/target/ppc/helper_regs.c
+> +++ b/target/ppc/helper_regs.c
+> @@ -274,6 +274,7 @@ TCGTBCPUState ppc_get_tb_cpu_state(CPUState *cs)
+>       return (TCGTBCPUState){ .pc = env->nip, .flags = hflags_current };
+>   }
+>   
+> +#ifndef CONFIG_USER_ONLY
+>   void cpu_interrupt_exittb(CPUState *cs)
+>   {
+>       /*
+> @@ -285,6 +286,7 @@ void cpu_interrupt_exittb(CPUState *cs)
+>           cpu_interrupt(cs, CPU_INTERRUPT_EXITTB);
+>       }
+>   }
+> +#endif
+>   
+>   int hreg_store_msr(CPUPPCState *env, target_ulong value, int alter_hv)
+>   {
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
