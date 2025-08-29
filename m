@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4620B3CBCA
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:19:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB99FB3CC44
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:49:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usN8S-0001oN-93; Sat, 30 Aug 2025 11:04:56 -0400
+	id 1usN8d-0002Sb-Q4; Sat, 30 Aug 2025 11:05:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1urtZ2-0005gl-At
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:30:24 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1urta7-0005pC-7q
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:31:32 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1urtYz-0002DV-Vw
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:30:24 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-45b82a21eeeso321455e9.2
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 00:30:21 -0700 (PDT)
+ id 1urta4-0002Pf-Pv
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:31:30 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-45a1b05ac1eso9297755e9.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 00:31:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756452619; x=1757057419; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756452686; x=1757057486; darn=nongnu.org;
  h=mime-version:message-id:in-reply-to:references:user-agent:subject
  :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=LL74e/RfB9WIOsr69ZNP2N1kc8B6HK4y6eGiWFQYVWA=;
- b=GGtW4IlmiuNxSj3JpKw+Ax3OJ+1loS66qAapFlsoW0QWf+viFHpcX8VpN2oHtgsxoO
- vxsntV709OQUNUstFoFLdadGvs2jkxZ+vlCh+s9El7Cynf34CgefFlna0gaWDL43H6WW
- ljZKVphRw03F3SDt73BvmjfdOq8q04d7YoNvVadeFnm40hMpHKtTq0QdAai9qEQqBlSp
- E2PlKAuxBP5KLwuuBF3ZBvKp3QVSZ1IA3p/xIOOH5vFQTgCD0X53Wy4KvabsMLOYmXyX
- hLBPcAsjkdYwrn1uWzJgwSyJD+rP9NbL7rRyFw7U7yA6HP6b75HUVKDijBxPjrdhQAm5
- Wd7g==
+ bh=bIAB4xz818z1X9WhWXBdwn7DV8R/vo74xMKSASLBK3k=;
+ b=d1l1WydU/fGjmpNTjQ5LZnHN23ZhsRpcivSjThNuRkzCn7ttpxaj3c7aShh85fk/eZ
+ JEKzTqBeW+OdBt3hEcTV62e4LilpWtu3948GKxKaa9oH0lH2ZkRvrLOmhV97twG7IZXN
+ m5f1kmLkqW3hdso7infqV9/V7E1Qf2SCD/XutiCJBIdsuYVPIvzdJyAa1292F2xlGCkl
+ M0gvK2vCYiiNlT0rMvNODA5eRN9kpBaz5L5Q5bhBWo9kH1Y7adedEW4l73f/ZOS7jXAu
+ iGu4mDTJuvuVirs8+vVCyD38wLHdemsw0ks7dhW0k9a9jfrK5l21ccibfNiKEzV/74OM
+ DltQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756452619; x=1757057419;
+ d=1e100.net; s=20230601; t=1756452686; x=1757057486;
  h=mime-version:message-id:in-reply-to:references:user-agent:subject
  :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LL74e/RfB9WIOsr69ZNP2N1kc8B6HK4y6eGiWFQYVWA=;
- b=NtkK3cwQEiz+xyGfcc57ePqShndV8iNwudihP4dBtbjvG3iTWXNAoe32WOpSAe6v1N
- r/RM/6K1oUYHjr/U9l2YBd/L8SJbJaF41KgTDUYLNkdnK3WJBhV4ES48VK5OYKsIRPtY
- gPtDjEdID8naO2Q+JVUvlWkk3q2wSkJk3IM3RuWYcJFfty9W15o+IubbwzD/w4nIZLoY
- n4g/sleTU7/VEpDtlApVrU4rYEnS/l84tNV7tniU2hzyl00GiW2+vAifHPTuOin+HZxs
- LPqa2y8fb7c+WdnMXd/LyiWvMJLAjQeiqb1TEyaU1kvC9+94omavNO9JYgorn7Yzy/iq
- fJUg==
-X-Gm-Message-State: AOJu0YyKL5h5Gm2OwykHzgX4cuvcPGesIfHSijytttX9UvwEQX7rHTYq
- FUZX4Koh8hASClmQnC1YbORiyxj20Phg5xZgVxYcMmQe5fJplFd/TRLKoHh5hlnnKFexx+H3bf7
- 3TeWcLPM=
-X-Gm-Gg: ASbGnctWXhUZqOH4IcJ47rS7tWpDm7fY0yIBFd8IWNnH09+DjrIX1jFJTV7RmPfefhW
- g3P0vF8VxmLQw1rv+/MGgiSTzHbns06DjPKcxB6gtsaIyhR8oyrjj1/c6dD3pG70R0nnryYvPpg
- xs4SVH+FzjLcoTaA9gatL81uJJZxpVMIcSp6UVOQ+mh4fkGyLllvwH/oBLf2LuBp76d1IO8dXuK
- EPHDm4QepqtIXDWuxrGz84Mdycci7HBK+YwgsentaR/TWPuKa+IG/I0KzLGknrrY9nOf2YtkNnw
- 9nNQB/PETsLcYX+nktqHtuqFTEESv/FyaZBQ3fqo0AVFNnlXXiIpwWEt3GUkM1mDxHbw7Q4/Opx
- nZwH/KEpj9f1rymhLTLqEas/uHX4TO7b4lz0Yo+I47CyqzmrlWd3/6XsbTLtwf3SptjOl+uJC
-X-Google-Smtp-Source: AGHT+IEuQm6IMAi0ezvzj4YNk7d7iamnwp4MxgBupN+x+86/0s8pxKFOymnb169A7cG0PrbhB5Zzbw==
-X-Received: by 2002:a05:600c:35d2:b0:45b:80e4:4e05 with SMTP id
- 5b1f17b1804b1-45b80e44f3dmr7092425e9.6.1756452618953; 
- Fri, 29 Aug 2025 00:30:18 -0700 (PDT)
+ bh=bIAB4xz818z1X9WhWXBdwn7DV8R/vo74xMKSASLBK3k=;
+ b=XLRPWyHdnok82n+uTkWRj4HgoX3CIl7SEr2+QJtJErlnFW8VwlebXEeuYWNhuW22VN
+ Nx+O+6xA0dZcgwlfdgVpQAt9k6TfEEf4Wnfk45oBC8etbnRWD+ouCUv3V9cdj9IgVJSS
+ 4xqHSsZMV5nHN3143yRU3oahggGsx3b03bUZ8tExDZzgIFs+VZqSN39BEYG5gTAdvemX
+ 1rM6GqO8bWOkjRJBvKq7XlmsKcPkvhuKP1414E8/v5aWZNmZiiPZnSgF3wbvYaf69pTm
+ eZhRVop79uNVvVeiYUk2mybaGjZRCsvdXmqo6EhDhFZrydN+iRRtSyO2KveMgQqh9qUS
+ 26Cg==
+X-Gm-Message-State: AOJu0YzJEzQngnJNGJMqBQ6pEMFbysgL7x8RQv1979OAKzdbECYznYUl
+ SHFSGXeWKrIvjC1jWSl7hKyvfXTHbvHWtZXB237AmRqV1PfS9eKIwpddQLTI+vD4C2ydygR+EmH
+ aF7Um3bI=
+X-Gm-Gg: ASbGncuw1ujEOSJW8AdJhIYwCPpiQ6pbaIgZNgcCAuW0/t48y+P1qe9Y2XVZva2qCXs
+ wpC75+MMk84zKUVXds6arZF1qCY7365UcAVcVIqt2Uqo8d2ViquR+wGFQidUh0YIG6BKVgaLK4r
+ ghzosokrdE15pgeBazcNELO6lSNQdxvN4KPZIt9XtPhQ7Lcl48dMnqQxPbzyxabjMsR9XnCoJ1O
+ 5U6aD6ee9NRh9e8XtSA565m+WucNvERgybJr6UiAMsgeuVEQU7drarmi7d81lIKAlADZVccROwN
+ f972IpyCcgCPif3dVg+VCDWtLxmHIPXncXN+WWtIHovWgUI++R2G/F+JDuqj8GnR7kwcAEBL+wg
+ 6v3mmrVDBabPZH0d8YqOAUml+q2iR5voGIn7Ds/0DMZuk9YTyzdxfybTnKsC5zBZL+zKxlwP7
+X-Google-Smtp-Source: AGHT+IEbTjP/p59KlwMV3inx+4dS6vOb/vdA55KQl6eq4ad+cxRg9b4MMuR4UjJDboe+WVi1bKoVYA==
+X-Received: by 2002:a05:600c:6094:b0:45b:7951:92b6 with SMTP id
+ 5b1f17b1804b1-45b79519537mr52408865e9.5.1756452686366; 
+ Fri, 29 Aug 2025 00:31:26 -0700 (PDT)
 Received: from meli-email.org (athedsl-4441256.home.otenet.gr.
  [79.129.180.152]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b7f53a947sm10788115e9.3.2025.08.29.00.30.18
+ 5b1f17b1804b1-45b7e7ef7cfsm26061605e9.6.2025.08.29.00.31.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 00:30:18 -0700 (PDT)
-Date: Fri, 29 Aug 2025 10:27:26 +0300
+ Fri, 29 Aug 2025 00:31:26 -0700 (PDT)
+Date: Fri, 29 Aug 2025 10:30:45 +0300
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-arm@nongnu.org
-Subject: Re: [PATCH 15/61] target/arm: Add CP_REG_AA32_64BIT_{SHIFT,MASK}
+Subject: Re: [PATCH 16/61] target/arm: Rename CP_REG_AA32_NS_{SHIFT,MASK}
 User-Agent: meli/0.8.12
 References: <20250827010453.4059782-1-richard.henderson@linaro.org>
- <20250827010453.4059782-20-richard.henderson@linaro.org>
-In-Reply-To: <20250827010453.4059782-20-richard.henderson@linaro.org>
-Message-ID: <t1qvih.2mkqztkoudm9n@linaro.org>
+ <20250827010453.4059782-21-richard.henderson@linaro.org>
+In-Reply-To: <20250827010453.4059782-21-richard.henderson@linaro.org>
+Message-ID: <t1qvkd.29wfunyx0g8b7@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,61 +99,50 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Wed, 27 Aug 2025 04:04, Richard Henderson <richard.henderson@linaro.org> wrote:
->Give a name to the bit we're already using.
+>Rename from CP_REG_NS_* to emphasize this is
+>specific to AArch32.
 >
 >Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 >---
-> target/arm/cpregs.h | 15 ++++++++++-----
-> 1 file changed, 10 insertions(+), 5 deletions(-)
->
->diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
->index b6c8eff0dd..3dc4c9927b 100644
->--- a/target/arm/cpregs.h
->+++ b/target/arm/cpregs.h
->@@ -178,9 +178,14 @@ enum {
-> #define CP_REG_NS_SHIFT 29
-> #define CP_REG_NS_MASK (1 << CP_REG_NS_SHIFT)
-> 
->+/* Distinguish 32-bit and 64-bit views of AArch32 system registers. */
->+#define CP_REG_AA32_64BIT_SHIFT  15
->+#define CP_REG_AA32_64BIT_MASK   (1 << CP_REG_AA32_64BIT_SHIFT)
-
-You could use include/qemu/bitops.h
-
->+
-> #define ENCODE_CP_REG(cp, is64, ns, crn, crm, opc1, opc2)   \
->-    ((ns) << CP_REG_NS_SHIFT | ((cp) << 16) | ((is64) << 15) |   \
->-     ((crn) << 11) | ((crm) << 7) | ((opc1) << 3) | (opc2))
->+    (((ns) << CP_REG_NS_SHIFT) |                            \
->+     ((is64) << CP_REG_AA32_64BIT_SHIFT) |                  \
->+     ((cp) << 16) | ((crn) << 11) | ((crm) << 7) | ((opc1) << 3) | (opc2))
-> 
-> #define ENCODE_AA64_CP_REG(cp, crn, crm, op0, op1, op2) \
->     (CP_REG_AA64_MASK |                                 \
->@@ -202,7 +207,7 @@ static inline uint32_t kvm_to_cpreg_id(uint64_t kvmid)
->         cpregid |= CP_REG_AA64_MASK;
->     } else {
->         if ((kvmid & CP_REG_SIZE_MASK) == CP_REG_SIZE_U64) {
->-            cpregid |= (1 << 15);
->+            cpregid |= CP_REG_AA32_64BIT_MASK;
->         }
-> 
->         /*
->@@ -226,8 +231,8 @@ static inline uint64_t cpreg_to_kvm_id(uint32_t cpregid)
->         kvmid = cpregid & ~CP_REG_AA64_MASK;
->         kvmid |= CP_REG_SIZE_U64 | CP_REG_ARM64;
->     } else {
->-        kvmid = cpregid & ~(1 << 15);
->-        if (cpregid & (1 << 15)) {
->+        kvmid = cpregid & ~CP_REG_AA32_64BIT_MASK;
->+        if (cpregid & CP_REG_AA32_64BIT_MASK) {
->             kvmid |= CP_REG_SIZE_U64 | CP_REG_ARM;
->         } else {
->             kvmid |= CP_REG_SIZE_U32 | CP_REG_ARM;
->-- 
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
+> target/arm/cpregs.h | 8 ++++----
+> 1 file changed, 4 insertions(+), 4 deletions(-)
+>
+>diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
+>index 3dc4c9927b..7ebe404163 100644
+>--- a/target/arm/cpregs.h
+>+++ b/target/arm/cpregs.h
+>@@ -175,15 +175,15 @@ enum {
+>  * add a bit to distinguish between secure and non-secure cpregs in the
+>  * hashtable.
+>  */
+>-#define CP_REG_NS_SHIFT 29
+>-#define CP_REG_NS_MASK (1 << CP_REG_NS_SHIFT)
+>+#define CP_REG_AA32_NS_SHIFT     29
+>+#define CP_REG_AA32_NS_MASK      (1 << CP_REG_AA32_NS_SHIFT)
+> 
+> /* Distinguish 32-bit and 64-bit views of AArch32 system registers. */
+> #define CP_REG_AA32_64BIT_SHIFT  15
+> #define CP_REG_AA32_64BIT_MASK   (1 << CP_REG_AA32_64BIT_SHIFT)
+> 
+> #define ENCODE_CP_REG(cp, is64, ns, crn, crm, opc1, opc2)   \
+>-    (((ns) << CP_REG_NS_SHIFT) |                            \
+>+    (((ns) << CP_REG_AA32_NS_SHIFT) |                       \
+>      ((is64) << CP_REG_AA32_64BIT_SHIFT) |                  \
+>      ((cp) << 16) | ((crn) << 11) | ((crm) << 7) | ((opc1) << 3) | (opc2))
+> 
+>@@ -214,7 +214,7 @@ static inline uint32_t kvm_to_cpreg_id(uint64_t kvmid)
+>          * KVM is always non-secure so add the NS flag on AArch32 register
+>          * entries.
+>          */
+>-         cpregid |= 1 << CP_REG_NS_SHIFT;
+>+         cpregid |= CP_REG_AA32_NS_MASK;
+>     }
+>     return cpregid;
+> }
+>-- 
 >2.43.0
 >
 >
