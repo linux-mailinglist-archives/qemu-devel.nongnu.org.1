@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D937B3CDFC
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B41BB3CBFF
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:32:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNOf-0004Bk-C6; Sat, 30 Aug 2025 11:21:41 -0400
+	id 1usNOd-00043H-J6; Sat, 30 Aug 2025 11:21:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1us156-0001uJ-Gn
+ id 1us153-0001td-Uw
  for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:32:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1us14y-0000Ym-TE
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:32:00 -0400
+ id 1us151-0000ZL-5q
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:31:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756481511;
+ s=mimecast20190719; t=1756481513;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OIZ/GEl4kDZnmqyRnHirJQEA0qTP8X+DRdscFCyUtVA=;
- b=FNcjlZioLMFxCTpr0mv4JM/KNc7jtd9j4W96FAIqOlj+YJMgPuK4NA8xBNPr/tsxAMRD7g
- goExU1QzT0gOaC2KvzO+fYh0pb+kf+9xGGhjrYULJ0uDgr6RwsDAuB3ggHp0ctI72OfC1I
- 37mAF1p6cnVdzM9X6beOtl3fte784rs=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3PkxGeX9T+Pbn++peZb7XxFUEJB9Ya56yMRu7fcEwv4=;
+ b=i0k+cs5IeIbUNz2x7SjvNCPalA/sKZUzugj2cxk+ES5qhM8ePPDPBWbCdoqzrSh1OW0YY8
+ vbWz/ff32mlGKkCDHCJCtH1yVKfRCLpP4Rr/vo+JnW0kprFEe+Zn+YW/3S0nF6fcwGyStK
+ 6HDsrXTX20kDzZrMhqwfvzhsq5pyXEQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-qwF_9CVeOBmi4zXSukoHhQ-1; Fri, 29 Aug 2025 11:31:49 -0400
-X-MC-Unique: qwF_9CVeOBmi4zXSukoHhQ-1
-X-Mimecast-MFC-AGG-ID: qwF_9CVeOBmi4zXSukoHhQ_1756481508
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45b7c4c738cso7744605e9.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 08:31:49 -0700 (PDT)
+ us-mta-267-JLvvCd-kOlSF5i2eCh7glg-1; Fri, 29 Aug 2025 11:31:52 -0400
+X-MC-Unique: JLvvCd-kOlSF5i2eCh7glg-1
+X-Mimecast-MFC-AGG-ID: JLvvCd-kOlSF5i2eCh7glg_1756481511
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45a1b05d31cso11221765e9.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 08:31:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756481507; x=1757086307;
+ d=1e100.net; s=20230601; t=1756481510; x=1757086310;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OIZ/GEl4kDZnmqyRnHirJQEA0qTP8X+DRdscFCyUtVA=;
- b=mC2kerPsz/kHKtH6YiW8QtvmJJbY2dDS51tBnl1BApUafPii4RhdA3elYAywCRzAJS
- Va2I2WWf3ZIqb7YFsxvRfetwiaUC7GWDKttOgnIzmaNHKfjeNvmPb4DS4lHECH/JWV+C
- /SHlFf06TwBxxqCattcl6tx8fOjge/BitKa7HPhKAdnMTZC4OCEVk9eXp7Dj0oQw2o96
- EdGKdZSlwMWzLePf0e9o4SR0uRHeIS2hJxPjc7Xsn/fvc35BDxAj3mnHcp5NZeI9i4IA
- vWHq/OtFQRdfM5YUOxh+Y8vvp5AWWV+qOlKzr4H0cSZ9f40+emCoXOM68cmjBIaXXFwu
- DyPw==
-X-Gm-Message-State: AOJu0YzPN4MdCaqgLeZIQxyy8n1YjeIvc0PulBiY7aZo++6+IIxUpM9H
- Zr4zW8Xpk4YvTGjOTLBjW+D4LbpiU8h6EPM3KDS0sT3RWBqdwNNgXdOAsoKuCIdNA8El83FBHf8
- xr9xGo9we6eE2iunGMPs9oJ38WRqCSzLq7BoCzRj5goLc/FmXuYHT61GojBZWGSHyzOKOjC3CXX
- Tvhn0z3cgBx0i9AHLLrwwaYD5e1qoV9lGGDz/uMV+6
-X-Gm-Gg: ASbGnct3/M+fXIgcVqWNElv2HhS6jQUvoUpOvUCgW8CzG5pSV3F1xFlj5H/pRpfvIIr
- 9uyHVF/JYj36f1NE1vPcq+BR7dFYKKNChARFHBPVAJRnAfAdMtKvAxo73g2adndvgGYS6nlmQPS
- Y8i7kZ+GpVOuEUg79Rt0sfkiuS4GQPYHm9nv1vuk18UV0zcfeyt1OVAR0oUaB8MObC5wcnEacf9
- srrhVPouad9RGOW1ZhGDshyIPAZljgeTpGL4iyi70h2qXEpl8Cf8IjdtXnUUjB5lH+AFRQSQTMR
- Tg2Q++4MRv99muNOjUY6A49JI6hZ0vDeH14amX4dcJ8zOm4dvJa6JJxw1odSrq2LpJ8hlUXUUiw
- rw1yWqhZct+XCABiy0LXeT0BYa09Z5RgNRR/Z4sfYBLA=
-X-Received: by 2002:a05:600c:1d06:b0:455:ed48:144f with SMTP id
- 5b1f17b1804b1-45b5179669dmr207493335e9.14.1756481507442; 
- Fri, 29 Aug 2025 08:31:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGh04SToA6KYjoF4S/pMtkzcIwTEud5hYK9UbJmkplEPhrtexHOBlCZlpUS2Fp2EfJGvi8VKQ==
-X-Received: by 2002:a05:600c:1d06:b0:455:ed48:144f with SMTP id
- 5b1f17b1804b1-45b5179669dmr207493045e9.14.1756481507029; 
- Fri, 29 Aug 2025 08:31:47 -0700 (PDT)
+ bh=3PkxGeX9T+Pbn++peZb7XxFUEJB9Ya56yMRu7fcEwv4=;
+ b=fpJnxXggwN0KnN3WC1er1PPl660KHkimM7zvsuDgMn+wMqfKGhLJotn/aGyj5oJf55
+ hpIjJcQKBqv1ldeCHqXHQMd9h3iri+/thFxk6ZlzyDkj65NwP+f9OeBmaj1WcfVPRW0K
+ I1668U/RmL0sYUSNaOvcnerKfQOV2em+N1F5s6CEW6wWWdDqlTwhZB7thVuW4ux73XCZ
+ KloOVCYOUKs/chY7QP2f/zRtkUFpgliZbk08L4uBkm9mPYWJg+va/d4wgbCIP6RHTV2O
+ EfZZnTBNx2XjiD3FOxi1j1ygIBuNliFGMAr5XN2a2Z2ChSeWDBpJrCPGNc17wnyDaMTA
+ Bgcw==
+X-Gm-Message-State: AOJu0YxXZ8ipj0bcUYZCUsQHkE+5DrQT/9d0YPtVlAliZqO3MEfegshe
+ syTtcABdq/S0KRn9+gmucYBmSboGq/aCiVtzXLs4LGrGe845GRaPtkHMFfuctDXWE4Uf7LxuzMn
+ rvnhwocyL6pHumxeM2hSiluKejVRjS2PCWchz5Md052BMkMC8vCd4S+yem+6Y5IGJHf0f1LV+Sm
+ 8JE/VYYSt8eTYeFDwRgRml57uRfoFjW+Otq+nYp4oj
+X-Gm-Gg: ASbGncscR49z1mZoaICTGhFRufwNgmhX3zuesZNMpcSMOQEjQeIzs6S3c+7BJpsb2Ph
+ lA9idAhbmq2EGCTqPnolCqr7q6Jyou4s0hWf1aJU/WgmyTFYhDiLZVLum4egUdd4Kp9U+sVW/aJ
+ 4jvpdp0wBmIBcgPAVZt5E63ibdhmBN34dqKe8gK+Y5bogLEX00X7P/Mmrxye2fi/rATg2OHXC5l
+ QFkggyvO11bnNOpni3tx913fAl8p9hMwPqoOuPqS5IqE2dI8W32T9Irxo+CG1ADAJfXl/lDr5mG
+ LZi9h3oomMY7XUk7x8oCx0fAzybSBRizQ2Uu204+rWdsJeGWe70HgqubZm4i1UXFRZvj67tg98D
+ A4/4HJff4qKsF++lVFmykeCs5LcumcvzufR9vngKM8bo=
+X-Received: by 2002:a5d:584f:0:b0:3ca:6a35:13ff with SMTP id
+ ffacd0b85a97d-3ca6a351850mr14209960f8f.19.1756481509886; 
+ Fri, 29 Aug 2025 08:31:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFPJTkM+LgAZnxpvyi444avC23qMjSuRAgrlH3VolZyPSwbXaHy8rGjXOrXJo87O71bFPFYXg==
+X-Received: by 2002:a5d:584f:0:b0:3ca:6a35:13ff with SMTP id
+ ffacd0b85a97d-3ca6a351850mr14209937f8f.19.1756481509423; 
+ Fri, 29 Aug 2025 08:31:49 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b7e7d23ddsm42693385e9.4.2025.08.29.08.31.44
+ 5b1f17b1804b1-45b7e7d2393sm43224695e9.3.2025.08.29.08.31.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 08:31:45 -0700 (PDT)
+ Fri, 29 Aug 2025 08:31:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, richard.henderson@linaro.org, imammedo@redhat.com,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 13/18] cpus: remove TCG-ism from cpu_exit()
-Date: Fri, 29 Aug 2025 17:31:10 +0200
-Message-ID: <20250829153115.1590048-9-pbonzini@redhat.com>
+Cc: peterx@redhat.com,
+	richard.henderson@linaro.org,
+	imammedo@redhat.com
+Subject: [PATCH 14/18] cpus: properly kick CPUs out of inner execution loop
+Date: Fri, 29 Aug 2025 17:31:11 +0200
+Message-ID: <20250829153115.1590048-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829152909.1589668-1-pbonzini@redhat.com>
 References: <20250829152909.1589668-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,31 +109,194 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that TCG has its own kick function, make cpu_exit() do the right kick
-for all accelerators.
+Now that cpu_exit() actually kicks all accelerators, use it whenever
+the message to another thread is processed in qemu_wait_io_event().
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/core/cpu-common.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ cpu-common.c                | 3 ++-
+ hw/ppc/ppc.c                | 2 ++
+ hw/ppc/spapr_hcall.c        | 7 +++----
+ hw/ppc/spapr_rtas.c         | 2 +-
+ replay/replay-events.c      | 3 ++-
+ system/cpu-timers.c         | 6 +++---
+ system/cpus.c               | 5 +++--
+ target/arm/tcg/mte_helper.c | 2 +-
+ target/i386/kvm/hyperv.c    | 1 -
+ 9 files changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index ca00accd162..3fa9fa82228 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -76,9 +76,7 @@ void cpu_exit(CPUState *cpu)
- {
-     /* Ensure cpu_exec will see the reason why the exit request was set.  */
-     qatomic_store_release(&cpu->exit_request, true);
--    /* Ensure cpu_exec will see the exit request after TCG has exited.  */
--    smp_wmb();
--    qatomic_set(&cpu->neg.icount_decr.u16.high, -1);
-+    qemu_cpu_kick(cpu);
+diff --git a/cpu-common.c b/cpu-common.c
+index ef5757d23bf..152661df8e9 100644
+--- a/cpu-common.c
++++ b/cpu-common.c
+@@ -137,7 +137,8 @@ static void queue_work_on_cpu(CPUState *cpu, struct qemu_work_item *wi)
+     wi->done = false;
+     qemu_mutex_unlock(&cpu->work_mutex);
+ 
+-    qemu_cpu_kick(cpu);
++    /* exit the inner loop and reach qemu_wait_io_event_common().  */
++    cpu_exit(cpu);
  }
  
- static int cpu_common_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
+ void do_run_on_cpu(CPUState *cpu, run_on_cpu_func func, run_on_cpu_data data,
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index 43d0d0e7553..3e436c70413 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -190,6 +190,7 @@ static void ppc970_set_irq(void *opaque, int pin, int level)
+             if (level) {
+                 trace_ppc_irq_cpu("stop");
+                 cs->halted = 1;
++                cpu_exit(cs);
+             } else {
+                 trace_ppc_irq_cpu("restart");
+                 cs->halted = 0;
+@@ -386,6 +387,7 @@ static void ppc40x_set_irq(void *opaque, int pin, int level)
+             if (level) {
+                 trace_ppc_irq_cpu("stop");
+                 cs->halted = 1;
++                cpu_exit(cs);
+             } else {
+                 trace_ppc_irq_cpu("restart");
+                 cs->halted = 0;
+diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+index 51875e32a09..c594d4b916e 100644
+--- a/hw/ppc/spapr_hcall.c
++++ b/hw/ppc/spapr_hcall.c
+@@ -509,8 +509,8 @@ static target_ulong h_cede(PowerPCCPU *cpu, SpaprMachineState *spapr,
+     if (!cpu_has_work(cs)) {
+         cs->halted = 1;
+         cs->exception_index = EXCP_HLT;
+-        qatomic_set(&cs->exit_request, true);
+         ppc_maybe_interrupt(env);
++        cpu_exit(cs);
+     }
+ 
+     return H_SUCCESS;
+@@ -531,8 +531,8 @@ static target_ulong h_confer_self(PowerPCCPU *cpu)
+     }
+     cs->halted = 1;
+     cs->exception_index = EXCP_HALTED;
+-    qatomic_set(&cs->exit_request, true);
+     ppc_maybe_interrupt(&cpu->env);
++    cpu_exit(cs);
+ 
+     return H_SUCCESS;
+ }
+@@ -624,8 +624,7 @@ static target_ulong h_confer(PowerPCCPU *cpu, SpaprMachineState *spapr,
+     }
+ 
+     cs->exception_index = EXCP_YIELD;
+-    qatomic_set(&cs->exit_request, true);
+-    cpu_loop_exit(cs);
++    cpu_exit(cs);
+ 
+     return H_SUCCESS;
+ }
+diff --git a/hw/ppc/spapr_rtas.c b/hw/ppc/spapr_rtas.c
+index 78309dbb09d..143bc8c3794 100644
+--- a/hw/ppc/spapr_rtas.c
++++ b/hw/ppc/spapr_rtas.c
+@@ -221,7 +221,7 @@ static void rtas_stop_self(PowerPCCPU *cpu, SpaprMachineState *spapr,
+     cs->halted = 1;
+     ppc_store_lpcr(cpu, env->spr[SPR_LPCR] & ~pcc->lpcr_pm);
+     kvmppc_set_reg_ppc_online(cpu, 0);
+-    qemu_cpu_kick(cs);
++    cpu_exit(cs);
+ }
+ 
+ static void rtas_ibm_suspend_me(PowerPCCPU *cpu, SpaprMachineState *spapr,
+diff --git a/replay/replay-events.c b/replay/replay-events.c
+index 8959da9f1fa..a96e47e7740 100644
+--- a/replay/replay-events.c
++++ b/replay/replay-events.c
+@@ -118,7 +118,8 @@ void replay_add_event(ReplayAsyncEventKind event_kind,
+ 
+     g_assert(replay_mutex_locked());
+     QTAILQ_INSERT_TAIL(&events_list, event, events);
+-    qemu_cpu_kick(first_cpu);
++    /* Kick the TCG thread out of tcg_cpu_exec().  */
++    cpu_exit(first_cpu);
+ }
+ 
+ void replay_bh_schedule_event(QEMUBH *bh)
+diff --git a/system/cpu-timers.c b/system/cpu-timers.c
+index cb35fa62b8a..6a00691b8d5 100644
+--- a/system/cpu-timers.c
++++ b/system/cpu-timers.c
+@@ -246,14 +246,14 @@ void qemu_timer_notify_cb(void *opaque, QEMUClockType type)
+ 
+     if (qemu_in_vcpu_thread()) {
+         /*
+-         * A CPU is currently running; kick it back out to the
++         * A CPU is currently running; kick it back out of the
+          * tcg_cpu_exec() loop so it will recalculate its
+          * icount deadline immediately.
+          */
+-        qemu_cpu_kick(current_cpu);
++        cpu_exit(current_cpu);
+     } else if (first_cpu) {
+         /*
+-         * qemu_cpu_kick is not enough to kick a halted CPU out of
++         * cpu_exit() is not enough to kick a halted CPU out of
+          * qemu_tcg_wait_io_event.  async_run_on_cpu, instead,
+          * causes cpu_thread_is_idle to return false.  This way,
+          * handle_icount_deadline can run.
+diff --git a/system/cpus.c b/system/cpus.c
+index 9bfbe2b0607..bb13942cbb7 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -604,7 +604,7 @@ void cpu_pause(CPUState *cpu)
+         qemu_cpu_stop(cpu, true);
+     } else {
+         cpu->stop = true;
+-        qemu_cpu_kick(cpu);
++        cpu_exit(cpu);
+     }
+ }
+ 
+@@ -644,6 +644,7 @@ void pause_all_vcpus(void)
+ 
+     while (!all_vcpus_paused()) {
+         qemu_cond_wait(&qemu_pause_cond, &bql);
++        /* FIXME: is this needed? */
+         CPU_FOREACH(cpu) {
+             qemu_cpu_kick(cpu);
+         }
+@@ -672,7 +673,7 @@ void cpu_remove_sync(CPUState *cpu)
+ {
+     cpu->stop = true;
+     cpu->unplug = true;
+-    qemu_cpu_kick(cpu);
++    cpu_exit(cpu);
+     bql_unlock();
+     qemu_thread_join(cpu->thread);
+     bql_lock();
+diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
+index 0efc18a181e..302e899287c 100644
+--- a/target/arm/tcg/mte_helper.c
++++ b/target/arm/tcg/mte_helper.c
+@@ -591,7 +591,7 @@ static void mte_async_check_fail(CPUARMState *env, uint64_t dirty_ptr,
+      * which is rather sooner than "normal".  But the alternative
+      * is waiting until the next syscall.
+      */
+-    qemu_cpu_kick(env_cpu(env));
++    cpu_exit(env_cpu(env));
+ #endif
+ }
+ 
+diff --git a/target/i386/kvm/hyperv.c b/target/i386/kvm/hyperv.c
+index 9865120cc43..f7a81bd2700 100644
+--- a/target/i386/kvm/hyperv.c
++++ b/target/i386/kvm/hyperv.c
+@@ -81,7 +81,6 @@ int kvm_hv_handle_exit(X86CPU *cpu, struct kvm_hyperv_exit *exit)
+          * necessary because memory hierarchy is being changed
+          */
+         async_safe_run_on_cpu(CPU(cpu), async_synic_update, RUN_ON_CPU_NULL);
+-        cpu_exit(CPU(cpu));
+ 
+         return EXCP_INTERRUPT;
+     case KVM_EXIT_HYPERV_HCALL: {
 -- 
 2.51.0
 
