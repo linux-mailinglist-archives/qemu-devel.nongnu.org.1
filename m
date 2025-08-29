@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EDCB3CC33
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DB5B3CBEE
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:26:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usND0-00009t-B1; Sat, 30 Aug 2025 11:09:38 -0400
+	id 1usNBw-0007fU-I0; Sat, 30 Aug 2025 11:08:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uruou-0001ns-QX
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:50:52 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uruqP-00020N-IX
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:52:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uruos-0002Ds-3Y
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:50:52 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uruqM-0002QT-Tm
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:52:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756457447;
+ s=mimecast20190719; t=1756457540;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=YWgsaOT0OAPMOoNl6wRbnZLwepxu8epCcwB5ieHEGd4=;
- b=ZyPKiK92rAptMt/CZU+ZN5VSj3t/M+RtqkdmQ35u4vwQ8w9ZY3OvbPO20vSG5TqHwDrBKW
- vypfHSuH5xvFHsba2X2yIfDIhEeDxeQ/06Mtjs3NYTBaH1rgS1u+qJE/Kgi58Eki+i9moI
- ztiAwYN/8kfFVBGNCAJQJZn9N4n1Qh4=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/uzEyrp8K0TacJb3YSFM+4SzIIYw46pc5V7foBNNsV0=;
+ b=gO/bT84XKf3Aulos4m8Tb947fFF3A0M8rxhe1ITNXXwJBIhdDJJqC7nIM6wXrmZkEJlwOU
+ Jt7bzvI4vrLm/VltzhbyTjbSXJfyqQsnwC4aexXV1xy1HhdWKUbyyUM7/ew/zqEhCnO1kL
+ KcvHSdi9OR7RX542Teu1XLMmB6/BqY4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-473-BkJBYXMsMWymAVUnU9-rkg-1; Fri, 29 Aug 2025 04:50:44 -0400
-X-MC-Unique: BkJBYXMsMWymAVUnU9-rkg-1
-X-Mimecast-MFC-AGG-ID: BkJBYXMsMWymAVUnU9-rkg_1756457444
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45b51baec92so3767925e9.1
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 01:50:44 -0700 (PDT)
+ us-mta-311-C-To_Qs3PZ6S9HhZBAr6NA-1; Fri, 29 Aug 2025 04:52:16 -0400
+X-MC-Unique: C-To_Qs3PZ6S9HhZBAr6NA-1
+X-Mimecast-MFC-AGG-ID: C-To_Qs3PZ6S9HhZBAr6NA_1756457536
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-45a1b05b15eso11896095e9.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 01:52:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756457443; x=1757062243;
+ d=1e100.net; s=20230601; t=1756457535; x=1757062335;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=YWgsaOT0OAPMOoNl6wRbnZLwepxu8epCcwB5ieHEGd4=;
- b=opKz/y0Y6p2IOh/+UJB571x6V4F0hvfQjb8/TLeLQsFQqzEjgiSZ7C5f+Z4qixFO9W
- B3Uc8jucvPebxkJfoXs5czCGw0yypr/sExRG8LHI+LT4S2CdOS18s/rkMmHCXcqNYXoO
- wT1j6ZwESBAHDpfAJ6PZjcqGNo2WTzykdO5Bxny3KU0tv32gH0HhZRfbMgyMjAlofaVD
- HZKfpsXJzHnW0C6Nl6v6PNuQfNA0ECIIDC4V/bC8KtIyfRhUUutlpI3z+YvJmi39cU/u
- paoLfWCIuthVdXmqQTsnfDoqm1G6wWiZpKAcoLAHhei9+X+L+D0BYBQUSLtBYdq9gE+g
- ZwcQ==
+ bh=/uzEyrp8K0TacJb3YSFM+4SzIIYw46pc5V7foBNNsV0=;
+ b=XeTEBWYq+2CjU6idjbEeCU/Wpoj8Jb8+EyTahr1dAZUiIcdNZvIbbhNpHw7Vd0+YEn
+ Gc3Bn3WrliHLNY39erywBx4xaeUhD+f5nrCz7lkQfblQJmKogm2iVE6t2SZdZBaCMFaA
+ 9ETPTNwy2RCbYlbq1/l68kC/mUuQ9oAHBuO/hO4cCBRKPyfn10zSuSFhiqGUpRG+wldM
+ 1/QhtoI8Al+q+Xi773e7l5UUCDsmAs6jeGJ+PVfo1xhJvdQrQRdjDZHdBic82VUsn5bT
+ tr4QHsIqRW4Bs1OJEXrJRUDw+tlwYvwhwUa17RJcQhORSsLX44J2K84nZgnogNwV6erB
+ cAug==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXhOoRpYfax2Fc6/oyr972K80RPeWi78pAyBqu4ZRgfetT+d/uHgrtvTR2Obc8Y89BPjYWeceeAJgUu@nongnu.org
-X-Gm-Message-State: AOJu0Yy4y3VMHeLLoH8PWpOJ/bguTSTj97eu9cxWoEV5FI84aZ3IxI+/
- gKtHWvfpjjmCTOrRMXD+OOE69fz+Mq+Saw6amQ+i+f96cRJb2ANANC+fkADbK9yPFxsuR8X4chC
- U3FegK1jpLcvFCLp/50i1VbST5IcER9FIdXVxm9Jk43UZAZZinry1Uquh
-X-Gm-Gg: ASbGncvsOLr/3IAoXOEfg+khUZIJWglE0cxyyP+2vWHRkznihBX/1pHfBlW9eI9Yd4W
- kdc+hhX/pB6ZyGQXYYWuBV0FeWueXwc67NnL8j6VurFmvDRBP0Ua1kc9DeX3vOfFkrJmqIh/ing
- gD8ve2HkbeWZwXBWQiXBVXOMdSUFmbRkozzDtFcJ5qyZzc60br8hgVrbWO++Y3cCt927OPgQxJq
- VfQzMYZ4SsT5ux8B0ngLxdVCJtnYcvZMHaQClMkdXufvU/xdy+ItW697h1QAJtfKDUShOrAPA7m
- D8ErHgZn0soOYO0ONnOClnHvUiNzVleyvV51Ik0p/Z69XbkvYalMbReHRpqBo8yyPbbo
-X-Received: by 2002:a05:600c:4512:b0:45b:67e9:121e with SMTP id
- 5b1f17b1804b1-45b74e88d87mr63917175e9.14.1756457443519; 
- Fri, 29 Aug 2025 01:50:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHA8fau6HGJNKuaIVMigG7NSi6iKwAJyM4YdhaFstWE34fp9xEWjywfBh6W1m41wCmbO4htEg==
-X-Received: by 2002:a05:600c:4512:b0:45b:67e9:121e with SMTP id
- 5b1f17b1804b1-45b74e88d87mr63916915e9.14.1756457443062; 
- Fri, 29 Aug 2025 01:50:43 -0700 (PDT)
+ AJvYcCV4R+UagYhBNt7WjPYWFzBOcImtmZ+xYPOzw+23AKt3es9Fx12wxXoRGQT1F+EdoLD2JriIUmfL27mu@nongnu.org
+X-Gm-Message-State: AOJu0YzK34kre7sxo5EFbqxlgeJZeb74/gCCm508q0yilQdEPQTqQVIb
+ Vj6byjAFNKB9qQUaig1JTolLpOCChRMxGT7Mo34gLnXaHb4RKgGVk/pESV0N5QpCf154V1bFlez
+ 9jv/eRQWUTG92AEsTA+TNHDdEpVewmvBuBwkHUja+Q8wgxU+JYJ6w0jRr
+X-Gm-Gg: ASbGncvowMIxdsG4aSSMjNaPqyz/tNuCtaE1xsfZ23EjvvhqScJ3v1UeoO9MFjoDJvu
+ wu77vUuhPSCSvBxvbTqZzNOq9OCxFnOl6qPUOf1Dpg/iTlL7qZuAlYeGj1cgwRH9hIIIw49bWh0
+ MwN1+NNADeLODOg348lN22ZV5yKKDtmqTnCfOzh5O+mauCK7kJsdAkgYpRxTxxeDw9XKHVtb7wx
+ Bh9IC5bJi/Hfv6Ei3Ok8F+YLxxIXsmCXeRqX5Mhs4RA6TcWL7ktKjHMfB378x29W010MfGHCV7z
+ 7Qx16GgtonnKKWvGX6TbiaBcGW9/YNpPkCjhwh3FmpYrupLrzvDVqRZNHUwuIT+H4ZWN
+X-Received: by 2002:a05:600c:1c25:b0:45b:7608:3ca1 with SMTP id
+ 5b1f17b1804b1-45b76212044mr55310775e9.23.1756457535682; 
+ Fri, 29 Aug 2025 01:52:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGErU3Hfwc/cDsPvrsH+zyxQbz/d3of1/vz/qZVy9QNTKbn9DUOji1PZFFvBXiDVn38l4aTOg==
+X-Received: by 2002:a05:600c:1c25:b0:45b:7608:3ca1 with SMTP id
+ 5b1f17b1804b1-45b76212044mr55310565e9.23.1756457535271; 
+ Fri, 29 Aug 2025 01:52:15 -0700 (PDT)
 Received: from [192.168.0.6] (ip-109-42-48-43.web.vodafone.de. [109.42.48.43])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf270fc34esm2562694f8f.10.2025.08.29.01.50.41
+ ffacd0b85a97d-3cf276ccc13sm2482515f8f.22.2025.08.29.01.52.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Aug 2025 01:50:42 -0700 (PDT)
-Message-ID: <5f7a13e8-3971-442d-88ac-641460d289da@redhat.com>
-Date: Fri, 29 Aug 2025 10:50:41 +0200
+ Fri, 29 Aug 2025 01:52:14 -0700 (PDT)
+Message-ID: <d0195bfe-2a17-4020-8176-8f2219f1951b@redhat.com>
+Date: Fri, 29 Aug 2025 10:52:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] tests/functional: enable force refresh of cached
- assets
+Subject: Re: [PATCH 2/3] tests/functional: fix formatting of exception args
 To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
 References: <20250829083156.2570137-1-berrange@redhat.com>
- <20250829083156.2570137-2-berrange@redhat.com>
+ <20250829083156.2570137-3-berrange@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -126,7 +125,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250829083156.2570137-2-berrange@redhat.com>
+In-Reply-To: <20250829083156.2570137-3-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -155,45 +154,38 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 29/08/2025 10.31, Daniel P. Berrangé wrote:
-> If the 'QEMU_TEST_REFRESH_CACHE' environment variable is set, then
-> ignore any existing cached asset and download a fresh copy.
+> On HTTP 404 errors, we failed to include the URL in the exception
+> that was raised, while for the catch-all exception we failed to
+> include the URL and forgot the placeholder for the exception
+> details too.
 > 
 > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 > ---
->   docs/devel/testing/functional.rst   | 3 +++
->   tests/functional/qemu_test/asset.py | 4 ++++
->   2 files changed, 7 insertions(+)
+>   tests/functional/qemu_test/asset.py | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
 > 
-> diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
-> index 3728bab6c0..fdeaebaadc 100644
-> --- a/docs/devel/testing/functional.rst
-> +++ b/docs/devel/testing/functional.rst
-> @@ -312,6 +312,9 @@ The cache is populated in the ``~/.cache/qemu/download`` directory by
->   default, but the location can be changed by setting the
->   ``QEMU_TEST_CACHE_DIR`` environment variable.
->   
-> +To force the test suite to re-download the cache, even if still valid,
-> +set the ``QEMU_TEST_REFRESH_CACHE`` environment variable.
-> +
->   Skipping tests
->   --------------
->   
 > diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-> index 704b84d0ea..b5a6136d36 100644
+> index b5a6136d36..ae2bec3ea5 100644
 > --- a/tests/functional/qemu_test/asset.py
 > +++ b/tests/functional/qemu_test/asset.py
-> @@ -72,6 +72,10 @@ def _check(self, cache_file):
->           return self.hash == hl.hexdigest()
+> @@ -168,12 +168,13 @@ def fetch(self):
+>                   # indicate a broken test rather than a transient
+>                   # server or networking problem
+>                   if e.code == 404:
+> -                    raise AssetError(self, "Unable to download: "
+> -                                     "HTTP error %d" % e.code)
+> +                    raise AssetError(self, "Unable to download %s: "
+> +                                     "HTTP error %d" % (self.url, e.code))
+>                   continue
+>               except Exception as e:
+>                   tmp_cache_file.unlink()
+> -                raise AssetError(self, "Unable to download: " % e)
+> +                raise AssetError(self, "Unable to download %s: %s" % (
+> +                    self.url, e))
 >   
->       def valid(self):
-> +        if os.getenv("QEMU_TEST_REFRESH_CACHE", None) is not None:
-> +            self.log.info("Force refresh of asset %s", self.url)
-> +            return False
-> +
+>           if not os.path.exists(tmp_cache_file):
+>               raise AssetError(self, "Download retries exceeded", transient=True)
 
-Do we really need this? You can also simply "rm ~/.cache/qemu/downloads" 
-instead, or click on the "Clear runner caches" in the gitlab CI.
-
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
