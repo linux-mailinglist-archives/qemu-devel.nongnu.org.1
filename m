@@ -2,94 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56AA6B3CC28
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F603B3CDC1
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:04:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNi9-0002C9-P9; Sat, 30 Aug 2025 11:41:49 -0400
+	id 1usNjM-0006aA-8N; Sat, 30 Aug 2025 11:43:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7R1-0000wT-CR
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:19:05 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7Qx-0001AO-GT
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:19:01 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-b4c29d2ea05so2607410a12.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:18:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756505936; x=1757110736; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=t3jQQUc01jW0I2l5HvOL4L7fQ2s6GxUPSQM22cp499Y=;
- b=DuWcsEnXgAOYlyh19lMtbgq/r8PeaxMqqDBROyezTKtI2mv75QfAzk+bFoDuWM0/ok
- ShAfAknCIsakZKQfQE4y2WHTfSkQHuxZys37m7XYbyeKCrGGggWwMoQ5tGqynj7hdoJT
- cNBjUghRx07peXieIUkrOZhFJg98erho5cwrCrD9Jx8ci3HXlTGRn1p4i0JremIdZg3p
- rML3CmLP65Q4Fa8rt20vO9K7hSp+3X5P3a5E5vsF4mP9nXAcMOcsnM/DJmiQZz+qZmKc
- Si4y2dB1lOpmp0BxEy2edvWytT2ZwNS/05uVje/ZeGfKQ7mtBGtqWK1SZaJhOVjJMRID
- 8DoQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1us7SW-0001UC-94
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:20:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1us7SS-0001dl-Iz
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:20:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756506027;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=f/CCFPyH0dGcMXSfRt1wQ2VDyryFvhni+oktsJKv6oY=;
+ b=REA/lWfFzE7+BDV3zRoTY2UHOHqsVnpafb+qOrSzr1VyJgGPLxsGJIfvlXoiZgRZejYhce
+ os/uDBEPC85pNBHsdmh9sQvQunLnIhBK7io3yz5n3POjRmUf0igIZJFlCU4qj8VrwugqRn
+ E8qa3nvpmSMWJm+ytnqrn4QIXvE+/CI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-358-OSVCCgE4OPCzJSUYy9TE3w-1; Fri, 29 Aug 2025 18:20:25 -0400
+X-MC-Unique: OSVCCgE4OPCzJSUYy9TE3w-1
+X-Mimecast-MFC-AGG-ID: OSVCCgE4OPCzJSUYy9TE3w_1756506024
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3d17731ab27so333501f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:20:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756505936; x=1757110736;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t3jQQUc01jW0I2l5HvOL4L7fQ2s6GxUPSQM22cp499Y=;
- b=XJoQqtmVeEtD5sC4c0HKMzVshPsR6tIabMlSGbcckXUySGjw8lyHnDXpfPd76oH+Oe
- G+gJLWWvQVNCs+nXUylvmZG7Zkj3UWQidt90ZfvB9rW3ydLXF+oFqymqmFmrZ2SWiJqS
- umwbgZEvLPs3BE2yohy/JIxrgCfbo1IJcR6CmP3rspZA9JAfqW0lAHYfbYrRf0ODICh/
- sMmsgBOIv7/P+L+qJIL/rd0r7mbK2xGFTBWb3qn0xfcPDMQXba/3Oh9Ro6+oYnZZRm6A
- EjL4rGtVIc1TQAOz1nfrRsquWxKDv5UGsjeJaIapfF5D9YV9+YI2ctLFNZqEIJGioMqI
- XHUg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW0gyZsro1V3nMJwwlRF5yqGEDMcsBmm6AMyMJ0y4CdW/h5hhjkNXNApHahzCWD0AnxJorVKYuGGDXQ@nongnu.org
-X-Gm-Message-State: AOJu0YxsOal/yvn7ixbauxNdtrdyublX7YpiiPY75lJLbUaxPsQUYjoX
- 48zszyiUJf7OCjR+f87F+S78XJtUlSPauIMYc73bKHpwS8O4+Y9qaGxbteiqtEy+B+w=
-X-Gm-Gg: ASbGncv6on5hkOU6hbW2ysPzyyx+DjROs9YqVszesh+fSZo5W2wo3OcT11IEN7GJ4Bl
- ahS96feJpVVEnaFN4Z3W44+ursd2M5BGXsowjXMGGM1nlLvV2QYljJVb+lL0/h5E1O5gRPk8MVw
- TPsZT6s4BlXH3xHr4CAMdiKnXxrSy2FyrnHO/UyYRdzdA3u3+woKmKj2u9KtU1xcM29DNpNqBG+
- /KqSyCwq6us5bR1qzmXdZJlFoi2cQKQPn5Ox6mYdDTB1QQcx9BzTCvMdvzp1JgcDrft2BH5I8A3
- nReGhDPyW2XqZCZuewCEGLCKIL0yaO3bGpdjENszuLWD8bycUFWkzxy4rAiA3zuQ1WTe/J8KxRw
- KB3tI/IbsRYwke5XzYzesjQnVs1Ux/T1WeyMBSUlV4UJXjl+3MYVHncwRLMzgY/qr0nUktEL+db
- 9mwwLD
-X-Google-Smtp-Source: AGHT+IFDw5kqLSmI9qrmgBJ3GGzK5bBsUF/rs1QywPSurSzNW4+gW1wDd3y6M3ZkVTIv0Hj66/bM4Q==
-X-Received: by 2002:a17:90b:4c8f:b0:31f:252:e765 with SMTP id
- 98e67ed59e1d1-32815437acemr274227a91.6.1756505936316; 
- Fri, 29 Aug 2025 15:18:56 -0700 (PDT)
-Received: from [10.118.1.198] (122-150-204-48.dyn.ip.vocus.au.
- [122.150.204.48]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-327976b5074sm3360315a91.4.2025.08.29.15.18.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Aug 2025 15:18:55 -0700 (PDT)
-Message-ID: <56d449f5-3572-4cf8-b875-07a2aaf1f094@linaro.org>
-Date: Sat, 30 Aug 2025 08:18:50 +1000
+ d=1e100.net; s=20230601; t=1756506024; x=1757110824;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=f/CCFPyH0dGcMXSfRt1wQ2VDyryFvhni+oktsJKv6oY=;
+ b=f/Fb/LWvs2qipjGj52c+IRFhNHQLv38O19E+c5AQx5DWCxJoxZODYmnaSIvgQ7jwVn
+ MaFfenhUVk0NLu3dRvlwUT6Vt3rl+m0I0qZWg0T/LgtzaT7XTpaMhLDorFX9mpVH7h6c
+ Y7ziK83F1mcv9EtvFkH7o0xi4lelDsbuXC5UZ2o1fUcFTQpErwf9Aar1+myXF0EsClFL
+ 8L6UMjxNKHyVN6yls5MbLJeop4y8J7a6YoVdcVjJkmNx4nNHSwnC+Gu1QDp+l6iKWNXX
+ sHrn+Heotx4WPjwxkzvUxUaLZPHTyM/3P/jVyc0cjIcNIzm9vMmK16AWh/kf0ziPMBxX
+ gHwg==
+X-Gm-Message-State: AOJu0YznZiIL0xjzsjZuN1M3OU+3FRbFiiwiHEyr8099/e53nrx2RtmE
+ CLU5pnOligQIbLr4O7Jim82N3fspkp99D4ATNC2oVinacGzJ4w5jZfYoeB9qj8QzT675UhG7FlJ
+ QOHlk7zZAcRyzLFon6S+s3Q21oCQ8odtIgbfIBcVg814MfvvrcSd5IFU8Yj4yRNTSUUTvj57sJT
+ fCwnmuxDf/O0sTz+sMr7piGYczTvi30aU=
+X-Gm-Gg: ASbGncsr4YpH3PmkwMsh1WP8if0rNZwDOcFwCqam6O8btth9FczRJKroPI9rk5EUFgd
+ sBfshht95GeP0sAjRieA6peZyHXCgaPTm820O2loVdRfVKOzF/Vwvm+MtXfU2NKEK0Rba/bzoa5
+ kGvX387UcgdqfSDG+Vw1Th8g5rez2e3/s508QWsXPFJUhY0ZwVGO1JVejYb/n9zbBu4D2DyaLJO
+ 4TGv4MBWobK/UnLbxXOB711
+X-Received: by 2002:a05:6000:1a8c:b0:3d1:2163:ccb3 with SMTP id
+ ffacd0b85a97d-3d1def66e7bmr118218f8f.42.1756506024368; 
+ Fri, 29 Aug 2025 15:20:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFz+S86pLNK2KCZVzgajemsILgPM6DTg1/5YY5Yb3z1ZryrxKoE3lyy+ECXqC9QK7L+9Bc+TmHI7+FqlDtoks8=
+X-Received: by 2002:a05:6000:1a8c:b0:3d1:2163:ccb3 with SMTP id
+ ffacd0b85a97d-3d1def66e7bmr118214f8f.42.1756506024019; Fri, 29 Aug 2025
+ 15:20:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/18] target-arm: remove uses of cpu_interrupt() for
- user-mode emulation
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: peterx@redhat.com, imammedo@redhat.com,
- Peter Maydell <peter.maydell@linaro.org>
 References: <20250829152909.1589668-1-pbonzini@redhat.com>
- <20250829152909.1589668-5-pbonzini@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250829152909.1589668-5-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
+ <20250829153115.1590048-12-pbonzini@redhat.com>
+ <da327e5f-69a1-4480-bb7b-14bd78ec69c7@linaro.org>
+In-Reply-To: <da327e5f-69a1-4480-bb7b-14bd78ec69c7@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Sat, 30 Aug 2025 00:19:44 +0200
+X-Gm-Features: Ac12FXxHvcUbiJ13l_CmO2oSGcROjEf64TuLWqZAARF5tnkeLHEiw7N3UJQMUbY
+Message-ID: <CABgObfasWhcL6MjJdAvDfaKG9sczqUccE9YYm-A+hE=xfaKoEw@mail.gmail.com>
+Subject: Re: [PATCH 16/18] cpus: clear exit_request in qemu_wait_io_event
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, peterx@redhat.com, imammedo@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,26 +103,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/25 01:28, Paolo Bonzini wrote:
-> Arm leaves around some functions that use cpu_interrupt(), even for
-> user-mode emulation when the code is unreachable.  Pull out the
-> system-mode implementation to a separate file, and add stubs for
-> CONFIG_USER_ONLY.
-> 
-> Cc: Peter Maydell<peter.maydell@linaro.org>
-> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
-> ---
->   target/arm/internals.h |   5 +
->   target/arm/cpu-irq.c   | 381 +++++++++++++++++++++++++++++++++++++++++
->   target/arm/cpu.c       | 370 ---------------------------------------
->   target/arm/el2-stubs.c |  37 ++++
->   target/arm/helper.c    |   4 +
->   target/arm/meson.build |   2 +
->   6 files changed, 429 insertions(+), 370 deletions(-)
->   create mode 100644 target/arm/cpu-irq.c
->   create mode 100644 target/arm/el2-stubs.c
+On Sat, Aug 30, 2025 at 12:11=E2=80=AFAM Richard Henderson
+<richard.henderson@linaro.org> wrote:
+> > (b) cpu_exit(): store-release cpu->exit_request, or
+> > (b) cpu_interrupt(): store-release cpu->interrupt_request
+>
+> Mm.  This is the reason we want the seq_cst of the qatomic_or.
+> Perhaps comments in patch 7 should be expanded to document this?
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Not entirely.  There are cases in which a relaxed RMW atomic would
+also work, for example this one in the CPU thread:
 
-r~
+    if (ctl_has_irq(env)) {
+        cpu_set_interrupt(cs, CPU_INTERRUPT_VIRQ);
+    }
+
+and there are cases in which store-release is needed but atomicity
+isn't (the ones under the BQL). It's putting the two requirements
+together that requires patch 7.
+
+And to be honest I am not sure there are other cases than the one
+above, where cpu_set_interrupt()/cpu_reset_interrupt() is called
+outside the BQL. But it's really a matter of time. Sooner or later
+someone will move the APIC or GIC under its own lock, therefore we
+might as well keep things clean already. "Written only under lock X"
+is handy but I prefer to use it with moderation - like it's okay if
+it's a primitive but not if there are dozens of calls across the code
+base.
+
+Thanks for the speedy review!
+
+Paolo
+
 
