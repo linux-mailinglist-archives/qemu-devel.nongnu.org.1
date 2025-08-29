@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B41BB3CBFF
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14ED0B3CE07
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:20:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNOd-00043H-J6; Sat, 30 Aug 2025 11:21:39 -0400
+	id 1usNOh-0004Ht-Gr; Sat, 30 Aug 2025 11:21:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1us153-0001td-Uw
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:32:00 -0400
+ id 1us159-0001we-9K
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:32:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1us151-0000ZL-5q
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:31:57 -0400
+ id 1us156-0000aC-Eh
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 11:32:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756481513;
+ s=mimecast20190719; t=1756481518;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3PkxGeX9T+Pbn++peZb7XxFUEJB9Ya56yMRu7fcEwv4=;
- b=i0k+cs5IeIbUNz2x7SjvNCPalA/sKZUzugj2cxk+ES5qhM8ePPDPBWbCdoqzrSh1OW0YY8
- vbWz/ff32mlGKkCDHCJCtH1yVKfRCLpP4Rr/vo+JnW0kprFEe+Zn+YW/3S0nF6fcwGyStK
- 6HDsrXTX20kDzZrMhqwfvzhsq5pyXEQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mZd6LcPXZdEGsNumQwGYHNC9F7djFaIPp8BsfVJR/SE=;
+ b=DcCbsy45+HfpEwQesm+T0+W+t0efDL6vMG/MfEF8mp5bIHvcYQ3dicCmLyEP1bekXCsMkY
+ VAzGjN+YQr4g95bVy6WCkXqmU33fhIgf+UVE9bjpx2v3M/1qngylTpBpiNBT9RnBmXorRy
+ tAD1Qw4n1llsYrfrdVCZaoDtwiJN97g=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-267-JLvvCd-kOlSF5i2eCh7glg-1; Fri, 29 Aug 2025 11:31:52 -0400
-X-MC-Unique: JLvvCd-kOlSF5i2eCh7glg-1
-X-Mimecast-MFC-AGG-ID: JLvvCd-kOlSF5i2eCh7glg_1756481511
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-45a1b05d31cso11221765e9.1
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 08:31:51 -0700 (PDT)
+ us-mta-661-7ELIpv2pPjyvXbwKTPMWeA-1; Fri, 29 Aug 2025 11:31:55 -0400
+X-MC-Unique: 7ELIpv2pPjyvXbwKTPMWeA-1
+X-Mimecast-MFC-AGG-ID: 7ELIpv2pPjyvXbwKTPMWeA_1756481514
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3d17731acb6so108986f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 08:31:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756481510; x=1757086310;
+ d=1e100.net; s=20230601; t=1756481513; x=1757086313;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3PkxGeX9T+Pbn++peZb7XxFUEJB9Ya56yMRu7fcEwv4=;
- b=fpJnxXggwN0KnN3WC1er1PPl660KHkimM7zvsuDgMn+wMqfKGhLJotn/aGyj5oJf55
- hpIjJcQKBqv1ldeCHqXHQMd9h3iri+/thFxk6ZlzyDkj65NwP+f9OeBmaj1WcfVPRW0K
- I1668U/RmL0sYUSNaOvcnerKfQOV2em+N1F5s6CEW6wWWdDqlTwhZB7thVuW4ux73XCZ
- KloOVCYOUKs/chY7QP2f/zRtkUFpgliZbk08L4uBkm9mPYWJg+va/d4wgbCIP6RHTV2O
- EfZZnTBNx2XjiD3FOxi1j1ygIBuNliFGMAr5XN2a2Z2ChSeWDBpJrCPGNc17wnyDaMTA
- Bgcw==
-X-Gm-Message-State: AOJu0YxXZ8ipj0bcUYZCUsQHkE+5DrQT/9d0YPtVlAliZqO3MEfegshe
- syTtcABdq/S0KRn9+gmucYBmSboGq/aCiVtzXLs4LGrGe845GRaPtkHMFfuctDXWE4Uf7LxuzMn
- rvnhwocyL6pHumxeM2hSiluKejVRjS2PCWchz5Md052BMkMC8vCd4S+yem+6Y5IGJHf0f1LV+Sm
- 8JE/VYYSt8eTYeFDwRgRml57uRfoFjW+Otq+nYp4oj
-X-Gm-Gg: ASbGncscR49z1mZoaICTGhFRufwNgmhX3zuesZNMpcSMOQEjQeIzs6S3c+7BJpsb2Ph
- lA9idAhbmq2EGCTqPnolCqr7q6Jyou4s0hWf1aJU/WgmyTFYhDiLZVLum4egUdd4Kp9U+sVW/aJ
- 4jvpdp0wBmIBcgPAVZt5E63ibdhmBN34dqKe8gK+Y5bogLEX00X7P/Mmrxye2fi/rATg2OHXC5l
- QFkggyvO11bnNOpni3tx913fAl8p9hMwPqoOuPqS5IqE2dI8W32T9Irxo+CG1ADAJfXl/lDr5mG
- LZi9h3oomMY7XUk7x8oCx0fAzybSBRizQ2Uu204+rWdsJeGWe70HgqubZm4i1UXFRZvj67tg98D
- A4/4HJff4qKsF++lVFmykeCs5LcumcvzufR9vngKM8bo=
-X-Received: by 2002:a5d:584f:0:b0:3ca:6a35:13ff with SMTP id
- ffacd0b85a97d-3ca6a351850mr14209960f8f.19.1756481509886; 
- Fri, 29 Aug 2025 08:31:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFPJTkM+LgAZnxpvyi444avC23qMjSuRAgrlH3VolZyPSwbXaHy8rGjXOrXJo87O71bFPFYXg==
-X-Received: by 2002:a5d:584f:0:b0:3ca:6a35:13ff with SMTP id
- ffacd0b85a97d-3ca6a351850mr14209937f8f.19.1756481509423; 
- Fri, 29 Aug 2025 08:31:49 -0700 (PDT)
+ bh=mZd6LcPXZdEGsNumQwGYHNC9F7djFaIPp8BsfVJR/SE=;
+ b=rpTLClKXmO76K8XXObSTJCFzyohgnB/MtfTw3hbh97hR0IndE2NXcvWy48e1sMmCe1
+ JY/iG2tC1qU0u0TuWc4W7qH1d6sF0rsf8dAUy6azUYh+t/UES4VHZWrEewKIF6PRvbY4
+ yszBLPWznj7gIEDOP0qAmGJbxN6OS93adt6Qo3Dg13qbvPk8nh0kcldU0Pe7Ew0lAixT
+ yD1LS2QR5201Rx6mtIG7lwIKXY7ADFfSMSAnNwQJ2DJKmYujmKDhJu3cK8Jdu8YGzms6
+ wZ5OArOuRaar2qIsRyLOp+O9vgtRnxoGrb1Dl1zgCht3tlecKqfPgjsYTul301oA4L7w
+ UCrw==
+X-Gm-Message-State: AOJu0YwP0WcL5dSLAnZSMpDdB4YrxXzDRJ81taOWhhZrVs2VIYgbuJxf
+ /7BVd5YGDfsV5u0Rl/nCDrv+KLPKZCSMfdUsjJiL03gLm3eiTpryi423j6f2peDnHOQSs3t8UP6
+ P4uzWzkCI3dC5xOnVHusuqxfArCVAVt9FicCsLTWDgRE0jQGMKxzzocW2nRlJzMnM+l3V7Fewxs
+ F2UgdFhrw7ub/1Bao+4S8DxRLBzChtizx8CElNr3df
+X-Gm-Gg: ASbGncviDQw4nowMIdKYBA3RcHGM99WeorCjx1JitoKBVxcCjFLHA8pfaJ6Znxec9eh
+ 0bNLVwLLR0QBebWSonYlqmpuSn+9c27rlZrYGp4LLem3u1dSzRdC9dPPUJyevsJYdgUPkbmZZ6m
+ Seljup/ET+Pe47ZsP0zBmaotvcvtXgdjDjbKnYKFDm3PA4MNIN/CS5yfq/H5FUxJ5l6qW8INBhl
+ J5DueFocFhRZApvjw4LHkYTC5nMDITcZeP/QRQFjrEFsw7B2V4yJ9h7fmJsP+zmUvEmO+FGT1n8
+ HRpeAItBTOb1F8m5wv3W4Vhz0xIbkIfjUykHY/dnmoguNPyAc8IJa5i/Z1xkfyDXYHZ91bLvd5u
+ +PkZMNeam8KipBpX/dFrNELeDz4gE/FDaOjL6uwLdeYo=
+X-Received: by 2002:a05:6000:26cf:b0:3d0:affe:ed78 with SMTP id
+ ffacd0b85a97d-3d0affef23dmr1781203f8f.48.1756481512510; 
+ Fri, 29 Aug 2025 08:31:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEpjxQoiKkiNhPX7y4x/G4G1LOYrqQ3UlvdwDnJLH0wNDNWd0TcF6xq1w9zp6zHqqvxRgAeSQ==
+X-Received: by 2002:a05:6000:26cf:b0:3d0:affe:ed78 with SMTP id
+ ffacd0b85a97d-3d0affef23dmr1781171f8f.48.1756481511986; 
+ Fri, 29 Aug 2025 08:31:51 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b7e7d2393sm43224695e9.3.2025.08.29.08.31.47
+ ffacd0b85a97d-3cf270fc3fasm3808697f8f.5.2025.08.29.08.31.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 08:31:47 -0700 (PDT)
+ Fri, 29 Aug 2025 08:31:50 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com,
 	richard.henderson@linaro.org,
 	imammedo@redhat.com
-Subject: [PATCH 14/18] cpus: properly kick CPUs out of inner execution loop
-Date: Fri, 29 Aug 2025 17:31:11 +0200
-Message-ID: <20250829153115.1590048-10-pbonzini@redhat.com>
+Subject: [PATCH 15/18] bsd-user, linux-user: introduce qemu_wait_io_event
+Date: Fri, 29 Aug 2025 17:31:12 +0200
+Message-ID: <20250829153115.1590048-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829152909.1589668-1-pbonzini@redhat.com>
 References: <20250829152909.1589668-1-pbonzini@redhat.com>
@@ -109,194 +109,372 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that cpu_exit() actually kicks all accelerators, use it whenever
-the message to another thread is processed in qemu_wait_io_event().
+Add a user-mode emulation version of the function.  More will be
+added later, for now it is just process_queued_cpu_work.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- cpu-common.c                | 3 ++-
- hw/ppc/ppc.c                | 2 ++
- hw/ppc/spapr_hcall.c        | 7 +++----
- hw/ppc/spapr_rtas.c         | 2 +-
- replay/replay-events.c      | 3 ++-
- system/cpu-timers.c         | 6 +++---
- system/cpus.c               | 5 +++--
- target/arm/tcg/mte_helper.c | 2 +-
- target/i386/kvm/hyperv.c    | 1 -
- 9 files changed, 17 insertions(+), 14 deletions(-)
+ bsd-user/aarch64/target_arch_cpu.h | 2 +-
+ bsd-user/arm/target_arch_cpu.h     | 2 +-
+ bsd-user/i386/target_arch_cpu.h    | 2 +-
+ bsd-user/riscv/target_arch_cpu.h   | 2 +-
+ bsd-user/x86_64/target_arch_cpu.h  | 2 +-
+ include/hw/core/cpu.h              | 9 +++++++++
+ include/system/cpus.h              | 1 -
+ accel/tcg/user-exec.c              | 5 +++++
+ linux-user/aarch64/cpu_loop.c      | 2 +-
+ linux-user/alpha/cpu_loop.c        | 2 +-
+ linux-user/arm/cpu_loop.c          | 2 +-
+ linux-user/hexagon/cpu_loop.c      | 2 +-
+ linux-user/hppa/cpu_loop.c         | 2 +-
+ linux-user/i386/cpu_loop.c         | 2 +-
+ linux-user/loongarch64/cpu_loop.c  | 2 +-
+ linux-user/m68k/cpu_loop.c         | 2 +-
+ linux-user/microblaze/cpu_loop.c   | 2 +-
+ linux-user/mips/cpu_loop.c         | 2 +-
+ linux-user/openrisc/cpu_loop.c     | 2 +-
+ linux-user/ppc/cpu_loop.c          | 2 +-
+ linux-user/riscv/cpu_loop.c        | 2 +-
+ linux-user/s390x/cpu_loop.c        | 2 +-
+ linux-user/sh4/cpu_loop.c          | 2 +-
+ linux-user/sparc/cpu_loop.c        | 2 +-
+ linux-user/xtensa/cpu_loop.c       | 2 +-
+ 25 files changed, 36 insertions(+), 23 deletions(-)
 
-diff --git a/cpu-common.c b/cpu-common.c
-index ef5757d23bf..152661df8e9 100644
---- a/cpu-common.c
-+++ b/cpu-common.c
-@@ -137,7 +137,8 @@ static void queue_work_on_cpu(CPUState *cpu, struct qemu_work_item *wi)
-     wi->done = false;
-     qemu_mutex_unlock(&cpu->work_mutex);
+diff --git a/bsd-user/aarch64/target_arch_cpu.h b/bsd-user/aarch64/target_arch_cpu.h
+index 87fbf6d6775..4407f35fb97 100644
+--- a/bsd-user/aarch64/target_arch_cpu.h
++++ b/bsd-user/aarch64/target_arch_cpu.h
+@@ -54,7 +54,7 @@ static inline G_NORETURN void target_cpu_loop(CPUARMState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
--    qemu_cpu_kick(cpu);
-+    /* exit the inner loop and reach qemu_wait_io_event_common().  */
-+    cpu_exit(cpu);
+         switch (trapnr) {
+         case EXCP_SWI:
+diff --git a/bsd-user/arm/target_arch_cpu.h b/bsd-user/arm/target_arch_cpu.h
+index bc2eaa0bf4e..a79ecf15f8f 100644
+--- a/bsd-user/arm/target_arch_cpu.h
++++ b/bsd-user/arm/target_arch_cpu.h
+@@ -46,7 +46,7 @@ static inline G_NORETURN void target_cpu_loop(CPUARMState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
+         switch (trapnr) {
+         case EXCP_UDEF:
+         case EXCP_NOCP:
+diff --git a/bsd-user/i386/target_arch_cpu.h b/bsd-user/i386/target_arch_cpu.h
+index 5d4c931decd..592702a8a1e 100644
+--- a/bsd-user/i386/target_arch_cpu.h
++++ b/bsd-user/i386/target_arch_cpu.h
+@@ -113,7 +113,7 @@ static inline G_NORETURN void target_cpu_loop(CPUX86State *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
+ 
+         switch (trapnr) {
+         case 0x80: {
+diff --git a/bsd-user/riscv/target_arch_cpu.h b/bsd-user/riscv/target_arch_cpu.h
+index ef92f004803..dbe7c7231f5 100644
+--- a/bsd-user/riscv/target_arch_cpu.h
++++ b/bsd-user/riscv/target_arch_cpu.h
+@@ -49,7 +49,7 @@ static inline G_NORETURN void target_cpu_loop(CPURISCVState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
+ 
+         signo = 0;
+ 
+diff --git a/bsd-user/x86_64/target_arch_cpu.h b/bsd-user/x86_64/target_arch_cpu.h
+index f82042e30af..f298fbc9808 100644
+--- a/bsd-user/x86_64/target_arch_cpu.h
++++ b/bsd-user/x86_64/target_arch_cpu.h
+@@ -121,7 +121,7 @@ static inline G_NORETURN void target_cpu_loop(CPUX86State *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
+ 
+         switch (trapnr) {
+         case EXCP_SYSCALL:
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 338757e5254..ffa553b2318 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -1145,6 +1145,15 @@ AddressSpace *cpu_get_address_space(CPUState *cpu, int asidx);
+ G_NORETURN void cpu_abort(CPUState *cpu, const char *fmt, ...)
+     G_GNUC_PRINTF(2, 3);
+ 
++/**
++ * qemu_wait_io_event:
++ * @cpu: CPU that left the execution loop
++ *
++ * Perform accelerator-independent work after the CPU has left
++ * the inner execution loop.
++ */
++void qemu_wait_io_event(CPUState *cpu);
++
+ /* $(top_srcdir)/cpu.c */
+ void cpu_class_init_props(DeviceClass *dc);
+ void cpu_exec_class_post_init(CPUClass *cc);
+diff --git a/include/system/cpus.h b/include/system/cpus.h
+index 69be6a77a75..e6864861c0b 100644
+--- a/include/system/cpus.h
++++ b/include/system/cpus.h
+@@ -18,7 +18,6 @@ bool cpu_thread_is_idle(CPUState *cpu);
+ bool all_cpu_threads_idle(void);
+ bool cpu_can_run(CPUState *cpu);
+ void qemu_wait_io_event_common(CPUState *cpu);
+-void qemu_wait_io_event(CPUState *cpu);
+ void cpu_thread_signal_created(CPUState *cpu);
+ void cpu_thread_signal_destroyed(CPUState *cpu);
+ void cpu_handle_guest_debug(CPUState *cpu);
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 3c072fd868f..81906d2e033 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -52,6 +52,11 @@ void qemu_cpu_kick(CPUState *cpu)
+     tcg_kick_vcpu_thread(cpu);
  }
  
- void do_run_on_cpu(CPUState *cpu, run_on_cpu_func func, run_on_cpu_data data,
-diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index 43d0d0e7553..3e436c70413 100644
---- a/hw/ppc/ppc.c
-+++ b/hw/ppc/ppc.c
-@@ -190,6 +190,7 @@ static void ppc970_set_irq(void *opaque, int pin, int level)
-             if (level) {
-                 trace_ppc_irq_cpu("stop");
-                 cs->halted = 1;
-+                cpu_exit(cs);
-             } else {
-                 trace_ppc_irq_cpu("restart");
-                 cs->halted = 0;
-@@ -386,6 +387,7 @@ static void ppc40x_set_irq(void *opaque, int pin, int level)
-             if (level) {
-                 trace_ppc_irq_cpu("stop");
-                 cs->halted = 1;
-+                cpu_exit(cs);
-             } else {
-                 trace_ppc_irq_cpu("restart");
-                 cs->halted = 0;
-diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-index 51875e32a09..c594d4b916e 100644
---- a/hw/ppc/spapr_hcall.c
-+++ b/hw/ppc/spapr_hcall.c
-@@ -509,8 +509,8 @@ static target_ulong h_cede(PowerPCCPU *cpu, SpaprMachineState *spapr,
-     if (!cpu_has_work(cs)) {
-         cs->halted = 1;
-         cs->exception_index = EXCP_HLT;
--        qatomic_set(&cs->exit_request, true);
-         ppc_maybe_interrupt(env);
-+        cpu_exit(cs);
-     }
++void qemu_wait_io_event(CPUState *cpu)
++{
++    process_queued_cpu_work(cpu);
++}
++
+ /*
+  * Adjust the pc to pass to cpu_restore_state; return the memop type.
+  */
+diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
+index 4c4921152e8..9d0f09c3a13 100644
+--- a/linux-user/aarch64/cpu_loop.c
++++ b/linux-user/aarch64/cpu_loop.c
+@@ -38,7 +38,7 @@ void cpu_loop(CPUARMState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
-     return H_SUCCESS;
-@@ -531,8 +531,8 @@ static target_ulong h_confer_self(PowerPCCPU *cpu)
-     }
-     cs->halted = 1;
-     cs->exception_index = EXCP_HALTED;
--    qatomic_set(&cs->exit_request, true);
-     ppc_maybe_interrupt(&cpu->env);
-+    cpu_exit(cs);
+         switch (trapnr) {
+         case EXCP_SWI:
+diff --git a/linux-user/alpha/cpu_loop.c b/linux-user/alpha/cpu_loop.c
+index 728b64906d9..1f2d1c5565f 100644
+--- a/linux-user/alpha/cpu_loop.c
++++ b/linux-user/alpha/cpu_loop.c
+@@ -35,7 +35,7 @@ void cpu_loop(CPUAlphaState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
-     return H_SUCCESS;
- }
-@@ -624,8 +624,7 @@ static target_ulong h_confer(PowerPCCPU *cpu, SpaprMachineState *spapr,
-     }
+         switch (trapnr) {
+         case EXCP_RESET:
+diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
+index 9aeb9b0087f..026a189b884 100644
+--- a/linux-user/arm/cpu_loop.c
++++ b/linux-user/arm/cpu_loop.c
+@@ -295,7 +295,7 @@ void cpu_loop(CPUARMState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
-     cs->exception_index = EXCP_YIELD;
--    qatomic_set(&cs->exit_request, true);
--    cpu_loop_exit(cs);
-+    cpu_exit(cs);
+         switch(trapnr) {
+         case EXCP_UDEF:
+diff --git a/linux-user/hexagon/cpu_loop.c b/linux-user/hexagon/cpu_loop.c
+index 25c97edcaef..675c157a3de 100644
+--- a/linux-user/hexagon/cpu_loop.c
++++ b/linux-user/hexagon/cpu_loop.c
+@@ -36,7 +36,7 @@ void cpu_loop(CPUHexagonState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
-     return H_SUCCESS;
- }
-diff --git a/hw/ppc/spapr_rtas.c b/hw/ppc/spapr_rtas.c
-index 78309dbb09d..143bc8c3794 100644
---- a/hw/ppc/spapr_rtas.c
-+++ b/hw/ppc/spapr_rtas.c
-@@ -221,7 +221,7 @@ static void rtas_stop_self(PowerPCCPU *cpu, SpaprMachineState *spapr,
-     cs->halted = 1;
-     ppc_store_lpcr(cpu, env->spr[SPR_LPCR] & ~pcc->lpcr_pm);
-     kvmppc_set_reg_ppc_online(cpu, 0);
--    qemu_cpu_kick(cs);
-+    cpu_exit(cs);
- }
+         switch (trapnr) {
+         case EXCP_INTERRUPT:
+diff --git a/linux-user/hppa/cpu_loop.c b/linux-user/hppa/cpu_loop.c
+index 3af50653bb7..a8e715cb59b 100644
+--- a/linux-user/hppa/cpu_loop.c
++++ b/linux-user/hppa/cpu_loop.c
+@@ -119,7 +119,7 @@ void cpu_loop(CPUHPPAState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
- static void rtas_ibm_suspend_me(PowerPCCPU *cpu, SpaprMachineState *spapr,
-diff --git a/replay/replay-events.c b/replay/replay-events.c
-index 8959da9f1fa..a96e47e7740 100644
---- a/replay/replay-events.c
-+++ b/replay/replay-events.c
-@@ -118,7 +118,8 @@ void replay_add_event(ReplayAsyncEventKind event_kind,
+         switch (trapnr) {
+         case EXCP_SYSCALL:
+diff --git a/linux-user/i386/cpu_loop.c b/linux-user/i386/cpu_loop.c
+index 7b2d8b03d84..7af476c9d44 100644
+--- a/linux-user/i386/cpu_loop.c
++++ b/linux-user/i386/cpu_loop.c
+@@ -214,7 +214,7 @@ void cpu_loop(CPUX86State *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
-     g_assert(replay_mutex_locked());
-     QTAILQ_INSERT_TAIL(&events_list, event, events);
--    qemu_cpu_kick(first_cpu);
-+    /* Kick the TCG thread out of tcg_cpu_exec().  */
-+    cpu_exit(first_cpu);
- }
+         switch(trapnr) {
+         case 0x80:
+diff --git a/linux-user/loongarch64/cpu_loop.c b/linux-user/loongarch64/cpu_loop.c
+index a0a4cbb7cc3..dc83118e389 100644
+--- a/linux-user/loongarch64/cpu_loop.c
++++ b/linux-user/loongarch64/cpu_loop.c
+@@ -27,7 +27,7 @@ void cpu_loop(CPULoongArchState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
- void replay_bh_schedule_event(QEMUBH *bh)
-diff --git a/system/cpu-timers.c b/system/cpu-timers.c
-index cb35fa62b8a..6a00691b8d5 100644
---- a/system/cpu-timers.c
-+++ b/system/cpu-timers.c
-@@ -246,14 +246,14 @@ void qemu_timer_notify_cb(void *opaque, QEMUClockType type)
+         switch (trapnr) {
+         case EXCP_INTERRUPT:
+diff --git a/linux-user/m68k/cpu_loop.c b/linux-user/m68k/cpu_loop.c
+index aca0bf23dc6..5b62260212d 100644
+--- a/linux-user/m68k/cpu_loop.c
++++ b/linux-user/m68k/cpu_loop.c
+@@ -33,7 +33,7 @@ void cpu_loop(CPUM68KState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
-     if (qemu_in_vcpu_thread()) {
-         /*
--         * A CPU is currently running; kick it back out to the
-+         * A CPU is currently running; kick it back out of the
-          * tcg_cpu_exec() loop so it will recalculate its
-          * icount deadline immediately.
-          */
--        qemu_cpu_kick(current_cpu);
-+        cpu_exit(current_cpu);
-     } else if (first_cpu) {
-         /*
--         * qemu_cpu_kick is not enough to kick a halted CPU out of
-+         * cpu_exit() is not enough to kick a halted CPU out of
-          * qemu_tcg_wait_io_event.  async_run_on_cpu, instead,
-          * causes cpu_thread_is_idle to return false.  This way,
-          * handle_icount_deadline can run.
-diff --git a/system/cpus.c b/system/cpus.c
-index 9bfbe2b0607..bb13942cbb7 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -604,7 +604,7 @@ void cpu_pause(CPUState *cpu)
-         qemu_cpu_stop(cpu, true);
-     } else {
-         cpu->stop = true;
--        qemu_cpu_kick(cpu);
-+        cpu_exit(cpu);
-     }
- }
+         switch(trapnr) {
+         case EXCP_ILLEGAL:
+diff --git a/linux-user/microblaze/cpu_loop.c b/linux-user/microblaze/cpu_loop.c
+index d8277961c73..a7f3f0e6a68 100644
+--- a/linux-user/microblaze/cpu_loop.c
++++ b/linux-user/microblaze/cpu_loop.c
+@@ -32,7 +32,7 @@ void cpu_loop(CPUMBState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
-@@ -644,6 +644,7 @@ void pause_all_vcpus(void)
+         switch (trapnr) {
+         case EXCP_INTERRUPT:
+diff --git a/linux-user/mips/cpu_loop.c b/linux-user/mips/cpu_loop.c
+index e67b8a2e463..9ac4af6ae52 100644
+--- a/linux-user/mips/cpu_loop.c
++++ b/linux-user/mips/cpu_loop.c
+@@ -74,7 +74,7 @@ void cpu_loop(CPUMIPSState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
-     while (!all_vcpus_paused()) {
-         qemu_cond_wait(&qemu_pause_cond, &bql);
-+        /* FIXME: is this needed? */
-         CPU_FOREACH(cpu) {
-             qemu_cpu_kick(cpu);
-         }
-@@ -672,7 +673,7 @@ void cpu_remove_sync(CPUState *cpu)
- {
-     cpu->stop = true;
-     cpu->unplug = true;
--    qemu_cpu_kick(cpu);
-+    cpu_exit(cpu);
-     bql_unlock();
-     qemu_thread_join(cpu->thread);
-     bql_lock();
-diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index 0efc18a181e..302e899287c 100644
---- a/target/arm/tcg/mte_helper.c
-+++ b/target/arm/tcg/mte_helper.c
-@@ -591,7 +591,7 @@ static void mte_async_check_fail(CPUARMState *env, uint64_t dirty_ptr,
-      * which is rather sooner than "normal".  But the alternative
-      * is waiting until the next syscall.
-      */
--    qemu_cpu_kick(env_cpu(env));
-+    cpu_exit(env_cpu(env));
- #endif
- }
+         switch(trapnr) {
+         case EXCP_SYSCALL:
+diff --git a/linux-user/openrisc/cpu_loop.c b/linux-user/openrisc/cpu_loop.c
+index 8c72347a99a..9512e34e2af 100644
+--- a/linux-user/openrisc/cpu_loop.c
++++ b/linux-user/openrisc/cpu_loop.c
+@@ -33,7 +33,7 @@ void cpu_loop(CPUOpenRISCState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
-diff --git a/target/i386/kvm/hyperv.c b/target/i386/kvm/hyperv.c
-index 9865120cc43..f7a81bd2700 100644
---- a/target/i386/kvm/hyperv.c
-+++ b/target/i386/kvm/hyperv.c
-@@ -81,7 +81,6 @@ int kvm_hv_handle_exit(X86CPU *cpu, struct kvm_hyperv_exit *exit)
-          * necessary because memory hierarchy is being changed
-          */
-         async_safe_run_on_cpu(CPU(cpu), async_synic_update, RUN_ON_CPU_NULL);
--        cpu_exit(CPU(cpu));
+         switch (trapnr) {
+         case EXCP_SYSCALL:
+diff --git a/linux-user/ppc/cpu_loop.c b/linux-user/ppc/cpu_loop.c
+index 22885ffd906..3b5d775a49f 100644
+--- a/linux-user/ppc/cpu_loop.c
++++ b/linux-user/ppc/cpu_loop.c
+@@ -77,7 +77,7 @@ void cpu_loop(CPUPPCState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
  
-         return EXCP_INTERRUPT;
-     case KVM_EXIT_HYPERV_HCALL: {
+         arch_interrupt = true;
+         switch (trapnr) {
+diff --git a/linux-user/riscv/cpu_loop.c b/linux-user/riscv/cpu_loop.c
+index b3162815320..940fd67f7b3 100644
+--- a/linux-user/riscv/cpu_loop.c
++++ b/linux-user/riscv/cpu_loop.c
+@@ -36,7 +36,7 @@ void cpu_loop(CPURISCVState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
+ 
+         switch (trapnr) {
+         case EXCP_INTERRUPT:
+diff --git a/linux-user/s390x/cpu_loop.c b/linux-user/s390x/cpu_loop.c
+index 49e44548f85..be179a073f6 100644
+--- a/linux-user/s390x/cpu_loop.c
++++ b/linux-user/s390x/cpu_loop.c
+@@ -64,7 +64,7 @@ void cpu_loop(CPUS390XState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
+ 
+         switch (trapnr) {
+         case EXCP_INTERRUPT:
+diff --git a/linux-user/sh4/cpu_loop.c b/linux-user/sh4/cpu_loop.c
+index 259ea1cc8bb..a7edd52e37c 100644
+--- a/linux-user/sh4/cpu_loop.c
++++ b/linux-user/sh4/cpu_loop.c
+@@ -34,7 +34,7 @@ void cpu_loop(CPUSH4State *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
+ 
+         switch (trapnr) {
+         case 0x160:
+diff --git a/linux-user/sparc/cpu_loop.c b/linux-user/sparc/cpu_loop.c
+index 7d30cd1ff22..b9228708bf4 100644
+--- a/linux-user/sparc/cpu_loop.c
++++ b/linux-user/sparc/cpu_loop.c
+@@ -220,7 +220,7 @@ void cpu_loop (CPUSPARCState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
+ 
+         switch (trapnr) {
+         case TARGET_TT_SYSCALL:
+diff --git a/linux-user/xtensa/cpu_loop.c b/linux-user/xtensa/cpu_loop.c
+index 43a194fc4a4..bf19377dc29 100644
+--- a/linux-user/xtensa/cpu_loop.c
++++ b/linux-user/xtensa/cpu_loop.c
+@@ -133,7 +133,7 @@ void cpu_loop(CPUXtensaState *env)
+         cpu_exec_start(cs);
+         trapnr = cpu_exec(cs);
+         cpu_exec_end(cs);
+-        process_queued_cpu_work(cs);
++        qemu_wait_io_event(cs);
+ 
+         env->sregs[PS] &= ~PS_EXCM;
+         switch (trapnr) {
 -- 
 2.51.0
 
