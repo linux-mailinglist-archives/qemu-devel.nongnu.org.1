@@ -2,59 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E194CB3CC03
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A06B3CC2B
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:44:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNH1-0007vK-5O; Sat, 30 Aug 2025 11:13:47 -0400
+	id 1usNM2-0004fC-EM; Sat, 30 Aug 2025 11:19:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1urycs-0008W6-73
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 08:54:42 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uryqV-0002Dk-2T
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:08:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1urycp-0006WW-AH
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 08:54:41 -0400
-Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c21:2d8b:0:640:7d49:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 4316680EB0;
- Fri, 29 Aug 2025 15:54:33 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a45::1:13])
- by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id VsaNvi1Gs0U0-5Bb0ybcf; Fri, 29 Aug 2025 15:54:32 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1756472072;
- bh=fSURjKxp8aN/QzOarNoSx4w8f8QS2PoH+Lpg9ZtltA8=;
- h=Message-ID:Date:Cc:Subject:To:From;
- b=goUAaQ1iIC5L7M4+R25uxXDH6qKhR/BqOu0SZJVGG+OyZJe5yYugQSj0wveh8azwf
- 6C1fGZ4I0VG48NeTPoeFN3T/E6UHJRj2lAMqGO2ZNPGIwmEqVrlztc41wM6D5vErUk
- RXf+cDVbItgE4esMbnDHWj1hhNTIaip1FVj6ewTg=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: jasowang@redhat.com
-Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, armbru@redhat.com,
- eblake@redhat.com, devel@lists.libvirt.org
-Subject: [PATCH] qapi: net/tap: deprecate vhostforce option
-Date: Fri, 29 Aug 2025 15:54:29 +0300
-Message-ID: <20250829125429.795595-1-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uryqP-0002Gh-Ek
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:08:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756472918;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=t1YLAREREMgvXglJ3soAfbuaGVQEaukQoE3lXSXWXHc=;
+ b=IXJuO7OhYYaR+ckSkJgxWgTcfbPgj5o+Q19SKV37ohayfwL+81bYS5Oem3FfO+DVSFY8bI
+ jhIQbhpw+s/ldgCZ7va+yUIhFoUyyzjQR72E1OGF99pyS8YXY4D9KCgBU3cRll4OmWgl8c
+ 2i+9FFI6wGbxY4AbhvPkNnIeDMRPbIU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-479-xZk1784iPHi0gC5Rw59BPg-1; Fri, 29 Aug 2025 08:59:39 -0400
+X-MC-Unique: xZk1784iPHi0gC5Rw59BPg-1
+X-Mimecast-MFC-AGG-ID: xZk1784iPHi0gC5Rw59BPg_1756472378
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3ccd58af2bbso1091625f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 05:59:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756472378; x=1757077178;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=t1YLAREREMgvXglJ3soAfbuaGVQEaukQoE3lXSXWXHc=;
+ b=KOmINV1EAcWCgW1SlLbxvnh2GCD2oxXSk+XlrS1aZQjDcWNKkY1KPra9NjoOEkX8W1
+ VzDXOWap+F6DX4+puqWFYyNKlohPq1WiKQWM0/18f5seH218E1YnfriN0oFLvgeaiAWC
+ iw+vKxblWbt/1CqZ4eK1RJBswyg5N3Va5eGvbtHlWENlRAZk2jWxqm2hsrG6twbUK+Gw
+ ukYsvpMs0NmfV0EESijdteJR+lbk6vsfFWRW83ZYQBlOM2Y+bI3WpdvK6nSZ3/X2r8Zi
+ hWfbdGKjy21pkBIe8/dzIQ44sXd7R8aR4XlTQsWIZonFrKq5FSXPkqdeeWJ2ZiyStG9+
+ RIfg==
+X-Gm-Message-State: AOJu0Yz6/ZXsv6zoCrkpSX5Ybi4z0uRTgx7b/Y3Ahk4J62z3KU3Di+3h
+ dxGFheuZJZaXep2q+Xf2ovY06RHGrnhGSwubQGNWU/TpmD1UAO/d1caNDfPwgE/GgXodGVoQmIz
+ zeDaZpt3j+uTBlyd27jrCj0L3vktpnaEnlkj5O2h34kukpI4NovD+jj2BzGjSnSL3skJZBph0en
+ SYw5c1d3QENRx18J17wg6JKIQyEkSDTZjaK44hflFJ
+X-Gm-Gg: ASbGncsW9StrlZqBxHQjbscsl+TInuVYROVcZjqMIeaHHPozJJ/cobI1jW3qz/UGDvv
+ jcI08AhwfcbSdbpMZkmhzz82XjZhJul18xlaQqu+UI03uljQpUONX7tAzlv+4WIBqOxwhOR+/pM
+ iDmgNm972F6S0Kw0fizpgHNoyRUu4ae0eDbLxvuZOEUMCZXhtadZ3sfGBLCMCkiB6j4CJLGMIfr
+ 4RWIQkIh1pSrJnIk+MM2ms+yybkWjOrAAw6nzyJZMxYjycEr1CBw/Ur9tpZ1Eiu3HR/dxlLDflO
+ CC0ri4F/zXU5l5TQPgsBLDtoSYa4UPTkdCSQPziM9Fgbkgg7U0iR90sI14bTMxkNp62H7bM3XTt
+ CZZeRXbE2KsPKnUUNZa9wEVmlBXb7g1lpOlps3U8DbDY=
+X-Received: by 2002:a05:6000:24c3:b0:3d1:2828:c2ee with SMTP id
+ ffacd0b85a97d-3d12828ca25mr833783f8f.11.1756472377805; 
+ Fri, 29 Aug 2025 05:59:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDrEt6fzHmZXZ5g5IXTjkYeKXPP2Gxk6MQTC/7slewC8bXhb6P+837H+nZ1i/nqcJTMie9ZQ==
+X-Received: by 2002:a05:6000:24c3:b0:3d1:2828:c2ee with SMTP id
+ ffacd0b85a97d-3d12828ca25mr833761f8f.11.1756472377258; 
+ Fri, 29 Aug 2025 05:59:37 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.56.250])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3cf276d643dsm3361021f8f.26.2025.08.29.05.59.36
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 29 Aug 2025 05:59:36 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/28] i386, accel, memory patches for 2025-08-29
+Date: Fri, 29 Aug 2025 14:59:07 +0200
+Message-ID: <20250829125935.1526984-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,60 +104,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This option simply duplicates the @vhost option since long ago
-(10 years!)
-commit 1e7398a140f7a6 ("vhost: enable vhost without without MSI-X").
-Let's finally deprecate it.
+The following changes since commit 59f504bb43366594e97cf496c9a9ccf59be00b73:
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- docs/about/deprecated.rst | 7 +++++++
- qapi/net.json             | 6 +++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+  Merge tag 'pull-loongarch-20250828' of https://github.com/gaosong715/qemu into staging (2025-08-29 07:44:50 +1000)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index d50645a071..d14cb37480 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -516,6 +516,13 @@ Stream ``reconnect`` (since 9.2)
- The ``reconnect`` option only allows specifying second granularity timeouts,
- which is not enough for all types of use cases, use ``reconnect-ms`` instead.
- 
-+TAP ``vhostforce`` (since 10.2)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+The ``vhostforce`` option just duplicates the main ``vhost`` option.
-+Use ``vhost`` alone.
-+
-+
- VFIO device options
- '''''''''''''''''''
- 
-diff --git a/qapi/net.json b/qapi/net.json
-index 78bcc9871e..d1216bb60a 100644
---- a/qapi/net.json
-+++ b/qapi/net.json
-@@ -353,6 +353,10 @@
- # @poll-us: maximum number of microseconds that could be spent on busy
- #     polling for tap (since 2.7)
- #
-+# Features:
-+#
-+# @deprecated: Member @vhostforce is deprecated.  Simply use @vhost.
-+#
- # Since: 1.2
- ##
- { 'struct': 'NetdevTapOptions',
-@@ -369,7 +373,7 @@
-     '*vhost':      'bool',
-     '*vhostfd':    'str',
-     '*vhostfds':   'str',
--    '*vhostforce': 'bool',
-+    '*vhostforce': { 'type': 'bool', 'features': [ 'deprecated' ] },
-     '*queues':     'uint32',
-     '*poll-us':    'uint32'} }
- 
+are available in the Git repository at:
+
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to 83bd8e65bc70cef03a207df315004f8b1301dc53:
+
+  tcg: move interrupt caching and single step masking closer to user (2025-08-29 12:48:14 +0200)
+
+----------------------------------------------------------------
+* hw/i386: split isapc from PCI boards
+* cpu-exec, accel: remove BQL usage for interrupt_request != 0
+* memory, hpet, pmtimer: introduce BQL-free PIO/MMIO
+
+----------------------------------------------------------------
+Igor Mammedov (8):
+      add cpu_test_interrupt()/cpu_set_interrupt() helpers and use them tree wide
+      memory: reintroduce BQL-free fine-grained PIO/MMIO
+      acpi: mark PMTIMER as unlocked
+      hpet: switch to fine-grained device locking
+      hpet: move out main counter read into a separate block
+      hpet: make main counter read lock-less
+      kvm: i386: irqchip: take BQL only if there is an interrupt
+      tcg: move interrupt caching and single step masking closer to user
+
+Mark Cave-Ayland (19):
+      hw/i386/pc_piix.c: restrict isapc machine to 32-bit CPUs
+      hw/i386/pc_piix.c: restrict isapc machine to 3.5G memory
+      hw/i386/pc_piix.c: remove include for loader.h
+      hw/i386/pc_piix.c: inline pc_xen_hvm_init_pci() into pc_xen_hvm_init()
+      hw/i386/pc_piix.c: duplicate pc_init1() into pc_isa_init()
+      hw/i386/pc_piix.c: remove pcmc->pci_enabled dependent initialisation from pc_init_isa()
+      hw/i386/pc_piix.c: remove igvm initialisation from pc_init_isa()
+      hw/i386/pc_piix.c: remove SMI and piix4_pm initialisation from pc_init_isa()
+      hw/i386/pc_piix.c: remove SGX initialisation from pc_init_isa()
+      hw/i386/pc_piix.c: remove nvdimm initialisation from pc_init_isa()
+      hw/i386/pc_piix.c: simplify RAM size logic in pc_init_isa()
+      hw/i386/pc_piix.c: hardcode hole64_size to 0 in pc_init_isa()
+      hw/i386/pc_piix.c: remove pc_system_flash_cleanup_unused() from pc_init_isa()
+      hw/i386/pc_piix.c: always initialise ISA IDE drives in pc_init_isa()
+      hw/i386/pc_piix.c: assume pcmc->pci_enabled is always true in pc_init1()
+      hw/i386: move isapc machine to separate isapc.c file
+      hw/i386/pc_piix.c: remove unused headers after isapc machine split
+      hw/i386/pc_piix.c: replace rom_memory with pci_memory
+      hw/i386/isapc.c: replace rom_memory with system_memory
+
+Paolo Bonzini (1):
+      user-exec: ensure interrupt_request is not used
+
+ include/hw/core/cpu.h               |  23 ++++
+ include/system/memory.h             |  12 ++
+ accel/tcg/cpu-exec.c                |  31 +++--
+ accel/tcg/tcg-accel-ops.c           |   2 +-
+ accel/tcg/user-exec.c               |   4 +-
+ hw/acpi/core.c                      |   1 +
+ hw/i386/isapc.c                     | 189 +++++++++++++++++++++++++++
+ hw/i386/pc_piix.c                   | 248 ++++++++++++------------------------
+ hw/intc/s390_flic.c                 |   2 +-
+ hw/openrisc/cputimer.c              |   2 +-
+ hw/timer/hpet.c                     |  38 ++++--
+ system/cpus.c                       |   9 +-
+ system/memory.c                     |  15 +++
+ system/physmem.c                    |   2 +-
+ target/alpha/cpu.c                  |   8 +-
+ target/arm/cpu.c                    |  20 +--
+ target/arm/helper.c                 |  18 +--
+ target/arm/hvf/hvf.c                |   6 +-
+ target/avr/cpu.c                    |   2 +-
+ target/hppa/cpu.c                   |   2 +-
+ target/i386/hvf/hvf.c               |   4 +-
+ target/i386/hvf/x86hvf.c            |  21 ++-
+ target/i386/kvm/kvm.c               |  46 ++++---
+ target/i386/nvmm/nvmm-all.c         |  24 ++--
+ target/i386/tcg/system/seg_helper.c |   2 +-
+ target/i386/tcg/system/svm_helper.c |   2 +-
+ target/i386/whpx/whpx-all.c         |  34 ++---
+ target/loongarch/cpu.c              |   2 +-
+ target/m68k/cpu.c                   |   2 +-
+ target/microblaze/cpu.c             |   2 +-
+ target/mips/cpu.c                   |   6 +-
+ target/mips/kvm.c                   |   2 +-
+ target/openrisc/cpu.c               |   3 +-
+ target/ppc/cpu_init.c               |   2 +-
+ target/ppc/kvm.c                    |   2 +-
+ target/rx/cpu.c                     |   3 +-
+ target/rx/helper.c                  |   2 +-
+ target/s390x/cpu-system.c           |   2 +-
+ target/sh4/cpu.c                    |   2 +-
+ target/sh4/helper.c                 |   2 +-
+ target/sparc/cpu.c                  |   2 +-
+ target/sparc/int64_helper.c         |   4 +-
+ hw/i386/Kconfig                     |   3 -
+ hw/i386/meson.build                 |   1 +
+ 44 files changed, 490 insertions(+), 319 deletions(-)
+ create mode 100644 hw/i386/isapc.c
 -- 
-2.48.1
+2.51.0
 
 
