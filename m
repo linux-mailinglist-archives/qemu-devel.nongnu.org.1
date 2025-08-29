@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F483B3CB9A
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A86E5B3CB9E
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:02:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usN3e-0001oM-Tc; Sat, 30 Aug 2025 10:59:58 -0400
+	id 1usN3b-0001i4-Lz; Sat, 30 Aug 2025 10:59:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1urpIU-0001Hc-LH
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 22:57:02 -0400
+ id 1urpH8-0008Q0-94
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 22:55:39 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1urpIN-0007WW-AB
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 22:57:02 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1urpH5-0007AT-P5
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 22:55:38 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8BxndKXFrFotW4EAA--.8681S3;
+ by gateway (Coremail) with SMTP id _____8Axjr+XFrFouG4EAA--.7879S3;
  Fri, 29 Aug 2025 10:55:19 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJDxbMGMFrFoKstvAA--.33085S12;
+ by front1 (Coremail) with SMTP id qMiowJDxbMGMFrFoKstvAA--.33085S13;
  Fri, 29 Aug 2025 10:55:19 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 10/14] target/loongarch: Use MMUConext in
- loongarch_map_tlb_entry()
-Date: Fri, 29 Aug 2025 10:55:03 +0800
-Message-Id: <20250829025507.2315073-11-maobibo@loongson.cn>
+Subject: [PULL 11/14] target/loongarch: Use MMUContext in
+ loongarch_get_addr_from_tlb
+Date: Fri, 29 Aug 2025 10:55:04 +0800
+Message-Id: <20250829025507.2315073-12-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250829025507.2315073-1-maobibo@loongson.cn>
 References: <20250829025507.2315073-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJDxbMGMFrFoKstvAA--.33085S12
+X-CM-TRANSID: qMiowJDxbMGMFrFoKstvAA--.33085S13
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,73 +63,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With function loongarch_map_tlb_entry(), parameter MMUConext is added
-and remove parameter physical, prot and address.
+With function loongarch_get_addr_from_tlb(), parameter MMUContext
+is added and remove parameter physical, prot and address.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/loongarch/tcg/tlb_helper.c | 33 +++++++++++++++----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
+ target/loongarch/cpu_helper.c        |  7 +++++--
+ target/loongarch/tcg/tcg_loongarch.h |  4 ++--
+ target/loongarch/tcg/tlb_helper.c    | 18 +++++-------------
+ 3 files changed, 12 insertions(+), 17 deletions(-)
 
+diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
+index cd61b33ef9..0cc01a0ca4 100644
+--- a/target/loongarch/cpu_helper.c
++++ b/target/loongarch/cpu_helper.c
+@@ -173,9 +173,12 @@ static TLBRet loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
+ 
+     context.addr = address;
+     if (tcg_enabled()) {
+-        ret = loongarch_get_addr_from_tlb(env, physical, prot, address,
+-                                          access_type, mmu_idx);
++        ret = loongarch_get_addr_from_tlb(env, &context, access_type, mmu_idx);
+         if (ret != TLBRET_NOMATCH) {
++            if (ret == TLBRET_MATCH) {
++                *physical = context.physical;
++                *prot = context.prot;
++            }
+             return ret;
+         }
+     }
+diff --git a/target/loongarch/tcg/tcg_loongarch.h b/target/loongarch/tcg/tcg_loongarch.h
+index 488700c3c3..47702893e3 100644
+--- a/target/loongarch/tcg/tcg_loongarch.h
++++ b/target/loongarch/tcg/tcg_loongarch.h
+@@ -15,8 +15,8 @@ bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+                             MMUAccessType access_type, int mmu_idx,
+                             bool probe, uintptr_t retaddr);
+ 
+-TLBRet loongarch_get_addr_from_tlb(CPULoongArchState *env, hwaddr *physical,
+-                                   int *prot, target_ulong address,
++TLBRet loongarch_get_addr_from_tlb(CPULoongArchState *env,
++                                   MMUContext *context,
+                                    MMUAccessType access_type, int mmu_idx);
+ 
+ #endif  /* TARGET_LOONGARCH_TCG_LOONGARCH_H */
 diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 10322da62e..703ab9c8ca 100644
+index 703ab9c8ca..64a4e82dec 100644
 --- a/target/loongarch/tcg/tlb_helper.c
 +++ b/target/loongarch/tcg/tlb_helper.c
-@@ -648,28 +648,19 @@ void helper_ldpte(CPULoongArchState *env, target_ulong base, target_ulong odd,
-     env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI, PS, ps);
+@@ -663,24 +663,16 @@ static TLBRet loongarch_map_tlb_entry(CPULoongArchState *env,
+     return loongarch_check_pte(env, context, access_type, mmu_idx);
  }
  
--static TLBRet loongarch_map_tlb_entry(CPULoongArchState *env, hwaddr *physical,
--                                      int *prot, vaddr address,
-+static TLBRet loongarch_map_tlb_entry(CPULoongArchState *env,
-+                                      MMUContext *context,
-                                       MMUAccessType access_type, int index,
-                                       int mmu_idx)
- {
-     LoongArchTLB *tlb = &env->tlb[index];
-     uint8_t tlb_ps, n;
--    MMUContext context;
--    TLBRet ret;
- 
-     tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
--    n = (address >> tlb_ps) & 0x1;/* Odd or even */
--    context.pte = n ? tlb->tlb_entry1 : tlb->tlb_entry0;
--    context.addr = address;
--    context.ps = tlb_ps;
--    ret = loongarch_check_pte(env, &context, access_type, mmu_idx);
--    if (ret == TLBRET_MATCH) {
--        *physical = context.physical;
--        *prot = context.prot;
--     }
--
--    return ret;
-+    n = (context->addr >> tlb_ps) & 0x1;/* Odd or even */
-+    context->pte = n ? tlb->tlb_entry1 : tlb->tlb_entry0;
-+    context->ps = tlb_ps;
-+    return loongarch_check_pte(env, context, access_type, mmu_idx);
- }
- 
- TLBRet loongarch_get_addr_from_tlb(CPULoongArchState *env, hwaddr *physical,
-@@ -677,11 +668,19 @@ TLBRet loongarch_get_addr_from_tlb(CPULoongArchState *env, hwaddr *physical,
+-TLBRet loongarch_get_addr_from_tlb(CPULoongArchState *env, hwaddr *physical,
+-                                   int *prot, vaddr address,
++TLBRet loongarch_get_addr_from_tlb(CPULoongArchState *env,
++                                   MMUContext *context,
                                     MMUAccessType access_type, int mmu_idx)
  {
      int index, match;
-+    MMUContext context;
-+    TLBRet ret;
+-    MMUContext context;
+-    TLBRet ret;
  
-+    context.addr = address;
-     match = loongarch_tlb_search(env, address, &index);
+-    context.addr = address;
+-    match = loongarch_tlb_search(env, address, &index);
++    match = loongarch_tlb_search(env, context->addr, &index);
      if (match) {
--        return loongarch_map_tlb_entry(env, physical, prot,
--                                       address, access_type, index, mmu_idx);
-+        ret = loongarch_map_tlb_entry(env, &context, access_type, index,
-+                                      mmu_idx);
-+        if (ret == TLBRET_MATCH) {
-+            *physical = context.physical;
-+            *prot = context.prot;
-+        }
-+        return ret;
+-        ret = loongarch_map_tlb_entry(env, &context, access_type, index,
+-                                      mmu_idx);
+-        if (ret == TLBRET_MATCH) {
+-            *physical = context.physical;
+-            *prot = context.prot;
+-        }
+-        return ret;
++        return loongarch_map_tlb_entry(env, context, access_type, index,
++                                       mmu_idx);
      }
  
      return TLBRET_NOMATCH;
