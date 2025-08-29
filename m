@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C638B3CC5F
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 746A1B3CCA4
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:10:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNFY-0006Sx-Bz; Sat, 30 Aug 2025 11:12:16 -0400
+	id 1usNEv-0004n6-Vf; Sat, 30 Aug 2025 11:11:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1urwyF-00004q-4G
+ id 1urwyF-00004r-4K
  for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1urwyC-0001j8-VF
+ id 1urwyC-0001jK-V3
  for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756465715;
+ s=mimecast20190719; t=1756465716;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PGvG/LGRqC2htS89N6HiSrot7Fa5WLiu5iEYx6qvNzE=;
- b=JbLQ5TxjY/88CNw39AgLr0tJUiV7gTVLDNcB/PIqhMOEkKjuHyD5PActzrJwkPmn6o8oSt
- aTLTgT/8/C9uNn1OxpFgAMTdLGAer5UukFvfqE7VHQVkJe1/OWpzWFqFuXtpxCMn3Uqvjf
- k5cVFAm9UXvCgx4oaSq8w8gJpU5i60M=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=JKbrB0s6B1hxtiguHSN3mL4QozFKLp4LyEThmokh9/o=;
+ b=Ei3MzzCJ+xTgIUxO2HR4y5HNwPQANp9b6vaBw0Zc8OL61eIqURmmWFoo1DCYrDoJwPIIIR
+ pFGvgKPj4FPvGAWBR2rOvrSiO0XfWUBTTcu/2KullHU9NucixfDnVUsY8ftJxEPS63Vl2f
+ 33itLqH7j2fjAz2NiIiMBfpz7nt/eRE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-PR4zvEojM8O3YlsnkE_wkQ-1; Fri,
- 29 Aug 2025 07:08:32 -0400
-X-MC-Unique: PR4zvEojM8O3YlsnkE_wkQ-1
-X-Mimecast-MFC-AGG-ID: PR4zvEojM8O3YlsnkE_wkQ_1756465711
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-RulhVhRkMMSN61nay8ETcg-1; Fri,
+ 29 Aug 2025 07:08:34 -0400
+X-MC-Unique: RulhVhRkMMSN61nay8ETcg-1
+X-Mimecast-MFC-AGG-ID: RulhVhRkMMSN61nay8ETcg_1756465713
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 17278195C27E; Fri, 29 Aug 2025 11:08:31 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4DD6A180044F; Fri, 29 Aug 2025 11:08:33 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.225.62])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8349E30001B5; Fri, 29 Aug 2025 11:08:29 +0000 (UTC)
+ id BABB430001B5; Fri, 29 Aug 2025 11:08:31 +0000 (UTC)
 From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 6/9] qga: ignore channel_init() fail if 'retry_path' is set
-Date: Fri, 29 Aug 2025 14:08:10 +0300
-Message-ID: <20250829110813.50286-7-kkostiuk@redhat.com>
+Subject: [PULL 7/9] qga-vss: Write hex value of error in log
+Date: Fri, 29 Aug 2025 14:08:11 +0300
+Message-ID: <20250829110813.50286-8-kkostiuk@redhat.com>
 In-Reply-To: <20250829110813.50286-1-kkostiuk@redhat.com>
 References: <20250829110813.50286-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
@@ -82,37 +82,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Windows, we run QGA with `-d --retry-path` options by default,
-and expect that QGA will start even without the vioserial driver
-and will wait for communication forever.
+QGA-VSS writes error using error_setg_win32_internal,
+which call g_win32_error_message.
+
+g_win32_error_message - translate a Win32 error code
+(as returned by GetLastError()) into the corresponding message.
+
+In the same time, we call error_setg_win32_internal with
+error codes from different Windows componets like VSS or
+Performance monitor that provides different codes and
+can't be converted with g_win32_error_message. In this
+case, the empty suffix will be returned so error will be
+masked.
+
+This commit directly add hex value of error code.
+
+Reproduce:
+ - Run QGA command: {"execute": "guest-fsfreeze-freeze-list", "arguments": {"mountpoints": ["D:"]}}
+
+QGA error example:
+ - before changes:
+  {"error": {"class": "GenericError", "desc": "failed to add D: to snapshot set: "}}
+ - after changes:
+  {"error": {"class": "GenericError", "desc": "failed to add D: to snapshot set: Windows error 0x8004230e: "}}
 
 Reviewed-by: Yan Vugenfirer <yvugenfi@redhat.com>
-Reviewed-by: Michal Privoznik <mprivozn@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250825140549.146617-3-kkostiuk@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250825135311.138330-1-kkostiuk@redhat.com
 Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 ---
- qga/main.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ qga/vss-win32/requester.cpp | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/qga/main.c b/qga/main.c
-index a1bf8f53ac..dd1c216f9a 100644
---- a/qga/main.c
-+++ b/qga/main.c
-@@ -1512,8 +1512,12 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
+diff --git a/qga/vss-win32/requester.cpp b/qga/vss-win32/requester.cpp
+index bc260abb96..5615955b6f 100644
+--- a/qga/vss-win32/requester.cpp
++++ b/qga/vss-win32/requester.cpp
+@@ -28,8 +28,9 @@
  
-     if (!channel_init(s, s->config->method, s->config->channel_path,
-                       s->socket_activation ? FIRST_SOCKET_ACTIVATION_FD : -1)) {
--        g_critical("failed to initialize guest agent channel");
--        return NULL;
-+        if (s->config->retry_path) {
-+            g_info("failed to initialize guest agent channel, will retry");
-+        } else {
-+            g_critical("failed to initialize guest agent channel");
-+            return NULL;
-+        }
-     }
- 
-     if (config->daemonize) {
+ #define err_set(e, err, fmt, ...) {                                         \
+     (e)->error_setg_win32_wrapper((e)->errp, __FILE__, __LINE__, __func__,  \
+-                                   err, fmt, ## __VA_ARGS__);               \
+-    qga_debug(fmt, ## __VA_ARGS__);                                         \
++                                   err, fmt ": Windows error 0x%lx",        \
++                                   ## __VA_ARGS__, err);                    \
++    qga_debug(fmt ": Windows error 0x%lx", ## __VA_ARGS__, err);            \
+ }
+ /* Bad idea, works only when (e)->errp != NULL: */
+ #define err_is_set(e) ((e)->errp && *(e)->errp)
 -- 
 2.50.1
 
