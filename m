@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE493B3CC4B
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C584B3CBCC
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:20:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usN9g-0004e0-QX; Sat, 30 Aug 2025 11:06:13 -0400
+	id 1usNBU-0005Ya-8K; Sat, 30 Aug 2025 11:08:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uruUa-0002yk-Kd
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:29:54 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ id 1uruUq-00037A-WF
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:30:09 -0400
+Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uruUW-0006RE-Nf
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:29:52 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 115D4C02A7;
- Fri, 29 Aug 2025 11:29:39 +0300 (MSK)
+ id 1uruUo-0006Wc-KE
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:30:08 -0400
+Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
+ [IPv6:2a02:6b8:c42:cf2d:0:640:140f:0])
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 0AA3F8102F;
+ Fri, 29 Aug 2025 11:30:02 +0300 (MSK)
 Received: from [IPV6:2a02:6bf:8080:c1f::1:a] (unknown [2a02:6bf:8080:c1f::1:a])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id bTWNKX1GkeA0-1cxfkDKF; Fri, 29 Aug 2025 11:29:38 +0300
+ by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id xTW9Rl1Fm8c0-0Gy97CHf; Fri, 29 Aug 2025 11:30:01 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1756456178;
- bh=BC2pgvxBEZl/Wtw6h5PC3t3gaWLfjQj1HiJ5+pWQUTk=;
+ s=default; t=1756456201;
+ bh=t0EERVi/AW1MnULrOfzLpJ3n4WkUUeGQx06/lgmzDwg=;
  h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=zGx1CwwnakDhLp4/AJooIAL8bXReDorsWr8GwqESAJ9FkeLSiVU1GZV2pzhBOHnnf
- V4dlN8OsIYFAM3CTvu2XZQbucwNfAQY4FRkxDm4QT4Gr5Vy7VQmF5QDPcfngVG/v+b
- 36eixJ+cyZU8pWVtVsT5MU/yLE/guINrI7rfthnA=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ b=iB3T1/Qe36mIll74W9u/cg8s2Ta+P8uFVIwsVIYkjGD37bdxV1FFq30uL1LpFPNG+
+ 93uKxuHVWnvWclWUoTOYE8c6tRuXn0jZBsIPk2jq4L1CRZA4gM5nwfKSYwXG7MCq2A
+ 9GychvW2Vxc0Y/JXyeVkX8xB4Q3p3sgFgE1IBW1Q=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <d801092f-76da-4b2c-ad35-c0c625c78861@yandex-team.ru>
-Date: Fri, 29 Aug 2025 11:29:37 +0300
+Message-ID: <a7f72cc7-d5ec-4a9e-a1a1-d77f376c5ce4@yandex-team.ru>
+Date: Fri, 29 Aug 2025 11:29:59 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/9] migration: Threadify loadvm process
+Subject: Re: [PATCH RFC 5/9] migration: Thread-ify precopy vmstate load process
 To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
 Cc: "Dr . David Alan Gilbert" <dave@treblig.org>,
  Kevin Wolf <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -50,13 +50,14 @@ Cc: "Dr . David Alan Gilbert" <dave@treblig.org>,
  Zhang Chen <zhangckid@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>,
  Juraj Marcin <jmarcin@redhat.com>
 References: <20250827205949.364606-1-peterx@redhat.com>
+ <20250827205949.364606-6-peterx@redhat.com>
 Content-Language: en-US
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20250827205949.364606-1-peterx@redhat.com>
+In-Reply-To: <20250827205949.364606-6-peterx@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -80,11 +81,72 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 27.08.25 23:59, Peter Xu wrote:
-> split the patches into smaller ones if possible
+> Migration module was there for 10+ years.  Initially, it was in most cases
+> based on coroutines.  As more features were added into the framework, like
+> postcopy, multifd, etc.. it became a mixture of threads and coroutines.
+> 
+> I'm guessing coroutines just can't fix all issues that migration want to
+> resolve.
+> 
+> After all these years, migration is now heavily based on a threaded model.
+> 
+> Now there's still a major part of migration framework that is still not
+> thread-based, which is precopy load.  We do load in a separate thread in
+> postcopy since the 1st day postcopy was introduced, however that requires a
+> separate state transition from precopy loading all devices first, which
+> still happens in the main thread of a coroutine.
+> 
+> This patch tries to move the migration incoming side to be run inside a
+> separate thread (mig/dst/main) just like the src (mig/src/main).  The
+> entrance to be migration_incoming_thread().
+> 
+> Quite a few things are needed to make it fly..
+> 
+> BQL Analysis
+> ============
+> 
+> Firstly, when moving it over to the thread, it means the thread cannot take
+> BQL during the whole process of loading anymore, because otherwise it can
+> block main thread from using the BQL for all kinds of other concurrent
+> tasks (for example, processing QMP / HMP commands).
+> 
+> Here the first question to ask is: what needs BQL during precopy load, and
+> what doesn't?
+> 
+> Most of the load process shouldn't need BQL, especially when it's about
+> RAM.  After all, RAM is still the major chunk of data to move for a live
+> migration process.  VFIO started to change that, though, but still, VFIO is
+> per-device so that shouldn't need BQL either in most cases.
+> 
+> Generic device loads will need BQL, likely not when receiving VMSDs, but
+> when applying them.  One example is any post_load() could potentially
+> inject memory regions causing memory transactions to happen.  That'll need
+> to update the global address spaces, hence requires BQL.  The other one is
+> CPU sync operations, even if the sync alone may not need BQL (which is
+> still to be further justified), run_on_cpu() will need it.
+> 
+> For that, qemu_loadvm_state() and qemu_loadvm_state_main() functions need
+> to now take a "bql_held" parameter saying whether bql is held.  We could
+> use things like BQL_LOCK_GUARD(), but this patch goes with explicit
+> lockings rather than relying on bql_locked TLS variable.  In case of
+> migration, we always know whether BQL is held in different context as long
+> as we can still pass that information downwards.
 
-Support for bql_held parameter for some functions may also be
-moved to separate preparation patches, which will simplify the
-main patch.
+Agree, but I think it's better to make new macros following same pattern, i.e.
+
+WITH_BQL_HELD(bql_held) {
+     action();
+}
+
+instead of
+
+WITH_BQL_HELD(bql_held, actions());
+
+..
+
+Or I'm missing something and we already have a precedent of the latter
+notation?
+
 
 
 -- 
