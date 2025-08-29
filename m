@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EA4DB3CC3C
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6750CB3CCE2
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:22:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNl2-0003nU-Eh; Sat, 30 Aug 2025 11:44:49 -0400
+	id 1usNl7-00041b-OU; Sat, 30 Aug 2025 11:44:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7bA-0004MI-LJ
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:29:32 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1us7bD-0004Nj-Dt
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:29:35 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7b8-0003a5-J3
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:29:32 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-771e987b4e6so2093269b3a.2
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:29:29 -0700 (PDT)
+ id 1us7bB-0003aY-3r
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:29:34 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-7723cf6e4b6so123900b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:29:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756506568; x=1757111368; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756506571; x=1757111371; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0b8XApD11uS49cAycox2dUykst7Wjzbv/b7G4vIsl14=;
- b=NnCzgKEQk5n2SyLKoj5TsoIDvLQjYq2SHXsb0iNyMab3W985RiviLo0fRszusjB/Ca
- riOanlBTu+t614TVWwTrbKeUqlXhDUeEoslN9IkeWB1Pro+FwVb3K35tee4qZBgibDjn
- FhOFIy9iAQWKWoHbxyzPmzVAlyuDGjEiWUJekVKcjMFIx7LLoeaGbMI1Ho0Bj2imOcWG
- MERUwj3Jre/pcX3jkWhYlJV86F8ulyO5FNSuaB4K1JjWQYg5wSu0L95xqndQ2jbitv0n
- dmhcPXcDS0aI8Aw8Wxy3HoQ5FPbgJ34DT/RaKmj7Q9mDG6gkJiDc3f10Jtrt5ZQjq/WG
- cNlg==
+ bh=sa3b2TMivSD6XM1tsMuoQHxNMdNW+gXzNJQ+o4QofYU=;
+ b=TjGjwO87K6+IEaBvP1dugeIOtl3VXDnuLMGhkTNfKmqiHlT1+tcoSH8CamnMFbmQY1
+ tdCluo2RzARwNnlNFyR+Yy43S43V3EYBDzIhof/FIGSR9j1O6yu+LMg5EgsjRi9kWPAO
+ eGgiqprkpWZ06KttX7zMdBuWD6AosPBHIC3T2fI850zFve9w1widaAa6X3YQHGWtP+fN
+ RbJN/f6k/2q4HdNMf0q/QsOLozGqsLTEGw8R/ggv69pWgzQ0F6lUcOA+vZAmJDlvkvb2
+ PS14QEdWH+giabeC6Vzga7oBtMVhrAODs+wPUcwwUFVK9DwJ6vuBRmYrGk51/VSUpUMW
+ xYhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756506568; x=1757111368;
+ d=1e100.net; s=20230601; t=1756506571; x=1757111371;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0b8XApD11uS49cAycox2dUykst7Wjzbv/b7G4vIsl14=;
- b=gFQ/MXgrgPt9XwVO11WFbXymqS4+yMUYMbPbusQY8HwEOmGyxcIvuiyTORJxndq7MP
- IzdpLBg18A1tgosCooiSawXSC3FFjOhsjdJ/C9fO3ShK22fCOkgdIpRjhAeLo3iWQUix
- pqPoNphcRjWspw3Y1T1yr3qLesqIiP8lZHT/wf1EpcuyHGZcwTwvDm3la5gAIdelfy5c
- 8Q/PTZOpUAYgCHNXht+Fn4WKDh32uk9Ij+DjzoE59Peqrs31ssTdP+6qKOLF41obGqR3
- DloieQCcb6aVPPtEQdTxoznTl3GN9crIpwUnWV+qlVzS2EnhMfAWqgGkV/moQ3f/OoMJ
- IIYA==
-X-Gm-Message-State: AOJu0Yz1DhOej7etjg8SCTep5o3q5OTdIv7zJjTM9fXKnlR9ERsvDdnU
- LbE+PBLRBNo+7LqjeDRVcft9Nnhm6AvSmlh8Vsw5O2jBWWTNFAsdfgttkTdZB3bFXqvI5MsgUJF
- YMjU+zNM=
-X-Gm-Gg: ASbGncvG9U27W13KWC7dC9sWGJEtfVMefZxunAihPEMGqpAjVvl6pA/k28oUVCVgJ8t
- ApX1GysR4mNOPeTjocXaEON7rZ/jkYWzQtGmst0H83EGRBb7ahVb2R9fDayc65sltMNKfX4uEMt
- IbzeH3bZtcd2Fa6rp0eIy7V0Zfz/lLgmPwr0oBqZgFWmfvniqH3ALhd9QpclE5BH3MBMj6yKv1A
- QUGsoH8mQMMr3bVxS8KbuLHcSRUezwJtt/776SxJgoMdKr9bqkHA9LSzEPD/DUjsrMBwgwrj7mA
- x+vFXBx3NNhwn/xFQx/CBu0vw2wirRPWwodMGMSs+w7OR59TKJjUCDCZ6Ab8gN3aiiK57BoAIjt
- 7ddF5TujaZebfTgZzutusej1Qx2lQc16JR5O3V2MalEgoOD6cx1rCTMOqVlQopO8=
-X-Google-Smtp-Source: AGHT+IF86UjIpExCZf9kfvKrOOhbrRzG3nHakxqS988SQdXc/rTUTl1bVPoBIkjXSqg/rCBBfP+E9g==
-X-Received: by 2002:a05:6a00:4b11:b0:772:2ca8:9378 with SMTP id
- d2e1a72fcca58-7723e341374mr278060b3a.21.1756506568476; 
- Fri, 29 Aug 2025 15:29:28 -0700 (PDT)
+ bh=sa3b2TMivSD6XM1tsMuoQHxNMdNW+gXzNJQ+o4QofYU=;
+ b=SXV6Eq7frXW8MuufyW00F2vO28Vc0lSDTcvh2+T3zddjPnf0uRkpu4C3s+edJnr43K
+ kzT7PW0exPIj+YCgGYVpNiHfnx1oGIEamfJt4eWXJm648+jFD5tYRmiYVaYaYyL/+nUh
+ GF8RBdB6FXCqXyfjHUiSIf0a/k7y9S/nOSTtC3tj39Yw8BhDSII3E+jNhy8j2k7eC47W
+ NE3himMqFNocvN/wtPeRrxriU7vb9gc7/OGzAozbJ03wERk/D2/rZkYO3RTMuEHdSYOL
+ WyC0SvxaOFQsez9PjOftJjEe5a9ztpPaRqqkZX3ljfOGNwm5cLSFmASL8Uh2TwONfvF6
+ ZcMg==
+X-Gm-Message-State: AOJu0YwA4FFKBEjPBedEmlkrmCko0S1SM6ElMFBeJ9mt3laj72hOp+Qn
+ 5QojNJHXg704fjv9hYgmP6wS5Xium73L8IJQqkDeBTdnq8qD6AQ0gt0dNufqrThKStaUWRiuS6l
+ a43zp3vg=
+X-Gm-Gg: ASbGncv9xcWISrHisJlHrOiW6E0Tgo66XN57D61Ppg5N+a2hm/mYHtzIt6Usqrao/+T
+ WWhQEwiV1N9shTjKY+iSbZZ+J6Lhw8Oc7oYWLxzYPyEgBP0ng72169RSo9XXiiGJfU7850CsjGo
+ h+2+WKmemLWplEHn0cU10vE1+ITDepxrjnCbhj9b1r4m1rsvq4GY5T2q/JHC1Wj5qB4gu8VykJn
+ cacPKW6woQRdNSHbj4xFdb/BuXSJPpu1AH8FPXkvVw3OgfaJxR25YKOz1tNHFwUO7LnPpXGdyAb
+ u8Yf6hxFoBHPtoc6ZdhQMffNC+r0uVl3s1rYDikCh5vGbRzJmN4Srl1QiVvfWlIXQ99ghGLO7b4
+ LfDx/UrU1yesm6JZaZxFBp1EVMk0hSr35Pr+Z6SsX6Zr9AhzFLIoNBUfN+JooG5A=
+X-Google-Smtp-Source: AGHT+IFjL7GGVQWYbRsmQQvFaR0YcRM55PYADd6V8BiFEPpKZ1A7UT1PsubbI67GMXtDZxxv+Y29Uw==
+X-Received: by 2002:a05:6a20:42a3:b0:243:d471:51e1 with SMTP id
+ adf61e73a8af0-243d6f37f73mr284392637.42.1756506570826; 
+ Fri, 29 Aug 2025 15:29:30 -0700 (PDT)
 Received: from stoup.. (122-150-204-179.dyn.ip.vocus.au. [122.150.204.179])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7722a4bb5dasm3364297b3a.55.2025.08.29.15.29.26
+ d2e1a72fcca58-7722a4bb5dasm3364297b3a.55.2025.08.29.15.29.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 15:29:28 -0700 (PDT)
+ Fri, 29 Aug 2025 15:29:30 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 47/91] linux-user/microblaze: Fold target_pt_regs.r* to an array
-Date: Sat, 30 Aug 2025 08:23:43 +1000
-Message-ID: <20250829222427.289668-48-richard.henderson@linaro.org>
+Subject: [PULL 48/91] linux-user/microblaze: Expand target_elf_gregset_t
+Date: Sat, 30 Aug 2025 08:23:44 +1000
+Message-ID: <20250829222427.289668-49-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250829222427.289668-1-richard.henderson@linaro.org>
 References: <20250829222427.289668-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,146 +98,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Separately enumerating all 32 registers is not helpful.
+Make use of the fact that target_elf_gregset_t is a proper structure.
+Drop ELF_NREG, target_elf_greg_t, and tswapreg.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/microblaze/target_ptrace.h | 34 +------------
- linux-user/microblaze/signal.c        | 70 +++------------------------
- 2 files changed, 8 insertions(+), 96 deletions(-)
+ linux-user/microblaze/target_elf.h | 11 +++++++----
+ linux-user/microblaze/elfload.c    | 14 +++++---------
+ 2 files changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/linux-user/microblaze/target_ptrace.h b/linux-user/microblaze/target_ptrace.h
-index a46c8cb7bc..ead913e5a4 100644
---- a/linux-user/microblaze/target_ptrace.h
-+++ b/linux-user/microblaze/target_ptrace.h
-@@ -7,38 +7,8 @@
- typedef uint32_t microblaze_reg_t;
+diff --git a/linux-user/microblaze/target_elf.h b/linux-user/microblaze/target_elf.h
+index cc5cc0477e..56de77d4f3 100644
+--- a/linux-user/microblaze/target_elf.h
++++ b/linux-user/microblaze/target_elf.h
+@@ -8,13 +8,16 @@
+ #ifndef MICROBLAZE_TARGET_ELF_H
+ #define MICROBLAZE_TARGET_ELF_H
  
- struct target_pt_regs {
--    microblaze_reg_t r0;
--    microblaze_reg_t r1;
--    microblaze_reg_t r2;
--    microblaze_reg_t r3;
--    microblaze_reg_t r4;
--    microblaze_reg_t r5;
--    microblaze_reg_t r6;
--    microblaze_reg_t r7;
--    microblaze_reg_t r8;
--    microblaze_reg_t r9;
--    microblaze_reg_t r10;
--    microblaze_reg_t r11;
--    microblaze_reg_t r12;
--    microblaze_reg_t r13;
--    microblaze_reg_t r14;
--    microblaze_reg_t r15;
--    microblaze_reg_t r16;
--    microblaze_reg_t r17;
--    microblaze_reg_t r18;
--    microblaze_reg_t r19;
--    microblaze_reg_t r20;
--    microblaze_reg_t r21;
--    microblaze_reg_t r22;
--    microblaze_reg_t r23;
--    microblaze_reg_t r24;
--    microblaze_reg_t r25;
--    microblaze_reg_t r26;
--    microblaze_reg_t r27;
--    microblaze_reg_t r28;
--    microblaze_reg_t r29;
--    microblaze_reg_t r30;
--    microblaze_reg_t r31;
-+    /* Note the kernel enumerates all 32 registers. */
-+    microblaze_reg_t r[32];
-     microblaze_reg_t pc;
-     microblaze_reg_t msr;
-     microblaze_reg_t ear;
-diff --git a/linux-user/microblaze/signal.c b/linux-user/microblaze/signal.c
-index 7aef781314..e874e4def1 100644
---- a/linux-user/microblaze/signal.c
-+++ b/linux-user/microblaze/signal.c
-@@ -51,75 +51,17 @@ struct target_rt_sigframe {
++#include "target_ptrace.h"
++
+ #define HAVE_ELF_CORE_DUMP      1
  
- static void setup_sigcontext(struct target_sigcontext *sc, CPUMBState *env)
- {
--    __put_user(env->regs[0], &sc->regs.r0);
--    __put_user(env->regs[1], &sc->regs.r1);
--    __put_user(env->regs[2], &sc->regs.r2);
--    __put_user(env->regs[3], &sc->regs.r3);
--    __put_user(env->regs[4], &sc->regs.r4);
--    __put_user(env->regs[5], &sc->regs.r5);
--    __put_user(env->regs[6], &sc->regs.r6);
--    __put_user(env->regs[7], &sc->regs.r7);
--    __put_user(env->regs[8], &sc->regs.r8);
--    __put_user(env->regs[9], &sc->regs.r9);
--    __put_user(env->regs[10], &sc->regs.r10);
--    __put_user(env->regs[11], &sc->regs.r11);
--    __put_user(env->regs[12], &sc->regs.r12);
--    __put_user(env->regs[13], &sc->regs.r13);
--    __put_user(env->regs[14], &sc->regs.r14);
--    __put_user(env->regs[15], &sc->regs.r15);
--    __put_user(env->regs[16], &sc->regs.r16);
--    __put_user(env->regs[17], &sc->regs.r17);
--    __put_user(env->regs[18], &sc->regs.r18);
--    __put_user(env->regs[19], &sc->regs.r19);
--    __put_user(env->regs[20], &sc->regs.r20);
--    __put_user(env->regs[21], &sc->regs.r21);
--    __put_user(env->regs[22], &sc->regs.r22);
--    __put_user(env->regs[23], &sc->regs.r23);
--    __put_user(env->regs[24], &sc->regs.r24);
--    __put_user(env->regs[25], &sc->regs.r25);
--    __put_user(env->regs[26], &sc->regs.r26);
--    __put_user(env->regs[27], &sc->regs.r27);
--    __put_user(env->regs[28], &sc->regs.r28);
--    __put_user(env->regs[29], &sc->regs.r29);
--    __put_user(env->regs[30], &sc->regs.r30);
--    __put_user(env->regs[31], &sc->regs.r31);
-+    for (int i = 0; i < 32; ++i) {
-+        __put_user(env->regs[i], &sc->regs.r[i]);
-+    }
-     __put_user(env->pc, &sc->regs.pc);
+-typedef abi_ulong target_elf_greg_t;
+-
+-#define ELF_NREG                38
++/*
++ * See linux kernel: arch/microblaze/include/asm/elf.h, where
++ * elf_gregset_t is mapped to struct pt_regs via sizeof.
++ */
+ typedef struct target_elf_gregset_t {
+-    target_elf_greg_t regs[ELF_NREG];
++    struct target_pt_regs pt;
+ } target_elf_gregset_t;
+ 
+ #endif
+diff --git a/linux-user/microblaze/elfload.c b/linux-user/microblaze/elfload.c
+index 89250dbd63..7eb1b26d17 100644
+--- a/linux-user/microblaze/elfload.c
++++ b/linux-user/microblaze/elfload.c
+@@ -11,18 +11,14 @@ const char *get_elf_cpu_model(uint32_t eflags)
+     return "any";
  }
  
- static void restore_sigcontext(struct target_sigcontext *sc, CPUMBState *env)
+-#define tswapreg(ptr)   tswapal(ptr)
+-
+ void elf_core_copy_regs(target_elf_gregset_t *r, const CPUMBState *env)
  {
--    __get_user(env->regs[0], &sc->regs.r0);
--    __get_user(env->regs[1], &sc->regs.r1);
--    __get_user(env->regs[2], &sc->regs.r2);
--    __get_user(env->regs[3], &sc->regs.r3);
--    __get_user(env->regs[4], &sc->regs.r4);
--    __get_user(env->regs[5], &sc->regs.r5);
--    __get_user(env->regs[6], &sc->regs.r6);
--    __get_user(env->regs[7], &sc->regs.r7);
--    __get_user(env->regs[8], &sc->regs.r8);
--    __get_user(env->regs[9], &sc->regs.r9);
--    __get_user(env->regs[10], &sc->regs.r10);
--    __get_user(env->regs[11], &sc->regs.r11);
--    __get_user(env->regs[12], &sc->regs.r12);
--    __get_user(env->regs[13], &sc->regs.r13);
--    __get_user(env->regs[14], &sc->regs.r14);
--    __get_user(env->regs[15], &sc->regs.r15);
--    __get_user(env->regs[16], &sc->regs.r16);
--    __get_user(env->regs[17], &sc->regs.r17);
--    __get_user(env->regs[18], &sc->regs.r18);
--    __get_user(env->regs[19], &sc->regs.r19);
--    __get_user(env->regs[20], &sc->regs.r20);
--    __get_user(env->regs[21], &sc->regs.r21);
--    __get_user(env->regs[22], &sc->regs.r22);
--    __get_user(env->regs[23], &sc->regs.r23);
--    __get_user(env->regs[24], &sc->regs.r24);
--    __get_user(env->regs[25], &sc->regs.r25);
--    __get_user(env->regs[26], &sc->regs.r26);
--    __get_user(env->regs[27], &sc->regs.r27);
--    __get_user(env->regs[28], &sc->regs.r28);
--    __get_user(env->regs[29], &sc->regs.r29);
--    __get_user(env->regs[30], &sc->regs.r30);
--    __get_user(env->regs[31], &sc->regs.r31);
-+    for (int i = 0; i < 32; ++i) {
-+        __get_user(env->regs[i], &sc->regs.r[i]);
-+    }
-     __get_user(env->pc, &sc->regs.pc);
- }
+     for (int i = 0; i < 32; i++) {
+-        r->regs[i] = tswapreg(env->regs[i]);
++        r->pt.r[i] = tswapal(env->regs[i]);
+     }
  
+-    r->regs[32] = tswapreg(env->pc);
+-    r->regs[33] = tswapreg(mb_cpu_read_msr(env));
+-    r->regs[34] = 0;
+-    r->regs[35] = tswapreg(env->ear);
+-    r->regs[36] = 0;
+-    r->regs[37] = tswapreg(env->esr);
++    r->pt.pc = tswapal(env->pc);
++    r->pt.msr = tswapal(mb_cpu_read_msr(env));
++    r->pt.ear = tswapal(env->ear);
++    r->pt.esr = tswapal(env->esr);
+ }
 -- 
 2.43.0
 
