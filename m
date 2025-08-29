@@ -2,88 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBAB9B3CC1C
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CA1B3CC0F
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:37:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNZg-0000Bi-5c; Sat, 30 Aug 2025 11:33:04 -0400
+	id 1usNak-0003Me-CA; Sat, 30 Aug 2025 11:34:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
- id 1us3Mg-0004ti-03
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 13:58:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1us3ZN-0006rd-Fs
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 14:11:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
- id 1us3Me-0003Ux-23
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 13:58:17 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1us3ZL-0007tP-H2
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 14:11:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756490294;
+ s=mimecast20190719; t=1756491082;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dz3HxuCmcZlc0siOqaxukkCCyxcJiIXpMdpX3YwJQTo=;
- b=a6FOVi/8FLIrjUgs/WYi28Sj5QulhGd67tbLqWWcn2Wdv8eo/c6RvtHkUG/cZ3Hy8QG3YG
- y2ZbiBlevMEd7StZZah8V52pNp9tZ5Yg5vvXHbEuOnS2vFJZY1YtIPd/A/2JaPL5etXoSa
- jHBvdZhX7PPrPCDrQT61v2EXnZTrsw8=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-495-A0L7BiJ3OaKUOwDxYvniWQ-1; Fri, 29 Aug 2025 13:56:45 -0400
-X-MC-Unique: A0L7BiJ3OaKUOwDxYvniWQ-1
-X-Mimecast-MFC-AGG-ID: A0L7BiJ3OaKUOwDxYvniWQ_1756490204
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-327b289e8easo2092895a91.1
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 10:56:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756490204; x=1757095004;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=dz3HxuCmcZlc0siOqaxukkCCyxcJiIXpMdpX3YwJQTo=;
- b=gU2Dn/9bfxRh4pMHyGrA0Qii8zbm2nEZesoH7DWvJTulL823oOZQ77AGqK/y9tvXFO
- q+c9dSQpRzJiczdp+Nhhlo2PNiLAkqsHNalXG7JxZ7BORevwgqV8dGeuqiY9y0D8OI5C
- HsRw0NdsS/3TWadl5EOPxBaB4PYnz5gdJ3wrPpn8yHb9j5Fce6bsnHbAjx6dFxMehQoG
- enf8wNkQvE5muBKPxrejP+yeQRnoc+w2a37EgDMswCi/sACB23HRhsIlm9wKkxljx32D
- 7Dtq6NpIf2xKnf9myrX8P+6GU9AkEkJUL615TM+IObgthnoa5j9u/W6BQPlPprvlet4q
- PJRw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUHGhzCOy6UsFsNfcri0hy37VYnWnrhVIvChU7fTLS2kE4r19FgehLgleE5dBqMoZEuROUuWvzrH6JV@nongnu.org
-X-Gm-Message-State: AOJu0Yy/uBXxFA33dPZlGQqgiBqmhKknwlF83n7ZzASB1Eag7WZg12vx
- JB5zWOfE9OVgcAG7lwaBNHon7v4T9vwpWp+GoGpj1DSFnRrO8vKKwTevrPesod+EWgDlq8NhVxc
- 7h6BSIAnRJi48r+pVWDjpGph7NjMsfgI65fziF0CV8rPBbmoYAV67BK1JS0sTZcZJuPu+8F3omP
- kuyexObkUdG1qQoY9X3Fhn/USzNKiqnnU=
-X-Gm-Gg: ASbGncv/OhpBCg4nMEHCwwyMngCT/o9IqcSDGTmTmQN/CPvvbtwqoaFl/xbZHtNFp6x
- VqjTfBDBEcW9S1esrEm41MQUidc8Uz+fDROQMM5l4V19g2AFr7YBflQADM549FKvKqWVRJwCpjk
- IbPa7Afbe8rxIOlbelXw==
-X-Received: by 2002:a17:90b:1d43:b0:327:e67d:658d with SMTP id
- 98e67ed59e1d1-327e67d6768mr4708518a91.20.1756490203851; 
- Fri, 29 Aug 2025 10:56:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF2ohRMZ2usxKdgz4UzVTIFqkI0545r4eUeqDTapLPt21aFQr49h6FWqP0Vj7qEQyJ1L2lXuZT7utA7jINHBV4=
-X-Received: by 2002:a17:90b:1d43:b0:327:e67d:658d with SMTP id
- 98e67ed59e1d1-327e67d6768mr4708499a91.20.1756490203376; Fri, 29 Aug 2025
- 10:56:43 -0700 (PDT)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=UT++9xeqRJVlPmgZHunkIs7CVk5E6xgyQNaQdVKKG88=;
+ b=Wua/NccA5z+9IhvOok5MX+yg4Ga9DfT753AoCPAhfUo/mlTUj54uODwytXXLve2orfU5fS
+ HD+R4UU9hve/DTU4ID4JbP8JGLtcWHabj69uNyntLEhmWNnh7yb7+WoKSeat1tEl0thJwp
+ ScfafStatVM7Dg2ywj+WmQg8lWqrRaI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-88-zIHB1HqhM6OR2dqbhuWOIg-1; Fri,
+ 29 Aug 2025 14:04:03 -0400
+X-MC-Unique: zIHB1HqhM6OR2dqbhuWOIg-1
+X-Mimecast-MFC-AGG-ID: zIHB1HqhM6OR2dqbhuWOIg_1756490642
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 76FA71800298; Fri, 29 Aug 2025 18:04:01 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.108])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 68C7419560B4; Fri, 29 Aug 2025 18:03:56 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>, qemu-block@nongnu.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 00/14] util: sync error_report & qemu_log output more
+ closely
+Date: Fri, 29 Aug 2025 19:03:40 +0100
+Message-ID: <20250829180354.2922145-1-berrange@redhat.com>
 MIME-Version: 1.0
-References: <qemu-stable-10.0.4-20250827180051@cover.tls.msk.ru>
- <20250827150323.2694101-56-mjt@tls.msk.ru>
- <BN7PR01MB38281A0E41A6B3A681B2A2F8803AA@BN7PR01MB3828.prod.exchangelabs.com>
-In-Reply-To: <BN7PR01MB38281A0E41A6B3A681B2A2F8803AA@BN7PR01MB3828.prod.exchangelabs.com>
-From: Mauro Matteo Cascella <mcascell@redhat.com>
-Date: Fri, 29 Aug 2025 19:56:32 +0200
-X-Gm-Features: Ac12FXx-3g2ETvVl31tKognWEu1QBMRdhuJLsO8Ewe2sgvnzDnzLnQFQGBVTBS8
-Message-ID: <CAA8xKjXAcib=RKEY=bmb9QjL7czFHaKzYU4dBmQnh1_Le13aCw@mail.gmail.com>
-Subject: Re: [Stable-10.0.4 56/59] hw/uefi: clear uefi-vars buffer in
- uefi_vars_write callback
-To: "zdi-disclosures@trendmicro.com" <zdi-disclosures@trendmicro.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "qemu-stable@nongnu.org" <qemu-stable@nongnu.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcascell@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,85 +89,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 29, 2025 at 7:41=E2=80=AFPM zdi-disclosures@trendmicro.com
-<zdi-disclosures@trendmicro.com> wrote:
->
-> Hello Team,
->
-> May we know the ZDI-CAN mapped to CVE-2025-8860?
+This series is a tangent that came out of discussion in
 
-This was reported (by you) to the qemu-security ML as ZDI-CAN-27261.
+   https://lists.nongnu.org/archive/html/qemu-devel/2025-08/msg00903.html
 
-> Regards,
-> The ZDI
->
-> -----Original Message-----
-> From: Michael Tokarev <mjt@tls.msk.ru>
-> Sent: Wednesday, August 27, 2025 8:03 AM
-> To: qemu-devel@nongnu.org
-> Cc: qemu-stable@nongnu.org; Mauro Matteo Cascella <mcascell@redhat.com>; =
-ZDI Disclosures Mailbox <zdi-disclosures@trendmicro.com>; Gerd Hoffmann <kr=
-axel@redhat.com>; Michael Tokarev <mjt@tls.msk.ru>
-> Subject: [Stable-10.0.4 56/59] hw/uefi: clear uefi-vars buffer in uefi_va=
-rs_write callback
->
-> From: Mauro Matteo Cascella <mcascell@redhat.com>
->
-> When the guest writes to register UEFI_VARS_REG_BUFFER_SIZE, the .write
-> callback `uefi_vars_write` is invoked. The function allocates a
-> heap buffer without zeroing the memory, leaving the buffer filled with
-> residual data from prior allocations. When the guest later reads from
-> register UEFI_VARS_REG_PIO_BUFFER_TRANSFER, the .read callback
-> `uefi_vars_read` returns leftover metadata or other sensitive process
-> memory from the previously allocated buffer, leading to an information
-> disclosure vulnerability.
->
-> Fixes: CVE-2025-8860
-> Fixes: 90ca4e03c27d ("hw/uefi: add var-service-core.c")
-> Reported-by: ZDI <zdi-disclosures@trendmicro.com>
-> Suggested-by: Gerd Hoffmann <kraxel@redhat.com>
-> Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
-> Message-ID: <20250811101128.17661-1-mcascell@redhat.com>
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> (cherry picked from commit f757d9d90d19b914d4023663bfc4da73bbbf007e)
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
->
-> diff --git a/hw/uefi/var-service-core.c b/hw/uefi/var-service-core.c
-> index 4836a0cb81..92fc121fe7 100644
-> --- a/hw/uefi/var-service-core.c
-> +++ b/hw/uefi/var-service-core.c
-> @@ -259,8 +259,8 @@ static void uefi_vars_write(void *opaque, hwaddr addr=
-, uint64_t val, unsigned si
->          uv->buf_size =3D val;
->          g_free(uv->buffer);
->          g_free(uv->pio_xfer_buffer);
-> -        uv->buffer =3D g_malloc(uv->buf_size);
-> -        uv->pio_xfer_buffer =3D g_malloc(uv->buf_size);
-> +        uv->buffer =3D g_malloc0(uv->buf_size);
-> +        uv->pio_xfer_buffer =3D g_malloc0(uv->buf_size);
->          break;
->      case UEFI_VARS_REG_DMA_BUFFER_ADDR_LO:
->          uv->buf_addr_lo =3D val;
-> --
-> 2.47.2
->
-> TREND MICRO EMAIL NOTICE
->
-> The information contained in this email and any attachments is confidenti=
-al and may be subject to copyright or other intellectual property protectio=
-n. If you are not the intended recipient, you are not authorized to use or =
-disclose this information, and we request that you notify us by reply mail =
-or telephone and delete the original message from your mail system.
->
-> For details about what personal information we collect and why, please se=
-e our Privacy Notice on our website at: Read privacy policy<http://www.tren=
-dmicro.com/privacy>
->
+In thinking about adding thread info to error_report, I
+came to realize we should likely make qemu_log behave
+consistently with error_report & friends. We already
+honour '-msg timestamp=on', but don't honour 'guest-name=on'
+and also don't include the binary name.
 
+As an example of the current state, consider mixing error and
+log output today:
 
---=20
-Mauro Matteo Cascella
-Red Hat Product Security
-PGP-Key ID: BB3410B0
+- Default context:
+
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
+                       -d 'trace:qcrypto*'
+  qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55ac6d97f700 dir=fish
+  qcrypto_tls_creds_get_path TLS creds path creds=0x55ac6d97f700 filename=ca-cert.pem path=<none>
+  qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+- Full context:
+
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
+                       -d 'trace:qcrypto*' \
+                       -msg guest-name=on,timestamp=on \
+                       -name "fish food"
+  2025-08-19T20:14:16.791413Z qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55e9a3458d10 dir=fish
+  2025-08-19T20:14:16.791429Z qcrypto_tls_creds_get_path TLS creds path creds=0x55e9a3458d10 filename=ca-cert.pem path=<none>
+  2025-08-19T20:14:16.791433Z fish food qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+And after this series is complete:
+
+- Default context:
+
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
+                      -d 'trace:qcrypto*'
+  qemu-system-x86_64(1184284:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55a24ad5cb30 dir=fish
+  qemu-system-x86_64(1184284:main): qcrypto_tls_creds_get_path TLS creds path creds=0x55a24ad5cb30 filename=ca-cert.pem path=<none>
+  qemu-system-x86_64(1184284:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+- Full context:
+
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
+                      -d 'trace:qcrypto*' \
+                      -msg guest-name=on,timestamp=on \
+                      -name "fish food"
+  2025-08-19T20:12:50.211823Z [fish food] qemu-system-x86_64(1168876:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x5582183d8760 dir=fish
+  2025-08-19T20:12:50.211842Z [fish food] qemu-system-x86_64(1168876:main): qcrypto_tls_creds_get_path TLS creds path creds=0x5582183d8760 filename=ca-cert.pem path=<none>
+  2025-08-19T20:12:50.211846Z [fish food] qemu-system-x86_64(1168876:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+The main things to note:
+
+ * error_report/warn_report/qemu_log share the same
+   output format and -msg applies to both
+
+ * -msg debug-threads=on is now unconditionally enabled
+   and thus the param is deprecated & ignored
+
+ * Thread ID and name are unconditionally enabled
+
+ * Guest name is surrounded in [...] brackets
+
+ * The default output lines are typically 15 chars
+   wider given that we always include the thread
+   ID + name now
+
+ * This takes the liberty of assigning the new file
+   to the existing error-report.c maintainer (Markus)
+   Since splitting it off into message.c instead of
+   putting it all in error-report.c felt slightly
+   nicer.
+
+One thing I didn't tackle is making the location
+info get reported for qemu_log. This is used to
+give context for error messages when parsing some
+CLI args, and could be interesting for log messages
+associated with those same CLI args.
+
+Changes in v2:
+
+ - Re-use existing qemu_get_thread_id rather than
+   re-inventing it as qemu_thread_get_id.
+ - Expose qemu_thread_set_name and use it from all
+   locations needing to set thread names
+ - Fix qemu_log() to skip context prefix when
+   emitting a log message in fragments across
+   multiple calls
+ - Skip allocating memory for empty context messages
+ - Fix leak in win32 impl of qemu_thread_get_name
+ - Use g_strlcpy where possible
+
+Daniel P. Berrangé (14):
+  include: define constant for early constructor priority
+  monitor: initialize global data from a constructor
+  system: unconditionally enable thread naming
+  util: expose qemu_thread_set_name
+  audio: make jackaudio use qemu_thread_set_name
+  util: set the name for the 'main' thread
+  util: add API to fetch the current thread name
+  log: avoid prefix on split qemu_log calls
+  util: introduce common helper for error-report & log code
+  util: convert error-report & log to message API for timestamp
+  util: add support for formatting a workload name in messages
+  util: add support for formatting a program name in messages
+  util: add support for formatting thread info in messages
+  util: add brackets around guest name in message context
+
+ MAINTAINERS                          |  2 +
+ audio/jackaudio.c                    | 28 ++++++++--
+ docs/about/deprecated.rst            |  7 +++
+ include/qemu/compiler.h              |  8 +++
+ include/qemu/error-report.h          |  4 --
+ include/qemu/message.h               | 52 ++++++++++++++++++
+ include/qemu/thread.h                |  3 +-
+ meson.build                          | 21 +++++++
+ monitor/monitor.c                    | 14 +++--
+ storage-daemon/qemu-storage-daemon.c |  6 ++
+ system/vl.c                          | 30 +++++++---
+ tests/qemu-iotests/041               |  2 +-
+ tests/qemu-iotests/common.filter     |  2 +-
+ tests/unit/test-error-report.c       |  6 +-
+ util/error-report.c                  | 29 ++--------
+ util/log.c                           | 28 ++++++----
+ util/meson.build                     |  1 +
+ util/message.c                       | 73 +++++++++++++++++++++++++
+ util/qemu-thread-posix.c             | 76 +++++++++++++++++---------
+ util/qemu-thread-win32.c             | 82 +++++++++++++++++++---------
+ 20 files changed, 357 insertions(+), 117 deletions(-)
+ create mode 100644 include/qemu/message.h
+ create mode 100644 util/message.c
+
+-- 
+2.50.1
 
 
