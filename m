@@ -2,60 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A91ACB3CC22
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C40B3CC13
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:38:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNMy-0007U7-RV; Sat, 30 Aug 2025 11:19:58 -0400
+	id 1usNN7-0008EZ-Kg; Sat, 30 Aug 2025 11:20:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1us093-0004Xz-0f; Fri, 29 Aug 2025 10:32:02 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1us0HI-0007Zn-Ll
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 10:40:32 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1us08s-0005Vi-9R; Fri, 29 Aug 2025 10:31:57 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9821256F31B;
- Fri, 29 Aug 2025 16:31:40 +0200 (CEST)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id lqxsGrwcisnQ; Fri, 29 Aug 2025 16:31:38 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 7C36756F30F; Fri, 29 Aug 2025 16:31:38 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 7966956F30D;
- Fri, 29 Aug 2025 16:31:38 +0200 (CEST)
-Date: Fri, 29 Aug 2025 16:31:38 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-cc: npiggin@gmail.com, danielhb413@gmail.com, harshpb@linux.ibm.com, 
- mjrosato@linux.ibm.com, farman@linux.ibm.com, pasic@linux.ibm.com, 
- borntraeger@linux.ibm.com, thuth@redhat.com, richard.henderson@linaro.org, 
- david@redhat.com, iii@linux.ibm.com, john.levon@nutanix.com, 
- thanos.makatos@nutanix.com, alex.williamson@redhat.com, clg@redhat.com, 
- steven.sistare@oracle.com, tomitamoeko@gmail.com, qemu-ppc@nongnu.org, 
- qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH 16/22] vfio/pci.c: use QOM casts where appropriate
-In-Reply-To: <bc37692f-da9b-44e9-b4db-6ab7edbeaaaf@nutanix.com>
-Message-ID: <3b64d555-d564-cf7a-9a0a-ea566a90524d@eik.bme.hu>
-References: <20250715093110.107317-1-mark.caveayland@nutanix.com>
- <20250715093110.107317-17-mark.caveayland@nutanix.com>
- <d02ef0f5-3c52-7a8a-dc29-1a8c28e70b50@eik.bme.hu>
- <bc37692f-da9b-44e9-b4db-6ab7edbeaaaf@nutanix.com>
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1us0HE-0007zp-AX
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 10:40:32 -0400
+Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 57TEeJeE054845
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Fri, 29 Aug 2025 23:40:20 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=5cOfY4KsxJ9w2KVkX2GwNF0odtUWxEb47sjM2jUg8jw=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1756478420; v=1;
+ b=pDQC64DYAY11Cy/zu0XOpDVIENy/nuq5TcvKiPZDpZhNpYAki+uOAA0qjX54cOWH
+ C8klR8/RHNReHufFfYlsvm1VwYD8v/Sb9XdhZwgV1nzM1RHglDlJLbzVrAUL8uAw
+ rMBspzbkXYL+PqLZW+ScdaGDZ+OQ5ITdIVL94pTFFF8U+MW6lclVkDKlUCSMrBvP
+ MauSmP7bztrGTMRzm5XcBLdiAakCUcAV43OKjAtMwOcbtK9GyGCIr86SbP/MO8AT
+ dbThCyZLxJzQ3tmiqjv93ayDUMrw5X06EwlY3sJilQmH8TvTCL5HVzrNfZxm7/zv
+ 7r3O9GqZ0EAnFx48+6TGNw==
+Message-ID: <942ae41e-931f-4d09-85d8-8849d36b88db@rsg.ci.i.u-tokyo.ac.jp>
+Date: Fri, 29 Aug 2025 23:40:19 +0900
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- BOUNDARY="3866299591-268935935-1756477553=:65066"
-Content-ID: <39cb9cff-c11a-708f-7aa5-363a70bc60a5@eik.bme.hu>
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] virtio: Call set_features during reset
+To: Michael Tokarev <mjt@tls.msk.ru>, Fabiano Rosas <farosas@suse.de>
+Cc: peterx@redhat.com, qemu-devel@nongnu.org
+References: <871pudmlmj.fsf@suse.de>
+ <dc23eaca-15f5-40be-89d0-2247cfe1f716@tls.msk.ru> <87plchkaxo.fsf@suse.de>
+ <3983904c-9530-4cf5-b294-12ca04658b23@rsg.ci.i.u-tokyo.ac.jp>
+ <3b17f289-876d-4cbd-bda7-1bbd83832e85@tls.msk.ru>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <3b17f289-876d-4cbd-bda7-1bbd83832e85@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,60 +74,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 2025/08/29 17:34, Michael Tokarev wrote:
+> On 28.08.2025 03:57, Akihiko Odaki wrote:
+> 
+>> The posted call trace indicates a lockup happens in the control path, 
+>> but commit cefd67f25430 ("virtio-net: Fix num_buffers for version 1") 
+>> changes the data path.
+>>
+>> On the other hand, I can come up with a possible failure scenario with 
+>> commit ce1431615292 ("virtio: Call set_features during reset"). 
+>> Perhaps it changed the machine state before loading the migrated 
+>> state, and caused a mismatch between them.
+> 
+> Yes, the problem commit is 0caed25cd171c6 "virtio: Call set_features
+> during reset", - the OP corrected himself in the next message (subject
+> line updated).
+> 
+>> I need more information to understand the issue. A command line to 
+>> reproduce the issue is especially helpful because options like 
+>> mrg_rxbuf=, which you mentioned, tell enabled features, which is 
+>> valuable information.
+> 
+> See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1112044#69 for
+> the command line.Â  The guest is started by libvirtd.
 
---3866299591-268935935-1756477553=:65066
-Content-Type: text/plain; CHARSET=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 8BIT
-Content-ID: <fce22f5b-47d2-bd6a-04bd-ef622b499f65@eik.bme.hu>
+Thank you, now I think I understand the problem.
 
-On Fri, 29 Aug 2025, Mark Cave-Ayland wrote:
-> On 15/07/2025 14:38, BALATON Zoltan wrote:
->
->> On Tue, 15 Jul 2025, Mark Cave-Ayland wrote:
->>> Use QOM casts to convert between VFIOPCIDevice and PCIDevice instead of
->>> accessing pdev directly.
->>> 
->>> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
->>> ---
->>> hw/vfio/pci.c | 202 ++++++++++++++++++++++++++++++--------------------
->>> 1 file changed, 120 insertions(+), 82 deletions(-)
->>> 
->>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
->>> index 1093b28df7..fb9eb58da5 100644
->>> --- a/hw/vfio/pci.c
->>> +++ b/hw/vfio/pci.c
->>> @@ -119,6 +119,7 @@ static void vfio_intx_mmap_enable(void *opaque)
->>> static void vfio_intx_interrupt(void *opaque)
->>> {
->>>     VFIOPCIDevice *vdev = opaque;
->>> +    PCIDevice *pdev = PCI_DEVICE(vdev);
->> 
->> Don't do that. Opaque data is already type checked when it is registered 
->> for the callback and cannot be changed so additional type checking here is 
->> just a performance hit without any advantage. It's OK to do it in less 
->> frequently called functions but don't add unnecessary casts to functions 
->> that can be called a lot.
->
-> In general the QOM casts fall into the noise in a standard profile, but I can 
-> see how it could be possible they might show up in the interrupt fast path.
->
-> I'll look at getting a vfio-pci perf test set up here to see if there is a 
-> noticeable effect in this case, and if so think about what the best approach 
-> is.
+> 
+> Please note: this is stable-7.2 series, it is *not* master (I picked
+> up this commit to 7.2.x).Â  It'd be interesting to check if master is
+> affected too.Â  Unfortunately I never tried migration, and now I only
+> have my notebook, so can only migrate between two qemu instances on
+> the same box - which is probably okay too.
 
-In general, casting opaque pointer of a callback is unnecessary because 
-these can be checked once when registered so it's not needed to check 
-again at every use. I think this should really be recommended practice to 
-not use QOM casts for these opaque pointers of callbacks. A lot of these 
-are also in hot path so not adding unnecessary checks is a good idea. In 
-this case when you're in the vfio implementation what's wrong with 
-accessing internal field of vfio anyway? An object's implemenattion should 
-be able to access its own fields so maybe the current way is OK and most 
-of this patch is not needed at all.
+I think you need to backport commit 9379ea9db3c0 ("virtio-net: Add 
+queues before loading them") and adda0ad56bd2 ("virtio-net: Add queues 
+for RSS during migration"). Here is an explanation:
+
+First, let me define two variables for conciseness:
+N: the number of queue pairs
+M: the maximum number of queue pairs, which is determined with
+    n->max_queue_pairs
+
+The problem is that QEMU inconsistently chose N for virtio-net in the 
+past. Before commit 8c49756825da ("virtio-net: Add only one queue pair 
+when realizing"):
+1) realize() chose M.
+2) set_features() chose: 1 (when RSS and MQ are disabled)
+                          M (otherwise)
+
+This itself was a problem; both RSS and MQ were disabled when realize() 
+but N was M, which is inconsistent with 2) and this inconsistency was 
+guest-visible.
+
+I wrote commit 8c49756825da ("virtio-net: Add only one queue pair when 
+realizing") to make QEMU implement the behavior in 2) also during 
+realization and fix the inconsistency, but it broke migration when the 
+migrated VM had enabled VIRTIO_NET_F_RSS and VIRTIO_NET_F_MQ because it 
+expected that N == M.
+
+This is also why the backported commit also broke migration; it 
+accidentally fixed the inconsistency between the first reset state and 
+the state after set_features() and caused the same problem.
+
+I wrote commit 9379ea9db3c0 ("virtio-net: Add queues before loading 
+them") to fix the issue and later complemented it with commit 
+adda0ad56bd2 ("virtio-net: Add queues for RSS during migration").
+
+There are several relevant commits because I could not fix the 
+underlying problem at once, but hopefully this email clarifies how the 
+two commits fixed it in the end.
 
 Regards,
-BALATON Zoltan
---3866299591-268935935-1756477553=:65066--
+Akihiko Odaki
 
