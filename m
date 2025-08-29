@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F248B3CEAA
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 20:27:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AA8B3CC32
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:45:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNjR-0006bV-4M; Sat, 30 Aug 2025 11:43:14 -0400
+	id 1usNjv-00075k-1J; Sat, 30 Aug 2025 11:43:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7Wb-0002eW-Ci
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:24:50 -0400
+ id 1us7We-0002fU-2L
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:24:52 -0400
 Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7WY-0002aL-6x
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:24:49 -0400
+ id 1us7Wa-0002b4-OQ
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:24:51 -0400
 Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-771e15ce64eso2273561b3a.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:24:45 -0700 (PDT)
+ d2e1a72fcca58-7704f3c4708so3116926b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:24:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756506284; x=1757111084; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756506287; x=1757111087; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H0Ggm9wlx+9xy29EQzn7RdgHf/CbCvu60/I/6/mmVNA=;
- b=EhJysH+opPv6pKep1Zygg23NlGgRn8M5mFaFMYYdZ/8X8B70o0F4DagjMyBzzORf/l
- tmkfmckBrLOXB0tx/3O30uEHe2nK+Oht+6ouBKzAmDy11CKFHmA7h0qnHyBrv7xP3/yv
- 1yxwGoKeDhZHikEAbPFUjZBtAd6D5WYZTHFLnxxBl7KltxtFO6fQFuWO5voythsMcnEm
- mZT2AcyzPDyqBqdWlUN/iAYQlMdd139lefZPMpMWspXMsO+1HYLcnHaP8ZHbW6rR8rQa
- NUiZVrIpYIgRy4seIt1gEfxFo8B7Fwq5PeUW7gkGttW3RPcpr8vDGfPnu3fHNzliAcdQ
- GSCA==
+ bh=f5I/NtM7Pi+1byAnsGGTmyqoepcDZYWEIZxl5JuqsYk=;
+ b=DxzyeTe+o4lcbIR9v+7saHyJdzQCCMY8W9oNb6UhghPRcAVQl2YvRfsFd3nmopl3yQ
+ u3oAmpFLoGeRIfMOEUleYjxjHQh/ZNCcDFu1CWtqHl9CnalooTMTkKl0vzN9cDOwbmqx
+ g4ES87DmJZqTZdV0FsCBY/yFG8vyeYs3fffdUraztAc2F/06djy0qBUVD4Yn8TMG1MYk
+ 5jdGuSKAhO2jWFKWREXeNNs5ql7eoAo9E0jIbG/5H/74tK7zGs5Qj23NLJ72cfZyZ92n
+ wtMZ7wfwu9dQ7+148jPfglXZqwY+NpzC7RTrZd9KXt3EZC3F+m84spvYkIvaUpT/cB2U
+ KW1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756506284; x=1757111084;
+ d=1e100.net; s=20230601; t=1756506287; x=1757111087;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H0Ggm9wlx+9xy29EQzn7RdgHf/CbCvu60/I/6/mmVNA=;
- b=t8Q7gp4fdpWGr849a/7MRsGg6XQNCGS5bUDlmUiXFyTf+LUCo4YryJwwXR5BegucKE
- qPrQ/5ZDZ1DAzwPz5i/SZnfy4BdV7tqoQrPfLqPRy4TT1XaL01xV5r7ixtbmPUyVgz/E
- eEY/Dydy8ixZzli6TqTCEGsHoB1OdWdrfUttTsXwpTmPnDz9uIt+wZq6q5eYh2cQ0+LO
- 6sy3nJtGgb122edEgRz9IUHPTaRok6kkOwUK8rnOHKLYlu/7LCQpUcDxuOEBTZWBKya/
- bCHgtw8mhkchIqjg5aUKCRIL71lZieKy7S3GmBet+FGlEkf64AzQpsN9kaP36qcxINq1
- OA9g==
-X-Gm-Message-State: AOJu0YwqmoTtHwJd4jQ4QwauPJmb2cjHBhXwq3ByFwK/iwWEFAkqMdvx
- xSKnqAFgK7b8TPig7xx4o9aK1kiLqWoFJ8WQQO6QynrWYSwcJOJrrrnCgvhomzc+t5tPNpkbwra
- smZnAzrk=
-X-Gm-Gg: ASbGncuXLO0dDlKtBRjUeuLqMZ86OZ057y8zXyE7cm13CWESzc/AiFTizFCayxZIq3e
- ADyWYXt3PkWmagyHf+PipuIBakZK+RHvlZ/9LsujDwbVvD29fcXpQevydBqj+1/OIX/beOfKkpO
- aFxlsPsHl0Ob/7R3QhtXrB5XxfoBb037k8PpJGaDXl35fJzIt9bMJHLQxyvP1z/qONuDzp/Lp8P
- NB5RhitEYbPRLIXA9YIyv1+X67QGW71dK72XNIeMa1cyZDnuUMWbRvzoJLom9keJO0phXvlUoMv
- n/9Qvjx+rPBtQ4OLv0aX64/aBIYLa7tflmYYMoFlKAYcbNVoBQ8sZafoFGbXlGeGqN/CPZ9GPD/
- wqkjDx+ZWSsyHX1+SsUe/HC+Qpwlr6chA8l4yKmTiwwpDM00OcKmZIqb2mLol
-X-Google-Smtp-Source: AGHT+IGgwAtFm/zW2VAYRCXULc4/gfxnnGl50fxq7QFYBAUx2KYn8im8KALQfb7CJeO3wj7g4v5e4w==
-X-Received: by 2002:a05:6a00:114b:b0:771:d7b0:6944 with SMTP id
- d2e1a72fcca58-7723e21ed20mr275593b3a.3.1756506284484; 
- Fri, 29 Aug 2025 15:24:44 -0700 (PDT)
+ bh=f5I/NtM7Pi+1byAnsGGTmyqoepcDZYWEIZxl5JuqsYk=;
+ b=c3qcdmALcItF+SzlEwJK6d08gN6OnaEuBnmdpSqt2Go7m7zA5iRsQCUCtf+4OrtrMj
+ E8ASo/hZK2Apy5MkuiwabsH3kLbvNhzn/6HsvEe50UA/CDrfqgnEW3ekn8S1PqVigWhs
+ +mSjkGtRD3d61V162PL3z1F5NkfJXsDockoDojpJlBdLu0Rzs0tvQKg5W1Pic6i0Xgxa
+ 7IGT1yayvqhlVskbJ9GOEoQUs/+OaypQuQkmVaT3RfLaQIOvg1zrqdtwmUvuF1BIP5L8
+ klsfiOGEK8LDy+Ucp7UYp8b/D2QLdpYHAowAvK2VBAMYWhVscUeqL2XpV/gJYk6HVVEj
+ h0hg==
+X-Gm-Message-State: AOJu0YwucgDMrE5lb3m46j7nAv+EKaQKovmhtbJBYAay+v//YG2/BAUH
+ IOu73RMMztGbf0voOp0bvMbhdBi6AbjCohYcqWvxBbOvJfl2IHQ8fVx8D/TsCKz5Qn7YPnYnoXo
+ /xGfQgl8=
+X-Gm-Gg: ASbGncuIhRlT0UGo6kEN/ih11KFCHbN956hHmg+3QyvUUYDcUdMllMzdPwuwy3wdiGm
+ l05yVtSyeC6btJeITpuRDEBKTHY4JPQ32Zn33ait+iNwEuSsIJM9156SSD0c/tcNc/XSgFtKeYa
+ ZVVwTrZTttFeqFyGWmKRJ9nvuqmo5qTWZg8q5FlDZkvC9l7z2acgIjmIc7OY55p90nWVRXTtYdd
+ G4gpR7Nfhbc+znA9V0615v1GOSrTchgdXraedcUMhi35g56Dyz6M164UyV5Y+qtDVOijSb/SdN8
+ JhCBWilYsOkX/twNcQLmPd9aEduwHFimE28OlCuRd2x00+UmfXXPl1zPpKozOFT9fbv90EIwyyd
+ LDPnSVXysBQsW7+jEALfz7axY85GVGyLd4YYbp8vr9l9MuyifCVge3k8A9Rvfzi950LIuJyY=
+X-Google-Smtp-Source: AGHT+IHTehE9+fW/jscaj6Rdo1FqDTGrBWryGjvOxEmdYxNNZHcl748Terk6JGHjaU2tKTod3sTamQ==
+X-Received: by 2002:a05:6a00:1495:b0:772:2850:783d with SMTP id
+ d2e1a72fcca58-7723e387ed0mr284737b3a.22.1756506286787; 
+ Fri, 29 Aug 2025 15:24:46 -0700 (PDT)
 Received: from stoup.. (122-150-204-12.dyn.ip.vocus.au. [122.150.204.12])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7722a71c60bsm3302493b3a.103.2025.08.29.15.24.41
+ d2e1a72fcca58-7722a71c60bsm3302493b3a.103.2025.08.29.15.24.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 15:24:44 -0700 (PDT)
+ Fri, 29 Aug 2025 15:24:46 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 04/91] linux-user: Drop deprecated -p option
-Date: Sat, 30 Aug 2025 08:23:00 +1000
-Message-ID: <20250829222427.289668-5-richard.henderson@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 05/91] linux-user/x86_64: Convert target_elf_gregset_t to a
+ struct
+Date: Sat, 30 Aug 2025 08:23:01 +1000
+Message-ID: <20250829222427.289668-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250829222427.289668-1-richard.henderson@linaro.org>
 References: <20250829222427.289668-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
  envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
@@ -102,130 +99,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+A structure typedef may be abstract, while an array typedef cannot.
 
-The user-mode '-p' option has been deprecated since 9.0 and
-doesn't do anything except emit a warning. We are well past
-our minimum deprecation period, so drop the option.
-
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250828162012.3307647-1-peter.maydell@linaro.org>
 ---
- bsd-user/main.c                 |  8 --------
- linux-user/main.c               | 12 ------------
- docs/about/deprecated.rst       | 10 ----------
- docs/about/removed-features.rst |  8 ++++++++
- docs/user/main.rst              |  3 ---
- 5 files changed, 8 insertions(+), 33 deletions(-)
+ linux-user/elfload.c | 60 +++++++++++++++++++++++---------------------
+ 1 file changed, 31 insertions(+), 29 deletions(-)
 
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index 7e5d4bbce0..9ba69642f5 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -367,14 +367,6 @@ int main(int argc, char **argv)
-             }
-         } else if (!strcmp(r, "L")) {
-             interp_prefix = argv[optind++];
--        } else if (!strcmp(r, "p")) {
--            unsigned size, want = qemu_real_host_page_size();
--
--            r = argv[optind++];
--            if (qemu_strtoui(r, NULL, 10, &size) || size != want) {
--                warn_report("Deprecated page size option cannot "
--                            "change host page size (%u)", want);
--            }
-         } else if (!strcmp(r, "g")) {
-             gdbstub = g_strdup(argv[optind++]);
-         } else if (!strcmp(r, "r")) {
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 6edeeecef3..7b0ccb6fd6 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -340,16 +340,6 @@ static void handle_arg_ld_prefix(const char *arg)
-     interp_prefix = strdup(arg);
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index fce4c05674..ba205c5a19 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -154,7 +154,9 @@ typedef abi_int         target_pid_t;
+ #define ELF_ARCH       EM_X86_64
+ 
+ #define ELF_NREG    27
+-typedef target_elf_greg_t  target_elf_gregset_t[ELF_NREG];
++typedef struct target_elf_gregset_t {
++    target_elf_greg_t regs[ELF_NREG];
++} target_elf_gregset_t;
+ 
+ /*
+  * Note that ELF_NREG should be 29 as there should be place for
+@@ -163,35 +165,35 @@ typedef target_elf_greg_t  target_elf_gregset_t[ELF_NREG];
+  *
+  * See linux kernel: arch/x86/include/asm/elf.h
+  */
+-static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *env)
++static void elf_core_copy_regs(target_elf_gregset_t *r, const CPUX86State *env)
+ {
+-    (*regs)[0] = tswapreg(env->regs[15]);
+-    (*regs)[1] = tswapreg(env->regs[14]);
+-    (*regs)[2] = tswapreg(env->regs[13]);
+-    (*regs)[3] = tswapreg(env->regs[12]);
+-    (*regs)[4] = tswapreg(env->regs[R_EBP]);
+-    (*regs)[5] = tswapreg(env->regs[R_EBX]);
+-    (*regs)[6] = tswapreg(env->regs[11]);
+-    (*regs)[7] = tswapreg(env->regs[10]);
+-    (*regs)[8] = tswapreg(env->regs[9]);
+-    (*regs)[9] = tswapreg(env->regs[8]);
+-    (*regs)[10] = tswapreg(env->regs[R_EAX]);
+-    (*regs)[11] = tswapreg(env->regs[R_ECX]);
+-    (*regs)[12] = tswapreg(env->regs[R_EDX]);
+-    (*regs)[13] = tswapreg(env->regs[R_ESI]);
+-    (*regs)[14] = tswapreg(env->regs[R_EDI]);
+-    (*regs)[15] = tswapreg(get_task_state(env_cpu_const(env))->orig_ax);
+-    (*regs)[16] = tswapreg(env->eip);
+-    (*regs)[17] = tswapreg(env->segs[R_CS].selector & 0xffff);
+-    (*regs)[18] = tswapreg(env->eflags);
+-    (*regs)[19] = tswapreg(env->regs[R_ESP]);
+-    (*regs)[20] = tswapreg(env->segs[R_SS].selector & 0xffff);
+-    (*regs)[21] = tswapreg(env->segs[R_FS].selector & 0xffff);
+-    (*regs)[22] = tswapreg(env->segs[R_GS].selector & 0xffff);
+-    (*regs)[23] = tswapreg(env->segs[R_DS].selector & 0xffff);
+-    (*regs)[24] = tswapreg(env->segs[R_ES].selector & 0xffff);
+-    (*regs)[25] = tswapreg(env->segs[R_FS].selector & 0xffff);
+-    (*regs)[26] = tswapreg(env->segs[R_GS].selector & 0xffff);
++    r->regs[0] = tswapreg(env->regs[15]);
++    r->regs[1] = tswapreg(env->regs[14]);
++    r->regs[2] = tswapreg(env->regs[13]);
++    r->regs[3] = tswapreg(env->regs[12]);
++    r->regs[4] = tswapreg(env->regs[R_EBP]);
++    r->regs[5] = tswapreg(env->regs[R_EBX]);
++    r->regs[6] = tswapreg(env->regs[11]);
++    r->regs[7] = tswapreg(env->regs[10]);
++    r->regs[8] = tswapreg(env->regs[9]);
++    r->regs[9] = tswapreg(env->regs[8]);
++    r->regs[10] = tswapreg(env->regs[R_EAX]);
++    r->regs[11] = tswapreg(env->regs[R_ECX]);
++    r->regs[12] = tswapreg(env->regs[R_EDX]);
++    r->regs[13] = tswapreg(env->regs[R_ESI]);
++    r->regs[14] = tswapreg(env->regs[R_EDI]);
++    r->regs[15] = tswapreg(get_task_state(env_cpu_const(env))->orig_ax);
++    r->regs[16] = tswapreg(env->eip);
++    r->regs[17] = tswapreg(env->segs[R_CS].selector & 0xffff);
++    r->regs[18] = tswapreg(env->eflags);
++    r->regs[19] = tswapreg(env->regs[R_ESP]);
++    r->regs[20] = tswapreg(env->segs[R_SS].selector & 0xffff);
++    r->regs[21] = tswapreg(env->segs[R_FS].selector & 0xffff);
++    r->regs[22] = tswapreg(env->segs[R_GS].selector & 0xffff);
++    r->regs[23] = tswapreg(env->segs[R_DS].selector & 0xffff);
++    r->regs[24] = tswapreg(env->segs[R_ES].selector & 0xffff);
++    r->regs[25] = tswapreg(env->segs[R_FS].selector & 0xffff);
++    r->regs[26] = tswapreg(env->segs[R_GS].selector & 0xffff);
  }
  
--static void handle_arg_pagesize(const char *arg)
--{
--    unsigned size, want = qemu_real_host_page_size();
--
--    if (qemu_strtoui(arg, NULL, 10, &size) || size != want) {
--        warn_report("Deprecated page size option cannot "
--                    "change host page size (%u)", want);
--    }
--}
--
- static void handle_arg_seed(const char *arg)
- {
-     seed_optarg = arg;
-@@ -522,8 +512,6 @@ static const struct qemu_argument arg_table[] = {
-      "range[,...]","filter logging based on address range"},
-     {"D",          "QEMU_LOG_FILENAME", true, handle_arg_log_filename,
-      "logfile",     "write logs to 'logfile' (default stderr)"},
--    {"p",          "QEMU_PAGESIZE",    true,  handle_arg_pagesize,
--     "pagesize",   "deprecated change to host page size"},
-     {"one-insn-per-tb",
-                    "QEMU_ONE_INSN_PER_TB",  false, handle_arg_one_insn_per_tb,
-      "",           "run with one guest instruction per emulated TB"},
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index d50645a071..5d1579dcf8 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -81,16 +81,6 @@ kernel since 2001. None of the board types QEMU supports need
- ``param_struct`` support, so this option has been deprecated and will
- be removed in a future QEMU version.
- 
--User-mode emulator command line arguments
-------------------------------------------
--
--``-p`` (since 9.0)
--''''''''''''''''''
--
--The ``-p`` option pretends to control the host page size.  However,
--it is not possible to change the host page size, and using the
--option only causes failures.
--
- QEMU Machine Protocol (QMP) commands
- ------------------------------------
- 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index d7c2113fc3..25a904032c 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -571,6 +571,14 @@ The ``-singlestep`` option has been given a name that better reflects
- what it actually does. For both linux-user and bsd-user, use the
- ``-one-insn-per-tb`` option instead.
- 
-+``-p`` (removed in 10.2)
-+''''''''''''''''''''''''
-+
-+The ``-p`` option pretends to control the host page size.  However,
-+it is not possible to change the host page size; we stopped trying
-+to do anything with the option except print a warning from 9.0,
-+and now the option is removed entirely.
-+
- 
- QEMU Machine Protocol (QMP) commands
- ------------------------------------
-diff --git a/docs/user/main.rst b/docs/user/main.rst
-index 347bdfabf8..a8ddf91424 100644
---- a/docs/user/main.rst
-+++ b/docs/user/main.rst
-@@ -262,9 +262,6 @@ Debug options:
-    Activate logging of the specified items (use '-d help' for a list of
-    log items)
- 
--``-p pagesize``
--   Act as if the host page size was 'pagesize' bytes
--
- ``-one-insn-per-tb``
-    Run the emulation with one guest instruction per translation block.
-    This slows down emulation a lot, but can be useful in some situations,
+ #if ULONG_MAX > UINT32_MAX
 -- 
 2.43.0
 
