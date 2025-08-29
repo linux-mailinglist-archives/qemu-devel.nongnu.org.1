@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E71B3CDCF
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:09:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B687B3CCF5
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:26:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNiK-0003MU-Rw; Sat, 30 Aug 2025 11:42:00 -0400
+	id 1usNjA-0005oC-F9; Sat, 30 Aug 2025 11:42:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us75h-000892-LG
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 17:57:01 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1us7Jb-000772-0w
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:11:23 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us75d-0004gg-Cm
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 17:57:01 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-327d47a0e3eso1456717a91.3
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 14:56:56 -0700 (PDT)
+ id 1us7JW-00083W-Mw
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:11:22 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-b4dc35711d9so546970a12.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:11:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756504615; x=1757109415; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756505476; x=1757110276; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=nGIXDNSVQ5fb683JpUhMRlteIhAQq4YWpd9SbTwCc/o=;
- b=SAjakH8BzuOJb/fLl2Wbnb4vu8MPWkOCWTdzTFF2KaLufZuuZqomTpXjEswDIkhdxJ
- lDPEHEas+/BMtZV5pSQQFLb5wQFgPlUoTQaKK2Z04Q8C46sv8maiNAakhx25jXCoKbmJ
- hKWl5tTJqmwkc190c6JgA21GiTDy0cUHDVWstFmgPFBnSuzbGU3lYgq4hQoaz2fe6g/y
- Tl9xVUtxtNP04c4t8+AiSAA7ii4cAVG9KQa3BeT9eZJg4wfAOtc3/nhxkAElQsmAKSS7
- 5BtVPda9+PLfRQGUtSGIo6RFeOYLoGLDy9J0l71xvkbdC59DAdAXJHSlbdYNhd9lKI1F
- nHNQ==
+ bh=p6dVFub8rfkbljYLWR1PaKydXBgAgpJmLsYGBvx29pU=;
+ b=WEqQOvLmyARNMJaUMGqfgGGeLqAljOPZ2aqQINVIxQVySwXAwUvg+y+XWOn+AHSqvy
+ Y7A/NB1r91I1JU/iNxdtRPczdA02ntvcMesKjxb8TataMILFgMdo4P+Li+A0uS1T/mr7
+ McXtLKb1RrU+hQ0nxHns6p16lsveuZiy5i1lYTeeyZov2CqtzXdzEpCQAguS6yfiQSGK
+ m1exrt6A+2ERQwcNQgMUeBNXb2waYkTCmUn+jLmvqBdTHqe7KdDDqkc43SbgfWpuaw0l
+ 6+WNv7qd/gr/adBwaMues47YyxavSPHss/y5PiJyfJhnMp+Dg0x3fh5CfaaNIpS7qMl1
+ ZbmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756504615; x=1757109415;
+ d=1e100.net; s=20230601; t=1756505476; x=1757110276;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nGIXDNSVQ5fb683JpUhMRlteIhAQq4YWpd9SbTwCc/o=;
- b=Hgvei43/RwAfMQaQzhHejNYX6gcyzH8/C9ali+RvskvqKTUgP/Afvt/5djkYJcC2vm
- yirejqFw9FG12r14voqE/HY4UCuEJ5c+uCQk42yJCIb8LHqUqc3kNQUVhKd2EIigijcq
- YVoO53DrlfrhW5frPvds+Avqh+WpKBBT38PuAvYbHmn9HuAsVke+h3nI0I/khaly2unI
- WoSz7SeNTA0BSHcqhzNnEzYCFlZYierrrsrQigbY3iyqV0ClwYyRyerpaMDEEwWqlnAz
- BXb/Rr8FY7dPQmaWBV9ZUBwECl/21zoF3QEINdxIIUi58H4bRfKUN/qTpnH/zGtEN7/m
- mjKg==
+ bh=p6dVFub8rfkbljYLWR1PaKydXBgAgpJmLsYGBvx29pU=;
+ b=LcaIyx57MFAhBrfE/r8ixl/O3ScepAC9INcqa5giQzPEymZd7/xlMtbRTN1dOxhLUk
+ wfPMtUg8rWamblwaI3dbi0PdgElRZ7aVc34pWMJdIDLo8KO5Jhy+5pqlin6zIHX/aP/D
+ Y8T8mMZ4vjlLlWOukKieQ0yCTU4HQFCnsOe7RvKpqxldizxOcxjLUMwJ4iGyqIIBWuax
+ PrBohwaCPKIpMqbNfvfB3PNFJk12JgN5hNoEdDuCmKz5R+Tk/suhZY2LmdW5HmXG93Wv
+ M6qL9B6yT24O9TdHhQ7A4OatWvZ2lT4TyR8RGvpT0C6qb+cjq5EnpFFvGOu51zKNTX7B
+ RgRw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXnrVoIdvGfLwT0NT9VaD3npA5pQb/VQL001ZLBW5UMoFhpXNjxnGSV/5LZiNi4k9UZ1JVivwN2zcKw@nongnu.org
-X-Gm-Message-State: AOJu0Yz5vaP/2DT2CWe50TfI4FAyE4DpO5GjTsKf5MHBun1guhjOoHsJ
- TKew9/nuLjoxh0uyb3y4olIczlZ2GDbfSBYkn4HLvmxWZZK3WdHSMcSNQ47F3BssqCQ=
-X-Gm-Gg: ASbGnct+bFs0d2HTJBBBBfkWhl7q5vAjsAU5/uACc3/Ac8I2hus+x8e8vGY1M8s6KnX
- TVU8bFtm7DqXqvIuj5qZY3LLj2zt5IbyBnfCOlVdXkx3nwRwCmXrLiu5a8OBBTczSdG7ILKD7Ei
- BPKU6ygPz5iBKicFqjeDeqCdnY18l4y6YSs9k9JqI++mmhiDujszE+TtyHpPbduyX1rk5Nfl0qW
- UhHuwTtmdugZnE+hUZL3sMzbT8U/x7ULhKT1Sn1QB2qUnr9XkWAuLVxcl0gFIHyW2fknQfRDtLO
- FsS18f/CaYAQxHiCUqjk5BJMksgc8BkdmEasM/MCwe02N9loDfXP+AnZdU4Agzuz34WmKamsaIW
- etJbd77X/5Vu3ftCLjsmEoDlraSWP512SkukwqPhM5BggNG5ChNofowsUxZoZln8ipIhZH0vO12
- DKzlF5MQO2w3Ow4PmQkA==
-X-Google-Smtp-Source: AGHT+IHvM9sY4AYkYnz1CV9448wKoEaH2bEHY4WpOWeWrFsjBQLC1de6QFf6OxSN35RZkle3CStjYw==
-X-Received: by 2002:a17:90b:1e12:b0:327:7e8b:eba8 with SMTP id
- 98e67ed59e1d1-328156e13abmr161663a91.31.1756504615171; 
- Fri, 29 Aug 2025 14:56:55 -0700 (PDT)
-Received: from [10.118.1.198] (122-150-204-179.dyn.ip.vocus.au.
- [122.150.204.179]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3276fce1160sm9213646a91.22.2025.08.29.14.56.52
+ AJvYcCXkPGeKEVm7uMVkoGeNn5XmmdFCBGG1UTFz5eHpICMR8EjDFSk6UcFsK0+Y7RBp6Kt1/GkqCphcsgqx@nongnu.org
+X-Gm-Message-State: AOJu0Yy7sYEo/lZBuTHCKYOWF9LpZLXKcA4y5EbjpoYesORen0qTmlJk
+ PBVdHnttp3Dcy/zLfETEvIUXcsOcKSJ3WIOKOcviLFqAHeI+MAsW9Ce7hSrye2/QI00=
+X-Gm-Gg: ASbGncuW9E+SSPyO9myEy8aAsqGWUddmAj7KlspwCnFTVAIYXd0E8U+jlDWdKIxqcmR
+ 0GmrHGNDPZlsq2cBNHx7+8my0NGsJkG5WK4xGoSdib4PiWH4Iw8FJDXajfCslDxRH0gihgAH7nu
+ Xk/511/Nwao4VSLpIPwtBFVaolaLnW9zbEmo4bkfusxHAQQ2Y3xm2nMyvQsljm3eQxIZexCOq71
+ spANTC6DeuILDVG1iAtBVYbjQUwyuWYP3wpqZTzVSuVeGkMclGaG+2ps6aSZgHSkDRP7SZv2K4N
+ TAQxVJtLOq8UIRf/QUftIG4SkIiozjHe81eeL9OU9fa+8GzHIXw/8S2aXgybApnk7SXLW9RKn3E
+ jEqECDChjnWThla8jQHwx8jSXK/qi2JU/4BT31TiaoYWuE5cOLt6wTt7DRAkwv62Y7lS39SE1Or
+ sLZPfU
+X-Google-Smtp-Source: AGHT+IFl4+lGRoxnOIQax/suYjIRf+kNKrxg03b+4a+EWxcsk+9353g1FBlcrNxjOeuvMNfv/CUjCQ==
+X-Received: by 2002:a17:903:98f:b0:248:79d4:93b3 with SMTP id
+ d9443c01a7336-24944b29e4dmr1938005ad.59.1756505475729; 
+ Fri, 29 Aug 2025 15:11:15 -0700 (PDT)
+Received: from [10.118.1.198] (122-150-204-48.dyn.ip.vocus.au.
+ [122.150.204.48]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-249065ab343sm34715735ad.126.2025.08.29.15.11.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Aug 2025 14:56:54 -0700 (PDT)
-Message-ID: <743782b5-1e3b-4b63-afe2-4ad1da333bde@linaro.org>
-Date: Sat, 30 Aug 2025 07:56:50 +1000
+ Fri, 29 Aug 2025 15:11:15 -0700 (PDT)
+Message-ID: <da327e5f-69a1-4480-bb7b-14bd78ec69c7@linaro.org>
+Date: Sat, 30 Aug 2025 08:11:10 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/18] cpus: properly kick CPUs out of inner execution loop
+Subject: Re: [PATCH 16/18] cpus: clear exit_request in qemu_wait_io_event
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 Cc: peterx@redhat.com, imammedo@redhat.com
 References: <20250829152909.1589668-1-pbonzini@redhat.com>
- <20250829153115.1590048-10-pbonzini@redhat.com>
+ <20250829153115.1590048-12-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20250829153115.1590048-10-pbonzini@redhat.com>
+In-Reply-To: <20250829153115.1590048-12-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,41 +104,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/30/25 01:31, Paolo Bonzini wrote:
-> @@ -624,8 +624,7 @@ static target_ulong h_confer(PowerPCCPU *cpu, SpaprMachineState *spapr,
->       }
->   
->       cs->exception_index = EXCP_YIELD;
-> -    qatomic_set(&cs->exit_request, true);
-> -    cpu_loop_exit(cs);
-> +    cpu_exit(cs);
->   
->       return H_SUCCESS;
->   }
+> Make the code common to all accelerators: after seeing cpu->exit_request
+> set to true, accelerator code needs to reach qemu_wait_io_event_common().
+> 
+> So for the common cases where they use qemu_wait_io_event(), go ahead and
+> clear it in there.  Note that the cheap qatomic_set() is enough because
+> at this point the thread has taken the BQL; qatomic_set_mb() is not needed.
+> In particular, this is the ordering of the communication between
+> I/O and vCPU threads is always the same.
+> 
+> In the I/O thread:
+> 
+> (a) store other memory locations that will be checked if cpu->exit_request
+>      or cpu->interrupt_request is 1 (for example cpu->stop or cpu->work_list
+>      for cpu->exit_request)
+> 
+> (b) cpu_exit(): store-release cpu->exit_request, or
+> (b) cpu_interrupt(): store-release cpu->interrupt_request
 
-cpu_loop_exit does a longjmp; cpu_exit does not.
+Mm.  This is the reason we want the seq_cst of the qatomic_or.
+Perhaps comments in patch 7 should be expanded to document this?
 
-This may be a bug fix, but it's hard to tell.
-If it is a bug fix, it should be separated.
-
-I'm also having a hard time with e.g.
-
-> +++ b/system/cpu-timers.c
-> @@ -246,14 +246,14 @@ void qemu_timer_notify_cb(void *opaque, QEMUClockType type)
->  
->      if (qemu_in_vcpu_thread()) {
->          /*
-> -         * A CPU is currently running; kick it back out to the
-> +         * A CPU is currently running; kick it back out of the
->           * tcg_cpu_exec() loop so it will recalculate its
->           * icount deadline immediately.
->           */
-> -        qemu_cpu_kick(current_cpu);
-> +        cpu_exit(current_cpu);
-
-where the comment still says kick and we're replacing kick with exit.
-
-I guess the root of this problem is that "kick" isn't a precise term, we ought to name it 
-something else, and we should paint the bike shed green.
+Anyway for this patch,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
