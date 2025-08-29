@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41F5B3CBFA
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49359B3CC6A
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:56:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNJ9-0001pq-Ct; Sat, 30 Aug 2025 11:16:00 -0400
+	id 1usNKv-0003UN-Q2; Sat, 30 Aug 2025 11:17:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryjD-0001Ln-RJ
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:01:19 -0400
+ id 1uryjQ-0001QB-11
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:01:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryjA-00006T-4C
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:01:15 -0400
+ id 1uryjN-00009f-W2
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:01:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756472471;
+ s=mimecast20190719; t=1756472485;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0orM1aVNWIA/N/a7VgzNhQDU3JWqnZ2top440RxQ0lE=;
- b=YRsLhGsVBxU5aOwKC+Az8wRoXLAS/63ey+TCuJ6bbPn91BDHB76tM5A9E1q8AVxR4OcIah
- FS+cP4kC5lEceE91DiGyauzuE0+pXG37l5xCcoSR0HKsZKDrYbLzRTCXH/Z4e2YwGKhdwT
- dYNJNenUE92iBV7gsQYqqp9X/eugK74=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kNjdodWk7rcIhhAGNhnPGaLvYybeyDD5TwM221RwZAk=;
+ b=he3EUK5Edj3JEck2wYwLTMQgec4gT1as3D84tdettaFZI4agYSmeLKzGtliAQJ1Pyeu+M7
+ 2kvYiiQDnlm/55WR8n6Ohzf4fGgjoTc+aOzmLc20epyfpBVPnYL5OVo7F1eg6qDSMtYiCc
+ a4yUIW758JMtqZ/WwkGoYUmVB9YK4TM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-466-f8fxBGJgMNik6soxjyscdw-1; Fri, 29 Aug 2025 09:01:10 -0400
-X-MC-Unique: f8fxBGJgMNik6soxjyscdw-1
-X-Mimecast-MFC-AGG-ID: f8fxBGJgMNik6soxjyscdw_1756472469
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-45a1b0cc989so16485275e9.3
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 06:01:09 -0700 (PDT)
+ us-mta-650-uJVVF_zZP8KWzOMPC_qA9g-1; Fri, 29 Aug 2025 09:01:24 -0400
+X-MC-Unique: uJVVF_zZP8KWzOMPC_qA9g-1
+X-Mimecast-MFC-AGG-ID: uJVVF_zZP8KWzOMPC_qA9g_1756472483
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-45a1b0b46bbso11366965e9.2
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 06:01:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756472468; x=1757077268;
+ d=1e100.net; s=20230601; t=1756472482; x=1757077282;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0orM1aVNWIA/N/a7VgzNhQDU3JWqnZ2top440RxQ0lE=;
- b=M85lrdmOoIzuKRBqrqnhijTN/6PmUWu1iLf49y/pn1YEFJ8R9GxvLNM2Q20FvPwksC
- Ac6O91t5k+k44S32Blx+B20YdxHtwKoJFmo+WPoqkO/zahA5ez4af+dlaqffKTybQZ7X
- Kzl5JbE896kbJg7/2ELw5EMjB08J0F8nPnTETZonkX9/ouF5xFkjEnFfwAt2P0CEpfra
- hNwxKbWrbLoQ9BVWse11FJSMeoXYJCVQB9FXcg/0WgNtHTMt1p2xPICetL2fdVu1Q2Qo
- lEvN+9L+YoJ/EvTvZRWH7/hRr6mclLgSaBl5F/t26cnridnU23XufWPQyAfdcMUoidmm
- gDlw==
-X-Gm-Message-State: AOJu0YygcpN6mlL3gPKRk3xzbWao1A5An6RLQQbZ/lsDZjI35HnAuh5e
- 4LWNQVbjSgXw+rlFgWRdFEOWnK3qXrI29yy3/8qO7wOGYw92Jh4QwoPe/kWpEXktHC5MXDap9Pe
- 885yA5CeynZXlVGmKRxoDiGjFSehPfOct/oDXF3067DI0NvPYE7F2bT/K468Kcv+CPFvn+vZyD/
- 0ZgZfwlfeTHqdirgDwId7Oq+eILI2mNVs0uCy2gvxl
-X-Gm-Gg: ASbGncunm5tCNMZCD9M1633zHCFVsld7/n7BWM96FM1pZj+RVH/UWHlljdL9F7HojgZ
- LYijscaKOO2IUs5wUEHnWHWGslZ00v4t4eDZapVfhpC0gvpplQsEPY0Kh/ZFaJSv+bzlJ1XOcvd
- k1GPcCezUbOcNHIBWAsVS0j917I5qdf9NMgYK8bduJzaJllq9ymh+pCRDoRLSCCmbyXG+AkWjFY
- XVrE1ZdzwfIAdrCTA5g2EEbnHLvBFBtMAZB018IVHgD0kE/auhBozF+gxWwvklAw3hsPlLbZYQD
- 91o/6dBg6GFOoggzoqE39lJKexoVCtIWoq5Ak518ew2LdXbaap5wYFSjTqQ2VYxMP1T/IGgsjWO
- ykQv2TSpEJMRsgXMP8Rpu+8PBF2L+gqhGtLR4FQvVTn0=
-X-Received: by 2002:a05:600c:4590:b0:45b:47e1:ef67 with SMTP id
- 5b1f17b1804b1-45b517e8d46mr198626635e9.34.1756472467505; 
- Fri, 29 Aug 2025 06:01:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8Yv6xglzILBEpowjUqr6BdN0rB6z6cY37+FPkiEMRwvy3C3MmejApndDCueeE0XWKUSgM8Q==
-X-Received: by 2002:a05:600c:4590:b0:45b:47e1:ef67 with SMTP id
- 5b1f17b1804b1-45b517e8d46mr198626105e9.34.1756472466806; 
- Fri, 29 Aug 2025 06:01:06 -0700 (PDT)
+ bh=kNjdodWk7rcIhhAGNhnPGaLvYybeyDD5TwM221RwZAk=;
+ b=Z37oQYzgimntkhi/hTp/gHdkwNZAJugVgT6wnHuYmHNaUEIws4bkj3AVgqSYW32Vya
+ 6QPQlvkdkhNt0OKGI46T6oxdXLT0R0bQk6NByoU0FLZyrajnDpyWo7DsItzysSqAKA2Q
+ 7XhejzA0176hdlInBLKspQVtRk6x5UqdyB2Wcecvz0toV2B+aD2Edp4iQ1ps2OH+aKYA
+ UuZitvGJMwxcOml082VMNC44DZh6mi17WD168Vygws9WWtcSwNzgyAYU+PaPsD/IbHaN
+ r5P4aIz5X1I8FSQ5CeZSGTqeR3XG6IAoEUtS/NBmCgOcuDphhqfAU4d5EECVyVRlDlqP
+ oFBw==
+X-Gm-Message-State: AOJu0Yz7ygI7+1q0Ey12a5Y5ldDDCnGRJvu1i0Ze3l5xKQCHa/mAlryU
+ ShIdmpq7TJTu9lojlfME7jsY5FSat7atLGLMf06vNxENWkufJMOQPFgdJkFPYZYXqu1Wwxm9vQg
+ lczMrHuDyRXaJc5LpNGQM3yEKwKD+eeP02XzytD7vur510ZMWPP6CYiR1hNQsFSJ33PWYcJPm5I
+ 0gvKUQ7ZZDhhf+KHh5ZNylue0Q3wPUF/Vk9afqrteR
+X-Gm-Gg: ASbGncusK+M8hbaVReaoDbNqDfMXV1by7DArbKmyXa2Vyjk+srrj9zhQK0VR9YaF/9A
+ of5AkFfmAr8vcgYVp5nS5FEI4OSocWfN3je8p3XDfMNuS84vg6IpcfBMnGHOpKV+heVapZDmV5J
+ kLeIK/o6lzpLiVzStCrANNGEMXEOO+4UHlH/pyMVllas6fjI/h7F2euU6pq/MRymAswtW+EtzUe
+ aChaERbuGPf1AKtG9NFkXd2cMRa7zRvL/Rgmc6FsjqLHICQU5pvPK6Acv99DDpD4TcWp25YyqAw
+ 0gKzeducC8Hpx6kBARs/Rjj/9o8CsOnA6Q+PFMA+15pOZDlfyN7/XW18vphvt38bJxiabw30Lia
+ Yy7otq2PQPIzp+3hDeUi7QXZdiMuJLx/UOz6taXJEAWY=
+X-Received: by 2002:a5d:5d87:0:b0:3c8:f348:7882 with SMTP id
+ ffacd0b85a97d-3c8f34887d8mr15009744f8f.54.1756472481440; 
+ Fri, 29 Aug 2025 06:01:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGSBuU5yy7Mbc2ZujWUqM7uq+Zevh2Of9cZsRwLKDJSP0n7lyT5LILB49ctQmqQ6g17DxWDlw==
+X-Received: by 2002:a5d:5d87:0:b0:3c8:f348:7882 with SMTP id
+ ffacd0b85a97d-3c8f34887d8mr15009694f8f.54.1756472479781; 
+ Fri, 29 Aug 2025 06:01:19 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf33add483sm3307321f8f.37.2025.08.29.06.01.03
+ ffacd0b85a97d-3d0c344f6e3sm2190886f8f.35.2025.08.29.06.01.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 06:01:03 -0700 (PDT)
+ Fri, 29 Aug 2025 06:01:10 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Igor Mammedov <imammedo@redhat.com>,
 	Peter Xu <peterx@redhat.com>
-Subject: [PULL 26/28] hpet: make main counter read lock-less
-Date: Fri, 29 Aug 2025 14:59:33 +0200
-Message-ID: <20250829125935.1526984-27-pbonzini@redhat.com>
+Subject: [PULL 27/28] kvm: i386: irqchip: take BQL only if there is an
+ interrupt
+Date: Fri, 29 Aug 2025 14:59:34 +0200
+Message-ID: <20250829125935.1526984-28-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829125935.1526984-1-pbonzini@redhat.com>
 References: <20250829125935.1526984-1-pbonzini@redhat.com>
@@ -110,99 +111,101 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Igor Mammedov <imammedo@redhat.com>
 
-Make access to main HPET counter lock-less.
+when kernel-irqchip=split is used, QEMU still hits BQL
+contention issue when reading ACPI PM/HPET timers
+(despite of timer[s] access being lock-less).
 
-In unlikely event of an update in progress, readers will busy wait
-untill update is finished.
+So Windows with more than 255 cpus is still not able to
+boot (since it requires iommu -> split irqchip).
 
-As result micro benchmark of concurrent reading of HPET counter
-with large number of vCPU shows over 80% better (less) latency.
+Problematic path is in kvm_arch_pre_run() where BQL is taken
+unconditionally when split irqchip is in use.
+
+There are a few parts that BQL protects there:
+  1. interrupt check and injecting
+
+    however we do not take BQL when checking for pending
+    interrupt (even within the same function), so the patch
+    takes the same approach for cpu->interrupt_request checks
+    and takes BQL only if there is a job to do.
+
+  2. request_interrupt_window access
+      CPUState::kvm_run::request_interrupt_window doesn't need BQL
+      as it's accessed by its own vCPU thread.
+
+  3. cr8/cpu_get_apic_tpr access
+      the same (as #2) applies to CPUState::kvm_run::cr8,
+      and APIC registers are also cached/synced (get/put) within
+      the vCPU thread it belongs to.
+
+Taking BQL only when is necessary, eleminates BQL bottleneck on
+IO/MMIO only exit path, improoving latency by 80% on HPET micro
+benchmark.
+
+This lets Windows to boot succesfully (in case hv-time isn't used)
+when more than 255 vCPUs are in use.
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/20250814160600.2327672-6-imammedo@redhat.com
+Link: https://lore.kernel.org/r/20250814160600.2327672-8-imammedo@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/timer/hpet.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ target/i386/kvm/kvm.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-index c776afc0f2d..789a31d0a08 100644
---- a/hw/timer/hpet.c
-+++ b/hw/timer/hpet.c
-@@ -39,6 +39,7 @@
- #include "system/address-spaces.h"
- #include "qom/object.h"
- #include "qemu/lockable.h"
-+#include "qemu/seqlock.h"
- #include "trace.h"
- 
- struct hpet_fw_config hpet_fw_cfg = {.count = UINT8_MAX};
-@@ -74,6 +75,7 @@ struct HPETState {
-     MemoryRegion iomem;
-     uint64_t hpet_offset;
-     bool hpet_offset_saved;
-+    QemuSeqLock state_version;
-     qemu_irq irqs[HPET_NUM_IRQ_ROUTES];
-     uint32_t flags;
-     uint8_t rtc_irq_level;
-@@ -430,17 +432,25 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
-     trace_hpet_ram_read(addr);
-     addr &= ~4;
- 
--    QEMU_LOCK_GUARD(&s->lock);
-     if (addr == HPET_COUNTER) {
--        if (hpet_enabled(s)) {
--            cur_tick = hpet_get_ticks(s);
--        } else {
--            cur_tick = s->hpet_counter;
--        }
-+        unsigned version;
-+
-+        /*
-+         * Write update is rare, so busywait here is unlikely to happen
-+         */
-+        do {
-+            version = seqlock_read_begin(&s->state_version);
-+            if (unlikely(!hpet_enabled(s))) {
-+                cur_tick = s->hpet_counter;
-+            } else {
-+                cur_tick = hpet_get_ticks(s);
-+            }
-+        } while (seqlock_read_retry(&s->state_version, version));
-         trace_hpet_ram_read_reading_counter(addr & 4, cur_tick);
-         return cur_tick >> shift;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index a7b5c8f81bc..306430a0521 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -5478,9 +5478,6 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
+         }
      }
  
-+    QEMU_LOCK_GUARD(&s->lock);
-     /*address range of all global regs*/
-     if (addr <= 0xff) {
-         switch (addr) {
-@@ -500,6 +510,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
-             old_val = s->config;
-             new_val = deposit64(old_val, shift, len, value);
-             new_val = hpet_fixup_reg(new_val, old_val, HPET_CFG_WRITE_MASK);
-+            seqlock_write_begin(&s->state_version);
-             s->config = new_val;
-             if (activating_bit(old_val, new_val, HPET_CFG_ENABLE)) {
-                 /* Enable main counter and interrupt generation. */
-@@ -518,6 +529,8 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
-                     hpet_del_timer(&s->timer[i]);
+-    if (!kvm_pic_in_kernel()) {
+-        bql_lock();
+-    }
+ 
+     /* Force the VCPU out of its inner loop to process any INIT requests
+      * or (for userspace APIC, but it is cheap to combine the checks here)
+@@ -5489,10 +5486,10 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
+     if (cpu_test_interrupt(cpu, CPU_INTERRUPT_INIT | CPU_INTERRUPT_TPR)) {
+         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_INIT) &&
+             !(env->hflags & HF_SMM_MASK)) {
+-            cpu->exit_request = 1;
++            qatomic_set(&cpu->exit_request, 1);
+         }
+         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_TPR)) {
+-            cpu->exit_request = 1;
++            qatomic_set(&cpu->exit_request, 1);
+         }
+     }
+ 
+@@ -5503,6 +5500,8 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
+             (env->eflags & IF_MASK)) {
+             int irq;
+ 
++            bql_lock();
++
+             cpu->interrupt_request &= ~CPU_INTERRUPT_HARD;
+             irq = cpu_get_pic_interrupt(env);
+             if (irq >= 0) {
+@@ -5517,6 +5516,7 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
+                             strerror(-ret));
                  }
              }
-+            seqlock_write_end(&s->state_version);
-+
-             /* i8254 and RTC output pins are disabled
-              * when HPET is in legacy mode */
-             if (activating_bit(old_val, new_val, HPET_CFG_LEGACY)) {
-@@ -686,6 +699,7 @@ static void hpet_init(Object *obj)
-     HPETState *s = HPET(obj);
++            bql_unlock();
+         }
  
-     qemu_mutex_init(&s->lock);
-+    seqlock_init(&s->state_version);
-     /* HPET Area */
-     memory_region_init_io(&s->iomem, obj, &hpet_ram_ops, s, "hpet", HPET_LEN);
-     memory_region_enable_lockless_io(&s->iomem);
+         /* If we have an interrupt but the guest is not ready to receive an
+@@ -5531,8 +5531,6 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
+ 
+         DPRINTF("setting tpr\n");
+         run->cr8 = cpu_get_apic_tpr(x86_cpu->apic_state);
+-
+-        bql_unlock();
+     }
+ }
+ 
 -- 
 2.51.0
 
