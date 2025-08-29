@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6D7B3CC34
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F248B3CEAA
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 20:27:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNjH-0006Aa-VW; Sat, 30 Aug 2025 11:43:00 -0400
+	id 1usNjR-0006bV-4M; Sat, 30 Aug 2025 11:43:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7WY-0002dm-2l
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:24:46 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1us7Wb-0002eW-Ci
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:24:50 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7WU-0002Ya-WA
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:24:45 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-76e6cbb991aso2490753b3a.1
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:24:42 -0700 (PDT)
+ id 1us7WY-0002aL-6x
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:24:49 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-771e15ce64eso2273561b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:24:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756506281; x=1757111081; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756506284; x=1757111084; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UOcWUc5rHijwQW3sC3RaBXrOkg4imftVqoCeUx1b1us=;
- b=HGDZ5/PPPPUzCT0QP20gHWeZmiFFKlyFCbDM/g93bzV5bnC3Qs+rwxcq7WKdAgLp9C
- bIv4BblliapAShNE8OPjJafHMWAnd4Z2Rk/MRk8VPhG+UYonAWcxGxqEP6LRV44aN1el
- MDxBOKrhN/dmGkb75AtVRLCTt0BHlQ08XhIVlRjNGx/tvHWpL0CD7PxagSTEt/zc0RDU
- TROwn7S3toaMgI7r596Ayj3bjil8o8S7sOqx++pvvYRCgwO5esglMMzkhUYESrY1/ld/
- mQx8ZNCQfzFAW4v/b5TOLaT6YcFAj9w0oyPjSyCoURMFS3rOsRyhZdP1q09EmYtDOriL
- iIWg==
+ bh=H0Ggm9wlx+9xy29EQzn7RdgHf/CbCvu60/I/6/mmVNA=;
+ b=EhJysH+opPv6pKep1Zygg23NlGgRn8M5mFaFMYYdZ/8X8B70o0F4DagjMyBzzORf/l
+ tmkfmckBrLOXB0tx/3O30uEHe2nK+Oht+6ouBKzAmDy11CKFHmA7h0qnHyBrv7xP3/yv
+ 1yxwGoKeDhZHikEAbPFUjZBtAd6D5WYZTHFLnxxBl7KltxtFO6fQFuWO5voythsMcnEm
+ mZT2AcyzPDyqBqdWlUN/iAYQlMdd139lefZPMpMWspXMsO+1HYLcnHaP8ZHbW6rR8rQa
+ NUiZVrIpYIgRy4seIt1gEfxFo8B7Fwq5PeUW7gkGttW3RPcpr8vDGfPnu3fHNzliAcdQ
+ GSCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756506281; x=1757111081;
+ d=1e100.net; s=20230601; t=1756506284; x=1757111084;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UOcWUc5rHijwQW3sC3RaBXrOkg4imftVqoCeUx1b1us=;
- b=BHvhMnKu9rcFKCOARtZNVdJg+/x227usPiiLTCxGf4udo6pJ7w+3ad/1ekFt8iLTOt
- dAD2wQRrGUTrDMG0qGGJOEWmVhERffvksIMyWgS29MWdoO73iVMVwDkviijjT16Ky6so
- oKs2/6Kl5G98TIQSZS5zhqA0MOc0jY2RXkRtzasngRoVfMBjmnsG8aNgszMDJvf/TPpR
- tXqtajJV+unVq0OrKZAk6rKfGA5ZP9hfR4OL+p6iuJv9/eSMrDKzAXiZSloSBwCkbKOH
- SlP1OEGpbgfhPoHHelkdjnUUQKuGUopwgVT31RuqHWreAskcSoAkuOc2j2fINSufqnA8
- T5qg==
-X-Gm-Message-State: AOJu0YxA8V6JpjVkah3eHvYyMmrYWBjNFt1s+VNh3YV97mrECb3MNNbv
- ZtzBWBhVzMMi3AmnBZQ2hxywK6sC1IWnwB+kyw0CrYZ1+gmBNeiYwXIIqus9bLwCRYlKU8W+W2q
- GJvMO2vo=
-X-Gm-Gg: ASbGncvvSmjmt4CPByBNq97Jnq49GvcMA6n4yznd09H9xx4DhjgpYYpjYFk52BVxu7Z
- ltO3lli6+a4lkIf0F/xenZwuPyNvDATRuo7z0ohDaSt+Yjlctydyk+McflusDMos55pJrJ820f+
- mjBsuZddyx1rM6DIo956DsbG2LtvlVaC3wo4XqDbmUc1Wu4OAFqkBKlGxXtiiimQxYLIF9DTjAU
- kswWfYZ/SRPNk6zvM/12AbmaxCJcF97LpMXbHgEiMYb4YHgEp/8VEhdY6vScan+JIv+IL0tKlXl
- cUoqHyl6oWwSJicwl90mYHzjpxISdexGua9NzYq01MXeSVLnr8FpwzFSbNSxWr9ERpWF/hbgeHy
- 0JlpXbiJdTuF1VVnxvDCeT6mDSmM60PJvrzpYrvybYiRtUnklYUzBw0yPM9o8
-X-Google-Smtp-Source: AGHT+IHuUveqfkfC+6KXlw/14GbFhELbZIwmXziACfIQGIKoyWGgbeNp6mlG+cxoKUQzzqEETObESw==
-X-Received: by 2002:a05:6a00:1482:b0:771:ea2e:b002 with SMTP id
- d2e1a72fcca58-7723e22d0a2mr244843b3a.10.1756506281271; 
- Fri, 29 Aug 2025 15:24:41 -0700 (PDT)
+ bh=H0Ggm9wlx+9xy29EQzn7RdgHf/CbCvu60/I/6/mmVNA=;
+ b=t8Q7gp4fdpWGr849a/7MRsGg6XQNCGS5bUDlmUiXFyTf+LUCo4YryJwwXR5BegucKE
+ qPrQ/5ZDZ1DAzwPz5i/SZnfy4BdV7tqoQrPfLqPRy4TT1XaL01xV5r7ixtbmPUyVgz/E
+ eEY/Dydy8ixZzli6TqTCEGsHoB1OdWdrfUttTsXwpTmPnDz9uIt+wZq6q5eYh2cQ0+LO
+ 6sy3nJtGgb122edEgRz9IUHPTaRok6kkOwUK8rnOHKLYlu/7LCQpUcDxuOEBTZWBKya/
+ bCHgtw8mhkchIqjg5aUKCRIL71lZieKy7S3GmBet+FGlEkf64AzQpsN9kaP36qcxINq1
+ OA9g==
+X-Gm-Message-State: AOJu0YwqmoTtHwJd4jQ4QwauPJmb2cjHBhXwq3ByFwK/iwWEFAkqMdvx
+ xSKnqAFgK7b8TPig7xx4o9aK1kiLqWoFJ8WQQO6QynrWYSwcJOJrrrnCgvhomzc+t5tPNpkbwra
+ smZnAzrk=
+X-Gm-Gg: ASbGncuXLO0dDlKtBRjUeuLqMZ86OZ057y8zXyE7cm13CWESzc/AiFTizFCayxZIq3e
+ ADyWYXt3PkWmagyHf+PipuIBakZK+RHvlZ/9LsujDwbVvD29fcXpQevydBqj+1/OIX/beOfKkpO
+ aFxlsPsHl0Ob/7R3QhtXrB5XxfoBb037k8PpJGaDXl35fJzIt9bMJHLQxyvP1z/qONuDzp/Lp8P
+ NB5RhitEYbPRLIXA9YIyv1+X67QGW71dK72XNIeMa1cyZDnuUMWbRvzoJLom9keJO0phXvlUoMv
+ n/9Qvjx+rPBtQ4OLv0aX64/aBIYLa7tflmYYMoFlKAYcbNVoBQ8sZafoFGbXlGeGqN/CPZ9GPD/
+ wqkjDx+ZWSsyHX1+SsUe/HC+Qpwlr6chA8l4yKmTiwwpDM00OcKmZIqb2mLol
+X-Google-Smtp-Source: AGHT+IGgwAtFm/zW2VAYRCXULc4/gfxnnGl50fxq7QFYBAUx2KYn8im8KALQfb7CJeO3wj7g4v5e4w==
+X-Received: by 2002:a05:6a00:114b:b0:771:d7b0:6944 with SMTP id
+ d2e1a72fcca58-7723e21ed20mr275593b3a.3.1756506284484; 
+ Fri, 29 Aug 2025 15:24:44 -0700 (PDT)
 Received: from stoup.. (122-150-204-12.dyn.ip.vocus.au. [122.150.204.12])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7722a71c60bsm3302493b3a.103.2025.08.29.15.24.39
+ d2e1a72fcca58-7722a71c60bsm3302493b3a.103.2025.08.29.15.24.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 15:24:40 -0700 (PDT)
+ Fri, 29 Aug 2025 15:24:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 03/91] linux-user: Tidy print_socket_protocol
-Date: Sat, 30 Aug 2025 08:22:59 +1000
-Message-ID: <20250829222427.289668-4-richard.henderson@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 04/91] linux-user: Drop deprecated -p option
+Date: Sat, 30 Aug 2025 08:23:00 +1000
+Message-ID: <20250829222427.289668-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250829222427.289668-1-richard.henderson@linaro.org>
 References: <20250829222427.289668-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,190 +102,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sink all of the qemu_log calls to the end, collecting only
-a string for the name, if identified.  Merge separate if
-blocks into one switch.
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+The user-mode '-p' option has been deprecated since 9.0 and
+doesn't do anything except emit a warning. We are well past
+our minimum deprecation period, so drop the option.
+
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250828162012.3307647-1-peter.maydell@linaro.org>
 ---
- linux-user/strace.c | 102 ++++++++++++++++++++++----------------------
- 1 file changed, 52 insertions(+), 50 deletions(-)
+ bsd-user/main.c                 |  8 --------
+ linux-user/main.c               | 12 ------------
+ docs/about/deprecated.rst       | 10 ----------
+ docs/about/removed-features.rst |  8 ++++++++
+ docs/user/main.rst              |  3 ---
+ 5 files changed, 8 insertions(+), 33 deletions(-)
 
-diff --git a/linux-user/strace.c b/linux-user/strace.c
-index 786354627a..1233ebceb0 100644
---- a/linux-user/strace.c
-+++ b/linux-user/strace.c
-@@ -499,116 +499,118 @@ print_socket_type(int type)
- static void
- print_socket_protocol(int domain, int type, int protocol)
- {
--    if (domain == AF_PACKET ||
--        (domain == AF_INET && type == TARGET_SOCK_PACKET)) {
--        switch (protocol) {
--        case 0x0003:
--            qemu_log("ETH_P_ALL");
--            break;
--        default:
--            qemu_log("%d", protocol);
--        }
--        return;
--    }
-+    const char *name = NULL;
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index 7e5d4bbce0..9ba69642f5 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -367,14 +367,6 @@ int main(int argc, char **argv)
+             }
+         } else if (!strcmp(r, "L")) {
+             interp_prefix = argv[optind++];
+-        } else if (!strcmp(r, "p")) {
+-            unsigned size, want = qemu_real_host_page_size();
+-
+-            r = argv[optind++];
+-            if (qemu_strtoui(r, NULL, 10, &size) || size != want) {
+-                warn_report("Deprecated page size option cannot "
+-                            "change host page size (%u)", want);
+-            }
+         } else if (!strcmp(r, "g")) {
+             gdbstub = g_strdup(argv[optind++]);
+         } else if (!strcmp(r, "r")) {
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 6edeeecef3..7b0ccb6fd6 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -340,16 +340,6 @@ static void handle_arg_ld_prefix(const char *arg)
+     interp_prefix = strdup(arg);
+ }
  
--    if (domain == PF_NETLINK) {
-+    switch (domain) {
-+    case AF_PACKET:
-+        switch (protocol) {
-+        case 3:
-+            name = "ETH_P_ALL";
-+            break;
-+        }
-+        break;
-+
-+    case PF_NETLINK:
-         switch (protocol) {
-         case NETLINK_ROUTE:
--            qemu_log("NETLINK_ROUTE");
-+            name = "NETLINK_ROUTE";
-             break;
-         case NETLINK_UNUSED:
--            qemu_log("NETLINK_UNUSED");
-+            name = "NETLINK_UNUSED";
-             break;
-         case NETLINK_USERSOCK:
--            qemu_log("NETLINK_USERSOCK");
-+            name = "NETLINK_USERSOCK";
-             break;
-         case NETLINK_FIREWALL:
--            qemu_log("NETLINK_FIREWALL");
-+            name = "NETLINK_FIREWALL";
-             break;
-         case NETLINK_SOCK_DIAG:
--            qemu_log("NETLINK_SOCK_DIAG");
-+            name = "NETLINK_SOCK_DIAG";
-             break;
-         case NETLINK_NFLOG:
--            qemu_log("NETLINK_NFLOG");
-+            name = "NETLINK_NFLOG";
-             break;
-         case NETLINK_XFRM:
--            qemu_log("NETLINK_XFRM");
-+            name = "NETLINK_XFRM";
-             break;
-         case NETLINK_SELINUX:
--            qemu_log("NETLINK_SELINUX");
-+            name = "NETLINK_SELINUX";
-             break;
-         case NETLINK_ISCSI:
--            qemu_log("NETLINK_ISCSI");
-+            name = "NETLINK_ISCSI";
-             break;
-         case NETLINK_AUDIT:
--            qemu_log("NETLINK_AUDIT");
-+            name = "NETLINK_AUDIT";
-             break;
-         case NETLINK_FIB_LOOKUP:
--            qemu_log("NETLINK_FIB_LOOKUP");
-+            name = "NETLINK_FIB_LOOKUP";
-             break;
-         case NETLINK_CONNECTOR:
--            qemu_log("NETLINK_CONNECTOR");
-+            name = "NETLINK_CONNECTOR";
-             break;
-         case NETLINK_NETFILTER:
--            qemu_log("NETLINK_NETFILTER");
-+            name = "NETLINK_NETFILTER";
-             break;
-         case NETLINK_IP6_FW:
--            qemu_log("NETLINK_IP6_FW");
-+            name = "NETLINK_IP6_FW";
-             break;
-         case NETLINK_DNRTMSG:
--            qemu_log("NETLINK_DNRTMSG");
-+            name = "NETLINK_DNRTMSG";
-             break;
-         case NETLINK_KOBJECT_UEVENT:
--            qemu_log("NETLINK_KOBJECT_UEVENT");
-+            name = "NETLINK_KOBJECT_UEVENT";
-             break;
-         case NETLINK_GENERIC:
--            qemu_log("NETLINK_GENERIC");
-+            name = "NETLINK_GENERIC";
-             break;
-         case NETLINK_SCSITRANSPORT:
--            qemu_log("NETLINK_SCSITRANSPORT");
-+            name = "NETLINK_SCSITRANSPORT";
-             break;
-         case NETLINK_ECRYPTFS:
--            qemu_log("NETLINK_ECRYPTFS");
-+            name = "NETLINK_ECRYPTFS";
-             break;
-         case NETLINK_RDMA:
--            qemu_log("NETLINK_RDMA");
-+            name = "NETLINK_RDMA";
-             break;
-         case NETLINK_CRYPTO:
--            qemu_log("NETLINK_CRYPTO");
-+            name = "NETLINK_CRYPTO";
-             break;
-         case NETLINK_SMC:
--            qemu_log("NETLINK_SMC");
--            break;
--        default:
--            qemu_log("%d", protocol);
-+            name = "NETLINK_SMC";
-             break;
-         }
--        return;
+-static void handle_arg_pagesize(const char *arg)
+-{
+-    unsigned size, want = qemu_real_host_page_size();
+-
+-    if (qemu_strtoui(arg, NULL, 10, &size) || size != want) {
+-        warn_report("Deprecated page size option cannot "
+-                    "change host page size (%u)", want);
 -    }
-+        break;
- 
--    if (domain == AF_INET || domain == AF_INET6) {
-+    case AF_INET:
-+    case AF_INET6:
-         switch (protocol) {
-+        case 3:
-+            if (domain == AF_INET && type == TARGET_SOCK_PACKET) {
-+                name = "ETH_P_ALL";
-+            }
-+            break;
-         case IPPROTO_IP:
--            qemu_log("IPPROTO_IP");
-+            name = "IPPROTO_IP";
-             break;
-         case IPPROTO_TCP:
--            qemu_log("IPPROTO_TCP");
-+            name = "IPPROTO_TCP";
-             break;
-         case IPPROTO_UDP:
--            qemu_log("IPPROTO_UDP");
-+            name = "IPPROTO_UDP";
-             break;
-         case IPPROTO_RAW:
--            qemu_log("IPPROTO_RAW");
--            break;
--        default:
--            qemu_log("%d", protocol);
-+            name = "IPPROTO_RAW";
-             break;
-         }
--        return;
-+        break;
-     }
--    qemu_log("%d", protocol);
 -}
+-
+ static void handle_arg_seed(const char *arg)
+ {
+     seed_optarg = arg;
+@@ -522,8 +512,6 @@ static const struct qemu_argument arg_table[] = {
+      "range[,...]","filter logging based on address range"},
+     {"D",          "QEMU_LOG_FILENAME", true, handle_arg_log_filename,
+      "logfile",     "write logs to 'logfile' (default stderr)"},
+-    {"p",          "QEMU_PAGESIZE",    true,  handle_arg_pagesize,
+-     "pagesize",   "deprecated change to host page size"},
+     {"one-insn-per-tb",
+                    "QEMU_ONE_INSN_PER_TB",  false, handle_arg_one_insn_per_tb,
+      "",           "run with one guest instruction per emulated TB"},
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index d50645a071..5d1579dcf8 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -81,16 +81,6 @@ kernel since 2001. None of the board types QEMU supports need
+ ``param_struct`` support, so this option has been deprecated and will
+ be removed in a future QEMU version.
  
-+    if (name) {
-+        qemu_log("%s", name);
-+    } else {
-+        qemu_log("%d", protocol);
-+    }
-+}
+-User-mode emulator command line arguments
+------------------------------------------
+-
+-``-p`` (since 9.0)
+-''''''''''''''''''
+-
+-The ``-p`` option pretends to control the host page size.  However,
+-it is not possible to change the host page size, and using the
+-option only causes failures.
+-
+ QEMU Machine Protocol (QMP) commands
+ ------------------------------------
  
- #ifdef TARGET_NR__newselect
- static void
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index d7c2113fc3..25a904032c 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -571,6 +571,14 @@ The ``-singlestep`` option has been given a name that better reflects
+ what it actually does. For both linux-user and bsd-user, use the
+ ``-one-insn-per-tb`` option instead.
+ 
++``-p`` (removed in 10.2)
++''''''''''''''''''''''''
++
++The ``-p`` option pretends to control the host page size.  However,
++it is not possible to change the host page size; we stopped trying
++to do anything with the option except print a warning from 9.0,
++and now the option is removed entirely.
++
+ 
+ QEMU Machine Protocol (QMP) commands
+ ------------------------------------
+diff --git a/docs/user/main.rst b/docs/user/main.rst
+index 347bdfabf8..a8ddf91424 100644
+--- a/docs/user/main.rst
++++ b/docs/user/main.rst
+@@ -262,9 +262,6 @@ Debug options:
+    Activate logging of the specified items (use '-d help' for a list of
+    log items)
+ 
+-``-p pagesize``
+-   Act as if the host page size was 'pagesize' bytes
+-
+ ``-one-insn-per-tb``
+    Run the emulation with one guest instruction per translation block.
+    This slows down emulation a lot, but can be useful in some situations,
 -- 
 2.43.0
 
