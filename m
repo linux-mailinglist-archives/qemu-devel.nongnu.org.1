@@ -2,69 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C584B3CBCC
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E871CB3CC06
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:34:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNBU-0005Ya-8K; Sat, 30 Aug 2025 11:08:04 -0400
+	id 1usNBd-0006DM-5j; Sat, 30 Aug 2025 11:08:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uruUq-00037A-WF
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:30:09 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uruUo-0006Wc-KE
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:30:08 -0400
-Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:cf2d:0:640:140f:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 0AA3F8102F;
- Fri, 29 Aug 2025 11:30:02 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:c1f::1:a] (unknown [2a02:6bf:8080:c1f::1:a])
- by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id xTW9Rl1Fm8c0-0Gy97CHf; Fri, 29 Aug 2025 11:30:01 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1756456201;
- bh=t0EERVi/AW1MnULrOfzLpJ3n4WkUUeGQx06/lgmzDwg=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=iB3T1/Qe36mIll74W9u/cg8s2Ta+P8uFVIwsVIYkjGD37bdxV1FFq30uL1LpFPNG+
- 93uKxuHVWnvWclWUoTOYE8c6tRuXn0jZBsIPk2jq4L1CRZA4gM5nwfKSYwXG7MCq2A
- 9GychvW2Vxc0Y/JXyeVkX8xB4Q3p3sgFgE1IBW1Q=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <a7f72cc7-d5ec-4a9e-a1a1-d77f376c5ce4@yandex-team.ru>
-Date: Fri, 29 Aug 2025 11:29:59 +0300
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uruWE-0003mR-IY
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:31:34 -0400
+Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uruW6-0006t3-V0
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:31:33 -0400
+Received: by mail-yb1-xb2e.google.com with SMTP id
+ 3f1490d57ef6-e989adfefeaso163233276.2
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 01:31:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756456282; x=1757061082; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=3w37zfElto3qXoWmipNIx6UAtBzYa8FuYHHoW3jRCjA=;
+ b=dElh9l4H1pOdFLEHP1nyf8wDj8Pt8axYdiFtSPqEJjXojjGky8lof9Xy3rjvg3jEUb
+ 5PpRhfbPI9WZLXwW2wo9XwMDMiPJMR+3FR+vLonpogeDdE2IvfCbclFckkps/IuWu7iQ
+ DEzhVF9rVHMCCay8EWwR+4gvX8x+6bp0v4JTE9Dype5eVE4KFR1mUtNl+yDcVgL370Eb
+ /MvKnLpqBjxqnZRYwCMRRwSKYSUm2sqYGgPFQD6AgleRyl57RPy1n5WGM0j3ofd8qMce
+ ziWOqxrlVhhJ9ARyJfKDvq5avhaSD95wkf82aOZVnagVQ/bfD0TgaLMFX/plBzZDEb/i
+ ollQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756456282; x=1757061082;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3w37zfElto3qXoWmipNIx6UAtBzYa8FuYHHoW3jRCjA=;
+ b=MMB188P9PLLx/UmYDwCVulCoVlaSFLn5jFIDob6TlJ1V5kG7NuaFy7NfWcDm5QJ4JB
+ uyzLRdcuZ7UqSCife+cRgwfJJ7dDUoCUvuCZBO/gvgVDV/TU88yrZOXSj9uWZX03ZcQl
+ uhULWt1e4c19hfnrUk7Zy2LGx+gcUbYo8IXW+9f4dRkwafKmlPO60JEzH1GmhVc4svhs
+ FsO8lZ8NvzH/zOi4q7X/mI+w5QbOMPJhRl9Ft6ilxbz6CIFAdTRPKMDVngkdW+KgUK6J
+ IBKdVIjWGWUcLSDbo+Vn8NCyidiCFmnpSF6CbVbgGymx8Sw20HBgc7VLeT7EBVgzFLY5
+ vQrw==
+X-Gm-Message-State: AOJu0YwL7fNt4Hjp/TLcMX4MG6fKvU0OxkwKIvFTG5TMbnBfuFIAIe5s
+ sG9L+mbF/6n5HDY0hqOCAu7IvJRFyti2Jyz5/qRXRxFMCTbT5K2F5Phzh6dKs/ZcMct39h0rxId
+ kDGxbywIM9S3ubhRjKO3KI6+hyXDS0IbitFlH4f12ZQ==
+X-Gm-Gg: ASbGncvfs8+QE05i7F5hQRJM9jx8JqA/j0ymDWiy/qgxVSGYMy01R0QdY8LzUw0cBEc
+ esdO+C0mrUEGVfwpveqs6WX/cHiidqkrQCIuyp8hHOhDnKwjhEUOGp4NERf+NZS/dbUvZdHJrfl
+ HprAwqIObZuBJ8PF1ua/X/hLLNpxCQcqSOzDvSibeuP1L466qVXEsUHIIRcQYGbaBSO3dkOud3H
+ BM4khveL6Ab7+hNFqQ=
+X-Google-Smtp-Source: AGHT+IEroBT4Wo4XIuJ6FwD5eKFjNK8yXZkssh/dDq08EOW9XNmYGcclP7RyRx/LPJixTs5Es/GTfn/cJevvrZbbZwE=
+X-Received: by 2002:a05:690c:6001:b0:721:1fda:e328 with SMTP id
+ 00721157ae682-7211fdb5f33mr163508527b3.49.1756456282416; Fri, 29 Aug 2025
+ 01:31:22 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 5/9] migration: Thread-ify precopy vmstate load process
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: "Dr . David Alan Gilbert" <dave@treblig.org>,
- Kevin Wolf <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Hailiang Zhang <zhanghailiang@xfusion.com>,
- Yury Kotov <yury-kotov@yandex-team.ru>, Prasad Pandit <ppandit@redhat.com>,
- Zhang Chen <zhangckid@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>,
- Juraj Marcin <jmarcin@redhat.com>
-References: <20250827205949.364606-1-peterx@redhat.com>
- <20250827205949.364606-6-peterx@redhat.com>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20250827205949.364606-6-peterx@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+References: <20250828120836.195358-1-richard.henderson@linaro.org>
+ <20250828120836.195358-31-richard.henderson@linaro.org>
+ <CAFEAcA9AbA4pa9EjOnkmrGMOOC-4nS+FNqni91bfDDkH1wOAbA@mail.gmail.com>
+ <fa015de3-3d90-4c2a-9746-0337e53fac89@linaro.org>
+In-Reply-To: <fa015de3-3d90-4c2a-9746-0337e53fac89@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 29 Aug 2025 09:31:10 +0100
+X-Gm-Features: Ac12FXwijQ2tfuvZSYInqz8m8PForKD3F3klDDUOxCOu5MaNsCFRHLUukNHYH0w
+Message-ID: <CAFEAcA8g=1W_CqKSDkpKaYcmqZBYtWf6h77oj7Pdg=KHJNFhAw@mail.gmail.com>
+Subject: Re: [PATCH v3 30/87] linux-user/i386: Create target_ptrace.h
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,76 +93,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27.08.25 23:59, Peter Xu wrote:
-> Migration module was there for 10+ years.  Initially, it was in most cases
-> based on coroutines.  As more features were added into the framework, like
-> postcopy, multifd, etc.. it became a mixture of threads and coroutines.
-> 
-> I'm guessing coroutines just can't fix all issues that migration want to
-> resolve.
-> 
-> After all these years, migration is now heavily based on a threaded model.
-> 
-> Now there's still a major part of migration framework that is still not
-> thread-based, which is precopy load.  We do load in a separate thread in
-> postcopy since the 1st day postcopy was introduced, however that requires a
-> separate state transition from precopy loading all devices first, which
-> still happens in the main thread of a coroutine.
-> 
-> This patch tries to move the migration incoming side to be run inside a
-> separate thread (mig/dst/main) just like the src (mig/src/main).  The
-> entrance to be migration_incoming_thread().
-> 
-> Quite a few things are needed to make it fly..
-> 
-> BQL Analysis
-> ============
-> 
-> Firstly, when moving it over to the thread, it means the thread cannot take
-> BQL during the whole process of loading anymore, because otherwise it can
-> block main thread from using the BQL for all kinds of other concurrent
-> tasks (for example, processing QMP / HMP commands).
-> 
-> Here the first question to ask is: what needs BQL during precopy load, and
-> what doesn't?
-> 
-> Most of the load process shouldn't need BQL, especially when it's about
-> RAM.  After all, RAM is still the major chunk of data to move for a live
-> migration process.  VFIO started to change that, though, but still, VFIO is
-> per-device so that shouldn't need BQL either in most cases.
-> 
-> Generic device loads will need BQL, likely not when receiving VMSDs, but
-> when applying them.  One example is any post_load() could potentially
-> inject memory regions causing memory transactions to happen.  That'll need
-> to update the global address spaces, hence requires BQL.  The other one is
-> CPU sync operations, even if the sync alone may not need BQL (which is
-> still to be further justified), run_on_cpu() will need it.
-> 
-> For that, qemu_loadvm_state() and qemu_loadvm_state_main() functions need
-> to now take a "bql_held" parameter saying whether bql is held.  We could
-> use things like BQL_LOCK_GUARD(), but this patch goes with explicit
-> lockings rather than relying on bql_locked TLS variable.  In case of
-> migration, we always know whether BQL is held in different context as long
-> as we can still pass that information downwards.
+On Thu, 28 Aug 2025 at 23:14, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 8/29/25 00:42, Peter Maydell wrote:
+> > On Thu, 28 Aug 2025 at 13:09, Richard Henderson
+> > <richard.henderson@linaro.org> wrote:
+> >> +/*
+> >> + * Compare linux arch/x86/include/uapi/asm/ptrace.h (struct pt_regs) and
+> >> + * arch/x86/include/asm/user_32.h (struct user_regs_struct).
+> >> + * The structure layouts are identical; the user_regs_struct names are better.
+> >> + */
+> >
+> > Why do you think the user_regs_struct names are better?
+> > "bx" suggests a 16-bit register, but these are 32-bit, right?
+>
+> Mostly I really don't like xds etc.
+>
+> > Commit message should say something about why we're changing
+> > the types (though clearly here the target-specific types are
+> > more sensible than the host-specific ones).
+>
+> Oops, yes.  There are quite a lot of error across the various target_pt_regs structures
+> that we never caught because they were never used.
 
-Agree, but I think it's better to make new macros following same pattern, i.e.
+With that,
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-WITH_BQL_HELD(bql_held) {
-     action();
-}
-
-instead of
-
-WITH_BQL_HELD(bql_held, actions());
-
-..
-
-Or I'm missing something and we already have a precedent of the latter
-notation?
-
-
-
--- 
-Best regards,
-Vladimir
+thanks
+-- PMM
 
