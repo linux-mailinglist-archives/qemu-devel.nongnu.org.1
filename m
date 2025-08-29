@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A769B3CC17
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A35B3CD27
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:34:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNaS-00027g-9F; Sat, 30 Aug 2025 11:33:52 -0400
+	id 1usNaX-0002d4-V7; Sat, 30 Aug 2025 11:33:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1us3TQ-0005fz-UC
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 14:05:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1us3TX-0005hG-9J
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 14:05:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1us3TP-0005yZ-33
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 14:05:16 -0400
+ id 1us3TU-00060C-Aa
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 14:05:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756490714;
+ s=mimecast20190719; t=1756490719;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DgjbyrOEn0brWKK2GHDnSTslVOsxwhRJLAenTWwHYrA=;
- b=Qs03drpDXG7D7RwO9kjA9RepkN0hCTPIoJpfXs+Jr24vclfEGM3JB8zALepZLQ8x5LiCyw
- J3L6UguOky3W9bGZXixwvWmDdHeNzZ3iaI3O9p/OhVZOAsWU5wsKOv2povBQn2CBS8mIHW
- znCZmuWfHEHVkRS3SuOnC/75eyrEbD0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=hFnegfN+ZJEFrktf/Xt9S8f7de5z0ix1bAkH/iyhqK8=;
+ b=KAEVVkwqEW3o+2dSNxWKbbV9Q5GY5R32nIY2E/E8DhnbV2qx3bB0H0b00DxOfxjXrewCZu
+ 0r6kaJowJ0/KidKA+46TZjDGShEUom2JzDt8ufCHdoDtZB0Zy1ae4Vhk04emLqDvJg4qES
+ J5k7vee7ovhOm3E9qV5Z+hNBTfnBzo8=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-IeRTXkO0MCu5zH4c3t5MTQ-1; Fri,
- 29 Aug 2025 14:05:10 -0400
-X-MC-Unique: IeRTXkO0MCu5zH4c3t5MTQ-1
-X-Mimecast-MFC-AGG-ID: IeRTXkO0MCu5zH4c3t5MTQ_1756490709
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-A27-3dUVOTC3WsdXfTbViQ-1; Fri,
+ 29 Aug 2025 14:05:15 -0400
+X-MC-Unique: A27-3dUVOTC3WsdXfTbViQ-1
+X-Mimecast-MFC-AGG-ID: A27-3dUVOTC3WsdXfTbViQ_1756490714
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4B6F1180034F; Fri, 29 Aug 2025 18:05:09 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 35F43195609F; Fri, 29 Aug 2025 18:05:14 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.108])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8AF5719560B4; Fri, 29 Aug 2025 18:05:04 +0000 (UTC)
+ id DA5ED19560BC; Fri, 29 Aug 2025 18:05:09 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -57,17 +57,17 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 13/14] util: add support for formatting thread info in
- messages
-Date: Fri, 29 Aug 2025 19:03:53 +0100
-Message-ID: <20250829180354.2922145-14-berrange@redhat.com>
+Subject: [PATCH v2 14/14] util: add brackets around guest name in message
+ context
+Date: Fri, 29 Aug 2025 19:03:54 +0100
+Message-ID: <20250829180354.2922145-15-berrange@redhat.com>
 In-Reply-To: <20250829180354.2922145-1-berrange@redhat.com>
 References: <20250829180354.2922145-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -92,190 +92,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The message context is now extended to be able to include the
-thread ID and thread name, after the program name. On Linux
-the thread ID will match the process TID visible in /proc,
-while on other platforms it will merely be an integer repr
-of the system thread object address/ID.
-
-This changes the output for both error_report and qemu_log,
-when running under the system emulators or the QEMU storage
-daemon. Other programs omit the thread information since
-they are largely single threaded, though potentially it
-would be useful to enable in all of them, given that the RCU
-thread will always get spawned by a constructor function.
+The message context can optionally include the guest name if the
+argument '-msg guest-name=on' is given. The formatting, however,
+does not look good if the guest name contains whitespace. Change
+the output to include square brackets to demarcate the name.
 
 Before:
 
-  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish -d 'trace:qcrypto*'
-  qemu-system-x86_64: qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x560db818e080 dir=fish
-  qemu-system-x86_64: qcrypto_tls_creds_get_path TLS creds path creds=0x560db818e080 filename=ca-cert.pem path=<none>
-  qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish -d 'trace:qcrypto*' -msg guest-name=on -name "fish food"
+  fish food qemu-system-x86_64(1146846:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55657e94e690 dir=fish
+  fish food qemu-system-x86_64(1146846:main): qcrypto_tls_creds_get_path TLS creds path creds=0x55657e94e690 filename=ca-cert.pem path=<none>
+  fish food qemu-system-x86_64(1146846:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
 
 After:
 
-  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish -d 'trace:qcrypto*'
-  qemu-system-x86_64(772366:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x560db818e080 dir=fish
-  qemu-system-x86_64(772366:main): qcrypto_tls_creds_get_path TLS creds path creds=0x560db818e080 filename=ca-cert.pem path=<none>
-  qemu-system-x86_64(772366:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish -d 'trace:qcrypto*' -msg guest-name=on -name "fish food"
+  [fish food] qemu-system-x86_64(1144713:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x5604ada2c950 dir=fish
+  [fish food] qemu-system-x86_64(1144713:main): qcrypto_tls_creds_get_path TLS creds path creds=0x5604ada2c950 filename=ca-cert.pem path=<none>
+  [fish food] qemu-system-x86_64(1144713:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/qemu/message.h               |  1 +
- storage-daemon/qemu-storage-daemon.c |  6 +++++
- system/vl.c                          |  8 +++++--
- tests/qemu-iotests/041               |  2 +-
- tests/qemu-iotests/common.filter     |  2 +-
- util/message.c                       | 33 +++++++++++++++++++---------
- 6 files changed, 38 insertions(+), 14 deletions(-)
+ util/message.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/qemu/message.h b/include/qemu/message.h
-index 4550ce8ed7..6dbb068ca9 100644
---- a/include/qemu/message.h
-+++ b/include/qemu/message.h
-@@ -7,6 +7,7 @@ enum QMessageFormatFlags {
-     QMESSAGE_FORMAT_TIMESTAMP = (1 << 0),
-     QMESSAGE_FORMAT_WORKLOAD_NAME = (1 << 1),
-     QMESSAGE_FORMAT_PROGRAM_NAME = (1 << 2),
-+    QMESSAGE_FORMAT_THREAD_INFO = (1 << 3),
- };
- 
- /**
-diff --git a/storage-daemon/qemu-storage-daemon.c b/storage-daemon/qemu-storage-daemon.c
-index eb72561358..cc44ed7848 100644
---- a/storage-daemon/qemu-storage-daemon.c
-+++ b/storage-daemon/qemu-storage-daemon.c
-@@ -47,6 +47,7 @@
- #include "qemu/cutils.h"
- #include "qemu/config-file.h"
- #include "qemu/error-report.h"
-+#include "qemu/message.h"
- #include "qemu/help_option.h"
- #include "qemu/job.h"
- #include "qemu/log.h"
-@@ -65,6 +66,10 @@ static const char *pid_file;
- static char *pid_file_realpath;
- static volatile bool exit_requested = false;
- 
-+#define QMESSAGE_FORMAT_DEFAULT \
-+    (QMESSAGE_FORMAT_PROGRAM_NAME | \
-+     QMESSAGE_FORMAT_THREAD_INFO)
-+
- void qemu_system_killed(int signal, pid_t pid)
- {
-     exit_requested = true;
-@@ -399,6 +404,7 @@ int main(int argc, char *argv[])
- #endif
- 
-     error_init(argv[0]);
-+    qmessage_set_format(QMESSAGE_FORMAT_DEFAULT);
-     qemu_init_exec_dir(argv[0]);
-     os_setup_signal_handling();
- 
-diff --git a/system/vl.c b/system/vl.c
-index 9030212c50..20b655a7bc 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -145,6 +145,10 @@
- 
- #define MAX_VIRTIO_CONSOLES 1
- 
-+#define QMESSAGE_FORMAT_DEFAULT \
-+    (QMESSAGE_FORMAT_PROGRAM_NAME | \
-+     QMESSAGE_FORMAT_THREAD_INFO)
-+
- typedef struct BlockdevOptionsQueueEntry {
-     BlockdevOptions *bdo;
-     Location loc;
-@@ -811,10 +815,9 @@ static void realtime_init(void)
-     }
- }
- 
--
- static void configure_msg(QemuOpts *opts)
- {
--    int flags = QMESSAGE_FORMAT_PROGRAM_NAME;
-+    int flags = QMESSAGE_FORMAT_DEFAULT;
-     if (qemu_opt_get_bool(opts, "timestamp", false)) {
-         flags |= QMESSAGE_FORMAT_TIMESTAMP;
-     }
-@@ -2888,6 +2891,7 @@ void qemu_init(int argc, char **argv)
-     module_call_init(MODULE_INIT_OPTS);
- 
-     error_init(argv[0]);
-+    qmessage_set_format(QMESSAGE_FORMAT_DEFAULT);
-     qemu_init_exec_dir(argv[0]);
- 
-     os_setup_limits();
-diff --git a/tests/qemu-iotests/041 b/tests/qemu-iotests/041
-index 8452845f44..d9954da42b 100755
---- a/tests/qemu-iotests/041
-+++ b/tests/qemu-iotests/041
-@@ -1102,7 +1102,7 @@ class TestRepairQuorum(iotests.QMPTestCase):
-         self.vm.shutdown()
-         log = iotests.filter_qtest(self.vm.get_log())
-         log = re.sub(r'^Formatting.*\n', '', log)
--        log = re.sub(r'^%s: ' % os.path.basename(iotests.qemu_prog), '', log)
-+        log = re.sub(r'^%s\(.*\): ' % os.path.basename(iotests.qemu_prog), '', log)
- 
-         self.assertEqual(log,
-                          "Can no longer replace 'img1' by 'repair0', because " +
-diff --git a/tests/qemu-iotests/common.filter b/tests/qemu-iotests/common.filter
-index 511a55b1e8..ecf74c223e 100644
---- a/tests/qemu-iotests/common.filter
-+++ b/tests/qemu-iotests/common.filter
-@@ -81,7 +81,7 @@ _filter_qemu_io()
- # replace occurrences of QEMU_PROG with "qemu"
- _filter_qemu()
- {
--    gsed -e "s#\\(^\\|(qemu) \\)$(basename $QEMU_PROG):#\1QEMU_PROG:#" \
-+    gsed -e "s#\\(^\\|(qemu) \\)$(basename $QEMU_PROG)(.*):#\1QEMU_PROG:#" \
-         -e 's#^QEMU [0-9]\+\.[0-9]\+\.[0-9]\+ monitor#QEMU X.Y.Z monitor#' \
-         -e $'s#\r##' # QEMU monitor uses \r\n line endings
- }
 diff --git a/util/message.c b/util/message.c
-index cb3ffd6700..5201ffc569 100644
+index 5201ffc569..6d3580b7be 100644
 --- a/util/message.c
 +++ b/util/message.c
-@@ -44,15 +44,28 @@ char *qmessage_context(int flags)
-         pgnamestr = g_get_prgname();
+@@ -48,11 +48,12 @@ char *qmessage_context(int flags)
+         int thid = qemu_get_thread_id();
+         const char *thname = qemu_thread_get_name();
+ 
+-        return g_strdup_printf("%s%s%s%s%s(%d:%s): ",
++        return g_strdup_printf("%s%s%s%s%s%s(%d:%s): ",
+                                timestr ? timestr : "",
+                                timestr ? " " : "",
++                               wknamestr ? "[" : "",
+                                wknamestr ? wknamestr : "",
+-                               wknamestr ? " " : "",
++                               wknamestr ? "] " : "",
+                                pgnamestr ? pgnamestr : "",
+                                thid, thname);
+     } else {
+@@ -60,11 +61,12 @@ char *qmessage_context(int flags)
+             return NULL;
+         }
+ 
+-        return g_strdup_printf("%s%s%s%s%s%s",
++        return g_strdup_printf("%s%s%s%s%s%s%s",
+                                timestr ? timestr : "",
+                                timestr ? " " : "",
++                               wknamestr ? "[" : "",
+                                wknamestr ? wknamestr : "",
+-                               wknamestr ? " " : "",
++                               wknamestr ? "] " : "",
+                                pgnamestr ? pgnamestr : "",
+                                pgnamestr ? ": " : "");
      }
- 
--    if (!timestr && !wknamestr && !pgnamestr) {
--        return NULL;
--    }
-+    if (message_format & QMESSAGE_FORMAT_THREAD_INFO) {
-+        int thid = qemu_get_thread_id();
-+        const char *thname = qemu_thread_get_name();
- 
--    return g_strdup_printf("%s%s%s%s%s%s",
--                           timestr ? timestr : "",
--                           timestr ? " " : "",
--                           wknamestr ? wknamestr : "",
--                           wknamestr ? " " : "",
--                           pgnamestr ? pgnamestr : "",
--                           pgnamestr ? ": " : "");
-+        return g_strdup_printf("%s%s%s%s%s(%d:%s): ",
-+                               timestr ? timestr : "",
-+                               timestr ? " " : "",
-+                               wknamestr ? wknamestr : "",
-+                               wknamestr ? " " : "",
-+                               pgnamestr ? pgnamestr : "",
-+                               thid, thname);
-+    } else {
-+        if (!timestr && !wknamestr && !pgnamestr) {
-+            return NULL;
-+        }
-+
-+        return g_strdup_printf("%s%s%s%s%s%s",
-+                               timestr ? timestr : "",
-+                               timestr ? " " : "",
-+                               wknamestr ? wknamestr : "",
-+                               wknamestr ? " " : "",
-+                               pgnamestr ? pgnamestr : "",
-+                               pgnamestr ? ": " : "");
-+    }
- }
 -- 
 2.50.1
 
