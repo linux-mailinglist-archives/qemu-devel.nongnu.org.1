@@ -2,142 +2,153 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67DB5B3CBEE
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:26:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36467B3CC30
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:44:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNBw-0007fU-I0; Sat, 30 Aug 2025 11:08:32 -0400
+	id 1usND6-0000iV-5H; Sat, 30 Aug 2025 11:09:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uruqP-00020N-IX
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:52:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1urusS-0002Gh-DD
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:54:34 -0400
+Received: from mail-dm6nam11on2062e.outbound.protection.outlook.com
+ ([2a01:111:f403:2415::62e]
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uruqM-0002QT-Tm
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:52:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756457540;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=/uzEyrp8K0TacJb3YSFM+4SzIIYw46pc5V7foBNNsV0=;
- b=gO/bT84XKf3Aulos4m8Tb947fFF3A0M8rxhe1ITNXXwJBIhdDJJqC7nIM6wXrmZkEJlwOU
- Jt7bzvI4vrLm/VltzhbyTjbSXJfyqQsnwC4aexXV1xy1HhdWKUbyyUM7/ew/zqEhCnO1kL
- KcvHSdi9OR7RX542Teu1XLMmB6/BqY4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-C-To_Qs3PZ6S9HhZBAr6NA-1; Fri, 29 Aug 2025 04:52:16 -0400
-X-MC-Unique: C-To_Qs3PZ6S9HhZBAr6NA-1
-X-Mimecast-MFC-AGG-ID: C-To_Qs3PZ6S9HhZBAr6NA_1756457536
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-45a1b05b15eso11896095e9.1
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 01:52:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756457535; x=1757062335;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/uzEyrp8K0TacJb3YSFM+4SzIIYw46pc5V7foBNNsV0=;
- b=XeTEBWYq+2CjU6idjbEeCU/Wpoj8Jb8+EyTahr1dAZUiIcdNZvIbbhNpHw7Vd0+YEn
- Gc3Bn3WrliHLNY39erywBx4xaeUhD+f5nrCz7lkQfblQJmKogm2iVE6t2SZdZBaCMFaA
- 9ETPTNwy2RCbYlbq1/l68kC/mUuQ9oAHBuO/hO4cCBRKPyfn10zSuSFhiqGUpRG+wldM
- 1/QhtoI8Al+q+Xi773e7l5UUCDsmAs6jeGJ+PVfo1xhJvdQrQRdjDZHdBic82VUsn5bT
- tr4QHsIqRW4Bs1OJEXrJRUDw+tlwYvwhwUa17RJcQhORSsLX44J2K84nZgnogNwV6erB
- cAug==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV4R+UagYhBNt7WjPYWFzBOcImtmZ+xYPOzw+23AKt3es9Fx12wxXoRGQT1F+EdoLD2JriIUmfL27mu@nongnu.org
-X-Gm-Message-State: AOJu0YzK34kre7sxo5EFbqxlgeJZeb74/gCCm508q0yilQdEPQTqQVIb
- Vj6byjAFNKB9qQUaig1JTolLpOCChRMxGT7Mo34gLnXaHb4RKgGVk/pESV0N5QpCf154V1bFlez
- 9jv/eRQWUTG92AEsTA+TNHDdEpVewmvBuBwkHUja+Q8wgxU+JYJ6w0jRr
-X-Gm-Gg: ASbGncvowMIxdsG4aSSMjNaPqyz/tNuCtaE1xsfZ23EjvvhqScJ3v1UeoO9MFjoDJvu
- wu77vUuhPSCSvBxvbTqZzNOq9OCxFnOl6qPUOf1Dpg/iTlL7qZuAlYeGj1cgwRH9hIIIw49bWh0
- MwN1+NNADeLODOg348lN22ZV5yKKDtmqTnCfOzh5O+mauCK7kJsdAkgYpRxTxxeDw9XKHVtb7wx
- Bh9IC5bJi/Hfv6Ei3Ok8F+YLxxIXsmCXeRqX5Mhs4RA6TcWL7ktKjHMfB378x29W010MfGHCV7z
- 7Qx16GgtonnKKWvGX6TbiaBcGW9/YNpPkCjhwh3FmpYrupLrzvDVqRZNHUwuIT+H4ZWN
-X-Received: by 2002:a05:600c:1c25:b0:45b:7608:3ca1 with SMTP id
- 5b1f17b1804b1-45b76212044mr55310775e9.23.1756457535682; 
- Fri, 29 Aug 2025 01:52:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGErU3Hfwc/cDsPvrsH+zyxQbz/d3of1/vz/qZVy9QNTKbn9DUOji1PZFFvBXiDVn38l4aTOg==
-X-Received: by 2002:a05:600c:1c25:b0:45b:7608:3ca1 with SMTP id
- 5b1f17b1804b1-45b76212044mr55310565e9.23.1756457535271; 
- Fri, 29 Aug 2025 01:52:15 -0700 (PDT)
-Received: from [192.168.0.6] (ip-109-42-48-43.web.vodafone.de. [109.42.48.43])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf276ccc13sm2482515f8f.22.2025.08.29.01.52.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Aug 2025 01:52:14 -0700 (PDT)
-Message-ID: <d0195bfe-2a17-4020-8176-8f2219f1951b@redhat.com>
-Date: Fri, 29 Aug 2025 10:52:13 +0200
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1urusL-0002bH-Ry
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:54:30 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jjDC5VBBYY9uhlc7TVUaoDVnVk/9N2c9y/MXvRM0bEEdNFivaEP5uoQyjohroKzDgnNK/EpgSOCOrXdX0GpItPBppBXDfS9NjeqC63EzxHStpn29n6Z64LxZQWCeiCDniXbXDZb6kkOp1KdOim7bcNC/Qz8qJm/aBp4PFzuoUvLle3YVvg1AmCOLyDoo8uucV2ILmACIlrvHu3NC7I0VrD7kOnq+t22UPGvwXI4E6pk0tJLgBlPC0GFaoXDCo1xqlbNF6C4Ej9uw8XVzoTfQ6G50jI8VwBlYhUR7OYfw9QTj0B3NeJ85GBlYaHxVbOiLvH9XduHKiRH1f8MzbzuJ2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DAev/+24X+uGf7WFS9D33rVew8lK8iLv1eksPb2h9ew=;
+ b=uGYknwTPWM/OZd/a4gbHtJg4TG7naGShFELB3WOrA1mCNYB7yMCJMiHG8Atq+ZFJWGQ+Y0P8AdveMEbC0YTulP/HzmDHf827xS3exDoq9MVHj1z1YYH20j5vv7xZ09eDYLxWBkM+L5qU2PIsQByG/McIeSgCpaOuWM6PnAoLiYhgHPv09khIfbnHFLOq4BhcqLVKGgP1f7Vcf3wfVyfAPAsvLifdwcCKwp3dOixqKh4BnKulhDc/wSjj8EcC94SfYVkroQJgQiXa4cOPoboYL7zRk8d22X3piHathlsz/FgQz+3PLQnjvOSGgIXjXulVJ7YjNecMJjU2+v3iCNBGaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DAev/+24X+uGf7WFS9D33rVew8lK8iLv1eksPb2h9ew=;
+ b=uPpRNfUnwTVoQPrnyaC9xiJbE/A4SunegkTwLkw7biP95tPCP1FH5LvM5cX/h1gUMYOPFFDncbgvlMMyPdFcZyV9WEjh0kHH3D/T9NPvEqUq7vwFfnGsD+lttghCEKXgaGSLVAdKGREAfr3llxSaKHdcoARbWFrVc2rGZO3sCgqYnseq506oTXMhG2Ju8Zzbybho73RDChH13/y4sMM1iQ9PNb1fhWTowFVnH/xmrgQCJAsS2iAsWURtDpSFea+31u9vAqawUkJfYbpNwvrPGbKqs0FQcaWGt7/0SujhLtx3XiKTTzPwaIQkkW0B7jR0NKgAe3UMTRY6gCKVFhVw/Q==
+Received: from CH2PR17CA0022.namprd17.prod.outlook.com (2603:10b6:610:53::32)
+ by DS0PR12MB7582.namprd12.prod.outlook.com (2603:10b6:8:13c::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.25; Fri, 29 Aug
+ 2025 08:54:13 +0000
+Received: from CH3PEPF0000000E.namprd04.prod.outlook.com
+ (2603:10b6:610:53:cafe::4a) by CH2PR17CA0022.outlook.office365.com
+ (2603:10b6:610:53::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.22 via Frontend Transport; Fri,
+ 29 Aug 2025 08:54:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CH3PEPF0000000E.mail.protection.outlook.com (10.167.244.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9073.11 via Frontend Transport; Fri, 29 Aug 2025 08:54:13 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 29 Aug
+ 2025 01:54:03 -0700
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 29 Aug
+ 2025 01:54:02 -0700
+Received: from Asurada-Nvidia (10.127.8.14) by mail.nvidia.com (10.129.68.9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Fri, 29 Aug 2025 01:54:01 -0700
+Date: Fri, 29 Aug 2025 01:54:00 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Yi Liu <yi.l.liu@intel.com>
+CC: Zhenzhong Duan <zhenzhong.duan@intel.com>, <qemu-devel@nongnu.org>,
+ <alex.williamson@redhat.com>, <clg@redhat.com>, <eric.auger@redhat.com>,
+ <mst@redhat.com>, <jasowang@redhat.com>, <peterx@redhat.com>,
+ <ddutile@redhat.com>, <jgg@nvidia.com>, <joao.m.martins@oracle.com>,
+ <clement.mathieu--drif@eviden.com>, <kevin.tian@intel.com>,
+ <chao.p.peng@intel.com>
+Subject: Re: [PATCH v5 20/21] Workaround for ERRATA_772415_SPR17
+Message-ID: <aLFqqHGNEkKknRoY@Asurada-Nvidia>
+References: <20250822064101.123526-1-zhenzhong.duan@intel.com>
+ <20250822064101.123526-21-zhenzhong.duan@intel.com>
+ <aKkDXiSwWGgio0dM@Asurada-Nvidia>
+ <fba0b1ce-13de-4c80-9f44-4adc07cc6934@intel.com>
+ <aK8fsD+c0LAXzB3y@Asurada-Nvidia>
+ <6dc3e334-7f22-4f8f-a801-b9ce07b0bc4f@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] tests/functional: fix formatting of exception args
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20250829083156.2570137-1-berrange@redhat.com>
- <20250829083156.2570137-3-berrange@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250829083156.2570137-3-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <6dc3e334-7f22-4f8f-a801-b9ce07b0bc4f@intel.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF0000000E:EE_|DS0PR12MB7582:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed3390eb-b6c3-4e75-ba91-08dde6d9a0c4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|82310400026|36860700013|7416014|376014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?pRtTfYJxelQdglpBE3esu6AN3gCa2zXmiUzytnbHyNsdRRMVGbFz49L/e2mo?=
+ =?us-ascii?Q?w8HkvDn/cVNOcrmJXGnp+wbBhSbcJN6qe6kQ7N/s29AcstP3iR2c8cPaRI3+?=
+ =?us-ascii?Q?Sna+UntuqIZaVLLRLg7owUK+eYUrLpkpPES7U+4LGVdAZixvy4etMIOe2rIi?=
+ =?us-ascii?Q?n9c0xeho2IMENUotcz6wKVsmei1vC+nDSwFz5Ux9SoOZVhB/75jRipxl5toQ?=
+ =?us-ascii?Q?9FpZjOkD0Yv0oISNrxaYXZy59xw7IOjK739n4kcseRQmf7n3j+uXZXNbDTXP?=
+ =?us-ascii?Q?d/ixvyYKynp2ZruQgVWgpihwdCR2p06TkBc/5i6gNC5fKNukvUt6k0oHNudU?=
+ =?us-ascii?Q?mZdVmZ8qIvy4IZKzMtsf8QKhmBwD7fW+fysKyVlsxhrfj3WyZdrwahyy9ONT?=
+ =?us-ascii?Q?Ah/A36hsEm//GoNvYJsV77wo56vZLqBHbfVsOWjD8dBcNr7H2rqE9xzojGyN?=
+ =?us-ascii?Q?wQoYJNlRBVbc8PVZQaPN0v1snvCxYkqO3s3xNTHBEnIuJdzlUPoB2p7IDT9W?=
+ =?us-ascii?Q?mgVxYv0W8Je3mr75Eu1FrKI2dUeOzngtqFsT9Nl3gsBATw8Zp6sAIqzcFrKa?=
+ =?us-ascii?Q?GaVHlvOtDkpfpp+SIRaoFHn06OiUaY03HOHefpdvZj6SpD6xMhG73UGXjetx?=
+ =?us-ascii?Q?li7NfnBqumoSolbFDm3C3VRTS3f6W7TgiTMjdTX+pGeEnPgpE/Xi2FOz15/h?=
+ =?us-ascii?Q?IzxlX1OzZadd2gKsl6eJIaocvtZ+0jnOKgIfjJIMAXS0DF217bbcByXFUQeI?=
+ =?us-ascii?Q?AH1xq7Xc+HOaf/C5M/a3JD19TmIigWjpcisDMxamevEZWcviRTrBwqy9AkF8?=
+ =?us-ascii?Q?iFan6SmO3Jk3CoKS3ijo1IJ75/ysLa4LTFhYnaPf8VaXYrHNzD8Ldka/Q8m7?=
+ =?us-ascii?Q?uIo503iIrwo9t1IKoH/pjNhy8qLm537L5u2xWyDOrRhj6ehUDdBXsgjnD+Vj?=
+ =?us-ascii?Q?zNLbu7e/yn6TYktjNc5TKk2ctN7IuxqX2kyXhnSXciZeLJ7B9zHJSOznb+nI?=
+ =?us-ascii?Q?Ksk9/XM0X/Xq/DEQc+xwKWQUjSyHcFBX31sE/ExLHECgIvjxcL4vVShPpLgV?=
+ =?us-ascii?Q?CPmOWn2Ye6a1Tx0pBwV7rK/Pm6uLWGi5tjGWwum/XJHB1C3OUPqk9sbA7vxv?=
+ =?us-ascii?Q?/q5cx7uUQYxKdEIjgcrLdeubHG3WnaimGZ3CK089mtqq9c2cIWKr0V6iDQo+?=
+ =?us-ascii?Q?E9Zgw9F16jp6oWCm3WIChIzIyTjvtoGy0IY1bVx/iwYM1xBoAH6rvqouivIn?=
+ =?us-ascii?Q?h/qfVkUGovPitEZnzm4FyGByLy4jIYhICgA8yyc6ftQTKZDZQicadmAC/pzQ?=
+ =?us-ascii?Q?bufDQXMzNuagAkaG+UlvA4H2BTekWRULuslFOQWM+L1hwzvVa7Zu82b2A4/G?=
+ =?us-ascii?Q?0DyozubHIbMwh85N/r9VzxFSFthtt5ViCQa3uvIPXAYkOAC5ne+RIpSjeWON?=
+ =?us-ascii?Q?dOOTpoigonlAmtTMDbITDa6GSf/BIZTtJ9IKnC42dEQagaE45Kc5umfmoSc4?=
+ =?us-ascii?Q?dBwp70fO29FEIbAx2tPZbTwY6sKAUPB55RJp?=
+X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
+ SFS:(13230040)(1800799024)(82310400026)(36860700013)(7416014)(376014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2025 08:54:13.4782 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed3390eb-b6c3-4e75-ba91-08dde6d9a0c4
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH3PEPF0000000E.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7582
+Received-SPF: permerror client-ip=2a01:111:f403:2415::62e;
+ envelope-from=nicolinc@nvidia.com;
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FORGED_SPF_HELO=1, SPF_HELO_PASS=-0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,39 +164,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/08/2025 10.31, Daniel P. Berrangé wrote:
-> On HTTP 404 errors, we failed to include the URL in the exception
-> that was raised, while for the catch-all exception we failed to
-> include the URL and forgot the placeholder for the exception
-> details too.
+On Fri, Aug 29, 2025 at 04:16:41PM +0800, Yi Liu wrote:
+> On 2025/8/27 23:09, Nicolin Chen wrote:
+> > On Wed, Aug 27, 2025 at 07:56:38PM +0800, Yi Liu wrote:
+> > > On 2025/8/23 07:55, Nicolin Chen wrote:
+> > We could start with a function that loads the HostIOMMUDeviceCaps (or
+> > just VendorCaps) dealing with vendor types and outputs generic ones:
+> > 
+> >          host_iommu_flags = host_iommu_decode_vendor_caps(&vendor_caps);
+> > 
+> >          if (hwpt_flags & IOMMU_HWPT_ALLOC_NEST_PARENT &&
+> >              host_iommu_flags & HOST_IOMMU_FLAG_BYPASS_RO) {
+> >               container->bcontainer.bypass_ro = true;
+> >          }
+> > 
+> > Over time, it can even grow into a separate file, if there are more
+> > vendor specific requirement.
 > 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   tests/functional/qemu_test/asset.py | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-> index b5a6136d36..ae2bec3ea5 100644
-> --- a/tests/functional/qemu_test/asset.py
-> +++ b/tests/functional/qemu_test/asset.py
-> @@ -168,12 +168,13 @@ def fetch(self):
->                   # indicate a broken test rather than a transient
->                   # server or networking problem
->                   if e.code == 404:
-> -                    raise AssetError(self, "Unable to download: "
-> -                                     "HTTP error %d" % e.code)
-> +                    raise AssetError(self, "Unable to download %s: "
-> +                                     "HTTP error %d" % (self.url, e.code))
->                   continue
->               except Exception as e:
->                   tmp_cache_file.unlink()
-> -                raise AssetError(self, "Unable to download: " % e)
-> +                raise AssetError(self, "Unable to download %s: %s" % (
-> +                    self.url, e))
->   
->           if not os.path.exists(tmp_cache_file):
->               raise AssetError(self, "Download retries exceeded", transient=True)
+> you also have valid point. I've also considered to let vIOMMU to invoke
+> the vfio_listener_register(). This might need to change the VFIO logic a
+> lot. Conceptually, it does not stand very well... And it is too heavy
+> for WA an errata...
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+I think it's fine to use a flag. Zhenzhong's bypass_ro patch looks
+quite clean to me.
 
+> So may we just start with a function as you proposed?
+
+Yea.
+
+I imagined that kind of decoding function in the backend/iommufd.c
+or somewhere closer to HostIOMMU structure/function in this file.
+
+And I expected that the WANTS_NESTING_PARENT flag would need some
+validation from the vendor specific hw info too, by ensuring IOMMU
+HW does support nesting. Then we could reject the allocation of a
+nesting parent at an earlier stage.
+
+Now, we are doing in a way of pre-allocating a nesting parent HWPT
+(so long as vIOMMU wants) and letting the set_iommu_device callback
+do the validation of the HW info. I think that's fine as well..
+
+Yet one way or another, we do put iommu_hw_info_vtd (HW IOMMU caps)
+in the vIOMMU code and validate that in the vIOMMU code right? So,
+argubly the whole separation between vIOMMU and HW IOMMU things is
+not that perfectly implemented? :-/
+
+Thanks
+Nic
 
