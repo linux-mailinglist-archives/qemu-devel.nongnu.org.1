@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE8BB3CDBF
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 202AEB3CCED
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:25:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNIW-0001P1-BE; Sat, 30 Aug 2025 11:15:24 -0400
+	id 1usNHr-00013D-Tz; Sat, 30 Aug 2025 11:14:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryj6-0001Kw-9O
+ id 1uryjC-0001Lg-2q
  for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:01:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryj1-0008VN-Gp
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:01:05 -0400
+ id 1uryj6-000058-CU
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:01:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756472462;
+ s=mimecast20190719; t=1756472467;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EfuI+eYyHqGdGwnOJuZfiUIJtJVwLpHcMFmDHYw07EI=;
- b=Io0cDZWsN5zH2eWXBMRJkQxkMk0mZSGxSPzolm8k9SZyYUGPvpzQr6pLfouCfvkjZQxmKj
- ivibW0qU/bzzeoPjC+cAvg/Ou/PH871tPm34/PhpMYKs5OPd1YNwEnCDgbOGiQWobg3ciN
- +LM48PKa3DAf5XoCD39ic02VCh7p38A=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wib+D8WRzWnAj9UyAq3qZPgY0vk6Olt8tQ4PW4MKmdU=;
+ b=JywMhLbJb84Ulz1WUb2gQEnGFdGZ7QHVuQPjqk2biWPJkXdIX8C14lUBc4CDHk38ZTiocV
+ 8ZOkUIkNJcNB/dIghKovaEDhO8CH1Tj0JHbe3pfa9KAB1IlKcw74/bb9NGBylypDi72dty
+ pKw608rXSSC2XVoYUyirGLO36jgyJqY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-117-zx8ndt44NGaDTHIVEQyq8A-1; Fri, 29 Aug 2025 09:01:00 -0400
-X-MC-Unique: zx8ndt44NGaDTHIVEQyq8A-1
-X-Mimecast-MFC-AGG-ID: zx8ndt44NGaDTHIVEQyq8A_1756472460
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3cf12498799so589173f8f.2
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 06:01:00 -0700 (PDT)
+ us-mta-59-cvI3qvKbN_WrtczRO3PBWQ-1; Fri, 29 Aug 2025 09:01:05 -0400
+X-MC-Unique: cvI3qvKbN_WrtczRO3PBWQ-1
+X-Mimecast-MFC-AGG-ID: cvI3qvKbN_WrtczRO3PBWQ_1756472464
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-45a1b0b46bbso11364025e9.2
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 06:01:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756472459; x=1757077259;
+ d=1e100.net; s=20230601; t=1756472463; x=1757077263;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EfuI+eYyHqGdGwnOJuZfiUIJtJVwLpHcMFmDHYw07EI=;
- b=CKrJUMTwYFp0VvqoZs/WnqlsCUx+3/Xc8Y6HXwHTKKcl1Nxqctfyo2dRy0ocdUBzxI
- Mq1q71i0536ZuMR3lUe4lM2vaC95Uti5026a/2OIGgZ2CU9MbhwY8PtG5OvBfXiwd+yH
- 9KJCDDLSlYxxBvo75rSUtCwaEDhcUY0g6JobCt0CZXzOD706oJBoyDlvxQ5QeKEn0irF
- 5QTyn00/h2R1OPcDV/c1+iYS/jsiM9SRcuhJ4cwxYJ4M8ehCJZcJT6i6Ocs2hjRTzvz3
- MJ/IHA5R6UMJGVKfln0Vv2ZJDDga/9TzIpG5rJFidlzOpR5ZcUt3Vm+HPaGOsbSjFGQn
- nQXw==
-X-Gm-Message-State: AOJu0YyA9qEz6mq/yYBWK/8sht++yCyN0fCTwdm0dOvSB+y++Mgxq1No
- rFfhrqRCO8K+dMnERnPBUNjP3yJW/oTQzLkK6B8dK04mOMzkUl8cntJxJZ1bm1fz5BloIxEN5Yp
- HdIT33RS1L7oTA4ulQYRFzPNUuSi9segpp/C795JwkLWog14DsAIL5IyxagE3MYnyVdIodqF0rc
- wcPfKRzHUXuvOPwnxkSNf5ZoHN2ZJEsf+UEhRjzn27
-X-Gm-Gg: ASbGncvd45igvulNq1CLY7frjaM251KmqLXtoNrwBxmztDQSbAg7GGbniMCUBV0dUyC
- vfwJL0ZqrAurp06A98xKCOThM4QTNu9QvJkDBkutjuqIwI+rRXKLEzB6RhsY6Gy5g5QhEpjf8Pz
- V4U8smYF/xuvLKc2UlCse/fzd3rFzAdAJDFh1L4l3yxO40n2R1Hg7w+SXwtfVRqg/De7+RzJbWL
- ovEH+ttDhVtJHV2I54W6vQTvs+Pe94f8CBE22tD9SN0obXVDhFmkwV9+jDvsjMGdYgmFAe4N5Di
- l00EpPa1ygNDmsgGGP/RusGbWmTM0ehNAU3V25lDXmQg/sjkm7GlP2MUq1yC9hrlwwe9WCycLJV
- U68yjf7K/lqvDObfLvYGZkPPfePjWJBJnW8Fmxq26XlI=
-X-Received: by 2002:a5d:5887:0:b0:3b7:88f5:eaae with SMTP id
- ffacd0b85a97d-3c5dc542ac7mr20825061f8f.39.1756472459171; 
- Fri, 29 Aug 2025 06:00:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSAjb7hyifQXIMNGh5s3fBnPMSLDF3TFTYmDsxKKRWgZuXq0AB1WHRhKxIW+o3MWszv4TWkQ==
-X-Received: by 2002:a5d:5887:0:b0:3b7:88f5:eaae with SMTP id
- ffacd0b85a97d-3c5dc542ac7mr20824998f8f.39.1756472458477; 
- Fri, 29 Aug 2025 06:00:58 -0700 (PDT)
+ bh=wib+D8WRzWnAj9UyAq3qZPgY0vk6Olt8tQ4PW4MKmdU=;
+ b=TVtECzLm0+qHPIT8BPczXmfDg7PJCC23WQIirHeeyMFMJV8Gt85etP/HqCf+OKFWW4
+ TKF5BZrsib5Jfc3A/oKYO5iuA0wd5Yj+tFg89KirNhbTSdosQfpumKrQxnwzZOLozmU+
+ uG0B7kdpMIchS2yvHxjv5BILA6m17ucHnnTnigQoCz1kjazGIUfXB6H06RpCutwBI+HY
+ 7tOWuwyu493+jciDJfVImIt5ux+ezOChgIS1UZyZopnoUicNUewAPuvuu58D8Y9dInYf
+ aLyJm0VTzBfkz88EiHwCrfoxJpSLNQKFrH7+9ZEDCVMSNoMU+e6wIwKrVCkEyCETRGae
+ Ljmw==
+X-Gm-Message-State: AOJu0Yyy5tbcMXBNIl7R3uqmdB8mAMi+aGqde/TsmObFHM6VG+XXP3V/
+ l97aMIZDSg1xMoNAuSMosdg7O/y7ZNhcJKAIANT2ri6aBWIizmN7JkGN/eeHdK5EXB38In1PNy/
+ VGRw7t1LK4Qlr2dWL4qwYgZOJSXwXCE4uEpfdwWltRCcuMe1wjhlu4aLWb9zdNl49xWafOz5plT
+ mBQIlmj4D3TwYmFlt9rH1lgltwRNwunL/0H2xAp6lz
+X-Gm-Gg: ASbGnctj9OsWqYb5brh7SGmlS87+ZyixJ7E2rcpaG7w5eVw1KMndy+OSw833x/7bnHV
+ stVI4juV82G6bUrognsgnz961uXl1eExVOmnCITogvVkGjHbdjzLAI3GBHJDew7JA/NEL1CSb4t
+ bGZLjboS0DO4mRQzJb68RsM7XmwZ5vM4nyiyZslVAKuPU1RCxjuNH07frHpes5jS8eq5YjynajV
+ H8KT59Dtjb0+h4TUqSIvdRNMbPI1dFk26l8fWdxMXAK3V4mdDbb/TQUEYWFIzqkcy01Y9JlIzy/
+ zvTDosxxO9AVfaFiNc0pIzZhb3Ma/nkDWYIoJAyVRAQUNcJUnuYPhXKDL7eKj3KnoV1rNvoCbt1
+ 6jiYSz7+UhOi5rUo0Vr/+uBJouMaQZG42GRkiJeWy3oQ=
+X-Received: by 2002:a05:600c:1d26:b0:45b:7c20:5709 with SMTP id
+ 5b1f17b1804b1-45b7c205c14mr51130295e9.12.1756472462128; 
+ Fri, 29 Aug 2025 06:01:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFzpbmdD6NQq2vTFnKGN/6cnfNrrjKpUuP6QPaxbVk3vlZCOKff2eDDKni4SzcCXYOaw4fUvw==
+X-Received: by 2002:a05:600c:1d26:b0:45b:7c20:5709 with SMTP id
+ 5b1f17b1804b1-45b7c205c14mr51129975e9.12.1756472461632; 
+ Fri, 29 Aug 2025 06:01:01 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3d0a7691340sm2354126f8f.39.2025.08.29.06.00.55
+ 5b1f17b1804b1-45b7e50e30asm39297335e9.24.2025.08.29.06.01.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 06:00:55 -0700 (PDT)
+ Fri, 29 Aug 2025 06:01:00 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Igor Mammedov <imammedo@redhat.com>,
 	Peter Xu <peterx@redhat.com>
-Subject: [PULL 24/28] hpet: switch to fine-grained device locking
-Date: Fri, 29 Aug 2025 14:59:31 +0200
-Message-ID: <20250829125935.1526984-25-pbonzini@redhat.com>
+Subject: [PULL 25/28] hpet: move out main counter read into a separate block
+Date: Fri, 29 Aug 2025 14:59:32 +0200
+Message-ID: <20250829125935.1526984-26-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829125935.1526984-1-pbonzini@redhat.com>
 References: <20250829125935.1526984-1-pbonzini@redhat.com>
@@ -110,64 +110,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Igor Mammedov <imammedo@redhat.com>
 
-as a step towards lock-less HPET counter read,
-use per device locking instead of BQL.
+Follow up patche will switch main counter read to
+lock-less mode. As preparation for that move relevant
+branch into a separate top level block to make followup
+patch cleaner/simplier by reducing contextual noise
+when lock-less read is introduced.
+
+no functional changes.
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/20250814160600.2327672-4-imammedo@redhat.com
+Link: https://lore.kernel.org/r/20250814160600.2327672-5-imammedo@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/timer/hpet.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/timer/hpet.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-index cb48cc151f1..ab5aa59ae4e 100644
+index ab5aa59ae4e..c776afc0f2d 100644
 --- a/hw/timer/hpet.c
 +++ b/hw/timer/hpet.c
-@@ -38,6 +38,7 @@
- #include "hw/timer/i8254.h"
- #include "system/address-spaces.h"
- #include "qom/object.h"
-+#include "qemu/lockable.h"
- #include "trace.h"
- 
- struct hpet_fw_config hpet_fw_cfg = {.count = UINT8_MAX};
-@@ -69,6 +70,7 @@ struct HPETState {
-     SysBusDevice parent_obj;
-     /*< public >*/
- 
-+    QemuMutex lock;
-     MemoryRegion iomem;
-     uint64_t hpet_offset;
-     bool hpet_offset_saved;
-@@ -428,6 +430,7 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
-     trace_hpet_ram_read(addr);
+@@ -431,6 +431,16 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
      addr &= ~4;
  
-+    QEMU_LOCK_GUARD(&s->lock);
+     QEMU_LOCK_GUARD(&s->lock);
++    if (addr == HPET_COUNTER) {
++        if (hpet_enabled(s)) {
++            cur_tick = hpet_get_ticks(s);
++        } else {
++            cur_tick = s->hpet_counter;
++        }
++        trace_hpet_ram_read_reading_counter(addr & 4, cur_tick);
++        return cur_tick >> shift;
++    }
++
      /*address range of all global regs*/
      if (addr <= 0xff) {
          switch (addr) {
-@@ -482,6 +485,7 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
-     int len = MIN(size * 8, 64 - shift);
-     uint64_t old_val, new_val, cleared;
- 
-+    QEMU_LOCK_GUARD(&s->lock);
-     trace_hpet_ram_write(addr, value);
-     addr &= ~4;
- 
-@@ -679,8 +683,10 @@ static void hpet_init(Object *obj)
-     SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-     HPETState *s = HPET(obj);
- 
-+    qemu_mutex_init(&s->lock);
-     /* HPET Area */
-     memory_region_init_io(&s->iomem, obj, &hpet_ram_ops, s, "hpet", HPET_LEN);
-+    memory_region_enable_lockless_io(&s->iomem);
-     sysbus_init_mmio(sbd, &s->iomem);
- }
- 
+@@ -438,14 +448,6 @@ static uint64_t hpet_ram_read(void *opaque, hwaddr addr,
+             return s->capability >> shift;
+         case HPET_CFG:
+             return s->config >> shift;
+-        case HPET_COUNTER:
+-            if (hpet_enabled(s)) {
+-                cur_tick = hpet_get_ticks(s);
+-            } else {
+-                cur_tick = s->hpet_counter;
+-            }
+-            trace_hpet_ram_read_reading_counter(addr & 4, cur_tick);
+-            return cur_tick >> shift;
+         case HPET_STATUS:
+             return s->isr >> shift;
+         default:
 -- 
 2.51.0
 
