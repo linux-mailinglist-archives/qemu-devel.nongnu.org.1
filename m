@@ -2,92 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E05B3CC20
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 068A5B3CCF4
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:26:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNSq-0004tq-HC; Sat, 30 Aug 2025 11:26:00 -0400
+	id 1usNYF-0004q7-1L; Sat, 30 Aug 2025 11:31:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1us26r-0006HC-CG
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 12:37:53 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1us26p-0006fL-GJ
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 12:37:53 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-45b7d485204so14894185e9.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 09:37:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756485468; x=1757090268; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=huJdIqvmZ+zaJuBuQQp6mFkNWQfYfBe7ou7wyl7+Fmk=;
- b=W7bYHK+stzVK0GKy9CNmXmUYjpm7bQKY759aPbonrEJKUexG/hB67BFIJhLpyN2HEZ
- 6IYbAyLgVGQJKsv8HnOV28elbm5FyH70j7Yw0WqLpyE4Gsi1OD12uabGSEtORPeN2qeE
- IVUq6kqtkAmz2bd70vv0IKxfb5KOSawQQrr7trohMtK3J7tM5X270NfzHTQXB0icorRo
- tDKG/x6jq++PDTaGdAmAxOwIH2fBJExCTMqMpvTavCvfud8sa70gpKJfltXn2g2AcAX5
- h5FilVwikRc7bSwpgdpVYaUpPkXF/72A02zzgANdlcRM2G/o+ObuSsw9FnEQNwuw/Z+n
- /LWA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1us2jG-0000TI-RC
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 13:17:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1us2jD-0000s0-Qa
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 13:17:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756487849;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=NyoG+jTPiaHvw5W43Q/uXfIw3nFf8bdzhU2ft+D8mqY=;
+ b=afsj4APpl139o+pePcW4Lp2r78+5uOtFUXkWRU0ZeA+Wz4glK6H1RvYOx65J0N2i3wxrfF
+ JCdNNxqgrrr2CDg83AWwbkcEt+OoUsX2diqUF5j8gTr9h9cJ0iBfeMbJe1zyeuiJBHLzEz
+ B5u4vfmz+K5KPaQQd3pvji0IrlO43zY=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-50-9dnvgvd0Ma61K0DXtVQiLw-1; Fri, 29 Aug 2025 13:17:28 -0400
+X-MC-Unique: 9dnvgvd0Ma61K0DXtVQiLw-1
+X-Mimecast-MFC-AGG-ID: 9dnvgvd0Ma61K0DXtVQiLw_1756487847
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-70deedd1deaso43116526d6.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 10:17:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756485468; x=1757090268;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=huJdIqvmZ+zaJuBuQQp6mFkNWQfYfBe7ou7wyl7+Fmk=;
- b=Agug7sw+IYrzZ0JXGBA0yjfzxOnt4PyQc+FRhFXwx42j+xiUNjL/+yq7GlUNBUpxgl
- QhlXW2rvLTSm1bAlBMOffCmPQW/kbDfmKDrKZLiow/4ct9f85XgNv2C6xK8DrfPXI3UZ
- evJokxGGCJGipFPI1778utcOgMxax2o0H4d48mHTqc83ppn5jAECLjyiAaC1/REf80Uk
- ZowMDlifIdm0LkmuEuSbEm4zxDi7hQTcVfg6SJDMfwDBcTTXhfm/9QGCAX+yC7cL0O6T
- mJFbavFzfgfa1jDqNbFYOaMOM3z9q24ymqw926jZLESuM06ZUHFzaETPAoPX3JFrg0Wp
- bqcg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXnqiHGtF4gPk4pd0Gv+vaaROa8P2V5zTudww4am+fdOJdAzVO+++IUf33I2drE/9V6QFHgBi2ZCyrX@nongnu.org
-X-Gm-Message-State: AOJu0YwsTT6oA6+BhNTRiU6chAyHxt1Dfy7TNVwTONCfe+tgVQPi8PpQ
- i4pxBHccr/PiTlxnzxpaKbsxh2AjTnx3/5wXCwOH/4X3+uNA//goX9mPJtEFN5vYjas=
-X-Gm-Gg: ASbGncvx7I2rgGsA1338L1K1//ADlk9ysKq99O7ohsHMScmKCiL3p/S/WA4yURlp1CX
- f6T5pkRx0rYFd3jka/M8HPq0ZYRefOD0ihZ0OU7J9B/OKQC9YZAHk6nktcDtfoE8O87kpHMbYkF
- LR/1s1CJqJhVH4uJKK9zT3QOvChwG7j2KjkJVTJj8nl5okUkFu58xjyLmlCp03kYEGELaUBcWsO
- faC2QJtnz8CdpluChMZya0QGjru84p9CSwoNyLQjpTDkjRpprPuYfnoNGdDzKBW76TnT9+HI96L
- iQgRnACBbxwsLAHjxu4fBBOUYMAyh7bWC6Q4uW/A5OBmeg9YOON7j11fdh0DKAEiYOyrXTkQGb5
- V7QSPTdBh0ZortRagzOjtmizq+DCKyk/DcB8YNoZooxM4XhEOaf3byLUB+N5rvMI9aMda1I7ohZ
- ZToyHFoEY2Op4=
-X-Google-Smtp-Source: AGHT+IGx4lPv5fUVgnNxOiziaaiKvWCf956a+8HuCHiCxa7LPGuUslVnlQhGSHWisHWq1+pqz+1LIg==
-X-Received: by 2002:a05:600c:4f0e:b0:45b:7f16:468a with SMTP id
- 5b1f17b1804b1-45b7f16485dmr27834525e9.37.1756485468589; 
- Fri, 29 Aug 2025 09:37:48 -0700 (PDT)
-Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b7e89920dsm51510625e9.16.2025.08.29.09.37.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Aug 2025 09:37:47 -0700 (PDT)
-Message-ID: <0c90ebd6-e112-478e-8604-ce5d1a1f29d5@linaro.org>
-Date: Fri, 29 Aug 2025 18:37:46 +0200
+ d=1e100.net; s=20230601; t=1756487847; x=1757092647;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NyoG+jTPiaHvw5W43Q/uXfIw3nFf8bdzhU2ft+D8mqY=;
+ b=tLFcoTwlPAjyYV0Cz1KIUiOg/k824g0x9tAPENIjgRyV6mfwHdCEJr7tBdUoOA7nVI
+ lnN9jy/vanwcE6vW3dFo9NO6cLjItE9eAAT8fqWwh8oo2ZEBaa16PY9Enh+zxMIOfCjK
+ RphesqBnpW0mbeOCrgTnvRXrCF4JuRUWcMwEMePIcaCIByR05FxO4kDGhy2b9PR4Xnb4
+ kjGrUT4vMSuZta8MrJmBuNbCyY0Oj93MRfrGfJdyFc/w172hbtYcDAU1ijnb0G53uiyq
+ UNmcM6TDQsXwRsQB+S+qmH3WUFyFFOxJBYB17sFLiCIQK8jVshY73RDzerzT1A3ilS1d
+ 59/g==
+X-Gm-Message-State: AOJu0YyTpJ4RE+18cfYcK6uLyplQjm/tnyfvmF0JEuLXXDdT4cilP1z9
+ Vb6mKoToiU4T7rxVa7fwKBISxE/M+HXA4SZ4GAhjs3IZoRPZZkBzFTDB6QoO6NsbVFx4qMEehaA
+ 95d+k2vihv08P8X8QBy2VmMf+R46R0XihWTAD2Nmg/zjyUfI6Ya+qJwDI
+X-Gm-Gg: ASbGnctNT8s1/upnwSLDveti5zz/wfI3O1O6zrQd9lplADeybiAefo26nemdYWsdY8X
+ 1z2IS+FrJnTOwrLB+v2GlHJUaJ5dspMGDwS2+UL1oH0K18rmS+8Y1JPZ/jyL5JTptvGxV2nxY8N
+ zNB5Va2NBDwXJrShic4d1l2MOnWMXDFSfctUFwAWM967XdBhv40Jf8oLhF3gDLxtV8LjtEu28WV
+ ebK8L6h4GJvgF8vTEkuYGkz1sQTHS4CkkrrrVLaij9c3D+DGY2zxHkWoEABmL0GeHHf9uM1JbY4
+ 4264f7W5zRoldINgMB6Xwolls7FyoI3n
+X-Received: by 2002:a05:6214:ac4:b0:70f:a04f:232f with SMTP id
+ 6a1803df08f44-70fa0501905mr30981376d6.30.1756487847270; 
+ Fri, 29 Aug 2025 10:17:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE0isj4/pPMsT6kKTzXfXM6IHttoNCQXShvDZsX2TlebzejybwgMpPrqWj5S26kCpEInm4qBw==
+X-Received: by 2002:a05:6214:ac4:b0:70f:a04f:232f with SMTP id
+ 6a1803df08f44-70fa0501905mr30981006d6.30.1756487846792; 
+ Fri, 29 Aug 2025 10:17:26 -0700 (PDT)
+Received: from x1.local ([174.89.135.121]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-70e62528a9asm19362806d6.62.2025.08.29.10.17.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 29 Aug 2025 10:17:26 -0700 (PDT)
+Date: Fri, 29 Aug 2025 13:17:14 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Kevin Wolf <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Yury Kotov <yury-kotov@yandex-team.ru>, Prasad Pandit <ppandit@redhat.com>,
+ Zhang Chen <zhangckid@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>,
+ Juraj Marcin <jmarcin@redhat.com>
+Subject: Re: [PATCH RFC 5/9] migration: Thread-ify precopy vmstate load process
+Message-ID: <aLHgmt7vDbmWCS24@x1.local>
+References: <20250827205949.364606-1-peterx@redhat.com>
+ <20250827205949.364606-6-peterx@redhat.com>
+ <a7f72cc7-d5ec-4a9e-a1a1-d77f376c5ce4@yandex-team.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] hw: fix some leaks in xlnx devices
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Francisco Iglesias <francisco.iglesias@amd.com>
-References: <20250826174956.3010274-1-peter.maydell@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250826174956.3010274-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <a7f72cc7-d5ec-4a9e-a1a1-d77f376c5ce4@yandex-team.ru>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,11 +110,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/8/25 19:49, Peter Maydell wrote:
+On Fri, Aug 29, 2025 at 11:29:59AM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> > For that, qemu_loadvm_state() and qemu_loadvm_state_main() functions need
+> > to now take a "bql_held" parameter saying whether bql is held.  We could
+> > use things like BQL_LOCK_GUARD(), but this patch goes with explicit
+> > lockings rather than relying on bql_locked TLS variable.  In case of
+> > migration, we always know whether BQL is held in different context as long
+> > as we can still pass that information downwards.
+> 
+> Agree, but I think it's better to make new macros following same pattern, i.e.
+> 
+> WITH_BQL_HELD(bql_held) {
+>     action();
+> }
+> 
+> instead of
+> 
+> WITH_BQL_HELD(bql_held, actions());
+> 
+> ..
+> 
+> Or I'm missing something and we already have a precedent of the latter
+> notation?
 
-> Peter Maydell (2):
->    hw/misc/xlnx-versal-cframe-reg: Free FIFO, g_tree on deinit
->    hw/display/xlnx_dp: Don't leak dpcd and edid objects
+Nop.. it's just that when initially working on that I didn't try as hard to
+achieve such pattern.  Here we need to recover the BQL status after the
+block, so I didn't immediately see how autoptr would work there.
 
-Series queued, thanks.
+But I tried slightly harder, I think below should achieve the same pattern
+but based on some for() magic.
+
+Thanks for raising this, early comments still be welcomed or I'll go with
+that.
+
+===8<===
+
+static inline void
+with_bql_held_lock(bool bql_held, const char *file, int line)
+{
+    assert(bql_held == bql_locked());
+    if (!bql_held) {
+        bql_lock_impl(file, line);
+    }
+}
+
+static inline void
+with_bql_held_unlock(bool bql_held)
+{
+    assert(bql_locked());
+    if (!bql_held) {
+        bql_unlock();
+    }
+}
+
+/**
+ * WITH_BQL_HELD(): Run a block of code, making sure BQL is held
+ * @bql_held: Whether BQL is already held
+ *
+ * Example use case:
+ *
+ * WITH_BQL_HELD(bql_held) {
+ *     // BQL is guaranteed to be held within this block,
+ *     // if it wasn't held, will be released when the block finishes.
+ * }
+ */
+#define  WITH_BQL_HELD(bql_held)                                \
+    for (bool _bql_once = \
+             (with_bql_held_lock(bql_held, __FILE__, __LINE__), true);  \
+         _bql_once;                                                     \
+         _bql_once = (with_bql_held_unlock(bql_held), false))           \
+
+static inline void
+with_bql_released_unlock(bool bql_held)
+{
+    assert(bql_held == bql_locked());
+    if (bql_held) {
+        bql_unlock();
+    }
+}
+
+static inline void
+with_bql_released_lock(bool bql_held, const char *file, int line)
+{
+    assert(!bql_locked());
+    if (bql_held) {
+        bql_lock_impl(file, line);
+    }
+}
+
+/**
+ * WITH_BQL_RELEASED(): Run a task, making sure BQL is released
+ * @bql_held: Whether BQL is already held
+ *
+ * Example use case:
+ *
+ * WITH_BQL_RELEASED(bql_held) {
+ *     // BQL is guaranteed to be released within this block,
+ *     // if it was held, will be re-taken when the block finishes.
+ * }
+ */
+#define  WITH_BQL_RELEASED(bql_held)                                    \
+    for (bool _bql_once = (with_bql_released_unlock(bql_held), true);   \
+         _bql_once;                                                     \
+         _bql_once =                                                    \
+             (with_bql_released_lock(bql_held, __FILE__, __LINE__), false)) \
+
+-- 
+Peter Xu
+
 
