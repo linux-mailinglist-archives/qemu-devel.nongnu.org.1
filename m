@@ -2,88 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59647B3CDB1
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6574CB3CBBC
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:14:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usN7r-0000Kq-5q; Sat, 30 Aug 2025 11:04:19 -0400
+	id 1usN9M-0003YX-VA; Sat, 30 Aug 2025 11:05:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1urtnT-0001ny-PX
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:45:20 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1urtnQ-0005Cg-NM
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:45:18 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-45b7e69570bso4403145e9.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 00:45:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756453513; x=1757058313; darn=nongnu.org;
- h=mime-version:message-id:in-reply-to:references:user-agent:subject
- :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=LAj9Iz2NA3K7h9ZrEZS5jY9f71C/30q8F4KTv008cPs=;
- b=N6Ai2RaLV+wyQk6KEAn5hK4UD0MNr4S0YM78WJMf5OrqBwlaqn5XTiMKNJdViMMBBL
- GVooISd18UK2drMxiguu57E90cNBxE5QLQBAc+W/s8ERnHBT6vzv3sjbnUbwSRz/MKNv
- fvjCnG/VYUpZbMPArCzvMHpboZ+EBryc1K0jr3I3MpUIkqvpPWi/JlAG/gl+nGfBJr9A
- XmLtY1DPxOo3GCXCb4kCd77iO+AwKjyaadoNM1eMUHQO7Tqd19w72kM2yvY6UDbQrNBK
- PIhi1Wehbq0/hi1mfGvGu4q2ru1xeNmj3CaPvcf174daHouTr3mnpAs+cWZ5QSNg/rGl
- URwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756453514; x=1757058314;
- h=mime-version:message-id:in-reply-to:references:user-agent:subject
- :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LAj9Iz2NA3K7h9ZrEZS5jY9f71C/30q8F4KTv008cPs=;
- b=wAqP4tuzH2M/B5h9Um/5WHUBpntHPRwvgk3bCpd2Ay97FTVUlT2ZvQVkYjLjZJDEW+
- EmtPelmswcPrZYqpBYTBNlCLKUwVlubjoCoxEXWli09vQ3TBdhlmQiLmB8/Hvpn0nZWz
- IE2qJjYS2+bFtAsMIebDXX4jQWkObYAuFc5PvnH+xcG3YFcQR1IZQMVNfL4KKaBmu0EP
- tw5RvFdRf/ExgdYMU37XPFFOy/nIoq8Qe21u5YE9NdqrQ3WYC75gAFkYmX9mhwi6t/zx
- DzOJ7t7TmBbH3XRaq9+XiB44N0yL0ckdhitBQaLrCp1r6hK5oZQzBt4ehppGrnBak4LU
- Lb1w==
-X-Gm-Message-State: AOJu0Yw0OPkV/ajZxsEnB7roFVZBj8I1iF6vxBEcuITPplw0g9AGhjPw
- PdhxreInFC3Q7cGCwAH/BKiQzgKhgJKjJhWs5G+9idunqU0+/PnyKt9YnQMMfhGjyezUMh0Lky4
- NeIy+ME8=
-X-Gm-Gg: ASbGncst0LNwh9Gfe/Q+amH5WCArLTALlwOf/4jYwuXUgRTopCUTFGHGKq+wqhNJdOg
- VgdJNx29cJTXDjva3pvvRapKj1kYC8XMegF1eEml8UW+NwlUzwlcknnag2bx1ML4fNP7i6+1+3g
- fYjGfqnFPszlKBCgp3UQp3TXos461LuFZYWHMO4FO2De6L4f8N5/VYbUhZt+CKxp5rfZ2hdt/Xj
- xS/tTXpgy0P/zU/vRzrd/4CqKieD+AU+u5jaYvQ8PyB466jlUmNE7scbGpvJCWvkYvkY5/Q7pFn
- WU6B7Z9zYLkWThGIZCMv58LD5XcJzszuog5Hekumm7Vm2Yuq1u/v9BABhpGcAM0Fwqq8k3s9/jN
- 29AQYquNksPDXB1WGNM+Smr2n7VNWVbqoNxJ9YlpV2HFV0M+ISeuOVfYP7ieVcqDausQ+MSVo
-X-Google-Smtp-Source: AGHT+IFnHouCyTKVxYsgeydDcjUvfdTbX7ziFQida3Lpj/H2xCKMDGOrHC69b2+4bZ4qhTLs+OhqyA==
-X-Received: by 2002:a05:600c:4451:b0:45b:43cc:e558 with SMTP id
- 5b1f17b1804b1-45b517cba3bmr219703705e9.35.1756453513513; 
- Fri, 29 Aug 2025 00:45:13 -0700 (PDT)
-Received: from meli-email.org (athedsl-4441256.home.otenet.gr.
- [79.129.180.152]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b7e7d23b7sm26550515e9.1.2025.08.29.00.45.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 00:45:13 -0700 (PDT)
-Date: Fri, 29 Aug 2025 10:44:31 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-Cc: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH] linux-user: Drop deprecated -p option
-User-Agent: meli/0.8.12
-References: <20250828162012.3307647-1-peter.maydell@linaro.org>
-In-Reply-To: <20250828162012.3307647-1-peter.maydell@linaro.org>
-Message-ID: <t1qw7c.221yk652cxq5o@linaro.org>
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1urtoX-0002ED-Fj
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:46:25 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1urtoT-0005XY-6M
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:46:24 -0400
+Received: from loongson.cn (unknown [10.20.42.126])
+ by gateway (Coremail) with SMTP id _____8BxWNHEWrFomX4EAA--.9169S3;
+ Fri, 29 Aug 2025 15:46:12 +0800 (CST)
+Received: from [10.20.42.126] (unknown [10.20.42.126])
+ by front1 (Coremail) with SMTP id qMiowJAxT+bBWrFoJDRwAA--.21087S3;
+ Fri, 29 Aug 2025 15:46:11 +0800 (CST)
+Subject: Re: [PATCH] hw/loongarch/virt: Add reset interface for virt-machine
+To: Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20241031065418.3111892-1-maobibo@loongson.cn>
+From: lixianglai <lixianglai@loongson.cn>
+Message-ID: <abce6ab9-1700-7848-391f-ef95bbcb2c12@loongson.cn>
+Date: Fri, 29 Aug 2025 15:45:02 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20241031065418.3111892-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-CM-TRANSID: qMiowJAxT+bBWrFoJDRwAA--.21087S3
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxArW7XFWkuF18GrW3Zr1fuFX_yoWrtw1rpF
+ ZruFn8Jws5JrnrZ39xJas8uF1DZw1IkrWa9F1xKryFkF47WryUXr10yasFvF4DA3yrWF1Y
+ vrnakw12va1UX3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
+ 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+ wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
+ 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+ xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+ 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU25EfUUUU
+ U
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.357,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,113 +80,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 28 Aug 2025 19:20, Peter Maydell <peter.maydell@linaro.org> wrote:
->The user-mode '-p' option has been deprecated since 9.0 and
->doesn't do anything except emit a warning. We are well past
->our minimum deprecation period, so drop the option.
+Hi Bibo Mao:
+> With generic cpu reset interface, pc register is entry of FLASH for
+> UEFI BIOS. However with direct kernel booting requirement, there is
+> little different, pc register of primary cpu is entry address of ELF
+> file.
 >
->Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->---
-> docs/about/deprecated.rst       | 10 ----------
-> docs/about/removed-features.rst |  8 ++++++++
-> bsd-user/main.c                 |  8 --------
-> linux-user/main.c               | 12 ------------
-> 4 files changed, 8 insertions(+), 30 deletions(-)
+> At the same time with requirement of cpu hotplug, hot-added CPU should
+> register reset interface for this cpu object. Now reset callback is
+> not registered for hot-added CPU.
+>
+> With this patch reset callback for CPU is register when CPU instance
+> is created, and reset interface is added for virt-machine board. In
+> reset interface of virt-machine, reset for direct kernel booting
+> requirement is called.
+>
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>   hw/loongarch/boot.c         |  9 +--------
+>   hw/loongarch/virt.c         | 14 ++++++++++++++
+>   include/hw/loongarch/boot.h |  1 +
+>   target/loongarch/cpu.c      | 10 ++++++++++
+>   4 files changed, 26 insertions(+), 8 deletions(-)
+>
+> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+> index cb668703bd..cbb4e3737d 100644
+> --- a/hw/loongarch/boot.c
+> +++ b/hw/loongarch/boot.c
+> @@ -216,12 +216,11 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
+>       return kernel_entry;
+>   }
+>   
+> -static void reset_load_elf(void *opaque)
+> +void reset_load_elf(void *opaque)
+>   {
+>       LoongArchCPU *cpu = opaque;
+>       CPULoongArchState *env = &cpu->env;
+>   
+> -    cpu_reset(CPU(cpu));
+>       if (env->load_elf) {
+>   	if (cpu == LOONGARCH_CPU(first_cpu)) {
+>               env->gpr[4] = env->boot_info->a0;
+> @@ -320,12 +319,6 @@ static void loongarch_direct_kernel_boot(struct loongarch_boot_info *info)
+>   void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info)
+>   {
+>       LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
+> -    int i;
+> -
+> -    /* register reset function */
+> -    for (i = 0; i < ms->smp.cpus; i++) {
+> -        qemu_register_reset(reset_load_elf, LOONGARCH_CPU(qemu_get_cpu(i)));
+> -    }
+>   
+>       info->kernel_filename = ms->kernel_filename;
+>       info->kernel_cmdline = ms->kernel_cmdline;
+> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+> index 9a635d1d3d..80680d178c 100644
+> --- a/hw/loongarch/virt.c
+> +++ b/hw/loongarch/virt.c
+> @@ -1434,6 +1434,19 @@ static int64_t virt_get_default_cpu_node_id(const MachineState *ms, int idx)
+>       }
+>   }
+>   
+> +static void virt_reset(MachineState *machine, ResetType type)
+> +{
+> +    CPUState *cs;
+> +
+> +    /* Reset all devices including CPU devices */
+> +    qemu_devices_reset(type);
+> +
+> +    /* Reset PC and register context for kernel direct booting method */
+> +    CPU_FOREACH(cs) {
+> +        reset_load_elf(LOONGARCH_CPU(cs));
+> +    }
+> +}
+> +
+>   static void virt_class_init(ObjectClass *oc, void *data)
+>   {
+>       MachineClass *mc = MACHINE_CLASS(oc);
+> @@ -1457,6 +1470,7 @@ static void virt_class_init(ObjectClass *oc, void *data)
+>       mc->auto_enable_numa_with_memdev = true;
+>       mc->get_hotplug_handler = virt_get_hotplug_handler;
+>       mc->default_nic = "virtio-net-pci";
+> +    mc->reset = virt_reset;
+>       hc->plug = virt_device_plug_cb;
+>       hc->pre_plug = virt_device_pre_plug;
+>       hc->unplug_request = virt_device_unplug_request;
+> diff --git a/include/hw/loongarch/boot.h b/include/hw/loongarch/boot.h
+> index b3b870df1f..c7020ec9bb 100644
+> --- a/include/hw/loongarch/boot.h
+> +++ b/include/hw/loongarch/boot.h
+> @@ -115,5 +115,6 @@ struct memmap_entry {
+>   };
+>   
+>   void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info);
+> +void reset_load_elf(void *opaque);
+>   
+>   #endif /* HW_LOONGARCH_BOOT_H */
+> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+> index 7212fb5f8f..f7f8fcc024 100644
+> --- a/target/loongarch/cpu.c
+> +++ b/target/loongarch/cpu.c
+> @@ -592,6 +592,13 @@ static void loongarch_cpu_disas_set_info(CPUState *s, disassemble_info *info)
+>       info->print_insn = print_insn_loongarch;
+>   }
+>   
+> +#ifndef CONFIG_USER_ONLY
+> +static void loongarch_cpu_reset_cb(void *opaque)
+> +{
+> +    cpu_reset((CPUState *) opaque);
+> +}
+> +#endif
+> +
+>   static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
+>   {
+>       CPUState *cs = CPU(dev);
+> @@ -607,6 +614,9 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
+>       loongarch_cpu_register_gdb_regs_for_features(cs);
+>   
+>       cpu_reset(cs);
+> +#ifndef CONFIG_USER_ONLY
+> +    qemu_register_reset(loongarch_cpu_reset_cb, dev);
 
-What about docs/user/main.rst?
+I think we should implement the corresponding unregistration process in 
+loongarch_cpu_unrealizefn
 
+Thanks!
+Xianglai
+
+> +#endif
+>       qemu_init_vcpu(cs);
+>   
+>       lacc->parent_realize(dev, errp);
 >
->diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
->index 58bce715f9c..dfb7882e3da 100644
->--- a/docs/about/deprecated.rst
->+++ b/docs/about/deprecated.rst
->@@ -68,16 +68,6 @@ configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
-> marked deprecated since 9.0, users have to ensure that all the topology members
-> described with -smp are supported by the target machine.
-> 
->-User-mode emulator command line arguments
->------------------------------------------
->-
->-``-p`` (since 9.0)
->-''''''''''''''''''
->-
->-The ``-p`` option pretends to control the host page size.  However,
->-it is not possible to change the host page size, and using the
->-option only causes failures.
->-
-> QEMU Machine Protocol (QMP) commands
-> ------------------------------------
-> 
->diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
->index b1b3d1b1b3f..06f186991ac 100644
->--- a/docs/about/removed-features.rst
->+++ b/docs/about/removed-features.rst
->@@ -583,6 +583,14 @@ The ``-singlestep`` option has been given a name that better reflects
-> what it actually does. For both linux-user and bsd-user, use the
-> ``-one-insn-per-tb`` option instead.
-> 
->+``-p`` (removed in 10.2)
->+''''''''''''''''''''''''
->+
->+The ``-p`` option pretends to control the host page size.  However,
->+it is not possible to change the host page size; we stopped trying
->+to do anything with the option except print a warning from 9.0,
->+and now the option is removed entirely.
->+
-> 
-> QEMU Machine Protocol (QMP) commands
-> ------------------------------------
->diff --git a/bsd-user/main.c b/bsd-user/main.c
->index 7e5d4bbce09..9ba69642f50 100644
->--- a/bsd-user/main.c
->+++ b/bsd-user/main.c
->@@ -367,14 +367,6 @@ int main(int argc, char **argv)
->             }
->         } else if (!strcmp(r, "L")) {
->             interp_prefix = argv[optind++];
->-        } else if (!strcmp(r, "p")) {
->-            unsigned size, want = qemu_real_host_page_size();
->-
->-            r = argv[optind++];
->-            if (qemu_strtoui(r, NULL, 10, &size) || size != want) {
->-                warn_report("Deprecated page size option cannot "
->-                            "change host page size (%u)", want);
->-            }
->         } else if (!strcmp(r, "g")) {
->             gdbstub = g_strdup(argv[optind++]);
->         } else if (!strcmp(r, "r")) {
->diff --git a/linux-user/main.c b/linux-user/main.c
->index 6edeeecef38..7b0ccb6fd60 100644
->--- a/linux-user/main.c
->+++ b/linux-user/main.c
->@@ -340,16 +340,6 @@ static void handle_arg_ld_prefix(const char *arg)
->     interp_prefix = strdup(arg);
-> }
-> 
->-static void handle_arg_pagesize(const char *arg)
->-{
->-    unsigned size, want = qemu_real_host_page_size();
->-
->-    if (qemu_strtoui(arg, NULL, 10, &size) || size != want) {
->-        warn_report("Deprecated page size option cannot "
->-                    "change host page size (%u)", want);
->-    }
->-}
->-
-> static void handle_arg_seed(const char *arg)
-> {
->     seed_optarg = arg;
->@@ -522,8 +512,6 @@ static const struct qemu_argument arg_table[] = {
->      "range[,...]","filter logging based on address range"},
->     {"D",          "QEMU_LOG_FILENAME", true, handle_arg_log_filename,
->      "logfile",     "write logs to 'logfile' (default stderr)"},
->-    {"p",          "QEMU_PAGESIZE",    true,  handle_arg_pagesize,
->-     "pagesize",   "deprecated change to host page size"},
->     {"one-insn-per-tb",
->                    "QEMU_ONE_INSN_PER_TB",  false, handle_arg_one_insn_per_tb,
->      "",           "run with one guest instruction per emulated TB"},
->-- 
->2.43.0
->
->
+> base-commit: 58d49b5895f2e0b5cfe4b2901bf24f3320b74f29
+
 
