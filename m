@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24B6B3CEAD
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 20:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A07F9B3CBC6
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:18:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usN7R-0007vR-4w; Sat, 30 Aug 2025 11:03:53 -0400
+	id 1usN7s-0000OF-FD; Sat, 30 Aug 2025 11:04:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1urt4U-000579-Mo
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 02:58:51 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1urt66-0005u9-9R
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:00:30 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1urt4R-0003N6-7J
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 02:58:50 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3c854b6459fso1366177f8f.3
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 23:58:46 -0700 (PDT)
+ id 1urt64-0003w3-Bh
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:00:30 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-45a1b065d59so11121085e9.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 00:00:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756450723; x=1757055523; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756450826; x=1757055626; darn=nongnu.org;
  h=mime-version:message-id:in-reply-to:references:user-agent:subject
  :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=evoy54U7aEmzZ9F35YDylbpt0gv0hDdNSMweUaQNRic=;
- b=v5vijYRu1yhpDppeDcW4hmCr+5Y8FfMDuoMgiOWBSbaJq7xKxUQh8GHo1v2T7IONfr
- 8SkpV1PulhjUsqtPEnMOHCLJkN1sZ+fCaUHz4mReiyW7+IEhdDGtdWnw69sIMop8Bv9/
- ues5yfsrnt9foX4wsKkC9mLOBeUSh7uwSCu78KEM/SiT6/DUeStCdgM/tHfxF7KwoCq0
- LdKyZn40d4UE56HNLtD0+osdWSdVuwVbyxtupeZyCROmq0jS61FFTkFLr9zFbZVaH93E
- xJysLzS2Zq/9BY120vmWR8yVj1Ds6QIu4ZaZuGrqtSHGyNPK5E/5KcN7JubFhX655xhT
- WFUA==
+ bh=8mDwc7859lUawsk8WvPSdQIfrO/qUoTqwkKzFjnxmlk=;
+ b=vaNz+0AzWRmAtZ5K3Pad8umzvjGajgOiJ5zhTCeL1QFRNU4ne9DCQqseNJ73Pa8wNV
+ RrVaNvtGIOXBPg4Ti57oK7uGSKaQimrLwgRDUoLXajk6iuXqDMcOMByAiRPkxCXzMIgn
+ Ny1U+6dkL/BWLfSzyClrpvTANtg74z49F9k/RP8kVYG03nYWSVWZU3rWS4e6KNHSe68I
+ Fwe42Kzylel68Rreor7WbrD5d+ItFHuqkZUzN01emgBG+D8sxYcNt2IiaCLwJw0sfAjS
+ e+oGtunKGpcH3g6kYhygUECh/zgRur0EkZkOYJXNwRAUMmbJ9S8kzyDk8ycXQMm445Gg
+ 531w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756450723; x=1757055523;
+ d=1e100.net; s=20230601; t=1756450826; x=1757055626;
  h=mime-version:message-id:in-reply-to:references:user-agent:subject
  :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=evoy54U7aEmzZ9F35YDylbpt0gv0hDdNSMweUaQNRic=;
- b=h4CT2uaQjrAGKMfEGYo1dkrdk6IqnRfoJNEC7ygfveTVtx0runJruRLLT9F2J1As6Z
- pSsc6HQy2+VQ5ClPOgd7CbSUCI32wnbzVhvgaJxAhGmCopyTvA8vP1VMPuilYs/q+A5A
- cBfXlUvQlQar0BsGYWmbs3kbgrvVj65Q21WAeINUAdtqi3vgY6qizMv+U6Hy4dm53Omd
- nEeyUf4hCEQvU/4dVfKDWwh9xIZfr8NULbL6AuNsqwMBGN8BUteA7/STwwTg6LHqQZtY
- V4qBqWdb3tuHKIUaNEN0lrcaZ730Jo7P//BtS0+OOUVuG6fdDw82z8USzNzc28ypLs1V
- znzA==
-X-Gm-Message-State: AOJu0Yx3pciq/CdIx0CEp/5PAPOg1anErO6KgAPnPc7O1e2kagtAqKqQ
- K1yTSOnTRa0fQM7Zx+tnY+gRdg5tN1lmn59EqzCN+mwXK2l6AhdQdNRvsLHH75/xNHaLO8Wm4mB
- za9sxZ9g=
-X-Gm-Gg: ASbGnctiJZGVr8WnbvHyIRtnWKWRzscA9WraxZuvvN35RzS4LuYrK27F5laM7cXL04x
- TWSMSeoupg1B3Tf52DzNvrt6n4VQ17nARp+DhIO37mAgvKrqjBboTdkskAN1pW7DHbt2stO51nX
- mFTuT7swh2FqqPYSaQvVesqZNO7wO8oYJMThMr8Y+e7XWLiy3nt9x7djgPhZSqmxR0dsAqZyQRv
- VNUdoCYTVX9KLN3hc2YpXPYDVpFSe5lMbEx0fGFsDzVy577ZMeSIEacTdVbyrvW74woy7ReXwCB
- 1UHJ5H117GTGcZxHBKG+1up50BXb6ADKgeNzBPwr2TX1xEgf0EaidkxQIgEODj7zCDQJe5jFifm
- EX63K52CEuslQP092XJFijWY0h7ov27E/VQ0DLE5YLk+4jEgOVOzlnNFrVUrv17bIY/SM/VjQ5c
- RrZlDL1Kg=
-X-Google-Smtp-Source: AGHT+IGqWEhOsaAHDh/EL9r/5wu5+dHOAyYumIh1BpDO3BbQk0nXfebg8E9tIGLbXZoDBAYl8Drsqw==
-X-Received: by 2002:a5d:64e1:0:b0:3c8:2fd:60c1 with SMTP id
- ffacd0b85a97d-3c802fd6376mr14900337f8f.18.1756450723243; 
- Thu, 28 Aug 2025 23:58:43 -0700 (PDT)
+ bh=8mDwc7859lUawsk8WvPSdQIfrO/qUoTqwkKzFjnxmlk=;
+ b=c7whS3w8KN0BciNY4Agj4EhD77cMDqSdpF6YnWpzMadbsFK50dS+CJ1h7bpnyTegB5
+ 3zDamXE5pRaDKMu8xFJo/aNf4ccSndG5cmBGfHT51AUkGCwg398JcoPXgrBMVXCKuT2F
+ ikwDdes9/tQA3vrzuJBcHkR6npkbaIk/sBldqG+pFDnBzvXz5RPPEEXquWNCNWhx2+2j
+ rQLzQR1+5w77Zb1YJ92rWkRLFaCVoyuult8pHGpaPw+t+ZrVwbCLWLRZdzrXrIJzL8+Q
+ dN1rtT4KHyywyG2SH/P6/eiO0+hxBxKGlfmorjM8tQuo5Ube9oQVVbvqWuCYG810SWB4
+ +0kA==
+X-Gm-Message-State: AOJu0Yy9GimpO+C4IJSLdAnVKBMTvLDeo3HQcwHNee+5QStB18OP+IiA
+ W10WdJf31tB2e4w53YVL/LN4ES2Bi1KuU+dcNMS30Q3/QbWcaRfDtXj0nkjK7K/uJbKLs/TUSpR
+ KoBdiF7Y=
+X-Gm-Gg: ASbGncuJxQcj6NHTV1kQp/UTsthEklBJae2WDyn+0lShUPM1oLQvR0ywEdTevIo8fAX
+ ychCiUbITdCn3m4Iq29O+C+di7fXuLXVb0IGCoCn6FvJSBMer8IJBEBM3maK2IOnPFpjRHWuLrt
+ 578PmoZTkz5DQlOjYotdqxs9fXiMIZcdSvGJ2rdxFcO3sqVU96x8dYYiuee9DYgX3vwDtaTfakX
+ 3C/FVU/LGGH7ytASlhhlkQMoCSJdCoo9lIB+80B1QaKmy0X1ssimu0vmnkwfqc6e7dp7ddHFDYS
+ ONZOfCkiTW2NsCksMo7qKkVNd7vM7PVvSY/zRzJ2T7exHyj/djRVn6MsuPo8ClQ1QANzhKV23yI
+ wXPELg8axxP5MZ1USFOHp3A7IjkT8V/gOg0bPfNTCAhT2GymsNDftUV5OlMxs3w3V7NIs8C1p
+X-Google-Smtp-Source: AGHT+IHPYF6amWyn5ekA2SxAYNR1XU4lzwddYmnEBpzfzVgX4WPX9oAZMW76zcsB2+m55Nl/R+eNAA==
+X-Received: by 2002:a05:600c:190a:b0:453:5c30:a1fd with SMTP id
+ 5b1f17b1804b1-45b517954bfmr255114055e9.8.1756450825994; 
+ Fri, 29 Aug 2025 00:00:25 -0700 (PDT)
 Received: from meli-email.org (athedsl-4441256.home.otenet.gr.
  [79.129.180.152]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3d0f85c287fsm349493f8f.52.2025.08.28.23.58.42
+ 5b1f17b1804b1-45b73c52735sm85216535e9.22.2025.08.29.00.00.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Aug 2025 23:58:42 -0700 (PDT)
-Date: Fri, 29 Aug 2025 09:58:05 +0300
+ Fri, 29 Aug 2025 00:00:25 -0700 (PDT)
+Date: Fri, 29 Aug 2025 09:59:22 +0300
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-arm@nongnu.org
-Subject: Re: [PATCH 03/61] target/arm/hvf: Split out sysreg.c.inc
+Subject: Re: [PATCH 05/61] target/arm/hvf: Add KVMID_TO_HVF, HVF_TO_KVMID
 User-Agent: meli/0.8.12
 References: <20250827010453.4059782-1-richard.henderson@linaro.org>
- <20250827010453.4059782-4-richard.henderson@linaro.org>
-In-Reply-To: <20250827010453.4059782-4-richard.henderson@linaro.org>
-Message-ID: <t1qu1t.3evqxo96xccsr@linaro.org>
+ <20250827010453.4059782-7-richard.henderson@linaro.org>
+In-Reply-To: <20250827010453.4059782-7-richard.henderson@linaro.org>
+Message-ID: <t1qu4o.3fgegimfxo66f@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,331 +99,49 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Wed, 27 Aug 2025 04:03, Richard Henderson <richard.henderson@linaro.org> wrote:
->Move the list of supported sysregs to a reuseable file.
+>Conversion between KVM system registers ids and the HVF system
+>register ids is trivial.
 >
 >Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 >---
 
+
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-> target/arm/hvf/hvf.c        | 147 ++----------------------------------
-> target/arm/hvf/sysreg.c.inc | 146 +++++++++++++++++++++++++++++++++++
-> 2 files changed, 152 insertions(+), 141 deletions(-)
-> create mode 100644 target/arm/hvf/sysreg.c.inc
+> target/arm/hvf/hvf.c | 20 ++++++++++++++++++++
+> 1 file changed, 20 insertions(+)
 >
 >diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
->index 47b0cd3a35..f0e4b75e6a 100644
+>index 7b0413093d..47165bd29c 100644
 >--- a/target/arm/hvf/hvf.c
 >+++ b/target/arm/hvf/hvf.c
->@@ -403,150 +403,15 @@ struct hvf_sreg_match {
+>@@ -403,6 +403,26 @@ struct hvf_sreg_match {
 >     uint32_t cp_idx;
 > };
 > 
->+#define DEF_SYSREG(HVF_ID, crn, crm, op0, op1, op2) \
->+    { HVF_ID, HVF_SYSREG(crn, crm, op0, op1, op2) },
+>+/*
+>+ * QEMU uses KVM system register ids in the migration format.
+>+ * Conveniently, HVF uses the same encoding of the op* and cr* parameters
+>+ * within the low 16 bits of the ids.  Thus conversion between the
+>+ * formats is trivial.
+>+ */
 >+
-> static struct hvf_sreg_match hvf_sreg_match[] = {
->-    { HV_SYS_REG_DBGBVR0_EL1, HVF_SYSREG(0, 0, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR0_EL1, HVF_SYSREG(0, 0, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR0_EL1, HVF_SYSREG(0, 0, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR0_EL1, HVF_SYSREG(0, 0, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR1_EL1, HVF_SYSREG(0, 1, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR1_EL1, HVF_SYSREG(0, 1, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR1_EL1, HVF_SYSREG(0, 1, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR1_EL1, HVF_SYSREG(0, 1, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR2_EL1, HVF_SYSREG(0, 2, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR2_EL1, HVF_SYSREG(0, 2, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR2_EL1, HVF_SYSREG(0, 2, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR2_EL1, HVF_SYSREG(0, 2, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR3_EL1, HVF_SYSREG(0, 3, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR3_EL1, HVF_SYSREG(0, 3, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR3_EL1, HVF_SYSREG(0, 3, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR3_EL1, HVF_SYSREG(0, 3, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR4_EL1, HVF_SYSREG(0, 4, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR4_EL1, HVF_SYSREG(0, 4, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR4_EL1, HVF_SYSREG(0, 4, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR4_EL1, HVF_SYSREG(0, 4, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR5_EL1, HVF_SYSREG(0, 5, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR5_EL1, HVF_SYSREG(0, 5, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR5_EL1, HVF_SYSREG(0, 5, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR5_EL1, HVF_SYSREG(0, 5, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR6_EL1, HVF_SYSREG(0, 6, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR6_EL1, HVF_SYSREG(0, 6, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR6_EL1, HVF_SYSREG(0, 6, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR6_EL1, HVF_SYSREG(0, 6, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR7_EL1, HVF_SYSREG(0, 7, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR7_EL1, HVF_SYSREG(0, 7, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR7_EL1, HVF_SYSREG(0, 7, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR7_EL1, HVF_SYSREG(0, 7, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR8_EL1, HVF_SYSREG(0, 8, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR8_EL1, HVF_SYSREG(0, 8, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR8_EL1, HVF_SYSREG(0, 8, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR8_EL1, HVF_SYSREG(0, 8, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR9_EL1, HVF_SYSREG(0, 9, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR9_EL1, HVF_SYSREG(0, 9, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR9_EL1, HVF_SYSREG(0, 9, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR9_EL1, HVF_SYSREG(0, 9, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR10_EL1, HVF_SYSREG(0, 10, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR10_EL1, HVF_SYSREG(0, 10, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR10_EL1, HVF_SYSREG(0, 10, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR10_EL1, HVF_SYSREG(0, 10, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR11_EL1, HVF_SYSREG(0, 11, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR11_EL1, HVF_SYSREG(0, 11, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR11_EL1, HVF_SYSREG(0, 11, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR11_EL1, HVF_SYSREG(0, 11, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR12_EL1, HVF_SYSREG(0, 12, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR12_EL1, HVF_SYSREG(0, 12, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR12_EL1, HVF_SYSREG(0, 12, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR12_EL1, HVF_SYSREG(0, 12, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR13_EL1, HVF_SYSREG(0, 13, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR13_EL1, HVF_SYSREG(0, 13, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR13_EL1, HVF_SYSREG(0, 13, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR13_EL1, HVF_SYSREG(0, 13, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR14_EL1, HVF_SYSREG(0, 14, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR14_EL1, HVF_SYSREG(0, 14, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR14_EL1, HVF_SYSREG(0, 14, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR14_EL1, HVF_SYSREG(0, 14, 2, 0, 7) },
->-
->-    { HV_SYS_REG_DBGBVR15_EL1, HVF_SYSREG(0, 15, 2, 0, 4) },
->-    { HV_SYS_REG_DBGBCR15_EL1, HVF_SYSREG(0, 15, 2, 0, 5) },
->-    { HV_SYS_REG_DBGWVR15_EL1, HVF_SYSREG(0, 15, 2, 0, 6) },
->-    { HV_SYS_REG_DBGWCR15_EL1, HVF_SYSREG(0, 15, 2, 0, 7) },
->-
->-#ifdef SYNC_NO_RAW_REGS
->-    /*
->-     * The registers below are manually synced on init because they are
->-     * marked as NO_RAW. We still list them to make number space sync easier.
->-     */
->-    { HV_SYS_REG_MDCCINT_EL1, HVF_SYSREG(0, 2, 2, 0, 0) },
->-    { HV_SYS_REG_MIDR_EL1, HVF_SYSREG(0, 0, 3, 0, 0) },
->-    { HV_SYS_REG_MPIDR_EL1, HVF_SYSREG(0, 0, 3, 0, 5) },
->-    { HV_SYS_REG_ID_AA64PFR0_EL1, HVF_SYSREG(0, 4, 3, 0, 0) },
->-#endif
->-    { HV_SYS_REG_ID_AA64PFR1_EL1, HVF_SYSREG(0, 4, 3, 0, 1) },
->-    { HV_SYS_REG_ID_AA64DFR0_EL1, HVF_SYSREG(0, 5, 3, 0, 0) },
->-    { HV_SYS_REG_ID_AA64DFR1_EL1, HVF_SYSREG(0, 5, 3, 0, 1) },
->-    { HV_SYS_REG_ID_AA64ISAR0_EL1, HVF_SYSREG(0, 6, 3, 0, 0) },
->-    { HV_SYS_REG_ID_AA64ISAR1_EL1, HVF_SYSREG(0, 6, 3, 0, 1) },
->-#ifdef SYNC_NO_MMFR0
->-    /* We keep the hardware MMFR0 around. HW limits are there anyway */
->-    { HV_SYS_REG_ID_AA64MMFR0_EL1, HVF_SYSREG(0, 7, 3, 0, 0) },
->-#endif
->-    { HV_SYS_REG_ID_AA64MMFR1_EL1, HVF_SYSREG(0, 7, 3, 0, 1) },
->-    { HV_SYS_REG_ID_AA64MMFR2_EL1, HVF_SYSREG(0, 7, 3, 0, 2) },
->-    /* Add ID_AA64MMFR3_EL1 here when HVF supports it */
->-
->-    { HV_SYS_REG_MDSCR_EL1, HVF_SYSREG(0, 2, 2, 0, 2) },
->-    { HV_SYS_REG_SCTLR_EL1, HVF_SYSREG(1, 0, 3, 0, 0) },
->-    { HV_SYS_REG_CPACR_EL1, HVF_SYSREG(1, 0, 3, 0, 2) },
->-    { HV_SYS_REG_TTBR0_EL1, HVF_SYSREG(2, 0, 3, 0, 0) },
->-    { HV_SYS_REG_TTBR1_EL1, HVF_SYSREG(2, 0, 3, 0, 1) },
->-    { HV_SYS_REG_TCR_EL1, HVF_SYSREG(2, 0, 3, 0, 2) },
->-
->-    { HV_SYS_REG_APIAKEYLO_EL1, HVF_SYSREG(2, 1, 3, 0, 0) },
->-    { HV_SYS_REG_APIAKEYHI_EL1, HVF_SYSREG(2, 1, 3, 0, 1) },
->-    { HV_SYS_REG_APIBKEYLO_EL1, HVF_SYSREG(2, 1, 3, 0, 2) },
->-    { HV_SYS_REG_APIBKEYHI_EL1, HVF_SYSREG(2, 1, 3, 0, 3) },
->-    { HV_SYS_REG_APDAKEYLO_EL1, HVF_SYSREG(2, 2, 3, 0, 0) },
->-    { HV_SYS_REG_APDAKEYHI_EL1, HVF_SYSREG(2, 2, 3, 0, 1) },
->-    { HV_SYS_REG_APDBKEYLO_EL1, HVF_SYSREG(2, 2, 3, 0, 2) },
->-    { HV_SYS_REG_APDBKEYHI_EL1, HVF_SYSREG(2, 2, 3, 0, 3) },
->-    { HV_SYS_REG_APGAKEYLO_EL1, HVF_SYSREG(2, 3, 3, 0, 0) },
->-    { HV_SYS_REG_APGAKEYHI_EL1, HVF_SYSREG(2, 3, 3, 0, 1) },
->-
->-    { HV_SYS_REG_SPSR_EL1, HVF_SYSREG(4, 0, 3, 0, 0) },
->-    { HV_SYS_REG_ELR_EL1, HVF_SYSREG(4, 0, 3, 0, 1) },
->-    { HV_SYS_REG_SP_EL0, HVF_SYSREG(4, 1, 3, 0, 0) },
->-    { HV_SYS_REG_AFSR0_EL1, HVF_SYSREG(5, 1, 3, 0, 0) },
->-    { HV_SYS_REG_AFSR1_EL1, HVF_SYSREG(5, 1, 3, 0, 1) },
->-    { HV_SYS_REG_ESR_EL1, HVF_SYSREG(5, 2, 3, 0, 0) },
->-    { HV_SYS_REG_FAR_EL1, HVF_SYSREG(6, 0, 3, 0, 0) },
->-    { HV_SYS_REG_PAR_EL1, HVF_SYSREG(7, 4, 3, 0, 0) },
->-    { HV_SYS_REG_MAIR_EL1, HVF_SYSREG(10, 2, 3, 0, 0) },
->-    { HV_SYS_REG_AMAIR_EL1, HVF_SYSREG(10, 3, 3, 0, 0) },
->-    { HV_SYS_REG_VBAR_EL1, HVF_SYSREG(12, 0, 3, 0, 0) },
->-    { HV_SYS_REG_CONTEXTIDR_EL1, HVF_SYSREG(13, 0, 3, 0, 1) },
->-    { HV_SYS_REG_TPIDR_EL1, HVF_SYSREG(13, 0, 3, 0, 4) },
->-    { HV_SYS_REG_CNTKCTL_EL1, HVF_SYSREG(14, 1, 3, 0, 0) },
->-    { HV_SYS_REG_CSSELR_EL1, HVF_SYSREG(0, 0, 3, 2, 0) },
->-    { HV_SYS_REG_TPIDR_EL0, HVF_SYSREG(13, 0, 3, 3, 2) },
->-    { HV_SYS_REG_TPIDRRO_EL0, HVF_SYSREG(13, 0, 3, 3, 3) },
->-    { HV_SYS_REG_CNTV_CTL_EL0, HVF_SYSREG(14, 3, 3, 3, 1) },
->-    { HV_SYS_REG_CNTV_CVAL_EL0, HVF_SYSREG(14, 3, 3, 3, 2) },
->-    { HV_SYS_REG_SP_EL1, HVF_SYSREG(4, 1, 3, 4, 0) },
+>+#define KVMID_TO_HVF(KVM)  ((KVM) & 0xffff)
+>+#define HVF_TO_KVMID(HVF)  \
+>+    (CP_REG_ARM64 | CP_REG_SIZE_U64 | CP_REG_ARM64_SYSREG | (HVF))
+>+
+>+/* Verify this at compile-time. */
+>+
+>+#define DEF_SYSREG(HVF_ID, ...) \
+>+  QEMU_BUILD_BUG_ON(HVF_ID != KVMID_TO_HVF(KVMID_AA64_SYS_REG64(__VA_ARGS__)));
+>+
 >+#include "sysreg.c.inc"
-> };
-> 
+>+
 >+#undef DEF_SYSREG
 >+
-> int hvf_get_registers(CPUState *cpu)
-> {
->     ARMCPU *arm_cpu = ARM_CPU(cpu);
->diff --git a/target/arm/hvf/sysreg.c.inc b/target/arm/hvf/sysreg.c.inc
->new file mode 100644
->index 0000000000..222698f1d1
->--- /dev/null
->+++ b/target/arm/hvf/sysreg.c.inc
->@@ -0,0 +1,146 @@
->+/* SPDX-License-Identifier: GPL-2.0-or-later */
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR0_EL1, 0, 0, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR0_EL1, 0, 0, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR0_EL1, 0, 0, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR0_EL1, 0, 0, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR1_EL1, 0, 1, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR1_EL1, 0, 1, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR1_EL1, 0, 1, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR1_EL1, 0, 1, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR2_EL1, 0, 2, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR2_EL1, 0, 2, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR2_EL1, 0, 2, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR2_EL1, 0, 2, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR3_EL1, 0, 3, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR3_EL1, 0, 3, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR3_EL1, 0, 3, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR3_EL1, 0, 3, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR4_EL1, 0, 4, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR4_EL1, 0, 4, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR4_EL1, 0, 4, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR4_EL1, 0, 4, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR5_EL1, 0, 5, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR5_EL1, 0, 5, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR5_EL1, 0, 5, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR5_EL1, 0, 5, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR6_EL1, 0, 6, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR6_EL1, 0, 6, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR6_EL1, 0, 6, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR6_EL1, 0, 6, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR7_EL1, 0, 7, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR7_EL1, 0, 7, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR7_EL1, 0, 7, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR7_EL1, 0, 7, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR8_EL1, 0, 8, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR8_EL1, 0, 8, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR8_EL1, 0, 8, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR8_EL1, 0, 8, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR9_EL1, 0, 9, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR9_EL1, 0, 9, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR9_EL1, 0, 9, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR9_EL1, 0, 9, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR10_EL1, 0, 10, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR10_EL1, 0, 10, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR10_EL1, 0, 10, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR10_EL1, 0, 10, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR11_EL1, 0, 11, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR11_EL1, 0, 11, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR11_EL1, 0, 11, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR11_EL1, 0, 11, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR12_EL1, 0, 12, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR12_EL1, 0, 12, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR12_EL1, 0, 12, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR12_EL1, 0, 12, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR13_EL1, 0, 13, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR13_EL1, 0, 13, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR13_EL1, 0, 13, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR13_EL1, 0, 13, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR14_EL1, 0, 14, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR14_EL1, 0, 14, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR14_EL1, 0, 14, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR14_EL1, 0, 14, 2, 0, 7)
->+
->+DEF_SYSREG(HV_SYS_REG_DBGBVR15_EL1, 0, 15, 2, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_DBGBCR15_EL1, 0, 15, 2, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_DBGWVR15_EL1, 0, 15, 2, 0, 6)
->+DEF_SYSREG(HV_SYS_REG_DBGWCR15_EL1, 0, 15, 2, 0, 7)
->+
->+#ifdef SYNC_NO_RAW_REGS
->+/*
->+ * The registers below are manually synced on init because they are
->+ * marked as NO_RAW. We still list them to make number space sync easier.
->+ */
->+DEF_SYSREG(HV_SYS_REG_MDCCINT_EL1, 0, 2, 2, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_MIDR_EL1, 0, 0, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_MPIDR_EL1, 0, 0, 3, 0, 5)
->+DEF_SYSREG(HV_SYS_REG_ID_AA64PFR0_EL1, 0, 4, 3, 0, 0)
->+#endif
->+
->+DEF_SYSREG(HV_SYS_REG_ID_AA64PFR1_EL1, 0, 4, 3, 0, 1)
->+DEF_SYSREG(HV_SYS_REG_ID_AA64DFR0_EL1, 0, 5, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_ID_AA64DFR1_EL1, 0, 5, 3, 0, 1)
->+DEF_SYSREG(HV_SYS_REG_ID_AA64ISAR0_EL1, 0, 6, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_ID_AA64ISAR1_EL1, 0, 6, 3, 0, 1)
->+
->+#ifdef SYNC_NO_MMFR0
->+/* We keep the hardware MMFR0 around. HW limits are there anyway */
->+DEF_SYSREG(HV_SYS_REG_ID_AA64MMFR0_EL1, 0, 7, 3, 0, 0)
->+#endif
->+
->+DEF_SYSREG(HV_SYS_REG_ID_AA64MMFR1_EL1, 0, 7, 3, 0, 1)
->+DEF_SYSREG(HV_SYS_REG_ID_AA64MMFR2_EL1, 0, 7, 3, 0, 2)
->+/* Add ID_AA64MMFR3_EL1 here when HVF supports it */
->+
->+DEF_SYSREG(HV_SYS_REG_MDSCR_EL1, 0, 2, 2, 0, 2)
->+DEF_SYSREG(HV_SYS_REG_SCTLR_EL1, 1, 0, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_CPACR_EL1, 1, 0, 3, 0, 2)
->+DEF_SYSREG(HV_SYS_REG_TTBR0_EL1, 2, 0, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_TTBR1_EL1, 2, 0, 3, 0, 1)
->+DEF_SYSREG(HV_SYS_REG_TCR_EL1, 2, 0, 3, 0, 2)
->+
->+DEF_SYSREG(HV_SYS_REG_APIAKEYLO_EL1, 2, 1, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_APIAKEYHI_EL1, 2, 1, 3, 0, 1)
->+DEF_SYSREG(HV_SYS_REG_APIBKEYLO_EL1, 2, 1, 3, 0, 2)
->+DEF_SYSREG(HV_SYS_REG_APIBKEYHI_EL1, 2, 1, 3, 0, 3)
->+DEF_SYSREG(HV_SYS_REG_APDAKEYLO_EL1, 2, 2, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_APDAKEYHI_EL1, 2, 2, 3, 0, 1)
->+DEF_SYSREG(HV_SYS_REG_APDBKEYLO_EL1, 2, 2, 3, 0, 2)
->+DEF_SYSREG(HV_SYS_REG_APDBKEYHI_EL1, 2, 2, 3, 0, 3)
->+DEF_SYSREG(HV_SYS_REG_APGAKEYLO_EL1, 2, 3, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_APGAKEYHI_EL1, 2, 3, 3, 0, 1)
->+
->+DEF_SYSREG(HV_SYS_REG_SPSR_EL1, 4, 0, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_ELR_EL1, 4, 0, 3, 0, 1)
->+DEF_SYSREG(HV_SYS_REG_SP_EL0, 4, 1, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_AFSR0_EL1, 5, 1, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_AFSR1_EL1, 5, 1, 3, 0, 1)
->+DEF_SYSREG(HV_SYS_REG_ESR_EL1, 5, 2, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_FAR_EL1, 6, 0, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_PAR_EL1, 7, 4, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_MAIR_EL1, 10, 2, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_AMAIR_EL1, 10, 3, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_VBAR_EL1, 12, 0, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_CONTEXTIDR_EL1, 13, 0, 3, 0, 1)
->+DEF_SYSREG(HV_SYS_REG_TPIDR_EL1, 13, 0, 3, 0, 4)
->+DEF_SYSREG(HV_SYS_REG_CNTKCTL_EL1, 14, 1, 3, 0, 0)
->+DEF_SYSREG(HV_SYS_REG_CSSELR_EL1, 0, 0, 3, 2, 0)
->+DEF_SYSREG(HV_SYS_REG_TPIDR_EL0, 13, 0, 3, 3, 2)
->+DEF_SYSREG(HV_SYS_REG_TPIDRRO_EL0, 13, 0, 3, 3, 3)
->+DEF_SYSREG(HV_SYS_REG_CNTV_CTL_EL0, 14, 3, 3, 3, 1)
->+DEF_SYSREG(HV_SYS_REG_CNTV_CVAL_EL0, 14, 3, 3, 3, 2)
->+DEF_SYSREG(HV_SYS_REG_SP_EL1, 4, 1, 3, 4, 0)
+> #define DEF_SYSREG(HVF_ID, op0, op1, crn, crm, op2) \
+>     { HVF_ID, HVF_SYSREG(crn, crm, op0, op1, op2) },
+> 
 >-- 
 >2.43.0
 >
