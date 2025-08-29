@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A768CB3CDF0
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1245CB3CC27
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:43:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNiK-0003KC-0O; Sat, 30 Aug 2025 11:42:00 -0400
+	id 1usNi0-0001TW-LS; Sat, 30 Aug 2025 11:41:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us6i2-00039N-B7
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 17:32:38 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1us6iH-0003Dp-V5
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 17:32:49 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us6hz-000738-QH
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 17:32:34 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-770530175a6so1705143b3a.3
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 14:32:30 -0700 (PDT)
+ id 1us6iF-00077E-0u
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 17:32:49 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-b4c72885c8bso1470888a12.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 14:32:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756503149; x=1757107949; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756503165; x=1757107965; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=5Hqlc6/a7x2Z1czMBEiMziHSyqqwjw6QoDJsF0k2VYo=;
- b=yq+tdNad2ae7SOOA79IFRjQBgdth06DBKzuLA016RbaUPO7dDLCV1GLAZtgpUHwKR0
- gI/+530ZQTZ5odjTvZzLA/M/Bj97+PhMhekWVYrYVQiuKhbwxqFA951MK2DNHAhVGifx
- CrLXxp5z8LxJXKZ+YwXATUuxW/nTiYQf49MbfTZ0AjHK5qKoBg+IeoqqLs6tb2nRzCTr
- 6i5ZNFehPgRGggoGjQjjGCeMTk+uufuyitVS8IJ2WO6w9zQPguD3oul8gkKBD91CXRet
- rtlQ+KYQ6Gra+y2kgaQbPhm59lJBzfyAfe1ujVl8WXVh2stYI1RLKkCK+fZo7zrOCU+Y
- 7Tvg==
+ bh=RnLBRmA5/Inu3OcN7jj7H/GMmsk/+FIMHY9bKhpSdaM=;
+ b=GINpwwrTEqS6V6tLRR0OE+J4Kh8wfI2jzphk2glPQYPLq7Fu2/MNPBxaKa3MO9PbkN
+ ejhulbCNVdCSclRsmVvq+XuZvqv6hBmIhGr5Y+Bk94QaD1irAeU6oU11PRJvKR+bhWH0
+ NXCWLxeB11i/DwY5sqtLdx/3GOFvVM1DItluAA+PbQATLjygYjoMSQsu/mCjb09JGeg+
+ JcY6fyZgFvT/NM8zAaH7fv+KYBzcYl3IAnnWTEcV7KeSl7MS1EI2ifiWL+BRTwKYJFvI
+ KhlL59uyiKmH34bS5hgOFZItOOY6oBBgo196KIz2HWmL2FzJBZTiGn2JWwZNBFcDaHjm
+ Z7cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756503149; x=1757107949;
+ d=1e100.net; s=20230601; t=1756503165; x=1757107965;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5Hqlc6/a7x2Z1czMBEiMziHSyqqwjw6QoDJsF0k2VYo=;
- b=xEKHVNUp3gNhEwUX7F+EVyUKJt6KyykA9NsaoqgZWq/9j1T9qi39S0sjDRK1rxolqI
- 5c6T/almstVt3+X4/YxEX3J/wn4HLHuWnC1Dx0kri0vBUKFEv5k/WfWQQmhGWNKZGwwP
- YS7sbWP38Z/+db6Rv40xz6X1L7pflIEwFYlCDNRToKBwEkU6M1XY7QleVwPD/N0xCimu
- PgUPwwLu4q4M3D2r0Dqi1jSl7KuXrv1hYFgSOOlnlnLfbPJIVBEk9UP5FXoCxGRW3b4x
- oJ4JbYCcVS5Li7Jmibs6J+jszM1d0fN9BejAZcTLn1j8L3oEwCVrOuku7d7MDAtrCHsn
- lRqg==
+ bh=RnLBRmA5/Inu3OcN7jj7H/GMmsk/+FIMHY9bKhpSdaM=;
+ b=FBieHF06AJ0XnFJAWgsWTDJoFbMlLJCOUjrquI1Jf/AI2VAtCeMhBM0kWJEsjfghBv
+ 7+poaRSa+CXrPxzCu0V9e+9ul0vDxpTY4TgBiLiCU2vKxeUThH7pi7W/dUZH/G3Bmu4e
+ cbhW8i/a6WnxHE9enmrT7wnl2yMZTeftGV82xaHzu1/FAbWKJOeexvU8iCP6hI4sxfsQ
+ suFy0ykoo58cSSO+kSm9b5DlCBNi056FXAB7+v52UeGvJyZ3Zz67doiu+QjPWWG2E86k
+ B/ybphTN+0VdWGJUlObAZs6+ixvIitTUYECwoocQADE+gOWYGfjiftuVTc08kdIOvwIX
+ d0Yg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVcfT4JZBAsPcAvqrPE2FuTy121SfsXeo71Q7l7HdUxno5BQTDsGo90tYmHgWleo/im1fQjcidNEXvt@nongnu.org
-X-Gm-Message-State: AOJu0Yx9sKe8BJcYT3E2hnv8WeZBg1/ktxtD6Sj7+qmBEajQoJvXKTOl
- CB6TWlKeWbCOHtnVlnbkZIqKxdal7i4qMAMFNvSZQyG7brYWZWVxK94PCOZfqbW++8CBbYL5MFl
- JddYA+xA=
-X-Gm-Gg: ASbGncsZ7BSmVXoUbWWK2mL1w6EWeJmrblcq8iRDBNyKQZyQm4zQjnKhFOLKLWCwxkz
- KyLJrk4viHZRUthmL99IUhcBJuuO844NLXjuWrb8GqncBle4CKJSkA1p19yH1tlODFLZZ3UbYms
- J+f3ekaXSm/N66SOkDsVzxD64A3ZgbL/DsX2/LqQv7wdHAUq4UkO/GflZ/73h2e4mdo1KBG+81p
- hO9s/0pyYUrRW2jmwG3v6ARIFaNoBH6Ju3wsK1x7BrwlNAa/cmfWf+zpFCP31cNqzItpAaD/vmj
- rnFbcDjM5fguMCkTcfW7ehE8MEDpVdbReI/9ND+AaxN/6B+mjslurkJ7rhO2uf97M3+0ym62dhR
- 8erT8ULyLokvmp8+VndR0SSbZsvApO8didwQJ9Ow1mpoM10d/PcYR7V/JiluuJDs/wOMFpg==
-X-Google-Smtp-Source: AGHT+IFdaEOvtaQpJYpqdmQyUnM9VKAKiP5R6Dc+pSThBmK3sAtiPvKWw54V0xmWk7oV7QTfw9vUqQ==
-X-Received: by 2002:a05:6a20:394b:b0:240:489:be9a with SMTP id
- adf61e73a8af0-243d6e0110emr133717637.23.1756503149116; 
- Fri, 29 Aug 2025 14:32:29 -0700 (PDT)
-Received: from [10.118.1.198] (122-150-204-48.dyn.ip.vocus.au.
- [122.150.204.48]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7722a2d2ea5sm3297560b3a.38.2025.08.29.14.32.26
+ AJvYcCUju6FoBz6pjN1e0DmRWfdlaox8fWyJdHr2SFfMAvN1xjkVL+hRjBQH38+20JS2TEq7d6aTT3GFo2Yb@nongnu.org
+X-Gm-Message-State: AOJu0YycW0pwiYXSQvKLgjyqa3+XVCq+YdLKHCr+JWLS9+E7NAla3HjP
+ TN6oukUN/vjcFX6In01xlyvgw9RKmknWbfmuELfeHLmtpvGG8rIpABrZKlCGsbG2xD4=
+X-Gm-Gg: ASbGncvslXrW/UZzgOjL8pV3DMqcxqcruAfFs6IJKrP7LGQi/Swzn2i8DFDvaxTSdzn
+ IA1EUygaE0GiVFo1J8hGxML7uEy3KQwHrUXaWffYKxD6lJaVKjHG4F+R+aZnancxi4HW3ZuKRYF
+ WRRdrfAzfVKlm0HL7nI5bp4GhA6sp4dugGl8ciVf6jUFWXkUiZG2ccqNHKEWrxX7YQ5LiM76mMB
+ eATh3+0IUI7maH+Z1LqQ4efy4M8oNRSgm82ANv7rLz0YKJF2Iakxg/Fbemw+i2mN2eAXHn3KLje
+ iZR8CCCkfUv+odpn9qE2geoXAqIbs3USk2GhcGno/KJ2omgxgGwJBFvkFYcZ62Q5oVBJU8XwCWt
+ QX+0wLSMdN8wNe0jSi68vm4b4znVSdItcoywBIMXquvCew/apWIIoJYzWh3t2e/6BQEvYBghD7m
+ uQu11MHx4=
+X-Google-Smtp-Source: AGHT+IFakS0+rpdNXwjuy99OnKtjmr7VDVR68459dfqHU0uA74HY6b9AVoDIEKT4oM9DmnafVwiOLw==
+X-Received: by 2002:a17:903:3884:b0:246:7a11:3775 with SMTP id
+ d9443c01a7336-24944aec4admr839905ad.48.1756503165447; 
+ Fri, 29 Aug 2025 14:32:45 -0700 (PDT)
+Received: from [10.118.1.198] (122-150-204-179.dyn.ip.vocus.au.
+ [122.150.204.179]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b4cd366f95asm3042215a12.51.2025.08.29.14.32.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Aug 2025 14:32:28 -0700 (PDT)
-Message-ID: <56152a48-0297-4654-9934-7ca17e0e9416@linaro.org>
-Date: Sat, 30 Aug 2025 07:32:23 +1000
+ Fri, 29 Aug 2025 14:32:45 -0700 (PDT)
+Message-ID: <813a9ff0-8979-4fd1-b412-5538688c7965@linaro.org>
+Date: Sat, 30 Aug 2025 07:32:39 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/18] target/ppc: limit cpu_interrupt_exittb to system
+Subject: Re: [PATCH 02/18] target/sparc: limit cpu_check_irqs to system
  emulation
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 Cc: peterx@redhat.com, imammedo@redhat.com
 References: <20250829152909.1589668-1-pbonzini@redhat.com>
- <20250829152909.1589668-2-pbonzini@redhat.com>
+ <20250829152909.1589668-3-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20250829152909.1589668-2-pbonzini@redhat.com>
+In-Reply-To: <20250829152909.1589668-3-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,35 +106,15 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/30/25 01:28, Paolo Bonzini wrote:
 > It is not used by user-mode emulation and is the only caller of
-> cpu_interrupt() in qemu-ppc* binaries.
+> cpu_interrupt() in qemu-sparc* binaries.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   target/ppc/helper_regs.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-> index 7e5726871e5..5f217397490 100644
-> --- a/target/ppc/helper_regs.c
-> +++ b/target/ppc/helper_regs.c
-> @@ -274,6 +274,7 @@ TCGTBCPUState ppc_get_tb_cpu_state(CPUState *cs)
->       return (TCGTBCPUState){ .pc = env->nip, .flags = hflags_current };
->   }
->   
-> +#ifndef CONFIG_USER_ONLY
->   void cpu_interrupt_exittb(CPUState *cs)
->   {
->       /*
-> @@ -285,6 +286,7 @@ void cpu_interrupt_exittb(CPUState *cs)
->           cpu_interrupt(cs, CPU_INTERRUPT_EXITTB);
->       }
->   }
-> +#endif
->   
->   int hreg_store_msr(CPUPPCState *env, target_ulong value, int alter_hv)
->   {
+>   target/sparc/int32_helper.c | 2 ++
+>   target/sparc/int64_helper.c | 2 ++
+>   2 files changed, 4 insertions(+)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-r~
+
 
