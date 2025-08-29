@@ -2,82 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E871CB3CC06
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3183B3CBEF
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:26:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNBd-0006DM-5j; Sat, 30 Aug 2025 11:08:13 -0400
+	id 1usNBo-0006xX-Aq; Sat, 30 Aug 2025 11:08:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uruWE-0003mR-IY
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:31:34 -0400
-Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uruW6-0006t3-V0
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:31:33 -0400
-Received: by mail-yb1-xb2e.google.com with SMTP id
- 3f1490d57ef6-e989adfefeaso163233276.2
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 01:31:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756456282; x=1757061082; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=3w37zfElto3qXoWmipNIx6UAtBzYa8FuYHHoW3jRCjA=;
- b=dElh9l4H1pOdFLEHP1nyf8wDj8Pt8axYdiFtSPqEJjXojjGky8lof9Xy3rjvg3jEUb
- 5PpRhfbPI9WZLXwW2wo9XwMDMiPJMR+3FR+vLonpogeDdE2IvfCbclFckkps/IuWu7iQ
- DEzhVF9rVHMCCay8EWwR+4gvX8x+6bp0v4JTE9Dype5eVE4KFR1mUtNl+yDcVgL370Eb
- /MvKnLpqBjxqnZRYwCMRRwSKYSUm2sqYGgPFQD6AgleRyl57RPy1n5WGM0j3ofd8qMce
- ziWOqxrlVhhJ9ARyJfKDvq5avhaSD95wkf82aOZVnagVQ/bfD0TgaLMFX/plBzZDEb/i
- ollQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756456282; x=1757061082;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3w37zfElto3qXoWmipNIx6UAtBzYa8FuYHHoW3jRCjA=;
- b=MMB188P9PLLx/UmYDwCVulCoVlaSFLn5jFIDob6TlJ1V5kG7NuaFy7NfWcDm5QJ4JB
- uyzLRdcuZ7UqSCife+cRgwfJJ7dDUoCUvuCZBO/gvgVDV/TU88yrZOXSj9uWZX03ZcQl
- uhULWt1e4c19hfnrUk7Zy2LGx+gcUbYo8IXW+9f4dRkwafKmlPO60JEzH1GmhVc4svhs
- FsO8lZ8NvzH/zOi4q7X/mI+w5QbOMPJhRl9Ft6ilxbz6CIFAdTRPKMDVngkdW+KgUK6J
- IBKdVIjWGWUcLSDbo+Vn8NCyidiCFmnpSF6CbVbgGymx8Sw20HBgc7VLeT7EBVgzFLY5
- vQrw==
-X-Gm-Message-State: AOJu0YwL7fNt4Hjp/TLcMX4MG6fKvU0OxkwKIvFTG5TMbnBfuFIAIe5s
- sG9L+mbF/6n5HDY0hqOCAu7IvJRFyti2Jyz5/qRXRxFMCTbT5K2F5Phzh6dKs/ZcMct39h0rxId
- kDGxbywIM9S3ubhRjKO3KI6+hyXDS0IbitFlH4f12ZQ==
-X-Gm-Gg: ASbGncvfs8+QE05i7F5hQRJM9jx8JqA/j0ymDWiy/qgxVSGYMy01R0QdY8LzUw0cBEc
- esdO+C0mrUEGVfwpveqs6WX/cHiidqkrQCIuyp8hHOhDnKwjhEUOGp4NERf+NZS/dbUvZdHJrfl
- HprAwqIObZuBJ8PF1ua/X/hLLNpxCQcqSOzDvSibeuP1L466qVXEsUHIIRcQYGbaBSO3dkOud3H
- BM4khveL6Ab7+hNFqQ=
-X-Google-Smtp-Source: AGHT+IEroBT4Wo4XIuJ6FwD5eKFjNK8yXZkssh/dDq08EOW9XNmYGcclP7RyRx/LPJixTs5Es/GTfn/cJevvrZbbZwE=
-X-Received: by 2002:a05:690c:6001:b0:721:1fda:e328 with SMTP id
- 00721157ae682-7211fdb5f33mr163508527b3.49.1756456282416; Fri, 29 Aug 2025
- 01:31:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uruXE-00048K-4x
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:32:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uruX0-000706-VP
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:32:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756456329;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=FsaiQKyd0g1CH9huElZ/L3wWpKaP1lA41/6YfWyyxLQ=;
+ b=PVVTm2WA0rjWmCJLQ61kFrPayyeni6TyV1364vxACEUGfS/hCY0ZJvR8xvZ/QlSF7526Ta
+ TGTAEr55UhxkK5XpwV7lpv8r1jFSQwhkpAesnZKli6Z5Pje37qaOAhdVu+fyM5VZV4Vmwu
+ KTMS/B7Z4Q/1JVaqrtZgxU/ZsgL6upk=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-114-zTKL4RUqOjWVdE7Hh8-3Dg-1; Fri,
+ 29 Aug 2025 04:32:00 -0400
+X-MC-Unique: zTKL4RUqOjWVdE7Hh8-3Dg-1
+X-Mimecast-MFC-AGG-ID: zTKL4RUqOjWVdE7Hh8-3Dg_1756456320
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B8780195E906; Fri, 29 Aug 2025 08:31:59 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.108])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 1219C19560BC; Fri, 29 Aug 2025 08:31:57 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 0/3] tests/functional: improve handling flaky downloads
+Date: Fri, 29 Aug 2025 09:31:53 +0100
+Message-ID: <20250829083156.2570137-1-berrange@redhat.com>
 MIME-Version: 1.0
-References: <20250828120836.195358-1-richard.henderson@linaro.org>
- <20250828120836.195358-31-richard.henderson@linaro.org>
- <CAFEAcA9AbA4pa9EjOnkmrGMOOC-4nS+FNqni91bfDDkH1wOAbA@mail.gmail.com>
- <fa015de3-3d90-4c2a-9746-0337e53fac89@linaro.org>
-In-Reply-To: <fa015de3-3d90-4c2a-9746-0337e53fac89@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 29 Aug 2025 09:31:10 +0100
-X-Gm-Features: Ac12FXwijQ2tfuvZSYInqz8m8PForKD3F3klDDUOxCOu5MaNsCFRHLUukNHYH0w
-Message-ID: <CAFEAcA8g=1W_CqKSDkpKaYcmqZBYtWf6h77oj7Pdg=KHJNFhAw@mail.gmail.com>
-Subject: Re: [PATCH v3 30/87] linux-user/i386: Create target_ptrace.h
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2e.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,33 +82,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 28 Aug 2025 at 23:14, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 8/29/25 00:42, Peter Maydell wrote:
-> > On Thu, 28 Aug 2025 at 13:09, Richard Henderson
-> > <richard.henderson@linaro.org> wrote:
-> >> +/*
-> >> + * Compare linux arch/x86/include/uapi/asm/ptrace.h (struct pt_regs) and
-> >> + * arch/x86/include/asm/user_32.h (struct user_regs_struct).
-> >> + * The structure layouts are identical; the user_regs_struct names are better.
-> >> + */
-> >
-> > Why do you think the user_regs_struct names are better?
-> > "bx" suggests a 16-bit register, but these are 32-bit, right?
->
-> Mostly I really don't like xds etc.
->
-> > Commit message should say something about why we're changing
-> > the types (though clearly here the target-specific types are
-> > more sensible than the host-specific ones).
->
-> Oops, yes.  There are quite a lot of error across the various target_pt_regs structures
-> that we never caught because they were never used.
+This fixes the functional-system-debian job with the currently
+awol archive.openwrt.org server.
 
-With that,
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+  https://gitlab.com/berrange/qemu/-/jobs/11173491503
 
-thanks
--- PMM
+We can see teh download fail & retry, and then gracefully
+skip pre-cache:
+
+2025-08-29 08:02:16,510 - qemu-test - INFO - Downloading https://archive.openwrt.org/chaos_calmer/15.05.1/realview/generic/openwrt-15.05.1-realview-vmlinux-initramfs.elf to /builds/berrange/qemu/functional-cache/download/d3a01037f33e7512d46d50975588d5c3a0e0cbf25f37afab44775c2a2be523e6...
+2025-08-29 08:04:28,104 - qemu-test - ERROR - Unable to download https://archive.openwrt.org/chaos_calmer/15.05.1/realview/generic/openwrt-15.05.1-realview-vmlinux-initramfs.elf: URL error <urlopen error [Errno 101] Network is unreachable>
+2025-08-29 08:06:39,177 - qemu-test - ERROR - Unable to download https://archive.openwrt.org/chaos_calmer/15.05.1/realview/generic/openwrt-15.05.1-realview-vmlinux-initramfs.elf: URL error <urlopen error [Errno 101] Network is unreachable>
+2025-08-29 08:08:50,248 - qemu-test - ERROR - Unable to download https://archive.openwrt.org/chaos_calmer/15.05.1/realview/generic/openwrt-15.05.1-realview-vmlinux-initramfs.elf: URL error <urlopen error [Errno 101] Network is unreachable>
+2025-08-29 08:08:50,250 - qemu-test - ERROR - https://archive.openwrt.org/chaos_calmer/15.05.1/realview/generic/openwrt-15.05.1-realview-vmlinux-initramfs.elf: Download retries exceeded: skipping asset precache
+
+And then later the test itself is skipped:
+
+55/67 qemu:func-thorough+func-arm-thorough+thorough / func-arm-realview            SKIP              0.11s   0 subtests passed
+
+Daniel P. Berrangé (3):
+  tests/functional: enable force refresh of cached assets
+  tests/functional: fix formatting of exception args
+  tests/functional: handle URLError when fetching assets
+
+ docs/devel/testing/functional.rst   |  3 +++
+ tests/functional/qemu_test/asset.py | 20 ++++++++++++++++----
+ 2 files changed, 19 insertions(+), 4 deletions(-)
+
+-- 
+2.50.1
+
 
