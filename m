@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56573B3CDFB
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8EEB3CCB4
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:13:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNmh-0000II-VL; Sat, 30 Aug 2025 11:46:33 -0400
+	id 1usNmo-0000lq-F7; Sat, 30 Aug 2025 11:46:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7fP-0005w7-DX
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:33:55 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1us7fR-0005wY-Ec
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:33:57 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7fN-0004lB-MJ
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:33:55 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-76e4f2e4c40so2303419b3a.2
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:33:53 -0700 (PDT)
+ id 1us7fP-0004lo-Nz
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:33:57 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-772301f8a4cso1243681b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:33:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756506832; x=1757111632; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756506834; x=1757111634; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+fMdc66z+1eXUdLndIT85qIQpM1j8AYTmXXRdsfc7RE=;
- b=HAu8iDM0jYa5tEIA/Q8YNLxncwMEWL+SK+p205CtHZ0yQOH9/lZ7MstDTMOEVgov3N
- eHinGo5uztPRY05X9iGZoIz2ujKCbMAaqzFnU8mGpWoRqpxrdnbwkVTOsCCdFhQtJYFy
- 3lOXQSrD+Nn3NRtHpQJ/GDFFkEvZ22JOjgRuAtEbAT7GuNkDP4sbr8VqeW8VCd4LlOa/
- Sv/SGXgUqYmSNa458N2q2vt1K30a4f8JTxl6Z0rS/p4I/+zRLuEsk+Q9pEMJV+eNP7eV
- OW91MdhSaM8rMWtHhuaVGPRYR9t96U9tMX4gNqkO7rdqfQXd0ESAVjRteSRBu5QU90IW
- Oy9A==
+ bh=RaHhTTN035qJQGqD9PdDzeeKvrzQJZLWIQNdo5Ia4sA=;
+ b=gBUMcRQGPv1B30v+Z1yVnruEjzfVXAWMd46y2l/QjLN6ErmUiB++yOC2XfBHyIhfcf
+ rHE4RpllK2hKVuyvEZak8o8Nbs3/pbBhXYhypV1zASIWO3NswBJ60TgaVwlhSJIKNjsM
+ JyOetQX/RhkP5uKVqFBmePXSYmJYCOr91TL2ddfY4DecKheMSp1chIeXuGtOcW1tuWIX
+ t4zOVpTwxFIJyGhcY18CP8EtDk8HnmPjbIdxp3hsd7cujle0ofYJ3TJzke4bUW9MZfWS
+ 39OugKfSDkdLUbtyxby8M08htyiv8d5UFuEdwK1MiKJdkjiGFtwWLEMzPllUEad7EZnI
+ GttA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756506832; x=1757111632;
+ d=1e100.net; s=20230601; t=1756506834; x=1757111634;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+fMdc66z+1eXUdLndIT85qIQpM1j8AYTmXXRdsfc7RE=;
- b=MVU/iBCxlkZH1W/JaYH4HPoVt9h9jUInrY5uB5DDz7h+Ml+x7E61IU3xn6NjzwlHJu
- fm4iW+SP1UmDIZojiaQyG3cOAhbVYRi0UfpdGLmDLwyyimvGD1uFP3iJ7D7XgMhtshh0
- n+WVUQT6hBoCYjKWyrvf3yZRi6adiB92Dw7WAejXYH9ozIKAHWYrJok3YydTU+ZAHg9G
- DxZvo7+EWAowz+VMFatRNoDy9nNkRi6f4dRNo42cZ5Ajs3Jt6HCYElMDQGnAhF/Ftm07
- RgY3rtxq/PKAmW9ET/vqkdesSEYCDgIPn8b+7J6hb5aox+sMncK1LoK/LMNr5scbJdA2
- 7w2g==
-X-Gm-Message-State: AOJu0YwynTLua7hVBnVBHTHHeyGgbxpuGwH9q5gQXzA+7Z9PCWE5tAo5
- sSjA680ZVumDi5PJY/92npZXvxLcUaniCBENUdKGzotAyzxHCcfckzBPVEWAIjOCH5Zi/r65yrS
- j2XB/R7E=
-X-Gm-Gg: ASbGncveRN4dsjCBssqW/zGu2WZW4PptsFQ+SOPnyyumdZHwn78c2rUumGUOBUjKxi1
- CgiQ5QOXZYOnQeZq+kiWCgadd9JFpiAIZW9rPtOOEosR7zeusNaJzvLHXTzZ/XPkdP0Lnua8Dyu
- qPJfPsUbu+8zwsQqLg0yQyMSH04PlDOPlQtnVoyLrBahIdt+iGryk9DJbF9ouS+1ZZM9aV/q1m1
- R0mGZb/cUn0JJX3gURK5Zthq+ALVGCRiZ3Rr8luFazRbZ20+jdn/zU80rR6PxLmszpCx/DRVOD7
- Cdlo4levD9iFxqaZ7d2sBJjYdpaAIa9H/fg6l5cqBrT+5chJq/hl0lbdbe3x32QkIsXOBZDjWBa
- cwAPUC4ae85F4WQA0/FVjw7z2tD58PQ1aYMFAHIx1saAyon0sZ6HoNR2B3fyO
-X-Google-Smtp-Source: AGHT+IFpRBdEX9Yv/4QZkNROckNsLzQmKMPuN0vO4L3eMt8Ze280X7zxJ5Px6ETw7WPsfYEzTdhlnQ==
-X-Received: by 2002:a05:6a20:938e:b0:243:969d:a7f2 with SMTP id
- adf61e73a8af0-243d6f42133mr316867637.45.1756506832043; 
- Fri, 29 Aug 2025 15:33:52 -0700 (PDT)
+ bh=RaHhTTN035qJQGqD9PdDzeeKvrzQJZLWIQNdo5Ia4sA=;
+ b=la9g2YU3JGU3zUPdKh+uxapgl72U/1EM80SD0o2A6TxkVDN2C306xFnAsE/D4OY7gd
+ Y0zSpsYirIqx23st/TqXc1CHR8SPvjkzkQvjkCBvZTBdy+AzPFDsKFR6wOb2L3IxRZ4s
+ ZTXe8h0E7PUFb5A9dC2g1xD4r4/fRiqx7zb/ie11eV2RxaLcig6zaNpmFrFilwtPdwQs
+ npUgTq735CcuOARmKlAUPh/KT3xD1Cug6NMP/GU3xwmpOAv0c0buOuO7hHMvzDzO9zzn
+ by6bMwnrZwqrYJBoPNz8/BvzAHRW62sKeA2dVeaJCrmh86Uj9jxEDbA5K2dtrxmeBNvI
+ Sv0w==
+X-Gm-Message-State: AOJu0YzrJMyRJArBw4Rl0lUIggamP38S6TJHRl+ZiIbTc1wa3183ZO+U
+ xl+rwsLS06XiW9vXMCy8QVjkowdX3sT7awlumrCccXdMeLH8LWSzUTjg8RbQoKfsRFbL+37M/Uy
+ GPswk1To=
+X-Gm-Gg: ASbGnctZzvElyR2Ipu9XZba8k7Y0XrC6JbjJJkJyoDarXHxoq/+sMeCd41BlR1nCkeS
+ HDp3UL5DY21aFBvb2rmnL9WnrVYwk5eaFT2ZVU2Dp6k9fJcYWG+ykcqbU+z9Q3+hXIYnTWqYhUQ
+ qsg5FmPBIk8q3xI92JaaMWD9SuSt4dB7L7AXVNZ2Qw0YByWYk84sWPEp6Xx85bma4rCenISmFUl
+ nsX3IjCqv6Tuto8TVWvVwGzCPSqBWbYi73g2Lf7X2IXOBh/s5iyRgpOFMvlqSxakf3jAxLH7PX3
+ 3MZ3kxbONFxka9CDDuk9pkrKcHM3O1il2E1HuGF5tYLvm3JziCR36wLNGg3cWeYiie85B4ORfqk
+ fY+KfbzukirSXuw/H3zQ7nl8XmpLPohN5OfuWIMb4MMoIYR32vjKFN93LLiJ1
+X-Google-Smtp-Source: AGHT+IGmseJGsTd0zgn/XlqafGxQhicGY1B7D+KmUsouVID7LDnS4KSLPcdeCXcFeFkpbCkJoJPXlA==
+X-Received: by 2002:a05:6a00:2e08:b0:76b:f8ee:4eaa with SMTP id
+ d2e1a72fcca58-7723e24ff0cmr277132b3a.9.1756506834292; 
+ Fri, 29 Aug 2025 15:33:54 -0700 (PDT)
 Received: from stoup.. (122-150-204-12.dyn.ip.vocus.au. [122.150.204.12])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7722a269f27sm3449728b3a.12.2025.08.29.15.33.50
+ d2e1a72fcca58-7722a269f27sm3449728b3a.12.2025.08.29.15.33.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 15:33:51 -0700 (PDT)
+ Fri, 29 Aug 2025 15:33:54 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 81/91] linux-user: Move elf parameters to hppa/target_elf.h
-Date: Sat, 30 Aug 2025 08:24:17 +1000
-Message-ID: <20250829222427.289668-82-richard.henderson@linaro.org>
+Subject: [PULL 82/91] linux-user: Move elf parameters to xtensa/target_elf.h
+Date: Sat, 30 Aug 2025 08:24:18 +1000
+Message-ID: <20250829222427.289668-83-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250829222427.289668-1-richard.henderson@linaro.org>
 References: <20250829222427.289668-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,49 +101,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/hppa/target_elf.h |  6 ++++++
- linux-user/elfload.c         | 11 -----------
- 2 files changed, 6 insertions(+), 11 deletions(-)
+ linux-user/xtensa/target_elf.h | 3 +++
+ linux-user/elfload.c           | 7 -------
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/linux-user/hppa/target_elf.h b/linux-user/hppa/target_elf.h
-index b654758afa..9b6363a0a7 100644
---- a/linux-user/hppa/target_elf.h
-+++ b/linux-user/hppa/target_elf.h
-@@ -8,8 +8,14 @@
- #ifndef HPPA_TARGET_ELF_H
- #define HPPA_TARGET_ELF_H
+diff --git a/linux-user/xtensa/target_elf.h b/linux-user/xtensa/target_elf.h
+index 850a7206a5..0689e79be5 100644
+--- a/linux-user/xtensa/target_elf.h
++++ b/linux-user/xtensa/target_elf.h
+@@ -10,6 +10,9 @@
+ 
+ #include "target_ptrace.h"
  
 +#define ELF_CLASS               ELFCLASS32
-+#define ELF_ARCH                EM_PARISC
++#define ELF_ARCH                EM_XTENSA
 +
- #define HAVE_ELF_PLATFORM       1
+ #define HAVE_ELF_CORE_DUMP      1
  
- #define LO_COMMPAGE             0
-+#define STACK_GROWS_DOWN        0
-+#define STACK_ALIGNMENT         64
-+#define VDSO_HEADER             "vdso.c.inc"
- 
- #endif
+ /*
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 6e476d5308..6732011332 100644
+index 6732011332..804a819471 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -130,17 +130,6 @@ typedef abi_uint        target_gid_t;
+@@ -130,13 +130,6 @@ typedef abi_uint        target_gid_t;
  #endif
  typedef abi_int         target_pid_t;
  
--#ifdef TARGET_HPPA
+-#ifdef TARGET_XTENSA
 -
 -#define ELF_CLASS       ELFCLASS32
--#define ELF_ARCH        EM_PARISC
--#define STACK_GROWS_DOWN 0
--#define STACK_ALIGNMENT  64
+-#define ELF_ARCH        EM_XTENSA
 -
--#define VDSO_HEADER "vdso.c.inc"
+-#endif /* TARGET_XTENSA */
 -
--#endif /* TARGET_HPPA */
--
- #ifdef TARGET_XTENSA
+ #ifdef TARGET_HEXAGON
  
  #define ELF_CLASS       ELFCLASS32
 -- 
