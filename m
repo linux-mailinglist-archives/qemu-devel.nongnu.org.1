@@ -2,88 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3CBB3CBE5
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF5DB3CBA4
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:05:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usN82-0001Ek-6b; Sat, 30 Aug 2025 11:04:30 -0400
+	id 1usN8O-0001bI-KU; Sat, 30 Aug 2025 11:04:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1urtFr-0001pP-3r
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:10:35 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1urtFo-00068B-Lw
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:10:34 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3c79f0a604aso1034410f8f.2
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 00:10:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756451431; x=1757056231; darn=nongnu.org;
- h=mime-version:message-id:in-reply-to:references:user-agent:subject
- :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=3SfAhpm2rDnUQTvWWcdJPIX/eqB0cKtOdaFTIpbozSI=;
- b=WXZ6hghWMVOIi8UnegCMloI/3g07ZVuidvm1TpT1p7/2nU5/AIkMPZrwuXBxMs2W5A
- rYvibrUxvpH+sVcrGZ2Jgucb5BSa0WqxpLmkK0IZSqBTARcBRYQGViC2ee6PfDRToQZt
- GG4hJgICwyx+ksyNKW0n0P+3bHuLxQC4/11MpUTIzeMSeliWY5VtNioyDLouZhQyleFO
- dirIuySpD99xReSP8Wl9XULcJOIwpsrWai8WSZRwNqNgd+Q9m5kWSkXiYwzTd85erAkO
- 9ZUnZbm2tUiKzONb3VbuF49F0p5UOdM5gdhCxhCrNaONM3qyf6A70hwVC71X+4zTMec+
- Lswg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756451431; x=1757056231;
- h=mime-version:message-id:in-reply-to:references:user-agent:subject
- :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3SfAhpm2rDnUQTvWWcdJPIX/eqB0cKtOdaFTIpbozSI=;
- b=JweEftet0GsFcPNtyn383E4Ga7PPNPlYi1IPcsa+TXDHnuDsbpU0L3XLB1W+ApbWck
- SMz6JYomZxraHhUMUQbpbCvpbKwADkCPLvW8uBn9VdtgDeKLbWlX3T1prOz0peGl44F1
- u3zKlV+ADoLf5Ws28MlYQ1ehrmcRir9c24C6HOswU8uZUr32jDAYjhSMOUfAEx35ecuK
- MDxBgOMhbx1AooDSzmwJAIEbBYbeYaXO6O4CRo5mF1pfm3oubzOPV2sTbjQeLj5zj703
- cX15UtKq3940vXAAodwbqu0knefts6kNEEAf3BtIusP3vC8e6GtA351wR69Ar4FKlg5e
- ji3w==
-X-Gm-Message-State: AOJu0YyRSRAo2/1UlS2UmHnbtQFOnfgEQkckneCS95ulopxEeG94RQ4e
- YUBSiK7DS29xTRMzMRVdRP2DZuKag03MOwkLDh7oDjNxKm8qe0fcftPvfL0Kxovd5J4hsT3jc2l
- RFZOI6zE=
-X-Gm-Gg: ASbGncu2ftiDDNdMWuvaIoN6NJadlyi19cAd3+5HwcjBrMON0Y4aIjLycvVlGbDsMWn
- An+vBeUNx192E+2cy7AsWPKn/O4pN/x7T9/hdwvWSEtEbgqaIgarkl/ACXxjez155kkrdeTONJ3
- EqgdHAaVSKNJhvCGrAqSvdKxYeiCUh+bXdMTPNhuorQzjYcbXUY0i9ttipSz0lzKF6RepKJ1Tqy
- ASkT8ArD1MMhrcHU6HAP0ico8LrAf7vMqLzg3yTkJ9Z/+XXsGlDek1ucF0LmHBzVFOql8ajQ5nA
- C9dTMnF6VDolZAx7KyVXb0uGIRI8L2XAqxSDaisE5Y9qGx0EDlmv6Cdh0hICnuwUgShcO5d9raI
- N5JfxxQvpBX9Zl+kHVGYAT9jtWboqVURahSnEGXkVmQO+Wl+n9nznj8FWZWUVNTS3E7U+VDrd
-X-Google-Smtp-Source: AGHT+IFK36lwlKSoEmc63X8TbS19ARyne73+PWAs0EimtbmjP48i8m8qlcPegrqKpj8chbLFIK+oOg==
-X-Received: by 2002:a05:6000:2005:b0:3cd:e7de:c51e with SMTP id
- ffacd0b85a97d-3cde7dec787mr3831520f8f.61.1756451430904; 
- Fri, 29 Aug 2025 00:10:30 -0700 (PDT)
-Received: from meli-email.org (athedsl-4441256.home.otenet.gr.
- [79.129.180.152]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b6f306c93sm105638735e9.14.2025.08.29.00.10.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 00:10:30 -0700 (PDT)
-Date: Fri, 29 Aug 2025 10:09:59 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-arm@nongnu.org
-Subject: Re: [PATCH 13/61] target/arm: Restrict the scope of CPREG_FIELD32,
- CPREG_FIELD64
-User-Agent: meli/0.8.12
-References: <20250827010453.4059782-1-richard.henderson@linaro.org>
- <20250827010453.4059782-18-richard.henderson@linaro.org>
-In-Reply-To: <20250827010453.4059782-18-richard.henderson@linaro.org>
-Message-ID: <t1qulh.2tel69iq06l3d@linaro.org>
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1urtHm-0002Yh-Oy
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:12:35 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1urtHi-0006R2-R2
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 03:12:34 -0400
+Received: from loongson.cn (unknown [10.20.42.126])
+ by gateway (Coremail) with SMTP id _____8BxWNHSUrFor3wEAA--.9142S3;
+ Fri, 29 Aug 2025 15:12:18 +0800 (CST)
+Received: from [10.20.42.126] (unknown [10.20.42.126])
+ by front1 (Coremail) with SMTP id qMiowJDxrcHPUrFoJyxwAA--.64494S3;
+ Fri, 29 Aug 2025 15:12:17 +0800 (CST)
+Subject: Re: [PATCH] hw/loongarch/virt: Fix the cpu hotplug issue
+To: Bibo Mao <maobibo@loongson.cn>, qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20250829013243.1237107-1-lixianglai@loongson.cn>
+ <34bc7ebf-4a7e-d2f8-65de-529ef658be49@loongson.cn>
+From: lixianglai <lixianglai@loongson.cn>
+Message-ID: <a2825117-0fc1-1f5a-8128-d322ce94de06@loongson.cn>
+Date: Fri, 29 Aug 2025 15:11:07 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <34bc7ebf-4a7e-d2f8-65de-529ef658be49@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: qMiowJDxrcHPUrFoJyxwAA--.64494S3
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxJw43uFykXryDGw4xCF18CrX_yoWrWr1fpr
+ WkAF1UJrWUCrn7Z39rG345uFyDJr13K3ZxWF17tFW0kr4DXr1jqr1jvwnFgF1UAw48WF18
+ Zr1kZw17ZF43ZrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
+ 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+ wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
+ 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+ xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+ 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU24SoDUUU
+ U
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.357,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,68 +82,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 27 Aug 2025 04:04, Richard Henderson <richard.henderson@linaro.org> wrote:
->Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->---
+Hi Bibo Mao:
+>
+>
+> On 2025/8/29 上午9:32, Xianglai Li wrote:
+>> The hot-plugged cpu does not register the cpu reset function, so the cpu
+>> plugged in later cannot reset properly, and there will be problems when
+>> restarting.
+>>
+>> Now register the cpu reset function in the cpu hotplug callback 
+>> function.
+> Oh, it is actually one problem and it is missing :(. There is similiar 
+> patch posted at:
+>
+> https://lore.kernel.org/qemu-devel/20241031065418.3111892-1-maobibo@loongson.cn/ 
+>
+>
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+This patch seems more reasonable. Please ignore the patch I currently 
+submitted,
+Hope it will be merged in soon.
 
-> target/arm/cpregs.h |  9 ---------
-> target/arm/helper.c | 12 ++++++++++++
-> 2 files changed, 12 insertions(+), 9 deletions(-)
+Thanks!
+Xianglai.
+
+> I prefer to adding cpu reset in CPU object realize function rather 
+> hotplug handler, and executing reset_load_elf() in board specific
+> reset callback. However peter has different thoughts.
 >
->diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
->index b610716c24..812fb1340a 100644
->--- a/target/arm/cpregs.h
->+++ b/target/arm/cpregs.h
->@@ -991,15 +991,6 @@ struct ARMCPRegInfo {
->     CPAccessFn *orig_accessfn;
-> };
-> 
->-/*
->- * Macros which are lvalues for the field in CPUARMState for the
->- * ARMCPRegInfo *ri.
->- */
->-#define CPREG_FIELD32(env, ri) \
->-    (*(uint32_t *)((char *)(env) + (ri)->fieldoffset))
->-#define CPREG_FIELD64(env, ri) \
->-    (*(uint64_t *)((char *)(env) + (ri)->fieldoffset))
->-
-> void define_one_arm_cp_reg(ARMCPU *cpu, const ARMCPRegInfo *regs);
-> void define_arm_cp_regs_len(ARMCPU *cpu, const ARMCPRegInfo *regs, size_t len);
-> 
->diff --git a/target/arm/helper.c b/target/arm/helper.c
->index 35a176ea3b..3a9d8f0ddc 100644
->--- a/target/arm/helper.c
->+++ b/target/arm/helper.c
->@@ -51,6 +51,15 @@ int compare_u64(const void *a, const void *b)
->     return 0;
-> }
-> 
->+/*
->+ * Macros which are lvalues for the field in CPUARMState for the
->+ * ARMCPRegInfo *ri.
->+ */
->+#define CPREG_FIELD32(env, ri) \
->+    (*(uint32_t *)((char *)(env) + (ri)->fieldoffset))
->+#define CPREG_FIELD64(env, ri) \
->+    (*(uint64_t *)((char *)(env) + (ri)->fieldoffset))
->+
-> uint64_t raw_read(CPUARMState *env, const ARMCPRegInfo *ri)
-> {
->     assert(ri->fieldoffset);
->@@ -71,6 +80,9 @@ void raw_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
->     }
-> }
-> 
->+#undef CPREG_FIELD32
->+#undef CPREG_FIELD64
->+
-> static void *raw_ptr(CPUARMState *env, const ARMCPRegInfo *ri)
-> {
->     return (char *)env + ri->fieldoffset;
->-- 
->2.43.0
->
->
+> Regards
+> Bibo Mao
+>>
+>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+>> ---
+>>   hw/loongarch/boot.c         | 8 +-------
+>>   hw/loongarch/virt.c         | 4 ++++
+>>   include/hw/loongarch/virt.h | 1 +
+>>   3 files changed, 6 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+>> index 14d6c52d4e..6bc1f3d50c 100644
+>> --- a/hw/loongarch/boot.c
+>> +++ b/hw/loongarch/boot.c
+>> @@ -324,7 +324,7 @@ static int64_t load_kernel_info(struct 
+>> loongarch_boot_info *info)
+>>       return kernel_entry;
+>>   }
+>>   -static void reset_load_elf(void *opaque)
+>> +void reset_load_elf(void *opaque)
+>>   {
+>>       LoongArchCPU *cpu = opaque;
+>>       CPULoongArchState *env = &cpu->env;
+>> @@ -429,12 +429,6 @@ static void 
+>> loongarch_direct_kernel_boot(MachineState *ms,
+>>   void loongarch_load_kernel(MachineState *ms, struct 
+>> loongarch_boot_info *info)
+>>   {
+>>       LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
+>> -    int i;
+>> -
+>> -    /* register reset function */
+>> -    for (i = 0; i < ms->smp.cpus; i++) {
+>> -        qemu_register_reset(reset_load_elf, 
+>> LOONGARCH_CPU(qemu_get_cpu(i)));
+>> -    }
+>>         info->kernel_filename = ms->kernel_filename;
+>>       info->kernel_cmdline = ms->kernel_cmdline;
+>> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+>> index b15ada2078..71f8ddc980 100644
+>> --- a/hw/loongarch/virt.c
+>> +++ b/hw/loongarch/virt.c
+>> @@ -1013,6 +1013,8 @@ static void virt_cpu_unplug(HotplugHandler 
+>> *hotplug_dev,
+>>       /* Notify acpi ged CPU removed */
+>>       hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->acpi_ged), dev, 
+>> &error_abort);
+>>   +    /* unregister reset function */
+>> +    qemu_unregister_reset(reset_load_elf, cpu);
+>>       cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
+>>       cpu_slot->cpu = NULL;
+>>   }
+>> @@ -1037,6 +1039,8 @@ static void virt_cpu_plug(HotplugHandler 
+>> *hotplug_dev,
+>>                                &error_abort);
+>>       }
+>>   +    /* register reset function */
+>> +    qemu_register_reset(reset_load_elf, cpu);
+>>       cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
+>>       cpu_slot->cpu = CPU(dev);
+>>   }
+>> diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+>> index 602feab0f0..15ea393386 100644
+>> --- a/include/hw/loongarch/virt.h
+>> +++ b/include/hw/loongarch/virt.h
+>> @@ -71,6 +71,7 @@ struct LoongArchVirtMachineState {
+>>   OBJECT_DECLARE_SIMPLE_TYPE(LoongArchVirtMachineState, 
+>> LOONGARCH_VIRT_MACHINE)
+>>   void virt_acpi_setup(LoongArchVirtMachineState *lvms);
+>>   void virt_fdt_setup(LoongArchVirtMachineState *lvms);
+>> +void reset_load_elf(void *opaque);
+>>     static inline bool 
+>> virt_is_veiointc_enabled(LoongArchVirtMachineState *lvms)
+>>   {
+>>
+
 
