@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9268AB3CC53
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:53:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C638B3CC5F
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:54:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNF8-0005bc-R0; Sat, 30 Aug 2025 11:11:50 -0400
+	id 1usNFY-0006Sx-Bz; Sat, 30 Aug 2025 11:12:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1urwyB-0008Us-Pd
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1urwyF-00004q-4G
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1urwyA-0001iW-54
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:35 -0400
+ id 1urwyC-0001j8-VF
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756465713;
+ s=mimecast20190719; t=1756465715;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TDTBE92ZFAr7EyIfri2Q8TbKCHTFGHvD8rELbKaLqTg=;
- b=SW7sixZ1JdFaZGEV52lQ71VxPvzt+HEE0mtgv8nNhAEZ4Ef/e6K7WofTpiD1crp7T4Y/BW
- oXAZxSV6vwUVnSZ7ScQd/rHIIGy4B5K2z5mePAUWQFEFGGCoNit1L/k3GLc8l8QtZ7aE+P
- u7KGMD1P6555ElI/ThdU9ADhgvB9wsw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=PGvG/LGRqC2htS89N6HiSrot7Fa5WLiu5iEYx6qvNzE=;
+ b=JbLQ5TxjY/88CNw39AgLr0tJUiV7gTVLDNcB/PIqhMOEkKjuHyD5PActzrJwkPmn6o8oSt
+ aTLTgT/8/C9uNn1OxpFgAMTdLGAer5UukFvfqE7VHQVkJe1/OWpzWFqFuXtpxCMn3Uqvjf
+ k5cVFAm9UXvCgx4oaSq8w8gJpU5i60M=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-310-RjWja18jOvabRvHJPs3g8Q-1; Fri,
- 29 Aug 2025 07:08:30 -0400
-X-MC-Unique: RjWja18jOvabRvHJPs3g8Q-1
-X-Mimecast-MFC-AGG-ID: RjWja18jOvabRvHJPs3g8Q_1756465709
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-PR4zvEojM8O3YlsnkE_wkQ-1; Fri,
+ 29 Aug 2025 07:08:32 -0400
+X-MC-Unique: PR4zvEojM8O3YlsnkE_wkQ-1
+X-Mimecast-MFC-AGG-ID: PR4zvEojM8O3YlsnkE_wkQ_1756465711
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0C820195608F; Fri, 29 Aug 2025 11:08:29 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 17278195C27E; Fri, 29 Aug 2025 11:08:31 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.225.62])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6414A30001B5; Fri, 29 Aug 2025 11:08:27 +0000 (UTC)
+ id 8349E30001B5; Fri, 29 Aug 2025 11:08:29 +0000 (UTC)
 From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 5/9] qga: Fix channel initialization check in run_agent_once
-Date: Fri, 29 Aug 2025 14:08:09 +0300
-Message-ID: <20250829110813.50286-6-kkostiuk@redhat.com>
+Subject: [PULL 6/9] qga: ignore channel_init() fail if 'retry_path' is set
+Date: Fri, 29 Aug 2025 14:08:10 +0300
+Message-ID: <20250829110813.50286-7-kkostiuk@redhat.com>
 In-Reply-To: <20250829110813.50286-1-kkostiuk@redhat.com>
 References: <20250829110813.50286-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,27 +82,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Windows, we run QGA with `-d --retry-path` options by default,
+and expect that QGA will start even without the vioserial driver
+and will wait for communication forever.
+
 Reviewed-by: Yan Vugenfirer <yvugenfi@redhat.com>
 Reviewed-by: Michal Privoznik <mprivozn@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250825140549.146617-2-kkostiuk@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250825140549.146617-3-kkostiuk@redhat.com
 Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 ---
- qga/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qga/main.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/qga/main.c b/qga/main.c
-index 6c02f3ec38..a1bf8f53ac 100644
+index a1bf8f53ac..dd1c216f9a 100644
 --- a/qga/main.c
 +++ b/qga/main.c
-@@ -1563,7 +1563,7 @@ static void cleanup_agent(GAState *s)
- static int run_agent_once(GAState *s)
- {
-     if (!s->channel &&
--        channel_init(s, s->config->method, s->config->channel_path,
-+        !channel_init(s, s->config->method, s->config->channel_path,
-                      s->socket_activation ? FIRST_SOCKET_ACTIVATION_FD : -1)) {
-         g_critical("failed to initialize guest agent channel");
-         return EXIT_FAILURE;
+@@ -1512,8 +1512,12 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
+ 
+     if (!channel_init(s, s->config->method, s->config->channel_path,
+                       s->socket_activation ? FIRST_SOCKET_ACTIVATION_FD : -1)) {
+-        g_critical("failed to initialize guest agent channel");
+-        return NULL;
++        if (s->config->retry_path) {
++            g_info("failed to initialize guest agent channel, will retry");
++        } else {
++            g_critical("failed to initialize guest agent channel");
++            return NULL;
++        }
+     }
+ 
+     if (config->daemonize) {
 -- 
 2.50.1
 
