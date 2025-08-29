@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9491CB3CE94
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 20:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D97E4B3CC90
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:02:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNk0-0007oU-8B; Sat, 30 Aug 2025 11:43:44 -0400
+	id 1usNk4-00084C-8M; Sat, 30 Aug 2025 11:43:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7bI-0004PE-6c
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:29:40 -0400
+ id 1us7bJ-0004Pv-OM
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:29:41 -0400
 Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7bG-0003bR-76
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:29:39 -0400
+ id 1us7bH-0003c3-FH
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:29:41 -0400
 Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-770530175b2so2070039b3a.3
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:29:36 -0700 (PDT)
+ d2e1a72fcca58-77238cb3cbbso566920b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:29:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756506575; x=1757111375; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756506578; x=1757111378; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/S/XybhJsScwh2XgsdTT+la9BSjFbURn2C6teEPj7h4=;
- b=YKFWkli/D6KfQLbG+XySZQ+LbVkIzCqbv5THd13TA10pY8mF4wlEAQ7JEHrQEqGHdI
- GRTRRluBYzrnsW/N36kmlGHLlvxyGraQQy/Vlx9PNHt9eqvEXeBYoeaVT2k5/oATcwlX
- PISwfM3vS3HDnU2M2ovtAB62iwCCF9ow9iuZv59I9XruuWtsIi64tUnWyZnxvJWUaVKD
- VhbvlKwvr3TCbheet+Mn+tmk8wD/OkM+flLkHWp1mHR+WzUwzJZgptslX3Lg7Gzm9JZC
- qVJ9Rm2Ffh3HhEwyqm0rmUA7UA9V9i1/h1SX/kSCngLjR/gSTNStkf1P9FiUe7WAw9Dj
- M41g==
+ bh=hEu/Jd/KzuMLh+1O07NzkMG0vtLdDubGRA+9tMz/IuQ=;
+ b=zAydEpOQW1gq4nOnjJfAiXX+HotuKYzS2jb1nyQOA4eyx03o+jIJFj4NO9I/3NQJxs
+ hyb840dWO7HVHiAf4Bk0KMIPcH93TLtCNbXGDW7IH/sh5/5H3hoFALxdfnXNz7b45dWu
+ S7tibfWPHDE3lSqj1BNwLjTb3PyUPdXDJKYLHuoaLotyqdy7rafDGHOrx3voX5X62ent
+ +xnxNTry1OsC5Zl9CpC69wXJQqvfSWMFy43xWDZP6HGIO+vaK0W54YOgX0GftoDsOIoy
+ /OuYeJrut+PmCsYyHIfCvR8sav5wzs3bB5UXmANijFQkg6HPL66WP5Woj20MxyO6vH8M
+ v8uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756506575; x=1757111375;
+ d=1e100.net; s=20230601; t=1756506578; x=1757111378;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/S/XybhJsScwh2XgsdTT+la9BSjFbURn2C6teEPj7h4=;
- b=Vvw8osPwPKRe6c7rXQ+wCzqnq/aeVl01FMfiUeBvfeJbIbo84elKbhnsyiDL7SR1hc
- zL/L9XbLHIYP0myyIWCCRwCA1IbmNIQzR4iXzps9QJ/xiKkTsYYEpdPXGAsKvnu9z52x
- +rt07Imn5hfNzn13JTOLu0r0xEszjd89leTm2HTcDlERh9uZsG3s6RzCzLNMaRKHT4aC
- MuG3/RlcGfWqj3hr2wwbD3En3H8FfdryRTJx/SBQVPzcxJ4pa1JFuIenLf3eAF/qc3CY
- rsSaSB1BdvLfrdD5crnIZ+Pi1KrtohpQjYqooBEWF53mvcmid8T4HDOCEPZjD5AwMXmM
- WFJg==
-X-Gm-Message-State: AOJu0Yxi6hFPXUjYfMXkKq3PEGocOWJ13suBjD+ADkSb/TQCoPqfkL0Z
- Caji3ca3d80l6S5enVV55rHoqJQHlJZGHrxdZoy5C1FkgsrlAe93K4ro5k5XOfWQLdzTT6LqO2s
- Fa0Uujsg=
-X-Gm-Gg: ASbGnctl/jpAqQxy8+s6ySjiWxpBRUDjpJ1GJrdD6iovCSnWnjs4psBibCrg3RoBRCQ
- YQ73Gd9xi6ZmeuJfVU2okQuY9tPrCjA4LdIf30Qa8xogKWRNG6Dz8IGY/ESYdhrgnX6xM/2pZw8
- ugoaNXJxXv5da31jdIPM9jo2cBeFf3oFHD/k27TRtwDKEWYWTNLvN2kh7LkHHwH+bSxl9wGoo7E
- GI3/2T1DG+wfaedb+SSnAnVicRPSv0Su6tyNDqTQ0rLxKo4eHwEmn62oiXA+CqDlptosfYwsmTq
- ZsHarccZ3yWJpcWnaCYwdVf1u8JZ8209/LStpeaW/tvP4q/Rz8UQEoO72jCb+1Q3IQMVDR8aAis
- m8mL9Y6JhVjYHXJkZo+s7o2+65yf+UDisMOPUQXCa8R4aAY+qZBTi+862/TpSc5Y=
-X-Google-Smtp-Source: AGHT+IE010/6CsZCWu/yw5UNWPL1a3KMm+cdGEcmI7MFkFMtvwT/WSr+ZlZgWNhtjTuvteb/AJjRzQ==
-X-Received: by 2002:a05:6a00:23ca:b0:770:57c4:e959 with SMTP id
- d2e1a72fcca58-7723e22d449mr271737b3a.9.1756506575503; 
- Fri, 29 Aug 2025 15:29:35 -0700 (PDT)
+ bh=hEu/Jd/KzuMLh+1O07NzkMG0vtLdDubGRA+9tMz/IuQ=;
+ b=GSP4TEXNom52tXv50r7zv1Z/LoNQcxf3A/kGTinKQAwh537KHl4OqqB8ydalPIZ4PC
+ t3FoKpU8uW4AkliNk1VQDkxRfITrzB9d2ifEyq+DWaRzGWfvwqdPBXALK82o1jtSsS8F
+ jSvq1Gcgfnr5EbZTLpGb0T5RTe/vdnBqOH5viN7BWVplFOquqnAGlZdryB1Eh+vV6sj2
+ 5rjJ7At9H5GGXCx0+THp2l4EllxM/cngygJ0AisUb4xqJ9aONODUYzmE5wujGgBntdr3
+ AI0YnPXBjVKHr+G9dzFh0FWsFZ8K8wr0TP1rC1Swvo+oWZeqi4WecdmcxYbrmR0z4A1v
+ 2HEQ==
+X-Gm-Message-State: AOJu0YxgK5Qwa0jiP8kJrPrx1Vz65tu+BAUZGD10YgIv1ZvseH9y0KtN
+ tjz/aTTScejmbQOsWueRljvpNdCZaLFIQY5pqz2JLjUeqzBvxY7d4iEvfDDUPp/w+cC6MgDOzQg
+ gufCjkB4=
+X-Gm-Gg: ASbGncuN7B8pLAQQtJFSYccg+I5R0JR8YBoZPCTbjFbYhKc/uw7QaAjj0Bhl/yZ6X9p
+ qECUCR5M2mYf+qRQN+E8FaP1kPHReygRxFlH+DqYFnR2sK1x1wt3HqlFMKF27I4gnAN/LBBBpqh
+ SPvZN6CGqE2xW7Jba6sOdNFnfDlM9Rp95sQTanAmL+TZsXvTvfmoUYm7TGZyIni+vk6D0a8Ln9A
+ McWHOSwFjAwxsKZHT3fpia6Meh+FjXml6u6IZNFE79lwTK+01M64eRnvm6bALbu6Tg5z9JFfS9E
+ DHHELrxWIgXBRpK6fiqRfeBMGS7pJqQUhJDhGnY7OSQt+HPMVIDYtB7NKjzAco8uwQjW40UvcLP
+ 41Ce/mifKHBpEHBEFt5wWH3EYJeyypyCsjcRWObrvep6k/XY0Lu6U+C6XOa1/WL7k0psJoUmOAM
+ 2zyOwX2Bik
+X-Google-Smtp-Source: AGHT+IHQ9xcNrneHa9ylxk59nTdyuFRCRmYWLC3rdyfVR4/RTPM355ZvaQudYLw7z9OvZpzXQGN0gA==
+X-Received: by 2002:a05:6a00:390c:b0:76e:8cf4:7bc4 with SMTP id
+ d2e1a72fcca58-7723e3c8c40mr233123b3a.26.1756506577893; 
+ Fri, 29 Aug 2025 15:29:37 -0700 (PDT)
 Received: from stoup.. (122-150-204-179.dyn.ip.vocus.au. [122.150.204.179])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7722a4bb5dasm3364297b3a.55.2025.08.29.15.29.33
+ d2e1a72fcca58-7722a4bb5dasm3364297b3a.55.2025.08.29.15.29.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 15:29:35 -0700 (PDT)
+ Fri, 29 Aug 2025 15:29:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 50/91] linux-user/mips: Use target_ulong for target_elf_greg_t
-Date: Sat, 30 Aug 2025 08:23:46 +1000
-Message-ID: <20250829222427.289668-51-richard.henderson@linaro.org>
+Subject: [PULL 51/91] linux-user/openrisc: Create target_ptrace.h
+Date: Sat, 30 Aug 2025 08:23:47 +1000
+Message-ID: <20250829222427.289668-52-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250829222427.289668-1-richard.henderson@linaro.org>
 References: <20250829222427.289668-1-richard.henderson@linaro.org>
@@ -98,140 +99,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make use of the fact that target_elf_gregset_t is a proper structure.
-The target_ulong type matches the abi_ulong/abi_ullong
-selection within mips64/target_elf.h.
-
-Drop ELF_NREG, target_elf_greg_t, and tswapreg.
+Move the target_pt_regs structure from target_syscall.h and
+rename to target_user_regs_struct, obviating the comment.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/mips/target_elf.h   | 10 ++++---
- linux-user/mips64/target_elf.h | 14 +++++-----
- linux-user/mips/elfload.c      | 48 +++++++---------------------------
- 3 files changed, 22 insertions(+), 50 deletions(-)
+ linux-user/openrisc/target_ptrace.h  | 13 +++++++++++++
+ linux-user/openrisc/target_syscall.h | 11 -----------
+ linux-user/openrisc/signal.c         |  3 ++-
+ 3 files changed, 15 insertions(+), 12 deletions(-)
+ create mode 100644 linux-user/openrisc/target_ptrace.h
 
-diff --git a/linux-user/mips/target_elf.h b/linux-user/mips/target_elf.h
-index f767767eaa..a4b7fadbd6 100644
---- a/linux-user/mips/target_elf.h
-+++ b/linux-user/mips/target_elf.h
-@@ -8,16 +8,18 @@
- #ifndef MIPS_TARGET_ELF_H
- #define MIPS_TARGET_ELF_H
- 
-+#include "target_ptrace.h"
+diff --git a/linux-user/openrisc/target_ptrace.h b/linux-user/openrisc/target_ptrace.h
+new file mode 100644
+index 0000000000..563c648525
+--- /dev/null
++++ b/linux-user/openrisc/target_ptrace.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
- #define HAVE_ELF_HWCAP          1
- #define HAVE_ELF_BASE_PLATFORM  1
- #define HAVE_ELF_CORE_DUMP      1
- 
--typedef abi_ulong target_elf_greg_t;
--
- /* See linux kernel: arch/mips/include/asm/elf.h.  */
--#define ELF_NREG                45
- typedef struct target_elf_gregset_t {
--    target_elf_greg_t regs[ELF_NREG];
-+    union {
-+        abi_ulong reserved[45];
-+        struct target_pt_regs pt;
-+    };
- } target_elf_gregset_t;
- 
- #endif
-diff --git a/linux-user/mips64/target_elf.h b/linux-user/mips64/target_elf.h
-index 046a165eef..67bc963134 100644
---- a/linux-user/mips64/target_elf.h
-+++ b/linux-user/mips64/target_elf.h
-@@ -8,20 +8,18 @@
- #ifndef MIPS64_TARGET_ELF_H
- #define MIPS64_TARGET_ELF_H
- 
-+#include "target_ptrace.h"
++#ifndef OPENRISC_TARGET_PTRACE_H
++#define OPENRISC_TARGET_PTRACE_H
 +
- #define HAVE_ELF_HWCAP          1
- #define HAVE_ELF_BASE_PLATFORM  1
- #define HAVE_ELF_CORE_DUMP      1
++/* See arch/openrisc/include/uapi/asm/ptrace.h. */
++struct target_user_regs_struct {
++    abi_ulong gpr[32];
++    abi_ulong pc;
++    abi_ulong sr;
++};
++
++#endif /* OPENRISC_TARGET_PTRACE_H */
+diff --git a/linux-user/openrisc/target_syscall.h b/linux-user/openrisc/target_syscall.h
+index 7fe5b73d3b..c8394e9dcd 100644
+--- a/linux-user/openrisc/target_syscall.h
++++ b/linux-user/openrisc/target_syscall.h
+@@ -1,17 +1,6 @@
+ #ifndef OPENRISC_TARGET_SYSCALL_H
+ #define OPENRISC_TARGET_SYSCALL_H
  
--#ifdef TARGET_ABI_MIPSN32
--typedef abi_ullong target_elf_greg_t;
--#else
--typedef abi_ulong target_elf_greg_t;
--#endif
--
- /* See linux kernel: arch/mips/include/asm/elf.h.  */
--#define ELF_NREG                45
- typedef struct target_elf_gregset_t {
--    target_elf_greg_t regs[ELF_NREG];
-+    union {
-+        target_ulong reserved[45];
-+        struct target_pt_regs pt;
-+    };
- } target_elf_gregset_t;
- 
- #endif
-diff --git a/linux-user/mips/elfload.c b/linux-user/mips/elfload.c
-index 6e884911af..e0c50f50ed 100644
---- a/linux-user/mips/elfload.c
-+++ b/linux-user/mips/elfload.c
-@@ -124,47 +124,19 @@ const char *get_elf_base_platform(CPUState *cs)
- 
- #undef MATCH_PLATFORM_INSN
- 
--#ifdef TARGET_ABI_MIPSN32
--#define tswapreg(ptr)   tswap64(ptr)
--#else
--#define tswapreg(ptr)   tswapal(ptr)
--#endif
--
--/* See linux kernel: arch/mips/include/asm/reg.h.  */
--enum {
--#ifdef TARGET_MIPS64
--    TARGET_EF_R0 = 0,
--#else
--    TARGET_EF_R0 = 6,
--#endif
--    TARGET_EF_R26 = TARGET_EF_R0 + 26,
--    TARGET_EF_R27 = TARGET_EF_R0 + 27,
--    TARGET_EF_LO = TARGET_EF_R0 + 32,
--    TARGET_EF_HI = TARGET_EF_R0 + 33,
--    TARGET_EF_CP0_EPC = TARGET_EF_R0 + 34,
--    TARGET_EF_CP0_BADVADDR = TARGET_EF_R0 + 35,
--    TARGET_EF_CP0_STATUS = TARGET_EF_R0 + 36,
--    TARGET_EF_CP0_CAUSE = TARGET_EF_R0 + 37
+-/* Note that in linux/arch/openrisc/include/uapi/asm/ptrace.h,
+- * this is called user_regs_struct.  Given that this is what
+- * is used within struct sigcontext we need this definition.
+- * However, elfload.c wants this name.
+- */
+-struct target_pt_regs {
+-    abi_ulong gpr[32];
+-    abi_ulong pc;
+-    abi_ulong sr;
 -};
 -
- /* See linux kernel: arch/mips/kernel/process.c:elf_dump_regs.  */
- void elf_core_copy_regs(target_elf_gregset_t *r, const CPUMIPSState *env)
- {
--    int i;
--
--    for (i = 0; i <= TARGET_EF_R0; i++) {
--        r->regs[i] = 0;
--    }
--    for (i = 1; i < ARRAY_SIZE(env->active_tc.gpr); i++) {
--        r->regs[TARGET_EF_R0 + i] = tswapreg(env->active_tc.gpr[i]);
-+    for (int i = 1; i < ARRAY_SIZE(env->active_tc.gpr); i++) {
-+        r->pt.regs[i] = tswapl(env->active_tc.gpr[i]);
-     }
+ #define UNAME_MACHINE "openrisc"
+ #define UNAME_MINIMUM_RELEASE "2.6.32"
  
--    r->regs[TARGET_EF_R26] = 0;
--    r->regs[TARGET_EF_R27] = 0;
--    r->regs[TARGET_EF_LO] = tswapreg(env->active_tc.LO[0]);
--    r->regs[TARGET_EF_HI] = tswapreg(env->active_tc.HI[0]);
--    r->regs[TARGET_EF_CP0_EPC] = tswapreg(env->active_tc.PC);
--    r->regs[TARGET_EF_CP0_BADVADDR] = tswapreg(env->CP0_BadVAddr);
--    r->regs[TARGET_EF_CP0_STATUS] = tswapreg(env->CP0_Status);
--    r->regs[TARGET_EF_CP0_CAUSE] = tswapreg(env->CP0_Cause);
-+    r->pt.regs[26] = 0;
-+    r->pt.regs[27] = 0;
-+    r->pt.lo = tswapl(env->active_tc.LO[0]);
-+    r->pt.hi = tswapl(env->active_tc.HI[0]);
-+    r->pt.cp0_epc = tswapl(env->active_tc.PC);
-+    r->pt.cp0_badvaddr = tswapl(env->CP0_BadVAddr);
-+    r->pt.cp0_status = tswapl(env->CP0_Status);
-+    r->pt.cp0_cause = tswapl(env->CP0_Cause);
- }
+diff --git a/linux-user/openrisc/signal.c b/linux-user/openrisc/signal.c
+index cb74a9fe5e..40249095f2 100644
+--- a/linux-user/openrisc/signal.c
++++ b/linux-user/openrisc/signal.c
+@@ -21,9 +21,10 @@
+ #include "user-internals.h"
+ #include "signal-common.h"
+ #include "linux-user/trace.h"
++#include "target_ptrace.h"
+ 
+ typedef struct target_sigcontext {
+-    struct target_pt_regs regs;
++    struct target_user_regs_struct regs;
+     abi_ulong oldmask;
+ } target_sigcontext;
+ 
 -- 
 2.43.0
 
