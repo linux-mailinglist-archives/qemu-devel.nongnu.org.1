@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6429B3CC09
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90161B3CD57
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:45:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNaK-00017F-3l; Sat, 30 Aug 2025 11:33:44 -0400
+	id 1usNaO-0001kw-JF; Sat, 30 Aug 2025 11:33:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1us3Sf-0005Tv-9D
+ id 1us3Sf-0005Tr-8S
  for qemu-devel@nongnu.org; Fri, 29 Aug 2025 14:04:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1us3SX-0005Nu-Vh
+ id 1us3SY-0005PF-H9
  for qemu-devel@nongnu.org; Fri, 29 Aug 2025 14:04:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756490652;
+ s=mimecast20190719; t=1756490657;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nCbGcsiVAJlNscguLMny9mM9bwo/qEQWFgH5PtIu/kE=;
- b=St8a1VwbuaWbwRKOsDj3wL4ChM8YtOM7Xu8XFVuzYBiEJJ96j2RMWTRvquJT/hhAu0ImuH
- 51J/7UA5DIY8iWlU7IaBTuUX2S0CoqiYCk3wXBRCYYWri6oLHy9lGgvP4sTF3yGNjRrVHE
- rlgBhRiRfLpXkuElhceMWkDWqqyVZzY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=wVZICUMCqxqz7az1/nfHmwGiaD1oCFJORFGMoNZGToI=;
+ b=VDhPbrftrdEVDTQa4eE4FLdyP2W6pDN/R/2OS75swAb1I00pVa7g0JcVKavpG9aDRy0lRC
+ Ux6v8KyFlwCRkd3vDGVJUEhPDG1XgMSU1TeGGMyI3KY/Jwr3x1WOZqRfD2vqphynPCvb53
+ PbXOlFB656hCjIT+RwjGpB0C+qhnweM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-127-oaJGw1AHPlS_BtMHk5oe2Q-1; Fri,
- 29 Aug 2025 14:04:08 -0400
-X-MC-Unique: oaJGw1AHPlS_BtMHk5oe2Q-1
-X-Mimecast-MFC-AGG-ID: oaJGw1AHPlS_BtMHk5oe2Q_1756490647
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-112-7vG2dPVPNouSKl29-JRabg-1; Fri,
+ 29 Aug 2025 14:04:13 -0400
+X-MC-Unique: 7vG2dPVPNouSKl29-JRabg-1
+X-Mimecast-MFC-AGG-ID: 7vG2dPVPNouSKl29-JRabg_1756490652
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0E41719560AA; Fri, 29 Aug 2025 18:04:07 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 16CA6195E917; Fri, 29 Aug 2025 18:04:12 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.108])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0ED5619560B4; Fri, 29 Aug 2025 18:04:01 +0000 (UTC)
+ id 8238419560BC; Fri, 29 Aug 2025 18:04:07 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -57,17 +57,16 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 01/14] include: define constant for early constructor
- priority
-Date: Fri, 29 Aug 2025 19:03:41 +0100
-Message-ID: <20250829180354.2922145-2-berrange@redhat.com>
+Subject: [PATCH v2 02/14] monitor: initialize global data from a constructor
+Date: Fri, 29 Aug 2025 19:03:42 +0100
+Message-ID: <20250829180354.2922145-3-berrange@redhat.com>
 In-Reply-To: <20250829180354.2922145-1-berrange@redhat.com>
 References: <20250829180354.2922145-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -92,47 +91,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Functions marked with __attribute__((__constructor__)) will be
-invoked in linker order. In theory this is well defined, but
-in practice, it is hard to determine what this order will be
-with the layers of indirection through meson, ninja and the
-static libraries QEMU builds.
+Some monitor functions, most notably, monitor_cur() rely on global
+data being initialized by 'monitor_init_globals()'. The latter is
+called relatively late in startup. If code triggers error_report()
+before monitor_init_globals() is called, QEMU will abort when
+accessing the uninitialized monitor mutex.
 
-Notably, the order currently appears different between Linux
-and Windows (as tested with Wine on Linux). This can cause
-problems when certain QEMU constructors have a dependancy on
-other QEMU constructors.
+The critical monitor global data must be initialized from a
+constructor function, to improve the guarantee that it is done
+before any possible calls to monitor_cur(). Not only that, but
+the constructor must be marked to run before the default
+constructor in case any of them trigger error reporting.
 
-To address this define a QEMU_CONSTRUCTOR_EARLY constant which
-provides a priority value that will run before other default
-constructors. This is to be used for QEMU constructors that
-are themselves self-contained, but may be relied upon by other
-constructors.
+Note in particular that the RCU constructor will spawn a background
+thread so we might even have non-constructor QEMU code running
+concurrently with other constructors.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/qemu/compiler.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ monitor/monitor.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-index 1c2b673c05..4c49f52eb0 100644
---- a/include/qemu/compiler.h
-+++ b/include/qemu/compiler.h
-@@ -194,6 +194,14 @@
- # define QEMU_USED
- #endif
+diff --git a/monitor/monitor.c b/monitor/monitor.c
+index c5a5d30877..da54e1b1ce 100644
+--- a/monitor/monitor.c
++++ b/monitor/monitor.c
+@@ -704,18 +704,22 @@ void monitor_cleanup(void)
+     }
+ }
  
+-static void monitor_qapi_event_init(void)
 +/*
-+ * A priority for __attribute__((constructor(...))) that
-+ * will run earlier than the default constructors. Must
-+ * only be used for functions that have no dependency
-+ * on global initialization of other QEMU subsystems.
++ * Initialize static vars that have no deps on external
++ * module initialization, and are required for external
++ * functions to call things like monitor_cur()
 + */
-+#define QEMU_CONSTRUCTOR_EARLY 101
-+
- /*
-  * Disable -ftrivial-auto-var-init on a local variable.
-  *
++static void __attribute__((__constructor__(QEMU_CONSTRUCTOR_EARLY)))
++monitor_init_static(void)
+ {
++    qemu_mutex_init(&monitor_lock);
++    coroutine_mon = g_hash_table_new(NULL, NULL);
+     monitor_qapi_event_state = g_hash_table_new(qapi_event_throttle_hash,
+                                                 qapi_event_throttle_equal);
+ }
+ 
+ void monitor_init_globals(void)
+ {
+-    monitor_qapi_event_init();
+-    qemu_mutex_init(&monitor_lock);
+-    coroutine_mon = g_hash_table_new(NULL, NULL);
+-
+     /*
+      * The dispatcher BH must run in the main loop thread, since we
+      * have commands assuming that context.  It would be nice to get
 -- 
 2.50.1
 
