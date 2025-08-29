@@ -2,72 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EB7B3CC54
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 574AEB3CD58
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:46:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNBd-0006SW-Er; Sat, 30 Aug 2025 11:08:13 -0400
+	id 1usNCr-0008Kq-EL; Sat, 30 Aug 2025 11:09:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uruc3-0005wa-4t; Fri, 29 Aug 2025 04:37:35 -0400
-Received: from mgamail.intel.com ([192.198.163.16])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uruyA-0003IK-Q9
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 05:00:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uruc0-0007v3-6l; Fri, 29 Aug 2025 04:37:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756456652; x=1787992652;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=8MEwvMA5vWesPqUlof2mHDRU5hI6F3MzUmiUPKTMc2w=;
- b=HIsEgfp1Go/hDO3tu/U2onEWeLqA65sQ0z6AEJe9in9AREA2ERzH0dba
- 2t2NXNW4BHxC8pgxaAWk5m+mQZVppb+7p4n4x2/fpQtLQCqIcD7ZOObpB
- f6dEYKYJNvIeHKkI53mWwIr34lTEIJoOWrV7M2MQ8q0mCKaH+TRgY6MZd
- SXW6UHCoHEBQkbf/EiO/88xhbTgSUpvnwUYiU29nYLlQ2PkfYSDS3u6sc
- xCfK3ILArvPEbvAr0xJrlGKuIXij5Fcij4Q2GPDVOpaE7GvWtn/QY43Qg
- c/2g9qKBgKQPqImrW48/6rq2UcaK8WP79p7CbxxweVPWzMVY8o7JGneDX Q==;
-X-CSE-ConnectionGUID: rtumsdV7TUeypL5xK0KwDQ==
-X-CSE-MsgGUID: GU90eCCpSr6IL5+I/o0vsg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="46308778"
-X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="46308778"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2025 01:37:25 -0700
-X-CSE-ConnectionGUID: yNyV1i/RRbCTfXHCc77mNw==
-X-CSE-MsgGUID: m8WXClvBTLinjLXFgRmqwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="170718644"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa008.fm.intel.com with ESMTP; 29 Aug 2025 01:37:23 -0700
-Date: Fri, 29 Aug 2025 16:59:10 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- pbonzini@redhat.com, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: Re: [PATCH 10/22] rust: split "migration" crate
-Message-ID: <aLFr3u+r8P5GGZRJ@intel.com>
-References: <20250827104147.717203-1-marcandre.lureau@redhat.com>
- <20250827104147.717203-11-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uruy8-0003gW-My
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 05:00:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756458023;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=uM7nWo3HlkGw7Vp7YF5UQq8KgXNNYI2938xsqFzL3d8=;
+ b=Gfq/oF7CbibzzgbDO3LM16P8NwLaEfN1mbMEir609yOTQCGAmsE9Op097wsEdvTAcurOL3
+ DqK1eNM4CEYC4CcKSaUt1hNaT1mvTthjzgIyK9wTDLb0TqDi9LcrZCWVboMWGMZ0wz23I6
+ iH1fMqlu0wtJzxh0Nyl5tr/CUIwCldY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-553-PFGVrgCYMx2fXByYWpdvNQ-1; Fri, 29 Aug 2025 05:00:17 -0400
+X-MC-Unique: PFGVrgCYMx2fXByYWpdvNQ-1
+X-Mimecast-MFC-AGG-ID: PFGVrgCYMx2fXByYWpdvNQ_1756458016
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-45b7d84d8a0so3396985e9.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 02:00:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756458016; x=1757062816;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uM7nWo3HlkGw7Vp7YF5UQq8KgXNNYI2938xsqFzL3d8=;
+ b=mQVA2fP7ACzMWAr7tlupMYDsWR1DLjbX5py0wbPi/ljtiGYE5EVvlFDjZIgNlDEqZ7
+ MkU1RjuCZiBRbBnCvQ5dKA/T75o5ZR35T3FHKSHiL+tD3TcKVn8zKEuDaSaCVYPCJHkG
+ CfwMjZoVq8Ufz3qfQ/tG07rGfJ/XLH7Sg4++S8WAGN3UtRdh0vz5Keca062hbLWN7uKF
+ cU5vFXn8AA1fVOx1ELbSeA7kxbg6+LYAIA8vAL0sQH4SAMcB93wFb+aH6pza1cOaC7H2
+ YzParo7BrVwYDFDUaWBJwpIGjxrsxcGjXnknHQ9VPZqU6c/aSeF6st8ar5zzrQUSzslC
+ Ib/w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU7B4fcjEq+k7XxxS0HFZzBQCxllU2I9sUNYSw40by8UEi3BjpC9utaHojCK12V9Pt602TJuG25+l5/@nongnu.org
+X-Gm-Message-State: AOJu0Yyf+5xb+IMgjW2xWRzMePPo7tIf0yYc4mjNUIXQBEIgHXcvR8x3
+ IKhkXMKUZoPfR/DDQaz50tWp5tL1DhzwIJ+0me1Pu4XuJSH4MRomQgTS+vnrT9NwrtUJN5hLSyy
+ LfY8v0C4/VOzAU3hFFBjoQ9aY6X9yH+KBHfwsg3GhNXBwchyRmlaxlA6n
+X-Gm-Gg: ASbGncsrPvLMVtYeDKgE2E3va4AN89d0ACvHZRZTTondpMJo04GZcXpX2NEHkwK9W8h
+ 0b5r8JyVDBzT7jVu9DqklpxSaOcvcCvMhucSTTZmYor8MF7t5lfzFY8AernSd+0jXuIZwNvc3JG
+ iTtNiAljT4dSoupKMyTDzvO5g3qe/7x1VHLlzQQUJZKt4StY0ZQNweAUJMqqIBPstm5NDar4zxF
+ LzNUTHZ/5TcPeG8YPIYsLQKInVCTu4NGUwj5GOgahiwBEdyoNKbUjGEMNFvGfB71Fg0AcUp2luG
+ 511/YDs2Xq+GUerH6Op2VzpS+FaG1cCEXcFpijQMyRN6pf4Gq+4gQJjZcTchPPWbNyfQ
+X-Received: by 2002:a05:600c:1f95:b0:453:78f:fa9f with SMTP id
+ 5b1f17b1804b1-45b5179cfa5mr227352145e9.11.1756458015894; 
+ Fri, 29 Aug 2025 02:00:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHfncza+fn3l1Q1zRQprYOSqx7366roZsnYJHBs0yq74/r/vxUCYAH+20pvc2UZ33wImrUlsQ==
+X-Received: by 2002:a05:600c:1f95:b0:453:78f:fa9f with SMTP id
+ 5b1f17b1804b1-45b5179cfa5mr227351725e9.11.1756458015404; 
+ Fri, 29 Aug 2025 02:00:15 -0700 (PDT)
+Received: from [192.168.0.6] (ip-109-42-48-43.web.vodafone.de. [109.42.48.43])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b72c55c1bsm107878085e9.10.2025.08.29.02.00.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 29 Aug 2025 02:00:14 -0700 (PDT)
+Message-ID: <801f322a-6151-40ab-879a-f64e117d6d04@redhat.com>
+Date: Fri, 29 Aug 2025 11:00:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] tests/functional: handle URLError when fetching assets
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20250829083156.2570137-1-berrange@redhat.com>
+ <20250829083156.2570137-4-berrange@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250829083156.2570137-4-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250827104147.717203-11-marcandre.lureau@redhat.com>
-Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,98 +153,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Marc-Andre,
-
-On Wed, Aug 27, 2025 at 02:41:32PM +0400, marcandre.lureau@redhat.com wrote:
-> Date: Wed, 27 Aug 2025 14:41:32 +0400
-> From: marcandre.lureau@redhat.com
-> Subject: [PATCH 10/22] rust: split "migration" crate
+On 29/08/2025 10.31, Daniel P. BerrangÃ© wrote:
+> We treat most HTTP errors as non-fatal when fetching assets,
+> but forgot to handle network level errors. This adds catching
+> of URLError so that we retry on failure, and will ultimately
+> trigger graceful skipping in the pre-cache task.
 > 
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Signed-off-by: Daniel P. BerrangÃ© <berrange@redhat.com>
 > ---
+>   tests/functional/qemu_test/asset.py | 9 ++++++++-
+>   1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
+> index ae2bec3ea5..36f64fe2f6 100644
+> --- a/tests/functional/qemu_test/asset.py
+> +++ b/tests/functional/qemu_test/asset.py
+> @@ -15,7 +15,7 @@
+>   from time import sleep
+>   from pathlib import Path
+>   from shutil import copyfileobj
+> -from urllib.error import HTTPError
+> +from urllib.error import HTTPError, URLError
+>   
+>   class AssetError(Exception):
+>       def __init__(self, asset, msg, transient=False):
+> @@ -171,6 +171,13 @@ def fetch(self):
+>                       raise AssetError(self, "Unable to download %s: "
+>                                        "HTTP error %d" % (self.url, e.code))
+>                   continue
+> +            except URLError as e:
+> +                # This is typically a network/service level error
+> +                # eg urlopen error [Errno 110] Connection timed out>
+> +                tmp_cache_file.unlink()
+> +                self.log.error("Unable to download %s: URL error %s",
+> +                               self.url, e)
+> +                continue
 
-...
+Hmm, I don't think we should retry on each and every URLError. For example 
+if you have a typo in the server name, you get a "Name or service not known" 
+URLError, and it does not make sense to retry in that case.
 
-> @@ -0,0 +1,51 @@
-> +/*
-> + * QEMU System Emulator
-> + *
-> + * Copyright (c) 2024 Linaro Ltd.
-> + *
-> + * Authors: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a copy
-> + * of this software and associated documentation files (the "Software"), to deal
-> + * in the Software without restriction, including without limitation the rights
-> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-> + * copies of the Software, and to permit persons to whom the Software is
-> + * furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-> + * THE SOFTWARE.
-> + */
+Also, in case of the server being down, it takes a minute or two 'til the 
+urllib gives up, so if you retry multiple times in that case, you can easily 
+extend the test time by > 5 minutes (as you can see by the timestamps in the 
+example in your cover letter), which is unfortunate, too (considering that 
+there is also a timeout setting for the gitlab CI jobs).
 
-Could we use /* SPDX-License-Identifier: GPL-2.0-or-later */ directly ?
+I think I'd maybe rather do something like this instead, without retrying 
+the download, just marking certain errors as transient:
 
-[snip]
+        except URLError as e:
+            tmp_cache_file.unlink()
+            msg = str(e.reason)
+            self.log.error("Unable to download %s: URL error %s",
+                           self.url, msg)
+            raise AssetError(self, msg,
+                             transient=("Network is unreachable" in msg))
 
-> +// using extension traits would be nicer, unfortunately it doesn't allow const
-> +// fn yet
-> +pub struct VMStateFieldHelper(pub VMStateField);
->
->  // Add a couple builder-style methods to VMStateField, allowing
->  // easy derivation of VMStateField constants from other types.
+WDYT?
 
-A question: Sorry I didn't get your point about why we need
-VMStateFieldHelper?
-
-For its use case:
-
-> -        vmstate_struct!(FooB, arr_a[0 .. num_a], &VMSTATE_FOOA, FooA).with_version_id(1),
-> -        vmstate_struct!(FooB, arr_a_mul[0 .. num_a_mul * 32], &VMSTATE_FOOA, FooA).with_version_id(2),
-> +        VMStateFieldHelper(vmstate_struct!(FooB, arr_a[0 .. num_a], &VMSTATE_FOOA, FooA)).with_version_id(1).0,
-> +        VMStateFieldHelper(vmstate_struct!(FooB, arr_a_mul[0 .. num_a_mul * 32], &VMSTATE_FOOA, FooA)).with_version_id(2).0,
-
-It seems VMStateFieldHelper add another wrapper around vmstate_struct
-(and vmstate_of).
-
-The builder pattern is good, but I'm afraid this builder makes the use of
-vmstate_struct! more complex.
-
-> -impl VMStateField {
-> +impl VMStateFieldHelper {
->      #[must_use]
->      pub const fn with_version_id(mut self, version_id: i32) -> Self {
->          assert!(version_id >= 0);
-> -        self.version_id = version_id;
-> +        self.0.version_id = version_id;
->          self
->      }
-
-If we could have a build() method then user doesn't need to write ".0"
-at the end.
-
->  }
-
-And there's another VMStateDescriptionBuilder:
-
-https://lore.kernel.org/qemu-devel/20250505100854.73936-4-pbonzini@redhat.com/#t
-
-I think Paolo has the plan to merge it with v1.83 support. So if this
-VMStateFieldHelper is necessary, it's better seperate this into another
-patch and base it over VMStateDescriptionBuilder if possible.
-
-Thanks,
-Zhao
+  Thomas
 
 
