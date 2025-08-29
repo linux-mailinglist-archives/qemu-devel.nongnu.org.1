@@ -2,69 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9286B3CB92
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2FEB3CB90
 	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:00:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usN2m-0001Pe-IL; Sat, 30 Aug 2025 10:59:04 -0400
+	id 1usN3L-0001X7-Ck; Sat, 30 Aug 2025 10:59:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1urnr8-0003Mv-Ee
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 21:24:43 -0400
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1uroLr-0004vK-Vd
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 21:56:27 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1urnqk-0005uL-OT
- for qemu-devel@nongnu.org; Thu, 28 Aug 2025 21:24:21 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8DxM9A4AbFo6WkEAA--.8931S3;
- Fri, 29 Aug 2025 09:24:08 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowJAxvsE1AbFoXadvAA--.44266S3;
- Fri, 29 Aug 2025 09:24:07 +0800 (CST)
-Subject: Re: [PATCH v4 03/19] target/loongarch: Set page size in TLB entry
- with STLB
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-References: <20250730030202.3425934-1-maobibo@loongson.cn>
- <20250730030202.3425934-4-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <c23dea45-19c6-cd58-3fb0-617108ca73f2@loongson.cn>
-Date: Fri, 29 Aug 2025 09:27:18 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (envelope-from <lixianglai@loongson.cn>) id 1uroLk-0001Rd-Vv
+ for qemu-devel@nongnu.org; Thu, 28 Aug 2025 21:56:27 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8Dx+tG1CLFohGsEAA--.8999S3;
+ Fri, 29 Aug 2025 09:56:05 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowJAxvsG1CLFobLRvAA--.44421S2;
+ Fri, 29 Aug 2025 09:56:05 +0800 (CST)
+From: Xianglai Li <lixianglai@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH] hw/loongarch/virt: Fix the cpu hotplug issue
+Date: Fri, 29 Aug 2025 09:32:43 +0800
+Message-Id: <20250829013243.1237107-1-lixianglai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-In-Reply-To: <20250730030202.3425934-4-maobibo@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowJAxvsE1AbFoXadvAA--.44266S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxXF17Jw13WF1DKr1UuFyfuFX_yoWrWr4rpF
- W7Gw4DtFyqkrWkAF13tw4DKr1UZw4UCws7Xrs7GryF9Fn7Jrn7XFWDKwnIkry0q3y3AF47
- AF4kAryUuF13XFgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU70PfDUUU
- U
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.357,
+X-CM-TRANSID: qMiowJAxvsG1CLFobLRvAA--.44421S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,111 +61,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2025/7/30 上午11:01, Bibo Mao 写道:
-> With VTLB different TLB entry may have different page size, and
-> page size is set in PS field of TLB entry. However with STLB, all
-> the TLB entries have the same page size, page size comes from register
-> CSR_STLBPS, PS field of TLB entry is not used.
->
-> Here PS field of TLB entry is used with all TLB entries, even with
-> STLB. It is convenient with TLB maintainance operation.
->
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   target/loongarch/tcg/tlb_helper.c | 41 ++++++++-----------------------
->   1 file changed, 10 insertions(+), 31 deletions(-)
-     Reviewed-by: Song Gao <gaosong@loongson.cn>
-     Tested-by: Song Gao <gaosong@loongson.cn>
+The hot-plugged cpu does not register the cpu reset function, so the cpu
+plugged in later cannot reset properly, and there will be problems when
+restarting.
 
+Now register the cpu reset function in the cpu hotplug callback function.
 
-Thanks.
-Song Gao
-> diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-> index 8872593ff0..3ea0e153b1 100644
-> --- a/target/loongarch/tcg/tlb_helper.c
-> +++ b/target/loongarch/tcg/tlb_helper.c
-> @@ -110,11 +110,8 @@ static void invalidate_tlb_entry(CPULoongArchState *env, int index)
->       if (!tlb_e) {
->           return;
->       }
-> -    if (index >= LOONGARCH_STLB) {
-> -        tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
-> -    } else {
-> -        tlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS, PS);
-> -    }
-> +
-> +    tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
->       pagesize = MAKE_64BIT_MASK(tlb_ps, 1);
->       mask = MAKE_64BIT_MASK(0, tlb_ps + 1);
->   
-> @@ -173,11 +170,8 @@ static void fill_tlb_entry(CPULoongArchState *env, int index)
->           lo1 = env->CSR_TLBELO1;
->       }
->   
-> -    /* Only MTLB has the ps fields */
-> -    if (index >= LOONGARCH_STLB) {
-> -        tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, PS, csr_ps);
-> -    }
-> -
-> +    /* Store page size in field PS */
-> +    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, PS, csr_ps);
->       tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, VPPN, csr_vppn);
->       tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 1);
->       csr_asid = FIELD_EX64(env->CSR_ASID, CSR_ASID, ASID);
-> @@ -283,12 +277,7 @@ void helper_tlbrd(CPULoongArchState *env)
->   
->       index = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, INDEX);
->       tlb = &env->tlb[index];
-> -
-> -    if (index >= LOONGARCH_STLB) {
-> -        tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
-> -    } else {
-> -        tlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS, PS);
-> -    }
-> +    tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
->       tlb_e = FIELD_EX64(tlb->tlb_misc, TLB_MISC, E);
->   
->       if (!tlb_e) {
-> @@ -476,11 +465,8 @@ void helper_invtlb_page_asid(CPULoongArchState *env, target_ulong info,
->           if (!tlb_e) {
->               continue;
->           }
-> -        if (i >= LOONGARCH_STLB) {
-> -            tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
-> -        } else {
-> -            tlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS, PS);
-> -        }
-> +
-> +        tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
->           tlb_vppn = FIELD_EX64(tlb->tlb_misc, TLB_MISC, VPPN);
->           vpn = (addr & TARGET_VIRT_MASK) >> (tlb_ps + 1);
->           compare_shift = tlb_ps + 1 - R_TLB_MISC_VPPN_SHIFT;
-> @@ -509,11 +495,8 @@ void helper_invtlb_page_asid_or_g(CPULoongArchState *env,
->           if (!tlb_e) {
->               continue;
->           }
-> -        if (i >= LOONGARCH_STLB) {
-> -            tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
-> -        } else {
-> -            tlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS, PS);
-> -        }
-> +
-> +        tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
->           tlb_vppn = FIELD_EX64(tlb->tlb_misc, TLB_MISC, VPPN);
->           vpn = (addr & TARGET_VIRT_MASK) >> (tlb_ps + 1);
->           compare_shift = tlb_ps + 1 - R_TLB_MISC_VPPN_SHIFT;
-> @@ -673,11 +656,7 @@ static int loongarch_map_tlb_entry(CPULoongArchState *env, hwaddr *physical,
->       uint64_t tlb_entry, tlb_ppn;
->       uint8_t tlb_ps, n, tlb_v, tlb_d, tlb_plv, tlb_nx, tlb_nr, tlb_rplv;
->   
-> -    if (index >= LOONGARCH_STLB) {
-> -        tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
-> -    } else {
-> -        tlb_ps = FIELD_EX64(env->CSR_STLBPS, CSR_STLBPS, PS);
-> -    }
-> +    tlb_ps = FIELD_EX64(tlb->tlb_misc, TLB_MISC, PS);
->       n = (address >> tlb_ps) & 0x1;/* Odd or even */
->   
->       tlb_entry = n ? tlb->tlb_entry1 : tlb->tlb_entry0;
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+---
+ hw/loongarch/boot.c         | 8 +-------
+ hw/loongarch/virt.c         | 4 ++++
+ include/hw/loongarch/virt.h | 1 +
+ 3 files changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+index 14d6c52d4e..6bc1f3d50c 100644
+--- a/hw/loongarch/boot.c
++++ b/hw/loongarch/boot.c
+@@ -324,7 +324,7 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
+     return kernel_entry;
+ }
+ 
+-static void reset_load_elf(void *opaque)
++void reset_load_elf(void *opaque)
+ {
+     LoongArchCPU *cpu = opaque;
+     CPULoongArchState *env = &cpu->env;
+@@ -429,12 +429,6 @@ static void loongarch_direct_kernel_boot(MachineState *ms,
+ void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info)
+ {
+     LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
+-    int i;
+-
+-    /* register reset function */
+-    for (i = 0; i < ms->smp.cpus; i++) {
+-        qemu_register_reset(reset_load_elf, LOONGARCH_CPU(qemu_get_cpu(i)));
+-    }
+ 
+     info->kernel_filename = ms->kernel_filename;
+     info->kernel_cmdline = ms->kernel_cmdline;
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index b15ada2078..71f8ddc980 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -1013,6 +1013,8 @@ static void virt_cpu_unplug(HotplugHandler *hotplug_dev,
+     /* Notify acpi ged CPU removed */
+     hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->acpi_ged), dev, &error_abort);
+ 
++    /* unregister reset function */
++    qemu_unregister_reset(reset_load_elf, cpu);
+     cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
+     cpu_slot->cpu = NULL;
+ }
+@@ -1037,6 +1039,8 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev,
+                              &error_abort);
+     }
+ 
++    /* register reset function */
++    qemu_register_reset(reset_load_elf, cpu);
+     cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
+     cpu_slot->cpu = CPU(dev);
+ }
+diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+index 602feab0f0..15ea393386 100644
+--- a/include/hw/loongarch/virt.h
++++ b/include/hw/loongarch/virt.h
+@@ -71,6 +71,7 @@ struct LoongArchVirtMachineState {
+ OBJECT_DECLARE_SIMPLE_TYPE(LoongArchVirtMachineState, LOONGARCH_VIRT_MACHINE)
+ void virt_acpi_setup(LoongArchVirtMachineState *lvms);
+ void virt_fdt_setup(LoongArchVirtMachineState *lvms);
++void reset_load_elf(void *opaque);
+ 
+ static inline bool virt_is_veiointc_enabled(LoongArchVirtMachineState *lvms)
+ {
+-- 
+2.39.1
 
 
