@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068A5B3CCF4
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1851B3CE8E
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 20:06:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNYF-0004q7-1L; Sat, 30 Aug 2025 11:31:36 -0400
+	id 1usNYN-0005EO-CT; Sat, 30 Aug 2025 11:31:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1us2jG-0000TI-RC
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 13:17:34 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1us2k3-0000VF-FX
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 13:18:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1us2jD-0000s0-Qa
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 13:17:34 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1us2k1-00011z-SB
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 13:18:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756487849;
+ s=mimecast20190719; t=1756487900;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=NyoG+jTPiaHvw5W43Q/uXfIw3nFf8bdzhU2ft+D8mqY=;
- b=afsj4APpl139o+pePcW4Lp2r78+5uOtFUXkWRU0ZeA+Wz4glK6H1RvYOx65J0N2i3wxrfF
- JCdNNxqgrrr2CDg83AWwbkcEt+OoUsX2diqUF5j8gTr9h9cJ0iBfeMbJe1zyeuiJBHLzEz
- B5u4vfmz+K5KPaQQd3pvji0IrlO43zY=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PFl0pE59Dm5tIbM7MKcjvJkWCie7MVPDQ9LZAzsxkUo=;
+ b=WuMypc5eiI7jhiepsC0QEU1nHyto0/H2WvuXGH8hFkyQ2Jlwj/GGNH9QmBLkE00Ua7nYpN
+ qisrS/0+IpL8TDqp0aME5c6Ih+AW7DG5GiAAuiJheydV0hbBbd46yekhxwrGM2t5FtqDds
+ ySj/3sL7OvlgYftw5crhu/i6hZBeTlU=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-50-9dnvgvd0Ma61K0DXtVQiLw-1; Fri, 29 Aug 2025 13:17:28 -0400
-X-MC-Unique: 9dnvgvd0Ma61K0DXtVQiLw-1
-X-Mimecast-MFC-AGG-ID: 9dnvgvd0Ma61K0DXtVQiLw_1756487847
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-70deedd1deaso43116526d6.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 10:17:27 -0700 (PDT)
+ us-mta-574-9X2CJes7MketVDgEnBeUTA-1; Fri, 29 Aug 2025 13:18:18 -0400
+X-MC-Unique: 9X2CJes7MketVDgEnBeUTA-1
+X-Mimecast-MFC-AGG-ID: 9X2CJes7MketVDgEnBeUTA_1756487898
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7fa717ff667so375033785a.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 10:18:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756487847; x=1757092647;
+ d=1e100.net; s=20230601; t=1756487898; x=1757092698;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NyoG+jTPiaHvw5W43Q/uXfIw3nFf8bdzhU2ft+D8mqY=;
- b=tLFcoTwlPAjyYV0Cz1KIUiOg/k824g0x9tAPENIjgRyV6mfwHdCEJr7tBdUoOA7nVI
- lnN9jy/vanwcE6vW3dFo9NO6cLjItE9eAAT8fqWwh8oo2ZEBaa16PY9Enh+zxMIOfCjK
- RphesqBnpW0mbeOCrgTnvRXrCF4JuRUWcMwEMePIcaCIByR05FxO4kDGhy2b9PR4Xnb4
- kjGrUT4vMSuZta8MrJmBuNbCyY0Oj93MRfrGfJdyFc/w172hbtYcDAU1ijnb0G53uiyq
- UNmcM6TDQsXwRsQB+S+qmH3WUFyFFOxJBYB17sFLiCIQK8jVshY73RDzerzT1A3ilS1d
- 59/g==
-X-Gm-Message-State: AOJu0YyTpJ4RE+18cfYcK6uLyplQjm/tnyfvmF0JEuLXXDdT4cilP1z9
- Vb6mKoToiU4T7rxVa7fwKBISxE/M+HXA4SZ4GAhjs3IZoRPZZkBzFTDB6QoO6NsbVFx4qMEehaA
- 95d+k2vihv08P8X8QBy2VmMf+R46R0XihWTAD2Nmg/zjyUfI6Ya+qJwDI
-X-Gm-Gg: ASbGnctNT8s1/upnwSLDveti5zz/wfI3O1O6zrQd9lplADeybiAefo26nemdYWsdY8X
- 1z2IS+FrJnTOwrLB+v2GlHJUaJ5dspMGDwS2+UL1oH0K18rmS+8Y1JPZ/jyL5JTptvGxV2nxY8N
- zNB5Va2NBDwXJrShic4d1l2MOnWMXDFSfctUFwAWM967XdBhv40Jf8oLhF3gDLxtV8LjtEu28WV
- ebK8L6h4GJvgF8vTEkuYGkz1sQTHS4CkkrrrVLaij9c3D+DGY2zxHkWoEABmL0GeHHf9uM1JbY4
- 4264f7W5zRoldINgMB6Xwolls7FyoI3n
-X-Received: by 2002:a05:6214:ac4:b0:70f:a04f:232f with SMTP id
- 6a1803df08f44-70fa0501905mr30981376d6.30.1756487847270; 
- Fri, 29 Aug 2025 10:17:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE0isj4/pPMsT6kKTzXfXM6IHttoNCQXShvDZsX2TlebzejybwgMpPrqWj5S26kCpEInm4qBw==
-X-Received: by 2002:a05:6214:ac4:b0:70f:a04f:232f with SMTP id
- 6a1803df08f44-70fa0501905mr30981006d6.30.1756487846792; 
- Fri, 29 Aug 2025 10:17:26 -0700 (PDT)
+ bh=PFl0pE59Dm5tIbM7MKcjvJkWCie7MVPDQ9LZAzsxkUo=;
+ b=Jo3S9y5yVc9bl3pYzrdP9ZtqyHDGrHmeeLE7JZr/KGtAFdk/smIRLK5/Xq0pLx/l/W
+ lkv/Wv7b0jwjKPzi93A1/2DEB+IfI1YfWBdhP46aKAWjKEynBe9PUryhRAi28bzNt560
+ zuEaiR/MLTuTUetZUvn2heDhV4QOWu5Xt/sst207WPnoAcFFtwb9oU2SBSiu8n0R72T+
+ hPkE5YsBcqan0t7+QilYRORg+BQGD7cBTYt9HkAPv+hB7PYNkyPxmY1E4AP7XZ2Hdr2z
+ 4k5EWCdDX6+JNP1y+VNKHroJB/7CmHe8/F8+ySj8/51IbYqkGBM78nat+4SN341fgi4y
+ 4rxQ==
+X-Gm-Message-State: AOJu0YwO9akqtsReWw152csX8Z/SSsTIWXjn6//lpJfrwHd8eVUEcYBJ
+ taB3MHz24kwoc9wrGYQWGMZq5IYF+rUiRNKEUxn1MLJJ5/JTqSIvyombCVJlXRu5EQZY1RB9Q1L
+ u1Z9w4IUCI+GESAXp68rmvXuaIDNp/gO3Jvm1UPVKPLgcGACuLqgahGMH
+X-Gm-Gg: ASbGncvSi4OARkR7Ul2R5TwUPtDe4OHxrLaGr8E+gnpYJ6WEAuzPqBcPEXfDJA6iLbQ
+ delrF+NVMgNbVgOW6DSHuyVr7slDl8ZLSEo2CECKsvOnFDTTFdKQKP2x+uT0hzhSKwWEmri9ess
+ SO5VAcAZSutcANYss4rlA8Eqyk4eCrLuwco/EZSjIRTHj/HzMIcP9EkWr7CVvwzC6QOLVh401eK
+ VSAA4pHXQ4s3sXEvYph+CECr3PgfcQEx4AlS8pwUd4Tpdgepz1C4azRZd9XfvB9+N4YckabXBkq
+ iuSzZieeLiURUiQEqMSLpyBPw9zHjGl3
+X-Received: by 2002:a05:620a:d82:b0:7e7:fff0:70cd with SMTP id
+ af79cd13be357-7ea11095d10mr2833402485a.41.1756487898190; 
+ Fri, 29 Aug 2025 10:18:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHcMfAWIc9lEuEoM0HvqEmSdFa3eNz6SZ2ayR7aKShN3KQqFqF9Q6rzOwyXlHeqYHpLOW3WlA==
+X-Received: by 2002:a05:620a:d82:b0:7e7:fff0:70cd with SMTP id
+ af79cd13be357-7ea11095d10mr2833397585a.41.1756487897573; 
+ Fri, 29 Aug 2025 10:18:17 -0700 (PDT)
 Received: from x1.local ([174.89.135.121]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-70e62528a9asm19362806d6.62.2025.08.29.10.17.25
+ af79cd13be357-7fc0e31be10sm220266185a.16.2025.08.29.10.18.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 10:17:26 -0700 (PDT)
-Date: Fri, 29 Aug 2025 13:17:14 -0400
+ Fri, 29 Aug 2025 10:18:16 -0700 (PDT)
+Date: Fri, 29 Aug 2025 13:18:05 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Cc: qemu-devel@nongnu.org, "Dr . David Alan Gilbert" <dave@treblig.org>,
@@ -76,15 +76,14 @@ Cc: qemu-devel@nongnu.org, "Dr . David Alan Gilbert" <dave@treblig.org>,
  Yury Kotov <yury-kotov@yandex-team.ru>, Prasad Pandit <ppandit@redhat.com>,
  Zhang Chen <zhangckid@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>,
  Juraj Marcin <jmarcin@redhat.com>
-Subject: Re: [PATCH RFC 5/9] migration: Thread-ify precopy vmstate load process
-Message-ID: <aLHgmt7vDbmWCS24@x1.local>
+Subject: Re: [PATCH RFC 0/9] migration: Threadify loadvm process
+Message-ID: <aLHgzcDypW1r4Sbm@x1.local>
 References: <20250827205949.364606-1-peterx@redhat.com>
- <20250827205949.364606-6-peterx@redhat.com>
- <a7f72cc7-d5ec-4a9e-a1a1-d77f376c5ce4@yandex-team.ru>
+ <d801092f-76da-4b2c-ad35-c0c625c78861@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <a7f72cc7-d5ec-4a9e-a1a1-d77f376c5ce4@yandex-team.ru>
+In-Reply-To: <d801092f-76da-4b2c-ad35-c0c625c78861@yandex-team.ru>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -110,110 +109,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 29, 2025 at 11:29:59AM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> > For that, qemu_loadvm_state() and qemu_loadvm_state_main() functions need
-> > to now take a "bql_held" parameter saying whether bql is held.  We could
-> > use things like BQL_LOCK_GUARD(), but this patch goes with explicit
-> > lockings rather than relying on bql_locked TLS variable.  In case of
-> > migration, we always know whether BQL is held in different context as long
-> > as we can still pass that information downwards.
+On Fri, Aug 29, 2025 at 11:29:37AM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> On 27.08.25 23:59, Peter Xu wrote:
+> > split the patches into smaller ones if possible
 > 
-> Agree, but I think it's better to make new macros following same pattern, i.e.
-> 
-> WITH_BQL_HELD(bql_held) {
->     action();
-> }
-> 
-> instead of
-> 
-> WITH_BQL_HELD(bql_held, actions());
-> 
-> ..
-> 
-> Or I'm missing something and we already have a precedent of the latter
-> notation?
+> Support for bql_held parameter for some functions may also be
+> moved to separate preparation patches, which will simplify the
+> main patch.
 
-Nop.. it's just that when initially working on that I didn't try as hard to
-achieve such pattern.  Here we need to recover the BQL status after the
-block, so I didn't immediately see how autoptr would work there.
-
-But I tried slightly harder, I think below should achieve the same pattern
-but based on some for() magic.
-
-Thanks for raising this, early comments still be welcomed or I'll go with
-that.
-
-===8<===
-
-static inline void
-with_bql_held_lock(bool bql_held, const char *file, int line)
-{
-    assert(bql_held == bql_locked());
-    if (!bql_held) {
-        bql_lock_impl(file, line);
-    }
-}
-
-static inline void
-with_bql_held_unlock(bool bql_held)
-{
-    assert(bql_locked());
-    if (!bql_held) {
-        bql_unlock();
-    }
-}
-
-/**
- * WITH_BQL_HELD(): Run a block of code, making sure BQL is held
- * @bql_held: Whether BQL is already held
- *
- * Example use case:
- *
- * WITH_BQL_HELD(bql_held) {
- *     // BQL is guaranteed to be held within this block,
- *     // if it wasn't held, will be released when the block finishes.
- * }
- */
-#define  WITH_BQL_HELD(bql_held)                                \
-    for (bool _bql_once = \
-             (with_bql_held_lock(bql_held, __FILE__, __LINE__), true);  \
-         _bql_once;                                                     \
-         _bql_once = (with_bql_held_unlock(bql_held), false))           \
-
-static inline void
-with_bql_released_unlock(bool bql_held)
-{
-    assert(bql_held == bql_locked());
-    if (bql_held) {
-        bql_unlock();
-    }
-}
-
-static inline void
-with_bql_released_lock(bool bql_held, const char *file, int line)
-{
-    assert(!bql_locked());
-    if (bql_held) {
-        bql_lock_impl(file, line);
-    }
-}
-
-/**
- * WITH_BQL_RELEASED(): Run a task, making sure BQL is released
- * @bql_held: Whether BQL is already held
- *
- * Example use case:
- *
- * WITH_BQL_RELEASED(bql_held) {
- *     // BQL is guaranteed to be released within this block,
- *     // if it was held, will be re-taken when the block finishes.
- * }
- */
-#define  WITH_BQL_RELEASED(bql_held)                                    \
-    for (bool _bql_once = (with_bql_released_unlock(bql_held), true);   \
-         _bql_once;                                                     \
-         _bql_once =                                                    \
-             (with_bql_released_lock(bql_held, __FILE__, __LINE__), false)) \
+Sure, I can do that.
 
 -- 
 Peter Xu
