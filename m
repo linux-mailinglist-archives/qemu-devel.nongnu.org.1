@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C3B8B3CC49
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C22CB3CE78
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:59:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNmC-0006BA-Fk; Sat, 30 Aug 2025 11:46:02 -0400
+	id 1usNmN-0006f4-G3; Sat, 30 Aug 2025 11:46:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7bp-0004qW-KL
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:30:13 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1us7br-0004rH-CI
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:30:15 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7bn-0003up-Q7
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:30:13 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-76e2ea933b7so2376705b3a.1
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:30:10 -0700 (PDT)
+ id 1us7bp-0003vO-1M
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:30:15 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-772301f8ae2so956414b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:30:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756506609; x=1757111409; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756506611; x=1757111411; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/5ZB4KmZVQ2PXnRTjB721lcPMBvmO4keQCU+w332d1U=;
- b=EvvyauHAW5i8EcEA45vOOzdXPcvKpUeIA8RcYZOW0qLNHX/gVd1jVJe5f2c1kyplQg
- 2XGgkO3PdyIKki/kFu/rFd2a1JWW/mLdqz30W+69ZmuJYuaFjtotwthVLyuIjymgNziL
- +yl2r/kO+X21qSp+Zq8XSzDoBjQdgu0fFklRbTriYemFrtycNhIaa0VemoTyeeDgK8jG
- ZOW6JpI4HHkbn8TCR8OiDPlC5jfX+VpcWrbFn+pYO5hX0sF3Qz0LoVvu02kG7k6zdB0D
- BrL5PzBE7KEu88t1ysTGAzBTn06IxJ007A4xu9uaxVHxA/+jtYhIXda/vNgoDniHm6PO
- /EbQ==
+ bh=aJ5D76Lv5/JEWH6fy1PlED+PdSmiXzdOglOZPBl9O+8=;
+ b=f4eK4rsYCkGXfgp+oTuvliwrJzOGy0hGkE/aRQIF4kRqaxolW/a+En9Tsulcg9qt03
+ dJ+EseXCbo3pdALjLEhKd56nDBRuwSORC3iUVjL4bTRNkINg1xXmOZs/nx53aKu9FOxq
+ 1r8uZiBYbVlm0RSOa/gbFUX+YYqUCDrr4dJcEYJxMu5ow5eI8sVxO5aWIovarYTXtUmh
+ xiGangUVAjIkbTTcpmeyhuAPMtr8yQcxkYGNYyIJuSoqOBCIz1L8tOWwA23/u0Fwa7g8
+ xjtSgW1kPZW9w8Zb8+0qn+Z+N6KWaAIECpvh4efrmLP28iRXVXZ+eX3CsZamMIJwSqoa
+ N8vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756506609; x=1757111409;
+ d=1e100.net; s=20230601; t=1756506611; x=1757111411;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/5ZB4KmZVQ2PXnRTjB721lcPMBvmO4keQCU+w332d1U=;
- b=fOmIFmbujqo55ybSOzIz0AyJkp/ccx4y5rO3awNA8pihLhIO9i8IF8yWIpFiTf1DB6
- KDxaCHNTxsu6XhQ/1Y62tPIlDV2pcYnONoJIGMq6CV/P2hOMUma1puFcaYE3CTkCf8SZ
- un8UE0BY5gNgz2ciWbrAn21vjaRoWdNemPjuq9MrvhdvcJRyuji83jC8wb7EUx8Mbubp
- NK6IU6yZ2OtOZCFHKgWdGzFqJRK9cKx8jtY2sn/vyinmdiurpAMzd7bD9LCiRKRtK16w
- s6hK8Eqtg/0ZOj569jkyyXUzs1bsLugAi7zy6g8hKPbRz5hhrIEaS96fnR1T8K3FCBWr
- Pc7w==
-X-Gm-Message-State: AOJu0Yw+sdZURAVKxTneRnxBHLd+EIU+qBbvdW1hOGwPXYjyA4O//AA7
- xSG5pJZ6Peaz1NXkUHDJVVpsss0EugIXhqFEVfd9t/3CaALInpLfb8mR9czrhix3a/BCPiGu+8+
- 6upkzwUw=
-X-Gm-Gg: ASbGncvr9ARd+8oHH8So8fNRT5AM1T/CB2DSKdGS57PkU0RAQhSMIKPwWuEh7Jvekoh
- okg6Ujyx3t/tB8+E4PtTkR8O7IvPEvMdYBwH/o6ZsPLpiP8NNWXEi/J44S81ZkTwA90nhchyzS4
- gI44+7YeC/XEeZ4uOw8wzkUall+KrG8n2QSni2IPNvLc/VdBuZ8ymcxPh/Qy/vuP1U+sYKvGFoE
- QyhypQ2YBE75oMxUQSVRlD0xJ1RPCVRhFg5jhtk+P+hJX/y5k8VyPUVhfKupd2fXFQVjOoy/ZEZ
- R+VpmH/+LQEdJdgyqRP9qjGBfKbrq9SOmoXKCmjGbJwVSEZe7KbQy9b0qQmJpVKaOEX7yTd6WBH
- qQqWdl0NLHic3+FXLQsaQEkdPJIIcsCxEU08uHaDWDZWoZx4iHyTHD/7Z6JZIWDdvQxWsRKUXAA
- ==
-X-Google-Smtp-Source: AGHT+IGHqgg7wkZ0kwEJIR3d73aTGX5O9uPbcVO3nbt03uQkEXvz/39vWmDcEo7uMgunVpjSxO0J8w==
-X-Received: by 2002:a05:6a00:21c9:b0:736:4e14:8ec5 with SMTP id
- d2e1a72fcca58-7723e3374d8mr254396b3a.11.1756506608810; 
- Fri, 29 Aug 2025 15:30:08 -0700 (PDT)
+ bh=aJ5D76Lv5/JEWH6fy1PlED+PdSmiXzdOglOZPBl9O+8=;
+ b=t0fA35PQZ9JXP3s005pqYy02cpo5OTzcHBpcx0mQOaRoc8RWQtz0D2OUbbh4Yvvd9k
+ Rf5EZ4ssqAokbRohB2BQkKMOZ9XE71/yFQyKaMzX5n2O3iVUpaOAvHodLA6IVtKWCvuD
+ N7kQz+xrejRx3SC17Lt/tnQe3MM5hQURBvCABdi9U6wq8AcnjS/MD3JStobSZcW5VhUO
+ DCvMEn3x940B7btefj+TkHDp5jB42bPzliTj5mI1Egcuwkh8RhIdYLxX+p31Gwm2b1ia
+ g6Wlk3UaLb78/e/Pv0BU864lQOQLaggDdHLEjx5M/Khsw5M3m9gQnlXkQyJ8CoRTm1Fk
+ Ofxw==
+X-Gm-Message-State: AOJu0YyTDNXr1Qz2AWvJYzewflgrFUJOa2nPYe+alh9Fty79jiRVaPPO
+ 2sONJ7/t2aVqPMLH2gMDBfBH8XB3O8eZjO4Gqqqmqel/G59+VqUC/kfzqYOyd+RnWM00ynlgBuA
+ r5Rx1234=
+X-Gm-Gg: ASbGncvygG3Mnfxz+d6z2xzCRTvJ1xrmuYNUNpSfVbMDD72TFrf3nxX3ttDzUdM2qWF
+ 6j9of9Johu/zvreuhcnhJF6w57ILbLaP2iCAC8zh/EUDTrJ3ZM+fFINrVYVCt9Q0KSRei/4Q2qI
+ bequwJ0QxdD1zhBOFo4rEvKhXXQPKwCjouLfChfbmLFCETFJv6LmLkvQmL/f+fwxTPnRn11YU40
+ gGqGtP55HvFQP0XxEqm24lLj4010qfCeEm36Zf74vMRSocINFArwp/2CvptF9B6PcdUwl79CD17
+ ZU3Nss6w6TBb8GAiUFpi7wC/Ne0ReinWA5P86IQSryElISkhwavgLzKhVymgFmaptzT1eY82G+m
+ 0CZ4RT2DxAcMKX0+QQEk2HOvt3UoamdL4lsK4HeJzagSqjQ8WK079aUd8suo7voY=
+X-Google-Smtp-Source: AGHT+IEpowwrHFZcLyyHfRkXbdBN2JNVx61pj1DgboF4W162iRzTXMY0pSsk/Ns09PDHNc3YZLCVuA==
+X-Received: by 2002:a05:6a20:431a:b0:243:a682:9d1f with SMTP id
+ adf61e73a8af0-243d6dff535mr323263637.19.1756506611116; 
+ Fri, 29 Aug 2025 15:30:11 -0700 (PDT)
 Received: from stoup.. (122-150-204-179.dyn.ip.vocus.au. [122.150.204.179])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7722a4bb5dasm3364297b3a.55.2025.08.29.15.30.06
+ d2e1a72fcca58-7722a4bb5dasm3364297b3a.55.2025.08.29.15.30.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 15:30:08 -0700 (PDT)
+ Fri, 29 Aug 2025 15:30:10 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 64/91] linux-user: Replace init_guest_commpage macro with
- function
-Date: Sat, 30 Aug 2025 08:24:00 +1000
-Message-ID: <20250829222427.289668-65-richard.henderson@linaro.org>
+Subject: [PULL 65/91] linux-user: Move get_vdso_image_info to arm/elfload.c
+Date: Sat, 30 Aug 2025 08:24:01 +1000
+Message-ID: <20250829222427.289668-66-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250829222427.289668-1-richard.henderson@linaro.org>
 References: <20250829222427.289668-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,28 +98,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Turn the fallback macro into a function.  This will produce
-a link error if the other macros are set up incorrectly.
+Rename from vdso_image_info to avoid a symbol clash.
+Define HAVE_VDSO_IMAGE_INFO to signal the external definition exists.
+Provide fallback versions for other targets.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ linux-user/arm/target_elf.h |  1 +
+ linux-user/loader.h         | 12 +++++++++++
+ linux-user/arm/elfload.c    | 20 ++++++++++++++++++
+ linux-user/elfload.c        | 41 ++++++++-----------------------------
+ 4 files changed, 42 insertions(+), 32 deletions(-)
 
+diff --git a/linux-user/arm/target_elf.h b/linux-user/arm/target_elf.h
+index 5f81a43efb..19fdfa2f2c 100644
+--- a/linux-user/arm/target_elf.h
++++ b/linux-user/arm/target_elf.h
+@@ -14,6 +14,7 @@
+ #define HAVE_ELF_HWCAP2         1
+ #define HAVE_ELF_PLATFORM       1
+ #define HAVE_ELF_CORE_DUMP      1
++#define HAVE_VDSO_IMAGE_INFO    1
+ 
+ #define HI_COMMPAGE             ((intptr_t)0xffff0f00u)
+ 
+diff --git a/linux-user/loader.h b/linux-user/loader.h
+index c3b8f92e23..2175dd4e0a 100644
+--- a/linux-user/loader.h
++++ b/linux-user/loader.h
+@@ -110,4 +110,16 @@ bool init_guest_commpage(void);
+ struct target_elf_gregset_t;
+ void elf_core_copy_regs(struct target_elf_gregset_t *, const CPUArchState *);
+ 
++typedef struct {
++    const uint8_t *image;
++    const uint32_t *relocs;
++    unsigned image_size;
++    unsigned reloc_count;
++    unsigned sigreturn_ofs;
++    unsigned rt_sigreturn_ofs;
++} VdsoImageInfo;
++
++/* Note that both Elf32_Word and Elf64_Word are uint32_t. */
++const VdsoImageInfo *get_vdso_image_info(uint32_t elf_flags);
++
+ #endif /* LINUX_USER_LOADER_H */
+diff --git a/linux-user/arm/elfload.c b/linux-user/arm/elfload.c
+index 1205687976..308ed23fcb 100644
+--- a/linux-user/arm/elfload.c
++++ b/linux-user/arm/elfload.c
+@@ -7,6 +7,7 @@
+ #include "target_elf.h"
+ #include "target/arm/cpu-features.h"
+ #include "target_elf.h"
++#include "elf.h"
+ 
+ 
+ const char *get_elf_cpu_model(uint32_t eflags)
+@@ -255,3 +256,22 @@ void elf_core_copy_regs(target_elf_gregset_t *r, const CPUARMState *env)
+     r->pt.cpsr = tswapal(cpsr_read((CPUARMState *)env));
+     r->pt.orig_r0 = tswapal(env->regs[0]); /* FIXME */
+ }
++
++#if TARGET_BIG_ENDIAN
++# include "vdso-be8.c.inc"
++# include "vdso-be32.c.inc"
++#else
++# include "vdso-le.c.inc"
++#endif
++
++const VdsoImageInfo *get_vdso_image_info(uint32_t elf_flags)
++{
++#if TARGET_BIG_ENDIAN
++    return (EF_ARM_EABI_VERSION(elf_flags) >= EF_ARM_EABI_VER4
++            && (elf_flags & EF_ARM_BE8)
++            ? &vdso_be8_image_info
++            : &vdso_be32_image_info);
++#else
++    return &vdso_image_info;
++#endif
++}
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 25f29e60de..81bf05f581 100644
+index 81bf05f581..aed390ebb3 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -1115,7 +1115,7 @@ static abi_ulong create_elf_tables(abi_ulong p, int argc, int envc,
- #define HI_COMMPAGE 0
- #define LO_COMMPAGE -1
- #ifndef HAVE_GUEST_COMMPAGE
--#define init_guest_commpage() true
-+bool init_guest_commpage(void) { return true; }
- #endif
+@@ -40,15 +40,6 @@
+ #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 0
  #endif
  
+-typedef struct {
+-    const uint8_t *image;
+-    const uint32_t *relocs;
+-    unsigned image_size;
+-    unsigned reloc_count;
+-    unsigned sigreturn_ofs;
+-    unsigned rt_sigreturn_ofs;
+-} VdsoImageInfo;
+-
+ #define ELF_OSABI   ELFOSABI_SYSV
+ 
+ /* from personality.h */
+@@ -191,23 +182,6 @@ typedef abi_int         target_pid_t;
+ 
+ #define ELF_EXEC_PAGESIZE       4096
+ 
+-#if TARGET_BIG_ENDIAN
+-#include "elf.h"
+-#include "vdso-be8.c.inc"
+-#include "vdso-be32.c.inc"
+-
+-static const VdsoImageInfo *vdso_image_info(uint32_t elf_flags)
+-{
+-    return (EF_ARM_EABI_VERSION(elf_flags) >= EF_ARM_EABI_VER4
+-            && (elf_flags & EF_ARM_BE8)
+-            ? &vdso_be8_image_info
+-            : &vdso_be32_image_info);
+-}
+-#define vdso_image_info vdso_image_info
+-#else
+-# define VDSO_HEADER  "vdso-le.c.inc"
+-#endif
+-
+ #else
+ /* 64 bit ARM definitions */
+ 
+@@ -1973,14 +1947,17 @@ static void load_elf_interp(const char *filename, struct image_info *info,
+     load_elf_image(filename, &src, info, &ehdr, NULL);
+ }
+ 
+-#ifndef vdso_image_info
++#ifndef HAVE_VDSO_IMAGE_INFO
++const VdsoImageInfo *get_vdso_image_info(uint32_t elf_flags)
++{
+ #ifdef VDSO_HEADER
+ #include VDSO_HEADER
+-#define  vdso_image_info(flags)  &vdso_image_info
++    return &vdso_image_info;
+ #else
+-#define  vdso_image_info(flags)  NULL
+-#endif /* VDSO_HEADER */
+-#endif /* vdso_image_info */
++    return NULL;
++#endif
++}
++#endif /* HAVE_VDSO_IMAGE_INFO */
+ 
+ static void load_elf_vdso(struct image_info *info, const VdsoImageInfo *vdso)
+ {
+@@ -2311,7 +2288,7 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
+      * Load a vdso if available, which will amongst other things contain the
+      * signal trampolines.  Otherwise, allocate a separate page for them.
+      */
+-    const VdsoImageInfo *vdso = vdso_image_info(info->elf_flags);
++    const VdsoImageInfo *vdso = get_vdso_image_info(info->elf_flags);
+     if (vdso) {
+         load_elf_vdso(&vdso_info, vdso);
+         info->vdso = vdso_info.load_bias;
 -- 
 2.43.0
 
