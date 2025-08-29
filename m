@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB84DB3CD4E
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DFEB3CBCF
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:20:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usN63-0006pZ-Cz; Sat, 30 Aug 2025 11:02:27 -0400
+	id 1usN6A-0007In-Rz; Sat, 30 Aug 2025 11:02:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urskY-0005RL-HV
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 02:38:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ursmc-0006RT-Ah
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 02:40:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1urskV-0007Ub-ER
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 02:38:14 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ursmY-000815-74
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 02:40:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756449487;
+ s=mimecast20190719; t=1756449614;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=BGQ5qRLZ/dVY/7rHyQ0NoHm8va70Idrov02dYKnG/xQ=;
- b=IpzwppBGSmQH9uDuUAXiDJZmIRKIK2Ttng8FfJU9HMLra5qt9nGw3Y5ftAO/N3VVAaHjD9
- Zkd0A2zs4JgUmH5apMBVRBVFTgYMOuuYL4WWDJ8cPGHd2sDMLMCw1ZSY3REz2foYF3MYBd
- 8sxiKHLpDhYOXuzdM5KyxWS+MX0l2o4=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yh9ohG+VWrky/QdXWGA0razfDecmCl0pK+Bqqjh1BoE=;
+ b=Lz4sTSjaztN6lFY7ks5iZtVAuHGuPKgS3kFsTvhRHNHgBZRisybQuDIvml2dSQJy+pacKm
+ egpnFzhc0SMnbi2Chjv+gOxdIEDF9VH/M8OarOpPVrgbEBT7dJro+7BCfup0b5dJUbP0M3
+ 3dEYBU4jROP/qDer5j9tL81JdZTzvCg=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-FbElfyGLOgO1em8pTZQo6Q-1; Fri, 29 Aug 2025 02:38:04 -0400
-X-MC-Unique: FbElfyGLOgO1em8pTZQo6Q-1
-X-Mimecast-MFC-AGG-ID: FbElfyGLOgO1em8pTZQo6Q_1756449484
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-afef67d1735so99203166b.1
- for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 23:38:04 -0700 (PDT)
+ us-mta-111-374BImyWNKizXBWY3RcVSQ-1; Fri, 29 Aug 2025 02:40:10 -0400
+X-MC-Unique: 374BImyWNKizXBWY3RcVSQ-1
+X-Mimecast-MFC-AGG-ID: 374BImyWNKizXBWY3RcVSQ_1756449609
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-61a8a9ea4d5so2103325a12.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Aug 2025 23:40:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756449484; x=1757054284;
+ d=1e100.net; s=20230601; t=1756449609; x=1757054409;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BGQ5qRLZ/dVY/7rHyQ0NoHm8va70Idrov02dYKnG/xQ=;
- b=rKLvY1Ouc8ZMB5vIS+e90mS5omycFBzEFtqqNf7BAFosU3E155h1F53Je9tPrzp6Na
- WmXUFs3wCVh49V7Qref19TDn3oZ26bae2PJ31CKM6Qkz90E7p9pWt85hlO6493uI3rvf
- BehMqo6k7Mv1Ve2Y4IfXyH1D/bJgGNl7aUi4Ml+8kxd4Ynm5Og8QWHtZcq4cBS1igWcH
- qTRn8G8L79vw6dXfQ4B9FcOSiDBWULZzGZxQODmtsHLAyGtLsMPQgBfQ12DvoaPKGXUc
- GOKsepvS12mI+CYw7JC2KSGA4IK5KB72AHhl5x87f4f0LrAmdpjXFz3h+GK5M1uRd69Q
- mQew==
+ :from:references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yh9ohG+VWrky/QdXWGA0razfDecmCl0pK+Bqqjh1BoE=;
+ b=OFZdP80d9mZ+jIQ08Z2tbC9TnGYltLIBe08jRrmsZ5sOVhnw5oiwklQwcr5nPCLlpQ
+ z+GzEUj61mtUOrpEvax2Blp1qxSYFpqz0mJGOifiuVRqJIvFf9tDxZCWzr1dBxmRWThu
+ Ej0S/zgAKTY/046I55wc6t0GMM3/twlAAob43KWR7/DP/emR6u9/bwHi8GdV3GdY5jCu
+ UT53f6341oGnuW2530++HV5qJMUz0NXAijDsWUMf2RxDV8pS2CEvC970A7fkL1YpxNHt
+ yaT+UKcED/YM+4vJlDvOOXVUX0FwM4U/zBe1pe5+P5Tx2fdJDXppeyM4/QY8Nox/XUSe
+ wwVA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVEt50kZgN8GvuEuMJGtEaG/qHFvjfrTFubrRNngVAhrz40F+rF1/uDkXXiDUu7OYyXGXCbj2HXnRNp@nongnu.org
-X-Gm-Message-State: AOJu0YyaY0gN+aWF1TcFoGFiKpohB/kLv42No3L48iYeGLEB+GyZP/RI
- 9IpF0XaTmULO8OyshqDem2808Y1U2Tce2wnpezZeA30h/hqwjuNFlNtiPcCxQ04t67hcohja4Fc
- FiQ3Xqe/Iv9HJ4fp1f3/Hr+pWmO0lXA2Y5QLW3nlc5BxioZCjhiYl0RZe
-X-Gm-Gg: ASbGnctgHVZOlRnqPzXABxG0T0rWWBKYahFgdBY2JNJc/UN3EdUEfTRTu4bb9FJY3cK
- HM6wGe7HonLtxvOgg471SFI+tNLaw/Tq1r+gI6PttEi36YPfLo12PKVtNxq53R+0xCUBXbdkmip
- RGXJKWL/72Pjxw3+AoIBE9YLmh0D7hW4SNRRZXdFqqYLU9WHZLDY9R/bsvoilRV3b5foCbPjDLH
- Z4qqhgdwOQKVu3febk6ZE4RdYNLgHVk0cbzKABfOM+jp/KYKzFi4+eNro1SD6uEmOJlQgW78Dcc
- mNQ66zr3niiJegBOArQPKeZvbYC13TsciBI/eJe8Cvz7XUxrmQh31ep46z7gbLwBnYqh
-X-Received: by 2002:a17:907:7242:b0:afb:513a:f62f with SMTP id
- a640c23a62f3a-afeafec9004mr984149866b.20.1756449483735; 
- Thu, 28 Aug 2025 23:38:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHiYLvWcEtyKgdQxcMm4tf9PNPvifJigu/BQLjlk3wnCXeeHyQ6Lnb38FpywfHFOYA4qUXtw==
-X-Received: by 2002:a17:907:7242:b0:afb:513a:f62f with SMTP id
- a640c23a62f3a-afeafec9004mr984148766b.20.1756449483373; 
- Thu, 28 Aug 2025 23:38:03 -0700 (PDT)
+ AJvYcCXX9Z3IZJKl2xllcvPxRu7qcXr24ohVp4ETrtIqvxEsW+O9HgwdtLkTry8Q7k6aOCWZwj/kLhLLrCvZ@nongnu.org
+X-Gm-Message-State: AOJu0Yxx9D09PfiPiKaYWFoyuez/9DH2JznNVJOMAay9xDZvtN+frpjT
+ nxe8ZVKlr1b5ewPxh+mMFTQNlllRbqXIgF76IxO6Y7WgSJ9KS7Gya6Rm4pdl8pEfQvYc0qOMOi7
+ 1nGqfh9vUBdiHzxwAqq6rQNi1JjlfgDMbZDdTvPgN939rb751rbokzc9GSfs/cWVP
+X-Gm-Gg: ASbGncu8PeTFIolm9zKliP0AmS8EGHvWJ5fg8hUzIyeMKiQxzrEZIph127vu3SZn7yY
+ 3ToXMGLIavZtzwp2cz68MwExcAWSAC9+IdWreGoiB8HnpgiLGcBtOKqHBtLz8ITEOPVjVqvEDUI
+ oXMRSA6vuY22AtZc4MDtggxaw6bCuOFHGUhLsdPw0gdwPoUMxGyl0npFG5lI+zd/ScZZYQSUR5I
+ l2eoUwlH1z3DgW5R0fK7D8/OuqkbFVzsPk2YZmW/FtKzQO10L88eI03jQNFeKCuB3M8UBvGKHiT
+ tS8hgOc47iuG6K2terRjzZKBccFjXzdqyyhqp94NerBWjxAel4FFQ6ohmbfMDlqzfL6B
+X-Received: by 2002:a17:907:7fa4:b0:afe:fcaf:6d1b with SMTP id
+ a640c23a62f3a-afefcaf6efemr183575666b.43.1756449609180; 
+ Thu, 28 Aug 2025 23:40:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGOmGFSW76Vir/KDiT6uLNHGRnyLpXH36pJxpV3WM5T4rzdH8ODslS3DNxznMcwPQSmv1k7uw==
+X-Received: by 2002:a17:907:7fa4:b0:afe:fcaf:6d1b with SMTP id
+ a640c23a62f3a-afefcaf6efemr183573366b.43.1756449608738; 
+ Thu, 28 Aug 2025 23:40:08 -0700 (PDT)
 Received: from [192.168.0.6] (ip-109-42-48-43.web.vodafone.de. [109.42.48.43])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aff08b86833sm54546166b.48.2025.08.28.23.38.01
+ a640c23a62f3a-aff10eb1ee3sm2482466b.19.2025.08.28.23.40.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Aug 2025 23:38:02 -0700 (PDT)
-Message-ID: <0d35ea26-d3b7-48f3-ae86-b065e000a8cc@redhat.com>
-Date: Fri, 29 Aug 2025 08:38:00 +0200
+ Thu, 28 Aug 2025 23:40:08 -0700 (PDT)
+Message-ID: <6d35349c-f6f7-431f-a305-d548f2e4ec65@redhat.com>
+Date: Fri, 29 Aug 2025 08:40:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] linux-user: Drop deprecated -p option
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20250828162012.3307647-1-peter.maydell@linaro.org>
+Subject: Re: [PATCH] system: drop the -old-param option
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20250828162700.3308812-1-peter.maydell@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -124,10 +121,10 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250828162012.3307647-1-peter.maydell@linaro.org>
+In-Reply-To: <20250828162700.3308812-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -152,18 +149,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/08/2025 18.20, Peter Maydell wrote:
-> The user-mode '-p' option has been deprecated since 9.0 and
-> doesn't do anything except emit a warning. We are well past
-> our minimum deprecation period, so drop the option.
+On 28/08/2025 18.27, Peter Maydell wrote:
+> We deprecated the command line option -old-param for the 10.0
+> release, which allows us to drop it in 10.2.  This option was used to
+> boot Arm targets with a very old boot protocol using the
+> 'param_struct' ABI.  We only ever needed this on a handful of board
+> types which have all now been removed from QEMU.
 > 
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   docs/about/deprecated.rst       | 10 ----------
->   docs/about/removed-features.rst |  8 ++++++++
->   bsd-user/main.c                 |  8 --------
->   linux-user/main.c               | 12 ------------
->   4 files changed, 8 insertions(+), 30 deletions(-)
+>   docs/about/deprecated.rst       | 13 ------
+>   docs/about/removed-features.rst | 12 +++++
+>   include/system/system.h         |  1 -
+>   hw/arm/boot.c                   | 81 +--------------------------------
+>   system/globals.c                |  1 -
+>   system/vl.c                     |  4 --
+>   qemu-options.hx                 |  7 ---
+>   7 files changed, 13 insertions(+), 106 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
