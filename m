@@ -2,97 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76714B3CBD7
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B60E4B3CBC9
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:19:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNGw-0007pH-68; Sat, 30 Aug 2025 11:13:42 -0400
+	id 1usNLO-0004IC-H5; Sat, 30 Aug 2025 11:18:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryjT-0001R2-TL
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:01:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryjR-0000Ai-Um
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:01:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756472489;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=S1JyH2wiz5vFRYd2711N6Hwx1KpHo8g0euMCvUb8MQs=;
- b=D5dEVy0v4dg0SAzWJ4kg/q/BTjKNQdrO3XJddkMetY/n7WVGhkpdT5f1sTLjZZhegYtexr
- tKJ051Eg+HQgEaSEQiKnrbTi0WATwLOEsB2nS5vWFfD4p2/rfTPdCbaG3xqre0BD1NfOiv
- qmp44sgsdTveJx48iChPQf+F31nuClk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-363-W_wH6aiUOECmvybDJ2FuoA-1; Fri, 29 Aug 2025 09:01:27 -0400
-X-MC-Unique: W_wH6aiUOECmvybDJ2FuoA-1
-X-Mimecast-MFC-AGG-ID: W_wH6aiUOECmvybDJ2FuoA_1756472486
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-45b7bb85e90so12269985e9.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 06:01:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1urzWV-0008MI-IQ
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:52:11 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1urzWU-0000zl-1z
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:52:11 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2489acda3bbso16340045ad.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 06:52:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756475528; x=1757080328; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6ugGnloBP1A/JNiPociBvYx/p6/DHz1cAJve+Grw0JE=;
+ b=A+atSk2nVA4kA/wzhF72BTBzH+geZjhVbPi5C/9jAhaCs1xFazOaOTLSZ3HCTgOpgl
+ vBfQIRg7uc54D5chLS0h3vDX/lvgDwQVbvqyxTgwYd2ifb8VXZa1USybudCsutimnwD7
+ r0c8bxZOvariV2X0ERh3k/dWR9xUGUEN38GSEbR6xfSYGdLSmIs0m8ZNh024zXsRxRFz
+ RCtRaKcVNAnxGHTqw6g3tciiJsC6QoSsffcSrpWe5+jJTsEVODBT/g7zS+tfpqzn68yg
+ 81zfStZumiuT93JMUJYRiCn8Pt2syBC9tUO0Fc0ZFSslmYWUYoRlIeYbTj5Aw8rB5bT/
+ SYJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756472485; x=1757077285;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=S1JyH2wiz5vFRYd2711N6Hwx1KpHo8g0euMCvUb8MQs=;
- b=kkTBjrED4FtaveF8+jhIefh6YVIfYMvIEeeWdAyT9GktAyX653PH841ckvHURbY+nT
- QgNdNroRP+Ettyaju4/We4W09GNdcPhn9TSM/z6zMOkW4iDJpv491qfnMhDd0qFlGt9m
- GqZybACN5mi8Vn9+D643EjIt13HVEeQ02H7Q362GZ6Plzm70035/whzIB/Z10SzzTYeg
- 3vKD53EpfpduwGCknK0RJIo2pOcw3e2+rz2Sx+2l0lwGK9n4WlQaVLXXDgbCe/Obieu6
- n7rIorDP8jq1YCegxMLp2+uo3vba2zrx3DAiYA+KsaVe7NmjAbj3NLb3agizoqJWdt4m
- APbw==
-X-Gm-Message-State: AOJu0Yxufa1m/rZxWISt+p1jBttegMnx88svG5+iELIb/z298PKHIyJB
- TQxgIfKNdQnUceIEOQlNoQeiEWei2xHxjY1eOfOjv4HU3oRnLTwMug1VXsuMELGt7tyyGS3TTmO
- JsDN6uG1XhC3JMsmSb5+OFTsoA3aSzHn8MFFu88EaBobNomG0lkl5LkO+sV8ni47RKXFI8fVwZF
- 2CBLsaveM9O7GMImD1WIABFQ+lKS0R8AO4E2HH9fWI
-X-Gm-Gg: ASbGncsHeoFNzmqqsF+i3Wmu1AGrGx9prB6+ds/0aS8x074CgJo8EGpv1oaXoYsaamg
- tpg+TDxTxCKsxS/+IW8I1SV3NL8pxfY2yec+tEVOsbfOGmnQPqJuIuKefYDKfXGIAmQo0BpQT5g
- vR6WjzEvVgeDCmezHHs/k9h/Sbe/J6/933PuNyaa7aivNTOYL9KAr8smzTkSNGP8ydkm+zEyVr0
- cP9PktAZG9QvGlMe3N/93ucHX2YOhd4j2eE+1XegibOZUWFxjZIOF6I/APyeiNHxtgYpT3+/QT5
- 7A1yu23Lljv5Vt8wcz5pS1jkAZTvUZKv7hXrkx0kmC1CwkVtukMQgGKoXZhVd5nk2qoLZZoA98H
- GbCp0B5dXmfikNNbaFBFVWNxdh1i0bv/MEHYtKZjrmyw=
-X-Received: by 2002:a05:600c:430b:b0:456:942:b162 with SMTP id
- 5b1f17b1804b1-45b6e42bad0mr65771665e9.11.1756472484780; 
- Fri, 29 Aug 2025 06:01:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFrtRhe/ZtpJP3KGy3yiPpcs6g6Jf7QM/4IUPegPEJhbcJp9bbBWUT/eOfGDy484lyCHyLm4A==
-X-Received: by 2002:a05:600c:430b:b0:456:942:b162 with SMTP id
- 5b1f17b1804b1-45b6e42bad0mr65771235e9.11.1756472484107; 
- Fri, 29 Aug 2025 06:01:24 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.56.250])
+ d=1e100.net; s=20230601; t=1756475528; x=1757080328;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6ugGnloBP1A/JNiPociBvYx/p6/DHz1cAJve+Grw0JE=;
+ b=wIMIFJtzdFaJwOERMQt4a++c1q2sEBl5DdU3C3XcH6atLt48VB+MPjNw8EnRbPuXGK
+ ilypdBmFwQUUe+1XTbv55TngMFZquU5JLiQEs2tdVpyZla6NG8+8iUcsnU7Sz2WtcmUR
+ nb5H9WdYTLYcxf/azBqE6Wbnjlug/nAjtMYQYvASiz2yk05lTRNUnpVhre1Py/9VK9no
+ 12POKhYiSHQ1KmKv0uqW5RESVLQyE/OHeooj+McrLiMgZTUIL8dVuYosmaFQLEUFxDQY
+ Bcl+5hfHnpC3ExdyGM+tnmDOAkpboF6J+IuzVNFXmRPqfuSmUTUYKxjPnKVpjjIxrX/1
+ od1Q==
+X-Gm-Message-State: AOJu0YyiYcEVIFl0Ws9J+wPV/ZNFhKLI3u2zplHCz4FPxbQ6hZisZQJY
+ M8g6yEF7o6QG5bfzRzlGcJHKocOVo9JiNUAwbkxN0QcmrP3Tdm1bMWbCVZl4mJ2yX6nQvTt60pG
+ dYRziHEY=
+X-Gm-Gg: ASbGnctHhoY4DNe25OvzQq42fIqF+BS650v4T37ITDaqwfrV0wSXrCPFmw/rMgrVWJ9
+ 2pbRFyHycrsEV3W1su5+ygzWNFGOsrG0yf0cPlbLwBCHjZZbulXPVW+fzLfLjOTu3vpKwAyHcSM
+ mr71zrMOOsN2FCfATXFx0dXIJoogCF1gpbeHV1HvRVHgk81D/3PcPvRb7KakPcFMn3KayYhgeoT
+ o5PK3CdEqC/ZjPGoW5Wtp/Yf1OqygUgc4c/iWC9UhFhaXZpslaGl2EUn6O9SnUZdhvr8Sk7GdKH
+ wPvVhQEI8iDjs+LiVtFv0dop6UtoDpEUaYS6WKEVyYUa8mwWfSTOcfrdQLfXdZljS7DXD8PlJbO
+ CCUynMFjyC+gI5+/PjOqZaGXdi5fxX654iZ8AxPxLLlgzEaGosZr11xiYVnfo4R2T4EoWqMI=
+X-Google-Smtp-Source: AGHT+IGK78rmTz+6XPFVlsQ0CEW9mg3iiz4yD2/7aJD6kTO/3Qp+X8PDZD1ygXzSP2fKQJdmWrRFNA==
+X-Received: by 2002:a17:903:124c:b0:240:84b:a11a with SMTP id
+ d9443c01a7336-2462ee2bc6fmr361146025ad.17.1756475528388; 
+ Fri, 29 Aug 2025 06:52:08 -0700 (PDT)
+Received: from stoup.. (122-150-204-48.dyn.ip.vocus.au. [122.150.204.48])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf270fc496sm3400264f8f.1.2025.08.29.06.01.21
+ d9443c01a7336-24903705b9dsm26457415ad.7.2025.08.29.06.52.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 06:01:22 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
+ Fri, 29 Aug 2025 06:52:07 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Igor Mammedov <imammedo@redhat.com>
-Subject: [PULL 28/28] tcg: move interrupt caching and single step masking
- closer to user
-Date: Fri, 29 Aug 2025 14:59:35 +0200
-Message-ID: <20250829125935.1526984-29-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250829125935.1526984-1-pbonzini@redhat.com>
-References: <20250829125935.1526984-1-pbonzini@redhat.com>
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH] tcg/arm: Fix tgen_deposit
+Date: Fri, 29 Aug 2025 23:52:03 +1000
+Message-ID: <20250829135203.284630-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,74 +96,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Igor Mammedov <imammedo@redhat.com>
+When converting from tcg_out_deposit, the arguments were not
+shuffled properly.
 
-in cpu_handle_interrupt() the only place where cached interrupt_request
-might have effect is when CPU_INTERRUPT_SSTEP_MASK applied and
-cached interrupt_request handed over to cpu_exec_interrupt() and
-need_replay_interrupt().
-
-Simplify code by moving interrupt_request caching and CPU_INTERRUPT_SSTEP_MASK
-masking into the block where it actually matters and drop reloading cached value
-from CPUState:interrupt_request as the rest of the code directly uses
-CPUState:interrupt_request.
-
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Link: https://lore.kernel.org/r/20250814160600.2327672-9-imammedo@redhat.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-stable@nongnu.org
+Fixes: cf4905c03135f1181e8 ("tcg: Convert deposit to TCGOutOpDeposit")
+Reported-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cpu-exec.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ tcg/arm/tcg-target.c.inc | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 96c124aa720..8491e5badd1 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -782,13 +782,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
-     assert(!cpu_test_interrupt(cpu, ~0));
- #else
-     if (unlikely(cpu_test_interrupt(cpu, ~0))) {
--        int interrupt_request;
-         bql_lock();
--        interrupt_request = cpu->interrupt_request;
--        if (unlikely(cpu->singlestep_enabled & SSTEP_NOIRQ)) {
--            /* Mask out external interrupts for this step. */
--            interrupt_request &= ~CPU_INTERRUPT_SSTEP_MASK;
--        }
-         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_DEBUG)) {
-             cpu->interrupt_request &= ~CPU_INTERRUPT_DEBUG;
-             cpu->exception_index = EXCP_DEBUG;
-@@ -806,6 +800,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
-             return true;
-         } else {
-             const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
-+            int interrupt_request = cpu->interrupt_request;
+diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
+index 836894b16a..338c57b061 100644
+--- a/tcg/arm/tcg-target.c.inc
++++ b/tcg/arm/tcg-target.c.inc
+@@ -975,7 +975,8 @@ static void tgen_deposit(TCGContext *s, TCGType type, TCGReg a0, TCGReg a1,
+                          TCGReg a2, unsigned ofs, unsigned len)
+ {
+     /* bfi/bfc */
+-    tcg_out32(s, 0x07c00010 | (COND_AL << 28) | (a0 << 12) | a1
++    tcg_debug_assert(a0 == a1);
++    tcg_out32(s, 0x07c00010 | (COND_AL << 28) | (a0 << 12) | a2
+               | (ofs << 7) | ((ofs + len - 1) << 16));
+ }
  
-             if (cpu_test_interrupt(cpu, CPU_INTERRUPT_RESET)) {
-                 replay_interrupt();
-@@ -814,6 +809,11 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
-                 return true;
-             }
- 
-+            if (unlikely(cpu->singlestep_enabled & SSTEP_NOIRQ)) {
-+                /* Mask out external interrupts for this step. */
-+                interrupt_request &= ~CPU_INTERRUPT_SSTEP_MASK;
-+            }
-+
-             /*
-              * The target hook has 3 exit conditions:
-              * False when the interrupt isn't processed,
-@@ -838,9 +838,6 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
-                 cpu->exception_index = -1;
-                 *last_tb = NULL;
-             }
--            /* The target hook may have updated the 'cpu->interrupt_request';
--             * reload the 'interrupt_request' value */
--            interrupt_request = cpu->interrupt_request;
-         }
-         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_EXITTB)) {
-             cpu->interrupt_request &= ~CPU_INTERRUPT_EXITTB;
 -- 
-2.51.0
+2.34.1
 
 
