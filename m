@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51656B3CC4A
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F52AB3CBF3
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:26:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usN9P-0003nh-UU; Sat, 30 Aug 2025 11:05:55 -0400
+	id 1usN9Z-0004Qt-JQ; Sat, 30 Aug 2025 11:06:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uruB3-0003bB-H4
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:09:42 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1uruBX-0003nc-9J
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:10:11 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uruB1-0001zt-Ev
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:09:41 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-45b82a21eeeso589315e9.2
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 01:09:38 -0700 (PDT)
+ id 1uruBV-0002Hm-1B
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 04:10:10 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-45b7d485173so7913045e9.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 01:10:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756454976; x=1757059776; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756455006; x=1757059806; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uYEqRHgbV4dj/zidZbTo09wctcjJATrJIMMftyItbto=;
- b=SyaQmP0ve9WxSUuhkLG70fPWNo9iIgNYQGW0Zopgjl3pAK1efj+CQPmuvsxXCmzIvb
- 7ECOI/3yUoKjTTszQXtg9sQQww9noGYWBpmTxP/2hjMp61OSjE8gZymvDdMMWDLuy2kZ
- yU+r++ndvCYxGirMAbi1ZPAnWXi2aJ1eeadN6Yc+2TTL2N9d+saJ7V9uYknXNXwdRL3w
- 7vCUoC1iiPVZRU9Za1+V5ksaUNY7Gx1I1PERU/0tj2ik8f5SqSFkbzIeQ5hUsz+pATRn
- EUqemrpO3HYJD4r085LasZQs7Dlao2rMn631WWfzf53mxchxK8qtC6YwqpQFQ+ifxxnE
- bH5A==
+ bh=3LAric2XYbKMEbt/AJajkapCtK7bDeXmebiBkZGrU6s=;
+ b=W3PKeVkkA4n3tX/e3cNJvQjAM/eXMKNlfViz37PjCw6tAnyruNzf6gTBPpuSBNVXpG
+ wDKJS5xx4w1b4feIcceIPlqcTbg7Q+Y/YlXA+yR3UBl8LSbWNuQ95z92BhbhoxbKudae
+ thmwNBlfcFQl20grDqC32NXCRvsjCzYWKJgzRpWqUBfUT7wJeZDH2ziMICvTbaWKTP8X
+ MESq/Y798V6L3JHuw2otpOz7hc2gPI1hn4J1dQeVNia5NKys++dpETsF91J6cAbDcRFF
+ VhIX+9KWyd51t++Vft/KPZPjx5ac3mZlZLX5g9rdOJ+gKK0dMODeLnIcCDi9oxso35Xi
+ +P0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756454976; x=1757059776;
+ d=1e100.net; s=20230601; t=1756455006; x=1757059806;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=uYEqRHgbV4dj/zidZbTo09wctcjJATrJIMMftyItbto=;
- b=M2UsUegFd/b/cMmv37FIPY92NyeUm1DWl1lAh+z4zX8jpxOdS2y8XEeLvJGkq7d/G+
- XvADcAi9vBSIC1mzrZm2+kmUxh1xhbv0AGFKf+yjOGSGrBXoEw0KSEC14ybDi3BbHTWw
- kktFElyOpeI6yc4kGwxalisMGPBB2s7JNh+fn4rG1UCBHhAPgr0Q2p+yEYvxpeEUtznr
- MdMvw4IR/Z2sp/V85/eMHaM7lXMTa0D1/3JQa2t3isxMO7JAStbUTGWDIMcXDxyOblaE
- hb0jlozba+QhjC77wOf5H76NlGUfDEx2VvRLjKH0+smlZNusAqJM3dbHCkfyNvpPZHEX
- qC2Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWrpqXOwblEHQWwO9mnCvyS2pH2HL3X+HFyh8rlIwqiueAVSqK8SAFRzbEOnSjHP9a0DPMOmIQYs5qG@nongnu.org
-X-Gm-Message-State: AOJu0YzZt6kLUlUF/VueqnNtU/wcJR4zX50by6CFukB2/XU8DX3OWT0Y
- gLlbWR/fDj9SzRJOwzZT5vcC4rlgcy/BAH7ZcBv8DxwNHbaQzNyIHuApmNzjtp8s7QE=
-X-Gm-Gg: ASbGncuAoi7mIZNSBFQ9uTKgB5nk8xxfjtHKdV22QrRpK4tEvSdKypY7KUL5a0zy/C5
- jW7bwwuGu4uzd8ph/up+NLkKQbpcWs5sYlHnvmUUTeREMqDWyfa/jUBH/1P22IoYpOKGEy8lOKq
- 1l9ciBxrVXnBzYuWUNSdn2TUqdnD9uHzCHva2Ll73+VBFWsln7/S8Bms8Mo/AUmHG6ruVEdBf5k
- hsVFs11+CKCyNYp1GSh419ixJd2+smIzSOuZwVBLXrzZh9vycNE0ot67eVzDbwc6l75sqNtqv3e
- x1FtLmlrfhhRlL+j3bb/4EkV25rtg/FnvfdEFaSES+TbrYGrT2IJTRuo88a0dIt8spW05tAXUFg
- TmE+oEQ+BcP5gktTxKzCt1wM=
-X-Google-Smtp-Source: AGHT+IHWSncY8t16Gat2oF1IXj0YlNyyddkee5hGNfgNIv6CUTjZIlCqXsjtUmztQd8y/JQTBGuFKA==
-X-Received: by 2002:a05:600c:4705:b0:458:bf0a:6061 with SMTP id
- 5b1f17b1804b1-45b517d49d4mr253939295e9.24.1756454975590; 
- Fri, 29 Aug 2025 01:09:35 -0700 (PDT)
+ bh=3LAric2XYbKMEbt/AJajkapCtK7bDeXmebiBkZGrU6s=;
+ b=Td0XKGinV8b0Ow7PW5wmGPZteOWYxe4iPWGx03TzJRc1EdW8FuA/5MSx5DhYgA2Fzx
+ A8aO59OGIT6mHGaZFg94xcfV1X5lBr+HiEmKteX/UZ+og9eDX81VAohUV0vXMOXXdG8e
+ pvDNfKMPtcpffUWMOM28I6I59Yv6H5Xev2YFZ8YKXfxizwMFcAnL9qWRV1zbzcrfpya+
+ x5LMRtrLBR0TUJvPomeg8kRmfRF4fxRnlMYBOlevOvY0GoZX3sQ3TySGeppbL83fkLZx
+ NT3KG8pGsZvA/uYGaOgts6Ti7rTViztQZT8uIpIQwczSG6hrdYRvv1YeQPG9OW9gPSUA
+ Hpiw==
+X-Gm-Message-State: AOJu0YwTsRyiWiclS2O0RTxIMFi7HJ3UuGKnG20v6imQ+/BLHhqrAVZj
+ lPshpd82LQKQWQk1sYoRitj3WKDtHI8Mcz2jovSg9W5XJq2Agz9zTS/S8yAs5+Vt6ro=
+X-Gm-Gg: ASbGncsA3xZJlt6WNYYAFwngJA0g4GU6dLBH5X8i/i7M0SVlPSicEREiPjuXBM3fmS4
+ S2MeK4WFXDR9HIlDSaLw43TkyvDiXRkbbzKili8GO+c/zEID7YxxYqrdMpO7QQBma46QQSauBD2
+ hpYg5Hza6vjtpZczQJmH+CApDu9BBwTUmTiFVrL9mUlJO60SD1vXOaSOCq4OGNLM2dWqx5M/ToV
+ Im2sLBVn8WSb+Z7jM1orW/OsEd0dYmqVx8tnbv5G2E8pBQyW1EKxuBx2MElWUtHPyq1DEjYeR0s
+ lYucUPsWgEUJ75jx5coFKhCuXJ02SoFODc6u2De+gYQBA3dI76WPziLv8s3laNFqiU1wnbWH6pu
+ nWOyUgxoOIyKLTMEfW1eRqZyYIEm7IeL2Iba9t1WbDf3P
+X-Google-Smtp-Source: AGHT+IG3KzGTlWjJYDmnmwZUwT3jqgug6r9Rgg0bim9ME2QCqwRycZ13ueUgzwRqHDJ5UOkULyA5xA==
+X-Received: by 2002:a05:600c:154c:b0:45b:6269:d25b with SMTP id
+ 5b1f17b1804b1-45b67440939mr106240185e9.37.1756455006125; 
+ Fri, 29 Aug 2025 01:10:06 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b7e89920dsm29880545e9.16.2025.08.29.01.09.34
+ ffacd0b85a97d-3cf34491a5asm2348078f8f.55.2025.08.29.01.10.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 01:09:34 -0700 (PDT)
+ Fri, 29 Aug 2025 01:10:05 -0700 (PDT)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D4A305F80C;
- Fri, 29 Aug 2025 09:09:33 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 6B8BB5F80C;
+ Fri, 29 Aug 2025 09:10:04 +0100 (BST)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org,  qemu-devel@nongnu.org
-Subject: Re: [PATCH] system: drop the -old-param option
-In-Reply-To: <20250828162700.3308812-1-peter.maydell@linaro.org> (Peter
- Maydell's message of "Thu, 28 Aug 2025 17:27:00 +0100")
-References: <20250828162700.3308812-1-peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,  Warner Losh <imp@bsdimp.com>,  Kyle Evans
+ <kevans@freebsd.org>,  Laurent Vivier <laurent@vivier.eu>,  Richard
+ Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH] linux-user: Drop deprecated -p option
+In-Reply-To: <20250828162012.3307647-1-peter.maydell@linaro.org> (Peter
+ Maydell's message of "Thu, 28 Aug 2025 17:20:12 +0100")
+References: <20250828162012.3307647-1-peter.maydell@linaro.org>
 User-Agent: mu4e 1.12.12; emacs 30.1
-Date: Fri, 29 Aug 2025 09:09:33 +0100
-Message-ID: <87wm6my2f6.fsf@draig.linaro.org>
+Date: Fri, 29 Aug 2025 09:10:04 +0100
+Message-ID: <87qzwuy2eb.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,11 +105,9 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Peter Maydell <peter.maydell@linaro.org> writes:
 
-> We deprecated the command line option -old-param for the 10.0
-> release, which allows us to drop it in 10.2.  This option was used to
-> boot Arm targets with a very old boot protocol using the
-> 'param_struct' ABI.  We only ever needed this on a handful of board
-> types which have all now been removed from QEMU.
+> The user-mode '-p' option has been deprecated since 9.0 and
+> doesn't do anything except emit a warning. We are well past
+> our minimum deprecation period, so drop the option.
 >
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
