@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CCEB3CC11
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:38:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00196B3CBC3
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:18:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNGi-0007Oz-81; Sat, 30 Aug 2025 11:13:28 -0400
+	id 1usNGk-0007SV-Vx; Sat, 30 Aug 2025 11:13:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryiN-0001B9-4B
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:00:28 -0400
+ id 1uryiU-0001C6-0A
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:00:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryiF-0008Cx-OX
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:00:22 -0400
+ id 1uryiK-0008OI-Dr
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:00:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756472414;
+ s=mimecast20190719; t=1756472416;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jtKc/6E/RbNiUG2cnBtKwsWzbtnSHz0rkgbelCKjpIE=;
- b=ZILVrag0nSG1Xdtq3PKyY8982HYqFLHF5ycpZ293zoKi7BKu6t5evgS/49VC/JaWKTwnD3
- b5+akFA+/nJscL+AWb8wCEOwncsjNVbPqdlf91fkgNCbfdnK1si6dVdK4ze2s30rYUJ+RB
- uzb+oRO+7+mmI2Md+w6TIWky8DRLA+s=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=k8kp0Cbu16sKsjDAB7J2N+24+1kUucDBRmU0sLqwMZQ=;
+ b=d6Pak6MfMWnSR9EgkODJB0Y2U7UJGCI8DYo2zzoCIvdJd9+OMD9CPoW3S67+uLmWMLZKlJ
+ 0MYtf3Z5b7MX+CihQ6zOBIDpx0D3kL6KGocR17zW3ivfYTq89iWuR3L3i+lrID4xClmi3H
+ gSavnX8X9SEHBMIkXhYhSJEwy9JW+mw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-176-rFtJkVNZOvCPV02F2a0cSg-1; Fri, 29 Aug 2025 09:00:12 -0400
-X-MC-Unique: rFtJkVNZOvCPV02F2a0cSg-1
-X-Mimecast-MFC-AGG-ID: rFtJkVNZOvCPV02F2a0cSg_1756472411
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-45b7d485153so11514745e9.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 06:00:11 -0700 (PDT)
+ us-mta-98-VG07g-4GOa283MIVQcaGsQ-1; Fri, 29 Aug 2025 09:00:15 -0400
+X-MC-Unique: VG07g-4GOa283MIVQcaGsQ-1
+X-Mimecast-MFC-AGG-ID: VG07g-4GOa283MIVQcaGsQ_1756472414
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3cdd69ee330so731582f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 06:00:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756472410; x=1757077210;
+ d=1e100.net; s=20230601; t=1756472413; x=1757077213;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jtKc/6E/RbNiUG2cnBtKwsWzbtnSHz0rkgbelCKjpIE=;
- b=biKo3G75l29bBImq9aip44om+K1v1Nj0znij20npPjKiBThLBwYu30mPkq1MmuL0Zl
- 5V1dhGfZPrP6+4gwdIQavFoK6EBcV82ZY1uSf6ZzWS/p86YTyv9mtuVgya1IsqsMAZFR
- 1GV/8yZwoJ+W3XiX2EpROyOzuoITkBS11/q580VI+lqAM5EMSRhbdsruu00VkSCuQHIs
- q0Edn1iRMqpYTrD9iMjUA+5n2mDOYYHkF4e2lBywlDnKUweiVrpAqk89/UrN7i+y0Jb4
- XtR/XbT15MH/Y/M+inW7maXWMaN4eYcj/vB//8KASYyrWGlu9hMIYuXkGWVoAOmtjyiz
- 30uw==
-X-Gm-Message-State: AOJu0YxEEGaxkREhNuHlVt+sKsvdHCnWkXyf+LNIt2BXp+NzO0a1pTIj
- QhEqzy90urC2m3YoEZHrJLpWxv1AFsi2IeZKcOONgg11GKCKqSW9d8paAlmSz/LBcOXN61aeyi5
- Tv4lBKTpwd2yTKCkAZTxjvB0buoxMSGrEpmq+BD4//4glvG2btB7a5p9tmlwmE0Oi+3QaLM70Qy
- 1yTyYG85sdif8unO7DrzNpz4JcsS/jovK780FNJerv
-X-Gm-Gg: ASbGncuQoPO8PhXc5sqiqC/9J1/BT4MnHxhN1ckz4NWafLb64EVG76a2t4rOiEBSmzP
- 81Xf0Ho+bgfDMsrUUAf97sIOW8/MHHMQkoVC/lN9TJS/4eWCaCsVHU+mdg7Ab92e2QQKRVHPQmk
- qV+CETZcNTOxbjX2D5PZbDlWcwT7SkhzWvCsoYJDvxkblvL8/d9zupIQxtz2KKflUoy+xJN/yQB
- waULK4gaQJg8U2K6R/U0NKppWUUZ4qMxJKm+yhp9AZlZkaUXsxjcpa2uLPJ9kCx+maX5vT2OiNp
- 835PbJVaiEPUBhAuIaCxWB4QaUWY2mRmuqpqU3j8vBVHC5wcCTSvDmzpWDhRj6IXB3GT6arUQ0V
- jzXBOcn8uy9Y9R+75vg/58LIm3T1TkVsdQNcQWbr3w6Y=
-X-Received: by 2002:a05:600c:4511:b0:456:10a8:ff7 with SMTP id
- 5b1f17b1804b1-45b517dd3admr225707805e9.28.1756472409802; 
- Fri, 29 Aug 2025 06:00:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFX+JoRBf+P/lbVcUBADTBMTlEdHqi1xnX586DfxEksSoVDWPSvH7YGXB8suNz7FTMMm2eKqw==
-X-Received: by 2002:a05:600c:4511:b0:456:10a8:ff7 with SMTP id
- 5b1f17b1804b1-45b517dd3admr225707315e9.28.1756472409190; 
- Fri, 29 Aug 2025 06:00:09 -0700 (PDT)
+ bh=k8kp0Cbu16sKsjDAB7J2N+24+1kUucDBRmU0sLqwMZQ=;
+ b=rTKkgGBnU/OyAwhSeC4rUgrr2bBJO+J43cd7w40ekChtyiFl1rRc05UcLrUY+9KPX0
+ wScXXv14rqMWi4XNVKGH7BBfaYuVVcY4AeMb2znRHEmLTfBjLe00wUsrzCp1YDUnok5H
+ k8nW39pESeQIpiKwIzvGlin57ErQUXbQb6K3wkKe99JVMfy1jbfZe9VpGdpBgy/WYs2v
+ sSfmFeoP+3/lGTyO5HKAkIXg+IbkQT3e5C0cR0yE8+y5IE8TNFhPpHuAUn7gkBqbu+vW
+ pTDOBj63+S6nplw27ijDxpjhspY8T+Anz6UWPhff+d7xl59PayIfbE61XtlOlHnDqjF3
+ Iobw==
+X-Gm-Message-State: AOJu0YxCsAksplcLDmf4nfOhHift1RHlFhLhGXESbO1ULByv3qZcvmEq
+ 2O3ZP61+hdKI+gqKxmku++3I3+pORqizqOIDaVrJ+pEWVP8pgLtEItX5YPLJMa6wP8EMVbFQRzd
+ QqUjtqWRPnpeC7zaMy9VgbYocAtv+9wc/4xvbBjWmaIqe+0aNpcSMUSJcQ+YzCrhFU6K7bIE2HG
+ FN10snY0caVVE9Vw9s19IYOQ6psByiISXKbjNnz0pv
+X-Gm-Gg: ASbGncsGnWSnwOwZCC1GV2Hz2z5ZubuRAjtFEDlfUCjxgsz7JSYpLYKqkeKLBZ2zSAF
+ eKSFyzM4yQxkHW9gpMkKTccN8t+zhlCZu3laM4v0EBAB9LhnOQKfmLL0S/TFTSxzrZDXHA3UA8p
+ AJnfJZOeaWO9BaBRWvLvT+bpyNmGj8XAm6ZrCHG4edPZA8shzEBU+ZEoLsNtmJq8XiL9yIpNEU/
+ PRSIg18/8kkcd54AsCDk4FKXRDRLEwTWxHmqPiMxZL8ZMCWbm/Ghie1kE/BIq0/349H8GDsh92Y
+ fH82iIeLFJJoLOQDHWvomDp75i7KgS22W7CT8EHAa+5a6FIauu2RhZ0iiIyA9saQH2dzkqo2Q/W
+ 7RCT9uI1XyT2AzcI+tXQt2vwiVx9E1a2rYfLUrRGzpRE=
+X-Received: by 2002:a05:6000:40dd:b0:3a4:d6ed:8df8 with SMTP id
+ ffacd0b85a97d-3c5dc734927mr21516467f8f.39.1756472412942; 
+ Fri, 29 Aug 2025 06:00:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFY6a5M++V57bS+wpK+MuOfDStkPzeN9MtAnX3m6Z8KIV5YtsAP4l11iMRj4BKW0y6o5wcGeQ==
+X-Received: by 2002:a05:6000:40dd:b0:3a4:d6ed:8df8 with SMTP id
+ ffacd0b85a97d-3c5dc734927mr21516430f8f.39.1756472412419; 
+ Fri, 29 Aug 2025 06:00:12 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf276d5e5fsm3388364f8f.27.2025.08.29.06.00.06
+ ffacd0b85a97d-3cf33fb9d37sm3350068f8f.49.2025.08.29.06.00.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 06:00:06 -0700 (PDT)
+ Fri, 29 Aug 2025 06:00:10 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 12/28] hw/i386/pc_piix.c: hardcode hole64_size to 0 in
- pc_init_isa()
-Date: Fri, 29 Aug 2025 14:59:19 +0200
-Message-ID: <20250829125935.1526984-13-pbonzini@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 13/28] hw/i386/pc_piix.c: remove
+ pc_system_flash_cleanup_unused() from pc_init_isa()
+Date: Fri, 29 Aug 2025 14:59:20 +0200
+Message-ID: <20250829125935.1526984-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829125935.1526984-1-pbonzini@redhat.com>
 References: <20250829125935.1526984-1-pbonzini@redhat.com>
@@ -113,39 +112,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 
-All isapc machines must have 32-bit CPUs and have no PCI 64-bit hole so it can be
-hardcoded to 0.
+This function contains 'assert(PC_MACHINE_GET_CLASS(pcms)->pci_enabled)' and so we can
+safely assume that it should never be used for the isapc machine.
 
 Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250828111057.468712-13-mark.caveayland@nutanix.com
+Link: https://lore.kernel.org/r/20250828111057.468712-14-mark.caveayland@nutanix.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/pc_piix.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/i386/pc_piix.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 0bc033943ca..66dc4a5186e 100644
+index 66dc4a5186e..fb936748bd1 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -445,7 +445,6 @@ static void pc_init_isa(MachineState *machine)
-     GSIState *gsi_state;
-     MemoryRegion *ram_memory;
-     MemoryRegion *rom_memory = system_memory;
--    uint64_t hole64_size = 0;
- 
-     /*
-      * There is a small chance that someone unintentionally passes "-cpu max"
-@@ -499,7 +498,7 @@ static void pc_init_isa(MachineState *machine)
- 
-     /* allocate ram and load rom/bios */
-     if (!xen_enabled()) {
--        pc_memory_init(pcms, system_memory, rom_memory, hole64_size);
-+        pc_memory_init(pcms, system_memory, rom_memory, 0);
-     } else {
+@@ -503,7 +503,6 @@ static void pc_init_isa(MachineState *machine)
          assert(machine->ram_size == x86ms->below_4g_mem_size +
                                      x86ms->above_4g_mem_size);
+ 
+-        pc_system_flash_cleanup_unused(pcms);
+         if (machine->kernel_filename != NULL) {
+             /* For xen HVM direct kernel boot, load linux here */
+             xen_load_linux(pcms);
 -- 
 2.51.0
 
