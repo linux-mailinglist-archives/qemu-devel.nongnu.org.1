@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C28B3CD97
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FCC8B3CC63
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:55:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNGf-0007GY-UA; Sat, 30 Aug 2025 11:13:25 -0400
+	id 1usNH8-00006l-IU; Sat, 30 Aug 2025 11:13:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryhr-0000u2-Dm
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 08:59:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uryhu-0000uu-Pg
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 08:59:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryhp-00083l-SD
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 08:59:51 -0400
+ id 1uryhs-00084W-Ti
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 08:59:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756472389;
+ s=mimecast20190719; t=1756472391;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IPkT/oQDCaPUBTKhrgjd7p4GmdrxFlTRzjrLfJsc/fA=;
- b=Tz6l3W9ucnq5lXFVPol3CydAz4rcOmpSqrqut6Soqhcp+9iW8ZquvnF2XRN8Qb6BNYCBLY
- c8gaaCEnJJheHf7r6auqu8WDAPDS3yDqRtgL6mfhMtG7SxVcdNqpoNw/4c5xuCdc8RbK+7
- ybH/uiDo5weJJbtCAd9Cns7XrhXuOj4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eskP7wGSMkx2uQO3NyABAeQ/Th6dfwDBwreOAQBKuPo=;
+ b=UZShSfuBxoBBbXzxcFqzKjDokvT8R1D0W7VQkecauoa/c/tXF75F+6OYhnmZHoz9xVDpfp
+ F0SbiViYFyDoxVCRVxM1d75WMlaETl2oprUsp3bQ+IBfjYq4zWPltLU/yBHDf52Ubfw7/R
+ ZayY5wmAyTBtU6Xy0W48Cjqc0vzXyCs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-0UE4bEoNNQiNOzticR_Epg-1; Fri, 29 Aug 2025 08:59:47 -0400
-X-MC-Unique: 0UE4bEoNNQiNOzticR_Epg-1
-X-Mimecast-MFC-AGG-ID: 0UE4bEoNNQiNOzticR_Epg_1756472386
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-45a1b0c5366so13165355e9.3
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 05:59:47 -0700 (PDT)
+ us-mta-528-vhS8vOmgNHSIn5WTJ1x5Gg-1; Fri, 29 Aug 2025 08:59:49 -0400
+X-MC-Unique: vhS8vOmgNHSIn5WTJ1x5Gg-1
+X-Mimecast-MFC-AGG-ID: vhS8vOmgNHSIn5WTJ1x5Gg_1756472389
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45b7265febdso13902195e9.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 05:59:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756472385; x=1757077185;
+ d=1e100.net; s=20230601; t=1756472388; x=1757077188;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IPkT/oQDCaPUBTKhrgjd7p4GmdrxFlTRzjrLfJsc/fA=;
- b=JfDPXuz4ecEs1H6O610yRll5/LboiochSzAiL6aEKMBpnUVFJUdMM/bjZqvzYS6+Z7
- /aYGTVGnbY94ZvHo2JIFbb/XwSpJo8psxAM5ORHiFCvF02xAXRO47hmzubuYkrq/F/QO
- oBD4dCoepzRy6PN0dgdiAF3Iy+DUp11pzPlLmi7ZpFdIPik4R3Pzaj8YyFzp/pAKAelv
- lTFNZpRzt/c721l5FCRHoBKzuRVlIPJbGqaKwsAmNKjGbGc5Hx3e86an9ZOCFU6g4IcL
- m7utAA1w4FbvCTL/DC1jnYO7YPgDS77BCfhD77due4Lly98xfkHzM/NOghexPGldSww6
- 3nnw==
-X-Gm-Message-State: AOJu0YxVy3Y6rVY+0jBWRWasVmHdpeBnYei6/IIYX7aWwQHLYr2gK8oG
- NwXmu3RDmE7xn5sxRJpG1PuZAJB/JmrhNsu1Z3IBDhm+TbjcXHlSnDq8yGrTSOD92UdgV8TWIUn
- e7isZ/lvsiRxMpYhJxV8u2dD1Ow+YdPLmFJjYxzNPQXBNxOnYJlr/b3n7LBNImv7Qs6pt1xQYhp
- f90G2Fznvjwm5MRJWT6wXYM4xQlOjjheZzYGM1Xotv
-X-Gm-Gg: ASbGncuOL0QiE6IcMdZPk2JUomz92FIKYEhxGjs+POCsPHoEgTg1RK4Ay+l8t8rRwnP
- dyOLbszlvP0Za7iS8P8getErpgTNe1+dlK/PfwwSHbi6PHuiSiJxCQ5GKZx5AchxZ05x6o7y+sh
- flsorLiltypDMEaXSWRyW9pVVkH9ch/W6Jen1mhDlopFBZY3fu0EGbbex+lkqdfJFUzpQuS+a7u
- PBhkUiUDPjW0+W7bo1/jUKXjtRhH6/H6oV/uaNvvGQQN8ghktRWeW7JJRmWUag86Ojp3g1iVW4O
- 0HpxRI90lkrv1ziArmeYXQFCMUTwyv938QDfye8RQlcUIUKUecn91Og6Z2ueOrf+kLAYLAXwuoY
- JWd+gQhfhMKvDVjcxaL6iXNYKGoj9B07EHV5ZDkRQclk=
-X-Received: by 2002:a05:6000:2507:b0:3c5:9e0f:7608 with SMTP id
- ffacd0b85a97d-3c5dcdf9aa8mr22990947f8f.46.1756472385034; 
- Fri, 29 Aug 2025 05:59:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGKjyQTnZgNBRmgGfrYpi8vfZVF3wS5qeq/xg88hLiz4h6gQC4vB5nhGyepkWCvKbZPpGRQsA==
-X-Received: by 2002:a05:6000:2507:b0:3c5:9e0f:7608 with SMTP id
- ffacd0b85a97d-3c5dcdf9aa8mr22990912f8f.46.1756472384553; 
- Fri, 29 Aug 2025 05:59:44 -0700 (PDT)
+ bh=eskP7wGSMkx2uQO3NyABAeQ/Th6dfwDBwreOAQBKuPo=;
+ b=qTZdNHpVseMXGnpOc8ulaHF4OySrcTX8k5YJE3Cf+CgEkQkornHnb6tuR6Mok/o2Um
+ Q1/5WETFAejWwLmzsGhWbxB/Pl4BNkYKHARHV+m0BPnLD3NR8Ep/9zNCz4kYB01z2pyJ
+ RYlxUw8d+asaHh+TvNE9IZmI/9za+yxMaGICLlb6wY17l7vd5dJQ0Nheaq5al6AQ6nah
+ o5bXiKSFJ4ckpbWMRq9qMxkHPUTkgmJaUqJak2VZBZdv6BC+uWXyM8gA3UEpusA58Oku
+ P3SshhYYsw/gRPI7Y1DgCy5w+JKUTUp/jgZg64oCaUU2WobLww7VBflDy7NQJ2Jqepuw
+ dfAA==
+X-Gm-Message-State: AOJu0Yx2eC7+JgYdsNvBoeyGEijP8iOd7eY3REVXy67k0hubsMTZv2IX
+ F5ShLPJY9ZQDk3ipldnpVPrBdlgQg7mu3NvMZLoSd4Zy5xow8VHxNvW4OJmffPbTEc+jWaBfQ/H
+ GU4vFU3XibQdhYi7M3OzYUk2jg7/yI3rdDawkSby3pY5kZO1Lf70cVg0FaI/ERXr16t397DfrhY
+ FGkOxYrdfhBLfQ9sJwmB3v9GR8YWKdJ4jFRqV4z/DX
+X-Gm-Gg: ASbGncurAPSp2cDAxcIYVb57qajzrOJTy9lk4N4THDGHokGRcSm6Qw7vDJS1d7kj+J4
+ 8NC/mJ7iYhxtCrZr7xbvTR38yWROcl3YD9x3SCC9HfZtCeraEHiN4eHZ8US1uMEEvb8dqEdJh+Z
+ GnTfNoBCJ4/qw8G+1fFcGzvbb6WLHQcger9TGL1qMRZ8PXGKjr6Iyz2hrbHmwDbzjqnVHdtPiXA
+ Db02YZKgJqQNgmLOthipJFZAUX9aC7ACjJDpR8oE+cZxPhmHd1Tp+5XkRJY6hFu93KFritUifeW
+ K/KMn+KdvWd93ErOgXX08NkIMZRnUOdOsK5GZGoyqGFMeqhlEXQ5R4SqbUKH/xNAA95HRB49Bm+
+ 8gF+qhNp8iCZVRG5mJXP56UfzfhZSPmjJTtTLexviSvQ=
+X-Received: by 2002:a05:600c:16c4:b0:45b:7e07:af4c with SMTP id
+ 5b1f17b1804b1-45b7e07b13cmr22096675e9.16.1756472388137; 
+ Fri, 29 Aug 2025 05:59:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHNKIkXCfFLWhM6a9uf7DBKbhrZNmDWLMJCRzxgtaKwZ14JTBev7AFZ9N4+Utt9WHdRzfP/uw==
+X-Received: by 2002:a05:600c:16c4:b0:45b:7e07:af4c with SMTP id
+ 5b1f17b1804b1-45b7e07b13cmr22096515e9.16.1756472387666; 
+ Fri, 29 Aug 2025 05:59:47 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf33fba9fbsm3328765f8f.50.2025.08.29.05.59.42
+ 5b1f17b1804b1-45b7e380b77sm41670855e9.11.2025.08.29.05.59.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 05:59:43 -0700 (PDT)
+ Fri, 29 Aug 2025 05:59:45 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 03/28] hw/i386/pc_piix.c: remove include for loader.h
-Date: Fri, 29 Aug 2025 14:59:10 +0200
-Message-ID: <20250829125935.1526984-4-pbonzini@redhat.com>
+Subject: [PULL 04/28] hw/i386/pc_piix.c: inline pc_xen_hvm_init_pci() into
+ pc_xen_hvm_init()
+Date: Fri, 29 Aug 2025 14:59:11 +0200
+Message-ID: <20250829125935.1526984-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829125935.1526984-1-pbonzini@redhat.com>
 References: <20250829125935.1526984-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -112,30 +113,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 
-This header is not required since the loader functionality is handled separately
-by pc_memory_init() in pc.c.
+This helps to simplify the initialisation of the Xen hvm machine.
 
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250828111057.468712-4-mark.caveayland@nutanix.com
+Link: https://lore.kernel.org/r/20250828111057.468712-5-mark.caveayland@nutanix.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/pc_piix.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/i386/pc_piix.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 9a3b5d88f08..351986232d6 100644
+index 351986232d6..8e302dc013b 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -28,7 +28,6 @@
- #include "qemu/units.h"
- #include "hw/char/parallel-isa.h"
- #include "hw/dma/i8257.h"
--#include "hw/loader.h"
- #include "hw/i386/x86.h"
- #include "hw/i386/pc.h"
- #include "hw/i386/apic.h"
+@@ -471,14 +471,6 @@ static void pc_init_isa(MachineState *machine)
+ #endif
+ 
+ #ifdef CONFIG_XEN
+-static void pc_xen_hvm_init_pci(MachineState *machine)
+-{
+-    const char *pci_type = xen_igd_gfx_pt_enabled() ?
+-                TYPE_IGD_PASSTHROUGH_I440FX_PCI_DEVICE : TYPE_I440FX_PCI_DEVICE;
+-
+-    pc_init1(machine, pci_type);
+-}
+-
+ static void pc_xen_hvm_init(MachineState *machine)
+ {
+     PCMachineState *pcms = PC_MACHINE(machine);
+@@ -488,7 +480,10 @@ static void pc_xen_hvm_init(MachineState *machine)
+         exit(1);
+     }
+ 
+-    pc_xen_hvm_init_pci(machine);
++    pc_init1(machine, xen_igd_gfx_pt_enabled()
++                      ? TYPE_IGD_PASSTHROUGH_I440FX_PCI_DEVICE
++                      : TYPE_I440FX_PCI_DEVICE);
++
+     xen_igd_reserve_slot(pcms->pcibus);
+     pci_create_simple(pcms->pcibus, -1, "xen-platform");
+ }
 -- 
 2.51.0
 
