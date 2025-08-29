@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43BBB3CD90
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7E10B3CC52
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:53:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNEr-0004Rf-IW; Sat, 30 Aug 2025 11:11:33 -0400
+	id 1usNEs-0004em-Rm; Sat, 30 Aug 2025 11:11:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1urwy5-0008QW-33
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1urwy7-0008SJ-Kn
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1urwy2-0001gF-LH
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:28 -0400
+ id 1urwy4-0001gp-RY
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756465705;
+ s=mimecast20190719; t=1756465707;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=og6ymulh9UmaMSIescETQPevhxzm1aJMZFMSGR8zlFk=;
- b=D/8xktZ+uMSswme4HwcTS4OiE3ea7TAHdymLW/BJJWSSyLVH5uA/1KUyjBprf2+Bplk3jT
- aGgwOzsI1wRJgdLlHqIUoI02p2tyzxU93vMfGGavLD78b8fTUg83TbBvsbxN5/3Tw/nvdh
- u1FaU/2pWQKpGigWIzxoADhw1oB7aGk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=0cSYtWQY+sl2psNrjqMwDQ/CGi50FF+HBZzJGLsoQhg=;
+ b=WfGH1xMfucWGLGxsakA9AaGhb5gDFLiGezaoiATeDT426kVqbGXOYYIIucjec1u3Lg6/PF
+ AzrS9qRqnXKam8N+0JLA33RNZ/as+vaxjom1h7U9eM0dBDUJLLBeuhl+2jL84ZBGqozyrO
+ hLuQBb2qyLqUfNyxBXtd+WfraobCGGE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-dBgAec-gMnmw4UuDehncdg-1; Fri,
- 29 Aug 2025 07:08:21 -0400
-X-MC-Unique: dBgAec-gMnmw4UuDehncdg-1
-X-Mimecast-MFC-AGG-ID: dBgAec-gMnmw4UuDehncdg_1756465700
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-93-b2eaxCJEMke8sOfXm0XjsQ-1; Fri,
+ 29 Aug 2025 07:08:23 -0400
+X-MC-Unique: b2eaxCJEMke8sOfXm0XjsQ-1
+X-Mimecast-MFC-AGG-ID: b2eaxCJEMke8sOfXm0XjsQ_1756465702
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 79CFD195608F; Fri, 29 Aug 2025 11:08:20 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9F6D51800345; Fri, 29 Aug 2025 11:08:22 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.225.62])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DF36A30001B5; Fri, 29 Aug 2025 11:08:18 +0000 (UTC)
+ id 1635430001B5; Fri, 29 Aug 2025 11:08:20 +0000 (UTC)
 From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 1/9] qga: Fix ubsan warning
-Date: Fri, 29 Aug 2025 14:08:05 +0300
-Message-ID: <20250829110813.50286-2-kkostiuk@redhat.com>
+Subject: [PULL 2/9] qga: fix potentially not initialized nr_volumes in
+ qga_vss_fsfreeze()
+Date: Fri, 29 Aug 2025 14:08:06 +0300
+Message-ID: <20250829110813.50286-3-kkostiuk@redhat.com>
 In-Reply-To: <20250829110813.50286-1-kkostiuk@redhat.com>
 References: <20250829110813.50286-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,60 +83,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: "Denis V. Lunev via" <qemu-devel@nongnu.org>
 
-When compiling QEMU with --enable-ubsan there is a undefined behavior
-warning when running "make check":
+In this function we could have this variable not initialized. If this
+could be acceptable on error, the variable could be left not initialized
+f.e. as follows:
 
- .../qga/commands-linux.c:452:15: runtime error: applying non-zero offset 5 to null pointer
- #0 0x55ea7b89450c in build_guest_fsinfo_for_pci_dev ..../qga/commands-linux.c:452:15
+void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
+{
+    ...
+    if (mountpoints) {
+        ...
+        if (num_mount_points == 0) {
+            /* If there is no valid mount points, just exit. */
+            goto out;
+        }
+    }
+    ...
+    if (!mountpoints) {
+        ...
+        if (num_fixed_drives == 0) {
+            goto out; /* If there is no fixed drive, just exit. */
+        }
+    }
+    ...
+}
 
-Fix it by avoiding the additional pointer variable here and use an
-"offset" integer variable instead.
+Stay on safe side, initialize the variable at the beginning.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+CC: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+CC: Michael Roth <michael.roth@amd.com>
 Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250730072709.27077-1-thuth@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250807133221.1135453-1-den@openvz.org
 Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 ---
- qga/commands-linux.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ qga/vss-win32.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-index 9dc0c82503..4a09ddc760 100644
---- a/qga/commands-linux.c
-+++ b/qga/commands-linux.c
-@@ -400,10 +400,10 @@ static bool build_guest_fsinfo_for_pci_dev(char const *syspath,
-                                            Error **errp)
- {
-     unsigned int pci[4], host, hosts[8], tgt[3];
--    int i, nhosts = 0, pcilen;
-+    int i, offset, nhosts = 0, pcilen;
-     GuestPCIAddress *pciaddr = disk->pci_controller;
-     bool has_ata = false, has_host = false, has_tgt = false;
--    char *p, *q, *driver = NULL;
-+    char *p, *driver = NULL;
-     bool ret = false;
+diff --git a/qga/vss-win32.c b/qga/vss-win32.c
+index f444a25a70..b272bfc782 100644
+--- a/qga/vss-win32.c
++++ b/qga/vss-win32.c
+@@ -157,6 +157,8 @@ void qga_vss_fsfreeze(int *nr_volume, bool freeze,
+         .errp = errp,
+     };
  
-     p = strstr(syspath, "/devices/pci");
-@@ -445,13 +445,13 @@ static bool build_guest_fsinfo_for_pci_dev(char const *syspath,
- 
-     p = strstr(syspath, "/ata");
-     if (p) {
--        q = p + 4;
-+        offset = 4;
-         has_ata = true;
-     } else {
-         p = strstr(syspath, "/host");
--        q = p + 5;
-+        offset = 5;
-     }
--    if (p && sscanf(q, "%u", &host) == 1) {
-+    if (p && sscanf(p + offset, "%u", &host) == 1) {
-         has_host = true;
-         nhosts = build_hosts(syspath, p, has_ata, hosts,
-                              ARRAY_SIZE(hosts), errp);
++    *nr_volume = 0;
++
+     g_assert(errp);             /* requester.cpp requires it */
+     func = (QGAVSSRequesterFunc)GetProcAddress(provider_lib, func_name);
+     if (!func) {
 -- 
 2.50.1
 
