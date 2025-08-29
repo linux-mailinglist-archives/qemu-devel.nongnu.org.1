@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6750CB3CCE2
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F307B3CD88
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:55:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNl7-00041b-OU; Sat, 30 Aug 2025 11:44:57 -0400
+	id 1usNjx-0007R6-UL; Sat, 30 Aug 2025 11:43:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7bD-0004Nj-Dt
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:29:35 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1us7bF-0004OS-N6
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:29:37 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7bB-0003aY-3r
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:29:34 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-7723cf6e4b6so123900b3a.3
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:29:31 -0700 (PDT)
+ id 1us7bD-0003au-6t
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:29:37 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-32326e67c95so2848679a91.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:29:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756506571; x=1757111371; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756506573; x=1757111373; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sa3b2TMivSD6XM1tsMuoQHxNMdNW+gXzNJQ+o4QofYU=;
- b=TjGjwO87K6+IEaBvP1dugeIOtl3VXDnuLMGhkTNfKmqiHlT1+tcoSH8CamnMFbmQY1
- tdCluo2RzARwNnlNFyR+Yy43S43V3EYBDzIhof/FIGSR9j1O6yu+LMg5EgsjRi9kWPAO
- eGgiqprkpWZ06KttX7zMdBuWD6AosPBHIC3T2fI850zFve9w1widaAa6X3YQHGWtP+fN
- RbJN/f6k/2q4HdNMf0q/QsOLozGqsLTEGw8R/ggv69pWgzQ0F6lUcOA+vZAmJDlvkvb2
- PS14QEdWH+giabeC6Vzga7oBtMVhrAODs+wPUcwwUFVK9DwJ6vuBRmYrGk51/VSUpUMW
- xYhQ==
+ bh=yTZxpZcicsbz3TLYAdHyPjm1fzfLXoCF8L5rsece6PM=;
+ b=omql6CQzKM7/Z672E2B4+NEsagSGxAUuSCqJvB99hFmx/Co7PGtsBNl1Wq34zbkpmf
+ yUKZRdCqxqfIHQkES62t7PbS9huI1SPGMPUv3gqfwx5LST427WSG6es1hFTq48iIQrWj
+ mzDcCNFrP6vI4ze9QbWDEZ6s/D7uJ6ErZQKY2ObtQc/NyWEys1b4Brfy4W8wrVGe7mut
+ PS5l9S9VoqDg5r6n6KJhogsNlHNTMIVP0K0bD/jVUuD1jMZmMzfUHvDz6RKWI5zPFfpQ
+ jcJeCOOxcWyg9vvUBVSUNgRi4+3VLIPNcWM1FpXn3S44DSjrq+oK92q4yjPIY9HzWRXI
+ kDmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756506571; x=1757111371;
+ d=1e100.net; s=20230601; t=1756506573; x=1757111373;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sa3b2TMivSD6XM1tsMuoQHxNMdNW+gXzNJQ+o4QofYU=;
- b=SXV6Eq7frXW8MuufyW00F2vO28Vc0lSDTcvh2+T3zddjPnf0uRkpu4C3s+edJnr43K
- kzT7PW0exPIj+YCgGYVpNiHfnx1oGIEamfJt4eWXJm648+jFD5tYRmiYVaYaYyL/+nUh
- GF8RBdB6FXCqXyfjHUiSIf0a/k7y9S/nOSTtC3tj39Yw8BhDSII3E+jNhy8j2k7eC47W
- NE3himMqFNocvN/wtPeRrxriU7vb9gc7/OGzAozbJ03wERk/D2/rZkYO3RTMuEHdSYOL
- WyC0SvxaOFQsez9PjOftJjEe5a9ztpPaRqqkZX3ljfOGNwm5cLSFmASL8Uh2TwONfvF6
- ZcMg==
-X-Gm-Message-State: AOJu0YwA4FFKBEjPBedEmlkrmCko0S1SM6ElMFBeJ9mt3laj72hOp+Qn
- 5QojNJHXg704fjv9hYgmP6wS5Xium73L8IJQqkDeBTdnq8qD6AQ0gt0dNufqrThKStaUWRiuS6l
- a43zp3vg=
-X-Gm-Gg: ASbGncv9xcWISrHisJlHrOiW6E0Tgo66XN57D61Ppg5N+a2hm/mYHtzIt6Usqrao/+T
- WWhQEwiV1N9shTjKY+iSbZZ+J6Lhw8Oc7oYWLxzYPyEgBP0ng72169RSo9XXiiGJfU7850CsjGo
- h+2+WKmemLWplEHn0cU10vE1+ITDepxrjnCbhj9b1r4m1rsvq4GY5T2q/JHC1Wj5qB4gu8VykJn
- cacPKW6woQRdNSHbj4xFdb/BuXSJPpu1AH8FPXkvVw3OgfaJxR25YKOz1tNHFwUO7LnPpXGdyAb
- u8Yf6hxFoBHPtoc6ZdhQMffNC+r0uVl3s1rYDikCh5vGbRzJmN4Srl1QiVvfWlIXQ99ghGLO7b4
- LfDx/UrU1yesm6JZaZxFBp1EVMk0hSr35Pr+Z6SsX6Zr9AhzFLIoNBUfN+JooG5A=
-X-Google-Smtp-Source: AGHT+IFjL7GGVQWYbRsmQQvFaR0YcRM55PYADd6V8BiFEPpKZ1A7UT1PsubbI67GMXtDZxxv+Y29Uw==
-X-Received: by 2002:a05:6a20:42a3:b0:243:d471:51e1 with SMTP id
- adf61e73a8af0-243d6f37f73mr284392637.42.1756506570826; 
- Fri, 29 Aug 2025 15:29:30 -0700 (PDT)
+ bh=yTZxpZcicsbz3TLYAdHyPjm1fzfLXoCF8L5rsece6PM=;
+ b=ly3cnVClWXwUzAKVl/Le33GQPrsgR+QBV5xL0ii0WL4FqepDDiORgG6APH67AezgzA
+ gG/TPoCekGulzcogsEBdzgKT3CfdJtub6jmk8kSBvemF9TH9SvjGypz+LPSkwkBFv2ea
+ PZqEfkv1WAtHIw6BHQANppF9/c4yhs2N+neibp0G9NCY8YA6BOzNIWOEhtN3RbjjRguS
+ tgXby6DrfkpmQn088itK0sjo2n3DpM3iJ1lbzydKdzf2XlfR1aT7GN6BfkuheqcsWcSE
+ VbKyg+OX+OAk1fTeCu7fiIezJE/kNvg+aoavm1cweX8iEcA+pJ9JpCx8AadnvPZwnNKK
+ 85gA==
+X-Gm-Message-State: AOJu0YydzuPuG7lOJbrVBCGt0gOyvb0Cqie7ZHzDmXc5Scu29jqFxZ09
+ tKbnhPIQLa9r5GWr8RHGa37bKhGUHX+Donxh7Qfyn78usunNGUhA9cLc0cUnyefj+TMFUV/WUZy
+ 1E9vM6EM=
+X-Gm-Gg: ASbGnctc5VSaDqiN1bessxBqYJ2HJXWge0L/ERPcvQkyiCQba4lYXk3fql6/KKBg4S8
+ oDf8HmVGo4XWgVvbCxsPZcD3iByM17DZEqzipizbKKNhbpXKbv00fIIc1qA91H+rJ7m9k0Q2kNF
+ CuL2JMejRz5tvCmCB91R4Y6kwyS40YVz0rll4q7yxLibLugfuu+zPN2ZOZvg/DGSkoyscS3zjyH
+ p13pKkFH3eMzPJR6RsSfaNoRlFiGf1qRwNNDepj0kc8oNKm4a9FdHS7p6buBQgGbr5jorDeeoDc
+ dEFt7QJMjSaDPF1fZMMNswJGCbbFni4cBcNlfb81g+CWitRq2DOB2irEbF2OnNBmhOpVXUB6gZn
+ 2p9zUg6ddIvnNuaOz73nTFVo411345dSlgTIDwhu4rP7RPD/hq1Fg7LSzm9GNnCY=
+X-Google-Smtp-Source: AGHT+IGGFdEhxje/nzZMPj23DQnHAPYbn/TkIn2QPSYaa/lkKMNtrAIIv1WCGX7vtgLvOASM4Jhy6Q==
+X-Received: by 2002:a17:90a:e7cd:b0:328:d94:174 with SMTP id
+ 98e67ed59e1d1-32815412b69mr277545a91.5.1756506573113; 
+ Fri, 29 Aug 2025 15:29:33 -0700 (PDT)
 Received: from stoup.. (122-150-204-179.dyn.ip.vocus.au. [122.150.204.179])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7722a4bb5dasm3364297b3a.55.2025.08.29.15.29.29
+ d2e1a72fcca58-7722a4bb5dasm3364297b3a.55.2025.08.29.15.29.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 15:29:30 -0700 (PDT)
+ Fri, 29 Aug 2025 15:29:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 48/91] linux-user/microblaze: Expand target_elf_gregset_t
-Date: Sat, 30 Aug 2025 08:23:44 +1000
-Message-ID: <20250829222427.289668-49-richard.henderson@linaro.org>
+Subject: [PULL 49/91] linux-user/mips: Create target_ptrace.h
+Date: Sat, 30 Aug 2025 08:23:45 +1000
+Message-ID: <20250829222427.289668-50-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250829222427.289668-1-richard.henderson@linaro.org>
 References: <20250829222427.289668-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,69 +98,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make use of the fact that target_elf_gregset_t is a proper structure.
-Drop ELF_NREG, target_elf_greg_t, and tswapreg.
+Move the target_pt_regs structure from target_syscall.h.
+Fix the incorrect ordering of the fields.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/microblaze/target_elf.h | 11 +++++++----
- linux-user/microblaze/elfload.c    | 14 +++++---------
- 2 files changed, 12 insertions(+), 13 deletions(-)
+ linux-user/mips/target_ptrace.h    | 17 +++++++++++++++++
+ linux-user/mips/target_syscall.h   | 19 -------------------
+ linux-user/mips64/target_ptrace.h  | 16 ++++++++++++++++
+ linux-user/mips64/target_syscall.h | 16 ----------------
+ 4 files changed, 33 insertions(+), 35 deletions(-)
+ create mode 100644 linux-user/mips/target_ptrace.h
+ create mode 100644 linux-user/mips64/target_ptrace.h
 
-diff --git a/linux-user/microblaze/target_elf.h b/linux-user/microblaze/target_elf.h
-index cc5cc0477e..56de77d4f3 100644
---- a/linux-user/microblaze/target_elf.h
-+++ b/linux-user/microblaze/target_elf.h
-@@ -8,13 +8,16 @@
- #ifndef MICROBLAZE_TARGET_ELF_H
- #define MICROBLAZE_TARGET_ELF_H
- 
-+#include "target_ptrace.h"
+diff --git a/linux-user/mips/target_ptrace.h b/linux-user/mips/target_ptrace.h
+new file mode 100644
+index 0000000000..2f63b27ac4
+--- /dev/null
++++ b/linux-user/mips/target_ptrace.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
- #define HAVE_ELF_CORE_DUMP      1
++#ifndef MIPS_TARGET_PTRACE_H
++#define MIPS_TARGET_PTRACE_H
++
++struct target_pt_regs {
++    abi_ulong pad0[6];
++    abi_ulong regs[32];
++    abi_ulong lo;
++    abi_ulong hi;
++    abi_ulong cp0_epc;
++    abi_ulong cp0_badvaddr;
++    abi_ulong cp0_status;
++    abi_ulong cp0_cause;
++};
++
++#endif /* MIPS_TARGET_PTRACE_H */
+diff --git a/linux-user/mips/target_syscall.h b/linux-user/mips/target_syscall.h
+index 08ead67810..dfcdf320b7 100644
+--- a/linux-user/mips/target_syscall.h
++++ b/linux-user/mips/target_syscall.h
+@@ -1,25 +1,6 @@
+ #ifndef MIPS_TARGET_SYSCALL_H
+ #define MIPS_TARGET_SYSCALL_H
  
--typedef abi_ulong target_elf_greg_t;
+-/* this struct defines the way the registers are stored on the
+-   stack during a system call. */
 -
--#define ELF_NREG                38
-+/*
-+ * See linux kernel: arch/microblaze/include/asm/elf.h, where
-+ * elf_gregset_t is mapped to struct pt_regs via sizeof.
-+ */
- typedef struct target_elf_gregset_t {
--    target_elf_greg_t regs[ELF_NREG];
-+    struct target_pt_regs pt;
- } target_elf_gregset_t;
- 
- #endif
-diff --git a/linux-user/microblaze/elfload.c b/linux-user/microblaze/elfload.c
-index 89250dbd63..7eb1b26d17 100644
---- a/linux-user/microblaze/elfload.c
-+++ b/linux-user/microblaze/elfload.c
-@@ -11,18 +11,14 @@ const char *get_elf_cpu_model(uint32_t eflags)
-     return "any";
- }
- 
--#define tswapreg(ptr)   tswapal(ptr)
+-struct target_pt_regs {
+-	/* Pad bytes for argument save space on the stack. */
+-	abi_ulong pad0[6];
 -
- void elf_core_copy_regs(target_elf_gregset_t *r, const CPUMBState *env)
- {
-     for (int i = 0; i < 32; i++) {
--        r->regs[i] = tswapreg(env->regs[i]);
-+        r->pt.r[i] = tswapal(env->regs[i]);
-     }
+-	/* Saved main processor registers. */
+-	abi_ulong regs[32];
+-
+-	/* Saved special registers. */
+-	abi_ulong cp0_status;
+-	abi_ulong lo;
+-	abi_ulong hi;
+-	abi_ulong cp0_badvaddr;
+-	abi_ulong cp0_cause;
+-	abi_ulong cp0_epc;
+-};
+-
+ #define UNAME_MACHINE "mips"
+ #define UNAME_MINIMUM_RELEASE "2.6.32"
  
--    r->regs[32] = tswapreg(env->pc);
--    r->regs[33] = tswapreg(mb_cpu_read_msr(env));
--    r->regs[34] = 0;
--    r->regs[35] = tswapreg(env->ear);
--    r->regs[36] = 0;
--    r->regs[37] = tswapreg(env->esr);
-+    r->pt.pc = tswapal(env->pc);
-+    r->pt.msr = tswapal(mb_cpu_read_msr(env));
-+    r->pt.ear = tswapal(env->ear);
-+    r->pt.esr = tswapal(env->esr);
- }
+diff --git a/linux-user/mips64/target_ptrace.h b/linux-user/mips64/target_ptrace.h
+new file mode 100644
+index 0000000000..41f0bf6c1c
+--- /dev/null
++++ b/linux-user/mips64/target_ptrace.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#ifndef MIPS64_TARGET_PTRACE_H
++#define MIPS64_TARGET_PTRACE_H
++
++struct target_pt_regs {
++    target_ulong regs[32];
++    target_ulong lo;
++    target_ulong hi;
++    target_ulong cp0_epc;
++    target_ulong cp0_badvaddr;
++    target_ulong cp0_status;
++    target_ulong cp0_cause;
++};
++
++#endif /* MIPS64_TARGET_PTRACE_H */
+diff --git a/linux-user/mips64/target_syscall.h b/linux-user/mips64/target_syscall.h
+index 358dc2d64c..9135bf5e8b 100644
+--- a/linux-user/mips64/target_syscall.h
++++ b/linux-user/mips64/target_syscall.h
+@@ -1,22 +1,6 @@
+ #ifndef MIPS64_TARGET_SYSCALL_H
+ #define MIPS64_TARGET_SYSCALL_H
+ 
+-/* this struct defines the way the registers are stored on the
+-   stack during a system call. */
+-
+-struct target_pt_regs {
+-        /* Saved main processor registers. */
+-        target_ulong regs[32];
+-
+-        /* Saved special registers. */
+-        target_ulong cp0_status;
+-        target_ulong lo;
+-        target_ulong hi;
+-        target_ulong cp0_badvaddr;
+-        target_ulong cp0_cause;
+-        target_ulong cp0_epc;
+-};
+-
+ #define UNAME_MACHINE "mips64"
+ #define UNAME_MINIMUM_RELEASE "2.6.32"
+ 
 -- 
 2.43.0
 
