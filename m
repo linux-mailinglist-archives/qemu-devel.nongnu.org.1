@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA32B3CE33
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6D7B3CC34
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:45:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNjB-0005tJ-MY; Sat, 30 Aug 2025 11:42:53 -0400
+	id 1usNjH-0006Aa-VW; Sat, 30 Aug 2025 11:43:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7WU-0002cN-DF
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:24:42 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1us7WY-0002dm-2l
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:24:46 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1us7WS-0002WF-Go
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:24:42 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-771ff6f117aso2304678b3a.2
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:24:40 -0700 (PDT)
+ id 1us7WU-0002Ya-WA
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 18:24:45 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-76e6cbb991aso2490753b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 15:24:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756506278; x=1757111078; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756506281; x=1757111081; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mOHr0P1cUoVKDM3IaUw7ePoDCqTS/2VdOKzefbBT954=;
- b=YYR9A0Ugg4yy8NEVb621cW/IGPrEBTtHAQi+mQQ3zoSL2jYOKatnlh6JStwRKBrIdT
- RqoLFsGs4IValWU5uJR8GXS0haaraJ6x0eqPzzoCnXKuoqHBErJzNSWx1Xb74+Gm7SRz
- cCARn2hEPqA/6lop7a7d+l9pegd4w1NWnYrDh8h3vgDEDBdVLz5Td/XVYgkOWkGGXevW
- izr90hmcu58uKcIQJa7q4DaZbPeFRSy6CraHouN6TMddaJfrjLKOC3CJMXRI5ht85mjY
- NaUNQaXHm7AhUFjSW74kHhpi/T4Ywzs8vZ9+//XOaYBSEIGzjgkOQG0JMDikoDiaRfPz
- UzPQ==
+ bh=UOcWUc5rHijwQW3sC3RaBXrOkg4imftVqoCeUx1b1us=;
+ b=HGDZ5/PPPPUzCT0QP20gHWeZmiFFKlyFCbDM/g93bzV5bnC3Qs+rwxcq7WKdAgLp9C
+ bIv4BblliapAShNE8OPjJafHMWAnd4Z2Rk/MRk8VPhG+UYonAWcxGxqEP6LRV44aN1el
+ MDxBOKrhN/dmGkb75AtVRLCTt0BHlQ08XhIVlRjNGx/tvHWpL0CD7PxagSTEt/zc0RDU
+ TROwn7S3toaMgI7r596Ayj3bjil8o8S7sOqx++pvvYRCgwO5esglMMzkhUYESrY1/ld/
+ mQx8ZNCQfzFAW4v/b5TOLaT6YcFAj9w0oyPjSyCoURMFS3rOsRyhZdP1q09EmYtDOriL
+ iIWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756506278; x=1757111078;
+ d=1e100.net; s=20230601; t=1756506281; x=1757111081;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mOHr0P1cUoVKDM3IaUw7ePoDCqTS/2VdOKzefbBT954=;
- b=qkmjOVJ/XrMERF2X8VE8Ky71p9Ly9qT7MDmKw2vos6ZIjGFEhR9k94gdyAoWQd6xvk
- FaW+qA59bkXk9hWLR66xMCYSLqGW4B2ogH9RETqUwjZIMR7oLZWhdCivJVXOnmY44ctY
- JIW6wnaU8v+Z3CXnRZhUVhv4CmaaAFcDUFZrktnfUA9mdb6+LiU+V8M5R48IkS/000mO
- e9d1gEdIE6mkKsptkTUpBPS7Ew3Z3TTFvFi+Kcxs6UURK4MfbQtDfBUYRKhjwfpDjVK/
- 95MGtoA8aJzwWBNm6wuCAfDURRa0iGv8UIisVxw94gCVRWiPtENHO5zFYj55Mv3WutE5
- Hs5g==
-X-Gm-Message-State: AOJu0Yz89LsGp74KnPgwhrkcna/sE0AgpVaBxD+2Rk7htnvcm9aux21s
- OMUXXccEbsbHgYn4r7Vff8pK9w7ceiHz4eHysME++I4c1s1xL8KH5b3xtiDaSMptUaWn5R1/JWF
- xc7z5jbM=
-X-Gm-Gg: ASbGncv6NKyYLZsWdZ778AJsFAQxxjvGZHjrx7AnpMp3qd5445bfJUjv1pJqCGPqCOv
- 6cngKU6x7iqgVHVuMpGqoP9ZKoJIqTiBWr1Ax9uwKUggrflZfueQJmv+x0lKXhA65jTqUTWggnp
- w/71YTksK0oY8Vp7QnnLR6PjbBuj1PlmS40TTKDm9CEejeUvyJTGb6g4p0zj/O94dpqMViUQyVr
- gagE25uRxVT/hyEPrT4zuzTR8TQUkfLXoXpx9O70ry8l032B7runAHJejEUSWVVavA8jo1gDgxd
- o9L77S1MYGd7o7pjR6QMQhHMG6tcsgZzP7qZ6eTPtU/a2PRQhdbCi+jo1ZYe0u/KVz05ZNBpCsY
- sfA+k+7Z4v7e81NbUlXyJIcCOIfYk8H3MOFu/SaHjxzP2VjwS09My3CD6RpLB0V7liUvGXgg=
-X-Google-Smtp-Source: AGHT+IErdbSLZ6OtWY33IXwOpjTzBfrmEc2yA/O4DYMS5VmcZgingxjFQtO7M2G0FWTphzdgxUcv4g==
-X-Received: by 2002:a05:6a00:4b48:b0:772:1a0:f772 with SMTP id
- d2e1a72fcca58-7723e3920c3mr254693b3a.28.1756506278588; 
- Fri, 29 Aug 2025 15:24:38 -0700 (PDT)
+ bh=UOcWUc5rHijwQW3sC3RaBXrOkg4imftVqoCeUx1b1us=;
+ b=BHvhMnKu9rcFKCOARtZNVdJg+/x227usPiiLTCxGf4udo6pJ7w+3ad/1ekFt8iLTOt
+ dAD2wQRrGUTrDMG0qGGJOEWmVhERffvksIMyWgS29MWdoO73iVMVwDkviijjT16Ky6so
+ oKs2/6Kl5G98TIQSZS5zhqA0MOc0jY2RXkRtzasngRoVfMBjmnsG8aNgszMDJvf/TPpR
+ tXqtajJV+unVq0OrKZAk6rKfGA5ZP9hfR4OL+p6iuJv9/eSMrDKzAXiZSloSBwCkbKOH
+ SlP1OEGpbgfhPoHHelkdjnUUQKuGUopwgVT31RuqHWreAskcSoAkuOc2j2fINSufqnA8
+ T5qg==
+X-Gm-Message-State: AOJu0YxA8V6JpjVkah3eHvYyMmrYWBjNFt1s+VNh3YV97mrECb3MNNbv
+ ZtzBWBhVzMMi3AmnBZQ2hxywK6sC1IWnwB+kyw0CrYZ1+gmBNeiYwXIIqus9bLwCRYlKU8W+W2q
+ GJvMO2vo=
+X-Gm-Gg: ASbGncvvSmjmt4CPByBNq97Jnq49GvcMA6n4yznd09H9xx4DhjgpYYpjYFk52BVxu7Z
+ ltO3lli6+a4lkIf0F/xenZwuPyNvDATRuo7z0ohDaSt+Yjlctydyk+McflusDMos55pJrJ820f+
+ mjBsuZddyx1rM6DIo956DsbG2LtvlVaC3wo4XqDbmUc1Wu4OAFqkBKlGxXtiiimQxYLIF9DTjAU
+ kswWfYZ/SRPNk6zvM/12AbmaxCJcF97LpMXbHgEiMYb4YHgEp/8VEhdY6vScan+JIv+IL0tKlXl
+ cUoqHyl6oWwSJicwl90mYHzjpxISdexGua9NzYq01MXeSVLnr8FpwzFSbNSxWr9ERpWF/hbgeHy
+ 0JlpXbiJdTuF1VVnxvDCeT6mDSmM60PJvrzpYrvybYiRtUnklYUzBw0yPM9o8
+X-Google-Smtp-Source: AGHT+IHuUveqfkfC+6KXlw/14GbFhELbZIwmXziACfIQGIKoyWGgbeNp6mlG+cxoKUQzzqEETObESw==
+X-Received: by 2002:a05:6a00:1482:b0:771:ea2e:b002 with SMTP id
+ d2e1a72fcca58-7723e22d0a2mr244843b3a.10.1756506281271; 
+ Fri, 29 Aug 2025 15:24:41 -0700 (PDT)
 Received: from stoup.. (122-150-204-12.dyn.ip.vocus.au. [122.150.204.12])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7722a71c60bsm3302493b3a.103.2025.08.29.15.24.36
+ d2e1a72fcca58-7722a71c60bsm3302493b3a.103.2025.08.29.15.24.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 15:24:38 -0700 (PDT)
+ Fri, 29 Aug 2025 15:24:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
+Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/91] hw/core: Use qemu_log_trylock/unlock in
- cpu_common_reset_exit
-Date: Sat, 30 Aug 2025 08:22:58 +1000
-Message-ID: <20250829222427.289668-3-richard.henderson@linaro.org>
+Subject: [PULL 03/91] linux-user: Tidy print_socket_protocol
+Date: Sat, 30 Aug 2025 08:22:59 +1000
+Message-ID: <20250829222427.289668-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250829222427.289668-1-richard.henderson@linaro.org>
 References: <20250829222427.289668-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,39 +100,190 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ensure that the "CPU Reset" message won't be separated
-from the cpu_dump_state output.
+Sink all of the qemu_log calls to the end, collecting only
+a string for the name, if identified.  Merge separate if
+blocks into one switch.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/core/cpu-common.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ linux-user/strace.c | 102 ++++++++++++++++++++++----------------------
+ 1 file changed, 52 insertions(+), 50 deletions(-)
 
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index 26321be785..259cf2a3c3 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -135,10 +135,15 @@ static void cpu_common_reset_hold(Object *obj, ResetType type)
- static void cpu_common_reset_exit(Object *obj, ResetType type)
+diff --git a/linux-user/strace.c b/linux-user/strace.c
+index 786354627a..1233ebceb0 100644
+--- a/linux-user/strace.c
++++ b/linux-user/strace.c
+@@ -499,116 +499,118 @@ print_socket_type(int type)
+ static void
+ print_socket_protocol(int domain, int type, int protocol)
  {
-     if (qemu_loglevel_mask(CPU_LOG_RESET)) {
--        CPUState *cpu = CPU(obj);
-+        FILE *f = qemu_log_trylock();
+-    if (domain == AF_PACKET ||
+-        (domain == AF_INET && type == TARGET_SOCK_PACKET)) {
+-        switch (protocol) {
+-        case 0x0003:
+-            qemu_log("ETH_P_ALL");
+-            break;
+-        default:
+-            qemu_log("%d", protocol);
+-        }
+-        return;
+-    }
++    const char *name = NULL;
  
--        qemu_log("CPU Reset (CPU %d)\n", cpu->cpu_index);
--        log_cpu_state(cpu, cpu->cc->reset_dump_flags);
-+        if (f) {
-+            CPUState *cpu = CPU(obj);
-+
-+            fprintf(f, "CPU Reset (CPU %d)\n", cpu->cpu_index);
-+            cpu_dump_state(cpu, f, cpu->cc->reset_dump_flags);
-+            qemu_log_unlock(f);
+-    if (domain == PF_NETLINK) {
++    switch (domain) {
++    case AF_PACKET:
++        switch (protocol) {
++        case 3:
++            name = "ETH_P_ALL";
++            break;
 +        }
-     }
- }
++        break;
++
++    case PF_NETLINK:
+         switch (protocol) {
+         case NETLINK_ROUTE:
+-            qemu_log("NETLINK_ROUTE");
++            name = "NETLINK_ROUTE";
+             break;
+         case NETLINK_UNUSED:
+-            qemu_log("NETLINK_UNUSED");
++            name = "NETLINK_UNUSED";
+             break;
+         case NETLINK_USERSOCK:
+-            qemu_log("NETLINK_USERSOCK");
++            name = "NETLINK_USERSOCK";
+             break;
+         case NETLINK_FIREWALL:
+-            qemu_log("NETLINK_FIREWALL");
++            name = "NETLINK_FIREWALL";
+             break;
+         case NETLINK_SOCK_DIAG:
+-            qemu_log("NETLINK_SOCK_DIAG");
++            name = "NETLINK_SOCK_DIAG";
+             break;
+         case NETLINK_NFLOG:
+-            qemu_log("NETLINK_NFLOG");
++            name = "NETLINK_NFLOG";
+             break;
+         case NETLINK_XFRM:
+-            qemu_log("NETLINK_XFRM");
++            name = "NETLINK_XFRM";
+             break;
+         case NETLINK_SELINUX:
+-            qemu_log("NETLINK_SELINUX");
++            name = "NETLINK_SELINUX";
+             break;
+         case NETLINK_ISCSI:
+-            qemu_log("NETLINK_ISCSI");
++            name = "NETLINK_ISCSI";
+             break;
+         case NETLINK_AUDIT:
+-            qemu_log("NETLINK_AUDIT");
++            name = "NETLINK_AUDIT";
+             break;
+         case NETLINK_FIB_LOOKUP:
+-            qemu_log("NETLINK_FIB_LOOKUP");
++            name = "NETLINK_FIB_LOOKUP";
+             break;
+         case NETLINK_CONNECTOR:
+-            qemu_log("NETLINK_CONNECTOR");
++            name = "NETLINK_CONNECTOR";
+             break;
+         case NETLINK_NETFILTER:
+-            qemu_log("NETLINK_NETFILTER");
++            name = "NETLINK_NETFILTER";
+             break;
+         case NETLINK_IP6_FW:
+-            qemu_log("NETLINK_IP6_FW");
++            name = "NETLINK_IP6_FW";
+             break;
+         case NETLINK_DNRTMSG:
+-            qemu_log("NETLINK_DNRTMSG");
++            name = "NETLINK_DNRTMSG";
+             break;
+         case NETLINK_KOBJECT_UEVENT:
+-            qemu_log("NETLINK_KOBJECT_UEVENT");
++            name = "NETLINK_KOBJECT_UEVENT";
+             break;
+         case NETLINK_GENERIC:
+-            qemu_log("NETLINK_GENERIC");
++            name = "NETLINK_GENERIC";
+             break;
+         case NETLINK_SCSITRANSPORT:
+-            qemu_log("NETLINK_SCSITRANSPORT");
++            name = "NETLINK_SCSITRANSPORT";
+             break;
+         case NETLINK_ECRYPTFS:
+-            qemu_log("NETLINK_ECRYPTFS");
++            name = "NETLINK_ECRYPTFS";
+             break;
+         case NETLINK_RDMA:
+-            qemu_log("NETLINK_RDMA");
++            name = "NETLINK_RDMA";
+             break;
+         case NETLINK_CRYPTO:
+-            qemu_log("NETLINK_CRYPTO");
++            name = "NETLINK_CRYPTO";
+             break;
+         case NETLINK_SMC:
+-            qemu_log("NETLINK_SMC");
+-            break;
+-        default:
+-            qemu_log("%d", protocol);
++            name = "NETLINK_SMC";
+             break;
+         }
+-        return;
+-    }
++        break;
  
+-    if (domain == AF_INET || domain == AF_INET6) {
++    case AF_INET:
++    case AF_INET6:
+         switch (protocol) {
++        case 3:
++            if (domain == AF_INET && type == TARGET_SOCK_PACKET) {
++                name = "ETH_P_ALL";
++            }
++            break;
+         case IPPROTO_IP:
+-            qemu_log("IPPROTO_IP");
++            name = "IPPROTO_IP";
+             break;
+         case IPPROTO_TCP:
+-            qemu_log("IPPROTO_TCP");
++            name = "IPPROTO_TCP";
+             break;
+         case IPPROTO_UDP:
+-            qemu_log("IPPROTO_UDP");
++            name = "IPPROTO_UDP";
+             break;
+         case IPPROTO_RAW:
+-            qemu_log("IPPROTO_RAW");
+-            break;
+-        default:
+-            qemu_log("%d", protocol);
++            name = "IPPROTO_RAW";
+             break;
+         }
+-        return;
++        break;
+     }
+-    qemu_log("%d", protocol);
+-}
+ 
++    if (name) {
++        qemu_log("%s", name);
++    } else {
++        qemu_log("%d", protocol);
++    }
++}
+ 
+ #ifdef TARGET_NR__newselect
+ static void
 -- 
 2.43.0
 
