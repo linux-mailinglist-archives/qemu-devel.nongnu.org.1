@@ -2,89 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE31B3CC50
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00ACBB3CBC7
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:19:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNJ5-0001kK-9t; Sat, 30 Aug 2025 11:15:57 -0400
+	id 1usNGm-0007Wo-7N; Sat, 30 Aug 2025 11:13:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryiU-0001CA-S2
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:00:34 -0400
+ id 1uryiZ-0001D3-Cq
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:00:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uryiO-0008Pb-PD
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:00:30 -0400
+ id 1uryiS-0008Q1-4Y
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 09:00:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756472423;
+ s=mimecast20190719; t=1756472426;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nL10Pb0C0oM+hnv3YRRH5NRvJhhCyi5mIDRBLogPgA4=;
- b=C0OYSJe4uaT/9ie0pe5dHH+jMyuyvmI/SXrQ29FYIpmgDWZqPmHJNDoSUeOmBrVpHBrZ+h
- rGuHRJTDuv56zn+MVE7n+vMo9iVpd0g3062uOKTArTTbN6CPdR2zxg+zbJYnQxJAnTOLT2
- FzGefKaZVVKa5caJZ94W0cjCp19pFhk=
+ bh=hxkiFnVY+mg3VKabUNHDgm4c9XtnC0Fwn5bhubwexes=;
+ b=bm0yiVXSIffMBqoeS1Lc/PnyUjTI6Vc3UstnUi4/AjgTeRg5HXclw0jaNOtLONsjf4zjcz
+ 7ulNdzDe0oSqLJN5X8v/LqPVrlvcBMd72kBzhqCMD02k2H7srbwAorYbGderLTRY4RlwEJ
+ qv0EwgjC3gSZ3+If0z3wwzR12JnoHQw=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-185-iPYCVuAWOUScOzPWPDASWw-1; Fri, 29 Aug 2025 09:00:21 -0400
-X-MC-Unique: iPYCVuAWOUScOzPWPDASWw-1
-X-Mimecast-MFC-AGG-ID: iPYCVuAWOUScOzPWPDASWw_1756472420
+ us-mta-497-q53OVtmEO3-K0XXlwAMHgQ-1; Fri, 29 Aug 2025 09:00:24 -0400
+X-MC-Unique: q53OVtmEO3-K0XXlwAMHgQ-1
+X-Mimecast-MFC-AGG-ID: q53OVtmEO3-K0XXlwAMHgQ_1756472423
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3cf48ec9dcbso828939f8f.2
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 06:00:21 -0700 (PDT)
+ ffacd0b85a97d-3c79f0a5ff1so922735f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 06:00:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756472419; x=1757077219;
+ d=1e100.net; s=20230601; t=1756472423; x=1757077223;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nL10Pb0C0oM+hnv3YRRH5NRvJhhCyi5mIDRBLogPgA4=;
- b=BPgRHi0fFZWXXO1sA40tvKsBPXqzcdd+9u+3RITRrP1D05EuPDqGVmQD28hcRYPCmb
- mZkLSwC67h7IUbzcPGLmFVUW3mWGGC6PHakBYPjqtrITin16Eln7qvYiZS6+TcwNQ4US
- BtzqDqO97EiEje+2+AymtzZB6DyM/5gl1HB8DW/26RhfGwnPjLQ18ikMevBsvM5T5S7K
- P6E8jY+y1uzgmpvNkUdCCBgQof2S0O26sqt2UyBHbROSkFmM0bKlF/wWBZwTkj3HMyQt
- RZAEtmKuAkp0MIFehEhYcFe9cLRwSlOHTH82k7If87oMMrCOpSgwA8siRCK93TZP7NM0
- 1jkg==
-X-Gm-Message-State: AOJu0YyB05n1IsxZxJoC4gciwWKCm8pYnDzGtIRcx6DavCGFqKisBKUF
- Poy+j8CmclUMf04OQhx71cvMcez+IqR554bUZz0VsbD0IIwJ+7BYZgySjDY8kRFaUHcNzV6MbOB
- wZ3qJ7mUBH3AqNOOdG7XB5juoj9dOIh9FkCYKAujSBjpEzrmuCgD3uU7sJoOSWqO/plxN1viRiB
- pENIcsAQYZL6DOloREaCThDQ3myErznGYooeaRnBNo
-X-Gm-Gg: ASbGnctLzUXgv/VH5VFHTUA9gJys+vncwaHIFgQFKSo79sUc1x6XM94CBp2WAQkCrp+
- gWOhMYepiYqXSe/fjAUQgjGNLXqnd/4ej1MsasF9e+QWS0BSCVtW480DyrBPEoF1oRinWRTp55K
- 0/LiplxLBlFebAfrNmsCiSDNaOShe/jWJYD23X/YhHtuZ/6W+9utIOksxcR2uIHfzEZSfJLN3aq
- +3f4q012TTu1JchPVZ38hrHIWWiq4XT1P29aFAY7K3a3NnOGwnWuBFGTACPnXmwWCF1m6yE5HPH
- cESxin1or04pOrfFWTCEgGNPr90Z8/AbKdG0yZu4a+TYp9AjIKHpgmpznDz99J2JJIG8m2lI2F5
- eUaY0SG29KXte5RJeoq6f6eVsBHLUt25LPzBvhHxyBDQ=
-X-Received: by 2002:adf:a155:0:b0:3ce:9872:fd3 with SMTP id
- ffacd0b85a97d-3ce987213dfmr2758851f8f.34.1756472419236; 
- Fri, 29 Aug 2025 06:00:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGF1UfZ01N6dZ/xHrZ7Z/scelEM3D0hdN1H4/pJIiCA6v6p/WnkrhleIqeaARm+GK/2zeraIw==
-X-Received: by 2002:adf:a155:0:b0:3ce:9872:fd3 with SMTP id
- ffacd0b85a97d-3ce987213dfmr2758822f8f.34.1756472418587; 
- Fri, 29 Aug 2025 06:00:18 -0700 (PDT)
+ bh=hxkiFnVY+mg3VKabUNHDgm4c9XtnC0Fwn5bhubwexes=;
+ b=vO0qDtWB7lsP2UvMhIthpUCccEOWe5SHJXWEnZGyb8Aqt21jX4pONlfcnojzP/3l6P
+ e/5gsS4yS1ZJTN8sTN3CuhnI5B35GCHitL2Tw+D4LXx3l24s0vOGCM7dF9RRqMuiHTc8
+ 7ENjIatAT7iaPoKWtnM/1KJAIGuYxs2aHGCOo4a6CgnEW57JVSia8XIlQUyVCMb/zo+x
+ K26ArLnPfZ2KWOcCaCnwuj+y/1+ILZZdcSS2z27ZCZo0jOtS2ZF8OQOcQpUJhbkn092I
+ /d420vRgTCVJ/z8hb/8u7wXAjoCSXpw2kBS98aIs/4wvx33b04OiYF5twzOSuGwrqWwk
+ Heaw==
+X-Gm-Message-State: AOJu0Yzy02EsRl/Ohi9J6khfIasLbZUTOqWs/pfVkHa8YpS+P3hEoyvz
+ 63VmbFoV7xaYR5zuAMMiEn+gGuWnEo3xHsydC9qnzgbxplQ+GNnk4KGjn3HxG6ArNLQl+JNJYyd
+ ch9CV+1t107GBFq1XCQt7hIDMIWsTRzwAPPj4iAln7tAyP0wbaW1ywf00MGjOOH6ciHvUP5lCfA
+ hzgJW+Ayu4qNniDGhT8x3fCg7dp29kx4fXrk/j0qfx
+X-Gm-Gg: ASbGncsD9uiX3ok56wGW1Mn87Z6mIAXPJHOrNrpODPuUTaynXNfBzI/qL5a3JekCkHW
+ 2mR/ke+gmsd0PdvLBvT2ibAvzyTCqA8thXNbnqdB427cRUoCVvbxxFiaRaCZELewO8NSyPTZIUp
+ xM4vyhYbBMD/4x8jjfuCgqAyqIOlLurbbgFqk+JiyeIyhHT+Nvfdt5bXtXADjvYMUbfbtLNYzCR
+ TPRAzHQFNATJGAnrB8+FclgSRlugFqk3mL77tv5uFUL6mYyvWEEJKaNlfw1boItEwRvlGbY6HRm
+ 171jIpFGNpfkaKz6c8fzmKG5X6LFbKTTJvah8QGELbc48RBNHLhaT2b+b4DMjkwTYN5X/RVFfkZ
+ bXjvREwDZiRiEbbQBV8T++N2dnAJ+Jvw0q0Gi1EfPfRo=
+X-Received: by 2002:a5d:64e1:0:b0:3b6:436:b8ea with SMTP id
+ ffacd0b85a97d-3c5da83c601mr18910174f8f.6.1756472422264; 
+ Fri, 29 Aug 2025 06:00:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGM36Wo0fGXggWQDnWWH4VL8xKO3DiinY19cQeFX+2iWAhLjwKUpW9KtQTr1PyqqCRS29bqcg==
+X-Received: by 2002:a5d:64e1:0:b0:3b6:436:b8ea with SMTP id
+ ffacd0b85a97d-3c5da83c601mr18910133f8f.6.1756472421523; 
+ Fri, 29 Aug 2025 06:00:21 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3d164a57097sm85802f8f.40.2025.08.29.06.00.15
+ ffacd0b85a97d-3cf276d643dsm3363125f8f.26.2025.08.29.06.00.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 06:00:16 -0700 (PDT)
+ Fri, 29 Aug 2025 06:00:19 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 15/28] hw/i386/pc_piix.c: assume pcmc->pci_enabled is always
- true in pc_init1()
-Date: Fri, 29 Aug 2025 14:59:22 +0200
-Message-ID: <20250829125935.1526984-16-pbonzini@redhat.com>
+ Bernhard Beschow <shentey@gmail.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 16/28] hw/i386: move isapc machine to separate isapc.c file
+Date: Fri, 29 Aug 2025 14:59:23 +0200
+Message-ID: <20250829125935.1526984-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829125935.1526984-1-pbonzini@redhat.com>
 References: <20250829125935.1526984-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -113,255 +110,449 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 
-PCI is always enabled on the pc-i440fx machine so hardcode the relevant logic
-in pc_init1(). Add an assert() to ensure that this is always the case at
-runtime as already done in pc_q35_init().
+Now that pc_init_isa() is independent of any PCI initialisation, move it into a
+separate isapc.c file including the ISA IDE variables which are now no longer
+needed for the pc-i440fx machine. This enables us to finally fix the dependency
+of ISAPC on I440FX in hw/i386/Kconfig.
+
+Note that as part of the move to a separate file we can see that the licence text
+is a verbatim copy of the MIT licence. The text originates from commit 1df912cf9e
+("VL license of the day is MIT/BSD") so we can be sure that this was the original
+intent. As a consequence we can update the file header to use a SPDX tag as per
+the current project contribution guidelines.
 
 Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250828111057.468712-16-mark.caveayland@nutanix.com
+Link: https://lore.kernel.org/r/20250828111057.468712-17-mark.caveayland@nutanix.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/pc_piix.c | 192 ++++++++++++++++++----------------------------
- 1 file changed, 76 insertions(+), 116 deletions(-)
+ hw/i386/isapc.c     | 190 ++++++++++++++++++++++++++++++++++++++++++++
+ hw/i386/pc_piix.c   | 172 ---------------------------------------
+ hw/i386/Kconfig     |   3 -
+ hw/i386/meson.build |   1 +
+ 4 files changed, 191 insertions(+), 175 deletions(-)
+ create mode 100644 hw/i386/isapc.c
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 72ddd9b149d..3ea77b2c44f 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -125,6 +125,11 @@ static void pc_init1(MachineState *machine, const char *pci_type)
-     MemoryRegion *rom_memory = system_memory;
-     ram_addr_t lowmem;
-     uint64_t hole64_size = 0;
-+    PCIDevice *pci_dev;
-+    DeviceState *dev;
-+    size_t i;
+diff --git a/hw/i386/isapc.c b/hw/i386/isapc.c
+new file mode 100644
+index 00000000000..300d64b7ad2
+--- /dev/null
++++ b/hw/i386/isapc.c
+@@ -0,0 +1,190 @@
++/*
++ * QEMU PC System Emulator
++ *
++ * Copyright (c) 2003-2004 Fabrice Bellard
++ *
++ * SPDX-License-Identifier: MIT
++ */
 +
-+    assert(pcmc->pci_enabled);
- 
-     /*
-      * Calculate ram split, for memory below and above 4G.  It's a bit
-@@ -195,38 +200,36 @@ static void pc_init1(MachineState *machine, const char *pci_type)
-         kvmclock_create(pcmc->kvmclock_create_always);
-     }
- 
--    if (pcmc->pci_enabled) {
--        pci_memory = g_new(MemoryRegion, 1);
--        memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
--        rom_memory = pci_memory;
-+    pci_memory = g_new(MemoryRegion, 1);
-+    memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
-+    rom_memory = pci_memory;
- 
--        phb = OBJECT(qdev_new(TYPE_I440FX_PCI_HOST_BRIDGE));
--        object_property_add_child(OBJECT(machine), "i440fx", phb);
--        object_property_set_link(phb, PCI_HOST_PROP_RAM_MEM,
--                                 OBJECT(ram_memory), &error_fatal);
--        object_property_set_link(phb, PCI_HOST_PROP_PCI_MEM,
--                                 OBJECT(pci_memory), &error_fatal);
--        object_property_set_link(phb, PCI_HOST_PROP_SYSTEM_MEM,
--                                 OBJECT(system_memory), &error_fatal);
--        object_property_set_link(phb, PCI_HOST_PROP_IO_MEM,
--                                 OBJECT(system_io), &error_fatal);
--        object_property_set_uint(phb, PCI_HOST_BELOW_4G_MEM_SIZE,
--                                 x86ms->below_4g_mem_size, &error_fatal);
--        object_property_set_uint(phb, PCI_HOST_ABOVE_4G_MEM_SIZE,
--                                 x86ms->above_4g_mem_size, &error_fatal);
--        object_property_set_str(phb, I440FX_HOST_PROP_PCI_TYPE, pci_type,
--                                &error_fatal);
--        sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
-+    phb = OBJECT(qdev_new(TYPE_I440FX_PCI_HOST_BRIDGE));
-+    object_property_add_child(OBJECT(machine), "i440fx", phb);
-+    object_property_set_link(phb, PCI_HOST_PROP_RAM_MEM,
-+                             OBJECT(ram_memory), &error_fatal);
-+    object_property_set_link(phb, PCI_HOST_PROP_PCI_MEM,
-+                             OBJECT(pci_memory), &error_fatal);
-+    object_property_set_link(phb, PCI_HOST_PROP_SYSTEM_MEM,
-+                             OBJECT(system_memory), &error_fatal);
-+    object_property_set_link(phb, PCI_HOST_PROP_IO_MEM,
-+                             OBJECT(system_io), &error_fatal);
-+    object_property_set_uint(phb, PCI_HOST_BELOW_4G_MEM_SIZE,
-+                             x86ms->below_4g_mem_size, &error_fatal);
-+    object_property_set_uint(phb, PCI_HOST_ABOVE_4G_MEM_SIZE,
-+                             x86ms->above_4g_mem_size, &error_fatal);
-+    object_property_set_str(phb, I440FX_HOST_PROP_PCI_TYPE, pci_type,
-+                            &error_fatal);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
- 
--        pcms->pcibus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pci.0"));
--        pci_bus_map_irqs(pcms->pcibus,
--                         xen_enabled() ? xen_pci_slot_get_pirq
--                                       : pc_pci_slot_get_pirq);
-+    pcms->pcibus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pci.0"));
-+    pci_bus_map_irqs(pcms->pcibus,
-+                     xen_enabled() ? xen_pci_slot_get_pirq
-+                                   : pc_pci_slot_get_pirq);
- 
--        hole64_size = object_property_get_uint(phb,
--                                               PCI_HOST_PROP_PCI_HOLE64_SIZE,
--                                               &error_abort);
--    }
-+    hole64_size = object_property_get_uint(phb,
-+                                           PCI_HOST_PROP_PCI_HOLE64_SIZE,
-+                                           &error_abort);
- 
-     /* allocate ram and load rom/bios */
-     if (!xen_enabled()) {
-@@ -242,72 +245,51 @@ static void pc_init1(MachineState *machine, const char *pci_type)
-         }
-     }
- 
--    gsi_state = pc_gsi_create(&x86ms->gsi, pcmc->pci_enabled);
-+    gsi_state = pc_gsi_create(&x86ms->gsi, true);
- 
--    if (pcmc->pci_enabled) {
--        PCIDevice *pci_dev;
--        DeviceState *dev;
--        size_t i;
--
--        pci_dev = pci_new_multifunction(-1, pcms->south_bridge);
--        object_property_set_bool(OBJECT(pci_dev), "has-usb",
--                                 machine_usb(machine), &error_abort);
--        object_property_set_bool(OBJECT(pci_dev), "has-acpi",
--                                 x86_machine_is_acpi_enabled(x86ms),
--                                 &error_abort);
--        object_property_set_bool(OBJECT(pci_dev), "has-pic", false,
--                                 &error_abort);
--        object_property_set_bool(OBJECT(pci_dev), "has-pit", false,
--                                 &error_abort);
--        qdev_prop_set_uint32(DEVICE(pci_dev), "smb_io_base", 0xb100);
--        object_property_set_bool(OBJECT(pci_dev), "smm-enabled",
--                                 x86_machine_is_smm_enabled(x86ms),
--                                 &error_abort);
--        dev = DEVICE(pci_dev);
--        for (i = 0; i < ISA_NUM_IRQS; i++) {
--            qdev_connect_gpio_out_named(dev, "isa-irqs", i, x86ms->gsi[i]);
--        }
--        pci_realize_and_unref(pci_dev, pcms->pcibus, &error_fatal);
--
--        if (xen_enabled()) {
--            pci_device_set_intx_routing_notifier(
--                        pci_dev, piix_intx_routing_notifier_xen);
--
--            /*
--             * Xen supports additional interrupt routes from the PCI devices to
--             * the IOAPIC: the four pins of each PCI device on the bus are also
--             * connected to the IOAPIC directly.
--             * These additional routes can be discovered through ACPI.
--             */
--            pci_bus_irqs(pcms->pcibus, xen_intx_set_irq, pci_dev,
--                         XEN_IOAPIC_NUM_PIRQS);
--        }
--
--        isa_bus = ISA_BUS(qdev_get_child_bus(DEVICE(pci_dev), "isa.0"));
--        x86ms->rtc = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
--                                                              "rtc"));
--        piix4_pm = object_resolve_path_component(OBJECT(pci_dev), "pm");
--        dev = DEVICE(object_resolve_path_component(OBJECT(pci_dev), "ide"));
--        pci_ide_create_devs(PCI_DEVICE(dev));
--        pcms->idebus[0] = qdev_get_child_bus(dev, "ide.0");
--        pcms->idebus[1] = qdev_get_child_bus(dev, "ide.1");
--    } else {
--        uint32_t irq;
--
--        isa_bus = isa_bus_new(NULL, system_memory, system_io,
--                              &error_abort);
--        isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
--
--        x86ms->rtc = isa_new(TYPE_MC146818_RTC);
--        qdev_prop_set_int32(DEVICE(x86ms->rtc), "base_year", 2000);
--        isa_realize_and_unref(x86ms->rtc, isa_bus, &error_fatal);
--        irq = object_property_get_uint(OBJECT(x86ms->rtc), "irq",
--                                       &error_fatal);
--        isa_connect_gpio_out(ISA_DEVICE(x86ms->rtc), 0, irq);
--
--        i8257_dma_init(OBJECT(machine), isa_bus, 0);
--        pcms->hpet_enabled = false;
-+    pci_dev = pci_new_multifunction(-1, pcms->south_bridge);
-+    object_property_set_bool(OBJECT(pci_dev), "has-usb",
-+                             machine_usb(machine), &error_abort);
-+    object_property_set_bool(OBJECT(pci_dev), "has-acpi",
-+                             x86_machine_is_acpi_enabled(x86ms),
-+                             &error_abort);
-+    object_property_set_bool(OBJECT(pci_dev), "has-pic", false,
-+                             &error_abort);
-+    object_property_set_bool(OBJECT(pci_dev), "has-pit", false,
-+                             &error_abort);
-+    qdev_prop_set_uint32(DEVICE(pci_dev), "smb_io_base", 0xb100);
-+    object_property_set_bool(OBJECT(pci_dev), "smm-enabled",
-+                             x86_machine_is_smm_enabled(x86ms),
-+                             &error_abort);
-+    dev = DEVICE(pci_dev);
-+    for (i = 0; i < ISA_NUM_IRQS; i++) {
-+        qdev_connect_gpio_out_named(dev, "isa-irqs", i, x86ms->gsi[i]);
-     }
-+    pci_realize_and_unref(pci_dev, pcms->pcibus, &error_fatal);
++#include "qemu/osdep.h"
 +
-+    if (xen_enabled()) {
-+        pci_device_set_intx_routing_notifier(
-+                    pci_dev, piix_intx_routing_notifier_xen);
++#include "qemu/units.h"
++#include "qemu/error-report.h"
++#include "hw/char/parallel-isa.h"
++#include "hw/dma/i8257.h"
++#include "hw/i386/pc.h"
++#include "hw/ide/isa.h"
++#include "hw/ide/ide-bus.h"
++#include "system/kvm.h"
++#include "hw/i386/kvm/clock.h"
++#include "hw/xen/xen-x86.h"
++#include "system/xen.h"
++#include "hw/rtc/mc146818rtc.h"
++#include "target/i386/cpu.h"
 +
-+        /*
-+         * Xen supports additional interrupt routes from the PCI devices to
-+         * the IOAPIC: the four pins of each PCI device on the bus are also
-+         * connected to the IOAPIC directly.
-+         * These additional routes can be discovered through ACPI.
-+         */
-+        pci_bus_irqs(pcms->pcibus, xen_intx_set_irq, pci_dev,
-+                     XEN_IOAPIC_NUM_PIRQS);
++static const int ide_iobase[MAX_IDE_BUS] = { 0x1f0, 0x170 };
++static const int ide_iobase2[MAX_IDE_BUS] = { 0x3f6, 0x376 };
++static const int ide_irq[MAX_IDE_BUS] = { 14, 15 };
++
++
++static void pc_init_isa(MachineState *machine)
++{
++    PCMachineState *pcms = PC_MACHINE(machine);
++    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
++    X86MachineState *x86ms = X86_MACHINE(machine);
++    MemoryRegion *system_memory = get_system_memory();
++    MemoryRegion *system_io = get_system_io();
++    ISABus *isa_bus;
++    uint32_t irq;
++    GSIState *gsi_state;
++    MemoryRegion *ram_memory;
++    MemoryRegion *rom_memory = system_memory;
++    DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
++    int i;
++
++    /*
++     * There is a small chance that someone unintentionally passes "-cpu max"
++     * for the isapc machine, which will provide a much more modern 32-bit
++     * CPU than would be expected for an ISA-era PC. If the "max" cpu type has
++     * been specified, choose the "best" 32-bit cpu possible which we consider
++     * be the pentium3 (deliberately choosing an Intel CPU given that the
++     * default 486 CPU for the isapc machine is also an Intel CPU).
++     */
++    if (!strcmp(machine->cpu_type, X86_CPU_TYPE_NAME("max"))) {
++        machine->cpu_type = X86_CPU_TYPE_NAME("pentium3");
++        warn_report("-cpu max is invalid for isapc machine, using pentium3");
 +    }
 +
-+    isa_bus = ISA_BUS(qdev_get_child_bus(DEVICE(pci_dev), "isa.0"));
-+    x86ms->rtc = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
-+                                                          "rtc"));
-+    piix4_pm = object_resolve_path_component(OBJECT(pci_dev), "pm");
-+    dev = DEVICE(object_resolve_path_component(OBJECT(pci_dev), "ide"));
-+    pci_ide_create_devs(PCI_DEVICE(dev));
-+    pcms->idebus[0] = qdev_get_child_bus(dev, "ide.0");
-+    pcms->idebus[1] = qdev_get_child_bus(dev, "ide.1");
++    /*
++     * Similarly if someone unintentionally passes "-cpu host" for the isapc
++     * machine then display a warning and also switch to the "best" 32-bit
++     * cpu possible which we consider to be the pentium3. This is because any
++     * host CPU will already be modern than this, but it also ensures any
++     * newer CPU flags/features are filtered out for older guests.
++     */
++    if (!strcmp(machine->cpu_type, X86_CPU_TYPE_NAME("host"))) {
++        machine->cpu_type = X86_CPU_TYPE_NAME("pentium3");
++        warn_report("-cpu host is invalid for isapc machine, using pentium3");
++    }
 +
++    if (machine->ram_size > 3.5 * GiB) {
++        error_report("Too much memory for this machine: %" PRId64 " MiB, "
++                     "maximum 3584 MiB", machine->ram_size / MiB);
++        exit(1);
++    }
++
++    /*
++     * There is no RAM split for the isapc machine
++     */
++    if (xen_enabled()) {
++        xen_hvm_init_pc(pcms, &ram_memory);
++    } else {
++        ram_memory = machine->ram;
++
++        pcms->max_ram_below_4g = 3.5 * GiB;
++        x86ms->above_4g_mem_size = 0;
++        x86ms->below_4g_mem_size = machine->ram_size;
++    }
++
++    x86_cpus_init(x86ms, pcmc->default_cpu_version);
++
++    if (kvm_enabled()) {
++        kvmclock_create(pcmc->kvmclock_create_always);
++    }
++
++    /* allocate ram and load rom/bios */
++    if (!xen_enabled()) {
++        pc_memory_init(pcms, system_memory, rom_memory, 0);
++    } else {
++        assert(machine->ram_size == x86ms->below_4g_mem_size +
++                                    x86ms->above_4g_mem_size);
++
++        if (machine->kernel_filename != NULL) {
++            /* For xen HVM direct kernel boot, load linux here */
++            xen_load_linux(pcms);
++        }
++    }
++
++    gsi_state = pc_gsi_create(&x86ms->gsi, false);
++
++    isa_bus = isa_bus_new(NULL, system_memory, system_io,
++                          &error_abort);
++    isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
++
++    x86ms->rtc = isa_new(TYPE_MC146818_RTC);
++    qdev_prop_set_int32(DEVICE(x86ms->rtc), "base_year", 2000);
++    isa_realize_and_unref(x86ms->rtc, isa_bus, &error_fatal);
++    irq = object_property_get_uint(OBJECT(x86ms->rtc), "irq",
++                                   &error_fatal);
++    isa_connect_gpio_out(ISA_DEVICE(x86ms->rtc), 0, irq);
++
++    i8257_dma_init(OBJECT(machine), isa_bus, 0);
++    pcms->hpet_enabled = false;
++
++    if (x86ms->pic == ON_OFF_AUTO_ON || x86ms->pic == ON_OFF_AUTO_AUTO) {
++        pc_i8259_create(isa_bus, gsi_state->i8259_irq);
++    }
++
++    if (tcg_enabled()) {
++        x86_register_ferr_irq(x86ms->gsi[13]);
++    }
++
++    pc_vga_init(isa_bus, NULL);
++
++    /* init basic PC hardware */
++    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc,
++                         !MACHINE_CLASS(pcmc)->no_floppy, 0x4);
++
++    pc_nic_init(pcmc, isa_bus, NULL);
++
++    ide_drive_get(hd, ARRAY_SIZE(hd));
++    for (i = 0; i < MAX_IDE_BUS; i++) {
++        ISADevice *dev;
++        char busname[] = "ide.0";
++        dev = isa_ide_init(isa_bus, ide_iobase[i], ide_iobase2[i],
++                            ide_irq[i],
++                            hd[MAX_IDE_DEVS * i], hd[MAX_IDE_DEVS * i + 1]);
++        /*
++         * The ide bus name is ide.0 for the first bus and ide.1 for the
++         * second one.
++         */
++        busname[4] = '0' + i;
++        pcms->idebus[i] = qdev_get_child_bus(DEVICE(dev), busname);
++    }
++}
++
++static void isapc_machine_options(MachineClass *m)
++{
++    static const char * const valid_cpu_types[] = {
++        X86_CPU_TYPE_NAME("486"),
++        X86_CPU_TYPE_NAME("athlon"),
++        X86_CPU_TYPE_NAME("kvm32"),
++        X86_CPU_TYPE_NAME("pentium"),
++        X86_CPU_TYPE_NAME("pentium2"),
++        X86_CPU_TYPE_NAME("pentium3"),
++        X86_CPU_TYPE_NAME("qemu32"),
++        X86_CPU_TYPE_NAME("max"),
++        X86_CPU_TYPE_NAME("host"),
++        NULL
++    };
++    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
++
++    m->desc = "ISA-only PC";
++    m->max_cpus = 1;
++    m->option_rom_has_mr = true;
++    m->rom_file_has_mr = false;
++    pcmc->pci_enabled = false;
++    pcmc->has_acpi_build = false;
++    pcmc->smbios_defaults = false;
++    pcmc->gigabyte_align = false;
++    pcmc->smbios_legacy_mode = true;
++    pcmc->has_reserved_memory = false;
++    m->default_nic = "ne2k_isa";
++    m->default_cpu_type = X86_CPU_TYPE_NAME("486");
++    m->valid_cpu_types = valid_cpu_types;
++    m->no_floppy = !module_object_class_by_name(TYPE_ISA_FDC);
++    m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
++}
++
++DEFINE_PC_MACHINE(isapc, "isapc", pc_init_isa,
++                  isapc_machine_options);
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 3ea77b2c44f..988c9edc32c 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -71,12 +71,6 @@
  
-     if (x86ms->pic == ON_OFF_AUTO_ON || x86ms->pic == ON_OFF_AUTO_AUTO) {
-         pc_i8259_create(isa_bus, gsi_state->i8259_irq);
-@@ -321,7 +303,7 @@ static void pc_init1(MachineState *machine, const char *pci_type)
-         x86_register_ferr_irq(x86ms->gsi[13]);
-     }
- 
--    pc_vga_init(isa_bus, pcmc->pci_enabled ? pcms->pcibus : NULL);
-+    pc_vga_init(isa_bus, pcms->pcibus);
- 
-     /* init basic PC hardware */
-     pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc,
-@@ -329,28 +311,6 @@ static void pc_init1(MachineState *machine, const char *pci_type)
- 
-     pc_nic_init(pcmc, isa_bus, pcms->pcibus);
+ #define XEN_IOAPIC_NUM_PIRQS 128ULL
  
 -#ifdef CONFIG_IDE_ISA
--    if (!pcmc->pci_enabled) {
--        DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
--        int i;
--
--        ide_drive_get(hd, ARRAY_SIZE(hd));
--        for (i = 0; i < MAX_IDE_BUS; i++) {
--            ISADevice *dev;
--            char busname[] = "ide.0";
--            dev = isa_ide_init(isa_bus, ide_iobase[i], ide_iobase2[i],
--                               ide_irq[i],
--                               hd[MAX_IDE_DEVS * i], hd[MAX_IDE_DEVS * i + 1]);
--            /*
--             * The ide bus name is ide.0 for the first bus and ide.1 for the
--             * second one.
--             */
--            busname[4] = '0' + i;
--            pcms->idebus[i] = qdev_get_child_bus(DEVICE(dev), busname);
--        }
--    }
+-static const int ide_iobase[MAX_IDE_BUS] = { 0x1f0, 0x170 };
+-static const int ide_iobase2[MAX_IDE_BUS] = { 0x3f6, 0x376 };
+-static const int ide_irq[MAX_IDE_BUS] = { 14, 15 };
 -#endif
 -
-     if (piix4_pm) {
-         smi_irq = qemu_allocate_irq(pc_acpi_smi_interrupt, first_cpu, 0);
+ static GlobalProperty pc_piix_compat_defaults[] = {
+     { TYPE_RAMFB_DEVICE, "use-legacy-x86-rom", "true" },
+     { TYPE_VFIO_PCI_NOHOTPLUG, "use-legacy-x86-rom", "true" },
+@@ -392,134 +386,6 @@ static void pc_set_south_bridge(Object *obj, int value, Error **errp)
+     pcms->south_bridge = PCSouthBridgeOption_lookup.array[value];
+ }
  
+-#ifdef CONFIG_ISAPC
+-static void pc_init_isa(MachineState *machine)
+-{
+-    PCMachineState *pcms = PC_MACHINE(machine);
+-    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+-    X86MachineState *x86ms = X86_MACHINE(machine);
+-    MemoryRegion *system_memory = get_system_memory();
+-    MemoryRegion *system_io = get_system_io();
+-    ISABus *isa_bus;
+-    uint32_t irq;
+-    GSIState *gsi_state;
+-    MemoryRegion *ram_memory;
+-    MemoryRegion *rom_memory = system_memory;
+-    DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
+-    int i;
+-
+-    /*
+-     * There is a small chance that someone unintentionally passes "-cpu max"
+-     * for the isapc machine, which will provide a much more modern 32-bit
+-     * CPU than would be expected for an ISA-era PC. If the "max" cpu type has
+-     * been specified, choose the "best" 32-bit cpu possible which we consider
+-     * be the pentium3 (deliberately choosing an Intel CPU given that the
+-     * default 486 CPU for the isapc machine is also an Intel CPU).
+-     */
+-    if (!strcmp(machine->cpu_type, X86_CPU_TYPE_NAME("max"))) {
+-        machine->cpu_type = X86_CPU_TYPE_NAME("pentium3");
+-        warn_report("-cpu max is invalid for isapc machine, using pentium3");
+-    }
+-
+-    /*
+-     * Similarly if someone unintentionally passes "-cpu host" for the isapc
+-     * machine then display a warning and also switch to the "best" 32-bit
+-     * cpu possible which we consider to be the pentium3. This is because any
+-     * host CPU will already be modern than this, but it also ensures any
+-     * newer CPU flags/features are filtered out for older guests.
+-     */
+-    if (!strcmp(machine->cpu_type, X86_CPU_TYPE_NAME("host"))) {
+-        machine->cpu_type = X86_CPU_TYPE_NAME("pentium3");
+-        warn_report("-cpu host is invalid for isapc machine, using pentium3");
+-    }
+-
+-    if (machine->ram_size > 3.5 * GiB) {
+-        error_report("Too much memory for this machine: %" PRId64 " MiB, "
+-                     "maximum 3584 MiB", machine->ram_size / MiB);
+-        exit(1);
+-    }
+-
+-    /*
+-     * There is no RAM split for the isapc machine
+-     */
+-    if (xen_enabled()) {
+-        xen_hvm_init_pc(pcms, &ram_memory);
+-    } else {
+-        ram_memory = machine->ram;
+-
+-        pcms->max_ram_below_4g = 3.5 * GiB;
+-        x86ms->above_4g_mem_size = 0;
+-        x86ms->below_4g_mem_size = machine->ram_size;
+-    }
+-
+-    x86_cpus_init(x86ms, pcmc->default_cpu_version);
+-
+-    if (kvm_enabled()) {
+-        kvmclock_create(pcmc->kvmclock_create_always);
+-    }
+-
+-    /* allocate ram and load rom/bios */
+-    if (!xen_enabled()) {
+-        pc_memory_init(pcms, system_memory, rom_memory, 0);
+-    } else {
+-        assert(machine->ram_size == x86ms->below_4g_mem_size +
+-                                    x86ms->above_4g_mem_size);
+-
+-        if (machine->kernel_filename != NULL) {
+-            /* For xen HVM direct kernel boot, load linux here */
+-            xen_load_linux(pcms);
+-        }
+-    }
+-
+-    gsi_state = pc_gsi_create(&x86ms->gsi, false);
+-
+-    isa_bus = isa_bus_new(NULL, system_memory, system_io,
+-                          &error_abort);
+-    isa_bus_register_input_irqs(isa_bus, x86ms->gsi);
+-
+-    x86ms->rtc = isa_new(TYPE_MC146818_RTC);
+-    qdev_prop_set_int32(DEVICE(x86ms->rtc), "base_year", 2000);
+-    isa_realize_and_unref(x86ms->rtc, isa_bus, &error_fatal);
+-    irq = object_property_get_uint(OBJECT(x86ms->rtc), "irq",
+-                                   &error_fatal);
+-    isa_connect_gpio_out(ISA_DEVICE(x86ms->rtc), 0, irq);
+-
+-    i8257_dma_init(OBJECT(machine), isa_bus, 0);
+-    pcms->hpet_enabled = false;
+-
+-    if (x86ms->pic == ON_OFF_AUTO_ON || x86ms->pic == ON_OFF_AUTO_AUTO) {
+-        pc_i8259_create(isa_bus, gsi_state->i8259_irq);
+-    }
+-
+-    if (tcg_enabled()) {
+-        x86_register_ferr_irq(x86ms->gsi[13]);
+-    }
+-
+-    pc_vga_init(isa_bus, NULL);
+-
+-    /* init basic PC hardware */
+-    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc,
+-                         !MACHINE_CLASS(pcmc)->no_floppy, 0x4);
+-
+-    pc_nic_init(pcmc, isa_bus, NULL);
+-
+-    ide_drive_get(hd, ARRAY_SIZE(hd));
+-    for (i = 0; i < MAX_IDE_BUS; i++) {
+-        ISADevice *dev;
+-        char busname[] = "ide.0";
+-        dev = isa_ide_init(isa_bus, ide_iobase[i], ide_iobase2[i],
+-                            ide_irq[i],
+-                            hd[MAX_IDE_DEVS * i], hd[MAX_IDE_DEVS * i + 1]);
+-        /*
+-         * The ide bus name is ide.0 for the first bus and ide.1 for the
+-         * second one.
+-         */
+-        busname[4] = '0' + i;
+-        pcms->idebus[i] = qdev_get_child_bus(DEVICE(dev), busname);
+-    }
+-}
+-#endif
+-
+ #ifdef CONFIG_XEN
+ static void pc_xen_hvm_init(MachineState *machine)
+ {
+@@ -887,44 +753,6 @@ static void pc_i440fx_machine_2_6_options(MachineClass *m)
+ 
+ DEFINE_I440FX_MACHINE(2, 6);
+ 
+-#ifdef CONFIG_ISAPC
+-static void isapc_machine_options(MachineClass *m)
+-{
+-    static const char * const valid_cpu_types[] = {
+-        X86_CPU_TYPE_NAME("486"),
+-        X86_CPU_TYPE_NAME("athlon"),
+-        X86_CPU_TYPE_NAME("kvm32"),
+-        X86_CPU_TYPE_NAME("pentium"),
+-        X86_CPU_TYPE_NAME("pentium2"),
+-        X86_CPU_TYPE_NAME("pentium3"),
+-        X86_CPU_TYPE_NAME("qemu32"),
+-        X86_CPU_TYPE_NAME("max"),
+-        X86_CPU_TYPE_NAME("host"),
+-        NULL
+-    };
+-    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+-
+-    m->desc = "ISA-only PC";
+-    m->max_cpus = 1;
+-    m->option_rom_has_mr = true;
+-    m->rom_file_has_mr = false;
+-    pcmc->pci_enabled = false;
+-    pcmc->has_acpi_build = false;
+-    pcmc->smbios_defaults = false;
+-    pcmc->gigabyte_align = false;
+-    pcmc->smbios_legacy_mode = true;
+-    pcmc->has_reserved_memory = false;
+-    m->default_nic = "ne2k_isa";
+-    m->default_cpu_type = X86_CPU_TYPE_NAME("486");
+-    m->valid_cpu_types = valid_cpu_types;
+-    m->no_floppy = !module_object_class_by_name(TYPE_ISA_FDC);
+-    m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
+-}
+-
+-DEFINE_PC_MACHINE(isapc, "isapc", pc_init_isa,
+-                  isapc_machine_options);
+-#endif
+-
+ #ifdef CONFIG_XEN
+ static void xenfv_machine_4_2_options(MachineClass *m)
+ {
+diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+index 3a0e2b8ebbb..6a0ab54bea4 100644
+--- a/hw/i386/Kconfig
++++ b/hw/i386/Kconfig
+@@ -96,9 +96,6 @@ config ISAPC
+     select ISA_BUS
+     select PC
+     select IDE_ISA
+-    # FIXME: it is in the same file as i440fx, and does not compile
+-    # if separated
+-    depends on I440FX
+ 
+ config Q35
+     bool
+diff --git a/hw/i386/meson.build b/hw/i386/meson.build
+index 7896f348cff..436b3ce52d6 100644
+--- a/hw/i386/meson.build
++++ b/hw/i386/meson.build
+@@ -14,6 +14,7 @@ i386_ss.add(when: 'CONFIG_X86_IOMMU', if_true: files('x86-iommu.c'),
+ i386_ss.add(when: 'CONFIG_AMD_IOMMU', if_true: files('amd_iommu.c'),
+                                       if_false: files('amd_iommu-stub.c'))
+ i386_ss.add(when: 'CONFIG_I440FX', if_true: files('pc_piix.c'))
++i386_ss.add(when: 'CONFIG_ISAPC', if_true: files('isapc.c'))
+ i386_ss.add(when: 'CONFIG_MICROVM', if_true: files('x86-common.c', 'microvm.c', 'acpi-microvm.c', 'microvm-dt.c'))
+ i386_ss.add(when: 'CONFIG_NITRO_ENCLAVE', if_true: files('nitro_enclave.c'))
+ i386_ss.add(when: 'CONFIG_Q35', if_true: files('pc_q35.c'))
 -- 
 2.51.0
 
