@@ -2,62 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8955AB3CC04
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A123EB3CBCB
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:19:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNFZ-0006VW-Sf; Sat, 30 Aug 2025 11:12:17 -0400
+	id 1usNFB-0005fE-BV; Sat, 30 Aug 2025 11:11:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1urwyJ-00007G-A9
+ id 1urwyJ-000070-0R
  for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1urwyH-0001kd-Kb
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:43 -0400
+ id 1urwyH-0001kS-Ci
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 07:08:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1756465720;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8c1ZCXtMUdtENwpBFT4KuDVIvDg1G6MIjUiO8Sv6SJk=;
- b=Z644mlNBugxkjGn9c7J8UmBSgmT48SUdnrXY7UvUlxd1d74Pdy3aVrs+8IbhnVBK9JFaXQ
- TuWoSq8KERj5DD2Y+F95ay/wAZnD4ZSl8aCm8cZYIfxJI3j1V5TIQr9mJNZ5MiaZKCjc6c
- 6JhfeLv6r4FnTX50lTdVMQQRBR4EFzQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=8imASNa7WPLoyL5in5AEAUw1DAQ60jo9idLSR9tKcfs=;
+ b=Z2QeW++28YZQDXeoS61PLiq78RyQM/nIfyWWyA1KSWL56/6ry46z6rUJ+uk30Ou12C8GN+
+ kUtTxu6e5vA6A/e0ZwsXBtafvCu1KlI2RiLHY46q06PHlndxcH5uX/FsZgLHFvo4Upxd/1
+ OKlaPC7tFdZFUAjRYQBxbLDPSvt4Dv0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-qROApt4uMp6xzfjKapGgQg-1; Fri,
- 29 Aug 2025 07:08:36 -0400
-X-MC-Unique: qROApt4uMp6xzfjKapGgQg-1
-X-Mimecast-MFC-AGG-ID: qROApt4uMp6xzfjKapGgQg_1756465715
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-6-YMvFb33mPAG41OU6YcPqTA-1; Fri,
+ 29 Aug 2025 07:08:38 -0400
+X-MC-Unique: YMvFb33mPAG41OU6YcPqTA-1
+X-Mimecast-MFC-AGG-ID: YMvFb33mPAG41OU6YcPqTA_1756465717
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 93DFE18003FD; Fri, 29 Aug 2025 11:08:35 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9E9041956095; Fri, 29 Aug 2025 11:08:37 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.225.62])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C51B430001B5; Fri, 29 Aug 2025 11:08:33 +0000 (UTC)
+ id 1722B30001B5; Fri, 29 Aug 2025 11:08:35 +0000 (UTC)
 From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 8/9] qga/installer: Remove QGA VSS if QGA installation failed
-Date: Fri, 29 Aug 2025 14:08:12 +0300
-Message-ID: <20250829110813.50286-9-kkostiuk@redhat.com>
+Subject: [PULL 9/9] qga: Fix truncated output handling in guest-exec status
+ reporting
+Date: Fri, 29 Aug 2025 14:08:13 +0300
+Message-ID: <20250829110813.50286-10-kkostiuk@redhat.com>
 In-Reply-To: <20250829110813.50286-1-kkostiuk@redhat.com>
 References: <20250829110813.50286-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,59 +84,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When QGA Installer failed to install QGA service but install
-QGA VSS provider, provider should be removed before installer
-exits. Otherwise QGA VSS will has broken infomation and
-prevent QGA installation in next run.
+From: "minglei.liu" <minglei.liu@smartx.com>
 
-Reviewed-by: Yan Vugenfirer <yvugenfi@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250825143155.160913-1-kkostiuk@redhat.com
+Signed-off-by: minglei.liu <minglei.liu@smartx.com>
+Fixes: a1853dca743
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250711021714.91258-1-minglei.liu@smartx.com
 Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 ---
- qga/installer/qemu-ga.wxs | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ qga/commands.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/qga/installer/qemu-ga.wxs b/qga/installer/qemu-ga.wxs
-index df572adb4a..32b8308728 100644
---- a/qga/installer/qemu-ga.wxs
-+++ b/qga/installer/qemu-ga.wxs
-@@ -151,6 +151,14 @@
-               Return="check"
-               >
-     </CustomAction>
-+    <CustomAction Id="UnRegisterCom_Rollback"
-+              ExeCommand='"[qemu_ga_directory]qga-vss.dll",DLLCOMUnregister'
-+              Execute="rollback"
-+              Property="rundll"
-+              Impersonate="no"
-+              Return="check"
-+              >
-+    </CustomAction>
-     <?endif?>
+diff --git a/qga/commands.c b/qga/commands.c
+index 5a5fad31f8..5f20af25d3 100644
+--- a/qga/commands.c
++++ b/qga/commands.c
+@@ -205,13 +205,15 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid, Error **errp)
+ #endif
+         if (gei->out.length > 0) {
+             ges->out_data = g_base64_encode(gei->out.data, gei->out.length);
+-            ges->has_out_truncated = gei->out.truncated;
++            ges->has_out_truncated = true;
++            ges->out_truncated = gei->out.truncated;
+         }
+         g_free(gei->out.data);
  
-     <Feature Id="QEMUFeature" Title="QEMU Guest Agent" Level="1">
-@@ -174,8 +182,19 @@
+         if (gei->err.length > 0) {
+             ges->err_data = g_base64_encode(gei->err.data, gei->err.length);
+-            ges->has_err_truncated = gei->err.truncated;
++            ges->has_err_truncated = true;
++            ges->err_truncated = gei->err.truncated;
+         }
+         g_free(gei->err.data);
  
-     <InstallExecuteSequence>
-       <?ifdef var.InstallVss?>
--      <Custom Action="UnRegisterCom" After="StopServices">Installed</Custom>
--      <Custom Action="RegisterCom" After="InstallServices">NOT REMOVE</Custom>
-+        <!-- Use explicit Sequence number to provide an absolute position in the sequence-->
-+        <!-- This is needed to set "UnRegisterCom_Rollback" before "RegisterCom" and after "InstallFiles"-->
-+        <!-- but, Wix detect this double condition incorrectly -->
-+
-+        <!-- UnRegisterCom_Rollback (for install rollback): at 5849, right before RegisterCom (5850)-->
-+        <!-- Runs only if the installation fails and rolls back-->
-+        <Custom Action="UnRegisterCom_Rollback" Sequence="5849">NOT REMOVE</Custom>
-+
-+        <!-- RegisterCom (for install): at 5850, right after InstallFiles (5849) (old: After="InstallServices")-->
-+        <Custom Action="RegisterCom" Sequence="5850">NOT REMOVE</Custom>
-+
-+        <!-- UnRegisterCom (for uninstall): at 1901, right after StopServices (1900) (old: After="StopServices")-->
-+        <Custom Action="UnRegisterCom" Sequence="1901">Installed</Custom>
-       <?endif?>
-     </InstallExecuteSequence>
-   </Product>
 -- 
 2.50.1
 
