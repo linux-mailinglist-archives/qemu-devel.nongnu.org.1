@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00773B3CDF8
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8308B3CCD3
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:18:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usOEt-00019B-Uj; Sat, 30 Aug 2025 12:15:40 -0400
+	id 1usO04-0000oZ-Qg; Sat, 30 Aug 2025 12:00:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usERb-0007YI-TK
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:48:07 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1usERg-0007Zf-VL
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:48:14 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usERa-000530-0L
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:48:07 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-b475dfb4f42so1927274a12.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 22:48:05 -0700 (PDT)
+ id 1usERd-00053P-Hg
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:48:12 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-248cb0b37dfso26143035ad.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 22:48:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756532884; x=1757137684; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756532887; x=1757137687; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HTzcUGGxZsq7kEwv6ih902moRlxo1N6PG0gX7nMiQJ4=;
- b=iw6bbEcBtawB9ZsDqZPUBEBB3zINensW8qp2xmTRIVE5W8kveWSe6fT9XRTfx+BI3i
- PhofctcjOE9yTs6Urscq1ZQAqsmrsPRGZTMAmQtGuafmH24VclJ+CoSQe41Bnl9OqUzh
- vY0pOvAOykKm5gJ9B2FGB9X63dZA2zUaCvZfdqufnzX2EQEwh7cFOEd8E5ZDs2/3broK
- HqvYIdxJ4kfyOudxRurApm878qNmaCppC0N8Xhx1dlsQT9MOrYvTauoNNeMigmhHC0QE
- qJUcbft2d31dPv4BR1372acLfl/cIIDLC123URljbP0ZoMvOLN3OduseZp/9Z8qNz7Og
- 6/Zw==
+ bh=RrRDTwGDphkvvBtsV/mK2pHDoMT9L4tWZDtSjWVgm+E=;
+ b=VODi5qWzHCHWrXyl5SvBraebE+RtyxsvCJmkYPsDbFDT5O+fNOrZvdZDhgDi6cvbX8
+ ZtuvOXm647teiUaM2pyEKSnwXHQXc/+79tO4nKDHHgiDvnDfTieQVnoUi9gUmga+R+aq
+ 182YB8rQzm0f8XBHCIOKbWG6CK9gEoGtiHo/Dxb8yYKGh0TtrVH3ssv9u4Dq0f6tbr5Y
+ vExFJ//z+aM7/B/49zjhSiZmnByaR9+VBU/HUBjqLs0QZcN+5hBTokEMSfNY26Y4NbBW
+ 5kX/YVtuDD+h6bANfbVHbAhIvVt8jYFpCoXpLed/+6Ml8s2zoCR5QSvqtdkuXl9+CTmw
+ E0qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756532884; x=1757137684;
+ d=1e100.net; s=20230601; t=1756532887; x=1757137687;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HTzcUGGxZsq7kEwv6ih902moRlxo1N6PG0gX7nMiQJ4=;
- b=O8dfdI7dViVSA83rKY5lRY0EtFsUBvzCCLJ84HX/5IOiL8Soj1CoVOwyXL8xos5zqQ
- q93mRwonyMDLMm45eYVIuTp0nQh1lycMfqk/5lk7rWe4BZjUNLndNQ1qfGYTib+y/Fbp
- hjklBsksVg17uynywrteJi9bNZUtT1QpXK8RQa9LfDQkGgAQY24MXg2joUyCE16BNg4f
- WpG4VMqmKenDyo3uaCimfmRoAMxTESrn5y0U9NLHF0jkJTw1KNRsVOpumXlQfx/MkJ3y
- faVvI53U7He1gMvnWIWW4YLXq7vbfP7Y9UVKAfNMkiSXc0uHZIIiBCJTeQVC7M8YciMV
- a1Bw==
-X-Gm-Message-State: AOJu0YxlBGGSN1Uk1JIeBFMB934Bq5wNcE5UG4dXe/QTjJh3ktneCs63
- PE3BM4QwpzEGRi569NdDkZ6+2kZntEyfeXNL6Rx2Y0OMKNZLr8JXricF1bR/sc0B0p1yb/bM3WB
- HJ8CKMJ4=
-X-Gm-Gg: ASbGncsTr+mPZE1XgLhCAIGlu1QUFHIekN4gL/fLwnYitHZ96JbDrenVYKK10dMHFkq
- k+NPLwLpWKl5h6STVod98FAyJacp50VIlPGPNqCUouvNCW3P/0jkbzJiJs93lF3Oz2ckgXuiDNc
- AimkW6vsEJDwXtAw7xyKjZ7h+c5uhcx/gB4DhQCZaLdKX8spoLzTprYqaJhEcEVMH9r8UKa07oQ
- 2yb4g3gVr7IwuzrtoF4w4fOcZHjppWw4LC3xC/k63ddd5i6ujIBRDl6tuFkCFRm9OGz/8ElbdOL
- F/pXixIEL5LWDbt1HKh2q+rM3pLiAACdYK7zh4GHPWgqKKs/ZuUehix+O1dntMJu6EKFXf9fq8T
- tCHRavqL4U0CNp4d2Elii/Lhw7BFLpZjF9zB01mDCvt0Uj0ajG04bqz0o0Pm5JEU=
-X-Google-Smtp-Source: AGHT+IGkP6UopPk67EfOGRW2pZdc2MymT4cPW0rgxrTRD+/UAQXq97E15Kh1qQvF6R7ay2xlypUDrg==
-X-Received: by 2002:a17:903:b10:b0:248:a18e:200a with SMTP id
- d9443c01a7336-2494485d6f8mr11763785ad.10.1756532884148; 
- Fri, 29 Aug 2025 22:48:04 -0700 (PDT)
+ bh=RrRDTwGDphkvvBtsV/mK2pHDoMT9L4tWZDtSjWVgm+E=;
+ b=ky8y+NYHAYIiD27VyvoLtFVgPlxI7twGQsbxgz4uP6mocm5SbLHmqDNiJBN6sYxMx3
+ OJJww5nR2Tnj2a332h8JuN9SMyUU5OTI9zTzXz8WsOmTrcMwPqoHrRbJHDx+F80zqi5/
+ Hjnbgtzv7kna/DH2MKi6nfJBgVuqkUHp8JaQDojG3OezmNOwkYmTk6iPjdGxn4lUCaQ2
+ WX7XS7WJG6C3NfBoSLbq4LXpBR8BuTSmuCW0bec+yonHa/Ehc/gW64zJNGTuKO89YiCx
+ 75TjJRWP/jjnpEkgcbUevAf1HNO56laKW63rmp/rvRZghPNIrRKVP1thXx4I1oGM3i6z
+ xhhA==
+X-Gm-Message-State: AOJu0YzhjNJzFVD9HumbeZy9IPL8xt2FEop7Hrdf1PNqe89u+6ecaiyt
+ yiidDN70aoJXlstLgOIDngEOSpMN772HXIWDUiBe42NnTAZj03xjHpOcsQiJNjt/6zCbNh0qUl9
+ HaHacWtg=
+X-Gm-Gg: ASbGncvrRhFfEX5k+1TqqC/TBiJHCjIS3YncYahsTq/F+VVzVN5t4CltDqeJRQ/Atq1
+ 6SjUpVxoapGCp49WASWzHSJHxnJlQHoEQ+FZwl/ldkzo0pXoGo/uza92IkWS5LFlYX/iVoX5qru
+ Rm4sv7JdntTFK6Ge2+nvAXRkLFiHc6SwFJjpJGiOtbX+NZL/F4j95ImNZiiuk8IODoUd3FXrfu1
+ 1P/pAMN2D7TPn+nnhbZV3yB1Px5Blan8gX05tsKUaMCeOwEcfZlU7rzuV7XgNCzAEu8rwf417If
+ PHQoIW49IDJ2RC0rrxN5ixuasA20PD2/6qdAfv513RvyUnGxOeF63PHrcIkGg7mDLWS6ObW9aGc
+ pf2lzrZXcgs3XGcO7LMDlb6Rhb+RQzaUUiEpuz+MrVOabZuFsLgnkXYhkBeP4IhA=
+X-Google-Smtp-Source: AGHT+IGoHCdK1kauU9bmFRl/SqKDamGWvYyD6nzAwFXTX6HBF0hItUjUJFLxIVqbU97cHLuXO7nYfA==
+X-Received: by 2002:a17:902:ce02:b0:246:a42b:a31d with SMTP id
+ d9443c01a7336-24944ad758dmr13747515ad.44.1756532886866; 
+ Fri, 29 Aug 2025 22:48:06 -0700 (PDT)
 Received: from stoup.. (122-150-204-179.dyn.ip.vocus.au. [122.150.204.179])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2490658999fsm40852715ad.112.2025.08.29.22.48.01
+ d9443c01a7336-2490658999fsm40852715ad.112.2025.08.29.22.48.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 22:48:03 -0700 (PDT)
+ Fri, 29 Aug 2025 22:48:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 74/84] linux-user/aarch64: Implement prctls for GCS
-Date: Sat, 30 Aug 2025 15:41:18 +1000
-Message-ID: <20250830054128.448363-75-richard.henderson@linaro.org>
+Subject: [PATCH v4 75/84] linux-user/aarch64: Allocate new gcs stack on clone
+Date: Sat, 30 Aug 2025 15:41:19 +1000
+Message-ID: <20250830054128.448363-76-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250830054128.448363-1-richard.henderson@linaro.org>
 References: <20250830054128.448363-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,247 +99,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is PR_GET_SHADOW_STACK_STATUS, PR_SET_SHADOW_STACK_STATUS,
-and PR_LOCK_SHADOW_STACK_STATUS.
+Allocate the new stack early, so that error reporting need
+not clean up other objects.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/aarch64/gcs-internal.h | 38 ++++++++++++
- linux-user/aarch64/target_prctl.h | 96 +++++++++++++++++++++++++++++++
- linux-user/qemu.h                 |  5 ++
- linux-user/syscall.c              | 29 ++++++++++
- 4 files changed, 168 insertions(+)
- create mode 100644 linux-user/aarch64/gcs-internal.h
+ linux-user/syscall.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/linux-user/aarch64/gcs-internal.h b/linux-user/aarch64/gcs-internal.h
-new file mode 100644
-index 0000000000..e586c7e80e
---- /dev/null
-+++ b/linux-user/aarch64/gcs-internal.h
-@@ -0,0 +1,38 @@
-+/*
-+ * AArch64 gcs functions for linux-user
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef AARCH64_GCS_INTERNAL_H
-+#define AARCH64_GCS_INTERNAL_H
-+
-+#ifndef PR_SHADOW_STACK_ENABLE
-+# define PR_SHADOW_STACK_ENABLE  (1U << 0)
-+# define PR_SHADOW_STACK_WRITE   (1U << 1)
-+# define PR_SHADOW_STACK_PUSH    (1U << 2)
-+#endif
-+
-+static inline uint64_t gcs_get_el0_mode(CPUArchState *env)
-+{
-+    uint64_t cr = env->cp15.gcscr_el[0];
-+    abi_ulong flags = 0;
-+
-+    flags |= cr & GCSCR_PCRSEL ? PR_SHADOW_STACK_ENABLE : 0;
-+    flags |= cr & GCSCR_STREN ? PR_SHADOW_STACK_WRITE : 0;
-+    flags |= cr & GCSCR_PUSHMEN ? PR_SHADOW_STACK_PUSH : 0;
-+
-+    return flags;
-+}
-+
-+static inline void gcs_set_el0_mode(CPUArchState *env, uint64_t flags)
-+{
-+    uint64_t cr = GCSCRE0_NTR;
-+
-+    cr |= flags & PR_SHADOW_STACK_ENABLE ? GCSCR_RVCHKEN | GCSCR_PCRSEL : 0;
-+    cr |= flags & PR_SHADOW_STACK_WRITE ? GCSCR_STREN : 0;
-+    cr |= flags & PR_SHADOW_STACK_PUSH ? GCSCR_PUSHMEN : 0;
-+
-+    env->cp15.gcscr_el[0] = cr;
-+}
-+
-+#endif
-diff --git a/linux-user/aarch64/target_prctl.h b/linux-user/aarch64/target_prctl.h
-index ed75b9e4b5..621be5727f 100644
---- a/linux-user/aarch64/target_prctl.h
-+++ b/linux-user/aarch64/target_prctl.h
-@@ -6,8 +6,10 @@
- #ifndef AARCH64_TARGET_PRCTL_H
- #define AARCH64_TARGET_PRCTL_H
- 
-+#include "qemu/units.h"
- #include "target/arm/cpu-features.h"
- #include "mte_user_helper.h"
-+#include "gcs-internal.h"
- 
- static abi_long do_prctl_sve_get_vl(CPUArchState *env)
- {
-@@ -206,4 +208,98 @@ static abi_long do_prctl_get_tagged_addr_ctrl(CPUArchState *env)
- }
- #define do_prctl_get_tagged_addr_ctrl do_prctl_get_tagged_addr_ctrl
- 
-+static abi_long do_prctl_get_shadow_stack_status(CPUArchState *env,
-+                                                 abi_long arg2)
-+{
-+    ARMCPU *cpu = env_archcpu(env);
-+
-+    if (!cpu_isar_feature(aa64_gcs, cpu)) {
-+        return -TARGET_EINVAL;
-+    }
-+    return put_user_ual(gcs_get_el0_mode(env), arg2);
-+}
-+#define do_prctl_get_shadow_stack_status do_prctl_get_shadow_stack_status
-+
-+static abi_long gcs_alloc(abi_ulong hint, abi_ulong size)
-+{
-+    /*
-+     * Without softmmu, we cannot protect GCS memory properly.
-+     * Make do with normal read/write permissions.  This at least allows
-+     * emulation of correct programs which don't access the gcs stack
-+     * with normal instructions.
-+     */
-+    return target_mmap(hint, size, PROT_READ | PROT_WRITE,
-+                       MAP_PRIVATE | MAP_ANONYMOUS |
-+                       (hint ? MAP_FIXED_NOREPLACE : 0), -1, 0);
-+}
-+
-+static abi_ulong gcs_new_stack(TaskState *ts)
-+{
-+    /* Use guest_stack_size as a proxy for RLIMIT_STACK. */
-+    abi_ulong size = MIN(MAX(guest_stack_size / 2, TARGET_PAGE_SIZE), 2 * GiB);
-+    abi_ulong base = gcs_alloc(0, size);
-+
-+    if (base == -1) {
-+        return -1;
-+    }
-+
-+    ts->gcs_base = base;
-+    ts->gcs_size = size;
-+    return base + size - 8;
-+}
-+
-+static abi_long do_prctl_set_shadow_stack_status(CPUArchState *env,
-+                                                 abi_long new_mode)
-+{
-+    ARMCPU *cpu = env_archcpu(env);
-+    TaskState *ts = get_task_state(env_cpu(env));
-+    abi_long cur_mode;
-+
-+    if (!cpu_isar_feature(aa64_gcs, cpu)) {
-+        return -TARGET_EINVAL;
-+    }
-+    if (new_mode & ~(PR_SHADOW_STACK_ENABLE |
-+                     PR_SHADOW_STACK_WRITE |
-+                     PR_SHADOW_STACK_PUSH)) {
-+        return -TARGET_EINVAL;
-+    }
-+
-+    cur_mode = gcs_get_el0_mode(env);
-+    if ((new_mode ^ cur_mode) & ts->gcs_el0_locked) {
-+        return -TARGET_EBUSY;
-+    }
-+
-+    if (new_mode & ~cur_mode & PR_SHADOW_STACK_ENABLE) {
-+        abi_long gcspr;
-+
-+        if (ts->gcs_base || env->cp15.gcspr_el[0]) {
-+            return -EINVAL;
-+        }
-+        gcspr = gcs_new_stack(ts);
-+        if (gcspr == -1) {
-+            return -TARGET_ENOMEM;
-+        }
-+        env->cp15.gcspr_el[0] = gcspr;
-+    }
-+
-+    gcs_set_el0_mode(env, new_mode);
-+    arm_rebuild_hflags(env);
-+    return 0;
-+}
-+#define do_prctl_set_shadow_stack_status do_prctl_set_shadow_stack_status
-+
-+static abi_long do_prctl_lock_shadow_stack_status(CPUArchState *env,
-+                                                  abi_long arg2)
-+{
-+    ARMCPU *cpu = env_archcpu(env);
-+    TaskState *ts = get_task_state(env_cpu(env));
-+
-+    if (!cpu_isar_feature(aa64_gcs, cpu)) {
-+        return -EINVAL;
-+    }
-+    ts->gcs_el0_locked |= arg2;
-+    return 0;
-+}
-+#define do_prctl_lock_shadow_stack_status do_prctl_lock_shadow_stack_status
-+
- #endif /* AARCH64_TARGET_PRCTL_H */
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index e4dca0c20f..8a0d240405 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -121,6 +121,11 @@ struct TaskState {
-     abi_ulong child_tidptr;
- #ifdef TARGET_M68K
-     abi_ulong tp_value;
-+#endif
-+#if defined(TARGET_AARCH64)
-+    vaddr gcs_base;
-+    abi_ulong gcs_size;
-+    abi_ulong gcs_el0_locked;
- #endif
-     int used; /* non zero if used */
-     struct image_info *info;
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 91360a072c..2f1e881046 100644
+index 2f1e881046..91210775ed 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -6351,6 +6351,11 @@ abi_long do_arch_prctl(CPUX86State *env, int code, abi_ulong addr)
- # define PR_SME_VL_LEN_MASK  0xffff
- # define PR_SME_VL_INHERIT   (1 << 17)
- #endif
-+#ifndef PR_GET_SHADOW_STACK_STATUS
-+# define PR_GET_SHADOW_STACK_STATUS  74
-+# define PR_SET_SHADOW_STACK_STATUS  75
-+# define PR_LOCK_SHADOW_STACK_STATUS 76
-+#endif
+@@ -6652,6 +6652,21 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
+         ts = g_new0(TaskState, 1);
+         init_task_state(ts);
  
- #include "target_prctl.h"
++#ifdef TARGET_AARCH64
++        /*
++         * If GCS is enabled in the parent thread, it is also enabled
++         * in the child thread, but with a newly allocated stack.
++         */
++        abi_long new_gcspr = 0;
++        if (env->cp15.gcscr_el[0] & GCSCR_PCRSEL) {
++            new_gcspr = gcs_new_stack(ts);
++            if (new_gcspr == -1) {
++                g_free(ts);
++                return -TARGET_ENOMEM;
++            }
++        }
++#endif
++
+         /* Grab a mutex so that thread setup appears atomic.  */
+         pthread_mutex_lock(&clone_lock);
  
-@@ -6397,6 +6402,15 @@ static abi_long do_prctl_inval1(CPUArchState *env, abi_long arg2)
- #ifndef do_prctl_sme_set_vl
- #define do_prctl_sme_set_vl do_prctl_inval1
- #endif
-+#ifndef do_prctl_get_shadow_stack_status
-+#define do_prctl_get_shadow_stack_status do_prctl_inval1
-+#endif
-+#ifndef do_prctl_set_shadow_stack_status
-+#define do_prctl_set_shadow_stack_status do_prctl_inval1
-+#endif
-+#ifndef do_prctl_lock_shadow_stack_status
-+#define do_prctl_lock_shadow_stack_status do_prctl_inval1
-+#endif
+@@ -6676,6 +6691,11 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
+         ts->info = parent_ts->info;
+         ts->signal_mask = parent_ts->signal_mask;
  
- static abi_long do_prctl(CPUArchState *env, abi_long option, abi_long arg2,
-                          abi_long arg3, abi_long arg4, abi_long arg5)
-@@ -6467,6 +6481,21 @@ static abi_long do_prctl(CPUArchState *env, abi_long option, abi_long arg2,
-             return -TARGET_EINVAL;
++#ifdef TARGET_AARCH64
++        ts->gcs_el0_locked = parent_ts->gcs_el0_locked;
++        new_env->cp15.gcspr_el[0] = new_gcspr;
++#endif
++
+         if (flags & CLONE_CHILD_CLEARTID) {
+             ts->child_tidptr = child_tidptr;
          }
-         return do_prctl_get_tagged_addr_ctrl(env);
-+    case PR_GET_SHADOW_STACK_STATUS:
-+        if (arg3 || arg4 || arg5) {
-+            return -TARGET_EINVAL;
-+        }
-+        return do_prctl_get_shadow_stack_status(env, arg2);
-+    case PR_SET_SHADOW_STACK_STATUS:
-+        if (arg3 || arg4 || arg5) {
-+            return -TARGET_EINVAL;
-+        }
-+        return do_prctl_set_shadow_stack_status(env, arg2);
-+    case PR_LOCK_SHADOW_STACK_STATUS:
-+        if (arg3 || arg4 || arg5) {
-+            return -TARGET_EINVAL;
-+        }
-+        return do_prctl_lock_shadow_stack_status(env, arg2);
- 
-     case PR_GET_UNALIGN:
-         return do_prctl_get_unalign(env, arg2);
 -- 
 2.43.0
 
