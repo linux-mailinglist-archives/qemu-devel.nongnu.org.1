@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8308B3CCD3
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:18:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E661AB3CE95
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 20:09:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usO04-0000oZ-Qg; Sat, 30 Aug 2025 12:00:20 -0400
+	id 1usO01-0000XQ-K5; Sat, 30 Aug 2025 12:00:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usERg-0007Zf-VL
+ id 1usERg-0007Zg-VK
  for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:48:14 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usERd-00053P-Hg
+ id 1usERe-00053t-U3
  for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:48:12 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-248cb0b37dfso26143035ad.3
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 22:48:07 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-248ff4403b9so17479275ad.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 22:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756532887; x=1757137687; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756532889; x=1757137689; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RrRDTwGDphkvvBtsV/mK2pHDoMT9L4tWZDtSjWVgm+E=;
- b=VODi5qWzHCHWrXyl5SvBraebE+RtyxsvCJmkYPsDbFDT5O+fNOrZvdZDhgDi6cvbX8
- ZtuvOXm647teiUaM2pyEKSnwXHQXc/+79tO4nKDHHgiDvnDfTieQVnoUi9gUmga+R+aq
- 182YB8rQzm0f8XBHCIOKbWG6CK9gEoGtiHo/Dxb8yYKGh0TtrVH3ssv9u4Dq0f6tbr5Y
- vExFJ//z+aM7/B/49zjhSiZmnByaR9+VBU/HUBjqLs0QZcN+5hBTokEMSfNY26Y4NbBW
- 5kX/YVtuDD+h6bANfbVHbAhIvVt8jYFpCoXpLed/+6Ml8s2zoCR5QSvqtdkuXl9+CTmw
- E0qw==
+ bh=Bac99cWBoODM0lZjzPV8FafpKsc60jTDKb6XVoHXo24=;
+ b=n8iVZXGAFq/SZyurglApvl+Sook3Um1klhvTQmlkti//w4G6PW3yGOduOKwayHSmAz
+ xHY6e7n6ILnY80f0MwMqOxdx1dBR14rzJjazzmaP8AKI++ngDcfJiUFHiuhRaQQSHiJL
+ AI0Wc7SBtlztTaPcPqJEIhogvZXGQ/BqnPvVxLR0pRdT05hXLr4Z3vSq38LwtA74E9MN
+ aYwARVJX0WrSkNv57oFSsX42XGGWcSAqiQjdN8UggW50SH9ICqWV3mEPZcqrYeLJ4N6c
+ VLZB6CLjA+OkSzTT6peCnObaDVqnywqyc5PG5Rhh5ZEQ9oCbs4gQDtCyb+UuBIfoqu0i
+ 1Wrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756532887; x=1757137687;
+ d=1e100.net; s=20230601; t=1756532889; x=1757137689;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RrRDTwGDphkvvBtsV/mK2pHDoMT9L4tWZDtSjWVgm+E=;
- b=ky8y+NYHAYIiD27VyvoLtFVgPlxI7twGQsbxgz4uP6mocm5SbLHmqDNiJBN6sYxMx3
- OJJww5nR2Tnj2a332h8JuN9SMyUU5OTI9zTzXz8WsOmTrcMwPqoHrRbJHDx+F80zqi5/
- Hjnbgtzv7kna/DH2MKi6nfJBgVuqkUHp8JaQDojG3OezmNOwkYmTk6iPjdGxn4lUCaQ2
- WX7XS7WJG6C3NfBoSLbq4LXpBR8BuTSmuCW0bec+yonHa/Ehc/gW64zJNGTuKO89YiCx
- 75TjJRWP/jjnpEkgcbUevAf1HNO56laKW63rmp/rvRZghPNIrRKVP1thXx4I1oGM3i6z
- xhhA==
-X-Gm-Message-State: AOJu0YzhjNJzFVD9HumbeZy9IPL8xt2FEop7Hrdf1PNqe89u+6ecaiyt
- yiidDN70aoJXlstLgOIDngEOSpMN772HXIWDUiBe42NnTAZj03xjHpOcsQiJNjt/6zCbNh0qUl9
- HaHacWtg=
-X-Gm-Gg: ASbGncvrRhFfEX5k+1TqqC/TBiJHCjIS3YncYahsTq/F+VVzVN5t4CltDqeJRQ/Atq1
- 6SjUpVxoapGCp49WASWzHSJHxnJlQHoEQ+FZwl/ldkzo0pXoGo/uza92IkWS5LFlYX/iVoX5qru
- Rm4sv7JdntTFK6Ge2+nvAXRkLFiHc6SwFJjpJGiOtbX+NZL/F4j95ImNZiiuk8IODoUd3FXrfu1
- 1P/pAMN2D7TPn+nnhbZV3yB1Px5Blan8gX05tsKUaMCeOwEcfZlU7rzuV7XgNCzAEu8rwf417If
- PHQoIW49IDJ2RC0rrxN5ixuasA20PD2/6qdAfv513RvyUnGxOeF63PHrcIkGg7mDLWS6ObW9aGc
- pf2lzrZXcgs3XGcO7LMDlb6Rhb+RQzaUUiEpuz+MrVOabZuFsLgnkXYhkBeP4IhA=
-X-Google-Smtp-Source: AGHT+IGoHCdK1kauU9bmFRl/SqKDamGWvYyD6nzAwFXTX6HBF0hItUjUJFLxIVqbU97cHLuXO7nYfA==
-X-Received: by 2002:a17:902:ce02:b0:246:a42b:a31d with SMTP id
- d9443c01a7336-24944ad758dmr13747515ad.44.1756532886866; 
- Fri, 29 Aug 2025 22:48:06 -0700 (PDT)
+ bh=Bac99cWBoODM0lZjzPV8FafpKsc60jTDKb6XVoHXo24=;
+ b=DPjk0q/qB2iBtvK+G7WzH7VFOG2GtqLPrVficKRKYKLgHF+/GzZUlV9nD+w7fuTa//
+ rqgiY3Rv0zUwgJiIax74/Nn0wxyKOdINwVGK5FNTku34aSBCujx1H0Yd0P/eQ8zyVFTp
+ Y8om4N5AYQ7w/MG1GjGcaujXvWScD3xvmr4p+gco54s145VJopP5aTnS+qRKo+XNVL23
+ boo+6XMlKJK1SWaKEuILb3xMjGfVVv45ukDDgiX8UW4N8A9ox4RJmQUJ8ooVYUbtjh/n
+ aRfQJjFHB2D2gAp0X/WKN9OxP4BEGsHY52KO0hUEI6jenwHoeJCW1KjuW12P3E77/R2h
+ xw7Q==
+X-Gm-Message-State: AOJu0YxvBb3m3LCGd7CsoK2JfLaQaweWNC2r/W9VsHZaQ3p6lOuCBkFP
+ lAv4fm2hOfjOxrAW+cG4ulbe86PQSqrEr5LXLRBv34yor+V7KI26zElKdRfzuYfOqQgcN8uYox9
+ CJwm1f1s=
+X-Gm-Gg: ASbGnctR6XhOvTOBqdKMy6F7CRUFSUVrWTZeCpot+iRhNha2E+exk/YGczHc9CY5/l+
+ qZkfdOPbGteiG6/lCeoSFnDUZb8STW62TtAvTHiwFpZLO+pv25/H+BeTYrd+6zaqOCAyCgeOezH
+ e7egiU817IUoxMO2fFUSBItId40tw7ltcmaE5nnrIQKq95jOiRRhmqwmhTI3rixiGXnHrf2vTCa
+ j4LEfRh8WEHD8OyUJjAdcEh7G4dE3Xdi9IG8k/WDZ4FjaizWc5FqqgDq74ByTGzujZwXxcK56YO
+ mMgj9+QdEay+4dj182+90VK/hTX1tddm4nl8yzRQh7jNL276kVX97cjcv8X3ol4W8AkUNXeLXCO
+ reZbAf4CWkXMEozssxqW7RsmQjk1gmw69KzE+sQIBMGInuEZiPIOPUewhHB9x6S4=
+X-Google-Smtp-Source: AGHT+IGXaQpscm7/1zUhEeaoZ9ooDyQHhqZN0Z+WC+sNrG55TUaAuzpT/bs2zdf6XbdLvnzkq4mM0w==
+X-Received: by 2002:a17:902:e847:b0:248:9c98:2cf4 with SMTP id
+ d9443c01a7336-24944aeebf8mr15656665ad.46.1756532889443; 
+ Fri, 29 Aug 2025 22:48:09 -0700 (PDT)
 Received: from stoup.. (122-150-204-179.dyn.ip.vocus.au. [122.150.204.179])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2490658999fsm40852715ad.112.2025.08.29.22.48.04
+ d9443c01a7336-2490658999fsm40852715ad.112.2025.08.29.22.48.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 22:48:06 -0700 (PDT)
+ Fri, 29 Aug 2025 22:48:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 75/84] linux-user/aarch64: Allocate new gcs stack on clone
-Date: Sat, 30 Aug 2025 15:41:19 +1000
-Message-ID: <20250830054128.448363-76-richard.henderson@linaro.org>
+Subject: [PATCH v4 76/84] linux-user/aarch64: Release gcs stack on thread exit
+Date: Sat, 30 Aug 2025 15:41:20 +1000
+Message-ID: <20250830054128.448363-77-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250830054128.448363-1-richard.henderson@linaro.org>
 References: <20250830054128.448363-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,53 +99,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allocate the new stack early, so that error reporting need
-not clean up other objects.
-
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ linux-user/syscall.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 2f1e881046..91210775ed 100644
+index 91210775ed..dfe114ceb3 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -6652,6 +6652,21 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
-         ts = g_new0(TaskState, 1);
-         init_task_state(ts);
+@@ -9309,6 +9309,12 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+                              FUTEX_WAKE, INT_MAX, NULL, NULL, 0);
+             }
  
 +#ifdef TARGET_AARCH64
-+        /*
-+         * If GCS is enabled in the parent thread, it is also enabled
-+         * in the child thread, but with a newly allocated stack.
-+         */
-+        abi_long new_gcspr = 0;
-+        if (env->cp15.gcscr_el[0] & GCSCR_PCRSEL) {
-+            new_gcspr = gcs_new_stack(ts);
-+            if (new_gcspr == -1) {
-+                g_free(ts);
-+                return -TARGET_ENOMEM;
++            if (ts->gcs_base) {
++                target_munmap(ts->gcs_base, ts->gcs_size);
 +            }
-+        }
 +#endif
 +
-         /* Grab a mutex so that thread setup appears atomic.  */
-         pthread_mutex_lock(&clone_lock);
- 
-@@ -6676,6 +6691,11 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
-         ts->info = parent_ts->info;
-         ts->signal_mask = parent_ts->signal_mask;
- 
-+#ifdef TARGET_AARCH64
-+        ts->gcs_el0_locked = parent_ts->gcs_el0_locked;
-+        new_env->cp15.gcspr_el[0] = new_gcspr;
-+#endif
-+
-         if (flags & CLONE_CHILD_CLEARTID) {
-             ts->child_tidptr = child_tidptr;
-         }
+             object_unparent(OBJECT(cpu));
+             object_unref(OBJECT(cpu));
+             /*
 -- 
 2.43.0
 
