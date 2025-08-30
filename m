@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45957B3CCDD
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C8F9B3CCBB
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:15:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNvI-00046h-EK; Sat, 30 Aug 2025 11:55:24 -0400
+	id 1usNts-0008Ni-Fa; Sat, 30 Aug 2025 11:53:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usELa-0005qB-Vh
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:41:55 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1usELd-0005qx-Iy
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:41:58 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usELZ-00044h-6D
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:41:54 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-3278efed3b0so2120073a91.2
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 22:41:52 -0700 (PDT)
+ id 1usELb-00045N-TU
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:41:57 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-7722c8d2846so1049582b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 22:41:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756532511; x=1757137311; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756532514; x=1757137314; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Iwhk1HGVIv53xO1tUgspGYJaTSrp9MM6iDeDwh0Ulxk=;
- b=AyQXkTAl6OXTW0QOwlV/XAotH1QOusAY1cx2LSdCCZ3EzQcxqJR7ww1+jLNXzf24MO
- UOweL+iC7ID86FqvMeSJ90keB60K2XIj0e844ZIvMKgT6XjMx5jJnBJ8ldL8m/WXFghQ
- IVAxTYAAT1FeP9892vHMqvVswlMweJLJjWvm0WNSBzW0IaAuFytb4yXtQ1HSTTFpblj4
- FMaPw/jFo/ohyDqriAnBfUOo9htcZClUY7zPa2XBZ4I3Rlk8S3xrdgnDRVk4DQ0d9cKI
- Iaf5onB3h48slKGtkKxeSGWKke4B3Pwv7NJFUvc7bdMKD3nKu0WPPzku28JX8Uws+U0f
- dufQ==
+ bh=ZIUi24UCtA+WCzxRmM2e3Q9u+Kr20hlCK3lal507EEI=;
+ b=wx5WYltEomoEScrDLFeAXZD5WabZqwXvocGd/Tm/MpNdgj4Q9xlduw+nNnyEXYb2Wc
+ WSaJejnkme/BKTB/d5sUQ7RjtluYtjxnnZShOxbC1u5HDRScphddcD3/tcZ/2D7xnzcY
+ fK6bBVAnU6QhIGO7TP/wzPiq79L8q5F00J0rFrIVU0/9+s3dEIXLH1WFCtTL7c5ArI64
+ +KM79S3XuERg8za32lzSTcraBCE4JrdqkKlwybW/gb/tzw5VksdHaTfZUhamY4FwLJy7
+ xe/h1eAwwEXA/raxpklWuT61rygoSzG/umuT01yTBFn8kDd1OGrr6SYVHvhty+Mx2vTo
+ a28g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756532511; x=1757137311;
+ d=1e100.net; s=20230601; t=1756532514; x=1757137314;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Iwhk1HGVIv53xO1tUgspGYJaTSrp9MM6iDeDwh0Ulxk=;
- b=YMnD25ZiDMSwLf4PnK/n3brAHbWDFbUpGIAJE1+rHvi8Z/LHBIXFSah9HPnxqA9hg2
- zm34jN1TGYTUj6EfEfBCSU39lMUWbyh3NpCQmEuVsJWJebSqFML5ck9WgNFlMl9gmEEF
- XAXTBh6Zbu71jGZrjp/RLBPM6bns9FM1cewPGSv0e1sqE7/PIX+jMvwk0T4JSOokBGqj
- 0Rl2I0vgjUoweRqLgfN/oGHz0M59sCRAvJbogi10eq2y3bbb/2evBhACCuoVyYJEOEzi
- hnSiZ+lFfKlT4Kqa+5DWV06ynwsR7bin5FmqhuBYtPLyY5KfP4F0qeYIa1mI9055o3Ms
- g1oA==
-X-Gm-Message-State: AOJu0YxhdViYQk2a7o7vSiRjeF7PyqT8EH0XCxXr4ZcdzGGFVMVKPwh0
- KyNDWrqwNMJWdkj+qlY8lLHokeXxeE41XNHvTb3n63N0cROgNUiDUA3Lw+aLwBRlK8kGVkXNYsK
- 7tckmJJ4=
-X-Gm-Gg: ASbGncscPWdzsLoySxIwf+EhelFESxCm4OuXC0yjBhWzkpybg1D0maPP+QU9d6XamIx
- SJP3uio2N1JKy5CZdIJfIYGP16/zzSCjJiMQhcrKbyobfrc4iiQMvhjkUyOBM+ycs4VGGzCYm13
- VcchHjL+Q11hlrpGpaGyb1ILR8D+z7IokhqcPMiBXc9iY+UvUJ51GaLZvvf1lem1HA4qKNc3P6q
- 3aI/rPKKUWIJdfO9qC4zXEdfqTv8PExwEoy1Ohn+yOSs99mefQTRyCp9dPVNXxJS9sFZ61kBNu9
- GM5W06hUcaAPSKIxSoqEwem1wLWCcZqUUlTrXBkfDY3j03iX4v8jRggxyns83BH3twvi+S5yA1n
- NvUQrFD8RsRxGTThNStZd7v1F5m8Yc2jluQc9t75vHdSN/ZLlQR5ChDeZTamMMU0EhKrA0us=
-X-Google-Smtp-Source: AGHT+IEZ+RJB4/2vLFUV6OggUWyyd9VqDey0ACNrvjRIeKm1Hd+dpw/QQzkDKYMxJxvc+vIEmtfjBQ==
-X-Received: by 2002:a17:90b:4b8d:b0:327:c9d5:257e with SMTP id
- 98e67ed59e1d1-3281543c7a0mr1756181a91.16.1756532511576; 
- Fri, 29 Aug 2025 22:41:51 -0700 (PDT)
+ bh=ZIUi24UCtA+WCzxRmM2e3Q9u+Kr20hlCK3lal507EEI=;
+ b=i75Geh9TnL/E+C5APxYFHzdsJPVB7J55DPRsXSG1DSsMq4Cl/c4lDuqlmWHUBhaxJw
+ cV+8x6F+76ko5bQmbF8n8W2Fgt4virT3CAl5JzmYxQiOkjS0iD7616Wedfs/TuLGXs0u
+ VmQx+RUJtvm4mH3lsRFiuAWncHFfY/jsklWA1g+uhMD79dxn4YwIyhJ4DS0Ts4vcuLlM
+ KEJrBeH2VIsUMFIvhRnugxJli0jpAPL4/GmTLgVpZu8D91iEkVAhmgvLsch9IkVadSX3
+ oR/LE98E+AdD6IhB+/gqE4H2BBpoNVYB6x1bgice2WbdJB1V/ky2hQM24R+Z4utn6l1H
+ E6Xg==
+X-Gm-Message-State: AOJu0YwkottForF4pkyUVY/vYzwgR3+M/zgByZZIr8AwhzI42iBgAzz5
+ FdhjtDb8tvCp8xmMU7wcC0PRzCFWwgsTUSQFQlb/Ys2qMO02A5aupffcC2ZB6FjGce+Yq6Mgrjb
+ Mx+kPBHI=
+X-Gm-Gg: ASbGncvEmvOXV8ahBKBI0p5BqULKTz4nqnXYXeVM3iFfKYb/gZTmLP0oGfz3vzO188G
+ ylI0RQ9K4W9P/v2YvsXyvtaAldEjlrPxFfabKPxyrobV0mGO1Kt5NzKhuun66rClbgxhrdV8U2c
+ 6vYha7fV/MuSPS4AGEd6Qmvt/OKoDnqc6Z2dNkg5v63wJet+qzvWaIva9J5V7+JNu0uO2fct7Vl
+ JHrZA6WysaIoIM1/ukUcmUCUIdGTE6raCtQ8tD+kaBrarQhPZGShWkn702p5ii5uGRf7ZTCCm38
+ IKk1oyOg8xKiOhQ+gjrWeiLpAbZaFpSWDS9W0IKv/mrLgFsugtCW3OLLR4xBUrQp5w0EuVYSx7L
+ sS6H2o2Ajhu4WQFXmOOp9g9gOwyKik8jhapku9FxSOmEEJdVwYCmkHD9Qi+jVL87+JtO+0Ag=
+X-Google-Smtp-Source: AGHT+IGmX6P3MRUNZaf529VQMzmLxg+zkTp+rqzPRreBm7ms8M7liNkMdVMIuyWnSiGf5kdPDMGLlg==
+X-Received: by 2002:a05:6a20:3ca8:b0:243:78a:829e with SMTP id
+ adf61e73a8af0-243d6f7e7fbmr1474092637.55.1756532514028; 
+ Fri, 29 Aug 2025 22:41:54 -0700 (PDT)
 Received: from stoup.. (122-150-204-48.dyn.ip.vocus.au. [122.150.204.48])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b4d96829a66sm2435905a12.6.2025.08.29.22.41.49
+ 41be03b00d2f7-b4d96829a66sm2435905a12.6.2025.08.29.22.41.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 22:41:51 -0700 (PDT)
+ Fri, 29 Aug 2025 22:41:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 06/84] target/arm: Skip permission check from
- arm_cpu_get_phys_page_attrs_debug
-Date: Sat, 30 Aug 2025 15:40:10 +1000
-Message-ID: <20250830054128.448363-7-richard.henderson@linaro.org>
+Subject: [PATCH v4 07/84] target/arm: Introduce get_phys_addr_for_at
+Date: Sat, 30 Aug 2025 15:40:11 +1000
+Message-ID: <20250830054128.448363-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250830054128.448363-1-richard.henderson@linaro.org>
 References: <20250830054128.448363-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,28 +99,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not require read permission when translating addresses
-for debugging purposes.
+Rename get_phys_addr_with_space_nogpc for its only
+caller, do_ats_write.  Drop the MemOp memop argument
+as it doesn't make sense in the new context.  Replace
+the access_type parameter with prot_check.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/internals.h     | 18 +++++++-----------
+ target/arm/ptw.c           | 21 ++++++++++++++-------
+ target/arm/tcg/cpregs-at.c | 11 ++---------
+ 3 files changed, 23 insertions(+), 27 deletions(-)
 
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 899242e572..8782594b77 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1602,25 +1602,21 @@ bool get_phys_addr(CPUARMState *env, vaddr address,
+     __attribute__((nonnull));
+ 
+ /**
+- * get_phys_addr_with_space_nogpc: get the physical address for a virtual
+- *                                 address
++ * get_phys_addr_for_at:
+  * @env: CPUARMState
+  * @address: virtual address to get physical address for
+- * @access_type: 0 for read, 1 for write, 2 for execute
+- * @memop: memory operation feeding this access, or 0 for none
++ * @prot_check: PAGE_{READ,WRITE,EXEC}, or 0
+  * @mmu_idx: MMU index indicating required translation regime
+  * @space: security space for the access
+  * @result: set on translation success.
+  * @fi: set to fault info if the translation fails
+  *
+- * Similar to get_phys_addr, but use the given security space and don't perform
+- * a Granule Protection Check on the resulting address.
++ * Similar to get_phys_addr, but for use by AccessType_AT, i.e.
++ * system instructions for address translation.
+  */
+-bool get_phys_addr_with_space_nogpc(CPUARMState *env, vaddr address,
+-                                    MMUAccessType access_type, MemOp memop,
+-                                    ARMMMUIdx mmu_idx, ARMSecuritySpace space,
+-                                    GetPhysAddrResult *result,
+-                                    ARMMMUFaultInfo *fi)
++bool get_phys_addr_for_at(CPUARMState *env, vaddr address, unsigned prot_check,
++                          ARMMMUIdx mmu_idx, ARMSecuritySpace space,
++                          GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
+     __attribute__((nonnull));
+ 
+ bool pmsav8_mpu_lookup(CPUARMState *env, uint32_t address,
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index d37c0ce0f1..5d85610de2 100644
+index 5d85610de2..8925c9a610 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -3646,7 +3646,7 @@ static hwaddr arm_cpu_get_phys_page(CPUARMState *env, vaddr addr,
+@@ -3545,18 +3545,25 @@ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
+     return false;
+ }
+ 
+-bool get_phys_addr_with_space_nogpc(CPUARMState *env, vaddr address,
+-                                    MMUAccessType access_type, MemOp memop,
+-                                    ARMMMUIdx mmu_idx, ARMSecuritySpace space,
+-                                    GetPhysAddrResult *result,
+-                                    ARMMMUFaultInfo *fi)
++bool get_phys_addr_for_at(CPUARMState *env, vaddr address,
++                          unsigned prot_check, ARMMMUIdx mmu_idx,
++                          ARMSecuritySpace space, GetPhysAddrResult *result,
++                          ARMMMUFaultInfo *fi)
+ {
+     S1Translate ptw = {
          .in_mmu_idx = mmu_idx,
-         .in_space = arm_mmu_idx_to_security_space(env, mmu_idx),
-         .in_debug = true,
--        .in_prot_check = PAGE_READ,
-+        .in_prot_check = 0,
+         .in_space = space,
++        .in_prot_check = prot_check,
      };
-     GetPhysAddrResult res = {};
+-    return get_phys_addr_nogpc(env, &ptw, address, access_type,
+-                               memop, result, fi);
++    /*
++     * I_MXTJT: Granule protection checks are not performed on the final
++     * address of a successful translation.  This is a translation not a
++     * memory reference, so MMU_DATA_LOAD is arbitrary (the exact protection
++     * check is handled or bypassed by .in_prot_check) and "memop = MO_8"
++     * bypasses any alignment check.
++     */
++    return get_phys_addr_nogpc(env, &ptw, address,
++                               MMU_DATA_LOAD, MO_8, result, fi);
+ }
+ 
+ static ARMSecuritySpace
+diff --git a/target/arm/tcg/cpregs-at.c b/target/arm/tcg/cpregs-at.c
+index 398a61d398..2ff0b3e76f 100644
+--- a/target/arm/tcg/cpregs-at.c
++++ b/target/arm/tcg/cpregs-at.c
+@@ -27,19 +27,12 @@ static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
+                              MMUAccessType access_type, ARMMMUIdx mmu_idx,
+                              ARMSecuritySpace ss)
+ {
+-    bool ret;
+     uint64_t par64;
+     bool format64 = false;
      ARMMMUFaultInfo fi = {};
+     GetPhysAddrResult res = {};
+-
+-    /*
+-     * I_MXTJT: Granule protection checks are not performed on the final
+-     * address of a successful translation.  This is a translation not a
+-     * memory reference, so "memop = none = 0".
+-     */
+-    ret = get_phys_addr_with_space_nogpc(env, value, access_type, 0,
+-                                         mmu_idx, ss, &res, &fi);
++    bool ret = get_phys_addr_for_at(env, value, 1 << access_type,
++                                    mmu_idx, ss, &res, &fi);
+ 
+     /*
+      * ATS operations only do S1 or S1+S2 translations, so we never
 -- 
 2.43.0
 
