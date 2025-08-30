@@ -2,169 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D30B3CDFE
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EEABB3CE42
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:37:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usOJA-0000e0-Bh; Sat, 30 Aug 2025 12:20:04 -0400
+	id 1usOKL-00039F-4I; Sat, 30 Aug 2025 12:21:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nikolai.barybin@virtuozzo.com>)
- id 1usKMn-0004Su-L8
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 08:07:34 -0400
-Received: from mail-northeuropeazon11022108.outbound.protection.outlook.com
- ([52.101.66.108] helo=DUZPR83CU001.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nikolai.barybin@virtuozzo.com>)
- id 1usKMh-0003Mb-Oz
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 08:07:31 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XWHZ4LGSuWdcOFWniMhQRu7fxku/kWkS0W7c0jKdaldtxBJxIUbqNtf8Zieje8OgAqzayyv7tY7efCuBSAappok77X2EhpNXMw63JMQAOXOJaEUnJ2BlR+nNxhBjo6zi8EZECLSaGzXwsgCDQsT1qGYHbCQ3skEGKY0RmZtX0l6XJOLJa6KFsM0gPymsNQWZuzvjGVwGrr9wjkYvI0gSdv+dhTj4b6SN2zSuinYCFh0eD1BMmws1ttcZsY1159A0lpC4BcYwV/wpSL3XrjqfaNFRoBX8euZ/H8r7TA1hGxVKCmZXprTkLk06JOL6naJrRydLP46GlqKlulmuwMF/WA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VmotDNzTieZr3QBN9MebistHB6oDDXxVfRNQwa3rtwA=;
- b=p1NxskLUKsZiERKndKndT/1kEgXQP/QeFYY27Geet+3MMl6JDo2z3Hu7P2DcAjKLG9PTZlCvSccXmSOXkmpc/U5EJpxhsV5MAQ9uuUypo7anzsgAF3j/wj5efDxJxROtOaqwNWxlzDM/BUrdvYT57oy8SS4uFam/W1X97Y9oqBbexYNFlAFlx1JdBZK8bi5Xe0sGlrVgNpE9YCl1tFL1onBb1ChCBja/YnLAp2T1ouvWjBTHNTg36FjfBoLLfdZykDA99IPmNZcx17loTJ9qte4wGg5xuDl3qkFhdfJb4N8pfXD+lyuG+ligFJ6dJ2hhYrm2zQwdpAkvfhoElq5WDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VmotDNzTieZr3QBN9MebistHB6oDDXxVfRNQwa3rtwA=;
- b=IncyKVz3blzhFxxrNVmUGrFbYubO+ZBPawxHejg+eyN+AY7zNHg8MEB4AombNADU9wg7MSa4aBGYEgoa28Z21iSeEUh0gioyQEihKSyiFw7XdaCW8J2secz0udwnph2lDkFu5p6q715dK+QaBFQuNADLs2Why3LAcw38Vu2E9g1Jl+GnjAIbkshk6JehOKEofrq2fVCNyyE0RS2O9D+7nRd68WLlW+356rvN5FMJRY0zsdwQLGUVjkZRcBpjlrUX8FdJ3oS8ebwJGT6ZKQJ0FSyZGKYKpTD3ckQcvyFmD4MKQHw2ZsLgyBbc+7wnNK5ftHDb5gK57mtzRa03khzxLQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from PR3PR08MB5579.eurprd08.prod.outlook.com (2603:10a6:102:8c::22)
- by DB9PR08MB7495.eurprd08.prod.outlook.com (2603:10a6:10:36c::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.21; Sat, 30 Aug
- 2025 12:02:21 +0000
-Received: from PR3PR08MB5579.eurprd08.prod.outlook.com
- ([fe80::7f12:757d:e50a:5ed7]) by PR3PR08MB5579.eurprd08.prod.outlook.com
- ([fe80::7f12:757d:e50a:5ed7%4]) with mapi id 15.20.9073.014; Sat, 30 Aug 2025
- 12:02:20 +0000
-Content-Type: multipart/alternative;
- boundary="------------AljYGm0RTDe9c0Bk3u0J9hVU"
-Message-ID: <91324239-c144-4b07-9cc0-9093b5870509@virtuozzo.com>
-Date: Sat, 30 Aug 2025 14:02:19 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dump: enhance win_dump_available to report properly
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- "Denis V. Lunev" <den@virtuozzo.com>
-References: <20250827-enhance-win-dump-avalaible-v2-v1-1-a6f359e9ff8e@virtuozzo.com>
- <aK9K_SIcVBf_70gj@redhat.com>
-Content-Language: ru
-From: Nikolai Barybin <nikolai.barybin@virtuozzo.com>
-In-Reply-To: <aK9K_SIcVBf_70gj@redhat.com>
-X-ClientProxiedBy: FR0P281CA0119.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a8::17) To PR3PR08MB5579.eurprd08.prod.outlook.com
- (2603:10a6:102:8c::22)
+ (Exim 4.90_1) (envelope-from <qemu@bonslack.org>) id 1usLQK-0001cc-51
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 09:15:17 -0400
+Received: from bonnix2.bonnix.it ([37.247.49.194])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <qemu@bonslack.org>) id 1usLQE-0002iJ-Pk
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 09:15:15 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 bonnix2.bonnix.it 42187243410
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bonslack.org;
+ s=20220805; t=1756559698;
+ bh=UpJ3eLXvOnRdBEmtsdcpLwOzW3r5fZ7Upt3+dj4PLBI=;
+ h=Date:To:Cc:From:Subject;
+ b=AdBp2ca+6YfntMEU8YwSXxaDqZlfcnjX/aB/Bmfi7PCuzZu3jMu6qnqZ3Xnt/qlUn
+ eqdKYm3Ul3DFDtRNWeVKTqsdqs9lYHECq3geFpkWgdxI2rsgAOo8NxNPBd50H7oTgR
+ 2kE7IFZWTsxFmAEztiP6nXIItXrWK2NXuKkqBxZQ=
+Received: from [10.0.0.70] (ip190-129-198-217.pool-bba.aruba.it
+ [217.198.129.190])
+ by bonnix2.bonnix.it (Postfix) with ESMTPSA id 42187243410;
+ Sat, 30 Aug 2025 15:14:58 +0200 (CEST)
+Message-ID: <4bfb150f-7f5a-459b-808f-b0d1abc3b830@bonslack.org>
+Date: Sat, 30 Aug 2025 15:14:56 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PR3PR08MB5579:EE_|DB9PR08MB7495:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf13a032-d30d-49bd-5519-08dde7bd12a5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|8096899003|13003099007; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?eFJVdXRicVdsZDlZZmJvbXZsTjRMYzhxakJUOGJtdjh2VjFRZ2QySVB3VURQ?=
- =?utf-8?B?SFprbWN3dlR2bTJKVVh1TWNUN096SVFwOCtuS2F6c2lLdUlKOW84Vm96OXk2?=
- =?utf-8?B?RXozQnpRdTZPK3NSZDdoUXJWQzJTSGhRRG9GUUJsZ2Q1SkxFOFVvNmNoNUpI?=
- =?utf-8?B?RmRuYlFaeGtvKzZGblg0ak9MU0VoeUswRmZSSjlrazViUUlydCs5OVFWUHdW?=
- =?utf-8?B?QmZOa2cxSERFZmJpSUJ1ME1QY2pSR1ZobXJjc2MrVStlTnBXOXNhUmdmSDFZ?=
- =?utf-8?B?K29LT2ZKK1poN1BzdlBPQlU3dFR0dzJlaWtuT04zQ2doWnU0d09jTDNJaStW?=
- =?utf-8?B?V24zbGlEWTMyUm04WUc4cktoMjd3Nlh2dmlSbkQ1TGZ0cFBYNEdzT2psU2I4?=
- =?utf-8?B?RmZlWXUzY1YvMysxc01GaytnQlpDeDFZd2hOcXZaNWJIcXRSZndEdE5ibTl4?=
- =?utf-8?B?NXZlcUlFMEJnbjhoQzRRSmxUQjFndHZqSzlOR2kyb252Z1pUQ3c2Y0JOVC90?=
- =?utf-8?B?NVVOVnFHZ0oweHVuRkgwS25OTHlXTUtndmF4V3U4Q0MrclJMT1FmRFhjR3pR?=
- =?utf-8?B?M2RiV2Qvc2pHL3V6NGFVeWhEMXhZRldKK01jRlhRN0JrWU1sRXNObmhLWXM4?=
- =?utf-8?B?Yjl2SFdGamZzQlE4THlvTEJtcktlVDlXUExBQ2k5Y0xVZ0U1TFRzeU1udGo4?=
- =?utf-8?B?Tysvb3BhSzhHdjE3MzVzSTNwNGU4Y1pIeGFaSmtlUmpTUXFlS2R2ZFhROEdn?=
- =?utf-8?B?NXFrcytVeThtVFQ0blJWdkt4OUlxc0k4c2VyVTFKV3FiYTVxWGNuS01jYWtT?=
- =?utf-8?B?b0Jaam54bkNZeWpueVBhSEh3MEI3SlR5a1BCMlJmcDFZTFBOR2FHY0xtQUll?=
- =?utf-8?B?YXBzclBBR2VlZEpvZ2lYSFJoREtjcFcwTjVaZnJFZ3hTa1grRmx1MjdOcEli?=
- =?utf-8?B?M3Uwb2ExWWF3SGZsQzNZUDFHTmNUTlhBY1ZnckNLbnZuWTdMSEFhWUFMdkFN?=
- =?utf-8?B?TVFzcUU2aURYQ2sxamFpaWYxRW1iZlcwS296UFRabUEvU0txaUF6WmVydHZ0?=
- =?utf-8?B?T2pVdUVUbVFiYzM1eEhGTmVwZ2NIazRFa2pTZjRiTTdPSnpta0dHN0l4VUpW?=
- =?utf-8?B?RHBDNU5lQ3Q2OW5keSthYVZmdW41NzBpcnFPVGhIWkhucTg4NVB6VnNaOXcy?=
- =?utf-8?B?bm44c3pnYkJXMTdoNVVma1Q4ZzNUVUxOc2hpZy96VmpjUGoxQUxuUE1WOUtq?=
- =?utf-8?B?V01OSWxCUnB2WUpTbTdsMkFYUW12MnRRTVl1ZzJpcnhOY0lSd1Bza05BUDVw?=
- =?utf-8?B?cDF4Zlh4bWs1OHkrcXJnZ0RzQ0hkc0xtS3U2Y0MwMGNNUWhwU0FnM3BKbUNC?=
- =?utf-8?B?UGtTTE9ITStQWmNyT1dOdlhkTzUzTEZuQnFQWFFKZE1XR3lDeHdRMjhZQzFG?=
- =?utf-8?B?L2hLSjExL0UwSE9xaTFJTjZ3VWF3WjhMNFVjL3IyWU1TK0owS1Bnd0x2Ylph?=
- =?utf-8?B?bzZFZ2RLU1lTUmdqMUtRVS9JZmFFN3BZWjJXNys5MmFabXoxZlFxUFZHeWtX?=
- =?utf-8?B?bS85OFlSZEVuNHlhZGlNdktkcWVDSEVmODJqcURWYVY2YjJsSnQwLzZTMk5H?=
- =?utf-8?B?eFNiU0NlendPMi9vblVKM1FNWGp6ZS9kc3E3UjJOOGtOQU5kWnQ4clJuRWdX?=
- =?utf-8?B?Unh3SkkxT3Z3S25GdDdFQkNWeFBoUkZlMEZSSFYzcCtsdFU0VVNmN3hYSllX?=
- =?utf-8?B?cWU5UjVmV3oxYitjZ2xWdUJURFdUSnBuc1JNWHJ5V0tPbzdMZzc0Smd0NE5R?=
- =?utf-8?Q?eG2N4nakVK8SZOvINn86vK8YPk4zM6D6UBmyY=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PR3PR08MB5579.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(8096899003)(13003099007); DIR:OUT;
- SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SDBRTmVNajhJcTFkVWkwUlZJb0NseDlrMzZxNGVwRWN1SlJyR1o4TWY1bnlZ?=
- =?utf-8?B?U0RTdzNrdzNmbEdjZ1FFWFpEUDFrTUdTdlJlUUhPSklYSW94WGIvQjRtajVi?=
- =?utf-8?B?SkRTYktNS0c0K2Y4VHIvVDRRQUFqT1V6djZSd0JpU2ptSU1rbUZnNy82b0tF?=
- =?utf-8?B?cW5sT3pUZW5ZWUZnTTBGbWd4RGEwdkZlMXAwR2NYRG9waVNCQm56U2ZGTitx?=
- =?utf-8?B?RDYwemFvVnBRa2MrSFE0bERrMWJZR1J1eUtpcUZ5WWhXTWJweW4vQldmcGVL?=
- =?utf-8?B?MkxPcHpxMnlvSnVHY0w5OUY1Nk5RbDd1SklORDFvSHp6SnFldEp4ekpCUkwy?=
- =?utf-8?B?V1RuaEZnaTJ0dTNTMXJzUnF0bUlzTkNMdVlnSmR3Z0t1L0VBdGMwd0RkOU00?=
- =?utf-8?B?R1NIQUNBbVpYbGNEdGJQWEJ2WldtNWhqTk91WGJ3YWpGUlZycC95ZGl1d1ZY?=
- =?utf-8?B?YVZxKytiQklkRXlKZGcwVGQ3RW9mMnk1K1htV3lSUG9pSUtGVnU0K3Rad3FP?=
- =?utf-8?B?OUpqKzRsSXlpVW9QMXFNQW9sYXRRZkxhNjRGYk4xMUs3QU1HOU53dVljYTBE?=
- =?utf-8?B?NlFGUll2OEh5ZXFscVNNTFFscUtTQkV1MjFPaStndlVJS1RjZk9VR1NOS1Vq?=
- =?utf-8?B?MGtLR0ordkxxY040RU1oZklFOGxYSjAydDlwckhBOFpaNWlVMThOVEFYNVpu?=
- =?utf-8?B?ZE1RRjY5K01qT0VBcmxONUR5MVpkbTQ4RzRoSkdYQTN5K01jOURqZEUvOGlT?=
- =?utf-8?B?UDFnTXFGSVIwVlBTanpwNC9QZTNDOE4yaG5EUGhBVkxpbTh2RERiOHVkWHBV?=
- =?utf-8?B?djVrbE9keitrWEl4Y2gyMGhuYUZsS1J2YnRPRkNCcExyRHdQRncyQVpTVG91?=
- =?utf-8?B?MFU5NVF6cm84M2thdGs4SWVxNkt2YWowd0c5YmtWdW03WkV2WlRPUjU2UVFX?=
- =?utf-8?B?NGJaSDU2Y2VBQzRFM1VGenM4YUVKVzFRQk5uc0V1eEMzejJ0Q0hsK0hMektE?=
- =?utf-8?B?ekVrVlhsT3Ixci9GZVUrZ0UxbStOMmM2RDVlUGxTS2g2cUMyUFJrV2M3d0xG?=
- =?utf-8?B?SFFUa0hiaUlFajQ3Z1VlUzdWNFM0YTc3eHB2VjViYXUrZWhKREhvZ3FqdEtQ?=
- =?utf-8?B?Mm1qWlZyMmlPTmxjV0lmU2lRbzNuN3lTdWdVejQ4V1ZnZGxjTkVVSzBFTldF?=
- =?utf-8?B?RWRLMFpTYjhJL2NuVmViZzdRRG9YOWxveGNGODNTVVUwblZRU0RKUXlQQytu?=
- =?utf-8?B?a01tQzZoWlh4MTZnYzk1YjZqa3hqdmVGNytQbjJDRWg1L3N0QWYzem9oQzc0?=
- =?utf-8?B?YXNhc05yZVRSZHhzeHJsaHI4RHJEV3NGMVhuZDRkcjRLczhkMEdUdDU1NjYx?=
- =?utf-8?B?ekgvYjhGOUNnWkxaL0R3SzkxUXQ4dUJxSzM2TlZDK2FpKzcvaUNLdlk5Vk83?=
- =?utf-8?B?WjJDZ0h0RUU5STRtdmZuM3lCNWp1TFFWckxHM1g3V3puREszRlljY0FYV2M4?=
- =?utf-8?B?bldzdkVhejBOOVRDVS8xeDlrVlJReHRyaUtPT0dqVE1VcGFXWEtDc3NlZDZ6?=
- =?utf-8?B?R0xETE1OSlZIc24vSjRoMUpCd2s2Y1Vxd0NmeWFTbXdpS0NsT3B1L1crZGRh?=
- =?utf-8?B?S3lRRGQ0Vkc4VHFoeDVaYXBxbk05Z2xMTTVIU1U5UVhHelVybE16RG5LTmhy?=
- =?utf-8?B?a2lsSDM2OUx4eEFNazJibkxQS09xMmtqRkhEcmZNZzhLTnpobnlWanBpMHJk?=
- =?utf-8?B?MUNuT3E5bHo1TDhNOUYvUDJ6K0ROM0hzK0pKM0FnaU5CZUhBaEovV0FYdVRP?=
- =?utf-8?B?a3VHMUVpdTF3YzBkY3ZqTlQyeWRSY3JUczJmU3Y3Z0hwcjBTMURNUnZDbEVp?=
- =?utf-8?B?UzROVno3WVBtNjZwV1FtdEJFR051ajBxRnc0OStUaUN2aEdQbjllVXNxcWc3?=
- =?utf-8?B?QXRNN1lZVmZsYjN5bXRmdi9DMzludFdvU0NBeHhiYlJ3RnpJMWZWTEZLVTJt?=
- =?utf-8?B?RDVPaC84SU15SnpGbXJNMFdsa1hrYllkNzVUWWgwOWUycEt5bTRmM1hvN21x?=
- =?utf-8?B?cUZkZnh0QVZSRXhFVng2REFvZ2F5c1IrRlNYcjYvMWRwRkkyM3NMWWppaUZS?=
- =?utf-8?B?c1VCdGhqTHQrN3hJS1RYM2lWRXJqekVBZkNFVVdVQmlNZkdsYTEvNXFyWVVX?=
- =?utf-8?B?eHc9PQ==?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf13a032-d30d-49bd-5519-08dde7bd12a5
-X-MS-Exchange-CrossTenant-AuthSource: PR3PR08MB5579.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2025 12:02:20.6190 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9uHNGLJ1FP63URds65DObUwCQ3WdaseReoYsg7m3nGtUA83R7lD8yWuiES4nX9MoK1/lh7QU+D6xLld2Qd4YicHvH7jZy8hnUmGysooIBMc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB7495
-Received-SPF: pass client-ip=52.101.66.108;
- envelope-from=nikolai.barybin@virtuozzo.com;
- helo=DUZPR83CU001.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Content-Language: it
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>
+Cc: qemu-devel@nongnu.org
+From: Luca Bonissi <qemu@bonslack.org>
+Subject: [PATCH 1/7] Add termios2 support to linux-user
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=37.247.49.194; envelope-from=qemu@bonslack.org;
+ helo=bonnix2.bonnix.it
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -180,242 +64,236 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---------------AljYGm0RTDe9c0Bk3u0J9hVU
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From f784259c584fa5f69172f5223b82e21e6054569f Mon Sep 17 00:00:00 2001
+From: Luca Bonissi <qemu@bonslack.org>
+Date: Sat, 30 Aug 2025 14:51:09 +0200
+Subject: [PATCH 1/7] Add termios2 support to linux-user
 
-27.08.2025 20:14, Daniel P. Berrangé wrote:
-
-> On Wed, Aug 27, 2025 at 04:15:27PM +0300, Nikolai Barybin wrote:
->> QMP query-dump-guest-memory-capability reports win dump as available for
->> any x86 VM, which is false.
->>
->> This patch implements proper query of vmcoreinfo and calculation of
->> guest note size. Based on that we can surely report whether win dump
->> available or not.
->>
->> To perform this I suggest to split dump_init() into dump_preinit() and
->> dump_init_complete() to avoid exausting copypaste in
->> win_dump_available().
->>
->> For further reference one may review this libvirt discussion:
->> https://lists.libvirt.org/archives/list/devel@lists.libvirt.org/thread/HJ3JRLWLGN3IKIC22OQ3PMZ4J3EFG5XB/#HJ3JRLWLGN3IKIC22OQ3PMZ4J3EFG5XB
->> [PATCH 0/4] Allow xml-configured coredump format on VM crash
->>
->> Signed-off-by: Nikolai Barybin<nikolai.barybin@virtuozzo.com>
->> ---
->> During first series discussion Den mentions that that code will not work
->> on 32bit guest with more than 4Gb RAM on i386.
->>
->> This issue required even more code duplication between dump_init() and
->> win_dump_available() which we'd like to avoid as mentioned by Daniel.
->>
->> Hence I present 2nd version of this fix:
->>   - split dump_init() into dump_preinit() and dump_init_complete()
->>   - pass pre-inited dump structure with calculated guest note size to
->>     win_dump_available()
->>   - call header check and guest note size check inside
->>     win_dump_available()
->> ---
->>   dump/dump.c     | 129 ++++++++++++++++++++++++++++++++------------------------
->>   dump/win_dump.c |  23 ++++++++--
->>   dump/win_dump.h |   2 +-
->>   3 files changed, 95 insertions(+), 59 deletions(-)
->>
->> diff --git a/dump/dump.c b/dump/dump.c
->> index 15bbcc0c6192822cf920fcb7d60eb7d2cfad0952..19341fa42feef4d1c50dbb3a892ded59a3468d20 100644
->> --- a/dump/dump.c
->> +++ b/dump/dump.c
->> @@ -1777,10 +1777,7 @@ static void vmcoreinfo_update_phys_base(DumpState *s)
->>       g_strfreev(lines);
->>   }
->>   [...]
->> +    s->nr_cpus = nr_cpus;
->> +    return;
->> +cleanup:
->> +    dump_cleanup(s);
->> +}
-> The 'dump_cleanup' call is unsafe.
->
-> In qmp_query_dump_guest_memory_capability we initialize 's' using
-> 'dump_state_prepare' which just zero's the struct, aside from
-> the 'status' field.
->
-> Meanwhile 'dump_cleanup' will unconditionally do:
->
->      close(s->fd);
->
-> and 'fd' will be 0, as in stdin, so we break any usage of stdin
-> that QEMU has. Then some other unlucky part of QEMU will open a
-> FD and get given FD == 0, making things potentially even worse.
->
-> We need 'dump_state_prepare' to set 's->fd = -1', and in
-> dump_cleanup we should check for s->fd != -1, and after
-> closing it, must set it back to '-1'.
->
-> In fact, I think even the existing dump code is broken in
-> this respect, and so this should likely be a separate fix
-> we can send to stable.
->
-> I think the 'migrate_del_blocker' call in dump_cleanup
-> is potentially unsafe too, as it might try to delete a
-> blocker that is not registered.
-
-I'm not sure about that. Dump blocker variable is defined as global 
-static and is zeroed by default:
-
-static Error *dump_migration_blocker;
-
-And even if we tried to delete unregistered blocker it would do nothing:
-
-migrate_del_blocker(&dump_migration_blocker);
-
-void migrate_del_blocker(Error **reasonp)
-{
-     if (*reasonp) { <--- NULL-ptr check
-         for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
-             migration_blockers[mode] = 
-g_slist_remove(migration_blockers[mode],
-                                                       *reasonp);
-         }
-         error_free(*reasonp);
-         *reasonp = NULL;
-     }
-}
-
-
-But maybe I'm losing something, correct me if I'm wrong.
-
-> [...]
-> With regards,
-> Daniel
---------------AljYGm0RTDe9c0Bk3u0J9hVU
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><font size="2">27.08.2025 20:14, Daniel P. Berrangé wrote:</font></p>
-    <blockquote type="cite" cite="mid:aK9K_SIcVBf_70gj@redhat.com">
-      <pre wrap="" class="moz-quote-pre">On Wed, Aug 27, 2025 at 04:15:27PM +0300, Nikolai Barybin wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">QMP query-dump-guest-memory-capability reports win dump as available for
-any x86 VM, which is false.
-
-This patch implements proper query of vmcoreinfo and calculation of
-guest note size. Based on that we can surely report whether win dump
-available or not.
-
-To perform this I suggest to split dump_init() into dump_preinit() and
-dump_init_complete() to avoid exausting copypaste in
-win_dump_available().
-
-For further reference one may review this libvirt discussion:
-<a class="moz-txt-link-freetext" href="https://lists.libvirt.org/archives/list/devel@lists.libvirt.org/thread/HJ3JRLWLGN3IKIC22OQ3PMZ4J3EFG5XB/#HJ3JRLWLGN3IKIC22OQ3PMZ4J3EFG5XB">https://lists.libvirt.org/archives/list/devel@lists.libvirt.org/thread/HJ3JRLWLGN3IKIC22OQ3PMZ4J3EFG5XB/#HJ3JRLWLGN3IKIC22OQ3PMZ4J3EFG5XB</a>
-[PATCH 0/4] Allow xml-configured coredump format on VM crash
-
-Signed-off-by: Nikolai Barybin <a class="moz-txt-link-rfc2396E" href="mailto:nikolai.barybin@virtuozzo.com">&lt;nikolai.barybin@virtuozzo.com&gt;</a>
+Signed-off-by: Luca Bonissi <qemu@bonslack.org>
 ---
-During first series discussion Den mentions that that code will not work
-on 32bit guest with more than 4Gb RAM on i386.
+ linux-user/ioctls.h         |  6 +++
+ linux-user/strace.c         | 63 +++++++++++++++++++++++++++++
+ linux-user/syscall.c        | 80 +++++++++++++++++++++++++++++++++++++
+ linux-user/syscall_types.h  |  3 ++
+ linux-user/user-internals.h |  3 ++
+ 5 files changed, 155 insertions(+)
 
-This issue required even more code duplication between dump_init() and
-win_dump_available() which we'd like to avoid as mentioned by Daniel.
-
-Hence I present 2nd version of this fix:
- - split dump_init() into dump_preinit() and dump_init_complete()
- - pass pre-inited dump structure with calculated guest note size to
-   win_dump_available()
- - call header check and guest note size check inside
-   win_dump_available()
----
- dump/dump.c     | 129 ++++++++++++++++++++++++++++++++------------------------
- dump/win_dump.c |  23 ++++++++--
- dump/win_dump.h |   2 +-
- 3 files changed, 95 insertions(+), 59 deletions(-)
-
-diff --git a/dump/dump.c b/dump/dump.c
-index 15bbcc0c6192822cf920fcb7d60eb7d2cfad0952..19341fa42feef4d1c50dbb3a892ded59a3468d20 100644
---- a/dump/dump.c
-+++ b/dump/dump.c
-@@ -1777,10 +1777,7 @@ static void vmcoreinfo_update_phys_base(DumpState *s)
-     g_strfreev(lines);
+diff --git a/linux-user/ioctls.h b/linux-user/ioctls.h
+index 3b41128fd7..0b2deb2824 100644
+--- a/linux-user/ioctls.h
++++ b/linux-user/ioctls.h
+@@ -1,5 +1,11 @@
+      /* emulated ioctl list */
+ 
++#ifdef TARGET_TCGETS2
++     IOCTL(TCGETS2, IOC_R, MK_PTR(MK_STRUCT(STRUCT_termios2)))
++     IOCTL(TCSETS2, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios2)))
++     IOCTL(TCSETSW2, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios2)))
++     IOCTL(TCSETSF2, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios2)))
++#endif
+      IOCTL(TCGETS, IOC_R, MK_PTR(MK_STRUCT(STRUCT_termios)))
+      IOCTL(TCSETS, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios)))
+      IOCTL(TCSETSF, IOC_W, MK_PTR(MK_STRUCT(STRUCT_termios)))
+diff --git a/linux-user/strace.c b/linux-user/strace.c
+index 786354627a..ce35769f92 100644
+--- a/linux-user/strace.c
++++ b/linux-user/strace.c
+@@ -1933,6 +1933,69 @@ print_termios(void *arg)
+     qemu_log("}");
  }
- [...]
-+    s-&gt;nr_cpus = nr_cpus;
-+    return;
-+cleanup:
-+    dump_cleanup(s);
+ 
++#ifdef TARGET_TCGETS2
++void
++print_termios2(void *arg)
++{
++    const struct target_termios2 *target = arg;
++
++    target_tcflag_t iflags = tswap32(target->c_iflag);
++    target_tcflag_t oflags = tswap32(target->c_oflag);
++    target_tcflag_t cflags = tswap32(target->c_cflag);
++    target_tcflag_t lflags = tswap32(target->c_lflag);
++
++    qemu_log("{");
++
++    qemu_log("c_iflag = ");
++    print_flags(termios_iflags, iflags, 0);
++
++    qemu_log("c_oflag = ");
++    target_tcflag_t oflags_clean =  oflags & ~(TARGET_NLDLY | TARGET_CRDLY |
++                                               TARGET_TABDLY | TARGET_BSDLY |
++                                               TARGET_VTDLY | TARGET_FFDLY);
++    print_flags(termios_oflags, oflags_clean, 0);
++    if (oflags & TARGET_NLDLY) {
++        print_enums(termios_oflags_NLDLY, oflags & TARGET_NLDLY, 0);
++    }
++    if (oflags & TARGET_CRDLY) {
++        print_enums(termios_oflags_CRDLY, oflags & TARGET_CRDLY, 0);
++    }
++    if (oflags & TARGET_TABDLY) {
++        print_enums(termios_oflags_TABDLY, oflags & TARGET_TABDLY, 0);
++    }
++    if (oflags & TARGET_BSDLY) {
++        print_enums(termios_oflags_BSDLY, oflags & TARGET_BSDLY, 0);
++    }
++    if (oflags & TARGET_VTDLY) {
++        print_enums(termios_oflags_VTDLY, oflags & TARGET_VTDLY, 0);
++    }
++    if (oflags & TARGET_FFDLY) {
++        print_enums(termios_oflags_FFDLY, oflags & TARGET_FFDLY, 0);
++    }
++
++    qemu_log("c_cflag = ");
++    if (cflags & TARGET_CBAUD) {
++        print_enums(termios_cflags_CBAUD, cflags & TARGET_CBAUD, 0);
++    }
++    if (cflags & TARGET_CSIZE) {
++        print_enums(termios_cflags_CSIZE, cflags & TARGET_CSIZE, 0);
++    }
++    target_tcflag_t cflags_clean = cflags & ~(TARGET_CBAUD | TARGET_CSIZE);
++    print_flags(termios_cflags, cflags_clean, 0);
++
++    qemu_log("c_lflag = ");
++    print_flags(termios_lflags, lflags, 0);
++
++    qemu_log("c_cc = ");
++    qemu_log("\"%s\",", target->c_cc);
++
++    qemu_log("c_line = ");
++    print_raw_param("\'%c\'", target->c_line, 1);
++
++    qemu_log("}");
 +}
-</pre>
-      </blockquote>
-    </blockquote>
-    <blockquote type="cite" cite="mid:aK9K_SIcVBf_70gj@redhat.com">
-      <pre wrap="" class="moz-quote-pre">
-The 'dump_cleanup' call is unsafe.
++#endif
++
+ #undef UNUSED
+ 
+ #ifdef TARGET_NR_accept
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 91360a072c..41ef690e52 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -88,6 +88,7 @@
+ #endif
+ 
+ #define termios host_termios
++#define termios2 host_termios2
+ #define winsize host_winsize
+ #define termio host_termio
+ #define sgttyb host_sgttyb /* same as target */
+@@ -5887,6 +5888,85 @@ static const StructEntry struct_termios_def = {
+     .print = print_termios,
+ };
+ 
++#ifdef TARGET_TCGETS2
++static void target_to_host_termios2 (void *dst, const void *src)
++{
++    struct host_termios2 *host = dst;
++    const struct target_termios2 *target = src;
++
++    host->c_iflag =
++        target_to_host_bitmask(tswap32(target->c_iflag), iflag_tbl);
++    host->c_oflag =
++        target_to_host_bitmask(tswap32(target->c_oflag), oflag_tbl);
++    host->c_cflag =
++        target_to_host_bitmask(tswap32(target->c_cflag), cflag_tbl);
++    host->c_lflag =
++        target_to_host_bitmask(tswap32(target->c_lflag), lflag_tbl);
++    host->c_line = target->c_line;
++
++    memset(host->c_cc, 0, sizeof(host->c_cc));
++    host->c_cc[VINTR] = target->c_cc[TARGET_VINTR];
++    host->c_cc[VQUIT] = target->c_cc[TARGET_VQUIT];
++    host->c_cc[VERASE] = target->c_cc[TARGET_VERASE];
++    host->c_cc[VKILL] = target->c_cc[TARGET_VKILL];
++    host->c_cc[VEOF] = target->c_cc[TARGET_VEOF];
++    host->c_cc[VTIME] = target->c_cc[TARGET_VTIME];
++    host->c_cc[VMIN] = target->c_cc[TARGET_VMIN];
++    host->c_cc[VSWTC] = target->c_cc[TARGET_VSWTC];
++    host->c_cc[VSTART] = target->c_cc[TARGET_VSTART];
++    host->c_cc[VSTOP] = target->c_cc[TARGET_VSTOP];
++    host->c_cc[VSUSP] = target->c_cc[TARGET_VSUSP];
++    host->c_cc[VEOL] = target->c_cc[TARGET_VEOL];
++    host->c_cc[VREPRINT] = target->c_cc[TARGET_VREPRINT];
++    host->c_cc[VDISCARD] = target->c_cc[TARGET_VDISCARD];
++    host->c_cc[VWERASE] = target->c_cc[TARGET_VWERASE];
++    host->c_cc[VLNEXT] = target->c_cc[TARGET_VLNEXT];
++    host->c_cc[VEOL2] = target->c_cc[TARGET_VEOL2];
++}
++
++static void host_to_target_termios2 (void *dst, const void *src)
++{
++    struct target_termios2 *target = dst;
++    const struct host_termios2 *host = src;
++
++    target->c_iflag =
++        tswap32(host_to_target_bitmask(host->c_iflag, iflag_tbl));
++    target->c_oflag =
++        tswap32(host_to_target_bitmask(host->c_oflag, oflag_tbl));
++    target->c_cflag =
++        tswap32(host_to_target_bitmask(host->c_cflag, cflag_tbl));
++    target->c_lflag =
++        tswap32(host_to_target_bitmask(host->c_lflag, lflag_tbl));
++    target->c_line = host->c_line;
++
++    memset(target->c_cc, 0, sizeof(target->c_cc));
++    target->c_cc[TARGET_VINTR] = host->c_cc[VINTR];
++    target->c_cc[TARGET_VQUIT] = host->c_cc[VQUIT];
++    target->c_cc[TARGET_VERASE] = host->c_cc[VERASE];
++    target->c_cc[TARGET_VKILL] = host->c_cc[VKILL];
++    target->c_cc[TARGET_VEOF] = host->c_cc[VEOF];
++    target->c_cc[TARGET_VTIME] = host->c_cc[VTIME];
++    target->c_cc[TARGET_VMIN] = host->c_cc[VMIN];
++    target->c_cc[TARGET_VSWTC] = host->c_cc[VSWTC];
++    target->c_cc[TARGET_VSTART] = host->c_cc[VSTART];
++    target->c_cc[TARGET_VSTOP] = host->c_cc[VSTOP];
++    target->c_cc[TARGET_VSUSP] = host->c_cc[VSUSP];
++    target->c_cc[TARGET_VEOL] = host->c_cc[VEOL];
++    target->c_cc[TARGET_VREPRINT] = host->c_cc[VREPRINT];
++    target->c_cc[TARGET_VDISCARD] = host->c_cc[VDISCARD];
++    target->c_cc[TARGET_VWERASE] = host->c_cc[VWERASE];
++    target->c_cc[TARGET_VLNEXT] = host->c_cc[VLNEXT];
++    target->c_cc[TARGET_VEOL2] = host->c_cc[VEOL2];
++}
++
++static const StructEntry struct_termios2_def = {
++    .convert = { host_to_target_termios2, target_to_host_termios2 },
++    .size = { sizeof(struct target_termios2), sizeof(struct host_termios2) },
++    .align = { __alignof__(struct target_termios2), __alignof__(struct host_termios2) },
++    .print = print_termios2,
++};
++#endif
++
+ /* If the host does not provide these bits, they may be safely discarded. */
+ #ifndef MAP_SYNC
+ #define MAP_SYNC 0
+diff --git a/linux-user/syscall_types.h b/linux-user/syscall_types.h
+index 6dd7a80ce5..ac45705acf 100644
+--- a/linux-user/syscall_types.h
++++ b/linux-user/syscall_types.h
+@@ -1,4 +1,7 @@
+ STRUCT_SPECIAL(termios)
++#ifdef TARGET_TCGETS2
++STRUCT_SPECIAL(termios2)
++#endif
+ 
+ STRUCT(winsize,
+        TYPE_SHORT, TYPE_SHORT, TYPE_SHORT, TYPE_SHORT)
+diff --git a/linux-user/user-internals.h b/linux-user/user-internals.h
+index 691b9a1775..191e01c3a8 100644
+--- a/linux-user/user-internals.h
++++ b/linux-user/user-internals.h
+@@ -127,6 +127,9 @@ static inline uint64_t target_offset64(uint64_t word0, uint64_t word1)
+ #endif /* TARGET_ABI_BITS != 32 */
+ 
+ void print_termios(void *arg);
++#ifdef TARGET_TCGETS2
++void print_termios2(void *arg);
++#endif
+ 
+ /* ARM EABI and MIPS expect 64bit types aligned even on pairs or registers */
+ #ifdef TARGET_ARM
+-- 
+2.50.1
 
-In qmp_query_dump_guest_memory_capability we initialize 's' using
-'dump_state_prepare' which just zero's the struct, aside from
-the 'status' field.
 
-Meanwhile 'dump_cleanup' will unconditionally do:
-
-    close(s-&gt;fd);
-
-and 'fd' will be 0, as in stdin, so we break any usage of stdin
-that QEMU has. Then some other unlucky part of QEMU will open a
-FD and get given FD == 0, making things potentially even worse.
-
-We need 'dump_state_prepare' to set 's-&gt;fd = -1', and in
-dump_cleanup we should check for s-&gt;fd != -1, and after
-closing it, must set it back to '-1'.
-
-In fact, I think even the existing dump code is broken in
-this respect, and so this should likely be a separate fix
-we can send to stable.
-
-I think the 'migrate_del_blocker' call in dump_cleanup
-is potentially unsafe too, as it might try to delete a
-blocker that is not registered.
-</pre>
-    </blockquote>
-    <p><font size="2">I'm not sure about that. Dump blocker variable is
-        defined as global static and is zeroed by default:</font></p>
-    <p><font size="2">static Error *dump_migration_blocker;<br>
-        <br>
-        And even if we tried to delete unregistered blocker it would do
-        nothing:</font></p>
-    <p><font size="2">migrate_del_blocker(&amp;dump_migration_blocker);</font></p>
-    <p><font size="2">void migrate_del_blocker(Error **reasonp)<br>
-        {<br>
-        &nbsp; &nbsp; if (*reasonp) { &lt;--- NULL-ptr check<br>
-        &nbsp; &nbsp; &nbsp; &nbsp; for (MigMode mode = 0; mode &lt; MIG_MODE__MAX; mode++)
-        {<br>
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; migration_blockers[mode] =
-        g_slist_remove(migration_blockers[mode],<br>
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; *reasonp);<br>
-        &nbsp; &nbsp; &nbsp; &nbsp; }<br>
-        &nbsp; &nbsp; &nbsp; &nbsp; error_free(*reasonp);<br>
-        &nbsp; &nbsp; &nbsp; &nbsp; *reasonp = NULL;<br>
-        &nbsp; &nbsp; }<br>
-        }</font></p>
-    <p><br>
-    </p>
-    <p><font size="2">But maybe I'm losing something, correct me if I'm
-        wrong.</font></p>
-    <blockquote type="cite" cite="mid:aK9K_SIcVBf_70gj@redhat.com">
-      <pre wrap="" class="moz-quote-pre">[...]
-</pre>
-      <pre wrap="" class="moz-quote-pre">
-With regards,
-Daniel
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------AljYGm0RTDe9c0Bk3u0J9hVU--
 
