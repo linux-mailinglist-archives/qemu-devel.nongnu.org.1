@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CDFDB3CD30
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE5CAB3CCA2
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:09:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNsC-0003My-Sz; Sat, 30 Aug 2025 11:52:15 -0400
+	id 1usNsa-0004Lk-8l; Sat, 30 Aug 2025 11:52:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usCRG-00052a-4R
+ id 1usCRG-00052b-4S
  for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:39:39 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usCRD-00052c-3J
+ id 1usCRE-00052k-6t
  for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:39:37 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-2487104b9c6so25092975ad.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 20:39:33 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-248ff4403b9so17137235ad.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 20:39:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756525173; x=1757129973; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=JmWEBsWkC6Iy2kPe2svm5u9XW4Lz+QhNZJnUvnzxWu8=;
- b=Yuj6jcvYFHKyWx4PlSFg2qKjIyjPFIxBUrB1D0k1o3YatE4/nxCVs/OP+UWmLIURDX
- SHj2iCSVy8Yj9v7ZxPpYGT/zarJRQELkiD0knaosaHXJ4rr99uDRZhKSjIvOD71CopEi
- HEgZBvhPwTQ9lo7l2mTIJ0AXMzR9HphvyDyEwNLQvNx6FJ8Goi1b1k4qw3wkVzPnJEoe
- wkfX26j6P8mLUusl+HlXK0aekfuC1sW0/AGMbpk1KhuDJ1hZJmWV5O7x4UldCKn1vdYg
- zxnDXnCIED0DaCvp4+Hi0YkqL0xHeo2wAvQ8705sbfzD063FCfhmKcDxQxYieev7YD9l
- EC+g==
+ d=linaro.org; s=google; t=1756525175; x=1757129975; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=/kPH6riYNOweQhnmn/RRL6i17iJqnbvBitGNZ3+s7oE=;
+ b=N2+c3b041/8AsoJbylas1AcFxZUzs9Lf9e2cBGJajpFmnO1lbBiMjWd7AcZDz5rBJc
+ Mej+9VIO3InNmP9lskcTPjg1fl4vyQEjOR7kVttDijmM/Dp5/xYfdKWrJOhdDlzV69FT
+ PxqLG/tFnCdlYg+hJZCI4FHb4qe3nmkpWZVqCvXfLfLL9y2sbfIfezl1mKVpTeCRimg0
+ grGVVuMML91bmA9G5nzuRAPkbK5Byyn3/yp7UJoXps6yejKkNGjaKgCATU8AijlNkYWp
+ +7v7sc7AW6A6CQi090eIeWOSJZik8vldLzDKTStcH+zFWO53LrRVt3dCi0b1MvpMkpLE
+ 4FZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756525173; x=1757129973;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JmWEBsWkC6Iy2kPe2svm5u9XW4Lz+QhNZJnUvnzxWu8=;
- b=Uhmf11fOY0uaVHSNGKZwI49pwccApLaVZeSl9cvsQAYF8dxHG5fWtfgbYddfWSbHRe
- cWm4d88xiySLjGTZuEavDO6c1lkNCVTfB9M6sCbRIi8MVVX7aU87VWkS/TPfWsZJVuHZ
- MN3ftDrDCdmiizoHTIQYUQOkZ7rAZVrOH7uu0lmrTGNV4q0ZlIbnPBsb1tcb3FFCOxUZ
- gesTvigUm9HOBBsviig+7C6Ac0E847zSad1268Pv4oYgb9L1xBbcseySzYfdO418Reed
- DFVnWTqcdYDGhoGhylEbyRepPvC/1pzrk4El6ZMv109d6mO22Im+TZl0zXoOWZWQ3PXU
- PdPA==
-X-Gm-Message-State: AOJu0YwwZ4yo7erv6AlVF7VHHcWcuB+ZHesuc9HYQ1Lukf6Lgqem7pzW
- YIcqLjv6lTbw9Fm0bKuZchjja+QqevDorDQNGcvDiDU2P3HrqKwbq9j1HuZBvOjmWJEIzQp6MEr
- kIPwja4A=
-X-Gm-Gg: ASbGncu2cD5azOGk/TYIqVQLuNwHsKN1yow5DpgqeE9yl7KOXkLyDBZvdkperPAkixm
- 9bx+C8pvzc++j+Azyfv+w+IE4PBSWYfofEy1PdeBYyqGk5F7KjqX6VXt02yKOtbj82suBB6tjae
- 2SxEoqgZy1JTQMaLmlZwdG127hlrcsk9wqxyxAFiDi3bjDcv5zpXdJwjuvYRfwCzdhkVcEi+HCI
- uZfAfaFK7r4MQ6nBYDMMjjqvYtbERS0ey7yQP5Kn3jqek7OAWE7ew4FNrNcJbv8aFRBf5zUEwGU
- bJF8/fsTGR+hJIb3QnyqMkJpqqyvqPBo5KsOCFdXh/GW+IOHE0FGnNjjJkYpGfJcH+julHTER60
- p6zCqsxgrdrt7rYAP/uAnP685JvWIs5iCOqHaFdDc8bNNiLNYaYSuG4KFQH/8dlNz8VOAIL15Ig
- ==
-X-Google-Smtp-Source: AGHT+IHjGIMcnrt3dLT8rokciY0RpjzYKKVQkteIUbgEO4pIpXLWN3stP49Ug2NXH/Npc7bmk5/eig==
-X-Received: by 2002:a17:903:244e:b0:249:3eec:15bc with SMTP id
- d9443c01a7336-24944a44010mr11631645ad.19.1756525172641; 
- Fri, 29 Aug 2025 20:39:32 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1756525175; x=1757129975;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/kPH6riYNOweQhnmn/RRL6i17iJqnbvBitGNZ3+s7oE=;
+ b=Bw4d/9wW9+6ip04oFAKtSadV+DmvL1VwzDnmWnMRFOsN3Vue8Dsy4/Bl0wVgUCNuH/
+ E2E1K7RiOInBoN/twIA4tZNT9mRh2hR6bmeui5lzYBN/IhYc+vHwHNhljOQlcE1PH0Mi
+ peZ69AVW3AL7LdJ54TLsHcB3/BLIqx6ME8imM/Zwbb+LEPbD6+TA4SWyEUMBraEGwVQg
+ ALhYZfVq8tHh2YyePnooPv+NDR3rrFMYYNc/DrYYKIxdCy28CVIgOMdhHMoVbczG/1H7
+ 7HddCBT7wDZ1fy2VIoluGJKbGO9Uq3y5bgBoU3Ob5vaanHgHtiACzB0IXsRMSQPUlpku
+ uFQg==
+X-Gm-Message-State: AOJu0YxojueJ/VYG/anp5ruR7nseFHGJsuklXZjMgBdFt8g4DlsNalBf
+ zmQQKRfq/jSQ2V65X1iVTrbNMU/qsm3pcNXfLaV+UwenPHc4S0Rk3Abmxr+lNHiM8zpYlpjGBqK
+ /vGwKh6Q=
+X-Gm-Gg: ASbGncudw0yUpTW5QpUPI5Je40GLEyMJIpVpckpVEdeuez8jcBsxUTHy2mRc0CqaozG
+ eNV5aUmHknYZPJS6fyR0vQFkfWndGmqffp7wYU5fX6p97WDOkUrl3WqAt0BVIiLdDXMMujwbRq7
+ +4aEab+gE7NpCOLt7DzbdVdc9dcUoq40ZE5SGyVw8zaL3g8cPevqnLvVciOVBPw6dsElx0XNbqW
+ Sa9ZHn9cdCp9zMn/vYFlVnP2e14ZRwMzVHejimWlDsiz14FTlxXxNquZUIs+991HyHXostJLbhW
+ OAyk2qAfF6TTm9slLvK0QkIJRKfkHVxu2cEeh8xdXdDgVi6j5PSijhGI1/gXaq5IyissmeRqPJs
+ 3J8S0Eu5r13qikXHmqP6XkSR7UUfVSBxVeLXSrejBi+f4WEpF9S/OfoyO/eZi2O8=
+X-Google-Smtp-Source: AGHT+IEf/E7/fn/EFXd3pP+tALwMK3dxEbTHbXsrpxObaOKTCXVnmpSmLBscr0OXpA2LjLb0XABcgA==
+X-Received: by 2002:a17:903:37c4:b0:246:cb10:6e2f with SMTP id
+ d9443c01a7336-24944907804mr11575335ad.26.1756525174653; 
+ Fri, 29 Aug 2025 20:39:34 -0700 (PDT)
 Received: from stoup.. (122-150-204-179.dyn.ip.vocus.au. [122.150.204.179])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-24905da4784sm39551685ad.90.2025.08.29.20.39.30
+ d9443c01a7336-24905da4784sm39551685ad.90.2025.08.29.20.39.33
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 20:39:32 -0700 (PDT)
+ Fri, 29 Aug 2025 20:39:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 0/5] tcg/i386: Improve vector shifts
-Date: Sat, 30 Aug 2025 13:39:21 +1000
-Message-ID: <20250830033926.372955-1-richard.henderson@linaro.org>
+Subject: [PATCH v2 1/5] cpuinfo/i386: Detect GFNI as an AVX extension
+Date: Sat, 30 Aug 2025 13:39:22 +1000
+Message-ID: <20250830033926.372955-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250830033926.372955-1-richard.henderson@linaro.org>
+References: <20250830033926.372955-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,30 +97,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-x86 doesn't directly support 8-bit vector shifts, so we have
-some 2 to 5 insn expansions.  With VGF2P8AFFINEQB, we can do
-it in 1 insn, plus a (possibly shared) constant load.
+We won't use the SSE GFNI instructions, so delay
+detection until we know AVX is present.
 
-Changes for v2:
-  - Use PCMPGT for arithmetic right-shift of bits-1 (paolo).
-  - Tidy an instance of non-canonical operand ordering.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ host/include/i386/host/cpuinfo.h | 1 +
+ include/qemu/cpuid.h             | 3 +++
+ util/cpuinfo-i386.c              | 1 +
+ 3 files changed, 5 insertions(+)
 
-r~
-
-Richard Henderson (5):
-  cpuinfo/i386: Detect GFNI as an AVX extension
-  tcg/i386: Expand sari of bits-1 as pcmpgt
-  tcg/i386: Use canonical operand ordering in expand_vec_sari
-  tcg/i386: Add INDEX_op_x86_vgf2p8affineqb_vec
-  tcg/i386: Use vgf2p8affineqb for MO_8 vector shifts
-
- host/include/i386/host/cpuinfo.h |  1 +
- include/qemu/cpuid.h             |  3 ++
- util/cpuinfo-i386.c              |  1 +
- tcg/i386/tcg-target-opc.h.inc    |  1 +
- tcg/i386/tcg-target.c.inc        | 91 +++++++++++++++++++++++++++++---
- 5 files changed, 91 insertions(+), 6 deletions(-)
-
+diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
+index 9541a64da6..93d029d499 100644
+--- a/host/include/i386/host/cpuinfo.h
++++ b/host/include/i386/host/cpuinfo.h
+@@ -27,6 +27,7 @@
+ #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
+ #define CPUINFO_AES             (1u << 18)
+ #define CPUINFO_PCLMUL          (1u << 19)
++#define CPUINFO_GFNI            (1u << 20)
+ 
+ /* Initialized with a constructor. */
+ extern unsigned cpuinfo;
+diff --git a/include/qemu/cpuid.h b/include/qemu/cpuid.h
+index b11161555b..de7a900509 100644
+--- a/include/qemu/cpuid.h
++++ b/include/qemu/cpuid.h
+@@ -68,6 +68,9 @@
+ #ifndef bit_AVX512VBMI2
+ #define bit_AVX512VBMI2 (1 << 6)
+ #endif
++#ifndef bit_GFNI
++#define bit_GFNI        (1 << 8)
++#endif
+ 
+ /* Leaf 0x80000001, %ecx */
+ #ifndef bit_LZCNT
+diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
+index c8c8a1b370..f4c5b6ff40 100644
+--- a/util/cpuinfo-i386.c
++++ b/util/cpuinfo-i386.c
+@@ -50,6 +50,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+             if ((bv & 6) == 6) {
+                 info |= CPUINFO_AVX1;
+                 info |= (b7 & bit_AVX2 ? CPUINFO_AVX2 : 0);
++                info |= (c7 & bit_GFNI ? CPUINFO_GFNI : 0);
+ 
+                 if ((bv & 0xe0) == 0xe0) {
+                     info |= (b7 & bit_AVX512F ? CPUINFO_AVX512F : 0);
 -- 
 2.43.0
 
