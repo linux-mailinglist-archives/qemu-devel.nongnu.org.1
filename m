@@ -2,101 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B16B3CC60
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1641BB3CE15
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:23:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNrP-0002aa-LV; Sat, 30 Aug 2025 11:51:26 -0400
+	id 1usNs6-0003FV-IU; Sat, 30 Aug 2025 11:52:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1usBho-0003og-5K
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 22:52:40 -0400
-Received: from fhigh-b8-smtp.messagingengine.com ([202.12.124.159])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1usBhl-0008En-Nu
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 22:52:39 -0400
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
- by mailfhigh.stl.internal (Postfix) with ESMTP id 151947A013F;
- Fri, 29 Aug 2025 22:52:34 -0400 (EDT)
-Received: from phl-imap-08 ([10.202.2.84])
- by phl-compute-06.internal (MEProxy); Fri, 29 Aug 2025 22:52:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm2; t=1756522353;
- x=1756608753; bh=EW5ADFusadMyzkyvSlveU4fNtMRwtxTq406ASshOFpM=; b=
- mRtytAaQQO2FcDqVmec7kMRba1IqF18PFtN9aUMe5WRZ1iKKfbAJ00KbBYxpj+AC
- tpPfuNBBH/7MNidvXYx5LLvcOpMKTAO+ozD84BfGwEdtcze2sebGvuykhYBTc/IC
- US2raP2RdiBTy0QMgmt6FuKH2WDw29nTANYSYGjGvFSuMYHavg5lHWO4JoaTwnhf
- WtHgWE54mxNesc7ofAEN6WA4w2Ap+Deznc7IAa/SRrfWKOUqxExSepSgj7fN6Iin
- bg7KvWBPnFQ8m35nHIEeNAZuCl1szq7ssXyCJRKsfuOBjUYlWUuLiK/9Q2XNo+sM
- 7cvSua0hCLDavtwvjujVOA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1756522353; x=
- 1756608753; bh=EW5ADFusadMyzkyvSlveU4fNtMRwtxTq406ASshOFpM=; b=O
- UH7qGxWxTPaAPTNDbpC57LWKzV8tlkQ0luOkdRT4ruVctE8jeTzMrhnVkrOxI5rl
- WgAqW8QnkL0TFO4RwphwhpDsDmc//p2mGIfHYDesmS8f4Ojw+16x21hEpNCA0xJ9
- 5nYBOVstBnmtQuWzLNjcjVaAKY70D3M4AazA0/hj17/uQFkcSTpihefXNE+OmCa1
- +0Li4ng+7LuOn8WOsn1HRmA+5zZbQVfXp/GNDv7dbyEN3950epWGXQLS6+8pECns
- 58szPH0tjzvbPrbS7Y8rgWU5g+NTfwN7M0LkkdUCGt08rmZ1o9aMIgA8t/PXx1i0
- W9v5crw+38CCTx07nX3mg==
-X-ME-Sender: <xms:cWeyaFHXxzCVQk_2rDkrdWepNaqcn9SRUYydoyOPXlH1dJMFiC61Mg>
- <xme:cWeyaKWPK1V2J2W2i1pyd3JC_QZVeVMG-0tct0UUA860lvoUw4qsg3YPi5TOwUVKZ
- efU7vpcvQ4nw3pMCtw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddukeehvdefucetufdoteggodetrf
- dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
- rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
- gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedflfhirgig
- uhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
- cuggftrfgrthhtvghrnhepjeehfeduvddtgffgvdffkeethefhlefgvdevvdekuefffeek
- heehgeevhfevteejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
- hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomhdpnhgspghrtghp
- thhtohepiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphhhihhlmhgusehlih
- hnrghrohdrohhrghdprhgtphhtthhopeguvghvvghlsehlihhsthhsrdhlihgsvhhirhht
- rdhorhhgpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprh
- gtphhtthhopehjrghsohifrghnghesrhgvughhrghtrdgtohhmpdhrtghpthhtohepphgs
- ohhniihinhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehthhhuthhhsehrvgguhh
- grthdrtghomh
-X-ME-Proxy: <xmx:cWeyaFg62RIwW-eit4qgKVL-uFIBsl7jySkrKTU0HTZhg-pyfjLH6A>
- <xmx:cWeyaKy2frBqI8T8wjFE88Y_ZvN416Q4rG2e-z92ogvqbTmOto-ZsQ>
- <xmx:cWeyaBNu0htC9K11c0OsIvH9p6l15IGhWoiYbACqjZ5apYNtRd7E_g>
- <xmx:cWeyaLVmCukXkxFzroI5fetep0BReGBDGg5zPj4TpkL26wv_gz_Wjg>
- <xmx:cWeyaIxj0gHjkbOd9aj-50runqr9zCaxdjDdNPvyepRI1HZMVFpXGUZr>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
- id 3E63C2CE0078; Fri, 29 Aug 2025 22:52:33 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1usBtu-0005fY-Ai
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:05:10 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1usBtr-0000t7-TV
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:05:10 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-327f87275d4so1043964a91.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 20:05:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756523105; x=1757127905; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ukwoa5IccIQRUQm4QP0hSlkeC5H/N2q8r0mqAtwgM8w=;
+ b=rBHB4jfQNBlCTjbGu3pr0F7eCKyoFGB5Me9t3cperBlAPiqGUk6A89cDM/lGo5xTCz
+ /x21WzKI9DADcx7wHsAUgjpcMyUCLkcMW6v0kuoE1kuD95KFc1GJl1mHHSwn81Ns77Fr
+ 1VtObUehSfewHt4iz1N5klPVnSpsVQzUHYnrzE67Uid4S26xukCfCKgn5SXPtQZsudG4
+ s8vwvvMYrKzVEJUp2Mn4sAnS9cw9Q10nBT7O2xb5GmTpDlW5s5nOqfhtLcgAXoKqwaWZ
+ R4n/os3D3Lk6BDEnEyM7V73/x0s0BhFnMYo50r6gLiKtpjZNb4HN84l93KZjGh8XP+gN
+ Y2QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756523105; x=1757127905;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ukwoa5IccIQRUQm4QP0hSlkeC5H/N2q8r0mqAtwgM8w=;
+ b=nxJ6bD58RxB8S/z4BlEZX8pexv/YubdLnh4cOs4DeaiTmmzd33ixHTk9HBc/830UDY
+ O4m3Ii7S45T/fQi3L0prdUlx0GkHvmt0wa3/Ihqisi4I53jJ8g+OxUy5K2ELrBcgTjsP
+ nlOEW/byIvkXEdU5T21jhGl8MlJ61yjftAHXzZ2WUCKyNHpxg6ciZAXpnSZKDwZM3wmJ
+ 8jgDmNp/8WlEa+wtz3Z9rpGJd2BUSrYuoKL2Tv3l5AwU4ALp9EesIJxLXkuko0s8g6Nx
+ rgXsytrnG3xyCZnmvPwMTcOw35N9taIZ2+MFATm1r7mALM14ei49BRgZs2A0smFDQba0
+ KDUg==
+X-Gm-Message-State: AOJu0YxOGWVbM9QNIhogTHutOa6E4CaNi8fPZoBl5/0wtgng7LUK9jSI
+ rtE68CrxgNEAr8Vr2QpX5kaDF6ZczzrlgZnP0bcQlYL3WjrhgHrZVHzvFbZ4SV52vpM=
+X-Gm-Gg: ASbGnctMmLAzNsvBrGHNKs0IAzxv3n0RLWmAvbs0dG67mi3tJ+N+2gpyBQ158vRag3w
+ 2S1/3fXuFjnIiSU2oY74AQX7sIAd50+QMdRpcdWe23Yl4DXYsu6z9P9z+EWRogy1H/k0wNj6Dcg
+ XzgvM9YfF8/0q/qzJCb8WUe6uQ6lU676jMRiLYynXeZNwtsPH6VxPS2e1OoWfwoWeXymaRgxKUT
+ VX2+gqPOuawnQY1AtNvmppPmb4vQFW4tYMCWh1qFoRQd5fHe47zE9oRxRiWYVQ0N2icwfJ+m2yB
+ LIrLqXNDPBfTLnEJK/EW0cP/dA5QkZWOD0Gn8VW+F3FtuMSGGSWgKyM1MP9ppScwcft6JCAXL0A
+ rwRRkrFRHhM1ofCExSRuh2KylbQy9KKhKQEdJIbwjfO+3Xi6ClWE1jOdfYp6J2BQjUi0u2tTeL3
+ FkcaxQ
+X-Google-Smtp-Source: AGHT+IEzfp7qlunCOvR6feN2SYtSLTG6mmqrVdH3YBk8Aegq3LeCr/LBWVCYFtkfgQJGcrS6b2BAcQ==
+X-Received: by 2002:a17:90b:2252:b0:327:edde:609e with SMTP id
+ 98e67ed59e1d1-3281543caffmr1430482a91.12.1756523105311; 
+ Fri, 29 Aug 2025 20:05:05 -0700 (PDT)
+Received: from [10.118.1.198] (122-150-204-12.dyn.ip.vocus.au.
+ [122.150.204.12]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-77231f40553sm2745121b3a.43.2025.08.29.20.05.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 29 Aug 2025 20:05:04 -0700 (PDT)
+Message-ID: <32f69f26-ff0e-4615-9711-d30f41f67f8e@linaro.org>
+Date: Sat, 30 Aug 2025 13:04:44 +1000
 MIME-Version: 1.0
-X-ThreadId: AlYk8EVD7EFJ
-Date: Sat, 30 Aug 2025 10:52:13 +0800
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "QEMU devel" <qemu-devel@nongnu.org>
-Cc: devel@lists.libvirt.org, "Paolo Bonzini" <pbonzini@redhat.com>,
- "Thomas Huth" <thuth@redhat.com>, "Jason Wang" <jasowang@redhat.com>
-Message-Id: <6ed130fe-7ddc-46ba-aefd-832ef87971ad@app.fastmail.com>
-In-Reply-To: <20250828143800.49842-1-philmd@linaro.org>
-References: <20250828143800.49842-1-philmd@linaro.org>
-Subject: Re: [PATCH 0/2] hw/mips: Remove mipssim machine and mipsnet device
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=202.12.124.159;
- envelope-from=jiaxun.yang@flygoat.com; helo=fhigh-b8-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/18] cpus: properly kick CPUs out of inner execution loop
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, peterx@redhat.com, imammedo@redhat.com
+References: <20250829152909.1589668-1-pbonzini@redhat.com>
+ <20250829153115.1590048-10-pbonzini@redhat.com>
+ <743782b5-1e3b-4b63-afe2-4ad1da333bde@linaro.org>
+ <CABgObfYG=Aaz2ujr4xeuKgUqM35tF_2nS-W+v6bjYQJ4xMsvRg@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <CABgObfYG=Aaz2ujr4xeuKgUqM35tF_2nS-W+v6bjYQJ4xMsvRg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,44 +103,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 8/30/25 09:05, Paolo Bonzini wrote:
+> On Fri, Aug 29, 2025 at 11:57 PM Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> On 8/30/25 01:31, Paolo Bonzini wrote:
+>>> @@ -624,8 +624,7 @@ static target_ulong h_confer(PowerPCCPU *cpu, SpaprMachineState *spapr,
+>>>        }
+>>>
+>>>        cs->exception_index = EXCP_YIELD;
+>>> -    qatomic_set(&cs->exit_request, true);
+>>> -    cpu_loop_exit(cs);
+>>> +    cpu_exit(cs);
+>>>
+>>>        return H_SUCCESS;
+>>>    }
+>>
+>> cpu_loop_exit does a longjmp; cpu_exit does not.
+>>
+>> This may be a bug fix, but it's hard to tell.
+>> If it is a bug fix, it should be separated.
+> 
+> The longjmp is overkill but works. Not doing the longjmp also works
+> because gen_sc() finishes the TB and then you go all the way (check
+> interrupt_request -> check exit_request -> write exception_index ->
+> cpu_exec_end) out of tcg_cpu_exec().
+
+Ok.
+
+> 
+> I like cpu_loop_exit() to signify that I am in the middle of the TB.
+
+Agreed.  I suspect we over-use longjmp and could perhaps do better at simply returning up 
+the call-stack.
 
 
-=E5=9C=A82025=E5=B9=B48=E6=9C=8828=E6=97=A5=E5=91=A8=E5=9B=9B =E4=B8=8B=E5=
-=8D=8810:37=EF=BC=8CPhilippe Mathieu-Daud=C3=A9=E5=86=99=E9=81=93=EF=BC=9A
-> mipssim machine (single user of  mipsnet device) is
-> deprecated since v10.0; remove for 10.2.
->
-> Philippe Mathieu-Daud=C3=A9 (2):
->   hw/mips: Remove mipssim machine
->   hw/net: Remove mipsnet device model
+> That said, I'm always conflicted between renaming badly-named
+> functions and keeping historical names. qemu_wait_io_event() is also
+> horrible.
 
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+...
 
-I should really give another go for MIPS virt machine :-)
+> 
+>>> +++ b/system/cpu-timers.c
+>>> @@ -246,14 +246,14 @@ void qemu_timer_notify_cb(void *opaque, QEMUClockType type)
+>>>
+>>>       if (qemu_in_vcpu_thread()) {
+>>>           /*
+>>> -         * A CPU is currently running; kick it back out to the
+>>> +         * A CPU is currently running; kick it back out of the
+>>>            * tcg_cpu_exec() loop so it will recalculate its
+>>>            * icount deadline immediately.
+>>>            */
+>>> -        qemu_cpu_kick(current_cpu);
+>>> +        cpu_exit(current_cpu);
+>>
+>> where the comment still says kick and we're replacing kick with exit.
+>>
+>> I guess the root of this problem is that "kick" isn't a precise term, we ought to name it
+>> something else, and we should paint the bike shed green.
+> 
+> Yes, I agree. "send it out of" can work too in this case, I'll chanbge it.
 
-Thanks
-Jiaxun
+I was actually talking about renaming qemu_cpu_kick.
+But per above, that's hard.  :-)
 
->
->  MAINTAINERS                             |   6 -
->  docs/about/deprecated.rst               |  12 -
->  docs/about/removed-features.rst         |   5 +
->  docs/system/target-mips.rst             |  11 -
->  configs/devices/mips-softmmu/common.mak |   1 -
->  hw/mips/mipssim.c                       | 249 --------------------
->  hw/net/mipsnet.c                        | 297 ------------------------
->  hw/mips/Kconfig                         |   7 -
->  hw/mips/meson.build                     |   1 -
->  hw/net/Kconfig                          |   3 -
->  hw/net/meson.build                      |   1 -
->  hw/net/trace-events                     |   7 -
->  12 files changed, 5 insertions(+), 595 deletions(-)
->  delete mode 100644 hw/mips/mipssim.c
->  delete mode 100644 hw/net/mipsnet.c
->
-> --=20
-> 2.51.0
+I guess just updating the comment is fine for now.
 
---=20
-- Jiaxun
+
+r~
 
