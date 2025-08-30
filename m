@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63457B3CCE5
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F811B3CD76
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:50:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNqV-0001Ll-QJ; Sat, 30 Aug 2025 11:50:28 -0400
+	id 1usNqW-0001MW-Ji; Sat, 30 Aug 2025 11:50:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
- id 1usBg5-0003bQ-DG; Fri, 29 Aug 2025 22:50:53 -0400
-Received: from mail-qk1-x736.google.com ([2607:f8b0:4864:20::736])
+ id 1usBg5-0003c9-Vj; Fri, 29 Aug 2025 22:50:54 -0400
+Received: from mail-qk1-x72a.google.com ([2607:f8b0:4864:20::72a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
- id 1usBg3-00087l-6Y; Fri, 29 Aug 2025 22:50:53 -0400
-Received: by mail-qk1-x736.google.com with SMTP id
- af79cd13be357-7f6d8fcd106so376235185a.2; 
- Fri, 29 Aug 2025 19:50:50 -0700 (PDT)
+ id 1usBg4-00088D-82; Fri, 29 Aug 2025 22:50:53 -0400
+Received: by mail-qk1-x72a.google.com with SMTP id
+ af79cd13be357-7f7e89e4b37so260077485a.3; 
+ Fri, 29 Aug 2025 19:50:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1756522250; x=1757127050; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1756522251; x=1757127051; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=u0/rMuj5BJq38ST18amwRehThVkEDs8BGEyd5stjYDo=;
- b=GQyHS0CKJGLxTbZz3wBB7eZEcHdicVnkDm0BNhjEcQCZlQB4MycWbhe6a6FPRq0YZg
- xCFtIdy89y0zy9KAyA/+3JcTQ/y4UcMUlKQdT7ZcHWCZOffS3vdNRsWdrbL3bFRpTz6A
- yXtJ8YGTHLDlySLq2+ti3euV2mKS287+j0IYQJ8wLfzTFXlW8yIDjKHMaXB+BLBr7kzn
- Luu0/juJPw96jm7bHEm0CSB1xhqMhS4s4Y5IaaDY6nbNUbv4BQgcc0uSHFe1r7RDEwr5
- IKbWJNJlcLMo2SyDQDLiLDvs3q8smKE+u6IawNkHLByug+tLK0nCSy7D849aoUIa0RLt
- nosA==
+ bh=Qwx7Non1RKQkij6XP/CEOZXUJ1kdTiRPKXDqDi7L1NE=;
+ b=eC2kBaebvVPOntPMu/wiDcHeLqhB5umi4Dt12j45XToWzyjP8MjWltHmbekhWJHjDJ
+ 0vOPCvD181/s0nmHWTGrL1hmcf3CnMWGKQhySLSuTxnwCkV0NvSXKMKUDOUwZMdlkLPy
+ 50vjYSHrGdPiIBR6QsuW5Oe04BWztCxm//xccJxDMnXE5I9CmH8fGNZWR156oNJvfzd9
+ nbtNv8qYcyGklztInWF05OBgpfUncB0IP972NCOl5QhkEk/3JtLLM4VkdEWh5QErX6yy
+ l59j3D2t4M4HAU7JoGysDqhhBL4YZyesyfLpCqS7FFzqd+ZKJM5Bvs3b5Z4yfHtI4NOa
+ ZHcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756522250; x=1757127050;
+ d=1e100.net; s=20230601; t=1756522251; x=1757127051;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u0/rMuj5BJq38ST18amwRehThVkEDs8BGEyd5stjYDo=;
- b=ob7tfXKGsgtjN1hsF1zL2XsMTX7eAfvVjrRTrJa6g7FNXefl24W70ptiPdlz0R8iZB
- hH2Y3op5/Pe4yGrVA7PJC7TNxlvvbI8xA9W1S3T19WQf/g3nMLQMZXES/jwjCo+KSjtP
- +uoU78TRH7ES1tq8SLMWynmoL+nWmQcAhiA0r6NfyCI3VjJPuGUTzkOhfKWmURQk+XIw
- Dps2hNC5Euvbn05vMj5/4rjxV83vjONbidBBjLbrqaFRdRfrGwCTxz3EYOmfi/K4rfKt
- B+tMco3aA4vJ65cQi9l0Kd7vJoZp+6fCoE0umCmCbY7VSXgJ+sqvw/JLW/tyIEFaap7r
- QIXw==
-X-Gm-Message-State: AOJu0YwSdB6Zj2ovPrIDLHezKTzvuKXmlDy7f8Iiy4/XW2YLoCF3ksFa
- 8CpkSbRnZXmG8WsA6oJ5ooZS+hAhdZiEuya8y0SkxUtu0rOg8Rq/8hcfmYbfKQ==
-X-Gm-Gg: ASbGnctaoztnbm+XHPUjrgyjshORmxa9E0M8SJy03LafA1azG1B0NMbtMtfpUrfE3KE
- QxprbiZ3+PIxHP4nW2xdVq5yCl9dTW56GbepR5z7hrFJeTVdy66qe7kUJTYdi4KAEhMGGI6JP0R
- ysnw2W69AUemvBUlYE3+djbsXailL45+OgrFhUe8H0elR/uZXWlY/Dutzl2DZulBPOSkEVIia+o
- jYvy2pMqe9rVMRjkegEJ3pcsZqqgLvOYa5GTSQHEiMxYo8AyqULEp7t4ubQwX2pEXxIZDVF/9eM
- VejVMUkoC0loX4E97RM5lp1u8Igq0FP0/qvaqITUsEORy7ILKMerYzcJFHSb1FH+5UkYQ8aKiCo
- hDHp2OkC90gKexagjC2/+LBOY4yAThaudIWBAp8D/xBlcJA/06Fu1OTJcT+IgTeznPrHmT2hSGK
- PEHs27R5SZvO+cAsilYv3KMgE4mf0=
-X-Google-Smtp-Source: AGHT+IH18oXSzBFKJ4Xk5tXPZGMM9o2LuvSrmp5tf/Cp7Okqf1nNmkA+1nQBGVyxlav+H4uferfSXg==
-X-Received: by 2002:a05:620a:4403:b0:7ea:458:e6e2 with SMTP id
- af79cd13be357-7ff2cbd87f0mr76635585a.77.1756522249642; 
- Fri, 29 Aug 2025 19:50:49 -0700 (PDT)
+ bh=Qwx7Non1RKQkij6XP/CEOZXUJ1kdTiRPKXDqDi7L1NE=;
+ b=djehV/yDWN8TkMpftauWuX3X/DbEFDtVKS2Mt63QR221bmYqYNvVpPGlNcrBgyJ2R4
+ wdADN7+ivVX73yNcT0q99EFN0ghl8Nlmd1Xd9483WIT+7ZfSin0eqy7FnyMRoek3t0Ss
+ kNQZOdXnN5LDex1fVled2ykXHTDszUkALw4z1MSj1ZURisLvc+e6OiyJe+/BAkX1FdHZ
+ 0nqjjzgY+oasXhPFnlkGzT/xn3I7j464HwY7dRPCHZMohud4fqDu/FSbTKWVeF7958om
+ VutRJq0bgVWGMNBouPQ+hDZ/p52tWEcoykfakK3oTmX1HxKWcd+h91G+q+7cMNU6CQOk
+ c7SA==
+X-Gm-Message-State: AOJu0YzGz3NjIS7x/cPmJwNQ8iMY0T+MDXQc7B0t7YNsX73cm9RjiJAx
+ 2IC3vj5ykjBsRdI/SN9cUuqCGsOmnR0yLeQPmNo9ucsL5Qf/GrS+pseTwT/X6Q==
+X-Gm-Gg: ASbGncsMT41rh82lAMgxFazwtGbHe/9rQQYs+ubZydIMquVkNSp9dLjerrSDs4o468V
+ 8LWkrsYuqoamk68VvSSYBA4Ur4VgYoku9wCrhDfaGUPOGXNwCVMfejY4dFwzUJ9BRDnHANJ3mjn
+ dNRUrhnyMdelOYI4j3PA2FJTBkUulY8dJ9fbT07o/WAaXqBKFJ+wqfrOyeCrCbgs/nuytDYb+/z
+ huwysQ0+kDHF1ZENFYGtOE8yjl2w5ajHcBajASOUeXc5wpaOUjiB9MbW41kaRZUlXkMA1M2yw11
+ ZK8cx3kaIVu6a0Oq0SGJeJZus4xPzVbtrDC6C1dh6WHoOV+CoQYg7doQwH8fk4oz49XJ2k+Fufv
+ fxM3fydtZ4+4jClTFHT/8CeQRo64Wi3AM4y4MiyUQ/14rjPoITJdSlMOkSgbPiMwP0HEheBIefK
+ blolxYpGAp4swrV5lbchqhyJKbW4w=
+X-Google-Smtp-Source: AGHT+IGXDfsIf0avkJ5sxwRhCFbRVyU9krZ2QlADQXNxoBq7/CyDcVLwJmFFJEogH/CEImWaTWSjyg==
+X-Received: by 2002:a05:620a:7010:b0:7e9:f81f:ce72 with SMTP id
+ af79cd13be357-7ff2ccd09e3mr99786185a.72.1756522250697; 
+ Fri, 29 Aug 2025 19:50:50 -0700 (PDT)
 Received: from localhost.localdomain
  (wn-campus-nat-129-97-124-90.dynamic.uwaterloo.ca. [129.97.124.90])
  by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7fc0eacf1b4sm299457085a.21.2025.08.29.19.50.48
+ af79cd13be357-7fc0eacf1b4sm299457085a.21.2025.08.29.19.50.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 19:50:49 -0700 (PDT)
+ Fri, 29 Aug 2025 19:50:50 -0700 (PDT)
 From: Brian Song <hibriansong@gmail.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, armbru@redhat.com, bernd@bsbernd.com,
  fam@euphon.net, hibriansong@gmail.com, hreitz@redhat.com, kwolf@redhat.com,
  stefanha@redhat.com
-Subject: [PATCH 3/4] export/fuse: Safe termination for FUSE-uring
-Date: Fri, 29 Aug 2025 22:50:24 -0400
-Message-ID: <20250830025025.3610-4-hibriansong@gmail.com>
+Subject: [PATCH 4/4] iotests: add tests for FUSE-over-io_uring
+Date: Fri, 29 Aug 2025 22:50:25 -0400
+Message-ID: <20250830025025.3610-5-hibriansong@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250830025025.3610-1-hibriansong@gmail.com>
 References: <20250830025025.3610-1-hibriansong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::736;
- envelope-from=hibriansong@gmail.com; helo=mail-qk1-x736.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72a;
+ envelope-from=hibriansong@gmail.com; helo=mail-qk1-x72a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,176 +99,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the user sends a termination signal, storage-export-daemon stops
-the export, exits the main loop (main_loop_wait), and begins cleaning
-up associated resources. At this point, some SQEs submitted via FUSE_IO
-_URING_CMD_COMMIT_AND_FETCH may still be pending in the kernel, waiting
-for incoming FUSE requests, which can trigger CQE handlers in user
-space.
+To test FUSE-over-io_uring, set the environment variable
+FUSE_OVER_IO_URING=1. This applies only when using the
+'fuse' protocol.
 
-Currently, there is no way to manually cancel these pending CQEs in the
-kernel. As a result, after export termination, the related data
-structures might be deleted before the pending CQEs return, causing the
-CQE handler to be invoked after it has been freed, which may lead to a
-segfault.
-
-As a workaround, when submitting an SQE to the kernel, we increment the
-block reference (blk_exp_ref) to prevent the CQE handler from being
-deleted during export termination. Once the CQE is received, we
-decrement the reference (blk_exp_unref).
+$ FUSE_OVER_IO_URING=1 ./check -fuse
 
 Suggested-by: Kevin Wolf <kwolf@redhat.com>
 Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Brian Song <hibriansong@gmail.com>
 ---
- block/export/fuse.c | 75 +++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 65 insertions(+), 10 deletions(-)
+ tests/qemu-iotests/check     |  2 ++
+ tests/qemu-iotests/common.rc | 45 +++++++++++++++++++++++++++---------
+ 2 files changed, 36 insertions(+), 11 deletions(-)
 
-diff --git a/block/export/fuse.c b/block/export/fuse.c
-index 07f74fc8ec..ab2eb895ad 100644
---- a/block/export/fuse.c
-+++ b/block/export/fuse.c
-@@ -39,6 +39,7 @@
+diff --git a/tests/qemu-iotests/check b/tests/qemu-iotests/check
+index 545f9ec7bd..c6fa0f9e3d 100755
+--- a/tests/qemu-iotests/check
++++ b/tests/qemu-iotests/check
+@@ -94,6 +94,8 @@ def make_argparser() -> argparse.ArgumentParser:
+         mg.add_argument('-' + fmt, dest='imgfmt', action='store_const',
+                         const=fmt, help=f'test {fmt}')
  
- #include "standard-headers/linux/fuse.h"
- #include <sys/ioctl.h>
-+#include <sys/sysinfo.h>
++    # To test FUSE-over-io_uring, set the environment variable
++    # FUSE_OVER_IO_URING=1. This applies only when using the 'fuse' protocol
+     protocol_list = ['file', 'rbd', 'nbd', 'ssh', 'nfs', 'fuse']
+     g_prt = p.add_argument_group(
+         '  image protocol options',
+diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
+index e977cb4eb6..f8b79c3810 100644
+--- a/tests/qemu-iotests/common.rc
++++ b/tests/qemu-iotests/common.rc
+@@ -539,17 +539,38 @@ _make_test_img()
+         touch "$export_mp"
+         rm -f "$SOCK_DIR/fuse-output"
  
- #if defined(CONFIG_FALLOCATE_ZERO_RANGE)
- #include <linux/falloc.h>
-@@ -321,6 +322,8 @@ static void coroutine_fn co_fuse_uring_queue_handle_cqes(void *opaque)
-     fuse_inc_in_flight(exp);
+-        # Usually, users would export formatted nodes.  But we present fuse as a
+-        # protocol-level driver here, so we have to leave the format to the
+-        # client.
+-        # Switch off allow-other, because in general we do not need it for
+-        # iotests.  The default allow-other=auto has the downside of printing a
+-        # fusermount error on its first attempt if allow_other is not
+-        # permissible, which we would need to filter.
+-        QSD_NEED_PID=y $QSD \
+-              --blockdev file,node-name=export-node,filename=$img_name,discard=unmap \
+-              --export fuse,id=fuse-export,node-name=export-node,mountpoint="$export_mp",writable=on,growable=on,allow-other=off \
+-              &
++        if [ -n "$FUSE_OVER_IO_URING" ]; then
++            nr_cpu=$(nproc 2>/dev/null || echo 1)
++            nr_iothreads=$((nr_cpu / 2))
++            if [ $nr_iothreads -lt 1 ]; then
++                nr_iothreads=1
++            fi
++
++            iothread_args=""
++            iothread_export_args=""
++            for ((i=0; i<$nr_iothreads; i++)); do
++                iothread_args="$iothread_args --object iothread,id=iothread$i"
++                iothread_export_args="$iothread_export_args,iothread.$i=iothread$i"
++            done
++
++            QSD_NEED_PID=y $QSD \
++                    $iothread_args \
++                    --blockdev file,node-name=export-node,filename=$img_name,discard=unmap \
++                    --export fuse,id=fuse-export,node-name=export-node,mountpoint="$export_mp",writable=on,growable=on,allow-other=off,io-uring=on$iothread_export_args \
++                &
++        else
++            # Usually, users would export formatted nodes.  But we present fuse as a
++            # protocol-level driver here, so we have to leave the format to the
++            # client.
++            # Switch off allow-other, because in general we do not need it for
++            # iotests.  The default allow-other=auto has the downside of printing a
++            # fusermount error on its first attempt if allow_other is not
++            # permissible, which we would need to filter.
++            QSD_NEED_PID=y $QSD \
++                --blockdev file,node-name=export-node,filename=$img_name,discard=unmap \
++                --export fuse,id=fuse-export,node-name=export-node,mountpoint="$export_mp",writable=on,growable=on,allow-other=off \
++                &
++        fi
  
-     /* A ring entry returned */
-+    blk_exp_unref(&exp->common);
-+
-     fuse_uring_co_process_request(ent);
+         pidfile="$QEMU_TEST_DIR/qemu-storage-daemon.pid"
  
-     /* Finished processing requests */
-@@ -345,6 +348,9 @@ static void fuse_uring_cqe_handler(CqeHandler *cqe_handler)
-             err != -ENOTCONN) {
-             fuse_export_halt(exp);
-         }
-+
-+        /* A ring entry returned */
-+        blk_exp_unref(&exp->common);
-     } else {
-         co = qemu_coroutine_create(co_fuse_uring_queue_handle_cqes, ent);
-         qemu_coroutine_enter(co);
-@@ -392,6 +398,8 @@ static void fuse_uring_submit_register(void *opaque)
-     FuseRingEnt *ent = opaque;
-     FuseExport *exp = ent->rq->q->exp;
+@@ -592,6 +613,8 @@ _rm_test_img()
  
-+    /* Commit and fetch a ring entry */
-+    blk_exp_ref(&exp->common);
+         kill "${FUSE_PIDS[index]}"
  
-     aio_add_sqe(fuse_uring_prep_sqe_register, ent, &(ent->fuse_cqe_handler));
- }
-@@ -886,6 +894,38 @@ static void read_from_fuse_fd(void *opaque)
-     qemu_coroutine_enter(co);
- }
- 
-+#ifdef CONFIG_LINUX_IO_URING
-+static void fuse_ring_queue_manager_destroy(FuseRingQueueManager *manager)
-+{
-+    if (!manager) {
-+        return;
-+    }
++        sleep 1
 +
-+    for (int i = 0; i < manager->num_ring_queues; i++) {
-+        FuseRingQueue *rq = &manager->ring_queues[i];
-+
-+        for (int j = 0; j < FUSE_DEFAULT_RING_QUEUE_DEPTH; j++) {
-+            g_free(rq->ent[j].op_payload);
-+        }
-+        g_free(rq->ent);
-+    }
-+
-+    g_free(manager->ring_queues);
-+    g_free(manager);
-+}
-+
-+static void fuse_export_delete_uring(FuseExport *exp)
-+{
-+    exp->is_uring = false;
-+
-+    /* Clean up ring queue manager */
-+    if (exp->ring_queue_manager) {
-+        fuse_ring_queue_manager_destroy(exp->ring_queue_manager);
-+        exp->ring_queue_manager = NULL;
-+    }
-+}
-+#endif
-+
- static void fuse_export_shutdown(BlockExport *blk_exp)
- {
-     FuseExport *exp = container_of(blk_exp, FuseExport, common);
-@@ -901,24 +941,15 @@ static void fuse_export_shutdown(BlockExport *blk_exp)
-          */
-         g_hash_table_remove(exports, exp->mountpoint);
-     }
--}
--
--static void fuse_export_delete(BlockExport *blk_exp)
--{
--    FuseExport *exp = container_of(blk_exp, FuseExport, common);
- 
--    for (int i = 0; i < exp->num_queues; i++) {
-+    for (size_t i = 0; i < exp->num_queues; i++) {
-         FuseQueue *q = &exp->queues[i];
- 
-         /* Queue 0's FD belongs to the FUSE session */
-         if (i > 0 && q->fuse_fd >= 0) {
-             close(q->fuse_fd);
-         }
--        if (q->spillover_buf) {
--            qemu_vfree(q->spillover_buf);
--        }
-     }
--    g_free(exp->queues);
- 
-     if (exp->fuse_session) {
-         if (exp->mounted) {
-@@ -927,8 +958,29 @@ static void fuse_export_delete(BlockExport *blk_exp)
- 
-         fuse_session_destroy(exp->fuse_session);
-     }
-+}
-+
-+static void fuse_export_delete(BlockExport *blk_exp)
-+{
-+    FuseExport *exp = container_of(blk_exp, FuseExport, common);
-+
-+    for (size_t i = 0; i < exp->num_queues; i++) {
-+        FuseQueue *q = &exp->queues[i];
-+
-+        if (q->spillover_buf) {
-+            qemu_vfree(q->spillover_buf);
-+        }
-+    }
- 
-     g_free(exp->mountpoint);
-+
-+#ifdef CONFIG_LINUX_IO_URING
-+    if (exp->is_uring) {
-+        fuse_export_delete_uring(exp);
-+    }
-+#endif
-+
-+    g_free(exp->queues);
- }
- 
- /**
-@@ -1917,6 +1969,9 @@ fuse_uring_send_response(FuseRingEnt *ent, uint32_t req_id, ssize_t ret,
-     out_header->unique = req_id;
-     /* out_header->len = ret > 0 ? ret : 0; */
-     ent_in_out->payload_sz = ret > 0 ? ret : 0;
-+
-+    /* Commit and fetch a ring entry */
-+    blk_exp_ref(&exp->common);
-     aio_add_sqe(fuse_uring_prep_sqe_commit, ent,
-                     &ent->fuse_cqe_handler);
- }
+         # Wait until the mount is gone
+         timeout=10 # *0.5 s
+         while true; do
 -- 
 2.45.2
 
