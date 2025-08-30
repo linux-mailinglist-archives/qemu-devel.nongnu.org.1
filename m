@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE5CAB3CCA2
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35B0AB3CDF7
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:15:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNsa-0004Lk-8l; Sat, 30 Aug 2025 11:52:36 -0400
+	id 1usNq2-0008BN-P9; Sat, 30 Aug 2025 11:49:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usCRG-00052b-4S
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:39:39 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1usCRH-00052t-Ny
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:39:40 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usCRE-00052k-6t
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:39:37 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-248ff4403b9so17137235ad.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 20:39:35 -0700 (PDT)
+ id 1usCRG-00052v-8o
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:39:39 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-24456ce0b96so29882195ad.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 20:39:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756525175; x=1757129975; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756525177; x=1757129977; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=/kPH6riYNOweQhnmn/RRL6i17iJqnbvBitGNZ3+s7oE=;
- b=N2+c3b041/8AsoJbylas1AcFxZUzs9Lf9e2cBGJajpFmnO1lbBiMjWd7AcZDz5rBJc
- Mej+9VIO3InNmP9lskcTPjg1fl4vyQEjOR7kVttDijmM/Dp5/xYfdKWrJOhdDlzV69FT
- PxqLG/tFnCdlYg+hJZCI4FHb4qe3nmkpWZVqCvXfLfLL9y2sbfIfezl1mKVpTeCRimg0
- grGVVuMML91bmA9G5nzuRAPkbK5Byyn3/yp7UJoXps6yejKkNGjaKgCATU8AijlNkYWp
- +7v7sc7AW6A6CQi090eIeWOSJZik8vldLzDKTStcH+zFWO53LrRVt3dCi0b1MvpMkpLE
- 4FZQ==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=t71Z0EMt7VoYt+Js0tvLpYVjDl1AThaQamaO8gjGV1k=;
+ b=LpeH/VJ7SbJ3TSFXtL/M/wr3vQ30FDsQbZpIwUMrSPhk8Hn8Srmq/IpBotKzphyDtJ
+ r7PQawLa1TlF8BdSuiOSmNeOHUim6Z4mIfq8xKE9HLYIUDk2On+gVuAE0di3Fw0TVrzQ
+ oeBBo2MZe2S1lZYQS6v8jFSNn/g9kiacWs/NRpXh2AFaV3MSNzPpGMnVLKhinunoRZBJ
+ /EVHYWB7dr/h9xu0GRbFqcLHWJ6sggUMn5fclN7PL91lgBts1Tip9dyRzQJBryhyPqXA
+ JVZnu92l8CiMyNB064EtMU6PI8mYOhDh6da677nMMmvmRXYmjVJLq7Oz2yW7yfnaGlT2
+ YoEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756525175; x=1757129975;
+ d=1e100.net; s=20230601; t=1756525177; x=1757129977;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/kPH6riYNOweQhnmn/RRL6i17iJqnbvBitGNZ3+s7oE=;
- b=Bw4d/9wW9+6ip04oFAKtSadV+DmvL1VwzDnmWnMRFOsN3Vue8Dsy4/Bl0wVgUCNuH/
- E2E1K7RiOInBoN/twIA4tZNT9mRh2hR6bmeui5lzYBN/IhYc+vHwHNhljOQlcE1PH0Mi
- peZ69AVW3AL7LdJ54TLsHcB3/BLIqx6ME8imM/Zwbb+LEPbD6+TA4SWyEUMBraEGwVQg
- ALhYZfVq8tHh2YyePnooPv+NDR3rrFMYYNc/DrYYKIxdCy28CVIgOMdhHMoVbczG/1H7
- 7HddCBT7wDZ1fy2VIoluGJKbGO9Uq3y5bgBoU3Ob5vaanHgHtiACzB0IXsRMSQPUlpku
- uFQg==
-X-Gm-Message-State: AOJu0YxojueJ/VYG/anp5ruR7nseFHGJsuklXZjMgBdFt8g4DlsNalBf
- zmQQKRfq/jSQ2V65X1iVTrbNMU/qsm3pcNXfLaV+UwenPHc4S0Rk3Abmxr+lNHiM8zpYlpjGBqK
- /vGwKh6Q=
-X-Gm-Gg: ASbGncudw0yUpTW5QpUPI5Je40GLEyMJIpVpckpVEdeuez8jcBsxUTHy2mRc0CqaozG
- eNV5aUmHknYZPJS6fyR0vQFkfWndGmqffp7wYU5fX6p97WDOkUrl3WqAt0BVIiLdDXMMujwbRq7
- +4aEab+gE7NpCOLt7DzbdVdc9dcUoq40ZE5SGyVw8zaL3g8cPevqnLvVciOVBPw6dsElx0XNbqW
- Sa9ZHn9cdCp9zMn/vYFlVnP2e14ZRwMzVHejimWlDsiz14FTlxXxNquZUIs+991HyHXostJLbhW
- OAyk2qAfF6TTm9slLvK0QkIJRKfkHVxu2cEeh8xdXdDgVi6j5PSijhGI1/gXaq5IyissmeRqPJs
- 3J8S0Eu5r13qikXHmqP6XkSR7UUfVSBxVeLXSrejBi+f4WEpF9S/OfoyO/eZi2O8=
-X-Google-Smtp-Source: AGHT+IEf/E7/fn/EFXd3pP+tALwMK3dxEbTHbXsrpxObaOKTCXVnmpSmLBscr0OXpA2LjLb0XABcgA==
-X-Received: by 2002:a17:903:37c4:b0:246:cb10:6e2f with SMTP id
- d9443c01a7336-24944907804mr11575335ad.26.1756525174653; 
- Fri, 29 Aug 2025 20:39:34 -0700 (PDT)
+ bh=t71Z0EMt7VoYt+Js0tvLpYVjDl1AThaQamaO8gjGV1k=;
+ b=aEM4S88hY/8W2AHtNvFnWhw1bC94bT3tMOX5xOmeBvX6NbBhdRuoLXfzoXnUslbsT9
+ J91XYLesCGtypdvIl7IigfUbuu8wt9MbEzIBnwubXn1rw6FEU8KGsQrYbYsFh1gL7fp2
+ SGIZH4J1Ec8ley9rB+m2aX+ceiRKuawZ8yM3ghJGCmUiG21etfv/6p8gDTNBUnXHr1a3
+ 1cYLQukKhn5i6lSk+BPdcGM1/oA/fM9qheomm+xfvq3AQ3KuY7kGiCZzwNFGopwCm/qA
+ mYV2u/VumQ9lU32I/nrWvLjyKkcEAd8ryDuzAnTHO6ir3VmXTIvXJOvNNfn6jXAlESiO
+ 5AJA==
+X-Gm-Message-State: AOJu0YxTjljk36bUPpHFdf5SrBuCK2vbRjB2POeyByNdEPtakJsXeyQ5
+ dNNEVjeoidzuoJV4JlL+VSywH8mPbvbWVMNnT6yflMOxuVyNSlM4ZCHz/tP1ABqhL5gS6a+60ny
+ 8sspbTV0=
+X-Gm-Gg: ASbGncsTDKWpOtpQlsX7sdLTtEzS7Bhg4030xvltSOXhhdy2h66xBQAA91D/nRkKrI5
+ rnMJKRCTy5b8u3N4ljRRS0pvekCvo1ZA6gU1GQlFVjQxgtGBN5uwApiwWwJspEd/DgJTaj5zRPs
+ EuLuY5vtVynRq5BXTUnPhzJT9p/WnBb8jZxnVwolBQLCR8sb+7TOHEWPRSZUBVYrlnVTlED2LJW
+ ReVV16e1arlSKdx3Vp+9m32icYMgs45GNxYWzono858X6QZyp7Bbb2gu9aWS2EMMGq1eHG2h9+x
+ gnbDJR8DYjlj2ePgBqcLLum+5D9DDSNt8Hp1ZVPxmjlNQ/QDzKCyDnItBZq5pkDvuYQsb3APPi9
+ sDedVxM5MEObs9v0dR47RMrNVp8531rYTr61AjlnThY6qmOBlftay0LLGqaAtMoE=
+X-Google-Smtp-Source: AGHT+IGiN8QzMRDBAz8mg1IGPu+pQXRsz9MvTW2PX48TdeXXDJ/AzfO2QMZqOCEYHA4+bdyB5UzbIA==
+X-Received: by 2002:a17:902:d502:b0:248:ffb6:5bce with SMTP id
+ d9443c01a7336-24944af020cmr12329765ad.22.1756525176944; 
+ Fri, 29 Aug 2025 20:39:36 -0700 (PDT)
 Received: from stoup.. (122-150-204-179.dyn.ip.vocus.au. [122.150.204.179])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-24905da4784sm39551685ad.90.2025.08.29.20.39.33
- for <qemu-devel@nongnu.org>
+ d9443c01a7336-24905da4784sm39551685ad.90.2025.08.29.20.39.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 20:39:34 -0700 (PDT)
+ Fri, 29 Aug 2025 20:39:36 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 1/5] cpuinfo/i386: Detect GFNI as an AVX extension
-Date: Sat, 30 Aug 2025 13:39:22 +1000
-Message-ID: <20250830033926.372955-2-richard.henderson@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2 2/5] tcg/i386: Expand sari of bits-1 as pcmpgt
+Date: Sat, 30 Aug 2025 13:39:23 +1000
+Message-ID: <20250830033926.372955-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250830033926.372955-1-richard.henderson@linaro.org>
 References: <20250830033926.372955-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,54 +98,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We won't use the SSE GFNI instructions, so delay
-detection until we know AVX is present.
+Expand arithmetic right shift of bits-1 as a comparison vs 0.
 
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- host/include/i386/host/cpuinfo.h | 1 +
- include/qemu/cpuid.h             | 3 +++
- util/cpuinfo-i386.c              | 1 +
- 3 files changed, 5 insertions(+)
+ tcg/i386/tcg-target.c.inc | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
-index 9541a64da6..93d029d499 100644
---- a/host/include/i386/host/cpuinfo.h
-+++ b/host/include/i386/host/cpuinfo.h
-@@ -27,6 +27,7 @@
- #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
- #define CPUINFO_AES             (1u << 18)
- #define CPUINFO_PCLMUL          (1u << 19)
-+#define CPUINFO_GFNI            (1u << 20)
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index 088c6c9264..4cd5d4276c 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -4357,6 +4357,12 @@ static void expand_vec_sari(TCGType type, unsigned vece,
+ {
+     TCGv_vec t1, t2;
  
- /* Initialized with a constructor. */
- extern unsigned cpuinfo;
-diff --git a/include/qemu/cpuid.h b/include/qemu/cpuid.h
-index b11161555b..de7a900509 100644
---- a/include/qemu/cpuid.h
-+++ b/include/qemu/cpuid.h
-@@ -68,6 +68,9 @@
- #ifndef bit_AVX512VBMI2
- #define bit_AVX512VBMI2 (1 << 6)
- #endif
-+#ifndef bit_GFNI
-+#define bit_GFNI        (1 << 8)
-+#endif
- 
- /* Leaf 0x80000001, %ecx */
- #ifndef bit_LZCNT
-diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
-index c8c8a1b370..f4c5b6ff40 100644
---- a/util/cpuinfo-i386.c
-+++ b/util/cpuinfo-i386.c
-@@ -50,6 +50,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
-             if ((bv & 6) == 6) {
-                 info |= CPUINFO_AVX1;
-                 info |= (b7 & bit_AVX2 ? CPUINFO_AVX2 : 0);
-+                info |= (c7 & bit_GFNI ? CPUINFO_GFNI : 0);
- 
-                 if ((bv & 0xe0) == 0xe0) {
-                     info |= (b7 & bit_AVX512F ? CPUINFO_AVX512F : 0);
++    if (imm >= (8 << vece) - 1) {
++        tcg_gen_cmp_vec(TCG_COND_LT, vece, v0, v1,
++                        tcg_constant_vec(type, MO_64, 0));
++        return;
++    }
++
+     switch (vece) {
+     case MO_8:
+         /* Unpack to 16-bit, shift, and repack.  */
 -- 
 2.43.0
 
