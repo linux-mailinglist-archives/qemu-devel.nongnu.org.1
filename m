@@ -2,85 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F170AB3CC8D
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D9BB3CD5B
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:48:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNtl-0007dm-Ki; Sat, 30 Aug 2025 11:53:50 -0400
+	id 1usNvW-00059K-IQ; Sat, 30 Aug 2025 11:55:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usELM-0005n7-Ii
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:41:41 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1usELO-0005nd-9o
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:41:42 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usELJ-00040M-58
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:41:40 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-32326e2f0b3so2251270a91.2
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 22:41:36 -0700 (PDT)
+ id 1usELL-00040m-66
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:41:41 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-7718408baf7so2744593b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 22:41:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756532495; x=1757137295; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=YSDKOHMJ8LzZafWugFBoxtinx6LpqyI+FVcpeR420n4=;
- b=gtcG3ulzNkf74tCnDiHgfo4XWCQMCzQnyFWuvDN2nfPqT8+zO+yjtpoXUsgYk2eMh3
- tHmPojnrd/06ZT6xnWu48CkUp8KyW7WkYMJxIpC493Mr1RUcCp+BMJivjuxtGbaPLH7a
- tr0uzQHzln5Gg9YLDLRwrjyDz1RASD3K7lWMpNgYVM8zouQ7V1Yvixa3/FrEW8vX+U5E
- PNLkuSoy2xkTtxfMhJf1XofTkfO9Yi8vZ/pUvvfwYaOgGag00pEs2UG+1ZZMX3UU4P2p
- 5xw7wN7tD3Iw2j0pU2T/Z91CRPeMv6GBC9yBIE6eJx9+GvbBYYVB2p8uw7wB6sGEeyMu
- cS4Q==
+ d=linaro.org; s=google; t=1756532498; x=1757137298; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xJfNF5k3nu+7zmvA/IxmSosD+BHAmoqUFdC0gCMb2Yo=;
+ b=CmmUCL+Lu+5F5ZfK9aOkfMCNK2DofDD7SpgHe55MzyQApC6IgBFvWijiSMK0YrNVFP
+ bnv4rzHtO7yTa+PqSy23wouoZ9B+Xf1RdTs7KsH+AsR8DS1k7SwAyae6G6yGf3Yb7w/K
+ WHMLviCWZ2/DIzmk4+OW+n+tVF3et5/enfi2a1loL7x6HlAOzrljUQWFlwofk+Mh+4be
+ Lzs2e3XOiZx5gA6yZMvAu5L42kTi85nqAux2nqG5nSJdz0aUwQ8s+0U/i9xCelACMAdp
+ kcoBOk4o9XX86RSIG0/RDXOOeez3o5JcEDSHWh3pvwUKJjgFv7rhDOQf14Pda9CMa0xu
+ za1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756532495; x=1757137295;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=YSDKOHMJ8LzZafWugFBoxtinx6LpqyI+FVcpeR420n4=;
- b=bIhKKM13JOC0CFvRjAyOJIaeciJmNbkB0GLJAK9U6zXyYAmWeHx2goFENI6QXOEvVs
- C7/nS0ofLswG7nEo0EZxzmb8IX9pJtWJ79hiJxG0Y7hrPtXpDantBZ58bRNyxFyPXr0P
- MCXMaONKLtnjhsaJL0XDRdwpKD2LWcJuZ8wteAbDYo+k2NA2EJpKFVe93VoVuBE3RlcR
- 9mSZp95H2uNk48noHF620muKPMsx8sj/dDyyHK4/DuLeQCvoJhlps/qOTxPw1M2Yf24U
- /s9cvHwz1FTtlkTSCkpfhYu7cce0oLfwZDp2dtpYirOX10lRrVv52GlFmr3e03EtcIF8
- KZzA==
-X-Gm-Message-State: AOJu0Yw8XxcgblQbI/tVIsrCNn9YDhjb6iao1+2e7UAny2vvrAq6sw/t
- XOhWpY1EEOy3ZodSlQFdly/EuKfD8XCN5+OiJgdkCr090pZNvdu4O1aSE1a+IKbxuIL+tguyJl+
- k+DxKT+A=
-X-Gm-Gg: ASbGncuxZ4o04p3+etJRjGYwCCdR4Sr9XXof7awf4RXIG1V1F/6UyWkKR9IL9n48iGW
- MkA0M7Czw1hXbp3W1ue7vrvceA3PJ+W/bfFwB2HlhMVSPgp98uxZo8YHsA5oHyZgCTNzTH7iZhh
- U61BKAp8aplx7+I5e2yRqvN8gxcSM1zF8Fw2eYfXC60nf6X1m2RKWuE0xwXVrlLr7WD230hD+dB
- nWCkiQvsgcZ0t+98f0VEbn5+MY9XYskhivjsK13a6ArzkCLnU+jkOgJdM4tV3JRLBUJ4X7GubMz
- 6+2hS4/Q5XUn8FL/xnOu3r7QST1N1d+aibTMEOqqJQFKYZOSf0mON3gtPKTKh2seg+KAYnNtwg9
- JmsHTpSjA2v4TRS8TmsG80dp/6VM0Ld7SVc1w8V7GrM8hnuH+JqJ6rwSoK+0JfFgVpygoI1w=
-X-Google-Smtp-Source: AGHT+IGSP+w37twFrhLFnUN/CRW2goG/NT0AZf+02atYQE+0WVPjHcN5zJ6B74K8H+x533vR3guuDw==
-X-Received: by 2002:a17:90b:1b4b:b0:324:e6ea:f959 with SMTP id
- 98e67ed59e1d1-3281543747cmr1645542a91.14.1756532494516; 
- Fri, 29 Aug 2025 22:41:34 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1756532498; x=1757137298;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xJfNF5k3nu+7zmvA/IxmSosD+BHAmoqUFdC0gCMb2Yo=;
+ b=ghQOqlt1N+yOyg2ILI1wD2JkiqZl6cbitwsI9ijJjgpFrSVTdJcdxoaJRKQ1Ppg+08
+ nayL76TiZ1azZNJphkQ6HGy8u+02Dzw6X79kFwWs6JwbfHgGT5KBMJPV+lEmRj8oJMn8
+ HChfvAxuJAMJlvrO74oZp3tRMZNrUZvWdHDKO69k6aPeAGkPpNACO1fYXH+QW6R6d7JN
+ 9vfhQLHQxPx4SF00f1+BT8BE822sEdI8yCyu4YZJ9ltNkeTmxR5Xf3ThzPxwNzrJQ1yV
+ Wc7yfYSsuarDgrP+YK5s2Q/0YYTyzI78FZpKduUDWfuWQ+oqFkwX2wMHv20Mabi3nue5
+ /qjw==
+X-Gm-Message-State: AOJu0YwHtyPuP/pSrmFwwLBipJrnLhRQxETNtIsorIckNHu6OGDfoTXz
+ rByfw5+26yGtVErWaaDtZUDHnRb+jWxXS1PLY8K4WHIKK1m3XR1lFOvyvukpHA7PDw2ao33eIWC
+ oYhyH+VE=
+X-Gm-Gg: ASbGncuFtvFW/OQgckeM5mmVJqOri0tctCe1TiY6YiXRl+AlGBTOoXdVvTjXmamJXQa
+ gsj/b2YZ0iCTUL+XDVvqYD4U8wdx2JPo+44gBXMbNG2ok0XLE6ZYUQx4xFOFoIAEkmwDWI3Z/Sc
+ NMxUkcmTiLN+tozssATjQtbN+fv9vmIYazZgIaQlcE4wV0W9kaqw5mv/RcR//vpwMtT1NAmR8qu
+ uSrZTAc8HZFZvAITnPtFgNSVYkg549wP6sqSOZL6dmD7Jx1W9IZWj74SqcmNlP0XXdE/dMELk8S
+ vDOYhTwFPqeO/eAmUjK+Syfw7yP8iSb1cyJqgc13tnljtDd3t7av34ru6YCy2h+LCb0DRchruVI
+ ZvBxsfj+TAxlrZORnyZIKTW2CpKQA32af5scLvibPQJ4kGyLQ7f/5jYaAL+4c
+X-Google-Smtp-Source: AGHT+IFsg2G0q33hgbIqXPNz+FfHjfUQmk/Yq1VBivb/Lq/aJT3oFqS58Nv8GOib1+SDGkCXFAOX4A==
+X-Received: by 2002:a05:6300:218a:b0:243:b20d:5e05 with SMTP id
+ adf61e73a8af0-243d6f051e5mr1638088637.39.1756532497643; 
+ Fri, 29 Aug 2025 22:41:37 -0700 (PDT)
 Received: from stoup.. (122-150-204-48.dyn.ip.vocus.au. [122.150.204.48])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b4d96829a66sm2435905a12.6.2025.08.29.22.41.32
+ 41be03b00d2f7-b4d96829a66sm2435905a12.6.2025.08.29.22.41.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 22:41:33 -0700 (PDT)
+ Fri, 29 Aug 2025 22:41:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH v4 00/84] target/arm: Implement FEAT_GCS
-Date: Sat, 30 Aug 2025 15:40:04 +1000
-Message-ID: <20250830054128.448363-1-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 01/84] linux-user/aarch64: Split out signal_for_exception
+Date: Sat, 30 Aug 2025 15:40:05 +1000
+Message-ID: <20250830054128.448363-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250830054128.448363-1-richard.henderson@linaro.org>
+References: <20250830054128.448363-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,180 +101,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based on Peter's tags/pull-target-arm-20250828.
-Tree: https://gitlab.com/rth7680/qemu/-/tree/tgt-arm-gcs
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ linux-user/aarch64/cpu_loop.c | 84 ++++++++++++++++++++---------------
+ 1 file changed, 47 insertions(+), 37 deletions(-)
 
-This includes the prerequisite features, ATS1A and S1PIE, and
-not a prerequisite but closely related, S2PIE.
-
-This passes the linux kselftests for gcs, with a 48-bit VA.
-I also include a few smoke tests in tests/tcg/.
-
-
-This includes a best-effort linux-user implementation.  Since we
-don't have softmmu in user-only (yet), gcs stack pages get normal
-read/write access.  This means we cannot write-protect the pages
-in the same way the system implementation can.  But all of the
-other parts of GCS work fine, which is good enough for testing.
-
-Changes for v4:
-  - Rebase on target-arm.next, which includes all prereqs.
-  - Fixes up the minor conflicts with the elfload.c split.
-  - Include Thiago's t-b on the system-mode enable patch.
-
-
-r~
-
-
-Richard Henderson (84):
-  linux-user/aarch64: Split out signal_for_exception
-  linux-user/aarch64: Check syndrome for EXCP_UDEF
-  linux-user/aarch64: Generate ESR signal records
-  target/arm: Add prot_check parameter to pmsav8_mpu_lookup
-  target/arm: Add in_prot_check to S1Translate
-  target/arm: Skip permission check from
-    arm_cpu_get_phys_page_attrs_debug
-  target/arm: Introduce get_phys_addr_for_at
-  target/arm: Skip AF and DB updates for AccessType_AT
-  target/arm: Add prot_check parameter to do_ats_write
-  target/arm: Fill in HFG[RWI]TR_EL2 bits for Arm v9.5
-  target/arm: Remove outdated comment for ZCR_EL12
-  target/arm: Implement FEAT_ATS1A
-  target/arm: Add isar feature test for FEAT_S1PIE, FEAT_S2PIE
-  target/arm: Enable TCR2_ELx.PIE
-  target/arm: Implement PIR_ELx, PIRE0_ELx, S2PIR_EL2 registers
-  target/arm: Force HPD for stage2 translations
-  target/arm: Cache NV1 early in get_phys_addr_lpae
-  target/arm: Populate PIE in aa64_va_parameters
-  target/arm: Implement get_S1prot_indirect
-  target/arm: Implement get_S2prot_indirect
-  target/arm: Do not migrate env->exception
-  target/arm: Expand CPUARMState.exception.syndrome to 64 bits
-  target/arm: Expand syndrome parameter to raise_exception*
-  target/arm: Implement dirtybit check for PIE
-  target/arm: Enable FEAT_S1PIE and FEAT_S2PIE on -cpu max
-  include/hw/core/cpu: Introduce MMUIdxMap
-  include/hw/core/cpu: Introduce cpu_tlb_fast
-  include/hw/core/cpu: Invert the indexing into CPUTLBDescFast
-  target/hppa: Adjust mmu indexes to begin with 0
-  include/exec/memopidx: Adjust for 32 mmu indexes
-  include/hw/core/cpu: Widen MMUIdxMap
-  target/arm: Split out mmuidx.h from cpu.h
-  target/arm: Convert arm_mmu_idx_to_el from switch to table
-  target/arm: Remove unused env argument from regime_el
-  target/arm: Convert regime_el from switch to table
-  target/arm: Convert regime_has_2_ranges from switch to table
-  target/arm: Remove unused env argument from regime_is_pan
-  target/arm: Convert regime_is_pan from switch to table
-  target/arm: Remove unused env argument from regime_is_user
-  target/arm: Convert regime_is_user from switch to table
-  target/arm: Convert arm_mmu_idx_is_stage1_of_2 from switch to table
-  target/arm: Convert regime_is_stage2 to table
-  target/arm: Introduce mmu indexes for GCS
-  target/arm: Introduce regime_to_gcs
-  target/arm: Support page protections for GCS mmu indexes
-  target/arm: Implement gcs bit for data abort
-  target/arm: Add GCS cpregs
-  target/arm: Add GCS enable and trap levels to DisasContext
-  target/arm: Implement FEAT_CHK
-  target/arm: Expand pstate to 64 bits
-  target/arm: Add syndrome data for EC_GCS
-  target/arm: Implement EXLOCKException for ELR_ELx and SPSR_ELx
-  target/arm: Split {arm,core}_user_mem_index
-  target/arm: Introduce delay_exception{_el}
-  target/arm: Emit HSTR trap exception out of line
-  target/arm: Emit v7m LTPSIZE exception out of line
-  target/arm: Implement GCSSTR, GCSSTTR
-  target/arm: Implement GCSB
-  target/arm: Implement GCSPUSHM
-  target/arm: Implement GCSPOPM
-  target/arm: Implement GCSPUSHX
-  target/arm: Implement GCSPOPX
-  target/arm: Implement GCSPOPCX
-  target/arm: Implement GCSSS1
-  target/arm: Implement GCSSS2
-  target/arm: Add gcs record for BL
-  target/arm: Add gcs record for BLR
-  target/arm: Add gcs record for BLR with PAuth
-  target/arm: Load gcs record for RET
-  target/arm: Load gcs record for RET with PAuth
-  target/arm: Copy EXLOCKEn to EXLOCK on exception to the same EL
-  target/arm: Implement EXLOCK check during exception return
-  target/arm: Enable FEAT_GCS with -cpu max
-  linux-user/aarch64: Implement prctls for GCS
-  linux-user/aarch64: Allocate new gcs stack on clone
-  linux-user/aarch64: Release gcs stack on thread exit
-  linux-user/aarch64: Implement map_shadow_stack syscall
-  target/arm: Enable GCSPR_EL0 for read in user-mode
-  linux-user/aarch64: Inject SIGSEGV for GCS faults
-  linux-user/aarch64: Generate GCS signal records
-  linux-user/aarch64: Enable GCS in HWCAP
-  tests/tcg/aarch64: Add gcsstr
-  tests/tcg/aarch64: Add gcspushm
-  tests/tcg/aarch64: Add gcsss
-
- include/exec/cputlb.h              |  32 +--
- include/exec/memopidx.h            |   9 +-
- include/hw/core/cpu.h              |  25 +-
- linux-user/aarch64/gcs-internal.h  |  38 +++
- linux-user/aarch64/target_prctl.h  |  96 +++++++
- linux-user/aarch64/target_signal.h |   1 +
- linux-user/qemu.h                  |   5 +
- target/arm/cpregs.h                |  46 ++-
- target/arm/cpu-features.h          |  20 ++
- target/arm/cpu.h                   | 242 ++--------------
- target/arm/internals.h             | 169 ++----------
- target/arm/mmuidx-internal.h       | 113 ++++++++
- target/arm/mmuidx.h                | 241 ++++++++++++++++
- target/arm/syndrome.h              |  35 +++
- target/arm/tcg/translate.h         |  46 ++-
- target/hppa/cpu.h                  |  28 +-
- tests/tcg/aarch64/gcs.h            |  80 ++++++
- accel/tcg/cputlb.c                 |  49 ++--
- linux-user/aarch64/cpu_loop.c      | 167 ++++++++---
- linux-user/aarch64/elfload.c       |   1 +
- linux-user/aarch64/signal.c        | 170 +++++++++++-
- linux-user/syscall.c               | 114 ++++++++
- target/arm/cpregs-gcs.c            | 152 ++++++++++
- target/arm/cpu.c                   |  17 +-
- target/arm/gdbstub64.c             |   2 +
- target/arm/helper.c                | 268 ++++++++++++++----
- target/arm/machine.c               |  62 ++++-
- target/arm/mmuidx.c                |  66 +++++
- target/arm/ptw.c                   | 429 +++++++++++++++++++++-------
- target/arm/tcg-stubs.c             |   2 +-
- target/arm/tcg/cpregs-at.c         |  69 +++--
- target/arm/tcg/cpu64.c             |   4 +
- target/arm/tcg/helper-a64.c        |  13 +-
- target/arm/tcg/hflags.c            |  38 +++
- target/arm/tcg/m_helper.c          |   4 +-
- target/arm/tcg/mte_helper.c        |   2 +-
- target/arm/tcg/op_helper.c         |   8 +-
- target/arm/tcg/tlb-insns.c         |  47 +++-
- target/arm/tcg/tlb_helper.c        |  18 +-
- target/arm/tcg/translate-a64.c     | 430 ++++++++++++++++++++++++++---
- target/arm/tcg/translate.c         |  78 ++++--
- tcg/tcg.c                          |   3 +-
- tests/tcg/aarch64/gcspushm.c       |  71 +++++
- tests/tcg/aarch64/gcsss.c          |  74 +++++
- tests/tcg/aarch64/gcsstr.c         |  48 ++++
- docs/system/arm/emulation.rst      |   5 +
- target/arm/meson.build             |   9 +-
- target/arm/tcg/a64.decode          |   5 +
- tcg/aarch64/tcg-target.c.inc       |   2 +-
- tcg/arm/tcg-target.c.inc           |   2 +-
- tests/tcg/aarch64/Makefile.target  |   5 +
- 51 files changed, 2931 insertions(+), 729 deletions(-)
- create mode 100644 linux-user/aarch64/gcs-internal.h
- create mode 100644 target/arm/mmuidx-internal.h
- create mode 100644 target/arm/mmuidx.h
- create mode 100644 tests/tcg/aarch64/gcs.h
- create mode 100644 target/arm/cpregs-gcs.c
- create mode 100644 target/arm/mmuidx.c
- create mode 100644 tests/tcg/aarch64/gcspushm.c
- create mode 100644 tests/tcg/aarch64/gcsss.c
- create mode 100644 tests/tcg/aarch64/gcsstr.c
-
+diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
+index 4c4921152e..3b2782581b 100644
+--- a/linux-user/aarch64/cpu_loop.c
++++ b/linux-user/aarch64/cpu_loop.c
+@@ -27,11 +27,56 @@
+ #include "target/arm/syndrome.h"
+ #include "target/arm/cpu-features.h"
+ 
++/* Use the exception syndrome to map a cpu exception to a signal. */
++static void signal_for_exception(CPUARMState *env, vaddr addr)
++{
++    uint32_t syn = env->exception.syndrome;
++    int si_code, si_signo;
++
++    switch (syn_get_ec(syn)) {
++    case EC_DATAABORT:
++    case EC_INSNABORT:
++        /* Both EC have the same format for FSC, or close enough. */
++        switch (extract32(syn, 0, 6)) {
++        case 0x04 ... 0x07: /* Translation fault, level {0-3} */
++            si_signo = TARGET_SIGSEGV;
++            si_code = TARGET_SEGV_MAPERR;
++            break;
++        case 0x09 ... 0x0b: /* Access flag fault, level {1-3} */
++        case 0x0d ... 0x0f: /* Permission fault, level {1-3} */
++            si_signo = TARGET_SIGSEGV;
++            si_code = TARGET_SEGV_ACCERR;
++            break;
++        case 0x11: /* Synchronous Tag Check Fault */
++            si_signo = TARGET_SIGSEGV;
++            si_code = TARGET_SEGV_MTESERR;
++            break;
++        case 0x21: /* Alignment fault */
++            si_signo = TARGET_SIGBUS;
++            si_code = TARGET_BUS_ADRALN;
++            break;
++        default:
++            g_assert_not_reached();
++        }
++        break;
++
++    case EC_PCALIGNMENT:
++        si_signo = TARGET_SIGBUS;
++        si_code = TARGET_BUS_ADRALN;
++        break;
++
++    default:
++        g_assert_not_reached();
++    }
++
++    force_sig_fault(si_signo, si_code, addr);
++}
++
+ /* AArch64 main loop */
+ void cpu_loop(CPUARMState *env)
+ {
+     CPUState *cs = env_cpu(env);
+-    int trapnr, ec, fsc, si_code, si_signo;
++    int trapnr;
+     abi_long ret;
+ 
+     for (;;) {
+@@ -67,42 +112,7 @@ void cpu_loop(CPUARMState *env)
+             break;
+         case EXCP_PREFETCH_ABORT:
+         case EXCP_DATA_ABORT:
+-            ec = syn_get_ec(env->exception.syndrome);
+-            switch (ec) {
+-            case EC_DATAABORT:
+-            case EC_INSNABORT:
+-                /* Both EC have the same format for FSC, or close enough. */
+-                fsc = extract32(env->exception.syndrome, 0, 6);
+-                switch (fsc) {
+-                case 0x04 ... 0x07: /* Translation fault, level {0-3} */
+-                    si_signo = TARGET_SIGSEGV;
+-                    si_code = TARGET_SEGV_MAPERR;
+-                    break;
+-                case 0x09 ... 0x0b: /* Access flag fault, level {1-3} */
+-                case 0x0d ... 0x0f: /* Permission fault, level {1-3} */
+-                    si_signo = TARGET_SIGSEGV;
+-                    si_code = TARGET_SEGV_ACCERR;
+-                    break;
+-                case 0x11: /* Synchronous Tag Check Fault */
+-                    si_signo = TARGET_SIGSEGV;
+-                    si_code = TARGET_SEGV_MTESERR;
+-                    break;
+-                case 0x21: /* Alignment fault */
+-                    si_signo = TARGET_SIGBUS;
+-                    si_code = TARGET_BUS_ADRALN;
+-                    break;
+-                default:
+-                    g_assert_not_reached();
+-                }
+-                break;
+-            case EC_PCALIGNMENT:
+-                si_signo = TARGET_SIGBUS;
+-                si_code = TARGET_BUS_ADRALN;
+-                break;
+-            default:
+-                g_assert_not_reached();
+-            }
+-            force_sig_fault(si_signo, si_code, env->exception.vaddress);
++            signal_for_exception(env, env->exception.vaddress);
+             break;
+         case EXCP_DEBUG:
+         case EXCP_BKPT:
 -- 
 2.43.0
 
