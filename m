@@ -2,89 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 581CBB3CE56
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CDFDB3CD30
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:37:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNpg-00072B-KL; Sat, 30 Aug 2025 11:49:37 -0400
+	id 1usNsC-0003My-Sz; Sat, 30 Aug 2025 11:52:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usC0c-0007Jt-Ij
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:12:06 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1usCRG-00052a-4R
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:39:39 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usC0a-0001Th-O4
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:12:06 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-24457fe9704so28628565ad.0
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 20:12:03 -0700 (PDT)
+ id 1usCRD-00052c-3J
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:39:37 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-2487104b9c6so25092975ad.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 20:39:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756523522; x=1757128322; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=W93BYCdUb+ss8Guv9YFZD35WMY45GW2bvrGgSXT5vaA=;
- b=kmSsIlrz35T0RI6aqU01gJEeSH0x1kMY6pnL/yPjqY24fX5ga1xEcWUMt2b0uCHFtt
- AKGFTj9xAhQ+ulerg0AQponW9DXsFLXQAWyRkSqGavUSEWMQV6Gu9PMMLZUH2F11Sv0y
- aD+Bf3STXWsFGZhHPfsEMJ6uX6hw3sM35bMtf0facFe2CqFuEwXbQNxXv29MZOhNOWeY
- vqW8m9h90DU14BKJWTkATW8Gj+M3aVaKS8O8s70wxhfJqz469S2UHliNQZJKlcoAvK2/
- yIypRxBJtwcdKNqyEWUcKN+/1bNNTTKNRIGwH+CpkwUO+exIt+SMksq0e2dQni3npl3R
- rkOg==
+ d=linaro.org; s=google; t=1756525173; x=1757129973; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=JmWEBsWkC6Iy2kPe2svm5u9XW4Lz+QhNZJnUvnzxWu8=;
+ b=Yuj6jcvYFHKyWx4PlSFg2qKjIyjPFIxBUrB1D0k1o3YatE4/nxCVs/OP+UWmLIURDX
+ SHj2iCSVy8Yj9v7ZxPpYGT/zarJRQELkiD0knaosaHXJ4rr99uDRZhKSjIvOD71CopEi
+ HEgZBvhPwTQ9lo7l2mTIJ0AXMzR9HphvyDyEwNLQvNx6FJ8Goi1b1k4qw3wkVzPnJEoe
+ wkfX26j6P8mLUusl+HlXK0aekfuC1sW0/AGMbpk1KhuDJ1hZJmWV5O7x4UldCKn1vdYg
+ zxnDXnCIED0DaCvp4+Hi0YkqL0xHeo2wAvQ8705sbfzD063FCfhmKcDxQxYieev7YD9l
+ EC+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756523522; x=1757128322;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=W93BYCdUb+ss8Guv9YFZD35WMY45GW2bvrGgSXT5vaA=;
- b=pqP7kpmVSPNsl5DirzQXSESknDq6v2LkU5RwiCwxlAW6DHprYEvlEGL7mRd5ep0pcI
- 6Ws37CeTJaRBnSH8Yz0BtmnO5nu4knRtXaMePBiNPFxYGFKgBMvHSHnfgynWNVp1zULd
- HdOiYQjpAoQXRh1VgadD3RL9HBOw/V4H9rmWOG9IDVE8+w1714Z0m2ruIGL+vr9xoJiD
- +doQpzbnoJyyurINOvz3UKv4EtVwY9kbd7U8rZ26wHv3+NxeqKOC0SiehQKWhyFTqWYT
- yEa+uHymAFmI7X9yfUJZklvKWC60Q0Rqd0P6Gmy+2kPrw63W5lq8XE+hE4sBZ52qcCPk
- AJLQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUVkAYVj0BoOpJlVGp/5Yr+3u3LHGpBSIw0NUxoP8RKNSH3L+7c0c9OCofKIONLvPjDN/SXZkIXBQjR@nongnu.org
-X-Gm-Message-State: AOJu0YwrFcDv5ZWD8/Z2p1u1Ch0AHVtYFYSRpQlhQryoLvGvzra1O9MQ
- HfJcBcm+4OQxSqXtSj5/69CWLiQLEcEWoFZrlcvF4O97tAxOI4YY6Ro38seOVQWi+kI=
-X-Gm-Gg: ASbGncvgPEXZaKILaWnXW03z7UIbMNvHioHiZi83c5KzIr82JD4gnRahm18OcP90YtY
- z40BqmwVuJZl9l0LccvPcK7Y/aJykJOlaBhZN9xQiKFwgr6DOthETzKmIj3kPYzlfiw9wlNRCry
- AfL9lAB9jQPO3nEtR61xmKE+mp0BF3Pv8eJIOaHfoGfhOqWUZlGnTqaVgYVt9VAXu8cSNYh9JHY
- iBEsER6VizRExN66AIyPVkctbAT0peeYfP+7Cj8r3/DO7sf4yMhXE6IAO1oP4AdX2mibwfIXJLG
- Y3q6yGkL4aOn8Jfg4iiqsILuvhtXjGESH4IEOT7DoZdDgi3da9QvFv6az/2f4FSwxA0qBwrR6nc
- rmX7zqi0gtdQzxgb6s04pAiJsJkYpSWJp74UhDmwKn+DD6TQKFQdBZgg0BWZnvacCIEKSGXhUk1
- U67EVu
-X-Google-Smtp-Source: AGHT+IH4wRgt2YdrgXMyrFQrfMonHWeBtRVet+XOXL06Chw+3SIAkyduF7+3uL5wvSsVl6BUODuv2w==
-X-Received: by 2002:a17:903:944:b0:240:11cd:8502 with SMTP id
- d9443c01a7336-249448cfba5mr7920945ad.13.1756523522296; 
- Fri, 29 Aug 2025 20:12:02 -0700 (PDT)
-Received: from [10.118.1.198] (122-150-204-64.dyn.ip.vocus.au.
- [122.150.204.64]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2490373e321sm39053745ad.55.2025.08.29.20.11.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Aug 2025 20:12:01 -0700 (PDT)
-Message-ID: <b48aad39-d408-4666-9b19-e8f1fedf1a47@linaro.org>
-Date: Sat, 30 Aug 2025 13:11:56 +1000
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 18/28] target: Use cpu_pointer_wrap_notreached for strict
- align targets
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>, Yoshinori Sato
- <ysato@users.sourceforge.jp>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-References: <20250528081410.157251-1-richard.henderson@linaro.org>
- <20250528081410.157251-19-richard.henderson@linaro.org>
- <dee8def3-3ff7-4a86-8bcc-430f3775c1c3@tls.msk.ru>
+ d=1e100.net; s=20230601; t=1756525173; x=1757129973;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JmWEBsWkC6Iy2kPe2svm5u9XW4Lz+QhNZJnUvnzxWu8=;
+ b=Uhmf11fOY0uaVHSNGKZwI49pwccApLaVZeSl9cvsQAYF8dxHG5fWtfgbYddfWSbHRe
+ cWm4d88xiySLjGTZuEavDO6c1lkNCVTfB9M6sCbRIi8MVVX7aU87VWkS/TPfWsZJVuHZ
+ MN3ftDrDCdmiizoHTIQYUQOkZ7rAZVrOH7uu0lmrTGNV4q0ZlIbnPBsb1tcb3FFCOxUZ
+ gesTvigUm9HOBBsviig+7C6Ac0E847zSad1268Pv4oYgb9L1xBbcseySzYfdO418Reed
+ DFVnWTqcdYDGhoGhylEbyRepPvC/1pzrk4El6ZMv109d6mO22Im+TZl0zXoOWZWQ3PXU
+ PdPA==
+X-Gm-Message-State: AOJu0YwwZ4yo7erv6AlVF7VHHcWcuB+ZHesuc9HYQ1Lukf6Lgqem7pzW
+ YIcqLjv6lTbw9Fm0bKuZchjja+QqevDorDQNGcvDiDU2P3HrqKwbq9j1HuZBvOjmWJEIzQp6MEr
+ kIPwja4A=
+X-Gm-Gg: ASbGncu2cD5azOGk/TYIqVQLuNwHsKN1yow5DpgqeE9yl7KOXkLyDBZvdkperPAkixm
+ 9bx+C8pvzc++j+Azyfv+w+IE4PBSWYfofEy1PdeBYyqGk5F7KjqX6VXt02yKOtbj82suBB6tjae
+ 2SxEoqgZy1JTQMaLmlZwdG127hlrcsk9wqxyxAFiDi3bjDcv5zpXdJwjuvYRfwCzdhkVcEi+HCI
+ uZfAfaFK7r4MQ6nBYDMMjjqvYtbERS0ey7yQP5Kn3jqek7OAWE7ew4FNrNcJbv8aFRBf5zUEwGU
+ bJF8/fsTGR+hJIb3QnyqMkJpqqyvqPBo5KsOCFdXh/GW+IOHE0FGnNjjJkYpGfJcH+julHTER60
+ p6zCqsxgrdrt7rYAP/uAnP685JvWIs5iCOqHaFdDc8bNNiLNYaYSuG4KFQH/8dlNz8VOAIL15Ig
+ ==
+X-Google-Smtp-Source: AGHT+IHjGIMcnrt3dLT8rokciY0RpjzYKKVQkteIUbgEO4pIpXLWN3stP49Ug2NXH/Npc7bmk5/eig==
+X-Received: by 2002:a17:903:244e:b0:249:3eec:15bc with SMTP id
+ d9443c01a7336-24944a44010mr11631645ad.19.1756525172641; 
+ Fri, 29 Aug 2025 20:39:32 -0700 (PDT)
+Received: from stoup.. (122-150-204-179.dyn.ip.vocus.au. [122.150.204.179])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-24905da4784sm39551685ad.90.2025.08.29.20.39.30
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 29 Aug 2025 20:39:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <dee8def3-3ff7-4a86-8bcc-430f3775c1c3@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: qemu-devel@nongnu.org
+Subject: [PATCH v2 0/5] tcg/i386: Improve vector shifts
+Date: Sat, 30 Aug 2025 13:39:21 +1000
+Message-ID: <20250830033926.372955-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,23 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/29/25 16:55, Michael Tokarev wrote:
-> On 28.05.2025 11:14, Richard Henderson wrote:
->> Alpha, HPPA, and SH4 always use aligned addresses,
->> and therefore never produce accesses that cross pages.
->>
->> Cc: Helge Deller <deller@gmx.de>
->> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> 
-> This seems to broke booting debian on alpha, -- see
-> https://bugs.debian.org/1112285 .  I weren't able to repro it
-> though, - asked the OP to get a backtrace.
+x86 doesn't directly support 8-bit vector shifts, so we have
+some 2 to 5 insn expansions.  With VGF2P8AFFINEQB, we can do
+it in 1 insn, plus a (possibly shared) constant load.
 
-Ok.  I haven't reproduced this either.
-Let me know if you get more information.
-
+Changes for v2:
+  - Use PCMPGT for arithmetic right-shift of bits-1 (paolo).
+  - Tidy an instance of non-canonical operand ordering.
 
 r~
+
+Richard Henderson (5):
+  cpuinfo/i386: Detect GFNI as an AVX extension
+  tcg/i386: Expand sari of bits-1 as pcmpgt
+  tcg/i386: Use canonical operand ordering in expand_vec_sari
+  tcg/i386: Add INDEX_op_x86_vgf2p8affineqb_vec
+  tcg/i386: Use vgf2p8affineqb for MO_8 vector shifts
+
+ host/include/i386/host/cpuinfo.h |  1 +
+ include/qemu/cpuid.h             |  3 ++
+ util/cpuinfo-i386.c              |  1 +
+ tcg/i386/tcg-target-opc.h.inc    |  1 +
+ tcg/i386/tcg-target.c.inc        | 91 +++++++++++++++++++++++++++++---
+ 5 files changed, 91 insertions(+), 6 deletions(-)
+
+-- 
+2.43.0
+
 
