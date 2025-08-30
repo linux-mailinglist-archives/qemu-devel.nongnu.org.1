@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F5EB3CD95
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6374CB3CD89
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:55:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usOCl-00027K-FZ; Sat, 30 Aug 2025 12:13:31 -0400
+	id 1usODK-0002sU-6P; Sat, 30 Aug 2025 12:14:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usEQJ-0007B7-4W
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:46:47 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1usEQW-0007Eg-FH
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:47:00 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usEQH-0004ox-4M
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:46:46 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-2445805aa2eso29798005ad.1
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 22:46:44 -0700 (PDT)
+ id 1usEQJ-0004pd-Tv
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 01:46:52 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-b4dc35711d9so688081a12.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 22:46:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756532804; x=1757137604; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756532806; x=1757137606; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zlZEvW/doqzO9xqWDxfXmugnbOqvwtxVDwPmklV4QPY=;
- b=LrDdUnjftbIyG32LtzYMrqn6G8bcfaQpO5cpYlXqx186WZo6hJCQzWzV69LRFYVNli
- sged6nwmDAl7D9Z0Xa7h5Vz3HJ1zy3ICJqMslf9d9VH9bzailsdysbFJK5rNJefucgGa
- 1rH2h0Wj6ni6cEn0bTDVpoBYcOsQs6WxeUhQZOz4EYCoEYWhAonqqO+qWjytEntfr9YL
- 2TpkcIDR8t+RAL27rO5RpYw19TXqTEhB9BEyLpeW1hXlP+gaB88hDso8hyuKMar3GI2Y
- 1Rs9ctRFnzeRHFkPUmXCDXY5UDOeapDWrF6W6cqZX5RMhiETWWrqJoRX1T6p7E1HFO7h
- d5rg==
+ bh=ZnGv3gaWQ9shrmt0WGxn8YCEO4EdUIFI2jl/MhJPR7Y=;
+ b=FQfB1zLB1nRIdgI+BncuHSRsnkluJcMmR/vOvQLWRav9K861phZ1cmHE8CVqk66mhw
+ SmxfLEuOpTFuhitrycAcb1PmKonoH8PDxzcQr7LE1wFYjrs33Q7GueaC2wCcBiFPxhdd
+ hRGnL7lsXsE7F96/a/4gZsnG0CJuxkvtnnquDhA9r6dtYMdw/+VcIKLHKmpgHT2D25Mv
+ g5nPml7AhMzR77PhpZ0iJiDxKUv/zVuvsMKaaokw2R8FvxFhOYWMAYc6m4EgW6g15W9F
+ wTTIyQmunaqiUmcDi4bDXQxE9oPeJDrUHp0QNn3Ql8OkVS5wZr6vUljwhWkp9DY6BtBA
+ is+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756532804; x=1757137604;
+ d=1e100.net; s=20230601; t=1756532806; x=1757137606;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zlZEvW/doqzO9xqWDxfXmugnbOqvwtxVDwPmklV4QPY=;
- b=SdNI0MZuul+aCQgBoJGXGv9x4sTtEf+RuwGnJ/seLdwJIvdR8qvzwFec5x2M3/ZNhJ
- ByyDMz0EgR3caUcNgRk8zLiSfzkADX7a99Us7B4EKFvFk1Bulku85O00zh+scjBLqiMS
- pRB0K8gFz3DQXUSTJVMx6L5nACRROhH7ACCtvjYToO2y6DQb/mbEg1f3Frv/+lvBeOsY
- DxvXN5TczECGvd3LALIg3x3uzpo7mJqOCPlGEiumzr7yDAZFLEmjm/TH5mippfj6T3Lm
- aAuXuqKV6IOSTj1ozvhmvzVNq/da6vIY1J0rbGWZPqLYkWGNfJYBzguHsoLvqhLca4oX
- ofOQ==
-X-Gm-Message-State: AOJu0YyHWjBXPqd+rIXOcDOzAvrg+ZaVplfaoQ2Mhgj2OpOoMS1IZTGf
- useTjM+kP3fmIXGTwYEw6xmDocedh8QoE6b0T0Bh2UfFuMHYz85H4/9e38CmRDvVCg3nMscE4wE
- bOWopM5Q=
-X-Gm-Gg: ASbGncukv0w3yo27OYML5BKPlitOImkxSRd2XwjZoRcWrOgY60Qx0m1nWM/+uUMMeyj
- uI2UqFi15ofM8aJnyoVb77aquRjH/ZbZwuwtHl2SX3JJcUgelD1K4ijDog20iNw4RRJd/XOFrBX
- zwKgyB/Y0xAe5x35kYYicfbi+rCPc6rETlpcmXiTo7vzVuQWY/inH420AKwOwaGVqQVPPf/21sO
- siftIX2ZJk18paO4/zZOx55/hKVnxIEWaVJkBNsC0T5FuLg5SpTCssgkUc6K8jnAuUP8/xa0/Ro
- 3ww1oXNcM0/i7jmFrOHOAomSqmn/S+2gP11Ddzh8virDJdhvmEiunrEUFSGc2AuSPS5efZufsYB
- VTvQc2gwUQ26g//5Fm4r1yILvx8areGiXR8P2zPd7IR+WhKsyVVDf5tBJt2GQoBGnWAPKMQl65g
+ bh=ZnGv3gaWQ9shrmt0WGxn8YCEO4EdUIFI2jl/MhJPR7Y=;
+ b=BlzlVmme3NTC+QpR4P1dYyzH1xpHzofxincXXtq/GANZvNvrD2qEqQWUIQGHk/kUD1
+ 7zUvd8JQlSR07r/69uqDpGp9uFdP59xIhrx5vEZDtert6Poppirr6G0JYy8AY3JIfgTO
+ dHL2v1PdGYqmsWpZvNpS6R7QB9ZC8fbbWlGcxUK6ibOxP5oh6erIYbBPwbFUy1vL075m
+ u83R7GKQJO4D1E9p75iJjWXsqg3O2giCkwjyg1DYPuCNIxbhEMTyFh3yJbWhd3TJbA8n
+ 5eqRnKSQyRuXkpfelUPyH18/N3Pdx/C1/uNR3OOO/cwiuSK5hzw9n+puExcJLZ9NnSF+
+ bFTQ==
+X-Gm-Message-State: AOJu0YwAKYBAWIhz6BsI917uIy1Twz7NJIJi5sK0hSdyi5LRh3UNVk0f
+ vqSYeJP053EUEaTGiDsVtxgDLwPmkeasV+ZdSu/I/D2+N9pmXDfkjV2Pei3gLp7WBb+MygxfO+w
+ /Rd3Sy/E=
+X-Gm-Gg: ASbGncvIFdLq2IW7g/yjjQiSbQvFDArjR3HwUPdA4cZp6pQALDx+RVkH7+yrVloeMuj
+ 4JGD0nu5ryEqK/OxZuXpWH1/PXmIRG2Zz1d/z601kJCqnoZVcKmTIeESGK5nhXIToIzvUGQriv7
+ c6ZQ9lNmdodtnyAoSTefc9bA9NIFyqPUKYzVBsKZB+ftPEZ3okMnGzJYiCgGyg1SFD2XDf1Xubw
+ 3Ves1/m57zGvh6j5PyMGkeKVyQQk3ZGC0YZUjgGn9Uf3RBSZwELzUyml7aOAbTZHv8gFU859nfe
+ jk6f16PH8lCMOQVYgasRP0joZ5mexRJ7nAEodJMcFV5cSy5aT2qlnH9OHnaqBJ7n77bce1xC224
+ u+EnDJ4F5n+1MdjmlHwjmS7AYnf/dSDfjgDcnQlx/HkScBPVo/DtWEiZSM6YhWAw2JBcPZrgMoQ
  ==
-X-Google-Smtp-Source: AGHT+IGBDunypJcA4WSE9leAfjgFS8ErG+yv+2Q1YKLFKsGAMMjqD0WVuETxwJ/TCYB9CGQg5R1mgw==
-X-Received: by 2002:a17:902:ce8c:b0:249:3eec:15bb with SMTP id
- d9443c01a7336-249448e1ce7mr12667545ad.14.1756532803656; 
- Fri, 29 Aug 2025 22:46:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENyNyEVAuyalTEbfbRr0O62gIKo3HxW95LAEcbR4IxvqWRKzdjc3cxPf5hr5pS3iVUodaPHw==
+X-Received: by 2002:a17:903:1aa5:b0:249:17d1:f1d5 with SMTP id
+ d9443c01a7336-24944b29de0mr15030175ad.60.1756532806361; 
+ Fri, 29 Aug 2025 22:46:46 -0700 (PDT)
 Received: from stoup.. (122-150-204-179.dyn.ip.vocus.au. [122.150.204.179])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2490658999fsm40852715ad.112.2025.08.29.22.46.41
+ d9443c01a7336-2490658999fsm40852715ad.112.2025.08.29.22.46.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 22:46:43 -0700 (PDT)
+ Fri, 29 Aug 2025 22:46:46 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 45/84] target/arm: Support page protections for GCS mmu
- indexes
-Date: Sat, 30 Aug 2025 15:40:49 +1000
-Message-ID: <20250830054128.448363-46-richard.henderson@linaro.org>
+Subject: [PATCH v4 46/84] target/arm: Implement gcs bit for data abort
+Date: Sat, 30 Aug 2025 15:40:50 +1000
+Message-ID: <20250830054128.448363-47-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250830054128.448363-1-richard.henderson@linaro.org>
 References: <20250830054128.448363-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,53 +100,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Take read and write from the s1perms.gcs bit computed
-by the Arm pseudocode.
-
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ target/arm/tcg/tlb_helper.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index ccdf9076c3..62aaf0f792 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -1584,12 +1584,16 @@ static int get_S1prot_indirect(CPUARMState *env, S1Translate *ptw,
-         }
-     }
+diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
+index ae2acd6727..f1983a5732 100644
+--- a/target/arm/tcg/tlb_helper.c
++++ b/target/arm/tcg/tlb_helper.c
+@@ -28,7 +28,7 @@ static inline uint64_t merge_syn_data_abort(uint32_t template_syn,
+                                             ARMMMUFaultInfo *fi,
+                                             unsigned int target_el,
+                                             bool same_el, bool is_write,
+-                                            int fsc)
++                                            int fsc, bool gcs)
+ {
+     uint64_t syn;
  
--    if (perm & PAGE_WXN) {
-+    if (regime_is_gcs(mmu_idx)) {
-+        /*
-+         * Note that the one s1perms.gcs bit controls both read and write
-+         * access via AccessType_GCS.  See AArch64.S1CheckPermissions.
-+         */
-+        perm = (perm & PAGE_GCS ? PAGE_READ | PAGE_WRITE : 0);
-+    } else if (perm & PAGE_WXN) {
-         perm &= ~PAGE_EXEC;
-     }
+@@ -78,6 +78,7 @@ static inline uint64_t merge_syn_data_abort(uint32_t template_syn,
  
--    /* TODO: FEAT_GCS */
--
-     return perm & PAGE_RWX;
+     /* Form ISS2 at the top of the syndrome. */
+     syn |= (uint64_t)fi->dirtybit << 37;
++    syn |= (uint64_t)gcs << 40;
+ 
+     return syn;
  }
- 
-@@ -2236,6 +2240,13 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-              */
-             prot = get_S1prot_indirect(env, ptw, mmu_idx, pi, po,
-                                        result->f.attrs.space, out_space);
-+        } else if (regime_is_gcs(mmu_idx)) {
-+            /*
-+             * While one must use indirect permissions to successfully
-+             * use GCS instructions, AArch64.S1DirectBasePermissions
-+             * faithfully supplies s1perms.gcs = 0, Just In Case.
-+             */
-+            prot = 0;
-         } else {
-             int xn = extract64(attrs, 54, 1);
-             int pxn = extract64(attrs, 53, 1);
+@@ -252,9 +253,10 @@ void arm_deliver_fault(ARMCPU *cpu, vaddr addr,
+         syn = syn_insn_abort(same_el, fi->ea, fi->s1ptw, fsc);
+         exc = EXCP_PREFETCH_ABORT;
+     } else {
++        bool gcs = regime_is_gcs(core_to_arm_mmu_idx(env, mmu_idx));
+         syn = merge_syn_data_abort(env->exception.syndrome, fi, target_el,
+                                    same_el, access_type == MMU_DATA_STORE,
+-                                   fsc);
++                                   fsc, gcs);
+         if (access_type == MMU_DATA_STORE
+             && arm_feature(env, ARM_FEATURE_V6)) {
+             fsr |= (1 << 11);
 -- 
 2.43.0
 
