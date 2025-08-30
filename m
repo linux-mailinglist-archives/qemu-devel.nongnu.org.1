@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E43B3CDA0
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C6AB3CE69
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:52:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usOdq-0005yQ-Ud; Sat, 30 Aug 2025 12:41:31 -0400
+	id 1usOKa-0003fj-8T; Sat, 30 Aug 2025 12:21:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu@bonslack.org>) id 1usLSB-0001rX-Vx
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 09:17:12 -0400
+ (Exim 4.90_1) (envelope-from <qemu@bonslack.org>) id 1usLT0-0001xj-NS
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 09:18:02 -0400
 Received: from bonnix2.bonnix.it ([37.247.49.194])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <qemu@bonslack.org>) id 1usLSA-00034F-Ae
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 09:17:11 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 bonnix2.bonnix.it 43B7D243423
+ (envelope-from <qemu@bonslack.org>) id 1usLSy-00039I-TH
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 09:18:02 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 bonnix2.bonnix.it 742CA243428
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bonslack.org;
- s=20220805; t=1756559823;
- bh=TiPGb56e3fMUWmDZl8+EOwHvgPGIPIczeAmPR2GE1hE=;
+ s=20220805; t=1756559878;
+ bh=+w5ltWrAtgMYrK1G2SQXoN8OJLmBrzZSs1dk98DtHtA=;
  h=Date:From:Subject:To:Cc;
- b=R3BeK/tpgoCtSuIMCej+G5qL8hkt3cd2pxtNoDarCX7U7UbpXSG864euqjHaW4t+K
- vkhhblIGRd6z9ZER0qVPJ8UmA3ddRw+oix4zoCUEkGq1yVNufznJWQQGXEVB6rBegE
- JkDvG9MCAziFY596Hx8a3lY/bTjuRGL5uuO5uFUc=
+ b=2bx8ZK+uICq8lbcyCPybJuq2UqYg48CNsiPF9YkpfjkCTRkYOW/Uanct3TKw0UPlN
+ r2bjnOp9rYN2c8W9MDYzFOXS90RjVTPjkmpiDzSNHy9TfHFZNV3DabPDcjyPdOzbQr
+ 0sy7KqZQZRHhSszX8B4ivrVhicw2UHePg4Dc0UAA=
 Received: from [10.0.0.70] (ip190-129-198-217.pool-bba.aruba.it
  [217.198.129.190])
- by bonnix2.bonnix.it (Postfix) with ESMTPSA id 43B7D243423;
- Sat, 30 Aug 2025 15:17:03 +0200 (CEST)
-Message-ID: <5bee3c34-249a-449f-9b9c-c3bf98092d80@bonslack.org>
-Date: Sat, 30 Aug 2025 15:17:02 +0200
+ by bonnix2.bonnix.it (Postfix) with ESMTPSA id 742CA243428;
+ Sat, 30 Aug 2025 15:17:58 +0200 (CEST)
+Message-ID: <eabd3ca5-ee87-4c59-84f3-4ea0586d3775@bonslack.org>
+Date: Sat, 30 Aug 2025 15:17:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Luca Bonissi <qemu@bonslack.org>
-Subject: [PATCH 3/7] Add termios2 support to hppa target
+Subject: [PATCH 4/7] Add termios2 support to mips target
 To: Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>
 Cc: qemu-devel@nongnu.org
@@ -64,20 +64,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From 4e1fce768c62d36f32eb25e3c086f1c043a4e985 Mon Sep 17 00:00:00 2001
+From 7f4dc25d18880587a38bdd5ac81fc1a49354382e Mon Sep 17 00:00:00 2001
 From: Luca Bonissi <qemu@bonslack.org>
-Date: Sat, 30 Aug 2025 14:51:58 +0200
-Subject: [PATCH 3/7] Add termios2 support to hppa target
+Date: Sat, 30 Aug 2025 14:52:12 +0200
+Subject: [PATCH 4/7] Add termios2 support to mips target
 
 Signed-off-by: Luca Bonissi <qemu@bonslack.org>
 ---
- linux-user/hppa/termbits.h | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ linux-user/mips/termbits.h | 31 +++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/linux-user/hppa/termbits.h b/linux-user/hppa/termbits.h
-index 11fd4eed62..645f17bf63 100644
---- a/linux-user/hppa/termbits.h
-+++ b/linux-user/hppa/termbits.h
+diff --git a/linux-user/mips/termbits.h b/linux-user/mips/termbits.h
+index e8b4b58d87..27610f7c4d 100644
+--- a/linux-user/mips/termbits.h
++++ b/linux-user/mips/termbits.h
 @@ -18,6 +18,29 @@ struct target_termios {
      target_cc_t c_cc[TARGET_NCCS];         /* control characters */
  };
@@ -108,19 +108,21 @@ index 11fd4eed62..645f17bf63 100644
  /* c_iflag bits */
  #define TARGET_IGNBRK  0000001
  #define TARGET_BRKINT  0000002
-@@ -190,6 +213,12 @@ struct target_termios {
- #define TARGET_TIOCSBRK         0x5427 /* BSD compatibility */
- #define TARGET_TIOCCBRK         0x5428 /* BSD compatibility */
- #define TARGET_TIOCGSID         TARGET_IOR('T', 20, int)
+@@ -227,10 +250,10 @@ struct target_termios {
+ #define TARGET_TIOCSBRK	0x5427  /* BSD compatibility */
+ #define TARGET_TIOCCBRK	0x5428  /* BSD compatibility */
+ #define TARGET_TIOCGSID	0x7416  /* Return the session ID of FD */
+-#define TARGET_TCGETS2          TARGET_IOR('T', 0x2A, struct termios2)
+-#define TARGET_TCSETS2          TARGET_IOW('T', 0x2B, struct termios2)
+-#define TARGET_TCSETSW2         TARGET_IOW('T', 0x2C, struct termios2)
+-#define TARGET_TCSETSF2         TARGET_IOW('T', 0x2D, struct termios2)
 +#define TARGET_TCGETS2          TARGET_IOR('T', 0x2A, struct target_termios2)
 +#define TARGET_TCSETS2          TARGET_IOW('T', 0x2B, struct target_termios2)
 +#define TARGET_TCSETSW2         TARGET_IOW('T', 0x2C, struct target_termios2)
 +#define TARGET_TCSETSF2         TARGET_IOW('T', 0x2D, struct target_termios2)
-+#define TARGET_TIOCGRS485       TARGET_IOR('T', 0x2E, struct serial_rs485)
-+#define TARGET_TIOCSRS485       TARGET_IOWR('T', 0x2F, struct serial_rs485)
- #define TARGET_TIOCGPTN         TARGET_IOR('T', 0x30, unsigned int)
-         /* Get Pty Number (of pty-mux device) */
- #define TARGET_TIOCSPTLCK       TARGET_IOW('T', 0x31, int)
+ #define TARGET_TIOCGRS485       TARGET_IOR('T', 0x2E, struct serial_rs485)
+ #define TARGET_TIOCSRS485       TARGET_IOWR('T', 0x2F, struct serial_rs485)
+ #define TARGET_TIOCGPTN	TARGET_IOR('T',0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
 -- 
 2.50.1
 
