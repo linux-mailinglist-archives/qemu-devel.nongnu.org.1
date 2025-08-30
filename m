@@ -2,88 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F811B3CD76
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B16B3CC60
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 17:54:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNqW-0001MW-Ji; Sat, 30 Aug 2025 11:50:29 -0400
+	id 1usNrP-0002aa-LV; Sat, 30 Aug 2025 11:51:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
- id 1usBg5-0003c9-Vj; Fri, 29 Aug 2025 22:50:54 -0400
-Received: from mail-qk1-x72a.google.com ([2607:f8b0:4864:20::72a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
- id 1usBg4-00088D-82; Fri, 29 Aug 2025 22:50:53 -0400
-Received: by mail-qk1-x72a.google.com with SMTP id
- af79cd13be357-7f7e89e4b37so260077485a.3; 
- Fri, 29 Aug 2025 19:50:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1756522251; x=1757127051; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Qwx7Non1RKQkij6XP/CEOZXUJ1kdTiRPKXDqDi7L1NE=;
- b=eC2kBaebvVPOntPMu/wiDcHeLqhB5umi4Dt12j45XToWzyjP8MjWltHmbekhWJHjDJ
- 0vOPCvD181/s0nmHWTGrL1hmcf3CnMWGKQhySLSuTxnwCkV0NvSXKMKUDOUwZMdlkLPy
- 50vjYSHrGdPiIBR6QsuW5Oe04BWztCxm//xccJxDMnXE5I9CmH8fGNZWR156oNJvfzd9
- nbtNv8qYcyGklztInWF05OBgpfUncB0IP972NCOl5QhkEk/3JtLLM4VkdEWh5QErX6yy
- l59j3D2t4M4HAU7JoGysDqhhBL4YZyesyfLpCqS7FFzqd+ZKJM5Bvs3b5Z4yfHtI4NOa
- ZHcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756522251; x=1757127051;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Qwx7Non1RKQkij6XP/CEOZXUJ1kdTiRPKXDqDi7L1NE=;
- b=djehV/yDWN8TkMpftauWuX3X/DbEFDtVKS2Mt63QR221bmYqYNvVpPGlNcrBgyJ2R4
- wdADN7+ivVX73yNcT0q99EFN0ghl8Nlmd1Xd9483WIT+7ZfSin0eqy7FnyMRoek3t0Ss
- kNQZOdXnN5LDex1fVled2ykXHTDszUkALw4z1MSj1ZURisLvc+e6OiyJe+/BAkX1FdHZ
- 0nqjjzgY+oasXhPFnlkGzT/xn3I7j464HwY7dRPCHZMohud4fqDu/FSbTKWVeF7958om
- VutRJq0bgVWGMNBouPQ+hDZ/p52tWEcoykfakK3oTmX1HxKWcd+h91G+q+7cMNU6CQOk
- c7SA==
-X-Gm-Message-State: AOJu0YzGz3NjIS7x/cPmJwNQ8iMY0T+MDXQc7B0t7YNsX73cm9RjiJAx
- 2IC3vj5ykjBsRdI/SN9cUuqCGsOmnR0yLeQPmNo9ucsL5Qf/GrS+pseTwT/X6Q==
-X-Gm-Gg: ASbGncsMT41rh82lAMgxFazwtGbHe/9rQQYs+ubZydIMquVkNSp9dLjerrSDs4o468V
- 8LWkrsYuqoamk68VvSSYBA4Ur4VgYoku9wCrhDfaGUPOGXNwCVMfejY4dFwzUJ9BRDnHANJ3mjn
- dNRUrhnyMdelOYI4j3PA2FJTBkUulY8dJ9fbT07o/WAaXqBKFJ+wqfrOyeCrCbgs/nuytDYb+/z
- huwysQ0+kDHF1ZENFYGtOE8yjl2w5ajHcBajASOUeXc5wpaOUjiB9MbW41kaRZUlXkMA1M2yw11
- ZK8cx3kaIVu6a0Oq0SGJeJZus4xPzVbtrDC6C1dh6WHoOV+CoQYg7doQwH8fk4oz49XJ2k+Fufv
- fxM3fydtZ4+4jClTFHT/8CeQRo64Wi3AM4y4MiyUQ/14rjPoITJdSlMOkSgbPiMwP0HEheBIefK
- blolxYpGAp4swrV5lbchqhyJKbW4w=
-X-Google-Smtp-Source: AGHT+IGXDfsIf0avkJ5sxwRhCFbRVyU9krZ2QlADQXNxoBq7/CyDcVLwJmFFJEogH/CEImWaTWSjyg==
-X-Received: by 2002:a05:620a:7010:b0:7e9:f81f:ce72 with SMTP id
- af79cd13be357-7ff2ccd09e3mr99786185a.72.1756522250697; 
- Fri, 29 Aug 2025 19:50:50 -0700 (PDT)
-Received: from localhost.localdomain
- (wn-campus-nat-129-97-124-90.dynamic.uwaterloo.ca. [129.97.124.90])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7fc0eacf1b4sm299457085a.21.2025.08.29.19.50.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 19:50:50 -0700 (PDT)
-From: Brian Song <hibriansong@gmail.com>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, bernd@bsbernd.com,
- fam@euphon.net, hibriansong@gmail.com, hreitz@redhat.com, kwolf@redhat.com,
- stefanha@redhat.com
-Subject: [PATCH 4/4] iotests: add tests for FUSE-over-io_uring
-Date: Fri, 29 Aug 2025 22:50:25 -0400
-Message-ID: <20250830025025.3610-5-hibriansong@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250830025025.3610-1-hibriansong@gmail.com>
-References: <20250830025025.3610-1-hibriansong@gmail.com>
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1usBho-0003og-5K
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 22:52:40 -0400
+Received: from fhigh-b8-smtp.messagingengine.com ([202.12.124.159])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1usBhl-0008En-Nu
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 22:52:39 -0400
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+ by mailfhigh.stl.internal (Postfix) with ESMTP id 151947A013F;
+ Fri, 29 Aug 2025 22:52:34 -0400 (EDT)
+Received: from phl-imap-08 ([10.202.2.84])
+ by phl-compute-06.internal (MEProxy); Fri, 29 Aug 2025 22:52:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm2; t=1756522353;
+ x=1756608753; bh=EW5ADFusadMyzkyvSlveU4fNtMRwtxTq406ASshOFpM=; b=
+ mRtytAaQQO2FcDqVmec7kMRba1IqF18PFtN9aUMe5WRZ1iKKfbAJ00KbBYxpj+AC
+ tpPfuNBBH/7MNidvXYx5LLvcOpMKTAO+ozD84BfGwEdtcze2sebGvuykhYBTc/IC
+ US2raP2RdiBTy0QMgmt6FuKH2WDw29nTANYSYGjGvFSuMYHavg5lHWO4JoaTwnhf
+ WtHgWE54mxNesc7ofAEN6WA4w2Ap+Deznc7IAa/SRrfWKOUqxExSepSgj7fN6Iin
+ bg7KvWBPnFQ8m35nHIEeNAZuCl1szq7ssXyCJRKsfuOBjUYlWUuLiK/9Q2XNo+sM
+ 7cvSua0hCLDavtwvjujVOA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1756522353; x=
+ 1756608753; bh=EW5ADFusadMyzkyvSlveU4fNtMRwtxTq406ASshOFpM=; b=O
+ UH7qGxWxTPaAPTNDbpC57LWKzV8tlkQ0luOkdRT4ruVctE8jeTzMrhnVkrOxI5rl
+ WgAqW8QnkL0TFO4RwphwhpDsDmc//p2mGIfHYDesmS8f4Ojw+16x21hEpNCA0xJ9
+ 5nYBOVstBnmtQuWzLNjcjVaAKY70D3M4AazA0/hj17/uQFkcSTpihefXNE+OmCa1
+ +0Li4ng+7LuOn8WOsn1HRmA+5zZbQVfXp/GNDv7dbyEN3950epWGXQLS6+8pECns
+ 58szPH0tjzvbPrbS7Y8rgWU5g+NTfwN7M0LkkdUCGt08rmZ1o9aMIgA8t/PXx1i0
+ W9v5crw+38CCTx07nX3mg==
+X-ME-Sender: <xms:cWeyaFHXxzCVQk_2rDkrdWepNaqcn9SRUYydoyOPXlH1dJMFiC61Mg>
+ <xme:cWeyaKWPK1V2J2W2i1pyd3JC_QZVeVMG-0tct0UUA860lvoUw4qsg3YPi5TOwUVKZ
+ efU7vpcvQ4nw3pMCtw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddukeehvdefucetufdoteggodetrf
+ dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+ rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+ gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedflfhirgig
+ uhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
+ cuggftrfgrthhtvghrnhepjeehfeduvddtgffgvdffkeethefhlefgvdevvdekuefffeek
+ heehgeevhfevteejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+ hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomhdpnhgspghrtghp
+ thhtohepiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphhhihhlmhgusehlih
+ hnrghrohdrohhrghdprhgtphhtthhopeguvghvvghlsehlihhsthhsrdhlihgsvhhirhht
+ rdhorhhgpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprh
+ gtphhtthhopehjrghsohifrghnghesrhgvughhrghtrdgtohhmpdhrtghpthhtohepphgs
+ ohhniihinhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehthhhuthhhsehrvgguhh
+ grthdrtghomh
+X-ME-Proxy: <xmx:cWeyaFg62RIwW-eit4qgKVL-uFIBsl7jySkrKTU0HTZhg-pyfjLH6A>
+ <xmx:cWeyaKy2frBqI8T8wjFE88Y_ZvN416Q4rG2e-z92ogvqbTmOto-ZsQ>
+ <xmx:cWeyaBNu0htC9K11c0OsIvH9p6l15IGhWoiYbACqjZ5apYNtRd7E_g>
+ <xmx:cWeyaLVmCukXkxFzroI5fetep0BReGBDGg5zPj4TpkL26wv_gz_Wjg>
+ <xmx:cWeyaIxj0gHjkbOd9aj-50runqr9zCaxdjDdNPvyepRI1HZMVFpXGUZr>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+ id 3E63C2CE0078; Fri, 29 Aug 2025 22:52:33 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72a;
- envelope-from=hibriansong@gmail.com; helo=mail-qk1-x72a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-ThreadId: AlYk8EVD7EFJ
+Date: Sat, 30 Aug 2025 10:52:13 +0800
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "QEMU devel" <qemu-devel@nongnu.org>
+Cc: devel@lists.libvirt.org, "Paolo Bonzini" <pbonzini@redhat.com>,
+ "Thomas Huth" <thuth@redhat.com>, "Jason Wang" <jasowang@redhat.com>
+Message-Id: <6ed130fe-7ddc-46ba-aefd-832ef87971ad@app.fastmail.com>
+In-Reply-To: <20250828143800.49842-1-philmd@linaro.org>
+References: <20250828143800.49842-1-philmd@linaro.org>
+Subject: Re: [PATCH 0/2] hw/mips: Remove mipssim machine and mipsnet device
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=202.12.124.159;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fhigh-b8-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,97 +112,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To test FUSE-over-io_uring, set the environment variable
-FUSE_OVER_IO_URING=1. This applies only when using the
-'fuse' protocol.
 
-$ FUSE_OVER_IO_URING=1 ./check -fuse
 
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
-Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Brian Song <hibriansong@gmail.com>
----
- tests/qemu-iotests/check     |  2 ++
- tests/qemu-iotests/common.rc | 45 +++++++++++++++++++++++++++---------
- 2 files changed, 36 insertions(+), 11 deletions(-)
+=E5=9C=A82025=E5=B9=B48=E6=9C=8828=E6=97=A5=E5=91=A8=E5=9B=9B =E4=B8=8B=E5=
+=8D=8810:37=EF=BC=8CPhilippe Mathieu-Daud=C3=A9=E5=86=99=E9=81=93=EF=BC=9A
+> mipssim machine (single user of  mipsnet device) is
+> deprecated since v10.0; remove for 10.2.
+>
+> Philippe Mathieu-Daud=C3=A9 (2):
+>   hw/mips: Remove mipssim machine
+>   hw/net: Remove mipsnet device model
 
-diff --git a/tests/qemu-iotests/check b/tests/qemu-iotests/check
-index 545f9ec7bd..c6fa0f9e3d 100755
---- a/tests/qemu-iotests/check
-+++ b/tests/qemu-iotests/check
-@@ -94,6 +94,8 @@ def make_argparser() -> argparse.ArgumentParser:
-         mg.add_argument('-' + fmt, dest='imgfmt', action='store_const',
-                         const=fmt, help=f'test {fmt}')
- 
-+    # To test FUSE-over-io_uring, set the environment variable
-+    # FUSE_OVER_IO_URING=1. This applies only when using the 'fuse' protocol
-     protocol_list = ['file', 'rbd', 'nbd', 'ssh', 'nfs', 'fuse']
-     g_prt = p.add_argument_group(
-         '  image protocol options',
-diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
-index e977cb4eb6..f8b79c3810 100644
---- a/tests/qemu-iotests/common.rc
-+++ b/tests/qemu-iotests/common.rc
-@@ -539,17 +539,38 @@ _make_test_img()
-         touch "$export_mp"
-         rm -f "$SOCK_DIR/fuse-output"
- 
--        # Usually, users would export formatted nodes.  But we present fuse as a
--        # protocol-level driver here, so we have to leave the format to the
--        # client.
--        # Switch off allow-other, because in general we do not need it for
--        # iotests.  The default allow-other=auto has the downside of printing a
--        # fusermount error on its first attempt if allow_other is not
--        # permissible, which we would need to filter.
--        QSD_NEED_PID=y $QSD \
--              --blockdev file,node-name=export-node,filename=$img_name,discard=unmap \
--              --export fuse,id=fuse-export,node-name=export-node,mountpoint="$export_mp",writable=on,growable=on,allow-other=off \
--              &
-+        if [ -n "$FUSE_OVER_IO_URING" ]; then
-+            nr_cpu=$(nproc 2>/dev/null || echo 1)
-+            nr_iothreads=$((nr_cpu / 2))
-+            if [ $nr_iothreads -lt 1 ]; then
-+                nr_iothreads=1
-+            fi
-+
-+            iothread_args=""
-+            iothread_export_args=""
-+            for ((i=0; i<$nr_iothreads; i++)); do
-+                iothread_args="$iothread_args --object iothread,id=iothread$i"
-+                iothread_export_args="$iothread_export_args,iothread.$i=iothread$i"
-+            done
-+
-+            QSD_NEED_PID=y $QSD \
-+                    $iothread_args \
-+                    --blockdev file,node-name=export-node,filename=$img_name,discard=unmap \
-+                    --export fuse,id=fuse-export,node-name=export-node,mountpoint="$export_mp",writable=on,growable=on,allow-other=off,io-uring=on$iothread_export_args \
-+                &
-+        else
-+            # Usually, users would export formatted nodes.  But we present fuse as a
-+            # protocol-level driver here, so we have to leave the format to the
-+            # client.
-+            # Switch off allow-other, because in general we do not need it for
-+            # iotests.  The default allow-other=auto has the downside of printing a
-+            # fusermount error on its first attempt if allow_other is not
-+            # permissible, which we would need to filter.
-+            QSD_NEED_PID=y $QSD \
-+                --blockdev file,node-name=export-node,filename=$img_name,discard=unmap \
-+                --export fuse,id=fuse-export,node-name=export-node,mountpoint="$export_mp",writable=on,growable=on,allow-other=off \
-+                &
-+        fi
- 
-         pidfile="$QEMU_TEST_DIR/qemu-storage-daemon.pid"
- 
-@@ -592,6 +613,8 @@ _rm_test_img()
- 
-         kill "${FUSE_PIDS[index]}"
- 
-+        sleep 1
-+
-         # Wait until the mount is gone
-         timeout=10 # *0.5 s
-         while true; do
--- 
-2.45.2
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
+I should really give another go for MIPS virt machine :-)
+
+Thanks
+Jiaxun
+
+>
+>  MAINTAINERS                             |   6 -
+>  docs/about/deprecated.rst               |  12 -
+>  docs/about/removed-features.rst         |   5 +
+>  docs/system/target-mips.rst             |  11 -
+>  configs/devices/mips-softmmu/common.mak |   1 -
+>  hw/mips/mipssim.c                       | 249 --------------------
+>  hw/net/mipsnet.c                        | 297 ------------------------
+>  hw/mips/Kconfig                         |   7 -
+>  hw/mips/meson.build                     |   1 -
+>  hw/net/Kconfig                          |   3 -
+>  hw/net/meson.build                      |   1 -
+>  hw/net/trace-events                     |   7 -
+>  12 files changed, 5 insertions(+), 595 deletions(-)
+>  delete mode 100644 hw/mips/mipssim.c
+>  delete mode 100644 hw/net/mipsnet.c
+>
+> --=20
+> 2.51.0
+
+--=20
+- Jiaxun
 
