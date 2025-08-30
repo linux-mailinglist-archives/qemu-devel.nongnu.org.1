@@ -2,85 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1641BB3CE15
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 581CBB3CE56
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:43:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNs6-0003FV-IU; Sat, 30 Aug 2025 11:52:07 -0400
+	id 1usNpg-00072B-KL; Sat, 30 Aug 2025 11:49:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usBtu-0005fY-Ai
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:05:10 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1usC0c-0007Jt-Ij
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:12:06 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1usBtr-0000t7-TV
- for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:05:10 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-327f87275d4so1043964a91.1
- for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 20:05:06 -0700 (PDT)
+ id 1usC0a-0001Th-O4
+ for qemu-devel@nongnu.org; Fri, 29 Aug 2025 23:12:06 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-24457fe9704so28628565ad.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Aug 2025 20:12:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756523105; x=1757127905; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756523522; x=1757128322; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ukwoa5IccIQRUQm4QP0hSlkeC5H/N2q8r0mqAtwgM8w=;
- b=rBHB4jfQNBlCTjbGu3pr0F7eCKyoFGB5Me9t3cperBlAPiqGUk6A89cDM/lGo5xTCz
- /x21WzKI9DADcx7wHsAUgjpcMyUCLkcMW6v0kuoE1kuD95KFc1GJl1mHHSwn81Ns77Fr
- 1VtObUehSfewHt4iz1N5klPVnSpsVQzUHYnrzE67Uid4S26xukCfCKgn5SXPtQZsudG4
- s8vwvvMYrKzVEJUp2Mn4sAnS9cw9Q10nBT7O2xb5GmTpDlW5s5nOqfhtLcgAXoKqwaWZ
- R4n/os3D3Lk6BDEnEyM7V73/x0s0BhFnMYo50r6gLiKtpjZNb4HN84l93KZjGh8XP+gN
- Y2QQ==
+ bh=W93BYCdUb+ss8Guv9YFZD35WMY45GW2bvrGgSXT5vaA=;
+ b=kmSsIlrz35T0RI6aqU01gJEeSH0x1kMY6pnL/yPjqY24fX5ga1xEcWUMt2b0uCHFtt
+ AKGFTj9xAhQ+ulerg0AQponW9DXsFLXQAWyRkSqGavUSEWMQV6Gu9PMMLZUH2F11Sv0y
+ aD+Bf3STXWsFGZhHPfsEMJ6uX6hw3sM35bMtf0facFe2CqFuEwXbQNxXv29MZOhNOWeY
+ vqW8m9h90DU14BKJWTkATW8Gj+M3aVaKS8O8s70wxhfJqz469S2UHliNQZJKlcoAvK2/
+ yIypRxBJtwcdKNqyEWUcKN+/1bNNTTKNRIGwH+CpkwUO+exIt+SMksq0e2dQni3npl3R
+ rkOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756523105; x=1757127905;
+ d=1e100.net; s=20230601; t=1756523522; x=1757128322;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ukwoa5IccIQRUQm4QP0hSlkeC5H/N2q8r0mqAtwgM8w=;
- b=nxJ6bD58RxB8S/z4BlEZX8pexv/YubdLnh4cOs4DeaiTmmzd33ixHTk9HBc/830UDY
- O4m3Ii7S45T/fQi3L0prdUlx0GkHvmt0wa3/Ihqisi4I53jJ8g+OxUy5K2ELrBcgTjsP
- nlOEW/byIvkXEdU5T21jhGl8MlJ61yjftAHXzZ2WUCKyNHpxg6ciZAXpnSZKDwZM3wmJ
- 8jgDmNp/8WlEa+wtz3Z9rpGJd2BUSrYuoKL2Tv3l5AwU4ALp9EesIJxLXkuko0s8g6Nx
- rgXsytrnG3xyCZnmvPwMTcOw35N9taIZ2+MFATm1r7mALM14ei49BRgZs2A0smFDQba0
- KDUg==
-X-Gm-Message-State: AOJu0YxOGWVbM9QNIhogTHutOa6E4CaNi8fPZoBl5/0wtgng7LUK9jSI
- rtE68CrxgNEAr8Vr2QpX5kaDF6ZczzrlgZnP0bcQlYL3WjrhgHrZVHzvFbZ4SV52vpM=
-X-Gm-Gg: ASbGnctMmLAzNsvBrGHNKs0IAzxv3n0RLWmAvbs0dG67mi3tJ+N+2gpyBQ158vRag3w
- 2S1/3fXuFjnIiSU2oY74AQX7sIAd50+QMdRpcdWe23Yl4DXYsu6z9P9z+EWRogy1H/k0wNj6Dcg
- XzgvM9YfF8/0q/qzJCb8WUe6uQ6lU676jMRiLYynXeZNwtsPH6VxPS2e1OoWfwoWeXymaRgxKUT
- VX2+gqPOuawnQY1AtNvmppPmb4vQFW4tYMCWh1qFoRQd5fHe47zE9oRxRiWYVQ0N2icwfJ+m2yB
- LIrLqXNDPBfTLnEJK/EW0cP/dA5QkZWOD0Gn8VW+F3FtuMSGGSWgKyM1MP9ppScwcft6JCAXL0A
- rwRRkrFRHhM1ofCExSRuh2KylbQy9KKhKQEdJIbwjfO+3Xi6ClWE1jOdfYp6J2BQjUi0u2tTeL3
- FkcaxQ
-X-Google-Smtp-Source: AGHT+IEzfp7qlunCOvR6feN2SYtSLTG6mmqrVdH3YBk8Aegq3LeCr/LBWVCYFtkfgQJGcrS6b2BAcQ==
-X-Received: by 2002:a17:90b:2252:b0:327:edde:609e with SMTP id
- 98e67ed59e1d1-3281543caffmr1430482a91.12.1756523105311; 
- Fri, 29 Aug 2025 20:05:05 -0700 (PDT)
-Received: from [10.118.1.198] (122-150-204-12.dyn.ip.vocus.au.
- [122.150.204.12]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-77231f40553sm2745121b3a.43.2025.08.29.20.05.02
+ bh=W93BYCdUb+ss8Guv9YFZD35WMY45GW2bvrGgSXT5vaA=;
+ b=pqP7kpmVSPNsl5DirzQXSESknDq6v2LkU5RwiCwxlAW6DHprYEvlEGL7mRd5ep0pcI
+ 6Ws37CeTJaRBnSH8Yz0BtmnO5nu4knRtXaMePBiNPFxYGFKgBMvHSHnfgynWNVp1zULd
+ HdOiYQjpAoQXRh1VgadD3RL9HBOw/V4H9rmWOG9IDVE8+w1714Z0m2ruIGL+vr9xoJiD
+ +doQpzbnoJyyurINOvz3UKv4EtVwY9kbd7U8rZ26wHv3+NxeqKOC0SiehQKWhyFTqWYT
+ yEa+uHymAFmI7X9yfUJZklvKWC60Q0Rqd0P6Gmy+2kPrw63W5lq8XE+hE4sBZ52qcCPk
+ AJLQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUVkAYVj0BoOpJlVGp/5Yr+3u3LHGpBSIw0NUxoP8RKNSH3L+7c0c9OCofKIONLvPjDN/SXZkIXBQjR@nongnu.org
+X-Gm-Message-State: AOJu0YwrFcDv5ZWD8/Z2p1u1Ch0AHVtYFYSRpQlhQryoLvGvzra1O9MQ
+ HfJcBcm+4OQxSqXtSj5/69CWLiQLEcEWoFZrlcvF4O97tAxOI4YY6Ro38seOVQWi+kI=
+X-Gm-Gg: ASbGncvgPEXZaKILaWnXW03z7UIbMNvHioHiZi83c5KzIr82JD4gnRahm18OcP90YtY
+ z40BqmwVuJZl9l0LccvPcK7Y/aJykJOlaBhZN9xQiKFwgr6DOthETzKmIj3kPYzlfiw9wlNRCry
+ AfL9lAB9jQPO3nEtR61xmKE+mp0BF3Pv8eJIOaHfoGfhOqWUZlGnTqaVgYVt9VAXu8cSNYh9JHY
+ iBEsER6VizRExN66AIyPVkctbAT0peeYfP+7Cj8r3/DO7sf4yMhXE6IAO1oP4AdX2mibwfIXJLG
+ Y3q6yGkL4aOn8Jfg4iiqsILuvhtXjGESH4IEOT7DoZdDgi3da9QvFv6az/2f4FSwxA0qBwrR6nc
+ rmX7zqi0gtdQzxgb6s04pAiJsJkYpSWJp74UhDmwKn+DD6TQKFQdBZgg0BWZnvacCIEKSGXhUk1
+ U67EVu
+X-Google-Smtp-Source: AGHT+IH4wRgt2YdrgXMyrFQrfMonHWeBtRVet+XOXL06Chw+3SIAkyduF7+3uL5wvSsVl6BUODuv2w==
+X-Received: by 2002:a17:903:944:b0:240:11cd:8502 with SMTP id
+ d9443c01a7336-249448cfba5mr7920945ad.13.1756523522296; 
+ Fri, 29 Aug 2025 20:12:02 -0700 (PDT)
+Received: from [10.118.1.198] (122-150-204-64.dyn.ip.vocus.au.
+ [122.150.204.64]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2490373e321sm39053745ad.55.2025.08.29.20.11.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Aug 2025 20:05:04 -0700 (PDT)
-Message-ID: <32f69f26-ff0e-4615-9711-d30f41f67f8e@linaro.org>
-Date: Sat, 30 Aug 2025 13:04:44 +1000
+ Fri, 29 Aug 2025 20:12:01 -0700 (PDT)
+Message-ID: <b48aad39-d408-4666-9b19-e8f1fedf1a47@linaro.org>
+Date: Sat, 30 Aug 2025 13:11:56 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/18] cpus: properly kick CPUs out of inner execution loop
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, imammedo@redhat.com
-References: <20250829152909.1589668-1-pbonzini@redhat.com>
- <20250829153115.1590048-10-pbonzini@redhat.com>
- <743782b5-1e3b-4b63-afe2-4ad1da333bde@linaro.org>
- <CABgObfYG=Aaz2ujr4xeuKgUqM35tF_2nS-W+v6bjYQJ4xMsvRg@mail.gmail.com>
+Subject: Re: [PULL 18/28] target: Use cpu_pointer_wrap_notreached for strict
+ align targets
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: Helge Deller <deller@gmx.de>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20250528081410.157251-1-richard.henderson@linaro.org>
+ <20250528081410.157251-19-richard.henderson@linaro.org>
+ <dee8def3-3ff7-4a86-8bcc-430f3775c1c3@tls.msk.ru>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <CABgObfYG=Aaz2ujr4xeuKgUqM35tF_2nS-W+v6bjYQJ4xMsvRg@mail.gmail.com>
+In-Reply-To: <dee8def3-3ff7-4a86-8bcc-430f3775c1c3@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,72 +107,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/25 09:05, Paolo Bonzini wrote:
-> On Fri, Aug 29, 2025 at 11:57 PM Richard Henderson
-> <richard.henderson@linaro.org> wrote:
+On 8/29/25 16:55, Michael Tokarev wrote:
+> On 28.05.2025 11:14, Richard Henderson wrote:
+>> Alpha, HPPA, and SH4 always use aligned addresses,
+>> and therefore never produce accesses that cross pages.
 >>
->> On 8/30/25 01:31, Paolo Bonzini wrote:
->>> @@ -624,8 +624,7 @@ static target_ulong h_confer(PowerPCCPU *cpu, SpaprMachineState *spapr,
->>>        }
->>>
->>>        cs->exception_index = EXCP_YIELD;
->>> -    qatomic_set(&cs->exit_request, true);
->>> -    cpu_loop_exit(cs);
->>> +    cpu_exit(cs);
->>>
->>>        return H_SUCCESS;
->>>    }
->>
->> cpu_loop_exit does a longjmp; cpu_exit does not.
->>
->> This may be a bug fix, but it's hard to tell.
->> If it is a bug fix, it should be separated.
+>> Cc: Helge Deller <deller@gmx.de>
+>> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > 
-> The longjmp is overkill but works. Not doing the longjmp also works
-> because gen_sc() finishes the TB and then you go all the way (check
-> interrupt_request -> check exit_request -> write exception_index ->
-> cpu_exec_end) out of tcg_cpu_exec().
+> This seems to broke booting debian on alpha, -- see
+> https://bugs.debian.org/1112285 .  I weren't able to repro it
+> though, - asked the OP to get a backtrace.
 
-Ok.
-
-> 
-> I like cpu_loop_exit() to signify that I am in the middle of the TB.
-
-Agreed.  I suspect we over-use longjmp and could perhaps do better at simply returning up 
-the call-stack.
-
-
-> That said, I'm always conflicted between renaming badly-named
-> functions and keeping historical names. qemu_wait_io_event() is also
-> horrible.
-
-...
-
-> 
->>> +++ b/system/cpu-timers.c
->>> @@ -246,14 +246,14 @@ void qemu_timer_notify_cb(void *opaque, QEMUClockType type)
->>>
->>>       if (qemu_in_vcpu_thread()) {
->>>           /*
->>> -         * A CPU is currently running; kick it back out to the
->>> +         * A CPU is currently running; kick it back out of the
->>>            * tcg_cpu_exec() loop so it will recalculate its
->>>            * icount deadline immediately.
->>>            */
->>> -        qemu_cpu_kick(current_cpu);
->>> +        cpu_exit(current_cpu);
->>
->> where the comment still says kick and we're replacing kick with exit.
->>
->> I guess the root of this problem is that "kick" isn't a precise term, we ought to name it
->> something else, and we should paint the bike shed green.
-> 
-> Yes, I agree. "send it out of" can work too in this case, I'll chanbge it.
-
-I was actually talking about renaming qemu_cpu_kick.
-But per above, that's hard.  :-)
-
-I guess just updating the comment is fine for now.
+Ok.  I haven't reproduced this either.
+Let me know if you get more information.
 
 
 r~
