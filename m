@@ -2,81 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD7AB3CDBD
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20500B3CE5C
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:45:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usO7Z-00072U-CX; Sat, 30 Aug 2025 12:08:05 -0400
+	id 1usOQg-0000k4-GW; Sat, 30 Aug 2025 12:27:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1usGpc-0008Oa-IV
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 04:21:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1usGpY-000184-AE
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 04:21:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756542058;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=W56OVayfjtw3+UpoJKq7dLcaG+IStwODUGMsVrNF4vQ=;
- b=J2Ts+0SgeP2FDJMZMb41jGTzIYfopLP2wNvalH7h5Dy29mO2excoiFRk8/r1uaEEoATktg
- doSrWgYwrtyxgJddOZSAnzBJcih9O8KIjSKhohu8xD6KrmbeJ9MrAfTf03xat90bN4R3D/
- 80P/a+gy0OhIK6e0QWqUJOFPHOwoL/4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-328-380lnrq5NoiiOOJ22Ztgww-1; Sat,
- 30 Aug 2025 04:20:53 -0400
-X-MC-Unique: 380lnrq5NoiiOOJ22Ztgww-1
-X-Mimecast-MFC-AGG-ID: 380lnrq5NoiiOOJ22Ztgww_1756542051
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E530C180047F; Sat, 30 Aug 2025 08:20:50 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.4])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3E5331800446; Sat, 30 Aug 2025 08:20:50 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AA4BF21E6A27; Sat, 30 Aug 2025 10:20:47 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Mads Ynddal
- <mads@ynddal.dk>,  Alex
- =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,  Stefan Hajnoczi
- <stefanha@redhat.com>
-Subject: Re: [PATCH v4 7/7] qapi: switch to use QEMU_TEST_REGENERATE env var
-In-Reply-To: <20250819161053.464641-8-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Tue, 19 Aug 2025 17:10:53
- +0100")
-References: <20250819161053.464641-1-berrange@redhat.com>
- <20250819161053.464641-8-berrange@redhat.com>
-Date: Sat, 30 Aug 2025 10:20:47 +0200
-Message-ID: <87seh9cja8.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1)
+ (envelope-from <bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net>)
+ id 1usI2y-0007ow-4u
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 05:38:56 -0400
+Received: from m204-227.eu.mailgun.net ([161.38.204.227])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1)
+ (envelope-from <bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net>)
+ id 1usI2w-0002MS-0v
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 05:38:55 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=0x65c.net; q=dns/txt;
+ s=email; t=1756546731; x=1756553931; 
+ h=Content-Transfer-Encoding: Content-Type: MIME-Version: Message-ID: Date:
+ Subject: Subject: Cc: To: To: From: From: Sender: Sender; 
+ bh=/HYEUGSfsPIIVlhCbmnNtY/cUpksb10S6fvArjj8hsI=;
+ b=bhHtN7gDuEdHHBn+spD6lPCMbSCKOmQSFjo91PUhna/NqJpM8A+7R0tgGDtZyvWG4pgyLrbkG1cEWMvGLw6McpgPn9CtjqGRQwiAoDudZZOec1aQlSaYxOlHtDIRBeJIwey9XLGmDRtJ1QAEHd374sZCc2NkKMTBGnjWk0Gb37qWPxsDrUnNn+sOzdZvTyGdXewfI3sTSPMfialikyTIl6nWMQmnllBRfwuzQbge1yy00SJtaeM5FTall95x956kDDbgO7uZoPmRTROqgUHAr8jtZMlTHHrlLPtyMk351pqi0XVK5DP0YldUN2MAwyyfyVzVnI/3AAyU0MspV0GeGQ==
+X-Mailgun-Sid: WyJiNjdhNCIsInFlbXUtZGV2ZWxAbm9uZ251Lm9yZyIsIjU0ZWY0Il0=
+Received: from fedora (pub082136115007.dh-hfc.datazug.ch [82.136.115.7]) by
+ 93518a5527e07c5c8c323cd912038c47e23a9b50108f025ab03e83a0b0c23c7b with SMTP id
+ 68b2c6abdcefa73eceecbfa4; Sat, 30 Aug 2025 09:38:51 GMT
+X-Mailgun-Sending-Ip: 161.38.204.227
+From: Alessandro Ratti <alessandro@0x65c.net>
+To: qemu-devel@nongnu.org
+Cc: alessandro.ratti@gmail.com
+Subject: [PATCH] virtio: prefix error messages with "virtio:" 
+Date: Sat, 30 Aug 2025 11:31:46 +0200
+Message-ID: <20250830093844.452039-1-alessandro@0x65c.net>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=161.38.204.227;
+ envelope-from=bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net;
+ helo=m204-227.eu.mailgun.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sat, 30 Aug 2025 09:06:12 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,96 +68,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> The QAPI_TEST_UPDATE env var can be set when running the QAPI
-> schema tests to regenerate the reference output. For consistent
-> naming with the tracetool test, change the env var name to
-> QEMU_TEST_REGENERATE.
->
-> The test is modified to provide a hint about use of the new
-> env var and it is also added to the developer documentation.document its =
-usage.
->
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> ---
->  docs/devel/testing/main.rst    | 12 ++++++++++++
->  tests/qapi-schema/test-qapi.py |  7 +++++--
->  2 files changed, 17 insertions(+), 2 deletions(-)
->
-> diff --git a/docs/devel/testing/main.rst b/docs/devel/testing/main.rst
-> index 11f05c0006..0662766b5c 100644
-> --- a/docs/devel/testing/main.rst
-> +++ b/docs/devel/testing/main.rst
-> @@ -178,6 +178,18 @@ parser (either fixing a bug or extending/modifying t=
-he syntax). To do this:
->=20=20
->    ``qapi-schema +=3D foo.json``
->=20=20
-> +The reference output can be automatically updated to match the latest QA=
-PI
-> +code generator by running the tests with the QEMU_TEST_REGENERATE enviro=
-nment
-> +variable set.
-> +
-> +.. code::
-> +
-> +   QEMU_TEST_REGENERATE=3D1 make check-qapi-schema
-> +
-> +The resulting changes must be reviewed by the author to ensure they match
-> +the intended results before adding the updated reference output to the
-> +same commit that alters the generator code.
-> +
->  .. _tracetool-tests:
->=20=20
->  Tracetool tests
+Hi,
 
-Appreciated, thanks!
+This patch follows up on a previous attempt [1] to improve error messages in
+virtio_init_region_cache(), where the messages:
 
-> diff --git a/tests/qapi-schema/test-qapi.py b/tests/qapi-schema/test-qapi=
-.py
-> index 4be930228c..cf7fb8a6df 100755
-> --- a/tests/qapi-schema/test-qapi.py
-> +++ b/tests/qapi-schema/test-qapi.py
-> @@ -165,7 +165,7 @@ def test_and_diff(test_name, dir_name, update):
->      if actual_out =3D=3D expected_out and actual_err =3D=3D expected_err:
->          return 0
->=20=20
-> -    print("%s %s" % (test_name, 'UPDATE' if update else 'FAIL'),
-> +    print("%s: %s" % (test_name, 'UPDATE' if update else 'FAIL'),
+    Cannot map desc
+    Cannot map used
+    Cannot map avail
 
-I would've left this out just to keep the patch focused.  Definitely not
-worth a respin now.
+were changed to:
 
->            file=3Dsys.stderr)
->      out_diff =3D difflib.unified_diff(expected_out, actual_out, outfp.na=
-me)
->      err_diff =3D difflib.unified_diff(expected_err, actual_err, errfp.na=
-me)
-> @@ -173,6 +173,9 @@ def test_and_diff(test_name, dir_name, update):
->      sys.stdout.writelines(err_diff)
->=20=20
->      if not update:
-> +        print(("\n%s: set QEMU_TEST_REGENERATE=3D1 to recreate reference=
- output" +
-> +               "if the QAPI schema generator was intentionally changed")=
- % test_name,
-> +              file=3Dsys.stderr)
->          return 1
->=20=20
->      try:
-> @@ -197,7 +200,7 @@ def main(argv):
->      parser.add_argument('-d', '--dir', action=3D'store', default=3D'',
->                          help=3D"directory containing tests")
->      parser.add_argument('-u', '--update', action=3D'store_true',
-> -                        default=3D'QAPI_TEST_UPDATE' in os.environ,
-> +                        default=3D'QEMU_TEST_REGENERATE' in os.environ,
->                          help=3D"update expected test results")
->      parser.add_argument('tests', nargs=3D'*', metavar=3D'TEST', action=
-=3D'store')
->      args =3D parser.parse_args()
+    Virtio cannot map desc
+    ...
 
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+While this was an improvement in clarity, a reviewer (Alex Bennée)
+pointed out that all such messages go through virtio_error(), and suggested
+a cleaner and more scalable solution: prefixing all messages in
+virtio_error() itself.
 
+This patch implements that suggestion. It modifies virtio_error() to prepend
+"virtio: " to all messages, improving clarity across all call sites without
+duplicating the prefix manually.
+
+I tested the change by forcibly triggering an error inside
+virtio_init_region_cache() and verified the resulting output includes the
+new prefix, as expected.
+
+  ~/qemu/build$ sudo ./qemu-system-x86_64  \
+      -enable-kvm   \
+      -m 512   \
+      -drive \
+      if=virtio,file=/tmp/some.img,format=raw
+  qemu-system-x86_64: virtio: Cannot map used (debug test)
+  qemu-system-x86_64: virtio: Cannot map used (debug test)
+  qemu-system-x86_64: virtio: Cannot map used (debug test)
+  qemu-system-x86_64: virtio: Cannot map used (debug test)
+  qemu-system-x86_64: virtio: Cannot map used (debug test)
+  qemu-system-x86_64: virtio: Cannot map used (debug test)
+  ^Cqemu-system-x86_64: terminating on signal 2
+
+This should address the original concern in a more maintainable way.
+
+Thank you for your time and consideration.
+
+Best regards,
+Alessandro Ratti
+
+[1]: https://patchwork.kernel.org/project/qemu-devel/patch/20220414112902.41390-1-codeguy.moteen@gmail.com/
 
