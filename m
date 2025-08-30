@@ -2,60 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8660B3CE3C
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:34:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9AAB3CD53
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 18:44:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usOQs-0001BY-Ef; Sat, 30 Aug 2025 12:28:05 -0400
+	id 1usOE9-0007Mt-Ba; Sat, 30 Aug 2025 12:14:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net>)
- id 1usI2z-0007pA-Li
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 05:38:57 -0400
-Received: from m239-4.eu.mailgun.net ([185.250.239.4])
+ (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
+ id 1usKFb-0002tt-8R; Sat, 30 Aug 2025 08:00:07 -0400
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1)
- (envelope-from <bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net>)
- id 1usI2x-0002Me-Ea
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 05:38:57 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=0x65c.net; q=dns/txt;
- s=email; t=1756546733; x=1756553933; 
- h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To:
- Message-ID: Date: Subject: Subject: Cc: To: To: From: From: Sender: Sender; 
- bh=BEBbS3D81KIa7i5AIgyciRF8qIIH2Siayt4a3kPs16c=;
- b=CfYBBVAEASub6x608psb/mSFGhcVsnn/0WnGargJBjGC3ARtje7MGcwnetsMpmbRkrBrdPSAX7v+e/fFNhQWW2wsukOb50BNjhTvi5W2WpiGjuwsL605f1QJYBPpsw2RpR7S0om40abcAtxf3qp0dytobIHj2HbT95C98f6UbbDfWSH0OFlv804twp14AXXu86Bm+wQXLj0P9gmOuaHuG093GpCnsES5QCKUqutGE12EMrjrJFI0QtUByJxWxCrradnk1EdHiP3T5zFLtK/zqrlBWkG6uHxM1BD7/b+2lXD0yz3OHyNSpel+4B/AVWkoyRRqCLClJmRi4cFaYI9YPg==
-X-Mailgun-Sid: WyJiNjdhNCIsInFlbXUtZGV2ZWxAbm9uZ251Lm9yZyIsIjU0ZWY0Il0=
-Received: from fedora (pub082136115007.dh-hfc.datazug.ch [82.136.115.7]) by
- 93518a5527e07c5c8c323cd912038c47e23a9b50108f025ab03e83a0b0c23c7b with SMTP id
- 68b2c6ad64422a0f643c0ac8; Sat, 30 Aug 2025 09:38:53 GMT
-X-Mailgun-Sending-Ip: 185.250.239.4
-From: Alessandro Ratti <alessandro@0x65c.net>
-To: qemu-devel@nongnu.org
-Cc: alessandro.ratti@gmail.com,
-	Alessandro Ratti <alessandro@0x65c.net>
-Subject: [PATCH] virtio: prefix error messages with "virtio:"
-Date: Sat, 30 Aug 2025 11:31:47 +0200
-Message-ID: <20250830093844.452039-2-alessandro@0x65c.net>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250830093844.452039-1-alessandro@0x65c.net>
-References: <20250830093844.452039-1-alessandro@0x65c.net>
+ (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
+ id 1usKFY-0002Rk-Ho; Sat, 30 Aug 2025 08:00:06 -0400
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-74542b1b2f7so2478776a34.3; 
+ Sat, 30 Aug 2025 05:00:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1756555202; x=1757160002; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Q1u7Y0LnB2OthysxlFNVi2xzVYI1K22e1j/zpM8FPJI=;
+ b=Wk0ZWOckn/qgGwPJ2VmeAuOwY8JMf/+p0bF7lYMmd8dfrCm8SwLgtL9I6Y4dZtZIi/
+ eQzfluOB+CAGqbnzJXEQ+5ifOxVdcQQ+oG8cdVPWbwwWFq2MiBSza9QOGDNDuCzs5TnV
+ CozderznEllVKV1y7Z8hHFmxOP5aLfnoZlnFYZDGxgqo1RGEuSZ+y46t/71PTCcUw5fm
+ PFXPgqrP+1fBgxex3/O+x6NB2p6xau6e71jqD+kToFj5HUaosSFBblIcwA1uJV8E1fM0
+ 2o4ySvkCmXJyOcPM1xR9xyGj7mVPKS9B65tiEh+Vfmz9/D7bEYUPM4Omx6b9D0qelmXc
+ yJEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756555202; x=1757160002;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Q1u7Y0LnB2OthysxlFNVi2xzVYI1K22e1j/zpM8FPJI=;
+ b=RV9cQcfdon2cDtsqysb3eu9PCd7bLhFhPKzgK0NhPgXxScnZ2vz0UE6NSHU+yO0Qyk
+ IduRV75LM5UQ0SRMQwRMgQxgOgP+359IzwW9qWHLRwBKyDbRL8aCPlFk9ZDZiXVVpnUC
+ 8tWeozp/SutjwgcghxXqmF8uTcYcGe0JfkR5vNDzor7iA+ZvWi1tVAZfAfOyKzY2nMmy
+ BYdmp8Y9zXSiBE840ckshU52V9YDlsQvGDh7l/Kwgr40Tl063JkxMr0R8VQ5oUCBz/iH
+ MFr4O35gpKA594tJq11WFd8qNPFVj/tFgml8y1j4IKCH/Im6ZGEZpQBd5sasI1djO/b0
+ RQtg==
+X-Gm-Message-State: AOJu0YxPXYDJM9X1RyB6SBgwnQsZt1ty68T/42fcgEmfVs+jgwHzN3V2
+ 93FACFicqLLwRu1s5J3CtG9a55Huhiv02U2hAAYODL9HisCifolDS+M8isuO+Xbxad3b8aYS4Q6
+ LDBRl92tdFnGL85fwFJRcIbFjxBVYwWE6uFTH
+X-Gm-Gg: ASbGnctMUE3j6ZjLVKwingy4ZGDtagm6xIAp+Q8Q1RAV19blpsNUuD1DAyqPTYIS3RX
+ TYOzwd1HJwI9d3dOHJEjbttsGl+T2KgxlIYSawdS7brpnu4IeED1qS5cO48orX2dTxvVF0MWdxm
+ Osn/y2p6jxCn2jXJTZXlYHkig3fX7GLbLcjj/stm6w8cvPXJckduQqIPcolmuBFqUypvJ2gZMNt
+ oiHVp7anyTgxOT99G5ljuAxPeJxcgjbgAjvruaM
+X-Google-Smtp-Source: AGHT+IGTaorHFR43zcyJ0luBTjDLl0oq0gEcnfXNWqCMbFg5WEd+aWQLBf8TQKSPnNLbfgB9V76Bl82dBuUJ/J2ciW4=
+X-Received: by 2002:a05:6808:17a3:b0:434:2d4:f1bf with SMTP id
+ 5614622812f47-437f7d0f017mr654451b6e.21.1756555201873; Sat, 30 Aug 2025
+ 05:00:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=185.250.239.4;
- envelope-from=bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net;
- helo=m239-4.eu.mailgun.net
+References: <20250830025025.3610-1-hibriansong@gmail.com>
+In-Reply-To: <20250830025025.3610-1-hibriansong@gmail.com>
+From: Brian Song <hibriansong@gmail.com>
+Date: Sat, 30 Aug 2025 08:00:00 -0400
+X-Gm-Features: Ac12FXxoGoZLt6wedR06mFyps0NfGAGKdIgOxBiSilazLxe_ykqAvglOOJpTbK4
+Message-ID: <CAKWCU7VusNOUskuxc3RMTd+aLY6bSX+de-LiUhe9xpdmbzkn-Q@mail.gmail.com>
+Subject: Re: [PATCH 0/4] export/fuse: Add FUSE-over-io_uring for Storage
+ Exports
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, armbru@redhat.com, bernd@bsbernd.com, 
+ fam@euphon.net, hreitz@redhat.com, kwolf@redhat.com, stefanha@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
+ envelope-from=hibriansong@gmail.com; helo=mail-ot1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sat, 30 Aug 2025 09:06:12 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,45 +92,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The error message introduced in commit e45da653223 in
-virtio_init_region_cache() was unclear:
+We used fio to test a 1=E2=80=AFGB file under both traditional FUSE and
+FUSE-over-io_uring modes. The experiments were conducted with the
+following iodepth and numjobs configurations: 1-1, 64-1, 1-4, and 64-4,
+with 70% read and 30% write, resulting in a total of eight test cases,
+measuring both latency and throughput.
 
-    qemu-system-i386: Cannot map used
+Test results:
 
-This patch modifies virtio_error() to prepend all error messages with
-"virtio: ", making it easier to trace their origin.
+https://gist.github.com/hibriansong/a4849903387b297516603e83b53bbde4
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/230
-Buglink: https://bugs.launchpad.net/qemu/+bug/1919021
 
-Signed-off-by: Alessandro Ratti <alessandro@0x65c.net>
----
- hw/virtio/virtio.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 9a81ad912e..c43ac4d320 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -3934,11 +3934,16 @@ void virtio_device_set_child_bus_name(VirtIODevice *vdev, char *bus_name)
- void G_GNUC_PRINTF(2, 3) virtio_error(VirtIODevice *vdev, const char *fmt, ...)
- {
-     va_list ap;
-+    char *prefixed_fmt;
-+
-+    prefixed_fmt = g_strdup_printf("virtio: %s", fmt);
- 
-     va_start(ap, fmt);
--    error_vreport(fmt, ap);
-+    error_vreport(prefixed_fmt, ap);
-     va_end(ap);
- 
-+    g_free(prefixed_fmt);
-+
-     if (virtio_vdev_has_feature(vdev, VIRTIO_F_VERSION_1)) {
-         vdev->status = vdev->status | VIRTIO_CONFIG_S_NEEDS_RESET;
-         virtio_notify_config(vdev);
--- 
-2.39.5
 
+On 8/29/25 10:50 PM, Brian Song wrote:
+> Hi all,
+>
+> This is a GSoC project. More details are available here:
+> https://wiki.qemu.org/Google_Summer_of_Code_2025#FUSE-over-io_uring_expor=
+ts
+>
+> This patch series includes:
+> - Add a round-robin mechanism to distribute the kernel-required Ring
+> Queues to FUSE Queues
+> - Support multiple in-flight requests (multiple ring entries)
+> - Add tests for FUSE-over-io_uring
+>
+> More detail in the v2 cover letter:
+> https://lists.nongnu.org/archive/html/qemu-block/2025-08/msg00140.html
+>
+> And in the v1 cover letter:
+> https://lists.nongnu.org/archive/html/qemu-block/2025-07/msg00280.html
+>
+>
+> Brian Song (4):
+>    export/fuse: add opt to enable FUSE-over-io_uring
+>    export/fuse: process FUSE-over-io_uring requests
+>    export/fuse: Safe termination for FUSE-uring
+>    iotests: add tests for FUSE-over-io_uring
+>
+>   block/export/fuse.c                  | 838 +++++++++++++++++++++------
+>   docs/tools/qemu-storage-daemon.rst   |  11 +-
+>   qapi/block-export.json               |   5 +-
+>   storage-daemon/qemu-storage-daemon.c |   1 +
+>   tests/qemu-iotests/check             |   2 +
+>   tests/qemu-iotests/common.rc         |  45 +-
+>   util/fdmon-io_uring.c                |   5 +-
+>   7 files changed, 717 insertions(+), 190 deletions(-)
+>
 
