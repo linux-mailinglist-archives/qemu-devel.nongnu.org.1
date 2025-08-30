@@ -2,53 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19190B3CE47
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CFCB3CE66
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:51:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usOKp-00049h-23; Sat, 30 Aug 2025 12:21:49 -0400
+	id 1usOxj-0006PR-3m; Sat, 30 Aug 2025 13:02:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu@bonslack.org>) id 1usLVY-0002en-Q4
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 09:20:40 -0400
-Received: from bonnix2.bonnix.it ([37.247.49.194])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <qemu@bonslack.org>) id 1usLVX-0003ft-2y
- for qemu-devel@nongnu.org; Sat, 30 Aug 2025 09:20:40 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 bonnix2.bonnix.it 1C03D24342E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bonslack.org;
- s=20220805; t=1756560038;
- bh=SEZilLHq4QbqNQI+IiMOldiliACziPiHJF3zIYJJwGM=;
- h=Date:From:Subject:To:Cc;
- b=4jt6P4OEoIgnW63ioDJN/df1mZkrYkbgrRTlZy+M0Ux9n2qq0wwkLK56IqUKNDIMh
- O6sukMj+fxyZ5wusdAlDJwem7THT95TgZT7Lqy1zhfXYEnxiHQoW/9/cCQgH/gdT3z
- 5t9xVgsKBH/mSJiKjqX5467Pb3LSMHNe0DOzKPkE=
-Received: from [10.0.0.70] (ip190-129-198-217.pool-bba.aruba.it
- [217.198.129.190])
- by bonnix2.bonnix.it (Postfix) with ESMTPSA id 1C03D24342E;
- Sat, 30 Aug 2025 15:20:38 +0200 (CEST)
-Message-ID: <f058dae2-299b-49d0-8ae3-7f1b44a952f8@bonslack.org>
-Date: Sat, 30 Aug 2025 15:20:37 +0200
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1usO86-0001Uo-AB
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 12:08:42 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1usO83-0004nT-Fj
+ for qemu-devel@nongnu.org; Sat, 30 Aug 2025 12:08:38 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-45b7e69570bso12741145e9.0
+ for <qemu-devel@nongnu.org>; Sat, 30 Aug 2025 09:08:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756570111; x=1757174911; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZJG+EL2FkF86nIqbkYC2ddXBgtdgaQw+zt6Oja+ef1w=;
+ b=O2iUsHsORff4Yvih+pYRQsIgu3hCykMo7FrVoaJjPJ7YdwRL88JE1DddQibpoFv9hy
+ ceqGSyZ6LztI4S9kdghs/rkhHghWFv+kpUoiYmRkftalghIcx+j6sTcaAOtOZvJOXt6S
+ /XUx7JKoA1s8uy0HUGueoQc7g1RZdwoaN4twctALyeqSFAfkDR56rhFpoQl8cJYNfW7h
+ Qb4TDExsMpI1SRq9wQ7iZgvQtbzhDsoTIra/8bnjj1mTsDeRY93fjHP4oWDoCob7Kjic
+ 1VOfcDcjM2Eu6c21JDdkrnapgG/ik2dEpSzDJ1lhocAQ8nrhzpXUaUX0qzMi+4AVXqcZ
+ nNag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756570111; x=1757174911;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZJG+EL2FkF86nIqbkYC2ddXBgtdgaQw+zt6Oja+ef1w=;
+ b=NJIddpVpCuoZBD4Is6OzNYVDHnPZSntyGJFkN0qicAdcY0P7Db2APXAnE1MDdh5AgB
+ FQ7d2cdrn8ff0o922UVAoafkMb26j5k0Xqajwp/UY7E0S2Pn9/RR82QWHw0q2jUlGDbk
+ SUtxDl9+59+uI3pEb3Jx/gsEGMuqHDQ5NC1A+CAbQQ9lKu6QN4CpwjN4sghr7R0x80mH
+ p9xG+yOVPV1YI/Ecmy8c+Ku+59/193zZ9xtVaC5GKOjtgtynDyYTBImpMilLgJjaVbVH
+ a3WwXotXczT3HK5OTmz8TPS7vSNPJcJsF4VNMH8jN0HovpF4kecdBRxey58xSsI1bNeK
+ OjvA==
+X-Gm-Message-State: AOJu0YzeqFZvnm93H4VUNSjBIPE7zoC4sd4QC79KmkJ4O5zi8KqtAAtG
+ O5m8Kmf3ojCpCYqUVKX0pu2U6+18gSbN2B5GJbxlsrmbB1pXdcZcKWXDGMiU4u6kz1P5sGX21N5
+ rMIO+
+X-Gm-Gg: ASbGncsSeeH61a+6/JVlsvbIK382k7yP0ljHbJGQkT7Z+nKHH6Fm6skD+dZVHvrFS0p
+ u4knbj3kFMDZe5KzCOj1EGy8j8tYgAr30tk9yhqvLrnTYdGNhevRIK2NezEK39/Ysywz7ul4jsV
+ UmkKGsNFVCcgX6vm/unTa9Hb+PqCzzMD1e4AtDwAtX9mXZ0UuIO67SVjjrr9RGoOPcimiztJYTm
+ djNuqk2kI8Ozve/Y+J25ghOD05lMuoDjevnCr7f1EtaH+45RrQ2tN2azjxUXXulqeeMuSQpo2AC
+ rsm0/I060jggqw0vuMSo3wMjKlpNKo3H3gZSB4nElhoLl34ugSwE5iPNTKvNeeoa9W2pqykRY6s
+ D2lo9pAbL6rFydn4TFkhq4rt4sQV5NYWo+tBTX1+uMU1prf3JIA==
+X-Google-Smtp-Source: AGHT+IGrLqjyA7DO5FU4IeceOeNlJZMIx5Qr2mFtDPtJDzWaOtLYeHkTB0H7hBD1Ycn+lJXamzhMLg==
+X-Received: by 2002:a05:600c:1e89:b0:45b:88c6:70a2 with SMTP id
+ 5b1f17b1804b1-45b88c67360mr4072175e9.1.1756570111550; 
+ Sat, 30 Aug 2025 09:08:31 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b6ee66bddsm164634875e9.0.2025.08.30.09.08.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 30 Aug 2025 09:08:29 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL v2 00/32] target-arm queue
+Date: Sat, 30 Aug 2025 17:08:28 +0100
+Message-ID: <20250830160828.3593075-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Luca Bonissi <qemu@bonslack.org>
-Subject: [PATCH 7/7] Add termios2 support to sparc target
-To: Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Cc: qemu-devel@nongnu.org
-Content-Language: it
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=37.247.49.194; envelope-from=qemu@bonslack.org;
- helo=bonnix2.bonnix.it
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,64 +96,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From 982f2ab1346c2b89007521f57b10e57dded29274 Mon Sep 17 00:00:00 2001
-From: Luca Bonissi <qemu@bonslack.org>
-Date: Sat, 30 Aug 2025 14:52:56 +0200
-Subject: [PATCH 7/7] Add termios2 support to sparc target
+v2: handle bsd-user in the rename of isar_feature_aa64_atomics
 
-Signed-off-by: Luca Bonissi <qemu@bonslack.org>
----
- linux-user/sparc/termbits.h | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+-- PMM
 
-diff --git a/linux-user/sparc/termbits.h b/linux-user/sparc/termbits.h
-index 704bee1c42..588d7e8dcd 100644
---- a/linux-user/sparc/termbits.h
-+++ b/linux-user/sparc/termbits.h
-@@ -18,6 +18,28 @@ struct target_termios {
-     target_cc_t c_cc[TARGET_NCCS];         /* control characters */
- };
- 
-+struct target_termios2 {
-+    target_tcflag_t c_iflag;       /* input mode flags */
-+    target_tcflag_t c_oflag;       /* output mode flags */
-+    target_tcflag_t c_cflag;       /* control mode flags */
-+    target_tcflag_t c_lflag;       /* local mode flags */
-+    target_cc_t c_line;            /* line discipline */
-+    target_cc_t c_cc[TARGET_NCCS]; /* control characters */
-+    target_speed_t c_ispeed;       /* input speed */
-+    target_speed_t c_ospeed;       /* output speed */
-+};
-+
-+struct target_ktermios {
-+    target_tcflag_t c_iflag;       /* input mode flags */
-+    target_tcflag_t c_oflag;       /* output mode flags */
-+    target_tcflag_t c_cflag;       /* control mode flags */
-+    target_tcflag_t c_lflag;       /* local mode flags */
-+    target_cc_t c_line;            /* line discipline */
-+    target_cc_t c_cc[TARGET_NCCS]; /* control characters */
-+    target_speed_t c_ispeed;       /* input speed */
-+    target_speed_t c_ospeed;       /* output speed */
-+};
-+
- 
- /* c_cc characters */
- #define TARGET_VINTR    0
-@@ -251,6 +273,12 @@ struct target_termios {
- #define TARGET_TIOCGPGRP	TARGET_IOR('t', 131, int)
- #define TARGET_TIOCSCTTY	TARGET_IO('t', 132)
- #define TARGET_TIOCGSID	TARGET_IOR('t', 133, int)
-+#define TARGET_TCGETS2		TARGET_IOR('T', 12, struct target_termios2)
-+#define TARGET_TCSETS2		TARGET_IOW('T', 13, struct target_termios2)
-+#define TARGET_TCSETSW2	TARGET_IOW('T', 14, struct target_termios2)
-+#define TARGET_TCSETSF2	TARGET_IOW('T', 15, struct target_termios2)
-+#define TARGET_TIOCGRS485	TARGET_IOR('T', 0x41, struct serial_rs485)
-+#define TARGET_TIOCSRS485	TARGET_IOWR('T', 0x42, struct serial_rs485)
- /* Get minor device of a pty master's FD -- Solaris equiv is ISPTM */
- #define TARGET_TIOCGPTN	TARGET_IOR('t', 134, unsigned int) /* Get Pty Number */
- #define TARGET_TIOCSPTLCK	TARGET_IOW('t', 135, int) /* Lock/unlock PTY */
--- 
-2.50.1
+The following changes since commit 4791f22a5f5571cb248b1eddff98630545b3fd3e:
 
+  Merge tag 'pull-lu-20250830' of https://gitlab.com/rth7680/qemu into staging (2025-08-30 08:24:48 +1000)
 
+are available in the Git repository at:
+
+  https://gitlab.com/pm215/qemu.git tags/pull-target-arm-20250830
+
+for you to fetch changes up to 2e27650bddd35477d994a795a3b1cb57c8ed5c76:
+
+  hw/arm/stm32f205_soc: Don't leak TYPE_OR_IRQ objects (2025-08-30 16:38:47 +0100)
+
+----------------------------------------------------------------
+target-arm queue:
+ * Implement FEAT_SCTLR2
+ * Implement FEAT_TCR2
+ * Implement FEAT_CSSC
+ * Implement FEAT_LSE128
+ * Clean up of register field definitions
+ * Trap PMCR when MDCR_EL2.TPMCR is set
+ * tests/functional: update aarch64 RME test images
+ * hw/intc/arm_gicv3_kvm: preserve pending interrupts during cpr
+ * hw/arm: add static NVDIMMs in device tree
+ * hw/arm/stm32f205_soc: Don't leak TYPE_OR_IRQ objects
+ * scripts/kernel-doc: Avoid new Perl precedence warning
+ * scripts/kernel-doc: Update to kernel's new Python implementation
+
+----------------------------------------------------------------
+Gustavo Romero (3):
+      target/arm: Clean up of register field definitions
+      target/arm: Implement FEAT_SCTLR2 and enable with -cpu max
+      target/arm: Implement FEAT_TCR2 and enable with -cpu max
+
+Manos Pitsidianakis (1):
+      hw/arm: add static NVDIMMs in device tree
+
+Peter Maydell (12):
+      target/arm: Implement CTZ, CNT, ABS
+      scripts/kernel-doc: Avoid new Perl precedence warning
+      docs/sphinx/kerneldoc.py: Handle new LINENO syntax
+      tests/qtest/libqtest.h: Remove stray space from doc comment
+      scripts: Import Python kerneldoc from Linux kernel
+      scripts/kernel-doc: strip QEMU_ from function definitions
+      scripts/kernel-doc: tweak for QEMU coding standards
+      scripts/kerneldoc: Switch to the Python kernel-doc script
+      scripts/kernel-doc: Delete the old Perl kernel-doc script
+      MAINTAINERS: Put kernel-doc under the "docs build machinery" section
+      target/arm: Correct condition of aa64_atomics feature function
+      hw/arm/stm32f205_soc: Don't leak TYPE_OR_IRQ objects
+
+Pierrick Bouvier (2):
+      tests/functional/test_aarch64_device_passthrough: update image
+      tests/functional/test_aarch64_rme: update image
+
+Richard Henderson (12):
+      target/arm: Add feature predicate for FEAT_CSSC
+      target/arm: Implement MIN/MAX (immediate)
+      target/arm: Implement MIN/MAX (register)
+      target/arm: Split out gen_wrap2_i32 helper
+      target/arm: Enable FEAT_CSSC for -cpu max
+      qemu/atomic: Finish renaming atomic128-cas.h headers
+      qemu/atomic: Add atomic16 primitives for xchg, fetch_and, fetch_or
+      accel/tcg: Add cpu_atomic_*_mmu for 16-byte xchg, fetch_and, fetch_or
+      tcg: Add tcg_gen_atomic_{xchg,fetch_and,fetch_or}_i128
+      target/arm: Rename isar_feature_aa64_atomics
+      target/arm: Implement FEAT_LSE128
+      target/arm: Enable FEAT_LSE128 for -cpu max
+
+Smail AIDER (1):
+      target/arm: Trap PMCR when MDCR_EL2.TPMCR is set
+
+Steve Sistare (1):
+      hw/intc/arm_gicv3_kvm: preserve pending interrupts during cpr
+
+ MAINTAINERS                                        |    3 +
+ docs/conf.py                                       |    4 +-
+ docs/sphinx/kerneldoc.py                           |    7 +-
+ docs/system/arm/emulation.rst                      |    4 +
+ accel/tcg/atomic_template.h                        |   80 +-
+ accel/tcg/tcg-runtime.h                            |   12 +
+ bsd-user/aarch64/target_arch_elf.h                 |    2 +-
+ host/include/aarch64/host/atomic128-cas.h          |   45 -
+ include/accel/tcg/cpu-ldst-common.h                |   13 +-
+ include/hw/arm/stm32f205_soc.h                     |    2 +-
+ include/hw/intc/arm_gicv3_common.h                 |    3 +
+ include/tcg/tcg-op-common.h                        |    7 +
+ include/tcg/tcg-op.h                               |    3 +
+ target/arm/cpu-features.h                          |   24 +-
+ target/arm/cpu.h                                   |   17 +
+ target/arm/internals.h                             |   28 +-
+ tests/qtest/libqtest.h                             |    2 +-
+ host/include/aarch64/host/atomic128-cas.h.inc      |  102 +
+ host/include/generic/host/atomic128-cas.h.inc      |   96 +
+ target/arm/tcg/a64.decode                          |   26 +
+ hw/arm/boot.c                                      |   42 +
+ hw/arm/stm32f205_soc.c                             |   10 +-
+ hw/arm/virt.c                                      |    8 +-
+ hw/intc/arm_gicv3_kvm.c                            |   15 +
+ linux-user/aarch64/elfload.c                       |    4 +-
+ target/arm/cpregs-pmu.c                            |   34 +-
+ target/arm/cpu.c                                   |    6 +
+ target/arm/helper.c                                |  168 +-
+ target/arm/ptw.c                                   |    8 +-
+ target/arm/tcg/cpu64.c                             |    9 +-
+ target/arm/tcg/translate-a64.c                     |  195 +-
+ tcg/tcg-op-ldst.c                                  |   97 +-
+ accel/tcg/atomic_common.c.inc                      |    9 +
+ .editorconfig                                      |    2 +-
+ scripts/kernel-doc                                 | 2442 --------------------
+ scripts/kernel-doc.py                              |  325 +++
+ scripts/lib/kdoc/kdoc_files.py                     |  291 +++
+ scripts/lib/kdoc/kdoc_item.py                      |   42 +
+ scripts/lib/kdoc/kdoc_output.py                    |  749 ++++++
+ scripts/lib/kdoc/kdoc_parser.py                    | 1670 +++++++++++++
+ scripts/lib/kdoc/kdoc_re.py                        |  270 +++
+ .../functional/aarch64/test_device_passthrough.py  |   27 +-
+ tests/functional/aarch64/test_rme_sbsaref.py       |   64 +-
+ tests/functional/aarch64/test_rme_virt.py          |   85 +-
+ 44 files changed, 4389 insertions(+), 2663 deletions(-)
+ delete mode 100644 host/include/aarch64/host/atomic128-cas.h
+ create mode 100644 host/include/aarch64/host/atomic128-cas.h.inc
+ delete mode 100755 scripts/kernel-doc
+ create mode 100755 scripts/kernel-doc.py
+ create mode 100644 scripts/lib/kdoc/kdoc_files.py
+ create mode 100644 scripts/lib/kdoc/kdoc_item.py
+ create mode 100644 scripts/lib/kdoc/kdoc_output.py
+ create mode 100644 scripts/lib/kdoc/kdoc_parser.py
+ create mode 100644 scripts/lib/kdoc/kdoc_re.py
 
