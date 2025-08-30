@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D46E4B3CE55
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 19:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6597CB3CE9A
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Aug 2025 20:13:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usNqQ-0000MB-M4; Sat, 30 Aug 2025 11:50:22 -0400
+	id 1usNqQ-0000XR-VP; Sat, 30 Aug 2025 11:50:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
- id 1usBg3-0003as-VW; Fri, 29 Aug 2025 22:50:51 -0400
-Received: from mail-qk1-x735.google.com ([2607:f8b0:4864:20::735])
+ id 1usBg5-0003bM-7J; Fri, 29 Aug 2025 22:50:53 -0400
+Received: from mail-qt1-x836.google.com ([2607:f8b0:4864:20::836])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
- id 1usBg1-00087L-Bu; Fri, 29 Aug 2025 22:50:51 -0400
-Received: by mail-qk1-x735.google.com with SMTP id
- af79cd13be357-7fd454e65cdso100275485a.2; 
- Fri, 29 Aug 2025 19:50:48 -0700 (PDT)
+ id 1usBg2-00087U-B7; Fri, 29 Aug 2025 22:50:52 -0400
+Received: by mail-qt1-x836.google.com with SMTP id
+ d75a77b69052e-4b297962b24so29026821cf.2; 
+ Fri, 29 Aug 2025 19:50:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1756522248; x=1757127048; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1756522249; x=1757127049; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=j3cm0Mg08qHhHYH4vjziiJMKFR53qXZs+LCPZ4kO6b4=;
- b=jGVuTtrPgH51kBPoitQbSPItYsrSqJK008uQtHVrrTxiJceMnSM4PqP/HMWPfWGkUV
- gu4B3guORIJjKkN8217syqjXSdD7DJ2Cw8wmfpuZSNiCkKGK8SKK3+MrRqWVsSygNQGN
- aJ4dvcYvM6RSCGD9J+7FrY8DZMvhCe4DMOlTe8YAVq4mDh6wYFc3NaPrSEn2THoyja6u
- 9Reis9IT+6fELUAK665nbWmd4qZxZRnspi73r2WLrsyUgcPYgJWVjD850DPSiRJwZXDK
- eKJC/l271NUlWumsuVDIwdFcIsCqARlvyKM70z6T1uPz5/IFGVEGxopIe9QY+SfTvkfE
- 0DfA==
+ bh=XAdEckVxs7wUU52+bCeoIAHQ38yDPI3pC7AsOopH9Xw=;
+ b=NSfGp42vA0XD8E87pUX1+6tVPl4vjohFL4SpTsAStF7TKAmqSE+XVZpRi+0amFb6M9
+ 0W8BufaQg+3iSx5BQD2oYpa05UynekaEO8h3xO6b+5obPalZxt0z/LKKxu2waisHa8GY
+ YO/6GpfOlbBMLhEtN3q4CyDohZbhiDoIQsRn02lS3VASTOf05qCUeIyrB6KicMmxReyV
+ cfEHul1Gm2eB3x+MxrbTdvQKCWc4y6v+UWSpMvj/5MN44RiUO60umnDhR5DCQ8SH9Aa7
+ /Y5KgguRaYQl8FCAEE9UQT8cuDfnOcTzmJ2sFb5r2XYHlIwzXGX6VIKkMXMOCt/eRtLO
+ kcMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756522248; x=1757127048;
+ d=1e100.net; s=20230601; t=1756522249; x=1757127049;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=j3cm0Mg08qHhHYH4vjziiJMKFR53qXZs+LCPZ4kO6b4=;
- b=sgVYkrh7wj8O1eLxXhyjxY2k8aHXlZUIDwD4EPFetzsWQCieCKkS3FQetV1gLONo2U
- X2E0ws/73H4KyQNgpOl6DtbVSzB5FLpvNIhyEiMRK6BKqP+3nCniGZ2WKC7SdGBW5IW1
- 9PA3h337lRvtUW9a0L7SDJdkWkQZOJo2rsvLl7a4f5Cnnl6xic+ObXWcpDeFVSXtG19x
- WuoNgOUQag+pNK3l4+O4mKug1aT/kMtKim2ZkG0p4Dg9OcJP2RXeBL7dxUepX8+5bhxr
- cmRodm5nxl+qBI4Wf1/xta6hCl+XtnF/wr+TuIItFbLeWSUR56IkB36gVSgReimEUpkw
- B3Ug==
-X-Gm-Message-State: AOJu0Yyp+MchIrSHAKo12Qfm9mNPG8keD/8wWOGfpfQ8WqY/w/AGUpKY
- u6lSkbrCZLElTk8Cf9B9lEPF9mQCF63iKLc990MPxVn0KVTvvLxyDHkWXheL6Q==
-X-Gm-Gg: ASbGnctwTEdMHasVYdoiXqrguKVwEwZYEPz6DhZtQGdJUZnJgcAipx9xpNBRvUwk+sy
- RXMVBUVQanVTQfNEbNMaO3EA0Q5LVO6RK0bvK+e8Gq0+bQxl0hUFCXjoGgsR/LZqpl4bb93UopY
- rJSI1L4C1H3qFAwLdk0Gygt8zuYh/pk4miUaJecj0frVgZcREWR8zzo4EW7yqmLuMLSc3SXylz4
- FfLHW482oKpWxKeOYbWmOfDN2RybvIRBv3WcE7BIEx/SpPnq8R01bCNGqpFbooehD0fO/MxqIE4
- wSAoBN+gKXCp2Y8hVxCq3rlcgjyo4TuMv372eWn5dNNRENlrU0EH2H8KLG38tbBGKp8I9Q7+gc0
- 0cfM9UlVkP1epE7g+LhMRGXpl0vf8Gca/o9NYfxXKWvkqxBvwtX7WVGGo0EKhYl4v9h/MHs9VV+
- Ljee4toOu2GtfQulF6
-X-Google-Smtp-Source: AGHT+IGm5K3vhxn/n2Iuhyh9GwzoTKCBXM4mGj0Uu7vc/4P+n2Idoa5ygxR+fWN6Qt9MfFUKK2jbOg==
-X-Received: by 2002:a05:620a:4016:b0:7e8:2604:bdab with SMTP id
- af79cd13be357-7ff2b0d75f3mr88206485a.47.1756522247554; 
- Fri, 29 Aug 2025 19:50:47 -0700 (PDT)
+ bh=XAdEckVxs7wUU52+bCeoIAHQ38yDPI3pC7AsOopH9Xw=;
+ b=nATgD9mihFqV5AyHru/sTLwu9kNq6R1hU3AO3Z7YNIiPl7SWGm2GqIlirSrHCjpYQp
+ ey//bvRUPv8giImowS1v8fRJFVSAQENGFBUU2tFm7ewiTTv6FHT6zQvZ/McgTufhazqW
+ 9qw4UsLdq8v1ztIAuAQZ0O7fC5sbhwtgmkD8PTVZIleOFKBb/Ni0nOwRjhN/MCblTx1M
+ iDmSehKCSHYAorR9peLG6BKsmafsdcS/1hdU2OHNw1WsP2S1xtYM5qMTi3l4FAQOR1el
+ O1F2eTE6ZUH7i+aBPK5w65rHas2Msz4TX40myyWN5a+Khj4BRaF1U/oJRUmvX6L0vYu0
+ KMnw==
+X-Gm-Message-State: AOJu0YzxYxCtEzHEcJj3rBjVAJU2IoOdWKE2drrTSJxrMNpaKWhQgmx9
+ WQmr0Ep4ZC9/xLeGF8Z0FN4L+1wMAOCiKFRMvYhJEmk796qWdOUwIpoNcPoAAg==
+X-Gm-Gg: ASbGncs5R+np0vxsKMFRjqj5Zi91uzPCN4zJko/epuDiE70SJCikO6kPqZ5m+xoazIP
+ tryM9WChtYFB0tfRQqZiB8K+LVOdO0ypC6ZwNKBwgBBXfc+MpvE2bMgOHP2sM3TbJpTWuOtnK6B
+ 3zjZMlN3S/c6FW1z+vRIelFRE3PaRj5Nzng6jo/W/ifxwLh3RiUJ+32aGMqjHrelE9tv2SXuHW5
+ IlGSi1QNWQ9ISdlTWR3VOzAftiTOoJ8cEBfw7diFnK/XNkxeFinifLC8fGv/Dq1cbCUWg6M4Odv
+ GTLTRmlZMyfwjzTc//1LfBSK8RH21Hy19IjSZh0HaM7fFtzbQuVJwh0h8qb0jPk3LN708zxrMCH
+ /EMnkVZY0FCbclawujghfoLcb4TekTxftEtJ/NtG9hLjEHrkdvsjQl9DTBrClmcaJV7vEKNA+J3
+ a/G/QBERM7xoagCciRpEEnG74sPRY=
+X-Google-Smtp-Source: AGHT+IHY1684My/DJOqAEiegu5qoqFoLPTlj2mu7pKXrp026xgpo2nRFAAaApxVg3awdNIhrrX70Dw==
+X-Received: by 2002:a05:622a:1353:b0:4b2:9cdc:6d52 with SMTP id
+ d75a77b69052e-4b31dcf3a7bmr9040131cf.71.1756522248677; 
+ Fri, 29 Aug 2025 19:50:48 -0700 (PDT)
 Received: from localhost.localdomain
  (wn-campus-nat-129-97-124-90.dynamic.uwaterloo.ca. [129.97.124.90])
  by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7fc0eacf1b4sm299457085a.21.2025.08.29.19.50.46
+ af79cd13be357-7fc0eacf1b4sm299457085a.21.2025.08.29.19.50.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Aug 2025 19:50:47 -0700 (PDT)
+ Fri, 29 Aug 2025 19:50:48 -0700 (PDT)
 From: Brian Song <hibriansong@gmail.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, armbru@redhat.com, bernd@bsbernd.com,
  fam@euphon.net, hibriansong@gmail.com, hreitz@redhat.com, kwolf@redhat.com,
  stefanha@redhat.com
-Subject: [PATCH 1/4] export/fuse: add opt to enable FUSE-over-io_uring
-Date: Fri, 29 Aug 2025 22:50:22 -0400
-Message-ID: <20250830025025.3610-2-hibriansong@gmail.com>
+Subject: [PATCH 2/4] export/fuse: process FUSE-over-io_uring requests
+Date: Fri, 29 Aug 2025 22:50:23 -0400
+Message-ID: <20250830025025.3610-3-hibriansong@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250830025025.3610-1-hibriansong@gmail.com>
 References: <20250830025025.3610-1-hibriansong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::735;
- envelope-from=hibriansong@gmail.com; helo=mail-qk1-x735.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::836;
+ envelope-from=hibriansong@gmail.com; helo=mail-qt1-x836.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,541 +99,621 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds a new export option for storage-export-daemon to enable
-FUSE-over-io_uring via the switch io-uring=on|off (disableby default).
-It also implements the protocol handshake with the Linux kernel
-during the FUSE-over-io_uring initialization phase.
+https://docs.kernel.org/filesystems/fuse-io-uring.html
 
-See: https://docs.kernel.org/filesystems/fuse-io-uring.html
+As described in the kernel documentation, after FUSE-over-io_uring
+initialization and handshake, FUSE interacts with the kernel using
+SQE/CQE to send requests and receive responses. This corresponds to
+the "Sending requests with CQEs" section in the docs.
 
-The kernel documentation describes in detail how FUSE-over-io_uring
-works. This patch implements the Initial SQE stage shown in thediagram:
-it initializes one queue per IOThread, each currently supporting a
-single submission queue entry (SQE). When the FUSE driver sends the
-first FUSE request (FUSE_INIT), storage-export-daemon calls
-fuse_uring_start() to complete initialization, ultimately submitting
-the SQE with the FUSE_IO_URING_CMD_REGISTER command to confirm
-successful initialization with the kernel.
-
-We also added support for multiple IOThreads. The current Linux kernel
-requires registering $(nproc) queues when setting up FUSE-over-io_uring
-To let users customize the number of FUSE Queues (i.e., IOThreads),
-we first create nproc Ring Queues as required by the kernel, then
-distribute them in a round-robin manner to the FUSE Queues for
-registration. In addition, to support multiple in-flight requests,
-we configure each Ring Queue with FUSE_DEFAULT_RING_QUEUE_DEPTH
-entries/requests.
+This patch implements three key parts: registering the CQE handler
+(fuse_uring_cqe_handler), processing FUSE requests (fuse_uring_co_
+process_request), and sending response results (fuse_uring_send_
+response). It also merges the traditional /dev/fuse request handling
+with the FUSE-over-io_uring handling functions.
 
 Suggested-by: Kevin Wolf <kwolf@redhat.com>
 Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Brian Song <hibriansong@gmail.com>
 ---
- block/export/fuse.c                  | 310 +++++++++++++++++++++++++--
- docs/tools/qemu-storage-daemon.rst   |  11 +-
- qapi/block-export.json               |   5 +-
- storage-daemon/qemu-storage-daemon.c |   1 +
- util/fdmon-io_uring.c                |   5 +-
- 5 files changed, 309 insertions(+), 23 deletions(-)
+ block/export/fuse.c | 457 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 309 insertions(+), 148 deletions(-)
 
 diff --git a/block/export/fuse.c b/block/export/fuse.c
-index c0ad4696ce..19bf9e5f74 100644
+index 19bf9e5f74..07f74fc8ec 100644
 --- a/block/export/fuse.c
 +++ b/block/export/fuse.c
-@@ -48,6 +48,9 @@
- #include <linux/fs.h>
- #endif
- 
-+/* room needed in buffer to accommodate header */
-+#define FUSE_BUFFER_HEADER_SIZE 0x1000
-+
- /* Prevent overly long bounce buffer allocations */
- #define FUSE_MAX_READ_BYTES (MIN(BDRV_REQUEST_MAX_BYTES, 1 * 1024 * 1024))
- /*
-@@ -63,12 +66,59 @@
-     (FUSE_MAX_WRITE_BYTES - FUSE_IN_PLACE_WRITE_BYTES)
- 
- typedef struct FuseExport FuseExport;
-+typedef struct FuseQueue FuseQueue;
-+
-+#ifdef CONFIG_LINUX_IO_URING
-+#define FUSE_DEFAULT_RING_QUEUE_DEPTH 64
-+#define FUSE_DEFAULT_MAX_PAGES_PER_REQ 32
-+
-+typedef struct FuseRingQueue FuseRingQueue;
-+typedef struct FuseRingEnt {
-+    /* back pointer */
-+    FuseRingQueue *rq;
-+
-+    /* commit id of a fuse request */
-+    uint64_t req_commit_id;
-+
-+    /* fuse request header and payload */
-+    struct fuse_uring_req_header req_header;
-+    void *op_payload;
-+    size_t req_payload_sz;
-+
-+    /* The vector passed to the kernel */
-+    struct iovec iov[2];
-+
-+    CqeHandler fuse_cqe_handler;
-+} FuseRingEnt;
-+
-+struct FuseRingQueue {
-+    int rqid;
-+
-+    /* back pointer */
-+    FuseQueue *q;
-+    FuseRingEnt *ent;
-+
-+    /* List entry for ring_queues */
-+    QLIST_ENTRY(FuseRingQueue) next;
-+};
-+
-+/*
-+ * Round-robin distribution of ring queues across FUSE queues.
-+ * This structure manages the mapping between kernel ring queues and user
-+ * FUSE queues.
-+ */
-+typedef struct FuseRingQueueManager {
-+    FuseRingQueue *ring_queues;
-+    int num_ring_queues;
-+    int num_fuse_queues;
-+} FuseRingQueueManager;
-+#endif
- 
- /*
-  * One FUSE "queue", representing one FUSE FD from which requests are fetched
-  * and processed.  Each queue is tied to an AioContext.
-  */
--typedef struct FuseQueue {
-+struct FuseQueue {
-     FuseExport *exp;
- 
-     AioContext *ctx;
-@@ -109,15 +159,11 @@ typedef struct FuseQueue {
-      * Free this buffer with qemu_vfree().
-      */
-     void *spillover_buf;
--} FuseQueue;
- 
--/*
-- * Verify that FuseQueue.request_buf plus the spill-over buffer together
-- * are big enough to be accepted by the FUSE kernel driver.
-- */
--QEMU_BUILD_BUG_ON(sizeof(((FuseQueue *)0)->request_buf) +
--                  FUSE_SPILLOVER_BUF_SIZE <
--                  FUSE_MIN_READ_BUFFER);
-+#ifdef CONFIG_LINUX_IO_URING
-+    QLIST_HEAD(, FuseRingQueue) ring_queue_list;
-+#endif
-+};
- 
- struct FuseExport {
-     BlockExport common;
-@@ -133,7 +179,7 @@ struct FuseExport {
-      */
-     bool halted;
- 
--    int num_queues;
-+    size_t num_queues;
-     FuseQueue *queues;
-     /*
-      * True if this export should follow the generic export's AioContext.
-@@ -149,6 +195,12 @@ struct FuseExport {
-     /* Whether allow_other was used as a mount option or not */
-     bool allow_other;
- 
-+#ifdef CONFIG_LINUX_IO_URING
-+    bool is_uring;
-+    size_t ring_queue_depth;
-+    FuseRingQueueManager *ring_queue_manager;
-+#endif
-+
-     mode_t st_mode;
-     uid_t st_uid;
-     gid_t st_gid;
-@@ -205,7 +257,7 @@ static void fuse_attach_handlers(FuseExport *exp)
-         return;
-     }
- 
--    for (int i = 0; i < exp->num_queues; i++) {
-+    for (size_t i = 0; i < exp->num_queues; i++) {
-         aio_set_fd_handler(exp->queues[i].ctx, exp->queues[i].fuse_fd,
-                            read_from_fuse_fd, NULL, NULL, NULL,
-                            &exp->queues[i]);
-@@ -257,6 +309,189 @@ static const BlockDevOps fuse_export_blk_dev_ops = {
-     .drained_poll  = fuse_export_drained_poll,
+@@ -310,6 +310,47 @@ static const BlockDevOps fuse_export_blk_dev_ops = {
  };
  
-+#ifdef CONFIG_LINUX_IO_URING
-+static void fuse_uring_sqe_set_req_data(struct fuse_uring_cmd_req *req,
-+                    const unsigned int rqid,
-+                    const unsigned int commit_id)
-+{
-+    req->qid = rqid;
-+    req->commit_id = commit_id;
-+    req->flags = 0;
-+}
+ #ifdef CONFIG_LINUX_IO_URING
++static void coroutine_fn fuse_uring_co_process_request(FuseRingEnt *ent);
 +
-+static void fuse_uring_sqe_prepare(struct io_uring_sqe *sqe, FuseQueue *q,
-+               __u32 cmd_op)
-+{
-+    sqe->opcode = IORING_OP_URING_CMD;
-+
-+    sqe->fd = q->fuse_fd;
-+    sqe->rw_flags = 0;
-+    sqe->ioprio = 0;
-+    sqe->off = 0;
-+
-+    sqe->cmd_op = cmd_op;
-+    sqe->__pad1 = 0;
-+}
-+
-+static void fuse_uring_prep_sqe_register(struct io_uring_sqe *sqe, void *opaque)
-+{
-+    FuseRingEnt *ent = opaque;
-+    struct fuse_uring_cmd_req *req = (void *)&sqe->cmd[0];
-+
-+    fuse_uring_sqe_prepare(sqe, ent->rq->q, FUSE_IO_URING_CMD_REGISTER);
-+
-+    sqe->addr = (uint64_t)(ent->iov);
-+    sqe->len = 2;
-+
-+    fuse_uring_sqe_set_req_data(req, ent->rq->rqid, 0);
-+}
-+
-+static void fuse_uring_submit_register(void *opaque)
++static void coroutine_fn co_fuse_uring_queue_handle_cqes(void *opaque)
 +{
 +    FuseRingEnt *ent = opaque;
 +    FuseExport *exp = ent->rq->q->exp;
 +
++    /* Going to process requests */
++    fuse_inc_in_flight(exp);
 +
-+    aio_add_sqe(fuse_uring_prep_sqe_register, ent, &(ent->fuse_cqe_handler));
++    /* A ring entry returned */
++    fuse_uring_co_process_request(ent);
++
++    /* Finished processing requests */
++    fuse_dec_in_flight(exp);
 +}
 +
-+/**
-+ * Distribute ring queues across FUSE queues using round-robin algorithm.
-+ * This ensures even distribution of kernel ring queues across user-specified
-+ * FUSE queues.
-+ */
-+static
-+FuseRingQueueManager *fuse_ring_queue_manager_create(int num_fuse_queues,
-+                                                    size_t ring_queue_depth,
-+                                                    size_t bufsize)
++static void fuse_uring_cqe_handler(CqeHandler *cqe_handler)
 +{
-+    int num_ring_queues = get_nprocs();
-+    FuseRingQueueManager *manager = g_new(FuseRingQueueManager, 1);
++    FuseRingEnt *ent = container_of(cqe_handler, FuseRingEnt, fuse_cqe_handler);
++    Coroutine *co;
++    FuseExport *exp = ent->rq->q->exp;
 +
-+    if (!manager) {
-+        return NULL;
-+    }
-+
-+    manager->ring_queues = g_new(FuseRingQueue, num_ring_queues);
-+    manager->num_ring_queues = num_ring_queues;
-+    manager->num_fuse_queues = num_fuse_queues;
-+
-+    if (!manager->ring_queues) {
-+        g_free(manager);
-+        return NULL;
-+    }
-+
-+    for (int i = 0; i < num_ring_queues; i++) {
-+        FuseRingQueue *rq = &manager->ring_queues[i];
-+        rq->rqid = i;
-+        rq->ent = g_new(FuseRingEnt, ring_queue_depth);
-+
-+        if (!rq->ent) {
-+            for (int j = 0; j < i; j++) {
-+                g_free(manager->ring_queues[j].ent);
-+            }
-+            g_free(manager->ring_queues);
-+            g_free(manager);
-+            return NULL;
-+        }
-+
-+        for (size_t j = 0; j < ring_queue_depth; j++) {
-+            FuseRingEnt *ent = &rq->ent[j];
-+            ent->rq = rq;
-+            ent->req_payload_sz = bufsize - FUSE_BUFFER_HEADER_SIZE;
-+            ent->op_payload = g_malloc0(ent->req_payload_sz);
-+
-+            if (!ent->op_payload) {
-+                for (size_t k = 0; k < j; k++) {
-+                    g_free(rq->ent[k].op_payload);
-+                }
-+                g_free(rq->ent);
-+                for (int k = 0; k < i; k++) {
-+                    g_free(manager->ring_queues[k].ent);
-+                }
-+                g_free(manager->ring_queues);
-+                g_free(manager);
-+                return NULL;
-+            }
-+
-+            ent->iov[0] = (struct iovec) {
-+                &(ent->req_header),
-+                sizeof(struct fuse_uring_req_header)
-+            };
-+            ent->iov[1] = (struct iovec) {
-+                ent->op_payload,
-+                ent->req_payload_sz
-+            };
-+
-+            ent->fuse_cqe_handler.cb = fuse_uring_cqe_handler;
-+        }
-+    }
-+
-+    return manager;
-+}
-+
-+static
-+void fuse_distribute_ring_queues(FuseExport *exp, FuseRingQueueManager *manager)
-+{
-+    int queue_index = 0;
-+
-+    for (int i = 0; i < manager->num_ring_queues; i++) {
-+        FuseRingQueue *rq = &manager->ring_queues[i];
-+
-+        rq->q = &exp->queues[queue_index];
-+        QLIST_INSERT_HEAD(&(rq->q->ring_queue_list), rq, next);
-+
-+        queue_index = (queue_index + 1) % manager->num_fuse_queues;
-+    }
-+}
-+
-+static
-+void fuse_schedule_ring_queue_registrations(FuseExport *exp,
-+                                            FuseRingQueueManager *manager)
-+{
-+    for (int i = 0; i < manager->num_fuse_queues; i++) {
-+        FuseQueue *q = &exp->queues[i];
-+        FuseRingQueue *rq;
-+
-+        QLIST_FOREACH(rq, &q->ring_queue_list, next) {
-+            for (int j = 0; j < exp->ring_queue_depth; j++) {
-+                aio_bh_schedule_oneshot(q->ctx, fuse_uring_submit_register,
-+                                        &(rq->ent[j]));
-+            }
-+        }
-+    }
-+}
-+
-+static void fuse_uring_start(FuseExport *exp, struct fuse_init_out *out)
-+{
-+    /*
-+     * Since we didn't enable the FUSE_MAX_PAGES feature, the value of
-+     * fc->max_pages should be FUSE_DEFAULT_MAX_PAGES_PER_REQ, which is set by
-+     * the kernel by default. Also, max_write should not exceed
-+     * FUSE_DEFAULT_MAX_PAGES_PER_REQ * PAGE_SIZE.
-+     */
-+    size_t bufsize = out->max_write + FUSE_BUFFER_HEADER_SIZE;
-+
-+    if (!(out->flags & FUSE_MAX_PAGES)) {
-+        bufsize = FUSE_DEFAULT_MAX_PAGES_PER_REQ * qemu_real_host_page_size()
-+                         + FUSE_BUFFER_HEADER_SIZE;
-+    }
-+
-+    exp->ring_queue_manager = fuse_ring_queue_manager_create(
-+        exp->num_queues, exp->ring_queue_depth, bufsize);
-+
-+    if (!exp->ring_queue_manager) {
-+        error_report("Failed to create ring queue manager");
++    if (unlikely(exp->halted)) {
 +        return;
 +    }
 +
-+    /* Distribute ring queues across FUSE queues using round-robin */
-+    fuse_distribute_ring_queues(exp, exp->ring_queue_manager);
++    int err = cqe_handler->cqe.res;
 +
-+    fuse_schedule_ring_queue_registrations(exp, exp->ring_queue_manager);
++    if (err != 0) {
++        /* -ENOTCONN is ok on umount  */
++        if (err != -EINTR && err != -EAGAIN &&
++            err != -ENOTCONN) {
++            fuse_export_halt(exp);
++        }
++    } else {
++        co = qemu_coroutine_create(co_fuse_uring_queue_handle_cqes, ent);
++        qemu_coroutine_enter(co);
++    }
 +}
-+#endif
 +
- static int fuse_export_create(BlockExport *blk_exp,
-                               BlockExportOptions *blk_exp_args,
-                               AioContext *const *multithread,
-@@ -270,6 +505,11 @@ static int fuse_export_create(BlockExport *blk_exp,
- 
-     assert(blk_exp_args->type == BLOCK_EXPORT_TYPE_FUSE);
- 
-+#ifdef CONFIG_LINUX_IO_URING
-+    exp->is_uring = args->io_uring;
-+    exp->ring_queue_depth = FUSE_DEFAULT_RING_QUEUE_DEPTH;
-+#endif
-+
-     if (multithread) {
-         /* Guaranteed by common export code */
-         assert(mt_count >= 1);
-@@ -283,6 +523,10 @@ static int fuse_export_create(BlockExport *blk_exp,
-                 .exp = exp,
-                 .ctx = multithread[i],
-                 .fuse_fd = -1,
-+#ifdef CONFIG_LINUX_IO_URING
-+                .ring_queue_list =
-+                    QLIST_HEAD_INITIALIZER(exp->queues[i].ring_queue_list),
-+#endif
-             };
-         }
-     } else {
-@@ -296,6 +540,10 @@ static int fuse_export_create(BlockExport *blk_exp,
-             .exp = exp,
-             .ctx = exp->common.ctx,
-             .fuse_fd = -1,
-+#ifdef CONFIG_LINUX_IO_URING
-+            .ring_queue_list =
-+                QLIST_HEAD_INITIALIZER(exp->queues[0].ring_queue_list),
-+#endif
-         };
-     }
- 
-@@ -685,17 +933,39 @@ static bool is_regular_file(const char *path, Error **errp)
+ static void fuse_uring_sqe_set_req_data(struct fuse_uring_cmd_req *req,
+                     const unsigned int rqid,
+                     const unsigned int commit_id)
+@@ -1213,6 +1254,9 @@ fuse_co_read(FuseExport *exp, void **bufptr, uint64_t offset, uint32_t size)
+  * Data in @in_place_buf is assumed to be overwritten after yielding, so will
+  * be copied to a bounce buffer beforehand.  @spillover_buf in contrast is
+  * assumed to be exclusively owned and will be used as-is.
++ * In FUSE-over-io_uring mode, the actual op_payload content is stored in
++ * @spillover_buf. To ensure this buffer is used for writing, @in_place_buf
++ * is explicitly set to NULL.
+  * Return the number of bytes written to *out on success, and -errno on error.
   */
  static ssize_t coroutine_fn
- fuse_co_init(FuseExport *exp, struct fuse_init_out *out,
--             uint32_t max_readahead, uint32_t flags)
-+             uint32_t max_readahead, const struct fuse_init_in *in)
+@@ -1220,8 +1264,8 @@ fuse_co_write(FuseExport *exp, struct fuse_write_out *out,
+               uint64_t offset, uint32_t size,
+               const void *in_place_buf, const void *spillover_buf)
  {
--    const uint32_t supported_flags = FUSE_ASYNC_READ | FUSE_ASYNC_DIO;
-+    uint64_t supported_flags = FUSE_ASYNC_READ | FUSE_ASYNC_DIO
-+                                     | FUSE_INIT_EXT;
-+    uint64_t outargflags = 0;
-+    uint64_t inargflags = in->flags;
-+
-+    ssize_t ret = 0;
-+
-+    if (inargflags & FUSE_INIT_EXT) {
-+        inargflags = inargflags | (uint64_t) in->flags2 << 32;
+-    size_t in_place_size;
+-    void *copied;
++    size_t in_place_size = 0;
++    void *copied = NULL;
+     int64_t blk_len;
+     int ret;
+     struct iovec iov[2];
+@@ -1236,10 +1280,12 @@ fuse_co_write(FuseExport *exp, struct fuse_write_out *out,
+         return -EACCES;
+     }
+ 
+-    /* Must copy to bounce buffer before potentially yielding */
+-    in_place_size = MIN(size, FUSE_IN_PLACE_WRITE_BYTES);
+-    copied = blk_blockalign(exp->common.blk, in_place_size);
+-    memcpy(copied, in_place_buf, in_place_size);
++    if (in_place_buf) {
++        /* Must copy to bounce buffer before potentially yielding */
++        in_place_size = MIN(size, FUSE_IN_PLACE_WRITE_BYTES);
++        copied = blk_blockalign(exp->common.blk, in_place_size);
++        memcpy(copied, in_place_buf, in_place_size);
 +    }
-+
-+#ifdef CONFIG_LINUX_IO_URING
-+    if (exp->is_uring) {
-+        if (inargflags & FUSE_OVER_IO_URING) {
-+            supported_flags |= FUSE_OVER_IO_URING;
+ 
+     /**
+      * Clients will expect short writes at EOF, so we have to limit
+@@ -1263,26 +1309,38 @@ fuse_co_write(FuseExport *exp, struct fuse_write_out *out,
+         }
+     }
+ 
+-    iov[0] = (struct iovec) {
+-        .iov_base = copied,
+-        .iov_len = in_place_size,
+-    };
+-    if (size > FUSE_IN_PLACE_WRITE_BYTES) {
+-        assert(size - FUSE_IN_PLACE_WRITE_BYTES <= FUSE_SPILLOVER_BUF_SIZE);
+-        iov[1] = (struct iovec) {
+-            .iov_base = (void *)spillover_buf,
+-            .iov_len = size - FUSE_IN_PLACE_WRITE_BYTES,
++    if (in_place_buf) {
++        iov[0] = (struct iovec) {
++            .iov_base = copied,
++            .iov_len = in_place_size,
+         };
+-        qemu_iovec_init_external(&qiov, iov, 2);
++        if (size > FUSE_IN_PLACE_WRITE_BYTES) {
++            assert(size - FUSE_IN_PLACE_WRITE_BYTES <= FUSE_SPILLOVER_BUF_SIZE);
++            iov[1] = (struct iovec) {
++                .iov_base = (void *)spillover_buf,
++                .iov_len = size - FUSE_IN_PLACE_WRITE_BYTES,
++            };
++            qemu_iovec_init_external(&qiov, iov, 2);
 +        } else {
-+            exp->is_uring = false;
-+            ret = -ENODEV;
++            qemu_iovec_init_external(&qiov, iov, 1);
 +        }
-+    }
-+#endif
+     } else {
++        /* fuse over io_uring */
++        iov[0] = (struct iovec) {
++            .iov_base = (void *)spillover_buf,
++            .iov_len = size,
++        };
+         qemu_iovec_init_external(&qiov, iov, 1);
+     }
 +
-+    outargflags = inargflags & supported_flags;
+     ret = blk_co_pwritev(exp->common.blk, offset, size, &qiov, 0);
+     if (ret < 0) {
+         goto fail_free_buffer;
+     }
  
-     *out = (struct fuse_init_out) {
-         .major = FUSE_KERNEL_VERSION,
-         .minor = FUSE_KERNEL_MINOR_VERSION,
-         .max_readahead = max_readahead,
-         .max_write = FUSE_MAX_WRITE_BYTES,
--        .flags = flags & supported_flags,
--        .flags2 = 0,
-+        .flags = outargflags,
-+        .flags2 = outargflags >> 32,
+-    qemu_vfree(copied);
++    if (in_place_buf) {
++        qemu_vfree(copied);
++    }
  
-         /* libfuse maximum: 2^16 - 1 */
-         .max_background = UINT16_MAX,
-@@ -717,7 +987,7 @@ fuse_co_init(FuseExport *exp, struct fuse_init_out *out,
-         .map_alignment = 0,
-     };
+     *out = (struct fuse_write_out) {
+         .size = size,
+@@ -1290,7 +1348,9 @@ fuse_co_write(FuseExport *exp, struct fuse_write_out *out,
+     return sizeof(*out);
  
--    return sizeof(*out);
-+    return ret < 0 ? ret : sizeof(*out);
+ fail_free_buffer:
+-    qemu_vfree(copied);
++    if (in_place_buf) {
++        qemu_vfree(copied);
++    }
+     return ret;
  }
  
- /**
-@@ -1506,6 +1776,14 @@ fuse_co_process_request(FuseQueue *q, void *spillover_buf)
-         fuse_write_buf_response(q->fuse_fd, req_id, out_hdr,
-                                 out_data_buffer, ret);
-         qemu_vfree(out_data_buffer);
+@@ -1578,173 +1638,151 @@ static int fuse_write_buf_response(int fd, uint32_t req_id,
+     }
+ }
+ 
+-/*
+- * For use in fuse_co_process_request():
+- * Returns a pointer to the parameter object for the given operation (inside of
+- * queue->request_buf, which is assumed to hold a fuse_in_header first).
+- * Verifies that the object is complete (queue->request_buf is large enough to
+- * hold it in one piece, and the request length includes the whole object).
+- *
+- * Note that queue->request_buf may be overwritten after yielding, so the
+- * returned pointer must not be used across a function that may yield!
+- */
+-#define FUSE_IN_OP_STRUCT(op_name, queue) \
++#define FUSE_IN_OP_STRUCT_LEGACY(in_buf) \
+     ({ \
+-        const struct fuse_in_header *__in_hdr = \
+-            (const struct fuse_in_header *)(queue)->request_buf; \
+-        const struct fuse_##op_name##_in *__in = \
+-            (const struct fuse_##op_name##_in *)(__in_hdr + 1); \
+-        const size_t __param_len = sizeof(*__in_hdr) + sizeof(*__in); \
+-        uint32_t __req_len; \
+-        \
+-        QEMU_BUILD_BUG_ON(sizeof((queue)->request_buf) < __param_len); \
+-        \
+-        __req_len = __in_hdr->len; \
+-        if (__req_len < __param_len) { \
+-            warn_report("FUSE request truncated (%" PRIu32 " < %zu)", \
+-                        __req_len, __param_len); \
+-            ret = -EINVAL; \
+-            break; \
+-        } \
+-        __in; \
++        (void *)(((struct fuse_in_header *)in_buf) + 1); \
+     })
+ 
+-/*
+- * For use in fuse_co_process_request():
+- * Returns a pointer to the return object for the given operation (inside of
+- * out_buf, which is assumed to hold a fuse_out_header first).
+- * Verifies that out_buf is large enough to hold the whole object.
+- *
+- * (out_buf should be a char[] array.)
+- */
+-#define FUSE_OUT_OP_STRUCT(op_name, out_buf) \
++#define FUSE_OUT_OP_STRUCT_LEGACY(out_buf) \
+     ({ \
+-        struct fuse_out_header *__out_hdr = \
+-            (struct fuse_out_header *)(out_buf); \
+-        struct fuse_##op_name##_out *__out = \
+-            (struct fuse_##op_name##_out *)(__out_hdr + 1); \
+-        \
+-        QEMU_BUILD_BUG_ON(sizeof(*__out_hdr) + sizeof(*__out) > \
+-                          sizeof(out_buf)); \
+-        \
+-        __out; \
++        (void *)(((struct fuse_out_header *)out_buf) + 1); \
+     })
+ 
+-/**
+- * Process a FUSE request, incl. writing the response.
+- *
+- * Note that yielding in any request-processing function can overwrite the
+- * contents of q->request_buf.  Anything that takes a buffer needs to take
+- * care that the content is copied before yielding.
+- *
+- * @spillover_buf can contain the tail of a write request too large to fit into
+- * q->request_buf.  This function takes ownership of it (i.e. will free it),
+- * which assumes that its contents will not be overwritten by concurrent
+- * requests (as opposed to q->request_buf).
++
++/*
++ * Shared helper for FUSE request processing. Handles both legacy and io_uring
++ * paths.
+  */
+-static void coroutine_fn
+-fuse_co_process_request(FuseQueue *q, void *spillover_buf)
++static void coroutine_fn fuse_co_process_request_common(
++    FuseExport *exp,
++    uint32_t opcode,
++    uint64_t req_id,
++    void *in_buf,
++    void *spillover_buf,
++    void *out_buf,
++    int fd, /* -1 for uring */
++    void (*send_response)(void *opaque, uint32_t req_id, ssize_t ret,
++                         const void *buf, void *out_buf),
++    void *opaque /* FuseQueue* or FuseRingEnt* */)
+ {
+-    FuseExport *exp = q->exp;
+-    uint32_t opcode;
+-    uint64_t req_id;
+-    /*
+-     * Return buffer.  Must be large enough to hold all return headers, but does
+-     * not include space for data returned by read requests.
+-     * (FUSE_IN_OP_STRUCT() verifies at compile time that out_buf is indeed
+-     * large enough.)
+-     */
+-    char out_buf[sizeof(struct fuse_out_header) +
+-                 MAX_CONST(sizeof(struct fuse_init_out),
+-                 MAX_CONST(sizeof(struct fuse_open_out),
+-                 MAX_CONST(sizeof(struct fuse_attr_out),
+-                 MAX_CONST(sizeof(struct fuse_write_out),
+-                           sizeof(struct fuse_lseek_out)))))];
+-    struct fuse_out_header *out_hdr = (struct fuse_out_header *)out_buf;
+-    /* For read requests: Data to be returned */
+     void *out_data_buffer = NULL;
+-    ssize_t ret;
++    ssize_t ret = 0;
+ 
+-    /* Limit scope to ensure pointer is no longer used after yielding */
+-    {
+-        const struct fuse_in_header *in_hdr =
+-            (const struct fuse_in_header *)q->request_buf;
++    void *op_in_buf = (void *)FUSE_IN_OP_STRUCT_LEGACY(in_buf);
++    void *op_out_buf = (void *)FUSE_OUT_OP_STRUCT_LEGACY(out_buf);
+ 
+-        opcode = in_hdr->opcode;
+-        req_id = in_hdr->unique;
 +#ifdef CONFIG_LINUX_IO_URING
-+    /* Handle FUSE-over-io_uring initialization */
-+    if (unlikely(opcode == FUSE_INIT && exp->is_uring)) {
-+        struct fuse_init_out *out =
-+            (struct fuse_init_out *)FUSE_OUT_OP_STRUCT(out_buf);
-+        fuse_uring_start(exp, out);
-+    }
++    if (opcode != FUSE_INIT && exp->is_uring) {
++        op_in_buf = (void *)in_buf;
++        op_out_buf = (void *)out_buf;
+     }
 +#endif
+ 
+     switch (opcode) {
+     case FUSE_INIT: {
+-        const struct fuse_init_in *in = FUSE_IN_OP_STRUCT(init, q);
+-        ret = fuse_co_init(exp, FUSE_OUT_OP_STRUCT(init, out_buf),
+-                           in->max_readahead, in->flags);
++        const struct fuse_init_in *in =
++            (const struct fuse_init_in *)FUSE_IN_OP_STRUCT_LEGACY(in_buf);
++
++        struct fuse_init_out *out =
++            (struct fuse_init_out *)FUSE_OUT_OP_STRUCT_LEGACY(out_buf);
++
++        ret = fuse_co_init(exp, out, in->max_readahead, in);
+         break;
+     }
+ 
+-    case FUSE_OPEN:
+-        ret = fuse_co_open(exp, FUSE_OUT_OP_STRUCT(open, out_buf));
++    case FUSE_OPEN: {
++        struct fuse_open_out *out =
++            (struct fuse_open_out *)op_out_buf;
++
++        ret = fuse_co_open(exp, out);
+         break;
++    }
+ 
+     case FUSE_RELEASE:
+         ret = 0;
+         break;
+ 
+     case FUSE_LOOKUP:
+-        ret = -ENOENT; /* There is no node but the root node */
++        ret = -ENOENT;
+         break;
+ 
+-    case FUSE_GETATTR:
+-        ret = fuse_co_getattr(exp, FUSE_OUT_OP_STRUCT(attr, out_buf));
++    case FUSE_GETATTR: {
++        struct fuse_attr_out *out =
++            (struct fuse_attr_out *)op_out_buf;
++
++        ret = fuse_co_getattr(exp, out);
+         break;
++    }
+ 
+     case FUSE_SETATTR: {
+-        const struct fuse_setattr_in *in = FUSE_IN_OP_STRUCT(setattr, q);
+-        ret = fuse_co_setattr(exp, FUSE_OUT_OP_STRUCT(attr, out_buf),
+-                              in->valid, in->size, in->mode, in->uid, in->gid);
++        const struct fuse_setattr_in *in =
++            (const struct fuse_setattr_in *)op_in_buf;
++
++        struct fuse_attr_out *out =
++            (struct fuse_attr_out *)op_out_buf;
++
++        ret = fuse_co_setattr(exp, out, in->valid, in->size, in->mode,
++                              in->uid, in->gid);
+         break;
+     }
+ 
+     case FUSE_READ: {
+-        const struct fuse_read_in *in = FUSE_IN_OP_STRUCT(read, q);
++        const struct fuse_read_in *in =
++            (const struct fuse_read_in *)op_in_buf;
++
+         ret = fuse_co_read(exp, &out_data_buffer, in->offset, in->size);
+         break;
+     }
+ 
+     case FUSE_WRITE: {
+-        const struct fuse_write_in *in = FUSE_IN_OP_STRUCT(write, q);
+-        uint32_t req_len;
+-
+-        req_len = ((const struct fuse_in_header *)q->request_buf)->len;
+-        if (unlikely(req_len < sizeof(struct fuse_in_header) + sizeof(*in) +
+-                               in->size)) {
+-            warn_report("FUSE WRITE truncated; received %zu bytes of %" PRIu32,
+-                        req_len - sizeof(struct fuse_in_header) - sizeof(*in),
+-                        in->size);
+-            ret = -EINVAL;
+-            break;
++        const struct fuse_write_in *in =
++            (const struct fuse_write_in *)op_in_buf;
++
++        struct fuse_write_out *out =
++            (struct fuse_write_out *)op_out_buf;
++
++#ifdef CONFIG_LINUX_IO_URING
++        if (!exp->is_uring) {
++#endif
++            uint32_t req_len = ((const struct fuse_in_header *)in_buf)->len;
++
++            if (unlikely(req_len < sizeof(struct fuse_in_header) + sizeof(*in) +
++                        in->size)) {
++                warn_report("FUSE WRITE truncated; received %zu bytes of %"
++                    PRIu32,
++                    req_len - sizeof(struct fuse_in_header) - sizeof(*in),
++                    in->size);
++                ret = -EINVAL;
++                break;
++            }
++#ifdef CONFIG_LINUX_IO_URING
++        } else {
++            assert(in->size <=
++                ((FuseRingEnt *)opaque)->req_header.ring_ent_in_out.payload_sz);
+         }
++#endif
+ 
+-        /*
+-         * poll_fuse_fd() has checked that in_hdr->len matches the number of
+-         * bytes read, which cannot exceed the max_write value we set
+-         * (FUSE_MAX_WRITE_BYTES).  So we know that FUSE_MAX_WRITE_BYTES >=
+-         * in_hdr->len >= in->size + X, so this assertion must hold.
+-         */
+         assert(in->size <= FUSE_MAX_WRITE_BYTES);
+ 
+-        /*
+-         * Passing a pointer to `in` (i.e. the request buffer) is fine because
+-         * fuse_co_write() takes care to copy its contents before potentially
+-         * yielding.
+-         */
+-        ret = fuse_co_write(exp, FUSE_OUT_OP_STRUCT(write, out_buf),
+-                            in->offset, in->size, in + 1, spillover_buf);
++        const void *in_place_buf = in + 1;
++        const void *spill_buf = spillover_buf;
++
++#ifdef CONFIG_LINUX_IO_URING
++        if (exp->is_uring) {
++            in_place_buf = NULL;
++            spill_buf = out_buf;
++        }
++#endif
++
++        ret = fuse_co_write(exp, out, in->offset, in->size,
++                            in_place_buf, spill_buf);
+         break;
+     }
+ 
+     case FUSE_FALLOCATE: {
+-        const struct fuse_fallocate_in *in = FUSE_IN_OP_STRUCT(fallocate, q);
++        const struct fuse_fallocate_in *in =
++            (const struct fuse_fallocate_in *)op_in_buf;
++
+         ret = fuse_co_fallocate(exp, in->offset, in->length, in->mode);
+         break;
+     }
+@@ -1759,9 +1797,13 @@ fuse_co_process_request(FuseQueue *q, void *spillover_buf)
+ 
+ #ifdef CONFIG_FUSE_LSEEK
+     case FUSE_LSEEK: {
+-        const struct fuse_lseek_in *in = FUSE_IN_OP_STRUCT(lseek, q);
+-        ret = fuse_co_lseek(exp, FUSE_OUT_OP_STRUCT(lseek, out_buf),
+-                            in->offset, in->whence);
++        const struct fuse_lseek_in *in =
++            (const struct fuse_lseek_in *)op_in_buf;
++
++        struct fuse_lseek_out *out =
++            (struct fuse_lseek_out *)op_out_buf;
++
++        ret = fuse_co_lseek(exp, out, in->offset, in->whence);
+         break;
+     }
+ #endif
+@@ -1770,28 +1812,147 @@ fuse_co_process_request(FuseQueue *q, void *spillover_buf)
+         ret = -ENOSYS;
+     }
+ 
+-    /* Ignore errors from fuse_write*(), nothing we can do anyway */
++    send_response(opaque, req_id, ret, out_data_buffer, out_buf);
++
+     if (out_data_buffer) {
+-        assert(ret >= 0);
+-        fuse_write_buf_response(q->fuse_fd, req_id, out_hdr,
+-                                out_data_buffer, ret);
+         qemu_vfree(out_data_buffer);
++    }
++
++    if (fd != -1) {
++        qemu_vfree(spillover_buf);
++    }
++
+ #ifdef CONFIG_LINUX_IO_URING
++    /* Handle FUSE initialization errors */
++    if (unlikely(opcode == FUSE_INIT && ret == -ENODEV)) {
++        error_report("System doesn't support FUSE-over-io_uring");
++        fuse_export_halt(exp);
++        return;
++    }
++
+     /* Handle FUSE-over-io_uring initialization */
+-    if (unlikely(opcode == FUSE_INIT && exp->is_uring)) {
++    if (unlikely(opcode == FUSE_INIT && exp->is_uring && fd != -1)) {
+         struct fuse_init_out *out =
+-            (struct fuse_init_out *)FUSE_OUT_OP_STRUCT(out_buf);
++            (struct fuse_init_out *)FUSE_OUT_OP_STRUCT_LEGACY(out_buf);
+         fuse_uring_start(exp, out);
+     }
+ #endif
++}
++
++/* Helper to send response for legacy */
++static void send_response_legacy(void *opaque, uint32_t req_id, ssize_t ret,
++                            const void *buf, void *out_buf)
++{
++    FuseQueue *q = (FuseQueue *)opaque;
++    struct fuse_out_header *out_hdr = (struct fuse_out_header *)out_buf;
++    if (buf) {
++        assert(ret >= 0);
++        fuse_write_buf_response(q->fuse_fd, req_id, out_hdr, buf, ret);
      } else {
          fuse_write_response(q->fuse_fd, req_id, out_hdr,
                              ret < 0 ? ret : 0,
-diff --git a/docs/tools/qemu-storage-daemon.rst b/docs/tools/qemu-storage-daemon.rst
-index 35ab2d7807..c5076101e0 100644
---- a/docs/tools/qemu-storage-daemon.rst
-+++ b/docs/tools/qemu-storage-daemon.rst
-@@ -78,7 +78,7 @@ Standard options:
- .. option:: --export [type=]nbd,id=<id>,node-name=<node-name>[,name=<export-name>][,writable=on|off][,bitmap=<name>]
-   --export [type=]vhost-user-blk,id=<id>,node-name=<node-name>,addr.type=unix,addr.path=<socket-path>[,writable=on|off][,logical-block-size=<block-size>][,num-queues=<num-queues>]
-   --export [type=]vhost-user-blk,id=<id>,node-name=<node-name>,addr.type=fd,addr.str=<fd>[,writable=on|off][,logical-block-size=<block-size>][,num-queues=<num-queues>]
--  --export [type=]fuse,id=<id>,node-name=<node-name>,mountpoint=<file>[,growable=on|off][,writable=on|off][,allow-other=on|off|auto]
-+  --export [type=]fuse,id=<id>,node-name=<node-name>,mountpoint=<file>[,growable=on|off][,writable=on|off][,allow-other=on|off|auto][,io-uring=on|off]
-   --export [type=]vduse-blk,id=<id>,node-name=<node-name>,name=<vduse-name>[,writable=on|off][,num-queues=<num-queues>][,queue-size=<queue-size>][,logical-block-size=<block-size>][,serial=<serial-number>]
+                             ret < 0 ? 0 : ret);
+     }
++}
  
-   is a block export definition. ``node-name`` is the block node that should be
-@@ -111,10 +111,11 @@ Standard options:
-   that enabling this option as a non-root user requires enabling the
-   user_allow_other option in the global fuse.conf configuration file.  Setting
-   ``allow-other`` to auto (the default) will try enabling this option, and on
--  error fall back to disabling it.
--
--  The ``vduse-blk`` export type takes a ``name`` (must be unique across the host)
--  to create the VDUSE device.
-+  error fall back to disabling it. Once ``io-uring`` is enabled (off by default),
-+  the FUSE-over-io_uring-related settings will be initialized to bypass the
-+  traditional /dev/fuse communication mechanism and instead use io_uring to
-+  handle FUSE operations. The ``vduse-blk`` export type takes a ``name``
-+  (must be unique across the host) to create the VDUSE device.
-   ``num-queues`` sets the number of virtqueues (the default is 1).
-   ``queue-size`` sets the virtqueue descriptor table size (the default is 256).
+-    qemu_vfree(spillover_buf);
++static void coroutine_fn
++fuse_co_process_request(FuseQueue *q, void *spillover_buf)
++{
++    FuseExport *exp = q->exp;
++    uint32_t opcode;
++    uint64_t req_id;
++
++    /*
++     * Return buffer.  Must be large enough to hold all return headers, but does
++     * not include space for data returned by read requests.
++     */
++    char out_buf[sizeof(struct fuse_out_header) +
++        MAX_CONST(sizeof(struct fuse_init_out),
++        MAX_CONST(sizeof(struct fuse_open_out),
++        MAX_CONST(sizeof(struct fuse_attr_out),
++        MAX_CONST(sizeof(struct fuse_write_out),
++                  sizeof(struct fuse_lseek_out)))))] = {0};
++
++    /* Limit scope to ensure pointer is no longer used after yielding */
++    {
++        const struct fuse_in_header *in_hdr =
++            (const struct fuse_in_header *)q->request_buf;
++
++        opcode = in_hdr->opcode;
++        req_id = in_hdr->unique;
++    }
++
++    fuse_co_process_request_common(exp, opcode, req_id, q->request_buf,
++        spillover_buf, out_buf, q->fuse_fd, send_response_legacy, q);
++}
++
++#ifdef CONFIG_LINUX_IO_URING
++static void fuse_uring_prep_sqe_commit(struct io_uring_sqe *sqe, void *opaque)
++{
++    FuseRingEnt *ent = opaque;
++    struct fuse_uring_cmd_req *req = (void *)&sqe->cmd[0];
++
++    fuse_uring_sqe_prepare(sqe, ent->rq->q, FUSE_IO_URING_CMD_COMMIT_AND_FETCH);
++    fuse_uring_sqe_set_req_data(req, ent->rq->rqid,
++                                     ent->req_commit_id);
++}
++
++static void
++fuse_uring_send_response(FuseRingEnt *ent, uint32_t req_id, ssize_t ret,
++                         const void *out_data_buffer)
++{
++    FuseExport *exp = ent->rq->q->exp;
++
++    struct fuse_uring_req_header *rrh = &ent->req_header;
++    struct fuse_out_header *out_header = (struct fuse_out_header *)&rrh->in_out;
++    struct fuse_uring_ent_in_out *ent_in_out =
++        (struct fuse_uring_ent_in_out *)&rrh->ring_ent_in_out;
++
++    /* FUSE_READ */
++    if (out_data_buffer && ret > 0) {
++        memcpy(ent->op_payload, out_data_buffer, ret);
++    }
++
++    out_header->error  = ret < 0 ? ret : 0;
++    out_header->unique = req_id;
++    /* out_header->len = ret > 0 ? ret : 0; */
++    ent_in_out->payload_sz = ret > 0 ? ret : 0;
++    aio_add_sqe(fuse_uring_prep_sqe_commit, ent,
++                    &ent->fuse_cqe_handler);
++}
++
++/* Helper to send response for uring */
++static void send_response_uring(void *opaque, uint32_t req_id, ssize_t ret,
++                        const void *out_data_buffer, void *payload)
++{
++    FuseRingEnt *ent = (FuseRingEnt *)opaque;
++
++    fuse_uring_send_response(ent, req_id, ret, out_data_buffer);
++}
++
++static void coroutine_fn fuse_uring_co_process_request(FuseRingEnt *ent)
++{
++    FuseExport *exp = ent->rq->q->exp;
++    struct fuse_uring_req_header *rrh = &ent->req_header;
++    struct fuse_uring_ent_in_out *ent_in_out =
++        (struct fuse_uring_ent_in_out *)&rrh->ring_ent_in_out;
++    struct fuse_in_header *in_hdr =
++        (struct fuse_in_header *)&rrh->in_out;
++    uint32_t opcode = in_hdr->opcode;
++    uint64_t req_id = in_hdr->unique;
++    ent->req_commit_id = ent_in_out->commit_id;
++
++    if (unlikely(ent->req_commit_id == 0)) {
++        error_report("If this happens kernel will not find the response - "
++            "it will be stuck forever - better to abort immediately.");
++        fuse_export_halt(exp);
++        return;
++    }
++
++    fuse_co_process_request_common(exp, opcode, req_id, &rrh->op_in,
++        NULL, ent->op_payload, -1, send_response_uring, ent);
+ }
++#endif
  
-diff --git a/qapi/block-export.json b/qapi/block-export.json
-index 9ae703ad01..37f2fc47e2 100644
---- a/qapi/block-export.json
-+++ b/qapi/block-export.json
-@@ -184,12 +184,15 @@
- #     mount the export with allow_other, and if that fails, try again
- #     without.  (since 6.1; default: auto)
- #
-+# @io-uring: Use FUSE-over-io-uring.  (since 10.2; default: false)
-+#
- # Since: 6.0
- ##
- { 'struct': 'BlockExportOptionsFuse',
-   'data': { 'mountpoint': 'str',
-             '*growable': 'bool',
--            '*allow-other': 'FuseExportAllowOther' },
-+            '*allow-other': 'FuseExportAllowOther',
-+            '*io-uring': 'bool' },
-   'if': 'CONFIG_FUSE' }
- 
- ##
-diff --git a/storage-daemon/qemu-storage-daemon.c b/storage-daemon/qemu-storage-daemon.c
-index eb72561358..0cd4cd2b58 100644
---- a/storage-daemon/qemu-storage-daemon.c
-+++ b/storage-daemon/qemu-storage-daemon.c
-@@ -107,6 +107,7 @@ static void help(void)
- #ifdef CONFIG_FUSE
- "  --export [type=]fuse,id=<id>,node-name=<node-name>,mountpoint=<file>\n"
- "           [,growable=on|off][,writable=on|off][,allow-other=on|off|auto]\n"
-+"           [,io-uring=on|off]"
- "                         export the specified block node over FUSE\n"
- "\n"
- #endif /* CONFIG_FUSE */
-diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
-index d2433d1d99..68d3fe8e01 100644
---- a/util/fdmon-io_uring.c
-+++ b/util/fdmon-io_uring.c
-@@ -452,10 +452,13 @@ static const FDMonOps fdmon_io_uring_ops = {
- void fdmon_io_uring_setup(AioContext *ctx, Error **errp)
- {
-     int ret;
-+    int flags;
- 
-     ctx->io_uring_fd_tag = NULL;
-+    flags = IORING_SETUP_SQE128;
- 
--    ret = io_uring_queue_init(FDMON_IO_URING_ENTRIES, &ctx->fdmon_io_uring, 0);
-+    ret = io_uring_queue_init(FDMON_IO_URING_ENTRIES,
-+                            &ctx->fdmon_io_uring, flags);
-     if (ret != 0) {
-         error_setg_errno(errp, -ret, "Failed to initialize io_uring");
-         return;
+ const BlockExportDriver blk_exp_fuse = {
+     .type               = BLOCK_EXPORT_TYPE_FUSE,
 -- 
 2.45.2
 
