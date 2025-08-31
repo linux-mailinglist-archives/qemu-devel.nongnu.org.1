@@ -2,46 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0E6B3D2A1
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Aug 2025 13:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8463CB3D3C5
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Aug 2025 15:56:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usgXu-0002iy-G4; Sun, 31 Aug 2025 07:48:30 -0400
+	id 1usiW8-0001Ea-Jv; Sun, 31 Aug 2025 09:54:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1usgXq-0002iF-SX; Sun, 31 Aug 2025 07:48:26 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <maxim@guixotic.coop>)
+ id 1ushYr-0007CL-6d
+ for qemu-devel@nongnu.org; Sun, 31 Aug 2025 08:53:33 -0400
+Received: from mailtransmit05.runbox.com ([2a0c:5a00:149::26])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1usgXo-0006Eu-EF; Sun, 31 Aug 2025 07:48:26 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 01B4914E37C;
- Sun, 31 Aug 2025 14:47:46 +0300 (MSK)
-Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A7DFA26BA98;
- Sun, 31 Aug 2025 14:48:19 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org,
-	qemu-block@nongnu.org
+ (Exim 4.90_1) (envelope-from <maxim@guixotic.coop>)
+ id 1ushYf-0007nu-Kz
+ for qemu-devel@nongnu.org; Sun, 31 Aug 2025 08:53:25 -0400
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+ by mailtransmit05.runbox.com with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.93)
+ (envelope-from <maxim@guixotic.coop>)
+ id 1ushYX-002VxF-BL; Sun, 31 Aug 2025 14:53:13 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=guixotic.coop; s=selector1; h=Content-Transfer-Encoding:MIME-Version:
+ Message-ID:Date:Subject:Cc:To:From;
+ bh=dWZ2oPkGh/4u0vMN2ckIu5AvknPfjebCqx+qYvpdFj4=; b=L0Mal7/7U7nAxSPb06aCyBj2aD
+ FE9p4Fwfnu9Q6gTE4Y7dJvZlfu+hOM/nM6XKtynlkdXyohs/wPtLOJVB0Lp2EiyAFfaZsy6lOcCtw
+ 7/FFo02Pxu71OxeNrdQXzTr7CEkzeTI47kggFaTfTPKQSAZ/y2DTz7Fp2SFNXScJDUNMgR2jsKKOE
+ xuidIcjqeHNGwD3opJ5AhkO/B42HktOmIptDQ5OGG7D9RtiPpGL0AIdpOtIu0Z2tq3EjIPPeOzOHf
+ kJ4hgp7pKcO6mkBiD/mYWUjMSUXQ7+/XPMruOx3CJfk9x9hPHVuEPFgO+iAq9A3s5IjuF01z90V9r
+ HYx/xP8Q==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+ by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+ (envelope-from <maxim@guixotic.coop>)
+ id 1ushYW-0007Rv-JP; Sun, 31 Aug 2025 14:53:12 +0200
+Received: by submission03.runbox with esmtpsa [Authenticated ID (1476852)]
+ (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.93) id 1ushYO-005AKS-Q5; Sun, 31 Aug 2025 14:53:05 +0200
+From: Maxim Cournoyer <maxim@guixotic.coop>
+To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>,
-	Bin Meng <bin.meng@windriver.com>
-Subject: [PATCH] block: honor $TMPDIR in create_tmp_file()
-Date: Sun, 31 Aug 2025 14:48:17 +0300
-Message-ID: <20250831114818.4136358-1-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.47.2
+	Maxim Cournoyer <maxim@guixotic.coop>
+Subject: [PATCH] tests: honor $TMPDIR for test_virtio_version
+Date: Sun, 31 Aug 2025 21:52:55 +0900
+Message-ID: <20250831125255.7066-1-maxim@guixotic.coop>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a0c:5a00:149::26;
+ envelope-from=maxim@guixotic.coop; helo=mailtransmit05.runbox.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sun, 31 Aug 2025 09:54:46 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,52 +74,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current code uses g_get_tmp_dir() to get temporary directory,
-and if the returned *value* is "/tmp", the code changes it to
-"/var/tmp".  This is wrong, - we should use "/var/tmp" only if
-$TMPDIR is not set, not if it is set to some specific value.
-In particular, the code doesn't let us to use TMPDIR=/tmp.
+Until 10.1.0, the test suite could be run without having a writable
+/var/tmp in the build environment.  To avoid now requiring /var/tmp in
+the build environment (which can be a very minimal container like in
+the case of GNU Guix), consult TMPDIR first, using /var/tmp as a
+fallback.
 
-Fix this by using g_get_tmp_dir() only on windows platform as
-before, and open-code $TMPDIR usage on everything else.
-g_get_tmp_dir() checks $TMP and $TEMP too, but these variables
-are windows-specific and should not be used on *nix.
-
-Fixes: 69fbfff95e84 "block: Refactor get_tmp_filename()"
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1626
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Maxim Cournoyer <maxim@guixotic.coop>
 ---
- block.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tests/functional/x86_64/test_virtio_version.py | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/block.c b/block.c
-index 8848e9a7ed..f86fc9db35 100644
---- a/block.c
-+++ b/block.c
-@@ -853,8 +853,6 @@ char *create_tmp_file(Error **errp)
-     const char *tmpdir;
-     g_autofree char *filename = NULL;
+diff --git a/tests/functional/x86_64/test_virtio_version.py b/tests/functional/x86_64/test_virtio_version.py
+index a5ea73237f..501545f655 100755
+--- a/tests/functional/x86_64/test_virtio_version.py
++++ b/tests/functional/x86_64/test_virtio_version.py
+@@ -10,6 +10,8 @@
+ # This work is licensed under the terms of the GNU GPL, version 2 or
+ # later.  See the COPYING file in the top-level directory.
  
--    tmpdir = g_get_tmp_dir();
--#ifndef _WIN32
-     /*
-      * See commit 69bef79 ("block: use /var/tmp instead of /tmp for -snapshot")
-      *
-@@ -862,7 +860,12 @@ char *create_tmp_file(Error **errp)
-      * so the files can become very large. /tmp is often a tmpfs where as
-      * /var/tmp is usually on a disk, so more appropriate for disk images.
-      */
--    if (!g_strcmp0(tmpdir, "/tmp")) {
++import os
 +
-+#ifdef _WIN32
-+    tmpdir = g_get_tmp_dir();
-+#else
-+    tmpdir = getenv("TMPDIR");
-+    if (!tmpdir) {
-         tmpdir = "/var/tmp";
-     }
- #endif
+ from qemu.machine import QEMUMachine
+ from qemu_test import QemuSystemTest
+ 
+@@ -68,7 +70,9 @@ def run_device(self, devtype, opts=None, machine='pc'):
+         """
+         Run QEMU with `-device DEVTYPE`, return device info from `query-pci`
+         """
+-        with QEMUMachine(self.qemu_bin) as vm:
++        with QEMUMachine(
++                self.qemu_bin,
++                base_temp_dir=os.environ.get('TMPDIR', '/var/tmp')) as vm:
+             vm.set_machine(machine)
+             if opts:
+                 devtype += ',' + opts
+
+base-commit: e101d33792530093fa0b0a6e5f43e4d8cfe4581e
 -- 
-2.47.2
+2.51.0
 
 
