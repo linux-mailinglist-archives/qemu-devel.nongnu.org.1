@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2400B3E3B7
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 14:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDCFB3E6BA
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 16:10:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ut2zr-0007zs-2Y; Mon, 01 Sep 2025 07:46:51 -0400
+	id 1ut2zm-0007X7-CM; Mon, 01 Sep 2025 07:46:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1ut2z2-0006ol-6g; Mon, 01 Sep 2025 07:46:01 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1ut2z9-0006s9-TE; Mon, 01 Sep 2025 07:46:11 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1ut2yw-0001JP-Dm; Mon, 01 Sep 2025 07:45:59 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-24a1270e0deso12881415ad.1; 
- Mon, 01 Sep 2025 04:45:47 -0700 (PDT)
+ id 1ut2z4-0001Kd-07; Mon, 01 Sep 2025 07:46:07 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-b4d4881897cso1800309a12.0; 
+ Mon, 01 Sep 2025 04:45:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1756727145; x=1757331945; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1756727151; x=1757331951; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WES0X6tSGNzNPhgOsz9aAkJISTE6g/V5BmTgRuV7mUk=;
- b=DqcoPFdj+AWXPDnW23HymEIhKcDg3Wfwh3JrAO9BEgh/uwair4d48xhWxifm54okC9
- 9n50YPa7KXM5cqcTqgjF1DaMNEtvp22DVqjbABdVndGSBBlRBP0nTuBDL1JeCgANN4VS
- CFjTXlibZ4A5tiWBJSl2d6cmZB3vJ78N5JoAu1bGUhdU07ffkbPqWM37MjNXSpc1s6MV
- H39skfg1qn0uKhCToOyKmq6VybTh/9zBsVnd30q/tFIGnJyRLZaXv0u9VtfQra8qmZ9f
- JoLgdTprrMacGWSkl0TG3itfzwc/RxHHwHtuq2t6kXolALT1YMpUEH4nTSga1cn3KtZl
- tIFQ==
+ bh=MJlrySIO4BSZhcIFP/jHtysQnEYOUCLY5ts4W8Z02P0=;
+ b=B8KVSunI4bO116tMB4q4xnJt4heNpxogCgi3R9Q/RW7PBQnuTPhHVlLtPTbBQG4Ye6
+ PHUMdUzEu8yuDo4D6IHYggYK47V9VnLEy3/4viEF6BsnV8LaMmfqx22GbA3Mu60SJA8t
+ HvoDtP2+f3/YXpcyoK9IjpOG2eLIqEdinkaBLMLeYUamoUGPEn9WTrpIzzdEN8ggbQ7S
+ 8FLFku2ZGucUpUb1fH3VTmtjJZnoJnKPyy52nN7nVeWOB6r8kYFVRjkzOl7BR04Dj1EB
+ SFaDzoc03SLntiSlaxgURNOD5TMWdehsYyQzuldkOdT5YIWqzvYKM2ARYJsSVEH/F3Sr
+ WTVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756727145; x=1757331945;
+ d=1e100.net; s=20230601; t=1756727151; x=1757331951;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WES0X6tSGNzNPhgOsz9aAkJISTE6g/V5BmTgRuV7mUk=;
- b=I4LNDap/LbK1EHA99mwOufdHymqoh4wlqLabH6sth+se/yXo2hPlYvpcc32FvIQ5up
- TuOKrFOVriWxWK3waBy+e+H6Og3D7r4mN6y4kXwVWhioU//QUlDVfmNrlWfIbVZH1sqM
- 0KtrwV1c75cPqjE2EtxUoQqGueglD53O0h7QTtwSlIaD+rGwfwVVdRdkKV9UJ4rDHfi0
- SVmSktuLBQRJaKdmtALRWnXHfG/Iw8ON85K2fqIG9cupISnNzQnVDNlDaQ8KSDSJBs9q
- wrSJP850618AmWz7Pr+es/fL5GzVcUzou1Rq+jSEayoWKLTMGryte7QQi81uxpVvniLE
- Xs3A==
+ bh=MJlrySIO4BSZhcIFP/jHtysQnEYOUCLY5ts4W8Z02P0=;
+ b=ampYP6/pL9ggbhrQRx7W6di41cVwQBaMMaI8QFnx+cdwLbWItsc5/F8gtg9ceyvgmm
+ kfDb4Jc85pDcA99qFkZtiCGiAvi2DlfWNDdJq2/Mi+PLl/VwbauhqYBt6mQi65/+l+/Q
+ 4KfjsGNHgwo9JupzzfruWHIFju0xBxDuX12ZGNI65ESlYVYdvVui1KpYVBNspuexwQ+Q
+ nCg31Z4isPX/nv3efA5/m47Hzfjz/I5A2qRXpC4aPPqVoX1b0RG2W/DBrYZfIPMaIxXW
+ JPhsKRIXqGtt+IZ/so+PEMh7EQx4eRJ1gTryWzsmYwW3OYqr+OVc47BPn4wpfYS11TAk
+ Gq5g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUlbf19HjF+4NHUBCT5tFS4yOLyE98CRhjCU+i3Ygg+x60WARisnKGCnPUZN8ykFp6+3TznbAKjbA==@nongnu.org,
- AJvYcCUywqYR6VzOqSSM+DH0RXkrnuhKF9hIg0Dc/4pce+0Subt6lr8pqgsbWADFrd98ojXwOeoPieP4HlL7Jw==@nongnu.org
-X-Gm-Message-State: AOJu0YxuvZXFFUJrR/08mEdULNnq4XyBPh5wNH4OmhjP63Qw2ROP9TVv
- Ax5KnuF6nvZwH0H9FxrjuitpxTlQVxeqc4UyyvYnk6wwvoyP27qAm0Sxnchjdw==
-X-Gm-Gg: ASbGncvxMd8mzHyStboFnT1zo3gDmNXSU5+OOxPkWYb6VRNo09uWL4br4EAOiIMql7Z
- Ywq+69SaWzZ9sUY1AVE8v7vQ68WPKT7+9myGS6Vjgjy656sko6Mn9qJTl35cqP5441m+s4wXMox
- Dn1Berh3sIEIA46UeXgEwpLdiAkZiI+YaTvTWvFYRpOSRkOarAAjKo36/OP5dRCQ1nxuDiYhr2P
- D6A086YW0EC6JMflmRddRyIZmUMMCxIsc2hfT8Eei6dVi8aPwKC2LNlHGM0nKlgWQO+6ZRZMAF9
- 9tO4wDtIVSkMkFa6YfkUDPDb9Po2VVjCEtP1TtY7bypFhefLhmPXL4H1gGld9nE9sUPB4vyjBQt
- u860y6dEM+vC7DN0cuFG2v/FT1QYntQ/ol4o4wo03ggE=
-X-Google-Smtp-Source: AGHT+IHDhFRJQBYt2ZX4BzXIeOLbiQkOdlyOuir3bILDtDa/NmCbPUbnJ/plEPsSK9snQ1kxnmscMQ==
-X-Received: by 2002:a17:902:e5ce:b0:248:ffb6:5bc1 with SMTP id
- d9443c01a7336-24944a9d689mr109011385ad.35.1756727145453; 
- Mon, 01 Sep 2025 04:45:45 -0700 (PDT)
+ AJvYcCU7FWTE9LWrQtbngual93upmNgCE8cEUKQwT13KpFK5kM9t09yYQ7WKz6AIp6rsRz+S8i8yuCZHqA==@nongnu.org,
+ AJvYcCWAHerfjDQhtj+c+zIuYWnbFfrllVjsZDpbCmI7hKTz44U3ULq8Ljx/L4v+usUJHa+yfhOm6sP7cj+eEw==@nongnu.org
+X-Gm-Message-State: AOJu0YxlBn0XBdiBoB7LQm8Exd2Bx9qCNsVffli0/Chm1OG6cODxbmJ8
+ U6vjGg1fOMcrSsO+2xpCn7c+MaRR05XQdkOzwfI/gCCLyQ/QvpH5uhZhlyrXQA==
+X-Gm-Gg: ASbGnct2SEpprdwBPSNDhwpBZJailPfNbBXRPK9oXRlj+dgGXZiXFqYwCrFcTEqwYIQ
+ Ne7b/vS36Afmfg9UMltjBJO65LcReO5dal6eqebLGzrOTzttYWuuet7ttTETiwlk1VnfpWD4Jea
+ NRbViA/xQTOTSInz/WFk63SPCPScn8MWersjJ8nIxN9AKCT2Lf2PxUudoaiuCuIHfh9mPmrx1DP
+ odJk9usqCZD7k7b/Gcf2Vi+7mSF95pLiix8Sht6qptzOUddL7WOPcKUE9MsUvm6qN3fxKeOxaXW
+ 81giNl1qvqwcfl+lgMum3/PemxRBIDmLHSS1s7abYOD8Q2OVw01QU7u5FI+LbCSTpvZLuT247+5
+ mV6W9jMmujpfNVGwarncAKr3Ek+Pz5wvS
+X-Google-Smtp-Source: AGHT+IFW5pXptoNkvEWfX0rC+eB76VvDqUzzsHSUf2+rrT0WbJDA7OQuA4qZ+JSj5xn7OBcwyTx28g==
+X-Received: by 2002:a17:903:2288:b0:246:ae6e:e5e4 with SMTP id
+ d9443c01a7336-249448ded1amr94443535ad.6.1756727150962; 
+ Mon, 01 Sep 2025 04:45:50 -0700 (PDT)
 Received: from ktock.. ([240d:1a:3b6:8b00:750a:cb0b:f0f9:68f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-249065a8036sm103038775ad.129.2025.09.01.04.45.39
+ d9443c01a7336-249065a8036sm103038775ad.129.2025.09.01.04.45.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Sep 2025 04:45:44 -0700 (PDT)
+ Mon, 01 Sep 2025 04:45:50 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -78,23 +78,23 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, ktokunaga.mail@gmail.com
-Subject: [PATCH v3 04/35] .gitlab-ci.d: Add build tests for wasm64
-Date: Mon,  1 Sep 2025 20:44:06 +0900
-Message-ID: <74f75ef5de887b7e27ba9d17e21fc083ba99fa67.1756724464.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH v3 05/35] tcg/wasm: Add tcg-target.h and tcg-target-reg-bits.h
+Date: Mon,  1 Sep 2025 20:44:07 +0900
+Message-ID: <a3135800931780f64d95cae0c461954c46ccecc1.1756724464.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1756724464.git.ktokunaga.mail@gmail.com>
 References: <cover.1756724464.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,109 +110,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The wasm builds are tested for 3 targets: wasm32, wasm64(-sMEMORY64=1) and
-wasm64(-sMEMORY64=2). The CI builds the containers using the same Dockerfile
-(emsdk-wasm-cross.docker) with different build args.
+The Wasm backend targets wasm64 as the host so TCG_TARGET_REG_BITS is set to
+64. Since WebAssembly instructions vary in size and can include single-byte
+instructions, TCG_TARGET_INSN_UNIT_SIZE is set to 1.
 
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 ---
- .gitlab-ci.d/buildtest.yml          | 26 ++++++++++++++++++++++----
- .gitlab-ci.d/container-cross.yml    | 20 ++++++++++++++++++--
- .gitlab-ci.d/container-template.yml |  4 +++-
- 3 files changed, 43 insertions(+), 7 deletions(-)
+ MAINTAINERS                    |  5 +++
+ tcg/wasm/tcg-target-reg-bits.h | 11 ++++++
+ tcg/wasm/tcg-target.h          | 61 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 77 insertions(+)
+ create mode 100644 tcg/wasm/tcg-target-reg-bits.h
+ create mode 100644 tcg/wasm/tcg-target.h
 
 V3:
-- This commit is under review in another patch series so please ignore it
-  here.
+- Although checkpatch.pl reports the following error in tcg/wasm/tcg-target.h,
+  this file is based on the TCI code so it is preserved as-is.
+  > New file 'tcg/wasm/tcg-target.h' must not have license boilerplate
+  > header text, only the SPDX-License-Identifier, unless this file was
+  > copied from existing code already having such text.
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index d888a60063..77ae8f8281 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -787,11 +787,29 @@ coverity:
-     # Always manual on forks even if $QEMU_CI == "2"
-     - when: manual
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 433a44118d..89e4b51e22 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3999,6 +3999,11 @@ F: tcg/tci/
+ F: tcg/tci.c
+ F: disas/tci.c
  
--build-wasm:
-+build-wasm32-32bit:
-   extends: .wasm_build_job_template
-   timeout: 2h
-   needs:
--    job: wasm-emsdk-cross-container
-+    job: wasm32-32bit-emsdk-cross-container
-   variables:
--    IMAGE: emsdk-wasm32-cross
--    CONFIGURE_ARGS: --static --disable-tools --enable-debug --enable-tcg-interpreter
-+    IMAGE: emsdk-wasm32-32bit-cross
-+    CONFIGURE_ARGS: --static --cpu=wasm32 --disable-tools --enable-debug --enable-tcg-interpreter
++WebAssembly TCG target
++M: Kohei Tokunaga <ktokunaga.mail@gmail.com>
++S: Maintained
++F: tcg/wasm/
 +
-+build-wasm64-64bit:
-+  extends: .wasm_build_job_template
-+  timeout: 2h
-+  needs:
-+    job: wasm64-64bit-emsdk-cross-container
-+  variables:
-+    IMAGE: emsdk-wasm64-64bit-cross
-+    CONFIGURE_ARGS: --static --cpu=wasm64 --disable-tools --enable-debug --enable-tcg-interpreter
+ Block drivers
+ -------------
+ VMDK
+diff --git a/tcg/wasm/tcg-target-reg-bits.h b/tcg/wasm/tcg-target-reg-bits.h
+new file mode 100644
+index 0000000000..3dd821691f
+--- /dev/null
++++ b/tcg/wasm/tcg-target-reg-bits.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: MIT */
 +
-+build-wasm64-32bit:
-+  extends: .wasm_build_job_template
-+  timeout: 2h
-+  needs:
-+    job: wasm64-32bit-emsdk-cross-container
-+  variables:
-+    IMAGE: emsdk-wasm64-32bit-cross
-+    CONFIGURE_ARGS: --static --cpu=wasm64 --wasm64-32bit-address-limit --disable-tools --enable-debug --enable-tcg-interpreter
-diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index 8d3be53b75..84c4be49f4 100644
---- a/.gitlab-ci.d/container-cross.yml
-+++ b/.gitlab-ci.d/container-cross.yml
-@@ -92,7 +92,23 @@ win64-fedora-cross-container:
-   variables:
-     NAME: fedora-win64-cross
- 
--wasm-emsdk-cross-container:
-+wasm32-32bit-emsdk-cross-container:
-   extends: .container_job_template
-   variables:
--    NAME: emsdk-wasm32-cross
-+    NAME: emsdk-wasm32-32bit-cross
-+    BUILD_ARGS: --build-arg TARGET_CPU=wasm32
-+    DOCKERFILE: emsdk-wasm-cross
++#ifndef TCG_TARGET_REG_BITS_H
++#define TCG_TARGET_REG_BITS_H
 +
-+wasm64-64bit-emsdk-cross-container:
-+  extends: .container_job_template
-+  variables:
-+    NAME: emsdk-wasm64-64bit-cross
-+    BUILD_ARGS: --build-arg TARGET_CPU=wasm64 --build-arg WASM64_MEMORY64=1
-+    DOCKERFILE: emsdk-wasm-cross
++#if UINTPTR_MAX != UINT64_MAX
++# error Unsupported pointer size for TCG target
++#endif
++#define TCG_TARGET_REG_BITS 64
 +
-+wasm64-32bit-emsdk-cross-container:
-+  extends: .container_job_template
-+  variables:
-+    NAME: emsdk-wasm64-32bit-cross
-+    BUILD_ARGS: --build-arg TARGET_CPU=wasm64 --build-arg WASM64_MEMORY64=2
-+    DOCKERFILE: emsdk-wasm-cross
-diff --git a/.gitlab-ci.d/container-template.yml b/.gitlab-ci.d/container-template.yml
-index 4eec72f383..01ca840413 100644
---- a/.gitlab-ci.d/container-template.yml
-+++ b/.gitlab-ci.d/container-template.yml
-@@ -10,12 +10,14 @@
-     - export COMMON_TAG="$CI_REGISTRY/qemu-project/qemu/qemu/$NAME:latest"
-     - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
-     - until docker info; do sleep 1; done
-+    - export DOCKERFILE_NAME=${DOCKERFILE:-$NAME}
-   script:
-     - echo "TAG:$TAG"
-     - echo "COMMON_TAG:$COMMON_TAG"
-     - docker build --tag "$TAG" --cache-from "$TAG" --cache-from "$COMMON_TAG"
-       --build-arg BUILDKIT_INLINE_CACHE=1
--      -f "tests/docker/dockerfiles/$NAME.docker" "."
-+      $BUILD_ARGS
-+      -f "tests/docker/dockerfiles/$DOCKERFILE_NAME.docker" "."
-     - docker push "$TAG"
-   after_script:
-     - docker logout
++#endif
+diff --git a/tcg/wasm/tcg-target.h b/tcg/wasm/tcg-target.h
+new file mode 100644
+index 0000000000..f00761d19f
+--- /dev/null
++++ b/tcg/wasm/tcg-target.h
+@@ -0,0 +1,61 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Tiny Code Generator for QEMU
++ *
++ * Based on tci/tcg-target.h
++ *
++ * Copyright (c) 2009, 2011 Stefan Weil
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the "Software"), to deal
++ * in the Software without restriction, including without limitation the rights
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
++ */
++
++#ifndef TCG_TARGET_H
++#define TCG_TARGET_H
++
++#define TCG_TARGET_INSN_UNIT_SIZE 1
++#define MAX_CODE_GEN_BUFFER_SIZE  ((size_t)-1)
++
++/* Number of registers available. */
++#define TCG_TARGET_NB_REGS 16
++
++/* List of registers which are used by TCG. */
++typedef enum {
++    TCG_REG_R0 = 0,
++    TCG_REG_R1,
++    TCG_REG_R2,
++    TCG_REG_R3,
++    TCG_REG_R4,
++    TCG_REG_R5,
++    TCG_REG_R6,
++    TCG_REG_R7,
++    TCG_REG_R8,
++    TCG_REG_R9,
++    TCG_REG_R10,
++    TCG_REG_R11,
++    TCG_REG_R12,
++    TCG_REG_R13,
++    TCG_REG_R14,
++    TCG_REG_R15,
++
++    TCG_REG_TMP = TCG_REG_R13,
++    TCG_AREG0 = TCG_REG_R14,
++    TCG_REG_CALL_STACK = TCG_REG_R15,
++} TCGReg;
++
++#endif /* TCG_TARGET_H */
 -- 
 2.43.0
 
