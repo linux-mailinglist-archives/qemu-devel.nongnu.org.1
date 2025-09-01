@@ -2,62 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA51B3D97C
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FA3B3D9A4
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:14:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usxgt-0003BF-I7; Mon, 01 Sep 2025 02:06:55 -0400
+	id 1usxmE-0001DY-7e; Mon, 01 Sep 2025 02:12:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <fm-294854-20250901055632efa9c6209000020776-D6TkCx@rts-flowmailer.siemens.com>)
- id 1usxgi-00039j-15
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 02:06:44 -0400
-Received: from mta-64-227.siemens.flowmailer.net ([185.136.64.227])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1usxlb-0000md-Qu; Mon, 01 Sep 2025 02:11:49 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <fm-294854-20250901055632efa9c6209000020776-D6TkCx@rts-flowmailer.siemens.com>)
- id 1usxgc-0001xB-3K
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 02:06:43 -0400
-Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id
- 20250901055632efa9c6209000020776 for <qemu-devel@nongnu.org>;
- Mon, 01 Sep 2025 07:56:32 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=jan.kiszka@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=JTU3BFmS3GSE4uH8eM/o4TaOK5XUVgQEjgYT59J0ET0=;
- b=Ls7GIhFFS2eXamz10t7Am6Lw5O6/i+FyGyISmYYbiFXrv5m2j+tsX3rGvuwvHckid7fx/u
- dFPceJKpGEi5wRDyCFKqEcefzVYciH88Yb5bTSZk7ovD+0p9H6R/eXdAS1Dj1I8mIpxoJTqd
- nDVlk3RXKgcG2TMSTPG5gx/8Bw5coFVCwK2YlXEvq4JxF1Eyl1kHTYa/17j6K8ZJXzhoj7Pg
- 8ZqUrphx7gC9sjmKa4UwRTFBJ1TBAc0djRf9kR157bdIV9uRI/hXSAVyyFDvfwdTBWTp7V+b
- Vu3b4AOvzx7vUFl4EG01v+5pQkI+go1jfXl+pXpk/GuCkM4fdGlH3ZWg==;
-From: Jan Kiszka <jan.kiszka@siemens.com>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [PATCH v2 8/8] scripts: Add helper script to generate eMMC block
- device images
-Date: Mon,  1 Sep 2025 07:56:28 +0200
-Message-ID: <c8ea640893668e7f03be36c56c0ff1ee5b91c945.1756706188.git.jan.kiszka@siemens.com>
-In-Reply-To: <cover.1756706188.git.jan.kiszka@siemens.com>
-References: <cover.1756706188.git.jan.kiszka@siemens.com>
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1usxlU-0002Yn-He; Mon, 01 Sep 2025 02:11:47 -0400
+Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
+ [133.11.54.205]) (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5816ACAU076640
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Mon, 1 Sep 2025 15:10:24 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=Rte9kNYqlo5kvgMqXc5x5ukQ/m2csYorQsnbrvuIXSk=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=From:Subject:Date:Message-Id:To;
+ s=rs20250326; t=1756707024; v=1;
+ b=bWkRDby3HdquQjKUi1UW4zrNKKIYTJh1hXlHevp2Mc7CiAjEBDlIrVg3TA7BZwd0
+ 9Em9SwlcKvaHqY4aBTHxTdRC+wSkJwRv+rcBAvW1ZobMjw5nEMa4d2HsBpEqJ7aR
+ GnCSRy45diRbuoQYIMso1+HbHfGt2ed7G/fGSEtdgCIp/sbEOh3sjnDmAi3nnxvn
+ xfUA676lOwYnRkyr+Hlg96ORdYoOjGL2kShvD0E3RIgRMXnFCol5cI6S8yx8wUk4
+ eOOK9DXIff/jkDC3P100mTM0B8htTDOv/rSAQNAosW3qLfiqWyuOcFJBOJZPJY/8
+ Wg+AkvfweKU/McnWD7m3bA==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: [PATCH 00/16] memory: Stop piggybacking on memory region owners
+Date: Mon, 01 Sep 2025 15:09:58 +0900
+Message-Id: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-294854:519-21489:flowmailer
-Received-SPF: pass client-ip=185.136.64.227;
- envelope-from=fm-294854-20250901055632efa9c6209000020776-D6TkCx@rts-flowmailer.siemens.com;
- helo=mta-64-227.siemens.flowmailer.net
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALY4tWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDC2ND3dwi3RSDlGQTS9OkxBRDQyWgwoKi1LTMCrAh0bG1tQAjO5rRVAA
+ AAA==
+X-Change-ID: 20250831-mr-d0dc495bad11
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>,
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
+ John Levon <john.levon@nutanix.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.14.2
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,212 +99,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jan Kiszka <jan.kiszka@siemens.com>
+Supersedes: https://lore.kernel.org/qemu-devel/20250828-san-v9-0-c0dff4b8a487@rsg.ci.i.u-tokyo.ac.jp/
+("[PATCH v9 0/2] Fix check-qtest-ppc64 sanitizer errors")
 
-As an eMMC block device image may consist of more than just the user
-data partition, provide a helper script that can compose the image from
-boot partitions, an RPMB partition and the user data image. The script
-also does the required size validation and/or rounding.
+MemoryRegions used to "piggyback" on their owners instead of using their
+reference counters due to the circular dependencies between them, which
+caused memory leak.
 
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+I tried to fix it with "[PATCH v9 0/2] Fix check-qtest-ppc64 sanitizer
+errors" but it resulted in a lengthy discussion; ultimately it is
+attributed to the fact that "piggybacking" is hard to understand and
+forces us design trade-offs. It was also insufficient because it only
+deals with the container-subregion pattern and did not deal with DMA.
+
+With this series, I remove the "piggyback" hack altogather.
+The key insight here is that the owners explicitly call
+memory_region_del_subregion() to stop accepting new accesses to
+its MemoryRegions when they are no longer needed. I code the fact by 
+calling object_unparent() along with it.
+
+While I could write a function like memory_region_unparent() and replace
+such memory_region_del_subregion() calls, I used a few other insights to
+simplify the code:
+- Deletable MemoryRegions are of hotpluggable devices.
+- Devices do no longer accept new accesses after unrealization.
+
+So I made the common qdev code call memory_region_del_subregion() and
+object_unparent(). In the end, this series makes the code simpler and
+semantically robust, and kills the entire class of memory leak.
+
+Patch [1, 2] removes object_unparent() calls in instance_finalize(),
+which are incorrect.
+
+Patch 3 makes the qdev code automatically call
+memory_region_del_subregion().
+
+Patch [4, 15] removes memory_region_del_subregion() calls that are
+obviously no longer needed, demonstrating the benefit of automatic
+automatic subregion deletion.
+
+Patch 16 adds the object_unparent() call and stop piggybacking.
+
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- scripts/mkemmc.sh | 186 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 186 insertions(+)
- create mode 100755 scripts/mkemmc.sh
+Akihiko Odaki (16):
+      docs/devel: Do not unparent in instance_finalize
+      vfio/pci: Do not unparent in instance_finalize
+      qdev: Automatically delete memory subregions
+      hw/char/diva-gsp: Do not delete the subregion
+      hw/char/serial-pci-multi: Do not delete the subregion
+      secondary-vga: Do not delete the subregions
+      cmd646: Do not delete the subregions
+      hw/ide/piix: Do not delete the subregions
+      hw/ide/via: Do not delete the subregions
+      hw/nvme: Do not delete the subregion
+      pci: Do not delete the subregions
+      hw/ppc/spapr_pci: Do not delete the subregions
+      hw/usb/hcd-ehci: Do not delete the subregions
+      hw/usb/hcd-xhci: Do not delete the subregions
+      vfio-user: Do not delete the subregion
+      memory: Stop piggybacking on memory region owners
 
-diff --git a/scripts/mkemmc.sh b/scripts/mkemmc.sh
-new file mode 100755
-index 0000000000..9e52cd5f32
---- /dev/null
-+++ b/scripts/mkemmc.sh
-@@ -0,0 +1,186 @@
-+#!/bin/sh -e
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Create eMMC block device image from boot, RPMB and user data images
-+#
-+# Copyright (c) Siemens, 2025
-+#
-+# Authors:
-+#  Jan Kiszka <jan.kiszka@siemens.com>
-+#
-+# This work is licensed under the terms of the GNU GPL version 2.
-+# See the COPYING file in the top-level directory.
-+#
-+
-+usage() {
-+    echo "$0 [OPTIONS] USER_IMG[:SIZE] OUTPUT_IMG"
-+    echo ""
-+    echo "SIZE must be a power of 2. If no SIZE is specified, the size of USER_ING will"
-+    echo "be used (rounded up)."
-+    echo ""
-+    echo "Supported options:"
-+    echo "  -b BOOT1_IMG[:SIZE]   Add boot partitions. SIZE must be multiples of 128K. If"
-+    echo "                          no SIZE is specified, the size of BOOT_IMG will be"
-+    echo "                          used (rounded up). BOOT1_IMG will be stored in boot"
-+    echo "                          partition 1, and a boot partition 2 of the same size"
-+    echo "                          will be created as empty (all zeros) unless -B is"
-+    echo "                          specified as well."
-+    echo "  -B BOOT2_IMG          Fill boot partition 2 with BOOT2_IMG. Must be combined"
-+    echo "                          with -b which is also defining the partition size."
-+    echo "  -r RPMB_IMG[:SIZE]    Add RPMB partition. SIZE must be multiples of 128K. If"
-+    echo "                          no SIZE is specified, the size of RPMB_IMG will be"
-+    echo "                          used (rounded up)."
-+    echo "  -h, --help            This help"
-+    echo ""
-+    echo "All SIZE parameters support the units K, M, G. If SIZE is smaller than the"
-+    echo "associated image, it will be truncated in the output image."
-+    exit "$1"
-+}
-+
-+process_size() {
-+    if [ "${4#*:}" = "$4"  ]; then
-+        if ! size=$(stat -L -c %s "$2" 2>/dev/null); then
-+            echo "Missing $1 image '$2'." >&2
-+            exit 1
-+        fi
-+        if [ "$3" = 128 ]; then
-+            size=$(( (size + 128 * 1024 - 1) & ~(128 * 1024 - 1) ))
-+        elif [ $(( size & (size - 1) )) -gt 0 ]; then
-+            n=0
-+            while [ "$size" -gt 0 ]; do
-+                size=$((size >> 1))
-+                n=$((n + 1))
-+            done
-+            size=$((1 << n))
-+        fi
-+    else
-+        value="${4#*:}"
-+        if [ "${value%K}" != "$value" ]; then
-+            size=${value%K}
-+            multiplier=1024
-+        elif [ "${value%M}" != "$value" ]; then
-+            size=${value%M}
-+            multiplier=$((1024 * 1024))
-+        elif [ "${value%G}" != "$value" ]; then
-+            size=${value%G}
-+            multiplier=$((1024 * 1024 * 1024))
-+        else
-+            size=$value
-+            multiplier=1
-+        fi
-+        if [ "$size" -eq "$size" ] 2>/dev/null; then
-+            size=$((size * multiplier))
-+        else
-+            echo "Invalid value '$value' specified for $2 image size." >&2
-+            exit 1
-+        fi
-+        if [ "$3" = 128 ]; then
-+            if [ $(( size & (128 * 1024 - 1) )) -ne 0 ]; then
-+                echo "The $2 image size must be multiples of 128K." >&2
-+                exit 1
-+            fi
-+        elif [ $(( size & (size - 1) )) -gt 0 ]; then
-+            echo "The %2 image size must be power of 2." >&2
-+            exit 1
-+        fi
-+    fi
-+    echo $size
-+}
-+
-+userimg=
-+outimg=
-+bootimg1=
-+bootimg2=/dev/zero
-+bootsz=0
-+rpmbimg=
-+rpmbsz=0
-+
-+while [ $# -gt 0 ]; do
-+    case "$1" in
-+        -b)
-+            shift
-+            [ $# -ge 1 ] || usage 1
-+            bootimg1=${1%%:*}
-+            bootsz=$(process_size boot "$bootimg1" 128 "$1")
-+            shift
-+            ;;
-+        -B)
-+            shift
-+            [ $# -ge 1 ] || usage 1
-+            bootimg2=$1
-+            shift
-+            ;;
-+        -r)
-+            shift
-+            [ $# -ge 1 ] || usage 1
-+            rpmbimg=${1%%:*}
-+            rpmbsz=$(process_size RPMB "$rpmbimg" 128 "$1")
-+            shift
-+            ;;
-+        -h|--help)
-+            usage 0
-+            ;;
-+        *)
-+            if [ -z "$userimg" ]; then
-+                userimg=${1%%:*}
-+                usersz=$(process_size user "$userimg" 2 "$1")
-+            elif [ -z "$outimg" ]; then
-+                outimg=$1
-+            else
-+                usage 1
-+            fi
-+            shift
-+            ;;
-+    esac
-+done
-+
-+[ -n "$outimg" ] || usage 1
-+
-+if [ "$bootsz" -gt $((32640 * 1024)) ]; then
-+    echo "Boot image size is larger than 32640K." >&2
-+    exit 1
-+fi
-+if [ "$rpmbsz" -gt $((16384 * 1024)) ]; then
-+    echo "RPMB image size is larger than 16384K." >&2
-+    exit 1
-+fi
-+
-+echo "Creating eMMC image"
-+
-+truncate "$outimg" -s 0
-+pos=0
-+
-+if [ "$bootsz" -gt 0 ]; then
-+    echo "  Boot partition 1 and 2:   $((bootsz / 1024))K each"
-+    blocks=$(( bootsz / (128 * 1024) ))
-+    dd if="$bootimg1" of="$outimg" conv=sparse bs=128K count=$blocks \
-+        status=none
-+    dd if="$bootimg2" of="$outimg" conv=sparse bs=128K count=$blocks \
-+        seek=$blocks status=none
-+    pos=$((2 * bootsz))
-+fi
-+
-+if [ "$rpmbsz" -gt 0 ]; then
-+    echo "  RPMB partition:           $((rpmbsz / 1024))K"
-+    blocks=$(( rpmbsz / (128 * 1024) ))
-+    dd if="$rpmbimg" of="$outimg" conv=sparse bs=128K count=$blocks \
-+        seek=$(( pos / (128 * 1024) )) status=none
-+    pos=$((pos + rpmbsz))
-+fi
-+
-+if [ "$usersz" -lt 1024 ]; then
-+    echo "  User data:                $usersz bytes"
-+elif [ "$usersz" -lt $((1024 * 1024)) ]; then
-+    echo "  User data:                $(( (usersz + 1023) / 1024 ))K ($usersz)"
-+elif [ "$usersz" -lt $((1024 * 1024 * 1024)) ]; then
-+    echo "  User data:                $(( (usersz + 1048575) / 1048576))M ($usersz)"
-+else
-+    echo "  User data:                $(( (usersz + 1073741823) / 1073741824))G ($usersz)"
-+fi
-+dd if="$userimg" of="$outimg" conv=sparse bs=128K seek=$(( pos / (128 * 1024) )) \
-+    count=$(( (usersz + 128 * 1024 - 1) / (128 * 1024) )) status=none
-+pos=$((pos + usersz))
-+truncate "$outimg" -s $pos
-+
-+echo ""
-+echo "Instantiate via '-device emmc,boot-partition-size=$bootsz,rpmb-partition-size=$rpmbsz,drive=$outimg'"
+ MAINTAINERS                |  1 +
+ docs/devel/memory.rst      | 45 +++++++++++++++++-----------------------
+ include/hw/qdev-core.h     |  2 ++
+ include/system/memory.h    | 51 +++++++++++++++++++++++-----------------------
+ hw/char/diva-gsp.c         |  1 -
+ hw/char/serial-pci-multi.c |  1 -
+ hw/core/qdev.c             | 29 ++++++++++++++++++++++++++
+ hw/display/vga-pci.c       |  8 --------
+ hw/ide/cmd646.c            | 12 -----------
+ hw/ide/piix.c              | 13 ------------
+ hw/ide/via.c               | 12 -----------
+ hw/nvme/ctrl.c             |  2 --
+ hw/pci/pci.c               | 20 ------------------
+ hw/ppc/spapr_pci.c         | 22 --------------------
+ hw/usb/hcd-ehci.c          |  4 ----
+ hw/usb/hcd-xhci.c          | 10 ---------
+ hw/vfio-user/pci.c         |  6 ------
+ hw/vfio/pci.c              |  4 ----
+ stubs/memory.c             |  9 ++++++++
+ system/memory.c            | 11 +++-------
+ stubs/meson.build          |  1 +
+ 21 files changed, 89 insertions(+), 175 deletions(-)
+---
+base-commit: e101d33792530093fa0b0a6e5f43e4d8cfe4581e
+change-id: 20250831-mr-d0dc495bad11
+
+Best regards,
 -- 
-2.43.0
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
 
