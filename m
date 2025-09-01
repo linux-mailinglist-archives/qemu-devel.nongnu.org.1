@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785DDB3D984
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56577B3D989
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:08:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usxgt-0003BZ-J4; Mon, 01 Sep 2025 02:06:55 -0400
+	id 1usxh0-0003Cy-CH; Mon, 01 Sep 2025 02:07:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-202509010556306f63e0863a000207c1-szNMmg@rts-flowmailer.siemens.com>)
- id 1usxgg-00038X-5q
+ <fm-294854-20250901055630fa224eee7e00020764-mSyvn6@rts-flowmailer.siemens.com>)
+ id 1usxgg-00038f-8i
  for qemu-devel@nongnu.org; Mon, 01 Sep 2025 02:06:42 -0400
-Received: from mta-64-226.siemens.flowmailer.net ([185.136.64.226])
+Received: from mta-64-228.siemens.flowmailer.net ([185.136.64.228])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-202509010556306f63e0863a000207c1-szNMmg@rts-flowmailer.siemens.com>)
- id 1usxgb-0001wv-Vo
+ <fm-294854-20250901055630fa224eee7e00020764-mSyvn6@rts-flowmailer.siemens.com>)
+ id 1usxgb-0001ww-VT
  for qemu-devel@nongnu.org; Mon, 01 Sep 2025 02:06:41 -0400
-Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id
- 202509010556306f63e0863a000207c1 for <qemu-devel@nongnu.org>;
+Received: by mta-64-228.siemens.flowmailer.net with ESMTPSA id
+ 20250901055630fa224eee7e00020764 for <qemu-devel@nongnu.org>;
  Mon, 01 Sep 2025 07:56:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
  d=siemens.com; i=jan.kiszka@siemens.com;
  h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=G+jTwrh/Tv10lyU83TPYT5+VrS51epr9jsr352ZMXzk=;
- b=rfa74Cdn2qGV3Vvfwn9ohPpVWzCtOSnqp0AbJsdQ1ppLkGklCbz28gbZG+hjz+KOIu7+7m
- x8HCTwL4QnPhoqHsqMVjZ3rLbup5JJasDkUf66Py+Zxymaw84kIdPZDaUU34HAWG2kJSJ0GM
- IDF/yBZW8u8nBtveK/GrXFJ0plXtkc0XBCQ53ddT8uEUUpcUszrKItCvbUro7CCnj8lnbIwm
- w26XxQ/32DM0ZJ3Nj2qIAUgRwmuchyjvPdldbNKFA0H/XkC23P4C2oC7JALK/YREtsXS9rn9
- YrOmcmF8/a04txxEppqRG+4/5uewFDSBficWVMprGSILHY3idFxuuENw==;
+ bh=xFI1VA5/EHO61KzQO5OccwT8cCfNkw46hYpCrq2jLa0=;
+ b=DZbkFIu/XR+YFaWYli1pZSlGD1o5uAptvsDtxY0sJsGx21Mblh1N1f15wcRsSoMfaSlbGz
+ kum4AE0i/QaW4XqWPYPM2iRkQujd/ARcCvYW1WL+d7MnevwEEy8tpWEwjkT/QX70PB65gWLT
+ /VSVOA+x8XqZIbcdm+mdKyUzWSlHbiuRGGUB4j7FJVrV1TidClXxADK8kNmNvyiJ8TBDk9v4
+ C5etNrWHtM8rLwfLVssbdKC0Yx3qEFat9lxU4pc9MkxANIDGklPhjkjb9o/X16zO5/UJ42mT
+ YocV3ghIbFpLho9XNUUYgdVHHa4EFggS2RZG/nY91VDeRrdNHANlP7XQ==;
 From: Jan Kiszka <jan.kiszka@siemens.com>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
  Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [PATCH v2 2/8] hw/sd/sdcard: Add validation for boot-partition-size
-Date: Mon,  1 Sep 2025 07:56:22 +0200
-Message-ID: <1fff448da042bdf8cff7733ce67cadff4c540f1d.1756706188.git.jan.kiszka@siemens.com>
+Subject: [PATCH v2 3/8] hw/sd/sdcard: Allow user-instantiated eMMC
+Date: Mon,  1 Sep 2025 07:56:23 +0200
+Message-ID: <1f9b0ea005e49578ffcb6c6a5175d8b9af514a03.1756706188.git.jan.kiszka@siemens.com>
 In-Reply-To: <cover.1756706188.git.jan.kiszka@siemens.com>
 References: <cover.1756706188.git.jan.kiszka@siemens.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Flowmailer-Platform: Siemens
 Feedback-ID: 519:519-294854:519-21489:flowmailer
-Received-SPF: pass client-ip=185.136.64.226;
- envelope-from=fm-294854-202509010556306f63e0863a000207c1-szNMmg@rts-flowmailer.siemens.com;
- helo=mta-64-226.siemens.flowmailer.net
+Received-SPF: pass client-ip=185.136.64.228;
+ envelope-from=fm-294854-20250901055630fa224eee7e00020764-mSyvn6@rts-flowmailer.siemens.com;
+ helo=mta-64-228.siemens.flowmailer.net
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
@@ -74,35 +74,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jan Kiszka <jan.kiszka@siemens.com>
 
-Make sure we are not silently rounding down or even wrapping around,
-causing inconsistencies with the provided image.
+Enable user-instantiation so that PCI-attached eMMCs can be created for
+virt machines, for QA purposes for the eMMC model itself and for complex
+firmware/OS integrations using the upcoming RPMB partition support.
 
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- hw/sd/sd.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ hw/sd/sd.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 16aee210b4..834392b0a8 100644
+index 834392b0a8..8a4f58295b 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -2818,6 +2818,16 @@ static void sd_realize(DeviceState *dev, Error **errp)
-         }
-         blk_set_dev_ops(sd->blk, &sd_block_ops, sd);
-     }
-+    if (sd->boot_part_size % (128 * KiB) ||
-+        sd->boot_part_size > 255 * 128 * KiB) {
-+        char *size_str = size_to_str(sd->boot_part_size);
-+
-+        error_setg(errp, "Invalid boot partition size: %s", size_str);
-+        g_free(size_str);
-+        error_append_hint(errp,
-+                          "The boot partition size must be multiples of 128K"
-+                          "and not larger than 32640K.\n");
-+    }
- }
+@@ -2912,8 +2912,6 @@ static void emmc_class_init(ObjectClass *klass, const void *data)
+     dc->desc = "eMMC";
+     dc->realize = emmc_realize;
+     device_class_set_props(dc, emmc_properties);
+-    /* Reason: Soldered on board */
+-    dc->user_creatable = false;
  
- static void emmc_realize(DeviceState *dev, Error **errp)
+     sc->proto = &sd_proto_emmc;
+ 
 -- 
 2.43.0
 
