@@ -2,47 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1FA3B3D9A4
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 906D9B3D9A3
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:14:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usxmE-0001DY-7e; Mon, 01 Sep 2025 02:12:26 -0400
+	id 1usxmC-0001CF-9M; Mon, 01 Sep 2025 02:12:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1usxlb-0000md-Qu; Mon, 01 Sep 2025 02:11:49 -0400
+ id 1usxld-0000nW-VU; Mon, 01 Sep 2025 02:11:51 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1usxlU-0002Yn-He; Mon, 01 Sep 2025 02:11:47 -0400
+ id 1usxlU-0002Z9-0o; Mon, 01 Sep 2025 02:11:49 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5816ACAU076640
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5816ACAV076640
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
  Mon, 1 Sep 2025 15:10:24 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=Rte9kNYqlo5kvgMqXc5x5ukQ/m2csYorQsnbrvuIXSk=; 
+DKIM-Signature: a=rsa-sha256; bh=KWZuHmR5Opr2FHdoc3YFYaIEvZvc0eLGVYohiqlmGQE=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=From:Subject:Date:Message-Id:To;
- s=rs20250326; t=1756707024; v=1;
- b=bWkRDby3HdquQjKUi1UW4zrNKKIYTJh1hXlHevp2Mc7CiAjEBDlIrVg3TA7BZwd0
- 9Em9SwlcKvaHqY4aBTHxTdRC+wSkJwRv+rcBAvW1ZobMjw5nEMa4d2HsBpEqJ7aR
- GnCSRy45diRbuoQYIMso1+HbHfGt2ed7G/fGSEtdgCIp/sbEOh3sjnDmAi3nnxvn
- xfUA676lOwYnRkyr+Hlg96ORdYoOjGL2kShvD0E3RIgRMXnFCol5cI6S8yx8wUk4
- eOOK9DXIff/jkDC3P100mTM0B8htTDOv/rSAQNAosW3qLfiqWyuOcFJBOJZPJY/8
- Wg+AkvfweKU/McnWD7m3bA==
+ h=From:Date:Subject:Message-Id:To;
+ s=rs20250326; t=1756707025; v=1;
+ b=tjuUATsJbyfXaiqKgI4WZ7NFV3ZDDJA7dz9dZQRaZHLaDRCpj7qPSlu9nSnF5UH4
+ VXmpfnSnvwrNGfcq7Aqdf67eAOCpAPvpIqQwBupNk8gs/+2Am8C9vgYbtTfQp+GV
+ J+GGPZYgFByYLcQ25Ih6Mg3mHyJQqMtLsvtS0gDIHfKftrM6EKHjsfUE/ZMWJHYH
+ +B/o/zIJxaowQGpV9rOHrjHcT3GgftD1d3N9aIqbjg3dqW10cXmL27Io8BWBS2/y
+ Qr1nDk1etywoJuUSKZIzNMypYpqsmIsvBdGWVryHdr0zmTLO8IDjGkKefNKpu26j
+ QZBTGUOxaN9sj3ENASOHrA==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Subject: [PATCH 00/16] memory: Stop piggybacking on memory region owners
-Date: Mon, 01 Sep 2025 15:09:58 +0900
-Message-Id: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
+Date: Mon, 01 Sep 2025 15:09:59 +0900
+Subject: [PATCH 01/16] docs/devel: Do not unparent in instance_finalize
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALY4tWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDC2ND3dwi3RSDlGQTS9OkxBRDQyWgwoKi1LTMCrAh0bG1tQAjO5rRVAA
- AAA==
-X-Change-ID: 20250831-mr-d0dc495bad11
+Message-Id: <20250901-mr-v1-1-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
+References: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
@@ -99,95 +97,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Supersedes: https://lore.kernel.org/qemu-devel/20250828-san-v9-0-c0dff4b8a487@rsg.ci.i.u-tokyo.ac.jp/
-("[PATCH v9 0/2] Fix check-qtest-ppc64 sanitizer errors")
+Children are automatically unparented so manually unparenting is
+unnecessary.
 
-MemoryRegions used to "piggyback" on their owners instead of using their
-reference counters due to the circular dependencies between them, which
-caused memory leak.
+Worse, automatic unparenting happens before the insntance_finalize
+callback of the parent gets called, so object_unparent() calls in
+the callback will refer to objects that are already unparented, which
+is semantically incorrect.
 
-I tried to fix it with "[PATCH v9 0/2] Fix check-qtest-ppc64 sanitizer
-errors" but it resulted in a lengthy discussion; ultimately it is
-attributed to the fact that "piggybacking" is hard to understand and
-forces us design trade-offs. It was also insufficient because it only
-deals with the container-subregion pattern and did not deal with DMA.
-
-With this series, I remove the "piggyback" hack altogather.
-The key insight here is that the owners explicitly call
-memory_region_del_subregion() to stop accepting new accesses to
-its MemoryRegions when they are no longer needed. I code the fact by 
-calling object_unparent() along with it.
-
-While I could write a function like memory_region_unparent() and replace
-such memory_region_del_subregion() calls, I used a few other insights to
-simplify the code:
-- Deletable MemoryRegions are of hotpluggable devices.
-- Devices do no longer accept new accesses after unrealization.
-
-So I made the common qdev code call memory_region_del_subregion() and
-object_unparent(). In the end, this series makes the code simpler and
-semantically robust, and kills the entire class of memory leak.
-
-Patch [1, 2] removes object_unparent() calls in instance_finalize(),
-which are incorrect.
-
-Patch 3 makes the qdev code automatically call
-memory_region_del_subregion().
-
-Patch [4, 15] removes memory_region_del_subregion() calls that are
-obviously no longer needed, demonstrating the benefit of automatic
-automatic subregion deletion.
-
-Patch 16 adds the object_unparent() call and stop piggybacking.
+Remove the instruction to call object_unparent(), and the exception
+of the "do not call object_unparent()" rule for instance_finalize.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
-Akihiko Odaki (16):
-      docs/devel: Do not unparent in instance_finalize
-      vfio/pci: Do not unparent in instance_finalize
-      qdev: Automatically delete memory subregions
-      hw/char/diva-gsp: Do not delete the subregion
-      hw/char/serial-pci-multi: Do not delete the subregion
-      secondary-vga: Do not delete the subregions
-      cmd646: Do not delete the subregions
-      hw/ide/piix: Do not delete the subregions
-      hw/ide/via: Do not delete the subregions
-      hw/nvme: Do not delete the subregion
-      pci: Do not delete the subregions
-      hw/ppc/spapr_pci: Do not delete the subregions
-      hw/usb/hcd-ehci: Do not delete the subregions
-      hw/usb/hcd-xhci: Do not delete the subregions
-      vfio-user: Do not delete the subregion
-      memory: Stop piggybacking on memory region owners
+ docs/devel/memory.rst | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
- MAINTAINERS                |  1 +
- docs/devel/memory.rst      | 45 +++++++++++++++++-----------------------
- include/hw/qdev-core.h     |  2 ++
- include/system/memory.h    | 51 +++++++++++++++++++++++-----------------------
- hw/char/diva-gsp.c         |  1 -
- hw/char/serial-pci-multi.c |  1 -
- hw/core/qdev.c             | 29 ++++++++++++++++++++++++++
- hw/display/vga-pci.c       |  8 --------
- hw/ide/cmd646.c            | 12 -----------
- hw/ide/piix.c              | 13 ------------
- hw/ide/via.c               | 12 -----------
- hw/nvme/ctrl.c             |  2 --
- hw/pci/pci.c               | 20 ------------------
- hw/ppc/spapr_pci.c         | 22 --------------------
- hw/usb/hcd-ehci.c          |  4 ----
- hw/usb/hcd-xhci.c          | 10 ---------
- hw/vfio-user/pci.c         |  6 ------
- hw/vfio/pci.c              |  4 ----
- stubs/memory.c             |  9 ++++++++
- system/memory.c            | 11 +++-------
- stubs/meson.build          |  1 +
- 21 files changed, 89 insertions(+), 175 deletions(-)
----
-base-commit: e101d33792530093fa0b0a6e5f43e4d8cfe4581e
-change-id: 20250831-mr-d0dc495bad11
+diff --git a/docs/devel/memory.rst b/docs/devel/memory.rst
+index 57fb2aec76e066236d33efe1033d2e73c7f7c295..749f11d8a4ddc80f2d44b66fa41fb12c0fa54006 100644
+--- a/docs/devel/memory.rst
++++ b/docs/devel/memory.rst
+@@ -161,18 +161,11 @@ or never.
+ Destruction of a memory region happens automatically when the owner
+ object dies.
+ 
+-If however the memory region is part of a dynamically allocated data
+-structure, you should call object_unparent() to destroy the memory region
+-before the data structure is freed.  For an example see VFIOMSIXInfo
+-and VFIOQuirk in hw/vfio/pci.c.
+-
+ You must not destroy a memory region as long as it may be in use by a
+ device or CPU.  In order to do this, as a general rule do not create or
+-destroy memory regions dynamically during a device's lifetime, and only
+-call object_unparent() in the memory region owner's instance_finalize
+-callback.  The dynamically allocated data structure that contains the
+-memory region then should obviously be freed in the instance_finalize
+-callback as well.
++destroy memory regions dynamically during a device's lifetime.
++The dynamically allocated data structure that contains the
++memory region should be freed in the instance_finalize callback.
+ 
+ If you break this rule, the following situation can happen:
+ 
+@@ -198,9 +191,9 @@ this exception is rarely necessary, and therefore it is discouraged,
+ but nevertheless it is used in a few places.
+ 
+ For regions that "have no owner" (NULL is passed at creation time), the
+-machine object is actually used as the owner.  Since instance_finalize is
+-never called for the machine object, you must never call object_unparent
+-on regions that have no owner, unless they are aliases or containers.
++machine object is actually used as the owner.  You must never call
++object_unparent on regions that have no owner, unless they are aliases
++or containers.
+ 
+ 
+ Overlapping regions and priority
 
-Best regards,
 -- 
-Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+2.51.0
 
 
