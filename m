@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286CBB3D7F3
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 05:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93264B3D7F7
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 05:51:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usvXx-0002Sa-9c; Sun, 31 Aug 2025 23:49:33 -0400
+	id 1usvXz-0002Tm-Hs; Sun, 31 Aug 2025 23:49:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <wilfred.opensource@gmail.com>)
- id 1usvXr-0002Qt-DV; Sun, 31 Aug 2025 23:49:27 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1usvXw-0002So-4A; Sun, 31 Aug 2025 23:49:32 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <wilfred.opensource@gmail.com>)
- id 1usvXp-0005ff-Hs; Sun, 31 Aug 2025 23:49:27 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-249406d5878so12836555ad.0; 
- Sun, 31 Aug 2025 20:49:24 -0700 (PDT)
+ id 1usvXu-0005gM-B4; Sun, 31 Aug 2025 23:49:31 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-b4df220483fso1316539a12.2; 
+ Sun, 31 Aug 2025 20:49:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1756698562; x=1757303362; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1756698568; x=1757303368; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RjacYaLKOhLtcN2plgF+C3NWVsLcWnhBIR1v/WVcDRc=;
- b=MwG+Ob2rTqSDXUppg4RVznGnW+A2sMiW5pKG3XaRva4AFRS3JkFvfk/mTlGTDzXVTZ
- LpI2G/wh8OIBrF0g7HZsFF5CGxaNPr7Se1etH68rWcK1dXlsrcX0SkhuQfzD/bDL13BT
- //Zc9XRCOL5iuD7VtIWYAr5NzUPVfPBMGkZZp4W6CxnyZ6x1b1T58Ju3SiYGLoqXg124
- cr1PqKuOUFBFdZmkdlsF15ZvtC9tn2K+rv9sdiky41c4+tDNlrYl5xAVfqx4qSumoqDV
- U7IKyoVG5MWp9+3PiguBSDpBkmfODL+3ioYY8ukGXHsjllABn+d8pT05+JjO1gyZLDwY
- BC7g==
+ bh=jNY4ncpuDcOsXQxB2Rg/MklRq+L9/xqLJrUQZb5aHUA=;
+ b=lcjPcMmXuD7JP+zEQfpmea8LnDmHxF3Y4y64nm/44M7hISKSkAHJacNCnAo8KYPA2a
+ x9W3Ihu5Sl8LmAdh29xtK/ihMId5fjWeA9NUuoYMKZhlhJjyu0JVg33lGq2Q73s4P2m4
+ d+xd0ukZO/x02tbW1ZevMpOrOOTmhlDWXr0O6JiyjRKyaADfJZnmX4TBf1VhPm8gcSqG
+ Qr9lNWTtt7cFSR2bphRowq4B2k5QjfjStF3K4aI0pDYGvXWrlWNvM7Dm8SqggkEUSZ9O
+ mhxcf64LdYrJZ+Pwe2psvYlE+dIyfKaGoWG/zZTo48nH+lyHNkAnj9GqmVHJxbrjWdk5
+ OUmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756698562; x=1757303362;
+ d=1e100.net; s=20230601; t=1756698568; x=1757303368;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RjacYaLKOhLtcN2plgF+C3NWVsLcWnhBIR1v/WVcDRc=;
- b=eQ+HiqExkWfo0VpXSN9a7nz0RYTxgn/60Fl2yZHsjl70FUpQjAOOBk5e8yc/Ww2y9p
- 0v8JKRLNRHR4VCm5UTKOiDq7Lrab/HCFOYY248+cRkcBcoj30r7VgVm9jFUdZjYnloA1
- 3iAJ5Hu5XvOB2hFbxcz2gXDcuxP1P7fsCdqcGG4KQ0b4vx6DdUzKsOHcEuRPeDxhiRMv
- /VjSKXQq9AFVXHskSABcGf8DMn0M6Ogr1jnsGIl5lBv0H9O4Qp/UbUWDsTPgu6tWvlIt
- o4SXv1ZWuQY28c/njVLb/3ZU4ZQ7WlprrnYuyoO5zUzuVRtbGXbdzBh12EuIxJcSly+a
- OY4w==
+ bh=jNY4ncpuDcOsXQxB2Rg/MklRq+L9/xqLJrUQZb5aHUA=;
+ b=xCI+mRCI9eJnNuTZTt3+Yv1Zm90j+Mv0wWFfh3vrwmscW2VWp0kC4lhXLI9Q95hmbl
+ a2wSB3Hd9uSriNAro0q01pneM7OCWUSwlsJd77IRmUQA/ic6jc9YYRYQNChMY7LlAsVB
+ p04ikC54e4vBNNhyo2Jm8z6igEHTXoad9DFQzvBax7MwoG/W+3xu479ot3brNAeu1biU
+ PxR6nRiXymR20Pd0TBb05M5NBjGrrIrbdOlEBx3SZopaHltRpKJ5iUgiSzLgGakJykny
+ SP7R/6FB3TGfuzN7ohnUuxZyNF6uFon1Qk7/noz6t0ar7etpGT8ltX+A3lGjJaLJx+Lh
+ Wd7w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUvYqgLMh1xTTNcvdCiZojMb0E5jDtb3JX9PaT2DMnWyKhObPZZ7G4nBpiBryt3JDy+ajJfu2PX+QDL@nongnu.org,
- AJvYcCV4O0ZvUzMeuJDyDp+tWGS5obvqLUT9aKtCdAM4ednSvK/ciuLp1gP/n5a+uFRdc3VBJJ8o8x3QyKR9Xg==@nongnu.org
-X-Gm-Message-State: AOJu0YycQL3JVTvvYUhwqeESleO8JSXWehrU31nVTnFTpwYg6yD0uveG
- Wr0/U0XQF8vbcVvutGd5JfvTPKn5wV5o0tnmiVE0+cYK+XW+Idg2TWI5
-X-Gm-Gg: ASbGncvjNagyRNN37bdmMMnDb/ggppo5u1asjjH5bZ/BUZm81r3uHTBXiDPYfbKh7X/
- XJnCYy5LVXSPx5FW/Yj3s3yqqY0utxNFG8upHKAbInPTO5Ix2+CBxRWAiiLVi1OE+8nbU5mrgpW
- nDjZ5axJUZWeetDbWbG8bvJTVarvjYkW4ffgJxni6AaSfDtc/fCSoNzA5spN9WXxuvXMmYrIsps
- 2nuLd3reHAUhZnS4a3OcaopOwt19LMu1Yyf3t1bN2Tx57Uu4B+DttIEqMSFls4aStLB7sBLiuco
- zNFwSwNULJuaTFSdZ9yabkVYFk9BfAZpM15EMuJBf2qjz+2Iv/AY2q7K20mxCgB6huqAnL80FBh
- KCYJPLq4S5nyLEM0QIAVB7obIi4nKSEKOgVR5
-X-Google-Smtp-Source: AGHT+IGuz0kVu9sKmb8wZxrpAQckq5F0pWTtVRV7KjQb/4qmOq2Zmw6Zdgya5GGleFVXpYS9WOg0sg==
-X-Received: by 2002:a17:903:41c9:b0:249:147:95bb with SMTP id
- d9443c01a7336-249448de13fmr71926095ad.13.1756698562433; 
- Sun, 31 Aug 2025 20:49:22 -0700 (PDT)
+ AJvYcCUO8aD6ZFy19ER2wqqOo9M0TaaU6S/O/tAO9cmHxtwGKq11T9kIcwiDf4yPMGnlwnOvxakUdJpZf6MG4Q==@nongnu.org,
+ AJvYcCXRqSXERZPOEfeDI0Ve6xoiJq3nME1jNvHwtVvA+Q7DI8jShXg7ZliJ2a7PgpegJ502YR2EL2k3pnXY@nongnu.org
+X-Gm-Message-State: AOJu0Yxx6lf3VApqRCQ6F1ce5MJSbpikqXJFd85Fyy4K2I+ekS1y4DOM
+ igbeFjxJ2LafbfJta5aIO+MLV04fVcXRP8Ob/9YXuy6+qDn0krawqiP/
+X-Gm-Gg: ASbGncuDlV49FC8DE/yPEbEp0YFjfblSpOW6TRM43R6/Mmyh+ooU09CrVsyQEnt3Cil
+ /dUf7ZYZHBuF9vvEVBtSL1HvtTm8avL7g1jBNvimHppDHQszEXBOKF5P7Y7J3MHmorhWxaD0Rco
+ tbf72u/yIMX9cKvziOt3Ul4sGUPMWLLhx+lNtIEXgzqg1T+IbIXoo8T+f/w7+b4AodrcW9cTjvK
+ ADESv731SGAlMFgnfovROyXsuxuXzZUKvUXQpaOC1GXZPXUygcY/A7Jb7x0q+L/oqyTxes45LHP
+ KTIyqfullco9sZCk0g4HsA5h1Ecbcj9rBV7JBSgg9HO32sNBqS2CdoR9xIJlg4WEjGUamMUfOPb
+ F24AUvotSlSbKQ5kKr3wn81ykvvGdb1g/bEEHuveq6lZ0nUg=
+X-Google-Smtp-Source: AGHT+IFdJ5o0e4vpogbIibYDZzS1T+vxIUUqJG5aB1sZ09iJ0ZPWAeVQ+28343dyKevGZ/FgNWMwNQ==
+X-Received: by 2002:a17:902:e54b:b0:248:b716:c49c with SMTP id
+ d9443c01a7336-2494485bb85mr77442085ad.9.1756698568148; 
+ Sun, 31 Aug 2025 20:49:28 -0700 (PDT)
 Received: from fedora ([159.196.5.243]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-24905da26b9sm89802815ad.93.2025.08.31.20.49.17
+ d9443c01a7336-24905da26b9sm89802815ad.93.2025.08.31.20.49.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Aug 2025 20:49:21 -0700 (PDT)
+ Sun, 31 Aug 2025 20:49:27 -0700 (PDT)
 From: Wilfred Mallawa <wilfred.opensource@gmail.com>
 To: Alistair Francis <alistair.francis@wdc.com>
 Cc: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
@@ -73,16 +73,16 @@ Cc: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org,
  qemu-block@nongnu.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Subject: [PATCH v3 1/5] spdm-socket: add seperate send/recv functions
-Date: Mon,  1 Sep 2025 13:47:56 +1000
-Message-ID: <20250901034759.85042-3-wilfred.opensource@gmail.com>
+Subject: [PATCH v3 2/5] spdm: add spdm storage transport virtual header
+Date: Mon,  1 Sep 2025 13:47:57 +1000
+Message-ID: <20250901034759.85042-4-wilfred.opensource@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250901034759.85042-2-wilfred.opensource@gmail.com>
 References: <20250901034759.85042-2-wilfred.opensource@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=wilfred.opensource@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=wilfred.opensource@gmail.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,158 +107,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 
-This is to support uni-directional transports such as SPDM over Storage.
-As specified by the DMTF DSP0286.
-
-Also update spdm_socket_rsp() to use the new send()/receive() functions. For
-the case of spdm_socket_receive(), this allows us to do error checking
-in one place with the addition of spdm_socket_command_valid().
+This header contains the transport encoding for an SPDM message that
+uses the SPDM over Storage transport as defined by the DMTF DSP0286.
 
 Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 ---
- backends/spdm-socket.c       | 56 +++++++++++++++++++++++++++++-------
- include/system/spdm-socket.h | 35 ++++++++++++++++++++++
- 2 files changed, 80 insertions(+), 11 deletions(-)
+ include/system/spdm-socket.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/backends/spdm-socket.c b/backends/spdm-socket.c
-index 2c709c68c8..3d264814df 100644
---- a/backends/spdm-socket.c
-+++ b/backends/spdm-socket.c
-@@ -184,28 +184,62 @@ int spdm_socket_connect(uint16_t port, Error **errp)
-     return client_socket;
- }
- 
--uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
--                         void *req, uint32_t req_len,
--                         void *rsp, uint32_t rsp_len)
-+static bool spdm_socket_command_valid(uint32_t command)
-+{
-+    switch (command) {
-+    case SPDM_SOCKET_COMMAND_NORMAL:
-+    case SPDM_SOCKET_STORAGE_CMD_IF_SEND:
-+    case SPDM_SOCKET_STORAGE_CMD_IF_RECV:
-+    case SOCKET_SPDM_STORAGE_ACK_STATUS:
-+    case SPDM_SOCKET_COMMAND_OOB_ENCAP_KEY_UPDATE:
-+    case SPDM_SOCKET_COMMAND_CONTINUE:
-+    case SPDM_SOCKET_COMMAND_SHUTDOWN:
-+    case SPDM_SOCKET_COMMAND_UNKOWN:
-+    case SPDM_SOCKET_COMMAND_TEST:
-+        return true;
-+    default:
-+        return false;
-+    }
-+}
-+
-+uint32_t spdm_socket_receive(const int socket, uint32_t transport_type,
-+                             void *rsp, uint32_t rsp_len)
- {
-     uint32_t command;
-     bool result;
- 
--    result = send_platform_data(socket, transport_type,
--                                SPDM_SOCKET_COMMAND_NORMAL,
--                                req, req_len);
--    if (!result) {
-+    result = receive_platform_data(socket, transport_type, &command,
-+                                   (uint8_t *)rsp, &rsp_len);
-+
-+    /* we may have received some data, but check if the command is valid */
-+    if (!result || !spdm_socket_command_valid(command)) {
-         return 0;
-     }
- 
--    result = receive_platform_data(socket, transport_type, &command,
--                                   (uint8_t *)rsp, &rsp_len);
-+    return rsp_len;
-+}
-+
-+bool spdm_socket_send(const int socket, uint32_t socket_cmd,
-+                      uint32_t transport_type, void *req, uint32_t req_len)
-+{
-+    return send_platform_data(socket, transport_type,
-+                              socket_cmd, req, req_len);
-+}
-+
-+uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
-+                         void *req, uint32_t req_len,
-+                         void *rsp, uint32_t rsp_len)
-+{
-+    bool result;
-+
-+    result = spdm_socket_send(socket, SPDM_SOCKET_COMMAND_NORMAL,
-+                              transport_type, req, req_len);
-     if (!result) {
-         return 0;
-     }
- 
--    assert(command != 0);
--
-+    rsp_len = spdm_socket_receive(socket, transport_type, (uint8_t *)rsp,
-+                                  rsp_len);
-     return rsp_len;
- }
- 
 diff --git a/include/system/spdm-socket.h b/include/system/spdm-socket.h
-index 5d8bd9aa4e..2b7d03f82d 100644
+index 2b7d03f82d..6c2cb7b926 100644
 --- a/include/system/spdm-socket.h
 +++ b/include/system/spdm-socket.h
-@@ -50,6 +50,35 @@ uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
-                          void *req, uint32_t req_len,
-                          void *rsp, uint32_t rsp_len);
- 
-+/**
-+ * spdm_socket_rsp: Receive a message from an SPDM server
-+ * @socket: socket returned from spdm_socket_connect()
-+ * @transport_type: SPDM_SOCKET_TRANSPORT_TYPE_* macro
-+ * @rsp: response buffer
-+ * @rsp_len: response buffer length
-+ *
-+ * Receives a message from the SPDM server and returns the number of bytes
-+ * received or 0 on failure. This can be used to receive a message from the SPDM
-+ * server without sending anything first.
-+ */
-+uint32_t spdm_socket_receive(const int socket, uint32_t transport_type,
-+                             void *rsp, uint32_t rsp_len);
-+
-+/**
-+ * spdm_socket_rsp: Sends a message to an SPDM server
-+ * @socket: socket returned from spdm_socket_connect()
-+ * @socket_cmd: socket command type (normal/if_recv/if_send etc...)
-+ * @transport_type: SPDM_SOCKET_TRANSPORT_TYPE_* macro
-+ * @req: request buffer
-+ * @req_len: request buffer length
-+ *
-+ * Sends platform data to a SPDM server on socket, returns true on success.
-+ * The response from the server must then be fetched by using
-+ * spdm_socket_receive().
-+ */
-+bool spdm_socket_send(const int socket, uint32_t socket_cmd,
-+                      uint32_t transport_type, void *req, uint32_t req_len);
-+
- /**
-  * spdm_socket_close: send a shutdown command to the server
-  * @socket: socket returned from spdm_socket_connect()
-@@ -60,6 +89,9 @@ uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
+@@ -88,6 +88,18 @@ bool spdm_socket_send(const int socket, uint32_t socket_cmd,
+  */
  void spdm_socket_close(const int socket, uint32_t transport_type);
  
++/**
++ * Defines the transport encoding for SPDM, this information shall be passed
++ * down to the SPDM server, when conforming to the SPDM over Storage standard
++ * as defined by DSP0286.
++ */
++typedef struct {
++    uint8_t security_protocol;              /* Must be 0xE8 for SPDM Commands */
++    uint16_t security_protocol_specific;    /* Bit[7:2] SPDM Operation
++                                               Bit[0:1] Connection ID */
++    uint32_t length;                        /* Length of the SPDM Message*/
++} QEMU_PACKED StorageSpdmTransportHeader;
++
  #define SPDM_SOCKET_COMMAND_NORMAL                0x0001
-+#define SPDM_SOCKET_STORAGE_CMD_IF_SEND           0x0002
-+#define SPDM_SOCKET_STORAGE_CMD_IF_RECV           0x0003
-+#define SOCKET_SPDM_STORAGE_ACK_STATUS            0x0004
- #define SPDM_SOCKET_COMMAND_OOB_ENCAP_KEY_UPDATE  0x8001
- #define SPDM_SOCKET_COMMAND_CONTINUE              0xFFFD
- #define SPDM_SOCKET_COMMAND_SHUTDOWN              0xFFFE
-@@ -68,7 +100,10 @@ void spdm_socket_close(const int socket, uint32_t transport_type);
- 
- #define SPDM_SOCKET_TRANSPORT_TYPE_MCTP           0x01
- #define SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE        0x02
-+#define SPDM_SOCKET_TRANSPORT_TYPE_SCSI           0x03
-+#define SPDM_SOCKET_TRANSPORT_TYPE_NVME           0x04
- 
- #define SPDM_SOCKET_MAX_MESSAGE_BUFFER_SIZE       0x1200
-+#define SPDM_SOCKET_MAX_MSG_STATUS_LEN            0x02
- 
- #endif
+ #define SPDM_SOCKET_STORAGE_CMD_IF_SEND           0x0002
+ #define SPDM_SOCKET_STORAGE_CMD_IF_RECV           0x0003
 -- 
 2.51.0
 
