@@ -2,113 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CEE4B3E241
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 14:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E13B3E24B
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 14:09:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ut3Jn-00047Y-Oe; Mon, 01 Sep 2025 08:07:27 -0400
+	id 1ut3LB-0006AH-35; Mon, 01 Sep 2025 08:08:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ut3JU-000416-93
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:07:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ut3JK-0005Uj-OH
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:07:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756728409;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=G2PufC8xMuFJnV16F3+d4vkcKy+ZYp3njmyijDgjIl8=;
- b=GGsMWl4k5nYu1MYF5Xk098TB4NPi+is5AJ3MRZJkuGWi0ElP5zjZRkWFpP9cuxww9QlIWT
- qRlaaZ0x9RYuJqVYtxXdLOgnH1r28/DrgpZWRpHeZXTMramSXjXtts+p+VAOnETKgg+x8g
- uni/2EoIlmiPfp4aaUNQKwjEjdwEOkg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-60-UCSawtkCMv-kzNsroxETvw-1; Mon, 01 Sep 2025 08:06:48 -0400
-X-MC-Unique: UCSawtkCMv-kzNsroxETvw-1
-X-Mimecast-MFC-AGG-ID: UCSawtkCMv-kzNsroxETvw_1756728407
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3cd821eaac8so2612315f8f.1
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 05:06:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ut3L8-00068x-6u
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:08:50 -0400
+Received: from mail-yw1-x1131.google.com ([2607:f8b0:4864:20::1131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ut3Kz-0005fO-OV
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:08:48 -0400
+Received: by mail-yw1-x1131.google.com with SMTP id
+ 00721157ae682-71d5fe46572so40139207b3.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 05:08:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756728516; x=1757333316; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yXtHdrl+QM2N27NEU5e38Higfy7JEGr4Xf5KI2gQIQI=;
+ b=w1FRm/z3RRC2zxgYfvE5kktC0uc0ctsMadqBPGANzb2vSJwxyLGzG6WPQs832cmUFM
+ 495kBpQmiyVwW08+S1wTMB3erUVifkW8Ac5xWlNXicO1/0OwgK+co0QoN35e3ftFNEjJ
+ dflJi9uHClcYKohOk4yn2jU7VEeo7kjW/oVMawsfbCWJ2SOuWcnL75+LCNeQvQMYzKNM
+ bnfcRyX+6r2E8OB/T9aO9NcK0YdqFi0C9/2sskIGNdVC855LONiej0W0gMjR+80ITysk
+ BKmTKwYKNHaMrDfO/vvFlwPya4UaFwZJTNMcHR/8CwllLJsKSZm7LPe+eQlfeCUpTYQQ
+ K36g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756728406; x=1757333206;
+ d=1e100.net; s=20230601; t=1756728516; x=1757333316;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G2PufC8xMuFJnV16F3+d4vkcKy+ZYp3njmyijDgjIl8=;
- b=gnnzT1o9yrTotuZlmkewQwQDKU2OEHOngG9WEBImLXS8RGSlVQyV12N9Z0E8s41xod
- whMUhtJkQigpOk/1q3A8bvngcivvi/J/aipUMYuRPrYGvE7GiSKWFiadNdWNi7UQFyVc
- f+qkqf8B2/SDNmjo9H/JmviWp4vaq8iylrTr/t6a6rmX9DTuO2J+9qLpz+K/fR5MpzO+
- M4p6TzZmgDdR1HdVNqItgnmQDaEDj6TxN2bDEKsCNpX2zBweCYN1sTL6yrxo5YTvOsEd
- 1ebuJi24tUtk0WApIUCfPNe9kOW9idL5u4Jzpuc8AATJaNDLBgvDnqmXPTlv6fm/SR1O
- 19ug==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUyS0pQ85w6sZEaxVZAIPUbjwIdHp9UyYi8Oi/3/pgcxahWEqZ6Nabg/oLE5L/c9eC5HD+6y5OZjASw@nongnu.org
-X-Gm-Message-State: AOJu0Yw0rkDWgiJgZZPnyU40tMSyjt2LFODI791xP6Cq8apsyuDHva3M
- l0W9aVDxVFycSpr3Ote9JT8ossNYIWu98ej4PCfqv+3F9WeT4zMHXnePVMeGFa7XdnYgf+pHvvQ
- kaorRghoUQ/FZBNOCJiTaHQ2qs36jusIBMkIMdtLKPkFjTI7T0txZ8Y6hn3362vbyRSY60gqxFE
- HSEJcgVCqqxXmnEjrchIJqUPbU2OPgPOY=
-X-Gm-Gg: ASbGncstKVSDu20UKMW+nWicxzYAlB+tBMltvMRlsfOxeBTpK6G5BN07HFdUWRwiCcp
- F6hXyA3DVPvHuBsW1HCt2RUbq+J2JePr1LUYYOBEITjoHwe7IGEgBzFa5VLWOAMzUX9m1rOP2kQ
- MpF1IEXZK0V5/JA0Iq6xDBbaDuurmZRzPlFLyALj1JpxRm0VnV/3UJdXNQF3Srq5cE3BdWaCa35
- shbLVbKiFP+684//gavOOR+
-X-Received: by 2002:a05:6000:24c3:b0:3d0:ef30:d332 with SMTP id
- ffacd0b85a97d-3d1dea8dda6mr7279337f8f.46.1756728406464; 
- Mon, 01 Sep 2025 05:06:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGTeR95n/1gwuTu55O4uFE4V9bLm1YiQlaIbWWhyNWh3xRNw18YIAOfRvImO7sNV2TgAwW0IiU6jjDfZ8yvRgQ=
-X-Received: by 2002:a05:6000:24c3:b0:3d0:ef30:d332 with SMTP id
- ffacd0b85a97d-3d1dea8dda6mr7279282f8f.46.1756728405942; Mon, 01 Sep 2025
- 05:06:45 -0700 (PDT)
+ bh=yXtHdrl+QM2N27NEU5e38Higfy7JEGr4Xf5KI2gQIQI=;
+ b=A8Vpoep9z4M22yvx+twfeFNGgafLz3OdWLyVIOb6JC1Bj0SqLoVjVV2QYMG8qsPJyk
+ VvCzmnuXQI8M+QHHHo+VzSPZ7fcyisH7dSsEJeEQrxCrJ3XWpE/pXFwRm0iWZ23LbpFH
+ 4jRnYhN9OQsq2cH7+bSowIey0Tn7FZN5iREcZfrbb0rg7d8vHhqMVSY9M2rgMecxGL7X
+ VwRSWvLqw7lMipjxXAl9ppHUI1eW+Qb3VhImwQJTReUx0RgpXHgoZaAZMuqRX8gzAXYy
+ oYpLA8U2KDcYMwyf4t58TWSLpksnVCJtt1DwejNP3VcWNpmTrRSqAAbkfb6SBxh6MwSv
+ agZg==
+X-Gm-Message-State: AOJu0Yxiw7Gap5+cy/Cu62ocJ8ZkZLEsQ3I8y6QM+EajtfL6JvyI7Vvy
+ IskgKU+2gC8pL+HLRHY95hG4kKLINzsD5gNtVlS5h7TimaWkvLutshQ0niYu3jAf2B2dj2vtYhT
+ jquMuUbq/g1hC7yWQ4GYPRT4oWmsNmoboYci+1c6geA==
+X-Gm-Gg: ASbGnctMiAv2bPQcyM+lGEmUX/Ki/9+3dRW69Ac8CfQSNouaTY4e05Zq5iAzZ2ufr63
+ JgRUl8RCojon6feeGWidn04Ty7XWjtC5Z7zzTmanxpfqu4AnhNimm1on8ZRJ/LIhKOjfKpmoMwI
+ O2Ap/V5AieK51hQpgKkkzNuZdbH9tQb2GXgtDy61PMn5N2xzh/Y+x8myV9Ur63SHqngmUidnp9C
+ IYUYipefzPSfsKmoD0=
+X-Google-Smtp-Source: AGHT+IEAW7MwRNeVhU6Ent9zh1gCTq4zHNcPr2UQMRsiFLxuUQpRMYHma2GJqWbSXL7HhFbM3ZQI6GosfAwvIz+p2GE=
+X-Received: by 2002:a05:690c:61c6:b0:71f:9a36:d32f with SMTP id
+ 00721157ae682-7227653a540mr88021217b3.24.1756728515932; Mon, 01 Sep 2025
+ 05:08:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250814160600.2327672-7-imammedo@redhat.com>
- <20250821155603.2422553-1-imammedo@redhat.com>
- <aKyBFlCtnxnP9kt/@intel.com> <20250825171912.1bc7b841@fedora>
- <aK1mHGan+n9NSAOk@intel.com> <20250826104731.1440e3ed@fedora>
- <33661ea1-b0aa-45b3-8923-0b47a40dcea8@redhat.com>
- <CABgObfb6Hs8EOeLQeG_S=Y8j8dj6A9fAMn0DzSSVKZYBG_rP-g@mail.gmail.com>
- <20250901140510.2925ac85@fedora>
-In-Reply-To: <20250901140510.2925ac85@fedora>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 1 Sep 2025 14:06:27 +0200
-X-Gm-Features: Ac12FXxf6ywKvzlstJ-fch8fYv7U2_XtMW0NswZ6O3nTf3Z4fWOaP61kaMQ_A1Y
-Message-ID: <CABgObfYpB_gQd5=DFPR0mWBJeaNeeK9n1SUONUKCFy=7da4zOQ@mail.gmail.com>
-Subject: Re: [PATCH v5 6/8] add cpu_test_interrupt()/cpu_set_interrupt()
- helpers and use them tree wide
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Zhao Liu <zhao1.liu@intel.com>, qemu-devel@nongnu.org, peterx@redhat.com, 
- mst@redhat.com, mtosatti@redhat.com, richard.henderson@linaro.org, 
- riku.voipio@iki.fi, thuth@redhat.com, pasic@linux.ibm.com, 
- borntraeger@linux.ibm.com, david@redhat.com, jjherne@linux.ibm.com, 
- shorne@gmail.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com, 
- philmd@linaro.org, wangyanan55@huawei.com, peter.maydell@linaro.org, 
- agraf@csgraf.de, mads@ynddal.dk, mrolnik@gmail.com, deller@gmx.de, 
- dirty@apple.com, rbolshakov@ddn.com, phil@philjordan.eu, reinoud@netbsd.org, 
- sunilmut@microsoft.com, gaosong@loongson.cn, laurent@vivier.eu, 
- edgar.iglesias@gmail.com, aurelien@aurel32.net, jiaxun.yang@flygoat.com, 
- arikalo@gmail.com, chenhuacai@kernel.org, npiggin@gmail.com, 
- rathc@linux.ibm.com, harshpb@linux.ibm.com, yoshinori.sato@nifty.com, 
- iii@linux.ibm.com, mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com, 
- qemu-s390x@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org
+References: <20250811100823.94105-1-philmd@linaro.org>
+In-Reply-To: <20250811100823.94105-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 1 Sep 2025 13:08:24 +0100
+X-Gm-Features: Ac12FXzswSowIaE7UkJ51uR3Rpniv-oDaw0SUfciDCJIyWVhvyLTgMRPBgjSNGc
+Message-ID: <CAFEAcA_tW3UyUTcyFWP+bY15EO0DO3bcS9DLPuJYkdvEfFfVdA@mail.gmail.com>
+Subject: Re: [PATCH] system/rtc: Silent overflow in qemu_timedate_diff()
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,19 +92,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 1, 2025 at 2:05=E2=80=AFPM Igor Mammedov <imammedo@redhat.com> =
-wrote:
-> On Fri, 29 Aug 2025 14:33:57 +0200
-> Paolo Bonzini <pbonzini@redhat.com> wrote:
-> > Rethinking about it - this can be a separate patch that also affects
-> > cpu_reset_interrupt(), as well as all cases where
-> > cpu_reset_interrupt() is open coded.
+On Mon, 11 Aug 2025 at 11:08, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
 >
-> I can take care of replacing open coded cpu_reset_interrupt() cases
-> (I've already looked through them, while answering reviewers questions)
+> Per ctime(3) man-page:
+>
+>   A negative value for tm_isdst causes the mktime() function to
+>   attempt to divine whether summer time is in effect for the
+>   specified time.  The tm_isdst and tm_gmtoff members are forced
+>   to zero by timegm().
+>
+>   The mktime() function returns the specified calendar time; if
+>   the calendar time cannot be represented, it returns -1;
+>
+> Coverity reports (CID 1547724 Overflowed return value) the
+> qemu_timedate_diff() method doesn't handle this error path.
+>
+> Since this method was added in commit f650305967f ("Unify RTCs
+> that use host time, fix M48t59 alarm") in 2008, and there is no
+> open issue related to it, keep ignoring this unlikely case, but
+> add an assertion to make Coverity happy.
+>
+> Fixes: CID 1547724
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  system/rtc.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/system/rtc.c b/system/rtc.c
+> index 56951288c40..070b99fe6ad 100644
+> --- a/system/rtc.c
+> +++ b/system/rtc.c
+> @@ -98,6 +98,7 @@ time_t qemu_timedate_diff(struct tm *tm)
+>          struct tm tmp =3D *tm;
+>          tmp.tm_isdst =3D -1; /* use timezone to figure it out */
+>          seconds =3D mktime(&tmp);
+> +        assert(seconds >=3D 0);
+>          break;
+>      }
+>      default:
 
-No problem, I've posted my patches last Friday.
+Generally the struct tm that we call this function
+on is filled in using information from the guest.
+So I think that a silly guest could probably program
+a device in a way that causes us to call qemu_timedate_diff()
+on an invalid time and make mktime() fail.
 
-Paolo
+Also, if the device is programmable to a date earlier
+than the Unix epoch, this will also make mktime() return
+a negative number, e.g:
 
+  tm_sec   =3D 0
+  tm_min   =3D 0
+  tm_hour  =3D 0
+  tm_mday  =3D 1
+  tm_mon   =3D 0
+  tm_year  =3D 70
+  tm_wday  =3D 0
+  tm_yday  =3D 0
+  tm_isdst =3D 0
+
+(Jan 1st 1970) makes mktime return -3600.
+
+The safe way to check for mktime() failure is to clear errno
+before calling it and then check for it returning -1 and
+setting errno.
+
+I think that if we care about trying to handle errors here
+(and plausibly we don't care enough to go to the effort)
+we would want to:
+ * update the API of this function to allow it to indicate
+   failure (in some better way than raw mktime() so we
+   don't have the "-1 is ambiguous" problem)
+ * have all the callers handle an error in whatever way
+   makes sense (which might be assert if they can guarantee
+   the fields to be in-bounds, or might be something else,
+   e.g. for mt48t59.c where it wants to set the alarm
+   timer "alarm time out of range" should be handled as
+   "don't set the timer" because the requested time will
+   be either in the past or else so far in the future it
+   will never arrive)
+
+thanks
+-- PMM
 
