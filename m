@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E0EB3ED24
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 19:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F91B3ED48
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 19:20:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ut835-0006ng-NM; Mon, 01 Sep 2025 13:10:32 -0400
+	id 1ut8BT-0004DT-2M; Mon, 01 Sep 2025 13:19:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ut82f-000691-4h
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 13:10:09 -0400
-Received: from mail-yb1-xb34.google.com ([2607:f8b0:4864:20::b34])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1ut8BQ-0004Cj-IN
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 13:19:08 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ut82Y-0007ua-Uh
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 13:10:04 -0400
-Received: by mail-yb1-xb34.google.com with SMTP id
- 3f1490d57ef6-e931cad1fd8so3642617276.1
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 10:09:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1ut8BO-0000vY-Hx
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 13:19:08 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3d1bf79d75aso640610f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 10:19:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756746598; x=1757351398; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1756747144; x=1757351944; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mWm75LlarvNPNkG/j1YdIDdAaspy5HO2BeQIm0j5o6s=;
- b=dOjtOV51wilE0mMhI7NU9a2fx06noC/7PFixlFhgavWfpcM5K7F5AitEexcFeexlNH
- mpJBjP2Utx0G2bYTvGmuWR9BGExgQdymutc7mYTKyLi55Z59bOuKrWgnmQR4tEr0CuId
- B7b9ZpUiMMgvH9PkrBWZ0OYx8oWfrF/7mIoNQW5k1gIEEQvUKvmAcNvyoDXa4vEM+aRq
- ypdrDtu3xJUEMEN7vs+Bn0LuOx0MRHSTeMwNtQ294jfp0rDZh2/5QKZJ99GRIMs7k3fG
- JElberhyRUrj1OZPssGaPK25UaEJ9NT5rnuJRv5geaThBoBh7acvMWFixeBNkGPIkj1V
- gLbw==
+ bh=1sCqZB25DUfcm/4XKxVHPvAeQgXjO4vMXXkVVPHtE3o=;
+ b=j1FOPXEhy34vnv0cZRsJMKsDEqcWiUecj0eerIndpV71ZoyAJtUoh+AS1Y8Y93LRt1
+ SwPJVRCMspHkjL6LDAXXLaaXcb9SVeEx+MfBsbAMdUpk/sObEmiN+f1zZPoywPT1PrnX
+ L/VIU5+ACbfKw4ZYOK9HPWBjMUNXJNFh+pFbj3UzkGy8rzU3g4REVSxcFxPo9efGp/41
+ Yp6E44LRMoHE8g7a4UaCXa1fVuRYZbjYML0eWwh3pU2TY48F/xiO4fBzpvqNErGr18mC
+ ZYwt8Gg851DNhkJuLsAcbWYBQYFGRcNr70B7wBceSO5+bLB3tJdMxk3bfAopN/4CblKj
+ eMuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756746598; x=1757351398;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mWm75LlarvNPNkG/j1YdIDdAaspy5HO2BeQIm0j5o6s=;
- b=tzVyZ7uePbZprODD0Y11ZM3FZSsACr/814se3R0ZCaMRZrTqhTzpXOo+i02B8guyY/
- cEFkjhFClxQBzReNttOnGIOp1SGmh3Lz/f8EssYAbeE2QwkJsCNvP7/4fsHuLl+V9ndc
- 3F05JgQPdOBjEg1sJEHPoLMhiPUGsTgYMpAuR0wwKlZRhD+dPB+6MTVypceG7U71M1XO
- u/nRC9vfflExa4LPTjWjz9wqnb6kR8BXbU+g7jBOjFGqTEzW/bzjGsesDll8gCL2AYAV
- VcGF/PXSSptoPT4vlKg0vO2HYML6KOrZkNji+C0c0sZLDL3jEzNclyRIAC2ZvDbXzcM8
- F/cQ==
-X-Gm-Message-State: AOJu0YyA7pZN3iIy+iVM2mRopmUHb4pjlF69CEMnMv3sBpo1B/+sJw2c
- Vfr/cycqah1t0V5JAWMZ7bXUGJORn8Q++jJrrtXOUqXnAI63t2kmgYEqprKgwCu/pYna0Ec6SGV
- b+TM1e88tB92ieIUYIS8o8QQhGeXcDhJMhYxzdatNng==
-X-Gm-Gg: ASbGnctyx9N56vIQf54F9F1dj9E9YbnpqrpLOHFvAnbFQAXn5LDBPUE/75q731sFFDU
- +D+i5wHAZ7F1PC5xCbVo7SLc/lKkRHLGltwwk9Sz44gDi0C37zI6kM0EXcwrEW5wF3+Bw2Q4EPC
- 4YYz7yNq6CM6LdHenvCl2uRqjCxmD5Ad6aVVFQXu63Wxq1JbRxKPrE7BeMLVcshdbJ+wx9Gf/9U
- QNOKAWT
-X-Google-Smtp-Source: AGHT+IERTXHqlXXU39mvv5axTI9DNn+sVagnssYa+KVH5QXxHSA0PR8s+lbWdjQfl/g6dqIX3J7EdL/C2hw6Y+v7CeA=
-X-Received: by 2002:a05:690c:61ca:b0:723:89bb:7c63 with SMTP id
- 00721157ae682-72389bb8b40mr41845077b3.14.1756746597452; Mon, 01 Sep 2025
- 10:09:57 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1756747144; x=1757351944;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=1sCqZB25DUfcm/4XKxVHPvAeQgXjO4vMXXkVVPHtE3o=;
+ b=r6wD7M1L90i4IXcplhlJjjNIy30K43MpVXIeMy3fNQTKuiGDRcE+VzkwM8zIFYb1OL
+ ntLgklHm9QXA0Lq87M3TQVB+iANoF2CXHGFeLEQNgjEUxDXrccH8JHAXZIcl44nAncxS
+ GjEVvKXBcXiwpZP5fxqukuIs77Z5dAQ1SfMkjMxPywM/x9BDMjKjSrgeBoTNd7G8bUCl
+ z7i06nphyHGR75ezF4IOhF+mXD/pwi8Zftbcr06PQAWBSue3G088ShDt/2cJbhtRK4ht
+ nlL5TxSPCrcPM3d1/vYbFA3ZHVap4J4DfN22i7wE40XEAlb8LxF7OowTDQdXf0HFxiGv
+ 94lg==
+X-Gm-Message-State: AOJu0YzWR7NQh9m2v8HYE88lzxbX7AJgbhFIYjsqk1GiucQWhadU64dB
+ bJhAjVoZiFJHuQK+Iz8+clPslcHSmSKrxsfal3JPGewonkfpXEfQzDnELLqgq46IuRU=
+X-Gm-Gg: ASbGncv3d6OVYeDMtpOlSzSqDjyzBVfYmlm3SyH7yMNQLaHkRxWIqLW0O6iUOPNV/PJ
+ eIu6nOotQYJUAXw4A0E6YDnaPtY46m4Zvk3mn/rVLhtbhgrlszMyEzmvUEmc0ncYNewl0BQTDu6
+ TZ6yXA6ao9FvD5fcfYgHheTfKVVFr/TfGfc5wKEulS79eoVoqU4grKuVBt5P07uBOKyfKq3Uctm
+ cb3IF0byOY7jwx25H59fAinQ/Zm3yDREK1jcmYyKB5TMxLZwFvk8dhod5e6enzSPyQp1d9jlrA+
+ AeAkTzKQ75/K+Qg29SKRzULdtfzvNcP9J+d4r1IDMYRcUXTLjv2M699vLxsndDBZfJxHCDSA37d
+ +vWTI8S/XNPNjedCqhX/qxZfBGSBWgg0QUg==
+X-Google-Smtp-Source: AGHT+IHf4XtF3R4nNEcYqWb5xnCRc4YVZ2xSTr0Mht90V/zwbhqs9g+o32+fEei//O7yEAW7bfZV2A==
+X-Received: by 2002:a05:6000:420f:b0:3c4:2f45:1503 with SMTP id
+ ffacd0b85a97d-3d1b16f0bd5mr9675400f8f.16.1756747144002; 
+ Mon, 01 Sep 2025 10:19:04 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b7e50e30asm165673725e9.24.2025.09.01.10.19.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 01 Sep 2025 10:19:03 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 4705A5F81C;
+ Mon, 01 Sep 2025 18:19:02 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,  Philippe =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?= <philmd@linaro.org>,  Bin Meng <bmeng.cn@gmail.com>,
+ qemu-block@nongnu.org,  Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: Re: [PATCH v2 2/8] hw/sd/sdcard: Add validation for
+ boot-partition-size
+In-Reply-To: <1fff448da042bdf8cff7733ce67cadff4c540f1d.1756706188.git.jan.kiszka@siemens.com>
+ (Jan Kiszka's message of "Mon, 1 Sep 2025 07:56:22 +0200")
+References: <cover.1756706188.git.jan.kiszka@siemens.com>
+ <1fff448da042bdf8cff7733ce67cadff4c540f1d.1756706188.git.jan.kiszka@siemens.com>
+User-Agent: mu4e 1.12.12; emacs 30.1
+Date: Mon, 01 Sep 2025 18:19:02 +0100
+Message-ID: <87ms7e146x.fsf@draig.linaro.org>
 MIME-Version: 1.0
-References: <20250822092410.25833-1-cjchen@igel.co.jp>
- <20250822092410.25833-2-cjchen@igel.co.jp>
-In-Reply-To: <20250822092410.25833-2-cjchen@igel.co.jp>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 1 Sep 2025 18:09:45 +0100
-X-Gm-Features: Ac12FXyp5aoGFJCJISjg0rWTbnKib39-xtFSHoOxLlgVVJx173cxOAbUvbrHHzc
-Message-ID: <CAFEAcA8M6EAeEqSkJG-D+t=+3D4T99UoVNe94nfhRGxc80=PAw@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 1/9] doc/devel/memory.rst: additional explanation
- for unaligned access
-To: CJ Chen <cjchen@igel.co.jp>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-riscv@nongnu.org, 
- qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Keith Busch <kbusch@kernel.org>, 
- Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Tyrone Ting <kfting@nuvoton.com>, 
- Hao Wu <wuhaotsh@google.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>, 
- Tomoyuki Hirose <hrstmyk811m@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b34;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb34.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,92 +105,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 22 Aug 2025 at 10:25, CJ Chen <cjchen@igel.co.jp> wrote:
+Jan Kiszka <jan.kiszka@siemens.com> writes:
+
+> From: Jan Kiszka <jan.kiszka@siemens.com>
 >
-> Add documentation to clarify that if `.valid.unaligned =3D true` but
-> `.impl.unaligned =3D false`, QEMU=E2=80=99s memory core will automaticall=
-y split
-> unaligned guest accesses into multiple aligned accesses. This helps
-> devices avoid implementing their own unaligned logic, but can be
-> problematic for devices with side-effect-heavy registers. Also note
-> that setting `.valid.unaligned =3D false` together with
-> `.impl.unaligned =3D true` is invalid, as it contradicts itself and
-> will trigger an assertion.
+> Make sure we are not silently rounding down or even wrapping around,
+> causing inconsistencies with the provided image.
 >
-> Signed-off-by: CJ Chen <cjchen@igel.co.jp>
-> Acked-by: Tomoyuki Hirose <hrstmyk811m@gmail.com>
-> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 > ---
->  docs/devel/memory.rst | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
+>  hw/sd/sd.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 >
-> diff --git a/docs/devel/memory.rst b/docs/devel/memory.rst
-> index 57fb2aec76..71d7de7ae5 100644
-> --- a/docs/devel/memory.rst
-> +++ b/docs/devel/memory.rst
-> @@ -365,6 +365,24 @@ callbacks are called:
->  - .impl.unaligned specifies that the *implementation* supports unaligned
->    accesses; if false, unaligned accesses will be emulated by two aligned
->    accesses.
-> +- Additionally, if .valid.unaligned =3D true but .impl.unaligned =3D fal=
-se, the
-> +  memory core will emulate each unaligned guest access by splitting it i=
-nto
-> +  multiple aligned sub-accesses.
+> diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+> index 16aee210b4..834392b0a8 100644
+> --- a/hw/sd/sd.c
+> +++ b/hw/sd/sd.c
+> @@ -2818,6 +2818,16 @@ static void sd_realize(DeviceState *dev, Error **e=
+rrp)
+>          }
+>          blk_set_dev_ops(sd->blk, &sd_block_ops, sd);
+>      }
+> +    if (sd->boot_part_size % (128 * KiB) ||
+> +        sd->boot_part_size > 255 * 128 * KiB) {
+> +        char *size_str =3D size_to_str(sd->boot_part_size);
+> +
 
-Can we say in more specific detail what the core handling is, please?
-I should be able to read this documentation and know exactly what
-extra accesses I will get to my device. (Then I can make the decision
-about whether I will be OK with those or if I will need to do the
-unaligned handling myself.)
+This could be:
 
-Documenting the behaviour we intend to provide will also make it
-easier to review the implementation and the tests in the later patches.
+  g_autofree char *size_str =3D size_to_str(sd->boot_part_size);
 
-> This ensures that devices which only handle
-> +  aligned requests do not need to implement unaligned logic themselves. =
-For
-> +  example, see xhci_cap_ops in hw/usb/hcd-xhci.c: it sets  .valid.unalig=
-ned
-> +  =3D true so guests can do unaligned reads on the xHCI Capability Regis=
-ters,
-> +  while keeping .impl.unaligned =3D false to rely on the core splitting =
-logic.
-> +  However, if a device=E2=80=99s registers have side effects on read or =
-write, this
-> +  extra splitting can introduce undesired behavior. Specifically, for de=
-vices
-> +  whose registers trigger state changes on each read/write, splitting an=
- access
-> +  can lead to reading or writing bytes beyond the originally requested s=
-ubrange
-> +  thereby triggering repeated or otherwise unintended register side effe=
-cts.
-> +  In such cases, one should set .valid.unaligned =3D false to reject una=
-ligned
-> +  accesses entirely.
+> +        error_setg(errp, "Invalid boot partition size: %s", size_str);
+> +        g_free(size_str);
 
-.valid.unaligned has to match what the real hardware requires.
-So we should instead say something like:
+which drops this.
 
- If your device must support unaligned accesses and these extra
- accesses would cause unintended side-effects, then you must set
- .impl.unaligned and handle the unaligned access cases yourself.
+> +        error_append_hint(errp,
+> +                          "The boot partition size must be multiples of =
+128K"
+> +                          "and not larger than 32640K.\n");
+> +    }
+>  }
+>=20=20
+>  static void emmc_realize(DeviceState *dev, Error **errp)
 
-> +- Conversely, if .valid.unaligned =3D false but .impl.unaligned =3D true=
-,
-> +  that setting is considered invalid; it claims unaligned access is allo=
-wed
-> +  by the implementation yet disallowed for the device. QEMU enforces thi=
-s with
-> +  an assertion to prevent contradictory usage.
->
->  API Reference
->  -------------
-> --
-> 2.25.1
->
+Otherwise:
 
-thanks
--- PMM
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
