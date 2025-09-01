@@ -2,81 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5877B3E250
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 14:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BFAB3E160
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 13:21:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ut3LA-00069s-H9; Mon, 01 Sep 2025 08:08:52 -0400
+	id 1ut2aR-0006E8-1w; Mon, 01 Sep 2025 07:20:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ut3L5-0005xb-8m
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:08:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ut3Ks-0005ek-Q9
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:08:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756728509;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:resent-to:
- resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
- bh=Br0eDufuCl1H/A9/QpQKIm91QMS3pZxtsWEd1doI9uo=;
- b=havIK17HXhhbxlck7/tq/Fu5e5jgc4KnWuImxNbOxq33N544kSN6Pf0xQQRa4j7yCtIrsD
- VFr4Gx/wUPZBdqE2btjtDwDbUCdMcSy+aeIChC8MhLzCmbetwNTnEOq3BG4xC9ziINgC1I
- QU3J/vOAD3A6UdH2W4k4SVwXEYXijik=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-YqTMfVk7MYyKxYpDCZZ1hQ-1; Mon,
- 01 Sep 2025 08:08:28 -0400
-X-MC-Unique: YqTMfVk7MYyKxYpDCZZ1hQ-1
-X-Mimecast-MFC-AGG-ID: YqTMfVk7MYyKxYpDCZZ1hQ_1756728507
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 32D84180034A; Mon,  1 Sep 2025 12:08:27 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C22A619560B4; Mon,  1 Sep 2025 12:08:26 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2252A21E6935; Mon, 01 Sep 2025 14:08:24 +0200 (CEST)
-Resent-To: qemu-devel@nongnu.org, richard.henderson@linaro.org
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Mon, 01 Sep 2025 14:08:24 +0200
-Resent-Message-ID: <87ldmy4bpj.fsf@pond.sub.org>
-X-From-Line: armbru@redhat.com  Mon Sep  1 13:19:06 2025
-X-Original-To: armbru
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A0A9621E6935; Mon, 01 Sep 2025 13:19:06 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 3/3] vfio scsi ui: Error-check
- qio_channel_socket_connect_sync() the same way
-Date: Mon,  1 Sep 2025 13:19:06 +0200
-Message-ID: <20250901111906.2403307-4-armbru@redhat.com>
-In-Reply-To: <20250901111906.2403307-1-armbru@redhat.com>
-References: <20250901111906.2403307-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ut2aO-0006Dh-M2
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 07:20:32 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ut2aM-0005RI-MN
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 07:20:32 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-45b7c01a8c1so33268455e9.2
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 04:20:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756725628; x=1757330428; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YmHXeMeHaplpbeWWRJ62t2pphWP9VF2eLLTmdjZCQKA=;
+ b=HpTwp2t5mBNVsBPMUiMLQ5G/aHrVmDL6MWMxll9VJ7lCATw9ykQ/j6RzPwwAzx0PWP
+ PnaGRXDtQGFu1QKZmV4HCFXJu0p14kEVLBKbOTXkBbB1SZKra9qJGtkxfPdUouNYrAMy
+ ZRctor6uPp3tqIXIw03Zct6mGu4mcp2DX5JuheZzkm8GXXgzhhGyrvc8Egl/7CsV5+C/
+ uU2St48VWNAYSzz1UTgKudp8udj8qQgMHAbVgi+xt8y6e/+k4cIh05CSVXu0A4W6WCI0
+ pxsQV0Qm2IIMPwcqu7fmEr2p7LMSp7t2+w3kxx9xrX5a/5l+Tf/TYc0+oGQQsm7k/yZG
+ KNtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756725628; x=1757330428;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YmHXeMeHaplpbeWWRJ62t2pphWP9VF2eLLTmdjZCQKA=;
+ b=ahnBf11hyafCgXNSDe/QVJ+ELznmXEmxjAthk4+wszGIm08i60NMvQnPTU2hUKzP/V
+ s8mrqwYshXqktKZ+kwlxzmiX27Yx5w6IVv6ZDp8Ka3rKH26h/EKGgyshXAIWeCxS2TDd
+ 86eAqjgPFv/tVP4qAqB4SzgMq3xByaexxoV61NsMc35gKECb9Z3xg5MMi3dutLMYrF9z
+ 4N32BomuombcfvWprXN5JcPS+RHPy7rJ+5qZwjgctk9dsNBjz/IrjmvQZS73Is2CK5te
+ kQS/6ACiG5yHrRQ/Cp8ziAw/mLiF1A6A9X9L1fXY2HOEzNXGac4j/9BBO3QSt1MU+Y7R
+ 1mfA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCULhK0TbN9Jfrd20+qG9+vt4NRWhDM/0nA9X6DuBUEXlu4R0DRUs8qAShiW5s5lV4UkZYSGMXZsWTJG@nongnu.org
+X-Gm-Message-State: AOJu0Yy+ZICLIGMmqja8iGNGEC9DQTPxRSpzLIwr83rOK6LsZNrDBQAD
+ NdbFSOgp1FZ1l7N0pOpRcEXc5ZTY5WMhx46wQGwLvOQZOsD7aKMt3kaVTuPtmQYADTQ=
+X-Gm-Gg: ASbGncv22hUn2uUScUqxRO5ZsrUBNhLJt/tivjYPFesrUFxLCf9MlWjxtYV909NWTnZ
+ hJBlhy5t/Ve333Kab4sCW79wkThgu6wP1zj/W0boAusWvSg6ln7RAayS4BxV8TtxxyTS3NcY0p5
+ 5spEHSfLitCoh84ntdSxDhtC/H+3YscGqEN5NATinaVevKNiPGCIvuhb8us32jq/9dvOx0K2Kkt
+ TdSNnfCF4oHZEMM3MMHmg/OJh/Qzf7RVe3RbhB3gQ/9roIlLbsfr4rHDfApLXjI8J6NRJKdxYjA
+ n/iGnGM1ahFatP20n7dq2yjqX+TzsI2aVIj2Yn5GdPXqmrHStg2qA98/yRClSxMrVGasWI3I3fG
+ T00ZZJs2jZqfyDw/vUmfElrbd4KjgArIxPJ4mq420g+6TyxS0UhjpZQeTkceFC5S6+A==
+X-Google-Smtp-Source: AGHT+IF+qjjtnqzTk/gos9e0Ai9VpTUirJLKlLNM7p4X+UQUwJK6pflvHccoRAacJZGL0OemQk+JnQ==
+X-Received: by 2002:adf:b343:0:b0:3d2:9cbf:5b73 with SMTP id
+ ffacd0b85a97d-3d29cbf607bmr3435603f8f.6.1756725628549; 
+ Mon, 01 Sep 2025 04:20:28 -0700 (PDT)
+Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3d690f2edf1sm4181626f8f.16.2025.09.01.04.20.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 01 Sep 2025 04:20:27 -0700 (PDT)
+Message-ID: <7b9332de-3e59-4c73-9ab2-b2b34aada996@linaro.org>
+Date: Mon, 1 Sep 2025 13:20:27 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/18] target/sparc: limit cpu_check_irqs to system
+ emulation
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, richard.henderson@linaro.org, imammedo@redhat.com
+References: <20250829152909.1589668-1-pbonzini@redhat.com>
+ <20250829152909.1589668-3-pbonzini@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250829152909.1589668-3-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Lines: 83
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,87 +101,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qio_channel_socket_connect_sync() returns 0 on success, and -1 on
-failure, with errp set.  Some callers check the return value, and some
-check whether errp was set.
+On 29/8/25 17:28, Paolo Bonzini wrote:
+> It is not used by user-mode emulation and is the only caller of
+> cpu_interrupt() in qemu-sparc* binaries.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   target/sparc/int32_helper.c | 2 ++
+>   target/sparc/int64_helper.c | 2 ++
+>   2 files changed, 4 insertions(+)
+> 
+> diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
+> index 39db4ffa70a..fdcaa0a578b 100644
+> --- a/target/sparc/int32_helper.c
+> +++ b/target/sparc/int32_helper.c
+> @@ -65,6 +65,7 @@ static const char *excp_name_str(int32_t exception_index)
+>       return excp_names[exception_index];
+>   }
+>   
+> +#if !defined(CONFIG_USER_ONLY)
+>   void cpu_check_irqs(CPUSPARCState *env)
+>   {
+>       CPUState *cs;
+> @@ -96,6 +97,7 @@ void cpu_check_irqs(CPUSPARCState *env)
+>           cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
+>       }
+>   }
+> +#endif
 
-For consistency, always check the return value, and always check it's
-negative.
+I'd rather see these moved in system-specific files.
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250723133257.1497640-3-armbru@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
----
- hw/vfio-user/proxy.c     | 2 +-
- scsi/pr-manager-helper.c | 9 ++-------
- ui/input-barrier.c       | 5 +----
- 3 files changed, 4 insertions(+), 12 deletions(-)
-
-diff --git a/hw/vfio-user/proxy.c b/hw/vfio-user/proxy.c
-index 2275d3fe39..2c03d49f97 100644
---- a/hw/vfio-user/proxy.c
-+++ b/hw/vfio-user/proxy.c
-@@ -885,7 +885,7 @@ VFIOUserProxy *vfio_user_connect_dev(SocketAddress *addr, Error **errp)
- 
-     sioc = qio_channel_socket_new();
-     ioc = QIO_CHANNEL(sioc);
--    if (qio_channel_socket_connect_sync(sioc, addr, errp)) {
-+    if (qio_channel_socket_connect_sync(sioc, addr, errp) < 0) {
-         object_unref(OBJECT(ioc));
-         return NULL;
-     }
-diff --git a/scsi/pr-manager-helper.c b/scsi/pr-manager-helper.c
-index 6b86f01b01..aea751fb04 100644
---- a/scsi/pr-manager-helper.c
-+++ b/scsi/pr-manager-helper.c
-@@ -105,20 +105,15 @@ static int pr_manager_helper_initialize(PRManagerHelper *pr_mgr,
-         .u.q_unix.path = path
-     };
-     QIOChannelSocket *sioc = qio_channel_socket_new();
--    Error *local_err = NULL;
--
-     uint32_t flags;
-     int r;
- 
-     assert(!pr_mgr->ioc);
-     qio_channel_set_name(QIO_CHANNEL(sioc), "pr-manager-helper");
--    qio_channel_socket_connect_sync(sioc,
--                                    &saddr,
--                                    &local_err);
-+    r = qio_channel_socket_connect_sync(sioc, &saddr, errp);
-     g_free(path);
--    if (local_err) {
-+    if (r < 0) {
-         object_unref(OBJECT(sioc));
--        error_propagate(errp, local_err);
-         return -ENOTCONN;
-     }
- 
-diff --git a/ui/input-barrier.c b/ui/input-barrier.c
-index 9793258aac..0a2198ca50 100644
---- a/ui/input-barrier.c
-+++ b/ui/input-barrier.c
-@@ -490,7 +490,6 @@ static gboolean input_barrier_event(QIOChannel *ioc G_GNUC_UNUSED,
- static void input_barrier_complete(UserCreatable *uc, Error **errp)
- {
-     InputBarrier *ib = INPUT_BARRIER(uc);
--    Error *local_err = NULL;
- 
-     if (!ib->name) {
-         error_setg(errp, QERR_MISSING_PARAMETER, "name");
-@@ -506,9 +505,7 @@ static void input_barrier_complete(UserCreatable *uc, Error **errp)
-     ib->sioc = qio_channel_socket_new();
-     qio_channel_set_name(QIO_CHANNEL(ib->sioc), "barrier-client");
- 
--    qio_channel_socket_connect_sync(ib->sioc, &ib->saddr, &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (qio_channel_socket_connect_sync(ib->sioc, &ib->saddr, errp) < 0) {
-         return;
-     }
- 
--- 
-2.49.0
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
