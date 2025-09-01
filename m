@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07864B3E1FB
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 13:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2400B3E3B7
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 14:52:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ut2zY-0007G3-7V; Mon, 01 Sep 2025 07:46:32 -0400
+	id 1ut2zr-0007zs-2Y; Mon, 01 Sep 2025 07:46:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1ut2yx-0006mQ-9P; Mon, 01 Sep 2025 07:45:56 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1ut2z2-0006ol-6g; Mon, 01 Sep 2025 07:46:01 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1ut2yo-0001IZ-44; Mon, 01 Sep 2025 07:45:54 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2445806e03cso47820245ad.1; 
- Mon, 01 Sep 2025 04:45:41 -0700 (PDT)
+ id 1ut2yw-0001JP-Dm; Mon, 01 Sep 2025 07:45:59 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-24a1270e0deso12881415ad.1; 
+ Mon, 01 Sep 2025 04:45:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1756727139; x=1757331939; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1756727145; x=1757331945; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=io12k5COHOK3Yc/em6rq8KtQkvhygCFM2FsEAygkmkY=;
- b=XPNaqIGaD8PNDWxeDI0+8eZSR17g8twtl8L22t4tm3B6c+8hm+LSgEjcInDSMr/PLq
- 9+7PbDZkMPxWiIkmVkRbMalv6/jNd2Wbo/rr5Fw38PHTBpD6LYuxJsL5ou5Im+pGqDK9
- K7HdeFbKL7kYJFWLINodS4KHZStbSZiPe6IRce/HIDJyavwsGq0fl12YGj930DHrXMBk
- urxKe6pXutw/qkOeABci0B8N1/JLw1+q7uYy4nhooDMHudUB5PYbUGvGYE73hp7Fe+iZ
- 4kDhFKpaqzkr9B/VJrKQ9oHiZMbreQs1DxXhF7UMnWTRRl7C88JSJiVeIKE5nPubP+0C
- xeKg==
+ bh=WES0X6tSGNzNPhgOsz9aAkJISTE6g/V5BmTgRuV7mUk=;
+ b=DqcoPFdj+AWXPDnW23HymEIhKcDg3Wfwh3JrAO9BEgh/uwair4d48xhWxifm54okC9
+ 9n50YPa7KXM5cqcTqgjF1DaMNEtvp22DVqjbABdVndGSBBlRBP0nTuBDL1JeCgANN4VS
+ CFjTXlibZ4A5tiWBJSl2d6cmZB3vJ78N5JoAu1bGUhdU07ffkbPqWM37MjNXSpc1s6MV
+ H39skfg1qn0uKhCToOyKmq6VybTh/9zBsVnd30q/tFIGnJyRLZaXv0u9VtfQra8qmZ9f
+ JoLgdTprrMacGWSkl0TG3itfzwc/RxHHwHtuq2t6kXolALT1YMpUEH4nTSga1cn3KtZl
+ tIFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756727139; x=1757331939;
+ d=1e100.net; s=20230601; t=1756727145; x=1757331945;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=io12k5COHOK3Yc/em6rq8KtQkvhygCFM2FsEAygkmkY=;
- b=oSdjNgRU+4A03AD7ryfPlo6AwPB1drixGvOKt1qkmR2Z5R4uSV4eXScjCWdKqsmDV6
- KiKGkMCpRwQPAHgORfWhwsF4rusIavIj9C1WBpPm6qru+lOgtz4XXw8db1HNTAXtzCX5
- /BrMUkAGcYiCNaoefu42GcQ7QFud2QJS4KSSHrXNU6ZwS0A82BpS/DiJgOfXwj1nZWWy
- IsomVUNXzclM1SZhTP1wU6yVxG9MHpKNK2CHcF1NDAIjEy5xzNXrbNDaWUJo+hC45sg/
- bPk3XEdKjokYRG29MDfV9fG7pHtb3U2g5RlSOB78mrUFuEEyWlOqAsc8u7BDmj4y2Dvr
- 2r7Q==
+ bh=WES0X6tSGNzNPhgOsz9aAkJISTE6g/V5BmTgRuV7mUk=;
+ b=I4LNDap/LbK1EHA99mwOufdHymqoh4wlqLabH6sth+se/yXo2hPlYvpcc32FvIQ5up
+ TuOKrFOVriWxWK3waBy+e+H6Og3D7r4mN6y4kXwVWhioU//QUlDVfmNrlWfIbVZH1sqM
+ 0KtrwV1c75cPqjE2EtxUoQqGueglD53O0h7QTtwSlIaD+rGwfwVVdRdkKV9UJ4rDHfi0
+ SVmSktuLBQRJaKdmtALRWnXHfG/Iw8ON85K2fqIG9cupISnNzQnVDNlDaQ8KSDSJBs9q
+ wrSJP850618AmWz7Pr+es/fL5GzVcUzou1Rq+jSEayoWKLTMGryte7QQi81uxpVvniLE
+ Xs3A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUm+MtUO2O33vpVnbLyHpKxkWDX3Qqw8Ih9K9mcIKIIfQCCG5Ln4NSJMy/2d3bcz/Hkw+aAsqoINw==@nongnu.org,
- AJvYcCX7uD8VzcOpYVej//qmy5rraeCIa49W83t/1zwCwpH1wtSN7qJf8ZncT8vOR4EF3I3e49CN8Yituom5IQ==@nongnu.org
-X-Gm-Message-State: AOJu0YzfBMVSoMqnAEJA8wGJN+BnkhMIRrMHnkLBZ5WrTakWl65IA93q
- 7d5O9aG3WAQW34VQGeZPm5zv1DheREaPY/lirffRwngGNAQqGP3uL9Y1ehHzFA==
-X-Gm-Gg: ASbGncsUOJFQOKiVLLZwInyh6qzJBfs7GDC+Ewg6g/jrSYi1d88K1SWhLFPCw6LqXa7
- Lqa+0dF24jg/z2GUwHOl5s8hp8j6RG6NUKwRU0wpC5c2NNzY4bdx4y2c+lWMSkurDU0ly2e14U0
- S3vKMU6QqsknTKv3WEpujp1vWYdHBzMG5aaCMIcnfHg4bmFFkLn8bHe4V8JF0McLcHJKJz++d3U
- NgZU3RCoPZUgabqNrZtQKxwRODROPgrX85BBsaAboMjWeNI6tUoWoxkjnl/fudp0rE6a3IgBUp/
- 8U7GIN2qE6tdyqPpCN3C4TocXfqWhlVeetN3L8ATwREVNetIkcAu5ZyhYBJ4USlOXWZ0sV63QvX
- JTTqKRpIODCOgAG088r8fYoEbgRMHyNG2
-X-Google-Smtp-Source: AGHT+IEvGePlQn9QMKxmtmqoa8FIVGL1cCpeRfOkWdgU8ix3zc0C3oTbwMqiTJ9WQn4JsCCwDGwPmA==
-X-Received: by 2002:a17:902:ce09:b0:240:8ec:fe2 with SMTP id
- d9443c01a7336-2494487448fmr85433825ad.4.1756727139512; 
- Mon, 01 Sep 2025 04:45:39 -0700 (PDT)
+ AJvYcCUlbf19HjF+4NHUBCT5tFS4yOLyE98CRhjCU+i3Ygg+x60WARisnKGCnPUZN8ykFp6+3TznbAKjbA==@nongnu.org,
+ AJvYcCUywqYR6VzOqSSM+DH0RXkrnuhKF9hIg0Dc/4pce+0Subt6lr8pqgsbWADFrd98ojXwOeoPieP4HlL7Jw==@nongnu.org
+X-Gm-Message-State: AOJu0YxuvZXFFUJrR/08mEdULNnq4XyBPh5wNH4OmhjP63Qw2ROP9TVv
+ Ax5KnuF6nvZwH0H9FxrjuitpxTlQVxeqc4UyyvYnk6wwvoyP27qAm0Sxnchjdw==
+X-Gm-Gg: ASbGncvxMd8mzHyStboFnT1zo3gDmNXSU5+OOxPkWYb6VRNo09uWL4br4EAOiIMql7Z
+ Ywq+69SaWzZ9sUY1AVE8v7vQ68WPKT7+9myGS6Vjgjy656sko6Mn9qJTl35cqP5441m+s4wXMox
+ Dn1Berh3sIEIA46UeXgEwpLdiAkZiI+YaTvTWvFYRpOSRkOarAAjKo36/OP5dRCQ1nxuDiYhr2P
+ D6A086YW0EC6JMflmRddRyIZmUMMCxIsc2hfT8Eei6dVi8aPwKC2LNlHGM0nKlgWQO+6ZRZMAF9
+ 9tO4wDtIVSkMkFa6YfkUDPDb9Po2VVjCEtP1TtY7bypFhefLhmPXL4H1gGld9nE9sUPB4vyjBQt
+ u860y6dEM+vC7DN0cuFG2v/FT1QYntQ/ol4o4wo03ggE=
+X-Google-Smtp-Source: AGHT+IHDhFRJQBYt2ZX4BzXIeOLbiQkOdlyOuir3bILDtDa/NmCbPUbnJ/plEPsSK9snQ1kxnmscMQ==
+X-Received: by 2002:a17:902:e5ce:b0:248:ffb6:5bc1 with SMTP id
+ d9443c01a7336-24944a9d689mr109011385ad.35.1756727145453; 
+ Mon, 01 Sep 2025 04:45:45 -0700 (PDT)
 Received: from ktock.. ([240d:1a:3b6:8b00:750a:cb0b:f0f9:68f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-249065a8036sm103038775ad.129.2025.09.01.04.45.34
+ d9443c01a7336-249065a8036sm103038775ad.129.2025.09.01.04.45.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Sep 2025 04:45:38 -0700 (PDT)
+ Mon, 01 Sep 2025 04:45:44 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -78,23 +78,23 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, ktokunaga.mail@gmail.com
-Subject: [PATCH v3 03/35] dockerfiles: Add support for wasm64 to the wasm
- Dockerfile
-Date: Mon,  1 Sep 2025 20:44:05 +0900
-Message-ID: <dd1d5aee5cc69ad95f6cf11106cf020bc3bc4b59.1756724464.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH v3 04/35] .gitlab-ci.d: Add build tests for wasm64
+Date: Mon,  1 Sep 2025 20:44:06 +0900
+Message-ID: <74f75ef5de887b7e27ba9d17e21fc083ba99fa67.1756724464.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1756724464.git.ktokunaga.mail@gmail.com>
 References: <cover.1756724464.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,116 +110,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit fixes Dockerfile of the wasm build to support both of wasm32 and
-wasm64 build. Dockerfile takes the following build arguments and use these
-values for building dependencies.
-
-- TARGET_CPU: target wasm arch (wasm32 or wasm64)
-- WASM64_MEMORY64: target -sMEMORY64 mode (1 or 2)
+The wasm builds are tested for 3 targets: wasm32, wasm64(-sMEMORY64=1) and
+wasm64(-sMEMORY64=2). The CI builds the containers using the same Dockerfile
+(emsdk-wasm-cross.docker) with different build args.
 
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- MAINTAINERS                                   |  2 +-
- ...2-cross.docker => emsdk-wasm-cross.docker} | 29 ++++++++++++++-----
- 2 files changed, 23 insertions(+), 8 deletions(-)
- rename tests/docker/dockerfiles/{emsdk-wasm32-cross.docker => emsdk-wasm-cross.docker} (85%)
+ .gitlab-ci.d/buildtest.yml          | 26 ++++++++++++++++++++++----
+ .gitlab-ci.d/container-cross.yml    | 20 ++++++++++++++++++--
+ .gitlab-ci.d/container-template.yml |  4 +++-
+ 3 files changed, 43 insertions(+), 7 deletions(-)
 
 V3:
 - This commit is under review in another patch series so please ignore it
   here.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a07086ed76..433a44118d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -647,7 +647,7 @@ F: include/system/os-wasm.h
- F: os-wasm.c
- F: util/coroutine-wasm.c
- F: configs/meson/emscripten.txt
--F: tests/docker/dockerfiles/emsdk-wasm32-cross.docker
-+F: tests/docker/dockerfiles/emsdk-wasm-cross.docker
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index d888a60063..77ae8f8281 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -787,11 +787,29 @@ coverity:
+     # Always manual on forks even if $QEMU_CI == "2"
+     - when: manual
  
- Alpha Machines
- --------------
-diff --git a/tests/docker/dockerfiles/emsdk-wasm32-cross.docker b/tests/docker/dockerfiles/emsdk-wasm-cross.docker
-similarity index 85%
-rename from tests/docker/dockerfiles/emsdk-wasm32-cross.docker
-rename to tests/docker/dockerfiles/emsdk-wasm-cross.docker
-index 60a7d02f56..4b41be62ab 100644
---- a/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
-+++ b/tests/docker/dockerfiles/emsdk-wasm-cross.docker
-@@ -1,14 +1,17 @@
- # syntax = docker/dockerfile:1.5
- 
--ARG EMSDK_VERSION_QEMU=3.1.50
-+ARG EMSDK_VERSION_QEMU=4.0.10
- ARG ZLIB_VERSION=1.3.1
- ARG GLIB_MINOR_VERSION=2.84
- ARG GLIB_VERSION=${GLIB_MINOR_VERSION}.0
- ARG PIXMAN_VERSION=0.44.2
--ARG FFI_VERSION=v3.4.7
-+ARG FFI_VERSION=v3.5.2
- ARG MESON_VERSION=1.5.0
-+ARG TARGET_CPU=wasm32
-+ARG WASM64_MEMORY64=0
- 
--FROM emscripten/emsdk:$EMSDK_VERSION_QEMU AS build-base
-+FROM emscripten/emsdk:$EMSDK_VERSION_QEMU AS build-base-common
-+ARG TARGET_CPU
- ARG MESON_VERSION
- ENV TARGET=/builddeps/target
- ENV CPATH="$TARGET/include"
-@@ -33,8 +36,8 @@ RUN <<EOF
- cat <<EOT > /cross.meson
- [host_machine]
- system = 'emscripten'
--cpu_family = 'wasm32'
--cpu = 'wasm32'
-+cpu_family = '${TARGET_CPU}'
-+cpu = '${TARGET_CPU}'
- endian = 'little'
- 
- [binaries]
-@@ -46,6 +49,16 @@ pkgconfig = ['pkg-config', '--static']
- EOT
- EOF
- 
-+FROM build-base-common AS build-base-wasm32
+-build-wasm:
++build-wasm32-32bit:
+   extends: .wasm_build_job_template
+   timeout: 2h
+   needs:
+-    job: wasm-emsdk-cross-container
++    job: wasm32-32bit-emsdk-cross-container
+   variables:
+-    IMAGE: emsdk-wasm32-cross
+-    CONFIGURE_ARGS: --static --disable-tools --enable-debug --enable-tcg-interpreter
++    IMAGE: emsdk-wasm32-32bit-cross
++    CONFIGURE_ARGS: --static --cpu=wasm32 --disable-tools --enable-debug --enable-tcg-interpreter
 +
-+FROM build-base-common AS build-base-wasm64
-+ARG WASM64_MEMORY64
-+ENV CFLAGS="$CFLAGS -sMEMORY64=${WASM64_MEMORY64}"
-+ENV CXXFLAGS="$CXXFLAGS -sMEMORY64=${WASM64_MEMORY64}"
-+ENV LDFLAGS="$LDFLAGS -sMEMORY64=${WASM64_MEMORY64}"
++build-wasm64-64bit:
++  extends: .wasm_build_job_template
++  timeout: 2h
++  needs:
++    job: wasm64-64bit-emsdk-cross-container
++  variables:
++    IMAGE: emsdk-wasm64-64bit-cross
++    CONFIGURE_ARGS: --static --cpu=wasm64 --disable-tools --enable-debug --enable-tcg-interpreter
 +
-+FROM build-base-${TARGET_CPU} AS build-base
++build-wasm64-32bit:
++  extends: .wasm_build_job_template
++  timeout: 2h
++  needs:
++    job: wasm64-32bit-emsdk-cross-container
++  variables:
++    IMAGE: emsdk-wasm64-32bit-cross
++    CONFIGURE_ARGS: --static --cpu=wasm64 --wasm64-32bit-address-limit --disable-tools --enable-debug --enable-tcg-interpreter
+diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
+index 8d3be53b75..84c4be49f4 100644
+--- a/.gitlab-ci.d/container-cross.yml
++++ b/.gitlab-ci.d/container-cross.yml
+@@ -92,7 +92,23 @@ win64-fedora-cross-container:
+   variables:
+     NAME: fedora-win64-cross
+ 
+-wasm-emsdk-cross-container:
++wasm32-32bit-emsdk-cross-container:
+   extends: .container_job_template
+   variables:
+-    NAME: emsdk-wasm32-cross
++    NAME: emsdk-wasm32-32bit-cross
++    BUILD_ARGS: --build-arg TARGET_CPU=wasm32
++    DOCKERFILE: emsdk-wasm-cross
 +
- FROM build-base AS zlib-dev
- ARG ZLIB_VERSION
- RUN mkdir -p /zlib
-@@ -56,17 +69,19 @@ RUN emconfigure ./configure --prefix=$TARGET --static
- RUN emmake make install -j$(nproc)
- 
- FROM build-base AS libffi-dev
-+ARG TARGET_CPU
-+ARG WASM64_MEMORY64
- ARG FFI_VERSION
- RUN mkdir -p /libffi
- RUN git clone https://github.com/libffi/libffi /libffi
- WORKDIR /libffi
- RUN git checkout $FFI_VERSION
- RUN autoreconf -fiv
--RUN emconfigure ./configure --host=wasm32-unknown-linux \
-+RUN emconfigure ./configure --host=${TARGET_CPU}-unknown-linux \
-     --prefix=$TARGET --enable-static \
-     --disable-shared --disable-dependency-tracking \
-     --disable-builddir --disable-multi-os-directory \
--    --disable-raw-api --disable-docs
-+    --disable-raw-api --disable-docs WASM64_MEMORY64=${WASM64_MEMORY64}
- RUN emmake make install SUBDIRS='include' -j$(nproc)
- 
- FROM build-base AS pixman-dev
++wasm64-64bit-emsdk-cross-container:
++  extends: .container_job_template
++  variables:
++    NAME: emsdk-wasm64-64bit-cross
++    BUILD_ARGS: --build-arg TARGET_CPU=wasm64 --build-arg WASM64_MEMORY64=1
++    DOCKERFILE: emsdk-wasm-cross
++
++wasm64-32bit-emsdk-cross-container:
++  extends: .container_job_template
++  variables:
++    NAME: emsdk-wasm64-32bit-cross
++    BUILD_ARGS: --build-arg TARGET_CPU=wasm64 --build-arg WASM64_MEMORY64=2
++    DOCKERFILE: emsdk-wasm-cross
+diff --git a/.gitlab-ci.d/container-template.yml b/.gitlab-ci.d/container-template.yml
+index 4eec72f383..01ca840413 100644
+--- a/.gitlab-ci.d/container-template.yml
++++ b/.gitlab-ci.d/container-template.yml
+@@ -10,12 +10,14 @@
+     - export COMMON_TAG="$CI_REGISTRY/qemu-project/qemu/qemu/$NAME:latest"
+     - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+     - until docker info; do sleep 1; done
++    - export DOCKERFILE_NAME=${DOCKERFILE:-$NAME}
+   script:
+     - echo "TAG:$TAG"
+     - echo "COMMON_TAG:$COMMON_TAG"
+     - docker build --tag "$TAG" --cache-from "$TAG" --cache-from "$COMMON_TAG"
+       --build-arg BUILDKIT_INLINE_CACHE=1
+-      -f "tests/docker/dockerfiles/$NAME.docker" "."
++      $BUILD_ARGS
++      -f "tests/docker/dockerfiles/$DOCKERFILE_NAME.docker" "."
+     - docker push "$TAG"
+   after_script:
+     - docker logout
 -- 
 2.43.0
 
