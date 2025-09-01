@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFBBCB3EF94
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 22:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC02B3EFAF
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 22:30:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utB7d-00048c-8w; Mon, 01 Sep 2025 16:27:25 -0400
+	id 1utB7f-00049J-IV; Mon, 01 Sep 2025 16:27:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1utB7Z-00047T-AI
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 16:27:21 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1utB7b-00048U-ER
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 16:27:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1utB7X-0008Ms-3r
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 16:27:21 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1utB7a-0008Ne-0o
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 16:27:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756758438;
+ s=mimecast20190719; t=1756758441;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oitPS37GsICvVat2dGKQ6z69gkosxIhMQsYQbDyUGIU=;
- b=Yb9/MRRRpCdFBjdI13jvOCemcIiH5thd3vcR4E99dx+Be14W//oNZpL0iTPpT1FB/VLGms
- 8/YVOXRniyer6Is74jpW8M1qD+qdIyOEugFNE40eumD3XBynZH2qlHaFctIlXhJwLTY/SS
- vIVWpaqN2bERkS1o3u4vn1wAA2P6YU4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=96fcc12r2NZGoWcAWvZ/2KcZ+/kTHQQsPcjDbDUtkY8=;
+ b=iryAM9CQP8V+bOzfSgjh8PBxKaamdevOLFC9KNE7Mat2sCLr/YS0ZDu/E0yfBgR+/y+U0p
+ wiw0pb+bASEf6bAaL5fDKAKyKSpQT4UKfysQGwuqKgCCxBLCAY8wvi9MwZi6UiWYaVQCnP
+ 5H6BHf65sAoEw6xrOM2TI2D4oEnwso8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-201-U5HoIZ_PMoetO1L4T4lwJA-1; Mon,
- 01 Sep 2025 16:27:14 -0400
-X-MC-Unique: U5HoIZ_PMoetO1L4T4lwJA-1
-X-Mimecast-MFC-AGG-ID: U5HoIZ_PMoetO1L4T4lwJA_1756758434
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-VVMMJKNuMKynfl4vyFlHlQ-1; Mon,
+ 01 Sep 2025 16:27:18 -0400
+X-MC-Unique: VVMMJKNuMKynfl4vyFlHlQ-1
+X-Mimecast-MFC-AGG-ID: VVMMJKNuMKynfl4vyFlHlQ_1756758437
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F2C4B195C277; Mon,  1 Sep 2025 20:27:13 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 71FC31800446; Mon,  1 Sep 2025 20:27:17 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.85])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 193A819560AB; Mon,  1 Sep 2025 20:27:11 +0000 (UTC)
+ id 8C8B519560B4; Mon,  1 Sep 2025 20:27:14 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
  =?UTF-8?q?Daniel=20Berrang=C3=A9?= <berrange@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Jag Raman <jag.raman@oracle.com>
-Subject: [PATCH 03/19] python: backport 'kick event queue on legacy
- event_pull()'
-Date: Mon,  1 Sep 2025 16:26:45 -0400
-Message-ID: <20250901202702.2971212-4-jsnow@redhat.com>
+ Kevin Wolf <kwolf@redhat.com>
+Subject: [PATCH 04/19] python: backport 'protocol: adjust logging name when
+ changing client name'
+Date: Mon,  1 Sep 2025 16:26:46 -0400
+Message-ID: <20250901202702.2971212-5-jsnow@redhat.com>
 In-Reply-To: <20250901202702.2971212-1-jsnow@redhat.com>
 References: <20250901202702.2971212-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -83,31 +83,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This corrects an oversight in qmp-shell operation where new events will
-not accumulate in the event queue when pressing "enter" with an empty
-command buffer, so no new events show up.
+The client name is mutable, so the logging name should also change to
+reflect it when it changes.
 
-Reported-by: Jag Raman <jag.raman@oracle.com>
 Signed-off-by: John Snow <jsnow@redhat.com>
-cherry picked from commit 0443582d16cf9efd52b2c41a7b5be7af42c856cd
+cherry picked from commit e10b73c633ce138ba30bc8beccd2ab31989eaf3d
 ---
- python/qemu/qmp/legacy.py | 3 +++
- 1 file changed, 3 insertions(+)
+ python/qemu/qmp/protocol.py | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/python/qemu/qmp/legacy.py b/python/qemu/qmp/legacy.py
-index 22a2b5616ef..c8d0a29b56f 100644
---- a/python/qemu/qmp/legacy.py
-+++ b/python/qemu/qmp/legacy.py
-@@ -231,6 +231,9 @@ def pull_event(self,
+diff --git a/python/qemu/qmp/protocol.py b/python/qemu/qmp/protocol.py
+index 86e588881b7..ec4762c567b 100644
+--- a/python/qemu/qmp/protocol.py
++++ b/python/qemu/qmp/protocol.py
+@@ -217,10 +217,8 @@ class AsyncProtocol(Generic[T]):
+     # -------------------------
  
-         :return: The first available QMP event, or None.
-         """
-+        # Kick the event loop to allow events to accumulate
-+        self._sync(asyncio.sleep(0))
+     def __init__(self, name: Optional[str] = None) -> None:
+-        #: The nickname for this connection, if any.
+-        self.name: Optional[str] = name
+-        if self.name is not None:
+-            self.logger = self.logger.getChild(self.name)
++        self._name: Optional[str]
++        self.name = name
+ 
+         # stream I/O
+         self._reader: Optional[StreamReader] = None
+@@ -257,6 +255,24 @@ def __repr__(self) -> str:
+         tokens.append(f"runstate={self.runstate.name}")
+         return f"<{cls_name} {' '.join(tokens)}>"
+ 
++    @property
++    def name(self) -> Optional[str]:
++        """
++        The nickname for this connection, if any.
 +
-         if not wait:
-             # wait is False/0: "do not wait, do not except."
-             if self._qmp.events.empty():
++        This name is used for differentiating instances in debug output.
++        """
++        return self._name
++
++    @name.setter
++    def name(self, name: Optional[str]) -> None:
++        logger = logging.getLogger(__name__)
++        if name:
++            self.logger = logger.getChild(name)
++        else:
++            self.logger = logger
++        self._name = name
++
+     @property  # @upper_half
+     def runstate(self) -> Runstate:
+         """The current `Runstate` of the connection."""
 -- 
 2.50.1
 
