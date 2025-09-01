@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62361B3E424
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 15:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2A1B3E4F4
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 15:29:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ut2zy-0008NJ-73; Mon, 01 Sep 2025 07:46:58 -0400
+	id 1ut301-000058-JU; Mon, 01 Sep 2025 07:47:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1ut2zX-0007aK-62; Mon, 01 Sep 2025 07:46:32 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1ut2zY-0007aM-MH; Mon, 01 Sep 2025 07:46:36 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1ut2zS-0001Nl-Bs; Mon, 01 Sep 2025 07:46:30 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-b4d1e7d5036so1804776a12.1; 
- Mon, 01 Sep 2025 04:46:15 -0700 (PDT)
+ id 1ut2zP-0001OS-9d; Mon, 01 Sep 2025 07:46:29 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2445805aa2eso43006445ad.1; 
+ Mon, 01 Sep 2025 04:46:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1756727174; x=1757331974; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1756727179; x=1757331979; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vMZeL4QMsFfiljq1rOi24ctLNCC6JX7BUMH0r5U4zqw=;
- b=fDjexBbhvVlSzHZWYjzoej3TtLVjBtGca4CllNOLjsYC4/BkUYKOW/kcOh0hXWHLvb
- TeH2jEpzNNpctqywP79B940A3LXB7z7XgetkwZskqBaW5mWhXgiNVKwM1WjU2sm0NC1B
- ktLleYqs9Acs+cFQWsS/4ndg0yw08KOAaK05ENSCydOecNk6dWg05m4p++g++yD7wvxu
- 96kmXoAXiNHDMlhL5uSKzg0nCeyZjzPUZlc7Z5Z3s1i7AKShNHM63W5DRJ5g2+oXopHD
- DT3suFW/tv+tZ4+LNRFvnmTZHU4eQ7Y7WX2oLqOv/rI2hCmK15FEUbC+jyQUN8HOf2cF
- MsSA==
+ bh=cZn9qlLs9yOI27f7R6L8FcBRbqHv/U8xQ6luXz9uzYQ=;
+ b=BJcrpIVaRARs3trpZlTya3iMpeyJJ4Us7XNQK38j6pWFX00NZsXOaPVKj1UO1g47Pl
+ NqAX48BqCL9unTuVz9dT+5VUNn/EYG1tLwiU/6q6mWl47i3ld1MbvljV0SHbSKx31+yK
+ YWBYiNvR6llq+9UpetL29Syti4LT1k5II2H8xXluxvLoLG6RevX11t9LAQD1Qdsp1nyH
+ a0yk7s3g7zTos2xjJ4PoP5u4rhutGkzXzjLN/n4zJmc6Q79gyjahyVmyi3/eIrGMoDYE
+ lp/4ZQQOG5NugS/jOtevrD+5eEO5papFXHibxNUI6dPDYtfWDKr8Ty94OGzZMD5bxejN
+ GbTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756727174; x=1757331974;
+ d=1e100.net; s=20230601; t=1756727179; x=1757331979;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vMZeL4QMsFfiljq1rOi24ctLNCC6JX7BUMH0r5U4zqw=;
- b=YcN/ZZLYJIopljQ7C2Uq2QIfocQH9PRD1TUBeAsKKTYSoeBD72V3b6AQPWE++N+EEW
- zbXySDGMJGS+GomeZiAcEfArpedAAnvSVtw+f+SbQ6nPgI3DMFt5cHh/emFPEQL28r4/
- A4bvAj5LFhnch1ifkHvw0I6J66uWSBQyeDqTHWH7RUbgbc66ltPSbbtDsjKxNF95QPPL
- tKPo0gyz7p1Y8Vi2eLZEacw1BbXEf33gD3St9dA8DIg9laNgSbknIsXEMqN1tmLQUk7v
- gyBBhVpUPUufBcEEMbirwcGKeF7m3RgnqA0Q4KVwY6kyBQFtGiiL+WtoLauu8tJSfb3y
- RZOg==
+ bh=cZn9qlLs9yOI27f7R6L8FcBRbqHv/U8xQ6luXz9uzYQ=;
+ b=l5x4B/JIi3pstCgdxfYXbEBm9bWPhFV98aB2P3RYhjGzXgL3rDVruU+QLJMak0Vck2
+ ya6EHD/wGPnx30RFG++QIW7WluU9cRtvOp5K97GstFoLTBzaFrxYcvAuzNuaoM8YatyA
+ XOPl/LF/vOTqCyf4h+EMYcF+JCwC6u3+92kv6YEWC1nl36VcO4s+C+SuXAkDHRdRFeHh
+ 9lhOLFDMKkrGzAVBAbmQtEXJvag/4RZxwNtkAtQTtMBNCa9TB+328rSqmP5HJlSSXsZ3
+ aeww8LFu3diSIsKGcGFdurMdIyZtSsTYPTgAlEUrQo7mAb5q6u9S/b7marNcjcbayspw
+ kf5w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVayHVhCQYu3083mg5Akqg4aCjzrjWsHRDdvG/48d7fAbjqoy2O4eLTWDIg1V2UI27yWRogaqjSUVIr5A==@nongnu.org,
- AJvYcCXDjF6ARtyizLyiAHvWcvzmuGuHq3za4BpGr3wup4cDMBrRD2dtYMlG1sK5o7uG4KtnaZODzB9ADw==@nongnu.org
-X-Gm-Message-State: AOJu0YzzHckFZEi2/WgxYQxKHGyq9eKYGueeIKCWASvLb8YBvL1Eladu
- 7IhkyHANzbLOQoitvFwq07ic/PD93UuM9Et5OTDX7Nnsbo42nmfMmVnc4m/CjA==
-X-Gm-Gg: ASbGncs74+tgscLpTlLVJHycy4uFKr+Q5NGx2bBbsWmj9D9rDZd5mhQvfiKwbVa4fyD
- I8oIlWQnvCQTo6fPR3wZF8NLiYfv1Q1yiOdWTseWhG3i8Hg00r8fQu4SWijgFQdKP643oN0W0Vp
- 0OrRwl4hqwhEnUncVOfoA6HsIAa4Wj6IFhF+fU5vKR8iLBTm3OoooM0CmS1g9J8P52OYbPrumHD
- VnMh+ApHLpF43brOLyKioM3agsKyy4UHBdVqY3nKg2QFu95IKgaT0rjOk7GgqyqgVwobLDB6ie4
- 36oaNdE5I2LqdzhK4FJ1Si/G/zzrmNW8Qow7xVn6X2dBmocGyo0JGs6TWSInQqdawxyLMC057KX
- HRlM1r5OczhiF9xNYHLVNRLpN1nWXYogY
-X-Google-Smtp-Source: AGHT+IGy3HjJdd+8bZZcRad3yC6ILWjrjkHxEZpRVXjv6dyT3DFv3u2tLi4CIJi/qTWmLCRfCfnTQw==
-X-Received: by 2002:a17:902:e80e:b0:248:f2cb:e52 with SMTP id
- d9443c01a7336-24944a6eaf6mr99835365ad.22.1756727173739; 
- Mon, 01 Sep 2025 04:46:13 -0700 (PDT)
+ AJvYcCUcUSs1l9XOajnf7UlxvQofhA5yYqfQJrBffKspWoLl0RTKPD+pD+SnEJtc/6zbUU1o2aVIbNATa18unA==@nongnu.org,
+ AJvYcCWVejPjpaIFM2Z7A6VOniwQoTDmVjgPXIepR6cnZbH4ZDxOm8g18GTPBGWJ0+2ArZ6jbrRsOzC9eg==@nongnu.org
+X-Gm-Message-State: AOJu0YzicfkWRZNzW3GF5AqWuTxU1mPRvFk/gjRblsEpTo1byl7SJmyk
+ 8uBQZaZ868CcViF3XuJMlpCqJ07pNHLORtgnP9uWsncBDXjKAHTMnOCXCfogYw==
+X-Gm-Gg: ASbGncvdYI15TjrokwVQoCxekZ5o978c2SPgwksffnsmGKmbgZfkyTqL6XHvBhQwEze
+ /JEFHcEeo4LJEzXJ3jmlmSO8cqkfmZl1nWHoDWD8gzEMEaVZW80aGV/DFVSxRQTBVKqO1UcGZbG
+ rk6agKKuAfoTIdItUyHgzNhimuf+aRa3XXxNaMOdWMmDKx/6zt4CTZjqY8f4U+aJ83bjaSbI0ns
+ LhL+AqZUTK6Fw/gWw3CpO9e73522/bsBYWaPVWRMrCMXBcWs/oJCYAZUTrwrWceppJXEu9tyKG/
+ iSQdTiRCSaLYYRn8mT1oiEuqK0W6UQMk7Onrz3Zz1mBnjoLJDS/KALme5v5KLtI5tC12nRcDhfz
+ vpoUgcZAoOJ8ICvQRHyqd0g==
+X-Google-Smtp-Source: AGHT+IGNOGj69YnPJyljEQ3eSAE85qVdseIh+Xg+uwtDUGTZ5WehUZhCZ22VhMbxHvn1wZFdwRgv+w==
+X-Received: by 2002:a17:903:3847:b0:248:e3fb:4dc8 with SMTP id
+ d9443c01a7336-24944aa2905mr111738315ad.39.1756727179321; 
+ Mon, 01 Sep 2025 04:46:19 -0700 (PDT)
 Received: from ktock.. ([240d:1a:3b6:8b00:750a:cb0b:f0f9:68f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-249065a8036sm103038775ad.129.2025.09.01.04.46.08
+ d9443c01a7336-249065a8036sm103038775ad.129.2025.09.01.04.46.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Sep 2025 04:46:13 -0700 (PDT)
+ Mon, 01 Sep 2025 04:46:18 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -78,16 +78,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, ktokunaga.mail@gmail.com
-Subject: [PATCH v3 09/35] tcg/wasm: Add and/or/xor instructions
-Date: Mon,  1 Sep 2025 20:44:11 +0900
-Message-ID: <f8cb9a61b63a69cce422b2964659b0e0472347bc.1756724464.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH v3 10/35] tcg/wasm: Add add/sub/mul instructions
+Date: Mon,  1 Sep 2025 20:44:12 +0900
+Message-ID: <172f143f9806e41742137d975b2b80eb20f98a53.1756724464.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1756724464.git.ktokunaga.mail@gmail.com>
 References: <cover.1756724464.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,307 +110,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds support for generateing the and, or and xor operations. The
-generated Wasm codes will be instantiated and executed in the browser.
-
-Browsers tipycally limit the number of active Wasm instances and the
-instantiating Wasm modules introduces overhead. As a result, instantiating
-TBs that are rarely called is undesirable. To address this, the Wasm backend
-relies on the a forked subset of the TCI interpreter (tcg_qemu_tb_exec_tci
-function in tcg/wasm.c) for executing such TBs.
-
-The Wasm backend emits both Wasm and TCI instructions. TCI instructions are
-emitted to s->code_ptr, while the corresponding Wasm instructions are
-generated into a separate buffer allocated via tcg_malloc(). This buffer
-intends to be merged into the TB before tcg_gen_code returns.
-
-In the Wasm code, each TCG variable is mapped to a 64bit Wasm
-variable. Execution works by first pushing the operands into the Wasm's
-stack using get instructions. The result is left on the stack and this can
-be assigned to a variable by popping it using a set instruction. The Wasm
-binary format is documented at [1].
-
-Additionally, since the Wasm instuction's index operand must be
-LEB128-encoded, this commit introduces an encoder function implemented
-following [2].
-
-[1] https://webassembly.github.io/spec/core/binary/index.html
-[2] https://en.wikipedia.org/wiki/LEB128
+The add, sub and mul operations are implemented using the corresponding
+instructions in Wasm. TCI instructions are also generated in the same way as
+the original TCI backend.
 
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 ---
- MAINTAINERS               |   1 +
- tcg/wasm.c                |  66 ++++++++++++++++
- tcg/wasm/tcg-target.c.inc | 160 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 227 insertions(+)
- create mode 100644 tcg/wasm.c
+ tcg/wasm.c                | 12 ++++++++++++
+ tcg/wasm/tcg-target.c.inc | 39 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+)
 
-V3:
-- Although checkpatch.pl reports the following error in tcg/wasm.c,
-  this file is based on the TCI code so it is preserved as-is.
-  > New file 'tcg/wasm.c' must not have license boilerplate header text,
-  > only the SPDX-License-Identifier, unless this file was copied from
-  > existing code already having such text.
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 89e4b51e22..217bf2066c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4003,6 +4003,7 @@ WebAssembly TCG target
- M: Kohei Tokunaga <ktokunaga.mail@gmail.com>
- S: Maintained
- F: tcg/wasm/
-+F: tcg/wasm.c
- 
- Block drivers
- -------------
 diff --git a/tcg/wasm.c b/tcg/wasm.c
-new file mode 100644
-index 0000000000..9f3b1344d6
---- /dev/null
+index 9f3b1344d6..ba8a89d920 100644
+--- a/tcg/wasm.c
 +++ b/tcg/wasm.c
-@@ -0,0 +1,66 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * WebAssembly backend with forked TCI, based on tci.c
-+ *
-+ * Copyright (c) 2009, 2011, 2016 Stefan Weil
-+ *
-+ * This program is free software: you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation, either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "tcg/tcg.h"
-+
-+static void tci_args_rrr(uint32_t insn, TCGReg *r0, TCGReg *r1, TCGReg *r2)
-+{
-+    *r0 = extract32(insn, 8, 4);
-+    *r1 = extract32(insn, 12, 4);
-+    *r2 = extract32(insn, 16, 4);
-+}
-+
-+static uintptr_t tcg_qemu_tb_exec_tci(CPUArchState *env, const void *v_tb_ptr)
-+{
-+    const uint32_t *tb_ptr = v_tb_ptr;
-+    tcg_target_ulong regs[TCG_TARGET_NB_REGS];
-+    uint64_t stack[(TCG_STATIC_CALL_ARGS_SIZE + TCG_STATIC_FRAME_SIZE)
-+                   / sizeof(uint64_t)];
-+
-+    regs[TCG_AREG0] = (tcg_target_ulong)env;
-+    regs[TCG_REG_CALL_STACK] = (uintptr_t)stack;
-+
-+    for (;;) {
-+        uint32_t insn;
-+        TCGOpcode opc;
-+        TCGReg r0, r1, r2;
-+
-+        insn = *tb_ptr++;
-+        opc = extract32(insn, 0, 8);
-+
-+        switch (opc) {
-+        case INDEX_op_and:
+@@ -59,6 +59,18 @@ static uintptr_t tcg_qemu_tb_exec_tci(CPUArchState *env, const void *v_tb_ptr)
+             tci_args_rrr(insn, &r0, &r1, &r2);
+             regs[r0] = regs[r1] ^ regs[r2];
+             break;
++        case INDEX_op_add:
 +            tci_args_rrr(insn, &r0, &r1, &r2);
-+            regs[r0] = regs[r1] & regs[r2];
++            regs[r0] = regs[r1] + regs[r2];
 +            break;
-+        case INDEX_op_or:
++        case INDEX_op_sub:
 +            tci_args_rrr(insn, &r0, &r1, &r2);
-+            regs[r0] = regs[r1] | regs[r2];
++            regs[r0] = regs[r1] - regs[r2];
 +            break;
-+        case INDEX_op_xor:
++        case INDEX_op_mul:
 +            tci_args_rrr(insn, &r0, &r1, &r2);
-+            regs[r0] = regs[r1] ^ regs[r2];
++            regs[r0] = regs[r1] * regs[r2];
 +            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+    }
-+}
+         default:
+             g_assert_not_reached();
+         }
 diff --git a/tcg/wasm/tcg-target.c.inc b/tcg/wasm/tcg-target.c.inc
-index 4bcb594360..a1757b4db7 100644
+index a1757b4db7..d5cf324e7b 100644
 --- a/tcg/wasm/tcg-target.c.inc
 +++ b/tcg/wasm/tcg-target.c.inc
-@@ -25,6 +25,10 @@
-  * THE SOFTWARE.
-  */
+@@ -140,6 +140,9 @@ typedef enum {
+     OPC_GLOBAL_GET = 0x23,
+     OPC_GLOBAL_SET = 0x24,
  
-+#include "qemu/queue.h"
-+
-+typedef uint32_t tcg_insn_unit_tci;
-+
- static const int tcg_target_reg_alloc_order[] = {
-     TCG_REG_R2,
-     TCG_REG_R3,
-@@ -109,3 +113,159 @@ static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
-     }
-     return false;
- }
-+
-+/* converts a TCG register to a wasm variable index */
-+static const uint8_t tcg_target_reg_index[TCG_TARGET_NB_REGS] = {
-+    0,  /* TCG_REG_R0 */
-+    1,  /* TCG_REG_R1 */
-+    2,  /* TCG_REG_R2 */
-+    3,  /* TCG_REG_R3 */
-+    4,  /* TCG_REG_R4 */
-+    5,  /* TCG_REG_R5 */
-+    6,  /* TCG_REG_R6 */
-+    7,  /* TCG_REG_R7 */
-+    8,  /* TCG_REG_R8 */
-+    9,  /* TCG_REG_R9 */
-+    10, /* TCG_REG_R10 */
-+    11, /* TCG_REG_R11 */
-+    12, /* TCG_REG_R12 */
-+    13, /* TCG_REG_R13 */
-+    14, /* TCG_REG_R14 */
-+    15, /* TCG_REG_R15 */
-+};
-+
-+#define REG_IDX(r) tcg_target_reg_index[r]
-+
-+typedef enum {
-+    OPC_GLOBAL_GET = 0x23,
-+    OPC_GLOBAL_SET = 0x24,
-+
-+    OPC_I64_AND = 0x83,
-+    OPC_I64_OR = 0x84,
-+    OPC_I64_XOR = 0x85,
-+} WasmInsn;
-+
-+#define BUF_SIZE 1024
-+typedef struct LinkedBufEntry {
-+    uint8_t data[BUF_SIZE];
-+    uint32_t size;
-+    QSIMPLEQ_ENTRY(LinkedBufEntry) entry;
-+} LinkedBufEntry;
-+
-+typedef QSIMPLEQ_HEAD(, LinkedBufEntry) LinkedBuf;
-+
-+static void linked_buf_out8(LinkedBuf *linked_buf, uint8_t v)
-+{
-+    LinkedBufEntry *buf = QSIMPLEQ_LAST(linked_buf, LinkedBufEntry, entry);
-+    if (!buf || (buf->size == BUF_SIZE)) {
-+        LinkedBufEntry *e = tcg_malloc(sizeof(LinkedBufEntry));
-+        e->size = 0;
-+        QSIMPLEQ_INSERT_TAIL(linked_buf, e, entry);
-+        buf = e;
-+    }
-+    buf->data[buf->size++] = v;
-+}
-+
-+static void linked_buf_out_leb128(LinkedBuf *p, uint64_t v)
-+{
-+    uint8_t b;
-+    do {
-+        b = v & 0x7f;
-+        v >>= 7;
-+        if (v != 0) {
-+            b |= 0x80;
-+        }
-+        linked_buf_out8(p, b);
-+    } while (v != 0);
-+}
-+
-+/*
-+ * wasm code is generataed in the dynamically allocated buffer which
-+ * are managed as a linked list.
-+ */
-+static __thread LinkedBuf sub_buf;
-+
-+static void init_sub_buf(void)
-+{
-+    QSIMPLEQ_INIT(&sub_buf);
-+}
-+static void tcg_wasm_out8(TCGContext *s, uint8_t v)
-+{
-+    linked_buf_out8(&sub_buf, v);
-+}
-+static void tcg_wasm_out_leb128(TCGContext *s, uint64_t v)
-+{
-+    linked_buf_out_leb128(&sub_buf, v);
-+}
-+
-+static void tcg_wasm_out_op(TCGContext *s, WasmInsn opc)
-+{
-+    tcg_wasm_out8(s, opc);
-+}
-+static void tcg_wasm_out_op_idx(TCGContext *s, WasmInsn opc, uint32_t idx)
-+{
-+    tcg_wasm_out8(s, opc);
-+    tcg_wasm_out_leb128(s, idx);
-+}
-+
-+static void tcg_wasm_out_o1_i2(
-+    TCGContext *s, WasmInsn opc, TCGReg ret, TCGReg arg1, TCGReg arg2)
-+{
-+    tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(arg1));
-+    tcg_wasm_out_op_idx(s, OPC_GLOBAL_GET, REG_IDX(arg2));
-+    tcg_wasm_out_op(s, opc);
-+    tcg_wasm_out_op_idx(s, OPC_GLOBAL_SET, REG_IDX(ret));
-+}
-+
-+static void tcg_out_op_rrr(TCGContext *s, TCGOpcode op,
-+                           TCGReg r0, TCGReg r1, TCGReg r2)
-+{
-+    tcg_insn_unit_tci insn = 0;
-+
-+    insn = deposit32(insn, 0, 8, op);
-+    insn = deposit32(insn, 8, 4, r0);
-+    insn = deposit32(insn, 12, 4, r1);
-+    insn = deposit32(insn, 16, 4, r2);
-+    tcg_out32(s, insn);
-+}
-+
-+static void tgen_and(TCGContext *s, TCGType type,
++    OPC_I64_ADD = 0x7c,
++    OPC_I64_SUB = 0x7d,
++    OPC_I64_MUL = 0x7e,
+     OPC_I64_AND = 0x83,
+     OPC_I64_OR = 0x84,
+     OPC_I64_XOR = 0x85,
+@@ -265,6 +268,42 @@ static const TCGOutOpBinary outop_xor = {
+     .out_rrr = tgen_xor,
+ };
+ 
++static void tgen_add(TCGContext *s, TCGType type,
 +                     TCGReg a0, TCGReg a1, TCGReg a2)
 +{
-+    tcg_out_op_rrr(s, INDEX_op_and, a0, a1, a2);
-+    tcg_wasm_out_o1_i2(s, OPC_I64_AND, a0, a1, a2);
++    tcg_out_op_rrr(s, INDEX_op_add, a0, a1, a2);
++    tcg_wasm_out_o1_i2(s, OPC_I64_ADD, a0, a1, a2);
 +}
 +
-+static const TCGOutOpBinary outop_and = {
++static const TCGOutOpBinary outop_add = {
 +    .base.static_constraint = C_O1_I2(r, r, r),
-+    .out_rrr = tgen_and,
++    .out_rrr = tgen_add,
 +};
 +
-+static void tgen_or(TCGContext *s, TCGType type,
++static void tgen_sub(TCGContext *s, TCGType type,
 +                     TCGReg a0, TCGReg a1, TCGReg a2)
 +{
-+    tcg_out_op_rrr(s, INDEX_op_or, a0, a1, a2);
-+    tcg_wasm_out_o1_i2(s, OPC_I64_OR, a0, a1, a2);
++    tcg_out_op_rrr(s, INDEX_op_sub, a0, a1, a2);
++    tcg_wasm_out_o1_i2(s, OPC_I64_SUB, a0, a1, a2);
 +}
 +
-+static const TCGOutOpBinary outop_or = {
++static const TCGOutOpSubtract outop_sub = {
 +    .base.static_constraint = C_O1_I2(r, r, r),
-+    .out_rrr = tgen_or,
++    .out_rrr = tgen_sub,
 +};
 +
-+static void tgen_xor(TCGContext *s, TCGType type,
++static void tgen_mul(TCGContext *s, TCGType type,
 +                     TCGReg a0, TCGReg a1, TCGReg a2)
 +{
-+    tcg_out_op_rrr(s, INDEX_op_xor, a0, a1, a2);
-+    tcg_wasm_out_o1_i2(s, OPC_I64_XOR, a0, a1, a2);
++    tcg_out_op_rrr(s, INDEX_op_mul, a0, a1, a2);
++    tcg_wasm_out_o1_i2(s, OPC_I64_MUL, a0, a1, a2);
 +}
 +
-+static const TCGOutOpBinary outop_xor = {
++static const TCGOutOpBinary outop_mul = {
 +    .base.static_constraint = C_O1_I2(r, r, r),
-+    .out_rrr = tgen_xor,
++    .out_rrr = tgen_mul,
 +};
 +
-+static void tcg_out_tb_start(TCGContext *s)
-+{
-+    init_sub_buf();
-+}
+ static void tcg_out_tb_start(TCGContext *s)
+ {
+     init_sub_buf();
 -- 
 2.43.0
 
