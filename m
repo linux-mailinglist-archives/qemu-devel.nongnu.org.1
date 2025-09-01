@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12825B3D99E
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C52F1B3D9AB
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:15:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usxm7-0000vh-Sy; Mon, 01 Sep 2025 02:12:19 -0400
+	id 1usxm0-0000sx-89; Mon, 01 Sep 2025 02:12:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1usxlb-0000me-QI; Mon, 01 Sep 2025 02:11:49 -0400
+ id 1usxlb-0000ma-OQ; Mon, 01 Sep 2025 02:11:49 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1usxlU-0002Yu-0q; Mon, 01 Sep 2025 02:11:47 -0400
+ id 1usxlU-0002Yo-Hd; Mon, 01 Sep 2025 02:11:45 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5816ACAX076640
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5816ACAY076640
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Mon, 1 Sep 2025 15:10:25 +0900 (JST)
+ Mon, 1 Sep 2025 15:10:26 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=Jqr8P+bWn9/t6f+kXj3iAqWRCxcJIhzvpyYZplXrOeo=; 
+DKIM-Signature: a=rsa-sha256; bh=C011D3nEi4gnvkKvq30wWt2rhwDFSibnUsxSm7LxoTk=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1756707025; v=1;
- b=rss782Ak4QRV616rnZzznzDZ+KU1TyzWzJtyB347whZIJHUDP1UdBB+ptHsz7FAJ
- 0CLMJ1Z2n4YNqKuH+664JZEMPV+i05L2PMBMT394cpHTi7fyeXqjC1ZVOu97jSea
- QMocdpjhM7j3ZHHdprv4tnZ9z8Gf7vthwZRUd179+CLQ0ivgEzZf1nxsdV2tQWqK
- aAmCTXzjd0SD5qWRlra8LPomKeqxQLd51WU9k9gmgrmLNDWECY4oI24XHwpjeDFG
- D/X7zDI3UEKk/19Or2pP1cWT2IvcArUG0TlyZBuJZY6eeA0MeifbljvPpwRxlmOK
- xVOWiNP9rgL922zfYmviqQ==
+ s=rs20250326; t=1756707026; v=1;
+ b=CAEusT5y0bOiKbVw3q4ZjWEq90nxtfCC7lzVg4XydDe66LXoS3+44DWc6snn+DRG
+ jmgcMA/qUq3HcUYZ29OxczTsE221CLxhXELhKUJEfLrQuoZWuOiGRYyjHfJAs2g6
+ dJY1ZgV8EDpk3APAPKlk4bfHIKRM5z716J7boYkPo6mT2HffyBD4ZfPJQQYwTVgG
+ aZ2EORdks/x7LT440u09yPT7g+5isPXyY1IHJbb2PB2Bu6zCacSpQm/sL6pM4A90
+ /9A3pEL348HXhCGWgAxStzaSfJkeS/4k7YwujDsaRxnyrNxScsa8jsAvrU/LpXvD
+ TMRC4M7VItFyaRNrrBiYZg==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 01 Sep 2025 15:10:01 +0900
-Subject: [PATCH 03/16] qdev: Automatically delete memory subregions
+Date: Mon, 01 Sep 2025 15:10:02 +0900
+Subject: [PATCH 04/16] hw/char/diva-gsp: Do not delete the subregion
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250901-mr-v1-3-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250901-mr-v1-4-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -97,78 +97,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A common pattern is that to delete memory subregions during realization
-error handling and unrealization. pci automatically automatically
-deletes the IO subregions, but the pattern is manually implemented
-in other places, which is tedious and error-prone.
-
-Implement the logic to delete subregions in qdev to cover all devices.
+It is no longer necessary.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- include/hw/qdev-core.h |  2 ++
- hw/core/qdev.c         | 14 ++++++++++++++
- 2 files changed, 16 insertions(+)
+ hw/char/diva-gsp.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 530f3da70218df59da72dc7a975dca8265600e00..c2582a4d59b38152a00d066351492c2e2ae0718f 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -226,6 +226,7 @@ typedef QLIST_HEAD(, BusState) BusStateHead;
- struct DeviceState {
-     /* private: */
-     Object parent_obj;
-+
-     /* public: */
- 
-     /**
-@@ -526,6 +527,7 @@ bool qdev_realize_and_unref(DeviceState *dev, BusState *bus, Error **errp);
-  *  - unrealize any child buses by calling qbus_unrealize()
-  *    (this will recursively unrealize any devices on those buses)
-  *  - call the unrealize method of @dev
-+ *  - remove @dev from memory
-  *
-  * The device can then be freed by causing its reference count to go
-  * to zero.
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index f600226176871361d7ff3875f5d06bd4e614be6e..8fdf6774f87ec8424348e8c9652dc4c99a2faeb5 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -451,6 +451,17 @@ static bool check_only_migratable(Object *obj, Error **errp)
-     return true;
- }
- 
-+static int del_memory_region(Object *child, void *opaque)
-+{
-+    MemoryRegion *mr = (MemoryRegion *)object_dynamic_cast(child, TYPE_MEMORY_REGION);
-+
-+    if (mr && mr->container) {
-+        memory_region_del_subregion(mr->container, mr);
-+    }
-+
-+    return 0;
-+}
-+
- static void device_set_realized(Object *obj, bool value, Error **errp)
- {
-     DeviceState *dev = DEVICE(obj);
-@@ -582,6 +593,7 @@ static void device_set_realized(Object *obj, bool value, Error **errp)
-         if (dc->unrealize) {
-             dc->unrealize(dev);
-         }
-+        object_child_foreach(OBJECT(dev), del_memory_region, NULL);
-         dev->pending_deleted_event = true;
-         DEVICE_LISTENER_CALL(unrealize, Reverse, dev);
+diff --git a/hw/char/diva-gsp.c b/hw/char/diva-gsp.c
+index e1f0713cb794d0442c56935dfe56d784d96949f0..1ae472e879b53555d4751b6a4848354f81c27fee 100644
+--- a/hw/char/diva-gsp.c
++++ b/hw/char/diva-gsp.c
+@@ -63,7 +63,6 @@ static void diva_pci_exit(PCIDevice *dev)
+     for (i = 0; i < pci->ports; i++) {
+         s = pci->state + i;
+         qdev_unrealize(DEVICE(s));
+-        memory_region_del_subregion(&pci->membar, &s->io);
+         g_free(pci->name[i]);
      }
-@@ -606,6 +618,8 @@ post_realize_fail:
-     }
- 
- fail:
-+    object_child_foreach(OBJECT(dev), del_memory_region, NULL);
-+
-     error_propagate(errp, local_err);
-     if (unattached_parent) {
-         /*
+     qemu_free_irqs(pci->irqs, pci->ports);
 
 -- 
 2.51.0
