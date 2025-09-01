@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE2DB3D9AD
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13887B3D9BD
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:19:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usxmA-00017h-83; Mon, 01 Sep 2025 02:12:22 -0400
+	id 1usxsb-0003vR-7a; Mon, 01 Sep 2025 02:19:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1usxlZ-0000lm-Oz; Mon, 01 Sep 2025 02:11:47 -0400
+ id 1usxr9-0002OB-Qv; Mon, 01 Sep 2025 02:17:37 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1usxlU-0002Ys-0n; Mon, 01 Sep 2025 02:11:45 -0400
+ id 1usxr6-0003gt-It; Mon, 01 Sep 2025 02:17:31 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5816ACAd076640
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5816ACAe076640
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
  Mon, 1 Sep 2025 15:10:28 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=Sc8FTNaJ6chbtPcBo7M9g5GEXppq2W5QBLE99E5rkoE=; 
+DKIM-Signature: a=rsa-sha256; bh=A2GlR2TJmK/k+sr8q7+ruESRjTfRwEx+idAZUzdfRKY=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
  s=rs20250326; t=1756707028; v=1;
- b=Pbi0lDfE7A6QEs5U3QZixHoK2FBzYhrtiB8IWa78gxsErNovnbhCPfaFhDAL1NF4
- gHEWOdaaQCXoJn0KpoGVSk49wZx+GbdzC1Ac7xHySR6YFOYP4ciRzNc0YQxpvovh
- UNWBDXnPWujcvxmjL0jQRi0LOZj9JxTph42k7OnLekHohLWj/VUyzNQeX0bqc2II
- hJOSDqgGfAqcACw6p0YTMN2r6VBriJ87cZNqbdZFlDj/CDfO08kSc8a3pwX2EEEi
- DCupjMHmxrP84dK0K0vmEt3oQ/RKQfx3CYZJ7Kvqa3ocWBJHrmRY4SZA2wzzz+Cu
- VDiu1jmncN0/uWZCACVXlg==
+ b=ajmKJyuOHXz/1WIHwFjM5C+8kywLbx3NNxg9J+77ihbjwNxHDxZXsY+HE/4MCp3h
+ KbNNUkSs11QMXKnIxyr9NOfrVzwcVHEFlKaaXZEBHQFmvazLFWWR/pI4QlLUck++
+ JqqHbg+YmL/avpCmTNwOHM0PagdWBV6O9dbNwo2D8zBgvIC9BdRGPI7MnNdlS8we
+ KehUU0AhaZknJU/QX4wSZ5QX6F20ywZau/T/YPr78zTWL4a6bNaLwRgrlkGM82eX
+ 8WsRXWj2BntN5SzoEazMQ6m23h/s04IP4NkOmBJuaMADBMXou+G4e26GIgCcw29A
+ ZwprSyqb67Cazki2/2QjjA==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 01 Sep 2025 15:10:07 +0900
-Subject: [PATCH 09/16] hw/ide/via: Do not delete the subregions
+Date: Mon, 01 Sep 2025 15:10:08 +0900
+Subject: [PATCH 10/16] hw/nvme: Do not delete the subregion
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250901-mr-v1-9-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250901-mr-v1-10-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -101,39 +101,22 @@ It is no longer necessary.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/ide/via.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ hw/nvme/ctrl.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/hw/ide/via.c b/hw/ide/via.c
-index dedc2674c002f9de8894e6c49cdb3989cb0deccc..cbaf4ad1548b94afa14809930729eba169f1b061 100644
---- a/hw/ide/via.c
-+++ b/hw/ide/via.c
-@@ -234,17 +234,6 @@ static void via_ide_realize(PCIDevice *dev, Error **errp)
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index f5ee6bf260f159249204571a366472f3e0d16dea..eebce1f787f464978f535356533294c5a0c7bea8 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -9058,8 +9058,6 @@ static void nvme_exit(PCIDevice *pci_dev)
+     } else {
+         msix_uninit(pci_dev, &n->bar0, &n->bar0);
      }
+-
+-    memory_region_del_subregion(&n->bar0, &n->iomem);
  }
  
--static void via_ide_exitfn(PCIDevice *dev)
--{
--    PCIIDEState *d = PCI_IDE(dev);
--    unsigned i;
--
--    for (i = 0; i < ARRAY_SIZE(d->bmdma); ++i) {
--        memory_region_del_subregion(&d->bmdma_bar, &d->bmdma[i].extra_io);
--        memory_region_del_subregion(&d->bmdma_bar, &d->bmdma[i].addr_ioport);
--    }
--}
--
- static void via_ide_class_init(ObjectClass *klass, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-@@ -258,7 +247,6 @@ static void via_ide_class_init(ObjectClass *klass, const void *data)
-     k->config_read = via_ide_cfg_read;
-     k->config_write = via_ide_cfg_write;
-     k->realize = via_ide_realize;
--    k->exit = via_ide_exitfn;
-     k->vendor_id = PCI_VENDOR_ID_VIA;
-     k->device_id = PCI_DEVICE_ID_VIA_IDE;
-     k->revision = 0x06;
+ static const Property nvme_props[] = {
 
 -- 
 2.51.0
