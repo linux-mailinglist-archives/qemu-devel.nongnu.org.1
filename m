@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E88B3E261
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 14:13:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67752B3E26A
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 14:14:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ut3O8-0001GX-Oa; Mon, 01 Sep 2025 08:11:57 -0400
+	id 1ut3QK-0003tF-IG; Mon, 01 Sep 2025 08:14:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ut3Ns-0001EI-26
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:11:41 -0400
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ut3Nj-00069J-7s
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:11:37 -0400
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-71d6051afbfso35282577b3.2
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 05:11:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756728686; x=1757333486; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mbNVQaexgAuFhrLbfwjT8f6bBZHzfViMaeZ+WkQJx+4=;
- b=oUtF+uocsVeCryeuXvRwyOdL9ZOOxfrecTwFFQ68hlFT/8wYtkjd9Ib8c0nNJH+A+l
- jYzZJ8ez37oMS5Gu2ncYveIpxblwbzH6aGe+j5RJcLxONZg/Qaa6shiVzRUPAT7954Yp
- RSi8MuJiftVuRWirGq2gfKzlj3KiGlJFrr+W8XD6fx3RMJRLnPUh072DO4hSQXxTCOBq
- wJRLLJyYPVff2ijodD33vPa/lWPKE5l6MeUTWR4F7RJe+lclj159ZB/stAz5tAQ6ljNH
- AYQ1pmr7N4XxwEuNW1YiTjmINSG4lihwOBGfD7zhGutB3ytokjkowOgA21krL9TSZ3bx
- WaKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756728686; x=1757333486;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mbNVQaexgAuFhrLbfwjT8f6bBZHzfViMaeZ+WkQJx+4=;
- b=pz+fwUL1q4+Y0Zw93KWWiEP7J88ZW69Sx4tEeeU+Bsaum2kAqrjsLixS13Eg9+jMq6
- XH4v0Xdb+8l+WpH6wgOhmUea3Ukiq+ueTO+ZZnBAj3En261eqw2o41mOAhBZekRPsiA2
- HDWlyDO6XtXXhMBq6D7p+e4qcj9/9Hy14zl+1g6FbrdlHX3fq41QFik7iTnhJnzTVdS/
- gOw0DYRyBOyxOLqwUC2EaYsY3v3TlzCtCDsAVL4ESQ5mbGI2d6p2gNFLDuqBy+vAt6kj
- gL7fb9oz7yZ1XD8Wt4la9nu1Esrj8s4FTtCsAC1reBIk38p0+scFFTu/bVCjQ/pzP6Oe
- GoSw==
-X-Gm-Message-State: AOJu0Yyw1nZag59Psn60RDzHy4oLFCnkh1prRNtwHf4fXrfuqTEnWOGx
- 6kZjPA4gD3iLVM58LT7bKtgGYDmoIqMU9hKcJqjExwcHwSq4mEJjhscsOg7MstZiqw+FikI5FE8
- UFWb9k4bfGdt0gyTNzdsJqaj9hke/sJQ/Hb37zWGM6Q==
-X-Gm-Gg: ASbGnctdwW2I2Twc/Kup7ooDpB1XvYD7j6P3Cpd19ZB4Gc1cwyuvD24IX6LrLP0mJ4r
- XnKiECRQd5MmiptjVuW8ZCBBq8wuLGDAtYBQ5GF4x5dpXm9pOEmXpczJp0Asu9IAfDA2fJIYEzx
- UxScvUhE6fw5zlsMI1Tb8RHPTDlqCmBIvKCF4odvAaabboqVLQsHh1cBx8UWItuWhg2PNxF69G8
- lBdTrCzOG7wVXjNDqc=
-X-Google-Smtp-Source: AGHT+IEWVYsxghN1L89xV+vGw7FY2LaeFkI9jKIlYRG6AEkR9borrcdyv7N9aW/v15HbHS3vbchG+sXJweHSlnZwIBo=
-X-Received: by 2002:a05:690c:c1a:b0:71a:234c:aa86 with SMTP id
- 00721157ae682-722763573dfmr74380497b3.8.1756728686090; Mon, 01 Sep 2025
- 05:11:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ut3QG-0003jo-Qz
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:14:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ut3QA-0006PA-JZ
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:14:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756728837;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ghCpgUOpb3z+I4edtRaKYAfZSIkmSg9t0QPDVHE7VjE=;
+ b=UDMOaC8t7Au8+ktmyGxrkGXc0RgorO26A2b04UXrsCreh53SDZcrFZ2gOqQV7RT3Dk/LKg
+ tQV42g4ZMRr2fSn0UFA05rtxgSqiu9W6nzv4qVICFa9wQiPkBN77IZejO+8ivgreyr1blN
+ 2TXcw/dfjOzm4gAJ+xjNlTaYf061eoU=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-674-mewlGYv9NCGl2kb_T-yUgA-1; Mon,
+ 01 Sep 2025 08:13:54 -0400
+X-MC-Unique: mewlGYv9NCGl2kb_T-yUgA-1
+X-Mimecast-MFC-AGG-ID: mewlGYv9NCGl2kb_T-yUgA_1756728833
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9CD04195608A; Mon,  1 Sep 2025 12:13:53 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 59D2B180029A; Mon,  1 Sep 2025 12:13:53 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C722921E6A27; Mon, 01 Sep 2025 14:13:50 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Stefan Hajnoczi
+ <stefanha@redhat.com>
+Subject: Re: [PATCH] docs/about/removed-features: Clarify 'device_add' is
+ removed
+In-Reply-To: <20250901113957.17113-1-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 1 Sep 2025 13:39:56
+ +0200")
+References: <20250901113957.17113-1-philmd@linaro.org>
+Date: Mon, 01 Sep 2025 14:13:50 +0200
+Message-ID: <87v7m21ibl.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20250811095550.93655-1-philmd@linaro.org>
-In-Reply-To: <20250811095550.93655-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 1 Sep 2025 13:11:14 +0100
-X-Gm-Features: Ac12FXxyiPKcSQNLKiQyuMXdfG8wyAlYhA5lO9pyTmCO8Sqiq5Co7gdcFbA1dpY
-Message-ID: <CAFEAcA-XW_VV6=UUj3fcUFvuYR+Yf-Pc5EzxXZfARQrJJJC3oA@mail.gmail.com>
-Subject: Re: [PATCH] hw/scsi/mptsas: Avoid silent integer truncation in
- MPI_FUNC_IOC_INIT
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Don Slutz <don.slutz@gmail.com>,
- Fam Zheng <fam@euphon.net>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1129.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,45 +87,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 11 Aug 2025 at 10:55, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+
+> All other titles in removed-features.rst mention when
+> the feature was removed using "removed in". Use that
+> instead of "since" which we use for when a feature is
+> deprecated.
 >
-> For the MaxDevices 8-bit field of the request / response structures
-> of the MPI_FUNCTION_IOC_INIT command, the 0x00 value means "max 256
-> devices". This is not a problem because when max_devices=3D256, its
-> value (0x100), being casted to a uint8_t, is truncated to 0x00.
-> However Coverity complains for an "Overflowed constant". Fix by
-> re-using the request fields in the response, since they are not
-> modified and use the same types.
->
-> Fix: Coverity 1547736 (Overflowed constant)
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  hw/scsi/mptsas.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/scsi/mptsas.c b/hw/scsi/mptsas.c
-> index 1ebe0b82a79..4ada35b7ec8 100644
-> --- a/hw/scsi/mptsas.c
-> +++ b/hw/scsi/mptsas.c
-> @@ -579,11 +579,11 @@ static void mptsas_process_ioc_init(MPTSASState *s,=
- MPIMsgIOCInit *req)
->      }
->
->      memset(&reply, 0, sizeof(reply));
-> -    reply.WhoInit    =3D s->who_init;
-> +    reply.WhoInit    =3D req->WhoInit;
->      reply.MsgLength  =3D sizeof(reply) / 4;
->      reply.Function   =3D req->Function;
-> -    reply.MaxDevices =3D s->max_devices;
-> -    reply.MaxBuses   =3D s->max_buses;
-> +    reply.MaxDevices =3D req->MaxDevices;
-> +    reply.MaxBuses   =3D req->MaxBuses;
->      reply.MsgContext =3D req->MsgContext;
->
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+My bad.
 
-thanks
--- PMM
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+
 
