@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13887B3D9BD
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B4DB3D9AC
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:15:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usxsb-0003vR-7a; Mon, 01 Sep 2025 02:19:01 -0400
+	id 1usxmT-0001gP-BL; Mon, 01 Sep 2025 02:12:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1usxr9-0002OB-Qv; Mon, 01 Sep 2025 02:17:37 -0400
+ id 1usxmQ-0001dm-V3; Mon, 01 Sep 2025 02:12:38 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1usxr6-0003gt-It; Mon, 01 Sep 2025 02:17:31 -0400
+ id 1usxmO-0002oG-Rv; Mon, 01 Sep 2025 02:12:38 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5816ACAe076640
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5816ACAf076640
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
  Mon, 1 Sep 2025 15:10:28 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=A2GlR2TJmK/k+sr8q7+ruESRjTfRwEx+idAZUzdfRKY=; 
+DKIM-Signature: a=rsa-sha256; bh=a9y4Uz2vRhIfhworOPPwHJGJ+Fl7vXHFoarWH13fJvM=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1756707028; v=1;
- b=ajmKJyuOHXz/1WIHwFjM5C+8kywLbx3NNxg9J+77ihbjwNxHDxZXsY+HE/4MCp3h
- KbNNUkSs11QMXKnIxyr9NOfrVzwcVHEFlKaaXZEBHQFmvazLFWWR/pI4QlLUck++
- JqqHbg+YmL/avpCmTNwOHM0PagdWBV6O9dbNwo2D8zBgvIC9BdRGPI7MnNdlS8we
- KehUU0AhaZknJU/QX4wSZ5QX6F20ywZau/T/YPr78zTWL4a6bNaLwRgrlkGM82eX
- 8WsRXWj2BntN5SzoEazMQ6m23h/s04IP4NkOmBJuaMADBMXou+G4e26GIgCcw29A
- ZwprSyqb67Cazki2/2QjjA==
+ s=rs20250326; t=1756707029; v=1;
+ b=n3WBRCVPtkQGMlsdzqb5PJ7kTAIaadyC6RQEetatvpyFPkBNiO2aj3ougFWQyrlb
+ 4hPz0yxNfS19H4CCyYccfIoNEXaBmGcb5G6d2p4aTkvRWZbT3rnFQPyH6OW02Nj9
+ LZBLzZitg+LEFozQsL3U6rY8Y7CD1fXZlkN/OhDjkCdRPgm6JJ0bK+P+ppsZw2rO
+ GPgYfm8PPJmtUK/Y3Kwjgp+/PPiGJd+CvCDEFKc7xBXai9vdzDRjrEnJiUnf4WBE
+ pcc1r2XDIByHKWAjtnWcjq59SFSirpE6JR0D7GL+tfoCVWOt39CMamH1by34fZ+p
+ yebK5Z3YN1uGAhg57H6LIQ==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 01 Sep 2025 15:10:08 +0900
-Subject: [PATCH 10/16] hw/nvme: Do not delete the subregion
+Date: Mon, 01 Sep 2025 15:10:09 +0900
+Subject: [PATCH 11/16] pci: Do not delete the subregions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250901-mr-v1-10-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250901-mr-v1-11-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -101,22 +101,52 @@ It is no longer necessary.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/nvme/ctrl.c | 2 --
- 1 file changed, 2 deletions(-)
+ hw/pci/pci.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index f5ee6bf260f159249204571a366472f3e0d16dea..eebce1f787f464978f535356533294c5a0c7bea8 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -9058,8 +9058,6 @@ static void nvme_exit(PCIDevice *pci_dev)
-     } else {
-         msix_uninit(pci_dev, &n->bar0, &n->bar0);
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index c70b5ceebaf1f2b10768bd030526cbb518da2b8d..1dd577ca20ab204b5f38469c801e421398660718 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -1188,10 +1188,6 @@ static void do_pci_unregister_device(PCIDevice *pci_dev)
+     if (xen_mode == XEN_EMULATE) {
+         xen_evtchn_remove_pci_device(pci_dev);
      }
--
--    memory_region_del_subregion(&n->bar0, &n->iomem);
+-    if (memory_region_is_mapped(&pci_dev->bus_master_enable_region)) {
+-        memory_region_del_subregion(&pci_dev->bus_master_container_region,
+-                                    &pci_dev->bus_master_enable_region);
+-    }
+     address_space_destroy(&pci_dev->bus_master_as);
  }
  
- static const Property nvme_props[] = {
+@@ -1417,27 +1413,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+     return pci_dev;
+ }
+ 
+-static void pci_unregister_io_regions(PCIDevice *pci_dev)
+-{
+-    PCIIORegion *r;
+-    int i;
+-
+-    for(i = 0; i < PCI_NUM_REGIONS; i++) {
+-        r = &pci_dev->io_regions[i];
+-        if (!r->size || r->addr == PCI_BAR_UNMAPPED)
+-            continue;
+-        memory_region_del_subregion(r->address_space, r->memory);
+-    }
+-
+-    pci_unregister_vga(pci_dev);
+-}
+-
+ static void pci_qdev_unrealize(DeviceState *dev)
+ {
+     PCIDevice *pci_dev = PCI_DEVICE(dev);
+     PCIDeviceClass *pc = PCI_DEVICE_GET_CLASS(pci_dev);
+ 
+-    pci_unregister_io_regions(pci_dev);
+     pci_del_option_rom(pci_dev);
+     pcie_sriov_unregister_device(pci_dev);
+ 
 
 -- 
 2.51.0
