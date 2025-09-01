@@ -2,60 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3ED2B3E034
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 12:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F767B3E07B
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 12:42:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ut1pb-00005f-8s; Mon, 01 Sep 2025 06:32:11 -0400
+	id 1ut1yK-0006kx-0y; Mon, 01 Sep 2025 06:41:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1ut1pK-0008D0-C4
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 06:31:56 -0400
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1ut1yF-0006k2-FI
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 06:41:07 -0400
+Received: from 6.mo548.mail-out.ovh.net ([188.165.58.48])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1ut1pD-0005kj-DN
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 06:31:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=cgnse1i1+F4zsmgiL1rkXVjVZzRegby1ZinKGpRLv5M=; b=BSlvEz1/8ifo2T64ZeXlXN2GVK
- v45GZE6vcTdN6YGQaNQ8oB8RWrRNe6UmUxSlFMb5SgPSeQUG/ji4kE7NjFluiAUnS9IvQkAeIhTCF
- 3PZsxG43KDbaplpCJV5vlk0/Dy0WBr7LuHZgbf3zsh2CReA1oCvFzYskh96SjF3SoPbHsgau1LeAj
- KqUr4eDVf0PL6d/bsd1C8mA6ff57pDt55O/JWpb4LAzhCObHvHf9vjCeCnmznTZGwbk1juxMunbBG
- WOkIVxienu6aGV65/BMug8jOI8zXDSB2GUaV2IZrkPtgj8+CLPE0s6v2KswGh6xEgslnGsaxWcRMT
- ZHUVOfd0vVwN374dkL6ZOiNFPmiQZQN207lmmoH9yKLPBZsYywOGJj9jRqhW1e0ihTVWT1+Ab/ErZ
- /fE9Ge2kqjRWBf5yisPnHRmdnkio/uUbmR58CyeIpwasT6Z7TP+DqB5wfvADHMdt/FAl0QM6UyxlC
- An99NA+sQnBJsRpMGurvdLLhuXVzXrsd7I9mT7dcSCh6/02SmyesfA0tgKbLPH2o+zT3JK5L6etAw
- sDiRTLz8rIsqjnDeh9kndfQARiMBisxFHKiqU2ZCZ6v/ruxP+J25MFNz1lXu6aKTUjke92O22q4Gv
- 3Xnak6yKiRTtcOnZhnbAXixBqOfPXVN/cbAEDINWY=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: qemu-devel@nongnu.org, Mark Johnston <markj@freebsd.org>
-Cc: Greg Kurz <groug@kaod.org>, Paolo Bonzini <pbonzini@redhat.com>,
- =?ISO-8859-1?Q?Marc=2DAndr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Daniel =?ISO-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Philippe =?ISO-8859-1?Q?Mathieu=2DDaud=E9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1ut1y9-000782-TC
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 06:41:07 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.110.58.164])
+ by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 4cFllM0jyRz5x9Q;
+ Mon,  1 Sep 2025 10:40:47 +0000 (UTC)
+Received: from kaod.org (37.59.142.106) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.58; Mon, 1 Sep
+ 2025 12:40:46 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-106R006b9bd2c1b-ccfd-4ec4-9a61-b4a0987e2eec,
+ CAAE178DC29C5141E9BFB396468E1D399C164DD0) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 88.179.9.154
+Date: Mon, 1 Sep 2025 12:40:40 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Christian Schoenebeck <qemu_oss@crudebyte.com>
+CC: <qemu-devel@nongnu.org>, Mark Johnston <markj@freebsd.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau
+ <marcandre.lureau@redhat.com>, "Daniel P. =?UTF-8?B?QmVycmFuZ8Op?="
+ <berrange@redhat.com>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
+ <philmd@linaro.org>
 Subject: Re: [PATCH v2] 9pfs: Add FreeBSD support
-Date: Mon, 01 Sep 2025 12:31:32 +0200
-Message-ID: <2671619.RrsIbz4Ki0@silver>
-In-Reply-To: <aK8WUWSIV6Bz526v@nuc>
-References: <aJOWhHB2p-fbueAm@nuc> <12113631.YhV4tvpBIu@silver>
- <aK8WUWSIV6Bz526v@nuc>
+Message-ID: <20250901124040.53166f30@bahia>
+In-Reply-To: <12113631.YhV4tvpBIu@silver>
+References: <aJOWhHB2p-fbueAm@nuc> <2602995.s6eulQLtdm@silver>
+ <aKxcsmP6MI5p9OPe@nuc> <12113631.YhV4tvpBIu@silver>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.106]
+X-ClientProxiedBy: DAG4EX2.mxp5.local (172.16.2.32) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: cbfd3aed-59ec-4bfd-ab69-6b01c81eb208
+X-Ovh-Tracer-Id: 8659859135243393385
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduleduleefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfofggtgfgihesthejredtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepffetffefleetvdevkeffiefhkeefgfffjefghfejvedvkedtkeeutdduvdeghfeunecuffhomhgrihhnpehqvghmuhdrohhrghdpghhithhhuhgsrdgtohhmnecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrddutdeipdekkedrudejledrledrudehgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhnsggprhgtphhtthhopeejpdhrtghpthhtohepqhgvmhhupghoshhssegtrhhuuggvsgihthgvrdgtohhmpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehmrghrkhhjsehfrhgvvggsshgurdhorhhgpdhrtghpthhtohepphgsohhniihinhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehmrghrtggrnhgurhgvrdhluhhrvggruhesrhgvughhrghtrdgtohhmpdhrtghpth
+ htohepsggvrhhrrghnghgvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehphhhilhhmugeslhhinhgrrhhordhorhhgpdfovfetjfhoshhtpehmohehgeekmgdpmhhouggvpehsmhhtphhouhht
+DKIM-Signature: a=rsa-sha256; bh=gqjUpL9fgAszdT/kDQaagT3CtXC0PEPTmJv+Yxri8XU=; 
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1756723247; v=1;
+ b=wOyrL1dOw1AL/W7VPFKDSNEhMPKeG8VRa+DAXxh0tJQ0Nb00wkvYgVYK6M2nXNXosluCTOw2
+ Vsb3J+oHnjpq7KtCAXyph5Qh4O/znHNGDt7WA/eExXEmIqfd5vwRLetNLWzcyuk8vIT3/lfCTZN
+ qAyX3tT4O4Bnk5TPqaJCf2CUvP1igTSFYb2n/H+H4dtRfEZ3Bss+Gquqx7r2V+4fVEG8WDYXBhn
+ KiOadVF/eIket+GoPYxUZBpMd4N5+GV2uEiX0irczPsTEQlLd7Q/FAQlUwBMvBwBljca2lzvEGW
+ zY0v90a5g+4RZLKekyJOc9XGqSTTr3lvJ/wmhn9VxhLRw==
+Received-SPF: pass client-ip=188.165.58.48; envelope-from=groug@kaod.org;
+ helo=6.mo548.mail-out.ovh.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,38 +86,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wednesday, August 27, 2025 4:29:37 PM CEST Mark Johnston wrote:
-> On Tue, Aug 26, 2025 at 02:34:45PM +0200, Christian Schoenebeck wrote:
-[...]
-> I folded your suggestion in with a couple of minor tweaks:
-> 
-> commit 61de78986912b03f08354a177caf603857b531b5
-> Author: Mark Johnston <markj@FreeBSD.org>
-> Date:   Wed Jul 16 20:32:05 2025 +0000
-> 
->     9pfs: Add FreeBSD support
-> 
->     This is largely derived from existing Darwin support.  FreeBSD
->     apparently has better support for *at() system calls so doesn't require
->     workarounds for a missing mknodat().  The implementation has a couple of
-> warts however:
->     - The extattr(2) system calls don't support anything akin to
->       XATTR_CREATE or XATTR_REPLACE, so a racy workaround is implemented.
->     - Attribute names cannot begin with "user." or "system." on ZFS.
->       However FreeBSD's extattr(2) system calls support two dedicated
->       namespaces for these two.  So "user." or "system." prefixes are
->       trimmed off from attribute names and instead EXTATTR_NAMESPACE_USER or
-> EXTATTR_NAMESPACE_SYSTEM are picked and passed to extattr system calls
-> accordingly.
-> 
->     The 9pfs tests were verified to pass on the UFS, ZFS and tmpfs
->     filesystems.
-> 
->     Signed-off-by: Mark Johnston <markj@FreeBSD.org>
+On Tue, 26 Aug 2025 14:34:45 +0200
+Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
 
-LGTM, thanks!
+> On Monday, August 25, 2025 2:53:06 PM CEST Mark Johnston wrote:
+> > On Thu, Aug 21, 2025 at 01:24:04PM +0200, Christian Schoenebeck wrote:
+> > > On Wednesday, August 6, 2025 7:53:08 PM CEST Mark Johnston wrote:
+> [...]
+> > > Not forgotten. I just hoped there were other reviewers or testers in the
+> > > meantime, but be it.
+> > > 
+> > > Like I said, I don't have FreeBSD system here to test this, so I am taking
+> > > your word for now that you tested this and plan to bring this into QEMU
+> > > when master re-opens for new features soon.
+> > 
+> > Thank you very much!
+> > 
+> > In case I missed somewhat, what testing would you typically do
+> > otherwise?  So far I had run the QEMU test suite (which indeed found
+> > some bugs in the initial version) and tried mounting a 9pfs share from
+> > Linux and FreeBSD guests and doing a bit of manual testing.
+> 
+> Apart from QEMU's test cases, I also use guest systems running 9p as root file 
+> system [1], run software compilations there among some things. That proofed to 
+> be quite a useful test environment to spot edge cases, concurrency and 
+> performance issues and such.
+> 
+> [1] https://wiki.qemu.org/Documentation/9p_root_fs
+> 
+> Greg was running some general purpose file system stress test suite in the 
+> past, but I currently can't recall what that was.
+> 
 
-/Christian
+Hi Christian and Mark,
+
+I was running this in the guest :
+
+https://github.com/pjd/pjdfstest
+
+Cheers,
+
+--
+Greg
+
+> > > If you have some time to adjust the commit log message above, that would
+> > > be
+> > > great, otherwise I can also handle this on my end later on. Looks like
+> > > that
+> > > comment is not adjusted for v2 yet (i.e. "user." and not mentioning
+> > > "system.").
+> > 
+> > Here's an amended commit log message.  Please let me know if this is
+> > better submitted as a v3.
+> > 
+> > commit b79bf1b7d42025e3e14da86a7c08d269038cd3ed
+> > Author: Mark Johnston <markj@FreeBSD.org>
+> > Date:   Wed Jul 16 20:32:05 2025 +0000
+> > 
+> >     9pfs: Add FreeBSD support
+> > 
+> >     This is largely derived from existing Darwin support.  FreeBSD
+> >     apparently has better support for *at() system calls so doesn't require
+> >     workarounds for a missing mknodat().  The implementation has a couple of
+> > warts however:
+> >     - The extattr(2) system calls don't support anything akin to
+> >       XATTR_CREATE or XATTR_REPLACE, so a racy workaround is implemented.
+> >     - Attribute names cannot begin with "user." or "system." on ZFS, so
+> >       these prefixes are trimmed off.  FreeBSD's extattr system calls sport
+> >       an extra "namespace" identifier, and attributes created by the 9pfs
+> >       backend live in the universal user and system namespaces, so this
+> >       seems innocent enough.
+> > 
+> >     The 9pfs tests were verified to pass on the UFS, ZFS and tmpfs
+> >     filesystems.
+> > 
+> >     Signed-off-by: Mark Johnston <markj@FreeBSD.org>
+> 
+> Almost. Maybe something like this to make it a bit more clear?
+> 
+> - Attribute names cannot begin with "user." or "system." on ZFS. However
+>   FreeBSD's extattr(2) system supports two dedicated namespaces for these
+>   two. So "user." or "system." prefixes are trimmed off from attribute
+>   names and instead EXTATTR_NAMESPACE_USER or EXTATTR_NAMESPACE_SYSTEM
+>   are picked and passed to extattr system calls instead accordingly.
+> 
+> /Christian
+> 
+> 
 
 
+
+-- 
+Greg
 
