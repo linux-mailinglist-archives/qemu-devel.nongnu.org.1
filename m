@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7691B3D82E
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 06:23:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 942BBB3D82F
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 06:23:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usw3g-0006d2-17; Mon, 01 Sep 2025 00:22:23 -0400
+	id 1usw3p-0006gk-L3; Mon, 01 Sep 2025 00:22:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1usvqB-0002lg-ND; Mon, 01 Sep 2025 00:08:23 -0400
+ id 1usvqE-0002mJ-7V; Mon, 01 Sep 2025 00:08:26 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1usvq9-000862-Qq; Mon, 01 Sep 2025 00:08:23 -0400
+ id 1usvqC-000862-Hv; Mon, 01 Sep 2025 00:08:25 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 1 Sep
@@ -31,9 +31,9 @@ To: "reviewer:Incompatible changes" <devel@lists.libvirt.org>,
  <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 1/4] hw/arm: Remove ast2700a0-evb machine
-Date: Mon, 1 Sep 2025 12:08:04 +0800
-Message-ID: <20250901040808.1454742-2-jamin_lin@aspeedtech.com>
+Subject: [PATCH v1 2/4] hw/arm/aspeed_ast27x0: Remove ast2700-a0 SOC
+Date: Mon, 1 Sep 2025 12:08:05 +0800
+Message-ID: <20250901040808.1454742-3-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250901040808.1454742-1-jamin_lin@aspeedtech.com>
 References: <20250901040808.1454742-1-jamin_lin@aspeedtech.com>
@@ -65,119 +65,122 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ast2700a0-evb machine represents the first revision of the AST2700 and
-serves as the initial engineering sample rather than a production version.
-A newer revision, A1, is now supported, and the ast2700a1-evb should replace
-the older A0 version.
+The ast2700-a1 SOC represented the first revision of the AST2700 and
+was intended as an early engineering sample rather than a production
+platform. A newer revision, A1, is now supported, and the ast2700-a1
+SOC should replace the older A0 version.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- docs/about/deprecated.rst                     |  8 ------
- hw/arm/aspeed.c                               | 28 +------------------
- .../functional/aarch64/test_aspeed_ast2700.py | 12 --------
- 3 files changed, 1 insertion(+), 47 deletions(-)
+ hw/arm/aspeed_ast27x0.c | 81 -----------------------------------------
+ 1 file changed, 81 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 5d1579dcf8..8a273e019a 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -305,14 +305,6 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
- better reflects the way this property affects all random data within
- the device tree blob, not just the ``kaslr-seed`` node.
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index 6aa3841b69..2e47e2f860 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -89,54 +89,6 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+ #define AST2700_MAX_IRQ 256
  
--Arm ``ast2700a0-evb`` machine (since 10.1)
--''''''''''''''''''''''''''''''''''''''''''
+ /* Shared Peripheral Interrupt values below are offset by -32 from datasheet */
+-static const int aspeed_soc_ast2700a0_irqmap[] = {
+-    [ASPEED_DEV_SDMC]      = 0,
+-    [ASPEED_DEV_HACE]      = 4,
+-    [ASPEED_DEV_XDMA]      = 5,
+-    [ASPEED_DEV_UART4]     = 8,
+-    [ASPEED_DEV_SCU]       = 12,
+-    [ASPEED_DEV_RTC]       = 13,
+-    [ASPEED_DEV_EMMC]      = 15,
+-    [ASPEED_DEV_TIMER1]    = 16,
+-    [ASPEED_DEV_TIMER2]    = 17,
+-    [ASPEED_DEV_TIMER3]    = 18,
+-    [ASPEED_DEV_TIMER4]    = 19,
+-    [ASPEED_DEV_TIMER5]    = 20,
+-    [ASPEED_DEV_TIMER6]    = 21,
+-    [ASPEED_DEV_TIMER7]    = 22,
+-    [ASPEED_DEV_TIMER8]    = 23,
+-    [ASPEED_DEV_DP]        = 28,
+-    [ASPEED_DEV_EHCI1]     = 33,
+-    [ASPEED_DEV_EHCI2]     = 37,
+-    [ASPEED_DEV_LPC]       = 128,
+-    [ASPEED_DEV_IBT]       = 128,
+-    [ASPEED_DEV_KCS]       = 128,
+-    [ASPEED_DEV_ADC]       = 130,
+-    [ASPEED_DEV_GPIO]      = 130,
+-    [ASPEED_DEV_I2C]       = 130,
+-    [ASPEED_DEV_FMC]       = 131,
+-    [ASPEED_DEV_WDT]       = 131,
+-    [ASPEED_DEV_PWM]       = 131,
+-    [ASPEED_DEV_I3C]       = 131,
+-    [ASPEED_DEV_UART0]     = 132,
+-    [ASPEED_DEV_UART1]     = 132,
+-    [ASPEED_DEV_UART2]     = 132,
+-    [ASPEED_DEV_UART3]     = 132,
+-    [ASPEED_DEV_UART5]     = 132,
+-    [ASPEED_DEV_UART6]     = 132,
+-    [ASPEED_DEV_UART7]     = 132,
+-    [ASPEED_DEV_UART8]     = 132,
+-    [ASPEED_DEV_UART9]     = 132,
+-    [ASPEED_DEV_UART10]    = 132,
+-    [ASPEED_DEV_UART11]    = 132,
+-    [ASPEED_DEV_UART12]    = 132,
+-    [ASPEED_DEV_ETH1]      = 132,
+-    [ASPEED_DEV_ETH2]      = 132,
+-    [ASPEED_DEV_ETH3]      = 132,
+-    [ASPEED_DEV_PECI]      = 133,
+-    [ASPEED_DEV_SDHCI]     = 133,
+-};
 -
--The ``ast2700a0-evb`` machine represents the first revision of the AST2700
--and serves as the initial engineering sample rather than a production version.
--A newer revision, A1, is now supported, and the ``ast2700a1-evb`` should
--replace the older A0 version.
--
- Mips ``mipssim`` machine (since 10.0)
- '''''''''''''''''''''''''''''''''''''
- 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index c31bbe7701..e729edfe13 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -1989,35 +1989,13 @@ static void ast2700_evb_i2c_init(AspeedMachineState *bmc)
-                             TYPE_TMP105, 0x4d);
+ static const int aspeed_soc_ast2700a1_irqmap[] = {
+     [ASPEED_DEV_SDMC]      = 0,
+     [ASPEED_DEV_HACE]      = 4,
+@@ -958,34 +910,6 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+                                   AST2700_SOC_IOMEM_SIZE);
  }
  
--static void aspeed_machine_ast2700a0_evb_class_init(ObjectClass *oc,
--                                                    const void *data)
+-static void aspeed_soc_ast2700a0_class_init(ObjectClass *oc, const void *data)
 -{
--    MachineClass *mc = MACHINE_CLASS(oc);
--    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+-    static const char * const valid_cpu_types[] = {
+-        ARM_CPU_TYPE_NAME("cortex-a35"),
+-        NULL
+-    };
+-    DeviceClass *dc = DEVICE_CLASS(oc);
+-    AspeedSoCClass *sc = ASPEED_SOC_CLASS(oc);
 -
--    mc->alias = "ast2700-evb";
--    mc->desc = "Aspeed AST2700 A0 EVB (Cortex-A35)";
--    amc->soc_name  = "ast2700-a0";
--    amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
--    amc->hw_strap2 = AST2700_EVB_HW_STRAP2;
--    amc->fmc_model = "w25q01jvq";
--    amc->spi_model = "w25q512jv";
--    amc->num_cs    = 2;
--    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON;
--    amc->uart_default = ASPEED_DEV_UART12;
--    amc->i2c_init  = ast2700_evb_i2c_init;
--    amc->vbootrom = true;
--    mc->auto_create_sdcard = true;
--    mc->default_ram_size = 1 * GiB;
--    aspeed_machine_class_init_cpus_defaults(mc);
+-    /* Reason: The Aspeed SoC can only be instantiated from a board */
+-    dc->user_creatable = false;
+-    dc->realize      = aspeed_soc_ast2700_realize;
+-
+-    sc->valid_cpu_types = valid_cpu_types;
+-    sc->silicon_rev  = AST2700_A0_SILICON_REV;
+-    sc->sram_size    = 0x20000;
+-    sc->spis_num     = 3;
+-    sc->ehcis_num    = 2;
+-    sc->wdts_num     = 8;
+-    sc->macs_num     = 1;
+-    sc->uarts_num    = 13;
+-    sc->num_cpus     = 4;
+-    sc->uarts_base   = ASPEED_DEV_UART0;
+-    sc->irqmap       = aspeed_soc_ast2700a0_irqmap;
+-    sc->memmap       = aspeed_soc_ast2700_memmap;
+-    sc->get_irq      = aspeed_soc_ast2700_get_irq;
 -}
 -
- static void aspeed_machine_ast2700a1_evb_class_init(ObjectClass *oc,
-                                                     const void *data)
+ static void aspeed_soc_ast2700a1_class_init(ObjectClass *oc, const void *data)
  {
-     MachineClass *mc = MACHINE_CLASS(oc);
-     AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
- 
-+    mc->alias = "ast2700-evb";
-     mc->desc = "Aspeed AST2700 A1 EVB (Cortex-A35)";
-     amc->soc_name  = "ast2700-a1";
-     amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
-@@ -2166,10 +2144,6 @@ static const TypeInfo aspeed_machine_types[] = {
-         .class_init     = aspeed_minibmc_machine_ast1030_evb_class_init,
- #ifdef TARGET_AARCH64
-     }, {
--        .name          = MACHINE_TYPE_NAME("ast2700a0-evb"),
--        .parent        = TYPE_ASPEED_MACHINE,
--        .class_init    = aspeed_machine_ast2700a0_evb_class_init,
--        }, {
-         .name          = MACHINE_TYPE_NAME("ast2700a1-evb"),
-         .parent        = TYPE_ASPEED_MACHINE,
-         .class_init    = aspeed_machine_ast2700a1_evb_class_init,
-diff --git a/tests/functional/aarch64/test_aspeed_ast2700.py b/tests/functional/aarch64/test_aspeed_ast2700.py
-index d02dc7991c..063d9e572c 100755
---- a/tests/functional/aarch64/test_aspeed_ast2700.py
-+++ b/tests/functional/aarch64/test_aspeed_ast2700.py
-@@ -46,10 +46,6 @@ def verify_openbmc_boot_and_login(self, name):
-         exec_command_and_wait_for_pattern(self, 'root', 'Password:')
-         exec_command_and_wait_for_pattern(self, '0penBmc', f'root@{name}:~#')
- 
--    ASSET_SDK_V906_AST2700 = Asset(
--            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2700-a0-default-obmc.tar.gz',
--            '7247b6f19dbfb700686f8d9f723ac23f3eb229226c0589cb9b06b80d1b61f3cb')
--
-     ASSET_SDK_V906_AST2700A1 = Asset(
-             'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2700-default-obmc.tar.gz',
-             'f1d53e0be8a404ecce3e105f72bc50fa4e090ad13160ffa91b10a6e0233a9dc6')
-@@ -111,14 +107,6 @@ def start_ast2700_test_vbootrom(self, name):
-         self.do_test_aarch64_aspeed_sdk_start(
-                 self.scratch_file(name, 'image-bmc'))
- 
--    def test_aarch64_ast2700_evb_sdk_v09_06(self):
--        self.set_machine('ast2700-evb')
--
--        self.archive_extract(self.ASSET_SDK_V906_AST2700)
--        self.start_ast2700_test('ast2700-a0-default')
--        self.verify_openbmc_boot_and_login('ast2700-a0-default')
--        self.do_ast2700_i2c_test()
--
-     def test_aarch64_ast2700a1_evb_sdk_v09_06(self):
-         self.set_machine('ast2700a1-evb')
- 
+     static const char * const valid_cpu_types[] = {
+@@ -1020,11 +944,6 @@ static const TypeInfo aspeed_soc_ast27x0_types[] = {
+         .parent         = TYPE_ASPEED_SOC,
+         .instance_size  = sizeof(Aspeed27x0SoCState),
+         .abstract       = true,
+-    }, {
+-        .name           = "ast2700-a0",
+-        .parent         = TYPE_ASPEED27X0_SOC,
+-        .instance_init  = aspeed_soc_ast2700_init,
+-        .class_init     = aspeed_soc_ast2700a0_class_init,
+     },
+     {
+         .name           = "ast2700-a1",
 -- 
 2.43.0
 
