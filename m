@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E2DB3EFA2
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 22:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A785FB3EFA8
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 22:30:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utB7s-0004Gh-5N; Mon, 01 Sep 2025 16:27:40 -0400
+	id 1utB7w-0004Hb-8q; Mon, 01 Sep 2025 16:27:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1utB7q-0004GD-3M
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 16:27:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1utB7s-0004H8-Ld
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 16:27:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1utB7o-00007z-IH
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 16:27:37 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1utB7r-00008U-25
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 16:27:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756758455;
+ s=mimecast20190719; t=1756758458;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fKbaHAEvTwJqmExIXUlbRePoGgZFad/G/AMh5OouNuw=;
- b=aYpcnW8Da3YNaQeGfIwx4JtIf+A0W0xb19TpjvTt5v4TcyBVHdBrTKtm/1ihLQBVfikej6
- +oHnAYYPw83+YAFuvbAzCxG9B/4mS32fz5wWOmIiI/4gMlftbpIbXEbK0swuZG6IwjVjEz
- qilTCJXIZbayfRtq16j2OWFjRphTd3E=
+ bh=Se0q5+uT6KWiejFo7/IaGRao5fvt636my4wPKmetJz0=;
+ b=KvGxIfCeVcEN1dVbSnAWOpYVXNh5Wx4o6Pcmj0PDe85ZM4HmpSSJo+jfjc4qsDLZaO+73F
+ gqsQlxjxjUSkR3L7Q5O3zFAhqWZkmKI93JRCs6jeiZf3zMhkpozy+Oy7yGHwv6S5TNTJ5J
+ ew/KHf1ku+obBP6awQsaf1zm11Weoj0=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-L-DDQbeHOoubFCoSSIc1aQ-1; Mon,
- 01 Sep 2025 16:27:33 -0400
-X-MC-Unique: L-DDQbeHOoubFCoSSIc1aQ-1
-X-Mimecast-MFC-AGG-ID: L-DDQbeHOoubFCoSSIc1aQ_1756758453
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-180-Z9gLCwudODqDvUw21qrhJA-1; Mon,
+ 01 Sep 2025 16:27:37 -0400
+X-MC-Unique: Z9gLCwudODqDvUw21qrhJA-1
+X-Mimecast-MFC-AGG-ID: Z9gLCwudODqDvUw21qrhJA_1756758456
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 108D618004D4; Mon,  1 Sep 2025 20:27:33 +0000 (UTC)
+ id 2ABF0180035F; Mon,  1 Sep 2025 20:27:36 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.85])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 723FD19560AB; Mon,  1 Sep 2025 20:27:30 +0000 (UTC)
+ id 6C76319560B4; Mon,  1 Sep 2025 20:27:33 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
  =?UTF-8?q?Daniel=20Berrang=C3=A9?= <berrange@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>
-Subject: [PATCH 11/19] python: backport 'Remove deprecated get_event_loop
- calls'
-Date: Mon,  1 Sep 2025 16:26:53 -0400
-Message-ID: <20250901202702.2971212-12-jsnow@redhat.com>
+ Kevin Wolf <kwolf@redhat.com>, "Richard W.M. Jones" <rjones@redhat.com>
+Subject: [PATCH 12/19] python: backport '*really* remove get_event_loop'
+Date: Mon,  1 Sep 2025 16:26:54 -0400
+Message-ID: <20250901202702.2971212-13-jsnow@redhat.com>
 In-Reply-To: <20250901202702.2971212-1-jsnow@redhat.com>
 References: <20250901202702.2971212-1-jsnow@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,7 +67,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,87 +83,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This method was deprecated in 3.12 because it ordinarily should not be
-used from coroutines; if there is not a currently running event loop,
-this automatically creates a new event loop - which is usually not what
-you want from code that would ever run in the bottom half.
+A prior commit, aa1ff990, switched away from using get_event_loop *by
+default*, but this is not good enough to avoid deprecation warnings as
+`asyncio.get_event_loop_policy().get_event_loop()` is *also*
+deprecated. Replace this mechanism with explicit calls to
+asyncio.get_new_loop() and revise the cleanup mechanisms in __del__ to
+match.
 
-In our case, we do want this behavior in two places:
-
-(1) The synchronous shim, for convenience: this allows fully sync
-programs to use QEMUMonitorProtocol() without needing to set up an event
-loop beforehand. This is intentional to fully box in the async
-complexities into the legacy sync shim.
-
-(2) The qmp_tui shell; instead of relying on asyncio.run to create and
-run an asyncio program, we need to be able to pass the current asyncio
-loop to urwid setup functions. For convenience, again, we create one if
-one is not present to simplify the creation of the TUI appliance.
-
-The remaining user of get_event_loop() was in fact one of the erroneous
-users that should not have been using this function: if there's no
-running event loop inside of a coroutine, you're in big trouble :)
-
+Reported-by: Richard W.M. Jones <rjones@redhat.com>
+Reported-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: John Snow <jsnow@redhat.com>
-cherry picked from commit aa1ff9907603a3033296027e1bd021133df86ef1
+cherry picked from commit 21ce2ee4f2df87efe84a27b9c5112487f4670622
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- python/qemu/qmp/legacy.py  | 9 ++++++++-
- python/qemu/qmp/qmp_tui.py | 7 ++++++-
- python/tests/protocol.py   | 2 +-
- 3 files changed, 15 insertions(+), 3 deletions(-)
+ python/qemu/qmp/legacy.py  | 47 +++++++++++++++++++++++++++-----------
+ python/qemu/qmp/qmp_tui.py | 10 ++++++--
+ 2 files changed, 42 insertions(+), 15 deletions(-)
 
 diff --git a/python/qemu/qmp/legacy.py b/python/qemu/qmp/legacy.py
-index c8d0a29b56f..735d42971e9 100644
+index 735d42971e9..775b1fdd3b3 100644
 --- a/python/qemu/qmp/legacy.py
 +++ b/python/qemu/qmp/legacy.py
-@@ -86,7 +86,14 @@ def __init__(self,
+@@ -86,13 +86,15 @@ def __init__(self,
                  "server argument should be False when passing a socket")
  
          self._qmp = QMPClient(nickname)
--        self._aloop = asyncio.get_event_loop()
-+
-+        try:
-+            self._aloop = asyncio.get_running_loop()
-+        except RuntimeError:
-+            # No running loop; since this is a sync shim likely to be
-+            # used in fully sync programs, create one if neccessary.
-+            self._aloop = asyncio.get_event_loop_policy().get_event_loop()
-+
++        self._created_loop = False
+ 
+         try:
+             self._aloop = asyncio.get_running_loop()
+         except RuntimeError:
+-            # No running loop; since this is a sync shim likely to be
+-            # used in fully sync programs, create one if neccessary.
+-            self._aloop = asyncio.get_event_loop_policy().get_event_loop()
++            # No running loop; since this is a sync shim likely to be used
++            # in sync programs without any event loop at all, create one.
++            self._aloop = asyncio.new_event_loop()
++            self._created_loop = True
+ 
          self._address = address
          self._timeout: Optional[float] = None
+@@ -313,17 +315,36 @@ def send_fd_scm(self, fd: int) -> None:
+         self._qmp.send_fd_scm(fd)
  
+     def __del__(self) -> None:
+-        if self._qmp.runstate == Runstate.IDLE:
+-            return
++        if self._qmp.runstate != Runstate.IDLE:
++            self._qmp.logger.warning(
++                "QEMUMonitorProtocol object garbage collected without a prior "
++                "call to close()"
++            )
+ 
+         if not self._aloop.is_running():
+-            self.close()
+-        else:
+-            # Garbage collection ran while the event loop was running.
+-            # Nothing we can do about it now, but if we don't raise our
+-            # own error, the user will be treated to a lot of traceback
+-            # they might not understand.
++            if self._qmp.runstate != Runstate.IDLE:
++                # If the user neglected to close the QMP session and we
++                # are not currently running in an asyncio context, we
++                # have the opportunity to close the QMP session. If we
++                # do not do this, the error messages presented over
++                # dangling async resources may not make any sense to the
++                # user.
++                self.close()
++
++            # If we created our own loop (and we are not running inside
++            # of it), we must close it to avoid warnings and error
++            # messages upon program exit.
++            if self._created_loop:
++                self._aloop.close()
++
++        if self._qmp.runstate != Runstate.IDLE:
++            # If QMP is still not quiesced, it means that the garbage
++            # collector ran from a context within the event loop and we
++            # are simply too late to take any corrective action. Raise
++            # our own error to give meaningful feedback to the user in
++            # order to prevent pages of asyncio stacktrace jargon.
+             raise QMPError(
+-                "QEMUMonitorProtocol.close()"
+-                " was not called before object was garbage collected"
++                "QEMUMonitorProtocol.close() was not called before object was "
++                "garbage collected, and could not be closed due to GC running "
++                "in the event loop"
+             )
 diff --git a/python/qemu/qmp/qmp_tui.py b/python/qemu/qmp/qmp_tui.py
-index 53ea6c59a71..12bdc17c99e 100644
+index 12bdc17c99e..d5526338f22 100644
 --- a/python/qemu/qmp/qmp_tui.py
 +++ b/python/qemu/qmp/qmp_tui.py
-@@ -388,7 +388,12 @@ def run(self, debug: bool = False) -> None:
-         screen = urwid.raw_display.Screen()
-         screen.set_terminal_properties(256)
+@@ -161,6 +161,7 @@ def __init__(self, address: Union[str, Tuple[str, int]], num_retries: int,
+         self.retry_delay = retry_delay if retry_delay else 2
+         self.retry: bool = False
+         self.exiting: bool = False
++        self._created_loop = False
+         super().__init__()
  
--        self.aloop = asyncio.get_event_loop()
-+        try:
-+            self.aloop = asyncio.get_running_loop()
-+        except RuntimeError:
-+            # No running asyncio event loop. Create one if necessary.
-+            self.aloop = asyncio.get_event_loop_policy().get_event_loop()
-+
+     def add_to_history(self, msg: str, level: Optional[str] = None) -> None:
+@@ -391,8 +392,9 @@ def run(self, debug: bool = False) -> None:
+         try:
+             self.aloop = asyncio.get_running_loop()
+         except RuntimeError:
+-            # No running asyncio event loop. Create one if necessary.
+-            self.aloop = asyncio.get_event_loop_policy().get_event_loop()
++            # No running asyncio event loop. Create one.
++            self.aloop = asyncio.new_event_loop()
++            self._created_loop = True
+ 
          self.aloop.set_debug(debug)
  
-         # Gracefully handle SIGTERM and SIGINT signals
-diff --git a/python/tests/protocol.py b/python/tests/protocol.py
-index c254c77b176..e565802516d 100644
---- a/python/tests/protocol.py
-+++ b/python/tests/protocol.py
-@@ -227,7 +227,7 @@ def async_test(async_test_method):
-         Decorator; adds SetUp and TearDown to async tests.
-         """
-         async def _wrapper(self, *args, **kwargs):
--            loop = asyncio.get_event_loop()
-+            loop = asyncio.get_running_loop()
-             loop.set_debug(True)
+@@ -416,6 +418,10 @@ def run(self, debug: bool = False) -> None:
+             logging.error('%s\n%s\n', str(err), pretty_traceback())
+             raise err
  
-             await self._asyncSetUp()
++    def __del__(self) -> None:
++        if self._created_loop and self.aloop:
++            self.aloop.close()
++
+ 
+ class StatusBar(urwid.Text):
+     """
 -- 
 2.50.1
 
