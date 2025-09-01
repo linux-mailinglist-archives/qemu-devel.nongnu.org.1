@@ -2,95 +2,179 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3C9EB3E152
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 13:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F5EB3E464
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 15:15:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ut2Wz-0004Fj-0c; Mon, 01 Sep 2025 07:17:01 -0400
+	id 1ut4Lm-0008IH-H0; Mon, 01 Sep 2025 09:13:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ut2Ww-0004Ew-4K
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 07:16:58 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ut2Wt-0004fT-6d
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 07:16:57 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-45b7d87b90fso26232235e9.0
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 04:16:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756725409; x=1757330209; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SeDYy1DEgpcx4+sqiAQw9KNiJu2uZ5LQ1cRlI1CZNsQ=;
- b=AFXhgxL4/wbsgdE9DlSToEyQE4tZ/du+BiD3xeo/Y13AqcC0D6fw87oveDDLxHX1gC
- sYs1EsYc3SqHVhQDjpnekMhS7eLqw53TY3eRRnOXDmD2XlydzUHbZe6CZAu7eCdymYN9
- fYXhjXz7H99u5dWVfoWJeqgaSs9oMVm5FshzljZy8r+smAfqXgRSsBWXn+10MPirdq2j
- aXqkH+sL08YCFTlSvxf2MyPQWjfWNPf0fkKl8kPEaAYsOhtZ2JkM9MOzDvFS0ygTOaNp
- gLtmPZvRhZ6Ej7feK+qdaY2npeV055uvYV3c657SHBzyaMC/s70YSA/MiTL3CFO9szoi
- 9t0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756725409; x=1757330209;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SeDYy1DEgpcx4+sqiAQw9KNiJu2uZ5LQ1cRlI1CZNsQ=;
- b=ZRVraNj6dT0hNNtYyQDWdXlVJCpVry23dCL253mJ2FJ+HLGUsbygAPjJcu46MYufUW
- /shtVbPwBc1kxfjKMKfQ7qausinP64dUsgFSA2Vs5kCq2RxGQW9zy0q/VhTug81yZSb1
- rC5aT1hrbWBCrSq+7vPzrrN/+3yZM7qIECnRwx8yi5pJ9Lc1S10suF5ai90xNAecuAix
- IJxIuqUvzgoHjiAkgxb36eSbxqIBHff4N0kMY19Z2dQfhptFA+7BKAbMhV5ZPXLiL/J/
- BxTLVHru/lZWHuS2mgFDHMt/dieYPy2/YPX29JiT2jH4D6hYKK3ggwDzHWTo6WiN4PpR
- B8Mw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVyukuQ9w847yz5o5g6ERcMQpiHQx8AlFYh7foN019ZDDYyI9GNzArsOgClPcNAaobOOG1vu0r9nPM8@nongnu.org
-X-Gm-Message-State: AOJu0Ywm+MZDnYnTItHcskdoa7E3XfYoiIMsKbCw8BYcRDTJ29jgZRNN
- 4pPMg3di3aIeGk9esLwUbCeIVPfjXT+CoQSYIXSyEj/KMd+iXng+gqAJjX4W3yK1rtA=
-X-Gm-Gg: ASbGncsDCmdWDOb0Ig/KgiITCvIf2Td8VXspJ6hLedm+ybRLpL+u/YiJmMFSjEmS4EP
- WhIuGOk9b9TDeTTaWe0yl+969G5qMoImYYd7+kQZWD8RxrsEmWXG5ClVQHbkDVyYegiQco4bD9/
- sTroYBcTU0+5Yfi9IK0xVZfPuldfWP1Mhgy1r3dSRtW4lGgh9x8SF+l0Umy9zZd4la/E/MPaXcp
- X+6KJ/eTq11JM7czqRSIHgOKh6KjvVUDph4zYibxvj7yCW2SKycllgg55uC/VAwozJ7dqljgGtW
- p0yXMkc43WFV2MyO0PL4gYaqGwBfqV1pFimffNE3ge5wFCT2kAQoBB9fRD+7tGYbO6s1RwBK0SI
- nhrQXNRnKH8w5jG/wX58gLmopunfBwtoP9YkZtmyekTSmQiryQLzMq0pxa2BohSlfmzmma73ady
- HE
-X-Google-Smtp-Source: AGHT+IGYCiFhbzG8hE1HPz2tiQL8ZlJymxcKbWzkZ5BTsFKvL13gq0SSyI64VNQEDIRSNJBBmZZl0Q==
-X-Received: by 2002:a05:600c:35d5:b0:45b:8996:997d with SMTP id
- 5b1f17b1804b1-45b89969e0dmr46245175e9.16.1756725409510; 
- Mon, 01 Sep 2025 04:16:49 -0700 (PDT)
-Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b7e7d141esm157883025e9.2.2025.09.01.04.16.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 01 Sep 2025 04:16:49 -0700 (PDT)
-Message-ID: <a250edb4-7df5-4e3d-9f82-361778d8612a@linaro.org>
-Date: Mon, 1 Sep 2025 13:16:48 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 12/14] hw/pci: Allow explicit function numbers in pci
-To: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
- "cfu@mips.com" <cfu@mips.com>, "mst@redhat.com" <mst@redhat.com>,
+ (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
+ id 1ut2XW-0004L7-DI
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 07:17:34 -0400
+Received: from smarthost1.eviden.com ([80.78.11.82])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
+ id 1ut2XR-0004lm-Sz
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 07:17:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=eviden.com; i=@eviden.com; q=dns/txt; s=mail;
+ t=1756725450; x=1788261450;
+ h=from:to:cc:subject:date:message-id:
+ content-transfer-encoding:mime-version;
+ bh=FGJpoV60L72HE0x3+fim62b3dV9YFJe48z/idYWR92Q=;
+ b=EaV+EM5jZsZ8zxIIbodx1w4PnNb+o1Z8ccJ6cGzxkKloVfL2mAWU71GT
+ yfJOZ7tI6b6eCBhOHXPWkA3dmLIy8Bl55o4Bo8Mf6m19mgHkvYkZACuk9
+ dOvNKMgMMHNRuhPatATl3xQyADbDRWVibAEQcMgVLN8zpqcJ1e1J/VAp5
+ GFaPqWKoRqqXcjMauN+j92njjxcK4KtjESPzUQs0OYj2XxvWvWsGct9Ic
+ zgcPE8v/hAPVIq6pzRPdv6t6IPP1pSGENewW+CCQYg8W7FPmrjmifUuAF
+ zolkuQO2/n9v1nFZ1h8hgcTvC4czHY6JG+yt5V7bx5ZnmOqDcSViK/tBB Q==;
+X-CSE-ConnectionGUID: JudlwTQiRyGD2Qhn1uEXfQ==
+X-CSE-MsgGUID: xYm2W393RUuFRsKVNYXDAQ==
+X-IronPort-AV: E=Sophos;i="6.18,225,1751234400"; d="scan'208";a="42537902"
+X-MGA-submission: =?us-ascii?q?MDEvBGIlF+1J+lC0riRIAufRbzllD7gimux0/s?=
+ =?us-ascii?q?r1YCseXjeYWgpauPbH0Fcj1A4sLokqYMaFvbuz8QEa2d9nSRHM+UYGyG?=
+ =?us-ascii?q?qCxbD/LDR/veKVs94JJVXoNgII+SXTeM4/V6FtTsRlwVUP0kvoZBpeUG?=
+ =?us-ascii?q?HCRYs792pcA/f0ffFGNPrQ6g=3D=3D?=
+Received: from mail-westeuropeazon11010070.outbound.protection.outlook.com
+ (HELO AM0PR83CU005.outbound.protection.outlook.com) ([52.101.69.70])
+ by smarthost1.eviden.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384;
+ 01 Sep 2025 13:17:22 +0200
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZaeGkMFt5vnse+8dFW4Xvw5CDKk76ElZ2l6tSvz/9HjxyQM+ZK+ILnvEUFMPx4897jQu9Hv7KZXpn3BFtTR58ZeDqPqQU7YjXo4iICt4vbMLLo1n84LNggDg+XOefzm9FGC3zXW0bibTjfaftcHqYjr8AOacGXTHqZAmwAurMax7rbjf5tBPx2yvsW8u6lfD+dCnhBsoVUWAGDulrrFdayCWK8J91+9CmthGdonWlVRttAFe9KMxJhRSxGpn8YRXx5VFMdi1AErjEz9tF3C3jElsxMYU6751uzz+BXB+XLn//4/Rv8DMN4vMTbhYd4jW4JJamh1KFVw5VG8QOx+6pA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dBtfnv3f4oOZRftunLF8Qd82qIrHgWAjDrwCpwtzhOo=;
+ b=Epir4qojlUNsQlCb1t9/G3D7PbqhqYUFFtnQCnv8TwH9vmsgvMoai5PqWZoYOqnd5/ixdDAttx7fIBo/brdH8v/kscGjtFJovMLoZxqoBVjWuxQ5cjdTnCMsyLG7B3e8Yl5cS9pqsmgZFwSiPEc0ap4TR/Klf3ckGH7vx4sd8hRT27ip7C+O/hQD/d4kWaXikNxAmMjjdcNK13C+26PnFHYyZX2Mw9f86U0Or3fAqinVKhQnVs+v4XC1kyAyih5ABsDJuCoW15I/kHySH94P8ncSKNd9+QTQzci2J6DEoVQJjqTPddAeJnQS1tmdWVwlEVTE2Pcm+dmRPCemFNxfVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=eviden.com; dmarc=pass action=none header.from=eviden.com;
+ dkim=pass header.d=eviden.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Eviden.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dBtfnv3f4oOZRftunLF8Qd82qIrHgWAjDrwCpwtzhOo=;
+ b=qlgU0bE4d/UYrc4hCmy8El0MKHWmQDakzv5XmW+ttYZyQu+OwriLsZDH0dvs+AC/7s4swZxUE+pAEtmtbBF9Co4iKfjvZ4Ke4Ybb20y1AktENqzM/mV9qw2aACZ/7Ww7j7p+2YP3c8lldBY54OCcFDmAv7yiGyUv+j7VndxqTJloz6EYUhbYlu3j+u+wUaUYOBd+z/KGoQt2yFik9gaLJrLhHy/MahNb/vvkTZhaob7UwpIsRd+5/LMXxDP+4qjaUILWBX6U0VR3m6KPLB4gGVOSiTvPAnYJje7TVbDwAjs7uarV/5GLAei4UUv+HgOftYrlZ04jHZdLgJZyHmSbRA==
+Received: from AM8PR07MB7602.eurprd07.prod.outlook.com (2603:10a6:20b:24b::7)
+ by PAVPR07MB9215.eurprd07.prod.outlook.com (2603:10a6:102:317::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.17; Mon, 1 Sep
+ 2025 11:17:17 +0000
+Received: from AM8PR07MB7602.eurprd07.prod.outlook.com
+ ([fe80::fbd7:ca71:b636:6f9d]) by AM8PR07MB7602.eurprd07.prod.outlook.com
+ ([fe80::fbd7:ca71:b636:6f9d%6]) with mapi id 15.20.9073.026; Mon, 1 Sep 2025
+ 11:17:17 +0000
+From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "philmd@linaro.org"
+ <philmd@linaro.org>, "mst@redhat.com" <mst@redhat.com>,
  "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- "dbarboza@ventanamicro.com" <dbarboza@ventanamicro.com>
-References: <20250901102850.1172983-1-djordje.todorovic@htecgroup.com>
- <20250901102850.1172983-13-djordje.todorovic@htecgroup.com>
+ "zhenzhong.duan@intel.com" <zhenzhong.duan@intel.com>, "kevin.tian@intel.com"
+ <kevin.tian@intel.com>, "yi.l.liu@intel.com" <yi.l.liu@intel.com>,
+ "minwoo.im@samsung.com" <minwoo.im@samsung.com>, CLEMENT MATHIEU--DRIF
+ <clement.mathieu--drif@eviden.com>
+Subject: [PATCH 0/5] intel_iommu: Add PRI support
+Thread-Topic: [PATCH 0/5] intel_iommu: Add PRI support
+Thread-Index: AQHcGzH69L22Lrrt0EKlQsUSfgWejw==
+Date: Mon, 1 Sep 2025 11:17:17 +0000
+Message-ID: <20250901111630.1018573-1-clement.mathieu--drif@eviden.com>
+Accept-Language: en-GB, fr-FR, en-US
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250901102850.1172983-13-djordje.todorovic@htecgroup.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=eviden.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM8PR07MB7602:EE_|PAVPR07MB9215:EE_
+x-ms-office365-filtering-correlation-id: ce613c1c-0209-40d1-c3c7-08dde9491c8f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|376014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?MsajPI9MhM0urvx6fOa1MzPTCNS+aDwStw2DEPBx+NSz9xIHql+OwZauuD?=
+ =?iso-8859-1?Q?fbsnJI1i+baHrANumkcwmza7FCFPXsoB9irf9rG9DNADCS1HRo9jNUwZnK?=
+ =?iso-8859-1?Q?13Wdt15aGixIiMoRzRxiyiP0HlvJfnyWKHCZKkycrEapk/xHlV80vm9Ylx?=
+ =?iso-8859-1?Q?g17EkwUSXMaiyNBPNBuTulgNOieEZvaYJboAVXbzF7qh2qz0CABurZwwzm?=
+ =?iso-8859-1?Q?XMgkKIQsyFGL4dRtNt8UODo+deBU+wp4K75Z+dWKwfn3mD553V+GZ56+0u?=
+ =?iso-8859-1?Q?i8FVtwXAnW8D+WNRh1SgmnMjNzzDZP1U1aO6AyJYi817xZq2zGGQTIFLFF?=
+ =?iso-8859-1?Q?x2+/Moh4y6aZTdNvZesljuUuhy5aOe+G3kNqQrbKyYirHLUYnILz+Rau9H?=
+ =?iso-8859-1?Q?K6nTQEgl0RLTBtWa9WK0HuRqkKZl9ogoZD8u/z0zF9ztC7/U9AADpuPesY?=
+ =?iso-8859-1?Q?T9mPTlz0399/+N3rAnMjL9mDhKdWnCr13mEwnpbZ1P0M2d97jirezc0KWS?=
+ =?iso-8859-1?Q?tIL+KGreq3WrwwVOlzsrgQ4izGAaLLSfoXXYzYWxtlFVVgK3hkYqS2xTtx?=
+ =?iso-8859-1?Q?izbuMG4T2WWEm7Qb7RucR3OTQ3FQNtArSAhNbZ3GwXPbrozYiG7dFHiomx?=
+ =?iso-8859-1?Q?WCUSs5Y1nGdMDstzBGn8/sJk2Ky64kkGbYmTbFlaMSVlSPKhKUk2uZzahk?=
+ =?iso-8859-1?Q?Le06SHziRWpnvI8y1c4dqZ3B5KLSUVM48FHzOWooDeJ02HmKJEdQCd1fj7?=
+ =?iso-8859-1?Q?fv/NqVvZStHqlJ1VOnxI5s+aWWNfqRatBVUbOhFEi3hf42oJR6IZkV2uTg?=
+ =?iso-8859-1?Q?0tJQD2C9BeVS9bxDKIph5Vq8rXY6rNCR9ZwmTFnP+S2c1MpdGKadt3pQsG?=
+ =?iso-8859-1?Q?KMtu2If88K5+zz2b0rKlsTFPRz1j/S22MPx0/DxTSbjb7EJK8iVzSblS8w?=
+ =?iso-8859-1?Q?JXwMRoNgEUfH0c7FV8bwS2BaLZoB6mOVpbP4kOlKiumOERoMRHpPvGeaJ/?=
+ =?iso-8859-1?Q?KhvX/LI3HaXzNf5qP1VaYs/BpdZh+5Zn0oJ8ycq442YYIdxQj2+D7/+F4l?=
+ =?iso-8859-1?Q?1J8L5DFpslFIa7WCa6n4Lsp4xO3ZssD5H5oOn0rLF5varXcm7xX6m+IZh3?=
+ =?iso-8859-1?Q?3ezWoaQk5z+sw+tDUpMSnno10U70kbXE5B7ah+tD4GZKD4dbJPjfLgtGT5?=
+ =?iso-8859-1?Q?XBxJ6Y9Hu1QwhvPRTHZ4gq9UYffqU2aaOY3w8SU3HSE+eQzNSSTvlN4Qck?=
+ =?iso-8859-1?Q?5Ev0fLooqqtTEvIRhNpPV3IU+dJ9UfSE3NDnANemDFxWOSa1PR9nFP8fha?=
+ =?iso-8859-1?Q?2fDdL7dTuDOlN/y5gy6URQT0twlW8lLNxuISWVjGFmY96PAq5tE24xiScx?=
+ =?iso-8859-1?Q?zcqUqBFiHbrfDIJO93YaWGPzD/bWlpcyGbRgeBMcOjGJK4J2MlKMEnIfCi?=
+ =?iso-8859-1?Q?4+NYA6ddqXjflTeFNqRkcJ5m3bqkDQIiRGCZ34+xCrnOYesw3iQMljxCZA?=
+ =?iso-8859-1?Q?TEm7GpyQBA09AspyK4ptb5c8ygT50FERLxZELJCWPoVTgYOnWWxtw9ePS/?=
+ =?iso-8859-1?Q?uO3ho5M=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM8PR07MB7602.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?cC9y/HWCc98eF2eJoa86NHawLK0hEUBgv9k3yuQBm4oCRUX4nt8wUtgFoP?=
+ =?iso-8859-1?Q?4v44TWNnu9B1ASUBiBJPa4GcVkXWiZ4hIGnBcta4t434Az7BDl1MbiqqpZ?=
+ =?iso-8859-1?Q?LNuG34uShcSLNBhYX5mmvWsLZ9EQcbWpdwA5DgK6Zi8JkT7JfNeW4onrbO?=
+ =?iso-8859-1?Q?+EtwDYXDuSnlmsshdzW2c5xPC5Mkon0LqcRAV5AeI9RczxSQHVxMNB5rKx?=
+ =?iso-8859-1?Q?Zn5AJ0pKYyjMrY2bq4NLVw4Sc4PUs93AwgVnxkAy+vh7ehW3bO9c8q+8kC?=
+ =?iso-8859-1?Q?lC6QX9rMi2PGjShCZeX3U88zZTquOlh9gfK9Pnr4bKJC9YkoAI2FA+6P1S?=
+ =?iso-8859-1?Q?+jcBNcy0609z5rdavZK65jn+4Lj3471LPCxX/PLgfRA61xDfxA8lj8KpzG?=
+ =?iso-8859-1?Q?i/eLrzX4fuyI/qeOMYlFSCZsW0PXxXVazzcUJ+A58EMzoC5/0KLrrKTRwu?=
+ =?iso-8859-1?Q?9JeSYwf/0nA0baxp/X05Fd0VvVjQICz6z9EghQzulT8Bdq0rhRKMIoVw5x?=
+ =?iso-8859-1?Q?vDDGNGVDFq34StogJZIJd4QXZw/RrIUefEjKfLrNnjlsCHftNO/2lODTJD?=
+ =?iso-8859-1?Q?BcRHsHzuzFzIRyErjK/q7uw06uKB29adPwCG+zDezyf/NFMmRRS/6Kssva?=
+ =?iso-8859-1?Q?ttD9zSJUVBOX//+42ERHgDsuYs9ifJj7AyDSM8FmfrpS4eZopwqKmY69G/?=
+ =?iso-8859-1?Q?5+FG4FBxREMqcUycs3pWSqX1cpECiEt+OawIfIgdufKQiUJg0am3PNUalC?=
+ =?iso-8859-1?Q?ehiRQavZ1E8MV80AOe85shZA0Sdhp5O69w7gkIVixtCZrhc8YUYhbcrJY5?=
+ =?iso-8859-1?Q?K/mfUPKqnp/gUJh9RebqAEXlWPxvBn2cD8Y5OBIEYeRTxVjQ8kv48clSVN?=
+ =?iso-8859-1?Q?NBfbBM0nxBtGgfvCVWhWd7o2eYOHq5V1DiaH5h3tUioE2BsgRw+sQJjvIp?=
+ =?iso-8859-1?Q?OwmpOwGeR9b3+cXSvKV+aj+RFSWSA1cpoRRE3jaiNTyjCsDImwNmsqnfIa?=
+ =?iso-8859-1?Q?4/mqkggBrJABB3uGbpxq/Tt/Qmp3M7d0TdO10kh07AeEj10JU/4qVecjb9?=
+ =?iso-8859-1?Q?nfq/ooQ/1yEAl5isfeMTZKhPWbpa71wguujHuv0OBsRKJHpieqNE4mWyPx?=
+ =?iso-8859-1?Q?edKnNlzSzMAA+C+lCMURQQUov7zkUuZn2203lhNFfdpGcqbpgBYx9KPeEY?=
+ =?iso-8859-1?Q?hKuBo+0O1cCjnj/SLtRogxzjvrNgu6adEJMginOJHT8SUVT+KutTSlM/yH?=
+ =?iso-8859-1?Q?hRf9c4KJ/SbsvVjACFz0/D1mAH2gt+p1lL242EnV3c3BaAEmtq8+TSp9wW?=
+ =?iso-8859-1?Q?V4vjJGLGQz0IPVMfLIc/24fB6b8qrGXJJBAalUaxo8T4WZTKGB0UsPpmaw?=
+ =?iso-8859-1?Q?qfJ7xqea5BahtEWHxSp32V7kmHzS6J5WJ8z8jNFKZh+NaVbUgAQdm+DNyS?=
+ =?iso-8859-1?Q?1OFRRolz0HQDkoe5pU23l6xpxadjKGop726GplmmiXe6/i5oJUgoJWKYS1?=
+ =?iso-8859-1?Q?zYWwsn/Z0ZFv+rBcEtr64qoLWMc2A1+UKuwI+rDS0rSwliLgxeNICCDv8T?=
+ =?iso-8859-1?Q?Vihg5vZCzeVSbdlCtz0HhWAhZpWTZt1qx3jl8QD2MVLPaWYKT/XlPhVuT/?=
+ =?iso-8859-1?Q?0ZMGpkXt3UbNoJYi9Yt/8vuEFlFO4wbXXD+LyfmfC0UqsWiNhQzGk9zkCs?=
+ =?iso-8859-1?Q?G5TlV7mWynFiAcIJCZI=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: eviden.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR07MB7602.eurprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce613c1c-0209-40d1-c3c7-08dde9491c8f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Sep 2025 11:17:17.7407 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7d1c7785-2d8a-437d-b842-1ed5d8fbe00a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: t8moBYb8vbS9d0Q0Iys8Y0dopZRRNObUK709mNuiBQuj27mHb97IQGym2WdwH1Tr5pnOEDAnogsyCjsBJwx+gIADFTJTFj0gVb57bl6xM07gKsrEN10wI2NjXQml23gx
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR07MB9215
+Received-SPF: pass client-ip=80.78.11.82;
+ envelope-from=clement.mathieu--drif@eviden.com; helo=smarthost1.eviden.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 01 Sep 2025 09:13:15 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,70 +189,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/9/25 12:29, Djordje Todorovic wrote:
-> Since there is no pch_gbe emulation, we could be using func other
-> than 0 when adding new devices to specific boards.
-> 
-> Signed-off-by: Chao-ying Fu <cfu@mips.com>
-> Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
-> ---
->   hw/pci/pci.c | 15 +++++++++------
->   1 file changed, 9 insertions(+), 6 deletions(-)
-> 
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index c70b5ceeba..0c6d11e145 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -984,14 +984,15 @@ static int pci_parse_devaddr(const char *addr, int *domp, int *busp,
->   
->       slot = val;
->   
-> -    if (funcp != NULL) {
-> -        if (*e != '.')
-> +    if (funcp != NULL && *e != 0) {
+This patch set belongs to a list of series that add SVM support for VT-d.
+Here, we focus on implementing the PRI API exposed through the PCIIOMMUOps.
 
-s/0/'\0'/, otherwise:
+This work is based on the VT-d specification version 4.1 (March 2023).
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+What is PRI?
+''''''''''''
 
-> +        if (*e != '.') {
->               return -1;
-> -
-> +        }
->           p = e + 1;
->           val = strtoul(p, &e, 16);
-> -        if (e == p)
-> +        if (e == p) {
->               return -1;
-> +        }
->   
->           func = val;
->       }
-> @@ -2054,13 +2055,15 @@ bool pci_init_nic_in_slot(PCIBus *rootbus, const char *model,
->       int dom, busnr, devfn;
->       PCIDevice *pci_dev;
->       unsigned slot;
-> +    unsigned func;
-> +
->       PCIBus *bus;
->   
->       if (!nd) {
->           return false;
->       }
->   
-> -    if (!devaddr || pci_parse_devaddr(devaddr, &dom, &busnr, &slot, NULL) < 0) {
-> +    if (!devaddr || pci_parse_devaddr(devaddr, &dom, &busnr, &slot, &func) < 0) {
->           error_report("Invalid PCI device address %s for device %s",
->                        devaddr, model);
->           exit(1);
-> @@ -2071,7 +2074,7 @@ bool pci_init_nic_in_slot(PCIBus *rootbus, const char *model,
->           exit(1);
->       }
->   
-> -    devfn = PCI_DEVFN(slot, 0);
-> +    devfn = PCI_DEVFN(slot, func);
->   
->       bus = pci_find_bus_nr(rootbus, busnr);
->       if (!bus) {
+PRI (Page Request Interface) is a PCIe-level protocol that enables PCIe dev=
+ices
+to request page fault resolutions to the kernel through an IOMMU. PRI combi=
+ned
+with ATS are the 2 cornerstones of a technology called SVM (Shared Virtual
+Memory) or SVA (Shared Virtual Addressing) which allows PCIe devices to rea=
+d
+from and write to the memory of userspace applications without requiring pa=
+ge
+pinning.
 
+Resources
+'''''''''
+
+Here is a link to our GitHub repository where you can find:
+    - Qemu with all the patches for SVM
+        - ATS
+        - PRI
+        - Device IOTLB invalidations
+        - Requests with already pre-translated addresses
+    - A demo device
+    - A simple driver for the demo device
+    - A userspace program (for testing and demonstration purposes)
+
+https://github.com/BullSequana/Qemu-in-guest-SVM-demo
+
+Clement Mathieu--Drif (5):
+  pcie: Add a way to get the outstanding page request allocation (pri)
+    from the config space.
+  intel_iommu: Bypass barrier wait descriptor
+  intel_iommu: Declare PRI constants and structures
+  intel_iommu: Declare registers for PRI
+  intel_iommu: Add PRI operations support
+
+ hw/i386/intel_iommu.c          | 337 ++++++++++++++++++++++++++++++++-
+ hw/i386/intel_iommu_internal.h |  51 +++++
+ hw/pci/pcie.c                  |   8 +
+ include/hw/i386/intel_iommu.h  |   1 +
+ include/hw/pci/pcie.h          |   1 +
+ 5 files changed, 397 insertions(+), 1 deletion(-)
+
+--=20
+2.51.0=
 
