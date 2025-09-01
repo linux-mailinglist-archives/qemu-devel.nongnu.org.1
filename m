@@ -2,104 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B0EB3E3AC
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 14:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A0AB3E3BF
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 14:54:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ut3wd-0007xz-Ob; Mon, 01 Sep 2025 08:47:35 -0400
+	id 1ut428-0002QN-8w; Mon, 01 Sep 2025 08:53:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ut3wT-0007uW-Bn
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:47:27 -0400
-Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1ut424-0002Ow-9F
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:53:12 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ut3wL-0003Q5-Da
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:47:24 -0400
-Received: by mail-yw1-x1136.google.com with SMTP id
- 00721157ae682-72019872530so38641677b3.1
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 05:47:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1ut421-0004J3-OK
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:53:12 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-afede1b3d05so723587066b.2
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 05:53:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756730834; x=1757335634; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=secuoH1pp1SZwDzdp1awuyVn94TUSWevG5j6uqY1ls0=;
- b=UJZjCnP30rcL/tNS74mYpj8t8/nEG/YzUIqDyKBD29KtWjv+trQ25qU92ue85EJrvn
- Zk/r/lMpyTFMj2JncmvBfRUwKu6sfD8lpuFenI0LI6VOm4MKfd+0EzKFOW067EzC9qSr
- RjUyx/NgAdxx/0dRR6eiD0h6QMoInQbTyj+19iWuHItdYM9bw9K/6WYxFgJdF40mAcMG
- +GHQojIHOElOEarck4fKK85V/5b2ebaumAmXR+rJeKcVXWpa+Edwbx7B3nta35HiNaXP
- q/o0GCHpDjfv9UWr/I5wlOTHgu/FJ89fOZ43JLG5eO28JjES4Xubl/6A88rLIYZvdKJc
- cdew==
+ d=linaro.org; s=google; t=1756731187; x=1757335987; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=FA62XwpQPyNmrR76Sl1OJ/pIEbglEP1qpDGBeqWAqWk=;
+ b=LAEsZJf29nuE9grq7Vm1smIILMy9j42UFFx0ECvuOyxMA0/ko8zTOfQGdguISfYAFr
+ gVgNlqJ7loZ3ZoeKot1KNmL57dm4Vw19ffipJGeRf5WIlVbs0SB0ENJ7L4tAd6Hhy4Tq
+ w9esue1ZBQb5KGmXzbdpGEqpgpxSiKngexWQ3AoLMekrEZJa2hmvUtSspaf0DEie3M3g
+ uKQRGM6pby+JDr4JfIJCasR+dzBZf83Sr07JiBjp3id+e5fwDNdtc/eyoROvnGphePds
+ w5emen/eFhfcGwf8ibdMl5Dnciqwgu0eoCs6XeFEeeeOH8s56MfoHh0HO36VzPHymTaQ
+ 9kkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756730834; x=1757335634;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1756731187; x=1757335987;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=secuoH1pp1SZwDzdp1awuyVn94TUSWevG5j6uqY1ls0=;
- b=aU/FedUWq1KqEQxBCX5I8sMR+0Exw5c8+udvyLc3hDrvUH0F80QFY+ekEB1Fv2FWEA
- eni9n8ZhrHp8xdxfaEc0jeFuAKtBaByZ6tiGt6kwAQCP67+B0lxHXXqlkdAJOQ9hXI+b
- Dc1qLN687lToZMlwyFkByJ8qD/qvDWONeiRY2/8lQGgTFcQeT4DSwmJ8yHvuTKwHfyPe
- VK2Ig7VMdvztavOjfL5RMlkV79eCBbLob034aae1Me+eoo3zZQUoISA5jqLEAle4LrpD
- VAwesa945xZDnduTr0sfwAKDjw11GxTZViffzsu6OQQCaNQgtMh5OdCNNxJ1/nHIk9LZ
- 66KQ==
-X-Gm-Message-State: AOJu0Yz7Qxb7Ubi1QPzc84Nk85FymOwzDHuBlrPWn84bQ5vZxCJMzjS7
- 16m9XIlUAVkKr/vsebZ1eG98Qkrshd4IHonnuwsR1rOLpQhpylVJX3+kskupV0CtrFAcYz5+Bdv
- EBHxWp6dGXjc/kEHdzUJRzFs6CROcTtDC3SycEEJP7w==
-X-Gm-Gg: ASbGncsQr302+11X8DtUYUCxpH16DX29LeRIWIyx398cpVz8jSLBdnLAqU3DpFU4+D3
- dT8//2NY+kdbxi0vShBW677NuYwSLg4JCqQCxn8LsMJ2WZZG5ss8/WsF//kozRwCFBa4GlF12/j
- sKZqxc2BEc3kkjP1coB9BkTNjmOGnkQEpIuqC65wLH17xRD7sfAb6kXcW/BBBz1ah/4ubC3AMty
- DqVkGVW
-X-Google-Smtp-Source: AGHT+IFqxTeBzs2i901/7Nl4EW87AA6qyQ5dGk58l7ACLIlMSekaoHURHM27j8UrhAvMFxAjI9dilfAih8NvaANOUtw=
-X-Received: by 2002:a05:690c:6006:b0:71f:b944:1017 with SMTP id
- 00721157ae682-722765844e4mr81590597b3.50.1756730833747; Mon, 01 Sep 2025
- 05:47:13 -0700 (PDT)
+ bh=FA62XwpQPyNmrR76Sl1OJ/pIEbglEP1qpDGBeqWAqWk=;
+ b=ghEES5oRmvqNnxH4eWn8yQm8SNGosQVT/Uh8SC9RiettAlXRpPUv8+bKey0s4AQQE9
+ 6m2+RkBQkJ2iqbu42Hm6hYhUOz+5EbpWqry2FVxzATS1cjVaKybyl/PzcagoVjuirayE
+ holj36mOGC9vaVo6gDbcS0XN96+A2R1lBDeHkH0fZtoT1P8xfhJMQoMAMeJqQaPp87iU
+ u7wGohEUybZI/IEnY8VJy5MGwhkurSHFpwN6cK/72trfNw6z1szu9m5YfKKJP5Cluten
+ 2PsJOjcJyzmgEQpXhyTu+XuFyEu+rsJ9q447aDdcblcxBUrKOphdSj9h33mDjeA5ulOk
+ Zsbg==
+X-Gm-Message-State: AOJu0YxC30QWE2yUZJ6b5fWWkvFN+sVjfoO3GEpcwxn3lOpVlmpFEWkK
+ dHDr9N3iofMAPNZJCz9iYSErn6k8G4lZLfVeoAGNUr3vCfr6pi7U0VtPfqyX3gScnVM=
+X-Gm-Gg: ASbGncvc64B3ClhH2NEmywuasvwjHAJ+CtUhFQ6pmLJyog0JYuC/7/1Mer/M0RLSCft
+ tGmiFGxE42ztjz+uNl4w4mcV+xsiOUlOXmITDzvW6aZyi8hvv8gHedC1Jc9moN46DfpyeHQOylq
+ Ftrx6XY1b8UJk6q3IloyLxJhDmysbdEi57anOQUU9Cs12+8E1QP/GnW2o1VtrhY2a7JnPlSVtFq
+ cm2JMsph3gMuUKKcQOgL28jBIVeSYvuBvcu1xQuXjf56Spgv4IdnuVo3CL6SvBFduAD4TVFVRl6
+ I7yzDs8VkJ6mPu1RmB0fF0MIEM8O5hAd7B/SUrdyPEX1mCUkCzzYtz1TjoJqnEo3dnG9AcBl86L
+ BxavlSKAAcBLDY2phcYMRQjln1t4QPM1U9A==
+X-Google-Smtp-Source: AGHT+IGMBxwB/DKnr6fY8T1v5bK6K6ol72OuQXuqtTuwPjbzA5oRGLscHORewCaINkYKGrNDehzR9A==
+X-Received: by 2002:a17:907:2da2:b0:b04:36e3:c07c with SMTP id
+ a640c23a62f3a-b0436e3c5d3mr220300166b.33.1756731187351; 
+ Mon, 01 Sep 2025 05:53:07 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b0432937e0esm190990766b.3.2025.09.01.05.53.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 01 Sep 2025 05:53:05 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id F40EF5F7F5;
+ Mon, 01 Sep 2025 13:53:04 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 0/4] arm_load_dtb cleanups
+Date: Mon,  1 Sep 2025 13:53:00 +0100
+Message-ID: <20250901125304.1047624-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-References: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
- <CAFEAcA89xRp51q2T4M3R=pOuHcGE9zJCGDpbXOz4cBhxrcU00Q@mail.gmail.com>
-In-Reply-To: <CAFEAcA89xRp51q2T4M3R=pOuHcGE9zJCGDpbXOz4cBhxrcU00Q@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 1 Sep 2025 13:47:01 +0100
-X-Gm-Features: Ac12FXzRGthQENhxqD9hzdi3UavyBKsYwurH8bR2m8rIR0u6qdHlq6Nupx-Bwsk
-Message-ID: <CAFEAcA8FhKBXJcOYaCTcsewzt+gBhy4Sqkznf1=vf+g-69901g@mail.gmail.com>
-Subject: Re: [PATCH 00/16] memory: Stop piggybacking on memory region owners
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>, 
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, Helge Deller <deller@gmx.de>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- John Snow <jsnow@redhat.com>, 
- qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Nicholas Piggin <npiggin@gmail.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- qemu-ppc@nongnu.org, John Levon <john.levon@nutanix.com>,
- Thanos Makatos <thanos.makatos@nutanix.com>, 
- Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- David Gibson <david@gibson.dropbear.id.au>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1136.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,65 +98,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 1 Sept 2025 at 13:35, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Mon, 1 Sept 2025 at 07:11, Akihiko Odaki
-> <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
-> >
-> > Supersedes: https://lore.kernel.org/qemu-devel/20250828-san-v9-0-c0dff4b8a487@rsg.ci.i.u-tokyo.ac.jp/
-> > ("[PATCH v9 0/2] Fix check-qtest-ppc64 sanitizer errors")
-> >
-> > MemoryRegions used to "piggyback" on their owners instead of using their
-> > reference counters due to the circular dependencies between them, which
-> > caused memory leak.
-> >
-> > I tried to fix it with "[PATCH v9 0/2] Fix check-qtest-ppc64 sanitizer
-> > errors" but it resulted in a lengthy discussion; ultimately it is
-> > attributed to the fact that "piggybacking" is hard to understand and
-> > forces us design trade-offs. It was also insufficient because it only
-> > deals with the container-subregion pattern and did not deal with DMA.
->
-> Unlike Peter Xu's proposed patch and your v9 patch you reference
-> above, with this series I still see leaks doing a 'make check'
-> on an ASAN build of the Arm targets. Here's a sample leak
-> detected during the device-introspect-test:
+This was prompted by a slop PR that came in via github and while
+looking at it I thought what arm_load_dtb really needed was to be
+modernised to:
 
-I should mention that I'm using an lsan-suppressions.txt file
-with the following entries:
+  - use autofree to avoid goto fail
+  - use error_setg to report errors
+  - use error_fatal rather than open coding exit()
 
-# This is a set of suppressions for LeakSanitizer; you can use it
-# by setting
-#   LSAN_OPTIONS="suppressions=/path/to/scripts/lsan-suppressions.txt"
-# register_init_block API is busted
-leak:register_init_block
-leak:canfd_populate_regarray
-# qtest-only leak, not very important
-leak:qemu_irq_intercept_in
-# this is maybe a leak caused by g_test_trap_subprocess():
-# in the subprocess, the cleanup functions that are supposed to free
-# memory don't get run for some reason.
-leak:qos_traverse_graph
+Alex.
 
-plus various leak fixes which I've sent out over the past week or two:
+Alex Bennée (4):
+  hw/arm: use g_autofree for filename in arm_load_dtb
+  hw/arm: use g_autofree for fdt in arm_load_dtb
+  hw/arm: use g_auto(GStrv) for node_path in arm_load_dtb
+  hw/arm: expose Error * to arm_load_dtb
 
-[PATCH 0/3] hw: Fix qemu_init_irq() leaks
- https://patchew.org/QEMU/20250821154053.2417090-1-peter.maydell@linaro.org/
+ include/hw/arm/boot.h |  3 +-
+ hw/arm/boot.c         | 75 ++++++++++++++++++-------------------------
+ hw/arm/virt.c         |  6 ++--
+ 3 files changed, 36 insertions(+), 48 deletions(-)
 
-[PATCH] hw/char/max78000_uart: Destroy FIFO on deinit
-https://patchew.org/QEMU/20250821154358.2417744-1-peter.maydell@linaro.org/
+-- 
+2.47.2
 
-[PATCH] hw/gpio/pca9554: Avoid leak in pca9554_set_pin()
-https://patchew.org/QEMU/20250821154459.2417976-1-peter.maydell@linaro.org/
-
-[PATCH 0/2] hw: fix some leaks in xlnx devices
-https://patchew.org/QEMU/20250826174956.3010274-1-peter.maydell@linaro.org/
-
-[PATCH] hw/arm/boot: Correctly free the MemoryDeviceInfoList
-https://patchew.org/QEMU/20250901102214.3748011-1-peter.maydell@linaro.org/
-
-and with those patches plus the lsan-suppressions file plus either
-Peter Xu's patch or your v9 patch I get a clean 'make check' run.
-
-thanks
--- PMM
 
