@@ -2,64 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB26EB3E4EC
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 15:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BADACB3E4E9
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 15:27:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ut4YP-00024i-Pi; Mon, 01 Sep 2025 09:26:37 -0400
+	id 1ut4YT-00026K-EV; Mon, 01 Sep 2025 09:26:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ut4YN-000248-JG
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 09:26:35 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ut4YQ-00025U-ED
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 09:26:38 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ut4YL-0001Lr-KR
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 09:26:35 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3d4dcf3863dso889936f8f.1
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 06:26:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ut4YO-0001NB-6t
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 09:26:38 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3c46686d1e6so2896680f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 06:26:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756733189; x=1757337989; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=vMiNyuN8vCGx4gQ6SgirNIsSrqkqFDJsdJQQNQ3ScD8=;
- b=a1dXWPbvdOoA6s8N3b8aeUynfoy1KQFrQskmgfH+C0I7vh87EMcB22qT8JoKZlMtDQ
- hAIfbPCn1R9u30/jIz0pqp3xTWUSlWkJY6zHA9rE5DCO3udzTBgVXG3xAI6XefG434gl
- nr1QvpIBgsb3V2RXAi7n6qBL/eVK9EwK86+6oepobccpiklJYtFIjo3TKy1lTWU9zUVB
- Xqk6UAH/nyatjRQU4txuXH/PwiLRyNnLjFWIrdAsBUOdc6BGkXPNP6n7p0D/YvFxIVEH
- zGpSAutQOxnezqffi7YrLcY8jFQuPW2YIf3Ayd1/XjuH0yAPC0DHyH6kJ1aURIr37N9i
- 18uw==
+ d=linaro.org; s=google; t=1756733194; x=1757337994; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=w3w1FiZdw8VHp7vBmM8UDjk+CIU/+vapRQH5dsIqp3U=;
+ b=JMMIjHc21Gyf55mLU+3iO9MDoPBtodwm6oLBJfctceJ8CXBou7BxqrdfFQcPq24WH6
+ F3hbW9Fp0pplJyUSluipe4F6tnWLH6dNxg4qZi/j45NNlWpQwr6vHuf3P5C2+sCX5bQA
+ FkyJiFQUEsc/EimrG83MpBc/5vgqGDkKXl5cLyJGDJJIwCPh0ZddRESIhLQI6mTMPzdD
+ rKNO+b0hM3psBkvQNv3tqSrAxdNSpgLeG/Z/bvRfx4oQO2umva2lJOOJq+tZXb9KUkB7
+ I7TaOGGqatsirqsQFDdTiXdVVmpyfxig3M/VQghHkTggO1gyQvxfZL8GGz0lPC2C7Ufp
+ quVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756733189; x=1757337989;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vMiNyuN8vCGx4gQ6SgirNIsSrqkqFDJsdJQQNQ3ScD8=;
- b=KIb/l52xgtX712aRp2Q9Kwxd4HKdppHEmq47QLLtFZ/ug5mANu+QQxAAsqgorQvtr1
- bMUvhBNXQQq7/eFmBBdAqaXSe4JK+DBXIO0euJBsacGZTDn2GlgJ0UyOJ7AUxhtrqulC
- W+MoJ+4DGIUB8zGzs90+9cEUCPZOV1J6c7EbBkzVNbNuHBvARRo99FMOCdm35NeeFVZL
- AidPEX+BY9z1aJcfrYFamQw5nZocIE4B06MtbY6KdW6y4+qp9K24i6Bl00b1if43jqs3
- 5Nl5sOAYbntSn0Bq37m+hyLUSYrRrp1ni3W/fUy5L16wDZxPxeLF/xFvjQI6s45bdmI0
- YKLg==
-X-Gm-Message-State: AOJu0YyCqre8EbMPBAqQBWFLhJ6RLhN5a3AsBZ8Q/XeQvnT4ap1hFwtl
- Ah3t58kVY2kMX4j4kkwi012sjP7q2je/awus6HK2z9ZnnLoRCB4SJKZmM9kEFAKVsrjuyUj/tHG
- GmZ2z
-X-Gm-Gg: ASbGncvSi+Q8Xoncb0yAYGI96U8162tYxA5S/MNbG4wN+GhZfDSDw0z8TGAXBkbPUB2
- 4kEUMrArMPPzoUkZwzbKE0gQfGVuxnbmYLiTaR0q0gaZ9x7+jz2OM0bHiHtFaGFmhdEuvl36kTC
- vJujV5yJlVOhIFB5hrFbihhik4pM1ALSJOudY1ZvtueQd9Lnq5pCyb05y9mgG4i3nyNNiq7oSDj
- uvArKc7T4/eKSGXzpqA4/KX03MBeOX8gbJwvgpCpnQVaovtuSTybYBHZSJkqhSWGPRgwUAS6pCu
- Un3p6HL8whWgkEDlqr6XFs+UyNEQfAUDa8D1LLG3G2yEIEtcyrMQ8hzXCoUF+6j+crpdpFr7g6/
- KjILoh4/stNvK4bm4qoGdOa7QB4g7LwXdknqkQAq07IqVPSrWlBRyIPf5SjD+rFmgAB+CQRwJ
-X-Google-Smtp-Source: AGHT+IGvMZjAB7w3flVb9fpv8Ycj4IjlLC96zH/J1Wz7eo4dvSyKyjK/lO7Gxvgzr6WwfpI7VugvTQ==
-X-Received: by 2002:a05:6000:218a:b0:3d2:aadc:296 with SMTP id
- ffacd0b85a97d-3d2aadc060bmr3196475f8f.16.1756733188895; 
- Mon, 01 Sep 2025 06:26:28 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1756733194; x=1757337994;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=w3w1FiZdw8VHp7vBmM8UDjk+CIU/+vapRQH5dsIqp3U=;
+ b=YsycJBf/NEQSdFf3kfBqsnNPtH4uxjwMcyckrqwmUcOzf5sFJKjaP1g7/KMdyF8ZZj
+ rfnvl/2YyHUIlvgef4LG4d8WQgtJZ5JxT0XGpHpDUQnulAbZ5/Fbgy37/RXAl2wtszJ0
+ fT6jBDyDEIRmBYvHvP+QKOHSFRUnM7/Px80+3V4hgEwzOiI9+UQ269HwLo8R1COVrFdB
+ tMABZtR08L3ij8CUey47MxTm4aYimlhFKafhTg4hSFlSDigpI2Fgu7Zoh0opRr3WmTZK
+ N53KR9zk9sLyWJzMjuR1vZcQbZPEiIGoEi+9CmskRn3JDmT/o73lMU+aUmaP51/qWYjl
+ 2QgQ==
+X-Gm-Message-State: AOJu0YyHtCbbnAH8/skrXIIa0GGWVppRdUqTKFSNsPEAWr+/r2z5IBZH
+ SugKsSrCAxlKtu0XXzCT8QVZEp8BMKLTb+R19Qc9zom0E1OzYlrFsBl5ocPP6WU59SrJorqqVva
+ nOZH3
+X-Gm-Gg: ASbGncvbVWW5dvR4wm+kw+tWgSsLgy4GsNOrr48FkLBPzIy68I5z2AIuh5oizGS9RFU
+ b/1omuDUpLYtbPgfeUmolgyI3ob+Ca3LrUGw1PbZ9Brhajc0TCQAo6SzCJ1LNqPkKNqurRXC+Tm
+ 6GADwhehEoX/Pn8+lYmRcd1PbrulC8Yb822sV/Y7CuNtKjHvn9bO0Y239uud/aXsm1Y5CCEb24X
+ 0pfZSp3zMRJ13vIrXDHmZ0/tls6sZ1bffyQqWdHZy6UmMtr2kzn3Ql8t/zfqW7A4casWF8M7PqL
+ dnGqJ2Hf92vmsYeK+xCZzMI86qDZIkx8Ixxmi0Dn0jnGk2C1Xikb4q0ly0Wgm8tfgNhg2VmZhVr
+ zIuh1hYGAxzQ2sWvzWVLGPYYf9cIRvLXVqX6h4OCLdaN++Srww6hMJJwSE7ySXfdyyrNh+dMLmL
+ dR3nRPolE=
+X-Google-Smtp-Source: AGHT+IH/QAHlxPbNMTYaJUtn3zT3bO63FA0TSMUQyXWPqmbg4KgBIu8+2jjlf2Aul+/W+uLb9CMgDQ==
+X-Received: by 2002:a05:6000:230d:b0:3d7:b12b:1312 with SMTP id
+ ffacd0b85a97d-3d7b12b1a47mr1452198f8f.9.1756733193793; 
+ Mon, 01 Sep 2025 06:26:33 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3d0a1f807f9sm14484129f8f.38.2025.09.01.06.26.27
+ ffacd0b85a97d-3d15f7b012csm12130896f8f.63.2025.09.01.06.26.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 01 Sep 2025 06:26:28 -0700 (PDT)
+ Mon, 01 Sep 2025 06:26:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
@@ -71,15 +73,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/3] system: Forbid alloca()
-Date: Mon,  1 Sep 2025 15:26:23 +0200
-Message-ID: <20250901132626.28639-1-philmd@linaro.org>
+Subject: [PATCH v2 1/3] target/ppc/kvm: Avoid using alloca()
+Date: Mon,  1 Sep 2025 15:26:24 +0200
+Message-ID: <20250901132626.28639-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250901132626.28639-1-philmd@linaro.org>
+References: <20250901132626.28639-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,23 +106,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Eradicate alloca() uses on system code, then enable
--Walloca to prevent new ones to creep back in.
+kvmppc_load_htab_chunk() is used for migration, thus is not
+a hot path. Use the heap instead of the stack, removing the
+alloca() call.
 
-Since v1:
-- Convert KVM/PPC (Peter)
-- Update doc (Alex)
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/ppc/kvm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Philippe Mathieu-Daudé (3):
-  target/ppc/kvm: Avoid using alloca()
-  buildsys: Prohibit alloca() use on system code
-  docs/devel/style: Mention alloca() family API is forbidden
-
- docs/devel/style.rst | 4 ++--
- meson.build          | 4 ++++
- target/ppc/kvm.c     | 3 +--
- 3 files changed, 7 insertions(+), 4 deletions(-)
-
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index d145774b09a..937b9ee986d 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -2760,11 +2760,10 @@ int kvmppc_save_htab(QEMUFile *f, int fd, size_t bufsize, int64_t max_ns)
+ int kvmppc_load_htab_chunk(QEMUFile *f, int fd, uint32_t index,
+                            uint16_t n_valid, uint16_t n_invalid, Error **errp)
+ {
+-    struct kvm_get_htab_header *buf;
+     size_t chunksize = sizeof(*buf) + n_valid * HASH_PTE_SIZE_64;
++    g_autofree struct kvm_get_htab_header *buf = g_malloc(chunksize);
+     ssize_t rc;
+ 
+-    buf = alloca(chunksize);
+     buf->index = index;
+     buf->n_valid = n_valid;
+     buf->n_invalid = n_invalid;
 -- 
 2.51.0
 
