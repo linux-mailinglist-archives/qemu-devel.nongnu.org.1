@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52F1B3D9AB
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 298E4B3D9A1
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 08:14:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1usxm0-0000sx-89; Mon, 01 Sep 2025 02:12:14 -0400
+	id 1usxll-0000r5-31; Mon, 01 Sep 2025 02:11:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1usxlb-0000ma-OQ; Mon, 01 Sep 2025 02:11:49 -0400
+ id 1usxlY-0000lb-Ud; Mon, 01 Sep 2025 02:11:45 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1usxlU-0002Yo-Hd; Mon, 01 Sep 2025 02:11:45 -0400
+ id 1usxlT-0002Yq-Ik; Mon, 01 Sep 2025 02:11:42 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5816ACAY076640
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5816ACAZ076640
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
  Mon, 1 Sep 2025 15:10:26 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=C011D3nEi4gnvkKvq30wWt2rhwDFSibnUsxSm7LxoTk=; 
+DKIM-Signature: a=rsa-sha256; bh=yVddGPFKHGH7ywDN+5LX7u8IS3es11FFm1EZQqc1z24=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
  s=rs20250326; t=1756707026; v=1;
- b=CAEusT5y0bOiKbVw3q4ZjWEq90nxtfCC7lzVg4XydDe66LXoS3+44DWc6snn+DRG
- jmgcMA/qUq3HcUYZ29OxczTsE221CLxhXELhKUJEfLrQuoZWuOiGRYyjHfJAs2g6
- dJY1ZgV8EDpk3APAPKlk4bfHIKRM5z716J7boYkPo6mT2HffyBD4ZfPJQQYwTVgG
- aZ2EORdks/x7LT440u09yPT7g+5isPXyY1IHJbb2PB2Bu6zCacSpQm/sL6pM4A90
- /9A3pEL348HXhCGWgAxStzaSfJkeS/4k7YwujDsaRxnyrNxScsa8jsAvrU/LpXvD
- TMRC4M7VItFyaRNrrBiYZg==
+ b=H9NTIrmwAe0UW9Uooyiq6xPk8zIPc5sgks810/ELOGDrLQMkYrABbsw9fvhhGsIy
+ 3rcBLQqUF3iJFOvQ+ve3updYTXOdWDbrD6kKX6rBojXnITpxsmvovuwOhXdV+as2
+ 2HXikpMjgsMTl6DiT1/VEWlA4CRAQTAUYqze6dMnB1cBV0FTsATomNZLvh7+9CEV
+ KzFppy6+jeMPwG2irBoJ9j3Dfwgx1AuIs84ibf6InIPSsEB+yOmZYq4tCG1SFLYg
+ P/CehvqT2ugBPfzuGhUUFRg+N5/AfpHTL0oFNHQOcwd0QDWVXRparxxXkgWh7vhD
+ GijqJAWQ7el5WEFChagxGw==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 01 Sep 2025 15:10:02 +0900
-Subject: [PATCH 04/16] hw/char/diva-gsp: Do not delete the subregion
+Date: Mon, 01 Sep 2025 15:10:03 +0900
+Subject: [PATCH 05/16] hw/char/serial-pci-multi: Do not delete the
+ subregion
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250901-mr-v1-4-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250901-mr-v1-5-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -101,21 +102,21 @@ It is no longer necessary.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/char/diva-gsp.c | 1 -
+ hw/char/serial-pci-multi.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/hw/char/diva-gsp.c b/hw/char/diva-gsp.c
-index e1f0713cb794d0442c56935dfe56d784d96949f0..1ae472e879b53555d4751b6a4848354f81c27fee 100644
---- a/hw/char/diva-gsp.c
-+++ b/hw/char/diva-gsp.c
-@@ -63,7 +63,6 @@ static void diva_pci_exit(PCIDevice *dev)
+diff --git a/hw/char/serial-pci-multi.c b/hw/char/serial-pci-multi.c
+index 13df272691a64f14ca3597174815653a01fbd381..3132ca90cebfe411cd3333b62ed75dd01f501067 100644
+--- a/hw/char/serial-pci-multi.c
++++ b/hw/char/serial-pci-multi.c
+@@ -57,7 +57,6 @@ static void multi_serial_pci_exit(PCIDevice *dev)
      for (i = 0; i < pci->ports; i++) {
          s = pci->state + i;
          qdev_unrealize(DEVICE(s));
--        memory_region_del_subregion(&pci->membar, &s->io);
+-        memory_region_del_subregion(&pci->iobar, &s->io);
          g_free(pci->name[i]);
      }
-     qemu_free_irqs(pci->irqs, pci->ports);
+ }
 
 -- 
 2.51.0
