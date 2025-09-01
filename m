@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB5CB3E248
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 14:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A70B3E24D
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Sep 2025 14:10:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ut3LG-0006AD-Ax; Mon, 01 Sep 2025 08:08:58 -0400
+	id 1ut3L8-00064T-UX; Mon, 01 Sep 2025 08:08:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ut3L6-00064q-Nh
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:08:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ut3L4-0005z4-JG
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:08:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ut3Ku-0005eo-Tt
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:08:48 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ut3Ky-0005ew-P4
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 08:08:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756728509;
+ s=mimecast20190719; t=1756728511;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:resent-to:
  resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
- bh=os84wrbCKE8S3rpPjh53xN3q5M0Jv9m6MCnVR8nrjUA=;
- b=NFqZ2dZscpUhtPvPPaRUG25kLYfFguSqsJKzgCYWgMZXfkZQJUEJh3MD8SO3cOodgUixbl
- 4Kd23jt8rGee12k8eqr8pLp2C9cqFiePsoJIfJeqRvUqm9MOuwDXtwmjIH1gx3jagYWNKa
- VURGOTWKJ3s4HP/WzClhsPAi4ypdZa8=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=L/8AVTUZcFiQdhcB+bIxr4rVv/251UNsF28ctT64Eqs=;
+ b=eOrG5ZYpmkmwQEGbXsT3ogI1Q+FxNgq6WSOjGOvcfjzIbQghTe0bL6CcrVB8zh6CYwz4pL
+ sUBXtqOJU5pb1ONlIJS4G0XUjtUzVlWTjS5evjuLjgSqCcBu4v0OUEQyw3xnoA2++jbDXz
+ Uyi/KxtkH5XUe6C1zHNrgz9HO2Z2rHU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-130-EzAoKK4hPXaNdnhg7ceK0g-1; Mon,
- 01 Sep 2025 08:08:28 -0400
-X-MC-Unique: EzAoKK4hPXaNdnhg7ceK0g-1
-X-Mimecast-MFC-AGG-ID: EzAoKK4hPXaNdnhg7ceK0g_1756728507
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-185-duGAsvHmOeuWcEevtU4Wfw-1; Mon,
+ 01 Sep 2025 08:08:27 -0400
+X-MC-Unique: duGAsvHmOeuWcEevtU4Wfw-1
+X-Mimecast-MFC-AGG-ID: duGAsvHmOeuWcEevtU4Wfw_1756728507
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6377519560B3; Mon,  1 Sep 2025 12:08:27 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 13C6E195608B; Mon,  1 Sep 2025 12:08:27 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D67DC1955EA4; Mon,  1 Sep 2025 12:08:26 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B3D6E180047F; Mon,  1 Sep 2025 12:08:26 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0DEA621E6924; Mon, 01 Sep 2025 14:08:24 +0200 (CEST)
+ id 17E6421E6925; Mon, 01 Sep 2025 14:08:24 +0200 (CEST)
 Resent-To: qemu-devel@nongnu.org, richard.henderson@linaro.org
 Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Mon, 01 Sep 2025 14:08:23 +0200
-Resent-Message-ID: <87tt1m4bpk.fsf@pond.sub.org>
+Resent-Date: Mon, 01 Sep 2025 14:08:24 +0200
+Resent-Message-ID: <87plca4bpj.fsf@pond.sub.org>
 X-From-Line: armbru@redhat.com  Mon Sep  1 13:19:06 2025
 X-Original-To: armbru
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 9878E21E6924; Mon, 01 Sep 2025 13:19:06 +0200 (CEST)
+ id 9CA4B21E6925; Mon, 01 Sep 2025 13:19:06 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 1/3] ui/keymaps: Avoid trace crash and improve error messages
-Date: Mon,  1 Sep 2025 13:19:04 +0200
-Message-ID: <20250901111906.2403307-2-armbru@redhat.com>
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 2/3] i386/kvm/vmsr_energy: Plug memory leak on failure to
+ connect socket
+Date: Mon,  1 Sep 2025 13:19:05 +0200
+Message-ID: <20250901111906.2403307-3-armbru@redhat.com>
 In-Reply-To: <20250901111906.2403307-1-armbru@redhat.com>
 References: <20250901111906.2403307-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Lines: 55
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Lines: 35
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,57 +92,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-parse_keyboard_layout() passes a possibly null @filename to
-trace_keymap_parse().  Trace backend log then formats it with %s,
-which crashes on some systems.
+vmsr_open_socket() leaks the Error set by
+qio_channel_socket_connect_sync().  Plug the leak by not creating the
+Error.
 
-Fix by moving the null check before the trace_keymap_parse().
-
-While there, improve the error messages a bit.
-
-Fixes: d3b787fa7dde (keymaps: add tracing)
+Fixes: 0418f90809ae (Add support for RAPL MSRs in KVM/Qemu)
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250723131504.1482657-1-armbru@redhat.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250723133257.1497640-2-armbru@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- ui/keymaps.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ target/i386/kvm/vmsr_energy.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/ui/keymaps.c b/ui/keymaps.c
-index 6ceaa97085..2359dbfe7e 100644
---- a/ui/keymaps.c
-+++ b/ui/keymaps.c
-@@ -86,19 +86,25 @@ static int parse_keyboard_layout(kbd_layout_t *k,
-                                  const name2keysym_t *table,
-                                  const char *language, Error **errp)
- {
-+    g_autofree char *filename = NULL;
-     int ret;
-     FILE *f;
--    char * filename;
-     char line[1024];
-     char keyname[64];
-     int len;
+diff --git a/target/i386/kvm/vmsr_energy.c b/target/i386/kvm/vmsr_energy.c
+index 58ce3df53a..890322ae37 100644
+--- a/target/i386/kvm/vmsr_energy.c
++++ b/target/i386/kvm/vmsr_energy.c
+@@ -57,13 +57,9 @@ QIOChannelSocket *vmsr_open_socket(const char *path)
+     };
  
-     filename = qemu_find_file(QEMU_FILE_TYPE_KEYMAP, language);
-+    if (!filename) {
-+        error_setg(errp, "could not find keymap file for language '%s'",
-+                   language);
-+        return -1;
-+    }
-+
-     trace_keymap_parse(filename);
--    f = filename ? fopen(filename, "r") : NULL;
--    g_free(filename);
-+
-+    f = fopen(filename, "r");
-     if (!f) {
--        error_setg(errp, "could not read keymap file: '%s'", language);
-+        error_setg_file_open(errp, errno, filename);
-         return -1;
-     }
+     QIOChannelSocket *sioc = qio_channel_socket_new();
+-    Error *local_err = NULL;
  
+     qio_channel_set_name(QIO_CHANNEL(sioc), "vmsr-helper");
+-    qio_channel_socket_connect_sync(sioc,
+-                                    &saddr,
+-                                    &local_err);
+-    if (local_err) {
++    if (qio_channel_socket_connect_sync(sioc, &saddr, NULL) < 0) {
+         /* Close socket. */
+         qio_channel_close(QIO_CHANNEL(sioc), NULL);
+         object_unref(OBJECT(sioc));
 -- 
 2.49.0
 
