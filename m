@@ -2,118 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C442B3F34D
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 791EDB3F365
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:08:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utIGz-0006Vm-9s; Tue, 02 Sep 2025 00:05:36 -0400
+	id 1utIHT-0007HN-Qk; Tue, 02 Sep 2025 00:06:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utIGh-0006Mc-Ar
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 00:05:16 -0400
+ id 1utIH5-00075G-EQ
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 00:05:46 -0400
 Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utIGX-00077x-UB
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 00:05:15 -0400
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822SDrx030680
- for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 04:05:03 GMT
+ id 1utIH3-0007GC-0I
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 00:05:38 -0400
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822SASO015364
+ for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 04:05:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- 5U3X03XI+3CaYdsrFa9ikiy9R/yafn6T/ILPFySxnro=; b=PapM9U8o+W1YwdH1
- 1UWeVSB7Yybrqgcq7uYQ5rwPGu96cSeLAnNTax+lg5lYvP9C7ejO+1stO1wt3vGq
- RCu9Vo6qloNJeloyRtikttpNYw6Vpjr4hwnv2XZ0o9Y72UvH0oAnrZQ/XvXRUfWY
- aY76S26CNA0Iirrw3JBpvWHwAD+byGLB0qLEE68IAzwwGFQ6CqT+DZxKD+sUgvBi
- zlZWWrrMQGVO2g7jgHCBoKOiDpLbRcMvlMajvb6Y55k3hSco8O31N9EygPCGgk9z
- Q5T4bGbmzZZKVSkV/kpUZGdCG2VDkRuJwd5BM6O7I/kYkIvlFba9jgvRum2l4tsW
- FEpsUg==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ura8pd8p-1
+ ipDm1e5nw1apgo+50RgPBPg+++LforSnU5Bsed6rCz8=; b=nj4SVDrDg4WoeX3q
+ s66mt6Cj+1CvHA0bbqw8GtSDQtMEe03LnqGND+IzsjDBxrgHol/jnBCdJPtXPk9I
+ Nu4YYAeLWsC/GPr0GfhYWlCL7hMA5C5dzbZ/Ui3qtG8mvTGqDiLv0O6pFp7HIIx3
+ eV5SxEIYHp7K8sDVe3F6KEqZGGZ9gPcSzvw+W61pBGfm3UQe7PMId1+2WxcGGtM1
+ yINEM9BdToMmOtqwE+2HaA2ivm+r8lm3rEQl4+uaTaKcEb/mJc9kdelS2qBVYuP8
+ zwUI1uozipzoF0udL8n1Ps/UlmjUQZTMhVzoFQ0VlQRtfcK97Un9NFv0d8vX7x07
+ 55b1TA==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48urvyxep3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 04:05:02 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-24b18ad403eso1122065ad.1
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 21:05:02 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 04:05:35 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-b4c1aefa8b7so4019981a12.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 21:05:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756785901; x=1757390701;
+ d=1e100.net; s=20230601; t=1756785935; x=1757390735;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5U3X03XI+3CaYdsrFa9ikiy9R/yafn6T/ILPFySxnro=;
- b=e/yGUscj2QtztMCqTUYZXEhNEfFsouPWqyRoTcG74K7vPE66H2ib7htr+md6f+JQ/I
- RfUnKgTVN6eotY4EffTJAdKU0wiONAxA9xNGu3M1W2lUSo1YumOpEaZdFSueGHzoAU3a
- hCd6KiVJjiJLdUwmSZn6znp37GwUTI6Y+++VFd3T676m71SQU6vpMyUdiHpjRRM/5xWY
- fTHpz3nIPEU2v8iDU3rXf7ysJsIx5BgIhsygnvMvT6BrHKDKKKrWBt0eZQfwjxGhAdKS
- k7o+Xp2HRWSCMWg8IgpzfIcfRGZFU5kbfTCNi5U5bxvVsmfSQ/EOZqKSsvR3gPAUshDO
- k6Nw==
+ bh=ipDm1e5nw1apgo+50RgPBPg+++LforSnU5Bsed6rCz8=;
+ b=kmJBBUwOaBjNDURPL+gVoxCqhovBmt8MqKEUh5NQDUqfywrfHCHIOS7Zl9xRQDKIB4
+ KeP3Tg0Z0oluf6YiQcWEOe4aqc2HxyTOzjcNEvobYTo2bmSAkG0xVsFChkaer74xHgJn
+ EKHEFAMJJ6uCRgzY5DX7hRD1x7l5BwLYDwXr8I394vlRaLv4+uXgD6azoEN8uovKhxxu
+ nmA9CCB54lzDnwvToeqj4NOfPuknnuyD0B9gs3rlmu9EDBykzD3WY0qEv054mtHXbBXV
+ 6jgTxNRtXoCG1XE2CXLy4ApIRhLnT9YcvL1kWBMmzRnhsFpo6T2YRFdgy6Q5m4m2llVr
+ Pm5Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWS/nwDNU7OtRPYN9NVpCVWQ80xQPK9EN5ijpCVRgh8KckH9W5lLtJQnOskdXvckg5zEjylrE1j/jlJ@nongnu.org
-X-Gm-Message-State: AOJu0Yz1L0woENfBPQrHxia3JlnRLC32zkTtDAZHvINak6hRRSLlkAub
- whqRnjDiCb2k0jBmQVBse4iPUWWtPY00aQOdlNwC/0GGueD7ycvmUxKq4LT26jpN6gRp697+H9p
- 8PrdSm8Th/PYVjkxDxV1KJWyNUoua2hR0hb0MKUtfQmiBHvqPr0WpLJG6PMX0zTzyhbMu
-X-Gm-Gg: ASbGncsjqJh6HohkF4hoqXZ+U9BabfoSDonMFGqAuTsWYaUA17RO/9MfZCzsIqeybHR
- 8ichTBabxXVQTlfnn9CcvE4UBKdPIUhw2yD3iBC9WcdJaOdxUrG4yGmE0HVchQUQQkTOL6FCnhc
- h8xuNKjQYfmxoMxlG8joKvspJRZ2NodNyai0xhG5GphGfCpYkDkmHhL/1k95u7N8Cjn1EsZ9DKf
- 81tGHYmSUsJ0svpialr25zr9VN4Drgymc+ZN73+DTva5xqCbmzyEkl9IuyDYVJNXXZV1ghTFZGW
- 7VhO6RvrMtMpUuPUWGprDCe0fBF9ubOlZ4mDLq8j+ER2Db2oVeW86W7Lt5cGfw==
-X-Received: by 2002:a17:902:ef43:b0:24a:9342:ecc3 with SMTP id
- d9443c01a7336-24a9342eedbmr113860385ad.14.1756785901010; 
- Mon, 01 Sep 2025 21:05:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG/DIFaDFx/KjJg1u51SYMgE/9wzhViE8ou1/Y+PhWz0jfVAXMH/l7vhy0+FOc262SzqIezfQ==
-X-Received: by 2002:a17:902:ef43:b0:24a:9342:ecc3 with SMTP id
- d9443c01a7336-24a9342eedbmr113860095ad.14.1756785900503; 
- Mon, 01 Sep 2025 21:05:00 -0700 (PDT)
+ AJvYcCXTUYe1KRdomh0ZAso+dQViED/swjvd8fScgVzCEr3aN0Ay+c5//OUS1bs+lIYO+sFMJqrIbKwAnZcI@nongnu.org
+X-Gm-Message-State: AOJu0YyetbolzUNudX0tDkcOTQCZvAB+FtHlfc4BkIjw1Wm5yQKzEIh6
+ JQNP/EBCCcgCOP55sxaKHEtHL1oUSQA/p7pumR49BgaMGkEE/eqFO6RSCGkXOt/zAb1BecMLOWv
+ qkOWl6iOqHzdK7pj/Ln8961ZLh7JD3IYnKCrBPThppdQZkyyiq7+xB27P4A==
+X-Gm-Gg: ASbGnctA9q/QJs945JV/IyoeQYdDRE6XmO5JGcfsW9III+qgYmGuegmizTXSDww3XWO
+ Dp1oAo+p2R01l8VyyaOmowzFe0o5tsYYugKP/mbfv3ShTtvsgo20f1bM6b6+flYCFKBCOFTvcZN
+ mx3MOI1rrt0sy97bf4VouCjhjl/RqoFuSPGxZBimTP0Yj3gRSieowtPC8o0202V5cKzrCSOqMqU
+ ObWRSXcEH+BnkVLF1BLTV27CzKaKvPixbx1w/FLPT8/Z9PlQDzYmHdF1wuuYLZEFhLZL2cYINdT
+ JL3+rAY1Xriq7WwEg7jsE9WieNOo8t5EXMBSOlBw7Odjl2s4miF22zreVgRzDQ==
+X-Received: by 2002:a17:902:f64c:b0:248:fc2d:3a2a with SMTP id
+ d9443c01a7336-24944b6cf13mr135344255ad.56.1756785934727; 
+ Mon, 01 Sep 2025 21:05:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFUk+G3yQSbOSH8adIqzPJCLklk9Rh/YdjqLTkK3iBavhb/THPu6aSBiTl824uzM9ms/AGe6w==
+X-Received: by 2002:a17:902:f64c:b0:248:fc2d:3a2a with SMTP id
+ d9443c01a7336-24944b6cf13mr135343875ad.56.1756785934251; 
+ Mon, 01 Sep 2025 21:05:34 -0700 (PDT)
 Received: from [172.19.248.181] ([80.149.170.9])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-249037254a0sm115887685ad.33.2025.09.01.21.04.46
+ d9443c01a7336-24903727e23sm119538555ad.45.2025.09.01.21.05.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 01 Sep 2025 21:05:00 -0700 (PDT)
-Message-ID: <fbf20ae7-b528-4915-9ed1-42f90822cb8e@oss.qualcomm.com>
-Date: Mon, 1 Sep 2025 20:20:24 -0500
+ Mon, 01 Sep 2025 21:05:33 -0700 (PDT)
+Message-ID: <aeda5ee0-da2a-4a49-b9cd-e84fb5a7cd95@oss.qualcomm.com>
+Date: Mon, 1 Sep 2025 20:22:40 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 34/38] target/hexagon: Add initial MMU model
+Subject: Re: [PATCH 38/38] target/hexagon: Add hex_interrupts support
 To: ltaylorsimpson@gmail.com, qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, quic_mathbern@quicinc.com,
  ale@rev.ng, anjo@rev.ng, quic_mliebel@quicinc.com,
  alex.bennee@linaro.org, quic_mburton@quicinc.com, sidneym@quicinc.com,
  'Brian Cain' <bcain@quicinc.com>, 'Michael Lambert' <mlambert@quicinc.com>
 References: <20250301052628.1011210-1-brian.cain@oss.qualcomm.com>
- <20250301052628.1011210-35-brian.cain@oss.qualcomm.com>
- <011101db9370$ddebf410$99c3dc30$@gmail.com>
+ <20250301052628.1011210-39-brian.cain@oss.qualcomm.com>
+ <011b01db9374$b8982630$29c87290$@gmail.com>
 Content-Language: en-US
 From: Brian Cain <brian.cain@oss.qualcomm.com>
-In-Reply-To: <011101db9370$ddebf410$99c3dc30$@gmail.com>
+In-Reply-To: <011b01db9374$b8982630$29c87290$@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: CX8fHX_bFpSkq4fi4ZeqF6b_Ah7u3D_l
-X-Proofpoint-GUID: CX8fHX_bFpSkq4fi4ZeqF6b_Ah7u3D_l
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyMCBTYWx0ZWRfX62276Fq9DADh
- v/pDaKqzK1YO0nL98YHHyaQltUNfv4B8JMi3pV9TMmNAXiJz9NafQVPmdiVBdweqCxe10LpZOGf
- jrQcXAA3tgUwkhp1yGRvVbO9BKVZI3cIw47VPq9/5bIf3hqlIseCrxzdpkqNvg4xuiRbLV9/maE
- MsmZwr3A/K0pWVn14g7Zgc4ekMypLGvah0ho2muRVfhDqLdWOwVy4DgN8tuwb3NXD+8h9j6XOpa
- BegNe3Pqdf9rHVCl75NACzwjYmJa9e54F+3cJdBYLdbyDz+fvEwFKeUrGJHpaDs81wV7e+YvobI
- hqZYK5CozTEn+GzzGzK38rV87zdTn+D19Xk1xlTymtNkmVzAItRPr/cHlPTBDqfrBhSF/+faumf
- 3B5TmPdp
-X-Authority-Analysis: v=2.4 cv=VNndn8PX c=1 sm=1 tr=0 ts=68b66cee cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=oqm+nZh+PgUSu2IGv/nVbQ==:17
+X-Proofpoint-GUID: TYXt0EX7FuNifvakUBJ4oVRbjEUmygVO
+X-Proofpoint-ORIG-GUID: TYXt0EX7FuNifvakUBJ4oVRbjEUmygVO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyNyBTYWx0ZWRfX3TUdR1wwINl/
+ 4a7w+0Fmkpr3MkSV8BBb4L5C7Fw7uh4CJK9RAc4UCds7uXUgAKWDPHSBdFZ5t8dLy0FavIKv7O9
+ 5WBvEIRnA5mix2Bxnq4VE2EroaPacEvFUWpty94lUsmkn8t/LJOTB9QAMAj3GKChn+7D+YLPxuo
+ 2FMN3fVxhjVV5/ZutI3CjaQo9QJIsuwgOfOyC0Pzdmn+U/nbW7tjz/KUaxD3m9GI4pJlrrOSwDy
+ 4LVDjcOqILIeENzYKlGmaPLydlG7bgf0DKNa/gL2TUw/VwnLgEi7qElZws43HnXPMnWCe0X7re2
+ Zvce9NDXUuN0+Ig0FSoAE5sgSdHFcJYObOiCz0zi4oaWZu2X9/XCGCnzdUw/TFpdusg/CYf5X2U
+ 0fJ5E1IE
+X-Authority-Analysis: v=2.4 cv=NrDRc9dJ c=1 sm=1 tr=0 ts=68b66d0f cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=oqm+nZh+PgUSu2IGv/nVbQ==:17
  a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
- a=69wJf7TsAAAA:8 a=KKAkSRfTAAAA:8 a=COk6AnOGAAAA:8 a=Q0g7hkgB0gUcp5_g9AYA:9
- a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22 a=Fg1AiH1G6rFz08G2ETeA:22
+ a=69wJf7TsAAAA:8 a=KKAkSRfTAAAA:8 a=COk6AnOGAAAA:8 a=-0I2jZQW5GywFGCs9KsA:9
+ a=QEXdDO2ut3YA:10 a=_Vgx9l1VpLgwpw_dHYaR:22 a=Fg1AiH1G6rFz08G2ETeA:22
  a=cvBusfyB2V15izCimMoJ:22 a=TjNXssC_j7lpFel5tvFf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0
- clxscore=1015 adultscore=0 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300020
+ clxscore=1015 suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
+ impostorscore=0 spamscore=0 bulkscore=0 adultscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508300027
 Received-SPF: pass client-ip=205.220.180.131;
  envelope-from=brian.cain@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -26
@@ -122,7 +122,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -139,7 +139,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 3/12/2025 12:04 PM, ltaylorsimpson@gmail.com wrote:
+On 3/12/2025 12:32 PM, ltaylorsimpson@gmail.com wrote:
 >
 >> -----Original Message-----
 >> From: Brian Cain <brian.cain@oss.qualcomm.com>
@@ -151,277 +151,42 @@ On 3/12/2025 12:04 PM, ltaylorsimpson@gmail.com wrote:
 >> alex.bennee@linaro.org; quic_mburton@quicinc.com;
 >> sidneym@quicinc.com; Brian Cain <bcain@quicinc.com>; Michael Lambert
 >> <mlambert@quicinc.com>
->> Subject: [PATCH 34/38] target/hexagon: Add initial MMU model
+>> Subject: [PATCH 38/38] target/hexagon: Add hex_interrupts support
 >>
 >> From: Brian Cain <bcain@quicinc.com>
 >>
 >> Co-authored-by: Taylor Simpson <ltaylorsimpson@gmail.com>
->> Co-authored-by: Michael Lambert <mlambert@quicinc.com>
 >> Co-authored-by: Sid Manning <sidneym@quicinc.com>
->> Co-authored-by: Matheus Tavares Bernardino
->> <quic_mathbern@quicinc.com>
+>> Co-authored-by: Michael Lambert <mlambert@quicinc.com>
 >> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 >
->> diff --git a/target/hexagon/hex_mmu.c b/target/hexagon/hex_mmu.c new
->> file mode 100644 index 0000000000..54c4ba2dbf
->> --- /dev/null
->> +++ b/target/hexagon/hex_mmu.c
->> @@ -0,0 +1,528 @@
->> +/*
->> + * Copyright(c) 2019-2025 Qualcomm Innovation Center, Inc. All Rights
->> Reserved.
->> + *
->> + * SPDX-License-Identifier: GPL-2.0-or-later  */
->> +
->> +#include "qemu/osdep.h"
->> +#include "qemu/main-loop.h"
->> +#include "qemu/qemu-print.h"
->> +#include "cpu.h"
->> +#include "system/cpus.h"
->> +#include "internal.h"
->> +#include "exec/exec-all.h"
->> +#include "hex_mmu.h"
->> +#include "macros.h"
->> +#include "sys_macros.h"
->> +#include "reg_fields.h"
->> +
->> +#define GET_TLB_FIELD(ENTRY, FIELD)                               \
->> +    ((uint64_t)fEXTRACTU_BITS(ENTRY, reg_field_info[FIELD].width, \
->> +                              reg_field_info[FIELD].offset))
->> +
->> +/* PPD (physical page descriptor) */
->> +static inline uint64_t GET_PPD(uint64_t entry) {
->> +    return GET_TLB_FIELD(entry, PTE_PPD) |
->> +        (GET_TLB_FIELD(entry, PTE_PA35) <<
->> +reg_field_info[PTE_PPD].width); }
->> +
->> +#define NO_ASID      (1 << 8)
->> +
->> +typedef enum {
->> +    PGSIZE_4K,
->> +    PGSIZE_16K,
->> +    PGSIZE_64K,
->> +    PGSIZE_256K,
->> +    PGSIZE_1M,
->> +    PGSIZE_4M,
->> +    PGSIZE_16M,
->> +    PGSIZE_64M,
->> +    PGSIZE_256M,
->> +    PGSIZE_1G,
->> +    NUM_PGSIZE_TYPES
->> +} tlb_pgsize_t;
->> +
->> +static const char *pgsize_str[NUM_PGSIZE_TYPES] = {
->> +    "4K",
->> +    "16K",
->> +    "64K",
->> +    "256K",
->> +    "1M",
->> +    "4M",
->> +    "16M",
->> +    "64M",
->> +    "256M",
->> +    "1G",
->> +};
->> +
->> +#define INVALID_MASK 0xffffffffLL
->> +
->> +static const uint64_t encmask_2_mask[] = {
->> +    0x0fffLL,                           /* 4k,   0000 */
->> +    0x3fffLL,                           /* 16k,  0001 */
->> +    0xffffLL,                           /* 64k,  0010 */
->> +    0x3ffffLL,                          /* 256k, 0011 */
->> +    0xfffffLL,                          /* 1m,   0100 */
->> +    0x3fffffLL,                         /* 4m,   0101 */
->> +    0xffffffLL,                         /* 16m,  0110 */
->> +    0x3ffffffLL,                        /* 64m,  0111 */
->> +    0xfffffffLL,                        /* 256m, 1000 */
->> +    0x3fffffffLL,                       /* 1g,   1001 */
->> +    INVALID_MASK,                      /* RSVD, 0111 */
->> +};
->> +
->> +/*
->> + * @return the page size type from @a entry.
->> + */
->> +static inline tlb_pgsize_t hex_tlb_pgsize_type(uint64_t entry) {
->> +    if (entry == 0) {
->> +        qemu_log_mask(CPU_LOG_MMU, "%s: Supplied TLB entry was 0!\n",
->> __func__);
->> +        return 0;
->> +    }
->> +    tlb_pgsize_t size = ctz64(entry);
->> +    g_assert(size < NUM_PGSIZE_TYPES);
->> +    return size;
->> +}
->> +
->> +/*
->> + * @return the page size of @a entry, in bytes.
->> + */
->> +static inline uint64_t hex_tlb_page_size_bytes(uint64_t entry) {
->> +    return 1ull << (TARGET_PAGE_BITS + 2 * hex_tlb_pgsize_type(entry));
->> +}
->> +
->> +static inline uint64_t hex_tlb_phys_page_num(uint64_t entry) {
->> +    uint32_t ppd = GET_PPD(entry);
->> +    return ppd >> 1;
->> +}
->> +
->> +static inline uint64_t hex_tlb_phys_addr(uint64_t entry) {
->> +    uint64_t pagemask = encmask_2_mask[hex_tlb_pgsize_type(entry)];
->> +    uint64_t pagenum = hex_tlb_phys_page_num(entry);
->> +    uint64_t PA = (pagenum << TARGET_PAGE_BITS) & (~pagemask);
->> +    return PA;
->> +}
->> +
->> +static inline uint64_t hex_tlb_virt_addr(uint64_t entry) {
->> +    return (uint64_t)GET_TLB_FIELD(entry, PTE_VPN) <<
->> TARGET_PAGE_BITS;
->> +}
->> +
->> +static bool hex_dump_mmu_entry(FILE *f, uint64_t entry) {
->> +    if (GET_TLB_FIELD(entry, PTE_V)) {
->> +        fprintf(f, "0x%016" PRIx64 ": ", entry);
->> +        uint64_t PA = hex_tlb_phys_addr(entry);
->> +        uint64_t VA = hex_tlb_virt_addr(entry);
->> +        fprintf(f, "V:%" PRId64 " G:%" PRId64 " A1:%" PRId64 " A0:%" PRId64,
->> +                GET_TLB_FIELD(entry, PTE_V), GET_TLB_FIELD(entry, PTE_G),
->> +                GET_TLB_FIELD(entry, PTE_ATR1), GET_TLB_FIELD(entry,
->> PTE_ATR0));
->> +        fprintf(f, " ASID:0x%02" PRIx64 " VA:0x%08" PRIx64,
->> +                GET_TLB_FIELD(entry, PTE_ASID), VA);
->> +        fprintf(f,
->> +                " X:%" PRId64 " W:%" PRId64 " R:%" PRId64 " U:%" PRId64
->> +                " C:%" PRId64,
->> +                GET_TLB_FIELD(entry, PTE_X), GET_TLB_FIELD(entry, PTE_W),
->> +                GET_TLB_FIELD(entry, PTE_R), GET_TLB_FIELD(entry, PTE_U),
->> +                GET_TLB_FIELD(entry, PTE_C));
->> +        fprintf(f, " PA:0x%09" PRIx64 " SZ:%s (0x%" PRIx64 ")", PA,
->> +                pgsize_str[hex_tlb_pgsize_type(entry)],
->> +                hex_tlb_page_size_bytes(entry));
->> +        fprintf(f, "\n");
->> +        return true;
->> +    }
->> +
->> +    /* Not valid */
->> +    return false;
->> +}
->> +
->> +void dump_mmu(CPUHexagonState *env)
->> +{
->> +    int i;
->> +
->> +    HexagonCPU *cpu = env_archcpu(env);
->> +    for (i = 0; i < cpu->num_tlbs; i++) {
->> +        uint64_t entry = env->hex_tlb->entries[i];
->> +        if (GET_TLB_FIELD(entry, PTE_V)) {
->> +            qemu_printf("0x%016" PRIx64 ": ", entry);
->> +            uint64_t PA = hex_tlb_phys_addr(entry);
->> +            uint64_t VA = hex_tlb_virt_addr(entry);
->> +            qemu_printf(
->> +                "V:%" PRId64 " G:%" PRId64 " A1:%" PRId64 " A0:%" PRId64,
->> +                GET_TLB_FIELD(entry, PTE_V), GET_TLB_FIELD(entry, PTE_G),
->> +                GET_TLB_FIELD(entry, PTE_ATR1), GET_TLB_FIELD(entry,
->> PTE_ATR0));
->> +            qemu_printf(" ASID:0x%02" PRIx64 " VA:0x%08" PRIx64,
->> +                        GET_TLB_FIELD(entry, PTE_ASID), VA);
->> +            qemu_printf(
->> +                " X:%" PRId64 " W:%" PRId64 " R:%" PRId64 " U:%" PRId64
->> +                " C:%" PRId64,
->> +                GET_TLB_FIELD(entry, PTE_X), GET_TLB_FIELD(entry, PTE_W),
->> +                GET_TLB_FIELD(entry, PTE_R), GET_TLB_FIELD(entry, PTE_U),
->> +                GET_TLB_FIELD(entry, PTE_C));
->> +            qemu_printf(" PA:0x%09" PRIx64 " SZ:%s (0x%" PRIx64 ")", PA,
->> +                        pgsize_str[hex_tlb_pgsize_type(entry)],
->> +                        hex_tlb_page_size_bytes(entry));
->> +            qemu_printf("\n");
-> Use hex_dump_mmu_entry instead.
-
-
-Will fix this in v3.
-
+>> diff --git a/target/hexagon/hex_interrupts.c
+>> b/target/hexagon/hex_interrupts.c new file mode 100644 index
+>> 0000000000..fd00bcfb9a
 >
->> +        }
->> +    }
->> +}
->> +
->> +static inline void hex_log_tlbw(uint32_t index, uint64_t entry) {
->> +    if (qemu_loglevel_mask(CPU_LOG_MMU)) {
->> +        if (qemu_log_enabled()) {
->> +            FILE *logfile = qemu_log_trylock();
->> +            if (logfile) {
->> +                fprintf(logfile, "tlbw[%03d]: ", index);
->> +                if (!hex_dump_mmu_entry(logfile, entry)) {
->> +                    fprintf(logfile, "invalid\n");
->> +                }
->> +                qemu_log_unlock(logfile);
->> +            }
->> +        }
->> +    }
->> +}
->> +
->> +void hex_tlbw(CPUHexagonState *env, uint32_t index, uint64_t value) {
->> +    uint32_t myidx = fTLB_NONPOW2WRAP(fTLB_IDXMASK(index));
->> +    bool old_entry_valid = GET_TLB_FIELD(env->hex_tlb->entries[myidx],
->> PTE_V);
->> +    if (old_entry_valid && hexagon_cpu_mmu_enabled(env)) {
->> +        CPUState *cs = env_cpu(env);
->> +
->> +        tlb_flush(cs);
->> +    }
->> +    env->hex_tlb->entries[myidx] = (value);
->> +    hex_log_tlbw(myidx, value);
->> +}
->> +
->> +void hex_mmu_realize(CPUHexagonState *env) {
+>> +bool hex_check_interrupts(CPUHexagonState *env) {
 >> +    CPUState *cs = env_cpu(env);
->> +    if (cs->cpu_index == 0) {
->> +        env->hex_tlb = g_malloc0(sizeof(CPUHexagonTLBContext));
->> +    } else {
->> +        CPUState *cpu0_s = NULL;
->> +        CPUHexagonState *env0 = NULL;
->> +        CPU_FOREACH(cpu0_s) {
->> +            assert(cpu0_s->cpu_index == 0);
->> +            env0 = &(HEXAGON_CPU(cpu0_s)->env);
->> +            break;
->> +        }
-> Seems fragile to assume cpu_index == 0 will be first in CPU_FOREACH.  This would be better
->      CPU_FOREACH(cpu0_s) {
->          if (cpu0_s->cpu_index == 0) {
->              env0 = &(HEXAGON_CPU(cpu0_s)->env);
->              break;
->          }
->      }
->      g_assert(env0);  /* Make sure we found it */
-
-In fact, this suffers from the same design error we made w/the global 
-registers.
-
-We will move the global TLB state to an Object like we did w/the global 
-register state, and it will eliminate this FOREACH entirely and any 
-fragile binding with cpu_index == 0.
-
-
->
->> +        env->hex_tlb = env0->hex_tlb;
+>> +    bool int_handled = false;
+>> +    bool ssr_ex = get_ssr_ex(env);
+>> +    int max_ints = 32;
+>> +    bool schedcfgen;
+>> +
+>> +    /* Early exit if nothing pending */
+>> +    if (get_ipend(env) == 0) {
+>> +        restore_state(env, false);
+>> +        return false;
 >> +    }
->> +}
+>> +
+>> +    BQL_LOCK_GUARD();
+>> +    /* Only check priorities when schedcfgen is set */
+>> +    schedcfgen = get_schedcfgen(env);
+>> +    for (int i = 0; i < max_ints; i++) {
+>> +        if (!get_iad_bit(env, i) && get_ipend_bit(env, i)) {
+>> +            qemu_log_mask(CPU_LOG_INT,
+>> +                          "%s: thread[%d] pc = 0x%x found int %d\n", __func__,
+>> +                          env->threadId, env->gpr[HEX_REG_PC], i);
+> Don't use %d - use PRI* instead.  Several instances ...
 >
->> diff --git a/target/hexagon/meson.build b/target/hexagon/meson.build
->> index 3ec53010fa..aa729a3683 100644
->> --- a/target/hexagon/meson.build
->> +++ b/target/hexagon/meson.build
->> @@ -273,7 +273,8 @@ hexagon_ss.add(files(
->>   #     idef-generated-enabled-instructions
->>   #
->>   idef_parser_enabled = get_option('hexagon_idef_parser') -if
->> idef_parser_enabled and 'hexagon-linux-user' in target_dirs
->> +if idef_parser_enabled and ('hexagon-linux-user' in target_dirs or
->> +                            'hexagon-softmmu' in target_dirs)
->>       idef_parser_input_generated = custom_target(
->>           'idef_parser_input.h.inc',
->>           output: 'idef_parser_input.h.inc',
-> Move this to later patch "add build config for softmmu"
->
-Done in v2.
+I believe I have mitigated all of these in v2.
 >
 
