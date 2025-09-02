@@ -2,71 +2,129 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C96B3F227
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 04:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D55CB3F3B5
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:25:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utGT4-00034O-VF; Mon, 01 Sep 2025 22:09:54 -0400
+	id 1utIa2-0004ZT-II; Tue, 02 Sep 2025 00:25:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1utGT0-000346-DE
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 22:09:50 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1utGSx-0001ap-3p
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 22:09:49 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8AxxtDjUbZoOpkFAA--.11340S3;
- Tue, 02 Sep 2025 10:09:39 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowJBxZOTgUbZoKxF4AA--.48545S3;
- Tue, 02 Sep 2025 10:09:38 +0800 (CST)
-Subject: Re: [PATCH] hw/loongarch/virt: Fix the cpu hotplug issue
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org,
- Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20250829013243.1237107-1-lixianglai@loongson.cn>
- <34bc7ebf-4a7e-d2f8-65de-529ef658be49@loongson.cn>
- <20250901135846.12a9c3e2@fedora>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <85e19964-52a1-bc97-5287-ed5e5b3ec41a@loongson.cn>
-Date: Tue, 2 Sep 2025 10:07:36 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1utIZp-0004Ed-84
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 00:25:01 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1utIZn-0001Bi-CL
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 00:25:00 -0400
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822Rnhj020757
+ for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 04:24:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ 572yDz5gdmSjF8J7pzmJkjSWBFoqtnZUo6EgbeAUMbs=; b=gjFDL5Sd6tWwIQ3r
+ KZI0eUoknKvTY+jHhi+B5AmRU3EYNUUvZkT5+ruYsIHxoxkxSRTj+b87GYM5GrmY
+ uiSkoH2ja4cg9tf9DVOwFa/zGxTlbV0TFYjC9va5eL5ST0Gg6P7dMDssEJdvKZIw
+ KBasJ80LWUcIXrNV8mdN8j/RYPRbLFOtSiaOcpfLjeUbaDJ0q1ZTE0g3uJW9fQKj
+ Kw1avoTpQP6zlbrKH0Z0ZWL2CAA0AW/1N3E7Gw9iKHuGeUzRwYF2oufD1Xqz//pW
+ RLpBIy5c2W0sB6sozlkQxY4wZJWzurbRF5Srpg6bEipvH1EM6O7qLfPJmANm7UGK
+ uBzhaQ==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ur8rxhhx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 04:24:57 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4b32a58c3f9so44548641cf.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 21:24:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756787096; x=1757391896;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=572yDz5gdmSjF8J7pzmJkjSWBFoqtnZUo6EgbeAUMbs=;
+ b=GFk0A8Thk0YejyKqCZiwYSKM7SuBkB6Z6oxaMl+TNMJeomel/Gb70W990g2yvoxnhw
+ 6rwN736BeEpJOf+LCanaJFD7A9ZhB3vXBGy568oDRECcXoDFMfP7hMttVYDhiRGpJfIN
+ YHd7QNZEzrlxFQ3ouLJuvfJJfVzqUtyoX5nnONDwPakSQuhIyrgwHqFmzI3E91fGH73k
+ 5TYuY18Qj2F7idFAqCYeN9Rz9rfrnCmiv2ONQIKR/QJbfbAjVeuuH1XixVJCuI6XXSS3
+ X1g7Led1CynapKCEYbBm3W76wYSxsSDPBtNbuIuwIrDCFidnG/8Qk16iXf7U724BRBej
+ MuNw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXZYb7JrhVs4hj1eW5x0xFQhgxNzfVJPaNKrfnsUGqkI41oqwSV5+TOjojVjWz2GLugMVH5RLgN2zx9@nongnu.org
+X-Gm-Message-State: AOJu0YzZwH96JEugSMShKiN1+bPfegrQb5ecvoOA9hPUDi3n3I+k/bFG
+ G6d4hwpi6d0ytQwzHcxj4KAzXl0EJTtFXWD8doolel13/WwkzU3hb+NWP9nQjQX6sm13Gm7IdoV
+ 9G2WqCmI8yAJqR32K4siVoIfyo3TczBaRsOuM3UPt4X4CSkLaSme7aF1eAA==
+X-Gm-Gg: ASbGncvION1YRywNGofzkHpZRbjBc96c4dIWJOaEh6DzUDHbRgi8UqtISI5fQzT+/xh
+ 6HyBav7SvRIDIcKTZqTfztkOQ431Gc02Z+PlyPRspc3X6WqKj41lCFkiFhcSB5kcP63vMh8M6Us
+ lf4eJd360uxTRbsUNfUb821+nYnfcsqdCGYwqqq6ctqJ25mjBeAU5mVsWi/HooVzRT6iYZlPg7c
+ 1sRchwqdmXXqtCxok80zXksQwvDjTquC4m4ni6SNXB6BWGwKw0W8YpkF0dsE3EHc/ZywJd5Tlrh
+ cmRrCgUoohbHVh+M3B0ZWeM0H/cAhgFIyzo3GLQgu2TRX2NdmYrl3xfpIsqVdw==
+X-Received: by 2002:a05:622a:1394:b0:4b2:8ac5:25a3 with SMTP id
+ d75a77b69052e-4b31dcbcc9amr127247851cf.76.1756787096626; 
+ Mon, 01 Sep 2025 21:24:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCVSWtndf5s+796GYlwewpF6F98Ep5dMdOX7UrbBZSdkK0GO6mHRhefF6zO6Ow6AQL3pm6OA==
+X-Received: by 2002:a05:622a:1394:b0:4b2:8ac5:25a3 with SMTP id
+ d75a77b69052e-4b31dcbcc9amr127247611cf.76.1756787096074; 
+ Mon, 01 Sep 2025 21:24:56 -0700 (PDT)
+Received: from [172.19.248.181] ([80.149.170.9])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3cf276d5e5fsm17958390f8f.27.2025.09.01.21.24.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 01 Sep 2025 21:24:55 -0700 (PDT)
+Message-ID: <439dbebe-759f-444c-8e2b-8acd8b5ce5df@oss.qualcomm.com>
+Date: Mon, 1 Sep 2025 21:08:29 -0500
 MIME-Version: 1.0
-In-Reply-To: <20250901135846.12a9c3e2@fedora>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 22/39] target/hexagon: Implement setprio, resched
+To: ltaylorsimpson@gmail.com, 'Sid Manning' <sidneym@quicinc.com>,
+ qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, philmd@linaro.org,
+ "'Matheus Bernardino (QUIC)'" <quic_mathbern@quicinc.com>, ale@rev.ng,
+ anjo@rev.ng, "'Marco Liebel (QUIC)'" <quic_mliebel@quicinc.com>,
+ alex.bennee@linaro.org, "'Mark Burton (QUIC)'" <quic_mburton@quicinc.com>,
+ 'Brian Cain' <bcain@quicinc.com>
+References: <20250301052845.1012069-1-brian.cain@oss.qualcomm.com>
+ <20250301052845.1012069-23-brian.cain@oss.qualcomm.com>
+ <03a101db99d0$8c67c5e0$a53751a0$@gmail.com>
+ <IA0PR02MB9486BDD73D3CBCD3468C367FBED82@IA0PR02MB9486.namprd02.prod.outlook.com>
+ <03aa01db99e7$6f8a20a0$4e9e61e0$@gmail.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJBxZOTgUbZoKxF4AA--.48545S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxZF43ur1DAw4xWr47Zr1fGrX_yoWrZw15pr
- WUCFn0kF4kJr47Z39Fq34Y9F1qywsxKr43WFnxtrWFkw4qqr1DXF1jvw47uFWUA3Wru3WF
- vr9a9a1SvF4av3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j8yCJU
- UUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -54
-X-Spam_score: -5.5
-X-Spam_bar: -----
-X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.599,
+From: Brian Cain <brian.cain@oss.qualcomm.com>
+In-Reply-To: <03aa01db99e7$6f8a20a0$4e9e61e0$@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAxOSBTYWx0ZWRfXxWKsaoFSSgdN
+ 1Bb/HP6diUMGByMm1lwbMrc/4YcXDMOXW/GztZ7W1K3coJqXX6YPbjUDLonHeJy1qahnkXwddes
+ Mx8VMojtTj05JNJ+OG0anO9QNHhxVyJIImxoFRrzqOu9JHAxttnSHb2YKxrHORNuK37VhD+ubb0
+ 8I0i0duDPUtCCmNlqfyAA8XiQ4kwOJBIZVJkRlWJww+gOKm6JLDozvyAfDiidq0PUOdf0E5yt/w
+ c6poXJPuYJlVAtnI9rR5skzDBrK4FnDqeM/RxJmfXfnH3Nnk60JzhMJLZDPyCygtA9/7lMfwR/1
+ Ho5aCVVQ8qWzmpHA2Ldq0SDcBt1s/sxNQDW8K6fhVdAcxqFMbiMmiGh7ofKvGhXysqHhG+AxMWK
+ NJcjKL0M
+X-Proofpoint-GUID: yVHe-HRGEMC4b_fhU2LisKNjlkuRj7ct
+X-Proofpoint-ORIG-GUID: yVHe-HRGEMC4b_fhU2LisKNjlkuRj7ct
+X-Authority-Analysis: v=2.4 cv=PNkP+eqC c=1 sm=1 tr=0 ts=68b6719a cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=oqm+nZh+PgUSu2IGv/nVbQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=pGLkceISAAAA:8 a=COk6AnOGAAAA:8
+ a=EUspDBNiAAAA:8 a=69wJf7TsAAAA:8 a=KKAkSRfTAAAA:8 a=cwRB2rIEbE6GN1lDXnkA:9
+ a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22 a=TjNXssC_j7lpFel5tvFf:22
+ a=Fg1AiH1G6rFz08G2ETeA:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0 clxscore=1015
+ suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300019
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,121 +143,43 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-
-On 2025/9/1 下午7:58, Igor Mammedov wrote:
-> On Fri, 29 Aug 2025 10:31:57 +0800
-> Bibo Mao <maobibo@loongson.cn> wrote:
-> 
->> On 2025/8/29 上午9:32, Xianglai Li wrote:
->>> The hot-plugged cpu does not register the cpu reset function, so the cpu
->>> plugged in later cannot reset properly, and there will be problems when
->>> restarting.
->>>
->>> Now register the cpu reset function in the cpu hotplug callback function.
->> Oh, it is actually one problem and it is missing :(. There is similiar
->> patch posted at:
->>   
->> https://lore.kernel.org/qemu-devel/20241031065418.3111892-1-maobibo@loongson.cn/
+On 3/20/2025 5:28 PM, ltaylorsimpson@gmail.com wrote:
+>
+>> -----Original Message-----
+>> From: Sid Manning <sidneym@quicinc.com>
+>> Sent: Thursday, March 20, 2025 3:26 PM
+>> To: ltaylorsimpson@gmail.com; 'Brian Cain'
+>> <brian.cain@oss.qualcomm.com>; qemu-devel@nongnu.org
+>> Cc: richard.henderson@linaro.org; philmd@linaro.org; Matheus Bernardino
+>> (QUIC) <quic_mathbern@quicinc.com>; ale@rev.ng; anjo@rev.ng; Marco
+>> Liebel (QUIC) <quic_mliebel@quicinc.com>; alex.bennee@linaro.org; Mark
+>> Burton (QUIC) <quic_mburton@quicinc.com>; Brian Cain
+>> <bcain@quicinc.com>
+>> Subject: RE: [PATCH 22/39] target/hexagon: Implement setprio, resched
+>>>> +    if (lowest_th_prio > best_prio) {
+>>>> +        qemu_log_mask(CPU_LOG_INT,
+>>>> +                "%s: raising resched int %d, cur PC 0x" TARGET_FMT_lx "\n",
+>>>> +                __func__, int_number, arch_get_thread_reg(env,
+>>> HEX_REG_PC));
+>>>> +        SET_SYSTEM_FIELD(env, HEX_SREG_BESTWAIT, BESTWAIT_PRIO,
+>>>> 0x1ff);
+>>> What is the significance of 0x1ff?  The field is 10 bits, so this
+>>> isn't setting all the bits.
+>>> Should this be lowest_th_prio?
+>> [Sid Manning]
 >>
->> I prefer to adding cpu reset in CPU object realize function rather
->> hotplug handler, and executing reset_load_elf() in board specific
->> reset callback. However peter has different thoughts.
-> 
-> this patch and above mentioned one expose direct boot specific
-> reset_load_elf() on a generic hardware bring up path. That's
-> probably isn't right.
-> 
-> Ideally default (cpu_reset()) reset would happen 1st during
-> cpu creation/board init and then direct boot would patch
-> the CPU that actually would execute payload.
-> 
-> PS:
-> what's the reason to call reset_load_elf() on all present
-> vCPUs and why hotplugged ones matter here?
-> 
-> Shouldn't direct booted QEMU patch BSP only?
-yes, reset_load_elf() is only BSP relative, now BSP directly jumps
-to kernel entry, AP jump to slave_boot_code[]. Ideally both BSP and
-AP can jump to aux boot code if it boot code works like EFI bios, then 
-reset_load_elf() is not necessary for BSP also. I will try it.
-
-Regards
-Bibo Mao
-
-> 
+>> Hi Taylor,
 >>
->> Regards
->> Bibo Mao
->>>
->>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
->>> ---
->>>    hw/loongarch/boot.c         | 8 +-------
->>>    hw/loongarch/virt.c         | 4 ++++
->>>    include/hw/loongarch/virt.h | 1 +
->>>    3 files changed, 6 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
->>> index 14d6c52d4e..6bc1f3d50c 100644
->>> --- a/hw/loongarch/boot.c
->>> +++ b/hw/loongarch/boot.c
->>> @@ -324,7 +324,7 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
->>>        return kernel_entry;
->>>    }
->>>    
->>> -static void reset_load_elf(void *opaque)
->>> +void reset_load_elf(void *opaque)
->>>    {
->>>        LoongArchCPU *cpu = opaque;
->>>        CPULoongArchState *env = &cpu->env;
->>> @@ -429,12 +429,6 @@ static void loongarch_direct_kernel_boot(MachineState *ms,
->>>    void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info)
->>>    {
->>>        LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
->>> -    int i;
->>> -
->>> -    /* register reset function */
->>> -    for (i = 0; i < ms->smp.cpus; i++) {
->>> -        qemu_register_reset(reset_load_elf, LOONGARCH_CPU(qemu_get_cpu(i)));
->>> -    }
->>>    
->>>        info->kernel_filename = ms->kernel_filename;
->>>        info->kernel_cmdline = ms->kernel_cmdline;
->>> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
->>> index b15ada2078..71f8ddc980 100644
->>> --- a/hw/loongarch/virt.c
->>> +++ b/hw/loongarch/virt.c
->>> @@ -1013,6 +1013,8 @@ static void virt_cpu_unplug(HotplugHandler *hotplug_dev,
->>>        /* Notify acpi ged CPU removed */
->>>        hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->acpi_ged), dev, &error_abort);
->>>    
->>> +    /* unregister reset function */
->>> +    qemu_unregister_reset(reset_load_elf, cpu);
->>>        cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
->>>        cpu_slot->cpu = NULL;
->>>    }
->>> @@ -1037,6 +1039,8 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev,
->>>                                 &error_abort);
->>>        }
->>>    
->>> +    /* register reset function */
->>> +    qemu_register_reset(reset_load_elf, cpu);
->>>        cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
->>>        cpu_slot->cpu = CPU(dev);
->>>    }
->>> diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
->>> index 602feab0f0..15ea393386 100644
->>> --- a/include/hw/loongarch/virt.h
->>> +++ b/include/hw/loongarch/virt.h
->>> @@ -71,6 +71,7 @@ struct LoongArchVirtMachineState {
->>>    OBJECT_DECLARE_SIMPLE_TYPE(LoongArchVirtMachineState, LOONGARCH_VIRT_MACHINE)
->>>    void virt_acpi_setup(LoongArchVirtMachineState *lvms);
->>>    void virt_fdt_setup(LoongArchVirtMachineState *lvms);
->>> +void reset_load_elf(void *opaque);
->>>    
->>>    static inline bool virt_is_veiointc_enabled(LoongArchVirtMachineState *lvms)
->>>    {
->>>    
+>> The value 0x1ff is correct but it does look like BESTWAIT_PRIO is not, it should
+>> be 9 not 10 target/hexagon/reg_fields_def.h.inc
 >>
->>
-
+>> It looks like it was added in "PATCH 19/38 target/hexagon: Define register
+>> fields for system regs"
+>> I will make a fixup to that patch and correct the value.
+> I see.
+> If the intent is to set all the bits in the field, then use ~0.
+This didn't make it into v2 but it's a simple fix - will add it for v3.
+> Taylor
+>
+>
 
