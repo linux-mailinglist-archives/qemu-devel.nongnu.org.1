@@ -2,78 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C732B40AFC
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 18:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF79B40B11
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 18:51:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utUBZ-0006DF-L7; Tue, 02 Sep 2025 12:48:45 -0400
+	id 1utUDg-0008FB-CI; Tue, 02 Sep 2025 12:50:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jlu@pengutronix.de>)
- id 1utUBF-00062t-UO
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 12:48:28 -0400
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jlu@pengutronix.de>)
- id 1utUBB-0003Vk-Eo
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 12:48:25 -0400
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.whiteo.stw.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <jlu@pengutronix.de>)
- id 1utUAt-0001DK-15; Tue, 02 Sep 2025 18:48:03 +0200
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77])
- by drehscheibe.grey.stw.pengutronix.de with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.96)
- (envelope-from <jlu@pengutronix.de>) id 1utUAq-003QG6-16;
- Tue, 02 Sep 2025 18:48:00 +0200
-Received: from localhost ([127.0.0.1] helo=[IPv6:::1])
- by ptz.office.stw.pengutronix.de with esmtp (Exim 4.96)
- (envelope-from <jlu@pengutronix.de>) id 1utUAq-009SCg-0T;
- Tue, 02 Sep 2025 18:48:00 +0200
-Message-ID: <a1463f9e36d8b3e6289859bec9a0a5a758709316.camel@pengutronix.de>
-Subject: Re: [PATCH v2 1/8] hw/sd/sdcard: Fix size check for backing block
- image
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-To: Jan Kiszka <jan.kiszka@siemens.com>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, 
- qemu-devel <qemu-devel@nongnu.org>, Joel Stanley <joel@jms.id.au>
-Cc: Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org, Ilias Apalodimas
- <ilias.apalodimas@linaro.org>, qemu-arm <qemu-arm@nongnu.org>, Alistair
- Francis <alistair@alistair23.me>, Alexander Bulekov <alxndr@bu.edu>
-Date: Tue, 02 Sep 2025 18:47:59 +0200
-In-Reply-To: <21b6726a-1ceb-4782-a219-36f32cebb774@siemens.com>
-References: <cover.1756706188.git.jan.kiszka@siemens.com>
- <86217712232abd5152e7dfa98111f57b9b78d83b.1756706188.git.jan.kiszka@siemens.com>
- <6289fe04-82be-4a34-9fed-b0cc08e3b8f0@linaro.org>
- <a9fdf524-0ca1-45db-be39-7bfccc468f0f@siemens.com>
- <11808e86-cee0-48bf-8fbd-de13a9a25ed0@linaro.org>
- <4c039b3c-dc2c-4478-b1bb-90b925e56245@linaro.org>
- <c8e1a073-7702-4bad-b7f1-2b4f51da47f4@kaod.org>
- <03a51e36-9a15-4b49-a310-c36a4d0af360@linaro.org>
- <2abbaeda-f9dc-4045-a9f7-b2b48451255f@kaod.org>
- <42310bdb-4fad-4df2-b7ad-3ff3f863e248@linaro.org>
- <d21f6449-e646-42fc-8277-b011a886e9c9@linaro.org>
- <41d2e67e-3345-4720-b3aa-1051224025de@siemens.com>
- <21b6726a-1ceb-4782-a219-36f32cebb774@siemens.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1utUDe-0008ES-RW
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 12:50:54 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1utUDd-0004Po-6t
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 12:50:54 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-b0225483ca0so550972566b.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 09:50:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756831851; x=1757436651; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jtVv37IFrMt/51iDXJklEJqQ7iS6Rm5PnqjC6DUh6f4=;
+ b=Kw8Wp+wZHdoMuYWaU+Ja9kQcNkQsUg44eX6/Ox5bxNVfvc3FLEoJnOqqQpsIRGY8Md
+ N/x6h7JMUNX2Cotfsz3bL1cBtNq/2K//Im6VN+x9YzOtRLgmCvxleDLISfJ+jw9toM72
+ akiuR7Y1y8ftNIgQ+2GzFOUs1XojMfYKa+eZnjjneo726TOc55QVNfwYfgIJyRV7CHcy
+ g2/SmptlWbMyKUajEQh7IlRpL1+r439v5QlBqAG1fp0ZZNnZSoLMJ6vi43ZvsQ5apBHG
+ J7BjhCNDEA18Ld+5qXQBr48X6en5//Cj/ZpsHsIpVXnhzBEI5tPVvIDQq5ZYobYSCwMB
+ BVCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756831851; x=1757436651;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jtVv37IFrMt/51iDXJklEJqQ7iS6Rm5PnqjC6DUh6f4=;
+ b=L0weFiV+FOhYy2iapeXtzLurF5K5PrhDh7381SxkZTBce1eJOiXk6dgkBQv4ULYr0q
+ WF7WNCwaKOOUsrHIRDTlwLyWjEGJrpCvN/zXfeRfyCenJ5Pv1XRwzMXFltPGs0XDUhk1
+ qXPLShG454BtomJu5c/PMWfhAK9QzfLoF1/Xpb6Okd8VqHk8Mlp3k8O+zxWYlul/3DOZ
+ 4xA7Gkn0RWseH5mPJ/UKid0LKrb8Bo/0NctWzVzI5PHj+Gd/AeiwwgurYBY5wPqs0GRi
+ +4RyR/mVB1LSLm/ZH9ps3qTXnEzjgRF2LniBc7BS0DP7cxWnhqzCuYEoRnkQEqFEkw6Q
+ mi3Q==
+X-Gm-Message-State: AOJu0YwIXZk2CpD2Zepk0QI9GHUDHeYE9igN1MOoWp3cIlqJPSBDm7oE
+ tN/laFM4lwMmm+ye/0g+NpVJVkzxEqwmFB3d1znh86FbEbG/Gk63g441v3PX50GjvJU=
+X-Gm-Gg: ASbGncs5Qpr938RwRB/lnQuG3KdWa7PcwkDuLiyDvqY6mi+zZr6rdEL3QffGj82pfk2
+ iD0yy1ABQ4aXDPJgSlMpKekRHqp58VGu3urJ0bV5gEermnjipQUI1Jquf4fdZcP4RBFSwWLDGkz
+ zXKF701AfJTPAXt1H4X67uMHzPWhCvko7/u7UK9+s/yGKOAz0dkbKZFH2ik2G6cs/KC4B9L3lSS
+ YCIUZz2Ag8OWqk0AkPfv57S5htY4ZT7IU4e0WmgfUXxYC6edHqfdvy8XIpTiXARUDY5VvEOpAMC
+ qDpKVtqd6tcONmIkob9fpoSgGGqbzitkXJyxL5+J7gCnXGpcfPLldsXPOSSeAaE16mpJLcYonMH
+ ocrvTsyAla36qxxAL5NZ4vDY=
+X-Google-Smtp-Source: AGHT+IGgNhBEyN8gNysNAoj56uQ96otFlRHk/GUKx1iYSE3AzP/GlZi/DIxcHoRXEt8Qi7sxTTHA/g==
+X-Received: by 2002:a17:907:7e82:b0:afe:ec09:2a23 with SMTP id
+ a640c23a62f3a-b01d9769f7fmr1131782566b.43.1756831851341; 
+ Tue, 02 Sep 2025 09:50:51 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-61cfc52ade4sm9831541a12.45.2025.09.02.09.50.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Sep 2025 09:50:49 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 9D80F5F82D;
+ Tue, 02 Sep 2025 17:50:48 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ John Levon <john.levon@nutanix.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 0/4] virtio document cleanups (esp vhost-user)
+Date: Tue,  2 Sep 2025 17:50:44 +0100
+Message-ID: <20250902165048.1653323-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: jlu@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: qemu-devel@nongnu.org
-Received-SPF: pass client-ip=2a0a:edc0:2:b01:1d::104;
- envelope-from=jlu@pengutronix.de; helo=metis.whiteo.stw.pengutronix.de
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,52 +100,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2025-09-02 at 18:39 +0200, Jan Kiszka wrote:
-> > > I expect us to be safe and able to deal with non-pow2 regions if we u=
-se
-> > > QEMUSGList from the "system/dma.h" API. But this is a rework nobody h=
-ad
-> > > time to do so far.
-> >=20
-> > We have to tell two things apart: partitions sizes on the one side and
-> > backing storage sizes. The partitions sizes are (to my reading) clearly
-> > defined in the spec, and the user partition (alone!) has to be power of
-> > 2. The boot and RPMB partitions are multiples of 128K. The sum of them
-> > all is nowhere limited to power of 2 or even only multiples of 128K.
-> >=20
->=20
-> Re-reading the part of the device capacity, the rules are more complex:
-> =C2=A0- power of two up to 2 GB
-> =C2=A0- multiple of 512 bytes beyond that
->=20
-> So that power-of-two enforcement was and still is likely too strict.
->
-> But I still see no indication, neither in the existing eMMC code of QEMU
-> nor the spec, that the boot and RPMB partition sizes are included in that=
-.
+These just tidy up the device emulation area to be a little more
+organised as well as splitting out the VirtIO documents themselves.
 
-Correct. Non-power-of-two sizes are very common for real eMMCs. Taking a ra=
-ndom
-one from our lab:
-[    1.220588] mmcblk1: mmc1:0001 S0J56X 14.8 GiB
-[    1.228055]  mmcblk1: p1 p2 p3 p4
-[    1.230375] mmcblk1boot0: mmc1:0001 S0J56X 31.5 MiB
-[    1.233651] mmcblk1boot1: mmc1:0001 S0J56X 31.5 MiB
-[    1.236682] mmcblk1rpmb: mmc1:0001 S0J56X 4.00 MiB, chardev (244:0)
+Alex.
 
-For eMMCs using MLC NAND, you can also configure part of the user data area=
- to
-be pSLC (pseudo single level cell), which changes the available capacity (a=
-fter
-a required power cycle).
+Alex Bennée (4):
+  docs/system: split VirtIO devices from the rest
+  docs/system: unify the naming style for VirtIO devices
+  docs/system: drop vhost-user-rng docs
+  docs/system: merge vhost-user-input into vhost-user-contrib
 
-Regards,
-Jan
+ docs/system/device-emulation.rst              | 18 ++--
+ docs/system/devices/vfio-user.rst             |  2 +-
+ docs/system/devices/vhost-user-input.rst      | 45 ----------
+ docs/system/devices/vhost-user-rng.rst        | 41 ---------
+ docs/system/devices/virtio/index.rst          | 29 +++++++
+ .../devices/virtio/vhost-user-contrib.rst     | 87 +++++++++++++++++++
+ .../devices/{ => virtio}/vhost-user.rst       | 22 ++---
+ .../devices/{ => virtio}/virtio-gpu.rst       |  4 +-
+ .../devices/{ => virtio}/virtio-pmem.rst      |  6 +-
+ .../devices/{ => virtio}/virtio-snd.rst       |  2 +-
+ 10 files changed, 141 insertions(+), 115 deletions(-)
+ delete mode 100644 docs/system/devices/vhost-user-input.rst
+ delete mode 100644 docs/system/devices/vhost-user-rng.rst
+ create mode 100644 docs/system/devices/virtio/index.rst
+ create mode 100644 docs/system/devices/virtio/vhost-user-contrib.rst
+ rename docs/system/devices/{ => virtio}/vhost-user.rst (77%)
+ rename docs/system/devices/{ => virtio}/virtio-gpu.rst (99%)
+ rename docs/system/devices/{ => virtio}/virtio-pmem.rst (98%)
+ rename docs/system/devices/{ => virtio}/virtio-snd.rst (99%)
 
+-- 
+2.47.2
 
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
