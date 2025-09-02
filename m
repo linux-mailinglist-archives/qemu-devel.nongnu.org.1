@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3565B3F2FD
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 05:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24EBDB3F2F7
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 05:51:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utI0U-0007K6-RT; Mon, 01 Sep 2025 23:48:30 -0400
+	id 1utI0U-0007K7-T3; Mon, 01 Sep 2025 23:48:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI0C-0006wP-0F
+ id 1utI0B-0006wO-Tb
  for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:48:14 -0400
 Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI09-0004Vj-8u
+ id 1utI09-0004Vn-8t
  for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:48:11 -0400
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822RpH7030092
- for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:47:56 GMT
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822RmGT012352
+ for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:47:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- vgCHS3aLEltyNqfHFNdMSq/Dy0IvxO4z23Y9RYywzOU=; b=aR7EZNs3K1+4Cs9O
- paHbyKP36Cz8UwUm7Gw5Iokjg5W2+aBbyY+Z2Vijzu2KKj846QGqgAI/+IJ6oBn7
- bqRih8tB/CXwlSqkq5Qp41gHwqcd2SWfdI4/lAm8uZ3O/cm1jXs4fmREFyK+DXsp
- 95lGwMHOYAt6qx2cnXrS33lbCzvaFi8mIwfhcINc/SXJIFeNQMOA4BiF3tjoJXlT
- 0Kr/FecNKAoINs3vcw84Fw0ex7xJ0h7nTRtllAhPLNQk8+VRDwzYBpbVoSw1jDmQ
- LC3y2lNd/QVexD5tBmE0Lx044wxdlHT80oA3my1qdsXl2w148XZp2bFqwHGDEV9d
- Alp54w==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ush2xafu-1
+ EAl365lPLknZnw8mUPhbXE8Onwu5SXWupHDGh49GdfY=; b=exhPkl4ndFRzaqPF
+ BRqqV67u/7/cYe3JvFr6C1ZRLiBGmv0jNv/UMPNKblaB9bFPp6KRH2/Y3kDY98xD
+ Hru0jFb5gBuyDum2fEypBrRPbT/azyWTFHAtqQ0rpbSnP0ib+X++WC+sJWFoBBYt
+ Szia0ErQ4xj9taSsjetjthZFgZtgiNX9c0YHqlbr6twG/OyHtTNsbbeXkuYvkksq
+ fYJu4GW1V42RfpHlgFXEidsq87P5FaSI/mvE4EG1F2glEbDUfLGX8KceHKYGEdsL
+ 5XreqVxSY8fwH8BU3cm1x9rwYurDvLIxydMQ3Sn4UujFMzahWsGSt02/XVC8A4rk
+ +HfynQ==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ut2fea1e-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:47:56 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id
- 41be03b00d2f7-b47174b3427so4078635a12.2
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:47:56 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:47:57 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-b47156acca5so4015760a12.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:47:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756784875; x=1757389675;
+ d=1e100.net; s=20230601; t=1756784877; x=1757389677;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vgCHS3aLEltyNqfHFNdMSq/Dy0IvxO4z23Y9RYywzOU=;
- b=lJYQnql0a1izFUTe6039hRmgJ5DC/06PJXK/D7IEc4AmvB7h7tgFyDW+hXoHwRiW8+
- FDsBeMd5Ivd6w/BCju189eaxMZVn3S0DJwED8Gv5pdeC5ofIXFE1414g+7VO4OQhjDOw
- Fmzqm61C/Lv1lByv9VejGB/GZtjaEzX7ZzCVfszXwebWBM+QJuEgjt2/BWPYVb+C/q0X
- IVjHA7VD+p9AcHbWJVTNgDZbY1gHmkP1XFnKfmp3wbLSxFXxOViUfjnUQpCNmvSqHHM/
- QUFn6yz9zqPNAiWYRWtCxqnxvxnnki7mZmtozopoolbyC2cmZg8syT/IKtMCXoEF2nRy
- PMwg==
-X-Gm-Message-State: AOJu0YzHYExjX3s1waMGXkWH3hc9MEbP+g3F6JKbRI3DnuRvCqzVKaj2
- heTDOc/YTQVd5sg/7uCahDc1qwufsIX0dogsWsh2wx4DwVPRsAZrg6Id3JNTX+6KV4yrEmEJ7B/
- DL1Cyn/QMbQt99k8HYnGdxoRmEc+Ws9+xs7W53N9DaDAiFVq1mBS25xoAbHgpIIMEqBdK
-X-Gm-Gg: ASbGncuZlOB2YH/MAEJDDnMIx8sY501lSjmNMAl9LtvNX6zBNYuJh/4H7UO2OgBLk8O
- rYafkR+iPYdi08dxZCmuXLVmBpt6bTfmiz8OayTTLLxOUXxFjmWqKPSJcTD4OMK/hSrdianqXHn
- DrwB2osSGOSW68NmBCqNGBwjUtRVgird0k2GiZdTrj5rJFSBw8XLNnSCizwML5fgLHlRBjnk8sE
- AKGu9pHASOfD1LAG2CK7xD22Gn3KNkgFoR9mf7YrL3ECEUQSek+5h6jkOGCyvulO+YGWmTjd277
- MRA/RfBDoLqwVINezG/Tverx5hZq3pKFKEI6Tu2VTYhvrtI3z0B4mStGHViVx+P2UcT6vTf4dil
- fGPyItul0wsQL
-X-Received: by 2002:a05:6a20:a105:b0:240:1c56:64a5 with SMTP id
- adf61e73a8af0-243d6e07ab8mr14813894637.15.1756784875266; 
- Mon, 01 Sep 2025 20:47:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEccNOItZ1OinKgOcEnvCS6RPs82/DW06eyRgGg/PsQoPTRlXEWxS58NZWWg2YbdQplsq/0Aw==
-X-Received: by 2002:a05:6a20:a105:b0:240:1c56:64a5 with SMTP id
- adf61e73a8af0-243d6e07ab8mr14813865637.15.1756784874845; 
- Mon, 01 Sep 2025 20:47:54 -0700 (PDT)
+ bh=EAl365lPLknZnw8mUPhbXE8Onwu5SXWupHDGh49GdfY=;
+ b=aUE7HyHi3E7coSAccHNCEAhiTrAfaYFPRmaPTJQ4l0P81uLNebhPevR9xu+EUONSeb
+ +Q4m6Eec4LoZtOfiXQb5IoZri1a0Dl4Z8++x8kbTCk64sl67XGMFhIf+tPW4k9dFkzze
+ QXUiLkyLzNfYEQw/op6zsf4yNiKeAUe4kV7EPIKzONRv8bXVjRcRhDxzZ26EmNfoQ3Mf
+ tLRxmL244iEWckqks+xnQWQliWFf4MjSmY8hD756/brHu+uTMaoQ0+eWKI9KZg8HA088
+ CayTUsQ/oKgOX6MI/sq83rvWerHwRG4KkS0lVD+fLh9KWLH2bXzVZx5/suvN9CPmPV14
+ qvOg==
+X-Gm-Message-State: AOJu0Yx8TuUdtS44bgExlr1v7KUBlfLzsaUh15IZTOBtdvf0I5PKl7gX
+ KwOa/b/AVLJhgfjG0sYVKxB4dMGK2Z9js0DVVaREj0TK3CRc8IYuPWo6JZ/alvEqyNxKxQTWbTO
+ BnMtLUesYeT8F3HlOQnsE8mmOcs1A098HoyLwIyluIjR/hdCsJvBXPkLUq4p5/tPVqJQe
+X-Gm-Gg: ASbGncuFXJYuT5tdXiiXyJuMGgLUV3c7Sb6N06qq7+gO27K3diWeWrjC3F7ly8SGtHy
+ 061blQuaQEmEbOGAKp+z4RNOT1InK/YxpKPpYqIR9VrzxIu0r+s3/afLAhbSenCrrQQekgr0EVv
+ y93My6GQ9s4VmRJSjopk/OYs+OebnNYFpoLAXSn95B0s4itZ6xLHFAhn39gUdGGwGMDivXRuMZG
+ u1brJuZ6j9wkN290xQIc/dFtGdxe+7MDDOHTf1hMcghOR0sug7VpuutZbKCuTSlpyBgmfkxKKyF
+ ZzWB1kiNsh14twyTgGuZ/PU4HAmr1gOw9NhQuZLWhqBfgV5Isvm2gYJ5MF5ut7/QSMhd1wEnB9f
+ 9m8yPtrFO3R1w
+X-Received: by 2002:a05:6a20:431d:b0:245:fc8e:ef5b with SMTP id
+ adf61e73a8af0-245fc8ef17amr628022637.5.1756784876560; 
+ Mon, 01 Sep 2025 20:47:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEcsYVoEySEVnZxUGQaRgJyR4dNs3yHxAl+Fs1CUndUE6iwzUVUXvz3HbettHzgyBsuXXTW1g==
+X-Received: by 2002:a05:6a20:431d:b0:245:fc8e:ef5b with SMTP id
+ adf61e73a8af0-245fc8ef17amr627982637.5.1756784876069; 
+ Mon, 01 Sep 2025 20:47:56 -0700 (PDT)
 Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
  [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b4cd006e2c6sm10633584a12.2.2025.09.01.20.47.53
+ 41be03b00d2f7-b4cd006e2c6sm10633584a12.2.2025.09.01.20.47.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Sep 2025 20:47:54 -0700 (PDT)
+ Mon, 01 Sep 2025 20:47:55 -0700 (PDT)
 From: Brian Cain <brian.cain@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
@@ -79,38 +79,37 @@ Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
  anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
  alex.bennee@linaro.org, quic_mburton@quicinc.com,
  sid.manning@oss.qualcomm.com, Brian Cain <bcain@quicinc.com>
-Subject: [PATCH v2 28/40] target/hexagon: Add TCG overrides for int handler
- insts
-Date: Mon,  1 Sep 2025 20:47:03 -0700
-Message-Id: <20250902034715.1947718-29-brian.cain@oss.qualcomm.com>
+Subject: [PATCH v2 29/40] target/hexagon: Add TCG overrides for thread ctl
+Date: Mon,  1 Sep 2025 20:47:04 -0700
+Message-Id: <20250902034715.1947718-30-brian.cain@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250902034715.1947718-1-brian.cain@oss.qualcomm.com>
 References: <20250902034715.1947718-1-brian.cain@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMiBTYWx0ZWRfX2SHAgyT7nCEC
- 0qa/vbQEkaQDyAkKI+jnbYmil+CBc/6oO7bX6Jr5f+3VTVIbXF5IGhjPTGJoDxZN8eyr4shNtGW
- SGZVRAMGjHy6Dh6WUBFkrAhKOu7nSS96a866miJXUrKrP25GAMZWyGGaYQ+94Lh00YG7rRlyd52
- 2cPOGk5JMkvowDmfmr+2qEnaUw8wHBDS6NHjKzEbWrspq8LqTSzQbY/xtlQhbJz7HUORXyKbsSh
- mVZvm0YKwcBA/bhhf14/w1OKegr4bfq++TIYWSNljZZcv3rhrXV/9J41N+BVl+HMwCoqhAM/LDq
- QcyZHqXanfGjD+AugflAIUXrff3TapS9AHoBs5+RfS2VeCYx6hKhlqXYuJswcl8Lwu4I5mEiVUA
- Qq36JeCD
-X-Proofpoint-ORIG-GUID: 7cN6bw5n3L-CruXJ6MdaAK6yRvePyTZT
-X-Proofpoint-GUID: 7cN6bw5n3L-CruXJ6MdaAK6yRvePyTZT
-X-Authority-Analysis: v=2.4 cv=M9NNKzws c=1 sm=1 tr=0 ts=68b668ec cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzOCBTYWx0ZWRfX6lzz0XOTyU1r
+ vrB9Y9Q5pNTYwGvntNjmaY09nhO+frSiYDmC9iP9I59V7Sv2KM43fxDo8+1BvOstGaOPj5TmvZK
+ o4DRyz8WmAh5zaH4tDnl49c7laoF7g3Bu5BrFVf5SmmZb5l2DEgi7vxiPLB83d0EJ4ow7XXdNUO
+ nXuTYsfFyIz972/Bp8XmLR2URJ2K6fSqiohD7PqwCJ6ok36FmGvV9bXN/Ws32SZlR2Wt8tFUvIx
+ R+iW5SNDwiJ/Xkrz8sPG58VtjTuWG+8O/rKoMGO8+aMhPh71I9XIw3Vu7aRgCPaZBE8WM3XgFDE
+ E4xY3B33RB4PYOio6TDHZM9QK5BkN1yU+5v34kifmoCHBjI6Z5h8Wn1XtpItrLxaPFer0i1iE2Y
+ 918l+Qf5
+X-Proofpoint-ORIG-GUID: Huc4x_WMZ8rqJVfHP5InYGUAlZGAu6vV
+X-Proofpoint-GUID: Huc4x_WMZ8rqJVfHP5InYGUAlZGAu6vV
+X-Authority-Analysis: v=2.4 cv=U7iSDfru c=1 sm=1 tr=0 ts=68b668ed cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
  a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=pGLkceISAAAA:8
- a=EUspDBNiAAAA:8 a=ncxFUDX8U6Z2rYVbhVQA:9 a=QEXdDO2ut3YA:10
- a=bFCP_H2QrGi7Okbo017w:22 a=TjNXssC_j7lpFel5tvFf:22
+ a=EUspDBNiAAAA:8 a=t9Y8JitlK4h6-XB8aEcA:9 a=QEXdDO2ut3YA:10
+ a=_Vgx9l1VpLgwpw_dHYaR:22 a=TjNXssC_j7lpFel5tvFf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 spamscore=0 priorityscore=1501 malwarescore=0
- clxscore=1015 suspectscore=0 phishscore=0 bulkscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508300032
+ spamscore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ malwarescore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300038
 Received-SPF: pass client-ip=205.220.168.131;
  envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
 X-Spam_score_int: -26
@@ -137,122 +136,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Brian Cain <bcain@quicinc.com>
 
-Define TCG overrides for {c,}swi {c,s}iad, iassign{r,w}, {s,g}etimask
-instructions.
+Define TCG overrides for start, stop, wait, resume instructions.
 
 
 Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 ---
- target/hexagon/gen_tcg_sys.h | 25 ++++++++++++++++++++++
- target/hexagon/helper.h      |  8 ++++++++
- target/hexagon/op_helper.c   | 40 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 73 insertions(+)
+ target/hexagon/gen_tcg_sys.h | 18 ++++++++++++++++++
+ target/hexagon/helper.h      |  4 ++++
+ target/hexagon/op_helper.c   | 20 ++++++++++++++++++++
+ 3 files changed, 42 insertions(+)
 
 diff --git a/target/hexagon/gen_tcg_sys.h b/target/hexagon/gen_tcg_sys.h
-index 362703ab45..642ca3d3ff 100644
+index 642ca3d3ff..942d07b401 100644
 --- a/target/hexagon/gen_tcg_sys.h
 +++ b/target/hexagon/gen_tcg_sys.h
-@@ -7,6 +7,31 @@
- #ifndef HEXAGON_GEN_TCG_SYS_H
- #define HEXAGON_GEN_TCG_SYS_H
+@@ -63,4 +63,22 @@
+         tcg_gen_extrh_i64_i32(ctx->t_sreg_new_value[HEX_SREG_SGP1], tmp); \
+     } while (0)
  
-+/* System mode instructions */
-+#define fGEN_TCG_Y2_swi(SHORTCODE) \
-+    gen_helper_swi(tcg_env, RsV)
++#define fGEN_TCG_Y2_wait(SHORTCODE) \
++    do { \
++        RsV = RsV; \
++        gen_helper_wait(tcg_env, tcg_constant_tl(ctx->pkt->pc)); \
++    } while (0)
 +
-+#define fGEN_TCG_Y2_cswi(SHORTCODE) \
-+    gen_helper_cswi(tcg_env, RsV)
++#define fGEN_TCG_Y2_resume(SHORTCODE) \
++    gen_helper_resume(tcg_env, RsV)
 +
-+#define fGEN_TCG_Y2_ciad(SHORTCODE) \
-+    gen_helper_ciad(tcg_env, RsV)
++#define fGEN_TCG_Y2_start(SHORTCODE) \
++    gen_helper_start(tcg_env, RsV)
 +
-+#define fGEN_TCG_Y4_siad(SHORTCODE) \
-+    gen_helper_siad(tcg_env, RsV)
++#define fGEN_TCG_Y2_stop(SHORTCODE) \
++    do { \
++        RsV = RsV; \
++        gen_helper_stop(tcg_env); \
++    } while (0)
 +
-+#define fGEN_TCG_Y2_iassignw(SHORTCODE) \
-+    gen_helper_iassignw(tcg_env, RsV)
-+
-+#define fGEN_TCG_Y2_iassignr(SHORTCODE) \
-+    gen_helper_iassignr(RdV, tcg_env, RsV)
-+
-+#define fGEN_TCG_Y2_getimask(SHORTCODE) \
-+    gen_helper_getimask(RdV, tcg_env, RsV)
-+
-+#define fGEN_TCG_Y2_setimask(SHORTCODE) \
-+    gen_helper_setimask(tcg_env, PtV, RsV)
-+
- #define fGEN_TCG_Y2_setprio(SHORTCODE) \
-     gen_helper_setprio(tcg_env, PtV, RsV)
- 
+ #endif
 diff --git a/target/hexagon/helper.h b/target/hexagon/helper.h
-index 146f4f02e4..2fe4440ddc 100644
+index 2fe4440ddc..ada520bd52 100644
 --- a/target/hexagon/helper.h
 +++ b/target/hexagon/helper.h
-@@ -109,6 +109,14 @@ DEF_HELPER_2(probe_hvx_stores, void, env, int)
- DEF_HELPER_2(probe_pkt_scalar_hvx_stores, void, env, int)
- 
- #if !defined(CONFIG_USER_ONLY)
-+DEF_HELPER_2(swi, void, env, i32)
-+DEF_HELPER_2(cswi, void, env, i32)
-+DEF_HELPER_2(ciad, void, env, i32)
-+DEF_HELPER_2(siad, void, env, i32)
-+DEF_HELPER_2(iassignw, void, env, i32)
-+DEF_HELPER_2(iassignr, i32, env, i32)
-+DEF_HELPER_2(getimask, i32, env, i32)
-+DEF_HELPER_3(setimask, void, env, i32, i32)
- DEF_HELPER_2(sreg_read, i32, env, i32)
- DEF_HELPER_2(sreg_read_pair, i64, env, i32)
- DEF_HELPER_2(greg_read, i32, env, i32)
+@@ -124,4 +124,8 @@ DEF_HELPER_2(greg_read_pair, i64, env, i32)
+ DEF_HELPER_3(sreg_write, void, env, i32, i32)
+ DEF_HELPER_3(sreg_write_pair, void, env, i32, i64)
+ DEF_HELPER_3(setprio, void, env, i32, i32)
++DEF_HELPER_2(start, void, env, i32)
++DEF_HELPER_1(stop, void, env)
++DEF_HELPER_2(wait, void, env, i32)
++DEF_HELPER_2(resume, void, env, i32)
+ #endif
 diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
-index cfd34d8712..01e2677a62 100644
+index 01e2677a62..57d8e8305b 100644
 --- a/target/hexagon/op_helper.c
 +++ b/target/hexagon/op_helper.c
-@@ -1337,6 +1337,46 @@ void HELPER(vwhist128qm)(CPUHexagonState *env, int32_t uiV)
+@@ -1367,6 +1367,26 @@ uint32_t HELPER(iassignr)(CPUHexagonState *env, uint32_t src)
+     g_assert_not_reached();
  }
  
- #ifndef CONFIG_USER_ONLY
-+void HELPER(ciad)(CPUHexagonState *env, uint32_t mask)
++void HELPER(start)(CPUHexagonState *env, uint32_t imask)
 +{
 +    g_assert_not_reached();
 +}
 +
-+void HELPER(siad)(CPUHexagonState *env, uint32_t mask)
++void HELPER(stop)(CPUHexagonState *env)
 +{
 +    g_assert_not_reached();
 +}
 +
-+void HELPER(swi)(CPUHexagonState *env, uint32_t mask)
++void HELPER(wait)(CPUHexagonState *env, target_ulong PC)
 +{
 +    g_assert_not_reached();
 +}
 +
-+void HELPER(cswi)(CPUHexagonState *env, uint32_t mask)
++void HELPER(resume)(CPUHexagonState *env, uint32_t mask)
 +{
 +    g_assert_not_reached();
 +}
 +
-+void HELPER(iassignw)(CPUHexagonState *env, uint32_t src)
-+{
-+    g_assert_not_reached();
-+}
-+
-+uint32_t HELPER(iassignr)(CPUHexagonState *env, uint32_t src)
-+{
-+    g_assert_not_reached();
-+}
-+
-+uint32_t HELPER(getimask)(CPUHexagonState *env, uint32_t tid)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void HELPER(setimask)(CPUHexagonState *env, uint32_t pred, uint32_t imask)
-+{
-+    g_assert_not_reached();
-+}
-+
- void HELPER(sreg_write)(CPUHexagonState *env, uint32_t reg, uint32_t val)
+ uint32_t HELPER(getimask)(CPUHexagonState *env, uint32_t tid)
  {
      g_assert_not_reached();
 -- 
