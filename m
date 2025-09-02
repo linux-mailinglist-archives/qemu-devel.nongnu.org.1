@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21A6B3FC7E
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 12:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3432B3FC83
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 12:31:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utOHU-0006la-QH; Tue, 02 Sep 2025 06:30:28 -0400
+	id 1utOI1-0007Me-Le; Tue, 02 Sep 2025 06:31:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1utOHN-0006ht-DU
+ id 1utOHS-0006iQ-2p
  for qemu-devel@nongnu.org; Tue, 02 Sep 2025 06:30:26 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1utOHK-00012E-1O
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 06:30:19 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-45b8b1a104cso19606105e9.2
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:30:17 -0700 (PDT)
+ id 1utOHL-00012N-3F
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 06:30:22 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-45b627ea685so44391065e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:30:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756809016; x=1757413816; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756809017; x=1757413817; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8DZzfloCVYfnawb+HNzXt3BHlSz81vZt+CpZ/An1bjc=;
- b=hYrPyl13PiqR4upuXQsRkEYS3pDLMjGCNv1aQ8nSTxmQLGCQoqlk/F7Im0O7iCGE0T
- I00/H1QgdbISiOAW5+kN34ClvR3Xtht5rOvMeD6SGqaT3kUXXRGmiu4hb8a4CdujgbIs
- aBzCQuCWQbMMYmUCFj63rJrM1qu+bdwkCQx2k5W1xXKFv8haYGVyV3J8pof5Braf6DA5
- H0bddKL46nvYrYRGIx8InR7+OfPfYnvJAzs83ROHnLABaC3hbJiMa/cPMMhBaLIfLUr0
- n1zS0XEk97nH+3JshTspgcvbwR7mEfEcB1Z7MEy3FQqB96N/CXX5lhLPK9AC/rwnXnA5
- QQLw==
+ bh=xQrZp/o3nVe5VIQl1WMbqwaLzlGBPHdSsPm8KVtBY6o=;
+ b=vT7kHvtnAVd7yjLYmJ//8lTlUaNSnFo5EY6fLdbzDC8ulV1d60yatvys6me5zUdBM0
+ vMmnGqexGHyTqKfwYdnnxuuKSo7cJMnMRNmaerIurv08qpk20qDxVJg1rsq7A39zUCEC
+ 6bWOZLa6F578JDcUzCWQ6lgyoq/u4FyauCdIujRlrD6yq6VaIb/FyDmfU69Ml6Fj7Xak
+ Ags/QLe5mrq+8sGcbXKEyvjgUp7RCrypuOgXMgic/civsQdC3F4f++YANFK0stz3cuY4
+ 5ukMgEOGRyWebkXw3MMPzIOiUe8udrtzclVfpw8HwtBVMQejtUsSjWKCcRzklvfXtnbP
+ YElw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756809016; x=1757413816;
+ d=1e100.net; s=20230601; t=1756809017; x=1757413817;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8DZzfloCVYfnawb+HNzXt3BHlSz81vZt+CpZ/An1bjc=;
- b=uJiWn/6ZBHjF8gz3my5aNQV8TCkJ5eQ7p5IPisqwGVXGwglubZ63Zcl5TrTkGCk9mN
- R5j3IRFw4ZHjZ19J2rZwRq4Hx+YgIvKcuNq31N2Asq5Ha4TMiEWV2Zxc+BfzHU4WX4pj
- NCltrBTA6fOTbeGAE9JslaL9X8bMXplOYjew+JjD9qrZJmFHJ95VMYifm2L44wuvcAUW
- FZwyeOh7FzTtV9MKBQTN4f2vhkGWC91zyuozxLQcwDyXSbf+EAL2RlwSx4kQS2XZrpdd
- Jw5U+RW55Bhf5Jopb69M1GIhCAkL3lOOmpHPZPGbdgwyV1sQP3Hp2V5y58InUjKNp1xZ
- XjCw==
-X-Gm-Message-State: AOJu0YzAt4hvm+FsQW3y/zzyQ3CE6N3oJ69IHuzVpMHRWz8SSOOibrSV
- fKr2EPE5zdpQhtbTW6n4WK+L75osXv844LoIK3S4nvXbZNN0AeaCELVJKD6bYiul2hQBfw1yySx
- 6terQb+Y=
-X-Gm-Gg: ASbGnct+AySCjRKN4Lt+mGAIp45vKAxg4dkaIEoqvwL3XMcsqrVK9O1sRYpw+Ysy8re
- wIVtIYqNwsVDCXz9Sx3qZIGB2SGUJQYM/Tnf5w5gMT3DMKZzyK9JqzMoNiMbeD8+gRZhh3ymCjN
- QsouiWr6t26Bv+jv4fopqrgHSml86pbo2C3IVQbLQBzEHIFi2w9YJDtjcZABNyBccKeO8fI13AR
- Eu0uxEBhV88Hw86JbUA/N4x29EIDteWSzXoJ5uVakfmz3MAVIJ5TGM1zjcA4gwQZH/QmcgKWH2q
- PJVamZmw7bVLoBgGdPosU6C1TD+9607OuugZ3N/qsN7qnb+qMIFmpUZALv++cEmZCoDE9V8u72d
- d/ibCVzzEBruF87AENcYd8HSTdkZuLYKTLeLF8jDzvxsFbiLAVAUOuFFbNHCW8kE=
-X-Google-Smtp-Source: AGHT+IFJw/io0xUn77SLs4ccx+FzaqLixdyicaC1K62fMKtpMUpQdL4j89LVAEXIdH95f6bUaunIWg==
-X-Received: by 2002:a05:6000:4312:b0:3cf:3f1:acc3 with SMTP id
- ffacd0b85a97d-3d1df631895mr9852288f8f.60.1756809015716; 
- Tue, 02 Sep 2025 03:30:15 -0700 (PDT)
+ bh=xQrZp/o3nVe5VIQl1WMbqwaLzlGBPHdSsPm8KVtBY6o=;
+ b=SaaKegDbB16Z8itF44qEYycricb4uip17/fWcg3afNGO7iVI5HRCM399RVmjJPafWw
+ uyOQptZVCJdeayfDE8dEW08OdGwc5KcK6uf9lxySl0GR7HBtt+eWFucNgDse122Kpk5I
+ bdplhfri6KLAZKs2WarcGwVByeetjC2nujO4NkO3NyjAvnnZfSXtJVnLz/0kzo2KxNWn
+ HhhvvveGRuhzMjU3U0k5yWbUkeilyCDNK5Tk0kwl6FXb3bX6SxHkwx8LO//EwhbL+igP
+ 3Irw7MlruyedFvxUscALanvliFihcRawV2YDKpLCIRsLgRgquSOW0hegzaGnvNxzT///
+ 5JhQ==
+X-Gm-Message-State: AOJu0YytrjXQJ3kMiHRDx2Um97JVOZjxcp1ZxUPcvVWWu+ir+jV+LSl1
+ COmqFHCyDwf/+FyOq+I7Qs9wN3SErsINU3kaS5K/q940vvVM6/lgOGqrD4KlVQF6RO7mYherIG9
+ DN61qVZE=
+X-Gm-Gg: ASbGncvwdp300LLEaly2YupWjCPUerDXWyAku+/TtP5BswbM/J63FtyL3pakUFLMv3Q
+ B+O2W80vbw87AVWH6lReu2zVBF2MJTCJWK6J8M85+K+5c62ARAqwypdyX+O+2mn570o1K+12uJw
+ Kt2PjmmjEVrUy4/O8zGxblMkYRD08aCZWbSs2I8M1dsJLRRhFOsXPb5eoq8I3PYeU9N7gq9FO9q
+ 4OMgjfmKzEI4QjpIFyDB/Fs0DFpMJjere8LO2Xad5/KQQRzp64WnAxTgy9nCQmlX9V94/sOfleX
+ b5FV18qN63jzr2yj9CE5l2M+wK0ElNLRnRV+gybOAn1D30AXcNK8416s8CV8g4rHaU/LPugipP+
+ XAcG23tXKuNiB/ExN3BngOEFjdcbm+IMYsXAhVVHd3pyEa4XCrnH/QRxGwA6a8/DeJkIq+ezjRA
+ ==
+X-Google-Smtp-Source: AGHT+IE8QeM8eGqgCZQOVwH0QH9cFIshjds/kkQ0aUrifjSIPCpaTztCKvnoe1lxUNZ156SuuPGFgQ==
+X-Received: by 2002:a05:600c:3b84:b0:45b:89ef:65ae with SMTP id
+ 5b1f17b1804b1-45b89ef6623mr90153345e9.16.1756809017030; 
+ Tue, 02 Sep 2025 03:30:17 -0700 (PDT)
 Received: from stoup.. (151-0-205-164.ip282.fastwebnet.it. [151.0.205.164])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b6f0d32a2sm296470665e9.9.2025.09.02.03.30.14
+ 5b1f17b1804b1-45b6f0d32a2sm296470665e9.9.2025.09.02.03.30.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Sep 2025 03:30:15 -0700 (PDT)
+ Tue, 02 Sep 2025 03:30:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com
-Subject: [RFC 2/4] util: Drop QMESSAGE_CONTEXT_SKIP_MONITOR
-Date: Tue,  2 Sep 2025 12:30:08 +0200
-Message-ID: <20250902103010.309094-3-richard.henderson@linaro.org>
+Subject: [RFC 3/4] util/message: Use LogOutput
+Date: Tue,  2 Sep 2025 12:30:09 +0200
+Message-ID: <20250902103010.309094-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250902103010.309094-1-richard.henderson@linaro.org>
 References: <20250902103010.309094-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,99 +101,148 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/message.h | 11 +----------
- util/error-report.c    |  9 +++++----
- util/log.c             |  2 +-
- util/message.c         |  7 +------
- 4 files changed, 8 insertions(+), 21 deletions(-)
+ include/qemu/message.h | 12 +++++-------
+ util/error-report.c    |  8 ++++----
+ util/log.c             | 16 ++--------------
+ util/message.c         | 40 ++++++++++++++++++----------------------
+ 4 files changed, 29 insertions(+), 47 deletions(-)
 
 diff --git a/include/qemu/message.h b/include/qemu/message.h
-index 6dbb068ca9..68b08f0ea7 100644
+index 68b08f0ea7..ac285a0021 100644
 --- a/include/qemu/message.h
 +++ b/include/qemu/message.h
-@@ -28,25 +28,16 @@ void qmessage_set_format(int flags);
-  */
- void qmessage_set_workload_name(const char *name);
+@@ -3,6 +3,8 @@
+ #ifndef QEMU_MESSAGE_H
+ #define QEMU_MESSAGE_H
  
--enum QMessageContextFlags {
--    QMESSAGE_CONTEXT_SKIP_MONITOR = (1 << 0),
--};
--
++#include "qemu/log-output.h"
++
+ enum QMessageFormatFlags {
+     QMESSAGE_FORMAT_TIMESTAMP = (1 << 0),
+     QMESSAGE_FORMAT_WORKLOAD_NAME = (1 << 1),
+@@ -31,13 +33,9 @@ void qmessage_set_workload_name(const char *name);
  /**
   * qmessage_context:
-- * @flags: the message formatting control flags
   *
-  * Format a message prefix with the information
-  * previously selected by a call to
-  * qmessage_set_format.
-  *
-- * If @flags contains QMESSAGE_CONTEXT_SKIP_MONITOR
-- * an empty string will be returned if running in
-- * the context of a HMP command
+- * Format a message prefix with the information
+- * previously selected by a call to
+- * qmessage_set_format.
 - *
-  * Returns: a formatted message prefix, or empty string;
-  * to be freed by the caller.
+- * Returns: a formatted message prefix, or empty string;
+- * to be freed by the caller.
++ * Format a message prefix with the information previously selected
++ * by a call to qmessage_set_format.
   */
--char *qmessage_context(int flags);
-+char *qmessage_context(void);
+-char *qmessage_context(void);
++void qmessage_context(const LogOutput *l, void *opaque);
  
  #endif /* QEMU_MESSAGE_H */
 diff --git a/util/error-report.c b/util/error-report.c
-index 2e58ee1c50..fa34019dad 100644
+index fa34019dad..6ef556af5f 100644
 --- a/util/error-report.c
 +++ b/util/error-report.c
-@@ -172,10 +172,11 @@ static void print_loc(void)
- G_GNUC_PRINTF(2, 0)
+@@ -173,10 +173,10 @@ G_GNUC_PRINTF(2, 0)
  static void vreport(report_type type, const char *fmt, va_list ap)
  {
--    g_autofree gchar *context = qmessage_context(QMESSAGE_CONTEXT_SKIP_MONITOR);
--
--    if (context != NULL) {
--        error_printf("%s", context);
-+    if (!monitor_cur()) {
-+        g_autofree gchar *context = qmessage_context();
-+        if (context) {
-+            error_printf("%s", context);
-+        }
+     if (!monitor_cur()) {
+-        g_autofree gchar *context = qmessage_context();
+-        if (context) {
+-            error_printf("%s", context);
+-        }
++        void *opaque;
++        const LogOutput *l = error_log_output(&opaque);
++
++        qmessage_context(l, opaque);
      }
  
      print_loc();
 diff --git a/util/log.c b/util/log.c
-index 4b5953dcc7..b129634708 100644
+index b129634708..8bbd8e5dda 100644
 --- a/util/log.c
 +++ b/util/log.c
-@@ -161,7 +161,7 @@ void qemu_log(const char *fmt, ...)
-      * acquiring the mutex
-      */
-     g_autofree const char *context =
--        incomplete ? NULL : qmessage_context(0);
-+        incomplete ? NULL : qmessage_context();
+@@ -153,23 +153,11 @@ static __thread bool incomplete;
  
-     f = qemu_log_trylock();
+ void qemu_log(const char *fmt, ...)
+ {
+-    FILE *f;
+-    /*
+-     * Prepare the context *outside* the logging
+-     * lock so any timestamp better reflects when
+-     * the message was emitted if we are delayed
+-     * acquiring the mutex
+-     */
+-    g_autofree const char *context =
+-        incomplete ? NULL : qmessage_context();
+-
+-    f = qemu_log_trylock();
++    FILE *f = qemu_log_trylock();
      if (f) {
+         va_list ap;
+ 
+-        if (context != NULL) {
+-            fwrite(context, 1, strlen(context), f);
+-        }
++        qmessage_context(&log_output_stdio, f);
+ 
+         va_start(ap, fmt);
+         vfprintf(f, fmt, ap);
 diff --git a/util/message.c b/util/message.c
-index 6d3580b7be..8deba3940c 100644
+index 8deba3940c..0c63d128fc 100644
 --- a/util/message.c
 +++ b/util/message.c
-@@ -20,17 +20,12 @@ void qmessage_set_workload_name(const char *name)
+@@ -20,7 +20,7 @@ void qmessage_set_workload_name(const char *name)
  }
  
  
--char *qmessage_context(int flags)
-+char *qmessage_context(void)
+-char *qmessage_context(void)
++void qmessage_context(const LogOutput *l, void *opaque)
  {
      g_autofree char *timestr = NULL;
      const char *wknamestr = NULL;
-     const char *pgnamestr = NULL;
+@@ -43,26 +43,22 @@ char *qmessage_context(void)
+         int thid = qemu_get_thread_id();
+         const char *thname = qemu_thread_get_name();
  
--    if ((flags & QMESSAGE_CONTEXT_SKIP_MONITOR) &&
--        monitor_cur()) {
--        return NULL;
--    }
+-        return g_strdup_printf("%s%s%s%s%s%s(%d:%s): ",
+-                               timestr ? timestr : "",
+-                               timestr ? " " : "",
+-                               wknamestr ? "[" : "",
+-                               wknamestr ? wknamestr : "",
+-                               wknamestr ? "] " : "",
+-                               pgnamestr ? pgnamestr : "",
+-                               thid, thname);
+-    } else {
+-        if (!timestr && !wknamestr && !pgnamestr) {
+-            return NULL;
+-        }
 -
-     if (message_format & QMESSAGE_FORMAT_TIMESTAMP) {
-         g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
-         timestr = g_date_time_format_iso8601(dt);
+-        return g_strdup_printf("%s%s%s%s%s%s%s",
+-                               timestr ? timestr : "",
+-                               timestr ? " " : "",
+-                               wknamestr ? "[" : "",
+-                               wknamestr ? wknamestr : "",
+-                               wknamestr ? "] " : "",
+-                               pgnamestr ? pgnamestr : "",
+-                               pgnamestr ? ": " : "");
++        l->print(opaque, "%s%s%s%s%s%s(%d:%s): ",
++                 timestr ? timestr : "",
++                 timestr ? " " : "",
++                 wknamestr ? "[" : "",
++                 wknamestr ? wknamestr : "",
++                 wknamestr ? "] " : "",
++                 pgnamestr ? pgnamestr : "",
++                 thid, thname);
++    } else if (timestr || wknamestr || pgnamestr) {
++        l->print(opaque, "%s%s%s%s%s%s%s",
++                 timestr ? timestr : "",
++                 timestr ? " " : "",
++                 wknamestr ? "[" : "",
++                 wknamestr ? wknamestr : "",
++                 wknamestr ? "] " : "",
++                 pgnamestr ? pgnamestr : "",
++                 pgnamestr ? ": " : "");
+     }
+ }
 -- 
 2.43.0
 
