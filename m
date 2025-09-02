@@ -2,186 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D83B409F4
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 17:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB97B40A11
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 18:02:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utTOW-0002I0-IQ; Tue, 02 Sep 2025 11:58:04 -0400
+	id 1utTSC-0005cH-BO; Tue, 02 Sep 2025 12:01:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
- id 1utTOU-0002HD-J1
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 11:58:02 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
- id 1utTOR-0001GO-Ec
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 11:58:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756828679; x=1788364679;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=0Dy06LO2mGdAvFlCwBABTGYSbrwjh+iv9b3xA991QlQ=;
- b=PWHknMVpm8hJpNLfCFr7ozGSHxXTYpfmUnzeoM6skWEnEl98A5sx3b1X
- Zgjz7pEdOjVZ5SOH06R7NN1YlJYZ4Te1F559B+u0VjbIK2gO3K0iJbrZx
- UM7/m1v9jqg94pUsttz2Whnqtp6svgqRw4Q0vSPPwnE7VqwOCNy6MHYh3
- t56Z5jZLK/Db1MtklTWUentjsXcGFKiti1CTRVxbrrYKBg15gSSVntjav
- P6VAvjSj0xkqbPJYOQUL5hBZMDcq2zANLmGEYjLiB3EC7SVmqxra5TXji
- X34BmHRDpUpd+9HUUsQwibXfdtmRbaI7rsq12HJ1LrMPxeHTekFM9W4dL A==;
-X-CSE-ConnectionGUID: axGLXHt7SOyVQ6cHndyP4w==
-X-CSE-MsgGUID: jlAfOnAsRguYOt9wMzG8Eg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="69720742"
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; d="scan'208";a="69720742"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2025 08:57:53 -0700
-X-CSE-ConnectionGUID: lPggtp/gRDq4N5UimWWitA==
-X-CSE-MsgGUID: eaQ0mHIgSbmgzlaNlkYNRQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; d="scan'208";a="170603264"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2025 08:57:53 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 2 Sep 2025 08:57:51 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Tue, 2 Sep 2025 08:57:51 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.41)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 2 Sep 2025 08:57:51 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Hz5YZkxVfzR800BekR8z6gkmupnvOy5xUxsNjKrfakq1yFTmkcpR0qJ7lBJypnmqlunPOEdQiV9Pml0jgeVxJsO2wtf9UTSmWblDROIb8+EkXhvAJcSKNi7FqQoyex6jp4LUFJ2U5BkTAmUWF3esOSVXMt290wF+LWXI5BzB2cgib4gBKE8kx40N9dU0FWWAjceQD3PUszHCpns98Tnwnn3/RsW1CQWfhckTp/msxOWMGw/bsNGV3ZDlhw8Hk2i6rlSDYrPbpbodXmoUTbMoGS2Kp2sA3zOH49wUcEM2zu7D6uMNzh49ibLlhZCr3WV6V29WYMUyqKTPbz0uqHT0nw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6GUnBrPAPpSgum06hdebN553IFr+ftxnTCcOB2I3nLE=;
- b=AKQc9+pavraw7n4yiPwa4xxKRf9oEknhWWeQqLxNuJb3u/3CHJhmZTaTIzGzVSdlnDQJ4WBj21V/O8gWCf39w+OBOkcdsyfotN+C1hy6QTnOIELPDPz3QeIOyDhqA84ozKuAzZ6O9VPSpCFknNRuvIrmvSi6hSLBmaU+N1A/Xn2/LU6qiYqt1gKasg9upyyF7t7LiUhAMjHtw+k/J/hQVtrG99b7aZtJuWr/w5OlAzxmcH7REijDPyH6K5KIIoDv1etgezQYtAaicmprzwoYL3iAW+CXrwC222xB3prshW+wSC/M+HAVUb52s1aP4I5S1h8djGYAEXn/CgSqB3kKIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH3PPF9E162731D.namprd11.prod.outlook.com
- (2603:10b6:518:1::d3c) by SA3PR11MB8047.namprd11.prod.outlook.com
- (2603:10b6:806:2fc::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.25; Tue, 2 Sep
- 2025 15:57:48 +0000
-Received: from PH3PPF9E162731D.namprd11.prod.outlook.com
- ([fe80::bbd5:541c:86ba:3efa]) by PH3PPF9E162731D.namprd11.prod.outlook.com
- ([fe80::bbd5:541c:86ba:3efa%7]) with mapi id 15.20.9052.019; Tue, 2 Sep 2025
- 15:57:48 +0000
-Date: Tue, 2 Sep 2025 10:59:35 -0500
-From: Ira Weiny <ira.weiny@intel.com>
-To: Alireza Sanaee <alireza.sanaee@huawei.com>, <nifan.cxl@gmail.com>
-CC: <qemu-devel@nongnu.org>, <jonathan.cameron@huawei.com>,
- <linux-cxl@vger.kernel.org>, <gregory.price@memverge.com>,
- <ira.weiny@intel.com>, <dan.j.williams@intel.com>,
- <a.manzanares@samsung.com>, <dave@stgolabs.net>, <nmtadam.samsung@gmail.com>, 
- <jim.harris@samsung.com>, <Jorgen.Hansen@wdc.com>, <wj28.lee@gmail.com>,
- <armbru@redhat.com>, <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>, "Svetly
- Todorov" <svetly.todorov@memverge.com>
-Subject: Re: [PATCH v8 11/14] hw/cxl/events: Add qmp interfaces to
- add/release dynamic capacity extents
-Message-ID: <68b71467b850a_4bae529418@iweiny-mobl.notmuch>
-References: <20240523174651.1089554-1-nifan.cxl@gmail.com>
- <20240523174651.1089554-12-nifan.cxl@gmail.com>
- <20250902113915.00001fbd.alireza.sanaee@huawei.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250902113915.00001fbd.alireza.sanaee@huawei.com>
-X-ClientProxiedBy: MW4PR04CA0120.namprd04.prod.outlook.com
- (2603:10b6:303:83::35) To PH3PPF9E162731D.namprd11.prod.outlook.com
- (2603:10b6:518:1::d3c)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utTQe-0003uU-Ti
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 12:00:21 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utTQY-0001k7-Jl
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 12:00:16 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3d17731ac0fso3286667f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 09:00:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756828806; x=1757433606; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=00fTmYfT8sFMDWcfT7XRf5jzzwv+EfO9iwFUCc5DA5M=;
+ b=HWc+S0NpQ/EpLlF0QE5fPR1PN2qvbNlMdSUmz/qh1GwyeEgizw1R+f3zysNJMBe2Ht
+ 1sSE4kbmxr1VGI/XiI8FipsdHJ0fPtGcunD6MJCJ1QacrMCPGl1WU6CTK6OfTxIo6wcu
+ LBzsQbCpyWNoPmHN+iWFW+uAlmlu4BkPgR1TcrHd8dkFn+4T1NH6J+C2xVsJ9c/vlayE
+ 6IVu3MGt73/Jc5puy1Hg3U1B9XX2rZyR8TJzxwaxQlsleu8wQWolQydSi5pDJam/LVyE
+ ll8iQbHRxdIotbIpS05RvRcPoMnJ7Rcb8DpIXJekKDOVIFhQYrI3p5gnn25iSbVXg5i/
+ 5C8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756828806; x=1757433606;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=00fTmYfT8sFMDWcfT7XRf5jzzwv+EfO9iwFUCc5DA5M=;
+ b=tx9pDFCZ3H6687Oxhu9ix+2nDRLwoN/USt23ShRHHw8zrQTegEqbiDQAqkMgjJ3jHC
+ btfNDEfXSCmuDwmruw8OfmXVr1J0BPOjnY7ypPWRA48uJmoWvtTe61byh7E00i7x2701
+ wyjxfRaKQrWq2+f5XiI7AXQ2ThdBPCVaXMETxz359roJx+9lXgbdYi6k2P89mkYV243Y
+ MiVj9DoHRZOE9tOLPv0B0OMGJvETt1aOB58AjD9xP648UcMP3bTW/SIa4oMkI7lExiss
+ YvUG4N/B2gAGheDWKS6SJdmdI/ByEBDsAh+XCyWAiMLNuH25ug2rfRlQS3qXYOHw2jlE
+ 1uEg==
+X-Gm-Message-State: AOJu0YwgmzQSEfSVOjYtABYUtXMqHnE0jFT5RuZ2dn/PTYYjXDN67tYC
+ uu11e4COkDU/53eN7c2tKnos+r/Xyx5XsPy9Jh4VxuPafvSRpAWHXybidIa8xTkQ4yqfjYOEtC1
+ 8MyKH
+X-Gm-Gg: ASbGncty6EDtv64aIippnF+qsSK4ChhRrAFu2PlNz+oAnpXcPLnVOKefbQxsIHBgtEr
+ Z2we7TfFeHFyTTw63wvg8DUizRokeWtXOvMgJjGbBUWHPoe4sonlAx236MyYz7td4ChCQlfQUYq
+ DwwvD1jJV9uwUeeF88mZb3poFiPSNrcKQkCj/MSVOBP+B9GqDNmRZ4uHKydaukDa3WZtJAzSsVS
+ 8n0Jd3hhDhS5qL1ByS/0cM9wKXXByqS8oqZGULh8X+qi/466PS3VE9KPwNFSlgM3AxR5DfTSK0w
+ etYRCOgRSS3jqrbNuU83x2ePYo2ZvFlKiuYcs0AdwDACaOLODL9cWQi31For2/beR/7Sj66xFhB
+ hBLofKMZ1PYhVSbxGsMcSnuSd6XQth0oni74cVM67qc/lLh85XZnQkqxLDGfbKPmAtXPQMCEm
+X-Google-Smtp-Source: AGHT+IFETW/E8wHNmdoOh2BYlJun+Py8+G5C/0HL8XTwckbyWaaUAIPtiPjc6DXe2EDCX7vQyrUGyA==
+X-Received: by 2002:a05:6000:25c1:b0:3d0:affe:ed78 with SMTP id
+ ffacd0b85a97d-3d1e05b9aadmr9562603f8f.48.1756828805811; 
+ Tue, 02 Sep 2025 09:00:05 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3dbead0b247sm729915f8f.6.2025.09.02.09.00.04
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 02 Sep 2025 09:00:05 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL v2 00/38] Misc HW patches for 2025-09-02
+Date: Tue,  2 Sep 2025 18:00:04 +0200
+Message-ID: <20250902160004.3816-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH3PPF9E162731D:EE_|SA3PR11MB8047:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c1e27ce-4feb-4dd0-ca0e-08ddea3976be
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?D+q3RkvZ31hA+fNCz4CkC3WzPe7HMHBv8Ty8P6pLFfbOGsYR5wldkV0usVEC?=
- =?us-ascii?Q?/qPAfmydGvvvvORfAyKf0sw7U+QxKqPiNCogZgFwEuomWMF1S5rYCS1cPMBP?=
- =?us-ascii?Q?kDq2Wl1Zf2UmpPmXlC3MNHU+kZWdnMMocctCcsLQI+rH+yFxwRDNQtOdELWc?=
- =?us-ascii?Q?xw5U/LHu5ReckEXxXMKHEAnz3aHpqnAnDBkV/iBWaI713pKunzelQWBnmL+V?=
- =?us-ascii?Q?knXc3Zl65TbtYjKdk6z437e+fPq6D2b2yq6I6LJkitmz8MFPtTIOgQbtphXd?=
- =?us-ascii?Q?OySgHf7qmjCVc0KUSgr2xKbMdJLuTAuEdSI0kSBnci8miJq61T8I0T91QLqD?=
- =?us-ascii?Q?eyNnK3rwI5CVPbJLtGQKmxV2rnZIMa+lXGqULJJP68tC0/BOh0TcbK8x6pfi?=
- =?us-ascii?Q?3cRLTlmTv3U//HTmIGQJJajrdPnweQ08yOUPG2pcCReMd6n45kU5pJ3tVaiF?=
- =?us-ascii?Q?yu2LLXLkfGsLrjPnZitgh8KJaiY6uCmbt1ipq9hY7ZYzbgy3Kot/zyfUuTbS?=
- =?us-ascii?Q?/tscPuzZdLdFL29fSrauroJPu8hTaqMxcIBMEZaxmIROU9aopg7Sch0j9ao+?=
- =?us-ascii?Q?R4NsUtkyGiIWtX4lKIdkhOaIxdtbjW9WDY1cspBvpr54B0Vg8Bpph5dyxdj8?=
- =?us-ascii?Q?bTVvEVJw7cxVD7jLSNZbzsvudjHW+JWdi3H+oHgBe++bZgU5cw2V8mSxeyzb?=
- =?us-ascii?Q?aEgLdhKBRNrV/sI3r5t9vE7B1F+LqNJMyPzW+y/h6E5hYjVMfMtG2HDY68VO?=
- =?us-ascii?Q?MShxJLdiLFFV0KRHizGU6DNYtacvmj7kD8f1RnkgHkj9Z7a5lJKfY+MY03et?=
- =?us-ascii?Q?BMF4GZgc2ScUQtEmTaPt1W4DJrdffS74l9ablM+NZReYe/qfybHGmkJk4sG4?=
- =?us-ascii?Q?XYKMmJ/LEc7rcCxFB8QzR1jg2ssZF447QM1J3vJIBLg9nCShvLtow30nyliq?=
- =?us-ascii?Q?XXSkLndsVOwADyEajJ+DoFadA5aeZqaPnTPwTWq6KpcIAnYP1ipHPy8943oO?=
- =?us-ascii?Q?cVgqLdIRVpunAX7y6wVCne1vUpoAWrYxy5Al7j+QmFuh35JgDjqkHJnxqdwG?=
- =?us-ascii?Q?cBUigThBkCjnYCsaZI2JVdl9nZv3hV0MwIUT9W8024cCFPe/+r0syU0KG0N0?=
- =?us-ascii?Q?eQEeyELU5HQ5pyQrvgk/rurApmE8UQsLSvjRm9RQH0rE9Xjt8nXTZSHIUw19?=
- =?us-ascii?Q?z2p+0ERLuinnmA8o+h8qJDBd+QEiLDe0nvtalxdqPnxhcZ2XfstT5hLmp49O?=
- =?us-ascii?Q?/LumGX2cbw0kS8nx9qV5a2iYGR3Yz1brIPyB0BjiASKixqwgJbCaC/YoQLv5?=
- =?us-ascii?Q?1nNvYqGxvou8nJVXskdGJ9nWcVtLWOsQ0Qnbo+cnaSkGbwRNhvmFtZ3xVDKd?=
- =?us-ascii?Q?k7M0ogODj1pYVW+SBG/bcm8a92Vnz9eqS4tQgf/q+gE/DeF8IhFz+27heGbV?=
- =?us-ascii?Q?dIJs7bjuBYQ=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH3PPF9E162731D.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(7416014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ghI2z1NwhvW/m9uSfzJjZIsgZ/5eDBxzF6ryVyXWOsa11n2dYwQWrKSeT1Ku?=
- =?us-ascii?Q?mOT49R73cs2cQnqykTncpuj9amx7Dek9pcGSao1QKacCFm8Ma6KxxdKJMh/A?=
- =?us-ascii?Q?L0IOHEsWvWA9f0cse2KQlbalFiN0GIsHZec80zXIUu6B+BIVK/2hdfEmBWxx?=
- =?us-ascii?Q?pdBCduw5h5G2ParbFYhIJHUWYpbsGdwgB9jnCWlTr6RHuRb/mJ3gAG0fF/zj?=
- =?us-ascii?Q?IiHnoOqNmTYcWmOGvjyDLtvUbq3hffoUPtyS1ZJcEnIVUNoLa4yWDXtRTZw4?=
- =?us-ascii?Q?0L1nOkjfP4FAL+2UhfMLvAsNVsUtUPch3cQjgjhoef/fCaCs2R4T5/u+XFZ0?=
- =?us-ascii?Q?B5JmTElNkjWGQ4rh7tSIeMrw7q2Qec35kvsZvcDz2HYjxmbx2hAHO0E8kev+?=
- =?us-ascii?Q?88OrEiLG/iOFb6ToJWBQ3dFJHABBIfJ9ew9o/qkJ6baCe7uvm7T37uqrdXdU?=
- =?us-ascii?Q?iRZpPa+CmuMTJR4B7D4dtXR4BZgtIGAag8lWbHJyTaryrUGdjPUsSKeTHlzU?=
- =?us-ascii?Q?fQBjUShRIcCwq8uRKMjY8YoJ8h1gCSyohRIJDHMATbmyKkipl3qw/mWlUKWN?=
- =?us-ascii?Q?voErExtm6X49jFeAelJRSZa+8C0WByrqiJ7wj4bVSBRuzKZ8QoSdz6Dy6xyv?=
- =?us-ascii?Q?yOpJivcMvCVDqkpOpKpCxFpRmw/QyOtM1OoOEbyH1FwupL/dDPTMyq2cnhev?=
- =?us-ascii?Q?9ywgA0szuh7xiWYr94Um/0mymrp86gyfDhP45+lzopfS6YkbruLZZoDsG9aV?=
- =?us-ascii?Q?YkucLfn2+qmtgV6D4gPUboOjjVOOq4UhfK21ATbzkR8TVWS4dzpczH9kSLIX?=
- =?us-ascii?Q?F5FU+6fOdroD56YSrrvvV3WiL6fWEv3JG4BOhaTduwIrUOlUw0ZGuK8yIP+4?=
- =?us-ascii?Q?SBLccWkzkRtVj0mE/v19hVwRICwmwKaT3Eef+iAlKvCatTl5BBfiVOsuGcaa?=
- =?us-ascii?Q?kLJp8q3zxXF3Fv7UKMpKpxYa5ewDgkRIijYS8pmDFYFjH2j5XM0jmXDjd06C?=
- =?us-ascii?Q?eQKq4I7FOgKMvnI1wLpAZWNAQ0pC2tacFVUyNfMjAUXRDFJQen1OFckeR/MO?=
- =?us-ascii?Q?B+d6B0LdCsN+JsSfXiVlNJv44jfxV3zmPRaC19ZnFL4iOEoakDiWvGySvfz7?=
- =?us-ascii?Q?AMSgLoq8WZcgKIItI0aahZk9/yw94gTP7I8GlZNEKipb9f72+vTyIuhGzX9b?=
- =?us-ascii?Q?uYXlCWD9HAfUIXINUHJNUnc0jAfALbMmh+F9SBkvXKlq/QZyu9JkgdVUe8lp?=
- =?us-ascii?Q?4m/YubZWJqW+JalU5vSLe1KTCPAVqUkI5G2gtgs4ZZDP/qRRDkZZud17SdjC?=
- =?us-ascii?Q?iEqylG8Wjz80prhMefc0J7LYw/Vbf6hLaIUDyqWIfV0ZcwRD/UYAOgEdFRGs?=
- =?us-ascii?Q?r5JCqi8CVyHgAnOZ1os+orrz+9cl89Y6gsJsY9/dZJEFuMI+2pej/bxT97wM?=
- =?us-ascii?Q?t5heiEhsBfgOBGLJjYErVPdr7bBH/H2wkjeKRVtBEiEMIEhyHOBBbDUK7zpt?=
- =?us-ascii?Q?RLxZ4dPYs3F0KSiX8yAGdQCfa2eKv3LTRNRFdEM0RZMzxf2wv0B0J6096hPj?=
- =?us-ascii?Q?hEhs0xCxJqPHzHgXBYSOb+kyk4zKe9x8v2POVm09?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c1e27ce-4feb-4dd0-ca0e-08ddea3976be
-X-MS-Exchange-CrossTenant-AuthSource: PH3PPF9E162731D.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 15:57:48.4563 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9MtaUTjrsoQcZiv11x77l2bwcEuNnuvZiJ5wNmE6EiDHq/lZWWoJUiauiHdxtqbDg4/OiUiCprvyLmOC7spIDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB8047
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=ira.weiny@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -198,129 +93,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alireza Sanaee wrote:
-> On Thu, 23 May 2024 10:44:51 -0700
-> nifan.cxl@gmail.com wrote:
-> 
-> > From: Fan Ni <fan.ni@samsung.com>
-> > 
-> > To simulate FM functionalities for initiating Dynamic Capacity Add
-> > (Opcode 5604h) and Dynamic Capacity Release (Opcode 5605h) as in CXL
-> > spec r3.1 7.6.7.6.5 and 7.6.7.6.6, we implemented two QMP interfaces
-> > to issue add/release dynamic capacity extents requests.
-> > 
-> > With the change, we allow to release an extent only when its DPA range
-> > is contained by a single accepted extent in the device. That is to
-> > say, extent superset release is not supported yet.
-> > 
-> > 1. Add dynamic capacity extents:
-> > 
-> > For example, the command to add two continuous extents (each 128MiB
-> > long) to region 0 (starting at DPA offset 0) looks like below:
-> > 
-> > { "execute": "qmp_capabilities" }
-> > 
-> > { "execute": "cxl-add-dynamic-capacity",
-> >   "arguments": {
-> >       "path": "/machine/peripheral/cxl-dcd0",
-> >       "host-id": 0,
-> >       "selection-policy": "prescriptive",
-> >       "region": 0,
-> >       "extents": [
-> >       {
-> >           "offset": 0,
-> >           "len": 134217728
-> >       },
-> >       {
-> >           "offset": 134217728,
-> >           "len": 134217728
-> >       }
-> >       ]
-> >   }
-> > }
-> > 
-> > 2. Release dynamic capacity extents:
-> > 
-> > For example, the command to release an extent of size 128MiB from
-> > region 0 (DPA offset 128MiB) looks like below:
-> > 
-> > { "execute": "cxl-release-dynamic-capacity",
-> >   "arguments": {
-> >       "path": "/machine/peripheral/cxl-dcd0",
-> >       "host-id": 0,
-> >       "removal-policy":"prescriptive",
-> >       "region": 0,
-> >       "extents": [
-> >       {
-> >           "offset": 134217728,
-> >           "len": 134217728
-> >       }
-> >       ]
-> >   }
-> > }
-> > 
-> > Tested-by: Svetly Todorov <svetly.todorov@memverge.com>
-> > Reviewed-by: Gregory Price <gregory.price@memverge.com>
-> > Signed-off-by: Fan Ni <fan.ni@samsung.com>
+The following changes since commit 8415b0619f65bff12f10c774659df92d3f61daca:
 
-[snip]
+  Merge tag 'qga-pull-2025-08-29-v2' of https://github.com/kostyanf14/qemu into staging (2025-09-02 12:07:05 +0200)
 
-> > +##
-> > +# @cxl-release-dynamic-capacity:
-> > +#
-> > +# Command to initiate to release dynamic capacity extents from a
-> > +# host.  It simulates operations defined in cxl spec r3.1 7.6.7.6.6.
-> > +#
-> > +# @path: CXL DCD canonical QOM path.
-> > +#
-> > +# @host-id: The "Host ID" field as defined in cxl spec r3.1
-> > +#     Table 7-71.
-> > +#
-> > +# @removal-policy: Bit[3:0] of the "Flags" field as defined in cxl
-> > +#     spec r3.1 Table 7-71.
-> > +#
-> > +# @forced-removal: Bit[4] of the "Flags" field in cxl spec r3.1
-> > +#     Table 7-71.  When set, device does not wait for a Release
-> > +#     Dynamic Capacity command from the host.  Host immediately
-> > +#     loses access to released capacity.
-> > +#
-> > +# @sanitize-on-release: Bit[5] of the "Flags" field in cxl spec r3.1
-> > +#     Table 7-71.  When set, device should sanitize all released
-> > +#     capacity as a result of this request.
-> > +#
-> > +# @region: The "Region Number" field as defined in cxl spec r3.1
-> > +#     Table 7-71.  The dynamic capacity region where the capacity
-> > +#     is being added.  Valid range is from 0-7.
-> > +#
-> > +# @tag: The "Tag" field as defined in cxl spec r3.1 Table 7-71.
-> > +#
-> > +# @extents: The "Extent List" field as defined in cxl spec r3.1
-> > +#     Table 7-71.
-> > +#
-> > +# Since : 9.1
-> > +##
-> > +{ 'command': 'cxl-release-dynamic-capacity',
-> > +  'data': { 'path': 'str',
-> > +            'host-id': 'uint16',
-> > +            'removal-policy': 'CXLExtRemovalPolicy',
-> > +            '*forced-removal': 'bool',
-> > +            '*sanitize-on-release': 'bool',
-> > +            'region': 'uint8',
-> > +            '*tag': 'str',
-> > +            'extents': [ 'CXLDynamicCapacityExtent' ]
-> > +           }
-> > +}
-> 
-> Although tag-based removal is not implemented yet, but still just wanted
-> to leave a comment here that exact extents are not needed for tag-based
-> removal and `extents` should be an optional parameter here; this is my
-> understanding reading the spec, so I still might be wrong, shout if you
-> think it does not make sense.
+are available in the Git repository at:
 
-It's been a while but I think this allows the removal of non-tagged
-extents as well(?)  If so the tag would be NULL (or empty-string) and one
-can remove a regular extent.
+  https://github.com/philmd/qemu.git tags/hw-misc-20250902
 
-But I could be miss-remembering something,
-Ira
+for you to fetch changes up to e502e614f4c3e5ee7b12cf1c926d9581262fd626:
+
+  hw/i386/pc_piix.c: remove unnecessary if() from pc_init1() (2025-09-02 17:58:05 +0200)
+
+v2: Dropped "hw/sd/sdcard: Fix size check for backing block image"
+
+----------------------------------------------------------------
+Misc HW patches
+
+- Compile various system files once
+- Remove SDCard spec v1.10
+- Remove mipssim machine and mipsnet device model
+- Prevent crash in e1000e when legacy interrupt fires after enabling MSI-X
+- Introduce qemu_init_irq_child()
+- Remove various memory leaks reported by ASan
+- Few Coverity fixes
+- Use 74Kf CPU to run MIPS16e binaries and M14Kc for microMIPS ones
+
+(a pair if spurious checkpatch.pl warnings ignored).
+
+----------------------------------------------------------------
+
+Aditya Gupta (1):
+  hw/ppc: Fix build error with CONFIG_POWERNV disabled
+
+Cédric Le Goater (4):
+  hw/arm/virt: Include 'system/system.h'
+  hw/isa/superio: Include 'system/system.h'
+  hw/mips/loongson3_virt: Include 'system/system.h'
+  hw/mips/malta: Include 'system/system.h'
+
+Denis Rastyogin (1):
+  target/mips: fix TLB huge page check to use 64-bit shift
+
+Djordje Todorovic (1):
+  hw/pci: Allow explicit function numbers in pci
+
+Jan Kiszka (3):
+  hw/sd/sdcard: Add validation for boot-partition-size
+  hw/sd/sdcard: Refactor sd_bootpart_offset
+  crypto/hmac: Allow to build hmac over multiple
+    qcrypto_gnutls_hmac_bytes[v] calls
+
+Laurent Vivier (1):
+  e1000e: Prevent crash from legacy interrupt firing after MSI-X enable
+
+Mark Cave-Ayland (1):
+  hw/i386/pc_piix.c: remove unnecessary if() from pc_init1()
+
+Peter Maydell (8):
+  hw/irq: New qemu_init_irq_child() function
+  hw/char/serial-pci-multi: Use qemu_init_irq_child() to avoid leak
+  hw/ide/ich.c: Use qemu_init_irq_child() to avoid memory leak
+  hw/gpio/pca9554: Avoid leak in pca9554_set_pin()
+  hw/char/max78000_uart: Destroy FIFO on deinit
+  hw/misc/xlnx-versal-cframe-reg: Free FIFO, g_tree on deinit
+  hw/display/xlnx_dp: Don't leak dpcd and edid objects
+  hw/arm/boot: Correctly free the MemoryDeviceInfoList
+
+Philippe Mathieu-Daudé (12):
+  hw/sd/sdcard: Remove support for spec v1.10
+  target/ppc/kvm: Avoid using alloca()
+  docs/devel/style: Mention alloca() family API is forbidden
+  scripts/coverity-scan/COMPONENTS.md: Add a 'plugins' category
+  hw/scsi/mptsas: Avoid silent integer truncation in MPI_FUNC_IOC_INIT
+  hw/ssi: Document ssi_transfer() method
+  elf: Add EF_MIPS_ARCH_ASE definitions
+  linux-user/mips: Select 74Kf CPU to run MIPS16e binaries
+  linux-user/mips: Select M14Kc CPU to run microMIPS binaries
+  hw/mips: Remove mipssim machine
+  hw/net: Remove mipsnet device model
+  docs/about/removed-features: Clarify 'device_add' is removed
+
+Pierrick Bouvier (6):
+  migration: compile migration/ram.c once
+  migration/vfio: compile only once
+  cpu-target: build compilation unit once for user/system
+  include/exec/target_page.h: move page-target.c to header
+  hw/meson: enter target hw first
+  hw/intc: compile some arm related source once
+
+ MAINTAINERS                             |   7 +-
+ docs/about/deprecated.rst               |  18 --
+ docs/about/removed-features.rst         |  14 +-
+ docs/devel/style.rst                    |   4 +-
+ docs/system/target-mips.rst             |  11 -
+ configs/devices/mips-softmmu/common.mak |   1 -
+ meson.build                             |   5 +-
+ hw/sd/sdmmc-internal.h                  |   3 +-
+ include/crypto/hmac.h                   |  12 +
+ include/elf.h                           |   7 +
+ include/exec/target_page.h              |  11 +-
+ include/hw/irq.h                        |  23 +-
+ include/hw/sd/sd.h                      |   1 -
+ include/hw/ssi/ssi.h                    |  14 ++
+ target/ppc/cpu.h                        |   4 +
+ cpu-target.c                            |   5 -
+ crypto/hmac-gcrypt.c                    |   4 +-
+ crypto/hmac-glib.c                      |   4 +-
+ crypto/hmac-gnutls.c                    |   4 +-
+ crypto/hmac-nettle.c                    |   4 +-
+ hw/arm/boot.c                           |   2 +-
+ hw/arm/virt.c                           |   1 +
+ hw/char/max78000_uart.c                 |   7 +
+ hw/char/serial-pci-multi.c              |   3 +-
+ hw/core/irq.c                           |   8 +
+ hw/display/xlnx_dp.c                    |  10 +-
+ hw/gpio/pca9554.c                       |   2 +-
+ hw/i386/pc_piix.c                       |   6 +-
+ hw/ide/ich.c                            |   3 +-
+ hw/isa/isa-superio.c                    |   1 +
+ hw/mips/loongson3_virt.c                |   1 +
+ hw/mips/malta.c                         |   1 +
+ hw/mips/mipssim.c                       | 249 --------------------
+ hw/misc/xlnx-versal-cframe-reg.c        |   9 +
+ hw/net/e1000e_core.c                    |   5 -
+ hw/net/mipsnet.c                        | 297 ------------------------
+ hw/pci/pci.c                            |  15 +-
+ hw/ppc/pnv.c                            |  86 +++++++
+ hw/scsi/mptsas.c                        |   6 +-
+ hw/sd/sd.c                              |  37 +--
+ linux-user/mips/elfload.c               |   6 +
+ migration/vfio-stub.c                   |  16 ++
+ migration/vfio.c                        |  14 --
+ page-target.c                           |  21 --
+ target-info-stub.c                      |   4 +
+ target/mips/tcg/system/tlb_helper.c     |   2 +-
+ target/ppc/kvm.c                        |   6 +-
+ target/ppc/misc_helper.c                |  59 +----
+ hw/intc/meson.build                     |   6 +-
+ hw/meson.build                          |  45 ++--
+ hw/mips/Kconfig                         |   7 -
+ hw/mips/meson.build                     |   1 -
+ hw/net/Kconfig                          |   3 -
+ hw/net/meson.build                      |   1 -
+ hw/net/trace-events                     |   7 -
+ migration/meson.build                   |   8 +-
+ scripts/coverity-scan/COMPONENTS.md     |   3 +
+ 57 files changed, 330 insertions(+), 784 deletions(-)
+ delete mode 100644 hw/mips/mipssim.c
+ delete mode 100644 hw/net/mipsnet.c
+ create mode 100644 migration/vfio-stub.c
+ delete mode 100644 page-target.c
+
+-- 
+2.51.0
+
 
