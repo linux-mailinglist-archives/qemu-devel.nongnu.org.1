@@ -2,110 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F96EB3F31D
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 05:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DDDB3F327
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 05:59:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utI56-00055h-Vk; Mon, 01 Sep 2025 23:53:17 -0400
+	id 1utI5D-0005jG-Rs; Mon, 01 Sep 2025 23:53:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI4u-0004xw-07
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:53:05 -0400
+ id 1utI5A-0005Zm-U1
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:53:20 -0400
 Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI4r-0005FE-Oq
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:53:03 -0400
+ id 1utI58-0005G4-TB
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:53:20 -0400
 Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822Rk5R020472
- for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:53:00 GMT
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822S5ds021595
+ for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:53:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- wHvbDTunywXe9CH2hCgIFy8UJevKRFTRY+78Y/FIIwY=; b=fFHinCY9eT+nU0uy
- ikAqtgGnzUOhTWqkah06P8M8Eu5KtyOcmvHgDzRVuVGOsZrRDmjr2L14GYh172Fx
- 71a1Px+Y1+MQ1kzWNChuOVrO+kl2bMJD1asV29NN89RAGfsCgxQWN30axs3+iasg
- RgNX2ZXRI6Oa6OUx2V5TRe1Dj8CFBQ4Io5iDLTdS5Xrmc2YAvEmrTqYEfJ+WzUbA
- j4M5lw7vR2iz9jFVQ1QGLG1nZrqPTmCSJ8PcSa9WWud8NqCslL5GcmjPmbUgjhPd
- fpqrQ7/dLx2XUPm7EXeSuN7WcKRVJY0v9rOPYZtZf/O/ob0gJ1aWJ21I+cwPBtW7
- ZXLGuA==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ur8rxfej-1
+ 3qeCLnaewpy0JF0nlGpTO/CsTw+EHp0eW4Ic3uZJCVY=; b=nWNL045kNS5sRbF/
+ q59Wu6i0qXM7NcbJI8VNDvUX1HQbuOr9T+RQitLZna9unVtd/NkDPmrVvwk26KsS
+ cQMnG5pyvlCTNhbWO1C2HO+VqkWTm3GY7ZSWXuse2HjFOt5OJO+S4/p8a6Jb49w7
+ k2Dwdv4beH8ut+ni3SFPU3hXr4UYgu7vvqLr2UFFG2/5vWwZZIQktaAeBQ/5jpHp
+ yzDQnT9YEjK3JEK7cnDr9M20w3hsbW/vAOwmYFX8jWtg5qs/Y56ZuG10/VZVyezw
+ KzhHaoE/bLosOULoNYoDNSSq23jHEIJatdZwKhMxjJ8FEMhQ5Q+IPIUpDjtLmjDC
+ j1MRPg==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ur8rxffd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:53:00 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-24aa3cf81a8so26955095ad.2
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:53:00 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:53:17 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-24a8dcb3bddso27601005ad.2
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:53:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756785179; x=1757389979;
+ d=1e100.net; s=20230601; t=1756785196; x=1757389996;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wHvbDTunywXe9CH2hCgIFy8UJevKRFTRY+78Y/FIIwY=;
- b=nCac8/YuofOaXevUwAik7ERHR1WtVr2newWu8Dk7fzL909wr3lsmTsiIWQXeygjjWD
- UqicDUg5QWwI9o/220y0N74FyOG5KIijHdpArk8sotcsC6jXpgADp3bEtA9fvoONeXDM
- T5NLyUi57BEnvskmjMF7RlRaOqT1ihUfAxVeoKJPNGL9YgBWBGqP/WYMZozGr0sJIqdM
- UhOoBTnlwm5IjazMl99Q9IcVZsTiR0JCordxHhjt3HxOKV0UHA9Aw3qZEa40Ch7w8WlM
- kNlCrSk3ceIEhLtN8tSsGdZZRRTYBqoFI0pl1USFBPD6dhxFfpNJLEBgLgVwkd68CXMN
- LtSQ==
+ bh=3qeCLnaewpy0JF0nlGpTO/CsTw+EHp0eW4Ic3uZJCVY=;
+ b=lVA3vzlqzVD1z/lVj6vlSCCi82B54y8FSTPOjMlbmzItzZwlVX3ZhHfjiufaC8cJEh
+ iszAOkEF4apIiZhfnM5RLlj56rLxhmURgyRI2Ob3wPhwdNUk2kRTVLEfK9kKy6/o7hxx
+ OaBxGpnQO1ZRIZShjw1nEWrctBmQt92Q5bY2Gq4vyZ/7hkuZ1TOnGa92lyngnpdeiS5w
+ FjsH5CM5EFUj6pA5xK/Ub2/yY9yuSZJQBVNOzOlqZojplzF6WBgdGdBBpxtYP/b+BSOu
+ U1k+45MIoWl4Y5ro642jHUkQewCUtEsGvt2zurGbFSAe/kfc+iCN+7uO9A46t5u0/GRN
+ f4NQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWChcncBaUqD/cstAOcgHKKC83krk3e05qVlXRI/TUsVDKZfFJ2iRJ7u0rO9LC+xHM1vSHfZwJHFwQr@nongnu.org
-X-Gm-Message-State: AOJu0YxgItHvwQcP7/S3GePpWOSPf+DRojP1SAdOClYinOG9Sy8/+/Bn
- qMj0TF3n8Fz7xsJQcTUQPmqOn0EgyS7vnsnAP0brxf9wmFSpXvbWkhsL+zUOBoNkncqW49kisvH
- MxKEVCacbsNLOI90e+Q36dPUC+KVVZe+TYe8zRsbKlzp6IUsHQjemSp42cA==
-X-Gm-Gg: ASbGnctbq1yEjf8xBJ25S29BzBwIPiDBRJ43PnxYrUyZX3A4CEuRLiZVfmSFvGUKJt2
- y8Nimql6ZTum8HsSBkDfR364F7Y30jMgVI7F6wZ35b9aHMwKiaozs2VxNZhdY72sc/CBzUZ7Eed
- qL4hPMi71IYhFd2aC/xLdhHx83wS6wZn37yhDk00g07FeerL/AdSu701jDe42vHrdg8NLGMlazN
- ml3Kal/FqsyPErUboOLs+pJyEJn+ZKz+V5Z1lsOE0yWCJQJPI4y2QC8AiDwLhAl5lwAe8cXsmXX
- pabVG5nXOUrBHbtqySt1uPnqAlnOCPWpddgai6Ra1H6lKsR0SDM41wddw2oT8g==
-X-Received: by 2002:a17:902:f707:b0:24b:1d30:5b06 with SMTP id
- d9443c01a7336-24b1d3075e4mr1334125ad.15.1756785179425; 
- Mon, 01 Sep 2025 20:52:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFcrCaG8p8630LAikxvzpM0OqddN21ZL0wmi41XrYVq/eLNH4M1Q4bMNhTAnvYnKXbYhUpolA==
-X-Received: by 2002:a17:902:f707:b0:24b:1d30:5b06 with SMTP id
- d9443c01a7336-24b1d3075e4mr1333855ad.15.1756785178899; 
- Mon, 01 Sep 2025 20:52:58 -0700 (PDT)
+ AJvYcCWfjSY8yAfpp+loqVpP5w7+LKLXPn6tIO2fPyNHDQAyaphbZFLzIzPVbAt/Q559E79njhReDjcA0t/t@nongnu.org
+X-Gm-Message-State: AOJu0YzL/ywD6mk1ZuP+TcTy7x7gGHP+jpw4W5X4zfqvVxdSKJ94lVc7
+ mapdzY6NnlW9QCOmwO0INx7RxC1ic5r6GBmK7VljTLu6qkYm1E5fU/hNjXwF1Mqx/GxLVrA5jdM
+ PIbg7Ge3yXBk3Y9l0nVjWQR8fBjlR+lBxALiQwceyjHapvvfK+rsOoySDIA==
+X-Gm-Gg: ASbGncuLwTUI4eH8BFoFmxCLxpQy2Zuet6iXl+oX4NwVYwfv69unWAn7Sk357sz1ohT
+ 3sP6f4xPOVP1F9lHEuhu7ethSmNNbl4a7w7vH5/i7NryvDznTkj/RCnhXICg7uWJzBGDl5E3crD
+ JhNQwXbFlVslo7Ay1ai1MPQHzZjUjOpS3WDwiVl2sMM3V1b+eogdrj2qezPo0qF7OEfz7Bss0YB
+ Fgt8qg/QIZaclyKd2DKDc/YD2uvAisKd1JwNNKEbrAzL+BlHdYJhwKiNQ2xxTg56g8V5948nKIy
+ gDSPPbq9Ce03sNjQm6WkYJlKi+UjqHg+iIBgAsTeVByNRUXOKSBaRUHAlpp3hw==
+X-Received: by 2002:a17:902:ebd1:b0:246:9e32:e83a with SMTP id
+ d9443c01a7336-24944af3220mr135190235ad.47.1756785196519; 
+ Mon, 01 Sep 2025 20:53:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE9RDhyzwKcPd0nagIOqyDxYNwI8DWuMqc6gCHCMtItOrW3N5L5G+yXAdBF50axoW5tVspZrw==
+X-Received: by 2002:a17:902:ebd1:b0:246:9e32:e83a with SMTP id
+ d9443c01a7336-24944af3220mr135189885ad.47.1756785195964; 
+ Mon, 01 Sep 2025 20:53:15 -0700 (PDT)
 Received: from [172.19.248.181] ([80.149.170.9])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-24903727e23sm119295495ad.45.2025.09.01.20.52.45
+ d9443c01a7336-24903727e23sm119295495ad.45.2025.09.01.20.53.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 01 Sep 2025 20:52:58 -0700 (PDT)
-Message-ID: <9a229f74-d2da-4690-b6bb-a176472426fd@oss.qualcomm.com>
-Date: Mon, 1 Sep 2025 19:38:17 -0500
+ Mon, 01 Sep 2025 20:53:15 -0700 (PDT)
+Message-ID: <0ed9bc1f-1e9d-4dc5-80b3-90f1c51da08d@oss.qualcomm.com>
+Date: Mon, 1 Sep 2025 19:40:00 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/38] target/hexagon: Add new macro definitions for sysemu
+Subject: Re: [PATCH 15/38] target/hexagon: Add handlers for guest/sysreg r/w
 To: ltaylorsimpson@gmail.com, qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, quic_mathbern@quicinc.com,
  ale@rev.ng, anjo@rev.ng, quic_mliebel@quicinc.com,
  alex.bennee@linaro.org, quic_mburton@quicinc.com, sidneym@quicinc.com,
  'Brian Cain' <bcain@quicinc.com>
 References: <20250301052628.1011210-1-brian.cain@oss.qualcomm.com>
- <20250301052628.1011210-15-brian.cain@oss.qualcomm.com>
- <029401db8f98$22248020$666d8060$@gmail.com>
+ <20250301052628.1011210-16-brian.cain@oss.qualcomm.com>
+ <029601db8f99$b0267440$10735cc0$@gmail.com>
 Content-Language: en-US
 From: Brian Cain <brian.cain@oss.qualcomm.com>
-In-Reply-To: <029401db8f98$22248020$666d8060$@gmail.com>
+In-Reply-To: <029601db8f99$b0267440$10735cc0$@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAxOSBTYWx0ZWRfX3hbvmEOMFWK/
- xY/hFPbjHR2lSHnGyhQFg1Jr/QkNfO5PoduB0pbXFmx/1cnyHxThC/4tlctxDtxXOfTmVgKIfHS
- 8iyXcYHFxWCe4MSgiPoDgPRDmpn+Ms+WOXhZIws8zHsnbd68NT94C5NRwIobSktJehhO6L6MM6A
- L+gB2NLV+4eImfapjYP7L8590x+bzYcMwF3o1gCeMOV2lKE9RqPGByNdetBtDeIxGyqYhmONFfk
- pvG+ADU2x1VnWHVcHvVrpawVt8YeoYGw+auGXsJmBPX0g35fMA9YpK50Z8X5o/DEp1sGTl2Q9Py
- hT5B2XfURhnmOY9FdE7LzNa3sAFKOAaEvl4o9GMTwtUMNrs/zqh48BNDvfnUZMwFBGfIiRnh+Ch
- ZxpmfUUN
-X-Proofpoint-GUID: Zh6XE3Xi59ayf8jHff-rS0Zw4vS3D2s4
-X-Proofpoint-ORIG-GUID: Zh6XE3Xi59ayf8jHff-rS0Zw4vS3D2s4
-X-Authority-Analysis: v=2.4 cv=PNkP+eqC c=1 sm=1 tr=0 ts=68b66a1c cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=oqm+nZh+PgUSu2IGv/nVbQ==:17
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAxOSBTYWx0ZWRfX9f3eGXPMK8uW
+ rC0tZguVn1mwWFME05URfJRUKC0Rn72ALq9KLLTwbgc41/h3jKaGHJ3k47X0InL7f/Aic8qa0Fy
+ GPf+u0W0+O1yNogHrdMo/VYe/ldmvXQpSqCHRlQScXvGck8LuzEyoqfUfy2bLIlQRhB/4QnI0By
+ NKuHwqyLZyIvaIswO2G+dv7M8p5pkrrQ5BPfxZ8vxqUBB7MMPj7jVXonIr/nZAXKy6n0Gphe0xD
+ o2l5Vj0FwpRyWCikfa/FUNxel2Ac6WYN+Ta01jg6C080pk0bIP09dohBjwYYZ3BVKCtSSjVlRgp
+ ljku3/c28S2mNGJ65xjfQUVTTOhdOTj/aprp0Cjxbd5dMDI5HduFphT8ugpeZacLlIekMGfqUNy
+ pV8z7Ihw
+X-Proofpoint-GUID: 1cd1M3ZHiDflezqY9zakFg-UXxqdgaXu
+X-Proofpoint-ORIG-GUID: 1cd1M3ZHiDflezqY9zakFg-UXxqdgaXu
+X-Authority-Analysis: v=2.4 cv=PNkP+eqC c=1 sm=1 tr=0 ts=68b66a2d cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=oqm+nZh+PgUSu2IGv/nVbQ==:17
  a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
- a=69wJf7TsAAAA:8 a=KKAkSRfTAAAA:8 a=COk6AnOGAAAA:8 a=dp4J7eLCU0QiT_R9C2kA:9
- a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22 a=Fg1AiH1G6rFz08G2ETeA:22
- a=cvBusfyB2V15izCimMoJ:22 a=TjNXssC_j7lpFel5tvFf:22
+ a=69wJf7TsAAAA:8 a=KKAkSRfTAAAA:8 a=COk6AnOGAAAA:8 a=n_Hw8APGRrwVRHwZlUMA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
+ a=Fg1AiH1G6rFz08G2ETeA:22 a=cvBusfyB2V15izCimMoJ:22 a=TjNXssC_j7lpFel5tvFf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
@@ -139,7 +139,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 3/7/2025 1:35 PM, ltaylorsimpson@gmail.com wrote:
+On 3/7/2025 1:46 PM, ltaylorsimpson@gmail.com wrote:
 >
 >> -----Original Message-----
 >> From: Brian Cain <brian.cain@oss.qualcomm.com>
@@ -150,159 +150,44 @@ On 3/7/2025 1:35 PM, ltaylorsimpson@gmail.com wrote:
 >> quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com;
 >> alex.bennee@linaro.org; quic_mburton@quicinc.com;
 >> sidneym@quicinc.com; Brian Cain <bcain@quicinc.com>
->> Subject: [PATCH 14/38] target/hexagon: Add new macro definitions for
->> sysemu
+>> Subject: [PATCH 15/38] target/hexagon: Add handlers for guest/sysreg r/w
 >>
 >> From: Brian Cain <bcain@quicinc.com>
 >>
->> Also: add nop TCG overrides for break,unpause,fetchbo,dczeroa
-> dczeroa is modelled by QEMU.  It writes zero's to the cache line.
->
->> break: this hardware breakpoint instruction is used with the in-silicon
->> debugger feature, this is not modeled.
+>> This commit provides handlers to generate TCG for guest and system register
+>> reads and writes.  They will be leveraged by a future commit.
 >>
->> unpause: this instruction is used to resume hardware threads that are stalled
->> by pause instructions.  pause is modeled as a nop, or in RR mode as an
->> EXCP_YIELD.  This instruction is safe to ignore.
->>
->> Since cache/prefetch functions are not modeled, dczero and fetchbo are
->> safe to ignore.
-> dczero is modelled.
->
 >> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 >> ---
->>   target/hexagon/gen_tcg.h    |   9 ++
->>   target/hexagon/macros.h     |  28 ++++-
->>   target/hexagon/sys_macros.h | 238
->> ++++++++++++++++++++++++++++++++++++
->>   target/hexagon/op_helper.c  |   1 +
->>   4 files changed, 272 insertions(+), 4 deletions(-)  create mode 100644
->> target/hexagon/sys_macros.h
+>>   target/hexagon/genptr.c | 159
+>> ++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 159 insertions(+)
 >>
->> diff --git a/target/hexagon/gen_tcg.h b/target/hexagon/gen_tcg.h index
->> 8a3b801287..71f8a0e2d0 100644
->> --- a/target/hexagon/gen_tcg.h
->> +++ b/target/hexagon/gen_tcg.h
->> @@ -488,6 +488,7 @@
->>
->>   /* dczeroa clears the 32 byte cache line at the address given */  #define
->> fGEN_TCG_Y2_dczeroa(SHORTCODE) SHORTCODE
->> +#define fGEN_TCG_Y2_dczeroa_nt(SHORTCODE) SHORTCODE
-> Is there a Y2_dczeroa_nt instruction?  If not, remove this.
->
->>           ctx->dczero_addr = tcg_temp_new(); \
->>           tcg_gen_mov_tl(ctx->dczero_addr, (REG)); \
->>       } while (0)
->> +#else
->> +#define fDCZEROA(REG) ((void) REG)
-> This isn't needed because all the instances of fDCZEROA are inside QEMU_GENERATE.
->
->
->>   #endif
->>
->> diff --git a/target/hexagon/sys_macros.h b/target/hexagon/sys_macros.h
->> new file mode 100644 index 0000000000..3c4c3c7aa5
->> --- /dev/null
->> +++ b/target/hexagon/sys_macros.h
->> +#define READ_SREG(NUM) arch_get_system_reg(env, NUM)
->> +#define READ_SGP0()    arch_get_system_reg(env, HEX_SREG_SGP0)
->> +#define READ_SGP1()    arch_get_system_reg(env, HEX_SREG_SGP1)
->> +#define READ_SGP10()   ((uint64_t)arch_get_system_reg(env,
->> HEX_SREG_SGP0) | \
->> +    ((uint64_t)arch_get_system_reg(env, HEX_SREG_SGP1) << 32))
+>> diff --git a/target/hexagon/genptr.c b/target/hexagon/genptr.c index
+>> 2c5e15cfcf..488d0b4b97 100644
+>> --- a/target/hexagon/genptr.c
+>> +++ b/target/hexagon/genptr.c
+>> +G_GNUC_UNUSED
+>> +static void gen_read_greg(TCGv dst, int reg_num) {
+>> +    gen_helper_greg_read(dst, tcg_env, tcg_constant_tl(reg_num)); }
 >> +
->> +#define WRITE_SREG(NUM, VAL)      log_sreg_write(env, NUM, VAL, slot)
->> +#define WRITE_SGP0(VAL)           log_sreg_write(env, HEX_SREG_SGP0,
->> VAL, slot)
->> +#define WRITE_SGP1(VAL)           log_sreg_write(env, HEX_SREG_SGP1,
->> VAL, slot)
->> +#define WRITE_SGP10(VAL) \
->> +    do { \
->> +        log_sreg_write(env, HEX_SREG_SGP0, (VAL) & 0xFFFFFFFF, slot); \
->> +        log_sreg_write(env, HEX_SREG_SGP1, (VAL) >> 32, slot); \
->> +    } while (0)
+>> +G_GNUC_UNUSED
+>> +static void gen_read_greg_pair(TCGv_i64 dst, int reg_num) {
+>> +    gen_helper_greg_read_pair(dst, tcg_env, tcg_constant_tl(reg_num));
+>> +} #endif
 >> +
-> READ_SREG and WRITE_SREG look like a hangover for the original generator scripts which have been rewritten.  Are they needed?
->
->
->> +#ifdef QEMU_GENERATE
->> +#define GET_SSR_FIELD(RES, FIELD) \
->> +    GET_FIELD(RES, FIELD, hex_t_sreg[HEX_SREG_SSR]) #else
 >> +
->> +#define GET_SSR_FIELD(FIELD, REGIN) \
->> +    (uint32_t)GET_FIELD(FIELD, REGIN)
->> +#define GET_SYSCFG_FIELD(FIELD, REGIN) \
->> +    (uint32_t)GET_FIELD(FIELD, REGIN)
->> +#define SET_SYSTEM_FIELD(ENV, REG, FIELD, VAL) \
->> +    do { \
->> +        uint32_t regval = arch_get_system_reg(ENV, REG); \
->> +        fINSERT_BITS(regval, reg_field_info[FIELD].width, \
->> +                     reg_field_info[FIELD].offset, (VAL)); \
->> +        arch_set_system_reg(ENV, REG, regval); \
->> +    } while (0)
->> +#define SET_SSR_FIELD(ENV, FIELD, VAL) \
->> +    SET_SYSTEM_FIELD(ENV, HEX_SREG_SSR, FIELD, VAL) #define
->> +SET_SYSCFG_FIELD(ENV, FIELD, VAL) \
->> +    SET_SYSTEM_FIELD(ENV, HEX_SREG_SYSCFG, FIELD, VAL)
->> +
->> +#define CCR_FIELD_SET(ENV, FIELD) \
->> +    (!!GET_FIELD(FIELD, arch_get_system_reg(ENV, HEX_SREG_CCR)))
->> +
->> +/*
->> + * Direct-to-guest is not implemented yet, continuing would cause
->> +unexpected
->> + * behavior, so we abort.
->> + */
->> +#define ASSERT_DIRECT_TO_GUEST_UNSET(ENV, EXCP) \
->> +    do { \
->> +        switch (EXCP) { \
->> +        case HEX_EVENT_TRAP0: \
->> +            g_assert(!CCR_FIELD_SET(ENV, CCR_GTE)); \
->> +            break; \
->> +        case HEX_EVENT_IMPRECISE: \
->> +        case HEX_EVENT_PRECISE: \
->> +        case HEX_EVENT_FPTRAP: \
->> +            g_assert(!CCR_FIELD_SET(ENV, CCR_GEE)); \
->> +            break; \
->> +        default: \
->> +            if ((EXCP) >= HEX_EVENT_INT0) { \
->> +                g_assert(!CCR_FIELD_SET(ENV, CCR_GIE)); \
->> +            } \
->> +            break; \
->> +        } \
->> +    } while (0)
->> +#endif
->> +
->> +#define fREAD_ELR() (READ_SREG(HEX_SREG_ELR))
->> +
->> +#define fLOAD_PHYS(NUM, SIZE, SIGN, SRC1, SRC2, DST) { \
->> +  const uintptr_t rs = ((unsigned long)(unsigned)(SRC1)) & 0x7ff; \
->> +  const uintptr_t rt = ((unsigned long)(unsigned)(SRC2)) << 11; \
->> +  const uintptr_t addr = rs + rt;         \
->> +  cpu_physical_memory_read(addr, &DST, sizeof(uint32_t)); \ }
->> +
->> +#define fPOW2_HELP_ROUNDUP(VAL) \
->> +    ((VAL) | \
->> +     ((VAL) >> 1) | \
->> +     ((VAL) >> 2) | \
->> +     ((VAL) >> 4) | \
->> +     ((VAL) >> 8) | \
->> +     ((VAL) >> 16))
->> +#define fPOW2_ROUNDUP(VAL) (fPOW2_HELP_ROUNDUP((VAL) - 1) + 1)
->> +
->> +#define fFRAMECHECK(ADDR, EA)  g_assert_not_reached();
-> Add a FIXME or comment on why this is not implemented.  Or is it implemented in a subsequent patch in this series?
->
->> +#define fSET_TLB_LOCK()       g_assert_not_reached()
->> +#define fCLEAR_TLB_LOCK()     g_assert_not_reached()
->> +
->> +#define fSET_K0_LOCK()        g_assert_not_reached()
->> +#define fCLEAR_K0_LOCK()      g_assert_not_reached()
-> Add a comment that these are implemented in a later patch in the series.
+> This will work, but G'regs 0:3 could be read more efficiently by reading from TCGv hex_greg rather than calling the helper.
+
+Some guest registers have special behavior, so we pessimistically 
+generate helper calls for all of them.  Should we revisit this for v3 in 
+order to get optimal codegen for the simple registers, or can we revisit 
+it after the series lands?
 
 
-Some but not all of the suggestions above were addressed in v2. The 
-remaining ones will be addressed for v3.
-
+>
+> Otherwise
+> Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+>
 >
 
