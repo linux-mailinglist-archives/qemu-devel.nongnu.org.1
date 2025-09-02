@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB80B4023F
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 15:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A201B402A4
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 15:20:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utQnh-0000xQ-BK; Tue, 02 Sep 2025 09:11:53 -0400
+	id 1utQnm-0001Ua-Fl; Tue, 02 Sep 2025 09:11:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQnK-0000rg-2O
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQnL-0000rf-35
  for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:11:33 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQn2-0004Uc-Se
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:11:29 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-45b8b1a104cso21161745e9.2
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 06:11:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQn6-0004Ve-NF
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:11:26 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3d1bf79d75aso1080030f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 06:11:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756818669; x=1757423469; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756818673; x=1757423473; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ZO8GkHAjAS9SCd/410xii2goyI4MjiXciEMBan796CQ=;
- b=mWrLD0Dc5/2Rcx8FOPStxW3sAg0irDs0E0EO5H8t1y1HKLSTO5/3spUUF0cGdRzE6l
- V3OHgj0wSbBNVagpSvpWikTNZRqg2xJEvZu3Xj6d28gn0OI8O1ss6xEE4nF+NRsRnDPB
- XEG2znT3eReN4S0QihMdw9iQz5bmzbBLNPaxcShb0zJBBIP+gnPyVlTD5QvY7qrj/zRJ
- JzpNSpqxoBfaxmPspJA+qHu7zDX2UXKzJqnrn8i91HYhdy8g59G7SHV7xdpd7t5FF9dk
- jso+y3DLk+JZVRLzDHhtKPkPkUjhdgfk5kicdZsCQr+hAcoH+v+taidNBGZyKCMVhhon
- g6Qg==
+ :reply-to; bh=h1bQ3YvXHpWdKZQA8th6hBcDTCJDn8e1NCM2+N1lCr4=;
+ b=eT2Q4Ev/BFSWYoZgLckHVW+v2pprWe6ETLlJPFGkWOHiN8ZgS+1Ty1Q6P9LFDy7Jo9
+ yZWvcY8j+J/uRKsDPURyYKmxelZyDYFHx8f4EWIcuQXAyvDgBYFo4Gj1XLZkzcI/A1mv
+ PQ0ZnPVC4Pm6QfRf2oOIk1pbCKJUcUg0vqE2b0vG3r1DTsCAMv9lgp7X/TH7NfrULTxB
+ DUB/dvaSfrX41XFrfdZ/hrUEmbqF4MZS0nvaMfaeHYT6YwR1+hWs6tOK8ZNdKQ6P4fl5
+ uWIsVoZH1PlLrYxglMN2y2LM4PJsAz3rjHi0LLuHn5+0UE0Jn8AqZBFfkvyegzqfPSt1
+ Ewqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756818669; x=1757423469;
+ d=1e100.net; s=20230601; t=1756818673; x=1757423473;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZO8GkHAjAS9SCd/410xii2goyI4MjiXciEMBan796CQ=;
- b=QTT0QylusVKCYcsVImVLjsyh1F0dIGOFF+kxInaXtQ5DhgXGJj5mDeN0OnnTLjeuEH
- zfE3wPRM4CvGED38NWcPwUsda6xioTCE3ajVn5PtyM39rmhJ9HBcZja0/5VWusPwd7Js
- O4N+NNLu4mixNaomdVcGJxGGJShUZh/MSau435jlaiwlLczO7xIfeZClQSevWCD/sZD6
- whJZl+4t5Tj/bzq1dy6WjSA9K+Doc03iCyv8ZWQVL1H7tJ+ZC8MtGwC/nbc2gYdcXJdc
- ZQgVRLLMtuS844/a2iWpsqVwdYFBREnX3KxfRlAJHK/LpjMPxyDFIeGYBwsIrzrcYdOV
- RfBg==
-X-Gm-Message-State: AOJu0Yw7A+1bN9vNQx9Y9zmF8eyAYBuR6zHck/0/MY7l62IiIsj4gvUX
- LKTP71vGuH0TjNzdirdeWPQetPL80gg7dK6UclJoME9O1D5Tjw80JxP/tWOUJJynFX5aNsMBMKZ
- 49jBs
-X-Gm-Gg: ASbGncvHDGpGT1XHxOu36Kime9TURpGhsuo51yFluPn4HoWpDApVSVyclOClmlUd61K
- pgXpE282VoVJh3jH7WrIs9e89b9WtvRlwpj7kh7AeI97vEIVM8PTc327FW+3cZMdzczwnEsJKX4
- 5dj8CotrwfnAyglQJvnbFrUvrHu+wCK6k6dNQU7xkYfXMGnrgspu09+OKuBwmANrObTXbTX+pnh
- HEykZoEEzubIhzZAJWQg+AnGjVYxeCG385gumkwLn2yKaQwzNVUKIv6Am2NYrPT5M5eQ6NOl/1T
- d+kIgyjh27LzQOjdjLgFGbEZ5gt9ZPfGSyCCm1fpKnVyUDO6uUtZJ5wsamZsu+taQCTN26Z0Qv8
- Y+3ETpnlQsntyco12W+wXI7lGtfLO3I8FxSM2miJzGdhf8xDSyUdGn+gkZOuyxas11WYwiCanUJ
- LFiRkdsPY=
-X-Google-Smtp-Source: AGHT+IH8JY8CCrI4uIi4M+ZyCNFpGD+mDcK0OQeXubBdonC8cQv2Ja2TbLQkYu3JpiLMhVX1LpnGbQ==
-X-Received: by 2002:a05:600c:3596:b0:45b:8a45:b540 with SMTP id
- 5b1f17b1804b1-45b8a45b97amr62463075e9.19.1756818668831; 
- Tue, 02 Sep 2025 06:11:08 -0700 (PDT)
+ bh=h1bQ3YvXHpWdKZQA8th6hBcDTCJDn8e1NCM2+N1lCr4=;
+ b=k/CdtWGEpGeHtFjdjAO5m4sr3dAvQia1K/35EbX9uWxZJ7QGNxJhIPb9CQg4WEWHa1
+ Xnl6NeEKFQ36FnlULkjiHyhuQ5Tu74ASVC7zHFftkdo1Gz/oZ6AsZ78c546pT7YgDsvn
+ 9vQbKGml7NUnwxilex0p7y1GkHgGmfgQ/B8v0kiW7lByKKvHw5CTVFzO/kMsjWWPg76H
+ VzVf5GF966dftVdaFrM2ATJDnig6t1rg4wdc9TWKfgPNKfDGVyEEzc2G18QTZDzVPXyb
+ l6EKoIjZRGJZGNm0ywNR39MZITwusO4K4WOEfob2ejNNZM9B1hpojbQhGJJzCgkFqMm1
+ Pbfg==
+X-Gm-Message-State: AOJu0Yy/gveK9JO4tCl+lfD7PFNZnFhA9+qZkfo9TqivGLw/s3qOBejm
+ xQGScjvkqu84xZJVMAbk2fkYWn3BsTBUkbc3N3+Nu8nSUhP8Vfi7W81QyzO14PzEe3d9NGu5Jy1
+ zfjVh
+X-Gm-Gg: ASbGnctwjcmClM5fj/lECUK8lXKy4MiCfa+oGBgk/Qs3IDD/K+WBnqd3Tv+S6tszdux
+ /40KHq/IzzKXffQCAnD7XLxcYOaLk/rqkhuORJIpNqYQ74DTkV/Z1FIcPCPpUhiDghMKWjGBEVD
+ ax4ndB0S7C6pLKCgoAMZ7LIXAzNm4YhBAc+jEOpa3v+HJeUIBcniZZQYmXuWhKbLYoqHC2QSaT5
+ IfR8wthd9Ps1u1p+jiPHXfj4B4jKTtasLgXtggPKlXy/8vUBBzq59IZY9pdwZbvGTWYSPuoJfds
+ XdBQSpGZnCi2kPeBOzuByKKJqY0cm+XX6AICABFTAZFtwazYYELlqfYYG/lHy++krAOGMSFg821
+ Xqxql0TW6q0sFlUyd6S1ycrN6kTaqX6siWzxNo3XB+Z/tGLlfZYuYEn9X9bGLt3mUgvoecGIQ
+X-Google-Smtp-Source: AGHT+IHajneaawPqJGVPbngsHpW1dzCmK3xuoE2XLTazpZL7IEuk/CQWZF3UDFRqxoWPYf2r8sBYwg==
+X-Received: by 2002:a5d:5849:0:b0:3cb:e47c:5e4e with SMTP id
+ ffacd0b85a97d-3d1df34908bmr11490735f8f.24.1756818673509; 
+ Tue, 02 Sep 2025 06:11:13 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b6f0d32a2sm303454045e9.9.2025.09.02.06.11.08
+ ffacd0b85a97d-3cf34493b8csm19233720f8f.59.2025.09.02.06.11.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Sep 2025 06:11:08 -0700 (PDT)
+ Tue, 02 Sep 2025 06:11:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/39] e1000e: Prevent crash from legacy interrupt firing after
- MSI-X enable
-Date: Tue,  2 Sep 2025 15:09:48 +0200
-Message-ID: <20250902131016.84968-12-philmd@linaro.org>
+Subject: [PULL 12/39] scripts/coverity-scan/COMPONENTS.md: Add a 'plugins'
+ category
+Date: Tue,  2 Sep 2025 15:09:49 +0200
+Message-ID: <20250902131016.84968-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131016.84968-1-philmd@linaro.org>
 References: <20250902131016.84968-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,54 +97,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Laurent Vivier <lvivier@redhat.com>
+Cover the TCG plugins files under their own Coverity category.
 
-A race condition between guest driver actions and QEMU timers can lead
-to an assertion failure when the guest switches the e1000e from legacy
-interrupt mode to MSI-X. If a legacy interrupt delay timer (TIDV or
-RDTR) is active, but the guest enables MSI-X before the timer fires,
-the pending interrupt cause can trigger an assert in
-e1000e_intmgr_collect_delayed_causes().
-
-This patch removes the assertion and executes the code that clears the
-pending legacy causes. This change is safe and introduces no unintended
-behavioral side effects, as it only alters a state that previously led
-to termination.
-
-- when core->delayed_causes == 0 the function was already a no-op and
-  remains so.
-
-- when core->delayed_causes != 0 the function would previously
-  crash due to the assertion failure. The patch now defines a safe
-  outcome by clearing the cause and returning. Since behavior after
-  the assertion never existed, this simply corrects the crash.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1863
-Suggested-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Message-ID: <20250807110806.409065-1-lvivier@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20250811094341.91597-1-philmd@linaro.org>
 ---
- hw/net/e1000e_core.c | 5 -----
- 1 file changed, 5 deletions(-)
+ scripts/coverity-scan/COMPONENTS.md | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-index 24138587905..06657bb3ac5 100644
---- a/hw/net/e1000e_core.c
-+++ b/hw/net/e1000e_core.c
-@@ -341,11 +341,6 @@ e1000e_intmgr_collect_delayed_causes(E1000ECore *core)
- {
-     uint32_t res;
+diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
+index 72995903ff9..95805b536bc 100644
+--- a/scripts/coverity-scan/COMPONENTS.md
++++ b/scripts/coverity-scan/COMPONENTS.md
+@@ -147,6 +147,9 @@ tcg
+ system
+   ~ .*/qemu(/system/.*|/accel/.*)
  
--    if (msix_enabled(core->owner)) {
--        assert(core->delayed_causes == 0);
--        return 0;
--    }
--
-     res = core->delayed_causes;
-     core->delayed_causes = 0;
++plugins
++  ~ .*/qemu(/contrib|/tests/tcg)?/plugins/.*
++
+ (headers)
+   ~ .*/qemu(/include/.*)
  
 -- 
 2.51.0
