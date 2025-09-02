@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DDC9B40287
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 15:18:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A2BCB40254
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 15:15:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utQpr-0007g0-8m; Tue, 02 Sep 2025 09:14:07 -0400
+	id 1utQpw-0007yR-7R; Tue, 02 Sep 2025 09:14:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQpC-0007IW-NJ
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQpC-0007IV-NB
  for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:13:29 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQp7-0004mW-EK
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQp7-0004nO-Vs
  for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:13:25 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-45b9a856dc2so3420885e9.0
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 06:13:15 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-45b8b8d45b3so20465855e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 06:13:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756818794; x=1757423594; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756818798; x=1757423598; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=JgIF6lWD9SRkfbI3l9bP2fZjIYaJ7QJ0dnxofnv7srk=;
- b=eey1Bxzx4c12DhxcqYUm8caRF7qmGM/qcI+bF+NWczk0W5fFeTCLXFHmAi5sY33/TI
- 9uQdwE3aDVr4mmH8nDWvfCTqnYYGMWS4NHJ1xPScIljRb27NA/pDwPwqHiuvF7E3Zsv1
- v1scJqJw8rMQ8i1FVi1JxUlt23gumAWTfPH+VvBTdbzBowqTpWtmVXDu3mFxBjFtey52
- JFBbRGGv7L16mYzbXSCmtuSYyl6ZYOr4JITLgFQfZfq3bvk0jaz/yQ/ga2Mimtyi7jjw
- Zc9X+28JXfnJAtZ1hTGo7+28qf8izG1ud0Oz9W3Hf0RCWVjwX4GYx5d3fuGo06ndTqCX
- Poxw==
+ :reply-to; bh=IiaqMhKzb+hmnzQCD7wPPRZkhh4jutFo9MeWh47ViIw=;
+ b=T04mcPkO2zL7IqMK/1Wru2Oo8UKe8xsXkOQjbsGS9nVbmuTvJwpgJPOXf96gJBD3ym
+ tkyeWgwqM6attKcel0rtxPlQPSQR4nFVgcqvDFvDMl8UVvVgtVCvaDjBf/djXEseAR57
+ QeZxIikQMhldsMWWV3Ukv+X6wDvY3UIeCFn8nbSXe22I4hYetOdHc8MWyO1R5r8nXfQJ
+ lxGvd9/vpGmM7uX7R3mP9R+Sv9CD07bIcxS1ckSUWNp8zJmvQjkJlWqZwf8VHz1bOYQY
+ frlKWP5gsJVaCz6omXwkJ9gEisXsJmWswv3jZod2U1KXewehgssn6DeQnpWJ+/ys40Bc
+ GtwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756818794; x=1757423594;
+ d=1e100.net; s=20230601; t=1756818798; x=1757423598;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JgIF6lWD9SRkfbI3l9bP2fZjIYaJ7QJ0dnxofnv7srk=;
- b=c+YHgdzvwPh3HFxnCq2x2KZ/WPLHAbclgGfc5Z5fEC3V3vXamkGxlnlA8IVjiF9GE/
- J57kUJZEMfdVmvH1i2+mYD6ZU3X5nZRcUSwOQU8j+p0h2qYACe+UUMY0HlkJXkRt1lvs
- 2pu2mYDofFSxxHqIEwrp/k//VQz19egNIhU8PVAgGKkMMC4njUafsP4X+DtWLsMR/hMC
- WFU0Q5ZiqQm+3YtiQ+9pOyxxWGrWVZLFpNJCfgqJE6eY1i1yxUKrfFy+8oRVXQ3eHnHr
- 4FhraMCTNhx7WA9KkudgDBYIaeNcxXCpTLZnkp4yBFglP/vYNn0eD+t2DatcaH97FTwO
- 1W1g==
-X-Gm-Message-State: AOJu0YyUuXoRp+ssohU5IcbldY5DCZPgYpA6tV+y9nat92yNXnRvewuL
- raomZ40cKZcMZqSji7D+qBTcczQw773n7FpiPxbqNiwdh+ZEIYRI6x8br0gCICVo7hirb0yQU2s
- qFnC6
-X-Gm-Gg: ASbGncuzSN9VEn08MtJG8j1AtHC1DNTp+pbDXEhoD3rjSDU/IsEumCnyCN0Nti5wsp1
- dVyAwTDNiy8CecZpmYKVKFTBiLG2F/1ruwddl0OLpSzh2TG46noMIfKx3fu35vto3FwoB3q1vbG
- bR34wJ+yncWOUAR1IeYbYGhBPqDDm/vYm4VygHTmURA1Wda3x1lNCOV9wuif2WF5aG2JE21VAyG
- 9yXFJLYxDor8YjqBLaVG94X287iNsLkZrbxeYjclqGyVP6T60S6ilMlz1pmjur2cqijSJSLvDXf
- zeS+RfQ2W7E94Vi744lDUnSfYwwy/eSqEOMUuzYNg9ZVarfaN9ObaEUacYHEfHHZ4etdovavBqj
- TleBL0THEQUgOstDddy0FEaUGzMVzQP0gl2WiKQFxAZZVMnsLZ5LuTN4irED3LIyCL+F+rmYq
-X-Google-Smtp-Source: AGHT+IEKcsERGuHhYgXzaMD6vVpzEucACECBhl8bu0ckF9aGvTBIpvjxzRe/4tV7DLd2iiH6vvJSLA==
-X-Received: by 2002:a05:600c:4fcd:b0:459:e025:8c40 with SMTP id
- 5b1f17b1804b1-45b85533712mr103587935e9.10.1756818793570; 
- Tue, 02 Sep 2025 06:13:13 -0700 (PDT)
+ bh=IiaqMhKzb+hmnzQCD7wPPRZkhh4jutFo9MeWh47ViIw=;
+ b=KxWCAuKy2p5gxks3p2OQAdR6Q3y1S+fy92scX9+t6asWLTGuJ1fageMVw21VZpf72s
+ fjVeIOpNq19hMa6+LrFh0Rq2sbebZxBIivG0UGK3QQfbPbMpOrBO/oMvP3tzOSvsGgw0
+ xv+Mz8GVNNxz46VXjzXeU25WFWIDkIBP4JFtNuF5BBdvKimKKhaKtZNWwzSbo78yw84n
+ vh69sHJpFFsLdgPlCBCnXtI+83qN7jhpLdwTWW9PZl3tq+RgItsOPKEpF8zcJaXyEYkp
+ I4UEPnpcb/bYJRnBA0JtMLST+G8rH9aJcXCW9VH2E/CV3yVFpghuQjpIl+rGf5fW+QOH
+ OOkw==
+X-Gm-Message-State: AOJu0YxGkRDBJntoOWP0OuUwUdpQbaDP+CymfrMWiE9Iy+z8xE5izDbx
+ rq45OF4cB4E28FeA8RYt63MTM7xqYP2FX83Wjsy5Y68TzfgASPz1FdjiE8z23pqSCbXW7VXbNPi
+ jkzMI
+X-Gm-Gg: ASbGncu4tRhnH7a7drWzjstWI/v6Dv03sAeOfAcPH9TOSsdzgZyoWto3VKH3lu12HVA
+ KtB9dRuM3ujT2jJIVNE6HH0fy/wPAT0ARYj1+BkL8r2bb0RKWmIwjTckxDkJuUa4vXggcFHU/+h
+ vTpb9/RQTi0BGPyFh2c5w5KtcM23BVUL5GeOr8JEVkg7xCpcE6UfiYhUP2qyYjnIWnspPCrKt/w
+ 6qTzpcL5S4HaOwmgJR9NPf4G/PuoklBz7gsKC9RUNSiIqeUWw6pAGZ44oJciNosJInWpzU4yWEp
+ hzzu27NQwGupNAc3R9FjmNToX0P5fOOD0lt9Y0Ntxdhwnsl6W+2JYPx2LroeiTJZ3L2Krmi1OSD
+ y4TTZGmsXSkSjQS5V6tZPD1LVn1c36sWmfkB7nQUhTzdKn06aj81r5KBFSa4CSwjMe5NrifkL0d
+ AwMG4s8cU=
+X-Google-Smtp-Source: AGHT+IHuKyd7Gr32qW6rTX74DYVdWJ4mz5v3D3N6BiYWZ7vIQkHvuGZDBDaOM6KaDdDfe0KYsWUJew==
+X-Received: by 2002:a05:600c:1ca8:b0:45b:90fc:1ede with SMTP id
+ 5b1f17b1804b1-45b90fc20bemr36418755e9.6.1756818798253; 
+ Tue, 02 Sep 2025 06:13:18 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3d60cf93cb2sm10701682f8f.12.2025.09.02.06.13.12
+ 5b1f17b1804b1-45b732671b7sm138309095e9.3.2025.09.02.06.13.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Sep 2025 06:13:13 -0700 (PDT)
+ Tue, 02 Sep 2025 06:13:17 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 38/39] hw/arm/boot: Correctly free the MemoryDeviceInfoList
-Date: Tue,  2 Sep 2025 15:10:15 +0200
-Message-ID: <20250902131016.84968-39-philmd@linaro.org>
+Subject: [PULL 39/39] hw/i386/pc_piix.c: remove unnecessary if() from
+ pc_init1()
+Date: Tue,  2 Sep 2025 15:10:16 +0200
+Message-ID: <20250902131016.84968-40-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131016.84968-1-philmd@linaro.org>
 References: <20250902131016.84968-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,56 +98,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 
-When running the bios-tables-test under ASAN we see leaks like this:
+Now that the isapc logic has been split out of pc_piix.c, the PCI Host Bridge
+(phb) object is now always set in pc_init1().
 
-Direct leak of 16 byte(s) in 1 object(s) allocated from:
-    #0 0x5bc58579b00d in calloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-aarch64+0x250400d) (BuildId: 2e27b63dc9ac45f522ced40a17c2a60cc32f1d38)
-    #1 0x7b4ad90337b1 in g_malloc0 (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x637b1) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
-    #2 0x5bc5861826db in qmp_memory_device_list /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/mem/memory-device.c:307:34
-    #3 0x5bc587a9edb6 in arm_load_dtb /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/arm/boot.c:656:15
+Since phb is now guaranteed not to be NULL, Coverity reports that the if()
+statement surrounding ioapic_init_gsi() is now unnecessary and can be removed
+along with the phb NULL initialiser.
 
-Indirect leak of 28 byte(s) in 2 object(s) allocated from:
-    #0 0x5bc58579ae23 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-aarch64+0x2503e23) (BuildId: 2e27b63dc9ac45f522ced40a17c2a60cc32f1d38)
-    #1 0x7b4ad6c8f947 in __vasprintf_internal libio/vasprintf.c:116:16
-    #2 0x7b4ad9080a52 in g_vasprintf (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0xb0a52) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
-    #3 0x7b4ad90515e4 in g_strdup_vprintf (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x815e4) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
-    #4 0x7b4ad9051940 in g_strdup_printf (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x81940) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
-    #5 0x5bc5885eb739 in object_get_canonical_path /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:2123:19
-    #6 0x5bc58618dca8 in pc_dimm_md_fill_device_info /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/mem/pc-dimm.c:268:18
-    #7 0x5bc586182792 in qmp_memory_device_list /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/mem/memory-device.c:310:9
-
-This happens because we declared the MemoryDeviceInfoList *md_list
-with g_autofree, which will free the direct memory with g_free() but
-doesn't free all the other data structures referenced by it.  Instead
-what we want is to declare the pointer with g_autoptr(), which will
-automatically call the qapi_free_MemoryDeviceInfoList() cleanup
-function when the variable goes out of scope.
-
-Fixes: 36bc78aca83cfd ("hw/arm: add static NVDIMMs in device tree")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Coverity: CID 1620557
+Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Fixes: 99d0630a45 ("hw/i386/pc_piix.c: assume pcmc->pci_enabled is always true in pc_init1()")
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250901102214.3748011-1-peter.maydell@linaro.org>
+Message-ID: <20250901203409.1196620-1-mark.caveayland@nutanix.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/boot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i386/pc_piix.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index 1e57c4ab9ee..d0840308f5a 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -549,7 +549,7 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
-     unsigned int i;
-     hwaddr mem_base, mem_len;
-     char **node_path;
--    g_autofree MemoryDeviceInfoList *md_list = NULL;
-+    g_autoptr(MemoryDeviceInfoList) md_list = NULL;
-     Error *err = NULL;
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 7e78b6daa6d..caf8bab68e2 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -106,7 +106,7 @@ static void pc_init1(MachineState *machine, const char *pci_type)
+     X86MachineState *x86ms = X86_MACHINE(machine);
+     MemoryRegion *system_memory = get_system_memory();
+     MemoryRegion *system_io = get_system_io();
+-    Object *phb = NULL;
++    Object *phb;
+     ISABus *isa_bus;
+     Object *piix4_pm = NULL;
+     qemu_irq smi_irq;
+@@ -284,9 +284,7 @@ static void pc_init1(MachineState *machine, const char *pci_type)
+         pc_i8259_create(isa_bus, gsi_state->i8259_irq);
+     }
  
-     if (binfo->dtb_filename) {
+-    if (phb) {
+-        ioapic_init_gsi(gsi_state, phb);
+-    }
++    ioapic_init_gsi(gsi_state, phb);
+ 
+     if (tcg_enabled()) {
+         x86_register_ferr_irq(x86ms->gsi[13]);
 -- 
 2.51.0
 
