@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43560B4023C
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 15:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B18AAB4025E
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 15:15:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utQoN-0004Bm-9Z; Tue, 02 Sep 2025 09:12:37 -0400
+	id 1utQoD-0004BG-Sf; Tue, 02 Sep 2025 09:12:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQo7-000472-Rc
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQo7-00043M-Ev
  for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:12:19 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQnz-0004cF-HB
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:12:19 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-45b86157e18so16793835e9.0
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 06:12:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQo0-0004cO-RE
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:12:18 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-45b873a2092so25194515e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 06:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756818724; x=1757423524; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756818729; x=1757423529; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BGV/b4AEUGgg2Lmee3eaJgstc5VLArS5HN+xqv3hQRw=;
- b=B523NLin8Lu61jTo8BBb3sUhpQD6VFYpujI/Yk7SGyukDkE7sc5tTKGtwvwXjJrIVL
- 2gfE90QA9MUdONgyDJFdPvu7n4TfJ+jrVPCg7DzGigAJKUkkXp/emCaCkRd3gZU5IbsS
- P9qMOYG17okpVRAV4iyZZuVxRvI0rRih/CevOWyDLwOfUxUHMupwd4juTDCgeeb4NwLW
- +Ug9ckzTvVeAm8JwBQycEVTm23ifVCj3XtsSaaUx1QOahimoDV7PcwgmPGziAb7vtKBk
- 33DbQfW6qZZlwDLvBHpL1e0jzkHGmPEVwBgOVpaqRjhebY4JFcq1gsSOJRcnlMDbVcHL
- hlKQ==
+ :reply-to; bh=Td3nvqZKIvcK1wV49niKvXWkSXIsMzUAcPCww/paHbo=;
+ b=YpgeN2VVXCQ/f6G2EyLJpU3o8kZnqLq9XfGBPQEDXVTb50aAqIxmXboUONCti/do2J
+ U9s3Gn9F8DksV8gL72cCYlmyAv3mCCvubWsBsLRBUAqtBAF7n8YYcHGn1x3yfPZ8Fnok
+ tI/imIabtGU8vUBQ6kC3p5Xg05ZU7V0xNJ0nUDRn7K27sxpJzjYoYwhMzc7Hwgb7Crzu
+ 07tYjdf6DmRNthz0kz/YMWWrJYYSRgWCJzIR4/XKNeEiv8hZIJeRqVWvjLoSVpO6XIzn
+ TC4u19qE+0aREPSbwe9qxNndrqVF8TAG1osF+4h86dUp8ykiDC+TeESAlR8Hu6EzfPwJ
+ sVGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756818724; x=1757423524;
+ d=1e100.net; s=20230601; t=1756818729; x=1757423529;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BGV/b4AEUGgg2Lmee3eaJgstc5VLArS5HN+xqv3hQRw=;
- b=EFbYLCjpIt6sUdhJh+sf56samFvG3oZci7kTS3SSeDywo7uRCdyhOMa/ftKIgG62zy
- PFhowVEkYYU1bDiYQAR5tAAmWflWUg3u2DOjFYoJ+UaFY4veLkdoEmMwJ/ZY2DKEde/2
- Anz446xcBL3/5jkqQNE3qbVK9oUCdBrzCUlcIBP5d3HUwe3/cvjnpilT9Ev//MHYAVyD
- EWjzf7sXeg/HUVZPrnJkJNHH1Nied+anpHHfCjXJ173JUegTXlCHSxDSswhNgBbaldOc
- mFCsO4pN26kLpq96B2qfbNNOyiX/KMl8j89yRmuegBFZ1Y9nsGIciWLfwzfs/HJe4Aes
- n+OQ==
-X-Gm-Message-State: AOJu0Yz2jQgWNqE3Glf5znFPAYfPCiAUmoQZ9lK+f0iwF6cG0CEJCR2F
- S0LqdUyhkNkf92jHUTBjEs8eDUvjfxt0xC6ZqAZ7un5VNWYG95dWUCmdk574cfVsHVFnOZuKX6Q
- ihRMc
-X-Gm-Gg: ASbGncvjn3ppluip6Whl9ViAgd/8VtDhnMR5pyJh14KGMR3MB9VE2mMecgvY4NwZwcL
- HuHBZSsVD0ZSKiVGdaf5mywBh/fLjkzpXoPwVt00gs8CFGE9EaWgIFrSkYdC/mFbELzYwP4QLC5
- kSP5JpW8ZD9xHdJvH+mM6T8sL31E/bpBnOSo2LCfQcJMXAjtjPvN6XpmrdFQqG5B2HjV1CDKh+j
- hmwBMVOX9kgIr1i9CtBTWxZ4FYRUfik+iQBYY7tIWDJjYFfcCumxud0WGymKBOkCsKRQXtQvr49
- /5QdkfxAhABi+nahH2XHlYzbD//QEreaiEKuFKn2dymGXnhuRHDW517C42yyNXldxXJNRGewQK8
- vTLzihpx3nHB5xiE7eHsw2VI0kAWvILbUzvsdiV+238BMU9SACSMSBMgQM9r6FBnX4MJuVfaYO5
- RthLoPWYo=
-X-Google-Smtp-Source: AGHT+IGgGMsB2zNrI6Qfc/XUXPNx5hudoOvsEWQmSzltg7fCg4ve8pBOYzezh5nKGaX+QZDXb6f+aQ==
-X-Received: by 2002:a05:600c:5486:b0:45b:9c37:6c92 with SMTP id
- 5b1f17b1804b1-45b9c376e30mr11451145e9.31.1756818724343; 
- Tue, 02 Sep 2025 06:12:04 -0700 (PDT)
+ bh=Td3nvqZKIvcK1wV49niKvXWkSXIsMzUAcPCww/paHbo=;
+ b=FaWwTyzdYputKmM+8qv3HAsiwBtr6BzldwUT3eZmQDNUIVMVEStJ6yY1hSJY24zyGh
+ SyNhhxXmCfx5oz3a8wnn2mv1g7Z0tBmVPMdjA/tptWF/iN3wflPAmri6dNLhmOJWyycO
+ HvXVg8IQLjkxF/cht9CqQL45ME1jFAoRN+5JmgiDLiHNGW8KF2f6QLSMSDdN93bwCJij
+ yRqdskKzVm0Rwcnypaa/9xJW2dFBNsC52MGg3GiRd0Z1crzDgMSsYehzGH5SqCx//spW
+ YG3ly3gEisDPNdQIB396ZYlc9g9eK9bmp9rnbZgPeXwarHgXgvQjH2x3iCS6pXpCVV9+
+ zYzQ==
+X-Gm-Message-State: AOJu0Yz2y/Zrpxe3FIwj1xnO6fkOiWonduujwLrKNszeWjToV9Suse1X
+ Cu1t1TldIMRk7VvnT9D3I2YxW+jOpvc+qus5t0kqmn7oKlfh5f5Yqyeh1Qb08lBDaxXtUR/Zixi
+ JkEJO
+X-Gm-Gg: ASbGnctsjbqw7LpQJw7OMJJBLVzN1jbPxlubaGLPsxNlfA6vbj0YEJVf9KYt3sHe9A3
+ rDFMwlp7mJB68m2jJajFHcLUo9SHO6pGbHpD3sP/itZvIUL3svtRWwASrHx5PIyPISy/AEU7lCU
+ LF8Tgt3t1dwxdtTOVoE4DzqKRL8u0042PKpDBPTuNOusRr48aI2Oh0j++cnYGY7F+SVYHsvASxe
+ /xKvkhLiySmIELS9B0MsXGDtOdzzlx8HDwkeUbgF+MBuNVJgqRvhh2/01bFGbCbvWDr4aQ9EbZT
+ gVOntfaaStRt0nRlgmU4c3+LmdgEnuM5snN2clZ4WB5vu7m3yiuQRXura445weacgZYjeL5lMVJ
+ mKyzOPjINf7U442NTac7nxUl97njpqun0mZsc7jiqIUtAY1s+cO/s9NGcl++LQz43pKlQihKdhR
+ AWyjI4/Vk=
+X-Google-Smtp-Source: AGHT+IEgmE6dDucwrHlEiyTLqj8rutInoVMgxlC5ubZ5AjJ+oEALsdPKf2VZBtInwe2xxOyTzcqoYQ==
+X-Received: by 2002:a05:600c:1e8f:b0:45b:83fe:9cf7 with SMTP id
+ 5b1f17b1804b1-45b85525d75mr84750915e9.6.1756818728988; 
+ Tue, 02 Sep 2025 06:12:08 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b7e8ab832sm197197435e9.23.2025.09.02.06.12.03
+ 5b1f17b1804b1-45b7e68c83asm212334315e9.20.2025.09.02.06.12.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Sep 2025 06:12:03 -0700 (PDT)
+ Tue, 02 Sep 2025 06:12:08 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/39] hw/gpio/pca9554: Avoid leak in pca9554_set_pin()
-Date: Tue,  2 Sep 2025 15:10:00 +0200
-Message-ID: <20250902131016.84968-24-philmd@linaro.org>
+Subject: [PULL 24/39] hw/char/max78000_uart: Destroy FIFO on deinit
+Date: Tue,  2 Sep 2025 15:10:01 +0200
+Message-ID: <20250902131016.84968-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131016.84968-1-philmd@linaro.org>
 References: <20250902131016.84968-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,61 +99,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In pca9554_set_pin() we have a string property which we parse in
-order to set some non-string fields in the device state.  So we call
-visit_type_str(), passing it the address of the local variable
-state_str.
+In the max78000_uart we create a FIFO in the instance_init function,
+but we don't destroy it on deinit, so ASAN reports a leak in the
+device-introspect-test:
 
-visit_type_str() will allocate a new copy of the string; we
-never free this string, so the result is a memory leak, detected
-by ASAN during a "make check" run:
+    #0 0x561cc92d5de3 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-arm+0x21f1de3) (BuildId: 98fdf9fc85c3beaeca8eda0be8412f1e11b9c6ad)
+    #1 0x70cbf2afab09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
+    #2 0x561ccc4c884d in fifo8_create /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../util/fifo8.c:27:18
+    #3 0x561cc9744ec9 in max78000_uart_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/char/max78000_uart.c:241:5
 
-Direct leak of 5 byte(s) in 1 object(s) allocated from:
-    #0 0x5d605212ede3 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-arm+0x21f1de3) (
-BuildId: 3d5373c89317f58bfcd191a33988c7347714be14)
-    #1 0x7f7edea57b09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b68282
-9a6913cf682d75)
-    #2 0x7f7edea6d4d8 in g_strdup (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x784d8) (BuildId: 1eb6131419edb83b2178b68282
-9a6913cf682d75)
-    #3 0x5d6055289a91 in g_strdup_inline /usr/include/glib-2.0/glib/gstrfuncs.h:321:10
-    #4 0x5d6055289a91 in qobject_input_type_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qapi/qo
-bject-input-visitor.c:542:12
-    #5 0x5d605528479c in visit_type_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qapi/qapi-visit
--core.c:349:10
-    #6 0x5d60528bdd87 in pca9554_set_pin /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/gpio/pca9554.c:179:10
-    #7 0x5d60549bcbbb in object_property_set /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:1450:5
-    #8 0x5d60549d2055 in object_property_set_qobject /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/qom-qobject.c:28:10
-    #9 0x5d60549bcdf1 in object_property_set_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:1458:15
-    #10 0x5d605439d077 in gb200nvl_bmc_i2c_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/arm/aspeed.c:1267:5
-    #11 0x5d60543a3bbc in aspeed_machine_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/arm/aspeed.c:493:9
-
-Make the state_str g_autofree, so that we will always free
-it, on both error-exit and success codepaths.
+Add an instance_finalize method to destroy the FIFO.
 
 Cc: qemu-stable@nongnu.org
-Fixes: de0c7d543bca ("misc: Add a pca9554 GPIO device model")
+Fixes: d447e4b70295 ("MAX78000: UART Implementation")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250821154459.2417976-1-peter.maydell@linaro.org>
+Message-ID: <20250821154358.2417744-1-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/gpio/pca9554.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/char/max78000_uart.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/hw/gpio/pca9554.c b/hw/gpio/pca9554.c
-index de3f883aee9..eac0d23be34 100644
---- a/hw/gpio/pca9554.c
-+++ b/hw/gpio/pca9554.c
-@@ -174,7 +174,7 @@ static void pca9554_set_pin(Object *obj, Visitor *v, const char *name,
-     PCA9554State *s = PCA9554(obj);
-     int pin, rc, val;
-     uint8_t state, mask;
--    char *state_str;
-+    g_autofree char *state_str = NULL;
+diff --git a/hw/char/max78000_uart.c b/hw/char/max78000_uart.c
+index 19506d52ef9..c76c0e759b6 100644
+--- a/hw/char/max78000_uart.c
++++ b/hw/char/max78000_uart.c
+@@ -247,6 +247,12 @@ static void max78000_uart_init(Object *obj)
+     sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
+ }
  
-     if (!visit_type_str(v, name, &state_str, errp)) {
-         return;
++static void max78000_uart_finalize(Object *obj)
++{
++    Max78000UartState *s = MAX78000_UART(obj);
++    fifo8_destroy(&s->rx_fifo);
++}
++
+ static void max78000_uart_realize(DeviceState *dev, Error **errp)
+ {
+     Max78000UartState *s = MAX78000_UART(dev);
+@@ -274,6 +280,7 @@ static const TypeInfo max78000_uart_info = {
+     .parent        = TYPE_SYS_BUS_DEVICE,
+     .instance_size = sizeof(Max78000UartState),
+     .instance_init = max78000_uart_init,
++    .instance_finalize = max78000_uart_finalize,
+     .class_init    = max78000_uart_class_init,
+ };
+ 
 -- 
 2.51.0
 
