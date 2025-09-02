@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD232B3FC81
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 12:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D21A6B3FC7E
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 12:30:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utOHy-00073a-3U; Tue, 02 Sep 2025 06:30:58 -0400
+	id 1utOHU-0006la-QH; Tue, 02 Sep 2025 06:30:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1utOHM-0006hr-Ss
+ id 1utOHN-0006ht-DU
  for qemu-devel@nongnu.org; Tue, 02 Sep 2025 06:30:26 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1utOHI-00011p-8T
+ id 1utOHK-00012E-1O
  for qemu-devel@nongnu.org; Tue, 02 Sep 2025 06:30:19 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3ce4ed7a73fso2674973f8f.1
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:30:15 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-45b8b1a104cso19606105e9.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:30:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756809014; x=1757413814; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756809016; x=1757413816; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jx0gaB1gsva7mID0JHrMFFkewSed//dl5d0ra2Fwoi0=;
- b=JPJsJadd113zowauFWQ+NFZKpWjcsHVfiOX8/56dj8AjfyWcOJev5gqjU8zXEL4lKr
- MXofboy5WzNmZMenYBWmHtuJUVlnj+aK1byiXn86TbiwWtt34nn0daNdDa8ou115YAIG
- IZ7NfoChKPcN060dqsxxTV7R6ck+KOCi0q0zOzSVBPPMvcd5ymWbidKfSF9nrYpoVlaR
- 4fGRQ59PYBZY6Lv8OeB2oJzUsOLTzRfe1fp9k4OYwybJCiLQ18YlwP5GYWDsCWd0ksaH
- 3yYuO2RHEo5hNIeRgwB0kKlk30Xh/ibv469gRuQXtJ1OuT60b7djatOEd4mE4G08ZcqJ
- KQEw==
+ bh=8DZzfloCVYfnawb+HNzXt3BHlSz81vZt+CpZ/An1bjc=;
+ b=hYrPyl13PiqR4upuXQsRkEYS3pDLMjGCNv1aQ8nSTxmQLGCQoqlk/F7Im0O7iCGE0T
+ I00/H1QgdbISiOAW5+kN34ClvR3Xtht5rOvMeD6SGqaT3kUXXRGmiu4hb8a4CdujgbIs
+ aBzCQuCWQbMMYmUCFj63rJrM1qu+bdwkCQx2k5W1xXKFv8haYGVyV3J8pof5Braf6DA5
+ H0bddKL46nvYrYRGIx8InR7+OfPfYnvJAzs83ROHnLABaC3hbJiMa/cPMMhBaLIfLUr0
+ n1zS0XEk97nH+3JshTspgcvbwR7mEfEcB1Z7MEy3FQqB96N/CXX5lhLPK9AC/rwnXnA5
+ QQLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756809014; x=1757413814;
+ d=1e100.net; s=20230601; t=1756809016; x=1757413816;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jx0gaB1gsva7mID0JHrMFFkewSed//dl5d0ra2Fwoi0=;
- b=Xg5iqxC1GXbIPKS20WZ6HXZ6lSnKEM3LtaVSyTWHzQ5L0GK9Dsj+7h0RkcIWZlMNyK
- hInVjqhbyeC/Khwgrto6Af0f26+71DQ8v19iPJrmc71PJNnkTXDDw4z+P+9H2vxUyNLz
- 1OY40nInQQ33ro4WEWHzrW2hLUtGhmfC2A0dtBk57Ltdxbt1b0amIEEiBjwnIPUBeKK/
- t+O49uV3MAsf9Uh6812GbuR2CNgkqYjF4R3I1Mro7cVlRMUCoB9CSVvsAQm9D1/o2c5f
- TBtIfQ1QSjsmT1zZrUp3RgeAgNpL16Wt6Gaak+KDCcPQv2vOYlkFkCaN9lZjMdh85C+J
- 4LGg==
-X-Gm-Message-State: AOJu0YzsB1xOGGnQyrK5JEWInGjXM8sgKuD/Rbc4dL/K/Nl2biTt89KF
- XqHZItfFV/du0sf30c2tQS1Hwc7CXgSqUTEd8LIIGT9/v6bF1lWDbnhkWaGGuhkMNFH4cDy4Ta4
- MFEWl5N0=
-X-Gm-Gg: ASbGncur5vFRuAb3tFoC9WWRJwJSG7TO4fUJINR0JJu92NW9UjNdf6rCsT7yj7QLyOD
- NnLglKvZkwqsOb3dyrIgd2z/ESEKNKTrIJYeuuAf45g45HGGLNA2zcwUf9H+HfzBxfeNpBJIIHn
- VUkIygIvfCIiOqTEkJMbc3haRgs2g3/IA39tGTWyhidCdIDW/1fehYecAbS+zrYTxZ9OwhxY2Eo
- +VrREhIVJCNHrbDrsuQyBXfpIoRl7XBBw2SCrSUPZgUmmqkYtEd6mTC/RxXBUsDZ3BPvKmb5Mx5
- P2MakhxTe/ATh12P+xm58QAvFmtGqMYaA6D3QhuzKFt5CYwfC/t/9Ry+Q/gwbEMlilcp9HJU3EU
- oseCzc7c6n5ZoLukd1SWPTBBcAbMlPtFagLkmKcDbKajT2roK7WYOhc6AxUmKOjd6apYeTNikPQ
- ==
-X-Google-Smtp-Source: AGHT+IHhQWwo3VyernzucK4Mb+JHtbhYxaZlH3U+bgIl27N28RyrfR4HVViHvOCAWnTji6aSLf0IAg==
-X-Received: by 2002:a05:6000:290b:b0:3c7:df1d:3d9 with SMTP id
- ffacd0b85a97d-3d1dfa19a4dmr9643779f8f.39.1756809013930; 
- Tue, 02 Sep 2025 03:30:13 -0700 (PDT)
+ bh=8DZzfloCVYfnawb+HNzXt3BHlSz81vZt+CpZ/An1bjc=;
+ b=uJiWn/6ZBHjF8gz3my5aNQV8TCkJ5eQ7p5IPisqwGVXGwglubZ63Zcl5TrTkGCk9mN
+ R5j3IRFw4ZHjZ19J2rZwRq4Hx+YgIvKcuNq31N2Asq5Ha4TMiEWV2Zxc+BfzHU4WX4pj
+ NCltrBTA6fOTbeGAE9JslaL9X8bMXplOYjew+JjD9qrZJmFHJ95VMYifm2L44wuvcAUW
+ FZwyeOh7FzTtV9MKBQTN4f2vhkGWC91zyuozxLQcwDyXSbf+EAL2RlwSx4kQS2XZrpdd
+ Jw5U+RW55Bhf5Jopb69M1GIhCAkL3lOOmpHPZPGbdgwyV1sQP3Hp2V5y58InUjKNp1xZ
+ XjCw==
+X-Gm-Message-State: AOJu0YzAt4hvm+FsQW3y/zzyQ3CE6N3oJ69IHuzVpMHRWz8SSOOibrSV
+ fKr2EPE5zdpQhtbTW6n4WK+L75osXv844LoIK3S4nvXbZNN0AeaCELVJKD6bYiul2hQBfw1yySx
+ 6terQb+Y=
+X-Gm-Gg: ASbGnct+AySCjRKN4Lt+mGAIp45vKAxg4dkaIEoqvwL3XMcsqrVK9O1sRYpw+Ysy8re
+ wIVtIYqNwsVDCXz9Sx3qZIGB2SGUJQYM/Tnf5w5gMT3DMKZzyK9JqzMoNiMbeD8+gRZhh3ymCjN
+ QsouiWr6t26Bv+jv4fopqrgHSml86pbo2C3IVQbLQBzEHIFi2w9YJDtjcZABNyBccKeO8fI13AR
+ Eu0uxEBhV88Hw86JbUA/N4x29EIDteWSzXoJ5uVakfmz3MAVIJ5TGM1zjcA4gwQZH/QmcgKWH2q
+ PJVamZmw7bVLoBgGdPosU6C1TD+9607OuugZ3N/qsN7qnb+qMIFmpUZALv++cEmZCoDE9V8u72d
+ d/ibCVzzEBruF87AENcYd8HSTdkZuLYKTLeLF8jDzvxsFbiLAVAUOuFFbNHCW8kE=
+X-Google-Smtp-Source: AGHT+IFJw/io0xUn77SLs4ccx+FzaqLixdyicaC1K62fMKtpMUpQdL4j89LVAEXIdH95f6bUaunIWg==
+X-Received: by 2002:a05:6000:4312:b0:3cf:3f1:acc3 with SMTP id
+ ffacd0b85a97d-3d1df631895mr9852288f8f.60.1756809015716; 
+ Tue, 02 Sep 2025 03:30:15 -0700 (PDT)
 Received: from stoup.. (151-0-205-164.ip282.fastwebnet.it. [151.0.205.164])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b6f0d32a2sm296470665e9.9.2025.09.02.03.30.12
+ 5b1f17b1804b1-45b6f0d32a2sm296470665e9.9.2025.09.02.03.30.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Sep 2025 03:30:13 -0700 (PDT)
+ Tue, 02 Sep 2025 03:30:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com
-Subject: [RFC 1/4] util: Introduce LogOutput
-Date: Tue,  2 Sep 2025 12:30:07 +0200
-Message-ID: <20250902103010.309094-2-richard.henderson@linaro.org>
+Subject: [RFC 2/4] util: Drop QMESSAGE_CONTEXT_SKIP_MONITOR
+Date: Tue,  2 Sep 2025 12:30:08 +0200
+Message-ID: <20250902103010.309094-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250902103010.309094-1-richard.henderson@linaro.org>
 References: <20250902103010.309094-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,171 +100,99 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/monitor/monitor.h |  4 +++
- include/qemu/log-output.h | 14 ++++++++++
- monitor/monitor.c         | 54 +++++++++++++++++++++++++++++++--------
- stubs/error-printf.c      | 11 ++++++++
- util/log.c                |  7 +++++
- 5 files changed, 79 insertions(+), 11 deletions(-)
- create mode 100644 include/qemu/log-output.h
+ include/qemu/message.h | 11 +----------
+ util/error-report.c    |  9 +++++----
+ util/log.c             |  2 +-
+ util/message.c         |  7 +------
+ 4 files changed, 8 insertions(+), 21 deletions(-)
 
-diff --git a/include/monitor/monitor.h b/include/monitor/monitor.h
-index c3740ec616..8c4d73592f 100644
---- a/include/monitor/monitor.h
-+++ b/include/monitor/monitor.h
-@@ -4,6 +4,7 @@
- #include "block/block.h"
- #include "qapi/qapi-types-misc.h"
- #include "qemu/readline.h"
-+#include "qemu/log-output.h"
- #include "exec/hwaddr.h"
- 
- typedef struct MonitorHMP MonitorHMP;
-@@ -62,4 +63,7 @@ void monitor_register_hmp_info_hrt(const char *name,
- int error_vprintf_unless_qmp(const char *fmt, va_list ap) G_GNUC_PRINTF(1, 0);
- int error_printf_unless_qmp(const char *fmt, ...) G_GNUC_PRINTF(1, 2);
- 
-+const LogOutput *error_log_output(void **popaque);
-+const LogOutput *error_log_output_unless_qmp(void **popaque);
-+
- #endif /* MONITOR_H */
-diff --git a/include/qemu/log-output.h b/include/qemu/log-output.h
-new file mode 100644
-index 0000000000..1d502aae77
---- /dev/null
-+++ b/include/qemu/log-output.h
-@@ -0,0 +1,14 @@
-+#ifndef QEMU_LOG_OUTPUT_H
-+#define QEMU_LOG_OUTPUT_H 1
-+
-+typedef int LogOutputVararg(void *, const char *, ...) G_GNUC_PRINTF(2, 3);
-+typedef int LogOutputVaList(void *, const char *, va_list) G_GNUC_PRINTF(2, 0);
-+
-+typedef struct LogOutput {
-+    LogOutputVararg *print;
-+    LogOutputVaList *vprint;
-+} LogOutput;
-+
-+extern const LogOutput log_output_stdio;
-+
-+#endif
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index da54e1b1ce..71a3d62e0f 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -268,28 +268,60 @@ void monitor_printc(Monitor *mon, int c)
-     monitor_printf(mon, "'");
- }
- 
-+static const LogOutput log_output_monitor = {
-+    /* Abuse the Monitor* argument of monitor_printf as void* opaque. */
-+    (LogOutputVararg *)monitor_printf,
-+    (LogOutputVaList *)monitor_vprintf,
-+};
-+
-+const LogOutput *error_log_output(void **popaque)
-+{
-+    Monitor *cur_mon = monitor_cur();
-+
-+    if (cur_mon && !monitor_cur_is_qmp()) {
-+        *popaque = cur_mon;
-+        return &log_output_monitor;
-+    }
-+
-+    *popaque = stderr;
-+    return &log_output_stdio;
-+}
-+
-+const LogOutput *error_log_output_unless_qmp(void **popaque)
-+{
-+    Monitor *cur_mon = monitor_cur();
-+
-+    if (!cur_mon) {
-+        *popaque = stderr;
-+        return &log_output_stdio;
-+    }
-+    if (!monitor_cur_is_qmp()) {
-+        *popaque = cur_mon;
-+        return &log_output_monitor;
-+    }
-+
-+    *popaque = NULL;
-+    return NULL;
-+}
-+
- /*
-  * Print to current monitor if we have one, else to stderr.
+diff --git a/include/qemu/message.h b/include/qemu/message.h
+index 6dbb068ca9..68b08f0ea7 100644
+--- a/include/qemu/message.h
++++ b/include/qemu/message.h
+@@ -28,25 +28,16 @@ void qmessage_set_format(int flags);
   */
- int error_vprintf(const char *fmt, va_list ap)
+ void qmessage_set_workload_name(const char *name);
+ 
+-enum QMessageContextFlags {
+-    QMESSAGE_CONTEXT_SKIP_MONITOR = (1 << 0),
+-};
+-
+ /**
+  * qmessage_context:
+- * @flags: the message formatting control flags
+  *
+  * Format a message prefix with the information
+  * previously selected by a call to
+  * qmessage_set_format.
+  *
+- * If @flags contains QMESSAGE_CONTEXT_SKIP_MONITOR
+- * an empty string will be returned if running in
+- * the context of a HMP command
+- *
+  * Returns: a formatted message prefix, or empty string;
+  * to be freed by the caller.
+  */
+-char *qmessage_context(int flags);
++char *qmessage_context(void);
+ 
+ #endif /* QEMU_MESSAGE_H */
+diff --git a/util/error-report.c b/util/error-report.c
+index 2e58ee1c50..fa34019dad 100644
+--- a/util/error-report.c
++++ b/util/error-report.c
+@@ -172,10 +172,11 @@ static void print_loc(void)
+ G_GNUC_PRINTF(2, 0)
+ static void vreport(report_type type, const char *fmt, va_list ap)
  {
--    Monitor *cur_mon = monitor_cur();
-+    void *opaque;
-+    const LogOutput *l = error_log_output(&opaque);
- 
--    if (cur_mon && !monitor_cur_is_qmp()) {
--        return monitor_vprintf(cur_mon, fmt, ap);
--    }
--    return vfprintf(stderr, fmt, ap);
-+    return l->vprint(opaque, fmt, ap);
- }
- 
- int error_vprintf_unless_qmp(const char *fmt, va_list ap)
- {
--    Monitor *cur_mon = monitor_cur();
-+    void *opaque;
-+    const LogOutput *l = error_log_output_unless_qmp(&opaque);
- 
--    if (!cur_mon) {
--        return vfprintf(stderr, fmt, ap);
--    }
--    if (!monitor_cur_is_qmp()) {
--        return monitor_vprintf(cur_mon, fmt, ap);
-+    if (l) {
-+        return l->vprint(opaque, fmt, ap);
+-    g_autofree gchar *context = qmessage_context(QMESSAGE_CONTEXT_SKIP_MONITOR);
+-
+-    if (context != NULL) {
+-        error_printf("%s", context);
++    if (!monitor_cur()) {
++        g_autofree gchar *context = qmessage_context();
++        if (context) {
++            error_printf("%s", context);
++        }
      }
-     return -1;
- }
-diff --git a/stubs/error-printf.c b/stubs/error-printf.c
-index 0e326d8010..82e4756bda 100644
---- a/stubs/error-printf.c
-+++ b/stubs/error-printf.c
-@@ -21,3 +21,14 @@ int error_vprintf_unless_qmp(const char *fmt, va_list ap)
- {
-     return error_vprintf(fmt, ap);
- }
-+
-+const LogOutput *error_log_output(void **popaque)
-+{
-+    *popaque = stderr;
-+    return &log_output_stdio;
-+}
-+
-+const LogOutput *error_log_output_unless_qmp(void **popaque)
-+{
-+    return error_log_output(popaque);
-+}
+ 
+     print_loc();
 diff --git a/util/log.c b/util/log.c
-index fc900cde0c..4b5953dcc7 100644
+index 4b5953dcc7..b129634708 100644
 --- a/util/log.c
 +++ b/util/log.c
-@@ -28,6 +28,7 @@
- #include "qemu/thread.h"
- #include "qemu/lockable.h"
- #include "qemu/rcu.h"
-+#include "qemu/log-output.h"
- #ifdef CONFIG_LINUX
- #include <sys/syscall.h>
- #endif
-@@ -592,3 +593,9 @@ ssize_t rust_fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream)
-     return ret < 0 ? -errno : 0;
+@@ -161,7 +161,7 @@ void qemu_log(const char *fmt, ...)
+      * acquiring the mutex
+      */
+     g_autofree const char *context =
+-        incomplete ? NULL : qmessage_context(0);
++        incomplete ? NULL : qmessage_context();
+ 
+     f = qemu_log_trylock();
+     if (f) {
+diff --git a/util/message.c b/util/message.c
+index 6d3580b7be..8deba3940c 100644
+--- a/util/message.c
++++ b/util/message.c
+@@ -20,17 +20,12 @@ void qmessage_set_workload_name(const char *name)
  }
- #endif
-+
-+const LogOutput log_output_stdio = {
-+    /* Abuse the FILE* argument of fprintf as void* opaque. */
-+    (LogOutputVararg *)fprintf,
-+    (LogOutputVaList *)vfprintf,
-+};
+ 
+ 
+-char *qmessage_context(int flags)
++char *qmessage_context(void)
+ {
+     g_autofree char *timestr = NULL;
+     const char *wknamestr = NULL;
+     const char *pgnamestr = NULL;
+ 
+-    if ((flags & QMESSAGE_CONTEXT_SKIP_MONITOR) &&
+-        monitor_cur()) {
+-        return NULL;
+-    }
+-
+     if (message_format & QMESSAGE_FORMAT_TIMESTAMP) {
+         g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
+         timestr = g_date_time_format_iso8601(dt);
 -- 
 2.43.0
 
