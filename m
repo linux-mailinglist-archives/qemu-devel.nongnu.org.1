@@ -2,79 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF75B4065A
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 16:15:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A295B4088D
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 17:08:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utRlh-0003Ao-O7; Tue, 02 Sep 2025 10:13:53 -0400
+	id 1utSai-0005nQ-Ce; Tue, 02 Sep 2025 11:06:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3gvu2aAkKCqEBOLFFTMFSHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--ankeesler.bounces.google.com>)
- id 1utRlZ-000388-C7
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 10:13:45 -0400
-Received: from mail-qv1-xf49.google.com ([2607:f8b0:4864:20::f49])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utSac-0005lg-M1
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 11:06:31 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3gvu2aAkKCqEBOLFFTMFSHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--ankeesler.bounces.google.com>)
- id 1utRlH-0005LK-FE
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 10:13:44 -0400
-Received: by mail-qv1-xf49.google.com with SMTP id
- 6a1803df08f44-70dd6d255c4so135773806d6.0
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 07:13:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utSaY-0008AA-VE
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 11:06:30 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-45b7e69570bso28370715e9.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 08:06:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1756822403; x=1757427203; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=dHSCPE30znSY0wWG1dnzAUCDvKJoJRQ7QqhxUlGgzFo=;
- b=dcHMaliOyNba2g+yphuv2Zk/5z8QTucL0lYTGSnP462FYNzkOSNjdsPKBQJmSPLPBT
- 9nSWo1ZIrCIjYxOgI5qYmdDmKW4Np0fvWATPqFKms0MBB/0Hb85FWhmpc08tIRC6G9iD
- Ppu5FY1IMa4C/fdHEbaXjJzgGHHqHBE3ZkPA/vcg/J0ZEWgWcgQU9Q8jSMjYsfIs1lc/
- qaGeXIigl2EKlHUQ3OeH8yCkowG4hM7P9rv+K/hTfh8etzF0yEw2j6ZKn8uUXM66m+dn
- 4efXrtX+l5PHFKTmD+Ay3N1PgPjLY/9LL+6TpkxEhnzi91UognPBN6YDLmGzFgGi9IhZ
- W/FQ==
+ d=linaro.org; s=google; t=1756825581; x=1757430381; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ZEGO139SeqDxUI/SQqsVpNZ7wS1+CNUNhT7jQXyiEA8=;
+ b=EliLG+igVdHnlre29wOep/CMzAlJx3jdzmKWwnDrvjrZ3Iz9+wLN9uVud44RPq+mAT
+ H+A/HIKaUPoKCkulTUmdQVbu3AUZnmbrfrC+aljohV2nBr3tMRuEzHXnXE7XluTnuQB3
+ ZmLrsRW0rMU8/ozLzV9T3DbAhccNlAwNztMdn4vZdzzVfrpUAk7b1Czx8RwfZRCJUwlZ
+ Hx1Pa2/WCfYHAYuxJelNUYaOf5UpaNx3SUqhMwNYOufmts3rf+jmLDQm1mS7LuYzWBnK
+ oReN8EekCYj2cCJKJl105EzleDzvJP016ZOdbDIPUFh3rjB3fMEF2j9zabrTTIPPZDwl
+ 6ULQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756822403; x=1757427203;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dHSCPE30znSY0wWG1dnzAUCDvKJoJRQ7QqhxUlGgzFo=;
- b=Vjnw+Gnj9ZRaDKOVVtu8fi6Hg+JXRTnzaXP3uCCBn0KzmvDeuyNfFVwzmZwX+FOdQD
- ZP7wnmWGUrct3ryrvLlV0sV8pa6XiDzyrcsaWLKldQrarcSjknDOhJxQ0+U6qU3j6voX
- SIoblM7Z5i3E+joNTruQqKbzIqstR+0e3gCUMMP4lpKGKuxYShkFhSuaqrTrB/O+gQgP
- 1hll+cY/HOJSi5/t1wlyllTiTpcwh0sn9eB8Wgp1r/KZnHkbywApIsQUN3emEvaZ/ReN
- Ywpys0+2XriRO8fkYVlYo5TVzEwSLoGJqCdR+joU53Ah7T6oUh6zRZl2qSfTyXG00u0w
- iSmg==
-X-Gm-Message-State: AOJu0YyIN3TFnZB9W5NWtJLAF83Hx3QYSyofXL45QLM+fmCu4wWSLAUp
- tTFT+4f5g4NEhQb7AOgh9JYt8DFOHLKOPzTxrYEyigAMC+jzYPgOY8Ir0ETvYbfgfDdJHCTsXz8
- gePh60NUgD8abThYU
-X-Google-Smtp-Source: AGHT+IGhn452ukdULXAIbH1TYQFSAodQviu9A4SiU72IYKb64PF3kuaVaXxon8m247idQq6IR2bdFijVcon4FsA=
-X-Received: from qkbef6.prod.google.com ([2002:a05:620a:8086:b0:7ff:c939:d59e])
- (user=ankeesler job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:1101:b0:4af:1fe7:2170 with SMTP id
- d75a77b69052e-4b31dcd3740mr112062291cf.39.1756822402879; 
- Tue, 02 Sep 2025 07:13:22 -0700 (PDT)
-Date: Tue,  2 Sep 2025 14:13:12 +0000
-In-Reply-To: <20250902141312.750525-1-ankeesler@google.com>
-Mime-Version: 1.0
-References: <20250902141312.750525-1-ankeesler@google.com>
-X-Mailer: git-send-email 2.51.0.338.gd7d06c2dae-goog
-Message-ID: <20250902141312.750525-2-ankeesler@google.com>
-Subject: [PATCH v3 1/1] Support per-head resolutions with virtio-gpu
-From: Andrew Keesler <ankeesler@google.com>
-To: berrange@redhat.com, marcandre.lureau@gmail.com
-Cc: qemu-devel@nongnu.org, Andrew Keesler <ankeesler@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f49;
- envelope-from=3gvu2aAkKCqEBOLFFTMFSHPPHMF.DPNRFNV-EFWFMOPOHOV.PSH@flex--ankeesler.bounces.google.com;
- helo=mail-qv1-xf49.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ d=1e100.net; s=20230601; t=1756825581; x=1757430381;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZEGO139SeqDxUI/SQqsVpNZ7wS1+CNUNhT7jQXyiEA8=;
+ b=cJPuTHnYp2bjyC5f/2m5Xy1QCWqAJ4pubVs7nRNB8XfCdfFhTQZ2/aGvBcT3AwqZrL
+ qIFSF7C28Vw/nC85WL8lj7bTQujMu6DiWhXrVsBcNxq+koQYh0q3VxL3FtOA6aFokKg1
+ wPuOr+xIN6Vn0Pp7eU1yrqBCEZZR47V+MIRwwjw93zRstLREvljsFkpwyz4TXW7CiOii
+ 9Q2HRZ3b8+7CxYcCqTEJFM79pqGSzPOfy8JtbAt5sRbLOIg3jnfaQJurF1qdex99Lyq0
+ bIwE36HWCRem20P7QqxwznXVNbX7J9vQBH2/paoGNZyzqBQlYZVz0tzF0tUW8fYQpKX5
+ qjCA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWMBrlwGYvbaS54RQg3POe482fK1LhAYZohDyc7GatgltxPBNfPGNsiR1SnxvOSOBwLLqUEJNFZQTPs@nongnu.org
+X-Gm-Message-State: AOJu0YwNoMUNcLC2a5fuPygKVS6tTZ3DTVF2r+HABkctFhh6NUdVUb9c
+ b07RqoljCSaLvtcuLPqMmDtAk3VUOSjwgJSgdfq+fv1C/5/PWNIJQYgUZrWXhH60X8U=
+X-Gm-Gg: ASbGncuPUoyM7eFT0G1oWtuRVZ/cxIKWDL3Jath3d9B/zAbdj3ipLfIFnh9BhS9mtje
+ PoI+dtjBxajpNn2u2Nc6p0JbFHzP7xSL8lpQhghiygN7TZpId1TNCV2Vfg6ttRqKTISR0GtaMwB
+ 5ChJLOUpdpivugrMkmCZGb8Kq/M1DP/086OC+ScgvEk1lre1BIrqU0zqWx2X3Qrumx8kO+/xkrg
+ UofpzSRsxeGlJ1zItuybBFgSkzXbWc3DK7A0f2KzclbLzeL7CX9krLmjwW6MY1/k+M4HJIlqP0v
+ AAQtouZGroaaekEwiFfntByAT/LSikGiSQXNwG7MLTE2qojLa5x03wnlnX69GVOZDwY90zSxxHJ
+ UbvTEWlnqaRMCubircb4GqaPaI/9wmxu3NresMuFOq6M/Ng3OBAFAyVWi4Bszb2y1ig==
+X-Google-Smtp-Source: AGHT+IF10ro3TGgEArpDgxiZs0Eqj3adox0tKbIlEUiJ0UdUIAUl6iMe3HcGU8/gvgQsDph+PdecLA==
+X-Received: by 2002:a05:600c:5248:b0:456:1a69:94fd with SMTP id
+ 5b1f17b1804b1-45b8549c438mr101209995e9.0.1756825580900; 
+ Tue, 02 Sep 2025 08:06:20 -0700 (PDT)
+Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3cf33fb9d37sm20272216f8f.49.2025.09.02.08.06.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Sep 2025 08:06:20 -0700 (PDT)
+Message-ID: <6289fe04-82be-4a34-9fed-b0cc08e3b8f0@linaro.org>
+Date: Tue, 2 Sep 2025 17:06:19 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/8] hw/sd/sdcard: Fix size check for backing block
+ image
+To: Jan Kiszka <jan.kiszka@siemens.com>, qemu-devel <qemu-devel@nongnu.org>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ qemu-arm <qemu-arm@nongnu.org>
+References: <cover.1756706188.git.jan.kiszka@siemens.com>
+ <86217712232abd5152e7dfa98111f57b9b78d83b.1756706188.git.jan.kiszka@siemens.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <86217712232abd5152e7dfa98111f57b9b78d83b.1756706188.git.jan.kiszka@siemens.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,102 +104,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In 454f4b0f, we started down the path of supporting separate
-configurations per display head (e.g., you have 2 heads - one with
-EDID name "AAA" and the other with EDID name "BBB").
+On 1/9/25 07:56, Jan Kiszka wrote:
+> From: Jan Kiszka <jan.kiszka@siemens.com>
+> 
+> The power-of-2 rule applies to the user data area, not the complete
+> block image. The latter can be concatenation of boot partition images
+> and the user data.
+> 
+> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/sd/sd.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+> index 8c290595f0..16aee210b4 100644
+> --- a/hw/sd/sd.c
+> +++ b/hw/sd/sd.c
+> @@ -2789,7 +2789,7 @@ static void sd_realize(DeviceState *dev, Error **errp)
+>               return;
+>           }
+>   
+> -        blk_size = blk_getlength(sd->blk);
+> +        blk_size = blk_getlength(sd->blk) - sd->boot_part_size * 2;
+>           if (blk_size > 0 && !is_power_of_2(blk_size)) {
+>               int64_t blk_size_aligned = pow2ceil(blk_size);
+>               char *blk_size_str;
 
-In this change, we add resolution to this configuration surface (e.g.,
-you have 2 heads - one with resolution 111x222 and the other with
-resolution 333x444).
+This seems to break the tests/functional/arm/test_aspeed_rainier.py
+test due to mmc-p10bmc-20240617.qcow2 size:
 
-  -display vnc=localhost:0,id=aaa,display=vga,head=0 \
-  -display vnc=localhost:1,id=bbb,display=vga,head=1 \
-  -device '{"driver":"virtio-vga",
-            "max_outputs":2,
-            "id":"vga",
-            "outputs":[
-              {
-                 "name":"AAA",
-                 "xres":111,
-                 "yres":222
-              },
-              {
-                 "name":"BBB",
-                 "xres":333,
-                 "yres":444
-              }
-            ]}'
+Command: /builds/qemu-project/qemu/build/qemu-system-arm -display none 
+-vga none -chardev socket,id=mon,fd=5 -mon chardev=mon,mode=control 
+-machine rainier-bmc -chardev socket,id=console,fd=10 -serial 
+chardev:console -drive 
+file=/builds/qemu-project/qemu/functional-cache/download/d523fb478d2b84d5adc5658d08502bc64b1486955683814f89c6137518acd90b,if=sd,id=sd2,index=2 
+-net nic -net user -snapshot
+Output: qemu-system-arm: Invalid SD card size: 16 GiB
+SD card size has to be a power of 2, e.g. 16 GiB.
 
-Here is the behavior matrix of the current resolution configuration
-surface (xres/yres) with the new resolution configuration surface
-(outputs[i].xres/yres).
-
-Case: !(xres || yres) && !(outputs[i].has_xres && outputs[i].has_yres)
-Behavior: current behavior - outputs[0] enabled with default xres/yres
-
-Case: (xres || yres) && !(outputs[i].has_xres && outputs[i].has_yres)
-Behavior: current behavior - outputs[0] enabled with xres/yres
-
-Case: !(xres || yres) && (outputs[i].has_xres && outputs[i].has_yres)
-Behavior: new behavior - outputs[i] enabled with outputs[i].xres/yres
-
-Case: (xres || yres) && (outputs[i].has_xres && outputs[i].has_yres)
-Behavior: new behavior - outputs[i] enabled with outputs[i].xres/yres
----
- hw/display/virtio-gpu-base.c | 10 ++++++++++
- qapi/virtio.json             | 10 ++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
-
-diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
-index 7269477a1c..6adb5312a4 100644
---- a/hw/display/virtio-gpu-base.c
-+++ b/hw/display/virtio-gpu-base.c
-@@ -233,6 +233,16 @@ virtio_gpu_base_device_realize(DeviceState *qdev,
-     g->req_state[0].width = g->conf.xres;
-     g->req_state[0].height = g->conf.yres;
- 
-+    for (output_idx = 0, node = g->conf.outputs;
-+         node && output_idx < g->conf.max_outputs;
-+         output_idx++, node = node->next) {
-+        if (node->value->has_xres && node->value->has_yres) {
-+            g->enabled_output_bitmask |= (1 << output_idx);
-+            g->req_state[output_idx].width = node->value->xres;
-+            g->req_state[output_idx].height = node->value->yres;
-+        }
-+    }
-+
-     g->hw_ops = &virtio_gpu_ops;
-     for (i = 0; i < g->conf.max_outputs; i++) {
-         g->scanout[i].con =
-diff --git a/qapi/virtio.json b/qapi/virtio.json
-index 9d652fe4a8..9469c63e81 100644
---- a/qapi/virtio.json
-+++ b/qapi/virtio.json
-@@ -966,15 +966,21 @@
- ##
- # @VirtIOGPUOutput:
- #
--# Describes configuration of a VirtIO GPU output.
-+# Describes configuration of a VirtIO GPU output. If both xres and
-+# yres are set, they take precedence over root virtio-gpu
-+# resolution configuration and enable the corresponding output.
- #
- # @name: the name of the output
- #
-+# @xres: horizontal resolution of the output in pixels (since 10.2)
-+#
-+# @yres: vertical resolution of the output in pixels (since 10.2)
-+#
- # Since: 10.1
- ##
- 
- { 'struct': 'VirtIOGPUOutput',
--  'data': { 'name': 'str' } }
-+  'data': { 'name': 'str', '*xres': 'uint16', '*yres': 'uint16' } }
- 
- ##
- # @DummyVirtioForceArrays:
--- 
-2.51.0.338.gd7d06c2dae-goog
+https://gitlab.com/qemu-project/qemu/-/jobs/11217561316
 
 
