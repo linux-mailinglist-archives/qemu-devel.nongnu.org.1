@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C89B3F318
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 05:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE63B3F2DE
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 05:49:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utHzo-0006ng-FI; Mon, 01 Sep 2025 23:47:48 -0400
+	id 1utHzh-0006gK-Ri; Mon, 01 Sep 2025 23:47:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utHzc-0006f1-9j
+ id 1utHzc-0006f3-AC
  for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:47:36 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utHzV-0004QA-7U
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:47:32 -0400
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822S6es030596
+ id 1utHzU-0004Q9-Pb
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:47:31 -0400
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822RmnG029940
  for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:47:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- V/gmiIQui9QHU5OS0CRbUDLL6LwYzW+BkNFupQXyH1s=; b=e+ngS1QSFMAKS8fA
- 6dP9qoNKQgbXtbZJMam/WFJjwjODEFj2vq3XnWv9j+kwJwOf20cET/87UsbADEWj
- cYdAwAkv7YvagKEoNr1/eXekh2gQ4UMFm8b+97o2xZNwpF+eLNB6TjqufaBHXK7/
- 7T7Zv9IFKm2ZxYHWFKLJFVaWUWp4NbUNZEJmVx+/DgqaBEVsUFU+wymS2AaYR2tD
- JGyIvzQSVkhXc2Du7zFnjhuPPqOIwMDf4aHze4uUCzcS7Wl2pX5VewgLrwiI+IGD
- noiHTRKhrQVuD8S+ZmUjofnSHyH+N+IEdfpGPTJx2yBs2wNUfzsmQJUwg6F7VrYP
- nW8lhw==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ura8pbwr-1
+ V07Obdmlm93H9u7fTFgR+cEhr44VBifxtLzfjaaDFAE=; b=aIAIA5B1pkNX53IS
+ ge9adld4j8rjnpAEPq0+6ep3jxn4YFMvPM7brX2QWkLZdbxx3FHbc9iUzzLnlv1S
+ e5vst2j0LVYRt+6NJZ78SZXTaXHvG/t+mRCE6Z1jDhwXZP1eadc62FANTgSGHnd/
+ rxSWM/dWRq5jMoydVEdDQsxB1n8pDcoQG9Lr+3Lf2MDYpIVbHHEo0KBhMkbpdIiK
+ My2LxDTeNgdpskR5fBzx0sUfPcC6XdQLTkpXrFfjpwNOyZyrPN3ecSYO0x+vpgAO
+ HYj4BFRLrhc9Oes9IE8j9U5wNIRbqZX4R7r2y7lIsAqoZwY2ywjDaflZ8in35/bX
+ 0QtyJw==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ush2xaeb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
  for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:47:26 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-32811874948so2345571a91.2
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-b47174c8fd2so6498991a12.2
  for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:47:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1756784845; x=1757389645;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V/gmiIQui9QHU5OS0CRbUDLL6LwYzW+BkNFupQXyH1s=;
- b=VO9A7TjD8NYby4jFdSO2NXix6qHHtdUzAXV4zA19nKwUTDXESlZyD7rkaJvK9BhG20
- frWqNiiI1XW0OUxwFqLtPe2jSVeXMxr0JuOEvW7t2tRSoJNJDdZiWAc7910Qd0Gf+NU6
- 4dRlVAdn9fP0hE6kRn4cHRkG4yZF95NAauS/H+q6yKlat736YyWQBQu3NXiwTtxB4TE5
- 8uxFzVtfPFbNa2QcJBG24ykEK+ZQI229ZRada0zE6JDS1rD4pVIEQ/CBl4WRdUEOOdJS
- 0N+q7G6y+tGFH5wMkJCazLfNANsXFXhr/Czd1W7Gpat9Rn4AOgZeR4wCycMtM1r025fC
- Srjw==
-X-Gm-Message-State: AOJu0YzId3nzCoOLgvUPsV/bDLH+IEmN5NO9AGX4dl2WR9wk4Ugk+3ca
- 0kHD0LnBp564aH0BAKBsbrLg7NKydRWTxZj9wgH4zmn/r1NcH2S2NmUzbQUyCxGXzAx+Y2bqkWo
- OKa8M5oxGBEajQKyo2Y04Z7aNsGokjJ+5fweZIlp/mF+zsu3EkoAJa9K8tyvt69yfFwmr
-X-Gm-Gg: ASbGncuW47s2ouSkilTSbjmI48Q9Cclxj2Qs0WBz8eA+AHUZTFiAnJjetHxGhcXCa0m
- w0jea+il6BbQv/mUMb06wIqowCRZwGZVrA282paM2p52zITdVu/12FjZtzRzKam17u1cuq56YpU
- oNaRxUYX4ucGpOYZRjvABny+8/LtdnWgs14tjTAboG3vj4BIVXU3RqqANIVOiQR/8ymNMjaUOYP
- jyNJu7mlGqOZ0G2h4MKKM41ufFC5jLW6ylPkjn1lNC9j2RrPkMuH/IVq9NSJ1Plx2nJC1pPh/JB
- 15tPeiSGk216OyMRK8URXCLyrf/Flyc9vS6KE7EYaJScJ7f0NOWGNIpFO9BGvTsMyc3nLxWLIyK
- zfyKUblEVSGAk
-X-Received: by 2002:a17:90b:4fcb:b0:327:e0cf:d7b4 with SMTP id
- 98e67ed59e1d1-328156cc9aamr13370167a91.26.1756784844394; 
+ bh=V07Obdmlm93H9u7fTFgR+cEhr44VBifxtLzfjaaDFAE=;
+ b=QOz8LSorsuC2xn3B9kD82w12U4E8tL5gOxk6vWRGla2SZbQ1IfE/JbrnKetns4j8Cn
+ e+vs5o9wj7bwpBpfGjuoYwcxOP6SNAkqJZjJWrCwJE7T1R6lj8Vj3WuOV5SOIT80txM7
+ PUqR9V829RP7nAmYLlwc2wkpMP1b29KoR8fqLd57GiUOevtEmTkHp9IBxoiQWVeAk+7V
+ E29CUMwWvprfU2m7ZazviwGzYO32Y88gjKn0xWyUaRGjn3h4F+vvWJO0DY5LnM45fY8P
+ 4iUEbyrwKA9VABV40wAp8KuLd+nJcFved4XEoGkv+FrakIhCuS+nMxRDUPwQne+ep939
+ iV4A==
+X-Gm-Message-State: AOJu0YzLtOcxZJ05slAlgwbitqTAdDJUew3PNu46MjEdQp9RDnT/5uPk
+ 8yWs8YihgcwcDBWFPjMnK/U/O7aJCD8Ecl5L+lMvMa5xP8424J0+fh7PrPgFDeCW6eBXQfkWn0p
+ WFi6oP2pmqKHsfKtZ5UzlqGL2gxMn9CfyBuHgId1StPiUGLyAfMTKMCXQzPP50dTyxKc3
+X-Gm-Gg: ASbGnctna5rVmliwOLhC1s/2z2TxmIf5oHxHs1lUOXHNnzIXISqaRNjWmPtjQpXkDZW
+ BnaBIkfjkZM4Gdto889Vnp4mHsYG0Ee0O3KuzGI1eAnkbYniUEQw/Ryof42G4ti/UZasVCIjf4V
+ Wja8nZWDbGe+aCwCFgMEUeXeGmlMk8fmXvVzzjNozcKUncm6ztzgS2rYVY1Qdz5rCWBeWfpbQIY
+ KzUy1gxvfNgpLMXu9+gQU6ENRm+f/RWFHJUn3uJZJWxDROpyMzh5vH8SUTYfjeOp/OdDT0/G2va
+ B+scuHons34E47Qt1q8eFHpRzYsxnbbq7Eha0NiWgKVBhBWzFx7srRjAIE8VVKoTscVyHxcS/Pm
+ MuIBNGnnMkJQU
+X-Received: by 2002:a05:6a20:2449:b0:243:a21c:3730 with SMTP id
+ adf61e73a8af0-243d6f036c7mr13723612637.31.1756784845207; 
+ Mon, 01 Sep 2025 20:47:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE+spZcw/JPdVnNUB7JZ3X0IZ49YyHtjzgXvlFQXUsuEAn+b9j7wGn+IRSkgR550KSRmKsEaQ==
+X-Received: by 2002:a05:6a20:2449:b0:243:a21c:3730 with SMTP id
+ adf61e73a8af0-243d6f036c7mr13723579637.31.1756784844771; 
  Mon, 01 Sep 2025 20:47:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEV7/VejOWgAP5NgUa7dtkRvAAq2TW1yz5XfyMRFEV2R0Z2nBaNBE3hfjmY068IV7LfsmNOSg==
-X-Received: by 2002:a17:90b:4fcb:b0:327:e0cf:d7b4 with SMTP id
- 98e67ed59e1d1-328156cc9aamr13370131a91.26.1756784843746; 
- Mon, 01 Sep 2025 20:47:23 -0700 (PDT)
 Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
  [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b4cd006e2c6sm10633584a12.2.2025.09.01.20.47.22
+ 41be03b00d2f7-b4cd006e2c6sm10633584a12.2.2025.09.01.20.47.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Sep 2025 20:47:23 -0700 (PDT)
+ Mon, 01 Sep 2025 20:47:24 -0700 (PDT)
 From: Brian Cain <brian.cain@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
@@ -79,39 +79,39 @@ Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
  anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
  alex.bennee@linaro.org, quic_mburton@quicinc.com,
  sid.manning@oss.qualcomm.com, Brian Cain <bcain@quicinc.com>
-Subject: [PATCH v2 01/40] docs: Add hexagon sysemu docs
-Date: Mon,  1 Sep 2025 20:46:36 -0700
-Message-Id: <20250902034715.1947718-2-brian.cain@oss.qualcomm.com>
+Subject: [PATCH v2 02/40] docs/system: Add hexagon CPU emulation
+Date: Mon,  1 Sep 2025 20:46:37 -0700
+Message-Id: <20250902034715.1947718-3-brian.cain@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250902034715.1947718-1-brian.cain@oss.qualcomm.com>
 References: <20250902034715.1947718-1-brian.cain@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: 1zJkQKtbSbU_tAbcINi4-FA5SxqGKlKw
-X-Proofpoint-GUID: 1zJkQKtbSbU_tAbcINi4-FA5SxqGKlKw
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyMCBTYWx0ZWRfX09y3cIu8uDYm
- uslUIvaiWG612KwwFc5ilXQ3AVFSam2ZflJHU3joUuCRcUfq15cSGiUwxYUojAAB/vWYKzh8X5r
- VSQLN9vVRZQab4GtBjDsZlz3HK2ChsQwB+kARgjT2hjDjEeaKMO6YqK2R06k03wbkbGMNGkyeqr
- /48nvgxBpsTpLmHSTXvOAmsQAswEG9kIkGHqXSugmVgUBn6s1U5nBYvf/AfBZUQRJEtVjGOyRLZ
- oEtMi18rsmVWfxEgnvHuf8YBFbgFRuWYo2TSCaDAcuXOQDD568XkRfkVOVihxbMkZ2BmmUEssfV
- 9meukpBbjRy+11+LgVL9Y7FiSn/vG68cI0L6ColvoKu3r9tMS6yAIPr0Gte8wElmWhyj5dxUI0C
- 9Vt6r0u6
-X-Authority-Analysis: v=2.4 cv=VNndn8PX c=1 sm=1 tr=0 ts=68b668ce cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=NEAV23lmAAAA:8 a=COk6AnOGAAAA:8
- a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=D0m2eUgJkcDgvUq9oecA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=rl5im9kqc5Lf4LNbBjHf:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMiBTYWx0ZWRfX0v8LZN2a5O9x
+ OPyVE+Xmcb8WdiEzLDDK6X9SaZjDrd4YkxZHuPVg0hFdEU59ScoMbR6d6KSxhUMhMlUAJeo9ZjF
+ 8K91ar/SsN0Q22eF0ATuwhnFts2itr0qrDkeB2U86E1XefR2ZMnepZRm/i5MxxCtHYtztKcs82v
+ XjNfdyYoMUqRlhnIh0U0P+matJWlWcelI/KgHIcoHZT39W9zlLr7W4dTn/CwTzkptsZ+9BptdwS
+ oJkGHXme9woMPPNsOe/6AE8nZiFhljw/oOhe81Yp/4d0lR30SBqNLwoF3Bl0xjiJ03/ksvqY+3p
+ OOx2ZV/q4tZ8nj5yo/0XInVHb1e7iQ6hSvjKtmAeuylFQxH9TGsLtlAeiwU25QQfG9i58szBrNd
+ fZ4KpqBW
+X-Proofpoint-ORIG-GUID: -ieNxTI5RLn0XQ9cEuxjodd-tuIimjES
+X-Proofpoint-GUID: -ieNxTI5RLn0XQ9cEuxjodd-tuIimjES
+X-Authority-Analysis: v=2.4 cv=M9NNKzws c=1 sm=1 tr=0 ts=68b668ce cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=COk6AnOGAAAA:8
+ a=pGLkceISAAAA:8 a=2pVdXvZyqgCw3DkElpQA:9 a=QEXdDO2ut3YA:10
+ a=3WC7DwWrALyhR5TkjVHa:22 a=TjNXssC_j7lpFel5tvFf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0
- clxscore=1015 adultscore=0 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300020
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=brian.cain@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
+ impostorscore=0 adultscore=0 spamscore=0 priorityscore=1501 malwarescore=0
+ clxscore=1015 suspectscore=0 phishscore=0 bulkscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508300032
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -139,296 +139,46 @@ From: Brian Cain <bcain@quicinc.com>
 Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 ---
- MAINTAINERS                    |   3 +
- docs/devel/hexagon-sys.rst     | 112 +++++++++++++++++++++++++++++++++
- docs/devel/index-internals.rst |   1 +
- docs/system/hexagon/cdsp.rst   |  12 ++++
- docs/system/target-hexagon.rst | 102 ++++++++++++++++++++++++++++++
- docs/system/targets.rst        |   1 +
- 6 files changed, 231 insertions(+)
- create mode 100644 docs/devel/hexagon-sys.rst
- create mode 100644 docs/system/hexagon/cdsp.rst
- create mode 100644 docs/system/target-hexagon.rst
+ docs/system/hexagon/emulation.rst | 18 ++++++++++++++++++
+ docs/system/target-hexagon.rst    |  1 +
+ 2 files changed, 19 insertions(+)
+ create mode 100644 docs/system/hexagon/emulation.rst
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8f074e4371..bf7695658a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -237,6 +237,9 @@ F: disas/hexagon.c
- F: configs/targets/hexagon-linux-user/default.mak
- F: docker/dockerfiles/debian-hexagon-cross.docker
- F: gdb-xml/hexagon*.xml
-+F: docs/system/target-hexagon.rst
-+F: docs/system/hexagon/cdsp.rst
-+F: docs/devel/hexagon-sys.rst
- T: git https://github.com/quic/qemu.git hex-next
- 
- Hexagon idef-parser
-diff --git a/docs/devel/hexagon-sys.rst b/docs/devel/hexagon-sys.rst
+diff --git a/docs/system/hexagon/emulation.rst b/docs/system/hexagon/emulation.rst
 new file mode 100644
-index 0000000000..92ebc32dce
+index 0000000000..75f46719b9
 --- /dev/null
-+++ b/docs/devel/hexagon-sys.rst
-@@ -0,0 +1,112 @@
++++ b/docs/system/hexagon/emulation.rst
+@@ -0,0 +1,18 @@
 +.. SPDX-License-Identifier: GPL-2.0-or-later
 +
-+.. _Hexagon-System-arch:
++.. _Hexagon Emulation:
 +
-+Hexagon System Architecture
-+===========================
++Hexagon CPU architecture support
++================================
 +
-+The hexagon architecture has some unique elements which are described here.
++QEMU's TCG emulation includes support for v65, v66, v67, v68, v69, v71, v73.
++It also has support for the following architecture extensions:
 +
-+Interrupts
-+----------
-+When interrupts arrive at a Hexagon DSP core, they are priority-steered to
-+be handled by an eligible hardware thread with the lowest priority.
++- HVX (Hexagon Vector eXtensions)
 +
-+Memory
-+------
-+Each hardware thread has an ``SSR.ASID`` field that contains its Address
-+Space Identifier.  This value is catenated with a 32-bit virtual address -
-+the MMU can then resolve this extended virtual address to a physical address.
++For information on the specifics of the HVX extension, please refer
++to the `Qualcomm Hexagon V73 HVX Programmer's Reference Manual
++<https://docs.qualcomm.com/bundle/publicresource/80-N2040-53.pdf>`_.
 +
-+TLBs
-+----
-+The format of a TLB entry is shown below.
++.. code-block:: bash
 +
-+.. note::
-+    The Small Core DSPs have a different TLB format which is not yet
-+    supported.
-+
-+.. admonition:: Diagram
-+
-+ .. code:: text
-+
-+             6                   5                   4               3
-+       3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2
-+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-+      |v|g|x|A|A|             |                                       |
-+      |a|l|P|1|0|     ASID    |             Virtual Page              |
-+      |l|b| | | |             |                                       |
-+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-+
-+         3                   2                   1                   0
-+       1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
-+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-+      | | | | |       |                                             | |
-+      |x|w|r|u|Cacheab|               Physical Page                 |S|
-+      | | | | |       |                                             | |
-+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-+
-+
-+* ASID: the address-space identifier
-+* A1, A0: the behavior of these cache line attributes are not modeled by QEMU.
-+* xP: the extra-physical bit is the most significant physical address bit.
-+* S: the S bit and the LSBs of the physical page indicate the page size
-+* val: this is the 'valid' bit, when set it indicates that page matching
-+  should consider this entry.
-+
-+.. list-table:: Page sizes
-+   :widths: 25 25 50
-+   :header-rows: 1
-+
-+   * - S-bit
-+     - Phys page LSBs
-+     - Page size
-+   * - 1
-+     - N/A
-+     - 4kb
-+   * - 0
-+     - 0b1
-+     - 16kb
-+   * - 0
-+     - 0b10
-+     - 64kb
-+   * - 0
-+     - 0b100
-+     - 256kb
-+   * - 0
-+     - 0b1000
-+     - 1MB
-+   * - 0
-+     - 0b10000
-+     - 4MB
-+   * - 0
-+     - 0b100000
-+     - 16MB
-+
-+* glb: if the global bit is set, the ASID is not considered when matching
-+  TLBs.
-+* Cacheab: the cacheability attributes of TLBs are not modeled, these bits
-+  are ignored.
-+* RWX: read-, write-, execute-, enable bits.  Indicates if user programs
-+  are permitted to read/write/execute the given page.
-+* U: indicates if user programs can access this page.
-+
-+Scheduler
-+---------
-+The Hexagon system architecture has a feature to assist the guest OS
-+task scheduler.  The guest OS can enable this feature by setting
-+``SCHEDCFG.EN``.  The ``BESTWAIT`` register is programmed by the guest OS
-+to indicate the priority of the highest priority task waiting to run on a
-+hardware thread.  The reschedule interrupt is triggered when any hardware
-+thread's priority in ``STID.PRIO`` is worse than the ``BESTWAIT``.  When
-+it is triggered, the ``BESTWAIT.PRIO`` value is reset to 0x1ff.
-+
-+HVX Coprocessor
-+---------------
-+The Supervisor Status Register field ``SSR.XA`` binds a DSP hardware thread
-+to one of the eight possible HVX contexts.  The guest OS is responsible for
-+managing this resource.
-+
-+.. seealso::
-+
-+    ``target/hexagon/README`` in the QEMU source tree for more info about Hexagon.
-diff --git a/docs/devel/index-internals.rst b/docs/devel/index-internals.rst
-index 7a0678cbdd..0471db8064 100644
---- a/docs/devel/index-internals.rst
-+++ b/docs/devel/index-internals.rst
-@@ -14,6 +14,7 @@ Details about QEMU's various subsystems including how to add features to them.
-    block-coroutine-wrapper
-    clocks
-    ebpf_rss
-+   hexagon-sys
-    migration/index
-    multi-process
-    reset
-diff --git a/docs/system/hexagon/cdsp.rst b/docs/system/hexagon/cdsp.rst
-new file mode 100644
-index 0000000000..237529273c
---- /dev/null
-+++ b/docs/system/hexagon/cdsp.rst
-@@ -0,0 +1,12 @@
-+.. SPDX-License-Identifier: GPL-2.0-or-later
-+
-+Compute DSP
-+===========
-+
-+A Hexagon CDSP is designed as a computation offload device for an SoC.  The
-+``V66G_1024`` machine contains:
-+
-+* L2VIC interrupt controller
-+* QTimer timer device
-+
-+This machine will support any Hexagon CPU, but will default to ``v66``.
 diff --git a/docs/system/target-hexagon.rst b/docs/system/target-hexagon.rst
-new file mode 100644
-index 0000000000..5f7084a6a0
---- /dev/null
+index 5f7084a6a0..416b8f7be7 100644
+--- a/docs/system/target-hexagon.rst
 +++ b/docs/system/target-hexagon.rst
-@@ -0,0 +1,102 @@
-+.. SPDX-License-Identifier: GPL-2.0-or-later
-+
-+.. _Hexagon-System-emulator:
-+
-+Hexagon System emulator
-+-----------------------
-+
-+Use the ``qemu-system-hexagon`` executable to simulate a 32-bit Hexagon
-+machine.
-+
-+Hexagon Machines
-+================
-+
-+Hexagon DSPs are suited to various functions and generally appear in a
-+"DSP subsystem" of a larger system-on-chip (SoC).
-+
-+Hexagon DSPs are often included in a subsystem that looks like the diagram
-+below.  Instructions are loaded into DDR before the DSP is brought out of
-+reset and the first instructions are fetched from DDR via the EVB/reset vector.
-+
-+In a real system, a TBU/SMMU would normally arbitrate AXI accesses but
-+we don't have a need to model that for QEMU.
-+
-+Hexagon DSP cores use simultaneous multithreading (SMT) with as many as 8
-+hardware threads.
-+
-+.. admonition:: Diagram
-+
-+ .. code:: text
-+
-+              AHB (local) bus                     AXI (global) bus
-+                    │                                 │
-+                    │                                 │
-+       ┌─────────┐  │       ┌─────────────────┐       │
-+       │ L2VIC   ├──┤       │                 │       │
-+       │         ├──┼───────►                 ├───────┤
-+       └─────▲───┘  │       │   Hexagon DSP   │       │
-+             │      │       │                 │       │        ┌─────┐
-+             │      │       │    N threads    │       │        │ DDR │
-+             │      ├───────┤                 │       │        │     │
-+        ┌────┴──┐   │       │                 │       ├────────┤     │
-+        │QTimer ├───┤       │                 │       │        │     │
-+        │       │   │       │                 │       │        │     │
-+        └───────┘   │       │   ┌─────────┐   │       │        │     │
-+                    │       │  ┌─────────┐│   │       │        │     │
-+        ┌───────┐   │       │  │  HVX xM ││   │       │        │     │
-+        │QDSP6SS├───┤       │  │         │┘   │       │        │     │
-+        └───────┘   │       │  └─────────┘    │       │        └─────┘
-+                    │       │                 │       │
-+        ┌───────┐   │       └─────────────────┘       │
-+        │  CSR  ├───┤
-+        └───────┘   │   ┌──────┐   ┌───────────┐
-+                    │   │ TCM  │   │   VTCM    │
-+                        │      │   │           │
-+                        └──────┘   │           │
-+                                   │           │
-+                                   │           │
-+                                   │           │
-+                                   └───────────┘
-+
-+Components
-+----------
-+Other than l2vic and HVX, the components below are not implemented in QEMU.
-+
-+* L2VIC: the L2 vectored interrupt controller.  Supports 1024 input
-+  interrupts, edge- or level-triggered.  The core ISA has system registers
-+  ``VID``, ``VID1`` which read through to the L2VIC device.
-+* QTimer: ARMSSE-based programmable timer device. Its interrupts are
-+  wired to the L2VIC.  System registers ``TIMER``, ``UTIMER`` read
-+  through to the QTimer device.
-+* QDSP6SS: DSP subsystem features, accessible to the entire SoC, including
-+  DSP NMI, watchdog, reset, etc.
-+* CSR: Configuration/Status Registers.
-+* TCM: DSP-exclusive tightly-coupled memory.  This memory can be used for
-+  DSPs when isolated from DDR and in some bootstrapping modes.
-+* VTCM: DSP-exclusive vector tightly-coupled memory.  This memory is accessed
-+  by some HVX instructions.
-+* HVX: the vector coprocessor supports 64 and 128-byte vector registers.
-+  64-byte mode is not implemented in QEMU.
-+
-+
-+Bootstrapping
-+-------------
-+Hexagon systems do not generally have access to a block device.  So, for
-+QEMU the typical use case involves loading a binary or ELF file into memory
-+and executing from the indicated start address::
-+
-+    $ qemu-system-hexagon -kernel ./prog -append 'arg1 arg2'
-+
-+Semihosting
-+-----------
-+Hexagon supports a semihosting interface similar to other architectures'.
-+The ``trap0`` instruction can activate these semihosting calls so that the
-+guest software can access the host console and filesystem.  Semihosting
-+is not yet implemented in QEMU hexagon.
-+
-+
-+Hexagon Features
-+================
-+.. toctree::
-+   hexagon/cdsp
-+
-diff --git a/docs/system/targets.rst b/docs/system/targets.rst
-index 38e2418801..515e249326 100644
---- a/docs/system/targets.rst
-+++ b/docs/system/targets.rst
-@@ -30,3 +30,4 @@ Contents:
-    target-sparc64
-    target-i386
-    target-xtensa
-+   target-hexagon
+@@ -98,5 +98,6 @@ is not yet implemented in QEMU hexagon.
+ Hexagon Features
+ ================
+ .. toctree::
++   hexagon/emulation
+    hexagon/cdsp
+ 
 -- 
 2.34.1
 
