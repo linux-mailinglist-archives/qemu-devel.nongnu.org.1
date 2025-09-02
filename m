@@ -2,125 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3F0B3F3B3
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C96B3F227
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 04:11:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utIZz-0004Mp-AF; Tue, 02 Sep 2025 00:25:12 -0400
+	id 1utGT4-00034O-VF; Mon, 01 Sep 2025 22:09:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utIZa-00042K-SS
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 00:24:52 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utIZY-0001AF-6c
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 00:24:46 -0400
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822SuwU011396
- for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 04:24:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- HtFBowf/B5f24nMQ7iGb1zz8xAYQ+fqDLO5A/K0h5WU=; b=FAFpRGO74dwaJZ9x
- +5aZ/eUn/QfEvfAqBilV+f3NrnXQuwYGK7L58t8e5dUcHUkeAhhcONNLcpKm/0x2
- UlYVGCnP1DOFETV2XM7Kx5H5QiL/bxeUu7UtPsGoc7bAOG78cuvrOSstuKv1UPC8
- PQ8jA+DFOy7CSX+17uoYr4kjBfSu1gfIpqSj4oaLpr0V81Q7TdrTiXu59T4XaXdg
- sH0bU4/XrY7vz0EJq2qOQfylylWC7/2oSbeZumMkJjcnG8UY494lbSXQNZ54aHba
- 3qT3QlPZJK7bFzcloPVUe+dcny4o5j9B+00tK2Iy7INtxQjJG9qBykv4t7lnnyMC
- 8ucdRw==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48urmjefkg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 04:24:43 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-4b339e7d107so19263981cf.0
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 21:24:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756787082; x=1757391882;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HtFBowf/B5f24nMQ7iGb1zz8xAYQ+fqDLO5A/K0h5WU=;
- b=VkLdkZKf++yDPDlwY1AZEoX0dQFIT52zFVB9rGiOb3ldvcKF4BIsoy583y2XG/ye11
- SjwzdvAnwLfyi8bN1P31eLC822HZ9VNNL64K7NcniMij9/v1Q/Xfp5VjwiVOpsxVjT71
- Xf0unLg/EYie37vnpndK50cCIkuq9YITtizekVAbo9iTehJhxjKkiMXnvZoZwRFx7fz3
- 5reiKbY+NLO6l2MG4sfc2hqVhvLTdfsqrSVrtZoMnF4qjWf9Qlu4uu2rdP6MWaI4zZ3q
- s2y8j0SjM+I4VL1jEJ17MgWlP+6253WsPF708L2KC72n7ZOrlyn4m+LTd1IJz/rHO9R4
- /0xg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUbCBeFYKvKhyQB6fsw565XQSqosgzaXJs17Wb6eLKz3jkfuFtMjyrZo4F29e+nmmBz5ReKOMFQ2o1B@nongnu.org
-X-Gm-Message-State: AOJu0YzmRFRikUMUcErAg2DkI5gAGDOJ5dSAYC40yq7DnWT+CtT+EfNJ
- cwllXhYziPu5CkpXQQFYYF9RheZOsyxqxkiDgdEbvdGzmev5RAToEtz9y8krt9GCf8NHtPmrCn2
- lsjLTv3vXUy1gmBRrOTfAQUPDv/25b3EBvwJZKAHk3WxkfDjHbYybAfZa7Q==
-X-Gm-Gg: ASbGncsHKc1oP3Amn/ONPwaCydXfHbqK44GZGaZJ6AnW+DXEsA/ebZN0HrmmTz86u/N
- NJ8xPEJXY8AqOQsW5HgrXLhR7MKfavEy9hs5iDq5gkaCahNvoyhybReGnEjhpF+kxgjGTW72HGD
- 4xRGMOugR0rjf0bzpVcu05LDceBaRG0XMQ79FAXsQUdzoV1OVb4MGA8HkBDFczibxzZNpZaLlEj
- sae8wFe4ul66o6K9fu7EEPWZb4q+k6SomFPPamsRuBzhMlq8wm7V0MH+qoG+TrZRLLi/xsmSOFT
- x+9wT0TrPoKm0zCcH57BQo5Nz5unSrMPtPRnj5qOthPK9slnpcMi9Sq3iIRJqg==
-X-Received: by 2002:a05:622a:4e:b0:4b0:b7ce:90b4 with SMTP id
- d75a77b69052e-4b31dcd88admr121933331cf.44.1756787081901; 
- Mon, 01 Sep 2025 21:24:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFamebzO4kb9FKSny5B1dF0Sqgpw3em0CqJvFpcKwSqS6VZc7CKqU9lS0oqen9DnMXDtXG69w==
-X-Received: by 2002:a05:622a:4e:b0:4b0:b7ce:90b4 with SMTP id
- d75a77b69052e-4b31dcd88admr121933041cf.44.1756787081378; 
- Mon, 01 Sep 2025 21:24:41 -0700 (PDT)
-Received: from [172.19.248.181] ([80.149.170.9])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf276d5e5fsm17958390f8f.27.2025.09.01.21.24.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 01 Sep 2025 21:24:40 -0700 (PDT)
-Message-ID: <97c99d4e-12c5-46b1-9d1f-5734b5dc7f81@oss.qualcomm.com>
-Date: Mon, 1 Sep 2025 21:03:39 -0500
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1utGT0-000346-DE
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 22:09:50 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1utGSx-0001ap-3p
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 22:09:49 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8AxxtDjUbZoOpkFAA--.11340S3;
+ Tue, 02 Sep 2025 10:09:39 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowJBxZOTgUbZoKxF4AA--.48545S3;
+ Tue, 02 Sep 2025 10:09:38 +0800 (CST)
+Subject: Re: [PATCH] hw/loongarch/virt: Fix the cpu hotplug issue
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org,
+ Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20250829013243.1237107-1-lixianglai@loongson.cn>
+ <34bc7ebf-4a7e-d2f8-65de-529ef658be49@loongson.cn>
+ <20250901135846.12a9c3e2@fedora>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <85e19964-52a1-bc97-5287-ed5e5b3ec41a@loongson.cn>
+Date: Tue, 2 Sep 2025 10:07:36 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/39] target/hexagon: Implement software interrupt
-To: ltaylorsimpson@gmail.com, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, philmd@linaro.org, quic_mathbern@quicinc.com,
- ale@rev.ng, anjo@rev.ng, quic_mliebel@quicinc.com,
- alex.bennee@linaro.org, quic_mburton@quicinc.com, sidneym@quicinc.com,
- 'Brian Cain' <bcain@quicinc.com>, 'Mike Lambert' <mlambert@quicinc.com>
-References: <20250301052845.1012069-1-brian.cain@oss.qualcomm.com>
- <20250301052845.1012069-18-brian.cain@oss.qualcomm.com>
- <02e101db9915$d1c42fe0$754c8fa0$@gmail.com>
+In-Reply-To: <20250901135846.12a9c3e2@fedora>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: Brian Cain <brian.cain@oss.qualcomm.com>
-In-Reply-To: <02e101db9915$d1c42fe0$754c8fa0$@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=OemYDgTY c=1 sm=1 tr=0 ts=68b6718b cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=oqm+nZh+PgUSu2IGv/nVbQ==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
- a=69wJf7TsAAAA:8 a=KKAkSRfTAAAA:8 a=COk6AnOGAAAA:8 a=fjZv-glThPG368fN3rIA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
- a=Fg1AiH1G6rFz08G2ETeA:22 a=cvBusfyB2V15izCimMoJ:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: G1xMI228W2lUBxuaqh7ut23uynP2PPea
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyNCBTYWx0ZWRfX4P0Si6g+BfMU
- djbJP11/kZZClSIfKGNboMpi2LxdjkCX4v7HQJ03QULp2kz3bfbE21cEMcG5iLQ6VuDdymYdCM6
- n7NW/aNmiPlDTQ/gAyw8zmnhik32EII340cwahuF+zYUzi7X/rbfJKlmrnDilMIZKl8fZKxmlwA
- Rq0qE5KT37N6ud1HPdnd/0wS2LyOGV5IN094IqUzzxyECEEs5CoDgMw6pb3VSeTYBe51ysMczX9
- TDY866iV80kH4rNhP2Ag+pTYMehF3fgz8ipoGMHCR8jr6ctkW5EIV9VIzMKZtArgTbpW5+qqG51
- 94i2dzpBxD4bM5O4xyqedp5a+iM79jiZUoDZyQiBZGgSqf/Cbd+ArrFqJcbV94Onn1XF7AHTshQ
- lezetbKN
-X-Proofpoint-ORIG-GUID: G1xMI228W2lUBxuaqh7ut23uynP2PPea
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0 priorityscore=1501
- adultscore=0 clxscore=1015 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300024
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=brian.cain@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+X-CM-TRANSID: qMiowJBxZOTgUbZoKxF4AA--.48545S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxZF43ur1DAw4xWr47Zr1fGrX_yoWrZw15pr
+ WUCFn0kF4kJr47Z39Fq34Y9F1qywsxKr43WFnxtrWFkw4qqr1DXF1jvw47uFWUA3Wru3WF
+ vr9a9a1SvF4av3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+ wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+ 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+ W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j8yCJU
+ UUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -54
+X-Spam_score: -5.5
+X-Spam_bar: -----
+X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.599,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -139,385 +85,121 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 3/19/2025 4:28 PM, ltaylorsimpson@gmail.com wrote:
->
->> -----Original Message-----
->> From: Brian Cain <brian.cain@oss.qualcomm.com>
->> Sent: Friday, February 28, 2025 11:28 PM
->> To: qemu-devel@nongnu.org
->> Cc: brian.cain@oss.qualcomm.com; richard.henderson@linaro.org;
->> philmd@linaro.org; quic_mathbern@quicinc.com; ale@rev.ng; anjo@rev.ng;
->> quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com;
->> alex.bennee@linaro.org; quic_mburton@quicinc.com;
->> sidneym@quicinc.com; Brian Cain <bcain@quicinc.com>; Mike Lambert
->> <mlambert@quicinc.com>
->> Subject: [PATCH 17/39] target/hexagon: Implement software interrupt
+
+On 2025/9/1 下午7:58, Igor Mammedov wrote:
+> On Fri, 29 Aug 2025 10:31:57 +0800
+> Bibo Mao <maobibo@loongson.cn> wrote:
+> 
+>> On 2025/8/29 上午9:32, Xianglai Li wrote:
+>>> The hot-plugged cpu does not register the cpu reset function, so the cpu
+>>> plugged in later cannot reset properly, and there will be problems when
+>>> restarting.
+>>>
+>>> Now register the cpu reset function in the cpu hotplug callback function.
+>> Oh, it is actually one problem and it is missing :(. There is similiar
+>> patch posted at:
+>>   
+>> https://lore.kernel.org/qemu-devel/20241031065418.3111892-1-maobibo@loongson.cn/
 >>
->> From: Brian Cain <bcain@quicinc.com>
+>> I prefer to adding cpu reset in CPU object realize function rather
+>> hotplug handler, and executing reset_load_elf() in board specific
+>> reset callback. However peter has different thoughts.
+> 
+> this patch and above mentioned one expose direct boot specific
+> reset_load_elf() on a generic hardware bring up path. That's
+> probably isn't right.
+> 
+> Ideally default (cpu_reset()) reset would happen 1st during
+> cpu creation/board init and then direct boot would patch
+> the CPU that actually would execute payload.
+> 
+> PS:
+> what's the reason to call reset_load_elf() on all present
+> vCPUs and why hotplugged ones matter here?
+> 
+> Shouldn't direct booted QEMU patch BSP only?
+yes, reset_load_elf() is only BSP relative, now BSP directly jumps
+to kernel entry, AP jump to slave_boot_code[]. Ideally both BSP and
+AP can jump to aux boot code if it boot code works like EFI bios, then 
+reset_load_elf() is not necessary for BSP also. I will try it.
+
+Regards
+Bibo Mao
+
+> 
 >>
->> Co-authored-by: Mike Lambert <mlambert@quicinc.com>
->> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
->> ---
->>   target/hexagon/cpu.h       |   1 -
->>   target/hexagon/hexswi.h    |  17 +++
->>   target/hexagon/cpu.c       |   2 +
->>   target/hexagon/hexswi.c    | 258
->> +++++++++++++++++++++++++++++++++++++
->>   target/hexagon/op_helper.c |   1 +
->>   5 files changed, 278 insertions(+), 1 deletion(-)  create mode 100644
->> target/hexagon/hexswi.h  create mode 100644 target/hexagon/hexswi.c
+>> Regards
+>> Bibo Mao
+>>>
+>>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+>>> ---
+>>>    hw/loongarch/boot.c         | 8 +-------
+>>>    hw/loongarch/virt.c         | 4 ++++
+>>>    include/hw/loongarch/virt.h | 1 +
+>>>    3 files changed, 6 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+>>> index 14d6c52d4e..6bc1f3d50c 100644
+>>> --- a/hw/loongarch/boot.c
+>>> +++ b/hw/loongarch/boot.c
+>>> @@ -324,7 +324,7 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
+>>>        return kernel_entry;
+>>>    }
+>>>    
+>>> -static void reset_load_elf(void *opaque)
+>>> +void reset_load_elf(void *opaque)
+>>>    {
+>>>        LoongArchCPU *cpu = opaque;
+>>>        CPULoongArchState *env = &cpu->env;
+>>> @@ -429,12 +429,6 @@ static void loongarch_direct_kernel_boot(MachineState *ms,
+>>>    void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info)
+>>>    {
+>>>        LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
+>>> -    int i;
+>>> -
+>>> -    /* register reset function */
+>>> -    for (i = 0; i < ms->smp.cpus; i++) {
+>>> -        qemu_register_reset(reset_load_elf, LOONGARCH_CPU(qemu_get_cpu(i)));
+>>> -    }
+>>>    
+>>>        info->kernel_filename = ms->kernel_filename;
+>>>        info->kernel_cmdline = ms->kernel_cmdline;
+>>> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+>>> index b15ada2078..71f8ddc980 100644
+>>> --- a/hw/loongarch/virt.c
+>>> +++ b/hw/loongarch/virt.c
+>>> @@ -1013,6 +1013,8 @@ static void virt_cpu_unplug(HotplugHandler *hotplug_dev,
+>>>        /* Notify acpi ged CPU removed */
+>>>        hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->acpi_ged), dev, &error_abort);
+>>>    
+>>> +    /* unregister reset function */
+>>> +    qemu_unregister_reset(reset_load_elf, cpu);
+>>>        cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
+>>>        cpu_slot->cpu = NULL;
+>>>    }
+>>> @@ -1037,6 +1039,8 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev,
+>>>                                 &error_abort);
+>>>        }
+>>>    
+>>> +    /* register reset function */
+>>> +    qemu_register_reset(reset_load_elf, cpu);
+>>>        cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
+>>>        cpu_slot->cpu = CPU(dev);
+>>>    }
+>>> diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+>>> index 602feab0f0..15ea393386 100644
+>>> --- a/include/hw/loongarch/virt.h
+>>> +++ b/include/hw/loongarch/virt.h
+>>> @@ -71,6 +71,7 @@ struct LoongArchVirtMachineState {
+>>>    OBJECT_DECLARE_SIMPLE_TYPE(LoongArchVirtMachineState, LOONGARCH_VIRT_MACHINE)
+>>>    void virt_acpi_setup(LoongArchVirtMachineState *lvms);
+>>>    void virt_fdt_setup(LoongArchVirtMachineState *lvms);
+>>> +void reset_load_elf(void *opaque);
+>>>    
+>>>    static inline bool virt_is_veiointc_enabled(LoongArchVirtMachineState *lvms)
+>>>    {
+>>>    
 >>
->> diff --git a/target/hexagon/cpu.h b/target/hexagon/cpu.h index
->> dabee310c5..045581d7be 100644
->> --- a/target/hexagon/cpu.h
->> +++ b/target/hexagon/cpu.h
->> @@ -256,5 +256,4 @@ typedef HexagonCPU ArchCPU;  void
->> hexagon_translate_init(void);  void hexagon_translate_code(CPUState *cs,
->> TranslationBlock *tb,
->>                               int *max_insns, vaddr pc, void *host_pc);
->> -
-> Gratuitous change
-Fixed in v2.
->>   #endif /* HEXAGON_CPU_H */
->> diff --git a/target/hexagon/hexswi.h b/target/hexagon/hexswi.h new file
->> mode 100644 index 0000000000..5d232cb06c
->> --- /dev/null
->> +++ b/target/hexagon/hexswi.h
->> @@ -0,0 +1,17 @@
->> +/*
->> + * Copyright(c) 2025 Qualcomm Innovation Center, Inc. All Rights Reserved.
->> + *
->> + * SPDX-License-Identifier: GPL-2.0-or-later  */
->> +
->> +#ifndef HEXSWI_H
->> +#define HEXSWI_H
->> +
->> +
->> +#include "cpu.h"
->> +
->> +void hexagon_cpu_do_interrupt(CPUState *cpu); void
->> +register_trap_exception(CPUHexagonState *env, int type, int imm,
->> +                             target_ulong PC);
->> +
->> +#endif /* HEXSWI_H */
->> diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c index
->> 89a051b41d..843be8221f 100644
->> --- a/target/hexagon/cpu.c
->> +++ b/target/hexagon/cpu.c
->> @@ -33,6 +33,8 @@
->>   #ifndef CONFIG_USER_ONLY
->>   #include "sys_macros.h"
->>   #include "qemu/main-loop.h"
->> +#include "hex_interrupts.h"
->> +#include "hexswi.h"
-> Move these added include to a different patch where the contents are needed.
-
-I didn't fix this in v2 because I convinced myself that these were 
-appropriate as-is.  But on reconsideration I think I'm mistaken and will 
-try to fix this for v3.
-
-
->>   #endif
 >>
->>   static void hexagon_v66_cpu_init(Object *obj) { } diff --git
->> a/target/hexagon/hexswi.c b/target/hexagon/hexswi.c new file mode
->> 100644 index 0000000000..5fcf9b2be9
->> --- /dev/null
->> +++ b/target/hexagon/hexswi.c
->> @@ -0,0 +1,258 @@
->> +/*
->> + * Copyright(c) 2019-2025 Qualcomm Innovation Center, Inc. All Rights
->> Reserved.
->> + *
->> + * SPDX-License-Identifier: GPL-2.0-or-later  */
->> +
->> +#include "qemu/osdep.h"
->> +#include "cpu.h"
->> +#ifdef CONFIG_USER_ONLY
-> This file is only included in the system-mode build, so we don't need these guards.  Several in this file.
 
-Fixed in v2.
-
-
->> +#include "exec/helper-proto.h"
->> +#include "qemu.h"
->> +#endif
->> +#include "exec/cpu_ldst.h"
->> +#include "exec/exec-all.h"
->> +#include "qemu/log.h"
->> +#include "qemu/main-loop.h"
->> +#include "arch.h"
->> +#include "internal.h"
->> +#include "macros.h"
->> +#include "sys_macros.h"
->> +#include "tcg/tcg-op.h"
->> +#ifndef CONFIG_USER_ONLY
->> +#include "hex_mmu.h"
->> +#include "hexswi.h"
->> +#endif
->> +
->> +#ifndef CONFIG_USER_ONLY
->> +
->> +
->> +static void set_addresses(CPUHexagonState *env, target_ulong pc_offset,
->> +                          target_ulong exception_index)
->> +
->> +{
->> +    arch_set_system_reg(env, HEX_SREG_ELR,
->> +                        arch_get_thread_reg(env, HEX_REG_PC) + pc_offset);
->> +    arch_set_thread_reg(env, HEX_REG_PC,
->> +                        arch_get_system_reg(env, HEX_SREG_EVB) |
->> +                            (exception_index << 2)); }
->> +
->> +static const char *event_name[] = {
->> +    [HEX_EVENT_RESET] = "HEX_EVENT_RESET",
->> +    [HEX_EVENT_IMPRECISE] = "HEX_EVENT_IMPRECISE",
->> +    [HEX_EVENT_TLB_MISS_X] = "HEX_EVENT_TLB_MISS_X",
->> +    [HEX_EVENT_TLB_MISS_RW] = "HEX_EVENT_TLB_MISS_RW",
->> +    [HEX_EVENT_TRAP0] = "HEX_EVENT_TRAP0",
->> +    [HEX_EVENT_TRAP1] = "HEX_EVENT_TRAP1",
->> +    [HEX_EVENT_FPTRAP] = "HEX_EVENT_FPTRAP",
->> +    [HEX_EVENT_DEBUG] = "HEX_EVENT_DEBUG",
->> +    [HEX_EVENT_INT0] = "HEX_EVENT_INT0",
->> +    [HEX_EVENT_INT1] = "HEX_EVENT_INT1",
->> +    [HEX_EVENT_INT2] = "HEX_EVENT_INT2",
->> +    [HEX_EVENT_INT3] = "HEX_EVENT_INT3",
->> +    [HEX_EVENT_INT4] = "HEX_EVENT_INT4",
->> +    [HEX_EVENT_INT5] = "HEX_EVENT_INT5",
->> +    [HEX_EVENT_INT6] = "HEX_EVENT_INT6",
->> +    [HEX_EVENT_INT7] = "HEX_EVENT_INT7",
->> +    [HEX_EVENT_INT8] = "HEX_EVENT_INT8",
->> +    [HEX_EVENT_INT9] = "HEX_EVENT_INT9",
->> +    [HEX_EVENT_INTA] = "HEX_EVENT_INTA",
->> +    [HEX_EVENT_INTB] = "HEX_EVENT_INTB",
->> +    [HEX_EVENT_INTC] = "HEX_EVENT_INTC",
->> +    [HEX_EVENT_INTD] = "HEX_EVENT_INTD",
->> +    [HEX_EVENT_INTE] = "HEX_EVENT_INTE",
->> +    [HEX_EVENT_INTF] = "HEX_EVENT_INTF"
->> +};
->> +
->> +void hexagon_cpu_do_interrupt(CPUState *cs)
->> +
->> +{
->> +    CPUHexagonState *env = cpu_env(cs);
->> +    BQL_LOCK_GUARD();
->> +
->> +    qemu_log_mask(CPU_LOG_INT, "\t%s: event 0x%x:%s, cause
->> 0x%x(%d)\n",
->> +                  __func__, cs->exception_index,
->> +                  event_name[cs->exception_index], env->cause_code,
->> +                  env->cause_code);
->> +
->> +    env->llsc_addr = ~0;
->> +
->> +    uint32_t ssr = arch_get_system_reg(env, HEX_SREG_SSR);
-> Declarations at the beginning of the function.
-
-Fixed in v2.
-
-
->> +    if (GET_SSR_FIELD(SSR_EX, ssr) == 1) {
->> +        arch_set_system_reg(env, HEX_SREG_DIAG, env->cause_code);
->> +        env->cause_code = HEX_CAUSE_DOUBLE_EXCEPT;
->> +        cs->exception_index = HEX_EVENT_PRECISE;
->> +    }
->> +
->> +    switch (cs->exception_index) {
->> +    case HEX_EVENT_TRAP0:
->> +        if (env->cause_code == 0) {
->> +            qemu_log_mask(LOG_UNIMP,
->> +                          "trap0 is unhandled, no semihosting available\n");
->> +        }
->> +
->> +        hexagon_ssr_set_cause(env, env->cause_code);
->> +        set_addresses(env, 4, cs->exception_index);
->> +        break;
->> +
->> +    case HEX_EVENT_TRAP1:
->> +        hexagon_ssr_set_cause(env, env->cause_code);
->> +        set_addresses(env, 4, cs->exception_index);
->> +        break;
->> +
->> +    case HEX_EVENT_TLB_MISS_X:
->> +        switch (env->cause_code) {
->> +        case HEX_CAUSE_TLBMISSX_CAUSE_NORMAL:
->> +        case HEX_CAUSE_TLBMISSX_CAUSE_NEXTPAGE:
->> +            qemu_log_mask(CPU_LOG_MMU,
->> +                          "TLB miss EX exception (0x%x) caught: "
->> +                          "Cause code (0x%x) "
->> +                          "TID = 0x%" PRIx32 ", PC = 0x%" PRIx32
->> +                          ", BADVA = 0x%" PRIx32 "\n",
->> +                          cs->exception_index, env->cause_code, env->threadId,
->> +                          arch_get_thread_reg(env, HEX_REG_PC),
->> +                          arch_get_system_reg(env, HEX_SREG_BADVA));
->> +
->> +            hexagon_ssr_set_cause(env, env->cause_code);
->> +            set_addresses(env, 0, cs->exception_index);
->> +            break;
->> +
->> +        default:
->> +            cpu_abort(cs,
->> +                      "1:Hexagon exception %d/0x%x: "
->> +                      "Unknown cause code %d/0x%x\n",
->> +                      cs->exception_index, cs->exception_index, env->cause_code,
->> +                      env->cause_code);
->> +            break;
->> +        }
->> +        break;
->> +
->> +    case HEX_EVENT_TLB_MISS_RW:
->> +        switch (env->cause_code) {
->> +        case HEX_CAUSE_TLBMISSRW_CAUSE_READ:
->> +        case HEX_CAUSE_TLBMISSRW_CAUSE_WRITE:
->> +            qemu_log_mask(CPU_LOG_MMU,
->> +                          "TLB miss RW exception (0x%x) caught: "
->> +                          "Cause code (0x%x) "
->> +                          "TID = 0x%" PRIx32 ", PC = 0x%" PRIx32
->> +                          ", BADVA = 0x%" PRIx32 "\n",
->> +                          cs->exception_index, env->cause_code, env->threadId,
->> +                          env->gpr[HEX_REG_PC],
->> +                          arch_get_system_reg(env, HEX_SREG_BADVA));
->> +
->> +            hexagon_ssr_set_cause(env, env->cause_code);
->> +            set_addresses(env, 0, cs->exception_index);
->> +            /* env->sreg[HEX_SREG_BADVA] is set when the exception is raised
->> */
->> +            break;
->> +
->> +        default:
->> +            cpu_abort(cs,
->> +                      "2:Hexagon exception %d/0x%x: "
->> +                      "Unknown cause code %d/0x%x\n",
->> +                      cs->exception_index, cs->exception_index, env->cause_code,
->> +                      env->cause_code);
->> +            break;
->> +        }
->> +        break;
->> +
->> +    case HEX_EVENT_FPTRAP:
->> +        hexagon_ssr_set_cause(env, env->cause_code);
->> +        arch_set_thread_reg(env, HEX_REG_PC,
->> +                            arch_get_system_reg(env, HEX_SREG_EVB) |
->> +                                (cs->exception_index << 2));
-> Why not use set_addresses here?  How is ELR set?
->
->> +        break;
->> +
->> +    case HEX_EVENT_DEBUG:
->> +        hexagon_ssr_set_cause(env, env->cause_code);
->> +        set_addresses(env, 0, cs->exception_index);
->> +        qemu_log_mask(LOG_UNIMP, "single-step exception is not
->> handled\n");
->> +        break;
->> +
->> +    case HEX_EVENT_PRECISE:
->> +        switch (env->cause_code) {
->> +        case HEX_CAUSE_FETCH_NO_XPAGE:
->> +        case HEX_CAUSE_FETCH_NO_UPAGE:
->> +        case HEX_CAUSE_PRIV_NO_READ:
->> +        case HEX_CAUSE_PRIV_NO_UREAD:
->> +        case HEX_CAUSE_PRIV_NO_WRITE:
->> +        case HEX_CAUSE_PRIV_NO_UWRITE:
->> +        case HEX_CAUSE_MISALIGNED_LOAD:
->> +        case HEX_CAUSE_MISALIGNED_STORE:
->> +        case HEX_CAUSE_PC_NOT_ALIGNED:
->> +            qemu_log_mask(CPU_LOG_MMU,
->> +                          "MMU permission exception (0x%x) caught: "
->> +                          "Cause code (0x%x) "
->> +                          "TID = 0x%" PRIx32 ", PC = 0x%" PRIx32
->> +                          ", BADVA = 0x%" PRIx32 "\n",
->> +                          cs->exception_index, env->cause_code, env->threadId,
->> +                          env->gpr[HEX_REG_PC],
->> +                          arch_get_system_reg(env, HEX_SREG_BADVA));
->> +
->> +
->> +            hexagon_ssr_set_cause(env, env->cause_code);
->> +            set_addresses(env, 0, cs->exception_index);
->> +            /* env->sreg[HEX_SREG_BADVA] is set when the exception is raised
->> */
->> +            break;
->> +
->> +        case HEX_CAUSE_DOUBLE_EXCEPT:
->> +        case HEX_CAUSE_PRIV_USER_NO_SINSN:
->> +        case HEX_CAUSE_PRIV_USER_NO_GINSN:
->> +        case HEX_CAUSE_INVALID_OPCODE:
->> +        case HEX_CAUSE_NO_COPROC_ENABLE:
->> +        case HEX_CAUSE_NO_COPROC2_ENABLE:
->> +        case HEX_CAUSE_UNSUPORTED_HVX_64B:
->> +        case HEX_CAUSE_REG_WRITE_CONFLICT:
->> +        case HEX_CAUSE_VWCTRL_WINDOW_MISS:
->> +            hexagon_ssr_set_cause(env, env->cause_code);
->> +            set_addresses(env, 0, cs->exception_index);
->> +            break;
->> +
->> +        case HEX_CAUSE_COPROC_LDST:
->> +            hexagon_ssr_set_cause(env, env->cause_code);
->> +            set_addresses(env, 0, cs->exception_index);
->> +            break;
->> +
->> +        case HEX_CAUSE_STACK_LIMIT:
->> +            hexagon_ssr_set_cause(env, env->cause_code);
->> +            set_addresses(env, 0, cs->exception_index);
->> +            break;
->> +
->> +        default:
->> +            cpu_abort(cs,
->> +                      "3:Hexagon exception %d/0x%x: "
->> +                      "Unknown cause code %d/0x%x\n",
->> +                      cs->exception_index, cs->exception_index, env->cause_code,
->> +                      env->cause_code);
->> +            break;
->> +        }
->> +        break;
->> +
->> +    case HEX_EVENT_IMPRECISE:
->> +        qemu_log_mask(LOG_UNIMP,
->> +                "Imprecise exception: this case is not yet handled");
->> +        break;
->> +
->> +    default:
->> +        qemu_log_mask(LOG_UNIMP,
->> +                "Hexagon Unsupported exception 0x%x/0x%x\n",
->> +                  cs->exception_index, env->cause_code);
->> +        break;
->> +    }
->> +
->> +    cs->exception_index = HEX_EVENT_NONE; }
->> +
->> +void register_trap_exception(CPUHexagonState *env, int traptype, int
->> imm,
->> +                             target_ulong PC) {
->> +    CPUState *cs = env_cpu(env);
->> +
->> +    cs->exception_index = (traptype == 0) ? HEX_EVENT_TRAP0 :
->> HEX_EVENT_TRAP1;
->> +    ASSERT_DIRECT_TO_GUEST_UNSET(env, cs->exception_index);
->> +
->> +    env->cause_code = imm;
->> +    env->gpr[HEX_REG_PC] = PC;
->> +    cpu_loop_exit(cs);
->> +}
->> +#endif
->> diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
->> index 42805d0f1d..687e7f45c2 100644
->> --- a/target/hexagon/op_helper.c
->> +++ b/target/hexagon/op_helper.c
->> @@ -38,6 +38,7 @@
->>   #include "hex_mmu.h"
->>   #include "hw/intc/l2vic.h"
->>   #include "hex_interrupts.h"
->> +#include "hexswi.h"
-> Move this do a different patch where the contents are needed
-
-I didn't fix this in v2 because I convinced myself that these were 
-appropriate as-is.  But on reconsideration I think I'm mistaken and will 
-try to fix this for v3.
-
-
->>   #endif
->>
->>   #define SF_BIAS        127
->> --
->> 2.34.1
->
 
