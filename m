@@ -2,81 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91CBBB3FC7F
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 12:31:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB28B3FCB4
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 12:37:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utOHv-0006pY-Ic; Tue, 02 Sep 2025 06:30:55 -0400
+	id 1utONq-0003JS-Gh; Tue, 02 Sep 2025 06:37:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1utOHS-0006iR-3D
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 06:30:26 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1utONo-0003JH-EB
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 06:37:00 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1utOHM-00012b-Kw
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 06:30:24 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-45b87bc67a4so17204155e9.3
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:30:19 -0700 (PDT)
+ id 1utONm-0001pc-6t
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 06:37:00 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-45b7d87b90fso35113465e9.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:36:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756809018; x=1757413818; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=on4A+GT89TCdUZSaNdrGf23a3e80Lqu5mz2DsnpTu8Q=;
- b=SSfNhHn+UoEFrqvU2Z4VEehC2hmePm8HmCb63q+zL87JOLuFrIX45fGlH9BzLczvCH
- szvO+Kk8AuKpMsiGWH9ERzBMZejjqPoB1kwqqNE1ZKqj02mEURo6Zc7UCbSlhXHIe+//
- thfWV6C35j1NGAPGigK0rbHlyNATUmY0vDnt8CgYl8mIWp5B+jJ24lLKsxtkn0DVkbyX
- SpkASxZWMaz8y4uidtQd9eQpWUofRHqJd9u2Sc1Kkb/axtMXjBw1bEC4VHZUK1t477SN
- 0X2SWd1ZvenIHBuKdgChdSrg+7tl33RjIjNWfZGbWVzhC1zg2AmuseOk++xuMsnwMeCD
- n4rw==
+ d=linaro.org; s=google; t=1756809415; x=1757414215; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=uwHm6mbj2pyWy2tbuuYIuRmq6LSOJTP7MuQQ0+qBY/0=;
+ b=WhFeJgqUzDJZaUKDBSv9pjLEtjU4FpnMVhz8Xo3rTApPl+1/Vg1eqI1wVf7yez5foe
+ maFrz2WOVQK0m4N2VIFg4hYnb9CJC7EDBU7hlS+KIIjuJzOVoabgVv1CJvHP6FjC0etO
+ YhySXlFPqDk8519uYZKw4nhY/ZA9qaFJUbDa3qgaOMfo9jgE4ZS8Vac1L0DPTkWOKnlw
+ vKeDKhv7lUFv92TNRE8R5bzcUvBcx1cMk9nKUoFZx0ev/U7qH+S+Mkw5vEhN0sLcWp8a
+ N7G7CEujxuf1DRMyNvdeYYtdt4G25O3EEwsrpI7CRrZrqydTkGV0FNuHCW+uwjOCsTyj
+ A1sQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756809018; x=1757413818;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=on4A+GT89TCdUZSaNdrGf23a3e80Lqu5mz2DsnpTu8Q=;
- b=ZqGVYQodNNmYtLhjdMGGI4vI/KgN5FQGBT5MhX2G875/slPoeo+aP6TSiiBVB+5U9d
- kp9Wq82Dqj/tCXPN7var5A0V3raCg/dIn/OdscOgXG7r7YTbbm6O5XbqOtUuS7V3DSQF
- cQoNDnxGw3mDNNON4Ci2n3XLZY1rDffKcZ7UH2kc9Y3g1/ECg9WdUYr18gJmrxZckT26
- rEfRWq8e/GF0bXGovveGk1w38yzP8PvEjOVN/57ZgubXHowNeOAvHADHcESMWk6StLaa
- luF/s0OEsA7B6Ta6egmUF2kjVrfdkNbS6W1xF7J+wP13S32xA2lM0YjZhqYdmSDfDtng
- mcZg==
-X-Gm-Message-State: AOJu0YzBDz5xEZqds5HzLoocz2/pSKKH+wBf0ua5GIS/KMeHJeTsUFyZ
- u2OJdFGjAm25Ysmdgnq+nZYpddyTVyy4AthQ+M39dtlQH+pPUWlNNM6qu4kC8YbhcO2RJ3x8mGh
- +OrSujSU=
-X-Gm-Gg: ASbGncubVrFsHDlE5ssPelwMJs4829oZVbexpv3iVLZYCSfYFoWFHRQnNlkzKqs6cni
- IsNkNHGPBFlepEdSwzOKOCYks9StROhJ6JxkIl6+zPPc1GytX7y5hvPFYnhnbK8b+RBANNrExL6
- HAoADYfr1KRTmIafvTjgCxKLYkNaJxLBRrG1A12pjS0cL9eX7v4FYuGgcc9cUaigtB0LFtD14A5
- Gac2bK4l4Hm06B7ywNc9WW1gE9AT8FvqCfiGGcjqDZ5LNhLl/SrJcJTyd/0QsVRoG/xG8wV3ulE
- +51dj1iZVOoW4FyGUELojCF0zW1iCl5blcDJL+STZMsD1iyJiTdKdR+Xx2y+VqKFTzOzvET3LWo
- iVDlQeYvPjPcBdQEdYmD/nV7sTtdyNz2n99zbuPhlbEUiX6i25FvzesQ94KAXHrHWMtamyJDq3A
- ==
-X-Google-Smtp-Source: AGHT+IHKA6ZKsCdycg+Bp/Lv1UkvlSmjtEiQckLuBdmim4eFtGtcAEeKqym7Cdj1TP2FNKZjQH1s9A==
-X-Received: by 2002:a05:600c:474f:b0:459:ea5d:418b with SMTP id
- 5b1f17b1804b1-45b85532b10mr89518435e9.9.1756809018375; 
- Tue, 02 Sep 2025 03:30:18 -0700 (PDT)
-Received: from stoup.. (151-0-205-164.ip282.fastwebnet.it. [151.0.205.164])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b6f0d32a2sm296470665e9.9.2025.09.02.03.30.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Sep 2025 03:30:17 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com
-Subject: [RFC 4/4] util/error-report: Use LogOutput in vreport
-Date: Tue,  2 Sep 2025 12:30:10 +0200
-Message-ID: <20250902103010.309094-5-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250902103010.309094-1-richard.henderson@linaro.org>
-References: <20250902103010.309094-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1756809415; x=1757414215;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uwHm6mbj2pyWy2tbuuYIuRmq6LSOJTP7MuQQ0+qBY/0=;
+ b=P3vPESuMddqYbKR0t/yaYnsiRIKwH+bVOjAITKBFZ6JMuOQOHyawPwOjGm6w5OSti2
+ EaSxHgoNyY0UNkdWJpMvy1JsAI5399N6KL7wcsTlJQyo/9o6tkbiEsdII3SGhTGnpqhc
+ S0jp2AeKIwIq9GpsAosFp5ZN9HwZsG6EpPGGCI/7ZJT0YI1XO6/ovxOlNkPbZaggL1ei
+ /vaG/5YURjEjWQlzcM6ZXUKL7gMON6GdDYeLy3vzYM5jv4h8NJZ4rVPIsq0XWUHkIa3R
+ HId19gousednU1hsLDl84shXPOmCJPaf/t/XR/a4mERkx5UtZcRsUwSYomXtRPMGyAja
+ 2ykA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW4uchK8Wuqa61MgFRZIKOa54fsofKgvoABYKq0MUayAo/kkSIzMKBy2pMjYdr4bz02uWIjZLKFmjSt@nongnu.org
+X-Gm-Message-State: AOJu0YyevfNUNO+/EHZIQVThQcvaIY7E4D54Tn0H6bMGAchhPqPHSn/x
+ BLZjv5oQrFIf+8MK6cKXrC1M0deWb+OFH/lmdc1jH1Wd0GneZ9AEksGfxaQGItWLzSMFk39f91U
+ agCJVTD8=
+X-Gm-Gg: ASbGnctySZO4MzuPHCPqVhnFo5e82Xa/TfNDtYmGpBZL0Dvp5qENB6t9wJCq3m0QIOP
+ G4gGZ6zzFhQFWL6vul2ZUOL/ZARde/Ebbj203NeRnLk748l07boxN8vF+uH6f4/AwyPuuDAthoU
+ yAIv+iiCZq6/OWVp7wgJKa9F0SXVCQRsTuqBQ1lM5J92Qw1kcNTstCHIalxYy6NYC8XdrvhdehM
+ lKlGtxVPstXX6fr6SzphYwkfyb7f1wKw8XevbkRrt+qBuYhXjlhXd3DNU5WZ2Rt4p9OAypqnKfD
+ n27ZdBjHFO7BPtGShY/qqVo30svCWPO7O6u4/RAtCaVRshmIJOSJas2gE7eROk+VO5bJE8OvtPd
+ j1AQ0cJJkNrq7O4alonGqkxrZcbQGrXRz3fk9fEoLjlVr6vW+ya1LumSjqaq+X1j7Xdz5r24gE8
+ Fen+fKfw==
+X-Google-Smtp-Source: AGHT+IGmzsEhtijGxzR/ld5B0R5yOn760gfx4A5f9VONaR/cPH/R5Wv8hfhHeIf5b53H/omMiEGADg==
+X-Received: by 2002:a05:600c:c0ca:b0:45b:8b61:396 with SMTP id
+ 5b1f17b1804b1-45b8b6104f6mr45560205e9.18.1756809414911; 
+ Tue, 02 Sep 2025 03:36:54 -0700 (PDT)
+Received: from [10.20.0.233] (151-0-205-164.ip282.fastwebnet.it.
+ [151.0.205.164]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3cf34491a65sm18864650f8f.56.2025.09.02.03.36.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Sep 2025 03:36:54 -0700 (PDT)
+Message-ID: <c080bfe4-9aff-48bc-b99a-b9045fabb3e6@linaro.org>
+Date: Tue, 2 Sep 2025 12:36:52 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests: honor $TMPDIR for test_virtio_version
+To: Michael Tokarev <mjt@tls.msk.ru>, Maxim Cournoyer <maxim@guixotic.coop>,
+ qemu-devel@nongnu.org
+References: <20250831125255.7066-1-maxim@guixotic.coop>
+ <c1b6e93a-1c85-4626-8ea6-5efee2bf9489@tls.msk.ru>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <c1b6e93a-1c85-4626-8ea6-5efee2bf9489@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,119 +104,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Merge print_loc.  Use the LogOutput callbacks instead of
-error_printf and error_vprintf.
+On 9/1/25 16:41, Michael Tokarev wrote:
+> On 31.08.2025 15:52, Maxim Cournoyer wrote:
+>> Until 10.1.0, the test suite could be run without having a writable
+>> /var/tmp in the build environment.  To avoid now requiring /var/tmp in
+>> the build environment (which can be a very minimal container like in
+>> the case of GNU Guix), consult TMPDIR first, using /var/tmp as a
+>> fallback.
+> 
+>> diff --git a/tests/functional/x86_64/test_virtio_version.py b/tests/functional/x86_64/ 
+>> test_virtio_version.py
+>> index a5ea73237f..501545f655 100755
+>> --- a/tests/functional/x86_64/test_virtio_version.py
+>> +++ b/tests/functional/x86_64/test_virtio_version.py
+> 
+>> @@ -68,7 +70,9 @@ def run_device(self, devtype, opts=None, machine='pc'):
+>>           """
+>>           Run QEMU with `-device DEVTYPE`, return device info from `query-pci`
+>>           """
+>> -        with QEMUMachine(self.qemu_bin) as vm:
+>> +        with QEMUMachine(
+>> +                self.qemu_bin,
+>> +                base_temp_dir=os.environ.get('TMPDIR', '/var/tmp')) as vm:
+> 
+> I don't think /var/tmp is a good choice here, - I'm a bit surprised it
+> come from you when your OS doesn't have /var/tmp by default - shouldn't
+> it be /tmp here?
+> 
+> Overall, /var/tmp is a strange choice here and in a few other tests too,
+> -- maybe only block.c default is the only right place to have it as the
+> fallback/default.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- util/error-report.c | 72 +++++++++++++++++++++------------------------
- 1 file changed, 34 insertions(+), 38 deletions(-)
+It's possible that it's the testsuite that should be changed to prefer /var/tmp when 
+present and TMPDIR is tmpfs.  I don't know enough about what prompted the original change 
+in the first place.
 
-diff --git a/util/error-report.c b/util/error-report.c
-index 6ef556af5f..db5b2c1608 100644
---- a/util/error-report.c
-+++ b/util/error-report.c
-@@ -132,36 +132,6 @@ void loc_set_file(const char *fname, int lno)
-     }
- }
- 
--/*
-- * Print current location to current monitor if we have one, else to stderr.
-- */
--static void print_loc(void)
--{
--    const char *sep = "";
--    int i;
--    const char *const *argp;
--
--    switch (cur_loc->kind) {
--    case LOC_CMDLINE:
--        argp = cur_loc->ptr;
--        for (i = 0; i < cur_loc->num; i++) {
--            error_printf("%s%s", sep, argp[i]);
--            sep = " ";
--        }
--        error_printf(": ");
--        break;
--    case LOC_FILE:
--        error_printf("%s:", (const char *)cur_loc->ptr);
--        if (cur_loc->num) {
--            error_printf("%d:", cur_loc->num);
--        }
--        error_printf(" ");
--        break;
--    default:
--        error_printf("%s", sep);
--    }
--}
--
- /*
-  * Print a message to current monitor if we have one, else to stderr.
-  * @report_type is the type of message: error, warning or informational.
-@@ -172,28 +142,54 @@ static void print_loc(void)
- G_GNUC_PRINTF(2, 0)
- static void vreport(report_type type, const char *fmt, va_list ap)
- {
--    if (!monitor_cur()) {
--        void *opaque;
--        const LogOutput *l = error_log_output(&opaque);
-+    void *opaque;
-+    const LogOutput *l = error_log_output(&opaque);
- 
-+    if (!monitor_cur()) {
-         qmessage_context(l, opaque);
-     }
- 
--    print_loc();
-+    switch (cur_loc->kind) {
-+    case LOC_CMDLINE:
-+        {
-+            const char *const *argp = cur_loc->ptr;
-+            const char *sep = "";
-+
-+            for (int i = 0; i < cur_loc->num; i++) {
-+                l->print(opaque, "%s%s", sep, argp[i]);
-+                sep = " ";
-+            }
-+            l->print(opaque, ": ");
-+        }
-+        break;
-+    case LOC_FILE:
-+        {
-+            const char *file = cur_loc->ptr;
-+
-+            if (cur_loc->num) {
-+                error_printf("%s:%d: ", file, cur_loc->num);
-+            } else {
-+                error_printf("%s: ", file);
-+            }
-+        }
-+        break;
-+    case LOC_NONE:
-+        break;
-+    }
- 
-     switch (type) {
-     case REPORT_TYPE_ERROR:
-         break;
-     case REPORT_TYPE_WARNING:
--        error_printf("warning: ");
-+        l->print(opaque, "warning: ");
-         break;
-     case REPORT_TYPE_INFO:
--        error_printf("info: ");
-+        l->print(opaque, "info: ");
-         break;
-     }
- 
--    error_vprintf(fmt, ap);
--    error_printf("\n");
-+    l->vprint(opaque, fmt, ap);
-+    l->print(opaque, "\n");
- }
- 
- /*
--- 
-2.43.0
+But my point is that with *only* this change, it is very likely that this simply exchanges 
+one set of failures for another.
 
+
+r~
 
