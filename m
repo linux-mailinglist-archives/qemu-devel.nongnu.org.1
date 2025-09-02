@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8AEDB3F304
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 05:53:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B5FB3F356
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:07:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utI2x-0007lF-OJ; Mon, 01 Sep 2025 23:51:03 -0400
+	id 1utI2c-0007Jo-CF; Mon, 01 Sep 2025 23:50:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI2Z-0007I0-8E
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:50:40 -0400
+ id 1utI2R-0006sD-8B
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:50:33 -0400
 Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI2V-0004xR-Vr
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:50:39 -0400
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822S7TL030605
- for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:50:24 GMT
+ id 1utI2O-0004wc-2a
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:50:31 -0400
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822SGBd030247
+ for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:50:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:content-type:content-type:date:from
- :in-reply-to:message-id:mime-version:references:subject:to; s=
- qcppdkim1; bh=cmHumC5ToeVsNjzJmH0QFkzMTRIwHtIPnrPpsXwEdwc=; b=Ts
- fFlGrtodT5j7QKUWnC8dRYlnvlw05SVSk1nTdWOGha1tWJUBKM0mX57T7xvSi6vF
- XdT4MTEAhMc5gfXoS3IJuF8MANbYDh2yEfwlPgBuK9ndoU/Zi6f6gHz1Bb2ygzZZ
- 7hSlQZPxe2Wkezvmmjz9A2FaPInMQu3n2fzBotGoDbvDgsJw6DOCmCKBqUrTmULF
- JQsSa2nXKeVytNyd2G5UVc6m8WBg20+MsfaOreMuaOWHgbjyRsw1npCs0mQqYkI/
- R+xTChGgfCThwrnnd74kyUAqjtUkbyc0ZudhIp/MT0bbVZbNVg7UKxSJ0T8ZZEQa
- RmEuTpeO9ktM+nBUldwA==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ura8pc64-1
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ UrDhPZtJLVtIKBvAx7rgg9kjRX/dlVATLOPeCcMw1ZM=; b=CUBqUyegjb8NvSy/
+ icEjg2qZI/XJiRd0dDh36ZXDkhTd63YwQvYghXcrILfUPl2ifPSUY8MZGug4hYys
+ ikfBSxi7X/2d6r0E0n7BpVUjuymgSksPWpKRbs70KjwmgYq6lNShDYoHW84fiUk4
+ vPpV/6XJ4wDrXm3ZFsVmxrH7yDam0rqHPUmoXauW+eFMvwieod1XjgoBKEuEpRdW
+ bFr6is2GfDVxATkSmC0svvp3WrAP8YQGv5Tbn6PtdeuSnSvOI5AhsjCl7awbGzPy
+ k+NQPaKNfryYkehCyjPdkQKYrrFPfhRLYeqjNtu43CKocvUg/YR+ZX1eMooh38pF
+ myb2/A==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48w8wy26vp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:50:24 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-329e07f7046so418505a91.1
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:50:24 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:50:16 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-3234811cab3so6086162a91.3
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:50:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756785014; x=1757389814;
+ d=1e100.net; s=20230601; t=1756785015; x=1757389815;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cmHumC5ToeVsNjzJmH0QFkzMTRIwHtIPnrPpsXwEdwc=;
- b=mltY0XOZBOuVsTBBNh176JFDYOErI9yfNdyd1w4fA9JsUJcntuIKsqljUBCNXm6nP5
- vzDhaRbM5okMUpFoOrWC1YPqxKzDPUERP7g9NDlTfYoTZ1iHkBmkLtEtIysy7SEDcCaj
- IXUXo4GEd29VrOFXmACXUwWwXZqZs2hHjl3bwjmHUp9f8MP7wzX4vZ+gUedlAx0AYKmU
- rBzLFCUFEbyKSh5T6EmIvNBYGQ0z3ygWQiAHMrZBWznUKcFk72oauJbfULUXS9WUaLXs
- Nmc7SNHiQYgvXPITKBbIDX2RNm9D2Fh8j3Yo99zN06wL8G3iHre8dmn5St7v4dcFp7/S
- iFjw==
-X-Gm-Message-State: AOJu0YxyHI0zTQMEr+qAvO0Ye0vR2t1laS+0wwHBAPlfTHGb48JEzkuc
- KSDP8piXYEOW8EcCcb8mKeYx8qdF7wLKqp1qohH4h2tWIfBBjQbxX2uEW/z1U7Lti8uTU1QDTfo
- yabhl5NiN3iNvDOSJZ0PLnYmkR+jPLB1W+xYKZucgS7aHds5SDqE//BdS8O4TGieGZ5fO
-X-Gm-Gg: ASbGncu5G0wDhJGdaQBp/IwbitUXjroS7s8yyIOCgCGnOcu1N5R2OReHygm1BkkYvl/
- OIphpyjxiVOBmRvemoqStjOKG2HgUw0QNjOggofEqyaTBRtsubkP1/dNhvlopntrEMyyymLUmjw
- WGEgo8W9XAK4kXf43oaydm0fPTz2sFvCNtRFtiWz9hxOKxTFGXixf/iEvgvn5sHcHum57xOv+wK
- y4bvxTdY763kLUg4LZJ65mZzUCIvRbAoP/rdqMeHvLGQHa8UiowJyRB/jCUJ92Qi2fRCuRMs2q3
- 1F1FpCy4TmQAnU86lCLZs1+hpeEJPqL6aWQ3aX2500GNAxwoguoOxJSPNXkLtCD9qk5QYmHXj4y
- 1xWEXut1gbPhG
-X-Received: by 2002:a17:90b:1d48:b0:327:75c9:bea9 with SMTP id
- 98e67ed59e1d1-328156b638amr14157215a91.24.1756785013513; 
+ bh=UrDhPZtJLVtIKBvAx7rgg9kjRX/dlVATLOPeCcMw1ZM=;
+ b=v3CNtlQxOKOc8/VW8BVPXWl6jTmMiicRtSCYUgOAqoPIlFZ6eC5O8T/pxHkDS5ofc6
+ PJLDRQ+uQqWdV5P6lqPXb+AZumZjHj7+SqmgGK3coh2sXjL4IDPavakThU1exonYCr39
+ oeMHTKKrmP5dZhk9QrPw77OwCjsW6EGARSD8hHWtNH4aMiJHbGHiJqJDbVC9jYK7tAu5
+ GhdgwErDSMm2WzB2c+IUsETdcULydvITipBcL0UqUB6+aiVVp9of/ABObEgxFcnXLPRz
+ Fbj4KE6qU8SQGfz1tIxXHGGlSGIQESlQejzFZJhLSCWd2T4Z/CbkKKRAj1qiPirs9NLa
+ 6e6A==
+X-Gm-Message-State: AOJu0YzoIc1RKkFTZjQLlA6l8zgn/jZdJy4xoE3W1xLD5ceK9LdWK6Ky
+ yVq5bmYSi9TzDoeRpRtej34164uY1hZzy9adZ9xngO2roj1rDvjYS5M4znYHtJpwLXVkCa82O+J
+ +H/vEmGAYTU6RKlGSWcr5d4c3ATfFA6K3mVSPhVtt5DmhwR8sISn/AoOxGjaVKwjRCuJB
+X-Gm-Gg: ASbGncstebyVOFfJF2vySKx4Kn5+13lI1rqwjEWt6S7nt3Yumn6GZI8YZGwxziwA1Vs
+ WY4mMbgVZ8D4n7D8K25h3bqbB/DfGjtqBOlqlDngFkbW9/Tajr7qm2G7r5WoSSLAOVgSo/QCWbH
+ sncEbO/MLOxK5PSa+SKFfc7Awikp4WnywOL3SBkHT+SCimsEqbDBmuQ8E67kIzs/owNcam6QHVh
+ Rrh984n1hg5icthIHCMLDcC5E3wONDJR2bH0CbnwTtR7oMqsUNxHl6xki0Kd/n7j9vDXgWRj9YJ
+ 6hjp96lK9mrU8t2z8yd0Dn1okHYrXt/H1ZpP2Z1o006tQo2tO5e7boPrvc/WezKgHe2M+Zekpp4
+ wzeBXp+tJWxdr
+X-Received: by 2002:a17:90b:39c5:b0:321:c567:44bf with SMTP id
+ 98e67ed59e1d1-328156c9739mr11713943a91.29.1756785014648; 
+ Mon, 01 Sep 2025 20:50:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG92VJFLhBkR7mpPulYB1tmcfYbLpwynzrCX/TM9zf18n1/zGSME/PRImuNyWlOiA2pqQHUUA==
+X-Received: by 2002:a17:90b:39c5:b0:321:c567:44bf with SMTP id
+ 98e67ed59e1d1-328156c9739mr11713896a91.29.1756785013910; 
  Mon, 01 Sep 2025 20:50:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+Nu6CDVOUMRAuEkmxOaeanJDzMxBaxJBahezHZyPw1MgG9KzFtMqIq3kVMuGdaIt4I9FKTA==
-X-Received: by 2002:a17:90b:1d48:b0:327:75c9:bea9 with SMTP id
- 98e67ed59e1d1-328156b638amr14157162a91.24.1756785012796; 
- Mon, 01 Sep 2025 20:50:12 -0700 (PDT)
 Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
  [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-327c5fc5055sm14117932a91.14.2025.09.01.20.50.11
+ 98e67ed59e1d1-327c5fc5055sm14117932a91.14.2025.09.01.20.50.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Sep 2025 20:50:12 -0700 (PDT)
+ Mon, 01 Sep 2025 20:50:13 -0700 (PDT)
 From: Brian Cain <brian.cain@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
@@ -79,40 +79,39 @@ Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
  anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
  alex.bennee@linaro.org, quic_mburton@quicinc.com,
  sid.manning@oss.qualcomm.com, Sid Manning <sidneym@quicinc.com>,
- Damien Hedde <damien.hedde@dahe.fr>,
- =?UTF-8?q?Tobias=20R=C3=B6hmel?= <quic_trohmel@quicinc.com>
-Subject: [PATCH v2 10/11] hw/timer: Add QTimer device
-Date: Mon,  1 Sep 2025 20:49:50 -0700
-Message-Id: <20250902034951.1948194-11-brian.cain@oss.qualcomm.com>
+ Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
+ Damien Hedde <damien.hedde@dahe.fr>
+Subject: [PATCH v2 11/11] hw/intc: Add l2vic interrupt controller
+Date: Mon,  1 Sep 2025 20:49:51 -0700
+Message-Id: <20250902034951.1948194-12-brian.cain@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250902034951.1948194-1-brian.cain@oss.qualcomm.com>
 References: <20250902034951.1948194-1-brian.cain@oss.qualcomm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: FhVAV4T0OQMy-yLGiKP035bN6N7XkEL3
-X-Proofpoint-GUID: FhVAV4T0OQMy-yLGiKP035bN6N7XkEL3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyMCBTYWx0ZWRfXxdLP1uliTDOO
- QHCLTkLW7LJ8WNP1Zm+0Ir1K9wSVU/7KbRSYzjsMqTJ30VTv99IheygkLjptV13nwUQBQfi4R6r
- mAKKDdrQeTGiyI5Db1mDqEKnFfVeA+fbrTcCnMQTZC0Zdk+L3RdevdazT7nzDBBcjSBgTr+ybi6
- QF+yd+MPwmrSCp8nTdhlwRUvLJBtYUmT+lTOqspeMaJCpdTrQdA0gFYidfBhtH6JuLB8K6PA1jI
- qA8GJuNAGzLzodEIMBvfI5Ll5JFZypei3g6fwRh7SSbG4Wv5xQbOALCr+MjhLH9vYtQpBoPttVt
- GpEYB37oXrogOdjxAkv2sRi6cKSsY9HjiQk9OddwSRAEXXarjyHaWU9mrvesfkDNOQ88ra5fpjm
- gn6yAxOw
-X-Authority-Analysis: v=2.4 cv=VNndn8PX c=1 sm=1 tr=0 ts=68b66980 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
- a=Sf4xSIS_LemWqHAq_qwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=iS9zxrgQBfv6-_F4QbHw:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Authority-Analysis: v=2.4 cv=Ycq95xRf c=1 sm=1 tr=0 ts=68b66978 cx=c_pps
+ a=0uOsjrqzRL749jD1oC5vDA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=NEAV23lmAAAA:8 a=COk6AnOGAAAA:8
+ a=EUspDBNiAAAA:8 a=RIXGA4eaRyz-QDbuLqUA:9 a=QEXdDO2ut3YA:10
+ a=mQ_c8vxmzFEMiUWkPHU9:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: NZRYkY0tU7I-4vNG1b0mb8pwjGIU904I
+X-Proofpoint-ORIG-GUID: NZRYkY0tU7I-4vNG1b0mb8pwjGIU904I
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAxMDEwMSBTYWx0ZWRfX/8lEVdNhkQn3
+ VNoBsgRdcqA/5ycYCLoOnkFSB8R7VwDctyuGRyf0kaxMl77Qi+g8Amj3OXYi6j2n78NmiPLQT4V
+ 8xxCgIHLtehOr9SyiLx01d9ClepKOw9KL2ku+ZLTWVPLlQdz7ipilsJ80sQSC+AuL10B6fsSZ/z
+ IlO2ZR08AiAUsdKauFzR/9NUhAdlk7h97o0K682AitEST8gbKK6QPxeuS7aoIXAjwp8McNnOrUq
+ nj/3um4Q+//SvWyxKd0SJeMtbUWU8q5RWSv7168qfFQzu0HVXoQ+daJIlNJiZpsrAo+5suV1GSy
+ AZpxgipMZMmFy/x3K0RZvvewWVGD8I9r+xNmQfzODqstPSsyigzM2sPWfO4rp5ECJ0vhwqomUD8
+ UySpS7VB
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0
- clxscore=1015 adultscore=0 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300020
+ clxscore=1015 priorityscore=1501 adultscore=0 phishscore=0 malwarescore=0
+ bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509010101
 Received-SPF: pass client-ip=205.220.180.131;
  envelope-from=brian.cain@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -26
@@ -139,764 +138,646 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sid Manning <sidneym@quicinc.com>
 
-Note: QTimer was implemented before ARM SSE Timer was upstreamed, there may
-be opportunity to use that device instead.
-
+Co-authored-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 Co-authored-by: Damien Hedde <damien.hedde@dahe.fr>
-Co-authored-by: Tobias Röhmel <quic_trohmel@quicinc.com>
 Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 ---
  MAINTAINERS                    |   2 +
- include/hw/timer/qct-qtimer.h  |  85 ++++++
- hw/hexagon/hexagon_dsp.c       |   7 +-
- hw/hexagon/hexagon_globalreg.c |   9 +-
- hw/hexagon/virt.c              |  22 ++
- hw/timer/qct-qtimer.c          | 520 +++++++++++++++++++++++++++++++++
- hw/timer/meson.build           |   2 +
- 7 files changed, 642 insertions(+), 5 deletions(-)
- create mode 100644 include/hw/timer/qct-qtimer.h
- create mode 100644 hw/timer/qct-qtimer.c
+ docs/devel/hexagon-l2vic.rst   |  59 +++++
+ docs/devel/index-internals.rst |   1 +
+ include/hw/intc/l2vic.h        |  38 +++
+ hw/intc/l2vic.c                | 421 +++++++++++++++++++++++++++++++++
+ hw/hexagon/Kconfig             |   1 +
+ hw/intc/Kconfig                |   3 +
+ hw/intc/meson.build            |   2 +
+ hw/intc/trace-events           |   4 +
+ 9 files changed, 531 insertions(+)
+ create mode 100644 docs/devel/hexagon-l2vic.rst
+ create mode 100644 include/hw/intc/l2vic.h
+ create mode 100644 hw/intc/l2vic.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index e19fcf9e69..4f7748679b 100644
+index 4f7748679b..228b5b672f 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -230,7 +230,9 @@ M: Brian Cain <brian.cain@oss.qualcomm.com>
- S: Supported
- F: target/hexagon/
- F: hw/hexagon/
-+F: hw/timer/qct-qtimer.c
+@@ -233,6 +233,7 @@ F: hw/hexagon/
+ F: hw/timer/qct-qtimer.c
  F: include/hw/hexagon/
-+F: include/hw/timer/qct-qtimer.h
+ F: include/hw/timer/qct-qtimer.h
++F: hw/intc/l2vic.[ch]
  X: target/hexagon/idef-parser/
  X: target/hexagon/gen_idef_parser_funcs.py
  F: linux-user/hexagon/
-diff --git a/include/hw/timer/qct-qtimer.h b/include/hw/timer/qct-qtimer.h
+@@ -245,6 +246,7 @@ F: gdb-xml/hexagon*.xml
+ F: docs/system/target-hexagon.rst
+ F: docs/system/hexagon/cdsp.rst
+ F: docs/devel/hexagon-sys.rst
++F: docs/devel/hexagon-l2vic.rst
+ T: git https://github.com/quic/qemu.git hex-next
+ 
+ Hexagon idef-parser
+diff --git a/docs/devel/hexagon-l2vic.rst b/docs/devel/hexagon-l2vic.rst
 new file mode 100644
-index 0000000000..90f7981ccf
+index 0000000000..0885636274
 --- /dev/null
-+++ b/include/hw/timer/qct-qtimer.h
-@@ -0,0 +1,85 @@
-+/*
-+ * Qualcomm QCT QTimer
-+ *
-+ * Copyright(c) 2019-2025 Qualcomm Innovation Center, Inc. All Rights Reserved.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef TIMER_QCT_QTIMER_H
-+#define TIMER_QCT_QTIMER_H
-+
-+#include "hw/ptimer.h"
-+#include "hw/sysbus.h"
-+
-+#define TYPE_QCT_QTIMER "qct-qtimer"
-+#define TYPE_QCT_HEXTIMER "qct-hextimer"
-+OBJECT_DECLARE_SIMPLE_TYPE(QCTQtimerState, QCT_QTIMER)
-+OBJECT_DECLARE_SIMPLE_TYPE(QCTHextimerState, QCT_HEXTIMER)
-+
-+struct QCTHextimerState {
-+    QCTQtimerState *qtimer;
-+    ptimer_state *timer;
-+    uint64_t cntval; /*
-+                      * Physical timer compare value interrupt when cntpct >
-+                      * cntval
-+                      */
-+    uint64_t cntpct; /* Physical counter */
-+    uint32_t control;
-+    uint32_t cnt_ctrl;
-+    uint32_t cntpl0acr;
-+    uint64_t limit;
-+    uint32_t freq;
-+    uint32_t int_level;
-+    qemu_irq irq;
-+};
-+
-+#define QCT_QTIMER_TIMER_FRAME_ELTS (8)
-+#define QCT_QTIMER_TIMER_VIEW_ELTS (2)
-+struct QCTQtimerState {
-+    SysBusDevice parent_obj;
-+
-+    MemoryRegion iomem;
-+    MemoryRegion view_iomem;
-+    uint32_t secure;
-+    struct QCTHextimerState timer[QCT_QTIMER_TIMER_FRAME_ELTS];
-+    uint32_t frame_id;
-+    uint32_t freq;
-+    uint32_t nr_frames;
-+    uint32_t nr_views;
-+    uint32_t cnttid;
-+};
-+
-+#define QCT_QTIMER_AC_CNTFRQ (0x000)
-+#define QCT_QTIMER_AC_CNTSR (0x004)
-+#define QCT_QTIMER_AC_CNTSR_NSN_1 (1 << 0)
-+#define QCT_QTIMER_AC_CNTSR_NSN_2 (1 << 1)
-+#define QCT_QTIMER_AC_CNTSR_NSN_3 (1 << 2)
-+#define QCT_QTIMER_AC_CNTTID (0x08)
-+#define QCT_QTIMER_AC_CNTACR_0 (0x40)
-+#define QCT_QTIMER_AC_CNTACR_1 (0x44)
-+#define QCT_QTIMER_AC_CNTACR_2 (0x48)
-+#define QCT_QTIMER_AC_CNTACR_RWPT (1 << 5) /* R/W of CNTP_* regs */
-+#define QCT_QTIMER_AC_CNTACR_RWVT (1 << 4) /* R/W of CNTV_* regs */
-+#define QCT_QTIMER_AC_CNTACR_RVOFF (1 << 3) /* R/W of CNTVOFF register */
-+#define QCT_QTIMER_AC_CNTACR_RFRQ (1 << 2) /* R/W of CNTFRQ register */
-+#define QCT_QTIMER_AC_CNTACR_RPVCT (1 << 1) /* R/W of CNTVCT register */
-+#define QCT_QTIMER_AC_CNTACR_RPCT (1 << 0) /* R/W of CNTPCT register */
-+#define QCT_QTIMER_VERSION (0x0fd0)
-+#define QCT_QTIMER_CNTPCT_LO (0x000)
-+#define QCT_QTIMER_CNTPCT_HI (0x004)
-+#define QCT_QTIMER_CNT_FREQ (0x010)
-+#define QCT_QTIMER_CNTPL0ACR (0x014)
-+#define QCT_QTIMER_CNTPL0ACR_PL0CTEN (1 << 9)
-+#define QCT_QTIMER_CNTPL0ACR_PL0TVEN (1 << 8)
-+#define QCT_QTIMER_CNTPL0ACR_PL0VCTEN (1 << 1)
-+#define QCT_QTIMER_CNTPL0ACR_PL0PCTEN (1 << 0)
-+#define QCT_QTIMER_CNTP_CVAL_LO (0x020)
-+#define QCT_QTIMER_CNTP_CVAL_HI (0x024)
-+#define QCT_QTIMER_CNTP_TVAL (0x028)
-+#define QCT_QTIMER_CNTP_CTL (0x02c)
-+#define QCT_QTIMER_CNTP_CTL_ISTAT (1 << 2)
-+#define QCT_QTIMER_CNTP_CTL_INTEN (1 << 1)
-+#define QCT_QTIMER_CNTP_CTL_ENABLE (1 << 0)
-+#define QCT_QTIMER_AC_CNTACR_START 0x40
-+#define QCT_QTIMER_AC_CNTACR_END 0x5C
-+
-+#endif /* TIMER_QCT_QTIMER_H */
-diff --git a/hw/hexagon/hexagon_dsp.c b/hw/hexagon/hexagon_dsp.c
-index 510378280e..e0e39fca90 100644
---- a/hw/hexagon/hexagon_dsp.c
-+++ b/hw/hexagon/hexagon_dsp.c
-@@ -3,7 +3,6 @@
-  * subsystem with few peripherals, like the Compute DSP.
-  *
-  * Copyright (c) 2020-2024 Qualcomm Innovation Center, Inc. All Rights Reserved.
-- *
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
- 
-@@ -126,7 +125,11 @@ static void hexagon_common_init(MachineState *machine, Rev_t rev,
-          */
-         qdev_prop_set_bit(DEVICE(cpu), "start-powered-off", (i != 0));
-         qdev_prop_set_uint32(DEVICE(cpu), "l2vic-base-addr", m_cfg->l2vic_base);
--        qdev_prop_set_uint32(DEVICE(cpu), "config-table-addr", m_cfg->cfgbase);
-+        if (!object_property_set_link(OBJECT(cpu), "global-regs",
-+                                      OBJECT(glob_regs_dev), errp)) {
-+            error_report("Failed to link global system registers to CPU %d", i);
-+            return;
-+        }
-         qdev_prop_set_uint32(DEVICE(cpu), "hvx-contexts",
-                              m_cfg->cfgtable.ext_contexts);
-         qdev_prop_set_uint32(DEVICE(cpu), "jtlb-entries",
-diff --git a/hw/hexagon/hexagon_globalreg.c b/hw/hexagon/hexagon_globalreg.c
-index fcbf2ae4b2..c94d2c4c7f 100644
---- a/hw/hexagon/hexagon_globalreg.c
-+++ b/hw/hexagon/hexagon_globalreg.c
-@@ -14,6 +14,7 @@
- #include "migration/vmstate.h"
- #include "qom/object.h"
- #include "target/hexagon/cpu.h"
-+#include "hw/timer/qct-qtimer.h"
- #include "target/hexagon/hex_regs.h"
- #include "qemu/log.h"
- #include "trace/trace-hw_hexagon.h"
-@@ -137,9 +138,11 @@ static inline uint32_t apply_write_mask(uint32_t new_val, uint32_t cur_val,
- 
- static void read_timer(HexagonGlobalRegState *s, uint32_t *low, uint32_t *high)
- {
--    /* Not yet implemented */
--    *low = 0;
--    *high = 0;
-+    const hwaddr low_addr  = s->qtimer_base_addr + QCT_QTIMER_CNTPCT_LO;
-+    const hwaddr high_addr = s->qtimer_base_addr + QCT_QTIMER_CNTPCT_HI;
-+
-+    cpu_physical_memory_read(low_addr, low, sizeof(*low));
-+    cpu_physical_memory_read(high_addr, high, sizeof(*high));
- }
- 
- uint32_t hexagon_globalreg_read(HexagonCPU *cpu, uint32_t reg)
-diff --git a/hw/hexagon/virt.c b/hw/hexagon/virt.c
-index 615fde773d..c93d19ff89 100644
---- a/hw/hexagon/virt.c
-+++ b/hw/hexagon/virt.c
-@@ -17,6 +17,8 @@
- #include "hw/qdev-properties.h"
- #include "hw/qdev-clock.h"
- #include "hw/register.h"
-+#include "hw/timer/qct-qtimer.h"
-+#include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "qemu/guest-random.h"
- #include "qemu/units.h"
-@@ -256,6 +258,25 @@ static void fdt_add_virtio_devices(const HexagonVirtMachineState *vms)
-     }
- }
- 
-+static void create_qtimer(HexagonVirtMachineState *vms,
-+                          const hexagon_machine_config *m_cfg)
-+{
-+    Error **errp = NULL;
-+    QCTQtimerState *qtimer = QCT_QTIMER(qdev_new(TYPE_QCT_QTIMER));
-+
-+    object_property_set_uint(OBJECT(qtimer), "nr_frames", 2, errp);
-+    object_property_set_uint(OBJECT(qtimer), "nr_views", 1, errp);
-+    object_property_set_uint(OBJECT(qtimer), "cnttid", 0x111, errp);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(qtimer), errp);
++++ b/docs/devel/hexagon-l2vic.rst
+@@ -0,0 +1,59 @@
++Hexagon L2 Vectored Interrupt Controller
++========================================
 +
 +
-+    sysbus_mmio_map(SYS_BUS_DEVICE(qtimer), 1, m_cfg->qtmr_region);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(qtimer), 0,
-+                       qdev_get_gpio_in(vms->l2vic, irqmap[VIRT_QTMR0]));
-+    sysbus_connect_irq(SYS_BUS_DEVICE(qtimer), 1,
-+                       qdev_get_gpio_in(vms->l2vic, irqmap[VIRT_QTMR1]));
-+}
++.. code-block:: none
 +
- static void virt_instance_init(Object *obj)
- {
-     HexagonVirtMachineState *vms = HEXAGON_VIRT_MACHINE(obj);
-@@ -395,6 +416,7 @@ static void virt_init(MachineState *ms)
-     fdt_add_clocks(vms);
-     fdt_add_uart(vms, VIRT_UART0);
-     fdt_add_gpt_node(vms);
-+    create_qtimer(vms, m_cfg);
- 
-     rom_add_blob_fixed_as("config_table.rom", &m_cfg->cfgtable,
-                           sizeof(m_cfg->cfgtable), m_cfg->cfgbase,
-diff --git a/hw/timer/qct-qtimer.c b/hw/timer/qct-qtimer.c
++              +-------+
++              |       |             +----------------+
++              | l2vic |             |  hexagon core  |
++              |       |             |                |
++              | +-----|             |                |
++        ------> |VID0 >------------->irq2 -\         |
++        ------> |     |             |      |         |
++         ...  > |     |             |      |         |
++        ------> |     |             | <int steering> |
++              | +-----|             |   / |  | \     |
++              |  ...  |             |  |  |  |  |    |
++              | +-----|             | t0 t1 t2 t3 ...|
++        ------> |VIDN |             |                |
++        ------> |     |             |                |
++        ------> |     |             |                |
++        ------> |     |             |                |
++              | +-----|             |                |
++              |       |             |Global SREG File|
++              | State |             |                |
++              | [    ]|<============|=>[VID ]        |
++              | [    ]|<============|=>[VID1]        |
++              | [    ]|             |                |
++              | [    ]|             |                |
++              |       |             |                |
++              +-------+             +----------------+
++
++L2VIC/Core Integration
++----------------------
++
++* hexagon core supports 8 external interrupt sources
++* l2vic supports 1024 input interrupts mapped among 4 output interrupts
++* l2vic has four output signals: { VID0, VID1, VID2, VID3 }
++* l2vic device has a bank of registers per-VID that can be used to query
++  the status or assert new interrupts.
++* Interrupts are 'steered' to threads based on { thread priority, 'EX' state,
++  thread interrupt mask, thread interrupt enable, global interrupt enable,
++  etc. }.
++* Any hardware thread could conceivably handle any input interrupt, dependent
++  on state.
++* The system register transfer instruction can read the VID0-VID3 values from
++  the l2vic when reading from hexagon core system registers "VID" and "VID1".
++* When l2vic VID0 has multiple active interrupts, it pulses the VID0 output
++  IRQ and stores the IRQ number for the VID0 register field.  Only after this
++  interrupt is cleared can the l2vic pulse the VID0 output IRQ again and provide
++  the next interrupt number on the VID0 register.
++* The ``ciad`` instruction clears the l2vic input interrupt and un-disables the
++  core interrupt.  If some/an l2vic VID0 interrupt is pending when this occurs,
++  the next interrupt should fire and any subseqeunt reads of the VID register
++  should reflect the newly raised interrupt.
++* In QEMU, on an external interrupt or an unmasked-pending interrupt,
++  all vCPUs are triggered (has_work==true) and each will grab the IO lock
++  while considering the steering logic to determine whether they're the thread
++  that must handle the interrupt.
+diff --git a/docs/devel/index-internals.rst b/docs/devel/index-internals.rst
+index 0471db8064..6620497595 100644
+--- a/docs/devel/index-internals.rst
++++ b/docs/devel/index-internals.rst
+@@ -15,6 +15,7 @@ Details about QEMU's various subsystems including how to add features to them.
+    clocks
+    ebpf_rss
+    hexagon-sys
++   hexagon-l2vic
+    migration/index
+    multi-process
+    reset
+diff --git a/include/hw/intc/l2vic.h b/include/hw/intc/l2vic.h
 new file mode 100644
-index 0000000000..bd7123264c
+index 0000000000..be845e360c
 --- /dev/null
-+++ b/hw/timer/qct-qtimer.c
-@@ -0,0 +1,520 @@
++++ b/include/hw/intc/l2vic.h
+@@ -0,0 +1,38 @@
 +/*
-+ * Qualcomm QCT QTimer
++ * QEMU L2VIC Interrupt Controller
 + *
-+ * Copyright(c) 2019-2025 Qualcomm Innovation Center, Inc. All Rights Reserved.
-+ *
++ * Copyright(c) 2020-2025 Qualcomm Innovation Center, Inc. All Rights Reserved.
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
++#define L2VIC_VID_GRP_0 0x0 /* Read */
++#define L2VIC_VID_GRP_1 0x4 /* Read */
++#define L2VIC_VID_GRP_2 0x8 /* Read */
++#define L2VIC_VID_GRP_3 0xC /* Read */
++#define L2VIC_VID_0 0x10 /* Read SOFTWARE DEFINED */
++#define L2VIC_VID_1 0x14 /* Read SOFTWARE DEFINED NOT YET USED */
++#define L2VIC_INT_ENABLEn 0x100 /* Read/Write */
++#define L2VIC_INT_ENABLE_CLEARn 0x180 /* Write */
++#define L2VIC_INT_ENABLE_SETn 0x200 /* Write */
++#define L2VIC_INT_TYPEn 0x280 /* Read/Write */
++#define L2VIC_INT_STATUSn 0x380 /* Read */
++#define L2VIC_INT_CLEARn 0x400 /* Write */
++#define L2VIC_SOFT_INTn 0x480 /* Write */
++#define L2VIC_INT_PENDINGn 0x500 /* Read */
++#define L2VIC_INT_GRPn_0 0x600 /* Read/Write */
++#define L2VIC_INT_GRPn_1 0x680 /* Read/Write */
++#define L2VIC_INT_GRPn_2 0x700 /* Read/Write */
++#define L2VIC_INT_GRPn_3 0x780 /* Read/Write */
++
++#define L2VIC_INTERRUPT_MAX 1024
++#define L2VIC_CIAD_INSTRUCTION -1
++#define L2VIC_NO_PENDING 0xffffffff
++/*
++ * Note about l2vic groups:
++ * Each interrupt to L2VIC can be configured to associate with one of
++ * four groups.
++ * Group 0 interrupts go to IRQ2 via VID 0 (SSR: 0xC2, the default)
++ * Group 1 interrupts go to IRQ3 via VID 1 (SSR: 0xC3)
++ * Group 2 interrupts go to IRQ4 via VID 2 (SSR: 0xC4)
++ * Group 3 interrupts go to IRQ5 via VID 3 (SSR: 0xC5)
++ */
+diff --git a/hw/intc/l2vic.c b/hw/intc/l2vic.c
+new file mode 100644
+index 0000000000..9753ba2d25
+--- /dev/null
++++ b/hw/intc/l2vic.c
+@@ -0,0 +1,421 @@
++/*
++ * QEMU L2VIC Interrupt Controller
++ *
++ * Arm PrimeCell PL190 Vector Interrupt Controller was used as a reference.
++ * Copyright(c) 2020-2025 Qualcomm Innovation Center, Inc. All Rights Reserved.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
 +#include "qemu/osdep.h"
 +#include "hw/irq.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/timer/qct-qtimer.h"
++#include "hw/sysbus.h"
 +#include "migration/vmstate.h"
-+#include "qapi/error.h"
 +#include "qemu/log.h"
 +#include "qemu/module.h"
-+#include "qemu/timer.h"
++#include "hw/intc/l2vic.h"
++#include "trace.h"
 +
-+/* Common timer implementation.  */
++#define L2VICA(s, n) (s[(n) >> 2])
 +
-+#define QTIMER_MEM_SIZE_BYTES 0x1000
-+#define QTIMER_MEM_REGION_SIZE_BYTES 0x1000
-+#define QTIMER_DEFAULT_FREQ_HZ 19200000ULL
-+#define QTMR_TIMER_INDEX_MASK (0xf000)
-+#define HIGH_32(val) (0x0ffffffffULL & (val >> 32))
-+#define LOW_32(val) (0x0ffffffffULL & val)
++#define TYPE_L2VIC "l2vic"
++OBJECT_DECLARE_SIMPLE_TYPE(L2VICState, L2VIC)
 +
-+/*
-+ * QTimer version reg:
-+ *
-+ *    3                   2                   1
-+ *  1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
-+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-+ * | Major |         Minor         |           Step                |
-+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-+ */
-+static unsigned int TIMER_VERSION = 0x20020000;
++#define SLICE_MAX (L2VIC_INTERRUPT_MAX / 32)
 +
-+/*
-+ * qct_qtimer_read/write:
-+ * if offset < 0x1000 read restricted registers:
-+ * QCT_QTIMER_AC_CNTFREQ/CNTSR/CNTTID/CNTACR/CNTOFF_(LO/HI)/QCT_QTIMER_VERSION
-+ */
-+static uint64_t qct_qtimer_read(void *opaque, hwaddr offset, unsigned size)
-+{
-+    QCTQtimerState *s = (QCTQtimerState *)opaque;
-+    uint32_t frame = 0;
++typedef struct L2VICState {
++    SysBusDevice parent_obj;
 +
-+    switch (offset) {
-+    case QCT_QTIMER_AC_CNTFRQ:
-+        return s->freq;
-+    case QCT_QTIMER_AC_CNTSR:
-+        return s->secure;
-+    case QCT_QTIMER_AC_CNTTID:
-+        return s->cnttid;
-+    case QCT_QTIMER_AC_CNTACR_START ... QCT_QTIMER_AC_CNTACR_END:
-+        frame = (offset - 0x40) / 0x4;
-+        if (frame >= s->nr_frames) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: QCT_QTIMER_AC_CNT: Bad offset %x\n", __func__,
-+                          (int)offset);
-+            return 0x0;
-+        }
-+        return s->timer[frame].cnt_ctrl;
-+    case QCT_QTIMER_VERSION:
-+        return TIMER_VERSION;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: QCT_QTIMER_AC_CNT: Bad offset %" PRIx32 "\n",
-+                      __func__, (int)offset);
-+        return 0x0;
-+    }
-+
-+    qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%" PRIx32 "\n", __func__,
-+                  (int)offset);
-+    return 0;
-+}
-+
-+static void qct_qtimer_write(void *opaque, hwaddr offset, uint64_t value,
-+                             unsigned size)
-+{
-+    QCTQtimerState *s = (QCTQtimerState *)opaque;
-+    uint32_t frame = 0;
-+
-+    if (offset < 0x1000) {
-+        switch (offset) {
-+        case QCT_QTIMER_AC_CNTFRQ:
-+            s->freq = value;
-+            return;
-+        case QCT_QTIMER_AC_CNTSR:
-+            if (value > 0xFF)
-+                qemu_log_mask(LOG_GUEST_ERROR,
-+                              "%s: QCT_QTIMER_AC_CNTSR: Bad value %x\n",
-+                              __func__, (int)value);
-+            else
-+                s->secure = value;
-+            return;
-+        case QCT_QTIMER_AC_CNTACR_START ... QCT_QTIMER_AC_CNTACR_END:
-+            frame = (offset - QCT_QTIMER_AC_CNTACR_START) / 0x4;
-+            if (frame >= s->nr_frames) {
-+                qemu_log_mask(LOG_GUEST_ERROR,
-+                              "%s: QCT_QTIMER_AC_CNT: Bad offset %x\n",
-+                              __func__, (int)offset);
-+                return;
-+            }
-+            s->timer[frame].cnt_ctrl = value;
-+            return;
-+        default:
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: QCT_QTIMER_AC_CNT: Bad offset %x\n", __func__,
-+                          (int)offset);
-+            return;
-+        }
-+    } else
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset %" PRIx32 "\n", __func__,
-+                      (int)offset);
-+}
-+
-+static const MemoryRegionOps qct_qtimer_ops = {
-+    .read = qct_qtimer_read,
-+    .write = qct_qtimer_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
-+
-+static const VMStateDescription vmstate_qct_qtimer = {
-+    .name = "qct-qtimer",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (VMStateField[]){ VMSTATE_END_OF_LIST() }
-+};
-+
-+static void qct_qtimer_init(Object *obj)
-+{
-+    QCTQtimerState *s = QCT_QTIMER(obj);
-+
-+    object_property_add_uint32_ptr(obj, "secure", &s->secure,
-+                                   OBJ_PROP_FLAG_READ);
-+    object_property_add_uint32_ptr(obj, "frame_id", &s->frame_id,
-+                                   OBJ_PROP_FLAG_READ);
-+}
-+
-+static void hex_timer_update(QCTHextimerState *s)
-+{
-+    /* Update interrupts.  */
-+    int level = s->int_level && (s->control & QCT_QTIMER_CNTP_CTL_ENABLE);
-+    qemu_set_irq(s->irq, level);
-+}
-+
-+static MemTxResult hex_timer_read(void *opaque, hwaddr offset, uint64_t *data,
-+                                  unsigned size, MemTxAttrs attrs)
-+{
-+    QCTQtimerState *qct_s = (QCTQtimerState *)opaque;
-+    uint32_t slot_nr = (offset & 0xF000) >> 12;
-+    uint32_t reg_offset = offset & 0xFFF;
-+    uint32_t view = slot_nr % qct_s->nr_views;
-+    uint32_t frame = slot_nr / qct_s->nr_views;
-+
-+    if (frame >= qct_s->nr_frames) {
-+        *data = 0;
-+        return MEMTX_ACCESS_ERROR;
-+    }
-+    QCTHextimerState *s = &qct_s->timer[frame];
-+
-+
++    QemuMutex active;
++    MemoryRegion iomem;
++    MemoryRegion fast_iomem;
++    uint32_t level;
 +    /*
-+     * This is the case where we have 2 views, but the second one is not
-+     * implemented.
++     * offset 0:vid group 0 etc, 10 bits in each group
++     * are used:
 +     */
-+    if (view && !(qct_s->cnttid & (0x4 << (frame * 4)))) {
-+        *data = 0;
-+        return MEMTX_OK;
++    uint32_t vid_group[4];
++    uint32_t vid0;
++    /* Clear Status of Active Edge interrupt, not used: */
++    uint32_t int_clear[SLICE_MAX] QEMU_ALIGNED(16);
++    /* Enable interrupt source */
++    uint32_t int_enable[SLICE_MAX] QEMU_ALIGNED(16);
++    /* Clear (set to 0) corresponding bit in int_enable */
++    uint32_t int_enable_clear;
++    /* Set (to 1) corresponding bit in int_enable */
++    uint32_t int_enable_set;
++    /* Present for debugging, not used */
++    uint32_t int_pending[SLICE_MAX] QEMU_ALIGNED(16);
++    /* Generate an interrupt */
++    uint32_t int_soft;
++    /* Which enabled interrupt is active */
++    uint32_t int_status[SLICE_MAX] QEMU_ALIGNED(16);
++    /* Edge or Level interrupt */
++    uint32_t int_type[SLICE_MAX] QEMU_ALIGNED(16);
++    /* L2 interrupt group 0-3 0x600-0x7FF */
++    uint32_t int_group_n0[SLICE_MAX] QEMU_ALIGNED(16);
++    uint32_t int_group_n1[SLICE_MAX] QEMU_ALIGNED(16);
++    uint32_t int_group_n2[SLICE_MAX] QEMU_ALIGNED(16);
++    uint32_t int_group_n3[SLICE_MAX] QEMU_ALIGNED(16);
++    qemu_irq irq[8];
++} L2VICState;
++
++
++/*
++ * Find out if this irq is associated with a group other than
++ * the default group
++ */
++static uint32_t *get_int_group(L2VICState *s, int irq)
++{
++    int n = irq & 0x1f;
++    if (n < 8) {
++        return s->int_group_n0;
++    }
++    if (n < 16) {
++        return s->int_group_n1;
++    }
++    if (n < 24) {
++        return s->int_group_n2;
++    }
++    return s->int_group_n3;
++}
++
++static int find_slice(int irq)
++{
++    return irq / 32;
++}
++
++static int get_vid(L2VICState *s, int irq)
++{
++    uint32_t *group = get_int_group(s, irq);
++    uint32_t slice = group[find_slice(irq)];
++    /* Mask with 0x7 to remove the GRP:EN bit */
++    uint32_t val = slice >> ((irq & 0x7) * 4);
++    if (val & 0x8) {
++        return val & 0x7;
++    } else {
++        return 0;
++    }
++}
++
++static inline bool vid_active(L2VICState *s)
++
++{
++    /* scan all 1024 bits in int_status arrary */
++    const int size = sizeof(s->int_status) * CHAR_BIT;
++    const int active_irq = find_first_bit((unsigned long *)s->int_status, size);
++    return ((active_irq != size)) ? true : false;
++}
++
++static bool l2vic_update(L2VICState *s, int irq)
++{
++    if (vid_active(s)) {
++        return true;
 +    }
 +
-+    switch (reg_offset) {
-+    case (QCT_QTIMER_CNT_FREQ): /* Ticks/Second */
-+        if (!(s->cnt_ctrl & QCT_QTIMER_AC_CNTACR_RFRQ)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
++    bool pending = test_bit(irq, (unsigned long *)s->int_pending);
++    bool enable = test_bit(irq, (unsigned long *)s->int_enable);
++    if (pending && enable) {
++        int vid = get_vid(s, irq);
++        set_bit(irq, (unsigned long *)s->int_status);
++        clear_bit(irq, (unsigned long *)s->int_pending);
++        clear_bit(irq, (unsigned long *)s->int_enable);
++        /* ensure the irq line goes low after going high */
++        s->vid0 = irq;
++        s->vid_group[get_vid(s, irq)] = irq;
 +
-+        if (view && !((s->cntpl0acr & QCT_QTIMER_CNTPL0ACR_PL0PCTEN) ||
-+                      (s->cntpl0acr & QCT_QTIMER_CNTPL0ACR_PL0VCTEN))) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
++        /* already low: now call pulse */
++        /*     pulse: calls qemu_upper() and then qemu_lower()) */
++        qemu_irq_pulse(s->irq[vid + 2]);
++        trace_l2vic_delivered(irq, vid);
++        return true;
++    }
++    return false;
++}
 +
-+        *data = s->freq;
-+        return MEMTX_OK;
-+    case (QCT_QTIMER_CNTP_CVAL_LO): /* TimerLoad */
-+        if (!(s->cnt_ctrl & QCT_QTIMER_AC_CNTACR_RWPT)) {
-+            return MEMTX_ACCESS_ERROR;
++static void l2vic_update_all(L2VICState *s)
++{
++    for (int i = 0; i < L2VIC_INTERRUPT_MAX; i++) {
++        if (l2vic_update(s, i) == true) {
++            /* once vid is active, no-one else can set it until ciad */
++            return;
 +        }
++    }
++}
 +
-+        if (view && !(s->cntpl0acr & QCT_QTIMER_CNTPL0ACR_PL0CTEN)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
++static void l2vic_set_irq(void *opaque, int irq, int level)
++{
++    L2VICState *s = (L2VICState *)opaque;
++    if (level) {
++        qemu_mutex_lock(&s->active);
++        set_bit(irq, (unsigned long *)s->int_pending);
++        qemu_mutex_unlock(&s->active);
++    }
++    l2vic_update(s, irq);
++}
 +
-+        *data = LOW_32((s->cntval));
-+        return MEMTX_OK;
-+    case (QCT_QTIMER_CNTP_CVAL_HI): /* TimerLoad */
-+        if (!(s->cnt_ctrl & QCT_QTIMER_AC_CNTACR_RWPT)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
++static void l2vic_write(void *opaque, hwaddr offset, uint64_t val,
++                        unsigned size)
++{
++    L2VICState *s = (L2VICState *)opaque;
++    qemu_mutex_lock(&s->active);
++    trace_l2vic_reg_write((unsigned)offset, (uint32_t)val);
 +
-+        if (view && !(s->cntpl0acr & QCT_QTIMER_CNTPL0ACR_PL0CTEN)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        *data = HIGH_32((s->cntval));
-+        return MEMTX_OK;
-+    case QCT_QTIMER_CNTPCT_LO:
-+        if (!(s->cnt_ctrl & QCT_QTIMER_AC_CNTACR_RPCT)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        if (view && !(s->cntpl0acr & QCT_QTIMER_CNTPL0ACR_PL0PCTEN)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        *data = LOW_32((s->cntpct + (ptimer_get_count(s->timer))));
-+        return MEMTX_OK;
-+    case QCT_QTIMER_CNTPCT_HI:
-+        if (!(s->cnt_ctrl & QCT_QTIMER_AC_CNTACR_RPCT)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        if (view && !(s->cntpl0acr & QCT_QTIMER_CNTPL0ACR_PL0PCTEN)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        *data = HIGH_32((s->cntpct + (ptimer_get_count(s->timer))));
-+        return MEMTX_OK;
-+    case (QCT_QTIMER_CNTP_TVAL): /* CVAL - CNTP */
-+        if (!(s->cnt_ctrl & QCT_QTIMER_AC_CNTACR_RWPT)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        if (view && !(s->cntpl0acr & QCT_QTIMER_CNTPL0ACR_PL0CTEN)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        *data =
-+            (s->cntval - (HIGH_32((s->cntpct + (ptimer_get_count(s->timer)))) +
-+                          LOW_32((s->cntpct + (ptimer_get_count(s->timer))))));
-+        return MEMTX_OK;
-+    case (QCT_QTIMER_CNTP_CTL): /* TimerMIS */
-+        if (!(s->cnt_ctrl & QCT_QTIMER_AC_CNTACR_RWPT)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        if (view && !(s->cntpl0acr & QCT_QTIMER_CNTPL0ACR_PL0CTEN)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        *data = s->int_level;
-+        return MEMTX_OK;
-+    case QCT_QTIMER_CNTPL0ACR:
-+        if (view) {
-+            *data = 0;
++    if (offset == L2VIC_VID_0) {
++        if ((int)val != L2VIC_CIAD_INSTRUCTION) {
++            s->vid0 = val;
 +        } else {
-+            *data = s->cntpl0acr;
++            /* ciad issued: clear int_status */
++            clear_bit(s->vid0, (unsigned long *)s->int_status);
 +        }
-+        return MEMTX_OK;
++    } else if (offset >= L2VIC_INT_ENABLEn &&
++               offset < (L2VIC_INT_ENABLE_CLEARn)) {
++        L2VICA(s->int_enable, offset - L2VIC_INT_ENABLEn) = val;
++    } else if (offset >= L2VIC_INT_ENABLE_CLEARn &&
++               offset < L2VIC_INT_ENABLE_SETn) {
++        L2VICA(s->int_enable, offset - L2VIC_INT_ENABLE_CLEARn) &= ~val;
++    } else if (offset >= L2VIC_INT_ENABLE_SETn && offset < L2VIC_INT_TYPEn) {
++        L2VICA(s->int_enable, offset - L2VIC_INT_ENABLE_SETn) |= val;
++    } else if (offset >= L2VIC_INT_TYPEn && offset < L2VIC_INT_TYPEn + 0x80) {
++        L2VICA(s->int_type, offset - L2VIC_INT_TYPEn) = val;
++    } else if (offset >= L2VIC_INT_STATUSn && offset < L2VIC_INT_CLEARn) {
++        L2VICA(s->int_status, offset - L2VIC_INT_STATUSn) = val;
++    } else if (offset >= L2VIC_INT_CLEARn && offset < L2VIC_SOFT_INTn) {
++        L2VICA(s->int_clear, offset - L2VIC_INT_CLEARn) = val;
++    } else if (offset >= L2VIC_INT_PENDINGn &&
++               offset < L2VIC_INT_PENDINGn + 0x80) {
++        L2VICA(s->int_pending, offset - L2VIC_INT_PENDINGn) = val;
++    } else if (offset >= L2VIC_SOFT_INTn && offset < L2VIC_INT_PENDINGn) {
++        L2VICA(s->int_enable, offset - L2VIC_SOFT_INTn) |= val;
++        /*
++         *  Need to reverse engineer the actual irq number.
++         */
++        int irq = find_first_bit((unsigned long *)&val,
++                                 sizeof(s->int_enable[0]) * CHAR_BIT);
++        hwaddr byteoffset = offset - L2VIC_SOFT_INTn;
++        g_assert(irq != sizeof(s->int_enable[0]) * CHAR_BIT);
++        irq += byteoffset * 8;
 +
-+    case QCT_QTIMER_VERSION:
-+        *data = TIMER_VERSION;
-+        return MEMTX_OK;
-+
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset %" PRIx32 "\n", __func__,
++        /* The soft-int interface only works with edge-triggered interrupts */
++        if (test_bit(irq, (unsigned long *)s->int_type)) {
++            qemu_mutex_unlock(&s->active);
++            l2vic_set_irq(opaque, irq, 1);
++            qemu_mutex_lock(&s->active);
++        }
++    } else if (offset >= L2VIC_INT_GRPn_0 && offset < L2VIC_INT_GRPn_1) {
++        L2VICA(s->int_group_n0, offset - L2VIC_INT_GRPn_0) = val;
++    } else if (offset >= L2VIC_INT_GRPn_1 && offset < L2VIC_INT_GRPn_2) {
++        L2VICA(s->int_group_n1, offset - L2VIC_INT_GRPn_1) = val;
++    } else if (offset >= L2VIC_INT_GRPn_2 && offset < L2VIC_INT_GRPn_3) {
++        L2VICA(s->int_group_n2, offset - L2VIC_INT_GRPn_2) = val;
++    } else if (offset >= L2VIC_INT_GRPn_3 && offset < L2VIC_INT_GRPn_3 + 0x80) {
++        L2VICA(s->int_group_n3, offset - L2VIC_INT_GRPn_3) = val;
++    } else {
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: offset %" PRIx32 " unimplemented\n", __func__,
 +                      (int)offset);
-+        *data = 0;
-+        return MEMTX_ACCESS_ERROR;
 +    }
++    l2vic_update_all(s);
++    qemu_mutex_unlock(&s->active);
++    return;
 +}
 +
-+/*
-+ * Reset the timer limit after settings have changed.
-+ * May only be called from inside a ptimer transaction block.
-+ */
-+static void hex_timer_recalibrate(QCTHextimerState *s, int reload)
++static uint64_t l2vic_read(void *opaque, hwaddr offset, unsigned size)
 +{
-+    uint64_t limit;
-+    /* Periodic.  */
-+    limit = s->limit;
-+    ptimer_set_limit(s->timer, limit, reload);
-+}
++    uint64_t value;
++    L2VICState *s = (L2VICState *)opaque;
++    qemu_mutex_lock(&s->active);
 +
-+static MemTxResult hex_timer_write(void *opaque, hwaddr offset, uint64_t value,
-+                                   unsigned size, MemTxAttrs attrs)
-+{
-+    QCTQtimerState *qct_s = (QCTQtimerState *)opaque;
-+    uint32_t slot_nr = (offset & 0xF000) >> 12;
-+    uint32_t reg_offset = offset & 0xFFF;
-+    uint32_t view = slot_nr % qct_s->nr_views;
-+    uint32_t frame = slot_nr / qct_s->nr_views;
-+
-+    if (frame >= qct_s->nr_frames) {
-+        return MEMTX_ACCESS_ERROR;
-+    }
-+    QCTHextimerState *s = &qct_s->timer[frame];
-+
-+    /*
-+     * This is the case where we have 2 views, but the second one is not
-+     * implemented.
-+     */
-+    if (view && !(qct_s->cnttid & (0x4 << (frame * 4)))) {
-+        return MEMTX_OK;
-+    }
-+
-+    switch (reg_offset) {
-+    case (QCT_QTIMER_CNTP_CVAL_LO): /* TimerLoad */
-+        if (!(s->cnt_ctrl & QCT_QTIMER_AC_CNTACR_RWPT)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        if (view && !(s->cntpl0acr & QCT_QTIMER_CNTPL0ACR_PL0CTEN)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+
-+        s->int_level = 0;
-+        s->cntval = value;
-+        ptimer_transaction_begin(s->timer);
-+        if (s->control & QCT_QTIMER_CNTP_CTL_ENABLE) {
-+            /*
-+             * Pause the timer if it is running.  This may cause some
-+             * inaccuracy due to rounding, but avoids other issues.
-+             */
-+            ptimer_stop(s->timer);
-+        }
-+        hex_timer_recalibrate(s, 1);
-+        if (s->control & QCT_QTIMER_CNTP_CTL_ENABLE) {
-+            ptimer_run(s->timer, 0);
-+        }
-+        ptimer_transaction_commit(s->timer);
-+        break;
-+    case (QCT_QTIMER_CNTP_CVAL_HI):
-+        if (!(s->cnt_ctrl & QCT_QTIMER_AC_CNTACR_RWPT)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        if (view && !(s->cntpl0acr & QCT_QTIMER_CNTPL0ACR_PL0CTEN)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        break;
-+    case (QCT_QTIMER_CNTP_CTL): /* Timer control register */
-+        if (!(s->cnt_ctrl & QCT_QTIMER_AC_CNTACR_RWPT)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        if (view && !(s->cntpl0acr & QCT_QTIMER_CNTPL0ACR_PL0CTEN)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        ptimer_transaction_begin(s->timer);
-+        if (s->control & QCT_QTIMER_CNTP_CTL_ENABLE) {
-+            /*
-+             * Pause the timer if it is running.  This may cause some
-+             * inaccuracy due to rounding, but avoids other issues.
-+             */
-+            ptimer_stop(s->timer);
-+        }
-+        s->control = value;
-+        hex_timer_recalibrate(s, s->control & QCT_QTIMER_CNTP_CTL_ENABLE);
-+        ptimer_set_freq(s->timer, s->freq);
-+        ptimer_set_period(s->timer, 1);
-+        if (s->control & QCT_QTIMER_CNTP_CTL_ENABLE) {
-+            ptimer_run(s->timer, 0);
-+        }
-+        ptimer_transaction_commit(s->timer);
-+        break;
-+    case (QCT_QTIMER_CNTP_TVAL): /* CVAL - CNTP */
-+        if (!(s->cnt_ctrl & QCT_QTIMER_AC_CNTACR_RWPT)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        if (view && !(s->cntpl0acr & QCT_QTIMER_CNTPL0ACR_PL0CTEN)) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        ptimer_transaction_begin(s->timer);
-+        if (s->control & QCT_QTIMER_CNTP_CTL_ENABLE) {
-+            /*
-+             * Pause the timer if it is running.  This may cause some
-+             * inaccuracy due to rounding, but avoids other issues.
-+             */
-+            ptimer_stop(s->timer);
-+        }
-+        s->cntval = s->cntpct + value;
-+        ptimer_set_freq(s->timer, s->freq);
-+        ptimer_set_period(s->timer, 1);
-+        if (s->control & QCT_QTIMER_CNTP_CTL_ENABLE) {
-+            ptimer_run(s->timer, 0);
-+        }
-+        ptimer_transaction_commit(s->timer);
-+        break;
-+    case QCT_QTIMER_CNTPL0ACR:
-+        if (view) {
-+            break;
-+        }
-+
-+        s->cntpl0acr = value;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset %" PRIx32 "\n", __func__,
++    if (offset == L2VIC_VID_GRP_0) {
++        value = s->vid_group[0];
++    } else if (offset == L2VIC_VID_GRP_1) {
++        value = s->vid_group[1];
++    } else if (offset == L2VIC_VID_GRP_2) {
++        value = s->vid_group[2];
++    } else if (offset == L2VIC_VID_GRP_3) {
++        value = s->vid_group[3];
++    } else if (offset == L2VIC_VID_0) {
++        value = s->vid0;
++    } else if (offset >= L2VIC_INT_ENABLEn &&
++               offset < L2VIC_INT_ENABLE_CLEARn) {
++        value = L2VICA(s->int_enable, offset - L2VIC_INT_ENABLEn);
++    } else if (offset >= L2VIC_INT_ENABLE_CLEARn &&
++               offset < L2VIC_INT_ENABLE_SETn) {
++        value = 0;
++    } else if (offset >= L2VIC_INT_ENABLE_SETn && offset < L2VIC_INT_TYPEn) {
++        value = 0;
++    } else if (offset >= L2VIC_INT_TYPEn && offset < L2VIC_INT_TYPEn + 0x80) {
++        value = L2VICA(s->int_type, offset - L2VIC_INT_TYPEn);
++    } else if (offset >= L2VIC_INT_STATUSn && offset < L2VIC_INT_CLEARn) {
++        value = L2VICA(s->int_status, offset - L2VIC_INT_STATUSn);
++    } else if (offset >= L2VIC_INT_CLEARn && offset < L2VIC_SOFT_INTn) {
++        value = L2VICA(s->int_clear, offset - L2VIC_INT_CLEARn);
++    } else if (offset >= L2VIC_SOFT_INTn && offset < L2VIC_INT_PENDINGn) {
++        value = 0;
++    } else if (offset >= L2VIC_INT_PENDINGn &&
++               offset < L2VIC_INT_PENDINGn + 0x80) {
++        value = L2VICA(s->int_pending, offset - L2VIC_INT_PENDINGn);
++    } else if (offset >= L2VIC_INT_GRPn_0 && offset < L2VIC_INT_GRPn_1) {
++        value = L2VICA(s->int_group_n0, offset - L2VIC_INT_GRPn_0);
++    } else if (offset >= L2VIC_INT_GRPn_1 && offset < L2VIC_INT_GRPn_2) {
++        value = L2VICA(s->int_group_n1, offset - L2VIC_INT_GRPn_1);
++    } else if (offset >= L2VIC_INT_GRPn_2 && offset < L2VIC_INT_GRPn_3) {
++        value = L2VICA(s->int_group_n2, offset - L2VIC_INT_GRPn_2);
++    } else if (offset >= L2VIC_INT_GRPn_3 && offset < L2VIC_INT_GRPn_3 + 0x80) {
++        value = L2VICA(s->int_group_n3, offset - L2VIC_INT_GRPn_3);
++    } else {
++        value = 0;
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "L2VIC: %s: offset 0x%" PRIx32 "\n", __func__,
 +                      (int)offset);
-+        return MEMTX_ACCESS_ERROR;
 +    }
-+    hex_timer_update(s);
-+    return MEMTX_OK;
++
++    trace_l2vic_reg_read((unsigned)offset, value);
++    qemu_mutex_unlock(&s->active);
++
++    return value;
 +}
 +
-+static void hex_timer_tick(void *opaque)
-+{
-+    QCTHextimerState *s = (QCTHextimerState *)opaque;
-+    if ((s->cntpct >= s->cntval) && (s->int_level != 1)) {
-+        s->int_level = 1;
-+        hex_timer_update(s);
-+        return;
-+    }
-+    s->cntpct += s->limit;
-+}
-+
-+static const MemoryRegionOps hex_timer_ops = {
-+    .read_with_attrs = hex_timer_read,
-+    .write_with_attrs = hex_timer_write,
++static const MemoryRegionOps l2vic_ops = {
++    .read = l2vic_read,
++    .write = l2vic_write,
 +    .endianness = DEVICE_NATIVE_ENDIAN,
++    .valid.min_access_size = 4,
++    .valid.max_access_size = 4,
++    .valid.unaligned = false,
 +};
 +
-+static const VMStateDescription vmstate_hex_timer = {
-+    .name = "hex_timer",
++#define FASTL2VIC_ENABLE 0x0
++#define FASTL2VIC_DISABLE 0x1
++#define FASTL2VIC_INT 0x2
++
++static void fastl2vic_write(void *opaque, hwaddr offset, uint64_t val,
++                            unsigned size)
++{
++    if (offset == 0) {
++        uint32_t cmd = (val >> 16) & 0x3;
++        uint32_t irq = val & 0x3ff;
++        uint32_t slice = (irq / 32) * 4;
++        val = 1 << (irq % 32);
++
++        if (cmd == FASTL2VIC_ENABLE) {
++            l2vic_write(opaque, L2VIC_INT_ENABLE_SETn + slice, val, size);
++        } else if (cmd == FASTL2VIC_DISABLE) {
++            l2vic_write(opaque, L2VIC_INT_ENABLE_CLEARn + slice, val, size);
++        } else if (cmd == FASTL2VIC_INT) {
++            l2vic_write(opaque, L2VIC_SOFT_INTn + slice, val, size);
++        } else {
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          "%s: invalid write cmd %" PRId32 "\n",
++                          __func__, cmd);
++        }
++        return;
++    }
++    qemu_log_mask(LOG_GUEST_ERROR, "%s: invalid write offset 0x%08" HWADDR_PRIx
++            "\n", __func__, offset);
++}
++
++static const MemoryRegionOps fastl2vic_ops = {
++    .write = fastl2vic_write,
++    .endianness = DEVICE_NATIVE_ENDIAN,
++    .valid.min_access_size = 4,
++    .valid.max_access_size = 4,
++    .valid.unaligned = false,
++};
++
++static void l2vic_reset_hold(Object *obj, G_GNUC_UNUSED ResetType res_type)
++{
++    L2VICState *s = L2VIC(obj);
++    memset(s->int_clear, 0, sizeof(s->int_clear));
++    memset(s->int_enable, 0, sizeof(s->int_enable));
++    memset(s->int_pending, 0, sizeof(s->int_pending));
++    memset(s->int_status, 0, sizeof(s->int_status));
++    memset(s->int_type, 0, sizeof(s->int_type));
++    memset(s->int_group_n0, 0, sizeof(s->int_group_n0));
++    memset(s->int_group_n1, 0, sizeof(s->int_group_n1));
++    memset(s->int_group_n2, 0, sizeof(s->int_group_n2));
++    memset(s->int_group_n3, 0, sizeof(s->int_group_n3));
++    s->int_soft = 0;
++    s->vid0 = 0;
++
++    l2vic_update_all(s);
++}
++
++
++static void reset_irq_handler(void *opaque, int irq, int level)
++{
++    L2VICState *s = (L2VICState *)opaque;
++    Object *obj = OBJECT(opaque);
++    if (level) {
++        l2vic_reset_hold(obj, RESET_TYPE_COLD);
++    }
++    l2vic_update_all(s);
++}
++
++static void l2vic_init(Object *obj)
++{
++    DeviceState *dev = DEVICE(obj);
++    L2VICState *s = L2VIC(obj);
++    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
++    int i;
++
++    memory_region_init_io(&s->iomem, obj, &l2vic_ops, s, "l2vic", 0x1000);
++    sysbus_init_mmio(sbd, &s->iomem);
++    memory_region_init_io(&s->fast_iomem, obj, &fastl2vic_ops, s, "fast",
++                          0x10000);
++    sysbus_init_mmio(sbd, &s->fast_iomem);
++
++    qdev_init_gpio_in(dev, l2vic_set_irq, L2VIC_INTERRUPT_MAX);
++    qdev_init_gpio_in_named(dev, reset_irq_handler, "reset", 1);
++    for (i = 0; i < 8; i++) {
++        sysbus_init_irq(sbd, &s->irq[i]);
++    }
++    qemu_mutex_init(&s->active); /* TODO: Remove this is an experiment */
++}
++
++static const VMStateDescription vmstate_l2vic = {
++    .name = "l2vic",
 +    .version_id = 1,
 +    .minimum_version_id = 1,
-+    .fields = (VMStateField[]){ VMSTATE_UINT32(control, QCTHextimerState),
-+                                VMSTATE_UINT32(cnt_ctrl, QCTHextimerState),
-+                                VMSTATE_UINT64(cntpct, QCTHextimerState),
-+                                VMSTATE_UINT64(cntval, QCTHextimerState),
-+                                VMSTATE_UINT64(limit, QCTHextimerState),
-+                                VMSTATE_UINT32(int_level, QCTHextimerState),
-+                                VMSTATE_PTIMER(timer, QCTHextimerState),
-+                                VMSTATE_END_OF_LIST() }
++    .fields =
++        (VMStateField[]){
++            VMSTATE_UINT32(level, L2VICState),
++            VMSTATE_UINT32_ARRAY(vid_group, L2VICState, 4),
++            VMSTATE_UINT32(vid0, L2VICState),
++            VMSTATE_UINT32_ARRAY(int_enable, L2VICState, SLICE_MAX),
++            VMSTATE_UINT32(int_enable_clear, L2VICState),
++            VMSTATE_UINT32(int_enable_set, L2VICState),
++            VMSTATE_UINT32_ARRAY(int_type, L2VICState, SLICE_MAX),
++            VMSTATE_UINT32_ARRAY(int_status, L2VICState, SLICE_MAX),
++            VMSTATE_UINT32_ARRAY(int_clear, L2VICState, SLICE_MAX),
++            VMSTATE_UINT32(int_soft, L2VICState),
++            VMSTATE_UINT32_ARRAY(int_pending, L2VICState, SLICE_MAX),
++            VMSTATE_UINT32_ARRAY(int_group_n0, L2VICState, SLICE_MAX),
++            VMSTATE_UINT32_ARRAY(int_group_n1, L2VICState, SLICE_MAX),
++            VMSTATE_UINT32_ARRAY(int_group_n2, L2VICState, SLICE_MAX),
++            VMSTATE_UINT32_ARRAY(int_group_n3, L2VICState, SLICE_MAX),
++            VMSTATE_END_OF_LIST() }
 +};
 +
-+static void qct_qtimer_realize(DeviceState *dev, Error **errp)
++static void l2vic_class_init(ObjectClass *klass, const void *data)
 +{
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-+    QCTQtimerState *s = QCT_QTIMER(dev);
-+    unsigned int i;
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
 +
-+    if (s->nr_frames > QCT_QTIMER_TIMER_FRAME_ELTS) {
-+        error_setg(errp, "nr_frames too high");
-+        return;
-+    }
-+
-+    if (s->nr_views > QCT_QTIMER_TIMER_VIEW_ELTS) {
-+        error_setg(errp, "nr_views too high");
-+        return;
-+    }
-+
-+    memory_region_init_io(&s->iomem, OBJECT(sbd), &qct_qtimer_ops, s, "qutimer",
-+                          QTIMER_MEM_SIZE_BYTES);
-+    sysbus_init_mmio(sbd, &s->iomem);
-+
-+    memory_region_init_io(&s->view_iomem, OBJECT(sbd), &hex_timer_ops, s,
-+                          "qutimer_views",
-+                          QTIMER_MEM_SIZE_BYTES * s->nr_frames * s->nr_views);
-+    sysbus_init_mmio(sbd, &s->view_iomem);
-+
-+    for (i = 0; i < s->nr_frames; i++) {
-+        s->timer[i].limit = 1;
-+        s->timer[i].control = QCT_QTIMER_CNTP_CTL_ENABLE;
-+        s->timer[i].cnt_ctrl =
-+            (QCT_QTIMER_AC_CNTACR_RWPT | QCT_QTIMER_AC_CNTACR_RWVT |
-+             QCT_QTIMER_AC_CNTACR_RVOFF | QCT_QTIMER_AC_CNTACR_RFRQ |
-+             QCT_QTIMER_AC_CNTACR_RPVCT | QCT_QTIMER_AC_CNTACR_RPCT);
-+        s->timer[i].qtimer = s;
-+        s->timer[i].freq = QTIMER_DEFAULT_FREQ_HZ;
-+
-+        s->secure |= (1 << i);
-+
-+        sysbus_init_irq(sbd, &(s->timer[i].irq));
-+
-+        (s->timer[i]).timer =
-+            ptimer_init(hex_timer_tick, &s->timer[i], PTIMER_POLICY_LEGACY);
-+        vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY, &vmstate_hex_timer,
-+                         &s->timer[i]);
-+    }
++    dc->vmsd = &vmstate_l2vic;
++    rc->phases.hold = l2vic_reset_hold;
 +}
 +
-+static const Property qct_qtimer_properties[] = {
-+    DEFINE_PROP_UINT32("freq", QCTQtimerState, freq, QTIMER_DEFAULT_FREQ_HZ),
-+    DEFINE_PROP_UINT32("nr_frames", QCTQtimerState, nr_frames, 2),
-+    DEFINE_PROP_UINT32("nr_views", QCTQtimerState, nr_views, 1),
-+    DEFINE_PROP_UINT32("cnttid", QCTQtimerState, cnttid, 0x11),
-+};
-+
-+static void qct_qtimer_class_init(ObjectClass *klass, const void *data)
-+{
-+    DeviceClass *k = DEVICE_CLASS(klass);
-+
-+    device_class_set_props(k, qct_qtimer_properties);
-+    k->realize = qct_qtimer_realize;
-+    k->vmsd = &vmstate_qct_qtimer;
-+}
-+
-+static const TypeInfo qct_qtimer_info = {
-+    .name = TYPE_QCT_QTIMER,
++static const TypeInfo l2vic_info = {
++    .name = TYPE_L2VIC,
 +    .parent = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(QCTQtimerState),
-+    .instance_init = qct_qtimer_init,
-+    .class_init = qct_qtimer_class_init,
++    .instance_size = sizeof(L2VICState),
++    .instance_init = l2vic_init,
++    .class_init = l2vic_class_init,
 +};
 +
-+static void qct_qtimer_register_types(void)
++static void l2vic_register_types(void)
 +{
-+    type_register_static(&qct_qtimer_info);
++    type_register_static(&l2vic_info);
 +}
 +
-+type_init(qct_qtimer_register_types)
-diff --git a/hw/timer/meson.build b/hw/timer/meson.build
-index 178321c029..69468672bc 100644
---- a/hw/timer/meson.build
-+++ b/hw/timer/meson.build
-@@ -34,3 +34,5 @@ specific_ss.add(when: 'CONFIG_IBEX', if_true: files('ibex_timer.c'))
- system_ss.add(when: 'CONFIG_SIFIVE_PWM', if_true: files('sifive_pwm.c'))
++type_init(l2vic_register_types)
+diff --git a/hw/hexagon/Kconfig b/hw/hexagon/Kconfig
+index dc74751d21..f51c381a12 100644
+--- a/hw/hexagon/Kconfig
++++ b/hw/hexagon/Kconfig
+@@ -3,6 +3,7 @@ config HEX_DSP
+     default y
+     depends on HEXAGON && TCG
+     imply PTIMER
++    select L2VIC
  
- specific_ss.add(when: 'CONFIG_AVR_TIMER16', if_true: files('avr_timer16.c'))
+ config HEX_VIRT
+     bool
+diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
+index 7547528f2c..a5b136e2fa 100644
+--- a/hw/intc/Kconfig
++++ b/hw/intc/Kconfig
+@@ -8,6 +8,9 @@ config I8259
+ config PL190
+     bool
+ 
++config L2VIC
++    bool
 +
-+specific_ss.add(when: 'CONFIG_HEX_DSP', if_true: files('qct-qtimer.c'))
+ config IOAPIC
+     bool
+     select I8259
+diff --git a/hw/intc/meson.build b/hw/intc/meson.build
+index 3137521a4a..9a5e0b3a73 100644
+--- a/hw/intc/meson.build
++++ b/hw/intc/meson.build
+@@ -67,6 +67,8 @@ specific_ss.add(when: 'CONFIG_PSERIES', if_true: files('xics_spapr.c', 'spapr_xi
+ specific_ss.add(when: 'CONFIG_XIVE', if_true: files('xive.c'))
+ specific_ss.add(when: ['CONFIG_KVM', 'CONFIG_XIVE'],
+ 		if_true: files('spapr_xive_kvm.c'))
++
++specific_ss.add(when: 'CONFIG_L2VIC', if_true: files('l2vic.c'))
+ specific_ss.add(when: 'CONFIG_M68K_IRQC', if_true: files('m68k_irqc.c'))
+ specific_ss.add(when: 'CONFIG_LOONGSON_IPI_COMMON', if_true: files('loongson_ipi_common.c'))
+ specific_ss.add(when: 'CONFIG_LOONGSON_IPI', if_true: files('loongson_ipi.c'))
+diff --git a/hw/intc/trace-events b/hw/intc/trace-events
+index 018c609ca5..327514f498 100644
+--- a/hw/intc/trace-events
++++ b/hw/intc/trace-events
+@@ -314,6 +314,10 @@ sh_intc_register(const char *s, int id, unsigned short v, int c, int m) "%s %u -
+ sh_intc_read(unsigned size, uint64_t offset, unsigned long val) "size %u 0x%" PRIx64 " -> 0x%lx"
+ sh_intc_write(unsigned size, uint64_t offset, unsigned long val) "size %u 0x%" PRIx64 " <- 0x%lx"
+ sh_intc_set(int id, int enable) "setting interrupt group %d to %d"
++# l2vic.c
++l2vic_reg_write(unsigned int addr, uint32_t value) "addr: 0x%03x value: 0x%08"PRIx32
++l2vic_reg_read(unsigned int addr, uint32_t value) "addr: 0x%03x value: 0x%08"PRIx32
++l2vic_delivered(int irq, int vid) "l2vic: delivered %d (vid %d)"
+ 
+ # loongson_ipi.c
+ loongson_ipi_read(unsigned size, uint64_t addr, uint64_t val) "size: %u addr: 0x%"PRIx64 "val: 0x%"PRIx64
 -- 
 2.34.1
 
