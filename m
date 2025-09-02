@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929CBB40252
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 15:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FDCB4024C
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 15:14:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utQnu-0001yF-Dl; Tue, 02 Sep 2025 09:12:06 -0400
+	id 1utQnv-0002Lx-U7; Tue, 02 Sep 2025 09:12:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQnj-0001Nx-Q6
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:11:55 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQnn-0001iL-SO
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:12:01 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQnf-0004aS-Lw
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:11:55 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3da4c14a5f9so416070f8f.0
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 06:11:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQnk-0004b2-T8
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:11:59 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3d0b6008a8bso2100950f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 06:11:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756818706; x=1757423506; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756818711; x=1757423511; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=o+jLO/3nb8aNGzAALSlOJPeY6QIm6fDGV5/Q+uhwhJY=;
- b=E8J6kRT/zfOPJYldyRnrSQvDOjp+hVCLIiBWMEVFR44bDwgpqhGLUdrEN8WPpBCtAL
- 50bl/BOhS/gjE2RzhbBAcTEz9YiycS2Q4JB0QnTx3Xilxn+5LhDr9Yuw+p+1lqhGB9C4
- A/tUMqplv67VFmCkOqPfASB1ZTora+tJssgBDY0XO5Td6jSvNVrejFYfl3sOmA4AD3Py
- q2To8OLMM0YJKlh8k3rN6yohlw9ZqLzgKAQ3crMNZXDvjqZyh1mQhwujE4KtJyujB4q4
- 9PGqJu2wOJb+sRnf+NQ+iq+RByqmLdJAiOcztR/z3w+Lh15r2DM9uEKWniwAMgZPd6et
- vw/Q==
+ :reply-to; bh=cpUvSmRcSRgE9yxLQY3R1BhVSeS7VEdo2LGu+IwX/JY=;
+ b=k1uu6FpzOy+TTF6my9vqYXe0kA/gPDk4+/Dq4xtrld+PJuRO63gYZXmkQiHj3jW4GD
+ TAbVjAo1e2orzQem/GBsBrpFBTgyOk2PXeQl9Tx8r2TRHtPc6s1coX7o9U7s1qmz7BzM
+ OjTXtPx8IQiFAgFp3jPpg8Me4lWZTuDSSQIloY6039hGSh/Q8P7GC0bmWnGSz2/upK3G
+ ak6yMtbyNeMvFgp5N/Hgg3Fvly8gCr/sZZi/wEb8qBICyW3FctBnfsAoYbEHTp//nqxL
+ /VyYBOPk7I9D1H+1A++NJXFt5Q3ykL4nA3lyis56zf0MrWa5q/FQ5YFE5fepLILena5b
+ ebhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756818706; x=1757423506;
+ d=1e100.net; s=20230601; t=1756818711; x=1757423511;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o+jLO/3nb8aNGzAALSlOJPeY6QIm6fDGV5/Q+uhwhJY=;
- b=s7+22fjrA3vS4E/Lv3u6utu0joLFfpI1r5pcdUGt3g6f8xbZeNlTer/nTn0biKxAkp
- VnPi6403AGSzOdzvRBeZAtUEwYDv2opRZx4qciqlcDz3BcoV1CxNWomzaB7ZXI6CbG2z
- vEF2Igwqgv9QrO0ODnqZ24f0TnxFO6TAeFMZ0SqTQvfQt6Qgmx19YzuqVJBvMlNvZqXy
- FvssrP38HfkIATftLR9kTcAfSQlrTbkcR04su4ELYepumTzgXzLPwNWMgWysPtlZmAjJ
- is2YglfPfONLLSxleb7hVlmBNgK5D99hok49Bl3uPStTjuRI46LDA4RZXE1qYOC6npe+
- mMhA==
-X-Gm-Message-State: AOJu0Yx5orHY+N/oMjGx2GQ0vZyU6QXkYYNX5SaLiHCAcQUlyL+KIIDn
- 7U3DGQuojMgTfQUoJTbH5cWQklMUy4rGP+dbz6bVokgFtHhw8KkZWe1Of6yURNJJFJUBJwnv4mI
- q6JUZ
-X-Gm-Gg: ASbGncsY6OMs58aKsXGMYjwwP4DUPOoXqgyg3ZlZgtaJx5kt+AZtiZwSUVxGl4KpdOM
- ebS44HBHF1ogDcgqgY2n/as7jeRFp6MV1s6IlxLFDEWu4t/k7I3yasPy6tW/kV8NBmWyg6/zqnS
- TF+Nn8FklfafYANWGnMdjA4/5GSmuB9VrYQg9etHfLDS/sMJ1k2K/KU5pgof1gDZ4Rlo0PWk7mn
- MkA6l9p+YKhGOIVZWspO9rLd84h6NsJ1J3QIfEE3qCXxhtIuyMdxUA4j2ysGBJHQ51XB7/EVrEr
- 0oKacA7VCkKDPtDrz3hJC8VZ+2GcybtUA2Z65O+TXW/BS3ckNAFPF/f8tZuD27YS1KSu593kANC
- 3x8yBszu4Uuo62phercYRt+Nw3RZJGZHIUlEkudtz/q37Hnp8jYd0ME7M8Lgu12Ni8M3muB5m
-X-Google-Smtp-Source: AGHT+IEnd791XwRWyGuvmSYvq//9aPuv/ag6els0XgvtXAc+rU1ya6Xfaa3gOoas9ehRtwJtx6lUMg==
-X-Received: by 2002:a05:6000:2409:b0:3d6:4596:8a3a with SMTP id
- ffacd0b85a97d-3d645968c73mr4991116f8f.17.1756818705909; 
- Tue, 02 Sep 2025 06:11:45 -0700 (PDT)
+ bh=cpUvSmRcSRgE9yxLQY3R1BhVSeS7VEdo2LGu+IwX/JY=;
+ b=Lv43Mg9aCNCqi8YfcGN75G9NY/DaP1wTpMEM+55N5fIoLpNSxku5F3DNdWzflbOJ7c
+ OSK5zEjhSc+oF6QqVVuAunvhPktcVNBx/SmxoGZDx9HxnJEC7pmVYWo5bbEaIjBv1Ks5
+ hYTYbbUu0z+qkpLFKlQ0iNN7aW8vuLx84qu9zXngYYpo+8qiDZ9PK3IPLXoiLZRuSnxI
+ g9swQQJqrxHW/xpVaN3hQmdSmVw2twY6UsK7GYJgc/NoyH7k+x0q/k6xn6MGqnhi6382
+ reh+Pl3f8tLH8Sb3oPj++HLuXXlMoMpeMF1BXUJ+fBR35LPv9VL7ASbqoC/MpBu1k1IF
+ roRA==
+X-Gm-Message-State: AOJu0YwXF8srk2FoQdBC23hy0jvNHcV/jGKj6o/6630YyL+DtL/aY4zY
+ EH4wtGy7EQxhZLdvOuW+m9duV1F4iEEcwiTtLv6XHpYdfxvzgojqqfsYWneOCKgjMI7IPL/3wUs
+ u9zQK
+X-Gm-Gg: ASbGncuGFZxWQ7M+rGvfTLJ9aOVtG9uOZpJPQkFG8fgnKnxJZnNm91neXz3iFYuT5/M
+ 0ZSQZbY4OZ0Rtbo+G4BIJC7HYWoL+18nnBOj8OYiiDbqD/iCMsPcncxPXAon8p40Qj8zUAAnM/L
+ gp5k24J0KOodn774HNEBOaNEKdD+39Ynoax5OCYPIxi4SpsrZIr6wly3SP2acMlbUP4+fbfmRuS
+ WT1VIpvxZQAwnksZdikAJ7+ygoYerJyuq2fNxNlJCtid+YOCKiGSdxQZ0Mp8Ba483t3DydcTBBf
+ bGEugExulTW56zbynP6VMg+qm8TbYvi5LcayPwUySMkkvel9mdBbePIH8WZlGy4iFA+BlmJq9/7
+ wGYwu63JdWmfxk8tMjAzze201nANwt7nhLPcGT5SvzpL64YhEwKLVTkJfpGaKEhds/waGjpjJVh
+ H+35ZgwJA=
+X-Google-Smtp-Source: AGHT+IGtQRywtRb0g/EcSCim4s/f2fH8xbRQOIW21QrtFjZFEox15SeDSyEqliR61nrSlpxPy8VpMQ==
+X-Received: by 2002:a5d:64c9:0:b0:3ce:e14a:a898 with SMTP id
+ ffacd0b85a97d-3d1dddee967mr9118279f8f.14.1756818710501; 
+ Tue, 02 Sep 2025 06:11:50 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf34491a5asm19367334f8f.55.2025.09.02.06.11.45
+ ffacd0b85a97d-3d701622b92sm8361444f8f.58.2025.09.02.06.11.49
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Sep 2025 06:11:45 -0700 (PDT)
+ Tue, 02 Sep 2025 06:11:50 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/39] hw/ppc: Fix build error with CONFIG_POWERNV disabled
-Date: Tue,  2 Sep 2025 15:09:56 +0200
-Message-ID: <20250902131016.84968-20-philmd@linaro.org>
+Subject: [PULL 20/39] hw/irq: New qemu_init_irq_child() function
+Date: Tue,  2 Sep 2025 15:09:57 +0200
+Message-ID: <20250902131016.84968-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131016.84968-1-philmd@linaro.org>
 References: <20250902131016.84968-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,270 +97,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Aditya Gupta <adityag@linux.ibm.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Currently when CONFIG_POWERNV is not enabled, the build fails, such as
-with --without-default-devices:
+The qemu_init_irq() function initializes a TYPE_IRQ QOM object.  The
+caller is therefore responsible for eventually calling
+qemu_free_irq() to unref (and thus free) it.
 
-    $ ./configure --without-default-devices
-    $ make
+In many places where we want to initialize an IRQ we are in
+the init/realize of some other QOM object; if we have a variant
+of this function that calls object_initialize_child() then the
+IRQ will be automatically cleaned up when its parent object is
+destroyed, and we don't need to remember to manually free it.
 
-    [281/283] Linking target qemu-system-ppc64
-    FAILED: qemu-system-ppc64
-    cc -m64 @qemu-system-ppc64.rsp
-    /usr/bin/ld: libqemu-ppc64-softmmu.a.p/target_ppc_misc_helper.c.o: in function `helper_load_sprd':
-    .../target/ppc/misc_helper.c:335:(.text+0xcdc): undefined reference to `pnv_chip_find_core'
-    /usr/bin/ld: libqemu-ppc64-softmmu.a.p/target_ppc_misc_helper.c.o: in function `helper_store_sprd':
-    .../target/ppc/misc_helper.c:375:(.text+0xdf4): undefined reference to `pnv_chip_find_core'
-    collect2: error: ld returned 1 exit status
-    ...
+Implement qemu_init_irq_child(), which is to qemu_init_irq()
+what object_initialize_child() is to object_initialize().
 
-This is since target/ppc/misc_helper.c references PowerNV specific
-'pnv_chip_find_core' call.
-
-Split the PowerNV specific SPRD code out of the generic PowerPC code, by
-moving the SPRD code to pnv.c
-
-Fixes: 9808ce6d5cb ("target/ppc: Big-core scratch register fix")
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reported-by: Thomas Huth <thuth@redhat.com>
-Suggested-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-Acked-by: Cédric Le Goater <clg@redhat.com>
-Message-ID: <20250820122516.949766-2-adityag@linux.ibm.com>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250821154053.2417090-2-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/cpu.h         |  4 ++
- hw/ppc/pnv.c             | 86 ++++++++++++++++++++++++++++++++++++++++
- target/ppc/misc_helper.c | 59 +++------------------------
- 3 files changed, 96 insertions(+), 53 deletions(-)
+ include/hw/irq.h | 23 ++++++++++++++++++++++-
+ hw/core/irq.c    |  8 ++++++++
+ 2 files changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 6b90543811f..0e26e4343de 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1522,6 +1522,10 @@ struct PowerPCCPUClass {
-     void (*init_proc)(CPUPPCState *env);
-     int  (*check_pow)(CPUPPCState *env);
-     int  (*check_attn)(CPUPPCState *env);
+diff --git a/include/hw/irq.h b/include/hw/irq.h
+index b3012237acd..291fdd67df4 100644
+--- a/include/hw/irq.h
++++ b/include/hw/irq.h
+@@ -36,11 +36,32 @@ static inline void qemu_irq_pulse(qemu_irq irq)
+ 
+ /*
+  * Init a single IRQ. The irq is assigned with a handler, an opaque data
+- * and the interrupt number.
++ * and the interrupt number. The caller must free this with qemu_free_irq().
++ * If you are using this inside a device's init or realize method, then
++ * qemu_init_irq_child() is probably a better choice to avoid the need
++ * to manually clean up the IRQ.
+  */
+ void qemu_init_irq(IRQState *irq, qemu_irq_handler handler, void *opaque,
+                    int n);
+ 
++/**
++ * qemu_init_irq_child: Initialize IRQ and make it a QOM child
++ * @parent: QOM object which owns this IRQ
++ * @propname: child property name
++ * @irq: pointer to IRQState to initialize
++ * @handler: handler function for incoming interrupts
++ * @opaque: opaque data to pass to @handler
++ * @n: interrupt number to pass to @handler
++ *
++ * Init a single IRQ and make the IRQ object a child of @parent with
++ * the child-property name @propname. The IRQ object will thus be
++ * automatically freed when @parent is destroyed.
++ */
++void qemu_init_irq_child(Object *parent, const char *propname,
++                         IRQState *irq, qemu_irq_handler handler,
++                         void *opaque, int n);
 +
-+    /* Handlers to be set by the machine initialising the chips */
-+    uint64_t (*load_sprd)(CPUPPCState *env);
-+    void (*store_sprd)(CPUPPCState *env, uint64_t val);
- };
- 
- static inline bool ppc_cpu_core_single_threaded(CPUState *cs)
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index d84c9067edb..9c74f46091a 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -21,6 +21,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/datadir.h"
-+#include "qemu/log.h"
- #include "qemu/units.h"
- #include "qemu/cutils.h"
- #include "qapi/error.h"
-@@ -1794,12 +1795,83 @@ static void pnv_chip_power9_pec_realize(PnvChip *chip, Error **errp)
-     }
++
+ /**
+  * qemu_init_irqs: Initialize an array of IRQs.
+  *
+diff --git a/hw/core/irq.c b/hw/core/irq.c
+index 6dd8d47bd6e..0c768f7704e 100644
+--- a/hw/core/irq.c
++++ b/hw/core/irq.c
+@@ -49,6 +49,14 @@ void qemu_init_irq(IRQState *irq, qemu_irq_handler handler, void *opaque,
+     init_irq_fields(irq, handler, opaque, n);
  }
  
-+static uint64_t pnv_handle_sprd_load(CPUPPCState *env)
++void qemu_init_irq_child(Object *parent, const char *propname,
++                         IRQState *irq, qemu_irq_handler handler,
++                         void *opaque, int n)
 +{
-+    PowerPCCPU *cpu = env_archcpu(env);
-+    PnvCore *pc = pnv_cpu_state(cpu)->pnv_core;
-+    uint64_t sprc = env->spr[SPR_POWER_SPRC];
-+
-+    if (pc->big_core) {
-+        pc = pnv_chip_find_core(pc->chip, CPU_CORE(pc)->core_id & ~0x1);
-+    }
-+
-+    switch (sprc & 0x3e0) {
-+    case 0: /* SCRATCH0-3 */
-+    case 1: /* SCRATCH4-7 */
-+        return pc->scratch[(sprc >> 3) & 0x7];
-+
-+    case 0x1e0: /* core thread state */
-+        if (env->excp_model == POWERPC_EXCP_POWER9) {
-+            /*
-+             * Only implement for POWER9 because skiboot uses it to check
-+             * big-core mode. Other bits are unimplemented so we would
-+             * prefer to get unimplemented message on POWER10 if it were
-+             * used anywhere.
-+             */
-+            if (pc->big_core) {
-+                return PPC_BIT(63);
-+            } else {
-+                return 0;
-+            }
-+        }
-+        /* fallthru */
-+
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "mfSPRD: Unimplemented SPRC:0x"
-+                                  TARGET_FMT_lx"\n", sprc);
-+        break;
-+    }
-+    return 0;
++    object_initialize_child(parent, propname, irq, TYPE_IRQ);
++    init_irq_fields(irq, handler, opaque, n);
 +}
 +
-+static void pnv_handle_sprd_store(CPUPPCState *env, uint64_t val)
-+{
-+    PowerPCCPU *cpu = env_archcpu(env);
-+    uint64_t sprc = env->spr[SPR_POWER_SPRC];
-+    PnvCore *pc = pnv_cpu_state(cpu)->pnv_core;
-+    int nr;
-+
-+    if (pc->big_core) {
-+        pc = pnv_chip_find_core(pc->chip, CPU_CORE(pc)->core_id & ~0x1);
-+    }
-+
-+    switch (sprc & 0x3e0) {
-+    case 0: /* SCRATCH0-3 */
-+    case 1: /* SCRATCH4-7 */
-+        /*
-+         * Log stores to SCRATCH, because some firmware uses these for
-+         * debugging and logging, but they would normally be read by the BMC,
-+         * which is not implemented in QEMU yet. This gives a way to get at the
-+         * information. Could also dump these upon checkstop.
-+         */
-+        nr = (sprc >> 3) & 0x7;
-+        pc->scratch[nr] = val;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "mtSPRD: Unimplemented SPRC:0x"
-+                                  TARGET_FMT_lx"\n", sprc);
-+        break;
-+    }
-+}
-+
- static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
+ void qemu_init_irqs(IRQState irq[], size_t count,
+                     qemu_irq_handler handler, void *opaque)
  {
-     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(dev);
-     Pnv9Chip *chip9 = PNV9_CHIP(dev);
-     PnvChip *chip = PNV_CHIP(dev);
-     Pnv9Psi *psi9 = &chip9->psi;
-+    PowerPCCPU *cpu;
-+    PowerPCCPUClass *cpu_class;
-     Error *local_err = NULL;
-     int i;
- 
-@@ -1827,6 +1899,12 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    /* Set handlers for Special registers, such as SPRD */
-+    cpu = chip->cores[0]->threads[0];
-+    cpu_class = POWERPC_CPU_GET_CLASS(cpu);
-+    cpu_class->load_sprd = pnv_handle_sprd_load;
-+    cpu_class->store_sprd = pnv_handle_sprd_store;
-+
-     /* XIVE interrupt controller (POWER9) */
-     object_property_set_int(OBJECT(&chip9->xive), "ic-bar",
-                             PNV9_XIVE_IC_BASE(chip), &error_fatal);
-@@ -2078,6 +2156,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(dev);
-     PnvChip *chip = PNV_CHIP(dev);
-     Pnv10Chip *chip10 = PNV10_CHIP(dev);
-+    PowerPCCPU *cpu;
-+    PowerPCCPUClass *cpu_class;
-     Error *local_err = NULL;
-     int i;
- 
-@@ -2105,6 +2185,12 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    /* Set handlers for Special registers, such as SPRD */
-+    cpu = chip->cores[0]->threads[0];
-+    cpu_class = POWERPC_CPU_GET_CLASS(cpu);
-+    cpu_class->load_sprd = pnv_handle_sprd_load;
-+    cpu_class->store_sprd = pnv_handle_sprd_store;
-+
-     /* XIVE2 interrupt controller (POWER10) */
-     object_property_set_int(OBJECT(&chip10->xive), "ic-bar",
-                             PNV10_XIVE2_IC_BASE(chip), &error_fatal);
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index e7d94625185..0e625cbb704 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -328,69 +328,22 @@ target_ulong helper_load_sprd(CPUPPCState *env)
-      * accessed by powernv machines.
-      */
-     PowerPCCPU *cpu = env_archcpu(env);
--    PnvCore *pc = pnv_cpu_state(cpu)->pnv_core;
--    target_ulong sprc = env->spr[SPR_POWER_SPRC];
-+    PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
- 
--    if (pc->big_core) {
--        pc = pnv_chip_find_core(pc->chip, CPU_CORE(pc)->core_id & ~0x1);
-+    if (pcc->load_sprd) {
-+        return pcc->load_sprd(env);
-     }
- 
--    switch (sprc & 0x3e0) {
--    case 0: /* SCRATCH0-3 */
--    case 1: /* SCRATCH4-7 */
--        return pc->scratch[(sprc >> 3) & 0x7];
--
--    case 0x1e0: /* core thread state */
--        if (env->excp_model == POWERPC_EXCP_POWER9) {
--            /*
--             * Only implement for POWER9 because skiboot uses it to check
--             * big-core mode. Other bits are unimplemented so we would
--             * prefer to get unimplemented message on POWER10 if it were
--             * used anywhere.
--             */
--            if (pc->big_core) {
--                return PPC_BIT(63);
--            } else {
--                return 0;
--            }
--        }
--        /* fallthru */
--
--    default:
--        qemu_log_mask(LOG_UNIMP, "mfSPRD: Unimplemented SPRC:0x"
--                                  TARGET_FMT_lx"\n", sprc);
--        break;
--    }
-     return 0;
- }
- 
- void helper_store_sprd(CPUPPCState *env, target_ulong val)
- {
--    target_ulong sprc = env->spr[SPR_POWER_SPRC];
-     PowerPCCPU *cpu = env_archcpu(env);
--    PnvCore *pc = pnv_cpu_state(cpu)->pnv_core;
--    int nr;
-+    PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
- 
--    if (pc->big_core) {
--        pc = pnv_chip_find_core(pc->chip, CPU_CORE(pc)->core_id & ~0x1);
--    }
--
--    switch (sprc & 0x3e0) {
--    case 0: /* SCRATCH0-3 */
--    case 1: /* SCRATCH4-7 */
--        /*
--         * Log stores to SCRATCH, because some firmware uses these for
--         * debugging and logging, but they would normally be read by the BMC,
--         * which is not implemented in QEMU yet. This gives a way to get at the
--         * information. Could also dump these upon checkstop.
--         */
--        nr = (sprc >> 3) & 0x7;
--        pc->scratch[nr] = val;
--        break;
--    default:
--        qemu_log_mask(LOG_UNIMP, "mtSPRD: Unimplemented SPRC:0x"
--                                  TARGET_FMT_lx"\n", sprc);
--        break;
-+    if (pcc->store_sprd) {
-+        return pcc->store_sprd(env, val);
-     }
- }
- 
 -- 
 2.51.0
 
