@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C39CFB3F34B
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC19B3F363
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:08:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utI1f-0003Zu-3W; Mon, 01 Sep 2025 23:49:43 -0400
+	id 1utI1e-0003X2-Nf; Mon, 01 Sep 2025 23:49:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI1X-0002z4-50
+ id 1utI1X-00031Z-Dd
  for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:35 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI1U-0004e0-Ho
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:34 -0400
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822S9eh013671
- for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:49:20 GMT
+ id 1utI1U-0004e5-V7
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:35 -0400
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822SAKI022312
+ for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:49:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:content-type:content-type:date:from
- :in-reply-to:message-id:mime-version:references:subject:to; s=
- qcppdkim1; bh=vO09PguiJvsNsCrY1kFOKrQbz5IYjPfLPbK3g08GdlY=; b=T7
- A9WKgMSCmSS8JwTH/7alMmQ3N/DAo6vIrhPIbgl05Q2AHgnJZTIMhjvNDii8EjCv
- ycQ679J3s2fPOS2uztcgfrZCC+/IO0vjUsmTAIjFsTbHhHlKjtj7IerWPRCzRpz8
- B0bO2rIsbflfAFHsFFAlpmz3VXiaWP+PabEOX+tnpxas9i2YsOQHhtqY5F3UASrd
- tvBjzSEs049Ok/9vAEtvJSKJ9BXwnnhXc9qoeXx2thXYrUsOqGLdEwMZD0CRl46F
- Rcwe9FedVENDWNY79dCi83J73OfGcNGHyzlB+zSrgy+exJNhEH1kjSGl/u/Z4U5Z
- yPmu+5PKnH7gIwvgxAbg==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48uq0eej9h-1
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ PqI4bZNCgVlMM7GvpicjhmQQfbviVJTHvFtF54ovtNU=; b=VDB2qwsv+TAQ6PBj
+ jdrdrKPVrAcBrPyj7xajD7EjILIBGmzg0YWHoJzdsTpwdJBAQr5mX4Dnfieb5yPI
+ dNj0vLs3vla9xsZ89xcyGTIsy543PdgXNCyf3wUhpowYAhDml9HAeFma1PPRfpd9
+ V1q6OM60mfSJITxmlVHFV/q+jabXEtVIoyZsTEUfEvKZ8aVDOwDO8Si+dkpGAxJK
+ dXxvAPsTzP/gJvXB8G7TwVH3oy4xTHTwtKd7kOJ3wxeSjGMyD/9s33t+QN9IGzcI
+ Qo+waG8UeRGe82o/lzD5PZxxOQ7qe7W2C4IuiC0DViFMHlYXfnWvVvrO5ORssKTO
+ oOMgEQ==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48upnp6huq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:49:20 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-24458345f5dso55448205ad.3
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:49:20 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:49:21 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-325ce108e16so7459405a91.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:49:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756784959; x=1757389759;
+ d=1e100.net; s=20230601; t=1756784960; x=1757389760;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vO09PguiJvsNsCrY1kFOKrQbz5IYjPfLPbK3g08GdlY=;
- b=uxoBkzEtu9aD2OTj8xozJF4UmEk8dr36lTe0YLjRv38LteVjZPdWng4WqUdIBE3ia4
- SYecTgo6OGwQY/B5eLmlBfv71xORUTVcIFGrONgbaeGNNWzDJaXyxmhJQS6s+1hbhkAY
- YdPl7OXVXTG13sA7pYjDmjPvz9saoxl7mW24WKcndNYB3ZkvZkVYvKI+1h0bCiAxl/Qd
- bv3n+HqTY+wupFVgEljYeTW4QVZaglmmasi+idDBt7Zi/p+CCjpvkWtKQ918eT2Xjm9t
- c+Q05TCLqrcsAoTTQFwDiTO2TgsLJprR7TeQ9TmJ7SUsyToxA2TaAGMCjhmcU7YAUlJA
- WzwQ==
-X-Gm-Message-State: AOJu0Ywy7VYJUL9gDDvN6wDEWyE92g1kKnx4N1/+ulOlzhfHqZDKE9cv
- SF5oD06ljgEyiFnvGaVIkoiEy+51qHOGhldjG/4/XgRgUQ4rh8a5bAhn5KbQfZH4yYWS1AStGyv
- BYFakU1RlkUaQYnthTLPnMUSw6i10uunTU4lfmrgWnCzmBu2cakdyZ+qtjgkjLMjDebY8
-X-Gm-Gg: ASbGncvpqRIjNphrPBskx+wa43PdPuU5ZiwhquKfKGalZMdCvaqImNE3IyBeIiCRh6e
- g6WV0wQzK0KE0NpGvOQmJGkCvp9IQjkEXNk6QFFOdzwHdZ+zntnrWZVRkBUvqVFgN17AEMHvYBM
- KUQsCBD0mhdro49AoLVwSvE/rcgD8CNbHV27fOWtHNmVuRS6NCSq2+Zu4rb7Kl+TWiuc0fy6LpC
- GFboYSe1nRsWDp1DAcbJo8YhC/jPvUGjAFFgS7PzAyxA+/f+Kky1duZ4MhkgudZOP9jpn52ynk+
- v1Z5X7/np5V3TfIo2fDUHWFkSpBBMLSAu7ui9HOKM3MNJMJyqZNeX7AG03v8vlRmfRRHHnKBpkK
- uWQw182fbecRO
-X-Received: by 2002:a17:902:d501:b0:245:f1bb:9bf9 with SMTP id
- d9443c01a7336-24944870959mr156109815ad.12.1756784959368; 
+ bh=PqI4bZNCgVlMM7GvpicjhmQQfbviVJTHvFtF54ovtNU=;
+ b=qFtyQszu+J1q8oQzEIvk6nfNuwqhhTMpnMcSvlV5wYyPQC5a22/ckGwEnQCcTpUr5G
+ 3X7GgT8ChHhiVevP0z1PsVp331KvFRBfyki8iHGEbShzXbjQLszrcUDVP3bSumD8brWR
+ F/DxFPlCS1I8EJIBNUl41nYnBuZtF6aDlDeuecnV+Nl7rHdUfNt1BHlKP5+PXTscX8y1
+ JbdJhaQFxDC5131DJqInoJPpah5GavCY8G5xkGPftfEdGpSs0RNmRp38VBOdvRCEDAfI
+ l5FKczY8f+ZDPgwibW1nzLVIcyZOWU+USfjeUySUXuYolHm27M+vgUnsQ3g1Dh2ghYog
+ Ez7Q==
+X-Gm-Message-State: AOJu0YwbJtk2NZAan4/VIY/mNhuoLWYMZXypF4IPNuIngJwiRSXluLaw
+ j3QxfoyMMSyvWgzq2mj97DAqdZFvYx16yMMLeFrpg0WdnKvKOFTz4o5O2O4Id9riHijTbhqLEGY
+ TjlQH9myLVOOBuFXc8LaXmfX4uj4nqNcEm2eNAukDrqsnOnT7AVes5QSKJc3ULzVN+exO
+X-Gm-Gg: ASbGncvddYn6XlkSNW3PpL0PXFfQkVkgwzLtBYjBm4NOsCjTSrHJSKZWKtm4Ed2eK0p
+ Qz07Uh67BSRCdF+KuhUhYgX1cxtvVg4BHKd9uWFp0NvPMX0YKs16FfSfQdcTyObrHdII3Q4NHad
+ +LVUjXNF5XTHwvQ5sp7FZKR9/C6QmB/BkXOHVNo7oSmAx420zkUmL7dYSh9qBFRADQYz0PHei7B
+ ziGhBbbKSTVEZt7QhJL2+TrDg7kARzti8xmJoEMnvnMZQ2MiYy9NMMmF2WAVkkxoMrarG5W9QU+
+ alzCDAbV/5J10+OFX7szHkVdVpxrOLBx+sewWmkDT9d0WqC1h8FLzScbg94GA7kgm8V3k8/1p8b
+ skWzNM6BFWJa5
+X-Received: by 2002:a17:90b:3d86:b0:325:4751:3446 with SMTP id
+ 98e67ed59e1d1-328156c59b3mr15326070a91.24.1756784960430; 
+ Mon, 01 Sep 2025 20:49:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGXv0d8g2vqOMWgk1fqIMNdYiBnMR4tscB6b/LygKZFWsVSKystuUe+sBAPeeye6vOSkHQUFA==
+X-Received: by 2002:a17:90b:3d86:b0:325:4751:3446 with SMTP id
+ 98e67ed59e1d1-328156c59b3mr15326037a91.24.1756784959954; 
  Mon, 01 Sep 2025 20:49:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE6ZCqScf6kNOsvnh8lFAVv89GsuV33cDGjjWzXJVXc2UotnW1jwbJ8Cpohy4tm8GVn8fj6Mw==
-X-Received: by 2002:a17:902:d501:b0:245:f1bb:9bf9 with SMTP id
- d9443c01a7336-24944870959mr156109535ad.12.1756784958889; 
- Mon, 01 Sep 2025 20:49:18 -0700 (PDT)
 Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
  [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-327daeeca1csm12543546a91.25.2025.09.01.20.49.18
+ 98e67ed59e1d1-327daeeca1csm12543546a91.25.2025.09.01.20.49.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Sep 2025 20:49:18 -0700 (PDT)
+ Mon, 01 Sep 2025 20:49:19 -0700 (PDT)
 From: Brian Cain <brian.cain@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
@@ -79,40 +79,40 @@ Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
  anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
  alex.bennee@linaro.org, quic_mburton@quicinc.com,
  sid.manning@oss.qualcomm.com, Brian Cain <bcain@quicinc.com>
-Subject: [PATCH v2 22/39] target/hexagon: Implement setprio, resched
-Date: Mon,  1 Sep 2025 20:48:30 -0700
-Message-Id: <20250902034847.1948010-23-brian.cain@oss.qualcomm.com>
+Subject: [PATCH v2 23/39] target/hexagon: Add sysemu_ops,
+ cpu_get_phys_page_debug()
+Date: Mon,  1 Sep 2025 20:48:31 -0700
+Message-Id: <20250902034847.1948010-24-brian.cain@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250902034847.1948010-1-brian.cain@oss.qualcomm.com>
 References: <20250902034847.1948010-1-brian.cain@oss.qualcomm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: HQOVEGqj-4QYM0RlHIiTOYBdTvXoz9mm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAwNCBTYWx0ZWRfX9bIJdPuJvsO7
- /sH2mKBjLZPp99XjoWcHV3urmERrsDcgiZEDNCZ4sgtcVMhTFLv4QNatpOHmAkDs38Wd8afmYgY
- j3N9x/tUlpXKYN+Lej/CYuIB/S5NtyBxwXfOgJgTNTRNfoqkupLDeNukfRNXAFBCzXYn+uKwBr9
- 3y37X6T4WYHcMe5ExGhriWM/uFs5QqBmSTo0jHw0v5PpsucPmvMUJvslQpko/lArjbLOIM+dV9Y
- DM/UiMVeGOLaY2LJNl4KDXgixNNT2fMfMKEVi6IM1I8n/9shLY86hNCJZ0Dn5OwuP54k4BSHwXC
- f3Tn8qbxMUthGUq1AJWiLhdS4eIBUW6Uy21bxg0eNB5nTcxPNb7MbKNYYeH3cJxqBklV+dXXGIa
- qS3oNhje
-X-Proofpoint-ORIG-GUID: HQOVEGqj-4QYM0RlHIiTOYBdTvXoz9mm
-X-Authority-Analysis: v=2.4 cv=ea09f6EH c=1 sm=1 tr=0 ts=68b66940 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=COk6AnOGAAAA:8
- a=X_cK7RZiQvhuwfy_UrAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=324X-CrmTo6CU4MGRt3R:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: e_t-UCxKWi4zaiXakdoyuH62hu8LWGhH
+X-Authority-Analysis: v=2.4 cv=Jt/xrN4C c=1 sm=1 tr=0 ts=68b66941 cx=c_pps
+ a=vVfyC5vLCtgYJKYeQD43oA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
+ a=fg0LxJQkbHe3Ved8Rg4A:9 a=QEXdDO2ut3YA:10 a=rl5im9kqc5Lf4LNbBjHf:22
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: e_t-UCxKWi4zaiXakdoyuH62hu8LWGhH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAwMSBTYWx0ZWRfX5s3bV4+7Jixh
+ 81P978WFSSwr1ZhbWGRRwBfgJBufano6fvtru0JTmwVG2RoP6zA0B3UPmGWR5Qp6wdVyXiXjUbq
+ akcCwKGqDgWFwp3qzD3HVh5pxnu065Nie95tqsM53SsGSK+SorKXJMLAov+FR/m0OeW0O0tRrVZ
+ zreRpi3Z9j0NQIS9Msj/hn9jh0EIrbKXkNPF0gICYbSr+KV3iN8ysGsfxZxHMknwuCpB2h0N5z+
+ 2Xm8eRhgUF/XkvXYwMvBEWB3/uPnqe8LDOPmmEYF7qDT8uN6TJI3Zhhy0woeAForUBMGhzRCwj8
+ IbajCfj6EyM3OiIciEL59QP67q0wHMn4pYd9OUB2oTcqKyVnESVd4TXdvNTpWPu9LDpktdcutII
+ JUymCTSz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0 phishscore=0
- bulkscore=0 spamscore=0 priorityscore=1501 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300004
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
+ adultscore=0 priorityscore=1501 clxscore=1015 bulkscore=0 impostorscore=0
+ spamscore=0 phishscore=0 suspectscore=0 malwarescore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508300001
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=brian.cain@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -137,122 +137,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Brian Cain <bcain@quicinc.com>
 
-The hardware-assisted scheduler helps manage tasks on the run queue
-and interrupt steering.
-
-This instruction is defined in the Qualcomm Hexagon V71 Programmer's Reference
-Manual -
-https://docs.qualcomm.com/bundle/publicresource/80-N2040-51_REV_AB_Hexagon_V71_ProgrammerS_Reference_Manual.pdf
-See §11.9.2 SYSTEM MONITOR.
-
 Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 ---
- target/hexagon/op_helper.c | 71 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 69 insertions(+), 2 deletions(-)
+ target/hexagon/cpu.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
-index 63b9dda9a3..37a5b45e75 100644
---- a/target/hexagon/op_helper.c
-+++ b/target/hexagon/op_helper.c
-@@ -1472,6 +1472,57 @@ void HELPER(stop)(CPUHexagonState *env)
-     hexagon_stop_thread(env);
+diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
+index 2ae6874841..2af0b4089e 100644
+--- a/target/hexagon/cpu.c
++++ b/target/hexagon/cpu.c
+@@ -19,6 +19,7 @@
+ #include "qemu/qemu-print.h"
+ #include "cpu.h"
+ #include "internal.h"
++#include "exec/cputlb.h"
+ #include "exec/translation-block.h"
+ #include "qapi/error.h"
+ #include "hw/qdev-properties.h"
+@@ -518,6 +519,24 @@ static void find_qemu_subpage(vaddr *addr, hwaddr *phys, int page_size)
+     *phys += offset;
  }
  
-+static inline QEMU_ALWAYS_INLINE void resched(CPUHexagonState *env)
++static hwaddr hexagon_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
 +{
-+    uint32_t schedcfg;
-+    uint32_t schedcfg_en;
-+    int int_number;
-+    CPUState *cs;
-+    uint32_t lowest_th_prio = 0; /* 0 is highest prio */
-+    uint32_t bestwait_reg;
-+    uint32_t best_prio;
++    CPUHexagonState *env = cpu_env(cs);
++    hwaddr phys_addr;
++    int prot;
++    int page_size = 0;
++    int32_t excp = 0;
++    int mmu_idx = MMU_KERNEL_IDX;
 +
-+    BQL_LOCK_GUARD();
-+    qemu_log_mask(CPU_LOG_INT, "%s: check resched\n", __func__);
-+    schedcfg = arch_get_system_reg(env, HEX_SREG_SCHEDCFG);
-+    schedcfg_en = GET_FIELD(SCHEDCFG_EN, schedcfg);
-+    int_number = GET_FIELD(SCHEDCFG_INTNO, schedcfg);
-+
-+    if (!schedcfg_en) {
-+        return;
++    if (get_physical_address(env, &phys_addr, &prot, &page_size, &excp,
++                             addr, 0, mmu_idx)) {
++        find_qemu_subpage(&addr, &phys_addr, page_size);
++        return phys_addr;
 +    }
 +
-+    CPU_FOREACH(cs) {
-+        HexagonCPU *thread = HEXAGON_CPU(cs);
-+        CPUHexagonState *thread_env = &(thread->env);
-+        uint32_t th_prio = GET_FIELD(
-+            STID_PRIO, arch_get_system_reg(thread_env, HEX_SREG_STID));
-+        if (!hexagon_thread_is_enabled(thread_env)) {
-+            continue;
-+        }
-+
-+        lowest_th_prio = (lowest_th_prio > th_prio)
-+            ? lowest_th_prio
-+            : th_prio;
-+    }
-+
-+    bestwait_reg = arch_get_system_reg(env, HEX_SREG_BESTWAIT);
-+    best_prio = GET_FIELD(BESTWAIT_PRIO, bestwait_reg);
-+
-+    /*
-+     * If the lowest priority thread is lower priority than the
-+     * value in the BESTWAIT register, we must raise the reschedule
-+     * interrupt on the lowest priority thread.
-+     */
-+    if (lowest_th_prio > best_prio) {
-+        qemu_log_mask(CPU_LOG_INT,
-+                "%s: raising resched int %d, cur PC 0x" TARGET_FMT_lx "\n",
-+                __func__, int_number, arch_get_thread_reg(env, HEX_REG_PC));
-+        SET_SYSTEM_FIELD(env, HEX_SREG_BESTWAIT, BESTWAIT_PRIO, ~0);
-+        hex_raise_interrupts(env, 1 << int_number, CPU_INTERRUPT_SWI);
-+    }
++    return -1;
 +}
 +
- void HELPER(wait)(CPUHexagonState *env, target_ulong PC)
- {
-     BQL_LOCK_GUARD();
-@@ -1495,7 +1546,8 @@ uint32_t HELPER(getimask)(CPUHexagonState *env, uint32_t tid)
-         CPUHexagonState *found_env = &found_cpu->env;
-         if (found_env->threadId == tid) {
-             target_ulong imask = arch_get_system_reg(found_env, HEX_SREG_IMASK);
--            qemu_log_mask(CPU_LOG_INT, "%s: tid %d imask = 0x%x\n",
-+            qemu_log_mask(CPU_LOG_INT,
-+                          "%s: tid " TARGET_FMT_lx " imask = 0x%x\n",
-                           __func__, env->threadId,
-                           (unsigned)GET_FIELD(IMASK_MASK, imask));
-             return GET_FIELD(IMASK_MASK, imask);
-@@ -1515,7 +1567,7 @@ void HELPER(setimask)(CPUHexagonState *env, uint32_t pred, uint32_t imask)
  
-         if (pred == found_env->threadId) {
-             SET_SYSTEM_FIELD(found_env, HEX_SREG_IMASK, IMASK_MASK, imask);
--            qemu_log_mask(CPU_LOG_INT, "%s: tid %d imask 0x%x\n",
-+            qemu_log_mask(CPU_LOG_INT, "%s: tid " TARGET_FMT_lx " imask 0x%x\n",
-                           __func__, found_env->threadId, imask);
-             hex_interrupt_update(env);
-             return;
-@@ -1764,6 +1816,21 @@ uint64_t HELPER(greg_read_pair)(CPUHexagonState *env, uint32_t reg)
+ #define INVALID_BADVA 0xbadabada
  
- void HELPER(setprio)(CPUHexagonState *env, uint32_t thread, uint32_t prio)
- {
-+    CPUState *cs;
-+
-+    BQL_LOCK_GUARD();
-+    CPU_FOREACH(cs) {
-+        HexagonCPU *found_cpu = HEXAGON_CPU(cs);
-+        CPUHexagonState *found_env = &found_cpu->env;
-+        if (thread == found_env->threadId) {
-+            SET_SYSTEM_FIELD(found_env, HEX_SREG_STID, STID_PRIO, prio);
-+            qemu_log_mask(CPU_LOG_INT,
-+                          "%s: tid " TARGET_FMT_lx " prio = 0x%x\n",
-+                          __func__, found_env->threadId, prio);
-+            resched(env);
-+            return;
-+        }
-+    }
-     g_assert_not_reached();
+@@ -623,6 +642,13 @@ static bool hexagon_tlb_fill(CPUState *cs, vaddr address, int size,
+     do_raise_exception(env, cs->exception_index, env->gpr[HEX_REG_PC], retaddr);
  }
  
++#include "hw/core/sysemu-cpu-ops.h"
++
++static const struct SysemuCPUOps hexagon_sysemu_ops = {
++    .has_work = hexagon_cpu_has_work,
++    .get_phys_page_debug = hexagon_cpu_get_phys_page_debug,
++};
++
+ static bool hexagon_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+ {
+     CPUHexagonState *env = cpu_env(cs);
+@@ -665,6 +691,8 @@ static const TCGCPUOps hexagon_tcg_ops = {
+     .pointer_wrap = hexagon_pointer_wrap,
+     .cpu_exec_reset = cpu_reset,
+     .tlb_fill = hexagon_tlb_fill,
++    .cpu_exec_halt = hexagon_cpu_has_work,
++    .do_interrupt = hexagon_cpu_do_interrupt,
+ #endif /* !CONFIG_USER_ONLY */
+ };
+ 
+@@ -692,9 +720,12 @@ static void hexagon_cpu_class_init(ObjectClass *c, const void *data)
+     cc->gdb_core_xml_file = "hexagon-core.xml";
+     cc->disas_set_info = hexagon_cpu_disas_set_info;
+ #ifndef CONFIG_USER_ONLY
++    cc->sysemu_ops = &hexagon_sysemu_ops;
+     dc->vmsd = &vmstate_hexagon_cpu;
+ #endif
++#ifdef CONFIG_TCG
+     cc->tcg_ops = &hexagon_tcg_ops;
++#endif
+ }
+ 
+ #ifndef CONFIG_USER_ONLY
 -- 
 2.34.1
 
