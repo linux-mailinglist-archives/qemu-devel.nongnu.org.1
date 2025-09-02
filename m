@@ -2,115 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF15B3F33F
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8866BB3F33D
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:04:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utI1C-0001Dk-Jm; Mon, 01 Sep 2025 23:49:14 -0400
+	id 1utI1H-0001Vw-AN; Mon, 01 Sep 2025 23:49:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI19-0001Ae-V0
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:11 -0400
+ id 1utI1C-0001Kp-Le
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:15 -0400
 Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI17-0004cE-J5
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:11 -0400
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822RlRd012433
- for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:49:08 GMT
+ id 1utI18-0004cK-Fl
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:14 -0400
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822RkRi016546
+ for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:49:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- m8oqFVnMH2IVmyeIFRru/rqdGObfY/30qKnuYmfKufk=; b=KaI1g2+3aLbRlj2O
- BHKVDHFAVfplx01rQCWKn6piiAK/OvZjc3zn/VEdba5SGBwOjKGi5yTu4wvO4Vvx
- Db94a4AyIfVv534JEJ5UjCEe6dcpU2uxRtzDuiAV921P6ZJjKdp+ZUgYyTIrurZZ
- EVbR1qloMrGbREFnIwwHQYhPJznV2QHBKoCxG8G0dlAnwhe0smZW+MnYEcyo1yim
- 65sRsgI9Uq3m6isGu+tUQcTxYVaDnNhohO+Ny90RHeu5JEU33Zb/OX5oYdV46/L9
- EH+bLRyV9MNVdw8pdQPk87MMcCNWjBrmJI/vpDZeGWvusG0iu00m1GmHIy44cBWm
- E6u06Q==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48uq0eej8s-1
+ sBQQre50aOiB7vIhrSM03mlP7zl+XdQuOhi8uZVOGJY=; b=dB+wgAMYE3n7Zy8z
+ C/dFQQ29XxF4PwUI7LtIfNlTp27r2Csv8qS3jBJ+uz3UQk3a3eQE5zmhsvAH4vNw
+ BF6Dd/ZVdk6O2c9H2DL+KUBchkMAIzfZ0sKVHqcN4fhTHEq9U7qVDhG3S2wz9wzz
+ YH5cd8SPQ7FqIWWypY2Gv1kD+ekVjJ8cb+7NFcxRLduKdwVMHs+nzeCAVtB0naV9
+ VOu+NbA/BY+WjRYbhheLNpIKPzoqLhj1RoBgcIpjMhKe6+n1yQJrHi9qAt7Q15FZ
+ hKthjoNn4jdkVJvEnj7SdQOxlc5mW1VfVJfDeITlsnEa2E/mTzXMc/TmEA+z7NpC
+ xDV+MA==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48utk8x89c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:49:08 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-327b5e7f2f6so7154487a91.2
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:49:08 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:49:09 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-329745d6b89so4038080a91.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:49:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756784947; x=1757389747;
+ d=1e100.net; s=20230601; t=1756784948; x=1757389748;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m8oqFVnMH2IVmyeIFRru/rqdGObfY/30qKnuYmfKufk=;
- b=HQIsIuhQopKvHCSRNVfLQu1J6ibRQ00sjoHFjICBcLQgAwKYplIczB3/mybqSXAhhv
- sU8VYBmYkh18hvtJV6UELuxqvzcA0ZO/ntPHO9Jo4exu3UcYTttm6LDKokY/DclZraD7
- /PCqmPQzwYGoGmMGDNFxRUO8JYHKjiYbtv5SdPUZbofaqOAIIXu9CftRVZY0as81yoLB
- AasoQS0attQN3/VeilGmoU1IhIWlGAe8QKJEm8BQzlmlK3bSPPSlbYD8SCHPKziR+Czw
- uaeZeKVPXGM30M0W1FA/mTFWuc+9zmKfgfcJBDyFzCOzeGmrqFj2QUXTaaqwTqO2g2JR
- l/rQ==
-X-Gm-Message-State: AOJu0Yx7td2eVWeqXwRnGDrm0hPiDL4nrN9QVfC54+gKPs183UqourXl
- kMfLy/1t6Xfmc/HVc4tal1wSzMnaMLtErG2zeMBiH3lWWpQvTxWG+/cRYArgW3/KJtNRuqSSh/s
- b2vIVVJAJ6a8jANvGb5/SPSe99wRizaQNAfE60zKPfLtDtxmypUqYVQxurYQbZKzmNDoP
-X-Gm-Gg: ASbGncsVebt05U30cwzDvNttclYxaQAffSLuS7yifIwX+LulT43IOdJW+VcIEIMV8g6
- 60g18BDJxWDIJTx6Xa1tfqelXh938iwSG56v+bbIl+YLzvx+r4xloYmuCE31JIr2Liu4pnS1Gtz
- b/Cg1qpJ1BE/RoOHGSMuwmxPJ9Yiruq8MJ78Sjnlhl5dHcYcsig1vx20j9fd7rWrjrOhgX8T+3R
- nve9SYEdZXjecu15ewnGaH8yv051erz76VINXMNITz5Ab8LDEpMXkAZRsZwp2BkFu1LoaC1//jU
- ufRyDoQCJkclo7a/nIk1YCGYcQQ9ZbZpjYl5u+iAdlVQAx8lYJv/Lc7SzT1srC1xHXJ2LRsLqno
- PeeLFL0wPKjwv
-X-Received: by 2002:a17:90b:3c0e:b0:327:c9a4:de71 with SMTP id
- 98e67ed59e1d1-32815412248mr14757889a91.6.1756784946854; 
- Mon, 01 Sep 2025 20:49:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGmzbQra0wuPhSl/0Tm7FUufO2GzxSXSmQD5F2vF/ZaNlBdqq1eexGbgnSkaZOPCLaCnvkotA==
-X-Received: by 2002:a17:90b:3c0e:b0:327:c9a4:de71 with SMTP id
- 98e67ed59e1d1-32815412248mr14757854a91.6.1756784946312; 
- Mon, 01 Sep 2025 20:49:06 -0700 (PDT)
+ bh=sBQQre50aOiB7vIhrSM03mlP7zl+XdQuOhi8uZVOGJY=;
+ b=JK+S3PYqIOlLBwj9JnItbmtTrVh/0mf6nZq1fEBWDVOKtmPuFKChTmMdxXrpjjtZYe
+ mPmXGHtjJcjI9vj5C7kUYBUPev6RgoPnL4XodJzb7gzm4/qSWvKiGNxA3LKt9RONmKVR
+ 8p/osHBQ3fIKJox6+BLH+ure9CkBou0Kk/YmqdW3JKm+URTOmx5mwVMCThGkdoc5UgRi
+ WdejibNeMcQZmNyoqqauJUK6f5l8qP+zVgADdT6lMeEYg49Qzo2bRBwGhI+3xSB8A4cT
+ sQiNmckxLeTg7Sbnezw5vD/1RhY6gDfcO9kGxejQOe7YUZ4H2a/qVvBpwuJhluWPedV6
+ SwGA==
+X-Gm-Message-State: AOJu0YxWMC3Fw5usfLjTxffwir9VTaEtiDzyxLZD2L3yMOxnWc2Mwrdk
+ SW4mdxLqVupYa/IHqIsIyCRGyiVzV6sX/NetaNf5DRkwlh9AkpUBgPND0kYDA/jSdcbztwMyg7H
+ 6Ij8MiZqPbQQfDHicxfG3Ba24KbZQw509a6UQfNiFOYxZ8BiKZ26Fhp3roBdXcECTN4Pu
+X-Gm-Gg: ASbGncuMEhV1voJUxp+Bhh0/w/essRuXGnWdV839DdW1DhlFAXdtXCq24I+U54HQtRP
+ ELUPe9gJLbYIq5r80YP7yrwaGiZgk2Ls0/v3oCz90XLsc8IT2dhapN8qhXw7g7FXGdVGV2Y2bxI
+ kLc9Zi0JQpeEtj/tl5+qDrS1ErfntHwOlDANfhvimu34hie0fcs/hrDKgIlp1k/VAA+9LfDsSfl
+ yGTHTMApxdzuS6cwDPANZ4YMNBROgmVOWd0CA5kJNEotJRbQUPu2GtQDZVv/THUh9YoJkz2LOMB
+ c99j8IjY3O46sa+84M0PzkT8EsvpHL1HYuWbpvdjB5OlLib64dMawPbnI0SXHfhs7AZl+y2rTnY
+ rP+m/Bko0gSQw
+X-Received: by 2002:a17:90b:48c1:b0:325:42ad:29d2 with SMTP id
+ 98e67ed59e1d1-328156e3815mr11234311a91.31.1756784948039; 
+ Mon, 01 Sep 2025 20:49:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF+v8UicN8WFYzSYE3EA74AcJHrvV2ZVJWd3c+53FSzblSTJQb1FsyEU5JQJ6ruez+0z5/cig==
+X-Received: by 2002:a17:90b:48c1:b0:325:42ad:29d2 with SMTP id
+ 98e67ed59e1d1-328156e3815mr11234274a91.31.1756784947369; 
+ Mon, 01 Sep 2025 20:49:07 -0700 (PDT)
 Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
  [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-327daeeca1csm12543546a91.25.2025.09.01.20.49.05
+ 98e67ed59e1d1-327daeeca1csm12543546a91.25.2025.09.01.20.49.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Sep 2025 20:49:05 -0700 (PDT)
+ Mon, 01 Sep 2025 20:49:07 -0700 (PDT)
 From: Brian Cain <brian.cain@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
  philmd@linaro.org, matheus.bernardino@oss.qualcomm.com, ale@rev.ng,
  anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
  alex.bennee@linaro.org, quic_mburton@quicinc.com,
- sid.manning@oss.qualcomm.com, Brian Cain <bcain@quicinc.com>,
- Sid Manning <sidneym@quicinc.com>
-Subject: [PATCH v2 12/39] target/hexagon: Add implementation of cycle counters
-Date: Mon,  1 Sep 2025 20:48:20 -0700
-Message-Id: <20250902034847.1948010-13-brian.cain@oss.qualcomm.com>
+ sid.manning@oss.qualcomm.com, Brian Cain <bcain@quicinc.com>
+Subject: [PATCH v2 13/39] target/hexagon: Implement modify_syscfg()
+Date: Mon,  1 Sep 2025 20:48:21 -0700
+Message-Id: <20250902034847.1948010-14-brian.cain@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250902034847.1948010-1-brian.cain@oss.qualcomm.com>
 References: <20250902034847.1948010-1-brian.cain@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: mh_kfLRS4gDctVyyXtEUKwMqFKptaeBq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAwNCBTYWx0ZWRfX8RzNmU54tGJ2
- +RVb3fDaZeOMWs70PqJwRYsHZJAfEH06/HbANVSa9gHwIXDeWW0ybLL+AInvXAzyn4L4+Vxsj+U
- YmbbLhT9TeOeIeaQdQhoroBiAce2DDcfrTHNCTQJ1obkSsqG5zc0ycuRY8Tjos8rh8W+Mu6YCZc
- yIlGOGYdlhT53TuEwdyxtNfZN7xhETufgm43ja3PBxPXUEwfLlRnJtC/iCsyOlhcFNgJG5v6b7D
- RdTaX0cZDGa/OURdK8xtKo6Xx4+EHKEDtcd9mfjui2iwNM/fMlirRDek48v4jNzu04EgexMmDUg
- mzf9BSjiZWv5vANmXE25W+0sCTy5SH1Cm4//GAjod26IIspEguuvQNpEXpMb3M3R276Jce1i3bp
- HnvDWIQq
-X-Proofpoint-ORIG-GUID: mh_kfLRS4gDctVyyXtEUKwMqFKptaeBq
-X-Authority-Analysis: v=2.4 cv=ea09f6EH c=1 sm=1 tr=0 ts=68b66934 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+X-Proofpoint-GUID: gjs5jccxCXztUAnFtCMm6KO3yjmJUZ27
+X-Proofpoint-ORIG-GUID: gjs5jccxCXztUAnFtCMm6KO3yjmJUZ27
+X-Authority-Analysis: v=2.4 cv=ccnSrmDM c=1 sm=1 tr=0 ts=68b66935 cx=c_pps
+ a=0uOsjrqzRL749jD1oC5vDA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
  a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
- a=6WCJHhgCVYwEtMrCBCEA:9 a=QEXdDO2ut3YA:10 a=iS9zxrgQBfv6-_F4QbHw:22
+ a=HvbDY8S8NUK629Yy7K4A:9 a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
  a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDA0MiBTYWx0ZWRfX3N9n9T2MGWip
+ 7TdIequtclLEx1aqyep8OK/xnH+Jg5Qbb8ZA7s+UKY/p1HJZ0/isvguCFd8cudnhcDvrYTDTIif
+ fYZQxD6dfX7iAAuOuriw1v2FzpeeNHew3V/9H8hBTa1xeGBMgDeIG5fMYKFNLgoQzwYC3ksFx9v
+ GYhhMe5yJfDruqp4Q9WC9PnECvPMctVsrXF3Si53nCm9gBdjQKWeUP0pFEGvAX7yl7hiY8dAM+F
+ c1CnmF+EEbuj3kL7Dj8GUs5hY2Vi6JfULtldQbAy516Jz2y28CwqCYZLCjLnxZINOG+VoI86rZg
+ OLq5qaqgSvAgfHlBVdLXQPPfeRbi+aSsRoHsZzbFJ7wN3QMbPGTCdwaNXyOTaF/IdLwA0LIC4nB
+ kAu5QpEg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0 phishscore=0
- bulkscore=0 spamscore=0 priorityscore=1501 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300004
+ adultscore=0 phishscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+ clxscore=1015 suspectscore=0 spamscore=0 bulkscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508300042
 Received-SPF: pass client-ip=205.220.168.131;
  envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
 X-Spam_score_int: -26
@@ -137,241 +136,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Brian Cain <bcain@quicinc.com>
 
-The PCYCLE register is available in system mode, but only increments
-when the SYSCFG.PCYCLEEN field is set.
-
-The UPCYCLE register is available in user mode and we model it
-unconditionally in linux-user emulation, as if the system had enabled
-PCYCCLEEN.
-
-For now, the model is very crudely counting the sum of instructions
-executed among vCPUs, regardless of how the instructions were actually
-scheduled.  This is sufficient for demonstrating a rough level of
-activity but will be particularly misleading for benchmarks and performance
-tuning.  We may decide to revisit this model in order to give more
-a bit more fidelity, though without a cache model it would still be very far
-from accurate.
-
-Co-authored-by: Sid Manning <sidneym@quicinc.com>
 Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 ---
- target/hexagon/cpu.h        |  3 +++
- target/hexagon/translate.h  |  2 ++
- target/hexagon/cpu.c        | 11 +++++++++++
- target/hexagon/cpu_helper.c | 33 +++++++++++++++++++++++++++++----
- target/hexagon/translate.c  | 27 +++++++++++++++++++++++++++
- 5 files changed, 72 insertions(+), 4 deletions(-)
+ target/hexagon/op_helper.c | 47 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 46 insertions(+), 1 deletion(-)
 
-diff --git a/target/hexagon/cpu.h b/target/hexagon/cpu.h
-index 8046f7bff0..354e9e9cbf 100644
---- a/target/hexagon/cpu.h
-+++ b/target/hexagon/cpu.h
-@@ -28,6 +28,7 @@
- #include "cpu-qom.h"
- #include "exec/cpu-common.h"
- #include "exec/cpu-defs.h"
-+#include "exec/cpu-common.h"
- #include "hex_regs.h"
- #include "mmvec/mmvec.h"
- #include "hw/registerfields.h"
-@@ -37,6 +38,7 @@
- #endif
+diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
+index a8b44a73bd..53bf0591ec 100644
+--- a/target/hexagon/op_helper.c
++++ b/target/hexagon/op_helper.c
+@@ -1531,7 +1531,52 @@ static bool handle_pmu_sreg_write(CPUHexagonState *env, uint32_t reg,
  
- #ifndef CONFIG_USER_ONLY
-+#include "reg_fields.h"
- typedef struct CPUHexagonTLBContext CPUHexagonTLBContext;
- #endif
- 
-@@ -200,6 +202,7 @@ struct ArchCPU {
- 
- FIELD(TB_FLAGS, IS_TIGHT_LOOP, 0, 1)
- FIELD(TB_FLAGS, MMU_INDEX, 1, 3)
-+FIELD(TB_FLAGS, PCYCLE_ENABLED, 4, 1)
- 
- G_NORETURN void hexagon_raise_exception_err(CPUHexagonState *env,
-                                             uint32_t exception,
-diff --git a/target/hexagon/translate.h b/target/hexagon/translate.h
-index c3806fe068..0bdf526a9e 100644
---- a/target/hexagon/translate.h
-+++ b/target/hexagon/translate.h
-@@ -83,6 +83,8 @@ typedef struct DisasContext {
-     TCGv new_pred_value[NUM_PREGS];
-     TCGv branch_taken;
-     TCGv dczero_addr;
-+    bool pcycle_enabled;
-+    uint32_t num_cycles;
- } DisasContext;
- 
- bool is_gather_store_insn(DisasContext *ctx);
-diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
-index e35ac92402..b7e21c913f 100644
---- a/target/hexagon/cpu.c
-+++ b/target/hexagon/cpu.c
-@@ -281,9 +281,20 @@ static TCGTBCPUState hexagon_get_tb_cpu_state(CPUState *cs)
-     }
- 
- #ifndef CONFIG_USER_ONLY
-+    target_ulong syscfg = arch_get_system_reg(env, HEX_SREG_SYSCFG);
-+
-+    bool pcycle_enabled = extract32(syscfg,
-+                                    reg_field_info[SYSCFG_PCYCLEEN].offset,
-+                                    reg_field_info[SYSCFG_PCYCLEEN].width);
-+
-     hex_flags = FIELD_DP32(hex_flags, TB_FLAGS, MMU_INDEX,
-                            cpu_mmu_index(env_cpu(env), false));
-+
-+    if (pcycle_enabled) {
-+        hex_flags = FIELD_DP32(hex_flags, TB_FLAGS, PCYCLE_ENABLED, 1);
-+    }
- #else
-+    hex_flags = FIELD_DP32(hex_flags, TB_FLAGS, PCYCLE_ENABLED, true);
-     hex_flags = FIELD_DP32(hex_flags, TB_FLAGS, MMU_INDEX, MMU_USER_IDX);
- #endif
- 
-diff --git a/target/hexagon/cpu_helper.c b/target/hexagon/cpu_helper.c
-index fc49fe7883..f540eadef4 100644
---- a/target/hexagon/cpu_helper.c
-+++ b/target/hexagon/cpu_helper.c
-@@ -91,17 +91,30 @@ void arch_set_system_reg_masked(CPUHexagonState *env, uint32_t reg,
- 
- uint64_t hexagon_get_sys_pcycle_count(CPUHexagonState *env)
+ static void modify_syscfg(CPUHexagonState *env, uint32_t val)
  {
 -    g_assert_not_reached();
-+    BQL_LOCK_GUARD();
-+    uint64_t cycles = 0;
++    g_assert(bql_locked());
++
++    uint32_t syscfg_read_only_mask = 0x80001c00;
++    uint32_t old = arch_get_system_reg(env, HEX_SREG_SYSCFG);
++    uint8_t old_en = GET_SYSCFG_FIELD(SYSCFG_PCYCLEEN, old);
++    uint8_t old_gie = GET_SYSCFG_FIELD(SYSCFG_GIE, old);
++    uint8_t new_en = GET_SYSCFG_FIELD(SYSCFG_PCYCLEEN, val);
++    uint8_t new_gie = GET_SYSCFG_FIELD(SYSCFG_GIE, val);
 +    CPUState *cs;
-+    CPU_FOREACH(cs) {
-+        CPUHexagonState *thread_env = cpu_env(cs);
-+        cycles += thread_env->t_cycle_count;
-+    }
-+#ifndef CONFIG_USER_ONLY
-+    HexagonCPU *cpu = env_archcpu(env);
-+    return (cpu->globalregs ? hexagon_globalreg_get_pcycle_base(cpu) : 0) +
-+           cycles;
-+#else
-+    return cycles;
-+#endif
- }
- 
- uint32_t hexagon_get_sys_pcycle_count_high(CPUHexagonState *env)
- {
--    g_assert_not_reached();
-+    return hexagon_get_sys_pcycle_count(env) >> 32;
- }
- 
- uint32_t hexagon_get_sys_pcycle_count_low(CPUHexagonState *env)
- {
--    g_assert_not_reached();
-+    return extract64(hexagon_get_sys_pcycle_count(env), 0, 32);
- }
- 
- void hexagon_set_sys_pcycle_count_high(CPUHexagonState *env,
-@@ -118,7 +131,19 @@ void hexagon_set_sys_pcycle_count_low(CPUHexagonState *env,
- 
- void hexagon_set_sys_pcycle_count(CPUHexagonState *env, uint64_t cycles)
- {
--    g_assert_not_reached();
-+    BQL_LOCK_GUARD();
-+#ifndef CONFIG_USER_ONLY
-+    HexagonCPU *cpu = env_archcpu(env);
-+    if (cpu->globalregs) {
-+        hexagon_globalreg_set_pcycle_base(cpu, cycles);
-+    }
-+#endif
++    target_ulong old_mmu_enable = GET_SYSCFG_FIELD(SYSCFG_MMUEN, old);
++    target_ulong new_mmu_enable =
++        GET_SYSCFG_FIELD(SYSCFG_MMUEN, val);
 +
-+    CPUState *cs;
-+    CPU_FOREACH(cs) {
-+        CPUHexagonState *thread_env = cpu_env(cs);
-+        thread_env->t_cycle_count = 0;
++    /* clear read-only bits if they are set in the new value. */
++    val &= ~syscfg_read_only_mask;
++    /* if read-only are currently set in syscfg keep them set. */
++    val |= (old & syscfg_read_only_mask);
++
++    arch_set_system_reg(env, HEX_SREG_SYSCFG, val);
++
++    /* Check for change in MMU enable */
++    if (new_mmu_enable && !old_mmu_enable) {
++        hex_mmu_on(env);
++    } else if (!new_mmu_enable && old_mmu_enable) {
++        hex_mmu_off(env);
++    }
++
++    /* Changing pcycle enable from 0 to 1 resets the counters */
++    if (old_en == 0 && new_en == 1) {
++        CPU_FOREACH(cs) {
++            cpu_env(cs)->t_cycle_count = 0;
++        }
++    }
++
++    /* See if global interrupts are turned on */
++    if (!old_gie && new_gie) {
++        qemu_log_mask(CPU_LOG_INT, "%s: global interrupts enabled\n", __func__);
++        hex_interrupt_update(env);
++    }
++
++    if (qemu_loglevel_mask(LOG_UNIMP)) {
++        int new_v2x = GET_SYSCFG_FIELD(SYSCFG_V2X, val);
++        if (!new_v2x) {
++            qemu_log("HVX: 64 byte vector length is unsupported\n");
++        }
 +    }
  }
  
- void hexagon_modify_ssr(CPUHexagonState *env, uint32_t new, uint32_t old)
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index b74ddc2acb..a71fa33ccf 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -57,6 +57,7 @@ TCGv_i64 hex_store_val64[STORES_MAX];
- TCGv hex_llsc_addr;
- TCGv hex_llsc_val;
- TCGv_i64 hex_llsc_val_i64;
-+TCGv_i64 hex_cycle_count;
- TCGv hex_vstore_addr[VSTORES_MAX];
- TCGv hex_vstore_size[VSTORES_MAX];
- TCGv hex_vstore_pending[VSTORES_MAX];
-@@ -124,6 +125,22 @@ static void gen_exception_raw(int excp)
-     gen_helper_raise_exception(tcg_env, tcg_constant_i32(excp));
- }
- 
-+#ifndef CONFIG_USER_ONLY
-+static inline void gen_precise_exception(int excp, target_ulong PC)
-+{
-+    tcg_gen_movi_tl(hex_cause_code, excp);
-+    gen_exception(HEX_EVENT_PRECISE, PC);
-+}
-+
-+static inline void gen_pcycle_counters(DisasContext *ctx)
-+{
-+    if (ctx->pcycle_enabled) {
-+        tcg_gen_addi_i64(hex_cycle_count, hex_cycle_count, ctx->num_cycles);
-+        ctx->num_cycles = 0;
-+    }
-+}
-+#endif
-+
- static void gen_exec_counters(DisasContext *ctx)
- {
-     tcg_gen_addi_tl(hex_gpr[HEX_REG_QEMU_PKT_CNT],
-@@ -132,6 +149,10 @@ static void gen_exec_counters(DisasContext *ctx)
-                     hex_gpr[HEX_REG_QEMU_INSN_CNT], ctx->num_insns);
-     tcg_gen_addi_tl(hex_gpr[HEX_REG_QEMU_HVX_CNT],
-                     hex_gpr[HEX_REG_QEMU_HVX_CNT], ctx->num_hvx_insns);
-+
-+#ifndef CONFIG_USER_ONLY
-+   gen_pcycle_counters(ctx);
-+#endif
- }
- 
- static bool use_goto_tb(DisasContext *ctx, target_ulong dest)
-@@ -784,6 +805,7 @@ static void gen_commit_hvx(DisasContext *ctx)
-     }
- }
- 
-+static const int PCYCLES_PER_PACKET = 3;
- static void update_exec_counters(DisasContext *ctx)
- {
-     Packet *pkt = ctx->pkt;
-@@ -803,6 +825,7 @@ static void update_exec_counters(DisasContext *ctx)
-     }
- 
-     ctx->num_packets++;
-+    ctx->num_cycles += PCYCLES_PER_PACKET;
-     ctx->num_insns += num_real_insns;
-     ctx->num_hvx_insns += num_hvx_insns;
- }
-@@ -945,11 +968,13 @@ static void hexagon_tr_init_disas_context(DisasContextBase *dcbase,
- 
-     ctx->mem_idx = FIELD_EX32(hex_flags, TB_FLAGS, MMU_INDEX);
-     ctx->num_packets = 0;
-+    ctx->num_cycles = 0;
-     ctx->num_insns = 0;
-     ctx->num_hvx_insns = 0;
-     ctx->branch_cond = TCG_COND_NEVER;
-     ctx->is_tight_loop = FIELD_EX32(hex_flags, TB_FLAGS, IS_TIGHT_LOOP);
-     ctx->short_circuit = hex_cpu->short_circuit;
-+    ctx->pcycle_enabled = FIELD_EX32(hex_flags, TB_FLAGS, PCYCLE_ENABLED);
- }
- 
- static void hexagon_tr_tb_start(DisasContextBase *db, CPUState *cpu)
-@@ -1076,6 +1101,8 @@ void hexagon_translate_init(void)
-         offsetof(CPUHexagonState, llsc_val), "llsc_val");
-     hex_llsc_val_i64 = tcg_global_mem_new_i64(tcg_env,
-         offsetof(CPUHexagonState, llsc_val_i64), "llsc_val_i64");
-+    hex_cycle_count = tcg_global_mem_new_i64(tcg_env,
-+            offsetof(CPUHexagonState, t_cycle_count), "t_cycle_count");
-     for (i = 0; i < STORES_MAX; i++) {
-         snprintf(store_addr_names[i], NAME_LEN, "store_addr_%d", i);
-         hex_store_addr[i] = tcg_global_mem_new(tcg_env,
+ static uint32_t hexagon_find_last_irq(CPUHexagonState *env, uint32_t vid)
 -- 
 2.34.1
 
