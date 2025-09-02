@@ -2,100 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B0BB3F706
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 09:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ADADB3F738
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 09:58:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utLno-0007oR-Tn; Tue, 02 Sep 2025 03:51:41 -0400
+	id 1utLtc-00067W-It; Tue, 02 Sep 2025 03:57:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Sj0j=3N=kaod.org=clg@ozlabs.org>)
- id 1utLnk-0007lq-Oa; Tue, 02 Sep 2025 03:51:36 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Sj0j=3N=kaod.org=clg@ozlabs.org>)
- id 1utLni-0001xs-IP; Tue, 02 Sep 2025 03:51:36 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4cGHxY5txRz4wB0;
- Tue,  2 Sep 2025 17:51:29 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4cGHxV1jQPz4w9w;
- Tue,  2 Sep 2025 17:51:25 +1000 (AEST)
-Message-ID: <7d70dea7-8522-45a2-9958-b56d38879ba2@kaod.org>
-Date: Tue, 2 Sep 2025 09:51:23 +0200
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1utLtZ-00067E-MJ
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 03:57:37 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1utLtX-0002XJ-0u
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 03:57:37 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3ce772ce0dbso3422516f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 00:57:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756799852; x=1757404652; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0H/nU5oQw9mkQ3E7tv0e06Pzue129nTlkebdk/UkBhk=;
+ b=HC/Jtfw1w743LJ/7UPdUKMeuyV2yTZipJr5N+2g7mJC3+60pRxFLjmsqHy71BOfTdi
+ Fyw7rm4Np8Ng/ex/ZhLF7HRuxwSVhzIAtZbY1+uyQ+kBEQt1w2btjPhNBRPMAiIB5PdP
+ nfFqw54XaD7VEKnbghQBMwdvoB0WWA9sS6PVJ/FweqjF809AJNIY5uS5BZlmI+dWLmKa
+ qca94j+yF7WmtifmvMjyZK73PAtvWQ0wGeMmsfg/LdcMQrRy6oLmfCL5tMC/8dysLGGb
+ VfvHDCVxm4Fdrn8cXtnU5vWEHW7mhHDPEAqmuf99nXod9AnkELlNSFhmzkEUERt1xx00
+ X49g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756799852; x=1757404652;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0H/nU5oQw9mkQ3E7tv0e06Pzue129nTlkebdk/UkBhk=;
+ b=wtrFFQwoqLU0zzJXhOAuU/iFIMKbd/8TIY2W5ADRYNgn/fvXByb7+8aoj214D17AT3
+ YfDJ7LmtBw5AYPyBMvGb9TB8ZpxtTdIYFuksX5fZ9iZG0nYXc46Cm+F/CyLZqJyHlLjD
+ PTjDbI8DVQP0Hcr4SsX0shg3tq9XkoIMZvpmKTNUFwdCQkNUY5Ta1j/cNi9a+qNEC14i
+ wVGeBWa3mmzvBqPvVzgXYSpOHtQ2OzE3Sa6um34jyMTE1/WvrqWfKiiaQu8pLFUPqmu0
+ OafImAw80JGrPR62NoDQqFgJDSKUBlyXUMj9LvI+jOIO4ZhKr5nXFg5I3LSZLoa9uaJc
+ G8pQ==
+X-Gm-Message-State: AOJu0YwMEnJNDYgDL+r3QUTYc15GBapxnj2H2EuDWwLwbMLuDca/LNR8
+ fuKWMEyGmuv85Dk20DnqaLMOmOy9wYG8Kh13a+JuUCnFksut942Nq7xXuMQqy6lD1E8=
+X-Gm-Gg: ASbGncuU7K0ZiyehxKU1VZ/TRE4BQnUjYZYex01pe7KMyF861nfTcrb3MC5bHHU2rU6
+ KPzYPR//KaHgMrwJwbh5wJA+/3bSi+Lf8uvek7PA8NK+LHlmVOML1byy/eGwEses14mWO0Q3P4R
+ DhuK91MBVP4j1RQmBAFFTkPFzm4Fq3d3f0pg+Qo45LApf7PfbiuAVkwLUPRi8kjOte9HCHhNTaw
+ WQA7jXtAEuYaz65yyg+6CTxGrDF6xBVOfO0qquSVpKPCzGaUbKDLEVzm4lRCnTxffonFo8syRsm
+ LgyqRtZaIcaEJkFatlwEKtJrfdqW008lUX/ZGWZzyg+Unw1+lBOA/gzt/E4pHui8/VWkaftocK7
+ q971t6YwKBBjw4aQSxKUxPOWVapAEuxGT4NaRoDik7BuAlrry
+X-Google-Smtp-Source: AGHT+IH+xoPuRcE2RocnZHju493OogRDldqgNFhiri5kmjawY+Yf3OuOVvaLcVDVPIszqbmUrT8AeQ==
+X-Received: by 2002:a05:6000:310f:b0:3cd:f441:9222 with SMTP id
+ ffacd0b85a97d-3d1dea8caf8mr8158854f8f.35.1756799852136; 
+ Tue, 02 Sep 2025 00:57:32 -0700 (PDT)
+Received: from [192.168.23.199] ([193.33.57.199])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3d7ac825b88sm5913131f8f.7.2025.09.02.00.57.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Sep 2025 00:57:31 -0700 (PDT)
+Message-ID: <9b859c3f-0c9a-4c22-836f-ea69b38c5928@linaro.org>
+Date: Tue, 2 Sep 2025 09:57:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [SPAM] [PATCH v1 10/21] hw/arm/ast27x0: Move DRAM and SDMC
- initialization earlier to support memory aliasing
-To: Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Cc: troy_lee@aspeedtech.com
-References: <20250717034054.1903991-1-jamin_lin@aspeedtech.com>
- <20250717034054.1903991-11-jamin_lin@aspeedtech.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20250717034054.1903991-11-jamin_lin@aspeedtech.com>
+Subject: Re: [PATCH v6 0/9] contrib/plugins: uftrace
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, rowan Hart <rowanbhart@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
+ <ma.mandourr@gmail.com>, Richard Henderson <richard.henderson@linaro.org>
+References: <20250808204156.659715-1-pierrick.bouvier@linaro.org>
+ <a39236c9-d6e7-4ff3-81a0-bf83b579475d@linaro.org>
+ <87y0qy14pi.fsf@draig.linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <87y0qy14pi.fsf@draig.linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=Sj0j=3N=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,98 +107,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/17/25 05:40, Jamin Lin wrote:
-> To support DRAM aliasing for coprocessors (SSP/TSP), this commit moves the
-> initialization of the SDMC (SDRAM controller) and DRAM models earlier in
-> the device realization order.
+On 2025-09-01 19:07, Alex Bennée wrote:
+> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
 > 
-> In the upcoming changes, the PSP will expose a portion of its DRAM as shared
-> memory by creating a memory region alias at a specific offset. This alias is
-> mapped into the coprocessor's SDRAM address space, allowing both PSP and the
-> coprocessor (SSP/TSP) to access the same physical memory through their respective
-> views — PSP via its DRAM, and the coprocessor via its SDRAM.
+>> On 2025-08-08 13:41, Pierrick Bouvier wrote:
+>>> This plugin generates a binary trace compatible with the excellent uftrace:
+>>> https://github.com/namhyung/uftrace
+>>> In short, it tracks all function calls performed during execution,
+>>> based on
+>>> frame pointer analysis. A big advantage over "uftrace record" is that it works
+>>> in system mode, allowing to trace a full system execution, which was the
+>>> original goal. It works as well in user mode, but uftrace itself already does
+>>> this. It's implemented for aarch64 and x86_64.
+>>> Let's start with concrete examples of the result.
+>>> First, in system mode, booting a stack using TF-A + U-boot + Linux:
+>>> - Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
+>>> https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
+>>> - Stat and open syscalls in kernel
+>>> https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
+>>> - Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
+>>> https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
+>>> Full trace is available here:
+>>> https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz
+>>> You can download and open it on https://ui.perfetto.dev/ to explore it.
+>>> Second, in user mode, tracing qemu-aarch64 (itself) running git
+>>> --help:
+>>> - Loading program and its interpreter
+>>> https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
+>>> - TB creation
+>>> https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
+>>> Full trace is available here:
+>>> https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz
+>>> If you had curiosity and now you're ready to give some attention,
+>>> most of the
+>>> details you want to read are included in the documentation patch (final one).
+>>> Overhead is around x5-x15, and long traces can be directly filtered
+>>> with uftrace
+>>> if needed.
+>>> I hope this plugin can help people trying to understand what happens
+>>> out of the
+>>> user space, and get a better grasp of how firmwares, bootloader, and kernel
+>>> interact behind the curtain.
+>>> v6
+>>> --
+>>> - fix types and spelling mistakes
+>>> - use _MAX for privilege level enums
+>>> - uftrace info file: use empty strings
+>>> - trace flush: assert we wrote all data
+>>> - doc: added style for keyboard keys
+>>> - added URL to document uftrace entry format
+>>> - updated comment in vcpu_tb_trans to explain why we always instrument the first
+>>>     instruction in tb
+>>> v5
+>>> --
+>>> - addressed Alex comments
+>>> - split plugin implementation in several commits
+>>> - removed instruction based timestamps (only use time based timestamps)
+>>> - removed sampling implementation
+>>> v4
+>>> --
+>>> - add support for x64
+>>> v3
+>>> --
+>>> - fix missing include unistd.h (build failed on MacOS only)
+>>> v2
+>>> --
+>>> - trace active stacks on exit
+>>> - do not erase map generated in system_emulation
+>>> - add documentation to generate restricted visual traces around specific events
+>>>     of execution
+>>> Pierrick Bouvier (9):
+>>>     contrib/plugins/uftrace: skeleton file
+>>>     contrib/plugins/uftrace: define cpu operations and implement aarch64
+>>>     contrib/plugins/uftrace: track callstack
+>>>     contrib/plugins/uftrace: implement tracing
+>>>     contrib/plugins/uftrace: implement privilege level tracing
+>>>     contrib/plugins/uftrace: generate additional files for uftrace
+>>>     contrib/plugins/uftrace: implement x64 support
+>>>     contrib/plugins/uftrace_symbols.py
+>>>     contrib/plugins/uftrace: add documentation
+>>>    docs/about/emulation.rst           | 199 +++++++
+>>>    contrib/plugins/uftrace.c          | 876 +++++++++++++++++++++++++++++
+>>>    contrib/plugins/meson.build        |   3 +-
+>>>    contrib/plugins/uftrace_symbols.py | 152 +++++
+>>>    4 files changed, 1229 insertions(+), 1 deletion(-)
+>>>    create mode 100644 contrib/plugins/uftrace.c
+>>>    create mode 100755 contrib/plugins/uftrace_symbols.py
+>>>
+>>
+>> Ping on this series.
+>> Comments from reviewers have been addressed.
+>> Alex, are there other changes you would like before pulling this?
 > 
-> The remapping is configured through SCU registers and enables shared memory
-> communication between PSP and the coprocessors.
-> 
-> Therefore, the DRAM and SDMC devices must be realized before:
->    - the SCU, which configures the alias offset and size
->    - the coprocessors, which access the alias through their SDRAM window
-> 
-> No functional change.
+> I thought there were the some changes Philippe asked for? I can pull v7
+> once it is posted. There is no massive rush as the tree has just
+> re-opened.
+>
 
-Please move this patch at the beginning of the series. It can be
-merged early.
+It was a polite way to ask if you had other comments to address before 
+sending a v7, which is mostly about styling issues, so maybe not worth 
+being sent as it is.
+I just posted v7, let me know there if you need other changes before 
+considering it as ready.
 
+I don't mind if the series is pulled later, but I'm trying to address 
+all comments as soon as possible and move forward on other topics, thus 
+my previous ping.
 
-Thanks,
-
-C.
-
-
-> 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-> ---
->   hw/arm/aspeed_ast27x0.c | 40 ++++++++++++++++++++--------------------
->   1 file changed, 20 insertions(+), 20 deletions(-)
-> 
-> diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-> index 2d27eb1deb..9d67c5f631 100644
-> --- a/hw/arm/aspeed_ast27x0.c
-> +++ b/hw/arm/aspeed_ast27x0.c
-> @@ -765,6 +765,26 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
->                              qdev_get_gpio_in(DEVICE(&a->intc[0].orgates[0]), i));
->       }
->   
-> +    /*
-> +     * SDMC - SDRAM Memory Controller
-> +     * The SDMC controller is unlocked at SPL stage.
-> +     * At present, only supports to emulate booting
-> +     * start from u-boot stage. Set SDMC controller
-> +     * unlocked by default. It is a temporarily solution.
-> +     */
-> +    object_property_set_bool(OBJECT(&s->sdmc), "unlocked", true,
-> +                                 &error_abort);
-> +    if (!sysbus_realize(SYS_BUS_DEVICE(&s->sdmc), errp)) {
-> +        return;
-> +    }
-> +    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->sdmc), 0,
-> +                    sc->memmap[ASPEED_DEV_SDMC]);
-> +
-> +    /* RAM */
-> +    if (!aspeed_soc_ast2700_dram_init(dev, errp)) {
-> +        return;
-> +    }
-> +
->       /* SRAM */
->       name = g_strdup_printf("aspeed.sram.%d", CPU(&a->cpu[0])->cpu_index);
->       if (!memory_region_init_ram(&s->sram, OBJECT(s), name, sc->sram_size,
-> @@ -872,26 +892,6 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
->                              aspeed_soc_get_irq(s, ASPEED_DEV_EHCI1 + i));
->       }
->   
-> -    /*
-> -     * SDMC - SDRAM Memory Controller
-> -     * The SDMC controller is unlocked at SPL stage.
-> -     * At present, only supports to emulate booting
-> -     * start from u-boot stage. Set SDMC controller
-> -     * unlocked by default. It is a temporarily solution.
-> -     */
-> -    object_property_set_bool(OBJECT(&s->sdmc), "unlocked", true,
-> -                                 &error_abort);
-> -    if (!sysbus_realize(SYS_BUS_DEVICE(&s->sdmc), errp)) {
-> -        return;
-> -    }
-> -    aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->sdmc), 0,
-> -                    sc->memmap[ASPEED_DEV_SDMC]);
-> -
-> -    /* RAM */
-> -    if (!aspeed_soc_ast2700_dram_init(dev, errp)) {
-> -        return;
-> -    }
-> -
->       /* Net */
->       for (i = 0; i < sc->macs_num; i++) {
->           object_property_set_bool(OBJECT(&s->ftgmac100[i]), "aspeed", true,
-
+Regards,
+Pierrick
 
