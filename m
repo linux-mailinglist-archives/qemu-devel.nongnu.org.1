@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E111B40618
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 16:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A95B40658
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 16:15:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utRdx-00067u-JN; Tue, 02 Sep 2025 10:05:53 -0400
+	id 1utRlZ-00037H-38; Tue, 02 Sep 2025 10:13:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1utRdf-0005xd-EJ
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 10:05:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1utRdZ-0004EA-G7
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 10:05:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756821927;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BHe4X/K6k3rkK/u0AV7eJP1IQOoAyGnryLMjjYMWfYQ=;
- b=iA9U3dfYHTJkn3TJXh9wp6Fonc2SLRkWXiRLxqLVeyvtDS1o0weobaWqxbW8nP6mfEGRm9
- qvm9c2+U/lrZBuex6goSkMtvP/6dWy80ovJVYijywcnR6Pvqkh4WW4oU/AuFEgwzVXSMUw
- SClPiW8BP4oHRYKAnFFsPawy3wjQE5Q=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-257-ylBzQdvwOtSJo9ZzSB5AIQ-1; Tue,
- 02 Sep 2025 10:05:24 -0400
-X-MC-Unique: ylBzQdvwOtSJo9ZzSB5AIQ-1
-X-Mimecast-MFC-AGG-ID: ylBzQdvwOtSJo9ZzSB5AIQ_1756821919
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3E8F9180044F; Tue,  2 Sep 2025 14:05:19 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.110])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 98BC2180028B; Tue,  2 Sep 2025 14:05:18 +0000 (UTC)
-Date: Tue, 2 Sep 2025 10:05:17 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-ppc@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Chinmay Rath <rathc@linux.ibm.com>, kvm@vger.kernel.org,
- Glenn Miles <milesg@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: Re: [PATCH v2 1/3] target/ppc/kvm: Avoid using alloca()
-Message-ID: <20250902140517.GE80770@fedora>
-References: <20250901132626.28639-1-philmd@linaro.org>
- <20250901132626.28639-2-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="jd0fcGbAJA6igup7"
-Content-Disposition: inline
-In-Reply-To: <20250901132626.28639-2-philmd@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ (Exim 4.90_1) (envelope-from
+ <3gfu2aAkKCqAANKEESLERGOOGLE.COMQEMU-DEVELNONGNU.ORG@flex--ankeesler.bounces.google.com>)
+ id 1utRlU-00034w-Sg
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 10:13:41 -0400
+Received: from mail-qk1-x749.google.com ([2607:f8b0:4864:20::749])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3gfu2aAkKCqAANKEESLERGOOGLE.COMQEMU-DEVELNONGNU.ORG@flex--ankeesler.bounces.google.com>)
+ id 1utRlH-0005Kt-EU
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 10:13:40 -0400
+Received: by mail-qk1-x749.google.com with SMTP id
+ af79cd13be357-7fa717ff66bso1114709085a.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 07:13:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1756822402; x=1757427202; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=UZNSCN5sYnNYWa8Hr4uwRVGbv6aMKp/piGaLp7BrsHs=;
+ b=DBLyoAX/4kzwws1BxaWlo2dHk67z56hq4QzTxJe7u3vFvsruIXt/xRTSWUNyR04BPg
+ Iptd2eBgg7tY+Hsjl4WlXyCVBSfj2wc3NKogqGC0jSjWlzXmxV2WgK2DufxzZXkPzglR
+ 6KlewAkaPH/pwWoUtoYmUrA1d1C+zDKksHXichBUcl4k0LLU+IjAZj9KcRWmSbGnVAS7
+ uhSOegTjxzlbUMLV97tK6LOwj8vNLBlPPuHXpA5wrfyv7Eh120SWisnOvlOrXCrtjEI1
+ buAaEzWIekznrVQy4Eu2R9/qiv0BVmj6QJWQBsmnbskpMlE9lCNDJnIEsOda7k1ACm2d
+ CgaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756822402; x=1757427202;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=UZNSCN5sYnNYWa8Hr4uwRVGbv6aMKp/piGaLp7BrsHs=;
+ b=lCx4TsjUgJZdKF7fzsz3RLQ5qDXUE16IC02WNTvIx9F5MX4kTikJI3RRdMW378qi5j
+ XJdcq3jQPC09W4LT61UEb2lf8d55rgF08Np+CTnqKRncnLOnSwJx3Noeaypii5ioUr80
+ 6BsXXcrIZknNsbyrHohfTgOi3WCOluyj8L/2p6YIPTgDVaVTmeF3rXVUHPlsy+5VWdKn
+ EzgKes/2zJ7hAI72cCbnmEk8PED8Mp4wTRrNXrZ4PF1Nkv4sHwo+P0JJpocD11L5bMBv
+ RRGpnNIpleh4uF/c8uZkKBUCoLRCTdTDl/YitvP/QMGik9egG9cwntHPChbgQlzdQeP8
+ 9bZA==
+X-Gm-Message-State: AOJu0YweXnigVuPvz5NXBsS1iSHoWxicNtYODEaQ0PTLi4KNsKPUSpKp
+ cClnR8CefsNvUB4NoX+Jaqci2sTav1k31oca17kEOxRMrXxFX6lje1JQbT1+OkehZNzi/2s850S
+ HUABM1kmqRpdskfkH
+X-Google-Smtp-Source: AGHT+IG14FLglvlVh94qxRhWtrs/0kZICP6fsl3cnnx6X+6RdF+hMXJGf0U31e9EceikpmF/T0eX8FW6Qy0h60E=
+X-Received: from qkbdl5.prod.google.com ([2002:a05:620a:1d05:b0:807:e3b6:b77f])
+ (user=ankeesler job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:4451:b0:7e9:f81f:ce8d with SMTP id
+ af79cd13be357-7ff2c145378mr1083271085a.79.1756822401622; 
+ Tue, 02 Sep 2025 07:13:21 -0700 (PDT)
+Date: Tue,  2 Sep 2025 14:13:11 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.338.gd7d06c2dae-goog
+Message-ID: <20250902141312.750525-1-ankeesler@google.com>
+Subject: [PATCH v3 0/1] Support per-head resolutions with virtio-gpu
+From: Andrew Keesler <ankeesler@google.com>
+To: berrange@redhat.com, marcandre.lureau@gmail.com
+Cc: qemu-devel@nongnu.org, Andrew Keesler <ankeesler@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::749;
+ envelope-from=3gfu2aAkKCqAANKEESLERGOOGLE.COMQEMU-DEVELNONGNU.ORG@flex--ankeesler.bounces.google.com;
+ helo=mail-qk1-x749.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,40 +88,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+In 454f4b0f, we started down the path of supporting separate
+configurations per display head (e.g., you have 2 heads - one with
+EDID name "AAA" and the other with EDID name "BBB").
 
---jd0fcGbAJA6igup7
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In this change, we add resolution to this configuration surface (e.g.,
+you have 2 heads - one with resolution 111x222 and the other with
+resolution 333x444).
 
-On Mon, Sep 01, 2025 at 03:26:24PM +0200, Philippe Mathieu-Daud=E9 wrote:
-> kvmppc_load_htab_chunk() is used for migration, thus is not
-> a hot path. Use the heap instead of the stack, removing the
-> alloca() call.
->=20
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
-> ---
->  target/ppc/kvm.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+  -display vnc=localhost:0,id=aaa,display=vga,head=0 \
+  -display vnc=localhost:1,id=bbb,display=vga,head=1 \
+  -device '{"driver":"virtio-vga",
+            "max_outputs":2,
+            "id":"vga",
+            "outputs":[
+              {
+                 "name":"AAA",
+                 "xres":111,
+                 "yres":222
+              },
+              {
+                 "name":"BBB",
+                 "xres":333,
+                 "yres":444
+              }
+            ]}'
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Here is the behavior matrix of the current resolution configuration
+surface (xres/yres) with the new resolution configuration surface
+(outputs[i].xres/yres).
 
---jd0fcGbAJA6igup7
-Content-Type: application/pgp-signature; name=signature.asc
+Case: !(xres || yres) && !(outputs[i].has_xres && outputs[i].has_yres)
+Behavior: current behavior - outputs[0] enabled with default xres/yres
 
------BEGIN PGP SIGNATURE-----
+Case: (xres || yres) && !(outputs[i].has_xres && outputs[i].has_yres)
+Behavior: current behavior - outputs[0] enabled with xres/yres
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmi2+Z0ACgkQnKSrs4Gr
-c8h3sgf/eoM1bEv4uB6rZVlcxL1mnhvRmYV8QDeYpJGUN5TqRW7ahmJlv7PihWIh
-/UdnUjXYbpp+wPhP5p8MFcHOWmazYha17z7q99Kyd0bKLnUR+WvPTJFGzSClSUKf
-6D1yaGNzrrbidJoZ3xC9BJC+3yz6B9I4BNYg0Z9htdjIYkQtuuR88+Zx+Fj2jDWO
-ZPsB7iq0XrUoF8kVB7J8dXcL5rs+nK5rfGVUlAe7D7D6h9wN0uQxCPReVqlNh3Jr
-3dJbVDu6AClCkAj4fNU5q0L+R14ci/3vGLY9Qy4jtv+zxSeC4QY5+qfnV4j52In5
-JLT1YGlDCBa5XfJDERQCbVR4Wcd5qA==
-=MiVV
------END PGP SIGNATURE-----
+Case: !(xres || yres) && (outputs[i].has_xres && outputs[i].has_yres)
+Behavior: new behavior - outputs[i] enabled with outputs[i].xres/yres
 
---jd0fcGbAJA6igup7--
+Case: (xres || yres) && (outputs[i].has_xres && outputs[i].has_yres)
+Behavior: new behavior - outputs[i] enabled with outputs[i].xres/yres
+
+Changelist:
+* v3: changes after v2 review
+  * fix new resolution configuration logic (&& instead of ||)
+  * correct use of api machinery (has_*)
+  * move documentation to QMP API
+* v2: changes after v1 review + 10.2 rebase
+  * updated code, commit message, and cover letter to match new res config logic
+  * marked new VirtIOGPUOutput fields as optional and since 10.2
+* v1: initial patch
+
+Andrew Keesler (1):
+  Support per-head resolutions with virtio-gpu
+
+ hw/display/virtio-gpu-base.c | 10 ++++++++++
+ qapi/virtio.json             | 10 ++++++++--
+ 2 files changed, 18 insertions(+), 2 deletions(-)
+
+-- 
+2.51.0.338.gd7d06c2dae-goog
 
 
