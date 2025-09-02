@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32368B4022E
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 15:12:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E475B40265
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 15:16:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utQnP-0000Ye-Gd; Tue, 02 Sep 2025 09:11:36 -0400
+	id 1utQn6-0000Wm-Uh; Tue, 02 Sep 2025 09:11:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQms-0000Sf-2l
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:11:03 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQmy-0000Uw-27
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:11:08 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQmp-0004Rn-2R
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:11:01 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3cf48bde952so3723208f8f.0
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 06:10:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQmt-0004SY-RR
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:11:07 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3d0b6008a8bso2100215f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 06:11:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756818655; x=1757423455; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756818660; x=1757423460; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=bdjUdksMSi5PcEKm6NTkntw2W6DG2YujIlvk6/azIfc=;
- b=SrsnD9RrawR1dtynLS4siSs87MW6XyVElsaL3ekYgqUsvab38tF6LNEhpeZjrMlTbe
- OuF/ek1r8T4afXaLFQkBxlI1DS+2fu3YvlxQ8hC1Ajr+jOA6muUV0fLtBxxDHBjfDc8s
- 8jvwLETwAZY5ddvMh6JGb0velZRQVzkr0ymPnJDV6rEbA4m/dGZ6ldT8FxXjhJG54q6G
- 3AoEAQAfNp+F4cFN5B16W6xwgEMl1Fl0WMGID6KBL/fDClcSK+2JLVAF1F6KEmnKvNFO
- Lk3jBBQ7hjRx3V46XYgdjGPS1TqkdDuV95Rgec0uYsbzBHEvDOSq0NDYADnpymKDFjeQ
- AeZQ==
+ :reply-to; bh=7F5eIWtwGjAcSDjJbli/J422DEzt3H2+R5Kkkzggnos=;
+ b=UWO72YEwPSF9Aeah8oyng9DeUVrbLxuDYprk6L0kscF5XUsSlit5YXmYyGMEQMQmI4
+ GZKBj5+RMwA8JOT/bbJJUvROYucWKaa8kILq7vtsaBflHq1y0slsmegk4QZ2gDsXX+JJ
+ 6+jRJKv1HMF6E1mIvPCra9j8xkwV6Fw6q6i6rcbSjU8avn7IkUX+JOpv+R2P8Kbk04/3
+ bjdV0B7Ca84oxv9rI4r1wjpAgdQVqBue6llcNfADZRKHEX4WseSkwetOA7RSW5mG7Bzw
+ HrP2yCEZNu3b7vVh7G5uxMm/XwmK8NbeYe79pIfrfHGI7puevKhi7pYf6pqfO3btH0BE
+ 7IqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756818655; x=1757423455;
+ d=1e100.net; s=20230601; t=1756818660; x=1757423460;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bdjUdksMSi5PcEKm6NTkntw2W6DG2YujIlvk6/azIfc=;
- b=rm6ST+pBvXHTi2g4jdP0tOGKmLnSSKOwRlmvl+ACd5KK5jGNTDT7R+gg9I2u3tkcV9
- 7TnZb69QoV+Jhq3MeGwgbrLEgl180hcjzS5FCodN94RFOLQJGDuLYRECdSM8cDdaBDda
- ujAwlEWnw5jgymrXGV/4HtlqZ3BVA64nxtoxfW+7QDlIuugAmnHnotANiWmY/ukyx39r
- PIcW2SYpYiBaPgcJPjWAp5yyDj9TWHvzGUDNfmfc/CDjngrxKj6vcv4agDNYDuForKB8
- 3cUdyaEcUP4g8jPUY5vp4xVAoxDZKyRsYClPPU5+XTGEKRGl8QLvbgYHapN1kwwrRfQR
- XTKA==
-X-Gm-Message-State: AOJu0YwpHXVI/PxT4IA7GzWwkyEwbYiVmMXUoPFPpNKP/l1adjtEvgf7
- d0ZsMXiZg43KG6UgPxtCGj+enow39/xUX1qQXBCydh+VG+h8b9T96yuGEME+yX3iUt/UCZvfBYP
- EGuJe
-X-Gm-Gg: ASbGncty1j0f08jcX+VCbSu/6I6KseP8KFqxk25eE5TVMTBUKqjAtEdGhIFXdsibVHq
- tJjS3qF5DaoYHG9g/CnH0QsxTpK/SP1Xs6ZsJmgzGkiPqfW7/SW70/KHqoIpAZeEGJi3r4FWyEb
- St9vzgrFqZ84nRiCwa2L1ULjBiC9nPp0si5nyLDCpvru4kkSq5bcLp8lAgCRduslT8bOMOgSm8N
- ccFpSAHagdXfToQNInsVL1+LmPQ7xsBjNYUTB4dLgrKPaefGTHy/QVFIDt9vTk3q/1Q32tAy/xS
- Z1nDIEUV1RpmcRwpOgns54dodL3A4YKSjK36FVEyhRPi8LJ4c5br7V5KzJQvQGda/SLJWf0CSEV
- aeQ7FIV1XcOc4e0Nac1fdiPJ8oWfMYLfDWq5UO668pm3YcUhWeJiGni3Ix7Hz1WtkmXFAAmsDDA
- RTNCm7BC2dI8zpyPugsw==
-X-Google-Smtp-Source: AGHT+IHltI4oUZ06r03G6luP97pDDV9ZGvIYrYSujgJRf2wqYNfl6pOPrkB12g0+jiUPX3f6NwPysg==
-X-Received: by 2002:adf:a3da:0:b0:3d2:2989:224 with SMTP id
- ffacd0b85a97d-3d229892c7dmr5790880f8f.7.1756818654828; 
- Tue, 02 Sep 2025 06:10:54 -0700 (PDT)
+ bh=7F5eIWtwGjAcSDjJbli/J422DEzt3H2+R5Kkkzggnos=;
+ b=NqcPTtUWmw1Pxqi0b4O0ZT9LUXK6qXdaGjveYb0PpNrobbdW2BxX/ocoNbQX+nZPNO
+ kszE00QJ2vzCuv9RIU2z8fV2h0O9tFSzDmvQ/wi83jeSYrrS+Xc2LSTS00dewn7+7W6E
+ qE5f98pmZL7FH3Q1zW8PSQT2JZ2CcPv+kScTtpHuBOoOiXd2JzphPyTe6I8EpGQ/PRGZ
+ 51sq92YosDgmPMpP8+fngAnPk9W7DAcj+LYFJ6YONkHyqeqZcbar4nygim17BUtuikcp
+ xzzC+5aovOizKKO1lSRSLiqeHyxHbKaQ/anWyJflv5c97UXc/8kGI4fl33+sJgwFHLXP
+ KPag==
+X-Gm-Message-State: AOJu0YxSHZZd++HgFOVCm1aHXpiBzGRECT1c2AaWhxyeRPEfWiH5PC92
+ 1BVivqnc95DyC5pu4xlEe+c4Wn7ND8dcTtIyPgsZ3FUM1sYv/mW/0g1GwnwTyDIxwAlhRSwg13C
+ sHj3h
+X-Gm-Gg: ASbGncv4J9NQtBfdeLlpysj5EPQEJYCtpUHmfegv+H7/hxwKluDUPbxiP3/41Zma0dA
+ 3EurSnpOd8YvOgySPj8Qwm/lfjm+y3KZ+1xcpN7uk3IAYTjp2Iv0wFDI7EXVkY54Zi3jWn4nM6U
+ 6W8A5e76+5rX5Zz8sKf2rcWlKpL1B5MHIginzAvzTG4wy3odxeMWCYMryNi5pW4pLBi/Q7CC0z6
+ u3fXyr+bB3HCB0ar/xkCXDuIilho0ZfxTAT/hg2TCeHvkHlRHMCueiWnSiF0AlipoN0/gToUiux
+ wNpm9LIjP5u7VakrZNixjDIyjMT31Fc7ts5Q7FA4aHvtD+ID0XMXYk/GzoGrX6kV8cc9ina6WX5
+ 882wUJLHlmiRe+0eNzaFWytAu6Pm96NIcqRbSNaZYxIxf0sAQ2l8RAoZyVzOILrxuY7lwDaOnf7
+ 8xtfDhWKo=
+X-Google-Smtp-Source: AGHT+IGRru28GlAmQS2YlNliqsRwTVl7DfXxRd0qyRgM+12gljJrpPCPPZykgf4JxInVdOjtPkHoTg==
+X-Received: by 2002:a05:6000:18a2:b0:3c8:d236:26aa with SMTP id
+ ffacd0b85a97d-3d1e05b9a97mr9648132f8f.58.1756818659560; 
+ Tue, 02 Sep 2025 06:10:59 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf270fc3fasm19381159f8f.5.2025.09.02.06.10.53
+ ffacd0b85a97d-3d21a32dbc5sm15924801f8f.11.2025.09.02.06.10.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Sep 2025 06:10:54 -0700 (PDT)
+ Tue, 02 Sep 2025 06:10:58 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/39] include/exec/target_page.h: move page-target.c to header
-Date: Tue,  2 Sep 2025 15:09:45 +0200
-Message-ID: <20250902131016.84968-9-philmd@linaro.org>
+Subject: [PULL 09/39] hw/meson: enter target hw first
+Date: Tue,  2 Sep 2025 15:09:46 +0200
+Message-ID: <20250902131016.84968-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131016.84968-1-philmd@linaro.org>
 References: <20250902131016.84968-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,79 +99,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+We can reuse target source sets for "generic" devices that are related
+to a single architecture (like interrupt controllers).
+
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250730220519.1140447-3-pierrick.bouvier@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250801174006.2466508-2-pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- meson.build                |  2 +-
- include/exec/target_page.h | 11 ++++++++++-
- page-target.c              | 21 ---------------------
- 3 files changed, 11 insertions(+), 23 deletions(-)
- delete mode 100644 page-target.c
+ hw/meson.build | 45 +++++++++++++++++++++++----------------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 7ff84787cf1..fa6186db334 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3899,7 +3899,7 @@ if get_option('b_lto')
-   pagevary = declare_dependency(link_with: pagevary)
- endif
- common_ss.add(pagevary)
--specific_ss.add(files('page-target.c', 'page-vary-target.c'))
-+specific_ss.add(files('page-vary-target.c'))
- 
- common_ss.add(files('target-info.c'))
- specific_ss.add(files('target-info-stub.c'))
-diff --git a/include/exec/target_page.h b/include/exec/target_page.h
-index ca0ebbc8bbd..813591c9b51 100644
---- a/include/exec/target_page.h
-+++ b/include/exec/target_page.h
-@@ -62,6 +62,15 @@ static inline int qemu_target_page_bits(void)
-     return TARGET_PAGE_BITS;
- }
- 
--size_t qemu_target_pages_to_MiB(size_t pages);
-+/* Convert target pages to MiB (2**20). */
-+static inline size_t qemu_target_pages_to_MiB(size_t pages)
-+{
-+    int page_bits = TARGET_PAGE_BITS;
+diff --git a/hw/meson.build b/hw/meson.build
+index 791ce21ab42..1022bdb8069 100644
+--- a/hw/meson.build
++++ b/hw/meson.build
+@@ -1,3 +1,26 @@
++# Enter target code first to reuse variables associated
++subdir('alpha')
++subdir('arm')
++subdir('avr')
++subdir('hppa')
++subdir('xenpv') # i386 uses it
++subdir('i386')
++subdir('loongarch')
++subdir('m68k')
++subdir('microblaze')
++subdir('mips')
++subdir('openrisc')
++subdir('ppc')
++subdir('remote')
++subdir('riscv')
++subdir('rx')
++subdir('s390x')
++subdir('sh4')
++subdir('sparc')
++subdir('sparc64')
++subdir('tricore')
++subdir('xtensa')
 +
-+    /* So far, the largest (non-huge) page size is 64k, i.e. 16 bits. */
-+    g_assert(page_bits < 20);
-+
-+    return pages >> (20 - page_bits);
-+}
- 
- #endif
-diff --git a/page-target.c b/page-target.c
-deleted file mode 100644
-index 8fcd5443b52..00000000000
---- a/page-target.c
-+++ /dev/null
-@@ -1,21 +0,0 @@
--/*
-- * QEMU page values getters (target independent)
-- *
-- *  Copyright (c) 2003 Fabrice Bellard
-- *
-- * SPDX-License-Identifier: LGPL-2.1-or-later
-- */
+ subdir('9pfs')
+ subdir('acpi')
+ subdir('adc')
+@@ -44,26 +67,4 @@ subdir('virtio')
+ subdir('vmapple')
+ subdir('watchdog')
+ subdir('xen')
+-subdir('xenpv')
+ subdir('fsi')
 -
--#include "qemu/osdep.h"
--#include "exec/target_page.h"
--
--/* Convert target pages to MiB (2**20). */
--size_t qemu_target_pages_to_MiB(size_t pages)
--{
--    int page_bits = TARGET_PAGE_BITS;
--
--    /* So far, the largest (non-huge) page size is 64k, i.e. 16 bits. */
--    g_assert(page_bits < 20);
--
--    return pages >> (20 - page_bits);
--}
+-subdir('alpha')
+-subdir('arm')
+-subdir('avr')
+-subdir('hppa')
+-subdir('i386')
+-subdir('loongarch')
+-subdir('m68k')
+-subdir('microblaze')
+-subdir('mips')
+-subdir('openrisc')
+-subdir('ppc')
+-subdir('remote')
+-subdir('riscv')
+-subdir('rx')
+-subdir('s390x')
+-subdir('sh4')
+-subdir('sparc')
+-subdir('sparc64')
+-subdir('tricore')
+-subdir('xtensa')
 -- 
 2.51.0
 
