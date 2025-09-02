@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0862B3F359
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AB8B3F331
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:01:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utI03-0006qy-Nx; Mon, 01 Sep 2025 23:48:04 -0400
+	id 1utI0H-0006th-Cp; Mon, 01 Sep 2025 23:48:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utHzp-0006ot-Jk
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:47:49 -0400
+ id 1utHzq-0006qG-Uj
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:47:50 -0400
 Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utHzm-0004Tl-Nf
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:47:49 -0400
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822SKpT025556
- for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:47:46 GMT
+ id 1utHzn-0004Tt-Tw
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:47:50 -0400
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822S4uS030589
+ for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:47:47 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- bXOYi8iAS5C0z9QpXZYNZrW4sw+vX27RxmMAI6y6g8A=; b=eElxdme9GZmjtLjp
- I8L+V1dJ6uYrvoiMOwGv7zAlSMs2t0cdZrlCCROXoLdMcxrcDAnde3pRyKYP8BCP
- 3BZF8sEANFKXGGKGu52UfQxAthMFwgjUecQTx0Gf7Yh5W8nviCx+TSo0N34MMLY/
- Jotz2r71/ZPvS4GCswqdAW3LlZJhDilPyltZyuAXw25uqMzk6mXw2H5a+Z6liVgC
- K4KCfAzLGZVdlPfQ5o1xsj13+mWMHxWUxMe5erGAJkZxioY20vJuPqn4wgyv4Anu
- c2dh18IidrijOe5WdGpSMYlNQEX0mZXbiKnXV5f3RTr2FJtqa4JENv6C+whRLCH/
- yfCLWg==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48uscuxe6p-1
+ u6+cmbwXwuBQg3mgmZyDbHMM77cwPQpYHh0dKMI4RyM=; b=UvP8O4fK8C7m4Oqq
+ 7MpmK/mKAvIBlWsu1HnlarAMRvCuVLFoqg0ETA2Y06p8Ie5LT3VLn91tUJSm8Ldx
+ h0Oyb6t1Wi8GY9yiKy1Z4ib+mAkmgX1Pvah7T9sw9MWCp17pyo68VqRWYS/B5UdN
+ NWp4z+NnWUa9jMJf1q3LdPAS5klsKI4LG0+bLfZPFvB4xCUb99HanWX9UGsyfPQ+
+ lRLCPk2PyJFa1BsVbdhHQxMfSCUMo+gt+EScTNNMOxrN+nJ6XnL2CvfWrd7jvcFE
+ 3eTYobq4tvKUuxRTtf74D+yhMDfYpadLXALEj3byjxGWYIvAxIkHdGOdp43o7M/z
+ /YXX3w==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ura8pbxx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:47:45 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-327594fd627so5027695a91.3
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:47:45 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:47:46 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id
+ d2e1a72fcca58-77267239591so1184262b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:47:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756784864; x=1757389664;
+ d=1e100.net; s=20230601; t=1756784865; x=1757389665;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bXOYi8iAS5C0z9QpXZYNZrW4sw+vX27RxmMAI6y6g8A=;
- b=L3JQYkN3pR/HTgT6Y5k6hBDWv5l4eXJwRh3XvT3ep2PpTQnbjin3+nlHEpRIWpwqer
- 4D/2FDdeeY1GtvOO7YdZw3Z9JOYOLT03Vdh5ACZrTeuQOA4oKi1XPvr9pnRGa9i3/xce
- 5u8dkJc9xBOMZT7IHxuSmXzPXqZW9uODQGG5tWens7ZUo6r4U1E4KEWsuHp82tUoWgea
- 9CdhizmoJJ6NFNCoZ4gWDs6lPJi2ElmoSr2pc/zJHhax9OoE8FrCK/DOStMvlEha9Ezp
- gfRel7E/z0tocMt+sQw+DtWCUHWAaLOGFD2NT6/0Ag8eyxm1WeF6Z9Kxz18QXezo49E4
- CoJA==
-X-Gm-Message-State: AOJu0YwK5Aeo1truyMSXYy3K9ghHPq4yDqjPFpQG4Nn/SxzUTo2SjYlS
- Ug2+UFW4MzXQOkuEzegxYaQxSsvDySRLiYyZ2pNmAvQdlEGUtDXbJ97nzEFgyN+cDDxGuBZsAms
- xibc/zGGWXZhwgDu4W+EF0q+Seqd3PpEexzZxqW1gOk6/0dBHRAxJD3/J93ZLW3ccyOB9
-X-Gm-Gg: ASbGnctE4i0rlEhhMsu2jTxeBI9GBtz0Zo6E+TwB+nmF56pjLWTjFIV5QDQAq1sIiJt
- 5jvVEV7i67mr7w8HIbiPaTuu/o4OngoPpaC6kQlzNIJMxChllaMjj/yBBpZbWxo5ZLikcjzDRV5
- H7V8sqXstGZGrtDapuFMMSCiXMbP+igStjo5v/X/EH6XOE6Dxw/kjMZIbClnUU3EnOp3Qjol3BR
- lfsi5Myk47QKmJ6zi04UkscscCQUXmZCDPGW3/cgsUfc8fZsT3zO5emV1HpDbEXvR+CrdH22I6K
- sEOjEC48ahzDAvRt/zyPztwhjV6+IUh4mxEGIqMnIvUJGEZgXyTWG6oAy51tcd1U2ZqdXjG/0nw
- 5e5Z6qi7GHhU7
-X-Received: by 2002:a17:90a:e7cc:b0:327:dce5:f644 with SMTP id
- 98e67ed59e1d1-32815436034mr12726894a91.11.1756784864240; 
+ bh=u6+cmbwXwuBQg3mgmZyDbHMM77cwPQpYHh0dKMI4RyM=;
+ b=r4gVyEsV+yGdgAG0iGDjmZHcJnPRMbTw71TywOhmk37rmdmPEomhRrOutJl8NazenB
+ YqI4j8BH+H+ReWFvNfNallhGzHOWl7SLnxpVB2pZ1mN8TtXdxis/Inp2Nf0Ljpn2XbLg
+ N7Fm5Bp3+Hb0pzUKoj7zc+O5voNBr+IrNf0if5T5+/ysEG8krIqudT0U25CdrL6+UvNI
+ 0My7lRXl2sDLG3QknoFNqdytO2x2cFXCFR5MTVlg11xc+6YcfE/NgQDclIsZ25eVsi4E
+ sXvMy334/QJGY4nPAaZ8ihxYmt/mxgwHbXaDDsekILbzEe2Z9GsZGJItemChbAmBhTzj
+ QuNw==
+X-Gm-Message-State: AOJu0Yym0aOoKbVMLIjC7bIy3DqkTWLWbW/LIOGpy0M7qn83g1s+jpvt
+ i5EWrokxaz19sl4IAhMGkUdr12rREcf1/ngSYuzH4yeQZBY7Bm1HqlM1s66u+hHfoG+lNZsrQxW
+ r5kxWfbP6bLJDQgnKDhT8a4B3DoYyQXohz+Ey0ZVHm1pcdpgMNciPifx8Kw5kb9TBIozB
+X-Gm-Gg: ASbGncuMmfOUzvzjFZnM5qbA6mU0sITnrib83nqUIpkN171nDGQf786aeTk4fVK9Kk5
+ Aevo98wPodf16w+nb3l3Brh+CRQHK3xnYwKDmBQ4Lm6/7NmAREXLTdsnjCLfUEn6HZQWmznAPmi
+ kxrg5+frGQI4eX/mPfnWDn84ZT+bq/Gf+yhRfbhwxIweEclMypIemP+4boPGjHUCYZUpbpqazJV
+ bpy2ROz6m4cfTdUTUUxaVW5vBJoK4Q7EhnN7dpAdwdpA+qHv0c7oEDIDoF7hKM+wQ6CmG+mgxPa
+ wc5M8CNyLFd4i2Y3jb3Y0AcmjtiwmOF/XYf7LaEu2eLcQhdd48CZHgXXywgL/+b1KPhEIMxYTQw
+ 3w1tQfGXF43bH
+X-Received: by 2002:a05:6a20:7d9a:b0:243:4b5d:5ea6 with SMTP id
+ adf61e73a8af0-243d6e56fa9mr13813257637.26.1756784865279; 
+ Mon, 01 Sep 2025 20:47:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGkeWFczIB30dw79kli6Qlqszey2BYnWuEHXNaFxmPQBm/BPqZ+rWPhV+MzTeKUcytqwztbbg==
+X-Received: by 2002:a05:6a20:7d9a:b0:243:4b5d:5ea6 with SMTP id
+ adf61e73a8af0-243d6e56fa9mr13813223637.26.1756784864803; 
  Mon, 01 Sep 2025 20:47:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGPJGleTnbtJzITfmYs9WL9msDmN9r09NTzpZ9pjJjjziBfS8UjoB2RacwalyFuBJZKWOoPvQ==
-X-Received: by 2002:a17:90a:e7cc:b0:327:dce5:f644 with SMTP id
- 98e67ed59e1d1-32815436034mr12726857a91.11.1756784863699; 
- Mon, 01 Sep 2025 20:47:43 -0700 (PDT)
 Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
  [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b4cd006e2c6sm10633584a12.2.2025.09.01.20.47.42
+ 41be03b00d2f7-b4cd006e2c6sm10633584a12.2.2025.09.01.20.47.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Sep 2025 20:47:43 -0700 (PDT)
+ Mon, 01 Sep 2025 20:47:44 -0700 (PDT)
 From: Brian Cain <brian.cain@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
@@ -79,37 +79,37 @@ Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
  anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
  alex.bennee@linaro.org, quic_mburton@quicinc.com,
  sid.manning@oss.qualcomm.com, Brian Cain <bcain@quicinc.com>
-Subject: [PATCH v2 18/40] target/hexagon: Add new macro definitions for sysemu
-Date: Mon,  1 Sep 2025 20:46:53 -0700
-Message-Id: <20250902034715.1947718-19-brian.cain@oss.qualcomm.com>
+Subject: [PATCH v2 19/40] target/hexagon: Add handlers for guest/sysreg r/w
+Date: Mon,  1 Sep 2025 20:46:54 -0700
+Message-Id: <20250902034715.1947718-20-brian.cain@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250902034715.1947718-1-brian.cain@oss.qualcomm.com>
 References: <20250902034715.1947718-1-brian.cain@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMSBTYWx0ZWRfX0jAAsEP9mA92
- m+Tl50ubWl2AE3s7dEYcERma/Vj9LEeeZSnX1tXG+qNcTRHKw1KweB/3/eXRVbEIXnhGfXfv2lX
- anCL1Rb1m/a2RPi9usDkOCni4+4FUgmsQJ2Rml97EQLzvRRKb51Q9RT0jStkAtqJJiWOKb1Vd3+
- hxZv9E0Uxph7dUsniDrnaIs3rFAN98fgWKuFYXaUAB6LSiWIBy3tjftyJkgPCU/ikOH/IQh4/BQ
- 4FERZEO8FfRZ65kY+rVTiP/Ngaj5kvUkEy4lgjrKL/+7c4gKKT6sZOyftMAg7DQiAR86pHIZRTT
- xdjjdNEMAJptzR3TSsScVzWPRxhVtUxvRtWnV8pht96WRQxZW/E+51NXonoTO3geSLocdd5lYZz
- i9YG4mQW
-X-Authority-Analysis: v=2.4 cv=A8xsP7WG c=1 sm=1 tr=0 ts=68b668e1 cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+X-Proofpoint-ORIG-GUID: pNPCWjchi3K3s_D272ajkLFMGSsZOllC
+X-Proofpoint-GUID: pNPCWjchi3K3s_D272ajkLFMGSsZOllC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyMCBTYWx0ZWRfX1S2RazfDf0E7
+ T802Levy681JS5MTWOhlKAr6XcsR1ueoImyzd8RU0oMCWQ2wthvu4AjNHXhjXhbgnn1yPftis8l
+ iPqEgA5xV8HbZ02vZiqFupB096Fyg80qHVscl67Yw4B8EU+1yaO++nK9fZLvaf5q03RRsqGHT4i
+ zVb53Uu1e7xOXwz9hZaEugESb4m9toCfOtw6/1qa32Rg33PgLpA4KafqDcpeFbxNyWk7ybhETiv
+ Yd4t7/5vmYMisoKUv2gHl1uW86O8zIYoOwHI8gIhFkBKSsfUcXT+E0nzyatW6P5CAQxXKWZS8iu
+ eodlC/muRrNXxRu5hakWSjAazfg69UGtwzRcHnOWoEPrlg9aRVGO6ijQmpQcjWuf53CIkw89PvD
+ EdLYYkqq
+X-Authority-Analysis: v=2.4 cv=VNndn8PX c=1 sm=1 tr=0 ts=68b668e2 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
  a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
- a=H-6vKWyFFGuCzvjpqwAA:9 a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
+ a=l5hRqwrd4wiMbFURoVoA:9 a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
  a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: SXo4E8s4e7LUQrd9ocOP1RGoEtqtSLWs
-X-Proofpoint-GUID: SXo4E8s4e7LUQrd9ocOP1RGoEtqtSLWs
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0 impostorscore=0 bulkscore=0 clxscore=1015
- suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
+ suspectscore=0 spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0
+ clxscore=1015 adultscore=0 priorityscore=1501 phishscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300031
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300020
 Received-SPF: pass client-ip=205.220.180.131;
  envelope-from=brian.cain@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -26
@@ -136,377 +136,170 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Brian Cain <bcain@quicinc.com>
 
-Also: add nop TCG overrides for break,unpause,fetchbo,dczeroa
-
-break: this hardware breakpoint instruction is used with the in-silicon
-debugger feature, this is not modeled.
-
-unpause: this instruction is used to resume hardware threads that are
-stalled by pause instructions.  pause is modeled as a nop, or in RR
-mode as an EXCP_YIELD.  This instruction is safe to ignore.
-
-Since cache/prefetch functions are not modeled, dczero and fetchbo are
-safe to ignore.
+This commit provides handlers to generate TCG for guest and system
+register reads and writes.  They will be leveraged by a future commit.
 
 Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 ---
- target/hexagon/gen_tcg.h    |   9 ++
- target/hexagon/macros.h     |  30 ++++-
- target/hexagon/sys_macros.h | 238 ++++++++++++++++++++++++++++++++++++
- target/hexagon/op_helper.c  |   1 +
- 4 files changed, 274 insertions(+), 4 deletions(-)
- create mode 100644 target/hexagon/sys_macros.h
+ target/hexagon/genptr.c | 138 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 138 insertions(+)
 
-diff --git a/target/hexagon/gen_tcg.h b/target/hexagon/gen_tcg.h
-index 8a3b801287..71f8a0e2d0 100644
---- a/target/hexagon/gen_tcg.h
-+++ b/target/hexagon/gen_tcg.h
-@@ -488,6 +488,7 @@
+diff --git a/target/hexagon/genptr.c b/target/hexagon/genptr.c
+index 08fc5413de..a474787816 100644
+--- a/target/hexagon/genptr.c
++++ b/target/hexagon/genptr.c
+@@ -23,6 +23,7 @@
+ #include "exec/helper-gen.h"
+ #include "insn.h"
+ #include "opcodes.h"
++#include "sys_macros.h"
+ #include "translate.h"
+ #define QEMU_GENERATE       /* Used internally by macros.h */
+ #include "macros.h"
+@@ -128,6 +129,143 @@ TCGv get_result_pred(DisasContext *ctx, int pnum)
+     }
+ }
  
- /* dczeroa clears the 32 byte cache line at the address given */
- #define fGEN_TCG_Y2_dczeroa(SHORTCODE) SHORTCODE
-+#define fGEN_TCG_Y2_dczeroa_nt(SHORTCODE) SHORTCODE
- 
- /* In linux-user mode, these are not modelled, suppress compiler warning */
- #define fGEN_TCG_Y2_dcinva(SHORTCODE) \
-@@ -1133,6 +1134,9 @@
-                            RdV, tcg_constant_tl(0)); \
-     } while (0)
- 
-+#define fGEN_TCG_Y2_break(SHORTCODE)
-+#define fGEN_TCG_J2_unpause(SHORTCODE)
-+
- #define fGEN_TCG_J2_pause(SHORTCODE) \
-     do { \
-         uiV = uiV; \
-@@ -1342,6 +1346,11 @@
-         RsV = RsV; \
-         uiV = uiV; \
-     } while (0)
-+#define fGEN_TCG_Y2_dcfetchbo_nt(SHORTCODE) \
-+    do { \
-+        RsV = RsV; \
-+        uiV = uiV; \
-+    } while (0)
- 
- #define fGEN_TCG_L2_loadw_aq(SHORTCODE)                 SHORTCODE
- #define fGEN_TCG_L4_loadd_aq(SHORTCODE)                 SHORTCODE
-diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h
-index 9ba9be408d..4823c97fde 100644
---- a/target/hexagon/macros.h
-+++ b/target/hexagon/macros.h
-@@ -538,9 +538,6 @@ static inline TCGv gen_read_ireg(TCGv result, TCGv val, int shift)
- 
- #ifdef CONFIG_USER_ONLY
- #define fFRAMECHECK(ADDR, EA) do { } while (0) /* Not modelled in linux-user */
--#else
--/* System mode not implemented yet */
--#define fFRAMECHECK(ADDR, EA)  g_assert_not_reached();
- #endif
- 
- #ifdef QEMU_GENERATE
-@@ -631,8 +628,18 @@ static inline TCGv gen_read_ireg(TCGv result, TCGv val, int shift)
- #define fCONSTLL(A) A##LL
- #define fECHO(A) (A)
- 
--#define fTRAP(TRAPTYPE, IMM) helper_raise_exception(env, HEX_EXCP_TRAP0)
-+#ifdef CONFIG_USER_ONLY
-+#define fTRAP(TRAPTYPE, IMM) \
-+    do { \
-+        hexagon_raise_exception_err(env, HEX_EVENT_TRAP0, PC); \
-+    } while (0)
-+#endif
-+
-+#define fDO_TRACE(SREG)
-+#define fBREAK()
-+#define fUNPAUSE()
- #define fPAUSE(IMM)
-+#define fDCFETCH(REG)
- 
- #define fALIGN_REG_FIELD_VALUE(FIELD, VAL) \
-     ((VAL) << reg_field_info[FIELD].offset)
-@@ -649,10 +656,25 @@ static inline TCGv gen_read_ireg(TCGv result, TCGv val, int shift)
-         ctx->dczero_addr = tcg_temp_new(); \
-         tcg_gen_mov_tl(ctx->dczero_addr, (REG)); \
-     } while (0)
-+#else
-+#define fDCZEROA(REG) ((void) REG)
- #endif
- 
- #define fBRANCH_SPECULATE_STALL(DOTNEWVAL, JUMP_COND, SPEC_DIR, HINTBITNUM, \
-                                 STRBITNUM) /* Nothing */
- 
-+#ifdef CONFIG_USER_ONLY
-+/*
-+ * This macro can only be true in guest mode.
-+ * In user mode, the 4 VIRTINSN's can't be reached
-+ */
-+#define fTRAP1_VIRTINSN(IMM)       (false)
-+#define fVIRTINSN_SPSWAP(IMM, REG) g_assert_not_reached()
-+#define fVIRTINSN_GETIE(IMM, REG)  g_assert_not_reached()
-+#define fVIRTINSN_SETIE(IMM, REG)  g_assert_not_reached()
-+#define fVIRTINSN_RTE(IMM, REG)    g_assert_not_reached()
-+#endif
- 
- #endif
-+
-+#define fPREDUSE_TIMING()
-diff --git a/target/hexagon/sys_macros.h b/target/hexagon/sys_macros.h
-new file mode 100644
-index 0000000000..3c4c3c7aa5
---- /dev/null
-+++ b/target/hexagon/sys_macros.h
-@@ -0,0 +1,238 @@
-+/*
-+ * Copyright(c) 2019-2025 Qualcomm Innovation Center, Inc. All Rights Reserved.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef HEXAGON_SYS_MACROS_H
-+#define HEXAGON_SYS_MACROS_H
-+
-+/*
-+ * Macro definitions for Hexagon system mode
-+ */
-+
 +#ifndef CONFIG_USER_ONLY
-+
-+#define READ_SREG(NUM) arch_get_system_reg(env, NUM)
-+#define READ_SGP0()    arch_get_system_reg(env, HEX_SREG_SGP0)
-+#define READ_SGP1()    arch_get_system_reg(env, HEX_SREG_SGP1)
-+#define READ_SGP10()   ((uint64_t)arch_get_system_reg(env, HEX_SREG_SGP0) | \
-+    ((uint64_t)arch_get_system_reg(env, HEX_SREG_SGP1) << 32))
-+
-+#define WRITE_SREG(NUM, VAL)      log_sreg_write(env, NUM, VAL, slot)
-+#define WRITE_SGP0(VAL)           log_sreg_write(env, HEX_SREG_SGP0, VAL, slot)
-+#define WRITE_SGP1(VAL)           log_sreg_write(env, HEX_SREG_SGP1, VAL, slot)
-+#define WRITE_SGP10(VAL) \
-+    do { \
-+        log_sreg_write(env, HEX_SREG_SGP0, (VAL) & 0xFFFFFFFF, slot); \
-+        log_sreg_write(env, HEX_SREG_SGP1, (VAL) >> 32, slot); \
-+    } while (0)
-+
-+#ifdef QEMU_GENERATE
-+#define GET_SSR_FIELD(RES, FIELD) \
-+    GET_FIELD(RES, FIELD, hex_t_sreg[HEX_SREG_SSR])
-+#else
-+
-+#define GET_SSR_FIELD(FIELD, REGIN) \
-+    (uint32_t)GET_FIELD(FIELD, REGIN)
-+#define GET_SYSCFG_FIELD(FIELD, REGIN) \
-+    (uint32_t)GET_FIELD(FIELD, REGIN)
-+#define SET_SYSTEM_FIELD(ENV, REG, FIELD, VAL) \
-+    do { \
-+        uint32_t regval = arch_get_system_reg(ENV, REG); \
-+        fINSERT_BITS(regval, reg_field_info[FIELD].width, \
-+                     reg_field_info[FIELD].offset, (VAL)); \
-+        arch_set_system_reg(ENV, REG, regval); \
-+    } while (0)
-+#define SET_SSR_FIELD(ENV, FIELD, VAL) \
-+    SET_SYSTEM_FIELD(ENV, HEX_SREG_SSR, FIELD, VAL)
-+#define SET_SYSCFG_FIELD(ENV, FIELD, VAL) \
-+    SET_SYSTEM_FIELD(ENV, HEX_SREG_SYSCFG, FIELD, VAL)
-+
-+#define CCR_FIELD_SET(ENV, FIELD) \
-+    (!!GET_FIELD(FIELD, arch_get_system_reg(ENV, HEX_SREG_CCR)))
-+
-+/*
-+ * Direct-to-guest is not implemented yet, continuing would cause unexpected
-+ * behavior, so we abort.
-+ */
-+#define ASSERT_DIRECT_TO_GUEST_UNSET(ENV, EXCP) \
-+    do { \
-+        switch (EXCP) { \
-+        case HEX_EVENT_TRAP0: \
-+            g_assert(!CCR_FIELD_SET(ENV, CCR_GTE)); \
-+            break; \
-+        case HEX_EVENT_IMPRECISE: \
-+        case HEX_EVENT_PRECISE: \
-+        case HEX_EVENT_FPTRAP: \
-+            g_assert(!CCR_FIELD_SET(ENV, CCR_GEE)); \
-+            break; \
-+        default: \
-+            if ((EXCP) >= HEX_EVENT_INT0) { \
-+                g_assert(!CCR_FIELD_SET(ENV, CCR_GIE)); \
-+            } \
-+            break; \
-+        } \
-+    } while (0)
-+#endif
-+
-+#define fREAD_ELR() (READ_SREG(HEX_SREG_ELR))
-+
-+#define fLOAD_PHYS(NUM, SIZE, SIGN, SRC1, SRC2, DST) { \
-+  const uintptr_t rs = ((unsigned long)(unsigned)(SRC1)) & 0x7ff; \
-+  const uintptr_t rt = ((unsigned long)(unsigned)(SRC2)) << 11; \
-+  const uintptr_t addr = rs + rt;         \
-+  cpu_physical_memory_read(addr, &DST, sizeof(uint32_t)); \
++G_GNUC_UNUSED
++static bool greg_writable(int rnum, bool pair)
++{
++    if (pair) {
++        if (rnum < HEX_GREG_G3) {
++            return true;
++        }
++        qemu_log_mask(LOG_UNIMP,
++                "Warning: ignoring write to guest register pair G%d:%d\n",
++                rnum + 1, rnum);
++    } else {
++        if (rnum <= HEX_GREG_G3) {
++            return true;
++        }
++        qemu_log_mask(LOG_UNIMP,
++                "Warning: ignoring write to guest register G%d\n", rnum);
++    }
++    return false;
 +}
 +
-+#define fPOW2_HELP_ROUNDUP(VAL) \
-+    ((VAL) | \
-+     ((VAL) >> 1) | \
-+     ((VAL) >> 2) | \
-+     ((VAL) >> 4) | \
-+     ((VAL) >> 8) | \
-+     ((VAL) >> 16))
-+#define fPOW2_ROUNDUP(VAL) (fPOW2_HELP_ROUNDUP((VAL) - 1) + 1)
++G_GNUC_UNUSED
++static void check_greg_impl(int rnum, bool pair)
++{
++    if (pair && (!greg_implemented(rnum) || !greg_implemented(rnum + 1))) {
++        qemu_log_mask(LOG_UNIMP,
++                "Warning: guest register pair G%d:%d is unimplemented or "
++                "reserved. Read will yield 0.\n",
++                rnum + 1, rnum);
++    } else if (!pair && !greg_implemented(rnum)) {
++        qemu_log_mask(LOG_UNIMP,
++                "Warning: guest register G%d is unimplemented or reserved."
++                " Read will yield 0.\n", rnum);
++    }
++}
 +
-+#define fFRAMECHECK(ADDR, EA)  g_assert_not_reached();
++G_GNUC_UNUSED
++static inline void gen_log_greg_write(DisasContext *ctx, int rnum, TCGv val)
++{
++    tcg_gen_mov_tl(ctx->greg_new_value[rnum], val);
++}
 +
-+#define fTRAP(TRAPTYPE, IMM) \
-+    register_trap_exception(env, TRAPTYPE, IMM, PC)
++G_GNUC_UNUSED
++static void gen_log_greg_write_pair(DisasContext *ctx, int rnum, TCGv_i64 val)
++{
++    TCGv val32 = tcg_temp_new();
 +
-+#define fVIRTINSN_SPSWAP(IMM, REG)
-+#define fVIRTINSN_GETIE(IMM, REG) { REG = 0xdeafbeef; }
-+#define fVIRTINSN_SETIE(IMM, REG)
-+#define fVIRTINSN_RTE(IMM, REG)
-+#define fGRE_ENABLED() GET_FIELD(CCR_GRE, READ_SREG(HEX_SREG_CCR))
-+#define fTRAP1_VIRTINSN(IMM) \
-+    (fGRE_ENABLED() && \
-+        (((IMM) == 1) || ((IMM) == 3) || ((IMM) == 4) || ((IMM) == 6)))
++    /* Low word */
++    tcg_gen_extrl_i64_i32(val32, val);
++    gen_log_greg_write(ctx, rnum, val32);
 +
-+/* Not modeled in qemu */
++    /* High word */
++    tcg_gen_extrh_i64_i32(val32, val);
++    gen_log_greg_write(ctx, rnum + 1, val32);
++}
 +
-+#define MARK_LATE_PRED_WRITE(RNUM)
-+#define fICINVIDX(REG)
-+#define fICKILL()
-+#define fDCKILL()
-+#define fL2KILL()
-+#define fL2UNLOCK()
-+#define fL2CLEAN()
-+#define fL2CLEANINV()
-+#define fL2CLEANPA(REG)
-+#define fL2CLEANINVPA(REG)
-+#define fL2CLEANINVIDX(REG)
-+#define fL2CLEANIDX(REG)
-+#define fL2INVIDX(REG)
-+#define fL2TAGR(INDEX, DST, DSTREG)
-+#define fL2UNLOCKA(VA) ((void) VA)
-+#define fL2TAGW(INDEX, PART2)
-+#define fDCCLEANIDX(REG)
-+#define fDCCLEANINVIDX(REG)
++static const target_ulong sreg_immut_masks[NUM_SREGS] = {
++    [HEX_SREG_STID] = 0xff00ff00,
++    [HEX_SREG_ELR] = 0x00000003,
++    [HEX_SREG_SSR] = 0x00008000,
++    [HEX_SREG_CCR] = 0x10e0ff24,
++    [HEX_SREG_HTID] = IMMUTABLE,
++    [HEX_SREG_IMASK] = 0xffff0000,
++    [HEX_SREG_GEVB] = 0x000000ff,
++};
 +
-+/* Always succeed: */
-+#define fL2LOCKA(EA, PDV, PDN) ((void) EA, PDV = 0xFF)
-+#define fCLEAR_RTE_EX() \
-+    do { \
-+        uint32_t tmp = 0; \
-+        tmp = arch_get_system_reg(env, HEX_SREG_SSR); \
-+        fINSERT_BITS(tmp, reg_field_info[SSR_EX].width, \
-+                     reg_field_info[SSR_EX].offset, 0); \
-+        log_sreg_write(env, HEX_SREG_SSR, tmp, slot); \
-+    } while (0)
++G_GNUC_UNUSED
++static void gen_log_sreg_write(DisasContext *ctx, int rnum, TCGv val)
++{
++    const target_ulong reg_mask = sreg_immut_masks[rnum];
 +
-+#define fDCINVIDX(REG)
-+#define fDCINVA(REG) do { REG = REG; } while (0) /* Nothing to do in qemu */
++    if (reg_mask != IMMUTABLE) {
++        if (rnum < HEX_SREG_GLB_START) {
++            gen_masked_reg_write(val, hex_t_sreg[rnum], reg_mask);
++            tcg_gen_mov_tl(ctx->t_sreg_new_value[rnum], val);
++        } else {
++            gen_helper_sreg_write_masked(tcg_env, tcg_constant_i32(rnum), val);
++        }
++    }
++}
 +
-+#define fSET_TLB_LOCK()       g_assert_not_reached()
-+#define fCLEAR_TLB_LOCK()     g_assert_not_reached()
++G_GNUC_UNUSED
++static void gen_log_sreg_write_pair(DisasContext *ctx, int rnum, TCGv_i64 val)
++{
++    TCGv val32 = tcg_temp_new();
 +
-+#define fSET_K0_LOCK()        g_assert_not_reached()
-+#define fCLEAR_K0_LOCK()      g_assert_not_reached()
++    /* Low word */
++    tcg_gen_extrl_i64_i32(val32, val);
++    gen_log_sreg_write(ctx, rnum, val32);
 +
-+#define fTLB_IDXMASK(INDEX) \
-+    ((INDEX) & (fPOW2_ROUNDUP(fCAST4u(env_archcpu(env)->num_tlbs)) - 1))
++    /* High word */
++    tcg_gen_extrh_i64_i32(val32, val);
++    gen_log_sreg_write(ctx, rnum + 1, val32);
++}
 +
-+#define fTLB_NONPOW2WRAP(INDEX)                 \
-+    (((INDEX) >= env_archcpu(env)->num_tlbs) ?  \
-+         ((INDEX) - env_archcpu(env)->num_tlbs) : \
-+         (INDEX))
++G_GNUC_UNUSED
++static void gen_read_sreg(TCGv dst, int reg_num)
++{
++    if (reg_num >= HEX_SREG_GLB_START || reg_num == HEX_SREG_BADVA) {
++        gen_helper_sreg_read(dst, tcg_env, tcg_constant_i32(reg_num));
++    } else {
++        tcg_gen_mov_tl(dst, hex_t_sreg[reg_num]);
++    }
++}
 +
++G_GNUC_UNUSED
++static void gen_read_sreg_pair(TCGv_i64 dst, int reg_num)
++{
++    if (reg_num < HEX_SREG_GLB_START) {
++        if (reg_num + 1 == HEX_SREG_BADVA) {
++            TCGv badva = tcg_temp_new();
++            gen_helper_sreg_read(badva, tcg_env,
++                                 tcg_constant_tl(HEX_SREG_BADVA));
++            tcg_gen_concat_i32_i64(dst, hex_t_sreg[reg_num], badva);
++        } else {
++            tcg_gen_concat_i32_i64(dst, hex_t_sreg[reg_num],
++                                        hex_t_sreg[reg_num + 1]);
++        }
++    } else {
++        gen_helper_sreg_read_pair(dst, tcg_env, tcg_constant_tl(reg_num));
++    }
++}
 +
-+#define fTLBW(INDEX, VALUE) \
-+    hex_tlbw(env, (INDEX), (VALUE))
-+#define fTLBW_EXTENDED(INDEX, VALUE) \
-+    hex_tlbw(env, (INDEX), (VALUE))
-+#define fTLB_ENTRY_OVERLAP(VALUE) \
-+    (hex_tlb_check_overlap(env, VALUE, -1) != -2)
-+#define fTLB_ENTRY_OVERLAP_IDX(VALUE) \
-+    hex_tlb_check_overlap(env, VALUE, -1)
-+#define fTLBR(INDEX) \
-+    (env->hex_tlb->entries[fTLB_NONPOW2WRAP(fTLB_IDXMASK(INDEX))])
-+#define fTLBR_EXTENDED(INDEX) \
-+    (env->hex_tlb->entries[fTLB_NONPOW2WRAP(fTLB_IDXMASK(INDEX))])
-+#define fTLBP(TLBHI) \
-+    hex_tlb_lookup(env, ((TLBHI) >> 12), ((TLBHI) << 12))
-+#define iic_flush_cache(p)
++G_GNUC_UNUSED
++static void gen_read_greg(TCGv dst, int reg_num)
++{
++    gen_helper_greg_read(dst, tcg_env, tcg_constant_tl(reg_num));
++}
 +
-+#define fIN_DEBUG_MODE(TNUM) \
-+    ((GET_FIELD(ISDBST_DEBUGMODE, arch_get_system_reg(env, HEX_SREG_ISDBST)) \
-+        & (0x1 << (TNUM))) != 0)
-+
-+#define fIN_DEBUG_MODE_NO_ISDB(TNUM) false
-+#define fIN_DEBUG_MODE_WARN(TNUM) false
-+
-+#ifdef QEMU_GENERATE
-+
-+/*
-+ * Read tags back as zero for now:
-+ *
-+ * tag value in RD[31:10] for 32k, RD[31:9] for 16k
-+ */
-+#define fICTAGR(RS, RD, RD2) \
-+    do { \
-+        RD = ctx->zero; \
-+    } while (0)
-+#define fICTAGW(RS, RD)
-+#define fICDATAR(RS, RD) \
-+    do { \
-+        RD = ctx->zero; \
-+    } while (0)
-+#define fICDATAW(RS, RD)
-+
-+#define fDCTAGW(RS, RT)
-+/* tag: RD[23:0], state: RD[30:29] */
-+#define fDCTAGR(INDEX, DST, DST_REG_NUM) \
-+    do { \
-+        DST = ctx->zero; \
-+    } while (0)
-+#else
-+
-+/*
-+ * Read tags back as zero for now:
-+ *
-+ * tag value in RD[31:10] for 32k, RD[31:9] for 16k
-+ */
-+#define fICTAGR(RS, RD, RD2) \
-+    do { \
-+        RD = 0x00; \
-+    } while (0)
-+#define fICTAGW(RS, RD)
-+#define fICDATAR(RS, RD) \
-+    do { \
-+        RD = 0x00; \
-+    } while (0)
-+#define fICDATAW(RS, RD)
-+
-+#define fDCTAGW(RS, RT)
-+/* tag: RD[23:0], state: RD[30:29] */
-+#define fDCTAGR(INDEX, DST, DST_REG_NUM) \
-+    do { \
-+        DST = HEX_DC_STATE_INVALID | 0x00; \
-+    } while (0)
++G_GNUC_UNUSED
++static void gen_read_greg_pair(TCGv_i64 dst, int reg_num)
++{
++    gen_helper_greg_read_pair(dst, tcg_env, tcg_constant_tl(reg_num));
++}
 +#endif
 +
-+#endif
 +
-+#define NUM_TLB_REGS(x) (env_archcpu(env)->num_tlbs)
-+
-+#endif
-diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
-index 444799d3ad..c3140b97bd 100644
---- a/target/hexagon/op_helper.c
-+++ b/target/hexagon/op_helper.c
-@@ -24,6 +24,7 @@
- #include "cpu.h"
- #include "internal.h"
- #include "macros.h"
-+#include "sys_macros.h"
- #include "arch.h"
- #include "hex_arch_types.h"
- #include "fma_emu.h"
+ void gen_log_pred_write(DisasContext *ctx, int pnum, TCGv val)
+ {
+     TCGv pred = get_result_pred(ctx, pnum);
 -- 
 2.34.1
 
