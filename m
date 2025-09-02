@@ -2,117 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8173B3F311
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 05:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE85AB3F33E
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:04:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utI1z-0005jS-Os; Mon, 01 Sep 2025 23:50:03 -0400
+	id 1utI2V-0006er-TU; Mon, 01 Sep 2025 23:50:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI1s-0005Af-G3
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:56 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ id 1utI2E-0006Pa-9O
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:50:21 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI1p-0004hJ-Gu
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:56 -0400
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822XJPU031628
- for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:49:40 GMT
+ id 1utI2B-0004v1-Bh
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:50:17 -0400
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822THOD027558
+ for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:50:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- UM5LYPMkA0OC0J1ZEBpgnBrYVBgf9BIWiBbgIW52EXo=; b=p5JiNk7UXPhAweud
- e1yjuMMF6TirExZfjkBZXuk8CGP65d+mFnRK4JeCHSV4E8yZ4zO0A49YYZ62G+3R
- PmLD2Z0tW7/CQdF+YTPXOQdRJ4yxkNnu1AESK57uKarcnGF6deNzQAZGkuZQtrSK
- 0hBNyB9OfeZFVmoxQh+nDmJ+VLhDT8Hnlgj2S6nZtJHdWaHfyvVwxAlfv4O37kgy
- OP7eSW78uYnkNcPRmhQOX0n50NCQeFL1iESRucO5lt11xkgIR6HD2j23piWktz1I
- cOpHEySOf/5CGdhcPdAGYsOGIEMv0pgCxsppddW0gZ3ZumwrxV0W/wt4/9w59hs4
- 4nqY5Q==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48wqvw855f-1
+ cc:content-transfer-encoding:content-type:content-type:date:from
+ :message-id:mime-version:subject:to; s=qcppdkim1; bh=hL7UmL2Kie/
+ yf9fkb3P5KDf5suYVSPAEj/x+A/SAuHs=; b=QzbCqvOtbK1Z3Azx1WqD5hFKlbq
+ PLei56mbAwm9M3gva4Tri3xm/sR+G5DNCvvh1Fiqxxny54w2sVuVwFXYmE0Z03AI
+ tfwEfrogCjYvwNq9YL7XuMUZWZOWm7D+XY92mIeyHzPC3/h+Xc/tsZ1bg9GKKh8Y
+ pdoJoNpTbtXYt6lAi8XyCFPY6qK6hLfrsFpWW8XFowWJrP4JZbHSCE0r/TrxesfD
+ V12V9bHGGGFvomt1PKJDyttA+oHgXr0y4HWrx0+ENL11+icxPvN3qh3c+kyy4EIV
+ ahEDP7R0lQRBZFG+JoCqohQ8BYe0NY0rIVark51xyOXQT6hBAgnIqDPVMyg==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48uscuxecr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:49:40 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-329e3db861eso234213a91.0
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:49:40 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:50:04 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-2488490fe4eso67570015ad.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:50:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756784979; x=1757389779;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UM5LYPMkA0OC0J1ZEBpgnBrYVBgf9BIWiBbgIW52EXo=;
- b=Seni+XlmFQ3rlfoyvq+mv6pI2uDdEo/V55VIG4E/9wRY39A2NoawcsXdD73rCj7Nmt
- UXQDiCfpbPEGkc6sh2CRddHV3SSkfSDK+/IOP02fwedAoWeWTjSuerTy5XNlpIBF/rDK
- RDiaz4NQCJvLJV5T1ZUhb2U1h5xWsItwkpTWwGZJBalZ3KUCW1oa3EW5rlrOBmJywinn
- nc0SqrmLT0vJuMrCBZa+riq3mSg7jbw4ECQpkmC9PstUdAaObBZXu8wzrcmT1DBGQ+im
- pot59+PvILUtXuDTjKKeoBFzcYODg9KdnfCR2LUWJLlqEiwdhKPzINbrg12kP0jfDBSa
- qiFg==
-X-Gm-Message-State: AOJu0Yzdh3hkiIEpstBxK6CZI8VIVq8B8Lf+p13y2mVh6k8erauRl5Iy
- BBvVLDLgpK0iAmvBUtGsXdQ5ZgaDMgdQBXexOTkTSDSG/rJpkiNkTUkDRgAnThOojHRHaJQrXPE
- Nz4jpmdDcwmzjLJqKj7jylqjqSgTSQGkcqM8wy9evy5yiLghh9XhySOz+BBgZuNj7Dxb0
-X-Gm-Gg: ASbGncvo0CmiSOsy/l4Jq8yWuJZv+EEMEsgs57WV/dM7UmaL5SHcHAJXxywe/ddQ70C
- kRqtsfFnYQFpBtV5BIyQnOpx9KNCXF+EPqvhrTmNYphWXvuGeRkRRt8/kHt+/J4Cwqicc9xw5zc
- /pYmw11QvpFCVht8XTbzZ/G8SR4rW4tjNmoZhm4B3jKvj2KmdrGd2vkaEtMG7yqUY7rCtA9QAMD
- S3Q4Nx3zH0rP5Pmuj468NGGKvwJmWrBP0/qNC7lFnVWRiHOUx9k8EHjN3fmPK0m6Q5nwt8kT1f7
- TR8OfdC8IoShHTB47BF7RyjeulQyTaZLJWUZINchavWdyzU33JIZ5bDZH4XNZ+44RQqo3WOjbLh
- 4T2J+qA/g1/fF
-X-Received: by 2002:a17:90b:1d09:b0:323:7e80:8817 with SMTP id
- 98e67ed59e1d1-328156e3582mr13995100a91.36.1756784979419; 
- Mon, 01 Sep 2025 20:49:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHxPzkbr0SYW/6LdbKj2c4yVH3TDM5+btsri38teqH6Z96p416dJ4Na8MS/AjcdrmqNXPMjTQ==
-X-Received: by 2002:a17:90b:1d09:b0:323:7e80:8817 with SMTP id
- 98e67ed59e1d1-328156e3582mr13995076a91.36.1756784978959; 
- Mon, 01 Sep 2025 20:49:38 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1756785003; x=1757389803;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hL7UmL2Kie/yf9fkb3P5KDf5suYVSPAEj/x+A/SAuHs=;
+ b=gaolkc1JanwN0d3NhlXrOgkpWXShwJXj4+Tc9FHNzTT+AIOMAlvY7YxFN3nKsKYotf
+ CIoJK8bNu9aJRWQ0dxpCyrrkZ1GuhPVDxWqa0SUm/cYSkf1AxR4mY1aPwekjNc5e/UAs
+ 0tozbHIocavA9vuj0WQpqxCkMzNpnrpIJi0CukGpsUiUdCrRa9vbIA8mT0jj80WQFqsf
+ dSqgndx+kPAhl9do05eEynPC6jqWnQZJ7mVdZADyraKq4anp7HZ9TpsN3q3a8IK7FbZu
+ 5n184ym2DIgW1MLa/qfeog6EpsVEV6gfSXx85Ll/vdpX31bUySgMAv2CWayL0uhMqCPB
+ KdOQ==
+X-Gm-Message-State: AOJu0YyJ+euajcPOx1IXVW45xdk4YFpFN0wCNf+jV6LGYNzvRVZS+CvV
+ CfSA20NG2BFcUPESGynSSUW9zKdXLmA0QqsLewLZw254VmE50hFjX8REqZuvrwL6oLqW7ruAthD
+ ypKqFLrf80wGBEojm6wLnuWwnaRVIDalNmKUMkv3u2Nw0JnsEydyBz4NeVkfX5uqJrpuw
+X-Gm-Gg: ASbGncuu3y3duywSL4T3mhctTP+TqUM5PfkhfGqHyr92Op4/E1YZMowJbsrVIHThyvD
+ w0yWoqlP0TMiSiUJZfbgN/NQo+JWTF1X+oCGkxDuF8TbxFJZ9/R/Oagc38Tdd8l80MC0ik3Vb6l
+ C7Lpd9IaA1i46e7+RBdYykKz+fYiniVDehluSQozBCympGcr57yc1vbD+MGgORXfq9h2bEPG6+n
+ 5Nj+InzMDErMcCDff8GCqEWuN9Iv/MZRa0WrROfhqLzTpU2IUVBHPeKqAcNb2BDxdX2NOHb29OC
+ iJOzsrdu6TUzt9mfG9zU6onW1kyYMqrOMu4HsefNzUCtXQAOwoRTxoJXMWmkXvALczIQ/wDh3U3
+ vuFmgda4mrZA/
+X-Received: by 2002:a17:903:41d0:b0:23f:e869:9a25 with SMTP id
+ d9443c01a7336-24944acf3b2mr118460285ad.44.1756785002620; 
+ Mon, 01 Sep 2025 20:50:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHkyNFdxKEJ7fQlA3mgS07brl1LfE1MGsfoPF7smUmBlg7a/R6xRXhkmJjNSCql/qYIYQlr1g==
+X-Received: by 2002:a17:903:41d0:b0:23f:e869:9a25 with SMTP id
+ d9443c01a7336-24944acf3b2mr118460035ad.44.1756785002147; 
+ Mon, 01 Sep 2025 20:50:02 -0700 (PDT)
 Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
  [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-327daeeca1csm12543546a91.25.2025.09.01.20.49.38
+ 98e67ed59e1d1-327c5fc5055sm14117932a91.14.2025.09.01.20.50.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Sep 2025 20:49:38 -0700 (PDT)
+ Mon, 01 Sep 2025 20:50:01 -0700 (PDT)
 From: Brian Cain <brian.cain@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
  philmd@linaro.org, matheus.bernardino@oss.qualcomm.com, ale@rev.ng,
  anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
  alex.bennee@linaro.org, quic_mburton@quicinc.com,
- sid.manning@oss.qualcomm.com,
- Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Subject: [PATCH v2 39/39] target/hexagon: Add pcycle setting functionality
-Date: Mon,  1 Sep 2025 20:48:47 -0700
-Message-Id: <20250902034847.1948010-40-brian.cain@oss.qualcomm.com>
+ sid.manning@oss.qualcomm.com
+Subject: [PATCH v2 00/11] hexagon system emulation v2, part 3/3
+Date: Mon,  1 Sep 2025 20:49:40 -0700
+Message-Id: <20250902034951.1948194-1-brian.cain@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250902034847.1948010-1-brian.cain@oss.qualcomm.com>
-References: <20250902034847.1948010-1-brian.cain@oss.qualcomm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAyMDAyNCBTYWx0ZWRfXx/upH3dwu6Q3
- DkcG419YlmIgrsm0YY97KbVwG62p+9rG+HLOsEocaKMGa0+Wt2CeJXOA8B2dIyI8+dU6PeduUjG
- fFJg1EvTP22hfWeWj29Q77feC5YShu0uxnR/de2m8mNL+YW2JWcDCuomgpNviyJFTZATj7LZJGu
- sJ2+ZzfHERyCpGCArY7QKMLmOdVIO+9KMd/XAIYNeOv3e/plyyEhVhb+/InwV1jQqh3WOQxq7G/
- nXBEMMSQ0azG2iue9uIYTl07m6VvBcalCHczxg/YTMftL0ICy1b4KsC2knQnm8xIOrciE82E0Qc
- UHfVYOgG52mx9tSdM9XX+vcTsnDvcx12usDEJFJvpn2BZsl1opOsSjlWf8kz7OzVNHdCn/Yc9bt
- zw9SNyJq
-X-Authority-Analysis: v=2.4 cv=WKh/XmsR c=1 sm=1 tr=0 ts=68b66954 cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=COk6AnOGAAAA:8
- a=Kc8miizCJkRJjwKmxNEA:9 a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: QqpQaltNKNGPyrEBF-o7M08P7fNER6y4
-X-Proofpoint-ORIG-GUID: QqpQaltNKNGPyrEBF-o7M08P7fNER6y4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMSBTYWx0ZWRfX+0SZe1Neau28
+ WIw7x3n8h/Jj8MUC2xzf00VWvITmjjhtkdXAL/5mnMlYsAybJRAgBh1wzeDfqbZeb9j1cWKavDT
+ SKsOeO0OA5ps7Uq7bF2ceMv7F06vwk7Uuk3VIfeJBTYe1+o5zI3B0TNGR8eYs/4L1zFEavt2jg6
+ RwezPKt4yaGpyJ8X8Sadf9AgaAJgiIxyq5fAgy0EzYBNVc5IHgsYjSoNF0ffQpdLc71ERGPS2wD
+ hgL/1DrG84rad6ofZPB/Od7OiPcStDbjWy2LPP6uakjykx4TGHhDnT7jtkTga7qlBem4YDAFkvD
+ e9Dy05rq48qgjIAMdTTVJrBa96zC1O7BY1+5tu7oz9KEzq4Mrg7Mq2nYy3G3XSJntxNyhdj3o/9
+ txP2bapc
+X-Authority-Analysis: v=2.4 cv=A8xsP7WG c=1 sm=1 tr=0 ts=68b6696c cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=JmbkjY8jM9pbaCcUt8YA:9
+ a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-ORIG-GUID: EXXZxp6XrK2kMDE70tmeD_2wPyI4KAB5
+X-Proofpoint-GUID: EXXZxp6XrK2kMDE70tmeD_2wPyI4KAB5
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 bulkscore=0 phishscore=0 adultscore=0
- spamscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
+ adultscore=0 spamscore=0 impostorscore=0 bulkscore=0 clxscore=1015
+ suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509020024
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300031
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=brian.cain@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -135,37 +131,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
-Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
----
- target/hexagon/cpu_helper.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+As with parts 1, 2 - some of the changes requested have been made, but not
+all.
 
-diff --git a/target/hexagon/cpu_helper.c b/target/hexagon/cpu_helper.c
-index 5d0ba23d02..447421cdd0 100644
---- a/target/hexagon/cpu_helper.c
-+++ b/target/hexagon/cpu_helper.c
-@@ -120,13 +120,18 @@ uint32_t hexagon_get_sys_pcycle_count_low(CPUHexagonState *env)
- void hexagon_set_sys_pcycle_count_high(CPUHexagonState *env,
-         uint32_t cycles_hi)
- {
--    g_assert_not_reached();
-+    uint64_t cur_cycles = hexagon_get_sys_pcycle_count(env);
-+    uint64_t cycles =
-+        ((uint64_t)cycles_hi << 32) | extract64(cur_cycles, 0, 32);
-+    hexagon_set_sys_pcycle_count(env, cycles);
- }
- 
- void hexagon_set_sys_pcycle_count_low(CPUHexagonState *env,
-         uint32_t cycles_lo)
- {
--    g_assert_not_reached();
-+    uint64_t cur_cycles = hexagon_get_sys_pcycle_count(env);
-+    uint64_t cycles = extract64(cur_cycles, 32, 32) | cycles_lo;
-+    hexagon_set_sys_pcycle_count(env, cycles);
- }
- 
- void hexagon_set_sys_pcycle_count(CPUHexagonState *env, uint64_t cycles)
+New features for part 3:
+- global registers device model
+- boot-serial-test qtest case
+
+Issues not addressed with v2:
+* "Add l2vic interrupt controller" - DECLARE_SIMPLE_TYPE, bitops
+    - I might also push this and/or QTimer out of this series to simplify
+      things a bit.
+
+Brian Cain (8):
+  hw/hexagon: Add globalreg model
+  hw/hexagon: Add global register tracing
+  hw/hexagon: Add machine configs for sysemu
+  hw/hexagon: Add v68, sa8775-cdsp0 defs
+  hw/hexagon: Modify "Standalone" symbols
+  target/hexagon: add build config for softmmu
+  hw/hexagon: Define hexagon "virt" machine
+  tests/qtest: Add hexagon boot-serial-test
+
+Sid Manning (3):
+  hw/hexagon: Add support for cfgbase
+  hw/timer: Add QTimer device
+  hw/intc: Add l2vic interrupt controller
+
+ MAINTAINERS                                 |   7 +
+ docs/devel/hexagon-l2vic.rst                |  59 +++
+ docs/devel/index-internals.rst              |   1 +
+ configs/devices/hexagon-softmmu/default.mak |   8 +
+ configs/targets/hexagon-softmmu.mak         |   7 +
+ meson.build                                 |   1 +
+ qapi/machine.json                           |   4 +-
+ include/hw/hexagon/hexagon.h                | 150 ++++++
+ include/hw/hexagon/hexagon_globalreg.h      |  60 +++
+ include/hw/hexagon/virt.h                   |  43 ++
+ include/hw/intc/l2vic.h                     |  38 ++
+ include/hw/timer/qct-qtimer.h               |  85 ++++
+ target/hexagon/cpu.h                        |   6 +-
+ hw/hexagon/machine_cfg_sa8775_cdsp0.h.inc   |  63 +++
+ hw/hexagon/machine_cfg_v66g_1024.h.inc      |  63 +++
+ hw/hexagon/machine_cfg_v68n_1024.h.inc      |  64 +++
+ hw/hexagon/hexagon_dsp.c                    | 211 ++++++++
+ hw/hexagon/hexagon_globalreg.c              | 345 +++++++++++++
+ hw/hexagon/virt.c                           | 457 +++++++++++++++++
+ hw/intc/l2vic.c                             | 421 ++++++++++++++++
+ hw/timer/qct-qtimer.c                       | 520 ++++++++++++++++++++
+ system/qdev-monitor.c                       |   2 +-
+ target/hexagon/cpu.c                        |   5 +
+ target/hexagon/op_helper.c                  |   2 +-
+ target/hexagon/translate.c                  |   1 +
+ tests/qtest/boot-serial-test.c              |   8 +
+ hw/Kconfig                                  |   1 +
+ hw/hexagon/Kconfig                          |  16 +
+ hw/hexagon/meson.build                      |   7 +
+ hw/hexagon/trace-events                     |   3 +
+ hw/intc/Kconfig                             |   3 +
+ hw/intc/meson.build                         |   2 +
+ hw/intc/trace-events                        |   4 +
+ hw/meson.build                              |   1 +
+ hw/timer/meson.build                        |   2 +
+ target/Kconfig                              |   1 +
+ target/hexagon/Kconfig                      |   2 +
+ target/hexagon/meson.build                  |  12 +-
+ tests/qemu-iotests/testenv.py               |   1 +
+ tests/qtest/meson.build                     |   2 +
+ 40 files changed, 2680 insertions(+), 8 deletions(-)
+ create mode 100644 docs/devel/hexagon-l2vic.rst
+ create mode 100644 configs/devices/hexagon-softmmu/default.mak
+ create mode 100644 configs/targets/hexagon-softmmu.mak
+ create mode 100644 include/hw/hexagon/hexagon.h
+ create mode 100644 include/hw/hexagon/hexagon_globalreg.h
+ create mode 100644 include/hw/hexagon/virt.h
+ create mode 100644 include/hw/intc/l2vic.h
+ create mode 100644 include/hw/timer/qct-qtimer.h
+ create mode 100644 hw/hexagon/machine_cfg_sa8775_cdsp0.h.inc
+ create mode 100644 hw/hexagon/machine_cfg_v66g_1024.h.inc
+ create mode 100644 hw/hexagon/machine_cfg_v68n_1024.h.inc
+ create mode 100644 hw/hexagon/hexagon_dsp.c
+ create mode 100644 hw/hexagon/hexagon_globalreg.c
+ create mode 100644 hw/hexagon/virt.c
+ create mode 100644 hw/intc/l2vic.c
+ create mode 100644 hw/timer/qct-qtimer.c
+ create mode 100644 hw/hexagon/Kconfig
+ create mode 100644 hw/hexagon/meson.build
+ create mode 100644 hw/hexagon/trace-events
+ create mode 100644 target/hexagon/Kconfig
+
 -- 
 2.34.1
 
