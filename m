@@ -2,69 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E949B3F254
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 04:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E637B3F3BD
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:26:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utGmC-0001SF-Fs; Mon, 01 Sep 2025 22:29:40 -0400
+	id 1utIae-0007R6-LF; Tue, 02 Sep 2025 00:25:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1utGm9-0001S6-Mu
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 22:29:37 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1utGm5-0003ry-Ql
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 22:29:37 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8BxF9GEVrZoOJoFAA--.11588S3;
- Tue, 02 Sep 2025 10:29:25 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowJCxH8J_VrZoQRh4AA--.61809S3;
- Tue, 02 Sep 2025 10:29:24 +0800 (CST)
-Subject: Re: [PATCH v2] hw/loongarch/virt: Add reset interface for virt-machine
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Song Gao <gaosong@loongson.cn>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Xianglai Li <lixianglai@loongson.cn>, qemu-devel@nongnu.org
-References: <20250901081900.2931303-1-maobibo@loongson.cn>
- <e99ce8c4-b2cc-4eba-a947-f150330eda34@linaro.org>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <a205202e-7d0d-0739-ddd6-11a2081a9810@loongson.cn>
-Date: Tue, 2 Sep 2025 10:27:19 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1utIac-0007Lj-Hg
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 00:25:50 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
+ id 1utIaV-0001RB-GQ
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 00:25:50 -0400
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822RxPa029702
+ for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 04:25:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ hiK0rnf+f5QY6KQVKSZwlc3ty3G+c3Iu4L+7N9JIUbM=; b=Bpfu9oIDavkjS5ko
+ mwF0jEnOosW3E3xK2aeGALxySBALYhBP/lRj+DaCiFeGEqc6YextPM7jRUnYKmeS
+ /8qJa33mu6nIAvSg9wmaR1DnC4gCPbdSrLkBedtVH3mQEGbzW5NiL0mjz0LsBaoP
+ 6S9N7usmlkaF/A2EcCAHapaT0GRJnirj4HTMxpVctk5FC6qvGu31j3i+KFmp9gjx
+ zYluQrGtAn2/ZZJXHNLGqj++bT1JAy5s2SbTYYzrPIMvDZYVTS+Jo3oRD4iCgQcp
+ WczMF7XPwLx6JqSSgbMQMOjCEVwEIUzpQWRkA/uhaIIHimPr0mBE83wy9wPL5WFt
+ Wm/87Q==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ura8pehj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 04:25:42 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4b3415ddb6aso12935711cf.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 21:25:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756787141; x=1757391941;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hiK0rnf+f5QY6KQVKSZwlc3ty3G+c3Iu4L+7N9JIUbM=;
+ b=ScX9JpU6nGO/5cIdlN5IMT/lEmI+l+hy79/IM5y7njdx1M/rpQhdIm9MKDbnXmXX6z
+ 8OJpFSHjU26HpDrRU5/9iUkrE9Jh5rNnpQcJ2vvDySUFIzYFeKcGsS9LU/CkHysd/LsO
+ hnKwnVmglM8eooQwJD+Coz5kpdW7AjjS6Cps1+wfasTXqfC/sHQVZYByCELWRiyK1f1j
+ ipMhqyfFgn2mgLiAWYXrmHsrEkTe/BHFUzctLGActsav6k86O6vIDCk306GvdCPlrunS
+ vN8hq8LFDRlOlE7sCCOPCHug04HOG7c82yHUfYSRGJmHxA/0CJ//OeC7f0SZ0Rd15bt9
+ au0g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWdqnF9vj5HItkfKj7tLwLW5KJXme8L5KGKnqpwnpQmxzwQ0Z/d7GEjDzNdeM3AurecFyINMJ1HTDvv@nongnu.org
+X-Gm-Message-State: AOJu0Yyl4IBIlsm1XCLID8muScDeU0mz46RU18o7NGSNNo66f8PtfaFO
+ pLfPgHBNPwVT7suU3X5M2gMEwxfJPH8IkJh1cg52+az1LJ2fT+qea8KMVoo/Hy+c+r7Yi8+dD8y
+ YHlYgqq43MW2sp0hVMepzRCT6PEfmqlFL10mshwT5X2ODSZTxGcZVSzRJMg==
+X-Gm-Gg: ASbGncumH5KfvSqSNYjwozqsDcu7K1ipln1uv/4rW9zYGevqxi+q/JQ/OddO7n8/R0z
+ xSmeLaL5muh1AO++VXCB4OfZAKARG/73y3IARLk6gzY4Chw7poaR9M/I/MP5Ej8GKWFxKK1hcSg
+ AhqcR0ZnFYvetaGP+GB1w3IqNN6kMIkQMn9lDNFLRZ2+/TFVhuXaLVbhEWoq/fiFQM12AKVJ1o3
+ US4oNuYHTkbcD88sM+8XjQtLz5yT/usHlzVCsj0tWZj5TOWcfjxJTUotFJCjvAVTBgBJMMXBz/D
+ IwjrUFKQxX6AV4UnrajgUeyjc0BQcpnwfxPlD0bncs5UOvp9rZDoFOtCsQ/NEg==
+X-Received: by 2002:ac8:5f94:0:b0:4b2:d40b:997 with SMTP id
+ d75a77b69052e-4b31b889a3cmr115580811cf.11.1756787141087; 
+ Mon, 01 Sep 2025 21:25:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEXn62zFP91fw01jJpbfAjubhchSUjJ74ND0b+jlXnThneeLwv15MnpV/5+2vMz8ayp7nJoMg==
+X-Received: by 2002:ac8:5f94:0:b0:4b2:d40b:997 with SMTP id
+ d75a77b69052e-4b31b889a3cmr115580611cf.11.1756787140396; 
+ Mon, 01 Sep 2025 21:25:40 -0700 (PDT)
+Received: from [172.19.248.181] ([80.149.170.9])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b88007a60sm65955265e9.8.2025.09.01.21.25.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 01 Sep 2025 21:25:40 -0700 (PDT)
+Message-ID: <fc24d542-f6cb-47bd-af1d-caa99d3c9d8c@oss.qualcomm.com>
+Date: Mon, 1 Sep 2025 21:35:52 -0500
 MIME-Version: 1.0
-In-Reply-To: <e99ce8c4-b2cc-4eba-a947-f150330eda34@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 30/39] target/hexagon: Add next_PC, {s,g}reg writes
+To: ltaylorsimpson@gmail.com, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, philmd@linaro.org, quic_mathbern@quicinc.com,
+ ale@rev.ng, anjo@rev.ng, quic_mliebel@quicinc.com,
+ alex.bennee@linaro.org, quic_mburton@quicinc.com, sidneym@quicinc.com,
+ 'Brian Cain' <bcain@quicinc.com>
+References: <20250301052845.1012069-1-brian.cain@oss.qualcomm.com>
+ <20250301052845.1012069-31-brian.cain@oss.qualcomm.com>
+ <024f01db9836$aab62000$00226000$@gmail.com>
 Content-Language: en-US
+From: Brian Cain <brian.cain@oss.qualcomm.com>
+In-Reply-To: <024f01db9836$aab62000$00226000$@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJCxH8J_VrZoQRh4AA--.61809S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Ww43ur1xJrW5WryDJr13GFX_yoWxWr47pr
- ykAFW5JrWrGr1kXw47A34UuFyDZr1xKa13ZF1xtFyIkr4UXryjqr1jqr9FgF1UAw4rWF1Y
- vr1DXw17ZF47J3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UWHqcU
- UUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -54
-X-Spam_score: -5.5
-X-Spam_bar: -----
-X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.599,
+X-Proofpoint-ORIG-GUID: 1dCVqX3H2X-U6i5ret3gzrA51l-Mip4s
+X-Proofpoint-GUID: 1dCVqX3H2X-U6i5ret3gzrA51l-Mip4s
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyMCBTYWx0ZWRfX/GAGhFj/KXxG
+ RUbGblp6EV2HFkaQxnmZtK0DQ0xXnVQkI67PYwn5k3l7yXKE2Fwe9TqjAlaYWGNSo6+CW7Gj2LN
+ dLqq0HqccWgX3cjGcngcZqy5LUMv3cS//nsU8spAAUXF3U8FQ4k2suXPUwikNIJWhfxmEG2IaWF
+ Qbp3J2TtFqjFFI5At6RRSWxdvZVafCftDCFAZxOOkA/zBBHpcPHR/hv8Q09D8ktQp2KZXJs486C
+ H9wsejRd5lNRvVzdVczVKcejuBiTgJxUfs9ku+lRUQONWS2e7E3oMvXfl4QKLf7xQF8lOZSisRp
+ lh+nxvFD/0C5cbv1ypX0WGJcvbgdui7jOk/0h+KnbmqR/YUAQOiSpA0TUQCcB6RE69SJ42LP8us
+ zpT3ED46
+X-Authority-Analysis: v=2.4 cv=VNndn8PX c=1 sm=1 tr=0 ts=68b671c6 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=oqm+nZh+PgUSu2IGv/nVbQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
+ a=69wJf7TsAAAA:8 a=KKAkSRfTAAAA:8 a=COk6AnOGAAAA:8 a=1GvbeEhO9WgkJuYG0qQA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
+ a=Fg1AiH1G6rFz08G2ETeA:22 a=cvBusfyB2V15izCimMoJ:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0
+ clxscore=1015 adultscore=0 priorityscore=1501 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300020
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=brian.cain@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,176 +139,368 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+On 3/18/2025 1:50 PM, ltaylorsimpson@gmail.com wrote:
+>
+>> -----Original Message-----
+>> From: Brian Cain <brian.cain@oss.qualcomm.com>
+>> Sent: Friday, February 28, 2025 11:29 PM
+>> To: qemu-devel@nongnu.org
+>> Cc: brian.cain@oss.qualcomm.com; richard.henderson@linaro.org;
+>> philmd@linaro.org; quic_mathbern@quicinc.com; ale@rev.ng; anjo@rev.ng;
+>> quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com;
+>> alex.bennee@linaro.org; quic_mburton@quicinc.com;
+>> sidneym@quicinc.com; Brian Cain <bcain@quicinc.com>
+>> Subject: [PATCH 30/39] target/hexagon: Add next_PC, {s,g}reg writes
+>>
+>> From: Brian Cain <bcain@quicinc.com>
+>>
+>> Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+>> ---
+>>   target/hexagon/cpu.h       |   2 +-
+>>   target/hexagon/translate.h |   2 +
+>>   target/hexagon/genptr.c    |   7 +-
+>>   target/hexagon/translate.c | 142 ++++++++++++++++++++++++++++++++-
+>> ----
+>>   4 files changed, 132 insertions(+), 21 deletions(-)
+>>
+>> diff --git a/target/hexagon/cpu.h b/target/hexagon/cpu.h index
+>> 4667a1f748..73c3bb34b0 100644
+>> --- a/target/hexagon/cpu.h
+>> +++ b/target/hexagon/cpu.h
+>> @@ -142,9 +142,9 @@ typedef struct CPUArchState {
+>>       hex_lock_state_t k0_lock_state;
+>>       target_ulong tlb_lock_count;
+>>       target_ulong k0_lock_count;
+>> -    target_ulong next_PC;
+>>       CPUHexagonTLBContext *hex_tlb;
+>>   #endif
+>> +    target_ulong next_PC;
+> You are moving this from system-mode only to unconditional.  There must be an earlier patch in this series that put it in system-mode.  Find that and remove it, so there is only a single addition.
+>
+> Also, does this need to be part of the global state?  The answer is no if it doesn't live across packets.  If it is only used within the context of a single packet, you can just create a temporary TCGv in DisasContext.  There are several examples already.
+>
+We were not eager to re-introduce next_PC but there were some features 
+that wouldn't work without it - in particular the wait instruction IIRC.
 
-On 2025/9/1 下午6:51, Philippe Mathieu-Daudé wrote:
-> Hi Bibo,
-> 
-> On 1/9/25 10:19, Bibo Mao wrote:
->> With generic cpu reset interface, pc register is entry of FLASH for
->> UEFI BIOS. However with direct kernel booting requirement, there is
->> a little different, pc register of primary cpu is entry address of ELF
->> file.
+If this is objectionable, I can try and share the illustrating test case(s).
+
+>>       target_ulong new_value_usr;
 >>
->> At the same time with requirement of cpu hotplug, hot-added CPU should
->> register reset interface for this cpu object. Now reset callback is
->> not registered for hot-added CPU.
+>>       MemLog mem_log_stores[STORES_MAX];
+>> diff --git a/target/hexagon/translate.h b/target/hexagon/translate.h index
+>> c9533fee1f..ad1a2f4045 100644
+>> --- a/target/hexagon/translate.h
+>> +++ b/target/hexagon/translate.h
+>> @@ -85,6 +85,7 @@ typedef struct DisasContext {
+>>       TCGv dczero_addr;
+>>       bool pcycle_enabled;
+>>       bool pkt_ends_tb;
+>> +    bool need_next_pc;
+>>       uint32_t num_cycles;
+>>   } DisasContext;
 >>
->> With this patch reset callback for CPU is register when CPU instance
->> is created, and reset interface is added for virt-machine board. In
->> reset interface of virt-machine, reset for direct kernel booting
->> requirement is called.
+>> @@ -306,6 +307,7 @@ static inline void ctx_log_qreg_read(DisasContext
+>> *ctx,  }
 >>
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->> v1 ... v2:
->>    1. Add qemu_unregister_reset() in function 
->> loongarch_cpu_unrealizefn(),
->>       remove reset callback if vCPU is unrealized.
->> ---
+>>   extern TCGv hex_gpr[TOTAL_PER_THREAD_REGS];
+>> +extern TCGv hex_next_PC;
+>>   extern TCGv hex_pred[NUM_PREGS];
+>>   extern TCGv hex_slot_cancelled;
+>>   extern TCGv hex_new_value_usr;
+>> diff --git a/target/hexagon/genptr.c b/target/hexagon/genptr.c index
+>> 5554c9515c..afc7e5f3a5 100644
+>> --- a/target/hexagon/genptr.c
+>> +++ b/target/hexagon/genptr.c
+>> @@ -634,14 +634,15 @@ static void gen_write_new_pc_addr(DisasContext
+>> *ctx, TCGv addr,
+>>           tcg_gen_brcondi_tl(cond, pred, 0, pred_false);
+>>       }
 >>
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->>   hw/loongarch/boot.c         |  9 +--------
->>   hw/loongarch/virt.c         | 14 ++++++++++++++
->>   include/hw/loongarch/boot.h |  1 +
->>   target/loongarch/cpu.c      | 11 +++++++++++
->>   4 files changed, 27 insertions(+), 8 deletions(-)
+>> +    TCGv PC_wr = ctx->need_next_pc ? hex_next_PC :
+>> hex_gpr[HEX_REG_PC];
+>>       if (ctx->pkt->pkt_has_multi_cof) {
+>>           /* If there are multiple branches in a packet, ignore the second one */
+>> -        tcg_gen_movcond_tl(TCG_COND_NE, hex_gpr[HEX_REG_PC],
+>> +        tcg_gen_movcond_tl(TCG_COND_NE, PC_wr,
+>>                              ctx->branch_taken, tcg_constant_tl(0),
+>> -                           hex_gpr[HEX_REG_PC], addr);
+>> +                           PC_wr, addr);
+>>           tcg_gen_movi_tl(ctx->branch_taken, 1);
+>>       } else {
+>> -        tcg_gen_mov_tl(hex_gpr[HEX_REG_PC], addr);
+>> +        tcg_gen_mov_tl(PC_wr, addr);
+>>       }
 >>
->> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
->> index 14d6c52d4e..4919758a20 100644
->> --- a/hw/loongarch/boot.c
->> +++ b/hw/loongarch/boot.c
->> @@ -324,12 +324,11 @@ static int64_t load_kernel_info(struct 
->> loongarch_boot_info *info)
->>       return kernel_entry;
->>   }
->> -static void reset_load_elf(void *opaque)
->> +void reset_load_elf(void *opaque)
->>   {
->>       LoongArchCPU *cpu = opaque;
->>       CPULoongArchState *env = &cpu->env;
->> -    cpu_reset(CPU(cpu));
->>       if (env->load_elf) {
->>           if (cpu == LOONGARCH_CPU(first_cpu)) {
->>               env->gpr[4] = env->boot_info->a0;
->> @@ -429,12 +428,6 @@ static void 
->> loongarch_direct_kernel_boot(MachineState *ms,
->>   void loongarch_load_kernel(MachineState *ms, struct 
->> loongarch_boot_info *info)
->>   {
->>       LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
->> -    int i;
+>>       if (cond != TCG_COND_ALWAYS) {
+>> diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c index
+>> 475726388a..d4b22acb72 100644
+>> --- a/target/hexagon/translate.c
+>> +++ b/target/hexagon/translate.c
+>> @@ -49,6 +49,7 @@ static const AnalyzeInsn
+>> opcode_analyze[XX_LAST_OPCODE] = {  TCGv
+>> hex_gpr[TOTAL_PER_THREAD_REGS];  TCGv hex_pred[NUM_PREGS];  TCGv
+>> hex_slot_cancelled;
+>> +TCGv hex_next_PC;
+>>   TCGv hex_new_value_usr;
+>>   TCGv hex_store_addr[STORES_MAX];
+>>   TCGv hex_store_width[STORES_MAX];
+>> @@ -61,12 +62,14 @@ TCGv_i64 hex_cycle_count;  TCGv
+>> hex_vstore_addr[VSTORES_MAX];  TCGv hex_vstore_size[VSTORES_MAX];
+>> TCGv hex_vstore_pending[VSTORES_MAX];
+>> +static bool need_next_PC(DisasContext *ctx);
+> You don't need this.  The function definition is before any reference to it.
+
+
+I'll remove this declaration in v3.
+
+>>   #ifndef CONFIG_USER_ONLY
+>>   TCGv hex_greg[NUM_GREGS];
+>>   TCGv hex_t_sreg[NUM_SREGS];
+>>   TCGv_ptr hex_g_sreg_ptr;
+>>   TCGv hex_g_sreg[NUM_SREGS];
+>> +TCGv hex_cause_code;
+> This doesn't belong in this patch.
+Fixed in v2.
+>>   #endif
+>>
+>>   static const char * const hexagon_prednames[] = { @@ -184,6 +187,9 @@
+>> static void gen_end_tb(DisasContext *ctx)
+>>
+>>       gen_exec_counters(ctx);
+>>
+>> +    if (ctx->need_next_pc) {
+>> +        tcg_gen_mov_tl(hex_gpr[HEX_REG_PC], hex_next_PC);
+>> +    }
+>>       if (ctx->branch_cond != TCG_COND_NEVER) {
+>>           if (ctx->branch_cond != TCG_COND_ALWAYS) {
+>>               TCGLabel *skip = gen_new_label(); @@ -371,18 +377,24 @@ static
+>> bool pkt_ends_tb(Packet *pkt)  static bool need_next_PC(DisasContext
+>> *ctx)  {
+>>       Packet *pkt = ctx->pkt;
 >> -
->> -    /* register reset function */
->> -    for (i = 0; i < ms->smp.cpus; i++) {
->> -        qemu_register_reset(reset_load_elf, 
->> LOONGARCH_CPU(qemu_get_cpu(i)));
-> 
-> I agree CPU reset shouldn't be part of loading code to memory.
-> 
->> -    }
->>       info->kernel_filename = ms->kernel_filename;
->>       info->kernel_cmdline = ms->kernel_cmdline;
->> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
->> index b15ada2078..4fc8506c10 100644
->> --- a/hw/loongarch/virt.c
->> +++ b/hw/loongarch/virt.c
->> @@ -1199,6 +1199,19 @@ static int64_t 
->> virt_get_default_cpu_node_id(const MachineState *ms, int idx)
->>       }
->>   }
->> +static void virt_reset(MachineState *machine, ResetType type)
->> +{
->> +    CPUState *cs;
->> +
->> +    /* Reset all devices including CPU devices */
->> +    qemu_devices_reset(type);
->  > +> +    /* Reset PC and register context for kernel direct booting 
-> method */
->> +    CPU_FOREACH(cs) {
->> +        reset_load_elf(LOONGARCH_CPU(cs));
->> +    }
->> +}
->> +
->>   static void virt_class_init(ObjectClass *oc, const void *data)
->>   {
->>       MachineClass *mc = MACHINE_CLASS(oc);
->> @@ -1223,6 +1236,7 @@ static void virt_class_init(ObjectClass *oc, 
->> const void *data)
->>       mc->has_hotpluggable_cpus = true;
->>       mc->get_hotplug_handler = virt_get_hotplug_handler;
->>       mc->default_nic = "virtio-net-pci";
->> +    mc->reset = virt_reset;
->>       hc->plug = virt_device_plug_cb;
->>       hc->pre_plug = virt_device_pre_plug;
->>       hc->unplug_request = virt_device_unplug_request;
->> diff --git a/include/hw/loongarch/boot.h b/include/hw/loongarch/boot.h
->> index 9819f7fbe3..386b4406ad 100644
->> --- a/include/hw/loongarch/boot.h
->> +++ b/include/hw/loongarch/boot.h
->> @@ -114,5 +114,6 @@ struct memmap_entry {
->>   };
->>   void loongarch_load_kernel(MachineState *ms, struct 
->> loongarch_boot_info *info);
->> +void reset_load_elf(void *opaque);
->>   #endif /* HW_LOONGARCH_BOOT_H */
->> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
->> index 3a7621c0ea..61c8acb3c2 100644
->> --- a/target/loongarch/cpu.c
->> +++ b/target/loongarch/cpu.c
->> @@ -652,6 +652,13 @@ static void loongarch_cpu_disas_set_info(CPUState 
->> *s, disassemble_info *info)
->>       info->print_insn = print_insn_loongarch;
->>   }
->> +#ifndef CONFIG_USER_ONLY
->> +static void loongarch_cpu_reset_cb(void *opaque)
->> +{
->> +    cpu_reset((CPUState *) opaque);
->> +}
->> +#endif
->> +
->>   static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
->>   {
->>       CPUState *cs = CPU(dev);
->> @@ -668,6 +675,9 @@ static void loongarch_cpu_realizefn(DeviceState 
->> *dev, Error **errp)
->>       qemu_init_vcpu(cs);
->>       cpu_reset(cs);
-> 
-> Devices shouldn't call their DeviceReset handler manually, as it is
-> always called after DeviceRealize.
-ok, will remove this.
-
-> 
->> +#ifndef CONFIG_USER_ONLY
->> +    qemu_register_reset(loongarch_cpu_reset_cb, dev);
-> 
-> qemu_register_reset() is a legacy API, replaced by
-> qemu_register_resettable().
-> 
-> That said, I don't think the CPU object has to register its own
-> reset handlers. Instead that should the be responsibility of the
-> object creating the CPU objects.
-sure, will use qemu_register_resettable().
-> 
->> +#endif
->>       lacc->parent_realize(dev, errp);
->>   }
->> @@ -678,6 +688,7 @@ static void loongarch_cpu_unrealizefn(DeviceState 
->> *dev)
->>   #ifndef CONFIG_USER_ONLY
->>       cpu_remove_sync(CPU(dev));
->> +    qemu_unregister_reset(loongarch_cpu_reset_cb, dev);
-> 
-> Ditto, legacy -> qemu_unregister_resettable().
-will use qemu_unregister_resettable().
-
-Regards
-Bibo Mao
-> 
->>   #endif
->>       lacc->parent_unrealize(dev);
+>> -    /* Check for conditional control flow or HW loop end */
+>> -    for (int i = 0; i < pkt->num_insns; i++) {
+>> -        uint16_t opcode = pkt->insn[i].opcode;
+>> -        if (GET_ATTRIB(opcode, A_CONDEXEC) && GET_ATTRIB(opcode,
+>> A_COF)) {
+>> -            return true;
+>> -        }
+>> -        if (GET_ATTRIB(opcode, A_HWLOOP0_END) ||
+>> -            GET_ATTRIB(opcode, A_HWLOOP1_END)) {
+>> -            return true;
+> Was this inserted by an earlier patch in this series?  If so, don't insert it before.  Just put the below code in this patch.
+>
+>> +    if (pkt->pkt_has_cof || ctx->pkt_ends_tb) {
+>> +        for (int i = 0; i < pkt->num_insns; i++) {
+>> +            uint16_t opcode = pkt->insn[i].opcode;
+>> +            if ((GET_ATTRIB(opcode, A_CONDEXEC) && GET_ATTRIB(opcode,
+>> A_COF)) ||
+>> +                GET_ATTRIB(opcode, A_HWLOOP0_END) ||
+>> +                GET_ATTRIB(opcode, A_HWLOOP1_END)) {
+>> +                return true;
+>> +            }
+>>           }
+>>       }
+>> +    /*
+>> +     * We end the TB on some instructions that do not change the flow (for
+>> +     * other reasons). In these cases, we must set pc too, as the insn won't
+>> +     * do it themselves.
+>> +     */
+>> +    if (ctx->pkt_ends_tb && !check_for_attrib(pkt, A_COF)) {
+>> +        return true;
+>> +    }
+>>       return false;
+>>   }
 >>
->> base-commit: 91589bcd9fee0e66b241d04e5f37cd4f218187a2
+>> @@ -523,7 +535,14 @@ static void analyze_packet(DisasContext *ctx)  static
+>> void gen_start_packet(DisasContext *ctx)  {
+>>       Packet *pkt = ctx->pkt;
+>> +#ifndef CONFIG_USER_ONLY
+>> +    target_ulong next_PC = (check_for_opcode(pkt, Y2_k0lock) ||
+>> +                            check_for_opcode(pkt, Y2_tlblock)) ?
+> Should we also check for Y2_wait?
 
+Let me review why we didn't include Y2_wait here - the behavior is 
+similar but not identical between these instructions.
+
+
+>> +                               ctx->base.pc_next :
+>> +                               ctx->base.pc_next +
+>> +pkt->encod_pkt_size_in_bytes; #else
+>>       target_ulong next_PC = ctx->base.pc_next + pkt-
+>>> encod_pkt_size_in_bytes;
+>> +#endif
+> You don't need the #ifndef CONFIG_USER_ONLY here.  Note that the opcodes exist in linux-user mode as well as system mode.  So, you can just keep the first version.
+>
+> Note that check_for_opcode is currently guarded by #ifndef CONFIG_USER_ONLY, but you can remove that.
+>
+>>       int i;
+>>
+>>       /* Clear out the disassembly context */ @@ -531,6 +550,10 @@ static void
+>> gen_start_packet(DisasContext *ctx)
+>>       ctx->reg_log_idx = 0;
+>>       bitmap_zero(ctx->regs_written, TOTAL_PER_THREAD_REGS);
+>>       bitmap_zero(ctx->predicated_regs, TOTAL_PER_THREAD_REGS);
+>> +#ifndef CONFIG_USER_ONLY
+>> +    ctx->greg_log_idx = 0;
+>> +    ctx->sreg_log_idx = 0;
+>> +#endif
+>>       ctx->preg_log_idx = 0;
+>>       bitmap_zero(ctx->pregs_written, NUM_PREGS);
+>>       ctx->future_vregs_idx = 0;
+>> @@ -563,21 +586,41 @@ static void gen_start_packet(DisasContext *ctx)
+>>        * gen phase, so clear it again.
+>>        */
+>>       bitmap_zero(ctx->pregs_written, NUM_PREGS);
+>> +#ifndef CONFIG_USER_ONLY
+>> +    for (i = 0; i < NUM_SREGS; i++) {
+>> +        ctx->t_sreg_new_value[i] = NULL;
+>> +    }
+>> +    for (i = 0; i < ctx->sreg_log_idx; i++) {
+>> +        int reg_num = ctx->sreg_log[i];
+>> +        if (reg_num < HEX_SREG_GLB_START) {
+>> +            ctx->t_sreg_new_value[reg_num] = tcg_temp_new();
+>> +            tcg_gen_mov_tl(ctx->t_sreg_new_value[reg_num],
+>> hex_t_sreg[reg_num]);
+>> +        }
+>> +    }
+>> +    for (i = 0; i < NUM_GREGS; i++) {
+>> +        ctx->greg_new_value[i] = NULL;
+>> +    }
+>> +    for (i = 0; i < ctx->greg_log_idx; i++) {
+>> +        int reg_num = ctx->greg_log[i];
+>> +        ctx->greg_new_value[reg_num] = tcg_temp_new();
+>> +    }
+>> +#endif
+>>
+>>       /* Initialize the runtime state for packet semantics */
+>>       if (need_slot_cancelled(pkt)) {
+>>           tcg_gen_movi_tl(hex_slot_cancelled, 0);
+>>       }
+>>       ctx->branch_taken = NULL;
+>> -    ctx->pkt_ends_tb = pkt_ends_tb(pkt);
+>>       if (pkt->pkt_has_cof) {
+>>           ctx->branch_taken = tcg_temp_new();
+>> -        if (pkt->pkt_has_multi_cof) {
+>> -            tcg_gen_movi_tl(ctx->branch_taken, 0);
+>> -        }
+>> -        if (need_next_PC(ctx)) {
+>> -            tcg_gen_movi_tl(hex_gpr[HEX_REG_PC], next_PC);
+>> -        }
+>> +    }
+>> +    if (pkt->pkt_has_multi_cof) {
+>> +        tcg_gen_movi_tl(ctx->branch_taken, 0);
+>> +    }
+>> +    ctx->pkt_ends_tb = pkt_ends_tb(pkt);
+>> +    ctx->need_next_pc = need_next_PC(ctx);
+>> +    if (ctx->need_next_pc) {
+>> +        tcg_gen_movi_tl(hex_next_PC, next_PC);
+>>       }
+>>
+>>       /* Preload the predicated registers into get_result_gpr(ctx, i) */ @@ -
+>> 713,6 +756,59 @@ static void gen_reg_writes(DisasContext *ctx)
+>>       }
+>>   }
+>>
+>> +#ifndef CONFIG_USER_ONLY
+>> +static void gen_greg_writes(DisasContext *ctx) {
+>> +    int i;
+>> +
+>> +    for (i = 0; i < ctx->greg_log_idx; i++) {
+>> +        int reg_num = ctx->greg_log[i];
+>> +
+>> +        tcg_gen_mov_tl(hex_greg[reg_num], ctx-
+>>> greg_new_value[reg_num]);
+>> +    }
+>> +}
+>> +
+>> +
+>> +static void gen_sreg_writes(DisasContext *ctx) {
+>> +    int i;
+>> +
+>> +    TCGv old_reg = tcg_temp_new();
+>> +    for (i = 0; i < ctx->sreg_log_idx; i++) {
+>> +        int reg_num = ctx->sreg_log[i];
+>> +
+>> +        if (reg_num == HEX_SREG_SSR) {
+>> +            tcg_gen_mov_tl(old_reg, hex_t_sreg[reg_num]);
+>> +            tcg_gen_mov_tl(hex_t_sreg[reg_num], ctx-
+>>> t_sreg_new_value[reg_num]);
+>> +            gen_helper_modify_ssr(tcg_env, ctx->t_sreg_new_value[reg_num],
+>> +                                  old_reg);
+>> +            /* This can change processor state, so end the TB */
+>> +            ctx->base.is_jmp = DISAS_NORETURN;
+>> +        } else if ((reg_num == HEX_SREG_STID) ||
+>> +                   (reg_num == HEX_SREG_IMASK) ||
+>> +                   (reg_num == HEX_SREG_IPENDAD)) {
+>> +            if (reg_num < HEX_SREG_GLB_START) {
+>> +                tcg_gen_mov_tl(old_reg, hex_t_sreg[reg_num]);
+>> +                tcg_gen_mov_tl(hex_t_sreg[reg_num],
+>> +                               ctx->t_sreg_new_value[reg_num]);
+>> +            }
+>> +            /* This can change the interrupt state, so end the TB */
+>> +            gen_helper_pending_interrupt(tcg_env);
+>> +            ctx->base.is_jmp = DISAS_NORETURN;
+>> +        } else if ((reg_num == HEX_SREG_BESTWAIT) ||
+>> +                   (reg_num == HEX_SREG_SCHEDCFG)) {
+>> +            /* This can trigger resched interrupt, so end the TB */
+>> +            gen_helper_resched(tcg_env);
+>> +            ctx->base.is_jmp = DISAS_NORETURN;
+>> +        }
+>> +
+>> +        if (reg_num < HEX_SREG_GLB_START) {
+>> +            tcg_gen_mov_tl(hex_t_sreg[reg_num], ctx-
+>>> t_sreg_new_value[reg_num]);
+>> +        }
+>> +    }
+>> +}
+>> +#endif
+>> +
+>>   static void gen_pred_writes(DisasContext *ctx)  {
+>>       /* Early exit if not needed or the log is empty */ @@ -1012,6 +1108,10 @@
+>> static void gen_commit_packet(DisasContext *ctx)
+>>       process_store_log(ctx);
+>>
+>>       gen_reg_writes(ctx);
+>> +#if !defined(CONFIG_USER_ONLY)
+>> +    gen_greg_writes(ctx);
+>> +    gen_sreg_writes(ctx);
+>> +#endif
+>>       gen_pred_writes(ctx);
+>>       if (pkt->pkt_has_hvx) {
+>>           gen_commit_hvx(ctx);
+>> @@ -1073,6 +1173,7 @@ static void
+>> hexagon_tr_init_disas_context(DisasContextBase *dcbase,
+>>       ctx->is_tight_loop = FIELD_EX32(hex_flags, TB_FLAGS, IS_TIGHT_LOOP);
+>>       ctx->short_circuit = hex_cpu->short_circuit;
+>>       ctx->pcycle_enabled = FIELD_EX32(hex_flags, TB_FLAGS,
+>> PCYCLE_ENABLED);
+>> +    ctx->need_next_pc = false;
+> Don't need this because it is initialized in gen_start_packet.
+>
+>>   }
+>>
+>>   static void hexagon_tr_tb_start(DisasContextBase *db, CPUState *cpu) @@
+>> -1201,6 +1302,13 @@ void hexagon_translate_init(void)
+>>           offsetof(CPUHexagonState, llsc_val_i64), "llsc_val_i64");
+>>       hex_cycle_count = tcg_global_mem_new_i64(tcg_env,
+>>               offsetof(CPUHexagonState, t_cycle_count), "t_cycle_count");
+>> +#ifndef CONFIG_USER_ONLY
+>> +    hex_cause_code = tcg_global_mem_new(tcg_env,
+>> +        offsetof(CPUHexagonState, cause_code), "cause_code"); #endif
+> Doesn’t' belong in this patch
+
+
+Not fixed in v2, will address it in v3.
+
+>
+>> +    hex_next_PC = tcg_global_mem_new(tcg_env,
+>> +        offsetof(CPUHexagonState, next_PC), "next_PC");
+>> +
+>>       for (i = 0; i < STORES_MAX; i++) {
+>>           snprintf(store_addr_names[i], NAME_LEN, "store_addr_%d", i);
+>>           hex_store_addr[i] = tcg_global_mem_new(tcg_env,
+>> --
+>> 2.34.1
+>
 
