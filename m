@@ -2,116 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D470B3F34E
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 06:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A23B3F317
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 05:57:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utI1b-0003Fs-DU; Mon, 01 Sep 2025 23:49:39 -0400
+	id 1utI1X-0002sE-7T; Mon, 01 Sep 2025 23:49:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI1T-0002kH-G2
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:31 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ id 1utI1U-0002lk-4o
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:32 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI1O-0004d8-Vo
+ id 1utI1R-0004dS-GA
  for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:31 -0400
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822Rowa029965
- for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:49:16 GMT
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822Y3QI000383
+ for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:49:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- +6ZAJ60HK8MdNcBE3d7EkRCI9HsC+RkYUzB7Q0859BU=; b=IWqiK7A+93jg8F36
- sYmhZ6+6TCc28+iGhz/vL1vF/RwGYhC5RbuWpVeTYcCtj+jGVBBxylfCDkMSTlL7
- /ao2BQLUuMC3i0/9nFQX4jq0DCsdOHL88DLKPcJhoAL0mJLZe4vNFwj1YETOsAS1
- +h5QMtuSlRfXoOMSU201hWxVi91ERYzDMvahiMnUcZ0g42iin7TVp2f3VlbrkY4t
- s94Pl3ikdspOLsNpSwKNrqNoRDi9l8fL3f3N1cbdtkbhC6+rZxdTgYjwHh/KZJrZ
- lWFuYUcqtBmOMwAJxfRiVHwM0nrIw6YiT2jvRrPhivdysriJ5p8qAwMa6pX2nwov
- I2UdCg==
+ Ham6MQtFO1fUrUbOlSblP5ZqRQ62nQJgT8MQifuMG3Q=; b=aYFR48Jc7GdE5HY0
+ 3EMmLaUEdd+CpYnyAxFk1GrbJ3hBuyMqvuiYd6+s3PNh5qfMPzP6+ZuJozsDhMpq
+ SoSQLa3x0mzOg0bg6W7oR67La3DJYB9r6WRS/JAT6kC6bUWSHZZjammn8ujgyAh2
+ E9aiG5G4N0ePTTPIEYo45Js0QVcQ0shapx/p+kkWpKic1EUyPzNgx8dK6QWdfkMJ
+ 5tm0TH99iL/dE3O6hkg6uLT+4rPiY0ecDPZEjmoySoM8sDIFWxgbvUmnIUCks5SE
+ rdKLpzVoUuohwxNYKU/tD8kjKPmOmxAkJsOMDVm3FQWvqvqpM3wXukppQLN10cY0
+ NeGIkw==
 Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
  [209.85.216.69])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48w8wy26sh-1
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48wqvw853y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:49:16 +0000 (GMT)
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:49:17 +0000 (GMT)
 Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-324e41e946eso8954410a91.0
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:49:15 -0700 (PDT)
+ 98e67ed59e1d1-324e41e946eso8954529a91.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:49:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756784955; x=1757389755;
+ d=1e100.net; s=20230601; t=1756784956; x=1757389756;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+6ZAJ60HK8MdNcBE3d7EkRCI9HsC+RkYUzB7Q0859BU=;
- b=k+9Mj0zRmOMjDh/ob19YrZCvEYobc/phC2WKQcNOBEAiHBQpmwlVdQT4P1xYr3m8z/
- b0UW4VdBn4wN4VGHbBixxGyVom1UGS86lEDH0XKX8q+fzupCyiNJ/cb8nvh5Y/DH9d+a
- FOziyZqvKNg/pgnFzl7WQKTB7ZcyXgQ+WQc5ekqWaHFc13stYuDnOolLbF1ZjPPDOBQi
- i6S3rcsxQlDCmx4FgJZD2QhuWQSwVKh8nVGKhgULThRneyHyL+291zo1DbqfqJK+xJKP
- ACDmND577UBmyCupgBN6MkZFR4eCAAyxT4poy8h2YesnBDDpDlq65lFV5Kc1rtUrkA1e
- yFow==
-X-Gm-Message-State: AOJu0YwpyEdAM8pn2PobjFdRT57+x9v29wIWJlqO2XtxMZLFTKnTdA0F
- b4LQ4ATr/QaX97d2Jo1WHTH0NFqfhugrv+vYK+Qzp1C1yVc64x0zoIgEZQcGlSwYNuPxglT1dbU
- 9i0IwbAGibw6UwnqEuFYRVK6BpjnxueUZpp7xWLswDZhXmKYhNOhOQ541rLErlhn6c+L4
-X-Gm-Gg: ASbGncsRKl9BbhFea6x/bOYbfByj56b/a4GE7gvgiTgeOLUy/G2tFZJPq0PPYQh4Ln9
- VN74eilAA2elB3wYFyz1UvlyWiexpmBK0jAdlU/cArTlGAFBdS7A15ZjVkqg1wMPY721njZZNgm
- YX9VIg4HZVXuIUOPqW7pidy3qA3wpZ8D71loy+fF9MLXLkDsGuUlVDJ42PjVHj9H2Z61T4ibqRc
- IC6K9Sdjwku7O0A4KkrIOf8TtfgYXq/v7SvZXh3qBS9peCujsGN0mZ7kvf4QLyj/6RIXXAW4qW4
- UxD9pdWaAmNveQy8qPGxn82r1ET/+G3Dm0kg5msZYRzQSiAV0l//+r+3kzE6WGR5Ld8tyQRuCbD
- VfG1Ra0LxKQ9g
-X-Received: by 2002:a17:90a:d444:b0:329:8160:437b with SMTP id
- 98e67ed59e1d1-3298160445emr10385289a91.19.1756784954654; 
- Mon, 01 Sep 2025 20:49:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFoUJESB0Q61KZS3fHcn0wlkA90cLHDGkvgYfMvIxclioC5Jixbx4s3LkJwma/tToy5bGD3EA==
-X-Received: by 2002:a17:90a:d444:b0:329:8160:437b with SMTP id
- 98e67ed59e1d1-3298160445emr10385265a91.19.1756784954177; 
- Mon, 01 Sep 2025 20:49:14 -0700 (PDT)
+ bh=Ham6MQtFO1fUrUbOlSblP5ZqRQ62nQJgT8MQifuMG3Q=;
+ b=uzwosPaavAxP1zS8EX01hzSmhZRIcp1l4JApDtzGR8y0fMZZ/6FfpBFN6Lod0PK4Wc
+ nKNxCeaRspldRG3u1YISrovw7gsXHxiO/8+SYEnEYGedtCeOAQNJY96YQnA1fOeUFKKI
+ 45JRrJfGzj5gYVILS6ceUnq5vF8ESVK/0MBWUoOpDUJf7VABVQYJ+xjH/17qFysQPjuD
+ fwewKzJNVKaaXwehcaa6WGsnAY1hWujnp7daKdx6Rww3tf0AbmJy7mz/IkIP3amJBLCR
+ WvuaGJAB1DHuWCrJns3Baywd+x5iywgqD65NFMgE8TH1BGUY5e2klh+vt/QygkfloKpB
+ 15sQ==
+X-Gm-Message-State: AOJu0Yyv6gQSKnuVqsSa4RA3BTKkhfJbGRhM7szvtESHFzDmFRbsGMlw
+ HHmuo0Vib0/8uLPbY7AtQWPUYFkpkIR+lMUqbUolckPDWHzv1ngkEMmZPkfuJ1baO11COitoDwt
+ RtVlB2maeckgXUBYZCL5rStfNRHVoxcQR3CAymR0c2wbIo2tSQCvt6UlsdiCyqqgEuLs3
+X-Gm-Gg: ASbGncvspf/hSSebVRg80Po/ucmF/LW2CcM8m8ACRIl/LnE4EMJbwIH6LXtI/vN0hGQ
+ WWiAzdYSI0Aj6/PiOOHE8HFG9arDJQLesLTy9ezdGWXNXYzKB1hTWiYvBwL2nNQ5rBRj4n4ryVZ
+ o6+c4fFaSLj7hDQAZ0lq4dlcKTwCz9M37nOihbLk/aa6zyEUcwmI+L7ZWIhhx5waqwWs4zJAS2R
+ kVcKkAC19EXLB6K4yXi0rZ+5vBs0caedaLqdxzyXnDGNNbPoswHv0a8t7g2nPcZNze3pmZIMmkv
+ utCAbMWxN5fjSEiv/RnLKV4dmkq7WvWtaykVpX8R/easY2ZjyxL0WUSKA7FEGPNwkLTHvD+GydI
+ gbP3ZIpBoJrTX
+X-Received: by 2002:a17:90b:3948:b0:327:70a1:3bfd with SMTP id
+ 98e67ed59e1d1-32815414358mr12718989a91.3.1756784956252; 
+ Mon, 01 Sep 2025 20:49:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEIlYl+vbOgjKJo2gpFrYHHgS9TPCqlQgT9J30bnMubDU5nbBzkMh9go1W9IgQQxthL4M2kLA==
+X-Received: by 2002:a17:90b:3948:b0:327:70a1:3bfd with SMTP id
+ 98e67ed59e1d1-32815414358mr12718966a91.3.1756784955724; 
+ Mon, 01 Sep 2025 20:49:15 -0700 (PDT)
 Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
  [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-327daeeca1csm12543546a91.25.2025.09.01.20.49.13
+ 98e67ed59e1d1-327daeeca1csm12543546a91.25.2025.09.01.20.49.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Sep 2025 20:49:13 -0700 (PDT)
+ Mon, 01 Sep 2025 20:49:15 -0700 (PDT)
 From: Brian Cain <brian.cain@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
  philmd@linaro.org, matheus.bernardino@oss.qualcomm.com, ale@rev.ng,
  anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
  alex.bennee@linaro.org, quic_mburton@quicinc.com,
- sid.manning@oss.qualcomm.com
-Subject: [PATCH v2 18/39] target/hexagon: add simple cpu_exec_reset and
- pointer_wrap
-Date: Mon,  1 Sep 2025 20:48:26 -0700
-Message-Id: <20250902034847.1948010-19-brian.cain@oss.qualcomm.com>
+ sid.manning@oss.qualcomm.com, Brian Cain <bcain@quicinc.com>
+Subject: [PATCH v2 19/39] target/hexagon: Implement hexagon_tlb_fill()
+Date: Mon,  1 Sep 2025 20:48:27 -0700
+Message-Id: <20250902034847.1948010-20-brian.cain@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250902034847.1948010-1-brian.cain@oss.qualcomm.com>
 References: <20250902034847.1948010-1-brian.cain@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=Ycq95xRf c=1 sm=1 tr=0 ts=68b6693c cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAyMDAyNCBTYWx0ZWRfX5fpwkTmkybw8
+ BDFevUeoC1Gbnp566zoRwUhVEQ/WaGHFmRYhZ2eZmdXhZH9VBpidY0GITDdgRwL3f1GtT7B2dIV
+ M5GFewxPxlspEvDnUxPI6/4lGJbLpOEuVkxjyrnlWa6AhsiPsUrC7WPZoLBxoG4PBi5bp1m7lXs
+ yR2DClrReLuLTUhcP79GmRT2f4YEVnrC346woZcxw4c9X7n2ypxkofoOJjfkWKrwK4NVjuSusvw
+ 66zr44aM4Hv5Ze3XhR9TM59XQC6nB6/msZp3J3TQNB/icsuiBSHfUYN7luRFTPcnx7SDI5Au+pa
+ hrSNbV/KpCbarivC6b46nqQyOHgvFx7LoAVmuHBwrNyYcLSuGodOhfGhDcgs5qniXQtZMFILRBU
+ EJ73w9Vs
+X-Authority-Analysis: v=2.4 cv=WKh/XmsR c=1 sm=1 tr=0 ts=68b6693d cx=c_pps
  a=vVfyC5vLCtgYJKYeQD43oA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=O9wV_FzQyngHLK0UYg8A:9
- a=QEXdDO2ut3YA:10 a=rl5im9kqc5Lf4LNbBjHf:22
-X-Proofpoint-GUID: HPTxYyM52asyQHjpv_gpzmZYZ4wMylua
-X-Proofpoint-ORIG-GUID: HPTxYyM52asyQHjpv_gpzmZYZ4wMylua
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAxMDEwMSBTYWx0ZWRfX4T2SvUNgP9gD
- CbJc3UMNUtNu111pALS68vNWb+b7MG3oZKlInkljSMapQ42c+pury/eWgZhT+d1544XCvJQlmIb
- dUnaBSFKWBusYZgtUFlnPfvnVtGXK1Q1lEVe8RzcTn1SahG01XvSN5CeqZA4VJljuBD4kMZia3d
- xuNENekL2IssaURltWnlChgcnZeIElLNjq4vFiX25S3pDkWOEPQyYIHFW3tL9SbFErELVQovlV8
- rH1O5p0cfqts4z04H2ODhvm3qOA9FfOI9Qt7YG/Dc7bI8cGz4tfo2KZdelFUJbftrrXe3S1nrZ0
- 4iNoxHFBs2FYFy/oYEU6to7GcMPzMpNhHsXigEW36Ol69UW/SnmKhofCRewWhKSPEcZ190rWhMr
- hl9LkZWs
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=pGLkceISAAAA:8
+ a=EUspDBNiAAAA:8 a=yz7b9sy1sBSXNk6fZdQA:9 a=QEXdDO2ut3YA:10
+ a=rl5im9kqc5Lf4LNbBjHf:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: QwUu9Pu8V2w5HLN7R6WLgrSy9bA-EBmg
+X-Proofpoint-ORIG-GUID: QwUu9Pu8V2w5HLN7R6WLgrSy9bA-EBmg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 adultscore=0 phishscore=0 malwarescore=0
- bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509010101
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=brian.cain@oss.qualcomm.com; helo=mx0b-0031df01.pphosted.com
+ clxscore=1015 suspectscore=0 bulkscore=0 phishscore=0 adultscore=0
+ spamscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509020024
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -134,36 +134,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Matheus Tavares Bernardino <matheus.bernardino@oss.qualcomm.com>
+From: Brian Cain <bcain@quicinc.com>
 
-Signed-off-by: Matheus Tavares Bernardino <matheus.bernardino@oss.qualcomm.com>
+Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 ---
- target/hexagon/cpu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ target/hexagon/cpu.c | 134 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 133 insertions(+), 1 deletion(-)
 
 diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
-index 85ccf9893a..0445146f2b 100644
+index 0445146f2b..2ae6874841 100644
 --- a/target/hexagon/cpu.c
 +++ b/target/hexagon/cpu.c
-@@ -511,6 +511,12 @@ static bool hexagon_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
-     return false;
- }
- 
-+static vaddr hexagon_pointer_wrap(CPUState *cs, int mmu_idx,
-+                                  vaddr result, vaddr base)
-+{
-+    return result;
-+}
-+
+@@ -37,6 +37,8 @@
+ #include "hex_interrupts.h"
+ #include "hexswi.h"
+ #include "exec/cpu-interrupt.h"
++#include "exec/target_page.h"
++#include "hw/hexagon/hexagon_globalreg.h"
  #endif
  
- static const TCGCPUOps hexagon_tcg_ops = {
-@@ -525,6 +531,8 @@ static const TCGCPUOps hexagon_tcg_ops = {
-     .mmu_index = hexagon_cpu_mmu_index,
- #if !defined(CONFIG_USER_ONLY)
+ static void hexagon_v66_cpu_init(Object *obj) { }
+@@ -490,7 +492,136 @@ static void hexagon_cpu_init(Object *obj)
+ #endif
+ }
+ 
+-#ifndef CONFIG_USER_ONLY
++#if !defined(CONFIG_USER_ONLY)
++static bool get_physical_address(CPUHexagonState *env, hwaddr *phys, int *prot,
++                                 int *size, int32_t *excp, target_ulong address,
++                                 MMUAccessType access_type, int mmu_idx)
++
++{
++    if (hexagon_cpu_mmu_enabled(env)) {
++        return hex_tlb_find_match(env, address, access_type, phys, prot, size,
++                                  excp, mmu_idx);
++    } else {
++        *phys = address & 0xFFFFFFFF;
++        *prot = PAGE_VALID | PAGE_READ | PAGE_WRITE | PAGE_EXEC;
++        *size = TARGET_PAGE_SIZE;
++        return true;
++    }
++}
++
++/* qemu seems to only want to know about TARGET_PAGE_SIZE pages */
++static void find_qemu_subpage(vaddr *addr, hwaddr *phys, int page_size)
++{
++    vaddr page_start = *addr & ~((vaddr)(page_size - 1));
++    vaddr offset = ((*addr - page_start) / TARGET_PAGE_SIZE) * TARGET_PAGE_SIZE;
++    *addr = page_start + offset;
++    *phys += offset;
++}
++
++
++#define INVALID_BADVA 0xbadabada
++
++static void set_badva_regs(CPUHexagonState *env, target_ulong VA, int slot,
++                           MMUAccessType access_type)
++{
++    arch_set_system_reg(env, HEX_SREG_BADVA, VA);
++
++    if (access_type == MMU_INST_FETCH || slot == 0) {
++        arch_set_system_reg(env, HEX_SREG_BADVA0, VA);
++        arch_set_system_reg(env, HEX_SREG_BADVA1, INVALID_BADVA);
++        SET_SSR_FIELD(env, SSR_V0, 1);
++        SET_SSR_FIELD(env, SSR_V1, 0);
++        SET_SSR_FIELD(env, SSR_BVS, 0);
++    } else if (slot == 1) {
++        arch_set_system_reg(env, HEX_SREG_BADVA0, INVALID_BADVA);
++        arch_set_system_reg(env, HEX_SREG_BADVA1, VA);
++        SET_SSR_FIELD(env, SSR_V0, 0);
++        SET_SSR_FIELD(env, SSR_V1, 1);
++        SET_SSR_FIELD(env, SSR_BVS, 1);
++    } else {
++        g_assert_not_reached();
++    }
++}
++
++static void raise_tlbmiss_exception(CPUState *cs, target_ulong VA, int slot,
++                                    MMUAccessType access_type)
++{
++    CPUHexagonState *env = cpu_env(cs);
++
++    set_badva_regs(env, VA, slot, access_type);
++
++    switch (access_type) {
++    case MMU_INST_FETCH:
++        cs->exception_index = HEX_EVENT_TLB_MISS_X;
++        if ((VA & ~TARGET_PAGE_MASK) == 0) {
++            env->cause_code = HEX_CAUSE_TLBMISSX_CAUSE_NEXTPAGE;
++        } else {
++            env->cause_code = HEX_CAUSE_TLBMISSX_CAUSE_NORMAL;
++        }
++        break;
++    case MMU_DATA_LOAD:
++        cs->exception_index = HEX_EVENT_TLB_MISS_RW;
++        env->cause_code = HEX_CAUSE_TLBMISSRW_CAUSE_READ;
++        break;
++    case MMU_DATA_STORE:
++        cs->exception_index = HEX_EVENT_TLB_MISS_RW;
++        env->cause_code = HEX_CAUSE_TLBMISSRW_CAUSE_WRITE;
++        break;
++    }
++}
++
++static void raise_perm_exception(CPUState *cs, target_ulong VA, int slot,
++                                 MMUAccessType access_type, int32_t excp)
++{
++    CPUHexagonState *env = cpu_env(cs);
++
++    set_badva_regs(env, VA, slot, access_type);
++    cs->exception_index = excp;
++}
++
++static const char *access_type_names[] = { "MMU_DATA_LOAD ", "MMU_DATA_STORE",
++                                           "MMU_INST_FETCH" };
++
++static const char *mmu_idx_names[] = { "MMU_USER_IDX", "MMU_GUEST_IDX",
++                                       "MMU_KERNEL_IDX" };
++
++static bool hexagon_tlb_fill(CPUState *cs, vaddr address, int size,
++                             MMUAccessType access_type, int mmu_idx, bool probe,
++                             uintptr_t retaddr)
++{
++    CPUHexagonState *env = cpu_env(cs);
++    static int slot = 0 /* This is always zero for now */;
++    hwaddr phys;
++    int prot = 0;
++    int page_size = 0;
++    int32_t excp = 0;
++    bool ret = 0;
++
++    qemu_log_mask(
++        CPU_LOG_MMU,
++        "%s: tid = 0x%x, pc = 0x%08" PRIx32 ", vaddr = 0x%08" VADDR_PRIx
++        ", size = %d, %s,\tprobe = %d, %s\n",
++        __func__, env->threadId, env->gpr[HEX_REG_PC], address, size,
++        access_type_names[access_type], probe, mmu_idx_names[mmu_idx]);
++    ret = get_physical_address(env, &phys, &prot, &page_size, &excp, address,
++                               access_type, mmu_idx);
++    if (ret) {
++        if (!excp) {
++            find_qemu_subpage(&address, &phys, page_size);
++            tlb_set_page(cs, address, phys, prot, mmu_idx, TARGET_PAGE_SIZE);
++            return ret;
++        } else {
++            raise_perm_exception(cs, address, slot, access_type, excp);
++            do_raise_exception(env, cs->exception_index, env->gpr[HEX_REG_PC],
++                               retaddr);
++        }
++    }
++    if (probe) {
++        return false;
++    }
++    raise_tlbmiss_exception(cs, address, slot, access_type);
++    do_raise_exception(env, cs->exception_index, env->gpr[HEX_REG_PC], retaddr);
++}
+ 
+ static bool hexagon_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+ {
+@@ -533,6 +664,7 @@ static const TCGCPUOps hexagon_tcg_ops = {
      .cpu_exec_interrupt = hexagon_cpu_exec_interrupt,
-+    .pointer_wrap = hexagon_pointer_wrap,
-+    .cpu_exec_reset = cpu_reset,
+     .pointer_wrap = hexagon_pointer_wrap,
+     .cpu_exec_reset = cpu_reset,
++    .tlb_fill = hexagon_tlb_fill,
  #endif /* !CONFIG_USER_ONLY */
  };
  
