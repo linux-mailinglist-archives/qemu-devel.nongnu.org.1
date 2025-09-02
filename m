@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D079B3F315
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 05:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4B2B3F2EF
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 05:50:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utI1v-0005LC-52; Mon, 01 Sep 2025 23:49:59 -0400
+	id 1utI21-0005tT-Mi; Mon, 01 Sep 2025 23:50:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI1r-00057i-7W
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:55 -0400
+ id 1utI1n-0004mC-Eu
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:51 -0400
 Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <brian.cain@oss.qualcomm.com>)
- id 1utI1i-0004gG-La
- for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:55 -0400
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822RkKA016374
- for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:49:35 GMT
+ id 1utI1j-0004gS-QW
+ for qemu-devel@nongnu.org; Mon, 01 Sep 2025 23:49:50 -0400
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822Rm9o012351
+ for <qemu-devel@nongnu.org>; Tue, 2 Sep 2025 03:49:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- m3Jy3qDy8UMtfwS27O7HCnbT1ahJwyKtcD8kQj9/kgQ=; b=oV8wiWuu3PJk7BLH
- dFp57XYiQHfbIqiJ8IvajsVgqeRt6X04rNBezv7tB7vgfHk72FE9bNyesNIDSlbj
- /kltj6tnjvFS6e0Tsru+RO5Mi2dB67BwXqvspX3utVJ6nJpF4QnHfC8LjBBDgojj
- ujClsNjLKuJb6FrTfcrRmoSZJUABrHLldfa/wDT2oY83F28z+XGdnVvXJ0fmlCKQ
- 8IPLKV90lsbMcpOkgYhhV2zerDjyNhv5ySCmtrJBDj9RalbFQiKB3xnCayBGbsrK
- tROp+93cImhQxqge9+MB9lNsuHjh+UfdeVh1A/1r0sRuUXBoUN/dHsT7jw8bm+z2
- VrffOQ==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48utk8x8ar-1
+ /XtkofbAZfBFOGB7EfpPi54q1WneJlNbiChUs0mvYsc=; b=lFY0euds75ntjVJ/
+ Gfnxxw3EGIvCaeqydCJN3x6e+Vm+UUWLPCau7Ia58HKKH6nJ51WHQfCZgR/MEKPO
+ hLZkGVwBT5N7o34+lmdAUb6TUixZeG2z4b1DzutWta3FJzq9uq+xjdhMkjAaEmUf
+ FDUgiDgdInk17DdaLV0kCwzg+vsdeNZBwtOib7S50BUTmmoIYZNXPRmJ/82BSz/r
+ q71acnvxyUhLyX/RneC9uEgb67zWkGGHrOizTjijAUZ93rbEIJGIyvjXy2OjDS8g
+ c5rSw590ruJ6eX0y/7JEPSscPZ5EtZQSBUEVeGgiqbLALDDR1gU4MLOwMToF57wg
+ 7No6LA==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ut2fea6c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:49:35 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-24abc029ee3so18822655ad.0
- for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:49:34 -0700 (PDT)
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 03:49:36 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-329e3db861eso234173a91.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Sep 2025 20:49:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756784974; x=1757389774;
+ d=1e100.net; s=20230601; t=1756784975; x=1757389775;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m3Jy3qDy8UMtfwS27O7HCnbT1ahJwyKtcD8kQj9/kgQ=;
- b=HTFx5j8R7VZNVViHuWdrxcrxaxlU0AxWX78VHXsc/SLE8bh5Got8YyYe36s/qwz+26
- 7MRiI01kdsAPrLCOTgn0FGu2ag+jC1l7vzIlbSV7ftQkT8RJ8zJsl7p0NjUswvp71tC9
- x1JHa387ouXRBTahzbNHizu0dExJyHrudOgVeF4N+PZ9Roele4QGIBfhjKcAJNm6ZBgc
- PJNf0UqIyMLvP114u6qvsdMoxJxaEPs45vPpnLXNTwMYKM6ON/Xs5zgb6wwR3Mft6QA4
- crBYH2mRhAfDGla34j+DekxaPS/47ODrq510fcB6+17TEvU4qKImdw6pTfYLsK1Ph66l
- JbYQ==
-X-Gm-Message-State: AOJu0YyCPT7jcuUyFm80o0kAsCtcOsALg7RSfz+7In6UxjWapylIa8jH
- 6qTr/TswxNbltOd8Lpxq1qQghnvjpCSVFfSKwBnKIXt57eRlBg0Ab29B7TDzTSFXO1wpyzOl+uF
- 9COfImWYCdgvT2KvUxqgflVDP41kMvviPMSqmwKi2Ut+vsuczWcJBaeb7VcDeZekL7AFk
-X-Gm-Gg: ASbGncvipUr8UAFj4+moYN/qWsQWtv8wAuilrVsKYAaPkV2bCHFIr//eSK4Y+iaW0Id
- OnYA3zEqSKCRfPgZr8iOTZdF4q+3PvhRnwCVcGWoRLu9RgMSSLF1gjhGZkrj4BVSFama4uWMKtJ
- 5isdUGcj0wZBZtXgqaldTewH0QDb4206BW+GLECwGP9Y3ic/E9zI67aaoFQGHxddRmT5bo8klJR
- h7b6HibFviCeUspHLgCktt8w+bxVVLKd1AFpfqcjdAz3WbwdXID4Vfgmha37OxyVcWF2ba5MVo6
- PxpG/1PRFJX8guzkzljb0ogqszGBnw0yzLVO2dHTcx18nurc6TUPFvoAinIYM2cGorf9poegy5a
- AGzJtN3rh4BvA
-X-Received: by 2002:a17:902:e750:b0:24b:12ce:48bd with SMTP id
- d9443c01a7336-24b12ce4946mr15323865ad.17.1756784973940; 
- Mon, 01 Sep 2025 20:49:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGswUP6qStdwNIF/8fCiAUYsapjaEWjlCDJ7zPkrxgd09zewQresdZZvBdxWKgA7ige9AgkDw==
-X-Received: by 2002:a17:902:e750:b0:24b:12ce:48bd with SMTP id
- d9443c01a7336-24b12ce4946mr15323585ad.17.1756784973457; 
- Mon, 01 Sep 2025 20:49:33 -0700 (PDT)
+ bh=/XtkofbAZfBFOGB7EfpPi54q1WneJlNbiChUs0mvYsc=;
+ b=dgdXSZnMTvU7vVS9L1rNaoyrMgcEOFqxMbvm4+37oPAQ3vB8sSyxGHG97EyLOzgGwf
+ LyfrIZl5hKohjV7Jk4gHKzkHjmYmbN8+1s2ngPZPD6gTnmd11Z+kHgFafaRr+kg/XyhV
+ XwggiDRQPCA3t+N4fj3tVMI9b0RYPXwwMli6OqFN+1m3w/tsRIUS5y2COEtgEF94DvDE
+ Sqh4Nu+q8PwczW6C2cWYLbP/cndDR/sKQZ/ea+DWFqyZhb5pLe471U9SmPSpFBatdY/9
+ L0sA7RuN517X0HbGBAzYSV3niP0MhcGqqMHjy0dLD3c9FKaFa3NdD3xEsxIjNAbPjDmq
+ Q7UQ==
+X-Gm-Message-State: AOJu0YxX4ppl2Xld8tm2USseAn9Thr6MQhBisWe36wkX9i0A+Epop2gT
+ 6l6P4uIsm8/IiD2Ufld7of9qLj5IZz5L2ENTXgoqWVTFxkLajADB7VCGPg8R9wv1bFxKqXOXQp5
+ vwPOE5Ce6noUo7bYPtPQP3e5KKRsa0di6K0vsdwV1aZrLXKiEVpSL8Xt4z070WiDurAoj
+X-Gm-Gg: ASbGncu4C32wKMKtD8FEiQsj/JwzB+s6OeVD0n7jebOSdujcJNxYR1b5dLJF37J1zrr
+ XKquBOuDRVPJzC+lz8QLwk2CSW0rWhpvGo1+BUa1AABz+uJQ+/dvQ+Kj1Bb+KZbAGvtYJbMslA/
+ yZhL5Dz9QNXD4Fg9gVlEFFhLzh3XnGCJbyhhXgTGEGHqhHfGNpYV4FAl73mjq7E+/XeKJCbfLop
+ +mYg6zsM8hqIJKM+KiD+gXx6U6vKYwo/99ftjI5bq+n1vB+eDF6sCtTsXFrUEj3WnJJ3N0LCGDf
+ /iVnTrqctFcS1tBH1LCYJBTejyQJLKXn7PycPRgD3UASIEUkankv8jfIoJGETKyUT94I/8bmoIb
+ Yb3GotST7woDv
+X-Received: by 2002:a17:90b:3d8f:b0:327:8c05:f8b0 with SMTP id
+ 98e67ed59e1d1-3281531d6e0mr13485550a91.0.1756784975000; 
+ Mon, 01 Sep 2025 20:49:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH7Nil/yjE/x9qgOOxIJSMtOMx0OErqJ5KVVRKgBCPLxyhdB4yJn9xGAgjRaf71yrulq2NyAA==
+X-Received: by 2002:a17:90b:3d8f:b0:327:8c05:f8b0 with SMTP id
+ 98e67ed59e1d1-3281531d6e0mr13485528a91.0.1756784974502; 
+ Mon, 01 Sep 2025 20:49:34 -0700 (PDT)
 Received: from hu-bcain-lv.qualcomm.com (Global_NAT1.qualcomm.com.
  [129.46.96.20]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-327daeeca1csm12543546a91.25.2025.09.01.20.49.32
+ 98e67ed59e1d1-327daeeca1csm12543546a91.25.2025.09.01.20.49.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Sep 2025 20:49:33 -0700 (PDT)
+ Mon, 01 Sep 2025 20:49:34 -0700 (PDT)
 From: Brian Cain <brian.cain@oss.qualcomm.com>
 To: qemu-devel@nongnu.org
 Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
@@ -79,37 +79,37 @@ Cc: brian.cain@oss.qualcomm.com, richard.henderson@linaro.org,
  anjo@rev.ng, marco.liebel@oss.qualcomm.com, ltaylorsimpson@gmail.com,
  alex.bennee@linaro.org, quic_mburton@quicinc.com,
  sid.manning@oss.qualcomm.com, Brian Cain <bcain@quicinc.com>
-Subject: [PATCH v2 34/39] target/hexagon: Add TLB, k0 {un,}lock
-Date: Mon,  1 Sep 2025 20:48:42 -0700
-Message-Id: <20250902034847.1948010-35-brian.cain@oss.qualcomm.com>
+Subject: [PATCH v2 35/39] target/hexagon: Define gen_precise_exception()
+Date: Mon,  1 Sep 2025 20:48:43 -0700
+Message-Id: <20250902034847.1948010-36-brian.cain@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250902034847.1948010-1-brian.cain@oss.qualcomm.com>
 References: <20250902034847.1948010-1-brian.cain@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: c3iQJ5B-GOb-wrDA6B1hMLDSNkngS9Rl
-X-Proofpoint-ORIG-GUID: c3iQJ5B-GOb-wrDA6B1hMLDSNkngS9Rl
-X-Authority-Analysis: v=2.4 cv=ccnSrmDM c=1 sm=1 tr=0 ts=68b6694f cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzOCBTYWx0ZWRfXzOVYpvxn1Wtf
+ gwRhyHALLNKuDfed4ynJL1V17uyFE+O/0HACYPHgjhZoyflbhOTH1TzmqyDYAvefPxKhlVaY8G7
+ ivblKyLh+oqTsRqgyVrtVtVr1RGxFz57T8STiSZ6wDpQF0Kt8kBCUnwEQxOksi+wmHUk+1Xe46r
+ /KCbCpPAPCSBRUhc4+FRdune93+dRXU8RSPrrJqbVsZ3FKxkUXgx08z3u4Izj9dh2CZRog09tk3
+ PPUQFlnP6Y6DLbRA9ANNiGpdwq/1Mm4xUR9zpD7VmMuBjZGr6BpvP9yrg6Oj9IJdk/GcKq45aGa
+ OmEp/Q6yClAe1NQeR0TlPH38MEfig9MLhRPpchn8e6kwlKbVqPWM636uhJplLEGAzgGcXlz2Ba2
+ VxQngfd3
+X-Proofpoint-ORIG-GUID: gIF6PZep3N9DCx0jU5ImRMkOaNhE34Zn
+X-Proofpoint-GUID: gIF6PZep3N9DCx0jU5ImRMkOaNhE34Zn
+X-Authority-Analysis: v=2.4 cv=U7iSDfru c=1 sm=1 tr=0 ts=68b66950 cx=c_pps
+ a=vVfyC5vLCtgYJKYeQD43oA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
  a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
- a=5qM_0fsqfvQKBOMFAjMA:9 a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
+ a=nvr5Al9PzyP1cg5pS9MA:9 a=QEXdDO2ut3YA:10 a=rl5im9kqc5Lf4LNbBjHf:22
  a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDA0MiBTYWx0ZWRfX5+Z2pxCjHsGk
- gww47V5kDs+/umbvl5t07AZsBQtc8PtV0yzKiqe3sucN4giZ5Qnwm2tfWqxSIB/k1RR7FoH5Mr0
- csCAtB58aKIwWOI1tRFFxRYAcwt44HezOkvRuEBY7J/UaHLDEHyzvO49ohP6j6Sb9utsFltXXHE
- SP0p/EbsEC755fMcOd7kM38+w9m5u3YLCrGQt3Nd8J2MIkH7A5luwXAd5chlIKb/UnUQM61CGbo
- K5/DKBpst+NW+rLD/KVzQhiYpSu5W2/xV+ZTPi/sxbuDpJws9R/a5cFF/bkx4iozTZNPyNqLm5d
- VzhOCJ6B7CdWV3wDau1YdwblKtcGA0pMrfDcdHzydrx0H0VV2VzLtlvxccuTm02dnmY0uhpAyj5
- aFtMVqwm
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 phishscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
- clxscore=1015 suspectscore=0 spamscore=0 bulkscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508300042
+ spamscore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ malwarescore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300038
 Received-SPF: pass client-ip=205.220.168.131;
  envelope-from=brian.cain@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
 X-Spam_score_int: -26
@@ -136,146 +136,105 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Brian Cain <bcain@quicinc.com>
 
+Add PC to raise_exception helper
+
+Replace the fGEN_TCG_J2_trap0 macro override with the fTRAP()-generated
+system helper instead.
+
 Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 ---
- target/hexagon/sys_macros.h |   8 +--
- target/hexagon/op_helper.c  | 104 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 108 insertions(+), 4 deletions(-)
+ target/hexagon/gen_tcg.h   |  7 -------
+ target/hexagon/helper.h    |  2 +-
+ target/hexagon/op_helper.c | 10 ++++------
+ target/hexagon/translate.c | 13 ++++++++-----
+ 4 files changed, 13 insertions(+), 19 deletions(-)
 
-diff --git a/target/hexagon/sys_macros.h b/target/hexagon/sys_macros.h
-index 3c4c3c7aa5..e5dc1ce0ab 100644
---- a/target/hexagon/sys_macros.h
-+++ b/target/hexagon/sys_macros.h
-@@ -143,11 +143,11 @@
- #define fDCINVIDX(REG)
- #define fDCINVA(REG) do { REG = REG; } while (0) /* Nothing to do in qemu */
+diff --git a/target/hexagon/gen_tcg.h b/target/hexagon/gen_tcg.h
+index 71f8a0e2d0..146aadc737 100644
+--- a/target/hexagon/gen_tcg.h
++++ b/target/hexagon/gen_tcg.h
+@@ -1370,13 +1370,6 @@
+ #define fGEN_TCG_S2_storew_rl_st_vi(SHORTCODE)          SHORTCODE
+ #define fGEN_TCG_S4_stored_rl_st_vi(SHORTCODE)          SHORTCODE
  
--#define fSET_TLB_LOCK()       g_assert_not_reached()
--#define fCLEAR_TLB_LOCK()     g_assert_not_reached()
-+#define fSET_TLB_LOCK()       hex_tlb_lock(env);
-+#define fCLEAR_TLB_LOCK()     hex_tlb_unlock(env);
- 
--#define fSET_K0_LOCK()        g_assert_not_reached()
--#define fCLEAR_K0_LOCK()      g_assert_not_reached()
-+#define fSET_K0_LOCK()        hex_k0_lock(env);
-+#define fCLEAR_K0_LOCK()      hex_k0_unlock(env);
- 
- #define fTLB_IDXMASK(INDEX) \
-     ((INDEX) & (fPOW2_ROUNDUP(fCAST4u(env_archcpu(env)->num_tlbs)) - 1))
-diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
-index e283c5c809..5efd644fa7 100644
---- a/target/hexagon/op_helper.c
-+++ b/target/hexagon/op_helper.c
-@@ -1186,6 +1186,110 @@ void HELPER(modify_ssr)(CPUHexagonState *env, uint32_t new, uint32_t old)
-     BQL_LOCK_GUARD();
-     hexagon_modify_ssr(env, new, old);
- }
-+
-+static void hex_k0_lock(CPUHexagonState *env)
-+{
-+    BQL_LOCK_GUARD();
-+    g_assert((env->k0_lock_count == 0) || (env->k0_lock_count == 1));
-+
-+    uint32_t syscfg = arch_get_system_reg(env, HEX_SREG_SYSCFG);
-+    if (GET_SYSCFG_FIELD(SYSCFG_K0LOCK, syscfg)) {
-+        if (env->k0_lock_state == HEX_LOCK_QUEUED) {
-+            env->next_PC += 4;
-+            env->k0_lock_count++;
-+            env->k0_lock_state = HEX_LOCK_OWNER;
-+            SET_SYSCFG_FIELD(env, SYSCFG_K0LOCK, 1);
-+            return;
-+        }
-+        if (env->k0_lock_state == HEX_LOCK_OWNER) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "Double k0lock at PC: 0x%x, thread may hang\n",
-+                          env->next_PC);
-+            env->next_PC += 4;
-+            CPUState *cs = env_cpu(env);
-+            cpu_interrupt(cs, CPU_INTERRUPT_HALT);
-+            return;
-+        }
-+        env->k0_lock_state = HEX_LOCK_WAITING;
-+        CPUState *cs = env_cpu(env);
-+        cpu_interrupt(cs, CPU_INTERRUPT_HALT);
-+    } else {
-+        env->next_PC += 4;
-+        env->k0_lock_count++;
-+        env->k0_lock_state = HEX_LOCK_OWNER;
-+        SET_SYSCFG_FIELD(env, SYSCFG_K0LOCK, 1);
-+    }
-+
-+}
-+
-+static void hex_k0_unlock(CPUHexagonState *env)
-+{
-+    BQL_LOCK_GUARD();
-+    g_assert((env->k0_lock_count == 0) || (env->k0_lock_count == 1));
-+
-+    /* Nothing to do if the k0 isn't locked by this thread */
-+    uint32_t syscfg = arch_get_system_reg(env, HEX_SREG_SYSCFG);
-+    if ((GET_SYSCFG_FIELD(SYSCFG_K0LOCK, syscfg) == 0) ||
-+        (env->k0_lock_state != HEX_LOCK_OWNER)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "thread %d attempted to unlock k0 without having the "
-+                      "lock, k0_lock state = %d, syscfg:k0 = %d\n",
-+                      env->threadId, env->k0_lock_state,
-+                      GET_SYSCFG_FIELD(SYSCFG_K0LOCK, syscfg));
-+        g_assert(env->k0_lock_state != HEX_LOCK_WAITING);
-+        return;
-+    }
-+
-+    env->k0_lock_count--;
-+    env->k0_lock_state = HEX_LOCK_UNLOCKED;
-+    SET_SYSCFG_FIELD(env, SYSCFG_K0LOCK, 0);
-+
-+    /* Look for a thread to unlock */
-+    unsigned int this_threadId = env->threadId;
-+    CPUHexagonState *unlock_thread = NULL;
-+    CPUState *cs;
-+    CPU_FOREACH(cs) {
-+        CPUHexagonState *thread = cpu_env(cs);
-+
-+        /*
-+         * The hardware implements round-robin fairness, so we look for threads
-+         * starting at env->threadId + 1 and incrementing modulo the number of
-+         * threads.
-+         *
-+         * To implement this, we check if thread is a earlier in the modulo
-+         * sequence than unlock_thread.
-+         *     if unlock thread is higher than this thread
-+         *         thread must be between this thread and unlock_thread
-+         *     else
-+         *         thread higher than this thread is ahead of unlock_thread
-+         *         thread must be lower then unlock thread
-+         */
-+        if (thread->k0_lock_state == HEX_LOCK_WAITING) {
-+            if (!unlock_thread) {
-+                unlock_thread = thread;
-+            } else if (unlock_thread->threadId > this_threadId) {
-+                if (this_threadId < thread->threadId &&
-+                    thread->threadId < unlock_thread->threadId) {
-+                    unlock_thread = thread;
-+                }
-+            } else {
-+                if (thread->threadId > this_threadId) {
-+                    unlock_thread = thread;
-+                }
-+                if (thread->threadId < unlock_thread->threadId) {
-+                    unlock_thread = thread;
-+                }
-+            }
-+        }
-+    }
-+    if (unlock_thread) {
-+        cs = env_cpu(unlock_thread);
-+        unlock_thread->k0_lock_state = HEX_LOCK_QUEUED;
-+        SET_SYSCFG_FIELD(unlock_thread, SYSCFG_K0LOCK, 1);
-+        cpu_interrupt(cs, CPU_INTERRUPT_K0_UNLOCK);
-+    }
-+
-+}
+-#define fGEN_TCG_J2_trap0(SHORTCODE) \
+-    do { \
+-        uiV = uiV; \
+-        tcg_gen_movi_tl(hex_gpr[HEX_REG_PC], ctx->pkt->pc); \
+-        TCGv excp = tcg_constant_tl(HEX_EVENT_TRAP0); \
+-        gen_helper_raise_exception(tcg_env, excp); \
+-    } while (0)
  #endif
  
+ #define fGEN_TCG_A2_nop(SHORTCODE) do { } while (0)
+diff --git a/target/hexagon/helper.h b/target/hexagon/helper.h
+index e107d74609..bd75c72abd 100644
+--- a/target/hexagon/helper.h
++++ b/target/hexagon/helper.h
+@@ -18,7 +18,7 @@
+ #include "internal.h"
+ #include "helper_protos_generated.h.inc"
+ 
+-DEF_HELPER_FLAGS_2(raise_exception, TCG_CALL_NO_RETURN, noreturn, env, i32)
++DEF_HELPER_FLAGS_3(raise_exception, TCG_CALL_NO_RETURN, noreturn, env, i32, i32)
+ DEF_HELPER_2(commit_store, void, env, int)
+ DEF_HELPER_3(gather_store, void, env, i32, int)
+ DEF_HELPER_1(commit_hvx_stores, void, env)
+diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
+index 5efd644fa7..6783e1e7d1 100644
+--- a/target/hexagon/op_helper.c
++++ b/target/hexagon/op_helper.c
+@@ -71,15 +71,13 @@ G_NORETURN void hexagon_raise_exception_err(CPUHexagonState *env,
+                                             uint32_t exception,
+                                             uintptr_t pc)
+ {
+-    CPUState *cs = env_cpu(env);
+-    qemu_log_mask(CPU_LOG_INT, "%s: %d\n", __func__, exception);
+-    cs->exception_index = exception;
+-    cpu_loop_exit_restore(cs, pc);
++    do_raise_exception(env, exception, pc, 0);
+ }
+ 
+-G_NORETURN void HELPER(raise_exception)(CPUHexagonState *env, uint32_t excp)
++G_NORETURN void HELPER(raise_exception)(CPUHexagonState *env, uint32_t excp,
++                                        target_ulong PC)
+ {
+-    hexagon_raise_exception_err(env, excp, 0);
++    hexagon_raise_exception_err(env, excp, PC);
+ }
+ 
+ void log_store32(CPUHexagonState *env, target_ulong addr,
+diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
+index 01a236d108..38c2037c47 100644
+--- a/target/hexagon/translate.c
++++ b/target/hexagon/translate.c
+@@ -122,9 +122,10 @@ intptr_t ctx_tmp_vreg_off(DisasContext *ctx, int regnum,
+     return offset;
+ }
+ 
+-static void gen_exception_raw(int excp)
++static void gen_exception(int excp, target_ulong PC)
+ {
+-    gen_helper_raise_exception(tcg_env, tcg_constant_i32(excp));
++    gen_helper_raise_exception(tcg_env, tcg_constant_i32(excp),
++                               tcg_constant_tl(PC));
+ }
+ 
+ #ifndef CONFIG_USER_ONLY
+@@ -219,9 +220,11 @@ static void gen_end_tb(DisasContext *ctx)
+ 
+ void hex_gen_exception_end_tb(DisasContext *ctx, int excp)
+ {
+-    gen_exec_counters(ctx);
+-    tcg_gen_movi_tl(hex_gpr[HEX_REG_PC], ctx->next_PC);
+-    gen_exception_raw(excp);
++#ifdef CONFIG_USER_ONLY
++    gen_exception(excp, ctx->pkt->pc);
++#else
++    gen_precise_exception(excp, ctx->pkt->pc);
++#endif
+     ctx->base.is_jmp = DISAS_NORETURN;
+ }
  
 -- 
 2.34.1
