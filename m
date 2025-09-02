@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9894B3F708
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 09:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B65B3F703
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 09:52:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utLnN-00074V-3i; Tue, 02 Sep 2025 03:51:14 -0400
+	id 1utLnQ-00077P-LO; Tue, 02 Sep 2025 03:51:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1utLnD-00073t-MF
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 03:51:03 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1utLnH-00074d-JN
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 03:51:09 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1utLnB-0001uZ-F4
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 03:51:03 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-76e6cbb991aso4453972b3a.1
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 00:50:57 -0700 (PDT)
+ id 1utLnB-0001uc-F6
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 03:51:07 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-7722f8cf9adso3484609b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 00:50:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756799456; x=1757404256; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=1KDPIcfYEhsmrwuz9WFplpLUjFQgTVEe3sUb2KPSJuI=;
- b=qy11qxmea3ky0NMonO/LGsVfBmN6d2CNYQcFlzhBx6BgswVqhKV0+sza283aUACWcK
- UOBVoH7dc6tJmyA8kxDRQGRWUK448rTThFjLurr1+xz30BUwbRdnWPViNqB5LFDTeEV2
- 6sgMUxwjreK0shq0RvVudX6bS5AyEwtcVyqMol/9DV0nf2VBB47um73aU4omEheaRQkN
- obovdLJcYWnrEonZNzTUPWIHmXz2NZEyS9ejPsBKsfNusak/TPSKVb6JO9/rLLAUeKAw
- 2hHlQFfyXoJycNe7QUV2cmUQCWmKE1OkdhXFkzmRHCN+YrSEGgdVN/eOVFczrTjfU44t
- AueQ==
+ d=linaro.org; s=google; t=1756799457; x=1757404257; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=KsrgAwcfXPf60wLi3R10FjsXpsAPM+d7uJ0mGFTRCRw=;
+ b=tMSX8xRRGdeOatBYYgof1RALpPvJFmxCpaQDoY6FaqwGyl/fj9dIPU4NiwpiL1iW3n
+ B+tW+fLVXyYP7APyOOHimtxtyaeFZnrtvo3y1JD1MjfYfHp8Xv5gx/zrVXYAATkIMExj
+ lunPRAA14JuympQWFmUu9s2nzVxgAbcSxi0zDrwwdET+UalonnKBrWUiGmTxHfyUQGGp
+ tFTyE+PaJLWkzeLcG3P+n2/OP99OaxJI2tfPYpitadXtUmpoW9W/Uy/OQ4n8OqNKuzg/
+ bI2nmkL9g6i1YD1DZVNtvyHaLbfUS3UpOGMDPHfgIf4NHIxuX9bT3PWUCMGYpXjAjBkV
+ ZZ/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756799456; x=1757404256;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1KDPIcfYEhsmrwuz9WFplpLUjFQgTVEe3sUb2KPSJuI=;
- b=kR7flTjDUqoWlZmT48Lq/P6ju8LTmd6Po5TrYYMasCN2ZYRUIXeKNNfvo7WnJtfuF/
- /odkX57ELxSPawejyXrzGqAlJbLC2Sa/Hx35a7ggKQdfKjDBz2/j4/R70AQSlFXe98ja
- sdXE/fy+G6XF2KYDlmQOB/MMM8jSykJqhcJa+RJOx28wXprGofGHCqp9qqrn0+qJ4Q09
- 0mv3d5U76EIQCl9D9OPXxQ5aWYPlthCndbKySqO8c6RlObwg+PyHAUecjnp8SNy6pmqP
- 1oMnYrHH2adUGwdr/XjZs2s12DcI3MKzvW7x6NMSYi4HUqcBdWxWoN3PjYESFUYrkaw/
- crrA==
+ d=1e100.net; s=20230601; t=1756799457; x=1757404257;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=KsrgAwcfXPf60wLi3R10FjsXpsAPM+d7uJ0mGFTRCRw=;
+ b=TvRvnhCd8XtTEXtic82lg5Lnin2F88ObumbMCLIrd7TXuOWBhjjOgGUQPxomUB//lI
+ m/EXGahcJy90U/aYer0ablMWtQhMLoqBjtMb7SLFtpvS1e/MTz5K46muM4/rkgD1JCzy
+ Qp5McMNXvQW3pJZ4NiIQmWOaHRXFLjZ3D/q0/hgojx7In8ChxI/oyZ9+okRifuQTLew1
+ qtJaqtWu4PGNmVtwzyWMpTJGINZRIJav23J5iHfptIbifADnseYrAYwZVgnEKrLLfGHh
+ tRPHAqSQIqu06Y3hIjXFWsBm2xYUkRILU66yzHp8f5+eqF7ZedQnGzdJ7gI3Gpc49taa
+ yUaw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWDEi36YlzYVVZUld89S9tuwp0axhcGs++LXYaMzb9EhwuXtp32BgtnHsC4tZkERJyuvHOd9rEcm3gi@nongnu.org
-X-Gm-Message-State: AOJu0YyXTsDuz/igyv899ms4ekI7FhZZ6h70PyvXsUsf/Q5QggbVnyLV
- A5Mfbo5VBVqIszK8px2oSrWpA9Co8aI7ukdsqpGxiwOjn4AfStSSJ1xm9EIeY03PLq8=
-X-Gm-Gg: ASbGncth8E6G7x2D3/4/MfBFP5oNeyWLVoqp94gqMXVNKR3f1H6fGRdgdvLTtNzaGId
- NEedWmsyxZ0IX/VcvVzY63sejjr5hrT3nUBnJZ7fAH7ys01lfqIhId61eURI4lRNtbD3NTPMqIy
- 3CuixIspWH9mT7Ze88M+mBppVC+Y8muNvVhCDGaLjEuQimdO5yXxm7+6KmGeWHM0BThnZ9AtzfW
- 12xMp8Vnhd5OtvL1bR+bf5JTF2DIicvZKmzDZBQme3RHVE9tZzQh+mMDHS4w3KmaL6JJKu9aiYo
- t2HOk+Hy8iq3jFjO59mfWB33ocrV3ZaIV812wvNiBe4kLG44yQvXRUuzgDICsIr9hY9pbe61pcq
- 48zmCa/pj3ebcRjkmH5fPNYNG6PUaQH28rKHScpaarVRMKYewVDnqxQ==
-X-Google-Smtp-Source: AGHT+IEJjWyhALbMEB7bfGM6gSpkGBlun+b+lA0P2ALKG/bH8JF61j2QQj2UrSTezbQf9dnb68hUPw==
-X-Received: by 2002:a05:6a00:1398:b0:770:4eff:a300 with SMTP id
- d2e1a72fcca58-7723e224647mr11041049b3a.8.1756799456162; 
- Tue, 02 Sep 2025 00:50:56 -0700 (PDT)
+ AJvYcCUxcBLP6iTqVGwlQn/XoIuCYCVnViS3F7KE+PFo6Dpy9Tm/orslDD7f6N7S41VEpKFIrjnDPTxwUFhQ@nongnu.org
+X-Gm-Message-State: AOJu0YyiY4Im3axeuhVMMAf06BQk8bk3CzXC+alW34KDNER7hYa980Hf
+ YDv+NXXcIX5k+eqZqEqXiBrxH2yaGPO52IQJXySaJWMmBj44bFiRBTmPv+vIvixwJn8=
+X-Gm-Gg: ASbGncunnH++rZVRP9K1PdDvfiBf+Kx5ost8MTiHF4xFrzNyEMrgjxlxdFytrefyGfm
+ OTpNrnzGPDC21enZsfF2JSxTofBhkLfK22V0KMoMo2hXU4C5MFNHqw4mkQSL71LmE5YsKYJ1Pa4
+ XpRnAwIWTN/KjOzYwc4yE1nLn0I/tmmT8Wbfbo4kWcHHl6aV3+ST5l2EvHMP3MfWVbTPihTJol7
+ lLqGFcVNOXMQcTLfR0ZVcewDfGm+07TbMjUSr7CgVUC55+bR7RExyApS9/5sHIzhnDQ6PXZP6Jh
+ pusVBTVIhmfHN4Wxfl54ZfyHb3avJdp8wYgsNSfUCFJsugHRC89+8dS0NZBR6URsTeiE+lZP7gn
+ CpsMnK5Da0wetuyeyEE26ZF8wEwILuhQZ2X9n2XMGPVc=
+X-Google-Smtp-Source: AGHT+IEnwkRQyoajQ+wzO1OBiSDoxbHYacNaBxleMIW05ToiFEKgPiq2iScaYZJlnmLRKoKx53Yw3Q==
+X-Received: by 2002:a05:6a21:33a8:b0:243:9b4e:281b with SMTP id
+ adf61e73a8af0-243d6f40ef6mr14322782637.49.1756799457122; 
+ Tue, 02 Sep 2025 00:50:57 -0700 (PDT)
 Received: from pc.taild8403c.ts.net ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7723d79fcfesm9642766b3a.16.2025.09.02.00.50.55
+ d2e1a72fcca58-7723d79fcfesm9642766b3a.16.2025.09.02.00.50.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Sep 2025 00:50:55 -0700 (PDT)
+ Tue, 02 Sep 2025 00:50:56 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: pierrick.bouvier@linaro.org,
 	qemu-devel@nongnu.org
@@ -74,15 +75,16 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Gustavo Romero <gustavo.romero@linaro.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, rowan Hart <rowanbhart@gmail.com>
-Subject: [PATCH v7 0/9] contrib/plugins: uftrace
-Date: Tue,  2 Sep 2025 00:50:33 -0700
-Message-ID: <20250902075042.223990-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH v7 1/9] contrib/plugins/uftrace: skeleton file
+Date: Tue,  2 Sep 2025 00:50:34 -0700
+Message-ID: <20250902075042.223990-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250902075042.223990-1-pierrick.bouvier@linaro.org>
+References: <20250902075042.223990-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,111 +107,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This plugin generates a binary trace compatible with the excellent uftrace:
-https://github.com/namhyung/uftrace
+We define a scoreboard that will hold our data per cpu. As well, we
+define a buffer per cpu that will be used to read registers and memories
+in a thread-safe way.
 
-In short, it tracks all function calls performed during execution, based on
-frame pointer analysis. A big advantage over "uftrace record" is that it works
-in system mode, allowing to trace a full system execution, which was the
-original goal. It works as well in user mode, but uftrace itself already does
-this. It's implemented for aarch64 and x86_64.
+For now, we just instrument all instructions with an empty callback.
 
-Let's start with concrete examples of the result.
-
-First, in system mode, booting a stack using TF-A + U-boot + Linux:
-- Two first stages of boot sequence in Arm Trusted Firmware (EL3 and S-EL1)
-https://fileserver.linaro.org/s/kkxBS552W7nYESX/preview
-- Stat and open syscalls in kernel
-https://fileserver.linaro.org/s/dXe4MfraKg2F476/preview
-- Poweroff sequence (from kernel back to firmware, NS-EL2 to EL3)
-https://fileserver.linaro.org/s/oR2PtyGKJrqnfRf/preview
-
-Full trace is available here:
-https://fileserver.linaro.org/s/WsemLboPEzo24nw/download/aarch64_boot.json.gz
-You can download and open it on https://ui.perfetto.dev/ to explore it.
-
-Second, in user mode, tracing qemu-aarch64 (itself) running git --help:
-- Loading program and its interpreter
-https://fileserver.linaro.org/s/fie8JgX76yyL5cq/preview
-- TB creation
-https://fileserver.linaro.org/s/GXY6NKMw5EeRCew/preview
-
-Full trace is available here:
-https://fileserver.linaro.org/s/N8X8fnZ5yGRZLsT/download/qemu_aarch64_git_help.json.gz
-
-If you had curiosity and now you're ready to give some attention, most of the
-details you want to read are included in the documentation patch (final one).
-
-Overhead is around x5-x15, and long traces can be directly filtered with uftrace
-if needed.
-
-I hope this plugin can help people trying to understand what happens out of the
-user space, and get a better grasp of how firmwares, bootloader, and kernel
-interact behind the curtain.
-
-v7
---
-
-- Constants for TRACE_FLUSH_SIZE and TRACE_ID_SCALE
-- nits (add () and ,)
-
-v6
---
-
-- fix types and spelling mistakes
-- use _MAX for privilege level enums
-- uftrace info file: use empty strings
-- trace flush: assert we wrote all data
-- doc: added style for keyboard keys
-- added URL to document uftrace entry format
-- updated comment in vcpu_tb_trans to explain why we always instrument the first
-  instruction in tb
-
-v5
---
-
-- addressed Alex comments
-- split plugin implementation in several commits
-- removed instruction based timestamps (only use time based timestamps)
-- removed sampling implementation
-
-v4
---
-
-- add support for x64
-
-v3
---
-
-- fix missing include unistd.h (build failed on MacOS only)
-
-v2
---
-
-- trace active stacks on exit
-- do not erase map generated in system_emulation
-- add documentation to generate restricted visual traces around specific events
-  of execution
-
-Pierrick Bouvier (9):
-  contrib/plugins/uftrace: skeleton file
-  contrib/plugins/uftrace: define cpu operations and implement aarch64
-  contrib/plugins/uftrace: track callstack
-  contrib/plugins/uftrace: implement tracing
-  contrib/plugins/uftrace: implement privilege level tracing
-  contrib/plugins/uftrace: generate additional files for uftrace
-  contrib/plugins/uftrace: implement x64 support
-  contrib/plugins/uftrace_symbols.py
-  contrib/plugins/uftrace: add documentation
-
- docs/about/emulation.rst           | 199 +++++++
- contrib/plugins/uftrace.c          | 878 +++++++++++++++++++++++++++++
- contrib/plugins/meson.build        |   3 +-
- contrib/plugins/uftrace_symbols.py | 152 +++++
- 4 files changed, 1231 insertions(+), 1 deletion(-)
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ contrib/plugins/uftrace.c   | 73 +++++++++++++++++++++++++++++++++++++
+ contrib/plugins/meson.build |  3 +-
+ 2 files changed, 75 insertions(+), 1 deletion(-)
  create mode 100644 contrib/plugins/uftrace.c
- create mode 100755 contrib/plugins/uftrace_symbols.py
 
+diff --git a/contrib/plugins/uftrace.c b/contrib/plugins/uftrace.c
+new file mode 100644
+index 00000000000..4af0130b159
+--- /dev/null
++++ b/contrib/plugins/uftrace.c
+@@ -0,0 +1,73 @@
++/*
++ * Copyright (C) 2025, Pierrick Bouvier <pierrick.bouvier@linaro.org>
++ *
++ * Generates a trace compatible with uftrace (similar to uftrace record).
++ * https://github.com/namhyung/uftrace
++ *
++ * See docs/about/emulation.rst|Uftrace for details and examples.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include <qemu-plugin.h>
++#include <glib.h>
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
++
++typedef struct Cpu {
++    GByteArray *buf;
++} Cpu;
++
++static struct qemu_plugin_scoreboard *score;
++
++static void track_callstack(unsigned int cpu_index, void *udata)
++{
++}
++
++static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
++{
++    size_t n_insns = qemu_plugin_tb_n_insns(tb);
++
++    for (size_t i = 0; i < n_insns; i++) {
++        struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, i);
++
++        uintptr_t pc = qemu_plugin_insn_vaddr(insn);
++        qemu_plugin_register_vcpu_insn_exec_cb(insn, track_callstack,
++                                               QEMU_PLUGIN_CB_R_REGS,
++                                               (void *) pc);
++    }
++}
++
++static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
++{
++    Cpu *cpu = qemu_plugin_scoreboard_find(score, vcpu_index);
++    cpu->buf = g_byte_array_new();
++}
++
++static void vcpu_end(unsigned int vcpu_index)
++{
++    Cpu *cpu = qemu_plugin_scoreboard_find(score, vcpu_index);
++    g_byte_array_free(cpu->buf, true);
++    memset(cpu, 0, sizeof(Cpu));
++}
++
++static void at_exit(qemu_plugin_id_t id, void *data)
++{
++    for (size_t i = 0; i < qemu_plugin_num_vcpus(); ++i) {
++        vcpu_end(i);
++    }
++
++    qemu_plugin_scoreboard_free(score);
++}
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
++                                           const qemu_info_t *info,
++                                           int argc, char **argv)
++{
++    score = qemu_plugin_scoreboard_new(sizeof(Cpu));
++    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
++    qemu_plugin_register_atexit_cb(id, at_exit, NULL);
++    qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
++
++    return 0;
++}
+diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
+index 1876bc78438..7eb3629c95d 100644
+--- a/contrib/plugins/meson.build
++++ b/contrib/plugins/meson.build
+@@ -1,5 +1,6 @@
+ contrib_plugins = ['bbv', 'cache', 'cflow', 'drcov', 'execlog', 'hotblocks',
+-                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigger']
++                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigger',
++                   'uftrace']
+ if host_os != 'windows'
+   # lockstep uses socket.h
+   contrib_plugins += 'lockstep'
 -- 
 2.47.2
 
