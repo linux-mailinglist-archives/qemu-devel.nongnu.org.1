@@ -2,77 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE09AB409EA
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 17:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CE74B40A06
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 18:00:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utTMj-0000bS-7E; Tue, 02 Sep 2025 11:56:14 -0400
+	id 1utTQ2-0003RA-0f; Tue, 02 Sep 2025 11:59:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utTMX-0000U1-WC
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 11:56:04 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utTMU-0000u4-LQ
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 11:56:00 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-45b8b8d45b3so22173885e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 08:55:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756828556; x=1757433356; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=aumluLao06HPHxsnlJEB0MGe8/kLO8/7Fr6H7vMw33g=;
- b=bX3quFErH11WoS4pPlFbeRkSkG49J4sD/Y3GJ+9oQNI/2ALuVWgJB7sgwMpnU3HVHs
- wfEBbv5RPYmQ/XqcEuJSVMsbPp+hfH7D2ZNFjO9oDXrxGXwCyKgjP93MFThB5t3MnNe5
- xSBHQbtwS0CsxGrFnv+z7BR8QnZ6gr0D82r3xFjecRU77VvU/c3TMs2bFMbeYL6Ic3rD
- pH5kiOxWSKNGEUxLIsBvurnF8FTzEJZsk4bWwL+2AFItqqBpDDIxW/o8wM+sWz8UpDUy
- 9khZXkGtOnagK49fyPpPXH4BHB59lEuU9xHT9yWJoMB10yyLlDHoulGQ0i7BGj/SXKoF
- SHuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756828556; x=1757433356;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aumluLao06HPHxsnlJEB0MGe8/kLO8/7Fr6H7vMw33g=;
- b=kpfiz+wIJxQ2Z2H8eErSQ32h6tnZTPdmQGVapr6B1M19ankSIKiKpt1mQNsSIc98aH
- ujuOlEBmOTu4WC8tQad+MexG4CFrukcwKiBacbBAt9HPo/RSR7jLQ7Gc9Z2ju+OKwqjs
- pPasahPI1gOSkoFMivNBy9/hN+7H7CpIjw0E6ZtoDPRRlRX78/du3SntepgIlQ5zr85S
- wLMhJrOd8u1i5cmqRakOqGjR6S4L0DBlz7U+/YMYNZBRKmmzPb/Zp+Tlp2o8NoPrOejl
- gAVQ7k20ce2RxDruYAkk4OXzBBnPAyga/zhw6le5W2NwysvmMdU2Kn/zk5ZnvLERmMgZ
- S2dw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWmGY1eo5+iZMCwFjrlLtfxBdy6zqP+NneH/plBaBGbGOo+Mg6ophxEUbOod4Sn5OoedzTNynq4AViF@nongnu.org
-X-Gm-Message-State: AOJu0YyfKG5YNL0HsGOiTVLfXeZAuj+BYx6MD59Rn3Q2kA+Ssq82/l0J
- +EeSBGiMKdEejFFZVLtHXCOyU3MQuBSZNkatT7OYFhGAdsVYCOtk2eBIxRenbct3eukFSG3QbbK
- dXvcs
-X-Gm-Gg: ASbGncshtafVTXKnZhJpQ7WnqHLWTSjMEALgN+b+bSRHziJ90tZLzVAMW7cZllneT7U
- VzFRDpQtOl4IMN/NP5NlQKzGpzEsnaQ5irZ01l/l+C/Fd4n+OmyhYNzV4Qc1OPzpw4OQgSfqFxi
- JROVBXDjLR1wdxiGZFIjktR2ptA1f6E062DW8DG4oH254/ftHucd6rKE+KSw62Rj8EA1crM92rV
- zwJ1+bklx7bLR++1nPKwR6zWiuY6PCUrHTwRe+7juqHBeubu/5AUjUVfgTjjcSZi+XKd+qaCvOB
- oK56BjzISZAFB2eiWnzInSRWs4m/GX38nbmmvpA6KQRhFgfzXxK2zQZzvH5eV+sQ9setBCAJpIg
- 2mnw/DFuoI+pLgrguiF1q77VotUvEh2yV+UtJloPk49YN63fzh2CcToIaURA3vJj9bQ==
-X-Google-Smtp-Source: AGHT+IGkAmncDVsYxLGE3caeldUHww7Fzi+IwKSus3u6ubppUV1lns6p42z3CdAwWfvTcH96XFVAdQ==
-X-Received: by 2002:a5d:5846:0:b0:3cf:3f1:accb with SMTP id
- ffacd0b85a97d-3d1df72f5bamr8972952f8f.61.1756828556158; 
- Tue, 02 Sep 2025 08:55:56 -0700 (PDT)
-Received: from [192.168.69.207] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3da13041bcasm3890768f8f.35.2025.09.02.08.55.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Sep 2025 08:55:55 -0700 (PDT)
-Message-ID: <03a51e36-9a15-4b49-a310-c36a4d0af360@linaro.org>
-Date: Tue, 2 Sep 2025 17:55:54 +0200
+ (Exim 4.90_1) (envelope-from <SRS0=Sj0j=3N=kaod.org=clg@ozlabs.org>)
+ id 1utTPy-0003M5-M7; Tue, 02 Sep 2025 11:59:34 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=Sj0j=3N=kaod.org=clg@ozlabs.org>)
+ id 1utTPv-0001R3-O0; Tue, 02 Sep 2025 11:59:34 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4cGVmY0crxz4w9V;
+ Wed,  3 Sep 2025 01:59:25 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4cGVmV53ydz4w1p;
+ Wed,  3 Sep 2025 01:59:21 +1000 (AEST)
+Message-ID: <128fc71a-d4e9-4991-a6ba-2f57f2460d01@kaod.org>
+Date: Tue, 2 Sep 2025 17:59:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 1/8] hw/sd/sdcard: Fix size check for backing block
  image
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Jan Kiszka <jan.kiszka@siemens.com>, qemu-devel <qemu-devel@nongnu.org>,
- =?UTF-8?B?SmFuIEzDvGJiZSI=?= <jlu@pengutronix.de>,
- Joel Stanley <joel@jms.id.au>
+To: Jan Kiszka <jan.kiszka@siemens.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel <qemu-devel@nongnu.org>
 Cc: Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
  Ilias Apalodimas <ilias.apalodimas@linaro.org>,
  qemu-arm <qemu-arm@nongnu.org>
@@ -80,23 +41,61 @@ References: <cover.1756706188.git.jan.kiszka@siemens.com>
  <86217712232abd5152e7dfa98111f57b9b78d83b.1756706188.git.jan.kiszka@siemens.com>
  <6289fe04-82be-4a34-9fed-b0cc08e3b8f0@linaro.org>
  <a9fdf524-0ca1-45db-be39-7bfccc468f0f@siemens.com>
- <11808e86-cee0-48bf-8fbd-de13a9a25ed0@linaro.org>
- <4c039b3c-dc2c-4478-b1bb-90b925e56245@linaro.org>
- <c8e1a073-7702-4bad-b7f1-2b4f51da47f4@kaod.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <c8e1a073-7702-4bad-b7f1-2b4f51da47f4@kaod.org>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <a9fdf524-0ca1-45db-be39-7bfccc468f0f@siemens.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=Sj0j=3N=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,80 +111,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/9/25 17:47, Cédric Le Goater wrote:
-> On 9/2/25 17:45, Philippe Mathieu-Daudé wrote:
->> On 2/9/25 17:43, Philippe Mathieu-Daudé wrote:
->>> On 2/9/25 17:34, Jan Kiszka wrote:
->>>> On 02.09.25 17:06, Philippe Mathieu-Daudé wrote:
->>>>> On 1/9/25 07:56, Jan Kiszka wrote:
->>>>>> From: Jan Kiszka <jan.kiszka@siemens.com>
->>>>>>
->>>>>> The power-of-2 rule applies to the user data area, not the complete
->>>>>> block image. The latter can be concatenation of boot partition images
->>>>>> and the user data.
->>>>>>
->>>>>> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
->>>>>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>>>> ---
->>>>>>    hw/sd/sd.c | 2 +-
->>>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/hw/sd/sd.c b/hw/sd/sd.c
->>>>>> index 8c290595f0..16aee210b4 100644
->>>>>> --- a/hw/sd/sd.c
->>>>>> +++ b/hw/sd/sd.c
->>>>>> @@ -2789,7 +2789,7 @@ static void sd_realize(DeviceState *dev, Error
->>>>>> **errp)
->>>>>>                return;
->>>>>>            }
->>>>>>    -        blk_size = blk_getlength(sd->blk);
->>>>>> +        blk_size = blk_getlength(sd->blk) - sd->boot_part_size * 2;
->>>>>>            if (blk_size > 0 && !is_power_of_2(blk_size)) {
->>>>>>                int64_t blk_size_aligned = pow2ceil(blk_size);
->>>>>>                char *blk_size_str;
->>>>>
->>>>> This seems to break the tests/functional/arm/test_aspeed_rainier.py
->>>>> test due to mmc-p10bmc-20240617.qcow2 size:
->>>>>
->>>>> Command: /builds/qemu-project/qemu/build/qemu-system-arm -display 
->>>>> none -
->>>>> vga none -chardev socket,id=mon,fd=5 -mon chardev=mon,mode=control -
->>>>> machine rainier-bmc -chardev socket,id=console,fd=10 -serial
->>>>> chardev:console -drive file=/builds/qemu-project/qemu/functional- 
->>>>> cache/
->>>>> download/
->>>>> d523fb478d2b84d5adc5658d08502bc64b1486955683814f89c6137518acd90b,if=sd,id=sd2,index=2 -net nic -net user -snapshot
->>>>> Output: qemu-system-arm: Invalid SD card size: 16 GiB
->>>>> SD card size has to be a power of 2, e.g. 16 GiB.
->>>>>
->>>>> https://gitlab.com/qemu-project/qemu/-/jobs/11217561316
->>>>>
->>>>
->>>> Hmm, then the test was always wrong as well. I suspect the aspeed is
->>>> enabling boot partitions by default, and the image was created to pass
->>>> the wrong alignment check. Where / by whom is the image maintained?
+On 9/2/25 17:34, Jan Kiszka wrote:
+> On 02.09.25 17:06, Philippe Mathieu-Daudé wrote:
+>> On 1/9/25 07:56, Jan Kiszka wrote:
+>>> From: Jan Kiszka <jan.kiszka@siemens.com>
 >>>
->>> Cédric Le Goater (Cc'ed).
+>>> The power-of-2 rule applies to the user data area, not the complete
+>>> block image. The latter can be concatenation of boot partition images
+>>> and the user data.
 >>>
->>> The test comes from:
->>> https://lore.kernel.org/qemu-devel/4d1777d6-0195-4ecb- 
->>> a85f-09964268533d@kaod.org/
+>>> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+>>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>    hw/sd/sd.c | 2 +-
+>>>    1 file changed, 1 insertion(+), 1 deletion(-)
 >>>
->>> Maybe also relevant to your suspicion:
->>> https://lore.kernel.org/qemu-devel/e401d119-402e-0edd- 
->>> c2bf-28950ba48ccb@kaod.org/
+>>> diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+>>> index 8c290595f0..16aee210b4 100644
+>>> --- a/hw/sd/sd.c
+>>> +++ b/hw/sd/sd.c
+>>> @@ -2789,7 +2789,7 @@ static void sd_realize(DeviceState *dev, Error
+>>> **errp)
+>>>                return;
+>>>            }
+>>>    -        blk_size = blk_getlength(sd->blk);
+>>> +        blk_size = blk_getlength(sd->blk) - sd->boot_part_size * 2;
+>>>            if (blk_size > 0 && !is_power_of_2(blk_size)) {
+>>>                int64_t blk_size_aligned = pow2ceil(blk_size);
+>>>                char *blk_size_str;
 >>
->> Digging further:
->> https://lore.kernel.org/qemu- 
->> devel/9046a4327336d4425f1e7e7a973edef9e9948e80.camel@pengutronix.de/
+>> This seems to break the tests/functional/arm/test_aspeed_rainier.py
+>> test due to mmc-p10bmc-20240617.qcow2 size:
+>>
+>> Command: /builds/qemu-project/qemu/build/qemu-system-arm -display none -
+>> vga none -chardev socket,id=mon,fd=5 -mon chardev=mon,mode=control -
+>> machine rainier-bmc -chardev socket,id=console,fd=10 -serial
+>> chardev:console -drive file=/builds/qemu-project/qemu/functional-cache/
+>> download/
+>> d523fb478d2b84d5adc5658d08502bc64b1486955683814f89c6137518acd90b,if=sd,id=sd2,index=2 -net nic -net user -snapshot
+>> Output: qemu-system-arm: Invalid SD card size: 16 GiB
+>> SD card size has to be a power of 2, e.g. 16 GiB.
+>>
+>> https://gitlab.com/qemu-project/qemu/-/jobs/11217561316
 >>
 > 
-> yes commit c078298301a8 might have some impact there.
+> Hmm, then the test was always wrong as well. I suspect the aspeed is
+> enabling boot partitions by default, 
 
-With Jan patch, your script doesn't need anymore the
+Yes for the rainier machine which boots from eMMC :
 
-   echo "Fixing size to keep qemu happy..."
+         if (emmc && boot_emmc) {
+             qdev_prop_set_uint64(card, "boot-partition-size", 1 * MiB);
+             qdev_prop_set_uint8(card, "boot-config", 0x1 << 3);
+         }
 
-kludge.
+In this case, the emmc image is tailored to support boot. It's no
+different from real HW AFAICT. It's old (6/7y).
+
+Thanks,
+
+C.
 
 
