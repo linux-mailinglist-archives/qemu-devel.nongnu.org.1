@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B18AAB4025E
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 15:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E06AB40234
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Sep 2025 15:12:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utQoD-0004BG-Sf; Tue, 02 Sep 2025 09:12:27 -0400
+	id 1utQoS-0004Qy-Ti; Tue, 02 Sep 2025 09:12:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQo7-00043M-Ev
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:12:19 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQoB-0004G6-OM
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:12:24 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQo0-0004cO-RE
- for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:12:18 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-45b873a2092so25194515e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 06:12:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1utQo7-0004ck-PR
+ for qemu-devel@nongnu.org; Tue, 02 Sep 2025 09:12:22 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3b9edf4cf6cso4608993f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 06:12:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756818729; x=1757423529; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756818734; x=1757423534; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Td3nvqZKIvcK1wV49niKvXWkSXIsMzUAcPCww/paHbo=;
- b=YpgeN2VVXCQ/f6G2EyLJpU3o8kZnqLq9XfGBPQEDXVTb50aAqIxmXboUONCti/do2J
- U9s3Gn9F8DksV8gL72cCYlmyAv3mCCvubWsBsLRBUAqtBAF7n8YYcHGn1x3yfPZ8Fnok
- tI/imIabtGU8vUBQ6kC3p5Xg05ZU7V0xNJ0nUDRn7K27sxpJzjYoYwhMzc7Hwgb7Crzu
- 07tYjdf6DmRNthz0kz/YMWWrJYYSRgWCJzIR4/XKNeEiv8hZIJeRqVWvjLoSVpO6XIzn
- TC4u19qE+0aREPSbwe9qxNndrqVF8TAG1osF+4h86dUp8ykiDC+TeESAlR8Hu6EzfPwJ
- sVGQ==
+ :reply-to; bh=Vdp9ZUtiSvenNdC+VKbqDN2o6JPuLdKq8aqZrWQK9yo=;
+ b=mdpq95TwI/Yd9ohQiBN2vi9RzhPBWyJh5999BOUjIj4K8qp9K8H92miFDnhT734e+I
+ HanBal9FMW9RR9l80o9APLHxk+VZO6ffa/SOh7cLigZO3oAwYJ17PXoMqR+vsqlJwZQ+
+ za+OiI4Czhv0TINUg/j/hiK84RveNamliRPTCl6fMlofGHBQCGFfxALfv3xcuv1luzlZ
+ Itt1pQ0sRxR4Y2wtXffu2gXg1BFN4E/9Tm6OozQDzgKZzDDgvTk7m534Jelw3t45JHyO
+ y2QLdU1UjC8vqDEaGgncRmukZrq4cckI2YKKJT34aKksUomumDeQm2MAK+8KnmIegxDk
+ CT+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756818729; x=1757423529;
+ d=1e100.net; s=20230601; t=1756818734; x=1757423534;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Td3nvqZKIvcK1wV49niKvXWkSXIsMzUAcPCww/paHbo=;
- b=FaWwTyzdYputKmM+8qv3HAsiwBtr6BzldwUT3eZmQDNUIVMVEStJ6yY1hSJY24zyGh
- SyNhhxXmCfx5oz3a8wnn2mv1g7Z0tBmVPMdjA/tptWF/iN3wflPAmri6dNLhmOJWyycO
- HvXVg8IQLjkxF/cht9CqQL45ME1jFAoRN+5JmgiDLiHNGW8KF2f6QLSMSDdN93bwCJij
- yRqdskKzVm0Rwcnypaa/9xJW2dFBNsC52MGg3GiRd0Z1crzDgMSsYehzGH5SqCx//spW
- YG3ly3gEisDPNdQIB396ZYlc9g9eK9bmp9rnbZgPeXwarHgXgvQjH2x3iCS6pXpCVV9+
- zYzQ==
-X-Gm-Message-State: AOJu0Yz2y/Zrpxe3FIwj1xnO6fkOiWonduujwLrKNszeWjToV9Suse1X
- Cu1t1TldIMRk7VvnT9D3I2YxW+jOpvc+qus5t0kqmn7oKlfh5f5Yqyeh1Qb08lBDaxXtUR/Zixi
- JkEJO
-X-Gm-Gg: ASbGnctsjbqw7LpQJw7OMJJBLVzN1jbPxlubaGLPsxNlfA6vbj0YEJVf9KYt3sHe9A3
- rDFMwlp7mJB68m2jJajFHcLUo9SHO6pGbHpD3sP/itZvIUL3svtRWwASrHx5PIyPISy/AEU7lCU
- LF8Tgt3t1dwxdtTOVoE4DzqKRL8u0042PKpDBPTuNOusRr48aI2Oh0j++cnYGY7F+SVYHsvASxe
- /xKvkhLiySmIELS9B0MsXGDtOdzzlx8HDwkeUbgF+MBuNVJgqRvhh2/01bFGbCbvWDr4aQ9EbZT
- gVOntfaaStRt0nRlgmU4c3+LmdgEnuM5snN2clZ4WB5vu7m3yiuQRXura445weacgZYjeL5lMVJ
- mKyzOPjINf7U442NTac7nxUl97njpqun0mZsc7jiqIUtAY1s+cO/s9NGcl++LQz43pKlQihKdhR
- AWyjI4/Vk=
-X-Google-Smtp-Source: AGHT+IEgmE6dDucwrHlEiyTLqj8rutInoVMgxlC5ubZ5AjJ+oEALsdPKf2VZBtInwe2xxOyTzcqoYQ==
-X-Received: by 2002:a05:600c:1e8f:b0:45b:83fe:9cf7 with SMTP id
- 5b1f17b1804b1-45b85525d75mr84750915e9.6.1756818728988; 
- Tue, 02 Sep 2025 06:12:08 -0700 (PDT)
+ bh=Vdp9ZUtiSvenNdC+VKbqDN2o6JPuLdKq8aqZrWQK9yo=;
+ b=SUi7cvIQCQvArSZxPmbgpB1D3NERyaWzUr8sr1YEVU90S6P/Lymr59uvBJFxsid+9+
+ ecDTIWDmfvNvVh5DahJJAefGgKPjYxS7l8QD+EQ8hTCMRGtlIMz98niHDzQ6blcXzhNA
+ urSnsJCQvXG4JpterxYqcMzdWd56qbFet4guZnWHfPSkoghdxtVwQUeezKbokzj9++fS
+ gIA2GD1O82CBAzONGt8zK/foEYSaUYWb2mnGuLpGIr5xIlSHhYO2Z27m53bWJj5GTy3e
+ ZB7EQ4tw5Ccnbj+8FwGfZTAiKwoKpugX7oU7HuZsbGPrto5X6j37k/NqAbwIOSC3Z/RT
+ Zdzg==
+X-Gm-Message-State: AOJu0Yyo4C3HNHI74PscdTRseEy3AetUE06cRx4RtIDGcJqiVRmeZ/jS
+ h1MPsGBNw5XpD/VwJ8rGD7S/eO+AZg9oT9yX7RqfJAD8evAv2GqzBAEFfYVhzdapdehBxho9Q6Z
+ BGpps
+X-Gm-Gg: ASbGncvV0DegsOyRO504k4L8V/x23ygHYU0p1nlEQVWBMdjJ4zx93B0oH/lW1xjx7+Y
+ XQ8suWR/3RmZyfCRVdKVJoht0jlzvNaeaWDq7VQngAmLiIyGLD6Uy5ecXT3b69uioMR2YecxjbT
+ 4oQQ30SKSpNq12Xyx+LnSNsOtloP89ZMArYQeKNUxFqYYoqCfjymR9gX2AQr4r6e4sXN/HTB5/9
+ yIzzltxutBb4OLdwJPqtaUZ05VUHmSng2dFBAsURsB6XD6ayScXSiq2WLqemot+d80WyIPUFiMw
+ XFGpTQ0SfR/LyzPi5qtyCotNsdxuYIZ/Fge2USGWLJgfC3Hh+hFA2aOyDi+5K2XmLNdxmTru7/g
+ /dGzu6c4ct1r/RXXszoy/jDEBOTebUtD3f30QYuLtrMM5O//nGczusUfygi+EB/SZPVk8fdlb
+X-Google-Smtp-Source: AGHT+IFs/zZaYW+fGiRdmyDj8DgBgIKeczkDW5jzEfgjbwNqCb1i3OJ7lr7UmuyitmrSIKud6PGzcw==
+X-Received: by 2002:a05:6000:400d:b0:3d7:94bb:cb9d with SMTP id
+ ffacd0b85a97d-3d794bbceb5mr3411133f8f.3.1756818733579; 
+ Tue, 02 Sep 2025 06:12:13 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b7e68c83asm212334315e9.20.2025.09.02.06.12.08
+ 5b1f17b1804b1-45b945332adsm44075905e9.4.2025.09.02.06.12.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Sep 2025 06:12:08 -0700 (PDT)
+ Tue, 02 Sep 2025 06:12:13 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 24/39] hw/char/max78000_uart: Destroy FIFO on deinit
-Date: Tue,  2 Sep 2025 15:10:01 +0200
-Message-ID: <20250902131016.84968-25-philmd@linaro.org>
+Subject: [PULL 25/39] hw/misc/xlnx-versal-cframe-reg: Free FIFO,
+ g_tree on deinit
+Date: Tue,  2 Sep 2025 15:10:02 +0200
+Message-ID: <20250902131016.84968-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131016.84968-1-philmd@linaro.org>
 References: <20250902131016.84968-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,52 +99,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In the max78000_uart we create a FIFO in the instance_init function,
-but we don't destroy it on deinit, so ASAN reports a leak in the
-device-introspect-test:
+In the xlnx-versal-cframe-reg device we create a FIFO in
+instance_init but don't destroy it on deinit, causing ASAN
+to report a leak in the device-introspect-test:
 
-    #0 0x561cc92d5de3 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-arm+0x21f1de3) (BuildId: 98fdf9fc85c3beaeca8eda0be8412f1e11b9c6ad)
-    #1 0x70cbf2afab09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
-    #2 0x561ccc4c884d in fifo8_create /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../util/fifo8.c:27:18
-    #3 0x561cc9744ec9 in max78000_uart_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/char/max78000_uart.c:241:5
+Direct leak of 400 byte(s) in 1 object(s) allocated from:
+    #0 0x5aded4d54e23 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-aarch64+0x24ffe23) (BuildId: 9f1e6c53fecd904ba5fc1f521d7da080a0e4103b)
+    #1 0x71fbfac9bb09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
+    #2 0x5aded850059d in fifo8_create /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../util/fifo8.c:27:18
+    #3 0x5aded582b9e4 in fifo32_create /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/include/qemu/fifo32.h:35:5
+    #4 0x5aded582b326 in cframe_reg_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/misc/xlnx-versal-cframe-reg.c:693:5
 
-Add an instance_finalize method to destroy the FIFO.
+Similarly, we don't clean up the g_tree we create:
+Direct leak of 48 byte(s) in 1 object(s) allocated from:
+    #0 0x5aded4d54e23 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-aarch64+0x24ffe23) (BuildId: 9f1e6c5
+3fecd904ba5fc1f521d7da080a0e4103b)
+    #1 0x71fbfac9bb09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d75)
+    #2 0x71fbfaccc799 in g_tree_new_full (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x93799) (BuildId: 1eb6131419edb83b2178b682829a6913cf682d7
+5)
+    #3 0x5aded582b21a in cframe_reg_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/misc/xlnx-versal-cframe-reg.c:691:18
 
-Cc: qemu-stable@nongnu.org
-Fixes: d447e4b70295 ("MAX78000: UART Implementation")
+Add an instance_finalize method to clean up what we
+allocated in instance_init.
+
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250821154358.2417744-1-peter.maydell@linaro.org>
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+Message-ID: <20250826174956.3010274-2-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/char/max78000_uart.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/misc/xlnx-versal-cframe-reg.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/hw/char/max78000_uart.c b/hw/char/max78000_uart.c
-index 19506d52ef9..c76c0e759b6 100644
---- a/hw/char/max78000_uart.c
-+++ b/hw/char/max78000_uart.c
-@@ -247,6 +247,12 @@ static void max78000_uart_init(Object *obj)
-     sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
+diff --git a/hw/misc/xlnx-versal-cframe-reg.c b/hw/misc/xlnx-versal-cframe-reg.c
+index 1ce083e2409..95e167b9213 100644
+--- a/hw/misc/xlnx-versal-cframe-reg.c
++++ b/hw/misc/xlnx-versal-cframe-reg.c
+@@ -693,6 +693,14 @@ static void cframe_reg_init(Object *obj)
+     fifo32_create(&s->new_f_data, FRAME_NUM_WORDS);
  }
  
-+static void max78000_uart_finalize(Object *obj)
++static void cframe_reg_finalize(Object *obj)
 +{
-+    Max78000UartState *s = MAX78000_UART(obj);
-+    fifo8_destroy(&s->rx_fifo);
++    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(obj);
++
++    fifo32_destroy(&s->new_f_data);
++    g_tree_destroy(s->cframes);
 +}
 +
- static void max78000_uart_realize(DeviceState *dev, Error **errp)
- {
-     Max78000UartState *s = MAX78000_UART(dev);
-@@ -274,6 +280,7 @@ static const TypeInfo max78000_uart_info = {
-     .parent        = TYPE_SYS_BUS_DEVICE,
-     .instance_size = sizeof(Max78000UartState),
-     .instance_init = max78000_uart_init,
-+    .instance_finalize = max78000_uart_finalize,
-     .class_init    = max78000_uart_class_init,
- };
- 
+ static const VMStateDescription vmstate_cframe = {
+     .name = "cframe",
+     .version_id = 1,
+@@ -833,6 +841,7 @@ static const TypeInfo cframe_reg_info = {
+     .instance_size = sizeof(XlnxVersalCFrameReg),
+     .class_init    = cframe_reg_class_init,
+     .instance_init = cframe_reg_init,
++    .instance_finalize = cframe_reg_finalize,
+     .interfaces = (const InterfaceInfo[]) {
+         { TYPE_XLNX_CFI_IF },
+         { }
 -- 
 2.51.0
 
