@@ -2,36 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB2EB41792
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 10:00:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A48B417A7
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 10:02:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utiQ1-0001Of-IW; Wed, 03 Sep 2025 04:00:39 -0400
+	id 1utiRb-000310-3E; Wed, 03 Sep 2025 04:02:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1utiPO-0001BJ-Dq; Wed, 03 Sep 2025 04:00:00 -0400
+ id 1utiPS-0001EI-OQ; Wed, 03 Sep 2025 04:00:09 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1utiPM-0005zC-H0; Wed, 03 Sep 2025 03:59:58 -0400
+ id 1utiPQ-0005zn-QH; Wed, 03 Sep 2025 04:00:02 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D7D3914F53A;
+ by isrv.corpit.ru (Postfix) with ESMTP id E54C914F53B;
  Wed, 03 Sep 2025 10:59:51 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 45A6B26E185;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 528A526E186;
  Wed,  3 Sep 2025 10:59:53 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Stefan Weil via <qemu-trivial@nongnu.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 1/5] chardev/baum: Fix compiler warning for Windows builds
-Date: Wed,  3 Sep 2025 10:59:46 +0300
-Message-ID: <20250903075952.481585-2-mjt@tls.msk.ru>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org,
+ qemu-stable@qemu.org
+Subject: [PULL 2/5] block/curl: fix curl internal handles handling
+Date: Wed,  3 Sep 2025 10:59:47 +0300
+Message-ID: <20250903075952.481585-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250903075952.481585-1-mjt@tls.msk.ru>
 References: <20250903075952.481585-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -56,56 +58,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Weil via <qemu-trivial@nongnu.org>
+block/curl.c uses CURLMOPT_SOCKETFUNCTION to register a socket callback.
+According to the documentation, this callback is called not just with
+application-created sockets but also with internal curl sockets, - and
+for such sockets, user data pointer is not set by the application, so
+the result qemu crashing.
 
-Compiler warning:
+Pass BDRVCURLState directly to the callback function as user pointer,
+instead of relying on CURLINFO_PRIVATE.
 
-../chardev/baum.c:657:25: warning: comparison between pointer and integer
+This problem started happening with update of libcurl from 8.9 to 8.10 --
+apparently with this change curl started using private handles more.
 
-Use brlapi_fileDescriptor instead of int for brlapi_fd and
-BRLAPI_INVALID_FILE_DESCRIPTOR instead of -1.
+(CURLINFO_PRIVATE is used in one more place, in curl_multi_check_completion() -
+it might need a similar fix too)
 
-Signed-off-by: Stefan Weil <sw@weilnetz.de>
-Reviewed-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3081
+Cc: qemu-stable@qemu.org
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- chardev/baum.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ block/curl.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/chardev/baum.c b/chardev/baum.c
-index f3e8cd27f0..ad68321504 100644
---- a/chardev/baum.c
-+++ b/chardev/baum.c
-@@ -94,7 +94,7 @@ struct BaumChardev {
-     Chardev parent;
+diff --git a/block/curl.c b/block/curl.c
+index 5467678024..00b949ea45 100644
+--- a/block/curl.c
++++ b/block/curl.c
+@@ -162,13 +162,9 @@ static int curl_timer_cb(CURLM *multi, long timeout_ms, void *opaque)
+ static int curl_sock_cb(CURL *curl, curl_socket_t fd, int action,
+                         void *userp, void *sp)
+ {
+-    BDRVCURLState *s;
+-    CURLState *state = NULL;
++    BDRVCURLState *s = userp;
+     CURLSocket *socket;
  
-     brlapi_handle_t *brlapi;
--    int brlapi_fd;
-+    brlapi_fileDescriptor brlapi_fd;
-     unsigned int x, y;
-     bool deferred_init;
- 
-@@ -654,7 +654,7 @@ static void baum_chr_open(Chardev *chr,
-     baum->brlapi = handle;
- 
-     baum->brlapi_fd = brlapi__openConnection(handle, NULL, NULL);
--    if (baum->brlapi_fd == -1) {
-+    if (baum->brlapi_fd == BRLAPI_INVALID_FILE_DESCRIPTOR) {
-         error_setg(errp, "brlapi__openConnection: %s",
-                    brlapi_strerror(brlapi_error_location()));
-         g_free(handle);
-@@ -665,6 +665,10 @@ static void baum_chr_open(Chardev *chr,
- 
-     baum->cellCount_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, baum_cellCount_timer_cb, baum);
- 
-+    /*
-+     * On Windows, brlapi_fd is a pointer, which is being used here
-+     * as an integer, but in practice it seems to work
-+     */
-     qemu_set_fd_handler(baum->brlapi_fd, baum_chr_read, NULL, baum);
- }
- 
+-    curl_easy_getinfo(curl, CURLINFO_PRIVATE, (char **)&state);
+-    s = state->s;
+-
+     socket = g_hash_table_lookup(s->sockets, GINT_TO_POINTER(fd));
+     if (!socket) {
+         socket = g_new0(CURLSocket, 1);
+@@ -605,6 +601,7 @@ static void curl_attach_aio_context(BlockDriverState *bs,
+     assert(!s->multi);
+     s->multi = curl_multi_init();
+     s->aio_context = new_context;
++    curl_multi_setopt(s->multi, CURLMOPT_SOCKETDATA, s);
+     curl_multi_setopt(s->multi, CURLMOPT_SOCKETFUNCTION, curl_sock_cb);
+     curl_multi_setopt(s->multi, CURLMOPT_TIMERDATA, s);
+     curl_multi_setopt(s->multi, CURLMOPT_TIMERFUNCTION, curl_timer_cb);
 -- 
 2.47.2
 
