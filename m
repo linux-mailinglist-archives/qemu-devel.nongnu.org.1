@@ -2,93 +2,199 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F64DB42A98
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 22:15:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF86B42AAC
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 22:21:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uttsz-0001AL-EX; Wed, 03 Sep 2025 16:15:17 -0400
+	id 1uttxj-0003WV-T8; Wed, 03 Sep 2025 16:20:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uttsv-00015w-6x
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 16:15:13 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uttss-0003M3-DK
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 16:15:12 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-248c7f955a2so3457815ad.2
- for <qemu-devel@nongnu.org>; Wed, 03 Sep 2025 13:15:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1756930508; x=1757535308; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5T08h2g8sTvU4H0Y5og+g9NqTyFUMQh4K8hrNHa53qg=;
- b=Bsu2QSgGGsLr+ojLIij8Z0x8y+Rc1CdDQ+nccwjJRp8+gR16u6KJ7LHa+g5JKorn5E
- ZFv2cLvcmL3icS4YvOESAWl50DqlCJ/PeA2ivq18/Eoq5GssIJg57UUZKZEVsaGS/kYG
- h67Zg8zD+3o6RdsgVm183ARro32/wF2jGCSWokIM8B0eW0XavB2/TdaJy9a3b78zE9eg
- D7KUoVo3nH4ozRpIOLGmF2/cz2JyDSFVLgtSUqUKi+Aqe2frEKTWR1B23RkGvprGYA29
- Qet4i9luEoq2m3JKORI8stn2b8YntcCXcPPmwhcenGxRlKVLz40okAcIj2fYG4ZQrUGQ
- Q61w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756930508; x=1757535308;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5T08h2g8sTvU4H0Y5og+g9NqTyFUMQh4K8hrNHa53qg=;
- b=Niiz3EkEWKm3PDYPI37fhEipIV5yGCSsXNR6yXJapXklYvleWgBcW3YECwGX2fsjqp
- /RcHt8LtQeWce7aFIpzaIVgKShN5Ekc4MpeWFaPxirgcFqoTqlGzipSHSrMojsRFW93m
- L6fGztSuYonKfZ8WPE4Jz7YK5owMKGvk2mwV2e84sY6ddsxMcpCHlLlWCaTGKZ+O5MLv
- dhyKxLolszWI1dbV1lEuqYF6bLKgPhBiZISUOCOTt46VfOB8QvDFxJKwYm4FDS/+gM+6
- QwNCpb6Xa7mN5EEsL1Xp2EQkrjcDeyTs8LzDpZUWazhmnjz4Z7SYLR84S8L2d16zu9+6
- 3esA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWU0O97YxWUuzLWQin968EvQ2URkmxBDq9Au03CCJmwxn3eUbzms/LW0GwK9LAqxgxAA4uWpbye+uQM@nongnu.org
-X-Gm-Message-State: AOJu0Yxf6T4fI5hhflrYyb/HxV8rBFen3JXG7vUnfayvaGWIeR459ZZo
- vUWnmV85T62qMxTuDNVMl3JMvPaIfdptCR25veFnEXY9Bh5Ghdn0S4dZde7tXyLuv/Q=
-X-Gm-Gg: ASbGncvERfJVnTj/Z3G2yYWDi7YqOga1rxDEHJVuF1IkB5xUgbg8Cv0GTuh0Hfkopn3
- AOhNpBikX30FamP6VGAHCj1cFc7A11irLPVsf++3g0CPMqJk89BwBqGQvIo0eC7v8FECBHB/O7q
- RAsIKB5dcZeTtBY50YJyDYpCN2CW+EmpRYPsD8y4sZIhxjLRFTy8Teeh/XJbiyjA0xSvDWjlfiF
- 2GDESK4VSHuO0Wax5nFDdxKI0QEuZBvkB93rZsKU2A3FdJJAffUysNOAVqjU3133OWudLAl0ZFx
- BdFvEXqFN/tkTg8ksooAQqwshlLC9iv4B0aKO8Fy8+GAb/U33bNvIarWUuR5umwfwxNJLQSG2h+
- tU2S1L5WswGcvmVOFmVOZaSlRfNsH7FYVx817
-X-Google-Smtp-Source: AGHT+IFDQbePRAlyK9jhmu5N1movr9VadUmzV2lr68YqHWBA3jggMK7nWnMBxGPewNugqWwJbW13gA==
-X-Received: by 2002:a17:903:41cf:b0:235:e8da:8d1 with SMTP id
- d9443c01a7336-249448f9c03mr198796685ad.8.1756930508096; 
- Wed, 03 Sep 2025 13:15:08 -0700 (PDT)
-Received: from [192.168.68.110] ([187.10.187.251])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-24af8ab7e7bsm69528855ad.138.2025.09.03.13.15.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Sep 2025 13:15:07 -0700 (PDT)
-Message-ID: <6f062bf7-e2a9-40bf-a025-418e45c0a98a@ventanamicro.com>
-Date: Wed, 3 Sep 2025 17:15:04 -0300
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uttxT-0003VD-QW
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 16:19:55 -0400
+Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uttxJ-0005F2-Rk
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 16:19:50 -0400
+Received: from pps.filterd (m0127838.ppops.net [127.0.0.1])
+ by mx0a-002c1b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 583HHfa93727350; Wed, 3 Sep 2025 13:19:38 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ cc:content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=proofpoint20171006; bh=UslbHmlroWY7v
+ CI2+rFp4UtAk0vvv4IYWmmuqhe+uVY=; b=yw9KjEUyWGWzSg6dl90CIwYPGEytL
+ 5Eh7zKxllr4jMebfHLEayERTXwPszPS/69MI9Rk2SYGrOCMOTb9BqoVeCUAbBVvy
+ BPnoEzyIKeulltuY9pn1urC8f28Xbz77bP39h84T1qAY811583TOPMOehwu8d1zJ
+ wG8b5Db4ortkADXIVcz+KPiP2RbbWdKef9Fbrz5DuZAcL3QPlZS1kkiqrVuOzS9z
+ /rvuSj18fttjmqvNkU627rNJV+cDvLaLYnYb0DRgb6AkhVnFKI3KAbiyFrTMtnts
+ 0OMAdG3R28WRhjwB5QgaOW2qqdTfsAXsP5cHzy55woNPY+akhAS7TVHow==
+Received: from nam12-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2138.outbound.protection.outlook.com [40.107.237.138])
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 48xmw4s6ad-1
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Wed, 03 Sep 2025 13:19:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dWR6ttLEg+EFjzJOl25ItOYJdbQIm/TUwXPPdjCHyv/+ovZjeSDe1jEaKMv/Otb4wwDoU/NshirFtiim/nfu7BefQACikapf9nbz11tkvrRi8TR3pi5tAMGDdXxNLA+EeoHTHS47ipxznIqXqUc86+KQzCQGO3SysVzrT+ab96lDvvJesPTmAxzp11/1nCNN7TnhM628ApTw5putWXtZbp0ET0q/gSrBUjGQ8vF6/ToKIlFUNgFUddwFjQuGlLdLpX73m1Hi89etLHRI8P02XoAYLA/8h3ABhIuyEx/Ytq5AJUwqQjExlCG7EjzVU0TnQ/F3XMqcal33gYzqb2nmNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UslbHmlroWY7vCI2+rFp4UtAk0vvv4IYWmmuqhe+uVY=;
+ b=yjASaJ9oPOSQhY7WXTffRVuSgI8Ao9XUCEsXj6gaC+p8N6Ta6nfkONQ/F8QrCUTjfY7QcWe1qtzv1Em5ELxk2En6rfDm8xI24Hr8IHuTcoH4La+b5ExpurQ5+xldlKA5+g4rCqXirzsY7srYTOiq45QmavzC2RJ6GvjKQCzAf1WcsgL+TtCcu2TKAViOrvUH/CtXg9/5TQXigRx41MI7rg8GxNUWrtyjpcsGo9JcQtpqdgbQb7LCah0I40Tz2aYfBEAQddN2fx9bdJCS609RYUIQwsrDke+rjMq8Asi5mtd17HQxrdtqUibIiTWpJPuNdRoo+F/9MT6aKAjt8sofxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UslbHmlroWY7vCI2+rFp4UtAk0vvv4IYWmmuqhe+uVY=;
+ b=WaA+bXAeO4AS5LDpMnxxCsbsx9ps6GWYGLYlgtGI6KNWespetlEOzSV5ErLnyCUsEOFkZsLykHneHYD92epHy5JDakfloMtqAUGVqzvbTtMHLQKs9mvxl0u6eb7Iz8rfTcsIEFNJuCqH5NTYIa3l2JclGQq+mjOdouszq5g/yRCxz+wcHZDwlysCuww+V95p13KWhcdwatrchReLL7VW9Vjy8CgN5tduf+lOU76lU6/qHgwQkNPj6Ea1tw+YjPdHMt6WJXI/vehNeX8NTJ8Fmn2rBUHfjbb48AbJyqJRXB2YLHq15LyoBGVVDn8WxOwSvoHVfw3gVLW3bD0XsUKuvA==
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
+ by CH0PR02MB8133.namprd02.prod.outlook.com (2603:10b6:610:10a::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Wed, 3 Sep
+ 2025 20:19:36 +0000
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51%7]) with mapi id 15.20.9094.016; Wed, 3 Sep 2025
+ 20:19:36 +0000
+From: John Levon <john.levon@nutanix.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ John Levon <john.levon@nutanix.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v4 0/3] vfio-user client functional test
+Date: Wed,  3 Sep 2025 22:19:28 +0200
+Message-ID: <20250903201931.168317-1-john.levon@nutanix.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS4P195CA0025.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d6::20) To CH2PR02MB6760.namprd02.prod.outlook.com
+ (2603:10b6:610:7f::9)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] tests/tcg/riscv64: Add vector state to signal test
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-riscv@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
- <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-devel@nongnu.org
-References: <20250903042510.279954-1-npiggin@gmail.com>
- <20250903042510.279954-5-npiggin@gmail.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Content-Language: en-US
-In-Reply-To: <20250903042510.279954-5-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|CH0PR02MB8133:EE_
+X-MS-Office365-Filtering-Correlation-Id: 932c9e59-f40c-4e7c-069f-08ddeb27339f
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?czNyUHRWWGwyQWk4WUZZeGcvWm1VRTZNNXg3eHNuN3lhWDFQNVgrckZLZkxw?=
+ =?utf-8?B?K2tOaVRJaEdMN2ZWTHNPeDNDV3VUcjduTFdJY3dyRy95enBBZXIyT0NHTG5C?=
+ =?utf-8?B?WFZBTjE3d0VjaW53MnVwczBDWGp5VGVJTGVoSHpNOUJualJPQ0dadmQzTWxT?=
+ =?utf-8?B?ckRBeW9zUld0a3NZM0daQkJKNTJLbDBXcTViUmpjVUZGQnFZSjc0WlNDK09L?=
+ =?utf-8?B?MEN2NmlzalI0TzRIWWdzeXliMVJzbmlsRnNUa2kvVlZ1NnVXK2xDMmFnL29Q?=
+ =?utf-8?B?bTV4OTdjVHdrdHVmNG1NNEFSZFZlMzFxbU5NRUxQRG1ia1Arei9yQndFcmln?=
+ =?utf-8?B?RHRiYnl4YVlhNGwzdHJZYlpqM0dZRm8ySXBLU1pkSTBhTDRwSlVndmo1SVZ6?=
+ =?utf-8?B?MlFZWFJDa2NRQjlnb2xKdDNIRFpYZDV6dlVGd1YzZEJUY1RSZm5CKytXazVZ?=
+ =?utf-8?B?MjdQT25RKzFRV1hQcUhwekpacUxsVEFKM0JrQkljc0RmdFpHUE5OVDBJMGZV?=
+ =?utf-8?B?b2FvQkRGbU9DQnRPb3YzZzIzakh6RkcveitvYVJYUTV5YWpOYkM1KzFXdXBx?=
+ =?utf-8?B?RkswaDcra1RHeEg2ZE1FL1NldjFQL2Eva3JFTjh0MlFFTXliZkgySFEwd2s5?=
+ =?utf-8?B?QVVjLzFZOU1meGoxVkRZTExzS1I4a01lbkJRQmNLWERmaXM1Z1A2U0JINWNy?=
+ =?utf-8?B?b1BYNXl5S0RBejRQUGNZRS9ySmpYU0dTSkphdUd1OWhBMUE0WFF6Q3FxcXp4?=
+ =?utf-8?B?NjFDUkExUXNHR0dINDNsd1RUeXR1SXZDY012cDRuZjJUMUxsdC8xVkxTODZD?=
+ =?utf-8?B?RVJFd3FmYm9ZZnlTM0NYSXYzVk1YL2wydmlyY1l1Y1JVeVhJYjgyRkJYbWFD?=
+ =?utf-8?B?UXNxNGlkaHh5OUl0WGZjWXJUL25aekF6bjR0WEFubXpzemFlNUREMVBwTEhU?=
+ =?utf-8?B?M2gxSzVKYStwY2NqZVNsYW45c3NYM0lsaTNBeWZwQlNuMzNDUnlldzcwcW9r?=
+ =?utf-8?B?eXFWdHhmcS91MWN1UXlqNTJuU2czTExIUzNrbUg5dzljclRaUDJKKzkzMEln?=
+ =?utf-8?B?by9MQi9VZU8ySUpSeEpnbFdkMUl6RUNBU1hKa2J0MDNtcm85cDB4STdXMmE1?=
+ =?utf-8?B?VDl4SUlnZ1laemJjME5SeSsraUduZ250TlR6bW5xejBPTDh5TmFHZDRmVTBE?=
+ =?utf-8?B?OENzYWRzYTJOQkkzQzhHQmpCUEtPT3V4UXdxMW5mVHowS2FiYThON2pDd3hm?=
+ =?utf-8?B?ekw4eE1rWDdHcGUyQk40em9tbEJHOU9LdjhUMGhvLzVzZFRjWVpvdE1sZUF0?=
+ =?utf-8?B?bHVLVC84OVRqaXB6S0dDU0g0SS93YU9WV2NTRmYzRjhLTjZRMjZLem1nQ2Fo?=
+ =?utf-8?B?YnNUTlMrTytuZ25QNHhiVnBWSTRkRk56anNaRUl4NmhTbmZJbWRtR3I1QXV3?=
+ =?utf-8?B?VnZqRXNtT2YrS3p3aFEvenlDOEI3M3JvTnhBV3hjZTl4Rlc5OXU5UVk4ZDNr?=
+ =?utf-8?B?a01aUjFreGI1NFRIdVJRSW94OGVyNmdlcW1kNUk4Rlo3K1RWbVlqOE9TY1R2?=
+ =?utf-8?B?ZElOM0VWNUtXSFFLdkxlMWhlR1VKSnpzVUd4Q1NPemY0dS90T0hOdW8rbHBP?=
+ =?utf-8?B?NlFpdE41L0pJM01mV3ZYYVNIUWtYRnUxRSttYUhwcW1HL1M4MnpHZlJMb3lH?=
+ =?utf-8?B?b2hOWjhLak5WSktmUWlMcG9oSWw3NHZEdDhtUzNaa0orbjBWRVVxNWg2cTJw?=
+ =?utf-8?B?Z1NFdDBOQVRLTFlsYmVBZkpHVFUwZDJOZ2M3ZHpmVi93K1RzR21ML0ttUEhT?=
+ =?utf-8?B?Y01jTFhSNVQyaDhueU0zRVlCMHk0cng2dnVwTFA4YWQzTkZXdE1ySFhMaTJL?=
+ =?utf-8?B?TXFlMzhjTEtnN2dLMDhqdDhiYWwraEtnV0lsd1ZONG8xS2dVT2Z1Z0JRMHh5?=
+ =?utf-8?Q?BvTuaiZZS/4=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q2IyaS9GWXEvbFY0TFlLYWo2cExDME9VcUNHb08xcDVHTXQ1bVdjUW9ySmho?=
+ =?utf-8?B?L1g4OFYvNFZ6L2ptYnV2T0llUyt5b29wVTRBTThDcFlZbnNsaVJzbGlFZjlU?=
+ =?utf-8?B?M3Y2cWREWFMybG5UQkNDdXZOaUNNdkJndHl3N3U3bmF1WUpVdk91MGxGS0xi?=
+ =?utf-8?B?UzFVbkVsYXNCTTdrK2FobFlFZ0dDK25INmhhckY3aFpxTXk3bVdaenduUmxq?=
+ =?utf-8?B?aEtvNUljanl4WGpxSlRkUk1NWmVjSlJzTndTNlhHU2F5OUVHUTJuQkg4RWl4?=
+ =?utf-8?B?elQzV3Q4bWtXQktGZFZIZEFOVVFaVVpkc29KTkMwN1BOUDgxTVZVd2ZxU2dD?=
+ =?utf-8?B?Tko5UW9TNCtZNkRMRTUwbmQ4bEFQMVloem8zaXRVVGx5TjMxRzlGejN0aXBK?=
+ =?utf-8?B?OXhtQUQvOUV1OWlkYlIydldTd3B1K1hSK0o5NTMzUnJKNS9DdDY5QjkrbEls?=
+ =?utf-8?B?N1c4ZVhNUVRWTk16NmlOWFIxcTBYc3RFRm41KzV2d3h2dlFXSEJsTlRXYisx?=
+ =?utf-8?B?czAyRWcvRlNvR3VpRThrTE5FZTEvbTIxODNSRDdpSFY1dllhTnZnM2xjZWU2?=
+ =?utf-8?B?TFFoUVE4aW5xZ3Q3UkZ5ZjhVSmtTVmNIVkNNYW80YW1hT2R0c2VlbTJMcHJO?=
+ =?utf-8?B?dnl3dHJWOGVMUTY1Nk1QOFRxTDRNSk9Dbk9ibFc2SjhzSkhrdm5PUjAzNEZ3?=
+ =?utf-8?B?TTdBbGovOSsyRldoOHZMWm9ER1FmNWF0MHhreHVQVlBBZnAzcjdFR2dqUlJu?=
+ =?utf-8?B?eVdDeXdrOVJWQkVWbThtTm1YdUpUWS9LZFJ0WFdJK1J6YTNYM08wRkNMS3N1?=
+ =?utf-8?B?dmFwb0ErRGJSOVU1czAyTFBQZkZXQlFXTWY5Rjd6TWVmNnBqcDRVSFJ2dytH?=
+ =?utf-8?B?Qmp1bHVBUHQ5TzRxQ1FjREdoVFdHWDlnUjNQRlB2eFBmMGRIZHZVVC9uSC9I?=
+ =?utf-8?B?MU5jWkRDRTI0TVhPa0FEZEZRSm9sTlJXZTZaOWJ3emJ3OTBQVERwZUhXZlBR?=
+ =?utf-8?B?eDc3SGlWT043WlAya1hRMWlITW1nUko3OG40cHNZK3NQYkVQRkJOQU9uN1FT?=
+ =?utf-8?B?MjZjWTJWdGZEaFRHT1J2SXN3czl3dE82WlAvdDdTZ3l4SnBYckgzcG1IYXl2?=
+ =?utf-8?B?ODhqcW43VDdiSG1mQlpnWGxKRi9nWkFUQzdZZ1c5S2huOGxsTzdsQUp5M0to?=
+ =?utf-8?B?QlhkSjVEbDk5OUl1a3pvQ0lFS1hVdFJlcmg2c1licEJSaHI2eE5xaklSOUpy?=
+ =?utf-8?B?MFRQU3dxeXcrWGFkWHhKRE55MmRVVmdCa3Q2cUJ2Q1hyZGZkNUdTVDZNM0dh?=
+ =?utf-8?B?SCtPL3lwNXAyQm5JM0hJdCtJT2lYTDNQbHVMTzhlejI5eU5seFFnMmI1VHBG?=
+ =?utf-8?B?WDJ1cXU1bSt5TXVob1RXMEU3QjNJOGJGQXdQU1ZsdVZOSUZRZ3BKWGlTaFlX?=
+ =?utf-8?B?MHF1MVladUxld0EvZW5ldzBCNit5TFVMaFVPOFhtYmp0ZDVub1dHeFdhMUNz?=
+ =?utf-8?B?MVlQNldCV3RrRmx2ZWFIZGw0dHZ0UHROdDFhejFWeU9zZzFUSy8yb1FHVUwz?=
+ =?utf-8?B?K053eEoxcEdOTFNXV3RTTzdIUkxUMSs0TERTbmtFVStGZnNKRTFiQjQ0ekk3?=
+ =?utf-8?B?Yy9qT0ZIT1J6NVJFQXBnTGJqSHFXdGlUMk0zeDg5Rnl6dWVtZ3BGeHZiQU9F?=
+ =?utf-8?B?OHhLWU14RE9NL1dpbHRTQjY1NklxTWN3MEluT1hxZFRJM2xGMnVDSFpWRlVW?=
+ =?utf-8?B?OWlsTHdtRThNT0Q3WjVpZHpzd2pTSC9EMTJYelNHemxqVkRYYlJiZSsvZUF5?=
+ =?utf-8?B?SGNZbVppNWlPVWdUczdyUW5QZWlPSnAydk4vNG1DUHJtanVkUlJEekxTMm1z?=
+ =?utf-8?B?NXpYNlAwTEdiSlhia1haNjJOc0pscUZhaTdCa21UQnh4Q0FtdTRnbTVBd3Nw?=
+ =?utf-8?B?b29xZTlZUlp4b1VVeGlWdjhOUWZuUVAxMnNTbnV5MTMvK2tPMlBWZDVZY3ha?=
+ =?utf-8?B?T3RiSHZvb3JjTUtLTGtMQkJieTR5dW5YSDlGSHBLeU1DdDM5RHRwTmJONUlm?=
+ =?utf-8?B?bjNsUHhqQUx1OStGakh6SnJSclJJY2E0NjdoZnU5QUxxWWhlbEtFWHFpZ25n?=
+ =?utf-8?Q?B3R87g5zuH1Ppc/L0Cwojhaxo?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 932c9e59-f40c-4e7c-069f-08ddeb27339f
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 20:19:36.3564 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sfeXL8R4PV0pSvJc5egCVwkOxs6vsEwW8OqCM/gqZuj/6qhXWge+qiFw1UgvriL0YIexCKQDgA/xD2HQ7LIT2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR02MB8133
+X-Authority-Analysis: v=2.4 cv=O4M5vA9W c=1 sm=1 tr=0 ts=68b8a2da cx=c_pps
+ a=JXmqnGAylZzlMSZfVbpSnA==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=0kUYKlekyDsA:10
+ a=plkC6irEooDNg33354wA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: c1Cj8AWgPHAHezNDxCCdXy4kTRb4x1Dg
+X-Proofpoint-ORIG-GUID: c1Cj8AWgPHAHezNDxCCdXy4kTRb4x1Dg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAzMDIwNCBTYWx0ZWRfX/zTM0p14XHy9
+ H+k+zbKpbi1yKgNaRV6SMGwBTdUVFCyXfPvvPxKM/TKko5b4enWDsXx2VbHnYF62gyJ1LgSayeS
+ Gkrg1wDt5qgkL7UTVH7FtiUqEg8ZEPi1ovbVm/ETKG6Fachh1XARHCPllUr8OHVAoXnDXZ/bX0G
+ x6wSnegofI2n1/NIrfgyYKfiu8fN3xZBIWWMqahAGbW160NvtvvrA7kj4mm5mpL7VLN9asjJNla
+ VHOKS5hGwuBzJjYd9XU6ONYTkaJLyrcXoskGvaWARlrCmxaIM2+RFFZENpzqBBxwTq8ye8JZ6Pe
+ MC30I3K7ElLqMDzi1DOWL3+LO3UDQD4/qg4sZkw/dO+pzsCYMQNNvs70A9dHR0=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-03_10,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.151.68;
+ envelope-from=john.levon@nutanix.com; helo=mx0a-002c1b01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,323 +211,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Add a basic functional test for the vfio-user client, along with a couple of
+test framework extensions to support it.
 
+v4: generalize the test so it's less sensitive to build/environment
 
-On 9/3/25 1:25 AM, Nicholas Piggin wrote:
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   tests/tcg/riscv64/test-signal-handling.c | 215 ++++++++++++++++++++++-
->   1 file changed, 209 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/tcg/riscv64/test-signal-handling.c b/tests/tcg/riscv64/test-signal-handling.c
-> index e9c0170c74..29b2fe169d 100644
-> --- a/tests/tcg/riscv64/test-signal-handling.c
-> +++ b/tests/tcg/riscv64/test-signal-handling.c
-> @@ -19,9 +19,16 @@
->   #include <execinfo.h>
->   #include <unistd.h>
->   #include <assert.h>
-> +#include <sys/auxv.h>
-> +#include <elf.h>
->   #include <sys/mman.h>
->   #include <ucontext.h>
->   #include <asm/sigcontext.h>
-> +#include "riscv_vector.h"
+John Levon (2):
+  tests/functional: return output from cmd.py helpers
+  tests/functional: add vm param to cmd.py helpers
 
+Mark Cave-Ayland (1):
+  tests/functional: add a vfio-user smoke test
 
-As I said in a review in the "[PATCH 0/3] target/riscv: corner case fixes" series,
-this header will break 'make check-tcg'. We need extra changes in the Docker image
-to recognize this header.
+ MAINTAINERS                                   |   1 +
+ tests/functional/qemu_test/cmd.py             |  65 +++++-
+ tests/functional/x86_64/meson.build           |   1 +
+ .../x86_64/test_vfio_user_client.py           | 207 ++++++++++++++++++
+ 4 files changed, 262 insertions(+), 12 deletions(-)
+ create mode 100755 tests/functional/x86_64/test_vfio_user_client.py
 
-
-Thanks,
-
-Daniel
-
-> +
-> +#ifndef COMPAT_HWCAP_ISA_V
-> +#define COMPAT_HWCAP_ISA_V (1 << ('V' - 'A'))
-> +#endif
->   
->   /*
->    * This horrible hack seems to be required when including
-> @@ -41,6 +48,10 @@ static uint64_t *signal_gvalues;
->   static double *initial_fvalues;
->   static double *final_fvalues;
->   static double *signal_fvalues;
-> +static size_t vlenb;
-> +static uint8_t *initial_vvalues;
-> +static uint8_t *final_vvalues;
-> +static uint8_t *signal_vvalues;
->   
->   extern unsigned long unimp_addr[];
->   
-> @@ -64,6 +75,8 @@ static void ILL_handler(int signo, siginfo_t *info, void *context)
->   {
->       ucontext_t *uc = context;
->       struct sigcontext *sc = (struct sigcontext *)&uc->uc_mcontext;
-> +    struct __riscv_ctx_hdr *sc_ext = &sc->sc_extdesc.hdr;
-> +    bool found_v = false;
->   
->       got_signal = true;
->   
-> @@ -82,12 +95,47 @@ static void ILL_handler(int signo, siginfo_t *info, void *context)
->       }
->       /* Test sc->sc_fpregs.d.fcsr ? */
->   
-> +    assert(sc->sc_extdesc.reserved == 0);
-> +    while (sc_ext->magic != END_MAGIC) {
-> +        assert(sc_ext->size != 0);
-> +
-> +        if (sc_ext->magic == RISCV_V_MAGIC) {
-> +            struct __sc_riscv_v_state *sc_v_state = (struct __sc_riscv_v_state *)(sc_ext + 1);
-> +            struct __riscv_v_ext_state *v_state = &sc_v_state->v_state;
-> +
-> +            found_v = true;
-> +
-> +            assert(getauxval(AT_HWCAP) & COMPAT_HWCAP_ISA_V);
-> +
-> +            assert(v_state->vlenb == vlenb);
-> +            assert(v_state->vtype == 0xc0); /* vma, vta */
-> +            assert(v_state->vl == vlenb);
-> +            assert(v_state->vstart == 0);
-> +            assert(v_state->vcsr == 0);
-> +
-> +            uint64_t *vregs = v_state->datap;
-> +            for (int i = 0; i < 32; i++) {
-> +                for (int j = 0; j < vlenb; j += 8) {
-> +                    size_t idx = (i * vlenb + j) / 8;
-> +                    ((uint64_t *)signal_vvalues)[idx] = vregs[idx];
-> +                }
-> +            }
-> +        }
-> +
-> +        sc_ext = (void *)sc_ext + sc_ext->size;
-> +    }
-> +
-> +    assert(sc_ext->size == 0);
-> +    if (getauxval(AT_HWCAP) & COMPAT_HWCAP_ISA_V) {
-> +        assert(found_v);
-> +    }
-> +
->       sc->sc_regs.pc += 4;
->   }
->   
->   static void init_test(void)
->   {
-> -    int i;
-> +    int i, j;
->   
->       callchain_root = find_callchain_root();
->   
-> @@ -107,6 +155,19 @@ static void init_test(void)
->       memset(final_fvalues, 0, 8 * 32);
->       signal_fvalues = malloc(8 * 32);
->       memset(signal_fvalues, 0, 8 * 32);
-> +
-> +    vlenb = __riscv_vlenb();
-> +    initial_vvalues = malloc(vlenb * 32);
-> +    memset(initial_vvalues, 0, vlenb * 32);
-> +    for (i = 0; i < 32 ; i++) {
-> +        for (j = 0; j < vlenb; j++) {
-> +            initial_vvalues[i * vlenb + j] = i * vlenb + j;
-> +        }
-> +    }
-> +    final_vvalues = malloc(vlenb * 32);
-> +    memset(final_vvalues, 0, vlenb * 32);
-> +    signal_vvalues = malloc(vlenb * 32);
-> +    memset(signal_vvalues, 0, vlenb * 32);
->   }
->   
->   static void run_test(void)
-> @@ -179,6 +240,72 @@ static void run_test(void)
->   "    fld    f29, 0xe8(t0)            \n"
->   "    fld    f30, 0xf0(t0)            \n"
->   "    fld    f31, 0xf8(t0)            \n"
-> +    /* Load initial values into vector registers */
-> +"    mv    t0, %[initial_vvalues]    \n"
-> +"    vsetvli x0,%[vlenb],e8,m1,ta,ma \n"
-> +"    vle8.v    v0, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v1, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v2, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v3, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v4, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v5, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v6, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v7, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v8, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v9, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v10, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v11, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v12, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v13, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v14, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v15, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v16, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v17, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v18, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v19, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v20, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v21, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v22, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v23, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v24, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v25, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v26, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v27, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v28, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v29, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v30, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vle8.v    v31, (t0)             \n"
->       /* Trigger the SIGILL */
->   ".global unimp_addr                  \n"
->   "unimp_addr:                         \n"
-> @@ -251,19 +378,93 @@ static void run_test(void)
->   "    fsd    f29, 0xe8(t0)            \n"
->   "    fsd    f30, 0xf0(t0)            \n"
->   "    fsd    f31, 0xf8(t0)            \n"
-> +    /* Save final values from vector registers */
-> +"    mv    t0, %[final_vvalues]      \n"
-> +"    vse8.v    v0, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v1, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v2, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v3, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v4, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v5, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v6, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v7, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v8, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v9, (t0)              \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v10, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v11, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v12, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v13, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v14, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v15, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v16, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v17, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v18, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v19, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v20, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v21, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v22, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v23, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v24, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v25, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v26, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v27, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v28, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v29, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v30, (t0)             \n"
-> +"    add    t0, t0, %[vlenb]         \n"
-> +"    vse8.v    v31, (t0)             \n"
->       : "=m" (initial_gvalues),
->         "=m" (final_gvalues),
-> -      "=m" (final_fvalues)
-> -    : "m" (initial_fvalues),
-> +      "=m" (final_fvalues),
-> +      "=m" (final_vvalues)
-> +    : [vlenb] "r" (vlenb),
-> +      "m" (initial_fvalues),
-> +      "m" (initial_vvalues),
->         [initial_gvalues] "r" (initial_gvalues),
->         [initial_fvalues] "r" (initial_fvalues),
-> +      [initial_vvalues] "r" (initial_vvalues),
->         [final_gvalues] "r" (final_gvalues),
-> -      [final_fvalues] "r" (final_fvalues)
-> +      [final_fvalues] "r" (final_fvalues),
-> +      [final_vvalues] "r" (final_vvalues)
->       : "t0",
->         "f0", "f1", "f2", "f3", "f4", "f5", "f6", "f7",
->         "f8", "f9", "f10", "f11", "f12", "f13", "f14", "f15",
->         "f16", "f17", "f18", "f19", "f20", "f21", "f22", "f23",
-> -      "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31");
-> +      "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31",
-> +      "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7",
-> +      "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15",
-> +      "v16", "v17", "v18", "v19", "v20", "v21", "v22", "v23",
-> +      "v24", "v25", "v26", "v27", "v28", "v29", "v30", "v31");
->   
->       assert(got_signal);
->   
-> @@ -272,7 +473,7 @@ static void run_test(void)
->        * and is not a simple equality.
->        */
->       assert(initial_gvalues[4] == (unsigned long)initial_gvalues);
-> -    assert(signal_gvalues[4] == (unsigned long)initial_fvalues);
-> +    assert(signal_gvalues[4] == (unsigned long)initial_vvalues + 31 * vlenb);
->       assert(final_gvalues[4] == (unsigned long)final_gvalues);
->       initial_gvalues[4] = final_gvalues[4] = signal_gvalues[4] = 0;
->   
-> @@ -284,6 +485,8 @@ static void run_test(void)
->       assert(!memcmp(initial_gvalues, signal_gvalues, 8 * 31));
->       assert(!memcmp(initial_fvalues, final_fvalues, 8 * 32));
->       assert(!memcmp(initial_fvalues, signal_fvalues, 8 * 32));
-> +    assert(!memcmp(initial_vvalues, signal_vvalues, vlenb * 32));
-> +    assert(!memcmp(initial_vvalues, final_vvalues, vlenb * 32));
->   }
->   
->   int main(void)
+-- 
+2.43.0
 
 
