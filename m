@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B5FB42232
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 15:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33171B42230
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 15:42:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utnkQ-00062c-Pv; Wed, 03 Sep 2025 09:42:02 -0400
+	id 1utnkU-00067S-1H; Wed, 03 Sep 2025 09:42:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <d.zhebryakov@yandex.ru>)
- id 1utnkO-00060e-Ga; Wed, 03 Sep 2025 09:42:00 -0400
-Received: from forward100a.mail.yandex.net ([178.154.239.83])
+ id 1utnkP-00062g-Ec; Wed, 03 Sep 2025 09:42:01 -0400
+Received: from forward103a.mail.yandex.net ([178.154.239.86])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <d.zhebryakov@yandex.ru>)
- id 1utnkJ-0007FL-MK; Wed, 03 Sep 2025 09:42:00 -0400
+ id 1utnkJ-0007FN-Nc; Wed, 03 Sep 2025 09:42:01 -0400
 Received: from mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c0d:400:0:640:80de:0])
- by forward100a.mail.yandex.net (Yandex) with ESMTPS id E10ABC008D;
- Wed, 03 Sep 2025 16:41:49 +0300 (MSK)
+ by forward103a.mail.yandex.net (Yandex) with ESMTPS id E3F058075E;
+ Wed, 03 Sep 2025 16:41:50 +0300 (MSK)
 Received: by mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net
- (smtp/Yandex) with ESMTPSA id kfgPGGxM54Y0-FE3I9trJ; 
- Wed, 03 Sep 2025 16:41:48 +0300
+ (smtp/Yandex) with ESMTPSA id kfgPGGxM54Y0-eeW9awNq; 
+ Wed, 03 Sep 2025 16:41:50 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
- t=1756906908; bh=T1nxtsG5EeE7KEykoqCLfkFmqtbk6wJVnVZ9JcedH3I=;
+ t=1756906910; bh=O9hW0c4Ttcubk5ra00YW4qEl7dFasP/KlwU4xmJPyMw=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=dLKxTftNzoZR0zdIdHl510j8s32YA+mSqEZDw/+1gWHJztYPrDFcrbSZzx7Xfi2KZ
- 5m6L683XRwIPQwrBM4iGNe458hHWhRxTUOoKC2BqKWuIW/yA8vmTeQsLAhXCn6RG+e
- NNxI/jGudDZ1gYdMaI1XHpwzh5Ur9Noxpx69/pGM=
+ b=duYnDuEjm+qrj3fzvDH8s/Z71dWOPFBXXSKImmwF9MEy8ORSMu6NUOunvHVR8sb5T
+ 4ZjTyqQpM3U5orhKbGV0kJ8NR+bU7yRIDlkWq9N2wNrZVOGNoINozBnKRA53dW0uof
+ dn2zx6k6n+NM03yEes4vB7kPglShiVmjfBX0cpKI=
 Authentication-Results: mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex.ru
 From: Danila Zhebryakov <d.zhebryakov@yandex.ru>
@@ -42,22 +42,22 @@ Cc: Laurent Vivier <laurent@vivier.eu>, David Hildenbrand <david@redhat.com>,
  Chinmay Rath <rathc@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Riku Voipio <riku.voipio@iki.fi>,
  Danila Zhebryakov <d.zhebryakov@yandex.ru>
-Subject: [PATCH v2 1/4] accel/tcg: Unify big- and little- endian atomic ops
-Date: Wed,  3 Sep 2025 16:41:43 +0300
-Message-ID: <20250903134146.1487794-2-d.zhebryakov@yandex.ru>
+Subject: [PATCH v2 2/4] target/ppc: refactor MMU helpers
+Date: Wed,  3 Sep 2025 16:41:44 +0300
+Message-ID: <20250903134146.1487794-3-d.zhebryakov@yandex.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250903134146.1487794-1-d.zhebryakov@yandex.ru>
 References: <20250903134146.1487794-1-d.zhebryakov@yandex.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.83;
- envelope-from=d.zhebryakov@yandex.ru; helo=forward100a.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.86;
+ envelope-from=d.zhebryakov@yandex.ru; helo=forward103a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -75,872 +75,659 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove dedicated LE and BE atomic helpers. Use MO_BSWAP flag of the memop instead.
-Adjust atomic_mmu_lookup to respect the TLB_BSWAP flag
+Changed most of the PPC MMU helpers to take CPUTLBEntryFull* instead of pointers to real address, prot and size.
+This is needed at least for booke206 MMU to support LE bits (which need to set TLB_BSWAP in tlb_fill_flags), but also seems reasonable to do to other MMUs for consistency.
+This should not change any behavior at all.
 
 Signed-off-by: Danila Zhebryakov <d.zhebryakov@yandex.ru>
 ---
- accel/tcg/atomic_common.c.inc       |  36 +--
- accel/tcg/atomic_template.h         | 326 ++++++++++------------------
- accel/tcg/cputlb.c                  |  11 +-
- accel/tcg/tcg-runtime.h             |  48 +---
- accel/tcg/user-exec.c               |   2 +-
- include/accel/tcg/cpu-ldst-common.h |  51 ++---
- target/m68k/op_helper.c             |   4 +-
- target/s390x/tcg/mem_helper.c       |   6 +-
- tcg/tcg-op-ldst.c                   |  43 ++--
- 9 files changed, 181 insertions(+), 346 deletions(-)
+ target/ppc/internal.h    |  3 +-
+ target/ppc/mmu-booke.c   | 63 +++++++++++++++++----------------
+ target/ppc/mmu-booke.h   |  2 +-
+ target/ppc/mmu-hash32.c  | 30 +++++++++-------
+ target/ppc/mmu-hash32.h  |  3 +-
+ target/ppc/mmu-hash64.c  | 14 ++++----
+ target/ppc/mmu-hash64.h  |  2 +-
+ target/ppc/mmu-radix64.c | 20 +++++++----
+ target/ppc/mmu-radix64.h |  2 +-
+ target/ppc/mmu_common.c  | 75 ++++++++++++++++++++--------------------
+ target/ppc/mmu_helper.c  | 15 ++++----
+ 11 files changed, 121 insertions(+), 108 deletions(-)
 
-diff --git a/accel/tcg/atomic_common.c.inc b/accel/tcg/atomic_common.c.inc
-index bca93a0ac4..6510efe3c8 100644
---- a/accel/tcg/atomic_common.c.inc
-+++ b/accel/tcg/atomic_common.c.inc
-@@ -42,19 +42,15 @@ static void atomic_trace_rmw_post(CPUArchState *env, uint64_t addr,
-     { return cpu_atomic_##OP##_mmu(env, addr, oldv, newv, oi, GETPC()); }
+diff --git a/target/ppc/internal.h b/target/ppc/internal.h
+index 7723350227..81f9a9f2cf 100644
+--- a/target/ppc/internal.h
++++ b/target/ppc/internal.h
+@@ -246,8 +246,7 @@ static inline int check_prot_access_type(int prot, MMUAccessType access_type)
+ /* PowerPC MMU emulation */
  
- CMPXCHG_HELPER(cmpxchgb, uint32_t)
--CMPXCHG_HELPER(cmpxchgw_be, uint32_t)
--CMPXCHG_HELPER(cmpxchgw_le, uint32_t)
--CMPXCHG_HELPER(cmpxchgl_be, uint32_t)
--CMPXCHG_HELPER(cmpxchgl_le, uint32_t)
-+CMPXCHG_HELPER(cmpxchgw, uint32_t)
-+CMPXCHG_HELPER(cmpxchgl, uint32_t)
+ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+-                      hwaddr *raddrp, int *psizep, int *protp,
+-                      int mmu_idx, bool guest_visible);
++               CPUTLBEntryFull *full, int mmu_idx, bool guest_visible);
  
- #ifdef CONFIG_ATOMIC64
--CMPXCHG_HELPER(cmpxchgq_be, uint64_t)
--CMPXCHG_HELPER(cmpxchgq_le, uint64_t)
-+CMPXCHG_HELPER(cmpxchgq, uint64_t)
- #endif
+ /* Software driven TLB helpers */
+ int ppc6xx_tlb_getnum(CPUPPCState *env, target_ulong eaddr,
+diff --git a/target/ppc/mmu-booke.c b/target/ppc/mmu-booke.c
+index 55e5dd7c6b..10ba8052d4 100644
+--- a/target/ppc/mmu-booke.c
++++ b/target/ppc/mmu-booke.c
+@@ -23,6 +23,7 @@
+ #include "cpu.h"
+ #include "internal.h"
+ #include "mmu-booke.h"
++#include "exec/tlb-flags.h"
  
- #if HAVE_CMPXCHG128
--CMPXCHG_HELPER(cmpxchgo_be, Int128)
--CMPXCHG_HELPER(cmpxchgo_le, Int128)
-+CMPXCHG_HELPER(cmpxchgo, Int128)
- #endif
+ /* Generic TLB check function for embedded PowerPC implementations */
+ static bool ppcemb_tlb_check(CPUPPCState *env, ppcemb_tlb_t *tlb,
+@@ -155,10 +156,10 @@ static bool mmubooke_check_pid(CPUPPCState *env, ppcemb_tlb_t *tlb,
+ }
  
- #undef CMPXCHG_HELPER
-@@ -87,19 +83,14 @@ Int128 HELPER(nonatomic_cmpxchgo)(CPUArchState *env, uint64_t addr,
- #ifdef CONFIG_ATOMIC64
- #define GEN_ATOMIC_HELPERS(OP)              \
-     ATOMIC_HELPER(glue(OP,b), uint32_t)     \
--    ATOMIC_HELPER(glue(OP,w_be), uint32_t)  \
--    ATOMIC_HELPER(glue(OP,w_le), uint32_t)  \
--    ATOMIC_HELPER(glue(OP,l_be), uint32_t)  \
--    ATOMIC_HELPER(glue(OP,l_le), uint32_t)  \
--    ATOMIC_HELPER(glue(OP,q_be), uint64_t)  \
--    ATOMIC_HELPER(glue(OP,q_le), uint64_t)
-+    ATOMIC_HELPER(glue(OP,w), uint32_t)     \
-+    ATOMIC_HELPER(glue(OP,l), uint32_t)     \
-+    ATOMIC_HELPER(glue(OP,q), uint64_t)
- #else
- #define GEN_ATOMIC_HELPERS(OP)              \
-     ATOMIC_HELPER(glue(OP,b), uint32_t)     \
--    ATOMIC_HELPER(glue(OP,w_be), uint32_t)  \
--    ATOMIC_HELPER(glue(OP,w_le), uint32_t)  \
--    ATOMIC_HELPER(glue(OP,l_be), uint32_t)  \
--    ATOMIC_HELPER(glue(OP,l_le), uint32_t)
-+    ATOMIC_HELPER(glue(OP,w), uint32_t)     \
-+    ATOMIC_HELPER(glue(OP,l), uint32_t)
- #endif
- 
- GEN_ATOMIC_HELPERS(fetch_add)
-@@ -123,12 +114,9 @@ GEN_ATOMIC_HELPERS(umax_fetch)
- GEN_ATOMIC_HELPERS(xchg)
- 
- #if HAVE_CMPXCHG128
--ATOMIC_HELPER(xchgo_be, Int128)
--ATOMIC_HELPER(xchgo_le, Int128)
--ATOMIC_HELPER(fetch_ando_be, Int128)
--ATOMIC_HELPER(fetch_ando_le, Int128)
--ATOMIC_HELPER(fetch_oro_be, Int128)
--ATOMIC_HELPER(fetch_oro_le, Int128)
-+ATOMIC_HELPER(xchgo, Int128)
-+ATOMIC_HELPER(fetch_ando, Int128)
-+ATOMIC_HELPER(fetch_oro , Int128)
- #endif
- 
- #undef ATOMIC_HELPER
-diff --git a/accel/tcg/atomic_template.h b/accel/tcg/atomic_template.h
-index ae5203b439..372ea290e1 100644
---- a/accel/tcg/atomic_template.h
-+++ b/accel/tcg/atomic_template.h
-@@ -69,66 +69,92 @@
- 
- /* Define host-endian atomic operations.  Note that END is used within
-    the ATOMIC_NAME macro, and redefined below.  */
--#if DATA_SIZE == 1
- # define END
--#elif HOST_BIG_ENDIAN
--# define END  _be
--#else
--# define END  _le
--#endif
- 
- ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, vaddr addr,
-                               ABI_TYPE cmpv, ABI_TYPE newv,
-                               MemOpIdx oi, uintptr_t retaddr)
+ static int mmubooke_check_tlb(CPUPPCState *env, ppcemb_tlb_t *tlb,
+-                              hwaddr *raddr, int *prot, target_ulong address,
++                              CPUTLBEntryFull *full, target_ulong address,
+                               MMUAccessType access_type, int i)
  {
-+    bool need_bswap = get_memop(oi) & MO_BSWAP;
-     DATA_TYPE *haddr = atomic_mmu_lookup(env_cpu(env), addr, oi,
--                                         DATA_SIZE, retaddr);
--    DATA_TYPE ret;
--
-+                                         DATA_SIZE, retaddr, &need_bswap);
-+    DATA_TYPE ret, ret_e;
-+    if (need_bswap) {
- #if DATA_SIZE == 16
--    ret = atomic16_cmpxchg(haddr, cmpv, newv);
-+        ret = atomic16_cmpxchg(haddr, BSWAP(cmpv), BSWAP(newv));
- #else
--    ret = qatomic_cmpxchg__nocheck(haddr, cmpv, newv);
-+        ret = qatomic_cmpxchg__nocheck(haddr, BSWAP(cmpv), BSWAP(newv));
- #endif
-+        ret_e = BSWAP(ret);
-+    } else {
-+#if DATA_SIZE == 16
-+        ret = atomic16_cmpxchg(haddr, cmpv, newv);
-+#else
-+        ret = qatomic_cmpxchg__nocheck(haddr, cmpv, newv);
-+#endif
-+        ret_e = ret;
-+    }
-     ATOMIC_MMU_CLEANUP;
-     atomic_trace_rmw_post(env, addr,
--                          VALUE_LOW(ret),
--                          VALUE_HIGH(ret),
--                          VALUE_LOW(newv),
--                          VALUE_HIGH(newv),
--                          oi);
--    return ret;
-+                        VALUE_LOW(ret),
-+                        VALUE_HIGH(ret),
-+                        VALUE_LOW(newv),
-+                        VALUE_HIGH(newv),
-+                        oi);
-+    return ret_e;
- }
- 
- ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, vaddr addr, ABI_TYPE val,
-                            MemOpIdx oi, uintptr_t retaddr)
- {
--    DATA_TYPE *haddr = atomic_mmu_lookup(env_cpu(env), addr, oi,
--                                         DATA_SIZE, retaddr);
--    DATA_TYPE ret;
-+    bool need_bswap = get_memop(oi) & MO_BSWAP;
- 
--#if DATA_SIZE == 16
--    ret = atomic16_xchg(haddr, val);
--#else
--    ret = qatomic_xchg__nocheck(haddr, val);
--#endif
-+    DATA_TYPE *haddr = atomic_mmu_lookup(env_cpu(env), addr, oi,
-+                                         DATA_SIZE, retaddr, &need_bswap);
-+    DATA_TYPE ret, ret_e;
-+
-+    if (need_bswap) {
-+        #if DATA_SIZE == 16
-+            ret = atomic16_xchg(haddr, BSWAP(val));
-+        #else
-+            ret = qatomic_xchg__nocheck(haddr, BSWAP(val));
-+        #endif
-+
-+        ret_e = BSWAP(ret);
-+    } else {
-+        #if DATA_SIZE == 16
-+            ret = atomic16_xchg(haddr, val);
-+        #else
-+            ret = qatomic_xchg__nocheck(haddr, val);
-+        #endif
-+        ret_e = ret;
-+    }
-     ATOMIC_MMU_CLEANUP;
-     atomic_trace_rmw_post(env, addr,
--                          VALUE_LOW(ret),
--                          VALUE_HIGH(ret),
--                          VALUE_LOW(val),
--                          VALUE_HIGH(val),
--                          oi);
--    return ret;
-+                        VALUE_LOW(ret),
-+                        VALUE_HIGH(ret),
-+                        VALUE_LOW(val),
-+                        VALUE_HIGH(val),
-+                        oi);
-+    return ret_e;
- }
- 
- #if DATA_SIZE == 16
- ABI_TYPE ATOMIC_NAME(fetch_and)(CPUArchState *env, vaddr addr, ABI_TYPE val,
-                                 MemOpIdx oi, uintptr_t retaddr)
- {
-+    bool need_bswap = get_memop(oi) & MO_BSWAP;
-+
-     DATA_TYPE *haddr = atomic_mmu_lookup(env_cpu(env), addr, oi,
--                                         DATA_SIZE, retaddr);
--    DATA_TYPE ret = atomic16_fetch_and(haddr, val);
-+                                         DATA_SIZE, retaddr, &need_bswap);
-+    DATA_TYPE ret, ret_e;
-+    if (need_bswap) {
-+        ret = atomic16_fetch_and(haddr, BSWAP(val));
-+        ret_e = BSWAP(ret);
-+    } else {
-+        ret = atomic16_fetch_and(haddr, val);
-+        ret_e = ret;
-+    }
-     ATOMIC_MMU_CLEANUP;
-     atomic_trace_rmw_post(env, addr,
-                           VALUE_LOW(ret),
-@@ -136,15 +162,25 @@ ABI_TYPE ATOMIC_NAME(fetch_and)(CPUArchState *env, vaddr addr, ABI_TYPE val,
-                           VALUE_LOW(val),
-                           VALUE_HIGH(val),
-                           oi);
--    return ret;
-+    return ret_e;
- }
- 
- ABI_TYPE ATOMIC_NAME(fetch_or)(CPUArchState *env, vaddr addr, ABI_TYPE val,
-                                MemOpIdx oi, uintptr_t retaddr)
- {
-+    bool need_bswap = get_memop(oi) & MO_BSWAP;
-+
-     DATA_TYPE *haddr = atomic_mmu_lookup(env_cpu(env), addr, oi,
--                                         DATA_SIZE, retaddr);
--    DATA_TYPE ret = atomic16_fetch_or(haddr, val);
-+                                         DATA_SIZE, retaddr, &need_bswap);
-+    DATA_TYPE ret, ret_e;
-+    if (need_bswap) {
-+        ret = atomic16_fetch_or(haddr, BSWAP(val));
-+        ret_e = BSWAP(ret);
-+    } else {
-+        ret = atomic16_fetch_or(haddr, val);
-+        ret_e = ret;
-+    }
-+
-     ATOMIC_MMU_CLEANUP;
-     atomic_trace_rmw_post(env, addr,
-                           VALUE_LOW(ret),
-@@ -152,16 +188,25 @@ ABI_TYPE ATOMIC_NAME(fetch_or)(CPUArchState *env, vaddr addr, ABI_TYPE val,
-                           VALUE_LOW(val),
-                           VALUE_HIGH(val),
-                           oi);
--    return ret;
-+    return ret_e;
- }
- #else
- #define GEN_ATOMIC_HELPER(X)                                        \
- ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, vaddr addr,              \
-                         ABI_TYPE val, MemOpIdx oi, uintptr_t retaddr) \
- {                                                                   \
--    DATA_TYPE *haddr, ret;                                          \
--    haddr = atomic_mmu_lookup(env_cpu(env), addr, oi, DATA_SIZE, retaddr);   \
--    ret = qatomic_##X(haddr, val);                                  \
-+    DATA_TYPE *haddr, ret, ret_e;                                   \
-+    bool need_bswap = get_memop(oi) & MO_BSWAP;                     \
-+    haddr = atomic_mmu_lookup(env_cpu(env), addr, oi, DATA_SIZE,    \
-+                                             retaddr, &need_bswap); \
-+    if (need_bswap) {                                               \
-+        ret = qatomic_##X(haddr, BSWAP(val));                       \
-+        ret_e = BSWAP(ret);                                         \
-+    }                                                               \
-+    else {                                                          \
-+        ret = qatomic_##X(haddr, val);                              \
-+        ret_e = ret;                                                \
-+    }                                                               \
-     ATOMIC_MMU_CLEANUP;                                             \
-     atomic_trace_rmw_post(env, addr,                                \
-                           VALUE_LOW(ret),                           \
-@@ -169,7 +214,7 @@ ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, vaddr addr,              \
-                           VALUE_LOW(val),                           \
-                           VALUE_HIGH(val),                          \
-                           oi);                                      \
--    return ret;                                                     \
-+    return ret_e;                                                   \
- }
- 
- GEN_ATOMIC_HELPER(fetch_add)
-@@ -191,183 +236,38 @@ GEN_ATOMIC_HELPER(xor_fetch)
-  * Trace this load + RMW loop as a single RMW op. This way, regardless
-  * of CF_PARALLEL's value, we'll trace just a read and a write.
-  */
--#define GEN_ATOMIC_HELPER_FN(X, FN, XDATA_TYPE, RET)                \
--ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, vaddr addr,              \
--                        ABI_TYPE xval, MemOpIdx oi, uintptr_t retaddr) \
--{                                                                   \
--    XDATA_TYPE *haddr, cmp, old, new, val = xval;                   \
--    haddr = atomic_mmu_lookup(env_cpu(env), addr, oi, DATA_SIZE, retaddr);   \
--    smp_mb();                                                       \
--    cmp = qatomic_read__nocheck(haddr);                             \
--    do {                                                            \
--        old = cmp; new = FN(old, val);                              \
--        cmp = qatomic_cmpxchg__nocheck(haddr, old, new);            \
--    } while (cmp != old);                                           \
--    ATOMIC_MMU_CLEANUP;                                             \
--    atomic_trace_rmw_post(env, addr,                                \
--                          VALUE_LOW(old),                           \
--                          VALUE_HIGH(old),                          \
--                          VALUE_LOW(xval),                          \
--                          VALUE_HIGH(xval),                         \
--                          oi);                                      \
--    return RET;                                                     \
--}
--
--GEN_ATOMIC_HELPER_FN(fetch_smin, MIN, SDATA_TYPE, old)
--GEN_ATOMIC_HELPER_FN(fetch_umin, MIN,  DATA_TYPE, old)
--GEN_ATOMIC_HELPER_FN(fetch_smax, MAX, SDATA_TYPE, old)
--GEN_ATOMIC_HELPER_FN(fetch_umax, MAX,  DATA_TYPE, old)
--
--GEN_ATOMIC_HELPER_FN(smin_fetch, MIN, SDATA_TYPE, new)
--GEN_ATOMIC_HELPER_FN(umin_fetch, MIN,  DATA_TYPE, new)
--GEN_ATOMIC_HELPER_FN(smax_fetch, MAX, SDATA_TYPE, new)
--GEN_ATOMIC_HELPER_FN(umax_fetch, MAX,  DATA_TYPE, new)
--
--#undef GEN_ATOMIC_HELPER_FN
--#endif /* DATA SIZE == 16 */
--
--#undef END
--
--#if DATA_SIZE > 1
--
--/* Define reverse-host-endian atomic operations.  Note that END is used
--   within the ATOMIC_NAME macro.  */
--#if HOST_BIG_ENDIAN
--# define END  _le
--#else
--# define END  _be
--#endif
--
--ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, vaddr addr,
--                              ABI_TYPE cmpv, ABI_TYPE newv,
--                              MemOpIdx oi, uintptr_t retaddr)
--{
--    DATA_TYPE *haddr = atomic_mmu_lookup(env_cpu(env), addr, oi,
--                                         DATA_SIZE, retaddr);
--    DATA_TYPE ret;
--
--#if DATA_SIZE == 16
--    ret = atomic16_cmpxchg(haddr, BSWAP(cmpv), BSWAP(newv));
--#else
--    ret = qatomic_cmpxchg__nocheck(haddr, BSWAP(cmpv), BSWAP(newv));
--#endif
--    ATOMIC_MMU_CLEANUP;
--    atomic_trace_rmw_post(env, addr,
--                          VALUE_LOW(ret),
--                          VALUE_HIGH(ret),
--                          VALUE_LOW(newv),
--                          VALUE_HIGH(newv),
--                          oi);
--    return BSWAP(ret);
--}
--
--ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, vaddr addr, ABI_TYPE val,
--                           MemOpIdx oi, uintptr_t retaddr)
--{
--    DATA_TYPE *haddr = atomic_mmu_lookup(env_cpu(env), addr, oi,
--                                         DATA_SIZE, retaddr);
--    ABI_TYPE ret;
--
--#if DATA_SIZE == 16
--    ret = atomic16_xchg(haddr, BSWAP(val));
--#else
--    ret = qatomic_xchg__nocheck(haddr, BSWAP(val));
--#endif
--    ATOMIC_MMU_CLEANUP;
--    atomic_trace_rmw_post(env, addr,
--                          VALUE_LOW(ret),
--                          VALUE_HIGH(ret),
--                          VALUE_LOW(val),
--                          VALUE_HIGH(val),
--                          oi);
--    return BSWAP(ret);
--}
--
--#if DATA_SIZE == 16
--ABI_TYPE ATOMIC_NAME(fetch_and)(CPUArchState *env, vaddr addr, ABI_TYPE val,
--                                MemOpIdx oi, uintptr_t retaddr)
--{
--    DATA_TYPE *haddr = atomic_mmu_lookup(env_cpu(env), addr, oi,
--                                         DATA_SIZE, retaddr);
--    DATA_TYPE ret = atomic16_fetch_and(haddr, BSWAP(val));
--    ATOMIC_MMU_CLEANUP;
--    atomic_trace_rmw_post(env, addr,
--                          VALUE_LOW(ret),
--                          VALUE_HIGH(ret),
--                          VALUE_LOW(val),
--                          VALUE_HIGH(val),
--                          oi);
--    return BSWAP(ret);
--}
- 
--ABI_TYPE ATOMIC_NAME(fetch_or)(CPUArchState *env, vaddr addr, ABI_TYPE val,
--                               MemOpIdx oi, uintptr_t retaddr)
--{
--    DATA_TYPE *haddr = atomic_mmu_lookup(env_cpu(env), addr, oi,
--                                         DATA_SIZE, retaddr);
--    DATA_TYPE ret = atomic16_fetch_or(haddr, BSWAP(val));
--    ATOMIC_MMU_CLEANUP;
--    atomic_trace_rmw_post(env, addr,
--                          VALUE_LOW(ret),
--                          VALUE_HIGH(ret),
--                          VALUE_LOW(val),
--                          VALUE_HIGH(val),
--                          oi);
--    return BSWAP(ret);
--}
--#else
--#define GEN_ATOMIC_HELPER(X)                                        \
--ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, vaddr addr,              \
--                        ABI_TYPE val, MemOpIdx oi, uintptr_t retaddr) \
--{                                                                   \
--    DATA_TYPE *haddr, ret;                                          \
--    haddr = atomic_mmu_lookup(env_cpu(env), addr, oi, DATA_SIZE, retaddr);   \
--    ret = qatomic_##X(haddr, BSWAP(val));                           \
--    ATOMIC_MMU_CLEANUP;                                             \
--    atomic_trace_rmw_post(env, addr,                                \
--                          VALUE_LOW(ret),                           \
--                          VALUE_HIGH(ret),                          \
--                          VALUE_LOW(val),                           \
--                          VALUE_HIGH(val),                          \
--                          oi);                                      \
--    return BSWAP(ret);                                              \
--}
--
--GEN_ATOMIC_HELPER(fetch_and)
--GEN_ATOMIC_HELPER(fetch_or)
--GEN_ATOMIC_HELPER(fetch_xor)
--GEN_ATOMIC_HELPER(and_fetch)
--GEN_ATOMIC_HELPER(or_fetch)
--GEN_ATOMIC_HELPER(xor_fetch)
--
--#undef GEN_ATOMIC_HELPER
--
--/* These helpers are, as a whole, full barriers.  Within the helper,
-- * the leading barrier is explicit and the trailing barrier is within
-- * cmpxchg primitive.
-- *
-- * Trace this load + RMW loop as a single RMW op. This way, regardless
-- * of CF_PARALLEL's value, we'll trace just a read and a write.
-- */
- #define GEN_ATOMIC_HELPER_FN(X, FN, XDATA_TYPE, RET)                \
- ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, vaddr addr,              \
-                         ABI_TYPE xval, MemOpIdx oi, uintptr_t retaddr) \
- {                                                                   \
-     XDATA_TYPE *haddr, ldo, ldn, old, new, val = xval;              \
--    haddr = atomic_mmu_lookup(env_cpu(env), addr, oi, DATA_SIZE, retaddr);   \
-+    bool need_bswap = get_memop(oi) & MO_BSWAP;                     \
-+    haddr = atomic_mmu_lookup(env_cpu(env), addr, oi, DATA_SIZE,    \
-+                              retaddr, &need_bswap);                \
-     smp_mb();                                                       \
-     ldn = qatomic_read__nocheck(haddr);                             \
--    do {                                                            \
--        ldo = ldn; old = BSWAP(ldo); new = FN(old, val);            \
--        ldn = qatomic_cmpxchg__nocheck(haddr, ldo, BSWAP(new));     \
--    } while (ldo != ldn);                                           \
-+    if (need_bswap) {                                               \
-+        do {                                                        \
-+            ldo = ldn; old = BSWAP(ldo);                            \
-+            new = FN(old, val);                                     \
-+            ldn = qatomic_cmpxchg__nocheck(haddr, ldo, BSWAP(new)); \
-+        } while (ldo != ldn);                                       \
-+    }                                                               \
-+    else{                                                           \
-+        do {                                                        \
-+            ldo = ldn; old = ldo;                                   \
-+            new = FN(old, val);                                     \
-+            ldn = qatomic_cmpxchg__nocheck(haddr, ldo, new);        \
-+        } while (ldo != ldn);                                       \
-+    }                                                               \
-     ATOMIC_MMU_CLEANUP;                                             \
-     atomic_trace_rmw_post(env, addr,                                \
--                          VALUE_LOW(old),                           \
--                          VALUE_HIGH(old),                          \
--                          VALUE_LOW(xval),                          \
--                          VALUE_HIGH(xval),                         \
--                          oi);                                      \
-+                        VALUE_LOW(old),                             \
-+                        VALUE_HIGH(old),                            \
-+                        VALUE_LOW(xval),                            \
-+                        VALUE_HIGH(xval),                           \
-+                        oi);                                        \
-     return RET;                                                     \
- }
- 
-@@ -381,18 +281,10 @@ GEN_ATOMIC_HELPER_FN(umin_fetch, MIN,  DATA_TYPE, new)
- GEN_ATOMIC_HELPER_FN(smax_fetch, MAX, SDATA_TYPE, new)
- GEN_ATOMIC_HELPER_FN(umax_fetch, MAX,  DATA_TYPE, new)
- 
--/* Note that for addition, we need to use a separate cmpxchg loop instead
--   of bswaps for the reverse-host-endian helpers.  */
--#define ADD(X, Y)   (X + Y)
--GEN_ATOMIC_HELPER_FN(fetch_add, ADD, DATA_TYPE, old)
--GEN_ATOMIC_HELPER_FN(add_fetch, ADD, DATA_TYPE, new)
--#undef ADD
--
- #undef GEN_ATOMIC_HELPER_FN
--#endif /* DATA_SIZE == 16 */
-+#endif /* DATA SIZE == 16 */
- 
- #undef END
--#endif /* DATA_SIZE > 1 */
- 
- #undef BSWAP
- #undef ABI_TYPE
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 87e14bde4f..d5b94c384c 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1808,7 +1808,7 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-  * or io operations to proceed.  Return the host address.
-  */
- static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
--                               int size, uintptr_t retaddr)
-+                               int size, uintptr_t retaddr, bool *need_bswap)
- {
-     uintptr_t mmu_idx = get_mmuidx(oi);
-     MemOp mop = get_memop(oi);
-@@ -1894,6 +1894,14 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-         notdirty_write(cpu, addr, size, full, retaddr);
+-    if (!mmubooke_check_pid(env, tlb, raddr, address, i)) {
++    if (!mmubooke_check_pid(env, tlb, &(full->phys_addr), address, i)) {
+         qemu_log_mask(CPU_LOG_MMU, "%s: TLB entry not found\n", __func__);
+         return -1;
+     }
+@@ -172,21 +173,22 @@ static int mmubooke_check_tlb(CPUPPCState *env, ppcemb_tlb_t *tlb,
      }
  
-+    if (unlikely(tlb_addr & TLB_BSWAP)) {
-+        assert(!( (  full->slow_flags[MMU_DATA_STORE]
-+            ^ full->slow_flags[MMU_DATA_LOAD ])
-+            & TLB_BSWAP));
-+
-+        mop ^= MO_BSWAP;
-+    }
-+
-     if (unlikely(tlb_addr & TLB_WATCHPOINT)) {
-         int wp_flags = 0;
- 
-@@ -1907,6 +1915,7 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-                              full->attrs, wp_flags, retaddr);
+     if (FIELD_EX64(env->msr, MSR, PR)) {
+-        *prot = tlb->prot & 0xF;
++        full->prot = tlb->prot & 0xF;
+     } else {
+-        *prot = (tlb->prot >> 4) & 0xF;
++        full->prot = (tlb->prot >> 4) & 0xF;
+     }
+-    if (check_prot_access_type(*prot, access_type)) {
++    if (check_prot_access_type(full->prot, access_type)) {
+         qemu_log_mask(CPU_LOG_MMU, "%s: good TLB!\n", __func__);
+         return 0;
      }
  
-+    *need_bswap = mop & MO_BSWAP;
-     return hostaddr;
+-    qemu_log_mask(CPU_LOG_MMU, "%s: no prot match: %x\n", __func__, *prot);
++    qemu_log_mask(CPU_LOG_MMU, "%s: no prot match: %x\n", __func__, full->prot);
+     return access_type == MMU_INST_FETCH ? -3 : -2;
+ }
  
-  stop_the_world:
-diff --git a/accel/tcg/tcg-runtime.h b/accel/tcg/tcg-runtime.h
-index 8436599b9f..9975962850 100644
---- a/accel/tcg/tcg-runtime.h
-+++ b/accel/tcg/tcg-runtime.h
-@@ -44,36 +44,22 @@ DEF_HELPER_FLAGS_4(st_i128, TCG_CALL_NO_WG, void, env, i64, i128, i32)
- 
- DEF_HELPER_FLAGS_5(atomic_cmpxchgb, TCG_CALL_NO_WG,
-                    i32, env, i64, i32, i32, i32)
--DEF_HELPER_FLAGS_5(atomic_cmpxchgw_be, TCG_CALL_NO_WG,
-+DEF_HELPER_FLAGS_5(atomic_cmpxchgw, TCG_CALL_NO_WG,
-                    i32, env, i64, i32, i32, i32)
--DEF_HELPER_FLAGS_5(atomic_cmpxchgw_le, TCG_CALL_NO_WG,
--                   i32, env, i64, i32, i32, i32)
--DEF_HELPER_FLAGS_5(atomic_cmpxchgl_be, TCG_CALL_NO_WG,
--                   i32, env, i64, i32, i32, i32)
--DEF_HELPER_FLAGS_5(atomic_cmpxchgl_le, TCG_CALL_NO_WG,
-+DEF_HELPER_FLAGS_5(atomic_cmpxchgl, TCG_CALL_NO_WG,
-                    i32, env, i64, i32, i32, i32)
- #ifdef CONFIG_ATOMIC64
--DEF_HELPER_FLAGS_5(atomic_cmpxchgq_be, TCG_CALL_NO_WG,
--                   i64, env, i64, i64, i64, i32)
--DEF_HELPER_FLAGS_5(atomic_cmpxchgq_le, TCG_CALL_NO_WG,
-+DEF_HELPER_FLAGS_5(atomic_cmpxchgq, TCG_CALL_NO_WG,
-                    i64, env, i64, i64, i64, i32)
- #endif
- #if HAVE_CMPXCHG128
--DEF_HELPER_FLAGS_5(atomic_cmpxchgo_be, TCG_CALL_NO_WG,
-+DEF_HELPER_FLAGS_5(atomic_cmpxchgo, TCG_CALL_NO_WG,
-                    i128, env, i64, i128, i128, i32)
--DEF_HELPER_FLAGS_5(atomic_cmpxchgo_le, TCG_CALL_NO_WG,
--                   i128, env, i64, i128, i128, i32)
--DEF_HELPER_FLAGS_4(atomic_xchgo_be, TCG_CALL_NO_WG,
--                   i128, env, i64, i128, i32)
--DEF_HELPER_FLAGS_4(atomic_xchgo_le, TCG_CALL_NO_WG,
--                   i128, env, i64, i128, i32)
--DEF_HELPER_FLAGS_4(atomic_fetch_ando_be, TCG_CALL_NO_WG,
-+DEF_HELPER_FLAGS_4(atomic_xchgo, TCG_CALL_NO_WG,
-                    i128, env, i64, i128, i32)
--DEF_HELPER_FLAGS_4(atomic_fetch_ando_le, TCG_CALL_NO_WG,
-+DEF_HELPER_FLAGS_4(atomic_fetch_ando, TCG_CALL_NO_WG,
-                    i128, env, i64, i128, i32)
--DEF_HELPER_FLAGS_4(atomic_fetch_oro_be, TCG_CALL_NO_WG,
--                   i128, env, i64, i128, i32)
--DEF_HELPER_FLAGS_4(atomic_fetch_oro_le, TCG_CALL_NO_WG,
-+DEF_HELPER_FLAGS_4(atomic_fetch_oro, TCG_CALL_NO_WG,
-                    i128, env, i64, i128, i32)
- #endif
- 
-@@ -84,29 +70,19 @@ DEF_HELPER_FLAGS_5(nonatomic_cmpxchgo, TCG_CALL_NO_WG,
- #define GEN_ATOMIC_HELPERS(NAME)                                  \
-     DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), b),              \
-                        TCG_CALL_NO_WG, i32, env, i64, i32, i32)   \
--    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), w_le),           \
--                       TCG_CALL_NO_WG, i32, env, i64, i32, i32)   \
--    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), w_be),           \
--                       TCG_CALL_NO_WG, i32, env, i64, i32, i32)   \
--    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), l_le),           \
-+    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), w),              \
-                        TCG_CALL_NO_WG, i32, env, i64, i32, i32)   \
--    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), l_be),           \
-+    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), l),              \
-                        TCG_CALL_NO_WG, i32, env, i64, i32, i32)   \
--    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), q_le),           \
--                       TCG_CALL_NO_WG, i64, env, i64, i64, i32)   \
--    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), q_be),           \
-+    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), q),              \
-                        TCG_CALL_NO_WG, i64, env, i64, i64, i32)
- #else
- #define GEN_ATOMIC_HELPERS(NAME)                                  \
-     DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), b),              \
-                        TCG_CALL_NO_WG, i32, env, i64, i32, i32)   \
--    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), w_le),           \
--                       TCG_CALL_NO_WG, i32, env, i64, i32, i32)   \
--    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), w_be),           \
--                       TCG_CALL_NO_WG, i32, env, i64, i32, i32)   \
--    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), l_le),           \
-+    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), w),              \
-                        TCG_CALL_NO_WG, i32, env, i64, i32, i32)   \
--    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), l_be),           \
-+    DEF_HELPER_FLAGS_4(glue(glue(atomic_, NAME), l),              \
-                        TCG_CALL_NO_WG, i32, env, i64, i32, i32)
- #endif /* CONFIG_ATOMIC64 */
- 
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 748bfab04a..8222892e64 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -1266,7 +1266,7 @@ uint64_t cpu_ldq_code_mmu(CPUArchState *env, vaddr addr,
-  * Do not allow unaligned operations to proceed.  Return the host address.
-  */
- static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
--                               int size, uintptr_t retaddr)
-+                               int size, uintptr_t retaddr, bool *need_bswap)
+-static int mmubooke_get_physical_address(CPUPPCState *env, hwaddr *raddr,
+-                                         int *prot, target_ulong address,
++static int mmubooke_get_physical_address(CPUPPCState *env,
++                                         CPUTLBEntryFull *full,
++                                         target_ulong address,
+                                          MMUAccessType access_type)
  {
-     MemOp mop = get_memop(oi);
-     int a_bits = memop_alignment_bits(mop);
-diff --git a/include/accel/tcg/cpu-ldst-common.h b/include/accel/tcg/cpu-ldst-common.h
-index 17a3250ded..9b13c6df3d 100644
---- a/include/accel/tcg/cpu-ldst-common.h
-+++ b/include/accel/tcg/cpu-ldst-common.h
-@@ -36,22 +36,13 @@ void cpu_st16_mmu(CPUArchState *env, vaddr addr, Int128 val,
- uint32_t cpu_atomic_cmpxchgb_mmu(CPUArchState *env, vaddr addr,
-                                  uint32_t cmpv, uint32_t newv,
-                                  MemOpIdx oi, uintptr_t retaddr);
--uint32_t cpu_atomic_cmpxchgw_le_mmu(CPUArchState *env, vaddr addr,
-+uint32_t cpu_atomic_cmpxchgw_mmu(CPUArchState *env, vaddr addr,
-                                     uint32_t cmpv, uint32_t newv,
-                                     MemOpIdx oi, uintptr_t retaddr);
--uint32_t cpu_atomic_cmpxchgl_le_mmu(CPUArchState *env, vaddr addr,
-+uint32_t cpu_atomic_cmpxchgl_mmu(CPUArchState *env, vaddr addr,
-                                     uint32_t cmpv, uint32_t newv,
-                                     MemOpIdx oi, uintptr_t retaddr);
--uint64_t cpu_atomic_cmpxchgq_le_mmu(CPUArchState *env, vaddr addr,
--                                    uint64_t cmpv, uint64_t newv,
--                                    MemOpIdx oi, uintptr_t retaddr);
--uint32_t cpu_atomic_cmpxchgw_be_mmu(CPUArchState *env, vaddr addr,
--                                    uint32_t cmpv, uint32_t newv,
--                                    MemOpIdx oi, uintptr_t retaddr);
--uint32_t cpu_atomic_cmpxchgl_be_mmu(CPUArchState *env, vaddr addr,
--                                    uint32_t cmpv, uint32_t newv,
--                                    MemOpIdx oi, uintptr_t retaddr);
--uint64_t cpu_atomic_cmpxchgq_be_mmu(CPUArchState *env, vaddr addr,
-+uint64_t cpu_atomic_cmpxchgq_mmu(CPUArchState *env, vaddr addr,
-                                     uint64_t cmpv, uint64_t newv,
-                                     MemOpIdx oi, uintptr_t retaddr);
+     ppcemb_tlb_t *tlb;
+@@ -194,7 +196,7 @@ static int mmubooke_get_physical_address(CPUPPCState *env, hwaddr *raddr,
  
-@@ -63,19 +54,14 @@ TYPE cpu_atomic_ ## NAME ## SUFFIX ## _mmu      \
- #ifdef CONFIG_ATOMIC64
- #define GEN_ATOMIC_HELPER_ALL(NAME)          \
-     GEN_ATOMIC_HELPER(NAME, uint32_t, b)     \
--    GEN_ATOMIC_HELPER(NAME, uint32_t, w_le)  \
--    GEN_ATOMIC_HELPER(NAME, uint32_t, w_be)  \
--    GEN_ATOMIC_HELPER(NAME, uint32_t, l_le)  \
--    GEN_ATOMIC_HELPER(NAME, uint32_t, l_be)  \
--    GEN_ATOMIC_HELPER(NAME, uint64_t, q_le)  \
--    GEN_ATOMIC_HELPER(NAME, uint64_t, q_be)
-+    GEN_ATOMIC_HELPER(NAME, uint32_t, w)     \
-+    GEN_ATOMIC_HELPER(NAME, uint32_t, l)     \
-+    GEN_ATOMIC_HELPER(NAME, uint64_t, q)
- #else
- #define GEN_ATOMIC_HELPER_ALL(NAME)          \
-     GEN_ATOMIC_HELPER(NAME, uint32_t, b)     \
--    GEN_ATOMIC_HELPER(NAME, uint32_t, w_le)  \
--    GEN_ATOMIC_HELPER(NAME, uint32_t, w_be)  \
--    GEN_ATOMIC_HELPER(NAME, uint32_t, l_le)  \
--    GEN_ATOMIC_HELPER(NAME, uint32_t, l_be)
-+    GEN_ATOMIC_HELPER(NAME, uint32_t, w)     \
-+    GEN_ATOMIC_HELPER(NAME, uint32_t, l)
+     for (i = 0; i < env->nb_tlb; i++) {
+         tlb = &env->tlb.tlbe[i];
+-        ret = mmubooke_check_tlb(env, tlb, raddr, prot, address,
++        ret = mmubooke_check_tlb(env, tlb, full, address,
+                                  access_type, i);
+         if (ret != -1) {
+             break;
+@@ -203,7 +205,8 @@ static int mmubooke_get_physical_address(CPUPPCState *env, hwaddr *raddr,
+     qemu_log_mask(CPU_LOG_MMU,
+                   "%s: access %s " TARGET_FMT_lx " => " HWADDR_FMT_plx
+                   " %d %d\n", __func__, ret < 0 ? "refused" : "granted",
+-                  address, ret < 0 ? -1 : *raddr, ret == -1 ? 0 : *prot, ret);
++                  address, ret < 0 ? -1 : full->phys_addr,
++                  ret == -1 ? 0 : full->prot, ret);
+     return ret;
+ }
+ 
+@@ -307,8 +310,7 @@ static bool mmubooke206_get_as(CPUPPCState *env,
+ 
+ /* Check if the tlb found by hashing really matches */
+ static int mmubooke206_check_tlb(CPUPPCState *env, ppcmas_tlb_t *tlb,
+-                                 hwaddr *raddr, int *prot,
+-                                 target_ulong address,
++                                 CPUTLBEntryFull *full, target_ulong address,
+                                  MMUAccessType access_type, int mmu_idx)
+ {
+     uint32_t epid;
+@@ -316,24 +318,25 @@ static int mmubooke206_check_tlb(CPUPPCState *env, ppcmas_tlb_t *tlb,
+     bool use_epid = mmubooke206_get_as(env, mmu_idx, &epid, &as, &pr);
+ 
+     if (!use_epid) {
+-        if (ppcmas_tlb_check(env, tlb, raddr, address,
++        if (ppcmas_tlb_check(env, tlb, &(full->phys_addr), address,
+                              env->spr[SPR_BOOKE_PID]) >= 0) {
+             goto found_tlb;
+         }
+ 
+         if (env->spr[SPR_BOOKE_PID1] &&
+-            ppcmas_tlb_check(env, tlb, raddr, address,
++            ppcmas_tlb_check(env, tlb, &(full->phys_addr), address,
+                              env->spr[SPR_BOOKE_PID1]) >= 0) {
+             goto found_tlb;
+         }
+ 
+         if (env->spr[SPR_BOOKE_PID2] &&
+-            ppcmas_tlb_check(env, tlb, raddr, address,
++            ppcmas_tlb_check(env, tlb, &(full->phys_addr), address,
+                              env->spr[SPR_BOOKE_PID2]) >= 0) {
+             goto found_tlb;
+         }
+     } else {
+-        if (ppcmas_tlb_check(env, tlb, raddr, address, epid) >= 0) {
++        if (ppcmas_tlb_check(env, tlb, &(full->phys_addr),
++                             address, epid) >= 0) {
+             goto found_tlb;
+         }
+     }
+@@ -356,7 +359,9 @@ found_tlb:
+         return -1;
+     }
+ 
++    uint8_t *prot = &(full->prot);
+     *prot = 0;
++
+     if (pr) {
+         if (tlb->mas7_3 & MAS3_UR) {
+             *prot |= PAGE_READ;
+@@ -387,8 +392,9 @@ found_tlb:
+     return access_type == MMU_INST_FETCH ? -3 : -2;
+ }
+ 
+-static int mmubooke206_get_physical_address(CPUPPCState *env, hwaddr *raddr,
+-                                            int *prot, target_ulong address,
++static int mmubooke206_get_physical_address(CPUPPCState *env,
++                                            CPUTLBEntryFull *full,
++                                            target_ulong address,
+                                             MMUAccessType access_type,
+                                             int mmu_idx)
+ {
+@@ -402,7 +408,7 @@ static int mmubooke206_get_physical_address(CPUPPCState *env, hwaddr *raddr,
+             if (!tlb) {
+                 continue;
+             }
+-            ret = mmubooke206_check_tlb(env, tlb, raddr, prot, address,
++            ret = mmubooke206_check_tlb(env, tlb, full, address,
+                                         access_type, mmu_idx);
+             if (ret != -1) {
+                 goto found_tlb;
+@@ -415,7 +421,8 @@ found_tlb:
+     qemu_log_mask(CPU_LOG_MMU, "%s: access %s " TARGET_FMT_lx " => "
+                   HWADDR_FMT_plx " %d %d\n", __func__,
+                   ret < 0 ? "refused" : "granted", address,
+-                  ret < 0 ? -1 : *raddr, ret == -1 ? 0 : *prot, ret);
++                  ret < 0 ? -1 : full->phys_addr,
++                  ret == -1 ? 0 : full->prot, ret);
+     return ret;
+ }
+ 
+@@ -474,27 +481,25 @@ static void booke206_update_mas_tlb_miss(CPUPPCState *env, target_ulong address,
+ }
+ 
+ bool ppc_booke_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+-                     hwaddr *raddrp, int *psizep, int *protp, int mmu_idx,
++                     CPUTLBEntryFull *full, int mmu_idx,
+                      bool guest_visible)
+ {
+     CPUState *cs = CPU(cpu);
+     CPUPPCState *env = &cpu->env;
+-    hwaddr raddr;
+-    int prot, ret;
++    int ret;
+ 
+     if (env->mmu_model == POWERPC_MMU_BOOKE206) {
+-        ret = mmubooke206_get_physical_address(env, &raddr, &prot, eaddr,
++        ret = mmubooke206_get_physical_address(env, full, eaddr,
+                                                access_type, mmu_idx);
+     } else {
+-        ret = mmubooke_get_physical_address(env, &raddr, &prot, eaddr,
+-                                            access_type);
++        ret = mmubooke_get_physical_address(env, full, eaddr, access_type);
+     }
+     if (ret == 0) {
+-        *raddrp = raddr;
+-        *protp = prot;
+-        *psizep = TARGET_PAGE_BITS;
++        full->lg_page_size = TARGET_PAGE_BITS;
+         return true;
+     } else if (!guest_visible) {
++        full->prot = 0;
++        full->phys_addr = 0;
+         return false;
+     }
+ 
+diff --git a/target/ppc/mmu-booke.h b/target/ppc/mmu-booke.h
+index f972843bbb..4d15ddd176 100644
+--- a/target/ppc/mmu-booke.h
++++ b/target/ppc/mmu-booke.h
+@@ -11,7 +11,7 @@ hwaddr booke206_tlb_to_page_size(CPUPPCState *env, ppcmas_tlb_t *tlb);
+ int ppcmas_tlb_check(CPUPPCState *env, ppcmas_tlb_t *tlb, hwaddr *raddrp,
+                      target_ulong address, uint32_t pid);
+ bool ppc_booke_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+-                     hwaddr *raddrp, int *psizep, int *protp, int mmu_idx,
++                     CPUTLBEntryFull *full, int mmu_idx,
+                      bool guest_visible);
+ 
  #endif
+diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
+index 8b980a5aa9..469ebbc883 100644
+--- a/target/ppc/mmu-hash32.c
++++ b/target/ppc/mmu-hash32.c
+@@ -292,7 +292,7 @@ static hwaddr ppc_hash32_htab_lookup(PowerPCCPU *cpu,
+ }
  
- GEN_ATOMIC_HELPER_ALL(fetch_add)
-@@ -100,19 +86,14 @@ GEN_ATOMIC_HELPER_ALL(umax_fetch)
+ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+-                      hwaddr *raddrp, int *psizep, int *protp, int mmu_idx,
++                      CPUTLBEntryFull *full, int mmu_idx,
+                       bool guest_visible)
+ {
+     CPUState *cs = CPU(cpu);
+@@ -301,24 +301,26 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+     hwaddr pte_offset, raddr;
+     ppc_hash_pte32_t pte;
+     bool key;
+-    int prot;
++    int prot = 0;
  
- GEN_ATOMIC_HELPER_ALL(xchg)
+     /* There are no hash32 large pages. */
+-    *psizep = TARGET_PAGE_BITS;
++    full->lg_page_size = TARGET_PAGE_BITS;
  
--Int128 cpu_atomic_cmpxchgo_le_mmu(CPUArchState *env, vaddr addr,
--                                  Int128 cmpv, Int128 newv,
--                                  MemOpIdx oi, uintptr_t retaddr);
--Int128 cpu_atomic_cmpxchgo_be_mmu(CPUArchState *env, vaddr addr,
--                                  Int128 cmpv, Int128 newv,
--                                  MemOpIdx oi, uintptr_t retaddr);
--
--GEN_ATOMIC_HELPER(xchg, Int128, o_le)
--GEN_ATOMIC_HELPER(xchg, Int128, o_be)
--GEN_ATOMIC_HELPER(fetch_and, Int128, o_le)
--GEN_ATOMIC_HELPER(fetch_and, Int128, o_be)
--GEN_ATOMIC_HELPER(fetch_or, Int128, o_le)
--GEN_ATOMIC_HELPER(fetch_or, Int128, o_be)
+     /* 1. Handle real mode accesses */
+     if (mmuidx_real(mmu_idx)) {
+         /* Translation is off */
+-        *raddrp = eaddr;
+-        *protp = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
++        full->phys_addr = eaddr;
++        full->prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+         return true;
+     }
+ 
+     /* 2. Check Block Address Translation entries (BATs) */
+     if (env->nb_BATs != 0) {
+-        raddr = ppc_hash32_bat_lookup(cpu, eaddr, access_type, protp, mmu_idx);
++        raddr = ppc_hash32_bat_lookup(cpu, eaddr, access_type, &prot, mmu_idx);
++        full->prot = prot;
 +
-+Int128 cpu_atomic_cmpxchgo_mmu(CPUArchState *env, vaddr addr,
-+                               Int128 cmpv, Int128 newv,
-+                               MemOpIdx oi, uintptr_t retaddr);
-+
-+GEN_ATOMIC_HELPER(xchg, Int128, o)
-+GEN_ATOMIC_HELPER(fetch_and, Int128, o)
-+GEN_ATOMIC_HELPER(fetch_or, Int128, o)
- 
- #undef GEN_ATOMIC_HELPER_ALL
- #undef GEN_ATOMIC_HELPER
-diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
-index f29ae12af8..d138bb6742 100644
---- a/target/m68k/op_helper.c
-+++ b/target/m68k/op_helper.c
-@@ -806,13 +806,13 @@ static void do_cas2l(CPUM68KState *env, uint32_t regs, uint32_t a1, uint32_t a2,
-         if ((a1 & 7) == 0 && a2 == a1 + 4) {
-             c = deposit64(c2, 32, 32, c1);
-             u = deposit64(u2, 32, 32, u1);
--            l = cpu_atomic_cmpxchgq_be_mmu(env, a1, c, u, oi, ra);
-+            l = cpu_atomic_cmpxchgq_mmu(env, a1, c, u, oi, ra);
-             l1 = l >> 32;
-             l2 = l;
-         } else if ((a2 & 7) == 0 && a1 == a2 + 4) {
-             c = deposit64(c1, 32, 32, c2);
-             u = deposit64(u1, 32, 32, u2);
--            l = cpu_atomic_cmpxchgq_be_mmu(env, a2, c, u, oi, ra);
-+            l = cpu_atomic_cmpxchgq_mmu(env, a2, c, u, oi, ra);
-             l2 = l >> 32;
-             l1 = l;
-         } else
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index f1acb1618f..996e10ece3 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -1838,7 +1838,7 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
-             uint32_t ov;
- 
-             if (parallel) {
--                ov = cpu_atomic_cmpxchgl_be_mmu(env, a1, cv, nv, oi4, ra);
-+                ov = cpu_atomic_cmpxchgl_mmu(env, a1, cv, nv, oi4, ra);
-             } else {
-                 ov = cpu_ldl_mmu(env, a1, oi4, ra);
-                 cpu_stl_mmu(env, a1, (ov == cv ? nv : ov), oi4, ra);
-@@ -1856,7 +1856,7 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
- 
-             if (parallel) {
- #ifdef CONFIG_ATOMIC64
--                ov = cpu_atomic_cmpxchgq_be_mmu(env, a1, cv, nv, oi8, ra);
-+                ov = cpu_atomic_cmpxchgq_mmu(env, a1, cv, nv, oi8, ra);
- #else
-                 /* Note that we asserted !parallel above.  */
-                 g_assert_not_reached();
-@@ -1884,7 +1884,7 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
+         if (raddr != -1) {
+-            if (!check_prot_access_type(*protp, access_type)) {
++            if (!check_prot_access_type(full->prot, access_type)) {
+                 if (guest_visible) {
+                     if (access_type == MMU_INST_FETCH) {
+                         cs->exception_index = POWERPC_EXCP_ISI;
+@@ -336,7 +338,7 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
                  }
-                 cpu_st16_mmu(env, a1, nv, oi16, ra);
-             } else if (HAVE_CMPXCHG128) {
--                ov = cpu_atomic_cmpxchgo_be_mmu(env, a1, cv, nv, oi16, ra);
-+                ov = cpu_atomic_cmpxchgo_mmu(env, a1, cv, nv, oi16, ra);
-                 cc = !int128_eq(ov, cv);
-             } else {
-                 /* Note that we asserted !parallel above.  */
-diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
-index 67c15fd4d0..4350030f27 100644
---- a/tcg/tcg-op-ldst.c
-+++ b/tcg/tcg-op-ldst.c
-@@ -815,16 +815,12 @@ typedef void (*gen_atomic_op_i128)(TCGv_i128, TCGv_env, TCGv_i64,
- # define WITH_ATOMIC128(X)
- #endif
- 
--static void * const table_cmpxchg[(MO_SIZE | MO_BSWAP) + 1] = {
-+static void * const table_cmpxchg[MO_SIZE + 1] = {
-     [MO_8] = gen_helper_atomic_cmpxchgb,
--    [MO_16 | MO_LE] = gen_helper_atomic_cmpxchgw_le,
--    [MO_16 | MO_BE] = gen_helper_atomic_cmpxchgw_be,
--    [MO_32 | MO_LE] = gen_helper_atomic_cmpxchgl_le,
--    [MO_32 | MO_BE] = gen_helper_atomic_cmpxchgl_be,
--    WITH_ATOMIC64([MO_64 | MO_LE] = gen_helper_atomic_cmpxchgq_le)
--    WITH_ATOMIC64([MO_64 | MO_BE] = gen_helper_atomic_cmpxchgq_be)
--    WITH_ATOMIC128([MO_128 | MO_LE] = gen_helper_atomic_cmpxchgo_le)
--    WITH_ATOMIC128([MO_128 | MO_BE] = gen_helper_atomic_cmpxchgo_be)
-+    [MO_16] = gen_helper_atomic_cmpxchgw,
-+    [MO_32] = gen_helper_atomic_cmpxchgl,
-+    WITH_ATOMIC64([MO_64] = gen_helper_atomic_cmpxchgq)
-+    WITH_ATOMIC128([MO_128] = gen_helper_atomic_cmpxchgo)
- };
- 
- static void tcg_gen_nonatomic_cmpxchg_i32_int(TCGv_i32 retv, TCGTemp *addr,
-@@ -873,7 +869,7 @@ static void tcg_gen_atomic_cmpxchg_i32_int(TCGv_i32 retv, TCGTemp *addr,
+                 return false;
+             }
+-            *raddrp = raddr;
++            full->phys_addr = raddr;
+             return true;
+         }
+     }
+@@ -347,7 +349,9 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+     /* 4. Handle direct store segments */
+     if (sr & SR32_T) {
+         return ppc_hash32_direct_store(cpu, sr, eaddr, access_type,
+-                                       raddrp, protp, mmu_idx, guest_visible);
++                                       &(full->phys_addr), &prot, mmu_idx,
++                                       guest_visible);
++        full->prot = prot;
      }
  
-     memop = tcg_canonicalize_memop(memop, 0, 0);
--    gen = table_cmpxchg[memop & (MO_SIZE | MO_BSWAP)];
-+    gen = table_cmpxchg[memop & MO_SIZE];
-     tcg_debug_assert(gen != NULL);
- 
-     oi = make_memop_idx(memop & ~MO_SIGN, idx);
-@@ -954,7 +950,7 @@ static void tcg_gen_atomic_cmpxchg_i64_int(TCGv_i64 retv, TCGTemp *addr,
-         gen_atomic_cx_i64 gen;
- 
-         memop = tcg_canonicalize_memop(memop, 1, 0);
--        gen = table_cmpxchg[memop & (MO_SIZE | MO_BSWAP)];
-+        gen = table_cmpxchg[memop & MO_SIZE];
-         if (gen) {
-             MemOpIdx oi = make_memop_idx(memop, idx);
-             TCGv_i64 a64 = maybe_extend_addr64(addr);
-@@ -1076,7 +1072,7 @@ static void tcg_gen_atomic_cmpxchg_i128_int(TCGv_i128 retv, TCGTemp *addr,
-         return;
+     /* 5. Check for segment level no-execute violation */
+@@ -425,11 +429,11 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+             prot &= ~PAGE_WRITE;
+         }
      }
+-    *protp = prot;
++    full->prot = prot;
  
--    gen = table_cmpxchg[memop & (MO_SIZE | MO_BSWAP)];
-+    gen = table_cmpxchg[memop & MO_SIZE];
-     if (gen) {
-         MemOpIdx oi = make_memop_idx(memop, idx);
-         TCGv_i64 a64 = maybe_extend_addr64(addr);
-@@ -1242,14 +1238,10 @@ static void do_atomic_op_i128(TCGv_i128 ret, TCGTemp *addr, TCGv_i128 val,
- #define GEN_ATOMIC_HELPER128(NAME, OP, NEW)                             \
- static void * const table_##NAME[(MO_SIZE | MO_BSWAP) + 1] = {          \
-     [MO_8] = gen_helper_atomic_##NAME##b,                               \
--    [MO_16 | MO_LE] = gen_helper_atomic_##NAME##w_le,                   \
--    [MO_16 | MO_BE] = gen_helper_atomic_##NAME##w_be,                   \
--    [MO_32 | MO_LE] = gen_helper_atomic_##NAME##l_le,                   \
--    [MO_32 | MO_BE] = gen_helper_atomic_##NAME##l_be,                   \
--    WITH_ATOMIC64([MO_64 | MO_LE] = gen_helper_atomic_##NAME##q_le)     \
--    WITH_ATOMIC64([MO_64 | MO_BE] = gen_helper_atomic_##NAME##q_be)     \
--    WITH_ATOMIC128([MO_128 | MO_LE] = gen_helper_atomic_##NAME##o_le)   \
--    WITH_ATOMIC128([MO_128 | MO_BE] = gen_helper_atomic_##NAME##o_be)   \
-+    [MO_16 | MO_LE] = gen_helper_atomic_##NAME##w,                      \
-+    [MO_32 | MO_LE] = gen_helper_atomic_##NAME##l,                      \
-+    WITH_ATOMIC64([MO_64 | MO_LE] = gen_helper_atomic_##NAME##q)        \
-+    WITH_ATOMIC128([MO_128 | MO_LE] = gen_helper_atomic_##NAME##o)      \
- };                                                                      \
- void tcg_gen_atomic_##NAME##_i32_chk(TCGv_i32 ret, TCGTemp *addr,       \
-                                      TCGv_i32 val, TCGArg idx,          \
-@@ -1292,14 +1284,11 @@ void tcg_gen_atomic_##NAME##_i128_chk(TCGv_i128 ret, TCGTemp *addr,     \
+     /* 9. Determine the real address from the PTE */
+-    *raddrp = pte.pte1 & HPTE32_R_RPN;
+-    *raddrp &= TARGET_PAGE_MASK;
+-    *raddrp |= eaddr & ~TARGET_PAGE_MASK;
++    full->phys_addr = pte.pte1 & HPTE32_R_RPN;
++    full->phys_addr &= TARGET_PAGE_MASK;
++    full->phys_addr |= eaddr & ~TARGET_PAGE_MASK;
+     return true;
+ }
+diff --git a/target/ppc/mmu-hash32.h b/target/ppc/mmu-hash32.h
+index 04c23ea75e..dd9da7729b 100644
+--- a/target/ppc/mmu-hash32.h
++++ b/target/ppc/mmu-hash32.h
+@@ -6,8 +6,7 @@
+ #include "system/memory.h"
+ 
+ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+-                      hwaddr *raddrp, int *psizep, int *protp, int mmu_idx,
+-                      bool guest_visible);
++                      CPUTLBEntryFull *full, int mmu_idx, bool guest_visible);
+ 
+ /*
+  * Segment register definitions
+diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
+index dd337558aa..2927be8144 100644
+--- a/target/ppc/mmu-hash64.c
++++ b/target/ppc/mmu-hash64.c
+@@ -980,7 +980,7 @@ static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
  }
  
- #define GEN_ATOMIC_HELPER(NAME, OP, NEW)                                \
--static void * const table_##NAME[(MO_SIZE | MO_BSWAP) + 1] = {          \
-+static void * const table_##NAME[MO_SIZE + 1] = {                       \
-     [MO_8] = gen_helper_atomic_##NAME##b,                               \
--    [MO_16 | MO_LE] = gen_helper_atomic_##NAME##w_le,                   \
--    [MO_16 | MO_BE] = gen_helper_atomic_##NAME##w_be,                   \
--    [MO_32 | MO_LE] = gen_helper_atomic_##NAME##l_le,                   \
--    [MO_32 | MO_BE] = gen_helper_atomic_##NAME##l_be,                   \
--    WITH_ATOMIC64([MO_64 | MO_LE] = gen_helper_atomic_##NAME##q_le)     \
--    WITH_ATOMIC64([MO_64 | MO_BE] = gen_helper_atomic_##NAME##q_be)     \
-+    [MO_16] = gen_helper_atomic_##NAME##w,                              \
-+    [MO_32] = gen_helper_atomic_##NAME##l,                              \
-+    WITH_ATOMIC64([MO_64] = gen_helper_atomic_##NAME##q)                \
- };                                                                      \
- void tcg_gen_atomic_##NAME##_i32_chk(TCGv_i32 ret, TCGTemp *addr,       \
-                                      TCGv_i32 val, TCGArg idx,          \
+ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+-                      hwaddr *raddrp, int *psizep, int *protp, int mmu_idx,
++                      CPUTLBEntryFull *full, int mmu_idx,
+                       bool guest_visible)
+ {
+     CPUState *cs = CPU(cpu);
+@@ -1063,9 +1063,9 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+             raddr |= env->spr[SPR_RMOR];
+         }
+ 
+-        *raddrp = raddr;
+-        *protp = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+-        *psizep = TARGET_PAGE_BITS;
++        full->phys_addr = raddr;
++        full->prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
++        full->lg_page_size = TARGET_PAGE_BITS;
+         return true;
+     }
+ 
+@@ -1201,9 +1201,9 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+ 
+     /* 7. Determine the real address from the PTE */
+ 
+-    *raddrp = deposit64(pte.pte1 & HPTE64_R_RPN, 0, apshift, eaddr);
+-    *protp = prot;
+-    *psizep = apshift;
++    full->phys_addr = deposit64(pte.pte1 & HPTE64_R_RPN, 0, apshift, eaddr);
++    full->prot = prot;
++    full->lg_page_size = apshift;
+     return true;
+ }
+ 
+diff --git a/target/ppc/mmu-hash64.h b/target/ppc/mmu-hash64.h
+index ae8d4b37ae..8e51b220a8 100644
+--- a/target/ppc/mmu-hash64.h
++++ b/target/ppc/mmu-hash64.h
+@@ -8,7 +8,7 @@ void dump_slb(PowerPCCPU *cpu);
+ int ppc_store_slb(PowerPCCPU *cpu, target_ulong slot,
+                   target_ulong esid, target_ulong vsid);
+ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+-                      hwaddr *raddrp, int *psizep, int *protp, int mmu_idx,
++                      CPUTLBEntryFull *full, int mmu_idx,
+                       bool guest_visible);
+ void ppc_hash64_tlb_flush_hpte(PowerPCCPU *cpu,
+                                target_ulong pte_index,
+diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
+index 33ac341290..b358f724e3 100644
+--- a/target/ppc/mmu-radix64.c
++++ b/target/ppc/mmu-radix64.c
+@@ -820,20 +820,26 @@ static bool ppc_radix64_xlate_impl(PowerPCCPU *cpu, vaddr eaddr,
+ }
+ 
+ bool ppc_radix64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+-                       hwaddr *raddrp, int *psizep, int *protp, int mmu_idx,
++                       CPUTLBEntryFull *full, int mmu_idx,
+                        bool guest_visible)
+ {
+-    bool ret = ppc_radix64_xlate_impl(cpu, eaddr, access_type, raddrp,
+-                                      psizep, protp, mmu_idx, guest_visible);
++    int prot = 0, psize = 0;
++    hwaddr raddr = 0;
++    bool ret = ppc_radix64_xlate_impl(cpu, eaddr, access_type, &raddr,
++                                      &psize, &prot, mmu_idx, guest_visible);
++
++    full->phys_addr = raddr;
++    full->prot = prot;
++    full->lg_page_size = psize;
+ 
+     qemu_log_mask(CPU_LOG_MMU, "%s for %s @0x%"VADDR_PRIx
+                   " mmu_idx %u (prot %c%c%c) -> 0x%"HWADDR_PRIx"\n",
+                   __func__, access_str(access_type),
+                   eaddr, mmu_idx,
+-                  *protp & PAGE_READ ? 'r' : '-',
+-                  *protp & PAGE_WRITE ? 'w' : '-',
+-                  *protp & PAGE_EXEC ? 'x' : '-',
+-                  *raddrp);
++                  prot & PAGE_READ ? 'r' : '-',
++                  prot & PAGE_WRITE ? 'w' : '-',
++                  prot & PAGE_EXEC ? 'x' : '-',
++                  raddr);
+ 
+     return ret;
+ }
+diff --git a/target/ppc/mmu-radix64.h b/target/ppc/mmu-radix64.h
+index 6620b3d648..ef7a125efe 100644
+--- a/target/ppc/mmu-radix64.h
++++ b/target/ppc/mmu-radix64.h
+@@ -15,7 +15,7 @@
+ #define R_EADDR_QUADRANT3       0xC000000000000000
+ 
+ bool ppc_radix64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+-                       hwaddr *raddr, int *psizep, int *protp, int mmu_idx,
++                       CPUTLBEntryFull *full, int mmu_idx,
+                        bool guest_visible);
+ 
+ #endif /* TARGET_PPC64 */
+diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
+index 52d48615ac..6ec74e61e8 100644
+--- a/target/ppc/mmu_common.c
++++ b/target/ppc/mmu_common.c
+@@ -85,7 +85,7 @@ int ppc6xx_tlb_getnum(CPUPPCState *env, target_ulong eaddr,
+ 
+ /* Software driven TLB helpers */
+ 
+-static int ppc6xx_tlb_check(CPUPPCState *env, hwaddr *raddr, int *prot,
++static int ppc6xx_tlb_check(CPUPPCState *env, hwaddr *raddr, uint8_t *prot,
+                             target_ulong eaddr, MMUAccessType access_type,
+                             target_ulong ptem, bool key, bool nx)
+ {
+@@ -187,7 +187,7 @@ static int ppc6xx_tlb_check(CPUPPCState *env, hwaddr *raddr, int *prot,
+     return ret;
+ }
+ 
+-static int get_bat_6xx_tlb(CPUPPCState *env, hwaddr *raddr, int *prot,
++static int get_bat_6xx_tlb(CPUPPCState *env, hwaddr *raddr, uint8_t *prot,
+                            target_ulong eaddr, MMUAccessType access_type,
+                            bool pr)
+ {
+@@ -259,7 +259,7 @@ static int get_bat_6xx_tlb(CPUPPCState *env, hwaddr *raddr, int *prot,
+ }
+ 
+ static int mmu6xx_get_physical_address(CPUPPCState *env, hwaddr *raddr,
+-                                       int *prot, target_ulong eaddr,
++                                       uint8_t *prot, target_ulong eaddr,
+                                        hwaddr *hashp, bool *keyp,
+                                        MMUAccessType access_type, int type)
+ {
+@@ -583,15 +583,15 @@ void dump_mmu(CPUPPCState *env)
+ 
+ static bool ppc_real_mode_xlate(PowerPCCPU *cpu, vaddr eaddr,
+                                 MMUAccessType access_type,
+-                                hwaddr *raddrp, int *psizep, int *protp)
++                                CPUTLBEntryFull *full)
+ {
+     CPUPPCState *env = &cpu->env;
+ 
+     if (access_type == MMU_INST_FETCH ? !FIELD_EX64(env->msr, MSR, IR)
+                                       : !FIELD_EX64(env->msr, MSR, DR)) {
+-        *raddrp = eaddr;
+-        *protp = PAGE_RWX;
+-        *psizep = TARGET_PAGE_BITS;
++        full->phys_addr = eaddr;
++        full->prot = PAGE_RWX;
++        full->lg_page_size = TARGET_PAGE_BITS;
+         return true;
+     } else if (env->mmu_model == POWERPC_MMU_REAL) {
+         cpu_abort(CPU(cpu), "PowerPC in real mode shold not do translation\n");
+@@ -600,21 +600,24 @@ static bool ppc_real_mode_xlate(PowerPCCPU *cpu, vaddr eaddr,
+ }
+ 
+ static bool ppc_40x_xlate(PowerPCCPU *cpu, vaddr eaddr,
+-                          MMUAccessType access_type,
+-                          hwaddr *raddrp, int *psizep, int *protp,
++                          MMUAccessType access_type, CPUTLBEntryFull *full,
+                           int mmu_idx, bool guest_visible)
+ {
+     CPUState *cs = CPU(cpu);
+     CPUPPCState *env = &cpu->env;
+     int ret;
+ 
+-    if (ppc_real_mode_xlate(cpu, eaddr, access_type, raddrp, psizep, protp)) {
++    if (ppc_real_mode_xlate(cpu, eaddr, access_type, full)) {
+         return true;
+     }
+ 
+-    ret = mmu40x_get_physical_address(env, raddrp, protp, eaddr, access_type);
++    int prot = 0;
++    ret = mmu40x_get_physical_address(env, &(full->phys_addr), &prot,
++                                      eaddr, access_type);
++    full->prot = prot;
++
+     if (ret == 0) {
+-        *psizep = TARGET_PAGE_BITS;
++        full->lg_page_size = TARGET_PAGE_BITS;
+         return true;
+     } else if (!guest_visible) {
+         return false;
+@@ -668,8 +671,7 @@ static bool ppc_40x_xlate(PowerPCCPU *cpu, vaddr eaddr,
+ }
+ 
+ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
+-                          MMUAccessType access_type,
+-                          hwaddr *raddrp, int *psizep, int *protp,
++                          MMUAccessType access_type, CPUTLBEntryFull *full,
+                           int mmu_idx, bool guest_visible)
+ {
+     CPUState *cs = CPU(cpu);
+@@ -678,7 +680,7 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
+     bool key;
+     int type, ret;
+ 
+-    if (ppc_real_mode_xlate(cpu, eaddr, access_type, raddrp, psizep, protp)) {
++    if (ppc_real_mode_xlate(cpu, eaddr, access_type, full)) {
+         return true;
+     }
+ 
+@@ -692,10 +694,10 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
+         type = ACCESS_INT;
+     }
+ 
+-    ret = mmu6xx_get_physical_address(env, raddrp, protp, eaddr, &hash, &key,
+-                                      access_type, type);
++    ret = mmu6xx_get_physical_address(env, &(full->phys_addr), &(full->prot),
++                                      eaddr, &hash, &key, access_type, type);
+     if (ret == 0) {
+-        *psizep = TARGET_PAGE_BITS;
++        full->lg_page_size = TARGET_PAGE_BITS;
+         return true;
+     } else if (!guest_visible) {
+         return false;
+@@ -806,15 +808,14 @@ tlb_miss:
+ /*****************************************************************************/
+ 
+ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+-                      hwaddr *raddrp, int *psizep, int *protp,
+-                      int mmu_idx, bool guest_visible)
++               CPUTLBEntryFull *full, int mmu_idx, bool guest_visible)
+ {
+     switch (cpu->env.mmu_model) {
+ #if defined(TARGET_PPC64)
+     case POWERPC_MMU_3_00:
+         if (ppc64_v3_radix(cpu)) {
+-            return ppc_radix64_xlate(cpu, eaddr, access_type, raddrp,
+-                                     psizep, protp, mmu_idx, guest_visible);
++            return ppc_radix64_xlate(cpu, eaddr, access_type,
++                                     full, mmu_idx, guest_visible);
+         }
+         /* fall through */
+     case POWERPC_MMU_64B:
+@@ -822,25 +823,24 @@ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+     case POWERPC_MMU_2_06:
+     case POWERPC_MMU_2_07:
+         return ppc_hash64_xlate(cpu, eaddr, access_type,
+-                                raddrp, psizep, protp, mmu_idx, guest_visible);
++                                full, mmu_idx, guest_visible);
+ #endif
+ 
+     case POWERPC_MMU_32B:
+-        return ppc_hash32_xlate(cpu, eaddr, access_type, raddrp,
+-                               psizep, protp, mmu_idx, guest_visible);
++        return ppc_hash32_xlate(cpu, eaddr, access_type, full,
++                                mmu_idx, guest_visible);
+     case POWERPC_MMU_BOOKE:
+     case POWERPC_MMU_BOOKE206:
+-        return ppc_booke_xlate(cpu, eaddr, access_type, raddrp,
+-                               psizep, protp, mmu_idx, guest_visible);
++        return ppc_booke_xlate(cpu, eaddr, access_type,
++                               full, mmu_idx, guest_visible);
+     case POWERPC_MMU_SOFT_4xx:
+-        return ppc_40x_xlate(cpu, eaddr, access_type, raddrp,
+-                             psizep, protp, mmu_idx, guest_visible);
++        return ppc_40x_xlate(cpu, eaddr, access_type,
++                             full, mmu_idx, guest_visible);
+     case POWERPC_MMU_SOFT_6xx:
+-        return ppc_6xx_xlate(cpu, eaddr, access_type, raddrp,
+-                             psizep, protp, mmu_idx, guest_visible);
++        return ppc_6xx_xlate(cpu, eaddr, access_type,
++                             full, mmu_idx, guest_visible);
+     case POWERPC_MMU_REAL:
+-        return ppc_real_mode_xlate(cpu, eaddr, access_type, raddrp, psizep,
+-                                   protp);
++        return ppc_real_mode_xlate(cpu, eaddr, access_type, full);
+     case POWERPC_MMU_MPC8xx:
+         cpu_abort(env_cpu(&cpu->env), "MPC8xx MMU model is not implemented\n");
+     default:
+@@ -851,19 +851,18 @@ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+ hwaddr ppc_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+ {
+     PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    hwaddr raddr;
+-    int s, p;
++    CPUTLBEntryFull full;
+ 
+     /*
+      * Some MMUs have separate TLBs for code and data. If we only
+      * try an MMU_DATA_LOAD, we may not be able to read instructions
+      * mapped by code TLBs, so we also try a MMU_INST_FETCH.
+      */
+-    if (ppc_xlate(cpu, addr, MMU_DATA_LOAD, &raddr, &s, &p,
++    if (ppc_xlate(cpu, addr, MMU_DATA_LOAD, &full,
+                   ppc_env_mmu_index(&cpu->env, false), false) ||
+-        ppc_xlate(cpu, addr, MMU_INST_FETCH, &raddr, &s, &p,
++        ppc_xlate(cpu, addr, MMU_INST_FETCH, &full,
+                   ppc_env_mmu_index(&cpu->env, true), false)) {
+-        return raddr & TARGET_PAGE_MASK;
++        return full.phys_addr & TARGET_PAGE_MASK;
+     }
+     return -1;
+ }
+diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
+index ac60705402..85815196eb 100644
+--- a/target/ppc/mmu_helper.c
++++ b/target/ppc/mmu_helper.c
+@@ -1363,13 +1363,14 @@ bool ppc_cpu_tlb_fill(CPUState *cs, vaddr eaddr, int size,
+                       bool probe, uintptr_t retaddr)
+ {
+     PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    hwaddr raddr;
+-    int page_size, prot;
+-
+-    if (ppc_xlate(cpu, eaddr, access_type, &raddr,
+-                  &page_size, &prot, mmu_idx, !probe)) {
+-        tlb_set_page(cs, eaddr & TARGET_PAGE_MASK, raddr & TARGET_PAGE_MASK,
+-                     prot, mmu_idx, 1UL << page_size);
++    CPUTLBEntryFull full = {
++        .attrs = MEMTXATTRS_UNSPECIFIED
++    };
++
++    if (ppc_xlate(cpu, eaddr, access_type,
++                  &full, mmu_idx, !probe)) {
++        full.phys_addr &= TARGET_PAGE_MASK;
++        tlb_set_page_full(cs, mmu_idx, eaddr & TARGET_PAGE_MASK, &full);
+         return true;
+     }
+     if (probe) {
 -- 
 2.47.2
 
