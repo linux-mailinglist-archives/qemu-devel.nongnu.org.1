@@ -2,47 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC3CB41A63
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 11:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CE9B41A5B
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 11:45:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utk2Z-000692-K0; Wed, 03 Sep 2025 05:44:31 -0400
+	id 1utk2T-00063r-Fd; Wed, 03 Sep 2025 05:44:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1utk2R-00063u-5S; Wed, 03 Sep 2025 05:44:23 -0400
+ id 1utk2Q-00063L-27; Wed, 03 Sep 2025 05:44:22 -0400
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1utk2N-0007uU-P9; Wed, 03 Sep 2025 05:44:22 -0400
+ id 1utk2N-0007ua-PR; Wed, 03 Sep 2025 05:44:21 -0400
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c21:2d8b:0:640:7d49:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id AD7BC806F5;
- Wed, 03 Sep 2025 12:44:16 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 77E458073C;
+ Wed, 03 Sep 2025 12:44:17 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b8f::1:11])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id EicMoq3GhCg0-frm9E0oN; Wed, 03 Sep 2025 12:44:16 +0300
+ ESMTPSA id EicMoq3GhCg0-vSakBBTS; Wed, 03 Sep 2025 12:44:17 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1756892656;
- bh=sIRk+lbn/qhf6egokX5jBbKKnrraNB0E4tHLMcdfjyg=;
+ s=default; t=1756892657;
+ bh=hUj5xMUecTx8X16HPNS7q8D78Nrs6/uPNPUtPM98KSc=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=nT4yCZVsRkiA7SMnpQ56wBrm1Cnlh9icDq5jMTo2DwmW1o9yKBbOhcS9bg6vG4/Bk
- iMD150zYxISfZOK8mqEsAkrIckHEafoa/fjBkEA2+MpCFPh0glsHwsLCprFmzIMsjX
- uVqjqnoGFQZd37dMXpuimLO0mBUclILoPxN1TRow=
+ b=No93VDNRuH1ywvNHUdJYxMFFfitrRLvSwI0D+/3y1LU6Q3sZjwSZtvFpkM8jlMvNi
+ jE8NLieu2qzHE1rGuv8Nc/B4A7+1eWxcGSRqs9Uo9V6RtPPSgvtO/gvADXfz/1oiMC
+ E+l+vZyByCbHnYjY8WpJd+nytw58JN3B03cuw2eU=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: berrange@redhat.com
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, peterx@redhat.com,
- vsementsov@yandex-team.ru,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 02/10] char-socket: rework tcp_chr_recv()
-Date: Wed,  3 Sep 2025 12:44:02 +0300
-Message-ID: <20250903094411.1029449-3-vsementsov@yandex-team.ru>
+ vsementsov@yandex-team.ru, Paolo Bonzini <pbonzini@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>
+Subject: [PATCH 03/10] util: add qemu_set_blocking() function
+Date: Wed,  3 Sep 2025 12:44:03 +0300
+Message-ID: <20250903094411.1029449-4-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250903094411.1029449-1-vsementsov@yandex-team.ru>
 References: <20250903094411.1029449-1-vsementsov@yandex-team.ru>
@@ -72,76 +71,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-First, qio_channel_readv_full() already guarantees BLOCKING and
-CLOEXEC states for incoming descriptors, no reason call extra
-ioctls.
+In generic code we have qio_channel_set_blocking(), which takes
+bool parameter, and qemu_file_set_blocking(), which as well takes
+bool parameter.
 
-Second, current implementation calls _set_block() and _set_cloexec()
-again on old descriptors on failure path - we fix this too.
+At lower fd-layer we have a mess of functions:
 
-Finally, handling errors exactly after qio_channel_readv_full() call
-looks more readable.
+- enough direct calls to g_unix_set_fd_nonblocking()
+and several wrappers without bool parameter:
+
+- qemu_scoket_set_nonblock(), which asserts success for posix (still,
+  in most cases we can handle the error in better way) and ignores
+  error for win32 realization
+
+- qemu_socket_try_set_nonblock(), the best one
+
+- qemu_socket_set_block(), which simply ignores an error, the worst
+  case
+
+And all three lack errp argument, so we have to handle it after the
+call.
+
+So let's introduce a new socket-layer wrapper, and use it consistently
+in following commits.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- chardev/char-socket.c | 37 +++++++++++++------------------------
- 1 file changed, 13 insertions(+), 24 deletions(-)
+ include/qemu/osdep.h |  1 +
+ util/oslib-posix.c   | 12 ++++++++++++
+ util/oslib-win32.c   | 18 ++++++++++++++++++
+ 3 files changed, 31 insertions(+)
 
-diff --git a/chardev/char-socket.c b/chardev/char-socket.c
-index 1e8313915b..5b9b19ba8b 100644
---- a/chardev/char-socket.c
-+++ b/chardev/char-socket.c
-@@ -293,6 +293,18 @@ static ssize_t tcp_chr_recv(Chardev *chr, char *buf, size_t len)
-                                      0, &err);
-     }
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index be3460b32f..1b38cb7e45 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -687,6 +687,7 @@ ssize_t qemu_write_full(int fd, const void *buf, size_t count)
+     G_GNUC_WARN_UNUSED_RESULT;
  
-+    if (ret == QIO_CHANNEL_ERR_BLOCK) {
-+        errno = EAGAIN;
-+        return -1;
-+    } else if (ret == -1) {
-+        trace_chr_socket_recv_err(chr, chr->label, error_get_pretty(err));
-+        error_free(err);
-+        errno = EIO;
-+        return -1;
+ void qemu_set_cloexec(int fd);
++bool qemu_set_blocking(int fd, bool block, Error **errp);
+ 
+ /* Return a dynamically allocated directory path that is appropriate for storing
+  * local state.
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index 4ff577e5de..e473938195 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -250,6 +250,18 @@ void qemu_anon_ram_free(void *ptr, size_t size)
+ #endif
+ }
+ 
++bool qemu_set_blocking(int fd, bool block, Error **errp)
++{
++    if (!g_unix_set_fd_nonblocking(fd, !block, NULL)) {
++        error_setg_errno(errp, errno,
++                         "Can't set file descriptor %d %s", fd,
++                         block ? "blocking" : "non-blocking");
++        return false;
 +    }
 +
-+    assert(ret >= 0);
++    return true;
++}
 +
-     if (msgfds_num) {
-         /* close and clean read_msgfds */
-         for (i = 0; i < s->read_msgfds_num; i++) {
-@@ -307,30 +319,7 @@ static ssize_t tcp_chr_recv(Chardev *chr, char *buf, size_t len)
-         s->read_msgfds_num = msgfds_num;
+ void qemu_socket_set_block(int fd)
+ {
+     g_unix_set_fd_nonblocking(fd, false, NULL);
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+index b7351634ec..03044f5b59 100644
+--- a/util/oslib-win32.c
++++ b/util/oslib-win32.c
+@@ -177,6 +177,24 @@ static int socket_error(void)
      }
- 
--    for (i = 0; i < s->read_msgfds_num; i++) {
--        int fd = s->read_msgfds[i];
--        if (fd < 0) {
--            continue;
--        }
--
--        /* O_NONBLOCK is preserved across SCM_RIGHTS so reset it */
--        qemu_socket_set_block(fd);
--
--#ifndef MSG_CMSG_CLOEXEC
--        qemu_set_cloexec(fd);
--#endif
--    }
--
--    if (ret == QIO_CHANNEL_ERR_BLOCK) {
--        errno = EAGAIN;
--        ret = -1;
--    } else if (ret == -1) {
--        trace_chr_socket_recv_err(chr, chr->label, error_get_pretty(err));
--        error_free(err);
--        errno = EIO;
--    } else if (ret == 0) {
--        trace_chr_socket_recv_eof(chr, chr->label);
--    }
-+    trace_chr_socket_recv_eof(chr, chr->label);
- 
-     return ret;
  }
+ 
++bool qemu_set_blocking(int fd, bool block, Error **errp)
++{
++    unsigned long opt = block ? 0 : 1;
++
++    if (block) {
++        qemu_socket_unselect(fd, NULL);
++    }
++
++    if (ioctlsocket(fd, FIONBIO, &opt) != NO_ERROR) {
++        error_setg_errno(errp, socket_error(),
++                         "Can't set file descriptor %d %s", fd,
++                         block ? "blocking" : "non-blocking");
++        return false;
++    }
++
++    return true;
++}
++
+ void qemu_socket_set_block(int fd)
+ {
+     unsigned long opt = 0;
 -- 
 2.48.1
 
