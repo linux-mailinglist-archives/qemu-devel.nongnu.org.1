@@ -2,100 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00513B42192
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 15:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8BDB4220A
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 15:39:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utnYN-0007p6-3O; Wed, 03 Sep 2025 09:29:35 -0400
+	id 1utng5-0005CM-36; Wed, 03 Sep 2025 09:37:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1utnYK-0007oY-MX
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 09:29:32 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1utnYF-0001o3-B9
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 09:29:29 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-b0473327e70so54203866b.3
- for <qemu-devel@nongnu.org>; Wed, 03 Sep 2025 06:29:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756906165; x=1757510965; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=rpHPu9J6GDNgbxNG2nQVVjMbkf/TXAQEqUgx8DM4NIA=;
- b=Gji9lybdOVC2GFIt747Mukl/0OXaTFJSz+nhotsXiC3pZiRae241tGczaLUISypFT8
- hyTunungYlC8YQZ05j+XC1n+gdqB8qxTfrmQHzYT9NB2T55UAYOlY8yBu2hhnMFzBPug
- IgQSGFXRP4X5EDgoZx4ryY+9fJDXjMN0+0njRWRQ++IN121VkJ4FmefcMImCVEOlJ4Zi
- aDJY5SeZcs45bvQ0j73gGOWjfqLF1hLBi4iOeme1VHqVql67q2ihtv/pM7PxrDPIyvZz
- Rk3JdN/MeA69uffN2PsQqH4p6FWsUk4U+aLB2GXt8PAZxAdfXpPr++O+meum9hvk+4TE
- 0vYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756906165; x=1757510965;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rpHPu9J6GDNgbxNG2nQVVjMbkf/TXAQEqUgx8DM4NIA=;
- b=diDLrufh19npGweXl0EHq88n+ufVAHbY1GseAv/6YYEjGHxsNkhYWSPOaHQghjZ23e
- cHLzE4pf3hMvXcTQzFkNooQNnNtDJKvf5jqHqmGWFsvYx/dF3+5eeORcZQC6etpbAaJD
- 7GrHN2OAXXeylDBm55uvrfHCRyi2ggmrTcm6SclpYgwpUEYU6aMT0Tn3eMbShaW3F0pc
- Tnety6zQvxxwTIH8ZI9YmJilEFSCrjMt4I5fMSridR8u2M+Uh5qMTS5/FvsXI5gbIbgb
- dW4DKDi7SEM/Ums0k2gs6+7EiV0y5UsAMMZ1eY06Db4U/JiJHT5DekKy/Rw7+E2iUO1Q
- VqXg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUx455R5N6UVqP9X+T3NmKiMLtt0U/bMT5Zngne7gidQ9IESD0jP0FtgY3gQzn1ETnCzVdokvkl+y7P@nongnu.org
-X-Gm-Message-State: AOJu0Yy4SYCy76/+WqYPE+vgloP67l9RT4Bgrg83+41lRT0waWbEsxLs
- Ngkh8pJ4auZ8SKGwGfrvgjHmM+fZ7T+CBM/uyN+0LDGmpvVkVlBt/EDXxQSDSewB4yc=
-X-Gm-Gg: ASbGnctW+rWwJ1nh4TUzCZR+vl2kBmoN6uqayl5UJ3xXJ8BaYg0yNxjUJ4F5dEJc+3/
- nQD4fkEOQC7Yqdd6bcSGV/PfAnc1SIwlgsjjj0xrJjIdDHwv5wssH8m9unD8/XnUjCKBP7fhKVr
- e4LAnVb2s8UyWIzh202wX9pItQV9irb++j431ixa//0Zfbzop8OJbhqzy7kGaPbx6udL9Y5plDJ
- sSA97K+aae+f0O29PP8/yrhZmbYK/1sOwipCE6d1nAbCJdirWWP/LmDVPXtuQvQzIm4e2/exEK+
- kvlf4WsRDb9Cfje2gjilKGdiG6B1jttQy/kgusN3+gXxFupvN59bcmA4eyetBB4PqG3Enl8dDUR
- 3xKdYAPtRG/D5Bnktgiog4y04ZQjZBzNsVSO2/KOVehrS+HnyGPLaA+BWGJtSA0HXAkys4W/SVH
- Y3LD48GA==
-X-Google-Smtp-Source: AGHT+IEkVxWNoV856q2bOmFFdaiy8HKx9k1ZiesXuQLKg87KaUHSd90wlJR2rqWNBdlsuyDPcyX5Ig==
-X-Received: by 2002:a17:907:9444:b0:b04:53cc:4400 with SMTP id
- a640c23a62f3a-b0453cc4661mr684654666b.27.1756906164695; 
- Wed, 03 Sep 2025 06:29:24 -0700 (PDT)
-Received: from [10.40.6.207] (93-51-222-138.ip268.fastwebnet.it.
- [93.51.222.138]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b04093c9161sm1038073166b.54.2025.09.03.06.29.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Sep 2025 06:29:24 -0700 (PDT)
-Message-ID: <e4ce9ca2-9be7-4486-a1b5-1c5939f26989@linaro.org>
-Date: Wed, 3 Sep 2025 15:29:22 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1utnfs-000581-Um
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 09:37:21 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1utnfp-0004tG-Or
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 09:37:20 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 46FE3C0189;
+ Wed, 03 Sep 2025 16:37:13 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b8f::1:11])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id BbgRSa3GomI0-KpmcKA5H; Wed, 03 Sep 2025 16:37:12 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1756906632;
+ bh=yPoVxfVIAnrRjM8aQPwPNKozvWBLFCJz4WUDmbQcXOw=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=USjftcpMieqHDI1L/HhVg0e5oaY/6ZgpTTCBOjN8cuAxl5EEObKHnuyGyXgx9MdEe
+ BjofEpjt/TEvhMBPCyhc9qoEvfMJscQlE9ayiF+/o03NgjiWDWF/ui/EBvPT6/dvIu
+ dJ1mU3bQNdAau/HZlTUrSBNMoyY8SQ+jcOJPo8f4=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: jasowang@redhat.com
+Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
+ steven.sistare@oracle.com, yc-core@yandex-team.ru, peterx@redhat.com,
+ mst@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, berrange@redhat.com
+Subject: [PATCH v2 0/8] virtio-net: live-TAP local migration
+Date: Wed,  3 Sep 2025 16:36:57 +0300
+Message-ID: <20250903133706.1177633-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 2/3] target/riscv: rvv: Add Zvqdotq support
-To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
- <liwei1518@gmail.com>, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20250903130125.1701363-1-max.chou@sifive.com>
- <20250903130125.1701363-3-max.chou@sifive.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250903130125.1701363-3-max.chou@sifive.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x632.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -107,28 +73,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/3/25 15:01, Max Chou wrote:
-> +#define OPMVX_VQDOTQ(NAME, TD, T1, T2, TX1, TX2, HD, HS1, HS2)          \
-> +static void do_##NAME(void *vd, target_long s1, void *vs2, int i)       \
-> +{                                                                       \
-> +    int idx;                                                            \
-> +    T1 r1;                                                              \
-> +    T2 r2;                                                              \
-> +    TX1 *r1_buf = (TX1 *)&s1;                                           \
-> +    TX2 *r2_buf = (TX2 *)vs2 + HD(i);                                   \
-> +    TD acc = ((TD *)vd)[HD(i)];                                         \
-> +                                                                        \
-> +    for (idx = 0; idx < 4; ++idx) {                                     \
-> +        r1 = *((T1 *)r1_buf + HS1(idx));                                \
-> +        r2 = *((T2 *)r2_buf + HS2(idx));                                \
-> +        acc += r1 * r2;                                                 \
+Hi all!
 
-One could argue for a missing widening cast to TD here.  You got away with it because the 
-only uses happen to have small inputs and "int" sized outputs, so C arithmetic promotion 
-worked for you.
+Here is a  new migration capability "local-tap", which
+allows local migration of TAP device, including its properties
+and open fds.
 
-You can move the variable declarations into the loop.
+With this new option, management software doesn't need to
+initialize new TAP and do a switch to it. Nothing should be
+done around virtio-net in local migration: it just migrates
+and continues to use same TAP device. So we avoid extra logic
+in management software, extra allocations in kenel (for new TAP),
+and corresponding extra delay in migration downtime.
 
+Note that patch 07 is reused from
+[PATCH 00/33] vhost-user-blk: live-backend local migration
+to not create extra dependency on a big series.
 
-r~
+Based on [PATCH v3 00/19] TAP initialization refactoring, or in other
+words:
+Based-on: <20250903124934.1169899-1-vsementsov@yandex-team.ru>
+
+Vladimir Sementsov-Ogievskiy (8):
+  net/tap: add some trace points
+  net/tap: keep exit notifier only when downscript set
+  net/tap: refactor net_tap_setup_vhost()
+  qapi: add interface for local TAP migration
+  net/tap: implement interfaces for local migration
+  virtio-net: support local tap migration
+  test/functional: exec_command_and_wait_for_pattern: add vm arg
+  tests/functional: add test_x86_64_tap_fd_migration
+
+ hw/net/virtio-net.c                           | 100 ++++-
+ include/hw/virtio/virtio-net.h                |   2 +
+ include/net/tap.h                             |   4 +
+ migration/options.c                           |   7 +
+ migration/options.h                           |   1 +
+ net/tap.c                                     | 323 ++++++++++++----
+ net/trace-events                              |   7 +
+ qapi/migration.json                           |   9 +-
+ qapi/net.json                                 |  12 +-
+ tests/functional/qemu_test/cmd.py             |   7 +-
+ .../test_x86_64_tap_fd_migration.py           | 347 ++++++++++++++++++
+ 11 files changed, 734 insertions(+), 85 deletions(-)
+ create mode 100644 tests/functional/test_x86_64_tap_fd_migration.py
+
+-- 
+2.48.1
+
 
