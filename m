@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28383B41A73
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 11:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC3CB41A63
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 11:46:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utk2Z-00068l-Fr; Wed, 03 Sep 2025 05:44:31 -0400
+	id 1utk2Z-000692-K0; Wed, 03 Sep 2025 05:44:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1utk2R-00063v-5y; Wed, 03 Sep 2025 05:44:23 -0400
+ id 1utk2R-00063u-5S; Wed, 03 Sep 2025 05:44:23 -0400
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1utk2N-0007uR-S3; Wed, 03 Sep 2025 05:44:22 -0400
+ id 1utk2N-0007uU-P9; Wed, 03 Sep 2025 05:44:22 -0400
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c21:2d8b:0:640:7d49:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 15CD08067A;
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id AD7BC806F5;
  Wed, 03 Sep 2025 12:44:16 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b8f::1:11])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id EicMoq3GhCg0-u946eTFc; Wed, 03 Sep 2025 12:44:15 +0300
+ ESMTPSA id EicMoq3GhCg0-frm9E0oN; Wed, 03 Sep 2025 12:44:16 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1756892655;
- bh=LdOEsfMv9+PXz13uCV6qZQY+vLOFE3HhoDVvWVSOAWc=;
+ s=default; t=1756892656;
+ bh=sIRk+lbn/qhf6egokX5jBbKKnrraNB0E4tHLMcdfjyg=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=unZJsqTOEcaT/Mj/DvUYDNcx4ceuEqoxa3/t8/9xjMXVQIBW5R2D+Y9f4umew1CMr
- 20/BHKBocmmNhct5E37yYT87thyxaisNp76f+F2MJzGm2aIk/cE3VdxsgUQ8zbwiVn
- 6nb55Wkmzi+Boz6tcCJQPJJEfWMo2hX5ET5RjLXs=
+ b=nT4yCZVsRkiA7SMnpQ56wBrm1Cnlh9icDq5jMTo2DwmW1o9yKBbOhcS9bg6vG4/Bk
+ iMD150zYxISfZOK8mqEsAkrIckHEafoa/fjBkEA2+MpCFPh0glsHwsLCprFmzIMsjX
+ uVqjqnoGFQZd37dMXpuimLO0mBUclILoPxN1TRow=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: berrange@redhat.com
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, peterx@redhat.com,
- vsementsov@yandex-team.ru
-Subject: [PATCH 01/10] io/channel: document how qio_channel_readv_full()
- handles fds
-Date: Wed,  3 Sep 2025 12:44:01 +0300
-Message-ID: <20250903094411.1029449-2-vsementsov@yandex-team.ru>
+ vsementsov@yandex-team.ru,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 02/10] char-socket: rework tcp_chr_recv()
+Date: Wed,  3 Sep 2025 12:44:02 +0300
+Message-ID: <20250903094411.1029449-3-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250903094411.1029449-1-vsementsov@yandex-team.ru>
 References: <20250903094411.1029449-1-vsementsov@yandex-team.ru>
@@ -71,52 +72,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The only realization, which may have incoming fds is
-qio_channel_socket_readv() (in io/channel-socket.c).
-qio_channel_socket_readv() do call (through
-qio_channel_socket_copy_fds()) qemu_socket_set_block() and
-qemu_set_cloexec() for each fd.
+First, qio_channel_readv_full() already guarantees BLOCKING and
+CLOEXEC states for incoming descriptors, no reason call extra
+ioctls.
+
+Second, current implementation calls _set_block() and _set_cloexec()
+again on old descriptors on failure path - we fix this too.
+
+Finally, handling errors exactly after qio_channel_readv_full() call
+looks more readable.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- include/io/channel.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ chardev/char-socket.c | 37 +++++++++++++------------------------
+ 1 file changed, 13 insertions(+), 24 deletions(-)
 
-diff --git a/include/io/channel.h b/include/io/channel.h
-index 234e5db70d..b848d50b99 100644
---- a/include/io/channel.h
-+++ b/include/io/channel.h
-@@ -117,6 +117,12 @@ struct QIOChannelClass {
-                          size_t nfds,
-                          int flags,
-                          Error **errp);
+diff --git a/chardev/char-socket.c b/chardev/char-socket.c
+index 1e8313915b..5b9b19ba8b 100644
+--- a/chardev/char-socket.c
++++ b/chardev/char-socket.c
+@@ -293,6 +293,18 @@ static ssize_t tcp_chr_recv(Chardev *chr, char *buf, size_t len)
+                                      0, &err);
+     }
+ 
++    if (ret == QIO_CHANNEL_ERR_BLOCK) {
++        errno = EAGAIN;
++        return -1;
++    } else if (ret == -1) {
++        trace_chr_socket_recv_err(chr, chr->label, error_get_pretty(err));
++        error_free(err);
++        errno = EIO;
++        return -1;
++    }
 +
-+    /*
-+     * The io_readv handler must guarantee that all
-+     * incoming fds are set BLOCKING and CLOEXEC (if
-+     * available).
-+     */
-     ssize_t (*io_readv)(QIOChannel *ioc,
-                         const struct iovec *iov,
-                         size_t niov,
-@@ -124,6 +130,7 @@ struct QIOChannelClass {
-                         size_t *nfds,
-                         int flags,
-                         Error **errp);
++    assert(ret >= 0);
 +
-     int (*io_close)(QIOChannel *ioc,
-                     Error **errp);
-     GSource * (*io_create_watch)(QIOChannel *ioc,
-@@ -234,6 +241,9 @@ void qio_channel_set_name(QIOChannel *ioc,
-  * was allocated. It is the callers responsibility
-  * to call close() on each file descriptor and to
-  * call g_free() on the array pointer in @fds.
-+ * qio_channel_readv_full() guarantees that all
-+ * incoming fds are set BLOCKING and CLOEXEC (if
-+ * available).
-  *
-  * It is an error to pass a non-NULL @fds parameter
-  * unless qio_channel_has_feature() returns a true
+     if (msgfds_num) {
+         /* close and clean read_msgfds */
+         for (i = 0; i < s->read_msgfds_num; i++) {
+@@ -307,30 +319,7 @@ static ssize_t tcp_chr_recv(Chardev *chr, char *buf, size_t len)
+         s->read_msgfds_num = msgfds_num;
+     }
+ 
+-    for (i = 0; i < s->read_msgfds_num; i++) {
+-        int fd = s->read_msgfds[i];
+-        if (fd < 0) {
+-            continue;
+-        }
+-
+-        /* O_NONBLOCK is preserved across SCM_RIGHTS so reset it */
+-        qemu_socket_set_block(fd);
+-
+-#ifndef MSG_CMSG_CLOEXEC
+-        qemu_set_cloexec(fd);
+-#endif
+-    }
+-
+-    if (ret == QIO_CHANNEL_ERR_BLOCK) {
+-        errno = EAGAIN;
+-        ret = -1;
+-    } else if (ret == -1) {
+-        trace_chr_socket_recv_err(chr, chr->label, error_get_pretty(err));
+-        error_free(err);
+-        errno = EIO;
+-    } else if (ret == 0) {
+-        trace_chr_socket_recv_eof(chr, chr->label);
+-    }
++    trace_chr_socket_recv_eof(chr, chr->label);
+ 
+     return ret;
+ }
 -- 
 2.48.1
 
