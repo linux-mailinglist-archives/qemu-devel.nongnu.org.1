@@ -2,56 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C543B41FDC
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 14:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9503B42029
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 14:56:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utmwS-0006D8-Bw; Wed, 03 Sep 2025 08:50:26 -0400
+	id 1utn2L-0001Sx-KA; Wed, 03 Sep 2025 08:56:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1utmw6-00063r-Tl
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 08:50:03 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1utmw5-0000o6-37
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 08:50:02 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 3FED8C0162;
- Wed, 03 Sep 2025 15:49:49 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b8f::1:11])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id anf8gZ3GnW20-4jtuwM2G; Wed, 03 Sep 2025 15:49:48 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1756903788;
- bh=m/hFLQMDX/lCZxfgHLZhE6GJfd+gtZ+BLeDe492dlkM=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=HrN3koCUAIhNDJ9ll8pRGM+WiLDFo+RDKSupUyzD575dio4khLFlu5qNntIyMPr/g
- 0JbVr68pUrJDO/35trAQXhe+Tie1oA5KyozNp77ZFn+7q9biGoF6Us7DUDcNphFjwB
- FZ7JH2PQXGNEiOrp51Q2qqvcHo5g5UdmapTQF4N8=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: jasowang@redhat.com
-Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
- steven.sistare@oracle.com, yc-core@yandex-team.ru
-Subject: [PATCH v3 19/19] net/tap: introduce net_init_tap_fds()
-Date: Wed,  3 Sep 2025 15:49:33 +0300
-Message-ID: <20250903124934.1169899-20-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250903124934.1169899-1-vsementsov@yandex-team.ru>
-References: <20250903124934.1169899-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1utn2J-0001SD-6X
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 08:56:27 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1utn2H-0004fz-C4
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 08:56:26 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-61cbfa1d820so12986620a12.3
+ for <qemu-devel@nongnu.org>; Wed, 03 Sep 2025 05:56:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756904183; x=1757508983; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9INEzjDw25wZ/WqxSioxyyZpgtayqnXYVa2BJ+rRogc=;
+ b=Pe6rxN0VDh+JdZ3vvXy9Y1+aY1bFVLTzYNxuAu5uERhkLoiv0D4z8a43+GEd0pM9g1
+ W3L6htsV/tdnlCcWXLzDx/4P53vYSTUeTvizHX5H+R4J1I6OwRmvx0h6ybI5Jf22peZF
+ wArEtGrGs6Qkl10jcVxsx9us5ZVmzek5UajnUNhUzMg0897+8xCdrHxny2Ez3miIBrwB
+ dOUda9ilEINVnpBLDGzcgE+rI3NE02TqvGcgW/wOD/CTOwAxMonSi6tqoEuYwmubkroe
+ UjI/r3JDeK1Oe2o5jfsYK8BySagua1C2qRTaYLoWWUVYD7FLY8no6V105SomkRy06JSi
+ p5zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756904183; x=1757508983;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9INEzjDw25wZ/WqxSioxyyZpgtayqnXYVa2BJ+rRogc=;
+ b=obVUjC8xEkI7cV072XK7dKtJnHQlsfE6zoxOvNAgE+Lu5we0StXrTq1rBiKbcQkHFr
+ D1IX27/bMT5pd2WsyefqFel4g2gLuY59oHv+Gp4jOzelwn9RWQ8N7t+7prOp+aLppOrD
+ axQ7UQ4L7/ltPNr4y3qIEDBVnwQMSAJt9JBg3HUZHYQP5KKfM47NdmQ3QGb3yge83BNy
+ kpKOB1CoJUhY+CYroMY7sGa+5j7foBYokHXdkHQbZ7mmARVT9JJ5ghv0+tS4P91IwcLP
+ UmX1Ear8mNe+mUnApM33Tp8Ci5xH2i2ECkoLD0gvAhrUag+YgqR/p5htM8yIqPeT+wRS
+ muPA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVGRKIgpByFrRTy3qY/QZ8bG67bLSRw2XgCQTXvXdOEdQS0Ja+S7dz9RAk4Gvr24t8DyoKBLFRI93CQ@nongnu.org
+X-Gm-Message-State: AOJu0YwRszFA41/GB5l4EC8SqWNeiTdvpPpA66ZCLYY3NlehgCgEFtrQ
+ ARxtExTRRn+p6538dn+DRRqBnuWA93UQkqBYrsKbKSrYd1282zxsZj/VV1pvd7b/R2A=
+X-Gm-Gg: ASbGncvXF9WndFaKiAUZE8dvDeDR/9PJBVNbuhhIQrRpEGCaVwYx/wGdQMWrLcY5Jd6
+ X5Pbs2IXxh6Ac7xwIM0uenQ7hSghvhhURlZV5U5VZ/GxLRIt3o/0aiV+ZzcwRewoXIZN7iGM2xv
+ 2SKFvhdYmOlLRkwGP8RgRjuBKy9fQSKzfgC1wsLq6J19bAM2EwFJF6XXTLMuOpqDj2c99JEkLFq
+ C8HE82Ca3cABw4U0qJcNYQEHDVf6fNmVe2Z/fRylX5EMhkCxUdd6lJDcaMdb00FFC/laxvmIiWA
+ /36+9paiwf0qatdi8YSx+W2ekXp2Tl1IpbVVub0r71k7O2m/BQMEuzvRqUyX40m/x4PIEj98aCd
+ uw/pMBd67XBsTAyrZ971ToXiuo6g2lZijJPpFYrZhy30JXnrP7maqJU7BM0ylLhJs3kmtJtI=
+X-Google-Smtp-Source: AGHT+IE9Wh249uYD8nTL+7ILkiNdAfcA/YBTyGtJ1IU6MDMeIbhqeOOFzt9CpKibWOHFGQxgwLnMxg==
+X-Received: by 2002:a05:6402:27ca:b0:61c:5a8c:9a4e with SMTP id
+ 4fb4d7f45d1cf-61d2699752fmr14195369a12.4.1756904183501; 
+ Wed, 03 Sep 2025 05:56:23 -0700 (PDT)
+Received: from [10.40.6.207] (93-51-222-138.ip268.fastwebnet.it.
+ [93.51.222.138]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-61cfc4e4d77sm12023601a12.37.2025.09.03.05.56.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 03 Sep 2025 05:56:23 -0700 (PDT)
+Message-ID: <37a1af69-0850-4b2f-b2bd-a9c99de3d68d@linaro.org>
+Date: Wed, 3 Sep 2025 14:56:21 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 12/12] target/loongarch: Only flush one TLB entry in
+ helper_invtlb_page_asid()
+To: Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+References: <20250903084827.3085911-1-maobibo@loongson.cn>
+ <20250903085401.3086110-1-maobibo@loongson.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20250903085401.3086110-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -62,6 +92,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -73,112 +104,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Final refactoring step for net_init_tap: move fds case to separate
-function, so that net_init_tap() becomes straightforward top-level
-entry point to tap initialization.
+On 9/3/25 10:54, Bibo Mao wrote:
+> With function helper_invtlb_page_asid(), only one TLB entry in
+> LoongArch emulated TLB is invalidated. so with QEMU TLB, it is not
+> necessary to flush all QEMU TLB, only flush address range specified
+> LoongArch emulated TLB is ok. Here invalidate_tlb_entry() is called
+> so that only QEMU TLB entry with specified address range is flushed.
+> 
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>   target/loongarch/tcg/tlb_helper.c | 5 +----
+>   1 file changed, 1 insertion(+), 4 deletions(-)
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Tested-by: Lei Yang <leiyang@redhat.com>
----
- net/tap.c | 68 +++++++++++++++++++++++++++++++------------------------
- 1 file changed, 39 insertions(+), 29 deletions(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/net/tap.c b/net/tap.c
-index 5ad6f6af85..2530627a9a 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -877,12 +877,48 @@ static int net_tap_open(const Netdev *netdev,
-     return 0;
- }
- 
-+static int net_init_tap_fds(const Netdev *netdev, const char *name,
-+                            NetClientState *peer, Error **errp)
-+{
-+    const NetdevTapOptions *tap = &netdev->u.tap;
-+    g_auto(GStrv) fds = NULL;
-+    g_auto(GStrv) vhost_fds = NULL;
-+    int nfds;
-+    int vnet_hdr = 0, i = 0;
-+    int ret;
-+
-+    assert(netdev->type == NET_CLIENT_DRIVER_TAP);
-+
-+    fds = g_strsplit(tap->fds, ":", MAX_TAP_QUEUES);
-+    nfds = g_strv_length(fds);
-+
-+    if (tap->vhostfds) {
-+        vhost_fds = g_strsplit(tap->vhostfds, ":", MAX_TAP_QUEUES);
-+        if (nfds != g_strv_length(vhost_fds)) {
-+            error_setg(errp, "The number of fds passed does not match "
-+                       "the number of vhostfds passed");
-+            return -1;
-+        }
-+    }
-+
-+    vnet_hdr = -1;
-+    for (i = 0; i < nfds; i++) {
-+        ret = net_tap_from_monitor_fd(netdev, peer, name,
-+                                       vhost_fds ? vhost_fds[i] : NULL,
-+                                       &vnet_hdr, fds[i], errp);
-+        if (ret < 0) {
-+            return -1;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
-+
- int net_init_tap(const Netdev *netdev, const char *name,
-                  NetClientState *peer, Error **errp)
- {
-     const NetdevTapOptions *tap = &netdev->u.tap;
--    int vnet_hdr = 0, i = 0;
--    int ret = 0;
- 
-     assert(netdev->type == NET_CLIENT_DRIVER_TAP);
- 
-@@ -916,38 +952,12 @@ int net_init_tap(const Netdev *netdev, const char *name,
-         return net_tap_from_monitor_fd(netdev, peer, name, tap->vhostfd,
-                                        NULL, tap->fd, errp);
-     } else if (tap->fds) {
--        g_auto(GStrv) fds = NULL;
--        g_auto(GStrv) vhost_fds = NULL;
--        int nfds;
--
-         if (tap->helper || tap->vhostfd) {
-             error_setg(errp, "helper= and vhostfd= are invalid with fds=");
-             return -1;
-         }
- 
--        fds = g_strsplit(tap->fds, ":", MAX_TAP_QUEUES);
--        nfds = g_strv_length(fds);
--
--        if (tap->vhostfds) {
--            vhost_fds = g_strsplit(tap->vhostfds, ":", MAX_TAP_QUEUES);
--            if (nfds != g_strv_length(vhost_fds)) {
--                error_setg(errp, "The number of fds passed does not match "
--                           "the number of vhostfds passed");
--                return -1;
--            }
--        }
--
--        vnet_hdr = -1;
--        for (i = 0; i < nfds; i++) {
--            ret = net_tap_from_monitor_fd(netdev, peer, name,
--                                           vhost_fds ? vhost_fds[i] : NULL,
--                                           &vnet_hdr, fds[i], errp);
--            if (ret < 0) {
--                return -1;
--            }
--        }
--
--        return 0;
-+        return net_init_tap_fds(netdev, name, peer, errp);
-     } else if (tap->helper) {
-         if (tap->vhostfds) {
-             error_setg(errp, "vhostfds= is invalid with helper=");
--- 
-2.48.1
+
+r~
+
+> 
+> diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+> index 017c0d2f5b..de0bbbb6b1 100644
+> --- a/target/loongarch/tcg/tlb_helper.c
+> +++ b/target/loongarch/tcg/tlb_helper.c
+> @@ -541,7 +541,6 @@ void helper_invtlb_page_asid(CPULoongArchState *env, target_ulong info,
+>                                target_ulong addr)
+>   {
+>       int index, asid = info & 0x3ff;
+> -    LoongArchTLB *tlb;
+>       tlb_match func;
+>       bool ret;
+>   
+> @@ -551,9 +550,7 @@ void helper_invtlb_page_asid(CPULoongArchState *env, target_ulong info,
+>           return;
+>       }
+>   
+> -    tlb = &env->tlb[index];
+> -    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 0);
+> -    tlb_flush(env_cpu(env));
+> +    invalidate_tlb(env, index);
+>   }
+>   
+>   void helper_invtlb_page_asid_or_g(CPULoongArchState *env,
 
 
