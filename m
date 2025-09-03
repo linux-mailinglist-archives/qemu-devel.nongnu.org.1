@@ -2,66 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDE0B41483
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 07:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B4AB41489
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 07:49:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utgL0-0005RU-5a; Wed, 03 Sep 2025 01:47:18 -0400
+	id 1utgL7-0005Rz-Km; Wed, 03 Sep 2025 01:47:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1utgKx-0005Qy-Ls
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 01:47:15 -0400
+ id 1utgKz-0005RW-PC
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 01:47:17 -0400
 Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1utgKu-000206-34
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 01:47:15 -0400
+ id 1utgKx-000206-Vq
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 01:47:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756878433; x=1788414433;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=F068w2uet0gCfJJMRsmAhZ6dLwCgtueHGaTQy1w2tw4=;
- b=Ns0IK73mZH/SifuLYWWrRP8IFuUH9mbGM624+vS4BY9ikGXcrS6Aa+0A
- WF1047Pa8znO6OdoVQqxWu6ZaH0XsUJY8ed9v07B9QJqXurKUvqU0hese
- vpTq1iG9jUtQDxIkKjsTKYNoG0Hvc0brr3slFS9gTch+9XK53+keSKg+g
- mIiScd+znPWY1qNoObPRW9AZu7AN5sXzPU3pKSZPhoxGBlQuBJrToM81w
- MzGlqzyZw6X7nb++ZO9MCJ+aPbeAdltcK/OTV8PscWAF1VeOpS37nh/uy
- T/HFKflevy9U3Pgrc9xwkDpapTcZAgrsdmQaaco/NVUHSt+W6gzTeN6MB w==;
-X-CSE-ConnectionGUID: R9eFAYxLRdeDg6DSTD8Ivw==
-X-CSE-MsgGUID: xt5xOMsUS/i5co5AgdppJw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="58878184"
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; d="scan'208";a="58878184"
+ t=1756878437; x=1788414437;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=9bqaUsWa3QbbmlyhD5WfWA5wuCxJhAlSjQHGJk486Wc=;
+ b=SNmt7GMeGCDdZ9gbMn+kE5+7Wh5s0V1+DkD+YtaRSpajaA1GL4r+Glql
+ oCKwzntId1DwTCQrBF9wnlK6Nu1tu3j1c09a+y2u1P3Y+4fSP/1hKp283
+ fhSYcWsUNp9QjP4QgP/1u/JUpM3rdnbXD+1+jwHcutNTbc/bamRC/139O
+ RHJSl7S8YrV1ANo8o7xmW5yymCTwL3WycxMs9lT41CmodC9iw2pAS3hmo
+ Gp7hEtSPhjTsJR9OGabHXDGhpCJW3INq59lHmApdDNRoxOzQBTsDTcz39
+ TmP1DFR34eCDzpRmxMVF6qt/qZ42ZsCbLDH0YSha10T7h/Nhdeg/azmnI A==;
+X-CSE-ConnectionGUID: 6V+KQSJKRGKNPz7W4o3RPw==
+X-CSE-MsgGUID: TdeHfOpxSEejC++lOagGJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="58878186"
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; d="scan'208";a="58878186"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2025 22:47:08 -0700
-X-CSE-ConnectionGUID: Hfiw9vIyQPumV2CGXiQHyw==
-X-CSE-MsgGUID: pY5y4FukR8aDjdT9FzTejQ==
+ 02 Sep 2025 22:47:09 -0700
+X-CSE-ConnectionGUID: Y08t34jhQcmKyODJS5b6yQ==
+X-CSE-MsgGUID: GDoKVTtqRY63G6SDifAzEg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; d="scan'208";a="175634757"
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; d="scan'208";a="175634762"
 Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2025 22:47:07 -0700
+ 02 Sep 2025 22:47:08 -0700
 From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 To: qemu-devel@nongnu.org
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Dongwon Kim <dongwon.kim@intel.com>
-Subject: [RFC 0/6] vfio: Implement VFIO_DEVICE_FEATURE_DMA_BUF and use it in
- virtio-gpu
-Date: Tue,  2 Sep 2025 22:42:13 -0700
-Message-ID: <20250903054438.1179384-1-vivek.kasireddy@intel.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: [RFC 1/6] linux-headers: Update vfio.h to include
+ VFIO_DEVICE_FEATURE_DMA_BUF
+Date: Tue,  2 Sep 2025 22:42:14 -0700
+Message-ID: <20250903054438.1179384-2-vivek.kasireddy@intel.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250903054438.1179384-1-vivek.kasireddy@intel.com>
+References: <20250903054438.1179384-1-vivek.kasireddy@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.20;
  envelope-from=vivek.kasireddy@intel.com; helo=mgamail.intel.com
@@ -88,58 +81,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The virtio-gpu driver running in the Guest VM can create Guest blob
-resources (by importing dmabufs) that are backed by System RAM. This
-is made possible by making use of memfd memory backend and udmabuf
-driver on the Host side. However, in order to create Guest blobs
-that are backed by vfio-pci device regions, we have to implement
-VFIO_DEVICE_FEATURE_DMA_BUF and leverage it in virtio-gpu.
-
-So, while creating the blobs we use memory_region_is_ram_device() to
-figure out if the blob is backed by memfd or a vfio-pci device. If
-it is determined that the blob is backed by vfio-pci device region,
-instead of calling into udmabuf driver to create dmabuf we would
-now call into vfio-pci driver to have a dmabuf created on the Host.
-
-Tested with an SRIOV enabled Intel dGPU by running Gnome Wayland
-(in the VM) and Qemu with the following (relevant) parameters:
--device vfio-pci,host=0000:03:00.1
--device virtio-vga,max_outputs=1,xres=1920,yres=1080,blob=true
--display gtk,gl=on
-
-Associated vfio-pci kernel driver series:
-https://lore.kernel.org/dri-devel/cover.1754311439.git.leon@kernel.org/
-Associated virtio-gpu kernel driver series (merged):
-https://lore.kernel.org/dri-devel/20241126031643.3490496-1-vivek.kasireddy@intel.com/
-
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 ---
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Alex Bennée <alex.bennee@linaro.org>
-Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: Cédric Le Goater <clg@redhat.com>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Leon Romanovsky <leonro@nvidia.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Dongwon Kim <dongwon.kim@intel.com>
+ linux-headers/linux/vfio.h | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-Vivek Kasireddy (6):
-  linux-headers: Update vfio.h to include VFIO_DEVICE_FEATURE_DMA_BUF
-  vfio: Add support for VFIO_DEVICE_FEATURE_DMA_BUF
-  virtio-gpu-udmabuf: Create dmabuf for blobs associated with VFIO
-    devices
-  virtio-gpu: Don't rely on res->blob to identify blob resources
-  virtio-gpu: Recreate the resource's dmabuf if new backing is attached
-  virtio-gpu: Find the host addr given gpa associated with a ram device
-
- hw/display/virtio-gpu-udmabuf.c | 60 ++++++++++++++++++++++++++++-----
- hw/display/virtio-gpu.c         | 58 +++++++++++++++++++++++++------
- hw/vfio/region.c                | 49 +++++++++++++++++++++++++++
- include/hw/vfio/vfio-device.h   |  3 ++
- linux-headers/linux/vfio.h      | 25 ++++++++++++++
- 5 files changed, 176 insertions(+), 19 deletions(-)
-
+diff --git a/linux-headers/linux/vfio.h b/linux-headers/linux/vfio.h
+index 79bf8c0cc5..d2177c9cba 100644
+--- a/linux-headers/linux/vfio.h
++++ b/linux-headers/linux/vfio.h
+@@ -1468,6 +1468,31 @@ struct vfio_device_feature_bus_master {
+ };
+ #define VFIO_DEVICE_FEATURE_BUS_MASTER 10
+ 
++/**
++ * Upon VFIO_DEVICE_FEATURE_GET create a dma_buf fd for the
++ * regions selected.
++ *
++ * open_flags are the typical flags passed to open(2), eg O_RDWR, O_CLOEXEC,
++ * etc. offset/length specify a slice of the region to create the dmabuf from.
++ * nr_ranges is the total number of (P2P DMA) ranges that comprise the dmabuf.
++ *
++ * Return: The fd number on success, -1 and errno is set on failure.
++ */
++#define VFIO_DEVICE_FEATURE_DMA_BUF 11
++
++struct vfio_region_dma_range {
++	__u64 offset;
++	__u64 length;
++};
++
++struct vfio_device_feature_dma_buf {
++	__u32	region_index;
++	__u32	open_flags;
++	__u32   flags;
++	__u32   nr_ranges;
++	struct vfio_region_dma_range dma_ranges[];
++};
++
+ /* -------- API for Type1 VFIO IOMMU -------- */
+ 
+ /**
 -- 
 2.50.1
 
