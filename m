@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5096AB42046
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 15:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA16AB42042
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 15:03:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utn82-0005PO-SP; Wed, 03 Sep 2025 09:02:22 -0400
+	id 1utn8z-0006KN-RI; Wed, 03 Sep 2025 09:03:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1utn7o-0005I4-3P
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 09:02:15 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1utn8i-0006DP-G8
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 09:03:09 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1utn7m-0000XG-A7
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 09:02:07 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-24cb39fbd90so199185ad.3
- for <qemu-devel@nongnu.org>; Wed, 03 Sep 2025 06:02:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1utn8c-0000dX-A7
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 09:02:59 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-afeec747e60so1110389266b.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Sep 2025 06:02:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1756904523; x=1757509323; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Q7yO8ADA0pol4cy8ipnt6jQ+4uDi0a2eWjgPSJWFAag=;
- b=W5dWaqwDzxLLEm8YFZUgX18zgumHcVzfB4UNa6kADQGdX7/byX3paik4yJCUajF8y3
- 7vw/EhyLoe79ZZM5cFn/f+c5/jNy2y27gadA+jglULlaf9YK3+BjmJT5p7FlcTxgim6R
- 06n39OvQmKuYUiwGEfmF0KLSu17JrCE6id4fzwsOjObcruSSsuO1uQs/hJLfEdmhQnur
- Pn76JF7SJLlSz8h6f105MNyksZ1MWCfW8omRh6lFVuWuuoHu0MwNOha4aJu0vA/SF2HW
- 3tClMUCrC028iobjojQhIfsntj3LLkSgGxTCVszIF+GqKVQhzISKEvm4WSHCUH7499oA
- rSAA==
+ d=linaro.org; s=google; t=1756904576; x=1757509376; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=y2G6yT4v+ABAnILA0GwJLFDR4TEqCFt7xBLFHKMc/cI=;
+ b=X9q/Iut2rP2KTk0BbZ+O3yJcNKF7asAtFjJ79iOpYTIgpAZOT429kIwFxGX+08gjHX
+ HsSWAUUrvuk/QOdEcXVVct3S0LpZQLh+bgKVWm43qwmQ8UEhpHuEyhYisGqGc6Y/pW/D
+ 36bPUXHvT9mhe++yWH8epCBYdFkPHDXrsgNzx1ix7VxLTSw1bsHp6/g6VaOKyhm2bCvK
+ TvpLBkcdCmjQqSSC8XPEKzVsbQsEbV1SP/0n/HmvLB7I8RpczGKXvf4MnDTFGhlhKecE
+ DGq+2+IkD1iz1WUsgwNKrsdOgVI9CkaVC+JjhChb012GCD0mKtSbxmoaNMYl5eD1KqXU
+ pXyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756904523; x=1757509323;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Q7yO8ADA0pol4cy8ipnt6jQ+4uDi0a2eWjgPSJWFAag=;
- b=rJJpJ98jlYyyl3LHveeHU1llog6NVGbpBvXhU+C1oEaAkh+1K5+8oJfFA2ndBrbEyh
- vqyrB/XV3KKBQTkySgALoW9tjsYmgmmEUED9uTXTxlU5EEI6IW94/cMUTkcsn0Lr8pHz
- NY39cYE9G1HvsBy+YqFV5hls8g7fXHI1T2c3CtJvp5D3Vncqh6DRA14H0PvzVkehgoin
- HSJThZ4AbqNcNiRki7icdl9K6DTQKWU5K+xEy283TzrIpMYNZh+qDF9MUXQoIYgVt3a7
- WXXTO/qKp52W0v8cnqtU7IjGkFgG16G/b/1cNxMd9Rqt6X7yQ3SA8Uq+eKNNw79AxCrU
- qYAw==
-X-Gm-Message-State: AOJu0YwDSs0S9jSUjwaNhhe44UUUFefhFsHjBP92AM/j86uc3bAhSN/Y
- N/h2cpRsklo+7L4xluLIL2nw5PRb2IQCh+8c2bz82QSPZGV9Gtgyu0/QRRykdAqxao5qVrE8nCa
- Bam4ymkVDaP3jV5Te6m1ddY47X9BkzwwhpQWLCnUbR9ikP5/aLtduZn2Psd5ILWKRuOBi0cGAUw
- MBNeLYcthpHU6k8iBI9rTkwrbGDXl7lMTN1YNIZGGEjg==
-X-Gm-Gg: ASbGncvfZOkm5pHFGNJzFdY+p4BCbgvWOusMQZbdI8JcC0QWAU0C9BJeGwkFvlggdmN
- KmB2Z1WPPVqqseeF1mow2KZZEwqB0rOThaOaUFE958GvlLYvQk6Y3HgDlf+pO6/8/z62NOlP8Vc
- ZTUC75m47KVr3QEshzv+yqgHZY1IYRKsxOB7fBInCUzX8Od5sJbvMUKIUMWoNIoUjJOG9N8usds
- DminET9qVQgHS5BfMuYW/jgjyjiPQE2jJvaGymTjw/PA5eDplVlTpUCdf7RDKA2/04teFszf2AJ
- EkIpcVB5fdOwc5bpssQCNUnux4rGhJNbuZE3wM2UFUo8N/N8c02PWIfO9utCR9Uw2VrHWZDvWTI
- OoGon1g2/E8ZTwVDq6XzYmhKRQXP05O6Qj50JweEGzYlIvm4y2FqB9tt+rI8cb9jhQhk=
-X-Google-Smtp-Source: AGHT+IGgfRSMell+/W3XLFCDDR80gZvnWvEbUrMOkY74hJ14lx4kYrnVxKGZ0YBfuAwyGNt9sJIxwQ==
-X-Received: by 2002:a17:902:ef52:b0:248:8d0a:b4c4 with SMTP id
- d9443c01a7336-24944b523d9mr205320645ad.47.1756904521068; 
- Wed, 03 Sep 2025 06:02:01 -0700 (PDT)
-Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
- [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-329e23858ecsm5472278a91.14.2025.09.03.06.01.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Sep 2025 06:02:00 -0700 (PDT)
-From: Max Chou <max.chou@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, richard.henderson@linaro.org,
- Max Chou <max.chou@sifive.com>
-Subject: [RFC PATCH v2 3/3] target/riscv: Expose Zvqdotq extension as a cpu
- property
-Date: Wed,  3 Sep 2025 21:01:25 +0800
-Message-ID: <20250903130125.1701363-4-max.chou@sifive.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250903130125.1701363-1-max.chou@sifive.com>
-References: <20250903130125.1701363-1-max.chou@sifive.com>
+ d=1e100.net; s=20230601; t=1756904576; x=1757509376;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y2G6yT4v+ABAnILA0GwJLFDR4TEqCFt7xBLFHKMc/cI=;
+ b=DG/rnagX+HpPuMuacBfhdUUO188qLDEOcG2gjVRY2eTC8wENZDt8hbXrDM/xjjwgQG
+ ICvqEwJRZ734toxNuV8IDjbftLwhe1vZ/zWtkLwranoW3JW9Mlrb3Pkn8oveHvQwP2Op
+ xaBMVyyEvGWj6bnJT6edfulTiDS3kKnZXwqPSmtL+ROD7HcsCMWY0VKZ1GCjk9FNuE6x
+ niH097U6oz2qA92Xgi4ICOaZz2B6mWgsZOebho3P99Gq93xK77OYqPApJ5SU1qcTM0Oq
+ Cnk8ltmjKTfZPYnMK3/3szhMqQUNm7vnu7RaHweSbS3XOWvaQi6tVq65I58jHkwNBBnG
+ XliA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVvhKrVYJWmOXhHQsccbj3vufAnWhLPwpnRjpJMSDii/h55ztM5Qg11R0JaPECm3cGeWgFiX7aHX5Wu@nongnu.org
+X-Gm-Message-State: AOJu0YzHNkRPVHN4lDt4cfRBVYj0qGEbAgKWEaFdpd/JABRCXHwSvOej
+ L8nmVOB1071dxLkaagnQJxmgvhg1RodyjMWGTEY7XDxaRpC2oe3HOaKakGLaAoLiwbw=
+X-Gm-Gg: ASbGncvO2vTo4x5O3moHHao6pSoSRRXOaOJ309kIE0XM0HlaGYLphbWiZVbR4LTD5pQ
+ 4qrEyVa1qyL2OaLw94EuYm7gRWESr+hTPY9h+/3nM0O5oouFQiYk7ae7QD1yFOVt7FLj90TDwLx
+ jy3CnQ8HN5M6QKzUzkCnIDybEJeLHyeBLd+Jf8hFWys6vCEqXn8p2CIKzAz0KCyFsecxGuk9+Xn
+ XYXOsuOk0WqnaZFrAj8r5KzV/EA8bQtaAtc/8Q3B8FmrWG0iNJ8LQ0jrzVSVAXKRo8Dj97xLF0A
+ Ybho5Ppgmke6RjdXRFZ0PcG1l3/+iw65Nz4S77FJ/72p3g98Yb9cpOqb8YvJ2W/BKFnTUVgytxD
+ 7HtK/AoSajZCY/5U8Ui8swskO0DNygdQ+eKmgMyTdCB18Gr1qrObGfEANbRNzCMNDTIMCi8/FgJ
+ meuxtHvoZgeZTKkJ3I
+X-Google-Smtp-Source: AGHT+IH6OUCwuNOxgsTxjqzxSpFzrvm32JRejCHqu4h2UJjbwkDe0FFr29oPFBMtAfNQ9k4KdiRaIQ==
+X-Received: by 2002:a17:907:7242:b0:b04:5734:3b76 with SMTP id
+ a640c23a62f3a-b045734438emr552338866b.24.1756904575652; 
+ Wed, 03 Sep 2025 06:02:55 -0700 (PDT)
+Received: from [10.40.6.207] (93-51-222-138.ip268.fastwebnet.it.
+ [93.51.222.138]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b040a410817sm1007467966b.101.2025.09.03.06.02.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 03 Sep 2025 06:02:55 -0700 (PDT)
+Message-ID: <ad903d54-b4ee-47e6-bbc7-fe660409d374@linaro.org>
+Date: Wed, 3 Sep 2025 15:02:53 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=max.chou@sifive.com; helo=mail-pl1-x630.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/12] target/loongarch: Use mmu idx bitmap method when
+ flush TLB
+To: Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+References: <20250903084827.3085911-1-maobibo@loongson.cn>
+ <20250903084827.3085911-2-maobibo@loongson.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20250903084827.3085911-2-maobibo@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,24 +105,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
----
- target/riscv/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+On 9/3/25 10:48, Bibo Mao wrote:
+> With API tlb_flush_range_by_mmuidx(), bitmap of mmu idx should be used
+> rather than itself. Also MMU_KERNEL_IDX and MMU_USER_IDX are used rather
+> than current running mmu idx when flush TLB.
+> 
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>   target/loongarch/tcg/tlb_helper.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+> index 9365860c8c..d58f447555 100644
+> --- a/target/loongarch/tcg/tlb_helper.c
+> +++ b/target/loongarch/tcg/tlb_helper.c
+> @@ -101,8 +101,7 @@ static void invalidate_tlb_entry(CPULoongArchState *env, int index)
+>       target_ulong addr, mask, pagesize;
+>       uint8_t tlb_ps;
+>       LoongArchTLB *tlb = &env->tlb[index];
+> -
+> -    int mmu_idx = cpu_mmu_index(env_cpu(env), false);
+> +    int mmu_idx = BIT(MMU_KERNEL_IDX) | BIT(MMU_USER_IDX);
+>       uint8_t tlb_v0 = FIELD_EX64(tlb->tlb_entry0, TLBENTRY, V);
+>       uint8_t tlb_v1 = FIELD_EX64(tlb->tlb_entry1, TLBENTRY, V);
+>       uint64_t tlb_vppn = FIELD_EX64(tlb->tlb_misc, TLB_MISC, VPPN);
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 95edd02e68..ed486113ba 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1373,6 +1373,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
- /* These are experimental so mark with 'x-' */
- const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-     MULTI_EXT_CFG_BOOL("x-svukte", ext_svukte, false),
-+    MULTI_EXT_CFG_BOOL("x-zvqdotq", ext_zvqdotq, false),
- 
-     { },
- };
--- 
-2.39.3
+Better to rename the variable too, since this isn't an mmu_idx.
+We have used "idxmap" elsewhere for this purpose.
 
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
