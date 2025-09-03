@@ -2,40 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B775DB41914
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 10:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6797BB4191F
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 10:50:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utjAX-0003J5-6g; Wed, 03 Sep 2025 04:48:41 -0400
+	id 1utjAW-0003IS-9t; Wed, 03 Sep 2025 04:48:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1utjAT-0003Ht-9k
+ id 1utjAT-0003Hu-9k
  for qemu-devel@nongnu.org; Wed, 03 Sep 2025 04:48:37 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1utjAQ-0007Mk-8n
+ (envelope-from <maobibo@loongson.cn>) id 1utjAR-0007Mj-6S
  for qemu-devel@nongnu.org; Wed, 03 Sep 2025 04:48:36 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8DxP9PdALhoGScGAA--.12554S3;
+ by gateway (Coremail) with SMTP id _____8DxudHdALhoHCcGAA--.12861S3;
  Wed, 03 Sep 2025 16:48:29 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowJDxbMHcALhoc916AA--.5293S2;
- Wed, 03 Sep 2025 16:48:28 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowJDxbMHcALhoc916AA--.5293S3;
+ Wed, 03 Sep 2025 16:48:29 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v3 00/12] target/loongarch: Small enhancement about TLB flush
-Date: Wed,  3 Sep 2025 16:48:15 +0800
-Message-Id: <20250903084827.3085911-1-maobibo@loongson.cn>
+Subject: [PATCH v3 01/12] target/loongarch: Use mmu idx bitmap method when
+ flush TLB
+Date: Wed,  3 Sep 2025 16:48:16 +0800
+Message-Id: <20250903084827.3085911-2-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20250903084827.3085911-1-maobibo@loongson.cn>
+References: <20250903084827.3085911-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJDxbMHcALhoc916AA--.5293S2
+X-CM-TRANSID: qMiowJDxbMHcALhoc916AA--.5293S3
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,52 +66,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch set is continuous MMU enhancement, it is focused on TLB
-search, especially on function helper_invtlb_page_asid() and function
-helper_invtlb_page_asid_or_g(). The code is similiar with function
-loongarch_tlb_search(), one common API loongarch_tlb_search_cb() is
-added for these functions.
+With API tlb_flush_range_by_mmuidx(), bitmap of mmu idx should be used
+rather than itself. Also MMU_KERNEL_IDX and MMU_USER_IDX are used rather
+than current running mmu idx when flush TLB.
 
-Also there is optimization with qemu TLB flush, invalidate_tlb_entry()
-is used to flush one TLB entry rather than flush all TLB entries.
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
-v2 ... v3:
-  1. Remove optimization to flush QEMU TLB with MMU_USER_IDX, now both
-     MMU_KERNEL_IDX and MMU_USER_IDX bitmap is added.
-  2. Add field RESERVE with register CSR_STLBPS, field RESERVE keeps
-     zero when change register CSR_STLBPS.
+ target/loongarch/tcg/tlb_helper.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-v1 ... v2:
-  1. Add bugfix patch with CSR_STLBPS page size set issue.
-  2. Add tlb entry invalidation in function invalidate_tlb(), it can be
-     used in both helper_invtlb_page_asid() and function
-     helper_invtlb_page_asid_or_g().
----
-Bibo Mao (12):
-  target/loongarch: Use mmu idx bitmap method when flush TLB
-  target/loongarch: Add parameter tlb pointer with fill_tlb_entry
-  target/loongarch: Reduce TLB flush with helper_tlbwr
-  target/loongarch: Update TLB index selection method
-  target/loongarch: Fix page size set issue with CSR_STLBPS
-  target/loongarch: Add tlb search callback in loongarch_tlb_search()
-  target/loongarch: Add common API loongarch_tlb_search_cb()
-  target/loongarch: Use loongarch_tlb_search_cb in
-    helper_invtlb_page_asid_or_g
-  target/loongarch: Use loongarch_tlb_search_cb in
-    helper_invtlb_page_asid
-  target/loongarch: Invalid tlb entry in invalidate_tlb()
-  target/loongarch: Only flush one TLB entry in
-    helper_invtlb_page_asid_or_g()
-  target/loongarch: Only flush one TLB entry in
-    helper_invtlb_page_asid()
-
- target/loongarch/cpu-csr.h        |   1 +
- target/loongarch/tcg/csr_helper.c |   5 +-
- target/loongarch/tcg/tlb_helper.c | 197 +++++++++++++++++++-----------
- 3 files changed, 132 insertions(+), 71 deletions(-)
-
-
-base-commit: 8415b0619f65bff12f10c774659df92d3f61daca
+diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
+index 9365860c8c..d58f447555 100644
+--- a/target/loongarch/tcg/tlb_helper.c
++++ b/target/loongarch/tcg/tlb_helper.c
+@@ -101,8 +101,7 @@ static void invalidate_tlb_entry(CPULoongArchState *env, int index)
+     target_ulong addr, mask, pagesize;
+     uint8_t tlb_ps;
+     LoongArchTLB *tlb = &env->tlb[index];
+-
+-    int mmu_idx = cpu_mmu_index(env_cpu(env), false);
++    int mmu_idx = BIT(MMU_KERNEL_IDX) | BIT(MMU_USER_IDX);
+     uint8_t tlb_v0 = FIELD_EX64(tlb->tlb_entry0, TLBENTRY, V);
+     uint8_t tlb_v1 = FIELD_EX64(tlb->tlb_entry1, TLBENTRY, V);
+     uint64_t tlb_vppn = FIELD_EX64(tlb->tlb_misc, TLB_MISC, VPPN);
 -- 
 2.39.3
 
