@@ -2,74 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5639B41C5C
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 12:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64181B423CE
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 16:33:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utl7V-00048g-TZ; Wed, 03 Sep 2025 06:53:41 -0400
+	id 1utoXt-0001Wv-EZ; Wed, 03 Sep 2025 10:33:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1utl7T-00048H-Pi
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 06:53:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hector.cao@canonical.com>)
+ id 1utldX-0005cZ-00
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 07:26:47 -0400
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1utl7Q-0008Pa-FA
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 06:53:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756896813;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yrFVTwxaEBkfhV3Ly33uBgIveu5Nm1+5QlKzPUaLUHw=;
- b=EGUIVdgYXj0vPPlX7NQcZ95rAm/XpHS4Ds3Lr6iZOcdCCs7BGv7yBqVkofKLL7kWpKi2AK
- 97BEGxwKmuc2J/lfrSmMl+XLWX9gUttWA8erRs6CDYktKE3OMIHhMX6O6FfVJDIGs2+Gib
- X28ov/Cy6CI5feiR+z9HbTkl0TYipck=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-411-S6XOTAuKPl281hrwlHw8Jw-1; Wed,
- 03 Sep 2025 06:53:30 -0400
-X-MC-Unique: S6XOTAuKPl281hrwlHw8Jw-1
-X-Mimecast-MFC-AGG-ID: S6XOTAuKPl281hrwlHw8Jw_1756896809
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (Exim 4.90_1) (envelope-from <hector.cao@canonical.com>)
+ id 1utldS-0005gT-QI
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 07:26:46 -0400
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A8D401800562; Wed,  3 Sep 2025 10:53:28 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.9])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9ECFE1800451; Wed,  3 Sep 2025 10:53:27 +0000 (UTC)
-Date: Wed, 3 Sep 2025 12:53:25 +0200
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Brian Song <hibriansong@gmail.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, armbru@redhat.com,
- bernd@bsbernd.com, fam@euphon.net, hreitz@redhat.com, kwolf@redhat.com
-Subject: Re: [PATCH 1/4] export/fuse: add opt to enable FUSE-over-io_uring
-Message-ID: <20250903105325.GB106431@fedora>
-References: <20250830025025.3610-1-hibriansong@gmail.com>
- <20250830025025.3610-2-hibriansong@gmail.com>
+ by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 565023F37D
+ for <qemu-devel@nongnu.org>; Wed,  3 Sep 2025 11:26:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1756898799;
+ bh=k1retpCCycIphN7h7XGrG4FyEMSetIL2qd8vjmKOpvs=;
+ h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+ To:Cc:Content-Type;
+ b=dcz3/ltOhO3dfEDY73a31+dAV+q48pgZgW1uBxjBMHIUEPb/LQWoX7jS0ckBhvYHI
+ liPHMo2BOn90w8/Tf9idND2ucTJ0Gxoe7rNNOxG79uyGzlTKpLRhuhe3VpDmR9dtTn
+ ZHyBqgKsV+OCysC3MX8C+4DAp+EBTcJhA9B6AMJJozvfN5JQU0ZVlByuFXXgYrYPGA
+ p5otLfDbaFOOHe2JK3T3rj/ZKPrCFIwqSiGNpZQ4S/px04gS0ocY/vr/6FY2VuMB7u
+ Q32SKyxLy7Mf3ADmIhT8Hnp+Uww2b9NGlGQ2PKIdCNki3hB0oHSeynNP++Tr6v4fgP
+ XKzKNQ8ly94Xg==
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-afcb7338319so612316866b.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Sep 2025 04:26:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756898798; x=1757503598;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=k1retpCCycIphN7h7XGrG4FyEMSetIL2qd8vjmKOpvs=;
+ b=YJLa8XkvSa9WHcB/U8ZeOll/QskIeCsehpFWIQd/M+BLy2005agAxGwLEmL1RXQ+RJ
+ D92Z0Flo8DZlyyUZzSnknDlxXnK3ujEQPJIYeVwrcgNYdERstM2isQSKrUSlpiyLQDUQ
+ OlRu8JnyMEIjxTc9rBfhyYvMWPD749XWCJHbX2+0iitTKL22Y+UmtOdnfQgffyEUdspi
+ lW1JTFAWMKtAZmqdF3sYo6IprQAtYkIpB9B4lc4QiWBq+A+VU6oVk+YhwyeyKIXfUelm
+ MrQwrEhFlahmXYBm2tLQEvZ2/CQDZt86nDxMyB6jmcYVcwv39gbScyzvWu3Cvr8QnI0L
+ T2WQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXwKG+dqw91No4lQtHO2lsvRKyqZ9+9KdN3tSwoniuADULCtfUWuSjRRZKkLLBDGZoWlGRkITd9fpyC@nongnu.org
+X-Gm-Message-State: AOJu0YxetFRIuCzI6YwMX9C+aBJbe/bKUdw5HbUNYbvVAFufqdcz7gAt
+ 7GHKjxJQl9TpN4IORPE4LCaOKVXBp7tHshhqanHslQyst89czWweBLfXLYWccWsK8I8V6cmrK07
+ FmARXCVDdBDP8hMgx8KwB4MapgPs7+uytez3MVS5JA5gb3oCyRFQ/F2HaJMNrFe6jMr6ter0Pf/
+ +TMNOWk07owlIAS+LRlegd44IS+061q368TfyxQvDQ1QUGaCs=
+X-Gm-Gg: ASbGncsfSonyQH8WAqIO+IKQOFBzNuJtxFh3ceyCUWKEAgo/IzcVQChHNDFD8/Ssy5w
+ DZ741Azhp9TobPiiV8a4nDCPkO4+iIcAMwP2UOUONbKGFs/OicqQo7XXvP8Sf657pwhpweK0eHe
+ 7XUTKbDPSvw9cS8Q4HZEbLfOQ0emaWjM+lzagxsaYY
+X-Received: by 2002:a17:907:2da7:b0:afe:7909:f42a with SMTP id
+ a640c23a62f3a-b01d97744a5mr1440518366b.51.1756898797950; 
+ Wed, 03 Sep 2025 04:26:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEhp7Rk1XVlP+IUGjmHnDP9LoVdPUp2z35mwYOUwo3wxcY+ZEmio5XCbekO5bRb3hZyvLTKCHzsn15U2ikZmbw=
+X-Received: by 2002:a17:907:2da7:b0:afe:7909:f42a with SMTP id
+ a640c23a62f3a-b01d97744a5mr1440513666b.51.1756898797331; Wed, 03 Sep 2025
+ 04:26:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="pOkYF4ZkALzC9oZ7"
-Content-Disposition: inline
-In-Reply-To: <20250830025025.3610-2-hibriansong@gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <CAATJJ0+Qq3ksRmNRDrGQLVHQ=XnsnFHxCNxUhjJfNfgwUKkDPQ@mail.gmail.com>
+ <aJNDxxjeqkOLAO2r@redhat.com>
+ <CAATJJ0L-E=JsKOX_E=jqraeK__jLF851DDbEx5psVkTMSppKXw@mail.gmail.com>
+ <aJOqmxTimJ_mFCqp@redhat.com>
+ <ccabd72c-6f48-4be2-8bbd-44f28eb2cfd1@redhat.com>
+ <CAATJJ0KZDHqMHmpmfFySJjreqPMTHDiJLJM_zBdcr5CrzOL2tg@mail.gmail.com>
+ <CAATJJ0Kz7Sdv-Dq0r0pGBXYgZbTbaC0fSQiVXoQides4pF=zXg@mail.gmail.com>
+In-Reply-To: <CAATJJ0Kz7Sdv-Dq0r0pGBXYgZbTbaC0fSQiVXoQides4pF=zXg@mail.gmail.com>
+From: Hector Cao <hector.cao@canonical.com>
+Date: Wed, 3 Sep 2025 13:26:25 +0200
+X-Gm-Features: Ac12FXysoj2R8B-YcrPQPh5wwPydX_NYZiR311xg95-aG5xa9iE-rDjDqJHCwWo
+Message-ID: <CABjvBV5P47Jc8Sz9G1aCheb_=_3oFe6Yo-6QkY+fnoO9Fe2YXw@mail.gmail.com>
+Subject: Re: Issues with pdcm in qemu 10.1-rc on migration and save/restore
+To: Christian Ehrhardt <christian.ehrhardt@canonical.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Xiaoyao Li <xiaoyao.li@intel.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ qemu-devel <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000b8bb4e063de3e00f"
+Received-SPF: pass client-ip=185.125.188.122;
+ envelope-from=hector.cao@canonical.com;
+ helo=smtp-relay-internal-0.canonical.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ HTML_MESSAGE=0.001, NUMERIC_HTTP_ADDR=1.242, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_REMOTE_IMAGE=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 03 Sep 2025 10:32:46 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,699 +115,819 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
---pOkYF4ZkALzC9oZ7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--000000000000b8bb4e063de3e00f
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 29, 2025 at 10:50:22PM -0400, Brian Song wrote:
-> This patch adds a new export option for storage-export-daemon to enable
-> FUSE-over-io_uring via the switch io-uring=3Don|off (disableby default).
-> It also implements the protocol handshake with the Linux kernel
-> during the FUSE-over-io_uring initialization phase.
->=20
-> See: https://docs.kernel.org/filesystems/fuse-io-uring.html
->=20
-> The kernel documentation describes in detail how FUSE-over-io_uring
-> works. This patch implements the Initial SQE stage shown in thediagram:
-> it initializes one queue per IOThread, each currently supporting a
-> single submission queue entry (SQE). When the FUSE driver sends the
-> first FUSE request (FUSE_INIT), storage-export-daemon calls
-> fuse_uring_start() to complete initialization, ultimately submitting
-> the SQE with the FUSE_IO_URING_CMD_REGISTER command to confirm
-> successful initialization with the kernel.
->=20
-> We also added support for multiple IOThreads. The current Linux kernel
-> requires registering $(nproc) queues when setting up FUSE-over-io_uring
-> To let users customize the number of FUSE Queues (i.e., IOThreads),
-> we first create nproc Ring Queues as required by the kernel, then
-> distribute them in a round-robin manner to the FUSE Queues for
-> registration. In addition, to support multiple in-flight requests,
-> we configure each Ring Queue with FUSE_DEFAULT_RING_QUEUE_DEPTH
-> entries/requests.
+On Wed, Sep 3, 2025 at 10:38=E2=80=AFAM Christian Ehrhardt <
+christian.ehrhardt@canonical.com> wrote:
 
-The previous paragraph says "each currently supporting a single
-submission queue entry (SQE)" whereas this paragraph says "we configure
-each Ring Queue with FUSE_DEFAULT_RING_QUEUE_DEPTH entries/requests".
-Maybe this paragraph was squashed into the commit description in a later
-step and the previous paragraph can be updated to reflect that multiple
-SQEs are submitted?
+> On Wed, Aug 20, 2025 at 7:11=E2=80=AFAM Christian Ehrhardt
+> <christian.ehrhardt@canonical.com> wrote:
+> >
+> > On Tue, Aug 19, 2025 at 4:51=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.=
+com>
+> wrote:
+> > >
+> > > On 8/6/25 21:18, Daniel P. Berrang=C3=A9 wrote:
+> > > > On Wed, Aug 06, 2025 at 07:57:34PM +0200, Christian Ehrhardt wrote:
+> > > >> On Wed, Aug 6, 2025 at 2:00=E2=80=AFPM Daniel P. Berrang=C3=A9 <
+> berrange@redhat.com> wrote:
+> > > >>>
+> > > >>> On Wed, Aug 06, 2025 at 01:52:17PM +0200, Christian Ehrhardt wrot=
+e:
+> > > >>>> Hi,
+> > > >>>> I was unsure if this would be better sent to libvirt or qemu - t=
+he
+> > > >>>> issue is somewhere between libvirt modelling CPUs and qemu 10.1
+> > > >>>> behaving differently. I did not want to double post and gladly
+> most of
+> > > >>>> the people are on both lists - since the switch in/out of the
+> problem
+> > > >>>> is qemu 10.0 <-> 10.1 let me start here. I beg your pardon for
+> not yet
+> > > >>>> having all the answers, I'm sure I could find more with
+> debugging, but
+> > > >>>> I also wanted to report early for your awareness while we are
+> still in
+> > > >>>> the RC phase.
+> > > >>>>
+> > > >>>>
+> > > >>>> # Problem
+> > > >>>>
+> > > >>>> What I found when testing migrations in Ubuntu with qemu 10.1-rc=
+1
+> was:
+> > > >>>>    error: operation failed: guest CPU doesn't match specificatio=
+n:
+> > > >>>> missing features: pdcm
+> > > >>>>
+> > > >>>> This is behaving the same with libvirt 11.4 or the more recent
+> 11.6.
+> > > >>>> But switching back to qemu 10.0 confirmed that this behavior is
+> new
+> > > >>>> with qemu 10.1-rc.
+> > > >>>
+> > > >>>
+> > > >>>> Without yet having any hard evidence against them I found a few
+> pdcm
+> > > >>>> related commits between 10.0 and 10.1-rc1:
+> > > >>>>    7ff24fb65 i386/tdx: Don't mask off CPUID_EXT_PDCM
+> > > >>>>    00268e000 i386/cpu: Warn about why CPUID_EXT_PDCM is not
+> available
+> > > >>>>    e68ec2980 i386/cpu: Move adjustment of CPUID_EXT_PDCM before
+> > > >>>> feature_dependencies[] check
+> > > >>>>    0ba06e46d i386/tdx: Add TDX fixed1 bits to supported CPUIDs
+> > > >>>>
+> > > >>>>
+> > > >>>> # Caveat
+> > > >>>>
+> > > >>>> My test environment is in LXD system containers, that gives me
+> issues
+> > > >>>> in the power management detection
+> > > >>>>    libvirtd[406]: error from service:
+> GDBus.Error:System.Error.EROFS:
+> > > >>>> Read-only file system
+> > > >>>>    libvirtd[406]: Failed to get host power management capabiliti=
+es
+> > > >>>
+> > > >>> That's harmless.
+> > > >>
+> > > >> Yeah, it always was for me - thanks for confirming.
+> > > >>
+> > > >>>> And the resulting host-model on a  rather old test server will
+> therefore have:
+> > > >>>>    <cpu mode=3D'custom' match=3D'exact' check=3D'full'>
+> > > >>>>      <model fallback=3D'forbid'>Haswell-noTSX-IBRS</model>
+> > > >>>>      <vendor>Intel</vendor>
+> > > >>>>      <feature policy=3D'require' name=3D'vmx'/>
+> > > >>>>      <feature policy=3D'disable' name=3D'pdcm'/>
+> > > >>>>       ...
+> > > >>>>
+> > > >>>> But that was fine in the past, and the behavior started to break
+> > > >>>> save/restore or migrations just now with the new qemu 10.1-rc.
+> > > >>>>
+> > > >>>> # Next steps
+> > > >>>>
+> > > >>>> I'm soon overwhelmed by meetings for the rest of the day, but
+> would be
+> > > >>>> curious if one has a suggestion about what to look at next for
+> > > >>>> debugging or a theory about what might go wrong. If nothing else
+> comes
+> > > >>>> up I'll try to set up a bisect run tomorrow.
+> > > >>>
+> > > >>> Yeah, git bisect is what I'd start with.
+> > > >>
+> > > >> Bisect complete, identified this commit
+> > > >>
+> > > >> commit 00268e00027459abede448662f8794d78eb4b0a4
+> > > >> Author: Xiaoyao Li <xiaoyao.li@intel.com>
+> > > >> Date:   Tue Mar 4 00:24:50 2025 -0500
+> > > >>
+> > > >>      i386/cpu: Warn about why CPUID_EXT_PDCM is not available
+> > > >>
+> > > >>      When user requests PDCM explicitly via "+pdcm" without PMU
+> enabled, emit
+> > > >>      a warning to inform the user.
+> > > >>
+> > > >>      Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> > > >>      Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> > > >>      Link:
+> https://lore.kernel.org/r/20250304052450.465445-3-xiaoyao.li@intel.com
+> > > >>      Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > > >>
+> > > >>   target/i386/cpu.c | 3 +++
+> > > >>   1 file changed, 3 insertions(+)
+> > > >>
+> > > >>
+> > > >>
+> > > >> Which is odd as it should only add a warning right?
+> > > >
+> > > > No, that commit message is misleading.
+> > > >
+> > > > IIUC mark_unavailable_features() actively blocks usage of the
+> feature,
+> > > > so it is a functional change, not merely a emitting warning.
+> > > >
+> > > > It makes me wonder if that commit was actually intended to block th=
+e
+> > > > feature or not, vs merely warning ?  CC'ing those involved in the
+> > > > commit.
+> > > We can revert the commit.  I'll send the revert to Stefan and let him
+> > > decide whether to include it in 10.1-rc4 or delay to 10.2 and 10.1.1.
+> >
+> > Thanks Paolo for considering that.
+> >
+> > My steps to reproduce seemed really clear and are 100% reproducible
+> > for me, but no one so far said "yeah they see it too", so I'm getting
+> > unsure if it was not tried by anyone else or if there is more to it
+> > than we yet know.
+> > Further I tested more with the commit reverted, and found that at
+> > least cross version migrations (9.2 -> 10.1) still have issues that
+> > seem related - complaining about pdcm as missing feature.
+> > But that was in a log of a test system that went away and ... you know
+> > how these things can sometimes be, that new result is not yet very
+> > reliable.
+> >
+> > I intended to check the following matrix more deeply again with and
+> > without the reverted change and then come back to this thread:
+> >
+> > #1 Compare platforms
+> > - Migrating between non containerized hosts to verify if they are
+> > affected as well
+> > - Power management explicitly switched off/on (vs the auto detect of
+> > host-model) in the guest XML
+> > #2 Retest the different Use-cases I've seen this pop up
+> > - 10.1 managed save (broken unless reverting the commit that was
+> identified)
+> > - 9.2 -> 10.1 migration (seems broken even with the revert)
+>
+> I need to come back to this aspect of it - the cross release or cross
+> qemu version migrations.
+>
+> Hector (on CC) helps me on that now - sadly we were able to confirm
+> that migrations from older qemu versions no longer work.
+> Yep 10.1 is released by now so it might end up as "The problem is what
+> happens when we detect after we have done a release that something has
+> gone wrong" from [2].
+> But I still can't believe only we see this and therefore for now want
+> to believe I messed up on our side when merging 10.1 :-)
+>
+> For now this is a call if others have also seen any older release
+> migrating to 10.1 to throw:
+>   error: operation failed: guest CPU doesn't match specification:
+> missing features: pdcm,arch-capabilities
+>
+> Hector will later today reply here with a summary of what we found so
+> far, to provide you a more complete picture to think about, without
+> having to read through all the messy interim steps in the Ubuntu bug.
+>
+>
+Indeed, we experience this error at migration from older QEMU versions to
+the QEMU 10.1
 
->=20
-> Suggested-by: Kevin Wolf <kwolf@redhat.com>
-> Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Signed-off-by: Brian Song <hibriansong@gmail.com>
-> ---
->  block/export/fuse.c                  | 310 +++++++++++++++++++++++++--
->  docs/tools/qemu-storage-daemon.rst   |  11 +-
->  qapi/block-export.json               |   5 +-
->  storage-daemon/qemu-storage-daemon.c |   1 +
->  util/fdmon-io_uring.c                |   5 +-
->  5 files changed, 309 insertions(+), 23 deletions(-)
->=20
-> diff --git a/block/export/fuse.c b/block/export/fuse.c
-> index c0ad4696ce..19bf9e5f74 100644
-> --- a/block/export/fuse.c
-> +++ b/block/export/fuse.c
-> @@ -48,6 +48,9 @@
->  #include <linux/fs.h>
->  #endif
-> =20
-> +/* room needed in buffer to accommodate header */
-> +#define FUSE_BUFFER_HEADER_SIZE 0x1000
 
-Is it possible to write this in a way that shows how the constant is
-calculated? That way the constant would automatically adjust on systems
-where the underlying assumptions have changed (e.g. page size, header
-struct size). This approach is also self-documenting so it's possible to
-understand where the magic number comes from.
+$ virsh migrate --unsafe --live test-migration qemu+ssh://10.105.100.188/sy=
+stem
+error: operation failed: guest CPU doesn't match specification:
+missing features: pdcm,arch-capabilities
 
-For example:
+The domain definition used to reproduce this issue is quite simple:
 
-  #define FUSE_BUFFER_HEADER_SIZE DIV_ROUND_UP(sizeof(struct fuse_uring_req=
-_header), qemu_real_host_page_size())
+<domain type=3D'kvm' xmlns:qemu=3D'http://libvirt.org/schemas/domain/qemu/1=
+.0'>
+  <name>test-migration</name>
+  <memory unit=3D'GiB'>2</memory>
+  <os>
+    <type arch=3D'x86_64' machine=3D'q35'>hvm</type>
+  </os>
+  <cpu mode=3D'host-model' check=3D'partial'/>
+</domain>
 
-(I'm guessing what the formula you used is, so this example may be
-incorrect...)
+Here are the -machine and -cpu blocks of QEMU command-lines for a
+migration between
+QEMU 9.2 and QEMU 10.1 on a Intel Haswell CPU:
 
-> +
->  /* Prevent overly long bounce buffer allocations */
->  #define FUSE_MAX_READ_BYTES (MIN(BDRV_REQUEST_MAX_BYTES, 1 * 1024 * 1024=
-))
->  /*
-> @@ -63,12 +66,59 @@
->      (FUSE_MAX_WRITE_BYTES - FUSE_IN_PLACE_WRITE_BYTES)
-> =20
->  typedef struct FuseExport FuseExport;
-> +typedef struct FuseQueue FuseQueue;
-> +
-> +#ifdef CONFIG_LINUX_IO_URING
-> +#define FUSE_DEFAULT_RING_QUEUE_DEPTH 64
-> +#define FUSE_DEFAULT_MAX_PAGES_PER_REQ 32
-> +
-> +typedef struct FuseRingQueue FuseRingQueue;
-> +typedef struct FuseRingEnt {
-> +    /* back pointer */
-> +    FuseRingQueue *rq;
-> +
-> +    /* commit id of a fuse request */
-> +    uint64_t req_commit_id;
+Origin: QEMU 9.2
 
-This field is not used in this commit. Please introduce it in the commit
-that uses it so it's easier to review and understand the purpose of this
-field.
+...
+-machine pc-q35-9.2,usb=3Doff,dump-guest-core=3Doff,memory-backend=3Dpc.ram=
+,acpi=3Doff
+\
+-cpu Haswell-noTSX-IBRS,vmx=3Don,pdcm=3Don,f16c=3Don,rdrand=3Don,
+ hypervisor=3Don,vme=3Don,ss=3Don,arat=3Don,tsc-adjust=3Don,zero-fcs-fds=3D=
+on,
+ umip=3Don,md-clear=3Don,stibp=3Don,flush-l1d=3Don,arch-capabilities=3Don,
+ ssbd=3Don,xsaveopt=3Don,abm=3Don,pdpe1gb=3Don,ibpb=3Don,ibrs=3Don,amd-stib=
+p=3Don,
+ amd-ssbd=3Don,skip-l1dfl-vmentry=3Don,pschange-mc-no=3Don,gds-no=3Don,rfds=
+-no=3Don,
+<vmx-*>
+...
 
-> +
-> +    /* fuse request header and payload */
-> +    struct fuse_uring_req_header req_header;
-> +    void *op_payload;
-> +    size_t req_payload_sz;
+<vmx-*> : the vmx-* block is removed for better clarity
 
-op_payload and req_payload_sz refer to the same buffer, and they are
-submitted alongside req_header. It would be nice to name the fields
-consistently:
+Target: QEMU 10.1
 
-  struct fuse_uring_req_header req_header;
-  void *req_payload;
-  size_t req_payload_sz;
+...
+-machine pc-q35-9.2,usb=3Doff,dump-guest-core=3Doff,memory-backend=3Dpc.ram=
+,acpi=3Doff
+\
+-cpu Haswell-noTSX-IBRS,vmx=3Don,pdcm=3Don,f16c=3Don,rdrand=3Don,
+ hypervisor=3Don,vme=3Don,ss=3Don,arat=3Don,tsc-adjust=3Don,zero-fcs-fds=3D=
+on,
+ umip=3Don,md-clear=3Don,stibp=3Don,flush-l1d=3Don,arch-capabilities=3Don,
+ ssbd=3Don,xsaveopt=3Donabm=3Don,pdpe1gb=3Don,ibpb=3Don,ibrs=3Don,amd-stibp=
+=3Don,
+ amd-ssbd=3Don,skip-l1dfl-vmentry=3Don,pschange-mc-no=3Don,gds-no=3Don,rfds=
+-no=3Don,vmx-activity-wait-sipi=3Don,vmx-pml=3Don
+...
 
-req_payload and req_payload_sz could be eliminated since they are also
-stored in iov[1].iov_base and .iov_len. If you feel that would be harder
-to understand, then it's okay to keep the duplicate fields.
+This migration failure can be broken down to 2 separate issues, each
+one is related to one missing feature: pdcm & arch-capabilities.
+Based on our best understanding of the moment, the behavior of QEMU on
+these 2 features has been changed recently in 10.1.
 
-> +
-> +    /* The vector passed to the kernel */
-> +    struct iovec iov[2];
-> +
-> +    CqeHandler fuse_cqe_handler;
-> +} FuseRingEnt;
-> +
-> +struct FuseRingQueue {
+- arch-capabilities
 
-A comment would be nice here to explain that the kernel requires one
-FuseRingQueue per host CPU and this concept is independent of /dev/fuse
-(FuseQueue).
+  https://github.com/qemu/qemu/commit/d3a24134e37d57abd3e7445842cda2717f49e=
+96d
+  (target/i386: do not expose ARCH_CAPABILITIES on AMD CPU)
 
-> +    int rqid;
-> +
-> +    /* back pointer */
-> +    FuseQueue *q;
-> +    FuseRingEnt *ent;
-> +
-> +    /* List entry for ring_queues */
-> +    QLIST_ENTRY(FuseRingQueue) next;
-> +};
-> +
-> +/*
-> + * Round-robin distribution of ring queues across FUSE queues.
-> + * This structure manages the mapping between kernel ring queues and user
-> + * FUSE queues.
-> + */
-> +typedef struct FuseRingQueueManager {
-> +    FuseRingQueue *ring_queues;
-> +    int num_ring_queues;
-> +    int num_fuse_queues;
-> +} FuseRingQueueManager;
-> +#endif
+- pdcm
+  https://github.com/qemu/qemu/commit/e68ec2980901c8e7f948f3305770962806c53=
+f0b
+  (i386/cpu: Move adjustment of CPUID_EXT_PDCM before
+feature_dependencies[] check)
 
-It's easy to forget which #ifdef we're inside after a few lines, so it
-helps to indicate that in a comment:
+  this commit makes QEMU disable the pdcm if PMU is off, I think on
+previous QEMU versions,
+  this is also the expected behavior but there is a bug that is fixed
+in the commit.
+  When I enable the PMU in the guest definition:
+    <features>
+    <pmu state=3D'on'/>
+    </features>
+  The missing pdcm feature error disappears.
 
-#endif /* CONFIG_LINUX_IO_URING */
+If we revert both these two commits, the migration works.
 
-> =20
->  /*
->   * One FUSE "queue", representing one FUSE FD from which requests are fe=
-tched
->   * and processed.  Each queue is tied to an AioContext.
->   */
-> -typedef struct FuseQueue {
-> +struct FuseQueue {
->      FuseExport *exp;
-> =20
->      AioContext *ctx;
-> @@ -109,15 +159,11 @@ typedef struct FuseQueue {
->       * Free this buffer with qemu_vfree().
->       */
->      void *spillover_buf;
-> -} FuseQueue;
-> =20
-> -/*
-> - * Verify that FuseQueue.request_buf plus the spill-over buffer together
-> - * are big enough to be accepted by the FUSE kernel driver.
-> - */
-> -QEMU_BUILD_BUG_ON(sizeof(((FuseQueue *)0)->request_buf) +
-> -                  FUSE_SPILLOVER_BUF_SIZE <
-> -                  FUSE_MIN_READ_BUFFER);
+We are looking into potential solutions to this migration issue and
+according to the documenation [1],
+our failure might fall into the 4th case:
+  $ qemu-7.2 -M pc-7.2 -> qemu-8.0 -M pc-7.2
 
-Why was this removed, it's probably still necessary in the non-io_uring
-case (which is compiled in even when CONFIG_LINUX_IO_URING is defined)?
+Presumably, it is necessary to add some compability properties to make
+the new behavior on pdcm and
+arch-capabilities compatible with older QEMU versions, but as Christian sai=
+d -
+10.1 is already released so it might be more complex now
 
-> +#ifdef CONFIG_LINUX_IO_URING
-> +    QLIST_HEAD(, FuseRingQueue) ring_queue_list;
-> +#endif
-> +};
-> =20
->  struct FuseExport {
->      BlockExport common;
-> @@ -133,7 +179,7 @@ struct FuseExport {
->       */
->      bool halted;
-> =20
-> -    int num_queues;
-> +    size_t num_queues;
->      FuseQueue *queues;
->      /*
->       * True if this export should follow the generic export's AioContext.
-> @@ -149,6 +195,12 @@ struct FuseExport {
->      /* Whether allow_other was used as a mount option or not */
->      bool allow_other;
-> =20
-> +#ifdef CONFIG_LINUX_IO_URING
-> +    bool is_uring;
-> +    size_t ring_queue_depth;
-> +    FuseRingQueueManager *ring_queue_manager;
-> +#endif
-> +
->      mode_t st_mode;
->      uid_t st_uid;
->      gid_t st_gid;
-> @@ -205,7 +257,7 @@ static void fuse_attach_handlers(FuseExport *exp)
->          return;
->      }
-> =20
-> -    for (int i =3D 0; i < exp->num_queues; i++) {
-> +    for (size_t i =3D 0; i < exp->num_queues; i++) {
->          aio_set_fd_handler(exp->queues[i].ctx, exp->queues[i].fuse_fd,
->                             read_from_fuse_fd, NULL, NULL, NULL,
->                             &exp->queues[i]);
-> @@ -257,6 +309,189 @@ static const BlockDevOps fuse_export_blk_dev_ops =
-=3D {
->      .drained_poll  =3D fuse_export_drained_poll,
->  };
-> =20
-> +#ifdef CONFIG_LINUX_IO_URING
-> +static void fuse_uring_sqe_set_req_data(struct fuse_uring_cmd_req *req,
-> +                    const unsigned int rqid,
-> +                    const unsigned int commit_id)
-> +{
-> +    req->qid =3D rqid;
-> +    req->commit_id =3D commit_id;
-> +    req->flags =3D 0;
-> +}
-> +
-> +static void fuse_uring_sqe_prepare(struct io_uring_sqe *sqe, FuseQueue *=
-q,
-> +               __u32 cmd_op)
-> +{
-> +    sqe->opcode =3D IORING_OP_URING_CMD;
-> +
-> +    sqe->fd =3D q->fuse_fd;
-> +    sqe->rw_flags =3D 0;
-> +    sqe->ioprio =3D 0;
-> +    sqe->off =3D 0;
-> +
-> +    sqe->cmd_op =3D cmd_op;
-> +    sqe->__pad1 =3D 0;
-> +}
-> +
-> +static void fuse_uring_prep_sqe_register(struct io_uring_sqe *sqe, void =
-*opaque)
-> +{
-> +    FuseRingEnt *ent =3D opaque;
-> +    struct fuse_uring_cmd_req *req =3D (void *)&sqe->cmd[0];
-> +
-> +    fuse_uring_sqe_prepare(sqe, ent->rq->q, FUSE_IO_URING_CMD_REGISTER);
-> +
-> +    sqe->addr =3D (uint64_t)(ent->iov);
-> +    sqe->len =3D 2;
-> +
-> +    fuse_uring_sqe_set_req_data(req, ent->rq->rqid, 0);
-> +}
-> +
-> +static void fuse_uring_submit_register(void *opaque)
-> +{
-> +    FuseRingEnt *ent =3D opaque;
-> +    FuseExport *exp =3D ent->rq->q->exp;
+## Other failed combinations
 
-This variable is unused in this commit? Does this commit compile for
-you? Usually the compiler warns about unused variables.
+We looked into all the failing migration combinations we might have in
+our supported releases.
+We can confirm that the migration is also broken for other QEMU
+versions we support in various Ubuntu releases:
+(F =3D Focal, J =3D Jammy, N =3D Noble, P =3D Plucky, Q =3D Questing)
 
-> +
-> +
-> +    aio_add_sqe(fuse_uring_prep_sqe_register, ent, &(ent->fuse_cqe_handl=
-er));
-> +}
-> +
-> +/**
-> + * Distribute ring queues across FUSE queues using round-robin algorithm.
-> + * This ensures even distribution of kernel ring queues across user-spec=
-ified
-> + * FUSE queues.
-> + */
-> +static
-> +FuseRingQueueManager *fuse_ring_queue_manager_create(int num_fuse_queues,
-> +                                                    size_t ring_queue_de=
-pth,
-> +                                                    size_t bufsize)
-> +{
-> +    int num_ring_queues =3D get_nprocs();
+F-4.2 -> Q-10.1
+J-6.2 -> Q-10.1
+N-8.2 -> Q-10.1
+P-9.2 -> Q-10.1
 
-The kernel code uses num_possible_cpus() in
-fs/fuse/dev_uring.c:fuse_uring_create() so I think this should be
-get_nprocs_conf() instead of get_nprocs().
+Maybe worth to note that these combinations are tested by our
+automated tests and they just leave
+cpu unspecified allowing libvirt to pick safe defaults instead of
+using host-model as shown in the sample
+domain definition above.
 
-> +    FuseRingQueueManager *manager =3D g_new(FuseRingQueueManager, 1);
-> +
-> +    if (!manager) {
+[1] https://www.qemu.org/docs/master/devel/migration/compatibility.html#how=
+-to-mitigate-when-we-have-a-backward-compatibility-error
 
-g_new() never returns NULL, so you can remove this if statement. If
-memory cannot be allocated then the process will abort.
 
-> +        return NULL;
-> +    }
-> +
-> +    manager->ring_queues =3D g_new(FuseRingQueue, num_ring_queues);
-> +    manager->num_ring_queues =3D num_ring_queues;
-> +    manager->num_fuse_queues =3D num_fuse_queues;
-> +
-> +    if (!manager->ring_queues) {
 
-Same here.
+> [1]: https://bugs.launchpad.net/ubuntu/+source/qemu/+bug/2121787
+> [2]:
+> https://gitlab.com/qemu-project/qemu/-/blob/master/docs/devel/migration/c=
+ompatibility.rst?plain=3D1#L322
+>
+> > The hope was that these will help to further identify what is going
+> > on, but despite the urgency of the release being imminent I have not
+> > yet managed to find the time in the last two days :-/
+> >
+> > > Sorry for the delay in answering (and thanks Daniel for bringing this
+> to
+> > > my attention).
+> > >
+> > > Thanks,
+> > >
+> > > Paolo
+> > >
+> >
+> >
+> > --
+> > Christian Ehrhardt
+> > Director of Engineering, Ubuntu Server
+> > Canonical Ltd
+>
+>
+>
+> --
+> Christian Ehrhardt
+> Director of Engineering, Ubuntu Server
+> Canonical Ltd
+>
 
-> +        g_free(manager);
-> +        return NULL;
-> +    }
-> +
-> +    for (int i =3D 0; i < num_ring_queues; i++) {
-> +        FuseRingQueue *rq =3D &manager->ring_queues[i];
-> +        rq->rqid =3D i;
-> +        rq->ent =3D g_new(FuseRingEnt, ring_queue_depth);
-> +
-> +        if (!rq->ent) {
 
-Same here.
+--=20
+Hector CAO
+Software Engineer =E2=80=93 Partner Engineering Team
+hector.cao@canonical.com
+https://launc <https://launchpad.net/~hectorcao>hpad.net/~hectorcao
+<https://launchpad.net/~hectorcao>
 
-> +            for (int j =3D 0; j < i; j++) {
-> +                g_free(manager->ring_queues[j].ent);
-> +            }
-> +            g_free(manager->ring_queues);
-> +            g_free(manager);
-> +            return NULL;
-> +        }
-> +
-> +        for (size_t j =3D 0; j < ring_queue_depth; j++) {
-> +            FuseRingEnt *ent =3D &rq->ent[j];
-> +            ent->rq =3D rq;
-> +            ent->req_payload_sz =3D bufsize - FUSE_BUFFER_HEADER_SIZE;
-> +            ent->op_payload =3D g_malloc0(ent->req_payload_sz);
-> +
-> +            if (!ent->op_payload) {
+<https://launchpad.net/~hectorcao>
 
-Same here.
+--000000000000b8bb4e063de3e00f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> +                for (size_t k =3D 0; k < j; k++) {
-> +                    g_free(rq->ent[k].op_payload);
-> +                }
-> +                g_free(rq->ent);
-> +                for (int k =3D 0; k < i; k++) {
-> +                    g_free(manager->ring_queues[k].ent);
-> +                }
-> +                g_free(manager->ring_queues);
-> +                g_free(manager);
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
+mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Sep 3, =
+2025 at 10:38=E2=80=AFAM Christian Ehrhardt &lt;<a href=3D"mailto:christian=
+.ehrhardt@canonical.com">christian.ehrhardt@canonical.com</a>&gt; wrote:<br=
+></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;=
+border-left:1px solid rgb(204,204,204);padding-left:1ex">On Wed, Aug 20, 20=
+25 at 7:11=E2=80=AFAM Christian Ehrhardt<br>
+&lt;<a href=3D"mailto:christian.ehrhardt@canonical.com" target=3D"_blank">c=
+hristian.ehrhardt@canonical.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; On Tue, Aug 19, 2025 at 4:51=E2=80=AFPM Paolo Bonzini &lt;<a href=3D"m=
+ailto:pbonzini@redhat.com" target=3D"_blank">pbonzini@redhat.com</a>&gt; wr=
+ote:<br>
+&gt; &gt;<br>
+&gt; &gt; On 8/6/25 21:18, Daniel P. Berrang=C3=A9 wrote:<br>
+&gt; &gt; &gt; On Wed, Aug 06, 2025 at 07:57:34PM +0200, Christian Ehrhardt=
+ wrote:<br>
+&gt; &gt; &gt;&gt; On Wed, Aug 6, 2025 at 2:00=E2=80=AFPM Daniel P. Berrang=
+=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.com" target=3D"_blank">berrang=
+e@redhat.com</a>&gt; wrote:<br>
+&gt; &gt; &gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt; On Wed, Aug 06, 2025 at 01:52:17PM +0200, Christian =
+Ehrhardt wrote:<br>
+&gt; &gt; &gt;&gt;&gt;&gt; Hi,<br>
+&gt; &gt; &gt;&gt;&gt;&gt; I was unsure if this would be better sent to lib=
+virt or qemu - the<br>
+&gt; &gt; &gt;&gt;&gt;&gt; issue is somewhere between libvirt modelling CPU=
+s and qemu 10.1<br>
+&gt; &gt; &gt;&gt;&gt;&gt; behaving differently. I did not want to double p=
+ost and gladly most of<br>
+&gt; &gt; &gt;&gt;&gt;&gt; the people are on both lists - since the switch =
+in/out of the problem<br>
+&gt; &gt; &gt;&gt;&gt;&gt; is qemu 10.0 &lt;-&gt; 10.1 let me start here. I=
+ beg your pardon for not yet<br>
+&gt; &gt; &gt;&gt;&gt;&gt; having all the answers, I&#39;m sure I could fin=
+d more with debugging, but<br>
+&gt; &gt; &gt;&gt;&gt;&gt; I also wanted to report early for your awareness=
+ while we are still in<br>
+&gt; &gt; &gt;&gt;&gt;&gt; the RC phase.<br>
+&gt; &gt; &gt;&gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt; # Problem<br>
+&gt; &gt; &gt;&gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt; What I found when testing migrations in Ubuntu w=
+ith qemu 10.1-rc1 was:<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 error: operation failed: guest CPU =
+doesn&#39;t match specification:<br>
+&gt; &gt; &gt;&gt;&gt;&gt; missing features: pdcm<br>
+&gt; &gt; &gt;&gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt; This is behaving the same with libvirt 11.4 or t=
+he more recent 11.6.<br>
+&gt; &gt; &gt;&gt;&gt;&gt; But switching back to qemu 10.0 confirmed that t=
+his behavior is new<br>
+&gt; &gt; &gt;&gt;&gt;&gt; with qemu 10.1-rc.<br>
+&gt; &gt; &gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt; Without yet having any hard evidence against the=
+m I found a few pdcm<br>
+&gt; &gt; &gt;&gt;&gt;&gt; related commits between 10.0 and 10.1-rc1:<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 7ff24fb65 i386/tdx: Don&#39;t mask =
+off CPUID_EXT_PDCM<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 00268e000 i386/cpu: Warn about why =
+CPUID_EXT_PDCM is not available<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 e68ec2980 i386/cpu: Move adjustment=
+ of CPUID_EXT_PDCM before<br>
+&gt; &gt; &gt;&gt;&gt;&gt; feature_dependencies[] check<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 0ba06e46d i386/tdx: Add TDX fixed1 =
+bits to supported CPUIDs<br>
+&gt; &gt; &gt;&gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt; # Caveat<br>
+&gt; &gt; &gt;&gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt; My test environment is in LXD system containers,=
+ that gives me issues<br>
+&gt; &gt; &gt;&gt;&gt;&gt; in the power management detection<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 libvirtd[406]: error from service: =
+GDBus.Error:System.Error.EROFS:<br>
+&gt; &gt; &gt;&gt;&gt;&gt; Read-only file system<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 libvirtd[406]: Failed to get host p=
+ower management capabilities<br>
+&gt; &gt; &gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt; That&#39;s harmless.<br>
+&gt; &gt; &gt;&gt;<br>
+&gt; &gt; &gt;&gt; Yeah, it always was for me - thanks for confirming.<br>
+&gt; &gt; &gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt; And the resulting host-model on a=C2=A0 rather o=
+ld test server will therefore have:<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 &lt;cpu mode=3D&#39;custom&#39; mat=
+ch=3D&#39;exact&#39; check=3D&#39;full&#39;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0 &lt;model fallback=3D&#39;fo=
+rbid&#39;&gt;Haswell-noTSX-IBRS&lt;/model&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0 &lt;vendor&gt;Intel&lt;/vend=
+or&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0 &lt;feature policy=3D&#39;re=
+quire&#39; name=3D&#39;vmx&#39;/&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0 &lt;feature policy=3D&#39;di=
+sable&#39; name=3D&#39;pdcm&#39;/&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0...<br>
+&gt; &gt; &gt;&gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt; But that was fine in the past, and the behavior =
+started to break<br>
+&gt; &gt; &gt;&gt;&gt;&gt; save/restore or migrations just now with the new=
+ qemu 10.1-rc.<br>
+&gt; &gt; &gt;&gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt; # Next steps<br>
+&gt; &gt; &gt;&gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt;&gt; I&#39;m soon overwhelmed by meetings for the res=
+t of the day, but would be<br>
+&gt; &gt; &gt;&gt;&gt;&gt; curious if one has a suggestion about what to lo=
+ok at next for<br>
+&gt; &gt; &gt;&gt;&gt;&gt; debugging or a theory about what might go wrong.=
+ If nothing else comes<br>
+&gt; &gt; &gt;&gt;&gt;&gt; up I&#39;ll try to set up a bisect run tomorrow.=
+<br>
+&gt; &gt; &gt;&gt;&gt;<br>
+&gt; &gt; &gt;&gt;&gt; Yeah, git bisect is what I&#39;d start with.<br>
+&gt; &gt; &gt;&gt;<br>
+&gt; &gt; &gt;&gt; Bisect complete, identified this commit<br>
+&gt; &gt; &gt;&gt;<br>
+&gt; &gt; &gt;&gt; commit 00268e00027459abede448662f8794d78eb4b0a4<br>
+&gt; &gt; &gt;&gt; Author: Xiaoyao Li &lt;<a href=3D"mailto:xiaoyao.li@inte=
+l.com" target=3D"_blank">xiaoyao.li@intel.com</a>&gt;<br>
+&gt; &gt; &gt;&gt; Date:=C2=A0 =C2=A0Tue Mar 4 00:24:50 2025 -0500<br>
+&gt; &gt; &gt;&gt;<br>
+&gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 i386/cpu: Warn about why CPUID_EXT_P=
+DCM is not available<br>
+&gt; &gt; &gt;&gt;<br>
+&gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 When user requests PDCM explicitly v=
+ia &quot;+pdcm&quot; without PMU enabled, emit<br>
+&gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 a warning to inform the user.<br>
+&gt; &gt; &gt;&gt;<br>
+&gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 Signed-off-by: Xiaoyao Li &lt;<a hre=
+f=3D"mailto:xiaoyao.li@intel.com" target=3D"_blank">xiaoyao.li@intel.com</a=
+>&gt;<br>
+&gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 Reviewed-by: Zhao Liu &lt;<a href=3D=
+"mailto:zhao1.liu@intel.com" target=3D"_blank">zhao1.liu@intel.com</a>&gt;<=
+br>
+&gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 Link: <a href=3D"https://lore.kernel=
+.org/r/20250304052450.465445-3-xiaoyao.li@intel.com" rel=3D"noreferrer" tar=
+get=3D"_blank">https://lore.kernel.org/r/20250304052450.465445-3-xiaoyao.li=
+@intel.com</a><br>
+&gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 Signed-off-by: Paolo Bonzini &lt;<a =
+href=3D"mailto:pbonzini@redhat.com" target=3D"_blank">pbonzini@redhat.com</=
+a>&gt;<br>
+&gt; &gt; &gt;&gt;<br>
+&gt; &gt; &gt;&gt;=C2=A0 =C2=A0target/i386/cpu.c | 3 +++<br>
+&gt; &gt; &gt;&gt;=C2=A0 =C2=A01 file changed, 3 insertions(+)<br>
+&gt; &gt; &gt;&gt;<br>
+&gt; &gt; &gt;&gt;<br>
+&gt; &gt; &gt;&gt;<br>
+&gt; &gt; &gt;&gt; Which is odd as it should only add a warning right?<br>
+&gt; &gt; &gt;<br>
+&gt; &gt; &gt; No, that commit message is misleading.<br>
+&gt; &gt; &gt;<br>
+&gt; &gt; &gt; IIUC mark_unavailable_features() actively blocks usage of th=
+e feature,<br>
+&gt; &gt; &gt; so it is a functional change, not merely a emitting warning.=
+<br>
+&gt; &gt; &gt;<br>
+&gt; &gt; &gt; It makes me wonder if that commit was actually intended to b=
+lock the<br>
+&gt; &gt; &gt; feature or not, vs merely warning ?=C2=A0 CC&#39;ing those i=
+nvolved in the<br>
+&gt; &gt; &gt; commit.<br>
+&gt; &gt; We can revert the commit.=C2=A0 I&#39;ll send the revert to Stefa=
+n and let him<br>
+&gt; &gt; decide whether to include it in 10.1-rc4 or delay to 10.2 and 10.=
+1.1.<br>
+&gt;<br>
+&gt; Thanks Paolo for considering that.<br>
+&gt;<br>
+&gt; My steps to reproduce seemed really clear and are 100% reproducible<br=
+>
+&gt; for me, but no one so far said &quot;yeah they see it too&quot;, so I&=
+#39;m getting<br>
+&gt; unsure if it was not tried by anyone else or if there is more to it<br=
+>
+&gt; than we yet know.<br>
+&gt; Further I tested more with the commit reverted, and found that at<br>
+&gt; least cross version migrations (9.2 -&gt; 10.1) still have issues that=
+<br>
+&gt; seem related - complaining about pdcm as missing feature.<br>
+&gt; But that was in a log of a test system that went away and ... you know=
+<br>
+&gt; how these things can sometimes be, that new result is not yet very<br>
+&gt; reliable.<br>
+&gt;<br>
+&gt; I intended to check the following matrix more deeply again with and<br=
+>
+&gt; without the reverted change and then come back to this thread:<br>
+&gt;<br>
+&gt; #1 Compare platforms<br>
+&gt; - Migrating between non containerized hosts to verify if they are<br>
+&gt; affected as well<br>
+&gt; - Power management explicitly switched off/on (vs the auto detect of<b=
+r>
+&gt; host-model) in the guest XML<br>
+&gt; #2 Retest the different Use-cases I&#39;ve seen this pop up<br>
+&gt; - 10.1 managed save (broken unless reverting the commit that was ident=
+ified)<br>
+&gt; - 9.2 -&gt; 10.1 migration (seems broken even with the revert)<br>
+<br>
+I need to come back to this aspect of it - the cross release or cross<br>
+qemu version migrations.<br>
+<br>
+Hector (on CC) helps me on that now - sadly we were able to confirm<br>
+that migrations from older qemu versions no longer work.<br>
+Yep 10.1 is released by now so it might end up as &quot;The problem is what=
+<br>
+happens when we detect after we have done a release that something has<br>
+gone wrong&quot; from [2].<br>
+But I still can&#39;t believe only we see this and therefore for now want<b=
+r>
+to believe I messed up on our side when merging 10.1 :-)<br>
+<br>
+For now this is a call if others have also seen any older release<br>
+migrating to 10.1 to throw:<br>
+=C2=A0 error: operation failed: guest CPU doesn&#39;t match specification:<=
+br>
+missing features: pdcm,arch-capabilities<br>
+<br>
+Hector will later today reply here with a summary of what we found so<br>
+far, to provide you a more complete picture to think about, without<br>
+having to read through all the messy interim steps in the Ubuntu bug.<br>
+<br></blockquote><div><br></div><div><span style=3D"font-family:arial,sans-=
+serif;color:rgb(0,0,0)">Indeed, we experience this error at migration from =
+older QEMU versions to the QEMU 10.1</span></div><div><pre style=3D"color:r=
+gb(0,0,0)"><font face=3D"arial, sans-serif">
+$ virsh migrate --unsafe --live test-migration qemu+ssh://<a href=3D"http:/=
+/10.105.100.188/system">10.105.100.188/system</a>
+error: operation failed: guest CPU doesn&#39;t match specification: missing=
+ features: pdcm,arch-capabilities
 
-Where are these structures freed in the normal lifecycle of a FUSE
-export? I only see this error handling code, but nothing is freed when
-the export is shut down.
+The domain definition used to reproduce this issue is quite simple:
 
-> +                return NULL;
-> +            }
-> +
-> +            ent->iov[0] =3D (struct iovec) {
-> +                &(ent->req_header),
-> +                sizeof(struct fuse_uring_req_header)
-> +            };
-> +            ent->iov[1] =3D (struct iovec) {
-> +                ent->op_payload,
-> +                ent->req_payload_sz
-> +            };
-> +
-> +            ent->fuse_cqe_handler.cb =3D fuse_uring_cqe_handler;
-> +        }
-> +    }
-> +
-> +    return manager;
-> +}
-> +
-> +static
-> +void fuse_distribute_ring_queues(FuseExport *exp, FuseRingQueueManager *=
-manager)
-> +{
-> +    int queue_index =3D 0;
-> +
-> +    for (int i =3D 0; i < manager->num_ring_queues; i++) {
-> +        FuseRingQueue *rq =3D &manager->ring_queues[i];
-> +
-> +        rq->q =3D &exp->queues[queue_index];
-> +        QLIST_INSERT_HEAD(&(rq->q->ring_queue_list), rq, next);
-> +
-> +        queue_index =3D (queue_index + 1) % manager->num_fuse_queues;
-> +    }
-> +}
-> +
-> +static
-> +void fuse_schedule_ring_queue_registrations(FuseExport *exp,
-> +                                            FuseRingQueueManager *manage=
-r)
-> +{
-> +    for (int i =3D 0; i < manager->num_fuse_queues; i++) {
-> +        FuseQueue *q =3D &exp->queues[i];
-> +        FuseRingQueue *rq;
-> +
-> +        QLIST_FOREACH(rq, &q->ring_queue_list, next) {
-> +            for (int j =3D 0; j < exp->ring_queue_depth; j++) {
-> +                aio_bh_schedule_oneshot(q->ctx, fuse_uring_submit_regist=
-er,
-> +                                        &(rq->ent[j]));
-> +            }
-> +        }
-> +    }
-> +}
-> +
-> +static void fuse_uring_start(FuseExport *exp, struct fuse_init_out *out)
-> +{
-> +    /*
-> +     * Since we didn't enable the FUSE_MAX_PAGES feature, the value of
-> +     * fc->max_pages should be FUSE_DEFAULT_MAX_PAGES_PER_REQ, which is =
-set by
-> +     * the kernel by default. Also, max_write should not exceed
-> +     * FUSE_DEFAULT_MAX_PAGES_PER_REQ * PAGE_SIZE.
-> +     */
-> +    size_t bufsize =3D out->max_write + FUSE_BUFFER_HEADER_SIZE;
-> +
-> +    if (!(out->flags & FUSE_MAX_PAGES)) {
-> +        bufsize =3D FUSE_DEFAULT_MAX_PAGES_PER_REQ * qemu_real_host_page=
-_size()
-> +                         + FUSE_BUFFER_HEADER_SIZE;
-> +    }
-> +
-> +    exp->ring_queue_manager =3D fuse_ring_queue_manager_create(
-> +        exp->num_queues, exp->ring_queue_depth, bufsize);
-> +
-> +    if (!exp->ring_queue_manager) {
-> +        error_report("Failed to create ring queue manager");
-> +        return;
-> +    }
-> +
-> +    /* Distribute ring queues across FUSE queues using round-robin */
-> +    fuse_distribute_ring_queues(exp, exp->ring_queue_manager);
-> +
-> +    fuse_schedule_ring_queue_registrations(exp, exp->ring_queue_manager);
-> +}
-> +#endif
-> +
->  static int fuse_export_create(BlockExport *blk_exp,
->                                BlockExportOptions *blk_exp_args,
->                                AioContext *const *multithread,
-> @@ -270,6 +505,11 @@ static int fuse_export_create(BlockExport *blk_exp,
-> =20
->      assert(blk_exp_args->type =3D=3D BLOCK_EXPORT_TYPE_FUSE);
-> =20
-> +#ifdef CONFIG_LINUX_IO_URING
-> +    exp->is_uring =3D args->io_uring;
-> +    exp->ring_queue_depth =3D FUSE_DEFAULT_RING_QUEUE_DEPTH;
-> +#endif
-> +
->      if (multithread) {
->          /* Guaranteed by common export code */
->          assert(mt_count >=3D 1);
-> @@ -283,6 +523,10 @@ static int fuse_export_create(BlockExport *blk_exp,
->                  .exp =3D exp,
->                  .ctx =3D multithread[i],
->                  .fuse_fd =3D -1,
-> +#ifdef CONFIG_LINUX_IO_URING
-> +                .ring_queue_list =3D
-> +                    QLIST_HEAD_INITIALIZER(exp->queues[i].ring_queue_lis=
-t),
-> +#endif
->              };
->          }
->      } else {
-> @@ -296,6 +540,10 @@ static int fuse_export_create(BlockExport *blk_exp,
->              .exp =3D exp,
->              .ctx =3D exp->common.ctx,
->              .fuse_fd =3D -1,
-> +#ifdef CONFIG_LINUX_IO_URING
-> +            .ring_queue_list =3D
-> +                QLIST_HEAD_INITIALIZER(exp->queues[0].ring_queue_list),
-> +#endif
->          };
->      }
-> =20
-> @@ -685,17 +933,39 @@ static bool is_regular_file(const char *path, Error=
- **errp)
->   */
->  static ssize_t coroutine_fn
->  fuse_co_init(FuseExport *exp, struct fuse_init_out *out,
-> -             uint32_t max_readahead, uint32_t flags)
-> +             uint32_t max_readahead, const struct fuse_init_in *in)
->  {
-> -    const uint32_t supported_flags =3D FUSE_ASYNC_READ | FUSE_ASYNC_DIO;
-> +    uint64_t supported_flags =3D FUSE_ASYNC_READ | FUSE_ASYNC_DIO
-> +                                     | FUSE_INIT_EXT;
-> +    uint64_t outargflags =3D 0;
-> +    uint64_t inargflags =3D in->flags;
-> +
-> +    ssize_t ret =3D 0;
-> +
-> +    if (inargflags & FUSE_INIT_EXT) {
-> +        inargflags =3D inargflags | (uint64_t) in->flags2 << 32;
-> +    }
-> +
-> +#ifdef CONFIG_LINUX_IO_URING
-> +    if (exp->is_uring) {
-> +        if (inargflags & FUSE_OVER_IO_URING) {
-> +            supported_flags |=3D FUSE_OVER_IO_URING;
-> +        } else {
-> +            exp->is_uring =3D false;
-> +            ret =3D -ENODEV;
-> +        }
-> +    }
-> +#endif
-> +
-> +    outargflags =3D inargflags & supported_flags;
-> =20
->      *out =3D (struct fuse_init_out) {
->          .major =3D FUSE_KERNEL_VERSION,
->          .minor =3D FUSE_KERNEL_MINOR_VERSION,
->          .max_readahead =3D max_readahead,
->          .max_write =3D FUSE_MAX_WRITE_BYTES,
-> -        .flags =3D flags & supported_flags,
-> -        .flags2 =3D 0,
-> +        .flags =3D outargflags,
-> +        .flags2 =3D outargflags >> 32,
-> =20
->          /* libfuse maximum: 2^16 - 1 */
->          .max_background =3D UINT16_MAX,
-> @@ -717,7 +987,7 @@ fuse_co_init(FuseExport *exp, struct fuse_init_out *o=
-ut,
->          .map_alignment =3D 0,
->      };
-> =20
-> -    return sizeof(*out);
-> +    return ret < 0 ? ret : sizeof(*out);
->  }
-> =20
->  /**
-> @@ -1506,6 +1776,14 @@ fuse_co_process_request(FuseQueue *q, void *spillo=
-ver_buf)
->          fuse_write_buf_response(q->fuse_fd, req_id, out_hdr,
->                                  out_data_buffer, ret);
->          qemu_vfree(out_data_buffer);
-> +#ifdef CONFIG_LINUX_IO_URING
-> +    /* Handle FUSE-over-io_uring initialization */
-> +    if (unlikely(opcode =3D=3D FUSE_INIT && exp->is_uring)) {
-> +        struct fuse_init_out *out =3D
-> +            (struct fuse_init_out *)FUSE_OUT_OP_STRUCT(out_buf);
-> +        fuse_uring_start(exp, out);
+&lt;domain type=3D&#39;kvm&#39; xmlns:qemu=3D&#39;<a href=3D"http://libvirt=
+.org/schemas/domain/qemu/1.0">http://libvirt.org/schemas/domain/qemu/1.0</a=
+>&#39;&gt;
+  &lt;name&gt;test-migration&lt;/name&gt;
+  &lt;memory unit=3D&#39;GiB&#39;&gt;2&lt;/memory&gt;
+  &lt;os&gt;
+    &lt;type arch=3D&#39;x86_64&#39; machine=3D&#39;q35&#39;&gt;hvm&lt;/typ=
+e&gt;
+  &lt;/os&gt;
+  &lt;cpu mode=3D&#39;host-model&#39; check=3D&#39;partial&#39;/&gt;
+&lt;/domain&gt;
 
-Is there any scenario where FUSE_INIT can be received multiple times?
-Maybe if the FUSE file system is umounted and mounted again? I want to
-check that this doesn't leak previously allocated ring state.
+Here are the -machine and -cpu blocks of QEMU command-lines for a migration=
+ between
+QEMU 9.2 and QEMU 10.1 on a Intel Haswell CPU:
 
-> +    }
-> +#endif
->      } else {
->          fuse_write_response(q->fuse_fd, req_id, out_hdr,
->                              ret < 0 ? ret : 0,
-> diff --git a/docs/tools/qemu-storage-daemon.rst b/docs/tools/qemu-storage=
--daemon.rst
-> index 35ab2d7807..c5076101e0 100644
-> --- a/docs/tools/qemu-storage-daemon.rst
-> +++ b/docs/tools/qemu-storage-daemon.rst
-> @@ -78,7 +78,7 @@ Standard options:
->  .. option:: --export [type=3D]nbd,id=3D<id>,node-name=3D<node-name>[,nam=
-e=3D<export-name>][,writable=3Don|off][,bitmap=3D<name>]
->    --export [type=3D]vhost-user-blk,id=3D<id>,node-name=3D<node-name>,add=
-r.type=3Dunix,addr.path=3D<socket-path>[,writable=3Don|off][,logical-block-=
-size=3D<block-size>][,num-queues=3D<num-queues>]
->    --export [type=3D]vhost-user-blk,id=3D<id>,node-name=3D<node-name>,add=
-r.type=3Dfd,addr.str=3D<fd>[,writable=3Don|off][,logical-block-size=3D<bloc=
-k-size>][,num-queues=3D<num-queues>]
-> -  --export [type=3D]fuse,id=3D<id>,node-name=3D<node-name>,mountpoint=3D=
-<file>[,growable=3Don|off][,writable=3Don|off][,allow-other=3Don|off|auto]
-> +  --export [type=3D]fuse,id=3D<id>,node-name=3D<node-name>,mountpoint=3D=
-<file>[,growable=3Don|off][,writable=3Don|off][,allow-other=3Don|off|auto][=
-,io-uring=3Don|off]
->    --export [type=3D]vduse-blk,id=3D<id>,node-name=3D<node-name>,name=3D<=
-vduse-name>[,writable=3Don|off][,num-queues=3D<num-queues>][,queue-size=3D<=
-queue-size>][,logical-block-size=3D<block-size>][,serial=3D<serial-number>]
-> =20
->    is a block export definition. ``node-name`` is the block node that sho=
-uld be
-> @@ -111,10 +111,11 @@ Standard options:
->    that enabling this option as a non-root user requires enabling the
->    user_allow_other option in the global fuse.conf configuration file.  S=
-etting
->    ``allow-other`` to auto (the default) will try enabling this option, a=
-nd on
-> -  error fall back to disabling it.
-> -
-> -  The ``vduse-blk`` export type takes a ``name`` (must be unique across =
-the host)
-> -  to create the VDUSE device.
-> +  error fall back to disabling it. Once ``io-uring`` is enabled (off by =
-default),
-> +  the FUSE-over-io_uring-related settings will be initialized to bypass =
-the
-> +  traditional /dev/fuse communication mechanism and instead use io_uring=
- to
-> +  handle FUSE operations. The ``vduse-blk`` export type takes a ``name``
-> +  (must be unique across the host) to create the VDUSE device.
->    ``num-queues`` sets the number of virtqueues (the default is 1).
->    ``queue-size`` sets the virtqueue descriptor table size (the default i=
-s 256).
-> =20
-> diff --git a/qapi/block-export.json b/qapi/block-export.json
-> index 9ae703ad01..37f2fc47e2 100644
-> --- a/qapi/block-export.json
-> +++ b/qapi/block-export.json
-> @@ -184,12 +184,15 @@
->  #     mount the export with allow_other, and if that fails, try again
->  #     without.  (since 6.1; default: auto)
->  #
-> +# @io-uring: Use FUSE-over-io-uring.  (since 10.2; default: false)
-> +#
->  # Since: 6.0
->  ##
->  { 'struct': 'BlockExportOptionsFuse',
->    'data': { 'mountpoint': 'str',
->              '*growable': 'bool',
-> -            '*allow-other': 'FuseExportAllowOther' },
-> +            '*allow-other': 'FuseExportAllowOther',
-> +            '*io-uring': 'bool' },
->    'if': 'CONFIG_FUSE' }
-> =20
->  ##
-> diff --git a/storage-daemon/qemu-storage-daemon.c b/storage-daemon/qemu-s=
-torage-daemon.c
-> index eb72561358..0cd4cd2b58 100644
-> --- a/storage-daemon/qemu-storage-daemon.c
-> +++ b/storage-daemon/qemu-storage-daemon.c
-> @@ -107,6 +107,7 @@ static void help(void)
->  #ifdef CONFIG_FUSE
->  "  --export [type=3D]fuse,id=3D<id>,node-name=3D<node-name>,mountpoint=
-=3D<file>\n"
->  "           [,growable=3Don|off][,writable=3Don|off][,allow-other=3Don|o=
-ff|auto]\n"
-> +"           [,io-uring=3Don|off]"
->  "                         export the specified block node over FUSE\n"
->  "\n"
->  #endif /* CONFIG_FUSE */
-> diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
-> index d2433d1d99..68d3fe8e01 100644
-> --- a/util/fdmon-io_uring.c
-> +++ b/util/fdmon-io_uring.c
-> @@ -452,10 +452,13 @@ static const FDMonOps fdmon_io_uring_ops =3D {
->  void fdmon_io_uring_setup(AioContext *ctx, Error **errp)
->  {
->      int ret;
-> +    int flags;
-> =20
->      ctx->io_uring_fd_tag =3D NULL;
-> +    flags =3D IORING_SETUP_SQE128;
+Origin: QEMU 9.2                                                           =
+                                                                           =
+                                                                           =
+       =20
+                                                                           =
+                                                                           =
+                                                                          =
+=20
+...                                                                        =
+                                                                           =
+                                                                          =
+=20
+-machine pc-q35-9.2,usb=3Doff,dump-guest-core=3Doff,memory-backend=3Dpc.ram=
+,acpi=3Doff \                                                              =
+                                                                           =
+       =20
+-cpu Haswell-noTSX-IBRS,vmx=3Don,pdcm=3Don,f16c=3Don,rdrand=3Don,          =
+                                                                           =
+                                                                           =
+       =20
+ hypervisor=3Don,vme=3Don,ss=3Don,arat=3Don,tsc-adjust=3Don,zero-fcs-fds=3D=
+on,                                                                        =
+                                                                           =
+           =20
+ umip=3Don,md-clear=3Don,stibp=3Don,flush-l1d=3Don,arch-capabilities=3Don, =
+                                                                           =
+                                                                           =
+         =20
+ ssbd=3Don,xsaveopt=3Don,abm=3Don,pdpe1gb=3Don,ibpb=3Don,ibrs=3Don,amd-stib=
+p=3Don,                                                                    =
+                                                                           =
+             =20
+ amd-ssbd=3Don,skip-l1dfl-vmentry=3Don,pschange-mc-no=3Don,gds-no=3Don,rfds=
+-no=3Don, &lt;vmx-*&gt;                                                    =
+                                                                           =
+             =20
+...                                                                        =
+                                                                           =
+                                                                          =
+=20
 
-Please add /* needed by FUSE-over-io_uring */ so it's clear who the user
-is.
+&lt;vmx-*&gt; : the vmx-* block is removed for better clarity
 
-> =20
-> -    ret =3D io_uring_queue_init(FDMON_IO_URING_ENTRIES, &ctx->fdmon_io_u=
-ring, 0);
-> +    ret =3D io_uring_queue_init(FDMON_IO_URING_ENTRIES,
-> +                            &ctx->fdmon_io_uring, flags);
->      if (ret !=3D 0) {
->          error_setg_errno(errp, -ret, "Failed to initialize io_uring");
->          return;
-> --=20
-> 2.45.2
->=20
+Target: QEMU 10.1                                                          =
+                                                                           =
+                                                                           =
+       =20
+                                                                           =
+                                                                           =
+                                                                          =
+=20
+...                                                                        =
+                                                                           =
+                                                                          =
+=20
+-machine pc-q35-9.2,usb=3Doff,dump-guest-core=3Doff,memory-backend=3Dpc.ram=
+,acpi=3Doff \                                                              =
+                                                                           =
+       =20
+-cpu Haswell-noTSX-IBRS,vmx=3Don,pdcm=3Don,f16c=3Don,rdrand=3Don,          =
+                                                                           =
+                                                                           =
+       =20
+ hypervisor=3Don,vme=3Don,ss=3Don,arat=3Don,tsc-adjust=3Don,zero-fcs-fds=3D=
+on,                                                                        =
+                                                                           =
+           =20
+ umip=3Don,md-clear=3Don,stibp=3Don,flush-l1d=3Don,arch-capabilities=3Don, =
+                                                                           =
+                                                                           =
+         =20
+ ssbd=3Don,xsaveopt=3Donabm=3Don,pdpe1gb=3Don,ibpb=3Don,ibrs=3Don,amd-stibp=
+=3Don,                                                                     =
+                                                                           =
+             =20
+ amd-ssbd=3Don,skip-l1dfl-vmentry=3Don,pschange-mc-no=3Don,gds-no=3Don,rfds=
+-no=3Don,vmx-activity-wait-sipi=3Don,vmx-pml=3Don                          =
+                                                                           =
+             =20
+...=20
 
---pOkYF4ZkALzC9oZ7
-Content-Type: application/pgp-signature; name=signature.asc
+This migration failure can be broken down to 2 separate issues, each one is=
+ related to one missing feature: pdcm &amp; arch-capabilities.
+Based on our best understanding of the moment, the behavior of QEMU on thes=
+e 2 features has been changed recently in 10.1.
 
------BEGIN PGP SIGNATURE-----
+- arch-capabilities</font></pre><pre style=3D"color:rgb(0,0,0)"><font face=
+=3D"arial, sans-serif">  <a href=3D"https://github.com/qemu/qemu/commit/d3a=
+24134e37d57abd3e7445842cda2717f49e96d">https://github.com/qemu/qemu/commit/=
+d3a24134e37d57abd3e7445842cda2717f49e96d</a>
+  (target/i386: do not expose ARCH_CAPABILITIES on AMD CPU)
+ =20
+- pdcm
+  <a href=3D"https://github.com/qemu/qemu/commit/e68ec2980901c8e7f948f33057=
+70962806c53f0b">https://github.com/qemu/qemu/commit/e68ec2980901c8e7f948f33=
+05770962806c53f0b</a>
+  (i386/cpu: Move adjustment of CPUID_EXT_PDCM before feature_dependencies[=
+] check)
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmi4HiUACgkQnKSrs4Gr
-c8j+MggAhboG/RRwa0kbO2XgCrORif80xENZIj1WJpls+TuU7q/QhvPPlUehD2Yr
-sWye/EWgVP1+QcBy3b6LQbODTktWJil7Op866bYTqCbs8d5utzpOMu/3umu8vzCb
-Lyec6nq89yBRi31Qtnq6m5v1oBOF0QFGaagTVlBpKvE7hLKBVfyqBGgoLDPmoJlU
-Fzjubw3OaKBI+4QXcZIzoTsPcZfBeREIV9qqW5hHvnBRgPeVK6UocQ9qsJidMUlS
-WdX2W0JJwUfo/J41LCMsfMq8LmKTQ3MASSAlDX2pk2N3t15XA6IjQJ/ykf6uJcgx
-k/v0lxuA3dBepoCpeOAk6exzfjiNxg==
-=GdJ/
------END PGP SIGNATURE-----
+  this commit makes QEMU disable the pdcm if PMU is off, I think on previou=
+s QEMU versions,
+  this is also the expected behavior but there is a bug that is fixed in th=
+e commit.
+  When I enable the PMU in the guest definition:=20
+    &lt;features&gt;
+    &lt;pmu state=3D&#39;on&#39;/&gt;
+    &lt;/features&gt;
+  The missing pdcm feature error disappears.
 
---pOkYF4ZkALzC9oZ7--
+If we revert both these two commits, the migration works.
 
+We are looking into potential solutions to this migration issue and accordi=
+ng to the documenation [1],
+our failure might fall into the 4th case:
+  $ qemu-7.2 -M pc-7.2 -&gt; qemu-8.0 -M pc-7.2
+
+Presumably, it is necessary to add some compability properties to make the =
+new behavior on pdcm and
+arch-capabilities compatible with older QEMU versions, but as Christian sai=
+d -
+10.1 is already released so it might be more complex now
+
+## Other failed combinations
+
+We looked into all the failing migration combinations we might have in our =
+supported releases.
+We can confirm that the migration is also broken for other QEMU versions we=
+ support in various Ubuntu releases:
+(F =3D Focal, J =3D Jammy, N =3D Noble, P =3D Plucky, Q =3D Questing)
+
+F-4.2 -&gt; Q-10.1                                                         =
+                                                        =20
+J-6.2 -&gt; Q-10.1                                                         =
+                                                          =20
+N-8.2 -&gt; Q-10.1                                                         =
+                                                          =20
+P-9.2 -&gt; Q-10.1                                                         =
+                                                          =20
+
+Maybe worth to note that these combinations are tested by our automated tes=
+ts and they just leave
+cpu unspecified allowing libvirt to pick safe defaults instead of using hos=
+t-model as shown in the sample
+domain definition above.=20
+
+[1] <a href=3D"https://www.qemu.org/docs/master/devel/migration/compatibili=
+ty.html#how-to-mitigate-when-we-have-a-backward-compatibility-error">https:=
+//www.qemu.org/docs/master/devel/migration/compatibility.html#how-to-mitiga=
+te-when-we-have-a-backward-compatibility-error</a>
+</font></pre></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">
+[1]: <a href=3D"https://bugs.launchpad.net/ubuntu/+source/qemu/+bug/2121787=
+" rel=3D"noreferrer" target=3D"_blank">https://bugs.launchpad.net/ubuntu/+s=
+ource/qemu/+bug/2121787</a><br>
+[2]: <a href=3D"https://gitlab.com/qemu-project/qemu/-/blob/master/docs/dev=
+el/migration/compatibility.rst?plain=3D1#L322" rel=3D"noreferrer" target=3D=
+"_blank">https://gitlab.com/qemu-project/qemu/-/blob/master/docs/devel/migr=
+ation/compatibility.rst?plain=3D1#L322</a><br>
+<br>
+&gt; The hope was that these will help to further identify what is going<br=
+>
+&gt; on, but despite the urgency of the release being imminent I have not<b=
+r>
+&gt; yet managed to find the time in the last two days :-/<br>
+&gt;<br>
+&gt; &gt; Sorry for the delay in answering (and thanks Daniel for bringing =
+this to<br>
+&gt; &gt; my attention).<br>
+&gt; &gt;<br>
+&gt; &gt; Thanks,<br>
+&gt; &gt;<br>
+&gt; &gt; Paolo<br>
+&gt; &gt;<br>
+&gt;<br>
+&gt;<br>
+&gt; --<br>
+&gt; Christian Ehrhardt<br>
+&gt; Director of Engineering, Ubuntu Server<br>
+&gt; Canonical Ltd<br>
+<br>
+<br>
+<br>
+-- <br>
+Christian Ehrhardt<br>
+Director of Engineering, Ubuntu Server<br>
+Canonical Ltd<br>
+</blockquote></div><div><br clear=3D"all"></div><div><br></div><span class=
+=3D"gmail_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_s=
+ignature"><div dir=3D"ltr"><div style=3D"text-align:left"></div><div style=
+=3D"text-align:left">Hector CAO<br></div><div style=3D"text-align:left">Sof=
+tware Engineer =E2=80=93 Partner Engineering Team</div><div style=3D"text-a=
+lign:left"><a href=3D"mailto:hector.cao@canonical.com" target=3D"_blank">he=
+ctor.cao@canonical.com</a></div><div style=3D"text-align:left"><a href=3D"h=
+ttps://launchpad.net/~hectorcao" target=3D"_blank">https://launc</a><a href=
+=3D"https://launchpad.net/~hectorcao" target=3D"_blank">hpad.net/~hectorcao=
+</a></div><div style=3D"text-align:left">
+<p style=3D"line-height:100%;margin-bottom:0in"> =20
+<a href=3D"https://launchpad.net/~hectorcao" target=3D"_blank"><img width=
+=3D"96" height=3D"81" src=3D"https://ci3.googleusercontent.com/mail-sig/AIo=
+rK4z5yECcB4DOFqFQjPXjogBAVC5Vv1klgihEnAZXkqybF5lNxe9SeDqtm-9dmSwj3Sbw2kDL58=
+U"></a></p>
+
+</div></div></div></div>
+
+--000000000000b8bb4e063de3e00f--
 
