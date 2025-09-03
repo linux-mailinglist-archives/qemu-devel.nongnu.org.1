@@ -2,75 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6CAB41484
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 07:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB4B4B4146E
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 07:43:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utgLB-0005V8-Dq; Wed, 03 Sep 2025 01:47:29 -0400
+	id 1utgGq-0003JT-5t; Wed, 03 Sep 2025 01:43:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1utgL4-0005Sg-Gp
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 01:47:24 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1utgGj-0003J0-Mv
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 01:42:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1utgL2-000206-Qb
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 01:47:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756878441; x=1788414441;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=BU5RBu9Owyo/QkBmmzVDRxjd1vlxZzGymV4N3uTNCYw=;
- b=ixBcuQYMlAQvnkDAh5ePmwhBqiSCIihrAcCs5UyinsvEobbuQEhfbVnY
- 2UHESoEPk+Rpp06wXGGNW9IJfso+dnZcg9Idg8EEG7O3kg5zikkuqDZEM
- wACDgEP9GWr0a2DMbExCsXqclI+mKLl1h6F/JG2Q+O15HNMIOcn3sv3Ro
- 35Enuz88xS7Y8SuxQd0Vs/2dI4sMnhLsZRIf0HDqT1SgWrVpn5e36gA9w
- fqTMc8+1X7/5yUEsi1RS/S50uQ6Y8ZzSm9eb7O65X+qzsEZYQJr15ivHq
- 2gwKVLwuOwd5AYEnwefro7riPeOfKs73D+KVSy/lzDGMzKsATU3tcCpWB g==;
-X-CSE-ConnectionGUID: wFd46wkcQtyCybBAx3AJlQ==
-X-CSE-MsgGUID: XrrfRx8/Q8ygHSSXRmlaqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="58878210"
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; d="scan'208";a="58878210"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2025 22:47:10 -0700
-X-CSE-ConnectionGUID: x09CrNPgQNey1k8mnzMB+A==
-X-CSE-MsgGUID: zRdOdsBqTTKKOP44V0peaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; d="scan'208";a="175634784"
-Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2025 22:47:09 -0700
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
-To: qemu-devel@nongnu.org
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: [RFC 6/6] virtio-gpu: Find the host addr given gpa associated with a
- ram device
-Date: Tue,  2 Sep 2025 22:42:19 -0700
-Message-ID: <20250903054438.1179384-7-vivek.kasireddy@intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250903054438.1179384-1-vivek.kasireddy@intel.com>
-References: <20250903054438.1179384-1-vivek.kasireddy@intel.com>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1utgGh-0001HA-Cf
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 01:42:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756878169;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jaru+fic4tIV0nDAFQSAAmsVK7Runa/xYXzjQUV7SCo=;
+ b=BOKIKYIxTmQBM8b0MkJ4XyhnKEfcywgnhsp/65x7l/d/YX+g3FSLQH/6iQEgO5V/pbTZqP
+ ClrGkD5U/ku6g5HtfG2dnJ+q2PfcvwBuxGph/X3QCfdclmHQbpD6cEPbiQWBJoJkM0wy8N
+ DNHnF0DtanvoRvpYsi3ijmWkgQowg6c=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-322-1enGTOPiMGKBI9V7_fSxOw-1; Wed, 03 Sep 2025 01:42:47 -0400
+X-MC-Unique: 1enGTOPiMGKBI9V7_fSxOw-1
+X-Mimecast-MFC-AGG-ID: 1enGTOPiMGKBI9V7_fSxOw_1756878167
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-329e55e686dso1952639a91.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 22:42:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756878167; x=1757482967;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jaru+fic4tIV0nDAFQSAAmsVK7Runa/xYXzjQUV7SCo=;
+ b=m/dukdH6b/jbyeg3oQaoQHXf7v8E/h1C83QpFz9eo6GEiWvhsaDLixP4LVBNYlgf64
+ O4h3o93IpaL60NV7JPMhQN0SoMrpwwFqPg4m50C7BglI4qslbVjBW1obX/kxhBGSghq2
+ eyIbvurITJvXp3iQs84O5tcB0Z/1/Bn5WTmNbMbYnSTpn0PjSPN25+B+hnHQg6chbi27
+ j8YDPreCzjTzAJg38BPcH2se3dcq/hKDKufY0wk4aq2REm0aBII/3RVAkbkdVI5H0jf1
+ sWRKEUHosCbPPbWEzWNwzywFREjLBkRr1xU4/KjTc5SKFLXO+5ObUnXtiXo8+Um5r337
+ Bk1Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUi+xWQBvj7nNBR6NOf8+T07xQE4DhyyTo7Ze0KndVLur7+FDGda86VFs+drUV1Ml8joV81PnjExUoq@nongnu.org
+X-Gm-Message-State: AOJu0Yw6Q1xwKEOiMNVCmIivqTtOOyGjLGhR1R1QzVtqJu0jxE6ddUB6
+ cxJ17xTdVuYE4mWVKO+TEE8XjxaFbFukN88VK/3vXXN9+lg1H0qJlk2yTvHOw4cgkKckn+QI4KY
+ xDbKnDQsBEbKlHmQScANz9ugKfjCeiaP3JAu2jtELmgwoY6PxUCS4V7fNfV5+Cv2LH2sHVbGb2q
+ hb1YYTO0fuWHPZTZkGxATT7gn036bgd2o=
+X-Gm-Gg: ASbGncvml0BRISiweBgt41sHpuZ2TOKj62STH0Dhx5ZIMzh+Hci4vaMurpyNg0tf8D4
+ PVjixLLeXwRsyb2eKG0/WOZ8plXDFKIz0JP/FP0vntPbXP/5mwHOnAJMulRXpS1c57tIGQESv7o
+ o6ifwq9I6rrqznBQaVz4kq0w==
+X-Received: by 2002:a17:90b:3c12:b0:321:2b89:957c with SMTP id
+ 98e67ed59e1d1-328156e29eamr18361312a91.27.1756878166826; 
+ Tue, 02 Sep 2025 22:42:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFsEb1IjNeObNdmNUSCYV5wa2h9/4NVZvkPf9qN4JpKRTpf1z5m1tCWi/pwaARdUBCXu+HAULZ25yjFsYYSroI=
+X-Received: by 2002:a17:90b:3c12:b0:321:2b89:957c with SMTP id
+ 98e67ed59e1d1-328156e29eamr18361296a91.27.1756878166365; Tue, 02 Sep 2025
+ 22:42:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.20;
- envelope-from=vivek.kasireddy@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20250821142641.359132-1-jonah.palmer@oracle.com>
+ <96b2392ae6f091a0d49a74c73122889c78d80dfa.camel@infradead.org>
+ <e9623342-e6f3-4b7f-b51c-4b2c1ccc6157@oracle.com>
+In-Reply-To: <e9623342-e6f3-4b7f-b51c-4b2c1ccc6157@oracle.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 3 Sep 2025 13:42:34 +0800
+X-Gm-Features: Ac12FXyM2hAfVpJBz9NNOuOEqeMq8ARf0W8ZZFgEbsFt6oq5YfJD9DzyuG9M4aI
+Message-ID: <CACGkMEuWjUdoALFSfkC_a9XkOTP6=E5R-nCpNYCk1pRnhK5cmg@mail.gmail.com>
+Subject: Re: [PATCH] net/hub: make net_hub_port_cleanup idempotent
+To: Jonah Palmer <jonah.palmer@oracle.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org,
+ eperezma@redhat.com, leiyang@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,82 +105,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the Guest provides a gpa (guest physical address) associated with
-a PCI region, then we can obtain the hva (host virtual address) via
-gpa2hva() API instead of dma_memory_map(). Note that we would still
-call dma_memory_unmap() (to unref mr) regardless of how we obtained
-the hva.
+On Fri, Aug 22, 2025 at 12:39=E2=80=AFAM Jonah Palmer <jonah.palmer@oracle.=
+com> wrote:
+>
+>
+>
+> On 8/21/25 11:13 AM, David Woodhouse wrote:
+> > On Thu, 2025-08-21 at 14:26 +0000, Jonah Palmer wrote:
+> >> Makes the net_hub_port_cleanup function idempotent to avoid double
+> >> removals by guarding its QLIST_REMOVE with a flag.
+> >>
+> >> When using a Xen networking device with hubport backends, e.g.:
+> >>
+> >> -accel kvm,xen-version=3D0x40011
+> >> -netdev hubport,...
+> >> -device xen-net-device,...
+> >>
+> >> the shutdown order starts with net_cleanup, which walks the list and
+> >> deletes netdevs (including hubports). Then Xen's xen_device_unrealize =
+is
+> >> called, which eventually leads to a second net_hub_port_cleanup call,
+> >> resulting in a segfault.
+> >>
+> >> Fixes: e7891c57 ("net: move backend cleanup to NIC cleanup")
+> >
+> > Tested-by: David Woodhouse <dwmw@amazon.co.uk>
+> >
+> > But I hate it.
+> >
+> > The lifetime of these objects is confusing, and this patch doesn't make
+> > it nicer.
+> >
+> > Why is it OK for the object to be taken off the list while it still
+> > exists and is findable by other pointers? What does it *mean* for it to
+> > be in that state? Doesn't it have a refcount? Can't it be unlisted
+> > *and* freed only when that refcount goes to zero?
+> >
+> >
+>
+> I believe this "off-list but still exists" state is intentional and is
+> the model for NIC peer backends. IIUC, it essentially means "detached
+> from hub broadcast but owned by the NIC until device teardown".
+>
+> The net core explicitly transfers ownership of a backend from the global
+> list to the NIC without freeing it, so it can be torn down later by the
+> device itself. See the comments in qemu_del_net_client and net_cleanup
+> in net/net.c.
+>
+> In other words, a backend can be removed from net_clients and still
+> exist (owned by the NIC) until qemu_del_nic cleans it up and frees it.
+> There's no refcount today and lifetime is manual.
+>
+> The real bug here is that hubport's cleanup is not idempotent, not
+> necessarily the ownership model itself.
+>
+> I do agree though that the lifetime of these objects is confusing. And a
+> refcount model would be theoretically cleaner, but current code
+> explicitly relies on ownership transfer without refcounts.
 
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Alex Bennée <alex.bennee@linaro.org>
-Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
----
- hw/display/virtio-gpu.c | 35 ++++++++++++++++++++++++++++++++---
- 1 file changed, 32 insertions(+), 3 deletions(-)
+In the long term, we should consider converting networking code to QOM.
 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 1654a417b8..4af8390bb5 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -32,6 +32,7 @@
- #include "qemu/module.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-+#include "monitor/monitor.h"
- 
- #define VIRTIO_GPU_VM_VERSION 1
- 
-@@ -799,6 +800,36 @@ static void virtio_gpu_set_scanout_blob(VirtIOGPU *g,
-                               &fb, res, &ss.r, &cmd->error);
- }
- 
-+static void *map_gpa2hva(VirtIOGPU *g,
-+                         struct virtio_gpu_ctrl_command *cmd,
-+                         uint64_t gpa, hwaddr *len)
-+{
-+    MemoryRegion *mr = NULL;
-+    Error *errp = NULL;
-+    void *map;
-+
-+    if (cmd->cmd_hdr.type != VIRTIO_GPU_CMD_RESOURCE_CREATE_BLOB) {
-+        return dma_memory_map(VIRTIO_DEVICE(g)->dma_as, gpa, len,
-+                              DMA_DIRECTION_TO_DEVICE,
-+                              MEMTXATTRS_UNSPECIFIED);
-+    }
-+
-+    map = gpa2hva(&mr, gpa, 1, &errp);
-+    if (errp) {
-+        error_report_err(errp);
-+        return NULL;
-+    }
-+
-+    if (!memory_region_is_ram_device(mr)) {
-+        memory_region_unref(mr);
-+        map = dma_memory_map(VIRTIO_DEVICE(g)->dma_as, gpa, len,
-+                             DMA_DIRECTION_TO_DEVICE,
-+                             MEMTXATTRS_UNSPECIFIED);
-+    }
-+
-+    return map;
-+}
-+
- int virtio_gpu_create_mapping_iov(VirtIOGPU *g,
-                                   uint32_t nr_entries, uint32_t offset,
-                                   struct virtio_gpu_ctrl_command *cmd,
-@@ -840,9 +871,7 @@ int virtio_gpu_create_mapping_iov(VirtIOGPU *g,
- 
-         do {
-             len = l;
--            map = dma_memory_map(VIRTIO_DEVICE(g)->dma_as, a, &len,
--                                 DMA_DIRECTION_TO_DEVICE,
--                                 MEMTXATTRS_UNSPECIFIED);
-+            map = map_gpa2hva(g, cmd, a, &len);
-             if (!map) {
-                 qemu_log_mask(LOG_GUEST_ERROR, "%s: failed to map MMIO memory for"
-                               " element %d\n", __func__, e);
--- 
-2.50.1
+Thanks
+
+>
+> ---
+>
+> Actually, now that I think about it, perhaps we don't need this extra
+> 'listed' state and instead can just check 'if (port->hub)' and set it to
+> NULL after it's removed from the list.
+>
 
 
