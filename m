@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0960FB41A61
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 11:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C11B41A6E
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 11:47:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utk3H-0006MJ-Ao; Wed, 03 Sep 2025 05:45:17 -0400
+	id 1utk2b-000699-Ik; Wed, 03 Sep 2025 05:44:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1utk2R-000641-OV; Wed, 03 Sep 2025 05:44:24 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ id 1utk2S-00064z-FI; Wed, 03 Sep 2025 05:44:24 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1utk2O-0007uq-TA; Wed, 03 Sep 2025 05:44:23 -0400
+ id 1utk2Q-0007v4-Cn; Wed, 03 Sep 2025 05:44:24 -0400
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c21:2d8b:0:640:7d49:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 218AD80783;
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id BF0A98078F;
  Wed, 03 Sep 2025 12:44:19 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b8f::1:11])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id EicMoq3GhCg0-JNEI174m; Wed, 03 Sep 2025 12:44:18 +0300
+ ESMTPSA id EicMoq3GhCg0-lPCqMY01; Wed, 03 Sep 2025 12:44:19 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1756892658;
- bh=cPcTm0Onlv9tB/dQmFTsQTZnBRIN/zxkFFBerI9L9ZY=;
+ s=default; t=1756892659;
+ bh=fkLGyCbDw3KY+wvM5vQPHxrSIbDb3U7juq+tFywxqw8=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=WafOWKhSIam7wqgBtEoMqREtp9GqziURAExMc14aohpxP4VzACEKlTyiq+Zq1w/kT
- WxWytBB85LeB+pN29by/nzRf06oeQxA0sGzLMDB1K32q2sm3lzhVpdN75i9uyWIkIC
- b10KPRlTif38fovzYblsA7ZtKLwNr3rgDZG1RO9Y=
+ b=JA4nSTMGJJsYSqM6i2/e159fuyGuraJUhdh8ORBisls/ZDxHiR2nuzVidrgGvyn9H
+ SgZMzrLmZEdXeBZ/8XtcsFjJjdv1QjyedG7honDK9Jb2Y9h/hE/Z4fMC/EJO6EiobN
+ KjgVPVAO2j30q/yQ5eByaU6X5ASQJ5ppKlEAm0rw=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: berrange@redhat.com
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, peterx@redhat.com,
- vsementsov@yandex-team.ru, Jason Wang <jasowang@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>
-Subject: [PATCH 05/10] util: drop qemu_socket_try_set_nonblock()
-Date: Wed,  3 Sep 2025 12:44:05 +0300
-Message-ID: <20250903094411.1029449-6-vsementsov@yandex-team.ru>
+ vsementsov@yandex-team.ru, Paolo Bonzini <pbonzini@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>
+Subject: [PATCH 06/10] util: drop qemu_socket_set_block()
+Date: Wed,  3 Sep 2025 12:44:06 +0300
+Message-ID: <20250903094411.1029449-7-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250903094411.1029449-1-vsementsov@yandex-team.ru>
 References: <20250903094411.1029449-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,191 +71,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we can use qemu_set_blocking() in these cases.
+Now we can use qemu_set_blocking() and stop ignore errors in
+these case.
+
+Just crash on error for now, as we'll rework it in following commits.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- include/qemu/sockets.h |  1 -
- net/dgram.c            | 12 +++---------
- net/socket.c           |  7 ++-----
- net/stream.c           |  9 +++------
- net/stream_data.c      | 10 ++++------
- util/oslib-posix.c     |  4 ----
- util/oslib-win32.c     |  9 ---------
- 7 files changed, 12 insertions(+), 40 deletions(-)
+ include/qemu/sockets.h | 1 -
+ io/channel-socket.c    | 3 ++-
+ util/oslib-posix.c     | 6 ------
+ util/oslib-win32.c     | 7 -------
+ 4 files changed, 2 insertions(+), 15 deletions(-)
 
 diff --git a/include/qemu/sockets.h b/include/qemu/sockets.h
-index 6477f90b9e..9512fec514 100644
+index 9512fec514..be351d85f7 100644
 --- a/include/qemu/sockets.h
 +++ b/include/qemu/sockets.h
-@@ -47,7 +47,6 @@ ssize_t qemu_send_full(int s, const void *buf, size_t count)
+@@ -46,7 +46,6 @@ ssize_t qemu_send_full(int s, const void *buf, size_t count)
+     G_GNUC_WARN_UNUSED_RESULT;
  int socket_set_cork(int fd, int v);
  int socket_set_nodelay(int fd);
- void qemu_socket_set_block(int fd);
--int qemu_socket_try_set_nonblock(int fd);
+-void qemu_socket_set_block(int fd);
  int socket_set_fast_reuse(int fd);
  
  #ifdef WIN32
-diff --git a/net/dgram.c b/net/dgram.c
-index fb9ded30df..baa126d514 100644
---- a/net/dgram.c
-+++ b/net/dgram.c
-@@ -287,7 +287,7 @@ static int net_dgram_mcast_init(NetClientState *peer,
-                                 Error **errp)
- {
-     NetDgramState *s;
--    int fd, ret;
-+    int fd;
-     struct sockaddr_in *saddr;
- 
-     if (remote->type != SOCKET_ADDRESS_TYPE_INET) {
-@@ -335,11 +335,8 @@ static int net_dgram_mcast_init(NetClientState *peer,
-                 g_free(saddr);
-                 return -1;
-             }
--            ret = qemu_socket_try_set_nonblock(fd);
--            if (ret < 0) {
-+            if (!qemu_set_blocking(fd, false, errp)) {
-                 g_free(saddr);
--                error_setg_errno(errp, -ret, "%s: Can't use file descriptor %d",
--                                 name, fd);
-                 return -1;
+diff --git a/io/channel-socket.c b/io/channel-socket.c
+index e77602a22e..4f7e86f72f 100644
+--- a/io/channel-socket.c
++++ b/io/channel-socket.c
+@@ -498,7 +498,8 @@ static void qio_channel_socket_copy_fds(struct msghdr *msg,
              }
  
-@@ -572,10 +569,7 @@ int net_init_dgram(const Netdev *netdev, const char *name,
-         if (fd == -1) {
-             return -1;
-         }
--        ret = qemu_socket_try_set_nonblock(fd);
--        if (ret < 0) {
--            error_setg_errno(errp, -ret, "%s: Can't use file descriptor %d",
--                             name, fd);
-+        if (!qemu_set_blocking(fd, false, errp)) {
-             return -1;
-         }
-         dest_addr = NULL;
-diff --git a/net/socket.c b/net/socket.c
-index db25e3d9ae..1ad03fc9d4 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -718,7 +718,7 @@ int net_init_socket(const Netdev *netdev, const char *name,
-     }
+             /* O_NONBLOCK is preserved across SCM_RIGHTS so reset it */
+-            qemu_socket_set_block(fd);
++            /* TODO: don't crash on error, just handle it! */
++            qemu_set_blocking(fd, true, &error_abort);
  
-     if (sock->fd) {
--        int fd, ret, so_type;
-+        int fd, so_type;
- 
-         fd = monitor_fd_param(monitor_cur(), sock->fd, errp);
-         if (fd == -1) {
-@@ -728,10 +728,7 @@ int net_init_socket(const Netdev *netdev, const char *name,
-         if (so_type < 0) {
-             return -1;
-         }
--        ret = qemu_socket_try_set_nonblock(fd);
--        if (ret < 0) {
--            error_setg_errno(errp, -ret, "%s: Can't use file descriptor %d",
--                             name, fd);
-+        if (!qemu_set_blocking(fd, false, errp)) {
-             return -1;
-         }
-         switch (so_type) {
-diff --git a/net/stream.c b/net/stream.c
-index d893f02cab..94f823a2a7 100644
---- a/net/stream.c
-+++ b/net/stream.c
-@@ -138,7 +138,6 @@ static void net_stream_server_listening(QIOTask *task, gpointer opaque)
-     NetStreamData *d = opaque;
-     QIOChannelSocket *listen_sioc = QIO_CHANNEL_SOCKET(d->listen_ioc);
-     SocketAddress *addr;
--    int ret;
-     Error *err = NULL;
- 
-     if (qio_task_propagate_error(task, &err)) {
-@@ -149,13 +148,11 @@ static void net_stream_server_listening(QIOTask *task, gpointer opaque)
- 
-     addr = qio_channel_socket_get_local_address(listen_sioc, NULL);
-     g_assert(addr != NULL);
--    ret = qemu_socket_try_set_nonblock(listen_sioc->fd);
--    if (addr->type == SOCKET_ADDRESS_TYPE_FD && ret < 0) {
--        qemu_set_info_str(&d->nc, "can't use file descriptor %s (errno %d)",
--                          addr->u.fd.str, -ret);
-+    if (!qemu_set_blocking(listen_sioc->fd, false, &err)) {
-+        qemu_set_info_str(&d->nc, "error: %s", error_get_pretty(err));
-+        error_free(err);
-         return;
-     }
--    g_assert(ret == 0);
-     qapi_free_SocketAddress(addr);
- 
-     d->nc.link_down = true;
-diff --git a/net/stream_data.c b/net/stream_data.c
-index 5af27e0d1d..03740e9f73 100644
---- a/net/stream_data.c
-+++ b/net/stream_data.c
-@@ -12,6 +12,7 @@
- #include "net/net.h"
- #include "io/channel.h"
- #include "io/net-listener.h"
-+#include "qemu/sockets.h"
- 
- #include "stream_data.h"
- 
-@@ -154,7 +155,6 @@ int net_stream_data_client_connected(QIOTask *task, NetStreamData *d)
- {
-     QIOChannelSocket *sioc = QIO_CHANNEL_SOCKET(d->ioc);
-     SocketAddress *addr;
--    int ret;
-     Error *err = NULL;
- 
-     if (qio_task_propagate_error(task, &err)) {
-@@ -166,14 +166,12 @@ int net_stream_data_client_connected(QIOTask *task, NetStreamData *d)
-     addr = qio_channel_socket_get_remote_address(sioc, NULL);
-     g_assert(addr != NULL);
- 
--    ret = qemu_socket_try_set_nonblock(sioc->fd);
--    if (addr->type == SOCKET_ADDRESS_TYPE_FD && ret < 0) {
--        qemu_set_info_str(&d->nc, "can't use file descriptor %s (errno %d)",
--                          addr->u.fd.str, -ret);
-+    if (!qemu_set_blocking(sioc->fd, false, &err)) {
-+        qemu_set_info_str(&d->nc, "error: %s", error_get_pretty(err));
-+        error_free(err);
-         qapi_free_SocketAddress(addr);
-         goto error;
-     }
--    g_assert(ret == 0);
-     qapi_free_SocketAddress(addr);
- 
-     net_socket_rs_init(&d->rs, net_stream_data_rs_finalize, false);
+ #ifndef MSG_CMSG_CLOEXEC
+             qemu_set_cloexec(fd);
 diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index dc23b33210..51f16d57ff 100644
+index 51f16d57ff..8891d82db0 100644
 --- a/util/oslib-posix.c
 +++ b/util/oslib-posix.c
-@@ -267,10 +267,6 @@ void qemu_socket_set_block(int fd)
-     g_unix_set_fd_nonblocking(fd, false, NULL);
+@@ -262,12 +262,6 @@ bool qemu_set_blocking(int fd, bool block, Error **errp)
+     return true;
  }
  
--int qemu_socket_try_set_nonblock(int fd)
+-void qemu_socket_set_block(int fd)
 -{
--    return g_unix_set_fd_nonblocking(fd, true, NULL) ? 0 : -errno;
+-    g_unix_set_fd_nonblocking(fd, false, NULL);
 -}
- 
+-
+-
  int socket_set_fast_reuse(int fd)
  {
+     int val = 1, ret;
 diff --git a/util/oslib-win32.c b/util/oslib-win32.c
-index 1566eb57e7..bf5d478c5c 100644
+index bf5d478c5c..b9ce2f96ee 100644
 --- a/util/oslib-win32.c
 +++ b/util/oslib-win32.c
-@@ -202,15 +202,6 @@ void qemu_socket_set_block(int fd)
-     ioctlsocket(fd, FIONBIO, &opt);
+@@ -195,13 +195,6 @@ bool qemu_set_blocking(int fd, bool block, Error **errp)
+     return true;
  }
  
--int qemu_socket_try_set_nonblock(int fd)
+-void qemu_socket_set_block(int fd)
 -{
--    unsigned long opt = 1;
--    if (ioctlsocket(fd, FIONBIO, &opt) != NO_ERROR) {
--        return -socket_error();
--    }
--    return 0;
+-    unsigned long opt = 0;
+-    qemu_socket_unselect(fd, NULL);
+-    ioctlsocket(fd, FIONBIO, &opt);
 -}
 -
  int socket_set_fast_reuse(int fd)
