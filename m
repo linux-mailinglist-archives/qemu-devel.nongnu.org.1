@@ -2,90 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A0BB41F9B
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 14:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A4AB4200A
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 14:53:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utmuG-0004pf-Ui; Wed, 03 Sep 2025 08:48:08 -0400
+	id 1utmw4-00061w-QE; Wed, 03 Sep 2025 08:50:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1utmuD-0004o8-Oq
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 08:48:05 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1utmuC-0000BM-7k
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 08:48:05 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-61cb4370e7bso9825351a12.3
- for <qemu-devel@nongnu.org>; Wed, 03 Sep 2025 05:48:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756903682; x=1757508482; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NHgaZwe20OB2RTNBClXsk7/P1c0TMf7hbNDsoPb8Wd8=;
- b=eNm6uR05HRLqSHsf06VvIqjbhLiBG9VYx6HxiVit7bEHzp/p3+ulFZOg5CQm6PkD/O
- +kdV+nXWVLEWR1tyQGCFBAmmRpQlvYp9EDY8vYsCYIXahN4dHi6QwPoffn2lm7zlrsy0
- 6xRxqCtDH1TI7BO+2vFR8B9sGJTWxNBOo6Ig7jwBrQa+xYzqypEe7lwCNyNI/Tw9V5On
- G1VcRWf+bARTwxFruKqMXuK3k6aZkTXQ3qY/iFwSXnp/upbBUFP6mpnrp1qWllxuHt0t
- eeu4Ed79kLK3jfxoGyfjBVbuOr0X4RambFUMf7/64x/BcvI/s0bKSDgDC7Ow42iDbjFy
- B94Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756903682; x=1757508482;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NHgaZwe20OB2RTNBClXsk7/P1c0TMf7hbNDsoPb8Wd8=;
- b=E5nQO1D/0vrJsRurCSRheDNA34V+tiihN4dhPKO6uzQwxmHCpYvCzOCGvAHJ1JOqQ1
- DFISsrnxcqq6kh4icizijeyut5pv8T8KHjmBaANF6bmthkfniBtaskM7Ibigx8NqbRQR
- UULfEdIN0MssmgpXStW16JJoiB0qaPsLPmrKj2301URvRhnKkqEl3JtKeNxAN7InbESy
- rYa6ZNgY/MHHCGxGElLV1hRgWF8WeWCMJxD3HgYN0JGoijGX/T8YN4Wz4Kz8g4buX+8V
- f4k7XXEL4GiXzYtYzRyD1izlJS1+yXL7rQb2kxHNW5vkxtDkQrTpYprgNlxmX4Tqcxuv
- 8jtQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVv73qDkZMdcf5E2/nd6Sdu8zDzY3aE0LjWwF6bYYQ0JMdOaU8eJ/rmuHXLnQTVr5V3gE5FSnApBeSX@nongnu.org
-X-Gm-Message-State: AOJu0Yy7Fw5pfk5/ao79/WmdmHpapeI1GRwA83v3X2WhX2cytXieYanD
- ATEZ7BcY3KzC3kKrZS33xW8mTAoEleviMiXWwr7183NfJnU7nHgjDYjIAYPKozeYdEI=
-X-Gm-Gg: ASbGnctCP9U6ZCrASADMIZ6A7RfBigfiu0+Syzh9SUbfAuXFencn5oQCmgXR9I452Ul
- x1ffMkwu8KjVIxQ+A49Go23402S0utO5cq7xE9LZ990jsOjGMuQoB4WlcpIuFi+eshMtFKlW54T
- q1mmteHJM2KF14ymMMQo08xPynypgnEjV3cD9/JqH/N6AeJZEfP3zuK1oruPnmvpV1IX7B7qX/W
- ZYJsZhkureA/4GLwiu6gs20WrYWtYxRYK3Iy+ED9vg0Y5BLTwq3TfNr0IvGj3gd/4o6o1irIATu
- MFegn2GYrylnk0NDGisYaGDu6DwTrhgGVs432X88znisUj2ntx0iNk4yCgDohjybqhV27hqCZPO
- 6GZ8lDGT5uAKyqP2qLc4KWhDWUxJMgxpjoTYpXCSvctxlr66N4EQlBq5oVJ+5/arYY46RCls=
-X-Google-Smtp-Source: AGHT+IGeKUC5JYfdVaeQ4bCb0WZIKWTm2cj0TQNEGnpnUJk17W8bCFTRPpcirfn308Hq0A/xy6Gndw==
-X-Received: by 2002:a05:6402:270e:b0:617:b28c:e134 with SMTP id
- 4fb4d7f45d1cf-61d260cc308mr14393716a12.0.1756903682187; 
- Wed, 03 Sep 2025 05:48:02 -0700 (PDT)
-Received: from [10.40.6.207] (93-51-222-138.ip268.fastwebnet.it.
- [93.51.222.138]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-61cfc214bacsm12257696a12.16.2025.09.03.05.48.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Sep 2025 05:48:01 -0700 (PDT)
-Message-ID: <a7eb6a3c-09a5-448b-a27a-812b6dee03fd@linaro.org>
-Date: Wed, 3 Sep 2025 14:47:59 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1utmvt-0005uq-CN
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 08:49:50 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1utmvp-0000kp-8Z
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 08:49:49 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 6EBD7C0162;
+ Wed, 03 Sep 2025 15:49:37 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b8f::1:11])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id anf8gZ3GnW20-6ez1Rk9L; Wed, 03 Sep 2025 15:49:36 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1756903776;
+ bh=KgBDmn2CL6n1Kz39QWWynh1px15TodRLtys1uZLo7AI=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=XNPExnFKw+C6heNZkB/nl1VaoN8xkK8wjAWU5L4AGqMfJRztm0o+WBCtScLBJ4xL0
+ lzGIdqQx/2ytG0NRI2RHfphtD0Qjr8DWAPo1TjxzBXHCEdtBQ1BHZ/BkzW8+X9ho+m
+ Z8sjkYRt8FUas2FPCXHdbRM8dlccUeFuFczBRSuI=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: jasowang@redhat.com
+Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
+ steven.sistare@oracle.com, yc-core@yandex-team.ru
+Subject: [PATCH v3 00/19] TAP initialization refactoring
+Date: Wed,  3 Sep 2025 15:49:14 +0300
+Message-ID: <20250903124934.1169899-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 18/24] target/arm/hvf: Keep calling hv_vcpu_run() in loop
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Alexander Graf <agraf@csgraf.de>, qemu-arm@nongnu.org,
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Peter Maydell <peter.maydell@linaro.org>, Mads Ynddal <mads@ynddal.dk>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Stefan Hajnoczi <stefanha@redhat.com>, Cameron Esfahani <dirty@apple.com>,
- Roman Bolshakov <rbolshakov@ddn.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20250903100702.16726-1-philmd@linaro.org>
- <20250903100702.16726-19-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250903100702.16726-19-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,7 +60,6 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -108,74 +71,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/3/25 12:06, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/arm/hvf/hvf.c | 40 +++++++++++++++++++++-------------------
->   1 file changed, 21 insertions(+), 19 deletions(-)
+Hi all!
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Here is a refactoring of initialization code, to improve its
+readability and get rid of duplication.
 
+v3:
+- rebase on top of [PATCH 00/10] io: deal with blocking/non-blocking fds
+- improve some commit messages
+- add t-b marks by Lei Yang (hope, they still counts after rebasing :)
 
-r~
+v2:
+01,03: improve commit msg
+14: fix return value for new net_tap_init_one()
+15: add return statements to other cases, to not break them
+20: new
 
-> 
-> diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-> index 0cfe3066c23..b60efdc1769 100644
-> --- a/target/arm/hvf/hvf.c
-> +++ b/target/arm/hvf/hvf.c
-> @@ -2141,30 +2141,32 @@ int hvf_arch_vcpu_exec(CPUState *cpu)
->       int ret;
->       hv_return_t r;
->   
-> -    if (!(cpu->singlestep_enabled & SSTEP_NOIRQ) &&
-> -        hvf_inject_interrupts(cpu)) {
-> -        return EXCP_INTERRUPT;
-> -    }
-> -
->       if (cpu->halted) {
->           return EXCP_HLT;
->       }
->   
-> -    flush_cpu_state(cpu);
-> +    do {
-> +        if (!(cpu->singlestep_enabled & SSTEP_NOIRQ) &&
-> +            hvf_inject_interrupts(cpu)) {
-> +            return EXCP_INTERRUPT;
-> +        }
->   
-> -    bql_unlock();
-> -    r = hv_vcpu_run(cpu->accel->fd);
-> -    bql_lock();
-> -    switch (r) {
-> -    case HV_SUCCESS:
-> -        ret = hvf_handle_vmexit(cpu, cpu->accel->exit);
-> -        break;
-> -    case HV_ILLEGAL_GUEST_STATE:
-> -        trace_hvf_illegal_guest_state();
-> -        /* fall through */
-> -    default:
-> -        g_assert_not_reached();
-> -    }
-> +        flush_cpu_state(cpu);
-> +
-> +        bql_unlock();
-> +        r = hv_vcpu_run(cpu->accel->fd);
-> +        bql_lock();
-> +        switch (r) {
-> +        case HV_SUCCESS:
-> +            ret = hvf_handle_vmexit(cpu, cpu->accel->exit);
-> +            break;
-> +        case HV_ILLEGAL_GUEST_STATE:
-> +            trace_hvf_illegal_guest_state();
-> +            /* fall through */
-> +        default:
-> +            g_assert_not_reached();
-> +        }
-> +    } while (ret == 0);
->   
->       return ret;
->   }
-r~
+Below are the initialization flow diagrams showing the changes.
+
+BEFORE REFACTORING:
+==================
+
+```
+net_init_tap()
+    |
+    +-- if (tap->fd)
+    |   +-- duplicated logic*
+    |   +-- net_init_tap_one()
+    |
+    +-- else if (tap->fds)
+    |   +-- for each fd:
+    |       +-- duplicated logic*
+    |       +-- net_init_tap_one()
+    |
+    +-- else if (tap->helper)
+    |   +-- duplicated logic*
+    |   +-- net_init_bridge()
+    |
+    +-- else (normal case)
+        +-- for each queue:
+            +-- net_tap_init()
+            +-- net_init_tap_one()
+
+net_init_bridge()
+    |
+    +-- duplicated logic*
+    +-- net_tap_fd_init()
+
+net_init_tap_one()
+    |
+    +-- net_tap_fd_init()
+
+net_tap_init()
+    |
+    +-- tap_open()
+
+net_tap_fd_init()
+    |
+    +-- qemu_new_net_client()
+    +-- Initialize TAPState
+
+* duplicated logic: set fd nonblocking + probe vnet_hdr
+```
+
+AFTER REFACTORING:
+=================
+
+```
+net_init_tap()
+    |
+    +-- if (tap->fd)
+    |   +-- net_tap_from_monitor_fd()
+    |
+    +-- else if (tap->fds)
+    |   +-- for each fd:
+    |       +-- net_tap_from_monitor_fd()
+    |
+    +-- else if (tap->helper)
+    |   +-- net_init_bridge()
+    |
+    +-- else (normal case)
+        +-- net_tap_open()
+
+net_tap_open()
+    |
+    +-- for each queue:
+        +-- net_tap_open_one()
+
+net_tap_open_one()
+    |
+    +-- tap_open()
+    +-- net_tap_fd_init_common()
+
+net_tap_from_monitor_fd()
+    |
+    +-- net_tap_fd_init_external()
+
+net_tap_fd_init_external()
+    |
+    +-- net_tap_fd_init_common()
+
+net_init_bridge()
+    |
+    +-- net_tap_fd_init_external()
+
+net_tap_fd_init_common()
+    |
+    +-- qemu_new_net_client()
+    +-- Initialize TAPState
+```
+
+Solved problems:
+
+- duplicated logic to handle external
+  file descriptors (set nonblocking, probe vnet_hdr)
+
+- duplication between tap/helper case in
+  net_init_tap() and net_init_bridge()
+
+- confusing naming and functionality spread between functions (we had
+  net_init_tap(), together with net_tap_init(); also main central
+  function was net_init_tap_one(), and part of its logic (not clear
+  why) moved to separate net_tap_fd_init()),
+
+- net_init_tap() was just too big
+
+Vladimir Sementsov-Ogievskiy (19):
+  net/tap: net_init_tap_one(): add return value
+  net/tap: tap_set_sndbuf(): add return value
+  net/tap: net_init_tap_one(): drop extra error propagation
+  net/tap: net_init_tap_one(): move parameter checking earlier
+  net/tap: net_init_tap(): refactor parameter checking
+  net/tap: net_init_tap(): drop extra variable vhostfdname
+  net/tap: move local variables related to the latter case to else
+    branch
+  net/tap: use glib strings vector and g_strsplit for fds case
+  net/tap: drop extra tap_fd_get_ifname() call
+  net/tap: net_init_tap_one(): refactor to use netdev as first arg
+  net/tap: net_init_tap_one(): support bridge
+  net/tap: net_init_bridge(): support tap
+  net/tap: refactor net_tap_init() into net_tap_open_one()
+  net/tap: introduce net_tap_open()
+  net/tap: introduce net_tap_fd_init_external()
+  net/tap: introduce net_tap_from_monitor_fd() helper
+  net/tap: split net_tap_setup_vhost() separate function
+  net/tap: drop net_tap_fd_init()
+  net/tap: introduce net_init_tap_fds()
+
+ net/tap-linux.c |   5 +-
+ net/tap.c       | 553 ++++++++++++++++++++++--------------------------
+ net/tap_int.h   |   2 +-
+ 3 files changed, 263 insertions(+), 297 deletions(-)
+
+-- 
+2.48.1
 
 
