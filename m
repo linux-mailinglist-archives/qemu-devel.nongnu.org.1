@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE641B42002
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 14:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C543B41FDC
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 14:51:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utmwW-0006Ig-IF; Wed, 03 Sep 2025 08:50:29 -0400
+	id 1utmwS-0006D8-Bw; Wed, 03 Sep 2025 08:50:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1utmw7-000644-0G
+ id 1utmw6-00063r-Tl
  for qemu-devel@nongnu.org; Wed, 03 Sep 2025 08:50:03 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1utmw5-0000o4-48
+ id 1utmw5-0000o6-37
  for qemu-devel@nongnu.org; Wed, 03 Sep 2025 08:50:02 -0400
 Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id AC4EBC01C0;
- Wed, 03 Sep 2025 15:49:48 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 3FED8C0162;
+ Wed, 03 Sep 2025 15:49:49 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b8f::1:11])
  by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id anf8gZ3GnW20-lzESOB5n; Wed, 03 Sep 2025 15:49:48 +0300
+ ESMTPSA id anf8gZ3GnW20-4jtuwM2G; Wed, 03 Sep 2025 15:49:48 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1756903788;
- bh=xAz54pULPRmewXD08HRWd/JDx6s3s5TRWhqg3FoWG2k=;
+ bh=m/hFLQMDX/lCZxfgHLZhE6GJfd+gtZ+BLeDe492dlkM=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=vVpjDSfAqu2ufMLrDcBdhDiKkcx7rPK50hHU5L9nxpTUpUr/k1HiLpa6COJww/B5I
- cscCIgr4nVYBCPQ6427bFV4lZdAPrQRtnpCFreOyq27c42bjpQtUv20PB/k05v0RMe
- TtUldnEIr/8bdOsdo/1RzXiOoOeEvFt2WmGOzLS4=
+ b=HrN3koCUAIhNDJ9ll8pRGM+WiLDFo+RDKSupUyzD575dio4khLFlu5qNntIyMPr/g
+ 0JbVr68pUrJDO/35trAQXhe+Tie1oA5KyozNp77ZFn+7q9biGoF6Us7DUDcNphFjwB
+ FZ7JH2PQXGNEiOrp51Q2qqvcHo5g5UdmapTQF4N8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: jasowang@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
  steven.sistare@oracle.com, yc-core@yandex-team.ru
-Subject: [PATCH v3 18/19] net/tap: drop net_tap_fd_init()
-Date: Wed,  3 Sep 2025 15:49:32 +0300
-Message-ID: <20250903124934.1169899-19-vsementsov@yandex-team.ru>
+Subject: [PATCH v3 19/19] net/tap: introduce net_init_tap_fds()
+Date: Wed,  3 Sep 2025 15:49:33 +0300
+Message-ID: <20250903124934.1169899-20-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250903124934.1169899-1-vsementsov@yandex-team.ru>
 References: <20250903124934.1169899-1-vsementsov@yandex-team.ru>
@@ -73,155 +73,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's called only from net_init_tap_one(), and there is no semantic
-reason, why we do part of initialization in one function and continue
-in another. Let's combine them into one net_tap_fd_init_common().
+Final refactoring step for net_init_tap: move fds case to separate
+function, so that net_init_tap() becomes straightforward top-level
+entry point to tap initialization.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Tested-by: Lei Yang <leiyang@redhat.com>
 ---
- net/tap.c | 97 +++++++++++++++++++++++++------------------------------
- 1 file changed, 44 insertions(+), 53 deletions(-)
+ net/tap.c | 68 +++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 39 insertions(+), 29 deletions(-)
 
 diff --git a/net/tap.c b/net/tap.c
-index bc46839584..5ad6f6af85 100644
+index 5ad6f6af85..2530627a9a 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -88,11 +88,12 @@ static void launch_script(const char *setup_script, const char *ifname,
- static void tap_send(void *opaque);
- static void tap_writable(void *opaque);
- 
--static int net_init_tap_one(const Netdev *netdev, NetClientState *peer,
--                            const char *model, const char *name,
--                            const char *ifname, const char *script,
--                            const char *downscript, const char *vhostfdname,
--                            int vnet_hdr, int fd, Error **errp);
-+static int net_tap_fd_init_common(const Netdev *netdev, NetClientState *peer,
-+                                  const char *model, const char *name,
-+                                  const char *ifname, const char *script,
-+                                  const char *downscript,
-+                                  const char *vhostfdname,
-+                                  int vnet_hdr, int fd, Error **errp);
- static int net_tap_setup_vhost(TAPState *s, const NetdevTapOptions *tap,
-                                const char *vhostfdname, Error **errp);
- 
-@@ -393,42 +394,6 @@ static NetClientInfo net_tap_info = {
-     .get_vhost_net = tap_get_vhost_net,
- };
- 
--static TAPState *net_tap_fd_init(NetClientState *peer,
--                                 const char *model,
--                                 const char *name,
--                                 int fd,
--                                 int vnet_hdr)
--{
--    NetClientState *nc;
--    TAPState *s;
--
--    nc = qemu_new_net_client(&net_tap_info, peer, model, name);
--
--    s = DO_UPCAST(TAPState, nc, nc);
--
--    s->fd = fd;
--    s->host_vnet_hdr_len = vnet_hdr ? sizeof(struct virtio_net_hdr) : 0;
--    s->using_vnet_hdr = false;
--    s->has_ufo = tap_probe_has_ufo(s->fd);
--    s->has_uso = tap_probe_has_uso(s->fd);
--    s->enabled = true;
--    tap_set_offload(&s->nc, 0, 0, 0, 0, 0, 0, 0);
--    /*
--     * Make sure host header length is set correctly in tap:
--     * it might have been modified by another instance of qemu.
--     */
--    if (vnet_hdr) {
--        tap_fd_set_vnet_hdr_len(s->fd, s->host_vnet_hdr_len);
--    }
--    tap_read_poll(s, true);
--    s->vhost_net = NULL;
--
--    s->exit.notify = tap_exit_notify;
--    qemu_add_exit_notifier(&s->exit);
--
--    return s;
--}
--
- static void close_all_fds_after_fork(int excluded_fd)
- {
-     const int skip_fd[] = {STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO,
-@@ -639,9 +604,9 @@ static int net_tap_fd_init_external(const Netdev *netdev, NetClientState *peer,
-         }
-     }
- 
--    return net_init_tap_one(netdev, peer, model, name,
--                            NULL, NULL, NULL,
--                            vhostfdname, vnet_hdr, fd, errp);
-+    return net_tap_fd_init_common(netdev, peer, model, name,
-+                                  NULL, NULL, NULL,
-+                                  vhostfdname, vnet_hdr, fd, errp);
+@@ -877,12 +877,48 @@ static int net_tap_open(const Netdev *netdev,
+     return 0;
  }
  
- int net_init_bridge(const Netdev *netdev, const char *name,
-@@ -711,9 +676,9 @@ static int net_tap_open_one(const Netdev *netdev,
-         }
-     }
- 
--    ret = net_init_tap_one(netdev, peer, "tap", name, ifname,
--                           script, downscript,
--                           tap->vhostfd, vnet_hdr, fd, errp);
-+    ret = net_tap_fd_init_common(netdev, peer, "tap", name, ifname,
-+                                 script, downscript,
-+                                 tap->vhostfd, vnet_hdr, fd, errp);
-     if (ret < 0) {
-         close(fd);
-         return -1;
-@@ -724,15 +689,41 @@ static int net_tap_open_one(const Netdev *netdev,
- 
- #define MAX_TAP_QUEUES 1024
- 
--static int net_init_tap_one(const Netdev *netdev, NetClientState *peer,
--                            const char *model, const char *name,
--                            const char *ifname, const char *script,
--                            const char *downscript, const char *vhostfdname,
--                            int vnet_hdr, int fd, Error **errp)
-+static int net_tap_fd_init_common(const Netdev *netdev, NetClientState *peer,
-+                                  const char *model, const char *name,
-+                                  const char *ifname, const char *script,
-+                                  const char *downscript,
-+                                  const char *vhostfdname,
-+                                  int vnet_hdr, int fd, Error **errp)
- {
-     const NetdevTapOptions *tap;
--    TAPState *s = net_tap_fd_init(peer, model, name, fd, vnet_hdr);
-     int ret;
-+    NetClientState *nc;
-+    TAPState *s;
++static int net_init_tap_fds(const Netdev *netdev, const char *name,
++                            NetClientState *peer, Error **errp)
++{
++    const NetdevTapOptions *tap = &netdev->u.tap;
++    g_auto(GStrv) fds = NULL;
++    g_auto(GStrv) vhost_fds = NULL;
++    int nfds;
++    int vnet_hdr = 0, i = 0;
++    int ret;
 +
-+    nc = qemu_new_net_client(&net_tap_info, peer, model, name);
++    assert(netdev->type == NET_CLIENT_DRIVER_TAP);
 +
-+    s = DO_UPCAST(TAPState, nc, nc);
++    fds = g_strsplit(tap->fds, ":", MAX_TAP_QUEUES);
++    nfds = g_strv_length(fds);
 +
-+    s->fd = fd;
-+    s->host_vnet_hdr_len = vnet_hdr ? sizeof(struct virtio_net_hdr) : 0;
-+    s->using_vnet_hdr = false;
-+    s->has_ufo = tap_probe_has_ufo(s->fd);
-+    s->has_uso = tap_probe_has_uso(s->fd);
-+    s->enabled = true;
-+    tap_set_offload(&s->nc, 0, 0, 0, 0, 0, 0, 0);
-+    /*
-+     * Make sure host header length is set correctly in tap:
-+     * it might have been modified by another instance of qemu.
-+     */
-+    if (vnet_hdr) {
-+        tap_fd_set_vnet_hdr_len(s->fd, s->host_vnet_hdr_len);
++    if (tap->vhostfds) {
++        vhost_fds = g_strsplit(tap->vhostfds, ":", MAX_TAP_QUEUES);
++        if (nfds != g_strv_length(vhost_fds)) {
++            error_setg(errp, "The number of fds passed does not match "
++                       "the number of vhostfds passed");
++            return -1;
++        }
 +    }
-+    tap_read_poll(s, true);
-+    s->vhost_net = NULL;
 +
-+    s->exit.notify = tap_exit_notify;
-+    qemu_add_exit_notifier(&s->exit);
++    vnet_hdr = -1;
++    for (i = 0; i < nfds; i++) {
++        ret = net_tap_from_monitor_fd(netdev, peer, name,
++                                       vhost_fds ? vhost_fds[i] : NULL,
++                                       &vnet_hdr, fds[i], errp);
++        if (ret < 0) {
++            return -1;
++        }
++    }
++
++    return 0;
++}
++
++
+ int net_init_tap(const Netdev *netdev, const char *name,
+                  NetClientState *peer, Error **errp)
+ {
+     const NetdevTapOptions *tap = &netdev->u.tap;
+-    int vnet_hdr = 0, i = 0;
+-    int ret = 0;
  
-     if (netdev->type == NET_CLIENT_DRIVER_BRIDGE) {
-         const NetdevBridgeOptions *bridge = &netdev->u.bridge;
+     assert(netdev->type == NET_CLIENT_DRIVER_TAP);
+ 
+@@ -916,38 +952,12 @@ int net_init_tap(const Netdev *netdev, const char *name,
+         return net_tap_from_monitor_fd(netdev, peer, name, tap->vhostfd,
+                                        NULL, tap->fd, errp);
+     } else if (tap->fds) {
+-        g_auto(GStrv) fds = NULL;
+-        g_auto(GStrv) vhost_fds = NULL;
+-        int nfds;
+-
+         if (tap->helper || tap->vhostfd) {
+             error_setg(errp, "helper= and vhostfd= are invalid with fds=");
+             return -1;
+         }
+ 
+-        fds = g_strsplit(tap->fds, ":", MAX_TAP_QUEUES);
+-        nfds = g_strv_length(fds);
+-
+-        if (tap->vhostfds) {
+-            vhost_fds = g_strsplit(tap->vhostfds, ":", MAX_TAP_QUEUES);
+-            if (nfds != g_strv_length(vhost_fds)) {
+-                error_setg(errp, "The number of fds passed does not match "
+-                           "the number of vhostfds passed");
+-                return -1;
+-            }
+-        }
+-
+-        vnet_hdr = -1;
+-        for (i = 0; i < nfds; i++) {
+-            ret = net_tap_from_monitor_fd(netdev, peer, name,
+-                                           vhost_fds ? vhost_fds[i] : NULL,
+-                                           &vnet_hdr, fds[i], errp);
+-            if (ret < 0) {
+-                return -1;
+-            }
+-        }
+-
+-        return 0;
++        return net_init_tap_fds(netdev, name, peer, errp);
+     } else if (tap->helper) {
+         if (tap->vhostfds) {
+             error_setg(errp, "vhostfds= is invalid with helper=");
 -- 
 2.48.1
 
