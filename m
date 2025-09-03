@@ -2,73 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE0A8B48F44
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 15:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C60A5B41E25
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 14:02:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvblD-0001Of-8P; Mon, 08 Sep 2025 09:18:19 -0400
+	id 1utmAe-00028B-MN; Wed, 03 Sep 2025 08:01:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uvbku-0001Jw-MC
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 09:18:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1utm9z-00020v-NZ
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 08:00:23 -0400
+Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uvbkg-0000WI-DH
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 09:17:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757337448;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wqR8npKklbOBXRqCKeqE1ClhsvPaMO6dnnorz324Qbg=;
- b=cYZuH+ucEup369A2KxSGL2+uNZXYixfHsEvivA/7g4Yd2le6nqC/ICQKrCzwYN5H2NBdYD
- khzDuF31ZX2UfI5rCJbTg5KOLanpc75+Yzbcgixm5KwbzqpQFuY2w29NbCshcQNc1x3d5y
- EFWe6iLtlWQMJoQVFFTAel44zxbAc6Y=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-139-plwIajoZMbCe9otIKHFa0Q-1; Mon,
- 08 Sep 2025 09:17:24 -0400
-X-MC-Unique: plwIajoZMbCe9otIKHFa0Q-1
-X-Mimecast-MFC-AGG-ID: plwIajoZMbCe9otIKHFa0Q_1757337443
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 53BCD180057B; Mon,  8 Sep 2025 13:17:23 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.148])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AB1DA1800452; Mon,  8 Sep 2025 13:17:22 +0000 (UTC)
-Date: Wed, 3 Sep 2025 13:51:08 +0200
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Brian Song <hibriansong@gmail.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, armbru@redhat.com,
- bernd@bsbernd.com, fam@euphon.net, hreitz@redhat.com, kwolf@redhat.com
-Subject: Re: [PATCH 2/4] export/fuse: process FUSE-over-io_uring requests
-Message-ID: <20250903115108.GD106431@fedora>
-References: <20250830025025.3610-1-hibriansong@gmail.com>
- <20250830025025.3610-3-hibriansong@gmail.com>
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1utm9w-0008Oa-T0
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 08:00:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+ :Subject; bh=eaFTxrHtbDTWKC+ongoolNfS/7cZ6curOBlgb49UKuw=; b=PI//acqxabtgETTm
+ pyw7BLSa2sFmY3X1jqaTcjcVGpsUNkqZfYFCIC+79HdMsoQDQodaGdab70qASXKvmy88L/8vLtyQF
+ 3PtoW/9DbCilX0JD8+t1EHO+r4UKtfe2DXAXgZIi851Mo73GI0ULv3KQfgzEH3rVSCZ73UXfmavJF
+ pMMrDyMQ0UV7/AXqSp0ezLTpwOyaGeDk7VMn4s7xyc5L+n2VQVJMa/76dPXTyqOBKAF9zVKhXcO0a
+ BbnRr1/vxvpTjY6u4coTs3DbOvKrA1zp7QlhjCU1XvCdwZsD1rTq3gNBsEbRb3cj63liwIVZ9n4HO
+ V+YPbfycGy9WndLxzA==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+ (envelope-from <dg@treblig.org>) id 1utm9r-008Ik9-1e;
+ Wed, 03 Sep 2025 12:00:11 +0000
+Date: Wed, 3 Sep 2025 12:00:11 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: Juraj Marcin <jmarcin@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, Jiri Denemark <jdenemar@redhat.com>,
+ qemu-devel@nongnu.org, Stefan Weil <sw@weilnetz.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [RFC PATCH 0/4] migration: Introduce postcopy-setup capability
+ and state
+Message-ID: <aLgtyy_UAfsmOLET@gallifrey>
+References: <20250807114922.1013286-1-jmarcin@redhat.com>
+ <aJoEJhJw-_rGVBbA@x1.local>
+ <xfzgjwld4ba7mymu3xhkxdwpeie7bbjnbei2xchkqncamktk3g@rbafrorlpvcv>
+ <aJzOo7P8aA64AfY_@x1.local>
+ <xbqqss2yshtjkew5cirlp2bx3dkumxg3grwpduol5ucpx3leqq@irqeo2csi2vg>
+ <aJ43_JQct45mnVgV@x1.local> <aLXehgy3S5G6A3ub@gallifrey>
+ <w6qkokuof6ge2gwajhcwul5boaqf57w6m4yzsbyljpgpnigc64@pw2unqceumjn>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="9nNHia54bSfr63d3"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250830025025.3610-3-hibriansong@gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 17
-X-Spam_score: 1.7
-X-Spam_bar: +
-X-Spam_report: (1.7 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- DKIM_INVALID=0.1, DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <w6qkokuof6ge2gwajhcwul5boaqf57w6m4yzsbyljpgpnigc64@pw2unqceumjn>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
+X-Uptime: 11:58:45 up 128 days, 20:12,  2 users,  load average: 0.09, 0.05,
+ 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
+ helo=mx.treblig.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,112 +76,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+* Juraj Marcin (jmarcin@redhat.com) wrote:
+> Hi Dave,
+> 
+> On 2025-09-01 17:57, Dr. David Alan Gilbert wrote:
+> > * Peter Xu (peterx@redhat.com) wrote:
+> > > On Thu, Aug 14, 2025 at 05:42:23PM +0200, Juraj Marcin wrote:
+> > > > Fair point, I'll then continue with the PING/PONG solution, the first
+> > > > implementation I have seems to be working to resolve Issue 1.
+> > > > 
+> > > > For rarer split brain, we'll rely on block device locks/mgmt to resolve
+> > > > and change the failure handling, so it registers errors from disk
+> > > > activation.
+> > > > 
+> > > > As tested, there should be no problems with the destination
+> > > > transitioning to POSTCOPY_PAUSED, since the VM was not started yet.
+> > > > 
+> > > > However, to prevent the source side from transitioning to
+> > > > POSTCOPY_PAUSED, I think adding a new state is still the best option.
+> > > > 
+> > > > I tried keeping the migration states as they are now and just rely on an
+> > > > attribute of MigrationState if 3rd PONG was received, however, this
+> > > > collides with (at least) migrate_pause tests, that are waiting for
+> > > > POSTCOPY_ACTIVE, and then pause the migration triggering the source to
+> > > > resume. We could maybe work around it by waiting for the 3rd pong
+> > > > instead, but I am not sure if it is possible from tests, or by not
+> > > > resuming if migrate_pause command is executed?
+> > > > 
+> > > > I also tried extending the span of the DEVICE state, but some functions
+> > > > behave differently depending on if they are in postcopy or not, using
+> > > > the migration_in_postcopy() function, but adding the DEVICE there isn't
+> > > > working either. And treating the DEVICE state sometimes as postcopy and
+> > > > sometimes as not seems just too messy, if it would even be possible.
+> > > 
+> > > Yeah, it might indeed be a bit messy.
+> > > 
+> > > Is it possible to find a middle ground?  E.g. add postcopy-setup status,
+> > > but without any new knob to enable it?  Just to describe the period of time
+> > > where dest QEMU haven't started running but started loading device states.
+> > > 
+> > > The hope is libvirt (which, AFAIU, always enables the "events" capability)
+> > > can ignore the new postcopy-setup status transition, then maybe we can also
+> > > introduce the postcopy-setup and make it always appear.
+> > 
+> > When the destination is started with '-S' (autostart=false), which is what
+> > I think libvirt does, doesn't management only start the destination
+> > after a certain useful event?
+> > In other words, is there an event we already emit to say that the destination
+> > has finished loading the postcopy devices, or could we just add that
+> > event, so that management could just wait for that before issuing
+> > the continue?
+> 
+> I am not aware of any such event on the destination side. When postcopy
+> (and its switchower) starts, the destination transitions from ACTIVE
+> directly to POSTCOPY_ACTIVE in the listen thread while devices are
+> loaded concurrently by the main thread.
+> 
+> There is DEVICE state on the source side, but that is used only on the
+> source side when device state is being collected. When device state is
+> being loaded on the destination, the source side is also already in
+> POSTCOPY_ACTIVE state.
 
---9nNHia54bSfr63d3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+So I wonder what libvirt uses to trigger it starting the destination in
+the postcopy case?  It's got to be after the device state has loaded.
 
-On Fri, Aug 29, 2025 at 10:50:23PM -0400, Brian Song wrote:
-> https://docs.kernel.org/filesystems/fuse-io-uring.html
->=20
-> As described in the kernel documentation, after FUSE-over-io_uring
-> initialization and handshake, FUSE interacts with the kernel using
-> SQE/CQE to send requests and receive responses. This corresponds to
-> the "Sending requests with CQEs" section in the docs.
->=20
-> This patch implements three key parts: registering the CQE handler
-> (fuse_uring_cqe_handler), processing FUSE requests (fuse_uring_co_
-> process_request), and sending response results (fuse_uring_send_
-> response). It also merges the traditional /dev/fuse request handling
-> with the FUSE-over-io_uring handling functions.
->=20
-> Suggested-by: Kevin Wolf <kwolf@redhat.com>
-> Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Signed-off-by: Brian Song <hibriansong@gmail.com>
-> ---
->  block/export/fuse.c | 457 ++++++++++++++++++++++++++++++--------------
->  1 file changed, 309 insertions(+), 148 deletions(-)
->=20
-> diff --git a/block/export/fuse.c b/block/export/fuse.c
-> index 19bf9e5f74..07f74fc8ec 100644
-> --- a/block/export/fuse.c
-> +++ b/block/export/fuse.c
-> @@ -310,6 +310,47 @@ static const BlockDevOps fuse_export_blk_dev_ops =3D=
- {
->  };
-> =20
->  #ifdef CONFIG_LINUX_IO_URING
-> +static void coroutine_fn fuse_uring_co_process_request(FuseRingEnt *ent);
-> +
-> +static void coroutine_fn co_fuse_uring_queue_handle_cqes(void *opaque)
+Dave
 
-This function appears to handle exactly one cqe. A singular function
-name would be clearer than a plural: co_fuse_uring_queue_handle_cqe().
-
-> +{
-> +    FuseRingEnt *ent =3D opaque;
-> +    FuseExport *exp =3D ent->rq->q->exp;
-> +
-> +    /* Going to process requests */
-> +    fuse_inc_in_flight(exp);
-
-What is the rationale for taking a reference here? Normally something
-already holds a reference (e.g. the request itself) and it will be
-dropped somewhere inside a function we're about to call, but we still
-need to access exp afterwards, so we temporarily take a reference.
-Please document the specifics in a comment.
-
-I think blk_exp_ref()/blk_exp_unref() are appropriate instead of
-fuse_inc_in_flight()/fuse_dec_in_flight() since we only need to hold
-onto the export and don't care about drain behavior.
-
-> +
-> +    /* A ring entry returned */
-> +    fuse_uring_co_process_request(ent);
-> +
-> +    /* Finished processing requests */
-> +    fuse_dec_in_flight(exp);
-> +}
-> +
-> +static void fuse_uring_cqe_handler(CqeHandler *cqe_handler)
-> +{
-> +    FuseRingEnt *ent =3D container_of(cqe_handler, FuseRingEnt, fuse_cqe=
-_handler);
-> +    Coroutine *co;
-> +    FuseExport *exp =3D ent->rq->q->exp;
-> +
-> +    if (unlikely(exp->halted)) {
-> +        return;
-> +    }
-> +
-> +    int err =3D cqe_handler->cqe.res;
-> +
-> +    if (err !=3D 0) {
-> +        /* -ENOTCONN is ok on umount  */
-> +        if (err !=3D -EINTR && err !=3D -EAGAIN &&
-> +            err !=3D -ENOTCONN) {
-> +            fuse_export_halt(exp);
-> +        }
-
-How are EINTR and EAGAIN handled if they are silently ignored? When did
-you encounter these error codes?
-
---9nNHia54bSfr63d3
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmi4K6wACgkQnKSrs4Gr
-c8je9QgAmkIyV3XxMBxfitb812vk+gHEN9YTdhmzQWiGBJJrTAOY4mCyvwAUFBAm
-AJZp1nNdWsLNn4sXkaDpfoX8b6OD1zUdPXN7xO7D/b9VJ2i6eojtTNQDnrpsKe4v
-f5ZqTl1mv3Diz/fT91Xu0HmSZyekCCqiooqaUuiOtWDQnQ0JwWuAUQR1UKL3m0k5
-OfX40J2X+ucchpDLAVgpvzb+oHOsvyZHQWWz0XjjKYWzOzcaFYeuimz3B1BFwnLh
-GP8fmRHXNN5Vf3HoOOS2TekJ03G4atI1J0Voe8M4jiN3xFk5ljVNg8+qxDreARg8
-k9pp1/2/l1DgyTbLF4HCStRBzj8hOQ==
-=sLsM
------END PGP SIGNATURE-----
-
---9nNHia54bSfr63d3--
-
+> Best regards,
+> 
+> Juraj Marcin
+> 
+> > 
+> > Dave
+> > 
+> > > Thanks,
+> > > 
+> > > -- 
+> > > Peter Xu
+> > > 
+> > > 
+> > -- 
+> >  -----Open up your eyes, open up your mind, open up your code -------   
+> > / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+> > \        dave @ treblig.org |                               | In Hex /
+> >  \ _________________________|_____ http://www.treblig.org   |_______/
+> > 
+> 
+> 
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
