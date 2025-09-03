@@ -2,96 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B10B422F7
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 16:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 130EFB42306
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 16:05:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uto5I-000340-2X; Wed, 03 Sep 2025 10:03:36 -0400
+	id 1uto7F-0005z6-AH; Wed, 03 Sep 2025 10:05:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1uto5D-00031x-5m
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 10:03:31 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1uto5B-0005tE-12
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 10:03:30 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-24c786130feso13333815ad.2
- for <qemu-devel@nongnu.org>; Wed, 03 Sep 2025 07:03:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1756908207; x=1757513007; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Q7yO8ADA0pol4cy8ipnt6jQ+4uDi0a2eWjgPSJWFAag=;
- b=XBA/vhhha7Tb7vCBmP6x6mUGW35xJrYYDp/UI0+KoNj6F2CwlW0773lQEnMEFoX0j3
- b+wcv+tDK+hSj31+dm/fJ1jNghc5UUk+bAoQQAT7HC/zNuYqnMEHwz6656Or1H0SgVtT
- W3zqriR8R1ThSbZvPe5kRp+vdrBQxVKgBW+9EPAk2J8Nc1hJN/Sg0SNFt+4KS7CXEDNH
- wlD1ejg2PE/hJi9avBTBNwovlwIzdQCZDaxeRubL3I7d44rzzhO4kjGU0UXC8Q5MH31w
- aKJKBck3dKFyWEqGG1MfIWvjyMg38kS5LYx9Iy2ip0Kb8PXZKnBT2TukqhjIpyfK4MAe
- ZbRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756908207; x=1757513007;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Q7yO8ADA0pol4cy8ipnt6jQ+4uDi0a2eWjgPSJWFAag=;
- b=DZh/T5bV5Mqy9CQEM4AU+UQRa53zFv0p2lAlgv9zX6PE8unIr/Wnw1c8cB8WOZRhb6
- odBpQ1SQ+NlIBVu+Mxz0B8EJh2iXFahWRyUzH6qkRpH8aM6+tZTMMM7ggJTjpkMTFS9W
- UK7ZEEunfM+t42GmZogIBD241iEUys20NQ7pIjC3yYfkoswJCpNfuS3KjvnzCMxxPxVI
- M/vojNpffEJ2yuzq7cRQpFjvV1mf7Pu7GE4nTbuZo/Y2QaoyETGeygItr114xiD2lMRP
- GGmii7ryxgdDucUf1dg/ywnFkwzYAPsyfy3fhDTtNFFBOtSrNfWQlA4xo7kDm59BoIPY
- bYQw==
-X-Gm-Message-State: AOJu0YzgMH76CHsvbpgM+ZTBOuEo1V8wCEwUXlPrC37C9AGF6SwAgMmD
- YfLZEtat3Lji5cowY8VX3IPetWiMSvwQClms5rGF3ire/KkNxq2o876oSaqI8Hu539+Aivo+sJS
- IA2VMVvId5E4IzVQk8UTJhLxLrQ/3L5D26upqciiwJGkTrWxJEdxagnoo5T1CcCFfgMZCzU1cc0
- 9bhyNHj93vr1l4f/gSAdUWodYun0fu/actzhaFsKXWWA==
-X-Gm-Gg: ASbGncvtp7rNOeGkf8n+dOa4Oi8sA0iA6JV4bc0HkcooZbxB56vQVCYeT+4yg7j37J1
- p8wVN4x9+2LS4tjpMcUounnqHmpOsnHD6Ss0i6Tp1S525PMQ6rVGBOFOhj3jqRBNq5R6O6DEez8
- cUe97UEcMknXDZbrHw2Wy0PPp1CQL9/U16OInB4JikGYqaI6X3KwgN23GOM640KUzuj7CILn314
- IoW5GNzoRDvT2CaJQsqlZMxwDjoKuPyxD2JoyMxhE+Ed6kLxMsPkAEBsVTLC/Qr34/qd8wMYqfT
- 4i5MBVIJRB6Y0UK0wXzW9AanEYJl3t6lv7BJXfw6a9PjuTSdVtjtMpNfEAVb+qWNRFhMGgzW9iz
- B+PlcqiPzaaSxS4EhBKDApoadccxWFJ7w4dB9HhzKMKCqnWMk5NQaZp9Eb8G5irdW+DmeaA0W9X
- a4hw==
-X-Google-Smtp-Source: AGHT+IFp1z8hnynSiwSV+34+CkKSuU/DNEso0oDkvNmZ597dU5eMU07lZKG0MnNOkgmr76Cr09eoDg==
-X-Received: by 2002:a17:903:41c9:b0:249:147:95bb with SMTP id
- d9443c01a7336-249448de13fmr166549455ad.13.1756908206165; 
- Wed, 03 Sep 2025 07:03:26 -0700 (PDT)
-Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
- [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-24b14e1b097sm50720545ad.21.2025.09.03.07.03.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Sep 2025 07:03:25 -0700 (PDT)
-From: Max Chou <max.chou@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, richard.henderson@linaro.org,
- Max Chou <max.chou@sifive.com>
-Subject: [RFC PATCH v3 3/3] target/riscv: Expose Zvqdotq extension as a cpu
- property
-Date: Wed,  3 Sep 2025 22:03:08 +0800
-Message-ID: <20250903140308.1705751-4-max.chou@sifive.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250903140308.1705751-1-max.chou@sifive.com>
-References: <20250903140308.1705751-1-max.chou@sifive.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uto77-0005wy-7w; Wed, 03 Sep 2025 10:05:30 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uto6x-0006Ze-Up; Wed, 03 Sep 2025 10:05:24 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 7EA2A56F3A0;
+ Wed, 03 Sep 2025 16:05:14 +0200 (CEST)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id TKnWAS9mFcFS; Wed,  3 Sep 2025 16:05:12 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 7EC1056F39E; Wed, 03 Sep 2025 16:05:12 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 7C75456F3A9;
+ Wed, 03 Sep 2025 16:05:12 +0200 (CEST)
+Date: Wed, 3 Sep 2025 16:05:12 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Danila Zhebryakov <d.zhebryakov@yandex.ru>
+cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>, 
+ David Hildenbrand <david@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, 
+ Ilya Leoshkevich <iii@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+ Chinmay Rath <rathc@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Riku Voipio <riku.voipio@iki.fi>
+Subject: Re: [PATCH v2 3/4] target/ppc: Add support for LE pages on PowerPC
+ booke206 mmu
+In-Reply-To: <20250903134146.1487794-4-d.zhebryakov@yandex.ru>
+Message-ID: <87b5780b-9cb4-6de6-faab-c0629449d3b7@eik.bme.hu>
+References: <20250903134146.1487794-1-d.zhebryakov@yandex.ru>
+ <20250903134146.1487794-4-d.zhebryakov@yandex.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=max.chou@sifive.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,24 +69,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
----
- target/riscv/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+On Wed, 3 Sep 2025, Danila Zhebryakov wrote:
+> Add support for passing TLB_BSWAP flag from powerpc booke206 MMU
+> Fix instruction fetches from LE pages being treated as MMIO
+> This change should not affect SPARC, as its instruction fetches are always BE
+>
+> Signed-off-by: Danila Zhebryakov <d.zhebryakov@yandex.ru>
+> ---
+> accel/tcg/cputlb.c     | 26 +++++++++++++++-----------
+> target/ppc/mmu-booke.c |  4 ++++
+> target/ppc/translate.c | 42 +++++++++++++++++++++++++++++++++++++-----
+> 3 files changed, 56 insertions(+), 16 deletions(-)
+>
+> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> index d5b94c384c..deb9f9ad24 100644
+> --- a/accel/tcg/cputlb.c
+> +++ b/accel/tcg/cputlb.c
+> @@ -1401,7 +1401,8 @@ static int probe_access_internal(CPUState *cpu, vaddr addr,
+>     flags |= full->slow_flags[access_type];
+>
+>     /* Fold all "mmio-like" bits into TLB_MMIO.  This is not RAM.  */
+> -    if (unlikely(flags & ~(TLB_WATCHPOINT | TLB_NOTDIRTY | TLB_CHECK_ALIGNED))
+> +    if (unlikely(flags & ~(TLB_WATCHPOINT | TLB_NOTDIRTY
+> +                           | TLB_CHECK_ALIGNED | TLB_BSWAP))
+>         || (access_type != MMU_INST_FETCH && force_mmio)) {
+>         *phost = NULL;
+>         return TLB_MMIO;
+> @@ -1792,12 +1793,19 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+>             mmu_watch_or_dirty(cpu, &l->page[1], type, ra);
+>         }
+>
+> -        /*
+> -         * Since target/sparc is the only user of TLB_BSWAP, and all
+> -         * Sparc accesses are aligned, any treatment across two pages
+> -         * would be arbitrary.  Refuse it until there's a use.
+> -         */
+> -        tcg_debug_assert((flags & TLB_BSWAP) == 0);
+> +        if (unlikely(flags & TLB_BSWAP)) {
+> +            /*
+> +             * TLB_BSWAP is relevant to SPARC and powerPC e500.
+> +             * SPARC never ends up here, as all its accesses are aligned
+> +             * cross-page accesses do work for e500, but crossing boundary
+> +             * between different endian pages should generate an exception
+> +             * Adding this would require another callback for a cpu for
+> +             * *just* this case, and such accesses are not correct anyway,
+> +             * so it just fails.
+> +             */
+> +            assert(!(TLB_BSWAP & (l->page[0].flags ^ l->page[1].flags)));
+> +            l->memop ^= MO_BSWAP;
+> +        }
+>     }
+>
+>     return crosspage;
+> @@ -1895,10 +1903,6 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+>     }
+>
+>     if (unlikely(tlb_addr & TLB_BSWAP)) {
+> -        assert(!( (  full->slow_flags[MMU_DATA_STORE]
+> -            ^ full->slow_flags[MMU_DATA_LOAD ])
+> -            & TLB_BSWAP));
+> -
+>         mop ^= MO_BSWAP;
+>     }
+>
+> diff --git a/target/ppc/mmu-booke.c b/target/ppc/mmu-booke.c
+> index 10ba8052d4..172e9604e0 100644
+> --- a/target/ppc/mmu-booke.c
+> +++ b/target/ppc/mmu-booke.c
+> @@ -362,6 +362,10 @@ found_tlb:
+>     uint8_t *prot = &(full->prot);
+>     *prot = 0;
+>
+> +    if (tlb->mas2 & MAS2_E) {
+> +        full->tlb_fill_flags |= TLB_BSWAP;
+> +    }
+> +
+>     if (pr) {
+>         if (tlb->mas7_3 & MAS3_UR) {
+>             *prot |= PAGE_READ;
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index 27f90c3cc5..2ebb862b69 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -24,7 +24,9 @@
+> #include "exec/target_page.h"
+> #include "tcg/tcg-op.h"
+> #include "tcg/tcg-op-gvec.h"
+> +#include "accel/tcg/probe.h"
+> #include "qemu/host-utils.h"
+> +#include "exec/tlb-flags.h"
+>
+> #include "exec/helper-proto.h"
+> #include "exec/helper-gen.h"
+> @@ -171,7 +173,7 @@ struct DisasContext {
+>     target_ulong cia;  /* current instruction address */
+>     uint32_t opcode;
+>     /* Routine used to access memory */
+> -    bool pr, hv, dr, le_mode;
+> +    bool pr, hv, dr, le_mode, insn_le_mode;
+>     bool lazy_tlb_flush;
+>     bool need_access_type;
+>     int mem_idx;
+> @@ -209,16 +211,42 @@ struct DisasContext {
+> #define DISAS_CHAIN        DISAS_TARGET_2  /* lookup next tb, pc updated */
+> #define DISAS_CHAIN_UPDATE DISAS_TARGET_3  /* lookup next tb, pc stale */
+>
+> -/* Return true iff byteswap is needed in a scalar memop */
+> +/* Return true if byteswap is needed in instruction fetch */
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 95edd02e68..ed486113ba 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1373,6 +1373,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
- /* These are experimental so mark with 'x-' */
- const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-     MULTI_EXT_CFG_BOOL("x-svukte", ext_svukte, false),
-+    MULTI_EXT_CFG_BOOL("x-zvqdotq", ext_zvqdotq, false),
- 
-     { },
- };
--- 
-2.39.3
+This is likely not a typo but short for if and only if. Leave it 
+unchanged.
 
+Regards,
+BALATON Zoltan
 
