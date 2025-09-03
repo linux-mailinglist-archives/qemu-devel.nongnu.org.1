@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10372B417B3
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 10:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A630EB417A6
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 10:02:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utiRn-0003vk-Ku; Wed, 03 Sep 2025 04:02:29 -0400
+	id 1utiRJ-00027q-4B; Wed, 03 Sep 2025 04:02:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1utiPS-0001EH-Jb; Wed, 03 Sep 2025 04:00:09 -0400
+ id 1utiPX-0001Gg-EY; Wed, 03 Sep 2025 04:00:10 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1utiPQ-0005zu-SX; Wed, 03 Sep 2025 04:00:02 -0400
+ id 1utiPU-00060O-Dc; Wed, 03 Sep 2025 04:00:06 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F194514F53C;
- Wed, 03 Sep 2025 10:59:51 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1691314F53D;
+ Wed, 03 Sep 2025 10:59:52 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 6018B26E187;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6D0FC26E188;
  Wed,  3 Sep 2025 10:59:53 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
-	qemu-trivial@nongnu.org
-Subject: [PULL 3/5] block/curl: drop old/unuspported curl version checks
-Date: Wed,  3 Sep 2025 10:59:48 +0300
-Message-ID: <20250903075952.481585-4-mjt@tls.msk.ru>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 4/5] scripts/coverity-scan/COMPONENTS.md: Add a 'plugins'
+ category
+Date: Wed,  3 Sep 2025 10:59:49 +0300
+Message-ID: <20250903075952.481585-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250903075952.481585-1-mjt@tls.msk.ru>
 References: <20250903075952.481585-1-mjt@tls.msk.ru>
@@ -58,50 +59,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We currently require libcurl >=7.29.0 (since f9cd86fe72be3cd8).
-Drop older LIBCURL_VERSION_NUM checks from the driver.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Cover the TCG plugins files under their own Coverity category.
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- block/curl.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+ scripts/coverity-scan/COMPONENTS.md | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/block/curl.c b/block/curl.c
-index 00b949ea45..e0f98e035a 100644
---- a/block/curl.c
-+++ b/block/curl.c
-@@ -516,7 +516,7 @@ static int curl_init_state(BDRVCURLState *s, CURLState *state)
-                              CURLOPT_REDIR_PROTOCOLS_STR, PROTOCOLS)) {
-             goto err;
-         }
--#elif LIBCURL_VERSION_NUM >= 0x071304
-+#else
-         if (curl_easy_setopt(state->curl, CURLOPT_PROTOCOLS, PROTOCOLS) ||
-             curl_easy_setopt(state->curl, CURLOPT_REDIR_PROTOCOLS, PROTOCOLS)) {
-             goto err;
-@@ -821,22 +821,11 @@ static int curl_open(BlockDriverState *bs, QDict *options, int flags,
-         goto out;
-     }
- #endif
--    /* Prior CURL 7.19.4 return value of 0 could mean that the file size is not
--     * know or the size is zero. From 7.19.4 CURL returns -1 if size is not
--     * known and zero if it is really zero-length file. */
--#if LIBCURL_VERSION_NUM >= 0x071304
-     if (cl < 0) {
-         pstrcpy(state->errmsg, CURL_ERROR_SIZE,
-                 "Server didn't report file size.");
-         goto out;
-     }
--#else
--    if (cl <= 0) {
--        pstrcpy(state->errmsg, CURL_ERROR_SIZE,
--                "Unknown file size or zero-length file.");
--        goto out;
--    }
--#endif
+diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
+index 72995903ff..95805b536b 100644
+--- a/scripts/coverity-scan/COMPONENTS.md
++++ b/scripts/coverity-scan/COMPONENTS.md
+@@ -147,6 +147,9 @@ tcg
+ system
+   ~ .*/qemu(/system/.*|/accel/.*)
  
-     s->len = cl;
++plugins
++  ~ .*/qemu(/contrib|/tests/tcg)?/plugins/.*
++
+ (headers)
+   ~ .*/qemu(/include/.*)
  
 -- 
 2.47.2
