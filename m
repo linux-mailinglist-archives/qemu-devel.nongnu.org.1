@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E48B4203F
+	by mail.lfdr.de (Postfix) with ESMTPS id A2373B4203E
 	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 15:02:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utn7H-0004YZ-In; Wed, 03 Sep 2025 09:01:35 -0400
+	id 1utn7g-00059w-Q5; Wed, 03 Sep 2025 09:02:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1utn6M-0003oA-R8
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 09:00:44 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1utn7Z-00055Y-4e
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 09:01:53 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1utn6K-0006cM-0E
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 09:00:37 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-b03fa5c5a89so645838166b.2
- for <qemu-devel@nongnu.org>; Wed, 03 Sep 2025 06:00:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1utn7X-0000Us-9i
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 09:01:52 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-32b70820360so513298a91.2
+ for <qemu-devel@nongnu.org>; Wed, 03 Sep 2025 06:01:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756904433; x=1757509233; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yXp8mXCCvT42pSqBeJMxlW3fVjkyM6+EbCBW1JDwLP4=;
- b=tRvTfZDx1BjtyfoYu+/fW+s6hMOWzJiq26HVB1PoqRWCDmrbwNXh4NZ+6sqNgrb6s1
- +1hpReyArzZSQ23+mayKzr9k7jDliaA3smBGuByx4m0sHLz3QDRvx+D3uhhdOpIevxc7
- p7SfuU2kIEZBXrv7p/s3rQMBL89zD1NvSU2oxXD6OamUEQM5f1eNL9SEcZ+eFlxTVDaU
- y6hK3XegLjfysF157liQsJrP3MzNikkzOuKGvJigQ2jHI0eEZ5cygd+02x76ddpbf7n4
- ONRET8lpMilHLEx/JGCk+BhgRWLXR+eIE13mOvVJh5TtBHa62C964ADHKERe64LDOzx1
- xebA==
+ d=sifive.com; s=google; t=1756904509; x=1757509309; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=a5HBE4kGgHVv5ddGcsNk2eOhjM/e0af34LDVEryaLhU=;
+ b=dmOA3ErJlFQLr6dvZxnd8Gl7ZdOAuHY5+NgEsZ9VWmfOoXbdTkYTx2fS2uQOqWm84g
+ yz3K1LFOcVqb7RGxDl2pTNhPo0Eyi4qNGFjqlwKUMbXH4b474vamVTtlAaQhUMAHV2S7
+ J15zqgqm1Xnp8tyEYpRQIdqJFLmrWSgfQbrrqBzuhPYcdWWtunJsGwmCsotSoZQ5zS/g
+ 1Tm+QKe5Y2ytQcROJUk9aCSnRvP91K7LopSj6vV8EJ8jn5NYFkD8AivgfN332XKWMXTg
+ LmMCPPMzCHHLy1jgNaoVOA1FTwowrSWODgPAZUZHsXAJLhIW42VowLAF4806eVvJncby
+ keRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756904433; x=1757509233;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yXp8mXCCvT42pSqBeJMxlW3fVjkyM6+EbCBW1JDwLP4=;
- b=AotL8cGKY2E9HKOdDlo0xjyQZdQ/cty+I2SIk5oZWoZwhHXJ1wLhLBREV7YVip/aB1
- w5F/0nXj0BN5jd+yPvXzdNK9zHHK4hZv9U6dNQ04n0r5SKOayHycxgSh42d1NS5h/9O7
- onBWmaV1eT0qLUmJTrTM86hm+veNmDac/3T4ZF+Iu2DHkCRaKXV7Iq3tjDAWf+uso8xu
- GBdJJp52kV4XJzxRCtfS7dbm78fP07Eci66Y039edLBSdpc2TnK3o1iHX/aNthieG+oa
- Dz0h9T9ZP+BeugRO9ftuBWidenohRJUCUz45XnVKsriRN4K9bcOAXgoGFiPw99hcnZAR
- Hgqw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX40gIKYU7cU8xp1/btfI2jxceBNqcwOb363RWXqW5rsDwygQ8SvCB4tjgzkaUcXZhBj8hbUgARI+3X@nongnu.org
-X-Gm-Message-State: AOJu0Yy6uGbPwlj0gYvMpR/ww4+VR9wOGsgjdtKoXeQVRshNflp9IzkT
- 9vKrH1x/xp64r7K2IzfFFMQPvpEszVo/mOo+JZWtpqn6Eteo5BQOhGXvzYj+IINo6Z4=
-X-Gm-Gg: ASbGncsYVIP1xxNozR7ESE/QaAbxgWeogtlT6TT47MdiWRknv1+gs0KxPUm3RCXPUZE
- O75zfBBkWTVtV9XWiZQMIEX72FV1evN7SdDyVIsbXX+LqKrgr/ebBZ15hVnGl0lOY21Xk9SjIRO
- Orfq3oTtbz+/NryOAbf/f+n2VZTUhgxeX9E6TAJdAKAjyWhsICGPjoG0LKitPm28CeymEI3CsYL
- 6drBOjjaeKc7xVnnIMSOQyYBWJ4UVtgmKTOSjaFMIdzN7nwO6fa/qB/zqgZokyI/i740Ktg/enq
- 8V/Q5f4b1jPvj7EDWppNH8s5q8jLEzTLkV2ufspRbzkbZW5q0Ao1LZlNeSl7X7ZaXD0TbCIs5wO
- ZQYFkPpd1MJkHhhPQ1dpd1G2alEj9nmyifgJbkhr7cNKzSkCNrjDhLV37QGNbaG0JiqnB8bY=
-X-Google-Smtp-Source: AGHT+IHeC85KDtPb+VtO2yRR0f+ScReK15sg7uFrRHK9yLCuiZkNmIX2/TkstQag+4/mfvOhcAt9uQ==
-X-Received: by 2002:a17:906:c111:b0:af9:5a60:3319 with SMTP id
- a640c23a62f3a-b01d8a8b62cmr1275651366b.19.1756904433407; 
- Wed, 03 Sep 2025 06:00:33 -0700 (PDT)
-Received: from [10.40.6.207] (93-51-222-138.ip268.fastwebnet.it.
- [93.51.222.138]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aff03e9ba10sm1284881666b.52.2025.09.03.06.00.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Sep 2025 06:00:32 -0700 (PDT)
-Message-ID: <272533e6-867b-4dec-a398-e90381ac430f@linaro.org>
-Date: Wed, 3 Sep 2025 15:00:31 +0200
+ d=1e100.net; s=20230601; t=1756904509; x=1757509309;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=a5HBE4kGgHVv5ddGcsNk2eOhjM/e0af34LDVEryaLhU=;
+ b=EBdF3zlDE1J7TcLKoUxaJTPCXhhyFemI50a4Gr64ithQllBwUcDUm65yC0aSwUjQ8f
+ mJOQcJj97t4jbYIL0noTpcMu4Xz/dmqj564EUXC3UNGa7NehtZKZiR5q8QrUwRJ5WJ27
+ Eb9u5jXYihINmfGnmYFR7g3uzzEsb+bxoXk292x0cxPWxAuQGKfjo8RjhBL/QjDc2/dn
+ Q6/7YBeysOfs7hrcgiJkeV9RsgPyIxhDi1dWolTRSGrlGmAxdb+zW+GziOcMxbT86wI2
+ o9xOlLIXiAd7stxlnppBainqgqYYpGEyLefYtmzM6YfCqeLl4BLpOCsIRQW138eXuQ5d
+ +8+w==
+X-Gm-Message-State: AOJu0YzmoCz/ROjjJcfXgcEgefpSw3gOy+yfitUQyg3BshFdVWIa23w2
+ 28Tb8tqr/Jy9A/BzK+y1ivpzoAJcPW0BV1kYiPoX0+oXaqV1A5jpHWzo0DAiRgLea9Zd+zi+m6P
+ FotG+YNI0mRX8+TOOJQ+g9CEYm51GVw7XMk+/ehZ4pYqesjhSZ2ybdr0ciA49fPMtMKi0oEctvb
+ AsOFK4IEKj+XMVSRvj7wZEMVnohWJv/PpUffEmVD3CBg==
+X-Gm-Gg: ASbGncv6wzU567mvD84GTHUTv8fl6MewNV6U4GOGyNrsRgewoeNKmcJ/nT66dMtjvus
+ jx6TGmBfQH2EGtJ8BrGYL8W5o0Vzz9R0s21zXBHzXOHZ+oC46two6f30+O8EqNuG+5f8eEuwvhw
+ zYnhd/g+XTF9Yhqrbzx3Y9GgE7kLgl6l8n/2eI9K4jMM9HeWJV9ecTn5FGQBBuEqTmxc3ZdexKK
+ Gg8WyhCPYmg5LfS/IuYxhD9RWc13499N7r6hBngyQg2rCRq8Iz8075IsyOVVhUQmjxpnXn/W/Pl
+ Sid6OEoPz0GSp8Nu51Gkb/09/zpZsB4UIx/wuu6psbDVkgnL+YZGuPNeLQ/BKvCsidVxlDWpD74
+ cAjicvGcm/8qAdLlJwWK7U7+hsE5CaA9Os/x/Lw6dc9nRCeQ1yxMEYtFtNf0RNp3sC0On732NXi
+ jWIg==
+X-Google-Smtp-Source: AGHT+IHhWSOOYiOkcPRhJAVTlaM+xESFcT8Qo77wqYZmR3jF1T1RFHevuaicR6xrxPJXgb+mw6+p9w==
+X-Received: by 2002:a17:90b:5205:b0:329:cb75:fef2 with SMTP id
+ 98e67ed59e1d1-329cb761185mr10499582a91.3.1756904509046; 
+ Wed, 03 Sep 2025 06:01:49 -0700 (PDT)
+Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
+ [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-329e23858ecsm5472278a91.14.2025.09.03.06.01.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Sep 2025 06:01:48 -0700 (PDT)
+From: Max Chou <max.chou@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, richard.henderson@linaro.org,
+ Max Chou <max.chou@sifive.com>
+Subject: [RFC PATCH v2 0/3] Add Zvqdotq support
+Date: Wed,  3 Sep 2025 21:01:22 +0800
+Message-ID: <20250903130125.1701363-1-max.chou@sifive.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/12] target/loongarch: Invalid tlb entry in
- invalidate_tlb()
-To: Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-References: <20250903084827.3085911-1-maobibo@loongson.cn>
- <20250903084827.3085911-11-maobibo@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250903084827.3085911-11-maobibo@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x630.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=max.chou@sifive.com; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,40 +103,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/3/25 10:48, Bibo Mao wrote:
-> Invalid tlb entry in function invalidate_tlb(), and its usage is
-> simple and easy to use.
-> 
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   target/loongarch/tcg/tlb_helper.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-> index c074c956a2..ee40684a18 100644
-> --- a/target/loongarch/tcg/tlb_helper.c
-> +++ b/target/loongarch/tcg/tlb_helper.c
-> @@ -161,6 +161,7 @@ static void invalidate_tlb(CPULoongArchState *env, int index)
->           return;
->       }
->       invalidate_tlb_entry(env, index);
-> +    tlb->tlb_misc = FIELD_DP64(tlb->tlb_misc, TLB_MISC, E, 0);
->   }
+This patch series adds Zvqdotq support.
 
-Why not move it all the way down into invalidate_elf_entry, after we've checked that E != 0?
+The isa spec of Zvqdotq extension is not ratified yet, so this patch series
+is based on the latest draft of the spec (v0.0.2) and make the Zvqdotq
+extension as an experimental extension.
 
+The draft of the Zvqdotq isa spec:
+https://github.com/riscv/riscv-dot-product
 
-r~
+v2:
+* Remove unnecessary variable and mask (Thanks for Richard Henderson's
+  suggestion)
 
->   
->   static void fill_tlb_entry(CPULoongArchState *env, LoongArchTLB *tlb)
-> @@ -340,7 +341,6 @@ void helper_tlbwr(CPULoongArchState *env)
->       old = env->tlb + index;
->       if (FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, NE)) {
->           invalidate_tlb(env, index);
-> -        old->tlb_misc = FIELD_DP64(old->tlb_misc, TLB_MISC, E, 0);
->           return;
->       }
->   
+Max Chou (3):
+  target/riscv: Add Zvqdotq cfg property
+  target/riscv: rvv: Add Zvqdotq support
+  target/riscv: Expose Zvqdotq extension as a cpu property
+
+ target/riscv/cpu.c                            |  2 +
+ target/riscv/cpu_cfg_fields.h.inc             |  1 +
+ target/riscv/helper.h                         | 10 +++
+ target/riscv/insn32.decode                    |  9 +++
+ target/riscv/insn_trans/trans_rvzvqdotq.c.inc | 61 +++++++++++++++++++
+ target/riscv/tcg/tcg-cpu.c                    |  5 ++
+ target/riscv/translate.c                      |  1 +
+ target/riscv/vector_helper.c                  | 61 +++++++++++++++++++
+ 8 files changed, 150 insertions(+)
+ create mode 100644 target/riscv/insn_trans/trans_rvzvqdotq.c.inc
+
+--
+2.39.3
 
 
