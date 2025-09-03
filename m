@@ -2,91 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A83FCB41378
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 06:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63403B41388
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 06:27:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utexr-0003IV-PB; Wed, 03 Sep 2025 00:19:19 -0400
+	id 1utf3z-0005cQ-Ex; Wed, 03 Sep 2025 00:25:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1utexm-0003IG-T0
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 00:19:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1utexk-0007bB-Sq
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 00:19:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756873149;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fGT34auug2xukE4iujlHtRWaEQGwwjlB4/t+zpAt6Z4=;
- b=V2ryJkZwSMR2lGLif4byLZdaJ3SsPftOg4Z6C6VC877kH+J3/lbyeZdLxgWlYUxiIbZwr8
- elHec7fWJUVPWaz7LaAb35jPx5j+Pl05Ndj8izbSsTNRgiipdT8QJ0PqlbrA35yvMvWpht
- gPTfMt4hc9G6lurqHVFxjygyCjWZVUs=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-upX15n34Phe64qvJ59rnqQ-1; Wed, 03 Sep 2025 00:19:07 -0400
-X-MC-Unique: upX15n34Phe64qvJ59rnqQ-1
-X-Mimecast-MFC-AGG-ID: upX15n34Phe64qvJ59rnqQ_1756873146
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-329b750757aso2459819a91.1
- for <qemu-devel@nongnu.org>; Tue, 02 Sep 2025 21:19:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1utf3u-0005bv-By; Wed, 03 Sep 2025 00:25:34 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1utf3s-00044A-78; Wed, 03 Sep 2025 00:25:34 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-b4c53892a56so5325339a12.2; 
+ Tue, 02 Sep 2025 21:25:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1756873529; x=1757478329; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dH4j7hWiGl6J+eOSDraAdf88k8xdTBcdGBajv5DBJp8=;
+ b=MuA/Wd0roamlcNuhFTnOKWBYouKmjAsh8VEoZrVVLFnOJoOxhi1nV/jPmDE86ojhJJ
+ I35t/fSMLuNB5/UN6KUhau3sXXExLtHiB4BHWLKFhavpc9wsNZhSZ3wIHYs7YJK0ywVn
+ ipBGZfnosKRDiUik/krZCv2hXKNw9bcKTRR3VUEI9zzPxtvSUrj1wLGg3up1ykWZAvyP
+ JDXsyGTZIOZJ1LymVNRzqOBNSAwshruxH6nVVrjW/Vzj8koM3xre1g8ibpcDAeMNtyfT
+ 5ecqVR/SToMqQSqr+nPRgcXBkoY0wayf50EG1nDH6fp7kZRizrJC/Bd6YbaVts9uthd3
+ DVBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756873146; x=1757477946;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fGT34auug2xukE4iujlHtRWaEQGwwjlB4/t+zpAt6Z4=;
- b=mGui9VQ0/drh6U3toiXeilL+uV7WzeI+QFRD66koMtTqBiVSZn1ppF9kW1dfk+QHnE
- p2il1aLVRlLK84YutkLSf4WRy12CQ1I9Db7SN7f8HU+P/XXKjgQzzmR2Wrs0J63LG88d
- nSNoMqIDziSHgYkJM3oAuNVbokqE4N5nR8Hnsz39eLydY8SXNNgYwsk+/vTcIEkowmtV
- JWXCvRmw9HJPGYHOhLULVDjkQxaNxbEeBZsMQsac3VV1MBtaP3nFfvcUr8ljcg4KT6D4
- nuZGJ4PjFAtf9oakwWOVnk9DX1gK3m36CuQEMm8AqEZnoHESMmrh6gETAFfQIPGOuQBk
- jX+Q==
-X-Gm-Message-State: AOJu0YydATjGsmqRf3Jt/LI6xrR9sgWOyIFKnnKqUC2BLsiijPjHrCgW
- qZrOrQkw5Y7ko4Zs8Fx2ioXGaS9Nw6ZcYoCpPEZ/AvzlmNDKiu7t594BiJbqSStjTmaX7jBm5yX
- KOfRyxGnJLyoeQQ1iO/TOn29ZDcdjZmLFRfa6csuAlifwoMeHUp5nN5VDbMYcLH5P6qI8EfvkHT
- RGtAO6x43I6UCfTJBqRlWqRp8TgANSTwM=
-X-Gm-Gg: ASbGnct7VaKAlLN1DF9NF3PSSZP/1Ft/d3n27/cIey5QczrEhRN0eGnICaiF4i/+YwP
- wSPZVzeon6aIfHb1ROi6lDWz6Z7DXMlA8esd/OrfzeEwMPld2EBpk6U7V/+xv7kwSuT7v+WGPWV
- v2MgFmghnUgSkez5tYnmHJ0w==
-X-Received: by 2002:a17:90b:54cc:b0:329:8b65:25b5 with SMTP id
- 98e67ed59e1d1-3298b652c59mr13661858a91.26.1756873145913; 
- Tue, 02 Sep 2025 21:19:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGqKfEUK6Y77EHGs7bkM43q3Yq6Hbsdy2L5oXiW/oC8Mzz6Y6uxbqQDsQSXcAq3oFey4/4edpa5kHHFWwPk18k=
-X-Received: by 2002:a17:90b:54cc:b0:329:8b65:25b5 with SMTP id
- 98e67ed59e1d1-3298b652c59mr13661840a91.26.1756873145454; Tue, 02 Sep 2025
- 21:19:05 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1756873529; x=1757478329;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dH4j7hWiGl6J+eOSDraAdf88k8xdTBcdGBajv5DBJp8=;
+ b=opQVXGXIig+YReDOoBK6BvG63w5dnZR+B7U94rdp4Cpam6WjIWJyUFdZZX2+pOtKv2
+ TRwe4HtU+ELJA9Knv1Dy1zLVCtfR+8L1k7mmzvUNWn5Q+VTL0yUmi5uFWDnx6z3iULcq
+ gcoLmX98smuN+CxdaWdpbxTjt1FT0j6F/DauvXwvPamgTcj9XaYWXab5odvVUfC3C3dO
+ 9im98k/zbmsoqFpq12EgSZLx/3mAsrALGlfyAUY7fuxiG+L7T0VkHNhXdewPlK/QepCO
+ zKpjv+Bp9jYfJB3pmMap64JIaSmikUbGklgznOHLbtUS7q3f/dH6+sEknv10QZ2Uw05k
+ rqgg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV3ZyPvl8k4D/tWrOmXaPABCyr4k0fha+HgFwALVv45fG6JzCgS0gXlZnqY60EGxpWK5KQhJWuG6Trk@nongnu.org
+X-Gm-Message-State: AOJu0YxlrqZs0ki+BglOogwHtw1kGn1q9jV3Jjl28bJmnKVVUpRWkqPQ
+ /cmr7wRLgxsNPNVmx7FEzFngl7wwh/2zB3X+3ebio5N36V5Xb/fWtccrpucyyA==
+X-Gm-Gg: ASbGncv2SQoX9XfXdzAgYGx1V3r+1i2XvFatX3zhM9QxmE+HifuEALITBM/d/pIItL/
+ yp83RUpKW624oCC6KDt+ue+2aXlJF0arrnz4e/0lntYG17v/jMdQ5INaLo0QTTAYZUc5b3XPtuj
+ 3NZ6BSg2fZYjgKakAnSkDFLjxyHpU9TDscPSDcOLprbToe/DkTYM/jr0VWyj5Y2hTBRUunpSoe1
+ MRH5IGP6mv9nVCULOO0b3PQsqvj8ROxemRvoEZNtcC50g5gWlHmKrsRfKkOR1JdcRzMbeyACIiU
+ eF5vPYRat3ch0vaxGJmhazPifpCTdJM8ys2GzYOmS1zKREBhYAwsxkC15vNlV18ZEPx6qGG2tB7
+ n0AVX66rlAvK1ZrdGwR1t6F+UqiGStAfTsSVyUIwlmxzasY1QQISwd01BfAFqeJ+W8UvLmetecy
+ ICyqiqMqTa
+X-Google-Smtp-Source: AGHT+IE5YYd7Om+3CUbaajgST0npR9GYcUyDqcBWuzJD8srUUMa/SsILPrmfAhwZhAKgVW4AYnkdUg==
+X-Received: by 2002:a17:903:1211:b0:249:3781:38f0 with SMTP id
+ d9443c01a7336-2494486f59fmr211830005ad.12.1756873528723; 
+ Tue, 02 Sep 2025 21:25:28 -0700 (PDT)
+Received: from lima-default (123.253.189.97.qld.leaptel.network.
+ [123.253.189.97]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2490370298dsm149002635ad.4.2025.09.02.21.25.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Sep 2025 21:25:28 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-riscv@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
+Subject: [PATCH 0/4] linux-user/riscv: add vector state to signal
+Date: Wed,  3 Sep 2025 14:25:06 +1000
+Message-ID: <20250903042510.279954-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-References: <20250823160323.20811-1-vsementsov@yandex-team.ru>
- <20250823160323.20811-6-vsementsov@yandex-team.ru>
-In-Reply-To: <20250823160323.20811-6-vsementsov@yandex-team.ru>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 3 Sep 2025 12:18:54 +0800
-X-Gm-Features: Ac12FXxc2apVBZPx4iryEb_QPTS-er8uTDY2xELSBWrad_kznXVMRmGMPLLZB5w
-Message-ID: <CACGkMEsbnX5tqw_1RpKcfmg=0Q8bi2AgXsa+heps45XY1P3ObQ@mail.gmail.com>
-Subject: Re: [PATCH v2 05/20] net/tap: net_init_tap_one(): move parameter
- checking earlier
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, leiyang@redhat.com, steven.sistare@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,54 +100,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Aug 24, 2025 at 12:03=E2=80=AFAM Vladimir Sementsov-Ogievskiy
-<vsementsov@yandex-team.ru> wrote:
->
-> Let's keep all similar argument checking in net_init_tap() function.
->
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->  net/tap.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->
-> diff --git a/net/tap.c b/net/tap.c
-> index 58c3318b1c..3fe99ef63f 100644
-> --- a/net/tap.c
-> +++ b/net/tap.c
-> @@ -765,9 +765,6 @@ static int net_init_tap_one(const NetdevTapOptions *t=
-ap, NetClientState *peer,
->                         "vhost-net requested but could not be initialized=
-");
->              goto failed;
->          }
-> -    } else if (vhostfdname) {
-> -        error_setg(errp, "vhostfd(s)=3D is not valid without vhost");
-> -        goto failed;
->      }
->
->      return 0;
-> @@ -829,6 +826,11 @@ int net_init_tap(const Netdev *netdev, const char *n=
-ame,
->          return -1;
->      }
->
-> +    if (tap->has_vhost && !tap->vhost && (tap->vhostfds || tap->vhostfd)=
-) {
-> +        error_setg(errp, "vhostfd(s)=3D is not valid without vhost");
-> +        return -1;
-> +    }
+This series adds vector state to the linux-user signal handler,
+and adds a basic signal handling test case. As a sanity check, I
+also verified the signal handling test works in the same way when
+run under a real Linux kernel.
 
-So this doesn't deal with vhost force or is this expected to be
-applied on top of the deprecation of vhostforce?
+The signal handler test has some gross header hacks in it to make
+it work for me (debian arm64->riscv64 cross compile environment),
+I would not be surprised if it breaks in other environments, any
+ideas or breakages let me know. May just have to define the types
+by hand for now if it becomes intractable.
 
-Thanks
+I couldn't find much in the way of previous discussion or work on
+this, forgive me if I've missed it.
 
-> +
->      if (tap->fd) {
->          if (tap->ifname || tap->script || tap->downscript ||
->              tap->has_vnet_hdr || tap->helper || tap->has_queues ||
-> --
-> 2.48.1
->
+Thanks,
+Nick
+
+Nicholas Piggin (4):
+  tests/tcg/riscv64: Add a user signal handling test
+  linux-user/riscv: Add extended state to sigcontext
+  linux-user/riscv: Add vector state to signal context
+  tests/tcg/riscv64: Add vector state to signal test
+
+ linux-user/riscv/signal.c                | 195 ++++++++-
+ linux-user/riscv/vdso-asmoffset.h        |   2 +-
+ tests/tcg/riscv64/Makefile.target        |   5 +
+ tests/tcg/riscv64/test-signal-handling.c | 506 +++++++++++++++++++++++
+ 4 files changed, 696 insertions(+), 12 deletions(-)
+ create mode 100644 tests/tcg/riscv64/test-signal-handling.c
+
+-- 
+2.51.0
 
 
