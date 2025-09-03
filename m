@@ -2,70 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39E7B42A12
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 21:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAA2B42A97
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 22:15:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uttK0-0007ey-JS; Wed, 03 Sep 2025 15:39:08 -0400
+	id 1uttri-0000Tg-Ct; Wed, 03 Sep 2025 16:13:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uttJy-0007ea-8M
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 15:39:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uttJu-0007Ft-Mk
- for qemu-devel@nongnu.org; Wed, 03 Sep 2025 15:39:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756928309;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=7ViEPDnqnaUJlWIvLFiXQ+Pg2yfwJuliieVyNpBRLGw=;
- b=Pw2hIPxRLYaBYB0k8xH73qEMHWtfdNDLLIaXMwmCGJSAUz7AkC493gfImKPUFLoQ2YEbUZ
- bULWf1bT49hC2+T9lUAy7nTo87lhflL9iKMlsGXjmY8N+lTypEXIMAqitfWmYJ1QoFpaj/
- H08Sqd/mDf3LxkJspS6Xyg2tSEFs87Q=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-528-d48-mJJdPiyPR46cz8U4eg-1; Wed,
- 03 Sep 2025 15:38:26 -0400
-X-MC-Unique: d48-mJJdPiyPR46cz8U4eg-1
-X-Mimecast-MFC-AGG-ID: d48-mJJdPiyPR46cz8U4eg_1756928305
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A3B0A195604F
- for <qemu-devel@nongnu.org>; Wed,  3 Sep 2025 19:38:25 +0000 (UTC)
-Received: from localhost (unknown [10.45.242.16])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C8BEA1800578; Wed,  3 Sep 2025 19:38:23 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH] ui/spice: fix crash when disabling GL scanout on
-Date: Wed,  3 Sep 2025 23:38:18 +0400
-Message-ID: <20250903193818.2460914-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uttrX-0000T3-Dp
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 16:13:47 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uttrT-0002iw-RT
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 16:13:46 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-32b60a9aa4cso150697a91.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Sep 2025 13:13:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1756930421; x=1757535221; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Z8oR7Ug/NBOYS0ZxmroGQfUtno2HikxnOcrwBNJDARM=;
+ b=FWW4FJn8KXBKM+GrSYZ9no6yiNtK8bxahMoFypUUN6RF2RecqA09vxgdQBiKjrHVFg
+ sY7FDfEyqGxv0dLDivRr4TQT4x9M9624/MYc2OjZYUihvBB1tRSXUtDONHtY9u84tvHM
+ 42sXCtCHD0Qg8hy2jcxjhb945T2cI0O6BugF8AX6tKvj7V1vKSCLvky85Oc6DvTKoI3b
+ san7pPy9xZwXEGdexq19/iyIJNHbbyc3FL0K1uD9VFvbv573J+7hK/jhXEXlvHA0cOxC
+ sZM5IMmlSQc/i98vfcwcKzttUOpYw26J51fKF2IjVlfB9hjqx6ASLqOlt4xKvGbsKn8V
+ ZcSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756930421; x=1757535221;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Z8oR7Ug/NBOYS0ZxmroGQfUtno2HikxnOcrwBNJDARM=;
+ b=ntC7MBItUKbEnL1Aq0E6XunJdQegstBcICFc2ze//DWiz2smaf5MeYPlvpfLf/hVgk
+ 16URl+EvalY+fb8i9GpidKfhu2s/pZvNuTKOYTQE/C3OhyaTTOj96rjP00yB6KH/0BPJ
+ 9ZwzJ9WTU/UQVCW6IDlrrG0NhDo6jjaRas61azJOZQ0bBkxic06c5Zjd6DeAJ0XpvAzw
+ sTMzJ/trfXvtGZ+kQZh+cnStDZ2npNLQ4fZal6yJJZLFDOpu1dx9sKVMhVMdBNGSVeYB
+ JZx1ygKTYKyTHqj1i8uERRCAWJaQ2LEg+FMTdyVoarvfrwv4kO6OfOzc2qoBp3AmNOJr
+ QiSA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUttQiZEyC8B4z8kyhl0PBi5E3JQI1ym5OBgD+X4BNOeUOCnJRBvQjSLTFMtKSvWN9rEhXbiJUVg/K+@nongnu.org
+X-Gm-Message-State: AOJu0YzvLi7kxsRCR4V8TuMwFzf/1y5ubbx2jXsqkSWfT85r3fYOPI2t
+ C+6CjSut+KULCZYLU+anOHNpnzYa27VP57SLC58eOPKyI3SeEoLtkrhUVE5ZD7RULt4=
+X-Gm-Gg: ASbGncv77ntzxwMblvnb2czjhxK0LyDMq5AWnzVBU3oDIWy2M30dadoTT/kzctZtoBl
+ RG0uEIxmDb1AbpSc8NvYu40MjxZxP91ZjZZ2rxjQ9MJsTXtfix2VGpdm2g87+SnIgE2aDduAF/6
+ XvC4K/P/JvUyPr4BN1i+PUZz4IEnmmqP24VRLJrCCo1lB3Las9wwX8NqzohMvzcWQmaoiY8MyZ2
+ pws3h0ZS1MlynkeVHOOULuYfIvLD1vIkwLmktNM+xKPRKzGWQVrW8JPg6v6Tzey4AuW+MqQ1izD
+ UXh9uh+eqpmZnovW+BathFkJpou3Sw143oXC88ereM8M/6Ra+RrMbglttutWxBJBISc8F4qrY9F
+ kPF/vS8Ymu8JmfdHelxF0PZy47r2o7ODwCq/tnyV+uC/DcY0=
+X-Google-Smtp-Source: AGHT+IH6lyJIqKNClqanASQizB/0VF5Kcvuuvw8f/faiT7LrhBlLXCWtptmMbwZJ3BXuvduUv3DIOg==
+X-Received: by 2002:a17:90b:1642:b0:32b:6132:5f94 with SMTP id
+ 98e67ed59e1d1-32b61326258mr4103392a91.21.1756930421459; 
+ Wed, 03 Sep 2025 13:13:41 -0700 (PDT)
+Received: from [192.168.68.110] ([187.10.187.251])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b4cd28adc00sm15228576a12.32.2025.09.03.13.13.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 03 Sep 2025 13:13:41 -0700 (PDT)
+Message-ID: <6bff4c9d-1da4-40b3-901a-789923d8ef7e@ventanamicro.com>
+Date: Wed, 3 Sep 2025 17:13:36 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] target/risvc: Fix vector whole ldst vstart check
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-devel@nongnu.org, Chao Liu <chao.liu@zevorn.cn>,
+ Nicholas Joaquin <njoaquin@tenstorrent.com>,
+ Ganesh Valliappan <gvalliappan@tenstorrent.com>
+References: <20250903030114.274535-1-npiggin@gmail.com>
+ <20250903030114.274535-3-npiggin@gmail.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Language: en-US
+In-Reply-To: <20250903030114.274535-3-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,39 +107,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+Hi Nick,
 
-When spice_qxl_gl_scanout2() isn't available, the fallback code
-incorrectly handles NULL arguments to disable the scanout, leading to:
+^ typo in the patch subject: s/risvc/riscv
 
-Program terminated with signal SIGSEGV, Segmentation fault.
-#0  spice_server_gl_scanout (qxl=0x55a25ce57ae8, fd=0x0, width=0, height=0, offset=0x0, stride=0x0, num_planes=0, format=0, modifier=72057594037927935, y_0_top=0)
-    at ../ui/spice-display.c:983
-983         if (num_planes <= 1) {
+On 9/3/25 12:01 AM, Nicholas Piggin wrote:
+> The whole vector ldst instructions do not include a vstart check,
+> so an overflowed vstart can result in an underflowed memory address
+> offset and crash:
+> 
+>      accel/tcg/cputlb.c:1465:probe_access_flags:
+>        assertion failed: (-(addr | TARGET_PAGE_MASK) >= size)
+> 
+> Add the VSTART_CHECK_EARLY_EXIT() check for these helpers.
+> 
+> This was found with a verification test generator based on RiESCUE.
+> 
+> Reported-by: Nicholas Joaquin <njoaquin@tenstorrent.com>
+> Reported-by: Ganesh Valliappan <gvalliappan@tenstorrent.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   target/riscv/vector_helper.c             |  2 +
+>   tests/tcg/riscv64/Makefile.target        |  5 ++
+>   tests/tcg/riscv64/test-vstart-overflow.c | 75 ++++++++++++++++++++++++
+>   3 files changed, 82 insertions(+)
+>   create mode 100644 tests/tcg/riscv64/test-vstart-overflow.c
+> 
+> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+> index fc85a34a84..e0e8735000 100644
+> --- a/target/riscv/vector_helper.c
+> +++ b/target/riscv/vector_helper.c
+> @@ -825,6 +825,8 @@ vext_ldst_whole(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
+>       uint32_t esz = 1 << log2_esz;
+>       int mmu_index = riscv_env_mmu_index(env, false);
+>   
+> +    VSTART_CHECK_EARLY_EXIT(env, evl);
+> +
+>       /* Calculate the page range of first page */
+>       addr = base + (env->vstart << log2_esz);
+>       page_split = -(addr | TARGET_PAGE_MASK);
+> diff --git a/tests/tcg/riscv64/Makefile.target b/tests/tcg/riscv64/Makefile.target
+> index 4da5b9a3b3..19a49b6467 100644
+> --- a/tests/tcg/riscv64/Makefile.target
+> +++ b/tests/tcg/riscv64/Makefile.target
+> @@ -18,3 +18,8 @@ TESTS += test-fcvtmod
+>   test-fcvtmod: CFLAGS += -march=rv64imafdc
+>   test-fcvtmod: LDFLAGS += -static
+>   run-test-fcvtmod: QEMU_OPTS += -cpu rv64,d=true,zfa=true
+> +
+> +# Test for vstart >= vl
+> +TESTS += test-vstart-overflow
+> +test-vstart-overflow: CFLAGS += -march=rv64gcv
+> +run-test-vstart-overflow: QEMU_OPTS += -cpu rv64,v=on
+> diff --git a/tests/tcg/riscv64/test-vstart-overflow.c b/tests/tcg/riscv64/test-vstart-overflow.c
+> new file mode 100644
+> index 0000000000..72999f2c8a
+> --- /dev/null
+> +++ b/tests/tcg/riscv64/test-vstart-overflow.c
+> @@ -0,0 +1,75 @@
+> +/*
+> + * Test for VSTART set to overflow VL
+> + *
+> + * TCG vector instructions should call VSTART_CHECK_EARLY_EXIT() to check
+> + * this case, otherwise memory addresses can underflow and misbehave or
+> + * crash QEMU.
+> + *
+> + * TODO: Add stores and other instructions.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +#include <stdint.h>
+> +#include <riscv_vector.h>
 
-Fixes: https://bugzilla.redhat.com/show_bug.cgi?id=2391334
-Fixes: 98a050ca93afd8 ("ui/spice: support multi plane dmabuf scanout")
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- ui/spice-display.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+The fix in vector_helper.c is fine but this patch (and patch 3) won't execute
+'make check-tcg'. It complains about this header being missing in the docker
+env.
 
-diff --git a/ui/spice-display.c b/ui/spice-display.c
-index 669832c561..db71e866f8 100644
---- a/ui/spice-display.c
-+++ b/ui/spice-display.c
-@@ -980,7 +980,9 @@ static void spice_server_gl_scanout(QXLInstance *qxl,
-     spice_qxl_gl_scanout2(qxl, fd, width, height, offset, stride,
-                           num_planes, format, modifier, y_0_top);
- #else
--    if (num_planes <= 1) {
-+    if (fd == NULL) {
-+        spice_qxl_gl_scanout(qxl, -1, 0, 0, 0, 0, false);
-+    } else if (num_planes <= 1) {
-         spice_qxl_gl_scanout(qxl, fd[0], width, height, stride[0], format, y_0_top);
-     } else {
-         error_report("SPICE server does not support multi plane GL scanout");
--- 
-2.51.0
+To eliminate the possibility of my env being the problem I ran this series in
+Gitlab. Same error:
+
+
+https://gitlab.com/danielhb/qemu/-/jobs/11236091281
+
+/builds/danielhb/qemu/tests/tcg/riscv64/test-vstart-overflow.c:13:10: fatal error: riscv_vector.h: No such file or directory
+3899
+    13 | #include <riscv_vector.h>
+3900
+       |          ^~~~~~~~~~~~~~~~
+3901
+compilation terminated.
+3902
+make[1]: *** [Makefile:122: test-vstart-overflow] Error 1
+
+
+I believe you need to add the Docker changes you made in this patch. Same
+thing for patch 3. And same thing for patch 4 of:
+
+[PATCH 0/4] linux-user/riscv: add vector state to signal
+
+Given that you're also using riscv_vector.h in there too. Thanks,
+
+
+Daniel
+
+
+
+> +
+> +#define VSTART_OVERFLOW_TEST(insn)                \
+> +({                                                \
+> +    uint8_t vmem[64] = { 0 };                     \
+> +    uint64_t vstart;                              \
+> +    asm volatile("                           \r\n \
+> +    # Set VL=52 and VSTART=56                \r\n \
+> +    li          t0, 52                       \r\n \
+> +    vsetvli     x0, t0, e8, m4, ta, ma       \r\n \
+> +    li          t0, 56                       \r\n \
+> +    csrrw       x0, vstart, t0               \r\n \
+> +    li          t1, 64                       \r\n \
+> +    " insn "                                 \r\n \
+> +    csrr        %0, vstart                   \r\n \
+> +    " : "=r"(vstart), "+A"(vmem) :: "t0", "t1", "v24", "memory"); \
+> +    vstart;                                       \
+> +})
+> +
+> +int run_vstart_overflow_tests()
+> +{
+> +    /*
+> +     * An implementation is permitted to raise an illegal instruction
+> +     * exception when executing a vector instruction if vstart is set to a
+> +     * value that could not be produced by the execution of that instruction
+> +     * with the same vtype. If TCG is changed to do this, then this test
+> +     * could be updated to handle the SIGILL.
+> +     */
+> +    if (VSTART_OVERFLOW_TEST("vl1re16.v    v24, %1")) {
+> +        return 1;
+> +    }
+> +
+> +    if (VSTART_OVERFLOW_TEST("vs1r.v       v24, %1")) {
+> +        return 1;
+> +    }
+> +
+> +    if (VSTART_OVERFLOW_TEST("vle16.v      v24, %1")) {
+> +        return 1;
+> +    }
+> +
+> +    if (VSTART_OVERFLOW_TEST("vse16.v      v24, %1")) {
+> +        return 1;
+> +    }
+> +
+> +    if (VSTART_OVERFLOW_TEST("vluxei8.v    v24, %1, v20")) {
+> +        return 1;
+> +    }
+> +
+> +    if (VSTART_OVERFLOW_TEST("vlse16.v     v24, %1, t1")) {
+> +        return 1;
+> +    }
+> +
+> +    if (VSTART_OVERFLOW_TEST("vlseg2e8.v  v24, %1")) {
+> +        return 1;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +int main()
+> +{
+> +    return run_vstart_overflow_tests();
+> +}
 
 
