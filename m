@@ -2,93 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07582B41829
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 10:16:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D738B41830
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Sep 2025 10:16:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1utieU-00030o-Mv; Wed, 03 Sep 2025 04:15:35 -0400
+	id 1utifF-0005E9-Ao; Wed, 03 Sep 2025 04:16:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1utie1-0002rw-1J; Wed, 03 Sep 2025 04:15:05 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1utidz-0001kO-00; Wed, 03 Sep 2025 04:15:04 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E82E814F568;
- Wed, 03 Sep 2025 11:14:52 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 2611226E1A2;
- Wed,  3 Sep 2025 11:14:54 +0300 (MSK)
-Message-ID: <1e96bf51-9b8f-4343-b43f-0c8f8dfb9c48@tls.msk.ru>
-Date: Wed, 3 Sep 2025 11:14:53 +0300
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1utifB-0004yF-BH
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 04:16:17 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1utif8-00023Q-Fr
+ for qemu-devel@nongnu.org; Wed, 03 Sep 2025 04:16:16 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-b040df389easo645150766b.3
+ for <qemu-devel@nongnu.org>; Wed, 03 Sep 2025 01:16:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1756887369; x=1757492169; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SvnGN5I+4Xd8ST1Iu+S1aQnbXtg0tn0QCV9HrVJQ4tE=;
+ b=RIfYhNsqqFyt1ETa3jVXj/bq8PxgJy80Xq7u6xs7x2g4gwTW0RP5wr4MGzLMc3fnPy
+ 8HimeObEv0mhX5Q0bHkxNrZEKORSOS7XD/Lo6Fn0rmcsy2UwD32TKSBdqATmKDQ5h+vx
+ LHjuYHDbYj2USsXLB3mfIdt7yHP1Qy+kVvTHmuggf0QEnEnoyiRJCd9pt7kv9x2YJ4iN
+ tEBkO5vZdAL5P1uedDS0NxFCfPgsYzTASfdC9dvadjvsAcdltZpObpnQn+7il63P6yQQ
+ rSFlkd63OpT6M1+1+KQg/Du6Ac9pb7nh6JDxbajgiBRAS95JxQxjzQcPeZIYJLF69BnV
+ X4qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756887369; x=1757492169;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=SvnGN5I+4Xd8ST1Iu+S1aQnbXtg0tn0QCV9HrVJQ4tE=;
+ b=CjvJlmVaZmdzsEYb4cOcduPx6mNMVT/Yv+oooYNzeg78ig3CR3pEBydNhkQzh9+KOg
+ i5oHzFyvqp2KolQ3qDNvLwIhEL4pGg0m6eyUIiqSqSxs6vaDYSzLm3ootfw1CKwpSz67
+ QY91HIb0iEQFDct+enkDzmzgS31tOOwEPutpUrj3fgaI+lH0JR/WT4hcj8BSVj3FwUl7
+ DOUSPO3jUY7Y23KoLDPcI50eKV0b3Yx2uH3cBkfvyHgoFF6Vk2zHBv+ciKUnMn4gKzYU
+ khtY1gBfy/Cxg/PlFx35mkM2MQl0s+JYyFctQAa6vf6Da8TknNkmX9CSXn4lB13qL1wt
+ dFrg==
+X-Gm-Message-State: AOJu0YyBLWJvVmCggm3AU8y+SBVnv9X7xlZTKaESqUXJjHLyAGWnmYb1
+ 9jrcRBWkWXsQzB0Phq6TG4o5qrz1uvShRc4eXINWPISuMFvb7WxF6Zz/i1B43muvgxEkuKaRpnh
+ uYtis4Qk=
+X-Gm-Gg: ASbGnctjhZhtaZAv3lGt7BgVJetKcfm2D+Anjgcc7Hid73o+ruCdTL56JdEo4upqqYV
+ KgxAmz/d8QFn+p9BXa9B9KciR6rlQWga/jcgmjwe97n5SRyaoejH7DGsciFJbNTy1g/XLNC8bvD
+ 7ZXBKXhKE0E4624y+TGmKN6OHCWssu3dHPdl2napk8C3OmqUzpTRckm+zzdrkTnxS5JRdbOBxSX
+ +1wwNpOs/KxRVAPLA6Kopj1TCiL2jTTc0jG5PUvuEmqJmqovaev8cI4FuiWlf12FLZ46fgTzDw/
+ y7vyI5IJxtqso5cmV0N+p4qQrd3m+DNV0GzVpPZqegGu7S5jVxpO2DQ1/mRkB0L33Ca3BjMjTJq
+ hEVb10hCZ0YxSoyAc3fm03J6U00u/dQIx5Q==
+X-Google-Smtp-Source: AGHT+IF6RWyF/9Ju1XoQ1Fqy61B1V1/yNaHxs+rEvjRb+GFeO7h4ChICfBiAr2YVKwMWb/F5AxlG4A==
+X-Received: by 2002:a17:907:9444:b0:b04:53cc:4400 with SMTP id
+ a640c23a62f3a-b0453cc4661mr558065666b.27.1756887369416; 
+ Wed, 03 Sep 2025 01:16:09 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-aff079861a1sm1202805766b.22.2025.09.03.01.16.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Sep 2025 01:16:08 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id CE6D25F815;
+ Wed, 03 Sep 2025 09:16:07 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,  qemu-arm@nongnu.org
+Subject: Re: [PATCH 2/4] hw/arm: use g_autofree for fdt in arm_load_dtb
+In-Reply-To: <CAFEAcA8WNFs5HGScaB1bs-u8bHT1MbS8BvWXefx-eSd7dCsz=Q@mail.gmail.com>
+ (Peter Maydell's message of "Tue, 2 Sep 2025 10:36:00 +0100")
+References: <20250901125304.1047624-1-alex.bennee@linaro.org>
+ <20250901125304.1047624-3-alex.bennee@linaro.org>
+ <CAFEAcA8WNFs5HGScaB1bs-u8bHT1MbS8BvWXefx-eSd7dCsz=Q@mail.gmail.com>
+User-Agent: mu4e 1.12.12; emacs 30.1
+Date: Wed, 03 Sep 2025 09:16:07 +0100
+Message-ID: <877bygymrc.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] qga/installer: Remove QGA VSS if QGA installation failed
-To: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
- Yan Vugenfirer <yvugenfi@redhat.com>, qemu-stable <qemu-stable@nongnu.org>
-References: <20250825143155.160913-1-kkostiuk@redhat.com>
- <5d2f2ea7-07ee-438c-86d6-aff7a3ae7fff@tls.msk.ru>
- <CAPMcbCpfSPPUOxFU9pw2UZFLDzeK0D71Lh5Gvy+sE-UtZPhuEw@mail.gmail.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <CAPMcbCpfSPPUOxFU9pw2UZFLDzeK0D71Lh5Gvy+sE-UtZPhuEw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,18 +104,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03.09.2025 11:01, Kostiantyn Kostiuk wrote:
-> Hi Michael,
-> 
-> Please also pick https://lore.kernel.org/qemu- 
-> devel/20250825135311.138330-1-kkostiuk@redhat.com/ <https:// 
-> lore.kernel.org/qemu-devel/20250825135311.138330-1-kkostiuk@redhat.com/> 
-> for stable as it provides more detailed error logs.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-Picked up edf3780a7dad4 "qga-vss: Write hex value of error in log"
-too (for 10.0 & 10.1).
+> On Mon, 1 Sept 2025 at 13:53, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
+rote:
+>>
+>> With the fdt being protected by g_autofree we can skip the goto fail
+>> and bail out straight away. The only thing we must take care of is
+>> stealing the pointer in the one case when we do need it to survive.
+>>
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> ---
+>>  hw/arm/boot.c | 29 ++++++++++++-----------------
+>>  1 file changed, 12 insertions(+), 17 deletions(-)
+>>
+>> diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+>> index 56fd13b9f7c..749f2d08341 100644
+>> --- a/hw/arm/boot.c
+>> +++ b/hw/arm/boot.c
+>> @@ -519,7 +519,7 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_=
+info *binfo,
+>>                   hwaddr addr_limit, AddressSpace *as, MachineState *ms,
+>>                   ARMCPU *cpu)
+>>  {
+>> -    void *fdt =3D NULL;
+>> +    g_autofree void *fdt =3D NULL;
+>>      int size, rc, n =3D 0;
+>>      uint32_t acells, scells;
+>>      unsigned int i;
+>
+>
+>> @@ -673,14 +672,10 @@ int arm_load_dtb(hwaddr addr, const struct arm_boo=
+t_info *binfo,
+>>
+>>      if (fdt !=3D ms->fdt) {
+>>          g_free(ms->fdt);
+>> -        ms->fdt =3D fdt;
+>> +        ms->fdt =3D g_steal_pointer(&fdt);
+>>      }
+>>
+>>      return size;
+>> -> -fail:
+>> -    g_free(fdt);
+>> -    return -1;
+>>  }
+>
+> Previously, if we get to the end of the function and fdt =3D=3D ms->fdt
+> then we continue to use that DTB, and we don't free it.
+> After this change, if fdt =3D=3D ms->fdt then we will skip the
+> g_steal_pointer() and the g_autofree will free the memory,
+> but leave ms->fdt still pointing to it.
+>
+> Since arm_load_dtb() is only called once it's a bit unclear
+> to me whether this can happen -- I think you would need to have
+> a board-specific arm_boot_info::get_dtb function which returned
+> the MachineState::fdt pointer. But as this is supposed to
+> just be a refactoring patch and the previous code clearly was
+> written to account for the possibility of fdt =3D=3D ms->fdt,
+> I think we should continue to handle that case.
 
-Thanks,
+Hmm I was thinking we could assert if ms->fdt is set because we clearly
+shouldn't be loading one. For arm the only thing that sets ms->fdt is
+create_fdt which also implies:
 
-/mjt
+  vms->bootinfo.skip_dtb_autoload =3D true;
+
+so on start-up we should either create or load - not both.
+
+but then I am confused about why we do another arm_load_dtb in the
+machine_done notifier.
+
+Either way I can't see how fdt =3D g_malloc0(dt_size) could ever match
+what might already be in ms->fdt.
+
+
+>
+> thanks
+> -- PMM
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
