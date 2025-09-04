@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFB5B438AB
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 12:25:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC1FB438C4
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 12:33:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu79G-00024R-EJ; Thu, 04 Sep 2025 06:24:59 -0400
+	id 1uu7Fl-0006Df-Fq; Thu, 04 Sep 2025 06:31:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uu794-0001q1-UV; Thu, 04 Sep 2025 06:24:47 -0400
+ id 1uu7Fd-0006C6-VK; Thu, 04 Sep 2025 06:31:35 -0400
 Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uu78x-00062U-3I; Thu, 04 Sep 2025 06:24:45 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cHbD85dtqz6L4sl;
- Thu,  4 Sep 2025 18:23:36 +0800 (CST)
+ id 1uu7Fb-0002Bz-2K; Thu, 04 Sep 2025 06:31:33 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cHbN35hTsz67D3k;
+ Thu,  4 Sep 2025 18:30:27 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 6EA021404C4;
- Thu,  4 Sep 2025 18:24:32 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 7031C140133;
+ Thu,  4 Sep 2025 18:31:23 +0800 (CST)
 Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 4 Sep
- 2025 12:24:31 +0200
-Date: Thu, 4 Sep 2025 11:24:30 +0100
+ 2025 12:31:22 +0200
+Date: Thu, 4 Sep 2025 11:31:21 +0100
 To: Wilfred Mallawa <wilfred.opensource@gmail.com>
 CC: Alistair Francis <alistair.francis@wdc.com>, Keith Busch
  <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>, Jesper Devantier
@@ -37,11 +37,11 @@ CC: Alistair Francis <alistair.francis@wdc.com>, Keith Busch
  Apfelbaum" <marcel.apfelbaum@gmail.com>, <qemu-devel@nongnu.org>,
  <qemu-block@nongnu.org>, <dlemoal@kernel.org>, Wilfred Mallawa
  <wilfred.mallawa@wdc.com>
-Subject: Re: [PATCH v4 4/5] spdm: define SPDM transport enum types
-Message-ID: <20250904112430.00006b3b@huawei.com>
-In-Reply-To: <20250904031058.367667-6-wilfred.opensource@gmail.com>
+Subject: Re: [PATCH v4 5/5] hw/nvme: connect SPDM over NVMe Security Send/Recv
+Message-ID: <20250904113121.00004f05@huawei.com>
+In-Reply-To: <20250904031058.367667-7-wilfred.opensource@gmail.com>
 References: <20250904031058.367667-2-wilfred.opensource@gmail.com>
- <20250904031058.367667-6-wilfred.opensource@gmail.com>
+ <20250904031058.367667-7-wilfred.opensource@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -77,62 +77,78 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu,  4 Sep 2025 13:10:58 +1000
+On Thu,  4 Sep 2025 13:10:59 +1000
 Wilfred Mallawa <wilfred.opensource@gmail.com> wrote:
 
 > From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 > 
-> SPDM maybe used over different transports, such as PCIe Data Object
-> Exchange (DoE) or Storage amongst others. This patch
+> This patch extends the existing support we have for NVMe with only DoE
+> to also add support to SPDM over the NVMe Security Send/Recv commands.
+> 
+> With the new definition of the `spdm-trans` argument, users can specify
+> `spdm_trans=nvme` or `spdm_trans=doe`. This allows us to select the SPDM
+> transport respectively. SPDM over the NVMe Security Send/Recv commands
+> are defined in the DMTF DSP0286.
 
-Odd line wrap.  I'd also drop the 'amongst others' as 'such as' already
-suggests there are others so t those extra words add no meaning.
+Question on lack of default inline.
 
-> specifies such types as an enum with a qdev property definition such that
-> a user input transport type (string) can be mapped directly into the
-> respective SPDM transport enum for internal use.
+Jonathan
+
 > 
 > Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Trivial comment below.
-
-> diff --git a/include/system/spdm-socket.h b/include/system/spdm-socket.h
-> index 6c2cb7b926..8fb5f7cf40 100644
-> --- a/include/system/spdm-socket.h
-> +++ b/include/system/spdm-socket.h
-> @@ -110,12 +110,25 @@ typedef struct {
->  #define SPDM_SOCKET_COMMAND_UNKOWN                0xFFFF
->  #define SPDM_SOCKET_COMMAND_TEST                  0xDEAD
+> ---
+>  docs/specs/spdm.rst         | 10 +++++++--
+>  hw/nvme/ctrl.c              | 45 ++++++++++++++++++++++++++++---------
+>  include/hw/pci/pci_device.h |  2 ++
+>  3 files changed, 44 insertions(+), 13 deletions(-)
+> 
+> diff --git a/docs/specs/spdm.rst b/docs/specs/spdm.rst
+> index f7de080ff0..dd6cfbbd68 100644
+> --- a/docs/specs/spdm.rst
+> +++ b/docs/specs/spdm.rst
+> @@ -98,7 +98,7 @@ Then you can add this to your QEMU command line:
+>  .. code-block:: shell
 >  
-> -#define SPDM_SOCKET_TRANSPORT_TYPE_MCTP           0x01
-> -#define SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE        0x02
-> -#define SPDM_SOCKET_TRANSPORT_TYPE_SCSI           0x03
-> -#define SPDM_SOCKET_TRANSPORT_TYPE_NVME           0x04
-> -
->  #define SPDM_SOCKET_MAX_MESSAGE_BUFFER_SIZE       0x1200
->  #define SPDM_SOCKET_MAX_MSG_STATUS_LEN            0x02
+>      -drive file=blknvme,if=none,id=mynvme,format=raw \
+> -        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323
+> +        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323,spdm_trans=doe
 >  
-> +typedef enum SpdmTransportType {
-> +    SPDM_SOCKET_TRANSPORT_TYPE_UNSPEC = 0,
-> +    SPDM_SOCKET_TRANSPORT_TYPE_MCTP,
-> +    SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE,
-> +    SPDM_SOCKET_TRANSPORT_TYPE_SCSI,
-> +    SPDM_SOCKET_TRANSPORT_TYPE_NVME,
-> +    SPDM_SOCKET_TRANSPORT_TYPE_MAX,
+>  At which point QEMU will try to connect to the SPDM server.
+>  
+> @@ -113,7 +113,13 @@ of the default. So the entire QEMU command might look like this
+>          -append "root=/dev/vda console=ttyS0" \
+>          -net none -nographic \
+>          -drive file=blknvme,if=none,id=mynvme,format=raw \
+> -        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323
+> +        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323,spdm_trans=doe
 
-Given it will always be last element and I assume isn't a spec thing as such,
-but just a useful terminating entry, I'd drop that trailing comma.
+I wonder if, for command line backwards compatibility we should have a default
+of doe if no spdm_trans parameter is provided?
 
-> +} SpdmTransportType;
 > +
-> +extern const PropertyInfo qdev_prop_spdm_trans;
-> +
-> +#define DEFINE_PROP_SPDM_TRANS(_name, _state, _field, _default) \
-> +    DEFINE_PROP_UNSIGNED(_name, _state, _field, _default, \
-> +                         qdev_prop_spdm_trans, SpdmTransportType)
-> +#define DEFINE_PROP_SPDM_TRANS_NODEFAULT(_name, _state, _field) \
-> +    DEFINE_PROP_SPDM_TRANS(_name, _state, _field, \
-> +                           SPDM_SOCKET_TRANSPORT_TYPE_UNSPEC)
-> +
->  #endif
+> +The `spdm_trans` argument defines the underlying transport type that is emulated
+> +by QEMU. For an PCIe NVMe controller, both "doe" and "nvme" are supported. Where,
+> +"doe" does SPDM transport over the PCIe extended capability Data Object Exchange
+> +(DOE), and "nvme" uses the NVMe Admin Security Send/Receive commands to
+> +implement the SPDM transport.
+>  
+>  .. _DMTF:
+>     https://www.dmtf.org/standards/SPDM
+> diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+> index df72599bcc..e485e0584e 100644
+> --- a/hw/nvme/ctrl.c
+> +++ b/hw/nvme/ctrl.c
+
+> @@ -9308,6 +9326,7 @@ static const Property nvme_props[] = {
+>                       false),
+>      DEFINE_PROP_UINT16("mqes", NvmeCtrl, params.mqes, 0x7ff),
+>      DEFINE_PROP_UINT16("spdm_port", PCIDevice, spdm_port, 0),
+> +    DEFINE_PROP_SPDM_TRANS_NODEFAULT("spdm_trans", PCIDevice, spdm_trans),
+
+As above. I think a default is appropriate here.
+
+>      DEFINE_PROP_BOOL("ctratt.mem", NvmeCtrl, params.ctratt.mem, false),
+>      DEFINE_PROP_BOOL("atomic.dn", NvmeCtrl, params.atomic_dn, 0),
+>      DEFINE_PROP_UINT16("atomic.awun", NvmeCtrl, params.atomic_awun, 0),
 
 
