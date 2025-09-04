@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE95B43574
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:20:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 814CBB43573
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:20:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu59R-00042D-0n; Thu, 04 Sep 2025 04:17:05 -0400
+	id 1uu59e-0005Cj-AQ; Thu, 04 Sep 2025 04:17:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu558-0006ba-8A
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:12:37 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1uu55D-0006hS-07
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:12:44 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu54Z-0004Cg-RB
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:12:32 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-b043da5a55fso107840166b.0
- for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:11:59 -0700 (PDT)
+ id 1uu54d-0004EX-GL
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:12:38 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-afcb7322da8so151142766b.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:12:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756973518; x=1757578318; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756973521; x=1757578321; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KM2ZDhNYkLW1KWUOdLmFVe8gLAQ7wgd1StjOThDS9B0=;
- b=JISPeP60TaaTAmN88DaImEbB/tI2yBQj4Bl+oV9mNYxY66JWiLSm9X6Lp4NmPIPjgG
- Kz4yRRBqXIS2ymgpsfyHUHauwsqPGk9d18Xo983MlC6PR/2JMXkNexjsI5qDQlSAJhPK
- rS7OZfTGP4/vXI2VKK9gRN0saArVXaXABOWncUXXqoeXRBZR198DYyeqQaVnNxvYodr1
- cPB0vVoiP3Ahid7IZXqVitFSg98hdzws24587LeOV0jHRlV0q2IJbQxKKEoZwylO1OG3
- mj+98AxuFMvQAgDr8PkpaNts7tW9NDN0YAngMuzEomhLHGL3MqGAyM++bYy15IRqlifG
- Mbvw==
+ bh=dryPG5cdTvon401P43IQAncMYcpBnZGjJaBP50H9h5s=;
+ b=Z+VLcHiKE1AbteVM4e0xrE933CXRtp7Cd+3Dc52K669bV+8jEIQKbHzlOV8BnzMbOs
+ YI0Y4pLm46aIKaqhnTwIJ5ZFtyyABlwzfm3lZzMzuR0ScA30jiniA/X03OLEBs0SkUM1
+ xR1TWu7yoaVRtd3UiFntzM3QMs0w4MEqsZq6H4h9Q+xUV2PVQluKFBVK+W7J0AJRjC3z
+ uV54SnVNP91yeNL4bbBFWy20Ss4N9V9+qIfbQ1cJ7uCa157Gg824AwZtwHTjzBEiMNtd
+ Sh394/TllXwDjQobOX3x/3Le3jq0Y7JEe9ZehXkkHQ4Iq94/gfULSpQ4aG6m+cxENQKl
+ MziA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756973518; x=1757578318;
+ d=1e100.net; s=20230601; t=1756973521; x=1757578321;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KM2ZDhNYkLW1KWUOdLmFVe8gLAQ7wgd1StjOThDS9B0=;
- b=vVI3Rk0vHFxDMqE5K1XQokHhoqew4So4kdD8ZWPjZqRdaNzeUncNs9DhSE4As5I5mh
- GzDJQWcIIvNEC3YAogXwzoyS9tr9JMJ7V42aQR5MqYeWZ38xNZXAW5EzytbE7tarKisi
- QSfBhghECRM+/AApdsqrbrkYtsJZslfALl9uo7GLSrEDSK7aBjJsAQRXeIyU+1Ehduzz
- +APkV6G++HPchDo9cLcfM5kKJxVDqyJNyXWrX1E90C/znQDeBYuiwR2Fsl7RadOdLfV/
- /0/JK1Y/NAchBlNL5jiXWgc3WZHV26PL29t+v8/YApTSZZ0Th2Oh9NXN7RHwB0yZNv8Q
- Mk+w==
-X-Gm-Message-State: AOJu0YzE3BmEmo93Sv4N0VZ3IITASfx3GeVOH5PDAPmM0x9k0OfrTEg8
- i0cC2P3ZTPPhcyx0Gusj/tSue+59M3NXgDIwNrGesA+BMpNSzzsxKAdHq95ENQREwicIE200rsO
- AQiiGpRisaQ==
-X-Gm-Gg: ASbGnculkVvBfvvIbgvA2yPHOk3r/RXT5HjKpz04U1l1A2KXiY5YKLQVN3fEjhC6tML
- 6EPi0IzcoaQGI7UmKqltIFRYu2ov3hl2/LHd2CMH6czN2WHPh6m1O1DOt02EJIPlVcb4YhQnHGh
- r5U+5XTgnGDXEYdRL9mq5DnNl//oD+qqLb/BfAsHGmVm5ZSWIyf0dnkeOjXF3/2Aqf1JAdOAG6F
- JktP49qo2F3ElsJRr66B7BwbChR/tv5A63QKKAz6KvOTW9Prjt019it4raCrMMvUZZMpgG0ltoE
- yaCZeR07Im61JcnARAZKK3Uds0pPGN4NCqZ/WP4U3rHMXH43NRsjC3afhcNRVQon0BuebSaLZ1w
- l5Skoaxvut6zTKvTjozUxukHd2LQatoKXPw==
-X-Google-Smtp-Source: AGHT+IE6k0GqNytWpGYUw8aMikHxjbuztoWFqvzmVO/on4V3dK6nYD0ba2/sDJcNk3Tb6kLpXPbyDw==
-X-Received: by 2002:a17:907:961a:b0:b04:2edd:280b with SMTP id
- a640c23a62f3a-b042edd2a50mr1478196866b.39.1756973517480; 
- Thu, 04 Sep 2025 01:11:57 -0700 (PDT)
+ bh=dryPG5cdTvon401P43IQAncMYcpBnZGjJaBP50H9h5s=;
+ b=f/Ukv4FHo/W6+WT+lUWEQ2/XIH6sdqhOyJJMMjJgxgdWuc3/DhsdvPxfd9ac33tvOw
+ 40KxUpZcNcbm0YD6I5n9/7uTHVXyYKpppbEmNYbcJv4g+qgEhLagk2bdJbGZMiXqIGaD
+ fYacViMFcUrVPtSCaJWWEpLPKFTB3rUAYXLLUCiZ7SK+3dikz021in40MGFc4R5zm1qF
+ cGROoYZVZ9pbtuHtmnNCyJsihk+/04Z9wnNZPuMZA4vuBwI2uVhwuqyPq+OM4ujWEc3r
+ CX8NJVQSh+2e8xctHnGOAxcrnpOPMcR4CVFtQpX6gPwB2BhYNW869EJ1+ZvsCR90aD/u
+ 7EpA==
+X-Gm-Message-State: AOJu0YyG56gMbFxe30ZWsnIv4KKqezLO7SniVTOujusJlVkb4uotRLT8
+ CAhJWhyGOprqtXjwsDoiHxqesOMlJQZoJq0FWkJP/xeE2iVtffbvTgp0aSc2TWg77/l6I6e4RWT
+ q/oht7nXEng==
+X-Gm-Gg: ASbGnctSlrR2PaXYvBCGBw43Mi9ZaCDEZKhrLjiSKtZsdafhy4K4md+vUSXzVvpSRCz
+ 1++KVRTe/7JifLStJuBDABCbw+CusaRwdaSOj1+IMFBFs2qhORJGp/SKA4bfdAd5lLQYRf8/D2J
+ JSKpzqvEJpoYk9Zq15g0mmw/MH8DBuz4lat6FGrYAF1ge3pJmu8JUxCXLmlolTGbNXLptGrHiNk
+ 2+2ItDgDYP9ro3eHQ8qEBe4fdnVW+yu1Q+Y2Cg0GO2U/SRl55F5H7u7WE2r60M7X0suG+J1NWz0
+ ZMImaCZ9BSb6WfjBIiph9WDNkuXRgsZ3H2PYdrZgTNANovxp3WtxUQjrCzBZHqsx+ksY3YPc4QL
+ +JB2gxYN9a4tOtg3Vk6mdq8A=
+X-Google-Smtp-Source: AGHT+IGDnb25U4p97OCHED0J2lFk0ur4/KBbXrud2PABbqZVX6GA8E6Xsu3KLiaHB+cjs0txk70Kjg==
+X-Received: by 2002:a17:907:7ea8:b0:b04:53cc:441c with SMTP id
+ a640c23a62f3a-b0453cc4688mr868679666b.28.1756973521151; 
+ Thu, 04 Sep 2025 01:12:01 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b041f6fb232sm1080452766b.87.2025.09.04.01.11.50
+ a640c23a62f3a-aff12a6b404sm1395198066b.88.2025.09.04.01.11.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 04 Sep 2025 01:11:55 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 30E81601A8;
+ by draig.lan (Postfix) with ESMTP id 8A375601B3;
  Thu, 04 Sep 2025 09:11:34 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -127,16 +127,17 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>, John Levon <john.levon@nutanix.com>
-Subject: [PATCH v2 049/281] semihosting: Initialize heap once per process
-Date: Thu,  4 Sep 2025 09:07:23 +0100
-Message-ID: <20250904081128.1942269-50-alex.bennee@linaro.org>
+Subject: [PATCH v2 051/281] linux-user: Move ppc uabi/asm/elf.h workaround to
+ osdep.h
+Date: Thu,  4 Sep 2025 09:07:25 +0100
+Message-ID: <20250904081128.1942269-52-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -161,180 +162,77 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-While semihosting isn't really thread aware, the current
-implementation allocates space for the heap per-thread.
+Move the workaround out of linux-user/elfload.c, so that
+we don't have to replicate it in many places.  Place it
+immediately after the include of <signal.h>, which draws
+in the relevant symbols.
 
-Remove the heap_base and heap_limit fields from TaskState.
-Replace with static variables within do_common_semihosting.
+Note that ARCH_DLINFO is not defined by the kernel header,
+and so there's no need to undef it either.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/qemu.h             |  5 -----
- linux-user/aarch64/cpu_loop.c |  7 -------
- linux-user/arm/cpu_loop.c     | 25 +++++++++++--------------
- linux-user/m68k/cpu_loop.c    |  8 --------
- linux-user/riscv/cpu_loop.c   |  4 ----
- semihosting/arm-compat-semi.c | 22 +++++++++-------------
- 6 files changed, 20 insertions(+), 51 deletions(-)
+ include/qemu/osdep.h |  8 ++++++++
+ hw/core/loader.c     |  4 ----
+ linux-user/elfload.c | 10 ----------
+ 3 files changed, 8 insertions(+), 14 deletions(-)
 
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index b6621536b36..4d6fad28c63 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -121,11 +121,6 @@ struct TaskState {
-     abi_ulong child_tidptr;
- #ifdef TARGET_M68K
-     abi_ulong tp_value;
--#endif
--#if defined(TARGET_ARM) || defined(TARGET_M68K) || defined(TARGET_RISCV)
--    /* Extra fields for semihosted binaries.  */
--    abi_ulong heap_base;
--    abi_ulong heap_limit;
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index 96fe51bc390..be3460b32f2 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -133,6 +133,14 @@ QEMU_EXTERN_C int daemon(int, int);
+ #include <setjmp.h>
+ #include <signal.h>
+ 
++/*
++ * Avoid conflict with linux/arch/powerpc/include/uapi/asm/elf.h, included
++ * from <asm/sigcontext.h>, but we might as well do this unconditionally.
++ */
++#undef ELF_CLASS
++#undef ELF_DATA
++#undef ELF_ARCH
++
+ #ifdef CONFIG_IOVEC
+ #include <sys/uio.h>
  #endif
-     int used; /* non zero if used */
-     struct image_info *info;
-diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
-index b65999a75bf..030a630c936 100644
---- a/linux-user/aarch64/cpu_loop.c
-+++ b/linux-user/aarch64/cpu_loop.c
-@@ -140,9 +140,6 @@ void cpu_loop(CPUARMState *env)
- void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
-     ARMCPU *cpu = env_archcpu(env);
--    CPUState *cs = env_cpu(env);
--    TaskState *ts = get_task_state(cs);
--    struct image_info *info = ts->info;
-     int i;
- 
-     if (!(arm_feature(env, ARM_FEATURE_AARCH64))) {
-@@ -167,8 +164,4 @@ void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
-     if (cpu_isar_feature(aa64_pauth, cpu)) {
-         qemu_guest_getrandom_nofail(&env->keys, sizeof(env->keys));
-     }
--
--    ts->heap_base = info->brk;
--    /* This will be filled in on the first SYS_HEAPINFO call.  */
--    ts->heap_limit = 0;
+diff --git a/hw/core/loader.c b/hw/core/loader.c
+index e7056ba4bd3..524af6f14a0 100644
+--- a/hw/core/loader.c
++++ b/hw/core/loader.c
+@@ -295,10 +295,6 @@ static void *load_at(int fd, off_t offset, size_t size)
+     return ptr;
  }
-diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
-index e40d6beafa2..9d54422736c 100644
---- a/linux-user/arm/cpu_loop.c
-+++ b/linux-user/arm/cpu_loop.c
-@@ -492,19 +492,16 @@ void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
-     for(i = 0; i < 16; i++) {
-         env->regs[i] = regs->uregs[i];
-     }
--#if TARGET_BIG_ENDIAN
--    /* Enable BE8.  */
--    if (EF_ARM_EABI_VERSION(info->elf_flags) >= EF_ARM_EABI_VER4
--        && (info->elf_flags & EF_ARM_BE8)) {
--        env->uncached_cpsr |= CPSR_E;
--        env->cp15.sctlr_el[1] |= SCTLR_E0E;
--    } else {
--        env->cp15.sctlr_el[1] |= SCTLR_B;
--    }
--    arm_rebuild_hflags(env);
+ 
+-#ifdef ELF_CLASS
+-#undef ELF_CLASS
 -#endif
+-
+ #define ELF_CLASS   ELFCLASS32
+ #include "elf.h"
  
--    ts->heap_base = info->brk;
--    /* This will be filled in on the first SYS_HEAPINFO call.  */
--    ts->heap_limit = 0;
-+    if (TARGET_BIG_ENDIAN) {
-+        /* Enable BE8.  */
-+        if (EF_ARM_EABI_VERSION(info->elf_flags) >= EF_ARM_EABI_VER4
-+            && (info->elf_flags & EF_ARM_BE8)) {
-+            env->uncached_cpsr |= CPSR_E;
-+            env->cp15.sctlr_el[1] |= SCTLR_E0E;
-+        } else {
-+            env->cp15.sctlr_el[1] |= SCTLR_B;
-+        }
-+        arm_rebuild_hflags(env);
-+    }
- }
-diff --git a/linux-user/m68k/cpu_loop.c b/linux-user/m68k/cpu_loop.c
-index 3aaaf02ca4e..23693f33582 100644
---- a/linux-user/m68k/cpu_loop.c
-+++ b/linux-user/m68k/cpu_loop.c
-@@ -94,10 +94,6 @@ void cpu_loop(CPUM68KState *env)
- 
- void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
- {
--    CPUState *cpu = env_cpu(env);
--    TaskState *ts = get_task_state(cpu);
--    struct image_info *info = ts->info;
--
-     env->pc = regs->pc;
-     env->dregs[0] = regs->d0;
-     env->dregs[1] = regs->d1;
-@@ -116,8 +112,4 @@ void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
-     env->aregs[6] = regs->a6;
-     env->aregs[7] = regs->usp;
-     env->sr = regs->sr;
--
--    ts->heap_base = info->brk;
--    /* This will be filled in on the first SYS_HEAPINFO call.  */
--    ts->heap_limit = 0;
- }
-diff --git a/linux-user/riscv/cpu_loop.c b/linux-user/riscv/cpu_loop.c
-index 541de765ffa..2dd30c7b288 100644
---- a/linux-user/riscv/cpu_loop.c
-+++ b/linux-user/riscv/cpu_loop.c
-@@ -108,8 +108,4 @@ void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
-         error_report("Incompatible ELF: RVE cpu requires RVE ABI binary");
-         exit(EXIT_FAILURE);
-     }
--
--    ts->heap_base = info->brk;
--    /* This will be filled in on the first SYS_HEAPINFO call.  */
--    ts->heap_limit = 0;
- }
-diff --git a/semihosting/arm-compat-semi.c b/semihosting/arm-compat-semi.c
-index bc04b02eba8..bcd13cd6dfd 100644
---- a/semihosting/arm-compat-semi.c
-+++ b/semihosting/arm-compat-semi.c
-@@ -666,7 +666,7 @@ void do_common_semihosting(CPUState *cs)
-             int i;
- #ifdef CONFIG_USER_ONLY
-             TaskState *ts = get_task_state(cs);
--            target_ulong limit;
-+            static abi_ulong heapbase, heaplimit;
- #else
-             LayoutInfo info = common_semi_find_bases(cs);
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index ea214105ff8..4ca8c39dc26 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -35,16 +35,6 @@
+ #include "target/arm/cpu-features.h"
  #endif
-@@ -678,24 +678,20 @@ void do_common_semihosting(CPUState *cs)
-              * Some C libraries assume the heap immediately follows .bss, so
-              * allocate it using sbrk.
-              */
--            if (!ts->heap_limit) {
--                abi_ulong ret;
+ 
+-#ifdef _ARCH_PPC64
+-#undef ARCH_DLINFO
+-#undef ELF_PLATFORM
+-#undef ELF_HWCAP
+-#undef ELF_HWCAP2
+-#undef ELF_CLASS
+-#undef ELF_DATA
+-#undef ELF_ARCH
+-#endif
 -
--                ts->heap_base = do_brk(0);
--                limit = ts->heap_base + COMMON_SEMI_HEAP_SIZE;
-+            if (!heaplimit) {
-+                heapbase = do_brk(0);
-                 /* Try a big heap, and reduce the size if that fails.  */
--                for (;;) {
--                    ret = do_brk(limit);
-+                for (abi_ulong size = COMMON_SEMI_HEAP_SIZE; ; size >>= 1) {
-+                    abi_ulong limit = heapbase + size;
-+                    abi_ulong ret = do_brk(limit);
-                     if (ret >= limit) {
-+                        heaplimit = limit;
-                         break;
-                     }
--                    limit = (ts->heap_base >> 1) + (limit >> 1);
-                 }
--                ts->heap_limit = limit;
-             }
--
--            retvals[0] = ts->heap_base;
--            retvals[1] = ts->heap_limit;
-+            retvals[0] = heapbase;
-+            retvals[1] = heaplimit;
-             /*
-              * Note that semihosting is *not* thread aware.
-              * Always return the stack base of the main thread.
+ #ifndef TARGET_ARCH_HAS_SIGTRAMP_PAGE
+ #define TARGET_ARCH_HAS_SIGTRAMP_PAGE 0
+ #endif
 -- 
 2.47.2
 
