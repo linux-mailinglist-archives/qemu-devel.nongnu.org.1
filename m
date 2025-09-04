@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784E8B437EF
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 12:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B528B437ED
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 12:08:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu6rY-0004Z8-QR; Thu, 04 Sep 2025 06:06:40 -0400
+	id 1uu6rc-0004hJ-Po; Thu, 04 Sep 2025 06:06:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uu6rM-0004Uc-Ae; Thu, 04 Sep 2025 06:06:28 -0400
+ id 1uu6rS-0004Xq-HO; Thu, 04 Sep 2025 06:06:36 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uu6rK-0004eu-0u; Thu, 04 Sep 2025 06:06:28 -0400
+ id 1uu6rO-0004eu-AV; Thu, 04 Sep 2025 06:06:33 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 4 Sep
- 2025 18:05:57 +0800
+ 2025 18:05:58 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Thu, 4 Sep 2025 18:05:57 +0800
+ Transport; Thu, 4 Sep 2025 18:05:58 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
  <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <thuth@redhat.com>, Kane-Chen-AS
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 3/4] tests/functional/arm: Update test ASPEED SDK v09.07
- for AST2600
-Date: Thu, 4 Sep 2025 18:05:54 +0800
-Message-ID: <20250904100556.1729604-4-kane_chen@aspeedtech.com>
+Subject: [PATCH v1 4/4] tests/functional/arm: Update test ASPEED SDK v09.07
+ for AST2700 vbootrom
+Date: Thu, 4 Sep 2025 18:05:55 +0800
+Message-ID: <20250904100556.1729604-5-kane_chen@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250904100556.1729604-1-kane_chen@aspeedtech.com>
 References: <20250904100556.1729604-1-kane_chen@aspeedtech.com>
@@ -70,32 +70,37 @@ From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
 Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 ---
- tests/functional/arm/test_aspeed_ast2600.py | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/functional/aarch64/test_aspeed_ast2700.py | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tests/functional/arm/test_aspeed_ast2600.py b/tests/functional/arm/test_aspeed_ast2600.py
-index fdae4c939d..129695ca4e 100755
---- a/tests/functional/arm/test_aspeed_ast2600.py
-+++ b/tests/functional/arm/test_aspeed_ast2600.py
-@@ -97,14 +97,14 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
+diff --git a/tests/functional/aarch64/test_aspeed_ast2700.py b/tests/functional/aarch64/test_aspeed_ast2700.py
+index e8e06701cf..a3db267294 100755
+--- a/tests/functional/aarch64/test_aspeed_ast2700.py
++++ b/tests/functional/aarch64/test_aspeed_ast2700.py
+@@ -54,6 +54,10 @@ def verify_openbmc_boot_and_login(self, name):
+             'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2700-default-obmc.tar.gz',
+             'f1d53e0be8a404ecce3e105f72bc50fa4e090ad13160ffa91b10a6e0233a9dc6')
  
-         self.do_test_arm_aspeed_buildroot_poweroff()
++    ASSET_SDK_V907_AST2700A1_VBOOROM = Asset(
++            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2700-default-obmc.tar.gz',
++            '6e9e0c4b13e0f26040eca3f4a7f17cf09fc0f5c37c820500ff79370cc3c44add')
++
+     def do_ast2700_i2c_test(self):
+         exec_command_and_wait_for_pattern(self,
+             'echo lm75 0x4d > /sys/class/i2c-dev/i2c-1/device/new_device ',
+@@ -127,10 +131,10 @@ def test_aarch64_ast2700a1_evb_sdk_v09_06(self):
+         self.verify_openbmc_boot_and_login('ast2700-default')
+         self.do_ast2700_i2c_test()
  
--    ASSET_SDK_V906_AST2600 = Asset(
--        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2600-default-obmc.tar.gz',
--        '768d76e247896ad78c154b9cff4f766da2ce65f217d620b286a4a03a8a4f68f5')
-+    ASSET_SDK_V907_AST2600 = Asset(
-+        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2600-default-obmc.tar.gz',
-+        'cb6c08595bcbba1672ce716b068ba4e48eda1ed9abe78a07b30392ba2278feba')
+-    def test_aarch64_ast2700a1_evb_sdk_vbootrom_v09_06(self):
++    def test_aarch64_ast2700a1_evb_sdk_vbootrom_v09_07(self):
+         self.set_machine('ast2700a1-evb')
  
-     def test_arm_ast2600_evb_sdk(self):
-         self.set_machine('ast2600-evb')
- 
--        self.archive_extract(self.ASSET_SDK_V906_AST2600)
-+        self.archive_extract(self.ASSET_SDK_V907_AST2600)
- 
-         self.vm.add_args('-device',
-             'tmp105,bus=aspeed.i2c.bus.5,address=0x4d,id=tmp-test')
+-        self.archive_extract(self.ASSET_SDK_V906_AST2700A1)
++        self.archive_extract(self.ASSET_SDK_V907_AST2700A1_VBOOROM)
+         self.start_ast2700_test_vbootrom('ast2700-default')
+         self.verify_vbootrom_firmware_flow()
+         self.verify_openbmc_boot_and_login('ast2700-default')
 -- 
 2.43.0
 
