@@ -2,69 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E022B447B3
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 22:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B85F3B447C0
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 22:52:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuGsP-0003ct-Kb; Thu, 04 Sep 2025 16:48:13 -0400
+	id 1uuGsI-0003a0-2I; Thu, 04 Sep 2025 16:48:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGsL-0003cD-Ce
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:48:09 -0400
-Received: from mailgate01.uberspace.is ([95.143.172.20])
+ (Exim 4.90_1) (envelope-from <titusr@google.com>) id 1uuGsD-0003YO-3g
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:48:01 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGsC-0000m6-6D
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:48:07 -0400
-Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate01.uberspace.is (Postfix) with ESMTPS id 1B71E60C5C
- for <qemu-devel@nongnu.org>; Thu,  4 Sep 2025 22:47:25 +0200 (CEST)
-Received: (qmail 346 invoked by uid 990); 4 Sep 2025 20:47:25 -0000
-Authentication-Results: skiff.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
- by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Thu, 04 Sep 2025 22:47:24 +0200
-From: Julian Ganz <neither@nut.email>
-To: qemu-devel@nongnu.org
-Cc: Julian Ganz <neither@nut.email>,
- Richard Henderson <richard.henderson@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PATCH v6 20/25] target/sparc: call plugin trap callbacks
-Date: Thu,  4 Sep 2025 22:46:57 +0200
-Message-ID: <e5ecf7f7ed5242809abec86a27cb284d321950c1.1757018626.git.neither@nut.email>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <cover.1757018626.git.neither@nut.email>
-References: <cover.1757018626.git.neither@nut.email>
+ (Exim 4.90_1) (envelope-from <titusr@google.com>) id 1uuGs7-0000mX-V9
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:48:00 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-560885b40e2so2969e87.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 13:47:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1757018869; x=1757623669; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dr49+/TE2wXDXE1qirriA0xB62DpArjWBKhXglp+OL8=;
+ b=PE9vMdywX8A+sJUJFzu6//jnrYPGVY+rocqM0y/Z6VzycP5a71tIxWXVNEWI+XeO1O
+ o8Ywh+Tba8SqdldqkQl3KBpqJBAFvgX8X0GnnXs8OThSX4jVfjpMuMvIeJ1Ql47t9SD2
+ oX7Yhm7Rp3fep/8yH+WgxUMzWGXlQuPtZUFlGJwAKBoMqGoYRITUs0q4apIRGlVzRnVz
+ wZ4LIJXeLzjEka+iQoJ6zE4Hnco72Sehy/Unv3InTYRw/oVhWDG0BrQ6r2TDM/S6xznl
+ tGDIby7EXpwMVmnlPqy/573OfpEBJDqqLChC6AJEbaJPKIrNavmhP1U6YhfHgDWoXZ9K
+ HT6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757018869; x=1757623669;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dr49+/TE2wXDXE1qirriA0xB62DpArjWBKhXglp+OL8=;
+ b=E+eZ2PUt6PRqxwW3nAcQvfScYxRTIsaOEngBOX+WMhNMc2eqykWwlwgSoo+4QGFr6I
+ wN+N7f1xJWneAWNeyebR9TOO756tel/pWV7QvKA6VHmx4+mdn7d/2BvUW/9k843bnp+C
+ dpHC9dkjRL6pPbnhqJnwtaleEAyQmA4uGAKPbF8G+ZdilXPXnEpD7jcac4slovBI8D/o
+ 2RNlOG16U13ZMayq7sLMipZcGudHgKQ28KxifL9ZVFFz6vZI2pV70uQ6ywKIBMRFuZvc
+ hF329IZb71k/YEBDIlHzr4FZIH5x2D1Js8edMNR3dzFAtVHJ6MjlvIRQkWAuUSv6AIk2
+ O7GA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW9LgLNSIUwOKXCdBbc6tANlpc9wawCMMbfWpOZB9P3LtW7C5LqtYbSEUqDYIojhys64vcd19dBb252@nongnu.org
+X-Gm-Message-State: AOJu0YyS4ACyQgP47+VogS5f04oBTlSQz2ozjUHZxk/rMJ3Cqmq/v2/G
+ FnJL0deN1Yq7rqPmBm+taQD33UIi3eEsVdT3VE4yJj3Hfw4fSfiCdnYinQDRxIRdgMh1Ak9l4PK
+ 5Z3XovWEBEaKo2EH2+gFkZG6dEEzRmNr9CA+WSi1f
+X-Gm-Gg: ASbGncv0OYwLbzkEWqFyof3xkVV/y+wz+NWmD4/t4O8WuNEZmv77BchInFdS3pH/U/U
+ rJ/AjN/Y2hGV3Pd32n2DJX/Nqc28DR6KjibTRt0ZO4psFjB97Dp6SMuezbpYX9Bws8f+bQJc4+S
+ MnsoRbBVCvIcMxZsY3Gzh7or1uGf0AMV+UD5a91Ls4V6saCVJCig/czXbOIRdQ8HuqmKppMQ/3M
+ bWrw4V36i0FOFNasVz7ZvbOhleOYd5nS7OLGOQYV1mX
+X-Google-Smtp-Source: AGHT+IE2r9g4TdemD6DpGjvEnlfAQ4oOc6iES/Hfhgn9iGUKHmC1rqNCh4nms5fJ1yGozYzm3xIm5r6UkXT0QlrMv9k=
+X-Received: by 2002:a05:6512:1145:b0:55f:6cac:c94 with SMTP id
+ 2adb3069b0e04-56136fa0033mr8837e87.7.1757018868973; Thu, 04 Sep 2025 13:47:48
+ -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.999829) MID_CONTAINS_FROM(1)
- MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.599829
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
- h=from:to:cc:subject:date;
- bh=sUcYG7ruyA+9QHxAzSD9HdeHOhM3xRfzfStnbhoeH60=;
- b=kQ6EQ44QRV0p254UZmu+Cj/1T5/wp7VRimKsqGZ/ayVaF3gKLcdoF/hEaWwPRkfF67y78RVD3t
- TNfTZAvsJ3mgTj/lIxzLHyLGu33N5F5FjDnWfIkQKCFYqIe5efE3ZGyRgt91QaKM6BxqlJk8tjBt
- qz9wyMaqXZu/dvndb9XsuDTxyu0mLnXV9EqAu1OvMccD4+yTv1Kwi8N74o6rOeroW7Puso60DtQB
- LzdztEJ4u9tiUm5msY32p0iLKlJV4rResbnP3U1MWFf2kJT9nn8r+8XUKpypy6RpwYOy7C/UQ5nU
- a4PsEMNE6XNz+WgltldPv0XEIJXkVA/vEVNCFWFSvT8zhyoX2gpNTwMjw2f2AJIc4a9eAb/NGRp4
- fFotEA9YlpWQEmcFLLcEIpJaFihEb55StH6IiGZFwzOWfMRuSAUSPwSJHJWWRdiKrLCZv3RkbXvQ
- 7HvphoWpALu1tqYTeEOGNLgVg7FjIo+V4ciN8i7fRCJtl7mCoSJiVfyYvhJDe2xWzsZThhPS/2DW
- pPJJkjyhA0TYP11IFLSMRhUDO5gy2GbOlbL7fw3EE++Z+AOxCYqj44liiohUAj3cyFqZDwkkFzj2
- LpzQ22Fo6TRsMSFfigIN8pLMxClJfPsGGANHZJWdxBQx6a09vhvPV+YajBfJi06iPCRZs48mL9MJ
- o=
-Received-SPF: pass client-ip=95.143.172.20; envelope-from=neither@nut.email;
- helo=mailgate01.uberspace.is
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20210708172556.1868139-1-titusr@google.com>
+ <20210708172556.1868139-2-titusr@google.com>
+ <472194f0-5853-4c7f-8b52-3c85e902097d@linaro.org>
+In-Reply-To: <472194f0-5853-4c7f-8b52-3c85e902097d@linaro.org>
+From: Titus Rwantare <titusr@google.com>
+Date: Thu, 4 Sep 2025 13:47:11 -0700
+X-Gm-Features: Ac12FXzTh9240eK_bGZv7iMuuv-ehW3FRorzo6SsQlIAFycz0vrM6HMW1704DG0
+Message-ID: <CAMvPwGqcn8fs0JWdcG1zsjZr_=Hny58Zuu=+wN_FRgvL-yTpUQ@mail.gmail.com>
+Subject: Re: [PATCH v5 1/5] hw/i2c: add support for PMBus
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Corey Minyard <minyard@acm.org>, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Joel Stanley <joel@jms.id.au>, Hao Wu <wuhaotsh@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=titusr@google.com; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,74 +96,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We recently introduced API for registering callbacks for trap related
-events as well as the corresponding hook functions. Due to differences
-between architectures, the latter need to be called from target specific
-code.
-
-This change places hooks for SPARC (32bit and 64bit) targets. We treat
-any interrupt other than EXTINT and IVEC as exceptions as they appear to
-be synchroneous events.
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Julian Ganz <neither@nut.email>
----
- target/sparc/int32_helper.c |  7 +++++++
- target/sparc/int64_helper.c | 10 ++++++++++
- 2 files changed, 17 insertions(+)
-
-diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
-index 39db4ffa70..634439ab2a 100644
---- a/target/sparc/int32_helper.c
-+++ b/target/sparc/int32_helper.c
-@@ -24,6 +24,7 @@
- #include "accel/tcg/cpu-ldst.h"
- #include "exec/log.h"
- #include "system/runstate.h"
-+#include "qemu/plugin.h"
- 
- static const char * const excp_names[0x80] = {
-     [TT_TFAULT] = "Instruction Access Fault",
-@@ -172,4 +173,10 @@ void sparc_cpu_do_interrupt(CPUState *cs)
-         env->qemu_irq_ack(env, intno);
-     }
- #endif
+On Fri, 29 Aug 2025 at 09:08, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> Hi Titus,
+>
+> On 8/7/21 19:25, Titus Rwantare wrote:
+> > QEMU has support for SMBus devices, and PMBus is a more specific
+> > implementation of SMBus. The additions made in this commit makes it eas=
+ier to
+> > add new PMBus devices to QEMU.
+> >
+> > https://pmbus.org/specification-archives/
+> >
+> > Reviewed-by: Joel Stanley <joel@jms.id.au>
+> > Reviewed-by: Hao Wu <wuhaotsh@google.com>
+> > Signed-off-by: Titus Rwantare <titusr@google.com>
+> > ---
+> >   include/hw/i2c/pmbus_device.h |  517 +++++++++++
+> >   hw/i2c/pmbus_device.c         | 1612 ++++++++++++++++++++++++++++++++=
 +
-+    if (intno == TT_EXTINT) {
-+        qemu_plugin_vcpu_interrupt_cb(cs, env->regwptr[9]);
-+    } else {
-+        qemu_plugin_vcpu_exception_cb(cs, env->regwptr[9]);
-+    }
- }
-diff --git a/target/sparc/int64_helper.c b/target/sparc/int64_helper.c
-index 49e4e51c6d..1de9de0961 100644
---- a/target/sparc/int64_helper.c
-+++ b/target/sparc/int64_helper.c
-@@ -23,6 +23,7 @@
- #include "exec/helper-proto.h"
- #include "exec/log.h"
- #include "trace.h"
-+#include "qemu/plugin.h"
- 
- #define DEBUG_PCALL
- 
-@@ -253,6 +254,15 @@ void sparc_cpu_do_interrupt(CPUState *cs)
-     }
-     env->npc = env->pc + 4;
-     cs->exception_index = -1;
-+
-+    switch (intno) {
-+    case TT_EXTINT:
-+    case TT_IVEC:
-+        qemu_plugin_vcpu_interrupt_cb(cs, tsptr->tpc);
-+        break;
-+    default:
-+        qemu_plugin_vcpu_exception_cb(cs, tsptr->tpc);
-+    }
- }
- 
- trap_state *cpu_tsptr(CPUSPARCState* env)
--- 
-2.49.1
+> >   hw/arm/Kconfig                |    1 +
+> >   hw/i2c/Kconfig                |    4 +
+> >   hw/i2c/meson.build            |    1 +
+> >   5 files changed, 2135 insertions(+)
+> >   create mode 100644 include/hw/i2c/pmbus_device.h
+> >   create mode 100644 hw/i2c/pmbus_device.c
+>
+>
+> > +static uint8_t pmbus_receive_byte(SMBusDevice *smd)
+> > +{
+> > +    PMBusDevice *pmdev =3D PMBUS_DEVICE(smd);
+> > +    PMBusDeviceClass *pmdc =3D PMBUS_DEVICE_GET_CLASS(pmdev);
 
+> > +        qemu_log_mask(LOG_GUEST_ERROR,
+> > +                      "%s: reading from write only register 0x%02x\n",
+> > +                      __func__, pmdev->code);
+> > +        break;
+> > +
+> > +passthough:
+> > +    default:
+> > +        /* Pass through read request if not handled */
+> > +        if (pmdc->receive_byte) {
+> > +            ret =3D pmdc->receive_byte(pmdev);
+>
+> This returned value ...
+>
+> > +        }
+> > +        break;
+> > +    }
+> > +
+> > +    if (pmdev->out_buf_len !=3D 0) {
+> > +        ret =3D pmbus_out_buf_pop(pmdev);
+>
+> ... is overwritten here, is that expected?
+>
+> > +        return ret;
+> > +    }
+
+Yes, this is expected but it could be done more cleanly. I can only
+return a byte out of pmbus_receive_byte() and this is sometimes data,
+sometimes -1 for an error. At the time, I decided the valid data in
+out_buf should take precedence over returns from the device
+receive_byte.
+-Titus
 
