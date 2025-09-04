@@ -2,63 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50095B43818
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 12:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE05B43847
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 12:15:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu6wI-0002D2-CZ; Thu, 04 Sep 2025 06:11:34 -0400
+	id 1uu6yy-0003pf-Ij; Thu, 04 Sep 2025 06:14:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uu6w7-00022v-Vr; Thu, 04 Sep 2025 06:11:24 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uu6vz-00063I-62; Thu, 04 Sep 2025 06:11:21 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cHZs62mlRz6J6mF;
- Thu,  4 Sep 2025 18:07:06 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 1542D1402F5;
- Thu,  4 Sep 2025 18:10:57 +0800 (CST)
-Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 4 Sep
- 2025 12:10:56 +0200
-Date: Thu, 4 Sep 2025 11:10:55 +0100
-To: Wilfred Mallawa <wilfred.opensource@gmail.com>
-CC: Alistair Francis <alistair.francis@wdc.com>, Keith Busch
- <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>, Jesper Devantier
- <foss@defmacro.it>, Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng
- <fam@euphon.net>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
- <hreitz@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, "Marcel
- Apfelbaum" <marcel.apfelbaum@gmail.com>, <qemu-devel@nongnu.org>,
- <qemu-block@nongnu.org>, <dlemoal@kernel.org>, Wilfred Mallawa
- <wilfred.mallawa@wdc.com>
-Subject: Re: [PATCH v4 1/5] spdm-socket: add seperate send/recv functions
-Message-ID: <20250904111055.000026a6@huawei.com>
-In-Reply-To: <20250904031058.367667-3-wilfred.opensource@gmail.com>
-References: <20250904031058.367667-2-wilfred.opensource@gmail.com>
- <20250904031058.367667-3-wilfred.opensource@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uu6yu-0003oS-Ln
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 06:14:16 -0400
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uu6yq-0008By-EP
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 06:14:16 -0400
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-7454a992f7dso688247a34.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 03:14:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1756980850; x=1757585650; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=F9GxhJmWfwBye7noMnqDJZ/ZX2guxAEgJ0FNB26d/OM=;
+ b=B/oxHCGFptNR2Ph8rqWP4ECYJi+kJzJyfKBiPMmzLKb5N+phWMVrw4vpeSaajIP4SL
+ WEnODLSc9p83pnmFenXLI7wNuXGuJx9OlWfezPjtU/Mxp1qS9JIRhfh5Jk4k9SQjaCMc
+ O5AFmAdRXjATws1dJOlLtglvDh9ZclAl0ssM9Yv2NLuXrcadRu8lr+dXzRTG/KR1rQok
+ C1RUTpdJzncSM/McUiIc2YKwfFMNE0obyFR25ywxPdsUkzTyXKDt/7v37DnIMxHNPV4y
+ Th4KPSGZZAIWVa/fgJB4yTQF0gTT50ZUjT/Lq27nFQOQEa7VRicUxORmfoxH+06hiLc4
+ /GIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756980850; x=1757585650;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=F9GxhJmWfwBye7noMnqDJZ/ZX2guxAEgJ0FNB26d/OM=;
+ b=uwiYiWkGFkWyxzcPQtUnIx7nV+7J+/h0FMrvuZz1zsRe7apSDymcF8u+WIeKmQ1D5e
+ TbLNpgaCyPtSnN37zOyj4dmitdOza/xYs/+jooqoKn2Yuq/Z2LG0oID0P9NLdjpj77pJ
+ hZ/TWbOsRFP2jE2/jrEItdBZwxQt70saVtxM9SZUNuDh13QW2S8SXDOTS2ZvFmzyIqP1
+ L8I8E7Lnz+9GDwxYYsEuTZc0wfr7WoGuK3WutiiQKC5zY9hzCnALV/3lrxtmO9IS7ylH
+ 3+w5CA4AD9akW+mwwUsK45S8gJfI28KvongPB1K17l5pLcTqqTbZzi8iuBoelxPHgf+R
+ M49Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVYlIt5I7i5s1+DeBHPaDlLqP80tvcxb/CKDT+gcPhiHl1fRCcbT8I5i0PVNzx9lg8QkR/oIf7cWXTf@nongnu.org
+X-Gm-Message-State: AOJu0YxImZc09cSnZiWg1at1YdkukFsN9Pl6+dU85kegAIV9t3kBp3nH
+ m2bFBCYWA3eZq35yYH7cymubuTOJ+aS2hBh0+2PdQcGribr2X0VxP1vpeJrvIFsEynw=
+X-Gm-Gg: ASbGncvZHfbR4ty6R1un/Qvy3I3MSVL2D7JSnjXjaHWunnIW76v5EO/lAPIWVTy3E1e
+ rn7M+fIjVJlXPRuQp3Hgh0Jm0u7BY6Qc8LCynYziOU5SVJ2Wb380auCKbD8zZ4emker8PM7Tra8
+ +MvW07aiktB9B22Z7rB50nhQGlyJvUELS/FMinwqTP4vocn/JcZh0xCCGUn62/B0XbmI+ePvP0R
+ PsbEW4xJGVguYm3wgtWofnsZ7JZQRYQxQQMm7cCjVZZ6UJ1x9kPh5eSV1YLiLSRBMwtdOzCUXOd
+ 7velN4T3bYlV5nRkCZ4UjsTxqNye1DKHRIRILrniWzG2WpLhBCjkzhjAV44pwdOiicKpo8QyeQi
+ S3t4FcUsdg3IjHmWnaASzSUv7c4k7wf6vGrRWg7kp9J9/QJY=
+X-Google-Smtp-Source: AGHT+IFMxCTjr2ulg1tUf6aQ5+QiW5mTfsn/q3zJ6U9Y39MM6DVTIllosa8QvDq4q3MRLNV+oh6wyg==
+X-Received: by 2002:a05:6830:648e:b0:745:615a:fe6f with SMTP id
+ 46e09a7af769-74569db5623mr10148022a34.11.1756980849845; 
+ Thu, 04 Sep 2025 03:14:09 -0700 (PDT)
+Received: from [192.168.68.110] ([187.10.187.251])
+ by smtp.gmail.com with ESMTPSA id
+ 586e51a60fabf-319b6063d3dsm2049136fac.26.2025.09.04.03.14.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 04 Sep 2025 03:14:09 -0700 (PDT)
+Message-ID: <da524d10-fee5-45f2-ba9e-23f66a754e9b@ventanamicro.com>
+Date: Thu, 4 Sep 2025 07:14:03 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 1/3] target/riscv: Add Zvqdotq cfg property
+To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ richard.henderson@linaro.org
+References: <20250903140308.1705751-1-max.chou@sifive.com>
+ <20250903140308.1705751-2-max.chou@sifive.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Language: en-US
+In-Reply-To: <20250903140308.1705751-2-max.chou@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,159 +103,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <jonathan.cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu,  4 Sep 2025 13:10:55 +1000
-Wilfred Mallawa <wilfred.opensource@gmail.com> wrote:
 
-> From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+
+On 9/3/25 11:03 AM, Max Chou wrote:
+> The Zvqdotq extension is the vector dot-product extension of RISC-V.
 > 
-> This is to support uni-directional transports such as SPDM over Storage.
-> As specified by the DMTF DSP0286.
-> 
-> Also update spdm_socket_rsp() to use the new send()/receive() functions. For
-> the case of spdm_socket_receive(), this allows us to do error checking
-> in one place with the addition of spdm_socket_command_valid().
-> 
-> Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Hi Wilfred,
-
-Main comments are focused on patch break up and a few definitions that
-are here but not used yet. Move those to the patch that first uses them.
-
-Jonathan
-
+> Signed-off-by: Max Chou <max.chou@sifive.com>
 > ---
->  backends/spdm-socket.c       | 56 +++++++++++++++++++++++++++++-------
->  include/system/spdm-socket.h | 35 ++++++++++++++++++++++
->  2 files changed, 80 insertions(+), 11 deletions(-)
+>   target/riscv/cpu.c                | 1 +
+>   target/riscv/cpu_cfg_fields.h.inc | 1 +
+>   target/riscv/tcg/tcg-cpu.c        | 5 +++++
+>   3 files changed, 7 insertions(+)
 > 
-> diff --git a/backends/spdm-socket.c b/backends/spdm-socket.c
-> index 2c709c68c8..3d264814df 100644
-> --- a/backends/spdm-socket.c
-> +++ b/backends/spdm-socket.c
-> @@ -184,28 +184,62 @@ int spdm_socket_connect(uint16_t port, Error **errp)
->      return client_socket;
->  }
->  
-> -uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
-> -                         void *req, uint32_t req_len,
-> -                         void *rsp, uint32_t rsp_len)
-> +static bool spdm_socket_command_valid(uint32_t command)
-As below - perhaps this sanity check belongs in a precursor patch?
-> +{
-> +    switch (command) {
-> +    case SPDM_SOCKET_COMMAND_NORMAL:
-> +    case SPDM_SOCKET_STORAGE_CMD_IF_SEND:
-> +    case SPDM_SOCKET_STORAGE_CMD_IF_RECV:
-> +    case SOCKET_SPDM_STORAGE_ACK_STATUS:
-> +    case SPDM_SOCKET_COMMAND_OOB_ENCAP_KEY_UPDATE:
-> +    case SPDM_SOCKET_COMMAND_CONTINUE:
-> +    case SPDM_SOCKET_COMMAND_SHUTDOWN:
-> +    case SPDM_SOCKET_COMMAND_UNKOWN:
-> +    case SPDM_SOCKET_COMMAND_TEST:
-> +        return true;
-> +    default:
-> +        return false;
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index d055ddf462..95edd02e68 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -187,6 +187,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
+>       ISA_EXT_DATA_ENTRY(zvksg, PRIV_VERSION_1_12_0, ext_zvksg),
+>       ISA_EXT_DATA_ENTRY(zvksh, PRIV_VERSION_1_12_0, ext_zvksh),
+>       ISA_EXT_DATA_ENTRY(zvkt, PRIV_VERSION_1_12_0, ext_zvkt),
+> +    ISA_EXT_DATA_ENTRY(zvqdotq, PRIV_VERSION_1_12_0, ext_zvqdotq),
+
+Is this really 1.12? If it's marked as experimental I would expect it be a new
+extension, e.g. 1.13.
+
+
+Thanks,
+
+Daniel
+
+>       ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
+>       ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
+>       ISA_EXT_DATA_ENTRY(sdtrig, PRIV_VERSION_1_12_0, debug),
+> diff --git a/target/riscv/cpu_cfg_fields.h.inc b/target/riscv/cpu_cfg_fields.h.inc
+> index e2d116f0df..5da59c22d6 100644
+> --- a/target/riscv/cpu_cfg_fields.h.inc
+> +++ b/target/riscv/cpu_cfg_fields.h.inc
+> @@ -100,6 +100,7 @@ BOOL_FIELD(ext_zvfbfmin)
+>   BOOL_FIELD(ext_zvfbfwma)
+>   BOOL_FIELD(ext_zvfh)
+>   BOOL_FIELD(ext_zvfhmin)
+> +BOOL_FIELD(ext_zvqdotq)
+>   BOOL_FIELD(ext_smaia)
+>   BOOL_FIELD(ext_ssaia)
+>   BOOL_FIELD(ext_smctr)
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index 78fb279184..7015370ab0 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -767,6 +767,11 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+>           return;
+>       }
+>   
+> +    if (cpu->cfg.ext_zvqdotq && !cpu->cfg.ext_zve32x) {
+> +        error_setg(errp, "Zvqdotq extension requires V or Zve* extensions");
+> +        return;
 > +    }
-> +}
 > +
-> +uint32_t spdm_socket_receive(const int socket, uint32_t transport_type,
-> +                             void *rsp, uint32_t rsp_len)
->  {
->      uint32_t command;
->      bool result;
->  
-> -    result = send_platform_data(socket, transport_type,
-> -                                SPDM_SOCKET_COMMAND_NORMAL,
-> -                                req, req_len);
-> -    if (!result) {
-> +    result = receive_platform_data(socket, transport_type, &command,
-> +                                   (uint8_t *)rsp, &rsp_len);
-> +
-> +    /* we may have received some data, but check if the command is valid */
-> +    if (!result || !spdm_socket_command_valid(command)) {
-
-Is this change related to the separate send/recv part?  Perhaps it
-is a useful bit of hardening to do as a precursor patch?
-
->          return 0;
->      }
->  
-> -    result = receive_platform_data(socket, transport_type, &command,
-> -                                   (uint8_t *)rsp, &rsp_len);
-> +    return rsp_len;
-> +}
-> +
-> +bool spdm_socket_send(const int socket, uint32_t socket_cmd,
-> +                      uint32_t transport_type, void *req, uint32_t req_len)
-> +{
-> +    return send_platform_data(socket, transport_type,
-> +                              socket_cmd, req, req_len);
-
-I'd wrap that closer to 80 chars.
-
-> +}
-> +
-> +uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
-> +                         void *req, uint32_t req_len,
-> +                         void *rsp, uint32_t rsp_len)
-> +{
-> +    bool result;
-> +
-> +    result = spdm_socket_send(socket, SPDM_SOCKET_COMMAND_NORMAL,
-> +                              transport_type, req, req_len);
->      if (!result) {
->          return 0;
->      }
->  
-> -    assert(command != 0);
-> -
-> +    rsp_len = spdm_socket_receive(socket, transport_type, (uint8_t *)rsp,
-
-Why casting to a uint8_t * ?  It is a void * and this function takes a void *.
-
-> +                                  rsp_len);
->      return rsp_len;
->  }
->  
-> diff --git a/include/system/spdm-socket.h b/include/system/spdm-socket.h
-> index 5d8bd9aa4e..2b7d03f82d 100644
-> --- a/include/system/spdm-socket.h
-> +++ b/include/system/spdm-socket.h
-
->  /**
->   * spdm_socket_close: send a shutdown command to the server
->   * @socket: socket returned from spdm_socket_connect()
-> @@ -60,6 +89,9 @@ uint32_t spdm_socket_rsp(const int socket, uint32_t transport_type,
->  void spdm_socket_close(const int socket, uint32_t transport_type);
->  
->  #define SPDM_SOCKET_COMMAND_NORMAL                0x0001
-> +#define SPDM_SOCKET_STORAGE_CMD_IF_SEND           0x0002
-> +#define SPDM_SOCKET_STORAGE_CMD_IF_RECV           0x0003
-> +#define SOCKET_SPDM_STORAGE_ACK_STATUS            0x0004
->  #define SPDM_SOCKET_COMMAND_OOB_ENCAP_KEY_UPDATE  0x8001
->  #define SPDM_SOCKET_COMMAND_CONTINUE              0xFFFD
->  #define SPDM_SOCKET_COMMAND_SHUTDOWN              0xFFFE
-> @@ -68,7 +100,10 @@ void spdm_socket_close(const int socket, uint32_t transport_type);
->  
->  #define SPDM_SOCKET_TRANSPORT_TYPE_MCTP           0x01
->  #define SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE        0x02
-> +#define SPDM_SOCKET_TRANSPORT_TYPE_SCSI           0x03
-> +#define SPDM_SOCKET_TRANSPORT_TYPE_NVME           0x04
-
-Not used in this patch. Move it to where it is first used.
-
->  
->  #define SPDM_SOCKET_MAX_MESSAGE_BUFFER_SIZE       0x1200
-> +#define SPDM_SOCKET_MAX_MSG_STATUS_LEN            0x02
-
-Not used in this patch. 
-
->  
->  #endif
+>       if ((cpu->cfg.ext_zvbc || cpu->cfg.ext_zvknhb) && !cpu->cfg.ext_zve64x) {
+>           error_setg(
+>               errp,
 
 
