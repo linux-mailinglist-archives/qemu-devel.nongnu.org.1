@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65ADB43530
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4813FB43552
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:17:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu54S-00065J-N7; Thu, 04 Sep 2025 04:11:52 -0400
+	id 1uu54S-00065K-MX; Thu, 04 Sep 2025 04:11:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu54Q-00064V-K9
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:11:50 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1uu54O-00061n-J9
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:11:48 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu54F-0003yI-DW
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:11:50 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-b042eb09948so122900066b.3
+ id 1uu54E-0003yB-AL
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:11:48 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-b0411b83aafso113382266b.1
  for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:11:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1756973496; x=1757578296; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XYe2srEOzuPavOLB2dyXu3UjjKzRy0khJhV96Tf8OLU=;
- b=GPp0vZemNvNyJgvcR7/O10++xWClSA71KC2YLk3EmCU58+nOcwVld/gkAU18UcC2xN
- 5ti4gyT27VrUE0WpiveCDdag1ltms/+YkSY9AbrICuf5Yap97up5tycDZ71tRjQZgUu/
- ZoCoGstf/NuDpw4icSMUpQn76CSec4FSkAwWSkrQ4m7eci+l5EZ566NxN3ORr8LrCKA0
- pa9CCem66pmIviovYrKG9TK9/8xVztbdLRltNYlVLDSaylbHG2OU88LiUf+v6lROoPBH
- vhPPRCprtATihsd3oY65xQ2a4oernB8ShON7D+fXOZjmrdf/gibQMIwPuvZ5H7s9SMTR
- pKCA==
+ bh=Wv6wFcI7G6DdUK88SJsbLfMk3oLK1TTP1R3ujLyoIqI=;
+ b=xND+ov8P5ZGHcV+/GUR6bYVVW/kDrnqx9OdTmD2lEtbKBiz4kdH43aFg5jj1zD7BXY
+ YvV2pTdq4ND9bLAUUTo0YTcojSdb5doPjPpsQA3SCQx9VBASE7zw5Yji0DhWXJ4TYLTB
+ 4e0mfeuiDaUIPuzygT/7L284IcYAuiACsrDoIpoQcRBE6oGncIGkveTbBEPIuuMEqOoW
+ s7YCKNTVVF3q60ECjtsa9O3lL6u2p+wa3TUFytmk53K/5d1O0FiS2dCw14yRD0SNy719
+ 0nxjtUwrct++lR7VP+2OYkbUk6pH7z9wzAZvITB3A+GYXSlbuJgg2Laizv3yz0YvF7Lr
+ HhLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1756973496; x=1757578296;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XYe2srEOzuPavOLB2dyXu3UjjKzRy0khJhV96Tf8OLU=;
- b=E4qTz3X092DU8JGEx4r+VAtk4O9joc+ieZ9+/u1v0FeorzZJ5g43+te1avSbc2Y1Or
- qKIT14M6O0SnNcZXTTAsfxWZwwIliEpbt+zfboLU3zxwCgA7aYxpR3Fn95/TJHkNvHa4
- d9NT1eSrcoxianCg2VhJDuG8cHCHUJpzFUFRxsX0SgFeW3O+YI0lKBGdB1ZYiFzdIZ/s
- /P9KAScW3mGt7tizh1ra1ZhDMOt8KfvqIzQe4yG9fivgkmci6jWQ9/iGAuGz8s+waIJn
- 1WAd/jQ5SaDsx2XEU2nZXwJFFfFuGle1xl0ErHZ0pf6PcKKo5LBlu5gnSZHb1lXEJCo4
- Ozfw==
-X-Gm-Message-State: AOJu0YwA9eVjVn7BBdlVTyokTCpMfq/07EMqP7RENmj1Mb7BFLcASsl+
- W1NgYPFBhKnQoYN8QKiWfh8l4mAtOAxTAjIipYF3UYiiyCIWyIiaFlMmJHW8nMsv11iir1Bnoq2
- jLJx5DvL9lA==
-X-Gm-Gg: ASbGncujnJ+1+Flw5FyO53YhZ3Cye/I2ylIAGAhLwXCSuFd3aCNx2MMvFYYdIWUrapx
- QrCYnPo8aXXPIuGBOa3SCoXkKRXd9T1KpkpHjEEpU7JyvbKF9Lh//gdki3+Wc8ZA1sCVhqNtBWB
- IyLisLAu3oxSsfco62R1RzjdFcT9Bcs/cb/0EwYZXV+4qXyVbAijth5JUdhwDuUaKL107ge1j9j
- NeB2SYXI40N3+7IjlFJ8mCuWE0zSwW+Tj8+jQGJMz34MtP+iq2DA1IT0jhziG0yv9knIDGtBE9z
- NL1qYVXRM90tOrkLeNozQiXSG1DcG+LvQbC4VZOjYRr5+WaRbPPOT+fPdbmsmMGd0xaEyTF+Crc
- ZsCJUsr2RbX6wTRTi5EISPmILs3sck1NxWQ==
-X-Google-Smtp-Source: AGHT+IFuFf8b0FN8m1f6QwjfoO5kUp2eWUieR36l5Mw4cqCx0SRMNKUchjBVGkuWlbdtmtCQOxC3yA==
+ bh=Wv6wFcI7G6DdUK88SJsbLfMk3oLK1TTP1R3ujLyoIqI=;
+ b=eFWrj8Zi5lf0IqWwA02reZ1z3Y7Eit6awMq6VFgbfdMVWXKEunbzbOCSRZzrr3R0oO
+ v5ROKmG67C1vEj59qX1SacTi0NkbAAJpfdH3EY9fQ7RC3/vSp/Yrtux57y24By7p5INs
+ lEeBDsB5JlAEGRgVpGC3ypu2BNLbcLdRVWOM4yJQPONeVI9a2PRs0lfQ8RkpzUtYoGzJ
+ 9GMFqDKfxnOFNml1LcUfcSSHbLq67Btw19m3le2C5gNW3oniry/PCzr/VhNPP9u2PYFv
+ goPSpoPJPiVrntsBIbDzSDSPdhAxe6ZsAk+TMxyiL5Ym/QilFoD1aiKbUxECht60ON4x
+ FzQg==
+X-Gm-Message-State: AOJu0Ywi0WQ3EjOR8V6XN9fiJVTh/DuR6k7WnLHLZMNew1E6dVtbeghl
+ rwX9EWoV4iSJZumKIMxq/MiLU5u3DVq/0CKRb+y2QUHhTG53+g6NGlX1XhR8XNdkD1ByMcPqab9
+ m/HREfG1O1A==
+X-Gm-Gg: ASbGncv1D+hMngSUXA0BRQO4Qrf4wcorfo0Mp6Pg+EyLkHedfx+xmzn/qA4CAPEIEUc
+ JlQfROksu98PoskHf7xsXLQS9wdJWe1WRPUXQ46AL72K3FcjWvTYPf+ojcYwMX29pjFn9MuYLtO
+ 4afEYPEoR5iqglqt1rwSx5QlUfYnSQcvaFkfYAeVv5nFCNvjQeDGShpNDF7sNCoCQSXe8IA9p+j
+ 9oMscJrGfKULX27wdMFNSCdEDN6FPbsJA5fxHGI8JHCeGufPCxnnh/bvlzU5bGQZRWUqMk+0jAW
+ PwHN1bOod3cB6q/kV2RywkBPDr3gJF5uW4ENN1SpHc0oeIgO+GhCppqWxKT+z/bhaAssXKVKb7W
+ RE3IxiPJetZCk0XPV7ze53XH1yTO44o62Iw==
+X-Google-Smtp-Source: AGHT+IElPpn0KvMqOR0Q75Gfkj0ncOLp1bLOMMk7oeP9JIeBPVNdyXvx2TH7ciqYVtSvBIeB+x6WBg==
 X-Received: by 2002:a17:906:7953:b0:b04:813e:491 with SMTP id
- a640c23a62f3a-b04813e1a1amr139361166b.12.1756973495989; 
+ a640c23a62f3a-b04813e1a1amr139359366b.12.1756973495570; 
  Thu, 04 Sep 2025 01:11:35 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b0471c7a163sm248962666b.47.2025.09.04.01.11.31
+ a640c23a62f3a-b0484e8a4a1sm55305766b.83.2025.09.04.01.11.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 04 Sep 2025 01:11:32 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 807A05F92E;
+ by draig.lan (Postfix) with ESMTP id 9A3B85F92F;
  Thu, 04 Sep 2025 09:11:28 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -126,17 +126,19 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>, John Levon <john.levon@nutanix.com>
-Subject: [PATCH v2 003/281] scripts/minikconf.py: s/Error/KconfigParserError
-Date: Thu,  4 Sep 2025 09:06:37 +0100
-Message-ID: <20250904081128.1942269-4-alex.bennee@linaro.org>
+ Nicholas Piggin <npiggin@gmail.com>, John Levon <john.levon@nutanix.com>,
+ qemu-stable@nongnu.org
+Subject: [PATCH v2 004/281] python: mkvenv: fix messages printed by mkvenv
+Date: Thu,  4 Sep 2025 09:06:38 +0100
+Message-ID: <20250904081128.1942269-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -159,33 +161,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-Error is not defined in this script, raise KconfigParserError instead.
+The new Matcher class does not have a __str__ implementation, and therefore
+it prints the debugging representation of the internal object:
 
-Fixes: 82f5181777ebe04b550fd94a1d04c49dd3f012dc ("kconfig: introduce kconfig files")
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Link: https://lore.kernel.org/r/20250820-scripts-minikconf-fixes-v1-2-252041a9125e@linaro.org
+  $ ../configure --enable-rust && make qemu-system-arm --enable-download
+  python determined to be '/usr/bin/python3'
+  python version: Python 3.13.6
+  mkvenv: Creating non-isolated virtual environment at 'pyvenv'
+  mkvenv: checking for LegacyMatcher('meson>=1.5.0')
+  mkvenv: checking for LegacyMatcher('pycotap>=1.1.0')
+
+Add the method to print the nicer
+
+  mkvenv: checking for meson>=1.5.0
+  mkvenv: checking for pycotap>=1.1.0
+
+Cc: qemu-stable@nongnu.org
+Cc: John Snow <jsnow@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/minikconf.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ python/scripts/mkvenv.py | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/scripts/minikconf.py b/scripts/minikconf.py
-index 2a4694fb6a3..4de5aeed11a 100644
---- a/scripts/minikconf.py
-+++ b/scripts/minikconf.py
-@@ -363,7 +363,9 @@ def parse_file(self, fp):
+diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
+index f102527c4de..9aed266df1b 100644
+--- a/python/scripts/mkvenv.py
++++ b/python/scripts/mkvenv.py
+@@ -184,6 +184,10 @@ def match(self, version_str: str) -> bool:
+             )
+         )
  
-     def do_assignment(self, var, val):
-         if not var.startswith("CONFIG_"):
--            raise Error('assigned variable should start with CONFIG_')
-+            raise KconfigParserError(
-+                self, "assigned variable should start with CONFIG_"
-+            )
-         var = self.data.do_var(var[7:])
-         self.data.do_assignment(var, val)
- 
++    def __str__(self) -> str:
++        """String representation delegated to the backend."""
++        return str(self._m)
++
+     def __repr__(self) -> str:
+         """Stable debug representation delegated to the backend."""
+         return repr(self._m)
 -- 
 2.47.2
 
