@@ -2,142 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EDEB43B22
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 14:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 499EDB43BEA
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 14:44:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu8mh-0008PS-KQ; Thu, 04 Sep 2025 08:09:50 -0400
+	id 1uu9IQ-0004vH-JK; Thu, 04 Sep 2025 08:42:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1uu8mG-0008Md-5v
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 08:09:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1uu8lz-0003yH-3y
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 08:09:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756987740;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RGfsbECkN8yDi9zfYlQG8Tqcfjb7p7ijr5WocyCehHg=;
- b=N3OpXnB5C99ONu8j1eaM5TXj0EEeRyBKKjwTbLoThxg1FmFdgaZIvd8ZjD7ynAEoxB4UZ0
- ECBoDhp4RJOIT1sZPjRvYcmoK6p3Zts7iLul8dvyKlzjLTitIQd/1fnaf2zHbAwF13G3VQ
- 6iTS8wFEmBn7Mcl0RDA1fGRH+z5kJHQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-1U8ze165OL-Oo4fze-zXMw-1; Thu, 04 Sep 2025 08:08:56 -0400
-X-MC-Unique: 1U8ze165OL-Oo4fze-zXMw-1
-X-Mimecast-MFC-AGG-ID: 1U8ze165OL-Oo4fze-zXMw_1756987730
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45dcfc6558cso6155435e9.1
- for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 05:08:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756987729; x=1757592529;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=RGfsbECkN8yDi9zfYlQG8Tqcfjb7p7ijr5WocyCehHg=;
- b=CmSNToprnlc3Z/o5ZNivLRIHehvCOUeoTFLh0E/uEMwlz7tAR10ybhwItEPwO2HmP5
- gnM2SNzJm6thp7LLSiL65Ib/AJQVr2MviNioXexKCaGsPwy/2D/gkVrjh+KxC7di+cds
- WuFZ4DYOupRkYKiagxmrHnNCI0UvpIqPjLbHd43hE/qMAZdUZ82i6VrHvPtEi1yagev1
- z83Qt9SIBNqFaCcqlrZAMvgFR0CzbwR0sZRDOTIcnjtRxhwCvGECOnA1r401tWrLZtJB
- THKZKDYzdF3E6D4vwBsngBWEoZDdmHbcrPBgQyHYAAzn5zPX4bQAsozrX+zVwvnlKzL3
- /Ytg==
-X-Gm-Message-State: AOJu0YzdxA2tZ7dBL7m6QD8sA0D+s/80Z0o2FJC6FlcjZ1ZELOlYw87v
- roxQb9vpUDm8BBuquGVZnPFNca8kO6IDafpZsx7xpN/cW/SDea3IVEIzhRSA23wy1ptxjMcxzSV
- tmLDUHYNTNcuuPVLrl6y2HL11nW2H3RrAW+3lF1Hby2xuj6KqseKrraU0j1z0GBKGmcA=
-X-Gm-Gg: ASbGncu+b9nGrWGy+aDt13C8qp+1ox4+Jx47XPbntYXRNqUpxNX/O1rgi8KumhuS1OG
- BFzWshkN9wZT4TTnAdfsB20tGPmubAPvXDYy4jBUktwotOsxoPD+VaVt/pi4dUj8IAren1QXHdn
- pvuZmrMo/ByV2B22wyXFYhV2giKW9UDjlWS1u+8IfXRe7dcx8px7CWV+cUCsviCYItAM6SdiiH6
- ByC9d7XO3fDmtPKTfzbsTmDzBaXizFIhUu29ZC00Z76xFKPGWJSs33PdSvHcFvZzZwhwPjREd64
- K/BGHSdli0gVFOjOXuzgNcclf1UxGw==
-X-Received: by 2002:a05:6000:2681:b0:3df:1a8b:ff40 with SMTP id
- ffacd0b85a97d-3df1a8c028amr3675212f8f.43.1756987729331; 
- Thu, 04 Sep 2025 05:08:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGX0PPz3yh7ncUtLm/xW0ZxJtT+AldckvinW77LYH+EITFhgO23Jx24JW/wmCpN9gO6bSEhZg==
-X-Received: by 2002:a05:6000:2681:b0:3df:1a8b:ff40 with SMTP id
- ffacd0b85a97d-3df1a8c028amr3675186f8f.43.1756987728720; 
- Thu, 04 Sep 2025 05:08:48 -0700 (PDT)
-Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3d53fda847dsm18324880f8f.0.2025.09.04.05.08.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Sep 2025 05:08:48 -0700 (PDT)
-Date: Thu, 4 Sep 2025 14:08:44 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Alex =?UTF-8?B?QmVubsOpZQ==?= <alex.bennee@linaro.org>, Peter Xu
- <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Reinoud Zandijk <reinoud@netbsd.org>,
- =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>, Huacai Chen
- <chenhuacai@kernel.org>, Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Alistair Francis <alistair.francis@wdc.com>,
- qemu-arm@nongnu.org, Fam Zheng <fam@euphon.net>, Helge Deller
- <deller@gmx.de>, Matthew Rosato <mjrosato@linux.ibm.com>, Fabiano Rosas
- <farosas@suse.de>, qemu-rust@nongnu.org, Bibo Mao <maobibo@loongson.cn>,
- qemu-riscv@nongnu.org, Thanos Makatos <thanos.makatos@nutanix.com>, Liu
- Zhiwei <zhiwei_liu@linux.alibaba.com>, Riku Voipio <riku.voipio@iki.fi>,
- Cameron Esfahani <dirty@apple.com>, Alexander Graf <agraf@csgraf.de>,
- Laurent Vivier <lvivier@redhat.com>, Harsh Prateek Bora
- <harshpb@linux.ibm.com>, "Daniel P. =?UTF-8?B?QmVycmFuZ8Op?="
- <berrange@redhat.com>, qemu-ppc@nongnu.org, Stafford Horne
- <shorne@gmail.com>, Sunil Muthuswamy <sunilmut@microsoft.com>, Jagannathan
- Raman <jag.raman@oracle.com>, Brian Cain <brian.cain@oss.qualcomm.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, devel@lists.libvirt.org, Mads
- Ynddal <mads@ynddal.dk>, Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jason Herne <jjherne@linux.ibm.com>, Michael Rolnik <mrolnik@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>, Laurent Vivier <laurent@vivier.eu>, Ilya
- Leoshkevich <iii@linux.ibm.com>, qemu-block@nongnu.org, Peter Maydell
- <peter.maydell@linaro.org>, Kostiantyn Kostiuk <kkostiuk@redhat.com>, Kyle
- Evans <kevans@freebsd.org>, David Hildenbrand <david@redhat.com>, "Edgar E.
- Iglesias" <edgar.iglesias@gmail.com>, Warner Losh <imp@bsdimp.com>, Daniel
- Henrique Barboza <dbarboza@ventanamicro.com>, John Snow <jsnow@redhat.com>,
- Yoshinori Sato <yoshinori.sato@nifty.com>, Aleksandar Rikalo
- <arikalo@gmail.com>, Alistair Francis <alistair@alistair23.me>, Marcelo
- Tosatti <mtosatti@redhat.com>, Yonggang Luo <luoyonggang@gmail.com>,
- Radoslaw Biernacki <rad@semihalf.com>, Artyom Tarasenko
- <atar4qemu@gmail.com>, Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost
- <eduardo@habkost.net>, Aurelien Jarno <aurelien@aurel32.net>, Richard
- Henderson <richard.henderson@linaro.org>, qemu-s390x@nongnu.org, Alex
- Williamson <alex.williamson@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, Roman Bolshakov
- <rbolshakov@ddn.com>, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Chinmay Rath <rathc@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, Cleber
- Rosa <crosa@redhat.com>, kvm@vger.kernel.org, Song Gao
- <gaosong@loongson.cn>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
- <philmd@linaro.org>, Halil Pasic <pasic@linux.ibm.com>, Eric Farman
- <farman@linux.ibm.com>, Palmer Dabbelt <palmer@dabbelt.com>, Leif Lindholm
- <leif.lindholm@oss.qualcomm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Michael Roth <michael.roth@amd.com>, Mauro
- Carvalho Chehab <mchehab+huawei@kernel.org>, Jiaxun Yang
- <jiaxun.yang@flygoat.com>, =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau
- <marcandre.lureau@redhat.com>, Mark Cave-Ayland
- <mark.cave-ayland@ilande.co.uk>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, John
- Levon <john.levon@nutanix.com>, Xin Wang <wangxinxin.wang@huawei.com>
-Subject: Re: [PATCH v2 001/281] target/i386: Add support for save/load of
- exception error code
-Message-ID: <20250904140844.5b670290@fedora>
-In-Reply-To: <20250904081128.1942269-2-alex.bennee@linaro.org>
-References: <20250904081128.1942269-1-alex.bennee@linaro.org>
- <20250904081128.1942269-2-alex.bennee@linaro.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1uu9IK-0004tO-Tw
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 08:42:29 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1uu9IA-0007un-93
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 08:42:28 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8CxqdEdiblo6akGAA--.13985S3;
+ Thu, 04 Sep 2025 20:42:05 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowJCxdOQbiblo4QJ+AA--.6028S2;
+ Thu, 04 Sep 2025 20:42:03 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: maobibo@loongson.cn
+Cc: qemu-devel@nongnu.org,
+	philmd@linaro.org,
+	jiaxun.yang@flygoat.com
+Subject: [PATCH v6 00/11] hw/loongarch: add the advanced extended interrupt
+ controllers (AVECINTC) support
+Date: Thu,  4 Sep 2025 20:18:29 +0800
+Message-Id: <20250904121840.2023683-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowJCxdOQbiblo4QJ+AA--.6028S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,86 +63,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu,  4 Sep 2025 09:06:35 +0100
-Alex Benn=C3=A9e <alex.bennee@linaro.org> wrote:
+Hi,
 
-> From: Xin Wang <wangxinxin.wang@huawei.com>
->=20
-> For now, qemu save/load CPU exception info(such as exception_nr and
-> has_error_code), while the exception error_code is ignored. This will
-> cause the dest hypervisor reinject a vCPU exception with error_code(0),
-> potentially causing a guest kernel panic.
->=20
-> For instance, if src VM stopped with an user-mode write #PF (error_code 6=
-),
-> the dest hypervisor will reinject an #PF with error_code(0) when vCPU res=
-ume,
-> then guest kernel panic as:
->   BUG: unable to handle page fault for address: 00007f80319cb010
->   #PF: supervisor read access in user mode
->   #PF: error_code(0x0000) - not-present page
->   RIP: 0033:0x40115d
->=20
-> To fix it, support save/load exception error_code.
+Introduce the advanced extended interrupt controllers (AVECINTC). This
+feature will allow each core to have 256 independent interrupt vectors
+and MSI interrupts can be independently routed to any vector on any CPU.
 
-this potentially will break migration between new/old QEMU versions
-due to presence new subsection. But then according to commit message
-the guest might panic (on dst) when resumed anyways.
+The whole topology of irqchips in LoongArch machines looks like this if
+AVECINTC is supported:
+      +-----+     +---------------------------------+     +-------+
+      | IPI | --> |        CPUINTC                  | <-- | Timer |
+      +-----+     +---------------------------------+     +-------+
+                          ^            ^          ^
+                          |            |          |
+                 +-------------+ +----------+ +---------+     +-------+
+                 |   EIOINTC   | | AVECINTC | | LIOINTC | <-- | UARTs |
+                 +-------------+ +----------+ +---------+     +-------+
+                 ^            ^       ^
+                 |            |       |
+            +---------+  +---------+  |
+            | PCH-PIC |  | PCH-MSI |  |
+            +---------+  +---------+  |
+              ^     ^           ^     |
+              |     |           |     |
+      +---------+ +---------+ +---------+
+      | Devices | | PCH-LPC | | Devices |
+      +---------+ +---------+ +---------+
+                      ^
+                      |
+                 +---------+
+                 | Devices |
+                 +---------+
 
-So patch changes how guest will fail
-(panic: old =3D> old, old =3D> new
- vs migration error: new =3D> old ).
+We can see more about AVECINTC on linux driver code[1]
+and loongarch msg interrupts on volI 6.2 Message-Interrupts
 
-Peter,
-do we care and do we need a compat knob to make existing
-machine type behave old way?
+Tested the code using the virion-net NIC the start scripts is kernel.sh at[3] and then
+run 'ifconfig eth0 192.168.122.12' or
+test avec plug and unplug interfaces
+1 run kernel.sh[3]
+2 telnet localhost 4418;
+3 run QOM 'device_add la464-loongarch-cpu,socket-id=2,core-id=0,thread-id=0,id=cpu-2'
+4 run vm 'ifconfig eth0 192.168.122.12';
+5 run QOM 'device_de cpu-2'
+6 run vm 'ifconfig eth0 192.168.122.11';
 
->=20
-> Signed-off-by: Xin Wang <wangxinxin.wang@huawei.com>
-> Link: https://lore.kernel.org/r/20250819145834.3998-1-wangxinxin.wang@hua=
-wei.com
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  target/i386/machine.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
->=20
-> diff --git a/target/i386/machine.c b/target/i386/machine.c
-> index dd2dac1d443..45b7cea80aa 100644
-> --- a/target/i386/machine.c
-> +++ b/target/i386/machine.c
-> @@ -462,6 +462,24 @@ static const VMStateDescription vmstate_exception_in=
-fo =3D {
->      }
->  };
-> =20
-> +static bool cpu_errcode_needed(void *opaque)
-> +{
-> +    X86CPU *cpu =3D opaque;
-> +
-> +    return cpu->env.has_error_code !=3D 0;
-> +}
-> +
-> +static const VMStateDescription vmstate_error_code =3D {
-> +    .name =3D "cpu/error_code",
-> +    .version_id =3D 1,
-> +    .minimum_version_id =3D 1,
-> +    .needed =3D cpu_errcode_needed,
-> +    .fields =3D (const VMStateField[]) {
-> +        VMSTATE_INT32(env.error_code, X86CPU),
-> +        VMSTATE_END_OF_LIST()
-> +    }
-> +};
-> +
->  /* Poll control MSR enabled by default */
->  static bool poll_control_msr_needed(void *opaque)
->  {
-> @@ -1746,6 +1764,7 @@ const VMStateDescription vmstate_x86_cpu =3D {
->      },
->      .subsections =3D (const VMStateDescription * const []) {
->          &vmstate_exception_info,
-> +        &vmstate_error_code,
->          &vmstate_async_pf_msr,
->          &vmstate_async_pf_int_msr,
->          &vmstate_pv_eoi_msr,
+[1]: https://github.com/torvalds/linux/blob/master/drivers/irqchip/irq-loongarch-avec.c
+[2]: https://github.com/loongson/LoongArch-Documentation/releases/download/2023.04.20/LoongArch-Vol1-v1.10-EN.pdf
+[3]: https://github.com/gaosong715/qemu/releases/download/pull-loongarch-20250514/kernel.sh
+
+v6:
+  1: Change some code to support KVM mode, and will add a patch in late.
+  2: Use async_run_on_cpu() to update CSR_MSGIS;
+  3: Rebase.
+
+v5:
+  1: rebase and R_b;
+  2; change patch2 and patch3 commit message;
+  3, change virt_is_avecintc_enabled() to virt_has_avecintc();
+  4: remove set and clean CSR_ECFG.bit15;
+  5; patch11 add some check lvms->avec, beacuse someone my set avecintc=off.
+
+v4:
+  1: Implemetnt the AVEC plug/unplug interface. test with devcice-add
+cpu and device-add and then setup the virtio-net nic. new patch11;
+  2: add a new patch1 move some machine define to virt.h;
+  3; add a new patch3 to implemet write/raad misc' avec feature and
+status bit.
+  4: Simplification of patch8 and patch10 as per bibo's suggestion.
+
+v3:
+  1: Implement the read-clear feature for CSR_MSGIR register
+  2: Fix some code style;
+  3: Merge patch8 and patch9 into one patch8;
+  4: Fix patch7 get wrong cpu_num and irq_num;
+  5: Add vmstate_msg for messag-interrupt registers migrate;
+  6: Update test scripts use  '-bios', because kernel use avec need acpi
+support. the bios is qemu/pc_bios/edk2-loongarch64-code.fd.bz2.
+
+Thanks.
+Song Gao
+
+
+Song Gao (11):
+  target/loongarch: move some machine define to virt.h
+  hw/loongarch: add virt feature avecintc support
+  hw/loongarch: add misc register supoort avecintc
+  loongarch: add a advance interrupt controller device
+  target/loongarch: add msg interrupt CSR registers
+  hw/loongarch: AVEC controller add a MemoryRegion
+  hw/loongarch: Implement avec controller imput and output pins
+  hw/loongarch: Implement avec set irq
+  target/loongarch: Add CSR_ESTAT.bit15 and CSR_ECFG.bit15 for msg
+    interrupts.
+  target/loongarch:Implement csrrd CSR_MSGIR register
+  hw/loongarch: Implement AVEC plug/unplug interfaces
+
+ hw/intc/Kconfig                               |   3 +
+ hw/intc/loongarch_avec.c                      | 237 ++++++++++++++++++
+ hw/intc/meson.build                           |   1 +
+ hw/loongarch/Kconfig                          |   1 +
+ hw/loongarch/virt.c                           |  99 +++++++-
+ include/hw/intc/loongarch_avec.h              |  39 +++
+ include/hw/loongarch/virt.h                   |  34 +++
+ include/hw/pci-host/ls7a.h                    |   2 +
+ target/loongarch/cpu-csr.h                    |   9 +-
+ target/loongarch/cpu.h                        |  35 +--
+ target/loongarch/csr.c                        |   5 +
+ target/loongarch/machine.c                    |  27 +-
+ target/loongarch/tcg/csr_helper.c             |  21 ++
+ target/loongarch/tcg/helper.h                 |   1 +
+ .../tcg/insn_trans/trans_privileged.c.inc     |   1 +
+ 15 files changed, 488 insertions(+), 27 deletions(-)
+ create mode 100644 hw/intc/loongarch_avec.c
+ create mode 100644 include/hw/intc/loongarch_avec.h
+
+-- 
+2.41.0
 
 
