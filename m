@@ -2,63 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C64AB436EF
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 11:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 804E2B437B0
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 11:55:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu68p-0000GY-De; Thu, 04 Sep 2025 05:20:27 -0400
+	id 1uu6fo-0005ri-Tf; Thu, 04 Sep 2025 05:54:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1uu68f-0000EY-BS
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 05:20:17 -0400
+ id 1uu6fl-0005qC-Fg
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 05:54:29 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1uu68b-0003mM-T3
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 05:20:17 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1uu6fa-0002Qr-6q
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 05:54:29 -0400
 Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8AxP_C5WbloDZwGAA--.13910S3;
- Thu, 04 Sep 2025 17:19:53 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Cx6tHEYblob54GAA--.14101S3;
+ Thu, 04 Sep 2025 17:54:12 +0800 (CST)
 Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowJAxfcG2Wblo2qR9AA--.14980S3;
- Thu, 04 Sep 2025 17:19:52 +0800 (CST)
-Subject: Re: [PATCH v3 08/12] target/loongarch: Use loongarch_tlb_search_cb in
- helper_invtlb_page_asid_or_g
+ by front1 (Coremail) with SMTP id qMiowJCxXMHBYblozrV9AA--.15040S3;
+ Thu, 04 Sep 2025 17:54:12 +0800 (CST)
+Subject: Re: [PATCH v3 09/12] target/loongarch: Use loongarch_tlb_search_cb in
+ helper_invtlb_page_asid
 To: Richard Henderson <richard.henderson@linaro.org>,
  Song Gao <gaosong@loongson.cn>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
  <philmd@linaro.org>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
 References: <20250903084827.3085911-1-maobibo@loongson.cn>
- <20250903084827.3085911-9-maobibo@loongson.cn>
- <3002fdb0-35cf-4146-8451-7690064a1460@linaro.org>
+ <20250903084827.3085911-10-maobibo@loongson.cn>
+ <6819c70b-57af-4155-baf1-8e9a6b8cb93b@linaro.org>
 From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <c4d991ae-724f-138b-338f-a11c15e5d6d1@loongson.cn>
-Date: Thu, 4 Sep 2025 17:17:50 +0800
+Message-ID: <4a2a183c-ea45-72b5-3035-40982429e579@loongson.cn>
+Date: Thu, 4 Sep 2025 17:52:09 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <3002fdb0-35cf-4146-8451-7690064a1460@linaro.org>
+In-Reply-To: <6819c70b-57af-4155-baf1-8e9a6b8cb93b@linaro.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJAxfcG2Wblo2qR9AA--.14980S3
+X-CM-TRANSID: qMiowJCxXMHBYblozrV9AA--.15040S3
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
- BjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26c
- xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
- j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxV
- AFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAF
- wI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
- 14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
- AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
- rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
- CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
- 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr
- 0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU83U
- UUUUUUU==
+X-Coremail-Antispam: 1Uk129KBj93XoW7Kr4kWrWrurWxXw17KrW3urX_yoW8JFWDpr
+ WfCFW7KFW8Jas3JFySgw1YqF9xXrWkJw4IqFn3t3WrAwnxJw1vqr4vq34v9Fy8JFWxWF1j
+ qr4Yvr1UZFW2qacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
+ 6r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+ wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
+ 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+ xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr
+ 1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8PCzJUU
+ UUU==
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
  helo=mail.loongson.cn
 X-Spam_score_int: -34
@@ -84,24 +86,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 2025/9/3 下午9:20, Richard Henderson wrote:
+On 2025/9/3 下午9:21, Richard Henderson wrote:
 > On 9/3/25 10:48, Bibo Mao wrote:
->> +    ret = loongarch_tlb_search_cb(env, addr, &index, asid, func);
->> +    if (!ret) {
->> +        return;
->>       }
+>> With function helper_invtlb_page_asid(), currently it is to search
+>> TLB entry one by one. Instead STLB can be searched at first with hash
+>> method, and then search MTLB with one by one method
+>>
+>> Here common API loongarch_tlb_search_cb() is used in function
+>> helper_invtlb_page_asid()
+>>
+>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>> ---
+>>   target/loongarch/tcg/tlb_helper.c | 42 +++++++++++++++----------------
+>>   1 file changed, 20 insertions(+), 22 deletions(-)
+>>
+>> diff --git a/target/loongarch/tcg/tlb_helper.c 
+>> b/target/loongarch/tcg/tlb_helper.c
+>> index 620de85a3a..c074c956a2 100644
+>> --- a/target/loongarch/tcg/tlb_helper.c
+>> +++ b/target/loongarch/tcg/tlb_helper.c
+>> @@ -32,6 +32,15 @@ static bool tlb_match_any(int global, int asid, int 
+>> tlb_asid)
+>>       return false;
+>>   }
+>> +static bool tlb_match_asid(int global, int asid, int tlb_asid)
+>> +{
+>> +    if (!global && tlb_asid == asid) {
+>> +        return true;
+>> +    }
 >> +
->> +    tlb = &env->tlb[index];
+>> +    return false;
 > 
-> Perhaps it would be better to have loongarch_tlb_search_cb return the 
-> LoongArchTLB pointer, or NULL for no match.
-Sure, will add separate patch to have loongarch_tlb_search_cb return the
-LoongArchTLB pointer.
+> return !global && tlb_asid == asid;
+will do.
 
 Regards
 Bibo Mao
 > 
-> Anyway,
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > 
 > 
