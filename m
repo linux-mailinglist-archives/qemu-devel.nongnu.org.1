@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6528DB435AD
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2787CB4359E
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:24:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu5AT-0007jj-D3; Thu, 04 Sep 2025 04:18:05 -0400
+	id 1uu5Af-0000BY-Bq; Thu, 04 Sep 2025 04:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu55P-0006n7-7x
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:12:57 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ id 1uu55W-0006wT-Tn
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:13:04 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu54k-0004I8-Ni
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:12:46 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-b042cc3962aso114363366b.0
- for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:12:09 -0700 (PDT)
+ id 1uu54r-0004Ij-H7
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:12:57 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-619487c8865so3299355a12.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:12:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756973528; x=1757578328; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756973529; x=1757578329; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nJY1IlIgq7GGkBP3hhYu6s36xjwpVbPeSOjHkNAYnEM=;
- b=ujbQemcQ1csrq8TigLZhY/HJfO3aNWnKZb3SzO110U2hOcasSApv+x0jq3YFpBKqgF
- cExNpJXEC9WaZDkXhtdIeAgFd9smMtiuE9HRqIERWU37IH54Z0uPAQRdBEjQBapYx4+s
- 5yc6dJYLCsC+lLjpAdPad77y0wXwLd9/bdJr+1QoedH03WK1YFeTEK2Uo46sHXQqzt50
- Uip+cPAaY0+kOAwzmLFnC47BB8WNzH8236AGDFj4a4NBKPjg84t2l1SGWPKmlkXc1tKe
- Ex0ut9d/VbgZQ5x/cQZauKzj1Rhyje/BMatncT791/+4xLeRd62yTZYoXO+uh9Q1leHi
- ZORg==
+ bh=yLl9oYpNkKlC5u6Dy+xpIH1LWB2sTjU8xRvbErhSckk=;
+ b=JfQGnLN7wlpBU3Nh26joYZOJ0Mz8cEWd5b0NVhOr7Rcq3xKhk2gDZpQCJS46CNVpxD
+ i4XdCv+3mqdnKcNvpa9RWfkphNwI24oLSQr+v61moDMZx+f3421iycK3LQpE9vCT04ew
+ V6pqtyjyE+5qwOMIRfMj5UI7tnO7J4FSCB4NYENQmavRzdMltznTWlrGqjgv5fp9I5B5
+ wlQV7C5EozBFK8O7hacQh8QDlcRzidhv6Q4WisNfNR+tlwtVXPDz3jAmrXYzsLomTz3O
+ Mq+i3D6n8TF+drQiuvTP8JPq4UrVTBEGEHWybikFnKmWQFWDXKLIoC2dTmC8kgA5PYsZ
+ 1y2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756973528; x=1757578328;
+ d=1e100.net; s=20230601; t=1756973529; x=1757578329;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nJY1IlIgq7GGkBP3hhYu6s36xjwpVbPeSOjHkNAYnEM=;
- b=kZZRJB4hdmgYtaJ35kqg9CPywM8bEMXFrMQHLO3x6VBeKNEOUviBlCXU+GOXQTOZw0
- AyMWfdpVIX631VcN4GDP83H86FPy9+T4MOPK3VtTuY7xCyUwZ/MgslMpHWvq5tbqz6DW
- OCNq5wUrjxQD5iBX8Nmc3BEHWS6IWJrIiiz9FnUvtDyRnc3OZQvY6PXPtx8eOxmBM/4y
- Q341Q75Td9vQ7NxXqruJhybX3ypbadQaonCoRPYgyuM12KiDntJajMgK90l/cZAK/Ft/
- /xpMV/bZbCbTBodL6zLQqQH8Atamns/l2ppBr3rKqAuXj1MYiQI517xNDJ3vs2gDmH/k
- 2bsw==
-X-Gm-Message-State: AOJu0YyXPJV93yE+DdTmueqpCyGPdyovCzQ55tOLFyLj3PfMHy2E0VlA
- fmWbw+OZEbfjv1Q3JkIQjLkLdnEbnwF03ENYCH9saCnQYtgZRBPoC1tn4USoWdLIN4v73MXQJyk
- Isz8dWyyabg==
-X-Gm-Gg: ASbGncv/GIJTSXVGisZdEOZ1ZTUEEbfoTMXNvW2Ak8AgBIgxk0AsXi/dhnMWTAhKCnV
- jVxDezRDNZ/j6tcT1l25BGyh72uqpU/cVW0WONbm2f7FCCBJqXIk61zXAa/oGA/IlXRd0o0WdzO
- rkZqr8ELSGJZDe+tP9nKsRoj90QQBa3DnZC1HTjaXDoVtvs0c5NRfccTRsXmmOQWIp4a/wR6qDv
- ywiq2qFnI3A9ioGQZ0Y+rkmHUrAHex2MUvFRQOlRtAEEtipVLOQ/2Q1nH082nfPdKdICCWuH4lU
- QjJ+/W6HHCcAO9iNUhMGPwZf9SmH2cbzLNSrFyxy+W2oK0+0HrcklCdqWzLyTSh/Zazd1wAkKEY
- lbpu4m1vRS4u+VgkPQ0F7g8Y=
-X-Google-Smtp-Source: AGHT+IEi9pe0oeBOE15/8xuZT4mmtCw/EODsHqznTJDr3Z4WP9YjhwiV366LnSMgu6QLvZ6qkctWyg==
-X-Received: by 2002:a17:907:86a6:b0:afe:bdcb:9e62 with SMTP id
- a640c23a62f3a-b01d973074dmr1930653766b.33.1756973527252; 
- Thu, 04 Sep 2025 01:12:07 -0700 (PDT)
+ bh=yLl9oYpNkKlC5u6Dy+xpIH1LWB2sTjU8xRvbErhSckk=;
+ b=EKbDOMKEIr7CevYHbYF7+Q/kzpKDsPiEjVUJZ84uJvF6lCGoGyT5PEJ3ZSRrb0FgvX
+ IVLqbZ0i1HHp3ZVz5E87dsewyYaDMqHPCV6DMM+XT+23BdzSsNWMRjPTLqwpqTmy/0yT
+ eOE+Ol+YbtIVxAubsn42/sRaL1z5M35WW0zxApT5JLOJi9PMapHZEMxrJaVzyEGZVFY/
+ H4H/p29nO1INZsHlXgimxSuFbogs6q8jPcPyqL7c1Z3AxsTL/53qpiW8EreIdEWmFcsI
+ o491GGdRClk5zCMuW0TmKdkkgaRpSMP0h81EQOFWaMA2ecoUZeml9aq0fONchJM8+XlH
+ s4Mg==
+X-Gm-Message-State: AOJu0YzUCo9BZL9LgOQRD52blTCs6jug93T2YLeV9DnqIeZQQqrbbIJy
+ nykL5jtxG/lomXYeDEkzsoX8kNxWFoGQoYdo7SbmSasFJq9SenobPEkvovsXD4tr1RHWEVdh/Ls
+ TWf5fm06vBg==
+X-Gm-Gg: ASbGncvnhSh8Svy4Ws47oVFIeXmymO114EFpVjoqwVuyJMspV8BLExgdF+Dg9fLV/R+
+ QSpGl6qcXYDkSWeTjro4g6ynL1tEwbgHUfr6D1RkScM7DrLIzccjJ26nq9MZdzG2R764lBPBNG+
+ Hh5pDE5ttRFZR4+3s3LjGViGKk0+u4426r8IUsDsAN+zR0mksqy/zr7ru/1CUxyHnKAjicjNIvI
+ SuDp+OzYfO3ho9iS6eC4aG8rMNikh4LhNWKZcNtC/3uQ9cNBpHNiB+Lv9T4/qm5Rq6M2sz0WyLj
+ EGJLxUUmNqFl9xJE/iVnUbAR7Tx/oK5BUsVUaHmmpFRHV637BNJl+1/PzRBQWq01k4Cy3FUdDB5
+ ArKIVQrzrNS2RSEjth1eXs/+q8vzYz2exeeUeCJ7UL1T0
+X-Google-Smtp-Source: AGHT+IHg43VIz5IWaoCglFsXYUVyXtk+RFiP5eDwfdW8F/G9pRndbxerLOqZv98JEUjySgovhYynfw==
+X-Received: by 2002:a17:907:3fa2:b0:b04:3623:aa10 with SMTP id
+ a640c23a62f3a-b043623b1c6mr1473568066b.2.1756973529066; 
+ Thu, 04 Sep 2025 01:12:09 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b0424cc1698sm987487966b.21.2025.09.04.01.12.01
+ a640c23a62f3a-b018fe7c638sm1311287266b.6.2025.09.04.01.12.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 04 Sep 2025 01:12:04 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 093DB60ABF;
+ by draig.lan (Postfix) with ESMTP id 7EACA60AD9;
  Thu, 04 Sep 2025 09:11:38 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -127,23 +127,23 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>, John Levon <john.levon@nutanix.com>
-Subject: [PATCH v2 076/281] linux-user/aarch64: Create init_main_thread
-Date: Thu,  4 Sep 2025 09:07:50 +0100
-Message-ID: <20250904081128.1942269-77-alex.bennee@linaro.org>
+Subject: [PATCH v2 080/281] linux-user/mips: Create init_main_thread
+Date: Thu,  4 Sep 2025 09:07:54 +0100
+Message-ID: <20250904081128.1942269-81-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,70 +164,72 @@ From: Richard Henderson <richard.henderson@linaro.org>
 Merge init_thread and target_cpu_copy_regs.
 There's no point going through a target_pt_regs intermediate.
 
+Note that init_thread had set cp0_status in target_pt_regs, but
+target_cpu_copy_regs did not copy to env.  This turns out to be
+ok because mips_cpu_reset_hold initializes CP0_Status properly.
+
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/aarch64/cpu_loop.c | 14 ++++++--------
- linux-user/elfload.c          | 10 +---------
+ linux-user/elfload.c       |  8 +-------
+ linux-user/mips/cpu_loop.c | 16 ++++++----------
  2 files changed, 7 insertions(+), 17 deletions(-)
 
-diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
-index 030a630c936..4c4921152e8 100644
---- a/linux-user/aarch64/cpu_loop.c
-+++ b/linux-user/aarch64/cpu_loop.c
-@@ -137,10 +137,10 @@ void cpu_loop(CPUARMState *env)
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 0feccfbe916..ac96755b06c 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -581,13 +581,7 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs,
+ #define elf_check_abi(x) (!((x) & EF_MIPS_ABI2))
+ #endif
+ 
+-static inline void init_thread(struct target_pt_regs *regs,
+-                               struct image_info *infop)
+-{
+-    regs->cp0_status = 2 << CP0St_KSU;
+-    regs->cp0_epc = infop->entry;
+-    regs->regs[29] = infop->start_stack;
+-}
++#define HAVE_INIT_MAIN_THREAD
+ 
+ /* See linux kernel: arch/mips/include/asm/elf.h.  */
+ #define ELF_NREG 45
+diff --git a/linux-user/mips/cpu_loop.c b/linux-user/mips/cpu_loop.c
+index 6405806eb02..e67b8a2e463 100644
+--- a/linux-user/mips/cpu_loop.c
++++ b/linux-user/mips/cpu_loop.c
+@@ -211,12 +211,9 @@ done_syscall:
      }
  }
  
 -void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
 +void init_main_thread(CPUState *cs, struct image_info *info)
  {
-+    CPUARMState *env = cpu_env(cs);
-     ARMCPU *cpu = env_archcpu(env);
+-    CPUState *cpu = env_cpu(env);
+-    TaskState *ts = get_task_state(cpu);
+-    struct image_info *info = ts->info;
 -    int i;
++    CPUArchState *env = cpu_env(cs);
  
-     if (!(arm_feature(env, ARM_FEATURE_AARCH64))) {
-         fprintf(stderr,
-@@ -148,14 +148,12 @@ void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
-         exit(EXIT_FAILURE);
-     }
+     struct mode_req {
+         bool single;
+@@ -245,12 +242,11 @@ void target_cpu_copy_regs(CPUArchState *env, target_pt_regs *regs)
  
--    for (i = 0; i < 31; i++) {
--        env->xregs[i] = regs->regs[i];
+     struct mode_req prog_req;
+     struct mode_req interp_req;
++    target_ulong entry = info->entry;
+ 
+-    for(i = 0; i < 32; i++) {
+-        env->active_tc.gpr[i] = regs->regs[i];
 -    }
--    env->pc = regs->pc;
--    env->xregs[31] = regs->sp;
-+    env->pc = info->entry & ~0x3ULL;
-+    env->xregs[31] = info->start_stack;
-+
- #if TARGET_BIG_ENDIAN
-     env->cp15.sctlr_el[1] |= SCTLR_E0E;
--    for (i = 1; i < 4; ++i) {
-+    for (int i = 1; i < 4; ++i) {
-         env->cp15.sctlr_el[i] |= SCTLR_EE;
+-    env->active_tc.PC = regs->cp0_epc & ~(target_ulong)1;
+-    if (regs->cp0_epc & 1) {
++    env->active_tc.gpr[29] = info->start_stack;
++    env->active_tc.PC = entry & ~(target_ulong)1;
++    if (entry & 1) {
+         env->hflags |= MIPS_HFLAG_M16;
      }
-     arm_rebuild_hflags(env);
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 95868739546..f93afbdcea3 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -395,15 +395,7 @@ static const VdsoImageInfo *vdso_image_info(uint32_t elf_flags)
- #define ELF_ARCH        EM_AARCH64
- #define ELF_CLASS       ELFCLASS64
  
--static inline void init_thread(struct target_pt_regs *regs,
--                               struct image_info *infop)
--{
--    abi_long stack = infop->start_stack;
--    memset(regs, 0, sizeof(*regs));
--
--    regs->pc = infop->entry & ~0x3ULL;
--    regs->sp = stack;
--}
-+#define HAVE_INIT_MAIN_THREAD
- 
- #define ELF_NREG    34
- typedef target_elf_greg_t  target_elf_gregset_t[ELF_NREG];
 -- 
 2.47.2
 
