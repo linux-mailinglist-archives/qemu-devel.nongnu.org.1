@@ -2,75 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B4DEB48F42
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 15:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26692B44699
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 21:40:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvbl6-0001Ks-B7; Mon, 08 Sep 2025 09:18:13 -0400
+	id 1uuFnW-0002u7-LS; Thu, 04 Sep 2025 15:39:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uvbkt-0001Jh-Lw
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 09:18:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uvbkg-0000Wa-6t
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 09:17:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757337449;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=w+BGCswe7XVBqVygPbRkKhoOGAwCOjf+beWhRwokwuE=;
- b=XmdbYOQ38cvQ1uAka3d29mZ8NKq6KBHU1LhVPSAJMQiIN/mNtDZSKW6ND0dD5XLVfiguIP
- AARBfwcbcLbBgMeRS7AQf2BWiO2+T3Lef3kyc9iL1WFQ9rGCuLTkNODWpOJkFXLvGyKma6
- co6NV39okLGmfdDXkWUxM+D7FAv1Avw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-654-cjd1Dym0McmQMgkC5MuAxw-1; Mon,
- 08 Sep 2025 09:17:26 -0400
-X-MC-Unique: cjd1Dym0McmQMgkC5MuAxw-1
-X-Mimecast-MFC-AGG-ID: cjd1Dym0McmQMgkC5MuAxw_1757337445
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5A6DD19560B1; Mon,  8 Sep 2025 13:17:25 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.148])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6E257180044F; Mon,  8 Sep 2025 13:17:24 +0000 (UTC)
-Date: Thu, 4 Sep 2025 21:32:17 +0200
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Brian Song <hibriansong@gmail.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, armbru@redhat.com,
- bernd@bsbernd.com, fam@euphon.net, hreitz@redhat.com,
- kwolf@redhat.com, eperezma@redhat.com
-Subject: Re: [PATCH 0/4] export/fuse: Add FUSE-over-io_uring for Storage
- Exports
-Message-ID: <20250904193217.GA122855@fedora>
-References: <20250830025025.3610-1-hibriansong@gmail.com>
- <CAKWCU7VusNOUskuxc3RMTd+aLY6bSX+de-LiUhe9xpdmbzkn-Q@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1uuFnT-0002tc-3J
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 15:39:03 -0400
+Received: from mail-qk1-x736.google.com ([2607:f8b0:4864:20::736])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1uuFnP-0004nL-Ey
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 15:39:02 -0400
+Received: by mail-qk1-x736.google.com with SMTP id
+ af79cd13be357-81076e81a23so49073985a.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 12:38:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1757014736; x=1757619536; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zlwcQ9iBpWQwDKBRpIv1lZWDKLzWmBPuOfOcu4urf20=;
+ b=LyArW9D1+Qdtwfm/BOerNIz+5TsOE8vL035TSBLG+hLuZWZb0pKjElo51dBYzU/fSj
+ JHlB9wM+VqIYXv5B9VLCDQQMLC56A9ax2W23tV04xeHuMoKTeNDNEf/tzVl8z2Z707yy
+ Nx1gVwuqUFOdtUZVRF6D6Pj1Nf5NN/J4quHxDES7veiVEQxYwlV8eRtJOt97oWXJ3XYn
+ b7k2cunpcxf4pq8gFj28Mkt4Y3ilXlfjExKrXd0ztehg/NlNNFijNwUxfnK9xi64Pvp+
+ 53AVfG6diJt05wsE6KXUM5Fdy9rqEhnherp8PESWu+Qp6vvh2KTmIISe8/Eoh1c6dpeq
+ xsZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757014736; x=1757619536;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zlwcQ9iBpWQwDKBRpIv1lZWDKLzWmBPuOfOcu4urf20=;
+ b=irAPYLjT22Nky6vE1i05a/fgQNmvudywsYhJ6P+9k+Ms7Nu8IBJC63quZDe0JyZ9ul
+ ZZhf4z7kyiRYRp2UzQC4I02sa5nRzu6vh+xwRPqlivkiYm63tWa/G7Ibtwb9p0ERDbtW
+ 7BDWXuTKqutTJYr1pLWnp/z0MAKsn9fFu5qDxgkfVzg6RJcDEcuGlPjvlCw9QQY4ucYi
+ lQ7BM/V9HvdPMOtFb0ysZkToYpD7m8qkb05aVq6erJjyXRWV3P6ZmKzAG3g40SIDg+1Q
+ QFMaPr/yCBoUgnndjJgNO3D/3lbuJy0xmPoTjHRfZMiiRawB/6+oVS6vJmNG9CrsabfU
+ hDLA==
+X-Gm-Message-State: AOJu0YyOrVKFKdkgdMS1hBMtOk/buL0NAgztSzCQcBnsA61CU0iJsQY+
+ W6eLrDZD016jyxxt2YUMo2tKI7CloPO72vDSIVRnIwvulIXpCSu3f5UZW3FZtVkwSqM8E3/MZob
+ VgkWSmvUMKEIqZzP/zZr73juVCQPpMGg=
+X-Gm-Gg: ASbGncsLWt9baVKgjaH2ZeUgunGAbLNCscmdEtqOVq9VRsYEkz9fwCIpIpZMh9RgtMu
+ Syr5tpNXz9uG82kKDNamCQgDJY50WhemcDiqCewMlX2BHov6Sltb9tBTx/HBBshLBPnfe/U1JhW
+ UjJomjytG+Mg4GIt7dvz1Wjn4sr8M63WktC96fI29ID7A/4yO08qcnPQyZ8X/ySHhh78xBMNpKx
+ DIBC/YziA25tfk0nNvEvrIK
+X-Google-Smtp-Source: AGHT+IFDcGIZj2VLW4xf5NTMGQWrLg3kWrIOiRersPsjOmjzRMxkFt2hld8KBagqGAxqWiDR6j76ojWUYPlgVbxwJQU=
+X-Received: by 2002:a05:620a:454d:b0:807:c011:4d94 with SMTP id
+ af79cd13be357-807c0114e51mr1138573285a.15.1757014735649; Thu, 04 Sep 2025
+ 12:38:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="4tuLW5IvoKy5gjNi"
-Content-Disposition: inline
-In-Reply-To: <CAKWCU7VusNOUskuxc3RMTd+aLY6bSX+de-LiUhe9xpdmbzkn-Q@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20250506152927.222671-1-pbonzini@redhat.com>
+ <20250506152927.222671-2-pbonzini@redhat.com>
+ <CAJ+F1CKZr2PZbXvi8OZ9O=QaGv4WUmLPofBzqDv4VAV64y9EnA@mail.gmail.com>
+ <1546553e-a21a-4a0a-8bcc-6c4e23ff35e2@redhat.com>
+In-Reply-To: <1546553e-a21a-4a0a-8bcc-6c4e23ff35e2@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Thu, 4 Sep 2025 23:38:43 +0400
+X-Gm-Features: Ac12FXxSdQm_oqj3GYB2KoXhHZGd7o38uNd9QP6n0WYnv0x7muc-Xe_8iZH_eCY
+Message-ID: <CAJ+F1CL+TxyRN0P2njCBRLigKe1tO1CyNOuCP1L5LHwE5FMEsQ@mail.gmail.com>
+Subject: Re: [PULL 01/30] lcitool: use newer Rust for Debian and Ubuntu
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::736;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x736.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,82 +96,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi
 
---4tuLW5IvoKy5gjNi
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Aug 30, 2025 at 08:00:00AM -0400, Brian Song wrote:
-> We used fio to test a 1=E2=80=AFGB file under both traditional FUSE and
-> FUSE-over-io_uring modes. The experiments were conducted with the
-> following iodepth and numjobs configurations: 1-1, 64-1, 1-4, and 64-4,
-> with 70% read and 30% write, resulting in a total of eight test cases,
-> measuring both latency and throughput.
->=20
-> Test results:
->=20
-> https://gist.github.com/hibriansong/a4849903387b297516603e83b53bbde4
-
-CCing Eugenio, who is looking at optimizing FUSE server performance
-using virtiofs with VDUSE.
-
->=20
->=20
->=20
->=20
-> On 8/29/25 10:50 PM, Brian Song wrote:
-> > Hi all,
+On Wed, Sep 3, 2025 at 5:59=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
+wrote:
+>
+> On 9/3/25 15:54, Marc-Andr=C3=A9 Lureau wrote:
+> > Hi Paolo
 > >
-> > This is a GSoC project. More details are available here:
-> > https://wiki.qemu.org/Google_Summer_of_Code_2025#FUSE-over-io_uring_exp=
-orts
+> > On Tue, May 6, 2025 at 7:30=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.c=
+om> wrote:
+> >>
+> >> On Debian, the rustc-web package provides a newer Rust compiler (1.78)
+> >> for all architectures except mips64el.
 > >
-> > This patch series includes:
-> > - Add a round-robin mechanism to distribute the kernel-required Ring
-> > Queues to FUSE Queues
-> > - Support multiple in-flight requests (multiple ring entries)
-> > - Add tests for FUSE-over-io_uring
+> > Unfortunately, rustc-web is not compatible with the cross/multiarch
+> > packages (it will remove all libstd-rust-dev:*).
 > >
-> > More detail in the v2 cover letter:
-> > https://lists.nongnu.org/archive/html/qemu-block/2025-08/msg00140.html
-> >
-> > And in the v1 cover letter:
-> > https://lists.nongnu.org/archive/html/qemu-block/2025-07/msg00280.html
-> >
-> >
-> > Brian Song (4):
-> >    export/fuse: add opt to enable FUSE-over-io_uring
-> >    export/fuse: process FUSE-over-io_uring requests
-> >    export/fuse: Safe termination for FUSE-uring
-> >    iotests: add tests for FUSE-over-io_uring
-> >
-> >   block/export/fuse.c                  | 838 +++++++++++++++++++++------
-> >   docs/tools/qemu-storage-daemon.rst   |  11 +-
-> >   qapi/block-export.json               |   5 +-
-> >   storage-daemon/qemu-storage-daemon.c |   1 +
-> >   tests/qemu-iotests/check             |   2 +
-> >   tests/qemu-iotests/common.rc         |  45 +-
-> >   util/fdmon-io_uring.c                |   5 +-
-> >   7 files changed, 717 insertions(+), 190 deletions(-)
-> >
->=20
+> > Should we switch to rustup in the meantime for debian cross-compilation=
+ testing?
+>
+> We should just switch to Trixie, which however needs some work in lcitool=
+.
+>
 
---4tuLW5IvoKy5gjNi
-Content-Type: application/pgp-signature; name=signature.asc
+Trixie no longer supports mips:
+https://www.debian.org/releases/trixie/release-notes/issues.html?utm_source=
+=3Dchatgpt.com#mips-architectures-removed
 
------BEGIN PGP SIGNATURE-----
+Can we simply drop it from our CI too, or do we want to keep
+cross-build testing on debian 12?
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmi56UEACgkQnKSrs4Gr
-c8gtSAf+PiVJX2kkv1qgBfo7SODqYcMFLwJ6wdyFc82h3//nnPUVcp2MQJPix9K3
-nfidEcwlKtN19TvurOXkmWvMDKTliwrHw8WS6ucTX6AzYRwCY5dC0dGPUzn9fSdG
-rVAPCbfHihm0EuqxePWi25MowuLJbszgngdAYukeILMWgYPXN1KU4hK62pM1A8mc
-GzOGd8ol2rNZvDKCWgr2eJrdLWwYzhgD0eM19IiYQ1XxXlPPtgsjpoUtNaekqZBs
-9v309b75Y1v5G+EY7amQNQ/0PGJDXIy9DaAGFf7Kh1b1zxKgZHUWAZ6tEL7HcA03
-u49pGL9hl65l7GEoi9PAZNM5opSMLg==
-=gAsk
------END PGP SIGNATURE-----
 
---4tuLW5IvoKy5gjNi--
-
+--
+Marc-Andr=C3=A9 Lureau
 
