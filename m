@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6595EB447B8
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 22:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94222B447C5
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 22:53:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuGu3-0006Y6-7S; Thu, 04 Sep 2025 16:49:55 -0400
+	id 1uuGu6-0006un-1K; Thu, 04 Sep 2025 16:49:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGtp-00068M-Np
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:49:46 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGtt-0006Ex-D0
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:49:48 -0400
 Received: from mailgate01.uberspace.is ([2001:1a50:11:0:c83f:a8ff:fea6:c8da])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGtd-00011f-VF
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:49:39 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGti-00011m-2l
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:49:45 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate01.uberspace.is (Postfix) with ESMTPS id A482B60BF1
+ by mailgate01.uberspace.is (Postfix) with ESMTPS id 006CC60C3E
  for <qemu-devel@nongnu.org>; Thu,  4 Sep 2025 22:49:18 +0200 (CEST)
-Received: (qmail 2444 invoked by uid 990); 4 Sep 2025 20:49:18 -0000
+Received: (qmail 2471 invoked by uid 990); 4 Sep 2025 20:49:18 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
@@ -33,31 +33,32 @@ Cc: Julian Ganz <neither@nut.email>,
  Alistair Francis <alistair.francis@wdc.com>,
  Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [PATCH v6 24/25] tests: add test for double-traps on rv64
-Date: Thu,  4 Sep 2025 22:48:59 +0200
-Message-ID: <dbe812aa186083ce4f4161072abc2f4ce8a83156.1757018626.git.neither@nut.email>
+Subject: [PATCH v6 25/25] tests: add test with interrupted memory accesses on
+ rv64
+Date: Thu,  4 Sep 2025 22:49:00 +0200
+Message-ID: <f74becaa58fe129897639d126a321afdc7ef2d05.1757018626.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <cover.1757018626.git.neither@nut.email>
 References: <cover.1757018626.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.999521) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.796651) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.599521
+X-Rspamd-Score: -5.396651
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=hJeTNN+EDtHALUaN38ske2iZTHRjFTg++mevsB5iNj8=;
- b=GtnvqD95XKsk2LdqvkQzffGuhlZZQtbBeHpDMgDGiM+uCpcHX7/jBI9z8e6NUjQSi2Rur7dFQh
- HiWaFJqVp7EnkZ+vdxR1v2FGcytVq/zFjfLSIjCb4Hu7ptxcVVOVMEUHNa8ALP0oIx/xlGVlp15/
- F9rVzlg7iZmAFBqrHqw4iKKMRJGXipQy4dEoxutAg52JYhKZegtkMesoGcyG3ytuC/+P8GDZMyxu
- 891XXosLMFAPJyyuCfR4HiKW1czOjAs+O8CIQfYrIi0G8k8gFX3U5kKFwRYSAfyJo+2lpkuK30DJ
- pnPcFF+Enqu7GCx4rOXz/0/4W0lu3KXVul3w/COo8A4+SlF09lUApA05EA0ddaqlH3dzmTfCUTCS
- NdWjPg6pC9PtREeqGjmG5nqUlqY6a3m+0HJLiWNa3gSQ5O0mu2ke7nKVEPB500YYzaOKcFc3iuBt
- UNPojxPC1FOQgDuzo1tHjWEwvNhUjDD9NZ/sv+ECaDcfAkpIepLykTMiIK+64blB0PAvjzWdfqmU
- h6B+NqKwkNhviYD5H5v7Rs7fzL/k21556UJRzijjBndChUBXYhoyURXB+DXwJDAygxyOA/Q6mBST
- c58oONwC5R+kD+YyUUCG/qa8mQ9WnyY6qj5TYe3vp3deVpjRpSL2HnlhCrX1oJ5HscU+aWdJGstb
- 4=
+ bh=mVLyiyy1HWjSWhu1/Q5w+icoVuven8S3d7VhRcdbntg=;
+ b=TY0pT536o+ZHiEnQhsgtRx4ZNUf6S2pZiLT1gb/yjcik9RKdUnmUjTkyG5NGEd9mQkc1Jb0afI
+ vo/L5CAqROcyN2s9IpYFsHlQ8u07uhcHrvdqTow9sauWmKKigBjRwy4zUxns5VS8rhmOEnpyCr+Y
+ nbsF6kqSU+x71OIr++/1EddorRfWcpJxv8PdjYqMD05obdoL5IYygKi7mtSL1eJ8d9xMJmOWp2mr
+ /yqYNs9L3qRTUl0frDIGOjcgGt57P8cP3tMCOX+PelVwjHt1vOb0UfRbpwfKvKYMOZtzTquBVzqG
+ 43IuC/yM1kO0+LFt0qaFURxwxaOf8i7evaF+Uz2HTvr4ahejBf6tECerYTQGGpQkDHvZJP5mwdSi
+ k/NfcqdQPaiJkGD4yn+/N0/J/N+SZZFMkN9uHmXuiYCx8QUsH5M+WaySrKxMPcPu/jcgfrxzbnN5
+ WOoryyWzZ/VLWiEHv7m8rb+5B0d07X794jJFihbn5cF893Qptl5cdbOXKEDA9GYL9FHd2dTpwaMN
+ 5y0v5x/w2lftroUJvxGn84a11+0HW/I0UKgA9jzSEhZqFBnOlk1/cZBD5OJjCP+TrktkVJ0bJWs1
+ e1nTAIWJkmxuJ216aicRogsNkC7EwZqXkGNgPhzIYg0K2jYo5bwjWHl5CvQqrI4SWNeKsHR+Y4ja
+ o=
 Received-SPF: pass client-ip=2001:1a50:11:0:c83f:a8ff:fea6:c8da;
  envelope-from=neither@nut.email; helo=mailgate01.uberspace.is
 X-Spam_score_int: -20
@@ -65,7 +66,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,97 +82,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We do have a number of test-case for various architectures exercising
-their interrupt/exception logic. However, for the recently introduced
-trap API we also want to exercise the logic for double traps on at least
-one architecture.
+This test aims at catching API misbehaviour w.r.t. the interaction
+between interrupts and memory accesses, such as the bug fixed in
+
+    27f347e6a1d269c533633c812321cabb249eada8
+
+Because the condition for triggering misbehaviour may not be
+deterministic and the cross-section between memory accesses and
+interrupt handlers may be small, we have to place our trust in large
+numbers. Instead of guessing/trying an arbitrary, fixed loop-bound, we
+decided to loop for a fixed amount of real-time. This avoids the test
+running into a time-out on slower machines while enabling a high number
+of possible interactions on faster machines.
 
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
  tests/tcg/riscv64/Makefile.softmmu-target |  6 ++
- tests/tcg/riscv64/doubletrap.S            | 73 +++++++++++++++++++++++
- 2 files changed, 79 insertions(+)
- create mode 100644 tests/tcg/riscv64/doubletrap.S
+ tests/tcg/riscv64/interruptedmemory.S     | 67 +++++++++++++++++++++++
+ 2 files changed, 73 insertions(+)
+ create mode 100644 tests/tcg/riscv64/interruptedmemory.S
 
 diff --git a/tests/tcg/riscv64/Makefile.softmmu-target b/tests/tcg/riscv64/Makefile.softmmu-target
-index 3ca595335d..1a71a78653 100644
+index 1a71a78653..d8f92b8e61 100644
 --- a/tests/tcg/riscv64/Makefile.softmmu-target
 +++ b/tests/tcg/riscv64/Makefile.softmmu-target
-@@ -24,5 +24,11 @@ EXTRA_RUNS += run-test-mepc-masking
- run-test-mepc-masking: test-mepc-masking
- 	$(call run-test, $<, $(QEMU) $(QEMU_OPTS)$<)
+@@ -30,5 +30,11 @@ run-plugin-doubletrap: doubletrap
+ 	  $(QEMU) -plugin ../plugins/libdiscons.so -d plugin -D $*.pout \
+ 	  $(QEMU_OPTS)$<)
  
-+EXTRA_RUNS += run-plugin-doubletrap
-+run-plugin-doubletrap: doubletrap
++EXTRA_RUNS += run-plugin-interruptedmemory
++run-plugin-interruptedmemory: interruptedmemory
 +	$(call run-test, $<, \
 +	  $(QEMU) -plugin ../plugins/libdiscons.so -d plugin -D $*.pout \
 +	  $(QEMU_OPTS)$<)
 +
  # We don't currently support the multiarch system tests
  undefine MULTIARCH_TESTS
-diff --git a/tests/tcg/riscv64/doubletrap.S b/tests/tcg/riscv64/doubletrap.S
+diff --git a/tests/tcg/riscv64/interruptedmemory.S b/tests/tcg/riscv64/interruptedmemory.S
 new file mode 100644
-index 0000000000..b61089c9c1
+index 0000000000..a32d672849
 --- /dev/null
-+++ b/tests/tcg/riscv64/doubletrap.S
-@@ -0,0 +1,73 @@
++++ b/tests/tcg/riscv64/interruptedmemory.S
+@@ -0,0 +1,67 @@
 +	.option norvc
 +
 +	.text
 +	.global _start
 +_start:
-+	# Set up vectored interrupts
++	# Set up trap vector
 +	lla	t0, trap
-+	add	t0, t0, 1
 +	csrw	mtvec, t0
 +
-+	# Enable sw interrupts
-+	csrrsi	zero, mie, 0x8
++	# Set up timer
++	lui	t1, 0x02004
++	sd	zero, 0(t1) # MTIMECMP0
++
++	# Enable timer interrupts
++	li	t0, 0x80
++	csrrs	zero, mie, t0
 +	csrrsi	zero, mstatus, 0x8
 +
-+	# Engage the double trap: we trigger an machine-level software
-+	# interrupt, which will trap to an illegal instruction
-+	lui	t1, 0x02000
-+	li	t0, 1
-+	sw	t0, 0(t1)
++	# Find out when to stop
++	call	rtc_get
++	li	t0, 60
++	slli	t0, t0, 30 # Approx. 10e9 ns
++	add	t0, t0, a0
 +
-+	# If we still not went out via the software interrupt route after a
-+	# short while, we failed the test.
-+	lui	t0, 0x1
++	# Loop with memory accesses
++	la	t1, semiargs
 +0:
-+	addi	t0, t0, -1
-+	bnez	t0, 0b
-+	j	fail
++	ld	t2, 0(t1)
++	sd	t2, 0(t1)
++	call	rtc_get
++	bltu	a0, t0, 0b
 +
-+trap:
-+	j	illegal_insn # Exceptions
-+	j	fail # Supervisor software interrupt
-+	j	fail
-+	.insn	i CUSTOM_0, 0, x0, x0, 0 # Machine software interrupt
-+	j	fail
-+	j	fail # Supervisor timer interrupt
-+	j	fail
-+	j	fail # Machine timer interrupt
-+	j	fail
-+	j	fail # Supervisor external interrupt
-+	j	fail
-+	j	fail # Machine external interrupt
-+	j	fail
-+	j	fail # Counter overflow interrupt
-+	j	fail
-+	j	fail
-+
-+illegal_insn:
-+	# Check whether we really got an illegal instruction
-+	csrr	t0, mcause
-+	li	t1, 2
-+	bne	t0, t1, fail
 +	li	a0, 0
-+	j	_exit
-+fail:
-+	li	a0, 1
-+_exit:
 +	lla	a1, semiargs
 +	li	t0, 0x20026	# ADP_Stopped_ApplicationExit
 +	sd	t0, 0(a1)
@@ -184,6 +170,23 @@ index 0000000000..b61089c9c1
 +	ebreak
 +	srai	zero, zero, 0x7
 +	j	.
++
++rtc_get:
++	# Get current time from the goldfish RTC
++	lui	t3, 0x0101
++	lw	a0, 0(t3)
++	lw	t3, 4(t3)
++	slli	t3, t3, 32
++	add	a0, a0, t3
++	ret
++
++trap:
++	lui	t5, 0x0200c
++	ld	t6, -0x8(t5) # MTIME
++	addi	t6, t6, 100
++	lui	t5, 0x02004
++	sd	t6, 0(t5) # MTIMECMP
++	mret
 +
 +	.data
 +	.balign	16
