@@ -2,102 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF50B43EF5
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 16:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C59B43F15
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 16:38:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuB24-0000uO-WD; Thu, 04 Sep 2025 10:33:49 -0400
+	id 1uuB4Z-0003Iz-6g; Thu, 04 Sep 2025 10:36:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uuB21-0000pu-L2
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 10:33:45 -0400
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1uuB4S-0003FY-AO
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 10:36:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uuB1r-0006Wn-JN
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 10:33:44 -0400
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1uuB4G-0007h1-JR
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 10:36:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1756996411;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1756996560;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+Rvd8zx5PhnwMcPMnDukUW4fhCSlh4rdnVhW9YU7UHY=;
- b=EXkUW6QD4XAMiliq32wCdEs6E15OfFv4duszjBoPnhiHq/n2bJLu7nxPD23ZDNCdXsrK3J
- f0g2XE54ubdBoM3DA+7uGuQUXQi707SPqei3VC3qbrz3B9hOf/gDnpxYjcpbxWUb4Ow4iD
- armMDzGBrcnYq2ldiEPSLqFSJGDmvdM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=moUisWZWUUBf6YwwL0HMsWPgBN9IM6SMgClxgAoZCss=;
+ b=hQhUXC9gl06UpzqZr0jyZuo1xiRyntN5IOk39vqQcw5GKcoKHhDnIukuOgpt3Sir3yjlVL
+ s/LAUus5wb/YGT4S9vv5WuNHVHkY6Yh5Avu6y2kejSv3f0r73Er8RcuB/EURFLIRR1CPJN
+ OjcKAfQZgGFYzZ1XL8AOoN/+bMZRnUk=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-142-kdqjIPomMz-t44YjpkjEzw-1; Thu, 04 Sep 2025 10:33:28 -0400
-X-MC-Unique: kdqjIPomMz-t44YjpkjEzw-1
-X-Mimecast-MFC-AGG-ID: kdqjIPomMz-t44YjpkjEzw_1756996408
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3e014bf8ebfso736353f8f.0
- for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 07:33:28 -0700 (PDT)
+ us-mta-592-W7p2jIldMR6piI89PkAVQA-1; Thu, 04 Sep 2025 10:35:58 -0400
+X-MC-Unique: W7p2jIldMR6piI89PkAVQA-1
+X-Mimecast-MFC-AGG-ID: W7p2jIldMR6piI89PkAVQA_1756996558
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-61d2ab4bb96so1157305a12.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 07:35:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756996407; x=1757601207;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+Rvd8zx5PhnwMcPMnDukUW4fhCSlh4rdnVhW9YU7UHY=;
- b=i0AstPlGyZ4Izchz78xHbnZgvzgAaDBnD7PZZSuY50l7s+pEkYv58swWQ5vU3DQo+w
- tyQwRUmmM8P+NjIDCfwmJ7Qjuo3Vfq0NMyApsKZqoyEPiaVSOoRr6tPM9nJOSqrs7AE2
- 7NVsgcF/v9Jrv9sYGpR7BibVL1tImwD8Rfh8ziKi5LZLWdcnw7iUWOrYHNWwRxaNcSnt
- /o+ZnaIzTFmx9Oa0hhF7s0wEU8AXvHoOu+8BsS66u6jszeVUMkcmjDJ7Gy1rLfFdPULw
- FixkhG2w1/h4NpdGnx85KoaFOVFT9a8sYjCXArS6Nt7NtIZX1s1X9fzZBlJi1xIACpG8
- 8/jQ==
+ d=1e100.net; s=20230601; t=1756996558; x=1757601358;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=moUisWZWUUBf6YwwL0HMsWPgBN9IM6SMgClxgAoZCss=;
+ b=gBche/KQhRbXpKRXLAuEPP7S0pdsUe4MQYcirBFNdRmYNKRULtvxS7OIhkrvMCJ5e2
+ Hq7a3GSf+HpgjxKW669A+7jWOzH0VEpQBd+KebC9ip26xHyxgqMvCGDHDr1VcsyQOJpG
+ Yu0A3dk6WjZDm9YP6jQxxCRUlVdeGcbwihaSxyOaeDVkYybdjjaxwLaa2q9+UDmrwgY/
+ cPxUZgOA+fAypHgGUY7aKCyZ1aE4yef4zEEytoo8j8tgI8GBikarck0wYo3ohXdFoskU
+ 5imRfRUUkzfY5I2gT9mQVShcUkIFNSlA+dM7BQaqXKhGe/Y5EpEszBstrzBIR+KtnGvJ
+ GWkA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXKK5Y+mVIzQSmmClBFNI4S1HtawkBGwkd+2X4fW9wB6ar1fbDzHxA2PIGIOwskS1yrAePoZ9wEUEYK@nongnu.org
-X-Gm-Message-State: AOJu0YyY7nKEiviK5UX5NOAKl2unxEfFDiSxlAb7kQdWNj3V4IPpAORV
- BfmkaOMv+o2FEh3kJKqqBw97gfCY2wUubVf3wUfhShAX0xH8ceC31S9UcdWbEZGPzf/jrK1IAlQ
- JHdFZDy03+T8Axc4wPZsDDSoTa+le3r4JzB9KvEClV3mLKlu9PZVDQSlf
-X-Gm-Gg: ASbGnctsXRvn94KKccKa35rsHMAHlGiY9Y8t0SyqDBR/y1/kiQt/Y78J3ivm4eSIBFL
- QKLdSZQDdOgEI7lEMsCRINS30eoo1t+JLsE5B+c+Bq+pfPnRF6EIv/i6PnQmzG3Db8Q4GMhmuMf
- XagGHWFl004hPSk1n+xX114kd5MZaelX771D+/7azlaSVk2HQ0Hmi5JOdJUi90IS3oEYl+mrtR9
- Kaptnv3DTSk36YAgVh8xdKcp3TEar8A07XwCS1hwOZWJClpFKUt0ib5KR5Z3S1wl3L9KuL/6xb0
- CBncRKYJTQwBOZoHL1lbeCdhlVkayanbKcHWt4xFmT58Z8MLPRmbyvqGL9GAMF8nRhUB3XNq1m/
- /Eee/IT9Gob4=
-X-Received: by 2002:a05:6000:178e:b0:3e0:63dc:913c with SMTP id
- ffacd0b85a97d-3e063dc9503mr2941475f8f.3.1756996407504; 
- Thu, 04 Sep 2025 07:33:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyDurDvrUNCb5ZwMrNsM56ZIrJNvFp6TmGhBfvPliakySuoUJJaGMPVK8IBrCnpCvOp7CDNA==
-X-Received: by 2002:a05:6000:178e:b0:3e0:63dc:913c with SMTP id
- ffacd0b85a97d-3e063dc9503mr2941439f8f.3.1756996407000; 
- Thu, 04 Sep 2025 07:33:27 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf34491a7fsm27152781f8f.57.2025.09.04.07.33.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 04 Sep 2025 07:33:26 -0700 (PDT)
-Message-ID: <f0473156-2e59-4467-90cc-d8315cf9063e@redhat.com>
-Date: Thu, 4 Sep 2025 16:33:24 +0200
+ AJvYcCXgW92vidzzJ/EJJHMgYQc53hxNQF0fawsLVBZWCXg+1LAsQ/4Q7P+uSL8TYD5mj2S+4+X8rkL+LdAu@nongnu.org
+X-Gm-Message-State: AOJu0YzvxxrylT5U64iK7ZdTaPrQDdK96DdMKEtVdK45J8OXK0snKUh7
+ v/dzEfeKYQwS+E7fSuMCfXRLTJ9r8yOuQLiFyGHPViRo2eLERdVm7U2vFDeXCfX/AJx6u/Ux1ef
+ NIqZ9WvGEA9hefr2z+gk5X9K0waRS46VDnZVg9gJzaxg/SySnzCQOHjvLTUVoYO3RTc0KPgLBqc
+ pdgWaTflcZcqz3BLEnIu2tRuoYmJXH7a8=
+X-Gm-Gg: ASbGncsbYPcUoUwvIz+IYfRxDRC567ImJe1g9zXDb+1IFX+cCiWcDZGaj2YyFGv6nL5
+ 94uMNceeQ+b8OIpKTA08KkQjrO+xptJnjD+kRz0dUh6CL6gMorGKNq8NKtC/qdpwTIl6Zro9eeI
+ vjPE6Aea4RqQPiesvy5eSvFQ==
+X-Received: by 2002:a05:6402:2714:b0:61d:feb:67fb with SMTP id
+ 4fb4d7f45d1cf-61d26d9c672mr15229048a12.34.1756996557674; 
+ Thu, 04 Sep 2025 07:35:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE6pv32c2YnCpF2P9MA2XEB9wA9IVo0SSt9lFl+O++4Vy0ykRu7b24484ztC+Qqxx3hJyERI7gkLPWLcLy7Duk=
+X-Received: by 2002:a05:6402:2714:b0:61d:feb:67fb with SMTP id
+ 4fb4d7f45d1cf-61d26d9c672mr15229024a12.34.1756996557201; Thu, 04 Sep 2025
+ 07:35:57 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 05/15] hw/arm/smmuv3-accel: Introduce smmuv3 accel
- device
-Content-Language: en-US
-To: Nicolin Chen <nicolinc@nvidia.com>, skolothumtho@nvidia.com
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, peter.maydell@linaro.org,
- jgg@nvidia.com, ddutile@redhat.com, berrange@redhat.com, nathanc@nvidia.com,
- mochs@nvidia.com, smostafa@google.com, linuxarm@huawei.com,
- wangzhou1@hisilicon.com, jiangkunkun@huawei.com,
- jonathan.cameron@huawei.com, zhangfei.gao@linaro.org,
- zhenzhong.duan@intel.com, shameerkolothum@gmail.com
-References: <20250714155941.22176-1-shameerali.kolothum.thodi@huawei.com>
- <20250714155941.22176-6-shameerali.kolothum.thodi@huawei.com>
- <aHU9INgBsFgvtec+@Asurada-Nvidia>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <aHU9INgBsFgvtec+@Asurada-Nvidia>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+References: <20250903094411.1029449-1-vsementsov@yandex-team.ru>
+In-Reply-To: <20250903094411.1029449-1-vsementsov@yandex-team.ru>
+From: Lei Yang <leiyang@redhat.com>
+Date: Thu, 4 Sep 2025 22:35:20 +0800
+X-Gm-Features: Ac12FXxYPcT-vMylpmxGOdo6K3OwVB1Xq61jLbRhPB9Pj-r6FLP_yb-xbH_mFxA
+Message-ID: <CAPpAL=wG_LptUhVGDSnwfkCizKk8t55Z3EKFqeTOcNYgM5EjhA@mail.gmail.com>
+Subject: Re: [PATCH 00/10] io: deal with blocking/non-blocking fds
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: berrange@redhat.com, qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ peterx@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=leiyang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,8 +87,8 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,111 +101,97 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Tested the current series of patches, mixed with patches from series
+[1] and [2], and the virtio-net regression tests passed. I also tested
+local VM migration under multiple NIC queues enabled and disabled, it
+also passed.
 
+[1] https://patchwork.ozlabs.org/project/qemu-devel/cover/20250903124934.11=
+69899-1-vsementsov@yandex-team.ru/
+[2] https://patchwork.ozlabs.org/project/qemu-devel/cover/20250903133706.11=
+77633-1-vsementsov@yandex-team.ru/
 
-On 7/14/25 7:23 PM, Nicolin Chen wrote:
-> On Mon, Jul 14, 2025 at 04:59:31PM +0100, Shameer Kolothum wrote:
->> Also setup specific PCIIOMMUOps for accel SMMUv3 as accel
->> SMMUv3 will have different handling for those ops callbacks
->> in subsequent patches.
->>
->> The "accel" property is not yet added, so users cannot set it at this
->> point. It will be introduced in a subsequent patch once the necessary
->> support is in place.
->>
->> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> Overall the patch looks good to me,
-> Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
->
-> with some nits:
->
->> @@ -61,7 +61,8 @@ arm_common_ss.add(when: 'CONFIG_ARMSSE', if_true: files('armsse.c'))
->>  arm_common_ss.add(when: 'CONFIG_FSL_IMX7', if_true: files('fsl-imx7.c', 'mcimx7d-sabre.c'))
->>  arm_common_ss.add(when: 'CONFIG_FSL_IMX8MP', if_true: files('fsl-imx8mp.c'))
->>  arm_common_ss.add(when: 'CONFIG_FSL_IMX8MP_EVK', if_true: files('imx8mp-evk.c'))
->> -arm_common_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmuv3.c'))
->> +arm_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmuv3.c'))
->> +arm_ss.add(when: ['CONFIG_ARM_SMMUV3', 'CONFIG_IOMMUFD'], if_true: files('smmuv3-accel.c'))
-> Wondering why "arm_common_ss" is changed to "arm_ss"?
-Indeed why did you need to change that?
+Tested-by: Lei Yang <leiyang@redhat.com>
 
-Thanks
-
-Eric
+On Wed, Sep 3, 2025 at 5:46=E2=80=AFPM Vladimir Sementsov-Ogievskiy
+<vsementsov@yandex-team.ru> wrote:
 >
->> +static SMMUv3AccelDevice *smmuv3_accel_get_dev(SMMUState *bs, SMMUPciBus *sbus,
->> +                                                PCIBus *bus, int devfn)
-> There seems to be an extra space in the 2nd line.
+> Hi all!
 >
->> +{
->> +    SMMUDevice *sdev = sbus->pbdev[devfn];
->> +    SMMUv3AccelDevice *accel_dev;
->> +
->> +    if (sdev) {
->> +        accel_dev = container_of(sdev, SMMUv3AccelDevice, sdev);
->> +    } else {
->> +        accel_dev = g_new0(SMMUv3AccelDevice, 1);
->> +        sdev = &accel_dev->sdev;
->> +
->> +        sbus->pbdev[devfn] = sdev;
->> +        smmu_init_sdev(bs, sdev, bus, devfn);
->> +    }
-> Could just:
->     if (sdev) {
->         return container_of(sdev, SMMUv3AccelDevice, sdev);
->     }
+> The series brings two things:
 >
-> Then, no extra indentations for the rest of the code.
+> 1. unify code which sets fds blocking/non-blocking through the whole
+> source
 >
->> +
->> +    return accel_dev;
->> +}
->> +
->> +static AddressSpace *smmuv3_accel_find_add_as(PCIBus *bus, void *opaque,
->> +                                              int devfn)
->> +{
->> +    SMMUState *bs = opaque;
->> +    SMMUPciBus *sbus;
->> +    SMMUv3AccelDevice *accel_dev;
->> +    SMMUDevice *sdev;
->> +
->> +    sbus = smmu_get_sbus(bs, bus);
->> +    accel_dev = smmuv3_accel_get_dev(bs, sbus, bus, devfn);
->> +    sdev = &accel_dev->sdev;
-> Maybe just:
+> 2. for fds, which comes from qio_channel_readv_full(), stop making
+> them blocking in generic code, and move this logic to the callers,
+> all except coming from migration qemu-file (see last patch)
 >
-> +    SMMUPciBus *sbus = smmu_get_sbus(bs, bus);
-> +    SMMUv3AccelDevice *accel_dev = smmuv3_accel_get_dev(bs, sbus, bus, devfn);
-> +    SMMUDevice *sdev = &accel_dev->sdev;
+> Vladimir Sementsov-Ogievskiy (10):
+>   io/channel: document how qio_channel_readv_full() handles fds
+>   char-socket: rework tcp_chr_recv()
+>   util: add qemu_set_blocking() function
+>   util: drop qemu_socket_set_nonblock()
+>   util: drop qemu_socket_try_set_nonblock()
+>   util: drop qemu_socket_set_block()
+>   use qemu_set_blocking instead of g_unix_set_fd_nonblocking
+>   oslib-posix: add qemu_fds_set_blocking() helper
+>   qio_channel_readv_full(): move setting fd blocking to callers
+>   migration/qemu-file: don't make incoming fds blocking again
 >
-> ?
+>  chardev/char-fd.c                       |  4 +--
+>  chardev/char-pty.c                      |  3 +-
+>  chardev/char-serial.c                   |  3 +-
+>  chardev/char-socket.c                   | 45 ++++++++++++-------------
+>  chardev/char-stdio.c                    |  3 +-
+>  contrib/ivshmem-server/ivshmem-server.c |  5 ++-
+>  hw/hyperv/syndbg.c                      |  4 ++-
+>  hw/input/virtio-input-host.c            |  3 +-
+>  hw/misc/ivshmem-flat.c                  |  4 ++-
+>  hw/misc/ivshmem-pci.c                   |  8 ++++-
+>  hw/remote/mpqemu-link.c                 |  3 ++
+>  hw/vfio-user/proxy.c                    |  4 +++
+>  hw/virtio/vhost-user.c                  | 10 +++++-
+>  hw/virtio/vhost-vsock.c                 |  8 ++---
+>  include/io/channel.h                    | 12 +++++++
+>  include/qemu/osdep.h                    |  8 +++++
+>  include/qemu/sockets.h                  |  3 --
+>  io/channel-command.c                    |  9 +++--
+>  io/channel-file.c                       |  3 +-
+>  io/channel-socket.c                     | 26 +++++++-------
+>  net/dgram.c                             | 28 ++++++++-------
+>  net/l2tpv3.c                            |  5 +--
+>  net/socket.c                            | 27 ++++++++++-----
+>  net/stream.c                            |  9 ++---
+>  net/stream_data.c                       | 10 +++---
+>  net/tap-bsd.c                           | 12 +++++--
+>  net/tap-linux.c                         |  8 ++++-
+>  net/tap-solaris.c                       |  7 +++-
+>  net/tap.c                               | 21 ++++--------
+>  qga/channel-posix.c                     |  7 +++-
+>  qga/commands-posix.c                    |  3 +-
+>  scsi/qemu-pr-helper.c                   |  4 +++
+>  tests/qtest/fuzz/virtio_net_fuzz.c      |  2 +-
+>  tests/qtest/tpm-emu.c                   |  1 +
+>  tests/qtest/vhost-user-test.c           |  3 +-
+>  tests/unit/socket-helpers.c             |  5 ++-
+>  tests/unit/test-crypto-tlssession.c     |  8 ++---
+>  tests/unit/test-io-channel-socket.c     |  1 +
+>  tests/unit/test-iov.c                   |  5 +--
+>  ui/input-linux.c                        |  3 +-
+>  util/event_notifier-posix.c             |  5 +--
+>  util/main-loop.c                        |  6 +++-
+>  util/oslib-posix.c                      | 27 +++++++++------
+>  util/oslib-win32.c                      | 25 ++++++--------
+>  util/vhost-user-server.c                |  9 +++--
+>  45 files changed, 244 insertions(+), 165 deletions(-)
 >
->> +typedef struct SMMUv3AccelDevice {
->> +    SMMUDevice  sdev;
-> Let's drop the extra space in between.
+> --
+> 2.48.1
 >
->> +} SMMUv3AccelDevice;
->> +
->> +#endif /* HW_ARM_SMMUV3_ACCEL_H */
->> diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
->> index eb94623555..c459d24427 100644
->> --- a/include/hw/arm/smmu-common.h
->> +++ b/include/hw/arm/smmu-common.h
->> @@ -162,6 +162,7 @@ struct SMMUState {
->>      uint8_t bus_num;
->>      PCIBus *primary_bus;
->>      bool smmu_per_bus; /* SMMU is specific to the primary_bus */
->> +    bool accel; /* SMMU has accelerator support */
-> How about:
-> "SMMU is in the HW-accelerated mode for stage-1 translation"
-> ?
->
-> Thanks
-> Nicolin
 >
 
 
