@@ -2,62 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF9CB447C9
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 22:54:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A01B447B4
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 22:50:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuGsC-0003Y3-Am; Thu, 04 Sep 2025 16:48:00 -0400
+	id 1uuGsE-0003Yy-Gp; Thu, 04 Sep 2025 16:48:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGs8-0003W3-FE
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:47:56 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGs8-0003Vu-Be
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:47:57 -0400
 Received: from mailgate01.uberspace.is ([2001:1a50:11:0:c83f:a8ff:fea6:c8da])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGrx-0000kk-ED
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGrx-0000ki-Qj
  for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:47:56 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate01.uberspace.is (Postfix) with ESMTPS id E0C2660BB4
- for <qemu-devel@nongnu.org>; Thu,  4 Sep 2025 22:47:23 +0200 (CEST)
-Received: (qmail 32736 invoked by uid 990); 4 Sep 2025 20:47:23 -0000
+ by mailgate01.uberspace.is (Postfix) with ESMTPS id 2DC2560C55
+ for <qemu-devel@nongnu.org>; Thu,  4 Sep 2025 22:47:24 +0200 (CEST)
+Received: (qmail 32755 invoked by uid 990); 4 Sep 2025 20:47:24 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
  by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Thu, 04 Sep 2025 22:47:23 +0200
+ Thu, 04 Sep 2025 22:47:24 +0200
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [PATCH v6 16/25] target/riscv: call plugin trap callbacks
-Date: Thu,  4 Sep 2025 22:46:53 +0200
-Message-ID: <b2661be6d5851f5d070b90a6d3ac801b67e96929.1757018626.git.neither@nut.email>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Yoshinori Sato <yoshinori.sato@nifty.com>
+Subject: [PATCH v6 17/25] target/rx: call plugin trap callbacks
+Date: Thu,  4 Sep 2025 22:46:54 +0200
+Message-ID: <fa4c16b7bf86ceea1b0f7f3f95a9d0e917f6e5fa.1757018626.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <cover.1757018626.git.neither@nut.email>
 References: <cover.1757018626.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.990391) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.995166) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.590391
+X-Rspamd-Score: -5.595166
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=6jnG3wDchPvR9iC7OeKM71ZvHzTjOj/B4aMwSwCZlYo=;
- b=oLgOyCO7C9M1gkLL/S0CJ9o/yrdfe7/Vd9aQR769jL0B18VeZ6F+L+DET46QiMoUAAJRXQwg8l
- nv4m8LrHM3NICRZm8FsDzHpWgEADZP1EEERwNshRQt8BgngvNhoIE8Wc+ix5N8HVgJIevx+/sjxf
- oxyPdLAS83YSuUqND3+lLkYngBdOQztzHGdCIO74oem1ARexkuL0v9m7Qk+xReT73IRX921Tz/IP
- iJt8/5Jt980qy8GwKkODA6diT2PmZmlAVbU4ucOOF+a+KrG0le3ZHpjOctXCltptsRJ1JynrNmVQ
- vHIV/Gxcf1edCEVC8OwlAn+UMYIbPD4DISxsT+1Sutb0geoc8MM8i2ZlMRz3EsyTJLONaaQsBNxx
- VhE/WCEiVJFh+ByhIoH1OUR5rRDcmf85ACgb6LjgIQyHExvhKc+SLU36+VxT/gxmwZb2CEJAijQC
- h/ixUij9dsak6x+pFK/bLfYHIIv03B41iigGgoHXiMqrUGEHzb7HlEh41zBlJN+Pe5GjfkyhBLiM
- sdnulqtYv/eNE/nWKqJCbk6LS+CDFJzDYo/C0/hsElLnYv3uJVs3z9P/KCEVzCdb/z/6rZkmwyag
- JFauhsu9sAjUF2GY3o+UN+lY5kj7DzFlTd9Mg/fpTKmHm8swwawQJhdl9h0tZdMyZ+NZfzNlfxa4
- U=
+ bh=O2XE4lw8lRTZO91tPzs5hLNcmDOO/lAMqHonY1qYSvs=;
+ b=dLUk+7bquaq6c/x9RvBJ8aMGAblc1xmRBg00+54bdP8TY++k7Xcl+P6hmD8A0RH9cGcITfjBGR
+ qJNcR4kz4oQlBC55OG1uqP05EjBlK2mmweF274ruK/vS2vxMcorFDnkf6N8AyJMelLsurZzKf2Qq
+ aUZrhuT+wWNETSIkr6F+R1V+TpFlgD0TrvuEf0Fwd7XKNABMBw6loHXTOFdtfAJaNdGCPjqKlS42
+ dn+uCkl/O1FO1TtsWXgDZlBUkjVksj6VgPVbMNYg2X+K8yGSmgU/8/3xQA8YwR4KFXN7SJ2Pe5pv
+ jrJZU+8H2ptHhvJiqfLeKnzatmZ1P2l/KLwwZQZI2FlToFSJiopw7e+s1ATITbYczW+c3UtV37Ne
+ 2Hu7KXMP6yX0trgP5fiNK+KbCajSzzSbsTeVyGt8iOjs5EaLFmFNtxxe17YH7tGpS5SsJ1xaPsQ+
+ WxSYYo84Crtipa8UtmrlyGu6iWero1iu5yGpUeD//nUA/u4ruoS6mAVFDZCjgbV/pOzjy7JU9Mue
+ lpKKEDYO7QruohUF0PwJPeSXyRbuQi14lO/Hbi7RNmJH/GhOTY3iVWmB0elu6U1TZJu5fvPaM7CB
+ PYxH2p+X2XtTyGhaxkmEDjJ8MbZn/8OGkT59co3npZGVKaXaaNbY/dqqqVVN1Zjqt8sDfqmpomar
+ A=
 Received-SPF: pass client-ip=2001:1a50:11:0:c83f:a8ff:fea6:c8da;
  envelope-from=neither@nut.email; helo=mailgate01.uberspace.is
 X-Spam_score_int: -20
@@ -86,56 +83,65 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for RISC-V targets.
+This change places hooks for Renesas Xtreme targets.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/riscv/cpu_helper.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ target/rx/helper.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 3479a62cc7..10a10dcd90 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -36,6 +36,7 @@
- #include "cpu_bits.h"
- #include "debug.h"
- #include "pmp.h"
+diff --git a/target/rx/helper.c b/target/rx/helper.c
+index ce003af421..054bfdff57 100644
+--- a/target/rx/helper.c
++++ b/target/rx/helper.c
+@@ -22,6 +22,7 @@
+ #include "exec/log.h"
+ #include "accel/tcg/cpu-ldst.h"
+ #include "hw/irq.h"
 +#include "qemu/plugin.h"
  
- int riscv_env_mmu_index(CPURISCVState *env, bool ifetch)
+ void rx_cpu_unpack_psw(CPURXState *env, uint32_t psw, int rte)
  {
-@@ -2176,6 +2177,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-     uint64_t hdeleg = async ? env->hideleg : env->hedeleg;
-     const bool prev_virt = env->virt_enabled;
-     const target_ulong prev_priv = env->priv;
+@@ -46,6 +47,7 @@ void rx_cpu_do_interrupt(CPUState *cs)
+     CPURXState *env = cpu_env(cs);
+     int do_irq = cpu_test_interrupt(cs, INT_FLAGS);
+     uint32_t save_psw;
 +    uint64_t last_pc = env->pc;
-     target_ulong tval = 0;
-     target_ulong tinst = 0;
-     target_ulong htval = 0;
-@@ -2198,6 +2200,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-         case RISCV_EXCP_SEMIHOST:
-             do_common_semihosting(cs);
-             env->pc += 4;
-+            qemu_plugin_vcpu_hostcall_cb(cs, last_pc);
-             return;
- #endif
-         case RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT:
-@@ -2467,6 +2470,12 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-                         prev_priv, prev_virt);
-     }
  
-+    if (async) {
-+        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-+    } else {
-+        qemu_plugin_vcpu_exception_cb(cs, last_pc);
-+    }
+     env->in_sleep = 0;
+ 
+@@ -65,6 +67,7 @@ void rx_cpu_do_interrupt(CPUState *cs)
+             env->psw_ipl = 15;
+             cs->interrupt_request &= ~CPU_INTERRUPT_FIR;
+             qemu_set_irq(env->ack, env->ack_irq);
++            qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
+             qemu_log_mask(CPU_LOG_INT, "fast interrupt raised\n");
+         } else if (do_irq & CPU_INTERRUPT_HARD) {
+             env->isp -= 4;
+@@ -75,6 +78,7 @@ void rx_cpu_do_interrupt(CPUState *cs)
+             env->psw_ipl = env->ack_ipl;
+             cs->interrupt_request &= ~CPU_INTERRUPT_HARD;
+             qemu_set_irq(env->ack, env->ack_irq);
++            qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
+             qemu_log_mask(CPU_LOG_INT,
+                           "interrupt 0x%02x raised\n", env->ack_irq);
+         }
+@@ -92,6 +96,14 @@ void rx_cpu_do_interrupt(CPUState *cs)
+         } else {
+             env->pc = cpu_ldl_data(env, env->intb + (vec & 0xff) * 4);
+         }
 +
-     /*
-      * Interrupt/exception/trap delivery is asynchronous event and as per
-      * zicfilp spec CPU should clear up the ELP state. No harm in clearing
++        if (vec == 30) {
++            /* Non-maskable interrupt */
++            qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
++        } else {
++            qemu_plugin_vcpu_exception_cb(cs, last_pc);
++        }
++
+         switch (vec) {
+         case 20:
+             expname = "privilege violation";
 -- 
 2.49.1
 
