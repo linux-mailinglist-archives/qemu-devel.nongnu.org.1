@@ -2,93 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9660EB435A8
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB865B43564
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:18:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu5CZ-0002xq-IH; Thu, 04 Sep 2025 04:20:15 -0400
+	id 1uu5AU-0007nN-4m; Thu, 04 Sep 2025 04:18:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu5BE-0001Ld-Uh
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:18:54 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu5B2-0008E3-Fv
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:18:52 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-61d7b2ec241so850090a12.0
- for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:18:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756973917; x=1757578717; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KAGwXDyF/1AKLx4R1JOMrgUV4/JTqtegj/R8YLcIDOA=;
- b=SDjFisJa8gObiWwulJG/bCdjBmJ8iZ7eR6EVQ1tOtCVyaSH8b2u2S8TbcDUD898Fny
- ioLhs7YGh1nKeTV9Sz0eeYO9Ea1Ww7arLvHmHa4V5q9cI0Q4WiHI3YlWE6TIR44aYabh
- 2C+QuoHMCooZiz8j0q2pNr2txnNC3g7TjlydTyO4IJpf8tXArkYwBAxDKC1BC7JjAaSY
- BtL5+tvciM8ze0gtYy3iFthrbr2g1amXeIZlmsCVLCCbW1fCaW0HE1cR63a8OgnR1eZY
- R/BMKp4B/24Y26rkP9NOJPlhLxoxPN6Pvg8tRMNA5Y7GZOJ3GR4h/rhAkzmEEkIYCA0l
- zrnA==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1uu56Z-00008W-4o
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:14:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1uu56U-0006MH-48
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:14:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1756973634;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=MkcJo3I8OmlqqKYUwb5uJPZw7tJsahONSTnsQCylKp8=;
+ b=KTOwl3XtNmIXmTDJ6AFZ5jJ6QQGrnAcPgqdZzocGfz6NzhohODjEyzycnNLznKMfwpS9r3
+ PkPYWP0n5+mtVJM+l7kISvNtVkca0nEvB4au0Pwhin/wXdZjhzzk33LeiOBSXqlx/51vrJ
+ QIOPQAeewIGynY5dQx4BW7oIyH3PV6g=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-163-VzLdRqSzNRWPsSDrUpeANw-1; Thu, 04 Sep 2025 04:13:52 -0400
+X-MC-Unique: VzLdRqSzNRWPsSDrUpeANw-1
+X-Mimecast-MFC-AGG-ID: VzLdRqSzNRWPsSDrUpeANw_1756973632
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45b98de0e34so5862425e9.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:13:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756973917; x=1757578717;
+ d=1e100.net; s=20230601; t=1756973631; x=1757578431;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KAGwXDyF/1AKLx4R1JOMrgUV4/JTqtegj/R8YLcIDOA=;
- b=fhVSq9epHziHF2gCX3/HtjmOwaT9dFCbw4Sc6jETex5u6AY6gBsJMmXHBlIzQQqaIY
- ELCg4w1mvU8MhL6IPaP4EAV2Hv83hXZyYAMyhzppqh7YnfnglQFyPY3meKUVpANT9wRl
- TsM7tAlyj4/IAFLaIjKWvd0sxfE1NzjBse7ruYaXc6xmp7vslcuMsBABvoDX7tCJKtfL
- 5BU5CJRxs2eSrL4OZFhhbyDZwP9bepDHTb6Pi9SgMjg6P5ziE0MWCyDjNuqb5raLFxi0
- vygzpssI/SZ0rYpsLWphXsZuaq1k93bdnCEoY4gmuMtwJX9xuuJdjFp6CEHn9KB+BhD8
- rjhw==
-X-Gm-Message-State: AOJu0YxQNCrohRBZxpnAh3ajEs5XAihfTBePONPyngQNzWHkP0cvPXVl
- MesigGsOZbqbA9iVhnAIwcDtjW75m//szU5meIlUBFQR6Qzr84vLSTJgTMvBhyVsL8kmeA6ku+G
- pvjbolpvHWA==
-X-Gm-Gg: ASbGnctw7gvz3thxpBbVvtZL0/RXDF2bXVfJVnAwlPbD54+vzIhRD/lH9MAJWo84fQX
- QeRaOPSbrbvclLjTKYAezFPNHboeCLZ477tB61/BDPmgjuuABNmSatgkcCogHRSFhV4X4+GOInm
- u1AOP0S8h2MYuRGQ/B1qVlkVGEhZqIT2jz/mPqFnBazUzRBhP0sG0Enw1a42KjDLkQo7R7YPeAe
- ybBFE6MJy3It7IjVG8JsoL4dYqdgB+busMwoc512WtFgqcy2OUy8tHeaa6fcHPLpKuPZIW4MTI1
- jW199nZTIVJ9Ye1b+lUD3X2HDbIQKFh2pwEaTCLFdHR8zxAkC2GyrY42Md6mgZt5I2XxyIkdTdf
- OnBPiQQMYC9ju2TaAbeQpIcIg9gtc6YfVRg==
-X-Google-Smtp-Source: AGHT+IHQyUWubqPeLJ0M9z9vTQ+5D+O2ikTNYs3CHPwgi9fA0khEhQI3cpk36+oHIaMoZR69w7S6OA==
-X-Received: by 2002:a05:6402:1e90:b0:61e:c5d4:1435 with SMTP id
- 4fb4d7f45d1cf-61ec5d41547mr7877369a12.19.1756973917191; 
- Thu, 04 Sep 2025 01:18:37 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-61cfc575b94sm13125903a12.53.2025.09.04.01.18.33
+ bh=MkcJo3I8OmlqqKYUwb5uJPZw7tJsahONSTnsQCylKp8=;
+ b=gYU/K0t04j6ow3EYWOxmuROylXSPGh/xYczy4CNlEAwte9XQYbWLSNd+vKPbexXm2i
+ I9Gdr+499TMvng0bcdbNwYdBBYZL+OI/oJ7/ZahNl06fRsxhsp0LB7k7TPOlJWJL6fA3
+ edHXuVggLMs/b0dvJnlGgPDlfFP3CcX80yoOPXBwnwM+jzg3ptOikZDxKpqkDrZ2JSt3
+ crcUHwbJjhvSvAzc6zptM+6NuBmwbUHQ4CvqlfOituG//tItssiMOdwEKDxDq2d2stjw
+ TOvoChCYvaPI9ROKoebBaTT/5tsqGUNTyGBH3y5+rW7KVnAGYfWuwg8iGBLDKc2YfDqe
+ O9BA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVaXsil9FdF4mjyjHNsQPTxXdhFjzQOYqT4c/Twnyn2ibb9WWRtESj11ApqusWEeWmg3YVnyUh5gTNY@nongnu.org
+X-Gm-Message-State: AOJu0Yyh0DOe9pHeBXFxKZo4EXjWECK6ihwAykhOc/WctvqPMwwIobEh
+ BKTfpVsMubZwUI2uGXMusuPcLUZlNVQsGO5U0d1mrEOY3MUkKVI60SL2RlsTwbhEJbDH6z/TAjG
+ g30bO4lj0DX2HD457uwA9lyd1NPTbrWTN3UvmuyLhD8RqtB6zcJ0MqZaO
+X-Gm-Gg: ASbGncudQq/c5XkJUCF+e3LXzY2iVkTxG7Yydsi6CEdO3fXmw01ObiWh9FL/WCXGnt4
+ vKlAsKxuF88JMQMV+UtfAYVOtwvXa5nZdnDdPntzwzxPtR5Y4fbIbjlBLiVcTY8WJqJCuEMv2AH
+ JwBt2fa/87irosTbTL092J9HI74luXGOrjUIE/JfyPugyCSCZohNLO/2VWiA2+ozJwuwCqGxBW/
+ iaUjDWTvFhhiTFNUmiz/+VZK3k65bTyVf4Jr7iuVAHZ7+gfO//XNN9ublH72tpwYLddvQ/yxlbi
+ DvKspu8okW6pwsrDXXb+GPRH+Dtt6A==
+X-Received: by 2002:a05:600c:3115:b0:45b:81b4:1917 with SMTP id
+ 5b1f17b1804b1-45b8555c359mr158242845e9.10.1756973631512; 
+ Thu, 04 Sep 2025 01:13:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFMPM5qyRd3L7iOr32s/BucpbBt7pFDjMDDF/EzV0fdn7Oh7zQ2WNvFJf+TxzwL8aXQJiwoGA==
+X-Received: by 2002:a05:600c:3115:b0:45b:81b4:1917 with SMTP id
+ 5b1f17b1804b1-45b8555c359mr158242495e9.10.1756973631004; 
+ Thu, 04 Sep 2025 01:13:51 -0700 (PDT)
+Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b6f0c6dc1sm357473855e9.1.2025.09.04.01.13.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Sep 2025 01:18:34 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5AE7A60AE4;
- Thu, 04 Sep 2025 09:12:20 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH v2 1/4] hw/arm: use g_autofree for filename in arm_load_dtb
-Date: Thu,  4 Sep 2025 09:12:16 +0100
-Message-ID: <20250904081220.1944461-2-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250904081220.1944461-1-alex.bennee@linaro.org>
-References: <20250904081220.1944461-1-alex.bennee@linaro.org>
+ Thu, 04 Sep 2025 01:13:50 -0700 (PDT)
+Date: Thu, 4 Sep 2025 10:13:47 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Song Gao <gaosong@loongson.cn>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVk?=
+ =?UTF-8?B?w6k=?= <philmd@linaro.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Xianglai Li <lixianglai@loongson.cn>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 3/3] hw/loongarch/virt: Register reset interface with
+ CPU object
+Message-ID: <20250904101347.0599daab@fedora>
+In-Reply-To: <20250903023556.3082693-4-maobibo@loongson.cn>
+References: <20250903023556.3082693-1-maobibo@loongson.cn>
+ <20250903023556.3082693-4-maobibo@loongson.cn>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,46 +112,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The function has quite a number of exit cases so lets try and clean
-things up with g_autofree. As the fdt hasn't be allocated yet we can
-return directly from the fail point.
+On Wed,  3 Sep 2025 10:35:56 +0800
+Bibo Mao <maobibo@loongson.cn> wrote:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- hw/arm/boot.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+> With cpu hotplug is implemented on LoongArch virt machine, reset
+> interface with hot-added CPU should be registered. Otherwise there
+> will be problem if system reboots after cpu is hot-added.
+> 
+> Now register reset interface with CPU object is realized and remove
+> the reset interface with CPU object unrealizd.
+> 
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>  hw/loongarch/boot.c    | 13 -------------
+>  target/loongarch/cpu.c |  4 ++++
+>  2 files changed, 4 insertions(+), 13 deletions(-)
+> 
+> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+> index 5799b4c75c..a516415822 100644
+> --- a/hw/loongarch/boot.c
+> +++ b/hw/loongarch/boot.c
+> @@ -350,13 +350,6 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
+>      return kernel_entry;
+>  }
+>  
+> -static void reset_load_elf(void *opaque)
+> -{
+> -    LoongArchCPU *cpu = opaque;
+> -
+> -    cpu_reset(CPU(cpu));
+> -}
+> -
+>  static void fw_cfg_add_kernel_info(struct loongarch_boot_info *info,
+>                                     FWCfgState *fw_cfg)
+>  {
+> @@ -439,12 +432,6 @@ static void loongarch_direct_kernel_boot(MachineState *ms,
+>  void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info)
+>  {
+>      LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
+> -    int i;
+> -
+> -    /* register reset function */
+> -    for (i = 0; i < ms->smp.cpus; i++) {
+> -        qemu_register_reset(reset_load_elf, LOONGARCH_CPU(qemu_get_cpu(i)));
+> -    }
+>  
+>      info->kernel_filename = ms->kernel_filename;
+>      info->kernel_cmdline = ms->kernel_cmdline;
+> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+> index 3a7621c0ea..9edb8ebc4d 100644
+> --- a/target/loongarch/cpu.c
+> +++ b/target/loongarch/cpu.c
+> @@ -668,6 +668,9 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
+>  
+>      qemu_init_vcpu(cs);
+>      cpu_reset(cs);
+> + #ifndef CONFIG_USER_ONLY
+> +    qemu_register_resettable(OBJECT(dev));
+> + #endif
 
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index 1e57c4ab9ee..5d708255df6 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -553,20 +553,18 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
-     Error *err = NULL;
- 
-     if (binfo->dtb_filename) {
--        char *filename;
--        filename = qemu_find_file(QEMU_FILE_TYPE_DTB, binfo->dtb_filename);
-+        g_autofree char *filename = qemu_find_file(QEMU_FILE_TYPE_DTB,
-+                                                   binfo->dtb_filename);
-         if (!filename) {
-             fprintf(stderr, "Couldn't open dtb file %s\n", binfo->dtb_filename);
--            goto fail;
-+            return -1;
-         }
- 
-         fdt = load_device_tree(filename, &size);
-         if (!fdt) {
-             fprintf(stderr, "Couldn't open dtb file %s\n", filename);
--            g_free(filename);
-             goto fail;
-         }
--        g_free(filename);
-     } else {
-         fdt = binfo->get_dtb(binfo, &size);
-         if (!fdt) {
--- 
-2.47.2
+I'd put this in virt_cpu_plug() as last step, which should work both for
+cold and hotpluged cpus. And drop CONFIG_USER_ONLY while at it.
+
+with that
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+
+PS:
+the rest of the patches are very arch specific so I won't review them.
+
+>  
+>      lacc->parent_realize(dev, errp);
+>  }
+> @@ -678,6 +681,7 @@ static void loongarch_cpu_unrealizefn(DeviceState *dev)
+>  
+>  #ifndef CONFIG_USER_ONLY
+>      cpu_remove_sync(CPU(dev));
+> +    qemu_unregister_resettable(OBJECT(dev));
+>  #endif
+>  
+>      lacc->parent_unrealize(dev);
 
 
