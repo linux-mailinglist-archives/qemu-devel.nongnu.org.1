@@ -2,95 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1323B4422D
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 18:06:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 442F2B44260
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 18:13:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuCR7-0006T8-Hs; Thu, 04 Sep 2025 12:03:46 -0400
+	id 1uuCY1-0002Tz-Cz; Thu, 04 Sep 2025 12:10:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uuCQH-0006QT-SO; Thu, 04 Sep 2025 12:02:54 -0400
-Received: from isrv.corpit.ru ([212.248.84.144])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1uuCXx-0002T6-0b
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 12:10:49 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uuCQ9-0007XV-I7; Thu, 04 Sep 2025 12:02:53 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7A87714FD94;
- Thu, 04 Sep 2025 19:02:27 +0300 (MSK)
-Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A30D9271C8C;
- Thu,  4 Sep 2025 19:02:27 +0300 (MSK)
-Message-ID: <7e761eec-1dc1-4891-8ff4-edbff0485268@tls.msk.ru>
-Date: Thu, 4 Sep 2025 19:02:27 +0300
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1uuCXq-0001NK-5d
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 12:10:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References;
+ bh=sydaIQXWDcJvZFDqnCOF4NsTDZeP+BOGQa6B2fbrJRQ=; b=Fyv4U5IU/VmDS7eMc7ML8xxIDm
+ c5U+sFnMwBtmG0Xe1DhcUkF8+zRlAliL6bNqVGFD/x9/xE1FfLaEngZK+UWWIMv+QWDD/Qcktckuf
+ 4rhwOUgz6BfOkTTN1h9+qqD5hSVtqzS5byWUfAJ4ttcqOHITsmEhctQ25o/IiODWeipTve7N9zkQc
+ /OsL1PMsgO+0u3Ix25Po4NHSA5ZpiN9/ZFFj4/T76MrlDHAb2/ZBes81wTQapvvJIaWYh1Eqz3C68
+ p9o+ScDy6cmnqFysFIBTfYzTC6Bj+6yuEw8aZDZPtAfNTHS6VeVXsWm+asvf4YwNT7SNA7p5ajh78
+ s0VcHrNnue89Co/sG/CLqj22eaSG2azG0zQo6G9pCEkYFVKrrZFMN+gY+kWrDrhdddHSWxTsQjbjD
+ IEWbZii4yf2BR3df4oRD5zZKSzq7S3oPmYkJz3Z5mXYZB7XxSOZGoc1QJZrELogerGwwAnzdxX5K2
+ qjXQ5OfhcH9TYpKfe6Gc6KtJ07ZBcdzBvyIY6TvP4R0QYAeDOkJo3iJ0uK6wCzFdFju62G/l2xfap
+ ipuCEbYRDUiKyaRpArMdqRW69ezeOfXlpB69Vq4PGQOR1RuSNSOFJIWWBoU20bKuBN6wTVyxubzs4
+ ZrV0kBIgS6kbZp5AuKKpyWskHCZ5fRXoNjdJJ36a8=;
+Received: from [131.175.126.3] (helo=cheesecake.dot1x.polimi.it)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1uuCVm-0001Zv-Nb; Thu, 04 Sep 2025 17:08:35 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: richard.henderson@linaro.org,
+	qemu-devel@nongnu.org
+Date: Thu,  4 Sep 2025 17:10:26 +0100
+Message-Id: <20250904161026.804239-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] e1000e: Prevent crash from legacy interrupt firing
- after MSI-X enable
-To: Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- qemu-stable <qemu-stable@nongnu.org>
-References: <20250807110806.409065-1-lvivier@redhat.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- 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
-In-Reply-To: <20250807110806.409065-1-lvivier@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 131.175.126.3
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH] target/sparc: allow partial decode of v8 STBAR instructions
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,55 +73,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07.08.2025 14:08, Laurent Vivier wrote:
-> A race condition between guest driver actions and QEMU timers can lead
-> to an assertion failure when the guest switches the e1000e from legacy
-> interrupt mode to MSI-X. If a legacy interrupt delay timer (TIDV or
-> RDTR) is active, but the guest enables MSI-X before the timer fires,
-> the pending interrupt cause can trigger an assert in
-> e1000e_intmgr_collect_delayed_causes().
-> 
-> This patch removes the assertion and executes the code that clears the
-> pending legacy causes. This change is safe and introduces no unintended
-> behavioral side effects, as it only alters a state that previously led
-> to termination.
-> 
-> - when core->delayed_causes == 0 the function was already a no-op and
->    remains so.
-> 
-> - when core->delayed_causes != 0 the function would previously
->    crash due to the assertion failure. The patch now defines a safe
->    outcome by clearing the cause and returning. Since behavior after
->    the assertion never existed, this simply corrects the crash.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1863
-> Suggested-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Solaris 8 appears to have a bug whereby it executes v9 MEMBAR instructions
+when booting a freshly installed image. According to the SPARC v8
+architecture manual, whilst bits 14 and bits 13-0 of the "Read State Register
+Instructions" are notionally zero, they are marked as unused (i.e. ignored).
+In effect the v9 MEMBAR instruction becomes a v8 STBAR instruction on a 32-bit
+SPARC CPU.
 
-It feels like this is a qemu-stable material.  Picking it up for
-10.0 & 10.1.  And for 7.2 too.
+Adjust the avail_32() logic in trans_MEMBAR() so that if a v9 MEMBAR
+instruction is executed on 32-bit SPARC, the equivalent of a v8 STBAR
+instruction is executed instead.
 
-Please let me know if I shouldn't.
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Fixes: af25071c1d ("target/sparc: Move RDASR, STBAR, MEMBAR to decodetree")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3097
+---
+ target/sparc/translate.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-Thanks,
-
-/mjt
-
-> diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-> index 24138587905b..06657bb3ac5c 100644
-> --- a/hw/net/e1000e_core.c
-> +++ b/hw/net/e1000e_core.c
-> @@ -341,11 +341,6 @@ e1000e_intmgr_collect_delayed_causes(E1000ECore *core)
->   {
->       uint32_t res;
->   
-> -    if (msix_enabled(core->owner)) {
-> -        assert(core->delayed_causes == 0);
-> -        return 0;
-> -    }
-> -
->       res = core->delayed_causes;
->       core->delayed_causes = 0;
->   
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index b922e53bf1..9efefe41c6 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -2832,7 +2832,15 @@ static bool trans_STBAR(DisasContext *dc, arg_STBAR *a)
+ static bool trans_MEMBAR(DisasContext *dc, arg_MEMBAR *a)
+ {
+     if (avail_32(dc)) {
+-        return false;
++        /*
++         * At least Solaris 8 executes v9 MEMBAR instructions such as
++         * 0x8143e008 during boot. According to the SPARC v8 architecture
++         * manual, bits 13 and 12-0 are unused (notionally zero) so in
++         * this case if we assume the unused bits are not decoded then
++         * the instruction becomes 0x8143c000, or the equivalent of STBAR.
++         */
++        tcg_gen_mb(TCG_MO_ST_ST | TCG_BAR_SC);
++        return advance_pc(dc);
+     }
+     if (a->mmask) {
+         /* Note TCG_MO_* was modeled on sparc64, so mmask matches. */
+-- 
+2.39.5
 
 
