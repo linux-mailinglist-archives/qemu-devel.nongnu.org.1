@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4813FB43552
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5227B435AF
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:26:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu54S-00065K-MX; Thu, 04 Sep 2025 04:11:52 -0400
+	id 1uu54X-0006As-9n; Thu, 04 Sep 2025 04:11:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu54O-00061n-J9
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:11:48 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ id 1uu54T-00066y-Qa
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:11:54 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu54E-0003yB-AL
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:11:48 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-b0411b83aafso113382266b.1
- for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:11:37 -0700 (PDT)
+ id 1uu54G-0003z1-9d
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:11:53 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-6188b5ad4f0so1271189a12.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:11:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756973496; x=1757578296; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756973497; x=1757578297; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Wv6wFcI7G6DdUK88SJsbLfMk3oLK1TTP1R3ujLyoIqI=;
- b=xND+ov8P5ZGHcV+/GUR6bYVVW/kDrnqx9OdTmD2lEtbKBiz4kdH43aFg5jj1zD7BXY
- YvV2pTdq4ND9bLAUUTo0YTcojSdb5doPjPpsQA3SCQx9VBASE7zw5Yji0DhWXJ4TYLTB
- 4e0mfeuiDaUIPuzygT/7L284IcYAuiACsrDoIpoQcRBE6oGncIGkveTbBEPIuuMEqOoW
- s7YCKNTVVF3q60ECjtsa9O3lL6u2p+wa3TUFytmk53K/5d1O0FiS2dCw14yRD0SNy719
- 0nxjtUwrct++lR7VP+2OYkbUk6pH7z9wzAZvITB3A+GYXSlbuJgg2Laizv3yz0YvF7Lr
- HhLw==
+ bh=npkBvBgQubJv2X1tCwkde0FzzeXErtznEAkpfHdfgYk=;
+ b=YJSqYBGfJzloAoEmG4V4W4s/srpTTlggN2pwLVIhrqC0ZPRVs+AUNZxQ8tOoi40Hld
+ 9KPpn+z2rxryeH4fczClJx/AXVQ15eixEPElawdRXTBsBJzkbbPf5mNmZRTqaII/29QP
+ GaqF7dDlMRi1zoBQHHbCutZ5Ar1Y/fNqfCiMno2IQRYGk+hhTfxU91rwAQKJYmOW/1My
+ pfys+jbx2MoxgjBb9DDosJiBMG2rU11sQyZKYiwOfYsoOH1KVA2bu1dkNhE/bRc1v4w8
+ riNwQxQiZc4SGEkvKlV2/FSp4/n4Tx53/zrAl7o8f2AYAJ5rhpfdyLupqr4gl7OAzqa1
+ hHmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756973496; x=1757578296;
+ d=1e100.net; s=20230601; t=1756973497; x=1757578297;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Wv6wFcI7G6DdUK88SJsbLfMk3oLK1TTP1R3ujLyoIqI=;
- b=eFWrj8Zi5lf0IqWwA02reZ1z3Y7Eit6awMq6VFgbfdMVWXKEunbzbOCSRZzrr3R0oO
- v5ROKmG67C1vEj59qX1SacTi0NkbAAJpfdH3EY9fQ7RC3/vSp/Yrtux57y24By7p5INs
- lEeBDsB5JlAEGRgVpGC3ypu2BNLbcLdRVWOM4yJQPONeVI9a2PRs0lfQ8RkpzUtYoGzJ
- 9GMFqDKfxnOFNml1LcUfcSSHbLq67Btw19m3le2C5gNW3oniry/PCzr/VhNPP9u2PYFv
- goPSpoPJPiVrntsBIbDzSDSPdhAxe6ZsAk+TMxyiL5Ym/QilFoD1aiKbUxECht60ON4x
- FzQg==
-X-Gm-Message-State: AOJu0Ywi0WQ3EjOR8V6XN9fiJVTh/DuR6k7WnLHLZMNew1E6dVtbeghl
- rwX9EWoV4iSJZumKIMxq/MiLU5u3DVq/0CKRb+y2QUHhTG53+g6NGlX1XhR8XNdkD1ByMcPqab9
- m/HREfG1O1A==
-X-Gm-Gg: ASbGncv1D+hMngSUXA0BRQO4Qrf4wcorfo0Mp6Pg+EyLkHedfx+xmzn/qA4CAPEIEUc
- JlQfROksu98PoskHf7xsXLQS9wdJWe1WRPUXQ46AL72K3FcjWvTYPf+ojcYwMX29pjFn9MuYLtO
- 4afEYPEoR5iqglqt1rwSx5QlUfYnSQcvaFkfYAeVv5nFCNvjQeDGShpNDF7sNCoCQSXe8IA9p+j
- 9oMscJrGfKULX27wdMFNSCdEDN6FPbsJA5fxHGI8JHCeGufPCxnnh/bvlzU5bGQZRWUqMk+0jAW
- PwHN1bOod3cB6q/kV2RywkBPDr3gJF5uW4ENN1SpHc0oeIgO+GhCppqWxKT+z/bhaAssXKVKb7W
- RE3IxiPJetZCk0XPV7ze53XH1yTO44o62Iw==
-X-Google-Smtp-Source: AGHT+IElPpn0KvMqOR0Q75Gfkj0ncOLp1bLOMMk7oeP9JIeBPVNdyXvx2TH7ciqYVtSvBIeB+x6WBg==
-X-Received: by 2002:a17:906:7953:b0:b04:813e:491 with SMTP id
- a640c23a62f3a-b04813e1a1amr139359366b.12.1756973495570; 
- Thu, 04 Sep 2025 01:11:35 -0700 (PDT)
+ bh=npkBvBgQubJv2X1tCwkde0FzzeXErtznEAkpfHdfgYk=;
+ b=JiwEKHeb7Leq6LS9qgQQY4QkBUOZkUh85W5w8jdLJPW8hMm8Fs22Zg9e/KJMdf7dxv
+ sT7183QA9PUDjyT9nuQPS6sgpYujq6LwUw1/PeMgRR8JmGF4gxCSYGrEIsSG4Io9YwBd
+ cqJwGhh3AARLmb71kIIUioJDJlSRUcOg9nLh86oJ20Kf/g9T9r8E758ttJZxPXhdLsVy
+ lBz7KYKdjsnzKqQzYuWLZfmkt+nHsEhx8ekAk8IvMBDVobN/YMn1yZOTZtSaYIAKDlTW
+ /axXFsmVRM+2QWdl0j5Yb0/wniaDVqIYJU8cIoQH2hZgec3P7ZHz2iQuvzelZ3QLaj40
+ F3gQ==
+X-Gm-Message-State: AOJu0YzwqakRbIYT1qsvWT06PI4Ofxo5pX1dBFCNuBspZGrZLFfZD+t8
+ KBMtaeP0lxFe9M4ktoP4fW9bDEdTS33mcM7t5NUZ1epWd8Fj6G/kPc+TXeIrpIwmMZxazkM6vyr
+ lzs+T9qQKXg==
+X-Gm-Gg: ASbGncst9YOXx0Vai09aoLnXgoWXxslU55aSQywYCk+FhV1t1cqyxRjIxZzbo6bHa/A
+ /PjZ2DRC7jfiAfZOi2ZmzCALQiGUjJlGO6nuCPq7pWFTyqT6vHhfFp5QxxaQMffT0t3Rrxl7Fia
+ AXTHInGGKmBU6PtltTElWsIFak+cROfD7Er+uMN6Y3h6jS43lJ9vpmnz05D4JR+EqFqCEvaxQHx
+ AVcUp+0LCgHWOmlQxnMGc87X+sAWoINRbKdK4mqorw7RhoTilo5z4gGjJVHSz4gVYJU7G4482GZ
+ pJQW9a17CP5z1Wn2CxE+5+f21ucIUqJ9wycenWXvP03XqUcYdkA3EsCzNs3rZHLbs+1lXDQdMHh
+ bQwxUhtNgYr35yQGv7Q7oNYE=
+X-Google-Smtp-Source: AGHT+IGEHcZDYSofdWUr8Bqng6QeMWXp/4Bc/tOlM+ePo4sSl/15T602ad6FUMUNNzOlh6Biq8rLZw==
+X-Received: by 2002:a17:907:c1f:b0:af6:a10a:d795 with SMTP id
+ a640c23a62f3a-b01df90c1e4mr1937783366b.55.1756973496744; 
+ Thu, 04 Sep 2025 01:11:36 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b0484e8a4a1sm55305766b.83.2025.09.04.01.11.31
+ a640c23a62f3a-aff9918dbd2sm1326671166b.103.2025.09.04.01.11.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 04 Sep 2025 01:11:32 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 9A3B85F92F;
+ by draig.lan (Postfix) with ESMTP id B4E6D5F937;
  Thu, 04 Sep 2025 09:11:28 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -126,19 +126,19 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>, John Levon <john.levon@nutanix.com>,
- qemu-stable@nongnu.org
-Subject: [PATCH v2 004/281] python: mkvenv: fix messages printed by mkvenv
-Date: Thu,  4 Sep 2025 09:06:38 +0100
-Message-ID: <20250904081128.1942269-5-alex.bennee@linaro.org>
+ Nicholas Piggin <npiggin@gmail.com>, John Levon <john.levon@nutanix.com>
+Subject: [PATCH v2 005/281] MAINTAINERS: add a few more files to "Top Level
+ Makefile and configure"
+Date: Thu,  4 Sep 2025 09:06:39 +0100
+Message-ID: <20250904081128.1942269-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=true
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -163,45 +163,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-The new Matcher class does not have a __str__ implementation, and therefore
-it prints the debugging representation of the internal object:
+A few files in scripts, and the list of packages in pythondeps.toml, are
+strictly related to the toplevel build scripts.  Add them to the
+MAINTAINERS file stanza.
 
-  $ ../configure --enable-rust && make qemu-system-arm --enable-download
-  python determined to be '/usr/bin/python3'
-  python version: Python 3.13.6
-  mkvenv: Creating non-isolated virtual environment at 'pyvenv'
-  mkvenv: checking for LegacyMatcher('meson>=1.5.0')
-  mkvenv: checking for LegacyMatcher('pycotap>=1.1.0')
-
-Add the method to print the nicer
-
-  mkvenv: checking for meson>=1.5.0
-  mkvenv: checking for pycotap>=1.1.0
-
-Cc: qemu-stable@nongnu.org
-Cc: John Snow <jsnow@redhat.com>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- python/scripts/mkvenv.py | 4 ++++
- 1 file changed, 4 insertions(+)
+ MAINTAINERS | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index f102527c4de..9aed266df1b 100644
---- a/python/scripts/mkvenv.py
-+++ b/python/scripts/mkvenv.py
-@@ -184,6 +184,10 @@ def match(self, version_str: str) -> bool:
-             )
-         )
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a07086ed762..0f3e55b51e8 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4392,7 +4392,6 @@ R: Philippe Mathieu-Daudé <philmd@linaro.org>
+ S: Maintained
+ F: meson.build
+ F: meson_options.txt
+-F: scripts/meson-buildoptions.*
+ F: scripts/check_sparse.py
+ F: scripts/symlink-install-tree.py
  
-+    def __str__(self) -> str:
-+        """String representation delegated to the backend."""
-+        return str(self._m)
-+
-     def __repr__(self) -> str:
-         """Stable debug representation delegated to the backend."""
-         return repr(self._m)
+@@ -4403,6 +4402,9 @@ R: Thomas Huth <thuth@redhat.com>
+ S: Maintained
+ F: Makefile
+ F: configure
++F: pythondeps.toml
++F: scripts/git-submodule.sh
++F: scripts/meson-buildoptions.*
+ F: scripts/mtest2make.py
+ F: tests/Makefile.include
+ 
 -- 
 2.47.2
 
