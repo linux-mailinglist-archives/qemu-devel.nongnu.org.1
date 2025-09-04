@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0E5B437F3
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 12:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E611B437EE
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 12:08:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu6rA-00041e-Cq; Thu, 04 Sep 2025 06:06:16 -0400
+	id 1uu6rD-0004Ib-5B; Thu, 04 Sep 2025 06:06:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uu6r7-0003wr-7v; Thu, 04 Sep 2025 06:06:13 -0400
+ id 1uu6rB-0004Ap-67; Thu, 04 Sep 2025 06:06:17 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uu6r0-0004eu-KL; Thu, 04 Sep 2025 06:06:11 -0400
+ id 1uu6r8-0004eu-Tq; Thu, 04 Sep 2025 06:06:16 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 4 Sep
@@ -31,11 +31,13 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <thuth@redhat.com>, Kane-Chen-AS
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 0/4] tests/functional/arm: Update test images for ASPEED
- chips
-Date: Thu, 4 Sep 2025 18:05:51 +0800
-Message-ID: <20250904100556.1729604-1-kane_chen@aspeedtech.com>
+Subject: [PATCH v1 1/4] tests/functional/arm: Update test ASPEED SDK v03.02
+ for AST1030
+Date: Thu, 4 Sep 2025 18:05:52 +0800
+Message-ID: <20250904100556.1729604-2-kane_chen@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250904100556.1729604-1-kane_chen@aspeedtech.com>
+References: <20250904100556.1729604-1-kane_chen@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -46,7 +48,7 @@ X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,28 +68,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
-Hi all,
-
-This series refreshes ASPEED functional tests to newer upstream images.
-No functional changes beyond asset bumps and test name/paths updates.
-
-Any feedback or suggestions are appreciated!
-
-Kane
+Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 ---
-Kane-Chen-AS (4):
-  tests/functional/arm: Update test ASPEED SDK v03.02 for AST1030
-  tests/functional/arm: Update test ASPEED SDK v09.07 for AST2500
-  tests/functional/arm: Update test ASPEED SDK v09.07 for AST2600
-  tests/functional/arm: Update test ASPEED SDK v09.07 for AST2700
-    vbootrom
+ tests/functional/arm/test_aspeed_ast1030.py | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
- tests/functional/aarch64/test_aspeed_ast2700.py |  8 ++++++--
- tests/functional/arm/test_aspeed_ast1030.py     | 12 ++++++------
- tests/functional/arm/test_aspeed_ast2500.py     |  8 ++++----
- tests/functional/arm/test_aspeed_ast2600.py     |  8 ++++----
- 4 files changed, 20 insertions(+), 16 deletions(-)
-
+diff --git a/tests/functional/arm/test_aspeed_ast1030.py b/tests/functional/arm/test_aspeed_ast1030.py
+index 77037f0179..42126b514f 100755
+--- a/tests/functional/arm/test_aspeed_ast1030.py
++++ b/tests/functional/arm/test_aspeed_ast1030.py
+@@ -12,17 +12,17 @@
+ 
+ class AST1030Machine(LinuxKernelTest):
+ 
+-    ASSET_ZEPHYR_3_00 = Asset(
++    ASSET_ZEPHYR_3_02 = Asset(
+         ('https://github.com/AspeedTech-BMC'
+-         '/zephyr/releases/download/v00.03.00/ast1030-evb-demo.zip'),
+-        '37fe3ecd4a1b9d620971a15b96492a81093435396eeac69b6f3e384262ff555f')
++         '/zephyr/releases/download/v00.03.02/ast1030-evb-demo.zip'),
++        '1ec83caab3ddd5d09481772801be7210e222cb015ce22ec6fffb8a76956dcd4f')
+ 
+-    def test_ast1030_zephyros_3_00(self):
++    def test_ast1030_zephyros_3_02(self):
+         self.set_machine('ast1030-evb')
+ 
+-        kernel_name = "ast1030-evb-demo/zephyr.elf"
++        kernel_name = "ast1030-evb-demo-3/zephyr.elf"
+         kernel_file = self.archive_extract(
+-            self.ASSET_ZEPHYR_3_00, member=kernel_name)
++            self.ASSET_ZEPHYR_3_02, member=kernel_name)
+ 
+         self.vm.set_console()
+         self.vm.add_args('-kernel', kernel_file, '-nographic')
 -- 
 2.43.0
 
