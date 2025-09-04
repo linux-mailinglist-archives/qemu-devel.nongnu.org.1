@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610FBB437F1
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 12:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 784E8B437EF
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 12:08:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu6rK-0004T2-AG; Thu, 04 Sep 2025 06:06:26 -0400
+	id 1uu6rY-0004Z8-QR; Thu, 04 Sep 2025 06:06:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uu6rH-0004S0-Ot; Thu, 04 Sep 2025 06:06:23 -0400
+ id 1uu6rM-0004Uc-Ae; Thu, 04 Sep 2025 06:06:28 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1uu6rC-0004eu-3i; Thu, 04 Sep 2025 06:06:23 -0400
+ id 1uu6rK-0004eu-0u; Thu, 04 Sep 2025 06:06:28 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 4 Sep
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <thuth@redhat.com>, Kane-Chen-AS
  <kane_chen@aspeedtech.com>
-Subject: [PATCH v1 2/4] tests/functional/arm: Update test ASPEED SDK v09.07
- for AST2500
-Date: Thu, 4 Sep 2025 18:05:53 +0800
-Message-ID: <20250904100556.1729604-3-kane_chen@aspeedtech.com>
+Subject: [PATCH v1 3/4] tests/functional/arm: Update test ASPEED SDK v09.07
+ for AST2600
+Date: Thu, 4 Sep 2025 18:05:54 +0800
+Message-ID: <20250904100556.1729604-4-kane_chen@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250904100556.1729604-1-kane_chen@aspeedtech.com>
 References: <20250904100556.1729604-1-kane_chen@aspeedtech.com>
@@ -70,32 +70,32 @@ From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
 Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 ---
- tests/functional/arm/test_aspeed_ast2500.py | 8 ++++----
+ tests/functional/arm/test_aspeed_ast2600.py | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/functional/arm/test_aspeed_ast2500.py b/tests/functional/arm/test_aspeed_ast2500.py
-index 6923fe8701..4fdd81e2f9 100755
---- a/tests/functional/arm/test_aspeed_ast2500.py
-+++ b/tests/functional/arm/test_aspeed_ast2500.py
-@@ -37,14 +37,14 @@ def test_arm_ast2500_evb_buildroot(self):
+diff --git a/tests/functional/arm/test_aspeed_ast2600.py b/tests/functional/arm/test_aspeed_ast2600.py
+index fdae4c939d..129695ca4e 100755
+--- a/tests/functional/arm/test_aspeed_ast2600.py
++++ b/tests/functional/arm/test_aspeed_ast2600.py
+@@ -97,14 +97,14 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
  
          self.do_test_arm_aspeed_buildroot_poweroff()
  
--    ASSET_SDK_V906_AST2500 = Asset(
--        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2500-default-obmc.tar.gz',
--        '542db84645b4efd8aed50385d7f4dd1caff379a987032311cfa7b563a3addb2a')
-+    ASSET_SDK_V907_AST2500 = Asset(
-+        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2500-default-obmc.tar.gz',
-+        'd52bcc279a37c8d7679b3e4ef22cc77c36f0f6624c687b37334f798828afb077')
+-    ASSET_SDK_V906_AST2600 = Asset(
+-        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2600-default-obmc.tar.gz',
+-        '768d76e247896ad78c154b9cff4f766da2ce65f217d620b286a4a03a8a4f68f5')
++    ASSET_SDK_V907_AST2600 = Asset(
++        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2600-default-obmc.tar.gz',
++        'cb6c08595bcbba1672ce716b068ba4e48eda1ed9abe78a07b30392ba2278feba')
  
-     def test_arm_ast2500_evb_sdk(self):
-         self.set_machine('ast2500-evb')
+     def test_arm_ast2600_evb_sdk(self):
+         self.set_machine('ast2600-evb')
  
--        self.archive_extract(self.ASSET_SDK_V906_AST2500)
-+        self.archive_extract(self.ASSET_SDK_V907_AST2500)
+-        self.archive_extract(self.ASSET_SDK_V906_AST2600)
++        self.archive_extract(self.ASSET_SDK_V907_AST2600)
  
-         self.do_test_arm_aspeed_sdk_start(
-             self.scratch_file("ast2500-default", "image-bmc"))
+         self.vm.add_args('-device',
+             'tmp105,bus=aspeed.i2c.bus.5,address=0x4d,id=tmp-test')
 -- 
 2.43.0
 
