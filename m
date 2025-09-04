@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26692B44699
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 21:40:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A301B48F47
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 15:20:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuFnW-0002u7-LS; Thu, 04 Sep 2025 15:39:06 -0400
+	id 1uvblC-0001Pa-Kb; Mon, 08 Sep 2025 09:18:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1uuFnT-0002tc-3J
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 15:39:03 -0400
-Received: from mail-qk1-x736.google.com ([2607:f8b0:4864:20::736])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1uuFnP-0004nL-Ey
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 15:39:02 -0400
-Received: by mail-qk1-x736.google.com with SMTP id
- af79cd13be357-81076e81a23so49073985a.3
- for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 12:38:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1757014736; x=1757619536; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zlwcQ9iBpWQwDKBRpIv1lZWDKLzWmBPuOfOcu4urf20=;
- b=LyArW9D1+Qdtwfm/BOerNIz+5TsOE8vL035TSBLG+hLuZWZb0pKjElo51dBYzU/fSj
- JHlB9wM+VqIYXv5B9VLCDQQMLC56A9ax2W23tV04xeHuMoKTeNDNEf/tzVl8z2Z707yy
- Nx1gVwuqUFOdtUZVRF6D6Pj1Nf5NN/J4quHxDES7veiVEQxYwlV8eRtJOt97oWXJ3XYn
- b7k2cunpcxf4pq8gFj28Mkt4Y3ilXlfjExKrXd0ztehg/NlNNFijNwUxfnK9xi64Pvp+
- 53AVfG6diJt05wsE6KXUM5Fdy9rqEhnherp8PESWu+Qp6vvh2KTmIISe8/Eoh1c6dpeq
- xsZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757014736; x=1757619536;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zlwcQ9iBpWQwDKBRpIv1lZWDKLzWmBPuOfOcu4urf20=;
- b=irAPYLjT22Nky6vE1i05a/fgQNmvudywsYhJ6P+9k+Ms7Nu8IBJC63quZDe0JyZ9ul
- ZZhf4z7kyiRYRp2UzQC4I02sa5nRzu6vh+xwRPqlivkiYm63tWa/G7Ibtwb9p0ERDbtW
- 7BDWXuTKqutTJYr1pLWnp/z0MAKsn9fFu5qDxgkfVzg6RJcDEcuGlPjvlCw9QQY4ucYi
- lQ7BM/V9HvdPMOtFb0ysZkToYpD7m8qkb05aVq6erJjyXRWV3P6ZmKzAG3g40SIDg+1Q
- QFMaPr/yCBoUgnndjJgNO3D/3lbuJy0xmPoTjHRfZMiiRawB/6+oVS6vJmNG9CrsabfU
- hDLA==
-X-Gm-Message-State: AOJu0YyOrVKFKdkgdMS1hBMtOk/buL0NAgztSzCQcBnsA61CU0iJsQY+
- W6eLrDZD016jyxxt2YUMo2tKI7CloPO72vDSIVRnIwvulIXpCSu3f5UZW3FZtVkwSqM8E3/MZob
- VgkWSmvUMKEIqZzP/zZr73juVCQPpMGg=
-X-Gm-Gg: ASbGncsLWt9baVKgjaH2ZeUgunGAbLNCscmdEtqOVq9VRsYEkz9fwCIpIpZMh9RgtMu
- Syr5tpNXz9uG82kKDNamCQgDJY50WhemcDiqCewMlX2BHov6Sltb9tBTx/HBBshLBPnfe/U1JhW
- UjJomjytG+Mg4GIt7dvz1Wjn4sr8M63WktC96fI29ID7A/4yO08qcnPQyZ8X/ySHhh78xBMNpKx
- DIBC/YziA25tfk0nNvEvrIK
-X-Google-Smtp-Source: AGHT+IFDcGIZj2VLW4xf5NTMGQWrLg3kWrIOiRersPsjOmjzRMxkFt2hld8KBagqGAxqWiDR6j76ojWUYPlgVbxwJQU=
-X-Received: by 2002:a05:620a:454d:b0:807:c011:4d94 with SMTP id
- af79cd13be357-807c0114e51mr1138573285a.15.1757014735649; Thu, 04 Sep 2025
- 12:38:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uvbl4-0001MK-8f
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 09:18:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uvbkh-0000XO-UL
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 09:18:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757337455;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pJAbJMVZVyzAKM99Gi+nIm58temUD7N50bpfdgXIpKw=;
+ b=UNsUJNp6k1LT/6cZaTOul73ywfSsIwQfn3HwQNUSF2VySTCzLb+dychujbct3G9LbWPB4W
+ Uhz3rc1gVq0eVyYPl3276RMHVG7nly5JwDpK+TH9FKNvWpuo1XTXpp799t/SzRpHAAvco3
+ PZz1K9zhUmzLB205IcKXGObF9WwpdWA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-208-CFruAQNIM_O0UzT9ePg6mw-1; Mon,
+ 08 Sep 2025 09:17:31 -0400
+X-MC-Unique: CFruAQNIM_O0UzT9ePg6mw-1
+X-Mimecast-MFC-AGG-ID: CFruAQNIM_O0UzT9ePg6mw_1757337449
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AF596195608B; Mon,  8 Sep 2025 13:17:28 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.148])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6A7F71800452; Mon,  8 Sep 2025 13:17:26 +0000 (UTC)
+Date: Thu, 4 Sep 2025 21:47:31 +0200
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Wilfred Mallawa <wilfred.opensource@gmail.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+ Jesper Devantier <foss@defmacro.it>, Fam Zheng <fam@euphon.net>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org, dlemoal@kernel.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Subject: Re: [PATCH v4 3/5] hw/nvme: add NVMe Admin Security SPDM support
+Message-ID: <20250904194731.GB122855@fedora>
+References: <20250904031058.367667-2-wilfred.opensource@gmail.com>
+ <20250904031058.367667-5-wilfred.opensource@gmail.com>
 MIME-Version: 1.0
-References: <20250506152927.222671-1-pbonzini@redhat.com>
- <20250506152927.222671-2-pbonzini@redhat.com>
- <CAJ+F1CKZr2PZbXvi8OZ9O=QaGv4WUmLPofBzqDv4VAV64y9EnA@mail.gmail.com>
- <1546553e-a21a-4a0a-8bcc-6c4e23ff35e2@redhat.com>
-In-Reply-To: <1546553e-a21a-4a0a-8bcc-6c4e23ff35e2@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 4 Sep 2025 23:38:43 +0400
-X-Gm-Features: Ac12FXxSdQm_oqj3GYB2KoXhHZGd7o38uNd9QP6n0WYnv0x7muc-Xe_8iZH_eCY
-Message-ID: <CAJ+F1CL+TxyRN0P2njCBRLigKe1tO1CyNOuCP1L5LHwE5FMEsQ@mail.gmail.com>
-Subject: Re: [PULL 01/30] lcitool: use newer Rust for Debian and Ubuntu
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::736;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x736.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="NLVjvN3KEsUWxDgy"
+Content-Disposition: inline
+In-Reply-To: <20250904031058.367667-5-wilfred.opensource@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,38 +92,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
 
-On Wed, Sep 3, 2025 at 5:59=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
-wrote:
->
-> On 9/3/25 15:54, Marc-Andr=C3=A9 Lureau wrote:
-> > Hi Paolo
-> >
-> > On Tue, May 6, 2025 at 7:30=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.c=
-om> wrote:
-> >>
-> >> On Debian, the rustc-web package provides a newer Rust compiler (1.78)
-> >> for all architectures except mips64el.
-> >
-> > Unfortunately, rustc-web is not compatible with the cross/multiarch
-> > packages (it will remove all libstd-rust-dev:*).
-> >
-> > Should we switch to rustup in the meantime for debian cross-compilation=
- testing?
->
-> We should just switch to Trixie, which however needs some work in lcitool=
-.
->
+--NLVjvN3KEsUWxDgy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Trixie no longer supports mips:
-https://www.debian.org/releases/trixie/release-notes/issues.html?utm_source=
-=3Dchatgpt.com#mips-architectures-removed
+On Thu, Sep 04, 2025 at 01:10:57PM +1000, Wilfred Mallawa wrote:
+> +/* From host to controller */
+> +static uint16_t nvme_security_send(NvmeCtrl *n, NvmeRequest *req)
+> +{
+> +    uint32_t dw10 = le32_to_cpu(req->cmd.cdw10);
+> +    uint8_t secp = (dw10 >> 24) & 0xff;
+> +
+> +    switch (secp) {
+> +    case NVME_SEC_PROT_DMTF_SPDM:
+> +        if (n->spdm_socket <= 0) {
 
-Can we simply drop it from our CI too, or do we want to keep
-cross-build testing on debian 12?
+0 is a valid file descriptor number. There are additional instances in
+this patch series where 0 is treated as an error.
 
+Please initialize the spdm_socket field to -1 and update the if
+statements. Although you can probably get away with relying on never
+getting fd 0 here in practice, making this assumption makes the code odd
+because the reader doesn't know if this is a bug or intentional.
 
---
-Marc-Andr=C3=A9 Lureau
+Stefan
+
+--NLVjvN3KEsUWxDgy
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmi57NIACgkQnKSrs4Gr
+c8jrtQgAl5B0qNjCyvJvWA9JEEaZyCRsWSYdNVd+lkCk8PMfdBYr+RN4Rul53Bcn
+j//ljmpAPxa3m3iI3MHNPb5Evy2J1RAIU1EFoeenh5yz4b8rtT0Bz0BmY8zXkG7/
+kZfwecmUnQG8HtL8SoO70YKwGX0La3Uy8kQZcpCfc9WJ13A0Kh5C+9sZoszqUhk5
+eyLI1H1ZldHlPL01R6gNnjeYriPWN5RFLPGKrKRvp1AFfJIy6J1ZYDY6ODRWgrmX
+HbNZOWht/w2EWRZR/7E+rXnAb8y/cOOqwzEdMaH253ZhnB2tAysNhFnHB/UhnIXo
+8snsmU/kjHaDIj79v+Zsk0M5nv3+2w==
+=pUUA
+-----END PGP SIGNATURE-----
+
+--NLVjvN3KEsUWxDgy--
+
 
