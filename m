@@ -2,185 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27EAEB4359F
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0691CB435C0
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:29:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu5FM-00029m-9N; Thu, 04 Sep 2025 04:23:10 -0400
+	id 1uu5Kk-00060R-5G; Thu, 04 Sep 2025 04:28:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uu5F3-0001wM-NY
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:22:51 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uu5Ez-0001eE-61
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:22:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756974165; x=1788510165;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=ObBIymkylvdCFPCk3KGl4XX4/XtxXsNSufN9hTg62gI=;
- b=Qsxu8eSI30KrIpnymr9OJECG99OPoLyFLrnJCXSX1gusNZXlADAH1GS0
- QzHFm4Cow135++MAFp/16M5fBiRE0Mz42yTzt46qXO/Zp5wjopp50eL3j
- czAtQcG5ZIbpBtnGntTzlOsGgQBrHbKB5xtkxYUXdW/Lcybr6rVie+IWO
- AR77LwScCU8aj3EZqAIEal1EXU8J6VJbF3cqfDX/SpH0F8Es6tcnvPleA
- GlpiLe2bFcQb226t8oSzXNL25nhgffUGZcMVH/tpAzCADB7C4lUDmCb2I
- m5X9OG/dK1oibbXxyAjFzjM5QIaCRSS8saoZYvHkDAgeo+c1IA5ZyhYGZ g==;
-X-CSE-ConnectionGUID: F07TwhnpTCWpxTp1lxssAg==
-X-CSE-MsgGUID: cKdu8/IRSHGiAWA6WSk+cw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="70677873"
-X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; d="scan'208";a="70677873"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2025 01:22:41 -0700
-X-CSE-ConnectionGUID: mJ+CzqwvTbi7NBsVMSwhaQ==
-X-CSE-MsgGUID: KC0nLf0tTtaI62tAOvCimQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; d="scan'208";a="171408852"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2025 01:22:41 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 4 Sep 2025 01:22:40 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Thu, 4 Sep 2025 01:22:40 -0700
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (40.107.101.64)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 4 Sep 2025 01:22:39 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O0OeXGGhIQmmfgHQapasW43Znz7ZjdVIPpo2CfRze04a7DuclbI0YeKPvbuoeflFI1vToih4y5X0R/J7QKWjpH+iR1AJEb5MLHSG1Zur9jz91DO/AHRq0uFADcVdqyF6llVxMFzYBSGKjYgbIDqp6mWHgS3nnN1uHMNhOPfFzyGH8uAuJfYSyZPj3KmnWOm5YKgrO+nXtiZIWWcOn1PK/5MllJ5pe/1nkr0cOUQzeMUcFOu3/3VzCzbh+7X64PgMeGkrCtLlkvw0r+n/nHwYmF9ekOgff1pXnmBy0wA+xnUCn7PxQd8chkH6eAkuRclDwDFGIrdAYn38ZLuBK+6CDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n4FB6pvvGisV9lWriNaM4PGEE20oUCGWkdfPWCTfgs0=;
- b=Fj5uCRKuLHT1tRHULO3hz6Qn0+FlrKRTIdTQAEhNM/AQAXf1xaYEyQdAW2riy74d5lN+wf4NvgvC9Wuh5aYGjWBkGLZ+zg1Tsiyr3AqE6ilPVP9tTIPiEHWYuGWevxgzwAPlSJaAeceln+8iCMpSt27qbU+Nodhbz9mVnPWCDIUrHlgDbKArYXTpJY6QlKql4uIx9Yf9E38CMhJ8TUCnBumRyahKWvb5iS0fuuGu3UoaJq5pDB2rNM1PdBAxZMcmN59OazMhUMO7c4AEedRk+GY5NH5UqDY0iZ7jTlrRCfseJ8v6yWB9OpkuwXNJ12m4Khh8+S2J9VUAGfvpBYYKkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB9136.namprd11.prod.outlook.com (2603:10b6:208:574::12)
- by DM6PR11MB4593.namprd11.prod.outlook.com (2603:10b6:5:2a3::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Thu, 4 Sep
- 2025 08:22:33 +0000
-Received: from IA3PR11MB9136.namprd11.prod.outlook.com
- ([fe80::604b:77a4:b1be:3f13]) by IA3PR11MB9136.namprd11.prod.outlook.com
- ([fe80::604b:77a4:b1be:3f13%4]) with mapi id 15.20.9073.026; Thu, 4 Sep 2025
- 08:22:33 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: Alex Williamson <alex.williamson@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "clg@redhat.com"
- <clg@redhat.com>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "steven.sistare@oracle.com" <steven.sistare@oracle.com>, "Peng, Chao P"
- <chao.p.peng@intel.com>
-Subject: RE: [PATCH] vfio/pci: Recover sub-page BAR size when base address is
- not aligned
-Thread-Topic: [PATCH] vfio/pci: Recover sub-page BAR size when base address is
- not aligned
-Thread-Index: AQHcHB/zipcVbt0doEmDwzVAjMlKnLSCrd2g
-Date: Thu, 4 Sep 2025 08:22:33 +0000
-Message-ID: <IA3PR11MB913691FA2E2EE7C457B623549200A@IA3PR11MB9136.namprd11.prod.outlook.com>
-References: <20250715065952.213057-1-zhenzhong.duan@intel.com>
- <20250902094002.20842f39.alex.williamson@redhat.com>
-In-Reply-To: <20250902094002.20842f39.alex.williamson@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB9136:EE_|DM6PR11MB4593:EE_
-x-ms-office365-filtering-correlation-id: 28f2abbf-5bd7-4279-da7d-08ddeb8c3285
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|376014|366016|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?Gw69NGoxPWZ2AwbTXMl2RCTkEBt4WJGXQzqDt5+ugGTGPooWbMnsc5DEMdrU?=
- =?us-ascii?Q?f8T0RqUZJJdwAec71PPybUqVCyjY8LmL/DoU7x5c3CjPDB9DLd5yqluneu7z?=
- =?us-ascii?Q?9gnDQALiCe8Z9MsyWeiRZ25NUhvg8dYWwXYe6lvuA1t8D2+c2coikGctQ7nj?=
- =?us-ascii?Q?bBr4+1bmQGyfaPi4xfJij9AiTOShPl90d9f1qg/637vStOCffoOvPk4c55+A?=
- =?us-ascii?Q?BHz15fIhBgroYjEnf9YNmcDhaZkuGsK0GGN2Y7rOxGAT7JavdaICFKPCScsf?=
- =?us-ascii?Q?8vIO+JrYvp6B8riLcaWkUEC/ttHmJOW+LMrcEOoSjFmwerVVQoUMjXPqNoQB?=
- =?us-ascii?Q?qCEg0sfiWNJJ+t8rGFfBRwbW463LqV8npZ6ZDy0PCn0AwJ8sWhGNg983KgDO?=
- =?us-ascii?Q?UGmvX/1S9vlHlw30QoQbTkDcqAHWgbuvD8PVJSCH1VEZ1WD6isb+p0DlLWFA?=
- =?us-ascii?Q?PddFP9pG6R/9VPZdNVksLVbCjddn7LnnbR8rZsdP7h69a3DWcx1yihlsxd0k?=
- =?us-ascii?Q?2ljykbs7Eh9ZTpecTDcfX9dPBrxBVqmgRFMZFWcF4hIDFbxdfZtjcMBNBLDj?=
- =?us-ascii?Q?oI7tO3BZOlS2x7Z7IAXKHLijFinYNTslBWZl2BTBooFfR0BUyTzqBHIDaz5d?=
- =?us-ascii?Q?i4l1t1Lag94+AW7PJIETSaQbmqnRz/dmn8f81R++4Ziuqd5ZP7wCqNwRyHo3?=
- =?us-ascii?Q?eSJIze+r1amocR06TLapaH46dRFGJafsK/KTsaiVEngalZRvEBZc0cY1qVPu?=
- =?us-ascii?Q?9Gj+5JgaoZ9wcr3lemZpjKSuqTkr1u1FO/qatsiTDtZxQCy+k6jbsIzUPX37?=
- =?us-ascii?Q?fWOFWG4GA0qd0K8kSLevYCFUwIWnO2bUFswD6/PBMzkwTdqs0k8ajZ7vxZxK?=
- =?us-ascii?Q?LUujJjJvfOZnJ0dUwUFmN4lUoRmYrxhJgCu/kfhedurIcR3Q2EZUR8wS3ngj?=
- =?us-ascii?Q?BD9qfz0gJgKTa6qfUrRX+jQ1OBT3Tc/xrYpQLiYJPWMIVfZBSQQbK9fdZWaT?=
- =?us-ascii?Q?Mob9/gMXfGo75xX7kvZGIlXUis9CB2kZF64h5bTCbF9lPrzuCFnyc/rxpuGl?=
- =?us-ascii?Q?3E2ZlZZvkGDIXBCj3lJfhm+Voltg9YGW0ZtZyiHlCZskLhTvyOPUmCLP45qq?=
- =?us-ascii?Q?IUCwPnOz8WngDeeaXogLEZg9qnh0ocAQwzWzbQVYwPc4c86uxoaEyBddoCv9?=
- =?us-ascii?Q?L8yKARIHpB0aVHJEzSlCNh+f4HZQdrlBdEYXIRi166i8pPupF/PPFmeWbfsB?=
- =?us-ascii?Q?YK7AborP8CIUzeNlVeo9T1+7cWscs6LQFI5R/M7vsAoaZNssbFgMKE1m1TKS?=
- =?us-ascii?Q?qAQuSTHX6z3uTuIRxjPR1J44RUxzU8MGVhcdhSZUCjuURrutIO3MTm9mozJu?=
- =?us-ascii?Q?MzM40wIxkyOQME6742Qvxa0/aqBelEvSuV0kD6fW00uz+reZjYoA83qCZYb9?=
- =?us-ascii?Q?2YnJ5ikNPCeSS/Ske3suhg8ebwnb4jsKMgSdy+YpUe9YLgWJp1ufvA=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA3PR11MB9136.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?fYldKDzkD5QYqP2tVWoJ3VdvzszXmSlxqca64kEJqtNjNjD7MVZITH7zpNKn?=
- =?us-ascii?Q?+tC35TywX8zLjy0VC7jmHdzA5zMZhkpHd4TLQ7cqDLICg/ukluHgCkGk+ruA?=
- =?us-ascii?Q?yob1ZBQ+1u4qpNZ/JPUhvMNHTriNXgVyb35OwJH9UFp9qRCOq84qELGXKLd6?=
- =?us-ascii?Q?xGDGqLS8LwJPJYnw0i9sJEk+ojfD1ykueZOnMrOGTIF1QdQNskLFIp87pwxt?=
- =?us-ascii?Q?qJYOlDEc5NqsfUY8+3VfTGnjG+6zi0MJykpFapHZqbHDVmcKXI5ww7543CZV?=
- =?us-ascii?Q?63e5Lml0B6mIyaBb0SgSlxJs7dysdyqVrNCR/08ZG5BPVijU0YdTpZ3x+55K?=
- =?us-ascii?Q?z4+oIX9y2TRufabpCpoCAynlyDmKMIsX5CDl8fsfOM3EEh3kDKerLQf7kiAa?=
- =?us-ascii?Q?KLhwA1JBCDOYlob7MpHtBTYm/+0W9VaiRWO6WtINCbuRY1/KheuY12ONeO9p?=
- =?us-ascii?Q?ip+pnGY6uSBi4wkVuOHQyipxVkZp3ovJGaqWWirEsc7kr1tyNxZaAMXzmrLG?=
- =?us-ascii?Q?j7F/0d4cwPjpaHQq+aoITS+06r/2vklnFRK1oKtIRtIF6x4MS3Ufm5KajWZK?=
- =?us-ascii?Q?KByR9aFHSMjwiQZ7JmUA9LEMVJ1c2gL1779bDSiQpzpTMvTonxpNYHxxiYHa?=
- =?us-ascii?Q?2Kq4tkkDDNfK/VXCIFVOnk1ceOSL6T/b4XK0G8X7FLNaTktZbsW59572Ystx?=
- =?us-ascii?Q?+YvAIwlOGuomO4zWsTIbSDIyVNMbRCqsw4yNu38rv5wKFo5XNWlIPtFvt2Ys?=
- =?us-ascii?Q?9o9qNJQ04Y7edPi1KKg39NWcNd8RZ6vBLmRrcSx0DK9JhjvIaOm+/ViJZa4X?=
- =?us-ascii?Q?hwNtBqdmWAO0VCeoeGRIjIS1v9S+9duvxtOCt/gu0utoM3al2TOK/nKMjqSL?=
- =?us-ascii?Q?Ws8JRDO50zkebr4xjm4H+/amambqeCT82ET3CSV+BfF73LbBe+V/5E7cXJk0?=
- =?us-ascii?Q?BM50Ie4w0wtpycdD2pDffL3lPd+sFASeZzUbBIPC0o2rHmUdZlmpAUghEIRv?=
- =?us-ascii?Q?CyKslGV1wwyncFg364t8o7Eov4gxfBRjQU7+OrUpULhPxWI5RYnjN+m4pUXh?=
- =?us-ascii?Q?bDWgdhlXTnFcV/DQQLsxCdHFKJlltmi/IrlKZxn8uiW464xNDAtwShNDnnT8?=
- =?us-ascii?Q?uQVRNo9MaR41pR5lDjnJNlaIRT38562OJxM9b/0tOELcK+ZNsq9KD6GyZ6O2?=
- =?us-ascii?Q?mi+N5cgYhph0/gJNHyx3jbRLpqFg9iTE9J4sx+XBeo8mQcvseTlEcZ5ZymrJ?=
- =?us-ascii?Q?R6sFDer0lTR12xd6KNcggBY3KOgA1Rpx7o8H95LN/Y03gutxnSzAZPChKbYP?=
- =?us-ascii?Q?tyWMIivTcRXeB2yhteVhqHaczjxhesw51Zh5S8zGGjvPfl3I7I27w8QHWksP?=
- =?us-ascii?Q?rcbVDB0JemSabco4ogtfOex+ZC/nfTUTeFDqqhQeRbjyaMcAcO4eljMbGxvr?=
- =?us-ascii?Q?RvVcG0PIfrCIU7iCZX3rPA/lwWL0SzbVByNCNSTHxyJDEsPUJIMxUoM93dYH?=
- =?us-ascii?Q?ZL0zF/m9hRp4MyfiLhTHK1VCqRuLr6Lk6TzSqGN7nc2zHRWyhXGb/gvQNwel?=
- =?us-ascii?Q?qvKBd7yNG6VGDrueuIZWGYe6bVrQfKPw5Zpyt9Z9?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <zhangckid@gmail.com>)
+ id 1uu5Ka-0005y7-Ln
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:28:32 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <zhangckid@gmail.com>)
+ id 1uu5KX-0002k5-BH
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:28:32 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-61d3d622a2bso2420694a12.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:28:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1756974500; x=1757579300; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WhnWyfs8YQKivkjEPCJWjC00mHB5PyHjOo9mWUimrLs=;
+ b=VBK78DgUIFsUvURzeQX28mhIlTPQqmg4w+BsU7zaxxoeVoh845Lx8oWBP/jl+2c1g1
+ 34YzuLngdrfJh9pH7duEiYMQxIqc1YFmifDYfKlkQV9RjtF5k4D1eV3aaDrvNMgHw5sR
+ xkQkmKgBXT0iDWGbEN0JvRRmQeqwapAk4t7pnlLIRAtlYKm2v4zVydNw/oxVpArCBfBX
+ xJT1hkJO+LPR3DJJ5MS2tu42SluPDDAQX/9MTm3CJCGdzw27DXyZoemXODfAHYwVbw3p
+ /7hBK3g0EOSChdH4LPOu/XCyjdmPRFA3vVkxnivwFYD7LESkQK1Wxh1RKz/3v0pBN0nr
+ 5I5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1756974500; x=1757579300;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WhnWyfs8YQKivkjEPCJWjC00mHB5PyHjOo9mWUimrLs=;
+ b=e9iSvyBkpxDEqmaRAHiIztqqMvLEEO2rGxTmsHtAsUGYcjyTuuwZVZy+ecroQaYHDK
+ uiXOCMmtNDvDJbXvKZ1x89t8PMEJAOljSkz/JdPgFTvy+oVYPKI4nUbVZhs1EWpkNTmG
+ olILFJ5YzKNLbXnfV+afqOqFeBn/Xa3Eo51issHhh9W9+ou/8vOVW+rxsWVO3aOSbA3D
+ rA+c0RN4htHAEwYubhuTuGvKVGwbB0XaAxqvhZk75aX3u1bAPPe1qqw13osqLZbleuJe
+ N+maRfunvy4sk6JyG4IJQpZo8iA5jBcrvdW+m5z59b64BH4+SJ2klHIo6BPJSgUlmksJ
+ QHnw==
+X-Gm-Message-State: AOJu0YxcApNT5W/1xDs3QfyQjH6BM4NLuaTcMHfdALF/9aWz+5PWC6FQ
+ ycPRhWgpJ6IxMHu5ffmyxV5c9dqQS80iNJbPpVm4Cb5ahiqDmNMJIxHr3OLMcC4cm6HY7egIrzH
+ vZ8kECDh+WZt/GOgb/tZM/ClJokem5qc=
+X-Gm-Gg: ASbGnctwWOuZJZ8ua4LTgugeMKfaJ3l3F8Tt5WzNoKUpXHkM3S3U68n0dUZ4G5jhBzu
+ C1VvaKvutd3Mp3hJ5A70qQOJq4bveR8ACxj9rwmjP2fiTEZHQ5hL/51dhQ1zPsHqjPJEjIVjhfO
+ f2Rh92yciKFU8THsB2FW6bvayqOSE8/KZO+ZsRVhMnejGE6pF91/2D25C24dHyk8hFUuS4Wk8Fk
+ Y2nmJz3acXdKt9r2wY=
+X-Google-Smtp-Source: AGHT+IHJAGZCReM/Q7M4tXpMlIg2E8yZ91ha/AEvXBjfgKrqCvZA5yabG/pshkYqcBGWi4Sfl1fvBwsBWH0HLS3Thd0=
+X-Received: by 2002:a17:907:7e82:b0:afe:6648:a243 with SMTP id
+ a640c23a62f3a-b00f67e0eb3mr2076761266b.3.1756974499932; Thu, 04 Sep 2025
+ 01:28:19 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9136.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28f2abbf-5bd7-4279-da7d-08ddeb8c3285
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Sep 2025 08:22:33.1984 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1pRpLdcSELp0lC6teHpUPB3hVToiK+eb0BQQsEa6Bp/ZJOWtS27fdB1YtoYXoEQH5OCRP56KBoKm8Qo1kk+5knYrw+4IKfrQ5qBo5lXjhi8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4593
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.198.163.10;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20250827205949.364606-1-peterx@redhat.com>
+In-Reply-To: <20250827205949.364606-1-peterx@redhat.com>
+From: Zhang Chen <zhangckid@gmail.com>
+Date: Thu, 4 Sep 2025 16:27:39 +0800
+X-Gm-Features: Ac12FXzMEA9Fkcja9O3MB6rcW8SlP9wlY1kfNqGL57esD_mgDpOiU0s404nSn0M
+Message-ID: <CAK3tnvKa=C-9qkOuyB+sZB8+o6YU0V+qaYheK-h9KBEumpyfBw@mail.gmail.com>
+Subject: Re: [PATCH RFC 0/9] migration: Threadify loadvm process
+To: Peter Xu <peterx@redhat.com>, Hailiang Zhang <zhanghailiang@xfusion.com>
+Cc: qemu-devel@nongnu.org, "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Kevin Wolf <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Fabiano Rosas <farosas@suse.de>, Yury Kotov <yury-kotov@yandex-team.ru>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Prasad Pandit <ppandit@redhat.com>, 
+ Li Zhijian <lizhijian@fujitsu.com>, Juraj Marcin <jmarcin@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=zhangckid@gmail.com; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -197,66 +98,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
->-----Original Message-----
->From: Alex Williamson <alex.williamson@redhat.com>
->Subject: Re: [PATCH] vfio/pci: Recover sub-page BAR size when base address
->is not aligned
+On Thu, Aug 28, 2025 at 4:59=E2=80=AFAM Peter Xu <peterx@redhat.com> wrote:
 >
->On Tue, 15 Jul 2025 02:59:52 -0400
->Zhenzhong Duan <zhenzhong.duan@intel.com> wrote:
+> [this is an early RFC, not for merge, but to collect initial feedbacks]
 >
->> Currently region_mr and mmap_mr size are recovered to original size when
->> base address is updated to non-PAGE_SIZE aligned, but still leave base_m=
-r
->> with PAGE_SIZE size. This is harmless as base_mr is a only container but
->> still a bit confusing when executing hmp command mtree.
->>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->> ---
->>  hw/vfio/pci.c | 4 +---
->>  1 file changed, 1 insertion(+), 3 deletions(-)
->>
->> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
->> index 1093b28df7..0455e6ce30 100644
->> --- a/hw/vfio/pci.c
->> +++ b/hw/vfio/pci.c
->> @@ -1348,9 +1348,7 @@ static void
->vfio_sub_page_bar_update_mapping(PCIDevice *pdev, int bar)
->>
->>      memory_region_transaction_begin();
->>
->> -    if (vdev->bars[bar].size < size) {
->> -        memory_region_set_size(base_mr, size);
->> -    }
->> +    memory_region_set_size(base_mr, size);
->>      memory_region_set_size(region_mr, size);
->>      memory_region_set_size(mmap_mr, size);
->>      if (size !=3D vdev->bars[bar].size &&
->memory_region_is_mapped(base_mr)) {
+> Background
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 >
->Has this been tested with MSI-X relocation to the sub-page BAR?  The
->lowest level MR here is meant to fill the gaps not backed by other MRs,
->for example between the region MR and the MSI-X emulation MR.  We call
->this function based on the region size, not the BAR size.  For example I
->think if we had a 4K host, 2K BAR, and >2K MSI-X table, bars[bar].size
->might be 8K, with the MSI-X table offset at 4K.  We'd want the
->underlying container BAR MR to cover the full 8K, not just the 4K that
->we're expanding the region access to.  OTOH, if host page size were
->64K, then we would want to expand the base MR to page size.
+> Nowadays, live migration heavily depends on threads. For example, most of
+> the major features that will be used nowadays in live migration (multifd,
+> postcopy, mapped-ram, vfio, etc.) all work with threads internally.
+>
+> But still, from time to time, we'll see some coroutines floating around t=
+he
+> migration context.  The major one is precopy's loadvm, which is internall=
+y
+> a coroutine.  It is still a critical path that any live migration depends=
+ on.
+>
+> A mixture of using both coroutines and threads is prone to issues.  Some
+> examples can refer to commit e65cec5e5d ("migration/ram: Yield periodical=
+ly
+> to the main loop") or commit 7afbdada7e ("migration/postcopy: ensure
+> preempt channel is ready before loading states").
+>
+> Overview
+> =3D=3D=3D=3D=3D=3D=3D=3D
+>
+> This series tries to move migration further into the thread-based model, =
+by
+> allowing the loadvm process to happen in a thread rather than in the main
+> thread with a coroutine.
+>
+> Luckily, since the qio channel code is always ready for both cases, IO
+> paths should all be fine.
+>
+> Note that loadvm for postcopy already happens in a ram load thread which =
+is
+> separate.  However, RAM is just the simple case here, even it has its own
+> challenges (on atomically update of the pgtables), its complexity lies in
+> the kernel.
+>
+> For precopy, loadvm has quite a few operations that will need BQL.  The
+> question is we can't take BQL for the whole process of loadvm, because
+> that'll block the main thread from executions (e.g. QMP hangs).  Here, th=
+e
+> finer granule we can push BQL the better.  This series so far chose
+> somewhere in the middle, by taking BQL on majorly these two places:
+>
+>   - CPU synchronizations
+>   - Device START/FULL sections
+>
+> After this series applied, most of the rest loadvm path will run without
+> BQL anymore.  There is a more detailed discussion / todo in the commit
+> message of patch "migration: Thread-ify precopy vmstate load process"
+> explaning how to further split the BQL critical sections.
+>
+> I was trying to split the patches into smaller ones if possible, but it's
+> still quite challenging so there's one major patch that does the work.
+>
+> After the series applied, the only leftover pieces in migration/ that wou=
+ld
+> use a coroutine is snapshot save/load/delete jobs.
+>
+> Tests
+> =3D=3D=3D=3D=3D
+>
+> Default CI passes.
+>
+> RDMA unit tests pass as usual. I also tried out cancellation / failure
+> tests over RDMA channels, making sure nothing is stuck.
+>
+> I also roughly measured how long it takes to run the whole 80+ migration
+> qtest suite, and see no measurable difference before / after this series.
+>
+> Risks
+> =3D=3D=3D=3D=3D
+>
+> This series has the risk of breaking things.  I would be surprised if it
+> didn't..
+>
+> I confess I didn't test anything on COLO but only from code observations
+> and analysis.  COLO maintainers: could you add some unit tests to QEMU's
+> qtests?
 
-Oh, I see, my patch may lead to truncation of relocated MSI-X region if it =
-is relocated to sub-page BAR, that's not correct, thanks Alex!
+For the COLO part, I think remove the coroutines related code is OK for me.
+Because the original coroutine still need to call the
+"colo_process_incoming_thread".
+
+Hi Hailiang, any comments for this part?
+
+Thanks
+Chen
 
 >
->I think that's the original reason this is conditional, but maybe you
->could share the confusing mtree output and provide any comments
->relative to the scenario above.  Thanks,
-
-Sorry, I don't have a device with sub-page BAR and a guest kernel writing a=
- non-PAGE_SIZE base  addr. I made this patch by code inspecting.
-
-BRs,
-Zhenzhong
+> The current way of taking BQL during FULL section load may cause issues, =
+it
+> means when the IOs are unstable we could be waiting for IO (in the new
+> migration incoming thread) with BQL held.  This is low possibility, thoug=
+h,
+> only happens when the network halts during flushing the device states.
+> However still possible.  One solution is to further breakdown the BQL
+> critical sections to smaller sections, as mentioned in TODO.
+>
+> Anything more than welcomed: suggestions, questions, objections, tests..
+>
+> Todo
+> =3D=3D=3D=3D
+>
+> - Test COLO?
+> - Finer grained BQL breakdown
+> - More..
+>
+> Thanks,
+>
+> Peter Xu (9):
+>   migration/vfio: Remove BQL implication in
+>     vfio_multifd_switchover_start()
+>   migration/rdma: Fix wrong context in qio_channel_rdma_shutdown()
+>   migration/rdma: Allow qemu_rdma_wait_comp_channel work with thread
+>   migration/rdma: Change io_create_watch() to return immediately
+>   migration: Thread-ify precopy vmstate load process
+>   migration/rdma: Remove coroutine path in qemu_rdma_wait_comp_channel
+>   migration/postcopy: Remove workaround on wait preempt channel
+>   migration/ram: Remove workaround on ram yield during load
+>   migration/rdma: Remove rdma_cm_poll_handler
+>
+>  include/migration/colo.h    |   6 +-
+>  migration/migration.h       |  52 +++++++--
+>  migration/savevm.h          |   5 +-
+>  hw/vfio/migration-multifd.c |   9 +-
+>  migration/channel.c         |   7 +-
+>  migration/colo-stubs.c      |   2 +-
+>  migration/colo.c            |  23 +---
+>  migration/migration.c       |  62 ++++++++---
+>  migration/ram.c             |  13 +--
+>  migration/rdma.c            | 206 ++++++++----------------------------
+>  migration/savevm.c          |  85 +++++++--------
+>  migration/trace-events      |   4 +-
+>  12 files changed, 196 insertions(+), 278 deletions(-)
+>
+> --
+> 2.50.1
+>
 
