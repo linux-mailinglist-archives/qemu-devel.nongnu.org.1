@@ -2,105 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2828B4425F
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 18:13:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB2FB44371
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 18:46:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuCYg-0002b6-5D; Thu, 04 Sep 2025 12:11:34 -0400
+	id 1uuD4P-0006bJ-Dt; Thu, 04 Sep 2025 12:44:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1uuCYb-0002aN-BI
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 12:11:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1uuCYR-0001SK-S9
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 12:11:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757002273;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=IXml/BHa8nzL9/Xc6RHrbKKaau1ijpMBY1LPUsLiCkg=;
- b=eOeMPGsSrCh3LdKPzkpzR65vbykOvyfCefu6w/Ck5ggLA7wJcu8rQWLpPAeVrunQWe7y3c
- hjxVOlI7uhACj9qcVjgM9GuEa5CJ7gBJ09UhU88pnHKP7bBE9cQSYLZhOyJEw/BxdOLL9j
- GRUtvYs9KnpFOIiFal0DvcGadzygRP8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-523-kVMQVIPyPPODS0GWlJ_UvA-1; Thu, 04 Sep 2025 12:11:11 -0400
-X-MC-Unique: kVMQVIPyPPODS0GWlJ_UvA-1
-X-Mimecast-MFC-AGG-ID: kVMQVIPyPPODS0GWlJ_UvA_1757002270
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45b990eb77cso7801215e9.0
- for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 09:11:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uuD4M-0006ab-7D
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 12:44:18 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uuD4G-0000tf-Sl
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 12:44:17 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3df2f4aedc7so767767f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 09:44:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1757004249; x=1757609049; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=WOnq3LCrEezycwHF3OwLwEhdgJXDrimxklj4eNyqm8A=;
+ b=CUbli+KDREYEMVx2JIQKdMKbcobGpNAH8Q0/+l05/D0Nhxq1c1Z1iZDGLbWHBA/8+c
+ Qus2/+s/jff5scyO1cFoXiyWJTs2qMTLD8+XW5uqbLLPuffwQiBYRVpotjt0eySTidYD
+ +Q5BoxD6QaDgzn4j9hyavT9Sig01vrYuzORrV6nJXKmYvLJJZposGvzhYZbcw7EQyX3y
+ PImK/ASVm0ZdwnfkNdURwQ8BFnbQA2O+xn+LiRHxeT9opYlhjjZyZ8uwzhxOBIlE1aqn
+ sO9je7l1ekAY0SySiGQpw8DjoJmRa3T+RNKKsqFRzgI2Ezk8bzeff9J9SODsMCNDwwFU
+ O9Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757002270; x=1757607070;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IXml/BHa8nzL9/Xc6RHrbKKaau1ijpMBY1LPUsLiCkg=;
- b=R682Q7o/901Q+hhMHYEERjvMLDSxZhzl/Jn0i6YxzoEgOFaE0gKgHKp5SyWmeuMv+M
- 8pZqhLOk4ul0uMyqd7kqwCuHX7ztQXghM29JyXA/jhzFSZip8ZcIpkxPJ4D+9xhId/v6
- uxjzApxSPJt16hMVmkCvKaBTQHsQ2NQ35AR8qVZcbwVkWMZZAsWVzqKgvnn9w4KH1j4K
- gJlJNvK6D1hehHoqmtOyJHLsGXIYXKq5v9OPMXQx/37dTrcPKt3OKWsZdlnOEf6UkjfO
- wkBOLgb5CkN0z86iBO34L3KZUGrKxL62Z5wwUSqQTcrlqz3GkjXaWGxglqydSK63MbxG
- CuoQ==
+ d=1e100.net; s=20230601; t=1757004249; x=1757609049;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WOnq3LCrEezycwHF3OwLwEhdgJXDrimxklj4eNyqm8A=;
+ b=Mf9dtknwfQ/ZZlWzOC7S5YuyIE+vvWjO9DkBvPrklj9LXDMNKzkFsTTvvMRZyftzZ1
+ lLD00MDqnRfAmwCA257FDomagMvUYwACAipt/C+FrPZRh8D3ftW7cxjsuQBWDDVhAtB7
+ ociw3AS9qk9gahsJLlFTiZmSWmfdJOPldF8/GovLvG/rEUVHSjGspuAtWAFyemO41YZI
+ hGjVcRxVTAkHTXFI0ulSPnDkqXm1AQZKttvLwsArLQckvRtaCsQtZDKII1T2lAMnVmJt
+ EBdFNm3Vs2znhVGgHVfPaNrOR7AzgRIrB211PDVwTsqDoqWv/9IRZqTMZuxnL3vmWv5s
+ f3ZA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXxpfeXZAV4zfTsiJnT1+Mwnxk90UJnluF1QqQ2HuM1mb5zhFXAExTJFsbZsl7M06uhyt8y4l4Q30Fw@nongnu.org
-X-Gm-Message-State: AOJu0Yy99zTsN0yNIzsjYsEf4t0ikeXl3tGGPGfV7hvvsp2jvy53pSwH
- DnO8u7d2RIu8WsiRetXhYQ4AnUhpErP9ZWtFn7fiFD8OoUkDqkiAW7LzVZ2milw2NPt3l9jRkIw
- jkebch6Pf8orgNiaPCKrxGiaDM4BOpfqsS2JsvGnpJtYbfS/MBqvpJ245
-X-Gm-Gg: ASbGncuXCMH3OSNV8DnHXpJpiZWkPkR8G8oPEOw6xw0QbCeJOd8lNG9aN0Ud4qTvA6C
- ZR2ECvFMWkoUcCW2y3J6CRQnRRxL/S8uAievcRij/YoJ8bwOmjObWhJ8ajTEYj55OqXfqPlE8XH
- awtylrs/9GYwdEuW0RRdMNoU4oOPMh9iG662C0oeZUju3B8TSKsw9cFYRUcm6OZdga5PqX2naZz
- b0vAs0ulhmVjn0oA7fG+FfFZkvw0ZiUmOxFZneViKGnLLNypg/kPvXABOlm4uIF8T72gw57oRVu
- jYRedIiKFPDAwGXaJiIgVm+/KGl/SUDCGN/orLEoYwH1hPYswgPrO4B51w==
-X-Received: by 2002:a05:600c:35d4:b0:45d:d259:9a48 with SMTP id
- 5b1f17b1804b1-45dd5b456c0mr2412305e9.9.1757002270193; 
- Thu, 04 Sep 2025 09:11:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEZs+3ID5ufQFplleMPY7XnIiV0knFhSoS9oDbht8onOv7HZeZ69++0fT3PUcyzxeo5d5Mh6A==
-X-Received: by 2002:a05:600c:35d4:b0:45d:d259:9a48 with SMTP id
- 5b1f17b1804b1-45dd5b456c0mr2411535e9.9.1757002267600; 
- Thu, 04 Sep 2025 09:11:07 -0700 (PDT)
-Received: from fedora (78-80-81-60.customers.tmcz.cz. [78.80.81.60])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b6f306c93sm377086515e9.14.2025.09.04.09.11.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Sep 2025 09:11:07 -0700 (PDT)
-Date: Thu, 4 Sep 2025 18:11:05 +0200
-From: Juraj Marcin <jmarcin@redhat.com>
-To: "Dr. David Alan Gilbert" <dave@treblig.org>
-Cc: Peter Xu <peterx@redhat.com>, Jiri Denemark <jdenemar@redhat.com>, 
- qemu-devel@nongnu.org, Stefan Weil <sw@weilnetz.de>, 
- Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [RFC PATCH 0/4] migration: Introduce postcopy-setup capability
- and state
-Message-ID: <iacvj4e7imqs7ra262gpmqbpxioadom26l34hhu5m5p22ykom4@mo4cljmx4ikk>
-References: <20250807114922.1013286-1-jmarcin@redhat.com>
- <aJoEJhJw-_rGVBbA@x1.local>
- <xfzgjwld4ba7mymu3xhkxdwpeie7bbjnbei2xchkqncamktk3g@rbafrorlpvcv>
- <aJzOo7P8aA64AfY_@x1.local>
- <xbqqss2yshtjkew5cirlp2bx3dkumxg3grwpduol5ucpx3leqq@irqeo2csi2vg>
- <aJ43_JQct45mnVgV@x1.local> <aLXehgy3S5G6A3ub@gallifrey>
- <w6qkokuof6ge2gwajhcwul5boaqf57w6m4yzsbyljpgpnigc64@pw2unqceumjn>
- <aLgtyy_UAfsmOLET@gallifrey>
+ AJvYcCXnKpbzOTyNBZ//aFime2cmDLh1xdm2YDExcNmgs9SHbz2fugk2pXVEzI9G8ClWmQBA/LnUrrdIq3vd@nongnu.org
+X-Gm-Message-State: AOJu0Yw4PLV9/x4AR3BePVjSS2Q8SgD4YwSNVZAqMKn3bzc0igZpfkd6
+ pJsS9UIKImozWgeh5ifCLpRgj+Lf8cRad+Sf0G96vQaP64OgUMN6wGCWywFvcE5HPRw=
+X-Gm-Gg: ASbGncsdUWXg0G72ySa4pTpITkftion6MQyoADF4lVm1ZOrBRehrwZcAlQzUCS2oXua
+ CN+oOcHLUyB3g68wHMdR/DGUGQ5ARYSpd03DNXV4cZE2ZzI/KgSfXyCV3yd+Ktlbmp3mwbgxpaZ
+ qkxLW1cSw3G1M4ajQEASYYdJjc03J8EEgJ+EUxucFpspNsXRZJrj9y7Sv+DbFzQIQiZV/wHa7iw
+ 59gnaVHJvNfbdmwBZCvRj8wzUXmRakQf/V9nGaFdVH7l+FQEcN8lvs0FQOTYeuusoPhfoIUBujQ
+ BAacDsy4Nt8rI8GFxclXcKfTNGm0NQNoid4YcMzLSs25/mZR5gu/ZT1zoKR2NKGJQGWMV1Lw7Qf
+ NvaBBnRwnnmoB/Wov2n68HPmUMEbLjvbHHF4/vdFSBVnRK0dRHItHfz/TWubfSRhH384+CEx83M
+ xTcGdDRQ==
+X-Google-Smtp-Source: AGHT+IHxjQ5+a4YzLzDnVdOHgY8Xjt47xIeZJgc3RnhGOJblnyyvj74JjU0mWG44JoDP/qMlx/Up/A==
+X-Received: by 2002:a05:6000:2011:b0:3cd:edee:c7f1 with SMTP id
+ ffacd0b85a97d-3d1e07a4d63mr14279747f8f.56.1757004248988; 
+ Thu, 04 Sep 2025 09:44:08 -0700 (PDT)
+Received: from [10.40.6.207] (93-51-222-138.ip268.fastwebnet.it.
+ [93.51.222.138]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b6f30fe02sm365769355e9.18.2025.09.04.09.44.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 04 Sep 2025 09:44:08 -0700 (PDT)
+Message-ID: <611cba04-c567-439e-8f52-4d5f74828083@linaro.org>
+Date: Thu, 4 Sep 2025 18:44:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLgtyy_UAfsmOLET@gallifrey>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/sparc: allow partial decode of v8 STBAR
+ instructions
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+References: <20250904161026.804239-1-mark.cave-ayland@ilande.co.uk>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20250904161026.804239-1-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,113 +102,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Dave,
-
-On 2025-09-03 12:00, Dr. David Alan Gilbert wrote:
-> * Juraj Marcin (jmarcin@redhat.com) wrote:
-> > Hi Dave,
-> > 
-> > On 2025-09-01 17:57, Dr. David Alan Gilbert wrote:
-> > > * Peter Xu (peterx@redhat.com) wrote:
-> > > > On Thu, Aug 14, 2025 at 05:42:23PM +0200, Juraj Marcin wrote:
-> > > > > Fair point, I'll then continue with the PING/PONG solution, the first
-> > > > > implementation I have seems to be working to resolve Issue 1.
-> > > > > 
-> > > > > For rarer split brain, we'll rely on block device locks/mgmt to resolve
-> > > > > and change the failure handling, so it registers errors from disk
-> > > > > activation.
-> > > > > 
-> > > > > As tested, there should be no problems with the destination
-> > > > > transitioning to POSTCOPY_PAUSED, since the VM was not started yet.
-> > > > > 
-> > > > > However, to prevent the source side from transitioning to
-> > > > > POSTCOPY_PAUSED, I think adding a new state is still the best option.
-> > > > > 
-> > > > > I tried keeping the migration states as they are now and just rely on an
-> > > > > attribute of MigrationState if 3rd PONG was received, however, this
-> > > > > collides with (at least) migrate_pause tests, that are waiting for
-> > > > > POSTCOPY_ACTIVE, and then pause the migration triggering the source to
-> > > > > resume. We could maybe work around it by waiting for the 3rd pong
-> > > > > instead, but I am not sure if it is possible from tests, or by not
-> > > > > resuming if migrate_pause command is executed?
-> > > > > 
-> > > > > I also tried extending the span of the DEVICE state, but some functions
-> > > > > behave differently depending on if they are in postcopy or not, using
-> > > > > the migration_in_postcopy() function, but adding the DEVICE there isn't
-> > > > > working either. And treating the DEVICE state sometimes as postcopy and
-> > > > > sometimes as not seems just too messy, if it would even be possible.
-> > > > 
-> > > > Yeah, it might indeed be a bit messy.
-> > > > 
-> > > > Is it possible to find a middle ground?  E.g. add postcopy-setup status,
-> > > > but without any new knob to enable it?  Just to describe the period of time
-> > > > where dest QEMU haven't started running but started loading device states.
-> > > > 
-> > > > The hope is libvirt (which, AFAIU, always enables the "events" capability)
-> > > > can ignore the new postcopy-setup status transition, then maybe we can also
-> > > > introduce the postcopy-setup and make it always appear.
-> > > 
-> > > When the destination is started with '-S' (autostart=false), which is what
-> > > I think libvirt does, doesn't management only start the destination
-> > > after a certain useful event?
-> > > In other words, is there an event we already emit to say that the destination
-> > > has finished loading the postcopy devices, or could we just add that
-> > > event, so that management could just wait for that before issuing
-> > > the continue?
-> > 
-> > I am not aware of any such event on the destination side. When postcopy
-> > (and its switchower) starts, the destination transitions from ACTIVE
-> > directly to POSTCOPY_ACTIVE in the listen thread while devices are
-> > loaded concurrently by the main thread.
-> > 
-> > There is DEVICE state on the source side, but that is used only on the
-> > source side when device state is being collected. When device state is
-> > being loaded on the destination, the source side is also already in
-> > POSTCOPY_ACTIVE state.
+On 9/4/25 18:10, Mark Cave-Ayland wrote:
+> Solaris 8 appears to have a bug whereby it executes v9 MEMBAR instructions
+> when booting a freshly installed image. According to the SPARC v8
+> architecture manual, whilst bits 14 and bits 13-0 of the "Read State Register
+> Instructions" are notionally zero, they are marked as unused (i.e. ignored).
+> In effect the v9 MEMBAR instruction becomes a v8 STBAR instruction on a 32-bit
+> SPARC CPU.
 > 
-> So I wonder what libvirt uses to trigger it starting the destination in
-> the postcopy case?  It's got to be after the device state has loaded.
-
-I checked the libvirt code and IIUC it waits for POSTCOPY_ACTIVE and
-then it issues the 'cont' command, so it's concurrently with the device
-state load. But as Peter mentioned, it doesn't actually start the VM if
-the device load is not finished yet, it only sets the autostart variable
-and the VM is started when the destination processes CMD_POSTCOPY_RUN
-after the device state load.
-
-Best regards,
-
-Juraj Marcin
-
+> Adjust the avail_32() logic in trans_MEMBAR() so that if a v9 MEMBAR
+> instruction is executed on 32-bit SPARC, the equivalent of a v8 STBAR
+> instruction is executed instead.
 > 
-> Dave
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Fixes: af25071c1d ("target/sparc: Move RDASR, STBAR, MEMBAR to decodetree")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3097
+> ---
+>   target/sparc/translate.c | 10 +++++++++-
+>   1 file changed, 9 insertions(+), 1 deletion(-)
 > 
-> > Best regards,
-> > 
-> > Juraj Marcin
-> > 
-> > > 
-> > > Dave
-> > > 
-> > > > Thanks,
-> > > > 
-> > > > -- 
-> > > > Peter Xu
-> > > > 
-> > > > 
-> > > -- 
-> > >  -----Open up your eyes, open up your mind, open up your code -------   
-> > > / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-> > > \        dave @ treblig.org |                               | In Hex /
-> > >  \ _________________________|_____ http://www.treblig.org   |_______/
-> > > 
-> > 
-> > 
-> -- 
->  -----Open up your eyes, open up your mind, open up your code -------   
-> / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-> \        dave @ treblig.org |                               | In Hex /
->  \ _________________________|_____ http://www.treblig.org   |_______/
-> 
+> diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+> index b922e53bf1..9efefe41c6 100644
+> --- a/target/sparc/translate.c
+> +++ b/target/sparc/translate.c
+> @@ -2832,7 +2832,15 @@ static bool trans_STBAR(DisasContext *dc, arg_STBAR *a)
+>   static bool trans_MEMBAR(DisasContext *dc, arg_MEMBAR *a)
+>   {
+>       if (avail_32(dc)) {
+> -        return false;
+> +        /*
+> +         * At least Solaris 8 executes v9 MEMBAR instructions such as
+> +         * 0x8143e008 during boot. According to the SPARC v8 architecture
+> +         * manual, bits 13 and 12-0 are unused (notionally zero) so in
+> +         * this case if we assume the unused bits are not decoded then
+> +         * the instruction becomes 0x8143c000, or the equivalent of STBAR.
+> +         */
+> +        tcg_gen_mb(TCG_MO_ST_ST | TCG_BAR_SC);
+> +        return advance_pc(dc);
+>       }
 
+You could avoid replicating this and do
+
+     return trans_STBAR(dc, NULL);
+
+Anyway,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
