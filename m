@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29FEB43556
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B24B4357D
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:20:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu58B-0001FT-Ey; Thu, 04 Sep 2025 04:15:43 -0400
+	id 1uu58o-0003H3-Ot; Thu, 04 Sep 2025 04:16:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu54r-0006Qz-Ph
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:12:20 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1uu550-0006Wh-7l
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:12:29 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu54P-00045p-Ej
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:12:15 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-b02c719a117so132858966b.1
- for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:11:48 -0700 (PDT)
+ id 1uu54V-00049h-6O
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:12:25 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-afeec747e60so137366766b.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:11:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756973508; x=1757578308; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756973513; x=1757578313; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cDNuaOsGD6r42U8ngLUfY1h4DF7myqs0cRJmalDhUb4=;
- b=rOj6rEcYdEpabrkFEyMLtS4l+OwKcqZX9pjTONuBlvCEwecszV115VfMTXuONev5Zj
- KwsY1uCrH8lEtFdYKy6HGaX5UBlgi2VcUSiMCuNWTmdOa6cdw5dlBLbDL//KdUGwNj39
- 5q9oKfhsoAhofV13yOKEpQ41suxyeRCK4HOuhe/FBGAYlUiPYN2GHwE74x5jlq2S1JSa
- lCwuJ7Z0OOKu1h3cRi1JalttEcqy5K5Nht3yt4kRoS3l6G/mmzAphDVyRmbi/STQSURr
- Qdnms7oUNHCMdksIaQ9hbBF3WPbOhwreWVo+dHcW2UG0T7D/bA043jVhYWf0CwK1wkul
- hDyQ==
+ bh=qtgYk8tL09X7evEehKpRVdQ+nFs0oLJoTM08eLIHHIc=;
+ b=f8UdJ4yA7QIyJlZ/xSU9PRHA1RfjCZLZ1pO4SoGUSiGbInnsupUv2ROht8EDM6LZwd
+ NtbMMdqJ9IA6OSBMyOJmWMs1iNKd9OcMdkHqHxR4t8gHHDzsjRQX8MfOICRVm5sDH9Dj
+ DO7MwUSIWpNUrxel3bKb34ohR+1XniY1dJQ+UM/LWmyt7ZbMH0ftlY3Yw2AbpOv/14w1
+ r3LEie+Czje8TUT5J5+dTQANX7ZUeG51JSVmKivvnDOnFRzLz5ZJ241nuxIFItbfnmqq
+ 29ngHZSyY/W4QRdotkwNJMC80i0OGxqMr1lOzWL8Wzuy62nZyNtchVllUno4MxpDoUuj
+ nUwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756973508; x=1757578308;
+ d=1e100.net; s=20230601; t=1756973513; x=1757578313;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cDNuaOsGD6r42U8ngLUfY1h4DF7myqs0cRJmalDhUb4=;
- b=F72dyGQr3w420HFH64ag4gNcqx7M2sPbbUNCZLYQY5vKPNZNrvX1LR/oDugNxH/kD+
- kWTCnBGJXclZMuW6eGpsZHS2Kkumo499/Cgw4SHbGT/Up8f6IotSQtY9Wh3FPGQ5o2I1
- aO5cUFe8Z7VWGiu3UbKVJLrxJvcGWlmA5i9tNBmVldo0kT1HMZeFkj8LxgclYrLiQ+9U
- uEDZK35eCQargKMbIAPHNTboXUi43aXarGipmrM3A0uHPPOe/ErmckO8CvuBRwk6kewL
- LwbDBs/5kvw0Dz4koYPTR6zKw1f1EQth4h5vjYHWEaL6SgeMVhyRMMiUvdm49DneWuwO
- /C3w==
-X-Gm-Message-State: AOJu0YygonSXZgIDgGWj9PJkhr/RMdV9IA9HIGbC8ZmhoYOdJjh9usOM
- rYEbdwBzx1a1vAtYUsINoCTODXNNTej/H0yYcsyldcxqmbb3082saxmiSH46FfQACUw=
-X-Gm-Gg: ASbGnctas313380uaWGQJ+Qr4tY6LGqrbktHd+YW6Ivw9wYJzxreav6pGF7Es0Vrgtq
- VJ/OSabn8pe3LNbYHtHCFV5uL81BzFHg4up1sJoJNjrL7yZVyxk0454sXkPEcwJkEmeDnBGsRr4
- +fLfh1nHcCKCINaF3aawgQob3l74ZDqTnmO9FPUtj0I84wjj3/zJKLdMsjBmaOWdX3bn41FGdeD
- uk35aqy/0DGArHF5fUDrLxH1QEXUCMa8Gc4AOW9nqMGp26MoXQZKtKg5fPEbB1U6X00qisZeMng
- P03aIjFSANt8qc6K2AAexTwrG9Knlvv5wCVw/EFaYaAg2ZgxHj3WU5IyZ14JauoLo/3Hb72fgyF
- rC/5yFECxSaSyW+PvlrR/xHYQYrZ8ez0y4VNl87FKB2Dv
-X-Google-Smtp-Source: AGHT+IEuGPLBjng4TGodrmsMkqQv/1x2d0i2N2XuU6rOMtEyrvdgiQZZOH9o9y1LB92mX/fQfkpwaw==
-X-Received: by 2002:a17:906:9f92:b0:afe:a615:39ef with SMTP id
- a640c23a62f3a-b01d8a2667emr1911016566b.9.1756973507309; 
- Thu, 04 Sep 2025 01:11:47 -0700 (PDT)
+ bh=qtgYk8tL09X7evEehKpRVdQ+nFs0oLJoTM08eLIHHIc=;
+ b=n6B3HxbK0b1vs61vRA58o55XWbsc2RY5jplUgCtDNsmrWeECfLDjot0ouQwIuSu64V
+ ewb93x+AgyIsA+D/fvUWVRjkQZ6P8vSS3K/j6z+y++CFzZ6EIZb9dAvagEnUfGNdHlnQ
+ TZc5qLmCHM2s1riRzXSIjmN0yXO2raTnpVQFnN5gMxn9j9SxA9wwanNsMmu/JvNeoIXu
+ +R+N1OT1Zo2bn6mO5/72aq1SS8qPAS4b9ZP4j1dbsmyeAFTbN/AHwdG5DAVbeOPeH433
+ NG+BJXNhIMsyYj9grHcJJF7+sSI/HYYX+QVg6nSZUgAfrLKR1If3GUrdZLIRXiX24wbR
+ VeEA==
+X-Gm-Message-State: AOJu0YwrX7cuk5m0fnafhI5HcdZOIvhd0RX46kLlbPvCAiYGGZN/QnD0
+ REFoSUmnLNFg2NRlTVF74lAd0OMKizHPBa2lhMbmbxoFLhQDyscePbJJ8ocaKh6k8Vp8tLKMDKb
+ HrJ9jQYNOYQ==
+X-Gm-Gg: ASbGnct2mseF1qHW8PuvGrarGNemyaKumKgKAVO2leqkQutuueY32VPt0SdrGEN00CB
+ l0KGmS+KrrVYGsq+Qnwdfl/+iMAkGb7FhQBZV4Z/ZFSeA5W+WIDzUPf+35jctbTtvkKjFXaTLS2
+ UOFVkR5iCNES/P5g7nASuPOgXKM+6Rl415xqnWNln+Euxb3oik5OyWAs8aCBU6CN8KselTCgz6G
+ Nls0JxcPwhbLpkcaUEYy5EKGqMTp/wD8fJH8M+HqTL3GD/CQ+GOjctyGTt4NLBGp1VE1SBmyCIL
+ AsBSc4t/lPXclGoSGJI4VfUARwckB8HxgjWJ/8d8I7jz+1KX77hq7kMkvPqkZkXezgdm2m640cq
+ 9ZgCjjmQHaqel84/z24lUITo+6KtQg4xqsjCD+kaccnFw
+X-Google-Smtp-Source: AGHT+IGYskyBYR3n5Q9uI+8AP0+1GXixN328LvmrggmBgoiP7mVHjL06ko8pn8Trl6ZXEys7FI6f0Q==
+X-Received: by 2002:a17:907:daa:b0:b04:8420:b6ef with SMTP id
+ a640c23a62f3a-b048420c5b0mr91846366b.61.1756973513129; 
+ Thu, 04 Sep 2025 01:11:53 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b0416e878a2sm1085838766b.95.2025.09.04.01.11.40
+ a640c23a62f3a-b017e4b9ed7sm1280476466b.90.2025.09.04.01.11.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Sep 2025 01:11:43 -0700 (PDT)
+ Thu, 04 Sep 2025 01:11:49 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 19D475FAD0;
- Thu, 04 Sep 2025 09:11:31 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 02D196000B;
+ Thu, 04 Sep 2025 09:11:32 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>,
@@ -127,18 +128,18 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>, John Levon <john.levon@nutanix.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 024/281] tests/functional: Move m68k tests into
- architecture specific folder
-Date: Thu,  4 Sep 2025 09:06:58 +0100
-Message-ID: <20250904081128.1942269-25-alex.bennee@linaro.org>
+Subject: [PATCH v2 031/281] tests/functional: Move s390x tests into
+ target-specific folders
+Date: Thu,  4 Sep 2025 09:07:05 +0100
+Message-ID: <20250904081128.1942269-32-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -164,131 +165,130 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Thomas Huth <thuth@redhat.com>
 
 The tests/functional folder has become quite crowded, thus move the
-m68k tests into a target-specific subfolder.
+s390x tests into a target-specific subfolder.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250819112403.432587-13-thuth@redhat.com>
+Message-ID: <20250819112403.432587-20-thuth@redhat.com>
 ---
- MAINTAINERS                                              | 8 ++++----
- tests/functional/m68k/meson.build                        | 9 +++++++++
- .../{test_m68k_mcf5208evb.py => m68k/test_mcf5208evb.py} | 0
- .../{test_m68k_nextcube.py => m68k/test_nextcube.py}     | 0
- .../functional/{test_m68k_q800.py => m68k/test_q800.py}  | 0
- .../{test_m68k_replay.py => m68k/test_replay.py}         | 0
- .../{test_m68k_tuxrun.py => m68k/test_tuxrun.py}         | 0
- tests/functional/meson.build                             | 9 +--------
- 8 files changed, 14 insertions(+), 12 deletions(-)
- create mode 100644 tests/functional/m68k/meson.build
- rename tests/functional/{test_m68k_mcf5208evb.py => m68k/test_mcf5208evb.py} (100%)
- rename tests/functional/{test_m68k_nextcube.py => m68k/test_nextcube.py} (100%)
- rename tests/functional/{test_m68k_q800.py => m68k/test_q800.py} (100%)
- rename tests/functional/{test_m68k_replay.py => m68k/test_replay.py} (100%)
- rename tests/functional/{test_m68k_tuxrun.py => m68k/test_tuxrun.py} (100%)
+ MAINTAINERS                                         |  6 +++---
+ tests/functional/meson.build                        | 13 +------------
+ tests/functional/s390x/meson.build                  | 13 +++++++++++++
+ .../test_ccw_virtio.py}                             |  0
+ .../test_pxelinux.py}                               |  0
+ .../{test_s390x_replay.py => s390x/test_replay.py}  |  0
+ .../test_topology.py}                               |  0
+ .../{test_s390x_tuxrun.py => s390x/test_tuxrun.py}  |  0
+ 8 files changed, 17 insertions(+), 15 deletions(-)
+ create mode 100644 tests/functional/s390x/meson.build
+ rename tests/functional/{test_s390x_ccw_virtio.py => s390x/test_ccw_virtio.py} (100%)
+ rename tests/functional/{test_s390x_pxelinux.py => s390x/test_pxelinux.py} (100%)
+ rename tests/functional/{test_s390x_replay.py => s390x/test_replay.py} (100%)
+ rename tests/functional/{test_s390x_topology.py => s390x/test_topology.py} (100%)
+ rename tests/functional/{test_s390x_tuxrun.py => s390x/test_tuxrun.py} (100%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 716127e831d..e188de813fb 100644
+index c6410a5f5fd..4a55a20f6a5 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1312,7 +1312,7 @@ F: hw/m68k/mcf_intc.c
- F: hw/char/mcf_uart.c
- F: hw/net/mcf_fec.c
- F: include/hw/m68k/mcf*.h
--F: tests/functional/test_m68k_mcf5208evb.py
-+F: tests/functional/m68k/test_mcf5208evb.py
+@@ -1797,7 +1797,7 @@ S: Supported
+ F: hw/s390x/
+ F: include/hw/s390x/
+ F: configs/devices/s390x-softmmu/default.mak
+-F: tests/functional/test_s390x_*
++F: tests/functional/s390x
+ T: git https://github.com/borntraeger/qemu.git s390-next
+ L: qemu-s390x@nongnu.org
  
- NeXTcube
- M: Thomas Huth <huth@tuxfamily.org>
-@@ -1320,7 +1320,7 @@ S: Odd Fixes
- F: hw/m68k/next-*.c
- F: hw/display/next-fb.c
- F: include/hw/m68k/next-cube.h
--F: tests/functional/test_m68k_nextcube.py
-+F: tests/functional/m68k/test_nextcube.py
+@@ -1811,7 +1811,7 @@ F: hw/s390x/ipl.*
+ F: pc-bios/s390-ccw/
+ F: pc-bios/s390-ccw.img
+ F: docs/devel/s390-dasd-ipl.rst
+-F: tests/functional/test_s390x_pxelinux.py
++F: tests/functional/s390x/test_pxelinux.py
+ T: git https://github.com/borntraeger/qemu.git s390-next
+ L: qemu-s390x@nongnu.org
  
- q800
- M: Laurent Vivier <laurent@vivier.eu>
-@@ -1346,7 +1346,7 @@ F: include/hw/m68k/q800-glue.h
- F: include/hw/misc/djmemc.h
- F: include/hw/misc/iosb.h
- F: include/hw/audio/asc.h
--F: tests/functional/test_m68k_q800.py
-+F: tests/functional/m68k/test_q800.py
+@@ -1865,7 +1865,7 @@ F: hw/s390x/cpu-topology.c
+ F: target/s390x/kvm/stsi-topology.c
+ F: docs/devel/s390-cpu-topology.rst
+ F: docs/system/s390x/cpu-topology.rst
+-F: tests/functional/test_s390x_topology.py
++F: tests/functional/s390x/test_topology.py
  
- virt
- M: Laurent Vivier <laurent@vivier.eu>
-@@ -1361,7 +1361,7 @@ F: include/hw/intc/goldfish_pic.h
- F: include/hw/intc/m68k_irqc.h
- F: include/hw/misc/virt_ctrl.h
- F: docs/specs/virt-ctlr.rst
--F: tests/functional/test_m68k_tuxrun.py
-+F: tests/functional/m68k/test_tuxrun.py
- 
- MicroBlaze Machines
- -------------------
-diff --git a/tests/functional/m68k/meson.build b/tests/functional/m68k/meson.build
-new file mode 100644
-index 00000000000..e29044a6d73
---- /dev/null
-+++ b/tests/functional/m68k/meson.build
-@@ -0,0 +1,9 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+tests_m68k_system_thorough = [
-+  'mcf5208evb',
-+  'nextcube',
-+  'replay',
-+  'q800',
-+  'tuxrun',
-+]
-diff --git a/tests/functional/test_m68k_mcf5208evb.py b/tests/functional/m68k/test_mcf5208evb.py
-similarity index 100%
-rename from tests/functional/test_m68k_mcf5208evb.py
-rename to tests/functional/m68k/test_mcf5208evb.py
-diff --git a/tests/functional/test_m68k_nextcube.py b/tests/functional/m68k/test_nextcube.py
-similarity index 100%
-rename from tests/functional/test_m68k_nextcube.py
-rename to tests/functional/m68k/test_nextcube.py
-diff --git a/tests/functional/test_m68k_q800.py b/tests/functional/m68k/test_q800.py
-similarity index 100%
-rename from tests/functional/test_m68k_q800.py
-rename to tests/functional/m68k/test_q800.py
-diff --git a/tests/functional/test_m68k_replay.py b/tests/functional/m68k/test_replay.py
-similarity index 100%
-rename from tests/functional/test_m68k_replay.py
-rename to tests/functional/m68k/test_replay.py
-diff --git a/tests/functional/test_m68k_tuxrun.py b/tests/functional/m68k/test_tuxrun.py
-similarity index 100%
-rename from tests/functional/test_m68k_tuxrun.py
-rename to tests/functional/m68k/test_tuxrun.py
+ X86 Machines
+ ------------
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index e2e66dcf523..d32dd4a371f 100644
+index 7e7a6aa0c93..abaa4e00fca 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -16,6 +16,7 @@ subdir('avr')
- subdir('hppa')
- subdir('i386')
- subdir('loongarch64')
-+subdir('m68k')
+@@ -29,10 +29,7 @@ subdir('ppc64')
+ subdir('riscv32')
+ subdir('riscv64')
+ subdir('rx')
+-
+-test_s390x_timeouts = {
+-  's390x_ccw_virtio' : 420,
+-}
++subdir('s390x')
  
- test_mips_timeouts = {
-   'mips_malta' : 480,
-@@ -81,14 +82,6 @@ tests_generic_linuxuser = [
+ test_sh4_timeouts = {
+   'sh4_tuxrun' : 240,
+@@ -59,14 +56,6 @@ tests_generic_linuxuser = [
  tests_generic_bsduser = [
  ]
  
--tests_m68k_system_thorough = [
--  'm68k_mcf5208evb',
--  'm68k_nextcube',
--  'm68k_replay',
--  'm68k_q800',
--  'm68k_tuxrun',
+-tests_s390x_system_thorough = [
+-  's390x_ccw_virtio',
+-  's390x_pxelinux',
+-  's390x_replay',
+-  's390x_topology',
+-  's390x_tuxrun',
 -]
 -
- tests_microblaze_system_thorough = [
-   'microblaze_replay',
-   'microblaze_s3adsp1800'
+ tests_sh4_system_thorough = [
+   'sh4_r2d',
+   'sh4_tuxrun',
+diff --git a/tests/functional/s390x/meson.build b/tests/functional/s390x/meson.build
+new file mode 100644
+index 00000000000..030b116039c
+--- /dev/null
++++ b/tests/functional/s390x/meson.build
+@@ -0,0 +1,13 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++test_s390x_timeouts = {
++  'ccw_virtio' : 420,
++}
++
++tests_s390x_system_thorough = [
++  'ccw_virtio',
++  'pxelinux',
++  'replay',
++  'topology',
++  'tuxrun',
++]
+diff --git a/tests/functional/test_s390x_ccw_virtio.py b/tests/functional/s390x/test_ccw_virtio.py
+similarity index 100%
+rename from tests/functional/test_s390x_ccw_virtio.py
+rename to tests/functional/s390x/test_ccw_virtio.py
+diff --git a/tests/functional/test_s390x_pxelinux.py b/tests/functional/s390x/test_pxelinux.py
+similarity index 100%
+rename from tests/functional/test_s390x_pxelinux.py
+rename to tests/functional/s390x/test_pxelinux.py
+diff --git a/tests/functional/test_s390x_replay.py b/tests/functional/s390x/test_replay.py
+similarity index 100%
+rename from tests/functional/test_s390x_replay.py
+rename to tests/functional/s390x/test_replay.py
+diff --git a/tests/functional/test_s390x_topology.py b/tests/functional/s390x/test_topology.py
+similarity index 100%
+rename from tests/functional/test_s390x_topology.py
+rename to tests/functional/s390x/test_topology.py
+diff --git a/tests/functional/test_s390x_tuxrun.py b/tests/functional/s390x/test_tuxrun.py
+similarity index 100%
+rename from tests/functional/test_s390x_tuxrun.py
+rename to tests/functional/s390x/test_tuxrun.py
 -- 
 2.47.2
 
