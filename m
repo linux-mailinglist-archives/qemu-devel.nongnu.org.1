@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91422B447BA
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 22:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2937B447C3
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 22:52:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuGsB-0003Xi-V5; Thu, 04 Sep 2025 16:47:59 -0400
+	id 1uuGsN-0003c7-0o; Thu, 04 Sep 2025 16:48:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGs7-0003VI-NW
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:47:55 -0400
-Received: from mailgate01.uberspace.is ([2001:1a50:11:0:c83f:a8ff:fea6:c8da])
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGsI-0003b2-Tx
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:48:07 -0400
+Received: from mailgate01.uberspace.is ([95.143.172.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGru-0000jU-HZ
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:47:55 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuGs9-0000jm-56
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 16:48:06 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate01.uberspace.is (Postfix) with ESMTPS id 7D60460BBE
+ by mailgate01.uberspace.is (Postfix) with ESMTPS id B963F60C21
  for <qemu-devel@nongnu.org>; Thu,  4 Sep 2025 22:47:22 +0200 (CEST)
-Received: (qmail 32669 invoked by uid 990); 4 Sep 2025 20:47:22 -0000
+Received: (qmail 32681 invoked by uid 990); 4 Sep 2025 20:47:22 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
@@ -28,40 +28,41 @@ Received: from unknown (HELO unkown) (::1)
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
-	Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v6 11/25] target/m68k: call plugin trap callbacks
-Date: Thu,  4 Sep 2025 22:46:48 +0200
-Message-ID: <63385a775e6c00d4fb9c726631ec808a700b266c.1757018626.git.neither@nut.email>
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Subject: [PATCH v6 12/25] target/microblaze: call plugin trap callbacks
+Date: Thu,  4 Sep 2025 22:46:49 +0200
+Message-ID: <829dc282fcf037d44681ba88be4dd9e17c644376.1757018626.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <cover.1757018626.git.neither@nut.email>
 References: <cover.1757018626.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.99705) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.998444) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.59705
+X-Rspamd-Score: -5.598444
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=FRZ2j8rbmm/3ycj8ZP5YixYFG9zzEquVSOdWN5ofsr0=;
- b=qg4E9Hoe0jmVFqFBSoMJ9eXwEdTUy5mbO6Rh/keYChNjMgp8gBcLOaIJbnTy3TFAjcQCqdLtmV
- Z8I5QVHhS+35BWhYyQzazNApUjkBUlyGVhwEQtaLoEhBx8/xjPb3jzjcp71YkHMuhKsAEQ8Qh5TI
- MtDSnGERzrRwwoJWvfnPIQaPoNpk6ztDUANKRNHwQdRlIU1/sBNglgCBZdNtOCkgzAoYjR6b6wsU
- 70q6bNkMBhvmsuDtmf6uhgdi4uVSOdDut9R8rP2TZdFzC6ej8PlTIKDY6QViAbbVCDRAo0UCB/1V
- oCPDAMfMrKbx6C9qgLIr4gx+l1ZGuBbZWZKLZZkN/T/FMjkXdxuzyvaqXpogkxPxwLkLuEc35QHH
- o0Nv5yIq0Baa8q4RBngQQH2frp30u3kRP+b2NrEm4If6ZdDTeygeSH7L2oj9Ia1QgRRD6tIeq5we
- fkKAvj/k6BmwX0XRcTFgmaWu0DkNckoH3wEVC0VyKCEtg03Xubre7SN0Ks6R2gOmETBHbE9rkpJt
- DmBl1JqDGnTpId9Q7yZDkIa//++H0Zve54uazplfTmQWMVn7HyjaN8AVWR3hFw1bXp0lxQLxXjqY
- +9Sg/NmcV3qEkMcERMUH3pYXIfyYxL4eDchZPTGktlZ8lon3yjuzNrD3bKmT80CeCxTQMTMyC5lh
- k=
-Received-SPF: pass client-ip=2001:1a50:11:0:c83f:a8ff:fea6:c8da;
- envelope-from=neither@nut.email; helo=mailgate01.uberspace.is
+ bh=rM5JX9zlQ9WGxAYK3Aunbsrp/Za/oYwP9iC2VqK2Yd4=;
+ b=msxdpSIb4Yu+2qhO55qz2NfIUnZ3CxlanAcRPoz7BPA/tG1uuW1lyYmU98KwDj6hnB0UZzz1x3
+ fQV4lG416C0zaq/anFAtfODdbca5+0d8xvsAf4l2n8ya5Z/5SJ/u7dJ4K1pf3PT6L8s0XY++x6Gd
+ rrcph09Sm5/avtWShMAd3CEeUiQaWpz15qCfn8GKBUP3EdiGSWkJZQb9co7SvgKtzI65fV/4vPkv
+ Hol1ZXdKhczd5Srp9jx5LgFdPKq9huUVHp6aX7WK2fgSQLlgtbtBM8H32oyvAd6ocMX9q//yWbsa
+ MZpkT2YFPy76EcBiuiVZZw3gBIcWjE+4X4kRBXaW/rk3zFB8KBcWOuxwyDn4fWB6gVYpAwVplyUh
+ e3aN1fqpC7h3gHcbDJqb31Z94n65xVoElqdfYpMfQH8kfSv7eKGdvHzRu01caUVzg3fEqPyGGzoC
+ a454d531gJaGaew0IlSJwbytjxuG2Y4bcvn64oEZLawNNr+uOs5vM1blZvssAk7yRqO471vnbTUE
+ Hj9gMVGF4li3gW//MPKNyxdBvbf0rh7BD2ti1Xw1/801XrRntMina+O75rnshlWXu2uPXnYEeIUw
+ h+3cPlAdhXgHpJ2UuVOQUD8Bft/TPnaztSHLsVk0SwI8Fv4VInZdJaOVy8CZxMX6/i+gJ9EkgL+s
+ 8=
+Received-SPF: pass client-ip=95.143.172.20; envelope-from=neither@nut.email;
+ helo=mailgate01.uberspace.is
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,81 +83,63 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for Motorola 68000 targets.
+This change places the hook for MicroBlaze targets. This architecture
+has one special "exception" for interrupts and no host calls.
 
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/m68k/op_helper.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ target/microblaze/helper.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
-index f29ae12af8..e9c20a8e03 100644
---- a/target/m68k/op_helper.c
-+++ b/target/m68k/op_helper.c
-@@ -22,6 +22,7 @@
+diff --git a/target/microblaze/helper.c b/target/microblaze/helper.c
+index ef0e2f973f..d66eab6e4b 100644
+--- a/target/microblaze/helper.c
++++ b/target/microblaze/helper.c
+@@ -27,6 +27,7 @@
+ #include "qemu/host-utils.h"
+ #include "exec/log.h"
  #include "exec/helper-proto.h"
- #include "accel/tcg/cpu-ldst.h"
- #include "semihosting/semihost.h"
 +#include "qemu/plugin.h"
  
- #if !defined(CONFIG_USER_ONLY)
  
-@@ -183,6 +184,21 @@ static const char *m68k_exception_name(int index)
-     return "Unassigned";
- }
- 
-+static void do_plugin_vcpu_interrupt_cb(CPUState *cs, uint64_t from)
-+{
-+    switch (cs->exception_index) {
-+    case EXCP_SPURIOUS ... EXCP_INT_LEVEL_7:
-+        qemu_plugin_vcpu_interrupt_cb(cs, from);
-+        break;
-+    case EXCP_SEMIHOSTING:
-+        qemu_plugin_vcpu_hostcall_cb(cs, from);
-+        break;
-+    default:
-+        qemu_plugin_vcpu_exception_cb(cs, from);
-+        break;
-+    }
-+}
-+
- static void cf_interrupt_all(CPUM68KState *env, int is_hw)
+ G_NORETURN
+@@ -35,6 +36,7 @@ static void mb_unaligned_access_internal(CPUState *cs, uint64_t addr,
  {
-     CPUState *cs = env_cpu(env);
-@@ -203,6 +219,7 @@ static void cf_interrupt_all(CPUM68KState *env, int is_hw)
-             return;
-         case EXCP_SEMIHOSTING:
-             do_m68k_semihosting(env, env->dregs[0]);
-+            qemu_plugin_vcpu_hostcall_cb(cs, retaddr);
-             return;
-         }
-     }
-@@ -239,6 +256,8 @@ static void cf_interrupt_all(CPUM68KState *env, int is_hw)
-     env->aregs[7] = sp;
-     /* Jump to vector.  */
-     env->pc = cpu_ldl_mmuidx_ra(env, env->vbr + vector, MMU_KERNEL_IDX, 0);
-+
-+    do_plugin_vcpu_interrupt_cb(cs, retaddr);
- }
- 
- static inline void do_stack_frame(CPUM68KState *env, uint32_t *sp,
-@@ -277,6 +296,7 @@ static void m68k_interrupt_all(CPUM68KState *env, int is_hw)
-     uint32_t sp;
-     uint32_t vector;
-     uint16_t sr, oldsr;
+     CPUMBState *env = cpu_env(cs);
+     uint32_t esr, iflags;
 +    uint64_t last_pc = env->pc;
  
-     if (!is_hw) {
-         switch (cs->exception_index) {
-@@ -417,6 +437,8 @@ static void m68k_interrupt_all(CPUM68KState *env, int is_hw)
-     env->aregs[7] = sp;
-     /* Jump to vector.  */
-     env->pc = cpu_ldl_mmuidx_ra(env, env->vbr + vector, MMU_KERNEL_IDX, 0);
-+
-+    do_plugin_vcpu_interrupt_cb(cs, last_pc);
+     /* Recover the pc and iflags from the corresponding insn_start.  */
+     cpu_restore_state(cs, retaddr);
+@@ -54,6 +56,7 @@ static void mb_unaligned_access_internal(CPUState *cs, uint64_t addr,
+     env->ear = addr;
+     env->esr = esr;
+     cs->exception_index = EXCP_HW_EXCP;
++    qemu_plugin_vcpu_exception_cb(cs, last_pc);
+     cpu_loop_exit(cs);
  }
  
- static void do_interrupt_all(CPUM68KState *env, int is_hw)
+@@ -152,6 +155,7 @@ void mb_cpu_do_interrupt(CPUState *cs)
+     CPUMBState *env = &cpu->env;
+     uint32_t t, msr = mb_cpu_read_msr(env);
+     bool set_esr;
++    uint64_t last_pc = env->pc;
+ 
+     /* IMM flag cannot propagate across a branch and into the dslot.  */
+     assert((env->iflags & (D_FLAG | IMM_FLAG)) != (D_FLAG | IMM_FLAG));
+@@ -256,6 +260,12 @@ void mb_cpu_do_interrupt(CPUState *cs)
+     env->res_addr = RES_ADDR_NONE;
+     env->iflags = 0;
+ 
++    if (cs->exception_index == EXCP_IRQ) {
++        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
++    } else {
++        qemu_plugin_vcpu_exception_cb(cs, last_pc);
++    }
++
+     if (!set_esr) {
+         qemu_log_mask(CPU_LOG_INT,
+                       "         to pc=%08x msr=%08x\n", env->pc, msr);
 -- 
 2.49.1
 
