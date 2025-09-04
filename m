@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D19B440FA
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 17:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B631AB440F8
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 17:49:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuCBb-0004pa-2J; Thu, 04 Sep 2025 11:47:43 -0400
+	id 1uuCBn-00050c-99; Thu, 04 Sep 2025 11:47:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uuCBE-0004k9-Aj
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 11:47:22 -0400
+ id 1uuCBQ-0004nO-CZ
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 11:47:35 -0400
 Received: from mail-vk1-xa2b.google.com ([2607:f8b0:4864:20::a2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uuCB6-0008IP-B8
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 11:47:18 -0400
+ id 1uuCBF-0008QZ-Gn
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 11:47:31 -0400
 Received: by mail-vk1-xa2b.google.com with SMTP id
- 71dfb90a1353d-544af5b745cso788538e0c.0
- for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 08:47:09 -0700 (PDT)
+ 71dfb90a1353d-544a55b84d8so461445e0c.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 08:47:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757000827; x=1757605627; darn=nongnu.org;
+ d=linaro.org; s=google; t=1757000831; x=1757605631; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hJUU2u1tzC1eXmbzNgouEyqDdukQnt6LnrP8qMtdLmo=;
- b=Dy1lhViLudkXBhvcAKfRz/usZITdTfbfODnoOoDSSBhZhoCS7JisgdrfW+T20py/2t
- 9ScTvgM+e6l2uP1g7RipTYwCWdLnOPyITgwwwP/QuPZYntxayMD8HHujHMebneFwfJIS
- kc3MWXSd4j73aj0SjBOw0RyiteluWcfKf7fj44ReSsAKgfjoTcDHF2/8qfpnFCmh0J/h
- P1LVm7O4+ar08Mo1IdxF7Izi/YrgISJ2OW9ojGosNLnbU3DBJGxWrypxOW3CQfm4vc09
- 0EmvRwee2ZWnuDgL5RJmhrQieETAfCBz+uI41I4K3mCuoYziiaHuQ2b/JyUxBbZYPbqR
- TssA==
+ bh=vYDFXmXqCAGa3H4P42CKPPrpxXB7rIYCvJObU3+Iajg=;
+ b=r18vM5WKsi7cX9Tw91VlYUKwN37l5yqMGA9eAJQawp0yIPFoMwKY+ndzx2RBgpOY4N
+ IRJcZDlamXiR+wo2RhE5BKFKLWUl9u55jRaXh6ZHoNEUKCw5Tjni1FCPMAJRv5UzoFHs
+ WzsxmBywhHYPgSZtgqhvDTvgtTUK2COc6KmpvUlLtQpq6eNtIM+H9bAnIj6xfsKZAkV9
+ UB9OROYp1nO1jcGIX0rJ/awMayYndxGzvg0me4qsZaSsdOV+7XyTcUWEfY6olt5VRLcu
+ Ag7tVhxq8hQ/MoAGQ0Rap5IzFCh6LLBS9TOYZBQURFcQXEh37pA/6YOEB6H7Qm2oY0fk
+ sdWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757000827; x=1757605627;
+ d=1e100.net; s=20230601; t=1757000831; x=1757605631;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hJUU2u1tzC1eXmbzNgouEyqDdukQnt6LnrP8qMtdLmo=;
- b=fQ/J/Fz8NUFxIhEK7KbiM9gsq4qdLVb7qF+kG4uir/gqyhoU2d0SPx1iVWKniOnqto
- XIRbpFz9dzPmuS3LGcTAPVpCOTd7hzVJXErklK0fbAzeRyKky1iVrrQHpWRq/yovF6pg
- M2RJAuDPOFNN+/Rf2F6R4Ta6/MPyGAGPdxKkkj3M3ULsEQc7KUtvqvnvxhtTIj5RtFSj
- 64ilbjOl44TX5LWj0u8w1EajkKzN34d6XstZqFRO21EKzmaX+yqHEd2gYHp6h0+ey+Mn
- GbYdCbsR89K2D15kj2CQUy/K0Y0gKrX3jYg+QONNuejlyA4GSx9JP+MboLr2QpF9m0X9
- vmvw==
-X-Gm-Message-State: AOJu0Yz32CQzsOVLImtE8EdK5zdxOnh8MvpNGJFwKyWcS6Qdg91EC+L1
- yy7t58c9ooroi3FrCFpds/1A0qdX//iPKq04kx9X0laZem3tgzF5alFo8Tb1BGta0AZJUj3jkYA
- eKaClsO60Ig==
-X-Gm-Gg: ASbGncvtNdF+2/E+qUwQ15wnXD7btdnCTUKdhZba0aXetX8S0VTJyD+PQaKsXxMoBqd
- zu3WxRvn3RSQUBBQbeXIVI8W+2GoJNcIkCNmXx9A7VxTsMKa0W6zgYxWQKGVqzeL3anco9X84NR
- Pij7tb6MwaR6K9Q1CoN6EhS0j36IKOwWCIMXdcbkF3OBeSYHvNQ/BW6czzeL9oCTce4xNU8f4nn
- kb07vQ0Dp4OlVodVEfn0u3i8LEPvM5bHia8Ftmbppv22JQaRjAIenigffCwbu0DYmaDXIizYeHd
- GmKD5C125OynurOVfHfYN4j6IdhCQjh96aNW+Iwza8uDQPZh6uHI0qw3lgZIUta9oW9fw97iV2H
- 0c/SZD1PFUOPQhNR3VoxTEFSkQ5opVVi4xzsOLOQ=
-X-Google-Smtp-Source: AGHT+IESD09FhaRWqFv/jDR5+zmzGS0I7CeSClFxHhefAuOcy70hbViiiCCMNb2+oYX6IZDbKF01/g==
-X-Received: by 2002:a05:6122:3d08:b0:545:eca2:1c7e with SMTP id
- 71dfb90a1353d-545eca22169mr688729e0c.0.1757000826773; 
- Thu, 04 Sep 2025 08:47:06 -0700 (PDT)
+ bh=vYDFXmXqCAGa3H4P42CKPPrpxXB7rIYCvJObU3+Iajg=;
+ b=YKkryFdKRN+13CGdLldEKobT7TOQrqqJlTWafE46CgOjLuRkd2XMRq3ELgfMp493sn
+ ia19USripvNxQgcGspoILsYQ1rICKsVnxqtFKq62PUhithefeWmNHAZuFYgbVf4JCKd4
+ 37A2FjSZ+a221KcbWq4hMD1SLB8RdQlZUBhrjukQC7u+nhVNyoC6NUWoHuMv0HAosdof
+ KHEBL3ewU1NTY3pNDi1rKcGT8F/zc78C3c90nNbmq8Q8oaeJCPd4QSHoZQhxDbfckLeH
+ dSFbgqOCizJi31tSpTznvUzQ3TkOdq44sa4Nmu/uv9dsHHrGO1aVvOTLATROROY85BjD
+ WMHg==
+X-Gm-Message-State: AOJu0YwLxpHF/j1OSFceJFf1Ly9q9t4068gEEt8H+09TDaE7y3RIuQMi
+ 9ezYR5foJOLqtHPYlOTJPmu5fDztt8zgMQmnPP/UzWbFLaCwXnNyaMOLHURAU3+68zkIuuX5hB/
+ VmUKwkO3AJg==
+X-Gm-Gg: ASbGncv0lYuF3Qoqd23s6OL+wE2wiEkgt5je4biE8v5anbB+im8dB6Pl0AkP5wAEt5/
+ Kc7SdYiPFotmZEwfub4EpWl8msk1q7Aydv49T3Q8IMS6Z1x2gNB933ssmA1FYt1y/D/k7aFWjRl
+ eMJdWrVJQ3u6aPQlTuUyLbMV1gN/wUDRsMuPzBGLPhwGIZxPj4KXnmnYWvfenNNbiFKJuSYdS7X
+ t1T6fQLwb2ViHv1Qk9rAaOcIpdpRbAK7UA/n3JZQJc9brDpEzBENMJhOR9iQp77Bub52Tf4u+Na
+ FRuzJKcrNUai7wlmk0mcBSJZIlWbYdb0jYtYBX5GL6I9pY7ibMBb6kHpGc0sh8rZaGgx6CJyMnB
+ SZxIYyiURR0nyglTuAaYz6FHtFV0x7oNH8DtK8LA=
+X-Google-Smtp-Source: AGHT+IEfdF/8MTudAgTz1GKf4FI7P0iY9BfPuKxefZGnKr/uKjEuglZ8oN5EPxrYTIZ4IfY4cxLhSw==
+X-Received: by 2002:a05:6122:1d8f:b0:531:2afc:4628 with SMTP id
+ 71dfb90a1353d-544a0190d7amr6131606e0c.2.1757000829781; 
+ Thu, 04 Sep 2025 08:47:09 -0700 (PDT)
 Received: from gromero0.. ([186.215.58.133]) by smtp.gmail.com with ESMTPSA id
- 71dfb90a1353d-544a666da0csm6497022e0c.28.2025.09.04.08.47.04
+ 71dfb90a1353d-544a666da0csm6497022e0c.28.2025.09.04.08.47.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Sep 2025 08:47:06 -0700 (PDT)
+ Thu, 04 Sep 2025 08:47:09 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com,
  berrange@redhat.com
 Cc: qemu-arm@nongnu.org,
 	1844144@gmail.com,
 	gustavo.romero@linaro.org
-Subject: [PATCH v2 2/5] tests/guest-debug: Format comments
-Date: Thu,  4 Sep 2025 15:46:37 +0000
-Message-Id: <20250904154640.52687-3-gustavo.romero@linaro.org>
+Subject: [PATCH v2 3/5] tests/guest-debug: Add quiet option to run-tests.py
+Date: Thu,  4 Sep 2025 15:46:38 +0000
+Message-Id: <20250904154640.52687-4-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250904154640.52687-1-gustavo.romero@linaro.org>
 References: <20250904154640.52687-1-gustavo.romero@linaro.org>
@@ -82,8 +82,9 @@ X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,55 +100,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Capitalize and add periods to comments.
+Add a --quiet option to run-tests.py so it can run without printing any
+messages to the stdout.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- tests/guest-debug/run-test.py | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ tests/guest-debug/run-test.py | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/tests/guest-debug/run-test.py b/tests/guest-debug/run-test.py
-index d21a5dda77..e051e8947c 100755
+index e051e8947c..cf8b37b8b8 100755
 --- a/tests/guest-debug/run-test.py
 +++ b/tests/guest-debug/run-test.py
-@@ -54,7 +54,7 @@ def log(output, msg):
- if __name__ == '__main__':
-     args = get_args()
+@@ -39,15 +39,17 @@ def get_args():
+     parser.add_argument("--stderr", help="A file to redirect stderr to")
+     parser.add_argument("--no-suspend", action="store_true",
+                         help="Ask the binary to not wait for GDB connection")
++    parser.add_argument("--quiet", action="store_true", default=False,
++                        help="Don't print any messages to stdout")
  
--    # Search for a gdb we can use
-+    # Search for a gdb we can use.
-     if not args.gdb:
-         args.gdb = shutil.which("gdb-multiarch")
-     if not args.gdb:
-@@ -94,22 +94,22 @@ def log(output, msg):
-         log(output, "QEMU CMD: %s" % (cmd))
+     return parser.parse_args()
+ 
+ 
+-def log(output, msg):
++def log(output, msg, quiet):
+     if output:
+         output.write(msg + "\n")
+         output.flush()
+-    else:
++    elif not quiet:
+         print(msg)
+ 
+ 
+@@ -91,7 +93,7 @@ def log(output, msg):
+             cmd = f'{args.qemu} {args.qargs} -g {socket_name}{suspend}' \
+                 f' {args.binary}'
+ 
+-        log(output, "QEMU CMD: %s" % (cmd))
++        log(output, "QEMU CMD: %s" % (cmd), args.quiet)
          inferior = subprocess.Popen(shlex.split(cmd))
  
--    # Now launch gdb with our test and collect the result
-+    # Now launch gdb with our test and collect the result.
-     gdb_cmd = args.gdb
-     if args.binary:
-         gdb_cmd += " %s" % (args.binary)
-     if args.gdb_args:
-         gdb_cmd += " %s" % (args.gdb_args)
--    # run quietly and ignore .gdbinit
-+    # Run quietly and ignore .gdbinit.
-     gdb_cmd += " -q -n -batch"
--    # disable pagination
-+    # Disable pagination.
-     gdb_cmd += " -ex 'set pagination off'"
--    # disable prompts in case of crash
-+    # Disable prompts in case of crash.
-     gdb_cmd += " -ex 'set confirm off'"
--    # connect to remote
-+    # Connect automatically to remote only if QEMU is launched.
-     if args.qemu:
-         gdb_cmd += " -ex 'target remote %s'" % (socket_name)
--    # finally the test script itself
-+    # Finally the test script itself.
-     if args.test:
-         argv = [args.test] + args.test_args
-         gdb_cmd += f" -ex \"py sys.argv={argv}\""
+     # Now launch gdb with our test and collect the result.
+@@ -117,7 +119,7 @@ def log(output, msg):
+ 
+ 
+     sleep(1)
+-    log(output, "GDB CMD: %s" % (gdb_cmd))
++    log(output, "GDB CMD: %s" % (gdb_cmd), args.quiet)
+ 
+     gdb_env = dict(os.environ)
+     gdb_pythonpath = gdb_env.get("PYTHONPATH", "").split(os.pathsep)
 -- 
 2.34.1
 
