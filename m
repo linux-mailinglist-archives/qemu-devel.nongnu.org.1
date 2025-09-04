@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F361FB4351B
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2206FB435A1
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:24:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu54b-0006Gd-B9; Thu, 04 Sep 2025 04:12:01 -0400
+	id 1uu5CM-00024h-LC; Thu, 04 Sep 2025 04:20:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu54Y-0006Co-5T
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:11:58 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1uu5B5-0001BU-VZ
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:18:45 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu54J-00040u-5N
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:11:57 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-619487c8865so3298491a12.1
- for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:11:41 -0700 (PDT)
+ id 1uu5B1-0008Dc-Sn
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:18:43 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-61cdab7eee8so1085101a12.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:18:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756973500; x=1757578300; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756973916; x=1757578716; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZYVyVNsFyTXeOSFCWu8uUvsiqoxRwuwTGPuSI8iWgeI=;
- b=rZ4ZeC78nxBSs7Hm28KPJA5UJ9/lmcd+qT6HI2dPYRgjbSbw8vupniVlEUHXvqpbsn
- 6MeEkMYeEq/YchF968lN9sYtAbppFqVpYC/43sQmjCIMFtH9d3RCZy0CjSbJlH0COMkO
- p+fkLqifdJb4uTSQDeYHOcAWBNd15ftan2CM9gzXQNY4LC9D918wKhTnIoynp/txtjm8
- Zmzu4E1LcDGH1WKI8qe9NIZZhVPWdReTtf8tfSByB9PJuRE25pirUXXDydE/M97AnMaN
- eInmWkGSTDl936dtve9BqbQUbseczCRXpssU3GICm/dRQ/c6TRcMGz/ZdIfHPbM+58zL
- qIEw==
+ bh=ompVlJELO9ntgp7NqWovDalEEm5jaDFBaNVePh2Fg+k=;
+ b=lqYpu8iTmfnRDkPsYPfWztkOHruSw/9HDNGJXi2AUKgD2QshF8ZVZgxVfo5/ciCepf
+ rKV2iawkbnU1xvxO8tHX6k5Rj7eRU2cLG1LTxzQ6lLDWG9JpA6bJxjYSdl+njg0sEHyn
+ QBxAtAho0yliqPYWp9QMmnoxYQS/rz0y+IIUtlqmxVUgl1x74H+07Zua3du1gvee1brZ
+ H1Wkj7mBGshRf5sELwH7eSJ9rXk/kB4NO0CNSAGdt9nEQLlbEVtMXY7/o4I+7f+0VJGa
+ rgJwcHqh1YDPejeLnAanrDnUdOtdEpYTdT/00WOnqVxxQWn1rHTjhmrUWqkbMl2V0cHc
+ RNXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756973500; x=1757578300;
+ d=1e100.net; s=20230601; t=1756973916; x=1757578716;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZYVyVNsFyTXeOSFCWu8uUvsiqoxRwuwTGPuSI8iWgeI=;
- b=HVeT957DZvH+IeWoMsexbuae3UsJ5lcsFgwqZ65/AGP9STTd85RFR2zR8RJ+1fieN1
- +SF0X+vRXdjnkp63w4U5W67W9hCWqfKcICiICrQ9uq/4kykIldHgc0gzWt6ckQV3bdvC
- rpXYcZYpxLd0WEx7i6plD0xuyw6c6bV/EBwR4yE7fqLq8pWVw+ZbEW/HzE3Z0UDoB60b
- jUJn99PWH1EIcnCZz6LUlwW342CVKKfhMfjI2bzjVDUdwaVZ725kMh/2hI5GkTmcJlY0
- dvomh8XdRod5mg+igZauqg3Oal81MgPeEAMnRqt0gNOsMYNP18/cSZ0Men2qHP8toPJW
- dUPQ==
-X-Gm-Message-State: AOJu0YzCONoUr7rhOW9DMXWxLISTMM1ZFmJLoKO5/Q/Zd4wNJDzZQLVK
- EusPsj9oLea5EmaJDmRNAFyM+9XAK+r8azhgpcY9+ylqCtcvjjgGY+k1LpkFM9XGpZyqDwrZvKd
- 9bhvWCN2c7A==
-X-Gm-Gg: ASbGncvaNq0VYr65rpmP+uJmn4ELOykJvW+2kqwSdCr9K/UXjLLFyMoiSMnIrPIutdu
- Xax3K/QD4jTH3vWnKd3IW9GfSaNoZ+UZ38ZSWnFjGXlOT9DYbcd/r3f30d5OgWEbgOmxdGstcgW
- liTTKFS+7F/eYUWhfD6cwpuzm+YAJAL/isedxYFHU63wL+qT1ExBFeLW4J+ic2xYJz8o9aaeah1
- OSqfPeRT3a38i0tIS0ZIQYaqkR9Etq+doG16eoMSSyQ2TFn6kW68SdAB1zzTIg/QEqV9wEI74+W
- kc11kbMUdW3gNqRFj5XyywSwBkSa4sI04TaZsQWuJrbuCdxQZm8dTDtplbAXj/PZ1YRs+gkaVQH
- Z9lR/lzWH8lPiW8J/DBuhEv2ks8U78RKlbA==
-X-Google-Smtp-Source: AGHT+IFieb+gm+rWJ0Oa45cj1KjcPCC4rl/ynxe9G4bgf3W7srLgMSyNw8FhmhZu6eY5HA4lnrH5tA==
-X-Received: by 2002:a17:907:9729:b0:af9:8739:10ca with SMTP id
- a640c23a62f3a-b01083235f9mr1709209966b.28.1756973499527; 
- Thu, 04 Sep 2025 01:11:39 -0700 (PDT)
+ bh=ompVlJELO9ntgp7NqWovDalEEm5jaDFBaNVePh2Fg+k=;
+ b=rNAHfDkyptGKnuql5HvqjbWK0H/+7otq6tvKRQrd4YIhZSXeJuOZpyyx56/lJit/KI
+ C+/ce9GAlMDBHkw9b9EoLJGremhgu8pyez1+PO1/lagScDu5xCTp3so4xj1HGQoxlgvX
+ PfojuawdC00NHdsbRtDR+R9+BQJw93MLJeo89f9CmOIDtcOS6wd2/ffQvhL9JW8aS41w
+ zAnESJRJN6Wd9mFys5Vny6/2eqGc8hwumFCmUt0X4K5eVTcRZBKLzc3TU7FiQyynZlMy
+ 5VtpPcAPvAYrpU6G0tcPH4Y+3iAvqggziOWdgT0aXzpACrmEOjrmgNYyEBNXV+n3ZlX4
+ wRiA==
+X-Gm-Message-State: AOJu0YxCk3l4k9xovJtLSpuws/0bl2n01i3Rqj0y8osyATMmIpFwadKm
+ rxFbSIzJk0vo5Tsw7ubxOZ3xEX1Ho4VFp9JTZkjuyeIn6zY/F6YuEF26cWcOwO/hjaY=
+X-Gm-Gg: ASbGncuePWiHlK54Gp1SlURbXDIOp2uKEVhlRVWOEJVi1kAE2vfcbWBcJhgViWQeR5j
+ Z2ilJ6TEp21Ro/WoU04+0/FzfIXFr0ZkF4y19cvBrdx313kHM4QvF4sIv1Vw9nmKm/z2k7H2Smm
+ NWLKjMPhk/L16O8oJ1qhgT5dTWP2aRSF/xg5lL8J00rufYPZxFrrRHLdHFGxQlPJ7eAF2KF8Kfb
+ z3wFFtb479UyxuxQ0xzL3s+hK8EmIdIrkaAtcPUe+IsIaRkUsp7jS4lmu60b/NtUGNESgSfkDvQ
+ kbIL3Z7fbCYxZJgI9hBDfwt8xGBBvgbIabVRVrorzjb+xb7OXaILlCmof8TcVuRhtzMZWn8cp+V
+ YW9CIZ/fHYdBLmCdpBAj9dq8poQ8Mc9mT+w==
+X-Google-Smtp-Source: AGHT+IFXKnqgaKsY2aRYlcO4LSLsCuART/SZSEUFpFcB1viH9haZ5yBXysPjsYR6aV+gJtHba4UXNg==
+X-Received: by 2002:a17:907:e916:b0:afe:ae6c:411c with SMTP id
+ a640c23a62f3a-b01f2113c64mr1656930766b.64.1756973915989; 
+ Thu, 04 Sep 2025 01:18:35 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b047011daa1sm275133966b.79.2025.09.04.01.11.34
+ a640c23a62f3a-aff138a8c1dsm1395320766b.99.2025.09.04.01.18.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Sep 2025 01:11:37 -0700 (PDT)
+ Thu, 04 Sep 2025 01:18:34 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2163E5F93E;
+ by draig.lan (Postfix) with ESMTP id 58E905F9D0;
  Thu, 04 Sep 2025 09:11:29 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -127,17 +126,19 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>, John Levon <john.levon@nutanix.com>,
- Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH v2 008/281] hw: add compat machines for 10.2
-Date: Thu,  4 Sep 2025 09:06:42 +0100
-Message-ID: <20250904081128.1942269-9-alex.bennee@linaro.org>
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Subject: [PATCH v2 010/281] tests/functional/test_aarch64_virt_gpu: Skip test
+ if EGL won't initialize
+Date: Thu,  4 Sep 2025 09:06:44 +0100
+Message-ID: <20250904081128.1942269-11-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -160,251 +161,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cornelia Huck <cohuck@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Add 10.2 machine types for arm/i440fx/m68k/q35/s390x/spapr.
+If you are using the Nvidia drivers and have installed new versions
+of those packages but have not yet rebooted the host kernel,
+attempting to use the egl-headless display will cause QEMU to fail to
+start with
 
-Signed-off-by: Cornelia Huck <cohuck@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250805095616.1168905-1-cohuck@redhat.com>
+$ qemu-system-aarch64 -M virt -display egl-headless
+qemu-system-aarch64: egl: eglInitialize failed: EGL_NOT_INITIALIZED
+qemu-system-aarch64: egl: render node init failed
+
+together with this complaint in the host kernel dmesg:
+
+[7874777.555649] NVRM: API mismatch: the client has the version 535.247.01, but
+                 NVRM: this kernel module has the version 535.230.02.  Please
+                 NVRM: make sure that this kernel module and all NVIDIA driver
+                 NVRM: components have the same version.
+
+This isn't a problem with QEMU itself, so reporting this as a test
+failure is misleading.  Instead skip the tests, as we already do for
+various other kinds of "host system can't actually run the EGL
+display" situation.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Message-ID: <20250826123455.2856988-1-peter.maydell@linaro.org>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Acked-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/boards.h        |  3 +++
- include/hw/i386/pc.h       |  3 +++
- hw/arm/virt.c              |  9 ++++++++-
- hw/core/machine.c          |  3 +++
- hw/i386/pc.c               |  3 +++
- hw/i386/pc_piix.c          | 13 +++++++++++--
- hw/i386/pc_q35.c           | 13 +++++++++++--
- hw/m68k/virt.c             |  9 ++++++++-
- hw/ppc/spapr.c             | 15 +++++++++++++--
- hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
- 10 files changed, 76 insertions(+), 9 deletions(-)
+ tests/functional/test_aarch64_virt_gpu.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index f94713e6e29..665b6201214 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -779,6 +779,9 @@ struct MachineState {
-     } \
-     type_init(machine_initfn##_register_types)
- 
-+extern GlobalProperty hw_compat_10_1[];
-+extern const size_t hw_compat_10_1_len;
-+
- extern GlobalProperty hw_compat_10_0[];
- extern const size_t hw_compat_10_0_len;
- 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 79b72c54dd3..e83157ab358 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -214,6 +214,9 @@ void pc_system_parse_ovmf_flash(uint8_t *flash_ptr, size_t flash_size);
- /* sgx.c */
- void pc_machine_init_sgx_epc(PCMachineState *pcms);
- 
-+extern GlobalProperty pc_compat_10_1[];
-+extern const size_t pc_compat_10_1_len;
-+
- extern GlobalProperty pc_compat_10_0[];
- extern const size_t pc_compat_10_0_len;
- 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index ef6be3660f5..9326cfc895f 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3455,10 +3455,17 @@ static void machvirt_machine_init(void)
- }
- type_init(machvirt_machine_init);
- 
-+static void virt_machine_10_2_options(MachineClass *mc)
-+{
-+}
-+DEFINE_VIRT_MACHINE_AS_LATEST(10, 2)
-+
- static void virt_machine_10_1_options(MachineClass *mc)
- {
-+    virt_machine_10_2_options(mc);
-+    compat_props_add(mc->compat_props, hw_compat_10_1, hw_compat_10_1_len);
- }
--DEFINE_VIRT_MACHINE_AS_LATEST(10, 1)
-+DEFINE_VIRT_MACHINE(10, 1)
- 
- static void virt_machine_10_0_options(MachineClass *mc)
- {
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index bd47527479a..38c949c4f2c 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -37,6 +37,9 @@
- #include "hw/virtio/virtio-iommu.h"
- #include "audio/audio.h"
- 
-+GlobalProperty hw_compat_10_1[] = {};
-+const size_t hw_compat_10_1_len = G_N_ELEMENTS(hw_compat_10_1);
-+
- GlobalProperty hw_compat_10_0[] = {
-     { "scsi-hd", "dpofua", "off" },
-     { "vfio-pci", "x-migration-load-config-after-iter", "off" },
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 2f58e73d334..bc048a6d137 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -81,6 +81,9 @@
-     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
-     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
- 
-+GlobalProperty pc_compat_10_1[] = {};
-+const size_t pc_compat_10_1_len = G_N_ELEMENTS(pc_compat_10_1);
-+
- GlobalProperty pc_compat_10_0[] = {
-     { TYPE_X86_CPU, "x-consistent-cache", "false" },
-     { TYPE_X86_CPU, "x-vendor-cpuid-only-v2", "false" },
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index c03324281bd..d165ac72ed7 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -504,12 +504,21 @@ static void pc_i440fx_machine_options(MachineClass *m)
-                      pc_piix_compat_defaults, pc_piix_compat_defaults_len);
- }
- 
--static void pc_i440fx_machine_10_1_options(MachineClass *m)
-+static void pc_i440fx_machine_10_2_options(MachineClass *m)
- {
-     pc_i440fx_machine_options(m);
- }
- 
--DEFINE_I440FX_MACHINE_AS_LATEST(10, 1);
-+DEFINE_I440FX_MACHINE_AS_LATEST(10, 2);
-+
-+static void pc_i440fx_machine_10_1_options(MachineClass *m)
-+{
-+    pc_i440fx_machine_10_2_options(m);
-+    compat_props_add(m->compat_props, hw_compat_10_1, hw_compat_10_1_len);
-+    compat_props_add(m->compat_props, pc_compat_10_1, pc_compat_10_1_len);
-+}
-+
-+DEFINE_I440FX_MACHINE(10, 1);
- 
- static void pc_i440fx_machine_10_0_options(MachineClass *m)
- {
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index b309b2b378d..e89951285e5 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -374,12 +374,21 @@ static void pc_q35_machine_options(MachineClass *m)
-                      pc_q35_compat_defaults, pc_q35_compat_defaults_len);
- }
- 
--static void pc_q35_machine_10_1_options(MachineClass *m)
-+static void pc_q35_machine_10_2_options(MachineClass *m)
- {
-     pc_q35_machine_options(m);
- }
- 
--DEFINE_Q35_MACHINE_AS_LATEST(10, 1);
-+DEFINE_Q35_MACHINE_AS_LATEST(10, 2);
-+
-+static void pc_q35_machine_10_1_options(MachineClass *m)
-+{
-+    pc_q35_machine_10_2_options(m);
-+    compat_props_add(m->compat_props, hw_compat_10_1, hw_compat_10_1_len);
-+    compat_props_add(m->compat_props, pc_compat_10_1, pc_compat_10_1_len);
-+}
-+
-+DEFINE_Q35_MACHINE(10, 1);
- 
- static void pc_q35_machine_10_0_options(MachineClass *m)
- {
-diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
-index 875fd00ef8d..98cfe43c73a 100644
---- a/hw/m68k/virt.c
-+++ b/hw/m68k/virt.c
-@@ -367,10 +367,17 @@ type_init(virt_machine_register_types)
- #define DEFINE_VIRT_MACHINE(major, minor) \
-     DEFINE_VIRT_MACHINE_IMPL(false, major, minor)
- 
-+static void virt_machine_10_2_options(MachineClass *mc)
-+{
-+}
-+DEFINE_VIRT_MACHINE_AS_LATEST(10, 2)
-+
- static void virt_machine_10_1_options(MachineClass *mc)
- {
-+    virt_machine_10_2_options(mc);
-+    compat_props_add(mc->compat_props, hw_compat_10_1, hw_compat_10_1_len);
- }
--DEFINE_VIRT_MACHINE_AS_LATEST(10, 1)
-+DEFINE_VIRT_MACHINE(10, 1)
- 
- static void virt_machine_10_0_options(MachineClass *mc)
- {
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 1855a3cd8d0..eb22333404d 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -4761,15 +4761,26 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
- #define DEFINE_SPAPR_MACHINE(major, minor) \
-     DEFINE_SPAPR_MACHINE_IMPL(false, major, minor)
- 
-+/*
-+ * pseries-10.2
-+ */
-+static void spapr_machine_10_2_class_options(MachineClass *mc)
-+{
-+    /* Defaults for the latest behaviour inherited from the base class */
-+}
-+
-+DEFINE_SPAPR_MACHINE_AS_LATEST(10, 2);
-+
- /*
-  * pseries-10.1
-  */
- static void spapr_machine_10_1_class_options(MachineClass *mc)
- {
--    /* Defaults for the latest behaviour inherited from the base class */
-+    spapr_machine_10_2_class_options(mc);
-+    compat_props_add(mc->compat_props, hw_compat_10_1, hw_compat_10_1_len);
- }
- 
--DEFINE_SPAPR_MACHINE_AS_LATEST(10, 1);
-+DEFINE_SPAPR_MACHINE(10, 1);
- 
- /*
-  * pseries-10.0
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index a79bd13275b..d0c6e80cb05 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -911,14 +911,26 @@ static const TypeInfo ccw_machine_info = {
-     DEFINE_CCW_MACHINE_IMPL(false, major, minor)
- 
- 
-+static void ccw_machine_10_2_instance_options(MachineState *machine)
-+{
-+}
-+
-+static void ccw_machine_10_2_class_options(MachineClass *mc)
-+{
-+}
-+DEFINE_CCW_MACHINE_AS_LATEST(10, 2);
-+
- static void ccw_machine_10_1_instance_options(MachineState *machine)
- {
-+    ccw_machine_10_2_instance_options(machine);
- }
- 
- static void ccw_machine_10_1_class_options(MachineClass *mc)
- {
-+    ccw_machine_10_2_class_options(mc);
-+    compat_props_add(mc->compat_props, hw_compat_10_1, hw_compat_10_1_len);
- }
--DEFINE_CCW_MACHINE_AS_LATEST(10, 1);
-+DEFINE_CCW_MACHINE(10, 1);
- 
- static void ccw_machine_10_0_instance_options(MachineState *machine)
- {
+diff --git a/tests/functional/test_aarch64_virt_gpu.py b/tests/functional/test_aarch64_virt_gpu.py
+index 38447278579..4e50887c3e9 100755
+--- a/tests/functional/test_aarch64_virt_gpu.py
++++ b/tests/functional/test_aarch64_virt_gpu.py
+@@ -76,6 +76,8 @@ def _launch_virt_gpu(self, gpu_device):
+                 self.skipTest("egl-headless support is not available")
+             elif "'type' does not accept value 'dbus'" in excp.output:
+                 self.skipTest("dbus display support is not available")
++            elif "eglInitialize failed: EGL_NOT_INITIALIZED" in excp.output:
++                self.skipTest("EGL failed to initialize on this host")
+             else:
+                 self.log.info("unhandled launch failure: %s", excp.output)
+                 raise excp
 -- 
 2.47.2
 
