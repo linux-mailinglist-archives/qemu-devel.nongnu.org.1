@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2206FB435A1
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:24:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C2CB4351E
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:12:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu5CM-00024h-LC; Thu, 04 Sep 2025 04:20:03 -0400
+	id 1uu54u-0006Mx-Oy; Thu, 04 Sep 2025 04:12:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu5B5-0001BU-VZ
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:18:45 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1uu54a-0006GC-8n
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:12:00 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uu5B1-0008Dc-Sn
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:18:43 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-61cdab7eee8so1085101a12.0
- for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:18:38 -0700 (PDT)
+ id 1uu54J-00041e-O4
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:11:59 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-61cb4374d2fso1072226a12.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Sep 2025 01:11:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1756973916; x=1757578716; darn=nongnu.org;
+ d=linaro.org; s=google; t=1756973501; x=1757578301; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ompVlJELO9ntgp7NqWovDalEEm5jaDFBaNVePh2Fg+k=;
- b=lqYpu8iTmfnRDkPsYPfWztkOHruSw/9HDNGJXi2AUKgD2QshF8ZVZgxVfo5/ciCepf
- rKV2iawkbnU1xvxO8tHX6k5Rj7eRU2cLG1LTxzQ6lLDWG9JpA6bJxjYSdl+njg0sEHyn
- QBxAtAho0yliqPYWp9QMmnoxYQS/rz0y+IIUtlqmxVUgl1x74H+07Zua3du1gvee1brZ
- H1Wkj7mBGshRf5sELwH7eSJ9rXk/kB4NO0CNSAGdt9nEQLlbEVtMXY7/o4I+7f+0VJGa
- rgJwcHqh1YDPejeLnAanrDnUdOtdEpYTdT/00WOnqVxxQWn1rHTjhmrUWqkbMl2V0cHc
- RNXg==
+ bh=3j1jG2MY/WGcH+crz7CtyaM5tw55oKFFqSyUb2OGtbM=;
+ b=xNT+gtAKGeol2h2GXBI9/QpScgbWnH/9lYAyf+ydexCHyJR3MbG6diaU1f4RciO8i3
+ J/+j5W9wYbqQvWrjCoDcHJqpvZPD0GcTDdv0kRK0WMjAvFUPR6PMm4p3df1Z+G9n7Lpg
+ GAWIXEsoQTLL5qFU68EUiRf8yDlPBYYSF6AwIecc3Vai9YtQjXnIESEVREzinjxeaZq8
+ nXqqaeLLmrkBHC3ufD6qGwmZYmdRetEhVicmqw5UpaNMDp3BLiL7mk9X952FgozqcShp
+ 2aFk6nMDm2h8l4C+O7RBouylyPQBeujvUEt50j5P8RZMxB/Gqs9IP+2B9KGcLO8fLjw5
+ e5tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1756973916; x=1757578716;
+ d=1e100.net; s=20230601; t=1756973501; x=1757578301;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ompVlJELO9ntgp7NqWovDalEEm5jaDFBaNVePh2Fg+k=;
- b=rNAHfDkyptGKnuql5HvqjbWK0H/+7otq6tvKRQrd4YIhZSXeJuOZpyyx56/lJit/KI
- C+/ce9GAlMDBHkw9b9EoLJGremhgu8pyez1+PO1/lagScDu5xCTp3so4xj1HGQoxlgvX
- PfojuawdC00NHdsbRtDR+R9+BQJw93MLJeo89f9CmOIDtcOS6wd2/ffQvhL9JW8aS41w
- zAnESJRJN6Wd9mFys5Vny6/2eqGc8hwumFCmUt0X4K5eVTcRZBKLzc3TU7FiQyynZlMy
- 5VtpPcAPvAYrpU6G0tcPH4Y+3iAvqggziOWdgT0aXzpACrmEOjrmgNYyEBNXV+n3ZlX4
- wRiA==
-X-Gm-Message-State: AOJu0YxCk3l4k9xovJtLSpuws/0bl2n01i3Rqj0y8osyATMmIpFwadKm
- rxFbSIzJk0vo5Tsw7ubxOZ3xEX1Ho4VFp9JTZkjuyeIn6zY/F6YuEF26cWcOwO/hjaY=
-X-Gm-Gg: ASbGncuePWiHlK54Gp1SlURbXDIOp2uKEVhlRVWOEJVi1kAE2vfcbWBcJhgViWQeR5j
- Z2ilJ6TEp21Ro/WoU04+0/FzfIXFr0ZkF4y19cvBrdx313kHM4QvF4sIv1Vw9nmKm/z2k7H2Smm
- NWLKjMPhk/L16O8oJ1qhgT5dTWP2aRSF/xg5lL8J00rufYPZxFrrRHLdHFGxQlPJ7eAF2KF8Kfb
- z3wFFtb479UyxuxQ0xzL3s+hK8EmIdIrkaAtcPUe+IsIaRkUsp7jS4lmu60b/NtUGNESgSfkDvQ
- kbIL3Z7fbCYxZJgI9hBDfwt8xGBBvgbIabVRVrorzjb+xb7OXaILlCmof8TcVuRhtzMZWn8cp+V
- YW9CIZ/fHYdBLmCdpBAj9dq8poQ8Mc9mT+w==
-X-Google-Smtp-Source: AGHT+IFXKnqgaKsY2aRYlcO4LSLsCuART/SZSEUFpFcB1viH9haZ5yBXysPjsYR6aV+gJtHba4UXNg==
-X-Received: by 2002:a17:907:e916:b0:afe:ae6c:411c with SMTP id
- a640c23a62f3a-b01f2113c64mr1656930766b.64.1756973915989; 
- Thu, 04 Sep 2025 01:18:35 -0700 (PDT)
+ bh=3j1jG2MY/WGcH+crz7CtyaM5tw55oKFFqSyUb2OGtbM=;
+ b=XmQ8aKLpPYwMii9Nn56b2dcwW3xhDPDFVhG+Sn7mYTDcjt3eqy+hVeuR+OjVAISEsh
+ 2Z4T++yZ0FSGx0Y4ugEJmBbsVGRcKzai2E58eneNCT96UDJR0d9JXmLL5u128FbrFdeC
+ SfZv1GyEDpIhVHkTg2W5Kc+lyyo4FKj7UUgkC2mxVEJXSNjxxGTM0E1pIgeuhqTrDzcb
+ cWhQSy2IFBYj49mC95WeIq05ovuQTuD8C3ylwl8aAHwYA9Hi3a/zNCXGyP/BxUBXBdJa
+ f5+m4GqePRJQ3kpW69QpNY5ywKnZRbYnCTKT3/xmDeZGoKZ6h+boLN1Lcf1i0QwU9tYh
+ 2cXQ==
+X-Gm-Message-State: AOJu0YxODD4XGRh0VB2R5To9jo0mMJfTkPoJ57fwF+8F5xrMRXI7tQJQ
+ Oljp7l71yLwwLDCjZk9OF3b2y/A/fMP/wUjyjuPER2loRyOy/2ngjqFjys10vRm+mtU=
+X-Gm-Gg: ASbGncv1eWLWiTVtIGWrQEVGojNI5ADgSOp7EEdJWjOQOFsnUjFpRsrUtcrFgRPtmQJ
+ xpQLN6v3O6XRwAvroZJXg6zrbMP0Ycm4vP1s1alKYQjHa3ryHPpXNwrGt9zQrkLnQFklL/LvReJ
+ 3ZISD3Oo8hHjQJqIRPuDpyoiZHEuYoLb0O5wlJY1T3DMYq78qi4Q6RgftUd0oS7mZRptZy/0kYg
+ taIv1UoaQoKsHnWCGx6ZWHamdjEFjpplIYozYciSVJcTgqhwJCjMDu3vhVDVAaDeNf3l6lXAhwf
+ +2LuSmnnfOMIRWNAkDvxJ3rhNFpovJ8YA6A4WZv/kQ5nOGZuT1NfKUqY0gxRpMjibBctbjQNp0n
+ dHqaqNYkLWhKSyF/FT26Zz0RlH9U9PjxJ0A==
+X-Google-Smtp-Source: AGHT+IHtaOAptd/dOyrxka90iG+Ickwt+7m6mDEjwCXtB/2x+x0WNk1ZvG1BgsoUzoIQQ2o03oW8Ow==
+X-Received: by 2002:a17:906:4789:b0:b04:1a1c:cb5b with SMTP id
+ a640c23a62f3a-b041a1ccc38mr1426344866b.7.1756973501036; 
+ Thu, 04 Sep 2025 01:11:41 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-aff138a8c1dsm1395320766b.99.2025.09.04.01.18.33
+ a640c23a62f3a-b03ab857474sm1225662366b.89.2025.09.04.01.11.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Sep 2025 01:18:34 -0700 (PDT)
+ Thu, 04 Sep 2025 01:11:37 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 58E905F9D0;
+ by draig.lan (Postfix) with ESMTP id 71DFF5F9F7;
  Thu, 04 Sep 2025 09:11:29 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -126,26 +126,25 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>, John Levon <john.levon@nutanix.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: [PATCH v2 010/281] tests/functional/test_aarch64_virt_gpu: Skip test
- if EGL won't initialize
-Date: Thu,  4 Sep 2025 09:06:44 +0100
-Message-ID: <20250904081128.1942269-11-alex.bennee@linaro.org>
+ Gustavo Romero <gustavo.romero@linaro.org>
+Subject: [PATCH v2 011/281] tests/functional: Fix reverse_debugging asset
+ precaching
+Date: Thu,  4 Sep 2025 09:06:45 +0100
+Message-ID: <20250904081128.1942269-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250904081128.1942269-1-alex.bennee@linaro.org>
 References: <20250904081128.1942269-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -161,52 +160,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-If you are using the Nvidia drivers and have installed new versions
-of those packages but have not yet rebooted the host kernel,
-attempting to use the egl-headless display will cause QEMU to fail to
-start with
+This commit fixes the asset precaching in the reverse_debugging test on
+aarch64.
 
-$ qemu-system-aarch64 -M virt -display egl-headless
-qemu-system-aarch64: egl: eglInitialize failed: EGL_NOT_INITIALIZED
-qemu-system-aarch64: egl: render node init failed
+QemuBaseTest.main() precaches assets (kernel, rootfs, DT blobs, etc.)
+that are defined in variables with the ASSET_ prefix. This works because
+it ultimately calls Asset.precache_test(), which relies on introspection
+to locate these variables.
 
-together with this complaint in the host kernel dmesg:
+If an asset variable is not named with the ASSET_ prefix, precache_test
+cannot find the asset and precaching silently fails. Hence, fix the
+asset precaching by fixing the asset variable name.
 
-[7874777.555649] NVRM: API mismatch: the client has the version 535.247.01, but
-                 NVRM: this kernel module has the version 535.230.02.  Please
-                 NVRM: make sure that this kernel module and all NVIDIA driver
-                 NVRM: components have the same version.
-
-This isn't a problem with QEMU itself, so reporting this as a test
-failure is misleading.  Instead skip the tests, as we already do for
-various other kinds of "host system can't actually run the EGL
-display" situation.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20250826123455.2856988-1-peter.maydell@linaro.org>
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
-Acked-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Message-ID: <20250827001008.22112-1-gustavo.romero@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/test_aarch64_virt_gpu.py | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/functional/test_aarch64_reverse_debug.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/functional/test_aarch64_virt_gpu.py b/tests/functional/test_aarch64_virt_gpu.py
-index 38447278579..4e50887c3e9 100755
---- a/tests/functional/test_aarch64_virt_gpu.py
-+++ b/tests/functional/test_aarch64_virt_gpu.py
-@@ -76,6 +76,8 @@ def _launch_virt_gpu(self, gpu_device):
-                 self.skipTest("egl-headless support is not available")
-             elif "'type' does not accept value 'dbus'" in excp.output:
-                 self.skipTest("dbus display support is not available")
-+            elif "eglInitialize failed: EGL_NOT_INITIALIZED" in excp.output:
-+                self.skipTest("EGL failed to initialize on this host")
-             else:
-                 self.log.info("unhandled launch failure: %s", excp.output)
-                 raise excp
+diff --git a/tests/functional/test_aarch64_reverse_debug.py b/tests/functional/test_aarch64_reverse_debug.py
+index 58d45328350..8bc91ccfde7 100755
+--- a/tests/functional/test_aarch64_reverse_debug.py
++++ b/tests/functional/test_aarch64_reverse_debug.py
+@@ -21,7 +21,7 @@ class ReverseDebugging_AArch64(ReverseDebugging):
+ 
+     REG_PC = 32
+ 
+-    KERNEL_ASSET = Asset(
++    ASSET_KERNEL = Asset(
+         ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
+          'releases/29/Everything/aarch64/os/images/pxeboot/vmlinuz'),
+         '7e1430b81c26bdd0da025eeb8fbd77b5dc961da4364af26e771bd39f379cbbf7')
+@@ -30,7 +30,7 @@ class ReverseDebugging_AArch64(ReverseDebugging):
+     def test_aarch64_virt(self):
+         self.set_machine('virt')
+         self.cpu = 'cortex-a53'
+-        kernel_path = self.KERNEL_ASSET.fetch()
++        kernel_path = self.ASSET_KERNEL.fetch()
+         self.reverse_debugging(args=('-kernel', kernel_path))
+ 
+ 
 -- 
 2.47.2
 
