@@ -2,68 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E8AB43638
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 10:47:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BD50B436E8
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 11:20:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu5aw-0003lT-Dt; Thu, 04 Sep 2025 04:45:26 -0400
+	id 1uu66u-0006ZT-U3; Thu, 04 Sep 2025 05:18:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
- id 1uu5at-0003ko-8f
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:45:23 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <chao.liu@zevorn.cn>)
+ id 1uu66q-0006Y4-HB; Thu, 04 Sep 2025 05:18:24 -0400
+Received: from [115.124.28.68] (helo=out28-68.mail.aliyun.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
- id 1uu5ap-0004PY-9d
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 04:45:23 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cHY1J54Xxz6GDP4;
- Thu,  4 Sep 2025 16:44:04 +0800 (CST)
-Received: from frapeml500003.china.huawei.com (unknown [7.182.85.28])
- by mail.maildlp.com (Postfix) with ESMTPS id 19F0E1402EF;
- Thu,  4 Sep 2025 16:45:00 +0800 (CST)
-Received: from localhost (10.203.177.99) by frapeml500003.china.huawei.com
- (7.182.85.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 4 Sep
- 2025 10:44:59 +0200
-Date: Thu, 4 Sep 2025 09:44:55 +0100
-To: Ira Weiny <ira.weiny@intel.com>
-CC: <nifan.cxl@gmail.com>, <qemu-devel@nongnu.org>,
- <jonathan.cameron@huawei.com>, <linux-cxl@vger.kernel.org>,
- <gregory.price@memverge.com>, <dan.j.williams@intel.com>,
- <a.manzanares@samsung.com>, <dave@stgolabs.net>, <nmtadam.samsung@gmail.com>, 
- <jim.harris@samsung.com>, <Jorgen.Hansen@wdc.com>, <wj28.lee@gmail.com>,
- <armbru@redhat.com>, <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>, Svetly
- Todorov <svetly.todorov@memverge.com>
-Subject: Re: [PATCH v8 11/14] hw/cxl/events: Add qmp interfaces to
- add/release dynamic capacity extents
-Message-ID: <20250904094455.0000194b.alireza.sanaee@huawei.com>
-In-Reply-To: <68b71467b850a_4bae529418@iweiny-mobl.notmuch>
-References: <20240523174651.1089554-1-nifan.cxl@gmail.com>
- <20240523174651.1089554-12-nifan.cxl@gmail.com>
- <20250902113915.00001fbd.alireza.sanaee@huawei.com>
- <68b71467b850a_4bae529418@iweiny-mobl.notmuch>
-Organization: Huawei
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <chao.liu@zevorn.cn>)
+ id 1uu66i-0002sz-7R; Thu, 04 Sep 2025 05:18:24 -0400
+Received: from ZEVORN-PC(mailfrom:chao.liu@zevorn.cn
+ fp:SMTPD_---.eXOUI2e_1756977228 cluster:ay29) by smtp.aliyun-inc.com;
+ Thu, 04 Sep 2025 17:13:49 +0800
+From: Chao Liu <chao.liu@zevorn.cn>
+To: richard.henderson@linaro.org, paolo.savini@embecosm.com, npiggin@gmail.com,
+ ebiggers@kernel.org, dbarboza@ventanamicro.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, Chao Liu <chao.liu@zevorn.cn>
+Subject: [PATCH v7 0/2] Generate strided vector loads/stores with tcg nodes
+Date: Thu,  4 Sep 2025 17:13:44 +0800
+Message-ID: <cover.1756975571.git.chao.liu@zevorn.cn>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.99]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- frapeml500003.china.huawei.com (7.182.85.28)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=alireza.sanaee@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 115.124.28.68 (deferred)
+Received-SPF: pass client-ip=115.124.28.68; envelope-from=chao.liu@zevorn.cn;
+ helo=out28-68.mail.aliyun.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,142 +52,70 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Alireza Sanaee <alireza.sanaee@huawei.com>
-From:  Alireza Sanaee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2 Sep 2025 10:59:35 -0500
-Ira Weiny <ira.weiny@intel.com> wrote:
+Hi all,
 
-> Alireza Sanaee wrote:
-> > On Thu, 23 May 2024 10:44:51 -0700
-> > nifan.cxl@gmail.com wrote:
-> >   
-> > > From: Fan Ni <fan.ni@samsung.com>
-> > > 
-> > > To simulate FM functionalities for initiating Dynamic Capacity Add
-> > > (Opcode 5604h) and Dynamic Capacity Release (Opcode 5605h) as in
-> > > CXL spec r3.1 7.6.7.6.5 and 7.6.7.6.6, we implemented two QMP
-> > > interfaces to issue add/release dynamic capacity extents requests.
-> > > 
-> > > With the change, we allow to release an extent only when its DPA
-> > > range is contained by a single accepted extent in the device.
-> > > That is to say, extent superset release is not supported yet.
-> > > 
-> > > 1. Add dynamic capacity extents:
-> > > 
-> > > For example, the command to add two continuous extents (each
-> > > 128MiB long) to region 0 (starting at DPA offset 0) looks like
-> > > below:
-> > > 
-> > > { "execute": "qmp_capabilities" }
-> > > 
-> > > { "execute": "cxl-add-dynamic-capacity",
-> > >   "arguments": {
-> > >       "path": "/machine/peripheral/cxl-dcd0",
-> > >       "host-id": 0,
-> > >       "selection-policy": "prescriptive",
-> > >       "region": 0,
-> > >       "extents": [
-> > >       {
-> > >           "offset": 0,
-> > >           "len": 134217728
-> > >       },
-> > >       {
-> > >           "offset": 134217728,
-> > >           "len": 134217728
-> > >       }
-> > >       ]
-> > >   }
-> > > }
-> > > 
-> > > 2. Release dynamic capacity extents:
-> > > 
-> > > For example, the command to release an extent of size 128MiB from
-> > > region 0 (DPA offset 128MiB) looks like below:
-> > > 
-> > > { "execute": "cxl-release-dynamic-capacity",
-> > >   "arguments": {
-> > >       "path": "/machine/peripheral/cxl-dcd0",
-> > >       "host-id": 0,
-> > >       "removal-policy":"prescriptive",
-> > >       "region": 0,
-> > >       "extents": [
-> > >       {
-> > >           "offset": 134217728,
-> > >           "len": 134217728
-> > >       }
-> > >       ]
-> > >   }
-> > > }
-> > > 
-> > > Tested-by: Svetly Todorov <svetly.todorov@memverge.com>
-> > > Reviewed-by: Gregory Price <gregory.price@memverge.com>
-> > > Signed-off-by: Fan Ni <fan.ni@samsung.com>  
-> 
-> [snip]
-> 
-> > > +##
-> > > +# @cxl-release-dynamic-capacity:
-> > > +#
-> > > +# Command to initiate to release dynamic capacity extents from a
-> > > +# host.  It simulates operations defined in cxl spec r3.1
-> > > 7.6.7.6.6. +#
-> > > +# @path: CXL DCD canonical QOM path.
-> > > +#
-> > > +# @host-id: The "Host ID" field as defined in cxl spec r3.1
-> > > +#     Table 7-71.
-> > > +#
-> > > +# @removal-policy: Bit[3:0] of the "Flags" field as defined in
-> > > cxl +#     spec r3.1 Table 7-71.
-> > > +#
-> > > +# @forced-removal: Bit[4] of the "Flags" field in cxl spec r3.1
-> > > +#     Table 7-71.  When set, device does not wait for a Release
-> > > +#     Dynamic Capacity command from the host.  Host immediately
-> > > +#     loses access to released capacity.
-> > > +#
-> > > +# @sanitize-on-release: Bit[5] of the "Flags" field in cxl spec
-> > > r3.1 +#     Table 7-71.  When set, device should sanitize all
-> > > released +#     capacity as a result of this request.
-> > > +#
-> > > +# @region: The "Region Number" field as defined in cxl spec r3.1
-> > > +#     Table 7-71.  The dynamic capacity region where the capacity
-> > > +#     is being added.  Valid range is from 0-7.
-> > > +#
-> > > +# @tag: The "Tag" field as defined in cxl spec r3.1 Table 7-71.
-> > > +#
-> > > +# @extents: The "Extent List" field as defined in cxl spec r3.1
-> > > +#     Table 7-71.
-> > > +#
-> > > +# Since : 9.1
-> > > +##
-> > > +{ 'command': 'cxl-release-dynamic-capacity',
-> > > +  'data': { 'path': 'str',
-> > > +            'host-id': 'uint16',
-> > > +            'removal-policy': 'CXLExtRemovalPolicy',
-> > > +            '*forced-removal': 'bool',
-> > > +            '*sanitize-on-release': 'bool',
-> > > +            'region': 'uint8',
-> > > +            '*tag': 'str',
-> > > +            'extents': [ 'CXLDynamicCapacityExtent' ]
-> > > +           }
-> > > +}  
-> > 
-> > Although tag-based removal is not implemented yet, but still just
-> > wanted to leave a comment here that exact extents are not needed
-> > for tag-based removal and `extents` should be an optional parameter
-> > here; this is my understanding reading the spec, so I still might
-> > be wrong, shout if you think it does not make sense.  
-> 
-> It's been a while but I think this allows the removal of non-tagged
-> extents as well(?)  If so the tag would be NULL (or empty-string) and
-> one can remove a regular extent.
-> 
-> But I could be miss-remembering something,
-> Ira
-> 
+Thanks Nick for the review. In patch v7:
 
-Yes non-tagged is working completely.
+1. Standardize the subject line of patch 1 and remove the trailing period.
+
+2. Split into sub-functions to improve the patch's code readability and
+   facilitate review.
+
+3. Use more faster TCG ops, use tcg_gen_andi_tl() instead of tcg_gen_rem_tl().
+
+4. Add a tested-by signature for patch 2, as Eric has already tested it.
+
+
+History of changes:
+
+patch v6:
+- If a strided vector memory access instruction has non-zero vstart, 
+  check it through vlse/vsse helpers function.
+- Adjust the tcg test Makefile.
+  https://lore.kernel.org/qemu-devel/cover.1756906528.git.chao.liu@zevorn.cn/
+
+Patch v5:
+- Removed the redundant call to mark_vs_dirty(s) within the
+  gen_ldst_stride_main_loop() function.
+  https://lore.kernel.org/qemu-riscv/cover.1755609029.git.chao.liu@zevorn.cn/
+
+Patch v4:
+- Use ctz32() replace to for-loop
+  https://lore.kernel.org/qemu-devel/cover.1755333616.git.chao.liu@yeah.net/
+
+Patch v3:
+- Fix the get_log2() function:
+  https://lore.kernel.org/qemu-riscv/cover.1755287531.git.chao.liu@yeah.net/T/#t
+- Add test for vlsseg8e32 instruction.
+- Rebase on top of the latest master.
+
+Patch v2:
+- Split the TCG node emulation of the complex strided load/store operation into
+  two separate functions to simplify the implementation:
+  https://lore.kernel.org/qemu-riscv/20250312155547.289642-1-paolo.savini@embecosm.com/
+
+Patch v1:
+- Paolo submitted the initial version of the patch.
+  https://lore.kernel.org/qemu-devel/20250211182056.412867-1-paolo.savini@embecosm.com/
+
+
+Tanks,
+Chao
+
+Chao Liu (2):
+  target/riscv: Use tcg nodes for strided vector ld/st generation
+  tests/tcg/riscv64: Add test for vlsseg8e32 instruction
+
+ target/riscv/insn_trans/trans_rvv.c.inc   | 348 ++++++++++++++++++++--
+ tests/tcg/riscv64/Makefile.softmmu-target |   7 +-
+ tests/tcg/riscv64/test-vlsseg8e32.S       | 107 +++++++
+ 3 files changed, 444 insertions(+), 18 deletions(-)
+ create mode 100644 tests/tcg/riscv64/test-vlsseg8e32.S
+
+-- 
+2.50.1
 
 
