@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB4CB43BEC
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 14:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D47EB43BF5
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Sep 2025 14:45:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uu9IO-0004uH-Gs; Thu, 04 Sep 2025 08:42:32 -0400
+	id 1uu9Ie-0004zr-9o; Thu, 04 Sep 2025 08:42:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uu9IK-0004su-S0
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 08:42:28 -0400
+ id 1uu9IV-0004yG-OR
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 08:42:40 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uu9IA-0007vR-TA
- for qemu-devel@nongnu.org; Thu, 04 Sep 2025 08:42:27 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1uu9IB-0007wO-V0
+ for qemu-devel@nongnu.org; Thu, 04 Sep 2025 08:42:36 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxRNAgiblo_qkGAA--.13618S3;
+ by gateway (Coremail) with SMTP id _____8Cxbb8gibloAaoGAA--.13037S3;
  Thu, 04 Sep 2025 20:42:08 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowJCxdOQbiblo4QJ+AA--.6028S9;
+ by front1 (Coremail) with SMTP id qMiowJCxdOQbiblo4QJ+AA--.6028S10;
  Thu, 04 Sep 2025 20:42:08 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: maobibo@loongson.cn
 Cc: qemu-devel@nongnu.org,
 	philmd@linaro.org,
 	jiaxun.yang@flygoat.com
-Subject: [PATCH v6 07/11] hw/loongarch: Implement avec controller imput and
- output pins
-Date: Thu,  4 Sep 2025 20:18:36 +0800
-Message-Id: <20250904121840.2023683-8-gaosong@loongson.cn>
+Subject: [PATCH v6 08/11] hw/loongarch: Implement avec set irq
+Date: Thu,  4 Sep 2025 20:18:37 +0800
+Message-Id: <20250904121840.2023683-9-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250904121840.2023683-1-gaosong@loongson.cn>
 References: <20250904121840.2023683-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJCxdOQbiblo4QJ+AA--.6028S9
+X-CM-TRANSID: qMiowJCxdOQbiblo4QJ+AA--.6028S10
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -48,8 +47,8 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,100 +64,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-the AVEC controller supports 256*256 irqs input, all the irqs connect CPU INT_AVEC irq
+Implement avec set irq and update CSR_MSIS.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/intc/loongarch_avec.c | 20 ++++++++++++++++++++
- hw/loongarch/virt.c      | 10 +++++++++-
- target/loongarch/cpu.h   |  3 ++-
- 3 files changed, 31 insertions(+), 2 deletions(-)
+ hw/intc/loongarch_avec.c         | 58 ++++++++++++++++++++++++++++++--
+ include/hw/intc/loongarch_avec.h |  3 ++
+ 2 files changed, 59 insertions(+), 2 deletions(-)
 
 diff --git a/hw/intc/loongarch_avec.c b/hw/intc/loongarch_avec.c
-index 253bab5461..1f9f376898 100644
+index 1f9f376898..03a20a7b60 100644
 --- a/hw/intc/loongarch_avec.c
 +++ b/hw/intc/loongarch_avec.c
-@@ -38,7 +38,12 @@ static const MemoryRegionOps loongarch_avec_ops = {
- 
- static void loongarch_avec_realize(DeviceState *dev, Error **errp)
- {
-+    LoongArchAVECState *s = LOONGARCH_AVEC(dev);
-     LoongArchAVECClass *lac = LOONGARCH_AVEC_GET_CLASS(dev);
-+    MachineState *machine = MACHINE(qdev_get_machine());
-+    MachineClass *mc = MACHINE_GET_CLASS(machine);
-+    const CPUArchIdList  *id_list;
-+    int i;
- 
-     Error *local_err = NULL;
-     lac->parent_realize(dev, &local_err);
-@@ -47,6 +52,21 @@ static void loongarch_avec_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    assert(mc->possible_cpu_arch_ids);
-+    id_list = mc->possible_cpu_arch_ids(machine);
-+    s->num_cpu = id_list->len;
-+    s->cpu = g_new(AVECCore, s->num_cpu);
-+    if (s->cpu == NULL) {
-+        error_setg(errp, "Memory allocation for AVECCore fail");
-+        return;
-+    }
+@@ -16,6 +16,13 @@
+ #include "migration/vmstate.h"
+ #include "trace.h"
+ #include "hw/qdev-properties.h"
++#include "target/loongarch/cpu.h"
++#include "qemu/error-report.h"
 +
-+    for (i = 0; i < s->num_cpu; i++) {
-+        s->cpu[i].arch_id = id_list->cpus[i].arch_id;
-+        s->cpu[i].cpu = CPU(id_list->cpus[i].cpu);
-+        qdev_init_gpio_out(dev, &s->cpu[i].parent_irq, 1);
-+    }
-+
-     return;
++/* msg addr field */
++FIELD(MSG_ADDR, IRQ_NUM, 4, 8)
++FIELD(MSG_ADDR, CPU_NUM, 12, 8)
++FIELD(MSG_ADDR, FIX, 28, 12)
+ 
+ static uint64_t loongarch_avec_mem_read(void *opaque,
+                                         hwaddr addr, unsigned size)
+@@ -23,13 +30,60 @@ static uint64_t loongarch_avec_mem_read(void *opaque,
+     return 0;
  }
  
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 1b390fb876..a3f8f4c854 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -383,9 +383,11 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
- static void virt_irq_init(LoongArchVirtMachineState *lvms)
++static void do_set_vcpu_avec_irq(CPUState *cs, run_on_cpu_data data)
++{
++    AVECCore *core = data.host_ptr;
++    CPULoongArchState *env;
++
++    assert(cs->cpu_index == core->dest_cpu);
++    env = &LOONGARCH_CPU(cs)->env;
++    if (core->level) {
++        set_bit(core->pending, &env->CSR_MSGIS[core->pending / 64]);
++    }
++    g_free(core);
++}
++
++
++static void avec_update_csr(AVECCore *core, int cpu_num,
++                            int irq_num, int level)
++{
++    CPUState *cs = qemu_get_cpu(cpu_num);
++
++    core->pending = irq_num;
++    core->dest_cpu = cpu_num;
++    core->level = level;
++    async_run_on_cpu(cs, do_set_vcpu_avec_irq,
++                         RUN_ON_CPU_HOST_PTR(core));
++}
++
++static void avec_set_irq(LoongArchAVECState *s, int cpu_num,
++                         int irq_num, int level)
++{
++    AVECCore *core;
++
++    core = g_new(AVECCore, 1);
++
++    if (level) {
++        avec_update_csr(core, cpu_num, irq_num, level);
++    }
++    qemu_set_irq(s->cpu[cpu_num].parent_irq, level);
++}
++
+ static void loongarch_avec_mem_write(void *opaque, hwaddr addr,
+                                      uint64_t val, unsigned size)
  {
-     DeviceState *pch_pic, *pch_msi;
--    DeviceState *ipi, *extioi, *avec;
-+    DeviceState *ipi, *extioi, *avec, *cpudev;
-     SysBusDevice *d;
-     int i, start, num;
-+    CPUState *cpu_state;
-+    MachineState *ms;
+-    return;
++    int irq_num, cpu_num = 0;
++    LoongArchAVECState *s = LOONGARCH_AVEC(opaque);
++    uint64_t msg_addr = addr + VIRT_AVEC_BASE;
++    CPUState *cs;
++
++    cpu_num = FIELD_EX64(msg_addr, MSG_ADDR, CPU_NUM);
++    cs = cpu_by_arch_id(cpu_num);
++    cpu_num = cs->cpu_index;
++    irq_num = FIELD_EX64(msg_addr, MSG_ADDR, IRQ_NUM);
++    avec_set_irq(s, cpu_num, irq_num, 1);
+ }
  
-     /*
-      * Extended IRQ model.
-@@ -470,6 +472,12 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
-         sysbus_realize_and_unref(SYS_BUS_DEVICE(avec), &error_fatal);
-         memory_region_add_subregion(get_system_memory(), VIRT_AVEC_BASE,
-                         sysbus_mmio_get_region(SYS_BUS_DEVICE(avec), 0));
-+        ms = MACHINE(lvms);
-+        for (int cpu = 0; cpu < ms->smp.cpus; cpu++) {
-+            cpu_state = qemu_get_cpu(cpu);
-+            cpudev = DEVICE(cpu_state);
-+            qdev_connect_gpio_out(avec, cpu, qdev_get_gpio_in(cpudev, INT_AVEC));
-+        }
-     }
+-
+ static const MemoryRegionOps loongarch_avec_ops = {
+     .read = loongarch_avec_mem_read,
+     .write = loongarch_avec_mem_write,
+diff --git a/include/hw/intc/loongarch_avec.h b/include/hw/intc/loongarch_avec.h
+index 3e8cf7d2c1..83656f8df4 100644
+--- a/include/hw/intc/loongarch_avec.h
++++ b/include/hw/intc/loongarch_avec.h
+@@ -18,6 +18,9 @@ OBJECT_DECLARE_TYPE(LoongArchAVECState, LoongArchAVECClass, LOONGARCH_AVEC)
+ typedef struct AVECCore {
+     CPUState *cpu;
+     qemu_irq parent_irq;
++    uint64_t pending;
++    uint64_t dest_cpu;
++    bool   level;
+     uint64_t arch_id;
+ } AVECCore;
  
-     /* Create EXTIOI device */
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index f083c31bb4..55a5dc33f2 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -217,9 +217,10 @@ FIELD(CSR_CRMD, WE, 9, 1)
- extern const char * const regnames[32];
- extern const char * const fregnames[32];
- 
--#define N_IRQS      13
-+#define N_IRQS      15
- #define IRQ_TIMER   11
- #define IRQ_IPI     12
-+#define INT_AVEC    14
- 
- #define LOONGARCH_STLB         2048 /* 2048 STLB */
- #define LOONGARCH_MTLB         64   /* 64 MTLB */
 -- 
 2.41.0
 
