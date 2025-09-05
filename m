@@ -2,70 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA42B45971
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Sep 2025 15:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA28B4599B
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Sep 2025 15:52:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuWim-0006ow-NZ; Fri, 05 Sep 2025 09:43:20 -0400
+	id 1uuWqG-0001fU-6k; Fri, 05 Sep 2025 09:51:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuWij-0006oT-4p
- for qemu-devel@nongnu.org; Fri, 05 Sep 2025 09:43:17 -0400
-Received: from mailgate01.uberspace.is ([2001:1a50:11:0:c83f:a8ff:fea6:c8da])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uuWie-00053m-FO
- for qemu-devel@nongnu.org; Fri, 05 Sep 2025 09:43:16 -0400
-Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate01.uberspace.is (Postfix) with ESMTPS id A405860E24
- for <qemu-devel@nongnu.org>; Fri,  5 Sep 2025 15:43:03 +0200 (CEST)
-Received: (qmail 25152 invoked by uid 990); 5 Sep 2025 13:43:03 -0000
-Authentication-Results: skiff.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
- by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Fri, 05 Sep 2025 15:43:03 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1uuWqD-0001ef-6a
+ for qemu-devel@nongnu.org; Fri, 05 Sep 2025 09:51:01 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1uuWq2-0006Wz-Ri
+ for qemu-devel@nongnu.org; Fri, 05 Sep 2025 09:50:59 -0400
+Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id D3E0AC1088;
+ Fri, 05 Sep 2025 16:50:42 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b8f::1:11])
+ by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id foiXcl3Gh8c0-q9SldYSX; Fri, 05 Sep 2025 16:50:42 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1757080242;
+ bh=ctFlVoels+P5XIXCLxbd3tfwXD7hdEUsEgNWLvyWgZA=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=g1BTQb/iWAtib3BkJ0IsPHXx/IU4YfTgiXk1R6M83bZDwjTeUVmejBa7FtUQtfV4i
+ WUIfVHtkf7eOzYSESWwKyNHAhn/3gjayxfWwBM8rWDhtle5+4oVKXec0uKFtHQ1b8s
+ 0M+avrmVwnb45z2nzS0zK6l/7H9mBITHvxHfdSr0=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: jasowang@redhat.com
+Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
+ steven.sistare@oracle.com, yc-core@yandex-team.ru, peterx@redhat.com,
+ mst@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, berrange@redhat.com
+Subject: [PATCH v3 0/9] virtio-net: live-TAP local migration
+Date: Fri,  5 Sep 2025 16:50:30 +0300
+Message-ID: <20250905135039.2202924-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Date: Fri, 05 Sep 2025 13:43:03 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: "Julian Ganz" <neither@nut.email>
-Message-ID: <cf6e7db43e9e9e59b6c9edb1c172b01ae62fb23f@nut.email>
-TLS-Required: No
-Subject: Re: [PATCH v6 00/25] tcg-plugins: add hooks for discontinuities
-To: "BALATON Zoltan" <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org
-In-Reply-To: <a1c2d356-e664-2632-002f-d0b9bea06e1e@eik.bme.hu>
-References: <cover.1757018626.git.neither@nut.email>
- <a1c2d356-e664-2632-002f-d0b9bea06e1e@eik.bme.hu>
-X-Rspamd-Bar: -
-X-Rspamd-Report: BAYES_HAM(-1.468467) MIME_GOOD(-0.1)
-X-Rspamd-Score: -1.568467
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
- h=from:to:cc:subject:date;
- bh=jwwKTpDJVc83P3MsCZRaUE/SFYg0zb134MSsRDhnYAw=;
- b=GjafwSPToHgWb579unzZpo/5/wLqz8AMqEyPk24PZ9Zf+zqRRJ0fhONIK6p3gsa57UU/XO4j/B
- tN/ys+aWsOCO0NtLNFJHEBIfTbZQGbh+Nh7+0psOGOMKay/As3MZ2jTmozPlZaVzcsv8wctssJYv
- YyH9WkFooo1GpQcRJw8F70pbh5mavyJ4blohGD5a+8bIA2VnSbsexrOT3LpldqgF8ON37VxRUL24
- 6y2Eguo4rNaThDinLMQUc20HkssYswrkXmXwA7Nx5r691z5Ix/g2GEidgfrWLrHGvsKIgVLqVTUX
- AIQ7PN3YUPKZ0r0JA90dApwDy9mDhxdGsUXNDDILXR0qDY1f5z4Q/upSwNKrpJkknxyClPGWeyns
- tL0sdTH/gCzS4KaJ5qlIoI3nSpwZOx/btCzPrZBjJyBjGLiuQ20cVa4ZNm99fe2kC9A+Q9xAakVz
- YQVfPZdMSrPawwj1IlN0StIGSgHdCVzNq8kGfhqkPT3S1SRw4yFW4N4TWXmVxPRQC8mRd6r/+I7y
- Ka3dXzXWaLosN1VoGWfcrJ7O1H8f/OoEWkQio/AS8MQQzeHRIeXT/wARDF4n27T8Eetpgvtmizk/
- BB50bZITRt/y9wN0czdQwjps/rr1y0uZzB4C8PwP31dpaDBU4KsfSXNvqZUVccEeQXouwld23NN2
- o=
-Received-SPF: pass client-ip=2001:1a50:11:0:c83f:a8ff:fea6:c8da;
- envelope-from=neither@nut.email; helo=mailgate01.uberspace.is
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -77,44 +74,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-September 5, 2025 at 1:38 PM, "BALATON Zoltan" wrote:
-> On Thu, 4 Sep 2025, Julian Ganz wrote:
-> >  Even with the existing interfaces, it is more or less possible to
-> >  discern these situations, e.g. as done by the cflow plugin. However,
-> >  this process poses a considerable overhead to the core analysis one =
-may
-> >  intend to perform.
-> >=20
->=20I'd rather have overhead in the plugin than in interrupt and exceptio=
-n
-> handling on every target unless this can be completely disabled
-> somehow when not needed to not pose any overhead on interrupt handling
-> in the guest.
+Hi all!
 
-The "more or less" is rather heavy here: with the current API there is
-no way to distinguish between interrupts and exceptions. Double-traps
-can probably only be detected if you don't rely on weird, very error
-prone heuristics around TB translations.
+Here is a  new migration capability "local-tap", which
+allows local migration of TAP device, including its properties
+and open fds.
 
-And as Alex Ben=C3=A9e pointed out, qemu can be easily built with plugins
-disabled.
+With this new option, management software doesn't need to
+initialize new TAP and do a switch to it. Nothing should be
+done around virtio-net in local migration: it just migrates
+and continues to use same TAP device. So we avoid extra logic
+in management software, extra allocations in kenel (for new TAP),
+and corresponding extra delay in migration downtime.
 
-> Have you done any testing on how much overhead this adds
-> to interrupt heavy guest workloads? At least for PPC these are already
-> much slower than real CPU so I'd like it to get faster not slower.
+Note that patch 07 is reused from
+[PATCH 00/33] vhost-user-blk: live-backend local migration
+to not create extra dependency on a big series.
 
-No, I have not made any performance measurements. However, given that
-for every single TB execution a similar hook is called already, the
-impact related to other existing plugin infrastructure _should_ be
-neglectible.
+v3:
+- drop tap_dump_packet (actually we already have qemu_hexdump,
+  which is even called in network code (under ifdef).
+- rework save/load code in tap.c to VMSD
+test:
+  - avoid using shell
+  - use sudo, and add skipUnlesPasswordlessSudo decorator
+  - don't keep extra open fd for ping.log
+  - use scratch file for ping.log (not hardcoded  /tmp/ping.log)
 
-That is, if your workload actually runs any code and is not constantly
-bombarded with interrupts that _do_ result in a trap (which _may_ happen
-during some tests).
+Based on [PATCH v3 00/19] TAP initialization refactoring, or in other
+words:
+Based-on: <20250903124934.1169899-1-vsementsov@yandex-team.ru>
 
-So if you are performance sensitive enough to care, you will very likely
-want to disable plugins anyway.
+Vladimir Sementsov-Ogievskiy (9):
+  net/tap: add some trace points
+  net/tap: keep exit notifier only when downscript set
+  net/tap: refactor net_tap_setup_vhost()
+  qapi: add interface for local TAP migration
+  net/tap: implement interfaces for local migration
+  virtio-net: support local tap migration
+  tests/functional: exec_command_and_wait_for_pattern: add vm arg
+  tests/functional: add skipUnlessPasswordlessSudo() decorator
+  tests/functional: add test_x86_64_tap_fd_migration
 
-Regards,
-Julian
+ hw/net/virtio-net.c                           | 100 ++++-
+ include/hw/virtio/virtio-net.h                |   2 +
+ include/net/tap.h                             |   4 +
+ migration/options.c                           |   7 +
+ migration/options.h                           |   1 +
+ net/tap.c                                     | 279 ++++++++++----
+ net/trace-events                              |   6 +
+ qapi/migration.json                           |   9 +-
+ qapi/net.json                                 |  12 +-
+ tests/functional/qemu_test/cmd.py             |   7 +-
+ tests/functional/qemu_test/decorators.py      |  16 +
+ .../test_x86_64_tap_fd_migration.py           | 345 ++++++++++++++++++
+ 12 files changed, 703 insertions(+), 85 deletions(-)
+ create mode 100644 tests/functional/test_x86_64_tap_fd_migration.py
+
+-- 
+2.48.1
+
 
