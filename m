@@ -2,89 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B71B4504E
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Sep 2025 09:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A461B45048
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Sep 2025 09:52:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuREA-0003Id-85; Fri, 05 Sep 2025 03:51:22 -0400
+	id 1uuRDt-0003AH-LB; Fri, 05 Sep 2025 03:51:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uuRDq-0003AD-S5
- for qemu-devel@nongnu.org; Fri, 05 Sep 2025 03:51:03 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1uuRDn-000371-3k
+ for qemu-devel@nongnu.org; Fri, 05 Sep 2025 03:50:59 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uuRDj-0008Rp-O7
- for qemu-devel@nongnu.org; Fri, 05 Sep 2025 03:51:02 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-45cb659e858so14281045e9.2
+ id 1uuRDj-0008Rx-JD
+ for qemu-devel@nongnu.org; Fri, 05 Sep 2025 03:50:57 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-45b8b2712d8so16832355e9.3
  for <qemu-devel@nongnu.org>; Fri, 05 Sep 2025 00:50:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757058652; x=1757663452; darn=nongnu.org;
+ d=linaro.org; s=google; t=1757058653; x=1757663453; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=k/NzJ2bgCdwbYumw+RjHPeb+xKv2XqzVqFCtxzAa+WI=;
- b=F9WbLL8gPt1/ymcE9uSGUUlY8CY7+K3mSJ8ni5r4rWLqvrYmz1EuMnSu+cWrK4Aohn
- nLmHzV2luCBlncssxADelghaJ7G/ysfajGb73NFRFlFAxbmk+Xdp0fA5+AovqPbyvwjy
- cYSivKlygAri4zzwDvlzAsaDAEk/K9lX4tL4+N07KKjMPsoFJ4Rzwlu3gYtUWxFREk1v
- CsUPhk0WH57DsVTKmrwpCn7KVn3xTKcd8VdfhsH5mrmUIhNKKSQsSoz8gyCBuyYxNxi0
- q9k0w7jzkr83QssMDQ5mpPUHa4Scg/X19iMVZhAsZ0fO6etzOtVf7JW8H8HzyaVFnqIW
- cTIA==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=/kPH6riYNOweQhnmn/RRL6i17iJqnbvBitGNZ3+s7oE=;
+ b=tEXVu5efiORQH4oek/vXebAjYKEFve1q+lgSR68RgSGhwDHzrDZQ7ydpjoDIFk0bd5
+ R57IatKhTP452n3z0kxY1ETXXTdXPurYB4dwX9Ltorpth/QlyrLedy1yKq3qseczRml+
+ Zeln100fhIHLQLFgyg6roKWqSIEIwm0Tb1mcw5kiNmRL/CriAVzf2cIgEsg1H5r0JR/f
+ k58j2haR5Dv/DO8StIl9HgXuH8lB7oQITUq7AInYs8dsJIFAjkmN3m//iOs32XHAcQRT
+ lbRN8elndCNtLVJb/E8aKx/8tgdIc22nGPFf2w4tLLbt2/ehw2s+W/gS1oj2cQrusRWD
+ L6Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757058652; x=1757663452;
+ d=1e100.net; s=20230601; t=1757058653; x=1757663453;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k/NzJ2bgCdwbYumw+RjHPeb+xKv2XqzVqFCtxzAa+WI=;
- b=jG9ZeBQoZNW/8o8jXEj+0UQMYKHeEPIHSAUX56/x7G9ot60sbn6/tCzFBzLkOryZhq
- lEqJcFVrqP3rt/1nw7oG/5AMC7gw7yJhpLdK2Ro1Fx+1UeCjkGfQra74moQSN1+6Tcih
- dGTVqCB+ldNZbFdCsDUFLI0FyjwIzJ0DUVyhy6T0P3waPskpimJRZlq0aecI0zpdWgpJ
- 7Vnw4awdENw9vNrwR9l0emYemtDqtI5hIT7egHJzR0jKboFeeM+cWkVzLRbpVa7h+7rr
- R5l3Prp+2MyGyKZ3NnpAbnUoPZCEJq80t6DYrR4xauHbfAYhWTsZe9QzoCB56YwmdsQB
- YghA==
-X-Gm-Message-State: AOJu0YzhyjNSNEmA+NKVui5Q5H2wqZflfZn+09zVu1vNCb57AE22ubHr
- z3142m2zht+svBJDuJNGMwxvMURYrsyIqq36MQCAIz/femzFMAHXtST/onCzTfHxB+yqGYCUKyB
- icbxLFds=
-X-Gm-Gg: ASbGncts9PuWXKzjIVH1X4DQWeWw/8MzfevZ1l+EDSNwR7ticBG0ozZBOPvroolJqi3
- sQwAHdWOUstf1QF4JGocpmJgchnaU5p10oDzXtKxxcRfBRoWi9YUzb+UB6p8SMEeSkcZ5Y54K8V
- hhljtxuso6X2839zka6tlj/+FDx+DYswXWCRj8zbdCJ0dR3CFmbxbEDoZUVolVtKEng3uWbYmMZ
- V3092czAFBnwcLSDBcdWtw5h7KhocrsS3XbY/DK86JV4hz5MsEieZxP7HCbRKsJMNCc9vUTb48N
- wHuxumkwvbq/TMoePT0NJuMT19BUaNXw5+dnE1fK6/n6mNQBfbdO3uvKqfRN3TDfmqJvaeoCU+j
- tuJ6JMmlz4MoU1Xq5ccR7TseurSZc1oM+U+PdfzZN5M2GKw==
-X-Google-Smtp-Source: AGHT+IEyMzR728QiLRjdRt61RPDhpM2giL5db66GL4rjRrjYBuZbKj1hYu8Nz2FA/sJFq7oGtJc4Gg==
-X-Received: by 2002:a05:600c:3596:b0:45d:da20:1ee9 with SMTP id
- 5b1f17b1804b1-45dda2020efmr8085695e9.30.1757058652380; 
- Fri, 05 Sep 2025 00:50:52 -0700 (PDT)
+ bh=/kPH6riYNOweQhnmn/RRL6i17iJqnbvBitGNZ3+s7oE=;
+ b=tfyuBgTpAKxLAVK48HhUa8Fqx8YT0zxJHLexELKgCJrr5If1bM9v8l7hU9+YMWXg7o
+ kQqOsJw5Q3/UMpTWFk4Y8kSTiDkHm7nv+QRI/DHKmdM0epxutnXkOSNcHo2XrY6YH+2q
+ DqZoMi0MMR8tWxl6pT5wJ5q7PfmGzATFEIWADqxngO+PFS00nIt6IDdnboFoiM4+o6Db
+ YVdLZdhZJGaS2yTba4B/6sUvxJ7zuk8+R7MA+dlrgFkhelJiOFWgex0NI0BtS/uY4fQX
+ smRoF03zyUgmG0J8xZ8ngvw2H7lwQetoq3P+PzzIUtoy6sBXFQCfnH6qAs+6vPvAJ5xE
+ Wfuw==
+X-Gm-Message-State: AOJu0Yx2PNzsGnsERMXmb4/pJb9Ef4koS3AhDCECzWPEP9NJgqp+iAmD
+ ZBU3m8gDEjRzyxomh+jNdiggkgQCU9suxMm+0JuqOKuZ47aK9AMGJZNqac+O92mCLHjlJDQZSmU
+ iO9XhPjw=
+X-Gm-Gg: ASbGncvfwOD3Rpo2tjlsL+GK2D0FooNdt4YLu6eC7A8aJuN2GdAy0NAI7HP0iH23oJL
+ Oi4E5d2apWYfC2MTwfe7rgk2d2hyWecPHShFJ7PS63pl/rGXQ+QuFXliN0vDbdw96tgwGp9ZlZI
+ 4YASVvtVhykxb8QxDRV+mobM0O0dmM9O8YWyI831HtoGa6mcGBd4+efjvOmagcajwUYwnYXpFME
+ NaQR+UFIlNzJ0w/pLm65YQi4Eci7WVzTEwmszJTcKMeq8npNA+JECun7v23lIPbtlG+m5fgXeT6
+ cWCoYv8HqwW84tZSxnVAJ41FjLX7IWFUobv+9/U0nowA/CzPn38EqonImqo9jOkzJnEmN2RKgxb
+ 9fpcf8kqSSlrnn0VtVGMGZdtSjn/dJkU9WG/qf773iNVP0PsIY4/hME/s
+X-Google-Smtp-Source: AGHT+IE5bNGk/JSOmX6isdb84wkO6QveawwcpFq6DtwiL/KX+dGVftynlvmZiv9yTbq2iVRcbsxptA==
+X-Received: by 2002:a05:600c:1c15:b0:45d:db2a:ce4a with SMTP id
+ 5b1f17b1804b1-45ddb2acfa8mr3374115e9.9.1757058653430; 
+ Fri, 05 Sep 2025 00:50:53 -0700 (PDT)
 Received: from stoup.dot1x.polimi.it ([131.175.126.3])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b98e77231sm143760715e9.12.2025.09.05.00.50.51
+ 5b1f17b1804b1-45b98e77231sm143760715e9.12.2025.09.05.00.50.52
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Sep 2025 00:50:51 -0700 (PDT)
+ Fri, 05 Sep 2025 00:50:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 1/6] tcg/arm: Fix tgen_deposit
-Date: Fri,  5 Sep 2025 09:50:42 +0200
-Message-ID: <20250905075048.100496-3-richard.henderson@linaro.org>
+Subject: [PULL 2/6] cpuinfo/i386: Detect GFNI as an AVX extension
+Date: Fri,  5 Sep 2025 09:50:43 +0200
+Message-ID: <20250905075048.100496-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250905075048.100496-1-richard.henderson@linaro.org>
 References: <20250905075048.100496-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,33 +97,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When converting from tcg_out_deposit, the arguments were not
-shuffled properly.
+We won't use the SSE GFNI instructions, so delay
+detection until we know AVX is present.
 
-Cc: qemu-stable@nongnu.org
-Fixes: cf4905c03135f1181e8 ("tcg: Convert deposit to TCGOutOpDeposit")
-Reported-by: Michael Tokarev <mjt@tls.msk.ru>
-Tested-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/arm/tcg-target.c.inc | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ host/include/i386/host/cpuinfo.h | 1 +
+ include/qemu/cpuid.h             | 3 +++
+ util/cpuinfo-i386.c              | 1 +
+ 3 files changed, 5 insertions(+)
 
-diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
-index 836894b16a..338c57b061 100644
---- a/tcg/arm/tcg-target.c.inc
-+++ b/tcg/arm/tcg-target.c.inc
-@@ -975,7 +975,8 @@ static void tgen_deposit(TCGContext *s, TCGType type, TCGReg a0, TCGReg a1,
-                          TCGReg a2, unsigned ofs, unsigned len)
- {
-     /* bfi/bfc */
--    tcg_out32(s, 0x07c00010 | (COND_AL << 28) | (a0 << 12) | a1
-+    tcg_debug_assert(a0 == a1);
-+    tcg_out32(s, 0x07c00010 | (COND_AL << 28) | (a0 << 12) | a2
-               | (ofs << 7) | ((ofs + len - 1) << 16));
- }
+diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
+index 9541a64da6..93d029d499 100644
+--- a/host/include/i386/host/cpuinfo.h
++++ b/host/include/i386/host/cpuinfo.h
+@@ -27,6 +27,7 @@
+ #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
+ #define CPUINFO_AES             (1u << 18)
+ #define CPUINFO_PCLMUL          (1u << 19)
++#define CPUINFO_GFNI            (1u << 20)
  
+ /* Initialized with a constructor. */
+ extern unsigned cpuinfo;
+diff --git a/include/qemu/cpuid.h b/include/qemu/cpuid.h
+index b11161555b..de7a900509 100644
+--- a/include/qemu/cpuid.h
++++ b/include/qemu/cpuid.h
+@@ -68,6 +68,9 @@
+ #ifndef bit_AVX512VBMI2
+ #define bit_AVX512VBMI2 (1 << 6)
+ #endif
++#ifndef bit_GFNI
++#define bit_GFNI        (1 << 8)
++#endif
+ 
+ /* Leaf 0x80000001, %ecx */
+ #ifndef bit_LZCNT
+diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
+index c8c8a1b370..f4c5b6ff40 100644
+--- a/util/cpuinfo-i386.c
++++ b/util/cpuinfo-i386.c
+@@ -50,6 +50,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+             if ((bv & 6) == 6) {
+                 info |= CPUINFO_AVX1;
+                 info |= (b7 & bit_AVX2 ? CPUINFO_AVX2 : 0);
++                info |= (c7 & bit_GFNI ? CPUINFO_GFNI : 0);
+ 
+                 if ((bv & 0xe0) == 0xe0) {
+                     info |= (b7 & bit_AVX512F ? CPUINFO_AVX512F : 0);
 -- 
 2.43.0
 
