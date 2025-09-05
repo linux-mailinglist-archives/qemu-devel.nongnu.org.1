@@ -2,84 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF6FB45C38
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Sep 2025 17:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43851B45D60
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Sep 2025 18:03:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuYC6-0002sy-OI; Fri, 05 Sep 2025 11:17:44 -0400
+	id 1uuYrV-0006lm-DK; Fri, 05 Sep 2025 12:00:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3A_-6aAcKCjolabkhauckkcha.Ykimaiq-Zarahjkjcjq.knc@flex--pefoley.bounces.google.com>)
- id 1uuYC0-0002sR-Ti
- for qemu-devel@nongnu.org; Fri, 05 Sep 2025 11:17:37 -0400
-Received: from mail-qt1-x84a.google.com ([2607:f8b0:4864:20::84a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3A_-6aAcKCjolabkhauckkcha.Ykimaiq-Zarahjkjcjq.knc@flex--pefoley.bounces.google.com>)
- id 1uuYBw-0001FI-Up
- for qemu-devel@nongnu.org; Fri, 05 Sep 2025 11:17:36 -0400
-Received: by mail-qt1-x84a.google.com with SMTP id
- d75a77b69052e-4b335bd70b8so39833471cf.3
- for <qemu-devel@nongnu.org>; Fri, 05 Sep 2025 08:17:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1757085444; x=1757690244; darn=nongnu.org;
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Lg9HVuz+A1FnOUJ3knlqpDY3nmh19aERu5ysQdwzHfo=;
- b=hHYwcrc7GxXE2gk62FdR+MiBIdEmSAfVW9Zx+JqWdfzidDv/UL2cZ0WhIHfeCNtFKf
- O5VYTYmk4545i5PN5i+pHh1aq3WyQKdChY73x+YD8mbuAsFGp7QXDnriWwg8VfVaTzqe
- hsBfTmWIyT+zzRmKE0n21lzR9eqZco+4inCe+gB0bHhcO6K4LfBED7TSYfjU6K42UoUW
- uD2463IeEZJu8QrvF5qGmV2QFXTmZge/OXeewLF8uqy0JWbzl7CzekB1ERXOERK/5B6K
- +pBpRlF/0yy76rLC1UMNWnWZhx6w1GkRG6ti1Br2n9z07XB6Nv+0Gw+pxcItO6/41FKL
- 8Ttw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757085444; x=1757690244;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Lg9HVuz+A1FnOUJ3knlqpDY3nmh19aERu5ysQdwzHfo=;
- b=BHSa5t314lS19nGLZMGoOZl97+6Lel+X5doEPUmf56YhMuM6hw7cT5DwL8aMZEtzsF
- YQj/dIgRoqrp6TC/C41HTfQRaB0k/9oSj/idscXpBGT6pncr9ls2FprPT/oOQNMUCTWs
- hqCt0ldeJm/W303Ra7sIj36Sc/db8OinR2NH+HnlrdskSreOCZr+RjJ62FbLGtJ/qxhF
- aUSQhuO4I3xqxSWqB4trhbEqYzF3ybkLxYi1Zubegni7saw9duLPV8sAniDITZffYOlh
- Q9try94ZxnXAHGGSrLjpvqjIkwvr/vA37PLgyJ5snvREuTlS4BArI/iU8+fvqodBsRhC
- mXkA==
-X-Gm-Message-State: AOJu0YxNzeCR1bnPq1+F6IOBMwekKS+kxtGjQCS0X0UttohnRvI91dEE
- pWZ+udzz8qfe5uVci1hGcMfaY9sSqMISVNQpXbkMBJV/KKb8RRVknXOKPa2ThKBd2Lwpec6dNuV
- w/XvZlO/dh6B/jcW8RuAgUs1Yk23CnDmL8+YBZy2EbsfYLl6zwAbScFX4mGzxvyuL0cveHfvddX
- aDgQeBcZKttEnSXdrkgNFOqk18vEPFEXlgzQhDDeG2
-X-Google-Smtp-Source: AGHT+IGM/+L8zEUGzWEnQtU4HEvkTbBW+snxkQSU3OsfAnxHuja0RCvsPDL8u7FWtU6VwmhKYCJSocscOO3m
-X-Received: from qtbih5.prod.google.com ([2002:a05:622a:6a85:b0:4b5:e643:b1ac])
- (user=pefoley job=prod-delivery.src-stubby-dispatcher) by
- 2002:ac8:5d92:0:b0:4b5:dadd:cec1
- with SMTP id d75a77b69052e-4b5daddf1e3mr81389091cf.59.1757085443784; Fri, 05
- Sep 2025 08:17:23 -0700 (PDT)
-Date: Fri, 05 Sep 2025 11:17:11 -0400
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAPb+umgC/1WMQQ7CIBBFr9LMWsxAwVpX3sN0UceRTqKlAUM0D
- XcXu3P5fv57KySOwglOzQqRsyQJcwWza4Cmcfas5FYZDBqHPVrVL0prQotu5I4c1OMS+S7vLXI
- ZKk+SXiF+tmbWv/VPz1ppxYfW0rXtLB3x7EPwD95TeMJQSvkC2w1Iw5UAAAA=
-X-Change-Id: 20250904-9p-11c0405ae7c5
-X-Mailer: b4 0.14.2
-Message-ID: <20250905-9p-v2-1-2ad31999684d@google.com>
-Subject: [PATCH v2] 9pfs: Stop including gstrfuncs.h
-From: Peter Foley <pefoley@google.com>
-To: qemu-devel@nongnu.org
-Cc: Christian Schoenebeck <qemu_oss@crudebyte.com>, Greg Kurz <groug@kaod.org>,
- pbonzini@redhat.com, 
- nabihestefan@google.com, Peter Foley <pefoley@google.com>
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::84a;
- envelope-from=3A_-6aAcKCjolabkhauckkcha.Ykimaiq-Zarahjkjcjq.knc@flex--pefoley.bounces.google.com;
- helo=mail-qt1-x84a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uuYrQ-0006kw-1h
+ for qemu-devel@nongnu.org; Fri, 05 Sep 2025 12:00:24 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uuYrI-0005KD-5p
+ for qemu-devel@nongnu.org; Fri, 05 Sep 2025 12:00:23 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cJLcc3tsbz6L50s;
+ Fri,  5 Sep 2025 23:58:56 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id AB4871402F2;
+ Fri,  5 Sep 2025 23:59:55 +0800 (CST)
+Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 5 Sep
+ 2025 17:59:55 +0200
+Date: Fri, 5 Sep 2025 16:59:53 +0100
+To: Arpit Kumar <arpit1.kumar@samsung.com>
+CC: <qemu-devel@nongnu.org>, <gost.dev@samsung.com>,
+ <linux-cxl@vger.kernel.org>, <dave@stgolabs.net>, <vishak.g@samsung.com>,
+ <krish.reddy@samsung.com>, <a.manzanares@samsung.com>,
+ <alok.rathore@samsung.com>, <cpgs@samsung.com>
+Subject: Re: [PATCH v3 1/2] hw/cxl: Refactored Identify Switch Device & Get
+ Physical Port State
+Message-ID: <20250905165953.00006c3c@huawei.com>
+In-Reply-To: <20250904131904.725758-2-arpit1.kumar@samsung.com>
+References: <20250904131904.725758-1-arpit1.kumar@samsung.com>
+ <CGME20250904131933epcas5p2ab29fa060d8a7df32a222aad740fedc6@epcas5p2.samsung.com>
+ <20250904131904.725758-2-arpit1.kumar@samsung.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,41 +71,303 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <jonathan.cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-gstrfuncs.h is not intended to be included directly.
-In fact this only works because glib.h is already included by osdep.h.
-Just remove the include.
+On Thu,  4 Sep 2025 18:49:03 +0530
+Arpit Kumar <arpit1.kumar@samsung.com> wrote:
 
-Signed-off-by: Peter Foley <pefoley@google.com>
----
-Changes in v2:
-- Just remove the include entirely in favor of osdep.h
-- Link to v1: https://lore.kernel.org/qemu-devel/20250904-9p-v1-1-e634cb374c80@google.com
----
- hw/9pfs/9p-util-generic.c | 1 -
- 1 file changed, 1 deletion(-)
+> -Storing physical ports info during enumeration.
+> -Refactored changes using physical ports info for
+>  Identify Switch Device (Opcode 5100h) & Get Physical Port State
+>  (Opcode 5101h) physical switch FM-API command set.
+> 
+> Signed-off-by: Arpit Kumar <arpit1.kumar@samsung.com>
+Hi Arpit,
 
-diff --git a/hw/9pfs/9p-util-generic.c b/hw/9pfs/9p-util-generic.c
-index 4c1e9c887d00c44bc073bec00c07ed09d3868bf5..b71fa2cb3785349c6b4d2b9591f5ea4f917844d0 100644
---- a/hw/9pfs/9p-util-generic.c
-+++ b/hw/9pfs/9p-util-generic.c
-@@ -2,7 +2,6 @@
- 
- #include "qemu/osdep.h"
- #include "9p-util.h"
--#include <glib/gstrfuncs.h>
- 
- char *qemu_open_flags_tostr(int flags)
- {
+A few minor things inline.   Biggest one is making sure
+to namespace the defines which is quite challenging to do
+here without a really long name.
 
----
-base-commit: baa79455fa92984ff0f4b9ae94bed66823177a27
-change-id: 20250904-9p-11c0405ae7c5
+Jonathan
 
-Best regards,
--- 
-Peter Foley <pefoley@google.com>
+> ---
+>  hw/cxl/cxl-mailbox-utils.c                | 230 ++++++++++++----------
+>  include/hw/cxl/cxl_device.h               |  67 +++++++
+>  include/hw/pci-bridge/cxl_upstream_port.h |   8 +
+>  3 files changed, 198 insertions(+), 107 deletions(-)
+> 
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index c5177dfd92..cb36880f0b 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -435,16 +435,6 @@ static CXLRetCode cmd_set_response_msg_limit(const struct cxl_cmd *cmd,
+>      return CXL_MBOX_SUCCESS;
+>  }
+
+> @@ -555,69 +520,20 @@ static CXLRetCode cmd_get_physical_port_state(const struct cxl_cmd *cmd,
+>          return CXL_MBOX_INVALID_INPUT;
+>      }
+>  
+> -    /* For success there should be a match for each requested */
+> -    out->num_ports = in->num_ports;
+> +    if (in->num_ports > pp->pports.num_ports) {
+> +        return CXL_MBOX_INVALID_INPUT;
+> +    }
+>  
+> +    out->num_ports = in->num_ports;
+>      for (i = 0; i < in->num_ports; i++) {
+> -        struct cxl_fmapi_port_state_info_block *port;
+> -        /* First try to match on downstream port */
+> -        PCIDevice *port_dev;
+> -        uint16_t lnkcap, lnkcap2, lnksta;
+> +        int pn = in->ports[i];
+>  
+> -        port = &out->ports[i];
+> -
+> -        port_dev = pcie_find_port_by_pn(bus, in->ports[i]);
+> -        if (port_dev) { /* DSP */
+> -            PCIDevice *ds_dev = pci_bridge_get_sec_bus(PCI_BRIDGE(port_dev))
+> -                ->devices[0];  
+> -            port->config_state = 3;
+> -            if (ds_dev) {
+> -                if (object_dynamic_cast(OBJECT(ds_dev), TYPE_CXL_TYPE3)) {
+> -                    port->connected_device_type = 5; /* Assume MLD for now */
+> -                } else {
+> -                    port->connected_device_type = 1;
+> -                }
+> -            } else {
+> -                port->connected_device_type = 0;
+> -            }
+> -            port->supported_ld_count = 3;
+> -        } else if (usp->port == in->ports[i]) { /* USP */
+> -            port_dev = PCI_DEVICE(usp);
+> -            port->config_state = 4;
+> -            port->connected_device_type = 0;
+> -        } else {
+> +        if (pp->pports.pport_info[pn].port_id != pn) {
+>              return CXL_MBOX_INVALID_INPUT;
+>          }
+> -
+> -        port->port_id = in->ports[i];
+> -        /* Information on status of this port in lnksta, lnkcap */
+> -        if (!port_dev->exp.exp_cap) {
+> -            return CXL_MBOX_INTERNAL_ERROR;
+> -        }
+> -        lnksta = port_dev->config_read(port_dev,
+> -                                       port_dev->exp.exp_cap + PCI_EXP_LNKSTA,
+> -                                       sizeof(lnksta));
+> -        lnkcap = port_dev->config_read(port_dev,
+> -                                       port_dev->exp.exp_cap + PCI_EXP_LNKCAP,
+> -                                       sizeof(lnkcap));
+> -        lnkcap2 = port_dev->config_read(port_dev,
+> -                                        port_dev->exp.exp_cap + PCI_EXP_LNKCAP2,
+> -                                        sizeof(lnkcap2));
+> -
+> -        port->max_link_width = (lnkcap & PCI_EXP_LNKCAP_MLW) >> 4;
+> -        port->negotiated_link_width = (lnksta & PCI_EXP_LNKSTA_NLW) >> 4;
+> -        /* No definition for SLS field in linux/pci_regs.h */
+> -        port->supported_link_speeds_vector = (lnkcap2 & 0xFE) >> 1;
+> -        port->max_link_speed = lnkcap & PCI_EXP_LNKCAP_SLS;
+> -        port->current_link_speed = lnksta & PCI_EXP_LNKSTA_CLS;
+> -        /* TODO: Track down if we can get the rest of the info */
+> -        port->ltssm_state = 0x7;
+> -        port->first_lane_num = 0;
+> -        port->link_state = 0;
+> -        port->port_cxl_version_bitmask = 0x2;
+> -        port->connected_device_cxl_version = 0x2;
+> +        memcpy(&out->ports[i], &(pp->pports.pport_info[pn]),
+> +               sizeof(CXLPhyPortInfo));
+>      }
+> -
+
+That's a stray change that shouldn't be here.
+
+>      pl_size = sizeof(*out) + sizeof(*out->ports) * in->num_ports;
+>      *len_out = pl_size;
+>  
+
+> +static void cxl_set_dsp_port(PCIBus *bus, PCIDevice *dev, void *opaque)
+> +{
+> +    CXLCCI *cci = (CXLCCI *)opaque;
+
+That cast isn't needed.  You can always implicitly cast from a void *
+to another pointer type (and the other way).
+
+> +    CXLUpstreamPort *pp = CXL_USP(cci->d);
+> +
+> +    if (object_dynamic_cast(OBJECT(dev), TYPE_CXL_DSP)) {
+> +        cxl_set_port_type(pp, PCIE_PORT(dev)->port, cci);
+> +    }
+> +}
+> +
+> +static CXLRetCode cxl_set_phy_port_info(CXLCCI *cci)
+> +{
+> +    PCIEPort *usp = PCIE_PORT(cci->d);
+> +    PCIBus *bus = &PCI_BRIDGE(cci->d)->sec_bus;
+> +    CXLUpstreamPort *pp = CXL_USP(cci->d);
+> +    int num_phys_ports = pcie_count_ds_ports(bus) + 1;
+> +    pp->pports.num_ports = num_phys_ports;
+
+Don't mix and match declarations and non declarations.
+
+> +    uint8_t phy_port_num = usp->port;
+> +
+> +    cxl_set_port_type(pp, phy_port_num, cci); /* USP */
+> +    pci_for_each_device_under_bus(bus, cxl_set_dsp_port, cci); /* DSP */
+> +
+> +    return CXL_MBOX_SUCCESS;
+> +}
+
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index 068c20d61e..9fc720ec10 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -129,6 +129,73 @@
+>                    CXL_NUM_CPMU_INSTANCES * (1 << 16),                   \
+>                    (1 << 16))
+>  
+> +#define CXL_MAX_PHY_PORTS 256
+> +
+> +/* physical port control info - CXL r3.2 table 7-19 */
+Stick to local style. That makes this
+/* CXL r3.2 Table 7-19: Get Physical Port State Port Information Block Format */
+
+
+> +#define CXL_PORT_CONFIG_STATE_DISABLED           0x0
+> +#define CXL_PORT_CONFIG_STATE_BIND_IN_PROGRESS   0x1
+> +#define CXL_PORT_CONFIG_STATE_UNBIND_IN_PROGRESS 0x2
+> +#define CXL_PORT_CONFIG_STATE_DSP                0x3
+> +#define CXL_PORT_CONFIG_STATE_USP                0x4
+> +#define CXL_PORT_CONFIG_STATE_FABRIC_PORT        0x5
+> +#define CXL_PORT_CONFIG_STATE_INVALID_PORT_ID    0xF
+> +
+> +#define NOT_CXL_OR_DISCONNECTED              0x00
+These need a clean prefix like the you have for CONFIG_STATE
+Some of these names are tricky to put concisely.
+
+#define CXL_PORT_CONNECTED_DEV_MODE_NOT_CXL_OR_DISCONN 0x0
+#define CXL_PORT_CONNECTED_DEV_MODE_RCD                0x1
+#define CXL_PORT_CONNECTED_DEV_MODE_68B_VH             0x2
+#define CXL_PORT_CONNECTED_DEV_MODE_256B               0x3
+#define CXL_PORT_CONNECTED_DEV_MODE_LO_256B            0x4
+#define CXL_PORT_CONNECTED_DEV_MODE_PBR                0x5
+
+Is about the shortest that covers what these are.
+Kind of need to retain these are about the device down the
+other end of the wires.  Only one bibblee so can use just 1 character.
+
+> +#define RCD_MODE                             0x01
+> +#define CXL_68B_FLIT_AND_VH_MODE             0x02
+> +#define STANDARD_256B_FLIT_MODE              0x03
+> +#define CXL_LATENCY_OPTIMIZED_256B_FLIT_MODE 0x04
+> +#define PBR_MODE                             0x05
+> +
+> +#define NO_DEVICE_DETECTED              0
+Similar here - also keep to hex to match spec and 2 digits as this one is byte. 
+#define CXL_PORT_CONNECTED_DEV_TYPE_NONE       0x00
+#define CXL_PORT_CONNECTED_DEV_TYPE_PCIE       0x01
+etc
+
+> +#define PCIE_DEVICE                     1
+> +#define CXL_TYPE_1_DEVICE               2
+> +#define CXL_TYPE_2_DEVICE_OR_HBR_SWITCH 3
+> +#define CXL_TYPE_3_SLD                  4
+> +#define CXL_TYPE_3_MLD                  5
+> +#define PBR_COMPONENT                   6
+> +
+> +#define CXL_RCD_MODE                    0x00
+> +#define CXL_68B_FLIT_AND_VH_CAPABLE     0x01
+> +#define CXL_256B_FLIT_CAPABLE           0x02
+> +#define CXL_LATENCY_OPTIMIZED_256B_FLIT 0x03
+> +#define CXL_PBR_CAPABLE                 0x04
+This lot are confusing as they are a bits in a bitmap. I'd express them as
+#define CXL_PORT_SUPPORTS_RCD             BIT(0)
+#define CXL_PORT_SUPPORTS_68B_VH          BIT(1)
+etc, matching names with above suggestion on short forms.
+
+> +
+> +#define CXL_LTSSM_DETECT        0x00
+I'd call out the PORT bit for these as they aren't generic
+and that this is the current state.
+
+CXL_PORT_LTSSM_STATE_DETECT  etc
+
+
+> +#define CXL_LTSSM_POLLING       0x01
+> +#define CXL_LTSSM_CONFIGURATION 0x02
+> +#define CXL_LTSSM_RECOVERY      0x03
+> +#define CXL_LTSSM_L0            0x04
+> +#define CXL_LTSSM_L0S           0x05
+> +#define CXL_LTSSM_L1            0x06
+> +#define CXL_LTSSM_L2            0x07
+> +#define CXL_LTSSM_DISABLED      0x08
+> +#define CXL_LTSSM_LOOPBACK      0x09
+> +#define CXL_LTSSM_HOT_RESET     0x0A
+> +
+> +#define LINK_STATE_FLAG_LANE_REVERSED    BIT(0)
+
+Probably stick CXL_PORT_ as prefix for these as well.
+
+> +#define LINK_STATE_FLAG_PERST_ASSERTED   BIT(1)
+> +#define LINK_STATE_FLAG_PRSNT            BIT(2)
+> +#define LINK_STATE_FLAG_POWER_OFF        BIT(3)
+> +
+> +typedef struct CXLPhyPortInfo {
+> +    uint8_t port_id;
+> +    uint8_t current_port_config_state; 
+> +    uint8_t connected_device_mode;
+> +    uint8_t rsv1;
+> +    uint8_t connected_device_type;
+> +    uint8_t supported_cxl_modes;
+> +    uint8_t max_link_width;
+> +    uint8_t negotiated_link_width;
+> +    uint8_t supported_link_speeds_vector;
+> +    uint8_t max_link_speed;
+> +    uint8_t current_link_speed;
+> +    uint8_t ltssm_state;
+> +    uint8_t first_negotiated_lane_num;
+> +    uint16_t link_state_flags;
+> +    uint8_t supported_ld_count;
+> +} QEMU_PACKED CXLPhyPortInfo;
+> +
+>  /* CXL r3.1 Table 8-34: Command Return Codes */
+>  typedef enum {
+>      CXL_MBOX_SUCCESS = 0x0,
+> diff --git a/include/hw/pci-bridge/cxl_upstream_port.h b/include/hw/pci-bridge/cxl_upstream_port.h
+> index db1dfb6afd..3b7e72bfe0 100644
+> --- a/include/hw/pci-bridge/cxl_upstream_port.h
+> +++ b/include/hw/pci-bridge/cxl_upstream_port.h
+> @@ -4,6 +4,7 @@
+>  #include "hw/pci/pcie.h"
+>  #include "hw/pci/pcie_port.h"
+>  #include "hw/cxl/cxl.h"
+> +#include "include/hw/cxl/cxl_device.h"
+>  
+>  typedef struct CXLUpstreamPort {
+>      /*< private >*/
+> @@ -23,6 +24,13 @@ typedef struct CXLUpstreamPort {
+>  
+>      DOECap doe_cdat;
+>      uint64_t sn;
+> +
+> +    /*< physical ports information >*/
+
+I believe the magic /*< private >*/ syntax with the <> is special for public/private.
+There are a few other comments marked like that in qemu, but very very few.
+So this probably just wants to be
+
+  /* Physical ports information */
+
+> +    struct {
+> +        uint8_t num_ports;
+> +        uint8_t active_port_bitmask[CXL_MAX_PHY_PORTS / BITS_PER_BYTE];
+> +        CXLPhyPortInfo pport_info[CXL_MAX_PHY_PORTS];
+> +    } pports;
+>  } CXLUpstreamPort;
+>  
+>  #endif /* CXL_SUP_H */
 
 
