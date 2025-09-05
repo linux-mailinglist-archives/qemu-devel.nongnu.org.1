@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D05B4599A
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Sep 2025 15:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 430F3B459A7
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Sep 2025 15:53:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuWqB-0001db-6d; Fri, 05 Sep 2025 09:50:59 -0400
+	id 1uuWqE-0001fD-Kd; Fri, 05 Sep 2025 09:51:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uuWq7-0001cx-Tw
- for qemu-devel@nongnu.org; Fri, 05 Sep 2025 09:50:55 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ id 1uuWqC-0001dU-2E
+ for qemu-devel@nongnu.org; Fri, 05 Sep 2025 09:51:00 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uuWq2-0006XI-MV
- for qemu-devel@nongnu.org; Fri, 05 Sep 2025 09:50:55 -0400
+ id 1uuWq3-0006XN-9N
+ for qemu-devel@nongnu.org; Fri, 05 Sep 2025 09:50:56 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 4C2E1C1091;
- Fri, 05 Sep 2025 16:50:45 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 04A9FC1093;
+ Fri, 05 Sep 2025 16:50:46 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b8f::1:11])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id foiXcl3Gh8c0-Mvpm3ELe; Fri, 05 Sep 2025 16:50:44 +0300
+ ESMTPSA id foiXcl3Gh8c0-2g50U4kW; Fri, 05 Sep 2025 16:50:45 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1757080244;
- bh=ZIuITB1rd17BNdWGYUy9N1rTVr/YhJCJKjPp4gE6akA=;
+ s=default; t=1757080245;
+ bh=9BRBRN4FugsQSiwFKEkHemuvQEzD3v1rNDoVEakXDW8=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=yhRw2dEvlKrHEAVI8Bb8+b8z5K30+KldaEYJmXz06TXw9j6D/OPEPBR8B7JNxab5l
- nYtlZxDDxm71iDmxy8AVbblymqkt5Jm+lNC0crs5sNYCFgt71QSON4uKJT0S7BfGr/
- mGaJbZNaDeDW9Kr+N7WNt2qaXZqUE3QU6mAFiUk4=
+ b=DurQy7uM9nCHn7vczOe7dFX5he/8OWdeKzd/m2NFIW34csUeUu3Tho1DJApdJArTC
+ 1AAlraf1Mb5NKVF4Z7+T4PW+7yRccIKzgvKHdjlT3rmpABxdW9b8gWoyMMeQbjYayE
+ stzXw4iXe45ySRZ3jPIrt6GWevAiWDxFF+l8kBFo=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -43,23 +44,23 @@ Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
  steven.sistare@oracle.com, yc-core@yandex-team.ru, peterx@redhat.com,
  mst@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
  thuth@redhat.com, philmd@linaro.org, berrange@redhat.com
-Subject: [PATCH v3 4/9] qapi: add interface for local TAP migration
-Date: Fri,  5 Sep 2025 16:50:34 +0300
-Message-ID: <20250905135039.2202924-5-vsementsov@yandex-team.ru>
+Subject: [PATCH v3 5/9] net/tap: implement interfaces for local migration
+Date: Fri,  5 Sep 2025 16:50:35 +0300
+Message-ID: <20250905135039.2202924-6-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250905135039.2202924-1-vsementsov@yandex-team.ru>
 References: <20250905135039.2202924-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,110 +75,249 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To migrate TAP device (including open fds) locally, user should:
-
-1. enable local-tap migration capability both on source and target
-2. use additional local-incoming=true option for tap on target
-
-Why capability is not enough? We need an option to modify early
-initialization of TAP, to avoid opening new fds. The capability
-may not be set at the moment of netdev initialization.
+Handle local-incoming option:
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- migration/options.c |  7 +++++++
- migration/options.h |  1 +
- qapi/migration.json |  9 ++++++++-
- qapi/net.json       | 12 +++++++++++-
- 4 files changed, 27 insertions(+), 2 deletions(-)
+ include/net/tap.h |   4 ++
+ net/tap.c         | 139 +++++++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 122 insertions(+), 21 deletions(-)
 
-diff --git a/migration/options.c b/migration/options.c
-index 4e923a2e07..6f5af52a5c 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -262,6 +262,13 @@ bool migrate_mapped_ram(void)
-     return s->capabilities[MIGRATION_CAPABILITY_MAPPED_RAM];
+diff --git a/include/net/tap.h b/include/net/tap.h
+index 6f34f13eae..3ef2e2dbae 100644
+--- a/include/net/tap.h
++++ b/include/net/tap.h
+@@ -30,7 +30,11 @@
+ 
+ int tap_enable(NetClientState *nc);
+ int tap_disable(NetClientState *nc);
++bool tap_local_incoming(NetClientState *nc);
+ 
+ int tap_get_fd(NetClientState *nc);
+ 
++int tap_load(NetClientState *nc, QEMUFile *f);
++int tap_save(NetClientState *nc, QEMUFile *f);
++
+ #endif /* QEMU_NET_TAP_H */
+diff --git a/net/tap.c b/net/tap.c
+index cf7f704a92..0fd7a7671c 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -35,6 +35,7 @@
+ #include "net/eth.h"
+ #include "net/net.h"
+ #include "clients.h"
++#include "migration/vmstate.h"
+ #include "monitor/monitor.h"
+ #include "system/system.h"
+ #include "qapi/error.h"
+@@ -44,6 +45,7 @@
+ #include "qemu/sockets.h"
+ #include "hw/virtio/vhost.h"
+ #include "trace.h"
++#include "system/runstate.h"
+ 
+ #include "net/tap.h"
+ 
+@@ -82,6 +84,7 @@ typedef struct TAPState {
+     VHostNetState *vhost_net;
+     unsigned host_vnet_hdr_len;
+     Notifier exit;
++    bool local_incoming;
+ } TAPState;
+ 
+ static void launch_script(const char *setup_script, const char *ifname,
+@@ -756,6 +759,43 @@ static int net_tap_init_vhost(TAPState *s, Error **errp)
+     return 0;
  }
  
-+bool migrate_local_tap(void)
++static int tap_post_load(void *opaque, int version_id)
 +{
-+    MigrationState *s = migrate_get_current();
++    TAPState *s = opaque;
 +
-+    return s->capabilities[MIGRATION_CAPABILITY_LOCAL_TAP];
++    tap_read_poll(s, true);
++
++    return net_tap_init_vhost(s, NULL);
 +}
 +
- bool migrate_ignore_shared(void)
++static const VMStateDescription vmstate_tap = {
++    .name = "virtio-net-device",
++    .post_load = tap_post_load,
++    .fields = (const VMStateField[]) {
++        VMSTATE_FD(fd, TAPState),
++        VMSTATE_BOOL(using_vnet_hdr, TAPState),
++        VMSTATE_BOOL(has_ufo, TAPState),
++        VMSTATE_BOOL(has_uso, TAPState),
++        VMSTATE_BOOL(enabled, TAPState),
++        VMSTATE_UINT32(host_vnet_hdr_len, TAPState),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++int tap_save(NetClientState *nc, QEMUFile *f)
++{
++    TAPState *s = DO_UPCAST(TAPState, nc, nc);
++
++    return vmstate_save_state(f, &vmstate_tap, s, 0);
++}
++
++int tap_load(NetClientState *nc, QEMUFile *f)
++{
++    TAPState *s = DO_UPCAST(TAPState, nc, nc);
++
++    return vmstate_load_state(f, &vmstate_tap, s, 0);
++}
++
+ static int net_tap_fd_init_common(const Netdev *netdev, NetClientState *peer,
+                                   const char *model, const char *name,
+                                   const char *ifname, const char *script,
+@@ -763,30 +803,40 @@ static int net_tap_fd_init_common(const Netdev *netdev, NetClientState *peer,
+                                   const char *vhostfdname,
+                                   int vnet_hdr, int fd, Error **errp)
  {
-     MigrationState *s = migrate_get_current();
-diff --git a/migration/options.h b/migration/options.h
-index 82d839709e..08c0606072 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -30,6 +30,7 @@ bool migrate_colo(void);
- bool migrate_dirty_bitmaps(void);
- bool migrate_events(void);
- bool migrate_mapped_ram(void);
-+bool migrate_local_tap(void);
- bool migrate_ignore_shared(void);
- bool migrate_late_block_activate(void);
- bool migrate_multifd(void);
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 2387c21e9c..992a5b1e2b 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -517,6 +517,12 @@
- #     each RAM page.  Requires a migration URI that supports seeking,
- #     such as a file.  (since 9.0)
- #
-+# @local-tap: Migrate TAPs locally, keeping backend alive. Open file
-+#     descriptors and TAP-related state are migrated. Only may be
-+#     used when migration channel is unix socket. For target device
-+#     also @local-incoming option must be specified (since 10.2)
-+#     (since 10.2)
-+#
- # Features:
- #
- # @unstable: Members @x-colo and @x-ignore-shared are experimental.
-@@ -536,7 +542,8 @@
-            { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
-            'validate-uuid', 'background-snapshot',
-            'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
--           'dirty-limit', 'mapped-ram'] }
-+           'dirty-limit', 'mapped-ram',
-+           { 'name': 'local-tap', 'features': [ 'unstable' ] } ] }
+-    const NetdevTapOptions *tap;
++    const NetdevTapOptions *tap = NULL;
+     int ret;
+     NetClientState *nc;
+     TAPState *s;
++    bool local_incoming = false;
++
++    if (netdev->type == NET_CLIENT_DRIVER_TAP) {
++        tap = &netdev->u.tap;
++        local_incoming = tap->local_incoming;
++    }
  
- ##
- # @MigrationCapabilityStatus:
-diff --git a/qapi/net.json b/qapi/net.json
-index 78bcc9871e..8f53549d58 100644
---- a/qapi/net.json
-+++ b/qapi/net.json
-@@ -353,6 +353,15 @@
- # @poll-us: maximum number of microseconds that could be spent on busy
- #     polling for tap (since 2.7)
- #
-+# @local-incoming: Do load open file descriptor for that TAP
-+#     on incoming migration. May be used only if QEMU is started
-+#     for incoming migration. Will work only together with local-tap
-+#     migration capability enabled (default: false) (Since: 10.2)
-+#
-+# Features:
-+#
-+# @unstable: Member @local-incoming is experimental
-+#
- # Since: 1.2
- ##
- { 'struct': 'NetdevTapOptions',
-@@ -371,7 +380,8 @@
-     '*vhostfds':   'str',
-     '*vhostforce': 'bool',
-     '*queues':     'uint32',
--    '*poll-us':    'uint32'} }
-+    '*poll-us':    'uint32',
-+    '*local-incoming': { 'type': 'bool', 'features': [ 'unstable' ] } } }
+     nc = qemu_new_net_client(&net_tap_info, peer, model, name);
  
- ##
- # @NetdevSocketOptions:
+     s = DO_UPCAST(TAPState, nc, nc);
+-
+-    s->fd = fd;
+-    s->host_vnet_hdr_len = vnet_hdr ? sizeof(struct virtio_net_hdr) : 0;
+-    s->using_vnet_hdr = false;
+-    s->has_ufo = tap_probe_has_ufo(s->fd);
+-    s->has_uso = tap_probe_has_uso(s->fd);
+-    s->enabled = true;
+-    tap_set_offload(&s->nc, 0, 0, 0, 0, 0, 0, 0);
+-    /*
+-     * Make sure host header length is set correctly in tap:
+-     * it might have been modified by another instance of qemu.
+-     */
+-    if (vnet_hdr) {
+-        tap_fd_set_vnet_hdr_len(s->fd, s->host_vnet_hdr_len);
++    s->local_incoming = local_incoming;
++
++    if (!local_incoming) {
++        s->fd = fd;
++        s->host_vnet_hdr_len = vnet_hdr ? sizeof(struct virtio_net_hdr) : 0;
++        s->using_vnet_hdr = false;
++        s->has_ufo = tap_probe_has_ufo(s->fd);
++        s->has_uso = tap_probe_has_uso(s->fd);
++        s->enabled = true;
++        tap_set_offload(&s->nc, 0, 0, 0, 0, 0, 0, 0);
++        /*
++         * Make sure host header length is set correctly in tap:
++         * it might have been modified by another instance of qemu.
++         */
++        if (vnet_hdr) {
++            tap_fd_set_vnet_hdr_len(s->fd, s->host_vnet_hdr_len);
++        }
++        tap_read_poll(s, true);
+     }
+-    tap_read_poll(s, true);
++
+     s->vhost_net = NULL;
+     s->exit.notify = NULL;
+ 
+@@ -798,9 +848,8 @@ static int net_tap_fd_init_common(const Netdev *netdev, NetClientState *peer,
+     }
+ 
+     assert(netdev->type == NET_CLIENT_DRIVER_TAP);
+-    tap = &netdev->u.tap;
+ 
+-    if (tap_set_sndbuf(s->fd, tap, errp) < 0) {
++    if (!local_incoming && tap_set_sndbuf(s->fd, tap, errp) < 0) {
+         goto failed;
+     }
+ 
+@@ -826,9 +875,11 @@ static int net_tap_fd_init_common(const Netdev *netdev, NetClientState *peer,
+         goto failed;
+     }
+ 
+-    ret = net_tap_init_vhost(s, errp);
+-    if (ret < 0) {
+-        goto failed;
++    if (!local_incoming) {
++        ret = net_tap_init_vhost(s, errp);
++        if (ret < 0) {
++            goto failed;
++        }
+     }
+ 
+     return 0;
+@@ -895,6 +946,38 @@ static int net_tap_open(const Netdev *netdev,
+     return 0;
+ }
+ 
++static int net_init_local_incoming(const Netdev *netdev,
++                                   const char *name,
++                                   NetClientState *peer,
++                                   Error **errp)
++{
++    const NetdevTapOptions *tap = &netdev->u.tap;
++    const char *downscript = tap->downscript;
++    int queues = tap->has_queues ? tap->queues : 1;
++    g_autofree char *default_downscript = NULL;
++    int i, ret;
++
++    assert(netdev->type == NET_CLIENT_DRIVER_TAP);
++    assert(!tap->script);
++
++    if (!downscript) {
++        downscript = default_downscript =
++                             get_relocated_path(DEFAULT_NETWORK_DOWN_SCRIPT);
++    }
++
++    for (i = 0; i < queues; i++) {
++        ret = net_tap_fd_init_common(netdev, peer, "tap", name,
++                                     tap->ifname ?: "",
++                                     "no", downscript,
++                                     tap->vhostfd, -1, -1, errp);
++        if (ret < 0) {
++            return -1;
++        }
++    }
++
++    return 0;
++}
++
+ static int net_init_tap_fds(const Netdev *netdev, const char *name,
+                             NetClientState *peer, Error **errp)
+ {
+@@ -983,6 +1066,13 @@ int net_init_tap(const Netdev *netdev, const char *name,
+         }
+ 
+         return net_init_bridge(netdev, name, peer, errp);
++    } else if (tap->local_incoming) {
++        if (tap->script) {
++            error_setg(errp, "script= is invalid with local-incoming");
++            return -1;
++        }
++
++        return net_init_local_incoming(netdev, name, peer, errp);
+     }
+ 
+     if (tap->vhostfds) {
+@@ -1031,3 +1121,10 @@ int tap_disable(NetClientState *nc)
+         return ret;
+     }
+ }
++
++bool tap_local_incoming(NetClientState *nc)
++{
++    TAPState *s = DO_UPCAST(TAPState, nc, nc);
++
++    return s->local_incoming && runstate_check(RUN_STATE_INMIGRATE);
++}
 -- 
 2.48.1
 
