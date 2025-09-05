@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D849FB45BE3
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Sep 2025 17:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C432EB45C1E
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Sep 2025 17:16:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuY59-0007bj-KZ; Fri, 05 Sep 2025 11:10:31 -0400
+	id 1uuY5H-0007rX-1U; Fri, 05 Sep 2025 11:10:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1uuY4c-0007UB-Tu; Fri, 05 Sep 2025 11:10:00 -0400
-Received: from sea.source.kernel.org ([172.234.252.31])
+ id 1uuY4t-0007ax-13; Fri, 05 Sep 2025 11:10:15 -0400
+Received: from tor.source.kernel.org ([172.105.4.254])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1uuY4U-0005n4-Lh; Fri, 05 Sep 2025 11:09:57 -0400
+ id 1uuY4T-0005n1-Ii; Fri, 05 Sep 2025 11:10:01 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id D1C7844D79;
+ by tor.source.kernel.org (Postfix) with ESMTP id AD5D660280;
  Fri,  5 Sep 2025 15:09:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6441DC4AF0F;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F31C4AF0E;
  Fri,  5 Sep 2025 15:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1757084974;
- bh=IjJ4y9uy7VcSd8eGrYRNJbPGROxfdzIQhh+NLKCr7+8=;
+ bh=bw0Q2E0+itMzHZTFAgZh+1sOTDglfoHnBNJIaey2lsE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=nqT3N/rTTzEr6JnYB0txCdej/G7lp2hL5lTPliCw2XM+yOqDR1Fth7bc4em0wwdV9
- UW7yhNNpgYgoGSTsYW+oT/FFl0Rlh2ZsL7O4aNVMMH9X5Eo+/1ZuRE6lUXbasQvpbY
- 75Fzymuv/Qq+Psjxc0YW6IUu5rxtneZkh8RVSr8e5VpK7RGkxhR3HaREXfov6uHJ0/
- Js5hO3PIOvQd3D617Z3YbLRBMijs7DVRNqrAzWxc42yx+IsiJ9bqh70gSKVncl4EKd
- 4hfVwIwVkARgE6H0AbgTLZER47KsYBIXl7jmh5yZ7RamPMW0jFu1vbJb/lq1tJJWnL
- 4j9rEVfB7mOZg==
+ b=JFCRmL/2wq2P3x+GjTghShmRyUd7j8waFh5sa9NC2cotgcLWN3PjFpvE/S7+YUEyC
+ AORAkSh2WHTJUIL4B1/zxWXMIrahlBmuwLF+DpHKiUVbdTU8dGcZjYbGrOrZKwlqWO
+ PP8ro5+sq4TK+Q0fApYkWYOZCXhgu7DfKMoZ38BNsxcs5q23kW8h/fURLapxCOUrHj
+ 5HFgSuq7wA5wLrsA+/1mqkqBIt7ZCeMHtO2qwtqP50ef0/WCFNPydWDUpQr9t42B7w
+ oxt/JBGcUsOxQk3jsvO3c8sKLhATlpOxiDe4Kxl4SKlXMJAYZCr7y4H1T4HlK5MwT8
+ YOxw4npAgvm7Q==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
  (envelope-from <mchehab+huawei@kernel.org>)
- id 1uuY49-0000000HEVJ-3lfQ; Fri, 05 Sep 2025 17:09:29 +0200
+ id 1uuY49-0000000HEVN-3smh; Fri, 05 Sep 2025 17:09:29 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v11 11/17] tests/acpi: virt: allow acpi table changes at DSDT
- and HEST tables
-Date: Fri,  5 Sep 2025 17:09:18 +0200
-Message-ID: <32fcebe49d990e24d8f048913de00054511294f8.1757084668.git.mchehab+huawei@kernel.org>
+ Ani Sinha <anisinha@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>
+Subject: [PATCH v11 12/17] arm/virt: Wire up a GED error device for ACPI / GHES
+Date: Fri,  5 Sep 2025 17:09:19 +0200
+Message-ID: <6d9e4571289317f708700f195b39e541c2b86fbf.1757084668.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1757084668.git.mchehab+huawei@kernel.org>
 References: <cover.1757084668.git.mchehab+huawei@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=172.234.252.31;
- envelope-from=mchehab+huawei@kernel.org; helo=sea.source.kernel.org
+Received-SPF: pass client-ip=172.105.4.254;
+ envelope-from=mchehab+huawei@kernel.org; helo=tor.source.kernel.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -74,34 +74,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We'll be adding a new GED device for HEST GPIO notification and
-increasing the number of entries at the HEST table.
+Adds support to ARM virtualization to allow handling
+generic error ACPI Event via GED & error source device.
 
-Blocklist testing HEST and DSDT tables until such changes
-are completed.
+It is aligned with Linux Kernel patch:
+https://lore.kernel.org/lkml/1272350481-27951-8-git-send-email-ying.huang@intel.com/
 
+Co-authored-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Co-authored-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Acked-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ hw/arm/virt-acpi-build.c |  1 +
+ hw/arm/virt.c            | 12 +++++++++++-
+ include/hw/arm/virt.h    |  1 +
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8bf4..45f256946751 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,10 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/aarch64/virt/HEST",
-+"tests/data/acpi/aarch64/virt/DSDT",
-+"tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt",
-+"tests/data/acpi/aarch64/virt/DSDT.acpipcihp",
-+"tests/data/acpi/aarch64/virt/DSDT.hpoffacpiindex",
-+"tests/data/acpi/aarch64/virt/DSDT.memhp",
-+"tests/data/acpi/aarch64/virt/DSDT.pxb",
-+"tests/data/acpi/aarch64/virt/DSDT.topology",
-+"tests/data/acpi/aarch64/virt/DSDT.viot",
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index 9a94e3993be9..2080d535c476 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -955,6 +955,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+     }
+ 
+     acpi_dsdt_add_power_button(scope);
++    aml_append(scope, aml_error_device());
+ #ifdef CONFIG_TPM
+     acpi_dsdt_add_tpm(scope, vms);
+ #endif
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index e5c4142e822d..dc6634a6a6c5 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -691,7 +691,7 @@ static inline DeviceState *create_acpi_ged(VirtMachineState *vms)
+     MachineState *ms = MACHINE(vms);
+     SysBusDevice *sbdev;
+     int irq = vms->irqmap[VIRT_ACPI_GED];
+-    uint32_t event = ACPI_GED_PWR_DOWN_EVT;
++    uint32_t event = ACPI_GED_PWR_DOWN_EVT | ACPI_GED_ERROR_EVT;
+     bool acpi_pcihp;
+ 
+     if (ms->ram_slots) {
+@@ -1048,6 +1048,13 @@ static void virt_powerdown_req(Notifier *n, void *opaque)
+     }
+ }
+ 
++static void virt_generic_error_req(Notifier *n, void *opaque)
++{
++    VirtMachineState *s = container_of(n, VirtMachineState, generic_error_notifier);
++
++    acpi_send_event(s->acpi_dev, ACPI_GENERIC_ERROR);
++}
++
+ static void create_gpio_keys(char *fdt, DeviceState *pl061_dev,
+                              uint32_t phandle)
+ {
+@@ -2470,6 +2477,9 @@ static void machvirt_init(MachineState *machine)
+ 
+     if (has_ged && aarch64 && firmware_loaded && virt_is_acpi_enabled(vms)) {
+         vms->acpi_dev = create_acpi_ged(vms);
++        vms->generic_error_notifier.notify = virt_generic_error_req;
++        notifier_list_add(&acpi_generic_error_notifiers,
++                          &vms->generic_error_notifier);
+     } else {
+         create_gpio_devices(vms, VIRT_GPIO, sysmem);
+     }
+diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+index 365a28b082ca..91e2ac7e3e80 100644
+--- a/include/hw/arm/virt.h
++++ b/include/hw/arm/virt.h
+@@ -174,6 +174,7 @@ struct VirtMachineState {
+     DeviceState *gic;
+     DeviceState *acpi_dev;
+     Notifier powerdown_notifier;
++    Notifier generic_error_notifier;
+     PCIBus *bus;
+     char *oem_id;
+     char *oem_table_id;
 -- 
 2.51.0
 
