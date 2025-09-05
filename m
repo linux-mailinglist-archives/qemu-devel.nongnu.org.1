@@ -2,67 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 713E8B4599C
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Sep 2025 15:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0AAAB45A3D
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Sep 2025 16:22:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuWqN-0001jc-F9; Fri, 05 Sep 2025 09:51:11 -0400
+	id 1uuXIk-0006kO-Jd; Fri, 05 Sep 2025 10:20:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uuWqI-0001h4-7r
- for qemu-devel@nongnu.org; Fri, 05 Sep 2025 09:51:07 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ id 1uuXIh-0006ja-B3
+ for qemu-devel@nongnu.org; Fri, 05 Sep 2025 10:20:28 -0400
+Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uuWq6-0006Xk-TU
- for qemu-devel@nongnu.org; Fri, 05 Sep 2025 09:51:05 -0400
-Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 9F795C1092;
- Fri, 05 Sep 2025 16:50:48 +0300 (MSK)
+ id 1uuXIU-0007wi-SC
+ for qemu-devel@nongnu.org; Fri, 05 Sep 2025 10:20:26 -0400
+Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
+ [IPv6:2a02:6b8:c42:cf2d:0:640:140f:0])
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id B98A882595;
+ Fri, 05 Sep 2025 17:20:08 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b8f::1:11])
- by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id foiXcl3Gh8c0-KF7XumK2; Fri, 05 Sep 2025 16:50:47 +0300
-Precedence: bulk
+ by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 7KjETd4Ft4Y0-N13GkYh7; Fri, 05 Sep 2025 17:20:08 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1757080247;
- bh=GspJw+jNZMf/qcEM6sv+qXWY9PKMq0Hh2OhEwGiDIAA=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=gQ/vAz16y9OXXtnrOBBLQChvDHC5K4rpuLbzDA/HP+Ob8uSBIvZGNDxr7nfoC5fwq
- 6jNaYaa9+YLX99NcKe5KLmHgezZ54iaX0RWekCnZ2nNYRk+eW0C9h3WNVhqthDZR/X
- yhjkoewhiRIBlFr+JIQrFwt/2KxiPQ2ZU066DQow=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
+ s=default; t=1757082008;
+ bh=N+I1NJouYOnrrHASJrjD5TNHeMpicQO5xeT8Na9pxR0=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=z27zLHzkGSMZhdHIMtWjMSM5SUNXC1iqeZZ/XLtuJRlzg0XiCIyFl3hpUkt/v4AYL
+ orfjurf3HzwkxvdbhG7F42tvWidSi+wGMzXNU+BLOFdhiWiCtWIjE6t3+vhlH3JzQu
+ n9zkQZBQ47xfWJFk1vKbzKW18Sw8tBSeWbr99fJI=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: jasowang@redhat.com
-Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
- steven.sistare@oracle.com, yc-core@yandex-team.ru, peterx@redhat.com,
- mst@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
- thuth@redhat.com, philmd@linaro.org, berrange@redhat.com
-Subject: [PATCH v3 9/9] tests/functional: add test_x86_64_tap_fd_migration
-Date: Fri,  5 Sep 2025 16:50:39 +0300
-Message-ID: <20250905135039.2202924-10-vsementsov@yandex-team.ru>
+To: berrange@redhat.com
+Cc: qemu-devel@nongnu.org,
+	vsementsov@yandex-team.ru
+Subject: [PATCH] util/hexdump: fix QEMU_HEXDUMP_LINE_WIDTH logic
+Date: Fri,  5 Sep 2025 17:20:06 +0300
+Message-ID: <20250905142006.2230345-1-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250905135039.2202924-1-vsementsov@yandex-team.ru>
-References: <20250905135039.2202924-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -74,366 +70,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add test for a new feature of local TAP migration with fd passing
-through unix socket.
+QEMU_HEXDUMP_LINE_WIDTH calculation doesn't correspond to
+qemu_hexdump_line(). This leads to last line of the dump (when
+length is not multiply of 16) has badly aligned ASCII part.
+
+Let's calculate length the same way.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- .../test_x86_64_tap_fd_migration.py           | 345 ++++++++++++++++++
- 1 file changed, 345 insertions(+)
- create mode 100644 tests/functional/test_x86_64_tap_fd_migration.py
+ util/hexdump.c | 38 ++++++++++++++++++++++++--------------
+ 1 file changed, 24 insertions(+), 14 deletions(-)
 
-diff --git a/tests/functional/test_x86_64_tap_fd_migration.py b/tests/functional/test_x86_64_tap_fd_migration.py
-new file mode 100644
-index 0000000000..a38dba39fe
---- /dev/null
-+++ b/tests/functional/test_x86_64_tap_fd_migration.py
-@@ -0,0 +1,345 @@
-+#!/usr/bin/env python3
-+#
-+# Functional test that tests TAP local migration
-+# with fd passing
-+#
-+# Copyright (c) Yandex
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+import os
-+import time
-+import subprocess
-+from subprocess import run
-+import signal
-+from typing import Tuple
-+
-+from qemu_test import (
-+    LinuxKernelTest,
-+    Asset,
-+    exec_command_and_wait_for_pattern,
-+)
-+from qemu_test.decorators import skipUnlessPasswordlessSudo
-+
-+GUEST_IP = "10.0.1.2"
-+GUEST_IP_MASK = f"{GUEST_IP}/24"
-+GUEST_MAC = "d6:0d:75:f8:0f:b7"
-+HOST_IP = "10.0.1.1"
-+HOST_IP_MASK = f"{HOST_IP}/24"
-+TAP_ID = "tap0"
-+TAP_MAC = "e6:1d:44:b5:03:5d"
-+
-+
-+def del_tap() -> None:
-+    run(
-+        ["sudo", "ip", "tuntap", "del", TAP_ID, "mode", "tap", "multi_queue"],
-+        check=True,
-+    )
-+
-+
-+def init_tap() -> None:
-+    run(
-+        ["sudo", "ip", "tuntap", "add", "dev", TAP_ID, "mode", "tap", "multi_queue"],
-+        check=True,
-+    )
-+    run(["sudo", "ip", "link", "set", "dev", TAP_ID, "address", TAP_MAC], check=True)
-+    run(["sudo", "ip", "addr", "add", HOST_IP_MASK, "dev", TAP_ID], check=True)
-+    run(["sudo", "ip", "link", "set", TAP_ID, "up"], check=True)
-+
-+
-+def parse_ping_line(line: str) -> float:
-+    # suspect lines like
-+    # [1748524876.590509] 64 bytes from 94.245.155.3 \
-+    #      (94.245.155.3): icmp_seq=1 ttl=250 time=101 ms
-+    spl = line.split()
-+    return float(spl[0][1:-1])
-+
-+
-+def parse_ping_output(out) -> Tuple[bool, float, float]:
-+    lines = [x for x in out.split("\n") if x.startswith("[")]
-+
-+    try:
-+        first_no_ans = next(
-+            (ind for ind in range(len(lines)) if lines[ind][20:26] == "no ans")
-+        )
-+    except StopIteration:
-+        return False, parse_ping_line(lines[0]), parse_ping_line(lines[-1])
-+
-+    last_no_ans = next(
-+        (ind for ind in range(len(lines) - 1, -1, -1) if lines[ind][20:26] == "no ans")
-+    )
-+
-+    return (
-+        True,
-+        parse_ping_line(lines[first_no_ans]),
-+        parse_ping_line(lines[last_no_ans]),
-+    )
-+
-+
-+def wait_migration_finish(source_vm, target_vm):
-+    migr_events = (
-+        ("MIGRATION", {"data": {"status": "completed"}}),
-+        ("MIGRATION", {"data": {"status": "failed"}}),
-+    )
-+
-+    source_e = source_vm.events_wait(migr_events)["data"]
-+    target_e = target_vm.events_wait(migr_events)["data"]
-+
-+    source_s = source_vm.cmd("query-status")["status"]
-+    target_s = target_vm.cmd("query-status")["status"]
-+
-+    assert (
-+        source_e["status"] == "completed"
-+        and target_e["status"] == "completed"
-+        and source_s == "postmigrate"
-+        and target_s == "paused"
-+    ), f"""Migration failed:
-+    SRC status: {source_s}
-+    SRC event: {source_e}
-+    TGT status: {target_s}
-+    TGT event:{target_e}"""
-+
-+
-+@skipUnlessPasswordlessSudo()
-+class VhostUserBlkFdMigration(LinuxKernelTest):
-+
-+    ASSET_KERNEL = Asset(
-+        (
-+            "https://archives.fedoraproject.org/pub/archive/fedora/linux/releases"
-+            "/31/Server/x86_64/os/images/pxeboot/vmlinuz"
-+        ),
-+        "d4738d03dbbe083ca610d0821d0a8f1488bebbdccef54ce33e3adb35fda00129",
-+    )
-+
-+    ASSET_INITRD = Asset(
-+        (
-+            "https://archives.fedoraproject.org/pub/archive/fedora/linux/releases"
-+            "/31/Server/x86_64/os/images/pxeboot/initrd.img"
-+        ),
-+        "277cd6c7adf77c7e63d73bbb2cded8ef9e2d3a2f100000e92ff1f8396513cd8b",
-+    )
-+
-+    ASSET_ALPINE_ISO = Asset(
-+        (
-+            "https://dl-cdn.alpinelinux.org/"
-+            "alpine/v3.22/releases/x86_64/alpine-standard-3.22.1-x86_64.iso"
-+        ),
-+        "96d1b44ea1b8a5a884f193526d92edb4676054e9fa903ad2f016441a0fe13089",
-+    )
-+
-+    def setUp(self):
-+        super().setUp()
-+
-+        init_tap()
-+
-+        self.outer_ping_proc = None
-+
-+    def tearDown(self):
-+        del_tap()
-+
-+        if self.outer_ping_proc:
-+            self.stop_outer_ping()
-+
-+        super().tearDown()
-+
-+    def start_outer_ping(self) -> None:
-+        assert self.outer_ping_proc is None
-+        self.outer_ping_log = self.scratch_file("ping.log")
-+        with open(self.outer_ping_log, "w") as f:
-+            self.outer_ping_proc = subprocess.Popen(
-+                ["ping", "-i", "0", "-O", "-D", GUEST_IP],
-+                text=True,
-+                stdout=f,
-+            )
-+
-+    def stop_outer_ping(self) -> str:
-+        assert self.outer_ping_proc
-+        self.outer_ping_proc.send_signal(signal.SIGINT)
-+
-+        self.outer_ping_proc.communicate(timeout=5)
-+        self.outer_ping_proc = None
-+
-+        with open(self.outer_ping_log) as f:
-+            return f.read()
-+
-+    def stop_ping_and_check(self, stop_time, resume_time):
-+        ping_res = self.stop_outer_ping()
-+
-+        discon, a, b = parse_ping_output(ping_res)
-+
-+        if not discon:
-+            text = f"STOP: {stop_time}, RESUME: {resume_time}," f"PING: {a} - {b}"
-+            if a > stop_time or b < resume_time:
-+                self.fail(f"PING failed: {text}")
-+            self.log.info(f"PING: no packets lost: {text}")
-+            return
-+
-+        text = (
-+            f"STOP: {stop_time}, RESUME: {resume_time}," f"PING: disconnect: {a} - {b}"
-+        )
-+        self.log.info(text)
-+        eps = 0.01
-+        if a < stop_time - eps or b > resume_time + eps:
-+            self.fail(text)
-+
-+    def one_ping_from_guest(self, vm) -> None:
-+        exec_command_and_wait_for_pattern(
-+            self,
-+            f"ping -c 1 -W 1 {HOST_IP}",
-+            "1 packets transmitted, 1 packets received",
-+            "1 packets transmitted, 0 packets received",
-+            vm=vm,
-+        )
-+        self.wait_for_console_pattern("# ", vm=vm)
-+
-+    def one_ping_from_host(self) -> None:
-+        run(["ping", "-c", "1", "-W", "1", GUEST_IP])
-+
-+    def setup_shared_memory(self):
-+        shm_path = f"/dev/shm/qemu_test_{os.getpid()}"
-+
-+        try:
-+            with open(shm_path, "wb") as f:
-+                f.write(b"\0" * (1024 * 1024 * 1024))  # 1GB
-+        except Exception as e:
-+            self.fail(f"Failed to create shared memory file: {e}")
-+
-+        return shm_path
-+
-+    def prepare_and_launch_vm(self, shm_path, vhost, incoming=False, vm=None):
-+        if not vm:
-+            vm = self.vm
-+
-+        vm.set_console()
-+        vm.add_args("-accel", "kvm")
-+        vm.add_args("-device", "pcie-pci-bridge,id=pci.1,bus=pcie.0")
-+        vm.add_args("-m", "1G")
-+
-+        vm.add_args(
-+            "-object",
-+            f"memory-backend-file,id=ram0,size=1G,mem-path={shm_path},share=on",
-+        )
-+        vm.add_args("-machine", "memory-backend=ram0")
-+
-+        vm.add_args(
-+            "-drive", f"file={self.ASSET_ALPINE_ISO.fetch()},media=cdrom,format=raw"
-+        )
-+
-+        vm.add_args("-S")
-+
-+        if incoming:
-+            vm.add_args("-incoming", "defer")
-+
-+        vm_s = "target" if incoming else "source"
-+        self.log.info(f"Launching {vm_s} VM")
-+        vm.launch()
-+
-+        self.set_migration_capabilities(vm)
-+        self.add_virtio_net(vm, vhost, incoming)
-+
-+    def add_virtio_net(self, vm, vhost: bool, incoming: bool = False):
-+        netdev_params = {
-+            "id": "netdev.1",
-+            "vhost": vhost,
-+            "type": "tap",
-+            "ifname": "tap0",
-+            "downscript": "no",
-+            "queues": 4,
-+        }
-+
-+        if incoming:
-+            netdev_params["local-incoming"] = True
-+        else:
-+            netdev_params["script"] = "no"
-+
-+        vm.cmd("netdev_add", netdev_params)
-+
-+        vm.cmd(
-+            "device_add",
-+            driver="virtio-net-pci",
-+            romfile="",
-+            id="vnet.1",
-+            netdev="netdev.1",
-+            mq=True,
-+            vectors=18,
-+            bus="pci.1",
-+            mac=GUEST_MAC,
-+            disable_legacy="off",
-+        )
-+
-+    def set_migration_capabilities(self, vm):
-+        capabilities = [
-+            {"capability": "events", "state": True},
-+            {"capability": "x-ignore-shared", "state": True},
-+            {"capability": "local-tap", "state": True},
-+        ]
-+        vm.cmd("migrate-set-capabilities", {"capabilities": capabilities})
-+
-+    def setup_guest_network(self) -> None:
-+        exec_command_and_wait_for_pattern(self, "ip addr", "# ")
-+        exec_command_and_wait_for_pattern(
-+            self,
-+            f"ip addr add {GUEST_IP_MASK} dev eth0 && ip link set eth0 up && echo OK",
-+            "OK",
-+        )
-+        self.wait_for_console_pattern("# ")
-+
-+    def do_test_tap_fd_migration(self, vhost):
-+        self.require_accelerator("kvm")
-+        self.set_machine("q35")
-+
-+        socket_dir = self.socket_dir()
-+        migration_socket = os.path.join(socket_dir.name, "migration.sock")
-+
-+        shm_path = self.setup_shared_memory()
-+
-+        self.prepare_and_launch_vm(shm_path, vhost)
-+        self.vm.cmd("cont")
-+        self.wait_for_console_pattern("login:")
-+        exec_command_and_wait_for_pattern(self, "root", "# ")
-+
-+        self.setup_guest_network()
-+
-+        self.one_ping_from_guest(self.vm)
-+        self.one_ping_from_host()
-+        self.start_outer_ping()
-+
-+        # Get some successful pings before migration
-+        time.sleep(0.5)
-+
-+        target_vm = self.get_vm(name="target")
-+        self.prepare_and_launch_vm(shm_path, vhost, incoming=True, vm=target_vm)
-+
-+        target_vm.cmd("migrate-incoming", {"uri": f"unix:{migration_socket}"})
-+
-+        self.log.info("Starting migration")
-+        freeze_start = time.time()
-+        self.vm.cmd("migrate", {"uri": f"unix:{migration_socket}"})
-+
-+        self.log.info("Waiting for migration completion")
-+        wait_migration_finish(self.vm, target_vm)
-+
-+        target_vm.cmd("cont")
-+        freeze_end = time.time()
-+
-+        self.vm.shutdown()
-+
-+        self.log.info("Verifying PING on target VM after migration")
-+        self.one_ping_from_guest(target_vm)
-+        self.one_ping_from_host()
-+
-+        # And a bit more pings after source shutdown
-+        time.sleep(0.3)
-+        self.stop_ping_and_check(freeze_start, freeze_end)
-+
-+        target_vm.shutdown()
-+
-+    def test_tap_fd_migration(self):
-+        self.do_test_tap_fd_migration(False)
-+
-+    def test_tap_fd_migration_vhost(self):
-+        self.do_test_tap_fd_migration(True)
-+
-+
-+if __name__ == "__main__":
-+    LinuxKernelTest.main()
+diff --git a/util/hexdump.c b/util/hexdump.c
+index f29ffceb74..7cfc547261 100644
+--- a/util/hexdump.c
++++ b/util/hexdump.c
+@@ -22,6 +22,19 @@ static inline char hexdump_nibble(unsigned x)
+     return (x < 10 ? '0' : 'a' - 10) + x;
+ }
+ 
++static size_t hexdump_line_length(size_t buf_len, size_t unit_len,
++                                  size_t block_len)
++{
++    size_t est = buf_len * 2;
++    if (unit_len) {
++        est += buf_len / unit_len;
++    }
++    if (block_len) {
++        est += buf_len / block_len;
++    }
++    return est;
++}
++
+ GString *qemu_hexdump_line(GString *str, const void *vbuf, size_t len,
+                            size_t unit_len, size_t block_len)
+ {
+@@ -30,14 +43,8 @@ GString *qemu_hexdump_line(GString *str, const void *vbuf, size_t len,
+ 
+     if (str == NULL) {
+         /* Estimate the length of the output to avoid reallocs. */
+-        size_t est = len * 2;
+-        if (unit_len) {
+-            est += len / unit_len;
+-        }
+-        if (block_len) {
+-            est += len / block_len;
+-        }
+-        str = g_string_sized_new(est + 1);
++        str = g_string_sized_new(hexdump_line_length(len, unit_len, block_len)
++                                 + 1);
+     }
+ 
+     for (u = 0, b = 0; len; u++, b++, len--, buf++) {
+@@ -76,13 +83,16 @@ static void asciidump_line(char *line, const void *bufptr, size_t len)
+ }
+ 
+ #define QEMU_HEXDUMP_LINE_BYTES 16
+-#define QEMU_HEXDUMP_LINE_WIDTH \
+-    (QEMU_HEXDUMP_LINE_BYTES * 2 + QEMU_HEXDUMP_LINE_BYTES / 4)
++#define QEMU_HEXDUMP_UNIT 1
++#define QEMU_HEXDUMP_BLOCK 4
+ 
+ void qemu_hexdump(FILE *fp, const char *prefix,
+                   const void *bufptr, size_t size)
+ {
+-    g_autoptr(GString) str = g_string_sized_new(QEMU_HEXDUMP_LINE_WIDTH + 1);
++    int width = hexdump_line_length(QEMU_HEXDUMP_LINE_BYTES,
++                                    QEMU_HEXDUMP_UNIT,
++                                    QEMU_HEXDUMP_BLOCK);
++    g_autoptr(GString) str = g_string_sized_new(width + 1);
+     char ascii[QEMU_HEXDUMP_LINE_BYTES + 1];
+     size_t b, len;
+ 
+@@ -90,11 +100,11 @@ void qemu_hexdump(FILE *fp, const char *prefix,
+         len = MIN(size - b, QEMU_HEXDUMP_LINE_BYTES);
+ 
+         g_string_truncate(str, 0);
+-        qemu_hexdump_line(str, bufptr + b, len, 1, 4);
++        qemu_hexdump_line(str, bufptr + b, len,
++                          QEMU_HEXDUMP_UNIT, QEMU_HEXDUMP_BLOCK);
+         asciidump_line(ascii, bufptr + b, len);
+ 
+-        fprintf(fp, "%s: %04zx: %-*s %s\n",
+-                prefix, b, QEMU_HEXDUMP_LINE_WIDTH, str->str, ascii);
++        fprintf(fp, "%s: %04zx: %-*s %s\n", prefix, b, width, str->str, ascii);
+     }
+ 
+ }
 -- 
 2.48.1
 
