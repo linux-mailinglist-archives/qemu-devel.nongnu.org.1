@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC336B4697E
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 08:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C3ABB46980
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 08:39:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uumY3-0001AI-3H; Sat, 06 Sep 2025 02:37:19 -0400
+	id 1uumYB-0001Bp-28; Sat, 06 Sep 2025 02:37:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uumXz-00014p-BS
- for qemu-devel@nongnu.org; Sat, 06 Sep 2025 02:37:15 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1uumY5-0001At-BG
+ for qemu-devel@nongnu.org; Sat, 06 Sep 2025 02:37:22 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uumXw-00054R-O6
- for qemu-devel@nongnu.org; Sat, 06 Sep 2025 02:37:14 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3e537dc30c7so724804f8f.3
- for <qemu-devel@nongnu.org>; Fri, 05 Sep 2025 23:37:11 -0700 (PDT)
+ id 1uumY0-00054o-6o
+ for qemu-devel@nongnu.org; Sat, 06 Sep 2025 02:37:21 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-45cb6180b60so17537845e9.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Sep 2025 23:37:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757140629; x=1757745429; darn=nongnu.org;
+ d=linaro.org; s=google; t=1757140630; x=1757745430; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=p8XdyY0WgYY1AXu6fJ6djSJBrBECJ7Yf6Jz8VR6FC5U=;
- b=i1Gjw6iQzrRZoJFOF7UcK/PM/3vXzSPMXvreoTVbar6uE3q2BVSL9z7zpMvZm8n1+Q
- IAxD5l4UjPMbRkJlac+9oekEz/GQrYH6NSQbuDJVl1hXnuW1u4WHBKzE7J14CdMu0kbG
- ZzSfs8sCREsh8TMywrWlIsOPuF1gF/7Wey/iY+KpBXuC/AUvtBskJpEpuZlX8/hTzFzk
- 5gk3lcBjxovpItowjPfRVdUaifdjpnY8EOlGtcH3QK/Hy0LkwabE6CgtfjkF1k0b6T4U
- +gO+atdFHkhgy1+efG9q1epHBqPhjHn6Jj5084dI3pWGJpqolv+DRiz9xUtU7u3ILD+U
- 7OqA==
+ bh=ri8ON67gkLPqgnqTdm7LR4KDRGqjQdFiShcuURoDY7Q=;
+ b=uN/iTVu1zFAcEH2OfD88wv2NQ08vB5fiu0d/Xv/1MXtRSVhJIxR9F5oExiRToE/gQe
+ 4LmBsgCzKR4iPwqALpe7Q6mBqOBmOYfJnKHkCtJ7U8dTD0fpKMIFt+HGeSwjb3oCGH19
+ sGWVcvL1peC+qrCMVYZ+E3Cps/gNcKx9D31YxAxKBthttA0p72HG51EtXeQL7AJ9/tpE
+ mg8kYMGGvQ+tggj6lif7QwzgiLeo1Yf/khs/KNDobzrP2kTC7nagpmXuJkpYDUqBxjmD
+ Xoykc/tGnoWYglmELQQfRseNZyUis+tpTD9sD8PJA8bx0o4A7EuTY1zzBqFdWEwHhZpB
+ vghQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757140629; x=1757745429;
+ d=1e100.net; s=20230601; t=1757140630; x=1757745430;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=p8XdyY0WgYY1AXu6fJ6djSJBrBECJ7Yf6Jz8VR6FC5U=;
- b=NrqNKeqHBgyxpv725TAufmVqmLpN6rk97cecSTKoKC043riY32BMvgvh3on5wCieUJ
- VeGgN6+GHmH81/XiZ5oexrbMr1nMQNplvq30CGb4nxrnOPRqnF9lHedV6NYTzVgeadbL
- IdJTAsXF+jw/7SBobdp0EhZRug8hEal8uNfeYk3GFQNt915MNyRgqQIqGgu3pEJGGEbw
- ibtpum7xfJgQ3kW3JTPZatCB2tLe0dlsDTzdphjiq+836VjNKXCWlwA6VkobywjHqpiI
- 5C7Kqo8zBTC1wjUbVICfuBdzSKzLl4ZBsI8r4BAz8cYm+3eSc5w9WDjzXztOD6tJhXUA
- /0AA==
+ bh=ri8ON67gkLPqgnqTdm7LR4KDRGqjQdFiShcuURoDY7Q=;
+ b=MWYrQgIH+P1SEapxuvpCKlzkdf3lf8qyXC4BPeRBrdacTm0vDbZmI+t70N8YjfOe9Z
+ WS4mSGsOaMPQXY5moSvAqmcP+8FKKfnQSgLN0qbmkl5KOvqw7vywR8tb8qFc/5fAhcQl
+ tTDbv5qojxNW0DjkByi/0uOVBLjNjP+GhpTS1E62BIoge2bSWRe3Ui395oeNBQyhJmk8
+ tzHnu5C/03JKepQ0/cqn7G3O88FIzr+7eFZ6BRLVBkSGMmMmqod8AOyeRnWJCBm5e3Ly
+ Th0O/V4E1c/Dn0Zq2O5KMudqpr31MSUotHcdq10tL+7WZG3mfPMkNDXjGhxgZVFbAsbH
+ BWzQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUTf4vw5Mpah7a1SClx65V0gkB1va6F7jTXPk1krJKXlbzHOzGFtfXxGy+1nWHz2GV59NEnbgkPIAFM@nongnu.org
-X-Gm-Message-State: AOJu0YyCgdfTMTJKrEPLxwx1EqJk7YY7UzR3AVVkjtfbB41pEVimHvCb
- /lO3Z3koAe+I8K6oDoOPTwOTMBNePLHs1YhXOJG+E61xDSakz9IJT0zN0qRrgrRtSIk=
-X-Gm-Gg: ASbGncsJVxxjmIIKwDZd5FruKPJVYDceY5bCMaFh0Nm9ohQDfEbisctP9oDY+/7BoSO
- Qk7mheOKt+79WrQlm554q/Ju6afWnAHhwW0A+v1fOufQmclUqtQmrrlQkyxC+uRlJe9n6FYGkvq
- NcZS1hIKNuLpOxg1DWOHvdrLxvRWW+/4VkDVw0ZnlVWhGVMQZqHF57lkyTv15YygCra36TP1vse
- KG6q/f7nrteGOHi7pLNZtEOuHywEjYfszpzjEs6v1YtRrKBvdUdB7YeUEiJ0Y7cAtHKrwgE//eB
- Jxd4HrACqva60QTwF14yAG6+ZSnlwyEVWNDpcyPN+unTgDQT/TmdDMHU9D3eooYxnyWz/zDfTo8
- 5VWxCyYfDu6405m7IIGDYX9YfUsDHqimcSzy4vLQ=
-X-Google-Smtp-Source: AGHT+IHiBQ1XHm16noOEJIdEA36XFpH8JWAD8uoOOq9dUfHqRtG6xU83nTV4xdJSOffL8zBDapZvDQ==
-X-Received: by 2002:a05:6000:2584:b0:3dc:21a1:8c6a with SMTP id
- ffacd0b85a97d-3e63736b322mr802323f8f.11.1757140629313; 
- Fri, 05 Sep 2025 23:37:09 -0700 (PDT)
+ AJvYcCUL4q5Cb/U/G4AA0spjbjb/QA8yieyae+KgLSHN9wldjNYxcqKeVw/AS8wVQKYKGE4R8x/GP2cvOgGL@nongnu.org
+X-Gm-Message-State: AOJu0YzjQdICJnTTcwG0E8Fn1AiR/wpRJEFj++kDVNK6K14GITXM587x
+ Go/Kw76x5ddkC3juWpIY9A+OnpLSGeSjtStJ2POpjMf5iN3R44mzrGLkkRiNVitMHfc/tkzHVT8
+ LygvLAOD53AlC
+X-Gm-Gg: ASbGnctt7FPzwUN9z7NGGUdq/3hDuJC9N3OanJs+wA5rcA7LXqaYBxEoajR0l7AJvOB
+ UVJYT0UUBNRa9YGO8lZSM2V4IMnBuB1TYa6Clhz2DrSterjXRbpu0ytQ8mVVQL3LJn7Bvxg2FnU
+ FukPmNjRToqcXVb2g3emmenYrsohId0UPnVorhqE9gvRmCKCq29wApQMk62J65KYS2eFBPvGWha
+ DYjDAyAmTV0ez3Ns6W5IlbH9rNzUW+CUJCmu+e0cVRb7koVEpZVdQOZx6LEbJf+/Y03itwf4ptv
+ Q9f8lIZ8JND36Uhg9oC/SoAxch8Ogmuj3v6RrGoOTzG8CFA7Q+MD4PEkkr8bwDUoRcw16i7rddN
+ QlGIAC+2NO/3vac0VU4rhqFoU7jLn/vXBbIXQRbw=
+X-Google-Smtp-Source: AGHT+IFTBPKJWTZUUtAAMu9m/ceWmU+ytngl7pIblLhVkMetUd46awg4iXNdpD+sZH9NNmfDPEgKVw==
+X-Received: by 2002:a05:600c:1f13:b0:458:a559:a693 with SMTP id
+ 5b1f17b1804b1-45dddee8ec7mr11236185e9.18.1757140630400; 
+ Fri, 05 Sep 2025 23:37:10 -0700 (PDT)
 Received: from [192.168.104.251] ([217.65.133.19])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45dd60b381csm61111985e9.17.2025.09.05.23.37.08
+ 5b1f17b1804b1-45dd60b381csm61111985e9.17.2025.09.05.23.37.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 05 Sep 2025 23:37:08 -0700 (PDT)
-Message-ID: <dc027db3-2776-4dae-834b-d8f93ed2e8e0@linaro.org>
-Date: Sat, 6 Sep 2025 08:12:59 +0200
+ Fri, 05 Sep 2025 23:37:10 -0700 (PDT)
+Message-ID: <1ab2dbb5-cce0-4c3e-876e-5ffae803faf9@linaro.org>
+Date: Sat, 6 Sep 2025 08:15:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/11] gdbstub: Remove tb_flush uses
+Subject: Re: [PATCH 02/11] accel/tcg: Split out tb_flush__exclusive
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org, philmd@linaro.org
 References: <20250906051820.160432-1-richard.henderson@linaro.org>
- <20250906051820.160432-2-richard.henderson@linaro.org>
+ <20250906051820.160432-3-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250906051820.160432-2-richard.henderson@linaro.org>
+In-Reply-To: <20250906051820.160432-3-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,14 +104,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2025-09-06 07:18, Richard Henderson wrote:
-> This hasn't been needed since d828b92b8a6
-> ("accel/tcg: Introduce CF_BP_PAGE").
+> Expose a routine to be called when no cpus are running.
+> Simplify the do_tb_flush run_on_cpu callback, because
+> that is explicitly called with start_exclusive; there
+> is no need for the mmap_lock as well.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   gdbstub/system.c | 4 ----
->   gdbstub/user.c   | 3 ---
->   2 files changed, 7 deletions(-)
+>   include/exec/tb-flush.h |  1 +
+>   accel/tcg/tb-maint.c    | 28 ++++++++++++++--------------
+>   2 files changed, 15 insertions(+), 14 deletions(-)
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
