@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F3B9B4773C
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 23:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B6DB4774C
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 23:12:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uv03I-0003l5-Ur; Sat, 06 Sep 2025 17:02:29 -0400
+	id 1uv03L-0003lV-QW; Sat, 06 Sep 2025 17:02:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv03D-0003jq-Og; Sat, 06 Sep 2025 17:02:23 -0400
+ id 1uv03F-0003kr-S6; Sat, 06 Sep 2025 17:02:25 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv032-0005x5-3K; Sat, 06 Sep 2025 17:02:20 -0400
+ id 1uv038-0005yA-8I; Sat, 06 Sep 2025 17:02:24 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5373F150F84;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6388F150F85;
  Sun, 07 Sep 2025 00:00:55 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1778B27868F;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 27207278690;
  Sun,  7 Sep 2025 00:00:57 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Daniel Xu <dxu@dxuuu.xyz>,
- Konstantin Kostiuk <kkostiuk@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 25/34] qga: Fix memory leak when output stream is
- unused
-Date: Sun,  7 Sep 2025 00:00:45 +0300
-Message-ID: <20250906210056.127031-7-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, "minglei.liu" <minglei.liu@smartx.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Kostiantyn Kostiuk <kkostiuk@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.20 26/34] qga: Fix truncated output handling in
+ guest-exec status reporting
+Date: Sun,  7 Sep 2025 00:00:46 +0300
+Message-ID: <20250906210056.127031-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.20-20250906235950@cover.tls.msk.ru>
 References: <qemu-stable-7.2.20-20250906235950@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -41,8 +43,8 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,52 +60,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Xu <dxu@dxuuu.xyz>
+From: "minglei.liu" <minglei.liu@smartx.com>
 
-If capture-output is requested but one of the channels goes unused (eg.
-we attempt to capture stderr but the command never writes to stderr), we
-can leak memory.
-
-guest_exec_output_watch() is (from what I understand) unconditionally
-called for both streams if output capture is requested. The first call
-will always pass the `p->size == p->length` check b/c both values are
-0. Then GUEST_EXEC_IO_SIZE bytes will be allocated for the stream.
-
-But when we reap the exited process there's a `gei->err.length > 0`
-check to actually free the buffer. Which does not get run if the command
-doesn't write to the stream.
-
-Fix by making free() unconditional.
-
-Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
-Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-(cherry picked from commit d6f67b83b81bf49b5c62e77143ed39c020e51830)
+Signed-off-by: minglei.liu <minglei.liu@smartx.com>
+Fixes: a1853dca743
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250711021714.91258-1-minglei.liu@smartx.com
+Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
+(cherry picked from commit 28c5d27dd4dc4100a96ff4c9e5871dd23c6b02ec)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/qga/commands.c b/qga/commands.c
-index 6cf978322e..ca63fe6e15 100644
+index ca63fe6e15..fb1251111f 100644
 --- a/qga/commands.c
 +++ b/qga/commands.c
-@@ -207,16 +207,16 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid, Error **errp)
+@@ -207,14 +207,16 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid, Error **errp)
          if (gei->out.length > 0) {
              ges->has_out_data = true;
              ges->out_data = g_base64_encode(gei->out.data, gei->out.length);
--            g_free(gei->out.data);
-             ges->has_out_truncated = gei->out.truncated;
+-            ges->has_out_truncated = gei->out.truncated;
++            ges->has_out_truncated = true;
++            ges->out_truncated = gei->out.truncated;
          }
-+        g_free(gei->out.data);
+         g_free(gei->out.data);
  
          if (gei->err.length > 0) {
              ges->has_err_data = true;
              ges->err_data = g_base64_encode(gei->err.data, gei->err.length);
--            g_free(gei->err.data);
-             ges->has_err_truncated = gei->err.truncated;
+-            ges->has_err_truncated = gei->err.truncated;
++            ges->has_err_truncated = true;
++            ges->err_truncated = gei->err.truncated;
          }
-+        g_free(gei->err.data);
+         g_free(gei->err.data);
  
-         QTAILQ_REMOVE(&guest_exec_state.processes, gei, next);
-         g_free(gei);
 -- 
 2.47.3
 
