@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593F1B4774E
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 23:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC782B47746
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 23:11:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uv04V-0004b3-8p; Sat, 06 Sep 2025 17:03:43 -0400
+	id 1uv04c-0004kl-CA; Sat, 06 Sep 2025 17:03:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv04Q-0004a5-MT; Sat, 06 Sep 2025 17:03:39 -0400
+ id 1uv04Y-0004gU-N9; Sat, 06 Sep 2025 17:03:46 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv04K-0006D5-2N; Sat, 06 Sep 2025 17:03:38 -0400
+ id 1uv04L-0006DK-Cv; Sat, 06 Sep 2025 17:03:44 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 00CF3150F8F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 0FCFE150F90;
  Sun, 07 Sep 2025 00:00:56 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B01ED278697;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C88A7278698;
  Sun,  7 Sep 2025 00:00:57 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Denis Rastyogin <gerben@altlinux.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 33/34] target/mips: fix TLB huge page check to use
- 64-bit shift
-Date: Sun,  7 Sep 2025 00:00:53 +0300
-Message-ID: <20250906210056.127031-15-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ qemu-stable@qemu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [Stable-7.2.20 34/34] block/curl: fix curl internal handles handling
+Date: Sun,  7 Sep 2025 00:00:54 +0300
+Message-ID: <20250906210056.127031-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.20-20250906235950@cover.tls.msk.ru>
 References: <qemu-stable-7.2.20-20250906235950@cover.tls.msk.ru>
@@ -43,8 +42,8 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,32 +59,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Denis Rastyogin <gerben@altlinux.org>
+block/curl.c uses CURLMOPT_SOCKETFUNCTION to register a socket callback.
+According to the documentation, this callback is called not just with
+application-created sockets but also with internal curl sockets, - and
+for such sockets, user data pointer is not set by the application, so
+the result qemu crashing.
 
-Use extract64(entry, psn, 1) instead of (entry & (1 << psn)) to avoid
-undefined behavior for shifts by 32–63 and to make bit extraction intent explicit.
+Pass BDRVCURLState directly to the callback function as user pointer,
+instead of relying on CURLINFO_PRIVATE.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This problem started happening with update of libcurl from 8.9 to 8.10 --
+apparently with this change curl started using private handles more.
 
-Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
-Message-ID: <20250814104914.13101-1-gerben@altlinux.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 1f82ca723478f44823a18e7151e487d58da03659)
+(CURLINFO_PRIVATE is used in one more place, in curl_multi_check_completion() -
+it might need a similar fix too)
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3081
+Cc: qemu-stable@qemu.org
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 606978500c3d18fb89a49844f253097b17f757de)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/mips/tcg/sysemu/tlb_helper.c b/target/mips/tcg/sysemu/tlb_helper.c
-index cce3dcdc0e..a502426be6 100644
---- a/target/mips/tcg/sysemu/tlb_helper.c
-+++ b/target/mips/tcg/sysemu/tlb_helper.c
-@@ -653,7 +653,7 @@ static int walk_directory(CPUMIPSState *env, uint64_t *vaddr,
-         return 0;
-     }
+diff --git a/block/curl.c b/block/curl.c
+index 0b125095e3..f9c5a1c182 100644
+--- a/block/curl.c
++++ b/block/curl.c
+@@ -161,13 +161,9 @@ static int curl_timer_cb(CURLM *multi, long timeout_ms, void *opaque)
+ static int curl_sock_cb(CURL *curl, curl_socket_t fd, int action,
+                         void *userp, void *sp)
+ {
+-    BDRVCURLState *s;
+-    CURLState *state = NULL;
++    BDRVCURLState *s = userp;
+     CURLSocket *socket;
  
--    if ((entry & (1 << psn)) && hugepg) {
-+    if (extract64(entry, psn, 1) && hugepg) {
-         *huge_page = true;
-         *hgpg_directory_hit = true;
-         entry = get_tlb_entry_layout(env, entry, leafentry_size, pf_ptew);
+-    curl_easy_getinfo(curl, CURLINFO_PRIVATE, (char **)&state);
+-    s = state->s;
+-
+     socket = g_hash_table_lookup(s->sockets, GINT_TO_POINTER(fd));
+     if (!socket) {
+         socket = g_new0(CURLSocket, 1);
+@@ -612,6 +608,7 @@ static void curl_attach_aio_context(BlockDriverState *bs,
+     assert(!s->multi);
+     s->multi = curl_multi_init();
+     s->aio_context = new_context;
++    curl_multi_setopt(s->multi, CURLMOPT_SOCKETDATA, s);
+     curl_multi_setopt(s->multi, CURLMOPT_SOCKETFUNCTION, curl_sock_cb);
+     curl_multi_setopt(s->multi, CURLMOPT_TIMERDATA, s);
+     curl_multi_setopt(s->multi, CURLMOPT_TIMERFUNCTION, curl_timer_cb);
 -- 
 2.47.3
 
