@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B32B46861
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 04:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7DAB46857
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 04:19:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuiSH-0004BL-E1; Fri, 05 Sep 2025 22:15:05 -0400
+	id 1uuiSo-0004ON-5s; Fri, 05 Sep 2025 22:15:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uuiS9-00047n-4u; Fri, 05 Sep 2025 22:14:57 -0400
+ id 1uuiSY-0004Gx-Od; Fri, 05 Sep 2025 22:15:25 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uuiRz-0006fu-2C; Fri, 05 Sep 2025 22:14:56 -0400
+ id 1uuiS9-0006hG-Je; Fri, 05 Sep 2025 22:15:18 -0400
 Received: from [10.40.4.92] (93-51-222-138.ip268.fastwebnet.it [93.51.222.138])
  (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5862Btnc041566
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5862Btnd041566
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Sat, 6 Sep 2025 11:13:32 +0900 (JST)
+ Sat, 6 Sep 2025 11:13:44 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=z0YH0QMtBFBQG+CaXT27uewgJWSh8xAMHDbxqOUFkk0=; 
+DKIM-Signature: a=rsa-sha256; bh=mg0ILQS2B5cAZXx5omO4UeETOZOBuc3DqAZJ4UmKvz8=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1757124824; v=1;
- b=dUG7IxeSwdaFRl5BCwStf6XW+NsPZGVu+YAteuNfU0uUew8NQaMg9rCIMpGpmgbR
- wA462bZlG4iL140bRfgT9k0Q+n9sUH+G5PhWIW7gbcMDBCz05HTVhgAOvlqsS0b4
- sFC8u0iWySBTXFqR91zNWYiIRoIyhCrtOKkp62RoTeHNNYpeNP2ajqkZgnutOYGB
- /dqCenir3UpnOoWcNkY1T1zH/wm3jsQlAaT54CtbNA7kYcA1Eubbtft/FW5MOXPs
- Lh9BeP0o2dI9fxDR781DStOueVFQLJm6VejfBIU7PH21LDdD335GrHNCniBtKw7F
- wKzK8hGGKQcO5WsbwuEUVA==
+ s=rs20250326; t=1757124836; v=1;
+ b=UNVaw+xClixMnF2zbEhoZF3UECN75Jw1U6fMG4OVsZoINYU3TN+sA9B1gAfYrYnn
+ xgAbhizCB1mPaYR/wokud12ymKpbmSpYrn+fxFUYz24ROxUj4ZEtNaJ1DEVoJC88
+ G6ken5AXUtCpxA+GOYlLE8oTGbL6lG8Oq+H3KjgaOOvEnUy+axXi9UqRMCsHUmlQ
+ 81aovTTF+VYXam+qrt5LOhl+xpQhU2OK/FV4wkrT6sg8OwxvPUgNF/RrysCjGZ8d
+ wg4Vfs+8mvMdyczBDAHLK6yxS/yWUsZr8WlpNCZO4JJTCPjm0IaAHpcBG1EwqKUC
+ nrr6EY/ZFksoXMHxQ3Z/Wg==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sat, 06 Sep 2025 04:11:16 +0200
-Subject: [PATCH 07/22] hw/pci-host/raven: Fix AddressSpace exposure timing
+Date: Sat, 06 Sep 2025 04:11:17 +0200
+Subject: [PATCH 08/22] sun4m: Fix AddressSpace exposure timing
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250906-use-v1-7-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250906-use-v1-8-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250906-use-v1-0-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250906-use-v1-0-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -84,8 +84,8 @@ X-Spam_score: -1.7
 X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
  DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,7 +101,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-raven-pcihost is not hotpluggable but its instance can still be created
+sun4m-iommu is not hotpluggable but its instance can still be created
 and finalized when processing the device-list-properties QMP command.
 Exposing such a temporary instance to AddressSpace should be
 avoided because it leaks the instance.
@@ -111,74 +111,43 @@ it won't happen for the temporary instances.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/pci-host/raven.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ hw/sparc/sun4m_iommu.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-index f8c0be5d21c351305742a696a65f70f87b546b0c..82f245c91cf267cdc6a518765a8c31d06eac7228 100644
---- a/hw/pci-host/raven.c
-+++ b/hw/pci-host/raven.c
-@@ -233,6 +233,20 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
-     MemoryRegion *address_space_mem = get_system_memory();
-     int i;
+diff --git a/hw/sparc/sun4m_iommu.c b/hw/sparc/sun4m_iommu.c
+index a7ff36ee78c1d6295efea6499dffc2a481022167..0997f29ccb97d3dec4e3d34db49f2e51b6807a1a 100644
+--- a/hw/sparc/sun4m_iommu.c
++++ b/hw/sparc/sun4m_iommu.c
+@@ -359,7 +359,6 @@ static void iommu_init(Object *obj)
+     memory_region_init_iommu(&s->iommu, sizeof(s->iommu),
+                              TYPE_SUN4M_IOMMU_MEMORY_REGION, OBJECT(dev),
+                              "iommu-sun4m", UINT64_MAX);
+-    address_space_init(&s->iommu_as, MEMORY_REGION(&s->iommu), "iommu-as");
  
-+    address_space_init(&s->pci_io_as, &s->pci_io, "raven-io");
+     sysbus_init_irq(dev, &s->irq);
+ 
+@@ -368,6 +367,13 @@ static void iommu_init(Object *obj)
+     sysbus_init_mmio(dev, &s->iomem);
+ }
+ 
++static void iommu_realize(DeviceState *dev, Error **errp)
++{
++    IOMMUState *s = SUN4M_IOMMU(dev);
 +
-+    /* CPU address space */
-+    memory_region_add_subregion(address_space_mem, PCI_IO_BASE_ADDR,
-+                                &s->pci_io);
-+    memory_region_add_subregion_overlap(address_space_mem, PCI_IO_BASE_ADDR,
-+                                        &s->pci_io_non_contiguous, 1);
-+    memory_region_add_subregion(address_space_mem, 0xc0000000, &s->pci_memory);
-+    pci_root_bus_init(&s->pci_bus, sizeof(s->pci_bus), DEVICE(d), NULL,
-+                      &s->pci_memory, &s->pci_io, 0, TYPE_PCI_BUS);
++    address_space_init(&s->iommu_as, MEMORY_REGION(&s->iommu), "iommu-as");
++}
 +
-+    address_space_init(&s->bm_as, &s->bm, "raven-bm");
-+    pci_setup_iommu(&s->pci_bus, &raven_iommu_ops, s);
-+
-     /*
-      * According to PReP specification section 6.1.6 "System Interrupt
-      * Assignments", all PCI interrupts are routed via IRQ 15
-@@ -276,14 +290,12 @@ static void raven_pcihost_initfn(Object *obj)
- {
-     PCIHostState *h = PCI_HOST_BRIDGE(obj);
-     PREPPCIState *s = RAVEN_PCI_HOST_BRIDGE(obj);
--    MemoryRegion *address_space_mem = get_system_memory();
-     DeviceState *pci_dev;
+ static const Property iommu_properties[] = {
+     DEFINE_PROP_UINT32("version", IOMMUState, version, 0),
+ };
+@@ -377,6 +383,7 @@ static void iommu_class_init(ObjectClass *klass, const void *data)
+     DeviceClass *dc = DEVICE_CLASS(klass);
  
-     memory_region_init(&s->pci_io, obj, "pci-io", 0x3f800000);
-     memory_region_init_io(&s->pci_io_non_contiguous, obj, &raven_io_ops, s,
-                           "pci-io-non-contiguous", 0x00800000);
-     memory_region_init(&s->pci_memory, obj, "pci-memory", 0x3f000000);
--    address_space_init(&s->pci_io_as, &s->pci_io, "raven-io");
- 
-     /*
-      * Raven's raven_io_ops use the address-space API to access pci-conf-idx
-@@ -292,15 +304,6 @@ static void raven_pcihost_initfn(Object *obj)
-      */
-     s->pci_io_non_contiguous.disable_reentrancy_guard = true;
- 
--    /* CPU address space */
--    memory_region_add_subregion(address_space_mem, PCI_IO_BASE_ADDR,
--                                &s->pci_io);
--    memory_region_add_subregion_overlap(address_space_mem, PCI_IO_BASE_ADDR,
--                                        &s->pci_io_non_contiguous, 1);
--    memory_region_add_subregion(address_space_mem, 0xc0000000, &s->pci_memory);
--    pci_root_bus_init(&s->pci_bus, sizeof(s->pci_bus), DEVICE(obj), NULL,
--                      &s->pci_memory, &s->pci_io, 0, TYPE_PCI_BUS);
--
-     /* Bus master address space */
-     memory_region_init(&s->bm, obj, "bm-raven", 4 * GiB);
-     memory_region_init_alias(&s->bm_pci_memory_alias, obj, "bm-pci-memory",
-@@ -310,8 +313,6 @@ static void raven_pcihost_initfn(Object *obj)
-                              get_system_memory(), 0, 0x80000000);
-     memory_region_add_subregion(&s->bm, 0         , &s->bm_pci_memory_alias);
-     memory_region_add_subregion(&s->bm, 0x80000000, &s->bm_ram_alias);
--    address_space_init(&s->bm_as, &s->bm, "raven-bm");
--    pci_setup_iommu(&s->pci_bus, &raven_iommu_ops, s);
- 
-     h->bus = &s->pci_bus;
- 
+     device_class_set_legacy_reset(dc, iommu_reset);
++    dc->realize = iommu_realize;
+     dc->vmsd = &vmstate_iommu;
+     device_class_set_props(dc, iommu_properties);
+ }
 
 -- 
 2.51.0
