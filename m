@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8076AB47739
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 23:04:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA4BB4773B
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 23:04:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uv02n-0003d6-IK; Sat, 06 Sep 2025 17:01:57 -0400
+	id 1uv032-0003hd-RQ; Sat, 06 Sep 2025 17:02:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv02Z-0003Yd-Mf; Sat, 06 Sep 2025 17:01:46 -0400
+ id 1uv02z-0003gx-BQ; Sat, 06 Sep 2025 17:02:09 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv02S-0005qI-9p; Sat, 06 Sep 2025 17:01:42 -0400
+ id 1uv02q-0005tj-IW; Sat, 06 Sep 2025 17:02:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1F268150F81;
+ by isrv.corpit.ru (Postfix) with ESMTP id 31E95150F82;
  Sun, 07 Sep 2025 00:00:55 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id D58F127868C;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E73C327868D;
  Sun,  7 Sep 2025 00:00:56 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 22/34] virtio-net: Add queues for RSS during migration
-Date: Sun,  7 Sep 2025 00:00:42 +0300
-Message-ID: <20250906210056.127031-4-mjt@tls.msk.ru>
+Subject: [Stable-7.2.20 23/34] scripts/kernel-doc: Avoid new Perl precedence
+ warning
+Date: Sun,  7 Sep 2025 00:00:43 +0300
+Message-ID: <20250906210056.127031-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.20-20250906235950@cover.tls.msk.ru>
 References: <qemu-stable-7.2.20-20250906235950@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -41,8 +44,8 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,124 +61,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-virtio_net_pre_load_queues() inspects vdev->guest_features to tell if
-VIRTIO_NET_F_RSS or VIRTIO_NET_F_MQ is enabled to infer the required
-number of queues. This works for VIRTIO_NET_F_MQ but it doesn't for
-VIRTIO_NET_F_RSS because only the lowest 32 bits of vdev->guest_features
-is set at the point and VIRTIO_NET_F_RSS uses bit 60 while
-VIRTIO_NET_F_MQ uses bit 22.
+Newer versions of Perl (5.41.x and up) emit a warning for code in
+kernel-doc:
+ Possible precedence problem between ! and pattern match (m//) at /scripts/kernel-doc line 1597.
 
-Instead of inferring the required number of queues from
-vdev->guest_features, use the number loaded from the vm state. This
-change also has a nice side effect to remove a duplicate peer queue
-pair change by circumventing virtio_net_set_multiqueue().
+This is because the code does:
+            if (!$param =~ /\w\.\.\.$/) {
 
-Also update the comment in include/hw/virtio/virtio.h to prevent an
-implementation of pre_load_queues() from refering to any fields being
-loaded during migration by accident in the future.
+In Perl, the !  operator has higher precedence than the =~
+pattern-match binding, so the effect of this condition is to first
+logically-negate the string $param into a true-or-false value and
+then try to pattern match it against the regex, which in this case
+will always fail.  This is almost certainly not what the author
+intended.
 
-Fixes: 8c49756825da ("virtio-net: Add only one queue pair when realizing")
-Fixes: 653217a501a1 ("virtio-net: Add only one queue pair when realizing" in 7.2.x)
+In the new Python version of kernel-doc in the Linux kernel,
+the equivalent code is written:
 
-Tested-by: Lei Yang <leiyang@redhat.com>
+            if KernRe(r'\w\.\.\.$').search(param):
+                # For named variable parameters of the form `x...`,
+                # remove the dots
+                param = param[:-3]
+            else:
+                # Handles unnamed variable parameters
+                param = "..."
+
+which is a more sensible way of writing the behaviour you would
+get if you put in brackets to make the regex match first and
+then negate the result.
+
+Take this as the intended behaviour, and update the Perl to match.
+
+For QEMU, this produces no change in output, presumably because we
+never used the "unnamed variable parameters" syntax.
+
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit adda0ad56bd28d5a809051cbd190fda5798ec4e4)
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Message-id: 20250819115648.2125709-1-peter.maydell@linaro.org
+(cherry picked from commit 5ffd387e9e0f787744fadaad35e1bf92224b0642)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 5dedfdf2e2..785cbbf768 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -2928,11 +2928,10 @@ static void virtio_net_del_queue(VirtIONet *n, int index)
-     virtio_del_queue(vdev, index * 2 + 1);
- }
+diff --git a/scripts/kernel-doc b/scripts/kernel-doc
+index 240923d509..133d6d1e08 100755
+--- a/scripts/kernel-doc
++++ b/scripts/kernel-doc
+@@ -1594,13 +1594,12 @@ sub push_parameter($$$$$) {
  
--static void virtio_net_change_num_queue_pairs(VirtIONet *n, int new_max_queue_pairs)
-+static void virtio_net_change_num_queues(VirtIONet *n, int new_num_queues)
- {
-     VirtIODevice *vdev = VIRTIO_DEVICE(n);
-     int old_num_queues = virtio_get_num_queues(vdev);
--    int new_num_queues = new_max_queue_pairs * 2 + 1;
-     int i;
- 
-     assert(old_num_queues >= 3);
-@@ -2968,16 +2967,14 @@ static void virtio_net_set_multiqueue(VirtIONet *n, int multiqueue)
-     int max = multiqueue ? n->max_queue_pairs : 1;
- 
-     n->multiqueue = multiqueue;
--    virtio_net_change_num_queue_pairs(n, max);
-+    virtio_net_change_num_queues(n, max * 2 + 1);
- 
-     virtio_net_set_queue_pairs(n);
- }
- 
--static int virtio_net_pre_load_queues(VirtIODevice *vdev)
-+static int virtio_net_pre_load_queues(VirtIODevice *vdev, uint32_t n)
- {
--    virtio_net_set_multiqueue(VIRTIO_NET(vdev),
--                              virtio_has_feature(vdev->guest_features, VIRTIO_NET_F_RSS) ||
--                              virtio_has_feature(vdev->guest_features, VIRTIO_NET_F_MQ));
-+    virtio_net_change_num_queues(VIRTIO_NET(vdev), n);
- 
-     return 0;
- }
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index a6a6f23d3a..82a49b8ab7 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -3656,13 +3656,6 @@ int virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
-         config_len--;
-     }
- 
--    if (vdc->pre_load_queues) {
--        ret = vdc->pre_load_queues(vdev);
--        if (ret) {
--            return ret;
--        }
--    }
--
-     num = qemu_get_be32(f);
- 
-     if (num > VIRTIO_QUEUE_MAX) {
-@@ -3670,6 +3663,13 @@ int virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
-         return -1;
-     }
- 
-+    if (vdc->pre_load_queues) {
-+        ret = vdc->pre_load_queues(vdev, num);
-+        if (ret) {
-+            return ret;
-+        }
-+    }
-+
-     for (i = 0; i < num; i++) {
-         vdev->vq[i].vring.num = qemu_get_be32(f);
-         if (k->has_variable_vring_alignment) {
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index 3f2f4f6d19..5ce9144c4a 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -180,8 +180,14 @@ struct VirtioDeviceClass {
-     void (*guest_notifier_mask)(VirtIODevice *vdev, int n, bool mask);
-     int (*start_ioeventfd)(VirtIODevice *vdev);
-     void (*stop_ioeventfd)(VirtIODevice *vdev);
--    /* Called before loading queues. Useful to add queues before loading. */
--    int (*pre_load_queues)(VirtIODevice *vdev);
-+    /*
-+     * Called before loading queues.
-+     * If the number of queues change at runtime, use @n to know the
-+     * number and add or remove queues accordingly.
-+     * Note that this function is called in the middle of loading vmsd;
-+     * no assumption should be made on states being loaded from vmsd.
-+     */
-+    int (*pre_load_queues)(VirtIODevice *vdev, uint32_t n);
-     /* Saving and loading of a device; trying to deprecate save/load
-      * use vmsd for new devices.
-      */
+ 	if ($type eq "" && $param =~ /\.\.\.$/)
+ 	{
+-	    if (!$param =~ /\w\.\.\.$/) {
+-	      # handles unnamed variable parameters
+-	      $param = "...";
+-	    }
+-	    elsif ($param =~ /\w\.\.\.$/) {
++	    if ($param =~ /\w\.\.\.$/) {
+ 	      # for named variable parameters of the form `x...`, remove the dots
+ 	      $param =~ s/\.\.\.$//;
++	    } else {
++	      # handles unnamed variable parameters
++	      $param = "...";
+ 	    }
+ 	    if (!defined $parameterdescs{$param} || $parameterdescs{$param} eq "") {
+ 		$parameterdescs{$param} = "variable arguments";
 -- 
 2.47.3
 
