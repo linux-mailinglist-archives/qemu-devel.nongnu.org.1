@@ -2,100 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FD65B47077
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 16:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7180DB47737
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 23:04:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uutz8-0000W3-Dm; Sat, 06 Sep 2025 10:33:46 -0400
+	id 1uv02M-0003QA-Dw; Sat, 06 Sep 2025 17:01:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uutz5-0000V6-E7
- for qemu-devel@nongnu.org; Sat, 06 Sep 2025 10:33:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uv02H-0003DC-Ol; Sat, 06 Sep 2025 17:01:25 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uutyv-0004ce-Jw
- for qemu-devel@nongnu.org; Sat, 06 Sep 2025 10:33:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757169208;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=n31bFV4Iy3GeoZaiAQ5lYmkcCmuO+Aj9eyB3qlc3Lt4=;
- b=Q+Zx0uqyAfcVPTwj5ne8VeVRk4+nL6OurhLwIM2Es01N7kBdTzprLrcW7UOzP6MJakuqoB
- Kfdxn/4g36h06sFja77a3hnvflBJzWiVQif24LtpZDzD/TwgZlOdPHROA/8j5zwhFuziU2
- XsICpZELuNHfprDI6NhXk53CAQbcC4Q=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-114-H9ChDU43PD2WxRGYrk4jlQ-1; Sat, 06 Sep 2025 10:33:27 -0400
-X-MC-Unique: H9ChDU43PD2WxRGYrk4jlQ-1
-X-Mimecast-MFC-AGG-ID: H9ChDU43PD2WxRGYrk4jlQ_1757169206
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3df19a545c2so2575058f8f.3
- for <qemu-devel@nongnu.org>; Sat, 06 Sep 2025 07:33:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757169202; x=1757774002;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=n31bFV4Iy3GeoZaiAQ5lYmkcCmuO+Aj9eyB3qlc3Lt4=;
- b=XlJ1tBOXAaPoAhV0PenA3HHrvkqro5qON6MvPeJozcbICAsgSmMeWY9a2nD2rQeyR+
- Fi0uvInoJ+UKfiJRX19qeyJN3Qv6tq7TCx74/9olvVQRHpKUhlXRgpqdmZkHvmXtefT3
- mvPtCGkkR1QTKJMIrvgnAyjtGEkKncxby6a6dDM2Rf/gyLL5Uspsow+CRSDZU85pyW6k
- KtuAGwOdvSOBCCdTdtOxwYArcZKAzWdOma5pexiVzEXb4zsmgy9owpCCkvK3d2MsOaaP
- 7/5T6VwFtupx4jZE8Ak0c/Fy1HMGGozl62w19xeevpq1WnX8ofprnxjQ5+2SMzC6INRf
- Yebw==
-X-Gm-Message-State: AOJu0YxIYiSaVumqfPT39m1yegmcxZQ7/KWBNlHTFUPhkVfOgmdm8I5l
- HsYaSrvSJ0Zvek8eaxvHY656GsjlqbDPniyQf1qvu7YqsBT/Lqi74bCpd1A8+CVSo5q7AepdF42
- UpIwYG5fZagOTyLzd2Q4qnui/1/2v0GfGX6bblQTk2u3eW4EA+pHM62XKzmXxZ9v4MDo9bptvC/
- lqRxOy65zE/o6fpmtt3RZn9sEhIDS2Fu8=
-X-Gm-Gg: ASbGncv+XQajOD7yqfIZUO+g8jTJXpeLybHVysIXFzuPSc/aLXWWkfPC7X5+QrW9OB/
- mTFXoloVG/TVvTq7aCu85j9dADlJRcAstPKTl9Hkf0DuIeupRdmdBGZnl/07IbAuHAB0BayNQmH
- ILlduCq4gu+TnB5lPS9XqnhPLdOnnE49SrscZI9Z9tupGyCnvPabtDBXoZZ9oUc7Qa3I1zyLf7H
- 3g+XwK5vhT3MmaIEwvQny8r
-X-Received: by 2002:a05:6000:290f:b0:3d2:4085:c37d with SMTP id
- ffacd0b85a97d-3e643ff6f80mr1559872f8f.29.1757169202469; 
- Sat, 06 Sep 2025 07:33:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IETK11Up6+UxWRo/nILOCi+L2gSmRDkYoqf/lwYh0MIgHHEypR0DTOQhnmhMtjKkr+lEbxPj0dapnyEQL7CrZo=
-X-Received: by 2002:a05:6000:290f:b0:3d2:4085:c37d with SMTP id
- ffacd0b85a97d-3e643ff6f80mr1559848f8f.29.1757169202036; Sat, 06 Sep 2025
- 07:33:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uv02A-0005kA-EO; Sat, 06 Sep 2025 17:01:25 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id C5D33150F7D;
+ Sun, 07 Sep 2025 00:00:54 +0300 (MSK)
+Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8A82A278688;
+ Sun,  7 Sep 2025 00:00:56 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.20 v2 00/34] Patch Round-up for stable 7.2.20,
+ freeze on 2025-09-06 (frozen)
+Date: Sun,  7 Sep 2025 00:00:38 +0300
+Message-ID: <qemu-stable-7.2.20-20250906235950@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <20250904-python-v1-1-c43b3209a0cd@google.com>
- <6e43209d-645f-46e4-a23a-2a1ec149dfe8@redhat.com>
- <CAAAKUPM=vSJuc-jjPQufezBi_0GPeeTqEje05uSOgKj3_7dHtA@mail.gmail.com>
-In-Reply-To: <CAAAKUPM=vSJuc-jjPQufezBi_0GPeeTqEje05uSOgKj3_7dHtA@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sat, 6 Sep 2025 16:33:10 +0200
-X-Gm-Features: AS18NWCoE_HTBPgRgcVg25lz9r8T5AmzYS9TaQGFmi4vmkgA-wuhWyLG0q0TFJ8
-Message-ID: <CABgObfZN4EoupW=fFHWsuqza0ro7yuBmA+pn=QrTvoKZGK8mZg@mail.gmail.com>
-Subject: Re: [PATCH] Use meson's detected python installation
-To: Peter Foley <pefoley@google.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour <ma.mandourr@gmail.com>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-block@nongnu.org, 
- nabihestefan@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,65 +57,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 5, 2025 at 5:01=E2=80=AFPM Peter Foley <pefoley@google.com> wro=
-te:
-> Interesting, that's not what I'm seeing in practice.
-> For example, locally reverting the change to block/meson.build results in=
-:
-> FAILED: block/module_block.h
-> /build/work/046b6fd7014012220d3de53b1bd62f6eb1e9/google3/third_party/qemu=
-/block/../scripts/modules/module_block.py block/module_block.h
-> /usr/bin/env: 'python3': No such file or directory
->
-> Where module_block.py is *not* executable:
-> -rw-rw-r-- 1 pefoley primarygroup 2751 Feb 10  2021 third_party/qemu/scri=
-pts/modules/module_block.py
+The following patches are queued for QEMU stable v7.2.20:
 
-What is the version of meson, and the actual command line? In my case
-it's  "/home/.../+build/pyvenv/bin/python3
-/home/pbonzini/work/upstream/qemu/block/../scripts/modules/module_block.py
-block/module_block.h"..
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
 
-In case you would like to debug it, here are some pointers. The Meson
-code that handles it is, starting from the constructor:
+Patch freeze is 2025-09-06 (frozen), and the release is planned for 2025-09-08:
 
-    if search_dirs is None:
-        # For compat with old behaviour
-        search_dirs =3D [None]
-    self.command =3D self._search(name, search_dirs, exclude_paths)
+  https://wiki.qemu.org/Planning/7.2
 
-The search_dirs list is simply
-[os.path.join(self.environment.get_source_dir(), self.subdir)]; see
-program_for_siystem in mesonbuild/interpreter/interpreter.py. _search
-simply walks the list:
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-    for search_dir in search_dirs:
-        commands =3D self._search_dir(name, search_dir)
-        if commands:
-            return commands
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
-and here is when the non-executable case is handled:
+Thanks!
 
-    def _search_dir(self, name: str, search_dir: T.Optional[str]) ->
-T.Optional[list]:
-        if os.path.exists(trial):
-            if self._is_executable(trial):
-                return [trial]
-            # Now getting desperate. Maybe it is a script file that is
-            # a) not chmodded executable, or
-            # b) we are on windows so they can't be directly executed.
-            return self._shebang_to_cmd(trial)
+/mjt
 
-from which you go to
+--------------------------------------
+01* b8882becd572 Michael Tokarev:
+   hw/display/qxl-render.c: fix qxl_unpack_chunks() chunk size calculation
+02* feea87cd6b64 Paolo Bonzini:
+   target/i386: fix width of third operand of VINSERTx128
+03* 535ca76425fc Richard Henderson:
+   target/arm/sme: Reorg SME access handling in handle_msr_i()
+04* 3c9ee5489488 Richard Henderson:
+   target/arm/sme: Rebuild hflags in set_pstate() helpers
+05* 2a8af3825958 Richard Henderson:
+   target/arm/sme: Introduce aarch64_set_svcr()
+06* 7f2a01e7368f Richard Henderson:
+   target/arm/sme: Reset SVE state in aarch64_set_svcr()
+07* fccb49182e23 Richard Henderson:
+   target/arm/sme: Reset ZA state in aarch64_set_svcr()
+08* f43185571491 Richard Henderson:
+   target/arm/sme: Rebuild hflags in aarch64_set_svcr()
+09* 5c922ec5b136 Richard Henderson:
+   target/arm/sme: Unify set_pstate() SM/ZA helpers as set_svcr()
+10* 99870aff907b Peter Maydell:
+   linux-user/aarch64: Support TPIDR2_MAGIC signal frame record
+11* e895095c78ab Philippe Mathieu-Daudé:
+   target/mips: Only update MVPControl.EVP bit if executed by master VPE
+12* 2bfcd27e00a4 Luc Michel:
+   hw/net/cadence_gem: fix register mask initialization
+13* b10bd4bd17ac Zenghui Yu:
+   hw/intc/arm_gicv3_kvm: Write all 1's to clear enable/active
+14* 35cca0f95ff5 Vacha Bhavsar:
+   target/arm: Fix big-endian handling of NEON gdb remote debugging
+15* 97b3d732afec Vacha Bhavsar:
+   target/arm: Fix handling of setting SVE registers from gdb
+16* 13ed972b4ce5 Jamin Lin:
+   hw/ssi/aspeed_smc: Fix incorrect FMC_WDT2 register read on AST1030
+17* c0df98ab1f3d Werner Fink:
+   qemu-iotests: Ignore indentation in Killed messages
+18* e262646e12ac Philippe Mathieu-Daudé:
+   hw/sd/ssi-sd: Return noise (dummy byte) when no card connected
+19 c12cbaa007c9 Zero Tang:
+   i386/tcg/svm: fix incorrect canonicalization
+20 8c49756825da Akihiko Odaki:
+   virtio-net: Add only one queue pair when realizing
+21 9379ea9db3c0 Akihiko Odaki:
+   virtio-net: Add queues before loading them
+22 adda0ad56bd2 Akihiko Odaki:
+   virtio-net: Add queues for RSS during migration
+23 5ffd387e9e0f Peter Maydell:
+   scripts/kernel-doc: Avoid new Perl precedence warning
+24 2e27650bddd3 Peter Maydell:
+   hw/arm/stm32f205_soc: Don't leak TYPE_OR_IRQ objects
+25 d6f67b83b81b Daniel Xu:
+   qga: Fix memory leak when output stream is unused
+26 28c5d27dd4dc minglei.liu:
+   qga: Fix truncated output handling in guest-exec status reporting
+27 8e4649cac9bc Laurent Vivier:
+   e1000e: Prevent crash from legacy interrupt firing after MSI-X enable
+28 450cb7ec2c5f Philippe Mathieu-Daudé:
+   linux-user/mips: Use P5600 as default CPU to run NaN2008 ELF binaries
+29 f7e3d7521b41 Philippe Mathieu-Daudé:
+   linux-user/mips: Do not try to use removed R5900 CPU
+30 14ab44b96d5b Philippe Mathieu-Daudé:
+   elf: Add EF_MIPS_ARCH_ASE definitions
+31 7a09b3cc70ab Philippe Mathieu-Daudé:
+   linux-user/mips: Select 74Kf CPU to run MIPS16e binaries
+32 51c3aebfda64 Philippe Mathieu-Daudé:
+   linux-user/mips: Select M14Kc CPU to run microMIPS binaries
+33 1f82ca723478 Denis Rastyogin:
+   target/mips: fix TLB huge page check to use 64-bit shift
+34 606978500c3d Michael Tokarev:
+   block/curl: fix curl internal handles handling
 
-   # Replace python3 with the actual python3 that we are using
-   if commands[0] =3D=3D '/usr/bin/env' and commands[1] =3D=3D 'python3':
-       commands =3D mesonlib.python_command + commands[2:]
-   elif commands[0].split('/')[-1] =3D=3D 'python3':
-       commands =3D mesonlib.python_command + commands[1:]
-
-and mesonlib.python_command should be the pyvenv Python interpreter.
-
-Paolo
-
+(commit(s) marked with * were in previous series and are not resent)
 
