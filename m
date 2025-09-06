@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B6DB4774C
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 23:12:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1ECBB47745
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 23:10:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uv03L-0003lV-QW; Sat, 06 Sep 2025 17:02:31 -0400
+	id 1uv03P-0003mt-Df; Sat, 06 Sep 2025 17:02:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv03F-0003kr-S6; Sat, 06 Sep 2025 17:02:25 -0400
+ id 1uv03J-0003m6-Q7; Sat, 06 Sep 2025 17:02:30 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv038-0005yA-8I; Sat, 06 Sep 2025 17:02:24 -0400
+ id 1uv03G-00061g-4t; Sat, 06 Sep 2025 17:02:29 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6388F150F85;
+ by isrv.corpit.ru (Postfix) with ESMTP id 73B1E150F86;
  Sun, 07 Sep 2025 00:00:55 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 27207278690;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 36CC0278691;
  Sun,  7 Sep 2025 00:00:57 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "minglei.liu" <minglei.liu@smartx.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Kostiantyn Kostiuk <kkostiuk@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 26/34] qga: Fix truncated output handling in
- guest-exec status reporting
-Date: Sun,  7 Sep 2025 00:00:46 +0300
-Message-ID: <20250906210056.127031-8-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.20 27/34] e1000e: Prevent crash from legacy interrupt
+ firing after MSI-X enable
+Date: Sun,  7 Sep 2025 00:00:47 +0300
+Message-ID: <20250906210056.127031-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.20-20250906235950@cover.tls.msk.ru>
 References: <qemu-stable-7.2.20-20250906235950@cover.tls.msk.ru>
@@ -43,8 +45,8 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,39 +62,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "minglei.liu" <minglei.liu@smartx.com>
+From: Laurent Vivier <lvivier@redhat.com>
 
-Signed-off-by: minglei.liu <minglei.liu@smartx.com>
-Fixes: a1853dca743
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250711021714.91258-1-minglei.liu@smartx.com
-Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-(cherry picked from commit 28c5d27dd4dc4100a96ff4c9e5871dd23c6b02ec)
+A race condition between guest driver actions and QEMU timers can lead
+to an assertion failure when the guest switches the e1000e from legacy
+interrupt mode to MSI-X. If a legacy interrupt delay timer (TIDV or
+RDTR) is active, but the guest enables MSI-X before the timer fires,
+the pending interrupt cause can trigger an assert in
+e1000e_intmgr_collect_delayed_causes().
+
+This patch removes the assertion and executes the code that clears the
+pending legacy causes. This change is safe and introduces no unintended
+behavioral side effects, as it only alters a state that previously led
+to termination.
+
+- when core->delayed_causes == 0 the function was already a no-op and
+  remains so.
+
+- when core->delayed_causes != 0 the function would previously
+  crash due to the assertion failure. The patch now defines a safe
+  outcome by clearing the cause and returning. Since behavior after
+  the assertion never existed, this simply corrects the crash.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1863
+Suggested-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Message-ID: <20250807110806.409065-1-lvivier@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit 8e4649cac9bcddc050d2df07908075e9e69bccc7)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/qga/commands.c b/qga/commands.c
-index ca63fe6e15..fb1251111f 100644
---- a/qga/commands.c
-+++ b/qga/commands.c
-@@ -207,14 +207,16 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid, Error **errp)
-         if (gei->out.length > 0) {
-             ges->has_out_data = true;
-             ges->out_data = g_base64_encode(gei->out.data, gei->out.length);
--            ges->has_out_truncated = gei->out.truncated;
-+            ges->has_out_truncated = true;
-+            ges->out_truncated = gei->out.truncated;
-         }
-         g_free(gei->out.data);
+diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+index 742f5ec800..5def4cfc1c 100644
+--- a/hw/net/e1000e_core.c
++++ b/hw/net/e1000e_core.c
+@@ -336,11 +336,6 @@ e1000e_intmgr_collect_delayed_causes(E1000ECore *core)
+ {
+     uint32_t res;
  
-         if (gei->err.length > 0) {
-             ges->has_err_data = true;
-             ges->err_data = g_base64_encode(gei->err.data, gei->err.length);
--            ges->has_err_truncated = gei->err.truncated;
-+            ges->has_err_truncated = true;
-+            ges->err_truncated = gei->err.truncated;
-         }
-         g_free(gei->err.data);
+-    if (msix_enabled(core->owner)) {
+-        assert(core->delayed_causes == 0);
+-        return 0;
+-    }
+-
+     res = core->delayed_causes;
+     core->delayed_causes = 0;
  
 -- 
 2.47.3
