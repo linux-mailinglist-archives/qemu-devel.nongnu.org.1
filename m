@@ -2,64 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56144B468F2
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 06:21:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 440D9B46945
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 07:21:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uukNf-0004LB-8s; Sat, 06 Sep 2025 00:18:27 -0400
+	id 1uulK1-0000Ah-4M; Sat, 06 Sep 2025 01:18:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uukNa-0004K4-Fn
- for qemu-devel@nongnu.org; Sat, 06 Sep 2025 00:18:22 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uukNS-0000zJ-16
- for qemu-devel@nongnu.org; Sat, 06 Sep 2025 00:18:22 -0400
-Received: from [10.40.4.92] (93-51-222-138.ip268.fastwebnet.it [93.51.222.138])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5864Hsjh090390
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Sat, 6 Sep 2025 13:17:56 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=XKCX0j1iFkQYjBwV+ZR4BOVq49wzZt3e0xKi4q1UhfI=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1757132278; v=1;
- b=eIQAnWdwhB6ietaHlgprgKBlpt6NUlyZIFyzQr4Pt0JvD/L+5lRCBx2ERUXcmE93
- 8yDNlKoMndBGPEXiEeLVuoPxZBZLPT+H3q9A3clzmMGVQPwySYy2sKoQbd0EzINS
- 5pXCEKIVcE2Gsiizs0XgI9ej32PZuCyXFmcn599ecQOClLN+tkulJxstTKSZ+QFN
- vbJOJ7g75QNQkAKtlnS8lramBV3ya7SpnkDN9VrS052dd5qldCzyG3IX3y2LdhAU
- Q7dqhkcsr9bZXOprywxIhBGEjHelMtSuRVBVDIdgioSTxPuveaWmMrOyslf1tzqG
- bUWbsq16Pv6Rz9zniARbYQ==
-Message-ID: <48689d16-1f88-4a56-8b48-b20923f92f2c@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sat, 6 Sep 2025 06:17:53 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uulJw-00009O-V7
+ for qemu-devel@nongnu.org; Sat, 06 Sep 2025 01:18:41 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uulJl-0006oQ-A0
+ for qemu-devel@nongnu.org; Sat, 06 Sep 2025 01:18:38 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-45ddddbe31fso1622265e9.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Sep 2025 22:18:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1757135902; x=1757740702; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Wapd2VeopBfnZY/WYDZqQKc4ECTuHkCcOAubJcTmaL4=;
+ b=brJ0cSvRA4esFgtepbgV56rMIhoKveTd6E8fbvxieaMj4WISJ9CLSBqACS2mpqx8Nc
+ cPvO/UuKW38hmAVUI5yNhw0RXr45/UQnjcHcQOjv58yxNQ+4Lsguux6ZDc8dBrKvnCT9
+ PH9hG+MN/V0e7QhUpaUDXITanrvzTLtmmPWOCcHLAN1ZQ9GhQQzt7NvGD3rzclWefqxj
+ lczdiA3/Ceget1h8ncEHuQ87bfxzdVusbnxsm8MdXvE18gjVTwdhXr7ZDFD26vrvVYUx
+ a/jtvTL/Krgp9iGdIobcMKFn0veXGjGzFYxoD0adqcCaUI0Rf1PY7LVFXpMiTdUQX8S2
+ 6pHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757135902; x=1757740702;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Wapd2VeopBfnZY/WYDZqQKc4ECTuHkCcOAubJcTmaL4=;
+ b=TFct70/+rD3fJT32ekA2IAPX/uAODg4ZJxUD8EPrMVTV1iP3mgLfviw5r2NWsCthlZ
+ OWOOUHunEXLNHzUCG9nJvAFNgTDSZnpczjvZ5YmHDSc+gVHu0YnTh/qNNt0P15Q9rO4/
+ qjZqUgIKWahdUvbE8gIJbdhfaRLSQ6BCCK5qO/kaODLyrmGnLaKEzJtxU1n2xe4QlAMU
+ /qL3uTKhWZpUBoYwxlTUvahiK68ynyVh4nBFWmEodo67/B2xsUCwZqLz3+4iO2q178j+
+ hDROgc3Pk23JGa6t1Axatpj1xjccKRjNVjWgyFx2WK7/6FBOgqHE6J3bqUM2CflMrrNU
+ kQzw==
+X-Gm-Message-State: AOJu0YwrhRCIPMWNpVxszJvCBNDypUloers7vidQe8C3323h9LdAudQ8
+ ZN3Tk60b8LuA4fV72tRlYtGyY2t6DdWUL6K9rGGsehYcImiG5KUS+pFBMVKw3UgOXbjNaF2pg1Q
+ RaVY44ck=
+X-Gm-Gg: ASbGncuLNpDhGixC7HYcZlBp3ROlIRfbkG4c1HbFas9AHxlViRnrC4rWrDGCTuLS2tY
+ FBk91uPugCksV6uEJPxIhn+iF99EWmkVDgBhm3zshGK8+s+pd29u/Kzs0m1LOtRBjZWaqh62ttD
+ zvjifxYE5fbaZQh6150hjXZvZv7hbY1UgTZAiQndm+nmDWg6UGH4gRg7pg8YMLrOcadU3F2YMl+
+ 28/V3IGv3YKJ24Q4peQVGPN6eNRr/yEm/L64WVOsT878ozsnq87wui8btEpcKsk5s3x51YFWI3b
+ G62A3IqjxVucm5SHV8i8upioQbYV2XXOiw31P1f0rwwznSYoM4n1sD2txd0RqbopZwoI14Cco2h
+ O56TxazNlbil0YW1h1NpcB0TiAW5gavnzVGFTUZetJ6ONNQ0WYoOlJ/inSUjj63YEOMPaVSdTrC
+ s6I3iqRp4=
+X-Google-Smtp-Source: AGHT+IGb4SDS2OclM1pc58OJToVO7Crx1ZiXeuuzlK65cFD8T7HVrkk85ZtSIzjtilrwELSHtm+4Wg==
+X-Received: by 2002:a05:600c:4514:b0:45b:772b:12b9 with SMTP id
+ 5b1f17b1804b1-45ddde9dcd3mr7875145e9.15.1757135902523; 
+ Fri, 05 Sep 2025 22:18:22 -0700 (PDT)
+Received: from stoup.21wol.it (93-51-222-138.ip268.fastwebnet.it.
+ [93.51.222.138]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45b6f306c22sm441197735e9.13.2025.09.05.22.18.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 05 Sep 2025 22:18:22 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org,
+	philmd@linaro.org
+Subject: [PATCH 00/11] accel/tcg: Improve tb_flush usage
+Date: Sat,  6 Sep 2025 07:18:09 +0200
+Message-ID: <20250906051820.160432-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 6/6] virtio-gpu: Find the host addr given gpa associated
- with a ram device
-To: Vivek Kasireddy <vivek.kasireddy@intel.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>
-References: <20250903054438.1179384-1-vivek.kasireddy@intel.com>
- <20250903054438.1179384-7-vivek.kasireddy@intel.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20250903054438.1179384-7-vivek.kasireddy@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,97 +97,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/09/03 7:42, Vivek Kasireddy wrote:
-> If the Guest provides a gpa (guest physical address) associated with
-> a PCI region, then we can obtain the hva (host virtual address) via
-> gpa2hva() API instead of dma_memory_map(). Note that we would still
-> call dma_memory_unmap() (to unref mr) regardless of how we obtained
-> the hva.
+It is too easy to mis-use tb_flush().  For instance, because of
+the cpu argument, some parts assumed that it needed to call the
+global flush function for every cpu.  It is easy to forget that
+the flush is not complete when the call returns: we have merely
+queued work to the cpu run loop.
 
-I think address_space_translate() should be used instead. The guest 
-passes addresses that are valid in the DMA address space, which may not 
-be a GPA if an IOMMU is in effect. address_space_translate() allows you 
-specifying the DMA address space.
+(Phil, I suspect this second case is what's biting split-accel.)
 
-The motivation for this change should also be described in the patch 
-message; otherwise a reader may wonder why dma_memory_map() does not 
-suffice.
+So: remove tb_flush and expose only the core as tb_flush__exclusive,
+to be used only when we are already within an exclusive context.
 
-While I added comments for each patch, the overall implementation 
-direction of this series looks good to me.
+In some cases (gdbstub, alpha, riscv, ppc spapr), we can eliminate
+the need for tb_flush completely.
 
-Regards,
-Akihiko Odaki
+Lightly tested so far, and I'm off on holiday next, but I thought
+this might help others working on split-accel in the meantime.
 
-> 
-> Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Cc: Alex Bennée <alex.bennee@linaro.org>
-> Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> ---
->   hw/display/virtio-gpu.c | 35 ++++++++++++++++++++++++++++++++---
->   1 file changed, 32 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> index 1654a417b8..4af8390bb5 100644
-> --- a/hw/display/virtio-gpu.c
-> +++ b/hw/display/virtio-gpu.c
-> @@ -32,6 +32,7 @@
->   #include "qemu/module.h"
->   #include "qapi/error.h"
->   #include "qemu/error-report.h"
-> +#include "monitor/monitor.h"
->   
->   #define VIRTIO_GPU_VM_VERSION 1
->   
-> @@ -799,6 +800,36 @@ static void virtio_gpu_set_scanout_blob(VirtIOGPU *g,
->                                 &fb, res, &ss.r, &cmd->error);
->   }
->   
-> +static void *map_gpa2hva(VirtIOGPU *g,
-> +                         struct virtio_gpu_ctrl_command *cmd,
-> +                         uint64_t gpa, hwaddr *len)
-> +{
-> +    MemoryRegion *mr = NULL;
-> +    Error *errp = NULL;
-> +    void *map;
-> +
-> +    if (cmd->cmd_hdr.type != VIRTIO_GPU_CMD_RESOURCE_CREATE_BLOB) {
-> +        return dma_memory_map(VIRTIO_DEVICE(g)->dma_as, gpa, len,
-> +                              DMA_DIRECTION_TO_DEVICE,
-> +                              MEMTXATTRS_UNSPECIFIED);
-> +    }
-> +
-> +    map = gpa2hva(&mr, gpa, 1, &errp);
-> +    if (errp) {
-> +        error_report_err(errp);
-> +        return NULL;
-> +    }
-> +
-> +    if (!memory_region_is_ram_device(mr)) {
-> +        memory_region_unref(mr);
-> +        map = dma_memory_map(VIRTIO_DEVICE(g)->dma_as, gpa, len,
-> +                             DMA_DIRECTION_TO_DEVICE,
-> +                             MEMTXATTRS_UNSPECIFIED);
-> +    }
-> +
-> +    return map;
-> +}
-> +
->   int virtio_gpu_create_mapping_iov(VirtIOGPU *g,
->                                     uint32_t nr_entries, uint32_t offset,
->                                     struct virtio_gpu_ctrl_command *cmd,
-> @@ -840,9 +871,7 @@ int virtio_gpu_create_mapping_iov(VirtIOGPU *g,
->   
->           do {
->               len = l;
-> -            map = dma_memory_map(VIRTIO_DEVICE(g)->dma_as, a, &len,
-> -                                 DMA_DIRECTION_TO_DEVICE,
-> -                                 MEMTXATTRS_UNSPECIFIED);
-> +            map = map_gpa2hva(g, cmd, a, &len);
->               if (!map) {
->                   qemu_log_mask(LOG_GUEST_ERROR, "%s: failed to map MMIO memory for"
->                                 " element %d\n", __func__, e);
+
+r~
+
+
+Richard Henderson (11):
+  gdbstub: Remove tb_flush uses
+  accel/tcg: Split out tb_flush__exclusive
+  target/alpha: Simplify call_pal implementation
+  target/riscv: Record misa_ext in TCGTBCPUState.cs_base
+  accel/tcg: Move post-load tb_flush to vm_change_state hook
+  hw/ppc/spapr: Use tb_invalidate_phys_range in h_page_init
+  linux-user: Use tb_flush_exclusive to start second thread
+  plugins: Use tb_flush__exclusive
+  accel/tcg: Introduce EXCP_TB_FLUSH
+  accel/tcg: Use EXCP_TB_FLUSH in tb_gen_code
+  accel/tcg: Remove tb_flush
+
+ include/exec/cpu-common.h       |  1 +
+ include/exec/tb-flush.h         | 18 +++++++---------
+ target/alpha/helper.h           |  1 -
+ accel/tcg/tb-maint.c            | 38 +++++++--------------------------
+ accel/tcg/tcg-accel-ops-mttcg.c |  7 ++++++
+ accel/tcg/tcg-accel-ops-rr.c    |  9 ++++++--
+ accel/tcg/tcg-all.c             | 21 ++++++++++++++++++
+ accel/tcg/translate-all.c       |  5 +----
+ gdbstub/system.c                |  4 ----
+ gdbstub/user.c                  |  3 ---
+ hw/core/cpu-system.c            |  8 -------
+ hw/ppc/spapr_hcall.c            |  4 ++--
+ linux-user/mmap.c               |  4 ++--
+ linux-user/syscall.c            |  2 +-
+ plugins/core.c                  |  6 ++----
+ plugins/loader.c                |  2 +-
+ target/alpha/sys_helper.c       |  6 ------
+ target/alpha/translate.c        | 21 ++++++------------
+ target/riscv/csr.c              |  3 ---
+ target/riscv/tcg/tcg-cpu.c      |  3 ++-
+ 20 files changed, 69 insertions(+), 97 deletions(-)
+
+-- 
+2.43.0
 
 
