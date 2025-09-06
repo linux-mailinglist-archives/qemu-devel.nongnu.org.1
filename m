@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB8CB46870
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 04:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 803E6B46872
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 04:30:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuiRx-00043t-IT; Fri, 05 Sep 2025 22:14:48 -0400
+	id 1uuiSA-00046x-0Q; Fri, 05 Sep 2025 22:14:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uuiRl-0003zB-Di; Fri, 05 Sep 2025 22:14:34 -0400
+ id 1uuiS3-00045I-8L; Fri, 05 Sep 2025 22:14:53 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uuiRZ-0006Xq-Ts; Fri, 05 Sep 2025 22:14:32 -0400
+ id 1uuiRt-0006fG-IC; Fri, 05 Sep 2025 22:14:48 -0400
 Received: from [10.40.4.92] (93-51-222-138.ip268.fastwebnet.it [93.51.222.138])
  (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5862Btna041566
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5862Btnb041566
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Sat, 6 Sep 2025 11:13:07 +0900 (JST)
+ Sat, 6 Sep 2025 11:13:20 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=VCWgUoTRg/k1AUk49wkoQFRWzcXCqr+AZelXZUH2ZBE=; 
+DKIM-Signature: a=rsa-sha256; bh=cN5bYCz95z43poG/hzCshYc7BVuKfAjXwSqQcnCNxz0=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1757124799; v=1;
- b=Mb9LKHOE4d7dnUuZfJWLY/3080nZZk1K5DYfN8zw6rcWo6d3kX8Vdajif3FrTqmu
- RGLaMlcLa27yhYLG+iOQW853AAxlfsA7WDaaG5agvDj8v5zRxAxtjMaA7k41Lh5+
- mB4u3VwytzA1F3ytFldPs4XjNywaXEXqbaStkX8wl2tYMRwqe7mrVzivSJ7rRJVn
- Cgre/iR7Slo0EpzeeZ7kemPrJWyclDIEdCcFbrGEL1PLtnnGTg0PqkpCpf0/E7he
- u9a9GlApmfSfeQc3E/7Len0lX2K67MUrdTJP0c950cumwFfu4AcWPEU9Et5CPSRJ
- FSC3GnsAgG+kiCBMyoriDw==
+ s=rs20250326; t=1757124812; v=1;
+ b=X97E9C/vFb4eJOPvohkQT/b+9jdqfQ43r0a5eDgVdCJ4tR2NDK1QcBJ8cpSGbakF
+ xE6Q7dHSO8LsCTYGTMKlmP3zLsXm/yGeqhYwrfNnTEsysPudx0eHkoEdw6B/DWYk
+ TAxeyTGBoVa2EgQLAI7mzI5GHcxNp/fAZ/KY5j4HQkeZuI71btpcNK/udyWc3Pqz
+ 7nzbnda6P2rnddo67xWjDzww9kX8WBBLtaBx+uy2nLWBlPrCWQLL/LwLyS4hJ3PY
+ fgpeS53PRmSPTO5D2nptdeK8kKGFZNeGr1kK2DR2yEI+9UrunR68JEVwWf6nmZe+
+ aV6HJXyXFfo6lR6BVjJK7g==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sat, 06 Sep 2025 04:11:14 +0200
-Subject: [PATCH 05/22] target/xtensa: Fix AddressSpace exposure timing
+Date: Sat, 06 Sep 2025 04:11:15 +0200
+Subject: [PATCH 06/22] auxbus: Fix AddressSpace exposure timing
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250906-use-v1-5-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250906-use-v1-6-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250906-use-v1-0-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250906-use-v1-0-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -101,7 +101,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-xtensa-cpu is not hotpluggable but its instance can still be created and
+aux-bus is not hotpluggable but its instance can still be created and
 finalized when processing the device-list-properties QMP command.
 Exposing such a temporary instance to AddressSpace should be
 avoided because it leaks the instance.
@@ -111,38 +111,27 @@ it won't happen for the temporary instances.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- target/xtensa/cpu.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ hw/misc/auxbus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
-index ea9b6df3aa24178c8e6a88b02afda5db659199da..63edc3a5b2778c8379a30125481f65361655fe1c 100644
---- a/target/xtensa/cpu.c
-+++ b/target/xtensa/cpu.c
-@@ -243,7 +243,11 @@ static void xtensa_cpu_realizefn(DeviceState *dev, Error **errp)
-     Error *local_err = NULL;
+diff --git a/hw/misc/auxbus.c b/hw/misc/auxbus.c
+index 877f34560626f0ef741f00bb6c7272135d264399..c47db4da985d8e81f9eb49542279499c931aac6c 100644
+--- a/hw/misc/auxbus.c
++++ b/hw/misc/auxbus.c
+@@ -74,12 +74,12 @@ AUXBus *aux_bus_init(DeviceState *parent, const char *name)
+     /* Memory related. */
+     bus->aux_io = g_malloc(sizeof(*bus->aux_io));
+     memory_region_init(bus->aux_io, OBJECT(bus), "aux-io", 1 * MiB);
+-    address_space_init(&bus->aux_addr_space, bus->aux_io, "aux-io");
+     return bus;
+ }
  
- #ifndef CONFIG_USER_ONLY
--    xtensa_irq_init(&XTENSA_CPU(dev)->env);
-+    CPUXtensaState *env = &XTENSA_CPU(dev)->env;
-+
-+    env->address_space_er = g_malloc(sizeof(*env->address_space_er));
-+    address_space_init(env->address_space_er, env->system_er, "ER");
-+    xtensa_irq_init(env);
- #endif
+ void aux_bus_realize(AUXBus *bus)
+ {
++    address_space_init(&bus->aux_addr_space, bus->aux_io, "aux-io");
+     qdev_realize(DEVICE(bus->bridge), BUS(bus), &error_fatal);
+ }
  
-     cpu_exec_realizefn(cs, &local_err);
-@@ -268,11 +272,9 @@ static void xtensa_cpu_initfn(Object *obj)
-     env->config = xcc->config;
- 
- #ifndef CONFIG_USER_ONLY
--    env->address_space_er = g_malloc(sizeof(*env->address_space_er));
-     env->system_er = g_malloc(sizeof(*env->system_er));
-     memory_region_init_io(env->system_er, obj, NULL, env, "er",
-                           UINT64_C(0x100000000));
--    address_space_init(env->address_space_er, env->system_er, "ER");
- 
-     cpu->clock = qdev_init_clock_in(DEVICE(obj), "clk-in", NULL, cpu, 0);
-     clock_set_hz(cpu->clock, env->config->clock_freq_khz * 1000);
 
 -- 
 2.51.0
