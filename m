@@ -2,90 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A6DB46866
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 04:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 959CFB4686D
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 04:27:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuiVY-0000DB-Lt; Fri, 05 Sep 2025 22:18:28 -0400
+	id 1uuiXE-0002uK-6m; Fri, 05 Sep 2025 22:20:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uuiVD-0008Iz-Uk; Fri, 05 Sep 2025 22:18:11 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uuiUz-00084H-Kp; Fri, 05 Sep 2025 22:18:07 -0400
-Received: from [10.40.4.92] (93-51-222-138.ip268.fastwebnet.it [93.51.222.138])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5862Btnr041566
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Sat, 6 Sep 2025 11:16:39 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=mKUX+37+W6DCHXaSHKP3HQpAh7aEXoOw1LuL7ABZjxU=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1757125010; v=1;
- b=X4P99cfpv2KVAQ+iA9GpqPomBdeTqycoyv0wgE8iFi6mxeHHZ/C9chaeY6HNkJ8Y
- 9nY/TAtkaeRBx3q8bDU732SbNfzaT0n7iOeG3lGnDrXUGQwE8TH04cJWlgPykR2F
- 7apmFBSWJob0OmDlYGaroLYuMjRMERfe6XTlxU7SMu5Q4uUSjoAHCWNJnFsMsQG/
- Z3Yh/3TlQF9oNXt8wa5AouFw37soDbhVmrrjYJV7YmrhxUgMBXZS23ipsjCst+Cq
- /dUGTWNxD1BW4zN4y0lBn4dbw8fQwHkN0WUN5HW46E5tCJvRIlpuD3eJD3Vw/+Qy
- 04wSJ8/6cW6evV77Khie6A==
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sat, 06 Sep 2025 04:11:31 +0200
-Subject: [PATCH 22/22] hw/usb/hcd-xhci: Do not delete the subregions
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1uuiX5-0002sp-9k
+ for qemu-devel@nongnu.org; Fri, 05 Sep 2025 22:20:03 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1uuiWu-0008Iz-Gi
+ for qemu-devel@nongnu.org; Fri, 05 Sep 2025 22:20:02 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8DxP9M5mrtoFU4HAA--.15169S3;
+ Sat, 06 Sep 2025 10:19:38 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by front1 (Coremail) with SMTP id qMiowJAxQMI3mrtomDeBAA--.9947S3;
+ Sat, 06 Sep 2025 10:19:37 +0800 (CST)
+Subject: Re: [PATCH v6 05/11] target/loongarch: add msg interrupt CSR registers
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, jiaxun.yang@flygoat.com
+References: <20250904121840.2023683-1-gaosong@loongson.cn>
+ <20250904121840.2023683-6-gaosong@loongson.cn>
+ <2495fcdb-2f8c-bc80-028f-8977d804eba3@loongson.cn>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <b2e063ba-80c9-7639-1779-167b3751a35e@loongson.cn>
+Date: Sat, 6 Sep 2025 10:22:45 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250906-use-v1-22-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
-References: <20250906-use-v1-0-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20250906-use-v1-0-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>,
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>,
- qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- John Levon <john.levon@nutanix.com>,
- Thanos Makatos <thanos.makatos@nutanix.com>,
- Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Aleksandar Rikalo <arikalo@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
- =?utf-8?q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-X-Mailer: b4 0.14.2
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <2495fcdb-2f8c-bc80-028f-8977d804eba3@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: qMiowJAxQMI3mrtomDeBAA--.9947S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxur1kAw1kGrWrZw13ArW3twc_yoWrKr13pr
+ n7AryUGFy8Gr93J3WfJ345XF9xXr1xGanFqr4IgFyxKF4UGr4jgrW0qrZIgF15Aw4rKr10
+ vr1UZry7ZF47XrXCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v2
+ 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+ wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
+ 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+ xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+ 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7XTmDUUU
+ U
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.794,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,36 +81,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is no longer necessary.
+在 2025/9/5 下午4:55, Bibo Mao 写道:
+>
+>
+> On 2025/9/4 下午8:18, Song Gao wrote:
+>> include CSR_MSGIS0-3, CSR_MSGIR and CSR_MSGIE.
+>>
+>> Signed-off-by: Song Gao <gaosong@loongson.cn>
+>> ---
+>>   target/loongarch/cpu-csr.h |  3 +++
+>>   target/loongarch/cpu.h     | 11 +++++++++++
+>>   target/loongarch/machine.c | 27 +++++++++++++++++++++++++--
+>>   3 files changed, 39 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
+>> index 0834e91f30..4792677086 100644
+>> --- a/target/loongarch/cpu-csr.h
+>> +++ b/target/loongarch/cpu-csr.h
+>> @@ -186,6 +186,9 @@ FIELD(CSR_MERRCTL, ISMERR, 0, 1)
+>>     #define LOONGARCH_CSR_CTAG           0x98 /* TagLo + TagHi */
+>>   +#define LOONGARCH_CSR_MSGIS(N)       (0xa0 + N)
+>> +#define LOONGARCH_CSR_MSGIR               0xa4
+>> +
+>>   /* Direct map windows CSRs*/
+>>   #define LOONGARCH_CSR_DMW(N)         (0x180 + N)
+>>   FIELD(CSR_DMW, PLV0, 0, 1)
+>> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+>> index 56fc4a1459..f083c31bb4 100644
+>> --- a/target/loongarch/cpu.h
+>> +++ b/target/loongarch/cpu.h
+>> @@ -233,6 +233,13 @@ FIELD(TLB_MISC, ASID, 1, 10)
+>>   FIELD(TLB_MISC, VPPN, 13, 35)
+>>   FIELD(TLB_MISC, PS, 48, 6)
+>>   +/*Msg interrupt registers */
+>> +#define N_MSGIS                4
+>> +FIELD(CSR_MSGIS, IS, 0, 63)
+>> +FIELD(CSR_MSGIR, INTNUM, 0, 8)
+>> +FIELD(CSR_MSGIR, ACTIVE, 31, 1)
+>> +FIELD(CSR_MSGIE, PT, 0, 8)
+>> +
+>>   #define LSX_LEN    (128)
+>>   #define LASX_LEN   (256)
+>>   @@ -350,6 +357,10 @@ typedef struct CPUArchState {
+>>       uint64_t CSR_DBG;
+>>       uint64_t CSR_DERA;
+>>       uint64_t CSR_DSAVE;
+>> +    /* Msg interrupt registers */
+>> +    uint64_t CSR_MSGIS[N_MSGIS];
+>> +    uint64_t CSR_MSGIR;
+>> +    uint64_t CSR_MSGIE;
+>>       struct {
+>>           uint64_t guest_addr;
+>>       } stealtime;
+>> diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
+>> index 4e70f5c879..996fbeb501 100644
+>> --- a/target/loongarch/machine.c
+>> +++ b/target/loongarch/machine.c
+>> @@ -10,6 +10,7 @@
+>>   #include "migration/cpu.h"
+>>   #include "system/tcg.h"
+>>   #include "vec.h"
+>> +#include "hw/loongarch/virt.h"
+>>     static const VMStateDescription vmstate_fpu_reg = {
+>>       .name = "fpu_reg",
+>> @@ -45,6 +46,27 @@ static const VMStateDescription vmstate_fpu = {
+>>       },
+>>   };
+>>   +static bool msg_needed(void *opaque)
+>> +{
+>> +    MachineState *ms = MACHINE(qdev_get_machine());
+> The avec CSR registers CSR_MSGIR etc is part of CPU, I just think
+> it will be better to check avec CPU feature rather than board feature.
+>
+We can check cpucfg[1].bit26. (MSG_INT).
+>> +    LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
+>> +
+>> +    return virt_has_avecintc(lvms);
+> It supposes that LoongArch CPU must be together with virt machine :)
+>
+>> +}
+>> +
+>> +static const VMStateDescription vmstate_msg = {
+> how about rename it as vmstate_avec?  the same with msg_needed.
+>
+OK,  I will correct it on v7.
 
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
----
- hw/usb/hcd-xhci.c | 10 ----------
- 1 file changed, 10 deletions(-)
-
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index 292c378bfc98bf458f7f760cdb6f1f21f23a7633..b68a2aec317107ec36736f762b9dccd71b53dc3e 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -3454,16 +3454,6 @@ static void usb_xhci_unrealize(DeviceState *dev)
-         xhci->mfwrap_timer = NULL;
-     }
- 
--    memory_region_del_subregion(&xhci->mem, &xhci->mem_cap);
--    memory_region_del_subregion(&xhci->mem, &xhci->mem_oper);
--    memory_region_del_subregion(&xhci->mem, &xhci->mem_runtime);
--    memory_region_del_subregion(&xhci->mem, &xhci->mem_doorbell);
--
--    for (i = 0; i < xhci->numports; i++) {
--        XHCIPort *port = &xhci->ports[i];
--        memory_region_del_subregion(&xhci->mem, &port->mem);
--    }
--
-     usb_bus_release(&xhci->bus);
- }
- 
-
--- 
-2.51.0
+thanks.
+Song Gao
+>
+> Regards
+> Bibo Mao
+>
+>
+>> +    .name = "cpu/msg",
+>> +    .version_id = 1,
+>> +    .minimum_version_id = 1,
+>> +    .needed = msg_needed,
+>> +    .fields = (const VMStateField[]) {
+>> +        VMSTATE_UINT64_ARRAY(env.CSR_MSGIS, LoongArchCPU, N_MSGIS),
+>> +        VMSTATE_UINT64(env.CSR_MSGIR, LoongArchCPU),
+>> +        VMSTATE_UINT64(env.CSR_MSGIE, LoongArchCPU),
+>> +        VMSTATE_END_OF_LIST()
+>> +    },
+>> +};
+>> +
+>>   static const VMStateDescription vmstate_lsxh_reg = {
+>>       .name = "lsxh_reg",
+>>       .version_id = 1,
+>> @@ -168,8 +190,8 @@ static const VMStateDescription vmstate_tlb = {
+>>   /* LoongArch CPU state */
+>>   const VMStateDescription vmstate_loongarch_cpu = {
+>>       .name = "cpu",
+>> -    .version_id = 3,
+>> -    .minimum_version_id = 3,
+>> +    .version_id = 4,
+>> +    .minimum_version_id = 4,
+>>       .fields = (const VMStateField[]) {
+>>           VMSTATE_UINTTL_ARRAY(env.gpr, LoongArchCPU, 32),
+>>           VMSTATE_UINTTL(env.pc, LoongArchCPU),
+>> @@ -245,6 +267,7 @@ const VMStateDescription vmstate_loongarch_cpu = {
+>>           &vmstate_tlb,
+>>   #endif
+>>           &vmstate_lbt,
+>> +        &vmstate_msg,
+>>           NULL
+>>       }
+>>   };
+>>
 
 
