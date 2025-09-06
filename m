@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6644BB4693C
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 07:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ECC2B4693F
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 07:21:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uulKZ-0000VR-UY; Sat, 06 Sep 2025 01:19:20 -0400
+	id 1uulKC-0000ML-H0; Sat, 06 Sep 2025 01:18:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uulK2-0000CX-55
- for qemu-devel@nongnu.org; Sat, 06 Sep 2025 01:18:46 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1uulK5-0000Ku-Mo
+ for qemu-devel@nongnu.org; Sat, 06 Sep 2025 01:18:50 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uulJp-0006oy-UF
- for qemu-devel@nongnu.org; Sat, 06 Sep 2025 01:18:45 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-45ddc7d5731so4963115e9.1
- for <qemu-devel@nongnu.org>; Fri, 05 Sep 2025 22:18:30 -0700 (PDT)
+ id 1uulJt-0006p8-1y
+ for qemu-devel@nongnu.org; Sat, 06 Sep 2025 01:18:49 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-45dd5e24d16so14961225e9.3
+ for <qemu-devel@nongnu.org>; Fri, 05 Sep 2025 22:18:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1757135909; x=1757740709; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RWFu/FOotqt+eEC1erBIyw/Wf7YECCKKISB9pmV9BoQ=;
- b=AcdprEV95CW04Vi96zV/7dYROmx+zp8IsU8MMruMayI42BTnUAHlJfOF7vNyPyK/Qn
- dxgQrz/5+6xnczCwzSvT7WbcdO5X6Q2TANa+h8RGoWwOz8sy2G1EWqjbAaP8jMLPlDEY
- iiHX6Mi73r5Jk4JnYkIGoqcrDJDyOSPk9/KsQm0GKC4u7f2GgmfQXGsia/odJ5ErLnf4
- pLxRfLLBkdEpUqQBKlb1etGeBrZxEJtQcpLH77pUvF2sEbwxJHuMFUGu89ta2lxsuwGg
- BIXkfWLOOvldpAYyV1PB6BQpboxw6qOrZSG2Y6+aeqH4yA1z7mAkEvTGMFCTXpM2V6XQ
- u3nw==
+ bh=si78m6k1/2WbkO3UQheH+as6HI/9NYY7KBL//tRndmo=;
+ b=BvB8/ev3YciUkNkE3cQSsdVl7ev+kME0QMLkoxVgMxGUpSmFsaePE6u0F77wFbtk2S
+ nK5CIF0VIvvKCCr5Y31GdJIrivRvioWUqOKzwKdDhQVKhMETY+lbJgQchFhAMI89yLOK
+ iaxdlUxGB2D7D/zuz8T95bVA7uyHacGueMAOe6M9lNN/kruBORU+1KfklpmiRww5vxzY
+ PIxjfZey7RbthsUbMMH/eMIc4vTrg5SNF7oO9LT8TYlQWLsV6I0OwFPrSOJzefw6G28n
+ YhAR39fevYZ8YPh5pfllZt3DMvcIFNsxXcOLdFjzOKbONvmLR2foFCGtl5b61fdaPkwD
+ HMXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1757135909; x=1757740709;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RWFu/FOotqt+eEC1erBIyw/Wf7YECCKKISB9pmV9BoQ=;
- b=bi8C85Y/uPwrUj2nUEvOl+z1CSAiQmzy1h0/nOXk7W08N2qjC09G3UzZEY0Op/v7Wj
- 1C1HpaN/d8az/0yu1C2452BxIK1HdvZkwlNc/hMXmXNvO7MYBukPsbK7hJYWUJNUwKAl
- GSv+BzUy8tq+fuMUtMg/vdDdvmsuwmqB9vU0aKCfbQ3psggilbb3YimUEW5nD7RDmxiI
- hEWhK8iChranijKo3RSS2gxWi4lzVpdANIqgz5gLsvzxnEzhgRQzwlRACNHoSyp2pzdR
- CIoZjk2GDBL2NiOX4zRkOoz3V5yJk9xVEllGxN3QWxf1o92qNSTx3WYbIbA9fh9VQGTJ
- 0y+w==
-X-Gm-Message-State: AOJu0Yx5VE6rpWuEMdv4B04CvzD/pmitO7jXCU1up87AgpdlQxBRZMYV
- ylygLG1P0O8cWlZs7BnPSMjh9R9iRNJA2TZ0aE2/b90ye9VxlTXgKM5JVkIgGNr1ewDjcnXJx0i
- e8XhrZ3Q=
-X-Gm-Gg: ASbGnctX4AmWQoNRYOIaAaCU7HSEWqb5P6vXQN4aT8lh7ibXo/LlXuP/jn4ZjWrcNqT
- vv1dLdg4j/P0jATzRtxbIl8jai2IlufLr3d2K2HmK2avPWjZ2I+xtm0vGd5nQnRbHHiPWTlghQm
- 23mBzG9+dOvDHfw+ylVO/nPGvbUXTwO6ZRYUWtQ4SwnBCoDzP7mBLVx2kRu/Jyw1R/y4xAdmVbG
- 3xSyQXLOxiNibx9dJ/HcrFFy7VfV0+Uwgwqut1H32AcbtPNBtS5KxZmVUmuR9pvWQ4P3m7UcNuu
- hrTknZwcF0gd2fdS6vhdkbrg0Lc9DnGJZX793hkZjVWAYF8Y4mmSMlzmE1HxC02YvT25i5q965N
- 9bcMGn0otHWpLAO0GEeRXgF0m4S/sEyekR9026Atir26oGESnqyi4Wv1BBjb+SM2s3hvygWEXtg
- YNGadu50o=
-X-Google-Smtp-Source: AGHT+IHBxE9W1OtcwdfWI8AuGrh/X5ENXub/MjIMfZMIDP+iHrqVsuNx8WGo3o/SmAWeNIAB9C+xtw==
-X-Received: by 2002:a05:600c:6298:b0:459:d451:3364 with SMTP id
- 5b1f17b1804b1-45dddecdaa7mr9221505e9.24.1757135908773; 
- Fri, 05 Sep 2025 22:18:28 -0700 (PDT)
+ bh=si78m6k1/2WbkO3UQheH+as6HI/9NYY7KBL//tRndmo=;
+ b=w9mSxk2nMc88l3pHiuFURSx2kVaU/Q3XIGIfWpSsIBvColqdNs5z0D/HRknlUqRx0u
+ 7axokhvTbGjGnWcqI/pT9ptGYrHLZingKOnBTVuq9iZd75XBOZOxlSqEfsmhUb7IZp5p
+ hXf+A4KD9mw2vILksrOcUkvnxscqKZRvnhAzZS6d/iW/i73M9I963v3o93qazjQp8OCP
+ PCNAKP4b987wtG+aWfRV5pJ3aj/T8ERMQCdM1dh6nhhC1YI7y5PE6obzKhhYxCYzn+1h
+ 0+TcySZ17WzwO4E3Ez5FEBDBgiY10B6YEQS0UKuhJAIttTwmaZeTtBtCAEIsqJvE+dRJ
+ 8+Og==
+X-Gm-Message-State: AOJu0YyAL3GG2cyEP1RGla43UkPvPRxKD/MpgG2GcPml/P886o2WQ/gZ
+ hRRhoZ+ABkdXMgmS8Mq47jvSIEojdYgHT9N6AuzBqLAXpdRR9aAr4M0NQg4tmjItEpejIm5EDNB
+ JMME+EKg=
+X-Gm-Gg: ASbGncsDF/NGx1WPf1AwYBScWrIN3XtWgviymjK28A9vzvWCL99RDUR5PTvv4DkLUFS
+ CHZWuDahK16O8FyRaR+v8uUNfALlfwztAx2zP/+HSLndawv5cTQqzk6lpuC8ejeGu1L8vI/mI06
+ rU6a5AvVkJoiUV61wRPy973fszOqhmrvuUaYijgIIn8GIecSmbNz52dyWwbWE7R9zqqxhHKDNhk
+ L/XqFd25bryC/ggIRoMDayYlKnZFSY6h9w3bqDV4f+CoBAu5iuoGFJf080Bdc55qI+3j1kWC+0y
+ tpYefPNnYtCjLuTV9TO08o0Q6fJtDZktqr8Wd8iy6JzolwKCXX6q/KHh9WP4Qd8pxJka8HZR3Jt
+ yr4Fly5CAYOwzoE/6gPuOKO5fH5rjcStGOwWF1X4YGk9DoNCAylweujnoi3GrQr9BjSQDh83C
+X-Google-Smtp-Source: AGHT+IHOQ0PxvYVG4jc+CmlT03Svxo6xfEZfCvrU0SodIDtu7O6oiqd6S6g/7rjChaRqvWpihPFT4Q==
+X-Received: by 2002:a05:600c:4e91:b0:45d:7d88:edcd with SMTP id
+ 5b1f17b1804b1-45dddef8115mr9943125e9.30.1757135909498; 
+ Fri, 05 Sep 2025 22:18:29 -0700 (PDT)
 Received: from stoup.21wol.it (93-51-222-138.ip268.fastwebnet.it.
  [93.51.222.138]) by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-45b6f306c22sm441197735e9.13.2025.09.05.22.18.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Sep 2025 22:18:28 -0700 (PDT)
+ Fri, 05 Sep 2025 22:18:29 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH 08/11] plugins: Use tb_flush__exclusive
-Date: Sat,  6 Sep 2025 07:18:17 +0200
-Message-ID: <20250906051820.160432-9-richard.henderson@linaro.org>
+Subject: [PATCH 09/11] accel/tcg: Introduce EXCP_TB_FLUSH
+Date: Sat,  6 Sep 2025 07:18:18 +0200
+Message-ID: <20250906051820.160432-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250906051820.160432-1-richard.henderson@linaro.org>
 References: <20250906051820.160432-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,58 +99,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In all cases, we are already within start_exclusive.
+We are going to disallow tb_flush from within the context
+of a running cpu.  Introduce a tcg-internal exception to
+return out of the cpu run loop and perform the flush there.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- plugins/core.c   | 6 ++----
- plugins/loader.c | 2 +-
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ include/exec/cpu-common.h       | 1 +
+ accel/tcg/tcg-accel-ops-mttcg.c | 7 +++++++
+ accel/tcg/tcg-accel-ops-rr.c    | 9 +++++++--
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/plugins/core.c b/plugins/core.c
-index c6e9ef1478..4ae1a6ae17 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -248,7 +248,7 @@ static void plugin_grow_scoreboards__locked(CPUState *cpu)
-         }
-         plugin.scoreboard_alloc_size = scoreboard_size;
-         /* force all tb to be flushed, as scoreboard pointers were changed. */
--        tb_flush(cpu);
-+        tb_flush__exclusive();
-     }
-     end_exclusive();
- }
-@@ -684,8 +684,6 @@ void qemu_plugin_user_exit(void)
-      * with the one in fork_start(). That is:
-      * - start_exclusive(), which acquires qemu_cpu_list_lock,
-      *   must be called before acquiring plugin.lock.
--     * - tb_flush(), which acquires mmap_lock(), must be called
--     *   while plugin.lock is not held.
-      */
-     start_exclusive();
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 9b658a3f48..ce9f116ac3 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -20,6 +20,7 @@
+ #define EXCP_HALTED     0x10003 /* cpu is halted (waiting for external event) */
+ #define EXCP_YIELD      0x10004 /* cpu wants to yield timeslice to another */
+ #define EXCP_ATOMIC     0x10005 /* stop-the-world and emulate atomic */
++#define EXCP_TB_FLUSH   0x10006 /* stop-the-world and flush all tb */
  
-@@ -705,7 +703,7 @@ void qemu_plugin_user_exit(void)
-     }
-     qemu_rec_mutex_unlock(&plugin.lock);
+ void cpu_exec_init_all(void);
+ void cpu_exec_step_atomic(CPUState *cpu);
+diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
+index 337b993d3d..f21c86dc84 100644
+--- a/accel/tcg/tcg-accel-ops-mttcg.c
++++ b/accel/tcg/tcg-accel-ops-mttcg.c
+@@ -27,6 +27,7 @@
+ #include "system/tcg.h"
+ #include "system/replay.h"
+ #include "exec/icount.h"
++#include "exec/tb-flush.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/notify.h"
+ #include "qemu/guest-random.h"
+@@ -107,6 +108,12 @@ static void *mttcg_cpu_thread_fn(void *arg)
+                 bql_unlock();
+                 cpu_exec_step_atomic(cpu);
+                 bql_lock();
++                break;
++            case EXCP_TB_FLUSH:
++                start_exclusive();
++                tb_flush__exclusive();
++                end_exclusive();
++                break;
+             default:
+                 /* Ignore everything else? */
+                 break;
+diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+index 6eec5c9eee..d4bf092736 100644
+--- a/accel/tcg/tcg-accel-ops-rr.c
++++ b/accel/tcg/tcg-accel-ops-rr.c
+@@ -32,6 +32,7 @@
+ #include "qemu/notify.h"
+ #include "qemu/guest-random.h"
+ #include "exec/cpu-common.h"
++#include "exec/tb-flush.h"
+ #include "tcg/startup.h"
+ #include "tcg-accel-ops.h"
+ #include "tcg-accel-ops-rr.h"
+@@ -264,14 +265,18 @@ static void *rr_cpu_thread_fn(void *arg)
+                 }
+                 bql_lock();
  
--    tb_flush(current_cpu);
-+    tb_flush__exclusive();
-     end_exclusive();
- 
-     /* now it's safe to handle the exit case */
-diff --git a/plugins/loader.c b/plugins/loader.c
-index 8f0d75c904..6849e1c518 100644
---- a/plugins/loader.c
-+++ b/plugins/loader.c
-@@ -378,7 +378,7 @@ static void plugin_flush_destroy(CPUState *cpu, run_on_cpu_data arg)
-     struct qemu_plugin_reset_data *data = arg.host_ptr;
- 
-     g_assert(cpu_in_exclusive_context(cpu));
--    tb_flush(cpu);
-+    tb_flush__exclusive();
-     plugin_reset_destroy(data);
- }
- 
+-                if (r == EXCP_DEBUG) {
++                switch (r) {
++                case EXCP_DEBUG:
+                     cpu_handle_guest_debug(cpu);
+                     break;
+-                } else if (r == EXCP_ATOMIC) {
++                case EXCP_ATOMIC:
+                     bql_unlock();
+                     cpu_exec_step_atomic(cpu);
+                     bql_lock();
+                     break;
++                case EXCP_TB_FLUSH:
++                    tb_flush__exclusive();
++                    break;
+                 }
+             } else if (cpu->stop) {
+                 if (cpu->unplug) {
 -- 
 2.43.0
 
