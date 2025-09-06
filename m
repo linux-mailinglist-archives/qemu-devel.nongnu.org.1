@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9EB6B46869
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 04:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8274DB4686E
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 04:29:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uuiTr-0005bF-9m; Fri, 05 Sep 2025 22:16:43 -0400
+	id 1uuiTq-0005MV-Az; Fri, 05 Sep 2025 22:16:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uuiTh-0005LV-Ks; Fri, 05 Sep 2025 22:16:33 -0400
+ id 1uuiTe-0005Jo-CG; Fri, 05 Sep 2025 22:16:30 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uuiTT-0007SE-5c; Fri, 05 Sep 2025 22:16:31 -0400
+ id 1uuiTO-0007Wf-MQ; Fri, 05 Sep 2025 22:16:28 -0400
 Received: from [10.40.4.92] (93-51-222-138.ip268.fastwebnet.it [93.51.222.138])
  (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5862Btnj041566
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 5862Btnk041566
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Sat, 6 Sep 2025 11:14:59 +0900 (JST)
+ Sat, 6 Sep 2025 11:15:11 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=kn8Bqoxi+tjKwwRXg2cZTs8dYOv2Ly9ES2G+ar9juS0=; 
+DKIM-Signature: a=rsa-sha256; bh=Ku5gTVgI2eFOcSa5Fx00WOVlDLfLzBXwYcYASIz2wj0=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1757124911; v=1;
- b=HQjxGqD12yYJnl2RNyQVgOtvRMBViN66R2En+XHIxXv6NqZg0zUl/uoMYoTxaaJl
- nqLni1wd2RUF5KDR3YFn4h6ExtN5G7S21ap058gwjW6L6BtLqbKSQhNi3OLFQaRg
- bc2Tzed4dUrx2I9axF5ImF/n4Zus7Tp1d1mqGzNXAsgJxu2Tl3HgcnRdEZ3f96d3
- B7p6RBOtZLUbujouL5l8wr9hmcmTJF8+iddjOKx9gV/JL2KFpIeld56bskrXEQS9
- c7RdlY10sXOSXU/yYtaOoMBIq4Ljvwhk9HYNC1J+067la24+aRPLLMryDMd2cdYI
- KqwS/Q1ydQkR+cuAw+hQVA==
+ s=rs20250326; t=1757124923; v=1;
+ b=C9i1wiIYsM4ULhuUI81VR7QzMhK/9MBwGmWPSfNNnGzUUQnWSWVGE8zaNzPPaTo7
+ 5giqdd3GoxmsooOrZCnqQrVHrkEGgLDDx6HiOaYLUGA0p5cu4Ce+sqOcs6NO5VQ0
+ bQqCj6guxNHcqr0FDunqVDyFZtxRERz1T3V1AdhBDmP+uhi0ZQFP3NphP001r25q
+ dcFGoQGtJa8MwGPIKUg/2LHhdeGfAaFpUjDzaccA7XWYtY/mb1MUhKPe2o8aBvda
+ wBlJ3oVaxrLdp4PXsBFmLXgNIuRFXUcsDnaTBzdLFaQAWNF42XSFK7EiyBOvlBh8
+ F7k1rw+cLhjY/zWK7Enudg==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sat, 06 Sep 2025 04:11:23 +0200
-Subject: [PATCH 14/22] secondary-vga: Do not delete the subregions
+Date: Sat, 06 Sep 2025 04:11:24 +0200
+Subject: [PATCH 15/22] cmd646: Do not delete the subregions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250906-use-v1-14-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250906-use-v1-15-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250906-use-v1-0-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250906-use-v1-0-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -84,8 +84,8 @@ X-Spam_score: -1.7
 X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
  DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,28 +105,39 @@ It is no longer necessary.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/display/vga-pci.c | 8 --------
- 1 file changed, 8 deletions(-)
+ hw/ide/cmd646.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/hw/display/vga-pci.c b/hw/display/vga-pci.c
-index b81f7fd2d0fd11913e6b132897028ca490e74b95..90b4545d382135b109e3bbc880bb8fe1a4fc5275 100644
---- a/hw/display/vga-pci.c
-+++ b/hw/display/vga-pci.c
-@@ -307,14 +307,6 @@ static void pci_secondary_vga_exit(PCIDevice *dev)
-     VGACommonState *s = &d->vga;
- 
-     graphic_console_close(s->con);
--    memory_region_del_subregion(&d->mmio, &d->mrs[0]);
--    memory_region_del_subregion(&d->mmio, &d->mrs[1]);
--    if (d->flags & (1 << PCI_VGA_FLAG_ENABLE_QEXT)) {
--        memory_region_del_subregion(&d->mmio, &d->mrs[2]);
--    }
--    if (d->flags & (1 << PCI_VGA_FLAG_ENABLE_EDID)) {
--        memory_region_del_subregion(&d->mmio, &d->mrs[3]);
--    }
+diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
+index 2a59516a9ddbc0a7d40400f521b9cef07006b76a..ea4d501c5e40b0f7f5fcd5c025c113d97d89f5b7 100644
+--- a/hw/ide/cmd646.c
++++ b/hw/ide/cmd646.c
+@@ -302,17 +302,6 @@ static void pci_cmd646_ide_realize(PCIDevice *dev, Error **errp)
+     }
  }
  
- static void pci_secondary_vga_init(Object *obj)
+-static void pci_cmd646_ide_exitfn(PCIDevice *dev)
+-{
+-    PCIIDEState *d = PCI_IDE(dev);
+-    unsigned i;
+-
+-    for (i = 0; i < 2; ++i) {
+-        memory_region_del_subregion(&d->bmdma_bar, &d->bmdma[i].extra_io);
+-        memory_region_del_subregion(&d->bmdma_bar, &d->bmdma[i].addr_ioport);
+-    }
+-}
+-
+ static const Property cmd646_ide_properties[] = {
+     DEFINE_PROP_UINT32("secondary", PCIIDEState, secondary, 0),
+ };
+@@ -325,7 +314,6 @@ static void cmd646_ide_class_init(ObjectClass *klass, const void *data)
+     device_class_set_legacy_reset(dc, cmd646_reset);
+     dc->vmsd = &vmstate_ide_pci;
+     k->realize = pci_cmd646_ide_realize;
+-    k->exit = pci_cmd646_ide_exitfn;
+     k->vendor_id = PCI_VENDOR_ID_CMD;
+     k->device_id = PCI_DEVICE_ID_CMD_646;
+     k->revision = 0x07;
 
 -- 
 2.51.0
