@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25406B4773A
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 23:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A01BB47738
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Sep 2025 23:04:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uv02i-0003TH-CI; Sat, 06 Sep 2025 17:01:53 -0400
+	id 1uv02o-0003dA-4t; Sat, 06 Sep 2025 17:01:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv02N-0003QH-A4; Sat, 06 Sep 2025 17:01:31 -0400
+ id 1uv02Z-0003Yc-MN; Sat, 06 Sep 2025 17:01:47 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv02J-0005ow-95; Sat, 06 Sep 2025 17:01:30 -0400
+ id 1uv02Q-0005pR-0B; Sat, 06 Sep 2025 17:01:42 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EE5AB150F7F;
- Sun, 07 Sep 2025 00:00:54 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0D58E150F80;
+ Sun, 07 Sep 2025 00:00:55 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A8DD927868A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C20F927868B;
  Sun,  7 Sep 2025 00:00:56 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Laurent Vivier <lvivier@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.20 20/34] virtio-net: Add only one queue pair when
- realizing
-Date: Sun,  7 Sep 2025 00:00:40 +0300
-Message-ID: <20250906210056.127031-2-mjt@tls.msk.ru>
+Subject: [Stable-7.2.20 21/34] virtio-net: Add queues before loading them
+Date: Sun,  7 Sep 2025 00:00:41 +0300
+Message-ID: <20250906210056.127031-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-7.2.20-20250906235950@cover.tls.msk.ru>
 References: <qemu-stable-7.2.20-20250906235950@cover.tls.msk.ru>
@@ -42,7 +42,7 @@ X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,31 +60,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Multiqueue usage is not negotiated yet when realizing. If more than
-one queue is added and the guest never requests to enable multiqueue,
-the extra queues will not be deleted when unrealizing and leak.
+Call virtio_net_set_multiqueue() to add queues before loading their
+states. Otherwise the loaded queues will not have handlers and elements
+in them will not be processed.
 
-Fixes: f9d6dbf0bf6e ("virtio-net: remove virtio queues if the guest doesn't support multiqueue")
+Cc: qemu-stable@nongnu.org
+Fixes: 8c49756825da ("virtio-net: Add only one queue pair when realizing")
+Fixes: 653217a501a1 ("virtio-net: Add only one queue pair when realizing" in 7.2.x)
+Reported-by: Laurent Vivier <lvivier@redhat.com>
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 8c49756825dab430b17648637735c2736d23f778)
+(cherry picked from commit 9379ea9db3c0064fa2787db0794a23a30f7b2d2d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 0ba1db5b14..d7d155a44d 100644
+index d7d155a44d..5dedfdf2e2 100644
 --- a/hw/net/virtio-net.c
 +++ b/hw/net/virtio-net.c
-@@ -3640,9 +3640,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
-     n->net_conf.tx_queue_size = MIN(virtio_net_max_tx_queue_size(n),
-                                     n->net_conf.tx_queue_size);
+@@ -2973,6 +2973,15 @@ static void virtio_net_set_multiqueue(VirtIONet *n, int multiqueue)
+     virtio_net_set_queue_pairs(n);
+ }
  
--    for (i = 0; i < n->max_queue_pairs; i++) {
--        virtio_net_add_queue(n, i);
--    }
-+    virtio_net_add_queue(n, 0);
++static int virtio_net_pre_load_queues(VirtIODevice *vdev)
++{
++    virtio_net_set_multiqueue(VIRTIO_NET(vdev),
++                              virtio_has_feature(vdev->guest_features, VIRTIO_NET_F_RSS) ||
++                              virtio_has_feature(vdev->guest_features, VIRTIO_NET_F_MQ));
++
++    return 0;
++}
++
+ static int virtio_net_post_load_device(void *opaque, int version_id)
+ {
+     VirtIONet *n = opaque;
+@@ -3910,6 +3919,7 @@ static void virtio_net_class_init(ObjectClass *klass, void *data)
+     vdc->guest_notifier_mask = virtio_net_guest_notifier_mask;
+     vdc->guest_notifier_pending = virtio_net_guest_notifier_pending;
+     vdc->legacy_features |= (0x1 << VIRTIO_NET_F_GSO);
++    vdc->pre_load_queues = virtio_net_pre_load_queues;
+     vdc->post_load = virtio_net_post_load_virtio;
+     vdc->vmsd = &vmstate_virtio_net_device;
+     vdc->primary_unplug_pending = primary_unplug_pending;
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 5914f839ea..a6a6f23d3a 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -3656,6 +3656,13 @@ int virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
+         config_len--;
+     }
  
-     n->ctrl_vq = virtio_add_queue(vdev, 64, virtio_net_handle_ctrl);
-     qemu_macaddr_default_if_unset(&n->nic_conf.macaddr);
++    if (vdc->pre_load_queues) {
++        ret = vdc->pre_load_queues(vdev);
++        if (ret) {
++            return ret;
++        }
++    }
++
+     num = qemu_get_be32(f);
+ 
+     if (num > VIRTIO_QUEUE_MAX) {
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index ab3eb182f4..3f2f4f6d19 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -180,6 +180,8 @@ struct VirtioDeviceClass {
+     void (*guest_notifier_mask)(VirtIODevice *vdev, int n, bool mask);
+     int (*start_ioeventfd)(VirtIODevice *vdev);
+     void (*stop_ioeventfd)(VirtIODevice *vdev);
++    /* Called before loading queues. Useful to add queues before loading. */
++    int (*pre_load_queues)(VirtIODevice *vdev);
+     /* Saving and loading of a device; trying to deprecate save/load
+      * use vmsd for new devices.
+      */
 -- 
 2.47.3
 
