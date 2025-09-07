@@ -2,40 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 480E9B479D7
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 10:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D17A8B4797E
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 10:07:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uv9Qx-0008S8-VM; Sun, 07 Sep 2025 03:03:31 -0400
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1uv9RB-00007o-Hs; Sun, 07 Sep 2025 03:03:45 -0400
+Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv9Qu-0008NK-G5; Sun, 07 Sep 2025 03:03:28 -0400
+ id 1uv9R8-00005N-4N; Sun, 07 Sep 2025 03:03:43 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv9Qq-0004OV-RR; Sun, 07 Sep 2025 03:03:27 -0400
+ id 1uv9Qy-0004Pi-6m; Sun, 07 Sep 2025 03:03:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BB85D151054;
+ by isrv.corpit.ru (Postfix) with ESMTP id D4AF1151055;
  Sun, 07 Sep 2025 10:02:04 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id BC3662793C1;
+ by tsrv.corpit.ru (Postfix) with ESMTP id CC3ED2793C2;
  Sun,  7 Sep 2025 10:02:05 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "minglei.liu" <minglei.liu@smartx.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Kostiantyn Kostiuk <kkostiuk@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 70/81] qga: Fix truncated output handling in
- guest-exec status reporting
-Date: Sun,  7 Sep 2025 10:01:49 +0300
-Message-ID: <20250907070205.135289-12-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 71/81] i386/kvm/vmsr_energy: Plug memory leak on
+ failure to connect socket
+Date: Sun,  7 Sep 2025 10:01:50 +0300
+Message-ID: <20250907070205.135289-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.4-20250907000448@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250907000448@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,39 +58,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "minglei.liu" <minglei.liu@smartx.com>
+From: Markus Armbruster <armbru@redhat.com>
 
-Signed-off-by: minglei.liu <minglei.liu@smartx.com>
-Fixes: a1853dca743
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250711021714.91258-1-minglei.liu@smartx.com
-Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-(cherry picked from commit 28c5d27dd4dc4100a96ff4c9e5871dd23c6b02ec)
+vmsr_open_socket() leaks the Error set by
+qio_channel_socket_connect_sync().  Plug the leak by not creating the
+Error.
+
+Fixes: 0418f90809ae (Add support for RAPL MSRs in KVM/Qemu)
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20250723133257.1497640-2-armbru@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+(cherry picked from commit b2e4534a2c9ce3d20ba44d855f1e2b71cc53c3a3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/qga/commands.c b/qga/commands.c
-index 5a5fad31f8..5f20af25d3 100644
---- a/qga/commands.c
-+++ b/qga/commands.c
-@@ -205,13 +205,15 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid, Error **errp)
- #endif
-         if (gei->out.length > 0) {
-             ges->out_data = g_base64_encode(gei->out.data, gei->out.length);
--            ges->has_out_truncated = gei->out.truncated;
-+            ges->has_out_truncated = true;
-+            ges->out_truncated = gei->out.truncated;
-         }
-         g_free(gei->out.data);
+diff --git a/target/i386/kvm/vmsr_energy.c b/target/i386/kvm/vmsr_energy.c
+index 31508d4e77..4be85f0bf2 100644
+--- a/target/i386/kvm/vmsr_energy.c
++++ b/target/i386/kvm/vmsr_energy.c
+@@ -67,13 +67,9 @@ QIOChannelSocket *vmsr_open_socket(const char *path)
+     };
  
-         if (gei->err.length > 0) {
-             ges->err_data = g_base64_encode(gei->err.data, gei->err.length);
--            ges->has_err_truncated = gei->err.truncated;
-+            ges->has_err_truncated = true;
-+            ges->err_truncated = gei->err.truncated;
-         }
-         g_free(gei->err.data);
+     QIOChannelSocket *sioc = qio_channel_socket_new();
+-    Error *local_err = NULL;
  
+     qio_channel_set_name(QIO_CHANNEL(sioc), "vmsr-helper");
+-    qio_channel_socket_connect_sync(sioc,
+-                                    &saddr,
+-                                    &local_err);
+-    if (local_err) {
++    if (qio_channel_socket_connect_sync(sioc, &saddr, NULL) < 0) {
+         /* Close socket. */
+         qio_channel_close(QIO_CHANNEL(sioc), NULL);
+         object_unref(OBJECT(sioc));
 -- 
 2.47.3
 
