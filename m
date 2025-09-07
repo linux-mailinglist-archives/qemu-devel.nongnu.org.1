@@ -2,41 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90AD1B47948
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 09:04:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E76AB47958
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 09:38:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uv9Q4-00083C-Rd; Sun, 07 Sep 2025 03:02:36 -0400
+	id 1uv9QC-00084c-Rs; Sun, 07 Sep 2025 03:02:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv9Q2-00082L-GH; Sun, 07 Sep 2025 03:02:34 -0400
+ id 1uv9QA-00084J-4g; Sun, 07 Sep 2025 03:02:42 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv9Pv-0004JP-K9; Sun, 07 Sep 2025 03:02:34 -0400
+ id 1uv9Q1-0004Jo-UQ; Sun, 07 Sep 2025 03:02:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0F7CC15104A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1C6A515104B;
  Sun, 07 Sep 2025 10:02:04 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 0D66A2793B7;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1FA602793B8;
  Sun,  7 Sep 2025 10:02:05 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- John Snow <jsnow@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Zero Tang <zero.tangptr@gmail.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 60/81] python: mkvenv: fix messages printed by mkvenv
-Date: Sun,  7 Sep 2025 10:01:39 +0300
-Message-ID: <20250907070205.135289-2-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 61/81] i386/tcg/svm: fix incorrect canonicalization
+Date: Sun,  7 Sep 2025 10:01:40 +0300
+Message-ID: <20250907070205.135289-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.4-20250907000448@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250907000448@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,46 +57,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Zero Tang <zero.tangptr@gmail.com>
 
-The new Matcher class does not have a __str__ implementation, and therefore
-it prints the debugging representation of the internal object:
+For all 32-bit systems and 64-bit Windows systems, "long" is 4 bytes long.
+Due to using "long" for a linear address, svm_canonicalization would
+set all high bits to 1 when (assuming 48-bit linear address) the segment
+base is bigger than 0x7FFF.
 
-  $ ../configure --enable-rust && make qemu-system-arm --enable-download
-  python determined to be '/usr/bin/python3'
-  python version: Python 3.13.6
-  mkvenv: Creating non-isolated virtual environment at 'pyvenv'
-  mkvenv: checking for LegacyMatcher('meson>=1.5.0')
-  mkvenv: checking for LegacyMatcher('pycotap>=1.1.0')
-
-Add the method to print the nicer
-
-  mkvenv: checking for meson>=1.5.0
-  mkvenv: checking for pycotap>=1.1.0
+This fixes booting guests under TCG when the guest IDT and GDT bases are
+above 0x7FFF, thereby resulting in incorrect bases. When an interrupt
+arrives, it would trigger a #PF exception; the #PF would trigger again,
+resulting in a #DF exception; the #PF would trigger for the third time,
+resulting in triple-fault, and eventually causes a shutdown VM-Exit to
+the hypervisor right after guest boot.
 
 Cc: qemu-stable@nongnu.org
-Cc: John Snow <jsnow@redhat.com>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit ab85146ac4c6527d6d975afbd3157488cb42147f)
+Signed-off-by: Zero Tang <zero.tangptr@gmail.com>
+(cherry picked from commit c12cbaa007c9da97a11e74119ea3aed9fcc3ac4c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index f102527c4d..9aed266df1 100644
---- a/python/scripts/mkvenv.py
-+++ b/python/scripts/mkvenv.py
-@@ -184,6 +184,10 @@ def match(self, version_str: str) -> bool:
-             )
-         )
+diff --git a/target/i386/tcg/system/svm_helper.c b/target/i386/tcg/system/svm_helper.c
+index f9982b72d1..fd9fadad00 100644
+--- a/target/i386/tcg/system/svm_helper.c
++++ b/target/i386/tcg/system/svm_helper.c
+@@ -49,7 +49,7 @@ static void svm_save_seg(CPUX86State *env, int mmu_idx, hwaddr addr,
+ static inline void svm_canonicalization(CPUX86State *env, target_ulong *seg_base)
+ {
+     uint16_t shift_amt = 64 - cpu_x86_virtual_addr_width(env);
+-    *seg_base = ((((long) *seg_base) << shift_amt) >> shift_amt);
++    *seg_base = (((int64_t) *seg_base) << shift_amt) >> shift_amt;
+ }
  
-+    def __str__(self) -> str:
-+        """String representation delegated to the backend."""
-+        return str(self._m)
-+
-     def __repr__(self) -> str:
-         """Stable debug representation delegated to the backend."""
-         return repr(self._m)
+ static void svm_load_seg(CPUX86State *env, int mmu_idx, hwaddr addr,
 -- 
 2.47.3
 
