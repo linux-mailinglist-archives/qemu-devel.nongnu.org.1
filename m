@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC7DB479D5
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 10:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35AADB47960
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 09:43:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uv9Rs-0001Gs-UB; Sun, 07 Sep 2025 03:04:29 -0400
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1uv9SD-0001iU-M3; Sun, 07 Sep 2025 03:04:51 -0400
+Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv9Rl-0000yS-Gq; Sun, 07 Sep 2025 03:04:21 -0400
+ id 1uv9Ry-0001ea-FX; Sun, 07 Sep 2025 03:04:34 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv9Rd-0004VL-LQ; Sun, 07 Sep 2025 03:04:19 -0400
+ id 1uv9Ri-0004Vy-PG; Sun, 07 Sep 2025 03:04:32 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 424C715105A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5D8F015105B;
  Sun, 07 Sep 2025 10:02:05 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 388142793C7;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 530DF2793C8;
  Sun,  7 Sep 2025 10:02:06 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -29,10 +29,10 @@ Cc: qemu-stable@nongnu.org,
  Justin Applegate <justink.applegate@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 76/81] linux-user/mips: Select 74Kf CPU to run MIPS16e
- binaries
-Date: Sun,  7 Sep 2025 10:01:55 +0300
-Message-ID: <20250907070205.135289-18-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 77/81] linux-user/mips: Select M14Kc CPU to run
+ microMIPS binaries
+Date: Sun,  7 Sep 2025 10:01:56 +0300
+Message-ID: <20250907070205.135289-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.4-20250907000448@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250907000448@cover.tls.msk.ru>
@@ -64,34 +64,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The 74Kf is our latest CPU supporting MIPS16e ASE.
+The M14Kc is our latest CPU supporting the microMIPS ASE.
 
-Note, currently QEMU doesn't have 64-bit CPU supporting MIPS16e ASE.
+Note, currently QEMU doesn't have 64-bit CPU supporting microMIPS ASE.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 6ea219d0196..d19954f46df ("target-mips: MIPS16 support")
+Fixes: 3c824109da0 ("target-mips: microMIPS ASE support")
 Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3054
 Reported-by: Justin Applegate <justink.applegate@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250814070650.78657-3-philmd@linaro.org>
-(cherry picked from commit 7a09b3cc70ab6d717b18dec5c5995f7a06af4593)
-(Mjt: in 10.1 and before the code is in linux-user/mips/target_elf.h)
+Message-Id: <20250814070650.78657-4-philmd@linaro.org>
+(cherry picked from commit 51c3aebfda6489b49cebef593a1ceb597cb97a7e)
+(Mjt: in 10.1 and before, the code is in linux-user/mips/target_elf.h)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/linux-user/mips/target_elf.h b/linux-user/mips/target_elf.h
-index 71a32315a8..cd8622ce28 100644
+index cd8622ce28..d20c6080cc 100644
 --- a/linux-user/mips/target_elf.h
 +++ b/linux-user/mips/target_elf.h
 @@ -12,6 +12,9 @@ static inline const char *cpu_get_model(uint32_t eflags)
      if ((eflags & EF_MIPS_ARCH) == EF_MIPS_ARCH_32R6) {
          return "mips32r6-generic";
      }
-+    if ((eflags & EF_MIPS_ARCH_ASE) == EF_MIPS_ARCH_ASE_M16) {
-+        return "74Kf";
++    if ((eflags & EF_MIPS_ARCH_ASE) == EF_MIPS_ARCH_ASE_MICROMIPS) {
++        return "M14Kc";
 +    }
-     if (eflags & EF_MIPS_NAN2008) {
-         return "P5600";
+     if ((eflags & EF_MIPS_ARCH_ASE) == EF_MIPS_ARCH_ASE_M16) {
+         return "74Kf";
      }
 -- 
 2.47.3
