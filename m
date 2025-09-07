@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 427E4B4794B
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 09:06:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BBDB479CF
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 10:36:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uv9RH-00009Z-BY; Sun, 07 Sep 2025 03:03:51 -0400
+	id 1uv9RN-0000Bo-Ia; Sun, 07 Sep 2025 03:03:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv9RD-00009G-W6; Sun, 07 Sep 2025 03:03:48 -0400
+ id 1uv9RJ-0000At-Mm; Sun, 07 Sep 2025 03:03:53 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv9R2-0004Q3-Fq; Sun, 07 Sep 2025 03:03:47 -0400
+ id 1uv9RB-0004Rv-GN; Sun, 07 Sep 2025 03:03:53 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E35AD151056;
+ by isrv.corpit.ru (Postfix) with ESMTP id EFEC7151057;
  Sun, 07 Sep 2025 10:02:04 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id E57C02793C3;
+ by tsrv.corpit.ru (Postfix) with ESMTP id F3E992793C4;
  Sun,  7 Sep 2025 10:02:05 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 72/81] vfio scsi ui: Error-check
- qio_channel_socket_connect_sync() the same way
-Date: Sun,  7 Sep 2025 10:01:51 +0300
-Message-ID: <20250907070205.135289-14-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 73/81] Revert "tests/qtest: use qos_printf instead of
+ g_test_message"
+Date: Sun,  7 Sep 2025 10:01:52 +0300
+Message-ID: <20250907070205.135289-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.4-20250907000448@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250907000448@cover.tls.msk.ru>
@@ -41,8 +41,8 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,70 +60,168 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Markus Armbruster <armbru@redhat.com>
 
-qio_channel_socket_connect_sync() returns 0 on success, and -1 on
-failure, with errp set.  Some callers check the return value, and some
-check whether errp was set.
+This reverts commit 30ea13e9d97dcbd4ea541ddf9e8857fa1d5cb30f.
 
-For consistency, always check the return value, and always check it's
-negative.
+Also rewrites qos_printf() calls added later.
+
+"make check" prints many lines like
+
+    stdout: 138: UNKNOWN:     # # qos_test running single test in subprocess
+    stdout: 139: UNKNOWN:     # # set_protocol_features: 0x42
+    stdout: 140: UNKNOWN:     # # set_owner: start of session
+    stdout: 141: UNKNOWN:     # # vhost-user: un-handled message: 14
+    stdout: 142: UNKNOWN:     # # vhost-user: un-handled message: 14
+    stdout: 143: UNKNOWN:     # # set_vring(0)=enabled
+    stdout: 144: UNKNOWN:     # # set_vring(1)=enabled
+    stdout: 145: UNKNOWN:     # # set_vring(0)=enabled
+    stdout: 146: UNKNOWN:     # # set_vring(1)=enabled
+    stdout: 147: UNKNOWN:     # # set_vring(0)=enabled
+    stdout: 148: UNKNOWN:     # # set_vring(1)=enabled
+    stdout: 149: UNKNOWN:     # # set_vring(0)=enabled
+    stdout: 150: UNKNOWN:     # # set_vring(1)=enabled
+    stdout: 151: UNKNOWN:     # # set_vring(0)=enabled
+    stdout: 152: UNKNOWN:     # # set_vring(1)=enabled
+    stdout: 153: UNKNOWN:     # # set_vring_num: 0/256
+    stdout: 154: UNKNOWN:     # # set_vring_addr: 0x7f9060000000/0x7f905ffff000/0x7f9060001000
+
+Turns out this is qos-test, and the culprit is a commit meant to ease
+debugging.  Revert it until a better solution is found.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20250723133257.1497640-3-armbru@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-(cherry picked from commit ec14a3de622ae30a8afa78b6f564bc743b753ee1)
-(Mjt: drop changes for hw/vfio-user/proxy.c which is not in 10.0)
+Message-ID: <20250728145747.3165315-1-armbru@redhat.com>
+[Commit message clarified]
+(cherry picked from commit c9a1ea9c52e6462ad5c7814f3abd65baa69dc4ce)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/scsi/pr-manager-helper.c b/scsi/pr-manager-helper.c
-index 3be52a98d5..5f0a26e7a1 100644
---- a/scsi/pr-manager-helper.c
-+++ b/scsi/pr-manager-helper.c
-@@ -105,20 +105,15 @@ static int pr_manager_helper_initialize(PRManagerHelper *pr_mgr,
-         .u.q_unix.path = path
-     };
-     QIOChannelSocket *sioc = qio_channel_socket_new();
--    Error *local_err = NULL;
+diff --git a/tests/qtest/qos-test.c b/tests/qtest/qos-test.c
+index abfd4b9512..00f39f33f6 100644
+--- a/tests/qtest/qos-test.c
++++ b/tests/qtest/qos-test.c
+@@ -328,11 +328,6 @@ static void walk_path(QOSGraphNode *orig_path, int len)
+ int main(int argc, char **argv, char** envp)
+ {
+     g_test_init(&argc, &argv, NULL);
 -
-     uint32_t flags;
-     int r;
+-    if (g_test_subprocess()) {
+-        qos_printf("qos_test running single test in subprocess\n");
+-    }
+-
+     if (g_test_verbose()) {
+         qos_printf("ENVIRONMENT VARIABLES: {\n");
+         for (char **env = envp; *env != 0; env++) {
+diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
+index 75cb3e44b2..56472ca709 100644
+--- a/tests/qtest/vhost-user-test.c
++++ b/tests/qtest/vhost-user-test.c
+@@ -26,7 +26,6 @@
+ #include "libqos/virtio-pci.h"
  
-     assert(!pr_mgr->ioc);
-     qio_channel_set_name(QIO_CHANNEL(sioc), "pr-manager-helper");
--    qio_channel_socket_connect_sync(sioc,
--                                    &saddr,
--                                    &local_err);
-+    r = qio_channel_socket_connect_sync(sioc, &saddr, errp);
-     g_free(path);
--    if (local_err) {
-+    if (r < 0) {
-         object_unref(OBJECT(sioc));
--        error_propagate(errp, local_err);
-         return -ENOTCONN;
+ #include "libqos/malloc-pc.h"
+-#include "libqos/qgraph_internal.h"
+ #include "hw/virtio/virtio-net.h"
+ 
+ #include "standard-headers/linux/vhost_types.h"
+@@ -345,7 +344,7 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
      }
  
-diff --git a/ui/input-barrier.c b/ui/input-barrier.c
-index c86e5d67eb..7acc48d704 100644
---- a/ui/input-barrier.c
-+++ b/ui/input-barrier.c
-@@ -490,7 +490,6 @@ static gboolean input_barrier_event(QIOChannel *ioc G_GNUC_UNUSED,
- static void input_barrier_complete(UserCreatable *uc, Error **errp)
- {
-     InputBarrier *ib = INPUT_BARRIER(uc);
--    Error *local_err = NULL;
- 
-     if (!ib->name) {
-         error_setg(errp, QERR_MISSING_PARAMETER, "name");
-@@ -506,9 +505,7 @@ static void input_barrier_complete(UserCreatable *uc, Error **errp)
-     ib->sioc = qio_channel_socket_new();
-     qio_channel_set_name(QIO_CHANNEL(ib->sioc), "barrier-client");
- 
--    qio_channel_socket_connect_sync(ib->sioc, &ib->saddr, &local_err);
--    if (local_err) {
--        error_propagate(errp, local_err);
-+    if (qio_channel_socket_connect_sync(ib->sioc, &ib->saddr, errp) < 0) {
+     if (size != VHOST_USER_HDR_SIZE) {
+-        qos_printf("%s: Wrong message size received %d\n", __func__, size);
++        g_test_message("Wrong message size received %d", size);
          return;
      }
  
+@@ -356,8 +355,8 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
+         p += VHOST_USER_HDR_SIZE;
+         size = qemu_chr_fe_read_all(chr, p, msg.size);
+         if (size != msg.size) {
+-            qos_printf("%s: Wrong message size received %d != %d\n",
+-                       __func__, size, msg.size);
++            g_test_message("Wrong message size received %d != %d",
++                           size, msg.size);
+             goto out;
+         }
+     }
+@@ -393,7 +392,7 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
+          * We don't need to do anything here, the remote is just
+          * letting us know it is in charge. Just log it.
+          */
+-        qos_printf("set_owner: start of session\n");
++        g_test_message("set_owner: start of session\n");
+         break;
+ 
+     case VHOST_USER_GET_PROTOCOL_FEATURES:
+@@ -419,7 +418,7 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
+          * the remote end to send this. There is no handshake reply so
+          * just log the details for debugging.
+          */
+-        qos_printf("set_protocol_features: 0x%"PRIx64 "\n", msg.payload.u64);
++        g_test_message("set_protocol_features: 0x%"PRIx64 "\n", msg.payload.u64);
+         break;
+ 
+         /*
+@@ -427,11 +426,11 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
+          * address of the vrings but we can simply report them.
+          */
+     case VHOST_USER_SET_VRING_NUM:
+-        qos_printf("set_vring_num: %d/%d\n",
++        g_test_message("set_vring_num: %d/%d\n",
+                    msg.payload.state.index, msg.payload.state.num);
+         break;
+     case VHOST_USER_SET_VRING_ADDR:
+-        qos_printf("set_vring_addr: 0x%"PRIx64"/0x%"PRIx64"/0x%"PRIx64"\n",
++        g_test_message("set_vring_addr: 0x%"PRIx64"/0x%"PRIx64"/0x%"PRIx64"\n",
+                    msg.payload.addr.avail_user_addr,
+                    msg.payload.addr.desc_user_addr,
+                    msg.payload.addr.used_user_addr);
+@@ -464,7 +463,7 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
+     case VHOST_USER_SET_VRING_CALL:
+         /* consume the fd */
+         if (!qemu_chr_fe_get_msgfds(chr, &fd, 1) && fd < 0) {
+-            qos_printf("call fd: %d, do not set non-blocking\n", fd);
++            g_test_message("call fd: %d, do not set non-blocking\n", fd);
+             break;
+         }
+         /*
+@@ -510,12 +509,12 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
+          * fully functioning vhost-user we would enable/disable the
+          * vring monitoring.
+          */
+-        qos_printf("set_vring(%d)=%s\n", msg.payload.state.index,
++        g_test_message("set_vring(%d)=%s\n", msg.payload.state.index,
+                    msg.payload.state.num ? "enabled" : "disabled");
+         break;
+ 
+     default:
+-        qos_printf("vhost-user: un-handled message: %d\n", msg.request);
++        g_test_message("vhost-user: un-handled message: %d\n", msg.request);
+         break;
+     }
+ 
+@@ -539,7 +538,7 @@ static const char *init_hugepagefs(void)
+     }
+ 
+     if (access(path, R_OK | W_OK | X_OK)) {
+-        qos_printf("access on path (%s): %s", path, strerror(errno));
++        g_test_message("access on path (%s): %s", path, strerror(errno));
+         g_test_fail();
+         return NULL;
+     }
+@@ -549,13 +548,13 @@ static const char *init_hugepagefs(void)
+     } while (ret != 0 && errno == EINTR);
+ 
+     if (ret != 0) {
+-        qos_printf("statfs on path (%s): %s", path, strerror(errno));
++        g_test_message("statfs on path (%s): %s", path, strerror(errno));
+         g_test_fail();
+         return NULL;
+     }
+ 
+     if (fs.f_type != HUGETLBFS_MAGIC) {
+-        qos_printf("Warning: path not on HugeTLBFS: %s", path);
++        g_test_message("Warning: path not on HugeTLBFS: %s", path);
+         g_test_fail();
+         return NULL;
+     }
 -- 
 2.47.3
 
