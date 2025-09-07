@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542CBB47949
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 09:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 382CEB47970
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 09:48:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uv9Qp-0008IL-Rd; Sun, 07 Sep 2025 03:03:23 -0400
+	id 1uv9Qv-0008Nd-An; Sun, 07 Sep 2025 03:03:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv9Qm-0008Gv-WB; Sun, 07 Sep 2025 03:03:21 -0400
+ id 1uv9Qt-0008MH-7u; Sun, 07 Sep 2025 03:03:27 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv9Qe-0004Mv-Nm; Sun, 07 Sep 2025 03:03:19 -0400
+ id 1uv9Qj-0004Ne-Jg; Sun, 07 Sep 2025 03:03:26 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9E52C151052;
+ by isrv.corpit.ru (Postfix) with ESMTP id ABF43151053;
  Sun, 07 Sep 2025 10:02:04 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A0CF62793BF;
+ by tsrv.corpit.ru (Postfix) with ESMTP id AEC8A2793C0;
  Sun,  7 Sep 2025 10:02:05 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Kostiantyn Kostiuk <kkostiuk@redhat.com>,
  Yan Vugenfirer <yvugenfi@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 68/81] qga/installer: Remove QGA VSS if QGA
- installation failed
-Date: Sun,  7 Sep 2025 10:01:47 +0300
-Message-ID: <20250907070205.135289-10-mjt@tls.msk.ru>
+Subject: [Stable-10.0.4 69/81] qga-vss: Write hex value of error in log
+Date: Sun,  7 Sep 2025 10:01:48 +0300
+Message-ID: <20250907070205.135289-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.4-20250907000448@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250907000448@cover.tls.msk.ru>
@@ -60,58 +59,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kostiantyn Kostiuk <kkostiuk@redhat.com>
 
-When QGA Installer failed to install QGA service but install
-QGA VSS provider, provider should be removed before installer
-exits. Otherwise QGA VSS will has broken infomation and
-prevent QGA installation in next run.
+QGA-VSS writes error using error_setg_win32_internal,
+which call g_win32_error_message.
+
+g_win32_error_message - translate a Win32 error code
+(as returned by GetLastError()) into the corresponding message.
+
+In the same time, we call error_setg_win32_internal with
+error codes from different Windows componets like VSS or
+Performance monitor that provides different codes and
+can't be converted with g_win32_error_message. In this
+case, the empty suffix will be returned so error will be
+masked.
+
+This commit directly add hex value of error code.
+
+Reproduce:
+ - Run QGA command: {"execute": "guest-fsfreeze-freeze-list", "arguments": {"mountpoints": ["D:"]}}
+
+QGA error example:
+ - before changes:
+  {"error": {"class": "GenericError", "desc": "failed to add D: to snapshot set: "}}
+ - after changes:
+  {"error": {"class": "GenericError", "desc": "failed to add D: to snapshot set: Windows error 0x8004230e: "}}
 
 Reviewed-by: Yan Vugenfirer <yvugenfi@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250825143155.160913-1-kkostiuk@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250825135311.138330-1-kkostiuk@redhat.com
 Signed-off-by: Kostiantyn Kostiuk <kkostiuk@redhat.com>
-(cherry picked from commit 85ff0e956bf26a93c92e4dca8f6257613269a0cf)
+(cherry picked from commit edf3780a7dad4658ab7b72ea37e310a2be9b16d3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/qga/installer/qemu-ga.wxs b/qga/installer/qemu-ga.wxs
-index df572adb4a..32b8308728 100644
---- a/qga/installer/qemu-ga.wxs
-+++ b/qga/installer/qemu-ga.wxs
-@@ -151,6 +151,14 @@
-               Return="check"
-               >
-     </CustomAction>
-+    <CustomAction Id="UnRegisterCom_Rollback"
-+              ExeCommand='"[qemu_ga_directory]qga-vss.dll",DLLCOMUnregister'
-+              Execute="rollback"
-+              Property="rundll"
-+              Impersonate="no"
-+              Return="check"
-+              >
-+    </CustomAction>
-     <?endif?>
+diff --git a/qga/vss-win32/requester.cpp b/qga/vss-win32/requester.cpp
+index 4401d55e3a..644514fb95 100644
+--- a/qga/vss-win32/requester.cpp
++++ b/qga/vss-win32/requester.cpp
+@@ -28,8 +28,9 @@
  
-     <Feature Id="QEMUFeature" Title="QEMU Guest Agent" Level="1">
-@@ -174,8 +182,19 @@
- 
-     <InstallExecuteSequence>
-       <?ifdef var.InstallVss?>
--      <Custom Action="UnRegisterCom" After="StopServices">Installed</Custom>
--      <Custom Action="RegisterCom" After="InstallServices">NOT REMOVE</Custom>
-+        <!-- Use explicit Sequence number to provide an absolute position in the sequence-->
-+        <!-- This is needed to set "UnRegisterCom_Rollback" before "RegisterCom" and after "InstallFiles"-->
-+        <!-- but, Wix detect this double condition incorrectly -->
-+
-+        <!-- UnRegisterCom_Rollback (for install rollback): at 5849, right before RegisterCom (5850)-->
-+        <!-- Runs only if the installation fails and rolls back-->
-+        <Custom Action="UnRegisterCom_Rollback" Sequence="5849">NOT REMOVE</Custom>
-+
-+        <!-- RegisterCom (for install): at 5850, right after InstallFiles (5849) (old: After="InstallServices")-->
-+        <Custom Action="RegisterCom" Sequence="5850">NOT REMOVE</Custom>
-+
-+        <!-- UnRegisterCom (for uninstall): at 1901, right after StopServices (1900) (old: After="StopServices")-->
-+        <Custom Action="UnRegisterCom" Sequence="1901">Installed</Custom>
-       <?endif?>
-     </InstallExecuteSequence>
-   </Product>
+ #define err_set(e, err, fmt, ...) {                                         \
+     (e)->error_setg_win32_wrapper((e)->errp, __FILE__, __LINE__, __func__,  \
+-                                   err, fmt, ## __VA_ARGS__);               \
+-    qga_debug(fmt, ## __VA_ARGS__);                                         \
++                                   err, fmt ": Windows error 0x%lx",        \
++                                   ## __VA_ARGS__, err);                    \
++    qga_debug(fmt ": Windows error 0x%lx", ## __VA_ARGS__, err);            \
+ }
+ /* Bad idea, works only when (e)->errp != NULL: */
+ #define err_is_set(e) ((e)->errp && *(e)->errp)
 -- 
 2.47.3
 
