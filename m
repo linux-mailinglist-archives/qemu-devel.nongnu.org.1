@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70CDB479ED
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 11:01:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60185B479D4
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 10:43:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uv9Sr-00027d-9m; Sun, 07 Sep 2025 03:05:29 -0400
+	id 1uv9T0-0002TV-Jp; Sun, 07 Sep 2025 03:05:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv9SL-00022S-Ln; Sun, 07 Sep 2025 03:05:00 -0400
+ id 1uv9ST-0002FW-C6; Sun, 07 Sep 2025 03:05:07 -0400
 Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uv9S6-0004Z5-OA; Sun, 07 Sep 2025 03:04:47 -0400
+ id 1uv9SC-0004Zh-Qg; Sun, 07 Sep 2025 03:05:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9A49D15105E;
+ by isrv.corpit.ru (Postfix) with ESMTP id A8C96151060;
  Sun, 07 Sep 2025 10:02:05 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9B75A2793CB;
+ by tsrv.corpit.ru (Postfix) with ESMTP id AABE82793CC;
  Sun,  7 Sep 2025 10:02:06 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Glenn Miles <milesg@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.4 80/81] hw/gpio/pca9554: Avoid leak in pca9554_set_pin()
-Date: Sun,  7 Sep 2025 10:01:59 +0300
-Message-ID: <20250907070205.135289-22-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ qemu-stable@qemu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [Stable-10.0.4 81/81] block/curl: fix curl internal handles handling
+Date: Sun,  7 Sep 2025 10:02:00 +0300
+Message-ID: <20250907070205.135289-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <qemu-stable-10.0.4-20250907000448@cover.tls.msk.ru>
 References: <qemu-stable-10.0.4-20250907000448@cover.tls.msk.ru>
@@ -43,8 +42,8 @@ X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,62 +59,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+block/curl.c uses CURLMOPT_SOCKETFUNCTION to register a socket callback.
+According to the documentation, this callback is called not just with
+application-created sockets but also with internal curl sockets, - and
+for such sockets, user data pointer is not set by the application, so
+the result qemu crashing.
 
-In pca9554_set_pin() we have a string property which we parse in
-order to set some non-string fields in the device state.  So we call
-visit_type_str(), passing it the address of the local variable
-state_str.
+Pass BDRVCURLState directly to the callback function as user pointer,
+instead of relying on CURLINFO_PRIVATE.
 
-visit_type_str() will allocate a new copy of the string; we
-never free this string, so the result is a memory leak, detected
-by ASAN during a "make check" run:
+This problem started happening with update of libcurl from 8.9 to 8.10 --
+apparently with this change curl started using private handles more.
 
-Direct leak of 5 byte(s) in 1 object(s) allocated from:
-    #0 0x5d605212ede3 in malloc (/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/qemu-system-arm+0x21f1de3) (
-BuildId: 3d5373c89317f58bfcd191a33988c7347714be14)
-    #1 0x7f7edea57b09 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x62b09) (BuildId: 1eb6131419edb83b2178b68282
-9a6913cf682d75)
-    #2 0x7f7edea6d4d8 in g_strdup (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x784d8) (BuildId: 1eb6131419edb83b2178b68282
-9a6913cf682d75)
-    #3 0x5d6055289a91 in g_strdup_inline /usr/include/glib-2.0/glib/gstrfuncs.h:321:10
-    #4 0x5d6055289a91 in qobject_input_type_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qapi/qo
-bject-input-visitor.c:542:12
-    #5 0x5d605528479c in visit_type_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qapi/qapi-visit
--core.c:349:10
-    #6 0x5d60528bdd87 in pca9554_set_pin /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/gpio/pca9554.c:179:10
-    #7 0x5d60549bcbbb in object_property_set /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:1450:5
-    #8 0x5d60549d2055 in object_property_set_qobject /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/qom-qobject.c:28:10
-    #9 0x5d60549bcdf1 in object_property_set_str /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../qom/object.c:1458:15
-    #10 0x5d605439d077 in gb200nvl_bmc_i2c_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/arm/aspeed.c:1267:5
-    #11 0x5d60543a3bbc in aspeed_machine_init /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-asan/../../hw/arm/aspeed.c:493:9
+(CURLINFO_PRIVATE is used in one more place, in curl_multi_check_completion() -
+it might need a similar fix too)
 
-Make the state_str g_autofree, so that we will always free
-it, on both error-exit and success codepaths.
-
-Cc: qemu-stable@nongnu.org
-Fixes: de0c7d543bca ("misc: Add a pca9554 GPIO device model")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250821154459.2417976-1-peter.maydell@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 3284d1c07cfd8d42aa27d1cf83d3e65fcd62e35e)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3081
+Cc: qemu-stable@qemu.org
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 606978500c3d18fb89a49844f253097b17f757de)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/gpio/pca9554.c b/hw/gpio/pca9554.c
-index fe03bb4b5e..735d26b4c3 100644
---- a/hw/gpio/pca9554.c
-+++ b/hw/gpio/pca9554.c
-@@ -177,7 +177,7 @@ static void pca9554_set_pin(Object *obj, Visitor *v, const char *name,
-     PCA9554State *s = PCA9554(obj);
-     int pin, rc, val;
-     uint8_t state, mask;
--    char *state_str;
-+    g_autofree char *state_str = NULL;
+diff --git a/block/curl.c b/block/curl.c
+index 5467678024..00b949ea45 100644
+--- a/block/curl.c
++++ b/block/curl.c
+@@ -162,13 +162,9 @@ static int curl_timer_cb(CURLM *multi, long timeout_ms, void *opaque)
+ static int curl_sock_cb(CURL *curl, curl_socket_t fd, int action,
+                         void *userp, void *sp)
+ {
+-    BDRVCURLState *s;
+-    CURLState *state = NULL;
++    BDRVCURLState *s = userp;
+     CURLSocket *socket;
  
-     if (!visit_type_str(v, name, &state_str, errp)) {
-         return;
+-    curl_easy_getinfo(curl, CURLINFO_PRIVATE, (char **)&state);
+-    s = state->s;
+-
+     socket = g_hash_table_lookup(s->sockets, GINT_TO_POINTER(fd));
+     if (!socket) {
+         socket = g_new0(CURLSocket, 1);
+@@ -605,6 +601,7 @@ static void curl_attach_aio_context(BlockDriverState *bs,
+     assert(!s->multi);
+     s->multi = curl_multi_init();
+     s->aio_context = new_context;
++    curl_multi_setopt(s->multi, CURLMOPT_SOCKETDATA, s);
+     curl_multi_setopt(s->multi, CURLMOPT_SOCKETFUNCTION, curl_sock_cb);
+     curl_multi_setopt(s->multi, CURLMOPT_TIMERDATA, s);
+     curl_multi_setopt(s->multi, CURLMOPT_TIMERFUNCTION, curl_timer_cb);
 -- 
 2.47.3
 
