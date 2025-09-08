@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761F3B489CB
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:15:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3325B489E5
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:18:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvYs4-0001Wt-64; Mon, 08 Sep 2025 06:13:13 -0400
+	id 1uvYs3-0001Ud-Fg; Mon, 08 Sep 2025 06:13:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvYrz-0001V8-L8
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uvYrt-0001U4-SU
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvYrk-0000t6-CM
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:05 -0400
+ id 1uvYrk-0000tM-SA
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757326367;
+ s=mimecast20190719; t=1757326369;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=6fDrP9bH4bHquY6G+/HTgZy5Ut0rr4KQwzXkfNcFZuw=;
- b=OTgYaQTqmPC1XwEhV/S5rq7oWFMifq0xJoz/4VnLTnshKHt46z98xXg3p+YPQbqYC+2LvC
- f5rI41u0JSq4/MeFvdBpdoUwZS8ii0OcdvmN5jXK/g03ZyB5n24RfaMZmQPJNu4LYE+fol
- s1tHhno+VfEbvWyk4WQijso2MulQoF0=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xDMh8Tj9XNE2pbl7SQeVp29Pr5x/uZR6F1csyzVp1gE=;
+ b=b63aAu4EiPJE36MS2C4H4QNzQwD4t3QO8mJaY4qTSyT8YLMg88cJzSFoJUPPsSdjrowKxl
+ n7FeDJEuSYnFmF7RSLa2Yyp+m0TZc0frwu5FQoUSx62WQCevoIcNZEDJ1O8nj6wn4G6BHD
+ IhmTXkS+UIo5+YKatkXTmtEgRfHT7Rs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-178-C3ksNylmOTKa97J_UfLVcg-1; Mon, 08 Sep 2025 06:12:46 -0400
-X-MC-Unique: C3ksNylmOTKa97J_UfLVcg-1
-X-Mimecast-MFC-AGG-ID: C3ksNylmOTKa97J_UfLVcg_1757326365
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3e1e7752208so2076437f8f.3
- for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:12:45 -0700 (PDT)
+ us-mta-203-qZfMMGy7N-uBLZi8gcCPSw-1; Mon, 08 Sep 2025 06:12:48 -0400
+X-MC-Unique: qZfMMGy7N-uBLZi8gcCPSw-1
+X-Mimecast-MFC-AGG-ID: qZfMMGy7N-uBLZi8gcCPSw_1757326367
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-45ddbfd44aaso18518195e9.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:12:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757326364; x=1757931164;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6fDrP9bH4bHquY6G+/HTgZy5Ut0rr4KQwzXkfNcFZuw=;
- b=oE8T98PfqwSxvLtexX3RaZ2UEgx3RS1OpPpUNF/E91YVhSKTRYYjekftoIlUHE2NsO
- IpVBROmkahffex/suyYxXmPp4nPTdtTPLxvJQpc8fh/LQ16vvagsxFX1nyaxRtZx7oqp
- FgAnD5eEFmo4QU4ZyOoNnZzEsAADEovbOrvYYw2LACLSaA8CXfurYYpWDXPOuLEe6GJJ
- uRG/7uq29sHX5/bLbfuA1LuHAIVzLjc2TW3jkqsDl389nCGj8BfQD84m/p+aXtmD5B+S
- imIe4jTYI0v+WX1Pmk3DhlwAmlsEFux8acZ4PpIe/YUVJjR+oH00dg+DdzrLb3kqVAtK
- EqkQ==
-X-Gm-Message-State: AOJu0YwR108zeuape1E0hGwUbAyqp9Mp6FNmbh6faF06AdELf3qm9NLD
- gpmSkZiQ0WVhxLRgvpwiyk9MWvN5zTICXW9Z7COmOjxqCGeFP42BtOC1ctCXeGvRjrakzpK2PC1
- PUcAkZwP6Hud44B+FkAIUbRMG5vdju0wJXIrWsZB/30cv+rhxf70TFpb9pXLijxS/MPbjKAhPYm
- U1rSyMfx+bgRT/QUiU7aTDETtIPc0P/5lpgowCkiVY
-X-Gm-Gg: ASbGncsb63sSUbK45PUOUhctv70/rGnM/NwclJw0W/o1VSYAtuNunDqEMOKI3efyEBM
- BRFsMVmUg5JB38KkY9O04tXnQzEen/CRHDxxdwxPlgy8vQLG5f0Tp1r2Os7XCTa38jnV+rkgrBL
- r0hTZfuurspv85HkOA38yKAs3eMEscK/OTK15X5n3wJYeushduvD9ahM2k0qj1cSZWMpnZ0HiiH
- N/IphZ+2tqvCwAlKhsuwC5Jj3ASRs4OoFwPRFyIDxqNttZdDkxh3BVkJ5LUbo/9PLfuqIJpX59t
- GK16Tk/iEBeDzNKchK/cZJEDQKWPi3/QIm2Q6uIfnnChPhjMI2l7yD7iZ3rzaDfEeYzICmPyb3I
- igkGOUetAttJlP3bFg9poLB7Gzjc5plgzUiwb/FFBb8U=
-X-Received: by 2002:a05:6000:3106:b0:3e6:116a:8fed with SMTP id
- ffacd0b85a97d-3e64bde97a5mr5971702f8f.45.1757326364002; 
+ d=1e100.net; s=20230601; t=1757326365; x=1757931165;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xDMh8Tj9XNE2pbl7SQeVp29Pr5x/uZR6F1csyzVp1gE=;
+ b=RTtyyL+/R9qOis6K+TVzNGpL3iU/Il2YcPEJKQ/tE1LgeSCjEUAyHj2Rvja2jY1kJa
+ WuAOkDMpLQL4kN41qPUunYjlNgYbnJhhZtZNdByf9syxsFn3L963mbT6xlWN5eDnFJOO
+ nRkPLlGmmBQf9eFCAwDSZAE/IWAZMZtZZiG+f9XxOONppSekAyBXazrqULmkU7+4hnWc
+ KxG0STpyFVyeU9+4Mp/NSd0GIZopozGWpGbBaEY+d9+1LXaAW4cA1UxnTLqaIM7Xq+Mm
+ tEAMcheP0RhyQuB8xygY+VW/JT54VSTp45mLG4s6MrAfQMvu1LmXDlNdVPfL9BVddYc6
+ 2Zgw==
+X-Gm-Message-State: AOJu0YyoBArYXbf85Td2IZ+/A+8j8191NKqF3e+LFh8qURS5v0Mrp0Fj
+ df8GiFOpG355C50nCqinavopP0zpr2wNvmqK8/9F37jhKP3uBgT1sA2fu7q2X9vtOJlgOL5lUet
+ ahLHnP1g3ANDLghHdlLyj2sqeJJTJyecUdZ7ntUOJ81I9OZ8XR0DMPsi+nhC+8Fm1QNSABEsjz5
+ p0jgny0sDV3GEQZrjWjOI8Goi3nxi9up3C50D5vgvn
+X-Gm-Gg: ASbGncvsaCLkhdxjtN/FrfQRbdGxMTT1zYNKMaZZPE/4cuAhMEpS61KegyUg0yaBJNQ
+ mH5GatJQ8VRdT8jC6m03P8XZw+g2jj7kVlfIx8UyqikNgbmJ8Bw5ROUcKeRAJ8LARW6nrJSX6Ug
+ D88OBVqUCzzZGTWX0CyNVNptyBtAcJHGJ4NN+tm49Y9ewyOO3H/mv3WaFurOrQWsnEAf2YYsXnz
+ t9yMle7UE3lyUtFDEFcnBZqxdushfFOi0+tWVgk3mDw1dA8NV9+ZOuu4fwFlILx8FaUUnu5ZlYT
+ TXQ9sk5CILypiDMXYktvTi2iS4Lzz67YijtMMnhNRxfckDYYs4YvNFqGaRt0fiCoYTptLpJ07Fh
+ du9MzNWfFY9tcu9XM8PW3m47obHdACaDA0OQ7OMRoxJQ=
+X-Received: by 2002:a05:600c:1991:b0:45c:b575:1aa8 with SMTP id
+ 5b1f17b1804b1-45dddeed95emr50676845e9.35.1757326365207; 
+ Mon, 08 Sep 2025 03:12:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH5kA4ZtNfoZF0xG1edGVELFWWNrBZbx2lf/NBUTrXIZuv4NNykJbpryLfgAlFNRPsXyZNT1Q==
+X-Received: by 2002:a05:600c:1991:b0:45c:b575:1aa8 with SMTP id
+ 5b1f17b1804b1-45dddeed95emr50676485e9.35.1757326364730; 
  Mon, 08 Sep 2025 03:12:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGSKuNhPB+qA3G+1Eg5hzdiirKG2Kv243wIirEV57gAkNZy4xz8mqx4mDxa8Z8Ch5Oh5B+hKw==
-X-Received: by 2002:a05:6000:3106:b0:3e6:116a:8fed with SMTP id
- ffacd0b85a97d-3e64bde97a5mr5971660f8f.45.1757326363416; 
- Mon, 08 Sep 2025 03:12:43 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45dd60b381csm140810465e9.17.2025.09.08.03.12.42
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-45de229238fsm69836945e9.16.2025.09.08.03.12.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Sep 2025 03:12:42 -0700 (PDT)
+ Mon, 08 Sep 2025 03:12:44 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 00/19] accel, cpus: clean up cpu->exit_request
-Date: Mon,  8 Sep 2025 12:12:22 +0200
-Message-ID: <20250908101241.2110068-1-pbonzini@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 01/19] target/ppc: limit cpu_interrupt_exittb to system
+ emulation
+Date: Mon,  8 Sep 2025 12:12:23 +0200
+Message-ID: <20250908101241.2110068-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250908101241.2110068-1-pbonzini@redhat.com>
+References: <20250908101241.2110068-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -104,129 +109,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpu->exit_request is used to kick vCPU threads into qemu_wait_io_event().
-The code that handles the signaling of cpu->exit_request is messy, mostly
-due to no one ever taking a look at it as a whole.  In fact already in commit
-4b8523ee896 ("kvm: First step to push iothread lock out of inner run loop",
-2015-07-01), the read of cpu->exit_request was placed outside the BQL
-critical section without much attention to ordering; and it only got
-worse from that point, in no small part due to a young and naive me.
+It is not used by user-mode emulation and is the only caller of
+cpu_interrupt() in qemu-ppc* binaries.
 
-This series is complementary to the cpu->interrupt_request cleanups
-that Igor did in "memory: reintroduce BQL-free fine-grained PIO/MMIO"
-(https://lore.kernel.org/qemu-devel/20250808120137.2208800-1-imammedo@redhat.com/T/),
-and in fact includes some extra changes to interrupt_request at the
-beginning.
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/ppc/helper_regs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Paolo
-
-Paolo Bonzini (19):
-  target/ppc: limit cpu_interrupt_exittb to system emulation
-  target/sparc: limit cpu_check_irqs to system emulation
-  target/i386: limit a20 to system emulation
-  target-arm: remove uses of cpu_interrupt() for user-mode emulation
-  user-exec: remove cpu_interrupt() stub
-  treewide: clear bits of cs->interrupt_request with cpu_reset_interrupt()
-  cpu-common: use atomic access for interrupt_request
-  cpus: document that qemu_cpu_kick() can be used for BQL-less operation
-  accel: use store_release/load_acquire for cross-thread exit_request
-  accel: use atomic accesses for exit_request
-  accel/tcg: create a thread-kick function for TCG
-  accel/tcg: inline cpu_exit()
-  cpus: remove TCG-ism from cpu_exit()
-  cpus: properly kick CPUs out of inner execution loop
-  treewide: rename qemu_wait_io_event/qemu_wait_io_event_common
-  bsd-user, linux-user: introduce qemu_process_cpu_events
-  cpus: clear exit_request in qemu_process_cpu_events
-  accel: make all calls to qemu_process_cpu_events look the same
-  tcg/user: do not set exit_request gratuitously
-
-v2->v3:
-- [accel: use store_release/load_acquire for cross-thread exit_request]
-  improve comments for memory barriers, match rr_kick_next_cpu() more
-  accurately
-
-- [cpus: properly kick CPUs out of inner execution loop]
-  fix comment
-
-- [treewide: rename qemu_wait_io_event/qemu_wait_io_event_common]
-  new patch; new names used throughout in patches 16-19
-
- docs/devel/tcg-icount.rst           |   2 +-
- accel/tcg/tcg-accel-ops-mttcg.h     |   3 -
- accel/tcg/tcg-accel-ops.h           |   1 +
- bsd-user/aarch64/target_arch_cpu.h  |   2 +-
- bsd-user/arm/target_arch_cpu.h      |   2 +-
- bsd-user/i386/target_arch_cpu.h     |   2 +-
- bsd-user/riscv/target_arch_cpu.h    |   2 +-
- bsd-user/x86_64/target_arch_cpu.h   |   2 +-
- include/hw/core/cpu.h               |  22 +-
- include/system/cpus.h               |   3 +-
- target/arm/internals.h              |   5 +
- accel/dummy-cpus.c                  |   2 +-
- accel/hvf/hvf-accel-ops.c           |   2 +-
- accel/kvm/kvm-accel-ops.c           |   3 +-
- accel/kvm/kvm-all.c                 |  23 +-
- accel/tcg/cpu-exec.c                |  34 ++-
- accel/tcg/tcg-accel-ops-mttcg.c     |  12 +-
- accel/tcg/tcg-accel-ops-rr.c        |  55 ++--
- accel/tcg/tcg-accel-ops.c           |   4 +-
- accel/tcg/user-exec.c               |  11 +-
- bsd-user/main.c                     |   5 -
- cpu-common.c                        |   3 +-
- hw/core/cpu-common.c                |  19 +-
- hw/core/cpu-system.c                |   2 +-
- hw/ppc/ppc.c                        |   2 +
- hw/ppc/spapr_hcall.c                |   7 +-
- hw/ppc/spapr_rtas.c                 |   2 +-
- linux-user/aarch64/cpu_loop.c       |   2 +-
- linux-user/alpha/cpu_loop.c         |   2 +-
- linux-user/arm/cpu_loop.c           |   2 +-
- linux-user/hexagon/cpu_loop.c       |   2 +-
- linux-user/hppa/cpu_loop.c          |   2 +-
- linux-user/i386/cpu_loop.c          |   2 +-
- linux-user/loongarch64/cpu_loop.c   |   2 +-
- linux-user/m68k/cpu_loop.c          |   2 +-
- linux-user/main.c                   |   5 -
- linux-user/microblaze/cpu_loop.c    |   2 +-
- linux-user/mips/cpu_loop.c          |   2 +-
- linux-user/openrisc/cpu_loop.c      |   2 +-
- linux-user/ppc/cpu_loop.c           |   2 +-
- linux-user/riscv/cpu_loop.c         |   2 +-
- linux-user/s390x/cpu_loop.c         |   2 +-
- linux-user/sh4/cpu_loop.c           |   2 +-
- linux-user/sparc/cpu_loop.c         |   2 +-
- linux-user/xtensa/cpu_loop.c        |   2 +-
- replay/replay-events.c              |   3 +-
- system/cpu-timers.c                 |   6 +-
- system/cpus.c                       |  15 +-
- target/arm/cpu-irq.c                | 381 ++++++++++++++++++++++++++++
- target/arm/cpu.c                    | 370 ---------------------------
- target/arm/el2-stubs.c              |  37 +++
- target/arm/helper.c                 |   4 +
- target/arm/tcg/mte_helper.c         |   2 +-
- target/avr/helper.c                 |   4 +-
- target/i386/helper.c                |   2 +
- target/i386/hvf/x86hvf.c            |   8 +-
- target/i386/kvm/hyperv.c            |   1 -
- target/i386/kvm/kvm.c               |  20 +-
- target/i386/nvmm/nvmm-accel-ops.c   |   8 +-
- target/i386/nvmm/nvmm-all.c         |  19 +-
- target/i386/tcg/system/seg_helper.c |  13 +-
- target/i386/tcg/system/svm_helper.c |   2 +-
- target/i386/whpx/whpx-accel-ops.c   |   6 +-
- target/i386/whpx/whpx-all.c         |  23 +-
- target/openrisc/sys_helper.c        |   2 +-
- target/ppc/helper_regs.c            |   2 +
- target/rx/helper.c                  |   4 +-
- target/s390x/tcg/excp_helper.c      |   2 +-
- target/sparc/int32_helper.c         |   2 +
- target/sparc/int64_helper.c         |   2 +
- target/arm/meson.build              |   2 +
- 71 files changed, 645 insertions(+), 566 deletions(-)
- create mode 100644 target/arm/cpu-irq.c
- create mode 100644 target/arm/el2-stubs.c
-
+diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
+index 7e5726871e5..5f217397490 100644
+--- a/target/ppc/helper_regs.c
++++ b/target/ppc/helper_regs.c
+@@ -274,6 +274,7 @@ TCGTBCPUState ppc_get_tb_cpu_state(CPUState *cs)
+     return (TCGTBCPUState){ .pc = env->nip, .flags = hflags_current };
+ }
+ 
++#ifndef CONFIG_USER_ONLY
+ void cpu_interrupt_exittb(CPUState *cs)
+ {
+     /*
+@@ -285,6 +286,7 @@ void cpu_interrupt_exittb(CPUState *cs)
+         cpu_interrupt(cs, CPU_INTERRUPT_EXITTB);
+     }
+ }
++#endif
+ 
+ int hreg_store_msr(CPUPPCState *env, target_ulong value, int alter_hv)
+ {
 -- 
 2.51.0
 
