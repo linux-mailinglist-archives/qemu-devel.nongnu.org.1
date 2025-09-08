@@ -2,96 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A52B489E9
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89EF8B48A13
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:23:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvYss-00025q-6D; Mon, 08 Sep 2025 06:14:02 -0400
+	id 1uvYvi-0006rq-Ia; Mon, 08 Sep 2025 06:16:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvYsk-00022v-17
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uvYvc-0006pb-U5
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:16:52 -0400
+Received: from p-east1-cluster1-host3-snip4-6.eps.apple.com ([57.103.91.29]
+ helo=outbound.ci.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvYsa-00011y-OH
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757326415;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0nuKa0pQnnRbuWROMsoY7tGerozDA9x5CjuoP23Xwkg=;
- b=H8a7y+8RO8TEwiiBBuHJz/HjeblQ4BhDGP2pcRRQfFafb5zVYbj/JDCsDsiDubjsXJTAt3
- 6dUIBiPzSVhjGMUugqwz7elvgGIltUEOeV5bfd5s7UoRJ3LdWXCnqryZfLwNPw764AMX5J
- sCLN+OhjgpF86Fxc8zh4zxymdwl89iE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-349-pkc1EtrlPQK0liLb-UdwkQ-1; Mon, 08 Sep 2025 06:13:33 -0400
-X-MC-Unique: pkc1EtrlPQK0liLb-UdwkQ-1
-X-Mimecast-MFC-AGG-ID: pkc1EtrlPQK0liLb-UdwkQ_1757326413
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3b9dc5c2ba0so2034822f8f.1
- for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:13:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757326412; x=1757931212;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0nuKa0pQnnRbuWROMsoY7tGerozDA9x5CjuoP23Xwkg=;
- b=ijmDNY+7n/95AlqtHnUZ9QyyD+8bOf04cIB7zjIGKSWftXecbjzzmQRfIaG7j5xkoL
- IVQTWt27kMdcnKAlK3Kx2+Ys+61OO858q5Om8ua+4NIOv9NGj0fPLJjCt4LdUsphnBah
- Z/xxEwO08eMD92NUs2zXz/rshDMDxdK2XpJ9Wl/fvszTkq2UBdjZ4TtfSpV+Edr9ua/g
- ONqv5rZMdPwH3WPNimbKz/tk9sk6JAzfipDRWwIPb7cCEdN8+rwM4N3T/B+7ulEKE875
- t7tbwgKKdYdtnJR5xjaDniyiHhjzkzFs8vmfdhhfTpMS7rDknlD8NxFOWEzEOFaZcEPN
- 0BEQ==
-X-Gm-Message-State: AOJu0YyY/QMxerg8USgyjQ/S65KKc/ZFKoAGZHI3+n5NDqen/YPtGXyq
- JdPzzwqB4fNYNXkjqYUd+REmLSkecQbmK9RRazMQYTTa3bnWCQxvV4NHSBVwE4ZnHDhWh+deXMN
- WMnVT+HdmDrTT4oWCdILK2DnRbLA2H0SWa5a/cCpNRMW+8/WmIFmwYE67ZC0Sofm/7eYOAwgOAM
- 3lqYtLjo1rVVYtPj1WCucaeYQt4GyXUsOtabll1XcO
-X-Gm-Gg: ASbGnctCSbGdoC28Dw8n9wkAl52L8seLB3Rm4N7K2drrC54IwStE8qHiaUtlXNm8rqd
- dYIwI0DbfZxAr/bPQyQ6+xev7gZmsWzAAsLZyxiTQw4MededRMzURSRenod+yG5fEiOaapCOr14
- ZLS7ZtIxr8jgK/0ks4FK2E3POcxmHssoxr1iXGiJdYndQqeKMKSeqjZks9f3CeGFqQJYeHKH2iB
- HlfL82KTBcNcOwSj8pVkQ185x5EuQv8dHZ4R9SHflFuxeaE2iCZDwuviwDyVZT5h4X+xYhLePOA
- TUtWUVgOfzJ69EQrsyOtHmHEtG2dMNC5prohhx251woU5U/dqBggZ5KfQYl8ku3Onr4o65/uoUC
- /5yGH8lnbNf4kdCFpvKYxQGV7eDQ0eIXiUo60ZfaNZlY=
-X-Received: by 2002:a05:6000:2285:b0:3e7:4334:2afe with SMTP id
- ffacd0b85a97d-3e743342e6cmr4399706f8f.5.1757326411858; 
- Mon, 08 Sep 2025 03:13:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHm9IeoOJnq1GxSimtNLaafTKR2wFYYFuU5wLNExCZ92RuAwuojRAUeUShXld3eyRPwc7mQ8g==
-X-Received: by 2002:a05:6000:2285:b0:3e7:4334:2afe with SMTP id
- ffacd0b85a97d-3e743342e6cmr4399672f8f.5.1757326411372; 
- Mon, 08 Sep 2025 03:13:31 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.56.250])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e748171834sm3967668f8f.5.2025.09.08.03.13.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Sep 2025 03:13:29 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Igor Mammedov <imammedo@redhat.com>
-Subject: [PATCH 19/19] tcg/user: do not set exit_request gratuitously
-Date: Mon,  8 Sep 2025 12:12:41 +0200
-Message-ID: <20250908101241.2110068-20-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250908101241.2110068-1-pbonzini@redhat.com>
-References: <20250908101241.2110068-1-pbonzini@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uvYvS-0001Re-3U
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:16:51 -0400
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+ by p00-icloudmta-asmtp-us-central-1k-100-percent-7 (Postfix) with ESMTPS id
+ 3023218000B9; Mon,  8 Sep 2025 10:16:32 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+ bh=wiZW7rftnpzvn1BVfH92/dT2nJc5YtLb8ooBCb9/qDY=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
+ b=kgIIE+3/GvJPQU4fLV+mEZQjBNHSls886uT7OFsdbgNItqEF0RDBxOsiKW9MQNIqdiClo23yKcZXQMHIh8ryAnQZ0198nFJi5q7Ag1R1GSh05oV9keQ1cP2mt+3iRMl7xsoX7tPG5AiGA25lnw0eyaPHJno80JNMaE1aWDWIiZIiyBHPtHZo7vA7HkiLRwJMG4OZjfJF8XAlt1zhMqslm8Y/pDxsJ7UPIs0hbAtlT2T8t1SIOy65B14qXz0fNQFmY8eWkF3TwXrQqGvwHuS6j3ciM68Fi8gWBXtcXOADU4DqCZ4OTOp2M0ll6anHMmSDwfBfmhmaM9t/EP0uzi+hlw==
+mail-alias-created-date: 1632407063367
+Received: from smtpclient.apple (ci-asmtp-me-k8s.p00.prod.me.com
+ [17.57.156.36])
+ by p00-icloudmta-asmtp-us-central-1k-100-percent-7 (Postfix) with ESMTPSA id
+ 72B0C1800186; Mon,  8 Sep 2025 10:16:30 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 10/24] target/arm/hvf: Mention hvf_arch_set_traps() must
+ run on vCPU thread
+From: Mads Ynddal <mads@ynddal.dk>
+In-Reply-To: <20250903100702.16726-11-philmd@linaro.org>
+Date: Mon, 8 Sep 2025 12:15:01 +0200
+Cc: qemu-devel@nongnu.org, Alexander Graf <agraf@csgraf.de>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
+ Mohamed Mediouni <mohamed@unpredictable.fr>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Cameron Esfahani <dirty@apple.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Paolo Bonzini <pbonzini@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7284245B-7C8E-4F58-89D2-6C24C807963A@ynddal.dk>
+References: <20250903100702.16726-1-philmd@linaro.org>
+ <20250903100702.16726-11-philmd@linaro.org>
+To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDEwNCBTYWx0ZWRfX6HPjGMk4P+vD
+ Rh8k658D6WuCp0YTIhOXFamFqDFj6hoGXQDuKKb3G7pAty8agL/BSvqxgrB33IhIZYbY3zOcjuA
+ 0DXXZtb3IyRNfOBPWyVOtnX3wyFVZafgSG2oS6OqJx/1Qzkqd9zTqICD7tC4shVoDI0w4vpBnBG
+ e0TOdo60ZysAjNEKmavl0mpjGNm9sviwY8apfZ84NiEC+US10XooV8I+AmCpgvqf194t78DcSC6
+ HYXcK5kaG3XBPvIXwKYNE8i5e/ID3v2FIs3u6C2mMSvlYIWlsdVvCpyH6RQ6cwDF4Al+Ss+eA=
+X-Proofpoint-ORIG-GUID: udl0NJEAMGn-BlYTK-X2ArVaK9slI50-
+X-Proofpoint-GUID: udl0NJEAMGn-BlYTK-X2ArVaK9slI50-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-08_03,2025-09-08_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ phishscore=0 spamscore=0 mlxlogscore=999 mlxscore=0 clxscore=1030
+ malwarescore=0 suspectscore=0 adultscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2506270000 definitions=main-2509080104
+X-JNJ: AAAAAAAB9Px5oCzkvYFV7DXVIFOeYjy1TumrztuH7atZG93MkcBdCewvBcyBno1To1FQn1InAYIr5r2OHvNAdFye6YBlp82E/W/I7vxiKM0WHTVGsTnGfKrmuQgqcmWNrL+bbyIyzJHu+p/P8oADrk/5kqCKEaBnedb0TUSjS8GyXZK29HQkxBifavEv2OwC0MSG+8z5B8kDQHFMRFDF8oYCRYEzOiekogA371SPeh02wtKEKBH4l96AvTf4TSlDfz1rwwtN8m0la2WsknDRWeFWFg9W3fQoS7TslseS9PhDOQ9NRQ6n4Gpq58umi6V2OqeNyCkD2Nf2554K6iT6ZlqGHks149XA0YR2sRwAQD9gAT0qd8M24Y4zcd/ak3gktbfbkT9C0iTIFUzPx8lBjWaIWIehV+xCAkpPXyO+XF/D8Jr/Iw8ETM9SM5ETKFwV6I8X4gfbHFqzNLY/yYNVq1b61RZu/hvfTqkrmr5L0ChpjZB/H97qOCFYEfmUszBH/PAdeXWmRm7a8LIct/Zl5dUlEvCpSLqObtkltlQH1fNdpLgDkqMHrBLkTkeQHL3ZPo+GMR7NBVGyuQQlRHHb5zbHl67+1AxC73wnb/bV7MMWLKcwwBATpzVbVyzsQjSL2zbWhCODo/TEz3knH6W3bvVMGxs4vIUxx3SM9EMTZeedgKjKD2qOCH7rs34jw4N0v4VcazZCkphAbRTnJb/I57pJB7sZaxMI6//rTMY=
+Received-SPF: pass client-ip=57.103.91.29; envelope-from=mads@ynddal.dk;
+ helo=outbound.ci.icloud.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,39 +90,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Whenever user-mode emulation needs to go all the way out of the cpu
-exec loop, it uses cpu_exit(), which already sets cpu->exit_request.
 
-Therefore, there is no need for tcg_kick_vcpu_thread() to set
-cpu->exit_request again outside system emulation.
+> On 3 Sep 2025, at 12.06, Philippe Mathieu-Daud=C3=A9 =
+<philmd@linaro.org> wrote:
+>=20
+> Since hvf_arch_set_traps() calls hv_vcpu_set_trap_debug_exceptions()
+> and hv_vcpu_set_trap_debug_reg_accesses(), which must run on a vCPU,
+> it also must. Mention it.
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> target/arm/hvf/hvf.c | 1 +
+> 1 file changed, 1 insertion(+)
 
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- accel/tcg/cpu-exec.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index ad94f96b252..7c20d9db122 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -751,6 +751,7 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
- 
- void tcg_kick_vcpu_thread(CPUState *cpu)
- {
-+#ifndef CONFIG_USER_ONLY
-     /*
-      * Ensure cpu_exec will see the reason why the exit request was set.
-      * FIXME: this is not always needed.  Other accelerators instead
-@@ -758,6 +759,7 @@ void tcg_kick_vcpu_thread(CPUState *cpu)
-      * CPU thread; see kvm_arch_pre_run() for example.
-      */
-     qatomic_store_release(&cpu->exit_request, true);
-+#endif
- 
-     /* Ensure cpu_exec will see the exit request after TCG has exited.  */
-     qatomic_store_release(&cpu->neg.icount_decr.u16.high, -1);
--- 
-2.51.0
-
+Reviewed-by: Mads Ynddal <mads@ynddal.dk>=
 
