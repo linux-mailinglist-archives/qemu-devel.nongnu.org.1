@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF9FB48A03
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0D5B489DA
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:17:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvYsA-0001dr-Rw; Mon, 08 Sep 2025 06:13:18 -0400
+	id 1uvYsC-0001dm-SV; Mon, 08 Sep 2025 06:13:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvYs7-0001cZ-Gu
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:15 -0400
+ id 1uvYs8-0001cW-7n
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvYrm-0000tY-BJ
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:15 -0400
+ id 1uvYrs-0000tp-17
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757326371;
+ s=mimecast20190719; t=1757326373;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7F7JtBib3HtIMCET12RYVWnFXL3A+/WcjU3+rd9Ob6M=;
- b=KduLtCeHyJ0yhLscWLDXAgyOF7yyWo8w4yr8UI/oDu2tizmcwK+cb4TA3Fb+RBEntEJpLL
- Vh1EZxQCunb63+U8lCR+ya2lyQBgGv2Zg1tz42FO7Jb+qCEO9Ykml/L6Vhw6GstD3dHlPQ
- LMSMnk62hDhTwW+N6rIgxX3eYoxi67w=
+ bh=W3FQSNcvluKEhgLR2MUjySlRLq+bsJkp7JvA9EI2Wgo=;
+ b=ap1jea98G4b+0d9ee+E7Hp8gJhZUhhUYiobeOpfo3+9WyVCL8TYkqMQqM0A6wJSJ5AUs1i
+ gMxT2YqoY2aF6gMVDC481+gEyc3d+9ik6nhQ0ygrbm+UUZ7QfG4NFSM5c/5uiQEhR1uHtG
+ OUBjBbeO/mV2HXFALlDnPIn5CzshimM=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-400-OgHveoIjMFKiEs0uBhBDHw-1; Mon, 08 Sep 2025 06:12:50 -0400
-X-MC-Unique: OgHveoIjMFKiEs0uBhBDHw-1
-X-Mimecast-MFC-AGG-ID: OgHveoIjMFKiEs0uBhBDHw_1757326369
+ us-mta-472-LU0QyyLHPfKaYonlYsokEQ-1; Mon, 08 Sep 2025 06:12:52 -0400
+X-MC-Unique: LU0QyyLHPfKaYonlYsokEQ-1
+X-Mimecast-MFC-AGG-ID: LU0QyyLHPfKaYonlYsokEQ_1757326371
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-45de14da365so13296885e9.3
- for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:12:50 -0700 (PDT)
+ 5b1f17b1804b1-45dd62a0dd2so15147825e9.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:12:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757326368; x=1757931168;
+ d=1e100.net; s=20230601; t=1757326371; x=1757931171;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7F7JtBib3HtIMCET12RYVWnFXL3A+/WcjU3+rd9Ob6M=;
- b=m8igFD3DBzSMelTMHg0FfTE5UmS2moQYvmDSFLkBvP1YiZzPG71QVsB3UFg7w4bJH/
- GWTSsPQKScd7RMOfSrQR6BeqKC4uIOnRXlSmhS7PEGXmu/lhzIsUKZcdIUhYumy3CZ4z
- SgTtgc8Yx47qQ/E9laQOg7bxdhF5h4/ao3FFqeqM0S6xDr4DC9m2qUs0XOR3TXSzseIq
- lHweRD9kPcQHN9JYq12n8zezUhV3nirWGq6HGQViQy99jZffnuoaG8IPSVlpwC+5d8bg
- R3WBNxmvuOj+OX1FbZOK2qBvnCXL0MFrFqc6l+MDwCvxga3Z6PgpAImHnAHTWZfY3K7r
- id7Q==
-X-Gm-Message-State: AOJu0YwB6v1Cxs80bUUOiGkF+vn0pMkWFsRnQcFC7FUKqYKBAAr4D5Xd
- 4NWIBlRilzPytWSVcovV2pbJhjVWRB91n5LuIPveXDi3ST9q4VK5SA0QO3dcxRbS/lZNiJrsLN8
- xhNEpyVn6pjia/lrIhLJQwBZNMvCAezJDUW8xCn0/johyTcMN/OLQcOXmcEj5RFZvFi2BAEdw75
- CJ11i03yjf/lgxpk9c+KBQJ1Xq8vr3irdTM93Hj8DV
-X-Gm-Gg: ASbGncvEv6LqtkFedsfCQWnTo0pJdKfZfvKb4Zc7v415taVGEVPqqf+2cODi5UV+3QZ
- eqPXwn638PI2eHqOkQLQuxw0vZlNJoH+TFkTqrk1AwK5l/pSMFTAjzuTLSFpv6i92+tPbtI3N03
- 4TNMtepDmfZS7doWt9ZWhaolN2zKEACdswnEVtuI09NeW0Jhutm4tqAU2VAhRIpFrP49obxB2bx
- suiDIHxePmEdW/Kx2jOhAnuMBDLMTtiB9w/nyU5ZagpSUbTVU3s1UG3BFTs9Wf2Trlctvhdx2mR
- HjYjKQeX0ezQThoQxzSvwcnkr/DMOLhZWnXaOVdhE0c4BA8+ontkCQG4aTgF0fCKu4zUNQtGeaq
- Bph8CiDo0atMT6p5gaGC642jIYQsmpkCSKvDMQTwHrsg=
-X-Received: by 2002:a5d:5f82:0:b0:3e7:42ae:d3dd with SMTP id
- ffacd0b85a97d-3e742aed713mr3940211f8f.53.1757326368554; 
- Mon, 08 Sep 2025 03:12:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHcKD6udcCUcULOY2R+Z2Tzs5rjwZBGDVQuz1UhG6afXgRb+ISjKUtCVbJ+NSCk2FEua+zyPw==
-X-Received: by 2002:a5d:5f82:0:b0:3e7:42ae:d3dd with SMTP id
- ffacd0b85a97d-3e742aed713mr3940187f8f.53.1757326368131; 
- Mon, 08 Sep 2025 03:12:48 -0700 (PDT)
+ bh=W3FQSNcvluKEhgLR2MUjySlRLq+bsJkp7JvA9EI2Wgo=;
+ b=KY0jX9vWW5M+z2nT7K5uu83Ac2NO4vfhqrlo63ifsDRpDfBpJFyFwaa/0VX3ZH7RTG
+ pNlwgvgddTWOdmaa8BoT9swlFpMEY9mmG5tywes4DqJKJOngIODcyqKrnu2TIbRb9vgo
+ q5i30Afpn/GGHh0qoP14EcRD/AlE3Lnx6X09/iwjnkEtkG7GLMmSdRwVpjyE9qVyudsu
+ EmeGNlUhdqSqEzp7Jw4mj8cswraZaGbOqaGjkUWzlAKzx43aE/fLiWiDM7L/0UC3jGo9
+ Ihv8NaaOEXN8QZq9Z5JS3gsD2/tU/6HJ08hPb8rNDzj8uVxv0xKa7uZR063+0vwyVJaC
+ R5ow==
+X-Gm-Message-State: AOJu0YynR++0EKb/Fuoj59NME8WodzimCrSmOqhoqlKL175VGreaIXli
+ TK0OEv1OwYFqdICRoGikg8jkmu2iBjEJso31zJ6dX7yW3WvMER0dZ++sApXTqMD6VGOKYZleTGh
+ eKfhBPKfVEVTj71CreKQdxNQNOiCKC9ReH/APrVwg6d6Pomj/eTTWo/US0ButMVrA4hC7q84E/7
+ ZC1E3mUAlPB3v0BnEmuY4zaQ0UT4MmHX/LmRsFbDBm
+X-Gm-Gg: ASbGncs4d+oAcCPwJGdyWjQK6BpMCW80v+BCybOmOs8tKY3+1vX4y6szeOMPD2opYDS
+ 0GW52p/2KDqGVvBwRX8YzSvdWRx0WIMchuNX6HYanHpCCV3BM9ke9czYh4CmQsPMhEbwfzooRgL
+ tHTgGx+WzH0sLV9Q0xPsaw/n0diJGfJYIj2y0NEFjVEgj//HurCyGRDKnEFhi+p09ai9A1lDKjv
+ wO5/fWeGfYhkaqlCRLJGBa+E19GFJAXdpTeA59dtHeP/DmdYTuTDQVM/nvaVtkoKEUR/XoF+sKi
+ AlQbO31xqJ2o3quqK0FqL4iBbdSUhuYi4XIWfBlk6HRgva4gDZeKHEySwMYvWqNORe2OUmN8hsk
+ adpYE6XJr1KBLVFkA6KXc9S67XKn2RWSmUt+9TD4Fhok=
+X-Received: by 2002:a05:600c:8b5c:b0:45b:9b9f:88cb with SMTP id
+ 5b1f17b1804b1-45dd5b78584mr97865095e9.16.1757326370797; 
+ Mon, 08 Sep 2025 03:12:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGYKXTKSPxPqGOXHimUcEKnbe+5MhjBPp4oldtBktDXNtJWwNAdq4u6QxDR6zcw76EOMnrLmg==
+X-Received: by 2002:a05:600c:8b5c:b0:45b:9b9f:88cb with SMTP id
+ 5b1f17b1804b1-45dd5b78584mr97864755e9.16.1757326370355; 
+ Mon, 08 Sep 2025 03:12:50 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45cb61377a7sm231030425e9.13.2025.09.08.03.12.45
+ 5b1f17b1804b1-45b7e8879cesm439159775e9.12.2025.09.08.03.12.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Sep 2025 03:12:45 -0700 (PDT)
+ Mon, 08 Sep 2025 03:12:49 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 02/19] target/sparc: limit cpu_check_irqs to system emulation
-Date: Mon,  8 Sep 2025 12:12:24 +0200
-Message-ID: <20250908101241.2110068-3-pbonzini@redhat.com>
+Subject: [PATCH 03/19] target/i386: limit a20 to system emulation
+Date: Mon,  8 Sep 2025 12:12:25 +0200
+Message-ID: <20250908101241.2110068-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250908101241.2110068-1-pbonzini@redhat.com>
 References: <20250908101241.2110068-1-pbonzini@redhat.com>
@@ -93,7 +94,7 @@ X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,55 +111,35 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 It is not used by user-mode emulation and is the only caller of
-cpu_interrupt() in qemu-sparc* binaries.
+cpu_interrupt() in qemu-i386 and qemu-x86_64.
 
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/sparc/int32_helper.c | 2 ++
- target/sparc/int64_helper.c | 2 ++
- 2 files changed, 4 insertions(+)
+ target/i386/helper.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
-index 39db4ffa70a..fdcaa0a578b 100644
---- a/target/sparc/int32_helper.c
-+++ b/target/sparc/int32_helper.c
-@@ -65,6 +65,7 @@ static const char *excp_name_str(int32_t exception_index)
-     return excp_names[exception_index];
- }
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index e0aaed3c4c4..651041ccfa6 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -110,6 +110,7 @@ int cpu_x86_support_mca_broadcast(CPUX86State *env)
+ /* x86 mmu */
+ /* XXX: add PGE support */
  
-+#if !defined(CONFIG_USER_ONLY)
- void cpu_check_irqs(CPUSPARCState *env)
++#ifndef CONFIG_USER_ONLY
+ void x86_cpu_set_a20(X86CPU *cpu, int a20_state)
  {
-     CPUState *cs;
-@@ -96,6 +97,7 @@ void cpu_check_irqs(CPUSPARCState *env)
-         cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
+     CPUX86State *env = &cpu->env;
+@@ -129,6 +130,7 @@ void x86_cpu_set_a20(X86CPU *cpu, int a20_state)
+         env->a20_mask = ~(1 << 20) | (a20_state << 20);
      }
  }
 +#endif
  
- void sparc_cpu_do_interrupt(CPUState *cs)
- {
-diff --git a/target/sparc/int64_helper.c b/target/sparc/int64_helper.c
-index 49e4e51c6dc..23adda4cad7 100644
---- a/target/sparc/int64_helper.c
-+++ b/target/sparc/int64_helper.c
-@@ -62,6 +62,7 @@ static const char * const excp_names[0x80] = {
- };
- #endif
- 
-+#if !defined(CONFIG_USER_ONLY)
- void cpu_check_irqs(CPUSPARCState *env)
- {
-     CPUState *cs;
-@@ -127,6 +128,7 @@ void cpu_check_irqs(CPUSPARCState *env)
-         cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
-     }
- }
-+#endif
- 
- void sparc_cpu_do_interrupt(CPUState *cs)
+ void cpu_x86_update_cr0(CPUX86State *env, uint32_t new_cr0)
  {
 -- 
 2.51.0
