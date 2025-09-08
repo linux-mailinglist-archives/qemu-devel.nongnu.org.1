@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8951B487C7
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 11:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C2E9B4880D
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 11:14:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvXnx-0005eZ-I1; Mon, 08 Sep 2025 05:04:54 -0400
+	id 1uvXvu-0001ug-SM; Mon, 08 Sep 2025 05:13:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvXnQ-0005Yn-34
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 05:04:21 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvXvn-0001tX-2Q
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 05:12:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvXnF-0008KD-3V
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 05:04:19 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvXvg-0001PS-Gc
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 05:12:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757322236;
+ s=mimecast20190719; t=1757322765;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=AhvUXvW8svR3x22M8R7FvV+xnXAef22ZxCBj7DbJ58U=;
- b=LfBQFc1Kw8z0GtjOkk/clLws4XRRowQplVOEFw2yDRxp579KVUV/f1CLd905y14daoZwRX
- ZgmBCfisI/R7uaEiSpOaXVAOn3Hzv+JNIDYDa0i3kzueSFV0rqqXG/iiNATpw3dZFepn8F
- vlKlgu0rHyh7k/wlKLTaTjM3yczjuE0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=H5DedatCWHavDvoZrpKK8PehOpLyFx44MUtfOsHcLfU=;
+ b=aQqfTxp0sPQ0yIdXYajSWse59fA1l6H6Xg7nvTSd9BlVhFblu1Hn5CK3GpUnj6CS/gMxZo
+ g6QU6lIaMUXrZ64MKFyB8GFczc9yIcX57EOjaokFPaIfult6Fn84N8R8Pw6NoYS6U482NG
+ Gpce6Fl32kZDyk3FfPoah20tivuYXt0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-FDzXRvsGPu2eiRxjMSi7eA-1; Mon, 08 Sep 2025 05:03:55 -0400
-X-MC-Unique: FDzXRvsGPu2eiRxjMSi7eA-1
-X-Mimecast-MFC-AGG-ID: FDzXRvsGPu2eiRxjMSi7eA_1757322234
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45dd56f0000so24426315e9.2
- for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 02:03:55 -0700 (PDT)
+ us-mta-125-x9qPGwd2O0SYdGv7XU2j1g-1; Mon, 08 Sep 2025 05:12:43 -0400
+X-MC-Unique: x9qPGwd2O0SYdGv7XU2j1g-1
+X-Mimecast-MFC-AGG-ID: x9qPGwd2O0SYdGv7XU2j1g_1757322762
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45b920e0c25so32049925e9.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 02:12:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757322234; x=1757927034;
+ d=1e100.net; s=20230601; t=1757322762; x=1757927562;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=AhvUXvW8svR3x22M8R7FvV+xnXAef22ZxCBj7DbJ58U=;
- b=RLXKgouhTKHW6tRBTaQK80s7aPUVsjKvwIHqgSmeOHFzX7SFaaiTrHEsCh1bD5qeWR
- mqYG3XwwdCKFKsQdJmuW4uK2GWRgzPUGenVPF55tB+cUFcNptrVt7mwTEHd/LWh9JLBI
- WyHo2E9/3q6WH4eXG9+va4GggKNi7o0h8SSZDB623pgKCLQ8svIn1nCDqyh1KzyIJBlw
- 2SJL+AYtHdGAuFXd4BjK3wF7/9nx/8XnLjmLG3ReBX25udpFz83swU4poMurzyOAioFJ
- Th0iv+40q/KvxdyNrkmJHnKmq316LTUSqV2giBesZv4iTAsm3Ie1KAMSMGmRfiyINddP
- ermQ==
+ bh=H5DedatCWHavDvoZrpKK8PehOpLyFx44MUtfOsHcLfU=;
+ b=w44PEacL9LHi5DL/nlwuEwml5Quu8iVWf1Ztn5vch5xhEFeHRP95sQ++qK0Jw4vESF
+ x4kai9gOGuHqoo1G2XwKwNqLtcrt1z8Y/untK9DP/wtAECa9iywP58P2MbWCzs0JUMSY
+ pHSzxplO65HNOlXdsKCf8KWOwdl8YhBfsR79i7hs8NJcvWZD5ol6do/qxUmYA9UdADD1
+ a6n6Y27glUOVJSXpSRFD6i7j289qnx5vyymCgpmhN1wrx+1yvEDlUZvJifx2b8K5u1SH
+ bcSfbXqaFLPGMTT3H6SYs+k+fPnyXhFnP2VYuYcl2nQFkndv/aoVdpwo9qW/X/mPwyKH
+ Btzw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXUMr3iscAS32viGlacFyISaIqYEkkbKRlrWonOGX6nVkLgBYSNejc1GMMkLvNbe4VdgQiI8+UIface@nongnu.org
-X-Gm-Message-State: AOJu0YzrEcqTC0HZOW8ScZJACjPYf8XfObtz761DEa6BR8y9L5erDiNU
- b3MsVbU1xhZaJAX3or6mXZmpvLW2PKTJwfF4YPo0YkWJnYh6uKKCrbZPoa3sXpUYChu+Pb+yTKo
- zl9ZJJ3EQ2XuSa65q0CjyxTY9MJ+ajYW4CAIqXiCbfiiSKcCDkvJX2QLl
-X-Gm-Gg: ASbGncstOzzUFYhz7xmlvbK6oXapV2H872lwZEw3B/K7bYTWButruxzmfpvtytGuAWQ
- DmYL+CUyormeU3lr/FH2GOVgxrDlzxL9g0al7pKD9o447rIe2ZOQMvBiOQrpIh8JTHxuQ+zmRWK
- bZxaljXlzxSZVzvatDfMSNrrgv7NaSakzVomKRX+W1tu2gHNorFWp8aol3Y+p0kVFIZ+t3amOA/
- Hjdd8d50cGE5HXWm0BaOrTGVvyWcD7Zlswwg6b/oS8Q9IJS0TRmU81iPENwTn+1DMNl9fZA3QD/
- WAh/3+gSOLi1ZeRVirqjEdKNdtyaKJOWl4PxOFgrqNzp0FLWX/K4BiQa4cKQ2d/SuNAb6zYgG5k
- eaCA1Vg==
-X-Received: by 2002:a05:600c:4f50:b0:45b:8600:2be1 with SMTP id
- 5b1f17b1804b1-45dddeb70f7mr58828135e9.7.1757322234437; 
- Mon, 08 Sep 2025 02:03:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHScWsXGW6SsjWOSVxfdlSBYBFLI7Tc2z/zrw0Q8n8twpPbFA6jNIjUTp1cIOk07kohoWZqsQ==
-X-Received: by 2002:a05:600c:4f50:b0:45b:8600:2be1 with SMTP id
- 5b1f17b1804b1-45dddeb70f7mr58827765e9.7.1757322234049; 
- Mon, 08 Sep 2025 02:03:54 -0700 (PDT)
+ AJvYcCVUk3BOWAgZxcTcJhU2jUtGquXU5oWns2e5B26ema8IoiZhOfIA+CxAshSEofpahCEQFAoYYHXUpzn/@nongnu.org
+X-Gm-Message-State: AOJu0Yw6rz9AHLHmoCMYxTFOaLlUibCyHVIkgYxNPMcM9HQLi2V1a275
+ sZCZjq3vJJDtcFQxpAnyQKsGo8NGa/RF6rnwHRpSuCIHxdJvmweS4rdNTeL2k519mMzvrckCWq2
+ Rul7uzVsPOQmjZiQs2Z6dn43p9tUINREJY2+23FTVpznACIVbHlkCneEK
+X-Gm-Gg: ASbGncukZEE6T0O64ikGhrHyBCVCvG/UMgqjn1etbsSMSLvNZ1pkVOnAhwg9ZZXLL3J
+ jUylT8duBlSQ7cI2mBGcQI3BiuombIugOvKf+o2YB05OdB6bKEvDh3pUQIn3Ugb1yTN1f3Yy6qs
+ AkZAYvp/lUmJ4SXoDO7MJgInyhHhg5t930GoNZ2FIWwXUZ4rXoCQjswcPxwV3XOVDDEHLQn1gCp
+ YE61siy+yztPiFLAcGiZTof2SU55hcF3DpJ/OLYu449iTaXZ+huTUJ+NsaUcbXzbAg5XOVJgdxr
+ HO9sbHQ9nOWMbB1hSwRWrwpvvDvaBlKG2oOl02leRnqAytV8KCUD9qMIF0qVORBaAMVD3jq5MpZ
+ FJ5G0mw==
+X-Received: by 2002:a05:600c:1912:b0:459:e398:ed89 with SMTP id
+ 5b1f17b1804b1-45de2cf9a5cmr39526165e9.1.1757322762444; 
+ Mon, 08 Sep 2025 02:12:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGnisDzvToDGNWlrdFaGcylw8y03P/b0yNQySgMB6iaWqScPPEk/XLZ4CAP7VY+3cwWUrPhOQ==
+X-Received: by 2002:a05:600c:1912:b0:459:e398:ed89 with SMTP id
+ 5b1f17b1804b1-45de2cf9a5cmr39525825e9.1.1757322761975; 
+ Mon, 08 Sep 2025 02:12:41 -0700 (PDT)
 Received: from [192.168.0.5] (ltea-047-064-114-112.pools.arcor-ip.net.
  [47.64.114.112]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45dd3aadbcesm161002545e9.17.2025.09.08.02.03.52
+ 5b1f17b1804b1-45dd2304e16sm179056905e9.7.2025.09.08.02.12.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Sep 2025 02:03:53 -0700 (PDT)
-Message-ID: <15775d9f-3644-4b26-ba9b-483b3dfd4922@redhat.com>
-Date: Mon, 8 Sep 2025 11:03:52 +0200
+ Mon, 08 Sep 2025 02:12:41 -0700 (PDT)
+Message-ID: <e43d5fa3-6687-4837-b99c-5d95f0e563f1@redhat.com>
+Date: Mon, 8 Sep 2025 11:12:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] tests/guest-debug: Format comments
+Subject: Re: [PATCH v2 3/5] tests/guest-debug: Add quiet option to run-tests.py
 To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
  alex.bennee@linaro.org, berrange@redhat.com
 Cc: qemu-arm@nongnu.org, 1844144@gmail.com
 References: <20250904154640.52687-1-gustavo.romero@linaro.org>
- <20250904154640.52687-3-gustavo.romero@linaro.org>
+ <20250904154640.52687-4-gustavo.romero@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -125,7 +125,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250904154640.52687-3-gustavo.romero@linaro.org>
+In-Reply-To: <20250904154640.52687-4-gustavo.romero@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -154,16 +154,72 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 04/09/2025 17.46, Gustavo Romero wrote:
-> Capitalize and add periods to comments.
+> Add a --quiet option to run-tests.py so it can run without printing any
+> messages to the stdout.
 > 
 > Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 > ---
->   tests/guest-debug/run-test.py | 14 +++++++-------
->   1 file changed, 7 insertions(+), 7 deletions(-)
+>   tests/guest-debug/run-test.py | 10 ++++++----
+>   1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/guest-debug/run-test.py b/tests/guest-debug/run-test.py
+> index e051e8947c..cf8b37b8b8 100755
+> --- a/tests/guest-debug/run-test.py
+> +++ b/tests/guest-debug/run-test.py
+> @@ -39,15 +39,17 @@ def get_args():
+>       parser.add_argument("--stderr", help="A file to redirect stderr to")
+>       parser.add_argument("--no-suspend", action="store_true",
+>                           help="Ask the binary to not wait for GDB connection")
+> +    parser.add_argument("--quiet", action="store_true", default=False,
+> +                        help="Don't print any messages to stdout")
+>   
+>       return parser.parse_args()
+>   
+>   
+> -def log(output, msg):
+> +def log(output, msg, quiet):
+>       if output:
+>           output.write(msg + "\n")
+>           output.flush()
+> -    else:
+> +    elif not quiet:
+>           print(msg)
+>   
+>   
+> @@ -91,7 +93,7 @@ def log(output, msg):
+>               cmd = f'{args.qemu} {args.qargs} -g {socket_name}{suspend}' \
+>                   f' {args.binary}'
+>   
+> -        log(output, "QEMU CMD: %s" % (cmd))
+> +        log(output, "QEMU CMD: %s" % (cmd), args.quiet)
+>           inferior = subprocess.Popen(shlex.split(cmd))
+>   
+>       # Now launch gdb with our test and collect the result.
+> @@ -117,7 +119,7 @@ def log(output, msg):
+>   
+>   
+>       sleep(1)
+> -    log(output, "GDB CMD: %s" % (gdb_cmd))
+> +    log(output, "GDB CMD: %s" % (gdb_cmd), args.quiet)
+>   
+>       gdb_env = dict(os.environ)
+>       gdb_pythonpath = gdb_env.get("PYTHONPATH", "").split(os.pathsep)
 
-Looks like it's currently a mix in the script, so it might be a good idea 
-indeed to standardize on one format here.
+I can see two more calls to log() in that script, don't you need to change 
+these spots, too:
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+$ grep log tests/guest-debug/run-test.py
+def log(output, msg):
+     log(output, "QEMU CMD: %s" % (cmd))
+     log(output, "GDB CMD: %s" % (gdb_cmd))
+         log(output, "GDB crashed? (%d, %d) SKIPPING" % (result, result - 128))
+         log(output, "GDB never connected? Killed guest")
+
+?
+
+Maybe you could declare the new parameter with quiet=False by default, so 
+that you don't have to worry?
+
+  Thomas
 
 
