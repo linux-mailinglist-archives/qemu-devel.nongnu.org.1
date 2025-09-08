@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5DEB49647
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 18:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8B4B49669
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 19:01:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvf99-0007LB-37; Mon, 08 Sep 2025 12:55:15 -0400
+	id 1uvf9B-0007Or-JE; Mon, 08 Sep 2025 12:55:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uvf8z-0007Ao-18
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:55:06 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uvf8v-00079k-BC
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:55:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uvf8q-0001du-BR
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:55:02 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uvf8s-0001dx-27
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:55:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1757350493;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fsu+oMiwd+/z8WuQ/D4yWcEU4hO/Tb/8LklLZbxcTYE=;
- b=hIILVH8RcwmND9t541z9e3Pk9QcSG+C92F2eYI8GyFG50ZntkiNa4YAxBqibP9zFJAL85y
- tW0Cos6FxK91dtxCbYx059ijL4A6N/WsQjZ2IYcv3yI1BmYJZ15Q9AnF/6kd+cRlUUTKHf
- /iakx4xuSIJolab6vYAVXJjIHJNv0Dk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=LxL649bZ9kgLbkNAweSzp4umnC2umcgzjheXrcb5Kvc=;
+ b=EgYl/zM9fjIC6POllRgLfplXotXwsF5FCg+/X9VmCYOgn97MbifrQhqWUXjv8PuBhDGd++
+ jHC/Wl2huYvamzccwvFpuKc/ElWUxpK6UETvPvwgzOzcTiPkqXvDNfyu9qmlzJbGk6aXoD
+ vChS5VxI/Mo1p+1C76Sp8BCBUGVGOKs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-221-9mve0AOPMxOrbDvek0N7Ow-1; Mon,
- 08 Sep 2025 12:54:48 -0400
-X-MC-Unique: 9mve0AOPMxOrbDvek0N7Ow-1
-X-Mimecast-MFC-AGG-ID: 9mve0AOPMxOrbDvek0N7Ow_1757350487
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-135-UfzzD-4jP0-E-iV9DNHPgw-1; Mon,
+ 08 Sep 2025 12:54:50 -0400
+X-MC-Unique: UfzzD-4jP0-E-iV9DNHPgw-1
+X-Mimecast-MFC-AGG-ID: UfzzD-4jP0-E-iV9DNHPgw_1757350489
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 10212180035C; Mon,  8 Sep 2025 16:54:47 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6BC1C1800447; Mon,  8 Sep 2025 16:54:49 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.50])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E3DFF300018D; Mon,  8 Sep 2025 16:54:44 +0000 (UTC)
+ id 8AD28300018D; Mon,  8 Sep 2025 16:54:47 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- John Levon <john.levon@nutanix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/31] vfio-user/container.h: update VFIOUserContainer
- declaration
-Date: Mon,  8 Sep 2025 18:53:41 +0200
-Message-ID: <20250908165354.1731444-19-clg@redhat.com>
+ John Levon <john.levon@nutanix.com>
+Subject: [PULL 19/31] vfio/container.c: use QOM casts where appropriate
+Date: Mon,  8 Sep 2025 18:53:42 +0200
+Message-ID: <20250908165354.1731444-20-clg@redhat.com>
 In-Reply-To: <20250908165354.1731444-1-clg@redhat.com>
 References: <20250908165354.1731444-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -87,37 +85,109 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 
-Update the VFIOUserContainer declaration so that it is closer to our coding
-guidelines: remove the explicit typedef (this is already handled by the
-OBJECT_DECLARE_TYPE() macro) and add a blank line after the parent object.
+Use QOM casts to convert between VFIOUserContainer and VFIOContainerBase instead
+of accessing bcontainer directly.
 
 Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: John Levon <john.levon@nutanix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/qemu-devel/20250715093110.107317-9-mark.caveayland@nutanix.com
+Link: https://lore.kernel.org/qemu-devel/20250715093110.107317-10-mark.caveayland@nutanix.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio-user/container.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ hw/vfio-user/container.c | 26 +++++++++++---------------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
-diff --git a/hw/vfio-user/container.h b/hw/vfio-user/container.h
-index 2bb1fa13431c280f595f52cd6510ccd141f1ffdb..d5d2275af732977461c504d7335e49464dbe4684 100644
---- a/hw/vfio-user/container.h
-+++ b/hw/vfio-user/container.h
-@@ -13,10 +13,11 @@
- #include "hw/vfio-user/proxy.h"
+diff --git a/hw/vfio-user/container.c b/hw/vfio-user/container.c
+index d589dd90f501bbb3442c7fdc263529501086510d..3cdbd44c1aac2153dd099139a3956a3a0bb9b48e 100644
+--- a/hw/vfio-user/container.c
++++ b/hw/vfio-user/container.c
+@@ -24,16 +24,14 @@
+  */
+ static void vfio_user_listener_begin(VFIOContainerBase *bcontainer)
+ {
+-    VFIOUserContainer *container = container_of(bcontainer, VFIOUserContainer,
+-                                                 bcontainer);
++    VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
  
- /* MMU container sub-class for vfio-user. */
--typedef struct VFIOUserContainer {
-+struct VFIOUserContainer {
-     VFIOContainerBase bcontainer;
+     container->proxy->async_ops = true;
+ }
+ 
+ static void vfio_user_listener_commit(VFIOContainerBase *bcontainer)
+ {
+-    VFIOUserContainer *container = container_of(bcontainer, VFIOUserContainer,
+-                                            bcontainer);
++    VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
+ 
+     /* wait here for any async requests sent during the transaction */
+     container->proxy->async_ops = false;
+@@ -44,8 +42,8 @@ static int vfio_user_dma_unmap(const VFIOContainerBase *bcontainer,
+                                hwaddr iova, ram_addr_t size,
+                                IOMMUTLBEntry *iotlb, bool unmap_all)
+ {
+-    VFIOUserContainer *container = container_of(bcontainer, VFIOUserContainer,
+-                                            bcontainer);
++    VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
 +
-     VFIOUserProxy *proxy;
--} VFIOUserContainer;
-+};
+     Error *local_err = NULL;
+     int ret = 0;
  
- OBJECT_DECLARE_SIMPLE_TYPE(VFIOUserContainer, VFIO_IOMMU_USER);
+@@ -86,8 +84,8 @@ static int vfio_user_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+                              ram_addr_t size, void *vaddr, bool readonly,
+                              MemoryRegion *mrp)
+ {
+-    VFIOUserContainer *container = container_of(bcontainer, VFIOUserContainer,
+-                                                bcontainer);
++    VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
++
+     int fd = memory_region_get_fd(mrp);
+     Error *local_err = NULL;
+     int ret = 0;
+@@ -173,8 +171,7 @@ static int vfio_user_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+ 
+ static bool vfio_user_setup(VFIOContainerBase *bcontainer, Error **errp)
+ {
+-    VFIOUserContainer *container = container_of(bcontainer, VFIOUserContainer,
+-                                                bcontainer);
++    VFIOUserContainer *container = VFIO_IOMMU_USER(bcontainer);
+ 
+     assert(container->proxy->dma_pgsizes != 0);
+     bcontainer->pgsizes = container->proxy->dma_pgsizes;
+@@ -218,7 +215,7 @@ vfio_user_container_connect(AddressSpace *as, VFIODevice *vbasedev,
+         goto put_space_exit;
+     }
+ 
+-    bcontainer = &container->bcontainer;
++    bcontainer = VFIO_IOMMU(container);
+ 
+     ret = ram_block_uncoordinated_discard_disable(true);
+     if (ret) {
+@@ -263,7 +260,7 @@ put_space_exit:
+ 
+ static void vfio_user_container_disconnect(VFIOUserContainer *container)
+ {
+-    VFIOContainerBase *bcontainer = &container->bcontainer;
++    VFIOContainerBase *bcontainer = VFIO_IOMMU(container);
+     VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
+     VFIOAddressSpace *space = bcontainer->space;
+ 
+@@ -291,7 +288,7 @@ static bool vfio_user_device_get(VFIOUserContainer *container,
+ 
+     vbasedev->fd = -1;
+ 
+-    vfio_device_prepare(vbasedev, &container->bcontainer, &info);
++    vfio_device_prepare(vbasedev, VFIO_IOMMU(container), &info);
+ 
+     return true;
+ }
+@@ -315,8 +312,7 @@ static bool vfio_user_device_attach(const char *name, VFIODevice *vbasedev,
+ 
+ static void vfio_user_device_detach(VFIODevice *vbasedev)
+ {
+-    VFIOUserContainer *container = container_of(vbasedev->bcontainer,
+-                                                VFIOUserContainer, bcontainer);
++    VFIOUserContainer *container = VFIO_IOMMU_USER(vbasedev->bcontainer);
+ 
+     vfio_device_unprepare(vbasedev);
  
 -- 
 2.51.0
