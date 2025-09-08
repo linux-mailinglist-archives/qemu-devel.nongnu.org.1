@@ -2,97 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E165B498C1
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 20:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E147AB4996F
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 21:09:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvguH-00004u-Am; Mon, 08 Sep 2025 14:48:01 -0400
+	id 1uvh9i-00069a-Lw; Mon, 08 Sep 2025 15:03:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uvguD-0008WN-BN
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 14:47:57 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uvh9Z-00068q-SU
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 15:03:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uvgtz-0004iC-63
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 14:47:56 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uvh9M-0007qW-Jq
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 15:03:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757357258;
+ s=mimecast20190719; t=1757358207;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=41DU/skBBkDyJb89sXmFdI6jLOCEQn65cQNKmcsj2ng=;
- b=J7SX6iEsiWKlESvi97zESltTGbCXjvP/BhnMpCmSL0cBhWdU74KslqMJs37adRVqeVf+bK
- 0yh8sXkNO/GwWLBkMpL/g8INbM/oEVv+08BB0w77qtA1RaLJsrDceJIX5CjGv3EOu0GGRo
- 8F1YOCm99b4sdHCNZw2Vsl+wio/kT/Y=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-Y6Un14TiPg-WuzeHSpJMbA-1; Mon, 08 Sep 2025 14:47:34 -0400
-X-MC-Unique: Y6Un14TiPg-WuzeHSpJMbA-1
-X-Mimecast-MFC-AGG-ID: Y6Un14TiPg-WuzeHSpJMbA_1757357254
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-7224cb09e84so106333586d6.1
- for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 11:47:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757357254; x=1757962054;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=41DU/skBBkDyJb89sXmFdI6jLOCEQn65cQNKmcsj2ng=;
- b=cwwqO0TPfnDr6JbLdEknlGEEtUwHmcmB6eFK0nyI9qZHlpu6noo/P6gq4hH8BSVF7h
- vyXwwLp+xX3P4AZ/jxjF84rmADOpELhaZz2MNAE/cSUDc3fBouxG9FBObPMMNht2Zy5K
- w1puVAgVxsIUgUu/dwAFt1nVUc8A6ZUvUYKtPPPkc8/wP642Pe67df7CGyKrBMPs+SSh
- QNWL6oZbaJo6vVE3jQ+0P0bhQP/P4idNx9wXTfYRtnYyo66uG46RrhYbCKxAVbRquZPC
- 3sJhanA0tzjLYOopV4NDNcAJ5nBxhR7oQXHb6uyRJmQCY6cFBxkcalxaPpWR07r1wZoV
- AaSw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUZh/qHFSaFRtac6BUHIuV/3JKFXaDUNKltW6nCDVJTaWbGg4tlm8nV6KMtYo4fLnv6VYGlZJxlyro7@nongnu.org
-X-Gm-Message-State: AOJu0Ywt3w/iEKs5Zb4uB584j16VZOkqg6zqog4uVyYbh7wQEMerYBxe
- zrgTbcxNkbmBs8kyWsyJ61wXXiQzlIjYrKzxYc7iBk4X/yUXClYMUfFs1hCZLe8oZMOuP7GiNLN
- c+x0aRD9r3xOwnrpUupx6dTBlVRKAwvvykjilLOI4Lt18YgPYQFaP/Xo5
-X-Gm-Gg: ASbGncuBslaAtyTUTsYFSj9G/jjWyhXM0ue7FdwjQstkE7E7TxvaWpV/oCo6x4Jbzxs
- im2NWbjugYJ3fpc+3IaNX1x6+dHdZ4JV7Rdel+7xPuANxrP9R24TWlTGJngbb7Pwfu+YZhVVYlX
- cQJ//r6LUbYo2A7PF1iKqAbnYQWGzrAJqu8YCT1fVJr96wVgV2A1AbQ1u+TmT07rpWh9jK6E2ij
- gb7thBBNuH/+flbWo5Kbie42k220dRPVGvGl0Wne3AD/hXf90s2v9IXyjpdJA9tWvNXOzU/a5Il
- B4EpPw24HK5irpAmzOCTkzk6JD+un4hq
-X-Received: by 2002:a05:6214:27e4:b0:718:f7d8:c01b with SMTP id
- 6a1803df08f44-73a3a6738d9mr83830846d6.17.1757357253960; 
- Mon, 08 Sep 2025 11:47:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHXrwiVTTHkWRgScMRX92/jEKBqRRnmDyI/LRYled6A/e7R83IX7iGOaz/1FPEtPnaIyPpMfg==
-X-Received: by 2002:a05:6214:27e4:b0:718:f7d8:c01b with SMTP id
- 6a1803df08f44-73a3a6738d9mr83830436d6.17.1757357253322; 
- Mon, 08 Sep 2025 11:47:33 -0700 (PDT)
-Received: from x1.local ([174.89.135.121]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-720add660desm127353246d6.30.2025.09.08.11.47.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Sep 2025 11:47:32 -0700 (PDT)
-Date: Mon, 8 Sep 2025 14:47:21 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: jasowang@redhat.com, qemu-devel@nongnu.org, leiyang@redhat.com,
- steven.sistare@oracle.com, yc-core@yandex-team.ru, mst@redhat.com,
- farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
- thuth@redhat.com, philmd@linaro.org, berrange@redhat.com
-Subject: Re: [PATCH v3 4/9] qapi: add interface for local TAP migration
-Message-ID: <aL8kuXQ2JF1TV3M7@x1.local>
-References: <20250905135039.2202924-1-vsementsov@yandex-team.ru>
- <20250905135039.2202924-5-vsementsov@yandex-team.ru>
- <aL730XiXhM1Vj4Zg@x1.local>
- <2626fb74-a8f4-475b-ab01-3b20c6ff2ae2@yandex-team.ru>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=qV0+I3MdC02Rdi6nC+wNGWpeinGZd7wDsOrzmLwX3LE=;
+ b=G1nvQbhfZdON4Ukkdk7Lny/ioafbRWQ5FqNlBKelbUAAqezA5uc5iJPMdsQViu8+1wnIqt
+ UqMW/SbtoCOd9axcDfEnhLWS1gTx/Vz220KAeGTDO47PoxEsvTmul7L/zjZ1IV1Zad8IU5
+ 1yG8dJO8RQyadAcfI5eqRVjKZzSeJ3s=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-513-OERoKNrEP1GR8knZLzNuUQ-1; Mon,
+ 08 Sep 2025 15:03:26 -0400
+X-MC-Unique: OERoKNrEP1GR8knZLzNuUQ-1
+X-Mimecast-MFC-AGG-ID: OERoKNrEP1GR8knZLzNuUQ_1757358205
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 33A61180059D; Mon,  8 Sep 2025 19:03:23 +0000 (UTC)
+Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.88.36])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 7C4B11955F24; Mon,  8 Sep 2025 19:03:20 +0000 (UTC)
+From: John Snow <jsnow@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ =?UTF-8?q?Daniel=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>
+Subject: [PATCH v3 00/19] python: 3.14 compatibility and python-qemu-qmp
+ synchronization
+Date: Mon,  8 Sep 2025 15:02:59 -0400
+Message-ID: <20250908190318.3331728-1-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2626fb74-a8f4-475b-ab01-3b20c6ff2ae2@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,133 +81,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 08, 2025 at 07:38:45PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> On 08.09.25 18:35, Peter Xu wrote:
-> > On Fri, Sep 05, 2025 at 04:50:34PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> > > diff --git a/qapi/migration.json b/qapi/migration.json
-> > > index 2387c21e9c..992a5b1e2b 100644
-> > > --- a/qapi/migration.json
-> > > +++ b/qapi/migration.json
-> > > @@ -517,6 +517,12 @@
-> > >   #     each RAM page.  Requires a migration URI that supports seeking,
-> > >   #     such as a file.  (since 9.0)
-> > >   #
-> > > +# @local-tap: Migrate TAPs locally, keeping backend alive. Open file
-> > > +#     descriptors and TAP-related state are migrated. Only may be
-> > > +#     used when migration channel is unix socket. For target device
-> > > +#     also @local-incoming option must be specified (since 10.2)
-> > > +#     (since 10.2)
-> > 
-> > IMHO we should move this into a per-device property, at least we need one
-> > there to still control the device behavior; we had a similar discussion
-> > recently on iterable virtio-net.
-> > 
-> > But maybe this one is slightly special?  Maybe the tap device needs to at
-> > least know whether in this specific migration, if we want to pass over FD
-> > or not (e.g. local upgrade, or remote _real_ migration)?
-> > 
-> > If that's the case, we may consider providing a generic migration
-> > capability, like cap-fd-passing.  Nowadays since Fabiano's moving migration
-> > capabilities all over to migration parameters, this one can start with a
-> > parameter instead of a capability.  The problem with migration capability
-> > is (at least) that it can't by default ON on any machine types.. meanwhile
-> > it simply looks like identital to parameters except it's always bool.
-> > 
-> > The high level rational is that we should never add a per-device cap flag
-> > into migration framework.
-> > 
-> 
-> Hmm.
-> 
-> 1. Yes, we need to distinguish, is that _real_ migration or local. And setting a
-> special property for each device (which supports fd-migration) to turn on passing
-> FD to the channel seems not comfortable and error prune.
-> 
-> 2. Initially, I decided separate "local-tap" and "local-vhost-user-blk" capabilities
-> just to simplify further testing/debugging in real environment: the possibility to
-> enable only "half of magic" helps.
-> 
-> So, granularity makes sence, but having local-XXX capability for each device class
-> looks bad.
-> 
-> Maybe, having generic cap-fd-passing, together with possibility to disable it on
-> per-device basis (like migrate-fd=false) is good compromise.
-> 
-> 
-> Another question is, do we need "local-incoming" option for target device.
-> 
-> Initially I added this because I thought: ho, I need to distinguish it initialization
-> time: do I need to call open(), or wait for incoming fd.
-> 
-> Now I see that I can just postpone this decision up to "start" point, where
-> 
-> - either I already have fd from incoming migration
-> - or have nothing: in this case, let's call open()
-> 
-> -
-> 
-> I'll try to go with one "fd-passing" capability, as any kind of granularity may be
-> added later on demand.
-> 
-> 
-> Hmm2. Probably we can avoid even adding such a capability, but just check, is migration
-> channel support fd passing or not? Seems too implicit for me.
-
-If we want to expose a feature internally, IIUC we can use QAPI "features"
-like this:
-
-https://lore.kernel.org/all/20250603013810.4772-17-farosas@suse.de/
-
-But I'm not yet sure whether it's useful..
-
-In this case the "capability" itself should almost always be present when
-using unix sockets..  The problem is, IIUC we're not trying to describe a
-capability, but a choice the user made.
-
-For example, when unix socket is the transport, we can still decide to not
-use fd passing even if it's fully supported in the current QEMU binary for
-any devices that are involved, because any of: (1) it could be a unix
-socket to a proxy daemon (of a container?) when fd passing isn't supported
-in the daemon, or (2) as you mentioned above, for debugging purpose when we
-want to triage whether a bug is relevant to fd-passing.  Maybe more.
-
-The per-device granularity you mentioned also makes sense to me.
-
-An use case is when, imagine, we have a QEMU that (1) supports tap local
-migration, but (2) doesn't yet support virtio-blk local migration.  Then we
-want to be able to enable the fd-passing for tap/virtio-net, but not for
-virtio-blk (even if the src QEMU in the context might support both)?
-
-IOW, it makes sense to me to have two layers of controls here:
-
-  (a) Migration new parameter, "migrate-fds" (or any better name..).
-
-      When set, it enables all devices that supports fd-passing to migrate
-      the fds directly.  OTOH, when not set, even if all devices enabled
-      fd-passing, it should still do a full migration.  This one is the
-      user knob saying "I want to migrate with fd migrated".
-
-      This should imply unix sockets for sure as the transport, and should
-      fail upfront if it's not a unix socket.
-
-      We should also auto-select this with cpr migrations..  then in any
-      code path (whenever such path exists?) that the fds can be either
-      migrated from cpr or main channels.
-
-  (b) Device new parameter, "migrate-fds" (or any better name..).
-
-      When set, the device will declare support migrating fds "whenever the
-      migration applies", aka, when above (a) is selected first.
-
-      Taking tap device as example here, setting it ON here means "please
-      enable fd-passing whenever the user enables this migration option".
-      So in tap code, it should migrate fd if both (a) and (b) are ON.
-      When migrating to e.g. old QEMUs, here (b) should be OFF even if (a)
-      is ON.
-
-Would above make sense?
-
--- 
-Peter Xu
+Hi, this series aims to support Python 3.14; a large part of how it=0D
+achieves this is by backporting various changes that have been made to=0D
+the python-qemu-qmp standalone library to ensure that our in-tree=0D
+version is very nearly byte identical to the standalone version.=0D
+=0D
+Several of Dan's patches are appended here which remove all deprecated=0D
+behavior from our test suite and enables printing warnings whenever=0D
+deprecated behavior is used so we will be able to catch it more readily=0D
+in the future.=0D
+=0D
+Following this series, I intend to drop the QMP library from the qemu=0D
+tree once and for all so that they do not desynchronize again. The=0D
+standalone library needs to drop avocado-framework and cut a v0.0.4=0D
+release first, but it's currently my top priority to end this=0D
+embarrassing patch of duplicated code and maintenance.=0D
+=0D
+Reviewers: try applying this series and using diff to compare the=0D
+qemu.git/python/qemu/qmp and python-qemu-qmp.git/qemu/qmp directories;=0D
+you should find only five differences: three instances of LICENSE text=0D
+being slightly different (pointing to LICENSE vs COPYING) and two=0D
+instances of a pylint ignore that are not needed in qemu.git due to=0D
+slightly different linter configuration in qemu.git/python/setup.cfg.=0D
+=0D
+If further changes are warranted, it is my preference to try to=0D
+"upstream" them first before backporting them here instead of trying to=0D
+amend this series.=0D
+=0D
+V2: Squashed two commits in order to prevent regressions in qemu.git.=0D
+=0D
+V3: Unsquashed a backport into individual backports,=0D
+    Amended commit messages to specify where the cherry-picks are from=0D
+    Added R-B and S-o-B by Dan to various patches=0D
+=0D
+--js=0D
+=0D
+Adam Dorsey (1):=0D
+  python: backport 'feat: allow setting read buffer limit'=0D
+=0D
+Daniel P. Berrang=C3=A9 (5):=0D
+  iotests: drop compat for old version context manager=0D
+  python: ensure QEMUQtestProtocol closes its socket=0D
+  iotests/147: ensure temporary sockets are closed before exiting=0D
+  iotests/151: ensure subprocesses are cleaned up=0D
+  iotests/check: always enable all python warnings=0D
+=0D
+John Snow (13):=0D
+  python: backport 'Change error classes to have better repr methods'=0D
+  python: backport 'EventListener: add __repr__ method'=0D
+  python: backport 'kick event queue on legacy event_pull()'=0D
+  python: backport 'protocol: adjust logging name when changing client=0D
+    name'=0D
+  python: backport 'drop Python3.6 workarounds'=0D
+  python: backport 'Use @asynciocontextmanager'=0D
+  python: backport 'qmp-shell: add common_parser()'=0D
+  python: backport 'make require() preserve async-ness'=0D
+  python: backport 'qmp-shell-wrap: handle missing binary gracefully'=0D
+  python: backport 'qmp-tui: Do not crash if optional dependencies are=0D
+    not met'=0D
+  python: backport 'Remove deprecated get_event_loop calls'=0D
+  python: backport 'avoid creating additional event loops per thread'=0D
+  python: synchronize qemu.qmp documentation=0D
+=0D
+ python/qemu/machine/qtest.py     |   2 +=0D
+ python/qemu/qmp/__init__.py      |   3 +-=0D
+ python/qemu/qmp/error.py         |   7 +-=0D
+ python/qemu/qmp/events.py        |  50 ++++++--=0D
+ python/qemu/qmp/legacy.py        |  46 +++++---=0D
+ python/qemu/qmp/message.py       |  22 ++--=0D
+ python/qemu/qmp/models.py        |   8 +-=0D
+ python/qemu/qmp/protocol.py      | 194 +++++++++++++++++++------------=0D
+ python/qemu/qmp/qmp_client.py    | 155 +++++++++++++++++-------=0D
+ python/qemu/qmp/qmp_shell.py     | 165 ++++++++++++++++++--------=0D
+ python/qemu/qmp/qmp_tui.py       |  30 +++--=0D
+ python/qemu/qmp/util.py          | 143 ++++++-----------------=0D
+ python/tests/protocol.py         |  10 +-=0D
+ tests/qemu-iotests/147           |   1 +=0D
+ tests/qemu-iotests/151           |   5 +=0D
+ tests/qemu-iotests/check         |   4 +=0D
+ tests/qemu-iotests/testenv.py    |   7 +-=0D
+ tests/qemu-iotests/testrunner.py |   9 +-=0D
+ 18 files changed, 532 insertions(+), 329 deletions(-)=0D
+=0D
+-- =0D
+2.50.1=0D
+=0D
 
 
