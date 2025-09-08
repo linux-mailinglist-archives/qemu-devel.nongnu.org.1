@@ -2,139 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20D3B489C5
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 761F3B489CB
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:15:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvYre-0001Lx-VI; Mon, 08 Sep 2025 06:12:47 -0400
+	id 1uvYs4-0001Wt-64; Mon, 08 Sep 2025 06:13:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvYrb-0001FR-4H
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:12:43 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uvYrz-0001V8-L8
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvYrS-0000pN-1b
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:12:42 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uvYrk-0000t6-CM
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757326344;
+ s=mimecast20190719; t=1757326367;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=63XCfblRIRB/xioyliU5fyf02XQ/AYrdKg33//yMdTI=;
- b=Q+TUCod4PpV9YLoxmH8oSMrLAl3/9/D3xkajAfH4KfSPHWcFTxDcf73CcmCa2I2d3O82PF
- yAO7K99XV2aEv4TC27rglQhg5T6J0/cHgvLaSCh2dwMt9WW1dBs79LaqaoHgorD9dj1jHh
- yrZ3yzMex25yyVNQRwxsseN71aPJBW8=
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6fDrP9bH4bHquY6G+/HTgZy5Ut0rr4KQwzXkfNcFZuw=;
+ b=OTgYaQTqmPC1XwEhV/S5rq7oWFMifq0xJoz/4VnLTnshKHt46z98xXg3p+YPQbqYC+2LvC
+ f5rI41u0JSq4/MeFvdBpdoUwZS8ii0OcdvmN5jXK/g03ZyB5n24RfaMZmQPJNu4LYE+fol
+ s1tHhno+VfEbvWyk4WQijso2MulQoF0=
 Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
  [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-244-XbJGD13yMum1YqCuvNHgxw-1; Mon, 08 Sep 2025 06:12:22 -0400
-X-MC-Unique: XbJGD13yMum1YqCuvNHgxw-1
-X-Mimecast-MFC-AGG-ID: XbJGD13yMum1YqCuvNHgxw_1757326342
+ us-mta-178-C3ksNylmOTKa97J_UfLVcg-1; Mon, 08 Sep 2025 06:12:46 -0400
+X-MC-Unique: C3ksNylmOTKa97J_UfLVcg-1
+X-Mimecast-MFC-AGG-ID: C3ksNylmOTKa97J_UfLVcg_1757326365
 Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3df3e935ec8so2000473f8f.0
- for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:12:22 -0700 (PDT)
+ ffacd0b85a97d-3e1e7752208so2076437f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:12:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757326341; x=1757931141;
- h=content-transfer-encoding:in-reply-to:autocrypt:cc:from
- :content-language:references:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=63XCfblRIRB/xioyliU5fyf02XQ/AYrdKg33//yMdTI=;
- b=hDSZim1bdPZrjIPLgp0bGAAadIty/f5/0U+cSq61BBR8KlGsGRLIRDLLLjJ9BbzGCf
- lGp0qpKcy1Lsv3T5WvWpaLLmIcxUR3pCWSZI+Ycas8kqWoWAV4JlIBwIXpAu+gut5wdE
- OwYiC8j3fP0pIMvVY7DA7NwCZsNPILGB/3i8cqmmgrkUEIv9WI04npfatey3xwT43V8G
- 7cMbW2MiO1R+KSPaxBitRRkouuELPUSPl73KRMeS2cGJiUKh0FqHb2opUFe95ekE4Ccd
- c8iErb5i/Du268cyPSPBuOPApdxoZ3DGT9FcUj5ick7drYpn8zxlA1XnxKZRz3Ob0Sic
- wAzg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVDtY3rJ8NNi3QqIMF6PFmjfeFinL69MdpTT5SnfEJj9t9/o5AYmatBx4lnfD9qprqNTGROxeWWO90/@nongnu.org
-X-Gm-Message-State: AOJu0YwrXcQ3mx/QXgzU6YpQRoXISA71IyF9Jwxe/EcO6i+BfS4Ir4WM
- 1lXpp47GQ80Gqw05lhcmHq66i066+NBbcDvD3raD0Ug4Ql0BozAnAG+gcv75x9fGWm2vcHMH5Q2
- r+KiF1Fh+bk5IuBJeRjJIqxQ1OAeCEh2ZRLJMYtWGGWkEupi6X5S57kKC
-X-Gm-Gg: ASbGncsmc/J/9zxA0Wbn8migurKSf1KtZJft5wgE6QQHsDpfh1u2oO4cZNihQQnSHfc
- cEsrEjSuQzXLuOr33WvbZvO0soDgU2svvnFARvPLEQ5h5H86BHantt2JTdKdd6mub7erQ7T8ZJ4
- X5sK9WF7IJmrYEb6IboQ1OYDzNj+QUbrC8BLcOLMv7act1NwBnfo+SXEjAch211KGlDz4jyQ1K9
- tP5rj8wua5hZinD+ipXOPpIV9uKnNYGnL3mP/W4oriG+3+37AU1SKdB0pU2HJ1eOfcBvysx9V6y
- qLjqrgpHpp8ZbxqmSy1cgo1WbzvVjx9ihv4/QRnrlfPSfiPyWyisLV8XOVn43hINbNWEvZ2hln7
- VZkjHfg==
-X-Received: by 2002:a05:6000:2005:b0:3e3:e7a0:1ff8 with SMTP id
- ffacd0b85a97d-3e636d8ffc3mr5496632f8f.6.1757326341584; 
- Mon, 08 Sep 2025 03:12:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFU/FVxpMH5SiD3Owrt62GpFm5yHH7n2dXZ4Wr02a0nc8MsULsfRP6+qYoGMH72SZveqY8Zww==
-X-Received: by 2002:a05:6000:2005:b0:3e3:e7a0:1ff8 with SMTP id
- ffacd0b85a97d-3e636d8ffc3mr5496614f8f.6.1757326341134; 
- Mon, 08 Sep 2025 03:12:21 -0700 (PDT)
-Received: from [192.168.0.5] (ltea-047-064-114-112.pools.arcor-ip.net.
- [47.64.114.112]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e74b28a108sm1972111f8f.16.2025.09.08.03.12.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Sep 2025 03:12:20 -0700 (PDT)
-Message-ID: <666dce10-2359-4211-b761-daf9a828523e@redhat.com>
-Date: Mon, 8 Sep 2025 12:12:19 +0200
+ d=1e100.net; s=20230601; t=1757326364; x=1757931164;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6fDrP9bH4bHquY6G+/HTgZy5Ut0rr4KQwzXkfNcFZuw=;
+ b=oE8T98PfqwSxvLtexX3RaZ2UEgx3RS1OpPpUNF/E91YVhSKTRYYjekftoIlUHE2NsO
+ IpVBROmkahffex/suyYxXmPp4nPTdtTPLxvJQpc8fh/LQ16vvagsxFX1nyaxRtZx7oqp
+ FgAnD5eEFmo4QU4ZyOoNnZzEsAADEovbOrvYYw2LACLSaA8CXfurYYpWDXPOuLEe6GJJ
+ uRG/7uq29sHX5/bLbfuA1LuHAIVzLjc2TW3jkqsDl389nCGj8BfQD84m/p+aXtmD5B+S
+ imIe4jTYI0v+WX1Pmk3DhlwAmlsEFux8acZ4PpIe/YUVJjR+oH00dg+DdzrLb3kqVAtK
+ EqkQ==
+X-Gm-Message-State: AOJu0YwR108zeuape1E0hGwUbAyqp9Mp6FNmbh6faF06AdELf3qm9NLD
+ gpmSkZiQ0WVhxLRgvpwiyk9MWvN5zTICXW9Z7COmOjxqCGeFP42BtOC1ctCXeGvRjrakzpK2PC1
+ PUcAkZwP6Hud44B+FkAIUbRMG5vdju0wJXIrWsZB/30cv+rhxf70TFpb9pXLijxS/MPbjKAhPYm
+ U1rSyMfx+bgRT/QUiU7aTDETtIPc0P/5lpgowCkiVY
+X-Gm-Gg: ASbGncsb63sSUbK45PUOUhctv70/rGnM/NwclJw0W/o1VSYAtuNunDqEMOKI3efyEBM
+ BRFsMVmUg5JB38KkY9O04tXnQzEen/CRHDxxdwxPlgy8vQLG5f0Tp1r2Os7XCTa38jnV+rkgrBL
+ r0hTZfuurspv85HkOA38yKAs3eMEscK/OTK15X5n3wJYeushduvD9ahM2k0qj1cSZWMpnZ0HiiH
+ N/IphZ+2tqvCwAlKhsuwC5Jj3ASRs4OoFwPRFyIDxqNttZdDkxh3BVkJ5LUbo/9PLfuqIJpX59t
+ GK16Tk/iEBeDzNKchK/cZJEDQKWPi3/QIm2Q6uIfnnChPhjMI2l7yD7iZ3rzaDfEeYzICmPyb3I
+ igkGOUetAttJlP3bFg9poLB7Gzjc5plgzUiwb/FFBb8U=
+X-Received: by 2002:a05:6000:3106:b0:3e6:116a:8fed with SMTP id
+ ffacd0b85a97d-3e64bde97a5mr5971702f8f.45.1757326364002; 
+ Mon, 08 Sep 2025 03:12:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGSKuNhPB+qA3G+1Eg5hzdiirKG2Kv243wIirEV57gAkNZy4xz8mqx4mDxa8Z8Ch5Oh5B+hKw==
+X-Received: by 2002:a05:6000:3106:b0:3e6:116a:8fed with SMTP id
+ ffacd0b85a97d-3e64bde97a5mr5971660f8f.45.1757326363416; 
+ Mon, 08 Sep 2025 03:12:43 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.56.250])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45dd60b381csm140810465e9.17.2025.09.08.03.12.42
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Sep 2025 03:12:42 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH v3 00/19] accel, cpus: clean up cpu->exit_request
+Date: Mon,  8 Sep 2025 12:12:22 +0200
+Message-ID: <20250908101241.2110068-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Failure of func-x86_64-memlock
-To: Richard Henderson <richard.henderson@linaro.org>,
- qemu-devel <qemu-devel@nongnu.org>
-References: <7ceb8d59-be3f-4dad-9e2b-9db62fbf92cb@linaro.org>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <7ceb8d59-be3f-4dad-9e2b-9db62fbf92cb@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -153,19 +104,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/09/2025 12.26, Richard Henderson wrote:
-> Hi guys,
-> 
-> This test has been failing on my laptop for a few weeks.
-> Any idea why?
+cpu->exit_request is used to kick vCPU threads into qemu_wait_io_event().
+The code that handles the signaling of cpu->exit_request is messy, mostly
+due to no one ever taking a look at it as a whole.  In fact already in commit
+4b8523ee896 ("kvm: First step to push iothread lock out of inner run loop",
+2015-07-01), the read of cpu->exit_request was placed outside the BQL
+critical section without much attention to ordering; and it only got
+worse from that point, in no small part due to a young and naive me.
 
-FWIW, the test still works for me (after enabling it with "ulimit -l 2097152").
+This series is complementary to the cpu->interrupt_request cleanups
+that Igor did in "memory: reintroduce BQL-free fine-grained PIO/MMIO"
+(https://lore.kernel.org/qemu-devel/20250808120137.2208800-1-imammedo@redhat.com/T/),
+and in fact includes some extra changes to interrupt_request at the
+beginning.
 
-> There's nothing logged in tests/functional/x86_64/test_memlock*/*,
-> which itself seems like a bug.
+Paolo
 
-Is there maybe any hint in meson-logs/testlog-thorough.txt instead?
+Paolo Bonzini (19):
+  target/ppc: limit cpu_interrupt_exittb to system emulation
+  target/sparc: limit cpu_check_irqs to system emulation
+  target/i386: limit a20 to system emulation
+  target-arm: remove uses of cpu_interrupt() for user-mode emulation
+  user-exec: remove cpu_interrupt() stub
+  treewide: clear bits of cs->interrupt_request with cpu_reset_interrupt()
+  cpu-common: use atomic access for interrupt_request
+  cpus: document that qemu_cpu_kick() can be used for BQL-less operation
+  accel: use store_release/load_acquire for cross-thread exit_request
+  accel: use atomic accesses for exit_request
+  accel/tcg: create a thread-kick function for TCG
+  accel/tcg: inline cpu_exit()
+  cpus: remove TCG-ism from cpu_exit()
+  cpus: properly kick CPUs out of inner execution loop
+  treewide: rename qemu_wait_io_event/qemu_wait_io_event_common
+  bsd-user, linux-user: introduce qemu_process_cpu_events
+  cpus: clear exit_request in qemu_process_cpu_events
+  accel: make all calls to qemu_process_cpu_events look the same
+  tcg/user: do not set exit_request gratuitously
 
-  Thomas
+v2->v3:
+- [accel: use store_release/load_acquire for cross-thread exit_request]
+  improve comments for memory barriers, match rr_kick_next_cpu() more
+  accurately
+
+- [cpus: properly kick CPUs out of inner execution loop]
+  fix comment
+
+- [treewide: rename qemu_wait_io_event/qemu_wait_io_event_common]
+  new patch; new names used throughout in patches 16-19
+
+ docs/devel/tcg-icount.rst           |   2 +-
+ accel/tcg/tcg-accel-ops-mttcg.h     |   3 -
+ accel/tcg/tcg-accel-ops.h           |   1 +
+ bsd-user/aarch64/target_arch_cpu.h  |   2 +-
+ bsd-user/arm/target_arch_cpu.h      |   2 +-
+ bsd-user/i386/target_arch_cpu.h     |   2 +-
+ bsd-user/riscv/target_arch_cpu.h    |   2 +-
+ bsd-user/x86_64/target_arch_cpu.h   |   2 +-
+ include/hw/core/cpu.h               |  22 +-
+ include/system/cpus.h               |   3 +-
+ target/arm/internals.h              |   5 +
+ accel/dummy-cpus.c                  |   2 +-
+ accel/hvf/hvf-accel-ops.c           |   2 +-
+ accel/kvm/kvm-accel-ops.c           |   3 +-
+ accel/kvm/kvm-all.c                 |  23 +-
+ accel/tcg/cpu-exec.c                |  34 ++-
+ accel/tcg/tcg-accel-ops-mttcg.c     |  12 +-
+ accel/tcg/tcg-accel-ops-rr.c        |  55 ++--
+ accel/tcg/tcg-accel-ops.c           |   4 +-
+ accel/tcg/user-exec.c               |  11 +-
+ bsd-user/main.c                     |   5 -
+ cpu-common.c                        |   3 +-
+ hw/core/cpu-common.c                |  19 +-
+ hw/core/cpu-system.c                |   2 +-
+ hw/ppc/ppc.c                        |   2 +
+ hw/ppc/spapr_hcall.c                |   7 +-
+ hw/ppc/spapr_rtas.c                 |   2 +-
+ linux-user/aarch64/cpu_loop.c       |   2 +-
+ linux-user/alpha/cpu_loop.c         |   2 +-
+ linux-user/arm/cpu_loop.c           |   2 +-
+ linux-user/hexagon/cpu_loop.c       |   2 +-
+ linux-user/hppa/cpu_loop.c          |   2 +-
+ linux-user/i386/cpu_loop.c          |   2 +-
+ linux-user/loongarch64/cpu_loop.c   |   2 +-
+ linux-user/m68k/cpu_loop.c          |   2 +-
+ linux-user/main.c                   |   5 -
+ linux-user/microblaze/cpu_loop.c    |   2 +-
+ linux-user/mips/cpu_loop.c          |   2 +-
+ linux-user/openrisc/cpu_loop.c      |   2 +-
+ linux-user/ppc/cpu_loop.c           |   2 +-
+ linux-user/riscv/cpu_loop.c         |   2 +-
+ linux-user/s390x/cpu_loop.c         |   2 +-
+ linux-user/sh4/cpu_loop.c           |   2 +-
+ linux-user/sparc/cpu_loop.c         |   2 +-
+ linux-user/xtensa/cpu_loop.c        |   2 +-
+ replay/replay-events.c              |   3 +-
+ system/cpu-timers.c                 |   6 +-
+ system/cpus.c                       |  15 +-
+ target/arm/cpu-irq.c                | 381 ++++++++++++++++++++++++++++
+ target/arm/cpu.c                    | 370 ---------------------------
+ target/arm/el2-stubs.c              |  37 +++
+ target/arm/helper.c                 |   4 +
+ target/arm/tcg/mte_helper.c         |   2 +-
+ target/avr/helper.c                 |   4 +-
+ target/i386/helper.c                |   2 +
+ target/i386/hvf/x86hvf.c            |   8 +-
+ target/i386/kvm/hyperv.c            |   1 -
+ target/i386/kvm/kvm.c               |  20 +-
+ target/i386/nvmm/nvmm-accel-ops.c   |   8 +-
+ target/i386/nvmm/nvmm-all.c         |  19 +-
+ target/i386/tcg/system/seg_helper.c |  13 +-
+ target/i386/tcg/system/svm_helper.c |   2 +-
+ target/i386/whpx/whpx-accel-ops.c   |   6 +-
+ target/i386/whpx/whpx-all.c         |  23 +-
+ target/openrisc/sys_helper.c        |   2 +-
+ target/ppc/helper_regs.c            |   2 +
+ target/rx/helper.c                  |   4 +-
+ target/s390x/tcg/excp_helper.c      |   2 +-
+ target/sparc/int32_helper.c         |   2 +
+ target/sparc/int64_helper.c         |   2 +
+ target/arm/meson.build              |   2 +
+ 71 files changed, 645 insertions(+), 566 deletions(-)
+ create mode 100644 target/arm/cpu-irq.c
+ create mode 100644 target/arm/el2-stubs.c
+
+-- 
+2.51.0
 
 
