@@ -2,56 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A26B494FB
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 18:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD90B4952E
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 18:27:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uveXi-0001J0-HO; Mon, 08 Sep 2025 12:16:35 -0400
+	id 1uveft-0005YQ-5W; Mon, 08 Sep 2025 12:25:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1uveXK-0001E4-5y
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:16:17 -0400
-Received: from kylie.crudebyte.com ([5.189.157.229])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uveek-00057L-06
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:23:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
- id 1uveXE-0002om-0o
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:16:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Content-ID:Content-Description;
- bh=XSQ0JBnQjPPmzxj8jwlIRybqtbsZYC3dhO/GSppf4yg=; b=lPOc6sseWQYgbAPesB6MAehkvr
- H9juV09yQIwgWd/aML7TbM1IHUm345cFggL8kxrJkfGxYvAuA5LbNa1s30GC16SAsIaHks7sZ5sx0
- +4rpJ+Tdaxd76oORB9ihfq/6ig5UkHXWR9axt6NFSVqjGZ1Qr98BCjwuQDEe3+er8WBY3IR9TtyTy
- 66v5iIJRLZAz98ip3n83ybhvltxGxftYUTdqzZQpcc0wJtS5kW19GuQR0+kyw7JViM/mmRTmV3qqJ
- /80RvRloEP6WJ9Apq4XpTCLKHybJb9ybJBbCFTNNUwiudpdqzt1uF4FzPpEn6wPrc9/kgkkuLmS7j
- diVB/NiCRH2vIEMLGupmp1kvSSieDlDkJEdV4UJZH+g/bT1DpdNd1WaOP1Jw4OqrvA/A0J4utzGoE
- L8EOb1SB4pNNZUcYF8nKrHAtDjHIZfS4SDKism5I8CdAyHuvizEWPCC6s+MqEuvSEgEMnxBIVM7Xo
- KfajeFbN+7kWCie09T/gVkTE/i2HbUHGsQKFCHEPvDgg50/lx8Kkj7JEEP+niufXF3q8sTiMWXN22
- Yj+zvE2Ex13H84iNVDwqHA9evCsIvrg+t+pl4nOFMYeuOqBeAkB2mIvlqfwilvkxo0fQhAOF+FtHM
- 3QTL1O+00ntCWp7jxrXBScyVy77j59cqn/V8BoM84=;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>, pbonzini@redhat.com, nabihestefan@google.com, 
- Peter Foley <pefoley@google.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH v2] 9pfs: Stop including gstrfuncs.h
-Date: Mon, 08 Sep 2025 18:15:42 +0200
-Message-ID: <4676136.LvFx2qVVIh@silver>
-In-Reply-To: <20250905-9p-v2-1-2ad31999684d@google.com>
-References: <20250905-9p-v2-1-2ad31999684d@google.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uveeb-00048A-C2
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:23:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757348614;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=x48jTwX1lRKadvLC5pny0q22YBzyHpAwzz13c532+aI=;
+ b=SBQd4OglG/a54NfjSJp8MYPfYbyiUscWkJYAkwfd9JQ9YSc/hRt8QjAl+Zl2ymjlvRCaIk
+ ibFgimdoOBu7GejpkhrLppMbx3/Rul5e/deGEazHD9IVjcnBke5Pd92rr1JEqtUIY8WQdh
+ KcB8vWZqFuUx3fde3KjVKwj94Z4UF7M=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-549-mAi4P2l5NVy4bpE39lhi7g-1; Mon,
+ 08 Sep 2025 12:23:33 -0400
+X-MC-Unique: mAi4P2l5NVy4bpE39lhi7g-1
+X-Mimecast-MFC-AGG-ID: mAi4P2l5NVy4bpE39lhi7g_1757348612
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C96C81800343; Mon,  8 Sep 2025 16:23:31 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.93])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9C08A300018D; Mon,  8 Sep 2025 16:23:29 +0000 (UTC)
+Date: Mon, 8 Sep 2025 17:23:26 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Cleber Rosa <crosa@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>
+Subject: Re: [PATCH v2 01/18] python: backport 'Change error classes to have
+ better repr methods'
+Message-ID: <aL8C_paBo7KfcwEE@redhat.com>
+References: <20250903051125.3020805-1-jsnow@redhat.com>
+ <20250903051125.3020805-2-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250903051125.3020805-2-jsnow@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -66,23 +86,45 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Friday, September 5, 2025 5:17:11 PM CEST Peter Foley wrote:
-> gstrfuncs.h is not intended to be included directly.
-> In fact this only works because glib.h is already included by osdep.h.
-> Just remove the include.
+On Wed, Sep 03, 2025 at 01:11:07AM -0400, John Snow wrote:
+> By passing all of the arguments to the base class and overriding the
+> __str__ method when we want a different "human readable" message that
+> isn't just printing the list of arguments, we can ensure that all custom
+> error classes have a reasonable __repr__ implementation.
 > 
-> Signed-off-by: Peter Foley <pefoley@google.com>
+> In the case of ExecuteError, the pseudo-field that isn't actually
+> correlated to an input argument can be re-imagined as a read-only
+> property; this forces consistency in the class and makes the repr output
+> more obviously correct.
+> 
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> cherry picked from commit afdb7893f3b34212da4259b7202973f9a8cb85b3
+
+Wonder if we should modify this (and later commits) to say:
+
+ cherry picked from commit python-qemu-qmp@afdb7893f3b34212da4259b7202973f9a8cb85b3
+
+to avoid the ambiguity of what repo we're referring to
+
 > ---
+>  python/qemu/qmp/error.py      |  7 +++++--
+>  python/qemu/qmp/message.py    | 12 ++++++------
+>  python/qemu/qmp/protocol.py   |  7 +++++--
+>  python/qemu/qmp/qmp_client.py | 20 +++++++++++++-------
+>  4 files changed, 29 insertions(+), 17 deletions(-)
 
-Queued on 9p.next:
-https://github.com/cschoenebeck/qemu/commits/9p.next
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-Thanks!
 
-/Christian
-
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
