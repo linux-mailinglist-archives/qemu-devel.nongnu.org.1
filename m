@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34668B48AAA
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 762C1B48A90
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:53:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvZSQ-00062w-6D; Mon, 08 Sep 2025 06:50:48 -0400
+	id 1uvZSc-00067r-JN; Mon, 08 Sep 2025 06:50:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvZSD-00060Y-3E
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:50:34 -0400
+ id 1uvZSX-00066e-8G
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:50:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvZS6-0005z4-8D
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:50:32 -0400
+ id 1uvZSC-0005zg-RU
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:50:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757328623;
+ s=mimecast20190719; t=1757328626;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=y6WobgRcu9QhiucL9MTaVnK6KwVdm1kQbN8McJhsu6I=;
- b=TabxeJlhGrQm2DeP8F70BHlPrG/ofyetia0okz+qZIfs9v1CT89DZ8GE0SKcZfB5d002V3
- GkhIadaWe5YMJANkREHlZpoVYqGJ/Dp67m7jSJDLlVrdvRI96EF2fnOjV59cN50eP3zdZ8
- 0sfiILLW/Y677ShU8ILOutDfqXHw0kM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sN1USyIDQg2wAS4HLaXWN+O8GKxfsw4+4kDOL0kc8Sg=;
+ b=IEWeLxXeE8bskEJnLJ25nflxgLTE5wu1LWm80m1GFCa8TRVxdzYFG7DTOqGLjNnotdZT3M
+ GmL/57KSiLJbu6KxPTGPE6ny13Svva6QN8FR+5EX7I7NqtoI/oIhXFnHvnz7a/OMDefFu3
+ SsDobOFMmUTP+Zs6rO0LjG4vmtQ2f80=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-YyZQMkqlNOejcvE0rNLRQg-1; Mon, 08 Sep 2025 06:50:21 -0400
-X-MC-Unique: YyZQMkqlNOejcvE0rNLRQg-1
-X-Mimecast-MFC-AGG-ID: YyZQMkqlNOejcvE0rNLRQg_1757328621
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3e61deaf253so1297277f8f.1
- for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:50:21 -0700 (PDT)
+ us-mta-651-PDZta-tbNSSjUoWAwgVVLA-1; Mon, 08 Sep 2025 06:50:24 -0400
+X-MC-Unique: PDZta-tbNSSjUoWAwgVVLA-1
+X-Mimecast-MFC-AGG-ID: PDZta-tbNSSjUoWAwgVVLA_1757328623
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-45b467f5173so29461115e9.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:50:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757328620; x=1757933420;
+ d=1e100.net; s=20230601; t=1757328622; x=1757933422;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y6WobgRcu9QhiucL9MTaVnK6KwVdm1kQbN8McJhsu6I=;
- b=lKfCleO6FdlFLWnD8Yy7yKD17PkAhI2PyfM9O14OFyABzCVgJvEiCQC6B8+tigeBaU
- SRVt9yyiyPSPyFkbNi23LqrU+SNCHBBYykbSKBAdTgBu91YG6iojOU2QD6F+y4xordcq
- kqV42S1Hes0Lu7olnAWzYL5KL6GB/g/3Zx9Fsj4QzElKRSFFOJinH6UNNA6jVrpNxD/I
- 8yDL2ZWOPYIw5wz2wV1HxPaiIweKu5Q6qF1pXhLcCdnvPGrkF7oC9BP6MJmoK6a94OhR
- P1abTraQKnkz/AXQ2CyOHv3Dfol3MA5/N/4j28X57Rl3e8hycpGtWJMn4Rn7n2xld6rv
- FFtg==
-X-Gm-Message-State: AOJu0Yyy8sAulBPwxAL5oDeejsQHGg49iLbsxcvg95NwITxFnRA+unlb
- /1JVGoKL+ot0lc1IvVV+AidvIgWH287McVnWupSE9t/ZL5TbptNpShKOTYHzxGO7hbFXQzIRrQb
- /wSmliDfCdarN3yszbbeSeU+OyG5eex7U9nH/Dz/FQx8Nw6LPwuhJA3+BxTd1JU93Zt7y+YriO2
- LoUZKUU0FFquNMqkBGie6ODkyX2515A1r1T/AgDGZG
-X-Gm-Gg: ASbGncuCLYyGf3Se/4USCVz9C1n8NVJu5NSU7r8xofsRmVO9BCcF+zLMVVebwpSmjnL
- WhpvnXTdSQdVMl7HA1WkvzJaQ0DqQTP5h6lLA4MEzr4cSMSaAPT0SGEA4UAl+BiaNHHNBN+W4jX
- lFW+RPbNHMiF5zfKimPj4YF7VhJGWsV1Ms1noslC9RTAujOdOD1tO7hnmjnHl2L6uJZ5lBR/xhI
- ziAwKHQtPlbX35/mKLyl05aA+wgQJOvTdWLbYPSa+1eq6lwPmSyXtoQeJN4rfKECYODCgQOLyWG
- F/CFAILcvDc2qUzE+iLu8OJZwp1W0pZ9xvHBHJ2H65mv6qUgNgSM7froEajy7CQPhGMu9nUlras
- FSsnQdnBDaleyPrx8ZeVenLZRZkRchjXxALFq6B0KnUQ=
-X-Received: by 2002:a05:6000:1ac6:b0:3cb:285f:8d9c with SMTP id
- ffacd0b85a97d-3e643555f89mr5963663f8f.48.1757328619942; 
- Mon, 08 Sep 2025 03:50:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGjv+jN79RXGG31o3kDqpQPrAn8L10Mv4jNQ9prk4aoL2GgVwxeQqLUOUCAzRU9I4QYV9ioMQ==
-X-Received: by 2002:a05:6000:1ac6:b0:3cb:285f:8d9c with SMTP id
- ffacd0b85a97d-3e643555f89mr5963628f8f.48.1757328619261; 
- Mon, 08 Sep 2025 03:50:19 -0700 (PDT)
+ bh=sN1USyIDQg2wAS4HLaXWN+O8GKxfsw4+4kDOL0kc8Sg=;
+ b=ID10T29DIrEGwA+syR5BgiIbziRKUkyYTWxFvQTomjsaBvXMHqG+jDDdPgRkZPygjW
+ XWnDbfQAhNEl08zbKdSbCgVLdR4kK0GOdyLLfMA+sHw8MxZ8DH/lbtgvjj+9YuGr/BXf
+ CazjKV2q4AT1cxg/3HInJUEPudWTZzt5wz8vIaVL+s3KeGZkTLB8RqAStHT8oe/bSL0S
+ xPI1RbFUBaOIkU0O+yAKr4zjnKn/N4rEXPlPwsiDiyDc40G3s/VKLrHTAe8DkqDmvN95
+ CjMM1dMI/JNInGlv49/mR/1Be2hWWtIQ6BuAORJkZ+MjOd3rlJq/du7lKoclEdNO2Q4z
+ Dorg==
+X-Gm-Message-State: AOJu0YzbTDtZVVU32VnM3AMO9Z/ky/re+g43k627jO07wuKKxuZ/wyDc
+ qLX9Cj39HO8V9zveQ6ngMaoyjlmfNdBwBfY4iIeQ5btYc6xKJHSFnYREfoSihMCZv1zOLUxmHGS
+ ptfP6LwEva4IeTXEYlFjMIdAJlJN7P4JDMHOzqipii+Y1kUE1TIg02CyfgggKKhs4ffuPhMPq7k
+ +fJbkxQOPoV9tdA3xppMbtrvxZsjeW7VB572pS2asj
+X-Gm-Gg: ASbGncu/zO+pNoJXMA97c6YmZPMjA1HylXFyMRXSfKK5hvQ5sIUX0ejoP+JiMtJkvnE
+ 2xBUp3pbAo87m6Ks9KNOS8wtIX1dOheKPJKwLVCIYEAGMJ/nhh9pGgjPtoLVHhsUJLYLtqLSowA
+ 7qbUsTt0ejQxNWQ1huCuF9vJZzm2kGRIeJ0Isg0iSG7CNX+R7J1LxbA/JSovh0zBbTseLBQFoLf
+ dws+nh+Vl7TgK6NztJ9lKi8QehSsJJCHB+K9LdEM6LJs90NIGwUUqrM6xgvT5a3YQ3jVA0c1Ufe
+ gi7+kE38PIdzdrwc4zJDqWcvaPUgETPEbe8rG40mx73ooIywsdbiWXzeri2Lq+8qieqT3nT+1ZE
+ zsWc0KTDibk2lUP8RXyqPWaKYteaZ2ecwyrTgu9ibLqw=
+X-Received: by 2002:a05:600c:4e93:b0:45d:e0d8:a0aa with SMTP id
+ 5b1f17b1804b1-45de0d8a342mr70320825e9.17.1757328621424; 
+ Mon, 08 Sep 2025 03:50:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH10HtqrIisJ6gUY/X2CHwCHtBSfb6ARFFm6aBFJ6NFULumDNUma3p3We7PmgZHu9cUrFRZjQ==
+X-Received: by 2002:a05:600c:4e93:b0:45d:e0d8:a0aa with SMTP id
+ 5b1f17b1804b1-45de0d8a342mr70320195e9.17.1757328620663; 
+ Mon, 08 Sep 2025 03:50:20 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3cf33fbb3cdsm24872990f8f.51.2025.09.08.03.50.18
- for <qemu-devel@nongnu.org>
+ 5b1f17b1804b1-45b7e50e30asm440811325e9.24.2025.09.08.03.50.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Sep 2025 03:50:18 -0700 (PDT)
+ Mon, 08 Sep 2025 03:50:20 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 05/33] rust: use inline const expressions
-Date: Mon,  8 Sep 2025 12:49:37 +0200
-Message-ID: <20250908105005.2119297-6-pbonzini@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PATCH 06/33] rust: add qdev Device derive macro
+Date: Mon,  8 Sep 2025 12:49:38 +0200
+Message-ID: <20250908105005.2119297-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250908105005.2119297-1-pbonzini@redhat.com>
 References: <20250908105005.2119297-1-pbonzini@redhat.com>
@@ -91,7 +91,7 @@ X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,142 +107,591 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-They were stabilized in Rust 1.79.0.
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
+Add derive macro for declaring qdev properties directly above the field
+definitions. To do this, we split DeviceImpl::properties method on a
+separate trait so we can implement only that part in the derive macro
+expansion (we cannot partially implement the DeviceImpl trait).
+
+Adding a `property` attribute above the field declaration will generate
+a `qemu_api::bindings::Property` array member in the device's property
+list.
+
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Link: https://lore.kernel.org/r/20250711-rust-qdev-properties-v3-1-e198624416fb@linaro.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/devel/rust.rst            |  9 +++------
- rust/qemu-api/src/callbacks.rs | 27 +--------------------------
- rust/qemu-api/src/chardev.rs   |  2 +-
- rust/qemu-api/src/qdev.rs      |  2 +-
- rust/qemu-api/src/timer.rs     |  2 +-
- rust/qemu-api/src/vmstate.rs   |  2 +-
- 6 files changed, 8 insertions(+), 36 deletions(-)
+ rust/hw/char/pl011/src/device.rs  |  31 +-----
+ rust/hw/timer/hpet/src/device.rs  |   6 +-
+ rust/qemu-api-macros/src/lib.rs   | 152 +++++++++++++++++++++++++++++-
+ rust/qemu-api-macros/src/tests.rs | 111 ++++++++++++++++++++++
+ rust/qemu-api/src/qdev.rs         |  70 ++++++++++++--
+ rust/qemu-api/tests/tests.rs      |  24 +----
+ 6 files changed, 336 insertions(+), 58 deletions(-)
 
-diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
-index e0ee4a9837d..98e3a33a3ce 100644
---- a/docs/devel/rust.rst
-+++ b/docs/devel/rust.rst
-@@ -79,9 +79,6 @@ QEMU supports rustc version 1.83.0 and newer.  The following features
- from relatively new versions of Rust are not used for historical reasons;
- patches are welcome:
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index ceb71dd99b6..37944635202 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -9,7 +9,6 @@
+ };
  
--* inline const expression (stable in 1.79.0), currently worked around with
--  associated constants in the ``FnCall`` trait.
+ use qemu_api::{
+-    bindings::{qdev_prop_bool, qdev_prop_chr},
+     chardev::{CharBackend, Chardev, Event},
+     impl_vmstate_forward,
+     irq::{IRQState, InterruptSource},
+@@ -17,7 +16,7 @@
+     log_mask_ln,
+     memory::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder},
+     prelude::*,
+-    qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, Property, ResetType, ResettablePhasesImpl},
++    qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, ResetType, ResettablePhasesImpl},
+     qom::{ObjectImpl, Owned, ParentField, ParentInit},
+     static_assert,
+     sysbus::{SysBusDevice, SysBusDeviceImpl},
+@@ -105,12 +104,13 @@ pub struct PL011Registers {
+ }
+ 
+ #[repr(C)]
+-#[derive(qemu_api_macros::Object)]
++#[derive(qemu_api_macros::Object, qemu_api_macros::Device)]
+ /// PL011 Device Model in QEMU
+ pub struct PL011State {
+     pub parent_obj: ParentField<SysBusDevice>,
+     pub iomem: MemoryRegion,
+     #[doc(alias = "chr")]
++    #[property(rename = "chardev")]
+     pub char_backend: CharBackend,
+     pub regs: BqlRefCell<PL011Registers>,
+     /// QEMU interrupts
+@@ -129,6 +129,7 @@ pub struct PL011State {
+     #[doc(alias = "clk")]
+     pub clock: Owned<Clock>,
+     #[doc(alias = "migrate_clk")]
++    #[property(rename = "migrate-clk", default = true)]
+     pub migrate_clock: bool,
+ }
+ 
+@@ -176,9 +177,6 @@ impl ObjectImpl for PL011State {
+ }
+ 
+ impl DeviceImpl for PL011State {
+-    fn properties() -> &'static [Property] {
+-        &PL011_PROPERTIES
+-    }
+     fn vmsd() -> Option<&'static VMStateDescription> {
+         Some(&VMSTATE_PL011)
+     }
+@@ -690,7 +688,7 @@ pub fn post_load(&self, _version_id: u32) -> Result<(), ()> {
+ }
+ 
+ #[repr(C)]
+-#[derive(qemu_api_macros::Object)]
++#[derive(qemu_api_macros::Object, qemu_api_macros::Device)]
+ /// PL011 Luminary device model.
+ pub struct PL011Luminary {
+     parent_obj: ParentField<PL011State>,
+@@ -782,22 +780,3 @@ extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c_int {
+     },
+     ..Zeroable::ZERO
+ };
 -
- * associated constants are still explicitly marked ``'static`` (`changed in
-   1.81.0`__)
+-qemu_api::declare_properties! {
+-    PL011_PROPERTIES,
+-    qemu_api::define_property!(
+-        c"chardev",
+-        PL011State,
+-        char_backend,
+-        unsafe { &qdev_prop_chr },
+-        CharBackend
+-    ),
+-    qemu_api::define_property!(
+-        c"migrate-clk",
+-        PL011State,
+-        migrate_clock,
+-        unsafe { &qdev_prop_bool },
+-        bool,
+-        default = true
+-    ),
+-}
+diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
+index acf7251029e..01d5a0dd70c 100644
+--- a/rust/hw/timer/hpet/src/device.rs
++++ b/rust/hw/timer/hpet/src/device.rs
+@@ -1031,11 +1031,15 @@ impl ObjectImpl for HPETState {
+     ..Zeroable::ZERO
+ };
  
-@@ -97,9 +94,9 @@ patches are welcome:
-   before QEMU can use them.  For now, there is special code in
-   ``util/error.c`` to support non-NUL-terminated file names.
+-impl DeviceImpl for HPETState {
++// SAFETY: HPET_PROPERTIES is a valid Property array constructed with the
++// qemu_api::declare_properties macro.
++unsafe impl qemu_api::qdev::DevicePropertiesImpl for HPETState {
+     fn properties() -> &'static [Property] {
+         &HPET_PROPERTIES
+     }
++}
  
--* associated const equality would be nice to have for some users of
--  ``callbacks::FnCall``, but is still experimental.  ``ASSERT_IS_SOME``
--  replaces it.
-+Associated const equality would be nice to have for some users of
-+``callbacks::FnCall``, but is still experimental.  Const assertions
-+are used instead.
++impl DeviceImpl for HPETState {
+     fn vmsd() -> Option<&'static VMStateDescription> {
+         Some(&VMSTATE_HPET)
+     }
+diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+index 959726efe6d..97b2c214b62 100644
+--- a/rust/qemu-api-macros/src/lib.rs
++++ b/rust/qemu-api-macros/src/lib.rs
+@@ -3,10 +3,11 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
- __ https://github.com/rust-lang/rust/pull/125258
+ use proc_macro::TokenStream;
+-use quote::quote;
++use quote::{quote, quote_spanned, ToTokens};
+ use syn::{
+-    parse_macro_input, parse_quote, punctuated::Punctuated, spanned::Spanned, token::Comma, Data,
+-    DeriveInput, Error, Field, Fields, FieldsUnnamed, Ident, Meta, Path, Token, Variant,
++    parse::Parse, parse_macro_input, parse_quote, punctuated::Punctuated, spanned::Spanned,
++    token::Comma, Data, DeriveInput, Error, Field, Fields, FieldsUnnamed, Ident, Meta, Path, Token,
++    Variant,
+ };
+ mod bits;
+ use bits::BitsConstInternal;
+@@ -152,6 +153,151 @@ pub const fn raw_get(slot: *mut Self) -> *mut <Self as ::qemu_api::cell::Wrapper
+     })
+ }
  
-diff --git a/rust/qemu-api/src/callbacks.rs b/rust/qemu-api/src/callbacks.rs
-index 9642a16eb89..dbe2305f509 100644
---- a/rust/qemu-api/src/callbacks.rs
-+++ b/rust/qemu-api/src/callbacks.rs
-@@ -113,31 +113,6 @@
- /// This is always true for zero-capture closures and function pointers, as long
- /// as the code is able to name the function in the first place.
- pub unsafe trait FnCall<Args, R = ()>: 'static + Sync + Sized {
--    /// Referring to this internal constant asserts that the `Self` type is
--    /// zero-sized.  Can be replaced by an inline const expression in
--    /// Rust 1.79.0+.
--    const ASSERT_ZERO_SIZED: () = { assert!(mem::size_of::<Self>() == 0) };
--
--    /// Referring to this constant asserts that the `Self` type is an actual
--    /// function type, which can be used to catch incorrect use of `()`
--    /// at compile time.
--    ///
--    /// # Examples
--    ///
--    /// ```compile_fail
--    /// # use qemu_api::callbacks::FnCall;
--    /// fn call_it<F: for<'a> FnCall<(&'a str,), String>>(_f: &F, s: &str) -> String {
--    ///     let _: () = F::ASSERT_IS_SOME;
--    ///     F::call((s,))
--    /// }
--    ///
--    /// let s: String = call_it((), "hello world"); // does not compile
--    /// ```
--    ///
--    /// Note that this can be more simply `const { assert!(F::IS_SOME) }` in
--    /// Rust 1.79.0 or newer.
--    const ASSERT_IS_SOME: () = { assert!(Self::IS_SOME) };
--
-     /// `true` if `Self` is an actual function type and not `()`.
-     ///
-     /// # Examples
-@@ -195,7 +170,7 @@ unsafe impl<F, $($args,)* R> FnCall<($($args,)*), R> for F
++#[derive(Debug)]
++enum DevicePropertyName {
++    CStr(syn::LitCStr),
++    Str(syn::LitStr),
++}
++
++#[derive(Debug)]
++struct DeviceProperty {
++    rename: Option<DevicePropertyName>,
++    defval: Option<syn::Expr>,
++}
++
++impl Parse for DeviceProperty {
++    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
++        let _: syn::Token![#] = input.parse()?;
++        let bracketed;
++        _ = syn::bracketed!(bracketed in input);
++        let attribute = bracketed.parse::<syn::Ident>()?;
++        debug_assert_eq!(&attribute.to_string(), "property");
++        let mut retval = Self {
++            rename: None,
++            defval: None,
++        };
++        let content;
++        _ = syn::parenthesized!(content in bracketed);
++        while !content.is_empty() {
++            let value: syn::Ident = content.parse()?;
++            if value == "rename" {
++                let _: syn::Token![=] = content.parse()?;
++                if retval.rename.is_some() {
++                    return Err(syn::Error::new(
++                        value.span(),
++                        "`rename` can only be used at most once",
++                    ));
++                }
++                if content.peek(syn::LitStr) {
++                    retval.rename = Some(DevicePropertyName::Str(content.parse::<syn::LitStr>()?));
++                } else {
++                    retval.rename =
++                        Some(DevicePropertyName::CStr(content.parse::<syn::LitCStr>()?));
++                }
++            } else if value == "default" {
++                let _: syn::Token![=] = content.parse()?;
++                if retval.defval.is_some() {
++                    return Err(syn::Error::new(
++                        value.span(),
++                        "`default` can only be used at most once",
++                    ));
++                }
++                retval.defval = Some(content.parse()?);
++            } else {
++                return Err(syn::Error::new(
++                    value.span(),
++                    format!("unrecognized field `{value}`"),
++                ));
++            }
++
++            if !content.is_empty() {
++                let _: syn::Token![,] = content.parse()?;
++            }
++        }
++        Ok(retval)
++    }
++}
++
++#[proc_macro_derive(Device, attributes(property))]
++pub fn derive_device(input: TokenStream) -> TokenStream {
++    let input = parse_macro_input!(input as DeriveInput);
++
++    derive_device_or_error(input)
++        .unwrap_or_else(syn::Error::into_compile_error)
++        .into()
++}
++
++fn derive_device_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, Error> {
++    is_c_repr(&input, "#[derive(Device)]")?;
++    let properties: Vec<(syn::Field, DeviceProperty)> = get_fields(&input, "#[derive(Device)]")?
++        .iter()
++        .flat_map(|f| {
++            f.attrs
++                .iter()
++                .filter(|a| a.path().is_ident("property"))
++                .map(|a| Ok((f.clone(), syn::parse2(a.to_token_stream())?)))
++        })
++        .collect::<Result<Vec<_>, Error>>()?;
++    let name = &input.ident;
++    let mut properties_expanded = vec![];
++
++    for (field, prop) in properties {
++        let DeviceProperty { rename, defval } = prop;
++        let field_name = field.ident.unwrap();
++        macro_rules! str_to_c_str {
++            ($value:expr, $span:expr) => {{
++                let (value, span) = ($value, $span);
++                let cstr = std::ffi::CString::new(value.as_str()).map_err(|err| {
++                    Error::new(
++                        span,
++                        format!(
++                            "Property name `{value}` cannot be represented as a C string: {err}"
++                        ),
++                    )
++                })?;
++                let cstr_lit = syn::LitCStr::new(&cstr, span);
++                Ok(quote! { #cstr_lit })
++            }};
++        }
++
++        let prop_name = rename.map_or_else(
++            || str_to_c_str!(field_name.to_string(), field_name.span()),
++            |rename| -> Result<proc_macro2::TokenStream, Error> {
++                match rename {
++                    DevicePropertyName::CStr(cstr_lit) => Ok(quote! { #cstr_lit }),
++                    DevicePropertyName::Str(str_lit) => {
++                        str_to_c_str!(str_lit.value(), str_lit.span())
++                    }
++                }
++            },
++        )?;
++        let field_ty = field.ty.clone();
++        let qdev_prop = quote! { <#field_ty as ::qemu_api::qdev::QDevProp>::VALUE };
++        let set_default = defval.is_some();
++        let defval = defval.unwrap_or(syn::Expr::Verbatim(quote! { 0 }));
++        properties_expanded.push(quote! {
++            ::qemu_api::bindings::Property {
++                name: ::std::ffi::CStr::as_ptr(#prop_name),
++                info: #qdev_prop ,
++                offset: ::core::mem::offset_of!(#name, #field_name) as isize,
++                set_default: #set_default,
++                defval: ::qemu_api::bindings::Property__bindgen_ty_1 { u: #defval as u64 },
++                ..::qemu_api::zeroable::Zeroable::ZERO
++            }
++        });
++    }
++
++    Ok(quote_spanned! {input.span() =>
++        unsafe impl ::qemu_api::qdev::DevicePropertiesImpl for #name {
++            fn properties() -> &'static [::qemu_api::bindings::Property] {
++                static PROPERTIES: &[::qemu_api::bindings::Property] = &[#(#properties_expanded),*];
++
++                PROPERTIES
++            }
++        }
++    })
++}
++
+ #[proc_macro_derive(Wrapper)]
+ pub fn derive_opaque(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input as DeriveInput);
+diff --git a/rust/qemu-api-macros/src/tests.rs b/rust/qemu-api-macros/src/tests.rs
+index 6028cdbc4c3..aafffcdce91 100644
+--- a/rust/qemu-api-macros/src/tests.rs
++++ b/rust/qemu-api-macros/src/tests.rs
+@@ -36,6 +36,117 @@ macro_rules! derive_compile {
+     }};
+ }
  
-             #[inline(always)]
-             fn call(a: ($($args,)*)) -> R {
--                let _: () = Self::ASSERT_ZERO_SIZED;
-+                const { assert!(mem::size_of::<Self>() == 0) };
- 
-                 // SAFETY: the safety of this method is the condition for implementing
-                 // `FnCall`.  As to the `NonNull` idiom to create a zero-sized type,
-diff --git a/rust/qemu-api/src/chardev.rs b/rust/qemu-api/src/chardev.rs
-index 6e0590d758e..cb27be52569 100644
---- a/rust/qemu-api/src/chardev.rs
-+++ b/rust/qemu-api/src/chardev.rs
-@@ -138,7 +138,7 @@ pub fn enable_handlers<
-             F::call((owner, event))
-         }
- 
--        let _: () = CanReceiveFn::ASSERT_IS_SOME;
-+        const { assert!(CanReceiveFn::IS_SOME) };
-         let receive_cb: Option<unsafe extern "C" fn(*mut c_void, *const u8, c_int)> =
-             if ReceiveFn::is_some() {
-                 Some(rust_receive_cb::<T, ReceiveFn>)
++#[test]
++fn test_derive_device() {
++    // Check that repr(C) is used
++    derive_compile_fail!(
++        derive_device_or_error,
++        quote! {
++            #[derive(Device)]
++            struct Foo {
++                _unused: [u8; 0],
++            }
++        },
++        "#[repr(C)] required for #[derive(Device)]"
++    );
++    // Check that invalid/misspelled attributes raise an error
++    derive_compile_fail!(
++        derive_device_or_error,
++        quote! {
++            #[repr(C)]
++            #[derive(Device)]
++            struct DummyState {
++                #[property(defalt = true)]
++                migrate_clock: bool,
++            }
++        },
++        "unrecognized field `defalt`"
++    );
++    // Check that repeated attributes are not allowed:
++    derive_compile_fail!(
++        derive_device_or_error,
++        quote! {
++            #[repr(C)]
++            #[derive(Device)]
++            struct DummyState {
++                #[property(rename = "migrate-clk", rename = "migrate-clk", default = true)]
++                migrate_clock: bool,
++            }
++        },
++        "`rename` can only be used at most once"
++    );
++    derive_compile_fail!(
++        derive_device_or_error,
++        quote! {
++            #[repr(C)]
++            #[derive(Device)]
++            struct DummyState {
++                #[property(default = true, default = true)]
++                migrate_clock: bool,
++            }
++        },
++        "`default` can only be used at most once"
++    );
++    // Check that the field name is preserved when `rename` isn't used:
++    derive_compile!(
++        derive_device_or_error,
++        quote! {
++            #[repr(C)]
++            #[derive(Device)]
++            pub struct DummyState {
++                parent: ParentField<DeviceState>,
++                #[property(default = true)]
++                migrate_clock: bool,
++            }
++        },
++        quote! {
++            unsafe impl ::qemu_api::qdev::DevicePropertiesImpl for DummyState {
++                fn properties() -> &'static [::qemu_api::bindings::Property] {
++                    static PROPERTIES: &[::qemu_api::bindings::Property] =
++                        &[::qemu_api::bindings::Property {
++                            name: ::std::ffi::CStr::as_ptr(c"migrate_clock"),
++                            info: <bool as ::qemu_api::qdev::QDevProp>::VALUE,
++                            offset: ::core::mem::offset_of!(DummyState, migrate_clock) as isize,
++                            set_default: true,
++                            defval: ::qemu_api::bindings::Property__bindgen_ty_1 { u: true as u64 },
++                            ..::qemu_api::zeroable::Zeroable::ZERO
++                        }];
++                    PROPERTIES
++                }
++            }
++        }
++    );
++    // Check that `rename` value is used for the property name when used:
++    derive_compile!(
++        derive_device_or_error,
++        quote! {
++            #[repr(C)]
++            #[derive(Device)]
++            pub struct DummyState {
++                parent: ParentField<DeviceState>,
++                #[property(rename = "migrate-clk", default = true)]
++                migrate_clock: bool,
++            }
++        },
++        quote! {
++            unsafe impl ::qemu_api::qdev::DevicePropertiesImpl for DummyState {
++                fn properties() -> &'static [::qemu_api::bindings::Property] {
++                    static PROPERTIES: &[::qemu_api::bindings::Property] =
++                        &[::qemu_api::bindings::Property {
++                            name: ::std::ffi::CStr::as_ptr(c"migrate-clk"),
++                            info: <bool as ::qemu_api::qdev::QDevProp>::VALUE,
++                            offset: ::core::mem::offset_of!(DummyState, migrate_clock) as isize,
++                            set_default: true,
++                            defval: ::qemu_api::bindings::Property__bindgen_ty_1 { u: true as u64 },
++                            ..::qemu_api::zeroable::Zeroable::ZERO
++                        }];
++                    PROPERTIES
++                }
++            }
++        }
++    );
++}
++
+ #[test]
+ fn test_derive_object() {
+     derive_compile_fail!(
 diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index 36f02fb57db..52d54a4494e 100644
+index 52d54a4494e..6a58a00e3fc 100644
 --- a/rust/qemu-api/src/qdev.rs
 +++ b/rust/qemu-api/src/qdev.rs
-@@ -373,7 +373,7 @@ fn do_init_gpio_in(
-             }
+@@ -101,8 +101,67 @@ pub trait ResettablePhasesImpl {
+     T::EXIT.unwrap()(unsafe { state.as_ref() }, typ);
+ }
+ 
++/// Helper trait to return pointer to a [`bindings::PropertyInfo`] for a type.
++///
++/// This trait is used by [`qemu_api_macros::Device`] derive macro.
++///
++/// Base types that already have `qdev_prop_*` globals in the QEMU API should
++/// use those values as exported by the [`bindings`] module, instead of
++/// redefining them.
++///
++/// # Safety
++///
++/// This trait is marked as `unsafe` because currently having a `const` refer to
++/// an `extern static` as a reference instead of a raw pointer results in this
++/// compiler error:
++///
++/// ```text
++/// constructing invalid value: encountered reference to `extern` static in `const`
++/// ```
++///
++/// This is because the compiler generally might dereference a normal reference
++/// during const evaluation, but not in this case (if it did, it'd need to
++/// dereference the raw pointer so this would fail to compile).
++///
++/// It is the implementer's responsibility to provide a valid
++/// [`bindings::PropertyInfo`] pointer for the trait implementation to be safe.
++pub unsafe trait QDevProp {
++    const VALUE: *const bindings::PropertyInfo;
++}
++
++/// Use [`bindings::qdev_prop_bool`] for `bool`.
++unsafe impl QDevProp for bool {
++    const VALUE: *const bindings::PropertyInfo = unsafe { &bindings::qdev_prop_bool };
++}
++
++/// Use [`bindings::qdev_prop_uint64`] for `u64`.
++unsafe impl QDevProp for u64 {
++    const VALUE: *const bindings::PropertyInfo = unsafe { &bindings::qdev_prop_uint64 };
++}
++
++/// Use [`bindings::qdev_prop_chr`] for [`crate::chardev::CharBackend`].
++unsafe impl QDevProp for crate::chardev::CharBackend {
++    const VALUE: *const bindings::PropertyInfo = unsafe { &bindings::qdev_prop_chr };
++}
++
++/// Trait to define device properties.
++///
++/// # Safety
++///
++/// Caller is responsible for the validity of properties array.
++pub unsafe trait DevicePropertiesImpl {
++    /// An array providing the properties that the user can set on the
++    /// device.  Not a `const` because referencing statics in constants
++    /// is unstable until Rust 1.83.0.
++    fn properties() -> &'static [Property] {
++        &[]
++    }
++}
++
+ /// Trait providing the contents of [`DeviceClass`].
+-pub trait DeviceImpl: ObjectImpl + ResettablePhasesImpl + IsA<DeviceState> {
++pub trait DeviceImpl:
++    ObjectImpl + ResettablePhasesImpl + DevicePropertiesImpl + IsA<DeviceState>
++{
+     /// _Realization_ is the second stage of device creation. It contains
+     /// all operations that depend on device properties and can fail (note:
+     /// this is not yet supported for Rust devices).
+@@ -111,13 +170,6 @@ pub trait DeviceImpl: ObjectImpl + ResettablePhasesImpl + IsA<DeviceState> {
+     /// with the function pointed to by `REALIZE`.
+     const REALIZE: Option<fn(&Self) -> Result<()>> = None;
+ 
+-    /// An array providing the properties that the user can set on the
+-    /// device.  Not a `const` because referencing statics in constants
+-    /// is unstable until Rust 1.83.0.
+-    fn properties() -> &'static [Property] {
+-        &[]
+-    }
+-
+     /// A `VMStateDescription` providing the migration format for the device
+     /// Not a `const` because referencing statics in constants is unstable
+     /// until Rust 1.83.0.
+@@ -175,7 +227,7 @@ pub fn class_init<T: DeviceImpl>(&mut self) {
+         if let Some(vmsd) = <T as DeviceImpl>::vmsd() {
+             self.vmsd = vmsd;
          }
+-        let prop = <T as DeviceImpl>::properties();
++        let prop = <T as DevicePropertiesImpl>::properties();
+         if !prop.is_empty() {
+             unsafe {
+                 bindings::device_class_set_props_n(self, prop.as_ptr(), prop.len());
+diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
+index a658a49fcfd..aff3eecd654 100644
+--- a/rust/qemu-api/tests/tests.rs
++++ b/rust/qemu-api/tests/tests.rs
+@@ -5,11 +5,10 @@
+ use std::{ffi::CStr, ptr::addr_of};
  
--        let _: () = F::ASSERT_IS_SOME;
-+        const { assert!(F::IS_SOME) };
-         unsafe extern "C" fn rust_irq_handler<T, F: for<'a> FnCall<(&'a T, u32, u32)>>(
-             opaque: *mut c_void,
-             line: c_int,
-diff --git a/rust/qemu-api/src/timer.rs b/rust/qemu-api/src/timer.rs
-index 0daec62f926..1e639eaf221 100644
---- a/rust/qemu-api/src/timer.rs
-+++ b/rust/qemu-api/src/timer.rs
-@@ -56,7 +56,7 @@ pub fn init_full<'timer, 'opaque: 'timer, T, F>(
-     ) where
-         F: for<'a> FnCall<(&'a T,)>,
-     {
--        let _: () = F::ASSERT_IS_SOME;
-+        const { assert!(F::IS_SOME) };
+ use qemu_api::{
+-    bindings::{module_call_init, module_init_type, qdev_prop_bool},
++    bindings::{module_call_init, module_init_type},
+     cell::{self, BqlCell},
+-    declare_properties, define_property,
+     prelude::*,
+-    qdev::{DeviceImpl, DeviceState, Property, ResettablePhasesImpl},
++    qdev::{DeviceImpl, DeviceState, ResettablePhasesImpl},
+     qom::{ObjectImpl, ParentField},
+     sysbus::SysBusDevice,
+     vmstate::VMStateDescription,
+@@ -26,9 +25,10 @@
+ };
  
-         /// timer expiration callback
-         unsafe extern "C" fn rust_timer_handler<T, F: for<'a> FnCall<(&'a T,)>>(
-diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 812f390d780..8515e382135 100644
---- a/rust/qemu-api/src/vmstate.rs
-+++ b/rust/qemu-api/src/vmstate.rs
-@@ -457,7 +457,7 @@ macro_rules! vmstate_exist_fn {
-         const fn test_cb_builder__<T, F: for<'a> $crate::callbacks::FnCall<(&'a T, u8), bool>>(
-             _phantom: ::core::marker::PhantomData<F>,
-         ) -> $crate::vmstate::VMSFieldExistCb {
--            let _: () = F::ASSERT_IS_SOME;
-+            const { assert!(F::IS_SOME) };
-             $crate::vmstate::rust_vms_test_field_exists::<T, F>
-         }
+ #[repr(C)]
+-#[derive(qemu_api_macros::Object)]
++#[derive(qemu_api_macros::Object, qemu_api_macros::Device)]
+ pub struct DummyState {
+     parent: ParentField<DeviceState>,
++    #[property(rename = "migrate-clk", default = true)]
+     migrate_clock: bool,
+ }
  
+@@ -44,17 +44,6 @@ pub fn class_init<T: DeviceImpl>(self: &mut DummyClass) {
+     }
+ }
+ 
+-declare_properties! {
+-    DUMMY_PROPERTIES,
+-        define_property!(
+-            c"migrate-clk",
+-            DummyState,
+-            migrate_clock,
+-            unsafe { &qdev_prop_bool },
+-            bool
+-        ),
+-}
+-
+ unsafe impl ObjectType for DummyState {
+     type Class = DummyClass;
+     const TYPE_NAME: &'static CStr = c"dummy";
+@@ -69,16 +58,13 @@ impl ObjectImpl for DummyState {
+ impl ResettablePhasesImpl for DummyState {}
+ 
+ impl DeviceImpl for DummyState {
+-    fn properties() -> &'static [Property] {
+-        &DUMMY_PROPERTIES
+-    }
+     fn vmsd() -> Option<&'static VMStateDescription> {
+         Some(&VMSTATE)
+     }
+ }
+ 
+ #[repr(C)]
+-#[derive(qemu_api_macros::Object)]
++#[derive(qemu_api_macros::Object, qemu_api_macros::Device)]
+ pub struct DummyChildState {
+     parent: ParentField<DummyState>,
+ }
 -- 
 2.51.0
 
