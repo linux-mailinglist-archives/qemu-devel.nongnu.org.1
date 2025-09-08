@@ -2,65 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4AFB4964F
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 18:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43ECDB4966D
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 19:02:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvf9H-0007bh-2v; Mon, 08 Sep 2025 12:55:23 -0400
+	id 1uvf9E-0007WR-1w; Mon, 08 Sep 2025 12:55:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uvf9B-0007R1-NC
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:55:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uvf9A-0007QD-Mi
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:55:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uvf94-0001qU-JJ
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:55:17 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uvf93-0001qa-Q5
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:55:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1757350506;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6uTUGkT6l2VFj2s62kA2cob0zVa39/BxqJ9b2QjmEaY=;
- b=ev+gxFBPA7Macruw5VYl/MwsDGN5liqzBdj3xw88Be31VGHfypIZUdmfD14hPbydTY8gUa
- aD0rWXSM3TqmcBcJCWzwiuDNNjir02bZajLejF0xIUw48YuCpi3Zqsi31nKE09UYMU6dQS
- bgdW4jTeiCpyb3e2SgXrHpdO/d0eX+c=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=gPEUCaZYygqJQz764hQRVW735UON+2BLl3xNtcGzDWM=;
+ b=DYBBmGVWvUZ4VrZFeMFr/QcsJlfwJLpsuuzwLHCxoX5a2jWZyyBoC5Xk3bQXU1M3c+uRwh
+ ZEydAqrvZ5rP1c3LzOOHDG4VZoJiXGSX7pd7FD2lgXovEQDui5TsxbOvk8XOGApTGfMEkG
+ uOUVrEcAz+zttXzNPU5jRme9kMp1i3Q=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-DWifPo0KMlGeX7YEYqs4Bw-1; Mon,
- 08 Sep 2025 12:55:02 -0400
-X-MC-Unique: DWifPo0KMlGeX7YEYqs4Bw-1
-X-Mimecast-MFC-AGG-ID: DWifPo0KMlGeX7YEYqs4Bw_1757350501
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-341-k0Cu7P1WOnKhQ_EM-2lf-A-1; Mon,
+ 08 Sep 2025 12:55:03 -0400
+X-MC-Unique: k0Cu7P1WOnKhQ_EM-2lf-A-1
+X-Mimecast-MFC-AGG-ID: k0Cu7P1WOnKhQ_EM-2lf-A_1757350502
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4CFFF19540F1; Mon,  8 Sep 2025 16:55:00 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B22871800452; Mon,  8 Sep 2025 16:55:02 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.50])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 220A53000198; Mon,  8 Sep 2025 16:54:57 +0000 (UTC)
+ id C89B6300018D; Mon,  8 Sep 2025 16:55:00 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- John Levon <john.levon@nutanix.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 23/31] vfio-user/pci.c: rename VFIOUserPCIDevice device field
- to parent_obj
-Date: Mon,  8 Sep 2025 18:53:46 +0200
-Message-ID: <20250908165354.1731444-24-clg@redhat.com>
+Subject: [PULL 24/31] vfio/pci.h: update VFIOPCIDevice declaration
+Date: Mon,  8 Sep 2025 18:53:47 +0200
+Message-ID: <20250908165354.1731444-25-clg@redhat.com>
 In-Reply-To: <20250908165354.1731444-1-clg@redhat.com>
 References: <20250908165354.1731444-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,32 +85,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 
-Now that nothing accesses the device field directly, rename device to
-parent_obj as per our current coding guidelines.
+Update the VFIOPCIDevice declaration so that it is closer to our coding
+guidelines: add a blank line after the parent object.
 
 Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: John Levon <john.levon@nutanix.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/qemu-devel/20250715093110.107317-14-mark.caveayland@nutanix.com
+Link: https://lore.kernel.org/qemu-devel/20250715093110.107317-15-mark.caveayland@nutanix.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio-user/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/vfio/pci.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/vfio-user/pci.c b/hw/vfio-user/pci.c
-index 7b6a6514f6c22c64ea52d4e8e99b263ed44de522..c3947a8f2ec9c0309b4484b95a4bd5439fa1d17f 100644
---- a/hw/vfio-user/pci.c
-+++ b/hw/vfio-user/pci.c
-@@ -20,7 +20,7 @@
- OBJECT_DECLARE_SIMPLE_TYPE(VFIOUserPCIDevice, VFIO_USER_PCI)
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index 96144b6fdeb94dccf6c0beecf039a12b9845c59b..2db76b6f4fb58679d65b651f0507c474e5c05857 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -124,6 +124,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(VFIOPCIDevice, VFIO_PCI_BASE)
  
- struct VFIOUserPCIDevice {
--    VFIOPCIDevice device;
-+    VFIOPCIDevice parent_obj;
- 
-     SocketAddress *socket;
-     bool send_queued;   /* all sends are queued */
+ struct VFIOPCIDevice {
+     PCIDevice pdev;
++
+     VFIODevice vbasedev;
+     VFIOINTx intx;
+     unsigned int config_size;
 -- 
 2.51.0
 
