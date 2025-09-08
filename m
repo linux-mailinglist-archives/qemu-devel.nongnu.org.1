@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B87DBB48ABC
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34668B48AAA
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:56:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvZSZ-00066K-9D; Mon, 08 Sep 2025 06:50:55 -0400
+	id 1uvZSQ-00062w-6D; Mon, 08 Sep 2025 06:50:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvZSQ-00064F-Lq
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:50:48 -0400
+ id 1uvZSD-00060Y-3E
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:50:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvZS8-0005yf-VZ
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:50:37 -0400
+ id 1uvZS6-0005z4-8D
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:50:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757328620;
+ s=mimecast20190719; t=1757328623;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SZbJleeyulOpA5LrkMwUKjkXRJN+Q3YBVWNLlLwx58A=;
- b=DqctccKuyI0eQo7xAcgMGovJGM5Khxg87aiYPpFPiOrXGsY7u2oClg4cNx3z6D1iB7CzSJ
- ybtdwPxWcoRxzLSvNShzTSt4mYjZxr8JGojmQqhYm39Ho8T3PQBG/13RFT81VQDIsOEATn
- 70fkNWtnF5C96+rrsJDbgvPSXSTlKks=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=y6WobgRcu9QhiucL9MTaVnK6KwVdm1kQbN8McJhsu6I=;
+ b=TabxeJlhGrQm2DeP8F70BHlPrG/ofyetia0okz+qZIfs9v1CT89DZ8GE0SKcZfB5d002V3
+ GkhIadaWe5YMJANkREHlZpoVYqGJ/Dp67m7jSJDLlVrdvRI96EF2fnOjV59cN50eP3zdZ8
+ 0sfiILLW/Y677ShU8ILOutDfqXHw0kM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-OpDBZtkyM0yI-8aL_8bTgA-1; Mon, 08 Sep 2025 06:50:19 -0400
-X-MC-Unique: OpDBZtkyM0yI-8aL_8bTgA-1
-X-Mimecast-MFC-AGG-ID: OpDBZtkyM0yI-8aL_8bTgA_1757328618
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45dcf5f1239so16370715e9.2
- for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:50:19 -0700 (PDT)
+ us-mta-595-YyZQMkqlNOejcvE0rNLRQg-1; Mon, 08 Sep 2025 06:50:21 -0400
+X-MC-Unique: YyZQMkqlNOejcvE0rNLRQg-1
+X-Mimecast-MFC-AGG-ID: YyZQMkqlNOejcvE0rNLRQg_1757328621
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3e61deaf253so1297277f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:50:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757328618; x=1757933418;
+ d=1e100.net; s=20230601; t=1757328620; x=1757933420;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SZbJleeyulOpA5LrkMwUKjkXRJN+Q3YBVWNLlLwx58A=;
- b=bpCNjV82tdJiuPt70AAfJgjQu2hzNpPBzh8o0vfAIm8Kp32BKD/AptZ+3FYhgKNsTb
- KuljL4ezyArgL/Rn1HNDJ492x7ezXYH+JuV7w/Bggf7+PKPwbOsUPN026XSeJ8ipVNWh
- H0lqJUULRPgr1HiPAfp9O2Kh/53x2vJNWlaapBQKaVyRWPpZvFiQ7iVWA5upwGKa8LOB
- g3lnDIoaoCs3KcifkfgSGrO6/mPdMnUYZGeOSqCWQyIw1byjT6Cgk0uzS2Bmsa9NqXAl
- WL0jqFLe4i0U8HoQs5bbA/WzS2y0s8BMGmxnoek9FFiPEyseKwVErftC2fBSghsofx9M
- naEQ==
-X-Gm-Message-State: AOJu0Yxsqch1Bv5BYaINCvR3Er8EcvMsmI4KqJJjDHvxV1FisdCfgwWx
- EjEXNLJUIo02dBpyBR2ngvDAfY1a5bv1xgYuKYk/k+ZWqHrK/BEHTzwenYeDbyz0aXXru8//SfN
- Rh//SpXjbVBGvMqy1htuSYIDX8gVeRm89KM+KDxYC1DHQTgl4Ru0KHhEGikBy1A+Khe3WzpH/Pn
- ZZo4avP4Sd7yxcpUoRqGG344/CSURDGX2nIS9uOaVu
-X-Gm-Gg: ASbGnctsxIKJp27Zh1YquTzX1aE78nXk2WKmyb8mpb323Mml5/4K5ehciSVdR3Tn73S
- JzaTComewkFg5HpXZ9nytgHUlYIKfmtVJzq/gdUNb3U2Fv3U9Pvx4EK07wiaBptFQ3SVdkb4NOJ
- tLjY23VohvNEFJOGpPBDetHwC3CRc2ISSTRUh6xDbbmNLeE16zF07o9QnxeyVrFJemsOnKQ/HYG
- g6fr35cF60zLRZb3Nt0E5AJZRZf/J+7UDg0QxXy9oWvuEHwggnRXzGHY+c3D3rNW/FQgNPGC3sJ
- bUZ4jgI6p2mhoYMcnfbltXSCFTfCyGgIS4Z03e1BAArP2pXwZnhyQxAEwa0gWlfbMSc+N0u5Dj9
- LSgf17UiRs9z4nayIa15mzU16JvBs4Ey1mrrgOxHhknM=
-X-Received: by 2002:a05:600c:6298:b0:459:d451:3364 with SMTP id
- 5b1f17b1804b1-45dddecdaa7mr67425405e9.24.1757328617624; 
- Mon, 08 Sep 2025 03:50:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHHl9yOQe29Rdv8jl1S4Rx2noZPEQ8W5VP9dYHUPVe58UCa0wwkMkRy9/DdwEX/Ed+0PE3wCg==
-X-Received: by 2002:a05:600c:6298:b0:459:d451:3364 with SMTP id
- 5b1f17b1804b1-45dddecdaa7mr67425025e9.24.1757328617036; 
- Mon, 08 Sep 2025 03:50:17 -0700 (PDT)
+ bh=y6WobgRcu9QhiucL9MTaVnK6KwVdm1kQbN8McJhsu6I=;
+ b=lKfCleO6FdlFLWnD8Yy7yKD17PkAhI2PyfM9O14OFyABzCVgJvEiCQC6B8+tigeBaU
+ SRVt9yyiyPSPyFkbNi23LqrU+SNCHBBYykbSKBAdTgBu91YG6iojOU2QD6F+y4xordcq
+ kqV42S1Hes0Lu7olnAWzYL5KL6GB/g/3Zx9Fsj4QzElKRSFFOJinH6UNNA6jVrpNxD/I
+ 8yDL2ZWOPYIw5wz2wV1HxPaiIweKu5Q6qF1pXhLcCdnvPGrkF7oC9BP6MJmoK6a94OhR
+ P1abTraQKnkz/AXQ2CyOHv3Dfol3MA5/N/4j28X57Rl3e8hycpGtWJMn4Rn7n2xld6rv
+ FFtg==
+X-Gm-Message-State: AOJu0Yyy8sAulBPwxAL5oDeejsQHGg49iLbsxcvg95NwITxFnRA+unlb
+ /1JVGoKL+ot0lc1IvVV+AidvIgWH287McVnWupSE9t/ZL5TbptNpShKOTYHzxGO7hbFXQzIRrQb
+ /wSmliDfCdarN3yszbbeSeU+OyG5eex7U9nH/Dz/FQx8Nw6LPwuhJA3+BxTd1JU93Zt7y+YriO2
+ LoUZKUU0FFquNMqkBGie6ODkyX2515A1r1T/AgDGZG
+X-Gm-Gg: ASbGncuCLYyGf3Se/4USCVz9C1n8NVJu5NSU7r8xofsRmVO9BCcF+zLMVVebwpSmjnL
+ WhpvnXTdSQdVMl7HA1WkvzJaQ0DqQTP5h6lLA4MEzr4cSMSaAPT0SGEA4UAl+BiaNHHNBN+W4jX
+ lFW+RPbNHMiF5zfKimPj4YF7VhJGWsV1Ms1noslC9RTAujOdOD1tO7hnmjnHl2L6uJZ5lBR/xhI
+ ziAwKHQtPlbX35/mKLyl05aA+wgQJOvTdWLbYPSa+1eq6lwPmSyXtoQeJN4rfKECYODCgQOLyWG
+ F/CFAILcvDc2qUzE+iLu8OJZwp1W0pZ9xvHBHJ2H65mv6qUgNgSM7froEajy7CQPhGMu9nUlras
+ FSsnQdnBDaleyPrx8ZeVenLZRZkRchjXxALFq6B0KnUQ=
+X-Received: by 2002:a05:6000:1ac6:b0:3cb:285f:8d9c with SMTP id
+ ffacd0b85a97d-3e643555f89mr5963663f8f.48.1757328619942; 
+ Mon, 08 Sep 2025 03:50:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGjv+jN79RXGG31o3kDqpQPrAn8L10Mv4jNQ9prk4aoL2GgVwxeQqLUOUCAzRU9I4QYV9ioMQ==
+X-Received: by 2002:a05:6000:1ac6:b0:3cb:285f:8d9c with SMTP id
+ ffacd0b85a97d-3e643555f89mr5963628f8f.48.1757328619261; 
+ Mon, 08 Sep 2025 03:50:19 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45c447244c4sm240568135e9.6.2025.09.08.03.50.15
+ ffacd0b85a97d-3cf33fbb3cdsm24872990f8f.51.2025.09.08.03.50.18
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Sep 2025 03:50:15 -0700 (PDT)
+ Mon, 08 Sep 2025 03:50:18 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 04/33] rust: add missing const markers for MSRV==1.83.0
-Date: Mon,  8 Sep 2025 12:49:36 +0200
-Message-ID: <20250908105005.2119297-5-pbonzini@redhat.com>
+Subject: [PATCH 05/33] rust: use inline const expressions
+Date: Mon,  8 Sep 2025 12:49:37 +0200
+Message-ID: <20250908105005.2119297-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250908105005.2119297-1-pbonzini@redhat.com>
 References: <20250908105005.2119297-1-pbonzini@redhat.com>
@@ -107,160 +107,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rust 1.83 allows more functions to be marked const.
-Fix clippy with bumped minimum supported Rust version.
+They were stabilized in Rust 1.79.0.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/bits/src/lib.rs            | 6 +++---
- rust/qemu-api/src/assertions.rs | 4 ++--
- rust/qemu-api/src/cell.rs       | 6 ++----
- rust/qemu-api/src/qom.rs        | 6 +++---
- rust/qemu-api/src/timer.rs      | 2 +-
- rust/qemu-api/src/uninit.rs     | 6 +++---
- 6 files changed, 14 insertions(+), 16 deletions(-)
+ docs/devel/rust.rst            |  9 +++------
+ rust/qemu-api/src/callbacks.rs | 27 +--------------------------
+ rust/qemu-api/src/chardev.rs   |  2 +-
+ rust/qemu-api/src/qdev.rs      |  2 +-
+ rust/qemu-api/src/timer.rs     |  2 +-
+ rust/qemu-api/src/vmstate.rs   |  2 +-
+ 6 files changed, 8 insertions(+), 36 deletions(-)
 
-diff --git a/rust/bits/src/lib.rs b/rust/bits/src/lib.rs
-index d485d6bd110..e9d15ad0cb5 100644
---- a/rust/bits/src/lib.rs
-+++ b/rust/bits/src/lib.rs
-@@ -165,19 +165,19 @@ pub const fn into_bits(self) -> $type {
+diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
+index e0ee4a9837d..98e3a33a3ce 100644
+--- a/docs/devel/rust.rst
++++ b/docs/devel/rust.rst
+@@ -79,9 +79,6 @@ QEMU supports rustc version 1.83.0 and newer.  The following features
+ from relatively new versions of Rust are not used for historical reasons;
+ patches are welcome:
  
-             #[allow(dead_code)]
+-* inline const expression (stable in 1.79.0), currently worked around with
+-  associated constants in the ``FnCall`` trait.
+-
+ * associated constants are still explicitly marked ``'static`` (`changed in
+   1.81.0`__)
+ 
+@@ -97,9 +94,9 @@ patches are welcome:
+   before QEMU can use them.  For now, there is special code in
+   ``util/error.c`` to support non-NUL-terminated file names.
+ 
+-* associated const equality would be nice to have for some users of
+-  ``callbacks::FnCall``, but is still experimental.  ``ASSERT_IS_SOME``
+-  replaces it.
++Associated const equality would be nice to have for some users of
++``callbacks::FnCall``, but is still experimental.  Const assertions
++are used instead.
+ 
+ __ https://github.com/rust-lang/rust/pull/125258
+ 
+diff --git a/rust/qemu-api/src/callbacks.rs b/rust/qemu-api/src/callbacks.rs
+index 9642a16eb89..dbe2305f509 100644
+--- a/rust/qemu-api/src/callbacks.rs
++++ b/rust/qemu-api/src/callbacks.rs
+@@ -113,31 +113,6 @@
+ /// This is always true for zero-capture closures and function pointers, as long
+ /// as the code is able to name the function in the first place.
+ pub unsafe trait FnCall<Args, R = ()>: 'static + Sync + Sized {
+-    /// Referring to this internal constant asserts that the `Self` type is
+-    /// zero-sized.  Can be replaced by an inline const expression in
+-    /// Rust 1.79.0+.
+-    const ASSERT_ZERO_SIZED: () = { assert!(mem::size_of::<Self>() == 0) };
+-
+-    /// Referring to this constant asserts that the `Self` type is an actual
+-    /// function type, which can be used to catch incorrect use of `()`
+-    /// at compile time.
+-    ///
+-    /// # Examples
+-    ///
+-    /// ```compile_fail
+-    /// # use qemu_api::callbacks::FnCall;
+-    /// fn call_it<F: for<'a> FnCall<(&'a str,), String>>(_f: &F, s: &str) -> String {
+-    ///     let _: () = F::ASSERT_IS_SOME;
+-    ///     F::call((s,))
+-    /// }
+-    ///
+-    /// let s: String = call_it((), "hello world"); // does not compile
+-    /// ```
+-    ///
+-    /// Note that this can be more simply `const { assert!(F::IS_SOME) }` in
+-    /// Rust 1.79.0 or newer.
+-    const ASSERT_IS_SOME: () = { assert!(Self::IS_SOME) };
+-
+     /// `true` if `Self` is an actual function type and not `()`.
+     ///
+     /// # Examples
+@@ -195,7 +170,7 @@ unsafe impl<F, $($args,)* R> FnCall<($($args,)*), R> for F
+ 
              #[inline(always)]
--            pub fn set(&mut self, rhs: Self) {
-+            pub const fn set(&mut self, rhs: Self) {
-                 self.0 |= rhs.0;
+             fn call(a: ($($args,)*)) -> R {
+-                let _: () = Self::ASSERT_ZERO_SIZED;
++                const { assert!(mem::size_of::<Self>() == 0) };
+ 
+                 // SAFETY: the safety of this method is the condition for implementing
+                 // `FnCall`.  As to the `NonNull` idiom to create a zero-sized type,
+diff --git a/rust/qemu-api/src/chardev.rs b/rust/qemu-api/src/chardev.rs
+index 6e0590d758e..cb27be52569 100644
+--- a/rust/qemu-api/src/chardev.rs
++++ b/rust/qemu-api/src/chardev.rs
+@@ -138,7 +138,7 @@ pub fn enable_handlers<
+             F::call((owner, event))
+         }
+ 
+-        let _: () = CanReceiveFn::ASSERT_IS_SOME;
++        const { assert!(CanReceiveFn::IS_SOME) };
+         let receive_cb: Option<unsafe extern "C" fn(*mut c_void, *const u8, c_int)> =
+             if ReceiveFn::is_some() {
+                 Some(rust_receive_cb::<T, ReceiveFn>)
+diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
+index 36f02fb57db..52d54a4494e 100644
+--- a/rust/qemu-api/src/qdev.rs
++++ b/rust/qemu-api/src/qdev.rs
+@@ -373,7 +373,7 @@ fn do_init_gpio_in(
              }
+         }
  
-             #[allow(dead_code)]
-             #[inline(always)]
--            pub fn clear(&mut self, rhs: Self) {
-+            pub const fn clear(&mut self, rhs: Self) {
-                 self.0 &= !rhs.0;
-             }
- 
-             #[allow(dead_code)]
-             #[inline(always)]
--            pub fn toggle(&mut self, rhs: Self) {
-+            pub const fn toggle(&mut self, rhs: Self) {
-                 self.0 ^= rhs.0;
-             }
- 
-diff --git a/rust/qemu-api/src/assertions.rs b/rust/qemu-api/src/assertions.rs
-index a2d38c877df..e74fa3ef826 100644
---- a/rust/qemu-api/src/assertions.rs
-+++ b/rust/qemu-api/src/assertions.rs
-@@ -81,8 +81,8 @@ macro_rules! assert_field_type {
-     (@internal $param_name:ident, $ti:ty, $t:ty, $($field:tt)*) => {
-         const _: () = {
-             #[allow(unused)]
--            fn assert_field_type($param_name: &$t) {
--                fn types_must_be_equal<T, U>(_: &T)
-+            const fn assert_field_type($param_name: &$t) {
-+                const fn types_must_be_equal<T, U>(_: &T)
-                 where
-                     T: $crate::assertions::EqType<Itself = U>,
-                 {
-diff --git a/rust/qemu-api/src/cell.rs b/rust/qemu-api/src/cell.rs
-index 27063b049d5..148a13e3f56 100644
---- a/rust/qemu-api/src/cell.rs
-+++ b/rust/qemu-api/src/cell.rs
-@@ -980,8 +980,7 @@ pub unsafe fn from_raw<'a>(ptr: *mut T) -> &'a Self {
-     /// but the functions containing the dereference are usually safe.  The
-     /// value returned from `uninit()` must be initialized and pinned before
-     /// calling them.
--    #[allow(clippy::missing_const_for_fn)]
--    pub unsafe fn uninit() -> Self {
-+    pub const unsafe fn uninit() -> Self {
-         Self {
-             value: UnsafeCell::new(MaybeUninit::uninit()),
-             _pin: PhantomPinned,
-@@ -997,8 +996,7 @@ pub unsafe fn uninit() -> Self {
-     /// but the functions containing the dereference are usually safe.  The
-     /// value returned from `uninit()` must be pinned (and possibly initialized)
-     /// before calling them.
--    #[allow(clippy::missing_const_for_fn)]
--    pub unsafe fn zeroed() -> Self {
-+    pub const unsafe fn zeroed() -> Self {
-         Self {
-             value: UnsafeCell::new(MaybeUninit::zeroed()),
-             _pin: PhantomPinned,
-diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index e20ee014cb1..014ffb1fd88 100644
---- a/rust/qemu-api/src/qom.rs
-+++ b/rust/qemu-api/src/qom.rs
-@@ -307,7 +307,7 @@ impl<T: ObjectType> ParentInit<'_, T> {
-     /// Fields beyond `Object` could be uninitialized and it's your
-     /// responsibility to avoid that they're used when the pointer is
-     /// dereferenced, either directly or through a cast.
--    pub fn as_object_mut_ptr(&self) -> *mut bindings::Object {
-+    pub const fn as_object_mut_ptr(&self) -> *mut bindings::Object {
-         self.as_object_ptr().cast_mut()
-     }
- 
-@@ -318,7 +318,7 @@ pub fn as_object_mut_ptr(&self) -> *mut bindings::Object {
-     /// Fields beyond `Object` could be uninitialized and it's your
-     /// responsibility to avoid that they're used when the pointer is
-     /// dereferenced, either directly or through a cast.
--    pub fn as_object_ptr(&self) -> *const bindings::Object {
-+    pub const fn as_object_ptr(&self) -> *const bindings::Object {
-         self.0.as_ptr().cast()
-     }
- }
-@@ -336,7 +336,7 @@ impl<'a, T: ObjectImpl> ParentInit<'a, T> {
-     /// However, while the fields of the resulting reference are initialized,
-     /// calls might use uninitialized fields of the subclass.  It is your
-     /// responsibility to avoid this.
--    pub unsafe fn upcast<U: ObjectType>(&self) -> &'a U
-+    pub const unsafe fn upcast<U: ObjectType>(&self) -> &'a U
-     where
-         T::ParentType: IsA<U>,
-     {
+-        let _: () = F::ASSERT_IS_SOME;
++        const { assert!(F::IS_SOME) };
+         unsafe extern "C" fn rust_irq_handler<T, F: for<'a> FnCall<(&'a T, u32, u32)>>(
+             opaque: *mut c_void,
+             line: c_int,
 diff --git a/rust/qemu-api/src/timer.rs b/rust/qemu-api/src/timer.rs
-index 0a2d111d490..0daec62f926 100644
+index 0daec62f926..1e639eaf221 100644
 --- a/rust/qemu-api/src/timer.rs
 +++ b/rust/qemu-api/src/timer.rs
-@@ -39,7 +39,7 @@ impl Timer {
-     ///
-     /// The timer must be initialized before it is armed with
-     /// [`modify`](Self::modify).
--    pub unsafe fn new() -> Self {
-+    pub const unsafe fn new() -> Self {
-         // SAFETY: requirements relayed to callers of Timer::new
-         Self(unsafe { Opaque::zeroed() })
-     }
-diff --git a/rust/qemu-api/src/uninit.rs b/rust/qemu-api/src/uninit.rs
-index 04123b4ae99..b0a829729dd 100644
---- a/rust/qemu-api/src/uninit.rs
-+++ b/rust/qemu-api/src/uninit.rs
-@@ -12,7 +12,7 @@ pub struct MaybeUninitField<'a, T, U> {
+@@ -56,7 +56,7 @@ pub fn init_full<'timer, 'opaque: 'timer, T, F>(
+     ) where
+         F: for<'a> FnCall<(&'a T,)>,
+     {
+-        let _: () = F::ASSERT_IS_SOME;
++        const { assert!(F::IS_SOME) };
  
- impl<'a, T, U> MaybeUninitField<'a, T, U> {
-     #[doc(hidden)]
--    pub fn new(parent: &'a mut MaybeUninit<T>, child: *mut U) -> Self {
-+    pub const fn new(parent: &'a mut MaybeUninit<T>, child: *mut U) -> Self {
-         MaybeUninitField { parent, child }
-     }
+         /// timer expiration callback
+         unsafe extern "C" fn rust_timer_handler<T, F: for<'a> FnCall<(&'a T,)>>(
+diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
+index 812f390d780..8515e382135 100644
+--- a/rust/qemu-api/src/vmstate.rs
++++ b/rust/qemu-api/src/vmstate.rs
+@@ -457,7 +457,7 @@ macro_rules! vmstate_exist_fn {
+         const fn test_cb_builder__<T, F: for<'a> $crate::callbacks::FnCall<(&'a T, u8), bool>>(
+             _phantom: ::core::marker::PhantomData<F>,
+         ) -> $crate::vmstate::VMSFieldExistCb {
+-            let _: () = F::ASSERT_IS_SOME;
++            const { assert!(F::IS_SOME) };
+             $crate::vmstate::rust_vms_test_field_exists::<T, F>
+         }
  
-@@ -21,7 +21,7 @@ pub fn new(parent: &'a mut MaybeUninit<T>, child: *mut U) -> Self {
-     /// Because the `MaybeUninitField` remembers the containing object,
-     /// it is possible to use it in foreign APIs that initialize the
-     /// child.
--    pub fn parent(f: &Self) -> *const T {
-+    pub const fn parent(f: &Self) -> *const T {
-         f.parent.as_ptr()
-     }
- 
-@@ -30,7 +30,7 @@ pub fn parent(f: &Self) -> *const T {
-     /// Because the `MaybeUninitField` remembers the containing object,
-     /// it is possible to use it in foreign APIs that initialize the
-     /// child.
--    pub fn parent_mut(f: &mut Self) -> *mut T {
-+    pub const fn parent_mut(f: &mut Self) -> *mut T {
-         f.parent.as_mut_ptr()
-     }
- }
 -- 
 2.51.0
 
