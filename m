@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC60B4903A
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 15:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADEA3B4909B
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 16:00:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvcFt-0005T8-8P; Mon, 08 Sep 2025 09:50:02 -0400
+	id 1uvcNc-0003wr-6I; Mon, 08 Sep 2025 09:58:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uvcFR-0005PQ-0q
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 09:49:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uvcNY-0003vZ-51
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 09:57:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uvcFH-0004UG-Ic
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 09:49:31 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uvcNI-0005cI-HM
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 09:57:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757339360;
+ s=mimecast20190719; t=1757339849;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=/3/zW8Ud3uhUe0GfbVwpW+pPcJ3c9uSODL+ufaS8gek=;
- b=eohzEbEgFHL/xgfyrXCx4Lj0TdnWUlOXd1OVro6uEQ9Ntp+UcstYQLsrwb07ZaVSqqZ+hb
- 9NaBwO/ECnTHYmRLsz8u33tdiG3R1BHHDiI59GK4bPjZEBP3z6+uLlj35h+CuK3zZKsn16
- lNAnyYPWm5pQJRt3IlYIWPHIHg+qAkU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding;
+ bh=5XyIXyFVSpRrXpAIW+9HddG6p4iBzQ/cyRN7oaGIPpc=;
+ b=bofwKlqfmsfVZxtWSv/HGQlq8n2ym6lkz8UsUnuN6hQSWiI/ft/K0OCdQ5fNref9jFiD6p
+ 1CAa0oDGsj3jCujIhkGW8C1XAuWeKSSi4/9Yz0X77XNgB33iOfHUPPS0KvTzPo2Vjbv3bC
+ JNiWW9QPAjgRyOX2Yg5o3c8q0xHugRA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-ZbMlqo81Ng2_fGh1IQboXw-1; Mon,
- 08 Sep 2025 09:49:16 -0400
-X-MC-Unique: ZbMlqo81Ng2_fGh1IQboXw-1
-X-Mimecast-MFC-AGG-ID: ZbMlqo81Ng2_fGh1IQboXw_1757339355
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-SL0mRU22NoWfZFwF_59H3g-1; Mon,
+ 08 Sep 2025 09:57:26 -0400
+X-MC-Unique: SL0mRU22NoWfZFwF_59H3g-1
+X-Mimecast-MFC-AGG-ID: SL0mRU22NoWfZFwF_59H3g_1757339845
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9051F19560B0; Mon,  8 Sep 2025 13:49:15 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.148])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C394030001B5; Mon,  8 Sep 2025 13:49:14 +0000 (UTC)
-Date: Mon, 8 Sep 2025 09:49:13 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, pbonzini@redhat.com,
- Mads Ynddal <mads@ynddal.dk>
-Subject: Re: [PATCH] tracetool-test: allow to run in parallel
-Message-ID: <20250908134913.GC167158@fedora>
-References: <20250908114652.1880366-1-marcandre.lureau@redhat.com>
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6F7641956095; Mon,  8 Sep 2025 13:57:25 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.93])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id C0A1C18003FC; Mon,  8 Sep 2025 13:57:23 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/4] tests/functional: misc fixes for reliability /
+ debuggability
+Date: Mon,  8 Sep 2025 14:57:18 +0100
+Message-ID: <20250908135722.3375580-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="rnBNyzY6NYnwPA4U"
-Content-Disposition: inline
-In-Reply-To: <20250908114652.1880366-1-marcandre.lureau@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,43 +83,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---rnBNyzY6NYnwPA4U
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 08, 2025 at 03:46:51PM +0400, marcandre.lureau@redhat.com wrote:
-> From: Marc-Andr=E9 Lureau <marcandre.lureau@redhat.com>
->=20
-> Create a temporary build subdirectory, to avoid conflicting with other
-> running tests. This fixes "meson test" with tracetool-test which is
-> parallel default.
->=20
-> Signed-off-by: Marc-Andr=E9 Lureau <marcandre.lureau@redhat.com>
-> ---
->  tests/tracetool/tracetool-test.py | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+Daniel P. Berrangé (4):
+  tests/functional: fix infinite loop on console EOF
+  tests/functional: avoid duplicate messages on failures
+  tests/functional: avoid tearDown failure when QEMU dies
+  tests/functional: purge scratch dir on test startup
 
-Thanks, applied to my tracing tree:
-https://gitlab.com/stefanha/qemu/commits/tracing
+ tests/functional/qemu_test/cmd.py      |  2 +-
+ tests/functional/qemu_test/testcase.py | 14 +++++++++++---
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
-Stefan
-
---rnBNyzY6NYnwPA4U
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmi+3tkACgkQnKSrs4Gr
-c8j5wAf/bLX7TLs8iWEjWJeG51L89CdQjHlK4DlTTiiM9H4CWIZrtxjnJhb36tKj
-o+hm2NHR7yxvnxLBhXRy9xdWGmvW4jE+W4L0yyiF9aksQF4JOmhy/RzxE2oQ6aUM
-ACzqWwn5QzCFq7BCyizNR94hFWRuQCZcC4S+/T0GUiwlBOWBUkOiCWo7Ie3py4hA
-pFeJyKLz9iTVrhS2absjaZ74yplQISf3B32um9mafuCH4U4t5Jbb1JE2RB6f5e3Q
-Kt2PcrPknDc+cJ2Zf7jsHhTntgsVvLRJ+oi8RTDywnX11TJBU2MRuXmq924FNV2Z
-lkpwKKRL06R0+PSlx5fVvHZXPXIPhw==
-=CMP0
------END PGP SIGNATURE-----
-
---rnBNyzY6NYnwPA4U--
+-- 
+2.50.1
 
 
