@@ -2,101 +2,167 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 731ECB49A9C
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 22:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D99B2B49AC9
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 22:14:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvi4K-0001zh-Dd; Mon, 08 Sep 2025 16:02:28 -0400
+	id 1uviEP-0003qT-0t; Mon, 08 Sep 2025 16:12:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uvi3s-0001vR-SQ
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 16:02:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1uviEL-0003pf-Q0; Mon, 08 Sep 2025 16:12:50 -0400
+Received: from mail-co1nam11on2060d.outbound.protection.outlook.com
+ ([2a01:111:f403:2416::60d]
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uvi3j-0006yR-R0
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 16:02:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757361707;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=fz3xqU01kvmtYaiEpHfL3RwYEdsOgk1MOizgfVDpVa8=;
- b=Q3pvs1hZ1ZqPJPl9deW9cjwomxE4dmoNYF3/R3IoudqFseT98I56+Z49w0302W3tqGHCJk
- oM2mFPAP+UkfPuTUoFiRkS6/3YVWGY2NRjA6j0e4Hp6lYsutAbMg/orkD10DF1QT+iv69E
- a8nzrrZLoUYd7xt5CWLi+EKhQ9fVOpU=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-267-zggTfgU0OQygAAq_IJdQEg-1; Mon, 08 Sep 2025 16:01:45 -0400
-X-MC-Unique: zggTfgU0OQygAAq_IJdQEg-1
-X-Mimecast-MFC-AGG-ID: zggTfgU0OQygAAq_IJdQEg_1757361705
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-4b5f31ef7dfso84994941cf.1
- for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 13:01:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757361705; x=1757966505;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fz3xqU01kvmtYaiEpHfL3RwYEdsOgk1MOizgfVDpVa8=;
- b=vEo9g9T/oFwEvZpA4m4ucwfI03ggADvtWSlUCeBRivL6TN8K0w/MhUqteO2/LTYrd7
- KDntEvG/q+4qmBDR2+FvGaWsJvKzJ//sBdbgsXiC8Rrh0jAjmyBwCBsGcuTeinoJfBvN
- S4mQUXqRzLmVsPljCD9E/REVkVkFh7H2mydM41KkPFLUiPUyAWV+U+LCjhxQOEzq2SHm
- UPWqGyYGGfzm6mzi8bfXAZOi39vXJczZJ9RoWm9aX2BsHTq7FAbC8CKDbTy2XCBfk/1e
- 9s8TUkYCSdjtWvs6o8n1iuLnTLT4A8phNqj87EzfUf4SJv2xet+iSj8tqgYemtYZhJQI
- sfJg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUCmJ7miDtp4fxspOcNVz9vIOqXhOpcg4kcFSpBUtlZU56hp9VAlQutw89PaHScRz8FeFj/m3KMfTjA@nongnu.org
-X-Gm-Message-State: AOJu0Ywf/hdjAa26ZhjbDX8rp8HlU7Ru+AkMiRLQzjbAfIwJf1R0yzUt
- 2zFPjtFgkOsGQZ/0Fa0gaup1tY/M0r/WS5XVqq9nQ/rdIXPavMrDrIRzgICC0BSxBkf3gRUjLop
- 8r0t3U3N4tslTECPnMR4CP0sxHiB+4z52zbJF1Bml5jxmYYZgdjlb1q+w
-X-Gm-Gg: ASbGncvB9/WkNYC76nVkhcdlJiQ8hRFUwAVQxbCtlAbcAEU399US2M9T97kyKQtWOtj
- wK1hwLVsvQteRZ8YwOkUmWmdpQ9x5ab16HKUXClJ9rq8ecUeEvtdWt02O3DYTJdXSZ+Bj3mEuao
- mon82EBPCTv8oVhY8ONwzNW0x8wx+SyWOMcGUkgwEwMf5B5c42wEyZsfHoYwyGWgv6a1LQTsrkc
- GUefrItMmmqClY3w3vuTRDLT0V9HBMubIAz5LCJNanLba4sRf4ivGY5YeGGI6wFvzHZg5xJNRJz
- I2UE7wHZ/OcRrjCPHChTZmU3xAd/EbzjZwORB3/wNv0KxZgSR/gjoRuxt97junjleqXCkAay8dX
- 8/Kc/qtRJcwyQcNLPiMV+fg==
-X-Received: by 2002:a05:6214:f22:b0:713:2552:7be0 with SMTP id
- 6a1803df08f44-73a1fbaafbdmr81157126d6.9.1757361704745; 
- Mon, 08 Sep 2025 13:01:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFw9vFHtnQVRe3RGczH5Fayq+gehj2nItK+tXmm/phKzWiE+RVgNbEp+P3Z1k21oYOHyVxb7Q==
-X-Received: by 2002:a05:6214:f22:b0:713:2552:7be0 with SMTP id
- 6a1803df08f44-73a1fbaafbdmr81156606d6.9.1757361704161; 
- Mon, 08 Sep 2025 13:01:44 -0700 (PDT)
-Received: from x1.local
- (bras-base-aurron9134w-grc-11-174-89-135-121.dsl.bell.ca. [174.89.135.121])
- by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-72160017b64sm125391066d6.55.2025.09.08.13.01.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Sep 2025 13:01:43 -0700 (PDT)
-Date: Mon, 8 Sep 2025 16:01:42 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: jasowang@redhat.com, qemu-devel@nongnu.org, leiyang@redhat.com,
- steven.sistare@oracle.com, yc-core@yandex-team.ru, mst@redhat.com,
- farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
- thuth@redhat.com, philmd@linaro.org, berrange@redhat.com
-Subject: Re: [PATCH v3 5/9] net/tap: implement interfaces for local migration
-Message-ID: <aL82Jqzt5iJNNjnZ@x1.local>
-References: <20250905135039.2202924-1-vsementsov@yandex-team.ru>
- <20250905135039.2202924-6-vsementsov@yandex-team.ru>
- <aL75XyzSI6lEOKF3@x1.local>
- <0bdf838f-8fa8-488a-b2b8-fd6d385d05ff@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1uviEH-0001H9-0A; Mon, 08 Sep 2025 16:12:48 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IksgvJacVTHxby06O7ODd1uL8gF0PrmvILqEhMgMTzwTKMwVKOiQkmjK6MpChQ2rDyZ6nJEcc1zjg1WwNdDH9d2myqzgCoY+IsRiPLC2YCb4Zi5hRWbXcoyVFqU2KisMLv9by2Ms7fSN5kKGIiHoSQDEs1p7Sf64HbgZDh+xfAYtnbjY9azE6xaE0v8xhbGZOT2OnrQXu9JaahWD2TkceK3p4tBOjB+7p9x1gydsQIC/CHubCKBN3P0MKau+NLqZH4GrwniPBg73688Su/u2wDIzbulnMn8DDMwRAutTWJ542Hgo7Oth4IQ6lbWzjuGmTZCmwq/W7og8CPwgWXxZMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J9b0BcYk9WZb32veBb5CM8vbmxASJalsljZCewIlDTU=;
+ b=s1HGpGlMlMFBibE/VYfcXmtR6TMjoheL1jzHdF8rOnuX1tsQzjhTB3M7MCH1gUA3xnUo/VG8dcZOvgTCxF/E1PwzPnxjqfUKHFf4ukdf/np47BFA2XPtIugFIlbH+PeXXiYUaHAO9//HilIFG92DU22+zRNcIOR28W/q2dJ3K9Czx8iHbNT8fclWcugIdntNrJFW8BYyaTm/0qypKMdZiL8DH//M6x51AD9MjLquFV7XXmhol6vIBkwZOhwHC19JqoKnMTe3uadrkvX6Iy0nUXpl6t6opY3chY9IEQuTRZij4CHszKNvfvqvSWxO0YHbdvWHBV+qXIx8Gl0KK2DStw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=linaro.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J9b0BcYk9WZb32veBb5CM8vbmxASJalsljZCewIlDTU=;
+ b=ksVkDk32L4wbzgDFXJfVGfef1oGfY8yizGhwPZwFWiObxikoCKnkTbJlDln6ec05XNvnB2r+mMO1UJTP0wSNKvD3erPNoxgXHXt7T6GpCD02FmCWo0VaAXQvFtY44KoQsnPwrWS4SB/FEjqPzUkipoJZJENxgY+bTR+RV8P6Vg+/HvsYRRDWRF3ZDrJmbiL2MTRSN+mlShzTaljibJalu1AURxUwKtvWaKIOcRyBH7SuKbDD3cdFJT5cyiXRnlRF9jioRbA6AmqntASSWeb3UHJao4V4TTMGpB8V/sRwmM8DN8+AC7QqWVD2IsQAlQ5FNHZQ5nAOldCVCJt1i/epRw==
+Received: from MN2PR15CA0040.namprd15.prod.outlook.com (2603:10b6:208:237::9)
+ by CYYPR12MB8752.namprd12.prod.outlook.com (2603:10b6:930:b9::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Mon, 8 Sep
+ 2025 20:12:28 +0000
+Received: from BL6PEPF0001AB50.namprd04.prod.outlook.com
+ (2603:10b6:208:237:cafe::de) by MN2PR15CA0040.outlook.office365.com
+ (2603:10b6:208:237::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9094.22 via Frontend Transport; Mon,
+ 8 Sep 2025 20:12:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ BL6PEPF0001AB50.mail.protection.outlook.com (10.167.242.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9115.13 via Frontend Transport; Mon, 8 Sep 2025 20:12:27 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 8 Sep
+ 2025 13:12:13 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Mon, 8 Sep 2025 13:12:12 -0700
+Received: from nvidia.com (10.127.8.12) by mail.nvidia.com (10.126.190.181)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Mon, 8 Sep 2025 13:12:09 -0700
+Date: Mon, 8 Sep 2025 13:12:07 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Shameer Kolothum <skolothumtho@nvidia.com>
+CC: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, Jason Gunthorpe
+ <jgg@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>, Nathan Chen
+ <nathanc@nvidia.com>, Matt Ochs <mochs@nvidia.com>, "smostafa@google.com"
+ <smostafa@google.com>, "linuxarm@huawei.com" <linuxarm@huawei.com>,
+ "wangzhou1@hisilicon.com" <wangzhou1@hisilicon.com>, "jiangkunkun@huawei.com"
+ <jiangkunkun@huawei.com>, "jonathan.cameron@huawei.com"
+ <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
+ <zhangfei.gao@linaro.org>, "zhenzhong.duan@intel.com"
+ <zhenzhong.duan@intel.com>, "shameerkolothum@gmail.com"
+ <shameerkolothum@gmail.com>
+Subject: Re: [RFC PATCH v3 13/15] hw/arm/smmuv3: Forward invalidation
+ commands to hw
+Message-ID: <aL84lwouHh8LZ5mA@nvidia.com>
+References: <20250714155941.22176-1-shameerali.kolothum.thodi@huawei.com>
+ <20250714155941.22176-14-shameerali.kolothum.thodi@huawei.com>
+ <5ab38eaa-b005-432a-9de7-fae3e6096f89@redhat.com>
+ <CH3PR12MB7548543A976A65B74DA6EA42AB0CA@CH3PR12MB7548.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <0bdf838f-8fa8-488a-b2b8-fd6d385d05ff@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CH3PR12MB7548543A976A65B74DA6EA42AB0CA@CH3PR12MB7548.namprd12.prod.outlook.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB50:EE_|CYYPR12MB8752:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9a7beac-edec-49e5-798b-08ddef140848
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|7416014|376014|82310400026|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Nmp3K21iUXZjNWxOZVlKeWhEZU5aRWdEQThSSFB2d1FvQ051aGVvT1l2WERT?=
+ =?utf-8?B?TzdBMWZtRUxFNG5hdTVWVVVYUUttZWZnVjhLY0FxdDNKYVhhdEVWdy9SSmNq?=
+ =?utf-8?B?OTIxM1lZdUIzbVFQTVgxMXpwM1Q4WGw3bWZvMlJQSEFuZ3VyRnB2WGNsNk5L?=
+ =?utf-8?B?WW5wSFdJNnd3ZGZSbDFnRGZlb0tWcFZuenBjalAwYWRkR0dvRkV6Qm8vano4?=
+ =?utf-8?B?aWwwQnFmeldDajVoeWwyeEhDZG94Q1cxVDVoaEpKTnVlMkJiajEzZFFrWkNs?=
+ =?utf-8?B?VXpBSDM0VnEya0ZIR2ZsdHFJWTNxSUhSWkN3ZmdwK3g0SlhLemdMSU9MNll2?=
+ =?utf-8?B?MmdTNGZIeWhybDU5bWJteHBCU3E4b1JOR1NRbHIzSmNuajFOdGxRbU5ZdlRn?=
+ =?utf-8?B?RXU3VTdHQnMwUCs1VVJTbU1EbDF5YUs3Rm10SGFaaFVnRHlwVW5GREFLaDhV?=
+ =?utf-8?B?U2FxeFM5TzZDU01Hc3ptSUF2MzBLS0dTLzFsRmdVbm1UaUUvVnV1eUdXcDZu?=
+ =?utf-8?B?b3JKOVpuOHBBQnM4aytIcDhpZHFxSzFnMU5id0EyV3JFV0cxVFVNYTAxaVlG?=
+ =?utf-8?B?aHFYaDR5OC94MUhaVGpBZ0RRTWVIQVBnNG1lR3F3bDdnd21hRkxyRHgyYStX?=
+ =?utf-8?B?SXhERjVDY2IwM3RlSlBCZDFvUG1iT0JLMmNXcDNIUzYzOTlNSklKdUNCU2JQ?=
+ =?utf-8?B?RkY3UzY4R0xqMFBTV3F3YWhGSXJmdUNBYXBGV3AwSjlqZ0ZoQ2RKVXQrOC9H?=
+ =?utf-8?B?eGQyejB4dHlQVWxTazZjKzBDbWFrTFpaQWdkeEMweWFIWU9FSW0vNkpodFBT?=
+ =?utf-8?B?bkdvY3dXTkNWRDFCREY3ZXZqSGZuMXJ2SCsveXlnT0JkSkdRODVFYVl3YjlL?=
+ =?utf-8?B?eVRVdWF0VmYwekhvb0h1UW0rTENVbHAvdExkU0UraWxtdXE5RXBuRUx6TElF?=
+ =?utf-8?B?Y3pvRjVYWkVKR0ZVRmJzZmhtRHcydWl3eUtDYStnOHJkOWxZMWdKQmVwczNL?=
+ =?utf-8?B?VFh0UGFlYUN0NDhIdEJvRkhzU3l0YlBCc0xmWmM0THpyV2xMNnVNME8raG5y?=
+ =?utf-8?B?cys0QzU0cW1objNFNElRUjh1YkJlRnJDaWliSjFrWG1HeHhmR3lpdFJLWVJq?=
+ =?utf-8?B?SGlPS0NCYUtlSjVkTHBsODRBczNMb0wxZlplVTFwSWZHbEdkeEdFRTNOcElh?=
+ =?utf-8?B?cTJ5NXNYTzVtZDFkRlJwUGlTK3dKbGZmM0g0R09sekZEbGo1THFIWEkyTUdr?=
+ =?utf-8?B?ZWIvS0JNQkVSTzRJUFdMR3BYODNHWGlYeHRiREh5aWxxaFUxTzdUcHJFV2w2?=
+ =?utf-8?B?cVYzQ3hVV282bVBQNFZTdVI0TUtlekdwd05yV3pad29ZdDByT2EvL2VwQnlE?=
+ =?utf-8?B?U1lmZEVVb2MzMlZ2WTdwT0JkUUdKVUNPOGhDTGhVOVdNQzRUcTA4dDcxSkJz?=
+ =?utf-8?B?bkpaM0FFR2VXTUI2R2FBeCtsU0JhbHBZaldhQnQzaVRHV3MxcXB6UlVNZFlL?=
+ =?utf-8?B?enUvNUg5cGM5enRLNWowRUVuUzBHZnV3SHFIWSsrcEFNai9GQkR4WUtXRWsr?=
+ =?utf-8?B?RENKb1h1ellJM1c1bi9lcWU0K2tXMk5McnMycXZ6c2JnM3piNDlLb3U3b0VN?=
+ =?utf-8?B?VmpWRTIvb3Vvc3NvRVNub3VzdWFBbzRCUmtnNWdVYjRRRitEY1BQaDFzUGlC?=
+ =?utf-8?B?b0Z3bko4V0ZZN0Z4RDV1b2dUd05FSkIrRnQ2WTl1QU5XYmJzMFpxelJad251?=
+ =?utf-8?B?cVM0V3NlQVRac2k5ZWJVM3ZMKzIrRUw4NXhJR2dzcTdlZUtOejVJNkNhMjdO?=
+ =?utf-8?B?Y0NWS1c5VVIvWUtndTdjMmpLQnZ2d0p5cVllMEUvWU90MXlWZUh1RE5MRGlo?=
+ =?utf-8?B?WVJKbFl5NmJuK25ObTZLdEcyb1BEMVlGT25TTmd1NHRGbXNrYUJNWUJCcmlC?=
+ =?utf-8?B?bDJBRE5tak9EK3J2VmgyenhSWVZ2aDNzMHNQWEo4R01YRXEvSFRwSHBwYzJV?=
+ =?utf-8?B?K3k3NTdJdXVsU3ZjWklMamtnaHFZTE1WeHBsN1o4K0c0RXRBVWlmQWlYSS85?=
+ =?utf-8?Q?JR5FZe?=
+X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
+ SFS:(13230040)(1800799024)(7416014)(376014)(82310400026)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 20:12:27.1980 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9a7beac-edec-49e5-798b-08ddef140848
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB50.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8752
+Received-SPF: permerror client-ip=2a01:111:f403:2416::60d;
+ envelope-from=nicolinc@nvidia.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FORGED_SPF_HELO=1, SPF_HELO_PASS=-0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,85 +178,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 08, 2025 at 07:48:09PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> On 08.09.25 18:42, Peter Xu wrote:
-> > On Fri, Sep 05, 2025 at 04:50:35PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> > > +static const VMStateDescription vmstate_tap = {
-> > > +    .name = "virtio-net-device",
-> > > +    .post_load = tap_post_load,
-> > > +    .fields = (const VMStateField[]) {
-> > > +        VMSTATE_FD(fd, TAPState),
-> > > +        VMSTATE_BOOL(using_vnet_hdr, TAPState),
-> > > +        VMSTATE_BOOL(has_ufo, TAPState),
-> > > +        VMSTATE_BOOL(has_uso, TAPState),
-> > > +        VMSTATE_BOOL(enabled, TAPState),
-> > > +        VMSTATE_UINT32(host_vnet_hdr_len, TAPState),
-> > > +        VMSTATE_END_OF_LIST()
-> > > +    }
-> > > +};
+On Mon, Sep 08, 2025 at 05:22:35AM -0700, Shameer Kolothum wrote:
+> > -----Original Message-----
+> > From: Eric Auger <eric.auger@redhat.com>
+> > smmuv3_cmdq_consume(SMMUv3State *s)
+> > >      SMMUCmdError cmd_error = SMMU_CERROR_NONE;
+> > >      SMMUQueue *q = &s->cmdq;
+> > >      SMMUCommandType type = 0;
+> > > +    SMMUCommandBatch batch = {};
+> > > +    uint32_t ncmds;
+> > >
+> > >      if (!smmuv3_cmdq_enabled(s)) {
+> > >          return 0;
+> > >      }
 > > > +
-> > > +int tap_save(NetClientState *nc, QEMUFile *f)
-> > > +{
-> > > +    TAPState *s = DO_UPCAST(TAPState, nc, nc);
-> > > +
-> > > +    return vmstate_save_state(f, &vmstate_tap, s, 0);
-> > > +}
-> > > +
-> > > +int tap_load(NetClientState *nc, QEMUFile *f)
-> > > +{
-> > > +    TAPState *s = DO_UPCAST(TAPState, nc, nc);
-> > > +
-> > > +    return vmstate_load_state(f, &vmstate_tap, s, 0);
-> > > +}
-> > 
-> > Instead of hard-coding vmstate_save_state() / vmstate_load_state(), could
-> > we make tap's VMSD to be a subsection of virtio-net's?
-> > 
-> > Multifd already doesn't support qemufile, but only iochannels (which is the
-> > internal impl of qemufiles).  We might at some point start to concurrently
-> > load devices with multifd, then anything with qemufile will be a no-go and
-> > need to be serialized as legacy code in the main channel, or rewritten.
-> > 
-> > IMHO it'll be great if we can avoid adding new codes operating on
-> > qemufiles, and also avoid adding any new custom VMSD fields' put()/get() if
-> > ever possible.
-> > 
-> 
-> Subsections are loaded after fields.
-> 
-> And virtio-net already has fields
-> 
->         VMSTATE_WITH_TMP(VirtIONet, struct VirtIONetMigTmp,
->                          vmstate_virtio_net_has_vnet),
-> 
-> and
-> 
->         VMSTATE_WITH_TMP(VirtIONet, struct VirtIONetMigTmp,
->                          vmstate_virtio_net_has_ufo),
+> > > +    ncmds = smmuv3_q_ncmds(q);
+> > > +    batch.cmds = g_new0(Cmd, ncmds);
+> > > +    batch.cons = g_new0(uint32_t, ncmds);
 
-Side note: I'm actually a bit confused on why it needs to use
-VMSTATE_WITH_TMP(), or say, the get()/put() directly.
-
-Taking example of vmstate_virtio_net_has_ufo, afaiu, the only point here is
-that virtio_net_ufo_post_load() would check peer UFO support.  I wonder if
-that should work too to check that in virtio_net_post_load_device(), and
-fail there if anything is wrong..  then would has_ufo be able to be
-migrated as a VMSTATE_U8 field?
-
+> > so you are provisionning space for n commands found in the queue,
+> > independently on knowing whether they will be batched, ie. only
+> > invalidation commands are. Then commands are added in the batch one by
+> > one and you increment batch->ncmds in smmuv3_accel_batch_cmd. I agree
+> > with Jonathan. This looks weird. AT least I would introduce a kelper
+> > that inits a Back of ncmds and I would make all the batch fields
+> > private. You you end up with the init +
+> > smmuv3_accel_add_cmd_to_batch(batch, cmd). Then independently on the
+> > ncmds you can issue a smmuv3_accel_issue_cmd_batch that would return if
+> > there is nothing in the batch. You also need a batch deallocation
+> > helper. 
 > 
-> Which do check on virtio-net level some parameters, which should come from local migration of TAP.
-> 
-> That's why I made TAP a field, and put it before these two ones. This way these two checks works.
-> 
-> 
-> Still, from your comment I understand that hard-coding save/load is worse problem. So I can just
-> skip checking in vmstate_virtio_net_has_vnet / vmstate_virtio_net_has_ufo with enabled "local-tap"
-> (or "fd-passing") capability (or better migration parameter). This way TAP may be a subsection.
+> Agree, at present we pre-allocate irrespective of whether there will any
+> Invalidation cmds or not. I will take another look and incorporate your above
+> suggestion to improve this. 
 
-That'll be nice, thanks.  Or would a VMSTATE_STRUCT() for TAP to work (so
-that it can also be put before the two _TMPs, but avoid raw get()/put())?
+Perhaps we can try a different data structure for those two batch
+elements, e.g. using a GArray.
 
--- 
-Peter Xu
+This allows an unknown "ncmd" at the beginning, so an invalidation
+command will be just appended to the array in the _batch().
 
+Then, in the _submit(), we can convert it to regular array:
+    Cmd *cmds = (Cmd *)g_array_free(batch->cmds, FALSE);
+    // passing cmds to ioctl
+    g_free(cmds);
+
+> I remember I expressed in the past my concern about having
+> > commands executed out of order. I don't remember out conclusion on that
+> > but this shall be clearly studied and conclusion shall be put in the
+> > commit message.
+> 
+> Yes, you did, and I missed it. Sorry about that.
+> 
+> I think it is safe to honour the execution order of Guest here. From a quick glance, I
+> couldn’t find anything related to a safe out of order execution guidance from
+> SMMUv3 specification. Also, we can't be sure how Guest will be modified/optimised
+> in the future to completely rule out problems if we do out-of-order executions. 
+> 
+> Hence, my plan for next is to start batching if we see Invalidation cmds and submit
+> the batch If any non-invalidation commands are encountered in between.
+
+That sounds good to me.
+
+> @Nicolin, do you foresee any issues with above approach? From the current
+> Host SMMUV3 driver, batching of commands is mainly used for invalidations
+> (except for certain arm_smmu_cmdq_issue_cmd_with_sync() cases). So 
+> I guess we are good from a performance optimisation point of view if we can
+> cover invalidations as above.
+
+Yes. It shouldn't impact perf so long as the guest OS is sane.
+
+Nicolin
 
