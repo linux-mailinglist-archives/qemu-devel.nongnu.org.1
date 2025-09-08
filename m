@@ -2,76 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4D2B49999
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 21:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A1CB4998F
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 21:14:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvhFH-00059n-Pl; Mon, 08 Sep 2025 15:09:44 -0400
+	id 1uvhGM-0006Zz-Rx; Mon, 08 Sep 2025 15:10:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uvhFA-0004y0-FC
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 15:09:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uvhF1-0000Um-Th
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 15:09:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757358559;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uBU552McHZw/y6zrZ14/Z3QA03PexGzY+MQGOY/fZM8=;
- b=ACxSxhX23GyErifPeBgfbqWU/14mz36sKbjCVFckVpk7VQysJQG7D+VyRs7h56pSpLexk+
- whkeAqrNpX/y0vHV5qZ9SlVFAc3YIeWnCiD9yQnrYvaGAC/Qh4b7Y0gs/cnTmtbxlv1RIM
- 1hbxPsLrhYU/B9yjltJC6+CsetYd7uo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-202-bUZ3YDXOMEah0N6RJZLQPA-1; Mon,
- 08 Sep 2025 15:09:17 -0400
-X-MC-Unique: bUZ3YDXOMEah0N6RJZLQPA-1
-X-Mimecast-MFC-AGG-ID: bUZ3YDXOMEah0N6RJZLQPA_1757358556
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F1A731800577; Mon,  8 Sep 2025 19:09:15 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.93])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B2A1119560B8; Mon,  8 Sep 2025 19:09:13 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Yonggang Luo <luoyonggang@gmail.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 4/4] gitlab: prevent duplicated meson log artifacts in test
- jobs
-Date: Mon,  8 Sep 2025 20:09:01 +0100
-Message-ID: <20250908190901.3571859-5-berrange@redhat.com>
-In-Reply-To: <20250908190901.3571859-1-berrange@redhat.com>
-References: <20250908190901.3571859-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
+ id 1uvhFs-0005uB-6e; Mon, 08 Sep 2025 15:10:23 -0400
+Received: from mail-qk1-x72f.google.com ([2607:f8b0:4864:20::72f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
+ id 1uvhFj-0000aL-KE; Mon, 08 Sep 2025 15:10:17 -0400
+Received: by mail-qk1-x72f.google.com with SMTP id
+ af79cd13be357-8116af074e2so295172085a.0; 
+ Mon, 08 Sep 2025 12:10:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1757358599; x=1757963399; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=BlwzNDX92c1a3IW6bCeNHKdJURvxCMSn2ZCp5ODe7AE=;
+ b=bRczygB+3vPoijSmOM53w84UBdabunogVIRGbqysYdU+fcop10TBsMzdpW1JD8+Ato
+ 4MZyZITDcrlRX4maKTBXIp0N1nGTU7Vb5suLXt1K4NmehuWzzndgpvNrLAaNGHkhM5Lw
+ FaEilANuNEB1TnvMHQF90AmOkWL0gNrXkjopvp5GJRtkENX7f8lk7kWxUCcxhZItUbfL
+ YNPbnfsiHa3XLkWj4+1ywGV24SkD6EtiDNwa01bYJZcut22v/URpA8IwGi/q+MFUJ/br
+ /mldeerghYqil56OPtXyQzbFB9BCUGTunXCbnldkYtCA4WqWOJ31wlBzOPKREUwicvPC
+ S1+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757358599; x=1757963399;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:subject:from:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BlwzNDX92c1a3IW6bCeNHKdJURvxCMSn2ZCp5ODe7AE=;
+ b=Zf/5yMRrEg64C46Wl2rEuIf4f3Lhlng5gW0mAbCFqWjdl0kYVL4LQ8tUSIHHiV9Ngg
+ uPcbP3v9BD09eN5dxTr7oHG5t4rTXX69qKgSj3JjiDbaFb4yyGSxIycuAT6zc0W0IReA
+ nOinn7AeviZcb4z6q4UxVhOw9dUCv++mGR1jboy630Vp8vpSwGysIEh7oQUA5b3fL7vX
+ ChahrddorJDXgVwH2OVWhGGhk8mjOYslbWZeth1p7ycTo5Vxfk1FUs56sb2msDeSHk5P
+ yqMPCb1Ut0EbOI91UvozPtj/t/YhEs8tposgD4PYS+0yqyjHSzz6OwbaZqz9yqzK0bxR
+ 5TMg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWt9SL1bR6UVP8Wa2FUv7i7/a8wRSuREedG0hXpCAGmdNKtPDdrSMuHZPS6ynJh0YGfm9QqO/qcUuzG@nongnu.org
+X-Gm-Message-State: AOJu0YyOjRvci6SlPFJKvSKvkFhuiAkilFl/9kN8DRyHRsbOsz13R4AD
+ YUsBPPRmEzywCBX8PcXNG7K7TgN//+ESlRuyimlvKBHvjjC0/Fn1BlVN
+X-Gm-Gg: ASbGnctLqbAh+w8uaIMKl4t34V/HSPtiLFDU9vNPNYJVBJ6p4GfiL5kAHdrdXlpM0Yp
+ 1u6lEmCQMhce1WmzyXLpBKDAOZwlAxoxcvYWfceirBKuqUqcQiQeHtKEXPQutxBagNy/n+xf2VD
+ wWUtQ2g4IL9xl07GG7q9K5c8cYnc0Y9oegqdRtzAe0urbed3Yd9fOK6peks2ikpffqDx1dWr8Rk
+ XBvcilGzMP2hhL88OVTRymamacrjeGyCEisvUa71zR6vEmm8FBNeT/mGwwCTdY7tUH7FhUqCsdm
+ Vd88Hg2W0OG96VA9TFF95GpbaqTB7IGPv859YsZHxPWQpXqoFBpl152jUXxfUqqJeTIHEU/hqfy
+ cO3MumDPpVNqa1vgJbEP+ZlQ5Wlru3Q==
+X-Google-Smtp-Source: AGHT+IGQmObkBZ1TeAUFPkuy2GXRs2uOpjK9+voN+/GN1J18WSeUtj8v6qe7Ix4ORSybEDq1gePdDA==
+X-Received: by 2002:a05:620a:708d:b0:80a:eb17:6385 with SMTP id
+ af79cd13be357-813c70b3135mr825233685a.74.1757358598858; 
+ Mon, 08 Sep 2025 12:09:58 -0700 (PDT)
+Received: from [10.5.0.2] ([62.3.36.217]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-80aa6e4beddsm1122199485a.19.2025.09.08.12.09.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 08 Sep 2025 12:09:58 -0700 (PDT)
+Message-ID: <d5550d6c-d3cb-440a-b806-80dd11887dd8@gmail.com>
+Date: Mon, 8 Sep 2025 15:09:57 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+From: Brian Song <hibriansong@gmail.com>
+Subject: Re: [PATCH 2/4] export/fuse: process FUSE-over-io_uring requests
+To: Stefan Hajnoczi <stefanha@redhat.com>, Bernd Schubert <bernd@bsbernd.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, armbru@redhat.com,
+ bernd@bsbernd.com, fam@euphon.net, hreitz@redhat.com, kwolf@redhat.com
+References: <20250830025025.3610-1-hibriansong@gmail.com>
+ <20250830025025.3610-3-hibriansong@gmail.com>
+ <20250903115108.GD106431@fedora>
+Content-Language: en-US
+In-Reply-To: <20250903115108.GD106431@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72f;
+ envelope-from=hibriansong@gmail.com; helo=mail-qk1-x72f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,44 +101,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The build jobs will populate build/meson-logs/ with various files
-that are added as artifacts.
 
-The test jobs preserve the state of the build jobs, so we must
-delete any pre-existing logs to prevent confusion from duplicate
-artifacts.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- .gitlab-ci.d/buildtest-template.yml | 7 +++++++
- 1 file changed, 7 insertions(+)
+On 9/3/25 7:51 AM, Stefan Hajnoczi wrote:
+> On Fri, Aug 29, 2025 at 10:50:23PM -0400, Brian Song wrote:
+>> https://docs.kernel.org/filesystems/fuse-io-uring.html
+>>
+>> As described in the kernel documentation, after FUSE-over-io_uring
+>> initialization and handshake, FUSE interacts with the kernel using
+>> SQE/CQE to send requests and receive responses. This corresponds to
+>> the "Sending requests with CQEs" section in the docs.
+>>
+>> This patch implements three key parts: registering the CQE handler
+>> (fuse_uring_cqe_handler), processing FUSE requests (fuse_uring_co_
+>> process_request), and sending response results (fuse_uring_send_
+>> response). It also merges the traditional /dev/fuse request handling
+>> with the FUSE-over-io_uring handling functions.
+>>
+>> Suggested-by: Kevin Wolf <kwolf@redhat.com>
+>> Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
+>> Signed-off-by: Brian Song <hibriansong@gmail.com>
+>> ---
+>>   block/export/fuse.c | 457 ++++++++++++++++++++++++++++++--------------
+>>   1 file changed, 309 insertions(+), 148 deletions(-)
+>>
+>> diff --git a/block/export/fuse.c b/block/export/fuse.c
+>> index 19bf9e5f74..07f74fc8ec 100644
+>> --- a/block/export/fuse.c
+>> +++ b/block/export/fuse.c
+>> @@ -310,6 +310,47 @@ static const BlockDevOps fuse_export_blk_dev_ops = {
+>>   };
+>>   
+>>   #ifdef CONFIG_LINUX_IO_URING
+>> +static void coroutine_fn fuse_uring_co_process_request(FuseRingEnt *ent);
+>> +
+>> +static void coroutine_fn co_fuse_uring_queue_handle_cqes(void *opaque)
+> 
+> This function appears to handle exactly one cqe. A singular function
+> name would be clearer than a plural: co_fuse_uring_queue_handle_cqe().
+> 
+>> +{
+>> +    FuseRingEnt *ent = opaque;
+>> +    FuseExport *exp = ent->rq->q->exp;
+>> +
+>> +    /* Going to process requests */
+>> +    fuse_inc_in_flight(exp);
+> 
+> What is the rationale for taking a reference here? Normally something
+> already holds a reference (e.g. the request itself) and it will be
+> dropped somewhere inside a function we're about to call, but we still
+> need to access exp afterwards, so we temporarily take a reference.
+> Please document the specifics in a comment.
+> 
+> I think blk_exp_ref()/blk_exp_unref() are appropriate instead of
+> fuse_inc_in_flight()/fuse_dec_in_flight() since we only need to hold
+> onto the export and don't care about drain behavior.
+> 
 
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 308490a35a..d866cb12bb 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -83,6 +83,10 @@
- 
- .native_test_job_template:
-   extends: .common_test_job_template
-+  before_script:
-+    # Prevent logs from the build job that run earlier
-+    # from being duplicated in the test job artifacts
-+    - rm -f build/meson-logs/*
-   artifacts:
-     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
-     when: always
-@@ -111,6 +115,9 @@
-   before_script:
-     - export QEMU_TEST_ALLOW_UNTRUSTED_CODE=1
-     - export QEMU_TEST_CACHE_DIR=${CI_PROJECT_DIR}/functional-cache
-+    # Prevent logs from the build job that run earlier
-+    # from being duplicated in the test job artifacts
-+    - rm -f build/meson-logs/*
-   after_script:
-     - cd build
-     - du -chs ${CI_PROJECT_DIR}/*-cache
--- 
-2.50.1
+Stefan:
 
+When handling FUSE requests, we don’t want the FuseExport to be 
+accidentally deleted. Therefore, we use fuse_inc_in_flight in the CQE 
+handler to increment the in_flight counter, and when a request is 
+completed, we call fuse_dec_in_flight to decrement it. Once the last 
+request has been processed, fuse_dec_in_flight brings the in_flight 
+counter down to 0, indicating that the export can safely be deleted. The 
+usage of in_flight follows the same logic as in traditional FUSE request 
+handling.
+
+Since submitted SQEs for FUSE cannot be canceled, once we register or 
+commit them we must wait for the kernel to return a CQE. Otherwise, the 
+kernel may deliver a CQE and invoke its handler after the export has 
+already been deleted. For this reason, we directly call blk_exp_ref and 
+blk_exp_unref when submitting an SQE and when receiving its CQE, to 
+explicitly control the export reference and prevent accidental deletion.
+
+The doc/comment for co_fuse_uring_queue_handle_cqe:
+
+Protect FuseExport from premature deletion while handling FUSE requests. 
+CQE handlers inc/dec the in_flight counter; when it reaches 0, the 
+export can be freed. This follows the same logic as traditional FUSE.
+
+Since FUSE SQEs cannot be canceled, a CQE may arrive after commit even 
+if the export is deleted. To prevent this, we ref/unref the export 
+explicitly at SQE submission and CQE completion.
+
+>> +
+>> +    /* A ring entry returned */
+>> +    fuse_uring_co_process_request(ent);
+>> +
+>> +    /* Finished processing requests */
+>> +    fuse_dec_in_flight(exp);
+>> +}
+>> +
+>> +static void fuse_uring_cqe_handler(CqeHandler *cqe_handler)
+>> +{
+>> +    FuseRingEnt *ent = container_of(cqe_handler, FuseRingEnt, fuse_cqe_handler);
+>> +    Coroutine *co;
+>> +    FuseExport *exp = ent->rq->q->exp;
+>> +
+>> +    if (unlikely(exp->halted)) {
+>> +        return;
+>> +    }
+>> +
+>> +    int err = cqe_handler->cqe.res;
+>> +
+>> +    if (err != 0) {
+>> +        /* -ENOTCONN is ok on umount  */
+>> +        if (err != -EINTR && err != -EAGAIN &&
+>> +            err != -ENOTCONN) {
+>> +            fuse_export_halt(exp);
+>> +        }
+> 
+> How are EINTR and EAGAIN handled if they are silently ignored? When did
+> you encounter these error codes?
+
+Bernd:
+
+I have the same question about this. As for how the kernel returns 
+errors, I haven’t studied each case yet. In libfuse it’s implemented the 
+same way, could you briefly explain why we choose to ignore these two 
+errors, and under what circumstances we might encounter them?
+
+Thanks,
+Brian
 
