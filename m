@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8A7B4966F
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 19:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6F9B49646
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 18:56:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvf8r-00073N-Lr; Mon, 08 Sep 2025 12:54:57 -0400
+	id 1uvf8r-00073K-CS; Mon, 08 Sep 2025 12:54:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uvf8h-0006hw-EU
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uvf8h-0006hv-Bu
  for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:54:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uvf8e-0001cc-Tl
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uvf8e-0001cF-PO
  for qemu-devel@nongnu.org; Mon, 08 Sep 2025 12:54:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757350482;
+ s=mimecast20190719; t=1757350480;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8HV3S2WsxXDMXfyZlW1cb2Az/K8L2YoJTRcc6ZcbtKQ=;
- b=VxNq73uDJhOJiHlqhZPNtcPgRpXCQ+m2Ap1ulJJiOxUAZ+ci09OipdC2N+SCLehpWC1AIu
- pwOhcwIhrTQzU9DbZwq/ivbOV5e8cE5pKsimYzWBtQDnE9E0JCYR34OEv55SsULUn9Xt6D
- 13U/DmlOXhPD7Ww2DzBVYIcO+YCOjZw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=fHdFZnrjCMDOGkyais0homueeFu9kysDP0ORzt9+fdw=;
+ b=AssaJSO2VUAFKqibqDWOABc0Dn/grwxAoZWXDpelhUWGKtDca7/unghh4+jzEgSG5U4x5k
+ 0GBrS/JXE/zdSRbPo7dDILxDwd7wm7ZJQK9JRegNhrRfa/zqYzwI2VFEWMWza/bjQizErD
+ PGbOpE4F/WpR5t/1oVXTzfvSa359E6s=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-128-B1jLQRY3Ot2J-BDaNPtFEQ-1; Mon,
- 08 Sep 2025 12:54:39 -0400
-X-MC-Unique: B1jLQRY3Ot2J-BDaNPtFEQ-1
-X-Mimecast-MFC-AGG-ID: B1jLQRY3Ot2J-BDaNPtFEQ_1757350475
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-Q6AbwY-nOQiWogJ_EuAQhA-1; Mon,
+ 08 Sep 2025 12:54:38 -0400
+X-MC-Unique: Q6AbwY-nOQiWogJ_EuAQhA-1
+X-Mimecast-MFC-AGG-ID: Q6AbwY-nOQiWogJ_EuAQhA_1757350477
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 11AFB18004D4; Mon,  8 Sep 2025 16:54:35 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2D5C319560AD; Mon,  8 Sep 2025 16:54:37 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.50])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AF469300018D; Mon,  8 Sep 2025 16:54:32 +0000 (UTC)
+ id 8E6ED300018D; Mon,  8 Sep 2025 16:54:35 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PULL 13/31] hw/vfio/cpr-legacy.c: use QOM casts where appropriate
-Date: Mon,  8 Sep 2025 18:53:36 +0200
-Message-ID: <20250908165354.1731444-14-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 14/31] hw/vfio/container.c: use QOM casts where appropriate
+Date: Mon,  8 Sep 2025 18:53:37 +0200
+Message-ID: <20250908165354.1731444-15-clg@redhat.com>
 In-Reply-To: <20250908165354.1731444-1-clg@redhat.com>
 References: <20250908165354.1731444-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -90,73 +89,138 @@ of accessing bcontainer directly.
 
 Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Steve Sistare <steven.sistare@oracle.com>
-Link: https://lore.kernel.org/qemu-devel/20250715093110.107317-4-mark.caveayland@nutanix.com
+Link: https://lore.kernel.org/qemu-devel/20250715093110.107317-5-mark.caveayland@nutanix.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/cpr-legacy.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ hw/vfio/container.c | 31 +++++++++++++------------------
+ 1 file changed, 13 insertions(+), 18 deletions(-)
 
-diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
-index 553b203e9b60b3a08159e2224a887b4d76162428..8f437194fae035b37de3f7c3f88e332c4ef88302 100644
---- a/hw/vfio/cpr-legacy.c
-+++ b/hw/vfio/cpr-legacy.c
-@@ -41,8 +41,8 @@ static int vfio_legacy_cpr_dma_map(const VFIOContainerBase *bcontainer,
-                                    hwaddr iova, ram_addr_t size, void *vaddr,
-                                    bool readonly, MemoryRegion *mr)
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 134ddccc52449cd7d4ac90d17075e9fca5439674..030c6d3f89cf57dc06e9bb2222f02e7803482c56 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -71,7 +71,7 @@ static int vfio_dma_unmap_bitmap(const VFIOContainer *container,
+                                  hwaddr iova, ram_addr_t size,
+                                  IOMMUTLBEntry *iotlb)
+ {
+-    const VFIOContainerBase *bcontainer = &container->bcontainer;
++    const VFIOContainerBase *bcontainer = VFIO_IOMMU(container);
+     struct vfio_iommu_type1_dma_unmap *unmap;
+     struct vfio_bitmap *bitmap;
+     VFIOBitmap vbmap;
+@@ -124,8 +124,7 @@ static int vfio_legacy_dma_unmap_one(const VFIOContainerBase *bcontainer,
+                                      hwaddr iova, ram_addr_t size,
+                                      IOMMUTLBEntry *iotlb)
  {
 -    const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
 -                                                  bcontainer);
 +    const VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
-+
+     struct vfio_iommu_type1_dma_unmap unmap = {
+         .argsz = sizeof(unmap),
+         .flags = 0,
+@@ -213,8 +212,7 @@ static int vfio_legacy_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+                                ram_addr_t size, void *vaddr, bool readonly,
+                                MemoryRegion *mr)
+ {
+-    const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
+-                                                  bcontainer);
++    const VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
      struct vfio_iommu_type1_dma_map map = {
          .argsz = sizeof(map),
-         .flags = VFIO_DMA_MAP_FLAG_VADDR,
-@@ -65,7 +65,7 @@ static void vfio_region_remap(MemoryListener *listener,
+         .flags = VFIO_DMA_MAP_FLAG_READ,
+@@ -246,8 +244,7 @@ static int
+ vfio_legacy_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
+                                     bool start, Error **errp)
  {
-     VFIOContainer *container = container_of(listener, VFIOContainer,
-                                             cpr.remap_listener);
--    vfio_container_region_add(&container->bcontainer, section, true);
-+    vfio_container_region_add(VFIO_IOMMU(container), section, true);
- }
+-    const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
+-                                                  bcontainer);
++    const VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
+     int ret;
+     struct vfio_iommu_type1_dirty_bitmap dirty = {
+         .argsz = sizeof(dirty),
+@@ -272,8 +269,7 @@ vfio_legacy_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
+ static int vfio_legacy_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+                       VFIOBitmap *vbmap, hwaddr iova, hwaddr size, Error **errp)
+ {
+-    const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
+-                                                  bcontainer);
++    const VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
+     struct vfio_iommu_type1_dirty_bitmap *dbitmap;
+     struct vfio_iommu_type1_dirty_bitmap_get *range;
+     int ret;
+@@ -495,7 +491,7 @@ static void vfio_get_iommu_info_migration(VFIOContainer *container,
+ {
+     struct vfio_info_cap_header *hdr;
+     struct vfio_iommu_type1_info_cap_migration *cap_mig;
+-    VFIOContainerBase *bcontainer = &container->bcontainer;
++    VFIOContainerBase *bcontainer = VFIO_IOMMU(container);
  
- static bool vfio_cpr_supported(VFIOContainer *container, Error **errp)
-@@ -98,7 +98,7 @@ static int vfio_container_pre_save(void *opaque)
- static int vfio_container_post_load(void *opaque, int version_id)
+     hdr = vfio_get_iommu_info_cap(info, VFIO_IOMMU_TYPE1_INFO_CAP_MIGRATION);
+     if (!hdr) {
+@@ -518,8 +514,7 @@ static void vfio_get_iommu_info_migration(VFIOContainer *container,
+ 
+ static bool vfio_legacy_setup(VFIOContainerBase *bcontainer, Error **errp)
  {
-     VFIOContainer *container = opaque;
+-    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
+-                                            bcontainer);
++    VFIOContainer *container = VFIO_IOMMU_LEGACY(bcontainer);
+     g_autofree struct vfio_iommu_type1_info *info = NULL;
+     int ret;
+ 
+@@ -634,7 +629,7 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+ 
+     if (!cpr_is_incoming()) {
+         QLIST_FOREACH(bcontainer, &space->containers, next) {
+-            container = container_of(bcontainer, VFIOContainer, bcontainer);
++            container = VFIO_IOMMU_LEGACY(bcontainer);
+             if (!ioctl(group->fd, VFIO_GROUP_SET_CONTAINER, &container->fd)) {
+                 return vfio_container_group_add(container, group, errp);
+             }
+@@ -652,7 +647,7 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+          * create the container struct and group list.
+          */
+         QLIST_FOREACH(bcontainer, &space->containers, next) {
+-            container = container_of(bcontainer, VFIOContainer, bcontainer);
++            container = VFIO_IOMMU_LEGACY(bcontainer);
+ 
+             if (vfio_cpr_container_match(container, group, fd)) {
+                 return vfio_container_group_add(container, group, errp);
+@@ -672,7 +667,7 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+         goto fail;
+     }
+     new_container = true;
+-    bcontainer = &container->bcontainer;
++    bcontainer = VFIO_IOMMU(container);
+ 
+     if (!vfio_legacy_cpr_register_container(container, errp)) {
+         goto fail;
+@@ -735,7 +730,7 @@ fail:
+ static void vfio_container_disconnect(VFIOGroup *group)
+ {
+     VFIOContainer *container = group->container;
 -    VFIOContainerBase *bcontainer = &container->bcontainer;
 +    VFIOContainerBase *bcontainer = VFIO_IOMMU(container);
      VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
-     dma_map_fn saved_dma_map = vioc->dma_map;
-     Error *local_err = NULL;
-@@ -135,7 +135,7 @@ static int vfio_cpr_fail_notifier(NotifierWithReturn *notifier,
- {
-     VFIOContainer *container =
-         container_of(notifier, VFIOContainer, cpr.transfer_notifier);
--    VFIOContainerBase *bcontainer = &container->bcontainer;
-+    VFIOContainerBase *bcontainer = VFIO_IOMMU(container);
  
-     if (e->type != MIG_EVENT_PRECOPY_FAILED) {
-         return 0;
-@@ -167,7 +167,7 @@ static int vfio_cpr_fail_notifier(NotifierWithReturn *notifier,
+     QLIST_REMOVE(group, container_next);
+@@ -781,7 +776,7 @@ static VFIOGroup *vfio_group_get(int groupid, AddressSpace *as, Error **errp)
+     QLIST_FOREACH(group, &vfio_group_list, next) {
+         if (group->groupid == groupid) {
+             /* Found it.  Now is it already in the right context? */
+-            if (group->container->bcontainer.space->as == as) {
++            if (VFIO_IOMMU(group->container)->space->as == as) {
+                 return group;
+             } else {
+                 error_setg(errp, "group %d used in multiple address spaces",
+@@ -895,7 +890,7 @@ static bool vfio_device_get(VFIOGroup *group, const char *name,
+         }
+     }
  
- bool vfio_legacy_cpr_register_container(VFIOContainer *container, Error **errp)
- {
--    VFIOContainerBase *bcontainer = &container->bcontainer;
-+    VFIOContainerBase *bcontainer = VFIO_IOMMU(container);
-     Error **cpr_blocker = &container->cpr.blocker;
+-    vfio_device_prepare(vbasedev, &group->container->bcontainer, info);
++    vfio_device_prepare(vbasedev, VFIO_IOMMU(group->container), info);
  
-     migration_add_notifier_mode(&bcontainer->cpr_reboot_notifier,
-@@ -191,7 +191,7 @@ bool vfio_legacy_cpr_register_container(VFIOContainer *container, Error **errp)
- 
- void vfio_legacy_cpr_unregister_container(VFIOContainer *container)
- {
--    VFIOContainerBase *bcontainer = &container->bcontainer;
-+    VFIOContainerBase *bcontainer = VFIO_IOMMU(container);
- 
-     migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
-     migrate_del_blocker(&container->cpr.blocker);
+     vbasedev->fd = fd;
+     vbasedev->group = group;
 -- 
 2.51.0
 
