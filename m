@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A3AB489E1
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4FEB48A14
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:24:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvYsE-0001f6-NI; Mon, 08 Sep 2025 06:13:24 -0400
+	id 1uvYsT-0001pU-IR; Mon, 08 Sep 2025 06:13:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvYs9-0001cr-6B
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:17 -0400
+ id 1uvYsK-0001oo-Ql
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvYs5-0000w6-KP
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:15 -0400
+ id 1uvYsD-0000x6-88
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:13:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757326389;
+ s=mimecast20190719; t=1757326394;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2JxL0mu6HG+did++z5AjqHBeKoSZ1/tUC6gKjbxSw7M=;
- b=LLIiPfFl0CJuj74MkZ3AXuyyXYi2UPkgP42Ad6V/7Jtx535pgAs+P6BaycpbciPdPAVPly
- 3sAppqhXnZbupGlHsmqlboLqrOakk1doGlTOD5jfIv/Z6LrKChEmBq03cgdo+UNCF2ZrjX
- VOlarkkCOxOeue3aEleu8iiaqrF4c+g=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9F9omlNx3zkAVVgrXaGDIxi/SyKkxZLJobZOnZwp8BQ=;
+ b=TyFwglgstsuUAICrZFVOUZrww4FPSDfW7czFguUWc9nPm4BzBXrM5SECMijr1Ctr+818wH
+ ynaot6TpTlLJ9Raq6lwP1gUMSzeyUedlLiCtXhbI2qPUbCQvJkEsRKMNewa+mX8rxa7lve
+ +ftIESco114mhkHP6ExSEALE3LGRgDA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-gZLS2OC4MaaVQmCgoCwNqw-1; Mon, 08 Sep 2025 06:13:08 -0400
-X-MC-Unique: gZLS2OC4MaaVQmCgoCwNqw-1
-X-Mimecast-MFC-AGG-ID: gZLS2OC4MaaVQmCgoCwNqw_1757326387
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45de5fdda1aso3357935e9.1
- for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:13:07 -0700 (PDT)
+ us-mta-633-MkwKhkZVP9WCgaQbjLgtug-1; Mon, 08 Sep 2025 06:13:12 -0400
+X-MC-Unique: MkwKhkZVP9WCgaQbjLgtug-1
+X-Mimecast-MFC-AGG-ID: MkwKhkZVP9WCgaQbjLgtug_1757326391
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3e3b77972cbso1450135f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:13:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757326386; x=1757931186;
+ d=1e100.net; s=20230601; t=1757326388; x=1757931188;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2JxL0mu6HG+did++z5AjqHBeKoSZ1/tUC6gKjbxSw7M=;
- b=cE/pt8thLYjZFqSmskkD86M4atykX0xgI1dlblesN1BqAnBwpUBUOIEHnFtqTx4T01
- H0c+eUCrg+WsVX8QxXFjPpoMgJyeILbGtjsOod/RPOGuC+NKwY/LO677XkH5hJROQTyp
- TQxiIxxKglwrOF8Ip71LS+bBxm2crn+tH68iAYkcfWBCVelDn6Q6+2DotHbhTcVx4VBi
- bhjgMMcAPogH/EGVRC/Aq2GX4CIlhLIaNra6N9WA9o5cFpv46zHII/tcIKGaKKAs4KMP
- FEfiEebAbZ0or3RFSD/3vUzvOOjlrX9CnKNr6U7MWz2R+3MM04Ca4VbreDm+NTrh/Scc
- TYcg==
-X-Gm-Message-State: AOJu0Yww/3E7ptovhghn/8/lSpbEM4ELenPa3AvkoFmBCJAzDDMJxSn3
- BoxHUBLLB5fq7rTp5M56uXQYHg/6QtMZiwqoY/YxFdHT2OWn6p8jfS5QbC8DJnUZpoQX7x9+cR6
- kEwRR1FI5qH2CFDJeYebYFhxk3MzwNn6zJvUTMb9wMsP6zvLxPH17HvO321h1YYYnu23yuj1kSM
- qhhTF0Q1LG4RH8zRI7VNnzIFhTeIor8oNQGgfAbckp
-X-Gm-Gg: ASbGncsw5e0zHLYsPKalqE6EcuyKnSBPWn1b3M23M1keveDOLeqqXYAJLiTjqEx/DTj
- UCLxHHe8hhNjOu1rjlEYnduxR2s0aEqWhC6eQuBWmxnCXiaeU75a4WST7oKE6yPy3YqlpNH9K7Y
- Ubetv6SNFemtmeIl7qRBPBE4BwJaIYOzGMatwZXDcXuXLRsb3SrGqFhsOId57yxw/t3ZuoToaQT
- 1r3WS5J3ZR8JMETO0Uc0VYx4Djr6y+9JpqcEb3o+Yrh2TrYpUPJy55qs0lW4ziIDCi6RX7ehZhF
- fkPEfzOQK4KgFJLB3YbP7Lo8M53I7lcqXiTDuIeqL3pEyqgd1CB1mS3GqefNNWB3Y1mAV7E5gC2
- q1++lSSQuiWVxorrQcXI5qUyINn7dZ9kzzahkhsyCG9Q=
-X-Received: by 2002:a05:600c:1d16:b0:459:d780:3604 with SMTP id
- 5b1f17b1804b1-45ddde89897mr75840615e9.3.1757326385604; 
- Mon, 08 Sep 2025 03:13:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGFm0BetqOFBzZk+fzzdNuIQJww8nPT0Oa3fCLgeCEvHKqVxVO3DuAbACXN1ZpglRgXW6XO+g==
-X-Received: by 2002:a05:600c:1d16:b0:459:d780:3604 with SMTP id
- 5b1f17b1804b1-45ddde89897mr75840145e9.3.1757326385073; 
- Mon, 08 Sep 2025 03:13:05 -0700 (PDT)
+ bh=9F9omlNx3zkAVVgrXaGDIxi/SyKkxZLJobZOnZwp8BQ=;
+ b=HeZu1ZTYGV4qketcJLJI2If8IXHEJ3Q08iOpIkDMBYDQ55sq31ITtx+OS81gbEcknD
+ 4qagXlCuNPDpOeWFo/yT03iIaTSHEc+6e/+5TFgUob9Vq4CcmQHRiby6bwpl/HJjDoFS
+ nqINVGKGv/akLDnJiUQkmoiCxYKQy2xeHjv/qF/cCIptZvKX7GvzgWQlguEtqXsifR2d
+ wNxOwEWJq2opGL7hJ+YzPeBarMplRFEMLlIwhiKKuo9EPif9fjdIVOWGxKRGq9cXZO6O
+ FyObf4ivrOYWH3i/YHE+wEuyJWaBWoSH+rdFYl1XS1GNs9j+lRzBDlQYS9mTAM2Qw3/A
+ Al2Q==
+X-Gm-Message-State: AOJu0YzsgvgjCQ/axufWAUepYb18wYdS5lXBbS2iVkvIpBB+fxMu9YVT
+ aVzTBUBxx+abtNZpOxBKd5DtmkwUGRHg/ZLKKiFEyEeG+BPozTNKarnWB5bf6pA6QJ8z9gCqNSN
+ m+c8LkrSG0XlhOfJuYcmPN39anuAm7a3j2JrVjuyDNOYAnTKRSXW34lsJGcTEWo+xb94odkLU89
+ 5orAXJyRMQiYMYJQzR+p227pwlXwZVLLzoUrAn5zk0
+X-Gm-Gg: ASbGncuOgn6N/ik8KkZvk4l6TgBSfeDes1Bf2uQ7NdbvBvaXbJwKe2UdIf1uzOebUvn
+ NMgMjoffSU9WjnXSaumkL/rNAIn+SoJ784qQmiSwZb1lQZG5cs7PLGRpYgngaODoJkEm9o1AB6L
+ rH/XfMwGfXeYvfF/+592qQx2U5yo8oE66QdrhKIvqmjMUYnAKPKQKo6VUcQqPriHSLaaYRVIC2B
+ VwIbsKlBZE1f9q6el5/W+ZY8XyYbHXyjBLYY4Bn/BDEnLjhKvM7nVOIEQoFewH1IPnXNCf/yTJP
+ mOtcrOT6W7wv66+JuravRg1/W8vWeI29Eh7nox8WcdQmksiG6llMCgcb5iyIfhXFf9sZ8htydXn
+ 3PD1UwKcX8V16XEC9RajY/BkaDuMDGle/jobNz2wnwyA=
+X-Received: by 2002:a05:6000:1acd:b0:3e5:50:e070 with SMTP id
+ ffacd0b85a97d-3e64c789650mr4848514f8f.50.1757326388281; 
+ Mon, 08 Sep 2025 03:13:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IETPYIPWARpMny9jmQtqFuA7IPClj38ZHOG5z7M2vc4aWwgns8nIwsGlIiGgLvABmVep2ujJw==
+X-Received: by 2002:a05:6000:1acd:b0:3e5:50:e070 with SMTP id
+ ffacd0b85a97d-3e64c789650mr4848477f8f.50.1757326387757; 
+ Mon, 08 Sep 2025 03:13:07 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b9bcda91dsm270386825e9.6.2025.09.08.03.13.02
+ ffacd0b85a97d-3d729a96912sm28665067f8f.8.2025.09.08.03.13.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Sep 2025 03:13:03 -0700 (PDT)
+ Mon, 08 Sep 2025 03:13:05 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Xu <peterx@redhat.com>, Igor Mammedov <imammedo@redhat.com>
-Subject: [PATCH 09/19] accel: use store_release/load_acquire for cross-thread
- exit_request
-Date: Mon,  8 Sep 2025 12:12:31 +0200
-Message-ID: <20250908101241.2110068-10-pbonzini@redhat.com>
+Subject: [PATCH 10/19] accel: use atomic accesses for exit_request
+Date: Mon,  8 Sep 2025 12:12:32 +0200
+Message-ID: <20250908101241.2110068-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250908101241.2110068-1-pbonzini@redhat.com>
 References: <20250908101241.2110068-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -93,7 +94,7 @@ X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,168 +110,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reads and writes cpu->exit_request do not use a load-acquire/store-release
-pair right now, but this means that cpu_exit() may not write cpu->exit_request
-after any flags that are read by the vCPU thread.
-
-Probably everything is protected one way or the other by the BQL, because
-cpu->exit_request leads to the slow path, where the CPU thread often takes
-the BQL (for example, to go to sleep by waiting on the BQL-protected
-cpu->halt_cond); but it's not clear, so use load-acquire/store-release
+CPU threads write exit_request as a "note to self" that they need to
+go out to a slow path.  This write happens out of the BQL and can be
+a data race with another threads' cpu_exit(); use atomic accesses
 consistently.
 
+While at it, change the source argument from int ("1") to bool ("true").
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/kvm/kvm-all.c          | 19 +++++++++----------
- accel/tcg/cpu-exec.c         |  7 +++++--
- accel/tcg/tcg-accel-ops-rr.c | 11 +++++++++--
- hw/core/cpu-common.c         |  3 ++-
- target/i386/nvmm/nvmm-all.c  |  5 ++---
- target/i386/whpx/whpx-all.c  |  3 ++-
- 6 files changed, 29 insertions(+), 19 deletions(-)
+ include/hw/core/cpu.h             | 9 +++++++++
+ accel/kvm/kvm-all.c               | 2 +-
+ accel/tcg/tcg-accel-ops-mttcg.c   | 2 +-
+ accel/tcg/tcg-accel-ops-rr.c      | 4 ++--
+ hw/ppc/spapr_hcall.c              | 6 +++---
+ target/i386/kvm/kvm.c             | 6 +++---
+ target/i386/nvmm/nvmm-accel-ops.c | 2 +-
+ target/i386/nvmm/nvmm-all.c       | 2 +-
+ target/i386/whpx/whpx-all.c       | 6 +++---
+ 9 files changed, 24 insertions(+), 15 deletions(-)
 
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 8b57bcd92c9..338757e5254 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -422,6 +422,15 @@ struct qemu_work_item;
+  * valid under cpu_list_lock.
+  * @created: Indicates whether the CPU thread has been successfully created.
+  * @halt_cond: condition variable sleeping threads can wait on.
++ * @exit_request: Another thread requests the CPU to call qemu_wait_io_event().
++ *   Should be read only by CPU thread with load-acquire, to synchronize with
++ *   other threads' store-release operation.
++ *
++ *   In some cases, accelerator-specific code will write exit_request from
++ *   within the same thread, to "bump" the effect of qemu_cpu_kick() to
++ *   the one provided by cpu_exit(), especially when processing interrupt
++ *   flags.  In this case, the write and read happen in the same thread
++ *   and the write therefore can use qemu_atomic_set().
+  * @interrupt_request: Indicates a pending interrupt request.
+  *   Only used by system emulation.
+  * @halted: Nonzero if the CPU is in suspended state.
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index f36dfe33492..bd9e5e3886d 100644
+index bd9e5e3886d..e4167d94b4f 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -3029,10 +3029,6 @@ static void kvm_eat_signals(CPUState *cpu)
+@@ -3730,7 +3730,7 @@ int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr)
+     have_sigbus_pending = true;
+     pending_sigbus_addr = addr;
+     pending_sigbus_code = code;
+-    qatomic_set(&cpu->exit_request, 1);
++    qatomic_set(&cpu->exit_request, true);
+     return 0;
+ #else
+     return 1;
+diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
+index 337b993d3da..b12b7a36b5d 100644
+--- a/accel/tcg/tcg-accel-ops-mttcg.c
++++ b/accel/tcg/tcg-accel-ops-mttcg.c
+@@ -85,7 +85,7 @@ static void *mttcg_cpu_thread_fn(void *arg)
+     qemu_guest_random_seed_thread_part2(cpu->random_seed);
  
-     if (kvm_immediate_exit) {
-         qatomic_set(&cpu->kvm_run->immediate_exit, 0);
--        /* Write kvm_run->immediate_exit before the cpu->exit_request
--         * write in kvm_cpu_exec.
--         */
--        smp_wmb();
-         return;
-     }
+     /* process any pending work */
+-    cpu->exit_request = 1;
++    qatomic_set(&cpu->exit_request, true);
  
-@@ -3187,7 +3183,8 @@ int kvm_cpu_exec(CPUState *cpu)
-         }
- 
-         kvm_arch_pre_run(cpu, run);
--        if (qatomic_read(&cpu->exit_request)) {
-+        /* Corresponding store-release is in cpu_exit. */
-+        if (qatomic_load_acquire(&cpu->exit_request)) {
-             trace_kvm_interrupt_exit_request();
-             /*
-              * KVM requires us to reenter the kernel after IO exits to complete
-@@ -3197,13 +3194,15 @@ int kvm_cpu_exec(CPUState *cpu)
-             kvm_cpu_kick_self();
-         }
- 
--        /* Read cpu->exit_request before KVM_RUN reads run->immediate_exit.
--         * Matching barrier in kvm_eat_signals.
--         */
--        smp_rmb();
--
-         run_ret = kvm_vcpu_ioctl(cpu, KVM_RUN, 0);
- 
-+        /*
-+         * After writing cpu->exit_request, cpu_exit() sends a signal that writes
-+         * kvm->run->immediate_exit.  The signal is already happening after the
-+         * write to cpu->exit_request so, if KVM read kvm->run->immediate_exit
-+         * as true, cpu->exit_request will always read as true.
-+         */
-+
-         attrs = kvm_arch_post_run(cpu, run);
- 
- #ifdef KVM_HAVE_MCE_INJECTION
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 508d2d2d9e2..f838535d111 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -851,8 +851,11 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
-     }
- #endif /* !CONFIG_USER_ONLY */
- 
--    /* Finally, check if we need to exit to the main loop.  */
--    if (unlikely(qatomic_read(&cpu->exit_request)) || icount_exit_request(cpu)) {
-+    /*
-+     * Finally, check if we need to exit to the main loop.
-+     * The corresponding store-release is in cpu_exit.
-+     */
-+    if (unlikely(qatomic_load_acquire(&cpu->exit_request)) || icount_exit_request(cpu)) {
-         qatomic_set(&cpu->exit_request, 0);
-         if (cpu->exception_index == -1) {
-             cpu->exception_index = EXCP_INTERRUPT;
+     do {
+         if (cpu_can_run(cpu)) {
 diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-index 6eec5c9eee9..e8b0e370a8d 100644
+index e8b0e370a8d..d13e0d8b44d 100644
 --- a/accel/tcg/tcg-accel-ops-rr.c
 +++ b/accel/tcg/tcg-accel-ops-rr.c
-@@ -242,10 +242,17 @@ static void *rr_cpu_thread_fn(void *arg)
-             cpu = first_cpu;
+@@ -212,7 +212,7 @@ static void *rr_cpu_thread_fn(void *arg)
+     cpu = first_cpu;
+ 
+     /* process any pending work */
+-    cpu->exit_request = 1;
++    qatomic_set(&cpu->exit_request, true);
+ 
+     while (1) {
+         /* Only used for icount_enabled() */
+@@ -293,7 +293,7 @@ static void *rr_cpu_thread_fn(void *arg)
+         /* Does not need a memory barrier because a spurious wakeup is okay.  */
+         qatomic_set(&rr_current_cpu, NULL);
+ 
+-        if (cpu && cpu->exit_request) {
++        if (cpu && qatomic_read(&cpu->exit_request)) {
+             qatomic_set_mb(&cpu->exit_request, 0);
          }
  
--        while (cpu && cpu_work_list_empty(cpu) && !cpu->exit_request) {
--            /* Store rr_current_cpu before evaluating cpu_can_run().  */
-+        while (cpu && cpu_work_list_empty(cpu)) {
-+            /*
-+             * Store rr_current_cpu before evaluating cpu->exit_request.
-+             * Pairs with rr_kick_next_cpu().
-+             */
-             qatomic_set_mb(&rr_current_cpu, cpu);
+diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+index 1e936f35e44..51875e32a09 100644
+--- a/hw/ppc/spapr_hcall.c
++++ b/hw/ppc/spapr_hcall.c
+@@ -509,7 +509,7 @@ static target_ulong h_cede(PowerPCCPU *cpu, SpaprMachineState *spapr,
+     if (!cpu_has_work(cs)) {
+         cs->halted = 1;
+         cs->exception_index = EXCP_HLT;
+-        cs->exit_request = 1;
++        qatomic_set(&cs->exit_request, true);
+         ppc_maybe_interrupt(env);
+     }
  
-+            /* Pairs with store-release in cpu_exit.  */
-+            if (qatomic_load_acquire(&cpu->exit_request)) {
-+                break;
-+            }
-             current_cpu = cpu;
+@@ -531,7 +531,7 @@ static target_ulong h_confer_self(PowerPCCPU *cpu)
+     }
+     cs->halted = 1;
+     cs->exception_index = EXCP_HALTED;
+-    cs->exit_request = 1;
++    qatomic_set(&cs->exit_request, true);
+     ppc_maybe_interrupt(&cpu->env);
  
-             qemu_clock_enable(QEMU_CLOCK_VIRTUAL,
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index 152abc9024b..42463e6258d 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -74,7 +74,8 @@ void cpu_reset_interrupt(CPUState *cpu, int mask)
+     return H_SUCCESS;
+@@ -624,7 +624,7 @@ static target_ulong h_confer(PowerPCCPU *cpu, SpaprMachineState *spapr,
+     }
  
- void cpu_exit(CPUState *cpu)
+     cs->exception_index = EXCP_YIELD;
+-    cs->exit_request = 1;
++    qatomic_set(&cs->exit_request, true);
+     cpu_loop_exit(cs);
+ 
+     return H_SUCCESS;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 8420c4090ef..34e74f24470 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -5486,10 +5486,10 @@ void kvm_arch_pre_run(CPUState *cpu, struct kvm_run *run)
+     if (cpu_test_interrupt(cpu, CPU_INTERRUPT_INIT | CPU_INTERRUPT_TPR)) {
+         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_INIT) &&
+             !(env->hflags & HF_SMM_MASK)) {
+-            qatomic_set(&cpu->exit_request, 1);
++            qatomic_set(&cpu->exit_request, true);
+         }
+         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_TPR)) {
+-            qatomic_set(&cpu->exit_request, 1);
++            qatomic_set(&cpu->exit_request, true);
+         }
+     }
+ 
+@@ -5604,7 +5604,7 @@ int kvm_arch_process_async_events(CPUState *cs)
+         if (env->exception_nr == EXCP08_DBLE) {
+             /* this means triple fault */
+             qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+-            cs->exit_request = 1;
++            qatomic_set(&cs->exit_request, true);
+             return 0;
+         }
+         kvm_queue_exception(env, EXCP12_MCHK, 0, 0);
+diff --git a/target/i386/nvmm/nvmm-accel-ops.c b/target/i386/nvmm/nvmm-accel-ops.c
+index 3799260bbde..86869f133e9 100644
+--- a/target/i386/nvmm/nvmm-accel-ops.c
++++ b/target/i386/nvmm/nvmm-accel-ops.c
+@@ -77,7 +77,7 @@ static void nvmm_start_vcpu_thread(CPUState *cpu)
+  */
+ static void nvmm_kick_vcpu_thread(CPUState *cpu)
  {
--    qatomic_set(&cpu->exit_request, 1);
-+    /* Ensure cpu_exec will see the reason why the exit request was set.  */
-+    qatomic_store_release(&cpu->exit_request, true);
-     /* Ensure cpu_exec will see the exit request after TCG has exited.  */
-     smp_wmb();
-     qatomic_set(&cpu->neg.icount_decr.u16.high, -1);
+-    cpu->exit_request = 1;
++    qatomic_set(&cpu->exit_request, true);
+     cpus_kick_thread(cpu);
+ }
+ 
 diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index e1151b04c6e..10bd51d9b59 100644
+index 10bd51d9b59..7e36c42fbb4 100644
 --- a/target/i386/nvmm/nvmm-all.c
 +++ b/target/i386/nvmm/nvmm-all.c
-@@ -743,7 +743,8 @@ nvmm_vcpu_loop(CPUState *cpu)
+@@ -414,7 +414,7 @@ nvmm_vcpu_pre_run(CPUState *cpu)
+      * or commit pending TPR access.
+      */
+     if (cpu_test_interrupt(cpu, CPU_INTERRUPT_INIT | CPU_INTERRUPT_TPR)) {
+-        cpu->exit_request = 1;
++        qatomic_set(&cpu->exit_request, true);
+     }
  
-         nvmm_vcpu_pre_run(cpu);
- 
--        if (qatomic_read(&cpu->exit_request)) {
-+        /* Corresponding store-release is in cpu_exit. */
-+        if (qatomic_load_acquire(&cpu->exit_request)) {
- #if NVMM_USER_VERSION >= 2
-             nvmm_vcpu_stop(vcpu);
- #else
-@@ -751,8 +752,6 @@ nvmm_vcpu_loop(CPUState *cpu)
- #endif
-         }
- 
--        /* Read exit_request before the kernel reads the immediate exit flag */
--        smp_rmb();
-         ret = nvmm_vcpu_run(mach, vcpu);
-         if (ret == -1) {
-             error_report("NVMM: Failed to exec a virtual processor,"
+     if (!has_event && cpu_test_interrupt(cpu, CPU_INTERRUPT_NMI)) {
 diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
-index c09a0a64f22..2106c29c3a0 100644
+index 2106c29c3a0..00fb7e23100 100644
 --- a/target/i386/whpx/whpx-all.c
 +++ b/target/i386/whpx/whpx-all.c
-@@ -1714,7 +1714,8 @@ static int whpx_vcpu_run(CPUState *cpu)
-         if (exclusive_step_mode == WHPX_STEP_NONE) {
-             whpx_vcpu_pre_run(cpu);
- 
--            if (qatomic_read(&cpu->exit_request)) {
-+            /* Corresponding store-release is in cpu_exit. */
-+            if (qatomic_load_acquire(&cpu->exit_request)) {
-                 whpx_vcpu_kick(cpu);
-             }
+@@ -1489,10 +1489,10 @@ static void whpx_vcpu_pre_run(CPUState *cpu)
+     if (cpu_test_interrupt(cpu, CPU_INTERRUPT_INIT | CPU_INTERRUPT_TPR)) {
+         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_INIT) &&
+             !(env->hflags & HF_SMM_MASK)) {
+-            cpu->exit_request = 1;
++            qatomic_set(&cpu->exit_request, true);
          }
+         if (cpu_test_interrupt(cpu, CPU_INTERRUPT_TPR)) {
+-            cpu->exit_request = 1;
++            qatomic_set(&cpu->exit_request, true);
+         }
+     }
+ 
+@@ -1539,7 +1539,7 @@ static void whpx_vcpu_pre_run(CPUState *cpu)
+     if (tpr != vcpu->tpr) {
+         vcpu->tpr = tpr;
+         reg_values[reg_count].Reg64 = tpr;
+-        cpu->exit_request = 1;
++        qatomic_set(&cpu->exit_request, true);
+         reg_names[reg_count] = WHvX64RegisterCr8;
+         reg_count += 1;
+     }
 -- 
 2.51.0
 
