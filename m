@@ -2,57 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBC0B47E8D
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Sep 2025 22:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C53B482B5
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 04:54:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvLtj-0000s1-AD; Sun, 07 Sep 2025 16:22:04 -0400
+	id 1uvRz2-0004oS-Lr; Sun, 07 Sep 2025 22:51:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uvLta-0000r5-Fi
- for qemu-devel@nongnu.org; Sun, 07 Sep 2025 16:21:55 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uvLtI-00072p-J2
- for qemu-devel@nongnu.org; Sun, 07 Sep 2025 16:21:51 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9345C56F2A2;
- Sun, 07 Sep 2025 22:21:07 +0200 (CEST)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id YVgaXl2ElUY3; Sun,  7 Sep 2025 22:21:05 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 48DC656F319; Sun, 07 Sep 2025 22:21:05 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 4673D56F306;
- Sun, 07 Sep 2025 22:21:05 +0200 (CEST)
-Date: Sun, 7 Sep 2025 22:21:05 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Julian Ganz <neither@nut.email>
-cc: qemu-devel@nongnu.org, 
- =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
-Subject: Re: [PATCH v6 00/25] tcg-plugins: add hooks for discontinuities
-In-Reply-To: <3c8d0c3733edc984937ac33a417488f92dccb148@nut.email>
-Message-ID: <819c9f3b-13f4-2ef2-e651-5cfec52f2e12@eik.bme.hu>
-References: <cover.1757018626.git.neither@nut.email>
- <a1c2d356-e664-2632-002f-d0b9bea06e1e@eik.bme.hu>
- <cf6e7db43e9e9e59b6c9edb1c172b01ae62fb23f@nut.email>
- <df0a8c4b-ae9b-1582-1570-6cb588149a7a@eik.bme.hu>
- <3c8d0c3733edc984937ac33a417488f92dccb148@nut.email>
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1uvRyx-0004o3-F9
+ for qemu-devel@nongnu.org; Sun, 07 Sep 2025 22:51:51 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1uvRyh-0003jF-DF
+ for qemu-devel@nongnu.org; Sun, 07 Sep 2025 22:51:50 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-77251d7cca6so3172803b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 07 Sep 2025 19:51:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1757299884; x=1757904684; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=xP9a8Kw49JWphmuuT6z7629GJ1vhcNYD+R1e6O3zS5s=;
+ b=MhaI00NyElft157OdU539civVtgTyLtEos0rJwYSs6r/b/k+85eNhAkz9wXXM8jk+W
+ qLk4rP1cIylFPewOmbmKUaperDRp7y3bNmJzVGKqgAX6k7tTkKmi76jyYyD+TUKCon6e
+ 4y0sn6w8OWBzserxkLyt9YPfM73vNNZFEMzasUaFpwBC4thENQUhxhFR4TRPynWo2Iur
+ 32Zb4YaIlTMcdUWH0eEbw0QQYt1L9qQhGUrsPC9a32y3OlKRRyXZkGCNBljKR/U2Vch2
+ sJvoCemA8i5chg6T1pAAWycfSTSnWixydbDVP99eQZq9p6jcfsz/PpzJF1dmfVHEQDDv
+ Ny4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757299884; x=1757904684;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xP9a8Kw49JWphmuuT6z7629GJ1vhcNYD+R1e6O3zS5s=;
+ b=YEhDGfBA4va03w1/NSm+5NA4CVUp1UBskB8vNtv7r3T831j5gFI0K2k9eL18U01vM7
+ LEU1vrKxS9OA9i5DmjRE0rZwG+gLEMrbR0ODRwwqNw9nyNmX/EwCJYGK1NR5ZXsb1g/u
+ nEfiSo0hY9nbcfPGh2vcHfOLDBHZCjWKQLLBlDmaaBCQGlihkYkx5opshGjRMwpMeffo
+ JaFKL+zQTh0E45I3JsraDXaq8mPP5/Kdw+Cya1Z/pGiWIM9pVrz0/JL7//aKrIYfbBT7
+ hq699tN8TS5EHesyU+4N9G7niT/iQ+SqPQWBHagFAZm2r27ufx+Dow/NKhkMUzpkEHpD
+ 9s2A==
+X-Gm-Message-State: AOJu0YwsOy6dE9+tHCbbi/s+OpZ86hP/PTvni3LnFojRKGHiTHP7mdto
+ EuUA3ReQXFGJllfiGeO/qgjX5A1eQgS2v8oKApNbSsx9JCwtC0d0uRvnYfpyFxZ526Xx5zQZJf8
+ IW/YEvBcxiyXTE93wa22/+YDEG/NLvfVIO5u4zCklUPWdFz6MlzClOEASxuApJlYBJM3+kAJrkY
+ 57CzCAKt/Mb3etCx2c5CL9HfOO72GyPGihAFymzXzcXQ==
+X-Gm-Gg: ASbGncuIH3ktHM8XA/ZdKuDtv5Ii2q3TfDqUBHQEq6FL6PBfzxUCCXl84hDMUUL0XYm
+ O3M4riSdu4uOIJstfAsG5VOqreXf26V6ImLnBY9hiPTV44kRikd4gI4aJWNR8YCL9kza5yfSUYQ
+ Wwpowzne18Z0CwZZYXRL+fP+3cjYsuxjYicBUJrDHXcsGOUtzTM2Xzo40i+jjBiscPYdlkO9S+b
+ xp1LrIgqYqbOtUPD35HELilxoFHjEg9GeX69Gx1bAV4tlysKcmEfnV+kCn2qUTX88yc0+0a8geT
+ /WcG1Iu0xZGGHQV0T7fbFzA5vGvzzZ26QfMq7G8Vgzi9J1VBvBRM4AUalQJ86Oa+bCQU48apKKZ
+ v9HSHMGCDM8kXMbb/xpFT4F8pHEk+h7aprUdS9EmWJvtYY2gp4yo1LIP09vJyLSGAQ9OBhqTte3
+ UFpQ==
+X-Google-Smtp-Source: AGHT+IFgOmjiGAXzD5dJjA9n1n8ZJI1uTj6N5/XQ9idKdtMRIA2l0muAQTj0zPucvjjp4RX4ADA6tA==
+X-Received: by 2002:a05:6a00:17a8:b0:772:5165:3f68 with SMTP id
+ d2e1a72fcca58-7742de615c8mr6479526b3a.27.1757299884246; 
+ Sun, 07 Sep 2025 19:51:24 -0700 (PDT)
+Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
+ [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-772306a1870sm26823834b3a.75.2025.09.07.19.51.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 07 Sep 2025 19:51:23 -0700 (PDT)
+From: Max Chou <max.chou@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, richard.henderson@linaro.org,
+ Max Chou <max.chou@sifive.com>
+Subject: [RFC PATCH v4 0/3] Add Zvqdotq support
+Date: Mon,  8 Sep 2025 10:51:14 +0800
+Message-ID: <20250908025117.1728895-1-max.chou@sifive.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=max.chou@sifive.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,66 +103,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 5 Sep 2025, Julian Ganz wrote:
-> September 5, 2025 at 9:25 PM, "BALATON Zoltan" wrote:
->> On Fri, 5 Sep 2025, Julian Ganz wrote:
->>> September 5, 2025 at 1:38 PM, "BALATON Zoltan" wrote:
->>>> Have you done any testing on how much overhead this adds
->>>>  to interrupt heavy guest workloads? At least for PPC these are already
->>>>  much slower than real CPU so I'd like it to get faster not slower.
->>>>
->>>  No, I have not made any performance measurements. However, given that
->>>  for every single TB execution a similar hook is called already, the
->>>  impact related to other existing plugin infrastructure _should_ be
->>>  neglectible.
->>>
->>>  That is, if your workload actually runs any code and is not constantly
->>>  bombarded with interrupts that _do_ result in a trap (which _may_ happen
->>>  during some tests).
->>>
->>>  So if you are performance sensitive enough to care, you will very likely
->>>  want to disable plugins anyway.
->>>
->> I can disable plugins and do that normally but that does not help those who get QEMU from their distro (i.e. most users). If this infrastructure was disabled in default builds and needed an explicit option to enable then those who need it could enable it and not imposed it on everyone else who just get a default build from a distro and never use plugins. Having an option which needs rebuild is like not having the option for most people. I guess the question is which is the larger group? Those who just run guests or those who use this instrumentation with plugins.
->
-> Hard to say.
->
->> The default may better be what the larger group needs. Even then distros may still change the default so it would be best if the overhead can be minimised even if enabled. I think the log infrastructure does that, would a similar solution work here?
->>
->> For testing I've found that because embedded PPC CPUs have a software controlled MMU (and in addition to that QEMU may flush TLB entries too often) running something that does a lot of memory access like runnung the STREAM benchmark on sam460ex is hit by this IIRC but anything else causing a lot of interrupts like reading from emulated disk or sound is probably affected as well. I've tried to optimise PPC exception handling a bit before but whenever I optimise something it is later undone by other changes not caring about performance.
->
-> I could try running the benchmark on multiple versions:
->
-> * qemu with plugins disabled,
-> * with plugins enabled but without these patches and
-> * with plugins enabled and with these patches.
->
-> However, I'll likely only report back with results next week, though.
-> Do you happen to have an image you can point me to? Either something
-> that has the benchmark already or some unixoid running on the platform?
-> I'm currently not motivated enough to cook up some bare-metal testbed
-> for a platform I'm not familiar with.
+This patch series adds Zvqdotq support.
 
-I don't have ready images to test embedded PPC MMU exceptions which I 
-think this may affect most. I had an image for pegasos2 for a general test 
-used here:
-https://lists.nongnu.org/archive/html/qemu-discuss/2023-12/msg00008.html
-but that machine has a G4 CPU which has hardware MMU so is likely not 
-affected.
+The isa spec of Zvqdotq extension is not ratified yet, so this patch series
+is based on the latest draft of the spec (v0.0.2) and make the Zvqdotq
+extension as an experimental extension.
 
-I have uploaded some PPC binaries for the STREAM benchmark that I tested 
-with before here:
-http://zero.eik.bme.hu/~balaton/qemu/stream-test.zip
-which may excercise this if run on sam460ex or ppce500 machines but I 
-don't have a scripted test case for that. There is some docs on how to run 
-Linux on these machines here:
-https://www.qemu.org/docs/master/system/target-ppc.html
+The draft of the Zvqdotq isa spec:
+https://github.com/riscv/riscv-dot-product
 
-Alternatively maybe running a disk IO benchmark on an emulated IDE 
-controller using PIO mode or some other device that generates a lots of 
-interrupts may test this. I think you can use the "info irq" command in 
-QEMU Monitor to check how many interrupts you get.
+v4:
+* Update the PRIV_VERSION (Thanks for Daniel Henrique Barboza's suggestion)
 
-Regards,
-BALATON Zoltan
+v3:
+* Fix casting and simplify vs1/vs2 access (Thanks for Richard Henderson's
+  suggestion)
+
+v2:
+* Remove unnecessary variable and mask (Thanks for Richard Henderson's
+  suggestion)
+
+Max Chou (3):
+  target/riscv: Add Zvqdotq cfg property
+  target/riscv: rvv: Add Zvqdotq support
+  target/riscv: Expose Zvqdotq extension as a cpu property
+
+ target/riscv/cpu.c                            |  2 +
+ target/riscv/cpu_cfg_fields.h.inc             |  1 +
+ target/riscv/helper.h                         | 10 +++
+ target/riscv/insn32.decode                    |  9 +++
+ target/riscv/insn_trans/trans_rvzvqdotq.c.inc | 61 +++++++++++++++++++
+ target/riscv/tcg/tcg-cpu.c                    |  5 ++
+ target/riscv/translate.c                      |  1 +
+ target/riscv/vector_helper.c                  | 57 +++++++++++++++++
+ 8 files changed, 146 insertions(+)
+ create mode 100644 target/riscv/insn_trans/trans_rvzvqdotq.c.inc
+
+--
+2.39.3
+
 
