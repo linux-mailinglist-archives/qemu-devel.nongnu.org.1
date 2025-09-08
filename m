@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9AE9B48A91
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6675EB48AC0
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Sep 2025 12:58:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvZTU-0006vx-BH; Mon, 08 Sep 2025 06:51:52 -0400
+	id 1uvZTS-0006xB-VD; Mon, 08 Sep 2025 06:51:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvZTO-0006v2-CC
- for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:51:46 -0400
+ id 1uvZTO-0006vI-VT
+ for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:51:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uvZTC-0006Ck-6r
+ id 1uvZT9-0006Cz-30
  for qemu-devel@nongnu.org; Mon, 08 Sep 2025 06:51:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757328685;
+ s=mimecast20190719; t=1757328686;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dRZsNqZGE9NUqObfCVEOQEig8iVf+LmigSCKKBVNNnk=;
- b=IcGH/wBUbL5pPzDmMGawgjcW0jhySrDGHZS5Dtz2939Zv4pUzkp4gR24yoFx7HMoEouN09
- EXqSzo1OoybeDCogsBva+1fGP2Fz2rhpa4xy9FepfuKDTKvnMaMCfwATsZbMzLArFg2/t/
- EBvih2rxGj0UYwmAo5s96eIFkC2G6p4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Mxvf/JAkYelSTZETYkXyIfdcO2Wx1B9vDdDIc3VMLwg=;
+ b=DiXYc5Im8dkLjMTKDiVeH7/wEG8FYmDDK27SaLdV0jMRQLjvvMbFbwqL6P/ZdUX1j+T0xw
+ nkNef/eVJ9xi8OsdQcwqsY2v6Lk4XVuL7QceHAoTtxwpNaZ+p6UYYBmjlT8idwbRrtY+Eo
+ nIx+5hwfIcLTfTJ5y2EOidUcmUaREYI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-475-r9RVE5g1OWC_fWuZz_XbeQ-1; Mon, 08 Sep 2025 06:51:24 -0400
-X-MC-Unique: r9RVE5g1OWC_fWuZz_XbeQ-1
-X-Mimecast-MFC-AGG-ID: r9RVE5g1OWC_fWuZz_XbeQ_1757328683
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-45b990eb77cso30344875e9.0
- for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:51:24 -0700 (PDT)
+ us-mta-5-6sIqnsdGPtqP7D3GMJsRVQ-1; Mon, 08 Sep 2025 06:51:25 -0400
+X-MC-Unique: 6sIqnsdGPtqP7D3GMJsRVQ-1
+X-Mimecast-MFC-AGG-ID: 6sIqnsdGPtqP7D3GMJsRVQ_1757328684
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3e40057d90aso1419476f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 03:51:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757328682; x=1757933482;
+ d=1e100.net; s=20230601; t=1757328683; x=1757933483;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dRZsNqZGE9NUqObfCVEOQEig8iVf+LmigSCKKBVNNnk=;
- b=r1lJuQwlnS10QzubDTs80FytyFehED0PO9EWzFyfnUO/mrVg7TB9dZpNznojk6CzXo
- 5WOdvLFqwxeBCEo1RNv75b2Gx6foOxNCQyLZ6pbOXLMeY1IEsprCsY1hqpIlkUgGTSiF
- ZFdYki0sezqzG2dEcP+KMb7Gx4r9ilSvXtsHECFTi+W/yc3JT0oKvBWKxtpn6oy12OV0
- TBEjn5g6L6TXodBVENxlZZGpTYYks87dpYia+lixNz98lUAJP0SyfCcFxkRrXn0uwPJq
- BoL/le8NH0w9UPFNu558PDJme+R3vmrjKNialWO3LOeWhAjkv9CwRhVooXKPbGnf1fgu
- DXQw==
-X-Gm-Message-State: AOJu0YyEy9ugRO+1qxBF+xkfNfInPGOziKxRGQgdU4lzuYKsYGsrg6lV
- ejEQQDm/ABbDYXI2fM1ZtM6UlH7D8aRxRXeazUTmjCQiI1ADeIf2bxTo3nm7B3LYSOef335CJ+Z
- b+36aNagjT5VaNHca7Mkt8HOMLUmmKO1Dlr3gFrxS8EwPFBKFldLVo89BjKvn026H6KjKbKwjC3
- oIVvTWCOY8V0w3yoNtogKRSmVUAMYLRiOpdtbbwKh1
-X-Gm-Gg: ASbGncvZvR9UrhMxxHHVytk0maR3AI3f1nvTGZc20KI869OsFv6cTxHhHQJXYZF7ihk
- GoOIBOY5LaRE9R9D9jfx733iiHTQpcmivNEr98VfiNdExxGK87Ie7I+HCrnZ0Zn0UB60BridD9b
- NtqWpBfD+0gUWSmp8SjTpOqw2o9+1DTgELhc41DwXappfZkq7E/OxeTwYNjG0r8kbq4xiIe2Guu
- ugJ+iv0Tbwtyx56J1YIdbfy1H4T3h5db5GOWEAs6bffWh1GYpqlIVjPK9rcfE86l5rLDUXYYXuD
- BbsgB29PG4hqJdVsBf+4dwOLz1zPWY2ivsW9SGuNcAiTEermZMaeaJPY//jgJ9y03dYQHTczOcd
- na0vGR3REARis7Rfa2tOraErwAhHrjiECma/s5zcRjtM=
-X-Received: by 2002:a05:600c:840f:b0:45d:dc10:a5ee with SMTP id
- 5b1f17b1804b1-45dde20ee09mr64948365e9.15.1757328681914; 
- Mon, 08 Sep 2025 03:51:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHetaieeG5CZaDHSFgwU1vOxMvqsxKVOuJ8m75aT7R1cp//0OGrJnhVciz6CrkFhilhQaAckw==
-X-Received: by 2002:a05:600c:840f:b0:45d:dc10:a5ee with SMTP id
- 5b1f17b1804b1-45dde20ee09mr64948025e9.15.1757328681363; 
- Mon, 08 Sep 2025 03:51:21 -0700 (PDT)
+ bh=Mxvf/JAkYelSTZETYkXyIfdcO2Wx1B9vDdDIc3VMLwg=;
+ b=cWLh728r+ZaOcyv594jc6ptE4O/ygBp1K7sfMnJe4vRuIFzKgbGmP/p7KbCsaei+Xx
+ xofhvqGtWMQlYnyLv52fQ44Z7IZukrCmvV+XnuhSFXYR5ZqetSui6jbzfSo4U7jNlTF/
+ VEfEDdj11PZxemnT9Wc9IwzyWqBgXsxx2oNmIgCF4nQaG75GkdLI38sAEHVGxROio3V9
+ 1jOZmAq4D69Qydk9g/DZ+k64Sk2xsTEuLVxqnql0SznGXrdguqhd+nuLRBAhwjO4Gnnb
+ NnMS1tGqlCVXEDzxt95U836VgW+WIhSOkJq20h2Fp90L4wp9mTaZhMkkJ6eCapvtzjM/
+ V+Fw==
+X-Gm-Message-State: AOJu0YzqhJmPrJnp7Mo2qvyef1Uj9RZW8QNT6WqCj6uo+EmXWReFyAjo
+ 97irDisaRE/A3G7ENqTv3qRCy8cXZaN2m9cwDdJz6Sa1eOQHbd019g/q/vgM+5r/Ak7r3S0tf06
+ 7MaNdaSOso4y7WI2/SQqIahxjKAaqCFO5f/zWdY2vEurCHWLpmuEjgIZX2PO1YJFUEQU7NmUwqC
+ tgfvd6HYbameHmPY5BgD85nbMlVfWm3XTDLj2k13a/
+X-Gm-Gg: ASbGncv5oN+U/zJOadXrSzOu2PTK7YGa3QajXNWiSOTIgln7tdoDYTGOhTR6ZMqade1
+ FWdsbDHSPd9aNVxwwOxZ028ZpesXSnRBXJaObZT3kLjMQkrcVoeppwH3Ft+88biuKU7ZDt7UiQO
+ wju1Dsk+OGHFM0yc4CN/MRJkTX4luzEypJ41tI5C0MCnAkeOzeDxFYZ7RIOwKHYDnespHPiTIsh
+ R3QMTBcqpHp++UpslWLDvwe0SgHr3PxWmohozGeuUqiVXtq8o20aT5JNi1RCajfOmh5PrQ2P/GF
+ uUqkcGFzdys2WNTD13OVRwydJ183MLAjBeOsQbLwRzNO4yiBE221uS5HomQ7SQhiIPulAQp5LaP
+ e/lxt4xGdFd5VPZWMxGGsF0sL8FrzZhyl9RGiA9nU4K8=
+X-Received: by 2002:a5d:5d05:0:b0:3ce:f0a5:d594 with SMTP id
+ ffacd0b85a97d-3e641e3cba1mr6718259f8f.13.1757328683087; 
+ Mon, 08 Sep 2025 03:51:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFl4LGqNIWRvWJ5HHY/7bF1bcHn1LJIPfXb28/11U3xHuUCFuBKM6JD75yuRhKza2KTHiMqCA==
+X-Received: by 2002:a5d:5d05:0:b0:3ce:f0a5:d594 with SMTP id
+ ffacd0b85a97d-3e641e3cba1mr6718223f8f.13.1757328682577; 
+ Mon, 08 Sep 2025 03:51:22 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45b9a6ecfafsm286494065e9.21.2025.09.08.03.51.19
+ 5b1f17b1804b1-45dda4f2a0dsm133048215e9.2.2025.09.08.03.51.21
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Sep 2025 03:51:19 -0700 (PDT)
+ Mon, 08 Sep 2025 03:51:22 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 31/33] docs: update rust.rst
-Date: Mon,  8 Sep 2025 12:50:03 +0200
-Message-ID: <20250908105005.2119297-32-pbonzini@redhat.com>
+Subject: [PATCH 32/33] rust: meson: remove unnecessary complication in device
+ crates
+Date: Mon,  8 Sep 2025 12:50:04 +0200
+Message-ID: <20250908105005.2119297-33-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250908105005.2119297-1-pbonzini@redhat.com>
 References: <20250908105005.2119297-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -108,134 +108,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+It is not necessary anymore to explicitly list procedural macro crates
+when doing the final link using rustc.
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Link: https://lore.kernel.org/r/20250827104147.717203-23-marcandre.lureau@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/devel/rust.rst | 61 ++++++++++++++++++++++++---------------------
- 1 file changed, 32 insertions(+), 29 deletions(-)
+ rust/hw/char/pl011/meson.build | 3 ---
+ rust/hw/timer/hpet/meson.build | 3 ---
+ 2 files changed, 6 deletions(-)
 
-diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
-index 29eb48af35b..13a20e86a16 100644
---- a/docs/devel/rust.rst
-+++ b/docs/devel/rust.rst
-@@ -103,15 +103,18 @@ anymore.
- Writing Rust code in QEMU
- -------------------------
+diff --git a/rust/hw/char/pl011/meson.build b/rust/hw/char/pl011/meson.build
+index 628a5238702..ffdc8af53f1 100644
+--- a/rust/hw/char/pl011/meson.build
++++ b/rust/hw/char/pl011/meson.build
+@@ -44,8 +44,5 @@ _libpl011_rs = static_library(
  
--QEMU includes four crates:
-+QEMU includes several crates:
+ rust_devices_ss.add(when: 'CONFIG_X_PL011_RUST', if_true: [declare_dependency(
+   link_whole: [_libpl011_rs],
+-  # Putting proc macro crates in `dependencies` is necessary for Meson to find
+-  # them when compiling the root per-target static rust lib.
+-  dependencies: [bilge_impl_rs, qemu_macros],
+   variables: {'crate': 'pl011'},
+ )])
+diff --git a/rust/hw/timer/hpet/meson.build b/rust/hw/timer/hpet/meson.build
+index b6bb9477f0c..bb64b96672e 100644
+--- a/rust/hw/timer/hpet/meson.build
++++ b/rust/hw/timer/hpet/meson.build
+@@ -16,8 +16,5 @@ _libhpet_rs = static_library(
  
--* ``qemu_api`` for bindings to C code and useful functionality
-+* ``common`` provides Rust-only utilities
- 
--* ``qemu_api_macros`` defines several procedural macros that are useful when
-+* ``bql``, ``chardev``, ``hw/core``, ``migration``, ``qom``, ``system``,
-+  ``util`` for bindings to respective QEMU C library APIs
-+
-+* ``qemu_macros`` defines several procedural macros that are useful when
-   writing C code
- 
- * ``pl011`` (under ``rust/hw/char/pl011``) and ``hpet`` (under ``rust/hw/timer/hpet``)
--  are sample devices that demonstrate ``qemu_api`` and ``qemu_api_macros``, and are
-+  are sample devices that demonstrate Rust binding usage and ``qemu_macros``, and are
-   used to further develop them.  These two crates are functional\ [#issues]_ replacements
-   for the ``hw/char/pl011.c`` and ``hw/timer/hpet.c`` files.
- 
-@@ -124,7 +127,7 @@ This section explains how to work with them.
- Status
- ''''''
- 
--Modules of ``qemu_api`` can be defined as:
-+The stability of the modules can be defined as:
- 
- - *complete*: ready for use in new devices; if applicable, the API supports the
-   full functionality available in C
-@@ -140,26 +143,26 @@ Modules of ``qemu_api`` can be defined as:
- 
- The status of the modules is as follows:
- 
--================ ======================
--module           status
--================ ======================
--``assertions``   stable
--``bitops``       complete
--``callbacks``    complete
--``cell``         stable
--``errno``        complete
--``error``        stable
--``irq``          complete
--``log``          proof of concept
--``memory``       stable
--``module``       complete
--``qdev``         stable
--``qom``          stable
--``sysbus``       stable
--``timer``        stable
--``vmstate``      stable
--``zeroable``     stable
--================ ======================
-+========================== ======================
-+module                     status
-+========================== ======================
-+``bql::cell``              stable
-+``common::assertions``     stable
-+``common::bitops``         complete
-+``common::callbacks``      complete
-+``common::errno``          complete
-+``common::zeroable``       stable
-+``hwcore::irq``            complete
-+``hwcore::qdev``           stable
-+``hwcore::sysbus``         stable
-+``migration::vmstate``     stable
-+``qom``                    stable
-+``system::memory``         stable
-+``util::error``            stable
-+``util::log``              proof of concept
-+``util::module``           complete
-+``util::timer``            stable
-+========================== ======================
- 
- .. note::
-   API stability is not a promise, if anything because the C APIs are not a stable
-@@ -260,7 +263,7 @@ to go from a shared reference to a ``&mut``.
- 
- Whenever C code provides you with an opaque ``void *``, avoid converting it
- to a Rust mutable reference, and use a shared reference instead.  The
--``qemu_api::cell`` module provides wrappers that can be used to tell the
-+``bql::cell`` module provides wrappers that can be used to tell the
- Rust compiler about interior mutability, and optionally to enforce locking
- rules for the "Big QEMU Lock".  In the future, similar cell types might
- also be provided for ``AioContext``-based locking as well.
-@@ -292,7 +295,7 @@ the wrapper to be declared thread-safe::
- Writing bindings to C code
- ''''''''''''''''''''''''''
- 
--Here are some things to keep in mind when working on the ``qemu_api`` crate.
-+Here are some things to keep in mind when working on the QEMU Rust crate.
- 
- **Look at existing code**
-   Very often, similar idioms in C code correspond to similar tricks in
-@@ -355,7 +358,7 @@ from the type after ``as`` in the invocation of ``parse_macro_input!``::
-             .into()
-     }
- 
--The ``qemu_api_macros`` crate has utility functions to examine a
-+The ``qemu_macros`` crate has utility functions to examine a
- ``DeriveInput`` and perform common checks (e.g. looking for a struct
- with named fields).  These functions return ``Result<..., syn::Error>``
- and can be used easily in the procedural macro function::
-@@ -396,7 +399,7 @@ Right now, only the nightly version of ``rustfmt`` is supported.  This
- might change in the future.  While CI checks for correct formatting via
- ``cargo fmt --check``, maintainers can fix this for you when applying patches.
- 
--It is expected that ``qemu_api`` provides full ``rustdoc`` documentation for
-+It is expected that QEMU Rust crates provides full ``rustdoc`` documentation for
- bindings that are in their final shape or close.
- 
- Adding dependencies
+ rust_devices_ss.add(when: 'CONFIG_X_HPET_RUST', if_true: [declare_dependency(
+   link_whole: [_libhpet_rs],
+-  # Putting proc macro crates in `dependencies` is necessary for Meson to find
+-  # them when compiling the root per-target static rust lib.
+-  dependencies: [qemu_macros],
+   variables: {'crate': 'hpet'},
+ )])
 -- 
 2.51.0
 
