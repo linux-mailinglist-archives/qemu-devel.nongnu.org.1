@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E7FCB50399
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 19:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88857B503C0
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 19:03:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uw1fn-0006Qs-31; Tue, 09 Sep 2025 12:58:27 -0400
+	id 1uw1fm-0006Rf-ON; Tue, 09 Sep 2025 12:58:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uw1fO-0006GZ-FD
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:58:05 -0400
+ id 1uw1fW-0006Ld-VX
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:58:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uw1fM-0007cU-Fh
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:58:02 -0400
+ id 1uw1fS-0007cx-DB
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:58:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757437078;
+ s=mimecast20190719; t=1757437081;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cfr02aDddyM4f+cQuRHngl/25SfiMaK12tyjEfawCpc=;
- b=KLbV+9vzelO/FwR3xDd07vOEo2kXJajmltWSidx5IXpvGpurNiB+ZF34+QkILn2SfZFKqU
- pZNqfs4ux2daimUtkmKRrzwHtVjoOkvX0iRIWqBPNCwWbLUZ1ww9mML7YD59w22wdnI9K9
- hexlSR9pn1CaybfKHOZ4SROdeJupmuk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=YKYCnPa2j5HEUjmt+gy6hq2Fa7FzPDEoXHj0GPtbA7k=;
+ b=AnZeupw7gOZT1K/8B8y+01wxY3NBKbLoFIg5j3o1HM2qyxxxmPNu7PTXznXsaycLY7HXeU
+ KY2ThxB1t6ooW207KdJXxyoKczGNr9acdtJ7UcPnLyqfduHMElO5CZXUW7s7oCxU1X/UWB
+ wWlbQJPo1fgOsOLRv3l9ihpGz29E+r4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-zAWk9m70PVKjp_GYDXE6Fg-1; Tue,
- 09 Sep 2025 12:57:57 -0400
-X-MC-Unique: zAWk9m70PVKjp_GYDXE6Fg-1
-X-Mimecast-MFC-AGG-ID: zAWk9m70PVKjp_GYDXE6Fg_1757437076
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673--k451QWOPLmfnzBiH8U29Q-1; Tue,
+ 09 Sep 2025 12:57:59 -0400
+X-MC-Unique: -k451QWOPLmfnzBiH8U29Q-1
+X-Mimecast-MFC-AGG-ID: -k451QWOPLmfnzBiH8U29Q_1757437079
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 46D341800562; Tue,  9 Sep 2025 16:57:56 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0618D1956096; Tue,  9 Sep 2025 16:57:59 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.45])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D71B21800446; Tue,  9 Sep 2025 16:57:53 +0000 (UTC)
+ id A309A1800447; Tue,  9 Sep 2025 16:57:56 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -52,9 +52,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 09/15] accel: mark 'kvm' as secure and 'tcg' as insecure
-Date: Tue,  9 Sep 2025 17:57:20 +0100
-Message-ID: <20250909165726.3814465-10-berrange@redhat.com>
+Subject: [PATCH 10/15] hw/virtio: mark all virtio PCI devices as secure
+Date: Tue,  9 Sep 2025 17:57:21 +0100
+Message-ID: <20250909165726.3814465-11-berrange@redhat.com>
 In-Reply-To: <20250909165726.3814465-1-berrange@redhat.com>
 References: <20250909165726.3814465-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -88,34 +88,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- accel/kvm/kvm-all.c | 1 +
- accel/tcg/tcg-all.c | 1 +
- 2 files changed, 2 insertions(+)
+ hw/virtio/virtio-pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index f36dfe3349..53b89d0560 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -4068,6 +4068,7 @@ static const TypeInfo kvm_accel_type = {
-     .instance_init = kvm_accel_instance_init,
-     .class_init = kvm_accel_class_init,
-     .instance_size = sizeof(KVMState),
-+    .secure = true,
- };
- 
- static void kvm_type_init(void)
-diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-index 5125e1a4e2..3904df4e78 100644
---- a/accel/tcg/tcg-all.c
-+++ b/accel/tcg/tcg-all.c
-@@ -275,6 +275,7 @@ static const TypeInfo tcg_accel_type = {
-     .instance_init = tcg_accel_instance_init,
-     .class_init = tcg_accel_class_init,
-     .instance_size = sizeof(TCGState),
-+    .insecure = true,
- };
- module_obj(TYPE_TCG_ACCEL);
- 
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index 767216d795..f2f720792a 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -2494,6 +2494,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+         .name = t->generic_name,
+         .parent = base_type_info.name,
+         .class_init = virtio_pci_generic_class_init,
++        .secure = true,
+         .interfaces = (const InterfaceInfo[]) {
+             { INTERFACE_PCIE_DEVICE },
+             { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+@@ -2529,6 +2530,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+             .name          = t->non_transitional_name,
+             .parent        = base_type_info.name,
+             .instance_init = virtio_pci_non_transitional_instance_init,
++            .secure = true,
+             .interfaces = (const InterfaceInfo[]) {
+                 { INTERFACE_PCIE_DEVICE },
+                 { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+@@ -2543,6 +2545,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+             .name          = t->transitional_name,
+             .parent        = base_type_info.name,
+             .instance_init = virtio_pci_transitional_instance_init,
++            .secure = true,
+             .interfaces = (const InterfaceInfo[]) {
+                 /*
+                  * Transitional virtio devices work only as Conventional PCI
 -- 
 2.50.1
 
