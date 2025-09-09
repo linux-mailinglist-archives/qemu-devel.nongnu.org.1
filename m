@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E840B4FE4F
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:56:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5577AB4FE66
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:58:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvymG-000160-AV; Tue, 09 Sep 2025 09:52:56 -0400
+	id 1uvymG-0000zW-4g; Tue, 09 Sep 2025 09:52:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvym3-0000rx-VL
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:44 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvym5-0000sX-UF
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylv-0005Ie-II
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:43 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylv-0005Iv-Ul
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757425951;
+ s=mimecast20190719; t=1757425953;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h6MGCFstU9A8pKTdLVNROKctYzeYtjHXDz72OIr7J/Q=;
- b=TPo3Yu6CRdZKFFCjhCyEKjkf8XHQ/QDLRIaevafBKerl2IDdN25eNxoo3xzWbsm7DiYedc
- fNeQwXVgH1VPzpcWVqCfbm1FZIGigdZLER65vc0rznh2wG2Lco5Mj4mPM8lGdWQhvYqmmQ
- EFePo77NXzDCqoQWNbUPrSyi550Je6U=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=K8zAEwjum86ER5JQwBv8BwGQ1Mku6jJOxDC+Ilgkb/g=;
+ b=bHM6QfxsA0aPxwmDHERv2rDssVnUWTKkRiJQU2MqHWfLlc1j9s++xPPL6fq2rZlStWK1s5
+ AyLnqkQTHGQpLcCeAomu/KmqzSym/R9910CkKkrD9GmtmPWaukcEmEa6YqKZgHnqy7LocH
+ 0KYgE6gS6F2cVLl5RoBxEN0ByWCVHq0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-58-0n7ZpbAhOES_3UeX9sPBKA-1; Tue,
- 09 Sep 2025 09:52:28 -0400
-X-MC-Unique: 0n7ZpbAhOES_3UeX9sPBKA-1
-X-Mimecast-MFC-AGG-ID: 0n7ZpbAhOES_3UeX9sPBKA_1757425947
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-302-xNffJESFNFS9H4-gMcKfVQ-1; Tue,
+ 09 Sep 2025 09:52:30 -0400
+X-MC-Unique: xNffJESFNFS9H4-gMcKfVQ-1
+X-Mimecast-MFC-AGG-ID: xNffJESFNFS9H4-gMcKfVQ_1757425949
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 44EF61800284; Tue,  9 Sep 2025 13:52:27 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 718801800451; Tue,  9 Sep 2025 13:52:29 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.46])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AD19A1800451; Tue,  9 Sep 2025 13:52:24 +0000 (UTC)
+ id C1C191800447; Tue,  9 Sep 2025 13:52:27 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 16/23] gitlab: include all junit XML files from meson
-Date: Tue,  9 Sep 2025 15:51:40 +0200
-Message-ID: <20250909135147.612345-17-thuth@redhat.com>
+Subject: [PULL 17/23] gitlab: prevent duplicated meson log artifacts in test
+ jobs
+Date: Tue,  9 Sep 2025 15:51:41 +0200
+Message-ID: <20250909135147.612345-18-thuth@redhat.com>
 In-Reply-To: <20250909135147.612345-1-thuth@redhat.com>
 References: <20250909135147.612345-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,96 +85,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The junit XML file produced by meson does not always have the
-name 'testlog.junit.xml' - in the case of 'make check-functional'
-there is a 'testlog-thorough.junit.xml' file too.
+The build jobs will populate build/meson-logs/ with various files
+that are added as artifacts.
 
-Improve CI debugging robustness by capturing all junit files that
-meson produces.
+The test jobs preserve the state of the build jobs, so we must
+delete any pre-existing logs to prevent confusion from duplicate
+artifacts.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-ID: <20250908190901.3571859-4-berrange@redhat.com>
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Message-ID: <20250908190901.3571859-5-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/buildtest-template.yml  | 4 ++--
- .gitlab-ci.d/buildtest.yml           | 2 +-
- .gitlab-ci.d/crossbuild-template.yml | 2 +-
- .gitlab-ci.d/custom-runners.yml      | 2 +-
- .gitlab-ci.d/windows.yml             | 2 +-
- 5 files changed, 6 insertions(+), 6 deletions(-)
+ .gitlab-ci.d/buildtest-template.yml | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 4cc5b20790f..308490a35ac 100644
+index 308490a35ac..d866cb12bb1 100644
 --- a/.gitlab-ci.d/buildtest-template.yml
 +++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -90,7 +90,7 @@
-     paths:
-       - build/meson-logs
-     reports:
--      junit: build/meson-logs/testlog.junit.xml
-+      junit: build/meson-logs/*.junit.xml
+@@ -83,6 +83,10 @@
  
- .functional_test_job_template:
+ .native_test_job_template:
    extends: .common_test_job_template
-@@ -107,7 +107,7 @@
-       - build/meson-logs
-       - build/tests/functional/*/*/*.log
-     reports:
--      junit: build/meson-logs/testlog.junit.xml
-+      junit: build/meson-logs/*.junit.xml
++  before_script:
++    # Prevent logs from the build job that run earlier
++    # from being duplicated in the test job artifacts
++    - rm -f build/meson-logs/*
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+     when: always
+@@ -111,6 +115,9 @@
    before_script:
      - export QEMU_TEST_ALLOW_UNTRUSTED_CODE=1
      - export QEMU_TEST_CACHE_DIR=${CI_PROJECT_DIR}/functional-cache
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 778289267f1..83c2867295a 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -615,7 +615,7 @@ gcov:
-     paths:
-       - build/meson-logs
-     reports:
--      junit: build/meson-logs/testlog.junit.xml
-+      junit: build/meson-logs/*.junit.xml
-       coverage_report:
-         coverage_format: cobertura
-         path: build/coverage.xml
-diff --git a/.gitlab-ci.d/crossbuild-template.yml b/.gitlab-ci.d/crossbuild-template.yml
-index 7e70376cfcc..58136d06e4a 100644
---- a/.gitlab-ci.d/crossbuild-template.yml
-+++ b/.gitlab-ci.d/crossbuild-template.yml
-@@ -130,4 +130,4 @@
-     paths:
-       - build/meson-logs
-     reports:
--      junit: build/meson-logs/testlog.junit.xml
-+      junit: build/meson-logs/*.junit.xml
-diff --git a/.gitlab-ci.d/custom-runners.yml b/.gitlab-ci.d/custom-runners.yml
-index 1aa3c60efe9..2d493f70f7a 100644
---- a/.gitlab-ci.d/custom-runners.yml
-+++ b/.gitlab-ci.d/custom-runners.yml
-@@ -26,7 +26,7 @@
-       - build/build.ninja
-       - build/meson-logs
-     reports:
--      junit: build/meson-logs/testlog.junit.xml
-+      junit: build/meson-logs/*.junit.xml
- 
- include:
-   - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml'
-diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
-index f14e9ca1341..1e6a01bd9ac 100644
---- a/.gitlab-ci.d/windows.yml
-+++ b/.gitlab-ci.d/windows.yml
-@@ -26,7 +26,7 @@ msys2-64bit:
-     paths:
-       - build/meson-logs
-     reports:
--      junit: "build/meson-logs/testlog.junit.xml"
-+      junit: build/meson-logs/*.junit.xml
-   before_script:
-   - Write-Output "Acquiring msys2.exe installer at $(Get-Date -Format u)"
-   - If ( !(Test-Path -Path msys64\var\cache ) ) {
++    # Prevent logs from the build job that run earlier
++    # from being duplicated in the test job artifacts
++    - rm -f build/meson-logs/*
+   after_script:
+     - cd build
+     - du -chs ${CI_PROJECT_DIR}/*-cache
 -- 
 2.51.0
 
