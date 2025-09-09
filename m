@@ -2,80 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11FEB4A742
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 11:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 410FEB4A750
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 11:18:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvuSj-0004Yv-4g; Tue, 09 Sep 2025 05:16:30 -0400
+	id 1uvuUC-0005lE-9H; Tue, 09 Sep 2025 05:18:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uvuSY-0004Bg-RA
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 05:16:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uvuUA-0005ki-36
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 05:17:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uvuSQ-0007cw-U7
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 05:16:18 -0400
+ id 1uvuU5-0007jG-3A
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 05:17:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757409368;
+ s=mimecast20190719; t=1757409469;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XLTdFIrydxP18sL39W++yMP2XbxieZcPtiOm1+wtePU=;
- b=Mb2GKCuehqC/g2s/L6pmAuLLbR8XbIphL4wemRHbLpq9SwMm9rdjzhTbn4STGCSFbDMgF/
- F59AYNWIm8tlZh+Txv3rpUMrL4ep/0C7rUymXaNgdUyPQORs1GLezpnrRImz4ml41YHQH0
- qgCnMQmO0OJ2PI4HrXhzZe6giz06JWI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=o1wV7s0PBuYHMU3+/24J90kIvp/DulBRrQ3LIZXLbDs=;
+ b=OrCnnLzys8xZYiua2lDt6GrFqo7IGYofbjYCHQbGdReZvtEvLEn65P9GF/EGbs4UZLI45n
+ nIpggy8dbGODEIm7c+ZRakn9t6HdWw+pT6rVEqyDek+waQT59zKfu9cg09qrHySJHAyoG2
+ cI3LPDCIRXAhOj1/3YgQopgKjeDK330=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-67-LH3168zTOcGZWuuqkLDuew-1; Tue,
- 09 Sep 2025 05:16:07 -0400
-X-MC-Unique: LH3168zTOcGZWuuqkLDuew-1
-X-Mimecast-MFC-AGG-ID: LH3168zTOcGZWuuqkLDuew_1757409366
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-368-FeJNNKJmOJGMswmHGR-DEg-1; Tue,
+ 09 Sep 2025 05:17:46 -0400
+X-MC-Unique: FeJNNKJmOJGMswmHGR-DEg-1
+X-Mimecast-MFC-AGG-ID: FeJNNKJmOJGMswmHGR-DEg_1757409465
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A1E961800451; Tue,  9 Sep 2025 09:16:05 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 956721800447; Tue,  9 Sep 2025 09:17:45 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.45])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AE7241800452; Tue,  9 Sep 2025 09:15:59 +0000 (UTC)
-Date: Tue, 9 Sep 2025 10:15:56 +0100
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 40F101956095; Tue,  9 Sep 2025 09:17:44 +0000 (UTC)
+Date: Tue, 9 Sep 2025 10:17:40 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, peterx@redhat.com,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Kostiantyn Kostiuk <kkostiuk@redhat.com>,
- Alexander Bulekov <alxndr@bu.edu>, Bandan Das <bsd@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Darren Kenny <darren.kenny@oracle.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH 07/10] use qemu_set_blocking instead of
- g_unix_set_fd_nonblocking
-Message-ID: <aL_wTKuHCaTdDFRd@redhat.com>
-References: <20250903094411.1029449-1-vsementsov@yandex-team.ru>
- <20250903094411.1029449-8-vsementsov@yandex-team.ru>
- <aL_ssg0m_4FOfpHo@redhat.com>
- <4b0de513-12fa-4891-8dde-82971efa4778@yandex-team.ru>
+To: Andrew Keesler <ankeesler@google.com>
+Cc: marcandre.lureau@gmail.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 1/1] Support per-head resolutions with virtio-gpu
+Message-ID: <aL_wtBlIdBv5v2Qy@redhat.com>
+References: <20250902141312.750525-1-ankeesler@google.com>
+ <20250902141312.750525-2-ankeesler@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4b0de513-12fa-4891-8dde-82971efa4778@yandex-team.ru>
+In-Reply-To: <20250902141312.750525-2-ankeesler@google.com>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,88 +87,55 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 09, 2025 at 12:11:19PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> On 09.09.25 12:00, Daniel P. Berrangé wrote:
-> > On Wed, Sep 03, 2025 at 12:44:07PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> > > Instead of open-coded g_unix_set_fd_nonblocking() calls, use
-> > > QEMU wrapper qemu_socket_set_nonblock().
-> > > 
-> > > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> > > ---
-> > >   chardev/char-fd.c                  |  4 ++--
-> > >   chardev/char-pty.c                 |  3 +--
-> > >   chardev/char-serial.c              |  3 +--
-> > >   chardev/char-stdio.c               |  3 +--
-> > >   hw/input/virtio-input-host.c       |  3 +--
-> > >   hw/misc/ivshmem-flat.c             |  4 +++-
-> > >   hw/misc/ivshmem-pci.c              |  8 +++++++-
-> > >   hw/virtio/vhost-vsock.c            |  8 ++------
-> > >   io/channel-command.c               |  9 ++++++---
-> > >   io/channel-file.c                  |  3 +--
-> > >   net/tap-bsd.c                      | 12 ++++++++++--
-> > >   net/tap-linux.c                    |  8 +++++++-
-> > >   net/tap-solaris.c                  |  7 ++++++-
-> > >   net/tap.c                          | 21 ++++++---------------
-> > >   qga/commands-posix.c               |  3 +--
-> > >   tests/qtest/fuzz/virtio_net_fuzz.c |  2 +-
-> > >   tests/qtest/vhost-user-test.c      |  3 +--
-> > >   tests/unit/test-iov.c              |  5 +++--
-> > >   ui/input-linux.c                   |  3 +--
-> > >   util/event_notifier-posix.c        |  5 +++--
-> > >   util/main-loop.c                   |  6 +++++-
-> > >   21 files changed, 69 insertions(+), 54 deletions(-)
-> > 
-> > > diff --git a/io/channel-command.c b/io/channel-command.c
-> > > index 8966dd3a2b..8ae9a026b3 100644
-> > > --- a/io/channel-command.c
-> > > +++ b/io/channel-command.c
-> > > @@ -277,9 +277,12 @@ static int qio_channel_command_set_blocking(QIOChannel *ioc,
-> > >       cioc->blocking = enabled;
-> > >   #else
-> > > -    if ((cioc->writefd >= 0 && !g_unix_set_fd_nonblocking(cioc->writefd, !enabled, NULL)) ||
-> > > -        (cioc->readfd >= 0 && !g_unix_set_fd_nonblocking(cioc->readfd, !enabled, NULL))) {
-> > > -        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-> > > +    if (cioc->writefd >= 0 &&
-> > > +        !qemu_set_blocking(cioc->writefd, enabled, errp)) {
-> > > +        return -1;
-> > > +    }
-> > > +    if (cioc->readfd >= 0 &&
-> > > +        !qemu_set_blocking(cioc->readfd, enabled, errp)) {
-> > >           return -1;
-> > >       }
-> > >   #endif
-> > > diff --git a/io/channel-file.c b/io/channel-file.c
-> > > index ca3f180cc2..5cef75a67c 100644
-> > > --- a/io/channel-file.c
-> > > +++ b/io/channel-file.c
-> > > @@ -223,8 +223,7 @@ static int qio_channel_file_set_blocking(QIOChannel *ioc,
-> > >   #else
-> > >       QIOChannelFile *fioc = QIO_CHANNEL_FILE(ioc);
-> > > -    if (!g_unix_set_fd_nonblocking(fioc->fd, !enabled, NULL)) {
-> > > -        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-> > > +    if (!qemu_set_blocking(fioc->fd, enabled, errp)) {
-> > >           return -1;
-> > >       }
-> > >       return 0;
-> > 
-> > This is wrong for Windows. fioc->fd is not a socket, but this is passing
-> > it to an API whose impl assume it is receiving a socket.
-> > 
+On Tue, Sep 02, 2025 at 02:13:12PM +0000, Andrew Keesler wrote:
+> In 454f4b0f, we started down the path of supporting separate
+> configurations per display head (e.g., you have 2 heads - one with
+> EDID name "AAA" and the other with EDID name "BBB").
 > 
-> But what is changed with the patch? g_unix_set_fd_nonblocking(fioc->fd, ..) is wrong for Windows as well.
-
-Actually I missed the #ifdef. This code is in an #else branch that excludes
-compilation on Wnidows - the Windows brach just raise an error.
-
-> And making separate qemu_set_blocking() and qemu_socket_set_blocking(), which do the same
-> thing, doesn't make sense..
+> In this change, we add resolution to this configuration surface (e.g.,
+> you have 2 heads - one with resolution 111x222 and the other with
+> resolution 333x444).
 > 
-> Hmm. But we can define qemu_set_blocking() only for Linux, keeping qemu_socket_set_blocking() the generic
-> function. Still, nothing prevents using qemu_socket_set_blocking() on non-sockets..
+>   -display vnc=localhost:0,id=aaa,display=vga,head=0 \
+>   -display vnc=localhost:1,id=bbb,display=vga,head=1 \
+>   -device '{"driver":"virtio-vga",
+>             "max_outputs":2,
+>             "id":"vga",
+>             "outputs":[
+>               {
+>                  "name":"AAA",
+>                  "xres":111,
+>                  "yres":222
+>               },
+>               {
+>                  "name":"BBB",
+>                  "xres":333,
+>                  "yres":444
+>               }
+>             ]}'
+> 
+> Here is the behavior matrix of the current resolution configuration
+> surface (xres/yres) with the new resolution configuration surface
+> (outputs[i].xres/yres).
+> 
+> Case: !(xres || yres) && !(outputs[i].has_xres && outputs[i].has_yres)
+> Behavior: current behavior - outputs[0] enabled with default xres/yres
+> 
+> Case: (xres || yres) && !(outputs[i].has_xres && outputs[i].has_yres)
+> Behavior: current behavior - outputs[0] enabled with xres/yres
+> 
+> Case: !(xres || yres) && (outputs[i].has_xres && outputs[i].has_yres)
+> Behavior: new behavior - outputs[i] enabled with outputs[i].xres/yres
+> 
+> Case: (xres || yres) && (outputs[i].has_xres && outputs[i].has_yres)
+> Behavior: new behavior - outputs[i] enabled with outputs[i].xres/yres
+> ---
+>  hw/display/virtio-gpu-base.c | 10 ++++++++++
+>  qapi/virtio.json             | 10 ++++++++--
+>  2 files changed, 18 insertions(+), 2 deletions(-)
 
-We just relying on the name of the function alerting the developer / reviewer.
-If you're dealing with a FIFO pipe FD you are (hopefully) going to realize
-that qemu_socket_XXX is not a function to be used.
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
 
 With regards,
 Daniel
