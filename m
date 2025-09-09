@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48732B4FE29
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 870D0B4FE39
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:54:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvylS-0000hS-KO; Tue, 09 Sep 2025 09:52:06 -0400
+	id 1uvylk-0000kD-Sv; Tue, 09 Sep 2025 09:52:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylP-0000h9-OT
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:03 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylT-0000i6-DD
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylN-0005E9-HU
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:03 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylQ-0005Ed-TX
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757425918;
+ s=mimecast20190719; t=1757425922;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DO/pbTAisV5AUL8kG4zcb2NfE/3bGwI838ZO/9wVS9w=;
- b=OZb4aLjTMfgkH+xPGSAZ7PadhqJG05HVpiSQgYMNxegQ6M71ynidgEacP6fvFhfFeot4VO
- 8MHZDBLCVTIhxRLaOMgdHqo/RLVVYiVZS8CXjaY77VHTelu0ujD4oDKt6IlH6lDADxo9bi
- SjovmZ+hX4vv7yv6IhpEC9/8DCoLsG4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=czaGazZmWjRrjyPKQwiMHosoI55jbLoSX4D3jUHlHy4=;
+ b=DMg30Aky4Pw86ytpbrtw7kP0mTbCdf8+faRhzgBWONmMhlM7edhGBtXMsob/0Ih4VSNZ5a
+ ZDMzFzWzfCPQA9sIiy+uzdpn5UzVVLgKDDp/bNQSrseDFIV754DReDLy6BiNf9SOgakguc
+ JVULfCS3oYbX4mxwnLNMStwtjgGc5js=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-iNXK14MHMsu64h7fE9ik5w-1; Tue,
- 09 Sep 2025 09:51:57 -0400
-X-MC-Unique: iNXK14MHMsu64h7fE9ik5w-1
-X-Mimecast-MFC-AGG-ID: iNXK14MHMsu64h7fE9ik5w_1757425916
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-WC58Ol4iPm6_Tpzdki5RMw-1; Tue,
+ 09 Sep 2025 09:51:59 -0400
+X-MC-Unique: WC58Ol4iPm6_Tpzdki5RMw-1
+X-Mimecast-MFC-AGG-ID: WC58Ol4iPm6_Tpzdki5RMw_1757425918
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 735F819541B2; Tue,  9 Sep 2025 13:51:56 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 65D301800447; Tue,  9 Sep 2025 13:51:58 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.46])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1A0661800446; Tue,  9 Sep 2025 13:51:54 +0000 (UTC)
+ id EADF11800447; Tue,  9 Sep 2025 13:51:56 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 03/23] hw/mips/malta: Silence warning from ubsan
-Date: Tue,  9 Sep 2025 15:51:27 +0200
-Message-ID: <20250909135147.612345-4-thuth@redhat.com>
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 04/23] system/physmem: Silence warning from ubsan
+Date: Tue,  9 Sep 2025 15:51:28 +0200
+Message-ID: <20250909135147.612345-5-thuth@redhat.com>
 In-Reply-To: <20250909135147.612345-1-thuth@redhat.com>
 References: <20250909135147.612345-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -84,35 +83,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Thomas Huth <thuth@redhat.com>
 
 When compiling QEMU with --enable-ubsan there is a undefined behavior
-warning when using the malta machine:
+warning when running the bios-tables-test for example:
 
- hw/mips/malta.c:1200:32: runtime error: addition of unsigned offset
-  to 0x7fb620600000 overflowed to 0x7fb6205fffff
- SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior hw/mips/malta.c:1200:32
+ .../system/physmem.c:3243:13: runtime error: applying non-zero offset 262144 to null pointer
+    #0 0x55ac1df5fbc4 in address_space_write_rom_internal .../system/physmem.c:3243:13
 
-To fix the issue, check the bios_size whether we really loaded the
-firmware before trying to byte-swap the instructions here.
+The problem is that buf is indeed NULL if the function is e.g. called
+with type == FLUSH_CACHE. Add a check to fix the issue.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250728115152.187728-1-thuth@redhat.com>
+Message-ID: <20250728172545.314178-1-thuth@redhat.com>
 ---
- hw/mips/malta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ system/physmem.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/mips/malta.c b/hw/mips/malta.c
-index 344dc8ca766..02da629b5af 100644
---- a/hw/mips/malta.c
-+++ b/hw/mips/malta.c
-@@ -1191,7 +1191,7 @@ void mips_malta_init(MachineState *machine)
-          * In little endian mode the 32bit words in the bios are swapped,
-          * a neat trick which allows bi-endian firmware.
-          */
--        if (!TARGET_BIG_ENDIAN) {
-+        if (!TARGET_BIG_ENDIAN && bios_size > 0) {
-             uint32_t *end, *addr;
-             const size_t swapsize = MIN(bios_size, 0x3e0000);
-             addr = rom_ptr(FLASH_ADDRESS, swapsize);
+diff --git a/system/physmem.c b/system/physmem.c
+index f498572fc82..311011156c7 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -3231,8 +3231,10 @@ static inline MemTxResult address_space_write_rom_internal(AddressSpace *as,
+             }
+         }
+         len -= l;
+-        buf += l;
+         addr += l;
++        if (buf) {
++            buf += l;
++        }
+     }
+     return MEMTX_OK;
+ }
 -- 
 2.51.0
 
