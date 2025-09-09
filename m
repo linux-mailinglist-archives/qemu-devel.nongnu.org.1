@@ -2,61 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07780B4FE65
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:58:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B003B4FE5C
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:57:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvym0-0000qY-JR; Tue, 09 Sep 2025 09:52:40 -0400
+	id 1uvym4-0000qk-86; Tue, 09 Sep 2025 09:52:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvyll-0000lJ-3m
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvyln-0000lc-2Q
  for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylb-0005Fh-1L
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:22 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvyle-0005GI-MV
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757425931;
+ s=mimecast20190719; t=1757425935;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LLQai3TYd3eCThrqEX/u+AJjU7vki6uEHNIBlwx9oko=;
- b=dc8EPLs0oE9fY7ko31nnVJ6Wx553yYcmxTkIWzJjjD3eFlUzglFwvHYKf/GrvdlSc2y9cg
- 0ONEqzHRnn2JDGcGgeAWwhhrSNoD1RDzgx1D2GoFyQ3KnwgOdq+U1+vhouo8SvYFQkTBf4
- bEyb5YteSslxGOceZ9g/U9SpBTFw6OM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=0+N7ksxc09Rn8zd06nd3lkW7JmF5X1Y/vjS+u+eTaMQ=;
+ b=PwsbwWmEDoXKUJyHh7O97E7RYzstCPN1Fc6LiTKtNYD4sIA6gMAEw4fzpGcGU8yKmeFtKZ
+ wkhXebsLuBVCd/D/hyQwahDrqLeyy+FixqNcH0R3JRkKClE/ZLWsEW+lTlcafFoVh4P8c1
+ eWE0OusDZQ2h73ALqvOyBvSiZLSP5m4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-5xHg9PSzO6mkRFuHVxYc5w-1; Tue,
- 09 Sep 2025 09:52:09 -0400
-X-MC-Unique: 5xHg9PSzO6mkRFuHVxYc5w-1
-X-Mimecast-MFC-AGG-ID: 5xHg9PSzO6mkRFuHVxYc5w_1757425929
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-OGosCj7uOkWmhnV4M-V_Lg-1; Tue,
+ 09 Sep 2025 09:52:13 -0400
+X-MC-Unique: OGosCj7uOkWmhnV4M-V_Lg-1
+X-Mimecast-MFC-AGG-ID: OGosCj7uOkWmhnV4M-V_Lg_1757425932
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1C7E718002C8; Tue,  9 Sep 2025 13:52:09 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C0E2E19541BD; Tue,  9 Sep 2025 13:52:12 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.46])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A4EE718003FC; Tue,  9 Sep 2025 13:52:07 +0000 (UTC)
+ id BED3C18003FC; Tue,  9 Sep 2025 13:52:09 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 09/23] tests/functional: handle URLError when fetching assets
-Date: Tue,  9 Sep 2025 15:51:33 +0200
-Message-ID: <20250909135147.612345-10-thuth@redhat.com>
+ Kane-Chen-AS <kane_chen@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 10/23] tests/functional/arm: Update test ASPEED SDK v03.02 for
+ AST1030
+Date: Tue,  9 Sep 2025 15:51:34 +0200
+Message-ID: <20250909135147.612345-11-thuth@redhat.com>
 In-Reply-To: <20250909135147.612345-1-thuth@redhat.com>
 References: <20250909135147.612345-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,50 +83,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
-We treat most HTTP errors as non-fatal when fetching assets,
-but forgot to handle network level errors. This adds catching
-of URLError so that we retry on failure, and will ultimately
-trigger graceful skipping in the pre-cache task.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250829142616.2633254-4-berrange@redhat.com>
+Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Message-ID: <20250904100556.1729604-2-kane_chen@aspeedtech.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/asset.py | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ tests/functional/arm/test_aspeed_ast1030.py | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-index 5c74adf2241..2dd32bf28d9 100644
---- a/tests/functional/qemu_test/asset.py
-+++ b/tests/functional/qemu_test/asset.py
-@@ -15,7 +15,7 @@
- from time import sleep
- from pathlib import Path
- from shutil import copyfileobj
--from urllib.error import HTTPError
-+from urllib.error import HTTPError, URLError
+diff --git a/tests/functional/arm/test_aspeed_ast1030.py b/tests/functional/arm/test_aspeed_ast1030.py
+index 77037f01793..42126b514ff 100755
+--- a/tests/functional/arm/test_aspeed_ast1030.py
++++ b/tests/functional/arm/test_aspeed_ast1030.py
+@@ -12,17 +12,17 @@
  
- class AssetError(Exception):
-     def __init__(self, asset, msg, transient=False):
-@@ -171,6 +171,14 @@ def fetch(self):
-                     raise AssetError(self, "Unable to download: "
-                                      "HTTP error %d" % e.code)
-                 continue
-+            except URLError as e:
-+                # This is typically a network/service level error
-+                # eg urlopen error [Errno 110] Connection timed out>
-+                tmp_cache_file.unlink()
-+                self.log.error("Unable to download %s: URL error %s",
-+                               self.url, e.reason)
-+                raise AssetError(self, "Unable to download: URL error %s" %
-+                                 e.reason, transient=True)
-             except Exception as e:
-                 tmp_cache_file.unlink()
-                 raise AssetError(self, "Unable to download: %s" % e)
+ class AST1030Machine(LinuxKernelTest):
+ 
+-    ASSET_ZEPHYR_3_00 = Asset(
++    ASSET_ZEPHYR_3_02 = Asset(
+         ('https://github.com/AspeedTech-BMC'
+-         '/zephyr/releases/download/v00.03.00/ast1030-evb-demo.zip'),
+-        '37fe3ecd4a1b9d620971a15b96492a81093435396eeac69b6f3e384262ff555f')
++         '/zephyr/releases/download/v00.03.02/ast1030-evb-demo.zip'),
++        '1ec83caab3ddd5d09481772801be7210e222cb015ce22ec6fffb8a76956dcd4f')
+ 
+-    def test_ast1030_zephyros_3_00(self):
++    def test_ast1030_zephyros_3_02(self):
+         self.set_machine('ast1030-evb')
+ 
+-        kernel_name = "ast1030-evb-demo/zephyr.elf"
++        kernel_name = "ast1030-evb-demo-3/zephyr.elf"
+         kernel_file = self.archive_extract(
+-            self.ASSET_ZEPHYR_3_00, member=kernel_name)
++            self.ASSET_ZEPHYR_3_02, member=kernel_name)
+ 
+         self.vm.set_console()
+         self.vm.add_args('-kernel', kernel_file, '-nographic')
 -- 
 2.51.0
 
