@@ -2,105 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42758B4A137
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 07:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8887B4FBF3
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:00:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvqmg-0002jx-NS; Tue, 09 Sep 2025 01:20:50 -0400
+	id 1uvxw7-0006BG-KL; Tue, 09 Sep 2025 08:59:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uvqmM-0002hJ-Nt; Tue, 09 Sep 2025 01:20:31 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <lifei.shirley@bytedance.com>)
+ id 1uvrvX-0003ne-KN
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 02:34:03 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1uvqmF-00055T-7t; Tue, 09 Sep 2025 01:20:29 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-b0431c12df3so891445966b.1; 
- Mon, 08 Sep 2025 22:19:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <lifei.shirley@bytedance.com>)
+ id 1uvrvQ-0004uR-PT
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 02:34:03 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-77460a64848so653340b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 23:33:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1757395191; x=1757999991; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JiMGmGc4HDdoSPkV38KUKKsrILUvXzYduDCzRAWdwfs=;
- b=gxBhBsHinSn+Rg1o/4xFbj/hfeA6iEMG0Le8jlXM0FF1dzwWn/vIqiWaCjzJROPyv0
- VzxrJnQMWE+hRLv4zrCqBDyfCpJj1EGy0S49vmmhn+onJ8kk1nB58nBTeRRvHjt88t45
- Vi0H+0hjqiOhmj48j0DT2je4vk8hduAnaL2+/oO8jEmP0hai0L2BTW/cpA55+pJaXdyq
- IoE2hhYFBn3FJVLYj5EjJfoJ3PUWhgLk+PQ9y8zflBLcKOwXdp8pPTrMwVdE3GPW2Cim
- msggHyDICXPxI7Fya5/q2U3i4o+AbhTsl6Vlgak5FdozqNDtOj4meQJYIf41XRWc7fdO
- tEBA==
+ d=bytedance.com; s=google; t=1757399622; x=1758004422; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=KlYPumXZ2GNPPhioX83eHuWYdzwsk2NeU2T6+Hb+h+o=;
+ b=hN+5z20g8QInG14gp2lJ5e+f6QUebCgNUyw65Ydse9snreS2NPC89JJfaoMrPtciqA
+ Ciz7TaJ2ALdMMM2XNW6G0BPRJuXA9twJPaHA8beBL9uU2fYtbaZhnYU5BpeyTorbPCkd
+ bX5uzWj0QGvPkxCg1cZA9OIwY5E9F+dpiQDGFq/wv3t1fd1j6vXee46WtG0Gp4Bq586K
+ 9zPBr3NzjlGAUgPR/BWK/3wubvIaMM863IDtD5SIQEAPFupK7rR7kM5EjdjYhfw6WOGX
+ /LvofTHWddlRkRcMyxIZCfb9/xZqp/E/kZnEtVHgC5vxd0DpQF1oh18G2qaMZlyGySKk
+ rBFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757395191; x=1757999991;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JiMGmGc4HDdoSPkV38KUKKsrILUvXzYduDCzRAWdwfs=;
- b=Oi4GOksHhL9bq0xhTnk9IEVzDJE4ZuggVcuafqsV48066M6RrpGc/IdlTTJrXOLNiK
- GuHxykEQY0xP0ETl5Sg8MLYRW2EDSF6tMHmSd6CL55zWdeXBWokQ2ejVul4/nmE+JRUP
- ohSE2gwwg92TZqhGImN+ScjuKRrYTgnrWecfWBG/gXjexi6Hn84fUEhpwGPZ/LuP+wzl
- xUS+bHPS5iRw0pYRXKYBrX+Cbwpy5m0Mdnau1I3uyJ+AQwvf8j6qClyie3G7lGJXQEMt
- 2Bk0sQJQdOIMOaRlCGwI6Ackr5yNfzimhfcwYA1+W78jhK7wtgHY5yG8TWJAD44lL7uW
- ieWA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUaPsFwBDbsEnIIoafCCiXN8wgmnUjkZNDKG4BB/z6kiysJ54bggUF68b6wjlotgA4FeiXLdMPgaRg=@nongnu.org,
- AJvYcCVXqfmciYlmhLac28BIpwX4W8wptOlPKymRlld14GXKX5x1mcrTYFk3JIZRd2q/GpLM5i9bxmdHbAMfZA==@nongnu.org,
- AJvYcCW18SY8eC/WihmFMgTHqAJ/SanRBpJBSPwAXFjithyJliKnaQ5p1F4CnPYHsoRxX1tkYjUS1gw9nejF/w==@nongnu.org,
- AJvYcCXj/W3eX8xwk5w6E9Dt/nExx9cLuotwfG2HFRx6Fj6FNEXP42rAM9JzgpsKyTjRlz7hXWFavDrk944a@nongnu.org
-X-Gm-Message-State: AOJu0YxiJ6chHewtoJyBaPduKa8IRKA1idIq/UeFjGe6K05/J1+C+8Rs
- SwNd6TD1XHUSVpJ21FKzXUCoJh0UUI2zRcSQFDuzApcYPBLF2Jr56VKQ
-X-Gm-Gg: ASbGncuUB9afuw08fDMTY5jtzg/GeM05/4UwSxBHCHxNnzRbvUEcFeQnvV8LXE5mUX1
- zo4g9f+e+6I8xEuYfDYV6tAVKfFKpdV5K4Sjp1/a5UKUR3LPzyQlhDyuaGWMcjmVTl90NyxGwUn
- OUhqo6Lb2a3CnYa2LFrMhXgAOafwhEjOHOl503MxoA8OsqY7QNSxaelm0+8rbzg369JuzF0ezHf
- 7B78wSamJSE1gcMBr4rKzRo7aq4kkz/j6k71app5uc2auPyaYQI09sx4AlwDF9gEbmdH8k7Sh8H
- hE3oG1TOPk+ZdGwRSenf3M0B334jRmS/ZAb/rz+vYL0gj3P8F+q8ghAVKBcAkbaevS1BJXYBa+z
- m6KYwozNZ0DErkbaWzFlioIMENUsGWgnEVd8Y6nG6stW0YFh+u3pKCnuQrVnWC+D6zK/bD22abi
- MZ4q1wIC8PNvzchrKV1fdDfSq4WWJq2cjtjYK7BGX5B6ViX6cLB//4
-X-Google-Smtp-Source: AGHT+IHIDL+NqATTSAmmr3vUd0PsicyPno5jOJAqaFNkQ2bWpfv9zZl0m+BO4EDNXlPRIcgnDuMOEQ==
-X-Received: by 2002:a17:907:3e9f:b0:b04:3402:3937 with SMTP id
- a640c23a62f3a-b04b1466da9mr940076466b.28.1757395191027; 
- Mon, 08 Sep 2025 22:19:51 -0700 (PDT)
-Received: from ehlo.thunderbird.net
- (dynamic-2a02-3100-2544-af00-cdc9-6b46-02f2-ff9a.310.pool.telefonica.de.
- [2a02:3100:2544:af00:cdc9:6b46:2f2:ff9a])
+ d=1e100.net; s=20230601; t=1757399622; x=1758004422;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KlYPumXZ2GNPPhioX83eHuWYdzwsk2NeU2T6+Hb+h+o=;
+ b=D7ZoqjXjJoQRjgYpEgt3YFJmYkeLW1TZuXS41/JINLzXPVnmANdXP0MV9kOsgY8R8W
+ mCwZxNxuMOhd02+WA67RiLLq9meG0VT0kBiYyCN8oTKI4XNuT3X6DSlseRYioNHxqQFO
+ NjlsIyk/nBDB9f1IHV6voh1MMYzr/f9ArVL5ha/Eht622P1PTjHsaAeUMajLXfZvmSAp
+ m4EI9FUZ1J5AhbUl5wgVjjsseri6wvSEZ6bzAhfEpEQtdHm3/cYTpWauV53yCMTpcSHS
+ xDZXxdYFSpjXhvyuKVDU5oKrH2ZyMZZf04Xt300egukUH2d3oQL39T3wlIxgkiERLzzB
+ 0Ezg==
+X-Gm-Message-State: AOJu0YzqbLrHV+JTyTxIsffgD72aWRstibQpYBVhF/kr8k14mRkBNIIV
+ YZHgHAP9x7w6jbRwxILRU2djbTC3gSoPYN6zBduKYyxbAiI7tn7yJTkhVbAr2olrV9Q=
+X-Gm-Gg: ASbGncugzJ3/29o/Gls5l1leC0VIViLokAt2N/DQKOHu3K/JvXqqzzlwcXsWr8vzoiK
+ 7v/CoKDMCWefUEJ5Lj8jVzHMA9rrZaLhfXVkXdGG9kNZMoyVF/uTTj2EedYJ/zTvQrbcYlyIvbZ
+ 4ZSSpA+AZqvNxDmXntT8YowYoLAuVNlvUyJGkCxOl7pBqVziWzqYc9tA/wmHJrG29B2/w+83zv4
+ Ha8LUvWrvJ7iPylbS6g3WwrtRO52wi8Y6NNrZqsrjbwk7fwoNTxzBI5RNYgVGzfQcfyiBU1g/jZ
+ 8CXZWM0iW+c8giZ7aCDbFs78uGH178aAfMi0+UlGDamFpS4sJi2OsPpGx5dBjuBoL0YykaOW3++
+ xZHKhAkKoEBbGs+nV6Jyc0zzJitIe4km7QT03UqR8h2ZPR6Ngcqm77mRX4BjXvg==
+X-Google-Smtp-Source: AGHT+IG5VjYQNMdw/MpShOmZhgIpumMJ2z8imKGQ/mFwUjSsWb6PA2uPoGsX+egsKKVRJhRC4n1lfQ==
+X-Received: by 2002:a05:6a20:9392:b0:24e:2cee:9592 with SMTP id
+ adf61e73a8af0-2534547a6c6mr15549901637.46.1757399621653; 
+ Mon, 08 Sep 2025 23:33:41 -0700 (PDT)
+Received: from localhost.localdomain ([61.213.176.12])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b047373b000sm1325744766b.68.2025.09.08.22.19.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Sep 2025 22:19:50 -0700 (PDT)
-Date: Tue, 09 Sep 2025 05:19:49 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-CC: Stefan Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alistair Francis <Alistair.Francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
- qemu-ppc@nongnu.org, Huacai Chen <chenhuacai@kernel.org>,
- qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Song Gao <gaosong@loongson.cn>, Bibo Mao <maobibo@loongson.cn>
-Subject: =?US-ASCII?Q?Re=3A_=5BRFC_PATCH=5D_docs/system/security=3A_Restrict?=
- =?US-ASCII?Q?_=22virtualization_use_case=22_to_specific_machines?=
-In-Reply-To: <20250908125058.220973-1-peter.maydell@linaro.org>
-References: <20250908125058.220973-1-peter.maydell@linaro.org>
-Message-ID: <E6DAA9A9-5D7B-44EC-AC07-149DB096ABE2@gmail.com>
+ 41be03b00d2f7-b5235c0c3e2sm4213501a12.20.2025.09.08.23.33.38
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 08 Sep 2025 23:33:41 -0700 (PDT)
+From: Fei Li <lifei.shirley@bytedance.com>
+To: pbonzini@redhat.com, mtosatti@redhat.com, seanjc@google.com,
+ kvm@vger.kernel.org
+Cc: qemu-devel@nongnu.org,
+	Fei Li <lifei.shirley@bytedance.com>
+Subject: [PATCH] KVM: x86: Restrict writeback of SMI VCPU state
+Date: Tue,  9 Sep 2025 14:33:27 +0800
+Message-Id: <20250909063327.14263-1-lifei.shirley@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=lifei.shirley@bytedance.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 09 Sep 2025 08:58:42 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,123 +97,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Recently, we meet a SMI race bug triggered by one monitor tool in our
+production environment. This monitor executes 'info registers -a' hmp
+at a fixed frequency, even during VM startup process, which makes
+some AP stay in KVM_MP_STATE_UNINITIALIZED forever, thus VM hangs.
 
+The complete calling processes for the SMI race are as follows:
 
-Am 8=2E September 2025 12:50:57 UTC schrieb Peter Maydell <peter=2Emaydell=
-@linaro=2Eorg>:
->Currently our security policy defines a "virtualization use case"
->where we consider bugs to be security issues, and a
->"non-virtualization use case" where we do not make any security
->guarantees and don't consider bugs to be security issues=2E
->
->The rationale for this split is that much code in QEMU is older and
->was not written with malicious guests in mind, and we don't have the
->resources to audit, fix and defend it=2E  So instead we inform users
->about what the can in practice rely on as a security barrier, and
->what they can't=2E
->
->We don't currently restrict the "virtualization use case" to any
->particular set of machine types=2E  This means that we have effectively
->barred ourselves from adding KVM support to any machine type that we
->don't want to put into the "bugs are security issues" category, even
->if it would be useful for users to be able to get better performance
->with a trusted guest by enabling KVM=2E This seems an unnecessary
->restriction, and in practice the set of machine types it makes
->sense to use for untrusted-guest virtualization is quite small=2E
->
->Specifically, we would like to be able to enable the use of
->KVM with the imx8 development board machine types, but we don't
->want to commit ourselves to having to support those SoC models
->and device models as part of QEMU's security boundary:
->https://lore=2Ekernel=2Eorg/qemu-devel/20250629204851=2E1778-3-shentey@gm=
-ail=2Ecom/
->
->This patch updates the security policy to explicitly list the
->machine types we consider to be useful for the "virtualization
->use case"=2E
->
->This is an RFC partly to see if we have consensus that this change
->makes sense, and partly because I was only able to identify the
->machine types we want to cover for some of our target architectures=2E
->If maintainers for the other architectures could clarify which
->machine types work with KVM that would be helpful=2E
->
->Notes on the listed machine types:
->
->architectures I'm pretty sure about:
->
->aarch64:
-> -- virt is definitely the only supported one
->s390x:
-> -- s390-ccw-virtio is the only machine type for this architecture
->loongarch64:
-> -- virt is the only machine type for this architecture
->
->architectures where I've made a guess:
->
->i386, x86_64:
-> -- I have assumed that all machine types except the "experimental"
->    x-remote are supported
->
->architectures I don't know:
->
->mips, mips64
->riscv32, riscv64
->ppc, ppc64
->
->Signed-off-by: Peter Maydell <peter=2Emaydell@linaro=2Eorg>
+//thread1                      //thread2               //thread3
+`info registers -a` hmp [1]    AP(vcpu1) thread [2]    BSP(vcpu0) send INIT/SIPI [3]
 
-Thanks, Peter, for this proposal=2E It's nice to see the positive feedback=
- which may eventually make hardware-assisted acceleration accessible to a w=
-ider range of the community=2E Much appreciated!
+                               [2]
+                               KVM: KVM_RUN and then
+                                    schedule() in kvm_vcpu_block() loop
 
-Best regards,
-Bernhard
+[1]
+for each cpu: cpu_synchronize_state
+if !qemu_thread_is_self()
+1. insert to cpu->work_list, and handle asynchronously
+2. then kick the AP(vcpu1) by sending SIG_IPI/SIGUSR1 signal
 
->---
-> docs/system/security=2Erst | 28 ++++++++++++++++++++++++++++
-> 1 file changed, 28 insertions(+)
->
->diff --git a/docs/system/security=2Erst b/docs/system/security=2Erst
->index f2092c8768b=2E=2E395c2d7fb88 100644
->--- a/docs/system/security=2Erst
->+++ b/docs/system/security=2Erst
->@@ -35,6 +35,34 @@ malicious:
-> Bugs affecting these entities are evaluated on whether they can cause da=
-mage in
-> real-world use cases and treated as security bugs if this is the case=2E
->=20
->+To be covered by this security support policy you must:
->+
->+- use a virtualization accelerator like KVM or HVF
->+- use one of the machine types listed below
->+
->+It may be possible to use other machine types with a virtualization
->+accelerator to provide improved performance with a trusted guest
->+workload, but any machine type not listed here should not be
->+considered to be providing guest isolation or security guarantees,
->+and falls under the "non-virtualization use case"=2E
->+
->+Supported machine types for the virtualization use case, by target archi=
-tecture:
->+
->+aarch64
->+  ``virt``
->+i386, x86_64
->+  ``microvm``, ``xenfv``, ``xenpv``, ``xenpvh``, ``pc``, ``q35``, ``isap=
-c``
->+s390x
->+  ``s390-ccw-virtio``
->+loongarch64:
->+  ``virt``
->+ppc, ppc64:
->+  TODO
->+mips, mips64:
->+  TODO
->+riscv32, riscv64:
->+  TODO
->+
-> Non-virtualization Use Case
-> '''''''''''''''''''''''''''
->=20
+                               [2]
+                               KVM: checks signal_pending, breaks loop and returns -EINTR
+                               Qemu: break kvm_cpu_exec loop, run
+                                     1. qemu_wait_io_event()
+                                     => process_queued_cpu_work => cpu->work_list.func()
+                                        e.i. do_kvm_cpu_synchronize_state() callback
+                                        => kvm_arch_get_registers
+                                           => kvm_get_mp_state /* KVM: get_mpstate also calls
+                                              kvm_apic_accept_events() to handle INIT and SIPI */
+                                     => cpu->vcpu_dirty = true;
+                                     // end of qemu_wait_io_event
+
+                                                       [3]
+                                                       SeaBIOS: BSP enters non-root mode and runs reset_vector() in SeaBIOS.
+                                                                send INIT and then SIPI by writing APIC_ICR during smp_scan
+                                                       KVM: BSP(vcpu0) exits, then => handle_apic_write
+                                                            => kvm_lapic_reg_write => kvm_apic_send_ipi to all APs
+                                                            => for each AP: __apic_accept_irq, e.g. for AP(vcpu1)
+                                                            ==> case APIC_DM_INIT: apic->pending_events = (1UL << KVM_APIC_INIT)
+                                                                (not kick the AP yet)
+                                                            ==> case APIC_DM_STARTUP: set_bit(KVM_APIC_SIPI, &apic->pending_events)
+                                                                (not kick the AP yet)
+
+                               [2]
+                               Qemu continue:
+                                    2. kvm_cpu_exec()
+                                    => if (cpu->vcpu_dirty):
+                                       => kvm_arch_put_registers
+                                          => kvm_put_vcpu_events
+                               KVM: kvm_vcpu_ioctl_x86_set_vcpu_events
+                                    => clear_bit(KVM_APIC_INIT, &vcpu->arch.apic->pending_events);
+                                       e.i. pending_events changes from 11b to 10b
+                                      // end of kvm_vcpu_ioctl_x86_set_vcpu_events
+                               Qemu: => after put_registers, cpu->vcpu_dirty = false;
+                                     => kvm_vcpu_ioctl(cpu, KVM_RUN, 0)
+                               KVM: KVM_RUN
+                                    => schedule() in kvm_vcpu_block() until Qemu's next SIG_IPI/SIGUSR1 signal
+                                    /* But AP(vcpu1)'s mp_state will never change from KVM_MP_STATE_UNINITIALIZED
+                                      to KVM_MP_STATE_INIT_RECEIVED, even then to KVM_MP_STATE_RUNNABLE without
+                                      handling INIT inside kvm_apic_accept_events(), considering BSP will never
+                                      send INIT/SIPI again during smp_scan. Then AP(vcpu1) will never enter
+                                      non-root mode */
+
+                                                       [3]
+                                                       SeaBIOS: waits CountCPUs == expected_cpus_count and loops forever
+                                                                e.i. the AP(vcpu1) stays: EIP=0000fff0 && CS =f000 ffff0000
+                                                                and BSP(vcpu0) appears 100% utilized as it is in a while loop.
+
+To fix this, avoid clobbering SMI when not putting "reset" state, just
+like NMI abd SIPI does.
+
+Signed-off-by: Fei Li <lifei.shirley@bytedance.com>
+---
+ target/i386/kvm/kvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 369626f8c8..598661799a 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -5056,7 +5056,7 @@ static int kvm_put_vcpu_events(X86CPU *cpu, int level)
+ 
+     events.sipi_vector = env->sipi_vector;
+ 
+-    if (has_msr_smbase) {
++    if (has_msr_smbase && level >= KVM_PUT_RESET_STATE) {
+         events.flags |= KVM_VCPUEVENT_VALID_SMM;
+         events.smi.smm = !!(env->hflags & HF_SMM_MASK);
+         events.smi.smm_inside_nmi = !!(env->hflags2 & HF2_SMM_INSIDE_NMI_MASK);
+-- 
+2.39.2 (Apple Git-143)
+
 
