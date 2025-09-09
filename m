@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1E6B4FE50
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:56:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07780B4FE65
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:58:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvymA-0000sz-V1; Tue, 09 Sep 2025 09:52:51 -0400
+	id 1uvym0-0000qY-JR; Tue, 09 Sep 2025 09:52:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvyll-0000lK-4A
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvyll-0000lJ-3m
  for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylb-0005Fa-1E
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:21 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylb-0005Fh-1L
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757425930;
+ s=mimecast20190719; t=1757425931;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kHYfjAxM+7d5xQjXbicRx2I1ORFZGVv5RborgnBEVUk=;
- b=a2+fBL4uSkafeJ5XcA+f2qFPUlsVOh5GERfXNzXFj6LgUYmva87kiJ1SXS8ze6dVwhqjx2
- rXtAsPxB4Kh5s+DCAeT7r6+7NCK+HxL7GOk5ZgrchSaJamYyVQ7/txS4/Vx85Eib9loBrv
- entqw4XXEyF6LP0DuC54DlTpl9Rliow=
+ bh=LLQai3TYd3eCThrqEX/u+AJjU7vki6uEHNIBlwx9oko=;
+ b=dc8EPLs0oE9fY7ko31nnVJ6Wx553yYcmxTkIWzJjjD3eFlUzglFwvHYKf/GrvdlSc2y9cg
+ 0ONEqzHRnn2JDGcGgeAWwhhrSNoD1RDzgx1D2GoFyQ3KnwgOdq+U1+vhouo8SvYFQkTBf4
+ bEyb5YteSslxGOceZ9g/U9SpBTFw6OM=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-505-IlMn3JR6NbyxBVDnzh_P6g-1; Tue,
- 09 Sep 2025 09:52:07 -0400
-X-MC-Unique: IlMn3JR6NbyxBVDnzh_P6g-1
-X-Mimecast-MFC-AGG-ID: IlMn3JR6NbyxBVDnzh_P6g_1757425926
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-5xHg9PSzO6mkRFuHVxYc5w-1; Tue,
+ 09 Sep 2025 09:52:09 -0400
+X-MC-Unique: 5xHg9PSzO6mkRFuHVxYc5w-1
+X-Mimecast-MFC-AGG-ID: 5xHg9PSzO6mkRFuHVxYc5w_1757425929
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A351E180045C; Tue,  9 Sep 2025 13:52:06 +0000 (UTC)
+ id 1C7E718002C8; Tue,  9 Sep 2025 13:52:09 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.46])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 22B211800446; Tue,  9 Sep 2025 13:52:04 +0000 (UTC)
+ id A4EE718003FC; Tue,  9 Sep 2025 13:52:07 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 08/23] tests/functional: fix formatting of exception args
-Date: Tue,  9 Sep 2025 15:51:32 +0200
-Message-ID: <20250909135147.612345-9-thuth@redhat.com>
+Subject: [PULL 09/23] tests/functional: handle URLError when fetching assets
+Date: Tue,  9 Sep 2025 15:51:33 +0200
+Message-ID: <20250909135147.612345-10-thuth@redhat.com>
 In-Reply-To: <20250909135147.612345-1-thuth@redhat.com>
 References: <20250909135147.612345-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -83,31 +83,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The catch-all exception handler forgot the placeholder for
-the exception details.
+We treat most HTTP errors as non-fatal when fetching assets,
+but forgot to handle network level errors. This adds catching
+of URLError so that we retry on failure, and will ultimately
+trigger graceful skipping in the pre-cache task.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250829142616.2633254-3-berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250829142616.2633254-4-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/qemu_test/asset.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/functional/qemu_test/asset.py | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/tests/functional/qemu_test/asset.py b/tests/functional/qemu_test/asset.py
-index b5a6136d365..5c74adf2241 100644
+index 5c74adf2241..2dd32bf28d9 100644
 --- a/tests/functional/qemu_test/asset.py
 +++ b/tests/functional/qemu_test/asset.py
-@@ -173,7 +173,7 @@ def fetch(self):
+@@ -15,7 +15,7 @@
+ from time import sleep
+ from pathlib import Path
+ from shutil import copyfileobj
+-from urllib.error import HTTPError
++from urllib.error import HTTPError, URLError
+ 
+ class AssetError(Exception):
+     def __init__(self, asset, msg, transient=False):
+@@ -171,6 +171,14 @@ def fetch(self):
+                     raise AssetError(self, "Unable to download: "
+                                      "HTTP error %d" % e.code)
                  continue
++            except URLError as e:
++                # This is typically a network/service level error
++                # eg urlopen error [Errno 110] Connection timed out>
++                tmp_cache_file.unlink()
++                self.log.error("Unable to download %s: URL error %s",
++                               self.url, e.reason)
++                raise AssetError(self, "Unable to download: URL error %s" %
++                                 e.reason, transient=True)
              except Exception as e:
                  tmp_cache_file.unlink()
--                raise AssetError(self, "Unable to download: " % e)
-+                raise AssetError(self, "Unable to download: %s" % e)
- 
-         if not os.path.exists(tmp_cache_file):
-             raise AssetError(self, "Download retries exceeded", transient=True)
+                 raise AssetError(self, "Unable to download: %s" % e)
 -- 
 2.51.0
 
