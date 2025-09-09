@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F53B5039B
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 19:00:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7FCB50399
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 19:00:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uw1fm-0006QD-C6; Tue, 09 Sep 2025 12:58:26 -0400
+	id 1uw1fn-0006Qs-31; Tue, 09 Sep 2025 12:58:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uw1fN-0006GW-L6
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:58:03 -0400
+ id 1uw1fO-0006GZ-FD
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:58:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uw1fK-0007bt-L8
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:58:01 -0400
+ id 1uw1fM-0007cU-Fh
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:58:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757437075;
+ s=mimecast20190719; t=1757437078;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=reeHWg5i9UC3bmZs64SCWX3539n4gk5y3JvHWF0QkQk=;
- b=BWoU8pnbMrnWIuNUhytK0U+G0CaozxV8m0qlHiksfJPoDXnfk4+mzkDgxxNoat+E7hfvZc
- iEX55tLzJ5cGrJiBC/bdeVCzIEzD2m3uhHT22ii77pHuYVuc+Hx1nG+rxgdFWdZHGfki3I
- +DOb9R4DlWU2K+o176W5YtyPdQH103g=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=cfr02aDddyM4f+cQuRHngl/25SfiMaK12tyjEfawCpc=;
+ b=KLbV+9vzelO/FwR3xDd07vOEo2kXJajmltWSidx5IXpvGpurNiB+ZF34+QkILn2SfZFKqU
+ pZNqfs4ux2daimUtkmKRrzwHtVjoOkvX0iRIWqBPNCwWbLUZ1ww9mML7YD59w22wdnI9K9
+ hexlSR9pn1CaybfKHOZ4SROdeJupmuk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-etfenAe3MPe4JbSWIi66FQ-1; Tue,
- 09 Sep 2025 12:57:54 -0400
-X-MC-Unique: etfenAe3MPe4JbSWIi66FQ-1
-X-Mimecast-MFC-AGG-ID: etfenAe3MPe4JbSWIi66FQ_1757437073
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-zAWk9m70PVKjp_GYDXE6Fg-1; Tue,
+ 09 Sep 2025 12:57:57 -0400
+X-MC-Unique: zAWk9m70PVKjp_GYDXE6Fg-1
+X-Mimecast-MFC-AGG-ID: zAWk9m70PVKjp_GYDXE6Fg_1757437076
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2D1AB180047F; Tue,  9 Sep 2025 16:57:53 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 46D341800562; Tue,  9 Sep 2025 16:57:56 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.45])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C5D671800446; Tue,  9 Sep 2025 16:57:50 +0000 (UTC)
+ id D71B21800446; Tue,  9 Sep 2025 16:57:53 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -52,9 +52,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 08/15] hw/core: report secure/insecure status in query-machines
-Date: Tue,  9 Sep 2025 17:57:19 +0100
-Message-ID: <20250909165726.3814465-9-berrange@redhat.com>
+Subject: [PATCH 09/15] accel: mark 'kvm' as secure and 'tcg' as insecure
+Date: Tue,  9 Sep 2025 17:57:20 +0100
+Message-ID: <20250909165726.3814465-10-berrange@redhat.com>
 In-Reply-To: <20250909165726.3814465-1-berrange@redhat.com>
 References: <20250909165726.3814465-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -88,50 +88,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/core/machine-qmp-cmds.c | 2 ++
- qapi/machine.json          | 9 ++++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ accel/kvm/kvm-all.c | 1 +
+ accel/tcg/tcg-all.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index 6aca1a626e..4ef2d06d32 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -100,6 +100,8 @@ MachineInfoList *qmp_query_machines(bool has_compat_props, bool compat_props,
-         if (mc->default_ram_id) {
-             info->default_ram_id = g_strdup(mc->default_ram_id);
-         }
-+        info->secure = object_class_is_secure(OBJECT_CLASS(mc));
-+        info->insecure = object_class_is_insecure(OBJECT_CLASS(mc));
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index f36dfe3349..53b89d0560 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -4068,6 +4068,7 @@ static const TypeInfo kvm_accel_type = {
+     .instance_init = kvm_accel_instance_init,
+     .class_init = kvm_accel_class_init,
+     .instance_size = sizeof(KVMState),
++    .secure = true,
+ };
  
-         if (compat_props && mc->compat_props) {
-             int i;
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 038eab281c..ff1f9bf076 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -194,6 +194,12 @@
- #     present when `query-machines` argument @compat-props is true.
- #     (since 9.1)
- #
-+# @secure: If true, the machine is declared to provide a security
-+#     boundary from the guest; if false the status is undefined.
-+#
-+# @insecure: If true, the machine is declared to NOT provide a security
-+#     boundary from the guest; if false the status is undefined.
-+#
- # Features:
- #
- # @unstable: Member @compat-props is experimental.
-@@ -207,7 +213,8 @@
-             'deprecated': 'bool', '*default-cpu-type': 'str',
-             '*default-ram-id': 'str', 'acpi': 'bool',
-             '*compat-props': { 'type': ['CompatProperty'],
--                               'features': ['unstable'] } } }
-+                               'features': ['unstable'] },
-+            'secure': 'bool', 'insecure': 'bool' } }
+ static void kvm_type_init(void)
+diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
+index 5125e1a4e2..3904df4e78 100644
+--- a/accel/tcg/tcg-all.c
++++ b/accel/tcg/tcg-all.c
+@@ -275,6 +275,7 @@ static const TypeInfo tcg_accel_type = {
+     .instance_init = tcg_accel_instance_init,
+     .class_init = tcg_accel_class_init,
+     .instance_size = sizeof(TCGState),
++    .insecure = true,
+ };
+ module_obj(TYPE_TCG_ACCEL);
  
- ##
- # @query-machines:
 -- 
 2.50.1
 
