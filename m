@@ -2,94 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0629B4A0C4
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 06:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F115B4A0C6
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 06:38:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvq3v-0006L9-RG; Tue, 09 Sep 2025 00:34:36 -0400
+	id 1uvq7C-0001vF-8y; Tue, 09 Sep 2025 00:37:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wilfred.opensource@gmail.com>)
- id 1uvq3u-0006Kr-1j; Tue, 09 Sep 2025 00:34:34 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wilfred.opensource@gmail.com>)
- id 1uvq3o-0003HK-R4; Tue, 09 Sep 2025 00:34:33 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-7725147ec88so2182809b3a.0; 
- Mon, 08 Sep 2025 21:34:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1757392466; x=1757997266; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vaeExwVGOVV/kW0JCGTlDJdwyrSQrvISoe6gs6Lc/zE=;
- b=i7dVJs8s2Mi4AWXLNmB2NRk7NA/UYM+8McDoiTpOkYol9sH/PSGEhsz80yw/9dXUB8
- bh+EtcUOmaEo8D+nuueflK0DRQON7EVvedtrVhhcHFfFhWiXZZkHB822YtzPlZysgrBh
- 9d4rMb2uwBBBG/4JDdE+ffdHxkPdkc1Vk0AgErXlKS/Y4q/wBpOwCXlWjsJHOp3qRfz7
- EdDd8Lx58OgftojZSLf9JWw7cCgIRhUigarvNQ0ffaEppykuUKFsha6cBSTHVWA5bMVy
- be0VZbBYJMghKbBSpSiKRh9JVqOSuTepOUmVQzW3Ru7AdKRNICA2DYYJdNsA1+Vycn27
- IxMA==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvq6y-0001uD-QC
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 00:37:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvq6q-0003kh-Ab
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 00:37:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757392651;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=y1UepVGKBC0Mt3t6QP9hkL8HneT4LmLtsNTPLYx74Z8=;
+ b=BgMWwveXrGFLuNSFadIMz3wo1htYT5oII6RwzCoPzlA+PlF3p2fMae+rUlvRtCwE/QSmfj
+ PbNR1xCIwieXYLavwN/ETVx1/ggZqXE/2hoZHRYOuIIx9L1Mab/YrKukJA99aYscxd8nlS
+ ICTweYdp6rhDWAlU6xPZkI1twwE3z/Y=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-435-AanRXMkCN_a80l50hi434g-1; Tue, 09 Sep 2025 00:37:29 -0400
+X-MC-Unique: AanRXMkCN_a80l50hi434g-1
+X-Mimecast-MFC-AGG-ID: AanRXMkCN_a80l50hi434g_1757392649
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-45ceeae0513so28725955e9.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Sep 2025 21:37:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757392466; x=1757997266;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vaeExwVGOVV/kW0JCGTlDJdwyrSQrvISoe6gs6Lc/zE=;
- b=bTwL5O/7joG96RS+95CaKyxc1RT2rdgjtNQUHoZmdYYTDLWZFoKxkEeMA9srs2rcej
- vDwA8VI2zCrZwfKNi3wN8VL0sDzkjzV9Hifk2cYhpSaZAqVBovS+DBM17c+wKoTWM5O7
- Aez1LGFa4oRhyqNBzMDAjfaP03569iIC1b2ID9C1rpA2/fGNF/vCy9JjeqW66oGgIzEF
- mu0Z2EPIN4c1n9lwzOhtpfD0n+Lt8U2DZKrfG/SuVTyUxGwkmHUhOkw4kiL0+3+MDHjz
- 8MqwpslQEGCyZ+eZ2FL9giGcoGC5s59jNCLcgpzBdUAYMOlZvtCjOOWVIUvGWdkorE3f
- AIEg==
+ d=1e100.net; s=20230601; t=1757392648; x=1757997448;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=y1UepVGKBC0Mt3t6QP9hkL8HneT4LmLtsNTPLYx74Z8=;
+ b=pr0at54uTzrpNAQkgoU22Wvr92H9n1vrooDM+wqUV8T8+JYV1MKDb6bvW592OxnXnA
+ YVOCbaKnVL5poTk1kFmrzK7eRgoHypuJmUXYwyuoecLU/hHhBgrY4eo6aW//Jd8FX1U9
+ O0hyX72fYyvg6UsDsKOyy9+rfRirlpbFgaHZl5Ri2iEScnjT+bKZdLu11H1aBBT0UkrY
+ ARrQ46F+Trxwq3z7QocGmTyMhfyWWIk5OkVXWZDzswmlMh6fZY8IvN6Vd+ozMQtD1v5n
+ dbY1RAsXdM3nWuBTduVs4tpIADPRldCczJjzZjOu8oIgeqZIZIMyWJcFWlQuJffJDiQY
+ /I5w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUBwIg/DgM5tQ2O3u59FYhXMWjSc5S0Vl6Bp/fEH4naDtkQC21afpm5LRvWcOlJySR0JsEEsqxRSPgq@nongnu.org
-X-Gm-Message-State: AOJu0YwzYEHgoVSBUKfS1GDKAIuRxuAp7uUOcDEJQFk98hDyT5+m0iKQ
- 4HKxUKqdDYC0WeH7zvUFYSp0rnAeEd5BZNVT0BUy0qQENxjAlKiJhZCs
-X-Gm-Gg: ASbGncsni2MLSmFg0fxnvGMeF46Nq2zk5jVT418EJtdjjF0czBVwDJLWOetfZEfzi/2
- VLHAl6gKM2HwRa3vokx/wxfz9LYlATJ8VBbLz7jiNOmn6ta8W+spNsu2bmhb50pSMXLf0g4qiKT
- XdFJ4tWh61R8mksikq4HPaFuUQ0BXdITZKICJS///h3a34KHhlKvAlcOP5FNVS3OZVYSCbkvTeM
- 8NeoWFPb633WJUhPdseKfH/5CSHcilY9chLPXlIE8ICnLMwkENYDFpztW3MZsIJB0jSpYcCzdEP
- My8oCtbPBqrwtvGPZtqwn7le72QIrhZ5bf86zJUHMS3WO7Yph2638zY432atVHWo/1b6JKHUvxH
- ImxwQa6TZSpjBbHwsy3XHlrwr/3j4ueHuIPHSV8ej8Q==
-X-Google-Smtp-Source: AGHT+IGQKbb6IwSj0dYPTn1TVe874Hwz76JC3Ma1lp67i+jYd+oBBS8Bqt+7fQGS3Mr2o1yUmFwSBQ==
-X-Received: by 2002:a05:6a00:2188:b0:772:2bcc:d2d7 with SMTP id
- d2e1a72fcca58-7741bebeab3mr17700719b3a.2.1757392465810; 
- Mon, 08 Sep 2025 21:34:25 -0700 (PDT)
-Received: from fedora ([159.196.5.243]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-774661247cdsm606534b3a.33.2025.09.08.21.34.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Sep 2025 21:34:25 -0700 (PDT)
-From: Wilfred Mallawa <wilfred.opensource@gmail.com>
-To: Alistair Francis <alistair.francis@wdc.com>,
- Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
- Jesper Devantier <foss@defmacro.it>, Stefan Hajnoczi <stefanha@redhat.com>,
- Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Subject: [PATCH v5 5/5] hw/nvme: connect SPDM over NVMe Security Send/Recv
-Date: Tue,  9 Sep 2025 14:33:00 +1000
-Message-ID: <20250909043259.93140-7-wilfred.opensource@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250909043259.93140-2-wilfred.opensource@gmail.com>
-References: <20250909043259.93140-2-wilfred.opensource@gmail.com>
+ AJvYcCW+y862UhL1vf/48Ibexi+OzSfzhQq1phAFwMZU5a2nBFOyWs98Yq1tsfKO+hMvAykNZXgOMqC8A955@nongnu.org
+X-Gm-Message-State: AOJu0Yzg/6jlKqAM8sFr4qALDpr6oVjUt1Af8IzPSket8sBGTjChKsTw
+ 7JxR/eFMQ3TIMHR04B5F7qqgetWO9Fg1WGMlBLenJbDzvrCulbXmI4YTFbUKnWm/zAkKsA2g+wk
+ c/kOUbtvbQGMJe0UTEAg5PexnoH05KpIjr4DOA+ml0xpZO1lCoJbuz3e4
+X-Gm-Gg: ASbGncuHw4YRMGowLuwIeUPK0AJshaWgLH/y0Z/m4/Pode3LWkI9kcv98tHl8zQwZRH
+ tGVcO+KCGEit35hJNb913u7fZVPIQ2t1ikwPBZ0yFiAVJHExFBNHx13OwHlRxaf6BE8x5VyT5E8
+ ZuhOiLHJKpe+k7s3JHLNB5+2qsYCdYGghldyjdl3y0DY0iXBiJl2aLXiG4/K6MvyOAEaaoMbt7y
+ bvA2WfUVtC5Zl/XZyMUCd6T2n4UhluMCicp/O7SDTcF8Lod/gCZPUmYu/1Y5Pt2pCjUEg9NRa0X
+ u2H35DAiha4dMVcCaHBeCofFd1JCDoONjirY6bCWOI2aXHD5X2dRf765R5UTqTD2QdEQ14wRPmn
+ 3hdL2Qg==
+X-Received: by 2002:a05:600c:1390:b0:45d:da7c:b36 with SMTP id
+ 5b1f17b1804b1-45ddded7614mr86069375e9.19.1757392648614; 
+ Mon, 08 Sep 2025 21:37:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF1K4moPCmFgeJ4Ls0IXCLQv3wHP25afL++HeeAMykeV0YKlkZO4dKWA1Sa8ESQurpkGiXjgA==
+X-Received: by 2002:a05:600c:1390:b0:45d:da7c:b36 with SMTP id
+ 5b1f17b1804b1-45ddded7614mr86069195e9.19.1757392648172; 
+ Mon, 08 Sep 2025 21:37:28 -0700 (PDT)
+Received: from [192.168.0.7] (ltea-047-064-113-183.pools.arcor-ip.net.
+ [47.64.113.183]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45df16a749fsm1822095e9.19.2025.09.08.21.37.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 08 Sep 2025 21:37:27 -0700 (PDT)
+Message-ID: <56baeaa6-b274-457c-931d-4ae76535f6dd@redhat.com>
+Date: Tue, 9 Sep 2025 06:37:26 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] scripts/ci: add gitlab-failure-analysis script
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: berrange@redhat.com, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20250908211859.2678847-1-alex.bennee@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250908211859.2678847-1-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=wilfred.opensource@gmail.com; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,166 +153,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+On 08/09/2025 23.18, Alex Bennée wrote:
+> This is a script designed to collect data from multiple pipelines and
+> analyse the failure modes they have.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   scripts/ci/gitlab-failure-analysis | 65 ++++++++++++++++++++++++++++++
+>   1 file changed, 65 insertions(+)
+>   create mode 100755 scripts/ci/gitlab-failure-analysis
 
-This patch extends the existing support we have for NVMe with only DoE
-to also add support to SPDM over the NVMe Security Send/Recv commands.
+You already get a nice overview by visiting a page like 
+https://gitlab.com/qemu-project/qemu/-/pipelines/2019002986 ... what's the 
+advantage of this script?
 
-With the new definition of the `spdm-trans` argument, users can specify
-`spdm_trans=nvme` or `spdm_trans=doe`. This allows us to select the SPDM
-transport respectively. SPDM over the NVMe Security Send/Recv commands
-are defined in the DMTF DSP0286.
-
-Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
----
- docs/specs/spdm.rst         | 10 ++++++--
- hw/nvme/ctrl.c              | 46 ++++++++++++++++++++++++++++---------
- include/hw/pci/pci_device.h |  2 ++
- 3 files changed, 45 insertions(+), 13 deletions(-)
-
-diff --git a/docs/specs/spdm.rst b/docs/specs/spdm.rst
-index f7de080ff0..dd6cfbbd68 100644
---- a/docs/specs/spdm.rst
-+++ b/docs/specs/spdm.rst
-@@ -98,7 +98,7 @@ Then you can add this to your QEMU command line:
- .. code-block:: shell
- 
-     -drive file=blknvme,if=none,id=mynvme,format=raw \
--        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323
-+        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323,spdm_trans=doe
- 
- At which point QEMU will try to connect to the SPDM server.
- 
-@@ -113,7 +113,13 @@ of the default. So the entire QEMU command might look like this
-         -append "root=/dev/vda console=ttyS0" \
-         -net none -nographic \
-         -drive file=blknvme,if=none,id=mynvme,format=raw \
--        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323
-+        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323,spdm_trans=doe
-+
-+The `spdm_trans` argument defines the underlying transport type that is emulated
-+by QEMU. For an PCIe NVMe controller, both "doe" and "nvme" are supported. Where,
-+"doe" does SPDM transport over the PCIe extended capability Data Object Exchange
-+(DOE), and "nvme" uses the NVMe Admin Security Send/Receive commands to
-+implement the SPDM transport.
- 
- .. _DMTF:
-    https://www.dmtf.org/standards/SPDM
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index ad52e8f569..8a610f57f2 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8947,19 +8947,31 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
- 
-     pcie_cap_deverr_init(pci_dev);
- 
--    /* DOE Initialisation */
-+    /* SPDM Initialisation */
-     if (pci_dev->spdm_port) {
--        uint16_t doe_offset = n->params.sriov_max_vfs ?
--                                  PCI_CONFIG_SPACE_SIZE + PCI_ARI_SIZEOF
--                                  : PCI_CONFIG_SPACE_SIZE;
-+        switch  (pci_dev->spdm_trans) {
-+        case SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE:
-+            uint16_t doe_offset = n->params.sriov_max_vfs ?
-+                                    PCI_CONFIG_SPACE_SIZE + PCI_ARI_SIZEOF
-+                                    : PCI_CONFIG_SPACE_SIZE;
- 
--        pcie_doe_init(pci_dev, &pci_dev->doe_spdm, doe_offset,
--                      doe_spdm_prot, true, 0);
-+            pcie_doe_init(pci_dev, &pci_dev->doe_spdm, doe_offset,
-+                          doe_spdm_prot, true, 0);
- 
--        pci_dev->doe_spdm.spdm_socket = spdm_socket_connect(pci_dev->spdm_port,
--                                                            errp);
-+            pci_dev->doe_spdm.spdm_socket =
-+                spdm_socket_connect(pci_dev->spdm_port, errp);
- 
--        if (pci_dev->doe_spdm.spdm_socket < 0) {
-+            if (pci_dev->doe_spdm.spdm_socket < 0) {
-+                return false;
-+            }
-+            break;
-+        case SPDM_SOCKET_TRANSPORT_TYPE_NVME:
-+            n->spdm_socket = spdm_socket_connect(pci_dev->spdm_port, errp);
-+            if (n->spdm_socket < 0) {
-+                return false;
-+            }
-+            break;
-+        default:
-             return false;
-         }
-     }
-@@ -9250,11 +9262,17 @@ static void nvme_exit(PCIDevice *pci_dev)
-         g_free(n->cmb.buf);
-     }
- 
-+    /* Only one of the `spdm_socket` below would have been setup */
-     if (pci_dev->doe_spdm.spdm_socket > 0) {
-         spdm_socket_close(pci_dev->doe_spdm.spdm_socket,
-                           SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE);
-     }
- 
-+    if (n->spdm_socket >= 0) {
-+        spdm_socket_close(pci_dev->doe_spdm.spdm_socket,
-+                          SPDM_SOCKET_TRANSPORT_TYPE_NVME);
-+    }
-+
-     if (n->pmr.dev) {
-         host_memory_backend_set_mapped(n->pmr.dev, false);
-     }
-@@ -9307,6 +9325,8 @@ static const Property nvme_props[] = {
-                      false),
-     DEFINE_PROP_UINT16("mqes", NvmeCtrl, params.mqes, 0x7ff),
-     DEFINE_PROP_UINT16("spdm_port", PCIDevice, spdm_port, 0),
-+    DEFINE_PROP_SPDM_TRANS("spdm_trans", PCIDevice, spdm_trans,
-+                           SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE),
-     DEFINE_PROP_BOOL("ctratt.mem", NvmeCtrl, params.ctratt.mem, false),
-     DEFINE_PROP_BOOL("atomic.dn", NvmeCtrl, params.atomic_dn, 0),
-     DEFINE_PROP_UINT16("atomic.awun", NvmeCtrl, params.atomic_awun, 0),
-@@ -9382,7 +9402,9 @@ static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
- {
-     uint16_t old_num_vfs = pcie_sriov_num_vfs(dev);
- 
--    if (pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE)) {
-+    /* DOE is only initialised if SPDM over DOE is used */
-+    if (pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE) &&
-+        dev->spdm_trans == SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE) {
-         pcie_doe_write_config(&dev->doe_spdm, address, val, len);
-     }
-     pci_default_write_config(dev, address, val, len);
-@@ -9393,7 +9415,9 @@ static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
- static uint32_t nvme_pci_read_config(PCIDevice *dev, uint32_t address, int len)
- {
-     uint32_t val;
--    if (dev->spdm_port && pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE)) {
-+
-+    if (dev->spdm_port && pcie_find_capability(dev, PCI_EXT_CAP_ID_DOE) &&
-+        (dev->spdm_trans == SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE)) {
-         if (pcie_doe_read_config(&dev->doe_spdm, address, len, &val)) {
-             return val;
-         }
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index eee0338568..88ccea5011 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -4,6 +4,7 @@
- #include "hw/pci/pci.h"
- #include "hw/pci/pcie.h"
- #include "hw/pci/pcie_doe.h"
-+#include "system/spdm-socket.h"
- 
- #define TYPE_PCI_DEVICE "pci-device"
- typedef struct PCIDeviceClass PCIDeviceClass;
-@@ -166,6 +167,7 @@ struct PCIDevice {
- 
-     /* SPDM */
-     uint16_t spdm_port;
-+    SpdmTransportType spdm_trans;
- 
-     /* DOE */
-     DOECap doe_spdm;
--- 
-2.51.0
+  Thomas
 
 
