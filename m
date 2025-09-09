@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D76EB50378
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 18:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3D2B5037B
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 18:59:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uw1f8-000674-Or; Tue, 09 Sep 2025 12:57:46 -0400
+	id 1uw1fb-0006KB-5h; Tue, 09 Sep 2025 12:58:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uw1f6-000645-2D
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:57:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uw1fF-0006Bc-6e
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:57:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uw1f1-0007Vi-NZ
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:57:43 -0400
+ id 1uw1f5-0007WD-Mp
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:57:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757437058;
+ s=mimecast20190719; t=1757437060;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GKOEfxYbwSdrTXZEFWiWj/ei+zi84OVrn7iulMS2fTU=;
- b=CZW2314ODIPNrslT2HSdR8NCN6xsTQrc81YnKc5Uod+9IewSS4u9K0YNIq7kHFWJFA8rd4
- d/+j3eKKX3ObTZNhvh/Ho2Hof5HTIGG5kOv5PYkEQ2iKLARbLhYgKmleTQVPc4moiJC6be
- xxYlzQVsrJnN3HUJo/yhjKjCvErjeFY=
+ bh=3DqK2BFdY/4B0jfZv0jzbvcZYXlop4Q1Pi9PvHDOxkc=;
+ b=PPU5hhmiXDHmAgbZb3eqqQiafClkjDAFRb4dwps4nk6msducTBtATLbT0yvk4weQoKcJ4u
+ 1g+K159Os6lYy02D00cjdsDDBgd52cIXYJlolsXW5cln6ntmuGwm5R2Uf7n7Jmc/NJ8C3Z
+ RUaXKMJwAYazYrAKNXtlB3KCygC3Lvs=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-449-IyxQDZmCPXy7Vr4HtQyvqg-1; Tue,
- 09 Sep 2025 12:57:34 -0400
-X-MC-Unique: IyxQDZmCPXy7Vr4HtQyvqg-1
-X-Mimecast-MFC-AGG-ID: IyxQDZmCPXy7Vr4HtQyvqg_1757437053
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-Q-_05tqYMCOlGbaK__ZxFQ-1; Tue,
+ 09 Sep 2025 12:57:37 -0400
+X-MC-Unique: Q-_05tqYMCOlGbaK__ZxFQ-1
+X-Mimecast-MFC-AGG-ID: Q-_05tqYMCOlGbaK__ZxFQ_1757437056
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 802561800371; Tue,  9 Sep 2025 16:57:33 +0000 (UTC)
+ id 3013D18002C2; Tue,  9 Sep 2025 16:57:36 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.45])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CCA911800446; Tue,  9 Sep 2025 16:57:30 +0000 (UTC)
+ id F1D331800446; Tue,  9 Sep 2025 16:57:33 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -52,16 +52,16 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 01/15] qom: replace 'abstract' with 'flags'
-Date: Tue,  9 Sep 2025 17:57:12 +0100
-Message-ID: <20250909165726.3814465-2-berrange@redhat.com>
+Subject: [PATCH 02/15] qom: add tracking of security state of object types
+Date: Tue,  9 Sep 2025 17:57:13 +0100
+Message-ID: <20250909165726.3814465-3-berrange@redhat.com>
 In-Reply-To: <20250909165726.3814465-1-berrange@redhat.com>
 References: <20250909165726.3814465-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,91 +86,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will allow extra boolean flags without expending the memory
-usage of the Type struct.
+This introduces two new flags "secure" and "insecure" against
+the Type struct, and helpers to check this against the ObjectClass
+struct.
+
+An object type can be considered secure if it is either marked
+'secure', or is not marked 'insecure'. The gives an incremental
+path where the security status is undefined for most types, but
+with the possibility to require explicitly secure types, or
+exclude explicitly insecure types.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qom/object.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ include/qom/object.h | 24 ++++++++++++++++++++++++
+ qom/object.c         | 19 +++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
-diff --git a/qom/object.c b/qom/object.c
-index 1856bb36c7..a654765e0a 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -45,6 +45,10 @@ struct InterfaceImpl
-     const char *typename;
- };
- 
-+enum TypeImplFlags {
-+    TYPE_IMPL_FLAG_ABSTRACT = (1 << 0),
-+};
-+
- struct TypeImpl
- {
-     const char *name;
-@@ -63,7 +67,7 @@ struct TypeImpl
-     void (*instance_post_init)(Object *obj);
+diff --git a/include/qom/object.h b/include/qom/object.h
+index 26df6137b9..4b9c70f06f 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -453,6 +453,11 @@ struct Object
+  *   function.
+  * @abstract: If this field is true, then the class is considered abstract and
+  *   cannot be directly instantiated.
++ * @secure: If this field is true, then the class is considered to provide
++ *   a security boundary. If false, the security status is not defined.
++ * @insecure: If this field is true, then the class is considered to NOT
++ *   provide a security boundary. If false, the security status is not
++ *   defined.
+  * @class_size: The size of the class object (derivative of #ObjectClass)
+  *   for this object.  If @class_size is 0, then the size of the class will be
+  *   assumed to be the size of the parent class.  This allows a type to avoid
+@@ -485,6 +490,8 @@ struct TypeInfo
      void (*instance_finalize)(Object *obj);
  
--    bool abstract;
-+    int flags;
+     bool abstract;
++    bool secure;
++    bool insecure;
+     size_t class_size;
  
-     const char *parent;
-     TypeImpl *parent_type;
-@@ -127,7 +131,9 @@ static TypeImpl *type_new(const TypeInfo *info)
-     ti->instance_post_init = info->instance_post_init;
-     ti->instance_finalize = info->instance_finalize;
+     void (*class_init)(ObjectClass *klass, const void *data);
+@@ -996,6 +1003,23 @@ const char *object_class_get_name(ObjectClass *klass);
+  */
+ bool object_class_is_abstract(ObjectClass *klass);
  
--    ti->abstract = info->abstract;
-+    if (info->abstract) {
-+        ti->flags |= TYPE_IMPL_FLAG_ABSTRACT;
++/**
++ * object_class_is_secure:
++ * @klass: The class to check security of
++ *
++ * Returns: %true if @klass is declared to be secure, %false if not declared
++ */
++bool object_class_is_secure(ObjectClass *klass);
++
++
++/**
++ * object_class_is_insecure:
++ * @klass: The class to check security of
++ *
++ * Returns: %true if @klass is declared to be insecure, %false if not declared
++ */
++bool object_class_is_insecure(ObjectClass *klass);
++
+ /**
+  * object_class_by_name:
+  * @typename: The QOM typename to obtain the class for.
+diff --git a/qom/object.c b/qom/object.c
+index a654765e0a..a516ea0fea 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -47,6 +47,8 @@ struct InterfaceImpl
+ 
+ enum TypeImplFlags {
+     TYPE_IMPL_FLAG_ABSTRACT = (1 << 0),
++    TYPE_IMPL_FLAG_SECURE = (1 << 1),
++    TYPE_IMPL_FLAG_INSECURE = (1 << 2),
+ };
+ 
+ struct TypeImpl
+@@ -134,6 +136,13 @@ static TypeImpl *type_new(const TypeInfo *info)
+     if (info->abstract) {
+         ti->flags |= TYPE_IMPL_FLAG_ABSTRACT;
+     }
++    assert(!(info->secure && info->insecure));
++    if (info->secure) {
++        ti->flags |= TYPE_IMPL_FLAG_SECURE;
++    }
++    if (info->insecure) {
++        ti->flags |= TYPE_IMPL_FLAG_INSECURE;
 +    }
  
      for (i = 0; info->interfaces && info->interfaces[i].type; i++) {
          ti->interfaces[i].typename = g_strdup(info->interfaces[i].type);
-@@ -348,11 +354,11 @@ static void type_initialize(TypeImpl *ti)
-      * This means interface types are all abstract.
-      */
-     if (ti->instance_size == 0) {
--        ti->abstract = true;
-+        ti->flags |= TYPE_IMPL_FLAG_ABSTRACT;
-     }
-     if (type_is_ancestor(ti, type_interface)) {
-         assert(ti->instance_size == 0);
--        assert(ti->abstract);
-+        assert(ti->flags & TYPE_IMPL_FLAG_ABSTRACT);
-         assert(!ti->instance_init);
-         assert(!ti->instance_post_init);
-         assert(!ti->instance_finalize);
-@@ -558,7 +564,7 @@ static void object_initialize_with_type(Object *obj, size_t size, TypeImpl *type
-     type_initialize(type);
- 
-     g_assert(type->instance_size >= sizeof(Object));
--    g_assert(type->abstract == false);
-+    g_assert(!(type->flags & TYPE_IMPL_FLAG_ABSTRACT));
-     g_assert(size >= type->instance_size);
- 
-     memset(obj, 0, type->instance_size);
-@@ -1045,7 +1051,7 @@ ObjectClass *object_get_class(Object *obj)
- 
- bool object_class_is_abstract(ObjectClass *klass)
- {
--    return klass->type->abstract;
-+    return klass->type->flags & TYPE_IMPL_FLAG_ABSTRACT;
+@@ -1054,6 +1063,16 @@ bool object_class_is_abstract(ObjectClass *klass)
+     return klass->type->flags & TYPE_IMPL_FLAG_ABSTRACT;
  }
  
++bool object_class_is_secure(ObjectClass *klass)
++{
++    return klass->type->flags & TYPE_IMPL_FLAG_SECURE;
++}
++
++bool object_class_is_insecure(ObjectClass *klass)
++{
++    return klass->type->flags & TYPE_IMPL_FLAG_INSECURE;
++}
++
  const char *object_class_get_name(ObjectClass *klass)
-@@ -1110,7 +1116,8 @@ static void object_class_foreach_tramp(gpointer key, gpointer value,
-     type_initialize(type);
-     k = type->class;
- 
--    if (!data->include_abstract && type->abstract) {
-+    if (!data->include_abstract &&
-+        (type->flags & TYPE_IMPL_FLAG_ABSTRACT)) {
-         return;
-     }
- 
+ {
+     return klass->type->name;
 -- 
 2.50.1
 
