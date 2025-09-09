@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66B4B4FE54
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82111B4FE68
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:58:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvymC-0000y7-NQ; Tue, 09 Sep 2025 09:52:52 -0400
+	id 1uvymI-00018I-AQ; Tue, 09 Sep 2025 09:52:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylp-0000oC-TQ
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylz-0000qm-GX
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvyll-0005H9-1m
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:29 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylp-0005Hm-6n
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757425942;
+ s=mimecast20190719; t=1757425946;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=H7ND8DVcojIY8zZOwOhSVViHrcmjFHDYL+b9zvQ0MLA=;
- b=auiZ6yVq0fubI7XVAdqIzNr95mNNf7+GVruTLhicn1TJTU7HFkaLX/yKkY2FMmFJyqwthi
- xw6n9FmakDE3yPpkncQO4SUU8dxmT1jGftM5PvHwa6moslm9IwZjgm8pNmCXm6Sqd/k+CC
- /QKSDxuQzfiHmx//g72cb+9m12WScYI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=8l3E5m455oHTs31vnTEI2GIKYXp69kZrDDGmS8zurFU=;
+ b=OauF/ssvQaV1oGm53leFIYX+Hv8T/1tjpk5APTYddJgGMJaF0BiSP9YGcsgsQKWiFm36FP
+ ZuHZ8fRkpEy5V0VcIhfCMvdmLFfTu2X/m1/+6aHsOD9FEUkS5YPUdxaats5iXIYL/AWHGJ
+ J6nOuKWg1Wps/pdjd93KvNXl1X5FAds=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-qES64YwhNlmddWyvAYzZwA-1; Tue,
- 09 Sep 2025 09:52:20 -0400
-X-MC-Unique: qES64YwhNlmddWyvAYzZwA-1
-X-Mimecast-MFC-AGG-ID: qES64YwhNlmddWyvAYzZwA_1757425940
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-iNbOXpcUNh28A-obKRkz9w-1; Tue,
+ 09 Sep 2025 09:52:23 -0400
+X-MC-Unique: iNbOXpcUNh28A-obKRkz9w-1
+X-Mimecast-MFC-AGG-ID: iNbOXpcUNh28A-obKRkz9w_1757425942
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A21F7180029A; Tue,  9 Sep 2025 13:52:19 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1189E19560B6; Tue,  9 Sep 2025 13:52:22 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.46])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0BD1318003FC; Tue,  9 Sep 2025 13:52:17 +0000 (UTC)
+ id 409D018003FC; Tue,  9 Sep 2025 13:52:19 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Kane-Chen-AS <kane_chen@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 13/23] tests/functional/arm: Update test ASPEED SDK v09.07 for
- AST2700 vbootrom
-Date: Tue,  9 Sep 2025 15:51:37 +0200
-Message-ID: <20250909135147.612345-14-thuth@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 14/23] gitlab: replace avocado results files with meson results
+ files
+Date: Tue,  9 Sep 2025 15:51:38 +0200
+Message-ID: <20250909135147.612345-15-thuth@redhat.com>
 In-Reply-To: <20250909135147.612345-1-thuth@redhat.com>
 References: <20250909135147.612345-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -83,44 +83,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kane-Chen-AS <kane_chen@aspeedtech.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Message-ID: <20250904100556.1729604-5-kane_chen@aspeedtech.com>
+The 'results.xml' file and 'test-results' directory were both outputs
+of the avovcado test runner. Since we're now using meson with the new
+functional test framework, we must reference meson results files as the
+CI artifacts.
+
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-ID: <20250908190901.3571859-2-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/aarch64/test_aspeed_ast2700.py | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ .gitlab-ci.d/buildtest-template.yml | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tests/functional/aarch64/test_aspeed_ast2700.py b/tests/functional/aarch64/test_aspeed_ast2700.py
-index d02dc7991c1..8a08bc46888 100755
---- a/tests/functional/aarch64/test_aspeed_ast2700.py
-+++ b/tests/functional/aarch64/test_aspeed_ast2700.py
-@@ -54,6 +54,10 @@ def verify_openbmc_boot_and_login(self, name):
-             'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2700-default-obmc.tar.gz',
-             'f1d53e0be8a404ecce3e105f72bc50fa4e090ad13160ffa91b10a6e0233a9dc6')
- 
-+    ASSET_SDK_V907_AST2700A1_VBOOROM = Asset(
-+            'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2700-default-obmc.tar.gz',
-+            '6e9e0c4b13e0f26040eca3f4a7f17cf09fc0f5c37c820500ff79370cc3c44add')
-+
-     def do_ast2700_i2c_test(self):
-         exec_command_and_wait_for_pattern(self,
-             'echo lm75 0x4d > /sys/class/i2c-dev/i2c-1/device/new_device ',
-@@ -127,10 +131,10 @@ def test_aarch64_ast2700a1_evb_sdk_v09_06(self):
-         self.verify_openbmc_boot_and_login('ast2700-default')
-         self.do_ast2700_i2c_test()
- 
--    def test_aarch64_ast2700a1_evb_sdk_vbootrom_v09_06(self):
-+    def test_aarch64_ast2700a1_evb_sdk_vbootrom_v09_07(self):
-         self.set_machine('ast2700a1-evb')
- 
--        self.archive_extract(self.ASSET_SDK_V906_AST2700A1)
-+        self.archive_extract(self.ASSET_SDK_V907_AST2700A1_VBOOROM)
-         self.start_ast2700_test_vbootrom('ast2700-default')
-         self.verify_vbootrom_firmware_flow()
-         self.verify_openbmc_boot_and_login('ast2700-default')
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index 038c3c9540a..46722982149 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -104,11 +104,10 @@
+     when: always
+     expire_in: 7 days
+     paths:
+-      - build/tests/results/latest/results.xml
+-      - build/tests/results/latest/test-results
++      - build/meson-logs/testlog.txt
+       - build/tests/functional/*/*/*.log
+     reports:
+-      junit: build/tests/results/latest/results.xml
++      junit: build/meson-logs/testlog.junit.xml
+   before_script:
+     - export QEMU_TEST_ALLOW_UNTRUSTED_CODE=1
+     - export QEMU_TEST_CACHE_DIR=${CI_PROJECT_DIR}/functional-cache
 -- 
 2.51.0
 
