@@ -2,87 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBCFB4A33D
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 09:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F91AB4A33E
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 09:16:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvsYM-0004ZK-QP; Tue, 09 Sep 2025 03:14:10 -0400
+	id 1uvsYh-0004dQ-37; Tue, 09 Sep 2025 03:14:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1uvsYK-0004Yv-Uy
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 03:14:08 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1uvsYH-0000VX-Tx
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 03:14:08 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-45dd7b15a64so33641525e9.0
- for <qemu-devel@nongnu.org>; Tue, 09 Sep 2025 00:14:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1757402042; x=1758006842; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=18bWt/tr6EURE8EiER9IjYrcprROpj4SinHw/Fvv6fo=;
- b=amMSkcTq0961ZcpoviX7YjLaq9XhICoZiFTXGjduZbo57j932HrzPbWUW1wCg0wk1h
- v32P4nUYHapwM0AOqmS0C0azy3b2IJxQiErQ7pWUZPQGjF9pMJSLdDfe5CkrrGiunoYQ
- suKai2B4+0AyjNSwTXI6Zzyigtgiq0TnvCeAXkGFZDBQk8rQn3AfUGeXffuszEcVHul8
- /W21vSSRHDtxdgm9bRut+5CpcvdXBhVxPp+Lh1abfKcDHAHox4SSe3TwLp3vEL3udEqK
- xC5AutFTaaj5JmY38BIOw7eXmnAVXm7s4xvKF6anhcumT1ZyZrT+ejddFOE7rUW20CJt
- 1o5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757402042; x=1758006842;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=18bWt/tr6EURE8EiER9IjYrcprROpj4SinHw/Fvv6fo=;
- b=r4gDvIQZbpJHhDoKte8fuykML4Bc3j2bcQDX5zTZc1Kjl+msuMn1HdmYICasoJRryy
- gNpnfi+GnyiHtx2DEuV6T5Uk18DYRXBOSWTVm++imN06oKxkE6iJ7IYsgGpTychGeWoI
- oOpKHqnVIQiS0tRxq2pDoRpxavYRIg+IKn8Y6wBVeADJOneaiDBgJ+gIEhY6TO4DyumT
- 3CE+F4+fzNbtQT+kAKp5GpKxhckuFjX5NRV4Vwwmp5U86ZevBPN3iaqN5kyRIm0msqCs
- sqZqEZxekvs7RFNF1X04MdX6jCIClX+VJwztpkRaqE2TlmPzgbPC7zgFReI599c3wb8h
- sOhw==
-X-Gm-Message-State: AOJu0Ywk9PDYFrKEZzKgtfsVRE+M/UDCwjvTyc7rzBvD8Z23ReHkJjVD
- r4XbD8vc1LUGMsybPyzzVsAQ8oFP6IMfHROiLLA9LVU9O+2rug20TOd/PWw8/g==
-X-Gm-Gg: ASbGncsHxSAcUFJ4Tgiqv7M6G9nb/FGKS0x3b49uvPTLc1CqsClqZgLfLPL5RtpM3om
- qAGh6/KR9QiYHPtMrIY7o5wQgZD4XPAd2SlxZE3CHXPR/xy3w6bghvrRAzRcJcerHkSOcxPCF5J
- H3j5hI/Veqd6/2i2MvVsA5XI5N/N7h2sprvjlHzN5dSidcIHYguKc/YVReYzPmJKfvs0HbWSywl
- LKOxZxuzAjMyF4STUZcA9HTcmX+gm2t5wRM1XxcybtAwT2C61ZQ3I6+MCLPjU5ALQ7vWCa5Zf7f
- LYk4MzfjGTZMkyw++Eai8ELInlyYU/TPgcsbAp/3zoBc0/mx+QKlx0SQmd1NS9QW8P9KVyo9MmO
- uU1denJvR8jQtPa/pduo/k3ppS5mHJDqDUt1sxnM=
-X-Google-Smtp-Source: AGHT+IEfnruvq2UFgoGPKqsYNK3YQ3K2VccO7NTpP/Z79cbPJJu5mlnP5448qK6qZJzoCnbjih4pRQ==
-X-Received: by 2002:a05:600c:4f4a:b0:45c:b523:5a09 with SMTP id
- 5b1f17b1804b1-45dde21d0c0mr96729155e9.16.1757402041706; 
- Tue, 09 Sep 2025 00:14:01 -0700 (PDT)
-Received: from ehlo.thunderbird.net ([62.214.191.67])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45de5eabdb0sm80303845e9.8.2025.09.09.00.14.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Sep 2025 00:14:01 -0700 (PDT)
-Date: Tue, 09 Sep 2025 07:14:00 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
-CC: Huacai Chen <chenhuacai@kernel.org>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH 5/5] hw/pci-host/bonito: Add comments about documentation
-In-Reply-To: <20250508-bonito-v1-5-4f9f27733028@flygoat.com>
-References: <20250508-bonito-v1-0-4f9f27733028@flygoat.com>
- <20250508-bonito-v1-5-4f9f27733028@flygoat.com>
-Message-ID: <AB55B48E-F903-4524-9D6E-058238D33EC2@gmail.com>
+ (Exim 4.90_1) (envelope-from <SRS0=ZSe1=3U=kaod.org=clg@ozlabs.org>)
+ id 1uvsYe-0004cf-9m; Tue, 09 Sep 2025 03:14:28 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=ZSe1=3U=kaod.org=clg@ozlabs.org>)
+ id 1uvsYR-0000WM-1T; Tue, 09 Sep 2025 03:14:26 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4cLZnF0kdRz4w9k;
+ Tue,  9 Sep 2025 17:14:09 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4cLZnB6r1Wz4w8w;
+ Tue,  9 Sep 2025 17:14:06 +1000 (AEST)
+Message-ID: <abdb5b47-a450-4fc3-b5cd-b170ebb8271a@kaod.org>
+Date: Tue, 9 Sep 2025 09:14:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FREEMAIL_REPLY=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/5] tests/qtest: Add qtest for for ASPEED GPIO gpio-set
+ property
+To: Coco Li <lixiaoyan@google.com>, peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Felix Wu <flwu@google.com>,
+ 'Andrew Jeffery' <andrew@codeconstruct.com.au>
+References: <20250903213809.3779860-1-lixiaoyan@google.com>
+ <20250903213809.3779860-3-lixiaoyan@google.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20250903213809.3779860-3-lixiaoyan@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=ZSe1=3U=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,63 +107,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
++Andrew for awareness
 
+On 9/3/25 23:38, Coco Li wrote:
+> From: Felix Wu <flwu@google.com>
+> 
+>   - Added qtests to test gpio-set property for ASPEED.
+>   - Added function to get uint in qdict.
+> 
+> Signed-off-by: Felix Wu <flwu@google.com>
+> ---
+>   include/qobject/qdict.h        |   1 +
+>   qobject/qdict.c                |  13 ++++
+>   tests/qtest/aspeed_gpio-test.c | 105 ++++++++++++++++++++++++++++++---
+>   3 files changed, 110 insertions(+), 9 deletions(-)
+> 
+> diff --git a/include/qobject/qdict.h b/include/qobject/qdict.h
+> index 903e6e5462..861996f08d 100644
+> --- a/include/qobject/qdict.h
+> +++ b/include/qobject/qdict.h
+> @@ -57,6 +57,7 @@ void qdict_put_str(QDict *qdict, const char *key, const char *value);
+>   
+>   double qdict_get_double(const QDict *qdict, const char *key);
+>   int64_t qdict_get_int(const QDict *qdict, const char *key);
+> +uint64_t qdict_get_uint(const QDict *qdict, const char *key);
+>   bool qdict_get_bool(const QDict *qdict, const char *key);
+>   QList *qdict_get_qlist(const QDict *qdict, const char *key);
+>   QDict *qdict_get_qdict(const QDict *qdict, const char *key);
+> diff --git a/qobject/qdict.c b/qobject/qdict.c
+> index a90ac9ae2f..0dafe6d421 100644
+> --- a/qobject/qdict.c
+> +++ b/qobject/qdict.c
+> @@ -209,6 +209,19 @@ int64_t qdict_get_int(const QDict *qdict, const char *key)
+>       return qnum_get_int(qobject_to(QNum, qdict_get(qdict, key)));
+>   }
+>   
+> +/**
+> + * qdict_get_uint(): Get an unsigned integer mapped by 'key'
+> + *
+> + * This function assumes that 'key' exists and it stores a
+> + * QNum representable as uint.
+> + *
+> + * Return unsigned integer mapped by 'key'.
+> + */
+> +uint64_t qdict_get_uint(const QDict *qdict, const char *key)
+> +{
+> +    return qnum_get_uint(qobject_to(QNum, qdict_get(qdict, key)));
+> +}
+> +
+>   /**
+>    * qdict_get_bool(): Get a bool mapped by 'key'
+>    *
+> diff --git a/tests/qtest/aspeed_gpio-test.c b/tests/qtest/aspeed_gpio-test.c
+> index 12675d4cbb..c2f9ca2298 100644
+> --- a/tests/qtest/aspeed_gpio-test.c
+> +++ b/tests/qtest/aspeed_gpio-test.c
+> @@ -27,28 +27,115 @@
+>   #include "qemu/timer.h"
+>   #include "qobject/qdict.h"
+>   #include "libqtest-single.h"
+> +#include "qemu/typedefs.h"
+>   
+>   #define AST2600_GPIO_BASE 0x1E780000
+>   
+>   #define GPIO_ABCD_DATA_VALUE 0x000
+>   #define GPIO_ABCD_DIRECTION  0x004
+>   
+> +static uint32_t qtest_qom_get_uint32(QTestState *s, const char *path,
+> +                                     const char *property)
+> +{
+> +    QDict *r;
+> +
+> +    uint32_t res;
+> +    r = qtest_qmp(s, "{ 'execute': 'qom-get', 'arguments': "
+> +                     "{ 'path': %s, 'property': %s } }", path, property);
+> +    res = qdict_get_uint(r, "return");
+> +    qobject_unref(r);
+> +
+> +    return res;
+> +}
+> +
+> +static void qtest_qom_set_uint32(QTestState *s, const char *path,
+> +                                 const char *property, uint32_t value)
+> +{
+> +    QDict *r;
+> +
+> +    r = qtest_qmp(s, "{ 'execute': 'qom-set', 'arguments': "
+> +                     "{ 'path': %s, 'property': %s, 'value': %" PRIu32 " } }",
+> +                     path, property, value);
+> +    qobject_unref(r);
+> +}
+> +
+> +static const char *resp_get_error(QDict *r, const char* error_key)
+> +{
+> +    QDict *qdict;
+> +
+> +    g_assert(r);
+> +
+> +    qdict = qdict_get_qdict(r, "error");
+> +    if (qdict) {
+> +        return qdict_get_str(qdict, error_key);
+> +    }
+> +
+> +    return NULL;
+> +}
+> +
+> +static bool qtest_qom_check_error(QTestState *s, const char *path,
+> +                                  const char *property, const char *error_msg,
+> +                                  const char *error_msg_key)
+> +{
+> +    QDict *r;
+> +    bool b;
+> +
+> +    r = qtest_qmp(s, "{ 'execute': 'qom-get', 'arguments': "
+> +                     "{ 'path': %s, 'property': %s } }", path, property);
+> +    b = g_str_equal(resp_get_error(r, error_msg_key), error_msg);
+> +    qobject_unref(r);
+> +
+> +    return b;
+> +}
+> +
+>   static void test_set_colocated_pins(const void *data)
+>   {
+>       QTestState *s = (QTestState *)data;
+> -
+> +    const char path[] = "/machine/soc/gpio";
+>       /*
+>        * gpioV4-7 occupy bits within a single 32-bit value, so we want to make
+>        * sure that modifying one doesn't affect the other.
+>        */
+> -    qtest_qom_set_bool(s, "/machine/soc/gpio", "gpioV4", true);
+> -    qtest_qom_set_bool(s, "/machine/soc/gpio", "gpioV5", false);
+> -    qtest_qom_set_bool(s, "/machine/soc/gpio", "gpioV6", true);
+> -    qtest_qom_set_bool(s, "/machine/soc/gpio", "gpioV7", false);
+> -    g_assert(qtest_qom_get_bool(s, "/machine/soc/gpio", "gpioV4"));
+> -    g_assert(!qtest_qom_get_bool(s, "/machine/soc/gpio", "gpioV5"));
+> -    g_assert(qtest_qom_get_bool(s, "/machine/soc/gpio", "gpioV6"));
+> -    g_assert(!qtest_qom_get_bool(s, "/machine/soc/gpio", "gpioV7"));
+> +    qtest_qom_set_bool(s, path, "gpioV4", true);
+> +    qtest_qom_set_bool(s, path, "gpioV5", false);
+> +    qtest_qom_set_bool(s, path, "gpioV6", true);
+> +    qtest_qom_set_bool(s, path, "gpioV7", false);
+> +    g_assert(qtest_qom_get_bool(s, path, "gpioV4"));
+> +    g_assert(!qtest_qom_get_bool(s, path, "gpioV5"));
+> +    g_assert(qtest_qom_get_bool(s, path, "gpioV6"));
+> +    g_assert(!qtest_qom_get_bool(s, path, "gpioV7"));
+> +
+> +    /*
+> +     * Testing the gpio-set[%d] properties, using individual gpio boolean
+> +     * properties to do cross check.
+> +     * We use gpioR4-7 for test, Setting them to be 0b1010.
+> +     */
+> +    qtest_qom_set_uint32(s, path, "gpio-set[4]", 0x0);
+> +    g_assert(qtest_qom_get_uint32(s, path, "gpio-set[4]") == 0x0);
+> +    qtest_qom_set_uint32(s, path, "gpio-set[4]", 0xa000);
+> +    g_assert(qtest_qom_get_uint32(s, path, "gpio-set[4]") == 0xa000);
+> +
+> +    g_assert(!qtest_qom_get_bool(s, path, "gpioR4"));
+> +    g_assert(qtest_qom_get_bool(s, path, "gpioR5"));
+> +    g_assert(!qtest_qom_get_bool(s, path, "gpioR6"));
+> +    g_assert(qtest_qom_get_bool(s, path, "gpioR7"));
+> +
+> +    /*
+> +     * Testing the invalid indexing, the response info should contain following
+> +     * info:
+> +     * {key: "class", value: "GenericError"}
+> +     *
+> +     * For pins, it should follow "gpio%2[A-Z]%1d" or "gpio%3[18A-E]%1d" format.
+> +     */
+> +    const char error_msg[] = "GenericError";
+> +    const char error_msg_key[] = "class";
+> +
+> +    g_assert(qtest_qom_check_error(s, path, "gpioR+1", error_msg,
+> +                                   error_msg_key));
+> +    g_assert(qtest_qom_check_error(s, path, "gpio-set[99]", error_msg,
+> +                                   error_msg_key));
+> +    g_assert(qtest_qom_check_error(s, path, "gpio-set[-3]", error_msg,
+> +                                   error_msg_key));
+>   }
+>   
+>   static void test_set_input_pins(const void *data)
 
-Am 8=2E Mai 2025 14:46:10 UTC schrieb Jiaxun Yang <jiaxun=2Eyang@flygoat=
-=2Ecom>:
->Signed-off-by: Jiaxun Yang <jiaxun=2Eyang@flygoat=2Ecom>
->---
-> hw/pci-host/bonito=2Ec | 21 ++++++++++++++++-----
-> 1 file changed, 16 insertions(+), 5 deletions(-)
->
->diff --git a/hw/pci-host/bonito=2Ec b/hw/pci-host/bonito=2Ec
->index 49b4be26393a08eda4f99c8e2ef8a0c455c57bc0=2E=2E918ee39661004d902d2de=
-b25dd5e782855a11854 100644
->--- a/hw/pci-host/bonito=2Ec
->+++ b/hw/pci-host/bonito=2Ec
->@@ -1,5 +1,5 @@
-> /*
->- * bonito north bridge support
->+ * Algorithmics Ltd BONITO north bridge emulation
->  *
->  * Copyright (c) 2008 yajin (yajin@vm-kernel=2Eorg)
->  * Copyright (c) 2010 Huacai Chen (zltjiangshi@gmail=2Ecom)
->@@ -8,10 +8,21 @@
->  *
->  * Contributions after 2012-01-13 are licensed under the terms of the
->  * GNU GPL, version 2 or (at your option) any later version=2E
->- */
->-
->-/*
->- * fuloong 2e mini pc has a bonito north bridge=2E
->+ *
->+ * For 32-bit variant:
->+ * "BONITO - PCI/SDRAM System Controller for Vr43xx"
->+ * https://wiki=2Eqemu=2Eorg/File:Bonito-spec=2Epdf
->+ *
->+ * "BONITO - Companion Chip for Vr43xx and Vr5xxx" (uPD65949S1-P00-F6)
->+ * https://repo=2Eoss=2Ecipunited=2Ecom/archives/docs/NEC/U15789EE1V0DS0=
-0=2Epdf
-
-This one gives me a 404=2E This link works for me: https://www=2Erenesas=
-=2Ecom/ja/document/dst/upd65949s1-p00-f6-bonito-companion-chip-vr43xx-and-v=
-r5xxx
-
->+ *
->+ * For 64-bit variant:
->+ * "BONITO64 - "north bridge" controller for 64-bit MIPS CPUs"
->+ * https://wiki=2Eqemu=2Eorg/File:Bonito-spec=2Epdf
-
-This is the link to the 32-bit variant=2E Correct link: https://wiki=2Eqem=
-u=2Eorg/File:Bonito64-spec=2Epdf
-
->+ *
->+ * For Godson (Loongson) 2E variant:
->+ * "Godson 2E North Bridge User Manual" (in Chinese)
->+ * https://github=2Ecom/loongson-community/docs/blob/master/2E/Godson_2E=
-_NB_UM=2Epdf
->  */
->=20
-> #include "qemu/osdep=2Eh"
->
 
