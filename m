@@ -2,79 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F751B4A2F0
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 09:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14382B4A33F
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 09:16:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvsPU-0001aE-Al; Tue, 09 Sep 2025 03:05:00 -0400
+	id 1uvsYa-0004bH-3b; Tue, 09 Sep 2025 03:14:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uvsPN-0001ZV-JL
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 03:04:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <SRS0=ZSe1=3U=kaod.org=clg@ozlabs.org>)
+ id 1uvsYW-0004ax-3D; Tue, 09 Sep 2025 03:14:20 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uvsPF-00080W-JO
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 03:04:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757401480;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9TrwfGYzjGJI2AK3S457RqJ8AszdG43B482ek2jpZAg=;
- b=BLVkchFH+1woDjnvnhLgjn0tvNueWveEELfhqDwFwh/RLLSVBo9N/SJ34jJcB7V2s/0P97
- qAP9JcVqyVpqxmN4NAgttTfcLZbZShhoyrL83XEtAP7nDdcOY8ibk8C/wPWWbRNqaRw3By
- uH7rZTa5ZPdLhyT2o0cUZotRomGBynM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-BcQxbDpePO2PoU3OmOyuBQ-1; Tue,
- 09 Sep 2025 03:04:36 -0400
-X-MC-Unique: BcQxbDpePO2PoU3OmOyuBQ-1
-X-Mimecast-MFC-AGG-ID: BcQxbDpePO2PoU3OmOyuBQ_1757401475
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (Exim 4.90_1) (envelope-from <SRS0=ZSe1=3U=kaod.org=clg@ozlabs.org>)
+ id 1uvsYJ-0000V2-Dl; Tue, 09 Sep 2025 03:14:19 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4cLZmz2Qhcz4w9g;
+ Tue,  9 Sep 2025 17:13:55 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 36B15180048E; Tue,  9 Sep 2025 07:04:35 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.45])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6EE531800446; Tue,  9 Sep 2025 07:04:33 +0000 (UTC)
-Date: Tue, 9 Sep 2025 08:04:30 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yonggang Luo <luoyonggang@gmail.com>
-Subject: Re: [PATCH 4/4] gitlab: prevent duplicated meson log artifacts in
- test jobs
-Message-ID: <aL_QzBYYd4HB0T3Q@redhat.com>
-References: <20250908190901.3571859-1-berrange@redhat.com>
- <20250908190901.3571859-5-berrange@redhat.com>
- <87v7ls7i8t.fsf@draig.linaro.org>
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4cLZmx01mgz4w8w;
+ Tue,  9 Sep 2025 17:13:52 +1000 (AEST)
+Message-ID: <cddd599f-5928-4592-9c14-442cdbbf8d2d@kaod.org>
+Date: Tue, 9 Sep 2025 09:13:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87v7ls7i8t.fsf@draig.linaro.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] hw/gpio: Add property for ASPEED GPIO in 32 bits basis
+To: Coco Li <lixiaoyan@google.com>, peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Felix Wu <flwu@google.com>,
+ 'Andrew Jeffery' <andrew@codeconstruct.com.au>
+References: <20250903213809.3779860-1-lixiaoyan@google.com>
+ <20250903213809.3779860-2-lixiaoyan@google.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Language: en-US, fr
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20250903213809.3779860-2-lixiaoyan@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=ZSe1=3U=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,68 +102,97 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 08, 2025 at 10:21:38PM +0100, Alex Bennée wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
-> 
-> > The build jobs will populate build/meson-logs/ with various files
-> > that are added as artifacts.
-> >
-> > The test jobs preserve the state of the build jobs, so we must
-> > delete any pre-existing logs to prevent confusion from duplicate
-> > artifacts.
-> 
-> Will this cause us to rebuild needlessly?
++Andrew for awareness
 
-These files aren't involved in any rebuild / stale checks &
-the test pipeline I ran show no difference in what was done.
-
+On 9/3/25 23:38, Coco Li wrote:
+> From: Felix Wu <flwu@google.com>
 > 
-> >
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >  .gitlab-ci.d/buildtest-template.yml | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
-> > diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-> > index 308490a35a..d866cb12bb 100644
-> > --- a/.gitlab-ci.d/buildtest-template.yml
-> > +++ b/.gitlab-ci.d/buildtest-template.yml
-> > @@ -83,6 +83,10 @@
-> >  
-> >  .native_test_job_template:
-> >    extends: .common_test_job_template
-> > +  before_script:
-> > +    # Prevent logs from the build job that run earlier
-> > +    # from being duplicated in the test job artifacts
-> > +    - rm -f build/meson-logs/*
-> >    artifacts:
-> >      name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
-> >      when: always
-> > @@ -111,6 +115,9 @@
-> >    before_script:
-> >      - export QEMU_TEST_ALLOW_UNTRUSTED_CODE=1
-> >      - export QEMU_TEST_CACHE_DIR=${CI_PROJECT_DIR}/functional-cache
-> > +    # Prevent logs from the build job that run earlier
-> > +    # from being duplicated in the test job artifacts
-> > +    - rm -f build/meson-logs/*
-> >    after_script:
-> >      - cd build
-> >      - du -chs ${CI_PROJECT_DIR}/*-cache
+> Added 32 bits property for ASPEED GPIO. Previously it can only be access in bitwise manner.
 > 
-> -- 
-> Alex Bennée
-> Virtualisation Tech Lead @ Linaro
+> This change gives ASPEED similar behavior as Nuvoton.
 > 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> Signed-off-by: Felix Wu <flwu@google.com>
+> ---
+>   hw/gpio/aspeed_gpio.c | 57 +++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 57 insertions(+)
+> 
+> diff --git a/hw/gpio/aspeed_gpio.c b/hw/gpio/aspeed_gpio.c
+> index 609a556908..2d78bf9515 100644
+> --- a/hw/gpio/aspeed_gpio.c
+> +++ b/hw/gpio/aspeed_gpio.c
+> @@ -1308,6 +1308,57 @@ static void aspeed_gpio_2700_write(void *opaque, hwaddr offset,
+>   }
+>   
+>   /* Setup functions */
+> +static void aspeed_gpio_set_set(Object *obj, Visitor *v,
+> +                                        const char *name, void *opaque,
+> +                                        Error **errp)
+> +{
+> +    uint32_t set_val = 0;
+> +    AspeedGPIOState *s = ASPEED_GPIO(obj);
+> +    AspeedGPIOClass *agc = ASPEED_GPIO_GET_CLASS(s);
+> +    int set_idx = 0;
+> +
+> +    if (!visit_type_uint32(v, name, &set_val, errp)) {
+> +        return;
+> +    }
+> +
+> +    if (sscanf(name, "gpio-set[%d]", &set_idx) != 1) {
+> +        error_setg(errp, "%s: error reading %s", __func__, name);
+> +        return;
+> +    }
+> +
+> +    if (set_idx >= agc->nr_gpio_sets || set_idx < 0) {
+> +        error_setg(errp, "%s: invalid set_idx %s", __func__, name);
+> +        return;
+> +    }
+> +
+> +    aspeed_gpio_update(s, &s->sets[set_idx], set_val,
+> +                       ~s->sets[set_idx].direction);
+> +}
+> +
+> +static void aspeed_gpio_get_set(Object *obj, Visitor *v,
+> +                                        const char *name, void *opaque,
+> +                                        Error **errp)
+> +{
+> +    uint32_t set_val = 0;
+> +    AspeedGPIOState *s = ASPEED_GPIO(obj);
+> +    AspeedGPIOClass *agc = ASPEED_GPIO_GET_CLASS(s);
+> +    int set_idx = 0;
+> +
+> +    if (sscanf(name, "gpio-set[%d]", &set_idx) != 1) {
+> +        error_setg(errp, "%s: error reading %s", __func__, name);
+> +        return;
+> +    }
+> +
+> +    if (set_idx >= agc->nr_gpio_sets || set_idx < 0) {
+> +        error_setg(errp, "%s: invalid set_idx %s", __func__, name);
+> +        return;
+> +    }
+> +
+> +    set_val = s->sets[set_idx].data_value;
+> +    visit_type_uint32(v, name, &set_val, errp);
+> +}
+> +
+> +/****************** Setup functions ******************/
+>   static const GPIOSetProperties ast2400_set_props[ASPEED_GPIO_MAX_NR_SETS] = {
+>       [0] = {0xffffffff,  0xffffffff,  {"A", "B", "C", "D"} },
+>       [1] = {0xffffffff,  0xffffffff,  {"E", "F", "G", "H"} },
+> @@ -1435,6 +1486,12 @@ static void aspeed_gpio_init(Object *obj)
+>               g_free(name);
+>           }
+>       }
+> +
+> +    for (int i = 0; i < agc->nr_gpio_sets; i++) {
+> +        char *name = g_strdup_printf("gpio-set[%d]", i);
+> +        object_property_add(obj, name, "uint32", aspeed_gpio_get_set,
+> +        aspeed_gpio_set_set, NULL, NULL);
+> +    }
+>   }
+>   
+>   static const VMStateDescription vmstate_gpio_regs = {
 
 
