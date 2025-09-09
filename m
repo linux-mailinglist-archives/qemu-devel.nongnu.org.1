@@ -2,63 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC2AB4A439
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 09:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ECADB4A463
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 10:00:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvt8Q-0001D8-Nl; Tue, 09 Sep 2025 03:51:26 -0400
+	id 1uvtF6-0003JF-UM; Tue, 09 Sep 2025 03:58:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uvt8M-0001Bj-Ei; Tue, 09 Sep 2025 03:51:22 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uvtEx-0003FR-Eo
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 03:58:12 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uvt8A-000594-Dl; Tue, 09 Sep 2025 03:51:21 -0400
-Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c21:2d8b:0:640:7d49:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 6D96A8066F;
- Tue, 09 Sep 2025 10:51:05 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:b64::1:1] (unknown [2a02:6bf:8080:b64::1:1])
- by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 4pDiKb6GuGk0-HMv6wFof; Tue, 09 Sep 2025 10:51:04 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1757404264;
- bh=WDkgfhXw6p8dBd6w9PYgemsE5KhRjM8le73mcVMol6c=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=SX9xBQ2/J5TTbCoMxEuk7XTSSeRlM0uGliLxv8klvOuJFvniYHXx6xlGR1VqR4CLu
- rDz2t4spODnOIH6Z1iQakpj3SKAtLtIG/nW/ZG4nqhWi34KBcVn3hlzdSSVutOGoXd
- 96utFcTkP9nPPnqH/7lWj5junGJ4/8KFmc+jwfH8=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <b4d801db-7999-4298-a82a-9a14afe0d4f8@yandex-team.ru>
-Date: Tue, 9 Sep 2025 10:51:04 +0300
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1uvtEq-0005zZ-5j
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 03:58:10 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 78A271519CE
+ for <qemu-devel@nongnu.org>; Tue, 09 Sep 2025 10:57:53 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 30CE727A665
+ for <qemu-devel@nongnu.org>; Tue,  9 Sep 2025 10:57:58 +0300 (MSK)
+Message-ID: <26725cee-bb3b-47c0-bf4a-d0e48a4cbc37@tls.msk.ru>
+Date: Tue, 9 Sep 2025 10:57:57 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/10] util: add qemu_set_blocking() function
-To: Peter Xu <peterx@redhat.com>
-Cc: berrange@redhat.com, qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>
-References: <20250903094411.1029449-1-vsementsov@yandex-team.ru>
- <20250903094411.1029449-4-vsementsov@yandex-team.ru>
- <aL9SZr8uU4lp0o41@x1.local>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <aL9SZr8uU4lp0o41@x1.local>
+Content-Language: en-US, ru-RU
+To: QEMU Development <qemu-devel@nongnu.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Subject: debian guest significant slowdown in aarch64 qemu-user
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,119 +98,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09.09.25 01:02, Peter Xu wrote:
-> On Wed, Sep 03, 2025 at 12:44:03PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> In generic code we have qio_channel_set_blocking(), which takes
->> bool parameter, and qemu_file_set_blocking(), which as well takes
->> bool parameter.
->>
->> At lower fd-layer we have a mess of functions:
->>
->> - enough direct calls to g_unix_set_fd_nonblocking()
->> and several wrappers without bool parameter:
->>
->> - qemu_scoket_set_nonblock(), which asserts success for posix (still,
->>    in most cases we can handle the error in better way) and ignores
->>    error for win32 realization
->>
->> - qemu_socket_try_set_nonblock(), the best one
->>
->> - qemu_socket_set_block(), which simply ignores an error, the worst
->>    case
->>
->> And all three lack errp argument, so we have to handle it after the
->> call.
->>
->> So let's introduce a new socket-layer wrapper, and use it consistently
->> in following commits.
->>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> ---
->>   include/qemu/osdep.h |  1 +
->>   util/oslib-posix.c   | 12 ++++++++++++
->>   util/oslib-win32.c   | 18 ++++++++++++++++++
->>   3 files changed, 31 insertions(+)
->>
->> diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
->> index be3460b32f..1b38cb7e45 100644
->> --- a/include/qemu/osdep.h
->> +++ b/include/qemu/osdep.h
->> @@ -687,6 +687,7 @@ ssize_t qemu_write_full(int fd, const void *buf, size_t count)
->>       G_GNUC_WARN_UNUSED_RESULT;
->>   
->>   void qemu_set_cloexec(int fd);
->> +bool qemu_set_blocking(int fd, bool block, Error **errp);
->>   
->>   /* Return a dynamically allocated directory path that is appropriate for storing
->>    * local state.
->> diff --git a/util/oslib-posix.c b/util/oslib-posix.c
->> index 4ff577e5de..e473938195 100644
->> --- a/util/oslib-posix.c
->> +++ b/util/oslib-posix.c
->> @@ -250,6 +250,18 @@ void qemu_anon_ram_free(void *ptr, size_t size)
->>   #endif
->>   }
->>   
->> +bool qemu_set_blocking(int fd, bool block, Error **errp)
->> +{
->> +    if (!g_unix_set_fd_nonblocking(fd, !block, NULL)) {
-> 
-> If we want to do the best, we could also pass in GError** here, and convert
-> GError(.message) to errp?
+Hi!
 
-Hmm, agree, will try.
+A user reported a significant slowdown of an operation which used to
+work quite a bit faster.  This time, however, the regression is not
+on the qemu side but on the guest OS side (debian bookworm to debian
+trixie), running in the same qemu-user.  It is more, - it doesn't
+really matter which version of qemu-user to use (from a few recent
+versions).
 
-Interesting, why we just don't sit on GError..
+For example, building a particular debian source package (in this case,
+bird3) in qemu-user-backed aarch64 debian chroot for current debian
+release (trixie) takes at least as twice time than the same operation
+on bookworm (previous debian release).
 
-> 
->> +        error_setg_errno(errp, errno,
->> +                         "Can't set file descriptor %d %s", fd,
->> +                         block ? "blocking" : "non-blocking");
->> +        return false;
->> +    }
->> +
->> +    return true;
->> +}
->> +
->>   void qemu_socket_set_block(int fd)
->>   {
->>       g_unix_set_fd_nonblocking(fd, false, NULL);
->> diff --git a/util/oslib-win32.c b/util/oslib-win32.c
->> index b7351634ec..03044f5b59 100644
->> --- a/util/oslib-win32.c
->> +++ b/util/oslib-win32.c
->> @@ -177,6 +177,24 @@ static int socket_error(void)
->>       }
->>   }
->>   
->> +bool qemu_set_blocking(int fd, bool block, Error **errp)
->> +{
->> +    unsigned long opt = block ? 0 : 1;
->> +
->> +    if (block) {
->> +        qemu_socket_unselect(fd, NULL);
->> +    }
->> +
->> +    if (ioctlsocket(fd, FIONBIO, &opt) != NO_ERROR) {
->> +        error_setg_errno(errp, socket_error(),
->> +                         "Can't set file descriptor %d %s", fd,
->> +                         block ? "blocking" : "non-blocking");
->> +        return false;
->> +    }
->> +
->> +    return true;
->> +}
->> +
->>   void qemu_socket_set_block(int fd)
->>   {
->>       unsigned long opt = 0;
->> -- 
->> 2.48.1
->>
-> 
+I can confirm this slowdown, however, I see about 2x time difference,
+while the OP reports 10x slowdown.  https://bugs.debian.org/1113951
+has a few more details about this.
 
+I observe this difference (omitting the build logs):
 
--- 
-Best regards,
-Vladimir
+  $ sbuild -d bookworm --arch arm64 bird3_3.1.0-1.dsc
+  Build needed 00:14:45, 265340k disk space
+
+  $ sbuild -d trixie --arch arm64 bird3_3.1.0-1.dsc
+  Build needed 00:27:00, 267508k disk space
+
+One of the most notable contributors in this time difference seems
+to be tex setup procedure:
+
+  Processing triggers for tex-common (6.19) ...
+  Running updmap-sys. This may take some time... done.
+  Running mktexlsr /var/lib/texmf ... done.
+  Building format(s) --all.
+
+at this point it runs pdftex, luatex, luahbtex and a few other
+tex-related programs, which are visible in top(1) output for minutes
+when running in trixie chroot.
+
+Other programs are also running slower, but not that significant.
+
+I'll try to provide a minimal reproducer here.
+
+But overall, how to debug such situation, when it is not qemu which
+is at issue?
+
+Thanks,
+
+/mjt
 
