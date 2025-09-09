@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3D2B5037B
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 18:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6931BB503AF
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 19:02:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uw1fb-0006KB-5h; Tue, 09 Sep 2025 12:58:18 -0400
+	id 1uw1fT-0006BM-AT; Tue, 09 Sep 2025 12:58:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uw1fF-0006Bc-6e
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:57:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uw1fC-0006Ap-Ez
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:57:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uw1f5-0007WD-Mp
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:57:52 -0400
+ id 1uw1f9-0007Wz-8Q
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 12:57:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757437060;
+ s=mimecast20190719; t=1757437063;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3DqK2BFdY/4B0jfZv0jzbvcZYXlop4Q1Pi9PvHDOxkc=;
- b=PPU5hhmiXDHmAgbZb3eqqQiafClkjDAFRb4dwps4nk6msducTBtATLbT0yvk4weQoKcJ4u
- 1g+K159Os6lYy02D00cjdsDDBgd52cIXYJlolsXW5cln6ntmuGwm5R2Uf7n7Jmc/NJ8C3Z
- RUaXKMJwAYazYrAKNXtlB3KCygC3Lvs=
+ bh=BfxFnH+lEOQAd+2OGBF/DRY1rm//a62ECPegzMFOTXo=;
+ b=QvJG95EBu50vNUFFtKU2xYfYDZNPsMKFQMZLk9uCf//Bm7dPyN5LZSonV4LwviHBFIsSg6
+ vlIxgUKeaisUmIze4OHiw7cv/uw8kJ8ZviDh9Vlc2KjlMC4DzR3VXofpTYpQekfY+/E7sU
+ xNU8ZLHdpXA0kQ2nzRyqO9gRmABehKw=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-Q-_05tqYMCOlGbaK__ZxFQ-1; Tue,
- 09 Sep 2025 12:57:37 -0400
-X-MC-Unique: Q-_05tqYMCOlGbaK__ZxFQ-1
-X-Mimecast-MFC-AGG-ID: Q-_05tqYMCOlGbaK__ZxFQ_1757437056
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-511-FMbmylTdOmObc010OEyBjg-1; Tue,
+ 09 Sep 2025 12:57:39 -0400
+X-MC-Unique: FMbmylTdOmObc010OEyBjg-1
+X-Mimecast-MFC-AGG-ID: FMbmylTdOmObc010OEyBjg_1757437059
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3013D18002C2; Tue,  9 Sep 2025 16:57:36 +0000 (UTC)
+ id 15A97180047F; Tue,  9 Sep 2025 16:57:39 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.45])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F1D331800446; Tue,  9 Sep 2025 16:57:33 +0000 (UTC)
+ id A31581800446; Tue,  9 Sep 2025 16:57:36 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -52,16 +52,17 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 02/15] qom: add tracking of security state of object types
-Date: Tue,  9 Sep 2025 17:57:13 +0100
-Message-ID: <20250909165726.3814465-3-berrange@redhat.com>
+Subject: [PATCH 03/15] machine: add 'require-secure' and 'prohibit-insecure'
+ properties
+Date: Tue,  9 Sep 2025 17:57:14 +0100
+Message-ID: <20250909165726.3814465-4-berrange@redhat.com>
 In-Reply-To: <20250909165726.3814465-1-berrange@redhat.com>
 References: <20250909165726.3814465-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,115 +87,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This introduces two new flags "secure" and "insecure" against
-the Type struct, and helpers to check this against the ObjectClass
-struct.
+Both default to 'false' to maintain the historical behaviour.
 
-An object type can be considered secure if it is either marked
-'secure', or is not marked 'insecure'. The gives an incremental
-path where the security status is undefined for most types, but
-with the possibility to require explicitly secure types, or
-exclude explicitly insecure types.
+If 'require-secure' is set to 'yes', then types which
+explicitly declare themselves as secure are required.
+
+If 'prohibit-insecure' is set to 'yes', then types which
+explicitly declare themselves as insecure are forbidden.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/qom/object.h | 24 ++++++++++++++++++++++++
- qom/object.c         | 19 +++++++++++++++++++
- 2 files changed, 43 insertions(+)
+ hw/core/machine.c   | 60 +++++++++++++++++++++++++++++++++++++++++++++
+ include/hw/boards.h |  5 ++++
+ 2 files changed, 65 insertions(+)
 
-diff --git a/include/qom/object.h b/include/qom/object.h
-index 26df6137b9..4b9c70f06f 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -453,6 +453,11 @@ struct Object
-  *   function.
-  * @abstract: If this field is true, then the class is considered abstract and
-  *   cannot be directly instantiated.
-+ * @secure: If this field is true, then the class is considered to provide
-+ *   a security boundary. If false, the security status is not defined.
-+ * @insecure: If this field is true, then the class is considered to NOT
-+ *   provide a security boundary. If false, the security status is not
-+ *   defined.
-  * @class_size: The size of the class object (derivative of #ObjectClass)
-  *   for this object.  If @class_size is 0, then the size of the class will be
-  *   assumed to be the size of the parent class.  This allows a type to avoid
-@@ -485,6 +490,8 @@ struct TypeInfo
-     void (*instance_finalize)(Object *obj);
- 
-     bool abstract;
-+    bool secure;
-+    bool insecure;
-     size_t class_size;
- 
-     void (*class_init)(ObjectClass *klass, const void *data);
-@@ -996,6 +1003,23 @@ const char *object_class_get_name(ObjectClass *klass);
-  */
- bool object_class_is_abstract(ObjectClass *klass);
- 
-+/**
-+ * object_class_is_secure:
-+ * @klass: The class to check security of
-+ *
-+ * Returns: %true if @klass is declared to be secure, %false if not declared
-+ */
-+bool object_class_is_secure(ObjectClass *klass);
-+
-+
-+/**
-+ * object_class_is_insecure:
-+ * @klass: The class to check security of
-+ *
-+ * Returns: %true if @klass is declared to be insecure, %false if not declared
-+ */
-+bool object_class_is_insecure(ObjectClass *klass);
-+
- /**
-  * object_class_by_name:
-  * @typename: The QOM typename to obtain the class for.
-diff --git a/qom/object.c b/qom/object.c
-index a654765e0a..a516ea0fea 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -47,6 +47,8 @@ struct InterfaceImpl
- 
- enum TypeImplFlags {
-     TYPE_IMPL_FLAG_ABSTRACT = (1 << 0),
-+    TYPE_IMPL_FLAG_SECURE = (1 << 1),
-+    TYPE_IMPL_FLAG_INSECURE = (1 << 2),
- };
- 
- struct TypeImpl
-@@ -134,6 +136,13 @@ static TypeImpl *type_new(const TypeInfo *info)
-     if (info->abstract) {
-         ti->flags |= TYPE_IMPL_FLAG_ABSTRACT;
-     }
-+    assert(!(info->secure && info->insecure));
-+    if (info->secure) {
-+        ti->flags |= TYPE_IMPL_FLAG_SECURE;
-+    }
-+    if (info->insecure) {
-+        ti->flags |= TYPE_IMPL_FLAG_INSECURE;
-+    }
- 
-     for (i = 0; info->interfaces && info->interfaces[i].type; i++) {
-         ti->interfaces[i].typename = g_strdup(info->interfaces[i].type);
-@@ -1054,6 +1063,16 @@ bool object_class_is_abstract(ObjectClass *klass)
-     return klass->type->flags & TYPE_IMPL_FLAG_ABSTRACT;
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 38c949c4f2..b43c315bab 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -440,6 +440,34 @@ static void machine_set_dump_guest_core(Object *obj, bool value, Error **errp)
+     ms->dump_guest_core = value;
  }
  
-+bool object_class_is_secure(ObjectClass *klass)
++static bool machine_get_require_secure(Object *obj, Error **errp)
 +{
-+    return klass->type->flags & TYPE_IMPL_FLAG_SECURE;
++    MachineState *ms = MACHINE(obj);
++
++    return ms->require_secure;
 +}
 +
-+bool object_class_is_insecure(ObjectClass *klass)
++static void machine_set_require_secure(Object *obj, bool value, Error **errp)
 +{
-+    return klass->type->flags & TYPE_IMPL_FLAG_INSECURE;
++    MachineState *ms = MACHINE(obj);
++
++    ms->require_secure = value;
 +}
 +
- const char *object_class_get_name(ObjectClass *klass)
++static bool machine_get_prohibit_insecure(Object *obj, Error **errp)
++{
++    MachineState *ms = MACHINE(obj);
++
++    return ms->prohibit_insecure;
++}
++
++static void machine_set_prohibit_insecure(Object *obj, bool value, Error **errp)
++{
++    MachineState *ms = MACHINE(obj);
++
++    ms->prohibit_insecure = value;
++}
++
+ static bool machine_get_mem_merge(Object *obj, Error **errp)
  {
-     return klass->type->name;
+     MachineState *ms = MACHINE(obj);
+@@ -1245,6 +1273,17 @@ static void machine_class_init(ObjectClass *oc, const void *data)
+         NULL, NULL);
+     object_class_property_set_description(oc, "memory",
+         "Memory size configuration");
++
++    object_class_property_add_bool(oc, "require-secure",
++        machine_get_require_secure, machine_set_require_secure);
++    object_class_property_set_description(oc, "require-secure",
++        "Define whether explicitly secure impls are required");
++
++    object_class_property_add_bool(oc, "prohibit-insecure",
++        machine_get_prohibit_insecure, machine_set_prohibit_insecure);
++    object_class_property_set_description(oc, "prohibit-insecure",
++        "Define whether explicitly insecure impls are prohibited");
++
+ }
+ 
+ static void machine_class_base_init(ObjectClass *oc, const void *data)
+@@ -1269,6 +1308,8 @@ static void machine_initfn(Object *obj)
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
+ 
+     ms->dump_guest_core = true;
++    ms->require_secure = false;
++    ms->prohibit_insecure = false;
+     ms->mem_merge = (QEMU_MADV_MERGEABLE != QEMU_MADV_INVALID);
+     ms->enable_graphics = true;
+     ms->kernel_cmdline = g_strdup("");
+@@ -1362,6 +1403,25 @@ bool machine_dump_guest_core(MachineState *machine)
+     return machine->dump_guest_core;
+ }
+ 
++bool machine_check_security(MachineState *machine,
++                            ObjectClass *cls,
++                            Error **errp)
++{
++    if (machine->require_secure &&
++        !object_class_is_secure(cls)) {
++        error_setg(errp, "Type '%s' is not declared as secure",
++                   object_class_get_name(cls));
++        return false;
++    }
++    if (machine->prohibit_insecure &&
++        object_class_is_insecure(cls)) {
++        error_setg(errp, "Type '%s' is declared as insecure",
++                   object_class_get_name(cls));
++        return false;
++    }
++    return true;
++}
++
+ bool machine_mem_merge(MachineState *machine)
+ {
+     return machine->mem_merge;
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 665b620121..61f6942016 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -36,6 +36,9 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+ bool machine_usb(MachineState *machine);
+ int machine_phandle_start(MachineState *machine);
+ bool machine_dump_guest_core(MachineState *machine);
++bool machine_check_security(MachineState *machine,
++                            ObjectClass *cls,
++                            Error **errp);
+ bool machine_mem_merge(MachineState *machine);
+ bool machine_require_guest_memfd(MachineState *machine);
+ HotpluggableCPUList *machine_query_hotpluggable_cpus(MachineState *machine);
+@@ -403,6 +406,8 @@ struct MachineState {
+     int phandle_start;
+     char *dt_compatible;
+     bool dump_guest_core;
++    bool require_secure;
++    bool prohibit_insecure;
+     bool mem_merge;
+     bool usb;
+     bool usb_disabled;
 -- 
 2.50.1
 
