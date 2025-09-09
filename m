@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B53B4FBFF
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 751F6B4FC0E
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:06:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvxzN-0001Gp-KR; Tue, 09 Sep 2025 09:02:26 -0400
+	id 1uvy0l-0002dW-LG; Tue, 09 Sep 2025 09:03:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-2025090912510459b87fe0390002071b-k57wGR@rts-flowmailer.siemens.com>)
- id 1uvxyd-0000Vi-3S
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:01:41 -0400
-Received: from mta-65-226.siemens.flowmailer.net ([185.136.65.226])
+ <fm-294854-202509091251056de098b57a000207bb-gl7lKv@rts-flowmailer.siemens.com>)
+ id 1uvxyk-0000d7-LM
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:01:48 -0400
+Received: from mta-64-228.siemens.flowmailer.net ([185.136.64.228])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-2025090912510459b87fe0390002071b-k57wGR@rts-flowmailer.siemens.com>)
- id 1uvxyU-0003qC-ME
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:01:37 -0400
-Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id
- 2025090912510459b87fe0390002071b for <qemu-devel@nongnu.org>;
- Tue, 09 Sep 2025 14:51:04 +0200
+ <fm-294854-202509091251056de098b57a000207bb-gl7lKv@rts-flowmailer.siemens.com>)
+ id 1uvxyY-0003qD-2h
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:01:46 -0400
+Received: by mta-64-228.siemens.flowmailer.net with ESMTPSA id
+ 202509091251056de098b57a000207bb for <qemu-devel@nongnu.org>;
+ Tue, 09 Sep 2025 14:51:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
  d=siemens.com; i=jan.kiszka@siemens.com;
  h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=9hvqbXXknAWKoD8HDVYgVeJRmyNtPk4inrajVRBMyzE=;
- b=BinCEmiVkR95p/JZAW4+UpvFGbLlSlm3vrRoAi5HHxuDyWHtCM3uO7ddHuh3l3AFSJTMYa
- fcCthlJPLKxnLcg00emg/0mXuqAOTuMtDywefw/soQG9f8oKCTU/fpdvT/+uEl4qOiMg6rf5
- p/2H6QqGi/dddbpdHR7mYtZQKlfmFHpg6xNyDmIYJ79q0pbGtXg6RW8ZX4nFqgrd2JY6VqTl
- 07GUQp8Xgy4dUjkvfGm5N2EuEJ3rhWqyTx2qLq46SIwPKY42bVTHPzmwcabUIZpihptnQdYu
- llJyhLMKojG4MJfdvaYEu2pAlOi9Af/65hkEamaNfoXEX+aE8DGViPlg==;
+ bh=XpaUSmy2KFxJ62o1P2/KscwGD+F4kB8tiYPURuiobxA=;
+ b=inlswZ0qNAX4s7VC8ud40XH0NocCihvqg513x2n40S+Svi2VRclI1HRoYEFrOdDb1LXgG4
+ DZIld8+gBQPpNxa1Guf6smXyGU1j6r9axJdf6RzzAirDaPiF4nv1+8cplbkCjBnkmHuz9u9A
+ D1RnTS1+4AnCFTfF/4i56ostD4P3XOOEPtJs/8Bx4eZpGNC7tPUlQ8kI050cUtrJST0i+6AO
+ xuGNg0S71ZXtJAXV9OdKc/8XtFBl9U7CAgQpJEXP2D1igyeJV6G08ZApYRgBsOjdkA8efT8V
+ bk3uddBkRzTZUY9KKaA7Ou7nhpUJXAZkjUQSn6yKiFa2GpPFQa4GvEnw==;
 From: Jan Kiszka <jan.kiszka@siemens.com>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -39,18 +39,19 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Ilias Apalodimas <ilias.apalodimas@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Jan=20L=C3=BCbbe?= <jlu@pengutronix.de>
-Subject: [PATCH v3 4/6] hw/sd/sdcard: Handle RPMB MAC field
-Date: Tue,  9 Sep 2025 14:50:54 +0200
-Message-ID: <74a88a98199b41a1e53eac19421f38650b045b9b.1757422256.git.jan.kiszka@siemens.com>
+Subject: [PATCH v3 5/6] scripts: Add helper script to generate eMMC block
+ device images
+Date: Tue,  9 Sep 2025 14:50:55 +0200
+Message-ID: <77a3652687a7ebc7451326cdc7d2c66722e6a223.1757422256.git.jan.kiszka@siemens.com>
 In-Reply-To: <cover.1757422256.git.jan.kiszka@siemens.com>
 References: <cover.1757422256.git.jan.kiszka@siemens.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Flowmailer-Platform: Siemens
 Feedback-ID: 519:519-294854:519-21489:flowmailer
-Received-SPF: pass client-ip=185.136.65.226;
- envelope-from=fm-294854-2025090912510459b87fe0390002071b-k57wGR@rts-flowmailer.siemens.com;
- helo=mta-65-226.siemens.flowmailer.net
+Received-SPF: pass client-ip=185.136.64.228;
+ envelope-from=fm-294854-202509091251056de098b57a000207bb-gl7lKv@rts-flowmailer.siemens.com;
+ helo=mta-64-228.siemens.flowmailer.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -58,7 +59,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,151 +77,222 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jan Kiszka <jan.kiszka@siemens.com>
 
-Implement correct setting of the MAC field when passing RPMB frames back
-to the guest. Also check the MAC on authenticated write requests.
-
-This depends on HMAC support for QCRYPTO_HASH_ALGO_SHA256 which is
-always available via glib - assert this, just to be safe.
+As an eMMC block device image may consist of more than just the user
+data partition, provide a helper script that can compose the image from
+boot partitions, an RPMB partition and the user data image. The script
+also does the required size validation and/or rounding.
 
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- hw/sd/sd.c | 81 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ scripts/mkemmc.sh | 199 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 199 insertions(+)
+ create mode 100755 scripts/mkemmc.sh
 
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index f7e41512a1..0656d7a374 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -51,6 +51,7 @@
- #include "qemu/module.h"
- #include "sdmmc-internal.h"
- #include "trace.h"
-+#include "crypto/hmac.h"
- 
- //#define DEBUG_SD 1
- 
-@@ -118,6 +119,7 @@ typedef struct SDProto {
- } SDProto;
- 
- #define RPMB_KEY_MAC_LEN    32
-+#define RPMB_HASH_LEN       284
- 
- typedef struct {
-     uint8_t stuff_bytes[196];
-@@ -1120,6 +1122,66 @@ static void sd_blk_write(SDState *sd, uint64_t addr, uint32_t len)
-     }
- }
- 
-+static bool rpmb_calc_hmac(SDState *sd, RPMBDataFrame *frame,
-+                           unsigned int num_blocks, uint8_t *mac)
-+{
-+    size_t mac_len = RPMB_KEY_MAC_LEN;
-+    bool success = true;
-+    Error *err = NULL;
-+    QCryptoHmac *hmac;
-+    uint64_t addr;
+diff --git a/scripts/mkemmc.sh b/scripts/mkemmc.sh
+new file mode 100755
+index 0000000000..0532517011
+--- /dev/null
++++ b/scripts/mkemmc.sh
+@@ -0,0 +1,199 @@
++#!/bin/sh -e
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Create eMMC block device image from boot, RPMB and user data images
++#
++# Copyright (c) Siemens, 2025
++#
++# Authors:
++#  Jan Kiszka <jan.kiszka@siemens.com>
++#
++# This work is licensed under the terms of the GNU GPL version 2.
++# See the COPYING file in the top-level directory.
++#
 +
-+    hmac = qcrypto_hmac_new(QCRYPTO_HASH_ALGO_SHA256, sd->rpmb_key,
-+                            RPMB_KEY_MAC_LEN, &err);
-+    if (!hmac) {
-+        error_report_err(err);
-+        return false;
-+    }
-+
-+    /*
-+     * This implies a read request because we only support single-block write
-+     * requests so far.
-+     */
-+    if (num_blocks > 1) {
-+        /*
-+         * Unfortunately, the underlying crypto libraries do not allow us to
-+         * migrate an active QCryptoHmac state. Therefore, we have to calculate
-+         * the HMAC in one run. To avoid buffering a complete read sequence in
-+         * SDState, reconstruct all frames except for the last one.
-+         */
-+        char *buf = (char *)sd->data;
-+
-+        memcpy(buf, frame->data, RPMB_HASH_LEN);
-+        addr = be16_to_cpu(frame->address) * 256 + sd_part_offset(sd);
-+        do {
-+            if (blk_pread(sd->blk, addr, 256, buf, 0) < 0) {
-+                fprintf(stderr, "sd_blk_read: read error on host side\n");
-+                success = false;
-+                break;
-+            }
-+            if (qcrypto_hmac_bytes(hmac, buf, RPMB_HASH_LEN, NULL, NULL,
-+                                   &err) < 0) {
-+                error_report_err(err);
-+                success = false;
-+                break;
-+            }
-+            addr += 256;
-+        } while (--num_blocks > 1);
-+    }
-+
-+    if (success &&
-+        qcrypto_hmac_bytes(hmac, (const char*)frame->data, RPMB_HASH_LEN, &mac,
-+                           &mac_len, &err) < 0) {
-+        error_report_err(err);
-+        success = false;
-+    }
-+    assert(!success || mac_len == RPMB_KEY_MAC_LEN);
-+
-+    qcrypto_hmac_free(hmac);
-+
-+    return success;
++usage() {
++    echo "$0 [OPTIONS] USER_IMG[:SIZE] OUTPUT_IMG"
++    echo ""
++    echo "SIZE must be a power of 2 up to 2G and multiples of 512 byte from there on."
++    echo "If no SIZE is specified, the size of USER_ING will be used (rounded up)."
++    echo ""
++    echo "Supported options:"
++    echo "  -b BOOT1_IMG[:SIZE]   Add boot partitions. SIZE must be multiples of 128K. If"
++    echo "                          no SIZE is specified, the size of BOOT_IMG will be"
++    echo "                          used (rounded up). BOOT1_IMG will be stored in boot"
++    echo "                          partition 1, and a boot partition 2 of the same size"
++    echo "                          will be created as empty (all zeros) unless -B is"
++    echo "                          specified as well."
++    echo "  -B BOOT2_IMG          Fill boot partition 2 with BOOT2_IMG. Must be combined"
++    echo "                          with -b which is also defining the partition size."
++    echo "  -r RPMB_IMG[:SIZE]    Add RPMB partition. SIZE must be multiples of 128K. If"
++    echo "                          no SIZE is specified, the size of RPMB_IMG will be"
++    echo "                          used (rounded up)."
++    echo "  -h, --help            This help"
++    echo ""
++    echo "All SIZE parameters support the units K, M, G. If SIZE is smaller than the"
++    echo "associated image, it will be truncated in the output image."
++    exit "$1"
 +}
 +
- static void emmc_rpmb_blk_read(SDState *sd, uint64_t addr, uint32_t len)
- {
-     uint16_t resp = be16_to_cpu(sd->rpmb_result.req_resp);
-@@ -1142,6 +1204,17 @@ static void emmc_rpmb_blk_read(SDState *sd, uint64_t addr, uint32_t len)
-             sd->rpmb_result.result = cpu_to_be16(RPMB_RESULT_READ_FAILURE |
-                 (result & RPMB_RESULT_COUTER_EXPIRED));
-         }
-+        if (sd->multi_blk_cnt == 1 &&
-+            !rpmb_calc_hmac(sd, &sd->rpmb_result,
-+                            be16_to_cpu(sd->rpmb_result.block_count),
-+                            sd->rpmb_result.key_mac)) {
-+            memset(sd->rpmb_result.data, 0, sizeof(sd->rpmb_result.data));
-+            sd->rpmb_result.result = cpu_to_be16(RPMB_RESULT_AUTH_FAILURE);
-+        }
-+    } else if (!rpmb_calc_hmac(sd, &sd->rpmb_result, 1,
-+                               sd->rpmb_result.key_mac)) {
-+        memset(sd->rpmb_result.data, 0, sizeof(sd->rpmb_result.data));
-+        sd->rpmb_result.result = cpu_to_be16(RPMB_RESULT_AUTH_FAILURE);
-     }
-     memcpy(sd->data, &sd->rpmb_result, sizeof(sd->rpmb_result));
- 
-@@ -1153,6 +1226,7 @@ static void emmc_rpmb_blk_write(SDState *sd, uint64_t addr, uint32_t len)
- {
-     RPMBDataFrame *frame = (RPMBDataFrame *)sd->data;
-     uint16_t req = be16_to_cpu(frame->req_resp);
-+    uint8_t mac[RPMB_KEY_MAC_LEN];
- 
-     if (req == RPMB_REQ_READ_RESULT) {
-         /* just return the current result register */
-@@ -1190,6 +1264,11 @@ static void emmc_rpmb_blk_write(SDState *sd, uint64_t addr, uint32_t len)
-             sd->rpmb_result.result = cpu_to_be16(RPMB_RESULT_WRITE_FAILURE);
-             break;
-         }
-+        if (!rpmb_calc_hmac(sd, frame, 1, mac) ||
-+            memcmp(frame->key_mac, mac, RPMB_KEY_MAC_LEN) != 0) {
-+            sd->rpmb_result.result = cpu_to_be16(RPMB_RESULT_AUTH_FAILURE);
-+            break;
-+        }
-         if (be32_to_cpu(frame->write_counter) != sd->rpmb_write_counter) {
-             sd->rpmb_result.result = cpu_to_be16(RPMB_RESULT_COUNTER_FAILURE);
-             break;
-@@ -3114,6 +3193,8 @@ static void emmc_class_init(ObjectClass *klass, const void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     SDCardClass *sc = SDMMC_COMMON_CLASS(klass);
- 
-+    assert(qcrypto_hmac_supports(QCRYPTO_HASH_ALGO_SHA256));
++process_size() {
++    name=$1
++    image_file=$2
++    alignment=$3
++    image_arg=$4
++    if [ "${image_arg#*:}" = "$image_arg"  ]; then
++        if ! size=$(stat -L -c %s "$image_file" 2>/dev/null); then
++            echo "Missing $name image '$image_file'." >&2
++            exit 1
++        fi
++        if [ "$alignment" = 128 ]; then
++            size=$(( (size + 128 * 1024 - 1) & ~(128 * 1024 - 1) ))
++        elif [ $size -gt $((2 * 1024 * 1024 * 1024)) ]; then
++            size=$(( (size + 511) & ~511 ))
++        elif [ $(( size & (size - 1) )) -gt 0 ]; then
++            n=0
++            while [ "$size" -gt 0 ]; do
++                size=$((size >> 1))
++                n=$((n + 1))
++            done
++            size=$((1 << n))
++        fi
++    else
++        value="${image_arg#*:}"
++        if [ "${value%K}" != "$value" ]; then
++            size=${value%K}
++            multiplier=1024
++        elif [ "${value%M}" != "$value" ]; then
++            size=${value%M}
++            multiplier=$((1024 * 1024))
++        elif [ "${value%G}" != "$value" ]; then
++            size=${value%G}
++            multiplier=$((1024 * 1024 * 1024))
++        else
++            size=$value
++            multiplier=1
++        fi
++        if [ "$size" -eq "$size" ] 2>/dev/null; then
++            size=$((size * multiplier))
++        else
++            echo "Invalid value '$value' specified for $image_file image size." >&2
++            exit 1
++        fi
++        if [ "$alignment" = 128 ]; then
++            if [ $(( size & (128 * 1024 - 1) )) -ne 0 ]; then
++                echo "The $name image size must be multiples of 128K." >&2
++                exit 1
++            fi
++        elif [ $size -gt $((2 * 1024 * 1024 * 1024)) ]; then
++            if [ $(( size & 511)) -ne 0 ]; then
++                echo "The $name image size must be multiples of 512 (if >2G)." >&2
++                exit 1
++            fi
++        elif [ $(( size & (size - 1) )) -gt 0 ]; then
++            echo "The $name image size must be power of 2 (up to 2G)." >&2
++            exit 1
++        fi
++    fi
++    echo $size
++}
 +
-     dc->desc = "eMMC";
-     dc->realize = emmc_realize;
-     device_class_set_props(dc, emmc_properties);
++userimg=
++outimg=
++bootimg1=
++bootimg2=/dev/zero
++bootsz=0
++rpmbimg=
++rpmbsz=0
++
++while [ $# -gt 0 ]; do
++    case "$1" in
++        -b)
++            shift
++            [ $# -ge 1 ] || usage 1
++            bootimg1=${1%%:*}
++            bootsz=$(process_size boot "$bootimg1" 128 "$1")
++            shift
++            ;;
++        -B)
++            shift
++            [ $# -ge 1 ] || usage 1
++            bootimg2=$1
++            shift
++            ;;
++        -r)
++            shift
++            [ $# -ge 1 ] || usage 1
++            rpmbimg=${1%%:*}
++            rpmbsz=$(process_size RPMB "$rpmbimg" 128 "$1")
++            shift
++            ;;
++        -h|--help)
++            usage 0
++            ;;
++        *)
++            if [ -z "$userimg" ]; then
++                userimg=${1%%:*}
++                usersz=$(process_size user "$userimg" U "$1")
++            elif [ -z "$outimg" ]; then
++                outimg=$1
++            else
++                usage 1
++            fi
++            shift
++            ;;
++    esac
++done
++
++[ -n "$outimg" ] || usage 1
++
++if [ "$bootsz" -gt $((32640 * 1024)) ]; then
++    echo "Boot image size is larger than 32640K." >&2
++    exit 1
++fi
++if [ "$rpmbsz" -gt $((16384 * 1024)) ]; then
++    echo "RPMB image size is larger than 16384K." >&2
++    exit 1
++fi
++
++echo "Creating eMMC image"
++
++truncate "$outimg" -s 0
++pos=0
++
++if [ "$bootsz" -gt 0 ]; then
++    echo "  Boot partition 1 and 2:   $((bootsz / 1024))K each"
++    blocks=$(( bootsz / (128 * 1024) ))
++    dd if="$bootimg1" of="$outimg" conv=sparse bs=128K count=$blocks \
++        status=none
++    dd if="$bootimg2" of="$outimg" conv=sparse bs=128K count=$blocks \
++        seek=$blocks status=none
++    pos=$((2 * bootsz))
++fi
++
++if [ "$rpmbsz" -gt 0 ]; then
++    echo "  RPMB partition:           $((rpmbsz / 1024))K"
++    blocks=$(( rpmbsz / (128 * 1024) ))
++    dd if="$rpmbimg" of="$outimg" conv=sparse bs=128K count=$blocks \
++        seek=$(( pos / (128 * 1024) )) status=none
++    pos=$((pos + rpmbsz))
++fi
++
++if [ "$usersz" -lt 1024 ]; then
++    echo "  User data:                $usersz bytes"
++elif [ "$usersz" -lt $((1024 * 1024)) ]; then
++    echo "  User data:                $(( (usersz + 1023) / 1024 ))K ($usersz)"
++elif [ "$usersz" -lt $((1024 * 1024 * 1024)) ]; then
++    echo "  User data:                $(( (usersz + 1048575) / 1048576))M ($usersz)"
++else
++    echo "  User data:                $(( (usersz + 1073741823) / 1073741824))G ($usersz)"
++fi
++dd if="$userimg" of="$outimg" conv=sparse bs=128K seek=$(( pos / (128 * 1024) )) \
++    count=$(( (usersz + 128 * 1024 - 1) / (128 * 1024) )) status=none
++pos=$((pos + usersz))
++truncate "$outimg" -s $pos
++
++echo ""
++echo "Instantiate by appending to the qemu command line:"
++echo "  -drive file=$outimg,if=none,format=raw,id=emmc-img"
++echo "  -device emmc,boot-partition-size=$bootsz,rpmb-partition-size=$rpmbsz,drive=emmc-img"
 -- 
 2.51.0
 
