@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BAF3B508CA
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 00:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3920B508CC
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 00:16:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uw6a5-0007Uf-PX; Tue, 09 Sep 2025 18:12:53 -0400
+	id 1uw6aC-0007Vx-At; Tue, 09 Sep 2025 18:13:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3C6bAaAYKCqYeaHOTfMUUMRK.IUSWKSa-JKbKRTUTMTa.UXM@flex--yubinz.bounces.google.com>)
- id 1uw6Yq-0007DQ-3l
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 18:11:36 -0400
+ <3DKbAaAYKCqcfbIPUgNVVNSL.JVTXLTb-KLcLSUVUNUb.VYN@flex--yubinz.bounces.google.com>)
+ id 1uw6Yy-0007F1-QK
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 18:11:44 -0400
 Received: from mail-pl1-x64a.google.com ([2607:f8b0:4864:20::64a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3C6bAaAYKCqYeaHOTfMUUMRK.IUSWKSa-JKbKRTUTMTa.UXM@flex--yubinz.bounces.google.com>)
- id 1uw6Yj-0004yj-HF
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 18:11:34 -0400
+ <3DKbAaAYKCqcfbIPUgNVVNSL.JVTXLTb-KLcLSUVUNUb.VYN@flex--yubinz.bounces.google.com>)
+ id 1uw6Yj-0004z0-Eh
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 18:11:40 -0400
 Received: by mail-pl1-x64a.google.com with SMTP id
- d9443c01a7336-24457ef983fso134886065ad.0
- for <qemu-devel@nongnu.org>; Tue, 09 Sep 2025 15:11:25 -0700 (PDT)
+ d9443c01a7336-24458345f5dso85438635ad.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Sep 2025 15:11:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1757455884; x=1758060684; darn=nongnu.org;
+ d=google.com; s=20230601; t=1757455885; x=1758060685; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=veTE+2XQh+j1qKlXBCLzdOyXX94ZOtbuYk0ocRxomvg=;
- b=NyjRAdzT/Iy8jxtIviPMugi9cDJjjUN3jVh/PqX/4yvdzNGfnBPoyhPnKt8G5TXE6I
- I5udJJOU2l9LylXmf6sBOB0ttPb0FtjGaQ+ssL3JSCIa7oy/SbtX4GnTA2NjpDVTTEdH
- 66qCb1qbtVnZcCj8G0lZny9wPoIRzl0OtqRiEkvLgCo1sUQZiqbJbTnKGxbIkA9tjzA3
- xWJ6dvqyKEge92K1FhZRSNEtndZ7RaEjJdarg5KInqY7WWv6J45yPHz5f3J3QLo6rkbw
- CHI322NWfuDT0Obe8I2R9poztIDwucKOF892fmQ14ZOCmPKYHwZCxGvyaiBkIvZAPgGi
- A3Iw==
+ bh=y1f9cfNY7Q/+WX35vwzn1MYw5xAv3EW6lz/FRvicoaE=;
+ b=dph3YlkMIDWoOc2VLeMVUW4fV+Jfhci6QXEz+fVcHvtPj5Qm9HoeWyioqNBVw8oK/J
+ iX0RpWAbModiQNNtT/ubhB2WChaHet0AaGK9bpXw+yoEtxHJv6rGcX7fMN04sARnDWsY
+ qwcZuaCDba2vKLEZXzt4W6T0BYrfzJ0qqxiJk/7cWj55J5HkuwlaB1VdFS2OGoCHbHda
+ YTpE4S+QClmCNTPhRyHU1+C8hn7jJmGSxfx6Aq/+EPOjQk4p2GtE9t/Mln8D3nHcxWft
+ cjBlYpZcR7AefbcRhkabcel2ZSnzMJdqY1bCvfoAnDK4spHFJsuBJPyiKkSQggwoMCrC
+ uz/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757455884; x=1758060684;
+ d=1e100.net; s=20230601; t=1757455885; x=1758060685;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=veTE+2XQh+j1qKlXBCLzdOyXX94ZOtbuYk0ocRxomvg=;
- b=jtY9jz51kdgJVNL13SYDhJhE3LbvA697ZRfkh9QmUJoiMhGqayqXykns3sg2XOmbLW
- K1v7Nahym+FCOXc9/kRqu1c36mJ6tUsVOeB8eb83xZXdcet10ALzbu9AT9HcDJQ+40D6
- pF0CMKjXGXiRDD6m34U0nlzqiHk5wJcTvcHD+2HfRrGIOAKxMLpL557HZX08q3hKT7vo
- iElaB1RuFrhZ6s/j7bcdm9wy2TDsbImuEGFBQRI4DXIJd92D6mlG/e9XkSitVvielL9P
- SjYhfwGyj5h1p5gk7JKRrLp9X2w3jO9l3cy349/bHUO0fV9RNutwviVd2WAubXvhSaxW
- L9MA==
-X-Gm-Message-State: AOJu0Yyk/jpf4oR8GHmfksGOETDfpVSHWMtvfR2AVDWLf+t20eYsvDPv
- QlDIvAFb1PiTF4z+Xr3eq7LK/SxoBnN1+Z5vbdntC7udGcFfTRGROVjygIRUX7aiiKidyvjiv4Y
- yjxsO61zNEK92H3JACDXLp4rABvLDCNHvKtnYwA690yoYKijMzZwFkUk7g/wHNqD53VjHzTGyhQ
- xJGOquL20D/qrt1+yFfIIfW5ix3aTAhRXaEtc=
-X-Google-Smtp-Source: AGHT+IGTj+K55h4A9LdELTjIDABklNLLho407j6YgTz7G+bLMuxk1M8SKBnsSe6eCnOwST5VhpmmP08McHs=
-X-Received: from plnw11.prod.google.com ([2002:a17:902:da4b:b0:24c:cd65:485a])
+ bh=y1f9cfNY7Q/+WX35vwzn1MYw5xAv3EW6lz/FRvicoaE=;
+ b=cM972Zn0QhHyMelWtqtHySVLDptqavO3GdpNQt0w098ZMhjVAf2+MxDMlWkVU1l91l
+ qepa0kHoFiHG+7S1FlwCd7j2198KNFy6TcGUO+u4OWHsGE1ntEtG4aNdsEL/UlnLtO9C
+ csXsiq1OA4qslucoZuuv2MJXylSvDSOzyoKx0ZZJGXyduw5uoJsckAdxFFZ/yLBk65Ls
+ dJHlZJwcg5+fOD7fBR8vjxFjlmy7ZtAnrQhAo2fOBjM5iMzJmbC573PMJVvRfSFf44xv
+ VDnJ+bsHrmcpdMSPF33umz8XAQtuyDfFPigQbAowJ1z4tXL0stXr6QgOSBQeOpMAVIsS
+ HDeg==
+X-Gm-Message-State: AOJu0Yyi1COTWKNwNp370dmfp+4ra7kl+n1AzvSGB9YQC1Q1bAcHQZe9
+ Zwkmc4GKk2Xq03yeTTcKGcxZ5r9cTep0i327HKXUxZA2FTGXpU4LgdOgLDPCOnwJ46aBEeaOCM6
+ oNUn1GR3TK4FU4ibLFtrE0O2O+fKk8934U5cgU/6Zxdhu/z8um6GWyU4Fi3tpb7n/fzopTL0W89
+ DgZwtQbCpo7pE1MlSNbIGVmfuvqxCjxhAXPFU=
+X-Google-Smtp-Source: AGHT+IHpdvROGTyuB+3jBjukxYZIPmSpzYVyGYExF2kJfi3Ecdr2K2qeAL67tjQb9npMaPlbGBEyQJCv3Pw=
+X-Received: from plgv4.prod.google.com ([2002:a17:902:e8c4:b0:248:dc48:282b])
  (user=yubinz job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:e542:b0:249:c76:76db
- with SMTP id d9443c01a7336-2516ec71a4amr204662405ad.21.1757455883494; Tue, 09
- Sep 2025 15:11:23 -0700 (PDT)
-Date: Tue, 09 Sep 2025 22:10:56 +0000
+ 2002:a17:902:cf04:b0:248:79d4:93ae
+ with SMTP id d9443c01a7336-25172291a1dmr147543265ad.33.1757455884979; Tue, 09
+ Sep 2025 15:11:24 -0700 (PDT)
+Date: Tue, 09 Sep 2025 22:10:57 +0000
 In-Reply-To: <20250909-pcie-root-upstream-v1-0-d85883b2688d@google.com>
 Mime-Version: 1.0
 References: <20250909-pcie-root-upstream-v1-0-d85883b2688d@google.com>
 X-Mailer: b4 0.14.2
-Message-ID: <20250909-pcie-root-upstream-v1-1-d85883b2688d@google.com>
-Subject: [PATCH 1/7] hw/pci-host: implement Nuvoton PCIE Root Complex stub
+Message-ID: <20250909-pcie-root-upstream-v1-2-d85883b2688d@google.com>
+Subject: [PATCH 2/7] hw/pci-host: add basic Nuvoton PCIe window support
 From: Yubin Zou <yubinz@google.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>, 
@@ -70,17 +70,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Titus Rwantare <titusr@google.com>
 Content-Type: text/plain; charset="utf-8"
 Received-SPF: pass client-ip=2607:f8b0:4864:20::64a;
- envelope-from=3C6bAaAYKCqYeaHOTfMUUMRK.IUSWKSa-JKbKRTUTMTa.UXM@flex--yubinz.bounces.google.com;
+ envelope-from=3DKbAaAYKCqcfbIPUgNVVNSL.JVTXLTb-KLcLSUVUNUb.VYN@flex--yubinz.bounces.google.com;
  helo=mail-pl1-x64a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 09 Sep 2025 18:12:44 -0400
+X-Mailman-Approved-At: Tue, 09 Sep 2025 18:12:49 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,285 +96,402 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Titus Rwantare <titusr@google.com>
 
-   create a basic device to introduce the root complex registers and
-   respond to its mmio configuration accesses
+Adds the windowing registers without address translation
 
 Signed-off-by: Titus Rwantare <titusr@google.com>
 ---
- hw/pci-host/Kconfig               |   4 +
- hw/pci-host/meson.build           |   1 +
- hw/pci-host/npcm_pcierc.c         | 164 ++++++++++++++++++++++++++++++++++++++
- hw/pci-host/trace-events          |   4 +
- include/hw/pci-host/npcm_pcierc.h |  55 +++++++++++++
- 5 files changed, 228 insertions(+)
+ hw/pci-host/npcm_pcierc.c         | 223 +++++++++++++++++++++++++++++++++++++-
+ include/hw/pci-host/npcm_pcierc.h |  77 ++++++++++++-
+ 2 files changed, 297 insertions(+), 3 deletions(-)
 
-diff --git a/hw/pci-host/Kconfig b/hw/pci-host/Kconfig
-index 9824fa188d6b8865dcf7b069f2c16f269b211aa0..1d726b6e05c732b69e22aa2883892aaeaed129fa 100644
---- a/hw/pci-host/Kconfig
-+++ b/hw/pci-host/Kconfig
-@@ -108,3 +108,7 @@ config GT64120
-     select PCI
-     select EMPTY_SLOT
-     select I8259
-+
-+config NPCM_PCIERC
-+    bool
-+    select PCI_EXPRESS
-diff --git a/hw/pci-host/meson.build b/hw/pci-host/meson.build
-index 937a0f72acf940f963fc683ab52a5f8b80657ca3..2c0a49cbc5102110f7d92e279df1ad4654570332 100644
---- a/hw/pci-host/meson.build
-+++ b/hw/pci-host/meson.build
-@@ -30,6 +30,7 @@ pci_ss.add(when: 'CONFIG_MV64361', if_true: files('mv64361.c'))
- # ARM devices
- pci_ss.add(when: 'CONFIG_PCI_EXPRESS_FSL_IMX8M_PHY', if_true: files('fsl_imx8m_phy.c'))
- pci_ss.add(when: 'CONFIG_VERSATILE_PCI', if_true: files('versatile.c'))
-+pci_ss.add(when: 'CONFIG_NPCM_PCIERC', if_true: files('npcm_pcierc.c'))
- 
- # HPPA devices
- specific_ss.add(when: 'CONFIG_ASTRO', if_true: files('astro.c'))
 diff --git a/hw/pci-host/npcm_pcierc.c b/hw/pci-host/npcm_pcierc.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..3afe92e264f6ce4312e94f05b5e908840008df64
---- /dev/null
+index 3afe92e264f6ce4312e94f05b5e908840008df64..bffdec71acaba6562856b3bdd8aec07c3c153323 100644
+--- a/hw/pci-host/npcm_pcierc.c
 +++ b/hw/pci-host/npcm_pcierc.c
-@@ -0,0 +1,164 @@
-+/*
-+ * Nuvoton PCIe Root complex
-+ *
-+ * Copyright 2022 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/irq.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/pci-host/npcm_pcierc.h"
-+#include "qapi/error.h"
-+#include "qemu/log.h"
-+#include "qemu/units.h"
-+#include "qom/object.h"
-+#include "trace.h"
-+
-+static uint64_t npcm_pcierc_cfg_read(void *opaque, hwaddr addr, unsigned size)
+@@ -16,6 +16,193 @@
+ #include "qom/object.h"
+ #include "trace.h"
+ 
++/* Map enabled windows to a memory subregion */
++static void npcm_pcierc_map_enabled(NPCMPCIERCState *s, NPCMPCIEWindow *w)
 +{
-+    NPCMPCIERCState *s = NPCM_PCIERC(opaque);
-+    uint32_t ret = -1;
++    MemoryRegion *system = get_system_memory();
++    uint32_t size = NPCM_PCIERC_SAL_SIZE(w->sal);
++    hwaddr bar = ((uint64_t)w->sah) << 32 | (w->sal & 0xFFFFF000);
++    char name[26];
++
++    /* check if window is enabled */
++    if (!(w->sal & NPCM_PCIERC_SAL_EN)) {
++        return;
++    }
++
++    if (size > 2 * GiB || size < 4 * KiB) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Invalid PCI window size %d bytes\n",
++                      __func__, size);
++        return;
++    }
++
++    if (w->type == AXI2PCIE) {
++        snprintf(name, sizeof(name), "npcm-axi2pcie-window-%d", w->id);
++    } else if (w->type == PCIE2AXI) {
++        snprintf(name, sizeof(name), "npcm-pcie2axi-window-%d", w->id);
++    } else {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: unable to map uninitialized PCIe window",
++                      __func__);
++        return;
++    }
++
++    /* TODO: set subregion to target translation address */
++    /* add subregion starting at the window source address */
++    if (!memory_region_is_mapped(&w->mem)) {
++        memory_region_init(&w->mem, OBJECT(s), name, size);
++        memory_region_add_subregion(system, bar, &w->mem);
++    }
++}
++
++/* unmap windows marked as disabled */
++static void npcm_pcierc_unmap_disabled(NPCMPCIEWindow *w)
++{
++    MemoryRegion *system = get_system_memory();
++    /* Bit 0 in the Source address enables the window */
++    if (memory_region_is_mapped(&w->mem) && !(w->sal & NPCM_PCIERC_SAL_EN)) {
++        memory_region_del_subregion(system, &w->mem);
++    }
++}
++
++static void npcm_pcie_update_window_maps(NPCMPCIERCState *s)
++{
++    for (int i = 0; i < NPCM_PCIERC_NUM_PA_WINDOWS; i++) {
++        npcm_pcierc_unmap_disabled(&s->pcie2axi[i]);
++    }
++
++    for (int i = 0; i < NPCM_PCIERC_NUM_AP_WINDOWS; i++) {
++        npcm_pcierc_unmap_disabled(&s->axi2pcie[i]);
++    }
++
++    for (int i = 0; i < NPCM_PCIERC_NUM_AP_WINDOWS; i++) {
++        npcm_pcierc_map_enabled(s, &s->axi2pcie[i]);
++    }
++
++    for (int i = 0; i < NPCM_PCIERC_NUM_PA_WINDOWS; i++) {
++        npcm_pcierc_map_enabled(s, &s->pcie2axi[i]);
++    }
++}
++
++static NPCMPCIEWindow *npcm_pcierc_get_window(NPCMPCIERCState *s, hwaddr addr)
++{
++    NPCMPCIEWindow *window;
 +
 +    switch (addr) {
-+    case NPCM_PCIERC_RCCFGNUM:
-+        ret = s->rccfgnum;
++    case NPCM_PCIERC_PAnSAL(0) ... NPCM_PCIERC_PAnTP(1):
++        window = &s->pcie2axi[NPCM_PCIERC_PA_WINDOW(addr)];
 +        break;
 +
-+    case NPCM_PCIERC_INTEN:
-+        ret = s->rcinten;
-+        break;
-+
-+    case NPCM_PCIERC_INTST:
-+        ret = s->rcintstat;
-+        break;
-+
-+    case NPCM_PCIERC_IMSI_ADDR:
-+        ret = s->rcimsiaddr;
-+        break;
-+
-+    case NPCM_PCIERC_MSISTAT:
-+        ret = s->rcmsisstat;
-+        break;
-+
-+    case NPCM_PCIERC_AXI_ERROR_REPORT:
-+        ret = s->axierr;
++    case NPCM_PCIERC_APnSAL(0) ... NPCM_PCIERC_APnTP(4):
++        window = &s->axi2pcie[NPCM_PCIERC_AP_WINDOW(addr)];
 +        break;
 +
 +    default:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: read from unimplemented register 0x%04lx\n",
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: invalid window address 0x%lx\n",
 +                      __func__, addr);
-+        ret = -1;
-+        break;
++        return 0;
 +    }
-+    trace_npcm_pcierc_read(addr, size, ret);
-+    return ret;
++    return window;
 +}
 +
-+static void npcm_pcierc_cfg_write(void *opaque, hwaddr addr, uint64_t data,
-+                                  unsigned size)
++static int npcm_pcierc_get_window_offset(NPCMPCIEWindow *w, hwaddr addr)
 +{
-+    NPCMPCIERCState *s = NPCM_PCIERC(opaque);
++    if (w->type == AXI2PCIE) {
++        return addr & NPCM_PCIERC_AP_OFFSET_MASK;
++    } else if (w->type == PCIE2AXI) {
++        return addr & NPCM_PCIERC_PA_OFFSET_MASK;
++    } else {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: unable to access uninitialized PCIe window",
++                      __func__);
++        return -1;
++    }
++}
 +
-+    trace_npcm_pcierc_write(addr, size, data);
-+    switch (addr) {
-+    case NPCM_PCIERC_RCCFGNUM:
-+        s->rccfgnum = data;
++static uint32_t npcm_pcierc_read_window(NPCMPCIERCState *s, hwaddr addr)
++{
++    NPCMPCIEWindow *window = npcm_pcierc_get_window(s, addr);
++    int offset;
++
++    if (!window) {
++        return 0;
++    }
++
++    offset = npcm_pcierc_get_window_offset(window, addr);
++    if (offset < 0) {
++        return 0;
++    }
++
++    switch (offset) {
++    case NPCM_PCIERC_SAL_OFFSET:
++        return window->sal;
++
++    case NPCM_PCIERC_SAH_OFFSET:
++        return window->sah;
++
++    case NPCM_PCIERC_TAL_OFFSET:
++        return window->tal;
++
++    case NPCM_PCIERC_TAH_OFFSET:
++        return window->tah;
++
++    case NPCM_PCIERC_PARAM_OFFSET:
++        return window->params;
++
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: invalid window offset 0x%x\n",
++                      __func__, offset);
++        return 0;
++    }
++}
++
++static void npcm_pcierc_write_window(NPCMPCIERCState *s, hwaddr addr,
++                                     uint64_t data)
++{
++    NPCMPCIEWindow *window = npcm_pcierc_get_window(s, addr);
++    int offset;
++
++    if (!window) {
++        return;
++    }
++
++    offset = npcm_pcierc_get_window_offset(window, addr);
++    if (offset < 0) {
++        return;
++    }
++
++    switch (offset) {
++    case NPCM_PCIERC_SAL_OFFSET:
++        window->sal = data;
 +        break;
 +
-+    case NPCM_PCIERC_INTEN:
-+        s->rcinten = data;
++    case NPCM_PCIERC_SAH_OFFSET:
++        window->sah = data;
 +        break;
 +
-+    case NPCM_PCIERC_INTST:
-+        s->rcintstat &= ~data;
++    case NPCM_PCIERC_TAL_OFFSET:
++        window->tal = data;
 +        break;
 +
-+    case NPCM_PCIERC_IMSI_ADDR:
-+        s->rcimsiaddr = data;
++    case NPCM_PCIERC_TAH_OFFSET:
++        window->tah = data;
 +        break;
 +
-+    case NPCM_PCIERC_MSISTAT:
-+        s->rcmsisstat &= ~data;
-+        break;
-+
-+    case NPCM_PCIERC_AXI_ERROR_REPORT:
-+        s->axierr = data;
++    case NPCM_PCIERC_PARAM_OFFSET:
++        window->params = data;
 +        break;
 +
 +    default:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: write to unimplemented reg 0x%04lx data: 0x%lx\n",
-+                      __func__, addr, data);
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: invalid window offset 0x%x\n",
++                      __func__, offset);
++    }
++
++    npcm_pcie_update_window_maps(s);
++}
++
+ static uint64_t npcm_pcierc_cfg_read(void *opaque, hwaddr addr, unsigned size)
+ {
+     NPCMPCIERCState *s = NPCM_PCIERC(opaque);
+@@ -46,6 +233,10 @@ static uint64_t npcm_pcierc_cfg_read(void *opaque, hwaddr addr, unsigned size)
+         ret = s->axierr;
+         break;
+ 
++    case NPCM_PCIERC_PAnSAL(0) ... NPCM_PCIERC_APnTP(4):
++        ret = npcm_pcierc_read_window(s, addr);
 +        break;
++
+     default:
+         qemu_log_mask(LOG_UNIMP,
+                       "%s: read from unimplemented register 0x%04lx\n",
+@@ -88,6 +279,10 @@ static void npcm_pcierc_cfg_write(void *opaque, hwaddr addr, uint64_t data,
+         s->axierr = data;
+         break;
+ 
++    case NPCM_PCIERC_PAnSAL(0) ... NPCM_PCIERC_APnTP(4):
++        npcm_pcierc_write_window(s, addr, data);
++        break;
++
+     default:
+         qemu_log_mask(LOG_UNIMP,
+                       "%s: write to unimplemented reg 0x%04lx data: 0x%lx\n",
+@@ -96,6 +291,22 @@ static void npcm_pcierc_cfg_write(void *opaque, hwaddr addr, uint64_t data,
+     }
+ }
+ 
++static void npcm_pcierc_reset_pcie_windows(NPCMPCIERCState *s)
++{
++    memset(s->axi2pcie, 0, sizeof(s->axi2pcie));
++    memset(s->pcie2axi, 0, sizeof(s->pcie2axi));
++
++    for (int i = 0; i < NPCM_PCIERC_NUM_PA_WINDOWS; i++) {
++        s->pcie2axi[i].id = i;
++        s->pcie2axi[i].type = PCIE2AXI;
++    }
++
++    for (int i = 0; i < NPCM_PCIERC_NUM_AP_WINDOWS; i++) {
++        s->axi2pcie[i].id = i;
++        s->axi2pcie[i].type = AXI2PCIE;
 +    }
 +}
 +
-+static void npcm_pcierc_reset(Object *obj, ResetType type)
+ static void npcm_pcierc_reset(Object *obj, ResetType type)
+ {
+     NPCMPCIERCState *s = NPCM_PCIERC(obj);
+@@ -106,6 +317,8 @@ static void npcm_pcierc_reset(Object *obj, ResetType type)
+     s->rcimsiaddr = 0;
+     s->rcmsisstat = 0;
+     s->axierr = 0;
++
++    npcm_pcierc_reset_pcie_windows(s);
+ }
+ 
+ static const char *npcm_pcierc_root_bus_path(PCIHostState *host_bridge,
+@@ -136,6 +349,13 @@ static void npcm_pcierc_realize(DeviceState *dev, Error **errp)
+     sysbus_init_irq(sbd, &s->irq);
+ }
+ 
++static void npcm_pcierc_instance_init(Object *obj)
 +{
 +    NPCMPCIERCState *s = NPCM_PCIERC(obj);
 +
-+    s->rccfgnum = 0;
-+    s->rcinten = 0;
-+    s->rcintstat = 0;
-+    s->rcimsiaddr = 0;
-+    s->rcmsisstat = 0;
-+    s->axierr = 0;
++    npcm_pcierc_reset_pcie_windows(s);
 +}
 +
-+static const char *npcm_pcierc_root_bus_path(PCIHostState *host_bridge,
-+                                             PCIBus *rootbus)
-+{
-+    return "0000:00";
-+}
-+
-+static const MemoryRegionOps npcm_pcierc_cfg_ops = {
-+    .read       = npcm_pcierc_cfg_read,
-+    .write      = npcm_pcierc_cfg_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .impl = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+        .unaligned = false,
-+    },
-+};
-+
-+static void npcm_pcierc_realize(DeviceState *dev, Error **errp)
-+{
-+    NPCMPCIERCState *s = NPCM_PCIERC(dev);
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-+
-+    memory_region_init_io(&s->mmio, OBJECT(s), &npcm_pcierc_cfg_ops,
-+                          s, TYPE_NPCM_PCIERC, 4 * KiB);
-+    sysbus_init_mmio(sbd, &s->mmio);
-+    sysbus_init_irq(sbd, &s->irq);
-+}
-+
-+static void npcm_pcierc_class_init(ObjectClass *klass, const void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    PCIHostBridgeClass *hbc = PCI_HOST_BRIDGE_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
-+
-+    hbc->root_bus_path = npcm_pcierc_root_bus_path;
-+    dc->realize = npcm_pcierc_realize;
-+    rc->phases.enter = npcm_pcierc_reset;
-+    set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
-+    dc->fw_name = "pci";
-+}
-+
-+static const TypeInfo npcm_pcierc_type_info = {
-+    .name = TYPE_NPCM_PCIERC,
-+    .parent = TYPE_PCIE_HOST_BRIDGE,
-+    .instance_size = sizeof(NPCMPCIERCState),
-+    .class_init = npcm_pcierc_class_init,
-+};
-+
-+static void npcm_pcierc_register_types(void)
-+{
-+    type_register_static(&npcm_pcierc_type_info);
-+}
-+
-+type_init(npcm_pcierc_register_types)
-diff --git a/hw/pci-host/trace-events b/hw/pci-host/trace-events
-index 0a816b9aa129bb0c37d207e2612e09ac4762d51a..e4794f687177ee90fe4d33194b484c83a34dcaf9 100644
---- a/hw/pci-host/trace-events
-+++ b/hw/pci-host/trace-events
-@@ -69,3 +69,7 @@ elroy_pci_config_data_read(uint64_t addr, int size, uint64_t val) "addr 0x%"PRIx
- elroy_pci_config_data_write(uint64_t addr, int size, uint64_t val) "addr 0x%"PRIx64" size %d val 0x%"PRIx64
- iosapic_reg_write(uint64_t reg_select, int size, uint64_t val) "reg_select 0x%"PRIx64" size %d val 0x%"PRIx64
- iosapic_reg_read(uint64_t reg_select, int size, uint64_t val) "reg_select 0x%"PRIx64" size %d val 0x%"PRIx64
-+
-+# npmc_pcierc.c
-+npcm_pcierc_read(uint64_t offset, uint32_t size, uint64_t data) "offset: 0x%" PRIx64 " size: %d data: 0x%" PRIx64
-+npcm_pcierc_write(uint64_t offset, uint32_t size, uint64_t data) "offset: 0x%" PRIx64 " size: %d data: 0x%" PRIx64
+ static void npcm_pcierc_class_init(ObjectClass *klass, const void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -144,7 +364,7 @@ static void npcm_pcierc_class_init(ObjectClass *klass, const void *data)
+ 
+     hbc->root_bus_path = npcm_pcierc_root_bus_path;
+     dc->realize = npcm_pcierc_realize;
+-    rc->phases.enter = npcm_pcierc_reset;
++    rc->phases.exit = npcm_pcierc_reset;
+     set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
+     dc->fw_name = "pci";
+ }
+@@ -153,6 +373,7 @@ static const TypeInfo npcm_pcierc_type_info = {
+     .name = TYPE_NPCM_PCIERC,
+     .parent = TYPE_PCIE_HOST_BRIDGE,
+     .instance_size = sizeof(NPCMPCIERCState),
++    .instance_init = npcm_pcierc_instance_init,
+     .class_init = npcm_pcierc_class_init,
+ };
+ 
 diff --git a/include/hw/pci-host/npcm_pcierc.h b/include/hw/pci-host/npcm_pcierc.h
-new file mode 100644
-index 0000000000000000000000000000000000000000..2c817147d495fdc1d1fa4b389bad0469fd6a825e
---- /dev/null
+index 2c817147d495fdc1d1fa4b389bad0469fd6a825e..410b34d1c1ced0e25f63fc7693d87bb625a80776 100644
+--- a/include/hw/pci-host/npcm_pcierc.h
 +++ b/include/hw/pci-host/npcm_pcierc.h
-@@ -0,0 +1,55 @@
-+/*
-+ * Nuvoton PCIe Root complex
-+ *
-+ * Copyright 2022 Google LLC
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
+@@ -9,8 +9,8 @@
+ /*
+  * The PCIERC configuration registers must be initialised by the BMC kernel
+  * during boot for PCIe to function
+- * - A single window from the PCIe to the Memory controller
+- * - 4 windows from the BMC to the PCIe.
++ * - A single window from PCIe to the Memory controller
++ * - 4 windows from the BMC to PCIe.
+  *     1 of these five BMC-to-PCIe windows must be allocated for configuration
+  *     transactions, the rest can be used for I/0 or memory transactions
+  * - All BMC-to-PCIe windows are mapped to address range
+@@ -34,9 +34,77 @@
+ #define NPCM_PCIERC_MSISTAT             0x194 /* MSI Status Register */
+ #define NPCM_PCIERC_AXI_ERROR_REPORT    0x3E0
+ 
++/* PCIe-to-AXI Window 0 and 1 Registers */
++/* Source address low */
++#define NPCM_PCIERC_PAnSAL(n)          (0x600 + (0x100 * (n)))
++/* Source address high */
++#define NPCM_PCIERC_PAnSAH(n)          (0x604 + (0x100 * (n)))
++/* Translation address low */
++#define NPCM_PCIERC_PAnTAL(n)          (0x608 + (0x100 * (n)))
++/* Translation address high */
++#define NPCM_PCIERC_PAnTAH(n)          (0x60C + (0x100 * (n)))
++/* Translation parameters */
++#define NPCM_PCIERC_PAnTP(n)           (0x610 + (0x100 * (n)))
++/* Get window number from address */
++#define NPCM_PCIERC_PA_WINDOW(addr)    (((addr) - 0x600) / 0x100)
++#define NPCM_PCIERC_PA_OFFSET_MASK      0xff
 +
-+/*
-+ * The PCIERC configuration registers must be initialised by the BMC kernel
-+ * during boot for PCIe to function
-+ * - A single window from the PCIe to the Memory controller
-+ * - 4 windows from the BMC to the PCIe.
-+ *     1 of these five BMC-to-PCIe windows must be allocated for configuration
-+ *     transactions, the rest can be used for I/0 or memory transactions
-+ * - All BMC-to-PCIe windows are mapped to address range
-+ *   0xe800_0000 to 0xefff_ffff (128MB)
-+ */
++/* AXI-to-PCIe Window 1 to 5 Registers, n in range [0,4] */
++/* Source address low */
++#define NPCM_PCIERC_APnSAL(n)          (0x820 + (0x20 * (n)))
++/* Source address high */
++#define NPCM_PCIERC_APnSAH(n)          (0x824 + (0x20 * (n)))
++/* Translation address low */
++#define NPCM_PCIERC_APnTAL(n)          (0x828 + (0x20 * (n)))
++/* Translation address high */
++#define NPCM_PCIERC_APnTAH(n)          (0x82C + (0x20 * (n)))
++/* Translation parameters */
++#define NPCM_PCIERC_APnTP(n)           (0x830 + (0x20 * (n)))
++/* Get window number from address */
++#define NPCM_PCIERC_AP_WINDOW(addr)    (((addr) - 0x820) / 0x20)
++#define NPCM_PCIERC_AP_OFFSET_MASK      0x1f
 +
-+#ifndef NPCM_PCIERC_H
-+#define NPCM_PCIERC_H
++/* Translation window parameters */
++#define NPCM_PCIERC_TRSL_ID(p)              ((p) & 0x7)
++#define     NPCM_PCIERC_TRSL_ID_TX_RX       0
++#define     NPCM_PCIERC_TRSL_ID_CONFIG      1
++#define NPCM_PCIERC_TRSF_PARAM(p)           (((p) >> 16) & 0xFFF)
++#define     NPCM_PCIERC_TRSF_PARAM_MEMORY   0
++#define     NPCM_PCIERC_TRSF_PARAM_CONFIG   1
++#define     NPCM_PCIERC_TRSF_PARAM_IO       2
 +
-+#include "hw/sysbus.h"
-+#include "hw/pci/pci.h"
-+#include "hw/pci/pcie_host.h"
-+#include "qom/object.h"
++#define NPCM_PCIERC_SAL_OFFSET              0x0
++#define     NPCM_PCIERC_SAL_EN              1
++#define     NPCM_PCIERC_SAL_SIZE(addr)     (2ull << (((addr) >> 1) & 0x1F))
++#define NPCM_PCIERC_SAH_OFFSET              0x4
++#define NPCM_PCIERC_TAL_OFFSET              0x8
++#define NPCM_PCIERC_TAH_OFFSET              0xC
++#define NPCM_PCIERC_PARAM_OFFSET            0x10
 +
-+/* PCIe Root Complex Registers */
-+#define LINKSTAT                        0x92
-+#define NPCM_PCIERC_RCCFGNUM            0x140 /* Configuration Number */
-+#define NPCM_PCIERC_INTEN               0x180 /* Interrupt Enable */
-+#define NPCM_PCIERC_INTST               0x184 /* Interrupt Status */
-+#define NPCM_PCIERC_IMSI_ADDR           0x190
-+#define NPCM_PCIERC_MSISTAT             0x194 /* MSI Status Register */
-+#define NPCM_PCIERC_AXI_ERROR_REPORT    0x3E0
++#define NPCM_PCIERC_NUM_PA_WINDOWS          2
++#define NPCM_PCIERC_NUM_AP_WINDOWS          5
 +
-+#define TYPE_NPCM_PCIERC "npcm-pcie-root-complex"
-+OBJECT_DECLARE_SIMPLE_TYPE(NPCMPCIERCState, NPCM_PCIERC)
+ #define TYPE_NPCM_PCIERC "npcm-pcie-root-complex"
+ OBJECT_DECLARE_SIMPLE_TYPE(NPCMPCIERCState, NPCM_PCIERC)
+ 
++typedef enum {
++    AXI2PCIE = 1,
++    PCIE2AXI
++} NPCMPCIEWindowType;
 +
-+struct NPCMPCIERCState {
-+    PCIExpressHost parent;
++/* Nuvoton PCIe translation Window */
++typedef struct NPCMPCIEWindow {
++    uint32_t sal;            /* source address low */
++    uint32_t sah;            /* source address high */
++    uint32_t tal;            /* translation address low */
++    uint32_t tah;            /* translation address high */
++    uint32_t params;         /* translation window parameters */
 +
-+    qemu_irq irq;
++    MemoryRegion mem;        /* QEMU memory subregion per window */
++    NPCMPCIEWindowType type; /* translation direction */
++    uint8_t id;
++} NPCMPCIEWindow;
 +
-+    /* PCIe RC registers */
-+    MemoryRegion mmio;
-+    uint32_t rccfgnum;
-+    uint32_t rcinten;
-+    uint32_t rcintstat;
-+    uint32_t rcimsiaddr;
-+    uint32_t rcmsisstat;
-+    uint32_t axierr;
-+};
+ struct NPCMPCIERCState {
+     PCIExpressHost parent;
+ 
+@@ -50,6 +118,11 @@ struct NPCMPCIERCState {
+     uint32_t rcimsiaddr;
+     uint32_t rcmsisstat;
+     uint32_t axierr;
++    /* PCIe to AXI Windows */
++    NPCMPCIEWindow pcie2axi[NPCM_PCIERC_NUM_PA_WINDOWS];
 +
-+#endif /* NPCM_PCIERC_H */
++    /* AXI to PCIe Windows */
++    NPCMPCIEWindow axi2pcie[NPCM_PCIERC_NUM_AP_WINDOWS];
+ };
+ 
+ #endif /* NPCM_PCIERC_H */
 
 -- 
 2.51.0.384.g4c02a37b29-goog
