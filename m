@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B003B4FE5C
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A08CB4FE3D
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Sep 2025 15:54:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uvym4-0000qk-86; Tue, 09 Sep 2025 09:52:44 -0400
+	id 1uvymB-0000wt-Ti; Tue, 09 Sep 2025 09:52:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvyln-0000lc-2Q
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvylq-0000oK-SX
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvyle-0005GI-MV
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:25 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uvyli-0005Gn-6F
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 09:52:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757425935;
+ s=mimecast20190719; t=1757425939;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0+N7ksxc09Rn8zd06nd3lkW7JmF5X1Y/vjS+u+eTaMQ=;
- b=PwsbwWmEDoXKUJyHh7O97E7RYzstCPN1Fc6LiTKtNYD4sIA6gMAEw4fzpGcGU8yKmeFtKZ
- wkhXebsLuBVCd/D/hyQwahDrqLeyy+FixqNcH0R3JRkKClE/ZLWsEW+lTlcafFoVh4P8c1
- eWE0OusDZQ2h73ALqvOyBvSiZLSP5m4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=RFo1dN8+zoiYxx5px8qTDrqbuXee/GJdjmM1Ced3uRo=;
+ b=JjWM8eC5cf5PZnNXm20bbPNIPjm+GGV5JLXIXfMaUvU5KkhQcKNN0frO7fY9ynmjM9jDbW
+ jexsoSKEOync2RbfJpEMI+ZqWnymQf39uh+xbOVQwIrDI70IYW755lAzPTp/bAcX4lFLWr
+ pkkkWwC3o13umXQWLN6Vq89hRI5lPrs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-OGosCj7uOkWmhnV4M-V_Lg-1; Tue,
- 09 Sep 2025 09:52:13 -0400
-X-MC-Unique: OGosCj7uOkWmhnV4M-V_Lg-1
-X-Mimecast-MFC-AGG-ID: OGosCj7uOkWmhnV4M-V_Lg_1757425932
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-s1x5iXR8P0SXbJXMQ_P7ZA-1; Tue,
+ 09 Sep 2025 09:52:16 -0400
+X-MC-Unique: s1x5iXR8P0SXbJXMQ_P7ZA-1
+X-Mimecast-MFC-AGG-ID: s1x5iXR8P0SXbJXMQ_P7ZA_1757425935
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C0E2E19541BD; Tue,  9 Sep 2025 13:52:12 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 468EB1800370; Tue,  9 Sep 2025 13:52:15 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.46])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BED3C18003FC; Tue,  9 Sep 2025 13:52:09 +0000 (UTC)
+ id 6962318003FC; Tue,  9 Sep 2025 13:52:13 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Kane-Chen-AS <kane_chen@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 10/23] tests/functional/arm: Update test ASPEED SDK v03.02 for
- AST1030
-Date: Tue,  9 Sep 2025 15:51:34 +0200
-Message-ID: <20250909135147.612345-11-thuth@redhat.com>
+Subject: [PULL 11/23] tests/functional/arm: Update test ASPEED SDK v09.07 for
+ AST2500
+Date: Tue,  9 Sep 2025 15:51:35 +0200
+Message-ID: <20250909135147.612345-12-thuth@redhat.com>
 In-Reply-To: <20250909135147.612345-1-thuth@redhat.com>
 References: <20250909135147.612345-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,7 +67,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,40 +87,35 @@ From: Kane-Chen-AS <kane_chen@aspeedtech.com>
 
 Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Message-ID: <20250904100556.1729604-2-kane_chen@aspeedtech.com>
+Message-ID: <20250904100556.1729604-3-kane_chen@aspeedtech.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/arm/test_aspeed_ast1030.py | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tests/functional/arm/test_aspeed_ast2500.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/functional/arm/test_aspeed_ast1030.py b/tests/functional/arm/test_aspeed_ast1030.py
-index 77037f01793..42126b514ff 100755
---- a/tests/functional/arm/test_aspeed_ast1030.py
-+++ b/tests/functional/arm/test_aspeed_ast1030.py
-@@ -12,17 +12,17 @@
+diff --git a/tests/functional/arm/test_aspeed_ast2500.py b/tests/functional/arm/test_aspeed_ast2500.py
+index 6923fe87017..4fdd81e2f95 100755
+--- a/tests/functional/arm/test_aspeed_ast2500.py
++++ b/tests/functional/arm/test_aspeed_ast2500.py
+@@ -37,14 +37,14 @@ def test_arm_ast2500_evb_buildroot(self):
  
- class AST1030Machine(LinuxKernelTest):
+         self.do_test_arm_aspeed_buildroot_poweroff()
  
--    ASSET_ZEPHYR_3_00 = Asset(
-+    ASSET_ZEPHYR_3_02 = Asset(
-         ('https://github.com/AspeedTech-BMC'
--         '/zephyr/releases/download/v00.03.00/ast1030-evb-demo.zip'),
--        '37fe3ecd4a1b9d620971a15b96492a81093435396eeac69b6f3e384262ff555f')
-+         '/zephyr/releases/download/v00.03.02/ast1030-evb-demo.zip'),
-+        '1ec83caab3ddd5d09481772801be7210e222cb015ce22ec6fffb8a76956dcd4f')
+-    ASSET_SDK_V906_AST2500 = Asset(
+-        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2500-default-obmc.tar.gz',
+-        '542db84645b4efd8aed50385d7f4dd1caff379a987032311cfa7b563a3addb2a')
++    ASSET_SDK_V907_AST2500 = Asset(
++        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2500-default-obmc.tar.gz',
++        'd52bcc279a37c8d7679b3e4ef22cc77c36f0f6624c687b37334f798828afb077')
  
--    def test_ast1030_zephyros_3_00(self):
-+    def test_ast1030_zephyros_3_02(self):
-         self.set_machine('ast1030-evb')
+     def test_arm_ast2500_evb_sdk(self):
+         self.set_machine('ast2500-evb')
  
--        kernel_name = "ast1030-evb-demo/zephyr.elf"
-+        kernel_name = "ast1030-evb-demo-3/zephyr.elf"
-         kernel_file = self.archive_extract(
--            self.ASSET_ZEPHYR_3_00, member=kernel_name)
-+            self.ASSET_ZEPHYR_3_02, member=kernel_name)
+-        self.archive_extract(self.ASSET_SDK_V906_AST2500)
++        self.archive_extract(self.ASSET_SDK_V907_AST2500)
  
-         self.vm.set_console()
-         self.vm.add_args('-kernel', kernel_file, '-nographic')
+         self.do_test_arm_aspeed_sdk_start(
+             self.scratch_file("ast2500-default", "image-bmc"))
 -- 
 2.51.0
 
