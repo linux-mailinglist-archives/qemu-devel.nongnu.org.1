@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8D4B51FAD
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:05:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0012B5200B
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:14:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwPB7-0007rW-3w; Wed, 10 Sep 2025 14:04:21 -0400
+	id 1uwPB8-0007s4-8X; Wed, 10 Sep 2025 14:04:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uwPB1-0007q6-QX
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:04:15 -0400
+ id 1uwPB3-0007qY-Bx
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:04:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uwPAy-0004eW-U9
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:04:15 -0400
+ id 1uwPB0-0004em-Vw
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:04:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757527449;
+ s=mimecast20190719; t=1757527452;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=LeONa4juHQGw0uhlexz4qPGOST4ZsEDZVGCvQEzqjIE=;
- b=baZpDhQlgKP6SyV0H6Cd82zxTyvzKyf+a+4eKUzGq9wGAsBFtPMzI1r3qVxpUOnk9vmfAA
- i1dxEBUOD2m3L4qyKfWflbOlhrag9U48U0DCOBOcZ+drxf+l60s+rBw5Hkn2jTwx7bBo5W
- EO54DKHSoDV7eq9DjxWT/OxpYDwA1aM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ew+TJ+ULudDPsPQa2ndt/jLM13vxDA+61FCxMS3PlS0=;
+ b=J8j+OHcSQ258M3XK/voi2y4cQGY7e8k5VPYZWMqk7p3KUUZI7Gl0saCFHQu5+yJNP1JUMW
+ L1/ZVTJ7W+PW03kjBNdhGp4r989burer6CbT9g3vS2Ut5lQnUOc4KscuSKG46NcYiFjkgj
+ VnHuU4XhD9LGOWvi0w0rQ6BTI36sD0E=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-101-UdRCBb8APXGqQ0DiLaA3wg-1; Wed,
- 10 Sep 2025 14:04:05 -0400
-X-MC-Unique: UdRCBb8APXGqQ0DiLaA3wg-1
-X-Mimecast-MFC-AGG-ID: UdRCBb8APXGqQ0DiLaA3wg_1757527443
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-21-jI1BXoPBM0eEoopY93HxWQ-1; Wed,
+ 10 Sep 2025 14:04:09 -0400
+X-MC-Unique: jI1BXoPBM0eEoopY93HxWQ-1
+X-Mimecast-MFC-AGG-ID: jI1BXoPBM0eEoopY93HxWQ_1757527447
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6A624180034F; Wed, 10 Sep 2025 18:04:03 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7EC2519560A7; Wed, 10 Sep 2025 18:04:07 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.57])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5A7841800447; Wed, 10 Sep 2025 18:03:59 +0000 (UTC)
+ id C78001800447; Wed, 10 Sep 2025 18:04:03 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
@@ -58,12 +59,14 @@ Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 00/20] util: sync error_report & qemu_log output more
- closely
-Date: Wed, 10 Sep 2025 19:03:37 +0100
-Message-ID: <20250910180357.320297-1-berrange@redhat.com>
+Subject: [PATCH v3 01/20] include: define constant for early constructor
+ priority
+Date: Wed, 10 Sep 2025 19:03:38 +0100
+Message-ID: <20250910180357.320297-2-berrange@redhat.com>
+In-Reply-To: <20250910180357.320297-1-berrange@redhat.com>
+References: <20250910180357.320297-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
@@ -91,161 +94,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series is a tangent that came out of discussion in
+Functions marked with __attribute__((__constructor__)) will be
+invoked in linker order. In theory this is well defined, but
+in practice, it is hard to determine what this order will be
+with the layers of indirection through meson, ninja and the
+static libraries QEMU builds.
 
-   https://lists.nongnu.org/archive/html/qemu-devel/2025-08/msg00903.html
+Notably, the order currently appears different between Linux
+and Windows (as tested with Wine on Linux). This can cause
+problems when certain QEMU constructors have a dependancy on
+other QEMU constructors.
 
-In thinking about adding thread info to error_report, I
-came to realize we should likely make qemu_log behave
-consistently with error_report & friends. We already
-honour '-msg timestamp=on', but don't honour 'guest-name=on'
-and also don't include the binary name.
+To address this define a QEMU_CONSTRUCTOR_EARLY constant which
+provides a priority value that will run before other default
+constructors. This is to be used for QEMU constructors that
+are themselves self-contained, but may be relied upon by other
+constructors.
 
-As an example of the current state, consider mixing error and
-log output today:
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ include/qemu/compiler.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-- Default context:
-
-  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
-                       -d 'trace:qcrypto*'
-  qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55ac6d97f700 dir=fish
-  qcrypto_tls_creds_get_path TLS creds path creds=0x55ac6d97f700 filename=ca-cert.pem path=<none>
-  qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
-
-- Full context:
-
-  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
-                       -d 'trace:qcrypto*' \
-                       -msg guest-name=on,timestamp=on \
-                       -name "fish food"
-  2025-08-19T20:14:16.791413Z qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55e9a3458d10 dir=fish
-  2025-08-19T20:14:16.791429Z qcrypto_tls_creds_get_path TLS creds path creds=0x55e9a3458d10 filename=ca-cert.pem path=<none>
-  2025-08-19T20:14:16.791433Z fish food qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
-
-And after this series is complete:
-
-- Default context:
-
-  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
-                      -d 'trace:qcrypto*'
-  qemu-system-x86_64(1184284:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55a24ad5cb30 dir=fish
-  qemu-system-x86_64(1184284:main): qcrypto_tls_creds_get_path TLS creds path creds=0x55a24ad5cb30 filename=ca-cert.pem path=<none>
-  qemu-system-x86_64(1184284:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
-
-- Full context:
-
-  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
-                      -d 'trace:qcrypto*' \
-                      -msg guest-name=on,timestamp=on \
-                      -name "fish food"
-  2025-08-19T20:12:50.211823Z [fish food] qemu-system-x86_64(1168876:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x5582183d8760 dir=fish
-  2025-08-19T20:12:50.211842Z [fish food] qemu-system-x86_64(1168876:main): qcrypto_tls_creds_get_path TLS creds path creds=0x5582183d8760 filename=ca-cert.pem
-+path=<none>
-  2025-08-19T20:12:50.211846Z [fish food] qemu-system-x86_64(1168876:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
-
-The main things to note:
-
- * error_report/warn_report/qemu_log share the same
-   output format and -msg applies to both
-
- * -msg debug-threads=on is now unconditionally enabled
-   and thus the param is deprecated & ignored
-
- * Thread ID and name are unconditionally enabled
-
- * Guest name is surrounded in [...] brackets
-
- * The default output lines are typically 15 chars
-   wider given that we always include the thread
-   ID + name now
-
- * This takes the liberty of assigning the new file
-   to the existing error-report.c maintainer (Markus)
-   Since splitting it off into message.c instead of
-   putting it all in error-report.c felt slightly
-   nicer.
-
-One thing I didn't tackle is making the location
-info get reported for qemu_log. This is used to
-give context for error messages when parsing some
-CLI args, and could be interesting for log messages
-associated with those same CLI args.
-
-Changes in v3:
-
- - Stop formatting a string in qmessage_context, instead
-   output directly to a "FILE *" stream
- - Fix pre-existing bug interleaving qemu_log and
-   vreport when the trace 'log' backend has mutex probes
-   enabled
- - Don't skip error prefixes on stderr when vreport
-   is called from QMP context.
- - Remove little used error_[v]printf_unless_qmp funcs
-
-Changes in v2:
-
- - Re-use existing qemu_get_thread_id rather than
-   re-inventing it as qemu_thread_get_id.
- - Expose qemu_thread_set_name and use it from all
-   locations needing to set thread names
- - Fix qemu_log() to skip context prefix when
-   emitting a log message in fragments across
-   multiple calls
- - Skip allocating memory for empty context messages
- - Fix leak in win32 impl of qemu_thread_get_name
- - Use g_strlcpy where possible
-
-Daniel P. Berrangé (20):
-  include: define constant for early constructor priority
-  monitor: initialize global data from a constructor
-  system: unconditionally enable thread naming
-  util: expose qemu_thread_set_name
-  audio: make jackaudio use qemu_thread_set_name
-  util: set the name for the 'main' thread
-  util: add API to fetch the current thread name
-  log: avoid repeated prefix on incremental qemu_log calls
-  ui/vnc: remove use of error_printf_unless_qmp()
-  monitor: remove redundant error_[v]printf_unless_qmp
-  monitor: move error_vprintf() back to error-report.c
-  monitor: introduce monitor_cur_hmp() function
-  util: don't skip error prefixes when QMP is active
-  util: fix interleaving of error & trace output
-  util: introduce common helper for error-report & log code
-  util: convert error-report & log to message API for timestamp
-  util: add support for formatting a workload name in messages
-  util: add support for formatting a program name in messages
-  util: add support for formatting thread info in messages
-  util: add brackets around guest name in message context
-
- MAINTAINERS                          |  2 +
- audio/jackaudio.c                    | 30 ++++++++--
- docs/about/deprecated.rst            |  7 +++
- include/monitor/monitor.h            |  4 +-
- include/qemu/compiler.h              |  8 +++
- include/qemu/error-report.h          |  4 --
- include/qemu/message.h               | 40 +++++++++++++
- include/qemu/thread.h                |  3 +-
- meson.build                          | 21 +++++++
- monitor/monitor.c                    | 65 +++++++-------------
- storage-daemon/qemu-storage-daemon.c |  6 ++
- stubs/error-printf.c                 |  5 --
- stubs/monitor-core.c                 | 15 +++++
- system/vl.c                          | 30 +++++++---
- tests/qemu-iotests/041               |  2 +-
- tests/qemu-iotests/common.filter     |  2 +-
- tests/unit/test-error-report.c       |  6 +-
- tests/unit/test-util-sockets.c       |  3 +
- ui/vnc.c                             | 14 +++--
- util/error-report.c                  | 89 ++++++++++++++++------------
- util/log.c                           | 28 ++++-----
- util/meson.build                     |  1 +
- util/message.c                       | 47 +++++++++++++++
- util/qemu-thread-posix.c             | 76 +++++++++++++++---------
- util/qemu-thread-win32.c             | 82 +++++++++++++++++--------
- 25 files changed, 404 insertions(+), 186 deletions(-)
- create mode 100644 include/qemu/message.h
- create mode 100644 util/message.c
-
+diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+index 1c2b673c05..4c49f52eb0 100644
+--- a/include/qemu/compiler.h
++++ b/include/qemu/compiler.h
+@@ -194,6 +194,14 @@
+ # define QEMU_USED
+ #endif
+ 
++/*
++ * A priority for __attribute__((constructor(...))) that
++ * will run earlier than the default constructors. Must
++ * only be used for functions that have no dependency
++ * on global initialization of other QEMU subsystems.
++ */
++#define QEMU_CONSTRUCTOR_EARLY 101
++
+ /*
+  * Disable -ftrivial-auto-var-init on a local variable.
+  *
 -- 
 2.50.1
 
