@@ -2,61 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F7CB52022
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62393B52027
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:18:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwPDH-0002BG-Ve; Wed, 10 Sep 2025 14:06:36 -0400
+	id 1uwPNY-0002F6-Vw; Wed, 10 Sep 2025 14:17:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uwPCY-0000cy-Me
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:05:54 -0400
+ id 1uwPMB-0001Yk-Kx
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:15:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uwPCW-00050Q-LL
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:05:50 -0400
+ id 1uwPM9-0006Ef-IC
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:15:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757527547;
+ s=mimecast20190719; t=1757528141;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=NdibCPxAZX1isc7mCsZl5Mu924d8hKRd4Nv1RYXWrPg=;
- b=OARAdw8bLI9/7vJ1N6E3624Z1kYkVtoRKsaGknRsN1CVJ7bR8DxZC1ZnIfvylNUdLqWXh2
- mXgvrnWx4vGzzinAnJU8tkgtKlZEMVI+Ng8ueLfUe0ZP7xhuZDS2deu8jftxlNB0EEaGBc
- f1MLwg8KtH9JgK2VGoLiAH2QgRcMMk8=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+ptyFOEL14vk/aHMQqiSKAg6JR3D0122wd7Qc6qVcWs=;
+ b=ESXxI/vx5QqGaCxzCop+Oa8hQewmP3lu8UUw3WMVZE+IbJRLykYx/ddQp8zHcWK12MU60B
+ P3AnlhTchJTKYSwqCoANcbLktrsSoAKqIyyPuCI5bWqUo+IpoBULKxkIJ+fH+hvXqpI1hJ
+ w80m1Xw1dc7LXMW3wME6rbq7cihm+jg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-672-uWANk37WOmSCOr17-dg9Yg-1; Wed,
- 10 Sep 2025 14:05:44 -0400
-X-MC-Unique: uWANk37WOmSCOr17-dg9Yg-1
-X-Mimecast-MFC-AGG-ID: uWANk37WOmSCOr17-dg9Yg_1757527543
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-84-YM3HE_U_NBq4sVgxd2jJcA-1; Wed,
+ 10 Sep 2025 14:15:38 -0400
+X-MC-Unique: YM3HE_U_NBq4sVgxd2jJcA-1
+X-Mimecast-MFC-AGG-ID: YM3HE_U_NBq4sVgxd2jJcA_1757528137
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7E9F019560B6; Wed, 10 Sep 2025 18:05:43 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B8392195608F; Wed, 10 Sep 2025 18:15:36 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.57])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9F9151956095; Wed, 10 Sep 2025 18:05:40 +0000 (UTC)
-Date: Wed, 10 Sep 2025 19:05:37 +0100
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9E96019560B8; Wed, 10 Sep 2025 18:15:33 +0000 (UTC)
+Date: Wed, 10 Sep 2025 19:15:30 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [RFC 0/4] util: qmessage_context followup
-Message-ID: <aMG98W3y9jpUvJfB@redhat.com>
-References: <20250902103010.309094-1-richard.henderson@linaro.org>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, peterx@redhat.com,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ Kostiantyn Kostiuk <kkostiuk@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ Coiby Xu <Coiby.Xu@gmail.com>
+Subject: Re: [PATCH 04/10] util: drop qemu_socket_set_nonblock()
+Message-ID: <aMHAQkYQ1kK4_yD_@redhat.com>
+References: <20250903094411.1029449-1-vsementsov@yandex-team.ru>
+ <20250903094411.1029449-5-vsementsov@yandex-team.ru>
+ <aMFIhJp-GfOhv3AV@redhat.com>
+ <2bfafcf7-7051-4c14-a580-fb33895a0a1a@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250902103010.309094-1-richard.henderson@linaro.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2bfafcf7-7051-4c14-a580-fb33895a0a1a@yandex-team.ru>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -66,7 +78,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,25 +95,37 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 02, 2025 at 12:30:06PM +0200, Richard Henderson wrote:
-> Hi Daniel,
+On Wed, Sep 10, 2025 at 08:55:57PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> On 10.09.25 12:44, Daniel P. Berrangé wrote:
+> > > @@ -36,7 +37,11 @@ static gboolean ga_channel_listen_accept(GIOChannel *channel,
+> > >           g_warning("error converting fd to gsocket: %s", strerror(errno));
+> > >           goto out;
+> > >       }
+> > > -    qemu_socket_set_nonblock(client_fd);
+> > > +    if (!qemu_set_blocking(client_fd, false, &err)) {
+> > > +        g_warning("errer: %s", error_get_pretty(err));
+> > s/errer/error/
+> > 
+> > 
+> > This is a pre-existing problem, but none of this code should be using
+> > g_warning. g_printerr() should have been used for printing error
+> > messages. I'm not expecting you to fix that, just an observation.
 > 
-> I'm still not keen on qmessage_context allocating a string.
 > 
-> If we *did* allocate a string, it should be a GString so that we can
-> easily append to that.  The only benefit I see from this is that we
-> would collect all of the output and it would reach stderr atomically.
+> Why not g_error()? I see some g_warnings in qga code a correct "warnings", not "errors".. And if we use sometimes g_warning, the g_error is more correct pair for it.
 > 
-> However, I think it's better to not collect the message and just
-> output the pieces.  Something like the following.  The names are
-> horrible and I didn't document the patches well.
+> Or we don't want any of g_error / g_warning in QEMU code?
 
-I've posted a v3 of my series which incorporates the conceptual
-idea you show here. I managed to simplify it somewhat as I came
-to realize the qmessage_context code never needs to write to
-anything other than a "FILE *", because we always skip the context
-when writing to HMP. IOW, we could simply use fprintf() directly
-throughout
+g_error will call abort() after printing the message, which will
+prevent graceful cleanup and result in a core file, so is not
+very desirable to use.
+
+g_warning will also turn into g_error if G_DEBUG=fatal-warnings
+is set.
+
+We really just want a plain message printed on the console with
+no side effects, and g_printerr gives us that.
+
 
 With regards,
 Daniel
