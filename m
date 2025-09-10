@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D958B51FFE
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0720EB5201D
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:15:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwPES-0004vi-9v; Wed, 10 Sep 2025 14:07:49 -0400
+	id 1uwPDg-0004Bo-G3; Wed, 10 Sep 2025 14:07:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uwPDe-0004L6-Sj
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:06:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uwPDY-0003no-OF
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:06:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uwPDT-00053a-JJ
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:06:58 -0400
+ id 1uwPDV-00053q-3l
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:06:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757527606;
+ s=mimecast20190719; t=1757527607;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MGnG+XdtmTxntikOC8JogL74daSKQSHrsTNR1uFQlNA=;
- b=WwhlKraC4SW/cRvYdpnAGG5/jjxtFPgSQDT6VbkZzkL4SgxHbhR9YVhi2qdppYGlqjdFAv
- 6n1hRoMQvt1f84PMBmnZS7fCeLNyhy8CX30hjIuk2Q7/eICdAFOJcRKs0k6y3MSg4EtR3G
- EttXXJkMOer5GV6Vcpg3Ofetbh83cbg=
+ bh=PZyG2gVhf9ANlECoA63cnmRtA9cmX8TXqtAncsbQnvQ=;
+ b=WdSjpEUdgN4BC+6Xqnf7IFHfhAXZ8bZ9IbjGafkcpXl9ynnm2z6n03dD8ss9KnmaPKlvJq
+ 76mJaDi4+AbX9pF5GU0zhtjhWmmFP0SOMBqjcolS0dMLtUYpaBSVESPkEpnb69hvjiQlTZ
+ e7wgVVgmq1vVMUArxhj96YgF4MAXOsg=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-138-yc7g6dkZMZyexE5Im2m2Pw-1; Wed,
- 10 Sep 2025 14:06:42 -0400
-X-MC-Unique: yc7g6dkZMZyexE5Im2m2Pw-1
-X-Mimecast-MFC-AGG-ID: yc7g6dkZMZyexE5Im2m2Pw_1757527601
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-311-cIuGWy0yMdqxdMUvOq1HlQ-1; Wed,
+ 10 Sep 2025 14:06:46 -0400
+X-MC-Unique: cIuGWy0yMdqxdMUvOq1HlQ-1
+X-Mimecast-MFC-AGG-ID: cIuGWy0yMdqxdMUvOq1HlQ_1757527603
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7F9C91800296; Wed, 10 Sep 2025 18:06:41 +0000 (UTC)
+ id 8DBC41800378; Wed, 10 Sep 2025 18:06:43 +0000 (UTC)
 Received: from localhost (unknown [10.2.17.66])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E85E21800446; Wed, 10 Sep 2025 18:06:40 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 191991956095; Wed, 10 Sep 2025 18:06:42 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Aarushi Mehta <mehta.aaru20@gmail.com>, Fam Zheng <fam@euphon.net>,
@@ -52,25 +52,25 @@ Cc: Aarushi Mehta <mehta.aaru20@gmail.com>, Fam Zheng <fam@euphon.net>,
  Hanna Czenczek <hreitz@redhat.com>, eblake@redhat.com,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  qemu-block@nongnu.org, hibriansong@gmail.com, Stefan Weil <sw@weilnetz.de>,
- Paolo Bonzini <pbonzini@redhat.com>, Chao Gao <chao.gao@intel.com>
-Subject: [PATCH v4 02/12] aio-posix: keep polling enabled with fdmon-io_uring.c
-Date: Wed, 10 Sep 2025 13:56:53 -0400
-Message-ID: <20250910175703.374499-3-stefanha@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v4 03/12] tests/unit: skip test-nested-aio-poll with io_uring
+Date: Wed, 10 Sep 2025 13:56:54 -0400
+Message-ID: <20250910175703.374499-4-stefanha@redhat.com>
 In-Reply-To: <20250910175703.374499-1-stefanha@redhat.com>
 References: <20250910175703.374499-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,59 +86,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 816a430c517e ("util/aio: Defer disabling poll mode as long as
-possible") kept polling enabled when the event loop timeout is 0. Since
-there is no timeout the event loop will continue immediately and the
-overhead of disabling and re-enabling polling can be avoided.
+test-nested-aio-poll relies on internal details of how fdmon-poll.c
+handles AioContext polling. Skip it when other fdmon implementations are
+in use.
 
-fdmon-io_uring.c is unable to take advantage of this optimization
-because its ->need_wait() function returns true whenever there are new
-io_uring SQEs to submit:
+Note that this test is only built on POSIX systems so it is safe to
+include "util/aio-posix.h".
 
-  if (timeout || ctx->fdmon_ops->need_wait(ctx)) {
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Polling will be disabled even when timeout == 0.
-
-Extend the optimization to handle the case when need_wait() returns true
-and timeout == 0.
-
-Cc: Chao Gao <chao.gao@intel.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- util/aio-posix.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tests/unit/test-nested-aio-poll.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/util/aio-posix.c b/util/aio-posix.c
-index 2e0a5dadc4..824fdc34cc 100644
---- a/util/aio-posix.c
-+++ b/util/aio-posix.c
-@@ -559,7 +559,14 @@ static bool run_poll_handlers(AioContext *ctx, AioHandlerList *ready_list,
-         elapsed_time = qemu_clock_get_ns(QEMU_CLOCK_REALTIME) - start_time;
-         max_ns = qemu_soonest_timeout(*timeout, max_ns);
-         assert(!(max_ns && progress));
--    } while (elapsed_time < max_ns && !ctx->fdmon_ops->need_wait(ctx));
-+
-+        if (ctx->fdmon_ops->need_wait(ctx)) {
-+            if (fdmon_supports_polling(ctx)) {
-+                *timeout = 0; /* stay in polling mode */
-+            }
-+            break;
-+        }
-+    } while (elapsed_time < max_ns);
+diff --git a/tests/unit/test-nested-aio-poll.c b/tests/unit/test-nested-aio-poll.c
+index d8fd92c43b..45484e745b 100644
+--- a/tests/unit/test-nested-aio-poll.c
++++ b/tests/unit/test-nested-aio-poll.c
+@@ -15,6 +15,7 @@
+ #include "qemu/osdep.h"
+ #include "block/aio.h"
+ #include "qapi/error.h"
++#include "util/aio-posix.h"
  
-     if (remove_idle_poll_handlers(ctx, ready_list,
-                                   start_time + elapsed_time)) {
-@@ -722,7 +729,7 @@ bool aio_poll(AioContext *ctx, bool blocking)
-          * up IO threads when some work becomes pending. It is essential to
-          * avoid hangs or unnecessary latency.
-          */
--        if (poll_set_started(ctx, &ready_list, false)) {
-+        if (timeout && poll_set_started(ctx, &ready_list, false)) {
-             timeout = 0;
-             progress = true;
-         }
+ typedef struct {
+     AioContext *ctx;
+@@ -71,6 +72,12 @@ static void test(void)
+         .ctx = aio_context_new(&error_abort),
+     };
+ 
++    if (td.ctx->fdmon_ops != &fdmon_poll_ops) {
++        /* This test is tied to fdmon-poll.c */
++        g_test_skip("fdmon_poll_ops not in use");
++        return;
++    }
++
+     qemu_set_current_aio_context(td.ctx);
+ 
+     /* Enable polling */
 -- 
 2.51.0
 
