@@ -2,39 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42899B51AE1
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 17:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C43B51AD3
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 17:06:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwMOP-0005XF-5M; Wed, 10 Sep 2025 11:05:53 -0400
+	id 1uwMOR-0005as-OM; Wed, 10 Sep 2025 11:05:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lyndra@linux.alibaba.com>)
- id 1uwMOK-0005VR-D5; Wed, 10 Sep 2025 11:05:48 -0400
-Received: from [115.124.30.99] (helo=out30-99.freemail.mail.aliyun.com)
+ id 1uwMOM-0005XD-HT; Wed, 10 Sep 2025 11:05:50 -0400
+Received: from [115.124.30.124] (helo=out30-124.freemail.mail.aliyun.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lyndra@linux.alibaba.com>)
- id 1uwMOF-0003f7-So; Wed, 10 Sep 2025 11:05:48 -0400
+ id 1uwMOF-0003f2-8R; Wed, 10 Sep 2025 11:05:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linux.alibaba.com; s=default;
- t=1757516722; h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To;
- bh=3hTwrgSwdp3Rfn+8E33xqC1mmHPXNZ2zKgx8QMkf6aE=;
- b=jmgO5tCBHWIRdwvTECIAaNSVlhUkrjJxYNb0q0Xy6LaNrG2F3/QDcDnwfLl/qH0E0mCfjabSORxXp9E9QZd2gm7j8AKfR0Fe9q2/6t0S/kKsHrnJdMngk2izB1z3RDdJOAkUSK/1UOrTL6Y+R8cq1T748ypHYQh++ddEvHgikdQ=
+ t=1757516722; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
+ bh=EfbDjTEkKmQSHkupOEfM7fT9Z4bCEggf+NrkPcGjW4U=;
+ b=g6O5v7AvDwvvuomWPpIhONv0xhfX5osZyFxG+E4xDX4gKRq5QxCQl/2B1SDbePiOG8Aoo34BH/7Q8ZMGMG09YsY+d1ZPsJwjA2jXGaPIFoASTJcITuTpCRVesCpnrQYgGCqVzYUuYggMKX8zPiabx3BdPA/n2Pp1TwjAx2q6RDg=
 Received: from ea134-sw06.eng.xrvm.cn(mailfrom:lyndra@linux.alibaba.com
- fp:SMTPD_---0WniJAy3_1757516717 cluster:ay36) by smtp.aliyun-inc.com;
+ fp:SMTPD_---0WniJAyf_1757516720 cluster:ay36) by smtp.aliyun-inc.com;
  Wed, 10 Sep 2025 23:05:20 +0800
 From: TANG Tiancheng <lyndra@linux.alibaba.com>
-Subject: [PATCH v2 0/4] Fix RISC-V timer migration issues
-Date: Wed, 10 Sep 2025 23:04:24 +0800
-Message-Id: <20250910-timers-v2-0-31359f1f6ee8@linux.alibaba.com>
+Date: Wed, 10 Sep 2025 23:04:25 +0800
+Subject: [PATCH v2 1/4] hw/intc: Save time_delta in RISC-V mtimer VMState
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHiTwWgC/2XMyw7CIBCF4VdpZi0NELXgyvcwXQx0aifpxUAlN
- Q3vLnbr8j85+XaIFJgi3KodAiWOvMwl9KkCP+D8JMFdadBSX6SVVqw8UYhCGa/9tXEKNUI5vwL
- 1vB3Qoy09cFyX8DncpH7rH5GUkKIhUgZtZ/qzu488v7caR3bosPbLBG3O+QvxfZrhpAAAAA==
-X-Change-ID: 20250909-timers-18c2c67b1a2a
+Message-Id: <20250910-timers-v2-1-31359f1f6ee8@linux.alibaba.com>
+References: <20250910-timers-v2-0-31359f1f6ee8@linux.alibaba.com>
+In-Reply-To: <20250910-timers-v2-0-31359f1f6ee8@linux.alibaba.com>
 To: qemu-devel@nongnu.org
 Cc: Palmer Dabbelt <palmer@dabbelt.com>, 
  Alistair Francis <alistair.francis@wdc.com>, 
@@ -44,16 +42,17 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
  TANG Tiancheng <lyndra@linux.alibaba.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757516719; l=2207;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757516719; l=2874;
  i=lyndra@linux.alibaba.com; s=20250909; h=from:subject:message-id;
- bh=qhskT1NkJirVHE9x1Qr/P1472g+XACtByXEXvsPkUIU=;
- b=ZGnZciczPKSXNsu9v03kmH1SviK+rHMy0PAiBZISnpa3Ek32ZfKMzTgWRmo2RQZlR2YFhiO/d
- 4CUf+KA2h61CCVtNuCtr3v2ydW2XhaK0Y12muCWNuE4ag2ty5FdCLyv
+ bh=V0J1o0BTyrUgt1B4k2jqg8yY3dbSFHQu27VONEAoIxs=;
+ b=jxgJeMQuj0365JyrIMRQCwJPtuK7H9Z0Y9ItM+ZkpO4pwHJlOefU/LvLsLrntLqN9VapBgH/d
+ llJgPZe+H/CDNPTWbvAGDoNMGI8gcUXHe8JFtUGO4dq81bKMyO05Bxm
 X-Developer-Key: i=lyndra@linux.alibaba.com; a=ed25519;
  pk=GQh4uOSLVucXGkaZfEuQ956CrYS14cn1TA3N8AiIjBw=
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 115.124.30.99 (deferred)
-Received-SPF: pass client-ip=115.124.30.99;
- envelope-from=lyndra@linux.alibaba.com; helo=out30-99.freemail.mail.aliyun.com
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 115.124.30.124 (deferred)
+Received-SPF: pass client-ip=115.124.30.124;
+ envelope-from=lyndra@linux.alibaba.com;
+ helo=out30-124.freemail.mail.aliyun.com
 X-Spam_score_int: -166
 X-Spam_score: -16.7
 X-Spam_bar: ----------------
@@ -78,56 +77,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch set fixes several timer-related migration issues in QEMU's
-RISC-V implementation that cause timer events to be lost or behave
-incorrectly after snapshot save/restore or live migration.
+In QEMU's RISC-V ACLINT timer model, 'mtime' is not stored directly as a
+state variable. It is computed on demand as:
 
-The problems addressed are:
+    mtime = rtc_r + time_delta
 
-1. ACLINT mtimer time_delta not migrated: The time_delta field in
-   RISCVAclintMTimerState was missing from vmstate, causing incorrect
-   mtime values after snapshot restore. This resulted in guest time
-   appearing "frozen" until enough virtual time elapsed to compensate
-   for the offset error.
+where:
+- 'rtc_r' is the current VM virtual time (in ticks) obtained via
+  cpu_riscv_read_rtc_raw() from QEMU_CLOCK_VIRTUAL.
+- 'time_delta' is an offset applied when the guest writes a new 'mtime'
+  value via riscv_aclint_mtimer_write():
 
-2. ACLINT mtimer timers array not migrated: Active timer events
-   scheduled via riscv_aclint_mtimer_write_timecmp() were not being
-   migrated, causing pending timer interrupts to be lost after restore.
+    time_delta = value - rtc_r
 
-3. CPU stimer/vstimer not migrated: The S-mode and VS-mode timer
-   pointers in CPURISCVState were missing from vmstate_riscv_cpu,
-   causing supervisor-level timer events to be lost.
+Under this design, 'rtc_r' is assumed to be monotonically increasing
+during VM execution. Even if the guest writes an 'mtime' value smaller
+than the current one (making 'time_delta' negative in signed arithmetic,
+or underflow in unsigned arithmetic), the computed 'mtime' remains
+correct because 'rtc_r_new > rtc_r_old':
 
-The patch set introduces a new VMSTATE_TIMER_PTR_VARRAY macro to handle
-migration of variable-length timer pointer arrays, and adds the missing
-timer fields to the appropriate vmstate structures.
+    mtime_new = rtc_r_new + (value - rtc_r_old)
 
+However, this monotonicity assumption breaks on snapshot load.
+
+Before restoring a snapshot, QEMU resets the guest, which calls
+riscv_aclint_mtimer_reset_enter() to set 'mtime' to 0 and recompute
+'time_delta' as:
+
+    time_delta = 0 - rtc_r_reset
+
+Here, the time_delta differs from the value that was present when the
+snapshot was saved. As a result, subsequent reads produce a fixed offset
+from the true mtime.
+
+This can be observed with the 'date' command inside the guest: after loading
+a snapshot, the reported time appears "frozen" at the save point, and only
+resumes correctly after the guest has run long enough to compensate for the
+erroneous offset.
+
+The fix is to treat 'time_delta' as part of the device's migratable
+state and save/restore it via vmstate. This preserves the correct
+relation between 'rtc_r' and 'mtime' across snapshot save/load, ensuring
+'mtime' continues incrementing from the precise saved value after
+restore.
+
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: TANG Tiancheng <lyndra@linux.alibaba.com>
 ---
-Changes in v2:
-- Split VMSTATE_VARRAY_OF_POINTER_UINT32() into a separate patch,
-  and define VMSTATE_TIMER_PTR_VARRAY() in riscv_aclint.h.
-- Added Reviewed-by from Daniel Henrique Barboza.
-- Link to v1: https://lore.kernel.org/qemu-devel/20250909-timers-v1-0-7ee18a9d8f4b@linux.alibaba.com
+ hw/intc/riscv_aclint.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
----
-TANG Tiancheng (4):
-      hw/intc: Save time_delta in RISC-V mtimer VMState
-      include/migration: Add support for a variable-length array of UINT32 pointers
-      hw/intc: Save timers array in RISC-V mtimer VMState
-      target/riscv: Save stimer and vstimer in CPU vmstate
+diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
+index 4623cfa029365c6cbdead4bd4a9f0d8b9e88b939..318a9c8248432a8cd4c3f3fa990739917ecf7ca1 100644
+--- a/hw/intc/riscv_aclint.c
++++ b/hw/intc/riscv_aclint.c
+@@ -323,9 +323,10 @@ static void riscv_aclint_mtimer_reset_enter(Object *obj, ResetType type)
+ 
+ static const VMStateDescription vmstate_riscv_mtimer = {
+     .name = "riscv_mtimer",
+-    .version_id = 1,
+-    .minimum_version_id = 1,
++    .version_id = 2,
++    .minimum_version_id = 2,
+     .fields = (const VMStateField[]) {
++            VMSTATE_UINT64(time_delta, RISCVAclintMTimerState),
+             VMSTATE_VARRAY_UINT32(timecmp, RISCVAclintMTimerState,
+                                   num_harts, 0,
+                                   vmstate_info_uint64, uint64_t),
 
- hw/intc/riscv_aclint.c         |  7 +++++--
- include/hw/intc/riscv_aclint.h |  4 ++++
- include/migration/vmstate.h    | 10 ++++++++++
- target/riscv/machine.c         | 25 +++++++++++++++++++++++++
- 4 files changed, 44 insertions(+), 2 deletions(-)
----
-base-commit: 6a9fa5ef3230a7d51e0d953a59ee9ef10af705b8
-change-id: 20250909-timers-18c2c67b1a2a
-
-Best regards,
 -- 
-TANG Tiancheng <lyndra@linux.alibaba.com>
+2.43.0
 
 
