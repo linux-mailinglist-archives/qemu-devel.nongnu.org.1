@@ -2,74 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07435B51FBE
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F7CB52022
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:16:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwPCw-00016I-RN; Wed, 10 Sep 2025 14:06:15 -0400
+	id 1uwPDH-0002BG-Ve; Wed, 10 Sep 2025 14:06:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uwPCL-0000IJ-Jl
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:05:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uwPCY-0000cy-Me
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:05:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uwPCJ-0004zl-Mb
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:05:37 -0400
+ id 1uwPCW-00050Q-LL
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:05:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757527534;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fy2hCOizZ1P8nfNJTFHtbE21ChLZDVppYA1lOHsHttE=;
- b=P5W8rwQefhgPPR2/P0cwo6DzFPhlZAMr/8eqwKhx+eflACixeeaWl7o6bge8fo/+xkroyV
- TpVyLkHNM4qcgZqAagjB0/oglDYc3fAyH9/klpBxwPKAuZn0rM9KJq3hlYysjnxEOYMMvt
- 16taxX6kzSWiyuIw+euwivK91QoOApo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ s=mimecast20190719; t=1757527547;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=NdibCPxAZX1isc7mCsZl5Mu924d8hKRd4Nv1RYXWrPg=;
+ b=OARAdw8bLI9/7vJ1N6E3624Z1kYkVtoRKsaGknRsN1CVJ7bR8DxZC1ZnIfvylNUdLqWXh2
+ mXgvrnWx4vGzzinAnJU8tkgtKlZEMVI+Ng8ueLfUe0ZP7xhuZDS2deu8jftxlNB0EEaGBc
+ f1MLwg8KtH9JgK2VGoLiAH2QgRcMMk8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-213-FAqXAgcIPQuQIoHXLYQfgw-1; Wed,
- 10 Sep 2025 14:05:30 -0400
-X-MC-Unique: FAqXAgcIPQuQIoHXLYQfgw-1
-X-Mimecast-MFC-AGG-ID: FAqXAgcIPQuQIoHXLYQfgw_1757527528
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-672-uWANk37WOmSCOr17-dg9Yg-1; Wed,
+ 10 Sep 2025 14:05:44 -0400
+X-MC-Unique: uWANk37WOmSCOr17-dg9Yg-1
+X-Mimecast-MFC-AGG-ID: uWANk37WOmSCOr17-dg9Yg_1757527543
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BF7861800291; Wed, 10 Sep 2025 18:05:28 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.57])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 102491800446; Wed, 10 Sep 2025 18:05:23 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Stefan Weil <sw@weilnetz.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 20/20] util: add brackets around guest name in message
- context
-Date: Wed, 10 Sep 2025 19:03:57 +0100
-Message-ID: <20250910180357.320297-21-berrange@redhat.com>
-In-Reply-To: <20250910180357.320297-1-berrange@redhat.com>
-References: <20250910180357.320297-1-berrange@redhat.com>
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7E9F019560B6; Wed, 10 Sep 2025 18:05:43 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.57])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9F9151956095; Wed, 10 Sep 2025 18:05:40 +0000 (UTC)
+Date: Wed, 10 Sep 2025 19:05:37 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [RFC 0/4] util: qmessage_context followup
+Message-ID: <aMG98W3y9jpUvJfB@redhat.com>
+References: <20250902103010.309094-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250902103010.309094-1-richard.henderson@linaro.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -91,47 +79,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The message context can optionally include the guest name if the
-argument '-msg guest-name=on' is given. The formatting, however,
-does not look good if the guest name contains whitespace. Change
-the output to include square brackets to demarcate the name.
+On Tue, Sep 02, 2025 at 12:30:06PM +0200, Richard Henderson wrote:
+> Hi Daniel,
+> 
+> I'm still not keen on qmessage_context allocating a string.
+> 
+> If we *did* allocate a string, it should be a GString so that we can
+> easily append to that.  The only benefit I see from this is that we
+> would collect all of the output and it would reach stderr atomically.
+> 
+> However, I think it's better to not collect the message and just
+> output the pieces.  Something like the following.  The names are
+> horrible and I didn't document the patches well.
 
-Before:
+I've posted a v3 of my series which incorporates the conceptual
+idea you show here. I managed to simplify it somewhat as I came
+to realize the qmessage_context code never needs to write to
+anything other than a "FILE *", because we always skip the context
+when writing to HMP. IOW, we could simply use fprintf() directly
+throughout
 
-  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish -d 'trace:qcrypto*' -msg guest-name=on -name "fish food"
-  fish food qemu-system-x86_64(1146846:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55657e94e690 dir=fish
-  fish food qemu-system-x86_64(1146846:main): qcrypto_tls_creds_get_path TLS creds path creds=0x55657e94e690 filename=ca-cert.pem path=<none>
-  fish food qemu-system-x86_64(1146846:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
-
-After:
-
-  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish -d 'trace:qcrypto*' -msg guest-name=on -name "fish food"
-  [fish food] qemu-system-x86_64(1144713:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x5604ada2c950 dir=fish
-  [fish food] qemu-system-x86_64(1144713:main): qcrypto_tls_creds_get_path TLS creds path creds=0x5604ada2c950 filename=ca-cert.pem path=<none>
-  [fish food] qemu-system-x86_64(1144713:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- util/message.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/util/message.c b/util/message.c
-index 814ca0316e..7d94b9d970 100644
---- a/util/message.c
-+++ b/util/message.c
-@@ -28,7 +28,7 @@ void qmessage_context_print(FILE *fp)
- 
-     if ((message_format & QMESSAGE_FORMAT_WORKLOAD_NAME) &&
-         message_workloadname) {
--        fprintf(fp, "%s ", message_workloadname);
-+        fprintf(fp, "[%s] ", message_workloadname);
-     }
- 
-     if (message_format & QMESSAGE_FORMAT_PROGRAM_NAME) {
+With regards,
+Daniel
 -- 
-2.50.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
