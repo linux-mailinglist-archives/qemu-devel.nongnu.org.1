@@ -2,67 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB116B51FFC
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8D4B51FAD
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:05:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwPGU-0006c6-LX; Wed, 10 Sep 2025 14:09:55 -0400
+	id 1uwPB7-0007rW-3w; Wed, 10 Sep 2025 14:04:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uwPDp-0004mi-Fm
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:07:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uwPB1-0007q6-QX
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:04:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uwPDm-00057Z-Tc
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:07:08 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uwPAy-0004eW-U9
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:04:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757527625;
+ s=mimecast20190719; t=1757527449;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=m7ShvVxcohLryooGwoHjde/Zqt4sTaKcWehk8sb96Oo=;
- b=Ak05ZdTSwk/0fE7kHctvD7J64zSqOD5h64ppvy4JkZYy8vyBjfLLalpQ03Qa8AMKXmhZoj
- 0PacsUhFDeh7n0kSo1HFh4pCNAThKQwcAF7No4sRdhqBwyUEbCYhTJZ0JWhxpwyeoDJ6dG
- QkXQUqL81mUyrMJLyuCESpU4X9ZumbM=
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LeONa4juHQGw0uhlexz4qPGOST4ZsEDZVGCvQEzqjIE=;
+ b=baZpDhQlgKP6SyV0H6Cd82zxTyvzKyf+a+4eKUzGq9wGAsBFtPMzI1r3qVxpUOnk9vmfAA
+ i1dxEBUOD2m3L4qyKfWflbOlhrag9U48U0DCOBOcZ+drxf+l60s+rBw5Hkn2jTwx7bBo5W
+ EO54DKHSoDV7eq9DjxWT/OxpYDwA1aM=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-122-iNFkpZrvP42qcidO9zzaaw-1; Wed,
- 10 Sep 2025 14:07:02 -0400
-X-MC-Unique: iNFkpZrvP42qcidO9zzaaw-1
-X-Mimecast-MFC-AGG-ID: iNFkpZrvP42qcidO9zzaaw_1757527620
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-101-UdRCBb8APXGqQ0DiLaA3wg-1; Wed,
+ 10 Sep 2025 14:04:05 -0400
+X-MC-Unique: UdRCBb8APXGqQ0DiLaA3wg-1
+X-Mimecast-MFC-AGG-ID: UdRCBb8APXGqQ0DiLaA3wg_1757527443
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B5AC9180047F; Wed, 10 Sep 2025 18:07:00 +0000 (UTC)
-Received: from localhost (unknown [10.2.17.66])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 325B91956095; Wed, 10 Sep 2025 18:06:59 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
+ id 6A624180034F; Wed, 10 Sep 2025 18:04:03 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.57])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 5A7841800447; Wed, 10 Sep 2025 18:03:59 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Aarushi Mehta <mehta.aaru20@gmail.com>, Fam Zheng <fam@euphon.net>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Hanna Czenczek <hreitz@redhat.com>, eblake@redhat.com,
- Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org, hibriansong@gmail.com, Stefan Weil <sw@weilnetz.de>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 12/12] block/io_uring: use non-vectored read/write when
- possible
-Date: Wed, 10 Sep 2025 13:57:03 -0400
-Message-ID: <20250910175703.374499-13-stefanha@redhat.com>
-In-Reply-To: <20250910175703.374499-1-stefanha@redhat.com>
-References: <20250910175703.374499-1-stefanha@redhat.com>
+Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Stefan Weil <sw@weilnetz.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v3 00/20] util: sync error_report & qemu_log output more
+ closely
+Date: Wed, 10 Sep 2025 19:03:37 +0100
+Message-ID: <20250910180357.320297-1-berrange@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,70 +91,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The io_uring_prep_readv2/writev2() man pages recommend using the
-non-vectored read/write operations when possible for performance
-reasons.
+This series is a tangent that came out of discussion in
 
-I didn't measure a significant difference but it doesn't hurt to have
-this optimization in place.
+   https://lists.nongnu.org/archive/html/qemu-devel/2025-08/msg00903.html
 
-Suggested-by: Eric Blake <eblake@redhat.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- block/io_uring.c | 29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+In thinking about adding thread info to error_report, I
+came to realize we should likely make qemu_log behave
+consistently with error_report & friends. We already
+honour '-msg timestamp=on', but don't honour 'guest-name=on'
+and also don't include the binary name.
 
-diff --git a/block/io_uring.c b/block/io_uring.c
-index dd930ee57e..bbefbddcc0 100644
---- a/block/io_uring.c
-+++ b/block/io_uring.c
-@@ -49,12 +49,24 @@ static void luring_prep_sqe(struct io_uring_sqe *sqe, void *opaque)
- #ifdef HAVE_IO_URING_PREP_WRITEV2
-     {
-         int luring_flags = (flags & BDRV_REQ_FUA) ? RWF_DSYNC : 0;
--        io_uring_prep_writev2(sqe, fd, qiov->iov,
--                              qiov->niov, offset, luring_flags);
-+        if (luring_flags != 0 || qiov->niov > 1) {
-+            io_uring_prep_writev2(sqe, fd, qiov->iov,
-+                                  qiov->niov, offset, luring_flags);
-+        } else {
-+            /* The man page says non-vectored is faster than vectored */
-+            struct iovec *iov = qiov->iov;
-+            io_uring_prep_write(sqe, fd, iov->iov_base, iov->iov_len, offset);
-+        }
-     }
- #else
-         assert(flags == 0);
--        io_uring_prep_writev(sqe, fd, qiov->iov, qiov->niov, offset);
-+        if (qiov->niov > 1) {
-+            io_uring_prep_writev(sqe, fd, qiov->iov, qiov->niov, offset);
-+        } else {
-+            /* The man page says non-vectored is faster than vectored */
-+            struct iovec *iov = qiov->iov;
-+            io_uring_prep_write(sqe, fd, iov->iov_base, iov->iov_len, offset);
-+        }
- #endif
-         break;
-     case QEMU_AIO_ZONE_APPEND:
-@@ -65,8 +77,15 @@ static void luring_prep_sqe(struct io_uring_sqe *sqe, void *opaque)
-         if (req->resubmit_qiov.iov != NULL) {
-             qiov = &req->resubmit_qiov;
-         }
--        io_uring_prep_readv(sqe, fd, qiov->iov, qiov->niov,
--                            offset + req->total_read);
-+        if (qiov->niov > 1) {
-+            io_uring_prep_readv(sqe, fd, qiov->iov, qiov->niov,
-+                                offset + req->total_read);
-+        } else {
-+            /* The man page says non-vectored is faster than vectored */
-+            struct iovec *iov = qiov->iov;
-+            io_uring_prep_read(sqe, fd, iov->iov_base, iov->iov_len,
-+                               offset + req->total_read);
-+        }
-         break;
-     }
-     case QEMU_AIO_FLUSH:
+As an example of the current state, consider mixing error and
+log output today:
+
+- Default context:
+
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
+                       -d 'trace:qcrypto*'
+  qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55ac6d97f700 dir=fish
+  qcrypto_tls_creds_get_path TLS creds path creds=0x55ac6d97f700 filename=ca-cert.pem path=<none>
+  qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+- Full context:
+
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
+                       -d 'trace:qcrypto*' \
+                       -msg guest-name=on,timestamp=on \
+                       -name "fish food"
+  2025-08-19T20:14:16.791413Z qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55e9a3458d10 dir=fish
+  2025-08-19T20:14:16.791429Z qcrypto_tls_creds_get_path TLS creds path creds=0x55e9a3458d10 filename=ca-cert.pem path=<none>
+  2025-08-19T20:14:16.791433Z fish food qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+And after this series is complete:
+
+- Default context:
+
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
+                      -d 'trace:qcrypto*'
+  qemu-system-x86_64(1184284:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55a24ad5cb30 dir=fish
+  qemu-system-x86_64(1184284:main): qcrypto_tls_creds_get_path TLS creds path creds=0x55a24ad5cb30 filename=ca-cert.pem path=<none>
+  qemu-system-x86_64(1184284:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+- Full context:
+
+  # qemu-system-x86_64 -object tls-creds-x509,id=t0,dir=fish \
+                      -d 'trace:qcrypto*' \
+                      -msg guest-name=on,timestamp=on \
+                      -name "fish food"
+  2025-08-19T20:12:50.211823Z [fish food] qemu-system-x86_64(1168876:main): qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x5582183d8760 dir=fish
+  2025-08-19T20:12:50.211842Z [fish food] qemu-system-x86_64(1168876:main): qcrypto_tls_creds_get_path TLS creds path creds=0x5582183d8760 filename=ca-cert.pem
++path=<none>
+  2025-08-19T20:12:50.211846Z [fish food] qemu-system-x86_64(1168876:main): Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+The main things to note:
+
+ * error_report/warn_report/qemu_log share the same
+   output format and -msg applies to both
+
+ * -msg debug-threads=on is now unconditionally enabled
+   and thus the param is deprecated & ignored
+
+ * Thread ID and name are unconditionally enabled
+
+ * Guest name is surrounded in [...] brackets
+
+ * The default output lines are typically 15 chars
+   wider given that we always include the thread
+   ID + name now
+
+ * This takes the liberty of assigning the new file
+   to the existing error-report.c maintainer (Markus)
+   Since splitting it off into message.c instead of
+   putting it all in error-report.c felt slightly
+   nicer.
+
+One thing I didn't tackle is making the location
+info get reported for qemu_log. This is used to
+give context for error messages when parsing some
+CLI args, and could be interesting for log messages
+associated with those same CLI args.
+
+Changes in v3:
+
+ - Stop formatting a string in qmessage_context, instead
+   output directly to a "FILE *" stream
+ - Fix pre-existing bug interleaving qemu_log and
+   vreport when the trace 'log' backend has mutex probes
+   enabled
+ - Don't skip error prefixes on stderr when vreport
+   is called from QMP context.
+ - Remove little used error_[v]printf_unless_qmp funcs
+
+Changes in v2:
+
+ - Re-use existing qemu_get_thread_id rather than
+   re-inventing it as qemu_thread_get_id.
+ - Expose qemu_thread_set_name and use it from all
+   locations needing to set thread names
+ - Fix qemu_log() to skip context prefix when
+   emitting a log message in fragments across
+   multiple calls
+ - Skip allocating memory for empty context messages
+ - Fix leak in win32 impl of qemu_thread_get_name
+ - Use g_strlcpy where possible
+
+Daniel P. Berrangé (20):
+  include: define constant for early constructor priority
+  monitor: initialize global data from a constructor
+  system: unconditionally enable thread naming
+  util: expose qemu_thread_set_name
+  audio: make jackaudio use qemu_thread_set_name
+  util: set the name for the 'main' thread
+  util: add API to fetch the current thread name
+  log: avoid repeated prefix on incremental qemu_log calls
+  ui/vnc: remove use of error_printf_unless_qmp()
+  monitor: remove redundant error_[v]printf_unless_qmp
+  monitor: move error_vprintf() back to error-report.c
+  monitor: introduce monitor_cur_hmp() function
+  util: don't skip error prefixes when QMP is active
+  util: fix interleaving of error & trace output
+  util: introduce common helper for error-report & log code
+  util: convert error-report & log to message API for timestamp
+  util: add support for formatting a workload name in messages
+  util: add support for formatting a program name in messages
+  util: add support for formatting thread info in messages
+  util: add brackets around guest name in message context
+
+ MAINTAINERS                          |  2 +
+ audio/jackaudio.c                    | 30 ++++++++--
+ docs/about/deprecated.rst            |  7 +++
+ include/monitor/monitor.h            |  4 +-
+ include/qemu/compiler.h              |  8 +++
+ include/qemu/error-report.h          |  4 --
+ include/qemu/message.h               | 40 +++++++++++++
+ include/qemu/thread.h                |  3 +-
+ meson.build                          | 21 +++++++
+ monitor/monitor.c                    | 65 +++++++-------------
+ storage-daemon/qemu-storage-daemon.c |  6 ++
+ stubs/error-printf.c                 |  5 --
+ stubs/monitor-core.c                 | 15 +++++
+ system/vl.c                          | 30 +++++++---
+ tests/qemu-iotests/041               |  2 +-
+ tests/qemu-iotests/common.filter     |  2 +-
+ tests/unit/test-error-report.c       |  6 +-
+ tests/unit/test-util-sockets.c       |  3 +
+ ui/vnc.c                             | 14 +++--
+ util/error-report.c                  | 89 ++++++++++++++++------------
+ util/log.c                           | 28 ++++-----
+ util/meson.build                     |  1 +
+ util/message.c                       | 47 +++++++++++++++
+ util/qemu-thread-posix.c             | 76 +++++++++++++++---------
+ util/qemu-thread-win32.c             | 82 +++++++++++++++++--------
+ 25 files changed, 404 insertions(+), 186 deletions(-)
+ create mode 100644 include/qemu/message.h
+ create mode 100644 util/message.c
+
 -- 
-2.51.0
+2.50.1
 
 
