@@ -2,91 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAF1B519CA
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 16:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42899B51AE1
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 17:07:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwM10-0000SH-LK; Wed, 10 Sep 2025 10:41:42 -0400
+	id 1uwMOP-0005XF-5M; Wed, 10 Sep 2025 11:05:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
- id 1uwM0x-0000Rr-HN
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 10:41:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <lyndra@linux.alibaba.com>)
+ id 1uwMOK-0005VR-D5; Wed, 10 Sep 2025 11:05:48 -0400
+Received: from [115.124.30.99] (helo=out30-99.freemail.mail.aliyun.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
- id 1uwM0s-0000U0-G9
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 10:41:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757515286;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=W0NnmC6Lh5v4pZdMl8VvSdVEd96kDWwKqUqph1n3Tug=;
- b=dyvk1+ZOSASkqkLrVAq3MLzmzmG6AjhZZqpnILdqTt+sFmgfM/FEOFNPC4sSnVAOtTOvO3
- skebwTdeOJ3g6Xh94lfVqDZlkQC2gKS0oM+4fUzrerfaGN9tJfE3JgNlvRcoT6xmgdkAkx
- k57NgiWoEAFHY9PtuEmEok6Z4C+Ah84=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-449-FZqRuJw7MTypNjk7yYi41Q-1; Wed, 10 Sep 2025 10:40:13 -0400
-X-MC-Unique: FZqRuJw7MTypNjk7yYi41Q-1
-X-Mimecast-MFC-AGG-ID: FZqRuJw7MTypNjk7yYi41Q_1757515209
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-8080713fa17so1449130385a.2
- for <qemu-devel@nongnu.org>; Wed, 10 Sep 2025 07:40:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757515209; x=1758120009;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=W0NnmC6Lh5v4pZdMl8VvSdVEd96kDWwKqUqph1n3Tug=;
- b=f3kCSTF9J/nXMA7gIX39G9JGytda2ERvuZRh+/EEgMuqfy8DMwU0FogR+7UsvPZSs5
- O/vQO1FPzE8Rg1e4FDyaYhop9k3CETmAzjp5+WlFcYJ231s+rZXTIWFM1k+mOoDIkvlO
- OHzXrlx3g7DazEMtGdVUsgZzCmoBzGZ5MhfCOywWD7GXtlkN4ABvG5NacD6gTYvUqNeE
- YX8ymUsIehoeE+LjrceMtvAQUJ7Ll9qyE8p5qFr0ZDCknPTg6UgGouMdMPdjyiuljEbo
- ReYr8kAT3QPWkmuypScRj5ylOSIUfgo7GIsN8eeOEclw/YgU1FcK6Jbb9bL/lU5G1q6m
- RgeQ==
-X-Gm-Message-State: AOJu0Yw9Hg55FqAvlzIYg1BcnvB7I3epNVVTkHqpnoRegES19gzpbTg1
- sUzX7FZcEVyp/QHxteLasVNY4LJk6iS/iffnv2bSZBnT9/NEduX/3tjOCJqp3wT6PrN91hluRiv
- HkBcMHbi7QKSKiSsQ4/51wVEdn9+0pdjOk32Mtbl/K1hqEwsO0hPQ1p8SYMyVpEAukaF1jlEdGv
- YXNIoq137wLs07YjxgvBAYiUSYWOioUbM=
-X-Gm-Gg: ASbGncupYWp2ny4V4enl7GviZffyWayy77NmHu524WWjuby76JqQU93n6O36mJ143JS
- uuIYqvdwg0MeNA6AscekUfBMd0b4hBlYGkMMS/b6n0lYri4sXBSDYpiNPCAcuEj7QNLYDgJxmqL
- 1kwbMMMzk4G3cvgTXSo9s3z6iuyAkczmyrkbXI6h9V5AA8GYY0wXchK2Y=
-X-Received: by 2002:a05:620a:3909:b0:813:a1a8:d4e2 with SMTP id
- af79cd13be357-813c39a167dmr1415887985a.74.1757515209437; 
- Wed, 10 Sep 2025 07:40:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGXj+tvPS+3GMXelwQXFDP4hfDNSDdnw//gi2UueBMfreWysEfrzXsTfGWmIyhT9S4jOuQPdTezHG9JviU+WYg=
-X-Received: by 2002:a05:620a:3909:b0:813:a1a8:d4e2 with SMTP id
- af79cd13be357-813c39a167dmr1415883985a.74.1757515208802; Wed, 10 Sep 2025
- 07:40:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <lyndra@linux.alibaba.com>)
+ id 1uwMOF-0003f7-So; Wed, 10 Sep 2025 11:05:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1757516722; h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To;
+ bh=3hTwrgSwdp3Rfn+8E33xqC1mmHPXNZ2zKgx8QMkf6aE=;
+ b=jmgO5tCBHWIRdwvTECIAaNSVlhUkrjJxYNb0q0Xy6LaNrG2F3/QDcDnwfLl/qH0E0mCfjabSORxXp9E9QZd2gm7j8AKfR0Fe9q2/6t0S/kKsHrnJdMngk2izB1z3RDdJOAkUSK/1UOrTL6Y+R8cq1T748ypHYQh++ddEvHgikdQ=
+Received: from ea134-sw06.eng.xrvm.cn(mailfrom:lyndra@linux.alibaba.com
+ fp:SMTPD_---0WniJAy3_1757516717 cluster:ay36) by smtp.aliyun-inc.com;
+ Wed, 10 Sep 2025 23:05:20 +0800
+From: TANG Tiancheng <lyndra@linux.alibaba.com>
+Subject: [PATCH v2 0/4] Fix RISC-V timer migration issues
+Date: Wed, 10 Sep 2025 23:04:24 +0800
+Message-Id: <20250910-timers-v2-0-31359f1f6ee8@linux.alibaba.com>
 MIME-Version: 1.0
-References: <20250910121501.676219-1-abologna@redhat.com>
-In-Reply-To: <20250910121501.676219-1-abologna@redhat.com>
-From: Kashyap Chamarthy <kchamart@redhat.com>
-Date: Wed, 10 Sep 2025 16:39:50 +0200
-X-Gm-Features: Ac12FXxMcycCUaP5UKacl-2FJuV8UTGFs03EUzbojKwGUQ2zGjdMAAhAM02q4ag
-Message-ID: <CAJ=Wi4qhxwZH3d6gN4nJf0Ei3ECu9GFPZvhVjG_yu0zYkdnNww@mail.gmail.com>
-Subject: Re: [PATCH] docs/interop/firmware: Add riscv64 to FirmwareArchitecture
-To: Andrea Bolognani <abologna@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kchamart@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHiTwWgC/2XMyw7CIBCF4VdpZi0NELXgyvcwXQx0aifpxUAlN
+ Q3vLnbr8j85+XaIFJgi3KodAiWOvMwl9KkCP+D8JMFdadBSX6SVVqw8UYhCGa/9tXEKNUI5vwL
+ 1vB3Qoy09cFyX8DncpH7rH5GUkKIhUgZtZ/qzu488v7caR3bosPbLBG3O+QvxfZrhpAAAAA==
+X-Change-ID: 20250909-timers-18c2c67b1a2a
+To: qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org, 
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ TANG Tiancheng <lyndra@linux.alibaba.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757516719; l=2207;
+ i=lyndra@linux.alibaba.com; s=20250909; h=from:subject:message-id;
+ bh=qhskT1NkJirVHE9x1Qr/P1472g+XACtByXEXvsPkUIU=;
+ b=ZGnZciczPKSXNsu9v03kmH1SviK+rHMy0PAiBZISnpa3Ek32ZfKMzTgWRmo2RQZlR2YFhiO/d
+ 4CUf+KA2h61CCVtNuCtr3v2ydW2XhaK0Y12muCWNuE4ag2ty5FdCLyv
+X-Developer-Key: i=lyndra@linux.alibaba.com; a=ed25519;
+ pk=GQh4uOSLVucXGkaZfEuQ956CrYS14cn1TA3N8AiIjBw=
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 115.124.30.99 (deferred)
+Received-SPF: pass client-ip=115.124.30.99;
+ envelope-from=lyndra@linux.alibaba.com; helo=out30-99.freemail.mail.aliyun.com
+X-Spam_score_int: -166
+X-Spam_score: -16.7
+X-Spam_bar: ----------------
+X-Spam_report: (-16.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,45 +78,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 10, 2025 at 2:15=E2=80=AFPM Andrea Bolognani <abologna@redhat.c=
-om> wrote:
->
-> Descriptors using this value have been shipped for years
-> by distros, so we just need to update the spec to match
-> reality.
->
-> Signed-off-by: Andrea Bolognani <abologna@redhat.com>
-> ---
->  docs/interop/firmware.json | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
-> index 6bbe2cce0a..ccbfaf828d 100644
-> --- a/docs/interop/firmware.json
-> +++ b/docs/interop/firmware.json
-> @@ -85,12 +85,14 @@
->  #
->  # @loongarch64: 64-bit LoongArch. (since: 7.1)
->  #
-> +# @riscv64: 64-bit RISC-V.
-> +#
->  # @x86_64: 64-bit x86.
->  #
->  # Since: 3.0
->  ##
->  { 'enum' : 'FirmwareArchitecture',
-> -  'data' : [ 'aarch64', 'arm', 'i386', 'loongarch64', 'x86_64' ] }
-> +  'data' : [ 'aarch64', 'arm', 'i386', 'loongarch64', 'riscv64', 'x86_64=
-' ] }
+This patch set fixes several timer-related migration issues in QEMU's
+RISC-V implementation that cause timer events to be lost or behave
+incorrectly after snapshot save/restore or live migration.
 
-Thanks :-)
+The problems addressed are:
 
-Reviewed-by: Kashyap Chamarthy <kchamart@redhat.com>
+1. ACLINT mtimer time_delta not migrated: The time_delta field in
+   RISCVAclintMTimerState was missing from vmstate, causing incorrect
+   mtime values after snapshot restore. This resulted in guest time
+   appearing "frozen" until enough virtual time elapsed to compensate
+   for the offset error.
 
->  ##
->  # @FirmwareTarget:
-> --
-> 2.51.0
->
+2. ACLINT mtimer timers array not migrated: Active timer events
+   scheduled via riscv_aclint_mtimer_write_timecmp() were not being
+   migrated, causing pending timer interrupts to be lost after restore.
+
+3. CPU stimer/vstimer not migrated: The S-mode and VS-mode timer
+   pointers in CPURISCVState were missing from vmstate_riscv_cpu,
+   causing supervisor-level timer events to be lost.
+
+The patch set introduces a new VMSTATE_TIMER_PTR_VARRAY macro to handle
+migration of variable-length timer pointer arrays, and adds the missing
+timer fields to the appropriate vmstate structures.
+
+Signed-off-by: TANG Tiancheng <lyndra@linux.alibaba.com>
+---
+Changes in v2:
+- Split VMSTATE_VARRAY_OF_POINTER_UINT32() into a separate patch,
+  and define VMSTATE_TIMER_PTR_VARRAY() in riscv_aclint.h.
+- Added Reviewed-by from Daniel Henrique Barboza.
+- Link to v1: https://lore.kernel.org/qemu-devel/20250909-timers-v1-0-7ee18a9d8f4b@linux.alibaba.com
+
+---
+TANG Tiancheng (4):
+      hw/intc: Save time_delta in RISC-V mtimer VMState
+      include/migration: Add support for a variable-length array of UINT32 pointers
+      hw/intc: Save timers array in RISC-V mtimer VMState
+      target/riscv: Save stimer and vstimer in CPU vmstate
+
+ hw/intc/riscv_aclint.c         |  7 +++++--
+ include/hw/intc/riscv_aclint.h |  4 ++++
+ include/migration/vmstate.h    | 10 ++++++++++
+ target/riscv/machine.c         | 25 +++++++++++++++++++++++++
+ 4 files changed, 44 insertions(+), 2 deletions(-)
+---
+base-commit: 6a9fa5ef3230a7d51e0d953a59ee9ef10af705b8
+change-id: 20250909-timers-18c2c67b1a2a
+
+Best regards,
+-- 
+TANG Tiancheng <lyndra@linux.alibaba.com>
 
 
