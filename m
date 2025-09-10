@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B681B51FC1
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED9FB51FB5
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:06:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwPBi-00087V-Le; Wed, 10 Sep 2025 14:04:58 -0400
+	id 1uwPBm-0008Eg-18; Wed, 10 Sep 2025 14:05:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uwPBa-000810-FF
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:04:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uwPBg-00088x-BG
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:04:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uwPBX-0004jT-JH
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:04:49 -0400
+ id 1uwPBa-0004jd-8N
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:04:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757527486;
+ s=mimecast20190719; t=1757527489;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=q4+CEe/wAFjZNRupv5OHeYe/sqf/0adXjag9Bu5LdD0=;
- b=gX1pj54s7Kp4tcjBwRgDoljNFe47iRXnIWm+5guyTgEYO2YHoNC/HMfvAnBBJEArSvij9Y
- y0VPFPEvDP4D8sAdFGitS0p0dNJQ3kS6SU5P0GMpBWkyUiXE5jSj9uBMvu7maNMjS22FKj
- WfPuH2FnLGXtDjqz1NXUp9dBNSSYxng=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=HSmmeE4LX6+dAdVzSESwN9nzUTHN9b8kMqEf0jlqxZU=;
+ b=ZmmRqsCdcwo5GVirF6sbdFAjqUwH8DzzjQ0s5kEWGSmdO9+BvXdKwSAqxkkFfv8eJc/Seq
+ uDSPCPcFbDdqRyjJzmNMPXzkEqcXxu79usxcoB37QVG3xJ+26GcOWrGGfaAKZAf/SGV50f
+ 74dXMsCFFmSXvQ21ctikFA7psTJPMvI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-N89ze5LAP7uYM1Ujexhymw-1; Wed,
- 10 Sep 2025 14:04:43 -0400
-X-MC-Unique: N89ze5LAP7uYM1Ujexhymw-1
-X-Mimecast-MFC-AGG-ID: N89ze5LAP7uYM1Ujexhymw_1757527482
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-195-ueaW2QoiPnebkgk45w3TvA-1; Wed,
+ 10 Sep 2025 14:04:47 -0400
+X-MC-Unique: ueaW2QoiPnebkgk45w3TvA-1
+X-Mimecast-MFC-AGG-ID: ueaW2QoiPnebkgk45w3TvA_1757527486
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 346AC1956087; Wed, 10 Sep 2025 18:04:42 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3070C180045C; Wed, 10 Sep 2025 18:04:46 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.57])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 625641800447; Wed, 10 Sep 2025 18:04:38 +0000 (UTC)
+ id A807F1800447; Wed, 10 Sep 2025 18:04:42 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
@@ -59,16 +59,16 @@ Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 09/20] ui/vnc: remove use of error_printf_unless_qmp()
-Date: Wed, 10 Sep 2025 19:03:46 +0100
-Message-ID: <20250910180357.320297-10-berrange@redhat.com>
+Subject: [PATCH v3 10/20] monitor: remove redundant error_[v]printf_unless_qmp
+Date: Wed, 10 Sep 2025 19:03:47 +0100
+Message-ID: <20250910180357.320297-11-berrange@redhat.com>
 In-Reply-To: <20250910180357.320297-1-berrange@redhat.com>
 References: <20250910180357.320297-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -77,7 +77,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,50 +93,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The error_printf_unless_qmp() will print to the monitor if the current
-one is HMP, if it is QMP nothing will be printed, otherwise stderr
-will be used.
-
-This scenario is easily handled by checking !monitor_cur_is_qmp() and
-then calling the error_printf() function.
+These functions only had one caller which was easily converted to
+the normal error_printf() function. Remove them as they don't add
+sufficient value.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- ui/vnc.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ include/monitor/monitor.h |  3 ---
+ monitor/monitor.c         | 24 ------------------------
+ stubs/error-printf.c      |  5 -----
+ 3 files changed, 32 deletions(-)
 
-diff --git a/ui/vnc.c b/ui/vnc.c
-index 68ca4a68e7..439d586358 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -3530,8 +3530,10 @@ int vnc_display_password(const char *id, const char *password)
-         return -EINVAL;
-     }
-     if (vd->auth == VNC_AUTH_NONE) {
--        error_printf_unless_qmp("If you want use passwords please enable "
--                                "password auth using '-vnc ${dpy},password'.\n");
-+        if (!monitor_cur_is_qmp()) {
-+            error_printf("If you want use passwords please enable "
-+                         "password auth using '-vnc ${dpy},password'.\n");
-+        }
-         return -EINVAL;
-     }
+diff --git a/include/monitor/monitor.h b/include/monitor/monitor.h
+index c3740ec616..296690e1f1 100644
+--- a/include/monitor/monitor.h
++++ b/include/monitor/monitor.h
+@@ -59,7 +59,4 @@ void monitor_register_hmp(const char *name, bool info,
+ void monitor_register_hmp_info_hrt(const char *name,
+                                    HumanReadableText *(*handler)(Error **errp));
  
-@@ -3570,9 +3572,11 @@ static void vnc_display_print_local_addr(VncDisplay *vd)
-         qapi_free_SocketAddress(addr);
-         return;
-     }
--    error_printf_unless_qmp("VNC server running on %s:%s\n",
--                            addr->u.inet.host,
--                            addr->u.inet.port);
-+    if (!monitor_cur_is_qmp()) {
-+        error_printf("VNC server running on %s:%s\n",
-+                     addr->u.inet.host,
-+                     addr->u.inet.port);
-+    }
-     qapi_free_SocketAddress(addr);
+-int error_vprintf_unless_qmp(const char *fmt, va_list ap) G_GNUC_PRINTF(1, 0);
+-int error_printf_unless_qmp(const char *fmt, ...) G_GNUC_PRINTF(1, 2);
+-
+ #endif /* MONITOR_H */
+diff --git a/monitor/monitor.c b/monitor/monitor.c
+index da54e1b1ce..03dbe5d131 100644
+--- a/monitor/monitor.c
++++ b/monitor/monitor.c
+@@ -281,30 +281,6 @@ int error_vprintf(const char *fmt, va_list ap)
+     return vfprintf(stderr, fmt, ap);
  }
  
+-int error_vprintf_unless_qmp(const char *fmt, va_list ap)
+-{
+-    Monitor *cur_mon = monitor_cur();
+-
+-    if (!cur_mon) {
+-        return vfprintf(stderr, fmt, ap);
+-    }
+-    if (!monitor_cur_is_qmp()) {
+-        return monitor_vprintf(cur_mon, fmt, ap);
+-    }
+-    return -1;
+-}
+-
+-int error_printf_unless_qmp(const char *fmt, ...)
+-{
+-    va_list ap;
+-    int ret;
+-
+-    va_start(ap, fmt);
+-    ret = error_vprintf_unless_qmp(fmt, ap);
+-    va_end(ap);
+-    return ret;
+-}
+-
+ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
+     /* Limit guest-triggerable events to 1 per second */
+     [QAPI_EVENT_RTC_CHANGE]        = { 1000 * SCALE_MS },
+diff --git a/stubs/error-printf.c b/stubs/error-printf.c
+index 0e326d8010..1afa0f62ca 100644
+--- a/stubs/error-printf.c
++++ b/stubs/error-printf.c
+@@ -16,8 +16,3 @@ int error_vprintf(const char *fmt, va_list ap)
+     }
+     return vfprintf(stderr, fmt, ap);
+ }
+-
+-int error_vprintf_unless_qmp(const char *fmt, va_list ap)
+-{
+-    return error_vprintf(fmt, ap);
+-}
 -- 
 2.50.1
 
