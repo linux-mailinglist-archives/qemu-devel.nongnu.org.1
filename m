@@ -2,72 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A49B50B02
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 04:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5160DB50B2B
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 04:40:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwAWH-0002AM-6Q; Tue, 09 Sep 2025 22:25:13 -0400
+	id 1uwAii-00072D-3a; Tue, 09 Sep 2025 22:38:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uwAWD-0002A5-TJ
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 22:25:09 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uwAWB-0003pn-9z
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 22:25:09 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxH9N_4cBoxaIIAA--.18250S3;
- Wed, 10 Sep 2025 10:25:03 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowJDxQ+R+4cBoCVGLAA--.51447S3;
- Wed, 10 Sep 2025 10:25:02 +0800 (CST)
-Subject: Re: [PATCH v4 3/3] hw/loongarch/virt: Register reset interface with
- cpu plug callback
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Xianglai Li <lixianglai@loongson.cn>, Igor Mammedov <imammedo@redhat.com>,
- qemu-devel@nongnu.org
-References: <20250906070200.3749326-1-maobibo@loongson.cn>
- <20250906070200.3749326-4-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <35933eb0-8597-f0d1-fe26-f5e22a3f3375@loongson.cn>
-Date: Wed, 10 Sep 2025 10:28:18 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uwAif-00071G-Ca
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 22:38:01 -0400
+Received: from mgamail.intel.com ([192.198.163.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uwAiO-0005ey-GM
+ for qemu-devel@nongnu.org; Tue, 09 Sep 2025 22:38:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1757471864; x=1789007864;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=OTgM5lLfLfET1p0LPSvqPExJgsnE2V1snvbGRXSSmsc=;
+ b=UpQgwNJsjA3PUPGUatTahMxJibMGCDZGkQv5MxYTsa/6x1pMfO5U8GME
+ 8MsZnGtfH1eA/NtQhad8ksisaD10nPemhkDRYn/MESKM5nPzQTyH2fUpC
+ r9Djnb0CaPgVJ6ksWvP71RiaTof8CGlz+d9/COyvh4nRcYQspU+unFzN9
+ gQcC90SFBH0Uf2S3/JKu32KODMU0Uz7figAS3vT+u0O128M4AC/l4antG
+ dGq6HungKSitCRE5UjtSzcS6lqGcAWT1+CAlLpk4Duemy+SRimgT9ly0v
+ VCigFQzgwfpmY0FOf+gye59QY8pEQqNL+Gcs7/MdQJ2ZwfXKK9+pV3csW g==;
+X-CSE-ConnectionGUID: lpPVf0YbQFq92C1WjuBIhw==
+X-CSE-MsgGUID: 3t8pMvSCTOyiM6DYGSiMtw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="62402781"
+X-IronPort-AV: E=Sophos;i="6.18,253,1751266800"; d="scan'208";a="62402781"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2025 19:37:30 -0700
+X-CSE-ConnectionGUID: seu6+7NXTUm29xulb4kA+g==
+X-CSE-MsgGUID: 5HvNehR+QYS+ZjInKWfWUw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,253,1751266800"; d="scan'208";a="196930547"
+Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2025 19:37:27 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, yi.l.liu@intel.com, clement.mathieu--drif@eviden.com,
+ eric.auger@redhat.com, joao.m.martins@oracle.com, avihaih@nvidia.com,
+ xudong.hao@intel.com, giovanni.cabiddu@intel.com, mark.gross@intel.com,
+ arjan.van.de.ven@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH 0/5] vfio: relax the vIOMMU check
+Date: Tue,  9 Sep 2025 22:36:56 -0400
+Message-ID: <20250910023701.244356-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-In-Reply-To: <20250906070200.3749326-4-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowJDxQ+R+4cBoCVGLAA--.51447S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxXw4xZr13XF15WFW5CrW5XFc_yoW5Gr1xpr
- ZrZ3Z0kFs5Jr4DZ3y7tasxZF1kZr1xKr4a9Fn2yF1Fk39rJr1UXr12vF9FvFyUA34FgF1Y
- vrnYk3ZFva15trXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUwmhFDUUU
- U
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.932, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+Received-SPF: pass client-ip=192.198.163.13;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,75 +82,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2025/9/6 ÏÂÎç3:02, Bibo Mao Ð´µÀ:
-> With cpu hotplug is implemented on LoongArch virt machine, reset
-> interface with hot-added CPU should be registered. Otherwise there
-> will be problem if system reboots after cpu is hot-added.
->
-> Now register reset interface with CPU plug callback, so that all
-> cold/hot added CPUs let their reset interface registered. And remove
-> reset interface with CPU unplug callback.
->
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-> ---
->   hw/loongarch/boot.c | 13 -------------
->   hw/loongarch/virt.c |  2 ++
->   2 files changed, 2 insertions(+), 13 deletions(-)
-Tested-by: Song Gao <gaosong@loongson.cn>
+Hi,
 
-Thanks.
-Song Gao
-> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-> index 5799b4c75c..a516415822 100644
-> --- a/hw/loongarch/boot.c
-> +++ b/hw/loongarch/boot.c
-> @@ -350,13 +350,6 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
->       return kernel_entry;
->   }
->   
-> -static void reset_load_elf(void *opaque)
-> -{
-> -    LoongArchCPU *cpu = opaque;
-> -
-> -    cpu_reset(CPU(cpu));
-> -}
-> -
->   static void fw_cfg_add_kernel_info(struct loongarch_boot_info *info,
->                                      FWCfgState *fw_cfg)
->   {
-> @@ -439,12 +432,6 @@ static void loongarch_direct_kernel_boot(MachineState *ms,
->   void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info)
->   {
->       LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(ms);
-> -    int i;
-> -
-> -    /* register reset function */
-> -    for (i = 0; i < ms->smp.cpus; i++) {
-> -        qemu_register_reset(reset_load_elf, LOONGARCH_CPU(qemu_get_cpu(i)));
-> -    }
->   
->       info->kernel_filename = ms->kernel_filename;
->       info->kernel_cmdline = ms->kernel_cmdline;
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index 31215b7785..bd5cff1f1e 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -1014,6 +1014,7 @@ static void virt_cpu_unplug(HotplugHandler *hotplug_dev,
->       /* Notify acpi ged CPU removed */
->       hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->acpi_ged), dev, &error_abort);
->   
-> +    qemu_unregister_resettable(OBJECT(dev));
->       cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
->       cpu_slot->cpu = NULL;
->   }
-> @@ -1038,6 +1039,7 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev,
->                                &error_abort);
->       }
->   
-> +    qemu_register_resettable(OBJECT(dev));
->       cpu_slot = virt_find_cpu_slot(MACHINE(lvms), cpu->phy_id);
->       cpu_slot->cpu = CPU(dev);
->   }
+This series relax the vIOMMU check and allows live migration with vIOMMU
+without VFs using device dirty tracking. It's rewritten based on first 4
+patches of [1] from Joao.
+
+Currently what block us is the lack of dirty bitmap query with iommufd
+before unmap. By adding that query in patch2 plus an extra optimization
+in patch3 that let us simply read the dirty bit (without clearing it),
+then an optimization in patch4 to handle a corner case of domain switch
+in guest, finally we relax the check in patch5.
+
+We tested VM live migration (running QAT workload in VM) with QAT
+device passthrough, below matrix configs:
+1.Scalable mode vIOMMU + IOMMUFD cdev mode
+2.Scalable mode vIOMMU + legacy VFIO mode
+3.legacy mode vIOMMU + IOMMUFD cdev mode
+4.legacy mode vIOMMU + legacy VFIO mode
+
+[1] https://github.com/jpemartins/qemu/commits/vfio-migration-viommu/
+
+Thanks
+Zhenzhong
+
+Zhenzhong Duan (5):
+  vfio/iommufd: Add framework code to support getting dirty bitmap
+    before unmap
+  vfio/iommufd: Query dirty bitmap before DMA unmap
+  vfio/iommufd: Add IOMMU_HWPT_GET_DIRTY_BITMAP_NO_CLEAR flag support
+  intel_iommu: Optimize unmap_bitmap during migration
+  vfio/migration: Allow live migration with vIOMMU without VFs using
+    device dirty tracking
+
+ hw/vfio/vfio-iommufd.h        |  1 +
+ include/hw/vfio/vfio-device.h | 10 ++++++
+ include/system/iommufd.h      |  2 +-
+ backends/iommufd.c            |  5 +--
+ hw/i386/intel_iommu.c         | 42 ++++++++++++++++++++++
+ hw/vfio/container-base.c      |  5 +--
+ hw/vfio/device.c              |  6 ++++
+ hw/vfio/iommufd.c             | 66 +++++++++++++++++++++++++++++------
+ hw/vfio/migration.c           |  6 ++--
+ backends/trace-events         |  2 +-
+ 10 files changed, 123 insertions(+), 22 deletions(-)
+
+-- 
+2.47.1
 
 
