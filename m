@@ -2,66 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C65B51AE0
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 17:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82335B51AD1
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 17:06:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwMOP-0005Zo-HA; Wed, 10 Sep 2025 11:05:53 -0400
+	id 1uwMNO-0005G3-12; Wed, 10 Sep 2025 11:04:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lyndra@linux.alibaba.com>)
- id 1uwMOL-0005Wl-QI; Wed, 10 Sep 2025 11:05:50 -0400
-Received: from [115.124.30.97] (helo=out30-97.freemail.mail.aliyun.com)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uwMNH-0005Fh-Cj
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 11:04:43 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lyndra@linux.alibaba.com>)
- id 1uwMOF-0003fG-SP; Wed, 10 Sep 2025 11:05:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux.alibaba.com; s=default;
- t=1757516724; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
- bh=1gqd1TzCEIyvFYfjyBctacJ1+0G9407EGdXdIQ5mOdw=;
- b=mn8vwOGX7MGjS/e/rcvDjaRzyw3GZ95In0qElQq08tF5bsFy7CauO18rtnU/2xSe7ZM7gjdFFnjWJZHnQb6HxmZo7s5mxIkVWZkvE+HwoWY+7Y87SsdRymgjbeJ+EANHKX/au8JdwzI71TKW8UYwiiOMjATPYMVUOFcRilyJzt8=
-Received: from ea134-sw06.eng.xrvm.cn(mailfrom:lyndra@linux.alibaba.com
- fp:SMTPD_---0WniJAyz_1757516721 cluster:ay36) by smtp.aliyun-inc.com;
- Wed, 10 Sep 2025 23:05:21 +0800
-From: TANG Tiancheng <lyndra@linux.alibaba.com>
-Date: Wed, 10 Sep 2025 23:04:28 +0800
-Subject: [PATCH v2 4/4] target/riscv: Save stimer and vstimer in CPU
- vmstate
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uwMND-0003Qq-Nj
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 11:04:43 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 49DD756F31B;
+ Wed, 10 Sep 2025 17:04:35 +0200 (CEST)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id U42ZVCVOR8MK; Wed, 10 Sep 2025 17:04:32 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id E6B6956F2CA; Wed, 10 Sep 2025 17:04:32 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id E49C556F2C1;
+ Wed, 10 Sep 2025 17:04:32 +0200 (CEST)
+Date: Wed, 10 Sep 2025 17:04:32 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
+cc: Julian Ganz <neither@nut.email>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v6 00/25] tcg-plugins: add hooks for discontinuities
+In-Reply-To: <87ldmm5x28.fsf@draig.linaro.org>
+Message-ID: <453e44ee-f32c-887c-b488-34b9e03b65e8@eik.bme.hu>
+References: <cover.1757018626.git.neither@nut.email>
+ <a1c2d356-e664-2632-002f-d0b9bea06e1e@eik.bme.hu>
+ <cf6e7db43e9e9e59b6c9edb1c172b01ae62fb23f@nut.email>
+ <df0a8c4b-ae9b-1582-1570-6cb588149a7a@eik.bme.hu>
+ <3c8d0c3733edc984937ac33a417488f92dccb148@nut.email>
+ <819c9f3b-13f4-2ef2-e651-5cfec52f2e12@eik.bme.hu>
+ <a2eaee5105fb4b3302e2f65bb8bbea987a85454e@nut.email>
+ <a18a99ca-8415-71bf-3022-c9a98e46c2b5@eik.bme.hu>
+ <71a535f9154ddc269c0a948053e39053550bd8c0@nut.email>
+ <87ldmm5x28.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250910-timers-v2-4-31359f1f6ee8@linux.alibaba.com>
-References: <20250910-timers-v2-0-31359f1f6ee8@linux.alibaba.com>
-In-Reply-To: <20250910-timers-v2-0-31359f1f6ee8@linux.alibaba.com>
-To: qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, 
- Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org, 
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- TANG Tiancheng <lyndra@linux.alibaba.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757516719; l=1731;
- i=lyndra@linux.alibaba.com; s=20250909; h=from:subject:message-id;
- bh=db8HgAaEdZbHQou94hhdJN2K2puP3nx87MpC33YWDYQ=;
- b=+1hGhz821Vyki9a4hYBmSESip1sNmiTuxeSAuzOgWAuEfSkhzdTSkfC6Qw90ZGS3ztyMb4gsI
- fl/vn/FjHRSBtZyBSVO+tMdp8s4vAuBurrw4d2jeZMhKb7MSKbeNJJJ
-X-Developer-Key: i=lyndra@linux.alibaba.com; a=ed25519;
- pk=GQh4uOSLVucXGkaZfEuQ956CrYS14cn1TA3N8AiIjBw=
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 115.124.30.97 (deferred)
-Received-SPF: pass client-ip=115.124.30.97;
- envelope-from=lyndra@linux.alibaba.com; helo=out30-97.freemail.mail.aliyun.com
-X-Spam_score_int: -166
-X-Spam_score: -16.7
-X-Spam_bar: ----------------
-X-Spam_report: (-16.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=no autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1854827598-1757516672=:84971"
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,64 +73,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vmstate_riscv_cpu was missing env.stimer and env.vstimer.
-Without migrating these QEMUTimer fields, active S/VS-mode
-timer events are lost after snapshot or migration.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Add VMSTATE_TIMER_PTR() entries to save and restore them.
+--3866299591-1854827598-1757516672=:84971
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: TANG Tiancheng <lyndra@linux.alibaba.com>
----
- target/riscv/machine.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+On Wed, 10 Sep 2025, Alex Bennée wrote:
+> "Julian Ganz" <neither@nut.email> writes:
+>> September 10, 2025 at 12:06 PM, "BALATON Zoltan" wrote:
+>>> On Tue, 9 Sep 2025, Julian Ganz wrote:
+>>>> I ran streamPPCpowerpcO3 on qemu with these patches:
+>>>>
+>>>>  -------------------------------------------------------------
+>>>>  Function Best Rate MB/s Avg time Min time Max time
+>>>>  Copy: 2867.6 0.056828 0.055795 0.061792
+>>>>  Scale: 1057.5 0.153282 0.151305 0.158115
+>>>>  Add: 1308.8 0.187095 0.183380 0.193672
+>>>>  Triad: 1111.6 0.220863 0.215902 0.230440
+>>>>  -------------------------------------------------------------
+>>>>
+>>>>  After doing a clean build, with the fans still audible:
+>>>>
+>>>>  -------------------------------------------------------------
+>>>>  Function Best Rate MB/s Avg time Min time Max time
+>>>>  Copy: 2932.9 0.055131 0.054554 0.055667
+>>>>  Scale: 1067.9 0.151520 0.149832 0.155000
+>>>>  Add: 1324.9 0.184807 0.181150 0.191386
+>>>>  Triad: 1122.0 0.220080 0.213896 0.229302
+>>>>  -------------------------------------------------------------
+>>>>
+>>> What was different between the above two runs? I guess maybe one is with plugins disabled but it's not clear from the description.
+>>
+>> The difference is nothing but a a clean rebuild of qemu. As you see
+>> there are fluctuations already. Plugins are enabled for both cases.
+>>
+>>>> On qemu (6a9fa5ef3230a7d51e0d953a59ee9ef10af705b8) without these
+>>>>  patches, but plugins enabled:
+>>>>
+>>>>  -------------------------------------------------------------
+>>>>  Function Best Rate MB/s Avg time Min time Max time
+>>>>  Copy: 2972.1 0.054407 0.053834 0.054675
+>>>>  Scale: 1068.6 0.151503 0.149726 0.154594
+>>>>  Add: 1327.6 0.185160 0.180784 0.193181
+>>>>  Triad: 1127.2 0.219249 0.212915 0.229230
+>>>>  -------------------------------------------------------------
+>>>>
+>>>>  And on qemu (6a9fa5ef3230a7d51e0d953a59ee9ef10af705b8) without these
+>>>>  patches, with plugins disabled:
+>>>>
+>>>>  -------------------------------------------------------------
+>>>>  Function Best Rate MB/s Avg time Min time Max time
+>>>>  Copy: 2983.4 0.055141 0.053630 0.060013
+>>>>  Scale: 1058.3 0.152353 0.151186 0.155072
+>>>>  Add: 1323.9 0.184707 0.181279 0.188868
+>>>>  Triad: 1128.2 0.218674 0.212734 0.230314
+>>>>  -------------------------------------------------------------
+>>>>
+>>>>  I fail to see any significant indication that these patches, or
+>>>>  plugins in general, would result in a degredation of performance.
+>>>>
+>>> With worst case Copy test it seems to be about 3.5% (and about 1.7%
+>>> with plugins disabled?) and should be less than that normally so it
+>>> does not add much more overhead to plugins than there is already so
+>>> this should be acceptable. It may still be interesting to see if the
+>>> overhead with plugins disabled can be avoided with a similar way as
+>>> logging does it.
+>>
+>> The thing is: that's probably just usual fluctuations. As you have seen
+>> with the first two measurements the values fluctuate quite a bit between
+>> runs of the test on the very same qemu (assuming that a clean build did
+>> not incur any _other_ relevant change). For example, the best rate for
+>> scale shown with plugins enabled is one percent faster than with plugins
+>> disabled. Is this significant? Probably not. Or at least it doesn't make
+>> much sense.
+>
+> I wouldn't spend too much time chasing this down. As you say this
+> fluctuation is well within the noise range.
+>
+> I can recommend hyperfine as a runner:
+>
+>  https://github.com/sharkdp/hyperfine
+>
+> as it does some work on how many times you need to run a test before the
+> results are statistically relevant.
+>
+>> I may do some more tests this week, with runtimes longer than a few
+>> seconds if I can find the motivation to set up everything I'd need to
+>> compile your benchmark. In the mean-time, you are welcome to make your
+>> own measurements if you want to. The patches are also availible at [1]
+>> if you don't want to apply them to your local tree yourself.
+>
+> Balton,
+>
+> I don't think worries about performance impact are justified and Julian
+> has certainly done enough due diligence here. If you can come up with a
+> repeatable test that shows a measurable impact then please do so.
 
-diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index 1600ec44f0b755fdd49fc0df47c2288c9940afe0..51e0567ed30cbab5e791ea904165bc1854709192 100644
---- a/target/riscv/machine.c
-+++ b/target/riscv/machine.c
-@@ -400,6 +400,30 @@ static const VMStateDescription vmstate_ssp = {
-     }
- };
- 
-+static bool sstc_timer_needed(void *opaque)
-+{
-+    RISCVCPU *cpu = opaque;
-+    CPURISCVState *env = &cpu->env;
-+
-+    if (!cpu->cfg.ext_sstc) {
-+        return false;
-+    }
-+
-+    return env->stimer != NULL || env->vstimer != NULL;
-+}
-+
-+static const VMStateDescription vmstate_sstc = {
-+    .name = "cpu/timer",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = sstc_timer_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_TIMER_PTR(env.stimer, RISCVCPU),
-+        VMSTATE_TIMER_PTR(env.vstimer, RISCVCPU),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- const VMStateDescription vmstate_riscv_cpu = {
-     .name = "cpu",
-     .version_id = 10,
-@@ -476,6 +500,7 @@ const VMStateDescription vmstate_riscv_cpu = {
-         &vmstate_elp,
-         &vmstate_ssp,
-         &vmstate_ctr,
-+        &vmstate_sstc,
-         NULL
-     }
- };
+I agree this testing is enough to ensure there is no big impact. I just 
+wanted to make sure there is some testing and not just adding stuff 
+without worrying about performance. I'd like to keep QEMU quick and only 
+add unavoidable overhead where possible but I don't demand to spend too 
+much time on that. If Julian got interested and does more testing that may 
+give some interesting results for possible optimisation but if no time for 
+that this was enough to measure the impact for this series.
 
--- 
-2.43.0
+Regards,
+BALATON Zoltan
 
+>> Regards,
+>> Julian
+>>
+>> [1]: https://github.com/patchew-project/qemu/tree/patchew/cover.1757018626.git.neither@nut.email
+>
+>
+--3866299591-1854827598-1757516672=:84971--
 
