@@ -2,69 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57DECB51BB3
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 17:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD164B51BEE
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 17:39:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwMn3-00078W-6W; Wed, 10 Sep 2025 11:31:21 -0400
+	id 1uwMt4-0001Ne-5L; Wed, 10 Sep 2025 11:37:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uwMmf-00072p-ID; Wed, 10 Sep 2025 11:31:01 -0400
-Received: from forwardcorp1d.mail.yandex.net
- ([2a02:6b8:c41:1300:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uwMt0-0001Ml-Mr
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 11:37:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uwMmY-00085E-DD; Wed, 10 Sep 2025 11:30:57 -0400
-Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:1621:0:640:12d9:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id EB1CC807F9;
- Wed, 10 Sep 2025 18:30:41 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:b48::1:39] (unknown
- [2a02:6bf:8080:b48::1:39])
- by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id fUMJ900Gl4Y0-3WOIwbor; Wed, 10 Sep 2025 18:30:41 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1757518241;
- bh=FkByi02RbeEau5EJLJbcRoESOauSrZla3SH+LMFxpC0=;
- h=In-Reply-To:Cc:Date:References:To:From:Subject:Message-ID;
- b=s68KC6/vxM0NCSM7r70YDaggb6iYqUU3fb5mdvKWWxcVoZWrb3h6mrUHBA6lqhXCg
- yeM5EkMBJbeAaMTRdK/gAVXDeDnRXtkqAiov/2NFoSszcKvMtao2JWwG3o51zN+t4G
- R8hg0Hyrs9cQd6AzxoR11UunMdBoMjutugaPcBkI=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <f888c1f8-d727-47f9-8b26-ba91969d695b@yandex-team.ru>
-Date: Wed, 10 Sep 2025 18:30:41 +0300
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uwMsy-0000mZ-Ak
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 11:37:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757518645;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=kz9SnuI3/vpVZX5JTY6tsF5sQkS6K7Yu30w0y6EtaSE=;
+ b=fvLL7s6p3B62R3t4/NUmbqIxGXHKTDb6LK6cDn6VpyTegJWzLJ2mTpqSrKoFaQUKU6PfwZ
+ DHy0A8JkSEspNNoBp+T1HMbCoZQATp+D+LQzsOSjxuPyMNBR38pHrg/AUYtl8yEffV1jt1
+ HBnAHJ4vNP1PAtkrNTxoh2xkTZq1PWg=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-638-yQW9m915PtyW2570vwW38A-1; Wed, 10 Sep 2025 11:37:24 -0400
+X-MC-Unique: yQW9m915PtyW2570vwW38A-1
+X-Mimecast-MFC-AGG-ID: yQW9m915PtyW2570vwW38A_1757518644
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-810591dd04fso1448309785a.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Sep 2025 08:37:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757518644; x=1758123444;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kz9SnuI3/vpVZX5JTY6tsF5sQkS6K7Yu30w0y6EtaSE=;
+ b=dA2YFZSZ2HhBYn9EkpKGz4zXxqvurI+EAkgor6zZ+8eibbLtvNNYWr92xFWSKxodBf
+ YPUtZaswWGlUeQVfGkoSESgRChxj2SrQIJhF5+cQ7VO4Wl44o2QkbG3dA9QPbhmJEcnr
+ mpUwVgbn7wFYigfLX705oX+ckKryaROPn5OLAsl4p4Ug/UhQLhZ05SWBJhLOsNiHij3O
+ BWLYmUepU3wqoAr9P9Os1rcfIi0q4fd0jMkcnXbAac67tKNb8+z92U3vcDZjlxgKRs/Z
+ sYudnrk3vooEqnphzaQzQAXeiT0hE7mlUqA4ztiH6KyagID0QV+3R1ueSLexotgF2fDV
+ MM4Q==
+X-Gm-Message-State: AOJu0YzVr9kAKsKwcYv1MdtfzmzG7RO6ECChKfQkwkM9sIAOAnpGAtXO
+ tDGLgIPtbL8uEVWlzf1eoH9CLDgfEAZTXfVAn2Pz/f7iUx/ECz22XYK/8CsDieeuYIPopNdZg02
+ BxP8tuaGRozpcoGEr4FdJHJlaZ846j1Sl9Cdw+yI4c6Wl7JcVIQGo2lcJ
+X-Gm-Gg: ASbGnctf8gZVid8v8NsefGB+JcWhBHgHpPG9AkYKa9iaWi207MeaLFURtBonnsXl96r
+ fizE6nXo0vmz4Y9Rm1WdQ7ouExwq2Q+F5Cf7BDXZlcBtGGugTw28C5LQNhaR1WAGBk4pFrJmz1E
+ kmGtOMZvhHsvxOMfezyoSu/3nLqkShOpld8klOQEtNWryBxHEe4vSrhHQmb3MT1rrlRaV/LfTNh
+ YkJdjSxDCjYL8K+sn592502T8rv5Jkbr9XnU18tbothKXqyO3jqtGlX3hblwgr9pALnpYsK+v6R
+ XbMZ8c6+bJWvJZ/k94vZPOeEi9AaKYZg
+X-Received: by 2002:a05:620a:2795:b0:813:f407:b231 with SMTP id
+ af79cd13be357-813f407b2c1mr1353189585a.7.1757518643594; 
+ Wed, 10 Sep 2025 08:37:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEf/KuVdeKLvj4EGYJry2HAEzT1NBiK0ZFDkaqiHiRRXlDFFH/PmMK8tC1foIGn96Mz68XKwA==
+X-Received: by 2002:a05:620a:2795:b0:813:f407:b231 with SMTP id
+ af79cd13be357-813f407b2c1mr1353183785a.7.1757518642801; 
+ Wed, 10 Sep 2025 08:37:22 -0700 (PDT)
+Received: from x1.local ([174.89.135.121]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4b61bbbc0ecsm25838081cf.25.2025.09.10.08.37.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 10 Sep 2025 08:37:22 -0700 (PDT)
+Date: Wed, 10 Sep 2025 11:37:10 -0400
+From: Peter Xu <peterx@redhat.com>
+To: TANG Tiancheng <lyndra@linux.alibaba.com>
+Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH v2 2/4] include/migration: Add support for a
+ variable-length array of UINT32 pointers
+Message-ID: <aMGbJusVNgQ-N7y3@x1.local>
+References: <20250910-timers-v2-0-31359f1f6ee8@linux.alibaba.com>
+ <20250910-timers-v2-2-31359f1f6ee8@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/10] util: drop qemu_socket_set_nonblock()
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, peterx@redhat.com,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Michael Roth <michael.roth@amd.com>, Kostiantyn Kostiuk
- <kkostiuk@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Stefan Weil <sw@weilnetz.de>, Coiby Xu <Coiby.Xu@gmail.com>
-References: <20250903094411.1029449-1-vsementsov@yandex-team.ru>
- <20250903094411.1029449-5-vsementsov@yandex-team.ru>
- <aMFIhJp-GfOhv3AV@redhat.com>
- <7d8153f0-28e4-422b-8210-28d1d7472528@yandex-team.ru>
-Content-Language: en-US
-In-Reply-To: <7d8153f0-28e4-422b-8210-28d1d7472528@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250910-timers-v2-2-31359f1f6ee8@linux.alibaba.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,81 +108,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10.09.25 13:33, Vladimir Sementsov-Ogievskiy wrote:
-> On 10.09.25 12:44, Daniel P. Berrangé wrote:
->> On Wed, Sep 03, 2025 at 12:44:04PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->>> Use common qemu_set_blocking() instead.
->>>
->>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->>> ---
->>>   contrib/ivshmem-server/ivshmem-server.c |  5 ++++-
->>>   hw/hyperv/syndbg.c                      |  4 +++-
->>>   hw/virtio/vhost-user.c                  |  5 ++++-
->>>   include/qemu/sockets.h                  |  1 -
->>>   io/channel-socket.c                     |  7 +++----
->>>   net/dgram.c                             | 16 +++++++++++++---
->>>   net/l2tpv3.c                            |  5 +++--
->>>   net/socket.c                            | 20 ++++++++++++++++----
->>>   qga/channel-posix.c                     |  7 ++++++-
->>>   tests/unit/socket-helpers.c             |  5 ++++-
->>>   tests/unit/test-crypto-tlssession.c     |  8 ++++----
->>>   util/oslib-posix.c                      |  7 -------
->>>   util/oslib-win32.c                      |  5 -----
->>>   util/vhost-user-server.c                |  4 ++--
->>>   14 files changed, 62 insertions(+), 37 deletions(-)
->>>
->>
->>> diff --git a/qga/channel-posix.c b/qga/channel-posix.c
->>> index 465d688ecb..ddf8ebdc5e 100644
->>> --- a/qga/channel-posix.c
->>> +++ b/qga/channel-posix.c
->>> @@ -28,6 +28,7 @@ static gboolean ga_channel_listen_accept(GIOChannel *channel,
->>>       GAChannel *c = data;
->>>       int ret, client_fd;
->>>       bool accepted = false;
->>> +    Error *err = NULL;
->>>       g_assert(channel != NULL);
->>> @@ -36,7 +37,11 @@ static gboolean ga_channel_listen_accept(GIOChannel *channel,
->>>           g_warning("error converting fd to gsocket: %s", strerror(errno));
->>>           goto out;
->>>       }
->>> -    qemu_socket_set_nonblock(client_fd);
->>> +    if (!qemu_set_blocking(client_fd, false, &err)) {
->>> +        g_warning("errer: %s", error_get_pretty(err));
->>
->> s/errer/error/
->>
->>
->> This is a pre-existing problem, but none of this code should be using
->> g_warning. g_printerr() should have been used for printing error
->> messages. I'm not expecting you to fix that, just an observation.
+On Wed, Sep 10, 2025 at 11:04:26PM +0800, TANG Tiancheng wrote:
+> Add support for defining a vmstate field which is a variable-length array
+> of pointers, and use this to define a VMSTATE_TIMER_PTR_VARRAY() which allows
+> a variable-length array of QEMUTimer* to be used by devices.
 > 
-> Sure.
+> Message-id: 20250909-timers-v1-0-7ee18a9d8f4b@linux.alibaba.com
+> Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> Signed-off-by: TANG Tiancheng <lyndra@linux.alibaba.com>
 
-Ha, some how I've read "not expecting" with opposite meaning) So by "sure", I meant "will fix".
+Thanks.
 
-Still now looking at code and your comment more carefully, this means one more patch, as
-adding g_prinerr among two g_warnings is mess.
+No need for a repost, but the subject can be prefixed directly with
+"migration", if can be fixed when merge.
 
-One more patch won't hurt I think.
-
-> 
->>
->>> +        error_free(err);
->>> +        goto out;
->>> +    }
->>>       ret = ga_channel_client_add(c, client_fd);
->>>       if (ret) {
->>>           g_warning("error setting up connection");
->>
->>
->> With regards,
->> Daniel
-> 
-> 
-
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
 -- 
-Best regards,
-Vladimir
+Peter Xu
+
 
