@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37EE8B51CDE
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 18:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1D3B51CE1
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 18:03:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwNHF-0003VO-L2; Wed, 10 Sep 2025 12:02:33 -0400
+	id 1uwNHK-0003bM-Ke; Wed, 10 Sep 2025 12:02:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uwNGr-0003AL-DG
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uwNGs-0003AY-0a
  for qemu-devel@nongnu.org; Wed, 10 Sep 2025 12:02:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uwNGo-0004Vs-6B
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uwNGp-0004Vz-VQ
  for qemu-devel@nongnu.org; Wed, 10 Sep 2025 12:02:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757520125;
+ s=mimecast20190719; t=1757520126;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Pk2p/fZ62GE+HVK96dUx6wUZhpLCmZYAlpZ+g5YJz3U=;
- b=iXQ+jE+CAAaH8qRrVcZnGiyIFkTM+mQzPwXDT+cyw0QuiILrlqKfMo+tAg93hdEuqB6SSr
- l3Ej6nCw0+rJkS1Mam2Rc8xVx0bCJoLLO8S0INUiPWl9EHovwZl8wt0fSSkeCZW/f1f6hB
- DvuYA2PL5t2buLCkOZzwntcmf1NCoKo=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jsJ6uWuRVz9mme6Px6mGxd6bZciJc7GE+WQ3P+OnGj4=;
+ b=Oz7tl68GBNbwZmHZcvsGMcyHbToLgLP1neIM8xEhNm0JK9fBIY/J3PeAL3lhDkjbCe7BLW
+ 58DI2dd2JyLebu+x8XlnDZVi+yhkDGDJ8q0XjqxGRGeWqpTiz/uu1iWSYlKSxDTL9Wq+DH
+ z8DGugSKlcscTOUEPP0zZUUSXLImp2M=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-qt1OKEMJOa6zm2FYoEVGSg-1; Wed, 10 Sep 2025 12:02:03 -0400
-X-MC-Unique: qt1OKEMJOa6zm2FYoEVGSg-1
-X-Mimecast-MFC-AGG-ID: qt1OKEMJOa6zm2FYoEVGSg_1757520122
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7ff94e5c251so225352385a.1
- for <qemu-devel@nongnu.org>; Wed, 10 Sep 2025 09:02:03 -0700 (PDT)
+ us-mta-549-hxh20QKjM_alN2jffMYnyQ-1; Wed, 10 Sep 2025 12:02:05 -0400
+X-MC-Unique: hxh20QKjM_alN2jffMYnyQ-1
+X-Mimecast-MFC-AGG-ID: hxh20QKjM_alN2jffMYnyQ_1757520125
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-4b47b4d296eso169645701cf.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Sep 2025 09:02:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757520122; x=1758124922;
+ d=1e100.net; s=20230601; t=1757520124; x=1758124924;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Pk2p/fZ62GE+HVK96dUx6wUZhpLCmZYAlpZ+g5YJz3U=;
- b=ZeCpm9JUnQrGxgSFNKg3UDTXor3EDbWKkcIXAXkNI/pRigHzCODuT2XFUf//vUecnk
- vlwqaVfVUQGrT8PBUP4HY+sGR8ZomhBIqF7zflcUT7y4xs7XG73hT9P5LhlQRnzxj6L2
- Rqsa5tmA7uUza8OIrB1hU3YZYTHUFTt/34zeNnF1cG46hZSWCXiUv+cRwnwxb7UyPLaV
- xPPei2uZL0K17uJcThdZsCJ2lSGRmqpwVjxUCN6RFIY6/iJtkqSYxwvj5h/URjpvv0KZ
- QsRYwvbhsx7UDdY6P1/mA9xV37oqmmuHVepov4Mg80M0NDRA0OyMnsbxHd5CMwBNOVdt
- HPug==
-X-Gm-Message-State: AOJu0Yy8k5z/SxgtUBUQKc1la0wPoHIGclesm47tsPbY7Xvx8OB1smCp
- bt2Tx8vIX7x3ndHmVNJpVPOZ+OBEtslQbh/o3evfhomla4xI/DMLMNh+aU4n/2uzGng9PwjxM8h
- LypwjUMHz2JqCYLUo7mSDrm+bo1Rp5pRMpCd/8+VVHPhjXVOoJmZ/pqUA7OVHoI6MT96uFiRTfp
- z+RZFkOs0GKzj1D00jYuOpKVtFN7HYFKFEXQ+P0w==
-X-Gm-Gg: ASbGncuZLgXNceO/i7IKFQXIQkI4iR6Rh5BdzBeNrD17z2udoeR/T8TOwtLLfgt9U8S
- Bckq4YYwLuGg5g1WkrTZS5GvIttIMpjwcG6e3wuWtREIkhRWgb99zjt6gqvGPo4rv8DPmazKRpc
- K2xhsFFbKB5VUtsPI4as76Rbq1hNxWhmx2IR4jgAaE8yt+iAJsZzv/OhtU4i8xxp6AxHK3jZzXn
- 0fVmjD82WLeJoN5EyfUGul/8KDhBYmEJQT0IQadIn1TNG1f5Fwx+MOehja0DgUlPi529qtacmKD
- odkebe6XzKokX6d5R30nhM/Oh7HDmA==
-X-Received: by 2002:a05:620a:414f:b0:7e8:8f35:1d2b with SMTP id
- af79cd13be357-81ff181374emr16849285a.2.1757520122065; 
- Wed, 10 Sep 2025 09:02:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQx2xOVSmqUjrjn0K0j5L7e36/Uc3be7+P8Puidgf2AUD9TXTqBozLNygj0SCKXPJhPx9Veg==
-X-Received: by 2002:a05:620a:414f:b0:7e8:8f35:1d2b with SMTP id
- af79cd13be357-81ff181374emr16832185a.2.1757520119930; 
- Wed, 10 Sep 2025 09:01:59 -0700 (PDT)
+ bh=jsJ6uWuRVz9mme6Px6mGxd6bZciJc7GE+WQ3P+OnGj4=;
+ b=SiGTszDgo0gApfp0nkFnPGRNerU1kAoylUPQjeR7/Kkd6pn3lH/CrdqR3A1wFcj8vi
+ IsiSqWSYs073fc5PoBb6Ogk8198QWpWgjJoNwddnqyWcuWfs8deCsWqaEU8/DQlMbcme
+ GxwMAqpQY2KnNwUy76jCc1yuJXygzSHUq+Kn2XaffxwqgOCpwDvvT+vcvkl+wX3v0rmo
+ +Di/ADWU/MWb0xhb2HYNRxpkd3ttP4HFHceIR+jkSQqDDa1MgnBvcwce2MagcPaHDEZC
+ mcpNseGt1J9s1AgOYAKamFD6qOUkiKO4WQ9a6KU2UVgtXG3Lx8Y8B1654AEm+vaT7xLn
+ rJGQ==
+X-Gm-Message-State: AOJu0Yyw6zITtxHJcMWE/R+1HJmMotd0gmRpS9Vyb01py3Ibttk4iLy/
+ WTTZ89SJ8hnQ+t20icqviLJxhm1q8iezl1TcgZYsZeMIZs5taxfH2mP+7jYL06Aaby7YfOx/f2o
+ nMbJmwfC0Gku4yIoxtuC7dullMhGThW9Gz1aNn0HIkSrFbjf07eINa5ob4oMBpg93m9+Ghx08NW
+ PzBTwB3X84Dufemg34kgPdO5itNX/51rmZ32OjWw==
+X-Gm-Gg: ASbGnctNnwDOeb2hJ1EmyWcKqUEH5YRYii9lDkln2vBuXF8gwbvlfMLezzCmDD5VHhv
+ W2WUmeAJVfybqhvOYBJLObopz61Oy7Co9xtLbozHid/F9ZPn8ZWZOdnQyGgxKMJsy5spdiyosM8
+ McnEKQg24XhQefATrI1TFiksAyrpY4D+9ZQyajf5Qi/ZKceI0+PTSULJbgRAQ3mxdOEAWL4KudZ
+ 9sEc0idriprp0NCeYuFQRYqeOSvj64e3XmvEeKwILdkri+xBxDeIUm4Mmkj8sWnHueMtzVnxCf0
+ wFxajVvEb0Jd7Vnpkvo/CBzK0FtwDg==
+X-Received: by 2002:a05:622a:5e0e:b0:4b6:144:faf3 with SMTP id
+ d75a77b69052e-4b60144fc88mr98421271cf.30.1757520124049; 
+ Wed, 10 Sep 2025 09:02:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG5R2jBx42YgW4YgzFXkBFBkE3E17Jp840MW0gjhmmebGf2ZG0Jp9VZPOeQNkn4E37F0QmiOA==
+X-Received: by 2002:a05:622a:5e0e:b0:4b6:144:faf3 with SMTP id
+ d75a77b69052e-4b60144fc88mr98420631cf.30.1757520123086; 
+ Wed, 10 Sep 2025 09:02:03 -0700 (PDT)
 Received: from x1.com ([174.89.135.121]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4b61bbe0a85sm26655281cf.42.2025.09.10.09.01.59
+ d75a77b69052e-4b61bbe0a85sm26655281cf.42.2025.09.10.09.02.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Sep 2025 09:01:59 -0700 (PDT)
+ Wed, 10 Sep 2025 09:02:01 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Juraj Marcin <jmarcin@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH 2/3] migration: Make migration_has_failed() work even for
- CANCELLING
-Date: Wed, 10 Sep 2025 12:01:43 -0400
-Message-ID: <20250910160144.1762894-3-peterx@redhat.com>
+Subject: [PATCH 3/3] migration/multifd: Use the new graceful termination helper
+Date: Wed, 10 Sep 2025 12:01:44 -0400
+Message-ID: <20250910160144.1762894-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250910160144.1762894-1-peterx@redhat.com>
 References: <20250910160144.1762894-1-peterx@redhat.com>
@@ -106,34 +105,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We set CANCELLED very late, it means migration_has_failed() may not work
-correctly if it's invoked before updating CANCELLING to CANCELLED.
+Multifd has a separate loop to do TLS terminations gracefully.  Meanwhile,
+it depends on two variables which records thread creations.
 
-Allow that state will make migration_has_failed() working as expected even
-if it's invoked slightly earlier.
+It works perfectly before, however relying on "whether some threads are
+created" flag might be not as straightforward to decide a graceful
+shutdown.
 
-One current user is the multifd code for the TLS graceful termination,
-where it's before updating to CANCELLED.
+Since we'll need to dynamically identify TLS channels anyway with the new
+helper (which is needed for main and postcopy channels), use the same
+simple API for multifd channels too.  Also, we only need graceful shutdown
+on success of migrations.
+
+With that, we can remove the loop and drop migration_tls_channel_end().
+
+The comment there is still a good explanation, move it over to the new
+helper instead.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ migration/tls.h     |  1 -
+ migration/channel.c |  7 +++++++
+ migration/multifd.c | 40 +++++++---------------------------------
+ migration/tls.c     |  5 -----
+ 4 files changed, 14 insertions(+), 39 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 7015c2b5e0..397917b1b3 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1723,7 +1723,8 @@ int migration_call_notifiers(MigrationState *s, MigrationEventType type,
+diff --git a/migration/tls.h b/migration/tls.h
+index 58b25e1228..75c918e156 100644
+--- a/migration/tls.h
++++ b/migration/tls.h
+@@ -36,7 +36,6 @@ void migration_tls_channel_connect(MigrationState *s,
+                                    QIOChannel *ioc,
+                                    const char *hostname,
+                                    Error **errp);
+-void migration_tls_channel_end(QIOChannel *ioc, Error **errp);
+ /* Whether the QIO channel requires further TLS handshake? */
+ bool migrate_channel_requires_tls_upgrade(QIOChannel *ioc);
  
- bool migration_has_failed(MigrationState *s)
+diff --git a/migration/channel.c b/migration/channel.c
+index 1ae839e5fe..a481b45eae 100644
+--- a/migration/channel.c
++++ b/migration/channel.c
+@@ -153,6 +153,13 @@ int migration_channel_read_peek(QIOChannel *ioc,
+ bool migration_channel_shutdown_gracefully(QIOChannel *c, Error **errp)
  {
--    return (s->state == MIGRATION_STATUS_CANCELLED ||
-+    return (s->state == MIGRATION_STATUS_CANCELLING ||
-+            s->state == MIGRATION_STATUS_CANCELLED ||
-             s->state == MIGRATION_STATUS_FAILED);
+     if (object_dynamic_cast((Object *)c, TYPE_QIO_CHANNEL_TLS)) {
++        /*
++         * The destination expects the TLS session to always be properly
++         * terminated. This helps to detect a premature termination in the
++         * middle of the stream.  Note that older QEMUs always break the
++         * connection on the source and the destination always sees
++         * GNUTLS_E_PREMATURE_TERMINATION.
++         */
+         qio_channel_tls_bye(QIO_CHANNEL_TLS(c), errp);
+     }
+ 
+diff --git a/migration/multifd.c b/migration/multifd.c
+index b255778855..cb0262076b 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -439,7 +439,7 @@ static void multifd_send_set_error(Error *err)
+     }
  }
  
+-static void multifd_send_terminate_threads(void)
++static void multifd_send_terminate_threads(bool succeeded)
+ {
+     int i;
+ 
+@@ -460,6 +460,9 @@ static void multifd_send_terminate_threads(void)
+ 
+         qemu_sem_post(&p->sem);
+         if (p->c) {
++            if (succeeded) {
++                migration_channel_shutdown_gracefully(p->c, &error_warn);
++            }
+             qio_channel_shutdown(p->c, QIO_CHANNEL_SHUTDOWN_BOTH, NULL);
+         }
+     }
+@@ -541,50 +544,21 @@ static void multifd_send_cleanup_state(void)
+ 
+ void multifd_send_shutdown(void)
+ {
++    MigrationState *s = migrate_get_current();
+     int i;
+ 
+     if (!migrate_multifd()) {
+         return;
+     }
+ 
+-    for (i = 0; i < migrate_multifd_channels(); i++) {
+-        MultiFDSendParams *p = &multifd_send_state->params[i];
+-
+-        /* thread_created implies the TLS handshake has succeeded */
+-        if (p->tls_thread_created && p->thread_created) {
+-            Error *local_err = NULL;
+-            /*
+-             * The destination expects the TLS session to always be
+-             * properly terminated. This helps to detect a premature
+-             * termination in the middle of the stream.  Note that
+-             * older QEMUs always break the connection on the source
+-             * and the destination always sees
+-             * GNUTLS_E_PREMATURE_TERMINATION.
+-             */
+-            migration_tls_channel_end(p->c, &local_err);
+-
+-            /*
+-             * The above can return an error in case the migration has
+-             * already failed. If the migration succeeded, errors are
+-             * not expected but there's no need to kill the source.
+-             */
+-            if (local_err && !migration_has_failed(migrate_get_current())) {
+-                warn_report(
+-                    "multifd_send_%d: Failed to terminate TLS connection: %s",
+-                    p->id, error_get_pretty(local_err));
+-                break;
+-            }
+-        }
+-    }
+-
+-    multifd_send_terminate_threads();
++    multifd_send_terminate_threads(!migration_has_failed(s));
+ 
+     for (i = 0; i < migrate_multifd_channels(); i++) {
+         MultiFDSendParams *p = &multifd_send_state->params[i];
+         Error *local_err = NULL;
+ 
+         if (!multifd_send_cleanup_channel(p, &local_err)) {
+-            migrate_set_error(migrate_get_current(), local_err);
++            migrate_set_error(s, local_err);
+             error_free(local_err);
+         }
+     }
+diff --git a/migration/tls.c b/migration/tls.c
+index 284a6194b2..ca1595e05d 100644
+--- a/migration/tls.c
++++ b/migration/tls.c
+@@ -165,11 +165,6 @@ void migration_tls_channel_connect(MigrationState *s,
+                               NULL);
+ }
+ 
+-void migration_tls_channel_end(QIOChannel *ioc, Error **errp)
+-{
+-    qio_channel_tls_bye(QIO_CHANNEL_TLS(ioc), errp);
+-}
+-
+ bool migrate_channel_requires_tls_upgrade(QIOChannel *ioc)
+ {
+     if (!migrate_tls()) {
 -- 
 2.50.1
 
