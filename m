@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF241B52019
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D958B51FFE
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:11:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwPDg-00043Y-HO; Wed, 10 Sep 2025 14:07:00 -0400
+	id 1uwPES-0004vi-9v; Wed, 10 Sep 2025 14:07:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uwPDX-0003gi-69
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:06:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uwPDe-0004L6-Sj
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:06:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uwPDQ-000538-RB
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:06:50 -0400
+ id 1uwPDT-00053a-JJ
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:06:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757527601;
+ s=mimecast20190719; t=1757527606;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Uq/ffucX0LrsPavRUjZZ8ksU3DGad+yaH3VgAUHZsZo=;
- b=fSKjbcwwn41cSTCRnBzJ6qlXFtFq9LHLG6tl653IFKzKSvTfkwN7rW1O8khDcFDLUh53Zq
- wGevrc95sB+hTNFwX10D1g0A9CwgAhLvxBUvFj6PYOM7jqGN4CrDjg/qq2BcWJgGW/tIRd
- vZ5fCTzhylr+H2NRzoUVUzEW2ytMFfo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=MGnG+XdtmTxntikOC8JogL74daSKQSHrsTNR1uFQlNA=;
+ b=WwhlKraC4SW/cRvYdpnAGG5/jjxtFPgSQDT6VbkZzkL4SgxHbhR9YVhi2qdppYGlqjdFAv
+ 6n1hRoMQvt1f84PMBmnZS7fCeLNyhy8CX30hjIuk2Q7/eICdAFOJcRKs0k6y3MSg4EtR3G
+ EttXXJkMOer5GV6Vcpg3Ofetbh83cbg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-275-xmhrZunnO8WCF9k4-hZkpQ-1; Wed,
- 10 Sep 2025 14:06:40 -0400
-X-MC-Unique: xmhrZunnO8WCF9k4-hZkpQ-1
-X-Mimecast-MFC-AGG-ID: xmhrZunnO8WCF9k4-hZkpQ_1757527599
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-138-yc7g6dkZMZyexE5Im2m2Pw-1; Wed,
+ 10 Sep 2025 14:06:42 -0400
+X-MC-Unique: yc7g6dkZMZyexE5Im2m2Pw-1
+X-Mimecast-MFC-AGG-ID: yc7g6dkZMZyexE5Im2m2Pw_1757527601
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 850DC195608D; Wed, 10 Sep 2025 18:06:39 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7F9C91800296; Wed, 10 Sep 2025 18:06:41 +0000 (UTC)
 Received: from localhost (unknown [10.2.17.66])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AA66319560AB; Wed, 10 Sep 2025 18:06:38 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E85E21800446; Wed, 10 Sep 2025 18:06:40 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Aarushi Mehta <mehta.aaru20@gmail.com>, Fam Zheng <fam@euphon.net>,
@@ -52,26 +52,25 @@ Cc: Aarushi Mehta <mehta.aaru20@gmail.com>, Fam Zheng <fam@euphon.net>,
  Hanna Czenczek <hreitz@redhat.com>, eblake@redhat.com,
  Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  qemu-block@nongnu.org, hibriansong@gmail.com, Stefan Weil <sw@weilnetz.de>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 01/12] aio-posix: fix race between io_uring CQE and
- AioHandler deletion
-Date: Wed, 10 Sep 2025 13:56:52 -0400
-Message-ID: <20250910175703.374499-2-stefanha@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Chao Gao <chao.gao@intel.com>
+Subject: [PATCH v4 02/12] aio-posix: keep polling enabled with fdmon-io_uring.c
+Date: Wed, 10 Sep 2025 13:56:53 -0400
+Message-ID: <20250910175703.374499-3-stefanha@redhat.com>
 In-Reply-To: <20250910175703.374499-1-stefanha@redhat.com>
 References: <20250910175703.374499-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,92 +86,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When an AioHandler is enqueued on ctx->submit_list for removal, the
-fill_sq_ring() function will submit an io_uring POLL_REMOVE operation to
-cancel the in-flight POLL_ADD operation.
+Commit 816a430c517e ("util/aio: Defer disabling poll mode as long as
+possible") kept polling enabled when the event loop timeout is 0. Since
+there is no timeout the event loop will continue immediately and the
+overhead of disabling and re-enabling polling can be avoided.
 
-There is a race when another thread enqueues an AioHandler for deletion
-on ctx->submit_list when the POLL_ADD CQE has already appeared. In that
-case POLL_REMOVE is unnecessary. The code already handled this, but
-forgot that the AioHandler itself is still on ctx->submit_list when the
-POLL_ADD CQE is being processed. It's unsafe to delete the AioHandler at
-that point in time (use-after-free).
+fdmon-io_uring.c is unable to take advantage of this optimization
+because its ->need_wait() function returns true whenever there are new
+io_uring SQEs to submit:
 
-Solve this problem by keeping the AioHandler alive but setting a flag so
-that it will be deleted by fill_sq_ring() when it runs.
+  if (timeout || ctx->fdmon_ops->need_wait(ctx)) {
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Polling will be disabled even when timeout == 0.
+
+Extend the optimization to handle the case when need_wait() returns true
+and timeout == 0.
+
+Cc: Chao Gao <chao.gao@intel.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- util/fdmon-io_uring.c | 33 ++++++++++++++++++++++++++-------
- 1 file changed, 26 insertions(+), 7 deletions(-)
+ util/aio-posix.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/util/fdmon-io_uring.c b/util/fdmon-io_uring.c
-index b0d68bdc44..ad89160f31 100644
---- a/util/fdmon-io_uring.c
-+++ b/util/fdmon-io_uring.c
-@@ -52,9 +52,10 @@ enum {
-     FDMON_IO_URING_ENTRIES  = 128, /* sq/cq ring size */
- 
-     /* AioHandler::flags */
--    FDMON_IO_URING_PENDING  = (1 << 0),
--    FDMON_IO_URING_ADD      = (1 << 1),
--    FDMON_IO_URING_REMOVE   = (1 << 2),
-+    FDMON_IO_URING_PENDING            = (1 << 0),
-+    FDMON_IO_URING_ADD                = (1 << 1),
-+    FDMON_IO_URING_REMOVE             = (1 << 2),
-+    FDMON_IO_URING_DELETE_AIO_HANDLER = (1 << 3),
- };
- 
- static inline int poll_events_from_pfd(int pfd_events)
-@@ -218,6 +219,16 @@ static void fill_sq_ring(AioContext *ctx)
-         if (flags & FDMON_IO_URING_REMOVE) {
-             add_poll_remove_sqe(ctx, node);
-         }
-+        if (flags & FDMON_IO_URING_DELETE_AIO_HANDLER) {
-+            /*
-+             * process_cqe() sets this flag after ADD and REMOVE have been
-+             * cleared. They cannot be set again, so they must be clear.
-+             */
-+            assert(!(flags & FDMON_IO_URING_ADD));
-+            assert(!(flags & FDMON_IO_URING_REMOVE));
+diff --git a/util/aio-posix.c b/util/aio-posix.c
+index 2e0a5dadc4..824fdc34cc 100644
+--- a/util/aio-posix.c
++++ b/util/aio-posix.c
+@@ -559,7 +559,14 @@ static bool run_poll_handlers(AioContext *ctx, AioHandlerList *ready_list,
+         elapsed_time = qemu_clock_get_ns(QEMU_CLOCK_REALTIME) - start_time;
+         max_ns = qemu_soonest_timeout(*timeout, max_ns);
+         assert(!(max_ns && progress));
+-    } while (elapsed_time < max_ns && !ctx->fdmon_ops->need_wait(ctx));
 +
-+            QLIST_INSERT_HEAD_RCU(&ctx->deleted_aio_handlers, node, node_deleted);
++        if (ctx->fdmon_ops->need_wait(ctx)) {
++            if (fdmon_supports_polling(ctx)) {
++                *timeout = 0; /* stay in polling mode */
++            }
++            break;
 +        }
-     }
- }
++    } while (elapsed_time < max_ns);
  
-@@ -241,7 +252,12 @@ static bool process_cqe(AioContext *ctx,
-      */
-     flags = qatomic_fetch_and(&node->flags, ~FDMON_IO_URING_REMOVE);
-     if (flags & FDMON_IO_URING_REMOVE) {
--        QLIST_INSERT_HEAD_RCU(&ctx->deleted_aio_handlers, node, node_deleted);
-+        if (flags & FDMON_IO_URING_PENDING) {
-+            /* Still on ctx->submit_list, defer deletion until fill_sq_ring() */
-+            qatomic_or(&node->flags, FDMON_IO_URING_DELETE_AIO_HANDLER);
-+        } else {
-+            QLIST_INSERT_HEAD_RCU(&ctx->deleted_aio_handlers, node, node_deleted);
-+        }
-         return false;
-     }
- 
-@@ -347,10 +363,13 @@ void fdmon_io_uring_destroy(AioContext *ctx)
-             unsigned flags = qatomic_fetch_and(&node->flags,
-                     ~(FDMON_IO_URING_PENDING |
-                       FDMON_IO_URING_ADD |
--                      FDMON_IO_URING_REMOVE));
-+                      FDMON_IO_URING_REMOVE |
-+                      FDMON_IO_URING_DELETE_AIO_HANDLER));
- 
--            if (flags & FDMON_IO_URING_REMOVE) {
--                QLIST_INSERT_HEAD_RCU(&ctx->deleted_aio_handlers, node, node_deleted);
-+            if ((flags & FDMON_IO_URING_REMOVE) ||
-+                (flags & FDMON_IO_URING_DELETE_AIO_HANDLER)) {
-+                QLIST_INSERT_HEAD_RCU(&ctx->deleted_aio_handlers,
-+                                      node, node_deleted);
-             }
- 
-             QSLIST_REMOVE_HEAD_RCU(&ctx->submit_list, node_submitted);
+     if (remove_idle_poll_handlers(ctx, ready_list,
+                                   start_time + elapsed_time)) {
+@@ -722,7 +729,7 @@ bool aio_poll(AioContext *ctx, bool blocking)
+          * up IO threads when some work becomes pending. It is essential to
+          * avoid hangs or unnecessary latency.
+          */
+-        if (poll_set_started(ctx, &ready_list, false)) {
++        if (timeout && poll_set_started(ctx, &ready_list, false)) {
+             timeout = 0;
+             progress = true;
+         }
 -- 
 2.51.0
 
