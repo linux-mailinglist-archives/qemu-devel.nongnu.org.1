@@ -2,84 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289ECB508C8
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 00:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA54B50A53
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 03:37:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uw6am-0007mQ-6u; Tue, 09 Sep 2025 18:13:36 -0400
+	id 1uw9il-0007DH-7M; Tue, 09 Sep 2025 21:34:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3FabAaAYKCrAokRYdpWeeWbU.SecgUck-TUlUbdedWdk.ehW@flex--yubinz.bounces.google.com>)
- id 1uw6ZC-0007JW-VI
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 18:11:59 -0400
-Received: from mail-pg1-x54a.google.com ([2607:f8b0:4864:20::54a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3FabAaAYKCrAokRYdpWeeWbU.SecgUck-TUlUbdedWdk.ehW@flex--yubinz.bounces.google.com>)
- id 1uw6Yt-000511-Qx
- for qemu-devel@nongnu.org; Tue, 09 Sep 2025 18:11:58 -0400
-Received: by mail-pg1-x54a.google.com with SMTP id
- 41be03b00d2f7-b47174b3427so4929314a12.2
- for <qemu-devel@nongnu.org>; Tue, 09 Sep 2025 15:11:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1uw9ic-0007CQ-Ir; Tue, 09 Sep 2025 21:33:55 -0400
+Received: from [115.124.30.130] (helo=out30-130.freemail.mail.aliyun.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1uw9iM-00043J-MT; Tue, 09 Sep 2025 21:33:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1757455893; x=1758060693; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=NiQ978pxL/Tt3/1dhub6m048JLoFCWnVgsDiDRRFat4=;
- b=pT7O8aMhHUx7pWnTwAOssa3QjjMWQCu05cKcrxXI50Ie/VYXrmuKnBv1BvstxCXNSl
- 8VBbYufp0Em89yKngr4EZo3KaVbRg8ljLstDe1WhLKltKeVpSyfpHfXg5szbhHdVaCVU
- r0wlS/oK2z0W/YpUMu2fuyR5XN/Vb39CylEiKvuTZZU6Dl0C6vg2uU9qHX2U4UFduTkv
- jYChZGtNIJG5cNnHpQUqMZ3LY3ZykSdIFJ8Tb+h2R0gLoNZqj/IwehBHZwg31kcFkhEo
- +97Mzdkhuhj3GYZgkpZNF5bHmBfNHRTeychpoD9oyqSm5nzZtFuPpahwbHJuMrxSa5/2
- JOzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757455893; x=1758060693;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NiQ978pxL/Tt3/1dhub6m048JLoFCWnVgsDiDRRFat4=;
- b=GuEp7kDtmPWTqkdakN6O8i0AWZ3keIzqmLMXdapjGNnO8ygeF+uY0ep7bWOULwc27c
- BJcYfzx1EBWc5ux3QK1C0rC7gPlew2IMBilmvm5lP+1aCvo0tqezkB2JqOHJHmwLOyiq
- 46SAg/7Mk6cVAMOecgK+Lt/fLKclwmDSOisL7/kEGQByaflcV9KZxEz8hJocFItAwJte
- vM3+ywfHZ7JMoly3tv706oxHeJnyIFgHX9zWSpXchGtZMWDHpPmWCnV8r6DpCinYUdhs
- TRQUxnpn832Zykic6FKGvrdnIiiVgX+Y8DJVXjEM4GbMvbW7AcYjdDN+FPl8jFP+TuNZ
- F7Hw==
-X-Gm-Message-State: AOJu0Yyum2l8JyeQfWv5u6mTpy62d3MuzoyI0Ggocm/sNYqNy3/X358F
- eTTv+dVUD+aK2GTt+9mUjfyCn9nf8mY05mG3az1RX4HLwxBxyls0msIH1THCHezshUrvvAQzO1D
- I0RAR8tSPaNgfCGC5XwrkgkhK62xqjt3smTcfDFVVe8f5XQwtdLBOLMBpnPhoM1Gcsla9hzgJQh
- w/OBRI6Zg0l4rP/e8IXihWQlLuZCLzvzjNgS4=
-X-Google-Smtp-Source: AGHT+IE09vqjj/kxrFr0mfitlmWzu78KVe6NUbPFRsP67xAwnLkg55qcY+I1RmO0FAkFVPT1QrxzNypX2JQ=
-X-Received: from ploq12.prod.google.com ([2002:a17:903:1aac:b0:24b:1589:e332])
- (user=yubinz job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:ce03:b0:24c:bc02:78a4
- with SMTP id d9443c01a7336-2516e98142dmr193936295ad.24.1757455893307; Tue, 09
- Sep 2025 15:11:33 -0700 (PDT)
-Date: Tue, 09 Sep 2025 22:11:02 +0000
-In-Reply-To: <20250909-pcie-root-upstream-v1-0-d85883b2688d@google.com>
-Mime-Version: 1.0
-References: <20250909-pcie-root-upstream-v1-0-d85883b2688d@google.com>
-X-Mailer: b4 0.14.2
-Message-ID: <20250909-pcie-root-upstream-v1-7-d85883b2688d@google.com>
-Subject: [PATCH 7/7] hw/arm: Add PCIERC to NPCM7xx SoC
-From: Yubin Zou <yubinz@google.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>, 
- Hao Wu <wuhaotsh@google.com>, qemu-arm@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, Yubin Zou <yubinz@google.com>
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::54a;
- envelope-from=3FabAaAYKCrAokRYdpWeeWbU.SecgUck-TUlUbdedWdk.ehW@flex--yubinz.bounces.google.com;
- helo=mail-pg1-x54a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ d=linux.alibaba.com; s=default;
+ t=1757467994; h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:From;
+ bh=Ea4sB1bpDdQEJZQMAE94tBq4iUkKtnrepAiA6Scopuc=;
+ b=ZkgABqWx4v0+6vpxIjcqkidnzVOJcO36pRuS+qxQ6qTgNEfXWd6tEZMVcWAWzQbCEwdpej2kV4Ja+V/qQG1SLEJQXI4ssJ6wtBrFc0gRJUvHavcyo/mfwl24Wk/AnjVYBNWsAGOsagkbC7E4zlpSGTbTHGyiBBCa0qGBrHayKCc=
+Received: from 30.166.64.220(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0Wng5iIN_1757467992 cluster:ay36) by smtp.aliyun-inc.com;
+ Wed, 10 Sep 2025 09:33:13 +0800
+Content-Type: multipart/alternative;
+ boundary="------------U67p0gXps4LCGsDGTiQnbFrw"
+Message-ID: <6c0e3183-78dd-4c64-8083-f4a8433b7a00@linux.alibaba.com>
+Date: Wed, 10 Sep 2025 09:33:10 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] hw/intc: Save timers array in RISC-V mtimer VMState
+To: Peter Xu <peterx@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: TANG Tiancheng <lyndra@linux.alibaba.com>, qemu-devel@nongnu.org,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liwei1518@gmail.com>, qemu-riscv@nongnu.org, Fabiano Rosas <farosas@suse.de>
+References: <20250909-timers-v1-0-7ee18a9d8f4b@linux.alibaba.com>
+ <20250909-timers-v1-2-7ee18a9d8f4b@linux.alibaba.com>
+ <aa5ea2e9-8d01-4d45-99fc-efa5e6061c8b@ventanamicro.com>
+ <aMCdYUZyQWQ4Qc4v@x1.local>
+Content-Language: en-US
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <aMCdYUZyQWQ4Qc4v@x1.local>
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 115.124.30.130 (deferred)
+Received-SPF: pass client-ip=115.124.30.130;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-130.freemail.mail.aliyun.com
+X-Spam_score_int: -166
+X-Spam_score: -16.7
+X-Spam_bar: ----------------
+X-Spam_report: (-16.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001, SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 09 Sep 2025 18:12:49 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,97 +73,277 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hao Wu <wuhaotsh@google.com>
+This is a multi-part message in MIME format.
+--------------U67p0gXps4LCGsDGTiQnbFrw
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-GitWatcher: ignore
-Google-Bug-Id: 262946103
-Google-Bug-Id: 240169286
-Signed-off-by: Hao Wu <wuhaotsh@google.com>
-Change-Id: I77ce849af30e999ec26aeab62b7db437db28c012
+
+On 9/10/25 5:34 AM, Peter Xu wrote:
+> On Tue, Sep 09, 2025 at 09:45:07AM -0300, Daniel Henrique Barboza wrote:
+>>
+>> On 9/9/25 6:46 AM, TANG Tiancheng wrote:
+>>> The current 'timecmp' field in vmstate_riscv_mtimer is insufficient to keep
+>>> timers functional after migration.
+>>>
+>>> If an mtimer's entry in 'mtimer->timers' is active at the time the snapshot
+>>> is taken, it means riscv_aclint_mtimer_write_timecmp() has written to
+>>> 'mtimecmp' and scheduled a timer into QEMU's main loop 'timer_list'.
+>>>
+>>> During snapshot save, these active timers must also be migrated; otherwise,
+>>> after snapshot load there is no mechanism to restore 'mtimer->timers' back
+>>> into the 'timer_list', and any pending timer events would be lost.
+>>>
+>>> QEMU's migration framework commonly uses VMSTATE_TIMER_xxx macros to save
+>>> and restore 'QEMUTimer' variables. However, 'timers' is a pointer array
+>>> with variable length, and vmstate.h did not previously provide a helper
+>>> macro for such type.
+>>>
+>>> This commit adds a new macro, 'VMSTATE_TIMER_PTR_VARRAY', to handle saving
+>>> and restoring a variable-length array of 'QEMUTimer *'. We then use this
+>>> macro to migrate the 'mtimer->timers' array, ensuring that timer events
+>>> remain scheduled correctly after snapshot load.
+>>>
+>>> Reviewed-by: LIU Zhiwei<zhiwei_liu@linux.alibaba.com>
+>>> Signed-off-by: TANG Tiancheng<lyndra@linux.alibaba.com>
+>>> ---
+>> LGTM but I wonder if changing one of the VMSTATE_TIMER_xxxx macros to accept
+>> variable length arrays is better than creating a new macro that only RISC-V
+>> cares about. Creating a new macro surely is easier and less messier than
+>> changing all existing callers though ...
+>>
+>> I'll let the migration folks weight in. Thanks,
+> I didn't see a 2nd user, though..
+>
+> I'd split VMSTATE_VARRAY_OF_POINTER_UINT32() into a separate patch,
+OK.
+>   then
+> define VMSTATE_TIMER_PTR_VARRAY() in riscv .c files if that's the only
+> user,
+
+OK.
+
+We will send the v2 patch set later, where 
+VMSTATE_VARRAY_OF_POINTER_UINT32() as a separate patch for migration and 
+the others as a patch set for RISC-V. Thanks, Zhiwei
+
+> and if that helps readability.
+>
+> Thanks,
+>
+>> Daniel
+>>
+>>
+>>
+>>>    hw/intc/riscv_aclint.c      |  6 ++++--
+>>>    include/migration/vmstate.h | 14 ++++++++++++++
+>>>    2 files changed, 18 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
+>>> index 318a9c8248432a8cd4c3f3fa990739917ecf7ca1..9f4c36e965e2aa379d75c0a9f656177f0dd82a45 100644
+>>> --- a/hw/intc/riscv_aclint.c
+>>> +++ b/hw/intc/riscv_aclint.c
+>>> @@ -323,13 +323,15 @@ static void riscv_aclint_mtimer_reset_enter(Object *obj, ResetType type)
+>>>    static const VMStateDescription vmstate_riscv_mtimer = {
+>>>        .name = "riscv_mtimer",
+>>> -    .version_id = 2,
+>>> -    .minimum_version_id = 2,
+>>> +    .version_id = 3,
+>>> +    .minimum_version_id = 3,
+>>>        .fields = (const VMStateField[]) {
+>>>                VMSTATE_UINT64(time_delta, RISCVAclintMTimerState),
+>>>                VMSTATE_VARRAY_UINT32(timecmp, RISCVAclintMTimerState,
+>>>                                      num_harts, 0,
+>>>                                      vmstate_info_uint64, uint64_t),
+>>> +            VMSTATE_TIMER_PTR_VARRAY(timers, RISCVAclintMTimerState,
+>>> +                                     num_harts),
+>>>                VMSTATE_END_OF_LIST()
+>>>            }
+>>>    };
+>>> diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+>>> index 1ff7bd9ac425ba67cd5ca7ad97bcf570f9e19abe..255e403e5a103188712425d95a719d181e1a7202 100644
+>>> --- a/include/migration/vmstate.h
+>>> +++ b/include/migration/vmstate.h
+>>> @@ -522,6 +522,16 @@ extern const VMStateInfo vmstate_info_qlist;
+>>>        .offset     = vmstate_offset_array(_s, _f, _type*, _n),          \
+>>>    }
+>>> +#define VMSTATE_VARRAY_OF_POINTER_UINT32(_field, _state, _field_num, _version, _info, _type) { \
+>>> +    .name       = (stringify(_field)),                                    \
+>>> +    .version_id = (_version),                                             \
+>>> +    .num_offset = vmstate_offset_value(_state, _field_num, uint32_t),     \
+>>> +    .info       = &(_info),                                               \
+>>> +    .size       = sizeof(_type),                                          \
+>>> +    .flags      = VMS_VARRAY_UINT32 | VMS_ARRAY_OF_POINTER | VMS_POINTER, \
+>>> +    .offset     = vmstate_offset_pointer(_state, _field, _type),          \
+>>> +}
+>>> +
+>>>    #define VMSTATE_STRUCT_SUB_ARRAY(_field, _state, _start, _num, _version, _vmsd, _type) { \
+>>>        .name       = (stringify(_field)),                                     \
+>>>        .version_id = (_version),                                              \
+>>> @@ -1035,6 +1045,10 @@ extern const VMStateInfo vmstate_info_qlist;
+>>>    #define VMSTATE_TIMER_PTR_ARRAY(_f, _s, _n)                              \
+>>>        VMSTATE_ARRAY_OF_POINTER(_f, _s, _n, 0, vmstate_info_timer, QEMUTimer *)
+>>> +#define VMSTATE_TIMER_PTR_VARRAY(_f, _s, _f_n)                        \
+>>> +VMSTATE_VARRAY_OF_POINTER_UINT32(_f, _s, _f_n, 0, vmstate_info_timer, \
+>>> +                                                        QEMUTimer *)
+>>> +
+>>>    #define VMSTATE_TIMER_TEST(_f, _s, _test)                             \
+>>>        VMSTATE_SINGLE_TEST(_f, _s, _test, 0, vmstate_info_timer, QEMUTimer)
+>>>
+--------------U67p0gXps4LCGsDGTiQnbFrw
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 9/10/25 5:34 AM, Peter Xu wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:aMCdYUZyQWQ4Qc4v@x1.local">
+      <pre wrap="" class="moz-quote-pre">On Tue, Sep 09, 2025 at 09:45:07AM -0300, Daniel Henrique Barboza wrote:
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">
+
+On 9/9/25 6:46 AM, TANG Tiancheng wrote:
+</pre>
+        <blockquote type="cite">
+          <pre wrap="" class="moz-quote-pre">The current 'timecmp' field in vmstate_riscv_mtimer is insufficient to keep
+timers functional after migration.
+
+If an mtimer's entry in 'mtimer-&gt;timers' is active at the time the snapshot
+is taken, it means riscv_aclint_mtimer_write_timecmp() has written to
+'mtimecmp' and scheduled a timer into QEMU's main loop 'timer_list'.
+
+During snapshot save, these active timers must also be migrated; otherwise,
+after snapshot load there is no mechanism to restore 'mtimer-&gt;timers' back
+into the 'timer_list', and any pending timer events would be lost.
+
+QEMU's migration framework commonly uses VMSTATE_TIMER_xxx macros to save
+and restore 'QEMUTimer' variables. However, 'timers' is a pointer array
+with variable length, and vmstate.h did not previously provide a helper
+macro for such type.
+
+This commit adds a new macro, 'VMSTATE_TIMER_PTR_VARRAY', to handle saving
+and restoring a variable-length array of 'QEMUTimer *'. We then use this
+macro to migrate the 'mtimer-&gt;timers' array, ensuring that timer events
+remain scheduled correctly after snapshot load.
+
+Reviewed-by: LIU Zhiwei <a class="moz-txt-link-rfc2396E" href="mailto:zhiwei_liu@linux.alibaba.com">&lt;zhiwei_liu@linux.alibaba.com&gt;</a>
+Signed-off-by: TANG Tiancheng <a class="moz-txt-link-rfc2396E" href="mailto:lyndra@linux.alibaba.com">&lt;lyndra@linux.alibaba.com&gt;</a>
 ---
- hw/arm/Kconfig           |  1 +
- hw/arm/npcm7xx.c         | 10 ++++++++++
- include/hw/arm/npcm7xx.h |  4 +++-
- 3 files changed, 14 insertions(+), 1 deletion(-)
+</pre>
+        </blockquote>
+        <pre wrap="" class="moz-quote-pre">
+LGTM but I wonder if changing one of the VMSTATE_TIMER_xxxx macros to accept
+variable length arrays is better than creating a new macro that only RISC-V
+cares about. Creating a new macro surely is easier and less messier than
+changing all existing callers though ...
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 6ac38d083e4a01e09fc00e63df66046c7c17b356..a3f2041db7920c134a2d9d79ed4836bd35507d7b 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -487,6 +487,7 @@ config NPCM7XX
-     select UNIMP
-     select PCA954X
-     select USB_OHCI_SYSBUS
-+    select NPCM_PCIERC
- 
- config NPCM8XX
-     bool
-diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
-index ecfae328a96a49c82beaa53a5d803469c8f02d91..118470af0694718520b7c3828d3a09ecfafb31ec 100644
---- a/hw/arm/npcm7xx.c
-+++ b/hw/arm/npcm7xx.c
-@@ -47,6 +47,8 @@
- #define NPCM7XX_CLK_BA          (0xf0801000)
- #define NPCM7XX_MC_BA           (0xf0824000)
- #define NPCM7XX_RNG_BA          (0xf000b000)
-+#define NPCM7XX_PCIERC_BA       (0xe1000000)
-+#define NPCM7XX_PCIE_ROOT_BA    (0xe8000000)
- 
- /* USB Host modules */
- #define NPCM7XX_EHCI_BA         (0xf0806000)
-@@ -148,6 +150,7 @@ enum NPCM7xxInterrupt {
-     NPCM7XX_GPIO5_IRQ,
-     NPCM7XX_GPIO6_IRQ,
-     NPCM7XX_GPIO7_IRQ,
-+    NPCM7XX_PCIE_RC_IRQ         = 127,
- };
- 
- /* Total number of GIC interrupts, including internal Cortex-A9 interrupts. */
-@@ -475,6 +478,7 @@ static void npcm7xx_init(Object *obj)
-     }
- 
-     object_initialize_child(obj, "mmc", &s->mmc, TYPE_NPCM7XX_SDHCI);
-+    object_initialize_child(obj, "pcierc", &s->pcierc, TYPE_NPCM_PCIERC);
- }
- 
- static void npcm7xx_realize(DeviceState *dev, Error **errp)
-@@ -781,6 +785,12 @@ static void npcm7xx_realize(DeviceState *dev, Error **errp)
-         sysbus_connect_irq(sbd, 0, npcm7xx_irq(s, irq));
-     }
- 
-+    /* PCIe RC */
-+    sysbus_realize(SYS_BUS_DEVICE(&s->pcierc), &error_abort);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->pcierc), 0, NPCM7XX_PCIERC_BA);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcierc), 0,
-+                       npcm7xx_irq(s, NPCM7XX_PCIE_RC_IRQ));
+I'll let the migration folks weight in. Thanks,
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+I didn't see a 2nd user, though..
+
+I'd split VMSTATE_VARRAY_OF_POINTER_UINT32() into a separate patch,</pre>
+    </blockquote>
+    OK.
+    <blockquote type="cite" cite="mid:aMCdYUZyQWQ4Qc4v@x1.local">
+      <pre wrap="" class="moz-quote-pre"> then
+define VMSTATE_TIMER_PTR_VARRAY() in riscv .c files if that's the only
+user, </pre>
+    </blockquote>
+    <p>OK.</p>
+    <p>We will send the v2 patch set later, where <span
+      style="white-space: pre-wrap">VMSTATE_VARRAY_OF_POINTER_UINT32() as a separate patch for migration and the others as a patch set for RISC-V. 
+
+Thanks,
+Zhiwei</span></p>
+    <blockquote type="cite" cite="mid:aMCdYUZyQWQ4Qc4v@x1.local">
+      <pre wrap="" class="moz-quote-pre">and if that helps readability.
+
+Thanks,
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">
+Daniel
+
+
+
+</pre>
+        <blockquote type="cite">
+          <pre wrap="" class="moz-quote-pre">  hw/intc/riscv_aclint.c      |  6 ++++--
+  include/migration/vmstate.h | 14 ++++++++++++++
+  2 files changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
+index 318a9c8248432a8cd4c3f3fa990739917ecf7ca1..9f4c36e965e2aa379d75c0a9f656177f0dd82a45 100644
+--- a/hw/intc/riscv_aclint.c
++++ b/hw/intc/riscv_aclint.c
+@@ -323,13 +323,15 @@ static void riscv_aclint_mtimer_reset_enter(Object *obj, ResetType type)
+  static const VMStateDescription vmstate_riscv_mtimer = {
+      .name = "riscv_mtimer",
+-    .version_id = 2,
+-    .minimum_version_id = 2,
++    .version_id = 3,
++    .minimum_version_id = 3,
+      .fields = (const VMStateField[]) {
+              VMSTATE_UINT64(time_delta, RISCVAclintMTimerState),
+              VMSTATE_VARRAY_UINT32(timecmp, RISCVAclintMTimerState,
+                                    num_harts, 0,
+                                    vmstate_info_uint64, uint64_t),
++            VMSTATE_TIMER_PTR_VARRAY(timers, RISCVAclintMTimerState,
++                                     num_harts),
+              VMSTATE_END_OF_LIST()
+          }
+  };
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index 1ff7bd9ac425ba67cd5ca7ad97bcf570f9e19abe..255e403e5a103188712425d95a719d181e1a7202 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -522,6 +522,16 @@ extern const VMStateInfo vmstate_info_qlist;
+      .offset     = vmstate_offset_array(_s, _f, _type*, _n),          \
+  }
++#define VMSTATE_VARRAY_OF_POINTER_UINT32(_field, _state, _field_num, _version, _info, _type) { \
++    .name       = (stringify(_field)),                                    \
++    .version_id = (_version),                                             \
++    .num_offset = vmstate_offset_value(_state, _field_num, uint32_t),     \
++    .info       = &amp;(_info),                                               \
++    .size       = sizeof(_type),                                          \
++    .flags      = VMS_VARRAY_UINT32 | VMS_ARRAY_OF_POINTER | VMS_POINTER, \
++    .offset     = vmstate_offset_pointer(_state, _field, _type),          \
++}
 +
-     create_unimplemented_device("npcm7xx.shm",          0xc0001000,   4 * KiB);
-     create_unimplemented_device("npcm7xx.vdmx",         0xe0800000,   4 * KiB);
-     create_unimplemented_device("npcm7xx.pcierc",       0xe1000000,  64 * KiB);
-diff --git a/include/hw/arm/npcm7xx.h b/include/hw/arm/npcm7xx.h
-index 56536565b748c5fb2f415d85df36bc01cb64dc54..661d4050154a36dc2b90e96915ae59971a8c4a7a 100644
---- a/include/hw/arm/npcm7xx.h
-+++ b/include/hw/arm/npcm7xx.h
-@@ -31,6 +31,7 @@
- #include "hw/net/npcm7xx_emc.h"
- #include "hw/net/npcm_gmac.h"
- #include "hw/nvram/npcm7xx_otp.h"
-+#include "hw/pci-host/npcm_pcierc.h"
- #include "hw/timer/npcm7xx_timer.h"
- #include "hw/ssi/npcm7xx_fiu.h"
- #include "hw/ssi/npcm_pspi.h"
-@@ -108,7 +109,8 @@ struct NPCM7xxState {
-     NPCMGMACState       gmac[2];
-     NPCM7xxSDHCIState   mmc;
-     NPCMPSPIState       pspi[2];
--};
-+    NPCMPCIERCState     pcierc;
-+} NPCM7xxState;
- 
- #define TYPE_NPCM7XX    "npcm7xx"
- OBJECT_DECLARE_TYPE(NPCM7xxState, NPCM7xxClass, NPCM7XX)
+  #define VMSTATE_STRUCT_SUB_ARRAY(_field, _state, _start, _num, _version, _vmsd, _type) { \
+      .name       = (stringify(_field)),                                     \
+      .version_id = (_version),                                              \
+@@ -1035,6 +1045,10 @@ extern const VMStateInfo vmstate_info_qlist;
+  #define VMSTATE_TIMER_PTR_ARRAY(_f, _s, _n)                              \
+      VMSTATE_ARRAY_OF_POINTER(_f, _s, _n, 0, vmstate_info_timer, QEMUTimer *)
++#define VMSTATE_TIMER_PTR_VARRAY(_f, _s, _f_n)                        \
++VMSTATE_VARRAY_OF_POINTER_UINT32(_f, _s, _f_n, 0, vmstate_info_timer, \
++                                                        QEMUTimer *)
++
+  #define VMSTATE_TIMER_TEST(_f, _s, _test)                             \
+      VMSTATE_SINGLE_TEST(_f, _s, _test, 0, vmstate_info_timer, QEMUTimer)
 
--- 
-2.51.0.384.g4c02a37b29-goog
+</pre>
+        </blockquote>
+        <pre wrap="" class="moz-quote-pre">
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+</pre>
+    </blockquote>
+  </body>
+</html>
 
+--------------U67p0gXps4LCGsDGTiQnbFrw--
 
