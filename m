@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2536BB51FFD
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18123B5201F
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 20:16:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwPD4-0001QP-7J; Wed, 10 Sep 2025 14:06:23 -0400
+	id 1uwPDH-0001Xh-Db; Wed, 10 Sep 2025 14:06:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uwPC4-0008PH-4G
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:05:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uwPCE-00005h-5s
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:05:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uwPC0-0004xK-28
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:05:19 -0400
+ id 1uwPC7-0004yB-GW
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 14:05:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757527514;
+ s=mimecast20190719; t=1757527521;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2cUjnHXP+2yLDsC7cDBwPJsCA0A+uWS2z3y2xXWSqbk=;
- b=EhJtqS/m3ocETmyKIzpesUrJW7+qgbcZPpd2OZRXK9K/pCLL1fDQMu01kUCmUwyhRTQETX
- eDF4K6ohL+L614WIlBK5AZ9fCx2wHhI5eduH+x7is+6s2Q3JwZPOh8tx83rkE2VoanZ54r
- XJZsql8BBdvAAhJvtw7uCy5D5v4PBNE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=vxWJYGru1Gg7qht2WyJDwScYuEQEAZ6WAAEk9BmPzFc=;
+ b=UrJseWhkip8BuzIBIeCAN3sdbL18WRCvxDApq2z2lSRUSf7Z5ulFIrdpxksz8CFJ2FsZkV
+ mIeWh6HzdvehUwIdMTnPf6wISn/42Hgge+8friZ/pLXj7TLpWAlZoWVT0VmefCnl/pWrHS
+ WxL8r/7La9/bIottWrElvnIFYYAdHYE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-30-lBaOwhgDMKeTJ-ICCBiqfg-1; Wed,
- 10 Sep 2025 14:05:12 -0400
-X-MC-Unique: lBaOwhgDMKeTJ-ICCBiqfg-1
-X-Mimecast-MFC-AGG-ID: lBaOwhgDMKeTJ-ICCBiqfg_1757527511
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-363-TSPtSEpcPiekgaXFfx2LQQ-1; Wed,
+ 10 Sep 2025 14:05:16 -0400
+X-MC-Unique: TSPtSEpcPiekgaXFfx2LQQ-1
+X-Mimecast-MFC-AGG-ID: TSPtSEpcPiekgaXFfx2LQQ_1757527515
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 284A2180029A; Wed, 10 Sep 2025 18:05:11 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2F89C19560B7; Wed, 10 Sep 2025 18:05:15 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.57])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 86A911800446; Wed, 10 Sep 2025 18:05:07 +0000 (UTC)
+ id A43A91800452; Wed, 10 Sep 2025 18:05:11 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
@@ -59,17 +59,17 @@ Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 16/20] util: convert error-report & log to message API for
- timestamp
-Date: Wed, 10 Sep 2025 19:03:53 +0100
-Message-ID: <20250910180357.320297-17-berrange@redhat.com>
+Subject: [PATCH v3 17/20] util: add support for formatting a workload name in
+ messages
+Date: Wed, 10 Sep 2025 19:03:54 +0100
+Message-ID: <20250910180357.320297-18-berrange@redhat.com>
 In-Reply-To: <20250910180357.320297-1-berrange@redhat.com>
 References: <20250910180357.320297-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -78,7 +78,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,184 +94,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both the error-report and log APIs can optional emit a timestamp
-as a prefix on messages, with the '-msg timestamp=on' command
-line flag is set.
+The error_report function can include the guest name in any
+messages it prints. The qemu_log function has no equivalent
+behaviour.
 
-Convert them to the new message API for formatting the context
-prefix, guaranteeing they will have matching behaviour going
-forward.
+This introduces support for a "workload name" in the new
+messages API, which in the case of system emulators will
+be the guest name. The possibility of defining a workload
+name for other binaries is left as an exercise for the
+future.
 
-There is no change in output format for either logs or errors
-with this conversion.
+This change has no impact on the output of the error_report
+function, but will change the qemu_log function. This can
+be easily seen with the 'log' trace backend, and how it is
+now more closely matching error_report output.
+
+Before:
+
+  # qemu-system-x86_64 -msg guest-name=on -name blah -object tls-creds-x509,id=t0,dir=fish -d 'trace:qcrypto*'
+  qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55b3af3fd870 dir=fish
+  qcrypto_tls_creds_get_path TLS creds path creds=0x55b3af3fd870 filename=ca-cert.pem path=<none>
+  blah qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
+
+After:
+
+  # qemu-system-x86_64 -msg guest-name=on -name blah -object tls-creds-x509,id=t0,dir=fish -d 'trace:qcrypto*'
+  blah qcrypto_tls_creds_x509_load TLS creds x509 load creds=0x55b3af3fd870 dir=fish
+  blah qcrypto_tls_creds_get_path TLS creds path creds=0x55b3af3fd870 filename=ca-cert.pem path=<none>
+  blah qemu-system-x86_64: Unable to access credentials fish/ca-cert.pem: No such file or directory
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/qemu/error-report.h    |  1 -
- system/vl.c                    |  7 ++++++-
- tests/unit/test-error-report.c |  3 ++-
- util/error-report.c            | 17 ++---------------
- util/log.c                     | 21 ++++-----------------
- 5 files changed, 14 insertions(+), 35 deletions(-)
+ include/qemu/error-report.h |  3 ---
+ include/qemu/message.h      | 10 ++++++++++
+ system/vl.c                 |  6 ++++--
+ util/error-report.c         |  7 -------
+ util/message.c              | 12 +++++++++++-
+ 5 files changed, 25 insertions(+), 13 deletions(-)
 
 diff --git a/include/qemu/error-report.h b/include/qemu/error-report.h
-index 3ae2357fda..c8000778ec 100644
+index c8000778ec..ffc305f828 100644
 --- a/include/qemu/error-report.h
 +++ b/include/qemu/error-report.h
-@@ -70,7 +70,6 @@ void error_init(const char *argv0);
+@@ -70,7 +70,4 @@ void error_init(const char *argv0);
                                fmt, ##__VA_ARGS__);      \
      })
  
--extern bool message_with_timestamp;
- extern bool error_with_guestname;
- extern const char *error_guest_name;
+-extern bool error_with_guestname;
+-extern const char *error_guest_name;
+-
+ #endif
+diff --git a/include/qemu/message.h b/include/qemu/message.h
+index 0a06421f77..cfc3c92648 100644
+--- a/include/qemu/message.h
++++ b/include/qemu/message.h
+@@ -5,6 +5,7 @@
  
+ enum QMessageFormatFlags {
+     QMESSAGE_FORMAT_TIMESTAMP = (1 << 0),
++    QMESSAGE_FORMAT_WORKLOAD_NAME = (1 << 1),
+ };
+ 
+ /**
+@@ -16,6 +17,15 @@ enum QMessageFormatFlags {
+  */
+ void qmessage_set_format(int flags);
+ 
++/**
++ * qmessage_set_workload_name:
++ * @name: the name of the workload
++ *
++ * Set the workload name, which for a system emulator
++ * will be the guest VM name.
++ */
++void qmessage_set_workload_name(const char *name);
++
+ /**
+  * qmessage_context_print:
+  * @fp: file to emit the prefix on
 diff --git a/system/vl.c b/system/vl.c
-index a64fd90d4a..696dd92669 100644
+index 696dd92669..fee6fdf7b1 100644
 --- a/system/vl.c
 +++ b/system/vl.c
-@@ -26,6 +26,7 @@
- #include "qemu/help-texts.h"
- #include "qemu/datadir.h"
- #include "qemu/units.h"
-+#include "qemu/message.h"
- #include "qemu/module.h"
- #include "qemu/target-info.h"
- #include "exec/cpu-common.h"
-@@ -813,8 +814,12 @@ static void realtime_init(void)
- 
- static void configure_msg(QemuOpts *opts)
- {
--    message_with_timestamp = qemu_opt_get_bool(opts, "timestamp", false);
-+    int flags = 0;
-+    if (qemu_opt_get_bool(opts, "timestamp", false)) {
-+        flags |= QMESSAGE_FORMAT_TIMESTAMP;
+@@ -818,7 +818,9 @@ static void configure_msg(QemuOpts *opts)
+     if (qemu_opt_get_bool(opts, "timestamp", false)) {
+         flags |= QMESSAGE_FORMAT_TIMESTAMP;
+     }
+-    error_with_guestname = qemu_opt_get_bool(opts, "guest-name", false);
++    if (qemu_opt_get_bool(opts, "guest-name", false)) {
++        flags |= QMESSAGE_FORMAT_WORKLOAD_NAME;
 +    }
-     error_with_guestname = qemu_opt_get_bool(opts, "guest-name", false);
-+    qmessage_set_format(flags);
+     qmessage_set_format(flags);
  }
  
- 
-diff --git a/tests/unit/test-error-report.c b/tests/unit/test-error-report.c
-index 54319c86c9..78f8b57660 100644
---- a/tests/unit/test-error-report.c
-+++ b/tests/unit/test-error-report.c
-@@ -13,6 +13,7 @@
- 
- #include "qemu/error-report.h"
- #include "qapi/error.h"
-+#include "qemu/message.h"
- 
- static void
- test_error_report_simple(void)
-@@ -90,7 +91,7 @@ static void
- test_error_report_timestamp(void)
- {
-     if (g_test_subprocess()) {
--        message_with_timestamp = true;
-+        qmessage_set_format(QMESSAGE_FORMAT_TIMESTAMP);
-         warn_report("warn");
-         error_report("err");
-         return;
+@@ -3520,7 +3522,7 @@ void qemu_init(int argc, char **argv)
+                     exit(1);
+                 }
+                 /* Capture guest name if -msg guest-name is used later */
+-                error_guest_name = qemu_opt_get(opts, "guest");
++                qmessage_set_workload_name(qemu_opt_get(opts, "guest"));
+                 break;
+             case QEMU_OPTION_prom_env:
+                 if (nb_prom_envs >= MAX_PROM_ENVS) {
 diff --git a/util/error-report.c b/util/error-report.c
-index 6c887047e3..719f059494 100644
+index 719f059494..c40cdf3bb3 100644
 --- a/util/error-report.c
 +++ b/util/error-report.c
-@@ -13,6 +13,7 @@
- #include "qemu/osdep.h"
- #include "monitor/monitor.h"
- #include "qemu/error-report.h"
-+#include "qemu/message.h"
- 
- /*
-  * @report_type is the type of message: error, warning or
-@@ -24,8 +25,6 @@ typedef enum {
+@@ -25,8 +25,6 @@ typedef enum {
      REPORT_TYPE_INFO,
  } report_type;
  
--/* Prepend timestamp to messages */
--bool message_with_timestamp;
- bool error_with_guestname;
- const char *error_guest_name;
+-bool error_with_guestname;
+-const char *error_guest_name;
  
-@@ -185,13 +184,6 @@ static void print_loc(bool cur, error_print_func print_func, void *print_opaque)
+ typedef void (*error_print_func)(void *opaque, const char *fmt, ...);
+ typedef void (*error_print_vfunc)(void *opaque, const char *fmt, va_list ap);
+@@ -218,11 +216,6 @@ static void vreport(report_type type, const char *fmt, va_list ap)
+         qmessage_context_print(stderr);
      }
+ 
+-    /* Only prepend guest name if -msg guest-name and -name guest=... are set */
+-    if (error_with_guestname && error_guest_name && !cur) {
+-        print_func(print_opaque, "%s ", error_guest_name);
+-    }
+-
+     print_loc(!!cur, print_func, print_opaque);
+ 
+     switch (type) {
+diff --git a/util/message.c b/util/message.c
+index ef70e08c5f..a91c008e08 100644
+--- a/util/message.c
++++ b/util/message.c
+@@ -6,18 +6,28 @@
+ #include "monitor/monitor.h"
+ 
+ static int message_format;
++static char *message_workloadname;
+ 
+ void qmessage_set_format(int flags)
+ {
+     message_format = flags;
  }
  
--static char *
--real_time_iso8601(void)
--{
--    g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
--    return g_date_time_format_iso8601(dt);
--}
--
- /*
-  * Print a message to current monitor if we have one, else to stderr.
-  * @report_type is the type of message: error, warning or informational.
-@@ -213,7 +205,6 @@ static void vreport(report_type type, const char *fmt, va_list ap)
-     error_print_func print_func;
-     error_print_vfunc print_vfunc;
-     void *print_opaque;
--    gchar *timestr;
- 
-     if (cur) {
-         print_func = (error_print_func)monitor_printf;
-@@ -223,12 +214,8 @@ static void vreport(report_type type, const char *fmt, va_list ap)
-         print_func = (error_print_func)fprintf;
-         print_vfunc = (error_print_vfunc)vfprintf;
-         print_opaque = stderr;
--    }
- 
--    if (message_with_timestamp && !cur) {
--        timestr = real_time_iso8601();
--        print_func(print_opaque, "%s ", timestr);
--        g_free(timestr);
-+        qmessage_context_print(stderr);
-     }
- 
-     /* Only prepend guest name if -msg guest-name and -name guest=... are set */
-diff --git a/util/log.c b/util/log.c
-index 2642a55c59..baa33ad8f1 100644
---- a/util/log.c
-+++ b/util/log.c
-@@ -22,6 +22,7 @@
- #include "qemu/range.h"
- #include "qemu/error-report.h"
- #include "qapi/error.h"
-+#include "qemu/message.h"
- #include "qemu/cutils.h"
- #include "trace/control.h"
- #include "qemu/thread.h"
-@@ -151,26 +152,12 @@ static __thread bool incomplete;
- 
- void qemu_log(const char *fmt, ...)
+-void qmessage_context_print(FILE *fp)
++void qmessage_set_workload_name(const char *name)
  {
--    FILE *f;
--    g_autofree const char *timestr = NULL;
--
--    /*
--     * Prepare the timestamp *outside* the logging
--     * lock so it better reflects when the message
--     * was emitted if we are delayed acquiring the
--     * mutex
--     */
--    if (message_with_timestamp && !incomplete) {
--        g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
--        timestr = g_date_time_format_iso8601(dt);
--    }
--
--    f = qemu_log_trylock();
-+    FILE *f = qemu_log_trylock();
-     if (f) {
-         va_list ap;
++    message_workloadname = g_strdup(name);
++}
  
--        if (timestr) {
--            fprintf(f, "%s ", timestr);
-+        if (!incomplete) {
-+            qmessage_context_print(f);
-         }
- 
-         va_start(ap, fmt);
++void qmessage_context_print(FILE *fp)
++{
+     if (message_format & QMESSAGE_FORMAT_TIMESTAMP) {
+         g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
+         g_autofree char *timestr = g_date_time_format_iso8601(dt);
+         fprintf(fp, "%s ", timestr);
+     }
++
++    if ((message_format & QMESSAGE_FORMAT_WORKLOAD_NAME) &&
++        message_workloadname) {
++        fprintf(fp, "%s ", message_workloadname);
++    }
+ }
 -- 
 2.50.1
 
