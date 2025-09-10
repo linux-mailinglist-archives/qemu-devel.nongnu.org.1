@@ -2,85 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A1D3B51CE1
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 18:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C24B51D1F
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 18:10:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwNHK-0003bM-Ke; Wed, 10 Sep 2025 12:02:38 -0400
+	id 1uwNNp-0008J9-Va; Wed, 10 Sep 2025 12:09:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uwNGs-0003AY-0a
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 12:02:15 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uwNNa-0008Ge-BZ
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 12:09:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uwNGp-0004Vz-VQ
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 12:02:09 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uwNNV-0005M3-Pn
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 12:09:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757520126;
+ s=mimecast20190719; t=1757520536;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jsJ6uWuRVz9mme6Px6mGxd6bZciJc7GE+WQ3P+OnGj4=;
- b=Oz7tl68GBNbwZmHZcvsGMcyHbToLgLP1neIM8xEhNm0JK9fBIY/J3PeAL3lhDkjbCe7BLW
- 58DI2dd2JyLebu+x8XlnDZVi+yhkDGDJ8q0XjqxGRGeWqpTiz/uu1iWSYlKSxDTL9Wq+DH
- z8DGugSKlcscTOUEPP0zZUUSXLImp2M=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-549-hxh20QKjM_alN2jffMYnyQ-1; Wed, 10 Sep 2025 12:02:05 -0400
-X-MC-Unique: hxh20QKjM_alN2jffMYnyQ-1
-X-Mimecast-MFC-AGG-ID: hxh20QKjM_alN2jffMYnyQ_1757520125
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-4b47b4d296eso169645701cf.1
- for <qemu-devel@nongnu.org>; Wed, 10 Sep 2025 09:02:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757520124; x=1758124924;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jsJ6uWuRVz9mme6Px6mGxd6bZciJc7GE+WQ3P+OnGj4=;
- b=SiGTszDgo0gApfp0nkFnPGRNerU1kAoylUPQjeR7/Kkd6pn3lH/CrdqR3A1wFcj8vi
- IsiSqWSYs073fc5PoBb6Ogk8198QWpWgjJoNwddnqyWcuWfs8deCsWqaEU8/DQlMbcme
- GxwMAqpQY2KnNwUy76jCc1yuJXygzSHUq+Kn2XaffxwqgOCpwDvvT+vcvkl+wX3v0rmo
- +Di/ADWU/MWb0xhb2HYNRxpkd3ttP4HFHceIR+jkSQqDDa1MgnBvcwce2MagcPaHDEZC
- mcpNseGt1J9s1AgOYAKamFD6qOUkiKO4WQ9a6KU2UVgtXG3Lx8Y8B1654AEm+vaT7xLn
- rJGQ==
-X-Gm-Message-State: AOJu0Yyw6zITtxHJcMWE/R+1HJmMotd0gmRpS9Vyb01py3Ibttk4iLy/
- WTTZ89SJ8hnQ+t20icqviLJxhm1q8iezl1TcgZYsZeMIZs5taxfH2mP+7jYL06Aaby7YfOx/f2o
- nMbJmwfC0Gku4yIoxtuC7dullMhGThW9Gz1aNn0HIkSrFbjf07eINa5ob4oMBpg93m9+Ghx08NW
- PzBTwB3X84Dufemg34kgPdO5itNX/51rmZ32OjWw==
-X-Gm-Gg: ASbGnctNnwDOeb2hJ1EmyWcKqUEH5YRYii9lDkln2vBuXF8gwbvlfMLezzCmDD5VHhv
- W2WUmeAJVfybqhvOYBJLObopz61Oy7Co9xtLbozHid/F9ZPn8ZWZOdnQyGgxKMJsy5spdiyosM8
- McnEKQg24XhQefATrI1TFiksAyrpY4D+9ZQyajf5Qi/ZKceI0+PTSULJbgRAQ3mxdOEAWL4KudZ
- 9sEc0idriprp0NCeYuFQRYqeOSvj64e3XmvEeKwILdkri+xBxDeIUm4Mmkj8sWnHueMtzVnxCf0
- wFxajVvEb0Jd7Vnpkvo/CBzK0FtwDg==
-X-Received: by 2002:a05:622a:5e0e:b0:4b6:144:faf3 with SMTP id
- d75a77b69052e-4b60144fc88mr98421271cf.30.1757520124049; 
- Wed, 10 Sep 2025 09:02:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG5R2jBx42YgW4YgzFXkBFBkE3E17Jp840MW0gjhmmebGf2ZG0Jp9VZPOeQNkn4E37F0QmiOA==
-X-Received: by 2002:a05:622a:5e0e:b0:4b6:144:faf3 with SMTP id
- d75a77b69052e-4b60144fc88mr98420631cf.30.1757520123086; 
- Wed, 10 Sep 2025 09:02:03 -0700 (PDT)
-Received: from x1.com ([174.89.135.121]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4b61bbe0a85sm26655281cf.42.2025.09.10.09.02.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Sep 2025 09:02:01 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, Juraj Marcin <jmarcin@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH 3/3] migration/multifd: Use the new graceful termination helper
-Date: Wed, 10 Sep 2025 12:01:44 -0400
-Message-ID: <20250910160144.1762894-4-peterx@redhat.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250910160144.1762894-1-peterx@redhat.com>
-References: <20250910160144.1762894-1-peterx@redhat.com>
+ bh=ZfEjeCYWrvNyNF/OH64pvA+w6HxCV9HCS/0vK2FiFU8=;
+ b=gYNb9DjrrN8lfB0BL8+GAJ+oPLc5ilT/Ec/TpKoetx/YcLOEcOQUrwhtDNleoOTfIZYXHI
+ DgAnpw0CTwM/CIpg2YpgGChdgGy6WnfOzTETt+iRv9C3jNHdsvKjo7hcbUc3gu26455K6e
+ +s7/ICFmPlPpL+mJP/ybPlF9Wn97tlM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-423-cO_ZubgQPVetUqcFt0sGVw-1; Wed,
+ 10 Sep 2025 12:08:53 -0400
+X-MC-Unique: cO_ZubgQPVetUqcFt0sGVw-1
+X-Mimecast-MFC-AGG-ID: cO_ZubgQPVetUqcFt0sGVw_1757520532
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CCBC91935329; Wed, 10 Sep 2025 16:08:51 +0000 (UTC)
+Received: from redhat.com (unknown [10.45.224.166])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EE94318003FC; Wed, 10 Sep 2025 16:08:48 +0000 (UTC)
+Date: Wed, 10 Sep 2025 18:08:45 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, hreitz@redhat.com,
+ Maxim Levitsky <mlevitsk@redhat.com>, Hyman Huang <yong.huang@smartx.com>
+Subject: Re: Some iotests are failing with -luks
+Message-ID: <aMGijXg9XIpbbn-v@redhat.com>
+References: <425ef990-85cb-4c02-bb41-2f88f939d147@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <425ef990-85cb-4c02-bb41-2f88f939d147@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -105,155 +82,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Multifd has a separate loop to do TLS terminations gracefully.  Meanwhile,
-it depends on two variables which records thread creations.
+Am 10.09.2025 um 17:16 hat Thomas Huth geschrieben:
+> 
+>  Hi,
+> 
+> when running "./check -luks" in the qemu-iotests directory,
+> some tests are failing for me:
+> 
+> 295 296 inactive-node-nbd luks-detached-header
+> 
+> Is that a known problem already?
 
-It works perfectly before, however relying on "whether some threads are
-created" flag might be not as straightforward to decide a graceful
-shutdown.
+Not to me anyway.
 
-Since we'll need to dynamically identify TLS channels anyway with the new
-helper (which is needed for main and postcopy channels), use the same
-simple API for multifd channels too.  Also, we only need graceful shutdown
-on success of migrations.
+> FWIW, 295 is failing with the following output:
+> 
+> 295   fail       [17:03:01] [17:03:17]   15.7s                failed, exit status 1
+> [...]
+> +EWARNING:qemu.machine.machine:qemu received signal 6; command: "/home/thuth/tmp/qemu-build/qemu-system-x86_64 -display none -vga none -chardev socket,id=mon,fd=5 -mon chardev=mon,mode=control -chardev socket,id=qtest,fd=3 -qtest chardev:qtest -accel qtest -nodefaults -display none -accel qtest"
+> +EEWARNING:qemu.machine.machine:qemu received signal 6; command: "/home/thuth/tmp/qemu-build/qemu-system-x86_64 -display none -vga none -chardev socket,id=mon,fd=6 -mon chardev=mon,mode=control -chardev socket,id=qtest,fd=3 -qtest chardev:qtest -accel qtest -nodefaults -display none -accel qtest"
+> +EEWARNING:qemu.machine.machine:qemu received signal 6; command: "/home/thuth/tmp/qemu-build/qemu-system-x86_64 -display none -vga none -chardev socket,id=mon,fd=10 -mon chardev=mon,mode=control -chardev socket,id=qtest,fd=3 -qtest chardev:qtest -accel qtest -nodefaults -display none -accel qtest"
+> +E
+> [...]
+> 
+> etc.
+> 
+> 296 looks very similar (also a "qemu received signal 6" error),
+> but the others look like this:
 
-With that, we can remove the loop and drop migration_tls_channel_end().
+When it gets signal 6 (i.e. SIGABRT), that usually means that you should
+have a look at the coredump.
 
-The comment there is still a good explanation, move it over to the new
-helper instead.
+> inactive-node-nbd   fail       [17:13:56] [17:14:04]   7.5s                 failed, exit status 1
+> --- /home/thuth/devel/qemu/tests/qemu-iotests/tests/inactive-node-nbd.out
+> +++ /home/thuth/tmp/qemu-build/tests/qemu-iotests/scratch/luks-file-inactive-node-nbd/inactive-node-nbd.out.bad
+> @@ -1,239 +1,64 @@
+>  Preparing disk...
+>  Launching VM...
+> -{"execute": "nbd-server-start", "arguments": {"addr": {"data": {"path": "SOCK_DIR/PID-nbd.sock"}, "type": "unix"}}}
+> -{"return": {}}
+> +ERROR:qemu.qmp.qmp_client.qemu-223907:Failed to receive Greeting: EOFError
+> +ERROR:qemu.qmp.qmp_client.qemu-223907:Failed to establish session: EOFError
+> +Traceback (most recent call last):
+> +  File "/home/thuth/devel/qemu/python/qemu/qmp/protocol.py", line 425, in _session_guard
+> +    await coro
+> +  File "/home/thuth/devel/qemu/python/qemu/qmp/qmp_client.py", line 250, in _establish_session
+> +    self._greeting = await self._get_greeting()
+> +                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +  File "/home/thuth/devel/qemu/python/qemu/qmp/qmp_client.py", line 270, in _get_greeting
+> +    msg = await self._recv()
+> +          ^^^^^^^^^^^^^^^^^^
+> +  File "/home/thuth/devel/qemu/python/qemu/qmp/protocol.py", line 1009, in _recv
+> +    message = await self._do_recv()
+> +              ^^^^^^^^^^^^^^^^^^^^^
+> +  File "/home/thuth/devel/qemu/python/qemu/qmp/qmp_client.py", line 402, in _do_recv
+> +    msg_bytes = await self._readline()
+> +                ^^^^^^^^^^^^^^^^^^^^^^
+> +  File "/home/thuth/devel/qemu/python/qemu/qmp/protocol.py", line 977, in _readline
+> +    raise EOFError
+> +EOFError
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/tls.h     |  1 -
- migration/channel.c |  7 +++++++
- migration/multifd.c | 40 +++++++---------------------------------
- migration/tls.c     |  5 -----
- 4 files changed, 14 insertions(+), 39 deletions(-)
+Not sure what this is. It looks like the QEMU process failed to start,
+maybe it didn't like some command line option. I would expect an error
+message on stderr, but I'm not sure if qemu-iotests automatically
+displays that in such cases. I thought that yes, but maybe I'm confusing
+it with a different case.
 
-diff --git a/migration/tls.h b/migration/tls.h
-index 58b25e1228..75c918e156 100644
---- a/migration/tls.h
-+++ b/migration/tls.h
-@@ -36,7 +36,6 @@ void migration_tls_channel_connect(MigrationState *s,
-                                    QIOChannel *ioc,
-                                    const char *hostname,
-                                    Error **errp);
--void migration_tls_channel_end(QIOChannel *ioc, Error **errp);
- /* Whether the QIO channel requires further TLS handshake? */
- bool migrate_channel_requires_tls_upgrade(QIOChannel *ioc);
- 
-diff --git a/migration/channel.c b/migration/channel.c
-index 1ae839e5fe..a481b45eae 100644
---- a/migration/channel.c
-+++ b/migration/channel.c
-@@ -153,6 +153,13 @@ int migration_channel_read_peek(QIOChannel *ioc,
- bool migration_channel_shutdown_gracefully(QIOChannel *c, Error **errp)
- {
-     if (object_dynamic_cast((Object *)c, TYPE_QIO_CHANNEL_TLS)) {
-+        /*
-+         * The destination expects the TLS session to always be properly
-+         * terminated. This helps to detect a premature termination in the
-+         * middle of the stream.  Note that older QEMUs always break the
-+         * connection on the source and the destination always sees
-+         * GNUTLS_E_PREMATURE_TERMINATION.
-+         */
-         qio_channel_tls_bye(QIO_CHANNEL_TLS(c), errp);
-     }
- 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index b255778855..cb0262076b 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -439,7 +439,7 @@ static void multifd_send_set_error(Error *err)
-     }
- }
- 
--static void multifd_send_terminate_threads(void)
-+static void multifd_send_terminate_threads(bool succeeded)
- {
-     int i;
- 
-@@ -460,6 +460,9 @@ static void multifd_send_terminate_threads(void)
- 
-         qemu_sem_post(&p->sem);
-         if (p->c) {
-+            if (succeeded) {
-+                migration_channel_shutdown_gracefully(p->c, &error_warn);
-+            }
-             qio_channel_shutdown(p->c, QIO_CHANNEL_SHUTDOWN_BOTH, NULL);
-         }
-     }
-@@ -541,50 +544,21 @@ static void multifd_send_cleanup_state(void)
- 
- void multifd_send_shutdown(void)
- {
-+    MigrationState *s = migrate_get_current();
-     int i;
- 
-     if (!migrate_multifd()) {
-         return;
-     }
- 
--    for (i = 0; i < migrate_multifd_channels(); i++) {
--        MultiFDSendParams *p = &multifd_send_state->params[i];
--
--        /* thread_created implies the TLS handshake has succeeded */
--        if (p->tls_thread_created && p->thread_created) {
--            Error *local_err = NULL;
--            /*
--             * The destination expects the TLS session to always be
--             * properly terminated. This helps to detect a premature
--             * termination in the middle of the stream.  Note that
--             * older QEMUs always break the connection on the source
--             * and the destination always sees
--             * GNUTLS_E_PREMATURE_TERMINATION.
--             */
--            migration_tls_channel_end(p->c, &local_err);
--
--            /*
--             * The above can return an error in case the migration has
--             * already failed. If the migration succeeded, errors are
--             * not expected but there's no need to kill the source.
--             */
--            if (local_err && !migration_has_failed(migrate_get_current())) {
--                warn_report(
--                    "multifd_send_%d: Failed to terminate TLS connection: %s",
--                    p->id, error_get_pretty(local_err));
--                break;
--            }
--        }
--    }
--
--    multifd_send_terminate_threads();
-+    multifd_send_terminate_threads(!migration_has_failed(s));
- 
-     for (i = 0; i < migrate_multifd_channels(); i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
-         Error *local_err = NULL;
- 
-         if (!multifd_send_cleanup_channel(p, &local_err)) {
--            migrate_set_error(migrate_get_current(), local_err);
-+            migrate_set_error(s, local_err);
-             error_free(local_err);
-         }
-     }
-diff --git a/migration/tls.c b/migration/tls.c
-index 284a6194b2..ca1595e05d 100644
---- a/migration/tls.c
-+++ b/migration/tls.c
-@@ -165,11 +165,6 @@ void migration_tls_channel_connect(MigrationState *s,
-                               NULL);
- }
- 
--void migration_tls_channel_end(QIOChannel *ioc, Error **errp)
--{
--    qio_channel_tls_bye(QIO_CHANNEL_TLS(ioc), errp);
--}
--
- bool migrate_channel_requires_tls_upgrade(QIOChannel *ioc)
- {
-     if (!migrate_tls()) {
--- 
-2.50.1
+> luks-detached-header   fail       [17:15:26] [17:15:38]   12.2s                failed, exit status 1
+> --- /home/thuth/devel/qemu/tests/qemu-iotests/tests/luks-detached-header.out
+> +++ /home/thuth/tmp/qemu-build/tests/qemu-iotests/scratch/luks-file-luks-detached-header/luks-detached-header.out.bad
+> @@ -1,5 +1,55 @@
+> -..
+> +EE
+> +======================================================================
+> +ERROR: test_detached_luks_header (__main__.TestDetachedLUKSHeader.test_detached_luks_header)
+> +----------------------------------------------------------------------
+> +Traceback (most recent call last):
+> +  File "/home/thuth/devel/qemu/tests/qemu-iotests/tests/luks-detached-header", line 139, in setUp
+> +    res = qemu_img_create(
+> +          ^^^^^^^^^^^^^^^^
+> +  File "/home/thuth/devel/qemu/tests/qemu-iotests/iotests.py", line 278, in qemu_img_create
+> +    return qemu_img('create', *args)
+> +           ^^^^^^^^^^^^^^^^^^^^^^^^^
+> +  File "/home/thuth/devel/qemu/tests/qemu-iotests/iotests.py", line 261, in qemu_img
+> +    return qemu_tool(*full_args, check=check, combine_stdio=combine_stdio)
+> +           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +  File "/home/thuth/devel/qemu/tests/qemu-iotests/iotests.py", line 241, in qemu_tool
+> +    raise VerboseProcessError(
+> +qemu.utils.VerboseProcessError: Command '('/home/thuth/tmp/qemu-build/qemu-img', 'create', '-f', 'luks', '-o', 'iter-time=10', '-o', 'key-secret=sec0', '-o', 'detached-header=true', '--object', 'secret,id=sec0,data=foo', '/home/thuth/tmp/qemu-build/tests/qemu-iotests/scratch/luks-file-luks-detached-header/detached_header.img2')' returned non-zero exit status 1.
+> +  ┏━ output ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+> +  ┃ Formatting '/home/thuth/tmp/qemu-build/tests/qemu-iotests/scratch/l
+> +  ┃ uks-file-luks-detached-header/detached_header.img2', fmt=luks
+> +  ┃ size=-1 key-secret=sec0 iter-time=10 detached-header=true
+> +  ┃ qemu-img: /home/thuth/tmp/qemu-build/tests/qemu-iotests/scratch/luk
+> +  ┃ s-file-luks-detached-header/detached_header.img2: Parameter
+> +  ┃ 'detached-header' is unexpected
+> +  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This one is surprising. I don't think anything relevant in the luks
+driver has changed since the test was introduced. At the same time, the
+code clearly has a problem when it tries to convert a QemuOpts
+containing a "detached-header" option into a QAPI object when the schema
+doesn't even have this option. Was this broken from the beginning? Would
+have been for a year and half.
+
+Kevin
 
 
