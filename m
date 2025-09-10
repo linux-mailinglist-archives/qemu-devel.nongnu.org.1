@@ -2,89 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F2CB51E08
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 18:42:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7986DB51E85
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Sep 2025 19:04:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwNtQ-0001dG-1H; Wed, 10 Sep 2025 12:42:00 -0400
+	id 1uwODC-0008CS-GT; Wed, 10 Sep 2025 13:02:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1uwNtO-0001cw-GW
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 12:41:58 -0400
-Received: from mail-io1-xd29.google.com ([2607:f8b0:4864:20::d29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1uwNtL-00018R-TB
- for qemu-devel@nongnu.org; Wed, 10 Sep 2025 12:41:58 -0400
-Received: by mail-io1-xd29.google.com with SMTP id
- ca18e2360f4ac-8876462a34aso202748539f.2
- for <qemu-devel@nongnu.org>; Wed, 10 Sep 2025 09:41:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1757522514; x=1758127314; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=xL7JQIWeInW0ZYmfRZSfWkrWj7pxXYJHUuLb/gsAAIs=;
- b=iC+KSpNIMzqoSxn80ASDtzMGBVYQO+piiURuAPL8pTiwxYs9b2jBHk80VECYSVW8PL
- HP3ihPVpsF/MI9oC/m4sTRAQGIInOz3vwIBFW6JlhQFxAddgISGcA0ZZfz8DLMYp4JnI
- OFDM+USIujVf5PfRmH3NKrHLC5rteav5Elm4GWjVD75YXqZsM9f6aedz27rZGLNNM++u
- GPgyA8UUKZgvVm49BurZS8CuWGqAkYGzJSDFFS2/XLjxylKHody551GMg0OL/p40UpGY
- YcGhnxYZLu6+b4KI7U0F9o9RWRzry/fJWJ8xkSDBmF1wdCtTCKMxdOXMrhP7QlHFFA2y
- egLg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uwODA-0008Bn-PQ
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 13:02:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uwOD6-0003jC-St
+ for qemu-devel@nongnu.org; Wed, 10 Sep 2025 13:02:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757523737;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Z5ReGiGY6uadiKJ+QzUjrPbDSpgbi9ZwcLfupHAT/So=;
+ b=XCmwMOidlDASkw9agBRM3x668DbWRcUgRGaQjJastWt3At11/CjIgGOLR5eZeBDOnk460k
+ js6Q2cAs24cpKldAO1ubBu+RFgjCSUsesxqUk6yKG8tEoloZbu5HK0vVkgbTons1PaFbx2
+ W3kHnbM7HtoGdD9IH2GFEL1naxxta/Q=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-176-bO4A4E2hPLiu-aOrr2ULUQ-1; Wed, 10 Sep 2025 12:47:30 -0400
+X-MC-Unique: bO4A4E2hPLiu-aOrr2ULUQ-1
+X-Mimecast-MFC-AGG-ID: bO4A4E2hPLiu-aOrr2ULUQ_1757522850
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-721094e78e5so75671626d6.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Sep 2025 09:47:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757522514; x=1758127314;
+ d=1e100.net; s=20230601; t=1757522850; x=1758127650;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xL7JQIWeInW0ZYmfRZSfWkrWj7pxXYJHUuLb/gsAAIs=;
- b=J2g0yIR5iD+0st2eiNrnQksWmHxn618DC8U1IrZEZ3rM5rz3LpHtrM8WxReQW2DNuc
- DF7RTEq3pg0OGZkr6QLFgfb5N9RXg1LPCJrnZrJSbw0/7jrtQIz9HW6R9JgTmwBcVziJ
- T9qV2NM+Ep8JfpFBfmJHSQguUxuUXFN4E0QaPXGlxkPTe3GeZgmXDCWNCUqW6tCVeul2
- v7PsqR52w/IelXfuIS8p1qz83DM+LYqteiC8dnsFUa4yq0/cMM/kpqi+HaqyEQmnLp3r
- p/oMrdYCBgMi14AZXLR6H+NjLxwRgJSxKLGb7BRl7Cdc8+kqmuGzYzQUYHist9SKyfSB
- 4uHw==
-X-Gm-Message-State: AOJu0YzcFNuwdtshqSTUqLO7OPmRpQSak90esuyPc7drbW5CV5ClVe3c
- z9MjvJzoIVPkT98HAW/3Jxe+wkO3dFfB0/l8ydBVwuaPkJz2/f0KQZD82/k7u1qOmwU=
-X-Gm-Gg: ASbGnct52igJrYk5EXw8AkMnO2FcKdGGSUeG1NHQk+G8egfs78hzb6p0jS4O4UdkDZz
- fhKMJpEu9jmjpcN9w6eb7cpdF3jMx8khm0r6l/Tr47fuCHUDzmd1L1h0GlllcAJDU9SjI2U0Wbk
- 7+OLNcLeqWPF1eb/JZ3KkFAKcGdKBypEVREj32J6oyUmiLzjmVv6XNqqdCvM/cLNiWim4HpzWIP
- z1cVwJ/a4FNXZ7Zz4G3fu2iZLlp+rhl26Oyof78zGO2EtW0AULReEduL5tlsUEcimoBd2IQX2Ef
- hvYIoxGH3lAO0F0Ic++5MpEZJOAvd235ZRCN8QKJeVc2H9bG9d4MEQ13jgZgo7xGQrHyD8czmey
- wYxaMDFY6bw/SAGZp88kS8nTpS/0n0NvBXPw=
-X-Google-Smtp-Source: AGHT+IEkSvSwFfZNNpANLAhbTabK+ErP+BOBwvt7XlFXNALbCsEN2h3/TaIWe620QnwhkO6tMjmxCw==
-X-Received: by 2002:a05:6602:36ce:b0:88d:9dce:2916 with SMTP id
- ca18e2360f4ac-88d9dce2a43mr557426039f.8.1757522513939; 
- Wed, 10 Sep 2025 09:41:53 -0700 (PDT)
-Received: from localhost ([140.82.166.162]) by smtp.gmail.com with ESMTPSA id
- ca18e2360f4ac-8897613808csm406675739f.15.2025.09.10.09.41.53
+ bh=Z5ReGiGY6uadiKJ+QzUjrPbDSpgbi9ZwcLfupHAT/So=;
+ b=nJynXcfNrP8RNNFtxZE/Jhye19krzjIYD5bgOlA0XmwAvVLWagTkvLXJF5+qSMDpC8
+ kU1TYdKegBFcOMult7gRHg1Vl9wH5Q/mFUUsT+BhYNBruPU25gO6OARqOg6g2co3tzM5
+ 4+nrhbSmQcaHgcMU6d2JOyz96RPoogUZyueK+cYWsmUMUL++FL3pCjgbhKbLFOsqeD06
+ ueLqzS5ahHLP8tMdGTuHkJeUcyUyGSzWnaeDwhF1Am8mVscodI8XKoZ3kAEBZjHO5vlT
+ RDtGu4+UEjbyVSGehOwvrmndFj3THH3/jCvFJg5BdzGr2lu8w81gPxMWAZKBy3ihAeyx
+ 9I6w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUV9N4mK2ga0/IBkKb0U0gvb4e3YXXC4K202upKSVT+6DsDSG0V0Ea+YAraVFMppDIUqdAUUpMtK+uv@nongnu.org
+X-Gm-Message-State: AOJu0YxmAdD+yE4MLQY0Sx0fbJ8jI30M9sWeG97JPHQ78T+IT3WN2DOO
+ /S6OohvYirj8HijTWlT5+bufP4az1fSbNiYoOwj1Yt3N1sAPXwiu04cNiaqfW62ZHqJ4u2txLlz
+ F1FyCNm6GvuctCJd0bPsh0AzJ2Eq+bjPtDG18UgtUpvAVstzH3cP+JAxs
+X-Gm-Gg: ASbGncvzEirQMgtcJeGsmZQVQXlXWWCql8Ym420VDmWTdmGQo9zp1W1HO1T2pxCFiIt
+ QOLdvGOcoZvmHvsLhSYhkf2E6g/PtioKhPpluY6po8DfmDzfuovNVDOi0/Nh2aQQthAfbOehZ46
+ xQ8X+TA9vuYEABGJIGr2jFa+PnReVXFqkZiOrS7uo6OPwcRcIBt3xSVtWKKjgG89RKXDviHkHIy
+ P6aCAF8lgCH9rwHKhqWybUiv3OxC4m06hcs3xah6OUiBOFHNCRfwH4SoP7HNSVSsaBRpfZhmzFD
+ XyZC/W4jSbUCw2RVgL2ef+6GoW/T/7T4H1Ehzb6HwHrdV4DQE36YJqDOu/25uQSJvjy4o9LjWvn
+ 2VJiqejyUNw6/PdHYQULdPQ==
+X-Received: by 2002:a0c:f092:0:20b0:73b:d22e:14c5 with SMTP id
+ 6a1803df08f44-73bd22e1629mr142923676d6.3.1757522849734; 
+ Wed, 10 Sep 2025 09:47:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzREP4taqWZIQoMGNLRYw2eALmGxP7o151JaOGGRFZmkuAxbM33pCfbvI1NdbTRFQ4BetYtA==
+X-Received: by 2002:a0c:f092:0:20b0:73b:d22e:14c5 with SMTP id
+ 6a1803df08f44-73bd22e1629mr142923186d6.3.1757522849145; 
+ Wed, 10 Sep 2025 09:47:29 -0700 (PDT)
+Received: from x1.local
+ (bras-base-aurron9134w-grc-11-174-89-135-121.dsl.bell.ca. [174.89.135.121])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-72925b87571sm124927506d6.6.2025.09.10.09.47.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 10 Sep 2025 09:41:53 -0700 (PDT)
-Date: Wed, 10 Sep 2025 11:41:52 -0500
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Xie Bo <xb@ultrarisc.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com, 
- anup@brainfault.org, alistair.francis@wdc.com, rkrcmar@ventanamicro.com, 
- palmer@dabbelt.com, xiamy@ultrarisc.com
-Subject: Re: [PATCH v6 2/2] Fix VM resume after QEMU+KVM migration
-Message-ID: <20250910-f405263ec7a71e1384c39da4@orel>
-References: <20250910093529.614305-1-xb@ultrarisc.com>
- <20250910093529.614305-3-xb@ultrarisc.com>
+ Wed, 10 Sep 2025 09:47:28 -0700 (PDT)
+Date: Wed, 10 Sep 2025 12:47:26 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: berrange@redhat.com, qemu-devel@nongnu.org, farosas@suse.de,
+ steven.sistare@oracle.com
+Subject: Re: [PATCH v3] migration/qemu-file: don't make incoming fds blocking
+ again
+Message-ID: <aMGrnua2KHDerfMi@x1.local>
+References: <20250910143156.1053779-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250910093529.614305-3-xb@ultrarisc.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d29;
- envelope-from=ajones@ventanamicro.com; helo=mail-io1-xd29.google.com
+In-Reply-To: <20250910143156.1053779-1-vsementsov@yandex-team.ru>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,172 +110,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 10, 2025 at 05:35:28PM +0800, Xie Bo wrote:
-> Fix two migration issues for virtual machines in KVM mode:
-> 1.It saves and restores the vCPU's privilege mode to ensure that the 
-> vCPU's privilege mode is correct after migration.
-> 2.It saves and restores the vCPU's mp_state (runnable or stopped) and 
-> includes this state in the migration sequence, upgrading the vmstate 
-> version to ensure that the vCPU's mp_state is correct after migration.
+On Wed, Sep 10, 2025 at 05:31:56PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> In migration we want to pass fd "as is", not changing its
+> blocking status.
 > 
-> KVM_PUT_RUNTIME_STATE only synchronizes the vCPU’s runtime-modified 
-> state (such as registers), whereas mp_state is related to system boot, 
-> multi-core initialization, and is not modified during normal operation. 
-> Therefore, mp_state is only synchronized to KVM during KVM_PUT_RESET_STATE 
-> and KVM_PUT_FULL_STATE.
+> The only current user of these fds is CPR state (through VMSTATE_FD),
+> which of-course doesn't want to modify fds on target when source is
+> still running and use these fds.
 > 
-> Signed-off-by: Xie Bo <xb@ultrarisc.com>
+> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > ---
->  target/riscv/kvm/kvm-cpu.c   | 60 ++++++++++++++++++++++++++++--------
->  target/riscv/kvm/kvm_riscv.h |  3 +-
->  target/riscv/machine.c       |  5 +--
->  3 files changed, 52 insertions(+), 16 deletions(-)
 > 
-> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-> index 0f4997a918..1434dd1c51 100644
-> --- a/target/riscv/kvm/kvm-cpu.c
-> +++ b/target/riscv/kvm/kvm-cpu.c
-> @@ -576,6 +576,12 @@ static int kvm_riscv_get_regs_core(CPUState *cs)
->      }
->      env->pc = reg;
+> v3: RESEND, add qemu-devel to CC, sorry for the noise
+> v2: rework, following Daniel's suggestion to use flag.
+> 
+>  include/io/channel.h  |  1 +
+>  io/channel-socket.c   | 12 ++++++++----
+>  io/channel.c          |  2 +-
+>  migration/qemu-file.c |  3 ++-
+>  4 files changed, 12 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/io/channel.h b/include/io/channel.h
+> index 234e5db70d..5394f50768 100644
+> --- a/include/io/channel.h
+> +++ b/include/io/channel.h
+> @@ -36,6 +36,7 @@ OBJECT_DECLARE_TYPE(QIOChannel, QIOChannelClass,
 >  
-> +    ret = kvm_get_one_reg(cs, RISCV_CORE_REG(env, mode), &reg);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +    env->priv = reg;
-> +
->      for (i = 1; i < 32; i++) {
->          uint64_t id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CORE, i);
->          ret = kvm_get_one_reg(cs, id, &reg);
-> @@ -601,6 +607,12 @@ static int kvm_riscv_put_regs_core(CPUState *cs)
->          return ret;
->      }
->  
-> +    reg = env->priv;
-> +    ret = kvm_set_one_reg(cs, RISCV_CORE_REG(env, mode), &reg);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +
->      for (i = 1; i < 32; i++) {
->          uint64_t id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CORE, i);
->          reg = env->gpr[i];
-> @@ -1244,25 +1256,52 @@ int kvm_arch_get_registers(CPUState *cs, Error **errp)
->          return ret;
->      }
->  
-> +    ret = kvm_riscv_sync_mpstate_to_qemu(cs);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +
->      return ret;
->  }
->  
-> -int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state)
-> +int kvm_riscv_sync_mpstate_to_kvm(CPUState *cs)
->  {
-> +    int ret = 0;
-> +    CPURISCVState *env = &RISCV_CPU(cs)->env;
-> +
->      if (cap_has_mp_state) {
->          struct kvm_mp_state mp_state = {
-> -            .mp_state = state
-> +            .mp_state = env->mp_state
->          };
->  
-> -        int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state);
-> +        ret = kvm_vcpu_ioctl(cs, KVM_SET_MP_STATE, &mp_state);
->          if (ret) {
-> -            fprintf(stderr, "%s: failed to sync MP_STATE %d/%s\n",
-> +            fprintf(stderr, "%s: failed to sync MP_STATE to KVM %d/%s\n",
->                      __func__, ret, strerror(-ret));
-> -            return -1;
->          }
->      }
->  
-> -    return 0;
-> +    return ret;
-> +}
-> +
-> +int kvm_riscv_sync_mpstate_to_qemu(CPUState *cs)
-> +{
-> +    int ret = 0;
-> +    CPURISCVState *env = &RISCV_CPU(cs)->env;
-> +
-> +    if (cap_has_mp_state) {
-> +        struct kvm_mp_state mp_state;
-> +
-> +        ret = kvm_vcpu_ioctl(cs, KVM_GET_MP_STATE, &mp_state);
-> +        if (ret) {
-> +            fprintf(stderr, "%s: failed to sync MP_STATE to QEMU %d/%s\n",
-> +                    __func__, ret, strerror(-ret));
-> +            return ret;
-> +        }
-> +        env->mp_state = mp_state.mp_state;
-> +    }
-> +
-> +    return ret;
->  }
->  
->  int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
-> @@ -1289,13 +1328,8 @@ int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
->          return ret;
->      }
->  
-> -    if (KVM_PUT_RESET_STATE == level) {
-> -        RISCVCPU *cpu = RISCV_CPU(cs);
-> -        if (cs->cpu_index == 0) {
-> -            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_RUNNABLE);
-> -        } else {
-> -            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_STOPPED);
-> -        }
-> +    if (level >= KVM_PUT_RESET_STATE) {
-> +        ret = kvm_riscv_sync_mpstate_to_kvm(cs);
->          if (ret) {
->              return ret;
->          }
-> diff --git a/target/riscv/kvm/kvm_riscv.h b/target/riscv/kvm/kvm_riscv.h
-> index b2bcd1041f..953db94160 100644
-> --- a/target/riscv/kvm/kvm_riscv.h
-> +++ b/target/riscv/kvm/kvm_riscv.h
-> @@ -28,7 +28,8 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
->                            uint64_t aplic_base, uint64_t imsic_base,
->                            uint64_t guest_num);
->  void riscv_kvm_aplic_request(void *opaque, int irq, int level);
-> -int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
-> +int kvm_riscv_sync_mpstate_to_kvm(CPUState *cs);
-> +int kvm_riscv_sync_mpstate_to_qemu(CPUState *cs);
->  void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
->  uint64_t kvm_riscv_get_timebase_frequency(RISCVCPU *cpu);
->  
-> diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-> index 889e2b6570..8562a0a1d6 100644
-> --- a/target/riscv/machine.c
-> +++ b/target/riscv/machine.c
-> @@ -401,8 +401,8 @@ static const VMStateDescription vmstate_ssp = {
->  
->  const VMStateDescription vmstate_riscv_cpu = {
->      .name = "cpu",
-> -    .version_id = 10,
-> -    .minimum_version_id = 10,
-> +    .version_id = 11,
-> +    .minimum_version_id = 11,
->      .post_load = riscv_cpu_post_load,
->      .fields = (const VMStateField[]) {
->          VMSTATE_UINTTL_ARRAY(env.gpr, RISCVCPU, 32),
-> @@ -422,6 +422,7 @@ const VMStateDescription vmstate_riscv_cpu = {
->          VMSTATE_UNUSED(4),
->          VMSTATE_UINT32(env.misa_ext_mask, RISCVCPU),
->          VMSTATE_UINTTL(env.priv, RISCVCPU),
-> +        VMSTATE_UINT32(env.mp_state, RISCVCPU),
->          VMSTATE_BOOL(env.virt_enabled, RISCVCPU),
->          VMSTATE_UINT64(env.resetvec, RISCVCPU),
->          VMSTATE_UINTTL(env.mhartid, RISCVCPU),
-> -- 
-> 2.43.0
->
+>  #define QIO_CHANNEL_READ_FLAG_MSG_PEEK 0x1
+>  #define QIO_CHANNEL_READ_FLAG_RELAXED_EOF 0x2
+> +#define QIO_CHANNEL_READ_FLAG_PRESERVE_BLOCKING 0x4
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Shouldn't the name reflect FD somehow?  Or it can imply preservation
+blocking for the channel itself.
+
+  QIO_CHANNEL_READ_FLAG_FD_PRESERVE_BLOCKING 
+  QIO_CHANNEL_READ_FLAG_PRESERVE_FD_BLOCKING 
+  ...
+
+>  
+>  typedef enum QIOChannelFeature QIOChannelFeature;
+>  
+> diff --git a/io/channel-socket.c b/io/channel-socket.c
+> index 3b7ca924ff..2f6e2d84a3 100644
+> --- a/io/channel-socket.c
+> +++ b/io/channel-socket.c
+> @@ -464,7 +464,8 @@ static void qio_channel_socket_finalize(Object *obj)
+>  
+>  #ifndef WIN32
+>  static void qio_channel_socket_copy_fds(struct msghdr *msg,
+> -                                        int **fds, size_t *nfds)
+> +                                        int **fds, size_t *nfds,
+> +                                        bool preserve_blocking)
+>  {
+>      struct cmsghdr *cmsg;
+>  
+> @@ -497,8 +498,10 @@ static void qio_channel_socket_copy_fds(struct msghdr *msg,
+>                  continue;
+>              }
+>  
+> -            /* O_NONBLOCK is preserved across SCM_RIGHTS so reset it */
+> -            qemu_socket_set_block(fd);
+> +            if (!preserve_blocking) {
+> +                /* O_NONBLOCK is preserved across SCM_RIGHTS so reset it */
+> +                qemu_socket_set_block(fd);
+> +            }
+>  
+>  #ifndef MSG_CMSG_CLOEXEC
+>              qemu_set_cloexec(fd);
+> @@ -556,7 +559,8 @@ static ssize_t qio_channel_socket_readv(QIOChannel *ioc,
+>      }
+>  
+>      if (fds && nfds) {
+> -        qio_channel_socket_copy_fds(&msg, fds, nfds);
+> +        qio_channel_socket_copy_fds(
+> +            &msg, fds, nfds, flags & QIO_CHANNEL_READ_FLAG_PRESERVE_BLOCKING);
+>      }
+>  
+>      return ret;
+> diff --git a/io/channel.c b/io/channel.c
+> index ebd9322765..50d5f7b10b 100644
+> --- a/io/channel.c
+> +++ b/io/channel.c
+> @@ -58,7 +58,7 @@ ssize_t qio_channel_readv_full(QIOChannel *ioc,
+>  {
+>      QIOChannelClass *klass = QIO_CHANNEL_GET_CLASS(ioc);
+>  
+> -    if ((fds || nfds) &&
+> +    if ((fds || nfds || (flags & QIO_CHANNEL_READ_FLAG_PRESERVE_BLOCKING)) &&
+
+Not a huge deal, but.. IMHO we can simply ignore this flag when fds==NULL.
+
+It can also make callers' lives slightly easier too by always passing in
+this flag when necessary, like in below.
+
+>          !qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_FD_PASS)) {
+>          error_setg_errno(errp, EINVAL,
+>                           "Channel does not support file descriptor passing");
+> diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+> index b6ac190034..92c7b5678b 100644
+> --- a/migration/qemu-file.c
+> +++ b/migration/qemu-file.c
+> @@ -324,6 +324,7 @@ static ssize_t coroutine_mixed_fn qemu_fill_buffer(QEMUFile *f)
+>      size_t nfd = 0;
+>      int **pfds = f->can_pass_fd ? &fds : NULL;
+>      size_t *pnfd = f->can_pass_fd ? &nfd : NULL;
+> +    int flags = f->can_pass_fd ? QIO_CHANNEL_READ_FLAG_PRESERVE_BLOCKING : 0;
+>  
+>      assert(!qemu_file_is_writable(f));
+>  
+> @@ -340,7 +341,7 @@ static ssize_t coroutine_mixed_fn qemu_fill_buffer(QEMUFile *f)
+>  
+>      do {
+>          struct iovec iov = { f->buf + pending, IO_BUF_SIZE - pending };
+> -        len = qio_channel_readv_full(f->ioc, &iov, 1, pfds, pnfd, 0,
+> +        len = qio_channel_readv_full(f->ioc, &iov, 1, pfds, pnfd, flags,
+>                                       &local_error);
+>          if (len == QIO_CHANNEL_ERR_BLOCK) {
+>              if (qemu_in_coroutine()) {
+> -- 
+> 2.48.1
+> 
+
+-- 
+Peter Xu
+
 
