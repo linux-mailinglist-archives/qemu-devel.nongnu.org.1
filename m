@@ -2,66 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C4CB52DD1
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 11:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCEDDB52DEA
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 12:05:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwe2y-0001f9-Vj; Thu, 11 Sep 2025 05:56:57 -0400
+	id 1uweAJ-0008LU-Mj; Thu, 11 Sep 2025 06:04:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lyndra@linux.alibaba.com>)
- id 1uwe2r-0001cQ-Dk; Thu, 11 Sep 2025 05:56:49 -0400
-Received: from [115.124.30.97] (helo=out30-97.freemail.mail.aliyun.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lyndra@linux.alibaba.com>)
- id 1uwe2h-0005P4-B2; Thu, 11 Sep 2025 05:56:46 -0400
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uweAG-0008LA-CB
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 06:04:28 -0400
+Received: from mail-yx1-xb131.google.com ([2607:f8b0:4864:20::b131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uweAD-0006gZ-Af
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 06:04:28 -0400
+Received: by mail-yx1-xb131.google.com with SMTP id
+ 956f58d0204a3-5fe42994547so188011d50.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 03:04:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux.alibaba.com; s=default;
- t=1757584579; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
- bh=1gqd1TzCEIyvFYfjyBctacJ1+0G9407EGdXdIQ5mOdw=;
- b=GZEBXztvhdIwrDy+Q0iadCMAlFff6Ubh4Rq2mkiRDA+BbJRsRcyMO9F7HW4sOq0ulDTR5rHxR1+YyxmoLiZ7lwvZ+rRpmOy9rWZJHclutNGf+jQ0S0/OSEAj+nseLi3BzmudRM/EildDfenELDKTbTSubH14C2PN1tvDTR54ypI=
-Received: from ea134-sw06.eng.xrvm.cn(mailfrom:lyndra@linux.alibaba.com
- fp:SMTPD_---0Wnlj.L-_1757584579 cluster:ay36) by smtp.aliyun-inc.com;
- Thu, 11 Sep 2025 17:56:19 +0800
-From: TANG Tiancheng <lyndra@linux.alibaba.com>
-Date: Thu, 11 Sep 2025 17:56:16 +0800
-Subject: [PATCH v3 4/4] target/riscv: Save stimer and vstimer in CPU
- vmstate
+ d=linaro.org; s=google; t=1757585061; x=1758189861; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=90Hq1/SkzrOr12kzW5mjFU3ZDT8bRGSr2u7/iNn9v10=;
+ b=w7hf6IoFpDD3b7cmTx+Ev135GoftK5LkQ+5X9ZLlAd6nbeESBdBoTCOERV4rOPaxQa
+ 8OBt+aX8eGCSXJr3n4ZZGk1j3semGgyY5tjM4uowe6nBq1WQMFBRoagZdMCgNQLGRE82
+ 0IHfYpp2BRl6kRDFnnLIcSFSWnVw1IGMT+Lic073m0N9Q3BYMroAyZySI/te/zP/NdcF
+ xdktbaaCKDlHKDQnwbBzkZE3iJaHNAm4D+iDut3R13//IdPajfXvUEX6WJm9pNjOpMGv
+ MbiqtOMq/n4+F6JvKwyow4otDazLWy/HXsMHz2vsQZ8wKtw1z3CgyKMljuAsUTzoT43t
+ Whyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757585061; x=1758189861;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=90Hq1/SkzrOr12kzW5mjFU3ZDT8bRGSr2u7/iNn9v10=;
+ b=TfsimdWzZd5LMyWPWZqylTbF1v6LwSYvJI1U2gPptOWhd+0gV0dv91SbD4JyJSe0cY
+ dinp6c5RN3X1gkMx8o9JlXyjVE3ZsEtR9LNXDEfjyJtVh66yoSuzk45TOQUFN0R36/rF
+ dYsXw9o+bOb/Ob/qS+rHumTjyQF64bUyo9/xvoOt4W7aeCkdZyiwN2Ary1Ej4OArDmX9
+ haanRdabs3De4Wva41QWDU1sNcj6otJm7R41TiKaEKlbY11pZH4oZ/HaUou9MRSSjkKc
+ Wp3tJMb3uCgBukOLSaPiEN3zrSk8VbFU2HOfO1KBjsp0lJlZLI+IOxAOWWfWqkFKzALj
+ 54Nw==
+X-Gm-Message-State: AOJu0YxxrAQ1LKD0FRLJcLJs98dgr5s1Oc+IM6UxYJRB8/CHGag9Q27o
+ xXT5kvpAwEi+DtBdv29dQakBjGipEVCxknj+JAeyeuquLZDfgMfu/v4bfSdt3QoeAPpH7K+3jDG
+ paVqBnB1u+dOXJhgqCtPNoM/Gb2GYzoLboxcWnkLv1/ayRvwo9z0b
+X-Gm-Gg: ASbGncvMiUJxGk0LZz51fcl9ZWaOIXAk6ZLUk5Q1avRj5DER1PgWxcUs3w/bCn5FITs
+ DoLPSieMhN3kaDOnkDVizegGG4X0ZWAbUkrnfyoHy1YH1h1IzGXnbkQM7t7i9eZ0KPMS+GsdWHB
+ utayv3yDEUIbViuBWZA6TcldfLccg7Y5xsslD0kg1DdTZ2cTMXPsnQrVNPCONrJs5InoofzJhsA
+ Xe+yZiKFoYcBc+eMfE=
+X-Google-Smtp-Source: AGHT+IGmq8Aq6iskIyTm4ls7gp6FJRYP497Ovkq7K/pSzn28jbRoyuFnTkQRly5P69A8gkXQbrXSEp+Td84ektfxEFI=
+X-Received: by 2002:a53:d010:0:b0:5fc:f3a:58b3 with SMTP id
+ 956f58d0204a3-6103602c465mr11449643d50.36.1757585061215; Thu, 11 Sep 2025
+ 03:04:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250911-timers-v3-4-60508f640050@linux.alibaba.com>
-References: <20250911-timers-v3-0-60508f640050@linux.alibaba.com>
-In-Reply-To: <20250911-timers-v3-0-60508f640050@linux.alibaba.com>
-To: qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, 
- Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org, 
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- TANG Tiancheng <lyndra@linux.alibaba.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757584576; l=1731;
- i=lyndra@linux.alibaba.com; s=20250909; h=from:subject:message-id;
- bh=db8HgAaEdZbHQou94hhdJN2K2puP3nx87MpC33YWDYQ=;
- b=rnE8KAyA9YE2wPYoNdk7C1NlNMyzW4RDdk9kDIdRq/TxTEluv39LB2c1HOMy6tQ7vMY0CeSqN
- TQ/C8V5tDlJDLs+DBwdycbMzEPyXfF8O/IVtfM6sEYXlUzRRrHnLhEw
-X-Developer-Key: i=lyndra@linux.alibaba.com; a=ed25519;
- pk=GQh4uOSLVucXGkaZfEuQ956CrYS14cn1TA3N8AiIjBw=
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 115.124.30.97 (deferred)
-Received-SPF: pass client-ip=115.124.30.97;
- envelope-from=lyndra@linux.alibaba.com; helo=out30-97.freemail.mail.aliyun.com
-X-Spam_score_int: -166
-X-Spam_score: -16.7
-X-Spam_bar: ----------------
-X-Spam_report: (-16.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=no autolearn_force=no
+References: <20250908105005.2119297-1-pbonzini@redhat.com>
+In-Reply-To: <20250908105005.2119297-1-pbonzini@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 11 Sep 2025 11:04:09 +0100
+X-Gm-Features: Ac12FXx__Gdlp_HGN1M7neeZPDPF0L9fZenRW7Eb2HDsHU4uwET_BGeQYHmkAUI
+Message-ID: <CAFEAcA8WZ1Aa==LZv+roEHdaOzoMoX3aoeBbsM4gc3d_Yq=GTA@mail.gmail.com>
+Subject: Re: [PATCH 00/33] First Rust update for QEMU 10.2
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb131.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,64 +91,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vmstate_riscv_cpu was missing env.stimer and env.vstimer.
-Without migrating these QEMUTimer fields, active S/VS-mode
-timer events are lost after snapshot or migration.
+On Mon, 8 Sept 2025 at 11:53, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> This includes:
+> - bumping MSRV to 1.83.0 to support const_refs_to_static
+> - Zhao's safe, builder-based implementation of migration callbacks
+> - Manos's qdev properties macro.  While bit-based properties are
+>   not yet supported, that's a small change overall.
+> - the Rust crate split from Marc-Andr=C3=A9
+> - adding proc macro aliases in individual crates, also from Marc-Andr=C3=
+=A9
+>
+> I'm still not convinced about having "bql" depend on "migration",
+> but I am convinced by the crate split between "util" and "bql",
+> so we can move the implementation of VMState from "bql" to
+> "migration" later if needed.
+>
+> For the purpose of getting this in as an easy-to-use base for future
+> development, I'm disabling CI from Debian and Ubuntu.  The plan is:
+> - that Debian will require trixie to enable Rust usage
+> - that Ubuntu will backport 1.83 to its 22.04 and 24.04 versions
+>   (https://bugs.launchpad.net/ubuntu/+source/rustc-1.83/+bug/2120318)
+> - that Marc-Andr=C3=A9 or someone else will add Rust to other CI jobs
 
-Add VMSTATE_TIMER_PTR() entries to save and restore them.
+How far into the future does moving to 1.83.0 push our
+"we can enable rust and make it mandatory" point? I was
+hoping we would be able to do that sometime soon but this
+sounds like we're going to be still a long way out from that :-(
 
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: TANG Tiancheng <lyndra@linux.alibaba.com>
----
- target/riscv/machine.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index 1600ec44f0b755fdd49fc0df47c2288c9940afe0..51e0567ed30cbab5e791ea904165bc1854709192 100644
---- a/target/riscv/machine.c
-+++ b/target/riscv/machine.c
-@@ -400,6 +400,30 @@ static const VMStateDescription vmstate_ssp = {
-     }
- };
- 
-+static bool sstc_timer_needed(void *opaque)
-+{
-+    RISCVCPU *cpu = opaque;
-+    CPURISCVState *env = &cpu->env;
-+
-+    if (!cpu->cfg.ext_sstc) {
-+        return false;
-+    }
-+
-+    return env->stimer != NULL || env->vstimer != NULL;
-+}
-+
-+static const VMStateDescription vmstate_sstc = {
-+    .name = "cpu/timer",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = sstc_timer_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_TIMER_PTR(env.stimer, RISCVCPU),
-+        VMSTATE_TIMER_PTR(env.vstimer, RISCVCPU),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- const VMStateDescription vmstate_riscv_cpu = {
-     .name = "cpu",
-     .version_id = 10,
-@@ -476,6 +500,7 @@ const VMStateDescription vmstate_riscv_cpu = {
-         &vmstate_elp,
-         &vmstate_ssp,
-         &vmstate_ctr,
-+        &vmstate_sstc,
-         NULL
-     }
- };
-
--- 
-2.43.0
-
+-- PMM
 
