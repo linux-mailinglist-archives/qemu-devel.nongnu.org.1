@@ -2,84 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72758B5389F
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 18:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D15B538C4
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 18:08:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwjlF-0001s4-Gp; Thu, 11 Sep 2025 12:03:01 -0400
+	id 1uwjpC-00057J-94; Thu, 11 Sep 2025 12:07:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uwjkr-0001a0-7R
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 12:02:41 -0400
-Received: from mail-yw1-x112e.google.com ([2607:f8b0:4864:20::112e])
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1uwjp4-00056E-UL
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 12:06:59 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uwjkm-0005VK-RU
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 12:02:36 -0400
-Received: by mail-yw1-x112e.google.com with SMTP id
- 00721157ae682-71d60501806so6466867b3.2
- for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 09:02:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1uwjp3-00068q-4O
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 12:06:58 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-32d6c194134so1310811a91.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 09:06:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757606550; x=1758211350; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=7dRGjVVwpjU1/n+vvstizJLUX8chlCa0TZSJ83N8d/Y=;
- b=bYqQx48aVb8wKkqnke1773eFpc/NVszQfKqkG/7I7AxSIqiq5qHAIcY/qV3QRRTkZ4
- yCiSUM+WQLFx7f1S5pUpRP9F5NP1PFhaePZXhjIp/+nGTuYvW+nJhzdPX8Tuci0JmCIK
- aggtsdw7yiPGfmxB/MmvmfBGcS4N8PJJDBap0sc+rj5afdn+EBYbC3H9hIqgEwPukdO9
- hcSGSR4cSggEpkaTjKW+biuks+10f1NbLSwI03yI2JrU8xqUVUZMYevila15I/gA2a0A
- W8+z+FCzxouJHnzmXblg5wQFRWUTKf+4f6iw1fGZXHvum4Vk/Z960x/3tMnjUrH1vVsL
- wqxA==
+ d=sifive.com; s=google; t=1757606814; x=1758211614; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=LMkhBnxP1K1lXBwRpWEfdoby7fEpJeDOFfIr89S0Eqo=;
+ b=Y6BH+z7CMu3PxQeS3HUa/GKLnTUEl0uhZ8At4dV9AWLwTdkDFIxo/teOZjj0B4Pu3K
+ gmDHJdArZQ14+oz2I0+hDr8eoGR+F0YdSNxzGlXzUrVus4velwpwspE6hAU+auXHdCTJ
+ v1WR0FSGnrW+sg62+LbA2+iGx7QQj/5RVZPRyPcJ24yg3i5H0VXk3ea98PoxfztreRNv
+ rq5Zk/jCsh5tKE7P7j9KKUK9hKQo5yS4/jShNJ0IVu7LkUTZwTUz3DvlDUf9TPvf9bx/
+ FeEjZXlvLwUTp6lNWnkf1WzgUwutEuzdvFd689U9YbjMYpVPKp6xKmn9rU4XQ0Zey+Gi
+ qP/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757606550; x=1758211350;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1757606814; x=1758211614;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=7dRGjVVwpjU1/n+vvstizJLUX8chlCa0TZSJ83N8d/Y=;
- b=s9YFMZNPv9I63sIsBshue22m+DEzUcg9rWdYmvQ/ouNqjnR3Sf7wlnX2NDCyKtv5xM
- jsjH4nI00UiIH4Eq1HYNSAXQ/BbXFVQ0/TDUtO+i2f34Bkc2yvFRvS4xqSmhCTAOdwim
- VMme1LVr6mdQn9SnabNIGHteeSzrd+LHLRsxg9BSTx6qFv+LSQkJ7Ipr57vuTYRACYbh
- NXVExpZipcwaoWccBm9vNpBehp6USNTb+rwzORwKOzkrLRqxb59VkltgFrAVUBNKHmCz
- WZpo0l/AuT2cMnZX2guPiKienCcd7kxgez1LFXAXRO6Db2ZT4twH8S3nVEoecyma8Cmc
- QFPw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXEfY4xOvx+RObRpVxe6bRAVJcU9GLWEg4eYqsFzs7S0j4y2hjxXijftb8Z6LTCX8oyUJtiC4coVKN7@nongnu.org
-X-Gm-Message-State: AOJu0Yw8hD4SJ4k1t/TmgQp110DQhQ5u+OI5zQguj9kLq8t+Ia6RV2wm
- 06XuHiQvMI82jJay8dT6fvbBIyWYxcxuLBgibNUgMG1IRjV5uBJ6fiGyg9Bd07Is4E+L9x1Bh1V
- +e7tAMkY6am99mB+eoL9Q5Hpvugbp5clT+KHqD/MAsQ==
-X-Gm-Gg: ASbGnctA8jNAQVHbREKRgZ6C+mKrVzah9IlvXWeTVm/97glP1jpqmNeumXSbEO7Plrh
- 31dVajS7NhuNP3UlT+gQ7J76Hjxmq3hQqT2yJ2HKN89azfCO3pbdGnneiyctbcZkbde19ijimed
- o8uWyhCB8Y0mZjfJs1KNw07GtcKA9fR+S1xWZ1YKnpuN+MuXakrvAIfgD/evENNmmKcTaBBOWFh
- Leo6Ieo
-X-Google-Smtp-Source: AGHT+IEcRWg0Ibv9La+c1AHa5/EwzBNdLFmIeSpsqfPLBULrqQYCnbKIvwEz11pcW5Z0PxHmVsBAk1FKJbGhiL4pVXI=
-X-Received: by 2002:a05:690c:e1a:b0:721:1649:b070 with SMTP id
- 00721157ae682-727f5648a22mr172576627b3.44.1757606549654; Thu, 11 Sep 2025
- 09:02:29 -0700 (PDT)
+ bh=LMkhBnxP1K1lXBwRpWEfdoby7fEpJeDOFfIr89S0Eqo=;
+ b=QKalbx4udVGMwuFWztngkltxPDsYh8UMx8pyL262LcoIbMKmeylr/YnUJRpRgwihcY
+ fOs//jG21tOHi42Gf5fco+JGjwHaP3MG+ezCtNUgBL6zdY5axNgXw4pIgefW5CDIsVvY
+ hhUEEgUAOxQGLDgON3+C5DQx9fkAarjmRT747rbZ1TNvTMqS/uvbao04LKIdOuhglrs9
+ bZ7ln3ivl1U1Z3U3wDgohSRf4QCPvJXax28qBknSqi2m4c2qPXRO++xIzVm08pofiujM
+ nCs3ycLvPMV8BdGtrTVD9tUzbkmAw50OC4c+UxHmbGOA9R22wva72PHiS34GOtOfVFh2
+ 46Xg==
+X-Gm-Message-State: AOJu0Yxz012m/jXprMLI2KHm7oxT5SG1tJaOppDhcwFluosxGjSH/yMb
+ KilbWOf3o/FcLExdBTCxnOuhLH0XKRveBY3pVNE4LSXSgM2kX3ZMSG/RpmRCg/B9boOODKlc/8F
+ yC/aP9Qc6IanUADJ1CxJww3PmDW/veoSLbTDi0QK4CmKXQc9cQNHkC5+Xq8xmdjv+TD8M+zxx3Y
+ 3/L2XgJv85bOrDPbSmVXqz8KXWnQa8N+AcWE45KpQkfEne0g==
+X-Gm-Gg: ASbGnctryo5xN29zrE5jlgR4yEbOvrcZe1UFAPofXFKoUn/aD7Gz6muQ8DBB1XHQzcd
+ 2Q02EC8uctIs3KMZusQjtSwPQjuwaVmvjFkRKuiZyG8lo8tysRAlLmK1lIUE27OgE1RSBTn8pq0
+ bJraFUJnGjuvTwTBostoBmZ7RCfhcESCeltPzcVTpXotOdASHQM+YjwLxJCfUlHyg6e40FjS7WI
+ iEdPr1Rnu2i4E2ALSGb5AaGY0t1x8Xz07Hdurg2jhRAjZj41OSh0P+4DgKg3DYs42ldr8U4kyN0
+ BGxddOrDWCmc/fta+sgxBDxtBBkkeQQgMyHxL9KrAvQf9KSkhntT8Tq0lBGxXS8ZDQyQwakY7jV
+ fVA860aKQtTK+wl09ZA5fkEK4ypdMq0UZs+ALi8ZP+lhhTCtPYND6CEp72MNO
+X-Google-Smtp-Source: AGHT+IGpNm5A2658L6+ROOG4L0n01PQizIba4+pp+39zluhCjRERtKb1dIut/EoP7iTZFi4E9l/8Pg==
+X-Received: by 2002:a17:90b:5584:b0:32b:cb05:849a with SMTP id
+ 98e67ed59e1d1-32d43f936fbmr24008008a91.29.1757606813701; 
+ Thu, 11 Sep 2025 09:06:53 -0700 (PDT)
+Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-32dd9903a2asm2618765a91.24.2025.09.11.09.06.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Sep 2025 09:06:53 -0700 (PDT)
+From: frank.chang@sifive.com
+To: qemu-devel@nongnu.org
+Cc: Alistair Francis <Alistair.Francis@wdc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-riscv@nongnu.org (open list:SiFive Machines),
+ Frank Chang <frank.chang@sifive.com>
+Subject: [PATCH 0/4] Fix SiFive UART character drop issue and minor refactors
+Date: Fri, 12 Sep 2025 00:06:42 +0800
+Message-ID: <20250911160647.5710-1-frank.chang@sifive.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-References: <20250911144923.24259-1-sebott@redhat.com>
- <CAFEAcA8EDJT1+ayyWNsfdOvNoGzczzWV-JSyiP1c1jbxmcBshQ@mail.gmail.com>
- <8bca09f1-48fe-0868-f82f-cdb0362699e1@redhat.com>
-In-Reply-To: <8bca09f1-48fe-0868-f82f-cdb0362699e1@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 11 Sep 2025 17:02:17 +0100
-X-Gm-Features: Ac12FXx96W2Z904Fh96vP6TMP44uauq6yyDdA3EE2iGnUzJEwgpWwDS7kISm_EE
-Message-ID: <CAFEAcA8hUiQkYsyLOHFQqexzY3u4ZZZBXvi+DuueExGdJi_HVQ@mail.gmail.com>
-Subject: Re: [PATCH 0/2] arm: add kvm-psci-version vcpu property
-To: Sebastian Ott <sebott@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=frank.chang@sifive.com; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,40 +101,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 11 Sept 2025 at 16:59, Sebastian Ott <sebott@redhat.com> wrote:
->
-> On Thu, 11 Sep 2025, Peter Maydell wrote:
-> > On Thu, 11 Sept 2025 at 15:49, Sebastian Ott <sebott@redhat.com> wrote:
-> >>
-> >> This series adds a vcpu knob to request a specific PSCI version
-> >> from KVM via the KVM_REG_ARM_PSCI_VERSION FW register.
-> >>
-> >> Note: in order to support PSCI v0.1 we need to drop vcpu
-> >> initialization with KVM_CAP_ARM_PSCI_0_2 in that case.
-> >> Alternatively we could limit support to versions >=0.2 .
-> >>
-> >> Sebastian Ott (2):
-> >>   target/arm/kvm: add constants for new PSCI versions
-> >>   target/arm/kvm: add kvm-psci-version vcpu property
-> >
-> > Could we have some rationale, please? What's the use case
-> > where you might need to specify a particular PSCI version?
->
-> The use case is migrating between different host kernel versions.
-> Per default the kernel reports the latest PSCI version in the
-> KVM_REG_ARM_PSCI_VERSION register (for KVM_CAP_ARM_PSCI_0_2) -
-> when that differs between source and target a migration will fail.
->
-> This property allows to request a PSCI version that is supported by
-> both sides. Specifically I want to support migration between host
-> kernels with and without the following Linux commit:
->         8be82d536a9f KVM: arm64: Add support for PSCI v1.2 and v1.3
+From: Frank Chang <frank.chang@sifive.com>
 
-So if the destination kernel is post that commit and the
-source kernel pre-dates it, do we fail migration? Or is
-this only a migration failure when the destination doesn't
-support the PSCI version we defaulted to at the source end?
+This patch set fixes the SiFive UART character drop issue introduced
+after commit [1], which changed character printing from synchronous to
+asynchronous.
 
-thanks
--- PMM
+Since UART now transmits characters asynchronously, it is possible for
+the Tx FIFO to become full, causing new characters to be ignored and
+dropped when running Linux. This happens because:
+
+  1. The Linux SiFive UART driver sets the transmit watermark level to 1
+     [2], meaning a transmit watermark interrupt is raised whenever a
+     character is enqueued into the Tx FIFO.
+  2. Upon receiving a transmit watermark interrupt, the Linux driver
+     transfers up to a full Tx FIFO's worth of characters from the Linux
+     serial transmit buffer [3], without checking the txdata.full flag
+     before transferring multiple characters [4].
+
+This patch set updates QEMU to honor the Tx/Rx watermark thresholds and
+raise interrupts only when the Tx threshold is exceeded or the Rx
+threshold is undercut.
+
+The remaining patches contain minor refactors, including removing an
+outdated comment about the Tx FIFO.
+
+[1] 53c1557b230986ab6320a58e1b2c26216ecd86d5
+[2] https://github.com/torvalds/linux/blob/master/drivers/tty/serial/sifive.c#L1039
+[3] https://github.com/torvalds/linux/blob/master/drivers/tty/serial/sifive.c#L538
+[4] https://github.com/torvalds/linux/blob/master/drivers/tty/serial/sifive.c#L291
+
+Frank Chang (4):
+  hw/char: sifive_uart: Raise IRQ according to the Tx/Rx watermark
+    thresholds
+  hw/char: sifive_uart: Avoid pushing Tx FIFO when size is zero
+  hw/char: sifive_uart: Remove outdated comment about Tx FIFO
+  hw/char: sifive_uart: Add newline to error message
+
+ hw/char/sifive_uart.c | 36 ++++++++++++++++--------------------
+ 1 file changed, 16 insertions(+), 20 deletions(-)
+
+--
+2.49.0
+
 
