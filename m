@@ -2,101 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3C2B52C5A
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 10:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69690B52CAF
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 11:09:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwd6G-0005w9-TQ; Thu, 11 Sep 2025 04:56:16 -0400
+	id 1uwdGE-0001C3-CJ; Thu, 11 Sep 2025 05:06:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uwd69-0005vk-VJ
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 04:56:10 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uwd67-0005WQ-H1
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 04:56:09 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3dae49b117bso451108f8f.1
- for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 01:56:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757580963; x=1758185763; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=nll0NLGaWgrdoOT4kLjItrh6/lcecU6jGy/1hAEpG9I=;
- b=bnJKm3IsHx+BcwbTjx7oktdjLPlNkO3iO18iW4iSZXC1vKKY33fPvFNM2aSeguffJg
- JzOav/u+BBrYJLxaRfetggBfbt4hJkAhJfYJ+p+wBYtRJTA4wIKlXRsdJO1V64SP6bkG
- OpN/Nw6i73xMjiqkP3io5mrgw/SY2bVcWD4hbGoe799Vwgj+G3ClKqiyjmiAKURm4wuS
- kpd3uPjF4q4ds4pmP7kCi/fLzbA5vqcYb3nzm6FhXllkFHEYOR9ArsQ7EwkWeIViODIx
- SNdsZ3poeX0uNrUssjhNghYCSL9ICyU5q2v3gzkutHL3FwpM1JJr+aoRWCgdTkUqf2o5
- rMgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757580963; x=1758185763;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nll0NLGaWgrdoOT4kLjItrh6/lcecU6jGy/1hAEpG9I=;
- b=iNgguh92NwkhdhpEI7iVRzewSslxr41G3BRSArgo+GAryo/alYgEhGvWaOgL+iyhv0
- qqJGx0G/HP7yhbpt5EKyZ4tlbbewVAkK0mEp6GDUx/2aCmiZuA7BcF3s/dteGUCi8mO5
- ew4g2kmx6CgzOgmiIiZ4oHO8XsE/4/laLg0oUG1w7dNfGitpOcjmJOwkyW15+MTUjKRa
- GZbOQel9L/wHVqfIb1vFwWXmAn+7hNGAL1x9pBTMwMaJei6s8RMA3208rvLRDVP3bU2b
- OmN4VrvJPm0At4+raK4BRl4IdTCQorfhsyTAXmDNYmbcwFjehG11azGrPIhBSFQkO8SQ
- RbSA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX4bWpR/bc7ydsuukrwCootnHb0shkp7OiEThQj0BLvvPl6f6i4wB2jzk/dDOp1WkOCuqmMzRb8pO/D@nongnu.org
-X-Gm-Message-State: AOJu0Yz2ucbceojKcvdQKDD7oHd0m2HZ7O7U4/uCKUSCgbn+ttaOcrYz
- A0rBtn5G/SaQjBdP4RXn6mfNdksWLaRAUoIJ3nu0eaLswySknug9Q2ffdPlVpidrUQ0=
-X-Gm-Gg: ASbGncs7FS0xA9Kq5JB30l5BeQq0upZAzM/fM+Bujcpg41aj+ztyN+r4a7XxY5u9dfT
- GpjQPE70gKAfT7dWD+JK0fxNgL/7W79Jqgtc0HPP9+hi4FHpUW5+08mEAd0WKzsWsl2cKJ264Y1
- Zvxc0fQykc7VJGY3r4SqwvVO4mvoY8ujWL2piJY/ZSevWsxZLv0OV1Fn1RZ9IeOGkXP9ZKVz8KF
- dpmXAYQSklSvaQb1Li3ZCY7vUJTgj+NNHV3x6+TE2BElAz5x9VplqA+EddRHSO3TXtQTXvrv1Jm
- bwKIcwXPvavEE6V9jmmV8mys9muFw7JvTyg+HwxSywN0CcZ0C2c6hYF3jtopRwjmjrSikXJQ5+Q
- kDP5tXmoXgeo5ToKLnCpgBe8DbG0FVavriFYzcot/gAUAAhI=
-X-Google-Smtp-Source: AGHT+IHiiZwhA1aZ4Ljyq0Rq6zyR2CvhngX+IWXTTuDCyZlwXAV9ZJipHKARAsIMZZAExb4OdTshng==
-X-Received: by 2002:adf:a298:0:b0:3e7:4197:c99d with SMTP id
- ffacd0b85a97d-3e74197cb7fmr10739992f8f.15.1757580963459; 
- Thu, 11 Sep 2025 01:56:03 -0700 (PDT)
-Received: from [10.20.51.75] ([88.149.120.245])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45e016b5a16sm18618855e9.12.2025.09.11.01.56.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Sep 2025 01:56:02 -0700 (PDT)
-Message-ID: <f4de96aa-a163-4cec-bb85-b8aa71e49753@linaro.org>
-Date: Thu, 11 Sep 2025 08:55:57 +0000
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>) id 1uwdG9-0001Bg-6O
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 05:06:29 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>) id 1uwdG6-0006dn-Ge
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 05:06:28 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58B7Bi4N023577;
+ Thu, 11 Sep 2025 09:05:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=fUP3x5
+ 3iHaL6TVoX/rIskgNPxXDNQLevbP8vZNNZqv8=; b=hGxFYpfaTszYyr0XT3kZMx
+ xqLCaoyuoOIR7O5j0rYcW2g7EBVQ9KTRszaT8kn5pkJO0WocHQ9WJmWNYAZReqeh
+ Z5L7NiL2Cl2UTFWcbqSoMWME8DdcKusWiGLMh/08Kihxw0c0ERFHVfWYP8U+zRvM
+ Ec2CsyG0e2Li34/nelHz24Doe38a18TqopdoVRFLo86zCFTacBMHHBDZ9nt9sJmH
+ /hn9wJ6edNZNF51KjtGIa8z5QnEDeTYAw9mbzbV+nDVUXuHFvxKRTDLU23l09UX/
+ T6xv1+3GVNjbS0HEquv3mMdx8P9npibNXKoRKoZX0fgoWmtsltay7Ls+cpMXwOCg
+ ==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmx3kga-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Sep 2025 09:05:38 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58B740MN017218;
+ Thu, 11 Sep 2025 09:05:37 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4911gmmskw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Sep 2025 09:05:37 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 58B95XP833423688
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 11 Sep 2025 09:05:34 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E31422004B;
+ Thu, 11 Sep 2025 09:05:33 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8BDEF20040;
+ Thu, 11 Sep 2025 09:05:33 +0000 (GMT)
+Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
+ [9.87.154.222]) by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 11 Sep 2025 09:05:33 +0000 (GMT)
+Message-ID: <79a95a4349a8e97f65717139857432741701d489.camel@linux.ibm.com>
+Subject: Re: [PATCH RFC] tests/functional: add tests for SCLP event CPI
+From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+To: Shalini Chellathurai Saroja <shalini@linux.ibm.com>, qemu-s390x
+ mailing list <qemu-s390x@nongnu.org>, Thomas Huth <thuth@redhat.com>
+Cc: Daniel Berrange <berrange@redhat.com>, qemu-devel mailing list
+ <qemu-devel@nongnu.org>, Hendrik Brueckner <brueckner@linux.ibm.com>
+Date: Thu, 11 Sep 2025 11:05:10 +0200
+In-Reply-To: <20250812123124.382696-1-shalini@linux.ibm.com>
+References: <20250812123124.382696-1-shalini@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/20] monitor: move error_vprintf() back to
- error-report.c
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Stefan Weil <sw@weilnetz.de>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>
-References: <20250910180357.320297-1-berrange@redhat.com>
- <20250910180357.320297-12-berrange@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20250910180357.320297-12-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: geE7_a0FYm5NnghVdwSxjGR9f65HhT7n
+X-Proofpoint-ORIG-GUID: geE7_a0FYm5NnghVdwSxjGR9f65HhT7n
+X-Authority-Analysis: v=2.4 cv=J52q7BnS c=1 sm=1 tr=0 ts=68c290e2 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
+ a=WP5zsaevAAAA:8 a=xRRHrJYrEx2pfNY0FpYA:9 a=QEXdDO2ut3YA:10
+ a=t8Kx07QrZZTALmIZmm-o:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyNSBTYWx0ZWRfXxUuF5FdCqorJ
+ Z4nAGbl1L4YAPIxIuNMYECObIfH5w9qFrjDfdDPCFWzjN3MA6wmdrnV3yiFrWDY1m1dEjEdML1C
+ S9d3R06hCE+jabLDTFHzIiZQxmMQ3e9r70TMhhggOBMF7UBAD0F/J+VbgpGODotDd1prNUMcAWL
+ 7VPimoe0hTD+JK+jMPYvmOqTXq2P3OHlaWQAD6o+myQNihZvn6sfJgx1+F++D/7ySk6hQjeoXiN
+ jbrvTHySBu/iJuPVUCjDx/o++LsLN1D5jiqF+CWcgT1cxK2Kqji/rYAXV2DqkMwjiwHEyfHBfvt
+ xR+lgWJLQDTcTQTN4iSIB7UTprWzFHLZCuMCnGw215xGhzZVi90cZSjjx04Uxfepww7Q0Xc6TLn
+ GHdCmYtH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-10_04,2025-09-10_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011 suspectscore=0 spamscore=0 phishscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060025
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,108 +118,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/10/25 18:03, Daniel P. Berrangé wrote:
-> This conceptually reverts 397d30e9401d2da96dbdf0ce49805d6d4bb68833.
-> The discussion around stubs in that commit does not appear to be
-> important to the current state of the codebase.
-> 
-> This makes the error_vprintf() impl source file match that
-> of error_printf(), and also match the header where it is declared.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+On Tue, 2025-08-12 at 14:31 +0200, Shalini Chellathurai Saroja wrote:
+> Add tests for SCLP event type Control-Program Identification
+> (CPI) to s390x CCW virtio tests.
+>=20
+> Please note that these tests are skipped as the guest OS does not
+> trigger the SCLP event type CPI when the command
+> 'echo 1 > /sys/firmware/cpi/set' is executed in the guest. I
+> believe that the guest OS must to be updated to support the SCLP
+> event type CPI.
+>=20
+> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+> Suggested-by: Thomas Huth <thuth@redhat.com>
 > ---
->   monitor/monitor.c              | 13 -------------
->   stubs/monitor-core.c           |  5 +++++
->   tests/unit/test-util-sockets.c |  1 +
->   util/error-report.c            | 13 +++++++++++++
->   4 files changed, 19 insertions(+), 13 deletions(-)
-> 
-> diff --git a/monitor/monitor.c b/monitor/monitor.c
-> index 03dbe5d131..e1e5dbfcbe 100644
-> --- a/monitor/monitor.c
-> +++ b/monitor/monitor.c
-> @@ -268,19 +268,6 @@ void monitor_printc(Monitor *mon, int c)
->       monitor_printf(mon, "'");
->   }
->   
-> -/*
-> - * Print to current monitor if we have one, else to stderr.
-> - */
-> -int error_vprintf(const char *fmt, va_list ap)
-> -{
-> -    Monitor *cur_mon = monitor_cur();
-> -
-> -    if (cur_mon && !monitor_cur_is_qmp()) {
-> -        return monitor_vprintf(cur_mon, fmt, ap);
-> -    }
-> -    return vfprintf(stderr, fmt, ap);
-> -}
-> -
->   static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
->       /* Limit guest-triggerable events to 1 per second */
->       [QAPI_EVENT_RTC_CHANGE]        = { 1000 * SCALE_MS },
-> diff --git a/stubs/monitor-core.c b/stubs/monitor-core.c
-> index 1894cdfe1f..b498a0f1af 100644
-> --- a/stubs/monitor-core.c
-> +++ b/stubs/monitor-core.c
-> @@ -7,6 +7,11 @@ Monitor *monitor_cur(void)
->       return NULL;
->   }
->   
-> +bool monitor_cur_is_qmp(void)
-> +{
-> +    return false;
-> +}
+>  tests/functional/test_s390x_ccw_virtio.py | 24 +++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>=20
+> diff --git a/tests/functional/test_s390x_ccw_virtio.py b/tests/functional=
+/test_s390x_ccw_virtio.py
+> index 453711aa0f..c14379cbaa 100755
+> --- a/tests/functional/test_s390x_ccw_virtio.py
+> +++ b/tests/functional/test_s390x_ccw_virtio.py
 
-Better as g_assert_not_reached().  It's not obvious whether hmp or qmp is a better 
-fallback answer for "no monitor".  Anyway, since monitor_cur() is NULL, we should never 
-get here.
+Is this the best file to put it?
+It seems mostly to be about device testing.
 
-With that,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
-
+> @@ -15,6 +15,7 @@
+>  import tempfile
+> =20
+>  from qemu_test import QemuSystemTest, Asset
+> +from qemu_test import exec_command
+>  from qemu_test import exec_command_and_wait_for_pattern
+>  from qemu_test import wait_for_console_pattern
+> =20
+> @@ -270,5 +271,28 @@ def test_s390x_fedora(self):
+>                          'while ! (dmesg -c | grep Start.virtcrypto_remov=
+e) ; do'
+>                          ' sleep 1 ; done', 'Start virtcrypto_remove.')
+> =20
+> +        # Test SCLP event Control-Program Identification (CPI)
+> +        cpi =3D '/sys/firmware/cpi/'
+> +        sclpcpi =3D '/machine/sclp/s390-sclp-event-facility/sclpcpi'
+> +        self.log.info("Test SCLP event CPI")
+> +        exec_command(self, 'echo TESTVM > ' + cpi + 'system_name')
+> +        exec_command(self, 'echo LINUX > ' + cpi + 'system_type')
+> +        exec_command(self, 'echo TESTPLEX > ' + cpi + 'sysplex_name')
+> +        exec_command(self, 'echo 1 > ' + cpi + 'set')
+> +        try:
+> +            event =3D self.vm.event_wait('SCLP_EVENT_CTRL_PGM_ID')
+> +        except TimeoutError:
+> +            self.skipTest('SCLP Event type CPI is not supported by guest=
+ OS')
+> +        ts =3D self.vm.cmd('qom-get', path=3Dsclpcpi, property=3D'timest=
+amp')
+> +        self.assertNotEqual(int(ts), 0)
+> +        name =3D self.vm.cmd('qom-get', path=3Dsclpcpi, property=3D'syst=
+em_name')
+> +        self.assertEqual(name, 'TESTVM')
+> +        typ =3D self.vm.cmd('qom-get', path=3Dsclpcpi, property=3D'syste=
+m_type')
+> +        self.assertEqual(typ, 'LINUX')
+> +        sysplex =3D self.vm.cmd('qom-get', path=3Dsclpcpi, property=3D's=
+ysplex_name')
+> +        self.assertEqual(sysplex, 'TESTPLEX')
+> +        level =3D self.vm.cmd('qom-get', path=3Dsclpcpi, property=3D'sys=
+tem_level')
+> +        self.assertNotEqual(int(level), 0)
 > +
->   Monitor *monitor_set_cur(Coroutine *co, Monitor *mon)
->   {
->       return NULL;
-> diff --git a/tests/unit/test-util-sockets.c b/tests/unit/test-util-sockets.c
-> index ee66d727c3..bd48731ea2 100644
-> --- a/tests/unit/test-util-sockets.c
-> +++ b/tests/unit/test-util-sockets.c
-> @@ -72,6 +72,7 @@ int monitor_get_fd(Monitor *mon, const char *fdname, Error **errp)
->    * otherwise we get duplicate syms at link time.
->    */
->   Monitor *monitor_cur(void) { return cur_mon; }
-> +bool monitor_cur_is_qmp(void) { return false; }
->   Monitor *monitor_set_cur(Coroutine *co, Monitor *mon) { abort(); }
->   int monitor_vprintf(Monitor *mon, const char *fmt, va_list ap) { abort(); }
->   
-> diff --git a/util/error-report.c b/util/error-report.c
-> index 1b17c11de1..79b6f23e64 100644
-> --- a/util/error-report.c
-> +++ b/util/error-report.c
-> @@ -29,6 +29,19 @@ bool message_with_timestamp;
->   bool error_with_guestname;
->   const char *error_guest_name;
->   
-> +/*
-> + * Print to current monitor if we have one, else to stderr.
-> + */
-> +int error_vprintf(const char *fmt, va_list ap)
-> +{
-> +    Monitor *cur_mon = monitor_cur();
-> +
-> +    if (cur_mon && !monitor_cur_is_qmp()) {
-> +        return monitor_vprintf(cur_mon, fmt, ap);
-> +    }
-> +    return vfprintf(stderr, fmt, ap);
-> +}
-> +
->   int error_printf(const char *fmt, ...)
->   {
->       va_list ap;
+>  if __name__ =3D=3D '__main__':
+>      QemuSystemTest.main()
 
+--=20
+IBM Deutschland Research & Development GmbH
+Vorsitzender des Aufsichtsrats: Wolfgang Wendt
+Gesch=C3=A4ftsf=C3=BChrung: David Faller
+Sitz der Gesellschaft: B=C3=B6blingen / Registergericht: Amtsgericht Stuttg=
+art, HRB 243294
 
