@@ -2,145 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5B5B52D19
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 11:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10579B52D22
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 11:24:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwdUf-0004y8-2U; Thu, 11 Sep 2025 05:21:29 -0400
+	id 1uwdXE-0007Z7-Rf; Thu, 11 Sep 2025 05:24:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uwdUZ-0004pV-A5
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 05:21:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1uwdW6-0006nE-TE; Thu, 11 Sep 2025 05:23:02 -0400
+Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uwdUT-00008j-KJ
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 05:21:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757582471;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=G6LOG5shaxqsug3q02nt/u9bpLCOQq2UtK7lHmPc/V8=;
- b=JFt6+L3mNMVT3RvNaG5dSMp81za72YxAetlu3U4jqXVb9zT0Nj2xxjKEAxLSN+YD69ZmyO
- Kt21J4aqYPnBl4Sz27abu202MaQ1Xskx56CmEBTKutNiD4cauam3l7tDEoz/kuGOcsgLss
- uMzEyIELnUT/4YH9xJDWIYPpGcMeo0g=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654--SEutTRcMk6GJVJawthXSA-1; Thu, 11 Sep 2025 05:21:10 -0400
-X-MC-Unique: -SEutTRcMk6GJVJawthXSA-1
-X-Mimecast-MFC-AGG-ID: -SEutTRcMk6GJVJawthXSA_1757582469
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-45cb612d362so2963105e9.3
- for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 02:21:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757582469; x=1758187269;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=G6LOG5shaxqsug3q02nt/u9bpLCOQq2UtK7lHmPc/V8=;
- b=RA9xd2NzdO69khoWKH5HoHtlTutxSKEJ/bDXhEc8GLWrEgs+tOkSsQCUCn2/NAe7gZ
- h+EO6jmgx6cBSZBbFYxoYiMXM5+JQ1do07PG5MRfaFawhUUW4t6vgWjtRPpkmwCgvxq4
- wNXPgDktZ6kBIcoAF2TfcUN1zJjzkLdXvXmIJqKvv+fJYAC8cPV0IZLo3qUhE6uWxJQV
- RMyLtN7KBVrmoUHsOUhLDsADkrgBFL0QEA+QxBn7Kpm5eHPPW6cZKDBCUrVQBBBU/v5+
- fix4fGYJeznTC78R6COTjkrmLylpqeGfen3Oj3bDqpM4ycSov2RPK50TOWYtX+rrm3O7
- mYKQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXgHOQ+t3OykJ8Xoc3Lg4icgMte2AbUtrDvvykWPPDNio7NYL4qGlJkAtxNzihxD3RoZwN1VVQwC5Ss@nongnu.org
-X-Gm-Message-State: AOJu0YwDagQmPt0cpYlhiUUO8yrxVyb80XbsoJPmSsTptoAQUC1PZXHL
- KK6Em66aEt3WlVzJ5X2VgVjAFDNmADnVnIEUmKHNKrXeawVoZohF1kOmPft20tqlWMip/CamyNn
- 85xsxpaCvOvsXP5pb/HH/nOndCzgixd5u/y1bhvSfn4QhNGlC/f/chlR6
-X-Gm-Gg: ASbGncvOBW5CmrOkqC/KebjsJZMm7tiqAdxcldMnE3c2NiWlLTCv7fGaqQ8WxbQbc0C
- k1bK82KpOEaXVMj3U1S7L58f9jQ3C4QKx39VzzJQ9J7/M81qri5+u5jdbJaQIfAerng+y7Sm/q8
- VjfTMiNZyEXE2rkIM/1jbZyBdZ+wIgUwwK996zDo3Ef6wA98F89nYjA/Vqi5GxQyO+p1kRjFGMn
- QjC9Z39/u2ZJBuuE1ZfgMzc0+ZlZ2lZV87k53PKmpQMZdyKlwGPCny8VaDaxQwWAs12et6XYtni
- M1Gq6KOSjlXjbxJ2Pui/li82stwBfKxTdv0Tw4/0fSg8sDFXTvL7UDtZCkOGzKcbzLuFsAZ1Jz1
- snbxxlg==
-X-Received: by 2002:a05:600c:3b83:b0:45d:e326:96fb with SMTP id
- 5b1f17b1804b1-45de3269948mr161794625e9.30.1757582468699; 
- Thu, 11 Sep 2025 02:21:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHavDATIBe1wRjy6dSrbdIASpviJdY2tVpJGpAA8EKsNfLYUhdVqrb8mGokzo7e9BnrXVyCLQ==
-X-Received: by 2002:a05:600c:3b83:b0:45d:e326:96fb with SMTP id
- 5b1f17b1804b1-45de3269948mr161794315e9.30.1757582468226; 
- Thu, 11 Sep 2025 02:21:08 -0700 (PDT)
-Received: from [192.168.0.7] (ltea-047-064-113-183.pools.arcor-ip.net.
- [47.64.113.183]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45e037c3ee8sm16513145e9.18.2025.09.11.02.21.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Sep 2025 02:21:07 -0700 (PDT)
-Message-ID: <44a367bd-5242-4ddc-ad3e-b3dc718f549b@redhat.com>
-Date: Thu, 11 Sep 2025 11:21:06 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1uwdW0-0000SV-3s; Thu, 11 Sep 2025 05:22:57 -0400
+Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
+ [IPv6:2a02:6b8:c42:94a9:0:640:a3fa:0])
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 8299580879;
+ Thu, 11 Sep 2025 12:22:45 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:b3c::1:2f] (unknown
+ [2a02:6bf:8080:b3c::1:2f])
+ by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id iMHIvF0FfKo0-AzbJjcWI; Thu, 11 Sep 2025 12:22:45 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1757582565;
+ bh=bQnd+tqYiTVeLER5x/SqaYq1iSVZoZQBvhkLk8HddcE=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=J6F7KQeGIw0lfvnYmrDhBj3kZFcw8Skx0dwPl9c4mGA+D39/v/60sN3pnqI6x3iHu
+ axgd8xRz5dqD5VNfs7JZrzwfDP0pCLXNvoBXpeKDhun1p9OqC5+8NthRjlRmMYb/HP
+ /AHqBH2CYBI9m8OgfobM1eI/oXEaXMNpFZE2D7To=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <bd5f5895-751e-420a-a132-cd3a4ed44b40@yandex-team.ru>
+Date: Thu, 11 Sep 2025 12:22:44 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] tests/functional: add tests for SCLP event CPI
-To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
- Shalini Chellathurai Saroja <shalini@linux.ibm.com>,
- qemu-s390x mailing list <qemu-s390x@nongnu.org>
-Cc: Daniel Berrange <berrange@redhat.com>,
- qemu-devel mailing list <qemu-devel@nongnu.org>,
- Hendrik Brueckner <brueckner@linux.ibm.com>
-References: <20250812123124.382696-1-shalini@linux.ibm.com>
- <79a95a4349a8e97f65717139857432741701d489.camel@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v2 0/8] io: deal with blocking/non-blocking fds
+To: berrange@redhat.com
+Cc: qemu-devel@nongnu.org, peterx@redhat.com, qemu-block@nongnu.org,
+ leiyang@redhat.com, marcandre.lureau@redhat.com
+References: <20250911092007.1370002-1-vsementsov@yandex-team.ru>
 Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <79a95a4349a8e97f65717139857432741701d489.camel@linux.ibm.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20250911092007.1370002-1-vsementsov@yandex-team.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -156,36 +73,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/09/2025 11.05, Nina Schoetterl-Glausch wrote:
-> On Tue, 2025-08-12 at 14:31 +0200, Shalini Chellathurai Saroja wrote:
->> Add tests for SCLP event type Control-Program Identification
->> (CPI) to s390x CCW virtio tests.
->>
->> Please note that these tests are skipped as the guest OS does not
->> trigger the SCLP event type CPI when the command
->> 'echo 1 > /sys/firmware/cpi/set' is executed in the guest. I
->> believe that the guest OS must to be updated to support the SCLP
->> event type CPI.
->>
->> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
->> Suggested-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   tests/functional/test_s390x_ccw_virtio.py | 24 +++++++++++++++++++++++
->>   1 file changed, 24 insertions(+)
->>
->> diff --git a/tests/functional/test_s390x_ccw_virtio.py b/tests/functional/test_s390x_ccw_virtio.py
->> index 453711aa0f..c14379cbaa 100755
->> --- a/tests/functional/test_s390x_ccw_virtio.py
->> +++ b/tests/functional/test_s390x_ccw_virtio.py
+On 11.09.25 12:19, Vladimir Sementsov-Ogievskiy wrote:
+> Hi all!
 > 
-> Is this the best file to put it?
-> It seems mostly to be about device testing.
+> The series aims to unify code which sets fds blocking/non-blocking
+> through the whole source.
+> 
+> 01: reworked, only drop the for-loop
+> 02: new
+> 03: - improve commit-message, add a lot of motivation REREAD
+>      - convert GError to Error in a new function
+> 04: - add notes about caller conversion in commit message REREAD
 
-It's meant as generic testing of the s390-virtio-ccw machine. Of course, the 
-CPI testing could also be done in a separate file, but that means that you 
-have to go through booting of the guest there again ... so I'd rather prefer 
-to keep it here, so we only have to boot the guest once.
+REREAD - was notes for myself :)
 
-  Thomas
+>      - add r-b by Peter
+>      - save IVSHMEM_SERVER_DEBUG()
+>      - finally decided to keep g_warning() for now: conversion
+>        g_warning() -> g_printerr() should better be another series
+>        and cover the whole code-base (actually not too much, and
+>        mostly in qga)
+> 05: add r-b by Peter
+> 06: new
+> 07: functional part moved to separate commit
+> 08: - fix commit message
+>      - drop redundant qemu/sockets.h includes
+> 
+> v2 is also based on
+> [PATCH v4 0/2] save qemu-file incoming non-blocking fds
+> Based-on: <20250910193112.1220763-1-vsementsov@yandex-team.ru>
+> 
+> Vladimir Sementsov-Ogievskiy (8):
+>    char-socket: tcp_chr_recv(): drop extra _set_(block,cloexec)
+>    char-socket: tcp_chr_recv(): add comment
+>    util: add qemu_set_blocking() function
+>    util: drop qemu_socket_set_nonblock()
+>    util: drop qemu_socket_try_set_nonblock()
+>    io/channel-socket: rework qio_channel_socket_copy_fds()
+>    util: drop qemu_socket_set_block()
+>    use qemu_set_blocking instead of g_unix_set_fd_nonblocking
+> 
+>   chardev/char-fd.c                       |  4 +-
+>   chardev/char-pty.c                      |  3 +-
+>   chardev/char-serial.c                   |  3 +-
+>   chardev/char-socket.c                   | 21 ++-----
+>   chardev/char-stdio.c                    |  3 +-
+>   contrib/ivshmem-server/ivshmem-server.c |  6 +-
+>   hw/hyperv/syndbg.c                      |  4 +-
+>   hw/input/virtio-input-host.c            |  3 +-
+>   hw/misc/ivshmem-flat.c                  |  3 +-
+>   hw/misc/ivshmem-pci.c                   |  7 ++-
+>   hw/virtio/vhost-user.c                  |  5 +-
+>   hw/virtio/vhost-vsock.c                 |  8 +--
+>   include/qemu/osdep.h                    |  1 +
+>   include/qemu/sockets.h                  |  3 -
+>   io/channel-command.c                    |  9 ++-
+>   io/channel-file.c                       |  3 +-
+>   io/channel-socket.c                     | 80 ++++++++++++++++++-------
+>   net/dgram.c                             | 28 +++++----
+>   net/l2tpv3.c                            |  5 +-
+>   net/socket.c                            | 27 ++++++---
+>   net/stream.c                            |  9 +--
+>   net/stream_data.c                       | 10 ++--
+>   net/tap-bsd.c                           | 12 +++-
+>   net/tap-linux.c                         |  7 ++-
+>   net/tap-solaris.c                       |  7 ++-
+>   net/tap.c                               | 21 ++-----
+>   qga/channel-posix.c                     |  7 ++-
+>   qga/commands-posix.c                    |  3 +-
+>   tests/qtest/fuzz/virtio_net_fuzz.c      |  2 +-
+>   tests/qtest/vhost-user-test.c           |  3 +-
+>   tests/unit/socket-helpers.c             |  5 +-
+>   tests/unit/test-crypto-tlssession.c     |  8 +--
+>   tests/unit/test-iov.c                   |  5 +-
+>   ui/input-linux.c                        |  3 +-
+>   util/event_notifier-posix.c             |  4 +-
+>   util/main-loop.c                        |  5 +-
+>   util/oslib-posix.c                      | 22 ++++---
+>   util/oslib-win32.c                      | 25 ++++----
+>   util/vhost-user-server.c                |  4 +-
+>   39 files changed, 224 insertions(+), 164 deletions(-)
+> 
 
+
+-- 
+Best regards,
+Vladimir
 
