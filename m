@@ -2,84 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9858CB52E3F
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 12:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CAD9B52DE5
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 12:02:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uweT3-0008Nf-0T; Thu, 11 Sep 2025 06:23:53 -0400
+	id 1uwe7v-0007Hh-2E; Thu, 11 Sep 2025 06:02:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uweT1-0008M3-AS
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 06:23:51 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uweSs-0000dM-Us
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 06:23:50 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-61cb4374d2fso808568a12.2
- for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 03:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1757586219; x=1758191019; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wU8niMhFnqL1Dj0pnnvP/M2XkMpeaMP1pOvcmYGmUlE=;
- b=Py9RinS/KoGqNT0X+jLpfWLdFeh7aGF/RsGLR5W2944ZBeiSqrD1d6yFM6AdRyIDtb
- fxD9pYf1FPDckKtdUTD7B3t3/9UnscEGft20tOPzOAyPth1Neil4BkpyNyokaP9Bq8oQ
- 5IuxmmA15AAymAfiOyfrj+AZZYTFrI4cXN8SpfZtG3a8oKPPRi+DKiNH5/tvIAG69nQW
- n+ydJS+/DBeV4u9DU7AUwT6C2ii5IhOP2j6Jus7niLjHw4lWeVE7AZ/YMS5PmDTNzSvc
- kZ8P9xIcFQXWs7XwEapmESet6YJzUGtC3CRF7JHRympgAFqXIczLPTkhqkgfMGMtnaDn
- qXqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757586219; x=1758191019;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wU8niMhFnqL1Dj0pnnvP/M2XkMpeaMP1pOvcmYGmUlE=;
- b=cwPnzFxJGCi7AgINzY+z0Kdoj7Yxgy6iYuJEMsFZs/xq/APU0lYf0S3D7IX1Hpohvi
- 1JcNPqUxafE1QmB1BtE5ambk80Knseq3c82lAntWGgdKB8ct/bpUegM1O27oWxUAMh8A
- iTIY2JAAbU9VWPcUidtQRMHE2ylZM+sHiqBjqJaleKyRWi3oijRWLPehMhbBDCNrxkFP
- K9LJaAQ9oR8Yc547WhtC6HClY9uKD41Quw4Pj4PAWYQOOBccgR6lYd+KjF1+2mXwCZmG
- m0EcYv74IfbjOBs+G3hmBv8KQ8jRb7RhoAGPN8sYmLAW3DaOVpRCnIg7h4/EYkiuXJbF
- ijFQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXS1DLX9+KLZwG/sFb+291yFNiSAJzAlX/JapNShDvHVzU6c6ionFzYxMIKARiCIxYqCBJ/HBOcRHVa@nongnu.org
-X-Gm-Message-State: AOJu0YzzuPSTWmh4QnqotmTqMeTQ3mXh82G5dOpUZyHgaB/ifD6cNfxp
- 6d4zGpYa4mMlPSmgSPzft+iV51OFnUSn6O1L/eEyxFP3NMLE0KE7/lg58LflyTAnIc8DgpljgML
- Q6742bge81hdlISHcBPLuaSwZi0F/pz4=
-X-Gm-Gg: ASbGnctV75Y7IIgBQHiZA8WRlvw3c/HqV9CaqW4+fgRBaCff0DCNT/XfO3oEKKY6doF
- /nEmqzurXBd25QAtsezxAiohWVBQkf0hUhPHjbRKV10MtQr3r3KWU6TgSWD7rJGE/W1UGi6QA68
- vZKsd/eK6V0iC6KQcOEZyu5xRD+jwG/aG1n0szu33UZT+75yyukiTO7VTNp4nAgiL14hw6g6PkM
- 3RQtvZxOYkVZMq5F6zrU/0OCHI=
-X-Google-Smtp-Source: AGHT+IF+LpYqk7Um175vmwip0UO+yAzy1t5JE8Eg8gJa/JuK34dP+8jIxL21fx56jnwyHpN3PecGZIhLYNJAdFtB0Pw=
-X-Received: by 2002:a05:6402:5508:b0:61d:cd5:8b72 with SMTP id
- 4fb4d7f45d1cf-623801e798cmr15379223a12.31.1757586219277; Thu, 11 Sep 2025
- 03:23:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uwe7r-0007H9-Sm
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 06:01:59 -0400
+Received: from mgamail.intel.com ([198.175.65.19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uwe7p-0006UY-Ky
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 06:01:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1757584917; x=1789120917;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=NwVt3Hvjb0IhQ6E9x92cjR0FTVxvrHIBhXtAyzklHFE=;
+ b=hC6FwU3rOwyW9XGkmx5P72RHyX98yGlFgc8+OwJeJWh4CwJnYDV/4poh
+ +NSVr64Yak/AQrAQXyLeaSzFjvAF+SwEpgX7PgvG1N48lgrjFwQB2ryqm
+ nkbpvoIbnPHQ64Y5ccTZ37yHXS5Wi6dRXFUCr2Zz3NKldgvkmxasyWQK/
+ +daTyl45zE0rYzyk9LgymdrO003n/5b8YmP1pcNDu0Tt4C9sQrJG27rdG
+ ChCxzuYEJdFzqSQBlLV33BwGIOSa8cDtd0EB+uBgw6FVtGwL79oIZMrie
+ 1HUgUPg8LNQbucAL3tLZYAi7nFCyMVftWIPHKYM2Vhs3UQ8ZbYRb7hnEB w==;
+X-CSE-ConnectionGUID: 6GRTpSexS/2QcVmTCTboGQ==
+X-CSE-MsgGUID: N+Zb1G3eSeGXn4EPivJPNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="59770309"
+X-IronPort-AV: E=Sophos;i="6.18,257,1751266800"; d="scan'208";a="59770309"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Sep 2025 03:01:53 -0700
+X-CSE-ConnectionGUID: z6FCd+GkT3uRwKioCkE9+A==
+X-CSE-MsgGUID: wEJx4mF0TSW9jsaAK0Pfxw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,257,1751266800"; d="scan'208";a="204410591"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa002.jf.intel.com with ESMTP; 11 Sep 2025 03:01:52 -0700
+Date: Thu, 11 Sep 2025 18:23:45 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH 12/33] rust: add workspace authors
+Message-ID: <aMKjMY4HXBGLAAdQ@intel.com>
+References: <20250908105005.2119297-1-pbonzini@redhat.com>
+ <20250908105005.2119297-13-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20250910210849.GA379545@fedora>
- <8623c898-a0e1-42d2-8afa-35b64e41cc50@linux.ibm.com>
-In-Reply-To: <8623c898-a0e1-42d2-8afa-35b64e41cc50@linux.ibm.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Thu, 11 Sep 2025 06:23:26 -0400
-X-Gm-Features: AS18NWD4U8dtshF5d0FQhsv64Q51ymKBXiPyTq_sKUFzNtSy33KJ5hCuTzR1P7o
-Message-ID: <CAJSP0QVfaFjtuDqSiEozOmPVUMYzXWaSO21qUp1pHAgo1-Uvqg@mail.gmail.com>
-Subject: Re: swtpm persistent state snapshots by copying .permall file
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- pkrempa@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250908105005.2119297-13-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,54 +83,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 10, 2025 at 7:14=E2=80=AFPM Stefan Berger <stefanb@linux.ibm.co=
-m> wrote:
-> On 9/10/25 5:08 PM, Stefan Hajnoczi wrote:
-> > Hi Stefan,
-> > I am investigating QEMU devices with persistent state like swtpm for a
-> > specific snapshot use case. The VM is paused while disk images and othe=
-r
-> > persistent state files are snapshotted. This creates a crash-consistent
-> > snapshot similar to booting after power failure on a real machine. No
-> > RAM or volatile device state is collected.
-> >
-> > My concern is how to ensure the swtpm's persistent state is captured as
-> > consistently as possible, but I'm not very familiar with the code. I
-> > wanted to run the following by you:
-> >
-> > - Using --tpmstate dir=3D will write the persistent state to a new
-> >    temporary file and then atomically replace the old .permall file usi=
-ng
-> >    rename(2).
->
-> This is correct for the directory backend. We also have the file backend
-> where a single file is keeping all the different types of state.
->
-> >
-> > - If the VM is paused and a copy of the .permall file is taken, then
-> >    this copy is consistent. It may not reflect any in-progress changes
-> >    being written into a new temporary file, but that doesn't matter fro=
-m
->
-> Correct.
->
-> >    the snapshot point of view since the VM is paused and it hasn't seen
-> >    the completion of in-progress TPM operations.
->
-> >
-> > - The .volatilestate and .savestate files do not need to be captured in
-> >    the snapshot since the goal is just to achieve crash consistency.
->
-> Yes, I think so since the .volatilestate state would be written only in
-> case of VM suspend or migration and the .savestate only upon suspend-to-R=
-AM.
->
-> >
-> > Does this sound reasonable or have I missed something?
->
-> No, I think this sounds reasonable.
+On Mon, Sep 08, 2025 at 12:49:44PM +0200, Paolo Bonzini wrote:
+> Date: Mon,  8 Sep 2025 12:49:44 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 12/33] rust: add workspace authors
+> X-Mailer: git-send-email 2.51.0
+> 
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Link: https://lore.kernel.org/r/20250827104147.717203-4-marcandre.lureau@redhat.com
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  rust/Cargo.toml | 1 +
+>  1 file changed, 1 insertion(+)
 
-Thanks for confirming!
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Stefan
 
