@@ -2,51 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55BCEB52BA7
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 10:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7479DB52BEE
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 10:38:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwcfB-0004Wg-Lz; Thu, 11 Sep 2025 04:28:17 -0400
+	id 1uwcnS-0007Ir-K3; Thu, 11 Sep 2025 04:36:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xb@ultrarisc.com>)
- id 1uwcf4-0004W3-K7; Thu, 11 Sep 2025 04:28:10 -0400
+ id 1uwcnO-0007I5-IO; Thu, 11 Sep 2025 04:36:46 -0400
 Received: from [218.76.62.146] (helo=ultrarisc.com)
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <xb@ultrarisc.com>)
- id 1uwcey-0002Iq-Ft; Thu, 11 Sep 2025 04:28:09 -0400
-Received: from xb$ultrarisc.com ( [192.168.100.1] ) by
- ajax-webmail-localhost.localdomain (Coremail) ; Thu, 11 Sep 2025 16:28:54
- +0800 (GMT+08:00)
-X-Originating-IP: [192.168.100.1]
-Date: Thu, 11 Sep 2025 16:28:54 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?6LCi5rOi?= <xb@ultrarisc.com>
-To: "Michael Tokarev" <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, ajones@ventanamicro.com, qemu-riscv@nongnu.org,
+ id 1uwcnH-0003I1-98; Thu, 11 Sep 2025 04:36:45 -0400
+Received: from ur-dp1000.. (unknown [192.168.100.1])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAfwBn1M5IisJoPP4sAA--.40469S2; 
+ Thu, 11 Sep 2025 16:37:33 +0800 (CST)
+From: Xie Bo <xb@ultrarisc.com>
+To: qemu-devel@nongnu.org
+Cc: ajones@ventanamicro.com, qemu-riscv@nongnu.org, mjt@tls.msk.ru,
  pbonzini@redhat.com, anup@brainfault.org, alistair.francis@wdc.com,
- rkrcmar@ventanamicro.com, palmer@dabbelt.com, xiamy@ultrarisc.com
-Subject: =?UTF-8?Q?Re:_Re:_[PATCH_v6_for_v10.0.0_0/2]_t?=
- =?UTF-8?Q?arget/riscv=EF=BC=9AFix_riscv64_kvm_migration?=
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.1-cmXT6 build
- 20240625(a75f206e) Copyright (c) 2002-2025 www.mailtech.cn
- mispb-8cc425bc-7df6-4523-bb46-a48cc1a964e6-ultrarisc.com
-In-Reply-To: <9e0c71fe-55fb-4ca9-aac4-40d38a77e07a@tls.msk.ru>
-References: <20250910093529.614305-1-xb@ultrarisc.com>
- <9e0c71fe-55fb-4ca9-aac4-40d38a77e07a@tls.msk.ru>
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: iOob5GZvb3Rlcl90eHQ9MTA0MDo4NDA=
-Content-Type: text/plain; charset=UTF-8
+ rkrcmar@ventanamicro.com, palmer@dabbelt.com, xiamy@ultrarisc.com,
+ Xie Bo <xb@ultrarisc.com>
+Subject: =?UTF-8?q?=5BPATCH=20v7=20for=20v10=2E0=2E0=200/2=5D=20target/riscv=EF=BC=9AFix=20riscv64=20kvm=20migration=20?=
+Date: Thu, 11 Sep 2025 16:36:14 +0800
+Message-ID: <20250911083617.1173094-1-xb@ultrarisc.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Message-ID: <49f382e6.10fb.19937e45190.Coremail.xb@ultrarisc.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: AQAAfwBXxM5GiMJovvwsAA--.2097W
-X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQABB2jA1vAALAATs2
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
- CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
- daVFxhVjvjDU=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAfwBn1M5IisJoPP4sAA--.40469S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JrW7Zr4DCFyxuw4fJr15XFb_yoWxCrb_GF
+ W09FyUG3yDXF4UXFWjyw13Ar9xGayrCr1Ykan5Jr4jgryUWr1UJws5tF18XryUZF4UJF1k
+ Ar17JFWxCw17GjkaLaAFLSUrUUUU1b8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUIcSsGvfJTRUUUbh8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+ 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+ A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+ Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+ 1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAq
+ x4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6x
+ CaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwAC
+ I402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE-syl42xK82
+ IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC2
+ 0s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMI
+ IF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF
+ 0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87
+ Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUejjgUUUUU
+X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQACB2jCKHAAIgABsV
 X-Host-Lookup-Failed: Reverse DNS lookup failed for 218.76.62.146 (failed)
 Received-SPF: pass client-ip=218.76.62.146; envelope-from=xb@ultrarisc.com;
  helo=ultrarisc.com
@@ -72,44 +76,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgTWljaGFlbO+8jAoKWWVzLCB0aGUgcGF0Y2ggc2VyaWVzIGlzIGludGVuZGVkIHRvIGJlIGFw
-cGxpZWQgdG8gdGhlIG5leHQgZGV2ZWxvcG1lbnQgcmVsZWFzZSwgMTAuMi4gIApBZGRpdGlvbmFs
-bHksIHdlIHdhbnQgdG8gY2hlcnJ5LXBpY2sgaXQgdG8gdGhlIHN0YWJsZSAxMC4wLnggYW5kIDEw
-LjEueCBzZXJpZXMgYXMgd2VsbC4KCkJlc3QgcmVnYXJkcywKWGllIEJvCgoKPiAtLS0tLeWOn+Wn
-i+mCruS7ti0tLS0tCj4g5Y+R5Lu25Lq6OiAiTWljaGFlbCBUb2thcmV2IiA8bWp0QHRscy5tc2su
-cnU+Cj4g5Y+R6YCB5pe26Ze0OjIwMjUtMDktMTAgMTc6NTM6MTQgKOaYn+acn+S4iSkKPiDmlLbk
-u7bkuro6ICJYaWUgQm8iIDx4YkB1bHRyYXJpc2MuY29tPiwgcWVtdS1kZXZlbEBub25nbnUub3Jn
-Cj4g5oqE6YCBOiBham9uZXNAdmVudGFuYW1pY3JvLmNvbSwgcWVtdS1yaXNjdkBub25nbnUub3Jn
-LCBwYm9uemluaUByZWRoYXQuY29tLCBhbnVwQGJyYWluZmF1bHQub3JnLCBhbGlzdGFpci5mcmFu
-Y2lzQHdkYy5jb20sIHJrcmNtYXJAdmVudGFuYW1pY3JvLmNvbSwgcGFsbWVyQGRhYmJlbHQuY29t
-LCB4aWFteUB1bHRyYXJpc2MuY29tCj4g5Li76aKYOiBSZTogW1BBVENIIHY2IGZvciB2MTAuMC4w
-IDAvMl0gdGFyZ2V0L3Jpc2N277yaRml4IHJpc2N2NjQga3ZtIG1pZ3JhdGlvbgo+IAo+IE9uIDEw
-LjA5LjIwMjUgMTI6MzUsIFhpZSBCbyB3cm90ZToKPiA+IFRoaXMgc2VyaWVzKHY2KSByZXBsYWNl
-cyB0aGUgZWFybGllciBzZXJpZXMgcGF0Y2giW1BBVENIIHY1IGZvciB2MTAuMC4wIDAvMl0KPiA+
-IHRhcmdldC9yaXNjdjogRml4IHJpc2N2NjQga3ZtIG1pZ3JhdGlvbiIuCj4gCj4gSGkhCj4gCj4g
-WW91J3JlIHRhcmdldHRpbmcgcWVtdSAxMC4wLCB3aGlsZSB3ZSBhbHJlYWR5IHJlbGVhc2VkIDEw
-LjEsCj4gYW5kIHRoZSBuZXh0IHJlbGVhc2UgaXMgMTAuMi4KPiAKPiBEb2VzIGl0IG1lYW4geW91
-ciBwYXRjaHNldCBzaG91bGQgYmUgYXBwbGllZCB0byAxMC4yLCBhbmQKPiBjaGVycnktcGlja2Vk
-IHRvIHN0YWJsZSAxMC4wLnggYW5kIDEwLjEueCBzZXJpZXM/Cj4gCj4gVGhhbmtzLAo+IAo+IC9t
-anQKDQoNCl9fX19fX19fX19fX19fX19fX19fX193d3cudWx0cmFyaXNjLmNvbQ0K6YeN6KaB5o+Q
-56S677ya5pys6YKu5Lu25YyF5ous6ZmE5Lu255qE5YaF5a655piv5Y+X5rOV5b6L5L+d5oqk55qE
-5L+d5a+G5L+h5oGv77yM5aaC5p6c5oKo5LiN5piv5oyH5a6a5pS25Lu25Lq677yM6K+356uL5Y2z
-5bCG5pys6YKu5Lu25Yig6Zmk77yM5rOV5b6L56aB5q2i5Lu75L2V6Z2e5rOV55qE5oqr6Zyy44CB
-5aSN5Yi244CB5Lyg5pKt5oiW5Lul5Lu75L2V5pa55byP5L2/55So5pys6YKu5Lu244CC5pys6YKu
-5Lu25Lit5YyF5ZCr55qE5oSP6KeB44CB5bu66K6u5piv5Z+65LqO5oiW5Y+X5Yiw5oiR5pa56KGo
-6L6+5ZKM5a6a5LmJ55qE5p2h5qy+5Y+K5p2h5Lu255qE6ZmQ5a6a77yM5aaC5peg5oiR5pa555qE
-5q2j5byP5Lmm6Z2i5r6E5riF5oiW5o6I5p2D77yM5LiN5Y+v6KKr5Y2V54us5L2c5Li65Lu75L2V
-5oOF5b2i5LiL55qE6K+B5o2u5oiW5L6d5o2u44CC5oSf6LCi5oKo55qE55CG6Kej5LiO6YWN5ZCI
-44CC54mI5p2D5omA5pyJ44CCSU1QT1JUQU5UIE5PVElDRTogVGhpcyBlbWFpbCwgaW5jbHVkaW5n
-IGl0cyBhdHRhY2htZW50IGlmIGFueSwgaXMgY29uZmlkZW50aWFsLiBJZiB5b3UgYXJlIG5vdCB0
-aGUgaW50ZW5kZWQgcmVjaXBpZW50LCBwbGVhc2UgZGVsZXRlIGl0IGZyb20geW91ciBjb21wdXRl
-ciBpbW1lZGlhdGVseS4gQW55IGRpc2Nsb3N1cmUsIGNvcHlpbmcsIG9yIGRpc3RyaWJ1dGlvbiBv
-ZiB0aGlzIG1lc3NhZ2UsIG9yIHRha2luZyBvZiBhbnkgYWN0aW9uIGJhc2VkIG9uIGl0IGlzIHN0
-cmljdGx5IHByb2hpYml0ZWQuICBBbnkgb3BpbmlvbnMgYW5kIHN1Z2dlc3Rpb25zIGNvbnRhaW5l
-ZCBpbiB0aGlzIGVtYWlsIGFyZSBzdWJqZWN0IHRvIHRoZSB0ZXJtcyBhbmQgY29uZGl0aW9ucyBl
-eHByZXNzZWQgYW5kIGRlZmluZWQgYnkgdXMgYW5kIHNob3VsZCBub3QgYmUgcmVsaWVkIHVwb24g
-dW5jb25kaXRpb25hbGx5IHVuZGVyIGFueSBjaXJjdW1zdGFuY2VzIHVubGVzcyB0aGV5IGFyZSBj
-b25maXJtZWQgaW4gb2ZmaWNpYWwgd3JpdHRlbiBjbGFyaWZpY2F0aW9uIG9yIGF1dGhvcml6YXRp
-b24gZnJvbSB1cy4gIFRoYW5rIHlvdSBmb3IgeW91ciB1bmRlcnN0YW5kaW5nIGFuZCBjb29wZXJh
-dGlvbi5BbGwgcmlnaHRzIHJlc2VydmVkLg==
+This series(v7) replaces the earlier series patch"[PATCH v6 for v10.0.0 0/2]
+target/riscv: Fix riscv64 kvm migration".
+
+Changes since v6:
+- Patch 1: allow boot CPU to be randomly selected on each reset
+- Patch 2: unchanged; keep Reviewed-by from Andrew Jones <ajones@ventanamicro.com>
+
+Xie Bo (2):
+  Set KVM initial privilege mode and mp_state
+  Fix VM resume after QEMU+KVM migration
+
+ target/riscv/cpu.c           | 17 +++++++++-
+ target/riscv/cpu.h           |  2 ++
+ target/riscv/kvm/kvm-cpu.c   | 60 ++++++++++++++++++++++++++++--------
+ target/riscv/kvm/kvm_riscv.h |  3 +-
+ target/riscv/machine.c       |  5 +--
+ 5 files changed, 70 insertions(+), 17 deletions(-)
+
+-- 
+2.43.0
+
 
