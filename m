@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 444E8B52A0E
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 09:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0881BB52A12
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 09:33:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwbhq-00017c-Uc; Thu, 11 Sep 2025 03:26:59 -0400
+	id 1uwbhx-0001F0-EV; Thu, 11 Sep 2025 03:27:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uwbhX-0000Cj-AF; Thu, 11 Sep 2025 03:26:43 -0400
+ id 1uwbhg-0000fJ-Hh; Thu, 11 Sep 2025 03:26:48 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uwbhD-00015t-6p; Thu, 11 Sep 2025 03:26:21 -0400
+ id 1uwbhe-00015t-0k; Thu, 11 Sep 2025 03:26:48 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 11 Sep
@@ -33,10 +33,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <nabihestefan@google.com>, <wuhaotsh@google.com>, <titusr@google.com>
-Subject: [PATCH v2 13/14] tests/functional/arm/test_aspeed_ast2600: add PCIe
+Subject: [PATCH v2 14/14] tests/functional/aarch64/aspeed_ast2700: add PCIe
  enumeration test
-Date: Thu, 11 Sep 2025 15:24:37 +0800
-Message-ID: <20250911072452.314553-14-jamin_lin@aspeedtech.com>
+Date: Thu, 11 Sep 2025 15:24:38 +0800
+Message-ID: <20250911072452.314553-15-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250911072452.314553-1-jamin_lin@aspeedtech.com>
 References: <20250911072452.314553-1-jamin_lin@aspeedtech.com>
@@ -68,47 +68,77 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extend the AST2600 functional tests with a PCIe enumeration check.
+Add PCIe enumeration checks for AST2700 and AST2700fc functional tests.
 
-This patch introduces a new helper "do_ast2600_pcie_test()" that runs
-"lspci" on the emulated system and verifies the presence of the expected
-PCIe devices:
+This patch introduces a helper "do_ast2700_pcie_test()" that runs
+"lspci -s 0002:00:00.0" on the emulated system and verifies the
+expected PCIe device is present:
 
-- 80:00.0 Host bridge: ASPEED Technology, Inc. Device 2600
-- 80:08.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge
+- 0002:00:00.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI
+   Bridge
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- tests/functional/arm/test_aspeed_ast2600.py | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tests/functional/aarch64/test_aspeed_ast2700.py   | 7 +++++++
+ tests/functional/aarch64/test_aspeed_ast2700fc.py | 6 ++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/tests/functional/arm/test_aspeed_ast2600.py b/tests/functional/arm/test_aspeed_ast2600.py
-index 129695ca4e..f97fbbaa11 100755
---- a/tests/functional/arm/test_aspeed_ast2600.py
-+++ b/tests/functional/arm/test_aspeed_ast2600.py
-@@ -101,6 +101,14 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
-         'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2600-default-obmc.tar.gz',
-         'cb6c08595bcbba1672ce716b068ba4e48eda1ed9abe78a07b30392ba2278feba')
- 
-+    def do_ast2600_pcie_test(self):
-+        exec_command_and_wait_for_pattern(self,
-+            'lspci -s 80:00.0',
-+            '80:00.0 Host bridge: ASPEED Technology, Inc. Device 2600')
-+        exec_command_and_wait_for_pattern(self,
-+            'lspci -s 80:08.0',
-+            '80:08.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge')
-+
-     def test_arm_ast2600_evb_sdk(self):
-         self.set_machine('ast2600-evb')
- 
-@@ -136,5 +144,7 @@ def test_arm_ast2600_evb_sdk(self):
+diff --git a/tests/functional/aarch64/test_aspeed_ast2700.py b/tests/functional/aarch64/test_aspeed_ast2700.py
+index a3db267294..de3ef7d83b 100755
+--- a/tests/functional/aarch64/test_aspeed_ast2700.py
++++ b/tests/functional/aarch64/test_aspeed_ast2700.py
+@@ -69,6 +69,11 @@ def do_ast2700_i2c_test(self):
          exec_command_and_wait_for_pattern(self,
-              '/sbin/hwclock -f /dev/rtc1', year)
+             'cat /sys/bus/i2c/devices/1-004d/hwmon/hwmon*/temp1_input', '18000')
  
-+        self.do_ast2600_pcie_test()
++    def do_ast2700_pcie_test(self):
++        exec_command_and_wait_for_pattern(self,
++            'lspci -s 0002:00:00.0',
++            '0002:00:00.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge')
 +
+     def start_ast2700_test(self, name):
+         num_cpu = 4
+         uboot_size = os.path.getsize(self.scratch_file(name,
+@@ -130,6 +135,7 @@ def test_aarch64_ast2700a1_evb_sdk_v09_06(self):
+         self.start_ast2700_test('ast2700-default')
+         self.verify_openbmc_boot_and_login('ast2700-default')
+         self.do_ast2700_i2c_test()
++        self.do_ast2700_pcie_test()
+ 
+     def test_aarch64_ast2700a1_evb_sdk_vbootrom_v09_07(self):
+         self.set_machine('ast2700a1-evb')
+@@ -139,6 +145,7 @@ def test_aarch64_ast2700a1_evb_sdk_vbootrom_v09_07(self):
+         self.verify_vbootrom_firmware_flow()
+         self.verify_openbmc_boot_and_login('ast2700-default')
+         self.do_ast2700_i2c_test()
++        self.do_ast2700_pcie_test()
+ 
  if __name__ == '__main__':
-     AspeedTest.main()
+     QemuSystemTest.main()
+diff --git a/tests/functional/aarch64/test_aspeed_ast2700fc.py b/tests/functional/aarch64/test_aspeed_ast2700fc.py
+index b85370e182..8ba2ddab0d 100755
+--- a/tests/functional/aarch64/test_aspeed_ast2700fc.py
++++ b/tests/functional/aarch64/test_aspeed_ast2700fc.py
+@@ -49,6 +49,11 @@ def do_ast2700_i2c_test(self):
+         exec_command_and_wait_for_pattern(self,
+             'cat /sys/bus/i2c/devices/1-004d/hwmon/hwmon*/temp1_input', '18000')
+ 
++    def do_ast2700_pcie_test(self):
++        exec_command_and_wait_for_pattern(self,
++            'lspci -s 0002:00:00.0',
++            '0002:00:00.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge')
++
+     def do_ast2700fc_ssp_test(self):
+         self.vm.shutdown()
+         self.vm.set_console(console_index=1)
+@@ -128,6 +133,7 @@ def test_aarch64_ast2700fc_sdk_v09_06(self):
+         self.start_ast2700fc_test('ast2700-default')
+         self.verify_openbmc_boot_and_login('ast2700-default')
+         self.do_ast2700_i2c_test()
++        self.do_ast2700_pcie_test()
+         self.do_ast2700fc_ssp_test()
+         self.do_ast2700fc_tsp_test()
+ 
 -- 
 2.43.0
 
