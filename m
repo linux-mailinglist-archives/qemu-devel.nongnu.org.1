@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C78B52C3D
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 10:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E46B52C59
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 10:57:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwd1H-0003bB-Fs; Thu, 11 Sep 2025 04:51:08 -0400
+	id 1uwd6C-0005vS-Sg; Thu, 11 Sep 2025 04:56:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uwd1D-0003VO-FR
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 04:51:03 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1uwd68-0005uw-4v
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 04:56:08 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uwd16-0004vR-Ow
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 04:51:02 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-45b9853e630so4253345e9.0
- for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 01:50:55 -0700 (PDT)
+ id 1uwd65-0005Vw-GT
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 04:56:07 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-45df656889cso2957935e9.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 01:56:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757580653; x=1758185453; darn=nongnu.org;
+ d=linaro.org; s=google; t=1757580960; x=1758185760; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ujnceHljfEoi7XPNlz/AudQ/n03a6q6hILamwu8xWnU=;
- b=x27V82bYf9wU7v5KoWIhd2aI7q5ecZ9NoWjjU5aaJjxrJBQMbDemEHckW9yHomfmjo
- squW32FktHAUcC7GBZPaE4ADPBKyxy7Vuykr1RUMMWyicYOoLnH6OZgve3AllITOqAUW
- 9hfp8+CxZRIlu+GWqEMLgZBmEtoEqHSF/LnhZUQIwUKr7fWUeEdp6Jqk1JbWmRvMKX6Z
- todhktmBglEUW0a1qaBI/DItJEyd+kcssrlBm2jurGdEQct8TGI3aLKTQgZPa+0ncfsW
- /yOYPBajMjbKDAhEGtHdszaOZBzE+PxhQK7WQUKWbRZq09UkwIZyP9YJzulBSSVJdi0A
- XjWg==
+ bh=ufL5kzR48TLp53LD2iMyxiecCeDSmoGA8NSO3NMuspE=;
+ b=LWVV9u5q98nrhCnhqw90yrTH/Hc5qJpNlfQp5+grMwR4o8tQgCm7GsQSmxmP4jID0G
+ xRP2s2OajNR0b4Qmp4nt5NKtNw4ta/oaeD7RInq1EGRt0/h3Aj3YS2ctUAQGhdg1efiJ
+ bRk12ihCifQI8MhTo489k3TnCm/ta5G07BAno2HPBq5Kxkz94QHoEppIwGIoavULIJSa
+ WJAu64cUO3dg4Pa/bSgKfEl3W/FJDWwk6FSpHHMLyTA/Hx1rvefrwNvFzF2nqKOROi5o
+ NcUq3Wy30+er7M3L5wIAwd2HDxrnmD2QfXq4YsihjFnQ6qs9Yqr5N2/S9fKh2zyBq6Ih
+ N2dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757580653; x=1758185453;
+ d=1e100.net; s=20230601; t=1757580960; x=1758185760;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ujnceHljfEoi7XPNlz/AudQ/n03a6q6hILamwu8xWnU=;
- b=prYOjpajm0KaIpMOV4ntfY0zy/8VgX5x1RGfMVpBPAmHIEJxqM6WsS1Y3PjGhIlMid
- 1ovYxGfziU1uD7wtF2Ape7yJU/VjwMljqbHXlnXzcdkO16cNmaE4ocYxnM8kLxLu53mE
- SGPz2vY8F1umDAaBkesaWXrEfgbLXgqNQ2Yi/bScMFZq9sjekdatf+DtHgszY926ZY67
- Mz4r26zI+n1OHUKxK+TRG4YZxcF0YC4e5NbqT+lsz0xx5LwZaOiQdsAJmIXwGtUZBLEk
- M+w1AqDbAgYkfPKq9z5es+W10KtsYBfP6/dvjfY4jZz/bWe3jF349ApInVN4wosPrEqd
- GoFw==
+ bh=ufL5kzR48TLp53LD2iMyxiecCeDSmoGA8NSO3NMuspE=;
+ b=smfgULeatK3pVXXt2iXkH3AXWBw/iJaLZi/DhDPTAx3p8UDKRHHcyTJdwggFypa0HN
+ gfAGEOd3JuinLpBRLR8bkJQYlhHlM/KuNUzzIJkUbX0GOpNRq1jTC+rXLHiSUsodN3wf
+ qkRNCb7mT1hqslmSzGS3HjFK31naeyvCLujRWhZuqa/eqPms0BCPyUS0AssYjLFgFYn7
+ EH11nEAT8SOKtxWY6KQo56Njiv2t5t5cwo858IuqDGja2epG+G9rVZRXvWh4W2n2Q+DT
+ HyOOz0KfzQPiuoanb9ly1/e8s/BZO/4eNTVxNyXiK3HFLvQ5rH/N6LGcbsPhOL60r5rX
+ yXgA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUJxPaptQK6bKqu8Rp16y2bUewPtW+o0noaBpeLBgArfhHUb+a7mn+r7ID3Uimj9uQAyy+uAjIZJfSs@nongnu.org
-X-Gm-Message-State: AOJu0Yy2Vi2FcTtNNpDl6oCHJFYN3dYqp9RWQhA8OpZukqYT++SJztwu
- bd7NDcMUT4lkEQaZzy78UkorPj0ToCevxFqPH0jUmWUzhhf6yz71z7Wuhq2MKwiofvI=
-X-Gm-Gg: ASbGncs4h9NQZsRFf2q+AeMQpS8gqYMtD6Wapw7fYjb0+ru5z0VwVaMfc3dV1HoRoU9
- tavelVE5M8D/K/J+5tzX7PkugUCD0Hip4d4NmOmu4leu9yq7hLkt9H1hnk3TIZDW0cdHq9h0fw1
- 44TLejt96QKDuKLifHOrk+UDFpmC1Yq7miyTwHJinC52blwSa5gnFmNqnrGY89srK1hVTKzE4Nz
- bWAVNcCPU30CVNN4HXffrqUZT0c+5TgdR5UZbevpgAmPhYw4qDjhch2SML+FheaN39n5L8aeRz1
- J3Z4ykSvfYGE1ZwlupS+/VwtNGS+lgmHF1l9GRVODtL1uq4Imwm6Y+DlbMIJh1zQeW95xajm/cS
- xbox5QVZOJ8bZKKWDhAAxBK2eNZV5gqr4D3jCKLQQpNS5jLs=
-X-Google-Smtp-Source: AGHT+IFuWRG/PgvBzTKmhpw+b7xWr1es2/CM/oNvjWlkfR7qV81sBWV6vGoSfJAHTZ2+z2p1yTBeZQ==
-X-Received: by 2002:a05:600c:540c:b0:45b:5f99:191c with SMTP id
- 5b1f17b1804b1-45dddff012cmr174122035e9.12.1757580653071; 
- Thu, 11 Sep 2025 01:50:53 -0700 (PDT)
+ AJvYcCVZwNzIJs2+9l8i7FbMY6eD6JClfUd9BRXALSXpygfFWm97FZaIB4cNtbQZYMb8IJnpo7UWkaTrEVMm@nongnu.org
+X-Gm-Message-State: AOJu0YxPgJ7zyty0fEKu/+vgMDqgyEVA9S5KkLp5qsl8+Dry4PdOl6bp
+ yrtOqcuYbxiOmz9NiV3uH2m+AdP6O7IciuHaxZPzswjqCtye6hbS7Z+wr59jFWF+3KU=
+X-Gm-Gg: ASbGnctABNWnoDkbqbsxHVGmjO63xAlmeqDBJ4g13cFvgMWFaFusli+b30kfOFlUHtL
+ mHS0610ONuAj55Ni1/l8snJjsINhMVAw7WZRZCDv9nDnMlzIjIdlcR0pUvE2nnyB51P0fptuRqC
+ W+bZJvxqZZbqYluwR2g657hhTcjXa7U99jaKXcMFhEMh5zTIg7Rzm7EqAIRHrKLNh3W/wzp/vNz
+ kK3+nE2U6ziBCG4qEm4SieJ8ex7SotPN6iREwiow/oHGJ4IVm8mnXf5TUVtMrLzstdY7kyShsnM
+ gIJC3O+Uh+jeUUKfFDp+ei/VL1WFAoYA1T9Iq03LOEfV/7dDGCrOe6nxX8DMKS4GDpt4wPWB9xD
+ D67AQL6Qyyx0rtwazQ/XEDkp4ugXtbgs+IENnAtiSpSZoStU=
+X-Google-Smtp-Source: AGHT+IGNuBr4UL3ohUskIJDofp/ZsQFwxQo+Szt0Ew2m+U0+M+eGzRA+MhLrrUykCfE5I+KupLUaXQ==
+X-Received: by 2002:a05:600c:45cd:b0:45c:8e6d:a45f with SMTP id
+ 5b1f17b1804b1-45ddde868a2mr168413755e9.5.1757580960444; 
+ Thu, 11 Sep 2025 01:56:00 -0700 (PDT)
 Received: from [10.20.51.75] ([88.149.120.245])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45e017c1455sm18101255e9.24.2025.09.11.01.50.51
+ 5b1f17b1804b1-45e016b5a16sm18618855e9.12.2025.09.11.01.55.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Sep 2025 01:50:52 -0700 (PDT)
-Message-ID: <b5681050-2e15-438d-88fa-cd9e612be2c8@linaro.org>
-Date: Thu, 11 Sep 2025 08:50:49 +0000
+ Thu, 11 Sep 2025 01:56:00 -0700 (PDT)
+Message-ID: <e91895dd-3468-4a9f-8f66-85452143e6e0@linaro.org>
+Date: Thu, 11 Sep 2025 08:51:01 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/20] monitor: remove redundant
- error_[v]printf_unless_qmp
+Subject: Re: [PATCH v3 09/20] ui/vnc: remove use of error_printf_unless_qmp()
 To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
@@ -82,14 +81,14 @@ Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>
 References: <20250910180357.320297-1-berrange@redhat.com>
- <20250910180357.320297-11-berrange@redhat.com>
+ <20250910180357.320297-10-berrange@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20250910180357.320297-11-berrange@redhat.com>
+In-Reply-To: <20250910180357.320297-10-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -113,19 +112,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/10/25 18:03, Daniel P. Berrangé wrote:
-> These functions only had one caller which was easily converted to
-> the normal error_printf() function. Remove them as they don't add
-> sufficient value.
+> The error_printf_unless_qmp() will print to the monitor if the current
+> one is HMP, if it is QMP nothing will be printed, otherwise stderr
+> will be used.
+> 
+> This scenario is easily handled by checking !monitor_cur_is_qmp() and
+> then calling the error_printf() function.
 > 
 > Signed-off-by: Daniel P. Berrangé<berrange@redhat.com>
 > ---
->   include/monitor/monitor.h |  3 ---
->   monitor/monitor.c         | 24 ------------------------
->   stubs/error-printf.c      |  5 -----
->   3 files changed, 32 deletions(-)
+>   ui/vnc.c | 14 +++++++++-----
+>   1 file changed, 9 insertions(+), 5 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
-
 
