@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087A3B539A5
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 18:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2C0B539AB
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 18:52:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwkVz-00036x-1L; Thu, 11 Sep 2025 12:51:19 -0400
+	id 1uwkW2-00037z-6k; Thu, 11 Sep 2025 12:51:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uwkVu-0002r6-SH
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 12:51:14 -0400
+ id 1uwkVv-0002t3-5n
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 12:51:15 -0400
 Received: from forwardcorp1d.mail.yandex.net
  ([2a02:6b8:c41:1300:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uwkVr-0004Ao-0H
+ id 1uwkVr-0004As-DO
  for qemu-devel@nongnu.org; Thu, 11 Sep 2025 12:51:14 -0400
 Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:94a9:0:640:a3fa:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 2174E80792;
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 925BA807B0;
  Thu, 11 Sep 2025 19:51:08 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b3c::1:2f])
  by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 2pOVKM0Fka60-pJTsubfx; Thu, 11 Sep 2025 19:51:07 +0300
+ ESMTPSA id 2pOVKM0Fka60-aFGvYJGI; Thu, 11 Sep 2025 19:51:08 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1757609467;
- bh=mL60+yvxLhyujWvQbaf2IDcS9XPHKjBpReGt18aEJ7g=;
+ s=default; t=1757609468;
+ bh=eJ3HD6jryrgptt1wCimqF9otPGpP21C0gDC98NJaLv0=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=N7nyHVTdGB4HXzLXqs1Rki+/QEGEMInsoOeqsf6XAbFO216kqfHuTXEorSAYImJAV
- AbD0Gmi0yOZQuYZsCbDPvHDdvHCToAWXyUlPvr69CaAxJWoRbCROYT/VRm0JlflW7Q
- oSWBqpMpSYs6pZdAHYbonzNHT1yqPdqFCJ08mhEk=
+ b=lmcr2AUyOSDfB4HYuk/PbC6Jwa1GQ7v+TDLxmgLA5zAytbKd+yNr22BsGvifIUfcK
+ xbvPzJZMPImZVBmMmbEkVhtJ3sj3VpzySU1nV20xfmHOX0xUtRWimf9/08zx7QB347
+ uybLFaKDoLDOTBhOGmRkq6iLwOfNxud9kQ7wPl6U=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -43,10 +43,10 @@ To: jasowang@redhat.com
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, leiyang@redhat.com,
  steven.sistare@oracle.com, yc-core@yandex-team.ru,
  davydov-max@yandex-team.ru
-Subject: [PATCH v4 7/8] net/tap: net_init_tap(): drop extra variable
- vhostfdname
-Date: Thu, 11 Sep 2025 19:51:00 +0300
-Message-ID: <20250911165101.1637608-8-vsementsov@yandex-team.ru>
+Subject: [PATCH v4 8/8] net/tap: move local variables related to the latter
+ case to else branch
+Date: Thu, 11 Sep 2025 19:51:01 +0300
+Message-ID: <20250911165101.1637608-9-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250911165101.1637608-1-vsementsov@yandex-team.ru>
 References: <20250911165101.1637608-1-vsementsov@yandex-team.ru>
@@ -74,58 +74,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This makes more obvious, where the variables make sense.
+
+Note that ifname, script and downscript variables are not used in
+net_init_tap_one() for fd/fds/helper cases.
+
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Tested-by: Lei Yang <leiyang@redhat.com>
 ---
- net/tap.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ net/tap.c | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
 diff --git a/net/tap.c b/net/tap.c
-index 9b0ff70cf2..70ebe0c752 100644
+index 70ebe0c752..ce090582e0 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -806,14 +806,12 @@ int net_init_tap(const Netdev *netdev, const char *name,
-     /* for the no-fd, no-helper case */
-     const char *script;
-     const char *downscript;
--    const char *vhostfdname;
-     char ifname[128];
+@@ -801,19 +801,11 @@ static int get_fds(char *str, char *fds[], int max)
+ int net_init_tap(const Netdev *netdev, const char *name,
+                  NetClientState *peer, Error **errp)
+ {
+-    const NetdevTapOptions *tap;
+-    int fd, vnet_hdr = 0, i = 0, queues;
+-    /* for the no-fd, no-helper case */
+-    const char *script;
+-    const char *downscript;
+-    char ifname[128];
++    const NetdevTapOptions *tap = &netdev->u.tap;
++    int fd, vnet_hdr = 0, i = 0;
      int ret = 0;
  
      assert(netdev->type == NET_CLIENT_DRIVER_TAP);
-     tap = &netdev->u.tap;
-     queues = tap->has_queues ? tap->queues : 1;
--    vhostfdname = tap->vhostfd;
-     script = tap->script;
-     downscript = tap->downscript;
+-    tap = &netdev->u.tap;
+-    queues = tap->has_queues ? tap->queues : 1;
+-    script = tap->script;
+-    downscript = tap->downscript;
  
-@@ -864,7 +862,7 @@ int net_init_tap(const Netdev *netdev, const char *name,
+     /* QEMU hubs do not support multiqueue tap, in this case peer is set.
+      * For -netdev, peer is always NULL. */
+@@ -861,7 +853,7 @@ int net_init_tap(const Netdev *netdev, const char *name,
+         }
  
          if (!net_init_tap_one(tap, peer, "tap", name, NULL,
-                               script, downscript,
--                              vhostfdname, vnet_hdr, fd, errp)) {
-+                              tap->vhostfd, vnet_hdr, fd, errp)) {
+-                              script, downscript,
++                              NULL, NULL,
+                               tap->vhostfd, vnet_hdr, fd, errp)) {
              return -1;
          }
-     } else if (tap->fds) {
-@@ -961,7 +959,7 @@ free_fail:
+@@ -916,8 +908,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
+                 goto free_fail;
+             }
+ 
+-            if (!net_init_tap_one(tap, peer, "tap", name, ifname,
+-                                  script, downscript,
++            if (!net_init_tap_one(tap, peer, "tap", name, NULL,
++                                  NULL, NULL,
+                                   tap->vhostfds ? vhost_fds[i] : NULL,
+                                   vnet_hdr, fd, errp)) {
+                 ret = -1;
+@@ -958,15 +950,20 @@ free_fail:
+             return -1;
          }
  
-         if (!net_init_tap_one(tap, peer, "bridge", name, ifname,
--                              script, downscript, vhostfdname,
-+                              script, downscript, tap->vhostfd,
+-        if (!net_init_tap_one(tap, peer, "bridge", name, ifname,
+-                              script, downscript, tap->vhostfd,
++        if (!net_init_tap_one(tap, peer, "bridge", name, NULL,
++                              NULL, NULL, tap->vhostfd,
                                vnet_hdr, fd, errp)) {
              close(fd);
              return -1;
-@@ -1006,7 +1004,7 @@ free_fail:
-             if (!net_init_tap_one(tap, peer, "tap", name, ifname,
-                                   i >= 1 ? "no" : script,
-                                   i >= 1 ? "no" : downscript,
--                                  vhostfdname, vnet_hdr, fd, errp)) {
-+                                  tap->vhostfd, vnet_hdr, fd, errp)) {
-                 close(fd);
-                 return -1;
-             }
+         }
+     } else {
++        const char *script = tap->script;
++        const char *downscript = tap->downscript;
++        int queues = tap->has_queues ? tap->queues : 1;
+         g_autofree char *default_script = NULL;
+         g_autofree char *default_downscript = NULL;
++        char ifname[128];
++
+         if (tap->vhostfds) {
+             error_setg(errp, "vhostfds= is invalid if fds= wasn't specified");
+             return -1;
 -- 
 2.48.1
 
