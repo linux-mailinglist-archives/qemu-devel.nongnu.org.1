@@ -2,70 +2,145 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E8B3B52D26
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 11:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5B5B52D19
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 11:23:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwdUA-0004Xq-Hu; Thu, 11 Sep 2025 05:20:58 -0400
+	id 1uwdUf-0004y8-2U; Thu, 11 Sep 2025 05:21:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uwdU1-0004TR-J8; Thu, 11 Sep 2025 05:20:50 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uwdUZ-0004pV-A5
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 05:21:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uwdTu-0008T9-4V; Thu, 11 Sep 2025 05:20:48 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c23:36c1:0:640:5f85:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id E41948079D;
- Thu, 11 Sep 2025 12:20:34 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b3c::1:2f])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id QKHlUI0GnCg0-1yaIBh5Z; Thu, 11 Sep 2025 12:20:34 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1757582434;
- bh=VX3Y0DUKrieh9bHWrjD5huAHgixrf13PCJnm102WHJc=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=tJDNImftEGqecxHO+eMvx7Dn7JWVkFDUETWExqgpqwdgknrGdoLiAORNvF5vQcIUJ
- NyVTJCBflN1kQ/gtex8A5Q+gLBiy0RxCYox/BNRLdXhD864j7eYfWvbZktUZnDwxGD
- EBfW1ahNd1hB7ZyoYdRJpbChGXCgtxVh39RPG5L4=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: berrange@redhat.com
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, qemu-block@nongnu.org,
- vsementsov@yandex-team.ru, leiyang@redhat.com, marcandre.lureau@redhat.com,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Kostiantyn Kostiuk <kkostiuk@redhat.com>,
- Alexander Bulekov <alxndr@bu.edu>, Bandan Das <bsd@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Darren Kenny <darren.kenny@oracle.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v2 8/8] use qemu_set_blocking instead of
- g_unix_set_fd_nonblocking
-Date: Thu, 11 Sep 2025 12:20:06 +0300
-Message-ID: <20250911092007.1370002-9-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250911092007.1370002-1-vsementsov@yandex-team.ru>
-References: <20250911092007.1370002-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uwdUT-00008j-KJ
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 05:21:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757582471;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=G6LOG5shaxqsug3q02nt/u9bpLCOQq2UtK7lHmPc/V8=;
+ b=JFt6+L3mNMVT3RvNaG5dSMp81za72YxAetlu3U4jqXVb9zT0Nj2xxjKEAxLSN+YD69ZmyO
+ Kt21J4aqYPnBl4Sz27abu202MaQ1Xskx56CmEBTKutNiD4cauam3l7tDEoz/kuGOcsgLss
+ uMzEyIELnUT/4YH9xJDWIYPpGcMeo0g=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-654--SEutTRcMk6GJVJawthXSA-1; Thu, 11 Sep 2025 05:21:10 -0400
+X-MC-Unique: -SEutTRcMk6GJVJawthXSA-1
+X-Mimecast-MFC-AGG-ID: -SEutTRcMk6GJVJawthXSA_1757582469
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45cb612d362so2963105e9.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 02:21:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757582469; x=1758187269;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=G6LOG5shaxqsug3q02nt/u9bpLCOQq2UtK7lHmPc/V8=;
+ b=RA9xd2NzdO69khoWKH5HoHtlTutxSKEJ/bDXhEc8GLWrEgs+tOkSsQCUCn2/NAe7gZ
+ h+EO6jmgx6cBSZBbFYxoYiMXM5+JQ1do07PG5MRfaFawhUUW4t6vgWjtRPpkmwCgvxq4
+ wNXPgDktZ6kBIcoAF2TfcUN1zJjzkLdXvXmIJqKvv+fJYAC8cPV0IZLo3qUhE6uWxJQV
+ RMyLtN7KBVrmoUHsOUhLDsADkrgBFL0QEA+QxBn7Kpm5eHPPW6cZKDBCUrVQBBBU/v5+
+ fix4fGYJeznTC78R6COTjkrmLylpqeGfen3Oj3bDqpM4ycSov2RPK50TOWYtX+rrm3O7
+ mYKQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXgHOQ+t3OykJ8Xoc3Lg4icgMte2AbUtrDvvykWPPDNio7NYL4qGlJkAtxNzihxD3RoZwN1VVQwC5Ss@nongnu.org
+X-Gm-Message-State: AOJu0YwDagQmPt0cpYlhiUUO8yrxVyb80XbsoJPmSsTptoAQUC1PZXHL
+ KK6Em66aEt3WlVzJ5X2VgVjAFDNmADnVnIEUmKHNKrXeawVoZohF1kOmPft20tqlWMip/CamyNn
+ 85xsxpaCvOvsXP5pb/HH/nOndCzgixd5u/y1bhvSfn4QhNGlC/f/chlR6
+X-Gm-Gg: ASbGncvOBW5CmrOkqC/KebjsJZMm7tiqAdxcldMnE3c2NiWlLTCv7fGaqQ8WxbQbc0C
+ k1bK82KpOEaXVMj3U1S7L58f9jQ3C4QKx39VzzJQ9J7/M81qri5+u5jdbJaQIfAerng+y7Sm/q8
+ VjfTMiNZyEXE2rkIM/1jbZyBdZ+wIgUwwK996zDo3Ef6wA98F89nYjA/Vqi5GxQyO+p1kRjFGMn
+ QjC9Z39/u2ZJBuuE1ZfgMzc0+ZlZ2lZV87k53PKmpQMZdyKlwGPCny8VaDaxQwWAs12et6XYtni
+ M1Gq6KOSjlXjbxJ2Pui/li82stwBfKxTdv0Tw4/0fSg8sDFXTvL7UDtZCkOGzKcbzLuFsAZ1Jz1
+ snbxxlg==
+X-Received: by 2002:a05:600c:3b83:b0:45d:e326:96fb with SMTP id
+ 5b1f17b1804b1-45de3269948mr161794625e9.30.1757582468699; 
+ Thu, 11 Sep 2025 02:21:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHavDATIBe1wRjy6dSrbdIASpviJdY2tVpJGpAA8EKsNfLYUhdVqrb8mGokzo7e9BnrXVyCLQ==
+X-Received: by 2002:a05:600c:3b83:b0:45d:e326:96fb with SMTP id
+ 5b1f17b1804b1-45de3269948mr161794315e9.30.1757582468226; 
+ Thu, 11 Sep 2025 02:21:08 -0700 (PDT)
+Received: from [192.168.0.7] (ltea-047-064-113-183.pools.arcor-ip.net.
+ [47.64.113.183]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-45e037c3ee8sm16513145e9.18.2025.09.11.02.21.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 11 Sep 2025 02:21:07 -0700 (PDT)
+Message-ID: <44a367bd-5242-4ddc-ad3e-b3dc718f549b@redhat.com>
+Date: Thu, 11 Sep 2025 11:21:06 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC] tests/functional: add tests for SCLP event CPI
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ Shalini Chellathurai Saroja <shalini@linux.ibm.com>,
+ qemu-s390x mailing list <qemu-s390x@nongnu.org>
+Cc: Daniel Berrange <berrange@redhat.com>,
+ qemu-devel mailing list <qemu-devel@nongnu.org>,
+ Hendrik Brueckner <brueckner@linux.ibm.com>
+References: <20250812123124.382696-1-shalini@linux.ibm.com>
+ <79a95a4349a8e97f65717139857432741701d489.camel@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
+ yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
+ 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
+ tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
+ 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
+ O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
+ 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
+ gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
+ 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
+ zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
+ aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
+ QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
+ EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
+ 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
+ eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
+ ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
+ zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
+ tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
+ WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
+ UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
+ BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
+ 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
+ +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
+ 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
+ gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
+ WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
+ VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
+ knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
+ cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
+ X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
+ AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
+ ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
+ fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
+ 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
+ cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
+ ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
+ Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
+ oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
+ IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
+ yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
+In-Reply-To: <79a95a4349a8e97f65717139857432741701d489.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,450 +156,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of open-coded g_unix_set_fd_nonblocking() calls, use
-QEMU wrapper qemu_set_blocking().
+On 11/09/2025 11.05, Nina Schoetterl-Glausch wrote:
+> On Tue, 2025-08-12 at 14:31 +0200, Shalini Chellathurai Saroja wrote:
+>> Add tests for SCLP event type Control-Program Identification
+>> (CPI) to s390x CCW virtio tests.
+>>
+>> Please note that these tests are skipped as the guest OS does not
+>> trigger the SCLP event type CPI when the command
+>> 'echo 1 > /sys/firmware/cpi/set' is executed in the guest. I
+>> believe that the guest OS must to be updated to support the SCLP
+>> event type CPI.
+>>
+>> Signed-off-by: Shalini Chellathurai Saroja <shalini@linux.ibm.com>
+>> Suggested-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   tests/functional/test_s390x_ccw_virtio.py | 24 +++++++++++++++++++++++
+>>   1 file changed, 24 insertions(+)
+>>
+>> diff --git a/tests/functional/test_s390x_ccw_virtio.py b/tests/functional/test_s390x_ccw_virtio.py
+>> index 453711aa0f..c14379cbaa 100755
+>> --- a/tests/functional/test_s390x_ccw_virtio.py
+>> +++ b/tests/functional/test_s390x_ccw_virtio.py
+> 
+> Is this the best file to put it?
+> It seems mostly to be about device testing.
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- chardev/char-fd.c                  |  4 ++--
- chardev/char-pty.c                 |  3 +--
- chardev/char-serial.c              |  3 +--
- chardev/char-stdio.c               |  3 +--
- hw/input/virtio-input-host.c       |  3 +--
- hw/misc/ivshmem-flat.c             |  3 ++-
- hw/misc/ivshmem-pci.c              |  7 ++++++-
- hw/virtio/vhost-vsock.c            |  8 ++------
- io/channel-command.c               |  9 ++++++---
- io/channel-file.c                  |  3 +--
- net/tap-bsd.c                      | 12 ++++++++++--
- net/tap-linux.c                    |  7 ++++++-
- net/tap-solaris.c                  |  7 ++++++-
- net/tap.c                          | 21 ++++++---------------
- qga/commands-posix.c               |  3 +--
- tests/qtest/fuzz/virtio_net_fuzz.c |  2 +-
- tests/qtest/vhost-user-test.c      |  3 +--
- tests/unit/test-iov.c              |  5 +++--
- ui/input-linux.c                   |  3 +--
- util/event_notifier-posix.c        |  4 ++--
- util/main-loop.c                   |  5 ++++-
- 21 files changed, 64 insertions(+), 54 deletions(-)
+It's meant as generic testing of the s390-virtio-ccw machine. Of course, the 
+CPI testing could also be done in a separate file, but that means that you 
+have to go through booting of the guest there again ... so I'd rather prefer 
+to keep it here, so we only have to boot the guest once.
 
-diff --git a/chardev/char-fd.c b/chardev/char-fd.c
-index 6f03adf872..739dc68c36 100644
---- a/chardev/char-fd.c
-+++ b/chardev/char-fd.c
-@@ -212,8 +212,8 @@ void qemu_chr_open_fd(Chardev *chr,
-     FDChardev *s = FD_CHARDEV(chr);
-     g_autofree char *name = NULL;
- 
--    if (fd_out >= 0 && !g_unix_set_fd_nonblocking(fd_out, true, NULL)) {
--        assert(!"Failed to set FD nonblocking");
-+    if (fd_out >= 0) {
-+        qemu_set_blocking(fd_out, false, &error_abort);
-     }
- 
-     if (fd_out == fd_in && fd_in >= 0) {
-diff --git a/chardev/char-pty.c b/chardev/char-pty.c
-index 674e9b3f14..fe6bfb043d 100644
---- a/chardev/char-pty.c
-+++ b/chardev/char-pty.c
-@@ -349,8 +349,7 @@ static void char_pty_open(Chardev *chr,
-     }
- 
-     close(slave_fd);
--    if (!g_unix_set_fd_nonblocking(master_fd, true, NULL)) {
--        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+    if (!qemu_set_blocking(master_fd, false, errp)) {
-         return;
-     }
- 
-diff --git a/chardev/char-serial.c b/chardev/char-serial.c
-index 0a68b4b4e0..1ff31dcde3 100644
---- a/chardev/char-serial.c
-+++ b/chardev/char-serial.c
-@@ -271,8 +271,7 @@ static void qmp_chardev_open_serial(Chardev *chr,
-     if (fd < 0) {
-         return;
-     }
--    if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
--        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+    if (!qemu_set_blocking(fd, false, errp)) {
-         return;
-     }
-     tty_serial_init(fd, 115200, 'N', 8, 1);
-diff --git a/chardev/char-stdio.c b/chardev/char-stdio.c
-index 48db8d2f30..193727e807 100644
---- a/chardev/char-stdio.c
-+++ b/chardev/char-stdio.c
-@@ -107,8 +107,7 @@ static void qemu_chr_open_stdio(Chardev *chr,
-     old_fd0_flags = fcntl(0, F_GETFL);
-     old_fd1_flags = fcntl(1, F_GETFL);
-     tcgetattr(0, &oldtty);
--    if (!g_unix_set_fd_nonblocking(0, true, NULL)) {
--        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+    if (!qemu_set_blocking(0, false, errp)) {
-         return;
-     }
-     atexit(term_exit);
-diff --git a/hw/input/virtio-input-host.c b/hw/input/virtio-input-host.c
-index bbfee9d3b9..9f62532559 100644
---- a/hw/input/virtio-input-host.c
-+++ b/hw/input/virtio-input-host.c
-@@ -114,8 +114,7 @@ static void virtio_input_host_realize(DeviceState *dev, Error **errp)
-         error_setg_file_open(errp, errno, vih->evdev);
-         return;
-     }
--    if (!g_unix_set_fd_nonblocking(vih->fd, true, NULL)) {
--        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+    if (!qemu_set_blocking(vih->fd, false, errp)) {
-         goto err_close;
-     }
- 
-diff --git a/hw/misc/ivshmem-flat.c b/hw/misc/ivshmem-flat.c
-index fe4be6be17..89495f6a11 100644
---- a/hw/misc/ivshmem-flat.c
-+++ b/hw/misc/ivshmem-flat.c
-@@ -154,7 +154,8 @@ static void ivshmem_flat_add_vector(IvshmemFTState *s, IvshmemPeer *peer,
-      * peer.
-      */
-     peer->vector[peer->vector_counter].id = peer->vector_counter;
--    g_unix_set_fd_nonblocking(vector_fd, true, NULL);
-+    /* WARNING: qemu_socket_set_nonblock() return code ignored */
-+    qemu_set_blocking(vector_fd, false, NULL);
-     event_notifier_init_fd(&peer->vector[peer->vector_counter].event_notifier,
-                            vector_fd);
- 
-diff --git a/hw/misc/ivshmem-pci.c b/hw/misc/ivshmem-pci.c
-index d47ae739d6..2748db9286 100644
---- a/hw/misc/ivshmem-pci.c
-+++ b/hw/misc/ivshmem-pci.c
-@@ -540,7 +540,12 @@ static void process_msg_connect(IVShmemState *s, uint16_t posn, int fd,
- 
-     IVSHMEM_DPRINTF("eventfds[%d][%d] = %d\n", posn, vector, fd);
-     event_notifier_init_fd(&peer->eventfds[vector], fd);
--    g_unix_set_fd_nonblocking(fd, true, NULL); /* msix/irqfd poll non block */
-+
-+    /* msix/irqfd poll non block */
-+    if (!qemu_set_blocking(fd, false, errp)) {
-+        close(fd);
-+        return;
-+    }
- 
-     if (posn == s->vm_id) {
-         setup_interrupt(s, vector, errp);
-diff --git a/hw/virtio/vhost-vsock.c b/hw/virtio/vhost-vsock.c
-index 6e4088831f..107d88babe 100644
---- a/hw/virtio/vhost-vsock.c
-+++ b/hw/virtio/vhost-vsock.c
-@@ -147,9 +147,7 @@ static void vhost_vsock_device_realize(DeviceState *dev, Error **errp)
-             return;
-         }
- 
--        if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
--            error_setg_errno(errp, errno,
--                             "vhost-vsock: unable to set non-blocking mode");
-+        if (!qemu_set_blocking(vhostfd, false, errp)) {
-             return;
-         }
-     } else {
-@@ -160,9 +158,7 @@ static void vhost_vsock_device_realize(DeviceState *dev, Error **errp)
-             return;
-         }
- 
--        if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
--            error_setg_errno(errp, errno,
--                             "Failed to set FD nonblocking");
-+        if (!qemu_set_blocking(vhostfd, false, errp)) {
-             return;
-         }
-     }
-diff --git a/io/channel-command.c b/io/channel-command.c
-index 8966dd3a2b..8ae9a026b3 100644
---- a/io/channel-command.c
-+++ b/io/channel-command.c
-@@ -277,9 +277,12 @@ static int qio_channel_command_set_blocking(QIOChannel *ioc,
-     cioc->blocking = enabled;
- #else
- 
--    if ((cioc->writefd >= 0 && !g_unix_set_fd_nonblocking(cioc->writefd, !enabled, NULL)) ||
--        (cioc->readfd >= 0 && !g_unix_set_fd_nonblocking(cioc->readfd, !enabled, NULL))) {
--        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+    if (cioc->writefd >= 0 &&
-+        !qemu_set_blocking(cioc->writefd, enabled, errp)) {
-+        return -1;
-+    }
-+    if (cioc->readfd >= 0 &&
-+        !qemu_set_blocking(cioc->readfd, enabled, errp)) {
-         return -1;
-     }
- #endif
-diff --git a/io/channel-file.c b/io/channel-file.c
-index ca3f180cc2..5cef75a67c 100644
---- a/io/channel-file.c
-+++ b/io/channel-file.c
-@@ -223,8 +223,7 @@ static int qio_channel_file_set_blocking(QIOChannel *ioc,
- #else
-     QIOChannelFile *fioc = QIO_CHANNEL_FILE(ioc);
- 
--    if (!g_unix_set_fd_nonblocking(fioc->fd, !enabled, NULL)) {
--        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+    if (!qemu_set_blocking(fioc->fd, enabled, errp)) {
-         return -1;
-     }
-     return 0;
-diff --git a/net/tap-bsd.c b/net/tap-bsd.c
-index b4c84441ba..2e444e59b5 100644
---- a/net/tap-bsd.c
-+++ b/net/tap-bsd.c
-@@ -98,7 +98,12 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
-             return -1;
-         }
-     }
--    g_unix_set_fd_nonblocking(fd, true, NULL);
-+
-+    if (!qemu_set_blocking(fd, false, errp) {
-+        close(fd);
-+        return -1;
-+    }
-+
-     return fd;
- }
- 
-@@ -189,7 +194,10 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
-         goto error;
-     }
- 
--    g_unix_set_fd_nonblocking(fd, true, NULL);
-+    if (!qemu_set_blocking(fd, false, errp) {
-+        goto error;
-+    }
-+
-     return fd;
- 
- error:
-diff --git a/net/tap-linux.c b/net/tap-linux.c
-index 22ec2f45d2..981ef838fb 100644
---- a/net/tap-linux.c
-+++ b/net/tap-linux.c
-@@ -124,7 +124,12 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
-         return -1;
-     }
-     pstrcpy(ifname, ifname_size, ifr.ifr_name);
--    g_unix_set_fd_nonblocking(fd, true, NULL);
-+
-+    if (!qemu_set_blocking(fd, false, NULL)) {
-+        close(fd);
-+        return -1;
-+    }
-+
-     return fd;
- }
- 
-diff --git a/net/tap-solaris.c b/net/tap-solaris.c
-index 51b7830bef..02709590c1 100644
---- a/net/tap-solaris.c
-+++ b/net/tap-solaris.c
-@@ -198,7 +198,12 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
-             return -1;
-         }
-     }
--    g_unix_set_fd_nonblocking(fd, true, NULL);
-+
-+    if (!qemu_set_blocking(fd, false NULL)) {
-+        close(fd);
-+        return -1;
-+    }
-+
-     return fd;
- }
- 
-diff --git a/net/tap.c b/net/tap.c
-index f7df702f97..f37133e301 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -627,8 +627,7 @@ int net_init_bridge(const Netdev *netdev, const char *name,
-         return -1;
-     }
- 
--    if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
--        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+    if (!qemu_set_blocking(fd, false, errp)) {
-         return -1;
-     }
-     vnet_hdr = tap_probe_vnet_hdr(fd, errp);
-@@ -729,9 +728,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-                 error_propagate(errp, err);
-                 goto failed;
-             }
--            if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
--                error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
--                                 name, fd);
-+            if (!qemu_set_blocking(vhostfd, false, errp)) {
-                 goto failed;
-             }
-         } else {
-@@ -741,8 +738,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-                                  "tap: open vhost char device failed");
-                 goto failed;
-             }
--            if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
--                error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+            if (!qemu_set_blocking(vhostfd, false, errp)) {
-                 goto failed;
-             }
-         }
-@@ -839,9 +835,7 @@ int net_init_tap(const Netdev *netdev, const char *name,
-             return -1;
-         }
- 
--        if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
--            error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
--                             name, fd);
-+        if (!qemu_set_blocking(fd, false, errp)) {
-             close(fd);
-             return -1;
-         }
-@@ -895,10 +889,8 @@ int net_init_tap(const Netdev *netdev, const char *name,
-                 goto free_fail;
-             }
- 
--            if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
-+            if (!qemu_set_blocking(fd, false, errp)) {
-                 ret = -1;
--                error_setg_errno(errp, errno, "%s: Can't use file descriptor %d",
--                                 name, fd);
-                 goto free_fail;
-             }
- 
-@@ -951,8 +943,7 @@ free_fail:
-             return -1;
-         }
- 
--        if (!g_unix_set_fd_nonblocking(fd, true, NULL)) {
--            error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+        if (!qemu_set_blocking(fd, false, errp)) {
-             return -1;
-         }
-         vnet_hdr = tap_probe_vnet_hdr(fd, errp);
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index 12bc086d79..5070f27d75 100644
---- a/qga/commands-posix.c
-+++ b/qga/commands-posix.c
-@@ -503,9 +503,8 @@ int64_t qmp_guest_file_open(const char *path, const char *mode,
-     /* set fd non-blocking to avoid common use cases (like reading from a
-      * named pipe) from hanging the agent
-      */
--    if (!g_unix_set_fd_nonblocking(fileno(fh), true, NULL)) {
-+    if (!qemu_set_blocking(fileno(fh), false, errp)) {
-         fclose(fh);
--        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-         return -1;
-     }
- 
-diff --git a/tests/qtest/fuzz/virtio_net_fuzz.c b/tests/qtest/fuzz/virtio_net_fuzz.c
-index e239875e3b..e9b13d3e4f 100644
---- a/tests/qtest/fuzz/virtio_net_fuzz.c
-+++ b/tests/qtest/fuzz/virtio_net_fuzz.c
-@@ -132,7 +132,7 @@ static void *virtio_net_test_setup_socket(GString *cmd_line, void *arg)
- {
-     int ret = socketpair(PF_UNIX, SOCK_STREAM, 0, sockfds);
-     g_assert_cmpint(ret, !=, -1);
--    g_unix_set_fd_nonblocking(sockfds[0], true, NULL);
-+    qemu_set_blocking(sockfds[0], false, &error_abort);
-     sockfds_initialized = true;
-     g_string_append_printf(cmd_line, " -netdev socket,fd=%d,id=hs0 ",
-                            sockfds[1]);
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index 56472ca709..e39d6e7787 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -471,8 +471,7 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
-          * The receive function forces it to be blocking,
-          * so revert it back to non-blocking.
-          */
--        g_unix_set_fd_nonblocking(fd, true, &err);
--        g_assert_no_error(err);
-+        qemu_set_blocking(fd, false, &error_abort);
-         break;
- 
-     case VHOST_USER_SET_LOG_BASE:
-diff --git a/tests/unit/test-iov.c b/tests/unit/test-iov.c
-index 75bc3be005..63e2b1583c 100644
---- a/tests/unit/test-iov.c
-+++ b/tests/unit/test-iov.c
-@@ -1,4 +1,5 @@
- #include "qemu/osdep.h"
-+#include "qapi/error.h"
- #include "qemu/iov.h"
- #include "qemu/sockets.h"
- 
-@@ -186,7 +187,7 @@ static void test_io(void)
- 
-        close(sv[0]);
-        FD_SET(sv[1], &fds);
--       g_unix_set_fd_nonblocking(sv[1], true, NULL);
-+       qemu_set_blocking(sv[1], false, &error_abort);
-        r = g_test_rand_int_range(sz / 2, sz);
-        setsockopt(sv[1], SOL_SOCKET, SO_SNDBUF, &r, sizeof(r));
- 
-@@ -222,7 +223,7 @@ static void test_io(void)
- 
-        close(sv[1]);
-        FD_SET(sv[0], &fds);
--       g_unix_set_fd_nonblocking(sv[0], true, NULL);
-+       qemu_set_blocking(sv[0], false, &error_abort);
-        r = g_test_rand_int_range(sz / 2, sz);
-        setsockopt(sv[0], SOL_SOCKET, SO_RCVBUF, &r, sizeof(r));
-        usleep(500000);
-diff --git a/ui/input-linux.c b/ui/input-linux.c
-index 92e1a1aa64..44d0c15a9b 100644
---- a/ui/input-linux.c
-+++ b/ui/input-linux.c
-@@ -316,8 +316,7 @@ static void input_linux_complete(UserCreatable *uc, Error **errp)
-         error_setg_file_open(errp, errno, il->evdev);
-         return;
-     }
--    if (!g_unix_set_fd_nonblocking(il->fd, true, NULL)) {
--        error_setg_errno(errp, errno, "Failed to set FD nonblocking");
-+    if (!qemu_set_blocking(il->fd, false, errp)) {
-         return;
-     }
- 
-diff --git a/util/event_notifier-posix.c b/util/event_notifier-posix.c
-index 76420c5b56..9952de63dd 100644
---- a/util/event_notifier-posix.c
-+++ b/util/event_notifier-posix.c
-@@ -52,11 +52,11 @@ int event_notifier_init(EventNotifier *e, int active)
-         if (!g_unix_open_pipe(fds, FD_CLOEXEC, NULL)) {
-             return -errno;
-         }
--        if (!g_unix_set_fd_nonblocking(fds[0], true, NULL)) {
-+        if (!qemu_set_blocking(fds[0], false, NULL)) {
-             ret = -errno;
-             goto fail;
-         }
--        if (!g_unix_set_fd_nonblocking(fds[1], true, NULL)) {
-+        if (!qemu_set_blocking(fds[1], false, NULL)) {
-             ret = -errno;
-             goto fail;
-         }
-diff --git a/util/main-loop.c b/util/main-loop.c
-index 51aeb2432e..b8ddda8f5e 100644
---- a/util/main-loop.c
-+++ b/util/main-loop.c
-@@ -114,7 +114,10 @@ static int qemu_signal_init(Error **errp)
-         return -errno;
-     }
- 
--    g_unix_set_fd_nonblocking(sigfd, true, NULL);
-+    if (!qemu_set_blocking(sigfd, false, errp)) {
-+        close(sigfd);
-+        return -EINVAL;
-+    }
- 
-     qemu_set_fd_handler(sigfd, sigfd_handler, NULL, (void *)(intptr_t)sigfd);
- 
--- 
-2.48.1
+  Thomas
 
 
