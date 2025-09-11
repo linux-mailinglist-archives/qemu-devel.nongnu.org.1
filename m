@@ -2,79 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6372DB531A3
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 14:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8B3B531CA
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 14:13:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwfxk-0003mP-Aw; Thu, 11 Sep 2025 07:59:40 -0400
+	id 1uwg8P-0002QL-Uz; Thu, 11 Sep 2025 08:10:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jtomko@redhat.com>) id 1uwfxd-0003cu-At
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 07:59:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uwg8M-0002PI-Gc
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 08:10:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jtomko@redhat.com>) id 1uwfxV-0006UA-Rl
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 07:59:32 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uwg8E-0008Gz-9v
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 08:10:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757591958;
+ s=mimecast20190719; t=1757592624;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3CJWvgw8jXTso7Qw4D/rZViKGHWxwqyUWpC+jQEMaoA=;
- b=Nd8Xj3+3h5vE4f7KB1sKVilTxXww9o6atbdw9Op36ot/GTYn2v/ZJA7dBWQGUJKR6tIO+e
- v7uk7ABVWfJsW0X43GXihNeBAj4msNonRbNX3gb4e7K2O8OrfHK+dHu2PvUEA3s8/s+efv
- R3KiTe/o2v0QH6dlYh9HZq4YZZr6bWU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ content-transfer-encoding:content-transfer-encoding;
+ bh=2SdUvC2ubGxk30ZeDssCzCm4f5QjPRrWZPkHiwST+sU=;
+ b=BARm1L3KvKu686wt2wPrmGc0YP7u76SPukmDUDGLjlKJnV67sFHRFAjaYEUsPaCZGr3Ipd
+ emZM/fbM3M+9tc0TRzPpGaN/+acGHheQYf8lzQuyhdPRKHvkNFsj+D++7z6n76JKs0KfVK
+ 8PXfMqwFFzfdtKi9xyxGO9pRQuutP9o=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-196-vXZ0MX_fN1O5alAnTa3gRA-1; Thu,
- 11 Sep 2025 07:59:16 -0400
-X-MC-Unique: vXZ0MX_fN1O5alAnTa3gRA-1
-X-Mimecast-MFC-AGG-ID: vXZ0MX_fN1O5alAnTa3gRA_1757591955
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-499-vGcAXZUNOxqwNaRc-8a34Q-1; Thu,
+ 11 Sep 2025 08:10:20 -0400
+X-MC-Unique: vGcAXZUNOxqwNaRc-8a34Q-1
+X-Mimecast-MFC-AGG-ID: vGcAXZUNOxqwNaRc-8a34Q_1757592619
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DB6EE195395B; Thu, 11 Sep 2025 11:59:14 +0000 (UTC)
-Received: from fedora (unknown [10.44.33.231])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C9F6119560BB; Thu, 11 Sep 2025 11:59:08 +0000 (UTC)
-Date: Thu, 11 Sep 2025 13:59:04 +0200
-From: =?iso-8859-1?B?SuFu?= Tomko <jtomko@redhat.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefan Weil <sw@weilnetz.de>, qemu-block@nongnu.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B77411800562; Thu, 11 Sep 2025 12:10:18 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.18])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5E3C2300021A; Thu, 11 Sep 2025 12:10:18 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 7FEF821E6A27; Thu, 11 Sep 2025 14:10:15 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
  Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2 03/14] system: unconditionally enable thread naming
-Message-ID: <aMK5iGPz5rSV7WC8@fedora>
-References: <20250829180354.2922145-1-berrange@redhat.com>
- <20250829180354.2922145-4-berrange@redhat.com>
+ =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Greg Kurz
+ <groug@kaod.org>
+Subject: The different ways QEMU logs stuff
+Date: Thu, 11 Sep 2025 14:10:15 +0200
+Message-ID: <87bjnhgpg8.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="5c2FoizNjCBL97Wh"
-Content-Disposition: inline
-In-Reply-To: <20250829180354.2922145-4-berrange@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jtomko@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,90 +86,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+I fell into another rabbit hole: logging.  Here's my trip report.
 
---5c2FoizNjCBL97Wh
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+We have:
 
-On a Friday in 2025, Daniel P. Berrang=E9 wrote:
->When thread naming was introduced years ago, it was disabled by
->default and put behind a command line flag:
->
->  commit 8f480de0c91a18d550721f8d9af969ebfbda0793
->  Author: Dr. David Alan Gilbert <dgilbert@redhat.com>
->  Date:   Thu Jan 30 10:20:31 2014 +0000
->
->    Add 'debug-threads' suboption to --name
->
->This was done based on a concern that something might depend
->on the historical thread naming. Thread names, however, were
->never promised to be part of QEMU's public API. The defaults
->will vary across platforms, so no assumptions should ever be
->made about naming.
->
->An opt-in behaviour is also unfortunately incompatible with
->RCU which creates its thread from an constructor function
->which is run before command line args are parsed. Thus the
->RCU thread lacks any name.
->
->libvirt has unconditionally enabled debug-threads=3Dyes on all
->VMs it creates for 10 years. Interestingly this DID expose a
->bug in libvirt, as it parsed /proc/$PID/stat and could not
->cope with a space in the thread name. This was a latent
->pre-existing bug in libvirt though, and not a part of QEMU's
->API.
->
->Having thread names always available, will allow thread names
->to be included in error reports and log messags QEMU prints
->by default, which will improve ability to triage QEMU bugs.
->
->Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
->Signed-off-by: Daniel P. Berrang=E9 <berrange@redhat.com>
->---
-> docs/about/deprecated.rst |  7 +++++++
-> include/qemu/thread.h     |  1 -
-> system/vl.c               | 11 ++++++-----
-> util/qemu-thread-posix.c  | 18 +-----------------
-> util/qemu-thread-win32.c  | 27 ++++++---------------------
-> 5 files changed, 20 insertions(+), 44 deletions(-)
->
->diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
->index d50645a071..bd6f865558 100644
->--- a/docs/about/deprecated.rst
->+++ b/docs/about/deprecated.rst
->@@ -81,6 +81,13 @@ kernel since 2001. None of the board types QEMU support=
-s need
-> ``param_struct`` support, so this option has been deprecated and will
-> be removed in a future QEMU version.
->
->+``debug-threads`` option for ``-name``
+* util/error-report.c
 
-(since 10.2)
+  - To stderr (or current monitor, but that's not relevant here)
 
-Jano
+  - Format:
+        [TIME ][GUEST-NAME ]PROGNAME:LOCATION: (|warning: |info: )MESSAGE
+    where the optional parts are controlled by -msg
 
->+''''''''''''''''''''''''''''''''''''''
->+
->+Thread ``debug-threads`` option for the ``-name`` argument is now
->+ignored. Thread naming is unconditionally enabled for all platforms
->+where it is supported.
->+
-> User-mode emulator command line arguments
-> -----------------------------------------
->
+  - Maintained: see MAINTAINERS "Error reporting"
 
---5c2FoizNjCBL97Wh
-Content-Type: application/pgp-signature; name=signature.asc
+* util/log.c
 
------BEGIN PGP SIGNATURE-----
+  - Control:
 
-iHUEARYKAB0WIQT+Rn5j0qdK2hQgnuAU0rOr/y4PvAUCaMK5hQAKCRAU0rOr/y4P
-vAjPAP9IH40tEQqmVUeI2r1NnNvrTtDh4Eu4OSX8KyP65orD8QEAmHSoa4Lh0taD
-A8tZgqoQiRG3R3QRIthMbL+rbafF8Q8=
-=xUIa
------END PGP SIGNATURE-----
+    =C2=B7 Some logging is always on
 
---5c2FoizNjCBL97Wh--
+    =C2=B7 Some logging is off by default, enabled per "log item" with -d
+
+    =C2=B7 Some can additionally be limited to address ranges with -dfilter
+
+  - To the file given by -D (default stderr), or with -d tid to files
+    with names derived from the pattern given by -D (%d is replaced by
+    the thread ID)
+
+  - Format:
+        [TIME ]MESSAGE
+    where the optional part is controlled by -msg timestamp (-msg
+    guest-name has no effect here)
+
+  - Not covered by MAINTAINERS
+
+* Tracing
+
+  - Control: off by default, enabled with -trace per trace point (and
+    also -d trace: --- I find that duplication bizarre)
+
+  - Run time control with HMP commands trace-event, trace-file, QMP
+    commands trace-event-get-state, trace-event-set-state
+
+  - To whatever backends are compiled in:
+
+    =C2=B7 "log" wraps around util/log.c's always-on logging
+
+    =C2=B7 "simple" logs to a binary file given by -trace file=3D
+
+    =C2=B7 "syslog" logs to POSIX syslog
+
+    =C2=B7 "ftrace", "dtrace", "ust" integrate with Linux ftrace, DTrace /
+      SystemTap, and LTTng userspace tracing, respectively
+
+  - Maintained: see MAINTAINERS "Traicing"
+
+* Unstructured ad hoc printing to stdout or stderr
+
+I think that's it.
+
+Observations:
+
+* Mixing logs with different formats in one destination makes them
+  needlessly hard to read and parse.
+
+  Daniel's "util: sync error_report & qemu_log output more closely"
+  series makes util/error-report.c and util/log.c use a common message
+  prefix
+
+      [TIME ][GUEST-NAME ]PROGNAME\(THREAD-NAME\):...
+
+  where the optional parts are controlled by -msg.  Continues prior work
+  in that direction: commit 012842c0755 (log: make '-msg timestamp=3Don'
+  apply to all qemu_log usage).
+
+* Spreading logs over multiple destinations can make the order hard to
+  determine.
+
+  -D splits util/log.c from util/error-report.c.
+
+  -d tid further splits per thread.
+
+  Splitting per thread feels fairly redundant once the prefix includes
+  the thread name.  Thread names is easier to make sense of than numeric
+  thread IDs in the split filenames.
+
+  To keep the complete log in one place, avoid -D, and enable trace
+  backend "log".
+
+* In my view, util/log.c consists of three layers.  Form bottom to top:
+
+  * Logging messages: qemu_log()
+
+  * Control of what to log ("log items"): qemu_log_mask()
+
+  * Address filtering: qemu_log_in_addr_range()
+
+  The bottom layer is also used by trace backend "log".
+
+* Tracing vs. "log items"
+
+  Tracing and "log items" both provide opt-in logging.
+
+  Why do we have two?  Feels like an accident to me.
+
+  When to use which?  I guess people pick whatever they're familiar
+  with.
+
+  Would we be better off with just one?  I wish...
+
+  Which one?  Clearly tracing, because tracing backends provide plenty
+  of useful functionality "log items" lack.
+
+  "Log items" support per-thread log files.  With tracing, you could
+  instead split by thread names once Daniel's series is in.
+
+  Address range filtering is only used with "log items".  It could just
+  as easily be used with tracing.
+
+Thoughts?
 
 
