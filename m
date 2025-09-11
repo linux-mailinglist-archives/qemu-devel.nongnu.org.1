@@ -2,81 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE5A2B5335D
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 15:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE96B5335B
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 15:14:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwh76-0001OU-C4; Thu, 11 Sep 2025 09:13:24 -0400
+	id 1uwh7P-0001lp-OF; Thu, 11 Sep 2025 09:13:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uwh71-0001MM-4c
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 09:13:19 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uwh6v-0007XF-Ry
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 09:13:18 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-61a8c134533so1344830a12.3
- for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 06:13:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757596390; x=1758201190; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=BLArwD4h0WuYLDjVYgR3IWlbms1EKzAZ7hWpKqNofrY=;
- b=na/pRSC1/AF71OiBZTny6YWoYoY6PIyUaOVZy17A3MoUtzrLC3+J0fXlS0oWiOIr0x
- yv20J8qk0md1eH7ve592gxQapK1MsKqta6FpU+9+HI0E8LTqGh91kJMMQnIGsREpv4hi
- A/5ovLjKZGNs1b+CMHDIXxFlUOqvkZX4xmNkphqrzs20dKRtER+KLWK+1sPLWjKrJdPS
- W2Sup9Z03dsKOwuQegS/FIGTngXS/n9RxLLB89fzL507n4qIbcS+vobCE/Rq2+Ml+vU0
- kv/hfds6ARfVgSh6oRpz8JUAwtIini1j+CKwHW8wZk5JjgrDEOC13Zd0gAkqeyWiSJqR
- 4LeQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uwh7K-0001l9-Bq
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 09:13:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uwh7D-0007YV-7k
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 09:13:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757596405;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YN3OFDkOUp1GA6cUxj1GuOwxUSwN3QnGIgwQPVwANks=;
+ b=YVfuzsz8SwzULA8BwBlZw8E19Fx+VixHsDAetrYGLUN5ZqgCDvlDLagDv14ygUxsIWzvY6
+ de/0PwRrP9yoNHQ902dZtbcVLbhpQpyFOrvZU9XS6zdFgf1b7XWlXh+/n9KMoFwXv3JdXw
+ f/Uy1kFqXEBo4yuGPTgVsrOOeGdFt2w=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-567-GRCTDswPOiWvmK0sJt3pDg-1; Thu, 11 Sep 2025 09:13:23 -0400
+X-MC-Unique: GRCTDswPOiWvmK0sJt3pDg-1
+X-Mimecast-MFC-AGG-ID: GRCTDswPOiWvmK0sJt3pDg_1757596403
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-7211f13bc24so13677516d6.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 06:13:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757596390; x=1758201190;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BLArwD4h0WuYLDjVYgR3IWlbms1EKzAZ7hWpKqNofrY=;
- b=cXheW36c1Ui/gI/7LNOYw6LtxWwNz/9LJNfjDMM+0wVIECzRzhMsb89bDqJ9GWzaF3
- vuEvjPfJGJRZQ06kkAG+Lh3DB5XQppH8FW6jzQZHwDJO6Qrx8f9Q6zAGeznt5GVTtkGD
- QdPh2vl/WZf//Ggh643aGdgA0WLbRsT4X/PJjZOr+JG79F6bcQgdhr1IrmjmmYUbEN6r
- cF0BF+1p/tvT9lWSPuIh+e3HwvaSDo15Bp2m5gUmnbg9/koOHCr241cn6kWeL6P6md9v
- cYl9bysKCaySXRfiLqr/QhTGCYo6IdbB2cmXaEFzZSupKyWKLkLvTEjPixjNxrF4pynr
- sMqw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU8yURngFI/hJZ7DEMJi6jfrhZ5U6uom3axofkW10MXJq5aL8jGk41MJxdCRtwRCDgG6SJfSy4pMfO1@nongnu.org
-X-Gm-Message-State: AOJu0YwQL6K6hRbcLHuz+7/v1u64dlanbEp7+AIGF0SHrwtLM4jW73o8
- XkQGsJ54+iEa53t40vUY+LShYyfTP/SFK1xEjhIEImh9UH27haQN9tm79KBimaVRt5jUpU6s0qO
- X4vRCDhBUCzMYiRfYPo4B5gMAPawOPknPb5ijfVWddQ==
-X-Gm-Gg: ASbGncvVGQFvBam9vr1pOB2GXd0vc0HEe01dLJLsZmqhXkL5DaZkl5Jzl+B0YC3Cwjt
- nXZSsGl0v66nw4MGYMEQ8aw9n/B7dhpGIGumSoDsU7kqc7pkXUft0aaQxtGdLISKSTbzW9i64VA
- 0DEcSasle5gn98i2H5rExpee7xPAk+a31g39BT3t4ZZtgjrKp9RnMLgkwjvuY2sSIfUBFbLpU9o
- 6JGgh+gqLO2+BOFMX0=
-X-Google-Smtp-Source: AGHT+IF1Do3jJJouUJIYYM5Oe7bMecITwlXX7e9Z49dzvjsXu2b7hjeaXyKSNiI25DkAz8KnlclYlmcM9ZOVih/biQ8=
-X-Received: by 2002:a05:6402:254d:b0:628:20b9:2621 with SMTP id
- 4fb4d7f45d1cf-62820b928bdmr14561690a12.2.1757596390349; Thu, 11 Sep 2025
- 06:13:10 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1757596403; x=1758201203;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YN3OFDkOUp1GA6cUxj1GuOwxUSwN3QnGIgwQPVwANks=;
+ b=uAWTwn7cT68rsieNbfsRnBONPlbKYf5qUEmNLUUwRLRNYqBNxnavntrrxQ01aInYw+
+ EyhRyOq4HdWw6K2cVLjGcA09vzM1kSWt9sQMKW7B0tfJ9RrCizxDHIV4GmOA2kdKZ5EY
+ ABIeAvbjCcJq7GI/F5micJRUGlGJWx3MDl51Oa/4vGIe1g5MIwQdnzNxXsLL5SiIjSQ9
+ 9YWz63qOZ12En0xvij1uOd1hsCnNDDXuqywM+o1m/GDmm5d1mDDZ6Lq9+R78j1Gz7Y0w
+ xSEmsDTI53mGLxkhLRWSrHEdoXW6Km1JBNtDDTi4gV9c9f6E0x8H/iQPCzyikae/2J/f
+ Eu1A==
+X-Gm-Message-State: AOJu0Yyl+wn+zCmIAjIHDgo2SVUby2wqyp7fW/VXFJHK37FicAVKPx0L
+ byj/MTT4BeWuiOxY/1X9e1EXKqcAHP7c9SH0P8d4dAu0znmUO2gyIV9AuJ9zS6hHJjbQAQ9Pshg
+ JTgAN2mXzJ3UpKp1luZ4tYHHPgBB8Zqv78S+8DY6Qdoog3i5qaT04+BkEdZBFtqBJqlrE1aFvIq
+ 4gp1+QbjWoDaboXNgNyH0Oasz7iOfvEGjfYRcYGA==
+X-Gm-Gg: ASbGncudRC/qduHGKmqLUvcCrs9BHJ3xyo6eHF4G9Wla1kF0KfU83WJL/cG3QPyetX4
+ JWWi8tb38vw1o8Qa4IQ2d+WqEWpFgMeCmb28//4XBe1VNFl/Z8TAPQGi/UhneAc5WC9zGHM2JnJ
+ 0L8xMAOy4xkxIoFeccyD0sz5su++ECbQOL1zTaJxeae5kwTmpjoSx+cpfnj8qonz9xG9j7VPL/A
+ smLkMhP5FENU3EzhMUu5EiBP8Itm6VKPxf2m5Rr+8YGsYcyeAsN4RpKKHEe3T+JDt478jaJB1CM
+ C34+5Ks8xUZ1C4YWYWtjLGQfBUkBBDrS
+X-Received: by 2002:ad4:5caa:0:b0:737:a36d:77e9 with SMTP id
+ 6a1803df08f44-73924e23439mr218914606d6.17.1757596402939; 
+ Thu, 11 Sep 2025 06:13:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGEI7ACU4aW0EQytRDFRPjMkMvKDU4xmV6FSUQFUkGCnEZuDfV9H2or1opQTCnQXaZbSAIx/g==
+X-Received: by 2002:ad4:5caa:0:b0:737:a36d:77e9 with SMTP id
+ 6a1803df08f44-73924e23439mr218913896d6.17.1757596402321; 
+ Thu, 11 Sep 2025 06:13:22 -0700 (PDT)
+Received: from x1.local ([174.89.135.121]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-763b680037bsm10700946d6.29.2025.09.11.06.13.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Sep 2025 06:13:21 -0700 (PDT)
+Date: Thu, 11 Sep 2025 09:13:10 -0400
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Juraj Marcin <jmarcin@redhat.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH 0/3] migration/tls: Graceful shutdowns for main and
+ postcopy channels
+Message-ID: <aMLK5nT4CVPrcZCB@x1.local>
+References: <20250910160144.1762894-1-peterx@redhat.com>
 MIME-Version: 1.0
-References: <20250909123747.567480-1-thuth@redhat.com>
-In-Reply-To: <20250909123747.567480-1-thuth@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 11 Sep 2025 14:12:54 +0100
-X-Gm-Features: AS18NWDgOwpwP8VpUus8K1NUd1-geWRZuvI1MgI47EqU8IPPNQcD1WfFs7OPkfQ
-Message-ID: <CAFEAcA9h4HDAsSBUQq+3MCOcjyHJxjgyz6pz6GfzuboZ69=Rjw@mail.gmail.com>
-Subject: Re: [PATCH] tests/functional/aarch64: Fix assets of test_hotplug_pci
-To: Thomas Huth <thuth@redhat.com>
-Cc: Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250910160144.1762894-1-peterx@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,19 +105,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 9 Sept 2025 at 13:38, Thomas Huth <thuth@redhat.com> wrote:
->
-> From: Thomas Huth <thuth@redhat.com>
->
-> The old bookworm URLs don't work anymore, resulting in a 404 error
-> now. Let's update the test to Debian Trixie to get it going again.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  tests/functional/aarch64/test_hotplug_pci.py | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+On Wed, Sep 10, 2025 at 12:01:41PM -0400, Peter Xu wrote:
+> Fabiano fixed graceful shutdowns for multifd channels previously:
+> 
+> https://lore.kernel.org/qemu-devel/20250206175824.22664-1-farosas@suse.de/
+> 
+> However we likely forgot the rest channels.  Do it the same for the main
+> and postcopy channels.  This fixes a warning message when running unit test
+> /ARCH/migration/postcopy/preempt/tls/psk.
+> 
+> Thanks,
+> 
+> Peter Xu (3):
+>   migration/tls: Gracefully shutdown main and preempt channels
+>   migration: Make migration_has_failed() work even for CANCELLING
+>   migration/multifd: Use the new graceful termination helper
 
-Applied to master to avoid the CI failures; thanks.
+Please hold off the review on this one.  Juraj reported the issue wasn't
+resolved by the changes, and I can also reproduce.  I'll have a look and
+repost..
 
--- PMM
+-- 
+Peter Xu
+
 
