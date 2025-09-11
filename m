@@ -2,116 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A196B52D50
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 11:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0308B52DD4
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 11:59:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwdco-00047g-VC; Thu, 11 Sep 2025 05:29:54 -0400
+	id 1uwe32-0001hI-Pb; Thu, 11 Sep 2025 05:57:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
- id 1uwdck-000471-4U; Thu, 11 Sep 2025 05:29:50 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <lyndra@linux.alibaba.com>)
+ id 1uwe2r-0001cR-Dm; Thu, 11 Sep 2025 05:56:49 -0400
+Received: from [115.124.30.100] (helo=out30-100.freemail.mail.aliyun.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
- id 1uwdcg-0001ST-DJ; Thu, 11 Sep 2025 05:29:49 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58ALJdmD023376;
- Thu, 11 Sep 2025 09:29:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=428OOm
- Ckxvu5WQweL2ujU+fa26PQ4McB1IjXizMhyjA=; b=TTxQ+53ZUnyZIq/gfpBCWS
- ZrZwWVdBDmoYOfiymjgSwfYxSS1YqgkevYxO5KWKFL6PmY3CxwNfbiWthtjjklsw
- 0VD+WB9zvGnYj7OIw9jg+oG7YEMkIgm418U5aZltg//g9BkuhA+1dcRrahajnhUD
- 4Oebm7hu5h8Elrk5MTRDC9GVYf6DKg9D40tN/PY8IcLLMD1UqBQzedUouqT5fi50
- Awy9d/rlQcUQU5D/6IeHDYVHu1+R+KQ7jaP569bX/3pq0HqIRgcdd/fw04/WXit/
- c5rexC83qkN9DNbyA8p1w5igk6Rl0AnXSioN+q5rdkFT6IPPwGPYzWwaK12qSI2Q
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmx3q36-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Sep 2025 09:29:38 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58B9Tb9N029319;
- Thu, 11 Sep 2025 09:29:37 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmx3q2p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Sep 2025 09:29:37 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58B6XESt017188;
- Thu, 11 Sep 2025 09:29:36 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4911gmmv9g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Sep 2025 09:29:36 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 58B9Ta2h19333688
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 11 Sep 2025 09:29:36 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 15F3D5804E;
- Thu, 11 Sep 2025 09:29:36 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DA66158054;
- Thu, 11 Sep 2025 09:29:33 +0000 (GMT)
-Received: from [9.79.201.141] (unknown [9.79.201.141])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
- Thu, 11 Sep 2025 09:29:33 +0000 (GMT)
-Message-ID: <768c783a-7165-482e-aa28-86430a4527a9@linux.ibm.com>
-Date: Thu, 11 Sep 2025 14:59:30 +0530
+ (Exim 4.90_1) (envelope-from <lyndra@linux.alibaba.com>)
+ id 1uwe2l-0005Or-4E; Thu, 11 Sep 2025 05:56:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1757584578; h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To;
+ bh=DYiQL74ZEsuBIaGsaZfjxbsfdIN0YBm/3+mOK/dlVfM=;
+ b=c4lmcPMGtuZakyuVEIoylGK84UMALEDFY+gAmCUUQ3Tg6gpxVZGNh0ZyyVcMpZVxYZ4jTMPEPaEWz25s/Xtl+w54V6zRuN+Dpp0Ubkl1nsKrCYNLCnrJMIYaNuESZ/HTPXrrVvWftsgvTqX6Wrwl4wi6GK3nN64KhVgRubRESCg=
+Received: from ea134-sw06.eng.xrvm.cn(mailfrom:lyndra@linux.alibaba.com
+ fp:SMTPD_---0Wnlj.Iv_1757584574 cluster:ay36) by smtp.aliyun-inc.com;
+ Thu, 11 Sep 2025 17:56:17 +0800
+From: TANG Tiancheng <lyndra@linux.alibaba.com>
+Subject: [PATCH v3 0/4] Fix RISC-V timer migration issues
+Date: Thu, 11 Sep 2025 17:56:12 +0800
+Message-Id: <20250911-timers-v3-0-60508f640050@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] target/ppc: Move floating-point compare instructions
- to decodetree.
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org, npiggin@gmail.com, danielhb413@gmail.com
-Cc: harshpb@linux.ibm.com
-References: <20250619095840.369351-1-rathc@linux.ibm.com>
- <20250619095840.369351-3-rathc@linux.ibm.com>
- <7857ae80-63eb-4d18-9618-d6c94cdd0c17@linaro.org>
-Content-Language: en-US
-From: Chinmay Rath <rathc@linux.ibm.com>
-In-Reply-To: <7857ae80-63eb-4d18-9618-d6c94cdd0c17@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: XfjiId251xdZz6vx23J-Zxou4pOuYk1c
-X-Proofpoint-ORIG-GUID: tq3zw7C5T0h6VtprZubydX1quvjGLZS_
-X-Authority-Analysis: v=2.4 cv=J52q7BnS c=1 sm=1 tr=0 ts=68c29682 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=KKAkSRfTAAAA:8 a=mR2v0fqNRR0weItYsYIA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyNSBTYWx0ZWRfXzS1JBxdFF2/n
- WKW9q4KcJemP0BDs5oJgvvUDk6ej5TnxKI1Q3wtnyijSKte3yPlUcJyGBIGe3dr9uAC+ltevpfX
- VL2ImLng62Z3fwiZ50zGeLRwBkuvKeOcAAWr5szzywN6V9C7qI1ej3Vek7pKGPVP4sLp0OFSJyh
- V8x2vf1uw8BDW1tuU9Lt+AV26Df9zjnMVdJz9HZ6xf+yuy9Ifj8mQ+SSMFlMMYPscB+vwc6Hnk7
- aUO+lVL547fICe+DJ165Q0wS/HsROtMr6YSYVpMx9+xCj3Usx9fcTxBI6m1oNkgu4f6pGMRC/2v
- mf82n77m2Ik58OKfZKCYOapnIhnTMuo30OLcShzOOCHNmgjhd/jV2jbqrvKrLsrTmy594Acetnl
- qfhXmhHN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-10_04,2025-09-10_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 suspectscore=0 spamscore=0 phishscore=0
- bulkscore=0 adultscore=0 malwarescore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060025
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=rathc@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALycwmgC/22MwQ6CMBAFf4X0bEm3CBRP/ofx0JatbIJgWmwwh
+ H+3cDAmepyXN7OwgJ4wsFO2MI+RAo1DguKQMdvp4Yac2sRMClmKRjR8ojv6wEFZaavagJaapfP
+ Do6N5D12uiTsK0+hfezfCtv4kInDBa0RQummVO5pzT8NzznVPRhud2/HOtlSUXzqIjy6TXkBRN
+ g5chaj+6eu6vgEkxrXB4wAAAA==
+X-Change-ID: 20250909-timers-18c2c67b1a2a
+To: qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org, 
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ TANG Tiancheng <lyndra@linux.alibaba.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757584576; l=2408;
+ i=lyndra@linux.alibaba.com; s=20250909; h=from:subject:message-id;
+ bh=ZO4kc8jDpGjEzIDc4wxgL5AjLr8RUHhkcJicWIAedwA=;
+ b=LGimB6MwZwSRsseKUmo1Ffkix+QPbZY4007QhHAEOw0IQ8yu3NSvEFLYOG+cjUEp7nKE23qHb
+ Q/GuGoTujv9Djb2f/WWFdFuCGzkWd5eoCqR9Wt9H735ktdUloZBD8Yw
+X-Developer-Key: i=lyndra@linux.alibaba.com; a=ed25519;
+ pk=GQh4uOSLVucXGkaZfEuQ956CrYS14cn1TA3N8AiIjBw=
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 115.124.30.100 (deferred)
+Received-SPF: pass client-ip=115.124.30.100;
+ envelope-from=lyndra@linux.alibaba.com;
+ helo=out30-100.freemail.mail.aliyun.com
+X-Spam_score_int: -166
+X-Spam_score: -16.7
+X-Spam_bar: ----------------
+X-Spam_report: (-16.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,56 +80,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This patch set fixes several timer-related migration issues in QEMU's
+RISC-V implementation that cause timer events to be lost or behave
+incorrectly after snapshot save/restore or live migration.
 
-On 8/27/25 12:49, Richard Henderson wrote:
-> On 6/19/25 19:58, Chinmay Rath wrote:
->> +static bool do_helper_cmp(DisasContext *ctx, arg_X_bf *a,
->> +                          void (*helper)(TCGv_env, TCGv_i64, TCGv_i64,
->> +                                         TCGv_i32))
->> +    REQUIRE_INSNS_FLAGS(ctx, FLOAT);
->
-> ...
->
->> +TRANS(FCMPU, do_helper_cmp, gen_helper_FCMPU);
->> +TRANS(FCMPO, do_helper_cmp, gen_helper_FCMPO);
->
-> It's probably better to standardize on TRANS_FLAGS even though the 
-> flags checked is the same for both of these.
->
-Hi Richard,
+The problems addressed are:
 
-I did notice in the code that there are quite many instructions using 
-TRANS and doing flag check in the common helper.
-For example, in target/ppc/translate/fixedpoint-impl.c.inc :
+1. ACLINT mtimer time_delta not migrated: The time_delta field in
+   RISCVAclintMTimerState was missing from vmstate, causing incorrect
+   mtime values after snapshot restore. This resulted in guest time
+   appearing "frozen" until enough virtual time elapsed to compensate
+   for the offset error.
 
-/static bool do_set_bool_cond(DisasContext *ctx, arg_X_bi *a, bool neg, 
-bool rev)
-{
-     REQUIRE_INSNS_FLAGS2(ctx, ISA310);
-     uint32_t mask = 0x08 >> (a->bi & 0x03);
-     ....
-     return true;
-}
+2. ACLINT mtimer timers array not migrated: Active timer events
+   scheduled via riscv_aclint_mtimer_write_timecmp() were not being
+   migrated, causing pending timer interrupts to be lost after restore.
 
-TRANS(SETBC, do_set_bool_cond, false, false)
-TRANS(SETBCR, do_set_bool_cond, false, true)
-TRANS(SETNBC, do_set_bool_cond, true, false)
-TRANS(SETNBCR, do_set_bool_cond, true, true)
-/
+3. CPU stimer/vstimer not migrated: The S-mode and VS-mode timer
+   pointers in CPURISCVState were missing from vmstate_riscv_cpu,
+   causing supervisor-level timer events to be lost.
 
-Do we want to standardize the use of TRANS_FLAGS in all such existing 
-insns ?
+The patch set introduces a new VMSTATE_TIMER_PTR_VARRAY macro to handle
+migration of variable-length timer pointer arrays, and adds the missing
+timer fields to the appropriate vmstate structures.
 
-I can send a followup patch doing the same for such insns (including the 
-ones in this patch)
+Signed-off-by: TANG Tiancheng <lyndra@linux.alibaba.com>
+---
+Changes in v3:
+- Remove 'include/' of the subject at patch v2 2/4.
+- Added Reviewed-by from Peter Xu.
+- Link to v2: https://lore.kernel.org/qemu-devel/20250910-timers-v2-0-31359f1f6ee8@linux.alibaba.com
 
-Thanks,
+Changes in v2:
+- Split VMSTATE_VARRAY_OF_POINTER_UINT32() into a separate patch,
+  and define VMSTATE_TIMER_PTR_VARRAY() in riscv_aclint.h.
+- Added Reviewed-by from Daniel Henrique Barboza.
+- Link to v1: https://lore.kernel.org/qemu-devel/20250909-timers-v1-0-7ee18a9d8f4b@linux.alibaba.com
 
-Chinmay
+---
+TANG Tiancheng (4):
+      hw/intc: Save time_delta in RISC-V mtimer VMState
+      migration: Add support for a variable-length array of UINT32 pointers
+      hw/intc: Save timers array in RISC-V mtimer VMState
+      target/riscv: Save stimer and vstimer in CPU vmstate
 
-> But anyway,
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->
->
-> r~
+ hw/intc/riscv_aclint.c         |  7 +++++--
+ include/hw/intc/riscv_aclint.h |  4 ++++
+ include/migration/vmstate.h    | 10 ++++++++++
+ target/riscv/machine.c         | 25 +++++++++++++++++++++++++
+ 4 files changed, 44 insertions(+), 2 deletions(-)
+---
+base-commit: 6a9fa5ef3230a7d51e0d953a59ee9ef10af705b8
+change-id: 20250909-timers-18c2c67b1a2a
+
+Best regards,
+-- 
+TANG Tiancheng <lyndra@linux.alibaba.com>
+
 
