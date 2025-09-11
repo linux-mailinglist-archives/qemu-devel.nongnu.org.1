@@ -2,86 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC0AB53572
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 16:32:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2339FB53590
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 16:34:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwiLL-0003or-04; Thu, 11 Sep 2025 10:32:11 -0400
+	id 1uwiMu-0004vi-Dc; Thu, 11 Sep 2025 10:33:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uwiLH-0003o0-8Z
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 10:32:07 -0400
-Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uwiLF-0002Kf-3D
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 10:32:06 -0400
-Received: by mail-yw1-x1136.google.com with SMTP id
- 00721157ae682-7227bc08c97so13016427b3.1
- for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 07:32:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757601123; x=1758205923; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=3avX0MJx7z7ou5iJA8DuZIGcQo8FIUExV5H2IAivXQM=;
- b=yPDh6ShsGO4UdkVpGSvccunYtdauqdYYDUcbb5hvWwwbL4z6l9msN+GFk+5xfhCyMf
- u3niURFOcNSX6YoIO28xJTYBH/HQ95WXVio4hBsz0USJGN75LpA9TC347HTidM/I7tPC
- k2FAqW47KRz3PHmtxOPt3xTxiGq5WAx2M3x8tktMMXTAnbmMpX0I16hHxE6oLxTf6mqy
- VBIn0lAu++PL5ux5QVOS98ZYochWzXLP5gwrrhjST3rmo9ASUogU5Rj173aMdvEedNSc
- DXM0pvi9GQd49UZMi0AOoeEQd/JB/JV3PYOWymHl9ggl2RoYyv7zxZptJ0loV232fPfW
- PxbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757601123; x=1758205923;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3avX0MJx7z7ou5iJA8DuZIGcQo8FIUExV5H2IAivXQM=;
- b=HNfQ6QLUzdTUvNNY+baoVY0siJdh00Lbkz4C8w2brmRClSYYRYc67zh+tN/MQLn1+L
- PRtMOxXnkUeD0gKk2yqm/CSkakGWn9KZHg8ek9c9R/eIKg7H57hIkTzbCvjxs8QHH4e7
- FC17VsevITmS+KT55L1LzfeVG03vRHpimlxAGH7au/tTr7BkjcPgcdXSU0KwAPKwPHo+
- JyYpLP9Z0Tr8YSzKxw8DnzkO/OKrbsWnCtc287Pb2dKhioyvI1XsCVpBY+aKz1Ea1cLC
- ICHe1T6vh/jXncTtFl1x8DnSbydED7KiksX73rsvjD40BUNCdTkNRMgsmWnCPoMr8DuA
- yL1A==
-X-Gm-Message-State: AOJu0YytFN8EXv1NT24ozWlfiMb8HUkQb6mD+hQB3fWUKTnS066Ybxj5
- 67ae+iAWOGY0DkoMO2HrpS01UVl5K3CGUtmPtGmRjEHPgcc21IeaBhK7SNX7AFsSHCKgQjej8lq
- fjJXQkcMeD4PIcNYdq+4NggBmNPf1QAg6jWQzs6rHCA==
-X-Gm-Gg: ASbGncsgpANxpehpqkcQXwQGt2weNQKs1LPSIYO78yE0fHvFD0v1BX5AzuAykRdqqRh
- p7a4pszYVw/gZ7WH6v3tPQJBNnrNmxHeqyuIu7negnYzwPtcW94MGkoS8FbHUoAxAMwGJ7wO62n
- qMgF7e3WkwbDc7qzA/Uf4+/TzyUwHOR/NRVvWZA4UQP6O0GaJigpvEuIQFaKgpSK/4ccxqe3bgo
- yC8KNZn
-X-Google-Smtp-Source: AGHT+IEQyUF2uAO/Dr3GK+/8Yh1FkCBEqxkbFKdhvIn9JJK1BNBdmp5GTS8xK/Ajst3mT6d6OfL+Zito7A1qMjyCNDs=
-X-Received: by 2002:a05:690c:8d17:b0:71e:7a40:7efb with SMTP id
- 00721157ae682-72eeb9d1c8cmr29254277b3.11.1757601123187; Thu, 11 Sep 2025
- 07:32:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gautam@linux.ibm.com>)
+ id 1uwiMn-0004pK-Kp; Thu, 11 Sep 2025 10:33:45 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gautam@linux.ibm.com>)
+ id 1uwiMf-0002Qt-3T; Thu, 11 Sep 2025 10:33:40 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58B63BE6024821;
+ Thu, 11 Sep 2025 14:33:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=JCZEM+W/7YMGUhHjvYWtqcAniVYI3VzWeo2tV+Dky
+ hM=; b=h2yNeXdJOzhZVHkhd3suuEGH3tqNAGte9svVV6eHwhZ2I1yQZN2aU4Dks
+ AHiASpqDtaOZdh+G9+dE2j4DIfSapFVTU4taQampEopUfzdtrSqvStdynW8TZbCv
+ tCHBdXZx9HnlCTw3dg3VAZuuNfv97z/FXjXEUZKHdpbQy6Yv8DscbOYE8c79ukVO
+ x2l8svqUtIbtoJl8a/OOtQeLYs3waU550Eg0kmvB2Q/SuIR2dLF5MJB+delPQ7GD
+ Fj7e1/mJqjt8EnkL3Ws8Scpt+vp3EKddX/WwAuOgkdKIpv4fXlzXWzmnFgulKVSd
+ LN2ScUAKcFEE8bqh45gHmeyfq0ycA==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmx59dr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Sep 2025 14:33:27 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58BEVlEC026422;
+ Thu, 11 Sep 2025 14:33:27 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmx59dn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Sep 2025 14:33:27 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58BDPZtH010671;
+ Thu, 11 Sep 2025 14:33:26 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4910sn66mq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Sep 2025 14:33:26 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 58BEXMfn49217992
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 11 Sep 2025 14:33:22 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 204C920040;
+ Thu, 11 Sep 2025 14:33:22 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A4EE72004B;
+ Thu, 11 Sep 2025 14:33:19 +0000 (GMT)
+Received: from mac.in.ibm.com (unknown [9.109.215.107])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 11 Sep 2025 14:33:19 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: harshpb@linux.ibm.com, nicholas@linux.ibm.com, npiggin@gmail.com,
+ rathc@linux.ibm.com, pbonzini@redhat.com
+Cc: Gautam Menghani <gautam@linux.ibm.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: [PATCH v3] hw/ppc/spapr_hcall: Return host mitigation characteristics
+ in KVM mode
+Date: Thu, 11 Sep 2025 20:02:42 +0530
+Message-Id: <20250911143242.50274-1-gautam@linux.ibm.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-References: <20250822151614.187856-1-luc.michel@amd.com>
- <20250822151614.187856-40-luc.michel@amd.com>
-In-Reply-To: <20250822151614.187856-40-luc.michel@amd.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 11 Sep 2025 15:31:51 +0100
-X-Gm-Features: Ac12FXwU5pA47bV4PZ29Vo3Sh2Y6L9SKmyzInNKFfKlbGlg_Wess6EL5BefVsm8
-Message-ID: <CAFEAcA-wnyWketgmq-gQYfgxMkDq16VDNZQCvM3uA1OE__=PAA@mail.gmail.com>
-Subject: Re: [PATCH v4 39/47] target/arm/tcg/cpu64: add the cortex-a78ae CPU
-To: Luc Michel <luc.michel@amd.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Francisco Iglesias <francisco.iglesias@amd.com>,
- "Edgar E . Iglesias" <edgar.iglesias@amd.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Alistair Francis <alistair@alistair23.me>,
- Frederic Konrad <frederic.konrad@amd.com>, 
- Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: JaWqkUSOyZhFewTa0aXDHvbe7ly5M428
+X-Proofpoint-ORIG-GUID: gOEMF88e9tCDW77VKpfetdWoLEg5CM7y
+X-Authority-Analysis: v=2.4 cv=J52q7BnS c=1 sm=1 tr=0 ts=68c2ddb7 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=yJojWOMRYYMA:10 a=voM4FWlXAAAA:8 a=VnNF1IyMAAAA:8 a=-q3l6OvWyFqWqzZG4aIA:9
+ a=IC2XNlieTeVoXbcui8wp:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyNSBTYWx0ZWRfX/crDOqp4cG8w
+ IUDXKvI9JC7SH2czRyco1Ps4GKQ9j869ILHu0hyMf3xedfNkeXuABJ00bsZMCNk4yoFIwxTYl8J
+ QMDtlP/tcQTOd0yixproRLtzRMTJpJ0sqczVx0PDDXmmqm0ZPc6uMwswTg47l6Gvw3brXqMK0M/
+ omefF+H1f/r3+QAJVYd5UK2Q2tc4TE4+a4IwfzIwgkefnGw9JbCCybRy2Xc9dx8w7TIin/U4KBw
+ Fk6e9kc9Qc/gohL3ImphhYUNpsLDoUqwTTgo6n7QplVXHnxjU+XGFV6SCAscq9IuDM4yXf/cxSi
+ TQrE5ZuFdJkNqMEMiCcze3vZQyvr4sl0gSO3GraiCc7ZA7JVQdBCTCNYA9PckmyGLi92XTjD5yB
+ 8n13orAk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-11_01,2025-09-11_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 suspectscore=0 spamscore=0 phishscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060025
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=gautam@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,128 +122,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 22 Aug 2025 at 16:17, Luc Michel <luc.michel@amd.com> wrote:
->
-> Add support for the ARM Cortex-A78AE CPU.
->
-> Signed-off-by: Luc Michel <luc.michel@amd.com>
-> ---
->  target/arm/tcg/cpu64.c | 79 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 79 insertions(+)
->
-> diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-> index 35cddbafa4c..b56677c1a5d 100644
-> --- a/target/arm/tcg/cpu64.c
-> +++ b/target/arm/tcg/cpu64.c
-> @@ -404,10 +404,84 @@ static void aarch64_a76_initfn(Object *obj)
->
->      /* From D5.1 AArch64 PMU register summary */
->      cpu->isar.reset_pmcr_el0 = 0x410b3000;
->  }
->
-> +static void aarch64_a78ae_initfn(Object *obj)
-> +{
-> +    ARMCPU *cpu = ARM_CPU(obj);
-> +    ARMISARegisters *isar = &cpu->isar;
-> +
-> +    cpu->dtb_compatible = "arm,cortex-a78ae";
-> +    set_feature(&cpu->env, ARM_FEATURE_V8);
-> +    set_feature(&cpu->env, ARM_FEATURE_NEON);
-> +    set_feature(&cpu->env, ARM_FEATURE_GENERIC_TIMER);
-> +    set_feature(&cpu->env, ARM_FEATURE_BACKCOMPAT_CNTFRQ);
+Currently, on a P10 KVM guest, the mitigations seen in the output of
+"lscpu" command are different from the host. The reason for this
+behaviour is that when the KVM guest makes the "h_get_cpu_characteristics"
+hcall, QEMU does not consider the data it received from the host via the
+KVM_PPC_GET_CPU_CHAR ioctl, and just uses the values present in
+spapr->eff.caps[], which in turn just contain the default values set in
+spapr_machine_class_init().
 
-From cpu.h:
+Fix this behaviour by making sure that h_get_cpu_characteristics()
+returns the data received from the KVM ioctl for a KVM guest.
 
-    /*
-     * ARM_FEATURE_BACKCOMPAT_CNTFRQ makes the CPU default cntfrq be 62.5MHz
-     * if the board doesn't set a value, instead of 1GHz. It is for backwards
-     * compatibility and used only with CPU definitions that were already
-     * in QEMU before we changed the default. It should not be set on any
-     * CPU types added in future.
-     */
+Mitigation status seen in lscpu output:
+1. P10 LPAR (host)
+$ lscpu | grep -i mitigation
+Vulnerability Spectre v1:             Mitigation; __user pointer sanitization, ori31 speculation barrier enabled
+Vulnerability Spectre v2:             Mitigation; Software count cache flush (hardware accelerated), Software link stack flush
 
-This is a new CPU type, so don't set this.
+2. KVM guest on P10 LPAR with upstream QEMU
+$ lscpu | grep -i mitig
+Vulnerability L1tf:                   Mitigation; RFI Flush, L1D private per thread
+Vulnerability Meltdown:               Mitigation; RFI Flush, L1D private per thread
+Vulnerability Spec store bypass:      Mitigation; Kernel entry/exit barrier (eieio)
+Vulnerability Spectre v1:             Mitigation; __user pointer sanitization
+Vulnerability Spectre v2:             Mitigation; Software count cache flush (hardware accelerated), Software link stack flush
 
-> +    set_feature(&cpu->env, ARM_FEATURE_AARCH64);
-> +    set_feature(&cpu->env, ARM_FEATURE_CBAR_RO);
+3. KVM guest on P10 LPAR (this patch applied)
+$ lscpu | grep -i mitigation
+Vulnerability Spectre v1:             Mitigation; __user pointer sanitization, ori31 speculation barrier enabled
+Vulnerability Spectre v2:             Mitigation; Software count cache flush (hardware accelerated), Software link stack flush
 
-The TRM says this CPU doesn't have a CBAR register, so
-don't set this.
+Perf impact:
+With null syscall benchmark[1], ~45% improvement is observed.
 
-> +    set_feature(&cpu->env, ARM_FEATURE_EL2);
-> +    set_feature(&cpu->env, ARM_FEATURE_EL3);
-> +    set_feature(&cpu->env, ARM_FEATURE_PMU);
-> +
-> +    /* Ordered by B2.4 AArch64 registers by functional group */
+1. Vanilla QEMU
+$ ./null_syscall
+132.19 ns     456.54 cycles
 
-There is no B2.4 in the Cortex-A78AE TRM. Please don't
-just cut-and-paste things from other CPU definitions.
-Similarly for other comments here referencing TRM sections.
+2. With this patch
+$ ./null_syscall
+91.18 ns     314.57 cycles
 
-In this case what you want is section 3.2.4.
+[1]: https://ozlabs.org/~anton/junkcode/null_syscall.c
 
-> +    SET_IDREG(isar, CLIDR, 0x82000023);
-> +    cpu->ctr = 0x9444c004;
-> +    cpu->dcz_blocksize = 4;
-> +    SET_IDREG(isar, ID_AA64DFR0, 0x0000000110305408ull);
-> +    SET_IDREG(isar, ID_AA64ISAR0, 0x0010100010211120ull);
-> +    SET_IDREG(isar, ID_AA64ISAR1, 0x0000000001200031ull);
-> +    SET_IDREG(isar, ID_AA64MMFR0, 0x0000000000101125ull);
-> +    SET_IDREG(isar, ID_AA64MMFR1, 0x0000000010212122ull);
-> +    SET_IDREG(isar, ID_AA64MMFR2, 0x0000000100001011ull);
-> +    SET_IDREG(isar, ID_AA64PFR0, 0x1100000010111112ull); /* GIC filled in later */
-> +    SET_IDREG(isar, ID_AA64PFR1, 0x0000000000000010ull);
-> +    SET_IDREG(isar, ID_AFR0, 0x00000000);
-> +    SET_IDREG(isar, ID_DFR0, 0x04010088);
-> +    SET_IDREG(isar, ID_ISAR0, 0x02101110);
-> +    SET_IDREG(isar, ID_ISAR1, 0x13112111);
-> +    SET_IDREG(isar, ID_ISAR2, 0x21232042);
-> +    SET_IDREG(isar, ID_ISAR3, 0x01112131);
-> +    SET_IDREG(isar, ID_ISAR4, 0x00010142);
-> +    SET_IDREG(isar, ID_ISAR5, 0x01011121);
-> +    SET_IDREG(isar, ID_ISAR6, 0x00000010);
-> +    SET_IDREG(isar, ID_MMFR0, 0x10201105);
-> +    SET_IDREG(isar, ID_MMFR1, 0x40000000);
-> +    SET_IDREG(isar, ID_MMFR2, 0x01260000);
-> +    SET_IDREG(isar, ID_MMFR3, 0x02122211);
-> +    SET_IDREG(isar, ID_MMFR4, 0x00021110);
-> +    SET_IDREG(isar, ID_PFR0, 0x10010131);
-> +    SET_IDREG(isar, ID_PFR1, 0x00010000); /* GIC filled in later */
-> +    SET_IDREG(isar, ID_PFR2, 0x00000011);
-> +    cpu->midr = 0x410fd421;          /* r0p1 */
+Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+---
+v1 -> v2:
+Handle the case where KVM_PPC_GET_CPU_CHAR ioctl fails
 
-r0p3 is the latest...
+v2 -> v3:
+Add the lscpu output in the patch description
 
-> +    cpu->revidr = 0;
-> +
-> +    /* From B2.18 CCSIDR_EL1 */
-> +    /* 64KB L1 dcache */
-> +    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 7);
-> +    /* 64KB L1 icache */
-> +    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 2);
-> +    /* 512KB L2 cache */
-> +    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 8, 64, 512 * KiB, 7);
-> +
-> +    /* From B2.93 SCTLR_EL3 */
-> +    cpu->reset_sctlr = 0x30c50838;
-> +
-> +    /* From B4.23 ICH_VTR_EL2 */
-> +    cpu->gic_num_lrs = 4;
-> +    cpu->gic_vpribits = 5;
-> +    cpu->gic_vprebits = 5;
-> +    cpu->gic_pribits = 5;
-> +
-> +    /* From B5.1 AdvSIMD AArch64 register summary */
-> +    cpu->isar.mvfr0 = 0x10110222;
-> +    cpu->isar.mvfr1 = 0x13211111;
-> +    cpu->isar.mvfr2 = 0x00000043;
-> +
-> +    /* From D5.1 AArch64 PMU register summary */
-> +    cpu->isar.reset_pmcr_el0 = 0x41223000;
-> +}
+ hw/ppc/spapr_hcall.c   |  6 ++++++
+ include/hw/ppc/spapr.h |  1 +
+ target/ppc/kvm.c       | 13 ++++++++++---
+ 3 files changed, 17 insertions(+), 3 deletions(-)
 
-The register values look OK; checked against the TRM.
+diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+index 1e936f35e4..d617245849 100644
+--- a/hw/ppc/spapr_hcall.c
++++ b/hw/ppc/spapr_hcall.c
+@@ -1415,6 +1415,12 @@ static target_ulong h_get_cpu_characteristics(PowerPCCPU *cpu,
+     uint8_t count_cache_flush_assist = spapr_get_cap(spapr,
+                                                      SPAPR_CAP_CCF_ASSIST);
+ 
++    if (kvm_enabled() && spapr->chars.character) {
++        args[0] = spapr->chars.character;
++        args[1] = spapr->chars.behaviour;
++        return H_SUCCESS;
++    }
++
+     switch (safe_cache) {
+     case SPAPR_CAP_WORKAROUND:
+         characteristics |= H_CPU_CHAR_L1D_FLUSH_ORI30;
+diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+index 39bd5bd5ed..b1e3ee1ae2 100644
+--- a/include/hw/ppc/spapr.h
++++ b/include/hw/ppc/spapr.h
+@@ -283,6 +283,7 @@ struct SpaprMachineState {
+     Error *fwnmi_migration_blocker;
+ 
+     SpaprWatchdog wds[WDT_MAX_WATCHDOGS];
++    struct kvm_ppc_cpu_char chars;
+ };
+ 
+ #define H_SUCCESS         0
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index 015658049e..70e84408a3 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -2515,7 +2515,8 @@ bool kvmppc_has_cap_xive(void)
+ 
+ static void kvmppc_get_cpu_characteristics(KVMState *s)
+ {
+-    struct kvm_ppc_cpu_char c;
++    SpaprMachineState *spapr = SPAPR_MACHINE(qdev_get_machine());
++    struct kvm_ppc_cpu_char c = {0};
+     int ret;
+ 
+     /* Assume broken */
+@@ -2525,18 +2526,24 @@ static void kvmppc_get_cpu_characteristics(KVMState *s)
+ 
+     ret = kvm_vm_check_extension(s, KVM_CAP_PPC_GET_CPU_CHAR);
+     if (!ret) {
+-        return;
++        goto err;
+     }
+     ret = kvm_vm_ioctl(s, KVM_PPC_GET_CPU_CHAR, &c);
+     if (ret < 0) {
+-        return;
++        goto err;
+     }
+ 
++    spapr->chars = c;
+     cap_ppc_safe_cache = parse_cap_ppc_safe_cache(c);
+     cap_ppc_safe_bounds_check = parse_cap_ppc_safe_bounds_check(c);
+     cap_ppc_safe_indirect_branch = parse_cap_ppc_safe_indirect_branch(c);
+     cap_ppc_count_cache_flush_assist =
+         parse_cap_ppc_count_cache_flush_assist(c);
++
++    return;
++
++err:
++    memset(&(spapr->chars), 0, sizeof(struct kvm_ppc_cpu_char));
+ }
+ 
+ int kvmppc_get_cap_safe_cache(void)
+-- 
+2.39.5 (Apple Git-154)
 
-thanks
--- PMM
 
