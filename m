@@ -2,93 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C69B538C2
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 18:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5E2B538C5
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 18:08:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwjpE-00059J-0M; Thu, 11 Sep 2025 12:07:08 -0400
+	id 1uwjpT-0005Cj-Ih; Thu, 11 Sep 2025 12:07:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1uwjpC-00058S-9R
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 12:07:06 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1uwjpA-0006AM-7e
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 12:07:05 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-32de096c067so438609a91.0
- for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 09:07:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1757606822; x=1758211622; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UIhBt/gfm4MfQLRC2cneq/+C/BNaiAz/oeMtDs6zQnA=;
- b=PUGPQszprDrH25oPwap2QYkjh1bOVQNsoFE8Fe8E1cdwoE2Rr+nFmKUGWaJsswcOgt
- Gi8uxidtlOFICzjQitosHAYi5Fz02bobHMAfHvN20t6Rna+jrmvvQKYH1rERhE7Lx35H
- LoQk7+MrJ4cZMi3Ch/3Ey1mHIYs+lL0NK0XczgGWJjaVPyGGeNjSaKjQpntwuKws8PRG
- kkImkQ5K03agGrf/3mrFKLQfAe2jn1Ty+25Qnf747+WHGUVdjOsaCFpNBpWxZrwzlCHm
- 7Hx6LQC88Bk2Wnk6XiZ6BWQmehn7tF1SZedgHLwfWCCIvYhg+5XmcybpAxYo3tAlgvvA
- 0YNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757606822; x=1758211622;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UIhBt/gfm4MfQLRC2cneq/+C/BNaiAz/oeMtDs6zQnA=;
- b=KItkijA//kUJtliL5ExjAQatnLshEedAC0boZ3Ruie/oOUJhX3FbQAl+7Y0HQ2RjdL
- BlJ3UD9DqarzgvS5fBD/hD+JdbijCwE08ABhrc2dfedkqSVD8Zo2hJmR9YeiOQV6vm6n
- kW+s10PzbiOQnvjIe7DIkT/yJ6q6Vvy1YfPf9TMGw60x1rw1f2yNXni3E/YbtkSMnlyT
- mtCSeS850pSLOZ1zmcy/uNjpQkBDIFYKKEs8Pk/McYZIa7IuVmrNJ0221DReZYuZ3gln
- UiR0Y8httd5vkhv7LNH5KpuQkUTpD4lnFNRng9XPIj24ps880uZigM/F+hmUduhQxNlY
- aCVA==
-X-Gm-Message-State: AOJu0YwjmpabUjlNT+zqrV1CW7I3kIgdCA6Agi2CB4ovI2oQkmC3KKG7
- ZN8Y6IUGIgvLGdkPATB+4Eg4MwPq3k0GzkTfhwPVgBczMExLsL0fRXeTYPLn5TlXGP1JF29Pf2h
- YUqFIjmaRhsdoTcE+Ias59NHYCG4tZrJ3h83OWSli2mKsNxbC0DmwVSUowYN5HrDldctL+xIIOU
- Dx1AZe1NnTImwMZGi3wEQyQdbytzF7oCooeTbr+XVcoo/Kgg==
-X-Gm-Gg: ASbGnct6z00pXzWe8DXOoZambVng4pfgn+ZNgmAWsxDr9TSOyqOa+6Qmn1gzGY+n9R+
- 4sDvFZFiyRJ5gOQrlSBXOQJV4NOvlaMY+UEI/PuvwJRxIe8AnuHyrsoXw/kBaDvspFnibGC6FNh
- XyRejYxOWwhnsGyUcYLZlw/FwhxLPDcTWhWvDTMeNKgSuE1q4A/e0lph+ssT3TJ4Z3imzOaV7Yw
- tdybQICBlDu3DuGiPirVWjrRFkiRqoe5sc3L9Mx2FS/6qgDtWLvspALc4pH4o/XJjmCMnD+kxk+
- 0LJ6obnZnrtvd31U/Y70DvVlZiNN9ebKO0EXYkOUHj840w3Cx0E/Q8a1abmdOH3on3oQOKyiyCG
- YiKuK1uzb9xJjEBTG3YLOAY6vO3h1PzYfc6QP6m6iZnRLHzQrByKJrJ9coEIh
-X-Google-Smtp-Source: AGHT+IGrXv1a1syGeNZS7H98f7pe9op4VyS741NsSQnqqfmADV4og4MPk4p+CszzYk5IxU49CG2HFg==
-X-Received: by 2002:a17:90b:4e8b:b0:32b:6ac0:863f with SMTP id
- 98e67ed59e1d1-32d43f5a67bmr23253381a91.18.1757606822268; 
- Thu, 11 Sep 2025 09:07:02 -0700 (PDT)
-Received: from hsinchu16.internal.sifive.com ([210.176.154.34])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-32dd9903a2asm2618765a91.24.2025.09.11.09.07.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Sep 2025 09:07:01 -0700 (PDT)
-From: frank.chang@sifive.com
-To: qemu-devel@nongnu.org
-Cc: Alistair Francis <Alistair.Francis@wdc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- qemu-riscv@nongnu.org (open list:SiFive Machines),
- Frank Chang <frank.chang@sifive.com>
-Subject: [PATCH 4/4] hw/char: sifive_uart: Add newline to error message
-Date: Fri, 12 Sep 2025 00:06:46 +0800
-Message-ID: <20250911160647.5710-5-frank.chang@sifive.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250911160647.5710-1-frank.chang@sifive.com>
-References: <20250911160647.5710-1-frank.chang@sifive.com>
+ (Exim 4.90_1) (envelope-from <wei.liu@kernel.org>)
+ id 1uwjpR-0005C5-AP
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 12:07:21 -0400
+Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <wei.liu@kernel.org>)
+ id 1uwjpP-0006E6-MF
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 12:07:21 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sea.source.kernel.org (Postfix) with ESMTP id C2D244435D;
+ Thu, 11 Sep 2025 16:07:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547AFC4CEF0;
+ Thu, 11 Sep 2025 16:07:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1757606835;
+ bh=6CafthLxuvJBl9U6VCth8Xu5LVTg9nJAlbPflKMJTVA=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=PAOn0B/NRG0ewiOP4B9V1ZEdOCAUa9aaS8HLK5pVa7a7frGeREkK+GEWBxqkuJQwL
+ CcvgF4c93z4UWqUV4ElPg+0s1gRr4GOEX0CazX6OS8DTPTQu9OYoVnLs8xbrjkOy2K
+ nam6fS2cV1hut6SJ1P1pWYwxvaqdPPcG8KDm8cnPNKPFhR8+8XgctmeesVHm2Z1mJX
+ 0MTQlh5olvgvYVbcgkYMq+6D1tTNN73dbQLnANxO0jaIRNyPsWgY3OmZ2NB9EpIlnh
+ /ZymUhQMzQ+FOo77PGlDbfrK98JGJQLqisnchuQpkNmIuBJgcXIxWBuJ5qsKUX1EMS
+ 7AuH88E61wWBw==
+Date: Thu, 11 Sep 2025 16:07:14 +0000
+From: Wei Liu <wei.liu@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Magnus Kulke <magnuskulke@linux.microsoft.com>,
+ qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Markus Armbruster <armbru@redhat.com>,
+ Magnus Kulke <magnus.kulke@linux.microsoft.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Magnus Kulke <magnus.kulke@microsoft.com>,
+ Cornelia Huck <cohuck@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Thomas Huth <thuth@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Cameron Esfahani <dirty@apple.com>, Wei Liu <wei.liu@kernel.org>,
+ Wei Liu <liuwe@microsoft.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v3 00/26] Implementing a MSHV (Microsoft Hypervisor)
+ accelerator
+Message-ID: <aMLzsk3HHfPZoDDa@liuwe-devbox-ubuntu-v2.lamzopl0uupeniq2etz1fddiyg.xx.internal.cloudapp.net>
+References: <20250807143951.1154713-1-magnuskulke@linux.microsoft.com>
+ <20250911025906-mutt-send-email-mst@kernel.org>
+ <17ac0ef9-1c10-4f84-be24-b0f25c7e78fb@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=frank.chang@sifive.com; helo=mail-pj1-x102e.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17ac0ef9-1c10-4f84-be24-b0f25c7e78fb@redhat.com>
+Received-SPF: pass client-ip=2600:3c0a:e001:78e:0:1991:8:25;
+ envelope-from=wei.liu@kernel.org; helo=sea.source.kernel.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,29 +88,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frank Chang <frank.chang@sifive.com>
+On Thu, Sep 11, 2025 at 05:21:44PM +0200, Paolo Bonzini wrote:
+> On 9/11/25 08:59, Michael S. Tsirkin wrote:
+> > On Thu, Aug 07, 2025 at 04:39:25PM +0200, Magnus Kulke wrote:
+> > > Hey all,
+> > > 
+> > > This is the third revision of a patch set implementing an accelerator
+> > > for the MSHV kernel driver, exposing HyperV to Linux "Dom0" hosts in various
+> > > scenarios. Thank you for the feedback so far. Since the last revision we
+> > > incorporated feedback from the last review and identified further areas for
+> > > performance fixes, notably in the irqfd handling. I'm looking forward to your
+> > > comments.
+> > > 
+> > > Best regards,
+> > > 
+> > > magnus
+> > 
+> > 
+> > So regarding merging plans. Did you guys get in touch
+> > with Sunil? That's the easiest smoothest path, through
+> > an existing maintainer.
+> 
+> There's hardly any code shared with WHPX; I am on vacation this week but
+> I'll do a final review and merge it soon.
 
-Adds a missing newline character to the error message.
++1 on this. Nothing's shared with WHPX.
 
-Signed-off-by: Frank Chang <frank.chang@sifive.com>
----
- hw/char/sifive_uart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Mangus, can you confirm this is ready to be merged? Is there another
+version brewing?
 
-diff --git a/hw/char/sifive_uart.c b/hw/char/sifive_uart.c
-index baef0bd9c28..e7357d585a1 100644
---- a/hw/char/sifive_uart.c
-+++ b/hw/char/sifive_uart.c
-@@ -113,7 +113,7 @@ static void sifive_uart_write_tx_fifo(SiFiveUARTState *s, const uint8_t *buf,
- 
-     if (size > fifo8_num_free(&s->tx_fifo)) {
-         size = fifo8_num_free(&s->tx_fifo);
--        qemu_log_mask(LOG_GUEST_ERROR, "sifive_uart: TX FIFO overflow");
-+        qemu_log_mask(LOG_GUEST_ERROR, "sifive_uart: TX FIFO overflow.\n");
-     }
- 
-     if (size > 0) {
--- 
-2.49.0
+Thanks,
+Wei
 
+> 
+> Paolo
+> 
 
