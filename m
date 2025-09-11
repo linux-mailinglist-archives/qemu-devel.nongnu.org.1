@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8B5B5327A
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 14:39:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E34B53279
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Sep 2025 14:39:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwgYS-00040v-Hi; Thu, 11 Sep 2025 08:37:36 -0400
+	id 1uwgYY-00049l-7l; Thu, 11 Sep 2025 08:37:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nikolai.barybin@virtuozzo.com>)
- id 1uwgYA-0003zE-Sf
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 08:37:18 -0400
+ id 1uwgYF-00042S-BR
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 08:37:24 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nikolai.barybin@virtuozzo.com>)
- id 1uwgY2-0003Lb-6Q
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 08:37:17 -0400
+ id 1uwgY2-0003Ld-6R
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 08:37:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=Content-Type:MIME-Version:Message-ID:Date:Subject
- :From; bh=jDL4YwnVTRtqBqLVgffx3WOeptygvc/xP5pGSfFyaRM=; b=HcNzyL6VJIiss3FkDFC
- gL6gD+3oJbbGZtrMcPkx8XSG+LGOAvtmmAgCI7F1mC5KxVspQb0Ou/KtnGq7bQ2IDSas1btrT+EHy
- /xjvsUKz5JIenj9zY6R7AsfA7YZ7jH/2lBBAn5C5mldNZo0hqPF8nvTZkYrGaIZg7eH3gfa7eibbs
- iMUjroxbMC2SppYt80fJYGdk9T6UGlkreZgas9/9tIvjDQLzaA/OD03kwiPUxYK9ZpH1sZcxnYEjz
- DIJRopNw8UoiNUbXQcNcWxdsDrgB0WgLq+0+bB42mB7JQ/1DfG/NiO3S7c0LvD0UYTCulEDdON6/p
- NY8xxojDb5x1PlQ==;
+ :From; bh=VMrzAOVoxGmOJ9Ov4Dc6WuTDHNAHSRK4xVAkb+787ek=; b=NYufPtr4WZjT1br67w5
+ aGHy5Hyy+Yei2JEJnb/RnLrkSNdPXC3Qt5HRdlwuRIxHgSIjmGNzsimqZ+6hVM/Y6e3P/YPcwUl0s
+ aeu3eE1rOCPmu+yNDc+0xjEeRE9aPT6rtX1wOH7tt+n76G2Y4zkskuHUIZ5FgFUvnL4LFCirVGp8f
+ 3PxlgAxpddlQzqh7tfuxiQij46fe+K8ZpsN4/fp1N2d6kbvNrHN+33MtdkTxiYE7cvBI8pyCItGfp
+ EHJP51+RVB4tgo62tEFk2AQuWO/dWYmneAhG1JpOetC8dJiV8DJPyEHlAJECNDbpbRkQOaqYvKuS7
+ OEQjfXknHmVg0qw==;
 Received: from [130.117.225.5] (helo=dev012.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <nikolai.barybin@virtuozzo.com>) id 1uwg2t-009znU-11;
+ (envelope-from <nikolai.barybin@virtuozzo.com>) id 1uwg2t-009znU-1D;
  Thu, 11 Sep 2025 14:36:54 +0200
 From: Nikolai Barybin <nikolai.barybin@virtuozzo.com>
 To: qemu-devel@nongnu.org
@@ -36,12 +36,14 @@ Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Nikolai Barybin <nikolai.barybin@virtuozzo.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  "Denis V . Lunev" <den@virtuozzo.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v4 0/2] dump: enhance win_dump_available to report properly
-Date: Thu, 11 Sep 2025 15:36:54 +0300
-Message-ID: <20250911123656.413160-1-nikolai.barybin@virtuozzo.com>
+Subject: [PATCH v4 1/2] dump: enhance dump_state_prepare fd initialization
+Date: Thu, 11 Sep 2025 15:36:55 +0300
+Message-ID: <20250911123656.413160-2-nikolai.barybin@virtuozzo.com>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250911123656.413160-1-nikolai.barybin@virtuozzo.com>
+References: <20250911123656.413160-1-nikolai.barybin@virtuozzo.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=130.117.225.111;
  envelope-from=nikolai.barybin@virtuozzo.com; helo=relay.virtuozzo.com
@@ -52,7 +54,7 @@ X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,18 +70,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes since last revision:
-- Split in 2 patches
+Initializing descriptor with zero is unsafe: during cleanup we risk to
+unconditional close of fd == 0 in case dump state wasn't fully
+initialized. Thus, let's init fd with -1 value and check its value
+before closing it.
 
-Nikolai Barybin (2):
-  dump: enhance dump_state_prepare fd initialization
-  dump: enhance win_dump_available to report properly
+Signed-off-by: Nikolai Barybin <nikolai.barybin@virtuozzo.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ dump/dump.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
- dump/dump.c     | 138 ++++++++++++++++++++++++++++--------------------
- dump/win_dump.c |  23 ++++++--
- dump/win_dump.h |   2 +-
- 3 files changed, 101 insertions(+), 62 deletions(-)
-
+diff --git a/dump/dump.c b/dump/dump.c
+index 15bbcc0c61..b2f7ea7abd 100644
+--- a/dump/dump.c
++++ b/dump/dump.c
+@@ -103,7 +103,10 @@ static int dump_cleanup(DumpState *s)
+ 
+     guest_phys_blocks_free(&s->guest_phys_blocks);
+     memory_mapping_list_free(&s->list);
+-    close(s->fd);
++    if (s->fd != -1) {
++        close(s->fd);
++    }
++    s->fd = -1;
+     g_free(s->guest_note);
+     g_clear_pointer(&s->string_table_buf, g_array_unref);
+     s->guest_note = NULL;
+@@ -1708,8 +1711,8 @@ static DumpState dump_state_global = { .status = DUMP_STATUS_NONE };
+ 
+ static void dump_state_prepare(DumpState *s)
+ {
+-    /* zero the struct, setting status to active */
+-    *s = (DumpState) { .status = DUMP_STATUS_ACTIVE };
++    /* zero the struct, setting status to active and fd to -1 */
++    *s = (DumpState) { .fd = -1, .status = DUMP_STATUS_ACTIVE };
+ }
+ 
+ bool qemu_system_dump_in_progress(void)
 -- 
 2.43.5
 
