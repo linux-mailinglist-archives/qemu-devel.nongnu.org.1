@@ -2,95 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD7AB5404B
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 04:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C07EB54123
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 05:45:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwtQr-0008I9-Ip; Thu, 11 Sep 2025 22:22:37 -0400
+	id 1uwugq-0006y3-47; Thu, 11 Sep 2025 23:43:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
- id 1uwtQp-0008Hf-23
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 22:22:35 -0400
-Received: from mail-qk1-x733.google.com ([2607:f8b0:4864:20::733])
+ (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
+ id 1uwugm-0006xr-Nl
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 23:43:08 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hibriansong@gmail.com>)
- id 1uwtQl-0006Fw-3T
- for qemu-devel@nongnu.org; Thu, 11 Sep 2025 22:22:34 -0400
-Received: by mail-qk1-x733.google.com with SMTP id
- af79cd13be357-7e8704e9687so152291185a.1
- for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 19:22:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
+ id 1uwugi-0007tn-HX
+ for qemu-devel@nongnu.org; Thu, 11 Sep 2025 23:43:08 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-45df09c7128so11040005e9.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Sep 2025 20:43:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1757643746; x=1758248546; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XNGfVOHwOxsuG1+IlKfopeHk0m8RMByLbQO+DlJvGeE=;
- b=GTR+X+Y0R1+gVI4EPj2Z5Un4MfAdNRprorIlhr0x55d6bGiVa3dHZ4YojtcebV71sP
- 9rPFrZLBeXAJy693aMQluYf65Xn/Fs38RMug6t4URBobqpLeKOtkn4/Mbs3ISAunNVDK
- vtTqW2CLJW/J3r3ZdaNJZ5rwxRVWZiXkO8VM+Bxyzo8guOcBTe9FKDL6DigdpRj0lTrF
- b3u6fAH64vPUMWC7tSi0n/eX85K7eTXPwOQzRntSWVPjC6BZ7w0HBhldyuH92dU/oOSB
- KhCX+Nd3UZJL0Jxnp9RIPSFKp9iNC0EvBJc17Mulr2eak9CB+bwGVWn3SLbEf1BOjgvS
- pURw==
+ d=gmail.com; s=20230601; t=1757648579; x=1758253379; darn=nongnu.org;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=w9bUt/Tvj+p3SnTXLw7pcU3VuuU3mk0x0VCnm5Z8Xx0=;
+ b=ET4eHBGA5utZtOlT97uoRGoaj+wqt00DDLsa/Vdu4UCqI6d+EHHnm69rYNcOKQuWoX
+ eaB9w8gIL4S5RRdHGg/1jbIqoakJ38HuN1u2kLjD9Ki5Cqa8uyqvPqST6W7JYktSpf+9
+ DjXevyB6xj3hUDlA6S6kqEsc/bTE/WiouFURvF68yKdEvzZFXnF2o3GrkW3zCTLNSA+7
+ S6blLsgD3n+KdKD818/3Kv5VsIovEJNVuZfTIzMsKJbq8F8h1OuznXiuFgUq8gPbGbMN
+ 2LuZ+b928uxPKtZHj+Yv2cYvhgwxgkKOnUe+ZkRanPzckksTF7qk6bhK1lPETRfWliIa
+ gYZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757643746; x=1758248546;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XNGfVOHwOxsuG1+IlKfopeHk0m8RMByLbQO+DlJvGeE=;
- b=Swkv0/KbCiNKOPF7N4EeaNTyhuTeA75/QGlx2IPE/k8/sLTljhuzp55fIhLobemKeW
- J3gi/aLDWEP+CT7fFmO8PxjMl6oIFt5AoBevaIX/IjtcIE+kLShBFWPtT0bqJ36Esqoo
- RYzYAZymgzpGBsnSODjpAzDdQ4NVjxMUUgleaFccGlhWi3k1R3GC4nYSx4UUWjdbPUe8
- fSNJFPgDkQFm4Ru/BglvA5aYoAwxtrhhvvyGKVMlAFkSRhB1zum02ic0HrKfyWRYprJD
- w2eD17xMd9S9ys6Gq/LMRTQeevcZ97G5tav2vKp9OK0W2MOzxQay8Z6a0U+HVyLR9cvM
- qPmQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUMukObLsaM52jchY/j4ybPkjM+p/YprewMHDMjTbkMPpm7/40fxr5E7ED0LcspIoXB6zvtQFBgtcTF@nongnu.org
-X-Gm-Message-State: AOJu0YzikiVRMT+WvFY1e2csV0Gq2QckqKUSLEU6nx4xcmrhbpdltlXa
- YtJ64VjhgGsV01UOGN10/VyHoxHAfoUhhn1g7CUw+xPhdQVPXLkZNAqO
-X-Gm-Gg: ASbGnctFVddOwa6xRILsbq/sRdYSy9ub9T1IwATIDt4E6BYVAtEIqxmEdIBrHxjBaIV
- iMs9pLNrvfrJTPnjb6y/NwE7IvFTeD78PEDvFPla8xQV0a+FCCb0jDZljRuAESW2BPKKQGE7OCk
- LBw9Qts7D0shlU4diYOU4dw4Hp8kFdQ6guTUJOeaFcKIVe/3qijsOh7SQLYtD66s16iPkY88TmA
- xz7zP1zrWJ8hpIsGjg6tPD+q44IQmONjVGu2kMVvXIdSOkG5tkeSTBOldllFonnshtsn/8jfED4
- x9MP7YEXNnEwowO386tXFsmCE1MeobrvLpXewXUJr3jvgJl6OUBwZ1PfGuQMM0/eyCU2/qbUwdT
- 5MXJIZYPxdirBIuvOIIbq9dik91Y=
-X-Google-Smtp-Source: AGHT+IHVtuXca5QjEjQnbkgmShQiDWfazm7ar4GqJJt+/syQKvEDHfvC9HdyRTWiCeIVGI95zwOMtg==
-X-Received: by 2002:a05:620a:8a82:b0:81d:398d:fda8 with SMTP id
- af79cd13be357-823fc1d4a80mr152939785a.22.1757643745788; 
- Thu, 11 Sep 2025 19:22:25 -0700 (PDT)
-Received: from [192.168.0.156] ([45.62.219.80])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-820c8ac45a3sm198911985a.5.2025.09.11.19.22.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Sep 2025 19:22:25 -0700 (PDT)
-Message-ID: <f97b89e6-1faa-4f66-9630-99b7d387e90c@gmail.com>
-Date: Thu, 11 Sep 2025 22:22:24 -0400
+ d=1e100.net; s=20230601; t=1757648579; x=1758253379;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=w9bUt/Tvj+p3SnTXLw7pcU3VuuU3mk0x0VCnm5Z8Xx0=;
+ b=R70nww/qXWC42lemla1YmEImJcKvQC/G0UM1Q8dIg6x6iEEJAenAEK1/nf2psIIIqO
+ w4pVdbCHNfxJOXjOmkGTiSTzL50OOnK64eEnxD6UFY4hGFiMyF+qPznESl5/Mikz7mcW
+ slWnLeHxyYlrUAYOvJmpYcPCyd9j/bK5N8sENkviJS48FkRsglvAL73hgdl3r/bsSkcF
+ j0UQNHGkDd/30N9fsPTwiB5D21IvnXi/OSDxtjbUtNvAWKkRY/iwclAGePF1iLHLcOBU
+ sg617xSJwYFPT7IchM6Z3wWb31qAv8/vCY4mHv57IZznCpAfO/wH0DujS+MQmd1dkvgj
+ xntw==
+X-Gm-Message-State: AOJu0Yx9INJigz7LsGVA4wy6F8ZMzSMDHhBj4AfK+zJ2skwQLGY7BfuJ
+ TFWsVEBlDGzCOuQTyXATqpso2T1orxQ1MioVAKyoS7AcbsHvbs2lsceJ
+X-Gm-Gg: ASbGncsN8Wf0H2XsBds1S8HqSHvRgMTVOLIYo7C311ozs6BKr811gRftSZQHxdDIrLN
+ WmgwdBUu4kUPPmU/B2bJa9LtJlA/D8ozzSvPAhWMbCXKdGSrXtmQPYhHmU8oyBfLGRE5AI6YiVU
+ unSD/a6f32xlHzzsM2OmoKFGxJnwSzq6AE6Me0iuXJnTAt56tLYNtgynWQD0rhwoBruBz3NaOHI
+ L/lxpXzum2dbEjwSTrnDdKvI4HEejH3e+Gtk5VhZJB+66l+IyW93w+9tr8eu9dDaPGpvgQNHU+2
+ 3yLqdXXQK340lJc4CVN+A73xn8OjpirPhpHbiXOAVIACnJi07QU5Rd8YqERa/0t51hT5Mr3x/kS
+ ic6h6k0k33yijMmUCTN4xNFrO/arM74eROSBx+liN6+EWABtNiXMG/Tsk7+N9Pr4=
+X-Google-Smtp-Source: AGHT+IFUyAJhJSgyEodEsfKa5ucOE+luGQNzRDYYJbyE0A5wNmR0LAK6wDRBL2p2qFPaBPELodM8NQ==
+X-Received: by 2002:a05:600c:1d03:b0:45b:86bb:af5f with SMTP id
+ 5b1f17b1804b1-45dfd5b59c2mr50974225e9.6.1757648578666; 
+ Thu, 11 Sep 2025 20:42:58 -0700 (PDT)
+Received: from localhost (mem-185.47.220.165.jmnet.cz. [185.47.220.165])
+ by smtp.gmail.com with UTF8SMTPSA id
+ 5b1f17b1804b1-45e0372aea2sm48498795e9.7.2025.09.11.20.42.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Sep 2025 20:42:58 -0700 (PDT)
+From: Filip Hejsek <filip.hejsek@gmail.com>
+Subject: [PATCH v4 00/10] virtio-console: notify about the terminal size
+Date: Fri, 12 Sep 2025 05:39:45 +0200
+Message-Id: <20250912-console-resize-v4-0-7925e444afc4@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] iotests: add tests for FUSE-over-io_uring
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, armbru@redhat.com,
- bernd@bsbernd.com, fam@euphon.net, hreitz@redhat.com, kwolf@redhat.com
-References: <20250830025025.3610-1-hibriansong@gmail.com>
- <20250830025025.3610-5-hibriansong@gmail.com>
- <20250909193830.GF218449@fedora>
- <c280787c-0db5-4a63-8e22-ce50726e7ebe@gmail.com>
- <20250910131418.GA246746@fedora>
-Content-Language: en-US
-From: Brian Song <hibriansong@gmail.com>
-In-Reply-To: <20250910131418.GA246746@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::733;
- envelope-from=hibriansong@gmail.com; helo=mail-qk1-x733.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAGWw2gC/zXMQQrCMBBA0auUWTslGaa1deU9xEWM02agTSQRE
+ UvvbhBcvsX/GxTJKgVOzQZZXlo0xQo+NOCDi7Og3quBDHVmtIQ+xZIWwSxFP4Jj75ksm5szA9T
+ okWXS9294uVZPOa34DFncf2NMT6Pt2bBt+UgdDWgxpsChlPO8Ol1an1bY9y+9neZ1nAAAAA==
+X-Change-ID: 20250912-console-resize-96c42140ba08
+To: qemu-devel@nongnu.org
+Cc: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>, 
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ Szymon Lukasz <noh4hss@gmail.com>, Filip Hejsek <filip.hejsek@gmail.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757648576; l=5563;
+ i=filip.hejsek@gmail.com; s=20250912; h=from:subject:message-id;
+ bh=cepkGRsyCr/hmbPwQfFODYBL5dLHQlIAzX5rLnCaMVw=;
+ b=uOUvzZx3KN9ZvCTEs1TtN79Vt7IgZXa07ovZRmLqjiZjdrsHLfYG4Da8m8ZPM0PwPVbI6EQwp
+ M5LIiDgduZ4AhWI2TL5PtJDQwV3YDdmsrTjTqD4wYOwghN6IUHRrpQH
+X-Developer-Key: i=filip.hejsek@gmail.com; a=ed25519;
+ pk=nakB8gEK3oi+Q/5dBTMCy/LgZL47NP60z1jeDR6O/WU=
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=filip.hejsek@gmail.com; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,142 +115,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The goal of this series is to have a resizable terminal into a guest
+without having to set up networking and using, e.g. ssh.
 
+The virtio spec allows a virtio-console device to notify the guest about
+terminal resizes in the host. Linux Kernel implements the driver part of
+the spec. This series implement the device part in QEMU.
 
-On 9/10/25 9:14 AM, Stefan Hajnoczi wrote:
-> On Tue, Sep 09, 2025 at 04:51:12PM -0400, Brian Song wrote:
->>
->>
->> On 9/9/25 3:38 PM, Stefan Hajnoczi wrote:
->>> On Fri, Aug 29, 2025 at 10:50:25PM -0400, Brian Song wrote:
->>>> To test FUSE-over-io_uring, set the environment variable
->>>> FUSE_OVER_IO_URING=1. This applies only when using the
->>>> 'fuse' protocol.
->>>>
->>>> $ FUSE_OVER_IO_URING=1 ./check -fuse
->>>>
->>>> Suggested-by: Kevin Wolf <kwolf@redhat.com>
->>>> Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
->>>> Signed-off-by: Brian Song <hibriansong@gmail.com>
->>>> ---
->>>>    tests/qemu-iotests/check     |  2 ++
->>>>    tests/qemu-iotests/common.rc | 45 +++++++++++++++++++++++++++---------
->>>>    2 files changed, 36 insertions(+), 11 deletions(-)
->>>>
->>>> diff --git a/tests/qemu-iotests/check b/tests/qemu-iotests/check
->>>> index 545f9ec7bd..c6fa0f9e3d 100755
->>>> --- a/tests/qemu-iotests/check
->>>> +++ b/tests/qemu-iotests/check
->>>> @@ -94,6 +94,8 @@ def make_argparser() -> argparse.ArgumentParser:
->>>>            mg.add_argument('-' + fmt, dest='imgfmt', action='store_const',
->>>>                            const=fmt, help=f'test {fmt}')
->>>> +    # To test FUSE-over-io_uring, set the environment variable
->>>> +    # FUSE_OVER_IO_URING=1. This applies only when using the 'fuse' protocol
->>>>        protocol_list = ['file', 'rbd', 'nbd', 'ssh', 'nfs', 'fuse']
->>>>        g_prt = p.add_argument_group(
->>>>            '  image protocol options',
->>>> diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
->>>> index e977cb4eb6..f8b79c3810 100644
->>>> --- a/tests/qemu-iotests/common.rc
->>>> +++ b/tests/qemu-iotests/common.rc
->>>> @@ -539,17 +539,38 @@ _make_test_img()
->>>>            touch "$export_mp"
->>>>            rm -f "$SOCK_DIR/fuse-output"
->>>> -        # Usually, users would export formatted nodes.  But we present fuse as a
->>>> -        # protocol-level driver here, so we have to leave the format to the
->>>> -        # client.
->>>> -        # Switch off allow-other, because in general we do not need it for
->>>> -        # iotests.  The default allow-other=auto has the downside of printing a
->>>> -        # fusermount error on its first attempt if allow_other is not
->>>> -        # permissible, which we would need to filter.
->>>
->>> This comment applies to both branches of the if statement. I think
->>> keeping it here is slightly better.
->>>
->>>> -        QSD_NEED_PID=y $QSD \
->>>> -              --blockdev file,node-name=export-node,filename=$img_name,discard=unmap \
->>>> -              --export fuse,id=fuse-export,node-name=export-node,mountpoint="$export_mp",writable=on,growable=on,allow-other=off \
->>>> -              &
->>>> +        if [ -n "$FUSE_OVER_IO_URING" ]; then
->>>> +            nr_cpu=$(nproc 2>/dev/null || echo 1)
->>>> +            nr_iothreads=$((nr_cpu / 2))
->>>> +            if [ $nr_iothreads -lt 1 ]; then
->>>> +                nr_iothreads=1
->>>> +            fi
->>>
->>> Please add a comment explaining that the purpose of this configuration
->>> based on the number of CPUs is to test multiple IOThreads when the host
->>> allows it, since that is a more interesting case then just 1 IOThread.
->>> Many other configurations are possible as well, but not all of them can
->>> be tested because the test matrix would be large.
->>>
->>>> +
->>>> +            iothread_args=""
->>>> +            iothread_export_args=""
->>>> +            for ((i=0; i<$nr_iothreads; i++)); do
->>>> +                iothread_args="$iothread_args --object iothread,id=iothread$i"
->>>> +                iothread_export_args="$iothread_export_args,iothread.$i=iothread$i"
->>>> +            done
->>>> +
->>>> +            QSD_NEED_PID=y $QSD \
->>>> +                    $iothread_args \
->>>> +                    --blockdev file,node-name=export-node,filename=$img_name,discard=unmap \
->>>> +                    --export fuse,id=fuse-export,node-name=export-node,mountpoint="$export_mp",writable=on,growable=on,allow-other=off,io-uring=on$iothread_export_args \
->>>> +                &
->>>> +        else
->>>> +            # Usually, users would export formatted nodes.  But we present fuse as a
->>>> +            # protocol-level driver here, so we have to leave the format to the
->>>> +            # client.
->>>> +            # Switch off allow-other, because in general we do not need it for
->>>> +            # iotests.  The default allow-other=auto has the downside of printing a
->>>> +            # fusermount error on its first attempt if allow_other is not
->>>> +            # permissible, which we would need to filter.
->>>> +            QSD_NEED_PID=y $QSD \
->>>> +                --blockdev file,node-name=export-node,filename=$img_name,discard=unmap \
->>>> +                --export fuse,id=fuse-export,node-name=export-node,mountpoint="$export_mp",writable=on,growable=on,allow-other=off \
->>>> +                &
->>>> +        fi
->>>>            pidfile="$QEMU_TEST_DIR/qemu-storage-daemon.pid"
->>>> @@ -592,6 +613,8 @@ _rm_test_img()
->>>>            kill "${FUSE_PIDS[index]}"
->>>> +        sleep 1
->>>> +
->>>
->>> What is the purpose of this sleep command?
->>>
->>
->> I don’t exactly remember why. It might get stuck if there’s no sleep here. I
->> remember we discussed this problem in earlier emails.
-> 
-> The purpose needs to be understood. Otherwise there is a good chance
-> that the test will fail randomly in a continuous integration environment
-> where things sometimes take a long time due to CPU contention.
-> 
-> Stefan
+This series adds support for a resizable terminal if a virtio console
+device is connected to the stdio backend.
 
-I think the issue lies in our current approach of using df to check 
-whether the FUSE mount has been unmounted.
+This series also introduces resize messages that can be sent over QMP to
+notify QEMU about the size of the terminal connented to some chardev.
+In the libvirt setting, it will allow to implement a resizable terminal
+for virsh console and other libvirt clients.
 
-When we traced df with strace, we found that its logic for checking the 
-mount point is:
-=> Call mount to read the system's mount information
-=> Use statfs() to get the filesystem statistics
+This patch series was originally authored by Szymon Lukasz and submitted
+to qemu-devel about 5 years ago. The previous submission can be found at
+<https://lists.nongnu.org/archive/html/qemu-devel/2020-06/msg09591.html>.
+I have updated the patches to be compatible with latest master and made
+a few small changes of my own, including the addition of Windows support.
 
-But our current test code exits with the following sequence:
-=> Kill the FUSE process
-=> The kernel starts cleaning up the FUSE mount point
-=> df calls statfs(), which requires communication with the FUSE process 
-But the FUSE process might still be cleaning up, causing the 
-communication to fail
-=> df then returns an error or stale information
-=> Our detection logic misinterprets this and immediately deletes the 
-mounted image
+Probably the most important change I made is the swapping of rows and
+cols fields in resize messages. I would like to hear some feedback on
+this change from reviewers. The problem is that for a long time, the
+Linux kernel used a different field order from what was specified in the
+virtio spec. The kernel implementation was apparently merged around 2010,
+while the virtio spec came in 2014, so when a previous version of this
+patch series was being discussed here on this mailing list in 2020, it
+was decided that QEMU should match the Linux implementation, and ideally,
+the virtio spec should be changed.
 
-Since we only need to check the system's mount information, we can just 
-call mount and grep "$img" to verify whether the image has been 
-successfully unmounted.
+However, recently, the Linux kernel implementation was changed to conform
+to the spec: <https://git.kernel.org/linus/5326ab737a47278dbd16ed3ee7380b26c7056ddd>.
+As a result, to be compatible with latest kernel releases, QEMU needs to
+also use the field order matching the specification. I have changed the
+patch to use the spec-compliant order, so it works correctly with latest
+kernels now.
 
-Does it make sense?
+That leaves the issue of older kernels. There are about 15 years' worth
+of kernel versions with the swapped field order, including the kernel
+currently shipped in Debian stable. The effects of the swapped dimensions
+can sometimes be quite annoying - e.g. if you have a terminal with
+24 rows, this will be interpreted as 24 columns, and your shell may limit 
+line editing to this small space, most of which will be taken by your
+prompt. The patch series in its current form provides no way to disable
+the console size functionality, so users may end up worse off than if
+the functionality were not implemented at all.
 
-Brian
+PS: One of the patches adds one additional noop switch case
+    to a bunch of files. I didn't include the maintainers of these files
+    in the Cc list. I hope that's OK. :)
+
+v4:
+changed order of rows and cols fields
+added support for terminal size on Windows
+trace event is also emitted for legacy (non-multiport) drivers
+minor fixes required because of changes in QEMU (DECLARE_INSTANCE_CHECKER, qmp-example)
+updated version numbers ('Since: 10.2', hw_compat_10_1)
+
+v3:
+add resize messages over QMP, as suggested by Daniel
+
+v2:
+fix adding a new virtio feature bit to the virtio console device
+
+---
+Filip Hejsek (1):
+      char-win-stdio: add support for terminal size
+
+Szymon Lukasz (9):
+      chardev: add cols, rows fields
+      chardev: add CHR_EVENT_RESIZE
+      chardev: add qemu_chr_resize()
+      char-mux: add support for the terminal size
+      main-loop: change the handling of SIGWINCH
+      char-stdio: add support for the terminal size
+      qmp: add chardev-resize command
+      virtio-serial-bus: add terminal resize messages
+      virtio-console: notify the guest about terminal resizes
+
+ backends/cryptodev-vhost-user.c   |  1 +
+ chardev/char-fe.c                 | 13 ++++++++
+ chardev/char-mux.c                | 18 ++++++++++-
+ chardev/char-stdio.c              | 30 +++++++++++++++++++
+ chardev/char-win-stdio.c          | 19 ++++++++++++
+ chardev/char.c                    | 26 ++++++++++++++++
+ hw/block/vhost-user-blk.c         |  1 +
+ hw/char/terminal3270.c            |  1 +
+ hw/char/trace-events              |  1 +
+ hw/char/virtio-console.c          | 63 ++++++++++++++++++++++++++++++++++++---
+ hw/char/virtio-serial-bus.c       | 43 ++++++++++++++++++++++++--
+ hw/core/machine.c                 |  4 ++-
+ hw/ipmi/ipmi_bmc_extern.c         |  1 +
+ hw/scsi/vhost-user-scsi.c         |  1 +
+ hw/usb/ccid-card-passthru.c       |  1 +
+ hw/usb/dev-serial.c               |  1 +
+ hw/usb/redirect.c                 |  1 +
+ hw/virtio/vhost-user-base.c       |  1 +
+ hw/virtio/vhost-user-scmi.c       |  1 +
+ include/chardev/char-fe.h         | 10 +++++++
+ include/chardev/char.h            |  7 +++++
+ include/hw/virtio/virtio-serial.h |  5 ++++
+ include/qemu/main-loop.h          |  4 +++
+ monitor/hmp.c                     |  1 +
+ monitor/qmp.c                     |  1 +
+ net/passt.c                       |  1 +
+ net/vhost-user.c                  |  1 +
+ qapi/char.json                    | 22 ++++++++++++++
+ ui/curses.c                       | 11 +++----
+ util/main-loop.c                  | 21 +++++++++++++
+ 30 files changed, 298 insertions(+), 13 deletions(-)
+---
+base-commit: 190d5d7fd725ff754f94e8e0cbfb69f279c82b5d
+change-id: 20250912-console-resize-96c42140ba08
+
+Best regards,
+-- 
+Filip Hejsek <filip.hejsek@gmail.com>
+
 
