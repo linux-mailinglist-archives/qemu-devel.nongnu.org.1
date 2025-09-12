@@ -2,143 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA8EB548D7
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 12:10:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF81B548FD
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 12:13:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ux0ex-00032e-NT; Fri, 12 Sep 2025 06:05:40 -0400
+	id 1ux0he-00011q-TY; Fri, 12 Sep 2025 06:08:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1ux0dD-0007jV-Me; Fri, 12 Sep 2025 06:04:00 -0400
-Received: from mail-bn1nam02on2060c.outbound.protection.outlook.com
- ([2a01:111:f403:2407::60c]
- helo=NAM02-BN1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ux0hY-0000ur-A1
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 06:08:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1ux0d0-0001Py-3K; Fri, 12 Sep 2025 06:03:46 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vCF+inXC995ZUS3VezKVcF/z4XAcvK7zKOPKDa5ISNzG67nCzwFS4HfYkwk8Z9pa8qpuXmnWp/b9rbrJGB+fk/zwXZq31yuzL4GUqUWWG7KsNrIlRZo/RYY/VzH7m6TKGNWlob+eJzwSNia502zUhtbIjha/GsSc1qoEeg9dsHWJJhJucs3JgzdfZMRP0g9YK/3+o4hPeIeNHXqJR43KNvMzMwcXZe2IVFr1teX/NexCS7iWFB6J4yCPidKifuL8hYjdNjPlDqwzpevOmN2tqkrqocXeSX/e9RDoinnqzrZQzphBWAoWHRNhaPgMFc0VQRyIWm4fuHlK0T4lVdPCRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P7+eehizqazwdB6iHvoGlW3cC+8c34+ZcP6D1D7TWe8=;
- b=qVJVO+eiRnTTgq97vbirevEOJBW52nH7vY0ynHDrJIXkD5sOPa/R8iuGfD7DkUFTRPKbqylsm9u4FIVKq861UZt9Apr/Ou6UzxyJbwreD3E7K0nA+kJ4PBwVUaWAhRNoUU8Y/eDYnLfTq1h9jlt6qQ0t5L6bCrhCCaStnSR8Ibg+/DCgZiK3ycygu91u0jAQX4zH6QhJsnkGyC3CfrAoTE4Ywk3g7BhJybpAsNN631GLai2//ZoQWH6pTMzSsqzZK0MQ1D3oE07D8ftKLiyToHpDsrk3rxZLHQAP7Dsdw5q5zZY25N9kEvfXILPXiEMv21bvkas3ztRRzsGz8UdRmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P7+eehizqazwdB6iHvoGlW3cC+8c34+ZcP6D1D7TWe8=;
- b=Pl/WD3VMJLq7pxZQcj5YfENX09PGgUEPJjE2ufTfmwqmI/iERMzAMBIMbJzDHhk3vsqyXsQsWF3S7J5qqHt9I51mqBlfqGQ6ATi63DI78Em2A57AkmCT5U+q9WeWm76bjWXZVJhMpwpbcE4KAOsDeU6Fbx1rKz4gD15JiZL6uDs=
-Received: from DS7PR05CA0026.namprd05.prod.outlook.com (2603:10b6:5:3b9::31)
- by IA0PR12MB7775.namprd12.prod.outlook.com (2603:10b6:208:431::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Fri, 12 Sep
- 2025 10:03:20 +0000
-Received: from DS3PEPF000099DF.namprd04.prod.outlook.com
- (2603:10b6:5:3b9:cafe::a4) by DS7PR05CA0026.outlook.office365.com
- (2603:10b6:5:3b9::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.7 via Frontend Transport; Fri,
- 12 Sep 2025 10:03:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- DS3PEPF000099DF.mail.protection.outlook.com (10.167.17.202) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9115.13 via Frontend Transport; Fri, 12 Sep 2025 10:03:20 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Fri, 12 Sep
- 2025 03:02:45 -0700
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 12 Sep
- 2025 05:02:44 -0500
-Received: from XFR-LUMICHEL-L2.xilinx.com (10.180.168.240) by
- satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17
- via Frontend Transport; Fri, 12 Sep 2025 03:02:43 -0700
-From: Luc Michel <luc.michel@amd.com>
-To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: Luc Michel <luc.michel@amd.com>, Peter Maydell <peter.maydell@linaro.org>, 
- Francisco Iglesias <francisco.iglesias@amd.com>, "Edgar E . Iglesias"
- <edgar.iglesias@amd.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Alistair Francis <alistair@alistair23.me>, "Frederic
- Konrad" <frederic.konrad@amd.com>, Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-Subject: [PATCH v5 47/47] tests/functional/test_aarch64_xlnx_versal: test the
- versal2 machine
-Date: Fri, 12 Sep 2025 12:00:56 +0200
-Message-ID: <20250912100059.103997-48-luc.michel@amd.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250912100059.103997-1-luc.michel@amd.com>
-References: <20250912100059.103997-1-luc.michel@amd.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ux0hP-00024i-Ox
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 06:08:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757671687;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=KDMqTW3aY1B5rP6sAh49+iWoo3soWY2fmHqFSuCcfhY=;
+ b=Fd6SneEwvH62IuLmUQa2yfTHvAJCQ38yvI5+NwhJvpiK8eiHyTbwnsP2Du9E1pTLHnau+B
+ c+anZACtffccjlhC0N7Lsa2/eERdl/devPzTgygkmCgrPTRa7yYXFJV3SSwp5QvcR9tiG/
+ ViEl3VAsRGowWn5/5PdjUT0z9f1j4Zo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-79--FfUD_99PqmNqMCVHQHeVQ-1; Fri,
+ 12 Sep 2025 06:08:00 -0400
+X-MC-Unique: -FfUD_99PqmNqMCVHQHeVQ-1
+X-Mimecast-MFC-AGG-ID: -FfUD_99PqmNqMCVHQHeVQ_1757671680
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CCE1118004D8; Fri, 12 Sep 2025 10:07:59 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.45.224.15])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 231E61954126; Fri, 12 Sep 2025 10:07:57 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH v4 0/4] tests/functional: Test with
+ scripts/vmstate-static-checker.py
+Date: Fri, 12 Sep 2025 12:07:51 +0200
+Message-ID: <20250912100755.316518-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: luc.michel@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099DF:EE_|IA0PR12MB7775:EE_
-X-MS-Office365-Filtering-Correlation-Id: 86812469-6a6e-418a-afc6-08ddf1e39a55
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|82310400026|376014|13003099007; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?foDzt4H5LPcgGlC7eXvTqn5CJYrVlgDDZ+5vKr/uW2doIIj7nGoGyiDsDTiX?=
- =?us-ascii?Q?lYWvEyCh6mjSWJXLWep7ok0jcEE1/64VykGRdJimslmrj7ZpkdvwSrLUKKwA?=
- =?us-ascii?Q?9E3nwIAW24hbaeWZ4yBEVS7ZA9Vf9UZJxNzGaHSflu41ZcpyV+N6yqnc15cl?=
- =?us-ascii?Q?l/mES0xjNLeQtNuydMYJIZK76QHKmC+k8eEtVX0CfMzNDDE/t2VbtDqthoML?=
- =?us-ascii?Q?ipS9v71volGlN114DLupXamNTPKEniQkKTZGrXGSkdaAG4oTo81tpiNfWrJR?=
- =?us-ascii?Q?8fqzVJRa+RxD4+9bnpQxmsHhzowxF6pQ9FemDjVWxjR+ad2E4mCcFgIHZ+oB?=
- =?us-ascii?Q?zZr6GugTtefjs00m2twBn159M8HDZvbrmlO+r0HoU4b0cUWUR2QxYUs1DeAW?=
- =?us-ascii?Q?ymxlpH1PnHbXj5ZpsVvoJfiaqqjL44jpJXZUxOaQojumtDoqvoEox+n0wn8T?=
- =?us-ascii?Q?GOtV6sM1JtplsNxBoylL8TX/TGabqNroJG3v0xjAWa8xPx58L/31Ycu6TxWj?=
- =?us-ascii?Q?MfiLiAl6prfDim0TInVZXOke0or28L48I7lk5G+9Ik7cdoECroRLgPVS6Prw?=
- =?us-ascii?Q?cP12kHF4WX2v/aMmesr4JNKwDztoLZS/7TedgJxwsVvwC7Tca3Bk3k1uqRCg?=
- =?us-ascii?Q?jk7JRNQjoeRryR32v+l0SQoQ27AA33pTA7bxNHGYRrrWONw8D+8sCwLzMojA?=
- =?us-ascii?Q?DmVyxlZpValWR98dqXd2P0phHoA5TjGGRdiGYdxOTjH0K00sTviMrYf6mCCi?=
- =?us-ascii?Q?afmg+ax0a4StgG7S6AvhN7DE3GCwGuWI4AFd6ctdl4Gv/wwFMvqggHvcpBFi?=
- =?us-ascii?Q?1MSpxVpfImPly4xvZJEONO4eXRsEBZfT+7D5BPxOkw6PK2HRpkI2fnzF5M3C?=
- =?us-ascii?Q?8o2O0C6YROPfYg55ZCY68W8Nw41bFOF+EYZa66BVm9JrB/Q5gRLYAmHMBDrh?=
- =?us-ascii?Q?Y9IATl+gfr56MdvXQA2ZTi39sLsQ0OQ1z6tm7NN+P4GuX6A3MUaqg3txjYK7?=
- =?us-ascii?Q?Yqu3rnrHktDmQ4TAbhmc87INvwZ4ujUKKowzQDCZClRRwbymC3UV7J0vSCyg?=
- =?us-ascii?Q?IBsUn9dplxqXYX75JBN4kwW9y20W+pmgrtI3kXfiINhz1+FsKzQCmPpRO1uY?=
- =?us-ascii?Q?s1SHMxwPtuuGDDQDyDcf7Z9HKN991aMcV4WiTNO9p8c547BUjCHAGcnixArj?=
- =?us-ascii?Q?oKvI4IybjcbFT5iLWZ8XU2TWYJ6MkNHVXYxMsUynu+cj3mdnokD/rbP+2RPO?=
- =?us-ascii?Q?8oZrnEqH+Q52qyZFFluH70iDQnnRlFca6vNgFjOmqA/+ZHzw/i3Zsjm79QEG?=
- =?us-ascii?Q?8aIal9vbhArJxDxaDNshLZzdIawmW4VbyRCxajnk7F4HoxHrMyiUpV2H7lww?=
- =?us-ascii?Q?mda4axd/WSIguFfONrU0re4MgZLTEYHJJrpmj+mVeQym0fIpK/PIpjx+mF//?=
- =?us-ascii?Q?Z2KkT+kd/5hf/S3VES9HD/TSQFzOvqnZiXqJ8KRykm69xSDPXSmrbw=3D=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(13003099007);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2025 10:03:20.4849 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86812469-6a6e-418a-afc6-08ddf1e39a55
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099DF.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7775
-Received-SPF: permerror client-ip=2a01:111:f403:2407::60c;
- envelope-from=Luc.Michel@amd.com;
- helo=NAM02-BN1-obe.outbound.protection.outlook.com
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -154,49 +77,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a test for the amd-versal2-virt machine using the same command line,
-kernel, initrd than the ones used for amd-versal-virt.
+There are also some files available in tests/vmstate-static-checker-data/
+which were used in the past to verify the functionality of the checker
+script. Move them to tests/data/vmstate-static-checker now and add an
+automated test that checks for the expected output when using these files
+with the scripts/vmstate-static-checker.py script.
 
-Signed-off-by: Luc Michel <luc.michel@amd.com>
-Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
----
- tests/functional/aarch64/test_xlnx_versal.py | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Additionally also add an automatic test of the vmstate via good reference
+files from an older version of QEMU. I chose to use QEMU 7.2 for the
+reference files since this is a long term support release that is still
+actively being maintained, so we certainly want to make sure that we don't
+break migration from that version to the latest one.
 
-diff --git a/tests/functional/aarch64/test_xlnx_versal.py b/tests/functional/aarch64/test_xlnx_versal.py
-index 95e5c44771f..45aa6e1b881 100755
---- a/tests/functional/aarch64/test_xlnx_versal.py
-+++ b/tests/functional/aarch64/test_xlnx_versal.py
-@@ -18,12 +18,12 @@ class AmdVersalVirtMachine(LinuxKernelTest):
-         ('http://ports.ubuntu.com/ubuntu-ports/dists/bionic-updates/main/'
-          'installer-arm64/20101020ubuntu543.19/images/netboot/'
-          '/ubuntu-installer/arm64/initrd.gz'),
-         'e7a5e716b6f516d8be315c06e7331aaf16994fe4222e0e7cfb34bc015698929e')
- 
--    def test_aarch64_amd_versal_virt(self):
--        self.set_machine('amd-versal-virt')
-+    def common_aarch64_amd_versal_virt(self, machine):
-+        self.set_machine(machine)
-         kernel_path = self.ASSET_KERNEL.fetch()
-         initrd_path = self.ASSET_INITRD.fetch()
- 
-         self.vm.set_console()
-         self.vm.add_args('-m', '2G',
-@@ -31,7 +31,13 @@ def test_aarch64_amd_versal_virt(self):
-                          '-kernel', kernel_path,
-                          '-initrd', initrd_path)
-         self.vm.launch()
-         self.wait_for_console_pattern('Checked W+X mappings: passed')
- 
-+    def test_aarch64_amd_versal_virt(self):
-+        self.common_aarch64_amd_versal_virt('amd-versal-virt')
-+
-+    def test_aarch64_amd_versal2_virt(self):
-+        self.common_aarch64_amd_versal_virt('amd-versal2-virt')
-+
- if __name__ == '__main__':
-     LinuxKernelTest.main()
+Since the checker script can report false positives in certain cases,
+the latter test is marked with the "skipFlakyTests" decorator, i.e. it
+is only run if the user set the QEMU_TEST_FLAKY_TESTS environment
+variable before starting the tests.
+
+v4:
+- Move the test with the dump*.json files to a separate file
+- Rebase to current master since the folder layout in tests/functional
+  has changed
+
+v3:
+- Do not run the tests by default, only if QEMU_TEST_FLAKY_TESTS has
+  been set
+- Add some hints what to do in case the test detects an error
+
+v2:
+- Dropped the patch that is already upstream
+- Don't remove the old dump files, rather test for the expected
+  output of the checker script with them
+
+Thomas Huth (4):
+  tests: Move the old vmstate-static-checker files to tests/data/
+  tests/functional: Test whether the vmstate-static-checker script works
+    fine
+  tests/data/vmstate-static-checker: Add dump files from QEMU 7.2.17
+  tests/functional: Use vmstate-static-checker.py to test data from v7.2
+
+ MAINTAINERS                                   |    4 +-
+ .../aarch64/virt-7.2.json                     | 2571 +++++++++++++
+ .../vmstate-static-checker}/dump1.json        |    0
+ .../vmstate-static-checker}/dump2.json        |    0
+ .../vmstate-static-checker/m68k/virt-7.2.json | 2936 +++++++++++++++
+ .../ppc64/pseries-7.2.json                    | 1068 ++++++
+ .../s390x/s390-ccw-virtio-7.2.json            |  475 +++
+ .../x86_64/pc-q35-7.2.json                    | 3297 +++++++++++++++++
+ tests/functional/aarch64/meson.build          |    1 +
+ tests/functional/generic/test_vmstate.py      |   67 +
+ tests/functional/m68k/meson.build             |    4 +
+ tests/functional/ppc64/meson.build            |    1 +
+ tests/functional/s390x/meson.build            |    4 +
+ tests/functional/x86_64/meson.build           |    4 +-
+ tests/functional/x86_64/test_bad_vmstate.py   |   58 +
+ 15 files changed, 10488 insertions(+), 2 deletions(-)
+ create mode 100644 tests/data/vmstate-static-checker/aarch64/virt-7.2.json
+ rename tests/{vmstate-static-checker-data => data/vmstate-static-checker}/dump1.json (100%)
+ rename tests/{vmstate-static-checker-data => data/vmstate-static-checker}/dump2.json (100%)
+ create mode 100644 tests/data/vmstate-static-checker/m68k/virt-7.2.json
+ create mode 100644 tests/data/vmstate-static-checker/ppc64/pseries-7.2.json
+ create mode 100644 tests/data/vmstate-static-checker/s390x/s390-ccw-virtio-7.2.json
+ create mode 100644 tests/data/vmstate-static-checker/x86_64/pc-q35-7.2.json
+ create mode 100755 tests/functional/generic/test_vmstate.py
+ create mode 100755 tests/functional/x86_64/test_bad_vmstate.py
+
 -- 
-2.50.1
+2.51.0
 
 
