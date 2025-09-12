@@ -2,92 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96BAB54F7A
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 15:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1761AB54ADA
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 13:20:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ux3ln-0006Kw-HL; Fri, 12 Sep 2025 09:24:55 -0400
+	id 1ux1o3-0004ID-Rn; Fri, 12 Sep 2025 07:19:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <timo.teras@gmail.com>)
- id 1ux1kB-0003OJ-Pz
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 07:15:07 -0400
-Received: from mail-lf1-f54.google.com ([209.85.167.54])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <timo.teras@gmail.com>)
- id 1ux1k8-0004te-UT
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 07:15:07 -0400
-Received: by mail-lf1-f54.google.com with SMTP id
- 2adb3069b0e04-55f76454f69so1781358e87.0
- for <qemu-devel@nongnu.org>; Fri, 12 Sep 2025 04:15:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757675700; x=1758280500;
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=p6JP8Pum99r5CoRhJu1jMy4fZ/96rMAfaqPJqZ97O4Y=;
- b=X+0ag4SFFBRPLXel0YMC5nIoC3ZukaRhdgmBsyjkwP69HgKKNaG48POc9TFZMXPL0T
- PKaHla0scnGydsDl1HD00QmtdOIbQiyVbUxZ7ai2nCNBm/fkctxDbM3Q6qo+wpmiByUP
- QQxqEF2lKpmSwEfypPXRPCMxjA2vZno0lmojbaVxj2EQIipkHVpgXKdqjcA+v3sBUq5R
- KUMXVH8k+3b5bvUQZ6sTTBmpObkxlGUqUjf8h3KVWzaAUgSRgeNQA6RHEYTEYat1LFM8
- v4ZFjeDLFfH6FMPzPC6Klm5mVwPgrcZRwF8WTlIylWMLAkwmwiZuDArd5NChGiO8ZY7K
- qaBA==
-X-Gm-Message-State: AOJu0YzMYgA9S6jRsUm9RM0GoC5qTdXami1yDc/ZwzPDMIOAwjw6uOXi
- xykvLMlaPIn1Sd4qNcL49G8S9RgABrR+yOAzTJKqkhoeUra6860JF1JN
-X-Gm-Gg: ASbGncutebWROSflM5ykefIyTNhbYnmISErvuKpt7vtmPNnGMhinRRz25Fs2X9SboZa
- X/y9LXSH3Hv2In5bJoauX35Ncl1/aBWM1k/9rUvxa6g6XMStP402nwsI2mBaWBo2Zvrrl3z7PTp
- X25KGQc00s9IfnXRrD6VjFgggE86AnWQHr3c8BRSzSJygkMoxLa9XGtTZyKsHna+dqaYzIk9R9J
- AMwGH+uupeZ1Jta5DkwOVIQ5S/hl3JqgoSv1nQg7mtt8YU8GtbNIcRR7JcaOaOFgoXyEnAfTp6/
- wYj93QGV4Qm2u426CUtN4PvblVu1CKDlSeD75zKzQxCT8lyVHTnFBU6ZZuJq/vevvcDnx3MVjVI
- 7DTY5Dg0AbKZAtEyxalQ9OssL/bIyigS7xtatx9T+fjjLdpIMhV7LwNuu
-X-Google-Smtp-Source: AGHT+IGwv5iKCgHISaqD9l+6BfffDDPDnCqb70WaUKKci+yoS1ZmoJXytHs9mVhyfoREntyBr4qhug==
-X-Received: by 2002:a05:6512:350f:b0:569:28e5:d42 with SMTP id
- 2adb3069b0e04-5704f7a377amr673128e87.29.1757675699802; 
- Fri, 12 Sep 2025 04:14:59 -0700 (PDT)
-Received: from onyx.my.domain (91-159-30-98.elisa-laajakaista.fi.
- [91.159.30.98]) by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-56e5c3b6188sm1099903e87.3.2025.09.12.04.14.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Sep 2025 04:14:59 -0700 (PDT)
-From: =?utf-8?q?Timo_Ter=C3=A4s?= <timo.teras@iki.fi>
-Date: Fri, 12 Sep 2025 14:14:46 +0300
-Subject: [PATCH] hw/usb/host-libusb: keep autoscan enabled for bus+addr
- selector
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ux1nh-0004Fs-Sl
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 07:18:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ux1nZ-0005VT-SK
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 07:18:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757675908;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lhXhGWrzDthFEh5BZnKdQG/eOWAgCh3NRy37NOjuXeI=;
+ b=V5hu+tAw76KNjI8g+1/hrCFrGA3mt5dUXOPE7NrZh9NLhnbB1fPhNAA1DhRSsatuURK9rA
+ 4RjZUF5nuapRHIUBYMgNRQB4rPBBJjcp3Y75AZmwBbuwn+Yv+lI+yY4VLnhomz4NApGcOo
+ Eu2qXVB5ZBCgE7WS0wn5+RWGxSOJoAg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-355-j3DnC4BNPEWYAjTOBNIUsA-1; Fri,
+ 12 Sep 2025 07:18:26 -0400
+X-MC-Unique: j3DnC4BNPEWYAjTOBNIUsA-1
+X-Mimecast-MFC-AGG-ID: j3DnC4BNPEWYAjTOBNIUsA_1757675905
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F22391944F03; Fri, 12 Sep 2025 11:18:24 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.154])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7272218003FC; Fri, 12 Sep 2025 11:18:22 +0000 (UTC)
+Date: Fri, 12 Sep 2025 12:18:18 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH v2 1/3] io/crypto: Move tls premature termination
+ handling into QIO layer
+Message-ID: <aMQBehejwDPEO5C1@redhat.com>
+References: <20250911212355.1943494-1-peterx@redhat.com>
+ <20250911212355.1943494-2-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250912-usbhost-disconnect-v1-1-9c7c5fa9b50a@iki.fi>
-X-B4-Tracking: v=1; b=H4sIAKUAxGgC/x3MQQqAIBBA0avErBPSCLKrRAsbp5yNhlMRSHdPW
- r7F/wWEMpPA1BTIdLNwihW6bQCDizsp9tVgOjN0Vht1yRqSnMqzYIqR8FTaGkLnxg17ghoemTZ
- +/um8vO8Hc0YyvmQAAAA=
-X-Change-ID: 20250912-usbhost-disconnect-192ecaa8fc3e
-To: qemu-devel@nongnu.org
-Cc: =?utf-8?q?Timo_Ter=C3=A4s?= <timo.teras@iki.fi>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2888; i=timo.teras@iki.fi;
- h=from:subject:message-id; bh=BH8Px5alyO25aMCdJuahlCBuvr93ZN2zDT2SO/HzhOg=;
- b=owEBbQGS/pANAwAKAUZwDoxij6HOAcsmYgBoxACyakadGuPeumKvPvxBWaR4yfgaXrRino5l5
- vMgTAFi3w6JATMEAAEKAB0WIQTRdEpSPGbUaXBswFVGcA6MYo+hzgUCaMQAsgAKCRBGcA6MYo+h
- zkTCB/sEfw3RScOvyLmvZ+EeobBfJM86VM6Xm6A6OffyGmITx2rRA0ZhLPYHcJVHnXNe7dJTXYj
- yfjnVljVIYCS2omp2u4+vy9PluKQr0ykg16LgpYMDNansuz9HoFUaa72R8Y2QyoP/XWypsQ5YxH
- UGug1Ql8NhvO5B+7pnxBJ3cJdK5daMR/U1bYMzmfCyffDElYLYEO93EFP51LdnpxNu7zEvLVCvk
- OHp1I49NkB7HV1pfReBAkXlRZebu/YVRzc1afcWkkc/44SyLDRpi4HIdmOZmAIQOLosbB3BUfYY
- ad7S84Br8DgAJHm57ygM5oXzMsugr2Yh3jIJ85NtdyU8d+OB
-X-Developer-Key: i=timo.teras@iki.fi; a=openpgp;
- fpr=D1744A523C66D469706CC05546700E8C628FA1CE
-Received-SPF: pass client-ip=209.85.167.54; envelope-from=timo.teras@gmail.com;
- helo=mail-lf1-f54.google.com
-X-Spam_score_int: 8
-X-Spam_score: 0.8
-X-Spam_bar: /
-X-Spam_report: (0.8 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.001,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_PSBL=2.7,
+In-Reply-To: <20250911212355.1943494-2-peterx@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 12 Sep 2025 09:24:39 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,86 +85,149 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is partial revert of commit e058fa2dd599.
+On Thu, Sep 11, 2025 at 05:23:53PM -0400, Peter Xu wrote:
+> QCryptoTLSSession allows TLS premature termination in two cases, one of the
+> case is when the channel shutdown() is invoked on READ side.
+> 
+> It's possible the shutdown() happened after the read thread blocked at
+> gnutls_record_recv().  In this case, we should allow the premature
+> termination to happen.
+> 
+> The problem is by the time qcrypto_tls_session_read() was invoked,
+> tioc->shutdown may not have been set, so this may instead be treated as an
+> error if there is concurrent shutdown() calls.
+> 
+> To allow the flag to reflect the latest status of tioc->shutdown, move the
+> check upper into the QIOChannel level, so as to read the flag only after
+> QEMU gets an GNUTLS_E_PREMATURE_TERMINATION.
+> 
+> When at it, introduce qio_channel_tls_allow_premature_termination() helper
+> to make the condition checks easier to read.
+> 
+> This patch will fix a qemu qtest warning when running the preempt tls test,
+> reporting premature termination:
+> 
+> QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/migration-test --full -r /x86_64/migration/postcopy/preempt/tls/psk
+> ...
+> qemu-kvm: Cannot read from TLS channel: The TLS connection was non-properly terminated.
+> ...
+> 
+> In this specific case, the error was set by postcopy_preempt_thread, which
+> normally will be concurrently shutdown()ed by the main thread.
+> 
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  include/crypto/tlssession.h |  7 +------
+>  crypto/tlssession.c         |  7 ++-----
+>  io/channel-tls.c            | 21 +++++++++++++++++++--
+>  3 files changed, 22 insertions(+), 13 deletions(-)
 
-The portion to immediately validate the device is kept, but this
-adds and enables again the autoscan functionality. This is needed
-to detect and relay USB device disconnect event to the guest.
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-Fixes: e058fa2dd599 ("usb-host: add special case for bus+addr")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3111
-Signed-off-by: Timo Teräs <timo.teras@iki.fi>
----
- hw/usb/host-libusb.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+> diff --git a/include/crypto/tlssession.h b/include/crypto/tlssession.h
+> index 2f62ce2d67..6b4fcadee7 100644
+> --- a/include/crypto/tlssession.h
+> +++ b/include/crypto/tlssession.h
+> @@ -110,6 +110,7 @@
+>  typedef struct QCryptoTLSSession QCryptoTLSSession;
+>  
+>  #define QCRYPTO_TLS_SESSION_ERR_BLOCK -2
+> +#define QCRYPTO_TLS_SESSION_PREMATURE_TERMINATION -3
+>  
+>  /**
+>   * qcrypto_tls_session_new:
+> @@ -259,7 +260,6 @@ ssize_t qcrypto_tls_session_write(QCryptoTLSSession *sess,
+>   * @sess: the TLS session object
+>   * @buf: to fill with plain text received
+>   * @len: the length of @buf
+> - * @gracefulTermination: treat premature termination as graceful EOF
+>   * @errp: pointer to hold returned error object
+>   *
+>   * Receive up to @len bytes of data from the remote peer
+> @@ -267,10 +267,6 @@ ssize_t qcrypto_tls_session_write(QCryptoTLSSession *sess,
+>   * qcrypto_tls_session_set_callbacks(), decrypt it and
+>   * store it in @buf.
+>   *
+> - * If @gracefulTermination is true, then a premature termination
+> - * of the TLS session will be treated as indicating EOF, as
+> - * opposed to an error.
+> - *
 
-diff --git a/hw/usb/host-libusb.c b/hw/usb/host-libusb.c
-index b74670ae25696b5252f0d034cb9b759e338a050f..f0baf6b2f2d12fbf8feb5b788b46d3187028df58 100644
---- a/hw/usb/host-libusb.c
-+++ b/hw/usb/host-libusb.c
-@@ -90,7 +90,6 @@ struct USBHostDevice {
-     uint32_t                         iso_urb_frames;
-     uint32_t                         options;
-     uint32_t                         loglevel;
--    bool                             needs_autoscan;
-     bool                             allow_one_guest_reset;
-     bool                             allow_all_guest_resets;
-     bool                             suppress_remote_wake;
-@@ -1211,7 +1210,6 @@ static void usb_host_realize(USBDevice *udev, Error **errp)
- #if LIBUSB_API_VERSION >= 0x01000107 && !defined(CONFIG_WIN32)
-     if (s->hostdevice) {
-         int fd;
--        s->needs_autoscan = false;
-         fd = qemu_open(s->hostdevice, O_RDWR, errp);
-         if (fd < 0) {
-             return;
-@@ -1227,7 +1225,6 @@ static void usb_host_realize(USBDevice *udev, Error **errp)
-         !s->match.vendor_id &&
-         !s->match.product_id &&
-         !s->match.port) {
--        s->needs_autoscan = false;
-         ldev = usb_host_find_ref(s->match.bus_num,
-                                  s->match.addr);
-         if (!ldev) {
-@@ -1242,14 +1239,13 @@ static void usb_host_realize(USBDevice *udev, Error **errp)
-                        s->match.bus_num, s->match.addr);
-             return;
-         }
--    } else {
--        s->needs_autoscan = true;
--        QTAILQ_INSERT_TAIL(&hostdevs, s, next);
--        usb_host_auto_check(NULL);
-     }
- 
-     s->exit.notify = usb_host_exit_notifier;
-     qemu_add_exit_notifier(&s->exit);
-+
-+    QTAILQ_INSERT_TAIL(&hostdevs, s, next);
-+    usb_host_auto_check(NULL);
- }
- 
- static void usb_host_instance_init(Object *obj)
-@@ -1267,9 +1263,7 @@ static void usb_host_unrealize(USBDevice *udev)
-     USBHostDevice *s = USB_HOST_DEVICE(udev);
- 
-     qemu_remove_exit_notifier(&s->exit);
--    if (s->needs_autoscan) {
--        QTAILQ_REMOVE(&hostdevs, s, next);
--    }
-+    QTAILQ_REMOVE(&hostdevs, s, next);
-     usb_host_close(s);
- }
- 
 
----
-base-commit: 190d5d7fd725ff754f94e8e0cbfb69f279c82b5d
-change-id: 20250912-usbhost-disconnect-192ecaa8fc3e
+Could you say something about QCRYPTO_TLS_SESSION_PREMATURE_TERMINATION
+being a possible return code here (no need to repost just for that). 
 
-Best regards,
+>   * It is an error to call this before
+>   * qcrypto_tls_session_handshake() returns
+>   * QCRYPTO_TLS_HANDSHAKE_COMPLETE
+> @@ -282,7 +278,6 @@ ssize_t qcrypto_tls_session_write(QCryptoTLSSession *sess,
+>  ssize_t qcrypto_tls_session_read(QCryptoTLSSession *sess,
+>                                   char *buf,
+>                                   size_t len,
+> -                                 bool gracefulTermination,
+>                                   Error **errp);
+>  
+>  /**
+
+> +static bool
+> +qio_channel_tls_allow_premature_termination(QIOChannelTLS *tioc, int flags)
+> +{
+> +    if (flags & QIO_CHANNEL_READ_FLAG_RELAXED_EOF) {
+> +        return true;
+> +    }
+> +
+> +    if (qatomic_read(&tioc->shutdown) & QIO_CHANNEL_SHUTDOWN_READ) {
+> +        return true;
+> +    }
+> +
+> +    return false;
+> +}
+>  
+>  static ssize_t qio_channel_tls_readv(QIOChannel *ioc,
+>                                       const struct iovec *iov,
+> @@ -364,8 +377,6 @@ static ssize_t qio_channel_tls_readv(QIOChannel *ioc,
+>              tioc->session,
+>              iov[i].iov_base,
+>              iov[i].iov_len,
+> -            flags & QIO_CHANNEL_READ_FLAG_RELAXED_EOF ||
+> -            qatomic_load_acquire(&tioc->shutdown) & QIO_CHANNEL_SHUTDOWN_READ,
+>              errp);
+
+
+The original code uses qatomic_load_acquire() while the new code
+uses qatomic_read() which imposes weaker ordering constraints.
+
+Does this matter ? I'm not familiar enough with atomics to say
+which we need here ?
+
+>          if (ret == QCRYPTO_TLS_SESSION_ERR_BLOCK) {
+>              if (got) {
+> @@ -373,6 +384,12 @@ static ssize_t qio_channel_tls_readv(QIOChannel *ioc,
+>              } else {
+>                  return QIO_CHANNEL_ERR_BLOCK;
+>              }
+> +        } else if (ret == QCRYPTO_TLS_SESSION_PREMATURE_TERMINATION) {
+> +            if (qio_channel_tls_allow_premature_termination(tioc, flags)) {
+> +                ret = 0;
+> +            } else {
+> +                return -1;
+> +            }
+>          } else if (ret < 0) {
+>              return -1;
+>          }
+> -- 
+> 2.50.1
+> 
+
+With regards,
+Daniel
 -- 
-Timo Teräs <timo.teras@iki.fi>
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
