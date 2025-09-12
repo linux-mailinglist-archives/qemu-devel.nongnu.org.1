@@ -2,90 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FCEBB54651
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 11:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2F8B5436A
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 09:04:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwzdM-0005F4-La; Fri, 12 Sep 2025 04:59:56 -0400
+	id 1uwxo9-0002Bw-8X; Fri, 12 Sep 2025 03:02:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uwzdJ-0005E6-QO
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 04:59:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1uwxo2-0002BQ-T1; Fri, 12 Sep 2025 03:02:50 -0400
+Received: from mail-dm6nam12on20625.outbound.protection.outlook.com
+ ([2a01:111:f403:2417::625]
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uwzd9-0000DK-Vo
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 04:59:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757667581;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
- references:references; bh=ewxTlh5vEbdSqb4nj8EbEVqZ7bdeP2fsxuDDzEABHJU=;
- b=I+kmCPwSP47ME4C6og87BaZC0bubDlC/XtflBxjhzpa/C0Ybey7HAVvO1FVlc1WUCYNZ7T
- DcOrungqlZciltwDmSzeBdCyl4l/gVS0rVb8JVUfktRjk1Y/cebc2APW7ZGrnJVoepDB15
- 9OLtYGkgX1k+sljPJsr/q/DSXNz1K/g=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-NPO6A5k6NaKxvnVZLmRA6w-1; Fri,
- 12 Sep 2025 04:59:37 -0400
-X-MC-Unique: NPO6A5k6NaKxvnVZLmRA6w-1
-X-Mimecast-MFC-AGG-ID: NPO6A5k6NaKxvnVZLmRA6w_1757667576
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DA6CD1800366; Fri, 12 Sep 2025 08:59:35 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.12])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2C3DB19560B1; Fri, 12 Sep 2025 08:59:35 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8239D21E6A27; Fri, 12 Sep 2025 10:59:32 +0200 (CEST)
-Resent-To: richard.henderson@linaro.org, alifm@linux.ibm.com,
- borntraeger@linux.ibm.com, farman@linux.ibm.com, iii@linux.ibm.com,
- jjherne@linux.ibm.com, jrossi@linux.ibm.com, mjrosato@linux.ibm.com,
- pasic@linux.ibm.com, walling@linux.ibm.com, zycai@linux.ibm.com,
- qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Fri, 12 Sep 2025 10:59:32 +0200
-Resent-Message-ID: <87jz24avwr.fsf@pond.sub.org>
-From: Markus Armbruster <armbru@redhat.com>
-To: Zhuoying Cai <zycai@linux.ibm.com>
-Cc: thuth@redhat.com,  berrange@redhat.com,  richard.henderson@linaro.org,
- david@redhat.com,  jrossi@linux.ibm.com,  qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org,  walling@linux.ibm.com,  jjherne@linux.ibm.com,
- pasic@linux.ibm.com,  borntraeger@linux.ibm.com,  farman@linux.ibm.com,
- mjrosato@linux.ibm.com,  iii@linux.ibm.com,  eblake@redhat.com,
- alifm@linux.ibm.com
-Subject: Re: [PATCH v5 01/29] Add boot-certs to s390-ccw-virtio machine type
- option
-In-Reply-To: <ffb4d32b-d2bc-45f0-91ce-6472d64c02bb@linux.ibm.com> (Zhuoying
- Cai's message of "Thu, 11 Sep 2025 15:03:37 -0400")
-References: <20250818214323.529501-1-zycai@linux.ibm.com>
- <20250818214323.529501-2-zycai@linux.ibm.com>
- <87v7lpjvsw.fsf@pond.sub.org>
- <ffb4d32b-d2bc-45f0-91ce-6472d64c02bb@linux.ibm.com>
-Date: Fri, 12 Sep 2025 08:42:10 +0200
-Message-ID: <87wm64b29p.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1uwxo0-00058E-BM; Fri, 12 Sep 2025 03:02:50 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XRuArVILtj9ItgeYzpyqz3UgG9XCBwL7bSK7m7JTDP7GKxY5QsDpGDv0R4iLGjYRPgI9VfrHq0abAyAnMiIWAgZAQiu7cwIS6b+0LzA85cCDa/djaJQFQceGyn3gFyJHTnH6EUVO2QtFdGgCcpjRpxmlkpNuwsq85FwurBqjLtN0MJD7dv5Pnrny6KyE3MSkWotO/CzbPQmpWdXPaHpgOdgeQic2QUEJ0cSwHcxAt6XUbtHondbkYzIfgdVfEKuNS6CAVnerePoeMijruX7NOysHbXpj3TANa+Rgf7dHhduxUw1+d1Jm6YGOSDT/hZ8ZT65yWGX0fJJJuCe4NgAUVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zCXZU9e44H5BTdIejBMDoFHy7Dvoep10JIIACPAt2Ak=;
+ b=nxzdt9JMkgN5xlYgX8ERhlowvxnnWzKqzq8+NWSPLMzeABlsvAMDrndrgsUiXlp//a7kPvnBzon6KP5OtVAdl75JFyfqSwyibv2AhXhvkXBkEeXbdmR2PGJTl9tJWdaiToy4+Iti5dJ5EjApoHvC3PCD/4d5XheaF3OcEvxPRuB9TnpQdyw6RhZGfCLFzyO5HuA2IB2OC66tKaXM0xpaljWBfAmKW57KhntwOBMEVbZBAvCHcRvj519ExBlgKKTNgqGc67gfCcFelyCSL9mpdoPNY+B1tIkhbK8pdpz0082Nn5bA3IYJAxqtOIH51Osfacxn0Xju7IKKAPqj9R+KTg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zCXZU9e44H5BTdIejBMDoFHy7Dvoep10JIIACPAt2Ak=;
+ b=AEwmXdnRbdttcHyntg9/UF3maHp/6TMG9Cnk/xv6z06PP8HucoISjg5TF3QyBZQU6ON4TOreFthiLMxoRkiZpR89XqNouRk5r0EBZq/GaEbLseZM5lNj60c21C0SDiFg+wi/f2Jbg+zgyk1Kk2r84ey00b3IgGBbEYqZZLA5fQQ=
+Received: from BY5PR03CA0001.namprd03.prod.outlook.com (2603:10b6:a03:1e0::11)
+ by IA1PR12MB6388.namprd12.prod.outlook.com (2603:10b6:208:388::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Fri, 12 Sep
+ 2025 07:02:41 +0000
+Received: from BY1PEPF0001AE1C.namprd04.prod.outlook.com
+ (2603:10b6:a03:1e0:cafe::f1) by BY5PR03CA0001.outlook.office365.com
+ (2603:10b6:a03:1e0::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9115.15 via Frontend Transport; Fri,
+ 12 Sep 2025 07:02:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BY1PEPF0001AE1C.mail.protection.outlook.com (10.167.242.105) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9115.13 via Frontend Transport; Fri, 12 Sep 2025 07:02:40 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 12 Sep
+ 2025 00:02:40 -0700
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 12 Sep
+ 2025 00:02:40 -0700
+Received: from XFR-LUMICHEL-L2.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
+ Transport; Fri, 12 Sep 2025 00:02:38 -0700
+Date: Fri, 12 Sep 2025 09:02:37 +0200
+From: Luc Michel <luc.michel@amd.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, Francisco Iglesias
+ <francisco.iglesias@amd.com>, "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Alistair Francis
+ <alistair@alistair23.me>, Frederic Konrad <frederic.konrad@amd.com>, "Sai
+ Pavan Boddu" <sai.pavan.boddu@amd.com>
+Subject: Re: [PATCH v4 39/47] target/arm/tcg/cpu64: add the cortex-a78ae CPU
+Message-ID: <aMPFjZuTsXSBiqeL@XFR-LUMICHEL-L2.amd.com>
+References: <20250822151614.187856-1-luc.michel@amd.com>
+ <20250822151614.187856-40-luc.michel@amd.com>
+ <CAFEAcA-wnyWketgmq-gQYfgxMkDq16VDNZQCvM3uA1OE__=PAA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Lines: 264
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA-wnyWketgmq-gQYfgxMkDq16VDNZQCvM3uA1OE__=PAA@mail.gmail.com>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1C:EE_|IA1PR12MB6388:EE_
+X-MS-Office365-Filtering-Correlation-Id: 439f9f56-bf85-4152-ab4c-08ddf1ca5d5a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|82310400026|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?aVWFpFwEbVUgCtdv+qdJUUSKkfvPjmy92RW+c/+LDFRwdkVT23SUTYDvx6kw?=
+ =?us-ascii?Q?OthacFL+sf/kwKJH7B6N7nHhiC/DVdenAB4kvoHKk1PV//NY4X2UyhrfZYK3?=
+ =?us-ascii?Q?VTAy5QAgIo6eHJhMtX7Ag2+Kj7Z52ufbXsc+BguSGo8XFDd58xl6wXolKP/m?=
+ =?us-ascii?Q?40Wrq7EUrgBpwsvLR0vw5H38vPU32kT/vbiMhEgThJgYs2vg5+qgvYeBpTO0?=
+ =?us-ascii?Q?ovZqf0O644jo/dNa9ET4BXC8CqZuYzwDvQXGZJN910GVtF3SMod7aqZf2FpJ?=
+ =?us-ascii?Q?8E8KhnAiO6g/+X197/8dFODapS0iBoaPhHZoZ8qemYyXGKoYMbgDxxtEu0qq?=
+ =?us-ascii?Q?WePReTOJmCbyQkQIIuCyToa2Qvf3VECSJ9bXOELlwt7JxrWqCTWHilxp0REX?=
+ =?us-ascii?Q?lpepN2x+1t8zRqEWBCbyq0D6xTgNlChF75yUyE4BpGaT03kuJ3pgLQrxq4+n?=
+ =?us-ascii?Q?bP2wf+1dMjOcTcrOslF6hKPs601kjXLRhv9chBwHtQKQXKkr6lg6nRSt3CR9?=
+ =?us-ascii?Q?NcxpNb/ktnODjkoL/9GO2jUL9jvhfFh1XYphb5MH8yEZM4yP6o3ZdQAB7XQi?=
+ =?us-ascii?Q?4GjXLPj3iQYRKgu71pkiXXPLZIKQgj7pe6YVAf8wZXQVSiGcmwkZ0T0TuttA?=
+ =?us-ascii?Q?ritsGuTEIYYAsVGRzypZn04bkXlUCo8AZrLWDp/5S0CIJB6qgJTh5eeOWngx?=
+ =?us-ascii?Q?IlEOsoJfwSwS8pCMmG09/i9YS0jN/w8nEG4G7glBh+YcE39AEATWVd9M9xMn?=
+ =?us-ascii?Q?fJvkdwnQnaT3DBVI7OwakighyykSu7xexC0b54pCvinYnS0/jiLF/RaAjv/2?=
+ =?us-ascii?Q?/9u/Va3U812VFVVzJpBkktpViFK24w2Hbhu4VbFCjybfoosE36toqX7zTet0?=
+ =?us-ascii?Q?Q3/CPcDZoyltamnfoSUlXBkXec8JiKijfk7wJj91mraPBkwH6WyqM55x74Rp?=
+ =?us-ascii?Q?qenTLnc9CWvaJAeDBBQ+f5nK5EC1OaPF/fHJ3dEWs7hawQPoTk8w9DFwQV/4?=
+ =?us-ascii?Q?aNe7USCRgysEa7LiQqvjrHlVZYjzm00JBPVrMICVXNK0emT7x+BeMqD677tz?=
+ =?us-ascii?Q?38h/HiUdaKviRt/oy1lVGeUnxZh/VXNIkcXn22iZztnqsWGyhbMuHWMkcXrw?=
+ =?us-ascii?Q?SG2/hRbKbULgThnmQmvq7oC43ZFj367TTHDp3zxhrWSpeTlQquV1xeE4Uhei?=
+ =?us-ascii?Q?D/GUo+esvn3dxXcf48OGWli6fw60jhXTKWSxS08yrZU0JtSJUwyKAIXP5uGZ?=
+ =?us-ascii?Q?QB/ttnXV8SvtoxcYiK173+GOWk+vYXgBZ4DgDPBG9nEmmf2F8/5wxRbA9DKx?=
+ =?us-ascii?Q?7jMrkLcvV2uJNnKSoIWJwpWDOA+DvmH5N18fMdHPrTighjFZ7xxISrQpjwsI?=
+ =?us-ascii?Q?d0NB1lkJX3bZzKWgZanQuuN/T2IMS2Aoe//rMxkZ85rlEZLgUwPkSwDy5f3+?=
+ =?us-ascii?Q?QjriGdZWzLUdkL4rQFKp3AwINzWXgzsJbBy9OrImES4bzTEPOX8Rh4RrAF7A?=
+ =?us-ascii?Q?kvDozrPW8TAWD2fDEAQ/vlRrHXvb04ssYfZi?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2025 07:02:40.7054 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 439f9f56-bf85-4152-ab4c-08ddf1ca5d5a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BY1PEPF0001AE1C.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6388
+Received-SPF: permerror client-ip=2a01:111:f403:2417::625;
+ envelope-from=Luc.Michel@amd.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,269 +154,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Zhuoying Cai <zycai@linux.ibm.com> writes:
+On 15:31 Thu 11 Sep     , Peter Maydell wrote:
+> On Fri, 22 Aug 2025 at 16:17, Luc Michel <luc.michel@amd.com> wrote:
+> >
+> > Add support for the ARM Cortex-A78AE CPU.
+> >
+> > Signed-off-by: Luc Michel <luc.michel@amd.com>
+> > ---
+> >  target/arm/tcg/cpu64.c | 79 ++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 79 insertions(+)
+> >
+> > diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+> > index 35cddbafa4c..b56677c1a5d 100644
+> > --- a/target/arm/tcg/cpu64.c
+> > +++ b/target/arm/tcg/cpu64.c
+> > @@ -404,10 +404,84 @@ static void aarch64_a76_initfn(Object *obj)
+> >
+> >      /* From D5.1 AArch64 PMU register summary */
+> >      cpu->isar.reset_pmcr_el0 = 0x410b3000;
+> >  }
+> >
+> > +static void aarch64_a78ae_initfn(Object *obj)
+> > +{
+> > +    ARMCPU *cpu = ARM_CPU(obj);
+> > +    ARMISARegisters *isar = &cpu->isar;
+> > +
+> > +    cpu->dtb_compatible = "arm,cortex-a78ae";
+> > +    set_feature(&cpu->env, ARM_FEATURE_V8);
+> > +    set_feature(&cpu->env, ARM_FEATURE_NEON);
+> > +    set_feature(&cpu->env, ARM_FEATURE_GENERIC_TIMER);
+> > +    set_feature(&cpu->env, ARM_FEATURE_BACKCOMPAT_CNTFRQ);
+> 
+> From cpu.h:
+> 
+>     /*
+>      * ARM_FEATURE_BACKCOMPAT_CNTFRQ makes the CPU default cntfrq be 62.5MHz
+>      * if the board doesn't set a value, instead of 1GHz. It is for backwards
+>      * compatibility and used only with CPU definitions that were already
+>      * in QEMU before we changed the default. It should not be set on any
+>      * CPU types added in future.
+>      */
+> 
+> This is a new CPU type, so don't set this.
+> 
+> > +    set_feature(&cpu->env, ARM_FEATURE_AARCH64);
+> > +    set_feature(&cpu->env, ARM_FEATURE_CBAR_RO);
+> 
+> The TRM says this CPU doesn't have a CBAR register, so
+> don't set this.
+> 
+> > +    set_feature(&cpu->env, ARM_FEATURE_EL2);
+> > +    set_feature(&cpu->env, ARM_FEATURE_EL3);
+> > +    set_feature(&cpu->env, ARM_FEATURE_PMU);
+> > +
+> > +    /* Ordered by B2.4 AArch64 registers by functional group */
+> 
+> There is no B2.4 in the Cortex-A78AE TRM. Please don't
+> just cut-and-paste things from other CPU definitions.
+> Similarly for other comments here referencing TRM sections.
+> 
+> In this case what you want is section 3.2.4.
 
-> Thanks for the feedback.
->
-> On 9/11/25 3:24 AM, Markus Armbruster wrote:
->> Zhuoying Cai <zycai@linux.ibm.com> writes:
->> 
->>> Introduce a new `boot-certs` machine type option for the s390-ccw-virtio
->>> machine. This allows users to specify one or more certificate file paths
->>> or directories to be used during secure boot.
->>>
->>> Each entry is specified using the syntax:
->>> 	boot-certs.<index>.path=/path/to/cert.pem
->>>
->>> Multiple paths can be specify using array properties:
->>> 	boot-certs.0.path=/path/to/cert.pem,
->>> 	boot-certs.1.path=/path/to/cert-dir,
->>> 	boot-certs.2.path=/path/to/another-dir...
->>>
->>> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
->>> ---
->>>  docs/system/s390x/secure-ipl.rst   | 20 ++++++++++++++++++++
->>>  hw/s390x/s390-virtio-ccw.c         | 30 ++++++++++++++++++++++++++++++
->>>  include/hw/s390x/s390-virtio-ccw.h |  2 ++
->>>  qapi/machine-s390x.json            | 24 ++++++++++++++++++++++++
->>>  qemu-options.hx                    |  6 +++++-
->>>  5 files changed, 81 insertions(+), 1 deletion(-)
->>>  create mode 100644 docs/system/s390x/secure-ipl.rst
->>>
->>> diff --git a/docs/system/s390x/secure-ipl.rst b/docs/system/s390x/secure-ipl.rst
->>> new file mode 100644
->>> index 0000000000..9b3fd25cc4
->>> --- /dev/null
->>> +++ b/docs/system/s390x/secure-ipl.rst
->>> @@ -0,0 +1,20 @@
->>> +.. SPDX-License-Identifier: GPL-2.0-or-later
->>> +
->>> +Secure IPL Command Line Options
->>> +===============================
->>> +
->>> +New parameters have been introduced to s390-ccw-virtio machine type option
->>> +to support secure IPL. These parameters allow users to provide certificates
->>> +and enable secure IPL directly via the command line.
->> 
->> All too soon these parameters will no longer be new.  Consider something
->> like "The s390-ccw-virtio machine type supports secure TPL.  To enable
->> it, you need to provide certificates."
->> 
->>> +
->>> +Providing Certificates
->>> +----------------------
->>> +
->>> +The certificate store can be populated by supplying a list of certificate file
->>> +paths or directories on the command-line:
->> 
->> File is clear enough (use the certificate found in the file).  What does
->> directory do?
->
-> A directory contains a list of certificate files, and allowing both
-> files and directories could make the CLI more flexible.
+Sorry. All of this come from the fact that I mistakenly used the r0p1
+revision TRM. Section numbering seems to have changed between the
+revisions.
 
-I figure when @path names a file, it's an error when the file doesn't
-contain a valid cetificate.
+I'll redo this based on r0p3.
 
-What is @path names a directory, and one of the directory's files
-doesn't contain a valid certificate?
+Thanks
 
-Can a single file contain multiple certificates?
+Luc
 
->>> +
->>> +.. code-block:: shell
->>> +
->>> +    qemu-system-s390x -machine s390-ccw-virtio, \
->>> +                               boot-certs.0.path=/.../qemu/certs, \
->>> +                               boot-certs.1.path=/another/path/cert.pem ...
->>> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
->>> index c294106a74..9ac425c695 100644
->>> --- a/hw/s390x/s390-virtio-ccw.c
->>> +++ b/hw/s390x/s390-virtio-ccw.c
->>> @@ -45,6 +45,7 @@
->>>  #include "target/s390x/kvm/pv.h"
->>>  #include "migration/blocker.h"
->>>  #include "qapi/visitor.h"
->>> +#include "qapi/qapi-visit-machine-s390x.h"
->>>  #include "hw/s390x/cpu-topology.h"
->>>  #include "kvm/kvm_s390x.h"
->>>  #include "hw/virtio/virtio-md-pci.h"
->>> @@ -798,6 +799,30 @@ static void machine_set_loadparm(Object *obj, Visitor *v,
->>>      g_free(val);
->>>  }
->>>  
->>> +static void machine_get_boot_certs(Object *obj, Visitor *v,
->>> +                                   const char *name, void *opaque,
->>> +                                   Error **errp)
->>> +{
->>> +    S390CcwMachineState *ms = S390_CCW_MACHINE(obj);
->>> +    BootCertPathList **certs = &ms->boot_certs;
->>> +
->>> +    visit_type_BootCertPathList(v, name, certs, errp);
->>> +}
->>> +
->>> +static void machine_set_boot_certs(Object *obj, Visitor *v, const char *name,
->>> +                                   void *opaque, Error **errp)
->>> +{
->>> +    S390CcwMachineState *ms = S390_CCW_MACHINE(obj);
->>> +    BootCertPathList *cert_list = NULL;
->>> +
->>> +    visit_type_BootCertPathList(v, name, &cert_list, errp);
->>> +    if (!cert_list) {
->>> +        return;
->>> +    }
->>> +
->>> +    ms->boot_certs = cert_list;
->>> +}
->>> +
->>>  static void ccw_machine_class_init(ObjectClass *oc, const void *data)
->>>  {
->>>      MachineClass *mc = MACHINE_CLASS(oc);
->>> @@ -851,6 +876,11 @@ static void ccw_machine_class_init(ObjectClass *oc, const void *data)
->>>              "Up to 8 chars in set of [A-Za-z0-9. ] (lower case chars converted"
->>>              " to upper case) to pass to machine loader, boot manager,"
->>>              " and guest kernel");
->>> +
->>> +    object_class_property_add(oc, "boot-certs", "BootCertPath",
->> 
->> Isn't this a BootCertPathList, not a BootCertPath?
->
-> If I understand correctly, would BootCerts also be the correct option to
-> use here?
+> 
+> > +    SET_IDREG(isar, CLIDR, 0x82000023);
+> > +    cpu->ctr = 0x9444c004;
+> > +    cpu->dcz_blocksize = 4;
+> > +    SET_IDREG(isar, ID_AA64DFR0, 0x0000000110305408ull);
+> > +    SET_IDREG(isar, ID_AA64ISAR0, 0x0010100010211120ull);
+> > +    SET_IDREG(isar, ID_AA64ISAR1, 0x0000000001200031ull);
+> > +    SET_IDREG(isar, ID_AA64MMFR0, 0x0000000000101125ull);
+> > +    SET_IDREG(isar, ID_AA64MMFR1, 0x0000000010212122ull);
+> > +    SET_IDREG(isar, ID_AA64MMFR2, 0x0000000100001011ull);
+> > +    SET_IDREG(isar, ID_AA64PFR0, 0x1100000010111112ull); /* GIC filled in later */
+> > +    SET_IDREG(isar, ID_AA64PFR1, 0x0000000000000010ull);
+> > +    SET_IDREG(isar, ID_AFR0, 0x00000000);
+> > +    SET_IDREG(isar, ID_DFR0, 0x04010088);
+> > +    SET_IDREG(isar, ID_ISAR0, 0x02101110);
+> > +    SET_IDREG(isar, ID_ISAR1, 0x13112111);
+> > +    SET_IDREG(isar, ID_ISAR2, 0x21232042);
+> > +    SET_IDREG(isar, ID_ISAR3, 0x01112131);
+> > +    SET_IDREG(isar, ID_ISAR4, 0x00010142);
+> > +    SET_IDREG(isar, ID_ISAR5, 0x01011121);
+> > +    SET_IDREG(isar, ID_ISAR6, 0x00000010);
+> > +    SET_IDREG(isar, ID_MMFR0, 0x10201105);
+> > +    SET_IDREG(isar, ID_MMFR1, 0x40000000);
+> > +    SET_IDREG(isar, ID_MMFR2, 0x01260000);
+> > +    SET_IDREG(isar, ID_MMFR3, 0x02122211);
+> > +    SET_IDREG(isar, ID_MMFR4, 0x00021110);
+> > +    SET_IDREG(isar, ID_PFR0, 0x10010131);
+> > +    SET_IDREG(isar, ID_PFR1, 0x00010000); /* GIC filled in later */
+> > +    SET_IDREG(isar, ID_PFR2, 0x00000011);
+> > +    cpu->midr = 0x410fd421;          /* r0p1 */
+> 
+> r0p3 is the latest...
+> 
+> > +    cpu->revidr = 0;
+> > +
+> > +    /* From B2.18 CCSIDR_EL1 */
+> > +    /* 64KB L1 dcache */
+> > +    cpu->ccsidr[0] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 7);
+> > +    /* 64KB L1 icache */
+> > +    cpu->ccsidr[1] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 4, 64, 64 * KiB, 2);
+> > +    /* 512KB L2 cache */
+> > +    cpu->ccsidr[2] = make_ccsidr(CCSIDR_FORMAT_LEGACY, 8, 64, 512 * KiB, 7);
+> > +
+> > +    /* From B2.93 SCTLR_EL3 */
+> > +    cpu->reset_sctlr = 0x30c50838;
+> > +
+> > +    /* From B4.23 ICH_VTR_EL2 */
+> > +    cpu->gic_num_lrs = 4;
+> > +    cpu->gic_vpribits = 5;
+> > +    cpu->gic_vprebits = 5;
+> > +    cpu->gic_pribits = 5;
+> > +
+> > +    /* From B5.1 AdvSIMD AArch64 register summary */
+> > +    cpu->isar.mvfr0 = 0x10110222;
+> > +    cpu->isar.mvfr1 = 0x13211111;
+> > +    cpu->isar.mvfr2 = 0x00000043;
+> > +
+> > +    /* From D5.1 AArch64 PMU register summary */
+> > +    cpu->isar.reset_pmcr_el0 = 0x41223000;
+> > +}
+> 
+> The register values look OK; checked against the TRM.
+> 
+> thanks
+> -- PMM
 
-This is object_class_property_add()'s @type argument.  It's an arbitrary
-string, not checked in any way.  When the property's actual type is a
-QAPI type, like it is here, then the @type argument should be the name
-of the QAPI type.
-
-Questions?
-
->>> +                              machine_get_boot_certs, machine_set_boot_certs, NULL, NULL);
->>> +    object_class_property_set_description(oc, "boot-certs",
->>> +            "provide paths to a directory and/or a certificate file for secure boot");
->>>  }
->>>  
->>>  static inline void s390_machine_initfn(Object *obj)
->>> diff --git a/include/hw/s390x/s390-virtio-ccw.h b/include/hw/s390x/s390-virtio-ccw.h
->>> index 526078a4e2..b90949355c 100644
->>> --- a/include/hw/s390x/s390-virtio-ccw.h
->>> +++ b/include/hw/s390x/s390-virtio-ccw.h
->>> @@ -14,6 +14,7 @@
->>>  #include "hw/boards.h"
->>>  #include "qom/object.h"
->>>  #include "hw/s390x/sclp.h"
->>> +#include "qapi/qapi-types-machine-s390x.h"
->>>  
->>>  #define TYPE_S390_CCW_MACHINE               "s390-ccw-machine"
->>>  
->>> @@ -31,6 +32,7 @@ struct S390CcwMachineState {
->>>      uint8_t loadparm[8];
->>>      uint64_t memory_limit;
->>>      uint64_t max_pagesize;
->>> +    BootCertPathList *boot_certs;
->>>  
->>>      SCLPDevice *sclp;
->>>  };
->>> diff --git a/qapi/machine-s390x.json b/qapi/machine-s390x.json
->>> index 966dbd61d2..3e89ef8320 100644
->>> --- a/qapi/machine-s390x.json
->>> +++ b/qapi/machine-s390x.json
->>> @@ -119,3 +119,27 @@
->>>  { 'command': 'query-s390x-cpu-polarization', 'returns': 'CpuPolarizationInfo',
->>>    'features': [ 'unstable' ]
->>>  }
->>> +
->>> +##
->>> +# @BootCertPath:
->>> +#
->>> +# Boot certificate path.
->>> +#
->>> +# @path: path of certificate(s)
->>> +#
->>> +# Since: 10.1
->>> +##
->> 
->> No mention of file vs. directory.
->> 
->> Why do you wrap the file name in a struct?  One possible reason is
->> providing for future extensions.  Can you think of any?
->> 
->> If you extend it, the name BootCertPath could become suboptimal.
->> BootCertificate?
->> 
->
-> I wrapped the path in a struct to follow the array-style structure used
-> by cxl-fmw and smp-cache options (as Daniel suggested).
->
-> ```
->   It would be something like this on the CLI:
->
->
-> boot-certs.0.path=/path/to/dir,boot-certs.1.path=/to/other/dir,boot-certs.2.path=/some/...
-> ```
->
-> This could potentially leave room for future extensions, such as
-> including details about the certificate (e.g., issuer, hashing
-> algorithm, etc).
-
-No objections to the wrapping.  I'd prefer naming the struct
-BootCertificates.
-
->>> +{ 'struct': 'BootCertPath',
->>> +  'data': {'path': 'str'} }
->>> +
->>> +##
->>> +# @BootCerts:
->>> +#
->>> +# List of boot certificate paths.
->>> +#
->>> +# @boot-certs: List of BootCertPath
->> 
->> Anti-pattern: the description text restates the type.
->> 
->>> +#
->>> +# Since: 10.1
->>> +##
->>> +{ 'struct': 'BootCerts',
->>> +  'data': {'boot-certs': ['BootCertPath'] } }
->> 
->> Where is this type used?
->
-> Please correct me if I'm wrong, but from what I've seen, it is not used
-> directly in the implementation. It provides a list property for
-> BootCertPath, which makes the BootCertPathList definition valid and able
-> to accept multiple paths. If BootCerts is removed, then BootCertPathList
-> becomes underfined and results in compilation errors.
-
-Aha!
-
-Your QOM property setter and getter need visit_type_BootCertPathList().
-
-The QAPI generator generates code for BootCertPathList, including
-visit_type_BootCertPathList(), only when it knows it's actually used.
-It can only see uses within the QAPI schema.  So, when ['BootCertPath']
-doesn't occur there, visit_type_BootCertPathList() won't exist, and your
-QOM code won't compile.
-
-Since you don't actually need BootCertPathList in the schema, you need
-to add an artifical use just to get it generated.  The common way to do
-that is using it in a dummy type like this:
-
-    ##
-    # @DummyForceS390Arrays:
-    #
-    # Not used by QMP; hack to let us use BootCertPathList internally
-    #
-    # Since: 10.2
-    ##
-    { 'struct': 'DummyForceArrays',
-      'data': { 'unused': ['BootCertPath'] } }
-
-You also need to add it to pragme documentation-exceptions is
-pragma.json.
-
-Yes, this is clunky.  Sorry :)
-
-[...]
-
+-- 
 
