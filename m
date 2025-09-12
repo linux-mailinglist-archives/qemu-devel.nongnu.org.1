@@ -2,73 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668BCB5425A
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 07:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 667B1B54F7C
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 15:26:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwwo4-0001Fm-Kj; Fri, 12 Sep 2025 01:58:48 -0400
+	id 1ux3lp-0006Lr-Kf; Fri, 12 Sep 2025 09:24:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uwwnr-00018K-Eq
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 01:58:36 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
+ (Exim 4.90_1) (envelope-from <Lingshan.Zhu@amd.com>)
+ id 1uwx5a-0007w7-Rf
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 02:17:01 -0400
+Received: from mail-bn7nam10on2070.outbound.protection.outlook.com
+ ([40.107.92.70] helo=NAM10-BN7-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uwwnp-0003rb-SQ
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 01:58:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757656714; x=1789192714;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=hAp5E8q3JRPpm/pbTjfnejaXZNpz/9zFv79frd5g7xI=;
- b=W2kWjvrRFDvcw5Vs2wNMGyc8o8BNsnu1iP9RASsWJdsX2CeaK0xr1gQT
- vCb3t8sRc0YkK+pVxRF7Y0sCVRF5Oc9qjYOAy+Aj6uFlW7uS/OebZ8phv
- yosd4j3HsTK/72Ldbaok1wcVijbU0FEQv9+babQapVn1pDNjPGgRK6Oby
- ggYi7WHPcIiV3pl6xm6cNAMfaqAZUHpUeS8KPadkvwdTLeaM1eWPG5gyw
- 84OLzKeD38ZtY6+ozGprumv9E/9GSd6GBpA/Iy70tedP4MpBMJ72HvmPK
- 8F4TJQoBUWj508FQXT1trmsiHUodUmq7pdNtiP7xP/eRk3+kaXsmRbR3n A==;
-X-CSE-ConnectionGUID: 4s54m22lSu+9bF3d4rVMxA==
-X-CSE-MsgGUID: Twqnz8b9T7OtoL76+c/sJg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="59695283"
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; d="scan'208";a="59695283"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2025 22:58:32 -0700
-X-CSE-ConnectionGUID: 2YTS9IaTT2C1UyDwCK3TVA==
-X-CSE-MsgGUID: wzvbxMJrSpO6nG6fwjyO9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; d="scan'208";a="174272820"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14])
- ([10.124.238.14])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2025 22:58:31 -0700
-Message-ID: <d86395e0-4456-4bd0-b320-bbfc49f0e780@intel.com>
-Date: Fri, 12 Sep 2025 13:58:28 +0800
+ (Exim 4.90_1) (envelope-from <Lingshan.Zhu@amd.com>)
+ id 1uwx5Y-0006JM-Pz
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 02:16:54 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xsmVRFT7/++C897IHO438LBjkBHsLLVtWPW8nKkyrsGvEWwV95xkgoBdRdmnvFymKTEkl94IESk9jyek4savZaxxR8YyGn77b6Fj/11vcm1OS9Glb/wlO7b7kuiu3Wcl0TEu1v/XGK2/dazpFgCXSA03le2WVrcTL07+Or++KkVvrrqdIUPD0UbqEP7GSuIhVHSnSk3xhyKD+KfQv/u04de0mNbfWLvWZZXqJesTQ7MInoKt4pADyL54ZZJ7XitObbM5dGdcecHsEYwt0ncOcOEwbHl//WVJH2VulEM4ff6DM1sDMe/h45iWZCuFb9/8FlsOAGLk3hwSt8Y6w9mUGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=l6auPqG5hPxwFsrp7yZSOW+0r/UOmX244ZQIdt7Kfp8=;
+ b=ZYgQEhiXEeEN8HtDA6JptTahasXHZF3HMGZuQuS5gi9HCnhF1q0om3r8W62Yg8Bbm3/SDJiLnZ1D0dQQX4fviU2gAOCEkfZaz/OqyI4quD6k+FBe+E/4W+68qCI1ysuTlUmnY/a9ZqD/i58zl1C8uzevBlmH+3vVOsqOdr1lCFWOZ9szz2v+m90NEc4ssh3baXvvnk5Jy6AisoVvGOXZuMfUL3/TN/RWz+s3xrQRS2RuU3n1LlewuofpkE2BZTGYnM4DbObAOv6dSfcqXc5w0bbcZ0XzMVDYn7gxcLNf0OcC1v/FwuDQO8raa47Hq5z/PYW+YGCEi/sqigO7KT8WLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l6auPqG5hPxwFsrp7yZSOW+0r/UOmX244ZQIdt7Kfp8=;
+ b=SdCkCtUeJYmmUNNnYQLN68w/rvRAr3oMsvY4xZpTFgNHg/UJYCtO0RtMC4b3ljDK21HQyzUKF53JLBX8j2J5ayZKZt/SOmfdr/VUi9IBhdcnDqX2oUA5jvdSZmE++nLugTJnbiAKeyqTOEahYF5BZVaUqgoWjnFpVm1PtXMh9rc=
+Received: from SA0PR11CA0007.namprd11.prod.outlook.com (2603:10b6:806:d3::12)
+ by CH3PR12MB9122.namprd12.prod.outlook.com (2603:10b6:610:196::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Fri, 12 Sep
+ 2025 06:11:44 +0000
+Received: from SA2PEPF00001507.namprd04.prod.outlook.com
+ (2603:10b6:806:d3:cafe::48) by SA0PR11CA0007.outlook.office365.com
+ (2603:10b6:806:d3::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9115.17 via Frontend Transport; Fri,
+ 12 Sep 2025 06:11:43 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SA2PEPF00001507.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9115.13 via Frontend Transport; Fri, 12 Sep 2025 06:11:44 +0000
+Received: from fedora.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 11 Sep
+ 2025 23:11:42 -0700
+From: Zhu Lingshan <lingshan.zhu@amd.com>
+To: <jasowang@redhat.com>, <mst@redhat.com>
+CC: <qemu-devel@nongnu.org>, Zhu Lingshan <lingshan.zhu@amd.com>
+Subject: [RFC 0/2] virtio: implement suspend and resume feature
+Date: Fri, 12 Sep 2025 14:11:23 +0800
+Message-ID: <20250912061125.262457-1-lingshan.zhu@amd.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/loader: Rectify the address of setup_data
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20250814141406.2371767-1-xiaoyao.li@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250814141406.2371767-1-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001507:EE_|CH3PR12MB9122:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a280d0b-f462-4b82-5d86-08ddf1c33f6d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|36860700013|376014|82310400026|13003099007; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?0/vqGjt/xDEEAMX8LydPE9RRlQ94rf5S0tpqfi6tE+xPWKlZR8T9SBPZWp5k?=
+ =?us-ascii?Q?bZ+t56amCXXtiJ9f0q3H2q1OrcmYvd3emQlnwiXGKP6qcy9mnKxqU1yNVv78?=
+ =?us-ascii?Q?NfAVy8oCwWV0e5dKxpGnORfRxofKMBjDrrunUqWOze2nRttVLMFe8rmRIgh6?=
+ =?us-ascii?Q?aFXZghC3wK+KTVZrHCLVaBYT6411JC93RhsIcFM99s3qQhn0yYyzcwr+joCH?=
+ =?us-ascii?Q?GPLDwop1hmCe1g3W6sSW53xCDip32/G6O8YCi7NYVTTHkbXyd8tobWpmwx2X?=
+ =?us-ascii?Q?rF9riK1k1duziQkAlS63vSyxQbyEToydEqSR9DvZ/UncAyhIsvArJJ/q6OTg?=
+ =?us-ascii?Q?6Ve8NnB+hut9FGX+dvdxrEMJk9fMy8/+ftwaNnhULQBdZd3y7MESprzN1BeJ?=
+ =?us-ascii?Q?Yk0suzTYkLNQVNY9kK+tE8mMuyyg2PMZzDbEaqpjOFngQK2ZYzIzGC/86z+V?=
+ =?us-ascii?Q?R2xa2gRMOTouIhzcb2lptAzWMWca9pNol35tQztxM0GpZ/5s+3zYs23wSbxt?=
+ =?us-ascii?Q?y/zw5eha+5DFuOVRa2KIhBP+J/KWsdOOMPfye2Our15fdr9Xt5FH/Q+arF4T?=
+ =?us-ascii?Q?zL+GMsGdehS6qdzXbO9RrgZM4425atJDFxe9DoB8cKTe4+SWgY44R6acOcWZ?=
+ =?us-ascii?Q?tpXBsZK9zClb4O2LW+PsgBbxBlYB9eKIdPE7HknS6Jpz2JuHgC40cH8bDMJp?=
+ =?us-ascii?Q?d3Oi8gVM29vCF08ASuA5sEzUbZcYVgvw0y8kBVlVXPfwBX5u1eGwz2zp3ZY6?=
+ =?us-ascii?Q?kwQG5plgzHqfzkcycdLz8Anu4DhDJmiFrNXtiafAQRNkI3IG71jeJ/iE8DFL?=
+ =?us-ascii?Q?Ddu1GPcxEKm4h7VQ18yV2DldwbJYdhvfqLzPlefCxuHcZ4/bCOSiYIgmtn5L?=
+ =?us-ascii?Q?J0cX3U7bhnmGwc42yum2VqfMUlBsELhuSjk148xuBb2ysYxw7xaK4rl6qasl?=
+ =?us-ascii?Q?QcEePIEgGTtJCtJ+kGiH2KuqLWeypqPR1R9sEWRCl0pjvNjZe/eQatBpuOFY?=
+ =?us-ascii?Q?eIXPJmvXOr//BxuQEZB8+6cdzWlg9LcNfnHLVbkn3E40c9E3bmBD6TAGlgBc?=
+ =?us-ascii?Q?Ani7XzaBC1SP3kdAWYuoxBtfAcUvzj6oH9VRkBTQ/Li/0qQMZdUSs5zsiuzZ?=
+ =?us-ascii?Q?GRqj8REYJvgsvQh2AH9+DZIgNXuWRLB1Imf/sXU7Hf9v57NbnBRQUnserzoH?=
+ =?us-ascii?Q?wEwxZ7hsdV5N0gV/ylkTzygSx1gVfJ9g1Zk90nxdg9o+XHCdGj9X0JaAGyUr?=
+ =?us-ascii?Q?XANhB4VbrIyiEPWOsO6WFrzccXrldx1XJcsr9E2aLcMcYJHiGZjU+KJDpBLq?=
+ =?us-ascii?Q?tW0E9Li3Dyvn66VBXiVp2KiaTZ2gosqiMWJQezLwDmuu16frW3MZVH3Xi4Kd?=
+ =?us-ascii?Q?9n+s1qvI1Qm6aJL9MJLnaOUfxSIgNDDXlwc7GwE/gQhaE1ortvUiFwRRjmfy?=
+ =?us-ascii?Q?TqB52jyij8a8kCoQVsqdsezuqZu5VgClVS7WW2h7V25Q6PtUE3GGXyWq1Nwy?=
+ =?us-ascii?Q?A+eAfyomUrVCM0M=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026)(13003099007);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2025 06:11:44.0915 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a280d0b-f462-4b82-5d86-08ddf1c33f6d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00001507.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9122
+Received-SPF: permerror client-ip=40.107.92.70;
+ envelope-from=Lingshan.Zhu@amd.com;
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 12 Sep 2025 09:24:40 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,34 +146,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/14/2025 10:14 PM, Xiaoyao Li wrote:
-> Commit 214191f6b574 ("x86/loader: read complete kernel") changed the
-> semantics of kernel_size from the piggyback kernel to the whole kernel
-> file, which leads to the setup_data_offset contains setup_size and leads
-> to wrong address of setup_data being written in header[0x250].
-> 
-> Fix it by minusing setup_size.
+According to the spec changes[1,2], this RFC series implements
+suspend and resume facility for virtio, and a reference design
+on virtio-net.
 
-Gentle ping.
+This suspend and resume feature will be supported on more
+device types after the basic facilities settling down.
 
-> Fixes: 214191f6b574 ("x86/loader: read complete kernel")
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
->   hw/i386/x86-common.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-> index 7512be64d67b..127b85eb02cc 100644
-> --- a/hw/i386/x86-common.c
-> +++ b/hw/i386/x86-common.c
-> @@ -935,7 +935,7 @@ void x86_load_linux(X86MachineState *x86ms,
->           kernel_size = setup_data_offset + sizeof(struct setup_data) + dtb_size;
->           kernel = g_realloc(kernel, kernel_size);
->   
-> -        stq_le_p(header + 0x250, prot_addr + setup_data_offset);
-> +        stq_le_p(header + 0x250, prot_addr + setup_data_offset - setup_size);
->   
->           setup_data = (struct setup_data *)(kernel + setup_data_offset);
->           setup_data->next = 0;
+Plese help review, Thanks!!!
+
+
+[1] https://lore.kernel.org/virtio-comment/20250704101739.354522-1-lingshan.zhu@amd.com
+[2] https://github.com/oasis-tcs/virtio-spec/issues/229
+
+Zhu Lingshan (2):
+  virtio: implement virtio data-plane suspend and resume facility
+  virtio: implement virtio control-plane suspend and resume facility
+
+ hw/net/virtio-net.c                           | 115 ++++++++++++++++++
+ hw/virtio/virtio-pci.c                        |   5 +
+ hw/virtio/virtio.c                            |  24 ++++
+ include/hw/virtio/virtio.h                    |   1 +
+ .../standard-headers/linux/virtio_config.h    |   6 +
+ 5 files changed, 151 insertions(+)
+
+-- 
+2.51.0
 
 
