@@ -2,223 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD89BB5524C
+	by mail.lfdr.de (Postfix) with ESMTPS id 91749B5524A
 	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 16:50:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ux55u-00067w-NF; Fri, 12 Sep 2025 10:49:46 -0400
+	id 1ux56Y-0006uN-5x; Fri, 12 Sep 2025 10:50:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1ux55k-00063Z-WB
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 10:49:40 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ux56N-0006WX-6h
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 10:50:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1ux55h-0007dJ-LU
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 10:49:36 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58C1uPTK016787;
- Fri, 12 Sep 2025 14:49:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=E6I1JJflsh0FUsox7MxstGfFjAyhTWuGg0UCX19FahU=; b=
- oJRrHpbUMlUrIDsjTbbkcrrVDEhd/HSluy9i4nLWCSTmH8p6EQL9OYhDGL7LV6vO
- utfh5tjN3rPivO7i+/R7OsDxXZ6P2LlbNe0NTicFL4q7JknXOfVZx6r2AKPDz7R+
- dYz7TnHtqHSW0qrzxiKThhIAOHlI4eMNnUGMKGfQiiR+DJzi52aQBAaww+xnhlga
- /qZrp7x+cXmRC/O39/kaW9rADxemgH+5XQnoiBVI+k95wGOhF7fkh3vcZEIo8N+P
- fKwY/cmoakhatlS29dw5+8Yn3/gdNUD7P685WYnCM2R3bWcEIFzqZm9RBji9XMIW
- QAiMoV68Eqfo6f2xeC7Saw==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4922968dfb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 12 Sep 2025 14:49:31 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 58CD1Fa3025964; Fri, 12 Sep 2025 14:49:30 GMT
-Received: from sn4pr2101cu001.outbound.protection.outlook.com
- (mail-southcentralusazon11012001.outbound.protection.outlook.com
- [40.93.195.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 490bde0sgv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 12 Sep 2025 14:49:30 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Jj2HRB9q63dHFhk4E8+NY5uQP8/FthOo5XUdmuldoX9XNsPdsaaBlSLGPvP5QvlZcwsr+mVsN/d24C9rDNOP7nLGrqCUxFj+gtA86md2yc7Yh5BhHkYoiCqZXY4oGBo9tO05PkMRKwvd5BFtdgxnEvXZhw8OnlF0ZkF/HRWsmllVvuThYY4g+jwAHeTFjP9Y8NETNk27PHwvIOKIQVH2E52k8ENkt2/5G01TvdAIYSnFXrG9rwAtsfPWBQXxqmRxSJVXLOmiypmjjpFX1/bnqG8TUdJV4uMOcEyEnOmxXb2f+Cr8PhlFh72s0uKGJrEBxr28rY/5Lo714jiWWO81/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E6I1JJflsh0FUsox7MxstGfFjAyhTWuGg0UCX19FahU=;
- b=d1wNfuNVAVGVYqzBj4kcAOmic0NhOggZYqiD2tI1kYxa/cR8mtYIYdHZCiD/QRyrbwsem7iycF0ZQmGxvv9QAnsHBvoY/M96b6nmZFML1vLhC/8WLcaTjamLHDNUTpBKxdwGbwWZjFO4jSC1WYRYl8ivTcc3pTZ/g/KoK8mJFu3pwih02p4U1BtRNeruTMu2CH7HmCcqMGN8fF9DeOizMmlnRp+HR2wQNeDc/ESY4ajFFe7ceVWCafZnU6ib9Xq6zvPfZKFUNqSdTwI1cJbS5cVfJjT46dLEWh83IIn06CihuN5u9FOtu9PwD4qTbXZzHERkpCkebGFmMYnm+HKCtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E6I1JJflsh0FUsox7MxstGfFjAyhTWuGg0UCX19FahU=;
- b=xHvDjEJwFYFHPfl2h7dwTAX6I7WzOzRKw6M6iYvisabbVRiMfpd5CCWS6LDo1hdWPskCADwWaZhzHSIF1Un+J+akxjabInTlzpW7sjaREdgzPJGEJ2So9pN/kgtFEh+e1IPuwcJRgOu5uMMuBlIvANRNQdBLQehk1/cxgAnCvcg=
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
- by CH2PR10MB4263.namprd10.prod.outlook.com (2603:10b6:610:a6::23)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.19; Fri, 12 Sep
- 2025 14:49:28 +0000
-Received: from IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
- ([fe80::f2fe:d6c6:70c4:4572%7]) with mapi id 15.20.9094.021; Fri, 12 Sep 2025
- 14:49:28 +0000
-Message-ID: <28bf9c97-1e69-4121-a4aa-2d2bf5ac50bb@oracle.com>
-Date: Fri, 12 Sep 2025 10:49:23 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 4/9] vl: helper to request exec
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Markus Armbruster <armbru@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>
-References: <1755191843-283480-1-git-send-email-steven.sistare@oracle.com>
- <1755191843-283480-5-git-send-email-steven.sistare@oracle.com>
- <aMBNCUXuMzxUToff@x1.local>
-Content-Language: en-US
-From: Steven Sistare <steven.sistare@oracle.com>
-In-Reply-To: <aMBNCUXuMzxUToff@x1.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PH8PR02CA0043.namprd02.prod.outlook.com
- (2603:10b6:510:2da::12) To IA1PR10MB7447.namprd10.prod.outlook.com
- (2603:10b6:208:44c::10)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ux56E-0007hi-LS
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 10:50:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757688602;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7SS32GOmeVlDCi9lftr8b/i0oix8Re2uCyAHjkf+htg=;
+ b=W7tovtT/LF3Y5AgBd2umJmMaw1dVoNuy79CVoY2wmeIUdwBKJeGTOQA8XT0zav/1suMsGG
+ 1qjsMIhIPGlizE/GqfbYtfCZ0rCMeanH75r1gonqX+GdBFM3pANASeBGneEa6fc5wWLiLO
+ 991AVc0U1zBfuzULYBSNbanduA4m0OI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-fQr5U3_GOOiUzaXHAJ_iCA-1; Fri,
+ 12 Sep 2025 10:49:58 -0400
+X-MC-Unique: fQr5U3_GOOiUzaXHAJ_iCA-1
+X-Mimecast-MFC-AGG-ID: fQr5U3_GOOiUzaXHAJ_iCA_1757688597
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4FDA2180048E; Fri, 12 Sep 2025 14:49:57 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.154])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5EB021800447; Fri, 12 Sep 2025 14:49:55 +0000 (UTC)
+Date: Fri, 12 Sep 2025 15:49:51 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Gustavo Romero <gustavo.romero@linaro.org>
+Cc: qemu-devel@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com,
+ qemu-arm@nongnu.org
+Subject: Re: [PATCH v2 0/5] tests/functional: Adapt reverse_debugging to run
+ w/o Avocado
+Message-ID: <aMQzD0m3QluWzlmh@redhat.com>
+References: <20250904154640.52687-1-gustavo.romero@linaro.org>
+ <aL7CsSppNc-WZFY-@redhat.com>
+ <a6320118-84f0-4088-82de-7192be6093cd@linaro.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|CH2PR10MB4263:EE_
-X-MS-Office365-Filtering-Correlation-Id: c588235a-652b-43bb-97e6-08ddf20b9302
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?aXBrR1F5NllDYTdia1E3UjRQMTZhWnpvVktDSEYyVitQTTVrTi9jQm9GcG5o?=
- =?utf-8?B?cjNBeVZSVXc3YlV1aHVKaXFSc2JKR2g2V21ocUlESVBDa0N6L2xMd1NGZzVu?=
- =?utf-8?B?d2Y4cVFDZVlieFlNWXFSU2lCRkhxRlFWa0pEVXptbm5MQkczZFRId05LRGtF?=
- =?utf-8?B?TnJnbEhCLzVpRFptQ0VNWUVSWXNxcTl4SHNjUnpQYkxGQWNlVmJ2T0NHaEto?=
- =?utf-8?B?eDJ2RkQvMmN1MmlWUXRlZ0VvaThreUVyMkRrR2tQbWlDZUFXT1V2L1FoUnN5?=
- =?utf-8?B?NUpaOW1yT3NEdmRyVkpzbGlBSWZRaUs3dk9ncmZ1emFRakwzUE41VVhuS3pC?=
- =?utf-8?B?SDB1aTF6RkVvL08yNDlwOHB0K25YRGY5UWNPRUx6TzN4ZmdEM1M0UWErSG1R?=
- =?utf-8?B?Ui8wdHFKenBnTFR4WUVVU3Roc0duOXA2Ykk2MEJ6WkRDR2x3dHFwYXM5Vng1?=
- =?utf-8?B?QVJKOGxMeDFVeE1vTXhBZEVCS1NkS29adXhKeUZIYjFPdlFZTFdJbXB4UHVM?=
- =?utf-8?B?a2tQb2JyWjArMDROMGp2QnRiaUszMWlMR01qSFc5SUJBOGFZS2tpalEyU1dX?=
- =?utf-8?B?RjFqV3laTm41TGZCeFNLalhONFlldUk2V3pMU20wWVRZUVorcFRIbjRwbmUr?=
- =?utf-8?B?RytBemw3ZlhGUitDdjU2aVIyU3NKODBLRGcvZzk3TWpFOTJHQmNJa2Y5VWpY?=
- =?utf-8?B?Zm02SXhjUnk3Ky9ja09sVzBYMTgvVjNmZGNVWmVhazlOY1AyYnh0MUFHTldJ?=
- =?utf-8?B?Y202eExWRzVVcE9LUXhYWjQ4NGxqY3d3M3B4MGJHc3ZPSysvbVlVb2pxaTd6?=
- =?utf-8?B?WXcwTVNIUlR2bVh6YnhUb1p3SFA5aHNlOU14SWZ5KzBFZ2JwV3A0Unh3WTA3?=
- =?utf-8?B?M0ptdCtaRW5oUU1PbEkzR21WNVdwQ3RkSG40NTREdFZmSy9BUzJnUFUxT3Bq?=
- =?utf-8?B?REQvREg5S1lzdE1wN1g0RC8zVW5KcnAwNW9ZL1RQYlRBa2ppODhMZ2wwY1l2?=
- =?utf-8?B?MDUydHF2eG5xaW1ZM0p1clh3KzBvZGVVanpUK04vRXBzc0lhVmE2TlIxbmZD?=
- =?utf-8?B?aGpTQjdXSlp6RlhTaG5PbGxjb3Y1M2JROHhNeGRqa0dockUrdWZQcFR3MkRX?=
- =?utf-8?B?YTJlZm44ejJTU1ozWkVuaGNtZzRiKzNORDRUMDFjNG1LaDhQMnpVd0pySVFG?=
- =?utf-8?B?TDhJRFo3bWdyQmQyQ3FtNUR1bFM5dHNWa0tNanc5ZlRmTDBOeC9KelY5dUpx?=
- =?utf-8?B?V1ZPQXpiMVFVNlhZaHVXWEpBZ1M3TXJPbEJCc1FNdDVPZFoxdzFJeHRuNlFx?=
- =?utf-8?B?NnFxSVhIT1hKZEE0a0MwVVBORlJIaUUxTktIR0RkeHhrTVdkZkdLZUV0YjQ1?=
- =?utf-8?B?cEFJYis2ck1Ed3dRa1dkQTJTdEhQRW1wR3BGZkMxQVpYNUtVOHpmY05YRDFQ?=
- =?utf-8?B?M3ZwN3RuZk1KMWtGTFdnRXFUQ3BjYnkrS1oveS9Za0F4TkRqdHAwcGlkUWlh?=
- =?utf-8?B?ejVCZTFNc2tOOXpwVVd1TW16bG1WSUdFbTNXdkJVZEpyaXVad0c2QndxVFBG?=
- =?utf-8?B?Qmt2REZsbmFTd2VCWVF5R2E3Qy9EVWtuTURXMmVpeUNZcjEyaUorU1FrMmFO?=
- =?utf-8?B?eDBtbEh6U0dCTnM2UXdkaGRuR1l0b0MyZ1BYTmFTN0tQbW1qaVBZT2ZNWDdG?=
- =?utf-8?B?TEhscUU0OURBTU9mc1BtZmFCVzlaV3hOTmg5QlZQaDZ1WHV6eDJDN2tTYWly?=
- =?utf-8?B?TzFUSmVvcGZ2WFhJRm40OUdNeFJEL2Q1ekVnNWI4QWl1QjFtemkzS1UzcWxu?=
- =?utf-8?B?QjVGbWZwZysxMDdZOWJPbXB1ajNiSnhONHcrUU1IcGZiWVJnNzlud00zdVJr?=
- =?utf-8?B?WjdkaFViaFpwMnBoSDA4R2J3cHFBS0docDY3VnBuSk1zb3h6L1d6Ull2WkQ3?=
- =?utf-8?Q?IKaaxkrmPzA=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UkFRcDE1NjJjRTNlbmJuY2xnRStwZEdZMzZ1OXFCSm5Mc0ZtNUN5Rzc3aHdT?=
- =?utf-8?B?YkltK0tJeHBibVNCdzU2Nnduek5aV2F0SVFKQmlYdkZ6MzZ4SThvVEozVXRo?=
- =?utf-8?B?a2RsdHNOMlBLaEJJallIaFdiS2pZeEo4cUJGamtCbHRac1oweHBNMmNFQytS?=
- =?utf-8?B?WjFZTGFWWFA2K1BOYVl2WVVsdVVUMDZFS3I1SXQzU2pPMDViOEJRWGlmNDRz?=
- =?utf-8?B?V2dHUER2TXlhc0tmWEY3UzdoT2NpaThFZnZHMXhDeHppL1NHUEVKRVIzRjBz?=
- =?utf-8?B?WWtvcVdqMi9zM3FxeFlsdjh3c1psY2ZHUE5ZODArYXpxSG5uTGVnVi9jRjlN?=
- =?utf-8?B?RHFuaktiRWtySDNTendmTFhLVnRRREF1L09lNVRaa0NOdjA0TFdKKzJUOU1z?=
- =?utf-8?B?TW1qcEx4VFhrTXNXZWZBT0IvcTYycnc5Q2psVFlaWEZqMHJZaURTZm16VytW?=
- =?utf-8?B?TU1pcGhxSURkdTUwNlpEeDNSYlhrZDJSNnA1Y2lQZ1A1QVJnSXpYU0IwRWZD?=
- =?utf-8?B?TjA0d1p6Nit4WlEzZTdYeHJidFUxK2xSWVFPVElOd3JmREk2K0xQVGlKZnN2?=
- =?utf-8?B?UUFsUU1EcWwxYWxFeTczOWhFcFZ3SXVpd3UzdUZ1T1pzL0E5Q2x1RVMrekF4?=
- =?utf-8?B?Ym96RFhxUEtBeUhwV0pzcnVSdUpKZUFnb0xoQXk2RkxSelk3NmJVd2Zvd3B3?=
- =?utf-8?B?MEc4WkdDQ1p2TTNMalBkZjZoa2pDTWdvR25STWwyY2dmOTZEYkJ3SzZ3M0cv?=
- =?utf-8?B?NjQ1Rno4WGpMWkcrUVdTSkd4OUFOaTVkcHV0OVRnYTVSYnRGVFFSc3pMa0ZK?=
- =?utf-8?B?Z1QxQnpKRk8zcWcycTRnSkNRZU1Td2hPYVBJVTdMeVlsekZKcVZWUzdZSEdQ?=
- =?utf-8?B?K0hmNXBBOFBVcG5JSS82ZjZGeXIxNmxoVFpXOFlzeENKTnZINlBoZWQzenJi?=
- =?utf-8?B?dDNyaDlyRHYwM21XaWpCM2dpK1lEUktiYlp4cjRKRGF0S3FlcXBOSlExOEZ0?=
- =?utf-8?B?Q0ZjR0hjUmgrS1hYbm01cFVnZFMyU0FCZ2ppeGdOSG4wVW9uRUZwL3JqWk1u?=
- =?utf-8?B?VW1TSW1EZVpRb1gwNUF2MlIvc1lZOExrZ3pFNEVZd1dMbGp1MjVYNWFqWUpw?=
- =?utf-8?B?dnpXM3FoL0hFdmVLNTFpbUZ4bXRCOUF4MVFRdjZOSU1pdGs0b1pTQkpIakxF?=
- =?utf-8?B?bUFoaWtrekFwOERhaEVGN29UQ1ZqdVZITWFIczE3N0h1VjVFbHRVemNIc0dn?=
- =?utf-8?B?eUJJSkw1V2c5eWtZczk4c2crQkVTWkZkMTNCaHpLTWVXMHh2MUozR2ZNVjdH?=
- =?utf-8?B?WHByTmZaTll3MFgrTVBCcDVuRTFqTmRtNkxISzhBUllSNFFQMk1EUVJZM1dQ?=
- =?utf-8?B?SWJ3ZHdXNGpDbzlZMFJHLzBMbjFMTHY2NCtYUUVoZDBVb2NzMEw1VFFvOXUx?=
- =?utf-8?B?TzBnaHR0Z0I5M2lZTGkwZjRtdHRMSXo1VkFhRWNWTXpUa2hhVnpWdVNJMkEv?=
- =?utf-8?B?ZjU5RDFTUXhuckxjVGFUTE8xTzR4OEJQZUZocC84RU9xcjZSRU8yUFBMRmp2?=
- =?utf-8?B?VkFrdzJpMEF5MTdFeVRjQ2lxemJXdXd0KzJHRUVpWWpDYjJOUUMyU1Z3Z2Fl?=
- =?utf-8?B?bEtHY1VhQU9kWkRoek1IbUdoU2M1UzJYM2FWOGQ3R1VRZTd0K3dsR2lRNGVa?=
- =?utf-8?B?UGp3Sjg1QnV5cXRuVnYyR1ZtOE9zVXFLRXVwM0ZRQnUwR3FCTTBJM1pueEd6?=
- =?utf-8?B?RlBJNDlzYUFGZTRxaFl5UUcrTXJxSU9LNWhEbkJZNXRMbW1QSmVsQUw2Z2NL?=
- =?utf-8?B?em9Ya0cvOEVoQTZoZFJjcHF4NUNreUs2VGhmWXZ6aG56QlNFbmEyTlVKWXlk?=
- =?utf-8?B?ZWNaSU0xcFFpY0w0aGNFeTBkRFQ4TWRVZHgxT0h5TkNsMHgvK0lpL0JnWUdB?=
- =?utf-8?B?YUtqbGRxL3RpV3ZLYkpPempnd1ltS0xkcktXck9UMTBxdzZMdkxFUTUra2h3?=
- =?utf-8?B?S21VdU9wMVZWS2M3YW9VRFlUVU16dU1EenFESDJ4b2xvK0lVNmNsaU43UGpi?=
- =?utf-8?B?Mit5TURtY05STEMvWEJYMVRHT1B6M2VxdmRFTlAzM2FkSUFiekRTbStWTk4z?=
- =?utf-8?B?bXNYclJKcWJtZXZ1RWY4TG82Q0lWZHoxUTNBbTRXU21NUUdEaTNlYWtSRDd6?=
- =?utf-8?B?c0E9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: oysrFn4EZdoIVQCMc3HlqMzu1SSRyimdRitsMwvjIjSbrN/oHsewGt2yvFs7ErD5Qck9xotQq8m5TbeafYTnpTFdX+CEy/sY4+05U+OiNSbzEBtkOL0I/4ODN40qsL6YBkRO7Rr8EuamY+VYDjTXtqI1RDmsK04DIuWFUbFHvZr6BKg1JLtff05pEK8Sx07c+gbK2gIXD3PRRMurCPlsin3M+SuygeWGPiVOUnElApi9HH5Ji4XPObj7BvvskObMpEx496hgClkw+SsEwY9ni4uGNs99IQx6Yvs/miHvjLFsgEnsyj6jjxAZ30o5H2o1aa4BoNzpKSw4f+EJsza9CjHJ+PRxEjCJNYG+BRdxrPSM9wU2hj6qLgD69Pru3I7cxy/I+alYD5E2GGoHmr3+ferQ2Ygea97TVVmtTjsjyT3xBt50736CooDkf+RIY9UtkTB7fhSQCwlsgf7Bwzc3N8z5ib2lcC6pItZjtvJ/SnbVHuuGC3JS4eDLkXDKPl7ohgFDA8Dq7kfpmCN0ZNgH406z8TbyqvFyk0a5huyupTvgHedIkbYsLEzJ4Z+btJmRberFwkyKynKyoaiQMYwWFqR2Qohspu2xxZWne5Cdi1U=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c588235a-652b-43bb-97e6-08ddf20b9302
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2025 14:49:28.3977 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wb7q+ALN9pRb2KNiTEoxrWoZGlrEiVVxUltVKyrPBH1HuHA5GsJTzKUDVUSOSIDMhLtgxkJONfwFZLgr3bg/Hw1RZmOhy9gzEnhZvytYT3w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4263
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-12_05,2025-09-11_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- phishscore=0 suspectscore=0
- mlxscore=0 adultscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509120137
-X-Proofpoint-GUID: KI_qjRokTgams8_G4YMiZfbRmH5ktCeA
-X-Authority-Analysis: v=2.4 cv=CPEqXQrD c=1 sm=1 tr=0 ts=68c432fc b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117
- a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=UMyXomIJRQMxgr3ulywA:9
- a=QEXdDO2ut3YA:10 cc=ntf awl=host:13614
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE1OSBTYWx0ZWRfX3mf6RoX5Ofif
- NaUcScWiF/3m0ivo6GOJtHVuwvVm28xqD9aPYXJ+3w2bTX7+BT0H8iFbvWp7HLbyuUc2utd/GJc
- yz4ZBRiV/pZS+yQu/QJkBDPlDrXF7WcMQB9tJ9zJpE/SLx85G5N5lK0B7F1zeKquksnIa/8fIUS
- tnIF45EuBt8vSee08hWitPrcjJSLOU8Y8aNr7SYmlPoWEozgPZAgT7d+mKJ+6i2er5f57XEVtKD
- ViWkZkEiPK7HAJ44yFTV2eBExlf4tNURg9aqIGVdnf2JqqSHLl7ZvKD/J64YfkClaurp6imhAus
- K4UMpnvRGYPounUVOz0FFIoHEBLA1fGOmWIGxm0IbC64IsLTMJJ2XGM9aMRCa+V1BRYhXzBhqqz
- XmKYiPUsk0UVIgyahCu6dJ4/inLFlQ==
-X-Proofpoint-ORIG-GUID: KI_qjRokTgams8_G4YMiZfbRmH5ktCeA
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a6320118-84f0-4088-82de-7192be6093cd@linaro.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -231,122 +86,273 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/9/2025 11:51 AM, Peter Xu wrote:
-> On Thu, Aug 14, 2025 at 10:17:18AM -0700, Steve Sistare wrote:
->> Add a qemu_system_exec_request() hook that causes the main loop to exit and
->> exec a command using the specified arguments.  This will be used during CPR
->> to exec a new version of QEMU.
->>
->> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->> ---
->>   include/system/runstate.h |  3 +++
->>   system/runstate.c         | 29 +++++++++++++++++++++++++++++
->>   2 files changed, 32 insertions(+)
->>
->> diff --git a/include/system/runstate.h b/include/system/runstate.h
->> index 929379a..c005f49 100644
->> --- a/include/system/runstate.h
->> +++ b/include/system/runstate.h
->> @@ -128,6 +128,8 @@ typedef enum WakeupReason {
->>       QEMU_WAKEUP_REASON_OTHER,
->>   } WakeupReason;
->>   
->> +typedef void (*qemu_exec_func)(char **exec_argv);
->> +
->>   void qemu_system_reset_request(ShutdownCause reason);
->>   void qemu_system_suspend_request(void);
->>   void qemu_register_suspend_notifier(Notifier *notifier);
->> @@ -139,6 +141,7 @@ void qemu_register_wakeup_support(void);
->>   void qemu_system_shutdown_request_with_code(ShutdownCause reason,
->>                                               int exit_code);
->>   void qemu_system_shutdown_request(ShutdownCause reason);
->> +void qemu_system_exec_request(qemu_exec_func func, const strList *args);
->>   void qemu_system_powerdown_request(void);
->>   void qemu_register_powerdown_notifier(Notifier *notifier);
->>   void qemu_register_shutdown_notifier(Notifier *notifier);
->> diff --git a/system/runstate.c b/system/runstate.c
->> index 6178b00..b4980ff 100644
->> --- a/system/runstate.c
->> +++ b/system/runstate.c
->> @@ -41,6 +41,7 @@
->>   #include "qapi/error.h"
->>   #include "qapi/qapi-commands-run-state.h"
->>   #include "qapi/qapi-events-run-state.h"
->> +#include "qapi/type-helpers.h"
->>   #include "qemu/accel.h"
->>   #include "qemu/error-report.h"
->>   #include "qemu/job.h"
->> @@ -422,6 +423,8 @@ static NotifierList wakeup_notifiers =
->>   static NotifierList shutdown_notifiers =
->>       NOTIFIER_LIST_INITIALIZER(shutdown_notifiers);
->>   static uint32_t wakeup_reason_mask = ~(1 << QEMU_WAKEUP_REASON_NONE);
->> +qemu_exec_func exec_func;
->> +static char **exec_argv;
->>   
->>   ShutdownCause qemu_shutdown_requested_get(void)
->>   {
->> @@ -443,6 +446,11 @@ static int qemu_shutdown_requested(void)
->>       return qatomic_xchg(&shutdown_requested, SHUTDOWN_CAUSE_NONE);
->>   }
->>   
->> +static int qemu_exec_requested(void)
->> +{
->> +    return exec_argv != NULL;
->> +}
->> +
->>   static void qemu_kill_report(void)
->>   {
->>       if (!qtest_driver() && shutdown_signal) {
->> @@ -803,6 +811,23 @@ void qemu_system_shutdown_request(ShutdownCause reason)
->>       qemu_notify_event();
->>   }
->>   
->> +static void qemu_system_exec(void)
->> +{
->> +    exec_func(exec_argv);
->> +
->> +    /* exec failed */
->> +    g_strfreev(exec_argv);
->> +    exec_argv = NULL;
->> +    exec_func = NULL;
+On Thu, Sep 11, 2025 at 08:51:08PM -0300, Gustavo Romero wrote:
+> Hi Daniel,
 > 
-> Would this really happen?
+> Thanks a lot for review and the suggestions.
 > 
-> If so, do we at least want to dump something?
+> On 9/8/25 08:49, Daniel P. Berrangé wrote:
+> > On Thu, Sep 04, 2025 at 03:46:35PM +0000, Gustavo Romero wrote:
+> > > In this series, we leveraged the run-test.py script used in the
+> > > check-tcg tests, making it a GDB runner capable of calling a test script
+> > > without spawning any VMs. In this configuration, the test scripts can
+> > > manage the VM and also import gdb, making the GDB Python API inside the
+> > > functional test scripts.
+> > > 
+> > > A --quiet option has been added to run-test.py so it doesn't print the
+> > > command line used to execute GDB to the stdout. This ensures that users
+> > > don't get confused about how to re-run the tests. One can re-run the
+> > > test simply by copying and pasting the command line shown by Meson when
+> > > V=1 is passed:
+> > > 
+> > > $ make -j check-functional V=1
+> > > 
+> > > or, alternatively, once the test run completes, the exact command found
+> > > in the 'command:' field of the build/meson-logs/testlog-thorough.txt
+> > > file generated by Meson. Both methods provide the correct environment
+> > > variables required to run the test, such as the proper $PYTHONPATH.
+> > 
+> > While I like the conceptual idea of just sending human GDB commands,
+> > instead of working with GDB protocol packets, I really dislike the
+> > effect this has on the execution / startup of the functional tests
+> > via use of the custom runner for a number of reasons
+> > 
+> >   * The command line for launching the test outside of meson is very
+> >     complicated, so not memorable
 > 
->> +}
->> +
->> +void qemu_system_exec_request(qemu_exec_func func, const strList *args)
->> +{
->> +    exec_func = func;
->> +    exec_argv = strv_from_str_list(args);
->> +    qemu_notify_event();
->> +}
->> +
->>   static void qemu_system_powerdown(void)
->>   {
->>       qapi_event_send_powerdown();
->> @@ -849,6 +874,10 @@ static bool main_loop_should_exit(int *status)
->>       if (qemu_suspend_requested()) {
->>           qemu_system_suspend();
->>       }
->> +    if (qemu_exec_requested()) {
->> +        qemu_system_exec();
->> +        return false;
->> +    }
-> 
-> Some explanation of why it needs to be done explicitly here would be
-> helpful.  E.g., can we do exec inside a BH scheduled for the main thread?
-> What if we exec() directly in another thread (rather than the main loop
-> thread)?
+> Why very complicated? It calls a simple runner instead of calling the
+> test script directly, but it doesn't change the way to re-run a single
+> test. One just have to pass V=1 to see make's command line  and copy
+> and paste the full command line to re-run the test. I mentioned
+> inspecting 'testlog-thorough.txt' just for completeness.
 
-A BH is a good idea, thanks.
-It only requires a few lines of code, and no globals.
-I will drop this patch and add a BH to patch "migration: cpr-exec mode".
+Today we can run the individual tests directly 
 
-- Steve
+ # ./tests/functional/x86_64/test_reverse_debug.py
+ TAP version 13
+ ok 1 test_reverse_debug.ReverseDebugging_X86_64.test_x86_64_pc
+ 1..1
+
+
+(assuming you have PYTHONPATH and QEMU_TEST_QEMU_BINARY env set)
+
+This gives you a very easy way to interact with the test, see
+its progress, understand what failed, and debug it with strace,
+etc.
+
+This change looses all that. It appears I can run it with
+
+  # ./tests/guest-debug/run-test.py --quiet --gdb gdb --test \
+       ./tests/functional/x86_64/test_reverse_debug.py
+
+but the output is unintelligible
+
+  TAP version 13
+  0x000000000000fff0 in ?? ()
+  0x000000000000e05b in ?? ()
+  0x000000000000e062 in ?? ()
+  0x000000000000e066 in ?? ()
+  0x000000000000e068 in ?? ()
+  0x000000000000e06a in ?? ()
+  0x000000000000e070 in ?? ()
+  0x000000000000e076 in ?? ()
+  0x000000000000cf30 in ?? ()
+  0x000000000000cf31 in ?? ()
+  0x000000000000cf32 in ?? ()
+  0x000000000000cf31 in ?? ()
+  0x000000000000cf30 in ?? ()
+  0x000000000000e076 in ?? ()
+  0x000000000000e070 in ?? ()
+  0x000000000000e06a in ?? ()
+  0x000000000000e068 in ?? ()
+  0x000000000000e066 in ?? ()
+  0x000000000000e062 in ?? ()
+  0x000000000000e05b in ?? ()
+  0x000000000000fff0 in ?? ()
+  0x000000000000e05b in ?? ()
+  0x000000000000e062 in ?? ()
+  0x000000000000e066 in ?? ()
+  0x000000000000e068 in ?? ()
+  0x000000000000e06a in ?? ()
+  0x000000000000e070 in ?? ()
+  0x000000000000e076 in ?? ()
+  0x000000000000cf30 in ?? ()
+  0x000000000000cf31 in ?? ()
+  0x000000000000cf32 in ?? ()
+  Breakpoint 1 at 0xfff0
+  Breakpoint 2 at 0xe05b
+  Breakpoint 3 at 0xe062
+  Breakpoint 4 at 0xe066
+  Breakpoint 5 at 0xe068
+  Breakpoint 6 at 0xe06a
+  Breakpoint 7 at 0xe070
+  Breakpoint 8 at 0xe076
+  Breakpoint 9 at 0xcf30
+  Breakpoint 10 at 0xcf31
+  
+  Program received signal SIGINT, Interrupt.
+  0x00000000000d80dc in ?? ()
+  
+  Breakpoint 1, 0x000000000000fff0 in ?? ()
+  [Inferior 1 (process 1) detached]
+
+
+This undermines the core goals of what we aimed to achieve with
+the new functional test harness.
+
+> 
+> >   * It makes the meson.build rules much more complicated
+> 
+> Do we want to never augment functional tests' meson.build? Nothing
+> complicated is being added. Basically, just a new variable suffixed with
+> '_with_runner' which holds a tuple (test, runner) that tell the test
+> to be executed, following the same logic we already have for all the other
+> variables that specify the tests per arch/mode/speed.
+> 
+> Another option would be to select a runner based on a suffix in the test
+> name, for instance, 'reverse_debug_with_runner.py'.
+
+IMHO the overall concept of using the run-test.py runner for launching
+the tests is flawed and not viable. It adds too much complexity to the
+use of the tests, and harms the output.
+
+> >   * Running standalone there is no TAP output available making the
+> >     test hard to debug on failure or timeout
+> 
+> This is because of an unfortunate GDB Python API issue, please see my
+> reply in your comment on patch 5/5. This can be solved but needs more
+> investigation on GDB side.
+> 
+> 
+> > I understand the need to spawn the test via gdb, in order to be able
+> > to import the 'gdb' python module. Looking at what reverse_debugging.py
+> > does, however, makes me question whether we actually need to directly
+> > use the 'gdb' python module.
+> > 
+> > The only APIs we use are 'gdb.execute' and 'gdb.parse_and_eval'.
+> > 
+> > The latter is only used once as
+> > 
+> >    gdb.parse_and_eval("$pc")
+> > 
+> > and I believe that can be changed to
+> > 
+> >    gdb.execute("printf \"0x%x\", $pc", to_string=True)
+> > 
+> > IOW, all we need is 'gdb.execute("....", to_string=True)'
+> 
+> Yes, I do want to directly use the 'gdb' python module directly in the
+> tests. We shouldn't look at a solution only for reverse_debug.py but also
+> think of any future tests that will require the GDB Python API, so I don't
+> want to specialize here and reduce the API to a single method.
+
+If any other tests needing GDB arrive int he future we can consider
+them at that time.
+
+I like the idea of the test being able to execute human gdb commands,
+but I don't think the GDB provided 'gdb' module is viable to use
+directly. We need to retain control over how we launch our tests
+without intermediate runners present.
+
+> > With a little extra helper proxy script, we can achieve this without
+> > changing the way scripts are launched.
+> > 
+> > The script needs to listen on a UNIX socket path. When a client
+> > connects, it should read lines of data from the client and pass
+> > them to 'gdb.execute(..., to_string=True)' and whatever data
+> > gdb returns should be written back to the client.
+> > 
+> > A very very crude example with no error handling would be:
+> > 
+> >    #!/usr/bin/python3
+> > 
+> >    import gdb
+> >    import os
+> >    import socket
+> > 
+> >    sock = os.environ.get("QEMU_PROXY", "/tmp/qemu.gdb.proxy")
+> > 
+> >    try:
+> >      os.unlink(sock)
+> >    except:
+> >      pass
+> > 
+> >    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
+> >      s.bind(sock)
+> >      s.listen()
+> >      conn, addr = s.accept()
+> >      fh = conn.makefile('rw')
+> >      with conn:
+> >          while True:
+> >              line = fh.readline()
+> >              if not line:
+> >                  break
+> >              data = gdb.execute(line, to_string=True)
+> >              fh.write(data)
+> >              fh.flush()
+> > 
+> > 
+> > In the functional test suite, we should have a helper file
+> > tests/functional/qemu_test/gdb.py that provides an API for
+> > launching GDB to execute this proxy script, and an API to
+> > execute commands by talking over this UNIX socket path.
+> > 
+> > With this, we will need no changes in the way we execute the
+> > reverse debugging script from a test runner POV, thus avoiding
+> > all the downsides of use of the run-test.py script. IOW, the
+> > first 4 patches in this series go away completely. Instead we
+> > need a patch to create the proxy script and a patch to create
+> > the helper APIs in tests/functional/qemu_test/gdb.py, whereupon
+> > the last patch can replace
+> > 
+> > try:
+> >      import gdb
+> > except ModuleNotFoundError:
+> >      from sys import exit
+> >      exit("This script must be launched via tests/guest-debug/run-test.py!")
+> > 
+> > with
+> > 
+> >    from qemu_test import gdb
+> > 
+> > and the earlier mentioned replacement of parse_and_eval()
+> 
+> For the sake of not adding a few lines into meson.build, we are going
+> to design a new ad-hoc API for the functional tests on top of the GDB
+> Python API, which will communicate with the test script via a socket
+> and will _still require a runner anyway_ (just now hidden under a
+> module/API)? This is far more complicated than having a simple runner
+> to call GDB and pass the test script.
+
+This is not exclusively about the meson.build changes. It is about the
+overall execution environment of the tests being *simple* and easy to
+understand. That is the overrriding goal of how we approached design
+of the new functional test harness that made it valuable to spend the
+time to replace avocado. The GDB runner usage undermines the benefits
+we have achieved.
+
+> In fact, I think that if the test script had any clue in its name,
+> like the "_with_runner" suffix I mentioned above, maybe Meson's could
+> take care of calling GDB itself without calling any runner. Would that
+> address your first comment in the bullets (and maybe the second one too,
+> but not sure without trying it) and get this series accepted by you,
+> since the third one, about the exitcode, is related to GDB's odd behavior?
+
+The tests need to be runnable directly as standalone python programs,
+with well formed TAP output.
+
+Given the limitations of GDB, if we want to use its python module, then
+the proxy idea I describe above is the only way forward I see.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
