@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C4B1B54932
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 12:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45032B54979
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 12:21:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ux0my-0001Xu-5w; Fri, 12 Sep 2025 06:13:56 -0400
+	id 1ux0u0-0004rN-Uc; Fri, 12 Sep 2025 06:21:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ux0mu-0001Wu-Rw
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 06:13:52 -0400
+ id 1ux0tJ-0004i6-JK
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 06:20:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ux0mm-00037B-CM
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 06:13:52 -0400
+ id 1ux0tB-000450-4Z
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 06:20:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757672020;
+ s=mimecast20190719; t=1757672411;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=z0WAF4058LshVFQkMEgHvZR8a5DBdwSgQC4z2fq1IKE=;
- b=GggomHn33yHBT3ImfNgBp0vD15/g6X6fBYN6ZDAoYIrO7phs9rz09xHHWaeZx2rTURqcEf
- AawQBPnW5TPpSfBMOMnX+eIEAYUsf67H/yE4yCMnyGgAmR1pBzrsryVv/1fm1eO40KpOHj
- iD8hJvHJvEqygemYKdFvFvzfjAcfdpM=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=A1qnXIPAMYNSWvEYcqU2oj+tI5q+DkIMJV9rM6r9r+g=;
+ b=CAAAqrKAVg/wi/VJN3WwWMIa8PK5f3a5uVtAbk1JaHBPCHSSJbW6EVYhHeP93kIhZcBOZV
+ svvPoIyJU9+pj/gNsrvhLgdbZLpeTHzWdg5URyBtPEfAE+bS/ce8Bz1Fiz09p/mhLx2Wbl
+ md4cwWAT7AFXCAUlDtuXLAE319GHE00=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-OTu2ebPuNP6hJOlcwx9MXQ-1; Fri,
- 12 Sep 2025 06:13:37 -0400
-X-MC-Unique: OTu2ebPuNP6hJOlcwx9MXQ-1
-X-Mimecast-MFC-AGG-ID: OTu2ebPuNP6hJOlcwx9MXQ_1757672016
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-672-4Fp4N8tQPiGeCWCFo312Zw-1; Fri,
+ 12 Sep 2025 06:20:07 -0400
+X-MC-Unique: 4Fp4N8tQPiGeCWCFo312Zw-1
+X-Mimecast-MFC-AGG-ID: 4Fp4N8tQPiGeCWCFo312Zw_1757672407
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ED8301955D9D; Fri, 12 Sep 2025 10:13:35 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E6CB31800378; Fri, 12 Sep 2025 10:20:06 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.154])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 25B8A1954126; Fri, 12 Sep 2025 10:13:33 +0000 (UTC)
-Date: Fri, 12 Sep 2025 11:13:30 +0100
+ id 592B71944CCA; Fri, 12 Sep 2025 10:20:05 +0000 (UTC)
+Date: Fri, 12 Sep 2025 11:20:01 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, odaki@rsg.ci.i.u-tokyo.ac.jp,
- marcandre.lureau@redhat.com
-Subject: Re: [PATCH 08/12] util/oslib-win32: Revert warning on
- WSAEventSelect() failure
-Message-ID: <aMPySq3b6FLndWQp@redhat.com>
-References: <20250808080823.2638861-1-armbru@redhat.com>
- <20250808080823.2638861-9-armbru@redhat.com>
- <aKRe6pTbdU0OZ85I@redhat.com> <87segvyhcv.fsf@pond.sub.org>
+To: Peter Xu <peterx@redhat.com>
+Cc: Juraj Marcin <jmarcin@redhat.com>, qemu-devel@nongnu.org,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH] migration: Apply migration specific keep-alive defaults
+ to inet socket
+Message-ID: <aMPz0WFmstNmKBQc@redhat.com>
+References: <20250909150127.1494626-1-jmarcin@redhat.com>
+ <aMBDIwKDxTVrBJBQ@redhat.com> <aMCjGVUiM3MY-RM3@x1.local>
+ <aMEkY3N9ITwH_Y8Z@redhat.com> <aMGpHBGth05JY2hl@x1.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87segvyhcv.fsf@pond.sub.org>
+In-Reply-To: <aMGpHBGth05JY2hl@x1.local>
 User-Agent: Mutt/2.2.14 (2025-02-20)
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
@@ -90,80 +90,96 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 09, 2025 at 01:50:56PM +0200, Markus Armbruster wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
+On Wed, Sep 10, 2025 at 12:36:44PM -0400, Peter Xu wrote:
+> On Wed, Sep 10, 2025 at 08:10:57AM +0100, Daniel P. Berrangé wrote:
+> > On Tue, Sep 09, 2025 at 05:58:49PM -0400, Peter Xu wrote:
+> > > On Tue, Sep 09, 2025 at 04:09:23PM +0100, Daniel P. Berrangé wrote:
+> > > > On Tue, Sep 09, 2025 at 05:01:24PM +0200, Juraj Marcin wrote:
+> > > > > From: Juraj Marcin <jmarcin@redhat.com>
+> > > > > 
+> > > > > Usual system defaults for TCP keep-alive options are too long for
+> > > > > migration workload. On Linux, a TCP connection waits idle for 2 hours
+> > > > > before it starts checking if the connection is not broken.
+> > > > > 
+> > > > > Now when InetSocketAddress supports keep-alive options [1], this patch
+> > > > > applies migration specific defaults if they are not supplied by the user
+> > > > > or the management software. With these defaults, a migration TCP stream
+> > > > > waits idle for 1 minute and then sends 5 TCP keep-alive packets in 30
+> > > > > second interval before considering the connection as broken.
+> > > > > 
+> > > > > System defaults can be still used by explicitly setting these parameters
+> > > > > to 0.
+> > > > 
+> > > > IMHO this is not a good idea. This is a very short default, which
+> > > > may be fine for the scenario where your network conn is permanently
+> > > > dead, but it is going to cause undesirable failures when the network
+> > > > conn is only temporarily dead.
+> > > > 
+> > > > Optimizing defaults for temporary outages is much more preferrable
+> > > > as that maximises reliability of migration. In the case of permanent
+> > > > outages, it is already possible to tear down the connection without
+> > > > waiting for a keep-alive timeout, and liveliness checks can also be
+> > > > perform by the mgmt app at a higher level too. The TCP keepalives
+> > > > are just an eventual failsafe, and having those work on a long
+> > > > timeframe is OK.
+> > > 
+> > > For precopy it looks fine indeed, because migrate_cancel should always work
+> > > on src if src socket hanged, and even if dest QEMU socket hanged, it can
+> > > simply be killed if src QEMU can be gracefully cancelled and rolled back to
+> > > RUNNING, disregarding the socket status on dest QEMU.
+> > > 
+> > > For postcopy, we could still use migrate_pause to enforce src shutdown().
+> > > Initially I thought we have no way of doing that for dest QEMU, but I just
+> > > noticed two years ago I added that to dest QEMU for migrate_paused when
+> > > working on commit f8c543e808f20b..  So looks like that part is covered too,
+> > > so that if dest QEMU socket hanged we can also kick it out.
+> > > 
+> > > I'm not 100% sure though, on whether shutdown() would always be able to
+> > > successfully kick out the hanged socket while the keepalive is ticking.  Is
+> > > it guaranteed?
+> > 
+> > I don't know about shutdown(), but close() certainly works. If shutdown()
+> > is not sufficient, then IMHO the migration code would need the ability to
+> > use close() to deal with this situation.
+> > 
+> > 
+> > > I also am not sure if that happens, whether libvirt would automatically do
+> > > that, or provide some way so the user can trigger that.  The goal IIUC here
+> > > is we shouldn't put user into a situation where the migration hanged but
+> > > without any way to either cancel or recover.  With the default values Juraj
+> > > provided here, it makes sure the hang won't happen more than a few minutes,
+> > > which sounds like a sane timeout value.
+> > 
+> > Sufficient migration QMP commands should exist to ensure migration can
+> > always be cancelled. Short keepalive timeouts should not be considered
+> > a solution to any gaps in that respect.
+> > 
+> > Also there is yank, but IMHO apps shouldn't have to rely on yank - I see
+> > yank as a safety net for apps to workaround limitations in QEMU.
 > 
-> > On Fri, Aug 08, 2025 at 10:08:19AM +0200, Markus Armbruster wrote:
-> >> qemu_socket_select() and its wrapper qemu_socket_unselect() treat a
-> >> NULL @errp as &error_warn.  This is wildly inappropriate.  A caller
-> >> passing NULL specifies that errors are to be ignored.  If warnings are
-> >> wanted, the caller must pass &error_warn.
-> >> 
-> >> I'm not familiar with the calling code, so I can't say whether it will
-> >> work after WSAEventSelect() failure.  If it doesn't, then this should
-> >> be an error.  If it does, then why bother the user with a warning that
-> >> isn't actionable, and likely confusing?
-> >> 
-> >> The warning goes back to commit f5fd677ae7cf (win32/socket: introduce
-> >> qemu_socket_select() helper).  Before that commit, the error was
-> >> ignored, as indicated by passing a null @errp.  Revert to that
-> >> behavior.
-> >> 
-> >> Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-> >> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> >> ---
-> >>  util/oslib-win32.c | 4 ----
-> >>  1 file changed, 4 deletions(-)
-> >> 
-> >> diff --git a/util/oslib-win32.c b/util/oslib-win32.c
-> >> index b7351634ec..136a8fe118 100644
-> >> --- a/util/oslib-win32.c
-> >> +++ b/util/oslib-win32.c
-> >> @@ -296,10 +296,6 @@ bool qemu_socket_select(int sockfd, WSAEVENT hEventObject,
-> >>  {
-> >>      SOCKET s = _get_osfhandle(sockfd);
-> >>  
-> >> -    if (errp == NULL) {
-> >> -        errp = &error_warn;
-> >> -    }
-> >
-> > This makes sense, but I'd want the callers to be using warn_report
-> > instead. Ideally some (but not all) of the callers would propagate
-> > the error, but this isn't practical with the QIOChannel create
-> > watch function usage. I'd want to keep Error *errp on this function
-> > though, and have warn_report as a sign to our future selves that
-> > this is still not ideal.
+> The QMP facility looks to be all present, which is migrate-cancel and
+> migrate-pause mentioned above.
 > 
-> The direct callers are qio_channel_create_socket_watch(),
-> aio_set_fd_handler().  Callers via qemu_socket_unselect() are
-> qio_channel_socket_finalize(), qio_channel_socket_close(),
-> qemu_socket_set_block().
+> For migrate_cancel (of precopy), is that Ctrl-C of "virsh migrate"?
 > 
-> All but qio_channel_socket_close() cannot fail.  Would you like me to
-> make them pass &error_warn, because warning is less bad than silence
-> there?
-> 
-> qio_channel_socket_close() can fail, but it ignores
-> qemu_socket_unselect() failure.  What do you want me to do there?
+> Does libvirt exposes migrate_pause via any virsh command?  IIUC that's the
+> only official way of pausing a postcopy VM on either side.  I also agree we
+> shouldn't make yank the official tool to use.
 
-I think the overriding important thing is that we /must/ try to
-close(), and if close() succeeds claim the whole qio_channel_socket_close
-was successful. So I guess I'd say that &error_warn should be passed
-from all callers.
+virsh will call virDomainAbortJob when Ctrl-C is done to a 'migrate'
+command.
 
-> 
-> >> -
-> >>      if (s == INVALID_SOCKET) {
-> >>          error_setg(errp, "invalid socket fd=%d", sockfd);
-> >>          return false;
-> >> -- 
-> >> 2.49.0
-> >> 
-> >> 
-> >
-> > With regards,
-> > Daniel
-> 
+virDomainAbortJob will call migrate-cancel for pre-copy, or
+'migrate-pause' for post-copy.
+
+
+> OTOH, the default timeouts work without changing libvirt, making sure the
+> customers will not be stuck in a likely-failing network for hours without
+> providing a way to properly detach and recover when it's wanted.
+
+"timeouts work" has the implicit assumpton that the only reason a
+timeout will fire is due to a unrecoverable situation. IMHO that
+assumption is not valid.
 
 With regards,
 Daniel
