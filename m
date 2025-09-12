@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154DCB544FB
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 10:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D988B5451E
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 10:20:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwyye-0007Qi-Ho; Fri, 12 Sep 2025 04:17:52 -0400
+	id 1uwz0l-0000fc-D2; Fri, 12 Sep 2025 04:20:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uwyyb-0007QG-D2
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 04:17:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uwz0k-0000fM-0g
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 04:20:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uwyyZ-0001fg-CX
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 04:17:49 -0400
+ id 1uwz0f-00023k-Ve
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 04:20:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757665063;
+ s=mimecast20190719; t=1757665194;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cLwml6jPLzYyrwFAow8Z0COuF8hoRMxU33SVzOMh6U8=;
- b=E1PiZ2fircq5iB8WUwmha4ffWNy/CqsYacGTr607OlsV/ezm/QS60j+IpfBdY+l4Vjons3
- F8SPceDy5RrtxDMPOiPaOIe8BFKZX3OkbK5ERBe04BZJbUzSYSW5tIJ1Dsu1BAZHAbljnH
- Ntm8jv+c4Ofq7dP6j5zpeAJyIN3oqBY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=LvgTVNeeDAsHmJZmdmn5kzrdSl3AixFxAcezRULfLj8=;
+ b=iz54klY0JjCC+1yhCf6+OtsqjcrkobyfydomzZxogoRuc8vCst4mDhvmipUFPP8beJAI0f
+ REtOZXmk4oWc1+zG9fMHgAvfnD5VWp/VrBI9/St+S4W9IX+d314v4g46qSTvvGqjMyyP+8
+ 0Bcheks9NLW9S6ZRcYY9esdQxVTMHuQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-3-JJN9cgf5MJylVHWTCe-FbQ-1; Fri,
- 12 Sep 2025 04:17:41 -0400
-X-MC-Unique: JJN9cgf5MJylVHWTCe-FbQ-1
-X-Mimecast-MFC-AGG-ID: JJN9cgf5MJylVHWTCe-FbQ_1757665061
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-458-KQP6aAssOEGc4imI4A0MZQ-1; Fri,
+ 12 Sep 2025 04:19:52 -0400
+X-MC-Unique: KQP6aAssOEGc4imI4A0MZQ-1
+X-Mimecast-MFC-AGG-ID: KQP6aAssOEGc4imI4A0MZQ_1757665191
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A8AAB1977538; Fri, 12 Sep 2025 08:17:40 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1A323180057A; Fri, 12 Sep 2025 08:19:51 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.154])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EE66E1800447; Fri, 12 Sep 2025 08:17:38 +0000 (UTC)
-Date: Fri, 12 Sep 2025 09:17:35 +0100
+ id 409671800446; Fri, 12 Sep 2025 08:19:48 +0000 (UTC)
+Date: Fri, 12 Sep 2025 09:19:45 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Subject: Re: [PATCH 3/5] qemu-options: Change memory-encryption to
- confidential-guest-support in the example
-Message-ID: <aMPXH09Gyp7F8V1j@redhat.com>
+Subject: Re: [PATCH 4/5] qemu-options: Add confidential-guest-support to
+ machine options
+Message-ID: <aMPXoaVGsSOQcXQR@redhat.com>
 References: <20250714091953.448226-1-xiaoyao.li@intel.com>
- <20250714091953.448226-4-xiaoyao.li@intel.com>
+ <20250714091953.448226-5-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250714091953.448226-4-xiaoyao.li@intel.com>
+In-Reply-To: <20250714091953.448226-5-xiaoyao.li@intel.com>
 User-Agent: Mutt/2.2.14 (2025-02-20)
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -90,18 +90,20 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 14, 2025 at 05:19:51PM +0800, Xiaoyao Li wrote:
-> "confidential-guest-support" is the recommended property instead of
-> "memory-encryption". Switch to "confidential-guest-support" in the
-> example of sev-guest.
+On Mon, Jul 14, 2025 at 05:19:52PM +0800, Xiaoyao Li wrote:
+> "confidential-guest-support" is the recommended property to configure
+> machine with confidential computing technology instead of
+> "memory-encryption".
+> 
+> Add "confidential-guest-support" to machine options and call out
+> explicitly "memory-encryption" is the alias of it and not recommended.
 > 
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
->  qemu-options.hx | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  qemu-options.hx | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
 
 With regards,
 Daniel
