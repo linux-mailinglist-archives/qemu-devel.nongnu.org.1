@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCB7B545A4
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 10:37:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A9AB545AD
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 10:40:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uwzGi-0000XO-J3; Fri, 12 Sep 2025 04:36:32 -0400
+	id 1uwzJm-0001vQ-Tz; Fri, 12 Sep 2025 04:39:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uwzGS-0000CI-PQ
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 04:36:17 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
+ id 1uwzJk-0001v1-MP
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 04:39:40 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uwzGF-0005Dq-O6
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 04:36:16 -0400
+ id 1uwzJh-0005RR-Fo
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 04:39:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757666164; x=1789202164;
+ t=1757666377; x=1789202377;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=8SL6GoKfIhyZd278iUOuxFCX4INIyw15lWQYJ8KrqPk=;
- b=aND2cJXXdRGiz6NTtj7n88LrRXetsmUAGDxeV6v57UxERsLq/08rqI02
- jRmwEic5F+3HXXjuoLVIixWYtm0fa4grYPvDWAFhBj7hk2fvHLuPu8WBt
- 4kPgcFjeCjXEkkWJO+vEULsqt8g/i2qGUTRh1MOOS+nI05+EhwgfGKVHY
- rF5uLj81bxfcFHvqohDQ6TGPqmI1XpPa75pEJSM80YXpOSoY2XRQqe0er
- PLoPt0zw7NvhJf2WJqxT0z/igOXUykrbkQmbexlRzhDEgi2UIS4hR46LS
- RXi11ij94ylq5hl+ejNMbcleySbmd8DQHu4teQAAHqNeyGEhy1IBuHYKO A==;
-X-CSE-ConnectionGUID: J5cHIixUQdW52s8FruQGuA==
-X-CSE-MsgGUID: 45oaVTyVQAeeLxhm7IZ5aQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="70262185"
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; d="scan'208";a="70262185"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Sep 2025 01:35:43 -0700
-X-CSE-ConnectionGUID: L26maXTiSM+1BdBpyxttLg==
-X-CSE-MsgGUID: El0DyOrfSyq4uzn0zXpeNA==
+ bh=mR+Yc6W2LZpW9FcjUMtn0wAY0pOmP6olwK/wZYZPWkI=;
+ b=Y1tNVf9rK2hb6aFVvbrfMXNvY/gsRKSzj6kWZEY/4ttQpX1A3qXp0QQp
+ t234djjmCvSOGjYATf+B5JSiHbfEQ4ZdUFErsae4A0eLc2PW7aJ/CtcU+
+ YSLn3SoMrsToLhBnTb8W0AreMYYtxwCVVi3xcWI4vdz2mrjcVR6qmDZ9G
+ PcWEUGsXhI7ogYPXdtFQA7tFewSh1tgA6brfQhftrvRQtL+V9bBUYODwX
+ 7qIZ2PXjIEhTRBpZZ7k/UbtT1O3Llsc40PsKWC1igNL/XdS0mJHvErktE
+ zZU03+1dAGzEQRM1w1AE8oA3sc9gDrHbdEVSowXZvFbL6Gl8BhZi3e+j+ w==;
+X-CSE-ConnectionGUID: yCgPDCGNQDeFRbs4892r0Q==
+X-CSE-MsgGUID: 4G3ayEjaRaisiZx0Lxl4Cw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="85444631"
+X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; d="scan'208";a="85444631"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Sep 2025 01:39:33 -0700
+X-CSE-ConnectionGUID: 3/gtBYtWSOKnv0Tg2SIdGQ==
+X-CSE-MsgGUID: 62tMFUHGSxOT/6b/9j/kAg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; d="scan'208";a="204909272"
+X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; d="scan'208";a="179096567"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 12 Sep 2025 01:35:42 -0700
-Date: Fri, 12 Sep 2025 16:57:35 +0800
+ by orviesa005.jf.intel.com with ESMTP; 12 Sep 2025 01:39:31 -0700
+Date: Fri, 12 Sep 2025 17:01:24 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org,
  =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH 28/33] rust: repurpose qemu_api -> tests
-Message-ID: <aMPgf0/rZYWQvG0t@intel.com>
+Subject: Re: [PATCH 29/33] rust: re-export qemu_macros internal helper in
+ "bits"
+Message-ID: <aMPhZDZcWdhiV0gu@intel.com>
 References: <20250908105005.2119297-1-pbonzini@redhat.com>
- <20250908105005.2119297-29-pbonzini@redhat.com>
+ <20250908105005.2119297-30-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250908105005.2119297-29-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250908105005.2119297-30-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -83,55 +84,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 08, 2025 at 12:50:00PM +0200, Paolo Bonzini wrote:
-> Date: Mon,  8 Sep 2025 12:50:00 +0200
+On Mon, Sep 08, 2025 at 12:50:01PM +0200, Paolo Bonzini wrote:
+> Date: Mon,  8 Sep 2025 12:50:01 +0200
 > From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 28/33] rust: repurpose qemu_api -> tests
+> Subject: [PATCH 29/33] rust: re-export qemu_macros internal helper in "bits"
 > X-Mailer: git-send-email 2.51.0
 > 
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> The crate purpose is only to provide integration tests at this point,
-> that can't easily be moved to a specific crate.
-> 
-> It's also often a good practice to have a single integration test crate
-> (see for ex https://github.com/rust-lang/cargo/issues/4867)
-
-Good reference material!
-
-> Drop README.md, use docs/devel/rust.rst instead.
+> Avoid the need to import "qemu_macros".
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Link: https://lore.kernel.org/r/20250827104147.717203-20-marcandre.lureau@redhat.com
+> Link: https://lore.kernel.org/r/20250827104147.717203-21-marcandre.lureau@redhat.com
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  MAINTAINERS                                   |  2 +-
->  rust/qemu-api/wrapper.h                       | 53 -------------
->  rust/Cargo.lock                               | 30 ++++----
->  rust/Cargo.toml                               |  2 +-
->  rust/meson.build                              |  4 +-
->  rust/qemu-api/.gitignore                      |  2 -
->  rust/qemu-api/README.md                       | 19 -----
->  rust/qemu-api/build.rs                        |  1 -
->  rust/qemu-api/meson.build                     | 75 -------------------
->  rust/qemu-api/src/bindings.rs                 | 33 --------
->  rust/qemu-api/src/lib.rs                      | 18 -----
->  rust/qemu-api/src/prelude.rs                  |  5 --
->  rust/{qemu-api => tests}/Cargo.toml           |  7 +-
->  rust/tests/meson.build                        | 14 ++++
->  .../tests/vmstate_tests.rs                    |  0
->  15 files changed, 35 insertions(+), 230 deletions(-)
->  delete mode 100644 rust/qemu-api/wrapper.h
->  delete mode 100644 rust/qemu-api/.gitignore
->  delete mode 100644 rust/qemu-api/README.md
->  delete mode 120000 rust/qemu-api/build.rs
->  delete mode 100644 rust/qemu-api/meson.build
->  delete mode 100644 rust/qemu-api/src/bindings.rs
->  delete mode 100644 rust/qemu-api/src/lib.rs
->  delete mode 100644 rust/qemu-api/src/prelude.rs
->  rename rust/{qemu-api => tests}/Cargo.toml (78%)
->  create mode 100644 rust/tests/meson.build
->  rename rust/{qemu-api => tests}/tests/vmstate_tests.rs (100%)
+>  rust/bits/src/lib.rs | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
