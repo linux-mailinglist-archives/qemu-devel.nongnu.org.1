@@ -2,138 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5081AB54F7B
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 15:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCEBB54651
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 11:00:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ux3lj-0006Km-PN; Fri, 12 Sep 2025 09:24:52 -0400
+	id 1uwzdM-0005F4-La; Fri, 12 Sep 2025 04:59:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Lingshan.Zhu@amd.com>)
- id 1uwx0m-0005kY-59
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 02:11:56 -0400
-Received: from mail-dm6nam10on20611.outbound.protection.outlook.com
- ([2a01:111:f403:2413::611]
- helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uwzdJ-0005E6-QO
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 04:59:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Lingshan.Zhu@amd.com>)
- id 1uwx0j-0005ln-Py
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 02:11:55 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vxqXERKyynDbzA3L9Ne48RfqycvcSkx0A6YUznasuYG/o5MDkOgdHrZmrVyb+fTkvQ+xcWdrqoSUzt/XqQDdzQdy8Fu2RGZBzBOgR49KovK00jqI//2g5lr31hscGQEnxPtVcVKAQ5KOsy41NZE2ZzhAQ3Uv+A/HX6HnFlaALL06vH4nYnjborTlP9mUJ39zy5wS9b0Tuh/vL+KIs6Bm33P311NfNmW0T+JgWnRiqkLjg6rSu4Z3mMxEo0hlD1emeJBaHvrlO0fIyKkQNkkraKHZ4WJZa1wSzeJmiZyS+qz2KKDoK1bKGLJxQmNGT8G0xijEsc5dqKO0QHE+Zt7P/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WpyMhExORLjCmbrA9QoaWpCbIp8zyys/5Q8qeYSVDMA=;
- b=yV1sb0bayRRq4SDlvzxawvTL4FMYHlrq+HJ4IhEZDuXAP8TGgvfryorENV5OmDHCmQbkg8j3sb+yxmgk2ljB+RAT4uL46LYKgVUCZilSEsjlCLsq9t/RoM6XDOJuG9lJ656GbxTNtNmIDIMChQqp4p6ZFscRR2trXAkgG7KMVK3N5NFtt8Tj6RJXu7/g9r995MqjABrKCJbZqre1ViTMQACA0C9mzygoRy8v8fE5m6/oYGk8Nonca5cnxT5wSNwZakdY8lpAC4xzcIgskbg9ygq6k0iiGJUalHebxr/EbSEedSd06esceMzr+h7/HSXw50sKEjLz6GXbWM3MoBe8Qw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WpyMhExORLjCmbrA9QoaWpCbIp8zyys/5Q8qeYSVDMA=;
- b=m6AjzhqUnAHEUSWfgkt/PgtMrhobPG0WMZGbgWHfSg+70pFbnmjkXHilarQg+KTOtoUd8E1IBaubWO3Vj3D8VS8u8sURWALg4vX49bMUOZxgqnAUqqcpIMt7/xT3rTx2kon6qnv8v8vXdlFRVtLC5Kg8OQQf5czGl67tvF/EVgE=
-Received: from SA0PR11CA0194.namprd11.prod.outlook.com (2603:10b6:806:1bc::19)
- by MN2PR12MB4302.namprd12.prod.outlook.com (2603:10b6:208:1de::7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Fri, 12 Sep
- 2025 06:11:48 +0000
-Received: from SA2PEPF00001505.namprd04.prod.outlook.com
- (2603:10b6:806:1bc:cafe::25) by SA0PR11CA0194.outlook.office365.com
- (2603:10b6:806:1bc::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9115.16 via Frontend Transport; Fri,
- 12 Sep 2025 06:11:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SA2PEPF00001505.mail.protection.outlook.com (10.167.242.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9115.13 via Frontend Transport; Fri, 12 Sep 2025 06:11:47 +0000
-Received: from fedora.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 11 Sep
- 2025 23:11:45 -0700
-From: Zhu Lingshan <lingshan.zhu@amd.com>
-To: <jasowang@redhat.com>, <mst@redhat.com>
-CC: <qemu-devel@nongnu.org>, Zhu Lingshan <lingshan.zhu@amd.com>
-Subject: [RFC 2/2] virtio: implement virtio control-plane suspend and resume
- facility
-Date: Fri, 12 Sep 2025 14:11:25 +0800
-Message-ID: <20250912061125.262457-3-lingshan.zhu@amd.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250912061125.262457-1-lingshan.zhu@amd.com>
-References: <20250912061125.262457-1-lingshan.zhu@amd.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uwzd9-0000DK-Vo
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 04:59:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757667581;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
+ references:references; bh=ewxTlh5vEbdSqb4nj8EbEVqZ7bdeP2fsxuDDzEABHJU=;
+ b=I+kmCPwSP47ME4C6og87BaZC0bubDlC/XtflBxjhzpa/C0Ybey7HAVvO1FVlc1WUCYNZ7T
+ DcOrungqlZciltwDmSzeBdCyl4l/gVS0rVb8JVUfktRjk1Y/cebc2APW7ZGrnJVoepDB15
+ 9OLtYGkgX1k+sljPJsr/q/DSXNz1K/g=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-NPO6A5k6NaKxvnVZLmRA6w-1; Fri,
+ 12 Sep 2025 04:59:37 -0400
+X-MC-Unique: NPO6A5k6NaKxvnVZLmRA6w-1
+X-Mimecast-MFC-AGG-ID: NPO6A5k6NaKxvnVZLmRA6w_1757667576
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DA6CD1800366; Fri, 12 Sep 2025 08:59:35 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.12])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2C3DB19560B1; Fri, 12 Sep 2025 08:59:35 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 8239D21E6A27; Fri, 12 Sep 2025 10:59:32 +0200 (CEST)
+Resent-To: richard.henderson@linaro.org, alifm@linux.ibm.com,
+ borntraeger@linux.ibm.com, farman@linux.ibm.com, iii@linux.ibm.com,
+ jjherne@linux.ibm.com, jrossi@linux.ibm.com, mjrosato@linux.ibm.com,
+ pasic@linux.ibm.com, walling@linux.ibm.com, zycai@linux.ibm.com,
+ qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+Resent-From: Markus Armbruster <armbru@redhat.com>
+Resent-Date: Fri, 12 Sep 2025 10:59:32 +0200
+Resent-Message-ID: <87jz24avwr.fsf@pond.sub.org>
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhuoying Cai <zycai@linux.ibm.com>
+Cc: thuth@redhat.com,  berrange@redhat.com,  richard.henderson@linaro.org,
+ david@redhat.com,  jrossi@linux.ibm.com,  qemu-s390x@nongnu.org,
+ qemu-devel@nongnu.org,  walling@linux.ibm.com,  jjherne@linux.ibm.com,
+ pasic@linux.ibm.com,  borntraeger@linux.ibm.com,  farman@linux.ibm.com,
+ mjrosato@linux.ibm.com,  iii@linux.ibm.com,  eblake@redhat.com,
+ alifm@linux.ibm.com
+Subject: Re: [PATCH v5 01/29] Add boot-certs to s390-ccw-virtio machine type
+ option
+In-Reply-To: <ffb4d32b-d2bc-45f0-91ce-6472d64c02bb@linux.ibm.com> (Zhuoying
+ Cai's message of "Thu, 11 Sep 2025 15:03:37 -0400")
+References: <20250818214323.529501-1-zycai@linux.ibm.com>
+ <20250818214323.529501-2-zycai@linux.ibm.com>
+ <87v7lpjvsw.fsf@pond.sub.org>
+ <ffb4d32b-d2bc-45f0-91ce-6472d64c02bb@linux.ibm.com>
+Date: Fri, 12 Sep 2025 08:42:10 +0200
+Message-ID: <87wm64b29p.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001505:EE_|MN2PR12MB4302:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1daa36b6-3a31-4fc0-c415-08ddf1c34132
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|36860700013|82310400026|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?4LwHORRdIwrymi19Y84pOA/y2/j8mC4QnRkEAjql1dZ/SUlc3aDVCjQN1CSW?=
- =?us-ascii?Q?HpfeZsSPSx6cy5iLJ0dLnGNkUtWUkYm41Iu/7zzwF0kgd/D3lLdKyA3knaIY?=
- =?us-ascii?Q?eMzo835cEJ+sMJIbr8/EKBTlucQJYokJH4ajm91vkchlsUay8h5RPMN7BnO8?=
- =?us-ascii?Q?ACTX8iFVWEcvq0FPzW4OngJPOokRiFx/zTx4xJT1ZcqB80aNqn8t81apwqDr?=
- =?us-ascii?Q?1izs03Q1686GjPfMD9NAMb2UcKYTJbyf+JHKqFNaaS20TJeMhh3egs3zFpdq?=
- =?us-ascii?Q?fNABa5ZXimGVJGMxKHym3FU2WdmryaVVBRQ6niy9HxXiOvS5nbIlkIN3BGLc?=
- =?us-ascii?Q?qG6sT8VLh8i0xs/uY4XAjb1y0Zz13CM77HHtz1JHjWM0I7myzxi7fa4Sfpq4?=
- =?us-ascii?Q?v8fjjrbFpM3w4HaaOMn3dMv4HhEu4z940HWSs3JbtZpTKrbSUaINY7D5nFa6?=
- =?us-ascii?Q?47iWUCN4S9P0QBZjcELLZCt5cskHsbjrbXOx2UlwW2oOcDtyplhXR85nGSoR?=
- =?us-ascii?Q?irv8MPp7DeUnRB1AHqrenpp44rw3TkM4fsOreY0Jc09uxW7EnqS2iT02fygz?=
- =?us-ascii?Q?/7d2vxQLlT6Nf+a824BG4nePnvQ3lvRKpJkCqjmxIl2B3xDhsjXMX+LqlISm?=
- =?us-ascii?Q?s0jWOmuwP9JDBn62Mj3Ga8cDCuD/3eMWrFPVR4n9Qmx609mbi02vWw1vlTGU?=
- =?us-ascii?Q?WBKJMR5NK3pwRofaAUdLyfQn+dPp3o++Wifff91qTksZ+Q434QCLtVaGqtbZ?=
- =?us-ascii?Q?2Zt8QhyAJ9j9asJyERXsE7jCXr9tgk5eMQzaJ9HSVg+ydIhhUh5Ib3SCQD9I?=
- =?us-ascii?Q?JxG03Mb93SDXmIyi4NBbYirHmWmpwTSmvuQ4lf3dS+cdtwZlz9yPgZf8KRww?=
- =?us-ascii?Q?vkjAES2ShM4r1o5bBdymYAid2FUzdki3lFTE325GDMzanKGErrAOJOV7m4It?=
- =?us-ascii?Q?Zo/d/TT0BTOFcwmAITcf5hB4kDGE0f+2HLdVULsHAylZ+2HVBd6AmD5dF+3q?=
- =?us-ascii?Q?AMuw9v+HOPSlFpRsqAA7GOm3x09PT3habGHP0pfTppsymK7x1itdIGPnSzD+?=
- =?us-ascii?Q?F+jU5fe3dLj5d2OvXS/n1TaZunsAb1B663UU/iHJWCpijy2ucnZ7vVgaNKe0?=
- =?us-ascii?Q?EvYTbySicTszaLMme6+9gi/D0riP1JtYR+TQU5/HCDOxZJsxVj0bUGy2O/I/?=
- =?us-ascii?Q?fN9ihbxujQrv2rZ7yTCGBNkKhDh63HwX1fhGIWDrnAOo+c+pv2niwSVO8/fU?=
- =?us-ascii?Q?yfZ1bhqJgEiWlAjQ+hamQqhDxtXOhLf5te2nyStuuejkk6K2j/zUKb9i9Yrg?=
- =?us-ascii?Q?v8ciYAzAf/myyY7YYxXEmem3htRP98nCA+Yeocm2mXi4jtsAysEXbfrA1EN6?=
- =?us-ascii?Q?JKSy9gzpq4zIdy0rleAvrAF0PAvhkVNvj7zypXud3ATY0vg03oyMVUJaybUL?=
- =?us-ascii?Q?PmTpa8gaLiMY+wRPdo+5JG2pi5W+uGf0KZ9Bn1Jqn5KkOThKw7anePJeCOL8?=
- =?us-ascii?Q?WY5lDzu/Hx60MHCmbQhFnIh9QHA8Ihp/Auji?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2025 06:11:47.0588 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1daa36b6-3a31-4fc0-c415-08ddf1c34132
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00001505.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4302
-Received-SPF: permerror client-ip=2a01:111:f403:2413::611;
- envelope-from=Lingshan.Zhu@amd.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
+Lines: 264
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 12 Sep 2025 09:24:40 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -148,89 +101,269 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit implements suspend and resume facility
-of virtio control-plane according to the new spec changes,
-and a reference design on virtio-net.
+Zhuoying Cai <zycai@linux.ibm.com> writes:
 
-Signed-off-by: Zhu Lingshan <lingshan.zhu@amd.com>
----
- hw/virtio/virtio-pci.c     |  5 +++++
- hw/virtio/virtio.c         | 16 ++++++++++++++++
- include/hw/virtio/virtio.h |  1 +
- 3 files changed, 22 insertions(+)
+> Thanks for the feedback.
+>
+> On 9/11/25 3:24 AM, Markus Armbruster wrote:
+>> Zhuoying Cai <zycai@linux.ibm.com> writes:
+>> 
+>>> Introduce a new `boot-certs` machine type option for the s390-ccw-virtio
+>>> machine. This allows users to specify one or more certificate file paths
+>>> or directories to be used during secure boot.
+>>>
+>>> Each entry is specified using the syntax:
+>>> 	boot-certs.<index>.path=/path/to/cert.pem
+>>>
+>>> Multiple paths can be specify using array properties:
+>>> 	boot-certs.0.path=/path/to/cert.pem,
+>>> 	boot-certs.1.path=/path/to/cert-dir,
+>>> 	boot-certs.2.path=/path/to/another-dir...
+>>>
+>>> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
+>>> ---
+>>>  docs/system/s390x/secure-ipl.rst   | 20 ++++++++++++++++++++
+>>>  hw/s390x/s390-virtio-ccw.c         | 30 ++++++++++++++++++++++++++++++
+>>>  include/hw/s390x/s390-virtio-ccw.h |  2 ++
+>>>  qapi/machine-s390x.json            | 24 ++++++++++++++++++++++++
+>>>  qemu-options.hx                    |  6 +++++-
+>>>  5 files changed, 81 insertions(+), 1 deletion(-)
+>>>  create mode 100644 docs/system/s390x/secure-ipl.rst
+>>>
+>>> diff --git a/docs/system/s390x/secure-ipl.rst b/docs/system/s390x/secure-ipl.rst
+>>> new file mode 100644
+>>> index 0000000000..9b3fd25cc4
+>>> --- /dev/null
+>>> +++ b/docs/system/s390x/secure-ipl.rst
+>>> @@ -0,0 +1,20 @@
+>>> +.. SPDX-License-Identifier: GPL-2.0-or-later
+>>> +
+>>> +Secure IPL Command Line Options
+>>> +===============================
+>>> +
+>>> +New parameters have been introduced to s390-ccw-virtio machine type option
+>>> +to support secure IPL. These parameters allow users to provide certificates
+>>> +and enable secure IPL directly via the command line.
+>> 
+>> All too soon these parameters will no longer be new.  Consider something
+>> like "The s390-ccw-virtio machine type supports secure TPL.  To enable
+>> it, you need to provide certificates."
+>> 
+>>> +
+>>> +Providing Certificates
+>>> +----------------------
+>>> +
+>>> +The certificate store can be populated by supplying a list of certificate file
+>>> +paths or directories on the command-line:
+>> 
+>> File is clear enough (use the certificate found in the file).  What does
+>> directory do?
+>
+> A directory contains a list of certificate files, and allowing both
+> files and directories could make the CLI more flexible.
 
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 767216d795..bc9189746f 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -1580,6 +1580,11 @@ static void virtio_pci_common_write(void *opaque, hwaddr addr,
-         return;
-     }
- 
-+    /* only allow writing device status while suspended */
-+    if ((vdev->status & VIRTIO_CONFIG_S_SUSPEND) && (addr != VIRTIO_PCI_COMMON_STATUS)) {
-+        return;
-+    }
-+
-     switch (addr) {
-     case VIRTIO_PCI_COMMON_DFSELECT:
-         proxy->dfselect = val;
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index e5abbc4601..9d632d72be 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -2242,8 +2242,10 @@ int virtio_set_status(VirtIODevice *vdev, uint8_t val)
- {
-     VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
-     trace_virtio_set_status(vdev, val);
-+    uint8_t old_status;
-     int ret = 0;
- 
-+    old_status = vdev->status;
-     if (virtio_vdev_has_feature(vdev, VIRTIO_F_VERSION_1)) {
-         if (!(vdev->status & VIRTIO_CONFIG_S_FEATURES_OK) &&
-             val & VIRTIO_CONFIG_S_FEATURES_OK) {
-@@ -2276,6 +2278,15 @@ int virtio_set_status(VirtIODevice *vdev, uint8_t val)
-             vdev->status &= !VIRTIO_CONFIG_S_DRIVER_OK;
-     }
- 
-+    /* The device has been resumed */
-+    if ((!(vdev->status & VIRTIO_CONFIG_S_SUSPEND)) &&
-+        (old_status & VIRTIO_CONFIG_S_SUSPEND) &&
-+        (vdev->status & VIRTIO_CONFIG_S_DRIVER_OK) &&
-+        (vdev->config_interrupt_pending)) {
-+            virtio_notify_config(vdev);
-+            vdev->config_interrupt_pending = false;
-+    }
-+
-     return ret;
- }
- 
-@@ -2714,6 +2725,11 @@ void virtio_notify_config(VirtIODevice *vdev)
-     if (!(vdev->status & VIRTIO_CONFIG_S_DRIVER_OK))
-         return;
- 
-+    if (vdev->status & VIRTIO_CONFIG_S_SUSPEND) {
-+        vdev->config_interrupt_pending = true;
-+        return;
-+    }
-+
-     virtio_set_isr(vdev, 0x3);
-     vdev->generation++;
-     virtio_notify_vector(vdev, vdev->config_vector);
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index c594764f23..9d66076f75 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -167,6 +167,7 @@ struct VirtIODevice
-      */
-     EventNotifier config_notifier;
-     bool device_iotlb_enabled;
-+    bool config_interrupt_pending;
- };
- 
- struct VirtioDeviceClass {
--- 
-2.51.0
+I figure when @path names a file, it's an error when the file doesn't
+contain a valid cetificate.
+
+What is @path names a directory, and one of the directory's files
+doesn't contain a valid certificate?
+
+Can a single file contain multiple certificates?
+
+>>> +
+>>> +.. code-block:: shell
+>>> +
+>>> +    qemu-system-s390x -machine s390-ccw-virtio, \
+>>> +                               boot-certs.0.path=/.../qemu/certs, \
+>>> +                               boot-certs.1.path=/another/path/cert.pem ...
+>>> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+>>> index c294106a74..9ac425c695 100644
+>>> --- a/hw/s390x/s390-virtio-ccw.c
+>>> +++ b/hw/s390x/s390-virtio-ccw.c
+>>> @@ -45,6 +45,7 @@
+>>>  #include "target/s390x/kvm/pv.h"
+>>>  #include "migration/blocker.h"
+>>>  #include "qapi/visitor.h"
+>>> +#include "qapi/qapi-visit-machine-s390x.h"
+>>>  #include "hw/s390x/cpu-topology.h"
+>>>  #include "kvm/kvm_s390x.h"
+>>>  #include "hw/virtio/virtio-md-pci.h"
+>>> @@ -798,6 +799,30 @@ static void machine_set_loadparm(Object *obj, Visitor *v,
+>>>      g_free(val);
+>>>  }
+>>>  
+>>> +static void machine_get_boot_certs(Object *obj, Visitor *v,
+>>> +                                   const char *name, void *opaque,
+>>> +                                   Error **errp)
+>>> +{
+>>> +    S390CcwMachineState *ms = S390_CCW_MACHINE(obj);
+>>> +    BootCertPathList **certs = &ms->boot_certs;
+>>> +
+>>> +    visit_type_BootCertPathList(v, name, certs, errp);
+>>> +}
+>>> +
+>>> +static void machine_set_boot_certs(Object *obj, Visitor *v, const char *name,
+>>> +                                   void *opaque, Error **errp)
+>>> +{
+>>> +    S390CcwMachineState *ms = S390_CCW_MACHINE(obj);
+>>> +    BootCertPathList *cert_list = NULL;
+>>> +
+>>> +    visit_type_BootCertPathList(v, name, &cert_list, errp);
+>>> +    if (!cert_list) {
+>>> +        return;
+>>> +    }
+>>> +
+>>> +    ms->boot_certs = cert_list;
+>>> +}
+>>> +
+>>>  static void ccw_machine_class_init(ObjectClass *oc, const void *data)
+>>>  {
+>>>      MachineClass *mc = MACHINE_CLASS(oc);
+>>> @@ -851,6 +876,11 @@ static void ccw_machine_class_init(ObjectClass *oc, const void *data)
+>>>              "Up to 8 chars in set of [A-Za-z0-9. ] (lower case chars converted"
+>>>              " to upper case) to pass to machine loader, boot manager,"
+>>>              " and guest kernel");
+>>> +
+>>> +    object_class_property_add(oc, "boot-certs", "BootCertPath",
+>> 
+>> Isn't this a BootCertPathList, not a BootCertPath?
+>
+> If I understand correctly, would BootCerts also be the correct option to
+> use here?
+
+This is object_class_property_add()'s @type argument.  It's an arbitrary
+string, not checked in any way.  When the property's actual type is a
+QAPI type, like it is here, then the @type argument should be the name
+of the QAPI type.
+
+Questions?
+
+>>> +                              machine_get_boot_certs, machine_set_boot_certs, NULL, NULL);
+>>> +    object_class_property_set_description(oc, "boot-certs",
+>>> +            "provide paths to a directory and/or a certificate file for secure boot");
+>>>  }
+>>>  
+>>>  static inline void s390_machine_initfn(Object *obj)
+>>> diff --git a/include/hw/s390x/s390-virtio-ccw.h b/include/hw/s390x/s390-virtio-ccw.h
+>>> index 526078a4e2..b90949355c 100644
+>>> --- a/include/hw/s390x/s390-virtio-ccw.h
+>>> +++ b/include/hw/s390x/s390-virtio-ccw.h
+>>> @@ -14,6 +14,7 @@
+>>>  #include "hw/boards.h"
+>>>  #include "qom/object.h"
+>>>  #include "hw/s390x/sclp.h"
+>>> +#include "qapi/qapi-types-machine-s390x.h"
+>>>  
+>>>  #define TYPE_S390_CCW_MACHINE               "s390-ccw-machine"
+>>>  
+>>> @@ -31,6 +32,7 @@ struct S390CcwMachineState {
+>>>      uint8_t loadparm[8];
+>>>      uint64_t memory_limit;
+>>>      uint64_t max_pagesize;
+>>> +    BootCertPathList *boot_certs;
+>>>  
+>>>      SCLPDevice *sclp;
+>>>  };
+>>> diff --git a/qapi/machine-s390x.json b/qapi/machine-s390x.json
+>>> index 966dbd61d2..3e89ef8320 100644
+>>> --- a/qapi/machine-s390x.json
+>>> +++ b/qapi/machine-s390x.json
+>>> @@ -119,3 +119,27 @@
+>>>  { 'command': 'query-s390x-cpu-polarization', 'returns': 'CpuPolarizationInfo',
+>>>    'features': [ 'unstable' ]
+>>>  }
+>>> +
+>>> +##
+>>> +# @BootCertPath:
+>>> +#
+>>> +# Boot certificate path.
+>>> +#
+>>> +# @path: path of certificate(s)
+>>> +#
+>>> +# Since: 10.1
+>>> +##
+>> 
+>> No mention of file vs. directory.
+>> 
+>> Why do you wrap the file name in a struct?  One possible reason is
+>> providing for future extensions.  Can you think of any?
+>> 
+>> If you extend it, the name BootCertPath could become suboptimal.
+>> BootCertificate?
+>> 
+>
+> I wrapped the path in a struct to follow the array-style structure used
+> by cxl-fmw and smp-cache options (as Daniel suggested).
+>
+> ```
+>   It would be something like this on the CLI:
+>
+>
+> boot-certs.0.path=/path/to/dir,boot-certs.1.path=/to/other/dir,boot-certs.2.path=/some/...
+> ```
+>
+> This could potentially leave room for future extensions, such as
+> including details about the certificate (e.g., issuer, hashing
+> algorithm, etc).
+
+No objections to the wrapping.  I'd prefer naming the struct
+BootCertificates.
+
+>>> +{ 'struct': 'BootCertPath',
+>>> +  'data': {'path': 'str'} }
+>>> +
+>>> +##
+>>> +# @BootCerts:
+>>> +#
+>>> +# List of boot certificate paths.
+>>> +#
+>>> +# @boot-certs: List of BootCertPath
+>> 
+>> Anti-pattern: the description text restates the type.
+>> 
+>>> +#
+>>> +# Since: 10.1
+>>> +##
+>>> +{ 'struct': 'BootCerts',
+>>> +  'data': {'boot-certs': ['BootCertPath'] } }
+>> 
+>> Where is this type used?
+>
+> Please correct me if I'm wrong, but from what I've seen, it is not used
+> directly in the implementation. It provides a list property for
+> BootCertPath, which makes the BootCertPathList definition valid and able
+> to accept multiple paths. If BootCerts is removed, then BootCertPathList
+> becomes underfined and results in compilation errors.
+
+Aha!
+
+Your QOM property setter and getter need visit_type_BootCertPathList().
+
+The QAPI generator generates code for BootCertPathList, including
+visit_type_BootCertPathList(), only when it knows it's actually used.
+It can only see uses within the QAPI schema.  So, when ['BootCertPath']
+doesn't occur there, visit_type_BootCertPathList() won't exist, and your
+QOM code won't compile.
+
+Since you don't actually need BootCertPathList in the schema, you need
+to add an artifical use just to get it generated.  The common way to do
+that is using it in a dummy type like this:
+
+    ##
+    # @DummyForceS390Arrays:
+    #
+    # Not used by QMP; hack to let us use BootCertPathList internally
+    #
+    # Since: 10.2
+    ##
+    { 'struct': 'DummyForceArrays',
+      'data': { 'unused': ['BootCertPath'] } }
+
+You also need to add it to pragme documentation-exceptions is
+pragma.json.
+
+Yes, this is clunky.  Sorry :)
+
+[...]
 
 
