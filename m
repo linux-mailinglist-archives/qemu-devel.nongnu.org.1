@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE3BB554FA
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 18:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0493DB5550F
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 18:51:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ux6xN-0001jT-MZ; Fri, 12 Sep 2025 12:49:05 -0400
+	id 1ux6yo-0003J1-EX; Fri, 12 Sep 2025 12:50:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ux6xD-0001iN-Go
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 12:48:56 -0400
+ id 1ux6yA-0002vs-NF
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 12:49:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ux6x8-0008Ia-5C
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 12:48:52 -0400
+ id 1ux6y7-0008NI-Iu
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 12:49:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757695727;
+ s=mimecast20190719; t=1757695788;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5GolsejNXmhCcAPyk/471q7YDjS2oqJL780K0Qsl/I8=;
- b=SbcVAvrP98lHquI7N9dRsStGUX21uEUCKxopBLr/qlG9rZ/Wb4nZIuBA5LhHdyVSU2sUgJ
- xWypEb8pPubKVlrS9uMn8lW+lUiT3VRh2gfN1tVcD5FtYA4mxHoyBsnJzEYuaRZKKMdgDv
- larN/kb+2inMkQrj+hdRGkC0xjczj3s=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=v+zPLdtX2gG2swBBkip88Tu5IkfgsEGHhIYTGrbAl+U=;
+ b=QH5JU+I+eJHnl7M7QALhVIyLZOPYy75WrvPBh55KcFj7z9WjB+g/1zXWXtBE4CGBn8ysMT
+ Dy20aGkdH3cKXGeXHaPu7+rZXB6OoPxgkYSFdk+LKH3/YWjnTqtQNY9FJx8rtVqPEC4kgv
+ +88QwxA5lA4k2PEFoIXZqJ0zLyqXmK8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-iCvbJnVSPFyKvX6lgFmGgA-1; Fri,
- 12 Sep 2025 12:48:44 -0400
-X-MC-Unique: iCvbJnVSPFyKvX6lgFmGgA-1
-X-Mimecast-MFC-AGG-ID: iCvbJnVSPFyKvX6lgFmGgA_1757695723
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-270-Id_0R-4zOpylqSKbSzZtYQ-1; Fri,
+ 12 Sep 2025 12:49:45 -0400
+X-MC-Unique: Id_0R-4zOpylqSKbSzZtYQ-1
+X-Mimecast-MFC-AGG-ID: Id_0R-4zOpylqSKbSzZtYQ_1757695784
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 134291956050; Fri, 12 Sep 2025 16:48:43 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AAAFD1955DB6; Fri, 12 Sep 2025 16:49:43 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.154])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 014CB1954126; Fri, 12 Sep 2025 16:48:40 +0000 (UTC)
-Date: Fri, 12 Sep 2025 17:48:37 +0100
+ id 1E4FB1944AB5; Fri, 12 Sep 2025 16:49:40 +0000 (UTC)
+Date: Fri, 12 Sep 2025 17:49:37 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: peterx@redhat.com, farosas@suse.de, steven.sistare@oracle.com,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v4 2/2] io/channel: document how qio_channel_readv_full()
- handles fds
-Message-ID: <aMRO5SroQ_-FsBP1@redhat.com>
-References: <20250910193112.1220763-1-vsementsov@yandex-team.ru>
- <20250910193112.1220763-3-vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, peterx@redhat.com, qemu-block@nongnu.org,
+ leiyang@redhat.com, marcandre.lureau@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 1/8] char-socket: tcp_chr_recv(): drop extra
+ _set_(block,cloexec)
+Message-ID: <aMRPIa-ZE32Zrmr7@redhat.com>
+References: <20250911092007.1370002-1-vsementsov@yandex-team.ru>
+ <20250911092007.1370002-2-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250910193112.1220763-3-vsementsov@yandex-team.ru>
+In-Reply-To: <20250911092007.1370002-2-vsementsov@yandex-team.ru>
 User-Agent: Mutt/2.2.14 (2025-02-20)
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
@@ -90,20 +91,14 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 10, 2025 at 10:31:12PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> The only realization, which may have incoming fds is
-> qio_channel_socket_readv() (in io/channel-socket.c).
-> qio_channel_socket_readv() do call (through
-> qio_channel_socket_copy_fds()) qemu_socket_set_block() and
-> qemu_set_cloexec() for each fd.
-> 
-> Also, qio_channel_socket_copy_fds() is called at the end of
-> qio_channel_socket_readv(), on success path.
+On Thu, Sep 11, 2025 at 12:19:59PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> qio_channel_readv_full() guarantees BLOCKING and CLOEXEC states for
+> incoming descriptors, no reason to call extra ioctls.
 > 
 > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > ---
->  include/io/channel.h | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+>  chardev/char-socket.c | 14 --------------
+>  1 file changed, 14 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
