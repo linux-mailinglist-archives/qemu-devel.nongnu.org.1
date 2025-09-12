@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DA6B54FE1
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 15:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF96B5500B
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 15:52:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ux42u-00066n-Qp; Fri, 12 Sep 2025 09:42:36 -0400
+	id 1ux4Aa-0001BN-Qg; Fri, 12 Sep 2025 09:50:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ux42r-00065M-P1
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 09:42:34 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ux4AX-0001B8-Kq
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 09:50:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ux42n-0004ak-Vw
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 09:42:31 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ux4AV-0005xj-7w
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 09:50:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757684544;
+ s=mimecast20190719; t=1757685023;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=XEkfsLepkO5+FEQ45VO1MUMlWht5zOMXSzYowM15qHk=;
- b=G8BeWTOYOgRx7/pS+OIgIdrRyLCvnEoQ2WUY0ZRTY7ILqXAaH0MDOyhL5e5/UkOdhaNpR+
- gsNxB31KYI1N/wvRUZANCAtcEjqvgCLKprHX+GzqeUXz6t6nvucocWpGTrKmyLMwPkwlnU
- nnQsLHSV8+DAZD1KJ6Hzy/wJRKtlSfE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=A4jyelgNF9BZhWkgDMAz4xKfjyRzIqQc3Q1VqXYIk3o=;
+ b=BQwnRPwFXJRHUq6f9U9VcpJqMnn+04E880N4+8Ca/5M5mIhwBUnx5WC/Nd/YpSjrETFW52
+ O7cqLLOzNh5kQ7K6GWExugk/ksIWsGE1YQbln07ikyj4ufDqysD43wdcXrn+5DYL+vjVOM
+ Sc22DXBBg4xiwezU9ICG+IAXnpFKIiA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-2THCbkdANRyMTh80hLmivw-1; Fri,
- 12 Sep 2025 09:42:23 -0400
-X-MC-Unique: 2THCbkdANRyMTh80hLmivw-1
-X-Mimecast-MFC-AGG-ID: 2THCbkdANRyMTh80hLmivw_1757684540
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-145-agrOZXXmOhCA1XSM_-iTWw-1; Fri,
+ 12 Sep 2025 09:50:20 -0400
+X-MC-Unique: agrOZXXmOhCA1XSM_-iTWw-1
+X-Mimecast-MFC-AGG-ID: agrOZXXmOhCA1XSM_-iTWw_1757685018
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 47274180034F; Fri, 12 Sep 2025 13:42:20 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 27D821944F01; Fri, 12 Sep 2025 13:50:18 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.12])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8010C19560B9; Fri, 12 Sep 2025 13:42:19 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6A2B51954126; Fri, 12 Sep 2025 13:50:17 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B473E21E6A27; Fri, 12 Sep 2025 15:42:16 +0200 (CEST)
+ id D113B21E6A27; Fri, 12 Sep 2025 15:50:14 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Dmitry
- Fleytman <dmitry.fleytman@gmail.com>,  Akihiko Odaki
- <odaki@rsg.ci.i.u-tokyo.ac.jp>,  Jason Wang <jasowang@redhat.com>,  Sriram
- Yagnaraman <sriram.yagnaraman@ericsson.com>,  "Michael S. Tsirkin"
- <mst@redhat.com>,  Stefano Garzarella <sgarzare@redhat.com>,  Cornelia
- Huck <cohuck@redhat.com>,  Luigi Rizzo <lrizzo@google.com>,  Giuseppe
- Lettieri <g.lettieri@iet.unipi.it>,  Vincenzo Maffione
- <v.maffione@gmail.com>,  Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH v6 09/14] qmp: update virtio features map to support
- extended features
-In-Reply-To: <bef09bed78378da9c32d9913eefb83bd42ba8808.1757676218.git.pabeni@redhat.com>
- (Paolo Abeni's message of "Fri, 12 Sep 2025 15:07:00 +0200")
-References: <cover.1757676218.git.pabeni@redhat.com>
- <bef09bed78378da9c32d9913eefb83bd42ba8808.1757676218.git.pabeni@redhat.com>
-Date: Fri, 12 Sep 2025 15:42:16 +0200
-Message-ID: <87cy7v7pon.fsf@pond.sub.org>
+To: Filip Hejsek <filip.hejsek@gmail.com>
+Cc: qemu-devel@nongnu.org,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,  "Michael S. Tsirkin"
+ <mst@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Amit Shah
+ <amit@kernel.org>,  Eric Blake <eblake@redhat.com>,  Eduardo Habkost
+ <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Yanan Wang
+ <wangyanan55@huawei.com>,  Zhao Liu <zhao1.liu@intel.com>,  Szymon Lukasz
+ <noh4hss@gmail.com>
+Subject: Re: [PATCH v4 08/10] virtio-serial-bus: add terminal resize messages
+In-Reply-To: <20250912-console-resize-v4-8-7925e444afc4@gmail.com> (Filip
+ Hejsek's message of "Fri, 12 Sep 2025 05:39:53 +0200")
+References: <20250912-console-resize-v4-0-7925e444afc4@gmail.com>
+ <20250912-console-resize-v4-8-7925e444afc4@gmail.com>
+Date: Fri, 12 Sep 2025 15:50:14 +0200
+Message-ID: <878qij7pbd.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -91,20 +91,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Paolo Abeni <pabeni@redhat.com> writes:
+Filip Hejsek <filip.hejsek@gmail.com> writes:
 
-> Extend the VirtioDeviceFeatures struct with an additional u64
-> to track unknown features in the 64-127 bit range and decode
-> the full virtio features spaces for vhost and virtio devices.
+> From: Szymon Lukasz <noh4hss@gmail.com>
 >
-> Also add entries for the soon-to-be-supported virtio net GSO over
-> UDP features.
+> Implement the part of the virtio spec that allows to notify the virtio
+> driver about terminal resizes. The virtio spec contains two methods to
+> achieve that:
 >
-> Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> Acked-by: Jason Wang <jasowang@redhat.com>
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> For legacy drivers, we have only one port and we put the terminal size
+> in the config space and inject the config changed interrupt.
+>
+> For multiport devices, we use the control virtqueue to send a packet
+> containing the terminal size. Note that old versions of the Linux kernel
+> used an incorrect order for the fields (rows then cols instead of cols
+> then rows), until it was fixed by commit 5326ab737a47278dbd16ed3ee7380b26c7056ddd.
+>
+> As a result, when using a Linux kernel older than 6.15, the number of rows
+> and columns will be swapped.
 
-You lost my
-Acked-by: Markus Armbruster <armbru@redhat.com>
+Should this note be added to user documentation?
+
+> Signed-off-by: Szymon Lukasz <noh4hss@gmail.com>
+> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+> Signed-off-by: Filip Hejsek <filip.hejsek@gmail.com>
 
 
