@@ -2,98 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D15B555E6
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 20:11:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1442B55606
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 20:24:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ux8EO-000129-6o; Fri, 12 Sep 2025 14:10:44 -0400
+	id 1ux8PV-0004UV-UB; Fri, 12 Sep 2025 14:22:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
- id 1ux8EJ-00010v-76
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 14:10:39 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
- id 1ux8EH-0003A2-7p
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 14:10:38 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3e34dbc38easo1285855f8f.1
- for <qemu-devel@nongnu.org>; Fri, 12 Sep 2025 11:10:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1757700635; x=1758305435; darn=nongnu.org;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
- :date:message-id:reply-to;
- bh=9si+Uf804w0ESTyCjG5Lqt/5LJ22vn1+nXootdMN2Xg=;
- b=fO9HHRzVlAUlVynDzJWHZLORZRvtPjGGj0ALrw/+EnR2hhT8YJLzPVhgXdPEpairt9
- yh4A84O10zIcrqAmuLrPEXNnumigc0NQVG7E6KC5Sh9/uz8Z/9suMjTuzr+ptF7PBozW
- RGif2R0LbrARRKgyF/4U4avG40L4Gpxp6AUxDAwK3PuHLRmTS6IVKjubOz49owTxobkg
- h5rFMNu9C/L0OQtuVEUjbiM53SObqp1DP1nzKcWygrnM8bayi8rWOcuzl80oNZRgmaSw
- by8GzW5pgSHxEfpy51joB6YYZP6bqNpsSt8evbOMLARcJp/81lz8Wq/Sra8DyMTYfkN6
- DH2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757700635; x=1758305435;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9si+Uf804w0ESTyCjG5Lqt/5LJ22vn1+nXootdMN2Xg=;
- b=ZYoH9o7DrVLGJKjPUldFC300sJaNxZVKlwoB52m2reY3XmddefvCE8CkRMoOnOUNpY
- dGqrOnyAhDnS5vebJqoS3P56W1yDSanLtvka2/NXCX7Zm9ILp5PEkazbGVtF1ndExaUI
- GvRAhf+O+9QKED3Z34/L+8CGbAMFtbEWWFeV37fpZhoWQ/9XUSDw1jhQo/q6/dbidA1t
- VZAv/l81U+OGHCID8VIoNUJUDyN+oOh37I72mcFb0m9+pg9mZtNoW/w4EXWQ+S1jzOQJ
- 0akieWKsITfVIUA0ZxMGYCNpd0KYf4OQ7OEHEZJgY4bPHb7uja4SSyCrH/xg9ySVMReW
- 1TLg==
-X-Gm-Message-State: AOJu0YyUipjcDfXtY35V94tp2QhDqsffla00ZDXD1mO6QPDI0zxhgITG
- K2n9GEhOXPiaUfdSQcUDiJxOS6f2s4pUgP4DeAUoSnaqQfwn7Qm7wTB1
-X-Gm-Gg: ASbGncvYWIFJX7D51fa5Z20Gp13XwBAXxUNdsD83lDBVAy4pOAedbIr8Yvha/YKnJSN
- NUh2/SjW8V5MbfLuuC0yp10jkT1WSq8nbtM2xOr/+k0yRj4aX2gabGkMojo6wo+SiXVcjSNzOzN
- FycO2cgzEnzU1sSeQRNzL159tlWC1Tvf98UxxkcBCzCDH3jlI7BURZ1j83P9J8WMychDHJ2mza+
- yiqtiGHTTj3ZJOiP71N38w9yvdv5Z/vPBZojlLquZRGQq3dikAquNVXstzv94YuZVQt7DBVzmKE
- DxNl2XMa/nTViDCwmOHOa2qE4e1HFmrPlwzy6PgjDvutcdKBGPsNsI5dqOaV9ztbn3MMeAG0Gtv
- QavwfKSjjKGBQxiyBwqfc+/1c3s5jxOKNbui9Qhqq6enfvDArLlHj0EOTtg==
-X-Google-Smtp-Source: AGHT+IHad27V1PDDJoCsBu9AkDA7dU+1+ZJ1byS3oYPF3qRo/cU2RXcHs4girUwqKjl2p02GXjWlfg==
-X-Received: by 2002:adf:a355:0:b0:3e7:67fd:56e1 with SMTP id
- ffacd0b85a97d-3e767fd5917mr2659873f8f.54.1757700634859; 
- Fri, 12 Sep 2025 11:10:34 -0700 (PDT)
-Received: from [10.33.80.40] (mem-185.47.220.165.jmnet.cz. [185.47.220.165])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e7607d77b2sm7630794f8f.45.2025.09.12.11.10.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Sep 2025 11:10:34 -0700 (PDT)
-Message-ID: <64d6252959750b8da6f3bc4ac7c738b10463bf6d.camel@gmail.com>
-Subject: Re: [PATCH v4 07/10] qmp: add chardev-resize command
-From: Filip Hejsek <filip.hejsek@gmail.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau	
- <marcandre.lureau@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Amit Shah <amit@kernel.org>, Eric Blake	 <eblake@redhat.com>, Eduardo
- Habkost <eduardo@habkost.net>, Marcel Apfelbaum	
- <marcel.apfelbaum@gmail.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=	
- <philmd@linaro.org>, Yanan Wang <wangyanan55@huawei.com>, Zhao Liu	
- <zhao1.liu@intel.com>, Szymon Lukasz <noh4hss@gmail.com>, Daniel
- =?ISO-8859-1?Q?P=2EBerrang=E9?=	 <berrange@redhat.com>,
- devel@lists.libvirt.org
-Date: Fri, 12 Sep 2025 20:10:32 +0200
-In-Reply-To: <871pob7ot7.fsf@pond.sub.org>
-References: <20250912-console-resize-v4-0-7925e444afc4@gmail.com>
- <20250912-console-resize-v4-7-7925e444afc4@gmail.com>
- <871pob7ot7.fsf@pond.sub.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ux8PU-0004UF-3x
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 14:22:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1ux8PR-0005Ec-KO
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 14:22:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757701326;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=tlWSm+cBftCKIlPDz0tzvUuiAaoXPfIS4YzKA5xycXE=;
+ b=h9iqffLSSLTCdcp5c538SAW7tIwFNKxpJUt0ff2fcLjezESuRCy4ZrOPWLtaKnR5jrLJ/4
+ mi92uIHQQH/h45J3av0PhUN+jL3TSwVBfN9pCkZnii0o59Kgszm6UlfD2DawfA5NtdoAdE
+ JQb7K99fQ9IWJbtZpFF6DVNeziyzdSo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-197-FNKR1em4PbWBwKZOemNlFw-1; Fri,
+ 12 Sep 2025 14:22:05 -0400
+X-MC-Unique: FNKR1em4PbWBwKZOemNlFw-1
+X-Mimecast-MFC-AGG-ID: FNKR1em4PbWBwKZOemNlFw_1757701324
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 48DA21800562
+ for <qemu-devel@nongnu.org>; Fri, 12 Sep 2025 18:22:04 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.154])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 95B221800446; Fri, 12 Sep 2025 18:22:02 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 0/6] tests/functional: remove last use of avocado.utils
+Date: Fri, 12 Sep 2025 19:21:54 +0100
+Message-ID: <20250912182200.643909-1-berrange@redhat.com>
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=filip.hejsek@gmail.com; helo=mail-wr1-x42e.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,119 +81,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2025-09-12 at 16:01 +0200, Markus Armbruster wrote:
-> Cc: libvirt
->=20
-> Filip Hejsek <filip.hejsek@gmail.com> writes:
->=20
-> > From: Szymon Lukasz <noh4hss@gmail.com>
-> >=20
-> > The managment software can use this command to notify QEMU about the
-> > size of the terminal connected to a chardev, QEMU can then forward this
-> > information to the guest if the chardev is connected to a virtio consol=
-e
-> > device.
-> >=20
-> > Signed-off-by: Szymon Lukasz <noh4hss@gmail.com>
-> > Suggested-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> > Signed-off-by: Filip Hejsek <filip.hejsek@gmail.com>
-> > ---
-> >  chardev/char.c | 14 ++++++++++++++
-> >  qapi/char.json | 22 ++++++++++++++++++++++
-> >  2 files changed, 36 insertions(+)
-> >=20
-> > diff --git a/chardev/char.c b/chardev/char.c
-> > index b45d79cb9b57643827eb7479257fdda2cf6b0434..6e3ade98614c949be8041ec=
-5905a490ff536dee9 100644
-> > --- a/chardev/char.c
-> > +++ b/chardev/char.c
-> > @@ -1269,6 +1269,20 @@ bool qmp_add_client_char(int fd, bool has_skipau=
-th, bool skipauth,
-> >      return true;
-> >  }
-> > =20
-> > +void qmp_chardev_resize(const char *id, uint16_t cols, uint16_t rows,
-> > +                        Error **errp)
-> > +{
-> > +    Chardev *chr;
-> > +
-> > +    chr =3D qemu_chr_find(id);
-> > +    if (chr =3D=3D NULL) {
-> > +        error_setg(errp, "Chardev '%s' not found", id);
-> > +        return;
-> > +    }
-> > +
-> > +    qemu_chr_resize(chr, cols, rows);
-> > +}
-> > +
-> >  /*
-> >   * Add a timeout callback for the chardev (in milliseconds), return
-> >   * the GSource object created. Please use this to add timeout hook for
-> > diff --git a/qapi/char.json b/qapi/char.json
-> > index f0a53f742c8bee24c377551803a864fd36ac78cf..0a26c5eee6b71bc5de127a9=
-1b253cc69a9fe8ce6 100644
-> > --- a/qapi/char.json
-> > +++ b/qapi/char.json
-> > @@ -874,6 +874,28 @@
-> >  { 'command': 'chardev-send-break',
-> >    'data': { 'id': 'str' } }
-> > =20
-> > +##
-> > +# @chardev-resize:
->=20
-> This name doesn't tell me what is being resized.  PATCH 04 uses
-> "winsize", which is better.  The (losely) related SIGWINCH suggests
-> "window change" or "window size change".  Below, you use "terminal
-> size".
+This simply imports the GDB code from avocado.utils to the QEMU
+functional test suite, and drops the other redundant avocado
+usage.
 
-How about chardev-console-resize? That would match the name of the
-virtio event (VIRTIO_CONSOLE_RESIZE).
+Daniel P. Berrangé (6):
+  tests/functional: import GDB remote code from avocado
+  tests/functional: convert reverse debug test to local gdb module
+  tests/functional: replace avocado process with subprocess
+  tests/functional: drop datadrainer class in reverse debugging
+  tests/functional: close GDB socket in reverse debugging test
+  tests/functional: use self.log for all logging
 
-> > +#
-> > +# Notifies a chardev about the current size of the terminal connected
-> > +# to this chardev.
->=20
-> Yes, but what is it good for?  Your commit message tells: "managment
-> software can use this command to notify QEMU about the size of the
-> terminal connected to a chardev, QEMU can then forward this information
-> to the guest if the chardev is connected to a virtio console device."
+ tests/functional/aarch64/test_virt.py      |   4 +-
+ tests/functional/arm/test_integratorcp.py  |   3 +-
+ tests/functional/mips64el/test_malta.py    |   3 +-
+ tests/functional/qemu_test/gdb.py          | 237 ++++++
+ tests/functional/qemu_test/gdbmi_parser.py | 419 ++++++++++
+ tests/functional/qemu_test/spark.py        | 850 +++++++++++++++++++++
+ tests/functional/replay_kernel.py          |  16 +-
+ tests/functional/reverse_debugging.py      |  59 +-
+ tests/functional/x86_64/test_acpi_bits.py  |  31 +-
+ 9 files changed, 1557 insertions(+), 65 deletions(-)
+ create mode 100644 tests/functional/qemu_test/gdb.py
+ create mode 100644 tests/functional/qemu_test/gdbmi_parser.py
+ create mode 100644 tests/functional/qemu_test/spark.py
 
-How about:
+-- 
+2.50.1
 
-   Notifies a chardev about the current size of the terminal connected
-   to this chardev. The information will be forwarded to the guest if
-   the chardev is connected to a virtio console device.
-
-> > +#
-> > +# @id: the chardev's ID, must exist
-> > +# @cols: the number of columns
-> > +# @rows: the number of rows
->=20
-> Blank lines between the argument descriptions, bease.
->=20
-> What's the initial size?
-
-0x0
-
-> Do we need a way to query the size?
-
-I don't think it is necessary. What would be the usecase for that?
-
-> > +#
-> > +# Since: 10.2
-> > +#
-> > +# .. qmp-example::
-> > +#
-> > +#     -> { "execute": "chardev-resize", "arguments": { "id": "foo", "c=
-ols": 80, "rows": 24 } }
-> > +#     <- { "return": {} }
-> > +##
-> > +{ 'command': 'chardev-resize',
-> > +  'data': { 'id': 'str',
-> > +            'cols': 'uint16',
-> > +            'rows': 'uint16' } }
-> > +
-> >  ##
-> >  # @VSERPORT_CHANGE:
-> >  #
 
