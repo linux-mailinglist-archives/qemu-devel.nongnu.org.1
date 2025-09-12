@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0493DB5550F
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 18:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CAFBB55509
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 18:51:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ux6yo-0003J1-EX; Fri, 12 Sep 2025 12:50:34 -0400
+	id 1ux6yz-0004NO-I7; Fri, 12 Sep 2025 12:50:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ux6yA-0002vs-NF
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 12:49:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1ux6yt-00047r-FH
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 12:50:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1ux6y7-0008NI-Iu
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 12:49:54 -0400
+ id 1ux6yr-0000BJ-CT
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 12:50:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757695788;
+ s=mimecast20190719; t=1757695833;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=v+zPLdtX2gG2swBBkip88Tu5IkfgsEGHhIYTGrbAl+U=;
- b=QH5JU+I+eJHnl7M7QALhVIyLZOPYy75WrvPBh55KcFj7z9WjB+g/1zXWXtBE4CGBn8ysMT
- Dy20aGkdH3cKXGeXHaPu7+rZXB6OoPxgkYSFdk+LKH3/YWjnTqtQNY9FJx8rtVqPEC4kgv
- +88QwxA5lA4k2PEFoIXZqJ0zLyqXmK8=
+ bh=RBKkp2qg2Uwk4n1qNtpAARfwzzs9ivGPjM7DXv+5Bys=;
+ b=M4sMwa2JIzQZOl9qBbfxSX17/jK3+3yZjes9BULdARFsy4ih/sT+mDraePo47Fl197Gs1P
+ 8PqD/GGR6dPi0n989+jLzEifw6wAQKXBvLX+XJunLZLNVENXHoxsNSxHqM1rCnAO/hv5pE
+ ZxpWtr4l5AIcUv+fzVQ8l9cDi/8pCP8=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-270-Id_0R-4zOpylqSKbSzZtYQ-1; Fri,
- 12 Sep 2025 12:49:45 -0400
-X-MC-Unique: Id_0R-4zOpylqSKbSzZtYQ-1
-X-Mimecast-MFC-AGG-ID: Id_0R-4zOpylqSKbSzZtYQ_1757695784
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-623--x4Sin_ONS6CCqgPN8DV-w-1; Fri,
+ 12 Sep 2025 12:50:29 -0400
+X-MC-Unique: -x4Sin_ONS6CCqgPN8DV-w-1
+X-Mimecast-MFC-AGG-ID: -x4Sin_ONS6CCqgPN8DV-w_1757695822
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AAAFD1955DB6; Fri, 12 Sep 2025 16:49:43 +0000 (UTC)
+ id DF9611955EA4; Fri, 12 Sep 2025 16:50:21 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.154])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1E4FB1944AB5; Fri, 12 Sep 2025 16:49:40 +0000 (UTC)
-Date: Fri, 12 Sep 2025 17:49:37 +0100
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5F8A319560BD; Fri, 12 Sep 2025 16:50:18 +0000 (UTC)
+Date: Fri, 12 Sep 2025 17:50:15 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Cc: qemu-devel@nongnu.org, peterx@redhat.com, qemu-block@nongnu.org,
  leiyang@redhat.com, marcandre.lureau@redhat.com,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 1/8] char-socket: tcp_chr_recv(): drop extra
- _set_(block,cloexec)
-Message-ID: <aMRPIa-ZE32Zrmr7@redhat.com>
+Subject: Re: [PATCH v2 2/8] char-socket: tcp_chr_recv(): add comment
+Message-ID: <aMRPR5YEywhLif9H@redhat.com>
 References: <20250911092007.1370002-1-vsementsov@yandex-team.ru>
- <20250911092007.1370002-2-vsementsov@yandex-team.ru>
+ <20250911092007.1370002-3-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250911092007.1370002-2-vsementsov@yandex-team.ru>
+In-Reply-To: <20250911092007.1370002-3-vsementsov@yandex-team.ru>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
@@ -91,14 +90,14 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 11, 2025 at 12:19:59PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> qio_channel_readv_full() guarantees BLOCKING and CLOEXEC states for
-> incoming descriptors, no reason to call extra ioctls.
+On Thu, Sep 11, 2025 at 12:20:00PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> Add comment, to stress that the order of operation (first drop old fds,
+> second check read status) is intended.
 > 
 > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > ---
->  chardev/char-socket.c | 14 --------------
->  1 file changed, 14 deletions(-)
+>  chardev/char-socket.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
