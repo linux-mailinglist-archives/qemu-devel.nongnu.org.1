@@ -2,53 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF81B548FD
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 12:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09E62B548F1
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Sep 2025 12:13:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ux0he-00011q-TY; Fri, 12 Sep 2025 06:08:30 -0400
+	id 1ux0ha-0000w5-6a; Fri, 12 Sep 2025 06:08:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ux0hY-0000ur-A1
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ux0hY-0000uJ-0u
  for qemu-devel@nongnu.org; Fri, 12 Sep 2025 06:08:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ux0hP-00024i-Ox
- for qemu-devel@nongnu.org; Fri, 12 Sep 2025 06:08:18 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ux0hP-00024d-Ds
+ for qemu-devel@nongnu.org; Fri, 12 Sep 2025 06:08:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757671687;
+ s=mimecast20190719; t=1757671686;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=KDMqTW3aY1B5rP6sAh49+iWoo3soWY2fmHqFSuCcfhY=;
- b=Fd6SneEwvH62IuLmUQa2yfTHvAJCQ38yvI5+NwhJvpiK8eiHyTbwnsP2Du9E1pTLHnau+B
- c+anZACtffccjlhC0N7Lsa2/eERdl/devPzTgygkmCgrPTRa7yYXFJV3SSwp5QvcR9tiG/
- ViEl3VAsRGowWn5/5PdjUT0z9f1j4Zo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=OZ5kSFmLtWiykdMnySimFJQ93fikAalDa1MTUwd4FkA=;
+ b=Kx7yto/6v14u5ALt61D2o8pYlCHEZGXftXGywgu9aeFEi27z2/LRkGwKb58uGg7Eb/3Ih3
+ lEEkXiZYlcYfLFERmxMXZdCkn+VkMJkyJeuB0RW89VY9kPdZi6x1O9neTY1X5fuW5aC5nm
+ uYJ5+PnMQMgI9YzWDqBMiWuuVqyNHQY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-79--FfUD_99PqmNqMCVHQHeVQ-1; Fri,
- 12 Sep 2025 06:08:00 -0400
-X-MC-Unique: -FfUD_99PqmNqMCVHQHeVQ-1
-X-Mimecast-MFC-AGG-ID: -FfUD_99PqmNqMCVHQHeVQ_1757671680
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-351-pNUmowCGP0aKMSZiM7UcIw-1; Fri,
+ 12 Sep 2025 06:08:03 -0400
+X-MC-Unique: pNUmowCGP0aKMSZiM7UcIw-1
+X-Mimecast-MFC-AGG-ID: pNUmowCGP0aKMSZiM7UcIw_1757671682
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CCE1118004D8; Fri, 12 Sep 2025 10:07:59 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 074131954194; Fri, 12 Sep 2025 10:08:02 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.15])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 231E61954126; Fri, 12 Sep 2025 10:07:57 +0000 (UTC)
+ id 804AB1954126; Fri, 12 Sep 2025 10:08:00 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v4 0/4] tests/functional: Test with
- scripts/vmstate-static-checker.py
-Date: Fri, 12 Sep 2025 12:07:51 +0200
-Message-ID: <20250912100755.316518-1-thuth@redhat.com>
+Subject: [PATCH v4 1/4] tests: Move the old vmstate-static-checker files to
+ tests/data/
+Date: Fri, 12 Sep 2025 12:07:52 +0200
+Message-ID: <20250912100755.316518-2-thuth@redhat.com>
+In-Reply-To: <20250912100755.316518-1-thuth@redhat.com>
+References: <20250912100755.316518-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
@@ -60,8 +63,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,71 +80,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are also some files available in tests/vmstate-static-checker-data/
-which were used in the past to verify the functionality of the checker
-script. Move them to tests/data/vmstate-static-checker now and add an
-automated test that checks for the expected output when using these files
-with the scripts/vmstate-static-checker.py script.
+From: Thomas Huth <thuth@redhat.com>
 
-Additionally also add an automatic test of the vmstate via good reference
-files from an older version of QEMU. I chose to use QEMU 7.2 for the
-reference files since this is a long term support release that is still
-actively being maintained, so we certainly want to make sure that we don't
-break migration from that version to the latest one.
+All other test data resides in tests/data/, so let's move the dump
+files here, too.
 
-Since the checker script can report false positives in certain cases,
-the latter test is marked with the "skipFlakyTests" decorator, i.e. it
-is only run if the user set the QEMU_TEST_FLAKY_TESTS environment
-variable before starting the tests.
-
-v4:
-- Move the test with the dump*.json files to a separate file
-- Rebase to current master since the folder layout in tests/functional
-  has changed
-
-v3:
-- Do not run the tests by default, only if QEMU_TEST_FLAKY_TESTS has
-  been set
-- Add some hints what to do in case the test detects an error
-
-v2:
-- Dropped the patch that is already upstream
-- Don't remove the old dump files, rather test for the expected
-  output of the checker script with them
-
-Thomas Huth (4):
-  tests: Move the old vmstate-static-checker files to tests/data/
-  tests/functional: Test whether the vmstate-static-checker script works
-    fine
-  tests/data/vmstate-static-checker: Add dump files from QEMU 7.2.17
-  tests/functional: Use vmstate-static-checker.py to test data from v7.2
-
- MAINTAINERS                                   |    4 +-
- .../aarch64/virt-7.2.json                     | 2571 +++++++++++++
- .../vmstate-static-checker}/dump1.json        |    0
- .../vmstate-static-checker}/dump2.json        |    0
- .../vmstate-static-checker/m68k/virt-7.2.json | 2936 +++++++++++++++
- .../ppc64/pseries-7.2.json                    | 1068 ++++++
- .../s390x/s390-ccw-virtio-7.2.json            |  475 +++
- .../x86_64/pc-q35-7.2.json                    | 3297 +++++++++++++++++
- tests/functional/aarch64/meson.build          |    1 +
- tests/functional/generic/test_vmstate.py      |   67 +
- tests/functional/m68k/meson.build             |    4 +
- tests/functional/ppc64/meson.build            |    1 +
- tests/functional/s390x/meson.build            |    4 +
- tests/functional/x86_64/meson.build           |    4 +-
- tests/functional/x86_64/test_bad_vmstate.py   |   58 +
- 15 files changed, 10488 insertions(+), 2 deletions(-)
- create mode 100644 tests/data/vmstate-static-checker/aarch64/virt-7.2.json
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ MAINTAINERS                                                     | 2 +-
+ .../vmstate-static-checker}/dump1.json                          | 0
+ .../vmstate-static-checker}/dump2.json                          | 0
+ 3 files changed, 1 insertion(+), 1 deletion(-)
  rename tests/{vmstate-static-checker-data => data/vmstate-static-checker}/dump1.json (100%)
  rename tests/{vmstate-static-checker-data => data/vmstate-static-checker}/dump2.json (100%)
- create mode 100644 tests/data/vmstate-static-checker/m68k/virt-7.2.json
- create mode 100644 tests/data/vmstate-static-checker/ppc64/pseries-7.2.json
- create mode 100644 tests/data/vmstate-static-checker/s390x/s390-ccw-virtio-7.2.json
- create mode 100644 tests/data/vmstate-static-checker/x86_64/pc-q35-7.2.json
- create mode 100755 tests/functional/generic/test_vmstate.py
- create mode 100755 tests/functional/x86_64/test_bad_vmstate.py
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index fb045388b92..bd8eb349649 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3604,7 +3604,7 @@ F: migration/
+ F: scripts/vmstate-static-checker.py
+ F: tests/functional/migration.py
+ F: tests/functional/*/*migration.py
+-F: tests/vmstate-static-checker-data/
++F: tests/data/vmstate-static-checker/
+ F: tests/qtest/migration/
+ F: tests/qtest/migration-*
+ F: docs/devel/migration/
+diff --git a/tests/vmstate-static-checker-data/dump1.json b/tests/data/vmstate-static-checker/dump1.json
+similarity index 100%
+rename from tests/vmstate-static-checker-data/dump1.json
+rename to tests/data/vmstate-static-checker/dump1.json
+diff --git a/tests/vmstate-static-checker-data/dump2.json b/tests/data/vmstate-static-checker/dump2.json
+similarity index 100%
+rename from tests/vmstate-static-checker-data/dump2.json
+rename to tests/data/vmstate-static-checker/dump2.json
 -- 
 2.51.0
 
