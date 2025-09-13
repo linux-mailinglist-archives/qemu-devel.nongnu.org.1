@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E283AB55F48
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A59B55F79
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:26:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uxLNL-0002KC-2B; Sat, 13 Sep 2025 04:12:51 -0400
+	id 1uxLNd-0003hC-MV; Sat, 13 Sep 2025 04:13:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLMo-00019e-Un
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:19 -0400
+ id 1uxLMx-0001gS-Df
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLMm-0005G5-Lv
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:18 -0400
+ id 1uxLMp-0005H3-RR
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757751135;
+ s=mimecast20190719; t=1757751138;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=f392cpvVrwHS/NTGEyT/MWK0tqiJzK81OigZJrwHYxo=;
- b=BmKHT2GJX9qlRq9s+RPxh6g+XImUjhGR98YPjYoslHPcRI+SQRJEv4gonuBjd4dlLNubjy
- lrbbjECZ0Ku5yAvKCgiYCk2WU47V74Ko/nitQdbu11mldj70WIihASteuduBwpPd4YFJTa
- X9bsf6hjvHergRPZZvFPJxoMBDYQZGI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kXV8lyIjHzKxLuPEWkgQ4DrNPB+JccPFBiYkgzxwKUQ=;
+ b=QEKhLMOs4knW69J3pgACjJtFAXBIoiZx6rNvqmJDcem3kJBOBVpYkLfo8WGMmuPdArqGWK
+ pXX4COewLgjl/rNNupkYgDT7zza/eUA5PFXY4FvS9BA4WdKnCWKZeX9X7TO6Fd7L6EP8WD
+ 2SKXJiBhCdTCy/CJ23Fb3HypJyFYztg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-351-dXK4CBhANGmUcEJeuXFMGw-1; Sat, 13 Sep 2025 04:12:14 -0400
-X-MC-Unique: dXK4CBhANGmUcEJeuXFMGw-1
-X-Mimecast-MFC-AGG-ID: dXK4CBhANGmUcEJeuXFMGw_1757751133
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-45cb4f23156so15626895e9.2
- for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:12:13 -0700 (PDT)
+ us-mta-373-ZuAyM5Z4OxmmDrcUbFtEZw-1; Sat, 13 Sep 2025 04:12:16 -0400
+X-MC-Unique: ZuAyM5Z4OxmmDrcUbFtEZw-1
+X-Mimecast-MFC-AGG-ID: ZuAyM5Z4OxmmDrcUbFtEZw_1757751136
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-45d6c770066so12719695e9.0
+ for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:12:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757751132; x=1758355932;
+ d=1e100.net; s=20230601; t=1757751134; x=1758355934;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=f392cpvVrwHS/NTGEyT/MWK0tqiJzK81OigZJrwHYxo=;
- b=vzICEdOVCRvafTustfKNuhzxhqtVGU9yMYzQo2npFrTJKOTqAZ7wpiOj++2M79lPc9
- wpWdS9FPndOBAsK8hhjfI9B9VnJaJsdDh1V54QSY/yhlsApm+E8L1inunnBvTSiyDe58
- IOp2v6Ffv/cLnc1uCw93ORNinmap52L68zeedfK4EXWAIIUSQ2myQ9oAgtTJ4Wem0Adx
- bEZvagDvFMEGV94erDPeq0ZKhGrGJTB/lYcNXAPR5uba4GyZUTPKqxSfC8mBJHkU9hRi
- +M65O9cStYf99mv5hiFHzjCwnbsoGTNtL9uaHpVbDDT5miYDFQeEgqzlap7y/CAa42ti
- hFIQ==
-X-Gm-Message-State: AOJu0YzPAZKCDIG9qjJXHFThsWQlZHXt81J3KSndnima1O+7cGm7CHj3
- y9Kwz0QFkbS69y36q4fpMu9lWdxRXKdv1ciwD+PEFIUVeW1TF0M1nUelw8cYwpsTH768dlW159k
- L/RabXwGA/qS1L6w7aGwUnKre47eN5CNusa00ibI9pma4QW22N/oyIuH4xr9pKd4UCBrehjmzL5
- gepp5hrTIKGk6QpaNMtdCxDFHtkN5zLKkk/y9nRkcd
-X-Gm-Gg: ASbGncs6Ye8V3oA8KH1iKWGNRut7+VwRMKnumWLBJINlyyfwuhBPjAF4SeDESyu2piP
- O/IYEAaHxxrxKY3+eTbJ9vtS1zyzAl1RxysmFeeXubaZp8OVbQbQ5oAKhUW3CL+PsH5vL0rBCUV
- 8FQJ5ffrQXhP7YVgguxE/gpGgrLMFyn7u7fMdRtYT2PnxUA4LfZVQ2Yv5zI3nqRV1XnP85QhkDr
- t3PIgUCDAts2k7GHQUsgFPp3oVrCRLrG9s5tDv3ZvuLLmg/PrX3pTJgyxZuWWBtKGJoMOsorACO
- 11f22jmd3WjsqjT2TCcHXHIxJvKYqE5VJGTge7e1YqC/+6UpwYfkFaYGv3PUK9CvDHHwbs7alND
- xmGmK8IGSloz5KJnmdWzbphni16tdI5Ch4+UDLhIjOkE=
-X-Received: by 2002:a05:600c:4f89:b0:45b:868e:7f80 with SMTP id
- 5b1f17b1804b1-45f211c8388mr70627645e9.8.1757751132078; 
- Sat, 13 Sep 2025 01:12:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFZol7l839qBTzqOA8Su51vMoD8LUf321sO0LeMCftH76zx202suAfgU2WQW7eTGaLrsHvNOg==
-X-Received: by 2002:a05:600c:4f89:b0:45b:868e:7f80 with SMTP id
- 5b1f17b1804b1-45f211c8388mr70627295e9.8.1757751131594; 
- Sat, 13 Sep 2025 01:12:11 -0700 (PDT)
+ bh=kXV8lyIjHzKxLuPEWkgQ4DrNPB+JccPFBiYkgzxwKUQ=;
+ b=YkZptVcX4RqotqLv5un/8Vw97NfOKHbaDnhVRNYubkG/V5lOtMVN4nt8NjqwcZ8hZA
+ kq73//dRru2SUbTIXTPh4yk5p1MRuxu/iXxz4Xg1v9b4Q9fsMex6CB82QzQPjAtscFqL
+ DmZ5saw13MAkeogbpVsjwE7qlKcELQAzQtwkUpsQXk5QsMksCEwdzMrSYB9BrHdF1yCv
+ SmfERC85mbbYeY9qwr8C+CfDPN2NXTA/EE18w2eM/GUYU3f9WMLU+DgjWb0D5QS2D/oN
+ a0+2v/w2PARiC27rSfZDYOEaQPzKVyJSXeBCu9e1w8fwB5KgBCum6UF0c67ZbPExRfJQ
+ CyEA==
+X-Gm-Message-State: AOJu0YwCqgHIMY4ozJ4xvS36wJCG86+2A/2wHHTep4yL5GS0n8cpSiqV
+ r4f/pQqLnmFST4XORs+DiEzns5jBMp/Rt9qMObfgpbVJAkafdoI3/B2Ku/Yypm56bRtN8HJBT+m
+ 5gcY9t3PU+Riv6ranYP3RmNDjj594R9XrqlRzdQKw8PZV9cP0mZ8w4h7YWuOEkAB5pgvWSmbsXG
+ ZG5JNTQ9CeotvUub9T7aWaVDrXWGQb1GBgrhTIZwZZ
+X-Gm-Gg: ASbGncusTgJwG52TNzNCF87o/sd2jk6FWW1s4c1sjAaXuZc2JdqaqqjBPSjiRNd8g3V
+ 8SgNnCGPUx/qg1GMOgzKCPfbCb7QvUirgZM/WWZ1rLMcAvQXoDzuMNn6v3eC95LoYzFN5M/8upD
+ znbxe6+R2NyQtPgjx0lgFjYeNlYfdEiIVW+3NdHvlOlXtjLdVGZUXqbc47BWP6FTCq7jQ0Yt2am
+ okZYhq9/8ivl/QKLnNwnxkYp4medIeWP19F44TE5jXWD5SpZ19dFW8HerK17k098f0dEPts9Zs2
+ mypHnPL3vOAl4l5yPAD6q/Yb0QvqJHwWKHFnQbbuUrAfOKJL0Nqg74+Yu1hpjgAOvLB84iDrisH
+ KAqeGK7N7cBiDozQ1kJUZMA7VlgX1ex23/ySQ2NDecrw=
+X-Received: by 2002:a05:600c:364b:b0:45d:dae8:b137 with SMTP id
+ 5b1f17b1804b1-45f211f3140mr39730665e9.22.1757751134406; 
+ Sat, 13 Sep 2025 01:12:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHP6pu/Hcg3CnH5TXuMk4llyoUElyCIeSvuynbeIkybWWTxciigS6OBh2u/qLw/qjSFQ3burg==
+X-Received: by 2002:a05:600c:364b:b0:45d:dae8:b137 with SMTP id
+ 5b1f17b1804b1-45f211f3140mr39730405e9.22.1757751133848; 
+ Sat, 13 Sep 2025 01:12:13 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45e017b2a32sm93123355e9.18.2025.09.13.01.12.09
+ 5b1f17b1804b1-45e01832af1sm50583305e9.3.2025.09.13.01.12.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 13 Sep 2025 01:12:09 -0700 (PDT)
+ Sat, 13 Sep 2025 01:12:12 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 53/61] hpet: guard IRQ handling with BQL
-Date: Sat, 13 Sep 2025 10:09:34 +0200
-Message-ID: <20250913080943.11710-54-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+ Kirill Martynov <stdcalllevi@yandex-team.ru>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 54/61] i386/cpu: Enable SMM cpu address space under KVM
+Date: Sat, 13 Sep 2025 10:09:35 +0200
+Message-ID: <20250913080943.11710-55-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250913080943.11710-1-pbonzini@redhat.com>
 References: <20250913080943.11710-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -109,78 +109,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Igor Mammedov <imammedo@redhat.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Commit [1] made qemu fail with abort:
-  xen_evtchn_set_gsi: Assertion `bql_locked()' failed.
-when running ./tests/functional/x86_64/test_kvm_xen.py tests.
+Kirill Martynov reported assertation in cpu_asidx_from_attrs() being hit
+when x86_cpu_dump_state() is called to dump the CPU state[*]. It happens
+when the CPU is in SMM and KVM emulation failure due to misbehaving
+guest.
 
-To fix it make sure that BQL is held when manipulating IRQs.
+The root cause is that QEMU i386 never enables the SMM address space for
+cpu since KVM SMM support has been added.
 
-Fixes: 7defb58baf (hpet: switch to fine-grained device locking)
-Reported-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Link: https://lore.kernel.org/r/20250910142506.86274-1-imammedo@redhat.com
+Enable the SMM cpu address space under KVM when the SMM is enabled for
+the x86machine.
+
+[*] https://lore.kernel.org/qemu-devel/20250523154431.506993-1-stdcalllevi@yandex-team.ru/
+
+Reported-by: Kirill Martynov <stdcalllevi@yandex-team.ru>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Tested-by: Kirill Martynov <stdcalllevi@yandex-team.ru>
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://lore.kernel.org/r/20250730095253.1833411-2-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/timer/hpet.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ system/physmem.c          |  5 -----
+ target/i386/kvm/kvm-cpu.c | 10 ++++++++++
+ target/i386/kvm/kvm.c     |  5 +++++
+ 3 files changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
-index 789a31d0a08..1acba4fa9db 100644
---- a/hw/timer/hpet.c
-+++ b/hw/timer/hpet.c
-@@ -40,6 +40,7 @@
- #include "qom/object.h"
- #include "qemu/lockable.h"
- #include "qemu/seqlock.h"
-+#include "qemu/main-loop.h"
- #include "trace.h"
- 
- struct hpet_fw_config hpet_fw_cfg = {.count = UINT8_MAX};
-@@ -222,12 +223,15 @@ static void update_irq(struct HPETTimer *timer, int set)
-                                  timer->fsb & 0xffffffff, MEMTXATTRS_UNSPECIFIED,
-                                  NULL);
-         } else if (timer->config & HPET_TN_TYPE_LEVEL) {
-+            BQL_LOCK_GUARD();
-             qemu_irq_raise(s->irqs[route]);
-         } else {
-+            BQL_LOCK_GUARD();
-             qemu_irq_pulse(s->irqs[route]);
-         }
-     } else {
-         if (!timer_fsb_route(timer)) {
-+            BQL_LOCK_GUARD();
-             qemu_irq_lower(s->irqs[route]);
-         }
+diff --git a/system/physmem.c b/system/physmem.c
+index 311011156c7..a12c7ea1956 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -793,9 +793,6 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
+         cpu->as = as;
      }
-@@ -534,10 +538,12 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
-             /* i8254 and RTC output pins are disabled
-              * when HPET is in legacy mode */
-             if (activating_bit(old_val, new_val, HPET_CFG_LEGACY)) {
-+                BQL_LOCK_GUARD();
-                 qemu_set_irq(s->pit_enabled, 0);
-                 qemu_irq_lower(s->irqs[0]);
-                 qemu_irq_lower(s->irqs[RTC_ISA_IRQ]);
-             } else if (deactivating_bit(old_val, new_val, HPET_CFG_LEGACY)) {
-+                BQL_LOCK_GUARD();
-                 qemu_irq_lower(s->irqs[0]);
-                 qemu_set_irq(s->pit_enabled, 1);
-                 qemu_set_irq(s->irqs[RTC_ISA_IRQ], s->rtc_irq_level);
-@@ -683,11 +689,13 @@ static void hpet_handle_legacy_irq(void *opaque, int n, int level)
  
-     if (n == HPET_LEGACY_PIT_INT) {
-         if (!hpet_in_legacy_mode(s)) {
-+            BQL_LOCK_GUARD();
-             qemu_set_irq(s->irqs[0], level);
-         }
-     } else {
-         s->rtc_irq_level = level;
-         if (!hpet_in_legacy_mode(s)) {
-+            BQL_LOCK_GUARD();
-             qemu_set_irq(s->irqs[RTC_ISA_IRQ], level);
-         }
+-    /* KVM cannot currently support multiple address spaces. */
+-    assert(asidx == 0 || !kvm_enabled());
+-
+     if (!cpu->cpu_ases) {
+         cpu->cpu_ases = g_new0(CPUAddressSpace, cpu->num_ases);
+         cpu->cpu_ases_count = cpu->num_ases;
+@@ -818,8 +815,6 @@ void cpu_address_space_destroy(CPUState *cpu, int asidx)
+ 
+     assert(cpu->cpu_ases);
+     assert(asidx >= 0 && asidx < cpu->num_ases);
+-    /* KVM cannot currently support multiple address spaces. */
+-    assert(asidx == 0 || !kvm_enabled());
+ 
+     cpuas = &cpu->cpu_ases[asidx];
+     if (tcg_enabled()) {
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index 89a79536594..1dc1ba9b486 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -13,6 +13,7 @@
+ #include "qapi/error.h"
+ #include "system/system.h"
+ #include "hw/boards.h"
++#include "hw/i386/x86.h"
+ 
+ #include "kvm_i386.h"
+ #include "accel/accel-cpu-target.h"
+@@ -91,6 +92,15 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+         kvm_set_guest_phys_bits(cs);
      }
+ 
++    /*
++     * When SMM is enabled, there is 2 address spaces. Otherwise only 1.
++     *
++     * Only initialize address space 0 here, the second one for SMM is
++     * initialized at register_smram_listener() after machine init done.
++     */
++    cs->num_ases = x86_machine_is_smm_enabled(X86_MACHINE(current_machine)) ? 2 : 1;
++    cpu_address_space_init(cs, 0, "cpu-memory", cs->memory);
++
+     return true;
+ }
+ 
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 34e74f24470..d191d7177f1 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2704,6 +2704,7 @@ static MemoryRegion smram_as_mem;
+ 
+ static void register_smram_listener(Notifier *n, void *unused)
+ {
++    CPUState *cpu;
+     MemoryRegion *smram =
+         (MemoryRegion *) object_resolve_path("/machine/smram", NULL);
+ 
+@@ -2728,6 +2729,10 @@ static void register_smram_listener(Notifier *n, void *unused)
+     address_space_init(&smram_address_space, &smram_as_root, "KVM-SMRAM");
+     kvm_memory_listener_register(kvm_state, &smram_listener,
+                                  &smram_address_space, 1, "kvm-smram");
++
++    CPU_FOREACH(cpu) {
++        cpu_address_space_init(cpu, 1, "cpu-smm", &smram_as_root);
++    }
+ }
+ 
+ static void *kvm_msr_energy_thread(void *data)
 -- 
 2.51.0
 
