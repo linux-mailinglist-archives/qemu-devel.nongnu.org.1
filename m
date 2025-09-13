@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB991B55F5E
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF5BB55F43
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:13:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uxLMr-0001Ck-Em; Sat, 13 Sep 2025 04:12:21 -0400
+	id 1uxLMe-0000VZ-P7; Sat, 13 Sep 2025 04:12:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLMM-00009Y-Bz
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:11:52 -0400
+ id 1uxLMO-0000Bc-RY
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:11:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLMJ-000586-At
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:11:50 -0400
+ id 1uxLML-00058X-Ha
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:11:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757751106;
+ s=mimecast20190719; t=1757751108;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MgxPLlDroWhRn3BSQjwfdEkrCc5qOstwikDJUyq/f9Q=;
- b=g1WBxAqY1hgnke2kmKQnY4g7nxprRIiL/gCPQKsv35DQzgN8tpP2peFvmSgOGOWWttYZOP
- 66Imt6ZqfqkA7LH3WG7F3vYnHKhRtQ5nIcEcLfgE3/AElEWoF6w8xFgkHLPVuDFvA/M0T2
- w3eu7yzp/M9c1XB39IMimqvSfkLPagQ=
+ bh=oIfvFGk4qan/Mo6Ocp8y4g8+xo8GQK64aMfGU1lbIlo=;
+ b=BxqENhMv6mjWcw5fyItn7bnX20I0utOSAHOn/jp2edb7Rc7jrlJ9tKm2x+iMhKJLKFbnyA
+ NqYcbgd7cmw7aXJwUXuZMZdyowlOI18qhKUuN0SFv1pMPPrmYWJWyFKLxMkShY94rdaLxJ
+ h2/M9O/ekmaQaD1qvhLTdjRQjxiLmGE=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-N40LqTehOU2wLWd0Yzc6pQ-1; Sat, 13 Sep 2025 04:11:43 -0400
-X-MC-Unique: N40LqTehOU2wLWd0Yzc6pQ-1
-X-Mimecast-MFC-AGG-ID: N40LqTehOU2wLWd0Yzc6pQ_1757751103
+ us-mta-686-KLdho2shOviquZx0dGhGsg-1; Sat, 13 Sep 2025 04:11:47 -0400
+X-MC-Unique: KLdho2shOviquZx0dGhGsg-1
+X-Mimecast-MFC-AGG-ID: KLdho2shOviquZx0dGhGsg_1757751106
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3df3e935ec8so1352011f8f.0
- for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:11:43 -0700 (PDT)
+ ffacd0b85a97d-3e8ef75b196so117069f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:11:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757751102; x=1758355902;
+ d=1e100.net; s=20230601; t=1757751105; x=1758355905;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MgxPLlDroWhRn3BSQjwfdEkrCc5qOstwikDJUyq/f9Q=;
- b=SOB0bMeKjn+dL5FKYRorubhmOAdGCXfH84SaiS57qFSFQcFUoz6lMN3Su/LuDS4K3f
- L8tL/hq8o7DcRLlAijKqZ05iPRkmUmWcR4OgoGiJZDiMM/HgcAI1Y+HgdAoBrT/mA24B
- ou8yOB/C65Vrfw6cgDSj2OWPHElFYOViN2uqKX7dhpqc0013xMuvwT4EHrzz/IucY4oV
- niZRELiLrSjkpyfMX75Nn+Dbz5oT+8DsUloUe7pOGn7ZTFBpjvSPcyxl4BiHDZAxDaMe
- viahMUBTBYin2OnQ5QBZiGkE3pG55zijBNlhQksYGOM5rhHMGThKklgWm8LrrXWo8ZZX
- bhng==
-X-Gm-Message-State: AOJu0Ywopn2tmcKyyR0P2SHL44pN+8o365c1dsvC3qwsjMyvp1kNzk3Y
- QEK5E0JYu0yfZHb7tqU9VDozTXUKOuxq64dFgKdCF1E2U7g29G3MyXDKuU50h8jShc8rVJxcXIU
- 5k0VWDcocJoQi8Syp8GVS/MrNeWwrEuID4GN5wvrqwF+Wm1ZOSuCJSVGbnpIo7Go4hE/8YiOkM3
- 9NO6DPV1E4JJuwwLamsAYyvjyuUqKTzlQ9WYMrXc57
-X-Gm-Gg: ASbGnctWnj94ms3Yfw965BLFYRG574O7H7eCfER9uwZ6b6uDZW2ijnoJR9M2RV0WrgH
- 5VcmMb6AtkSAbqnWJfeBheE/ubaLGPl5eCHijJjGFiHvv+0WWdZLKlRBC6CfIyEj+T4WNawcs6h
- 64358acwlFoRKfJTT88po2w2/HSJd7oYNPImDwyPepYNHb5KvpP9yo+pjcZ9mzp/nbP1YQnq7rE
- hGd9AdJvhloO4GlGU2pEOR2hCVnNVsWGGxrx4vDEUJGFqxANfflBoNN0dZzv4zXe/t03tbpoKCg
- gigV2amcEvOjKW4ZXT46CZOB1S1Fia5Ov6WWY17/uFvYUNRkwHKUHcbkmOerfUxLmC52uP0XaPM
- MyqQEb0EHm/9Reg8BYOwMv3Z4cMBoANMshIX2E5Clezo=
-X-Received: by 2002:a05:6000:230c:b0:3e3:f89:ea31 with SMTP id
- ffacd0b85a97d-3e765a3e45dmr5133044f8f.61.1757751102090; 
- Sat, 13 Sep 2025 01:11:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYOvtXhW5fEwW5yGGQ30KmujXlzZNQVV19zbZkovXPVG5z+FTiF9nghieuo/KeKwE8nF/2ig==
-X-Received: by 2002:a05:6000:230c:b0:3e3:f89:ea31 with SMTP id
- ffacd0b85a97d-3e765a3e45dmr5133008f8f.61.1757751101448; 
- Sat, 13 Sep 2025 01:11:41 -0700 (PDT)
+ bh=oIfvFGk4qan/Mo6Ocp8y4g8+xo8GQK64aMfGU1lbIlo=;
+ b=qeIUcb09pzWLBRTAriT9J52j/WLDhoZpUCWqE5ySm2CQxVsbLR18A2jSyyxQKeCEu0
+ BNPiRV681yaIJIhmm6XhSLUyaUFcvNwa1qwlwlkeXJKdI0Rf1qwPtGF5yX9/M+LviJke
+ 2aUcQxxe9Hr6EYfqZDt6OoJcroISGk1O8KYzP0tuI3AopDhmqPjaV8a/ldUc1WDA5Qu/
+ S2c7cOh1vUgZ+MmcXWO52+rtXoaUMa9tqhoxyA7A0+oMYLs2aGu1kvVMuHnzEx9egVnz
+ gHxx1Ab1o3TLb81/3zZ+jJo/KzkmVQ5PaxQXjPfe9/OFJIFhxN26LczlvwCIUA7eZENv
+ OinQ==
+X-Gm-Message-State: AOJu0YyqJ77MT3qYq49++KyoE+MfOmjpig5Bspg/EJYjtJZpiKqyJ72P
+ 2X7Ypd/9QWWFjubuFpTp8+2syJNaC7sEpl048KN8EuSBFX2M+TgUOhXfVg/tcqY8ZYK9zelHnXy
+ yNsyfMDjSAYCneqTf9ZhnXdQO6iC9mFzEAXQlFjktJXpq0QSGJkLqv31k3lW1umuWlGuRJbpD39
+ /Ys/kNnYz3KpTED/zwFDh+179uOUkVmE9/j5VUWdwC
+X-Gm-Gg: ASbGncuBKg8+LQ68YikVkwBvCs5tAiuYu0YY4IDaJI4om6/BOxi4qy0aRxRSPpCAOBU
+ oRW9/oLGksJsPYftgLuJoAWtXcOVOKvu/Hq9f08Xp0tS7FhjQ3COm2cJJwHVKRRB+br7rfWtT4X
+ E/+sCtT4PhY9EeYr2DtfHTjKHi5Ynf2LXl0Qrf9+OzrKYTL/BB8MCGQ4JNOxjboSUKPK0/tbjJk
+ 79egeYPqf4aUhk4S4wCF4lig4/nFhASQPE8hA2BTWR0+7TuIMJtAXJIDFEpW+UZp/dHqJl2O1gP
+ Mytxcbjli8PjDT+m8IZSIKEBDF7O5Dn98qLjP6z32Zn/mYdhnfWqg1oymWAIzdg1uPFiHmR7JPO
+ b6NGbvXH2eWhUlBFU5s4S+q8y1H4NXJETqUbM61a2M5Y=
+X-Received: by 2002:a05:6000:208a:b0:3e7:48ab:7660 with SMTP id
+ ffacd0b85a97d-3e7659e1746mr5575179f8f.27.1757751104616; 
+ Sat, 13 Sep 2025 01:11:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGejjOd+tvEHduwW1k3OieaDrmrbEfTNN7bEY/y5x+jC41lb04bBDfyCR7Xjur7q/8ynLWmIA==
+X-Received: by 2002:a05:6000:208a:b0:3e7:48ab:7660 with SMTP id
+ ffacd0b85a97d-3e7659e1746mr5575148f8f.27.1757751104061; 
+ Sat, 13 Sep 2025 01:11:44 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e84de17f9bsm2224963f8f.49.2025.09.13.01.11.39
+ ffacd0b85a97d-3e76077584esm9606312f8f.11.2025.09.13.01.11.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 13 Sep 2025 01:11:39 -0700 (PDT)
+ Sat, 13 Sep 2025 01:11:42 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 41/61] rust: split "chardev" crate
-Date: Sat, 13 Sep 2025 10:09:22 +0200
-Message-ID: <20250913080943.11710-42-pbonzini@redhat.com>
+Subject: [PULL 42/61] rust: split "system" crate
+Date: Sat, 13 Sep 2025 10:09:23 +0200
+Message-ID: <20250913080943.11710-43-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250913080943.11710-1-pbonzini@redhat.com>
 References: <20250913080943.11710-1-pbonzini@redhat.com>
@@ -112,56 +112,80 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Link: https://lore.kernel.org/r/20250827104147.717203-14-marcandre.lureau@redhat.com
+Link: https://lore.kernel.org/r/20250827104147.717203-15-marcandre.lureau@redhat.com
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- MAINTAINERS                               |  1 +
- rust/chardev/wrapper.h                    | 28 ++++++++++++++++
- rust/qemu-api/wrapper.h                   |  2 --
- rust/Cargo.lock                           | 14 ++++++++
- rust/chardev/Cargo.toml                   | 24 +++++++++++++
- rust/chardev/build.rs                     |  1 +
- rust/chardev/meson.build                  | 41 +++++++++++++++++++++++
- rust/chardev/src/bindings.rs              | 36 ++++++++++++++++++++
- rust/{qemu-api => chardev}/src/chardev.rs |  0
- rust/chardev/src/lib.rs                   |  6 ++++
- rust/hw/char/pl011/Cargo.toml             |  1 +
- rust/hw/char/pl011/meson.build            |  1 +
- rust/hw/char/pl011/src/device.rs          |  2 +-
- rust/meson.build                          |  1 +
- rust/qemu-api/Cargo.toml                  |  1 +
- rust/qemu-api/meson.build                 |  9 +++--
- rust/qemu-api/src/bindings.rs             |  9 +----
- rust/qemu-api/src/lib.rs                  |  1 -
- rust/qemu-api/src/qdev.rs                 |  6 ++--
- 19 files changed, 164 insertions(+), 20 deletions(-)
- create mode 100644 rust/chardev/wrapper.h
- create mode 100644 rust/chardev/Cargo.toml
- create mode 120000 rust/chardev/build.rs
- create mode 100644 rust/chardev/meson.build
- create mode 100644 rust/chardev/src/bindings.rs
- rename rust/{qemu-api => chardev}/src/chardev.rs (100%)
- create mode 100644 rust/chardev/src/lib.rs
+ MAINTAINERS                             |  1 +
+ rust/qemu-api/wrapper.h                 |  3 --
+ rust/system/wrapper.h                   | 29 +++++++++++++++++
+ rust/Cargo.lock                         | 13 ++++++++
+ rust/Cargo.toml                         |  1 +
+ rust/bql/src/cell.rs                    |  5 ++-
+ rust/hw/char/pl011/Cargo.toml           |  1 +
+ rust/hw/char/pl011/meson.build          |  1 +
+ rust/hw/char/pl011/src/device.rs        |  2 +-
+ rust/hw/timer/hpet/Cargo.toml           |  1 +
+ rust/hw/timer/hpet/meson.build          |  1 +
+ rust/hw/timer/hpet/src/device.rs        | 12 +++----
+ rust/meson.build                        |  1 +
+ rust/qemu-api/Cargo.toml                |  1 +
+ rust/qemu-api/meson.build               |  7 +++--
+ rust/qemu-api/src/bindings.rs           | 14 +--------
+ rust/qemu-api/src/lib.rs                |  1 -
+ rust/qemu-api/src/sysbus.rs             |  2 +-
+ rust/system/Cargo.toml                  | 22 +++++++++++++
+ rust/system/build.rs                    |  1 +
+ rust/system/meson.build                 | 42 +++++++++++++++++++++++++
+ rust/system/src/bindings.rs             | 41 ++++++++++++++++++++++++
+ rust/system/src/lib.rs                  |  6 ++++
+ rust/{qemu-api => system}/src/memory.rs |  2 +-
+ 24 files changed, 177 insertions(+), 33 deletions(-)
+ create mode 100644 rust/system/wrapper.h
+ create mode 100644 rust/system/Cargo.toml
+ create mode 120000 rust/system/build.rs
+ create mode 100644 rust/system/meson.build
+ create mode 100644 rust/system/src/bindings.rs
+ create mode 100644 rust/system/src/lib.rs
+ rename rust/{qemu-api => system}/src/memory.rs (99%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index c7bd02aef16..cac6dcdc658 100644
+index cac6dcdc658..432ed513545 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -3516,6 +3516,7 @@ Rust
- M: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
- S: Maintained
- F: rust/bql/
-+F: rust/chardev/
- F: rust/common/
- F: rust/migration/
- F: rust/qemu-api
-diff --git a/rust/chardev/wrapper.h b/rust/chardev/wrapper.h
+@@ -3523,6 +3523,7 @@ F: rust/qemu-api
+ F: rust/qemu-api-macros
+ F: rust/qom/
+ F: rust/rustfmt.toml
++F: rust/system/
+ F: rust/util/
+ F: scripts/get-wraps-from-cargo-registry.py
+ 
+diff --git a/rust/qemu-api/wrapper.h b/rust/qemu-api/wrapper.h
+index 07dbc9987a8..564733b9035 100644
+--- a/rust/qemu-api/wrapper.h
++++ b/rust/qemu-api/wrapper.h
+@@ -49,14 +49,11 @@ typedef enum memory_order {
+ 
+ #include "qemu/osdep.h"
+ #include "qemu-io.h"
+-#include "system/system.h"
+ #include "hw/sysbus.h"
+-#include "system/memory.h"
+ #include "hw/clock.h"
+ #include "hw/qdev-clock.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/qdev-properties-system.h"
+ #include "hw/irq.h"
+ #include "exec/memattrs.h"
+-#include "system/address-spaces.h"
+ #include "hw/char/pl011.h"
+diff --git a/rust/system/wrapper.h b/rust/system/wrapper.h
 new file mode 100644
-index 00000000000..65ede6ea6d7
+index 00000000000..48abde85052
 --- /dev/null
-+++ b/rust/chardev/wrapper.h
-@@ -0,0 +1,28 @@
++++ b/rust/system/wrapper.h
+@@ -0,0 +1,29 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
 +/*
@@ -188,75 +212,317 @@ index 00000000000..65ede6ea6d7
 +
 +#include "qemu/osdep.h"
 +
-+#include "chardev/char-fe.h"
-+#include "chardev/char-serial.h"
-diff --git a/rust/qemu-api/wrapper.h b/rust/qemu-api/wrapper.h
-index b99df9f568a..07dbc9987a8 100644
---- a/rust/qemu-api/wrapper.h
-+++ b/rust/qemu-api/wrapper.h
-@@ -52,13 +52,11 @@ typedef enum memory_order {
- #include "system/system.h"
- #include "hw/sysbus.h"
- #include "system/memory.h"
--#include "chardev/char-fe.h"
- #include "hw/clock.h"
- #include "hw/qdev-clock.h"
- #include "hw/qdev-properties.h"
- #include "hw/qdev-properties-system.h"
- #include "hw/irq.h"
--#include "chardev/char-serial.h"
- #include "exec/memattrs.h"
- #include "system/address-spaces.h"
- #include "hw/char/pl011.h"
++#include "system/system.h"
++#include "system/memory.h"
++#include "system/address-spaces.h"
 diff --git a/rust/Cargo.lock b/rust/Cargo.lock
-index 442eadf08fa..ae852c55508 100644
+index ae852c55508..e6b75f30bef 100644
 --- a/rust/Cargo.lock
 +++ b/rust/Cargo.lock
-@@ -51,6 +51,18 @@ dependencies = [
+@@ -95,6 +95,7 @@ dependencies = [
+  "qemu_api",
+  "qemu_api_macros",
+  "qom",
++ "system",
+  "util",
+ ]
+ 
+@@ -136,6 +137,7 @@ dependencies = [
+  "qemu_api",
+  "qemu_api_macros",
+  "qom",
++ "system",
+  "util",
+ ]
+ 
+@@ -181,6 +183,7 @@ dependencies = [
   "migration",
+  "qemu_api_macros",
+  "qom",
++ "system",
+  "util",
+ ]
+ 
+@@ -224,6 +227,16 @@ dependencies = [
+  "unicode-ident",
  ]
  
 +[[package]]
-+name = "chardev"
++name = "system"
 +version = "0.1.0"
 +dependencies = [
-+ "bql",
 + "common",
-+ "migration",
 + "qemu_api_macros",
 + "qom",
 + "util",
 +]
 +
  [[package]]
- name = "common"
- version = "0.1.0"
-@@ -118,6 +130,7 @@ dependencies = [
-  "bilge-impl",
-  "bits",
-  "bql",
-+ "chardev",
-  "common",
-  "migration",
-  "qemu_api",
-@@ -163,6 +176,7 @@ name = "qemu_api"
- version = "0.1.0"
- dependencies = [
-  "bql",
-+ "chardev",
-  "common",
-  "migration",
-  "qemu_api_macros",
-diff --git a/rust/chardev/Cargo.toml b/rust/chardev/Cargo.toml
+ name = "unicode-ident"
+ version = "1.0.12"
+diff --git a/rust/Cargo.toml b/rust/Cargo.toml
+index 0516c16591c..8e210d277a2 100644
+--- a/rust/Cargo.toml
++++ b/rust/Cargo.toml
+@@ -8,6 +8,7 @@ members = [
+     "qemu-api-macros",
+     "qemu-api",
+     "qom",
++    "system",
+     "hw/char/pl011",
+     "hw/timer/hpet",
+     "util",
+diff --git a/rust/bql/src/cell.rs b/rust/bql/src/cell.rs
+index 25007427edc..24ab294b60d 100644
+--- a/rust/bql/src/cell.rs
++++ b/rust/bql/src/cell.rs
+@@ -77,9 +77,8 @@
+ //!
+ //! ```ignore
+ //! # use bql::BqlRefCell;
+-//! # use qemu_api::prelude::*;
+-//! # use qemu_api::{irq::InterruptSource, irq::IRQState};
+-//! # use qemu_api::{sysbus::SysBusDevice, qom::Owned, qom::ParentField};
++//! # use qom::{Owned, ParentField};
++//! # use system::{InterruptSource, IRQState, SysBusDevice};
+ //! # const N_GPIOS: usize = 8;
+ //! # struct PL061Registers { /* ... */ }
+ //! # unsafe impl ObjectType for PL061State {
+diff --git a/rust/hw/char/pl011/Cargo.toml b/rust/hw/char/pl011/Cargo.toml
+index f7ad5f8e08f..e4b1c3f1eb8 100644
+--- a/rust/hw/char/pl011/Cargo.toml
++++ b/rust/hw/char/pl011/Cargo.toml
+@@ -22,6 +22,7 @@ bql = { path = "../../../bql" }
+ migration = { path = "../../../migration" }
+ qom = { path = "../../../qom" }
+ chardev = { path = "../../../chardev" }
++system = { path = "../../../system" }
+ qemu_api = { path = "../../../qemu-api" }
+ qemu_api_macros = { path = "../../../qemu-api-macros" }
+ 
+diff --git a/rust/hw/char/pl011/meson.build b/rust/hw/char/pl011/meson.build
+index aaf911c5f42..fae6e1b9c9d 100644
+--- a/rust/hw/char/pl011/meson.build
++++ b/rust/hw/char/pl011/meson.build
+@@ -15,6 +15,7 @@ _libpl011_rs = static_library(
+     qemu_api_macros,
+     qom_rs,
+     chardev_rs,
++    system_rs,
+   ],
+ )
+ 
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index bc64061fb39..c65db5a5174 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -13,12 +13,12 @@
+ };
+ use qemu_api::{
+     irq::{IRQState, InterruptSource},
+-    memory::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder},
+     prelude::*,
+     qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, ResetType, ResettablePhasesImpl},
+     sysbus::{SysBusDevice, SysBusDeviceImpl},
+ };
+ use qom::{prelude::*, ObjectImpl, Owned, ParentField, ParentInit};
++use system::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder};
+ use util::{log::Log, log_mask_ln};
+ 
+ use crate::registers::{self, Interrupt, RegisterOffset};
+diff --git a/rust/hw/timer/hpet/Cargo.toml b/rust/hw/timer/hpet/Cargo.toml
+index 19456ec72b5..a95b1271c64 100644
+--- a/rust/hw/timer/hpet/Cargo.toml
++++ b/rust/hw/timer/hpet/Cargo.toml
+@@ -16,6 +16,7 @@ util = { path = "../../../util" }
+ migration = { path = "../../../migration" }
+ bql = { path = "../../../bql" }
+ qom = { path = "../../../qom" }
++system = { path = "../../../system" }
+ qemu_api = { path = "../../../qemu-api" }
+ qemu_api_macros = { path = "../../../qemu-api-macros" }
+ 
+diff --git a/rust/hw/timer/hpet/meson.build b/rust/hw/timer/hpet/meson.build
+index 50ccdee4a93..c4ffe020f6b 100644
+--- a/rust/hw/timer/hpet/meson.build
++++ b/rust/hw/timer/hpet/meson.build
+@@ -11,6 +11,7 @@ _libhpet_rs = static_library(
+     bql_rs,
+     qemu_api_macros,
+     qom_rs,
++    system_rs,
+   ],
+ )
+ 
+diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
+index 404569aa2de..841c2ba3375 100644
+--- a/rust/hw/timer/hpet/src/device.rs
++++ b/rust/hw/timer/hpet/src/device.rs
+@@ -17,19 +17,17 @@
+     VMStateDescription, VMStateDescriptionBuilder,
+ };
+ use qemu_api::{
+-    bindings::{
+-        address_space_memory, address_space_stl_le, qdev_prop_bit, qdev_prop_bool,
+-        qdev_prop_uint32, qdev_prop_usize,
+-    },
++    bindings::{qdev_prop_bit, qdev_prop_bool, qdev_prop_uint32, qdev_prop_usize},
+     irq::InterruptSource,
+-    memory::{
+-        hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder, MEMTXATTRS_UNSPECIFIED,
+-    },
+     prelude::*,
+     qdev::{DeviceImpl, DeviceState, Property, ResetType, ResettablePhasesImpl},
+     sysbus::{SysBusDevice, SysBusDeviceImpl},
+ };
+ use qom::{prelude::*, ObjectImpl, ParentField, ParentInit};
++use system::{
++    bindings::{address_space_memory, address_space_stl_le, hwaddr},
++    MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder, MEMTXATTRS_UNSPECIFIED,
++};
+ use util::timer::{Timer, CLOCK_VIRTUAL, NANOSECONDS_PER_SECOND};
+ 
+ use crate::fw_cfg::HPETFwConfig;
+diff --git a/rust/meson.build b/rust/meson.build
+index 4d9e2912232..d8b71f55061 100644
+--- a/rust/meson.build
++++ b/rust/meson.build
+@@ -29,6 +29,7 @@ subdir('util')
+ subdir('migration')
+ subdir('bql')
+ subdir('qom')
++subdir('system')
+ subdir('chardev')
+ subdir('qemu-api')
+ 
+diff --git a/rust/qemu-api/Cargo.toml b/rust/qemu-api/Cargo.toml
+index 3bf2dafa6df..2884c1d460b 100644
+--- a/rust/qemu-api/Cargo.toml
++++ b/rust/qemu-api/Cargo.toml
+@@ -20,6 +20,7 @@ migration = { path = "../migration" }
+ util = { path = "../util" }
+ bql = { path = "../bql" }
+ qom = { path = "../qom" }
++system = { path = "../system" }
+ qemu_api_macros = { path = "../qemu-api-macros" }
+ 
+ [lints]
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index a47f178b698..92e2581a64e 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -8,7 +8,6 @@ c_enums = [
+   'MachineInitPhase',
+   'MemoryDeviceInfoKind',
+   'ResetType',
+-  'device_endian',
+ ]
+ _qemu_api_bindgen_args = []
+ foreach enum : c_enums
+@@ -24,8 +23,11 @@ endforeach
+ blocked_type = [
+   'Chardev',
+   'Error',
++  'MemTxAttrs',
++  'MemoryRegion',
+   'ObjectClass',
+   'VMStateDescription',
++  'device_endian',
+ ]
+ foreach type: blocked_type
+   _qemu_api_bindgen_args += ['--blocklist-type', type]
+@@ -54,7 +56,6 @@ _qemu_api_rs = static_library(
+       'src/lib.rs',
+       'src/bindings.rs',
+       'src/irq.rs',
+-      'src/memory.rs',
+       'src/prelude.rs',
+       'src/qdev.rs',
+       'src/sysbus.rs',
+@@ -65,7 +66,7 @@ _qemu_api_rs = static_library(
+   rust_abi: 'rust',
+   rust_args: _qemu_api_cfg,
+   dependencies: [anyhow_rs, bql_rs, chardev_rs, common_rs, foreign_rs, libc_rs, migration_rs, qemu_api_macros,
+-                 qom_rs, util_rs, hwcore],
++                 qom_rs, system_rs, util_rs, hwcore],
+ )
+ 
+ qemu_api_rs = declare_dependency(link_with: [_qemu_api_rs],
+diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
+index 526bcf8e31b..63b805c76e4 100644
+--- a/rust/qemu-api/src/bindings.rs
++++ b/rust/qemu-api/src/bindings.rs
+@@ -24,6 +24,7 @@
+ use common::Zeroable;
+ use migration::bindings::VMStateDescription;
+ use qom::bindings::ObjectClass;
++use system::bindings::{device_endian, MemTxAttrs, MemoryRegion};
+ use util::bindings::Error;
+ 
+ #[cfg(MESON)]
+@@ -32,15 +33,6 @@
+ #[cfg(not(MESON))]
+ include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
+ 
+-// SAFETY: this is a pure data struct
+-unsafe impl Send for CoalescedMemoryRange {}
+-unsafe impl Sync for CoalescedMemoryRange {}
+-
+-// SAFETY: these are constants and vtables; the Send and Sync requirements
+-// are deferred to the unsafe callbacks that they contain
+-unsafe impl Send for MemoryRegionOps {}
+-unsafe impl Sync for MemoryRegionOps {}
+-
+ unsafe impl Send for Property {}
+ unsafe impl Sync for Property {}
+ 
+@@ -49,7 +41,3 @@ unsafe impl Sync for TypeInfo {}
+ 
+ unsafe impl Zeroable for crate::bindings::Property__bindgen_ty_1 {}
+ unsafe impl Zeroable for crate::bindings::Property {}
+-unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_1 {}
+-unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_2 {}
+-unsafe impl Zeroable for crate::bindings::MemoryRegionOps {}
+-unsafe impl Zeroable for crate::bindings::MemTxAttrs {}
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index d96096899d0..8d574404789 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -14,7 +14,6 @@
+ pub mod prelude;
+ 
+ pub mod irq;
+-pub mod memory;
+ pub mod qdev;
+ pub mod sysbus;
+ 
+diff --git a/rust/qemu-api/src/sysbus.rs b/rust/qemu-api/src/sysbus.rs
+index b883d7eaf18..dda71ebda70 100644
+--- a/rust/qemu-api/src/sysbus.rs
++++ b/rust/qemu-api/src/sysbus.rs
+@@ -9,11 +9,11 @@
+ pub use bindings::SysBusDeviceClass;
+ use common::Opaque;
+ use qom::{prelude::*, Owned};
++use system::MemoryRegion;
+ 
+ use crate::{
+     bindings,
+     irq::{IRQState, InterruptSource},
+-    memory::MemoryRegion,
+     qdev::{DeviceImpl, DeviceState},
+ };
+ 
+diff --git a/rust/system/Cargo.toml b/rust/system/Cargo.toml
 new file mode 100644
-index 00000000000..7df9c677fc7
+index 00000000000..6803895e080
 --- /dev/null
-+++ b/rust/chardev/Cargo.toml
-@@ -0,0 +1,24 @@
++++ b/rust/system/Cargo.toml
+@@ -0,0 +1,22 @@
 +[package]
-+name = "chardev"
++name = "system"
 +version = "0.1.0"
-+description = "Rust bindings for QEMU/chardev"
++description = "Rust bindings for QEMU/system"
 +resolver = "2"
 +publish = false
 +
@@ -269,34 +535,32 @@ index 00000000000..7df9c677fc7
 +
 +[dependencies]
 +common = { path = "../common" }
-+bql = { path = "../bql" }
-+migration = { path = "../migration" }
 +qom = { path = "../qom" }
 +util = { path = "../util" }
 +qemu_api_macros = { path = "../qemu-api-macros" }
 +
 +[lints]
 +workspace = true
-diff --git a/rust/chardev/build.rs b/rust/chardev/build.rs
+diff --git a/rust/system/build.rs b/rust/system/build.rs
 new file mode 120000
 index 00000000000..71a3167885c
 --- /dev/null
-+++ b/rust/chardev/build.rs
++++ b/rust/system/build.rs
 @@ -0,0 +1 @@
 +../util/build.rs
 \ No newline at end of file
-diff --git a/rust/chardev/meson.build b/rust/chardev/meson.build
+diff --git a/rust/system/meson.build b/rust/system/meson.build
 new file mode 100644
-index 00000000000..5d333e232bd
+index 00000000000..ae9b932d29d
 --- /dev/null
-+++ b/rust/chardev/meson.build
-@@ -0,0 +1,41 @@
++++ b/rust/system/meson.build
+@@ -0,0 +1,42 @@
 +c_enums = [
-+  'QEMUChrEvent',
++  'device_endian',
 +]
-+_chardev_bindgen_args = []
++_system_bindgen_args = []
 +foreach enum : c_enums
-+  _chardev_bindgen_args += ['--rustified-enum', enum]
++  _system_bindgen_args += ['--rustified-enum', enum]
 +endforeach
 +
 +# TODO: Remove this comment when the clang/libclang mismatch issue is solved.
@@ -306,24 +570,24 @@ index 00000000000..5d333e232bd
 +# this case you must pass the path to `clang` and `libclang` to your build
 +# command invocation using the environment variables CLANG_PATH and
 +# LIBCLANG_PATH
-+_chardev_bindings_inc_rs = rust.bindgen(
++_system_bindings_inc_rs = rust.bindgen(
 +  input: 'wrapper.h',
 +  dependencies: common_ss.all_dependencies(),
 +  output: 'bindings.inc.rs',
 +  include_directories: bindings_incdir,
 +  bindgen_version: ['>=0.60.0'],
-+  args: bindgen_args_common + _chardev_bindgen_args,
++  args: bindgen_args_common + _system_bindgen_args,
 +)
 +
-+_chardev_rs = static_library(
-+  'chardev',
++_system_rs = static_library(
++  'system',
 +  structured_sources(
 +    [
 +      'src/lib.rs',
 +      'src/bindings.rs',
-+      'src/chardev.rs',
++      'src/memory.rs',
 +    ],
-+    {'.': _chardev_bindings_inc_rs}
++    {'.': _system_bindings_inc_rs}
 +  ),
 +  override_options: ['rust_std=2021', 'build.rust_std=2021'],
 +  rust_abi: 'rust',
@@ -331,13 +595,14 @@ index 00000000000..5d333e232bd
 +  dependencies: [common_rs, qemu_api_macros],
 +)
 +
-+chardev_rs = declare_dependency(link_with: [_chardev_rs], dependencies: [qemu_api_macros, chardev, qemuutil])
-diff --git a/rust/chardev/src/bindings.rs b/rust/chardev/src/bindings.rs
++system_rs = declare_dependency(link_with: [_system_rs],
++  dependencies: [qemu_api_macros, hwcore])
+diff --git a/rust/system/src/bindings.rs b/rust/system/src/bindings.rs
 new file mode 100644
-index 00000000000..2d98026d627
+index 00000000000..43edd98807a
 --- /dev/null
-+++ b/rust/chardev/src/bindings.rs
-@@ -0,0 +1,36 @@
++++ b/rust/system/src/bindings.rs
+@@ -0,0 +1,41 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +#![allow(
 +    dead_code,
@@ -366,214 +631,51 @@ index 00000000000..2d98026d627
 +#[cfg(not(MESON))]
 +include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
 +
-+// SAFETY: these are implemented in C; the bindings need to assert that the
-+// BQL is taken, either directly or via `BqlCell` and `BqlRefCell`.
-+// When bindings for character devices are introduced, this can be
-+// moved to the Opaque<> wrapper in src/chardev.rs.
-+unsafe impl Send for CharBackend {}
-+unsafe impl Sync for CharBackend {}
++// SAFETY: these are constants and vtables; the Send and Sync requirements
++// are deferred to the unsafe callbacks that they contain
++unsafe impl Send for MemoryRegionOps {}
++unsafe impl Sync for MemoryRegionOps {}
 +
-+unsafe impl Zeroable for CharBackend {}
-diff --git a/rust/qemu-api/src/chardev.rs b/rust/chardev/src/chardev.rs
-similarity index 100%
-rename from rust/qemu-api/src/chardev.rs
-rename to rust/chardev/src/chardev.rs
-diff --git a/rust/chardev/src/lib.rs b/rust/chardev/src/lib.rs
++// SAFETY: this is a pure data struct
++unsafe impl Send for CoalescedMemoryRange {}
++unsafe impl Sync for CoalescedMemoryRange {}
++
++unsafe impl Zeroable for MemoryRegionOps__bindgen_ty_1 {}
++unsafe impl Zeroable for MemoryRegionOps__bindgen_ty_2 {}
++unsafe impl Zeroable for MemoryRegionOps {}
++unsafe impl Zeroable for MemTxAttrs {}
+diff --git a/rust/system/src/lib.rs b/rust/system/src/lib.rs
 new file mode 100644
-index 00000000000..2e549f99d91
+index 00000000000..aafe9a866c9
 --- /dev/null
-+++ b/rust/chardev/src/lib.rs
++++ b/rust/system/src/lib.rs
 @@ -0,0 +1,6 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +
 +pub mod bindings;
 +
-+mod chardev;
-+pub use chardev::*;
-diff --git a/rust/hw/char/pl011/Cargo.toml b/rust/hw/char/pl011/Cargo.toml
-index da89f78727f..f7ad5f8e08f 100644
---- a/rust/hw/char/pl011/Cargo.toml
-+++ b/rust/hw/char/pl011/Cargo.toml
-@@ -21,6 +21,7 @@ util = { path = "../../../util" }
- bql = { path = "../../../bql" }
- migration = { path = "../../../migration" }
- qom = { path = "../../../qom" }
-+chardev = { path = "../../../chardev" }
- qemu_api = { path = "../../../qemu-api" }
- qemu_api_macros = { path = "../../../qemu-api-macros" }
- 
-diff --git a/rust/hw/char/pl011/meson.build b/rust/hw/char/pl011/meson.build
-index af9393c9da9..aaf911c5f42 100644
---- a/rust/hw/char/pl011/meson.build
-+++ b/rust/hw/char/pl011/meson.build
-@@ -14,6 +14,7 @@ _libpl011_rs = static_library(
-     bql_rs,
-     qemu_api_macros,
-     qom_rs,
-+    chardev_rs,
-   ],
- )
- 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 63651b9dcdf..bc64061fb39 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -5,13 +5,13 @@
- use std::{ffi::CStr, mem::size_of};
- 
- use bql::BqlRefCell;
-+use chardev::{CharBackend, Chardev, Event};
- use common::{static_assert, uninit_field_mut};
- use migration::{
-     self, impl_vmstate_forward, impl_vmstate_struct, vmstate_fields, vmstate_of,
-     vmstate_subsections, vmstate_unused, VMStateDescription, VMStateDescriptionBuilder,
- };
- use qemu_api::{
--    chardev::{CharBackend, Chardev, Event},
-     irq::{IRQState, InterruptSource},
-     memory::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder},
-     prelude::*,
-diff --git a/rust/meson.build b/rust/meson.build
-index 043603d4169..4d9e2912232 100644
---- a/rust/meson.build
-+++ b/rust/meson.build
-@@ -29,6 +29,7 @@ subdir('util')
- subdir('migration')
- subdir('bql')
- subdir('qom')
-+subdir('chardev')
- subdir('qemu-api')
- 
- subdir('hw')
-diff --git a/rust/qemu-api/Cargo.toml b/rust/qemu-api/Cargo.toml
-index 9d11becb284..3bf2dafa6df 100644
---- a/rust/qemu-api/Cargo.toml
-+++ b/rust/qemu-api/Cargo.toml
-@@ -15,6 +15,7 @@ rust-version.workspace = true
- 
- [dependencies]
- common = { path = "../common" }
-+chardev = { path = "../chardev" }
- migration = { path = "../migration" }
- util = { path = "../util" }
- bql = { path = "../bql" }
-diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
-index 11e43bb6468..a47f178b698 100644
---- a/rust/qemu-api/meson.build
-+++ b/rust/qemu-api/meson.build
-@@ -7,7 +7,6 @@ c_enums = [
-   'GpioPolarity',
-   'MachineInitPhase',
-   'MemoryDeviceInfoKind',
--  'QEMUChrEvent',
-   'ResetType',
-   'device_endian',
- ]
-@@ -23,9 +22,10 @@ foreach enum : c_bitfields
- endforeach
- 
- blocked_type = [
-+  'Chardev',
-+  'Error',
-   'ObjectClass',
-   'VMStateDescription',
--  'Error',
- ]
- foreach type: blocked_type
-   _qemu_api_bindgen_args += ['--blocklist-type', type]
-@@ -53,7 +53,6 @@ _qemu_api_rs = static_library(
-     [
-       'src/lib.rs',
-       'src/bindings.rs',
--      'src/chardev.rs',
-       'src/irq.rs',
-       'src/memory.rs',
-       'src/prelude.rs',
-@@ -65,8 +64,8 @@ _qemu_api_rs = static_library(
-   override_options: ['rust_std=2021', 'build.rust_std=2021'],
-   rust_abi: 'rust',
-   rust_args: _qemu_api_cfg,
--  dependencies: [anyhow_rs, bql_rs, common_rs, foreign_rs, libc_rs, migration_rs, qemu_api_macros,
--                 qom_rs, util_rs, hwcore, chardev],
-+  dependencies: [anyhow_rs, bql_rs, chardev_rs, common_rs, foreign_rs, libc_rs, migration_rs, qemu_api_macros,
-+                 qom_rs, util_rs, hwcore],
- )
- 
- qemu_api_rs = declare_dependency(link_with: [_qemu_api_rs],
-diff --git a/rust/qemu-api/src/bindings.rs b/rust/qemu-api/src/bindings.rs
-index 525f136ae2b..526bcf8e31b 100644
---- a/rust/qemu-api/src/bindings.rs
-+++ b/rust/qemu-api/src/bindings.rs
-@@ -20,6 +20,7 @@
- 
- //! `bindgen`-generated declarations.
- 
-+use chardev::bindings::Chardev;
- use common::Zeroable;
- use migration::bindings::VMStateDescription;
- use qom::bindings::ObjectClass;
-@@ -31,13 +32,6 @@
- #[cfg(not(MESON))]
- include!(concat!(env!("OUT_DIR"), "/bindings.inc.rs"));
- 
--// SAFETY: these are implemented in C; the bindings need to assert that the
--// BQL is taken, either directly or via `BqlCell` and `BqlRefCell`.
--// When bindings for character devices are introduced, this can be
--// moved to the Opaque<> wrapper in src/chardev.rs.
--unsafe impl Send for CharBackend {}
--unsafe impl Sync for CharBackend {}
--
- // SAFETY: this is a pure data struct
- unsafe impl Send for CoalescedMemoryRange {}
- unsafe impl Sync for CoalescedMemoryRange {}
-@@ -59,4 +53,3 @@ unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_1 {}
- unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_2 {}
- unsafe impl Zeroable for crate::bindings::MemoryRegionOps {}
- unsafe impl Zeroable for crate::bindings::MemTxAttrs {}
--unsafe impl Zeroable for crate::bindings::CharBackend {}
-diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
-index 0541050e667..d96096899d0 100644
---- a/rust/qemu-api/src/lib.rs
-+++ b/rust/qemu-api/src/lib.rs
-@@ -13,7 +13,6 @@
- #[rustfmt::skip]
- pub mod prelude;
- 
--pub mod chardev;
- pub mod irq;
- pub mod memory;
- pub mod qdev;
-diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
-index 3daf9dda2b5..7efc796f502 100644
---- a/rust/qemu-api/src/qdev.rs
-+++ b/rust/qemu-api/src/qdev.rs
-@@ -10,6 +10,7 @@
++mod memory;
++pub use memory::*;
+diff --git a/rust/qemu-api/src/memory.rs b/rust/system/src/memory.rs
+similarity index 99%
+rename from rust/qemu-api/src/memory.rs
+rename to rust/system/src/memory.rs
+index ecbbd9b6046..29568ed7676 100644
+--- a/rust/qemu-api/src/memory.rs
++++ b/rust/system/src/memory.rs
+@@ -9,11 +9,11 @@
+     marker::PhantomData,
  };
  
- pub use bindings::{ClockEvent, DeviceClass, Property, ResetType};
-+use chardev::Chardev;
- use common::{callbacks::FnCall, Opaque};
- use migration::{impl_vmstate_c_struct, VMStateDescription};
- use qom::{prelude::*, ObjectClass, ObjectImpl, Owned, ParentInit};
-@@ -17,7 +18,6 @@
+-pub use bindings::{hwaddr, MemTxAttrs};
+ use common::{callbacks::FnCall, uninit::MaybeUninitField, zeroable::Zeroable, Opaque};
+ use qom::prelude::*;
  
- use crate::{
-     bindings::{self, qdev_init_gpio_in, qdev_init_gpio_out, ResettableClass},
--    chardev::Chardev,
-     irq::InterruptSource,
- };
+ use crate::bindings::{self, device_endian, memory_region_init_io};
++pub use crate::bindings::{hwaddr, MemTxAttrs};
  
-@@ -137,8 +137,8 @@ unsafe impl QDevProp for u64 {
-     const VALUE: *const bindings::PropertyInfo = unsafe { &bindings::qdev_prop_uint64 };
- }
- 
--/// Use [`bindings::qdev_prop_chr`] for [`crate::chardev::CharBackend`].
--unsafe impl QDevProp for crate::chardev::CharBackend {
-+/// Use [`bindings::qdev_prop_chr`] for [`chardev::CharBackend`].
-+unsafe impl QDevProp for chardev::CharBackend {
-     const VALUE: *const bindings::PropertyInfo = unsafe { &bindings::qdev_prop_chr };
- }
- 
+ pub struct MemoryRegionOps<T>(
+     bindings::MemoryRegionOps,
 -- 
 2.51.0
 
