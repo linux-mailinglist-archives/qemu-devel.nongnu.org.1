@@ -2,89 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A59B55F79
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:26:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD79EB55F47
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:13:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uxLNd-0003hC-MV; Sat, 13 Sep 2025 04:13:09 -0400
+	id 1uxLNU-0002qw-8C; Sat, 13 Sep 2025 04:13:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLMx-0001gS-Df
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uxLMz-0001oF-Jc
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLMp-0005H3-RR
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:27 -0400
+ id 1uxLMs-0005HZ-1c
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757751138;
+ s=mimecast20190719; t=1757751140;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kXV8lyIjHzKxLuPEWkgQ4DrNPB+JccPFBiYkgzxwKUQ=;
- b=QEKhLMOs4knW69J3pgACjJtFAXBIoiZx6rNvqmJDcem3kJBOBVpYkLfo8WGMmuPdArqGWK
- pXX4COewLgjl/rNNupkYgDT7zza/eUA5PFXY4FvS9BA4WdKnCWKZeX9X7TO6Fd7L6EP8WD
- 2SKXJiBhCdTCy/CJ23Fb3HypJyFYztg=
+ bh=v+L5IOFvaCrhn4Znhl/4a3Hvrnw7OeLoFEwsYYsO8qU=;
+ b=VrcPgsw+UFZwtEKTJi8FXJ3A4HMIK+9egu41pC7DmtsH3uQep6oSmPS+U+0L2AXzNeoHJz
+ KEUkRmqvTJK3OWwVe1S2xQUHcuUu3k0pvi/qaRdWzBIUiv8cVQUXe6ZgO0Sn4P6yBPw6cL
+ rXG8V1TEkaefJhpF3FnGg4aaX+DVcsk=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-373-ZuAyM5Z4OxmmDrcUbFtEZw-1; Sat, 13 Sep 2025 04:12:16 -0400
-X-MC-Unique: ZuAyM5Z4OxmmDrcUbFtEZw-1
-X-Mimecast-MFC-AGG-ID: ZuAyM5Z4OxmmDrcUbFtEZw_1757751136
+ us-mta-518-gbn8SXgqOwaZo1bIzUvHyw-1; Sat, 13 Sep 2025 04:12:19 -0400
+X-MC-Unique: gbn8SXgqOwaZo1bIzUvHyw-1
+X-Mimecast-MFC-AGG-ID: gbn8SXgqOwaZo1bIzUvHyw_1757751138
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45d6c770066so12719695e9.0
- for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:12:16 -0700 (PDT)
+ 5b1f17b1804b1-45df7e734e0so16324345e9.0
+ for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:12:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757751134; x=1758355934;
+ d=1e100.net; s=20230601; t=1757751137; x=1758355937;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kXV8lyIjHzKxLuPEWkgQ4DrNPB+JccPFBiYkgzxwKUQ=;
- b=YkZptVcX4RqotqLv5un/8Vw97NfOKHbaDnhVRNYubkG/V5lOtMVN4nt8NjqwcZ8hZA
- kq73//dRru2SUbTIXTPh4yk5p1MRuxu/iXxz4Xg1v9b4Q9fsMex6CB82QzQPjAtscFqL
- DmZ5saw13MAkeogbpVsjwE7qlKcELQAzQtwkUpsQXk5QsMksCEwdzMrSYB9BrHdF1yCv
- SmfERC85mbbYeY9qwr8C+CfDPN2NXTA/EE18w2eM/GUYU3f9WMLU+DgjWb0D5QS2D/oN
- a0+2v/w2PARiC27rSfZDYOEaQPzKVyJSXeBCu9e1w8fwB5KgBCum6UF0c67ZbPExRfJQ
- CyEA==
-X-Gm-Message-State: AOJu0YwCqgHIMY4ozJ4xvS36wJCG86+2A/2wHHTep4yL5GS0n8cpSiqV
- r4f/pQqLnmFST4XORs+DiEzns5jBMp/Rt9qMObfgpbVJAkafdoI3/B2Ku/Yypm56bRtN8HJBT+m
- 5gcY9t3PU+Riv6ranYP3RmNDjj594R9XrqlRzdQKw8PZV9cP0mZ8w4h7YWuOEkAB5pgvWSmbsXG
- ZG5JNTQ9CeotvUub9T7aWaVDrXWGQb1GBgrhTIZwZZ
-X-Gm-Gg: ASbGncusTgJwG52TNzNCF87o/sd2jk6FWW1s4c1sjAaXuZc2JdqaqqjBPSjiRNd8g3V
- 8SgNnCGPUx/qg1GMOgzKCPfbCb7QvUirgZM/WWZ1rLMcAvQXoDzuMNn6v3eC95LoYzFN5M/8upD
- znbxe6+R2NyQtPgjx0lgFjYeNlYfdEiIVW+3NdHvlOlXtjLdVGZUXqbc47BWP6FTCq7jQ0Yt2am
- okZYhq9/8ivl/QKLnNwnxkYp4medIeWP19F44TE5jXWD5SpZ19dFW8HerK17k098f0dEPts9Zs2
- mypHnPL3vOAl4l5yPAD6q/Yb0QvqJHwWKHFnQbbuUrAfOKJL0Nqg74+Yu1hpjgAOvLB84iDrisH
- KAqeGK7N7cBiDozQ1kJUZMA7VlgX1ex23/ySQ2NDecrw=
-X-Received: by 2002:a05:600c:364b:b0:45d:dae8:b137 with SMTP id
- 5b1f17b1804b1-45f211f3140mr39730665e9.22.1757751134406; 
- Sat, 13 Sep 2025 01:12:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHP6pu/Hcg3CnH5TXuMk4llyoUElyCIeSvuynbeIkybWWTxciigS6OBh2u/qLw/qjSFQ3burg==
-X-Received: by 2002:a05:600c:364b:b0:45d:dae8:b137 with SMTP id
- 5b1f17b1804b1-45f211f3140mr39730405e9.22.1757751133848; 
- Sat, 13 Sep 2025 01:12:13 -0700 (PDT)
+ bh=v+L5IOFvaCrhn4Znhl/4a3Hvrnw7OeLoFEwsYYsO8qU=;
+ b=gU265ahIw9FnOt9sfWzkRXCi+H66uf0Aav0kWDRXscDuQNzr9hh0jVDwTsmbvmlW5i
+ Bp7ignLnqwiDaAVIsQVJBDh+hHdvE1JS6uesreb1RArqci/NEoEUXumCqWfTjp0d2C3J
+ yIWktGnRCE0VfMBOSpNxKazAZ/0bnfsT75/0uVNhiyAp3D/06Bjfx0yTBX4Tj01lYEkG
+ GsK1BXh8wkCsv3kYig/rmE5+Ew4TWgG9QGUhuthEnAGWnL79BSvL6Yq1s0ElDid/nOQT
+ 1LQ/Z0NYH0q9p5LE6UacBBSpijmYNMGD7yDT3HLeLBvxY89h/G42mo8dNY5jyqjaSioW
+ 6low==
+X-Gm-Message-State: AOJu0YxRGXT/wFK4fvdlAVd57zgJ9Z8sIfsVOP2+zKSRpc5W4Xa6joQL
+ nRreE0VnknmrT5tUBCK/CedywaIKIddVEMh+J/lSBwJF9LRvgQM2RBaAX0Njz/BmoEsfWcLpgB6
+ 9zcL/04TEuGP/pgvF6t9zLk0gkkqXyTGvpbTr9Qwox24+gLmOkapHHH1BcFFiX+76PLhi0SvD6S
+ 7aSlGUT/hPGA3T1xHBFG6lTYIDdI8B827lHigtQEci
+X-Gm-Gg: ASbGncu8JPkMc1iRpk8uO2tpFpHsCF07laSPe3G//+0wZvOPah+YKEp42oynM+iQU2h
+ 8u5/uv1Ek6mh7gB+jbGFBI9DFN9z963p+qElcI497L/eU0YADnZxktLwYt40Km40TyW8RlU6rOg
+ BhNvmTP4EnPvnOYBTQuVBOPxtEbi//5mfL/huaZ4VvzWtkOWn/4ya97+kVl3fU4Lxf+/TZ26Pw5
+ bUalvuiqnNhQfuTPhCC0eWE3h4tUWgoWCNb6Q9/4VyKnp/wEz/E46I79fpUzQzyHPJMNhdNZ2QY
+ v2hx3SnrQkH4tt/M+wpQr9SNFJpva0MK5zk/0HTgkz2/xbuz0nGgzxpRjujyfGqr3dZkAaX3Hj4
+ 4fMJawHC0yPfObzo0dSjzjv+4ZV0eDLFEQFD1j3WSsK4=
+X-Received: by 2002:a05:600c:3b26:b0:45b:7a93:f108 with SMTP id
+ 5b1f17b1804b1-45f211c4c47mr48345575e9.3.1757751137507; 
+ Sat, 13 Sep 2025 01:12:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFRO3NpPrMB2IFTYqcOj2IxBf6t8aavGLmDHKZmLo3QhIfQtU68JRno3niWas0LsCcEtExeMg==
+X-Received: by 2002:a05:600c:3b26:b0:45b:7a93:f108 with SMTP id
+ 5b1f17b1804b1-45f211c4c47mr48345265e9.3.1757751137009; 
+ Sat, 13 Sep 2025 01:12:17 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45e01832af1sm50583305e9.3.2025.09.13.01.12.12
+ 5b1f17b1804b1-45e0156d40esm95692575e9.1.2025.09.13.01.12.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 13 Sep 2025 01:12:12 -0700 (PDT)
+ Sat, 13 Sep 2025 01:12:15 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
- Kirill Martynov <stdcalllevi@yandex-team.ru>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 54/61] i386/cpu: Enable SMM cpu address space under KVM
-Date: Sat, 13 Sep 2025 10:09:35 +0200
-Message-ID: <20250913080943.11710-55-pbonzini@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ Kirill Martynov <stdcalllevi@yandex-team.ru>
+Subject: [PULL 55/61] target/i386: Define enum X86ASIdx for x86's address
+ spaces
+Date: Sat, 13 Sep 2025 10:09:36 +0200
+Message-ID: <20250913080943.11710-56-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250913080943.11710-1-pbonzini@redhat.com>
 References: <20250913080943.11710-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -111,105 +114,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Kirill Martynov reported assertation in cpu_asidx_from_attrs() being hit
-when x86_cpu_dump_state() is called to dump the CPU state[*]. It happens
-when the CPU is in SMM and KVM emulation failure due to misbehaving
-guest.
+Define X86ASIdx as enum, like ARM's ARMASIdx, so that it's clear index 0
+is for memory and index 1 is for SMM.
 
-The root cause is that QEMU i386 never enables the SMM address space for
-cpu since KVM SMM support has been added.
-
-Enable the SMM cpu address space under KVM when the SMM is enabled for
-the x86machine.
-
-[*] https://lore.kernel.org/qemu-devel/20250523154431.506993-1-stdcalllevi@yandex-team.ru/
-
-Reported-by: Kirill Martynov <stdcalllevi@yandex-team.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Tested-by: Kirill Martynov <stdcalllevi@yandex-team.ru>
+Tested-By: Kirill Martynov <stdcalllevi@yandex-team.ru>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250730095253.1833411-2-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250730095253.1833411-3-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- system/physmem.c          |  5 -----
- target/i386/kvm/kvm-cpu.c | 10 ++++++++++
- target/i386/kvm/kvm.c     |  5 +++++
- 3 files changed, 15 insertions(+), 5 deletions(-)
+ target/i386/cpu.h                | 5 +++++
+ target/i386/kvm/kvm-cpu.c        | 2 +-
+ target/i386/kvm/kvm.c            | 4 ++--
+ target/i386/tcg/system/tcg-cpu.c | 4 ++--
+ 4 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 311011156c7..a12c7ea1956 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -793,9 +793,6 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
-         cpu->as = as;
-     }
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index f977fc49a77..e0be7a74068 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2574,6 +2574,11 @@ static inline bool x86_has_cpuid_0x1f(X86CPU *cpu)
+ void x86_cpu_set_a20(X86CPU *cpu, int a20_state);
+ void cpu_sync_avx_hflag(CPUX86State *env);
  
--    /* KVM cannot currently support multiple address spaces. */
--    assert(asidx == 0 || !kvm_enabled());
--
-     if (!cpu->cpu_ases) {
-         cpu->cpu_ases = g_new0(CPUAddressSpace, cpu->num_ases);
-         cpu->cpu_ases_count = cpu->num_ases;
-@@ -818,8 +815,6 @@ void cpu_address_space_destroy(CPUState *cpu, int asidx)
- 
-     assert(cpu->cpu_ases);
-     assert(asidx >= 0 && asidx < cpu->num_ases);
--    /* KVM cannot currently support multiple address spaces. */
--    assert(asidx == 0 || !kvm_enabled());
- 
-     cpuas = &cpu->cpu_ases[asidx];
-     if (tcg_enabled()) {
++typedef enum X86ASIdx {
++    X86ASIdx_MEM = 0,
++    X86ASIdx_SMM = 1,
++} X86ASIdx;
++
+ #ifndef CONFIG_USER_ONLY
+ static inline int x86_asidx_from_attrs(CPUState *cs, MemTxAttrs attrs)
+ {
 diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index 89a79536594..1dc1ba9b486 100644
+index 1dc1ba9b486..9c25b558395 100644
 --- a/target/i386/kvm/kvm-cpu.c
 +++ b/target/i386/kvm/kvm-cpu.c
-@@ -13,6 +13,7 @@
- #include "qapi/error.h"
- #include "system/system.h"
- #include "hw/boards.h"
-+#include "hw/i386/x86.h"
+@@ -99,7 +99,7 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+      * initialized at register_smram_listener() after machine init done.
+      */
+     cs->num_ases = x86_machine_is_smm_enabled(X86_MACHINE(current_machine)) ? 2 : 1;
+-    cpu_address_space_init(cs, 0, "cpu-memory", cs->memory);
++    cpu_address_space_init(cs, X86ASIdx_MEM, "cpu-memory", cs->memory);
  
- #include "kvm_i386.h"
- #include "accel/accel-cpu-target.h"
-@@ -91,6 +92,15 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
-         kvm_set_guest_phys_bits(cs);
-     }
- 
-+    /*
-+     * When SMM is enabled, there is 2 address spaces. Otherwise only 1.
-+     *
-+     * Only initialize address space 0 here, the second one for SMM is
-+     * initialized at register_smram_listener() after machine init done.
-+     */
-+    cs->num_ases = x86_machine_is_smm_enabled(X86_MACHINE(current_machine)) ? 2 : 1;
-+    cpu_address_space_init(cs, 0, "cpu-memory", cs->memory);
-+
      return true;
  }
- 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 34e74f24470..d191d7177f1 100644
+index d191d7177f1..28012d2b578 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -2704,6 +2704,7 @@ static MemoryRegion smram_as_mem;
+@@ -2728,10 +2728,10 @@ static void register_smram_listener(Notifier *n, void *unused)
  
- static void register_smram_listener(Notifier *n, void *unused)
- {
-+    CPUState *cpu;
-     MemoryRegion *smram =
-         (MemoryRegion *) object_resolve_path("/machine/smram", NULL);
- 
-@@ -2728,6 +2729,10 @@ static void register_smram_listener(Notifier *n, void *unused)
      address_space_init(&smram_address_space, &smram_as_root, "KVM-SMRAM");
      kvm_memory_listener_register(kvm_state, &smram_listener,
-                                  &smram_address_space, 1, "kvm-smram");
-+
-+    CPU_FOREACH(cpu) {
-+        cpu_address_space_init(cpu, 1, "cpu-smm", &smram_as_root);
-+    }
+-                                 &smram_address_space, 1, "kvm-smram");
++                                 &smram_address_space, X86ASIdx_SMM, "kvm-smram");
+ 
+     CPU_FOREACH(cpu) {
+-        cpu_address_space_init(cpu, 1, "cpu-smm", &smram_as_root);
++        cpu_address_space_init(cpu, X86ASIdx_SMM, "cpu-smm", &smram_as_root);
+     }
  }
  
- static void *kvm_msr_energy_thread(void *data)
+diff --git a/target/i386/tcg/system/tcg-cpu.c b/target/i386/tcg/system/tcg-cpu.c
+index 0538a4fd51a..7255862c244 100644
+--- a/target/i386/tcg/system/tcg-cpu.c
++++ b/target/i386/tcg/system/tcg-cpu.c
+@@ -74,8 +74,8 @@ bool tcg_cpu_realizefn(CPUState *cs, Error **errp)
+     memory_region_set_enabled(cpu->cpu_as_mem, true);
+ 
+     cs->num_ases = 2;
+-    cpu_address_space_init(cs, 0, "cpu-memory", cs->memory);
+-    cpu_address_space_init(cs, 1, "cpu-smm", cpu->cpu_as_root);
++    cpu_address_space_init(cs, X86ASIdx_MEM, "cpu-memory", cs->memory);
++    cpu_address_space_init(cs, X86ASIdx_SMM, "cpu-smm", cpu->cpu_as_root);
+ 
+     /* ... SMRAM with higher priority, linked from /machine/smram.  */
+     cpu->machine_done.notify = tcg_cpu_machine_done;
 -- 
 2.51.0
 
