@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79D6B55F6E
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 771FBB55F76
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:25:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uxLMt-0001TN-Vx; Sat, 13 Sep 2025 04:12:24 -0400
+	id 1uxLNI-0001tE-Qm; Sat, 13 Sep 2025 04:12:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLMl-00010e-FJ
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:16 -0400
+ id 1uxLMn-00016w-Sr
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLMh-0005EQ-Kx
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:13 -0400
+ id 1uxLMm-0005FY-4U
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757751130;
+ s=mimecast20190719; t=1757751133;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gxJgysm4LwVfPs3QtBRp3Oe8eEcJlz8X5Th6PWbDrkU=;
- b=ihH6JIIICv5k4jvMv9WqtTc3QoB+u/XOcgCj14L0IKdSOCxgjK6hB11c1ityk+mmC4c1k1
- mzKjPSadxPnLQCLGLtra02s8AfYEriHm3Re70+ZMW36aWZbodbtPDY63sofAKZpTYVgG6r
- bTyrnfGdDb8wOmPmhhvBoT+pP9f6Eaw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EApp4ovBiWyPxOCjCRzu1kr7T39LmQMZCfnyNBky3GQ=;
+ b=PLffUqQgYrVI/nZ1Ne2mPdG5Nur3FRBEiF13iVwQC6UcCCLcRXiHPUcsegCPxDqyBpH9WH
+ dxflRzzW4oKVL1MNY+ldFgiwhPKU4hAMYYlPTDauVC50hO8FOdjsztDENfVgahg895ly7k
+ wB6vPBEXfrR09JQl2LIzMMVHPWrv5i8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-145-k2Tx882jOfSG7HLtCYpUVg-1; Sat, 13 Sep 2025 04:12:09 -0400
-X-MC-Unique: k2Tx882jOfSG7HLtCYpUVg-1
-X-Mimecast-MFC-AGG-ID: k2Tx882jOfSG7HLtCYpUVg_1757751128
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3df9f185b82so1007539f8f.1
- for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:12:09 -0700 (PDT)
+ us-mta-287-VgOccC89OFOcOqmiUs7BYg-1; Sat, 13 Sep 2025 04:12:11 -0400
+X-MC-Unique: VgOccC89OFOcOqmiUs7BYg-1
+X-Mimecast-MFC-AGG-ID: VgOccC89OFOcOqmiUs7BYg_1757751130
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45dd9a66cfbso23972355e9.1
+ for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:12:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757751127; x=1758355927;
+ d=1e100.net; s=20230601; t=1757751129; x=1758355929;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gxJgysm4LwVfPs3QtBRp3Oe8eEcJlz8X5Th6PWbDrkU=;
- b=cJmjOyuFZCenOhMA4FFNF4zZqwtaa4Eugjgypf+cTMp3QcysbHR7UKalWPziBmvaZY
- 7z/OIsTXImnIB5Tg4YMqiMNOFAi5/hxbxHD1zlp0bjL+QNUyBXxpTt7lVExGakCHDkEv
- S+AU3yZssumFvqSdr5vZdOxpVmS/lec78N1qcU7j8vnmJ0El1DYfOg4NJ554r1C1u2sz
- nslgiryb/IZHfUzz0zWS9fkRFwVgll81NmWK/FDZkT3G5piKLqb9kfieY5EmXBCK6Bjj
- j+2NOrBTHZ3iFHRINuskXK/7GZok5WGuHC/NUnDfYetp5TpVfQ5t4g5EictsJkxNXDD6
- FO4A==
-X-Gm-Message-State: AOJu0YxDF+gikSXixDRqPWRvqch4YOTcff8A90zZC3PI29UDOvLLAve6
- LWRHsMN+UoRwITAnPeaBBmtfAw7wtQtZDo16mL6Avg6vi+nY5qekpQyR5fR8eYZzx8ub8T6jJkk
- KUw4WwoBVg5Qp2x/u0+TabrU6dQV2TMsSD90sN3bl+4JJXZOT0zoqXNgyJ64z/3zIyL1qV6jV4g
- C3Vgc5ZyOSbW96LcCva4WOAKnIn43v8AqcATHsUR/C
-X-Gm-Gg: ASbGncsYKThPoKjGwaJ1/K+BdGjMMPzhDSnHaIWRBiZvhAWeRXbMEOeKbk718uEqDlp
- ruBuK36PjWeQ1mI48sFwRCrs+/ZZPWG29cmXv2jm2bAxebJOWWHZPDhqJvOX2U4Nc2aShxlsAoz
- ZUSp0/4CmB9EJaHIw8GoU3po7gJ3hqJOxw8/Glc6z3zoaoUzyuWShICRgwp/rVYivw/5vbu+pgB
- WMwBdoCsnyorc8XeOzTssiTc/804tvnE0GiG35MrCkjdNF9FJtin8e/9vAGrduEs+nIrW3FIVeA
- Sz38DxHTm6wDS9BV5dywij7wIFoogMfyMUkVQPNvfJC9oPVoX5INIrAd8/r0jhZ/D9SBVlAwoj7
- FlpYbHGiHL6Jt+zMKYHIBWD1wCmu0TELlOYMJaBKuoWM=
-X-Received: by 2002:a05:6000:40db:b0:3e5:190b:b04e with SMTP id
- ffacd0b85a97d-3e765a140f0mr3626247f8f.37.1757751127315; 
- Sat, 13 Sep 2025 01:12:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE38kjpgKpyLh38ey7vU6pY6kl6eVmA+qDvMnKS9fdMyvVv+FLrbSA0MKRjkdfb25puvO4clA==
-X-Received: by 2002:a05:6000:40db:b0:3e5:190b:b04e with SMTP id
- ffacd0b85a97d-3e765a140f0mr3626223f8f.37.1757751126797; 
- Sat, 13 Sep 2025 01:12:06 -0700 (PDT)
+ bh=EApp4ovBiWyPxOCjCRzu1kr7T39LmQMZCfnyNBky3GQ=;
+ b=bJzHmjHqRTeTN0sPVwyY9+3RIILjjMbduBVslOiM0oxIamyZ6Sa9AV4P+r5wbFLtBl
+ VE5P1kmP0T94kFm0TkMnk+XhkVFPtjpSQiprxe92cz/yeMupnG/9oWfGhhWOAGhLVfeG
+ 02CBZlB1OEHvrbRt8JeBE4GwyTI9SAK4hCIhhOIEtzc4moMHng5eftaKa/L+0KU9L1WH
+ pFaaovSTMTwjXZyRi+fJizgu0wZ/jtyjJ0wa4oDUXEkpAorMOYTaJ9Z4KAL7mzmtCywt
+ sm/WNHo3vdx6I+BgAICILYFkz5n62OkCfwHw06G8D6KvIOm1N2hZVtif3GsGEgmSmbNm
+ UsVw==
+X-Gm-Message-State: AOJu0YyVRL8jGh+lSMrRY3IqmYCobeedJ5tQd24SYhzAnMrInWMBGFTT
+ q6rNb2J2Xa+bVMPCS6hUzRBlmJK1BYKG40yeRwzic9ScWmarcRBdB2HDq1D6fEDyKs76C5/j5C9
+ AcsDFS7B46oXoHYszqK+ImgD+S+mnGJvvjsnO5Kv7vd1Eocw5GLnyMcA+2B7A9HTDQ1epU4Jiwl
+ ejtsmfMvZA0JvDiC5v/CAHQ8lvNLJDmM8LfrE2DtXe
+X-Gm-Gg: ASbGncvxJujszDoXWZMxTP1xTkx6Q/dHz0EwhyoeN1dGNTWi/wQ88jBOLqFYXYrnHpF
+ pT59MJ17SatL6yH+ZTF2PGJg5drx+mxEqTnnBw3ysiMrdyLV4tHDgbxP5pRBB+uA3Bt5WuhTYdi
+ C4+AM5UkEy/KtVtc0DpHceRIsCP5c6UasBqNTrMXq4Opyx1mYUDzWqfS1tF8XoTeqsZdAzaON4y
+ q43hVd6d2xyRcnBAomJ6UC/K49e0qCRUdDWA6ZIQQrldnQ5vnRrFNhYxuk4KUpL1HL+c19u1wek
+ VNSmjGz6OWuOCuopKiPu0IgiP8ke4rN30avuvWAtk9LjjqxiZMuNLlYxDbAGvjc4izjiP7/XJFC
+ cmfqy8Mkw5ZHbNGSmxuD4LRk8aNGpXihAvWDizc5VsMU=
+X-Received: by 2002:a05:6000:18a7:b0:3d4:eac4:9db2 with SMTP id
+ ffacd0b85a97d-3e765782b5fmr6380120f8f.5.1757751129401; 
+ Sat, 13 Sep 2025 01:12:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvGOyAXBiVSRzDW698WECxpV6wbkkMYtpejitISc10Hmrt5mDtxcS26UMkMdwruekqqZyD6A==
+X-Received: by 2002:a05:6000:18a7:b0:3d4:eac4:9db2 with SMTP id
+ ffacd0b85a97d-3e765782b5fmr6380093f8f.5.1757751128985; 
+ Sat, 13 Sep 2025 01:12:08 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e81dbf9acdsm2652297f8f.55.2025.09.13.01.12.05
+ ffacd0b85a97d-3e7607d7c0dsm9563192f8f.47.2025.09.13.01.12.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 13 Sep 2025 01:12:05 -0700 (PDT)
+ Sat, 13 Sep 2025 01:12:07 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 51/61] rust: meson: remove unnecessary complication in device
- crates
-Date: Sat, 13 Sep 2025 10:09:32 +0200
-Message-ID: <20250913080943.11710-52-pbonzini@redhat.com>
+Subject: [PULL 52/61] rust: do not inline do_init_io
+Date: Sat, 13 Sep 2025 10:09:33 +0200
+Message-ID: <20250913080943.11710-53-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250913080943.11710-1-pbonzini@redhat.com>
 References: <20250913080943.11710-1-pbonzini@redhat.com>
@@ -108,44 +107,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is not necessary anymore to explicitly list procedural macro crates
-when doing the final link using rustc.
+This is now possible since the hwcore integration tests do not
+link the system crate anymore.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/r/20250908105005.2119297-33-pbonzini@redhat.com
+Link: https://lore.kernel.org/r/20250908105005.2119297-34-pbonzini@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/hw/char/pl011/meson.build | 3 ---
- rust/hw/timer/hpet/meson.build | 3 ---
- 2 files changed, 6 deletions(-)
+ rust/system/src/memory.rs | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/rust/hw/char/pl011/meson.build b/rust/hw/char/pl011/meson.build
-index 628a5238702..ffdc8af53f1 100644
---- a/rust/hw/char/pl011/meson.build
-+++ b/rust/hw/char/pl011/meson.build
-@@ -44,8 +44,5 @@ _libpl011_rs = static_library(
+diff --git a/rust/system/src/memory.rs b/rust/system/src/memory.rs
+index 02aa3af7b13..4b3316bf767 100644
+--- a/rust/system/src/memory.rs
++++ b/rust/system/src/memory.rs
+@@ -136,11 +136,6 @@ unsafe impl Send for MemoryRegion {}
+ unsafe impl Sync for MemoryRegion {}
  
- rust_devices_ss.add(when: 'CONFIG_X_PL011_RUST', if_true: [declare_dependency(
-   link_whole: [_libpl011_rs],
--  # Putting proc macro crates in `dependencies` is necessary for Meson to find
--  # them when compiling the root per-target static rust lib.
--  dependencies: [bilge_impl_rs, qemu_macros],
-   variables: {'crate': 'pl011'},
- )])
-diff --git a/rust/hw/timer/hpet/meson.build b/rust/hw/timer/hpet/meson.build
-index b6bb9477f0c..bb64b96672e 100644
---- a/rust/hw/timer/hpet/meson.build
-+++ b/rust/hw/timer/hpet/meson.build
-@@ -16,8 +16,5 @@ _libhpet_rs = static_library(
- 
- rust_devices_ss.add(when: 'CONFIG_X_HPET_RUST', if_true: [declare_dependency(
-   link_whole: [_libhpet_rs],
--  # Putting proc macro crates in `dependencies` is necessary for Meson to find
--  # them when compiling the root per-target static rust lib.
--  dependencies: [qemu_macros],
-   variables: {'crate': 'hpet'},
- )])
+ impl MemoryRegion {
+-    // inline to ensure that it is not included in tests, which only
+-    // link to hwcore and qom.  FIXME: inlining is actually the opposite
+-    // of what we want, since this is the type-erased version of the
+-    // init_io function below.  Look into splitting the qemu_api crate.
+-    #[inline(always)]
+     unsafe fn do_init_io(
+         slot: *mut bindings::MemoryRegion,
+         owner: *mut bindings::Object,
 -- 
 2.51.0
 
