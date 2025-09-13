@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBB2B55F53
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D554CB55F50
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:15:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uxLKa-0005dk-9W; Sat, 13 Sep 2025 04:10:00 -0400
+	id 1uxLKa-0005dh-88; Sat, 13 Sep 2025 04:10:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLKX-0005d8-BA
+ id 1uxLKX-0005d7-7x
  for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:09:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLKV-0004ZN-04
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:09:57 -0400
+ id 1uxLKV-0004Zq-0I
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:09:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757750991;
+ s=mimecast20190719; t=1757750993;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xDMh8Tj9XNE2pbl7SQeVp29Pr5x/uZR6F1csyzVp1gE=;
- b=aInHm+MKFbQvHJBMzEvj7uTY/4Pb3el4G6iP4CqzUpmAxKXXeDJSZoBYcDgzJY53qp+Y15
- +QOEq/P5b2dFGTCunmrsNkutskvFEF74NKMtl6+lNDlV1W3qBQn4DwoSK1hmwtV77xKiwe
- 0OXGB86adoptdheIumUB1R5vAgjAIAw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7F7JtBib3HtIMCET12RYVWnFXL3A+/WcjU3+rd9Ob6M=;
+ b=YEzFEhHbZisysNn0WG41PlslZoSPVPP4XJZC9NAot0EeFkmp/Fu6dmMW0zqZ5rmjWgVJ0G
+ sVrggz+Ub36kLt5tU8Mj70TQHDMNkWcxmivudlm16ltvL0MHkaGi4FUn0Ir8F9CvRd5r2l
+ m36ygXRufE33Ilu9GdCuowU9LA7AjsY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-375-Bu8sHLKWNHKhbSc-EsrPZA-1; Sat, 13 Sep 2025 04:09:49 -0400
-X-MC-Unique: Bu8sHLKWNHKhbSc-EsrPZA-1
-X-Mimecast-MFC-AGG-ID: Bu8sHLKWNHKhbSc-EsrPZA_1757750988
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-45b99c18484so9751265e9.1
- for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:09:49 -0700 (PDT)
+ us-mta-461-hQdZRjUaN2u4p49ij2XVEA-1; Sat, 13 Sep 2025 04:09:52 -0400
+X-MC-Unique: hQdZRjUaN2u4p49ij2XVEA-1
+X-Mimecast-MFC-AGG-ID: hQdZRjUaN2u4p49ij2XVEA_1757750991
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-45dcfc6558cso20047995e9.1
+ for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:09:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757750987; x=1758355787;
+ d=1e100.net; s=20230601; t=1757750990; x=1758355790;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xDMh8Tj9XNE2pbl7SQeVp29Pr5x/uZR6F1csyzVp1gE=;
- b=Vjz49h2ihx7o0mBetCU1tWV1MDorSHd0sTdPZqK10W9o8TPyzBONp9mM6jCR3aDF5k
- CvXjpmZ5x9CujJTxLrOCXI9/QJ9l+372YeZnzsH54YrTumCNazHud/xfYgxX2wFdzAA9
- PZsXxAQVPdCr68VTUcFEfMeekScJreO1Lhnbc+dXPaYjJ/yNTf20JvwWSREEIS/C3LTB
- clHCKT7VYi2XfDC48DRIZH9TeK8pPl/M8PZedPsPHoYzo4x1EQkXIwj9rjtYBYSg45Hg
- Uhv3FBASx83012PKG6bgBy3SarSUYKWg3MxJBAlSaEs4mzqu1z5BiKSSozJaMIe4aLxA
- /WDg==
-X-Gm-Message-State: AOJu0YyEn5k00dM5GpSUY0wXXLgOn07AhZ0LZF1MeJJipCk40I+XYVaI
- FMPqWbc1aE3g5t07XBwOMD8LHeAXxrucMZLskCP6ir6SO9N+QY4bdU+gV2kWMxTaj56Jfm8LAke
- CgnxJE9orTjsR2MMUCYH6GkUH61mTj8omf4fLrN7WruhTEtiNdUGWJvOPUYQlK4bSD0VBG/nwlb
- nhEyL2JmHfdBwoM9ejSf2OIe1Kis5cAtT/V4TfRebb
-X-Gm-Gg: ASbGncvkdz2ng2RATu+rc1Zp2vsxqoUBQAcUHtmi/afGnyEW8lIf2hgFOk+8nB6EyBc
- aSNtU35VA+g4i1zMStRGDGfUE6/NRQJWnxTaS3xQB8GYADLF7lCy7ojlvyRuny/enIF1EtyQKYJ
- yVG5kdI18ChbcKMbDeouBJ2vFCAjJ+aB7HVnFKbkH5POz3vVkGcspWa6dTtQd6C00mBjWGTpnnt
- vXK1b6p/bG9VHPFJLUTiI1uD0KzapGFtbV+z7xG9KT/ZX9fX3KkJ/5aolE6eJgYcqU82kt+D2Gb
- 8Po7mfZeDovblvzquClXYTukOu25WI87di7bh+1I7H0vUr+sKx/xhcUnbExm7636EkaVVjBAyFA
- +xRnV/9uLvde9YY7vzGP5JXP2JEuViaxY76JYXZDE1P0=
-X-Received: by 2002:a05:600c:22d4:b0:450:6b55:cf91 with SMTP id
- 5b1f17b1804b1-45f211cb52amr49034425e9.6.1757750986877; 
- Sat, 13 Sep 2025 01:09:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHS+LsunS4F36q9tGReOz9TIZeDxRUWf1wNYpLz8toQ4yhohQnwKxj4ZOtd2abtECfioruTbA==
-X-Received: by 2002:a05:600c:22d4:b0:450:6b55:cf91 with SMTP id
- 5b1f17b1804b1-45f211cb52amr49034145e9.6.1757750986409; 
- Sat, 13 Sep 2025 01:09:46 -0700 (PDT)
+ bh=7F7JtBib3HtIMCET12RYVWnFXL3A+/WcjU3+rd9Ob6M=;
+ b=DgFwTSUUdkxYHsuJq8Ho/9fYMYZKXL8qK1XmqKKWCMwM9v9BNaxloVQiPlEXIs8JDc
+ LGyK1vqRLN5HjYb/BGw+QlX7zatH1ElI4//qmzKLI8pZuD4NPRok0vkoAgn6IHFPZ4Ko
+ XviyfkztpuqjHI2+NVJVw5kFcS7VeXQf7SysRNAhuIODyjqrTEfLQveC56GNQT2DnS5L
+ cMsI6ANHsDqchRlM31vinFeodE2xhVDqRuV3VLjjSr9nNE2UFAni/YjJa1cppN5qBJbo
+ 6wjSEPkeQLzd0l93hdpGLIIGu8PEYCnpzWMTfY9xcZ7GPljAA+WqiWqMLNzhsVLhku+/
+ SL7g==
+X-Gm-Message-State: AOJu0YxC11/iVuvIV87cgTIqGBkC1oCAu82q7QIqqcdrEeESGxdmS981
+ qyoLl58Ywt7FL0Cll/Mxn1woa1OXqBHH4/bhEgtzRMH1gclTYyXwItxdGYr+Xr7JCOvM0xDyPDM
+ eBn9vmQixty64Ydpm6xEXzAVyWKBdxujmvKFtKt0TczFWLHbNbLRnBAvHxdxYRcx/tes5YQwLCp
+ 8dFRnQQogdy77IT+u1Qil1satKsCr8fPrmG1UibZog
+X-Gm-Gg: ASbGnctl/dE9VEgVobkA2yTTVuw7r/QqqcuywJvj0h8WFADWYTHu8xM/Fx/jtiLH3ii
+ 3ljuGq4ZiqoHOYYUVZ+m0+GWFPHGj/524vbGobsTiG198MFjLjgpMVAgKurEt8v6Ru3LUamiU8l
+ JK7bh8yYRpXCEfb3JF/sZ5QXYKvvUw3DRSRjNJLT6zbBUY3ijtKnaU32fPdt3eSDzxfhrg5MRJK
+ 2ZCHLZEXXFze7bU5qM4Ns8ssUVzBkhJYez9T0WRyF4xUHZnsLqmkyHDm1JL0Efib3RH15cYzQ3N
+ duxFCfma/bDBImu2Xi6xHNX3zXw9CLA+2SGGEHgn1cXONuhYdvPvwZs15XvZiEEnl9cS1GJz0xG
+ OdwJH3ZGgh+E6USNeaSgcXk82akWzK9LqkUv471R1nWM=
+X-Received: by 2002:a05:600c:4ed1:b0:45f:280d:15ea with SMTP id
+ 5b1f17b1804b1-45f280d1cc8mr9541235e9.26.1757750990134; 
+ Sat, 13 Sep 2025 01:09:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEC11Zoxy0Fa2GZwYApBFBrCf1/4pBkVMrVKI8bW9Ly3tyor9J8hlM5OA4Z9wWy5jhPFDtyLA==
+X-Received: by 2002:a05:600c:4ed1:b0:45f:280d:15ea with SMTP id
+ 5b1f17b1804b1-45f280d1cc8mr9540885e9.26.1757750989674; 
+ Sat, 13 Sep 2025 01:09:49 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45f29174de1sm4544635e9.2.2025.09.13.01.09.45
+ ffacd0b85a97d-3e859a278c1sm2067283f8f.24.2025.09.13.01.09.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 13 Sep 2025 01:09:45 -0700 (PDT)
+ Sat, 13 Sep 2025 01:09:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Igor Mammedov <imammedo@redhat.com>,
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 01/61] target/ppc: limit cpu_interrupt_exittb to system
- emulation
-Date: Sat, 13 Sep 2025 10:08:42 +0200
-Message-ID: <20250913080943.11710-2-pbonzini@redhat.com>
+Subject: [PULL 02/61] target/sparc: limit cpu_check_irqs to system emulation
+Date: Sat, 13 Sep 2025 10:08:43 +0200
+Message-ID: <20250913080943.11710-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250913080943.11710-1-pbonzini@redhat.com>
 References: <20250913080943.11710-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -110,34 +110,55 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 It is not used by user-mode emulation and is the only caller of
-cpu_interrupt() in qemu-ppc* binaries.
+cpu_interrupt() in qemu-sparc* binaries.
 
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/ppc/helper_regs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/sparc/int32_helper.c | 2 ++
+ target/sparc/int64_helper.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-index 7e5726871e5..5f217397490 100644
---- a/target/ppc/helper_regs.c
-+++ b/target/ppc/helper_regs.c
-@@ -274,6 +274,7 @@ TCGTBCPUState ppc_get_tb_cpu_state(CPUState *cs)
-     return (TCGTBCPUState){ .pc = env->nip, .flags = hflags_current };
+diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
+index 39db4ffa70a..fdcaa0a578b 100644
+--- a/target/sparc/int32_helper.c
++++ b/target/sparc/int32_helper.c
+@@ -65,6 +65,7 @@ static const char *excp_name_str(int32_t exception_index)
+     return excp_names[exception_index];
  }
  
-+#ifndef CONFIG_USER_ONLY
- void cpu_interrupt_exittb(CPUState *cs)
++#if !defined(CONFIG_USER_ONLY)
+ void cpu_check_irqs(CPUSPARCState *env)
  {
-     /*
-@@ -285,6 +286,7 @@ void cpu_interrupt_exittb(CPUState *cs)
-         cpu_interrupt(cs, CPU_INTERRUPT_EXITTB);
+     CPUState *cs;
+@@ -96,6 +97,7 @@ void cpu_check_irqs(CPUSPARCState *env)
+         cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
      }
  }
 +#endif
  
- int hreg_store_msr(CPUPPCState *env, target_ulong value, int alter_hv)
+ void sparc_cpu_do_interrupt(CPUState *cs)
+ {
+diff --git a/target/sparc/int64_helper.c b/target/sparc/int64_helper.c
+index 49e4e51c6dc..23adda4cad7 100644
+--- a/target/sparc/int64_helper.c
++++ b/target/sparc/int64_helper.c
+@@ -62,6 +62,7 @@ static const char * const excp_names[0x80] = {
+ };
+ #endif
+ 
++#if !defined(CONFIG_USER_ONLY)
+ void cpu_check_irqs(CPUSPARCState *env)
+ {
+     CPUState *cs;
+@@ -127,6 +128,7 @@ void cpu_check_irqs(CPUSPARCState *env)
+         cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
+     }
+ }
++#endif
+ 
+ void sparc_cpu_do_interrupt(CPUState *cs)
  {
 -- 
 2.51.0
