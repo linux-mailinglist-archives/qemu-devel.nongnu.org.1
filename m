@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C4CB55F41
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86743B55F3E
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:12:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uxLLJ-0005u4-Sc; Sat, 13 Sep 2025 04:10:45 -0400
+	id 1uxLLY-000621-A6; Sat, 13 Sep 2025 04:11:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLLH-0005tI-7r
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:10:43 -0400
+ id 1uxLLM-0005zg-G1
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:10:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLLF-0004zY-LT
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:10:42 -0400
+ id 1uxLLK-00050n-BC
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:10:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757751040;
+ s=mimecast20190719; t=1757751045;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0nuKa0pQnnRbuWROMsoY7tGerozDA9x5CjuoP23Xwkg=;
- b=FCIbil5je+oaLlWQtL36GHvnT1zM1x73upSS0ocMuCW0IsOQYRhpsX9HkHQQDJTDvLq8V1
- x1fftMoE48qgKNDBRWvXPI6m3boWpZaI9eR3HCTeP8/g5PfYAe/pKWHykZEAmIjo+wAO0X
- xWvkn1Gyr13MU3XzPvrzA9YItAMTLwg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=qfNF7of65e0ISpiPiVdlW59eULNiwvi00PI6EPOfXZE=;
+ b=Ukan3f0u6zvUaPpVY5ZpTKKCEkNpfi2KZbo/4RdhAlsaIrptr10lSZzRmNwuugW9BAyTjG
+ Dc/X6QHj4DQWuRwcf1VvPMlyrMPXl3WSyp56zl88UH30/aLdDIWaXsuCCy1uZuh5KIPvRM
+ w/3PY7faKhxHL699lgknBkkW6EdI8Ow=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-N8y_G6IQNdGCaWy-6ksYDA-1; Sat, 13 Sep 2025 04:10:39 -0400
-X-MC-Unique: N8y_G6IQNdGCaWy-6ksYDA-1
-X-Mimecast-MFC-AGG-ID: N8y_G6IQNdGCaWy-6ksYDA_1757751038
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-45dd66e1971so23559865e9.2
- for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:10:39 -0700 (PDT)
+ us-mta-685-DyOnHayRM4y5lTcwq6LcgA-1; Sat, 13 Sep 2025 04:10:42 -0400
+X-MC-Unique: DyOnHayRM4y5lTcwq6LcgA-1
+X-Mimecast-MFC-AGG-ID: DyOnHayRM4y5lTcwq6LcgA_1757751041
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3df19a545c2so1899794f8f.3
+ for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:10:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757751038; x=1758355838;
+ d=1e100.net; s=20230601; t=1757751040; x=1758355840;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0nuKa0pQnnRbuWROMsoY7tGerozDA9x5CjuoP23Xwkg=;
- b=h02VjcnJY38YVCTA5b00j+wCYPO6FvBaf24PBBdoVvWJCWq2UuylGPNQs/f9xoCuf8
- Z7Kd5gcb0RLQuZ4aDovuaJ9MoAfZZqXNJojexlF3abrHV894wtgSQ1s6TfocgbGbsB2u
- jfHgXA5uHw4AJzR/2tF7MO3MSk6r6HMzJaN4CbZmw7xGdopUWxbvKCEkrBG1N4mFnFZT
- rTMwDF2KkTIlg78RnLRUFKVItsVExIctB5rIZmNlgdF6UzSmR/1xkov1Y+uGN4gYI1pB
- fiA+ZaYKMiJ0SaBKgqhnHuuiBDEBsAaq4LfVJ3KJbSF7jhdVHmovuFbPt2zuklornYNe
- nu9w==
-X-Gm-Message-State: AOJu0Yw9RDjERz6vlYqoPr0JuXZJU1yoJEg/PPo8PH5BV81O8JHQf4cU
- NdYw/UvEUZUvM0A6/qLfcvVr+8516qREzvvRFRnZHHAgL+XCtMMPCZG/L3af/9w8hoZEyPo/lzB
- XiEo+VNRkrrxfnTaSzJxCuq0Vs40rFjg9gDxqNVwQ88WUHUEyoa1n1u0lDTBhtvne+KRVohBcoB
- Fqd7Oc3GNhn0Rxb2jpIMpET4+CDHb8gOVCElnnmDqm
-X-Gm-Gg: ASbGncs3jQvDWqyLcB2IkoYg/Z950+3EnotIWvuN4LA0zU9wPYa1763kaQQN47iSsd6
- zTXF0K+Mh14ttbs4TOBFPOfU3cbx+J+G3oH/S5tfVbubZEqMEVVv+Bb5EhqpqUQsnsoL7x7RwU6
- EGb0WxbxuvcHAFQaLbfudhqD21Q2oQ7fPMfIJIWg/0VLaIEbl26BDVYJlOC/uw5/G3iwm+Pwq2H
- re7nZD8Ss6YWCr0zANW/Khpus72KgYUsgnR6MxD7fJ1f9yfzr8QzR+IU0DWeLqlaKef4mtJa9Sl
- ibhxJrk/29CaAMpAU23UsJDkmujCUI/ufe+lK27x5Aa+0bn4rs+OoKyzU6kGAXsnt/MLruJ9Vji
- PYxX0XFWCtojbhWgDmoFjNzb7Ji//VgwNJmhWinvJoaA=
-X-Received: by 2002:a05:600c:1993:b0:45b:5f99:191c with SMTP id
- 5b1f17b1804b1-45f211d5aa8mr59383825e9.12.1757751037841; 
- Sat, 13 Sep 2025 01:10:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEVi6cigfC05eJnL/TuYSY2m+RCCQvCRSORtOBUn338bTr4wO4EmYkHRIdPt7hPjipiuF9vAg==
-X-Received: by 2002:a05:600c:1993:b0:45b:5f99:191c with SMTP id
- 5b1f17b1804b1-45f211d5aa8mr59383585e9.12.1757751037379; 
- Sat, 13 Sep 2025 01:10:37 -0700 (PDT)
+ bh=qfNF7of65e0ISpiPiVdlW59eULNiwvi00PI6EPOfXZE=;
+ b=i+4RZSu0wl+0V4DwsLk0yVgSvrMH9Bcv3cTltj0pLLVOGBOdoifOE/Mvpf1yWJ0sWP
+ WZ+8DhH382Aykyzvtnc07jD5iiIBb7IZnQgxjfJa2OzBL394gwm/FO4pl/qGuRCTd1zz
+ 6gzMe6vBETVJ5vLl4AswsSboPpnmzaF6NrQkwAJaBna70EPg2sDLA6YBWvhCSnwRwF2/
+ C19TD6jXCK/hwOjzZophG/vaodkCnxwJ2QhcXqXRWxuNIXe1qqVdOiZdNSzyMUfzY0G/
+ gxA2n2bqVnkS2uFE+D4udms04qt0Ev85+JfK1zNpN+jUGVHMkjiNVmquIaB1ep2p9PNP
+ +9VA==
+X-Gm-Message-State: AOJu0Yz7YKTMbtI/D9W16tTTGSJQM61BQcFTwiTtrec74ilQvMOJe0uz
+ j0poOCV2hew11e5ZQWvK7PWlVpb8IWMLeKA9fx0HPerMDp5mUT98u7ssigy0UdSedk1MXm+qf7Z
+ JQJhXAfjbE83lA5nNWJZctuZX2G4ksbQ/wEq0mDnpzukf2JxXQBTpKGTPso3UUDNr6XOtYGG8p4
+ Dfm7/YQ4Sg/IInEgBTf2tODG/5sDkkRAJe3P3pyR+W
+X-Gm-Gg: ASbGncsrD6veC6xxMgkeJx8rrCfsj0jXNmO7mW8BWstRYixKbCBszfqpDtHwGfOhu80
+ pbRL8sgGgElkmL05WuJ7K79Qjun5vsFQR0P1a3ShwWgWXZHy4qft3mWnBJy+rpvG7uw9+fSN6eE
+ PTWXD8LH3jpO3m4dTUaHdajneLdmmKNvwSHkvvJdm/lL8Dv2PlYhAi3LzQ7DyP+ohRQr9Shjfyt
+ EJG6CtAHfGQkkPhJ1Njw1bcdPfQ8t0iroOievrfh99msflGgOYXMCv1eeLH1SlNESwGOtfKXSO+
+ FXCUHen1O6BKD3ucz0+q7jv5fIYuZ1lTF5yM/7fXXe8yYeP08vgXh6Wxcn3lPD1VvIJ2byIUljz
+ kWPu0s2NTurTwJwqB4h1+wbrtQ7ZTGj2lw/WAndIR4qw=
+X-Received: by 2002:a05:6000:18a7:b0:3d4:eac4:9db2 with SMTP id
+ ffacd0b85a97d-3e765782b5fmr6375096f8f.5.1757751040075; 
+ Sat, 13 Sep 2025 01:10:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFIx2Z9HfsZVuFRTh7uRWrqt1LHESeyttOtPUE1k8aqMDFmRPdvMb8UROAa6JgpLYUvZvM3Yg==
+X-Received: by 2002:a05:6000:18a7:b0:3d4:eac4:9db2 with SMTP id
+ ffacd0b85a97d-3e765782b5fmr6375065f8f.5.1757751039616; 
+ Sat, 13 Sep 2025 01:10:39 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45e015775f1sm93399455e9.8.2025.09.13.01.10.34
+ ffacd0b85a97d-3e7607cd27dsm9313599f8f.41.2025.09.13.01.10.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 13 Sep 2025 01:10:34 -0700 (PDT)
+ Sat, 13 Sep 2025 01:10:38 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Igor Mammedov <imammedo@redhat.com>
-Subject: [PULL 19/61] tcg/user: do not set exit_request gratuitously
-Date: Sat, 13 Sep 2025 10:09:00 +0200
-Message-ID: <20250913080943.11710-20-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 20/61] ci: temporarily remove rust from Ubuntu
+Date: Sat, 13 Sep 2025 10:09:01 +0200
+Message-ID: <20250913080943.11710-21-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250913080943.11710-1-pbonzini@redhat.com>
 References: <20250913080943.11710-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -107,38 +108,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Whenever user-mode emulation needs to go all the way out of the cpu
-exec loop, it uses cpu_exit(), which already sets cpu->exit_request.
+This is for the purpose of getting an easy-to-use base for future
+development.  The plan is:
+- that Debian will require trixie to enable Rust usage
+- that Ubuntu will backport 1.83 to its 22.04 and 24.04 versions
+  (https://bugs.launchpad.net/ubuntu/+source/rustc-1.83/+bug/2120318)
 
-Therefore, there is no need for tcg_kick_vcpu_thread() to set
-cpu->exit_request again outside system emulation.
+Marc-André is working on adding Rust to other CI jobs.
 
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/r/20250908105005.2119297-2-pbonzini@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/tcg/cpu-exec.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .gitlab-ci.d/buildtest.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index ad94f96b252..7c20d9db122 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -751,6 +751,7 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 83c2867295a..f01978fb40c 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -39,9 +39,9 @@ build-system-ubuntu:
+     job: amd64-ubuntu2204-container
+   variables:
+     IMAGE: ubuntu2204
+-    CONFIGURE_ARGS: --enable-docs --enable-rust
++    CONFIGURE_ARGS: --enable-docs
+     TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
+-    MAKE_CHECK_ARGS: check-build check-doc
++    MAKE_CHECK_ARGS: check-build
  
- void tcg_kick_vcpu_thread(CPUState *cpu)
- {
-+#ifndef CONFIG_USER_ONLY
-     /*
-      * Ensure cpu_exec will see the reason why the exit request was set.
-      * FIXME: this is not always needed.  Other accelerators instead
-@@ -758,6 +759,7 @@ void tcg_kick_vcpu_thread(CPUState *cpu)
-      * CPU thread; see kvm_arch_pre_run() for example.
-      */
-     qatomic_store_release(&cpu->exit_request, true);
-+#endif
- 
-     /* Ensure cpu_exec will see the exit request after TCG has exited.  */
-     qatomic_store_release(&cpu->neg.icount_decr.u16.high, -1);
+ check-system-ubuntu:
+   extends: .native_test_job_template
 -- 
 2.51.0
 
