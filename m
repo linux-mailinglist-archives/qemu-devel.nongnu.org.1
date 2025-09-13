@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB39B55F52
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7806EB55F4D
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Sep 2025 10:15:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uxLNU-0002zL-Rt; Sat, 13 Sep 2025 04:13:01 -0400
+	id 1uxLNz-0004PZ-2Y; Sat, 13 Sep 2025 04:13:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLN5-00021k-Vf
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uxLN8-00025p-Ck
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uxLN3-0005KZ-Bv
- for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:35 -0400
+ id 1uxLN6-0005L4-J1
+ for qemu-devel@nongnu.org; Sat, 13 Sep 2025 04:12:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757751152;
+ s=mimecast20190719; t=1757751155;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KoI6yvC21dslA1v98yDlQjqFTRjNFP/v63K9eXeIsBI=;
- b=cKlFq5sTnWmWh10czgr8ZMThBHe19up1o6nY04jkmlNe7LW0jJL9WtDgkrduKmMUlEltgP
- 68nH+rowbEMVrYOQ/wBynOqrKjT/pA9CuZqX/oL8EvFzlyoPt4gG+dfsSyu+zUC+uXkl/j
- vx4yUJuYgzToJFH2vMuYSYtCHC+N5iI=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=F5uQt5ustiZIdzCYn4xmtqTsqlJ6I63W6ymofZAy7J0=;
+ b=A0H5qHb/Srq7Ek3PMhAEnCh5m7JyIar8vEqloJ9Gq0RuSYHjezjm5rn4IrM0Fqnl6Z9FCg
+ o7FEtvTtb6uG9eKNUZkjuRb/R7GKO7hz1AhnJqyhvEfRu/wV2lHxnADTteHy1tiDlRFqTg
+ WQKKZN9iH119rr2GrRGy4/EI6V5zqj0=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-57-pUaZbQgMOgO5lJVkXi1jHw-1; Sat, 13 Sep 2025 04:12:30 -0400
-X-MC-Unique: pUaZbQgMOgO5lJVkXi1jHw-1
-X-Mimecast-MFC-AGG-ID: pUaZbQgMOgO5lJVkXi1jHw_1757751150
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3e75fcdddbdso1295799f8f.2
- for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:12:30 -0700 (PDT)
+ us-mta-54-oUNNH6MTNdSPeIbWQwLUjw-1; Sat, 13 Sep 2025 04:12:34 -0400
+X-MC-Unique: oUNNH6MTNdSPeIbWQwLUjw-1
+X-Mimecast-MFC-AGG-ID: oUNNH6MTNdSPeIbWQwLUjw_1757751153
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3df2f4aedd1so1862778f8f.3
+ for <qemu-devel@nongnu.org>; Sat, 13 Sep 2025 01:12:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757751149; x=1758355949;
+ d=1e100.net; s=20230601; t=1757751152; x=1758355952;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KoI6yvC21dslA1v98yDlQjqFTRjNFP/v63K9eXeIsBI=;
- b=cUFJ6SjIUPboW+tTF8Bzh1eCjhOH58YL4vkwulDJaiSzPOmYNjpTWwKlABuAvPEHHP
- zf5b3jtCUiN8ZkTKPEi5Irb3PEUazy0zBV62joa1LmSLgiL2rUt1C48WofNOmCg4xSjf
- Y4vkET8jQu5OGsEZoANB+Nj6ILA+WIEvdbu13CQuRo/reXbhVBk086rPIOqvtBvS7akV
- sWW5CLUoI9W26i4CsoLY8VEcF9EvTb/zwxIvYfCWty7twID16eWifzcJncihqjFxNMwH
- PDlWFPqDAL9Bv73pb5zR9Ln+LXqu3w/LfGI1QTKd8hHaU0rUNzIThvxovliCj4rVzMU2
- OYYQ==
-X-Gm-Message-State: AOJu0YzD3UxAYMiwkftjep8/OsyTsRM460huqAoM+Vzrc09WtqebCyBg
- rsqgxpxQro/+jo+eUm6DldahY+73fr87YMqlbVeTSJwfNyGxbIDuqkn4Vj7FEVqjzQiJ7XUA3uV
- 0okfPKxBlFmWL3++4N69fq5ymR44XE4biYDuSwlaLOTXgUZ08PqDY+9RmyJWssx2B70Z++ttsJ2
- Jr2LtSP2ZNnEdA/P7vtGgiF4076qVSm5X2d50ozETy
-X-Gm-Gg: ASbGncu1rS8lI2rbiTQEKCEFiDN8fRwVfCOgvPRve8WtUif81FmErsSTEYRWuWhQSkH
- JQUNXE50lkhH9F+sNTiPbhoGqgqbM9N33HCsvKYzEb0bOBPAF7DmF5dQL/5hW3GBS6CIQqxAFzD
- iavf/K+H+bnGEeVcKac+Z2Y/3EZUe7heWr1I7NKIhTJxaWdii2NWnu0LlSaTknvRaouoMt64cTT
- Amb8425SEFTJNz2PrN0jY0N8HpyRvJH5903FqP5NjDJTUqSCSu9N1X3J4O+PBCLEtse8nfpV1h6
- +47jRSGvoQ2vCSWh3gtzUXmqoQn/zIRjvv2AvrjFpMAHc/Aub6nY0Xe9qMxeH0z2Wn/XSQh8nid
- 5BP8PwKmk9nxHIatigFFBYztdFbGmJEltNpg03VxJpd8=
-X-Received: by 2002:a05:6000:420f:b0:3e5:955d:a81b with SMTP id
- ffacd0b85a97d-3e7659c4248mr5016865f8f.34.1757751148850; 
- Sat, 13 Sep 2025 01:12:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEIE+15wQYUhMNqii8b89mH4X0yxHS5Pb4oyidKdzD45sVy0lZSe5czC38SfsyaH3c3EQOGtA==
-X-Received: by 2002:a05:6000:420f:b0:3e5:955d:a81b with SMTP id
- ffacd0b85a97d-3e7659c4248mr5016843f8f.34.1757751148392; 
- Sat, 13 Sep 2025 01:12:28 -0700 (PDT)
+ bh=F5uQt5ustiZIdzCYn4xmtqTsqlJ6I63W6ymofZAy7J0=;
+ b=R9gasxy3viIzbOqalpgPODuO6lkag4hwivZUYbdnvOQfMLP7Z0ID22KGycvOemX2Mt
+ oFaqGwV7MGqM9WYSl/DqVSAv7ZMyICerDew7uQO0ud5v0OW39T/yFvc0KRLBBLYqEEK8
+ gDmENB91njCchmlnn7IPdUjkT3MBhcmOA43YV/4Gpsfkjs+13RcEfkUMoAideePnrGIU
+ 1mInibIdipHyDJ1SmQuU7ow360o+6wEyka5z10WrIh1161lrwrhGGuiIXb4GlZDXiMSf
+ Vey97J3rtoufAhsfxKKxyApQKrxn1wwW4/aELSqxxzCH5xZZYf92QnBupFw8TbAxDWW8
+ 3VWQ==
+X-Gm-Message-State: AOJu0YyuGMAsNfGdf5ZLBWksv9nGoRAkSseSnUpcpkB1DL7hXYsuwKre
+ b5vbfm7NVo4TZSkrCm+u9eb3SU3PwrtikwqCWpv8S/vLG8ZDrMHRUXFq1vtw5ZAmCpm0iYwNADT
+ oIpwNJ7r9IR4/gp1VtRcXLc90RVfWAEHG037dUXhF4iPpV+4ZJ+ADQoYKce7cNCMk9dUNfeEq+e
+ M1xQ52HjoISAucxAKMj4RHWEsyngChMqJhwbeaJreU
+X-Gm-Gg: ASbGncuYV8AjIj4/SJbJIU9wWN8YPNQj2xgHpZLDsFnoLcN3akJY6Ps0lTJvUY5mJNU
+ d8ZJ5PEYuMNS3rZnTMXbqSDlqmmIQUAZuw/p18qa/s2YACVFwoZyL9mMYVL5L8VMndLfSzudFEl
+ lF0gsBMZFaKsSROCnF+z1WlWaeAl5okQvT7YbWDXz5zEYH9vZKvYDs00KtwPJsLiXjIyZv1BykV
+ HJ3Ith9yNOV6kcZJwmEJyX0PjO8G/ZejQ1iIsCtw+Nll4NDAnCpLNmY+fqUI1TwzurQmSXhDGyA
+ mW6trsUzchRELgAyODuEW9PXqQtjZVdyIWf/Rk4cTwkaps2YptG7ifvd3Ep2lXsk1NqQyfArouz
+ /TK4KzqpveGbTai42ka7FICtfZtFLPjEZ1yWmjfEWpmw=
+X-Received: by 2002:a5d:5c84:0:b0:3e4:f71e:2d7e with SMTP id
+ ffacd0b85a97d-3e765798576mr4616383f8f.23.1757751152022; 
+ Sat, 13 Sep 2025 01:12:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG9gKJ6zhYZUit2MO51JvZlTcvpfh7rjKP0NCSAJJY3k0/6Lb4S6RCDvPPCkLTYXBEY5PCMZg==
+X-Received: by 2002:a5d:5c84:0:b0:3e4:f71e:2d7e with SMTP id
+ ffacd0b85a97d-3e765798576mr4616363f8f.23.1757751151561; 
+ Sat, 13 Sep 2025 01:12:31 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.56.250])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e766659ea0sm6028410f8f.43.2025.09.13.01.12.27
+ ffacd0b85a97d-3e7607ccf93sm9469194f8f.38.2025.09.13.01.12.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 13 Sep 2025 01:12:27 -0700 (PDT)
+ Sat, 13 Sep 2025 01:12:29 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 60/61] accel/kvm: Zero out mem explicitly in
- kvm_set_user_memory_region()
-Date: Sat, 13 Sep 2025 10:09:41 +0200
-Message-ID: <20250913080943.11710-61-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 61/61] accel/kvm: Set guest_memfd_offset to non-zero value only
+ when guest_memfd is valid
+Date: Sat, 13 Sep 2025 10:09:42 +0200
+Message-ID: <20250913080943.11710-62-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250913080943.11710-1-pbonzini@redhat.com>
 References: <20250913080943.11710-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -112,32 +110,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Zero out the entire mem explicitly before it's used, to ensure the unused
-feilds (pad1, pad2) are all zeros. Otherwise, it might cause problem when
-the pad fields are extended by future KVM.
+Current QEMU unconditionally sets the guest_memfd_offset of KVMSlot in
+kvm_set_phys_mem(), which leads to the trace of kvm_set_user_memory looks:
 
-Fixes: ce5a983233b4 ("kvm: Enable KVM_SET_USER_MEMORY_REGION2 for memslot")
+kvm_set_user_memory AddrSpace#0 Slot#4 flags=0x2 gpa=0xe0000 size=0x20000 ua=0x7f5840de0000 guest_memfd=-1 guest_memfd_offset=0x3e0000 ret=0
+
+It's confusing that the guest_memfd_offset has a non-zero value while
+the guest_memfd is invalid (-1).
+
+Change to only set guest_memfd_offset when guest_memfd is valid and
+leave it as 0 when no valid guest_memfd.
+
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Link: https://lore.kernel.org/r/20250728115707.1374614-3-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250728115707.1374614-4-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/kvm/kvm-all.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ accel/kvm/kvm-all.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 633b72bde2d..72b571a6972 100644
+index 72b571a6972..9060599cd73 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -358,7 +358,7 @@ int kvm_physical_memory_addr_from_host(KVMState *s, void *ram,
- static int kvm_set_user_memory_region(KVMMemoryListener *kml, KVMSlot *slot, bool new)
- {
-     KVMState *s = kvm_state;
--    struct kvm_userspace_memory_region2 mem;
-+    struct kvm_userspace_memory_region2 mem = {};
-     int ret;
+@@ -1595,7 +1595,8 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml,
+         mem->ram = ram;
+         mem->flags = kvm_mem_flags(mr);
+         mem->guest_memfd = mr->ram_block->guest_memfd;
+-        mem->guest_memfd_offset = (uint8_t*)ram - mr->ram_block->host;
++        mem->guest_memfd_offset = mem->guest_memfd >= 0 ?
++                                  (uint8_t*)ram - mr->ram_block->host : 0;
  
-     mem.slot = slot->slot | (kml->as_id << 16);
+         kvm_slot_init_dirty_bitmap(mem);
+         err = kvm_set_user_memory_region(kml, mem, true);
 -- 
 2.51.0
 
