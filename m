@@ -2,65 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7FFB56906
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Sep 2025 14:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A86B56B6A
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Sep 2025 20:58:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uxmIU-0004ZO-B3; Sun, 14 Sep 2025 08:57:40 -0400
+	id 1uxrtD-0001LT-7j; Sun, 14 Sep 2025 14:55:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <fm-294854-20250914124650bc210655fb000207c7-yjyGvZ@rts-flowmailer.siemens.com>)
- id 1uxmID-0004WY-I3
- for qemu-devel@nongnu.org; Sun, 14 Sep 2025 08:57:23 -0400
-Received: from mta-65-227.siemens.flowmailer.net ([185.136.65.227])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <fm-294854-20250914124650bc210655fb000207c7-yjyGvZ@rts-flowmailer.siemens.com>)
- id 1uxmI1-0002Np-0r
- for qemu-devel@nongnu.org; Sun, 14 Sep 2025 08:57:21 -0400
-Received: by mta-65-227.siemens.flowmailer.net with ESMTPSA id
- 20250914124650bc210655fb000207c7 for <qemu-devel@nongnu.org>;
- Sun, 14 Sep 2025 14:46:50 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=jan.kiszka@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=n8i+jjUuq9cfattAVJFgrNhUxynT3tjgjOkOD34uDkY=;
- b=osKkD7BvZe/E3+4t21PhajP+vgI8vqnhmbLgmXVjPiREFDL7ltqjRxajTiU1BJg/1hD6P1
- wJd/287gPp6oH9Tvf8fE7C8fO0RQCKqpYvXOiEl8dnBW7A45Cl7yz3uMDXmqt6RGxlE/kc2v
- 59svawZfGoOZ4GMEjj78IUuoG/Ov55uDPTuaG3W9+L0Glem6Ps0ViHrUXLN5WB8i512UI8La
- DE71svJ60QwGPhEA53r4CWVA+03vlKNaTpPCQG04TIuHLJuT7jM9VuRKqebulD+Yf6Wc5V3O
- TW+yNjjADrs5F266zMDJHQHCOLi3FV4bt65uWjC/Id57VfmoG+dHWmbA==;
-From: Jan Kiszka <jan.kiszka@siemens.com>
-To: qemu-devel <qemu-devel@nongnu.org>
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1uxrt7-0001L9-IQ
+ for qemu-devel@nongnu.org; Sun, 14 Sep 2025 14:55:50 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1uxrt0-0004AB-JJ
+ for qemu-devel@nongnu.org; Sun, 14 Sep 2025 14:55:48 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-62ecd3c21d3so4512171a12.0
+ for <qemu-devel@nongnu.org>; Sun, 14 Sep 2025 11:55:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1757876136; x=1758480936; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=irzZInxGwtwWlxZTOg1+YRX58wsJ94sMIdxHBgBYNKY=;
+ b=C+Rn7RJzQXVRQNbW/pmId/IRcW71XJ5/Zkyp5pzwMxFp5nSMAyycdkaOtZlFJruiLk
+ 5ggjI21qkQCsKjc3sSi18v0u9xXpgpmfgt9PRq8GiHW6gZ2GukGLbOQgPb2vL9x8qJ3i
+ UaS1wq1xVNbxM8kUaXua53dnxIPtroglV22AXscnbCpT4DUcfbD6s0YDCXK33wYPf5tV
+ o7S+3/cyK9OAdfc9XPPYn3ZnujnpXuJQTe1v/Cn4VdHzuF2xi3scGDuVI7YR5E0JwaXO
+ /tGEJlfZwNYCV0Xoj7tkBDnOn6+AlDudpsrLUhZXsd1vRhy4Sft/OCbKcKeol7+dmZ78
+ Zn+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757876136; x=1758480936;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=irzZInxGwtwWlxZTOg1+YRX58wsJ94sMIdxHBgBYNKY=;
+ b=frc15SQL3JC0WlrT+dsi5CYYSNGF/QN8FPklFlTQZKONoGcPZ2jm7TMQnn9FDEl4mc
+ 7nkLC7ZiD0ch3CKPvBryftz6bg/jXHsubrb2c6yDzbZo/8K+QKWDowFkzXOlOKOB8Ud0
+ G7nNOKbZooiW3E64QmptZzYPmjhpgk7/d3iyr1Ydj7CQExzY4oFH+X39khQkEKotCQOb
+ u/wcmuQabF6+XJoJXqMf4RqHAmJNtKvvIUJ6nFJv8SQRcx7qMnwHMRagPCoOwCqfiDmQ
+ xasREnJpU79Nf3eQ8CzDYshyzIMdANBN+obsYO+xRm7qZ4yVk5SSXmJWDeCt+ASicKwk
+ AInQ==
+X-Gm-Message-State: AOJu0YxxaJIZV3goFZ8ZSAQDAUo6K29cQkfWrWFaIdvjXPpysq+fhN3G
+ wIp3KH9W6O/g8Y20iBnw7fDELTI67ec0I7fP6dBfaS5IDD/0sOy/g9u1kcWyEA==
+X-Gm-Gg: ASbGncvzyElrU9fPiu68JzPeQu7DiQxmQmiR7zL3HLEAjB8OOmY8zZd7XL30cGT+hjz
+ L4ScHIgSCo9j4SM3wXdiESExfAgD2/xsIUlNjm+AeY3SqxXR13W9HzN1DBIbPvBpv5whJaOwXlQ
+ hnBzhKX/YoXqiw9ZZXLrUBpJJEYwu49MdKNyT317/p3A0QxMJRFiX2jyyCpw38fsy5uOqhOLity
+ gANm8ZjWatktGmVOTu9y28J72+WUbNw4MN5AJDaMij3DvVb9J5MdR6h+fmeJfsYvpfQX6KN0xMo
+ zDp+ply+UWnmyPA8cY3YW5Tkxqn8nbYE51C5yzftzZzmqKBYQJH6aQSmeTPaNy5OAUr9c+QxCEr
+ KmWMPYyP5AA7yf1Gix4K1RyuNV1sXRlswnAQgbKq3kOjzVMo3601ZTZpwBPZMklNohN16RYIjdI
+ XW3oWWd3lbYb8jzqmxf14nUP+UWi1BPpFyas3Lu5t6TaBXna4+hf7Nyw==
+X-Google-Smtp-Source: AGHT+IHjWrKP2h3UAYC7zEZIs3syztWZ2UmO+Kl5219hVC1TDUo4CbU+QtmQ3Bysk0+xFiK7D3Cgag==
+X-Received: by 2002:a17:907:1b1d:b0:b04:2edd:280b with SMTP id
+ a640c23a62f3a-b07c37e1907mr920106866b.39.1757876135430; 
+ Sun, 14 Sep 2025 11:55:35 -0700 (PDT)
+Received: from Provence.localdomain
+ (dynamic-2a02-3100-2d8d-1600-0219-99ff-feb2-2458.310.pool.telefonica.de.
+ [2a02:3100:2d8d:1600:219:99ff:feb2:2458])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b07b30da58asm812963866b.5.2025.09.14.11.55.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 14 Sep 2025 11:55:34 -0700 (PDT)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bin Meng <bmeng.cn@gmail.com>, qemu-block@nongnu.org,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Jan=20L=C3=BCbbe?= <jlu@pengutronix.de>,
- Jerome Forissier <jerome.forissier@linaro.org>
-Subject: [PATCH v4 6/6] docs: Add eMMC device model description
-Date: Sun, 14 Sep 2025 14:46:46 +0200
-Message-ID: <bf2b2d675264fd41fbe55ad3fb2e528e6d72ad97.1757854006.git.jan.kiszka@siemens.com>
-In-Reply-To: <cover.1757854006.git.jan.kiszka@siemens.com>
-References: <cover.1757854006.git.jan.kiszka@siemens.com>
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH] hw/mips/fuloong2e: Fix vt82c686b idsel
+Date: Sun, 14 Sep 2025 20:55:26 +0200
+Message-ID: <20250914185526.3622-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-294854:519-21489:flowmailer
-Received-SPF: pass client-ip=185.136.65.227;
- envelope-from=fm-294854-20250914124650bc210655fb000207c7-yjyGvZ@rts-flowmailer.siemens.com;
- helo=mta-65-227.siemens.flowmailer.net
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,83 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jan Kiszka <jan.kiszka@siemens.com>
+PMON 2000 accesses the vt82c686b southbridge under device 17, not 5.
+Fix the FULOONG2E_VIA_SLOT define to reflect this.
 
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+
+--
+
+Makes PMON 2000 work in combination with
+https://lore.kernel.org/qemu-devel/20250508-bonito-v1-0-4f9f27733028@flygoat.com/
+`qemu-system-mips64el -M fuloong2e -bios pmon-2edev.bin`.
 ---
- docs/system/device-emulation.rst |  1 +
- docs/system/devices/emmc.rst     | 52 ++++++++++++++++++++++++++++++++
- 2 files changed, 53 insertions(+)
- create mode 100644 docs/system/devices/emmc.rst
+ hw/mips/fuloong2e.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
-index 911381643f..36429b1d17 100644
---- a/docs/system/device-emulation.rst
-+++ b/docs/system/device-emulation.rst
-@@ -101,3 +101,4 @@ Emulated Devices
-    devices/canokey.rst
-    devices/usb-u2f.rst
-    devices/igb.rst
-+   devices/emmc.rst
-diff --git a/docs/system/devices/emmc.rst b/docs/system/devices/emmc.rst
-new file mode 100644
-index 0000000000..dbea6d6c7e
---- /dev/null
-+++ b/docs/system/devices/emmc.rst
-@@ -0,0 +1,52 @@
-+==============
-+eMMC Emulation
-+==============
-+
-+Besides SD card emulation, QEMU also offers an eMMC model as found on many
-+embedded boards. An eMMC, just like an SD card, is connected to the machine
-+via an SDHCI controller.
-+
-+Create eMMC Images
-+==================
-+
-+A recent eMMC consists of 4 partitions: 2 boot partitions, 1 Replay protected
-+Memory Block (RPMB), and the user data area. QEMU expects backing images for
-+the eMMC to contain those partitions concatenated in exactly that order.
-+However, the boot partitions as well as the RPMB might be absent if their sizes
-+are configured to zero.
-+
-+The eMMC specification defines alignment constraints for the partitions. The
-+two boot partitions must be of the same size. Furthermore, boot and RPMB
-+partitions must be multiples of 128 KB with a maximum of 32640 KB for each
-+boot partition and 16384K for the RPMB partition.
-+
-+The alignment constrain of the user data area depends on its size. Up to 2
-+GByte, the size must be a power of 2. From 2 GByte onward, the size has to be
-+multiples of 512 byte.
-+
-+QEMU is enforcing those alignment rules before instantiating the device.
-+Therefore, the provided image has to strictly follow them as well. The helper
-+script `scripts/mkemmc.sh` can be used to create compliant images, with or
-+without pre-filled partitions. E.g., to create an eMMC image from a firmware
-+image and an OS image with an empty 2 MByte RPMB, use the following command:
-+
-+.. code-block:: console
-+
-+    scripts/mkemmc.sh -b firmware.img -r /dev/zero:2MB os.img emmc.img
-+
-+This will take care of rounding up the partition sizes to the next valid value
-+and will leave the RPMB and the second boot partition empty (zeroed).
-+
-+Adding eMMC Devices
-+===================
-+
-+An eMMC is either automatically created by a machine model (e.g. Aspeed boards)
-+or can be user-created when using a PCI-attached SDHCI controller. To
-+instantiate the eMMC image from the example above while assuming that the
-+firmware needs a boot partitions of 1 MB, use the following options:
-+
-+.. code-block:: console
-+
-+    -drive file=emmc.img,if=none,format=raw,id=emmc-img
-+    -device sdhci-pci
-+    -device emmc,drive=emmc-img,boot-partition-size=1048576,rpmb-partition-size=2097152
+diff --git a/hw/mips/fuloong2e.c b/hw/mips/fuloong2e.c
+index 2a8507b8b0..a6bf524b56 100644
+--- a/hw/mips/fuloong2e.c
++++ b/hw/mips/fuloong2e.c
+@@ -59,7 +59,7 @@
+ #define FULOONG_BIOSNAME "pmon_2e.bin"
+ 
+ /* PCI SLOT in Fuloong 2e */
+-#define FULOONG2E_VIA_SLOT        5
++#define FULOONG2E_VIA_SLOT        17
+ #define FULOONG2E_ATI_SLOT        6
+ #define FULOONG2E_RTL8139_SLOT    7
+ 
 -- 
 2.51.0
 
