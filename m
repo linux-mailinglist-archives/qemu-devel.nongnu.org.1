@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEC69B56907
-	for <lists+qemu-devel@lfdr.de>; Sun, 14 Sep 2025 14:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3628B56905
+	for <lists+qemu-devel@lfdr.de>; Sun, 14 Sep 2025 14:59:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uxmIJ-0004Xi-9Y; Sun, 14 Sep 2025 08:57:27 -0400
+	id 1uxmIY-0004bF-K2; Sun, 14 Sep 2025 08:57:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-202509141246488b648be968000207a2-G54YOY@rts-flowmailer.siemens.com>)
- id 1uxmI5-0004UL-PR
- for qemu-devel@nongnu.org; Sun, 14 Sep 2025 08:57:15 -0400
-Received: from mta-64-226.siemens.flowmailer.net ([185.136.64.226])
+ <fm-294854-20250914124648e491eeb33d000207db-ut1UNC@rts-flowmailer.siemens.com>)
+ id 1uxmIH-0004Xl-6R
+ for qemu-devel@nongnu.org; Sun, 14 Sep 2025 08:57:27 -0400
+Received: from mta-65-228.siemens.flowmailer.net ([185.136.65.228])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <fm-294854-202509141246488b648be968000207a2-G54YOY@rts-flowmailer.siemens.com>)
- id 1uxmHw-0002ND-Rt
- for qemu-devel@nongnu.org; Sun, 14 Sep 2025 08:57:13 -0400
-Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id
- 202509141246488b648be968000207a2 for <qemu-devel@nongnu.org>;
+ <fm-294854-20250914124648e491eeb33d000207db-ut1UNC@rts-flowmailer.siemens.com>)
+ id 1uxmHz-0002N3-8t
+ for qemu-devel@nongnu.org; Sun, 14 Sep 2025 08:57:24 -0400
+Received: by mta-65-228.siemens.flowmailer.net with ESMTPSA id
+ 20250914124648e491eeb33d000207db for <qemu-devel@nongnu.org>;
  Sun, 14 Sep 2025 14:46:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
  d=siemens.com; i=jan.kiszka@siemens.com;
  h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=9kg7dAy8SrX16vADrsAZRSF9godIAqn610Eq+o94Rw0=;
- b=qArgQk0psgyBT0x2sNAowtDpQgVztXIBrVm0lB1+DrARXyBlMy7x5gY26qdKOrrtSO0TgH
- 1dSKyFafWRzZSqRZAsFGsrXOoupSZB5TfcG1kgKWwN3kRBmlsfCpNg9ZuUYl3NSYu8uLmynY
- 2UmRBiDO6adaNsoCn6kh87A9UJgXsZ1hLYMxoWK7xu1zXSv0zkGtwJzKU2nnhTdTqrxkv/tw
- hOx+GfWJ4sX70x8N891rO6oJmRYY6pSkFap91oifybiQ8ERZrWAOnPeMVEK3Uhy/5qd9wkBz
- x2J+6wWC+FFb4xTu9rifvzoDibKfqZRJ1wXef0LPXEUBOcwiuuPcFy2A==;
+ bh=s3ZtzpvKMW/LKc6jZTgrh0+bspaB/1gW/W4kkRDduB0=;
+ b=Kbq4AyPK2zEyv4+MFuVyGywWanVTFfMkVu71VmIVDyX0191fQoIWnM6ldn42kpbZkB4xNE
+ QbB+47xUEoOfnuZoml6A1Q2Kz7NDOZUYErlByq4U4KXQAyjsl/xQamMjeiAJO5mhkQzrAolT
+ ILG3PX1c62934JAPBiOYCWNqvlixwb8CxkSk0o6+6LcHAXbSwRBoLP9MyTyI0wNBTLZ/Hl26
+ IO5EBUiJy9QswTW0r7Ghx9Y8W0prKfTOWmpJjdrrjI3JqpoINBTJNqEoeGyUzoK6t54AWXTQ
+ vrDBMfzfJBLi/10VECaTpFzgNbO8rhLjY9d94fPQKCLi6UU6nVrEB4sg==;
 From: Jan Kiszka <jan.kiszka@siemens.com>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -39,29 +39,24 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Ilias Apalodimas <ilias.apalodimas@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Jan=20L=C3=BCbbe?= <jlu@pengutronix.de>,
- Jerome Forissier <jerome.forissier@linaro.org>,
- Warner Losh <imp@bsdimp.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
- Alexander Bulekov <alxndr@bu.edu>
-Subject: [PATCH v4 1/6] hw/sd/sdcard: Fix size check for backing block image
-Date: Sun, 14 Sep 2025 14:46:41 +0200
-Message-ID: <48930c1092424d22dc2171140378de19e0814ef3.1757854006.git.jan.kiszka@siemens.com>
+ Jerome Forissier <jerome.forissier@linaro.org>
+Subject: [PATCH v4 2/6] hw/sd/sdcard: Allow user-instantiated eMMC
+Date: Sun, 14 Sep 2025 14:46:42 +0200
+Message-ID: <aa55b4a207713e1f8c01444e79b38b42c6e1c4d1.1757854006.git.jan.kiszka@siemens.com>
 In-Reply-To: <cover.1757854006.git.jan.kiszka@siemens.com>
 References: <cover.1757854006.git.jan.kiszka@siemens.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Flowmailer-Platform: Siemens
 Feedback-ID: 519:519-294854:519-21489:flowmailer
-Received-SPF: pass client-ip=185.136.64.226;
- envelope-from=fm-294854-202509141246488b648be968000207a2-G54YOY@rts-flowmailer.siemens.com;
- helo=mta-64-226.siemens.flowmailer.net
+Received-SPF: pass client-ip=185.136.65.228;
+ envelope-from=fm-294854-20250914124648e491eeb33d000207db-ut1UNC@rts-flowmailer.siemens.com;
+ helo=mta-65-228.siemens.flowmailer.net
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
@@ -82,104 +77,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jan Kiszka <jan.kiszka@siemens.com>
 
-Alignment rules apply the the individual partitions (user, boot, later
-on also RPMB) and depend both on the size of the image and the type of
-the device. Up to and including 2GB, the power-of-2 rule applies to the
-user data area. For larger images, multiples of 512 sectors must be used
-for eMMC and multiples of 512K for SD-cards. Fix the check accordingly
-and also detect if the image is too small to even hold the boot
-partitions.
+Enable user-instantiation so that PCI-attached eMMCs can be created for
+virt machines, for QA purposes for the eMMC model itself and for complex
+firmware/OS integrations using the upcoming RPMB partition support.
 
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Reviewed-by: Warner Losh <imp@bsdimp.com>
 ---
-CC: Warner Losh <imp@bsdimp.com>
-CC: Cédric Le Goater <clg@kaod.org>
-CC: Joel Stanley <joel@jms.id.au>
-CC: Alistair Francis <alistair@alistair23.me>
-CC: Alexander Bulekov <alxndr@bu.edu>
----
- hw/sd/sd.c | 61 +++++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 42 insertions(+), 19 deletions(-)
+ hw/sd/sd.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index d7a496d77c..b42cd01d1f 100644
+index b42cd01d1f..b86cbf0fbd 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -2759,6 +2759,28 @@ static void sd_instance_finalize(Object *obj)
-     timer_free(sd->ocr_power_timer);
- }
+@@ -2926,8 +2926,6 @@ static void emmc_class_init(ObjectClass *klass, const void *data)
+     dc->desc = "eMMC";
+     dc->realize = emmc_realize;
+     device_class_set_props(dc, emmc_properties);
+-    /* Reason: Soldered on board */
+-    dc->user_creatable = false;
  
-+static void sd_blk_size_error(SDState *sd, int64_t blk_size,
-+                              int64_t blk_size_aligned, const char *rule,
-+                              Error **errp)
-+{
-+    const char *dev_type = sd_is_emmc(sd) ? "eMMC" : "SD card";
-+    char *blk_size_str;
-+
-+    blk_size_str = size_to_str(blk_size);
-+    error_setg(errp, "Invalid %s size: %s", dev_type, blk_size_str);
-+    g_free(blk_size_str);
-+
-+    blk_size_str = size_to_str(blk_size_aligned);
-+    error_append_hint(errp,
-+                      "%s size has to be %s, e.g. %s.\n"
-+                      "You can resize disk images with"
-+                      " 'qemu-img resize <imagefile> <new-size>'\n"
-+                      "(note that this will lose data if you make the"
-+                      " image smaller than it currently is).\n",
-+                      dev_type, rule, blk_size_str);
-+    g_free(blk_size_str);
-+}
-+
- static void sd_realize(DeviceState *dev, Error **errp)
- {
-     SDState *sd = SDMMC_COMMON(dev);
-@@ -2781,25 +2803,26 @@ static void sd_realize(DeviceState *dev, Error **errp)
-             return;
-         }
- 
--        blk_size = blk_getlength(sd->blk);
--        if (blk_size > 0 && !is_power_of_2(blk_size)) {
--            int64_t blk_size_aligned = pow2ceil(blk_size);
--            char *blk_size_str;
--
--            blk_size_str = size_to_str(blk_size);
--            error_setg(errp, "Invalid SD card size: %s", blk_size_str);
--            g_free(blk_size_str);
--
--            blk_size_str = size_to_str(blk_size_aligned);
--            error_append_hint(errp,
--                              "SD card size has to be a power of 2, e.g. %s.\n"
--                              "You can resize disk images with"
--                              " 'qemu-img resize <imagefile> <new-size>'\n"
--                              "(note that this will lose data if you make the"
--                              " image smaller than it currently is).\n",
--                              blk_size_str);
--            g_free(blk_size_str);
--
-+        blk_size = blk_getlength(sd->blk) - sd->boot_part_size * 2;
-+        if (blk_size > SDSC_MAX_CAPACITY) {
-+            if (sd_is_emmc(sd) && blk_size % (1 << HWBLOCK_SHIFT) != 0) {
-+                int64_t blk_size_aligned =
-+                    ((blk_size >> HWBLOCK_SHIFT) + 1) << HWBLOCK_SHIFT;
-+                sd_blk_size_error(sd, blk_size, blk_size_aligned,
-+                                  "multiples of 512", errp);
-+                return;
-+            } else if (!sd_is_emmc(sd) && blk_size % (512 * KiB)) {
-+                int64_t blk_size_aligned = ((blk_size >> 19) + 1) << 19;
-+                sd_blk_size_error(sd, blk_size, blk_size_aligned,
-+                                  "multiples of 512K", errp);
-+                return;
-+            }
-+        } else if (blk_size > 0 && !is_power_of_2(blk_size)) {
-+            sd_blk_size_error(sd, blk_size, pow2ceil(blk_size), "a power of 2",
-+                              errp);
-+            return;
-+        } else if (blk_size < 0) {
-+            error_setg(errp, "eMMC image smaller than boot partitions");
-             return;
-         }
+     sc->proto = &sd_proto_emmc;
  
 -- 
 2.51.0
