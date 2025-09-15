@@ -2,86 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D19B5775C
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 13:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 110F2B576DA
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 12:44:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uy6uA-0000iN-MI; Mon, 15 Sep 2025 06:57:54 -0400
+	id 1uy6fb-0005eq-L4; Mon, 15 Sep 2025 06:42:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1uy6u7-0000iE-Pp
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:57:51 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1uy6tx-0003a6-0A
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:57:50 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3ea3d3ae48fso651015f8f.1
- for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 03:57:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1757933851; x=1758538651; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NM9mggGOccMBkzVpZnhUZYZHGdmEP8DhGl+eaqJCFZ8=;
- b=BrLw6YdlOgRncIGiip4phCMg74Xg3C5Sl21yP3nLKQ+HPjED2L/zukfug1bERTFdK3
- U6MSi3FN5575sWIB8eSUgpOAUmiV22wm/Xvp8dGF15BDzMQUbF+2/rU6hPMs/hVYfVMh
- yPTbPTRCx3B1zIF3F31TnU1MeBLj9v6FYWFADoSPkG5PYP/IOQDH2xl7p8IpdMwRYjJp
- 41IpsVh9WchZKVSkf2Me12QfQRXMHAEebFs3BdrRoc40ImqP+k9GTmpXmfgPZJgz6YYa
- BEx3VaBxKV0ADHgyK6kE51sahQTiyuZFxb216cOkCcUepNC56ghY0n887S0EkqTK0JIH
- F52Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757933851; x=1758538651;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NM9mggGOccMBkzVpZnhUZYZHGdmEP8DhGl+eaqJCFZ8=;
- b=XpG/reFltmwjmNc8lR3U8KpdZSjSpKhq6XIVY5Td8sN0543ZPb9brim/xLp+0u5OVW
- smu9f6BJ0EI8bZbZNRGiA/m/J0J/9lkjSdNpVGcRvpTqydaZ6ti0dcg8XcxgaM7p6ihq
- ROULnGYFWILm+WignMl2OMZDl4u5iJQqiYFoWCNaizBPw1+79vgeouks8/UJMlhSSUuM
- IEeztgfw3JrKyM70GsPj9IMrhfXzVA1qecDUTQB8RBKboiB8hA2j4WlaCskee6jEAPuh
- HKJA0oMjpxtHisEeRzvhEPfSKxsf6GWx9vXHZXcoPD4WcIlSI3nQdYx4acm33PDgV4f9
- r1Fg==
-X-Gm-Message-State: AOJu0Yz2CAy6vlI8Mos0b3BDhvvW51j1q9WAAVrl92v276SNVTSumMz3
- axRqOTg9yCWX8dbDtdospW6tLcRJQvr2KApqn57k9Wx30qRTeY0SeLrKz8xM8Q==
-X-Gm-Gg: ASbGnctoa4DYxWCtmTWII08HXcsqALB43HNNHQx0MDKryzydaPcHPQ/W/lf0MA39KV/
- tH7stlDgGWgDyTbwcITcxIe9tTVlSnvvlLigDuv/Gey7blDlx7o6Nm7uPYiNRdimZXtFN00u7gX
- 7srmaurfl185REjvHn7oAm8X70qtPJ3fJ+oATulj9M+0Y3cDaHnT64ZlhB1AudhAQxx3/IUcNOr
- +g2QJR9EP4100Cb4pxv+fVvso8geo5A26u3I2Wsi7D3z8homSSVdI8a+qovrEikKMB41XYSQbu0
- 6Tp6MQG9x0r8HPOXENktM4U6W1TIITknhCRzfG/yYtMTpFGRVmcJpJAId5jrfNc0m8kNxiJLYkn
- JQMoGHOoGxA6v5VHW1nvUKdgPwIHWadcomu7+KvGO
-X-Google-Smtp-Source: AGHT+IFJUWlrWXa6EFxBK490Mg1n+9DtRpIumiwITb0rBWzjalHR8BeoN5GZLiLTqRioyiJsv8XEhg==
-X-Received: by 2002:a05:6000:26cb:b0:3e2:e851:7f93 with SMTP id
- ffacd0b85a97d-3e75e0fc32bmr13514800f8f.7.1757933851134; 
- Mon, 15 Sep 2025 03:57:31 -0700 (PDT)
-Received: from ehlo.thunderbird.net ([185.238.219.94])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45e0156abecsm174980075e9.4.2025.09.15.03.57.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 Sep 2025 03:57:30 -0700 (PDT)
-Date: Mon, 15 Sep 2025 10:41:50 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
-CC: Huacai Chen <chenhuacai@kernel.org>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH 1/5] hw/pci-host/bonito: Implement ICU
-In-Reply-To: <20250508-bonito-v1-1-4f9f27733028@flygoat.com>
-References: <20250508-bonito-v1-0-4f9f27733028@flygoat.com>
- <20250508-bonito-v1-1-4f9f27733028@flygoat.com>
-Message-ID: <1A535D99-E31D-4F69-B70A-B7C5DA82C0E7@gmail.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uy6fW-0005eb-UN
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:42:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uy6f5-00022f-SM
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:42:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757932929;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xA0VgpfxlZyHkKd289F843B+aGIjnha6/zx/UpKXwhY=;
+ b=fZoTG3t1zkBzsSXA6wY2KGw4ff2WLFvD/DZLNAarE3Qyy+tp/n78/qCyjH0FWmYnjGUsEW
+ q1BCjonP3kt7WmnhM/5EH+zJHNCQvpQbEXQ4dopyZl9phOAjwP3Ns4YX6zuNr/A2uJjwtX
+ G0SosWbpd2IYbrUzXQkbNw0b6uEkDNI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-2LyP4_mRM8OAANKb9yemEw-1; Mon,
+ 15 Sep 2025 06:42:08 -0400
+X-MC-Unique: 2LyP4_mRM8OAANKb9yemEw-1
+X-Mimecast-MFC-AGG-ID: 2LyP4_mRM8OAANKb9yemEw_1757932927
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5CDC91800292; Mon, 15 Sep 2025 10:42:07 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.50])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 103C2180035E; Mon, 15 Sep 2025 10:42:05 +0000 (UTC)
+Date: Mon, 15 Sep 2025 11:42:02 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH 0/6] tests/functional: remove last use of avocado.utils
+Message-ID: <aMftegnnIUMFST6x@redhat.com>
+References: <20250912182200.643909-1-berrange@redhat.com>
+ <87qzw8qahi.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87qzw8qahi.fsf@draig.linaro.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,191 +83,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Sep 15, 2025 at 11:24:41AM +0100, Alex Bennée wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > This simply imports the GDB code from avocado.utils to the QEMU
+> > functional test suite, and drops the other redundant avocado
+> > usage.
+> 
+> Missing patches include dropping the:
+> 
+>   @skipIfMissingImports('avocado.utils')
+> 
+> from the reverse tests.
+> 
+> With this done can we remove the remaining references to avocado?
+> 
+>   python/Makefile                                                   
+>   110:	@avocado --config avocado.cfg run tests/                     
+>   118:	@coverage run -m avocado --config avocado.cfg run tests/*.py 
+>   python/README.rst
+>   73:- ``avocado.cfg`` Configuration for the Avocado test-runner.          
+>   python/qemu/machine/README.rst
+>   5:QEMU. It is used by the iotests, vm tests, avocado tests, and several  
+>   python/qemu/utils/README.rst
+>   5:debugging QEMU. It is used primarily by the vm and avocado tests.      
+>   python/setup.cfg
+>   37:    avocado-framework >= 90.0                                         
+>   python/tests/minreqs.txt
+>   35:avocado-framework==90.0                                               
+>   python/tests/protocol.py
+>   7:import avocado                                                         
+>   160:class Smoke(avocado.Test):                                           
+>   208:class TestBase(avocado.Test):
+
+IIUC, John Snow plans to drop the 'python' directory during this
+release cycle, so I think we can ignore that for now. I've also
+suggested that python-qemu-qmp would be better off switching to
+use pytest instead of avocado, as the latter is what python devs
+are commonly familiar with and is sufficient for our needs.
 
 
-Am 8=2E Mai 2025 14:46:06 UTC schrieb Jiaxun Yang <jiaxun=2Eyang@flygoat=
-=2Ecom>:
->Implement interrupt controller on Bonito north bridge, as well
->as PCI INTx mapping as per Fuloong 2E's hardware connection=2E
->
->pci_bonito_set_irq is renamed to bonito_set_irq to reflect that
->it also sets other IRQs on chip=2E
->
->Signed-off-by: Jiaxun Yang <jiaxun=2Eyang@flygoat=2Ecom>
->---
-> hw/pci-host/bonito=2Ec | 96 ++++++++++++++++++++++++++++++--------------=
---------
-> 1 file changed, 56 insertions(+), 40 deletions(-)
->
->diff --git a/hw/pci-host/bonito=2Ec b/hw/pci-host/bonito=2Ec
->index 7d6251a78d7e2e26803dd72968ca2ea7adcfe0e5=2E=2Ea599a1db4c068325b8c1a=
-a8fb4a45f6b299b581b 100644
->--- a/hw/pci-host/bonito=2Ec
->+++ b/hw/pci-host/bonito=2Ec
->@@ -157,6 +157,22 @@ FIELD(BONGENCFG, PCIQUEUE,      12, 1)
-> #define BONITO_INTEN            (0x38 >> 2)      /* 0x138 */
-> #define BONITO_INTISR           (0x3c >> 2)      /* 0x13c */
->=20
->+/* ICU Pins */
->+#define ICU_PIN_MBOXx(x)        (0 + (x))
->+#define ICU_PIN_DMARDY          4
->+#define ICU_PIN_DMAEMPTY        5
->+#define ICU_PIN_COPYRDY         6
->+#define ICU_PIN_COPYEMPTY       7
->+#define ICU_PIN_COPYERR         8
->+#define ICU_PIN_PCIIRQ          9
->+#define ICU_PIN_MASTERERR       10
->+#define ICU_PIN_SYSTEMERR       11
->+#define ICU_PIN_DRAMPERR        12
->+#define ICU_PIN_RETRYERR        13
->+#define ICU_PIN_INTTIMER        14
->+#define ICU_PIN_GPIOx(x)        (16 + (x))
->+#define ICU_PIN_GPINx(x)        (25 + (x))
->+
-> /* PCI mail boxes */
-> #define BONITO_PCIMAIL0_OFFSET    0x40
-> #define BONITO_PCIMAIL1_OFFSET    0x44
->@@ -206,6 +222,7 @@ struct PCIBonitoState {
->=20
->     BonitoState *pcihost;
->     uint32_t regs[BONITO_REGS];
->+    uint32_t icu_pin_state;
->=20
->     struct bonldma {
->         uint32_t ldmactrl;
->@@ -242,6 +259,40 @@ struct BonitoState {
-> #define TYPE_PCI_BONITO "Bonito"
-> OBJECT_DECLARE_SIMPLE_TYPE(PCIBonitoState, PCI_BONITO)
->=20
->+static void bonito_update_irq(PCIBonitoState *s)
->+{
->+    BonitoState *bs =3D s->pcihost;
->+    uint32_t inten =3D s->regs[BONITO_INTEN];
->+    uint32_t intisr =3D s->regs[BONITO_INTISR];
->+    uint32_t intpol =3D s->regs[BONITO_INTPOL];
->+    uint32_t intedge =3D s->regs[BONITO_INTEDGE];
->+    uint32_t pin_state =3D s->icu_pin_state;
->+    uint32_t level, edge;
->+
->+    pin_state =3D (pin_state & ~intpol) | (~pin_state & intpol);
->+
->+    level =3D pin_state & ~intedge;
->+    edge =3D (pin_state & ~intisr) & intedge;
->+
->+    intisr =3D (intisr & intedge) | level;
->+    intisr |=3D edge;
->+    intisr &=3D inten;
->+
->+    s->regs[BONITO_INTISR] =3D intisr;
->+
->+    qemu_set_irq(*bs->pic, !!intisr);
->+}
->+
->+static void bonito_set_irq(void *opaque, int irq, int level)
->+{
->+    BonitoState *bs =3D opaque;
->+    PCIBonitoState *s =3D bs->pci_dev;
->+
->+    s->icu_pin_state =3D deposit32(s->icu_pin_state, irq, 1, !!level);
->+
->+    bonito_update_irq(s);
->+}
->+
-> static void bonito_writel(void *opaque, hwaddr addr,
->                           uint64_t val, unsigned size)
-> {
->@@ -289,12 +340,12 @@ static void bonito_writel(void *opaque, hwaddr addr=
-,
->         }
->         break;
->     case BONITO_INTENSET:
->-        s->regs[BONITO_INTENSET] =3D val;
->         s->regs[BONITO_INTEN] |=3D val;
->+        bonito_update_irq(s);
->         break;
->     case BONITO_INTENCLR:
->-        s->regs[BONITO_INTENCLR] =3D val;
->         s->regs[BONITO_INTEN] &=3D ~val;
->+        bonito_update_irq(s);
->         break;
->     case BONITO_INTEN:
->     case BONITO_INTISR:
->@@ -549,45 +600,10 @@ static const MemoryRegionOps bonito_spciconf_ops =
-=3D {
->     =2Eendianness =3D DEVICE_NATIVE_ENDIAN,
-> };
->=20
->-#define BONITO_IRQ_BASE 32
->-
->-static void pci_bonito_set_irq(void *opaque, int irq_num, int level)
->-{
->-    BonitoState *s =3D opaque;
->-    qemu_irq *pic =3D s->pic;
->-    PCIBonitoState *bonito_state =3D s->pci_dev;
->-    int internal_irq =3D irq_num - BONITO_IRQ_BASE;
->-
->-    if (bonito_state->regs[BONITO_INTEDGE] & (1 << internal_irq)) {
->-        qemu_irq_pulse(*pic);
->-    } else {   /* level triggered */
->-        if (bonito_state->regs[BONITO_INTPOL] & (1 << internal_irq)) {
->-            qemu_irq_raise(*pic);
->-        } else {
->-            qemu_irq_lower(*pic);
->-        }
->-    }
->-}
->-
->-/* map the original irq (0~3) to bonito irq (16~47, but 16~31 are unused=
-) */
-> static int pci_bonito_map_irq(PCIDevice *pci_dev, int irq_num)
-> {
->-    int slot;
->-
->-    slot =3D PCI_SLOT(pci_dev->devfn);
->-
->-    switch (slot) {
->-    case 5:   /* FULOONG2E_VIA_SLOT, SouthBridge, IDE, USB, ACPI, AC97, =
-MC97 */
->-        return irq_num % 4 + BONITO_IRQ_BASE;
->-    case 6:   /* FULOONG2E_ATI_SLOT, VGA */
->-        return 4 + BONITO_IRQ_BASE;
->-    case 7:   /* FULOONG2E_RTL_SLOT, RTL8139 */
->-        return 5 + BONITO_IRQ_BASE;
->-    case 8 =2E=2E=2E 12: /* PCI slot 1 to 4 */
->-        return (slot - 8 + irq_num) + 6 + BONITO_IRQ_BASE;
->-    default:  /* Unknown device, don't do any translation */
->-        return irq_num;
->-    }
->+    /* Fuloong 2E PCI INTX are connected to Bonito GPIN[3:0] */
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-Given this comment, doesn't this code belong into fuloong2e=2Ec? See https=
-://lore=2Ekernel=2Eorg/qemu-devel/20230105154440=2E259361-1-shentey@gmail=
-=2Ecom =2E
-
->+    return ICU_PIN_GPINx(irq_num);
-
-It would then make sense to export this define=2E I can rebase my series, =
-or how about incorporating it here? Either way:
-
-Reviewed-by: Bernhard Beschow <shentey@gmail=2Ecom>
-
-> }
->=20
-> static void bonito_reset_hold(Object *obj, ResetType type)
->@@ -633,7 +649,7 @@ static void bonito_host_realize(DeviceState *dev, Err=
-or **errp)
->=20
->     memory_region_init(&bs->pci_mem, OBJECT(dev), "pci=2Emem", BONITO_PC=
-IHI_SIZE);
->     phb->bus =3D pci_register_root_bus(dev, "pci",
->-                                     pci_bonito_set_irq, pci_bonito_map_=
-irq,
->+                                     bonito_set_irq, pci_bonito_map_irq,
->                                      dev, &bs->pci_mem, get_system_io(),
->                                      PCI_DEVFN(5, 0), 32, TYPE_PCI_BUS);
->=20
->
 
