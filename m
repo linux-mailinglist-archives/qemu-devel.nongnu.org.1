@@ -2,114 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60ADDB5823C
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 18:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E127B58242
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 18:37:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyCAT-0006qz-6j; Mon, 15 Sep 2025 12:35:05 -0400
+	id 1uyCC0-0007q3-29; Mon, 15 Sep 2025 12:36:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maxbr@linux.ibm.com>)
- id 1uyCAO-0006qC-Aw
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 12:35:00 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uyCBl-0007iO-L9
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 12:36:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maxbr@linux.ibm.com>)
- id 1uyCAA-0007YB-7u
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 12:34:59 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58FDId7a023574;
- Mon, 15 Sep 2025 16:34:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=iXwxhs3IlBLgethRh
- Z+Lz5FtrIcS1AsOKcUKFw6BXEk=; b=bOr+RCE1vxLe62Hy3xU1AmxcgADrodUpJ
- aeeGywTV+KMxv55U/I32RzZOUN47ic5Vgj/qfYW5GQqCvxiZxlTZr45sCOvnkyTg
- PJWKKLZ6SFJWQE6HEL1UEuVh/rfbVVzKuEnO0PYeQRJl3EopvQMk2A4aTj/QRlTr
- GJ8XhLf/tohCn93GoKyB/d1s/7Wh6mz6zHf2Ck1y7uHlgmCIu7pr9ddF9Hk41xyE
- 9fm16ws+rO8K5/029BHeUL51BawpwM388aw0X3zlPkv29asTskR8qWYRH/FXjImA
- VlnkLbWP7EA3RrGm9e0pN/ZkaeDBzcVdmcqXXd4y/yEuv67Ww7W5A==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnkvf4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Sep 2025 16:34:28 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58FGWcsw006560;
- Mon, 15 Sep 2025 16:34:27 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnkvf1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Sep 2025 16:34:27 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58FF9XF8022328;
- Mon, 15 Sep 2025 16:34:26 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kxpfdj0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Sep 2025 16:34:26 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 58FGYMfq55837026
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Sep 2025 16:34:22 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4350820043;
- Mon, 15 Sep 2025 16:34:22 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3FDE520040;
- Mon, 15 Sep 2025 16:34:17 +0000 (GMT)
-Received: from li-9b52914c-2c8b-11b2-a85c-a36f6d484b4a.ibm.com (unknown
- [9.61.163.204]) by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 15 Sep 2025 16:34:16 +0000 (GMT)
-From: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
-To: maxbr@linux.ibm.com
-Cc: amit@kernel.org, armbru@redhat.com, berrange@redhat.com, eblake@redhat.com,
- eduardo@habkost.net, filip.hejsek@gmail.com, lvivier@redhat.com,
- marcandre.lureau@redhat.com, marcel.apfelbaum@gmail.com,
- mst@redhat.com, noh4hss@gmail.com, pbonzini@redhat.com,
- philmd@linaro.org, qemu-devel@nongnu.org, wangyanan55@huawei.com,
- zhao1.liu@intel.com, nsg@linux.ibm.com
-Subject: [PATCH v2] char-pty: add support for the terminal size
-Date: Mon, 15 Sep 2025 18:34:15 +0200
-Message-ID: <20250915163415.149190-1-maxbr@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250915162535.147642-1-maxbr@linux.ibm.com>
-References: <20250915162535.147642-1-maxbr@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uyCBV-0007wc-Is
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 12:36:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757954162;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=iohf8iTJbn33RjXzhmzZzE6csKhHQLJ/YlpJGiANklA=;
+ b=YmhAMgM1yI+V6Izz1sAJbCk42Teyrxawx4VkgUZhyp4MO85kc3uvw5HJyOgLepuzXmH7gC
+ gD2UdnmqSU2V9soSJk5dTFGyFrb84tReUg2QjogPmxi5s9rKbeoKU2NszAlvPMTargIJVa
+ 4kNy/BzgfeyA5RHs+5zTbEtVPEjgRjI=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-112-w4BvggvlOfmBBdcl2V2wUA-1; Mon, 15 Sep 2025 12:36:00 -0400
+X-MC-Unique: w4BvggvlOfmBBdcl2V2wUA-1
+X-Mimecast-MFC-AGG-ID: w4BvggvlOfmBBdcl2V2wUA_1757954160
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4b548745115so112208211cf.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 09:36:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757954160; x=1758558960;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iohf8iTJbn33RjXzhmzZzE6csKhHQLJ/YlpJGiANklA=;
+ b=gFDYCuPx5GTuTR/IIuP/iYAd9efSetjXIw/HCozAPkd5EfkZ2cCTwqzRrPxBEHr6/p
+ d3m5EYyDBH4yQQ4/25HPZcft30Ot3oIpeEwLFkaHzV81IOSY4wmgVreepeVC9BZt+ORP
+ q64uBtUkDqdSelG4lCi5puNmxoC6Tm7b6Su8YeY/irS2D6SBRt/iRyi/wYSNLfC52CRL
+ giwaWwtNfAWpj3xODb0rDUz3tkbXbU+uIDGTFvCyOp67pEOHBc6a7Ha7My4y+USWdbds
+ 7hSj3EujNdtv9kN9hZBIU+BM3oh6O4/eoPIghFRmWXEaxsGcfHPOvZ9Et7z1DmvCTMwc
+ u59Q==
+X-Gm-Message-State: AOJu0YynUgR1mEjbvCMApFw4fCAzzECaBF+2I8Z7AKoPlnB+SrIDNI2U
+ R0X/8un3V2PH54bJaO/uKZPPD94+2EUGps/nbsbpAIptFg5rSbfyQMA4NAnzLQ0eQWuZEvbX59A
+ bbfZwbf+hirqI6ayk0NKMeSGPJvm9TrQg7vuYXSR5/hMRUX7ULwVndU2E
+X-Gm-Gg: ASbGncuh+iLfHsNiQp0ynNxe1a7jEO/3sAvC/c0MVjd1o53qnFFAOTr7moran6UVP1g
+ uRcWuqc2VGDtuxspy+K7t+rYRBJhE2zPWmtln3UflFF40W+oX+ItC95OLSNMjAFSyurIgwZVGls
+ LGPhr3gZ3e5GDBEsaLyvwPyqbnA7i+WXtusds/F3NK5dasR3nVOuIR8g1nZlQvF5KM+f/YFLk1U
+ Y1Ai2dXVImrtS8d6x5XZcyOy0qRMXDUqm0JtmLopGu9ogbNfh7qn/9MbXwQYeZX0ITZttA5IqOv
+ QuCgwJ2dN5Vu/g8BQ4XchRaf/h6qAlRX
+X-Received: by 2002:a05:622a:1347:b0:4b4:7b34:1dc4 with SMTP id
+ d75a77b69052e-4b77cbbe4a1mr162873861cf.13.1757954159542; 
+ Mon, 15 Sep 2025 09:35:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFpnROrVIFBCKjJx5p3ucbdESi5suyNS88EJIAmJWWslilkAnI8VyMTix9MN+McuMqprx2tnQ==
+X-Received: by 2002:a05:622a:1347:b0:4b4:7b34:1dc4 with SMTP id
+ d75a77b69052e-4b77cbbe4a1mr162873161cf.13.1757954158851; 
+ Mon, 15 Sep 2025 09:35:58 -0700 (PDT)
+Received: from x1.local ([174.89.135.121]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4b639dab102sm68845051cf.33.2025.09.15.09.35.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Sep 2025 09:35:58 -0700 (PDT)
+Date: Mon, 15 Sep 2025 12:35:46 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: Re: [PATCH V3 4/9] vl: helper to request exec
+Message-ID: <aMhAYkVgf73gjxVZ@x1.local>
+References: <1755191843-283480-1-git-send-email-steven.sistare@oracle.com>
+ <1755191843-283480-5-git-send-email-steven.sistare@oracle.com>
+ <aMBNCUXuMzxUToff@x1.local>
+ <28bf9c97-1e69-4121-a4aa-2d2bf5ac50bb@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Ra2wi9pZVZIMeCh9dBk13vyyxokuDGk-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDAyOCBTYWx0ZWRfXz5iKkU7gFaAa
- cjX8ByxGaKWBs4hMc781mCK9i3nHJSZehKtVU+ZYW1FOfFhGChjxmNBOfsVq4SzbGUX0h6OmYxn
- zC5vIZSzU6z+FxxqCpq4lZRSJzpd5+l9Q2D2UxcAEpZLADxy1xCy064aDLhPQFmMUehspGLonjT
- 8QooWvmKLBj+AH1Ybd+X79bH8nWELOP7ukRz1VYrZgK+I79fsKsBmmyPKYwzsXIFBmvo0H5SIUh
- urvyjt955E11lCuy6KYrSQXvI9nUwyjxsKYM64AMzMgH/tryHZc/ElVinrW50ReA46zWtM58yRl
- e8kbL2f1tq2JhQlR+8oTGKswTJJPs7MqSsoZzQMQmPsQdEeuZy5jkv5oZNMSDEHqqCeMFIZiILl
- 7mVv8WZM
-X-Authority-Analysis: v=2.4 cv=HecUTjE8 c=1 sm=1 tr=0 ts=68c84014 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=GfxKoImt5xJX7E72Q28A:9
-X-Proofpoint-GUID: 0HuAXI7QRoHD9IIjFj9g_kIzXzBW3Y0d
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-15_06,2025-09-12_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 spamscore=0 priorityscore=1501 suspectscore=0
- malwarescore=0 bulkscore=0 impostorscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509150028
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=maxbr@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <28bf9c97-1e69-4121-a4aa-2d2bf5ac50bb@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,89 +107,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the terminal size upon SIGWINCH delivery.
+On Fri, Sep 12, 2025 at 10:49:23AM -0400, Steven Sistare wrote:
+> On 9/9/2025 11:51 AM, Peter Xu wrote:
+> > On Thu, Aug 14, 2025 at 10:17:18AM -0700, Steve Sistare wrote:
+> > > Add a qemu_system_exec_request() hook that causes the main loop to exit and
+> > > exec a command using the specified arguments.  This will be used during CPR
+> > > to exec a new version of QEMU.
+> > > 
+> > > Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> > > ---
+> > >   include/system/runstate.h |  3 +++
+> > >   system/runstate.c         | 29 +++++++++++++++++++++++++++++
+> > >   2 files changed, 32 insertions(+)
+> > > 
+> > > diff --git a/include/system/runstate.h b/include/system/runstate.h
+> > > index 929379a..c005f49 100644
+> > > --- a/include/system/runstate.h
+> > > +++ b/include/system/runstate.h
+> > > @@ -128,6 +128,8 @@ typedef enum WakeupReason {
+> > >       QEMU_WAKEUP_REASON_OTHER,
+> > >   } WakeupReason;
+> > > +typedef void (*qemu_exec_func)(char **exec_argv);
+> > > +
+> > >   void qemu_system_reset_request(ShutdownCause reason);
+> > >   void qemu_system_suspend_request(void);
+> > >   void qemu_register_suspend_notifier(Notifier *notifier);
+> > > @@ -139,6 +141,7 @@ void qemu_register_wakeup_support(void);
+> > >   void qemu_system_shutdown_request_with_code(ShutdownCause reason,
+> > >                                               int exit_code);
+> > >   void qemu_system_shutdown_request(ShutdownCause reason);
+> > > +void qemu_system_exec_request(qemu_exec_func func, const strList *args);
+> > >   void qemu_system_powerdown_request(void);
+> > >   void qemu_register_powerdown_notifier(Notifier *notifier);
+> > >   void qemu_register_shutdown_notifier(Notifier *notifier);
+> > > diff --git a/system/runstate.c b/system/runstate.c
+> > > index 6178b00..b4980ff 100644
+> > > --- a/system/runstate.c
+> > > +++ b/system/runstate.c
+> > > @@ -41,6 +41,7 @@
+> > >   #include "qapi/error.h"
+> > >   #include "qapi/qapi-commands-run-state.h"
+> > >   #include "qapi/qapi-events-run-state.h"
+> > > +#include "qapi/type-helpers.h"
+> > >   #include "qemu/accel.h"
+> > >   #include "qemu/error-report.h"
+> > >   #include "qemu/job.h"
+> > > @@ -422,6 +423,8 @@ static NotifierList wakeup_notifiers =
+> > >   static NotifierList shutdown_notifiers =
+> > >       NOTIFIER_LIST_INITIALIZER(shutdown_notifiers);
+> > >   static uint32_t wakeup_reason_mask = ~(1 << QEMU_WAKEUP_REASON_NONE);
+> > > +qemu_exec_func exec_func;
+> > > +static char **exec_argv;
+> > >   ShutdownCause qemu_shutdown_requested_get(void)
+> > >   {
+> > > @@ -443,6 +446,11 @@ static int qemu_shutdown_requested(void)
+> > >       return qatomic_xchg(&shutdown_requested, SHUTDOWN_CAUSE_NONE);
+> > >   }
+> > > +static int qemu_exec_requested(void)
+> > > +{
+> > > +    return exec_argv != NULL;
+> > > +}
+> > > +
+> > >   static void qemu_kill_report(void)
+> > >   {
+> > >       if (!qtest_driver() && shutdown_signal) {
+> > > @@ -803,6 +811,23 @@ void qemu_system_shutdown_request(ShutdownCause reason)
+> > >       qemu_notify_event();
+> > >   }
+> > > +static void qemu_system_exec(void)
+> > > +{
+> > > +    exec_func(exec_argv);
+> > > +
+> > > +    /* exec failed */
+> > > +    g_strfreev(exec_argv);
+> > > +    exec_argv = NULL;
+> > > +    exec_func = NULL;
+> > 
+> > Would this really happen?
+> > 
+> > If so, do we at least want to dump something?
+> > 
+> > > +}
+> > > +
+> > > +void qemu_system_exec_request(qemu_exec_func func, const strList *args)
+> > > +{
+> > > +    exec_func = func;
+> > > +    exec_argv = strv_from_str_list(args);
+> > > +    qemu_notify_event();
+> > > +}
+> > > +
+> > >   static void qemu_system_powerdown(void)
+> > >   {
+> > >       qapi_event_send_powerdown();
+> > > @@ -849,6 +874,10 @@ static bool main_loop_should_exit(int *status)
+> > >       if (qemu_suspend_requested()) {
+> > >           qemu_system_suspend();
+> > >       }
+> > > +    if (qemu_exec_requested()) {
+> > > +        qemu_system_exec();
+> > > +        return false;
+> > > +    }
+> > 
+> > Some explanation of why it needs to be done explicitly here would be
+> > helpful.  E.g., can we do exec inside a BH scheduled for the main thread?
+> > What if we exec() directly in another thread (rather than the main loop
+> > thread)?
+> 
+> A BH is a good idea, thanks.
+> It only requires a few lines of code, and no globals.
+> I will drop this patch and add a BH to patch "migration: cpr-exec mode".
 
-Signed-off-by: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
----
+That would be better, thanks.
 
-To be committed with the patch-set: [PATCH v4 00/10] virtio-console: notify about the terminal size
+Then, what happens if we exec() in the migration thread directly?  IOW, is
+BH required (to serialize with something happening in the main thread), or
+just looks slightly more clean when exec happens in the main thread?
 
-v1 -> v2: Move comment regarding patch dependencies to note section
----
- chardev/char-pty.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+These info would be great to be put into commit message, but if there's no
+obvious reason, IMHO we _could_ exec() directly in the migration thread, as
+I don't see whatever to be synchronized in the main thread..  Anyway, if we
+want to exec(), IMHO it would be best as straightforward as possible.
 
-diff --git a/chardev/char-pty.c b/chardev/char-pty.c
-index 674e9b3f14..802bae9037 100644
---- a/chardev/char-pty.c
-+++ b/chardev/char-pty.c
-@@ -28,6 +28,7 @@
- #include "io/channel-file.h"
- #include "qemu/sockets.h"
- #include "qemu/error-report.h"
-+#include "qemu/main-loop.h"
- #include "qemu/module.h"
- #include "qemu/option.h"
- #include "qemu/qemu-print.h"
-@@ -35,6 +36,8 @@
- #include "chardev/char-io.h"
- #include "qom/object.h"
- 
-+#include <sys/ioctl.h>
-+
- struct PtyChardev {
-     Chardev parent;
-     QIOChannel *ioc;
-@@ -43,6 +46,8 @@ struct PtyChardev {
-     int connected;
-     GSource *timer_src;
-     char *path;
-+
-+    Notifier resize_notifier;
- };
- typedef struct PtyChardev PtyChardev;
- 
-@@ -85,6 +90,15 @@ static void pty_chr_rearm_timer(Chardev *chr, int ms)
-     g_free(name);
- }
- 
-+static void pty_chr_resize(PtyChardev *s)
-+{
-+    struct winsize ws;
-+
-+    if (ioctl(QIO_CHANNEL_FILE(s->ioc)->fd, TIOCGWINSZ, &ws) != -1) {
-+        qemu_chr_resize(CHARDEV(s), ws.ws_col, ws.ws_row);
-+    }
-+}
-+
- static void pty_chr_update_read_handler(Chardev *chr)
- {
-     PtyChardev *s = PTY_CHARDEV(chr);
-@@ -331,6 +345,12 @@ static int qemu_openpty_raw(int *aslave, char *pty_name)
-     return amaster;
- }
- 
-+static void term_resize_notify(Notifier *n, void *data)
-+{
-+    PtyChardev *s = container_of(n, PtyChardev, resize_notifier);
-+    pty_chr_resize(s);
-+}
-+
- static void char_pty_open(Chardev *chr,
-                           ChardevBackend *backend,
-                           bool *be_opened,
-@@ -376,6 +396,10 @@ static void char_pty_open(Chardev *chr,
-             s->path = g_strdup(path);
-         }
-     }
-+
-+    pty_chr_resize(s);
-+    s->resize_notifier.notify = term_resize_notify;
-+    sigwinch_add_notifier(&s->resize_notifier);
- }
- 
- static void char_pty_parse(QemuOpts *opts, ChardevBackend *backend,
+Thanks,
+
 -- 
-2.50.1
+Peter Xu
 
 
