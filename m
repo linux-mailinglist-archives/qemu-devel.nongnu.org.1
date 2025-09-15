@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2B7B575BA
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 12:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B83B575D3
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 12:13:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uy6Aw-000279-Of; Mon, 15 Sep 2025 06:11:13 -0400
+	id 1uy6Az-0002Dl-Fz; Mon, 15 Sep 2025 06:11:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uy6AU-00026Z-Q6; Mon, 15 Sep 2025 06:10:42 -0400
+ id 1uy6AW-00026s-0q; Mon, 15 Sep 2025 06:10:45 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uy6AJ-0006ZD-Ud; Mon, 15 Sep 2025 06:10:42 -0400
+ id 1uy6AK-0006Zn-EB; Mon, 15 Sep 2025 06:10:41 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58FA8uMR006344
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58FA8uMS006344
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
  Mon, 15 Sep 2025 19:09:06 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=F0AyM/lua4p28w0QtF6/Ku3cctKLYXgOBYs6U3KWbds=; 
+DKIM-Signature: a=rsa-sha256; bh=POdHoCg5/LDRfXqqwG2wxEKm9Lch4GRRuKLv3lF9UqQ=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1757930946; v=1;
- b=r9GnzUJR86fNzx8/JIatyCC/REmjUSWpxlIV7L+ep8eioGuhNZm/Bj9eqrrwQVFX
- y/1/1th//BvK+pluxycZfZQYoXYeDhcT9g3lyjvTYhUbShe0auQZefWBMeOED4Kf
- EPvYJckegZGTVV89WAH0VCibN4qhJJ9QzB5IQ8bNOjxbFs2zBuH4DSVnouJZVlK8
- uYsRhsRonhyTU+KI60afyHoce1HMj21cd0KJPPwpGakwng12/FYVtod0rg/MZWrR
- jQ3tXLCDKXCL/8ORY0JE54ZC2jpMSXZ3UU1HmC7GES6vWFOJaqCVoyvg6kEs6BEY
- 9J9RtMkVB2JwvKiws6WENA==
+ s=rs20250326; t=1757930947; v=1;
+ b=iDtLG8V97FQTmogz3iYdnoPTv3sowJbrKnZfcQacRwUb1hU5mao28syyIqjHA9+a
+ AsClniWX0rp2Ii6QBBoQAYX6FBeW+Nxk8QeB1Lrhu/CC9veqLTmcdqa5aUAqPJA8
+ cT2gVBaB/2mgMclmjOImI8zw5cho8O0006Qi7g/tmCxGhGTtz/ZAfdNLf9xc8Oug
+ MBw+tx8cx5WaXAxGjmiAkMaxU7EsZxIKrobxwTjW6YZQ9r+2tu2ZRDPX5tbLN3BY
+ r66IhNWq3FIqNajPI/ovLCJOZB7oRTJmx84yJZUY7dhTYw+QlM/PbD+UvVfyJgX2
+ DUvxeNhvjAbXtI/F7YYWiw==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 15 Sep 2025 19:08:55 +0900
-Subject: [PATCH v2 14/15] hw/usb/hcd-ehci: Do not delete the subregions
+Date: Mon, 15 Sep 2025 19:08:56 +0900
+Subject: [PATCH v2 15/15] hw/usb/hcd-xhci: Do not delete the subregions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250915-use-v2-14-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250915-use-v2-15-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250915-use-v2-0-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250915-use-v2-0-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -85,7 +85,7 @@ X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
  DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,24 +105,30 @@ It is no longer necessary.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/usb/hcd-ehci.c | 4 ----
- 1 file changed, 4 deletions(-)
+ hw/usb/hcd-xhci.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/hw/usb/hcd-ehci.c b/hw/usb/hcd-ehci.c
-index b090f253656b..21c3501455b5 100644
---- a/hw/usb/hcd-ehci.c
-+++ b/hw/usb/hcd-ehci.c
-@@ -2557,10 +2557,6 @@ void usb_ehci_unrealize(EHCIState *s, DeviceState *dev)
-     ehci_queues_rip_all(s, 0);
-     ehci_queues_rip_all(s, 1);
+diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
+index 292c378bfc98..b68a2aec3171 100644
+--- a/hw/usb/hcd-xhci.c
++++ b/hw/usb/hcd-xhci.c
+@@ -3454,16 +3454,6 @@ static void usb_xhci_unrealize(DeviceState *dev)
+         xhci->mfwrap_timer = NULL;
+     }
  
--    memory_region_del_subregion(&s->mem, &s->mem_caps);
--    memory_region_del_subregion(&s->mem, &s->mem_opreg);
--    memory_region_del_subregion(&s->mem, &s->mem_ports);
+-    memory_region_del_subregion(&xhci->mem, &xhci->mem_cap);
+-    memory_region_del_subregion(&xhci->mem, &xhci->mem_oper);
+-    memory_region_del_subregion(&xhci->mem, &xhci->mem_runtime);
+-    memory_region_del_subregion(&xhci->mem, &xhci->mem_doorbell);
 -
-     usb_bus_release(&s->bus);
+-    for (i = 0; i < xhci->numports; i++) {
+-        XHCIPort *port = &xhci->ports[i];
+-        memory_region_del_subregion(&xhci->mem, &port->mem);
+-    }
+-
+     usb_bus_release(&xhci->bus);
+ }
  
-     if (s->vmstate) {
 
 -- 
 2.51.0
