@@ -2,94 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11994B575A2
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 12:09:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4277B575C3
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 12:12:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uy67g-0007aY-Ve; Mon, 15 Sep 2025 06:07:49 -0400
+	id 1uy6BE-0002iw-7n; Mon, 15 Sep 2025 06:11:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uy67d-0007Zp-Sx
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:07:46 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uy67Q-00066c-Ne
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:07:44 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-45f2a69d876so7358025e9.0
- for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 03:07:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757930840; x=1758535640; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WndymZA4HVXt6LIz7FmHpmeuzG3wCd/8zjNhhzjcMZk=;
- b=RFUvNGSWIix/WG0B8+EF4gHeyvRlaRjWG/Ao+VmOCz+UpN+KdZ3BW9wzx45/cZuC7x
- 3aCbCEfOe/curFFwuW9qdAdxFgy6xhrzMSMQf9tcie1M4aYmp+U3RSx1RdeYDPM+KNYW
- HXozgl0obAa5ugivxJFvmGhpDRCi2jPP/+XBk6c1IqsWk+sX9xTAl+hQ7BfrvX5hViVU
- sMnue+3Hs4+6LUPPBTJB9nY/c3EwlGIF/UiwTj/90VxM0ugGSWfTxmBzkJYcpoDaVYOD
- 1yDMBhoPHiBeFAwRrc/1XcmoipLnTrhgEU9Jr/Xw9TFAk3orWl8GQ9uMzltz6mymEleN
- cu8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757930840; x=1758535640;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=WndymZA4HVXt6LIz7FmHpmeuzG3wCd/8zjNhhzjcMZk=;
- b=pjA+CxePCOFHvpZfn+TitUlRMeGrjFvdBZF6BopYrTfAd2w3NT+6r0enSj7HjzPIEh
- L4Guzu0tocOn0hMdRzLIec0oVv5qgemYdFcKLe2DxOH8AHf0ZmP9j2TE4qbKrNB85we7
- hJZl87O5j1QgqPP3QBSg586cI0mVQsKAgK89e9gN17hlrCYsG8T6pItGE6Fim4d2bCeD
- BXwG3Ps7h2qUUOEifBcaykbV0K53H9d6QLQFgq5xgUsZwa6ooavSOybl6EQt8ay7F5sQ
- Me98sZV2XQdWswK9h0HWsNSh8MMusXz4lQg/QtsnzVh1hXybTbCmiWZANRYU5bPtpApv
- 86Yw==
-X-Gm-Message-State: AOJu0YzdMHg/vH/0qSvz5wyuJ/KF7kt3EKB2Xc7a5vHynrnKGFGMn8n8
- psCVNVsDez0VHljMfGLv8I36gOB4yvS8olSn0GEOBjfFo8dGQzzUWJlmdTULis0orNNvvUki+e7
- 39l7yjZ0=
-X-Gm-Gg: ASbGncsnFJrHWpZL+wC5Dho8Vx0HIYbwPRjwwRWqCyjAUdNm9sKpjuulhl2P4pVW4F5
- wvLe3YsxObBp+aHxnA4+jM8c/FiI2DeCqdm3G1gHiX05o2TvkFaA1LOXWE5jkfj9NiLW9Kj7rsv
- 0YH6ybQZnGhgg23a7K31jsQPBgbDzVoZGwso0wqR7eNo0FGnwf2cLQXIfXCeOx2F7ZceAukNC5y
- qisgxjkMCnJEFO+DeVredR5Cg8K1t4+2vi6oKrO3hqjrkJWfBwxbzrpSBFrXj5OEAlSbr/RGZxp
- GEJFOvK7laL9NIi3CmBSCQxZCUa7EH0kAMqKCM7H4b28Okmcny6TnhCGO0690MecG9jEcEnmhts
- 6EMtvFWC7qXDiXLfRkhpMNRIdSTSjiZ+nuA==
-X-Google-Smtp-Source: AGHT+IHQH+hAD5E2m6ScHuOonE0VUIfe9/GYxVM7UCTXVKiPtCh/I4bZj+eqtOiq+nLMcSRh7FFRhQ==
-X-Received: by 2002:a05:600c:5813:b0:45d:d96e:6176 with SMTP id
- 5b1f17b1804b1-45f211fe9d2mr82011145e9.25.1757930840288; 
- Mon, 15 Sep 2025 03:07:20 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45e016b5a16sm174074845e9.12.2025.09.15.03.07.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Sep 2025 03:07:18 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 350E95F867;
- Mon, 15 Sep 2025 11:07:18 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 3/6] tests/functional: replace avocado process with
- subprocess
-In-Reply-To: <20250912182200.643909-4-berrange@redhat.com> ("Daniel P.
- =?utf-8?Q?Berrang=C3=A9=22's?= message of "Fri, 12 Sep 2025 19:21:57
- +0100")
-References: <20250912182200.643909-1-berrange@redhat.com>
- <20250912182200.643909-4-berrange@redhat.com>
-User-Agent: mu4e 1.12.12; emacs 30.1
-Date: Mon, 15 Sep 2025 11:07:18 +0100
-Message-ID: <87ecs8rpux.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uy6B9-0002hL-TW; Mon, 15 Sep 2025 06:11:23 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uy6B2-0006hu-PS; Mon, 15 Sep 2025 06:11:23 -0400
+Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
+ [133.11.54.205]) (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58FA8uMD006344
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Mon, 15 Sep 2025 19:08:59 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=nsD5d6OPDnuvZuramUVkEmo0r3tVX99OGlg66wyt93Y=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=From:Subject:Date:Message-Id:To;
+ s=rs20250326; t=1757930939; v=1;
+ b=UHQJKOhfYoWbtvDEE3Y//NZhsjvx+aYuoCNVhxv5d/s0XJMuwBQC9mSLRPrrI3ei
+ buZCIhvlIl9TKxznhgNhhVLOVDDDHCIpuPRVZsPE5BE2+FzZBMI4YYHUjBH15z9k
+ gHuIMLJd2V42i0hHF3Ixw7DvCWh7aGpdwj5KgoYFRaO6NJ0XL0svQJhFOasl06k1
+ sXzeXozB2umzxvWbw8XmSbBu0Pv1CYKHWX9wS97c6nfQSVk8IIGisEDo8Nr4aQ1k
+ eiEJRQ8vvcqdlnCxFD/k1m8t79c4dOtYUxP+39vStgcYghzqvPrOp0tMEmcR1wx2
+ uEJaB5yaCP5+TYnKlSm+kA==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: [PATCH v2 00/15] Fix memory region leaks and
+ use-after-finalization
+Date: Mon, 15 Sep 2025 19:08:41 +0900
+Message-Id: <20250915-use-v2-0-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKnlx2gC/1WMQQ6DIBBFr2JmXQhgrKGr3qNxQcdRp03EgJIaw
+ 91L3XX5fv57B0QKTBFu1QGBEkf2cwFzqQAnN48kuC8MRplGWXUVWyRRt4RoVe0sKSjPJdDAn7P
+ y6ApPHFcf9jOa9G/995MWSmCj0bmh1/Rs7yGOElmy3MTq37uXDuVrgS7n/AWXOtJRowAAAA==
+X-Change-ID: 20250906-use-37ecc903a9e0
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>,
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ John Levon <john.levon@nutanix.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Aleksandar Rikalo <arikalo@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ =?utf-8?q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.15-dev-179e8
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,17 +104,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+Based-on: <cover.1751493467.git.balaton@eik.bme.hu>
+("[PATCH v2 00/14] hw/pci-host/raven clean ups")
 
-> The standard python subprocess.check_call method is better than
-> avocado.utils.process as it doesn't require stuffing all args
-> into a single string.
->
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+Supersedes: <20240829-memory-v1-1-ac07af2f4fa5@daynix.com>
+("[PATCH] docs/devel: Prohibit calling object_unparent() for memory region")
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+When developing the next version of "[PATCH 00/16] memory: Stop
+piggybacking on memory region owners*", I faced multiple memory region
+leaks and use-after-finalization. This series extracts their fixes so
+that the number of Cc: won't explode.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Patch "qdev: Automatically delete memory subregions" and the succeeding
+patches are for refactoring, but patch "vfio-user: Do not delete the
+subregion" does fix use-after-finalization.
+
+* https://lore.kernel.org/qemu-devel/20250901-mr-v1-0-dd7cb6b1480b@rsg.ci.i.u-tokyo.ac.jp/
+
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+---
+Changes in v2:
+- Added a reference to "[PATCH] docs/devel: Prohibit calling
+  object_unparent() for memory region", which does something similar to
+  patch "docs/devel: Do not unparent in instance_finalize()" but I
+  forgot I sent it in the past.
+- Fixed a typo in patch
+  "docs/devel: Do not unparent in instance_finalize()" and
+  "[PATCH 02/22] vfio/pci: Do not unparent in instance_finalize()".
+- Dropped patches to move address_space_init() calls; I intend to
+  QOM-ify to fix memory leaks automatically as discussed in the
+  following thread:
+  https://lore.kernel.org/qemu-devel/cd21698f-db77-eb75-6966-d559fdcab835@eik.bme.hu/
+  But the QOM-ification will be big so I'll send it as a separate
+  series.
+- Rebased on top of "[PATCH v2 00/14] hw/pci-host/raven clean ups".
+  https://lore.kernel.org/qemu-devel/cover.1751493467.git.balaton@eik.bme.hu/
+- Link to v1: https://lore.kernel.org/qemu-devel/20250906-use-v1-0-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp
+
+---
+Akihiko Odaki (15):
+      docs/devel: Do not unparent in instance_finalize()
+      vfio/pci: Do not unparent in instance_finalize()
+      hw/pci-bridge: Do not assume immediate MemoryRegion finalization
+      vfio-user: Do not delete the subregion
+      hw/char/diva-gsp: Do not delete the subregion
+      hw/char/serial-pci-multi: Do not delete the subregion
+      secondary-vga: Do not delete the subregions
+      cmd646: Do not delete the subregions
+      hw/ide/piix: Do not delete the subregions
+      hw/ide/via: Do not delete the subregions
+      hw/nvme: Do not delete the subregion
+      pci: Do not delete the subregions
+      hw/ppc/spapr_pci: Do not delete the subregions
+      hw/usb/hcd-ehci: Do not delete the subregions
+      hw/usb/hcd-xhci: Do not delete the subregions
+
+ docs/devel/memory.rst      | 19 +++------
+ include/hw/pci/pci.h       |  1 +
+ hw/char/diva-gsp.c         |  1 -
+ hw/char/serial-pci-multi.c |  1 -
+ hw/display/vga-pci.c       |  8 ----
+ hw/ide/cmd646.c            | 12 ------
+ hw/ide/piix.c              | 13 -------
+ hw/ide/via.c               | 12 ------
+ hw/nvme/ctrl.c             |  2 -
+ hw/pci/pci.c               | 22 +----------
+ hw/pci/pci_bridge.c        | 96 +++++++++++++++++++++++++---------------------
+ hw/ppc/spapr_pci.c         | 22 -----------
+ hw/usb/hcd-ehci.c          |  4 --
+ hw/usb/hcd-xhci.c          | 10 -----
+ hw/vfio-user/pci.c         |  6 ---
+ hw/vfio/pci.c              |  4 --
+ 16 files changed, 60 insertions(+), 173 deletions(-)
+---
+base-commit: e101d33792530093fa0b0a6e5f43e4d8cfe4581e
+change-id: 20250906-use-37ecc903a9e0
+
+Best regards,
+--  
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+
 
