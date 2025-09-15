@@ -2,115 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E817B58213
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 18:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F768B5823D
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 18:37:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyC2s-0002a5-SG; Mon, 15 Sep 2025 12:27:14 -0400
+	id 1uyC9h-0006bI-92; Mon, 15 Sep 2025 12:34:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maxbr@linux.ibm.com>)
- id 1uyC2l-0002Zj-EU
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 12:27:07 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maxbr@linux.ibm.com>)
- id 1uyC22-000687-6J
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 12:27:06 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58FDv4af024250;
- Mon, 15 Sep 2025 16:25:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=cS6EkZ0ID1VVa5aIP
- luUiD/+AuL/jgI+GJo/dc8rhy4=; b=Kf15CyoLmfwukJwHeqfy1oquBLktJt3QL
- X3oeV2wUaNr5X9Srg/Q7IqfhFkYDBPVPGSifo2K2/EHyIJ+zhe3cIcrYUwzmGTY9
- 5eB+n6N7jDIObDtqP1ZAwpLdXW61JiOkQXxY+a08rrSkmTSUZtazE0BF5zjEBEhZ
- 1M7GrC4jc0/amG3cReSw49fDmLnoDQjwN+C0AllAyVM6x2dULIbn0G9DzALCX8dk
- qxz97DVJkcoZljVX9kjBW/bKzBJyjvx+DpaNNIVAeRB6NMUd19Dpuo4vMLG3qMcL
- 5NF31vrX3GB77MYiavrjfpZFg4SlO6ybjNOaamgbdRd0ju2i/7KZA==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnku0u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Sep 2025 16:25:46 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58FGLJCQ012282;
- Mon, 15 Sep 2025 16:25:46 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnku0r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Sep 2025 16:25:45 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58FG4aJ8018625;
- Mon, 15 Sep 2025 16:25:45 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 495n5m756h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Sep 2025 16:25:44 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 58FGPhEl61211110
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Sep 2025 16:25:43 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3346420049;
- Mon, 15 Sep 2025 16:25:43 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 69AB220040;
- Mon, 15 Sep 2025 16:25:38 +0000 (GMT)
-Received: from li-9b52914c-2c8b-11b2-a85c-a36f6d484b4a.ibm.com (unknown
- [9.61.163.204]) by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 15 Sep 2025 16:25:38 +0000 (GMT)
-From: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
-To: berrange@redhat.com
-Cc: amit@kernel.org, armbru@redhat.com, eblake@redhat.com, eduardo@habkost.net,
- filip.hejsek@gmail.com, lvivier@redhat.com,
- marcandre.lureau@redhat.com, marcel.apfelbaum@gmail.com,
- maxbr@linux.ibm.com, mst@redhat.com, noh4hss@gmail.com,
- pbonzini@redhat.com, philmd@linaro.org, qemu-devel@nongnu.org,
- wangyanan55@huawei.com, zhao1.liu@intel.com
-Subject: [PATCH] char-pty: add support for the terminal size
-Date: Mon, 15 Sep 2025 18:25:35 +0200
-Message-ID: <20250915162535.147642-1-maxbr@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <aMfR3N3z6_fp6Lg9@redhat.com>
-References: <aMfR3N3z6_fp6Lg9@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uyC9a-0006VT-Sd
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 12:34:11 -0400
+Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uyC9F-0007Nu-Db
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 12:34:08 -0400
+Received: by mail-yw1-x112f.google.com with SMTP id
+ 00721157ae682-72e565bf2f0so34190237b3.3
+ for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 09:33:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1757954020; x=1758558820; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=UUK0/U8MeQYanHUvMO6n7yY2GDZDIGnGIxzeB837oBk=;
+ b=QMIHimiy5fynn+QRL7eol+9E/zCb5fej/L2Pe/mqUeO+tClkW/fmg7TeH5f7Y4b9BU
+ 0nGN/ciZi4yBDgVXiN01ZgKmFMzBxpqK2Dp6a5vQNJXn08SOmO7+ahBfkYlSz0k3E9zg
+ 0/ZcCawSlGYtqGBdvF3rScHeF3E0S4U8TC4IvyjGqVDV0L0kmOntboBgTb7KRA/0gpla
+ 0aEr/2W0MSaI6uLhRbIeMOB7VCy/ilWGPUolm7onZcSsxtHEf+2ZFKotp1sULgQWPqgr
+ EWFNo3Zwzh2rjjNiJ11AEiN28kNt+LCUJDne2PzKvbIk98EWsqcVSo6B3brdgTKgAL5y
+ 4c/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757954020; x=1758558820;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UUK0/U8MeQYanHUvMO6n7yY2GDZDIGnGIxzeB837oBk=;
+ b=beuvvbkDfJPClw+6qpagRwM+PeyeDi7PTya9cS+MbR3oqUgx4PI1VNpGuFYpfFBNuO
+ NTY761XYeGXXXvtcltN8ccZMdtaZz2DA76zL1FQUiUSJ+wjKab6WzXQlrJoVtQfiHLgh
+ g2WhOGjX+kI0dMIuLf2bmuT+X3SZ5vhAoNgJgi5CcPDu7SfO/imzNhpPk6TAGKwtgWnF
+ ssKSGtvryPsuRSeBBYa/8tVJg967RyTIT9gndxdJvmtR4ORb4c6N5gvOeoxHgNvdHeo0
+ lFi22cwAs+M7Bvun94meaS7kw2862LN2XQ/mKZIShK8jX0ORvkRb9xnj8QE26a9k6cHc
+ yzDw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWKV4HdCSHTmDwhk0ifdw5sZ2+kQIATpOqbWPyXGG3FaeIku+DkejnhxjpjUmMzqMQ2ubb9sf6fzcAe@nongnu.org
+X-Gm-Message-State: AOJu0YzE0mCDWsfV50lqgcnj/e5wArdTeqFSzOUDTYOAZ564I0KFckuE
+ WWz2wwGC4Sj2Rqk0iZXT/UHtTphLlZ7AicpkDdsXursbgqjM/+K/cqh9gwBjHks1JVaon4IOSqG
+ 3BmMB0kw8KDX0H0SawQ7FKX90/5NKrSShkask4Jf3FA==
+X-Gm-Gg: ASbGncs7BuNrXnBQScqAl59V35ng3ILCpOiyStPjNqwHL3Zs69WtjlFpVaKpCgPiprq
+ lz8Ovb+b9S2RXXD8ITj1o4BVMSRYbwR9t75nI0PkrAoc+TiRD+AXNCThF3caTeEuT4TKaCHrZdH
+ RxB765ZwPhSMBuxT7SLYq7+V8Q7wSJS9axx63T0+Bmua55le3gqvpCb689k8tIFIY+5vJ8wbb2P
+ r+l
+X-Google-Smtp-Source: AGHT+IEeILQk7ztH7t/2RwF0eZ16bh+vpubxJrjxEEbBg6SDdKHvuIBQueLviP5SWilz1B91EJ0F7JywA4eydE2qqzk=
+X-Received: by 2002:a05:690c:dc3:b0:71f:b944:103c with SMTP id
+ 00721157ae682-73064fea3edmr121790477b3.45.1757954019875; Mon, 15 Sep 2025
+ 09:33:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: kbk141anzs8XQXHi6Zqj7Hhror-XTc0D
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDAyOCBTYWx0ZWRfX8bd3sIxWTVi5
- UnuYyCtx+VZq8HIp0Rk+DInpQIBt1Cd+UhG5XfzrsCLkDsuxBiKp+U29A1ThVCACc7ku/oA6azO
- 7RKGgVGtsPwlCvuEUzKA3NG2HbPyoS0E2Vmv/N2glrGrZkdqCbhQGICnHesi8fhMz4WfECMin/q
- EY8COnLNLwkatv9vBK7HDStyoU2EThQJYB0DV4CwDH70hmn6VSXsD6x/JXrKg9sUdA1MzJORHU5
- rX64Cns282CnlgtCahu1BbxoKBvMmuPFjhGmqX2YY0/DJaSIDvSXqlbiGwbAgWxmVswsC/guSQ3
- +Rt45Eam1KknfkIBpkrZodiCNqmhrU9ya3tuoEXcOt3YZzQIIfAzq4+cLF19flHzHk5G9wSKjmR
- pufuZoMN
-X-Authority-Analysis: v=2.4 cv=HecUTjE8 c=1 sm=1 tr=0 ts=68c83e0a cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=GfxKoImt5xJX7E72Q28A:9
-X-Proofpoint-GUID: 7KXbZ_87q3VgVme4eejIgBNgoQjKHBB3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-15_06,2025-09-12_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 spamscore=0 priorityscore=1501 suspectscore=0
- malwarescore=0 bulkscore=0 impostorscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509150028
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=maxbr@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <20250911154159.158046-1-cohuck@redhat.com>
+In-Reply-To: <20250911154159.158046-1-cohuck@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 15 Sep 2025 17:33:27 +0100
+X-Gm-Features: Ac12FXxBcR-8P91RCP-I7VXj00AnR2TXSJfpKfQ7HrpKyEwCy4jiMxRlz0u__1Y
+Message-ID: <CAFEAcA8-UVGTaAM8=kCPgm5vYn13CKnV6S-vZjSk8w5af0tv9Q@mail.gmail.com>
+Subject: Re: [PATCH v3] arm/kvm: report registers we failed to set
+To: Cornelia Huck <cohuck@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Eric Auger <eric.auger@redhat.com>, Sebastian Ott <sebott@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,86 +93,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the terminal size upon SIGWINCH delivery.
+On Thu, 11 Sept 2025 at 16:42, Cornelia Huck <cohuck@redhat.com> wrote:
+>
+> If we fail migration because of a mismatch of some registers between
+> source and destination, the error message is not very informative:
+>
+> qemu-system-aarch64: error while loading state for instance 0x0 ofdevice 'cpu'
+> qemu-system-aarch64: Failed to put registers after init: Invalid argument
+>
+> At least try to give the user a hint which registers had a problem,
+> even if they cannot really do anything about it right now.
+>
+> Sample output:
+>
+> Could not set register op0:3 op1:0 crn:0 crm:0 op2:0 to c00fac31 (is 413fd0c1)
+>
+> We could be even more helpful once we support writable ID registers,
+> at which point the user might actually be able to configure something
+> that is migratable.
+>
+> Suggested-by: Eric Auger <eric.auger@redhat.com>
+> Reviewed-by: Sebastian Ott <sebott@redhat.com>
+> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+> ---
 
-To be committed with the patch-set: [PATCH v4 00/10] virtio-console: notify about the terminal size
 
-Signed-off-by: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
----
- chardev/char-pty.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
 
-diff --git a/chardev/char-pty.c b/chardev/char-pty.c
-index 674e9b3f14..802bae9037 100644
---- a/chardev/char-pty.c
-+++ b/chardev/char-pty.c
-@@ -28,6 +28,7 @@
- #include "io/channel-file.h"
- #include "qemu/sockets.h"
- #include "qemu/error-report.h"
-+#include "qemu/main-loop.h"
- #include "qemu/module.h"
- #include "qemu/option.h"
- #include "qemu/qemu-print.h"
-@@ -35,6 +36,8 @@
- #include "chardev/char-io.h"
- #include "qom/object.h"
- 
-+#include <sys/ioctl.h>
-+
- struct PtyChardev {
-     Chardev parent;
-     QIOChannel *ioc;
-@@ -43,6 +46,8 @@ struct PtyChardev {
-     int connected;
-     GSource *timer_src;
-     char *path;
-+
-+    Notifier resize_notifier;
- };
- typedef struct PtyChardev PtyChardev;
- 
-@@ -85,6 +90,15 @@ static void pty_chr_rearm_timer(Chardev *chr, int ms)
-     g_free(name);
- }
- 
-+static void pty_chr_resize(PtyChardev *s)
-+{
-+    struct winsize ws;
-+
-+    if (ioctl(QIO_CHANNEL_FILE(s->ioc)->fd, TIOCGWINSZ, &ws) != -1) {
-+        qemu_chr_resize(CHARDEV(s), ws.ws_col, ws.ws_row);
-+    }
-+}
-+
- static void pty_chr_update_read_handler(Chardev *chr)
- {
-     PtyChardev *s = PTY_CHARDEV(chr);
-@@ -331,6 +345,12 @@ static int qemu_openpty_raw(int *aslave, char *pty_name)
-     return amaster;
- }
- 
-+static void term_resize_notify(Notifier *n, void *data)
-+{
-+    PtyChardev *s = container_of(n, PtyChardev, resize_notifier);
-+    pty_chr_resize(s);
-+}
-+
- static void char_pty_open(Chardev *chr,
-                           ChardevBackend *backend,
-                           bool *be_opened,
-@@ -376,6 +396,10 @@ static void char_pty_open(Chardev *chr,
-             s->path = g_strdup(path);
-         }
-     }
-+
-+    pty_chr_resize(s);
-+    s->resize_notifier.notify = term_resize_notify;
-+    sigwinch_add_notifier(&s->resize_notifier);
- }
- 
- static void char_pty_parse(QemuOpts *opts, ChardevBackend *backend,
--- 
-2.50.1
+Applied to target-arm.next, thanks.
 
+-- PMM
 
