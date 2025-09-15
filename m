@@ -2,72 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE002B579B2
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 14:02:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5BCB579DB
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 14:05:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uy7t4-0004Ce-8w; Mon, 15 Sep 2025 08:00:50 -0400
+	id 1uy7wj-000807-5b; Mon, 15 Sep 2025 08:04:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1uy7se-00049U-51
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 08:00:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1uy7sP-0004dl-5p
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 08:00:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757937603;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0tp5oeg6dvweY9fzo/znq4Z2Pm2mGPwulbHE8Lic6BM=;
- b=FbvuRH4qi7fSAn3xaD8l4qK6pFDOZmkK2nFPl0pIkDARLKs+Roj0yZrG74u9yIoACFHgZY
- fbioMy+34sJdhlB78gEQ9C+rvHryHkdFCI6Tuo7B1RNSyiK+RqfJMKzxKrfrdrHAaxZxqC
- GS/KxBOY71NKyh0cpt3WfoA/cOMXxss=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-178-mfCfdxoTOguO1-mMIvy6ag-1; Mon,
- 15 Sep 2025 07:59:58 -0400
-X-MC-Unique: mfCfdxoTOguO1-mMIvy6ag-1
-X-Mimecast-MFC-AGG-ID: mfCfdxoTOguO1-mMIvy6ag_1757937597
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4CF981953946; Mon, 15 Sep 2025 11:59:57 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.45.224.193])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CC9A319540EB; Mon, 15 Sep 2025 11:59:54 +0000 (UTC)
-From: Juraj Marcin <jmarcin@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Juraj Marcin <jmarcin@redhat.com>, Jiri Denemark <jdenemar@redhat.com>,
- Peter Xu <peterx@redhat.com>, "Dr. David Alan Gilbert" <dave@treblig.org>,
- Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH 4/4] migration: Introduce POSTCOPY_DEVICE state
-Date: Mon, 15 Sep 2025 13:59:15 +0200
-Message-ID: <20250915115918.3520735-5-jmarcin@redhat.com>
-In-Reply-To: <20250915115918.3520735-1-jmarcin@redhat.com>
-References: <20250915115918.3520735-1-jmarcin@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uy7wY-0007zX-Bp
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 08:04:27 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uy7wP-0005Mm-8n
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 08:04:26 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3dae49b1293so2320303f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 05:04:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1757937847; x=1758542647; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cD6ONtt5eDH3z4CJYK+H+pjkUufJu6UdMVut3nJmLos=;
+ b=dHJeb9lfz0D2J1eF78Kb0X5lv9u7LNS4Hnx7O5vG/BNICkAfjmUuqtD9/IjounhqCF
+ PkGtNyV0buBOHZSt5x3XiEFM+zD+y+zb/h+WnBnrJx7OwbwqERkyuGqBRC0R832DeMrs
+ ySGX1o/H6i1VINviiTFATbbKntRT8MQvftJ++4PjM45pPjj/HithUN9dW9HVQEPfrqhv
+ y+cIL3PNyncclmzMRtSBWHHfxSnWtklJvovjBtyugY+Ew3dGqv0Vg8iveunUCUFte7ux
+ VW7WiESxWgjtOv5Xiiu7wI904Jk9Q36ezccuRT8YrkEGknrNNGu9v9fnpTOxNplMdjQd
+ OEQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757937847; x=1758542647;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=cD6ONtt5eDH3z4CJYK+H+pjkUufJu6UdMVut3nJmLos=;
+ b=TTgPNyGks5YXxxJkKgiDFxtbZupv5/rmSQ37Zpbp9SGh51K9LyF5ESuO6sDK1KK0lO
+ wEz+L/2ui+rmUdrTd8PgObOWWe5vzFlN0DzShR1lwiP4x0JU0o12WXHJ3t/7kPCW0nIT
+ Q+rLfIgOLbL6LL/4SEiPycstnaVEOLH5mmJFuXXlj7F+PBwzuLEyBC6vpOM/2ZdKrQQd
+ oCoErNJ4ne4OftNxgXlCSIX8EyHdGRfgDv+wEmIe6U3oprvht4UzIRnoUrLG8EWNdId2
+ IKBMDxN/IwSqKnHEemy1j9VU/+gX3XSDAIGykK4gbEU0PG+zYvg+oF3JviXd+rdB4m9e
+ pRMA==
+X-Gm-Message-State: AOJu0Yy7R0vVt/WNoRH2Z4CzQfGZMAiBJsfgM2YkExqadgreis8eq1cs
+ 95scnbcyx/5ypGN5aHnpZjrlEdg45erzClsTE2YdFf0GTvZw/fxU//P4ZRzpMsFI+lE/mxPGtVG
+ +vcQH9tY=
+X-Gm-Gg: ASbGncsmMFRyEAobTRhctXHi5WA3df0fZxx0+mk5x5Z9/2K6FhSfKB1zjjee81niLw5
+ j8zIyT32m6skOzTLCaWMe5ND3MrawY3mzDEpDM9kgH6XTIkrw9f2OMB1KQgmy68BDyVYzUuCpbd
+ zwTooXBoiBuDGVfxZTrVe78ge9Eme8mF01wNYqelmpLHiicPGo47vL/fvjCldJhmH2ZyJ2q13WU
+ FNomZ86DwwX+qFc/X/RD3WRV4Lqc/aDBG8DZB/5e1lIcetythuLq/YFVvtOp0kTPrpJLPv9JhYG
+ SikBEV1ZxhbxXF6KVhp63g78grM4oodRp1nbtFzjn8dWfjxumlhaxv2h/8GK5aelhm+aJGPz9xP
+ xXIL/rMsZ0GBdMjNFb4nut+o=
+X-Google-Smtp-Source: AGHT+IFuW5fRuO7FCCl4kDZKQjc5OEQob4bXf8xVYWbx0kp3n3maHwAklN1SlyxLaQdT4ljT4ZlpWw==
+X-Received: by 2002:a05:6000:4026:b0:3da:37de:a38e with SMTP id
+ ffacd0b85a97d-3e765a3d9f7mr13173405f8f.54.1757937846978; 
+ Mon, 15 Sep 2025 05:04:06 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3e81dbf9acdsm10649113f8f.55.2025.09.15.05.04.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Sep 2025 05:04:06 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 1F82B5F867;
+ Mon, 15 Sep 2025 13:04:05 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH 4/6] tests/functional: drop datadrainer class in reverse
+ debugging
+In-Reply-To: <aMfso1ksrXgznBvi@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Mon, 15 Sep 2025 11:38:27 +0100")
+References: <20250912182200.643909-1-berrange@redhat.com>
+ <20250912182200.643909-5-berrange@redhat.com>
+ <878qigrpcu.fsf@draig.linaro.org> <aMfso1ksrXgznBvi@redhat.com>
+User-Agent: mu4e 1.12.12; emacs 30.1
+Date: Mon, 15 Sep 2025 13:04:05 +0100
+Message-ID: <874it3rkga.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jmarcin@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,212 +105,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Juraj Marcin <jmarcin@redhat.com>
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-Currently, when postcopy starts, the source VM starts switchover and
-sends a package containing the state of all non-postcopiable devices.
-When the destination loads this package, the switchover is complete and
-the destination VM starts. However, if the device state load fails or
-the destination side crashes, the source side is already in
-POSTCOPY_ACTIVE state and cannot be recovered, even when it has the most
-up-to-date machine state as the destination has not yet started.
+> On Mon, Sep 15, 2025 at 11:18:09AM +0100, Alex Benn=C3=A9e wrote:
+>> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>>=20
+>> > The reverse debugging test uses the avocado datadrainer class to
+>> > create a background thread that reads from the console socket and
+>> > dumps it via python logger.
+>> >
+>> > Most tests log console output as a side effect of doing calls
+>> > to match strings, but this test never tries to match anything.
+>> >
+>> > This isn't critical, so just drop the functionality.
+>>=20
+>> We do end up with zero length logs for all console output although I don=
+'t know
+>> if we got that far before:
+>
+> AFAICT, the logs were also zero-length with the current code.
+> When I ran it with the datadrainer code, there didn't seem
+> to be any output to be drained.  I'm unclear if that's expected
+> or a sign I did something wrong, or something has broken since
+> the test was first written ?
 
-This patch introduces a new POSTCOPY_DEVICE state which is active
-while the destination machine is loading the device state, is not yet
-running, and the source side can be resumed in case of a migration
-failure.
+Hmm looking at test it looks like it only runs the first few
+instructions so unlikely to have any output.
 
-To transition from POSTCOPY_DEVICE to POSTCOPY_ACTIVE, the source
-side uses a PONG message that is a response to a PING message processed
-just before the POSTCOPY_RUN command that starts the destination VM.
-Thus, this change does not require any changes on the destination side
-and is effective even with older destination versions.
+This makes me more inclined just to port to the check-tcg tests where we
+have control of the binary and we can more easily verify things are
+working as they should.
 
-Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
----
- migration/migration.c                 | 23 ++++++++++++++++++-----
- migration/savevm.h                    |  2 ++
- migration/trace-events                |  1 +
- qapi/migration.json                   |  8 ++++++--
- tests/qtest/migration/precopy-tests.c |  3 ++-
- 5 files changed, 29 insertions(+), 8 deletions(-)
+>
+>
+>> > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>> > ---
+>> >  tests/functional/reverse_debugging.py | 6 ------
+>> >  1 file changed, 6 deletions(-)
+>> >
+>> > diff --git a/tests/functional/reverse_debugging.py b/tests/functional/=
+reverse_debugging.py
+>> > index 1b880cda8f..9c89f5c897 100644
+>> > --- a/tests/functional/reverse_debugging.py
+>> > +++ b/tests/functional/reverse_debugging.py
+>> > @@ -35,8 +35,6 @@ class ReverseDebugging(LinuxKernelTest):
+>> >      endian_is_le =3D True
+>> >=20=20
+>> >      def run_vm(self, record, shift, args, replay_path, image_path, po=
+rt):
+>> > -        from avocado.utils import datadrainer
+>> > -
+>> >          logger =3D logging.getLogger('replay')
+>> >          vm =3D self.get_vm(name=3D'record' if record else 'replay')
+>> >          vm.set_console()
+>> > @@ -54,10 +52,6 @@ def run_vm(self, record, shift, args, replay_path, =
+image_path, port):
+>> >          if args:
+>> >              vm.add_args(*args)
+>> >          vm.launch()
+>> > -        console_drainer =3D datadrainer.LineLogger(vm.console_socket.=
+fileno(),
+>> > -                                    logger=3Dself.log.getChild('conso=
+le'),
+>> > -                                    stop_check=3D(lambda : not vm.is_=
+running()))
+>> > -        console_drainer.start()
+>> >          return vm
+>> >=20=20
+>> >      @staticmethod
+>>=20
+>> --=20
+>> Alex Benn=C3=A9e
+>> Virtualisation Tech Lead @ Linaro
+>>=20
+>
+> With regards,
+> Daniel
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 7222e3de13..e63a7487be 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1223,6 +1223,7 @@ bool migration_is_running(void)
- 
-     switch (s->state) {
-     case MIGRATION_STATUS_ACTIVE:
-+    case MIGRATION_STATUS_POSTCOPY_DEVICE:
-     case MIGRATION_STATUS_POSTCOPY_ACTIVE:
-     case MIGRATION_STATUS_POSTCOPY_PAUSED:
-     case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
-@@ -1244,6 +1245,7 @@ static bool migration_is_active(void)
-     MigrationState *s = current_migration;
- 
-     return (s->state == MIGRATION_STATUS_ACTIVE ||
-+            s->state == MIGRATION_STATUS_POSTCOPY_DEVICE ||
-             s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
- }
- 
-@@ -1366,6 +1368,7 @@ static void fill_source_migration_info(MigrationInfo *info)
-         break;
-     case MIGRATION_STATUS_ACTIVE:
-     case MIGRATION_STATUS_CANCELLING:
-+    case MIGRATION_STATUS_POSTCOPY_DEVICE:
-     case MIGRATION_STATUS_POSTCOPY_ACTIVE:
-     case MIGRATION_STATUS_PRE_SWITCHOVER:
-     case MIGRATION_STATUS_DEVICE:
-@@ -1419,6 +1422,7 @@ static void fill_destination_migration_info(MigrationInfo *info)
-     case MIGRATION_STATUS_CANCELLING:
-     case MIGRATION_STATUS_CANCELLED:
-     case MIGRATION_STATUS_ACTIVE:
-+    case MIGRATION_STATUS_POSTCOPY_DEVICE:
-     case MIGRATION_STATUS_POSTCOPY_ACTIVE:
-     case MIGRATION_STATUS_POSTCOPY_PAUSED:
-     case MIGRATION_STATUS_POSTCOPY_RECOVER:
-@@ -1719,6 +1723,7 @@ bool migration_in_postcopy(void)
-     MigrationState *s = migrate_get_current();
- 
-     switch (s->state) {
-+    case MIGRATION_STATUS_POSTCOPY_DEVICE:
-     case MIGRATION_STATUS_POSTCOPY_ACTIVE:
-     case MIGRATION_STATUS_POSTCOPY_PAUSED:
-     case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
-@@ -2564,6 +2569,11 @@ static void *source_return_path_thread(void *opaque)
-             tmp32 = ldl_be_p(buf);
-             trace_source_return_path_thread_pong(tmp32);
-             qemu_sem_post(&ms->rp_state.rp_pong_acks);
-+            if (tmp32 == QEMU_VM_PING_PACKAGED_LOADED) {
-+                trace_source_return_path_thread_dst_started();
-+                migrate_set_state(&ms->state, MIGRATION_STATUS_POSTCOPY_DEVICE,
-+                                  MIGRATION_STATUS_POSTCOPY_ACTIVE);
-+            }
-             break;
- 
-         case MIG_RP_MSG_REQ_PAGES:
-@@ -2814,6 +2824,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     if (migrate_postcopy_ram()) {
-         qemu_savevm_send_ping(fb, 3);
-     }
-+    qemu_savevm_send_ping(fb, QEMU_VM_PING_PACKAGED_LOADED);
- 
-     qemu_savevm_send_postcopy_run(fb);
- 
-@@ -2871,7 +2882,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
- 
-     /* Now, switchover looks all fine, switching to postcopy-active */
-     migrate_set_state(&ms->state, MIGRATION_STATUS_DEVICE,
--                      MIGRATION_STATUS_POSTCOPY_ACTIVE);
-+                      MIGRATION_STATUS_POSTCOPY_DEVICE);
- 
-     bql_unlock();
- 
-@@ -3035,7 +3046,8 @@ static void migration_completion(MigrationState *s)
- 
-     if (s->state == MIGRATION_STATUS_ACTIVE) {
-         ret = migration_completion_precopy(s);
--    } else if (s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
-+    } else if (s->state == MIGRATION_STATUS_POSTCOPY_DEVICE ||
-+               s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
-         migration_completion_postcopy(s);
-     } else {
-         ret = -1;
-@@ -3311,8 +3323,8 @@ static MigThrError migration_detect_error(MigrationState *s)
-         return postcopy_pause(s);
-     } else {
-         /*
--         * For precopy (or postcopy with error outside IO), we fail
--         * with no time.
-+         * For precopy (or postcopy with error outside IO, or before dest
-+         * starts), we fail with no time.
-          */
-         migrate_set_state(&s->state, state, MIGRATION_STATUS_FAILED);
-         trace_migration_thread_file_err();
-@@ -3447,7 +3459,8 @@ static MigIterateState migration_iteration_run(MigrationState *s)
- {
-     uint64_t must_precopy, can_postcopy, pending_size;
-     Error *local_err = NULL;
--    bool in_postcopy = s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE;
-+    bool in_postcopy = (s->state == MIGRATION_STATUS_POSTCOPY_DEVICE ||
-+                        s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
-     bool can_switchover = migration_can_switchover(s);
-     bool complete_ready;
- 
-diff --git a/migration/savevm.h b/migration/savevm.h
-index 2d5e9c7166..c4de0325eb 100644
---- a/migration/savevm.h
-+++ b/migration/savevm.h
-@@ -29,6 +29,8 @@
- #define QEMU_VM_COMMAND              0x08
- #define QEMU_VM_SECTION_FOOTER       0x7e
- 
-+#define QEMU_VM_PING_PACKAGED_LOADED 0x42
-+
- bool qemu_savevm_state_blocked(Error **errp);
- void qemu_savevm_non_migratable_list(strList **reasons);
- int qemu_savevm_state_prepare(Error **errp);
-diff --git a/migration/trace-events b/migration/trace-events
-index 706db97def..007b5c407e 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -191,6 +191,7 @@ source_return_path_thread_pong(uint32_t val) "0x%x"
- source_return_path_thread_shut(uint32_t val) "0x%x"
- source_return_path_thread_resume_ack(uint32_t v) "%"PRIu32
- source_return_path_thread_switchover_acked(void) ""
-+source_return_path_thread_dst_started(void) ""
- migration_thread_low_pending(uint64_t pending) "%" PRIu64
- migrate_transferred(uint64_t transferred, uint64_t time_spent, uint64_t bandwidth, uint64_t avail_bw, uint64_t size) "transferred %" PRIu64 " time_spent %" PRIu64 " bandwidth %" PRIu64 " switchover_bw %" PRIu64 " max_size %" PRId64
- process_incoming_migration_co_end(int ret, int ps) "ret=%d postcopy-state=%d"
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 2387c21e9c..89a20d858d 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -142,6 +142,10 @@
- # @postcopy-active: like active, but now in postcopy mode.
- #     (since 2.5)
- #
-+# @postcopy-device: like postcopy-active, but the destination is still
-+#     loading device state and is not running yet.  If migration fails
-+#     during this state, the source side will resume.  (since 10.2)
-+#
- # @postcopy-paused: during postcopy but paused.  (since 3.0)
- #
- # @postcopy-recover-setup: setup phase for a postcopy recovery
-@@ -173,8 +177,8 @@
- ##
- { 'enum': 'MigrationStatus',
-   'data': [ 'none', 'setup', 'cancelling', 'cancelled',
--            'active', 'postcopy-active', 'postcopy-paused',
--            'postcopy-recover-setup',
-+            'active', 'postcopy-device', 'postcopy-active',
-+            'postcopy-paused', 'postcopy-recover-setup',
-             'postcopy-recover', 'completed', 'failed', 'colo',
-             'pre-switchover', 'device', 'wait-unplug' ] }
- ##
-diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
-index bb38292550..57ca623de5 100644
---- a/tests/qtest/migration/precopy-tests.c
-+++ b/tests/qtest/migration/precopy-tests.c
-@@ -1316,13 +1316,14 @@ void migration_test_add_precopy(MigrationTestEnv *env)
-     }
- 
-     /* ensure new status don't go unnoticed */
--    assert(MIGRATION_STATUS__MAX == 15);
-+    assert(MIGRATION_STATUS__MAX == 16);
- 
-     for (int i = MIGRATION_STATUS_NONE; i < MIGRATION_STATUS__MAX; i++) {
-         switch (i) {
-         case MIGRATION_STATUS_DEVICE: /* happens too fast */
-         case MIGRATION_STATUS_WAIT_UNPLUG: /* no support in tests */
-         case MIGRATION_STATUS_COLO: /* no support in tests */
-+        case MIGRATION_STATUS_POSTCOPY_DEVICE: /* postcopy can't be cancelled */
-         case MIGRATION_STATUS_POSTCOPY_ACTIVE: /* postcopy can't be cancelled */
-         case MIGRATION_STATUS_POSTCOPY_PAUSED:
-         case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
--- 
-2.51.0
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
