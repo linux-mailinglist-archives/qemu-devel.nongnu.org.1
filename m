@@ -2,127 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB01B57E05
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 15:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5256CB57359
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 10:46:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uy9cQ-0001bA-8t; Mon, 15 Sep 2025 09:51:46 -0400
+	id 1uy4pU-0003ku-GI; Mon, 15 Sep 2025 04:44:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maxbr@linux.ibm.com>)
- id 1uy4mz-0008ES-0l
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 04:42:21 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uy4pO-0003iw-29
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 04:44:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maxbr@linux.ibm.com>)
- id 1uy4mm-0002UI-4b
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 04:42:19 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58F0lHnU013144;
- Mon, 15 Sep 2025 08:41:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=J1lm84
- ULTZXed6oqC699109lgXjsMMrE9rICy5hMNFM=; b=Qb59NMk1O0HWUxA6RcnprV
- H/HbsBEmiDswesR7FaO+34xA4L7oVz+WRT1eAM6h5Z6sNp9OSP5suuy5KVcUSgsF
- VoiuDbNCTrBQN5houqng6fli95DM5tCaMboVMEXGZT4oAfR8hvCGqIKNSdYbf4jG
- PE5h+rI0IOiODUBWEWdsRheXNOYE4M//JkoiiE2wSI/izfK9FmzhqVykYNOE0YjI
- 1L56haoe01VfCtzm4t+24H4p05QEayrrZSbtgiL9LRmUfhn3qQj406V3Nnwrlkj+
- 4MoztuxfRtAUlNI5coz65Dx52zznqJyhD8ykVxoER6BT5FHuHDRzcy7tuDyqcCxw
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49504b1g9j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Sep 2025 08:41:53 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58F8frtM002711;
- Mon, 15 Sep 2025 08:41:53 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49504b1g9f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Sep 2025 08:41:53 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58F52MJY009363;
- Mon, 15 Sep 2025 08:41:52 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 495nn3568p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Sep 2025 08:41:52 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 58F8focS51052890
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Sep 2025 08:41:50 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 58B5E20043;
- Mon, 15 Sep 2025 08:41:50 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 96CE420040;
- Mon, 15 Sep 2025 08:41:45 +0000 (GMT)
-Received: from li-9b52914c-2c8b-11b2-a85c-a36f6d484b4a.ibm.com (unknown
- [9.61.137.228]) by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 15 Sep 2025 08:41:45 +0000 (GMT)
-Message-ID: <866f7190cf6423a7fc1e85070e2059ae7014c231.camel@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uy4pC-0002ZR-Bt
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 04:44:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757925869;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NQomQXxFuzPkrqX0lPJiGwHDpgfxwDcJPVIa2FJ/67Q=;
+ b=NFPj+wcV8dP8rOzqrQnKXvdzXFI7T8YIyqJhlQJ/EhWt3LHJQ4xhO73XvKgWiUhXav1Zuk
+ rBqSZuQK5wUCDtusasfCN0gU/NfZ4PoG8bFw4+tnvw4kcAtrkTaiAI2qiGP3XMcKOdDVN8
+ KMSFKYMa/KZV1pbgs1aH4F1KyZhdtW0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-457-arpKemd7OI6CvANHdqnDlA-1; Mon,
+ 15 Sep 2025 04:44:26 -0400
+X-MC-Unique: arpKemd7OI6CvANHdqnDlA-1
+X-Mimecast-MFC-AGG-ID: arpKemd7OI6CvANHdqnDlA_1757925864
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7ABF41800562; Mon, 15 Sep 2025 08:44:24 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.50])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9752D1800451; Mon, 15 Sep 2025 08:44:17 +0000 (UTC)
+Date: Mon, 15 Sep 2025 09:44:12 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Filip Hejsek <filip.hejsek@gmail.com>, qemu-devel@nongnu.org,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Szymon Lukasz <noh4hss@gmail.com>
 Subject: Re: [PATCH v4 00/10] virtio-console: notify about the terminal size
-From: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
-To: "Daniel P." =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Filip Hejsek <filip.hejsek@gmail.com>, qemu-devel@nongnu.org,
- =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau	 <marcandre.lureau@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>, Amit
- Shah <amit@kernel.org>, Markus Armbruster <armbru@redhat.com>, Eric Blake
- <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, Marcel
- Apfelbaum	 <marcel.apfelbaum@gmail.com>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?=	 <philmd@linaro.org>, Yanan Wang
- <wangyanan55@huawei.com>, Zhao Liu	 <zhao1.liu@intel.com>, Szymon Lukasz
- <noh4hss@gmail.com>
-Date: Mon, 15 Sep 2025 10:41:44 +0200
-In-Reply-To: <aMPe1vB3cZAlNBq1@redhat.com>
+Message-ID: <aMfR3N3z6_fp6Lg9@redhat.com>
 References: <20250912-console-resize-v4-0-7925e444afc4@gmail.com>
  <20250912042910-mutt-send-email-mst@kernel.org>
  <aMPe1vB3cZAlNBq1@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+ <866f7190cf6423a7fc1e85070e2059ae7014c231.camel@linux.ibm.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTEzMDAyMCBTYWx0ZWRfX3qJnnTRzN3sa
- XXUNqLYVQEl2hnIAwdhagw8ErqjPZ7nL33pO+HTzk8XQnXa5aFWgmSgqbkm3u0ItdlehpdFksTE
- DOxKP6zLdfYFNJOuiqhXzrXuy0O34PwP97h51iZSMz3sr4kF41p13BY+wEjbAawo7oknCC+m+8n
- njTYxE+QmaJ/871X4A/P2FJX0Z1HvzMk2m5dfE/f38qm04AvNhUA07EM7nvJVlvM+rVXf4q/Dr5
- hddwbsGTsBWVQazfVcWXsmJBzNw02wrj3qtXEQ1XdYk7nQO4Lf2NR75Hxu1Q5rUewr5xWThM8BO
- QDBvPxGsl3bN99jypAqFbOQcZ3bpBhNf5vA0jrgr8VpvvCGD5zuUl7uQqt5WQjbuZEoebi4unxv
- QPs+HBGz
-X-Proofpoint-ORIG-GUID: s50Xwt9cs5S7B4ju5QL01CKMIrmu7yCh
-X-Authority-Analysis: v=2.4 cv=dt/bC0g4 c=1 sm=1 tr=0 ts=68c7d151 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=69wJf7TsAAAA:8 a=VwQbUJbxAAAA:8
- a=NEAV23lmAAAA:8 a=sfQK5_NHEOywqs1JQfQA:9 a=QEXdDO2ut3YA:10
- a=Fg1AiH1G6rFz08G2ETeA:22
-X-Proofpoint-GUID: izfb5NfokCkeihxYheGn8ILfqGXW8zoh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-15_03,2025-09-12_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0
- spamscore=0 clxscore=1011 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509130020
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=maxbr@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <866f7190cf6423a7fc1e85070e2059ae7014c231.camel@linux.ibm.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 15 Sep 2025 09:51:38 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,139 +95,122 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2025-09-12 at 09:50 +0100, Daniel P. Berrang=C3=A9 wrote:
-> On Fri, Sep 12, 2025 at 04:41:02AM -0400, Michael S. Tsirkin wrote:
-> > On Fri, Sep 12, 2025 at 05:39:45AM +0200, Filip Hejsek wrote:
-> > > The goal of this series is to have a resizable terminal into a
-> > > guest
-> > > without having to set up networking and using, e.g. ssh.
-> > >=20
-> > > The virtio spec allows a virtio-console device to notify the
-> > > guest about
-> > > terminal resizes in the host. Linux Kernel implements the driver
-> > > part of
-> > > the spec. This series implement the device part in QEMU.
-> > >=20
-> > > This series adds support for a resizable terminal if a virtio
-> > > console
-> > > device is connected to the stdio backend.
-> > >=20
-> > > This series also introduces resize messages that can be sent over
-> > > QMP to
-> > > notify QEMU about the size of the terminal connented to some
-> > > chardev.
-> > > In the libvirt setting, it will allow to implement a resizable
-> > > terminal
-> > > for virsh console and other libvirt clients.
-> > >=20
-> > > This patch series was originally authored by Szymon Lukasz and
-> > > submitted
-> > > to qemu-devel about 5 years ago. The previous submission can be
-> > > found at
-> > > <
-> > > https://lists.nongnu.org/archive/html/qemu-devel/2020-06/msg09591.
-> > > html>.
-> > > I have updated the patches to be compatible with latest master
-> > > and made
-> > > a few small changes of my own, including the addition of Windows
-> > > support.
-> > >=20
-> > > Probably the most important change I made is the swapping of rows
-> > > and
-> > > cols fields in resize messages. I would like to hear some
-> > > feedback on
-> > > this change from reviewers. The problem is that for a long time,
-> > > the
-> > > Linux kernel used a different field order from what was specified
-> > > in the
-> > > virtio spec. The kernel implementation was apparently merged
-> > > around 2010,
-> > > while the virtio spec came in 2014, so when a previous version of
-> > > this
-> > > patch series was being discussed here on this mailing list in
-> > > 2020, it
-> > > was decided that QEMU should match the Linux implementation, and
-> > > ideally,
-> > > the virtio spec should be changed.
-> > >=20
-> > > However, recently, the Linux kernel implementation was changed to
-> > > conform
-> > > to the spec:
-> > > <https://git.kernel.org/linus/5326ab737a47278dbd16ed3ee7380b26c70
-> > > 56ddd>.
-> > > As a result, to be compatible with latest kernel releases, QEMU
-> > > needs to
-> > > also use the field order matching the specification. I have
-> > > changed the
-> > > patch to use the spec-compliant order, so it works correctly with
-> > > latest
-> > > kernels now.
-> > >=20
-> >=20
-> > Well this is not in any release yet. If you want me to revert that
-> > one, let me know ASAP. Maximilian?
-> >=20
-> > > That leaves the issue of older kernels. There are about 15 years'
-> > > worth
-> > > of kernel versions with the swapped field order, including the
-> > > kernel
-> > > currently shipped in Debian stable. The effects of the swapped
-> > > dimensions
-> > > can sometimes be quite annoying - e.g. if you have a terminal
-> > > with
-> > > 24 rows, this will be interpreted as 24 columns, and your shell
-> > > may limit=20
-> > > line editing to this small space, most of which will be taken by
-> > > your
-> > > prompt. The patch series in its current form provides no way to
-> > > disable
-> > > the console size functionality,
-> >=20
-> > Well I see the console-size property, no?
->=20
-> At least in the case of libvirt managed VMs, this series does
-> nothin by default, as they won't be using the 'stdio' chardev,
-> they'll require libvirt to first wire up the new QMP command,
-> and then apps using libvirt to call it. So in that sense, it'll
-> take a while before the effects are seen by users.
+On Mon, Sep 15, 2025 at 10:41:44AM +0200, Maximilian Immanuel Brandtner wrote:
+> On Fri, 2025-09-12 at 09:50 +0100, Daniel P. Berrangé wrote:
+> > On Fri, Sep 12, 2025 at 04:41:02AM -0400, Michael S. Tsirkin wrote:
+> > > On Fri, Sep 12, 2025 at 05:39:45AM +0200, Filip Hejsek wrote:
+> > > > The goal of this series is to have a resizable terminal into a
+> > > > guest
+> > > > without having to set up networking and using, e.g. ssh.
+> > > > 
+> > > > The virtio spec allows a virtio-console device to notify the
+> > > > guest about
+> > > > terminal resizes in the host. Linux Kernel implements the driver
+> > > > part of
+> > > > the spec. This series implement the device part in QEMU.
+> > > > 
+> > > > This series adds support for a resizable terminal if a virtio
+> > > > console
+> > > > device is connected to the stdio backend.
+> > > > 
+> > > > This series also introduces resize messages that can be sent over
+> > > > QMP to
+> > > > notify QEMU about the size of the terminal connented to some
+> > > > chardev.
+> > > > In the libvirt setting, it will allow to implement a resizable
+> > > > terminal
+> > > > for virsh console and other libvirt clients.
+> > > > 
+> > > > This patch series was originally authored by Szymon Lukasz and
+> > > > submitted
+> > > > to qemu-devel about 5 years ago. The previous submission can be
+> > > > found at
+> > > > <
+> > > > https://lists.nongnu.org/archive/html/qemu-devel/2020-06/msg09591.
+> > > > html>.
+> > > > I have updated the patches to be compatible with latest master
+> > > > and made
+> > > > a few small changes of my own, including the addition of Windows
+> > > > support.
+> > > > 
+> > > > Probably the most important change I made is the swapping of rows
+> > > > and
+> > > > cols fields in resize messages. I would like to hear some
+> > > > feedback on
+> > > > this change from reviewers. The problem is that for a long time,
+> > > > the
+> > > > Linux kernel used a different field order from what was specified
+> > > > in the
+> > > > virtio spec. The kernel implementation was apparently merged
+> > > > around 2010,
+> > > > while the virtio spec came in 2014, so when a previous version of
+> > > > this
+> > > > patch series was being discussed here on this mailing list in
+> > > > 2020, it
+> > > > was decided that QEMU should match the Linux implementation, and
+> > > > ideally,
+> > > > the virtio spec should be changed.
+> > > > 
+> > > > However, recently, the Linux kernel implementation was changed to
+> > > > conform
+> > > > to the spec:
+> > > > <https://git.kernel.org/linus/5326ab737a47278dbd16ed3ee7380b26c70
+> > > > 56ddd>.
+> > > > As a result, to be compatible with latest kernel releases, QEMU
+> > > > needs to
+> > > > also use the field order matching the specification. I have
+> > > > changed the
+> > > > patch to use the spec-compliant order, so it works correctly with
+> > > > latest
+> > > > kernels now.
+> > > > 
+> > > 
+> > > Well this is not in any release yet. If you want me to revert that
+> > > one, let me know ASAP. Maximilian?
+> > > 
+> > > > That leaves the issue of older kernels. There are about 15 years'
+> > > > worth
+> > > > of kernel versions with the swapped field order, including the
+> > > > kernel
+> > > > currently shipped in Debian stable. The effects of the swapped
+> > > > dimensions
+> > > > can sometimes be quite annoying - e.g. if you have a terminal
+> > > > with
+> > > > 24 rows, this will be interpreted as 24 columns, and your shell
+> > > > may limit 
+> > > > line editing to this small space, most of which will be taken by
+> > > > your
+> > > > prompt. The patch series in its current form provides no way to
+> > > > disable
+> > > > the console size functionality,
+> > > 
+> > > Well I see the console-size property, no?
+> > 
+> > At least in the case of libvirt managed VMs, this series does
+> > nothin by default, as they won't be using the 'stdio' chardev,
+> > they'll require libvirt to first wire up the new QMP command,
+> > and then apps using libvirt to call it. So in that sense, it'll
+> > take a while before the effects are seen by users.
+> 
+> Correct me if I'm wrong on this, but shouldn't the 'pty' chardev also
+> be able to take advantage of the same size change mechanisms as the
+> 'stdio' chardev (receiving SIGWINCH and being able to use the ioctl
+> TIOCGWINSZ)? If so the work for the 'stdio' chardev should probably be
+> replicated for the 'pty' chardev.
 
-Correct me if I'm wrong on this, but shouldn't the 'pty' chardev also
-be able to take advantage of the same size change mechanisms as the
-'stdio' chardev (receiving SIGWINCH and being able to use the ioctl
-TIOCGWINSZ)? If so the work for the 'stdio' chardev should probably be
-replicated for the 'pty' chardev.=20
+Yes, if using a suitable client app, it ought to work for
+'pty' I think.
 
->=20
-> > > so users may end up worse off than if
-> > > the functionality were not implemented at all.
-> >=20
-> > If we want to keep the Linux patch, the straight forward way is to
-> > send
-> > the fix to stable@ then poke at Debian at al to fix their kernels.
-> >=20
-> > Another option is to make the property default to off, have
-> > management turn it on when guest is up to date.
-> >=20
-> > But it really sounds like we should revert that Linux patch.
-> > I posted a revert, pls comment.
->=20
-> What about other non-Linux guest OS that may have correctly
-> implemented the virtio spec ?
->=20
-> At least FreeBSD appears to /not/ implemenmt resize at all:
->=20
-> =C2=A0
-> https://github.com/freebsd/freebsd-src/blob/main/sys/dev/virtio/console/v=
-irtio_console.c#L884
->=20
-> Do we have a Windows impl of virtio-console with resize support ?
->=20
-> Any other places we should check ?
->=20
-> With regards,
-> Daniel
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
