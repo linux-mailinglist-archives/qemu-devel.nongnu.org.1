@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5769EB57625
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 12:20:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF28B575D2
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 12:13:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uy6I1-0003Wn-AC; Mon, 15 Sep 2025 06:18:29 -0400
+	id 1uy6B1-0002Hf-MK; Mon, 15 Sep 2025 06:11:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uy6Hu-0003WQ-LE; Mon, 15 Sep 2025 06:18:22 -0400
+ id 1uy6AW-000275-SX; Mon, 15 Sep 2025 06:10:45 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uy6Hl-0007fl-JJ; Mon, 15 Sep 2025 06:18:20 -0400
+ id 1uy6AJ-0006ZA-VM; Mon, 15 Sep 2025 06:10:44 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58FA8uMH006344
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58FA8uMI006344
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
  Mon, 15 Sep 2025 19:09:01 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=3cGH6b5E85/I0U4om6lK9pPVs4VMPnqongUbGQsfkaQ=; 
+DKIM-Signature: a=rsa-sha256; bh=eeuVsJCDwKbW8icJDfICufxGLQvTBPTzkETbuI6aCMQ=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1757930941; v=1;
- b=H6gOX82RhLk1eTTbMkH8Jx5HBc51mysXyRFlq5ULd29mTwVFK9R6rhI9Gwcj/o/y
- WIxwBpQqs71l6QSw72NRBEnFjOnygAlvN3vXYW5B1q4Yc0I1kFALkQrB6WcC2zgn
- 2K5v4l5O16ZbbGPYh/OAcRWIUgkylZ5mV6Vtenn7ovbHjBpWN4fAHhitP/CD/476
- eeNPCGZZ4b2P47k3rudwPq8PkRXZfykrTCndKNb5LqNyZhrvmlOXJMyoWXbhYxNA
- beisTr+wqglRhuMRRlGEIePLnpjzn/igX5vznUct/3H6VrrE9M01agO+teEFrBNi
- L7qdyETaHLol0jUKFvDuLQ==
+ s=rs20250326; t=1757930942; v=1;
+ b=wLuzp8nBPZod+VtjxA1BsAzwerLj8+YXVjDhD4W7e9EgwldEpgkRxITGeaQYtXxJ
+ olj7VEPCiQbG15AzvRaQpmYFQOjuHQXPQYDpl3N7b2H4Bo7jrvu7GkO+9/4UwVL2
+ 9/Plr2x5cfucW6IcOUTL66r8aHbeijto7ADPQv5ljwQhqyl6fM83DPFbRU4Hs/BA
+ 4jF5fmF37PWQCxhqiMJIJLpOqeYkRNmxKjZN2WXG5FLU4g+8f04vJY257n5PrIAY
+ AzoXotAFL3C6HRFHejFbMFHI0NT0iv/Tdd0dnTWdQhzB5KaZsty07TTv5M6NeNIh
+ +LeCfGrHXZZ4wLvk1Oqs2w==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 15 Sep 2025 19:08:45 +0900
-Subject: [PATCH v2 04/15] vfio-user: Do not delete the subregion
+Date: Mon, 15 Sep 2025 19:08:46 +0900
+Subject: [PATCH v2 05/15] hw/char/diva-gsp: Do not delete the subregion
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250915-use-v2-4-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250915-use-v2-5-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250915-use-v2-0-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250915-use-v2-0-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -84,8 +84,8 @@ X-Spam_score: -1.7
 X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
  DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,26 +105,21 @@ It is no longer necessary.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/vfio-user/pci.c | 6 ------
- 1 file changed, 6 deletions(-)
+ hw/char/diva-gsp.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/hw/vfio-user/pci.c b/hw/vfio-user/pci.c
-index be71c777291f..0b6c6a1c5ed3 100644
---- a/hw/vfio-user/pci.c
-+++ b/hw/vfio-user/pci.c
-@@ -73,12 +73,6 @@ static void vfio_user_msix_setup(VFIOPCIDevice *vdev)
- 
- static void vfio_user_msix_teardown(VFIOPCIDevice *vdev)
- {
--    MemoryRegion *mr, *sub;
--
--    mr = vdev->bars[vdev->msix->pba_bar].mr;
--    sub = vdev->msix->pba_region;
--    memory_region_del_subregion(mr, sub);
--
-     g_free(vdev->msix->pba_region);
-     vdev->msix->pba_region = NULL;
- }
+diff --git a/hw/char/diva-gsp.c b/hw/char/diva-gsp.c
+index e1f0713cb794..1ae472e879b5 100644
+--- a/hw/char/diva-gsp.c
++++ b/hw/char/diva-gsp.c
+@@ -63,7 +63,6 @@ static void diva_pci_exit(PCIDevice *dev)
+     for (i = 0; i < pci->ports; i++) {
+         s = pci->state + i;
+         qdev_unrealize(DEVICE(s));
+-        memory_region_del_subregion(&pci->membar, &s->io);
+         g_free(pci->name[i]);
+     }
+     qemu_free_irqs(pci->irqs, pci->ports);
 
 -- 
 2.51.0
