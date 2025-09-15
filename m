@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3611EB58553
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 21:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 309C7B58568
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 21:38:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyEwK-00029g-RZ; Mon, 15 Sep 2025 15:32:40 -0400
+	id 1uyEwX-0002Kn-7D; Mon, 15 Sep 2025 15:32:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uyEvp-0001u1-Ra; Mon, 15 Sep 2025 15:32:10 -0400
+ id 1uyEwQ-0002Gc-Ul; Mon, 15 Sep 2025 15:32:50 -0400
 Received: from forwardcorp1d.mail.yandex.net
  ([2a02:6b8:c41:1300:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uyEvU-0001wk-OT; Mon, 15 Sep 2025 15:32:09 -0400
-Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:94a9:0:640:a3fa:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 7F344809B4;
- Mon, 15 Sep 2025 22:31:22 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:184::1:6])
- by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id AVVVql1FrOs0-s5AhM4u2; Mon, 15 Sep 2025 22:31:22 +0300
+ id 1uyEwB-00021l-Io; Mon, 15 Sep 2025 15:32:45 -0400
+Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
+ [IPv6:2a02:6b8:c42:cf2d:0:640:140f:0])
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 4BBD7807C8;
+ Mon, 15 Sep 2025 22:32:26 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:184::1:6] (unknown [2a02:6bf:8080:184::1:6])
+ by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id PWV2vt1FiW20-nLoG66DA; Mon, 15 Sep 2025 22:32:25 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1757964682;
- bh=U0iIBse8ZC8ENtg6o1H6rx8s5OyGvuvA2kcUutepzk4=;
- h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
- b=nWct6KKZ+zpUIAyWiBqE1h5DeuiT5qPM8W5G21p/nLhKDHy0XwDLIU74pdZQ8AGY5
- WtDfj6t+SwgbW0CLi42wmgBlAmvDXuRMC8XBTbFWX5cmLKjPSyjbYShzQK4ckjT6Gd
- HZHg38lwv9TifSGzeEmRqEtx3ktGOoSN1W3sOuSs=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net;
+ s=default; t=1757964745;
+ bh=gj8cORPbQlvh8ZP0z6p0gaj6QmuNXIr8s9Tj7DG4bvs=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=0DqG6u/DY7YjBkfaR/i5oEHxHHHp0vUxzCeLAmIYiKuP+YFKIrZMq7co0YjNUfhGl
+ 2vaCtkpVStI6RWgFPDtXE11AxT9A7o+eaM8Nl4sJOTyY6VqWKPefbzNHy/Mh273BdT
+ Z15PmND1eUFMk7cFAhDGtN5+kBf9OQfsmzUBP/Ww=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-ID: <f9bafce1-6e03-476a-a4a6-3e2d7105841c@yandex-team.ru>
+Date: Mon, 15 Sep 2025 22:32:25 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/12] io: deal with blocking/non-blocking fds
 To: berrange@redhat.com
 Cc: qemu-devel@nongnu.org, peterx@redhat.com, qemu-block@nongnu.org,
- vsementsov@yandex-team.ru, leiyang@redhat.com, marcandre.lureau@redhat.com,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 12/12] chardev: close an fd on failure path
-Date: Mon, 15 Sep 2025 22:31:04 +0300
-Message-ID: <20250915193105.230085-13-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250915193105.230085-1-vsementsov@yandex-team.ru>
+ leiyang@redhat.com, marcandre.lureau@redhat.com
 References: <20250915193105.230085-1-vsementsov@yandex-team.ru>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20250915193105.230085-1-vsementsov@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
@@ -56,7 +56,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,41 +72,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are at least two failure paths, where we forget
-to close an fd.
+On 15.09.25 22:30, Vladimir Sementsov-Ogievskiy wrote:
+> Hi all!
+> 
+> The series aims to unify code which sets fds blocking/non-blocking
+> through the whole source.
+> 
+> v4:
+> Drop patch about error_reporter, and use local_err
+> instead
+> 
+> 04: - use local_err instead of dropped error_reporter
+>      - change error handling in tcp_chr_sync_read
+>      - fix change in nbd_co_do_establish_connection
+>      - drop r-b because of changes
+> 05-06:
+>      - use local_err instead of dropped error_reporter
+> 08: add r-b by Daniel
+> 10: - use local_err, drop r-b
+> 11-12: add r-b by Daniel
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
----
- chardev/char-pty.c    | 1 +
- chardev/char-serial.c | 1 +
- 2 files changed, 2 insertions(+)
+Of-course, series still based on
+"[PATCH v4 0/2] save qemu-file incoming non-blocking fds"
+Based-on: <20250910193112.1220763-1-vsementsov@yandex-team.ru>
 
-diff --git a/chardev/char-pty.c b/chardev/char-pty.c
-index fe6bfb043d..b066f01412 100644
---- a/chardev/char-pty.c
-+++ b/chardev/char-pty.c
-@@ -350,6 +350,7 @@ static void char_pty_open(Chardev *chr,
- 
-     close(slave_fd);
-     if (!qemu_set_blocking(master_fd, false, errp)) {
-+        close(master_fd);
-         return;
-     }
- 
-diff --git a/chardev/char-serial.c b/chardev/char-serial.c
-index c622d758db..4c6ca713eb 100644
---- a/chardev/char-serial.c
-+++ b/chardev/char-serial.c
-@@ -272,6 +272,7 @@ static void qmp_chardev_open_serial(Chardev *chr,
-         return;
-     }
-     if (!qemu_set_blocking(fd, false, errp)) {
-+        close(fd);
-         return;
-     }
-     tty_serial_init(fd, 115200, 'N', 8, 1);
 -- 
-2.48.1
-
+Best regards,
+Vladimir
 
