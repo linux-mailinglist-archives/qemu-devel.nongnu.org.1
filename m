@@ -2,94 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0EDB5872C
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 00:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC02B5872A
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 00:07:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyHKt-0004lr-C8; Mon, 15 Sep 2025 18:06:11 -0400
+	id 1uyHJI-0003jJ-Fu; Mon, 15 Sep 2025 18:04:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
- id 1uyHHM-0002RW-3o
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 18:02:32 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uyHI2-0002sa-SE
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 18:03:15 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
- id 1uyHHD-0008Rk-0Z
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 18:02:30 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-b0411b83aafso706120266b.1
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uyHHH-0008Sc-Th
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 18:02:49 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-b54c707374fso1202257a12.1
  for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 15:02:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1757973731; x=1758578531; darn=nongnu.org;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
- :date:message-id:reply-to;
- bh=oTQZvVdeh0u2lyFgzlwQ4yWvPSR7Q3p62/A8Exy4cwQ=;
- b=acUdXmonHoLuWDZvS0duX8g3PHzg7hLtw+jQvEEEbA6n7Ai9BrPpEWGBsyaA4vZxsb
- ACnjZFzdz45MKIviRcqH4+8YDA/TorKitdV9s5+9S/8HUVfLC+Z41K1bfup5G++KslvW
- cE+a3dhyrLkhp9EXMlMgeAPxZ++Ep/tLZqDRi1xpGfAmvSyzU9EXVypzy29XccDe6dw5
- UwiCuqtyOt8gqATYe7jHvoR1umFmwzliS0i/OrM/yrzE2exQvOCLlEQmAajt7BclYiP7
- T2blIQxT1qL5JFHeRfQX7XvOK3yCtG3XtqbbS91ZsFpHx6NafzebPuKvKl2eQe08aLUc
- AnpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757973731; x=1758578531;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ d=linaro.org; s=google; t=1757973733; x=1758578533; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=oTQZvVdeh0u2lyFgzlwQ4yWvPSR7Q3p62/A8Exy4cwQ=;
- b=S+hhBCHZZ2EKR45AtQ1LPDdfDqG4WaswL39/5kFfojOHB5AadQ2jCcXTcU4WpRFoJG
- BIZlWS7VwWjvCDdEn+uroXcYaCNZc2MEG1wEM+TwSfGDQaQGw9h7hdsJvPq0t7yqcI8U
- Qi16jnylFbSM1QCBzRttl/5es6qwMeX2mqRktjrnWm0mT3I1QbwcBBTzaOSrwQ8HL6oS
- x04vF99XjSo5bubK1TGFpOdqUtkvJJtUwVM1eHVEM9n/2mKIM3ig0gsfQlqlinaROqf1
- EFn+MCnPPR6d3vir31sxS+7EEXihHB12rg3DlOJLf/tNpDLDFj1S06DDNAv4m5DS6aIA
- 9BWg==
+ bh=a231uzq+R7iz2yMZho6ndeoyunTHc0d8m1kbta7iezs=;
+ b=EhQFID2el13SXEqpvUVTKSxjouG62/rrKdBnbu7y22febZE+La5/H6ZcEglO8S7eO8
+ CkaL4KQmsqdbprFVMGtKTTEYvWBqq4QVPABlayOTjim/OryzN2wPWGhG70h037F5nIzj
+ XguD0qs0JkrPv3Wxe/jOL2qoK6v7V7Aeq4YLqpTFYfi6ewsb395HbgbDZXxSEZxgown8
+ YPQ5n1ppWs0WzDdIXx15pshI5PR/wEUQ99nvc5IWBVB6BNnh92LLn7dBNC3LJn8R9W+N
+ ICJQaDydcb+JHoaFfnkYGQSKKhDlyVQad3ASW8i1+Ejh5JShNBJEZU4xRwGWUXI36hXx
+ rw5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757973733; x=1758578533;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=a231uzq+R7iz2yMZho6ndeoyunTHc0d8m1kbta7iezs=;
+ b=MXx8u8CZG48bmTo4Lea3T1Y0PU1FRLVCl5KfpjkVrHBLOPqVfc2X4O/ecy8CLdRkjt
+ UL770P5yaIDRpwXSDvgsnOpm/ROMiDK7kdFDVNzcGbsijPeep0EZ/y2laR0pZsutAqDO
+ 2MG6GFnO4V+HLs1cop4NrmtbiMU3n0Lk9YsWvmd5KZTrK5sfXC30eFe+Zj+vMjLxeBic
+ NGLzfFSeV4D6TbYBgwX8pCk/TouiirGbgpvcXlIBGi7qbzR1Q2FM8nP2Ke8+k+dJj419
+ QulDmaOTolZKv7jiV2VfTWWo/z6NbW2Jqc3rV7BR+PnFTc3RXjx0gno06y/TEjMyZVmH
+ 8+qA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWoKUdqlkBk/yRDOTfHKBNF3MU2p6lxUQ7yW/VsnerLV3c7A31/Wo4sTD2Rcbp1j40vTfScdt/ugPXk@nongnu.org
-X-Gm-Message-State: AOJu0YzeOLmfJhCAhSDMGUDJi/HzU90xyrLVUhzw4gK/+xIlJL2C0L+2
- TDjdfVSK5Z/rrtCq/HbzCZYLinNx0Gv2SRzaO9H8Gn8mfbkw/SucgWK+
-X-Gm-Gg: ASbGncuwNS80W+2OcszeCxpclXI1cfydMQsGcy0j5CQd3QW8K7U/wJN1Y/VY6HrMjlg
- zQZuM4SSuUrjPrzTRNlYiSXoKS7P45PssHK+R9YM8OrUAsIX2ZteR9VMFU6F0EOTx5ki7ESDPUN
- nwTOM/t6UZjSF4EpjTyMce1H7OtcOb6k3uKZq96ZlXlAxoANPdu75M7InWeLBjOxOhevmTu4jJa
- VFOTb/Bk/FyNLTsFX/i3Oywi3ssLzD9yXaIYh2nr5j+MyzXt08/HyewWQZAytAjxjFMzOZG+bmv
- urKtgQ0UhBAwsSLbl1pfHU/3IPsiMkPiw+QahO+v4G9sr3DGU0hmU1ZoYq4ziyyAXQj9p/gny0+
- uFEmkWx6bpEkYe1uKgF6RZ3tWzcLxle3iyK+Wx2fBDIvWB5GAEBrVg6h8bmIND59/F7slkI8=
-X-Google-Smtp-Source: AGHT+IGCmtXDkhpvCc8iGtVCcJnWBCsN7M0KgA8mqiLotWxr92mVfh+28FTer28hajjStQlNUv97+w==
-X-Received: by 2002:a17:907:d16:b0:afe:c6a0:d116 with SMTP id
- a640c23a62f3a-b07c3572d31mr1505135366b.18.1757973730940; 
- Mon, 15 Sep 2025 15:02:10 -0700 (PDT)
-Received: from [10.192.92.112] (cgnat129.sys-data.com. [79.98.72.129])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b07d09e5414sm705074966b.18.2025.09.15.15.02.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Sep 2025 15:02:10 -0700 (PDT)
-Message-ID: <4c8e1ae5dd16d6ee4bcb42ed25d2987bc2c4a3cc.camel@gmail.com>
-Subject: Re: [PATCH v2] char-pty: add support for the terminal size
-From: Filip Hejsek <filip.hejsek@gmail.com>
-To: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
-Cc: amit@kernel.org, armbru@redhat.com, berrange@redhat.com,
- eblake@redhat.com, 	eduardo@habkost.net, lvivier@redhat.com,
- marcandre.lureau@redhat.com, 	marcel.apfelbaum@gmail.com, mst@redhat.com,
- noh4hss@gmail.com, pbonzini@redhat.com, 	philmd@linaro.org,
- qemu-devel@nongnu.org, wangyanan55@huawei.com, 	zhao1.liu@intel.com,
- nsg@linux.ibm.com
-Date: Tue, 16 Sep 2025 00:02:08 +0200
-In-Reply-To: <20250915163415.149190-1-maxbr@linux.ibm.com>
-References: <20250915162535.147642-1-maxbr@linux.ibm.com>
- <20250915163415.149190-1-maxbr@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+ AJvYcCVw0XHqL+1YPnT+pDBHH6neEQ2TOUBwVvyo6Qv2TumUHnObpC1dhicAVXJq1qwsH74T/otobpgpuYO9@nongnu.org
+X-Gm-Message-State: AOJu0YzbmEcKunvoMgvKvExlOXtd1J+h3VS0QEq0YqLl8IsvnaORxG4a
+ r0SYgrg7qXsSzgaACw4ipc75Stk7Mdh1myvXveYHuE5jREt8eqf3rKUdBgkxzRJaOcU=
+X-Gm-Gg: ASbGncttuDgNsgxRA2DKi18CvnVWeHxO3MFT4xyEsuaCh3aVHbSbZVpqv0genpK85TN
+ Kiw1zvo2QeqME2XBpfqFWG4uj++Y4FKM+LM9az7KFgNYZy7OXEM9aP/tQ1FvF9YLaQsZHkxlh/9
+ uCQ1DkEjHWu6ECU5ch8o4Uh6yRI7oRAuOyCpE9qAoBal3hLBOpYpmvI/E+Diaicj02dyT4xU0Wr
+ YiWGfQaaU7PjayvszMyhc9QCpSmCCEcfdWMUSGq5fOkRdq30dsJMmcSxfQWF0eyvSP1fLCm58H6
+ 5l6NWbitGYcsnRbQykOB57HOnlgHRckV3g3gnoslHwEcPezGUb53+Ggt9ap/O/rEQFzYoSZ4M1U
+ /hLgrzSPZQLxMbOsSGkMwlFjl5/AVcQi5OhKDUqmFfKW+5x92cXJ7IOFC9LJtiZTbpYq1vNscOQ
+ vDuFc=
+X-Google-Smtp-Source: AGHT+IG4fVNccz/oJCzx8yG5hwVhr6XpBF+kSk/ZnQrXiKnUcd59JVe27RBzo6/l1B4ddSP4iYF65w==
+X-Received: by 2002:a17:903:2350:b0:25f:d90:ed30 with SMTP id
+ d9443c01a7336-25f0dbecd59mr163021395ad.57.1757973733339; 
+ Mon, 15 Sep 2025 15:02:13 -0700 (PDT)
+Received: from [192.168.0.102] (200-162-224-93.static-corp.ajato.com.br.
+ [200.162.224.93]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-25f4935db09sm94265785ad.61.2025.09.15.15.02.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 15 Sep 2025 15:02:12 -0700 (PDT)
+Message-ID: <750ceecb-7c6e-4cf3-95db-c33bc4c5eed1@linaro.org>
+Date: Mon, 15 Sep 2025 19:02:09 -0300
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=filip.hejsek@gmail.com; helo=mail-ej1-x632.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/2] tests/functional: Adapt reverse_debugging to run
+ w/o Avocado (yet another try)
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20250915124207.42053-1-thuth@redhat.com>
+Content-Language: en-US
+From: Gustavo Romero <gustavo.romero@linaro.org>
+In-Reply-To: <20250915124207.42053-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pg1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,12 +104,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2025-09-15 at 18:34 +0200, Maximilian Immanuel Brandtner wrote:
-> Update the terminal size upon SIGWINCH delivery.
->=20
-> Signed-off-by: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+Hi Thomas,
 
-I don't think this will work, because SIGWINCH is only delivered for
-the process' controling terminal. Unfortunately I don't think there is
-any way to get size notifications for arbitrary terminal.
+On 9/15/25 09:42, Thomas Huth wrote:
+> Here's yet another attempt to remove the avocado dependency from the
+> reverse debugging tests: I basically took Gustavo's patches to rework
+> tests/functional/reverse_debugging.py, but instead of calling that
+> through tests/guest-debug/run-test.py and adding the cumbersome code
+> to support additional test execution logic, I kept our normal way of
+> running tests via pycotap. Instead, the essential logic for running
+> gdb is copied from tests/guest-debug/run-test.py into the new function
+> reverse_debug() that then runs gdb directly with using
+> tests/functional/reverse_debugging.py as the script.
+
+
+Thanks a lot for this series. It's neat that we don't need to touch
+meson.build, TAP works, and no additional module is used.
+
+Thumbs up from my side :)
+
+I just have some minor comments about it, inline in the patches.
+
+
+> Marked as an RFC since this still needs some love... The aarch64 test
+> seems to work already (after applying the fix for the reverse debug there
+> first: https://patchew.org/QEMU/20250603125459.17688-1-1844144@gmail.com/ ),
+> but the ppc64 and x86 tests are currently still completely broken.
+> Also we currently log into two different folders this way, into
+> tests/functional/aarch64/test_reverse_debug.ReverseDebugging_AArch64.test_aarch64_virt
+> for the normal outer test, and into
+> tests/functional/aarch64/reverse_debugging.ReverseDebugging.test_reverse_debugging
+> for the script that is run in gdb ... it's likely ok for the aarch64
+> test, but the ppc64 test contains two subtests, so we need to come up
+> with a better solution here for the final implementation.
+
+Although I don't know how to fix this last bit, I think besides the
+log files nothing really changes for any arch in comparison with the
+current version with Avocado in the tree.
+
+
+Cheers,
+Gustavo
+
+> Gustavo Romero (2):
+>    tests/functional: Provide GDB to the functional tests
+>    tests/functional: Adapt reverse_debugging to run w/o Avocado
+> 
+>   configure                                     |   2 +
+>   meson.build                                   |   4 +
+>   meson_options.txt                             |   2 +
+>   scripts/meson-buildoptions.sh                 |   2 +
+>   .../functional/aarch64/test_reverse_debug.py  |  16 +-
+>   tests/functional/meson.build                  |   7 +
+>   tests/functional/ppc64/test_reverse_debug.py  |  18 +-
+>   tests/functional/reverse_debugging.py         | 235 +++++++++++-------
+>   tests/functional/x86_64/test_reverse_debug.py |  20 +-
+>   9 files changed, 188 insertions(+), 118 deletions(-)
+> 
 
