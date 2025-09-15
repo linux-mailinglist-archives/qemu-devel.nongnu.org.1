@@ -2,68 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38223B570E1
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 09:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 189F5B57105
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 09:18:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uy3Kk-0005dk-IS; Mon, 15 Sep 2025 03:09:06 -0400
+	id 1uy3Rk-0000cI-Nj; Mon, 15 Sep 2025 03:16:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xb@ultrarisc.com>)
- id 1uy3KX-0005dF-HP; Mon, 15 Sep 2025 03:08:53 -0400
-Received: from [218.76.62.146] (helo=ultrarisc.com)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <xb@ultrarisc.com>)
- id 1uy3KN-0007M2-G8; Mon, 15 Sep 2025 03:08:51 -0400
-Received: from ur-dp1000.. (unknown [192.168.100.1])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAfwCXwdChu8do+wkuAA--.45058S4; 
- Mon, 15 Sep 2025 15:09:39 +0800 (CST)
-From: Xie Bo <xb@ultrarisc.com>
-To: qemu-devel@nongnu.org
-Cc: ajones@ventanamicro.com, qemu-riscv@nongnu.org, alistair23@gmail.com,
- pbonzini@redhat.com, anup@brainfault.org, alistair.francis@wdc.com,
- rkrcmar@ventanamicro.com, palmer@dabbelt.com, xiamy@ultrarisc.com,
- Xie Bo <xb@ultrarisc.com>
-Subject: [PATCH v9 2/2] Fix VM resume after QEMU+KVM migration
-Date: Mon, 15 Sep 2025 15:08:08 +0800
-Message-ID: <20250915070811.3422578-3-xb@ultrarisc.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250915070811.3422578-1-xb@ultrarisc.com>
-References: <20250915070811.3422578-1-xb@ultrarisc.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uy3RY-0000bA-9j; Mon, 15 Sep 2025 03:16:11 -0400
+Received: from isrv.corpit.ru ([212.248.84.144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uy3RK-00008G-87; Mon, 15 Sep 2025 03:16:07 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id BF4E9153B6E;
+ Mon, 15 Sep 2025 10:15:40 +0300 (MSK)
+Received: from [192.168.177.146] (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id C81222810A7;
+ Mon, 15 Sep 2025 10:15:43 +0300 (MSK)
+Message-ID: <7145327a-7d87-41e3-a879-5e6ae9b5abb5@tls.msk.ru>
+Date: Mon, 15 Sep 2025 10:15:43 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwCXwdChu8do+wkuAA--.45058S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxtF4fKr4kXr1xArWfZFy5urg_yoW7WFW8pr
- s8GFZxCr93GrWxXw1fJ34DXFn5Gw47GwsxC3y8ur4akF45GrZ09r1kKay2yrs5G348Ar12
- 9F45AFy3ua15tFJanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUQS14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
- x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
- Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l84
- ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2kK
- e7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I
- 80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCj
- c4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YV
- CY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE-syl42xK82IYc2Ij
- 64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
- 8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE
- 2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
- xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF
- 7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUoOzVDUUUU
-X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQAGB2jHbnEAKQAAsZ
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 218.76.62.146 (failed)
-Received-SPF: pass client-ip=218.76.62.146; envelope-from=xb@ultrarisc.com;
- helo=ultrarisc.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_=5BPATCH_v8_for_v10=2E0=2E0_0/2=5D_target/riscv?=
+ =?UTF-8?Q?=EF=BC=9AFix_riscv64_kvm_migration?=
+To: Alistair Francis <alistair23@gmail.com>, Xie Bo <xb@ultrarisc.com>
+Cc: qemu-devel@nongnu.org, ajones@ventanamicro.com, qemu-riscv@nongnu.org,
+ pbonzini@redhat.com, anup@brainfault.org, alistair.francis@wdc.com,
+ rkrcmar@ventanamicro.com, palmer@dabbelt.com, xiamy@ultrarisc.com
+References: <20250912085535.1649347-1-xb@ultrarisc.com>
+ <CAKmqyKN80GDakc6MzBcPur2BtLJCMFMg39fLTgKBh1W8GfZ-AA@mail.gmail.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <CAKmqyKN80GDakc6MzBcPur2BtLJCMFMg39fLTgKBh1W8GfZ-AA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=212.248.84.144; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,169 +105,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix two migration issues for virtual machines in KVM mode:
-1.It saves and restores the vCPU's privilege mode to ensure that the
-vCPU's privilege mode is correct after migration.
-2.It saves and restores the vCPU's mp_state (runnable or stopped) and
-includes this state in the migration sequence, upgrading the vmstate
-version to ensure that the vCPU's mp_state is correct after migration.
+On 15.09.2025 08:06, Alistair Francis wrote:
+..
+> Can you add the following tag:
+> 
+> Cc: qemu-stable@nongnu.org
+> 
+> to each commit message. That way it will be picked up for stable.
 
-KVM_PUT_RUNTIME_STATE only synchronizes the vCPU’s runtime-modified
-state (such as registers), whereas mp_state is related to system boot,
-multi-core initialization, and is not modified during normal operation.
-Therefore, mp_state is only synchronized to KVM during KVM_PUT_RESET_STATE
-and KVM_PUT_FULL_STATE.
+Hi!  This is just so I'm aware of the commits.
+Here, they're already on my radar, so there's no need to change
+anything :)
 
-Signed-off-by: Xie Bo <xb@ultrarisc.com>
----
- target/riscv/kvm/kvm-cpu.c   | 60 ++++++++++++++++++++++++++++--------
- target/riscv/kvm/kvm_riscv.h |  3 +-
- target/riscv/machine.c       |  5 +--
- 3 files changed, 52 insertions(+), 16 deletions(-)
+Thanks,
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 5c19062c19..1fa755bd96 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -594,6 +594,12 @@ static int kvm_riscv_get_regs_core(CPUState *cs)
-     }
-     env->pc = reg;
- 
-+    ret = kvm_get_one_reg(cs, RISCV_CORE_REG(mode), &reg);
-+    if (ret) {
-+        return ret;
-+    }
-+    env->priv = reg;
-+
-     for (i = 1; i < 32; i++) {
-         uint64_t id = KVM_RISCV_REG_ID_ULONG(KVM_REG_RISCV_CORE, i);
-         ret = kvm_get_one_reg(cs, id, &reg);
-@@ -619,6 +625,12 @@ static int kvm_riscv_put_regs_core(CPUState *cs)
-         return ret;
-     }
- 
-+    reg = env->priv;
-+    ret = kvm_set_one_reg(cs, RISCV_CORE_REG(mode), &reg);
-+    if (ret) {
-+        return ret;
-+    }
-+
-     for (i = 1; i < 32; i++) {
-         uint64_t id = KVM_RISCV_REG_ID_ULONG(KVM_REG_RISCV_CORE, i);
-         reg = env->gpr[i];
-@@ -1348,25 +1360,52 @@ int kvm_arch_get_registers(CPUState *cs, Error **errp)
-         return ret;
-     }
- 
-+    ret = kvm_riscv_sync_mpstate_to_qemu(cs);
-+    if (ret) {
-+        return ret;
-+    }
-+
-     return ret;
- }
- 
--int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state)
-+int kvm_riscv_sync_mpstate_to_kvm(CPUState *cs)
- {
-+    int ret = 0;
-+    CPURISCVState *env = &RISCV_CPU(cs)->env;
-+
-     if (cap_has_mp_state) {
-         struct kvm_mp_state mp_state = {
--            .mp_state = state
-+            .mp_state = env->mp_state
-         };
- 
--        int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state);
-+        ret = kvm_vcpu_ioctl(cs, KVM_SET_MP_STATE, &mp_state);
-         if (ret) {
--            fprintf(stderr, "%s: failed to sync MP_STATE %d/%s\n",
-+            fprintf(stderr, "%s: failed to sync MP_STATE to KVM %d/%s\n",
-                     __func__, ret, strerror(-ret));
--            return -1;
-         }
-     }
- 
--    return 0;
-+    return ret;
-+}
-+
-+int kvm_riscv_sync_mpstate_to_qemu(CPUState *cs)
-+{
-+    int ret = 0;
-+    CPURISCVState *env = &RISCV_CPU(cs)->env;
-+
-+    if (cap_has_mp_state) {
-+        struct kvm_mp_state mp_state;
-+
-+        ret = kvm_vcpu_ioctl(cs, KVM_GET_MP_STATE, &mp_state);
-+        if (ret) {
-+            fprintf(stderr, "%s: failed to sync MP_STATE to QEMU %d/%s\n",
-+                    __func__, ret, strerror(-ret));
-+            return ret;
-+        }
-+        env->mp_state = mp_state.mp_state;
-+    }
-+
-+    return ret;
- }
- 
- int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
-@@ -1393,13 +1432,8 @@ int kvm_arch_put_registers(CPUState *cs, int level, Error **errp)
-         return ret;
-     }
- 
--    if (KVM_PUT_RESET_STATE == level) {
--        RISCVCPU *cpu = RISCV_CPU(cs);
--        if (cs->cpu_index == 0) {
--            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_RUNNABLE);
--        } else {
--            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_STOPPED);
--        }
-+    if (level >= KVM_PUT_RESET_STATE) {
-+        ret = kvm_riscv_sync_mpstate_to_kvm(cs);
-         if (ret) {
-             return ret;
-         }
-diff --git a/target/riscv/kvm/kvm_riscv.h b/target/riscv/kvm/kvm_riscv.h
-index b2bcd1041f..953db94160 100644
---- a/target/riscv/kvm/kvm_riscv.h
-+++ b/target/riscv/kvm/kvm_riscv.h
-@@ -28,7 +28,8 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
-                           uint64_t aplic_base, uint64_t imsic_base,
-                           uint64_t guest_num);
- void riscv_kvm_aplic_request(void *opaque, int irq, int level);
--int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
-+int kvm_riscv_sync_mpstate_to_kvm(CPUState *cs);
-+int kvm_riscv_sync_mpstate_to_qemu(CPUState *cs);
- void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
- uint64_t kvm_riscv_get_timebase_frequency(RISCVCPU *cpu);
- 
-diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index 51e0567ed3..6e5be17c27 100644
---- a/target/riscv/machine.c
-+++ b/target/riscv/machine.c
-@@ -426,8 +426,8 @@ static const VMStateDescription vmstate_sstc = {
- 
- const VMStateDescription vmstate_riscv_cpu = {
-     .name = "cpu",
--    .version_id = 10,
--    .minimum_version_id = 10,
-+    .version_id = 11,
-+    .minimum_version_id = 11,
-     .post_load = riscv_cpu_post_load,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINTTL_ARRAY(env.gpr, RISCVCPU, 32),
-@@ -447,6 +447,7 @@ const VMStateDescription vmstate_riscv_cpu = {
-         VMSTATE_UNUSED(4),
-         VMSTATE_UINT32(env.misa_ext_mask, RISCVCPU),
-         VMSTATE_UINTTL(env.priv, RISCVCPU),
-+        VMSTATE_UINT32(env.mp_state, RISCVCPU),
-         VMSTATE_BOOL(env.virt_enabled, RISCVCPU),
-         VMSTATE_UINT64(env.resetvec, RISCVCPU),
-         VMSTATE_UINTTL(env.mhartid, RISCVCPU),
--- 
-2.43.0
+/mjt
 
 
