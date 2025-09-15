@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51911B5759E
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 12:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCBDB575A0
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 12:08:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uy66v-0007Ck-1e; Mon, 15 Sep 2025 06:07:02 -0400
+	id 1uy67B-0007SN-GA; Mon, 15 Sep 2025 06:07:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uy66o-00079C-8d
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:06:54 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1uy679-0007S6-1Q
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:07:15 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uy66d-00060d-Hb
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:06:53 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-45dcfecdc0fso39856105e9.1
- for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 03:06:40 -0700 (PDT)
+ id 1uy66y-00062r-H8
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:07:14 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-45f2c4c3853so3938285e9.2
+ for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 03:06:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757930796; x=1758535596; darn=nongnu.org;
+ d=linaro.org; s=google; t=1757930811; x=1758535611; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gUwBE/3JeKVh2fnm/o3oHMNb3S7p2IufNZQrGTpBmGw=;
- b=mk36XMoHVGEwbrkAiuaU2p9idU1+NZqz0GgWbRmlYrczig32Gy6RRSayhIUBV2vMfY
- ZgV8ooMSQ6YUKSKy4DBUHhv7BCvTsh0HgQu1CBn0DNuTZl057agGP9WsMx5VPwVbm44k
- vjjoYCIuBhuVqCIMTcEIjDu6XQz/thSbzvYjxRRD9UzstGZxDyJH3xdHw5hRLu7avu95
- oQpsj3KLIJTfxwssEM6JTjOMi8/h7cilgbUfLb5o8fzzMgrr80WpDaMDk2LNyjR4jJN8
- H8XujVWSPpcL3wUfNvZIvc3qa7ni2lbSAa7suzaItESTSUOyqwEEQMpMfIzBS66LEeA0
- lFbw==
+ bh=t7Cej6W9Z+heWxnF9n4qOiGD66PtXt1v/jqyKpsxBpY=;
+ b=G2Ww/qX61hg/0U7SidYoepA9VyCh0Cy8jViNcOb5rQl7ndL6Gr1Y15Cjj/G4IG/Pzc
+ 88+OAYeOKQlXjwqoS9K8OETnpvFt7Wx24QAA70wnnM8guTYvz0cSFkqDxYp3sJgFdS+r
+ pSxCriIMlauKEj5H0NPMP4s9WUW3HylnO2MAm/ZO1III0mEU0kmnKJ8MtiHWfTSM079r
+ eeMONwMTzVT+2E3xV0M5BWXTkdbKhw8eE6Bzg2qfebPnbvIp4wZW0iPDBilReaZRndOy
+ clugZbADOFnWoyXvhe8+H+AFFJMceIQgtEeo+gErdZHe+KTrDaEzXEnnzRzjYIY0b4Os
+ mkXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757930796; x=1758535596;
+ d=1e100.net; s=20230601; t=1757930811; x=1758535611;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=gUwBE/3JeKVh2fnm/o3oHMNb3S7p2IufNZQrGTpBmGw=;
- b=IoOas0EM8nMg7N4EFfJHmW6Mwm1o9Cq/Wx7F+jWeybYJfFcfYUDDey9N8bI5M6nbW4
- 4HUvm/BC5cYtUtmY95XSPisGEh6nhzmwquSZMHMMDq6mvIl6QQ+Jtz/arLOk/aTno0Ez
- cKXtaFdShHkFogPB2DhfV4SFcTPE75FTXrINfUakB3EIySPN5vu0gfMQ1jjm5xouqLoj
- 0eRdhSWLpUH4b432TC6o8k1ykOusc1012AC5kJXOT+q60mHMwPEi5NH3U5cfOmQxVOBI
- r454VeE15YKRZlTFPtYNbFoC5DXIO03P0OBDiQHQBb0o+p8nveFn+9ZORIoR0PCcF2Oq
- farA==
-X-Gm-Message-State: AOJu0YyaIhk7vXf931Mwcy2I5ByVlUieclRGO1bT2X2IP/NHS+kg+6bp
- MZ4dP2NG878eByTFJF1uFT9WLBR08UaJ4MiLgWxedaLfpwgWlBbQxdMfIBL/tzib/hvUyHdIFdV
- fYcV09ss=
-X-Gm-Gg: ASbGncs8kQpmUnk5dKDBYKMKjQY6lBQRCNb/UFNOyoE8jpry4j/4wtv5tXUKGN6tcA7
- 68MNiTXn67JdAHURgReZxifo1s2BFqJbkENgeQh8hcSQXMsGPoIRBnwvhHnBltyInldKJbvlsiJ
- 7AUdYmUzLvbi2eVeoIXCZWp+BA/hZdhbelAOyZIka1S685ctKJl/Ai90AWV8WsmX/BdvN0+nLL6
- p2OlqB9pdlSgArTQiEyOiEZZ2Evq63SEAeqpFwSJpUE3u8+E1B12udCAUYtdR/xsKHEBw2J/Cy+
- vxqkEFWDjpCL4LY3nWgdukX75dp5ufJRxkGgDMKx/IhtVNgrrvYNgfg4GK/yJUUxWjCnmVcUX9m
- vD8a8vdDTga8TOX14Qs6QCSf2UbqI731Wfg==
-X-Google-Smtp-Source: AGHT+IFz1HjyMI7QwR0WJ9c8gve7FfR2WYve3sekLpK0WjtCxKgWCC4tAxujjw/w2uBiIZqBJi4ODA==
-X-Received: by 2002:a05:600c:5246:b0:459:e025:8c40 with SMTP id
- 5b1f17b1804b1-45f211c8aa9mr126167075e9.10.1757930795933; 
- Mon, 15 Sep 2025 03:06:35 -0700 (PDT)
+ bh=t7Cej6W9Z+heWxnF9n4qOiGD66PtXt1v/jqyKpsxBpY=;
+ b=FoeTbhNSgtvJLAWu6pBBDrOJztn4S3Fl288lw4RPO95dw79GumAdCKL7x82cyp45qC
+ QSfpg7kh+BHsUqp1g3kF/UoLxZpUXoFbutNFdffR6mMyxmZDZoYKH7qDnxkT7djQRvTl
+ WeOu2TA9Y3BNVtXNruHLT0qufKM3izA8o0vpkw44Cm7dxiRztKAUcxHxgpgtzzD6JCZz
+ 2g8tZoiGO9KUStS4lbh+B2t8TpxcGr2HBya0PaA9ZA2UPb6cEJ9RzTe3zYTcEU8xKe/6
+ /C6S9nCUmWPJ2k+WaigQqQfSVmbgUIsiufDCpC1ZhK9ikuUF6DxeZa7SZdW9dbVAlqUJ
+ JT6g==
+X-Gm-Message-State: AOJu0Ywoq/5WZdz/USqU2b7zt+PFwLRg4auhwxXdf2GqyKCIcaACWGt8
+ QOEjnj8WaZVvwLUhlSXrbrVDTX1sp+o2MyMcqV+bFODBp6Yg4og8nfjSM42yk22xC0ZnXQbEwEL
+ diKDDkOk=
+X-Gm-Gg: ASbGncuREH/8Hq/V5v+nqH6c9Jjvp83PUT9YfOlrhHAMv/JWDzT8dParbCVm/kZMa4E
+ mmM0m22NvD0PoWjSjUlJi8AZRCU5msP6aicPffRO4fA+vdJEXlTC32nZMTH/98n1MhVaBfG2i04
+ /EX8AAYUYzDfDikucXlTQpIngT6YZrp5FvBq8eWUgikfgRsw6abToaBnwAo4QduapBnxM3fdf7g
+ Fa6bEtByc/YKz8Jz5uNB+HfYFZfaGnlvVQoKjbIDl0ZyFoxUta7fStxq5qVS+VFMbGt2ZnPPcs8
+ M9tAWSXRNTxNOJ21KThQ3HekZEsAIIItOgi9CKhvqI+UdeDF8xHEXTu6tvVGeBVGffTcUQtaN93
+ c9ScaBn+FTWt3mDcFxErabuA05oDYuCfSKg==
+X-Google-Smtp-Source: AGHT+IHUJF+VoEvtB2q/RoUqOFnj+VExusJGirA+izpNv0lujdO+L0bUAD+TQeil5NHrxTQzsR/WEQ==
+X-Received: by 2002:a05:600c:4ed2:b0:45b:8ac2:975e with SMTP id
+ 5b1f17b1804b1-45f2c410b69mr34903565e9.26.1757930811185; 
+ Mon, 15 Sep 2025 03:06:51 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45e0156d206sm177402935e9.5.2025.09.15.03.06.34
+ 5b1f17b1804b1-45e037d638dsm166153555e9.22.2025.09.15.03.06.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Sep 2025 03:06:34 -0700 (PDT)
+ Mon, 15 Sep 2025 03:06:50 -0700 (PDT)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C46C55F867;
- Mon, 15 Sep 2025 11:06:33 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 04B105F867;
+ Mon, 15 Sep 2025 11:06:50 +0100 (BST)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 1/6] tests/functional: import GDB remote code from avocado
-In-Reply-To: <20250912182200.643909-2-berrange@redhat.com> ("Daniel P.
- =?utf-8?Q?Berrang=C3=A9=22's?= message of "Fri, 12 Sep 2025 19:21:55
+Subject: Re: [PATCH 2/6] tests/functional: convert reverse debug test to
+ local gdb module
+In-Reply-To: <20250912182200.643909-3-berrange@redhat.com> ("Daniel P.
+ =?utf-8?Q?Berrang=C3=A9=22's?= message of "Fri, 12 Sep 2025 19:21:56
  +0100")
 References: <20250912182200.643909-1-berrange@redhat.com>
- <20250912182200.643909-2-berrange@redhat.com>
+ <20250912182200.643909-3-berrange@redhat.com>
 User-Agent: mu4e 1.12.12; emacs 30.1
-Date: Mon, 15 Sep 2025 11:06:33 +0100
-Message-ID: <87plbsrpw6.fsf@draig.linaro.org>
+Date: Mon, 15 Sep 2025 11:06:50 +0100
+Message-ID: <87jz20rpvp.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,51 +107,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> The gdbmi_parser.py and spark.py modules originated in projects
-> that pre-date avocado and are imported unchanged aside from the
-> 'import' statement in gdbmi_parser.py
->
-> The gdb.py module is original avocado code that is imported with
-> all classes except GDBRemote removed.
+> This replaces the use of Avocado for the GDBRemote class with
+> our in-tree copy.
 >
 > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> ---
->  tests/functional/qemu_test/gdb.py          | 233 ++++++
->  tests/functional/qemu_test/gdbmi_parser.py | 419 ++++++++++
->  tests/functional/qemu_test/spark.py        | 850 +++++++++++++++++++++
->  3 files changed, 1502 insertions(+)
->  create mode 100644 tests/functional/qemu_test/gdb.py
->  create mode 100644 tests/functional/qemu_test/gdbmi_parser.py
->  create mode 100644 tests/functional/qemu_test/spark.py
 
-I wonder if we should put these in a subdir named "imported" or
-something similar to make it clear these didn't start here.
-
->
-> diff --git a/tests/functional/qemu_test/gdb.py b/tests/functional/qemu_te=
-st/gdb.py
-> new file mode 100644
-> index 0000000000..913e3b65ab
-> --- /dev/null
-> +++ b/tests/functional/qemu_test/gdb.py
-> @@ -0,0 +1,233 @@
-> +# This program is free software; you can redistribute it and/or modify
-> +# it under the terms of the GNU General Public License as published by
-> +# the Free Software Foundation; either version 2 of the License, or
-> +# (at your option) any later version.
-> +#
-> +# This program is distributed in the hope that it will be useful,
-> +# but WITHOUT ANY WARRANTY; without even the implied warranty of
-> +# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-> +#
-> +# A cut-down copy of gdb.py from the avocado project:
-
-Or indeed a link to upstream from here and the other python comment
-blocks.
-
-Otherwise:
-
-Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
 --=20
 Alex Benn=C3=A9e
