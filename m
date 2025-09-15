@@ -2,77 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2F0B570B4
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 08:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C258B570E2
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 09:11:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uy35W-0001n2-Sb; Mon, 15 Sep 2025 02:53:22 -0400
+	id 1uy3Ko-0005fz-L5; Mon, 15 Sep 2025 03:09:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1uy35F-0001lr-7l
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 02:53:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1uy355-0005y7-Vi
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 02:53:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757919172;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hFnnPhcU4RBd3C5qFZyUV0l/D6x17Ps8MlGyZLx54f0=;
- b=SL2kHixgxNGSPNYEj00iM529ECqQU+zUsdRz6pYCZx7FoGgmY0LcYaWQgUy0LcjT3SPQl8
- nIySwOCXWzfYUfvYhHnp0rHcHWlyg1EIL1eefOxLdgl03f0vgbHXfaSEmt/CvL15YzGi21
- GL2CTUFIoIItXhzrACZQKKAqI2Cvsg0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-147-HUhvMThBOImcduzKTgBbZg-1; Mon,
- 15 Sep 2025 02:52:48 -0400
-X-MC-Unique: HUhvMThBOImcduzKTgBbZg-1
-X-Mimecast-MFC-AGG-ID: HUhvMThBOImcduzKTgBbZg_1757919167
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B24C21800578; Mon, 15 Sep 2025 06:52:47 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.44.32.55])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3911E300021A; Mon, 15 Sep 2025 06:52:47 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id D801D1800399; Mon, 15 Sep 2025 08:52:44 +0200 (CEST)
-Date: Mon, 15 Sep 2025 08:52:44 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Ani Sinha <anisinha@redhat.com>, Markus Armbruster <armbru@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Zhao Liu <zhao1.liu@intel.com>,
- Eric Blake <eblake@redhat.com>, roy.hopkins@randomman.co.uk
-Subject: Re: [PATCH] igvm: add initial support for non-cc firmware in igvm
- format
-Message-ID: <vaze7a2ropbvcy6vcvcqq53xmwj2syg3z67tbjvqqtwxpqhfys@mci3lzrsdqgw>
-References: <20250709123007.1039675-1-kraxel@redhat.com>
- <ub32mvhexl7ppqwzie53ztfnplamfsl6ahrlwlirvno56es36s@m6ozo7p4ao2j>
- <aMQgLMnz2YD6Tlo_@redhat.com>
+ (Exim 4.90_1) (envelope-from <xb@ultrarisc.com>)
+ id 1uy3Kg-0005eN-Bv; Mon, 15 Sep 2025 03:09:03 -0400
+Received: from [218.76.62.146] (helo=ultrarisc.com)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <xb@ultrarisc.com>)
+ id 1uy3KT-0007Lb-Kj; Mon, 15 Sep 2025 03:09:02 -0400
+Received: from ur-dp1000.. (unknown [192.168.100.1])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAfwCXwdChu8do+wkuAA--.45058S2; 
+ Mon, 15 Sep 2025 15:09:34 +0800 (CST)
+From: Xie Bo <xb@ultrarisc.com>
+To: qemu-devel@nongnu.org
+Cc: ajones@ventanamicro.com, qemu-riscv@nongnu.org, alistair23@gmail.com,
+ pbonzini@redhat.com, anup@brainfault.org, alistair.francis@wdc.com,
+ rkrcmar@ventanamicro.com, palmer@dabbelt.com, xiamy@ultrarisc.com,
+ Xie Bo <xb@ultrarisc.com>
+Subject: =?UTF-8?q?=5BPATCH=20v9=200/2=5D=20target/riscv=EF=BC=9AFix=20riscv64=20kvm=20migration?=
+Date: Mon, 15 Sep 2025 15:08:06 +0800
+Message-ID: <20250915070811.3422578-1-xb@ultrarisc.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aMQgLMnz2YD6Tlo_@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAfwCXwdChu8do+wkuAA--.45058S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtF15Ar1xtrWUCr48GFWUCFg_yoW3trb_GF
+ WIvFW7J39rXayv9FZ8tF4rA3sYkay8Cryjya18Ar4Yy347Wr45Ja1vqF18Xw1jvF4UJ3Wk
+ Jry7tryxCr1UWjkaLaAFLSUrUUUU8b8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUIcSsGvfJTRUUUbgkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+ 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+ A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+ Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+ 1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAq
+ x4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6x
+ CaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwAC
+ I402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCY02Avz4vE-syl42xK82
+ IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2Iq
+ xVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r
+ 1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY
+ 6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67
+ AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuY
+ vjTR_L0eDUUUU
+X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQAGB2jHbnEADwAPsw
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 218.76.62.146 (failed)
+Received-SPF: pass client-ip=218.76.62.146; envelope-from=xb@ultrarisc.com;
+ helo=ultrarisc.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_PASS=-0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,39 +77,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 12, 2025 at 02:29:16PM +0100, Daniel P. Berrangé wrote:
-> On Fri, Sep 12, 2025 at 03:25:08PM +0200, Gerd Hoffmann wrote:
-> > On Wed, Jul 09, 2025 at 02:30:07PM +0200, Gerd Hoffmann wrote:
-> > > Implement a ConfidentialGuestSupportClass for non-confidential VMs.
-> > > This allows the igvm support code work without sev/tdx.
-> > > 
-> > > RfC: Not fully sure this is the best way to implement this.
-> > > Alternatively we could add this directly into the igvm backend and run
-> > > it in case no confidential guest support object is present.
-> > 
-> > Started to look at this again.  Noticed that at least simple native
-> > igvm files (with memory regions only) boot just fine without an
-> > ConfidentialGuestSupportClass.  Which kind-of underlines that going for
-> > a pseudo-ConfidentialGuestSupportClass for native mode is maybe not the
-> > best design idea ...
-> > 
-> > Nevertheless we'll go need target-specific code for some IGVM features.
-> > That is obviously the case for loading some custom initial CPU state.
-> > But also things like the memory map are not the same across targets,
-> > even though some targets might share an implementation (e820 on x86,
-> > fdt elsewhere).
-> > 
-> > Suggestions how to wire that up best?
-> 
-> I'm not familiar with the details of IGVM wrt varying technologies.
-> Consider that x86 can boot a guest non-confidential, SEV-SNP or TDX.
-> Do we have a single IGVM file that provides enough data for all
-> three scenarios, or does each deployment technology need a separate
-> IGVM file to be provided ?
+This is v9 of the series. Compared to v8, the patches are now based on
+the 'riscv-to-apply.next' branch from Alistair's repository:
 
-You can have a single igvm file supporting all platforms.
+https://github.com/alistair23/qemu/tree/riscv-to-apply.next
 
-take care,
-  Gerd
+Changes since v8:
+- Rebased the series onto [alistair/riscv-to-apply.next]
+- Removed the previous 'Reviewed-by' tags due to the rebase
+  * The changes are purely mechanical; no code logic was altered *
+- Added 'Cc: qemu-stable@nongnu.org'
+
+Xie Bo (2):
+  Set KVM initial privilege mode and mp_state
+  Fix VM resume after QEMU+KVM migration
+
+ target/riscv/cpu.c           | 17 +++++++++-
+ target/riscv/cpu.h           |  2 ++
+ target/riscv/kvm/kvm-cpu.c   | 60 ++++++++++++++++++++++++++++--------
+ target/riscv/kvm/kvm_riscv.h |  3 +-
+ target/riscv/machine.c       |  5 +--
+ 5 files changed, 70 insertions(+), 17 deletions(-)
+
+-- 
+2.43.0
 
 
