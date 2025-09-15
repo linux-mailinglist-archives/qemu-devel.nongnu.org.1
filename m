@@ -2,94 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 918BEB57627
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 12:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC76B5762E
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 12:20:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uy6IM-0003de-Pt; Mon, 15 Sep 2025 06:18:51 -0400
+	id 1uy6JK-00042i-Ad; Mon, 15 Sep 2025 06:19:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uy6IB-0003aa-8F
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:18:39 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1uy6JA-0003x6-JS
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:19:41 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uy6Hv-0007gl-5d
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:18:36 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3e4aeaa57b9so3390699f8f.1
- for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 03:18:21 -0700 (PDT)
+ id 1uy6Iz-0007kR-VL
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 06:19:39 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-45f2acb5f42so7922505e9.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 03:19:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757931497; x=1758536297; darn=nongnu.org;
+ d=linaro.org; s=google; t=1757931562; x=1758536362; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3j6kpaAA/zdlWJrqLVWFFIySs9ZJWfWWyxqZnZNzRhU=;
- b=YcVrQ4gKv3IqIFmWL0O+Rsd2maK9nwBaMDLd+C3fPGd/dkEZY+wwcZ9AbH6S/nAAnm
- XQxeVkAX1pLev+EHcbwSc4WhV5EdXhsgtT6SrgExwLc3iOAdCsKyFUPZ3zyltYzeLEAj
- iKFIPZQakg0vbgqMRWLYDeNrbwYEM1IyWwDXaU+djCchK8pcBEYhCvMRnzCVgQ3j7NTK
- rPR0K5W8LC5TmC+w20FgWDv0JvH7V5V06t0Fsd2FoRSip0pguGDG8Zpaus69uNiX4UAx
- fO0m6c5aU342lXLMZ1qy/8xZqnFdvEGE7fBosYjzkQwNMWhABAkyDafyBrSj4Mts/jYG
- FZrw==
+ bh=Uy0HCfE3DMpSzqeuh6VRDtUO9lvr0BfKdeK87q9qIms=;
+ b=JJfSRsCkV0ZQ37I/BHEcQwo5C2OHuNQygJkPk1ftizOD+hxHC3k96bz5OLuKTlGvSD
+ NPv41tnlqd6URX+rKucK8RJGo957bZf2FAhoTmekUgW/+m4a7tFRh9qDRBBE2YHxiDSS
+ PFvaN6SB1qeKX2UClFIigwPoQ+F/jIX337LmAklN9OkJmQLaQfD/J9b33VS4FqHNizDM
+ SFHESDG7ZMiajBoIT2NpmgeNTiAWtNUdd7ABvms+i2qIdeLg24s7+g/J0eLgqek1dCyY
+ LUc8oSKnMQzjFoAwF7exaDCK6zs9ueu7xDZCMDA0Ju96C/ozA+HAV7YtDDGzAxaJu/lg
+ 1lyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757931497; x=1758536297;
+ d=1e100.net; s=20230601; t=1757931562; x=1758536362;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=3j6kpaAA/zdlWJrqLVWFFIySs9ZJWfWWyxqZnZNzRhU=;
- b=TSLe/8q6DiRSIx1Wbbp7j6P4MWbm9acI/G20T0o6AZkppRxhQUwBGUv7w8m3iZGgsb
- Ie8UTpe4KqbSaPLmttKzYN/Pn53KbFW/tkdhOcChvFgh7Jd3P7B+wrPY3wGDg8pwBCr1
- Q0iVTJP4PYKXps0Q4b0DM9j+yp7699wfPfYXl8guZzpKLoVwhWo/2s1t7Ku4iCWEZN7Q
- UqY6yr6yQBJOFXma+Gq3dgCZFA3fWUGfqi7xccQM1Sx7jbIymafaZ/yBlKEQkKlsoWSS
- rDyXBU0+9zEEOPkchQOVgFWwenIahJEWDMjX3njsS2DTW6/fz3aztZZBrjK+MI8NY2XZ
- 48Og==
-X-Gm-Message-State: AOJu0YyYU5+ONjH2Io4kN8HsHRhiBRO8CNtPey1tw1H8VkwGQ37aNrZy
- XfCThJhH1xtvTaAJCsjKdUoidJykNljVR7XwgtXSCT8oKautOGq/opH0v99vT5UX6JdP7syFYvs
- CeCsT1zc=
-X-Gm-Gg: ASbGncupcJ4eWZoGGy3EDjFpplJ2RGS4A4JZPWwHW0XVZju5ImoY/tHmbrHOSmQ61u5
- dYyIxxw2RrbIZNWRCHCs3zUCOECbXMRHw4S+8F+8JDu36M/JyK7XBGOv+Vv35wiw08Jl6PDAu0D
- fW64S6QKnwMIj8eJEmhYWhnwXXNSdw654+ghSBdowZT6NAVG+jz3SoLiS3BD9hvxmIhFPc9tz8w
- Nmscky4VllOu0nkcwHzHPvX7rJnVuPBKi/4Qw1vcMIqDpBsRPQ2Bk9L/6fN5Mlt5vahoMo6Kiey
- hLZbdCK7H0ULRJED8GTs93g7sufkzBSxzpRTRhM8h9JaFIi6xDbxkrsq2RC6XOdyEsXIwUsM4c0
- SIbTHIrihYMmio0+W1GHwTKDxzwB8LNuGIg==
-X-Google-Smtp-Source: AGHT+IGAmZR2LnSLJup6SXh3H/OaQcCINmFBUrqn2y1GVw6vgVAT9BrtBytaQIokleP6CnndkfVTqw==
-X-Received: by 2002:a5d:5d01:0:b0:3d7:38a7:35d0 with SMTP id
- ffacd0b85a97d-3e765a263c3mr9731994f8f.62.1757931497484; 
- Mon, 15 Sep 2025 03:18:17 -0700 (PDT)
+ bh=Uy0HCfE3DMpSzqeuh6VRDtUO9lvr0BfKdeK87q9qIms=;
+ b=EXQWtM0ig8x8k60Mj1FjgnIjKuVIBDaZNdKQlvtu5Ep0oo1kVsD9zezS6TA/BS/f/e
+ HtywUHibN1s+WqMa2AnXAKz5v8cVufoI9U2+Yjl0+fK3hJZGYUTsNDNg8ORv+/igBmiN
+ +pHNtUd7Z7Lug7YZIk7calo8Nvv2E948lquGlLPq8prTP/6BerecFwFcrfBuPFx1ZokV
+ YGURYlW76IzTrWFs0PCH855x4Zwdedm2t9Un2fqupRtmvXMVD9vjvtElMvV1ng/MZvRN
+ UvAFz233wEqCg6L+F7NDQkE+96YDaTzwTOPrxWwU/zk9tGOnDetS62kAAy9Od/33i5EV
+ LXHw==
+X-Gm-Message-State: AOJu0Yxql3na2Kk6RRSOeZK1N8QZe030xzLiUZTT+fxmYm1Uztyndonw
+ +ISdAZXuVj93Vu8zuFO8iYa6CaXSQxiV5PWTOv6Uj5MtNCbIvO3XC2PClo4nTg7hEAdJbnWG4mh
+ qVYRTIso=
+X-Gm-Gg: ASbGncv9D7NNcToO50A32ZGoFqncPEM7uhiq12UYb1+igXaH+K7GsdkKPiXrCxmFFw3
+ 9qqNZbPUlV4WclB2Ny6RyhpOSq0Nh3ANuy/n4qraKbXQbF96NiKOAfvaeUEUvdsGozpl+NCvte7
+ mmaKtVfxCXGc+xfSPPQfcnmBkEbVvgD0IxfgMcdn0M57soUCSK4D03P4iMig4g1JMSllTtT6lyN
+ ijXrcYtafNYzkFQ6ENgDlwC+GWT+yy/p7ecb9SE1JEfjgTc02H+L2gxpdPy4EflJoM9UUrEylZq
+ KjGcfM4HbxbcfBf4kBdpSNSaLxVZ0dtUo15RWWee36FZkpH4QZjv/X3Iqv6Wic6SHzFAsxWYa+t
+ UqgSNAUREbQXEFPAhqqvVYJw=
+X-Google-Smtp-Source: AGHT+IEtDCfXPHLFMgJ9ukZS/1W2Ue1oFQ/DhePDg9KsJAQeE68l/7x4JUKXY7ysIoJXWovNcpU55A==
+X-Received: by 2002:a05:600c:8010:b0:45f:2a9f:79da with SMTP id
+ 5b1f17b1804b1-45f2a9f7d5fmr41272735e9.18.1757931562363; 
+ Mon, 15 Sep 2025 03:19:22 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e8b7b6ff8fsm9051158f8f.61.2025.09.15.03.18.16
+ 5b1f17b1804b1-45e015784c3sm182003365e9.10.2025.09.15.03.19.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Sep 2025 03:18:16 -0700 (PDT)
+ Mon, 15 Sep 2025 03:19:21 -0700 (PDT)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 217435F867;
- Mon, 15 Sep 2025 11:18:16 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 1BC705F867;
+ Mon, 15 Sep 2025 11:19:21 +0100 (BST)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 5/6] tests/functional: close GDB socket in reverse
- debugging test
-In-Reply-To: <20250912182200.643909-6-berrange@redhat.com> ("Daniel P.
- =?utf-8?Q?Berrang=C3=A9=22's?= message of "Fri, 12 Sep 2025 19:21:59
+Subject: Re: [PATCH 6/6] tests/functional: use self.log for all logging
+In-Reply-To: <20250912182200.643909-7-berrange@redhat.com> ("Daniel P.
+ =?utf-8?Q?Berrang=C3=A9=22's?= message of "Fri, 12 Sep 2025 19:22:00
  +0100")
 References: <20250912182200.643909-1-berrange@redhat.com>
- <20250912182200.643909-6-berrange@redhat.com>
+ <20250912182200.643909-7-berrange@redhat.com>
 User-Agent: mu4e 1.12.12; emacs 30.1
-Date: Mon, 15 Sep 2025 11:18:16 +0100
-Message-ID: <87348orpcn.fsf@draig.linaro.org>
+Date: Mon, 15 Sep 2025 11:19:21 +0100
+Message-ID: <87wm60qaqe.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,10 +105,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> The GDB socket FD is leaked currently resulting in a warning from
-> python about the unclosed resource.
->
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Some tests are creating their on logger category which means any
+> output they log is not captured in base.log.
+
+This seems unrelated to reverse debugging and perhaps should be split to
+each test. But otherwise LGTM:
 
 Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
