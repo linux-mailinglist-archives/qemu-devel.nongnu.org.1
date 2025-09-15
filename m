@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A41CB57CC4
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 15:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DCAB57CC9
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 15:24:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uy9AP-0001fy-Lt; Mon, 15 Sep 2025 09:22:50 -0400
+	id 1uy9Az-0001zd-9i; Mon, 15 Sep 2025 09:23:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uy9AE-0001c4-DR; Mon, 15 Sep 2025 09:22:38 -0400
-Received: from forwardcorp1d.mail.yandex.net
- ([2a02:6b8:c41:1300:1:45:d181:df01])
+ id 1uy9AS-0001k8-NC; Mon, 15 Sep 2025 09:22:53 -0400
+Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uy9A4-0006xa-B2; Mon, 15 Sep 2025 09:22:35 -0400
+ id 1uy9AA-0006xo-BT; Mon, 15 Sep 2025 09:22:51 -0400
 Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:cf2d:0:640:140f:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 622A8807BC;
- Mon, 15 Sep 2025 16:22:19 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 08743807BD;
+ Mon, 15 Sep 2025 16:22:20 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:130::1:7])
  by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id GMPC4o1FuGk0-qOiAc6aL; Mon, 15 Sep 2025 16:22:19 +0300
+ ESMTPSA id GMPC4o1FuGk0-ynJLw6UQ; Mon, 15 Sep 2025 16:22:19 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1757942539;
- bh=lL9NT3QdoPBXUIiDbTg52f0I3fPCeIR3oGxvpY7x4CI=;
+ bh=WvzQDHe9ns7kfUBciD1JZDDf4ABJmycTS10fI1l005c=;
  h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
- b=PC+4cBukARcIOBo5Eja9VBhE5TPefubPqK4IdyPnVOA0Vo6VeYc3pazcwWu6Q9IH2
- mjc2I7syiQWANVPeTHpk9JOe7nybU9q4FmIHGAF5L04Tdk+J88hzWqVabFD/s9SFFn
- L5wAEUWPy2SX5RaWX/PUXJup0xXVjHItc5t3Sb7Y=
+ b=KaOABvh4zOHIguIeZo8Xs4iJ/xqcVuvxccuhtY8qJqkLzaz5XLAj1LTfU5YtpFTzj
+ mvB9zXOHFT2fxKK4gPMTJKNy9VoPxCfHFqyGNbAGUpjW3YkXi3N4psdD3BKes5GFyH
+ 5E/8wyG4wjDHPnpK2QEX/TVAdcB/HlV8Fc/WN/fw=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: berrange@redhat.com
 Cc: qemu-devel@nongnu.org, peterx@redhat.com, qemu-block@nongnu.org,
  vsementsov@yandex-team.ru, leiyang@redhat.com, marcandre.lureau@redhat.com,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 02/13] char-socket: tcp_chr_recv(): add comment
-Date: Mon, 15 Sep 2025 16:21:59 +0300
-Message-ID: <20250915132211.135095-3-vsementsov@yandex-team.ru>
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>
+Subject: [PATCH v3 03/13] util: add qemu_set_blocking() function
+Date: Mon, 15 Sep 2025 16:22:00 +0300
+Message-ID: <20250915132211.135095-4-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250915132211.135095-1-vsementsov@yandex-team.ru>
 References: <20250915132211.135095-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.200;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,33 +72,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add comment, to stress that the order of operation (first drop old fds,
-second check read status) is intended.
+In generic code we have qio_channel_set_blocking(), which takes
+bool parameter, and qemu_file_set_blocking(), which as well takes
+bool parameter.
+
+At lower fd-layer we have a mess of functions:
+
+- enough direct calls to Unix-specific g_unix_set_fd_nonblocking()
+(of course, all calls are out of Windows-compatible code), which
+is glib specific with GError, which we can't use, and have to
+handle error-reporting by hand after the call.
+
+and several platform-agnostic qemu_* helpers:
+
+- qemu_socket_set_nonblock(), which asserts success for posix (still,
+  in most cases we can handle the error in better way) and ignores
+  error for win32 realization
+
+- qemu_socket_try_set_nonblock(), providing and error, but not errp,
+so we have to handle it after the call
+
+- qemu_socket_set_block(), which simply ignores an error
+
+Note, that *_socket_* word in original API, which we are going
+to substitute was intended, because Windows support these operations
+only for sockets. What leads to solution of dropping it again?
+
+1. Having a QEMU-native wrapper with errp parameter
+for g_unix_set_fd_nonblocking() for non-socket fds worth doing,
+at least to unify error handling.
+
+2. So, if try to keep _socket_ vs _file_ words, we'll have two
+actually duplicated functions for Linux, which actually will
+be executed successfully on any (good enough) fds, and nothing
+prevent using them improperly except for the name. That doesn't
+look good.
+
+3. Naming helped us in the world where we crash on errors or
+ignore them. Now, with errp parameter, callers are intended to
+proper error checking. And for places where we really OK with
+crash-on-error semantics (like tests), we have an explicit
+&error_abort.
+
+So, this commit starts a series, which will effectively revert
+commit ff5927baa7ffb9 "util: rename qemu_*block() socket functions"
+(which in turn was reverting f9e8cacc5557e43
+"oslib-posix: rename socket_set_nonblock() to qemu_set_nonblock()",
+so that's a long story).
+Now we don't simply rename, instead we provide the new API and
+update all the callers.
+
+This commit only introduces a new fd-layer wrapper. Next commits
+will replace old API calls with it, and finally remove old API.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- chardev/char-socket.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/qemu/osdep.h |  1 +
+ util/oslib-posix.c   | 15 +++++++++++++++
+ util/oslib-win32.c   | 18 ++++++++++++++++++
+ 3 files changed, 34 insertions(+)
 
-diff --git a/chardev/char-socket.c b/chardev/char-socket.c
-index b1ce5d01c7..1be078dfc0 100644
---- a/chardev/char-socket.c
-+++ b/chardev/char-socket.c
-@@ -294,7 +294,12 @@ static ssize_t tcp_chr_recv(Chardev *chr, char *buf, size_t len)
-     }
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index be3460b32f..1b38cb7e45 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -687,6 +687,7 @@ ssize_t qemu_write_full(int fd, const void *buf, size_t count)
+     G_GNUC_WARN_UNUSED_RESULT;
  
-     if (msgfds_num) {
--        /* close and clean read_msgfds */
-+        /*
-+         * Close and clean previous read_msgfds, they are obsolete at
-+         * this point, regardless result of new call to
-+         * qio_channel_readv_full().
-+         */
+ void qemu_set_cloexec(int fd);
++bool qemu_set_blocking(int fd, bool block, Error **errp);
+ 
+ /* Return a dynamically allocated directory path that is appropriate for storing
+  * local state.
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index 4ff577e5de..c737701075 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -250,6 +250,21 @@ void qemu_anon_ram_free(void *ptr, size_t size)
+ #endif
+ }
+ 
++bool qemu_set_blocking(int fd, bool block, Error **errp)
++{
++    g_autoptr(GError) err = NULL;
 +
-         for (i = 0; i < s->read_msgfds_num; i++) {
-             close(s->read_msgfds[i]);
-         }
++    if (!g_unix_set_fd_nonblocking(fd, !block, &err)) {
++        error_setg_errno(errp, errno,
++                         "Can't set file descriptor %d %s: %s", fd,
++                         block ? "blocking" : "non-blocking",
++                         err->message);
++        return false;
++    }
++
++    return true;
++}
++
+ void qemu_socket_set_block(int fd)
+ {
+     g_unix_set_fd_nonblocking(fd, false, NULL);
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+index b7351634ec..03044f5b59 100644
+--- a/util/oslib-win32.c
++++ b/util/oslib-win32.c
+@@ -177,6 +177,24 @@ static int socket_error(void)
+     }
+ }
+ 
++bool qemu_set_blocking(int fd, bool block, Error **errp)
++{
++    unsigned long opt = block ? 0 : 1;
++
++    if (block) {
++        qemu_socket_unselect(fd, NULL);
++    }
++
++    if (ioctlsocket(fd, FIONBIO, &opt) != NO_ERROR) {
++        error_setg_errno(errp, socket_error(),
++                         "Can't set file descriptor %d %s", fd,
++                         block ? "blocking" : "non-blocking");
++        return false;
++    }
++
++    return true;
++}
++
+ void qemu_socket_set_block(int fd)
+ {
+     unsigned long opt = 0;
 -- 
 2.48.1
 
