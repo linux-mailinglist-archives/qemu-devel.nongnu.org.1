@@ -2,70 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EFEBB57478
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 11:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E083EB57468
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 11:16:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uy5K9-0008Nz-IY; Mon, 15 Sep 2025 05:16:38 -0400
+	id 1uy5I4-0007E7-Ss; Mon, 15 Sep 2025 05:14:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1uy5K5-0008MA-4D
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 05:16:33 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1uy5Jy-0006LT-Rs
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 05:16:32 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8Bxnr9g2cdoVngKAA--.21214S3;
- Mon, 15 Sep 2025 17:16:16 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowJBxZORd2cdoE_eWAA--.20947S3;
- Mon, 15 Sep 2025 17:16:15 +0800 (CST)
-Subject: Re: [PATCH 0/8] Add high MMIO support with GPEX host bridge
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- qemu-devel@nongnu.org
-References: <20250915071946.315171-1-maobibo@loongson.cn>
- <20250915101109.00001833@huawei.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <b6b7e9f1-2da9-0460-9122-5fac812b71ad@loongson.cn>
-Date: Mon, 15 Sep 2025 17:14:08 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <smostafa@google.com>)
+ id 1uy5I1-0007Dc-1G
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 05:14:26 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <smostafa@google.com>)
+ id 1uy5Hw-00061J-TI
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 05:14:24 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-45f28aba94cso74805e9.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 02:14:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1757927653; x=1758532453; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=phvkTGlJ19Pg5EKrxfwNjliEXWpnCXO5oXj3aYMdwo8=;
+ b=wSLtvv8/2pvqZ8zjTbWcYmxTe0q7pSnHgwIpGHQN9MxegzNL4y9wqnM+t9u869wjGR
+ jQ8oObMo/TAvysiz4CzCOXZCVaRlGb2zUL4AkXUEG+ECxDaF9zXlxhB7Hx85VTukmIOu
+ 7p+aij0isgwTFJrgjz1o1daRtLalcY71ibB3h6GVYpiuxCGd5MKfcHd6cw5Uy3GRunVM
+ p1JQe7wayA4/tJSVUCvc9kWuWfSKUQvjTwk1BudZ3Mu2Dly6XT1IKuif64x0eXMc4/wi
+ zaksoklchqCjDuI3aO+/e+g5OpkE/mNbzgdXCbF02KUMY5QrgACEjAt8F6uTNd0g8vJe
+ hZqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757927653; x=1758532453;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=phvkTGlJ19Pg5EKrxfwNjliEXWpnCXO5oXj3aYMdwo8=;
+ b=JiJjNvXyJtUOzpz/ZG3gJ37jatnHb6NPkP49kMbXeDKLYdollD465poCLAyqPJ0Xpu
+ i1dAUHIUfHniqqetjAdYWduRyihDWORLXVaeAjpXGVwH5LTUION5k0gJ/Yc6xAMZIaYN
+ WGaOuJpBPmH7Q3j/569kRLFpyoBXDPPWWXljSMPN0e2kXHKD5Nj4lDo2CzVCOfL76AZG
+ UQB0qF3JSplZGYpu1Ai3C9MpIDrsO2MI/n7e9I0SGrqDW17mVAjDIS6AmMeOePt8S0yp
+ UsBsdwaq0BwSJ43AFvHQOdhBiY9jsXyLBnB/91jyQfQaauH6+0SHCoRAngDtnDsuxKVZ
+ UjMA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWERx9ZQCyFTBH59ihRbT5XfKuBaJnMWddnzlCsMyrZRSpw5XSh5GgZhmEE71BPmZF9zIOXjy+9P4tG@nongnu.org
+X-Gm-Message-State: AOJu0YwUrxAOfoRr7zq8A9v+zhib44ZRsjq79OjdTXZT0uNDgEvFbFvl
+ mM0t+YsF34MJwsI8nqYuNTc04eDixYrwuyqllp8AMO3IntCAs1896JI1Ay4w5A6ZFg==
+X-Gm-Gg: ASbGncs9k/ptRIbpNeE7IKrvedfvp/3jsCvXsH57GOdeQY3dspJrsxnmcFf73o7uJGm
+ h/SHf97XufpJIxsboRcsHng7dOV8XGhou2AaJDru8cfbKWyUTTUclCQVVvub+YHIat3yQ9gdss6
+ W5rDqsridiwAoWEAloRW1vM3lT7Iwua95r/YxMBME3Vl+B+rd/7zcmvawKuF954QZC7dM0nihs1
+ y6flP9jqaeKTMoiPKSctilBRb3KnFLcZlCHeMV5rW182E5LjQCBGs3qcAWYRlyV6gndcCjbny5r
+ Y0e9mns21BCJNe+iB5Aa9afRyRZ+t/RVRv9ieG9fVoWkx2LkLqw7CoPw2u0J4DEHsADwjecy+0y
+ SfzesqKh5zlJ0FLBcW66IP71CVZ6/n5/RLwecfbrsbtgeEfPYqiE38JlNl6qPVc/7niZyzd1N3A
+ 1afUf3
+X-Google-Smtp-Source: AGHT+IGPsiXisLlbtqMfSI5sEwS3oLEv4PMIGXS/nEgWPO1eXkh7PR2Oxr9Q5TDh/MCpDAYXaiZOlQ==
+X-Received: by 2002:a05:600c:64c7:b0:45d:f6a6:a13e with SMTP id
+ 5b1f17b1804b1-45f2d98f76dmr1147585e9.1.1757927652895; 
+ Mon, 15 Sep 2025 02:14:12 -0700 (PDT)
+Received: from google.com (157.24.148.146.bc.googleusercontent.com.
+ [146.148.24.157]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3e7c778f764sm11513990f8f.57.2025.09.15.02.14.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Sep 2025 02:14:12 -0700 (PDT)
+Date: Mon, 15 Sep 2025 09:14:08 +0000
+From: Mostafa Saleh <smostafa@google.com>
+To: Tao Tang <tangtao1634@phytium.com.cn>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Eric Auger <eric.auger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Chen Baozi <chenbaozi@phytium.com.cn>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ jean-philippe@linaro.org
+Subject: Re: [RFC 02/11] hw/arm/smmuv3: Implement read/write logic for secure
+ registers
+Message-ID: <aMfY4LJVEGw3egdP@google.com>
+References: <20250806151134.365755-1-tangtao1634@phytium.com.cn>
+ <20250806151134.365755-3-tangtao1634@phytium.com.cn>
+ <aKOaIcPp26kbS3Nn@google.com>
+ <53607fe8-0555-4408-bfa6-e4b95d44e230@phytium.com.cn>
+ <aKma98hlAWG9M4h_@google.com>
+ <8987bd11-afae-4157-979d-ef10be69a7a5@phytium.com.cn>
 MIME-Version: 1.0
-In-Reply-To: <20250915101109.00001833@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJBxZORd2cdoE_eWAA--.20947S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Zr4UZFykCw4fJF1fAF4DWrX_yoW8ZF4xpr
- W7ZFnYyr48JrySkwnIya45WF90yrn3Gr1IqF1aqrW8CrsxXr15ur1xA34q9FWjy348JF1v
- qr1kG34UWF1UZ3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AK
- xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j0FALU
- UUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.242,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <8987bd11-afae-4157-979d-ef10be69a7a5@phytium.com.cn>
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=smostafa@google.com; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,55 +114,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Tao,
 
+On Thu, Sep 11, 2025 at 11:27:50PM +0800, Tao Tang wrote:
+> 
+> Hi Mostafa,
+> 
+> First, my apologies for the long delay in getting back to you. I was away on
+> paternity leave for the last few weeks.
 
-On 2025/9/15 下午5:11, Jonathan Cameron wrote:
-> On Mon, 15 Sep 2025 15:19:38 +0800
-> Bibo Mao <maobibo@loongson.cn> wrote:
-> 
->> On LoongArch Virt Machine, MMIO region with GPEX host bridge is
->> 0x40000000 -- 0x7FFFFFFF. The total size is 1G bytes and it is enough
->> for emulated virtio devices basically.
->>
->> However on some conditions such as hostmem is added with virtio-gpu
->> device with -device virtio-gpu-gl,hostmem=4G. The PCIE MMIO region is
->> not enough, 64-bit high MMIO region is required.
->>
->> Here property highmem-mmio is added on virt machine to add 64-bit high
->> MMIO region supported. With high MMIO region added, it is not compatible
->> with old machine, so property highmem-mmio is disabled by default.
-> 
-> Trivial request. Please mention loongarch in the cover letter title.
-> It will help people make a quick decision on whether they should be looking
-> at the thread or not.
-Thanks for reminder, I notice this when it is sent out.
-Will be cautious about this in future.
+No worries!
 
-Regards
-Bibo Mao
 > 
-> Jonathan
+> Thank you for the detailed follow-up, your advice is very helpful for
+> simplifying the series.
 > 
->>
->> Bibo Mao (8):
->>    target/loongarch: Add phys_bits in CPULoongArchState
->>    hw/loongarch/virt: Add field ram_end in LoongArchVirtMachineState
->>    hw/loongarch/virt: Add field gpx in LoongArchVirtMachineState
->>    hw/loongarch/virt: Get irq number from gpex config info
->>    hw/loongarch/virt: Get PCI info from gpex config info
->>    hw/loongarch/virt: Add property highmem_mmio with virt machine
->>    hw/loongarch/virt: Add high MMIO support with GPEX host
->>    hw/loongarch/virt: Add property highmem-mmio-size with virt machine
->>
->>   hw/loongarch/virt-acpi-build.c |  17 +---
->>   hw/loongarch/virt-fdt-build.c  |  43 +++++++---
->>   hw/loongarch/virt.c            | 152 ++++++++++++++++++++++++++++++---
->>   include/hw/loongarch/virt.h    |   5 +-
->>   target/loongarch/cpu.c         |  13 +--
->>   target/loongarch/cpu.h         |   2 +
->>   6 files changed, 186 insertions(+), 46 deletions(-)
->>
->>
->> base-commit: 190d5d7fd725ff754f94e8e0cbfb69f279c82b5d
+> 
+> On 2025/8/23 18:41, Mostafa Saleh wrote:
+> > On Wed, Aug 20, 2025 at 11:21:02PM +0800, Tao Tang wrote:
+> > > On 2025/8/19 05:24, Mostafa Saleh wrote:
+> > > > On Wed, Aug 06, 2025 at 11:11:25PM +0800, Tao Tang wrote:
+> > > > > This patch builds upon the previous introduction of secure register
+> > > > > definitions by providing the functional implementation for their access.
+> > > > > 
+> > > > > The availability of the secure programming interface is now correctly
+> > > > > gated by the S_IDR1.SECURE_IMPL bit. When this bit indicates that
+> > > > > secure functionality is enabled, the I/O handlers (smmuv3_read and
+> > > > > smmuv3_write) will correctly dispatch accesses to the secure
+> > > > > register space.
+> > > > > 
+> > > > > Signed-off-by: Tao Tang <tangtao1634@phytium.com.cn>
+> > > > > ---
+> > > > >    hw/arm/smmuv3-internal.h |   5 +
+> > > > >    hw/arm/smmuv3.c          | 451 +++++++++++++++++++++++++++++++++++++++
+> > > > >    2 files changed, 456 insertions(+)
+> > > > > 
+> > > > > diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+> > > > > index 483aaa915e..1a8b1cb204 100644
+> > > > > --- a/hw/arm/smmuv3-internal.h
+> > > > > +++ b/hw/arm/smmuv3-internal.h
+> > > > > @@ -122,6 +122,11 @@ REG32(CR0,                 0x20)
+> > > > >    #define SMMU_CR0_RESERVED 0xFFFFFC20
+> > > > > +/*
+> > > > > + * BIT1 and BIT4 are RES0 in SMMU_S_CRO
+> > > > > + */
+> > > > > +#define SMMU_S_CR0_RESERVED 0xFFFFFC12
+> > > > > +
+> > > > >    REG32(CR0ACK,              0x24)
+> > > > >    REG32(CR1,                 0x28)
+> > > > >    REG32(CR2,                 0x2c)
+> > > > > diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+> > > > > index ab67972353..619180d204 100644
+> > > > > --- a/hw/arm/smmuv3.c
+> > > > > +++ b/hw/arm/smmuv3.c
+> > > > > @@ -317,6 +317,18 @@ static void smmuv3_init_regs(SMMUv3State *s)
+> > > > >        s->gerrorn = 0;
+> > > > >        s->statusr = 0;
+> > > > >        s->gbpa = SMMU_GBPA_RESET_VAL;
+> > > > > +
+> > > > > +    /* Initialize secure state */
+> > > > > +    memset(s->secure_idr, 0, sizeof(s->secure_idr));
+> > > > > +    /* Secure EL2 and Secure stage 2 support */
+> > > > > +    s->secure_idr[1] = FIELD_DP32(s->secure_idr[1], S_IDR1, SEL2, 1);
+> > > > AFAIU, this is wrong, SEL2 means that the SMMU has dual stage-2,
+> > > > one for secure (S_S2TTB) and one for non-secure IPAs(S2TTB).
+> > > > Which is not implemented in this series.
+> > > 
+> > > Hi Mostafa,
+> > > 
+> > > Thank you for the very detailed and helpful review. Your feedback is spot
+> > > on, and I'd like to address your points and ask for a quick confirmation on
+> > > them.
+> > > 
+> > > Regarding the SEL2 bit, you are absolutely right, my understanding was
+> > > incorrect. I've spent the last few days reviewing the manual to better
+> > > understand the selection between Secure and Non-secure Stage 2 translations.
+> > > I would be very grateful if you could confirm if my new understanding is
+> > > correct:
+> > > 
+> > > - In Stage 2-only mode (Stage 1 bypassed), the choice between a Secure or
+> > > Non-secure IPA translation is determined solely by STE.NSCFG.
+> > > 
+> > Yes, but that's only with SMMU_IDR1.ATTR_PERMS_OVR which Qemu doesn't
+> > advertise, so in our case it's always secure.
+> > 
+> > > - In Stage 1-enabled mode, STE.NSCFG is ignored. The choice is determined by
+> > > the translation process, starting from CD.NSCFGx, with the output NS
+> > > attribute being the result of intermediate NSTable flags and the final
+> > > descriptor.NS bit (TTD.NSTable, TTD.NS).
+> > > 
+> > You have to differentiate between the security state of the translation and
+> > the security state of the translation table access.
+> > 
+> > For stage-1, the security state is determined by the NS bit in the last
+> > level PTE, which in case of nested translation it will choose between S2TTB
+> > or S_S2TTB.
+> > 
+> > Also, note that the stage-2 also have an NS which define the final attribute
+> > of the transaction.
+> > 
+> > You have to also be careful around things such as NSCFG{0,1} as it might
+> > change which stage-2 is used for the stage-1 TTB walk.
+> > 
+> > I see, in your patches, all the page-table access is done using the secure
+> > state of the SID which is not correct.
+> > 
+> > 
+> > > Based on this, I plan to have an internal flag, perhaps named
+> > > target_ipa_is_ns in SMMUTransCfg.SMMUS2Cfg struct, to track the outcome of
+> > > this process. This flag will then determine whether S_S2TTB or S2TTB is used
+> > > for the Stage 2 translation.
+> > > 
+> > I am worried that it's not that simple for a single secure nested translation
+> > you can have multiple stage-2 walks where some might be secure and others not,
+> > so I imagine this some how will be determined from each stage-1 walk and
+> > some how returned (maybe in the TLB struct) which is then the stage-2
+> > walk looks into.
+> > 
+> > I am not sure how complicated it is to manage 2 stage-2 with the current code
+> > base, so my advice would be to split the problem; for now you can drop SEL2
+> > from this series and rely on NS stage-2.
+> 
+> 
+> I would like to confirm my understanding of the implementation. Does this
+> mean that for the current RFC, we should set S_IDR1.SEL2=0, which implies
+> that all Stage-2 translations will begin with a Non-secure IPA? And the
+> final output PA space will then almost always be Non-secure PA, with the
+> sole exception being when S2SW, S2SA, S2NSW, and S2NSA are ALL ZERO.
+> 
+> 
+> However, since these fields are RES0 when S_IDR1.SEL2=0, it seems we can
+> conclude that for this version, the output will definitively be a Non-secure
+> PA. I believe this is what you meant by your advice to "rely on NS stage-2".
+> I would be grateful if you could let me know whether this interpretation is
+> on the right track.
 
+Yes, that’s what I meant, I think that simplifies a lot, in this series we
+can focus on the infrastructure for the secure SMMU (registers, TLBs..),
+and then extra features such as secure stage-2 can be added later.
+
+> 
+> 
+> ------------------------------<snip>------------------------------
+> 
+> > > The new code performs a single, necessary security state check at the entry
+> > > point of the MMIO handlers. The rest of the logic relies on the banking
+> > > mechanism, which makes the implementation generic for Non-secure, Secure,
+> > > and future states like Realm/Root. The new structure looks like this:
+> > > 
+> > > /* Structure for one register bank */
+> > > typedef struct SMMUv3Bank {
+> > >      uint32_t idr[6];     /* IDR0-IDR5, note: IDR5 only used for NS bank */
+> > >      uint32_t cr[3];      /* CR0-CR2 */
+> > >      uint32_t cr0ack;
+> > >      uint32_t init;       /* S_INIT register (secure only), reserved for NS
+> > > */
+> > >      uint32_t gbpa;
+> > > 
+> > > ......
+> > > 
+> > >      SMMUQueue eventq, cmdq;
+> > > } SMMUv3Bank;
+> > > 
+> > > struct SMMUv3State {
+> > >      SMMUState     smmu_state;
+> > > 
+> > >      /* Shared (non-banked) registers and state */
+> > >      uint32_t features;
+> > >      uint8_t sid_size;
+> > >      uint8_t sid_split;
+> > > 
+> > > ......
+> > > 
+> > >      /* Banked registers for all access */
+> > >      SMMUv3Bank bank[SMMU_SEC_IDX_NUM];
+> > > ......
+> > > };
+> > > 
+> > Yes, IMO,that’s the right approach. Although that might make the
+> > migration code more complicated as we changed the state struct.
+> > 
+> > Thanks,
+> > Mostafa
+> I have almost completed the refactoring based on this new structure, and I
+> will send out the v2 patch series in the next few days for review.
+
+Sounds good!
+
+Thanks,
+Mostafa
+
+> 
+> Thanks again for your invaluable guidance.
+> 
+> Best regards,
+> 
+> Tao
+> 
 
