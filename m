@@ -2,70 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDB6B586DC
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 23:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0EDB5872C
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 00:08:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyGvn-0000OI-Fn; Mon, 15 Sep 2025 17:40:16 -0400
+	id 1uyHKt-0004lr-C8; Mon, 15 Sep 2025 18:06:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uyGvh-0000N7-8k
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 17:40:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uyGvI-0000rU-IF
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 17:40:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1757972380;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+3/JMGmKU5SrxZCcWPzP018Z0sln8X3P+TDMBHmX0ec=;
- b=h27yqHUkYKjvN3+EfOny3WoJCSZcuIvt+G9PUUOuib2gceVGv1q10eZrPXdWgCc9mKC1ZU
- D6ekfH7y6Xdw0IQalzFi77IOslOEhFCUknP4YbLYjFRrnwgBLw0nZQ14XmMzUN7bwNUgue
- j3CFEZE3JQPiuGWs2sTwcVRCzYlp0Q8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-wYTVXPBUOGqgsqI8QchWFw-1; Mon,
- 15 Sep 2025 17:39:37 -0400
-X-MC-Unique: wYTVXPBUOGqgsqI8QchWFw-1
-X-Mimecast-MFC-AGG-ID: wYTVXPBUOGqgsqI8QchWFw_1757972376
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 29C08195608E; Mon, 15 Sep 2025 21:39:36 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.73])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B0736180035E; Mon, 15 Sep 2025 21:39:34 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org (open list:qcow2)
-Subject: [PATCH v3 2/2] qcow2,
- vmdk: Restrict creation with secondary file using protocol
-Date: Mon, 15 Sep 2025 16:37:27 -0500
-Message-ID: <20250915213919.3121401-6-eblake@redhat.com>
-In-Reply-To: <20250915213919.3121401-4-eblake@redhat.com>
-References: <20250915213919.3121401-4-eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
+ id 1uyHHM-0002RW-3o
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 18:02:32 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
+ id 1uyHHD-0008Rk-0Z
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 18:02:30 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-b0411b83aafso706120266b.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 15:02:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1757973731; x=1758578531; darn=nongnu.org;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=oTQZvVdeh0u2lyFgzlwQ4yWvPSR7Q3p62/A8Exy4cwQ=;
+ b=acUdXmonHoLuWDZvS0duX8g3PHzg7hLtw+jQvEEEbA6n7Ai9BrPpEWGBsyaA4vZxsb
+ ACnjZFzdz45MKIviRcqH4+8YDA/TorKitdV9s5+9S/8HUVfLC+Z41K1bfup5G++KslvW
+ cE+a3dhyrLkhp9EXMlMgeAPxZ++Ep/tLZqDRi1xpGfAmvSyzU9EXVypzy29XccDe6dw5
+ UwiCuqtyOt8gqATYe7jHvoR1umFmwzliS0i/OrM/yrzE2exQvOCLlEQmAajt7BclYiP7
+ T2blIQxT1qL5JFHeRfQX7XvOK3yCtG3XtqbbS91ZsFpHx6NafzebPuKvKl2eQe08aLUc
+ AnpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1757973731; x=1758578531;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=oTQZvVdeh0u2lyFgzlwQ4yWvPSR7Q3p62/A8Exy4cwQ=;
+ b=S+hhBCHZZ2EKR45AtQ1LPDdfDqG4WaswL39/5kFfojOHB5AadQ2jCcXTcU4WpRFoJG
+ BIZlWS7VwWjvCDdEn+uroXcYaCNZc2MEG1wEM+TwSfGDQaQGw9h7hdsJvPq0t7yqcI8U
+ Qi16jnylFbSM1QCBzRttl/5es6qwMeX2mqRktjrnWm0mT3I1QbwcBBTzaOSrwQ8HL6oS
+ x04vF99XjSo5bubK1TGFpOdqUtkvJJtUwVM1eHVEM9n/2mKIM3ig0gsfQlqlinaROqf1
+ EFn+MCnPPR6d3vir31sxS+7EEXihHB12rg3DlOJLf/tNpDLDFj1S06DDNAv4m5DS6aIA
+ 9BWg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWoKUdqlkBk/yRDOTfHKBNF3MU2p6lxUQ7yW/VsnerLV3c7A31/Wo4sTD2Rcbp1j40vTfScdt/ugPXk@nongnu.org
+X-Gm-Message-State: AOJu0YzeOLmfJhCAhSDMGUDJi/HzU90xyrLVUhzw4gK/+xIlJL2C0L+2
+ TDjdfVSK5Z/rrtCq/HbzCZYLinNx0Gv2SRzaO9H8Gn8mfbkw/SucgWK+
+X-Gm-Gg: ASbGncuwNS80W+2OcszeCxpclXI1cfydMQsGcy0j5CQd3QW8K7U/wJN1Y/VY6HrMjlg
+ zQZuM4SSuUrjPrzTRNlYiSXoKS7P45PssHK+R9YM8OrUAsIX2ZteR9VMFU6F0EOTx5ki7ESDPUN
+ nwTOM/t6UZjSF4EpjTyMce1H7OtcOb6k3uKZq96ZlXlAxoANPdu75M7InWeLBjOxOhevmTu4jJa
+ VFOTb/Bk/FyNLTsFX/i3Oywi3ssLzD9yXaIYh2nr5j+MyzXt08/HyewWQZAytAjxjFMzOZG+bmv
+ urKtgQ0UhBAwsSLbl1pfHU/3IPsiMkPiw+QahO+v4G9sr3DGU0hmU1ZoYq4ziyyAXQj9p/gny0+
+ uFEmkWx6bpEkYe1uKgF6RZ3tWzcLxle3iyK+Wx2fBDIvWB5GAEBrVg6h8bmIND59/F7slkI8=
+X-Google-Smtp-Source: AGHT+IGCmtXDkhpvCc8iGtVCcJnWBCsN7M0KgA8mqiLotWxr92mVfh+28FTer28hajjStQlNUv97+w==
+X-Received: by 2002:a17:907:d16:b0:afe:c6a0:d116 with SMTP id
+ a640c23a62f3a-b07c3572d31mr1505135366b.18.1757973730940; 
+ Mon, 15 Sep 2025 15:02:10 -0700 (PDT)
+Received: from [10.192.92.112] (cgnat129.sys-data.com. [79.98.72.129])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-b07d09e5414sm705074966b.18.2025.09.15.15.02.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Sep 2025 15:02:10 -0700 (PDT)
+Message-ID: <4c8e1ae5dd16d6ee4bcb42ed25d2987bc2c4a3cc.camel@gmail.com>
+Subject: Re: [PATCH v2] char-pty: add support for the terminal size
+From: Filip Hejsek <filip.hejsek@gmail.com>
+To: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+Cc: amit@kernel.org, armbru@redhat.com, berrange@redhat.com,
+ eblake@redhat.com, 	eduardo@habkost.net, lvivier@redhat.com,
+ marcandre.lureau@redhat.com, 	marcel.apfelbaum@gmail.com, mst@redhat.com,
+ noh4hss@gmail.com, pbonzini@redhat.com, 	philmd@linaro.org,
+ qemu-devel@nongnu.org, wangyanan55@huawei.com, 	zhao1.liu@intel.com,
+ nsg@linux.ibm.com
+Date: Tue, 16 Sep 2025 00:02:08 +0200
+In-Reply-To: <20250915163415.149190-1-maxbr@linux.ibm.com>
+References: <20250915162535.147642-1-maxbr@linux.ibm.com>
+ <20250915163415.149190-1-maxbr@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=filip.hejsek@gmail.com; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,84 +105,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ever since CVE-2024-4467 (see commit 7ead9469 in qemu v9.1.0), we have
-intentionally treated the opening of secondary files whose name is
-specified in the contents of the primary file, such as a qcow2
-data_file, as something that must be a local file and not a protocol
-prefix (it is still possible to open a qcow2 file that wraps an NBD
-data image by using QMP commands, but that is from the explicit action
-of the QMP overriding any string encoded in the qcow2 file).  At the
-time, we did not prevent the use of protocol prefixes on the secondary
-image while creating a qcow2 file, but it results in a qcow2 file that
-records an empty string for the data_file, rather than the protocol
-passed in during creation:
+On Mon, 2025-09-15 at 18:34 +0200, Maximilian Immanuel Brandtner wrote:
+> Update the terminal size upon SIGWINCH delivery.
+>=20
+> Signed-off-by: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
 
-$ qemu-img create -f raw datastore.raw 2G
-$ qemu-nbd -e 0 -t -f raw datastore.raw &
-$ qemu-img create -f qcow2 -o data_file=nbd://localhost:10809/ \
-  datastore_nbd.qcow2 2G
-Formatting 'datastore_nbd.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=2147483648 data_file=nbd://localhost:10809/ lazy_refcounts=off refcount_bits=16
-$ qemu-img info datastore_nbd.qcow2 | grep data
-$ qemu-img info datastore_nbd.qcow2 | grep data
-image: datastore_nbd.qcow2
-    data file:
-    data file raw: false
-    filename: datastore_nbd.qcow2
-
-And since an empty string was recorded in the file, attempting to open
-the image without using QMP to supply the NBD data store fails, with a
-somewhat confusing error message:
-
-$ qemu-io -f qcow2 datastore_nbd.qcow2
-qemu-io: can't open device datastore_nbd.qcow2: The 'file' block driver requires a file name
-
-Although the ability to create an image with a convenience reference
-to a protocol data file is not a security hole (unlike the case with
-open, the image is not untrusted if we are the ones creating it), the
-above demo shows that it is still inconsistent.  Thus, it makes more
-sense if we also insist that image creation rejects a protocol prefix
-when using the same syntax.  Now, the above attempt produces:
-
-$ qemu-img create -f qcow2 -o data_file=nbd://localhost:10809/ \
-  datastore_nbd.qcow2 2G
-Formatting 'datastore_nbd.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=2147483648 data_file=nbd://localhost:10809/ lazy_refcounts=off refcount_bits=16
-qemu-img: datastore_nbd.qcow2: Could not create 'nbd://localhost:10809/': No such file or directory
-
-with datastore_nbd.qcow2 no longer created.
-
-Signed-off-by: Eric Blake <eblake@redhat.com>
----
- block/qcow2.c | 2 +-
- block/vmdk.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/block/qcow2.c b/block/qcow2.c
-index ec72e272143..cb0bdb32eca 100644
---- a/block/qcow2.c
-+++ b/block/qcow2.c
-@@ -3971,7 +3971,7 @@ qcow2_co_create_opts(BlockDriver *drv, const char *filename, QemuOpts *opts,
-     /* Create and open an external data file (protocol layer) */
-     val = qdict_get_try_str(qdict, BLOCK_OPT_DATA_FILE);
-     if (val) {
--        ret = bdrv_co_create_file(val, opts, true, errp);
-+        ret = bdrv_co_create_file(val, opts, false, errp);
-         if (ret < 0) {
-             goto finish;
-         }
-diff --git a/block/vmdk.c b/block/vmdk.c
-index eb3c174eca4..3b35b63cb59 100644
---- a/block/vmdk.c
-+++ b/block/vmdk.c
-@@ -2334,7 +2334,7 @@ vmdk_create_extent(const char *filename, int64_t filesize, bool flat,
-     int ret;
-     BlockBackend *blk = NULL;
-
--    ret = bdrv_co_create_file(filename, opts, true, errp);
-+    ret = bdrv_co_create_file(filename, opts, false, errp);
-     if (ret < 0) {
-         goto exit;
-     }
--- 
-2.51.0
-
+I don't think this will work, because SIGWINCH is only delivered for
+the process' controling terminal. Unfortunately I don't think there is
+any way to get size notifications for arbitrary terminal.
 
