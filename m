@@ -2,95 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27D5B584D5
+	by mail.lfdr.de (Postfix) with ESMTPS id 25130B584D4
 	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 20:42:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyE8G-000147-Bu; Mon, 15 Sep 2025 14:40:56 -0400
+	id 1uyE8J-00014R-Q1; Mon, 15 Sep 2025 14:40:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uyE8C-00013J-66
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 14:40:52 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uyE7z-0003ah-Pb
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 14:40:49 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3eb08d8d9e7so889185f8f.0
- for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 11:40:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757961626; x=1758566426; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=t9plcvB3joQqsIVX9VNOSFGgH2b1wj2xGeS1SFZTKiM=;
- b=KmIJmD4rPWtGKHvL/zf8+eV6RnxEihwGdZTEEqhh0kryGSYiT9KAcftXfhi1uuawda
- dn4Fu2KBnG5dOL+fqMGtJdHh5aomGenLaztJYCbN5a0eQwn4KkBsm4bPlgqhG15vfo5a
- sluInh9uPAeDdXzn+cx/Y1AwXzLlvlH9QzCF787ziZrwB5AMKCyG+8i8Ss94tPRP3/AV
- z1rO+Mk4DqhkWGbdXpSPkIgHwJS1catNizCWWZvCRKbOl7OXF6iJEi5cr9PzBNHxfiTL
- Vs54MSVe3UROtnjs62Wwv3+uHd4Ns5mYZROpENubXEN9kNucnkhehVGKl2ycPO8HN66s
- netQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757961626; x=1758566426;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=t9plcvB3joQqsIVX9VNOSFGgH2b1wj2xGeS1SFZTKiM=;
- b=mr1fQQha840BsNNqezaarq+coMVgSX9A4Spxkktnf0g7c7ZBi8VqQDc/FSswRCVtr+
- hpl2uLc+prc1VX6JJhezrDuZTeVTNAm3OS+Jpe3Tr+xM2YR8OKouzYUN9kXwCtqbVCTt
- LcRMbwDOKxl3zYsXdMqFNkTM/RHnN3bGWwyTQo9jhIzf2+zU5RVOsdD7oomeGeu/+eL0
- Rbc52pG9O9vJDTFkqJG46Y52E08SmNDuxPiuHMQPNsOtJHEYCrrNaz/uFylI8ht6R9hR
- lrurEY8XasaYactfCWBTM5g0yNs6BYA/XmB0xP1lW7Ov37J/EVhmENq3b30cXYmII4CR
- f01w==
-X-Gm-Message-State: AOJu0YzjGLIxalP1b0Sl9MVhi4v9LbCwDtoo3/Hdds35D95e5LpUv8wu
- lLmiIMb6PaloR1qtaHXOdfoVNw4aUJdQLRdLuE6qvAgtFMueuyo8aFY/ou/uW45NBqg=
-X-Gm-Gg: ASbGnctiji4jpYkqthN7tqEkLmiMGB/yeErqJQDdnjAwmEaSkdM59VmQF33GbguKFGi
- egPYeqTBMI00pYgT3Vt9lPybxhV22Xa1nmb/AbbeF2g07QfIj+qBSeSFWToIVQ5s9NWSbJmbvVH
- h/XhwyydsNzzGiIWHqXiE7dTkcxeiaMI6NEbqCv4FgqBgoUzBwJpgSHBFMS/6i2usj/KxMQUwqU
- QRZZd9McF6OoDX2ce/MYCZSngpTa2Yu+U/SY2xQo7kC6W52CyYed2nJBQ7G3SSOxOqZdyukIa+s
- gRktxj16I6A8L7zZbj8ryK50O92//II6txIjcZuHMkxrSm7ofCfIzLLMc5iHhMZYBtvNSA6DoqM
- Pao0No898GPAcuYA6+ByEdupwLewp267cYw==
-X-Google-Smtp-Source: AGHT+IFbYcbdqC6OYsvq8md+1clqGWM7vzU3KPw/TlYyyddm3TW/ZZOPhpZdZk18AswS0ihtcqMwvQ==
-X-Received: by 2002:a05:6000:430e:b0:3e9:b208:f2f1 with SMTP id
- ffacd0b85a97d-3e9b208f3d2mr5398559f8f.29.1757961625996; 
- Mon, 15 Sep 2025 11:40:25 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e8b7b6ff8fsm10757027f8f.61.2025.09.15.11.40.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Sep 2025 11:40:24 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 79AD85F867;
- Mon, 15 Sep 2025 19:40:23 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: qemu-devel@nongnu.org,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,  Dmitry Osipenko
- <dmitry.osipenko@collabora.com>
-Subject: Re: [RFC 3/6] virtio-gpu-udmabuf: Create dmabuf for blobs
- associated with VFIO devices
-In-Reply-To: <20250903054438.1179384-4-vivek.kasireddy@intel.com> (Vivek
- Kasireddy's message of "Tue, 2 Sep 2025 22:42:16 -0700")
-References: <20250903054438.1179384-1-vivek.kasireddy@intel.com>
- <20250903054438.1179384-4-vivek.kasireddy@intel.com>
-User-Agent: mu4e 1.12.12; emacs 30.1
-Date: Mon, 15 Sep 2025 19:40:23 +0100
-Message-ID: <87o6rbo8yw.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uyE8E-000149-KC
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 14:40:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uyE87-0003bK-Pn
+ for qemu-devel@nongnu.org; Mon, 15 Sep 2025 14:40:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1757961641;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=yy3hWTKz1yeMWBg/dSxzWEOrMKxDIju37VQ+gDy7Ots=;
+ b=ZhWlVivc8H672lh044/+fzaQ7XgLbHbxq+15TYMuFvKOtQON0Mj9T7T5oDubqWLlNktqlV
+ jbEJzAgFAIJlCrqrKm1maDYWzhlM7IF6hp4M7NgJjaQkoeWe5RkqwCLcsUj4U1dT88/eAz
+ addl5pamgI9lFpYT8cFh+tf93YINA0I=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-ae1JozfLM7anKxfYt2LCFQ-1; Mon,
+ 15 Sep 2025 14:40:40 -0400
+X-MC-Unique: ae1JozfLM7anKxfYt2LCFQ-1
+X-Mimecast-MFC-AGG-ID: ae1JozfLM7anKxfYt2LCFQ_1757961639
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4090219107DD; Mon, 15 Sep 2025 18:40:39 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.50])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6500919560A2; Mon, 15 Sep 2025 18:40:36 +0000 (UTC)
+Date: Mon, 15 Sep 2025 19:40:33 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Juraj Marcin <jmarcin@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH v2 2/3] io/tls: Make qio_channel_tls_bye() always
+ synchronous
+Message-ID: <aMhdoWKdY_lxghVu@redhat.com>
+References: <20250911212355.1943494-1-peterx@redhat.com>
+ <20250911212355.1943494-3-peterx@redhat.com>
+ <aMQDuFI2hQQ8clAF@redhat.com> <aMQ-E8BkvQq6Pisx@x1.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aMQ-E8BkvQq6Pisx@x1.local>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,162 +86,157 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vivek Kasireddy <vivek.kasireddy@intel.com> writes:
+On Fri, Sep 12, 2025 at 11:36:51AM -0400, Peter Xu wrote:
+> On Fri, Sep 12, 2025 at 12:27:52PM +0100, Daniel P. Berrangé wrote:
+> > On Thu, Sep 11, 2025 at 05:23:54PM -0400, Peter Xu wrote:
+> > > No issue I hit, the change is only from code observation when I am looking
+> > > at a TLS premature termination issue.
+> > > 
+> > > qio_channel_tls_bye() API needs to be synchronous.  When it's not, the
+> > > previous impl will attach an asynchronous task retrying but only until when
+> > > the channel gets the relevant GIO event. It may be problematic, because the
+> > > caller of qio_channel_tls_bye() may have invoked channel close() before
+> > > that, leading to premature termination of the TLS session.
+> > > 
+> > > Remove the asynchronous handling, instead retry it immediately.  Currently,
+> > > the only two possible cases that may lead to async task is either INTERRUPT
+> > > or EAGAIN.  It should be suffice to spin retry as of now, until a solid
+> > > proof showing that a more complicated retry logic is needed.
+> > > 
+> > > With that, we can remove the whole async model for the bye task.
+> > > 
+> > > When at it, making the function return bool, which looks like a common
+> > > pattern in QEMU when errp is used.
+> > > 
+> > > Side note on the tracepoints: previously the tracepoint bye_complete()
+> > > isn't used.  Start to use it in this patch.  bye_pending() and bye_cancel()
+> > > can be dropped now.  Adding bye_retry() instead.
+> > > 
+> > > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > > ---
+> > >  include/io/channel-tls.h |  5 ++-
+> > >  io/channel-tls.c         | 86 +++++-----------------------------------
+> > >  io/trace-events          |  3 +-
+> > >  3 files changed, 15 insertions(+), 79 deletions(-)
+> > > 
 
-> In addition to memfd, a blob resource can also have its backing
-> storage in a VFIO device region. Therefore, we first need to figure
-> out if the blob is backed by a VFIO device region or a memfd before
-> we can call the right API to get a dmabuf fd created.
->
-> So, once we have the ramblock and the associated mr, we rely on
-> memory_region_is_ram_device() to tell us where the backing storage
-> is located. If the blob resource is VFIO backed, we try to find the
-> right VFIO device that contains the blob and then invoke the API
-> vfio_create_dmabuf().
->
-> Note that we only call virtio_gpu_remap_udmabuf() if the blob is
-> backed by a memfd. This is because the VFIO dmabuf implementation
-> may not support mmap.
->
-> Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> Cc: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> ---
->  hw/display/virtio-gpu-udmabuf.c | 60 ++++++++++++++++++++++++++++-----
->  1 file changed, 52 insertions(+), 8 deletions(-)
->
-> diff --git a/hw/display/virtio-gpu-udmabuf.c b/hw/display/virtio-gpu-udma=
-buf.c
-> index d804f321aa..0390a8f488 100644
-> --- a/hw/display/virtio-gpu-udmabuf.c
-> +++ b/hw/display/virtio-gpu-udmabuf.c
-> @@ -18,6 +18,7 @@
->  #include "ui/console.h"
->  #include "hw/virtio/virtio-gpu.h"
->  #include "hw/virtio/virtio-gpu-pixman.h"
-> +#include "hw/vfio/vfio-device.h"
->  #include "trace.h"
->  #include "system/ramblock.h"
->  #include "system/hostmem.h"
-> @@ -27,6 +28,32 @@
->  #include "standard-headers/linux/udmabuf.h"
->  #include "standard-headers/drm/drm_fourcc.h"
->=20=20
-> +static void vfio_create_dmabuf(VFIODevice *vdev,
-> +                               struct virtio_gpu_simple_resource *res)
-> +{
-> +    res->dmabuf_fd =3D vfio_device_create_dmabuf(vdev, res->iov, res->io=
-v_cnt);
-> +    if (res->dmabuf_fd < 0) {
-> +        warn_report("%s: VFIO_DEVICE_FEATURE_DMA_BUF: %s", __func__,
-> +                    strerror(errno));
-> +    }
-> +}
-> +
-> +static VFIODevice *vfio_device_lookup(MemoryRegion *mr)
-> +{
-> +    VFIODevice *vdev;
-> +
-> +    if (QLIST_EMPTY(&vfio_device_list)) {
-> +        return NULL;
-> +    }
-> +
-> +    QLIST_FOREACH(vdev, &vfio_device_list, next) {
-> +        if (vdev->dev =3D=3D mr->dev) {
-> +            return vdev;
-> +        }
-> +    }
-> +    return NULL;
-> +}
-> +
+> > > diff --git a/io/channel-tls.c b/io/channel-tls.c
+> > > index 5a2c8188ce..8510a187a8 100644
+> > > --- a/io/channel-tls.c
+> > > +++ b/io/channel-tls.c
+> > > @@ -253,84 +253,25 @@ void qio_channel_tls_handshake(QIOChannelTLS *ioc,
+> > >      qio_channel_tls_handshake_task(ioc, task, context);
+> > >  }
+> > >  
+> > > -static gboolean qio_channel_tls_bye_io(QIOChannel *ioc, GIOCondition condition,
+> > > -                                       gpointer user_data);
+> > > -
+> > > -static void qio_channel_tls_bye_task(QIOChannelTLS *ioc, QIOTask *task,
+> > > -                                     GMainContext *context)
+> > > +bool qio_channel_tls_bye(QIOChannelTLS *ioc, Error **errp)
+> > >  {
+> > > -    GIOCondition condition;
+> > > -    QIOChannelTLSData *data;
+> > >      int status;
+> > > -    Error *err = NULL;
+> > >  
+> > > -    status = qcrypto_tls_session_bye(ioc->session, &err);
+> > > +    trace_qio_channel_tls_bye_start(ioc);
+> > > +retry:
+> > > +    status = qcrypto_tls_session_bye(ioc->session, errp);
+> > >  
+> > >      if (status < 0) {
+> > >          trace_qio_channel_tls_bye_fail(ioc);
+> > 
+> > snip
+> > 
+> > > +        return false;
+> > > +    } else if (status != QCRYPTO_TLS_BYE_COMPLETE) {
+> > > +        /* BYE event must be synchronous, retry immediately */
+> > > +        trace_qio_channel_tls_bye_retry(ioc, status);
+> > > +        goto retry;
+> > >      }
+> > 
+> > We cannot do this. If the gnutls_bye() API needs to perform
+> > socket I/O, and so when we're running over a non-blocking
+> > socket we must expect EAGAIN. With this handling, QEMU will
+> > busy loop burning 100% CPU when the socket is not ready.
+> 
+> Right.  That was the plan when drafting this, the hope is spinning will
+> almost not happen, and even if it happens it'll finish soon (migration is
+> completing, it means network mustn't be so bad), unless the network is
+> stuck exactly at when we send the bye().
 
-Also fails if VFIO isn't enabled:
+Don't forget that the machine can be running 5 migrations
+of different VMs concurrently, and so may not be as quick
+to finish sending traffic as we expect. Since QEMU's mig
+protocol is essentially undirectional, I wonder if the
+send buffer could still be full of VMstate data waiting
+to be sent ? Perhaps its fine, but I don't like relying
+on luck, or hard-to-prove scenarios.
 
-  /usr/bin/ld: libsystem.a.p/hw_display_virtio-gpu-udmabuf.c.o: warning: re=
-location against `vfio_device_list' in read-only section `.text'
-  /usr/bin/ld: libsystem.a.p/hw_display_virtio-gpu-udmabuf.c.o: in function=
- `vfio_device_lookup':
-  /home/alex/lsrc/qemu.git/builds/all/../../hw/display/virtio-gpu-udmabuf.c=
-:45:(.text+0x313): undefined reference to `vfio_device_list'
-  /usr/bin/ld: libsystem.a.p/hw_display_virtio-gpu-udmabuf.c.o: in function=
- `vfio_create_dmabuf':
-  /home/alex/lsrc/qemu.git/builds/all/../../hw/display/virtio-gpu-udmabuf.c=
-:34:(.text+0x361): undefined reference to `vfio_device_create_dmabuf'
-  /usr/bin/ld: warning: creating DT_TEXTREL in a PIE
+> > A second point is that from a QIOChannel POV, we need to
+> > ensure that all APIs can be used in a non-blocking scenario.
+> > This is why in the QIOChannelSocket impl connect/listen APIs
+> > we provide both _sync and _async variants of the APIs, or
+> > in the QIOChannelTLS impl, the handshake API is always
+> > async with a callback to be invokved on completion.
+> 
+> I agree.  The issue is if so, migration code needs to be always be prepared
+> with a possible async op even if in 99.9999% cases it won't happen... we
+> need to complicate the multifd logic a lot for this, but the gain is
+> little..
+> 
+> This series still used patch 1 to fix the problem (rather than do real BYE
+> on preempt channels, for example) only because it's the easiest, after all
+> it's still a contract in tls channel impl to allow premature termination
+> for explicit shutdown()s on the host.
+> 
+> If we want to do 100% graceful shutdowns, we'll need to apply this to all
+> channels, and the async-possible model can definitely add more complexity
+> more than multifd.  I hope it won't be necessary.. but just to mention it.
+
+Even if the migration code is relying on non-blocking sockets
+for most of its work, at the time we're ready to invoke "bye",
+perhaps the migration code could simply call
+
+ qio_channel_set_blocking(ioc, true)
+
+to switch the socket over to blocking mode.
 
 
->  static void virtio_gpu_create_udmabuf(struct virtio_gpu_simple_resource =
-*res)
->  {
->      struct udmabuf_create_list *list;
-> @@ -130,6 +157,9 @@ bool virtio_gpu_have_udmabuf(void)
->=20=20
->  void virtio_gpu_init_udmabuf(struct virtio_gpu_simple_resource *res)
->  {
-> +    bool memfd_blob =3D false;
-> +    ram_addr_t offset;
-> +    RAMBlock *rb;
->      void *pdata =3D NULL;
->=20=20
->      res->dmabuf_fd =3D -1;
-> @@ -137,15 +167,31 @@ void virtio_gpu_init_udmabuf(struct virtio_gpu_simp=
-le_resource *res)
->          res->iov[0].iov_len < 4096) {
->          pdata =3D res->iov[0].iov_base;
->      } else {
-> -        virtio_gpu_create_udmabuf(res);
-> +        rb =3D qemu_ram_block_from_host(res->iov[0].iov_base, false, &of=
-fset);
-> +        if (rb && memory_region_is_ram_device(rb->mr)) {
-> +            VFIODevice *vdev =3D vfio_device_lookup(rb->mr);
-> +
-> +            if (!vdev) {
-> +                warn_report("Could not find device to create dmabuf");
-> +                return;
-> +            }
-> +            vfio_create_dmabuf(vdev, res);
-> +        } else {
-> +            virtio_gpu_create_udmabuf(res);
-> +            memfd_blob =3D true;
-> +        }
-> +
->          if (res->dmabuf_fd < 0) {
->              return;
->          }
-> -        virtio_gpu_remap_udmabuf(res);
-> -        if (!res->remapped) {
-> -            return;
-> +
-> +        if (memfd_blob) {
-> +            virtio_gpu_remap_udmabuf(res);
-> +            if (!res->remapped) {
-> +                return;
-> +            }
-> +            pdata =3D res->remapped;
->          }
-> -        pdata =3D res->remapped;
->      }
->=20=20
->      res->blob =3D pdata;
-> @@ -153,9 +199,7 @@ void virtio_gpu_init_udmabuf(struct virtio_gpu_simple=
-_resource *res)
->=20=20
->  void virtio_gpu_fini_udmabuf(struct virtio_gpu_simple_resource *res)
->  {
-> -    if (res->remapped) {
-> -        virtio_gpu_destroy_udmabuf(res);
-> -    }
-> +    virtio_gpu_destroy_udmabuf(res);
->  }
->=20=20
->  static void virtio_gpu_free_dmabuf(VirtIOGPU *g, VGPUDMABuf *dmabuf)
+> > The QIOChanel 'bye' method is flawed in that it is
+> > asynchronous, but has no callback for completion.
+> > 
+> > If migration is /always/ using a blocking socket for the
+> > TLS channels this isn't a problem as gnutls will complete
+> > immediately, but if any async sockets are used we have no
+> > way to wait for completion. This requires improving the
+> > API design in some manner.
+> 
+> I recall one of your future series on TLS would start to enable async for
+> all channels?  In all cases, we definitely don't want to have this call to
+> be relevant to the blocking mode of the channels.
+> 
+> Would it make sense to introduce a _sync() version of it, but keep the
+> original bye(), leaving the rest until a real async user appears?
+> 
+> I can also at least drop this patch as of now, because we can still wish it
+> almost always be synchronous.  However we have risk forgetting that forever
+> and hit it a few years later..
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+If we leave the current code as-is, and relying on migration switching
+to blocking mode first before calling bye, we'll be ok
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
