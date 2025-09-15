@@ -2,95 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40EFB581CC
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 18:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 772F8B581D0
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Sep 2025 18:17:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyBqL-00047j-Tj; Mon, 15 Sep 2025 12:14:17 -0400
+	id 1uyBrT-0004lu-BA; Mon, 15 Sep 2025 12:15:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uyBqB-0003yO-Cx
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 12:14:07 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uyBps-0003b6-C2
- for qemu-devel@nongnu.org; Mon, 15 Sep 2025 12:14:04 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-45dec1ae562so40025085e9.1
- for <qemu-devel@nongnu.org>; Mon, 15 Sep 2025 09:13:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1757952821; x=1758557621; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eO/ldWjErKpfl976r4mFLe5HyjWQ1Qm8Aiwr3AGIXXw=;
- b=qW2dFHOCsduvxIWNt/4kC5wnkdbNWtK1qlFhA/SL2M5oLWy12bjKfLTRmIAX5A4AUK
- JJWzW6tq+WJ5Yku2EMQ7wFMQpaIwovRzyhfBjdjJhZ1zr7VV5aOSLZgfk95FBIkai9sc
- 2NGF8qYkBlyO2cScN1RoJd7rPVXCFtHa9JfR3Stgt5l4BlH7qRh7Li3Z58PZaN5UPT+w
- 2suYOtouF2sn+abkYMQv0zrrKzxPCUvLbu3dcSPMgxkj/UBwsFNJGKRvlTEsXcseIHBC
- 8FoBGqCRsszXA2/Uifdov/zoy6SdS2RrytIp39+JcUjTvWSCJD45hHWSuu6PzN5tWpbW
- aOFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1757952821; x=1758557621;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=eO/ldWjErKpfl976r4mFLe5HyjWQ1Qm8Aiwr3AGIXXw=;
- b=EWKcArhuo5Q+av9JCOVSKBsD2w+jn7XuvQUf5prBaCEzCSuqf5CZgd0eVw8RnBjl6N
- kRfIbM2uflQZyt6204niyhiWHyd//F7Sgq5njtpwayGdAEHSUZLHtJTILVTYW0JWouvd
- FpPDFH6kbF3i/iWjldoBBAUE0Ri31KhB5BVDleMZR81tO1qW4QZ2YgTA1t29eGcATiPB
- WcNFhuY2KblsG2VOLX2Qpa5ssbREUpBWREMNjthhwIYXJzhE00dX6W7xuK3p786jqS1S
- B5Q/R3bth23K7JaQ+mHFeyGyA7aR3mc4FIGWvEj4KzX2Sq6MAu8OR+Jm+8/KXzuO6wUE
- I0cQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXUQ/E2I7vn2Wm9OKdZTbymhfI0JFY3CIAPIEkHoRw5MhDabU7E/wXxW26xmMxEUsSDLk8NFJdtyE08@nongnu.org
-X-Gm-Message-State: AOJu0Yys0RnbxlArH7tT/GO4+fdYBeTjEbWXOqHJXGIubp83BEiFmmwb
- Q2LrJ8dAm/hZU2yjMUnV5JX+ZHjj1hQYosYluZEZW2Ka4b2zTkEvjIbB3Ov6/47gVlc=
-X-Gm-Gg: ASbGncuDEQkQfM2Ib1WcpMoHKMtL1/Foc95nBHaLs3/cFqE34LAGl0ewXJ4egwaayR8
- ib0gV8U0Tpq5pzCHQCnLFTWWpAxwTZgHNW7UM1h7v349+PCycyd/w51aMzYAnl1wmhtf635qvVv
- xtWPBbL9VZ6dPxI+/BNgdZF2+Hw6hEMoVYxliXipcaT4n26tviwCO7l4y1ZdZE4zkFLd1626mCO
- c9Abswut+DhRBXtMtcjygIAM95ASjJ+b7gRyOP8kAGQ8B6z/sKTd/KYv9fOcuYnB5ASfFQNouNg
- tLbBcE50ebLzJ2aC0MSCrFZiIEafGX/jhHd+97FR9RVBrr8iaY4F5Ln7BDetpn167zdewnwWtLw
- B5XE90dImrxVVkdUdMUjOwCIQ/hZgVCdT/Q==
-X-Google-Smtp-Source: AGHT+IHJemgtGHz0vInWrPJBlhVWvOOYwIcRhwDG46HEyOvN5sz+DvlNL67V6g/7iKYNvfya7NPi/g==
-X-Received: by 2002:a05:600c:4fd6:b0:45b:76c6:cfb8 with SMTP id
- 5b1f17b1804b1-45f211d5d7bmr113392055e9.9.1757952820854; 
- Mon, 15 Sep 2025 09:13:40 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-45f2a13bdefsm87276125e9.14.2025.09.15.09.13.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Sep 2025 09:13:39 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1506C5F867;
- Mon, 15 Sep 2025 17:13:38 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Gustavo Romero <gustavo.romero@linaro.org>,  qemu-devel@nongnu.org,
- Daniel P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org
-Subject: Re: [RFC PATCH 0/2] tests/functional: Adapt reverse_debugging to
- run w/o Avocado (yet another try)
-In-Reply-To: <20250915124207.42053-1-thuth@redhat.com> (Thomas Huth's message
- of "Mon, 15 Sep 2025 14:42:05 +0200")
-References: <20250915124207.42053-1-thuth@redhat.com>
-User-Agent: mu4e 1.12.12; emacs 30.1
-Date: Mon, 15 Sep 2025 17:13:38 +0100
-Message-ID: <875xdjpubx.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
+ id 1uyBrJ-0004dN-Jn; Mon, 15 Sep 2025 12:15:20 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
+ id 1uyBr7-0003m7-5A; Mon, 15 Sep 2025 12:15:13 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58FDY8mP023436;
+ Mon, 15 Sep 2025 16:14:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=92r4wp
+ 2QLBVqdCo+uvp++2zIYUSsic+q3lhg6KcVKa8=; b=NRGDhXMqmqyYB71gnrMD3n
+ chjwEzlIRKx/IR6LVCRT34vLntvtLBxJXBu23tYOMS+XTz/EfghRb0WIbyYjNHMS
+ ncwAlpcs5xW9mdA490ROmtqGqFK8Ckt+Plk83q5Psd4HAhYhuWH5GTVIYvMcS9YN
+ teSpdoaxKPtc7S8pF8JB8hRIp+0VbOKQL6HfsgcpVGt2QS1/sfO9wCz0Ys2SqXjL
+ LNj4mqlgKocJvJMW5ZpZY0kVDcL/1qo6vxou1ja8qLswWT7dqzht/FKKYyKVFzJc
+ b91YWYg/9YR/zSP5sJ1GEky7CqLuABbR1pyAFmZrHwRwTJQkKRVlaKPxgAaA6GVw
+ ==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnkr17-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Sep 2025 16:14:55 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58FFAAu7022316;
+ Mon, 15 Sep 2025 16:14:54 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kxpfahk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Sep 2025 16:14:54 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 58FGEqBf20775442
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 15 Sep 2025 16:14:53 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 92B2458052;
+ Mon, 15 Sep 2025 16:14:52 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A17F058067;
+ Mon, 15 Sep 2025 16:14:51 +0000 (GMT)
+Received: from [9.61.159.211] (unknown [9.61.159.211])
+ by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Mon, 15 Sep 2025 16:14:51 +0000 (GMT)
+Message-ID: <14c613b1-d595-4cf1-b26e-5d87965a2c98@linux.ibm.com>
+Date: Mon, 15 Sep 2025 12:14:50 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 01/29] Add boot-certs to s390-ccw-virtio machine type
+ option
+To: Markus Armbruster <armbru@redhat.com>
+Cc: thuth@redhat.com, berrange@redhat.com, richard.henderson@linaro.org,
+ david@redhat.com, jrossi@linux.ibm.com, qemu-s390x@nongnu.org,
+ qemu-devel@nongnu.org, walling@linux.ibm.com, jjherne@linux.ibm.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com, farman@linux.ibm.com,
+ mjrosato@linux.ibm.com, iii@linux.ibm.com, eblake@redhat.com,
+ alifm@linux.ibm.com
+References: <20250818214323.529501-1-zycai@linux.ibm.com>
+ <20250818214323.529501-2-zycai@linux.ibm.com> <87v7lpjvsw.fsf@pond.sub.org>
+ <ffb4d32b-d2bc-45f0-91ce-6472d64c02bb@linux.ibm.com>
+ <87wm64b29p.fsf@pond.sub.org>
+ <3d930413-d809-4650-b1d8-446eb4ee7daa@linux.ibm.com>
+ <87tt14z03x.fsf@pond.sub.org>
+Content-Language: en-US
+From: Zhuoying Cai <zycai@linux.ibm.com>
+In-Reply-To: <87tt14z03x.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: QopDzXQNEwSa_OgT8h9gVPDtD0IRNGNC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDAyOCBTYWx0ZWRfX265Ch1q5TIaE
+ nEGrLge7JJS0CZM0eZjLBtMpWZpdHZ5XoeNVSBYZkjNqoQvqfFtMEp3PBNb63V11dcfVQZvwtVr
+ 0gvnq87rPTaYiZXXfB0rGCXoFfbFETdedVjHknfs6dZMRUOj2z+eFRRQc2stG7xiCuW8AV9vsIM
+ CAi62649vXw4NITNKOJXvBDOsHl1aHJcaIghsH89p9gbWnBV/uISmzggAg8M3/vltuj5mxpZ8PY
+ 0ojr5ilF2YrOKZQd4lClhlE9w5ZvYB5Ek8GAzvC0eghuIrM5ROd9J2oa5A+NtY/eeramRkfDoWR
+ INTenrZ7h+CGMIviItyC0amW0J9VSwKEQ5a6VcJ+eo6ng/94iEiW8XcP1D6XthGPTpQJre7OpLb
+ oEi4CYDH
+X-Authority-Analysis: v=2.4 cv=HecUTjE8 c=1 sm=1 tr=0 ts=68c83b7f cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=dtGe38LnIEzO8XVZHQwA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: QopDzXQNEwSa_OgT8h9gVPDtD0IRNGNC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-15_06,2025-09-12_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0 spamscore=0 priorityscore=1501 suspectscore=0
+ malwarescore=0 bulkscore=0 impostorscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509150028
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=zycai@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,34 +127,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+On 9/15/25 2:44 AM, Markus Armbruster wrote:
+> Zhuoying Cai <zycai@linux.ibm.com> writes:
+> 
+>> On 9/12/25 2:42 AM, Markus Armbruster wrote:
+>>> Zhuoying Cai <zycai@linux.ibm.com> writes:
+>>>
+>>>> Thanks for the feedback.
+>>>>
+>>>> On 9/11/25 3:24 AM, Markus Armbruster wrote:
+>>>>> Zhuoying Cai <zycai@linux.ibm.com> writes:
+>>>>>
+>>>>>> Introduce a new `boot-certs` machine type option for the s390-ccw-virtio
+>>>>>> machine. This allows users to specify one or more certificate file paths
+>>>>>> or directories to be used during secure boot.
+>>>>>>
+>>>>>> Each entry is specified using the syntax:
+>>>>>> 	boot-certs.<index>.path=/path/to/cert.pem
+>>>>>>
+>>>>>> Multiple paths can be specify using array properties:
+>>>>>> 	boot-certs.0.path=/path/to/cert.pem,
+>>>>>> 	boot-certs.1.path=/path/to/cert-dir,
+>>>>>> 	boot-certs.2.path=/path/to/another-dir...
+>>>>>>
+>>>>>> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
+>>>>>> ---
+>>>>>>  docs/system/s390x/secure-ipl.rst   | 20 ++++++++++++++++++++
+>>>>>>  hw/s390x/s390-virtio-ccw.c         | 30 ++++++++++++++++++++++++++++++
+>>>>>>  include/hw/s390x/s390-virtio-ccw.h |  2 ++
+>>>>>>  qapi/machine-s390x.json            | 24 ++++++++++++++++++++++++
+>>>>>>  qemu-options.hx                    |  6 +++++-
+>>>>>>  5 files changed, 81 insertions(+), 1 deletion(-)
+>>>>>>  create mode 100644 docs/system/s390x/secure-ipl.rst
+>>>>>>
+>>>>>> diff --git a/docs/system/s390x/secure-ipl.rst b/docs/system/s390x/secure-ipl.rst
+>>>>>> new file mode 100644
+>>>>>> index 0000000000..9b3fd25cc4
+>>>>>> --- /dev/null
+>>>>>> +++ b/docs/system/s390x/secure-ipl.rst
+>>>>>> @@ -0,0 +1,20 @@
+>>>>>> +.. SPDX-License-Identifier: GPL-2.0-or-later
+>>>>>> +
+>>>>>> +Secure IPL Command Line Options
+>>>>>> +===============================
+>>>>>> +
+>>>>>> +New parameters have been introduced to s390-ccw-virtio machine type option
+>>>>>> +to support secure IPL. These parameters allow users to provide certificates
+>>>>>> +and enable secure IPL directly via the command line.
+>>>>>
+>>>>> All too soon these parameters will no longer be new.  Consider something
+>>>>> like "The s390-ccw-virtio machine type supports secure TPL.  To enable
+>>>>> it, you need to provide certificates."
+>>>>>
+>>>>>> +
+>>>>>> +Providing Certificates
+>>>>>> +----------------------
+>>>>>> +
+>>>>>> +The certificate store can be populated by supplying a list of certificate file
+>>>>>> +paths or directories on the command-line:
+>>>>>
+>>>>> File is clear enough (use the certificate found in the file).  What does
+>>>>> directory do?
+>>>>
+>>>> A directory contains a list of certificate files, and allowing both
+>>>> files and directories could make the CLI more flexible.
+>>>
+>>> I figure when @path names a file, it's an error when the file doesn't
+>>> contain a valid cetificate.
+>>>
+>>> What is @path names a directory, and one of the directory's files
+>>> doesn't contain a valid certificate?
+>>>
+>>> Can a single file contain multiple certificates?
+>>
+>> A certificate file path is expected to contain exactly one certificate.
+>>
+>> Certificates provided through the CLI, whether as individual files or
+>> within a directory, are validated before use. If a certificate is
+>> invalid (e.g., unsupported format), it will be skipped and not added to
+>> the S390 certificate store.
+> 
+> Hmm.  What exactly happens when I configure a certificate file like
+> 
+>     -machine s390-ccw-virtio,boot-certs.0.path=/dev/null
+> 
+> or some other file that doesn't contain a valud certificate?  Is it
+> silently ignored, or is it an error?
+> 
+>> When iterating through the provided paths, the program will terminate on
+>> fatal configuration errors, such as when a specified path is neither a
+>> file nor a directory.
+> 
 
-> Here's yet another attempt to remove the avocado dependency from the
-> reverse debugging tests: I basically took Gustavo's patches to rework
-> tests/functional/reverse_debugging.py, but instead of calling that
-> through tests/guest-debug/run-test.py and adding the cumbersome code
-> to support additional test execution logic, I kept our normal way of
-> running tests via pycotap.
+If /dev/null is provided, the program will report an error and terminates.
 
-Hmm I was getting:
+   qemu-system-s390x: Path '/dev/null' is neither a file nor a directory
 
-  2025-09-15 17:10:50,798 - INFO: GDB CMD: /home/alex/src/tools/binutils-gd=
-b.git/builds/all/install/bin/gdb -q -n -batch -ex 'set pagination off' -ex =
-'set confirm off' -ex "py sys.argv=3D['/home/alex/lsrc/qemu.git/tests/funct=
-ional/reverse_debugging.py']" -x /home/alex/lsrc/qemu.git/tests/functional/=
-reverse_debugging.py
-  2025-09-15 17:10:50,803 - DEBUG: Using cached asset /home/alex/.cache/qem=
-u/download/7e1430b81c26bdd0da025eeb8fbd77b5dc961da4364af26e771bd39f379cbbf7=
- for https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/2=
-9/Everything/aarch64/os/images/pxeboot/vmlinuz
-  2025-09-15 17:10:50,891 - INFO: gdb output:
-   Python Exception <class 'ModuleNotFoundError'>: No module named 'pycotap'
-  Error occurred in Python: No module named 'pycotap'
+If a file exists but doesn't contain a valid certificate, the program
+will report the error but continues validating other remaining
+certificates. For example, providing a certificate in DER format
+(cert.pem) is not supported; only PEM format certificates are accepted:
 
-which asserted. Should gdb be seeing the pyenv PYTHONPATH or should we
-add a check for python3-pycotap in configure?
+   -machine s390-ccw-virtio,boot-certs.0.path=/root/cert.pem, \
+                            boot-certs.1.path=/root/pem-test/rsa.pem, \
+                            boot-certs.2.path=/root/pem-test/rsa-oaep.pem
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+   qemu-system-s390x: Failed to initialize certificate: /root/cert.pem:
+Failed to import certificate: Base64 unexpected header error.
+Using virtio-blk.
+SCSI boot device supports secure boot.
+LOADPARM=[        ]
+
+Using virtio-blk.
+Using SCSI scheme.
+....Verified component
+...Verified component
+...
+
+In summary, QEMU first collects a list of .pem files from the CLI, and
+then validate each certificate in that list.
+
+More specifically, QEMU first checks and normalizes the certificate
+paths - each path must be a non-empty string, must exist, and must be
+either a regular file or a directory. An invalid path will be reported
+and cause the program to terminate. Regular files with a .pem suffix, as
+well as .pem files inside directories, are added to the list.
+
+Once the list is built, QEMU attempts to read and parse each
+certificate. Errors at this stage (such as an invalid certificate
+format) are reported, but the program continues validating the rest of
+certificate in the list.
+
+(Further implementation details are provided in [PATCH v5 04/29]
+hw/s390x/ipl: Create certificate store.)
+
+> [...]
+> 
+
 
