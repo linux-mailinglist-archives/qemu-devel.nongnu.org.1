@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E94B59DA9
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 18:29:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD62B59D9C
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 18:28:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyYUX-00048G-Av; Tue, 16 Sep 2025 12:25:17 -0400
+	id 1uyYUg-0004C9-M3; Tue, 16 Sep 2025 12:25:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uyYUT-00045w-G2
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:25:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uyYUU-00047n-Pc
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:25:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uyYUR-0003C0-Oe
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:25:13 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uyYUS-0003CX-4v
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:25:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758039910;
+ s=mimecast20190719; t=1758039911;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7iL+AaF5sHuN6WBM7IcCzT21uM84brAC66QkldUSXDU=;
- b=KpaP6q0F2uCXjrFP4hRooQ0Zb9BzxWWbmQq8/ljmd0kajMl5Y21f5jYl/rLIBL4Ie1fwTu
- cxB8pbNYyGzDvZk4sqANyOT7gNZgVm53WDqUgYHMFjPrxx61MySuIGOaCgd0gsKa7ZUJCP
- /i8HxGuAF3lNJ1lj1gk7q3meWv6sioI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=yAAGczfISDvQS+uKt5bbeWRHjuOuYjCGJ8HcWOQqHjY=;
+ b=WoWyeya/29Jsl7M6M87IigLIoeqdPJ+nITvhh/d8zcF8L2hxRpKlYj+096EXl9x//txXBp
+ PopYeMOJwd4IiRFmyGL1+gtiGLVY5XTxyHXvdNzgM796tE8eOJMFlx1xLj4RmC75gs77pS
+ D04HvmBTWJEHMhIjF0IED2CXvZgy5Kg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-6aJ2J_PrMFaRNZpaoJ8M2Q-1; Tue,
- 16 Sep 2025 12:25:06 -0400
-X-MC-Unique: 6aJ2J_PrMFaRNZpaoJ8M2Q-1
-X-Mimecast-MFC-AGG-ID: 6aJ2J_PrMFaRNZpaoJ8M2Q_1758039905
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-Ts0B37MxORCd5gG0xMfUgw-1; Tue,
+ 16 Sep 2025 12:25:10 -0400
+X-MC-Unique: Ts0B37MxORCd5gG0xMfUgw-1
+X-Mimecast-MFC-AGG-ID: Ts0B37MxORCd5gG0xMfUgw_1758039908
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A4EC018002E9; Tue, 16 Sep 2025 16:25:05 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B769C1800562; Tue, 16 Sep 2025 16:25:08 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.80.221])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 998D119560B8; Tue, 16 Sep 2025 16:25:02 +0000 (UTC)
+ id 1EBFC19560BA; Tue, 16 Sep 2025 16:25:05 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, Michael Roth <michael.roth@amd.com>,
@@ -50,16 +50,17 @@ Cc: Kevin Wolf <kwolf@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Peter Maydell <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>,
  qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 16/19] python: ensure QEMUQtestProtocol closes its socket
-Date: Tue, 16 Sep 2025 12:24:01 -0400
-Message-ID: <20250916162404.9195-17-jsnow@redhat.com>
+Subject: [PULL 17/19] iotests/147: ensure temporary sockets are closed before
+ exiting
+Date: Tue, 16 Sep 2025 12:24:02 -0400
+Message-ID: <20250916162404.9195-18-jsnow@redhat.com>
 In-Reply-To: <20250916162404.9195-1-jsnow@redhat.com>
 References: <20250916162404.9195-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,30 +87,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-While QEMUQtestMachine closes the socket that was passed to
-QEMUQtestProtocol, the python resource leak manager still
-believes that the copy QEMUQtestProtocol holds is open. We
-must explicitly call close to avoid this leak warnnig.
+This avoids the python resource leak detector from issuing warnings
+in the iotests.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- python/qemu/machine/qtest.py | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/qemu-iotests/147 | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/python/qemu/machine/qtest.py b/python/qemu/machine/qtest.py
-index 4f5ede85b23..781f674ffaf 100644
---- a/python/qemu/machine/qtest.py
-+++ b/python/qemu/machine/qtest.py
-@@ -177,6 +177,8 @@ def _post_shutdown(self) -> None:
-             self._qtest_sock_pair[0].close()
-             self._qtest_sock_pair[1].close()
-             self._qtest_sock_pair = None
-+        if self._qtest is not None:
-+            self._qtest.close()
-         super()._post_shutdown()
+diff --git a/tests/qemu-iotests/147 b/tests/qemu-iotests/147
+index 6d6f077a14d..3e14bd389a4 100755
+--- a/tests/qemu-iotests/147
++++ b/tests/qemu-iotests/147
+@@ -277,6 +277,7 @@ class BuiltinNBD(NBDBlockdevAddBase):
+                      } }
+         self.client_test(filename, flatten_sock_addr(address), 'nbd-export')
  
-     def qtest(self, cmd: str) -> str:
++        sockfd.close()
+         self._server_down()
+ 
+ 
 -- 
 2.51.0
 
