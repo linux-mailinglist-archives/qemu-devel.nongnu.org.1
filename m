@@ -2,53 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF35B59695
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 14:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A30AB59640
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 14:32:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyV3j-0003Hf-L4; Tue, 16 Sep 2025 08:45:25 -0400
+	id 1uyUpB-00083E-9s; Tue, 16 Sep 2025 08:30:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uyV3c-0003GG-Ao
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:45:19 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uyV3O-0002Jv-OC
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:45:14 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Bx2tG+W8lo0vMKAA--.23768S3;
- Tue, 16 Sep 2025 20:44:46 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowJDxbMG4W8loS1uZAA--.42126S13;
- Tue, 16 Sep 2025 20:44:46 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: maobibo@loongson.cn
-Cc: qemu-devel@nongnu.org,
-	philmd@linaro.org,
-	jiaxun.yang@flygoat.com
-Subject: [PATCH v8 11/11] hw/loongarch: Implement DINTC plug/unplug interfaces
-Date: Tue, 16 Sep 2025 20:21:09 +0800
-Message-Id: <20250916122109.749813-12-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20250916122109.749813-1-gaosong@loongson.cn>
-References: <20250916122109.749813-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uyUoz-00082Y-FE
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:30:10 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uyUor-0000jw-HB
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:30:08 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-76e4f2e4c40so4630745b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 05:30:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758025798; x=1758630598; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=g9nZX1UZzMon5KE8z2cEcBk1rAUf4QpC5CCJVBoyGg8=;
+ b=npRYU8W0elegC2UZ+ddwGIosCkvtz3nAj2wy37SuXDZNhMNVhBKOL1qmJUL5vqJ/p0
+ ZPrrXK6Jo4RQD/4M/8sjfuqO2nVSkMDAthFVzUi03W7hTYcqLYuvyP7MiApo53xV0dty
+ Dibi9Vpjwis+qcBTEPF6E5ChmYwYln+10ErIPyMUcHNhZNg25cd36q5zF48FUQI4/zuv
+ 8vwFGMlNXqKHeMq0eoj3LnfRKY+UrGjwCbNPFTNDvnGoFJPBP3ZdVG2DHW/GJi1nQm9P
+ Fm7nD5kBOF3MT8AjTsFm+O5vP8KV2cvIZ5AURAHB7zNr1UiYHa87Be74ZgTO4M7qbGz9
+ vT4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758025798; x=1758630598;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=g9nZX1UZzMon5KE8z2cEcBk1rAUf4QpC5CCJVBoyGg8=;
+ b=FhWaPIGQZvhJSzAtN9AlbSLQdyxBuE+zMkxrDs0N/7BqU0KrFmcXKgiHbtL8r0K/Yd
+ 8J7tS6zrG+A1x/tyVKQD1M5icDsk5viwq04a1aAZZHw70ZYId/tYhI4k/Pxc47wYOQus
+ kQ/blfxS6P05D+XJRdSZe7dmz3Jbncf7EI2UAdQoNVqKbbbpvq0lEF7H/+FuM+MTujQM
+ KtP+AYAEX57RHIOmXKKhBApxxaBSYUL7Crjyx+OqGbPejiqgttB6vd4/1EqzQzrIO6XS
+ tNQTX4TS4r+c96ZTre79PB3wOObgqH9b3XQoBe3+Ezow1x/MnFf2ugKvVG8NZKodth6F
+ oM9A==
+X-Gm-Message-State: AOJu0Yy/d5B0d6GLt1jhi38F+UHtMX4lj8sHH8CW60ChdjZnOdV5fsAd
+ YvM31bwJwxPQeTy6p8yO7N+x7lBFurHG9utegt0/PSuIr2xrDIRXjdOppoJdbYuWX5c=
+X-Gm-Gg: ASbGncsuIqg++O3yKfu8ASfUEjLaD1e10iEt9xnjR7/u1zhDhFLNjL45Jnys0jhCO2k
+ zjf5Z6uDdSIEquqNN63mtNzs1bgFfpm9vR9Fhgof2R7t2UATqJ4jXXrlG6bYV5Vr6aiY3frZ1YV
+ 8HDfIrfE6KeCB8AgwK+XJbphZTONBHe9kkahvpV7fYUDAbyvqae5nkdyKF6mgfmA8K4dxwv2u+n
+ befqTzn0Z8AVn3betB27OLRZvgJdpBvpReoxoVGEvoMifxmp234jMwH6pdsigELNYRHXushX0r+
+ FWRubHSrp4Lrb39538Z05Gv6gPc0E2zqxwtL5Rekgmqx8YCMQX9w3VgVobhpB+S1C5KaCW10CSa
+ nQ5cZoRlx4qgMMbBFC82zRnnHb3JTOLC2r25p
+X-Google-Smtp-Source: AGHT+IEtqRs8Q5xfBxFGParguuRMRO31Nv09sXciV1q/3XsN1riw+eUNiRr+3fYxF09jez2ZnIJe8A==
+X-Received: by 2002:a05:6a00:b8a:b0:770:49ac:50b3 with SMTP id
+ d2e1a72fcca58-776121a7ff9mr21317453b3a.24.1758025798005; 
+ Tue, 16 Sep 2025 05:29:58 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.157.132])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-77618e200d3sm12409418b3a.17.2025.09.16.05.29.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Sep 2025 05:29:57 -0700 (PDT)
+Message-ID: <fe87b5e8-856e-4257-9a8d-40b0bd0b9360@linaro.org>
+Date: Tue, 16 Sep 2025 05:29:55 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJDxbMG4W8loS1uZAA--.42126S13
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 00/61] target/arm: Implement FEAT_SYSREG128
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20250827010453.4059782-1-richard.henderson@linaro.org>
+ <CAFEAcA9Any7XcejhUsCQDkseV8J0JQYq1YMDrM_eL7uJmDwcjg@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <CAFEAcA9Any7XcejhUsCQDkseV8J0JQYq1YMDrM_eL7uJmDwcjg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,147 +100,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-when cpu added, connect dintc irq to cpu INT_DMSI irq pin.
+On 9/16/25 05:14, Peter Maydell wrote:
+> Is some of the early part of this patchset useful refactoring
+> that we could get upstream already?
 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- hw/intc/loongarch_dintc.c | 71 +++++++++++++++++++++++++++++++++++++++
- hw/loongarch/virt.c       |  9 +++++
- 2 files changed, 80 insertions(+)
+Up through patch 36 reorganizes VHE to operate more like NV2, redirecting cpregs during 
+translation instead of using runtime thunks.
 
-diff --git a/hw/intc/loongarch_dintc.c b/hw/intc/loongarch_dintc.c
-index 08e70a0a0a..743eae9bc2 100644
---- a/hw/intc/loongarch_dintc.c
-+++ b/hw/intc/loongarch_dintc.c
-@@ -115,14 +115,81 @@ static void loongarch_dintc_init(Object *obj)
-     return;
- }
- 
-+static DINTCCore *loongarch_dintc_get_cpu(LoongArchDINTCState *s,
-+                                        DeviceState *dev)
-+{
-+    CPUClass *k = CPU_GET_CLASS(dev);
-+    uint64_t arch_id = k->get_arch_id(CPU(dev));
-+    int i;
-+
-+    for (i = 0; i < s->num_cpu; i++) {
-+        if (s->cpu[i].arch_id == arch_id) {
-+            return &s->cpu[i];
-+        }
-+    }
-+
-+    return NULL;
-+}
-+
-+static void loongarch_dintc_cpu_plug(HotplugHandler *hotplug_dev,
-+                                   DeviceState *dev, Error **errp)
-+{
-+    LoongArchDINTCState *s = LOONGARCH_DINTC(hotplug_dev);
-+    Object *obj = OBJECT(dev);
-+    DINTCCore *core;
-+    int index;
-+
-+    if (!object_dynamic_cast(obj, TYPE_LOONGARCH_CPU)) {
-+        warn_report("LoongArch DINTC: Invalid %s device type",
-+                                       object_get_typename(obj));
-+        return;
-+    }
-+    core = loongarch_dintc_get_cpu(s, dev);
-+    if (!core) {
-+        return;
-+    }
-+
-+    core->cpu = CPU(dev);
-+    index = core - s->cpu;
-+
-+    /* connect dintc msg irq to cpu irq */
-+    qdev_connect_gpio_out(DEVICE(s), index, qdev_get_gpio_in(dev, INT_DMSI));
-+    return;
-+}
-+
-+static void loongarch_dintc_cpu_unplug(HotplugHandler *hotplug_dev,
-+                                     DeviceState *dev, Error **errp)
-+{
-+    LoongArchDINTCState *s = LOONGARCH_DINTC(hotplug_dev);
-+    Object *obj = OBJECT(dev);
-+    DINTCCore *core;
-+
-+    if (!object_dynamic_cast(obj, TYPE_LOONGARCH_CPU)) {
-+        warn_report("LoongArch DINTC: Invalid %s device type",
-+                                       object_get_typename(obj));
-+        return;
-+    }
-+
-+    core = loongarch_dintc_get_cpu(s, dev);
-+
-+    if (!core) {
-+        return;
-+    }
-+
-+    core->cpu = NULL;
-+}
-+
- static void loongarch_dintc_class_init(ObjectClass *klass, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(klass);
-     LoongArchDINTCClass *lac = LOONGARCH_DINTC_CLASS(klass);
- 
-     dc->unrealize = loongarch_dintc_unrealize;
-     device_class_set_parent_realize(dc, loongarch_dintc_realize,
-                                     &lac->parent_realize);
-+    hc->plug = loongarch_dintc_cpu_plug;
-+    hc->unplug = loongarch_dintc_cpu_unplug;
- }
- 
- static const TypeInfo loongarch_dintc_info = {
-@@ -131,6 +198,10 @@ static const TypeInfo loongarch_dintc_info = {
-     .instance_size = sizeof(LoongArchDINTCState),
-     .instance_init = loongarch_dintc_init,
-     .class_init    = loongarch_dintc_class_init,
-+    .interfaces    = (const InterfaceInfo[]) {
-+        { TYPE_HOTPLUG_HANDLER },
-+        { }
-+    },
- };
- 
- static void loongarch_dintc_register_types(void)
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 922b545396..7a56434049 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -381,6 +381,8 @@ static void virt_cpu_irq_init(LoongArchVirtMachineState *lvms)
-                              &error_abort);
-         hotplug_handler_plug(HOTPLUG_HANDLER(lvms->extioi), DEVICE(cs),
-                              &error_abort);
-+        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->dintc), DEVICE(cs),
-+                             &error_abort);
-     }
- }
- 
-@@ -1103,6 +1105,9 @@ static void virt_cpu_unplug(HotplugHandler *hotplug_dev,
-     /* Notify ipi and extioi irqchip to remove interrupt routing to CPU */
-     hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->ipi), dev, &error_abort);
-     hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->extioi), dev, &error_abort);
-+    if (lvms->dintc) {
-+        hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->dintc), dev, &error_abort);
-+    }
- 
-     /* Notify acpi ged CPU removed */
-     hotplug_handler_unplug(HOTPLUG_HANDLER(lvms->acpi_ged), dev, &error_abort);
-@@ -1126,6 +1131,10 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev,
-         hotplug_handler_plug(HOTPLUG_HANDLER(lvms->extioi), dev, &error_abort);
-     }
- 
-+    if (lvms->dintc) {
-+        hotplug_handler_plug(HOTPLUG_HANDLER(lvms->dintc), dev, &error_abort);
-+    }
-+
-     if (lvms->acpi_ged) {
-         hotplug_handler_plug(HOTPLUG_HANDLER(lvms->acpi_ged), dev,
-                              &error_abort);
--- 
-2.41.0
+In addition to a being a nice cleanup on its own, I think it would simplify the EXLOCK 
+changes to ELR_EL1 in the GCS patch set.
 
+
+r~
 
