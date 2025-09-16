@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A30AB59640
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 14:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8138B59687
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 14:47:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyUpB-00083E-9s; Tue, 16 Sep 2025 08:30:24 -0400
+	id 1uyV5k-00052l-9N; Tue, 16 Sep 2025 08:47:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uyUoz-00082Y-FE
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:30:10 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uyUor-0000jw-HB
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:30:08 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-76e4f2e4c40so4630745b3a.2
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 05:30:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758025798; x=1758630598; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=g9nZX1UZzMon5KE8z2cEcBk1rAUf4QpC5CCJVBoyGg8=;
- b=npRYU8W0elegC2UZ+ddwGIosCkvtz3nAj2wy37SuXDZNhMNVhBKOL1qmJUL5vqJ/p0
- ZPrrXK6Jo4RQD/4M/8sjfuqO2nVSkMDAthFVzUi03W7hTYcqLYuvyP7MiApo53xV0dty
- Dibi9Vpjwis+qcBTEPF6E5ChmYwYln+10ErIPyMUcHNhZNg25cd36q5zF48FUQI4/zuv
- 8vwFGMlNXqKHeMq0eoj3LnfRKY+UrGjwCbNPFTNDvnGoFJPBP3ZdVG2DHW/GJi1nQm9P
- Fm7nD5kBOF3MT8AjTsFm+O5vP8KV2cvIZ5AURAHB7zNr1UiYHa87Be74ZgTO4M7qbGz9
- vT4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758025798; x=1758630598;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=g9nZX1UZzMon5KE8z2cEcBk1rAUf4QpC5CCJVBoyGg8=;
- b=FhWaPIGQZvhJSzAtN9AlbSLQdyxBuE+zMkxrDs0N/7BqU0KrFmcXKgiHbtL8r0K/Yd
- 8J7tS6zrG+A1x/tyVKQD1M5icDsk5viwq04a1aAZZHw70ZYId/tYhI4k/Pxc47wYOQus
- kQ/blfxS6P05D+XJRdSZe7dmz3Jbncf7EI2UAdQoNVqKbbbpvq0lEF7H/+FuM+MTujQM
- KtP+AYAEX57RHIOmXKKhBApxxaBSYUL7Crjyx+OqGbPejiqgttB6vd4/1EqzQzrIO6XS
- tNQTX4TS4r+c96ZTre79PB3wOObgqH9b3XQoBe3+Ezow1x/MnFf2ugKvVG8NZKodth6F
- oM9A==
-X-Gm-Message-State: AOJu0Yy/d5B0d6GLt1jhi38F+UHtMX4lj8sHH8CW60ChdjZnOdV5fsAd
- YvM31bwJwxPQeTy6p8yO7N+x7lBFurHG9utegt0/PSuIr2xrDIRXjdOppoJdbYuWX5c=
-X-Gm-Gg: ASbGncsuIqg++O3yKfu8ASfUEjLaD1e10iEt9xnjR7/u1zhDhFLNjL45Jnys0jhCO2k
- zjf5Z6uDdSIEquqNN63mtNzs1bgFfpm9vR9Fhgof2R7t2UATqJ4jXXrlG6bYV5Vr6aiY3frZ1YV
- 8HDfIrfE6KeCB8AgwK+XJbphZTONBHe9kkahvpV7fYUDAbyvqae5nkdyKF6mgfmA8K4dxwv2u+n
- befqTzn0Z8AVn3betB27OLRZvgJdpBvpReoxoVGEvoMifxmp234jMwH6pdsigELNYRHXushX0r+
- FWRubHSrp4Lrb39538Z05Gv6gPc0E2zqxwtL5Rekgmqx8YCMQX9w3VgVobhpB+S1C5KaCW10CSa
- nQ5cZoRlx4qgMMbBFC82zRnnHb3JTOLC2r25p
-X-Google-Smtp-Source: AGHT+IEtqRs8Q5xfBxFGParguuRMRO31Nv09sXciV1q/3XsN1riw+eUNiRr+3fYxF09jez2ZnIJe8A==
-X-Received: by 2002:a05:6a00:b8a:b0:770:49ac:50b3 with SMTP id
- d2e1a72fcca58-776121a7ff9mr21317453b3a.24.1758025798005; 
- Tue, 16 Sep 2025 05:29:58 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.157.132])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-77618e200d3sm12409418b3a.17.2025.09.16.05.29.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Sep 2025 05:29:57 -0700 (PDT)
-Message-ID: <fe87b5e8-856e-4257-9a8d-40b0bd0b9360@linaro.org>
-Date: Tue, 16 Sep 2025 05:29:55 -0700
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyV4z-0004yv-Jk
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:46:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyV4w-0002iB-O5
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:46:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758026794;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=aG4W3mmDglu4lEoQcUF+7rzQ4DSjx/M0FEtfZHT5Tcg=;
+ b=VcrFRUS6VLzRDcPMAczDyCQdLfJ0wA5nTSrBGcVAHpIb9iggvRqQeYhhI3vINubvWgvQP6
+ h/MbwFd4dCT1aQ4QWco2NEjCw1rzmo1T7CCuYCvwwnbNN8HaMaHSZPqvdml90zvfLbRVYB
+ a1KlMViJnOH3N7i/BbeWvOLw2+oarLU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-Hgj-_z-kOoaqxwHRQ_RUwQ-1; Tue,
+ 16 Sep 2025 08:46:33 -0400
+X-MC-Unique: Hgj-_z-kOoaqxwHRQ_RUwQ-1
+X-Mimecast-MFC-AGG-ID: Hgj-_z-kOoaqxwHRQ_RUwQ_1758026791
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1D5F519560B4; Tue, 16 Sep 2025 12:46:31 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9E911180044F; Tue, 16 Sep 2025 12:46:30 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 05C1F21E6A27; Tue, 16 Sep 2025 14:46:28 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Naveen N Rao <naveen@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Sean Christopherson
+ <seanjc@google.com>,  qemu-devel <qemu-devel@nongnu.org>,
+ kvm@vger.kernel.org,  "Daniel P. Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,  Eric Blake <eblake@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,  Zhao Liu <zhao1.liu@intel.com>,
+ Nikunj A Dadhania <nikunj@amd.com>,  Tom Lendacky
+ <thomas.lendacky@amd.com>,  Michael Roth <michael.roth@amd.com>,  Neeraj
+ Upadhyay <neeraj.upadhyay@amd.com>,  Roy Hopkins
+ <roy.hopkins@randomman.co.uk>
+Subject: Re: [RFC PATCH 3/7] target/i386: SEV: Add support for enabling
+ debug-swap SEV feature
+In-Reply-To: <m5fnfafkzxqamg4iyc6xjun7jlxulcuufgugtrweap6myvmgov@5cmxu5n3pl2p>
+ (Naveen N. Rao's message of "Mon, 15 Sep 2025 19:55:02 +0530")
+References: <cover.1757589490.git.naveen@kernel.org>
+ <0a77cf472bc36fee7c1be78fc7d6d514d22bca9a.1757589490.git.naveen@kernel.org>
+ <87jz239at0.fsf@pond.sub.org>
+ <m5fnfafkzxqamg4iyc6xjun7jlxulcuufgugtrweap6myvmgov@5cmxu5n3pl2p>
+Date: Tue, 16 Sep 2025 14:46:27 +0200
+Message-ID: <87plbqo998.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 00/61] target/arm: Implement FEAT_SYSREG128
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-References: <20250827010453.4059782-1-richard.henderson@linaro.org>
- <CAFEAcA9Any7XcejhUsCQDkseV8J0JQYq1YMDrM_eL7uJmDwcjg@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <CAFEAcA9Any7XcejhUsCQDkseV8J0JQYq1YMDrM_eL7uJmDwcjg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.009,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,16 +94,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/16/25 05:14, Peter Maydell wrote:
-> Is some of the early part of this patchset useful refactoring
-> that we could get upstream already?
+Naveen N Rao <naveen@kernel.org> writes:
 
-Up through patch 36 reorganizes VHE to operate more like NV2, redirecting cpregs during 
-translation instead of using runtime thunks.
+> Hi Markus,
+>
+> On Fri, Sep 12, 2025 at 01:20:43PM +0200, Markus Armbruster wrote:
+>> "Naveen N Rao (AMD)" <naveen@kernel.org> writes:
+>> 
+>> > Add support for enabling debug-swap VMSA SEV feature in SEV-ES and
+>> > SEV-SNP guests through a new "debug-swap" boolean property on SEV guest
+>> > objects. Though the boolean property is available for plain SEV guests,
+>> > check_sev_features() will reject setting this for plain SEV guests.
+>> 
+>> Let's see whether I understand...
+>> 
+>> It's a property of sev-guest and sev-snp-guest objects.  These are the
+>> "SEV guest objects".
+>> 
+>> I guess a sev-snp-guest object implies it's a SEV-SNP guest, and setting
+>> @debug-swap on such an object just works.
+>> 
+>> With a sev-guest object, it's either a "plain SEV guest" or a "SEV-ES"
+>> guest.
+>> 
+>> If it's the latter, setting @debug-swap just works.
+>> 
+>> If it's the former, and you set @debug-swap to true, then KVM
+>> accelerator initialization will fail later on.  This might trigger
+>> fallback to TCG.
+>> 
+>> Am I confused?
+>
+> You're spot on, except that in the last case above (plain old SEV 
+> guest), qemu throws an error:
+> 	qemu-system-x86_64: check_sev_features: SEV features require either SEV-ES or SEV-SNP to be enabled
 
-In addition to a being a nice cleanup on its own, I think it would simplify the EXLOCK 
-changes to ELR_EL1 in the GCS patch set.
+Okay.
 
+Can you (or anyone) explain to me why SEV-SNP gets its own object type,
+but SEV-ES does not?
 
-r~
+[...]
+
 
