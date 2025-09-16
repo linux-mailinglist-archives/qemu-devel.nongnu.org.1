@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52330B59E56
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 18:51:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F234B59E70
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 18:54:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyYsp-0001DT-R4; Tue, 16 Sep 2025 12:50:24 -0400
+	id 1uyYst-0001JJ-UP; Tue, 16 Sep 2025 12:50:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uyYsn-0001Ak-3q
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:50:21 -0400
+ id 1uyYsr-0001IT-Jh
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:50:25 -0400
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uyYsl-0006lu-A2
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:50:20 -0400
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uyYsp-0006n0-SX
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:50:25 -0400
 Received: from localhost.localdomain (unknown [167.220.208.43])
- by linux.microsoft.com (Postfix) with ESMTPSA id 662B620154FA;
- Tue, 16 Sep 2025 09:50:13 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 662B620154FA
+ by linux.microsoft.com (Postfix) with ESMTPSA id 8A86220154ED;
+ Tue, 16 Sep 2025 09:50:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8A86220154ED
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1758041417;
- bh=wKIrYgnVlsn75fWz2V59r5YrRWXYNGAzP0qi6BqD+/4=;
+ s=default; t=1758041422;
+ bh=FBfPjrtiE0YuxZHFIm9SF+e04OrNxovcu8CUedOUYHk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=mOqx7wKjOtVmRNRFkP6cyXwtg4eEDP64TWizUhMrFlmZsholeV3GH1sEXJo5YkleT
- L305590LCcovxnUKvzx7WOfwTWmoMBqR8mDDJcEpVbjN9k/vhI59Fd+A2o4gq94TEV
- kweBkJO/BXvPDcTWCvTecNHvbVGJijx0uxK7PBY8=
+ b=ipXiacMdL/bhR1AbM5+WjfUIwiyCydmfPfQ8MY0x+wYqcGpINM71VkmmG/d8BFkpa
+ nW5FFh38nsz+qqL+hpBpbJfvX6TLTNta3mQCR4nysENjBXln0J+l8OwRaH9zB/MW9A
+ R1i3FMjXc6CmenSe2ATFnorF6h2uiejDJB+pSVOs=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -47,9 +47,9 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 11/27] accel/mshv: Add vCPU signal handling
-Date: Tue, 16 Sep 2025 18:48:31 +0200
-Message-Id: <20250916164847.77883-12-magnuskulke@linux.microsoft.com>
+Subject: [PATCH v4 12/27] target/i386/mshv: Add CPU create and remove logic
+Date: Tue, 16 Sep 2025 18:48:32 +0200
+Message-Id: <20250916164847.77883-13-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250916164847.77883-1-magnuskulke@linux.microsoft.com>
 References: <20250916164847.77883-1-magnuskulke@linux.microsoft.com>
@@ -79,62 +79,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement signal handling for MSHV vCPUs to support asynchronous
-interrupts from the main thread.
+Implement MSHV-specific hooks for vCPU creation and teardown in the
+i386 target.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- accel/mshv/mshv-all.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ target/i386/mshv/mshv-cpu.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
-index b49988d294..cc4d47f8f5 100644
---- a/accel/mshv/mshv-all.c
-+++ b/accel/mshv/mshv-all.c
-@@ -525,6 +525,35 @@ static int mshv_cpu_exec(CPUState *cpu)
-     return ret;
+diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
+index 04938c2776..e848461c0e 100644
+--- a/target/i386/mshv/mshv-cpu.c
++++ b/target/i386/mshv/mshv-cpu.c
+@@ -29,6 +29,8 @@
+ #include "trace-accel_mshv.h"
+ #include "trace.h"
+ 
++#include <sys/ioctl.h>
++
+ int mshv_store_regs(CPUState *cpu)
+ {
+     error_report("unimplemented");
+@@ -61,20 +63,29 @@ int mshv_run_vcpu(int vm_fd, CPUState *cpu, hv_message *msg, MshvVmExit *exit)
+ 
+ void mshv_remove_vcpu(int vm_fd, int cpu_fd)
+ {
+-    error_report("unimplemented");
+-    abort();
++    close(cpu_fd);
  }
  
-+/*
-+ * The signal handler is triggered when QEMU's main thread receives a SIG_IPI
-+ * (SIGUSR1). This signal causes the current CPU thread to be kicked, forcing a
-+ * VM exit on the CPU. The VM exit generates an exit reason that breaks the loop
-+ * (see mshv_cpu_exec). If the exit is due to a Ctrl+A+x command, the system
-+ * will shut down. For other cases, the system will continue running.
-+ */
-+static void sa_ipi_handler(int sig)
-+{
-+    /* TODO: call IOCTL to set_immediate_exit, once implemented. */
 +
-+    qemu_cpu_kick_self();
-+}
-+
-+static void init_signal(CPUState *cpu)
-+{
-+    /* init cpu signals */
-+    struct sigaction sigact;
-+    sigset_t set;
-+
-+    memset(&sigact, 0, sizeof(sigact));
-+    sigact.sa_handler = sa_ipi_handler;
-+    sigaction(SIG_IPI, &sigact, NULL);
-+
-+    pthread_sigmask(SIG_BLOCK, NULL, &set);
-+    sigdelset(&set, SIG_IPI);
-+    pthread_sigmask(SIG_SETMASK, &set, NULL);
-+}
-+
- static void *mshv_vcpu_thread(void *arg)
+ int mshv_create_vcpu(int vm_fd, uint8_t vp_index, int *cpu_fd)
  {
-     CPUState *cpu = arg;
-@@ -541,6 +570,7 @@ static void *mshv_vcpu_thread(void *arg)
-         error_report("Failed to init vcpu %d", cpu->cpu_index);
-         goto cleanup;
-     }
-+    init_signal(cpu);
+-    error_report("unimplemented");
+-    abort();
++    int ret;
++    struct mshv_create_vp vp_arg = {
++        .vp_index = vp_index,
++    };
++    ret = ioctl(vm_fd, MSHV_CREATE_VP, &vp_arg);
++    if (ret < 0) {
++        error_report("failed to create mshv vcpu: %s", strerror(errno));
++        return -1;
++    }
++
++    *cpu_fd = ret;
++
++    return 0;
+ }
  
-     /* signal CPU creation */
-     cpu_thread_signal_created(cpu);
+ void mshv_init_mmio_emu(void)
+ {
+-    error_report("unimplemented");
+-    abort();
+ }
+ 
+ void mshv_arch_init_vcpu(CPUState *cpu)
 -- 
 2.34.1
 
