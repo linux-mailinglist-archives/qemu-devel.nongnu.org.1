@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54CEB590C9
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 10:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FD8B590EC
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 10:39:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyR81-0005vl-PI; Tue, 16 Sep 2025 04:33:33 -0400
+	id 1uyRDe-0004rj-B7; Tue, 16 Sep 2025 04:39:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uyR7x-0005vA-Mj
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:33:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uyR7s-0005vS-1p
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:33:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758011601;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=vvTDlb4UjeARLk7ny3NZlaug8tFqjjbSEOcKnmUpme4=;
- b=h/8dpUQF6hYr6x04s0UBx1FMIRkUdF5F6Wtho2RphlWy1SJvIzorDBwEXC8oImPgsD5ZmX
- Zd5Nv7z0c7/DKKlzWB70U7P6SDK1W7oeayZy8MdIycfhELui1facRoB89xn4rM5zt6U3fK
- ZcbBt4ef9UrAgixDsDtsXDHcHxb+ZUM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-74-zPqhcYPcOkqMAs4ZZkoqMQ-1; Tue,
- 16 Sep 2025 04:33:18 -0400
-X-MC-Unique: zPqhcYPcOkqMAs4ZZkoqMQ-1
-X-Mimecast-MFC-AGG-ID: zPqhcYPcOkqMAs4ZZkoqMQ_1758011596
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C0C0A18005A5; Tue, 16 Sep 2025 08:33:15 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.153])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8DCD11800579; Tue, 16 Sep 2025 08:33:10 +0000 (UTC)
-Date: Tue, 16 Sep 2025 09:33:06 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, qemu-block@nongnu.org,
- leiyang@redhat.com, marcandre.lureau@redhat.com,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Kostiantyn Kostiuk <kkostiuk@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>,
- Coiby Xu <Coiby.Xu@gmail.com>
-Subject: Re: [PATCH v4 06/12] util: drop qemu_socket_set_nonblock()
-Message-ID: <aMkgwkjM_fwoOCf8@redhat.com>
-References: <20250915193105.230085-1-vsementsov@yandex-team.ru>
- <20250915193105.230085-7-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uyRDR-0004Pb-9b
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:39:12 -0400
+Received: from mail-yw1-x1131.google.com ([2607:f8b0:4864:20::1131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uyRCz-0006Qo-9t
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:38:52 -0400
+Received: by mail-yw1-x1131.google.com with SMTP id
+ 00721157ae682-72267c05111so39251187b3.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 01:38:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758011910; x=1758616710; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=nXUYlnpSXxiJOL7NcgpwOHUm4vgvpdIMYxgPw3z+RY0=;
+ b=XFHPsMj8mOsOo5GJEGF4+FnlhlydQU633ZTXoxQfs6jtfl33rkvqoEQ4CmIZ85b6L8
+ SeqKp9TdRt8tMtLfyIu4AfB0rCeKfouiM6GEvxQI8UiZeT11Xmc/QRypEkG2RoFDQ+ZV
+ U1ue6QbZ/DW8TrXzaxIznNL1mcpYLVrXoD/ZTO9/dLj2WCbALW/IttO1Bi3HbIz6a8nS
+ zFTRqRwn/ST950ZxRikEYb0ptnj4d4oJXYg0jd8W5Viti1a/krEi9n1DHZhbSNUEOtAb
+ UmqFLbGtTJprsFr8wq5/dpdDqkNe8317S1KlW2qUqxBu5cQJuu8bZEK/JdYhsgkoMu41
+ cMIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758011910; x=1758616710;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nXUYlnpSXxiJOL7NcgpwOHUm4vgvpdIMYxgPw3z+RY0=;
+ b=wpSPfazT+fQlCUVzVhW2BtqrexV/r1e2QjuKhsz2/3vgHiuNep8LRP2WPmpzKpR+OA
+ 1F2hUnVe3Bg8WFzEmClN5AuPgmvp0Ec5tjQVw2e/yswqkmd+dxydy5puvX1zxmtx8RAn
+ ZkB3PpOCxSGGEe4Vu2qbiGNEZNy9KfmH6aicyp80HqMAad6KIyCsvv+r8yjkBmFR2f45
+ q/BmB7vP7pzZp/MRzPQm/RhiiyIGmreUNaK6sRqJrKCF3J5Y9lBBGISuVI9NjJyDExwQ
+ MvIGn1WuZnr016tPexgEn3ndK4CjBk9sVCgrgicJl6SthSA1MJay0NAQKJpqzDN2R/KV
+ 2BWw==
+X-Gm-Message-State: AOJu0YyTWhKctB0gfPZQn4T+kqjDEr8MpMZezz5HL8aaQF29rnHLvgcF
+ MAkJABX4POMTennvCJh1hq2i07+j84BuPq+/DIXj7t8KEG2Vm0goiklHj7Tn4FZApLf5u+in0mO
+ oTBO9CkS7Vwt1lY0A00NDyEqyceLZLClmGhfBp9/PDQ==
+X-Gm-Gg: ASbGncvbfRTY35zc8sozITDmE6UsZjYnj8wNLUoB5A88PZyHPNY1ItCpEOSoO17foyH
+ K3lJblPV8Eqcjh1pRlBNUm7+vVZh/ubmQ1DnSq/SmtwFCWx4DS2QDFR+0cB4bZSTz75k0mcXFZ+
+ kcXU46Mqy3KwA0vD3rOzIbcg4d/Bu5VHxSBjviL9m7eWrBMn3vqxSfLvVZSH9ZEbDn+Jhp/oJHq
+ NPRJh9m
+X-Google-Smtp-Source: AGHT+IHrBQlz7/Fdxv06eMmctttpp9NkMGIylulGPWLl6YvkOf7/ysjU3/ZWlDOCJ2OdN64Z+dKPnexj4It/HzCeo2g=
+X-Received: by 2002:a05:690c:a012:b0:730:c83b:e9f8 with SMTP id
+ 00721157ae682-730c83c15d1mr114639477b3.37.1758011910099; Tue, 16 Sep 2025
+ 01:38:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250915193105.230085-7-vsementsov@yandex-team.ru>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20250826205532.1500639-1-nabihestefan@google.com>
+In-Reply-To: <20250826205532.1500639-1-nabihestefan@google.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 16 Sep 2025 09:38:18 +0100
+X-Gm-Features: Ac12FXzHJ_6Xu5ABADwYfQUkLL5s31ax-cHt6ck1N7iPzUzOF147hVcsH1W1DE0
+Message-ID: <CAFEAcA8zGzfh_b1UWAeTDpMi=z-KFVUgS2By6CgpONNMVjMP5A@mail.gmail.com>
+Subject: Re: [PATCH 0/2] hw/pci-bridge: Create PLX Virtual Switch Device
+To: Nabih Estefan <nabihestefan@google.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mst@redhat.com, 
+ marcel.apfelbaum@gmail.com, venture@google.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,111 +88,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 15, 2025 at 10:30:58PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> Use common qemu_set_blocking() instead.
-> 
-> Note that pre-patch the behavior of Win32 and Linux realizations
-> are inconsistent: we ignore failure for Win32, and assert success
-> for Linux.
-> 
-> How do we convert the callers?
-> 
-> 1. Most of callers call qemu_socket_set_nonblock() on a
-> freshly created socket fd, in conditions when we may simply
-> report an error. Seems correct switching to error handling
-> both for Windows (pre-patch error is ignored) and Linux
-> (pre-patch we assert success). Anyway, we normally don't
-> expect errors in these cases.
-> 
-> Still in tests let's use &error_abort for simplicity.
-> 
-> What are exclusions?
-> 
-> 2. hw/virtio/vhost-user.c - we are inside #ifdef CONFIG_LINUX,
-> so no damage in switching to error handling from assertion.
-> 
-> 3. io/channel-socket.c: here we convert both old calls to
-> qemu_socket_set_nonblock() and qemu_socket_set_block() to
-> one new call. Pre-patch we assert success for Linux in
-> qemu_socket_set_nonblock(), and ignore all other errors here.
-> So, for Windows switch is a bit dangerous: we may get
-> new errors or crashes(when error_abort is passed) in
-> cases where we have silently ignored the error before
-> (was it correct in all such cases, if they were?) Still,
-> there is no other way to stricter API than take
-> this risk.
-> 
-> 4. util/vhost-user-server - compiled only for Linux (see
-> util/meson.build), so we are safe, switching from assertion to
-> &error_abort.
-> 
-> Note: In qga/channel-posix.c we use g_warning(), where g_printerr()
-> would actually be a better choice. Still let's for now follow
-> common style of qga, where g_warning() is commonly used to print
-> such messages, and no call to g_printerr(). Converting everything
-> to use g_printerr() should better be another series.
-> 
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->  contrib/ivshmem-server/ivshmem-server.c |  9 ++++++++-
->  hw/hyperv/syndbg.c                      |  4 +++-
->  hw/virtio/vhost-user.c                  |  5 ++++-
->  include/qemu/sockets.h                  |  1 -
->  io/channel-socket.c                     |  7 +++----
->  net/dgram.c                             | 16 +++++++++++++---
->  net/l2tpv3.c                            |  5 +++--
->  net/socket.c                            | 20 ++++++++++++++++----
->  qga/channel-posix.c                     |  7 ++++++-
->  tests/unit/socket-helpers.c             |  4 +++-
->  tests/unit/test-crypto-tlssession.c     |  8 ++++----
->  util/oslib-posix.c                      |  7 -------
->  util/oslib-win32.c                      |  5 -----
->  util/vhost-user-server.c                |  4 ++--
->  14 files changed, 65 insertions(+), 37 deletions(-)
+On Tue, 26 Aug 2025 at 21:56, Nabih Estefan <nabihestefan@google.com> wrote:
+>
+> Create a PLX PEX PCIe Virtual Switch implementation that can be used
+> for modeling trays. This is a generalized version of the xio3130 switch where
+> we can set the PCI information on creation, allowing us to model different
+> trays without creating specific devices for all of them. It is used the same
+> way the xio3130 switch is used + the PCI Signature information.
+>
+> The idea is to minimize the difficulty of creating different trays whose
+> only difference is recognition by some daemon through PCI signatures.
+> Instead of having to create 8 different versions of xio3130 that have
+> the same functionality but different PCI Signatures, we create one
+> general version where you can declare the PCI Signature information,
+> while keeping the same base functionality. This is not meant to fully
+> replace xio3130 since that is easier to use without knowledge of the PCI
+> Signature, this is meant to decrease the difficulty of creating switch
+> trays that require certain PCI information for recognition without any
+> significant change from a normal PLX Virtual Switch functionality.
 
+Could we implement this as optional config properties on
+the xio3130 rather than as an entirely new device ?
 
-> diff --git a/util/vhost-user-server.c b/util/vhost-user-server.c
-> index d805a92394..b3416ab956 100644
-> --- a/util/vhost-user-server.c
-> +++ b/util/vhost-user-server.c
-> @@ -78,7 +78,7 @@ static void vmsg_unblock_fds(VhostUserMsg *vmsg)
->      }
->  
->      for (i = 0; i < vmsg->fd_num; i++) {
-> -        qemu_socket_set_nonblock(vmsg->fds[i]);
-> +        qemu_set_blocking(vmsg->fds[i], false, &error_abort);
->      }
->  }
+> Changes from v1&2: Updating different formatting and API changes that
+> ocurred QEMU-wide since these patches were first staged in 8.1.
+>
+> Signed-off-by: Nabih Estefan <nabihestefan@google.com>
+> Signed-off-by: Patrick Venture <venture@google.com>
+>
+> Nabih Estefan (2):
+>   hw/pci-bridge: Create Initial revision for PLX Virtual Switch
+>   MAINTAINERS: Add entry for PLX VSwitches
+>
+>  MAINTAINERS                            |   6 +
+>  hw/pci-bridge/Kconfig                  |   5 +
+>  hw/pci-bridge/meson.build              |   1 +
+>  hw/pci-bridge/plx_vswitch_downstream.c | 188 +++++++++++++++++++++++++
+>  hw/pci-bridge/plx_vswitch_upstream.c   | 178 +++++++++++++++++++++++
+>  include/hw/pci-bridge/plx_vswitch.h    |  43 ++++++
 
-The caller of this method is able to handle errors more gracefully
-than abort.
+I note from the diffstat that you have provided no
+documentation and no tests...
 
-
-
-> @@ -303,7 +303,7 @@ set_watch(VuDev *vu_dev, int fd, int vu_evt,
->  
->          vu_fd_watch->fd = fd;
->          vu_fd_watch->cb = cb;
-> -        qemu_socket_set_nonblock(fd);
-> +        qemu_set_blocking(fd, false, &error_abort);
->          aio_set_fd_handler(server->ctx, fd, kick_handler,
->                             NULL, NULL, NULL, vu_fd_watch);
->          vu_fd_watch->vu_dev = vu_dev;
-
-Can we put a TODO here that error_abort should be fixed to be more
-graceful - either by moving the set_blocking call out of this
-callback entirely, or allowing this method to return errors.
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+thanks
+-- PMM
 
