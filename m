@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D764B599E8
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 16:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 772D9B59A4D
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 16:35:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyWau-0006O4-2x; Tue, 16 Sep 2025 10:23:44 -0400
+	id 1uyWcs-00005y-34; Tue, 16 Sep 2025 10:25:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uyWaW-0005uF-MO
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 10:23:20 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1uyWan-0006BP-Ae
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 10:23:37 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uyWaP-0008Nw-Gf
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 10:23:18 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-b523af71683so4503486a12.3
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 07:23:05 -0700 (PDT)
+ id 1uyWaU-0008OC-QL
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 10:23:31 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-24458272c00so58878695ad.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 07:23:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758032584; x=1758637384; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758032585; x=1758637385; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RcKPQdIEUX2PNEvjBDHi7h42HjJJAKk2WkX9D2rphHM=;
- b=E5E8W5/c3j7UslqPrnDMYfZmy16egOP+0qJv1wYTfgPoQGXzIfHIELp0XmGC2yPfcn
- 0JkOuoJsqclFHcO6+OuSmfcwgzTW5Jps09HOSZVh1oGrCqq11jqbC+YtDJQa+4jrWiik
- 4um3iR1yYYyO/UtJ380FF1yNCLJxtid1YM0meSTB9H8wySuG/Reen4PZmn8TcZ2p6pqL
- 5ylbl7KWojrXIE938s/xb6bcghrycrPXvvGgFrGbUjUMdgdvybh7UUB+TYGgapqomuqB
- uqVctEN+mSkUbHYlKg91gfuxSinM2akcuPSMgFv9qLpLyUx3i1Zzudkn7OonRRNB/YDK
- NNpQ==
+ bh=EJhr2YI6iB2xGTJI/fnQ7ZhqiroWE31mRa2JZAO6wpc=;
+ b=DkyZ0KEbOHhbNvS6YiF6I1l9K306+pmiUnMIAbP1o5P1f02/j34jkVEjZY+YzsCQhW
+ oa0vCXBlhkblrXBhWUeZY/+w1Fo6kRLhO0gTLChII8KFqSszeU3NFj4JkbUxQINGMB/L
+ hA4x44Tf8bj/Y/uUiPYj4OMpLUZeXoT22xXFrX7pYiiDsde/7YDoiG096sMussNwoPSD
+ RWaFAPvUJyZfPeX7yfiuQrMLajcO9w9rPvr3lUTKfQlqFxGfiV6IHUlk314qY/O4TOGT
+ 4RvDGYWryHCjBmk+5MtQ0p32dvjfaGFMPMI+tCRAXGYJWi8ldyYeu31R6aLSKK/p+viv
+ 7jmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758032584; x=1758637384;
+ d=1e100.net; s=20230601; t=1758032585; x=1758637385;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RcKPQdIEUX2PNEvjBDHi7h42HjJJAKk2WkX9D2rphHM=;
- b=kM8m6zLFwBIRTc/VpH1fzctsorBGEzSAf47BRcgF0COlnCpz96zb/vivdNIvTusuDV
- Z7ztxjsY5NzZ8OYGY54ZSLTf7XuhSM2YrdRREELhjijr8ly2hM4Kbd4fjPi/kwx3bBeo
- RLGE467Awv1iKWQUSKNDbC+Q2hqJVgr4QHnrH3WB0Ek+3CdSdXOsqyqwIcekOjkZIuNm
- 5o1Fod7AR/ubesCvl4Sw7LCqfthTn2ks/mQcFQGb5f92xdQ/RbiqKb0x+Z1GuWlis0r0
- UXz8ylIpBYiEKG08F1KbqkO/MICZ7OUj7LVn9dckdcstkq9O88WcUPLEdUWwjnzMusys
- JFwQ==
-X-Gm-Message-State: AOJu0YyirI9WrZ3at9ClDgUdSqEQKX+rZnK+NQsSkTMOf3iQA/z9boLO
- c584GVRW27iUCBPcS3c/VbC92fbTePNnkvlh3kn8N9CzTIQK+hVaesDTPlwNMzp6ISYkvi94w06
- UGztx
-X-Gm-Gg: ASbGncs2EiLrVM08hBoBVG2N5aiMjb4Rn2UAMDpWchUOAVlX+vhTA57813Q+8IrokGQ
- NEEAvyS2QIYDS3v4jXd5IbKbGov8ZjFf9K2tL6/Zsv19gUgLaGFOqKKMOtBEtA/tjJVQn6DyPvV
- lnEgudWerSDpMyJOj7AAMcnPz6MJ1/4p4YJjJIhRGubGcyCIS5kKqY4ikDxV6yB7CLYFBNh4BQ6
- LWyBxCE/BwS/I1/Em3hSWze3DsiTgYVT+mUhZ201itgy9JoeBdukiBu7MAnsFoyvMM2u2IUDARC
- JZ5N6bs6Wc7OUXEJT2xgZnQGq8I44WibfTraSroRtlKYIzmuw+WG8I0zEgebvwJecZ6GmRFNUlC
- TT0R4Z5Z8FYz44ABQklbgvDQUkUHP
-X-Google-Smtp-Source: AGHT+IHPi07hSEXRpiQX7L/EwHSH6nE2jPErGxU+iCmuzG2fhrGJMUWHHW4loXXBPZbIHisIvgOeLg==
-X-Received: by 2002:a17:903:944:b0:267:16ec:390 with SMTP id
- d9443c01a7336-26716ec061emr102254585ad.17.1758032584447; 
- Tue, 16 Sep 2025 07:23:04 -0700 (PDT)
+ bh=EJhr2YI6iB2xGTJI/fnQ7ZhqiroWE31mRa2JZAO6wpc=;
+ b=aQcgJs2Df/dPaoeJvU2WA3ejP/eEwGP1M6jzoFZSxEy0ZCDetYCuSRbVW9ZX485drz
+ UFbjXFzaZsvKEvi37q4Sz7kAy5zOtzb70/8Zj9ztGJxNyk/M4fsTIQn5jRe5KwW7r+In
+ eXqZOHWTh1ks6H0xM81mi6ma+AoP7sFs3PXLosO7gKm1IK6oNHjhK/tCGCCtZrn20Li6
+ R8j4oTiObn51JOR1E8Y75HQdq4NoINTCA2tg00PxafDVDREFYdFj2U1reG1Ssvlk75WR
+ Bl1XXPHErAxdBLZFVIpm49n4btn5PFcgb6Ts/6gpAekv6lf2eMSFX9qt6OeG4aEQtfJ7
+ Ursg==
+X-Gm-Message-State: AOJu0Yx9uvAsvgj8qaP88eY2TqYA91bvS8RGrIT8xyHHEvpp+hwLpM8h
+ BTtWbx357AH0PRCCEoZVt8koXieoj5AHrSvh4DGJWJYuKpfH8QtAiI3Yn5HSI2pSTVHrqM8WhJA
+ Ht2ai
+X-Gm-Gg: ASbGnct+8ALKU6+PFNT81TJhK0XqHJgnRxbSyTmQ/2YzYIGLcCue+MJ0SciVIbgsswU
+ +bLxLOx+ZAs9fPOKSvNfeeRnlOMbzRlPBUK/xA1H2zdWMupbJkcDjQr9jVv9G/56Gglc1wdevEE
+ ZlviAyGcQy1nHTk6jXg+Wg7/9MZTrKSP45K5HoxDvGHW9qOj6TsIHKrbXIB8KQW9A2AUkMFqnMY
+ 7dWO8/JFla4A0TEe5pqvgbz61DdCSJzK+FdxUymTxT3lp0kfvYnbG5VUetSUYqITUZvfjwjYlZ8
+ 60Nkwhw588pQay5nU+oGYk66zH41fdIyMeDlifcuk/iDQs+04vZ/7FZCoDCGfqIOIJ52eP0N7rJ
+ 0I9txrE8bRqsTx9Vu7lUMufH8Xo4H
+X-Google-Smtp-Source: AGHT+IGhEzeXjMpW0/gcNvT1rjfrJiTwVqmyvMwcbWvYdRG0lXVuWQb/QzeAQf6aqtXPmeqO0mBp9Q==
+X-Received: by 2002:a17:902:ce8b:b0:24e:e5c9:ecfd with SMTP id
+ d9443c01a7336-25d26a589bemr229082835ad.42.1758032585462; 
+ Tue, 16 Sep 2025 07:23:05 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2651d2df15esm73459905ad.45.2025.09.16.07.23.03
+ d9443c01a7336-2651d2df15esm73459905ad.45.2025.09.16.07.23.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Sep 2025 07:23:03 -0700 (PDT)
+ Tue, 16 Sep 2025 07:23:04 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	peter.maydell@linaro.org
-Subject: [PATCH v2 31/36] target/arm: Rename TBFLAG_A64_NV2_MEM_E20 with *_E2H
-Date: Tue, 16 Sep 2025 07:22:32 -0700
-Message-ID: <20250916142238.664316-32-richard.henderson@linaro.org>
+Subject: [PATCH v2 32/36] target/arm: Split out redirect_cpreg
+Date: Tue, 16 Sep 2025 07:22:33 -0700
+Message-ID: <20250916142238.664316-33-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916142238.664316-1-richard.henderson@linaro.org>
 References: <20250916142238.664316-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,87 +98,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Install e2h in tbflags and compute nv2_mem_e20 from
-that in aarch64_tr_init_disas_context.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.h               | 3 +--
- target/arm/tcg/translate.h     | 2 ++
- target/arm/tcg/hflags.c        | 8 +++++---
- target/arm/tcg/translate-a64.c | 3 ++-
- 4 files changed, 10 insertions(+), 6 deletions(-)
+ target/arm/tcg/translate-a64.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index c15d79a106..4a22b216b3 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -3093,8 +3093,7 @@ FIELD(TBFLAG_A64, ATA0, 31, 1)
- FIELD(TBFLAG_A64, NV, 32, 1)
- FIELD(TBFLAG_A64, NV1, 33, 1)
- FIELD(TBFLAG_A64, NV2, 34, 1)
--/* Set if FEAT_NV2 RAM accesses use the EL2&0 translation regime */
--FIELD(TBFLAG_A64, NV2_MEM_E20, 35, 1)
-+FIELD(TBFLAG_A64, E2H, 35, 1)
- /* Set if FEAT_NV2 RAM accesses are big-endian */
- FIELD(TBFLAG_A64, NV2_MEM_BE, 36, 1)
- FIELD(TBFLAG_A64, AH, 37, 1)   /* FPCR.AH */
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index f974996f3f..cd67c0ed07 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -150,6 +150,8 @@ typedef struct DisasContext {
-     bool trap_eret;
-     /* True if FEAT_LSE2 SCTLR_ELx.nAA is set */
-     bool naa;
-+    /* True if HCR_EL2.E2H is set */
-+    bool e2h;
-     /* True if FEAT_NV HCR_EL2.NV is enabled */
-     bool nv;
-     /* True if NV enabled and HCR_EL2.NV1 is set */
-diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
-index 59ab526375..6969d41ea0 100644
---- a/target/arm/tcg/hflags.c
-+++ b/target/arm/tcg/hflags.c
-@@ -258,6 +258,11 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
-     DP_TBFLAG_A64(flags, TBII, tbii);
-     DP_TBFLAG_A64(flags, TBID, tbid);
- 
-+    /* E2H is used by both VHE and NV2. */
-+    if (hcr & HCR_E2H) {
-+        DP_TBFLAG_A64(flags, E2H, 1);
-+    }
-+
-     if (cpu_isar_feature(aa64_sve, env_archcpu(env))) {
-         int sve_el = sve_exception_el(env, el);
- 
-@@ -390,9 +395,6 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
-         }
-         if (hcr & HCR_NV2) {
-             DP_TBFLAG_A64(flags, NV2, 1);
--            if (hcr & HCR_E2H) {
--                DP_TBFLAG_A64(flags, NV2_MEM_E20, 1);
--            }
-             if (env->cp15.sctlr_el[2] & SCTLR_EE) {
-                 DP_TBFLAG_A64(flags, NV2_MEM_BE, 1);
-             }
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 0ec309f1ea..599e7a36ee 100644
+index 599e7a36ee..c0fa2137b6 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -10304,10 +10304,11 @@ static void aarch64_tr_init_disas_context(DisasContextBase *dcbase,
-     dc->pstate_za = EX_TBFLAG_A64(tb_flags, PSTATE_ZA);
-     dc->sme_trap_nonstreaming = EX_TBFLAG_A64(tb_flags, SME_TRAP_NONSTREAMING);
-     dc->naa = EX_TBFLAG_A64(tb_flags, NAA);
-+    dc->e2h = EX_TBFLAG_A64(tb_flags, E2H);
-     dc->nv = EX_TBFLAG_A64(tb_flags, NV);
-     dc->nv1 = EX_TBFLAG_A64(tb_flags, NV1);
-     dc->nv2 = EX_TBFLAG_A64(tb_flags, NV2);
--    dc->nv2_mem_e20 = EX_TBFLAG_A64(tb_flags, NV2_MEM_E20);
-+    dc->nv2_mem_e20 = dc->nv2 && dc->e2h;
-     dc->nv2_mem_be = EX_TBFLAG_A64(tb_flags, NV2_MEM_BE);
-     dc->fpcr_ah = EX_TBFLAG_A64(tb_flags, AH);
-     dc->fpcr_nep = EX_TBFLAG_A64(tb_flags, NEP);
+@@ -2455,6 +2455,19 @@ static void gen_sysreg_undef(DisasContext *s, bool isread,
+     gen_exception_insn(s, 0, EXCP_UDEF, syndrome);
+ }
+ 
++/*
++ * Look up @key, returning the cpreg, which must exist.
++ * Additionally, the new cpreg must also be accessible.
++ */
++static const ARMCPRegInfo *
++redirect_cpreg(DisasContext *s, uint32_t key, bool isread)
++{
++    const ARMCPRegInfo *ri = get_arm_cp_reginfo(s->cp_regs, key);
++    assert(ri);
++    assert(cp_access_ok(s->current_el, ri, isread));
++    return ri;
++}
++
+ /* MRS - move from system register
+  * MSR (register) - move to system register
+  * SYS
+@@ -2603,9 +2616,7 @@ static void handle_sys(DisasContext *s, bool isread,
+          * fine-grained-traps on EL1 also do not apply here.
+          */
+         key = ENCODE_AA64_CP_REG(op0, 0, crn, crm, op2);
+-        ri = get_arm_cp_reginfo(s->cp_regs, key);
+-        assert(ri);
+-        assert(cp_access_ok(s->current_el, ri, isread));
++        ri = redirect_cpreg(s, key, isread);
+         /*
+          * We might not have done an update_pc earlier, so check we don't
+          * need it. We could support this in future if necessary.
 -- 
 2.43.0
 
