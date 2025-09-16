@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B85B59E5D
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 18:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A086B59E6B
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 18:53:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyYtg-0002Wy-Ij; Tue, 16 Sep 2025 12:51:17 -0400
+	id 1uyYtl-0002xE-2v; Tue, 16 Sep 2025 12:51:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uyYtD-0001s1-NF
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:50:47 -0400
+ id 1uyYtK-0002Bw-9V
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:50:57 -0400
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uyYtB-0006pN-DI
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:50:47 -0400
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uyYtG-0006qF-CF
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:50:53 -0400
 Received: from localhost.localdomain (unknown [167.220.208.43])
- by linux.microsoft.com (Postfix) with ESMTPSA id 2C60920154FA;
- Tue, 16 Sep 2025 09:50:39 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2C60920154FA
+ by linux.microsoft.com (Postfix) with ESMTPSA id 8C8D0201551B;
+ Tue, 16 Sep 2025 09:50:44 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8C8D0201551B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1758041443;
- bh=Wwe8KG+LMWXQlIvkOXlBvK+HvYpoNXYwOlAop5Mcs1o=;
+ s=default; t=1758041448;
+ bh=ki76MW4dVuJUE+a9UcyLBsbo2CBRhMu99AqINiBRaD4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=OH5L9rKbgyFkR2n6ba3576Ky6euct6hmJdAsDZ7ZrAoDzvXmxsgDFb6Skwfcbl1jM
- HCuQYhq+N/MTvDdxEcgBgOV8DcwXJ6mpPr9I3xw5HVgTPj6TRiXRQLFwCUWAFahVlQ
- dcmRoVYUbWJiU2cYjjcqC0IM9TNunSU3omK3lET0=
+ b=dp6pqMr5sXWNRgiZlgI4V4FV6mhGgFSCwkmS6o80Mt8flRwIqIAocLmLHKMoBWcnO
+ wu3DUP7FxXUqbpx8tgw5tD67Tg93Kwz305OZe63rDoWp1RHXkPWYvjai5Gvne+Cpwi
+ JLsCKePLV5SVRC9Dbd8nqFr1/NRKRIOeaFAslD1g=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -47,9 +47,10 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 16/27] target/i386/mshv: Implement mshv_arch_put_registers()
-Date: Tue, 16 Sep 2025 18:48:36 +0200
-Message-Id: <20250916164847.77883-17-magnuskulke@linux.microsoft.com>
+Subject: [PATCH v4 17/27] target/i386/mshv: Set local interrupt controller
+ state
+Date: Tue, 16 Sep 2025 18:48:37 +0200
+Message-Id: <20250916164847.77883-18-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250916164847.77883-1-magnuskulke@linux.microsoft.com>
 References: <20250916164847.77883-1-magnuskulke@linux.microsoft.com>
@@ -79,305 +80,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Write CPU register state to MSHV vCPUs. Various mapping functions to
-prepare the payload for the HV call have been implemented.
+To set the local interrupt controller state, perform hv calls retrieving
+partition state from the hypervisor.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- include/system/mshv.h       |  15 +++
- target/i386/mshv/mshv-cpu.c | 237 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 252 insertions(+)
+ target/i386/mshv/mshv-cpu.c | 117 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 117 insertions(+)
 
-diff --git a/include/system/mshv.h b/include/system/mshv.h
-index 6f3d5ea9d1..8036e1c3c0 100644
---- a/include/system/mshv.h
-+++ b/include/system/mshv.h
-@@ -81,6 +81,20 @@ typedef struct MshvMsiControl {
- #define mshv_msi_via_irqfd_enabled() mshv_enabled()
- 
- /* cpu */
-+typedef struct MshvFPU {
-+    uint8_t fpr[8][16];
-+    uint16_t fcw;
-+    uint16_t fsw;
-+    uint8_t ftwx;
-+    uint8_t pad1;
-+    uint16_t last_opcode;
-+    uint64_t last_ip;
-+    uint64_t last_dp;
-+    uint8_t xmm[16][16];
-+    uint32_t mxcsr;
-+    uint32_t pad2;
-+} MshvFPU;
-+
- typedef enum MshvVmExit {
-     MshvVmExitIgnore   = 0,
-     MshvVmExitShutdown = 1,
-@@ -90,6 +104,7 @@ typedef enum MshvVmExit {
- void mshv_init_mmio_emu(void);
- int mshv_create_vcpu(int vm_fd, uint8_t vp_index, int *cpu_fd);
- void mshv_remove_vcpu(int vm_fd, int cpu_fd);
-+int mshv_configure_vcpu(const CPUState *cpu, const MshvFPU *fpu, uint64_t xcr0);
- int mshv_get_standard_regs(CPUState *cpu);
- int mshv_get_special_regs(CPUState *cpu);
- int mshv_run_vcpu(int vm_fd, CPUState *cpu, hv_message *msg, MshvVmExit *exit);
 diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
-index b32bb7070f..98715621ba 100644
+index 98715621ba..daa41b92c9 100644
 --- a/target/i386/mshv/mshv-cpu.c
 +++ b/target/i386/mshv/mshv-cpu.c
-@@ -72,6 +72,35 @@ static enum hv_register_name SPECIAL_REGISTER_NAMES[17] = {
-     HV_X64_REGISTER_APIC_BASE,
- };
+@@ -12,6 +12,7 @@
  
-+static enum hv_register_name FPU_REGISTER_NAMES[26] = {
-+    HV_X64_REGISTER_XMM0,
-+    HV_X64_REGISTER_XMM1,
-+    HV_X64_REGISTER_XMM2,
-+    HV_X64_REGISTER_XMM3,
-+    HV_X64_REGISTER_XMM4,
-+    HV_X64_REGISTER_XMM5,
-+    HV_X64_REGISTER_XMM6,
-+    HV_X64_REGISTER_XMM7,
-+    HV_X64_REGISTER_XMM8,
-+    HV_X64_REGISTER_XMM9,
-+    HV_X64_REGISTER_XMM10,
-+    HV_X64_REGISTER_XMM11,
-+    HV_X64_REGISTER_XMM12,
-+    HV_X64_REGISTER_XMM13,
-+    HV_X64_REGISTER_XMM14,
-+    HV_X64_REGISTER_XMM15,
-+    HV_X64_REGISTER_FP_MMX0,
-+    HV_X64_REGISTER_FP_MMX1,
-+    HV_X64_REGISTER_FP_MMX2,
-+    HV_X64_REGISTER_FP_MMX3,
-+    HV_X64_REGISTER_FP_MMX4,
-+    HV_X64_REGISTER_FP_MMX5,
-+    HV_X64_REGISTER_FP_MMX6,
-+    HV_X64_REGISTER_FP_MMX7,
-+    HV_X64_REGISTER_FP_CONTROL_STATUS,
-+    HV_X64_REGISTER_XMM_CONTROL_STATUS,
-+};
-+
- int mshv_set_generic_regs(const CPUState *cpu, const hv_register_assoc *assocs,
-                           size_t n_regs)
- {
-@@ -371,8 +400,216 @@ int mshv_load_regs(CPUState *cpu)
+ #include "qemu/osdep.h"
+ #include "qemu/error-report.h"
++#include "qemu/memalign.h"
+ #include "qemu/typedefs.h"
+ 
+ #include "system/mshv.h"
+@@ -20,6 +21,7 @@
+ #include "hw/hyperv/hvgdk.h"
+ #include "hw/hyperv/hvgdk_mini.h"
+ #include "hw/hyperv/hvhdk_mini.h"
++#include "hw/i386/apic_internal.h"
+ 
+ #include "cpu.h"
+ #include "emulate/x86_decode.h"
+@@ -561,6 +563,114 @@ static int set_cpu_state(const CPUState *cpu, const MshvFPU *fpu_regs,
      return 0;
  }
  
-+static inline void populate_hv_segment_reg(SegmentCache *seg,
-+                                           hv_x64_segment_register *hv_reg)
++static int get_vp_state(int cpu_fd, struct mshv_get_set_vp_state *state)
 +{
-+    uint32_t flags = seg->flags;
-+
-+    hv_reg->base = seg->base;
-+    hv_reg->limit = seg->limit;
-+    hv_reg->selector = seg->selector;
-+    hv_reg->segment_type = (flags >> DESC_TYPE_SHIFT) & 0xF;
-+    hv_reg->non_system_segment = (flags & DESC_S_MASK) != 0;
-+    hv_reg->descriptor_privilege_level = (flags >> DESC_DPL_SHIFT) & 0x3;
-+    hv_reg->present = (flags & DESC_P_MASK) != 0;
-+    hv_reg->reserved = 0;
-+    hv_reg->available = (flags & DESC_AVL_MASK) != 0;
-+    hv_reg->_long = (flags >> DESC_L_SHIFT) & 0x1;
-+    hv_reg->_default = (flags >> DESC_B_SHIFT) & 0x1;
-+    hv_reg->granularity = (flags & DESC_G_MASK) != 0;
-+}
-+
-+static inline void populate_hv_table_reg(const struct SegmentCache *seg,
-+                                         hv_x64_table_register *hv_reg)
-+{
-+    memset(hv_reg, 0, sizeof(*hv_reg));
-+
-+    hv_reg->base = seg->base;
-+    hv_reg->limit = seg->limit;
-+}
-+
-+static int set_special_regs(const CPUState *cpu)
-+{
-+    X86CPU *x86cpu = X86_CPU(cpu);
-+    CPUX86State *env = &x86cpu->env;
-+    struct hv_register_assoc assocs[ARRAY_SIZE(SPECIAL_REGISTER_NAMES)];
-+    size_t n_regs = ARRAY_SIZE(SPECIAL_REGISTER_NAMES);
 +    int ret;
 +
-+    /* set names */
-+    for (size_t i = 0; i < n_regs; i++) {
-+        assocs[i].name = SPECIAL_REGISTER_NAMES[i];
-+    }
-+    populate_hv_segment_reg(&env->segs[R_CS], &assocs[0].value.segment);
-+    populate_hv_segment_reg(&env->segs[R_DS], &assocs[1].value.segment);
-+    populate_hv_segment_reg(&env->segs[R_ES], &assocs[2].value.segment);
-+    populate_hv_segment_reg(&env->segs[R_FS], &assocs[3].value.segment);
-+    populate_hv_segment_reg(&env->segs[R_GS], &assocs[4].value.segment);
-+    populate_hv_segment_reg(&env->segs[R_SS], &assocs[5].value.segment);
-+    populate_hv_segment_reg(&env->tr, &assocs[6].value.segment);
-+    populate_hv_segment_reg(&env->ldt, &assocs[7].value.segment);
-+
-+    populate_hv_table_reg(&env->gdt, &assocs[8].value.table);
-+    populate_hv_table_reg(&env->idt, &assocs[9].value.table);
-+
-+    assocs[10].value.reg64 = env->cr[0];
-+    assocs[11].value.reg64 = env->cr[2];
-+    assocs[12].value.reg64 = env->cr[3];
-+    assocs[13].value.reg64 = env->cr[4];
-+    assocs[14].value.reg64 = cpu_get_apic_tpr(x86cpu->apic_state);
-+    assocs[15].value.reg64 = env->efer;
-+    assocs[16].value.reg64 = cpu_get_apic_base(x86cpu->apic_state);
-+
-+    ret = mshv_set_generic_regs(cpu, assocs, n_regs);
++    ret = ioctl(cpu_fd, MSHV_GET_VP_STATE, state);
 +    if (ret < 0) {
-+        error_report("failed to set special registers");
++        error_report("failed to get partition state: %s", strerror(errno));
 +        return -1;
 +    }
 +
 +    return 0;
 +}
 +
-+static int set_fpu(const CPUState *cpu, const struct MshvFPU *regs)
++static int get_lapic(int cpu_fd,
++                     struct hv_local_interrupt_controller_state *state)
 +{
-+    struct hv_register_assoc assocs[ARRAY_SIZE(FPU_REGISTER_NAMES)];
-+    union hv_register_value *value;
-+    size_t fp_i;
-+    union hv_x64_fp_control_status_register *ctrl_status;
-+    union hv_x64_xmm_control_status_register *xmm_ctrl_status;
 +    int ret;
-+    size_t n_regs = ARRAY_SIZE(FPU_REGISTER_NAMES);
++    size_t size = 4096;
++    /* buffer aligned to 4k, as *state requires that */
++    void *buffer = qemu_memalign(size, size);
++    struct mshv_get_set_vp_state mshv_state = { 0 };
 +
-+    /* first 16 registers are xmm0-xmm15 */
-+    for (size_t i = 0; i < 16; i++) {
-+        assocs[i].name = FPU_REGISTER_NAMES[i];
-+        value = &assocs[i].value;
-+        memcpy(&value->reg128, &regs->xmm[i], 16);
++    mshv_state.buf_ptr = (uint64_t) buffer;
++    mshv_state.buf_sz = size;
++    mshv_state.type = MSHV_VP_STATE_LAPIC;
++
++    ret = get_vp_state(cpu_fd, &mshv_state);
++    if (ret == 0) {
++        memcpy(state, buffer, sizeof(*state));
 +    }
-+
-+    /* next 8 registers are fp_mmx0-fp_mmx7 */
-+    for (size_t i = 16; i < 24; i++) {
-+        assocs[i].name = FPU_REGISTER_NAMES[i];
-+        fp_i = (i - 16);
-+        value = &assocs[i].value;
-+        memcpy(&value->reg128, &regs->fpr[fp_i], 16);
-+    }
-+
-+    /* last two registers are fp_control_status and xmm_control_status */
-+    assocs[24].name = FPU_REGISTER_NAMES[24];
-+    value = &assocs[24].value;
-+    ctrl_status = &value->fp_control_status;
-+    ctrl_status->fp_control = regs->fcw;
-+    ctrl_status->fp_status = regs->fsw;
-+    ctrl_status->fp_tag = regs->ftwx;
-+    ctrl_status->reserved = 0;
-+    ctrl_status->last_fp_op = regs->last_opcode;
-+    ctrl_status->last_fp_rip = regs->last_ip;
-+
-+    assocs[25].name = FPU_REGISTER_NAMES[25];
-+    value = &assocs[25].value;
-+    xmm_ctrl_status = &value->xmm_control_status;
-+    xmm_ctrl_status->xmm_status_control = regs->mxcsr;
-+    xmm_ctrl_status->xmm_status_control_mask = 0;
-+    xmm_ctrl_status->last_fp_rdp = regs->last_dp;
-+
-+    ret = mshv_set_generic_regs(cpu, assocs, n_regs);
++    qemu_vfree(buffer);
 +    if (ret < 0) {
-+        error_report("failed to set fpu registers");
++        error_report("failed to get lapic");
 +        return -1;
 +    }
 +
 +    return 0;
 +}
 +
-+static int set_xc_reg(const CPUState *cpu, uint64_t xcr0)
++static uint32_t set_apic_delivery_mode(uint32_t reg, uint32_t mode)
 +{
-+    int ret;
-+    struct hv_register_assoc assoc = {
-+        .name = HV_X64_REGISTER_XFEM,
-+        .value.reg64 = xcr0,
-+    };
-+
-+    ret = mshv_set_generic_regs(cpu, &assoc, 1);
-+    if (ret < 0) {
-+        error_report("failed to set xcr0");
-+        return -errno;
-+    }
-+    return 0;
++    return ((reg) & ~0x700) | ((mode) << 8);
 +}
 +
-+static int set_cpu_state(const CPUState *cpu, const MshvFPU *fpu_regs,
-+                         uint64_t xcr0)
++static int set_vp_state(int cpu_fd, const struct mshv_get_set_vp_state *state)
 +{
 +    int ret;
 +
-+    ret = set_standard_regs(cpu);
++    ret = ioctl(cpu_fd, MSHV_SET_VP_STATE, state);
 +    if (ret < 0) {
-+        return ret;
-+    }
-+    ret = set_special_regs(cpu);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+    ret = set_fpu(cpu, fpu_regs);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+    ret = set_xc_reg(cpu, xcr0);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+    return 0;
-+}
-+
-+/*
-+ * TODO: populate topology info:
-+ *
-+ * X86CPU *x86cpu = X86_CPU(cpu);
-+ * CPUX86State *env = &x86cpu->env;
-+ * X86CPUTopoInfo *topo_info = &env->topo_info;
-+ */
-+int mshv_configure_vcpu(const CPUState *cpu, const struct MshvFPU *fpu,
-+                        uint64_t xcr0)
-+{
-+    int ret;
-+
-+    ret = set_cpu_state(cpu, fpu, xcr0);
-+    if (ret < 0) {
-+        error_report("failed to set cpu state");
++        error_report("failed to set partition state: %s", strerror(errno));
 +        return -1;
 +    }
 +
 +    return 0;
 +}
 +
-+static int put_regs(const CPUState *cpu)
++static int set_lapic(int cpu_fd,
++                     const struct hv_local_interrupt_controller_state *state)
 +{
-+    X86CPU *x86cpu = X86_CPU(cpu);
-+    CPUX86State *env = &x86cpu->env;
-+    MshvFPU fpu = {0};
 +    int ret;
++    size_t size = 4096;
++    /* buffer aligned to 4k, as *state requires that */
++    void *buffer = qemu_memalign(size, size);
++    struct mshv_get_set_vp_state mshv_state = { 0 };
 +
-+    memset(&fpu, 0, sizeof(fpu));
++    if (!state) {
++        error_report("lapic state is NULL");
++        return -1;
++    }
++    memcpy(buffer, state, sizeof(*state));
 +
-+    ret = mshv_configure_vcpu(cpu, &fpu, env->xcr0);
++    mshv_state.buf_ptr = (uint64_t) buffer;
++    mshv_state.buf_sz = size;
++    mshv_state.type = MSHV_VP_STATE_LAPIC;
++
++    ret = set_vp_state(cpu_fd, &mshv_state);
++    qemu_vfree(buffer);
 +    if (ret < 0) {
-+        error_report("failed to configure vcpu");
-+        return ret;
++        error_report("failed to set lapic: %s", strerror(errno));
++        return -1;
 +    }
 +
 +    return 0;
 +}
 +
- int mshv_arch_put_registers(const CPUState *cpu)
++static int set_lint(int cpu_fd)
++{
++    int ret;
++    uint32_t *lvt_lint0, *lvt_lint1;
++
++    struct hv_local_interrupt_controller_state lapic_state = { 0 };
++    ret = get_lapic(cpu_fd, &lapic_state);
++    if (ret < 0) {
++        return ret;
++    }
++
++    lvt_lint0 = &lapic_state.apic_lvt_lint0;
++    *lvt_lint0 = set_apic_delivery_mode(*lvt_lint0, APIC_DM_EXTINT);
++
++    lvt_lint1 = &lapic_state.apic_lvt_lint1;
++    *lvt_lint1 = set_apic_delivery_mode(*lvt_lint1, APIC_DM_NMI);
++
++    /* TODO: should we skip setting lapic if the values are the same? */
++
++    return set_lapic(cpu_fd, &lapic_state);
++}
++
+ /*
+  * TODO: populate topology info:
+  *
+@@ -572,6 +682,7 @@ int mshv_configure_vcpu(const CPUState *cpu, const struct MshvFPU *fpu,
+                         uint64_t xcr0)
  {
-+    int ret;
-+
-+    ret = put_regs(cpu);
+     int ret;
++    int cpu_fd = mshv_vcpufd(cpu);
+ 
+     ret = set_cpu_state(cpu, fpu, xcr0);
+     if (ret < 0) {
+@@ -579,6 +690,12 @@ int mshv_configure_vcpu(const CPUState *cpu, const struct MshvFPU *fpu,
+         return -1;
+     }
+ 
++    ret = set_lint(cpu_fd);
 +    if (ret < 0) {
-+        error_report("Failed to put registers");
++        error_report("failed to set lpic int");
 +        return -1;
 +    }
 +
-     error_report("unimplemented");
-     abort();
+     return 0;
  }
+ 
 -- 
 2.34.1
 
