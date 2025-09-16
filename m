@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667BFB59739
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 15:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CA8B5974B
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 15:18:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyVWZ-0005UA-M6; Tue, 16 Sep 2025 09:15:12 -0400
+	id 1uyVX8-0006Tu-TS; Tue, 16 Sep 2025 09:15:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uyVVk-0005L9-LF; Tue, 16 Sep 2025 09:14:20 -0400
+ id 1uyVVq-0005MW-5Y; Tue, 16 Sep 2025 09:14:27 -0400
 Received: from forwardcorp1a.mail.yandex.net
  ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uyVVg-0006Y0-0g; Tue, 16 Sep 2025 09:14:20 -0400
+ id 1uyVVh-0006Y5-BF; Tue, 16 Sep 2025 09:14:21 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 97A69C024C;
- Tue, 16 Sep 2025 16:14:07 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 5F982C024E;
+ Tue, 16 Sep 2025 16:14:08 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:16c::1:b])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 5EQRob1Gj0U0-v85a1l34; Tue, 16 Sep 2025 16:14:07 +0300
+ ESMTPSA id 5EQRob1Gj0U0-knRr4t0v; Tue, 16 Sep 2025 16:14:07 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1758028447;
- bh=wsoWvxGRkjhfwaoMYAfFW+x0chbESno/XD13mprGv/0=;
+ bh=lL9NT3QdoPBXUIiDbTg52f0I3fPCeIR3oGxvpY7x4CI=;
  h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
- b=DD2dJG772MCy1AY90CLFjl7hn++eg3O7HWPoEy+gdpqunpS1AVNi10WDstJod+Pyj
- QXAuQORNMQvGFpCxivyD/6qRU93fPlKSRdgJGgfNE+vpAJ/lVyvMlhyrWY4gIZ232u
- Oc+3HK0MP/ShvrFmmtLiWP/+WB//dgvrpDYtTuc0=
+ b=OWz/yi+Ml2PFlpJTqIETB5XnB7E76+YTmLjaV57XMxQW4Rfa2EvTKezS/pTLTbE3G
+ yjbBW1Iz2bTG5ZkVz7AOkrgFPA5aL1IhLUECttt2+sbzZyHGI3D1CrcAoEpxsDMpbz
+ +11oq2+qLM3NHXKj9GeHxkbNMqnMFtrToblxFaVE=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -40,10 +40,9 @@ To: berrange@redhat.com
 Cc: qemu-devel@nongnu.org, peterx@redhat.com, qemu-block@nongnu.org,
  vsementsov@yandex-team.ru, leiyang@redhat.com, marcandre.lureau@redhat.com,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v5 01/13] char-socket: tcp_chr_recv(): drop extra _set_(block,
- cloexec)
-Date: Tue, 16 Sep 2025 16:13:50 +0300
-Message-ID: <20250916131403.368343-2-vsementsov@yandex-team.ru>
+Subject: [PATCH v5 02/13] char-socket: tcp_chr_recv(): add comment
+Date: Tue, 16 Sep 2025 16:13:51 +0300
+Message-ID: <20250916131403.368343-3-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250916131403.368343-1-vsementsov@yandex-team.ru>
 References: <20250916131403.368343-1-vsementsov@yandex-team.ru>
@@ -74,40 +73,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qio_channel_readv_full() guarantees BLOCKING and CLOEXEC states for
-incoming descriptors, no reason to call extra ioctls.
+Add comment, to stress that the order of operation (first drop old fds,
+second check read status) is intended.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- chardev/char-socket.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ chardev/char-socket.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/chardev/char-socket.c b/chardev/char-socket.c
-index 1e8313915b..b1ce5d01c7 100644
+index b1ce5d01c7..1be078dfc0 100644
 --- a/chardev/char-socket.c
 +++ b/chardev/char-socket.c
-@@ -307,20 +307,6 @@ static ssize_t tcp_chr_recv(Chardev *chr, char *buf, size_t len)
-         s->read_msgfds_num = msgfds_num;
+@@ -294,7 +294,12 @@ static ssize_t tcp_chr_recv(Chardev *chr, char *buf, size_t len)
      }
  
--    for (i = 0; i < s->read_msgfds_num; i++) {
--        int fd = s->read_msgfds[i];
--        if (fd < 0) {
--            continue;
--        }
--
--        /* O_NONBLOCK is preserved across SCM_RIGHTS so reset it */
--        qemu_socket_set_block(fd);
--
--#ifndef MSG_CMSG_CLOEXEC
--        qemu_set_cloexec(fd);
--#endif
--    }
--
-     if (ret == QIO_CHANNEL_ERR_BLOCK) {
-         errno = EAGAIN;
-         ret = -1;
+     if (msgfds_num) {
+-        /* close and clean read_msgfds */
++        /*
++         * Close and clean previous read_msgfds, they are obsolete at
++         * this point, regardless result of new call to
++         * qio_channel_readv_full().
++         */
++
+         for (i = 0; i < s->read_msgfds_num; i++) {
+             close(s->read_msgfds[i]);
+         }
 -- 
 2.48.1
 
