@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFBDB59040
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 10:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F37F4B5903D
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 10:18:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyQsY-0003tY-Kr; Tue, 16 Sep 2025 04:17:34 -0400
+	id 1uyQsu-0003wb-Vk; Tue, 16 Sep 2025 04:17:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uyQsK-0003oQ-Jz
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:17:21 -0400
+ id 1uyQsS-0003rt-Ul
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:17:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uyQsG-00045F-M9
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:17:20 -0400
+ id 1uyQsP-00045r-B0
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:17:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758010634;
+ s=mimecast20190719; t=1758010639;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rda7XEQ3kq6g7pa3RFVVTTxi9DGLqiz9rOu/7eOSSWY=;
- b=XjbIhNFGJrgJMgWLpfUaiNv5cEnp9V0FP4jfBBR1Iaz2sIRnBFSqz8WP3RuAlbDv35mScl
- ud2FT/yNujzZQT7pgV7Ac/B3jbpm8LrHSQLza1nvJkLhgIR+uIaStggO/iHF2PmL6F8w7l
- Fro0qPeHOaZDxdTl6DHoxzcRbhGAXhw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=gA1tRrlYTbUkVARbJsIbN8joPo5eYrfqe2QkUWm8iTc=;
+ b=PfEBp8+vtOSsCQd6G6ftlE5BhKLs4XOjy4ahSttkt3rTWHWbWaCB2f0jihAKCHSeUSCezV
+ d+14LXaOzpaxbDeytA65BWij5T1+NJTU86u55mnPyQvQ7PZFLGn7voxBytao+u1bbRHOVg
+ cMEBLm8wf0ka8gk3sCgfslR+/EJl164=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-348-ooV5XtoFMr6-Qj3ZwUl4xg-1; Tue,
- 16 Sep 2025 04:17:11 -0400
-X-MC-Unique: ooV5XtoFMr6-Qj3ZwUl4xg-1
-X-Mimecast-MFC-AGG-ID: ooV5XtoFMr6-Qj3ZwUl4xg_1758010630
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-384-3FmVXRwFOrWkD3VktDXVBQ-1; Tue,
+ 16 Sep 2025 04:17:15 -0400
+X-MC-Unique: 3FmVXRwFOrWkD3VktDXVBQ-1
+X-Mimecast-MFC-AGG-ID: 3FmVXRwFOrWkD3VktDXVBQ_1758010634
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6165F1800577; Tue, 16 Sep 2025 08:17:10 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7B36318002E0; Tue, 16 Sep 2025 08:17:14 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.153])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 311461800446; Tue, 16 Sep 2025 08:17:06 +0000 (UTC)
+ id DF97118003FC; Tue, 16 Sep 2025 08:17:10 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
@@ -53,10 +53,11 @@ Cc: Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v5 7/8] qapi: switch to use QEMU_TEST_REGENERATE env var
-Date: Tue, 16 Sep 2025 09:16:37 +0100
-Message-ID: <20250916081638.764020-8-berrange@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH v5 8/8] tracetool-test: allow to run in parallel
+Date: Tue, 16 Sep 2025 09:16:38 +0100
+Message-ID: <20250916081638.764020-9-berrange@redhat.com>
 In-Reply-To: <20250916081638.764020-1-berrange@redhat.com>
 References: <20250916081638.764020-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -88,76 +89,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The QAPI_TEST_UPDATE env var can be set when running the QAPI
-schema tests to regenerate the reference output. For consistent
-naming with the tracetool test, change the env var name to
-QEMU_TEST_REGENERATE.
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The test is modified to provide a hint about use of the new
-env var and it is also added to the developer documentation.document its usage.
+Create a temporary build subdirectory, to avoid conflicting with other
+running tests. This fixes "meson test" with tracetool-test which is
+parallel default.
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20250908114652.1880366-1-marcandre.lureau@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- docs/devel/testing/main.rst    | 12 ++++++++++++
- tests/qapi-schema/test-qapi.py |  7 +++++--
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ tests/tracetool/tracetool-test.py | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/docs/devel/testing/main.rst b/docs/devel/testing/main.rst
-index 11f05c0006..0662766b5c 100644
---- a/docs/devel/testing/main.rst
-+++ b/docs/devel/testing/main.rst
-@@ -178,6 +178,18 @@ parser (either fixing a bug or extending/modifying the syntax). To do this:
+diff --git a/tests/tracetool/tracetool-test.py b/tests/tracetool/tracetool-test.py
+index a420597fc4..65430fdedc 100755
+--- a/tests/tracetool/tracetool-test.py
++++ b/tests/tracetool/tracetool-test.py
+@@ -6,6 +6,7 @@
+ from shutil import copyfile
+ from subprocess import check_call
+ import sys
++import tempfile
  
-   ``qapi-schema += foo.json``
  
-+The reference output can be automatically updated to match the latest QAPI
-+code generator by running the tests with the QEMU_TEST_REGENERATE environment
-+variable set.
-+
-+.. code::
-+
-+   QEMU_TEST_REGENERATE=1 make check-qapi-schema
-+
-+The resulting changes must be reviewed by the author to ensure they match
-+the intended results before adding the updated reference output to the
-+same commit that alters the generator code.
-+
- .. _tracetool-tests:
+ def get_formats(backend):
+@@ -99,7 +100,8 @@ def test_tracetool(tracetool, backend, source_dir, build_dir):
+         print("syntax: {argv0} TRACE-TOOL BACKEND SRC-DIR BUILD-DIR", file=sys.stderr)
+         sys.exit(1)
  
- Tracetool tests
-diff --git a/tests/qapi-schema/test-qapi.py b/tests/qapi-schema/test-qapi.py
-index 4be930228c..cf7fb8a6df 100755
---- a/tests/qapi-schema/test-qapi.py
-+++ b/tests/qapi-schema/test-qapi.py
-@@ -165,7 +165,7 @@ def test_and_diff(test_name, dir_name, update):
-     if actual_out == expected_out and actual_err == expected_err:
-         return 0
- 
--    print("%s %s" % (test_name, 'UPDATE' if update else 'FAIL'),
-+    print("%s: %s" % (test_name, 'UPDATE' if update else 'FAIL'),
-           file=sys.stderr)
-     out_diff = difflib.unified_diff(expected_out, actual_out, outfp.name)
-     err_diff = difflib.unified_diff(expected_err, actual_err, errfp.name)
-@@ -173,6 +173,9 @@ def test_and_diff(test_name, dir_name, update):
-     sys.stdout.writelines(err_diff)
- 
-     if not update:
-+        print(("\n%s: set QEMU_TEST_REGENERATE=1 to recreate reference output" +
-+               "if the QAPI schema generator was intentionally changed") % test_name,
-+              file=sys.stderr)
-         return 1
- 
-     try:
-@@ -197,7 +200,7 @@ def main(argv):
-     parser.add_argument('-d', '--dir', action='store', default='',
-                         help="directory containing tests")
-     parser.add_argument('-u', '--update', action='store_true',
--                        default='QAPI_TEST_UPDATE' in os.environ,
-+                        default='QEMU_TEST_REGENERATE' in os.environ,
-                         help="update expected test results")
-     parser.add_argument('tests', nargs='*', metavar='TEST', action='store')
-     args = parser.parse_args()
+-    fail = test_tracetool(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+-    if fail:
+-        sys.exit(1)
++    with tempfile.TemporaryDirectory(prefix=sys.argv[4]) as tmpdir:
++        fail = test_tracetool(sys.argv[1], sys.argv[2], sys.argv[3], tmpdir)
++        if fail:
++            sys.exit(1)
+     sys.exit(0)
 -- 
 2.50.1
 
