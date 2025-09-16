@@ -2,88 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A20B5A043
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE0BCB5A06D
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:22:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uya7K-0006KI-L7; Tue, 16 Sep 2025 14:09:26 -0400
+	id 1uyaIG-0008Eg-GW; Tue, 16 Sep 2025 14:20:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya58-0003Ty-Tf
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:07:18 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4w-0001ei-1C
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:07:03 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3ebf23c0d27so1158793f8f.0
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758046015; x=1758650815; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=YhTnH9wNwgFi/SzqMsXE+M8cpU3Hir6pM6j4YcAhL7s=;
- b=LO8uo1GvGtYnkFV9K+FNRmnDdYszL7NfgoMtYT0baM1x2KkCXSUs0iR9aA/8VV1FZ5
- +byx+N2U5ZA5AZKHvg5bo98f5ryLRFsZ2kBw385pSYjkinYwHwMuZxfLr3aY5BFH8hq7
- 9qiSZusGmJKqCFdJuO4tVAIsiKqhcd/Q85hC5rtJqziWj+mUJwds/uyMy7a3/8fbJRFJ
- 1cKjSmehNEj5DXDAXfNsVhR0NByTwUVnj1R4SbNyFK6f/7E/8A8z43ZjhVf2pDoWq+Mk
- fyh2YHa7owGo9rRDjLcDxBZHrFcS0Ideaz+ENBJZ/L/I68W/rC6hL5dBXcs4E39ZuvLh
- bHhA==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uyaI5-0008DS-Gm
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:20:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uyaI1-0003io-Mv
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:20:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758046828;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=293JgCySNIjXCRLHwd80u5lJNKbyKNZBn2UUV3LqwpY=;
+ b=YfQoRKgGTo5aiDDvdzfa481yPK7z4fl9/FWXay4oIYYEewNp9AB7EaYe3kizCjBIPhsxB2
+ AS2p1hREQoA55ro/IGGS750DbCSvKC92lpeIl14wuypqMZnLpO2P8ubAQ4fX083SGs6kxu
+ gGg4+BAugZ/X/K7+4fAHCbFz6nfW9qU=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-144-m07yw-4ZNoyg3TvuF2MOXw-1; Tue, 16 Sep 2025 14:20:27 -0400
+X-MC-Unique: m07yw-4ZNoyg3TvuF2MOXw-1
+X-Mimecast-MFC-AGG-ID: m07yw-4ZNoyg3TvuF2MOXw_1758046826
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-25bdf8126ceso100305815ad.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:20:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758046015; x=1758650815;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1758046825; x=1758651625;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YhTnH9wNwgFi/SzqMsXE+M8cpU3Hir6pM6j4YcAhL7s=;
- b=dpGdUva/aAqlqtmBz1vXC6Tlksx5po6T1T10DisPDtqzGGRH4wTgw0+oY8ZXtmSbYG
- ZBmaVehpABYNh7MK/3rtSOM/a1RdsSco0cIRivkFnhLmaXMgYfFfEmedTtl3YhtNFsb0
- uZe+5TEIp7cM0ljL8PeFPYZ7k4GvGRKLftDJRfiuj4DZBnuRnIgtbLqMVE23l8LH7l+R
- 1Mq75ZC2E9tbpXEQSNPK5Yjg9rddvZQX6cZvSvbCiMB37OWl+oM7uK4iWuD9bVksgVwL
- UigrRISiqqnT5PZ5YpZqslO+XwPvCSutmljkyqgxjaQ8KDMWIt+CxLHN8huOStoXijMz
- oXsA==
-X-Gm-Message-State: AOJu0YzJQ4rXcPYwxxSSHEPHeVqVwNJh4+vPcgQxMzDUbVBQnBSSG8ay
- KQ33joRW/GPqyVfN5nXCnqJpfNUYLiIln4FXcrEFzWVLNBSISDFLeOD7c3bTnOuMRNKaM9Ik+bU
- Eh/EX
-X-Gm-Gg: ASbGncuqKWevo8zclL8vpkwFRvWguZM00KAJzN128MRGmd+g1Vb3HWhWpIKHrxCyaiJ
- q/sQTqXv1X3qfJSrMsGAndm3JUJgKR4xuNPI/btj2msex8XZNRH6xgKgVddU+ztgDcH4g8zs6pX
- 98xlA8oEf21QAsll/tLih0j1lplqGn3hBi1O0X8Ah4F86/zhDsY1H3n8lbviSlCcbAJ25yVNT9k
- LCx0k+SNc/C3do9LtrF2o3QWbkRJ9gXPSOdbwnkGmnxulk/p9zTVZMrr+oHpywA6FVmbSoUAS62
- eMtalagXCyIDmmW0gG7p1Ww0m02cl8UqfgbISOrpXfKAheyRVbmcJpbSnThmlN7xHQYvX1ZNs7k
- s5JQ9NVcAISBSv6zd0hDbrxEbhv6c
-X-Google-Smtp-Source: AGHT+IHLVxow+Qy6wIDHyeTHFJswQ1vPcLVHUqyMk46fDzv83hzqs7q8c1x4epDpIi3oMABGZAUToA==
-X-Received: by 2002:a05:6000:2289:b0:3e5:47a9:1c7a with SMTP id
- ffacd0b85a97d-3e765a157b7mr16345160f8f.62.1758046014766; 
- Tue, 16 Sep 2025 11:06:54 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.53
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Sep 2025 11:06:53 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 36/36] hw/usb/network: Remove hardcoded 0x40 prefix in
- STRING_ETHADDR response
-Date: Tue, 16 Sep 2025 19:06:10 +0100
-Message-ID: <20250916180611.1481266-37-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250916180611.1481266-1-peter.maydell@linaro.org>
-References: <20250916180611.1481266-1-peter.maydell@linaro.org>
+ bh=293JgCySNIjXCRLHwd80u5lJNKbyKNZBn2UUV3LqwpY=;
+ b=WblQwsbqZoaq3OERECHV+HantyYOEVZdTDaO+uTXUGaHPHgqNO5lihFhP660uODQRb
+ 4yjrNeocZrkfjfTOEmAjFgry2Iw46nveYalt1Q1RhFa77t5OA1H47EbClhIwjxhfWJhu
+ wkbQ8zBx5EEGjHUKwB3ovabURfEJ5psuq3iKzZpFJokcpG86xRznDeuMeO4Vu5Z8H/MR
+ j7PQ4dk0Y1ArXKoqvhjmuW1txyhFggfll3/F3b3/QxYuXKMr2FsR6xYIoc4RjUAswBpp
+ 4ORpSdD3Zyeh1/bpi1Bg3SOwLUazMMaIaitGshiK17e6EQ+dCVtlE/x6uH+tNlzH8sPO
+ kaMw==
+X-Gm-Message-State: AOJu0YwrvAEOT/nJkomUVFyZgp5nlBaruhReuw3pdHb7l1rrEUEZ2o02
+ q86qSi/TAOjif52XeV70kBYWKnjgrcRHNvNiYad+5MV0VwmPJGEtivBesg0EOGQO/jP5Cgcbj85
+ rgxiT47wKUD9M2CZbZ7Ja/UPVf2wEoywA+W4IkRnRuG2xVSjVu9ghV/q+qqQ8MQJCIY5EDkUQL/
+ GVs4G7FXyRCHtXCC6gWfR2cGvGs5OnXbPn5BMkNE2VMQ==
+X-Gm-Gg: ASbGncsT6g87ZhlXH720k+xxUSuqMTxwT4u0fDfT02vUptRdwTFvpnptp2m5wrtezau
+ Rz+v+9J8f2rWD1XpN+EVGFARnt3GHuOuEqY38RQZLVYqSlm7/3yXFzbfMZ32FcChMFRqQHVNl2A
+ cA3W/Upvu35LNFGTM4EmcYuSZ5j6RX8LjSEu555a2dOSBZ0j0OpXfZ
+X-Received: by 2002:a17:903:1b08:b0:25c:9688:bdca with SMTP id
+ d9443c01a7336-25d26e43a33mr221841875ad.50.1758046825399; 
+ Tue, 16 Sep 2025 11:20:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGvzfOWT7IBBRnckyQCf2xL4aCvfgRSrfJwpeAAA6M2QPWPaLjzrUbLSXJK2ZVfYifV4lQNpd7XHLr8Nmw8Zp4=
+X-Received: by 2002:a17:903:1b08:b0:25c:9688:bdca with SMTP id
+ d9443c01a7336-25d26e43a33mr221841705ad.50.1758046825005; Tue, 16 Sep 2025
+ 11:20:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+References: <20250916162404.9195-1-jsnow@redhat.com>
+In-Reply-To: <20250916162404.9195-1-jsnow@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 16 Sep 2025 14:20:12 -0400
+X-Gm-Features: AS18NWCA3BJ5D8ODPq5Nc95z3uWGtgzjFy6zkOR8hzu8Xb0lovG3BiC1yEv7gF4
+Message-ID: <CAFn=p-ZgY=2XsBySA0KtZgoXfw0oLAg44cObC2KfyA3xfUUHqg@mail.gmail.com>
+Subject: Re: [PULL 00/19] Python patches
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Michael Roth <michael.roth@amd.com>, 
+ Hanna Reitz <hreitz@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ Cleber Rosa <crosa@redhat.com>, qemu-block@nongnu.org, 
+ Markus Armbruster <armbru@redhat.com>, qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.009,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,59 +101,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stéphane Graber <stgraber@stgraber.org>
+On Tue, Sep 16, 2025 at 12:24=E2=80=AFPM John Snow <jsnow@redhat.com> wrote=
+:
+>
+> The following changes since commit 190d5d7fd725ff754f94e8e0cbfb69f279c82b=
+5d:
+>
+>   Merge tag 'pull-request-2025-09-09' of https://gitlab.com/thuth/qemu in=
+to staging (2025-09-11 12:41:01 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/jsnow/qemu.git tags/python-pull-request
+>
+> for you to fetch changes up to 9a494d83538680651197651031375c2b6fa2490b:
+>
+>   iotests/check: always enable all python warnings (2025-09-15 14:36:02 -=
+0400)
+>
+> ----------------------------------------------------------------
+> Python Pull Request
+>
+> Python 3.14 support & synchronize with python-qemu-qmp repo
+>
+> ----------------------------------------------------------------
+>
+> Adam Dorsey (1):
+>   python: backport 'feat: allow setting read buffer limit'
+>
+> Daniel P. Berrang=C3=A9 (5):
+>   iotests: drop compat for old version context manager
+>   python: ensure QEMUQtestProtocol closes its socket
+>   iotests/147: ensure temporary sockets are closed before exiting
+>   iotests/151: ensure subprocesses are cleaned up
+>   iotests/check: always enable all python warnings
+>
+> John Snow (13):
+>   python: backport 'Change error classes to have better repr methods'
+>   python: backport 'EventListener: add __repr__ method'
+>   python: backport 'kick event queue on legacy event_pull()'
+>   python: backport 'protocol: adjust logging name when changing client
+>     name'
+>   python: backport 'drop Python3.6 workarounds'
+>   python: backport 'Use @asynciocontextmanager'
+>   python: backport 'qmp-shell: add common_parser()'
+>   python: backport 'make require() preserve async-ness'
+>   python: backport 'qmp-shell-wrap: handle missing binary gracefully'
+>   python: backport 'qmp-tui: Do not crash if optional dependencies are
+>     not met'
+>   python: backport 'Remove deprecated get_event_loop calls'
+>   python: backport 'avoid creating additional event loops per thread'
+>   python: synchronize qemu.qmp documentation
+>
+>  python/qemu/machine/qtest.py     |   2 +
+>  python/qemu/qmp/__init__.py      |   3 +-
+>  python/qemu/qmp/error.py         |   7 +-
+>  python/qemu/qmp/events.py        |  50 ++++++--
+>  python/qemu/qmp/legacy.py        |  46 +++++---
+>  python/qemu/qmp/message.py       |  22 ++--
+>  python/qemu/qmp/models.py        |   8 +-
+>  python/qemu/qmp/protocol.py      | 194 +++++++++++++++++++------------
+>  python/qemu/qmp/qmp_client.py    | 155 +++++++++++++++++-------
+>  python/qemu/qmp/qmp_shell.py     | 165 ++++++++++++++++++--------
+>  python/qemu/qmp/qmp_tui.py       |  30 +++--
+>  python/qemu/qmp/util.py          | 143 ++++++-----------------
+>  python/tests/protocol.py         |  10 +-
+>  tests/qemu-iotests/147           |   1 +
+>  tests/qemu-iotests/151           |   5 +
+>  tests/qemu-iotests/check         |   4 +
+>  tests/qemu-iotests/testenv.py    |   7 +-
+>  tests/qemu-iotests/testrunner.py |   9 +-
+>  18 files changed, 532 insertions(+), 329 deletions(-)
+>
+> --
+> 2.51.0
+>
+>
 
-USB NICs have a "40:" prefix hardcoded for all MAC addresses when we
-return the guest the MAC address if it queries the STRING_ETHADDR USB
-string property.  This doesn't match what we use for the
-OID_802_3_PERMANENT_ADDRESS or OID_802_3_CURRENT_ADDRESS OIDs for
-NDIS, or the MAC address we actually use in the QEMU networking code
-to send/receive packets for this device, or the NIC info string we
-print for users.  In all those other places we directly use
-s->conf.macaddr.a, which is the full thing the user asks for.
+CC qemu-stable. For the stable pull, this subset of patches should be
+sufficient:
 
-This overrides user-provided configuration and leads to an inconsistent
-experience.
+jsnow@jsnow-thinkpadp16vgen1 ~/s/q/build (python)> stg series --description
++ python-backport-kick-event     # python: backport 'kick event queue
+on legacy event_pull()'
++ python-backport-drop-python3.6 # python: backport 'drop Python3.6 workaro=
+unds'
++ python-backport-use            # python: backport 'Use @asynciocontextman=
+ager'
++ python-backport-remove         # python: backport 'Remove deprecated
+get_event_loop calls'
++ python-backport-avoid-creating # python: backport 'avoid creating
+additional event loops per thread'
++ iotests-drop-compat-for-old    # iotests: drop compat for old
+version context manager
++ python-ensure                  # python: ensure QEMUQtestProtocol
+closes its socket
++ iotests-147-ensure-temporary   # iotests/147: ensure temporary
+sockets are closed before exiting
++ iotests-151-ensure             # iotests/151: ensure subprocesses
+are cleaned up
+> iotests-check-always-enable    # iotests/check: always enable all python =
+warnings
 
-I couldn't find any documented reason (comment or git commits) for
-this behavior.  It seems like everyone is just expecting the MAC
-address to be fully passed through to the guest, but it isn't.
+i.e. patches 3, 5-6, 12-13, and 15-19. Tested locally in the python
+tests dir (make check-dev && make check-tox && make check-minreqs) and
+via normal build and test (../configure --enable-docs && make -j13 &&
+make check)
 
-This may have been a debugging hack that accidentally made it through
-to the accepted patch: it has been in the code since it was originally
-added back in 2008.
-
-This is also particularly problematic as the "40:" prefix isn't a
-reserved prefix for MAC addresses (IEEE OUI).  There are a number of
-valid allocations out there which use this prefix, meaning that QEMU
-may be causing MAC address conflicts.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 6c9f886ceae5b ("Add CDC-Ethernet usb NIC (original patch from Thomas Sailer)"
-Signed-off-by: Stéphane Graber <stgraber@stgraber.org>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2951
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-[PMM: beef up commit message based on mailing list discussion]
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- hw/usb/dev-network.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/hw/usb/dev-network.c b/hw/usb/dev-network.c
-index 81cc09dcac9..1df24541814 100644
---- a/hw/usb/dev-network.c
-+++ b/hw/usb/dev-network.c
-@@ -1383,7 +1383,7 @@ static void usb_net_realize(USBDevice *dev, Error **errp)
-     qemu_format_nic_info_str(qemu_get_queue(s->nic), s->conf.macaddr.a);
-     snprintf(s->usbstring_mac, sizeof(s->usbstring_mac),
-              "%02x%02x%02x%02x%02x%02x",
--             0x40,
-+             s->conf.macaddr.a[0],
-              s->conf.macaddr.a[1],
-              s->conf.macaddr.a[2],
-              s->conf.macaddr.a[3],
--- 
-2.43.0
+Thanks,
+--js.
 
 
