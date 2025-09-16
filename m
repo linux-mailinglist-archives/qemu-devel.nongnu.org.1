@@ -2,75 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C644EB59204
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 11:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E18B59242
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 11:31:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyRrW-0008Jb-QE; Tue, 16 Sep 2025 05:20:34 -0400
+	id 1uyS18-000485-Bn; Tue, 16 Sep 2025 05:30:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uyRrL-0008I3-GA
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 05:20:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <chao.liu@zevorn.cn>)
+ id 1uyS10-00047Y-FG; Tue, 16 Sep 2025 05:30:22 -0400
+Received: from [115.124.28.65] (helo=out28-65.mail.aliyun.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uyRrI-0002VJ-Uj
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 05:20:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758014419;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=Th5a/qoS7ax4Ly/DFJ/PJrQQgjIksdSPnSmZvren+h0=;
- b=CLi32f98MpMLC/ZL0rfJVoxNi0L6IDDgvU8wxgyxBvXI8W4L6dVEjAM/gxW0ha8HPT+M5/
- rSyOnxvMM9vCw76fPrPO6Z3JnWLARcUB9annuFy0r0p8sGjujTK50nkYvlniYrhWB/kcwI
- b+tnuOsSZt0TZ1n4uxaxyCKqGGQHP5w=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-vFBLBDjlOJy6h7irUc-4QA-1; Tue,
- 16 Sep 2025 05:20:15 -0400
-X-MC-Unique: vFBLBDjlOJy6h7irUc-4QA-1
-X-Mimecast-MFC-AGG-ID: vFBLBDjlOJy6h7irUc-4QA_1758014414
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 376C91956096; Tue, 16 Sep 2025 09:20:14 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.153])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2656E300018D; Tue, 16 Sep 2025 09:20:11 +0000 (UTC)
-Date: Tue, 16 Sep 2025 10:20:08 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Gustavo Romero <gustavo.romero@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: Re: [RFC PATCH 1/2] tests/functional: Provide GDB to the functional
- tests
-Message-ID: <aMkryJH9-SWPKtzc@redhat.com>
-References: <20250915124207.42053-1-thuth@redhat.com>
- <20250915124207.42053-2-thuth@redhat.com>
- <275a593b-18e1-461a-a416-aea50cb67dc8@linaro.org>
+ (Exim 4.90_1) (envelope-from <chao.liu@zevorn.cn>)
+ id 1uyS0u-0003Lr-5C; Tue, 16 Sep 2025 05:30:22 -0400
+Received: from ZEVORN-PC(mailfrom:chao.liu@zevorn.cn
+ fp:SMTPD_---.egLKg5x_1758014504 cluster:ay29) by smtp.aliyun-inc.com;
+ Tue, 16 Sep 2025 17:21:45 +0800
+From: Chao Liu <chao.liu@zevorn.cn>
+To: richard.henderson@linaro.org, paolo.savini@embecosm.com, npiggin@gmail.com,
+ ebiggers@kernel.org, dbarboza@ventanamicro.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, Chao Liu <chao.liu@zevorn.cn>
+Subject: [PATCH v9 0/2] Generate strided vector loads/stores with tcg nodes
+Date: Tue, 16 Sep 2025 17:21:36 +0800
+Message-ID: <cover.1758006834.git.chao.liu@zevorn.cn>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <275a593b-18e1-461a-a416-aea50cb67dc8@linaro.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 115.124.28.65 (deferred)
+Received-SPF: pass client-ip=115.124.28.65; envelope-from=chao.liu@zevorn.cn;
+ helo=out28-65.mail.aliyun.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RDNS_NONE=0.793, SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01,
+ UNPARSEABLE_RELAY=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,118 +53,85 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 15, 2025 at 07:02:24PM -0300, Gustavo Romero wrote:
-> Hi Thomas,
-> 
-> On 9/15/25 09:42, Thomas Huth wrote:
-> > From: Gustavo Romero <gustavo.romero@linaro.org>
-> > 
-> > The probe of gdb is done in 'configure' and the full path is passed
-> > to meson.build via the -Dgdb=option.
-> > 
-> > meson then can pass the location of gdb to the test via an environment
-> > variable.
-> > 
-> > This patch is based on an earlier patch ("Support tests that require a
-> > runner") by Gustavo Romero.
-> > 
-> > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> > ---
-> >   configure                     | 2 ++
-> >   meson.build                   | 4 ++++
-> >   meson_options.txt             | 2 ++
-> >   scripts/meson-buildoptions.sh | 2 ++
-> >   tests/functional/meson.build  | 7 +++++++
-> >   5 files changed, 17 insertions(+)
-> > 
-> > diff --git a/configure b/configure
-> > index 274a7787642..8e2e2cd562a 100755
-> > --- a/configure
-> > +++ b/configure
-> > @@ -1978,6 +1978,8 @@ if test "$skip_meson" = no; then
-> >     test -n "${LIB_FUZZING_ENGINE+xxx}" && meson_option_add "-Dfuzzing_engine=$LIB_FUZZING_ENGINE"
-> >     test "$plugins" = yes && meson_option_add "-Dplugins=true"
-> >     test "$tcg" != enabled && meson_option_add "-Dtcg=$tcg"
-> > +  test -n "$gdb_bin" && meson_option_add "-Dgdb=$gdb_bin"
-> > +
-> >     run_meson() {
-> >       NINJA=$ninja $meson setup "$@" "$PWD" "$source_path"
-> >     }
-> > diff --git a/meson.build b/meson.build
-> > index 3d738733566..4cbc3c8ac65 100644
-> > --- a/meson.build
-> > +++ b/meson.build
-> > @@ -75,6 +75,10 @@ have_user = have_linux_user or have_bsd_user
-> >   sh = find_program('sh')
-> >   python = import('python').find_installation()
-> > +# Meson python.get_path() on 'purelib' or 'platlib' doesn't properly return the
-> > +# site-packages dir in pyvenv, so it is built manually.
-> > +python_ver = python.language_version()
-> > +python_site_packages = meson.build_root() / 'pyvenv/lib/python' + python_ver / 'site-packages'
-> >   cc = meson.get_compiler('c')
-> >   all_languages = ['c']
-> > diff --git a/meson_options.txt b/meson_options.txt
-> > index fff1521e580..5bb41bcbc43 100644
-> > --- a/meson_options.txt
-> > +++ b/meson_options.txt
-> > @@ -36,6 +36,8 @@ option('trace_file', type: 'string', value: 'trace',
-> >   option('coroutine_backend', type: 'combo',
-> >          choices: ['ucontext', 'sigaltstack', 'windows', 'wasm', 'auto'],
-> >          value: 'auto', description: 'coroutine backend to use')
-> > +option('gdb', type: 'string', value: '',
-> > +       description: 'Path to GDB')
-> >   # Everything else can be set via --enable/--disable-* option
-> >   # on the configure script command line.  After adding an option
-> > diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-> > index 0ebe6bc52a6..f4bd21220ee 100644
-> > --- a/scripts/meson-buildoptions.sh
-> > +++ b/scripts/meson-buildoptions.sh
-> > @@ -58,6 +58,7 @@ meson_options_help() {
-> >     printf "%s\n" '  --enable-ubsan           enable undefined behaviour sanitizer'
-> >     printf "%s\n" '  --firmwarepath=VALUES    search PATH for firmware files [share/qemu-'
-> >     printf "%s\n" '                           firmware]'
-> > +  printf "%s\n" '  --gdb=VALUE              Path to GDB'
-> >     printf "%s\n" '  --iasl=VALUE             Path to ACPI disassembler'
-> >     printf "%s\n" '  --includedir=VALUE       Header file directory [include]'
-> >     printf "%s\n" '  --interp-prefix=VALUE    where to find shared libraries etc., use %M for'
-> > @@ -323,6 +324,7 @@ _meson_option_parse() {
-> >       --disable-fuzzing) printf "%s" -Dfuzzing=false ;;
-> >       --enable-gcrypt) printf "%s" -Dgcrypt=enabled ;;
-> >       --disable-gcrypt) printf "%s" -Dgcrypt=disabled ;;
-> > +    --gdb=*) quote_sh "-Dgdb=$2" ;;
-> >       --enable-gettext) printf "%s" -Dgettext=enabled ;;
-> >       --disable-gettext) printf "%s" -Dgettext=disabled ;;
-> >       --enable-gio) printf "%s" -Dgio=enabled ;;
-> > diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-> > index 2a0c5aa1418..c822eb66309 100644
-> > --- a/tests/functional/meson.build
-> > +++ b/tests/functional/meson.build
-> > @@ -77,6 +77,12 @@ foreach speed : ['quick', 'thorough']
-> >       test_env.set('PYTHONPATH', meson.project_source_root() / 'python:' +
-> >                                  meson.current_source_dir())
-> 
-> It's necessary to add the Python modules from pyvenv to the PYTHONPATH, otherwise
-> when libpython from GDB looks for pycotap it cannot find it. We already have
-> it in python_site_packages in Meson (introduced with this series) so adding
-> python_site_packages to test_env.set() above, like:
+Hi all,
 
-This dovetails to the point I made on the cover letter.
+Thanks Richard for the review. In patch v9:
 
-The pyvenv is populated wrt the python version we selected for QEMU.
-This cannot be assumed to be the same as the version that GDB was
-built against. Pointing GDB to a venv for a different python version
-is not a good idea.
+- Simplify the implementation of gen_check_vext_elem_mask():
+  remove the `mask` argument, compute the mask directly inside the function,
+  and eliminate redundant code.
+
+- Limit the bit width to 8 bits when loading the mask from memory.
+
+- Remove the `vreg` argument in gen_ldst_vreg().
+
+History of changes:
+
+patch v8:
+- Use the right TCGv type for each variable — for example, make mask_elem
+  type TCGv_i64.
+- Use tcg_gen_trunc_i64_ptr() to change TCGv types — don't use C-style
+  casting.
+- Use TCG_COND_TSTNE, not TCG_COND_NE in tcg_gen_brcond_i64() to represent:
+  if (vext_elem_mask(v0, i) != 0)
+  https://lore.kernel.org/qemu-devel/cover.1757690407.git.chao.liu@zevorn.cn/
+
+patch v7:
+- Standardize the subject line of patch 1 and remove the trailing period.
+- Split into sub-functions to improve the patch's code readability and
+  facilitate review.
+- Use more faster TCG ops, use tcg_gen_andi_tl() instead of tcg_gen_rem_tl().
+- Add a tested-by signature for patch 2, as Eric has already tested it.
+  https://lore.kernel.org/qemu-devel/cover.1756975571.git.chao.liu@zevorn.cn/
+
+patch v6:
+- If a strided vector memory access instruction has non-zero vstart, 
+  check it through vlse/vsse helpers function.
+- Adjust the tcg test Makefile.
+  https://lore.kernel.org/qemu-devel/cover.1756906528.git.chao.liu@zevorn.cn/
+
+Patch v5:
+- Removed the redundant call to mark_vs_dirty(s) within the
+  gen_ldst_stride_main_loop() function.
+  https://lore.kernel.org/qemu-riscv/cover.1755609029.git.chao.liu@zevorn.cn/
+
+Patch v4:
+- Use ctz32() replace to for-loop
+  https://lore.kernel.org/qemu-devel/cover.1755333616.git.chao.liu@yeah.net/
+
+Patch v3:
+- Fix the get_log2() function:
+  https://lore.kernel.org/qemu-riscv/cover.1755287531.git.chao.liu@yeah.net/T/#t
+- Add test for vlsseg8e32 instruction.
+- Rebase on top of the latest master.
+
+Patch v2:
+- Split the TCG node emulation of the complex strided load/store operation into
+  two separate functions to simplify the implementation:
+  https://lore.kernel.org/qemu-riscv/20250312155547.289642-1-paolo.savini@embecosm.com/
+
+Patch v1:
+- Paolo submitted the initial version of the patch.
+  https://lore.kernel.org/qemu-devel/20250211182056.412867-1-paolo.savini@embecosm.com/
 
 
-With regards,
-Daniel
+Thanks,
+Chao
+
+Chao Liu (2):
+  target/riscv: Use tcg nodes for strided vector ld/st generation
+  tests/tcg/riscv64: Add test for vlsseg8e32 instruction
+
+ target/riscv/insn_trans/trans_rvv.c.inc   | 354 ++++++++++++++++++++--
+ tests/tcg/riscv64/Makefile.softmmu-target |   7 +-
+ tests/tcg/riscv64/test-vlsseg8e32.S       | 107 +++++++
+ 3 files changed, 450 insertions(+), 18 deletions(-)
+ create mode 100644 tests/tcg/riscv64/test-vlsseg8e32.S
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.51.0
 
 
