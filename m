@@ -2,116 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B12BB5980D
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 15:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7FEDB59831
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 15:52:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyVyS-0005ma-1d; Tue, 16 Sep 2025 09:44:00 -0400
+	id 1uyW5x-0001JV-0K; Tue, 16 Sep 2025 09:51:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vacha.bhavsar@oss.qualcomm.com>)
- id 1uyVyN-0005m5-6X
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 09:43:55 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uyW5o-0001Ig-58
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 09:51:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vacha.bhavsar@oss.qualcomm.com>)
- id 1uyVyC-0001Rb-C4
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 09:43:54 -0400
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58GDatwQ015414
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 13:43:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-type:date:from:in-reply-to:message-id:mime-version
- :references:subject:to; s=qcppdkim1; bh=f0K9TPrH9RrXNhcijRCQEZ9C
- uudDMD6CPKKAC1xSQZA=; b=FIyMzFnASVAsDW0SRBbGe9PIUqI4xqYlxUSp/2lt
- R9jpLD8BpXWdrnP9lsnfz/O02ophwEpDvpCwRUs4vqUyNjwauTyUEYz/pfvkpGGK
- DiPU7xA7/EbmQBJwV/52kwU2OFLb3pDlGTJ8okcw+gcyq45OsTCD/gCYaFnuL4R3
- z4O1yI2DRoiTBn31Qhjuz5aGdIs6FuSWq+9C7bi1F/ULhZfNGThAuG4fxRcRLApR
- jmgbmKlVOLf0SxqLITjl+LTYm7UJt9qz5dR4W/sr488IbofdF28QwdKqwhM2PuXp
- n+p29y3lWieUIeuEEU9nlKD4wywAGSG0738n59hxZY+I4Q==
-Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
- [209.85.219.197])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 496g5n4pqk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 13:43:39 +0000 (GMT)
-Received: by mail-yb1-f197.google.com with SMTP id
- 3f1490d57ef6-ea40012493eso1908564276.2
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 06:43:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uyW5m-0002le-44
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 09:51:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758030691;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KNH5axLRBBfc2OscUdjexc//x2LlMBFWmvb7n1xsZmQ=;
+ b=Q8tadrCfsLEef5s42OBQy6S5ZcXkOXCy0oHV2LiUM5FmJ9/XdcsPoECLi41RjjYJQAZWra
+ qgLy1tPdDQoNeyPnY1Dlq9RQh71+c62EYip8NMcHzAzr6Q9n/9Juic3oqDQjYGudksB6O5
+ euKnbDHcbDDeaR8FkKB4D4DdomMoNHw=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-330-WGN-p4D2OUyd0OQOwPCVJw-1; Tue, 16 Sep 2025 09:51:30 -0400
+X-MC-Unique: WGN-p4D2OUyd0OQOwPCVJw-1
+X-Mimecast-MFC-AGG-ID: WGN-p4D2OUyd0OQOwPCVJw_1758030689
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4b793b04fe0so63616081cf.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 06:51:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758030218; x=1758635018;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=f0K9TPrH9RrXNhcijRCQEZ9CuudDMD6CPKKAC1xSQZA=;
- b=VHZ3B50TRBO408S+zqIkfqwn0IS9sG8zAQ3yBaWAG9WNkPQhe0b6fKwqKeZYZYZoCY
- CTpaqP12yJLQnczEaWtRpsv+ce1/IevRCw0pOtzmkmwJrkEeVVZODOUtwYbWl+1UDnV9
- oc476ruFwJU3FX56Xk5y/kM4FdL1+sSP0yg2L6wUCKYyVMnp9LRLFexCpNtcjVcgK22K
- 8sPhgdBHKQ+G7CuZjf6nM7NaxsryEXXqj2JMobn4dze8LBdfj6O73o8TrXB77nJGoC5A
- HC1y/lBXrDnng3TRGmEiVdtY/Jk+uwl9gHy8eWqupfKiAaHMuYWtFq9kzlrt86oe3prd
- w1fQ==
-X-Gm-Message-State: AOJu0YzlM80OVkvjB9sbFTt1yNCohhcuhsuV3KV9zOmrSYbR54qMW062
- OxRvRrwzWzpNmrfPquMt4cH+EDc1v+OHrQQIB6CXkdNSD8gozTA5+/jB2r/tP+vwHfju/RPxsWN
- 8D12zaQP3LFIKgY+FB6qsEnCQmN7fc/NjQMiVQO/GBrAYBnGZTWmW60pghixncYprCvpUjCkNZd
- F6FR3ee7lMMg0R6nzM1OlngkuV/ueiiis8
-X-Gm-Gg: ASbGncuT4E+IyR7P6nC0tof7mixmP+whyOb9J9HmEp/+NgxwSlhs+iRksp+2myLbuX3
- bKaQIb5z28dRxeCvMhBUcpThQ+gtNopnMBzeZsLrFLr7zDazN7bcjCXz/IOSio1HIsP0UeWAzj9
- U8iIvEUruo0xfC40b8Wio=
-X-Received: by 2002:a05:6902:6c18:b0:ea4:174f:bb1f with SMTP id
- 3f1490d57ef6-ea4174fbf7bmr4935194276.18.1758030218324; 
- Tue, 16 Sep 2025 06:43:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFn7TN/NxzfAtzqXy6t5bPCknaX08IjYkmW0gdUhZEpB651QLXV4uOvO7hkKm8BX6+3hEvIGQcshUYlqqLpAyo=
-X-Received: by 2002:a05:6902:6c18:b0:ea4:174f:bb1f with SMTP id
- 3f1490d57ef6-ea4174fbf7bmr4935153276.18.1758030217735; Tue, 16 Sep 2025
- 06:43:37 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1758030689; x=1758635489;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KNH5axLRBBfc2OscUdjexc//x2LlMBFWmvb7n1xsZmQ=;
+ b=POQRT0Fx79p7o8TJhAXts9F9IzfAl8kW6kW1B+2wXfA7R0hiKXjJDQkfc2eUR7T7aR
+ 0nN828qc2IruyIID5j4iB9cUB8a+m5d4XF5gXkanvu92GuDOuTh530mu5tdZMbDJE1m+
+ 3oUF/a4A7r6AeWz4HWmZ74y5XiJYJSO59SwxgYybm9a9pW7uMCtzzo9YfEndD59ND2Uy
+ euypjQJC9/9b4hwWR/t4HBi2LPYxy8yTSjvb77N+dBSF367u9dNLSTGlsFDq+djNT9cA
+ DnR8xsLg6YvjJC1DA0XBTq9o8BSNlw/wTuCivzf21Ew8tTLkBoPVmeekWioeemnNSJQS
+ RLcA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWihcBnWGFraYF9v9VaMzW2OGCvAFQhe1T9Cwy0JQ7ehmRryHXmemAF1Xz0GCM9R9it1tPRruKI7BsM@nongnu.org
+X-Gm-Message-State: AOJu0Yx0BdkHh9ezy9f9BUPpktwk8q5b1Mtj/4iJi1Jia7qjhKmANekD
+ 1eVO9aZKrAh83NB+ikG+PY85CYcdSmHZYaEAfCthavbeQ+X7NBJdxReHgBUUkfA0iWTt94TIClU
+ dHdvKk/kp83GuwDXSvglh6l1Synl1Z0v5ns66DRgNauLp0l5fLpzQGo90
+X-Gm-Gg: ASbGncsOP2KtiP97rIdb+AFV3riWxYTikdteZV7GRCPuyeXe9DoBMfPYXRZjARDRUQj
+ mRzNqKSqHrjuf+0ytkY5xIE2ouqtH8dwcNYCh5UZpTA29w25IUAuh4+QAEdwvwnBNoAX8NH75G+
+ lwgHJKXc2bI1WVj0VyXghNnGyS/5cV2Rrj2tXmqqCfOVDhEKOfKPeoAZkPgLSvSSGdhvbz6N2/o
+ y1RpbGRGbqOUqN0xv13qUUO0AVKzdQQIf4lhfK4izLDOuDsWGbHPEs4Ptrt4Tb8EsaFxv786EZV
+ eImMqAvla3aFgraI60BgO7LD4YzXA1Ou
+X-Received: by 2002:a05:622a:393:b0:4b7:9c8d:1bb2 with SMTP id
+ d75a77b69052e-4b79c8d1e89mr88251381cf.74.1758030689124; 
+ Tue, 16 Sep 2025 06:51:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFNGPHtHrMfWbcbR2EBlWXFWMGWUfZrTAYjjkq+hZOmtstdSB0YnN4bZ8r9EvZC9jbsBuQwbQ==
+X-Received: by 2002:a05:622a:393:b0:4b7:9c8d:1bb2 with SMTP id
+ d75a77b69052e-4b79c8d1e89mr88250931cf.74.1758030688298; 
+ Tue, 16 Sep 2025 06:51:28 -0700 (PDT)
+Received: from x1.local ([174.89.135.121]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4b639dad799sm85441071cf.28.2025.09.16.06.51.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Sep 2025 06:51:27 -0700 (PDT)
+Date: Tue, 16 Sep 2025 09:51:16 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org, leiyang@redhat.com,
+ marcandre.lureau@redhat.com, Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH v4 05/12] migration: qemu_file_set_blocking(): add errp
+ parameter
+Message-ID: <aMlrVHYxhuj1TYYL@x1.local>
+References: <20250915193105.230085-1-vsementsov@yandex-team.ru>
+ <20250915193105.230085-6-vsementsov@yandex-team.ru>
+ <aMh0sjXkQ9IYo_SB@x1.local> <aMkfn2_GBUDlUB6O@redhat.com>
+ <7f6b159e-6d97-4b0e-a825-7b8042c27e99@yandex-team.ru>
 MIME-Version: 1.0
-References: <20250909161012.2561593-1-vacha.bhavsar@oss.qualcomm.com>
- <CAFEAcA-xdREOLGyQkeeE1SxAH+27G9aepjD8jGoEJTbcLrm4+g@mail.gmail.com>
-In-Reply-To: <CAFEAcA-xdREOLGyQkeeE1SxAH+27G9aepjD8jGoEJTbcLrm4+g@mail.gmail.com>
-From: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
-Date: Tue, 16 Sep 2025 09:43:26 -0400
-X-Gm-Features: AS18NWCDbiRVbuXU25qdrKJpkupKEJO_V7MwmVneLMRA2MYvXS3pjyRwV3Pp03U
-Message-ID: <CAEWVDmvZDJnfz47NBGs3HDkAmQL4y-1Pujs3diUOm1UUvgPMcg@mail.gmail.com>
-Subject: Re: [PATCH v8 0/3] target/arm: Added support for SME register
- exposure to GDB
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000a2005d063eeb4ea3"
-X-Proofpoint-GUID: LVoCk4pXSDVub03_s8oaKsJIpKb6W1WQ
-X-Proofpoint-ORIG-GUID: LVoCk4pXSDVub03_s8oaKsJIpKb6W1WQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDA4NyBTYWx0ZWRfX4GfOBn3s71FD
- O4/jkxtLupvomelwerCkh7JB+WP50d4icFJ5r49lmiNW6D2WzHlz+4xLnsryV5ZtTxHmR1Xzn3f
- T2PnBZ6/+Kjtbz63vTvjRGkuH3hGsCBr3hBUPk9YgwiaqcaIXBwVz9knpDj2n0zoB3Oe1FmerPr
- 1NvZks/7cSwnuyqPny7UP4PF9gum7DRkOsBjVTGcxs5Z//eKRptfLwIKvZW7MjxmbmOYlDVroJW
- a5hBwy5wC6KJapObxKDuR3k9PeT0TCfrVT8n8BmBEza7XIQm1J20Pp+7/xJBI/uxjnLHUIftKQ0
- oTjif9rUhVdp7GcG20GbZ4cGHaxW4JHPY7Y0RiFpZY+L+mjzTETN3KmQUfbhXn2wmMT/LYWT7+C
- 6gjqxlCL
-X-Authority-Analysis: v=2.4 cv=SaD3duRu c=1 sm=1 tr=0 ts=68c9698b cx=c_pps
- a=5rZgxjGdQ1phXw1xqkF1vg==:117 a=yJojWOMRYYMA:10 a=KKAkSRfTAAAA:8
- a=EUspDBNiAAAA:8 a=fIeqX_urXbaYukCIe70A:9 a=QEXdDO2ut3YA:10 a=UDFYyeKIAAAA:8
- a=l8T_Kw-7r3-X5QYjpLkA:9 a=A-ZZsG7qi72MXd9y:21 a=lqcHg5cX4UMA:10
- a=FvMT9AR2qkiEEVpopuB7:22 a=cvBusfyB2V15izCimMoJ:22 a=ItlKd2BftxWApCZtRiMt:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-16_02,2025-09-12_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0 malwarescore=0 phishscore=0 spamscore=0
- priorityscore=1501 bulkscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509150087
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=vacha.bhavsar@oss.qualcomm.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7f6b159e-6d97-4b0e-a825-7b8042c27e99@yandex-team.ru>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.009,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,131 +112,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a2005d063eeb4ea3
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Tue, Sep 16, 2025 at 04:01:57PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> On 16.09.25 11:28, Daniel P. Berrangé wrote:
+> > On Mon, Sep 15, 2025 at 04:18:58PM -0400, Peter Xu wrote:
+> > > On Mon, Sep 15, 2025 at 10:30:57PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> > > > qemu_file_set_blocking() is a wrapper on qio_channel_set_blocking(),
+> > > > so let's passthrough the errp.
+> > > This looks all reasonable in general.
+> > > 
+> > > Said that, using error_abort in migration code normally are not suggested
+> > > because it's too strong.
+> > Note, that prior to this series, the existing qemu_socket_set_nonblock
+> > method that migration is calling will assert on failure. This series
+> > removes that assert and propagates it back to the callers to let them
+> > decide what to do. Ideally they would gracefully handle it, but if
+> > they assert that is no worse than current behaviour.
+> > 
+> 
+> In details, prior to series:
+> 
+> posix + set_nonblock -> crash on failure
+> 
+> other variants (posix/win32 + set_block, win32 + set_nonblock) -> ignore failure
 
-Noted, thank you!
+Correct, but IIUC that's for sockets only.
 
-On Tue, Sep 16, 2025 at 6:39=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
-.org>
-wrote:
+Major channel types that migration cares the most should also include file
+now.  qio_channel_file_set_blocking() also doesn't assert but return a
+failure.
 
-> On Tue, 9 Sept 2025 at 17:10, Vacha Bhavsar
-> <vacha.bhavsar@oss.qualcomm.com> wrote:
-> >
-> > The QEMU GDB stub does not expose the ZA storage SME register to GDB vi=
-a
-> > the remote serial protocol, which can be a useful functionality to debu=
-g
-> SME
-> > code. To provide this functionality in Aarch64 target, this patch
-> registers the
-> > SME register set with the GDB stub. To do so, this patch implements the
-> > aarch64_gdb_get_sme_reg() and aarch64_gdb_set_sme_reg() functions to
-> > specify how to get and set the SME registers, and the
-> > arm_gen_dynamic_smereg_feature() function to generate the target
-> > description in XML format to indicate the target architecture supports
-> SME.
-> > Finally, this patch includes a dyn_smereg_feature structure to hold thi=
-s
-> > GDB XML description of the SME registers for each CPU.
-> >
-> > Additionally, this patch series increases the value of MAX_PACKET_LENGT=
-H
-> > to allow for remote GDB debugging of the ZA register when the vector
-> > length is maximal.
-> >
-> > We have chosen to drop the patch related to changing GDBState's line_bu=
-f
-> > to a dynamically re-sizeable GString for the time being.
-> >
-> > This patch also includes a test case for testing SME register exposure
-> > to GDB, based off of the existing SVE test case for the gdbstub.
-> >
-> > Vacha Bhavsar (3):
-> >   target/arm: Increase MAX_PACKET_LENGTH for SME ZA remote gdb debuggin=
-g
-> >   target/arm: Added support for SME register exposure to GDB
-> >   target/arm: Added test case for SME register exposure to GDB
->
-> Thanks, I have applied this version to target-arm.next.
->
-> I had to fix up quite a few style nits reported by scripts/checkpatch.pl:
-> for future contributions I would suggest running your patches through
-> it. The script is not infallible so you have to use some judgement
-> in deciding whether to make changes, but it catches simple issues
-> like trailing whitespace or mixing tabs and spaces in indentation.
->
-> -- PMM
->
+> 
+> > > I did check all of below should be on the incoming side which is not as
+> > > severe (because killing dest qemu before switchover is normally
+> > > benign). Still, can we switch all below users to error_warn (including the
+> > > one below that may want to error_report_err(), IMHO a warn report is fine
+> > > even for such error)?
+> > IMHO ignoring a failure to change the blocking flag status is not
+> > a warnnig, it is unrecoverable for the migration operation. It
+> > should be possible to propagate the error in some way, but it will
+> > potentially require changes across multiple migration methods to
+> > handle this.
 
---000000000000a2005d063eeb4ea3
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In most cases I agree.  But still, using error_abort doesn't mean to fail
+migration, but to crash the VM.  We still at least doesn't want to do it on
+src..
 
-<div dir=3D"ltr">Noted, thank you!</div><br><div class=3D"gmail_quote gmail=
-_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Sep 16, 202=
-5 at 6:39=E2=80=AFAM Peter Maydell &lt;<a href=3D"mailto:peter.maydell@lina=
-ro.org">peter.maydell@linaro.org</a>&gt; wrote:<br></div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
-b(204,204,204);padding-left:1ex">On Tue, 9 Sept 2025 at 17:10, Vacha Bhavsa=
-r<br>
-&lt;<a href=3D"mailto:vacha.bhavsar@oss.qualcomm.com" target=3D"_blank">vac=
-ha.bhavsar@oss.qualcomm.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; The QEMU GDB stub does not expose the ZA storage SME register to GDB v=
-ia<br>
-&gt; the remote serial protocol, which can be a useful functionality to deb=
-ug SME<br>
-&gt; code. To provide this functionality in Aarch64 target, this patch regi=
-sters the<br>
-&gt; SME register set with the GDB stub. To do so, this patch implements th=
-e<br>
-&gt; aarch64_gdb_get_sme_reg() and aarch64_gdb_set_sme_reg() functions to<b=
-r>
-&gt; specify how to get and set the SME registers, and the<br>
-&gt; arm_gen_dynamic_smereg_feature() function to generate the target<br>
-&gt; description in XML format to indicate the target architecture supports=
- SME.<br>
-&gt; Finally, this patch includes a dyn_smereg_feature structure to hold th=
-is<br>
-&gt; GDB XML description of the SME registers for each CPU.<br>
-&gt;<br>
-&gt; Additionally, this patch series increases the value of MAX_PACKET_LENG=
-TH<br>
-&gt; to allow for remote GDB debugging of the ZA register when the vector<b=
-r>
-&gt; length is maximal.<br>
-&gt;<br>
-&gt; We have chosen to drop the patch related to changing GDBState&#39;s li=
-ne_buf<br>
-&gt; to a dynamically re-sizeable GString for the time being.<br>
-&gt;<br>
-&gt; This patch also includes a test case for testing SME register exposure=
-<br>
-&gt; to GDB, based off of the existing SVE test case for the gdbstub.<br>
-&gt;<br>
-&gt; Vacha Bhavsar (3):<br>
-&gt;=C2=A0 =C2=A0target/arm: Increase MAX_PACKET_LENGTH for SME ZA remote g=
-db debugging<br>
-&gt;=C2=A0 =C2=A0target/arm: Added support for SME register exposure to GDB=
-<br>
-&gt;=C2=A0 =C2=A0target/arm: Added test case for SME register exposure to G=
-DB<br>
-<br>
-Thanks, I have applied this version to target-arm.next.<br>
-<br>
-I had to fix up quite a few style nits reported by scripts/<a href=3D"http:=
-//checkpatch.pl" rel=3D"noreferrer" target=3D"_blank">checkpatch.pl</a>:<br=
->
-for future contributions I would suggest running your patches through<br>
-it. The script is not infallible so you have to use some judgement<br>
-in deciding whether to make changes, but it catches simple issues<br>
-like trailing whitespace or mixing tabs and spaces in indentation.<br>
-<br>
--- PMM<br>
-</blockquote></div>
+Meanwhile, this could violate things like newly introduced exit-on-error,
+but I agree we used to ignore those, so even if it fails before and didn't
+crash, we could have ignored those errors.. and not reportable to libvirt.
 
---000000000000a2005d063eeb4ea3--
+The ideal way to do is to always fail either src/dst when set blocking
+failed for sure, but yes, it's slightly involved on some paths this patch
+touched.
+
+So.. I think we can go with this patch, with a sincere wish that it'll
+simply almost never fail.  But then, let's mention that in the commit
+message, (1) this patch only asserts on the dest qemu and only before
+switchover (hence src can still fallback), never src, (2) state the facts
+that it so far is a slight violation to exit-on-error, but it's extremely
+unlikely to happen anyway (NOTE: this is not a programming error that
+normal assertions would do, so it falls into exit-on-error category).
+
+Thanks,
+
+-- 
+Peter Xu
+
 
