@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1DAB590E6
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 10:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61FF6B590DD
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 10:37:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyR9D-0006wi-Hv; Tue, 16 Sep 2025 04:34:47 -0400
+	id 1uyR9G-0006xn-B3; Tue, 16 Sep 2025 04:34:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uyR97-0006gp-Lk; Tue, 16 Sep 2025 04:34:41 -0400
+ id 1uyR9A-0006sW-Pk; Tue, 16 Sep 2025 04:34:44 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uyR91-0005zs-Vh; Tue, 16 Sep 2025 04:34:40 -0400
+ id 1uyR96-0005zx-4A; Tue, 16 Sep 2025 04:34:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758011676; x=1789547676;
+ t=1758011680; x=1789547680;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=p9Y4FxxNCJO8k3rMn0WRG6+uJf08DdF+53l2IzwHTQo=;
- b=M8u8OdvVA+nJvyRsD79iFeNE1S5B8JtHMA3iWuykN7NPdM9XyU5fP9tN
- 6fi68lJq4/0pVZ0eILfzmsfgfbXoqc1BltQVw/NAQmQ2DWsjFtp8EO9iO
- oyAHZJFy1Fn87kTM5jF+DAHlFYfGOuYUA8kngJfD7u0qJeP51mXIhrxDR
- 5V+Or0RuadBNJufPf6wIgWUrRd8y3ZvhZOyfe07sF254mkRAveBkkc8i5
- sFhlK+tfF2rrM6m7K2g2jMTv2Qy7jOuC4RSK0nFM125KUonj8sgKxCN3F
- WDD8PNHHCD4k/A5fKIpWsGw4Nu/haPQOpymmWqaPbBNGYbzqb/gdeo3FJ w==;
-X-CSE-ConnectionGUID: tuKjyQamSTe1HoaQo5EYZA==
-X-CSE-MsgGUID: bqyu53swR2a2NnygreaKEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="77725189"
-X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="77725189"
+ bh=JU7XScpelzyROakpaKr5C6kcia1NQZA7tGcllOsCJmM=;
+ b=LB+kfExX7PfCNVqpUH4yFkwgbHW5WuaKI+GQYD7ydhTlctaIn9pTpd9Q
+ k8DLM7KScJWnQoe8K66rlcXTAyx4XIc84qFpQL9y3OEKvKbW1iFhDtUif
+ g+w708GxUrPfjLuLSozsQiEk3r8VeWh2dBS99k2pQTEQKWFjosG1E1pIt
+ 8K3rAcP8d1VVIoFwSui5IfbsK4HAggVqkNmVlJLIvUSapRnmy3/50edqu
+ STXUm3Mf5VaZPyPCLby44wSAohcb0kI7q4YWgUcuqGqcp3JuavFRSZlbb
+ OOy7WgyWQPja+IUlKoT5C+tm2aOI7VvEvC6VHbFlJwfpa0Rdg74R/XwF5 g==;
+X-CSE-ConnectionGUID: Fwyi6V+FQn+y5R0v8Scp3A==
+X-CSE-MsgGUID: ssRpXlkRRI+xr2mOlXiUMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="77725195"
+X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="77725195"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2025 01:34:24 -0700
-X-CSE-ConnectionGUID: +C3BFFERSXmXLsW/u29JpQ==
-X-CSE-MsgGUID: R0kZ0Lb5QayhxG8CHs1r9Q==
+ 16 Sep 2025 01:34:26 -0700
+X-CSE-ConnectionGUID: TsX6C8beSwq2K765Sf3F9Q==
+X-CSE-MsgGUID: cRVVQ2rkSo+6EIVPy04GIg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="174691098"
+X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="174691110"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 16 Sep 2025 01:34:22 -0700
+ by orviesa007.jf.intel.com with ESMTP; 16 Sep 2025 01:34:24 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 08/12] rust/qdev: Support property info for more common types
-Date: Tue, 16 Sep 2025 16:55:53 +0800
-Message-Id: <20250916085557.2008344-9-zhao1.liu@intel.com>
+Subject: [PATCH 09/12] rust/qdev: Support bit property in #property macro
+Date: Tue, 16 Sep 2025 16:55:54 +0800
+Message-Id: <20250916085557.2008344-10-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250916085557.2008344-1-zhao1.liu@intel.com>
 References: <20250916085557.2008344-1-zhao1.liu@intel.com>
@@ -78,55 +78,197 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a helper macro to implement QDevProp trait for u8/u16/u32/usize/i32
-/i64.
+Add BIT_INFO to QDevProp trait, so that bit related property info could
+be bound to u32 & u64.
+
+Then add "bit=*" field in #property attributes macro to allow device to
+configure bit property.
+
+In addtion, convert the #property field parsing from `if-else` pattern
+to `match` pattern, to help readability. And note, the `bitnr` member of
+`Property` struct is generated by manual TokenStream construction,
+instead of conditional repetition (like #(bitnr: #bitnr,)?) since
+`quote` doesn't support this.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/hw/core/src/qdev.rs | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ rust/hw/core/src/qdev.rs    | 15 +++++---
+ rust/qemu-macros/src/lib.rs | 77 +++++++++++++++++++++++++------------
+ 2 files changed, 62 insertions(+), 30 deletions(-)
 
 diff --git a/rust/hw/core/src/qdev.rs b/rust/hw/core/src/qdev.rs
-index d887046d8de1..b57dc05ebb0e 100644
+index b57dc05ebb0e..a8cd9e3c2fd5 100644
 --- a/rust/hw/core/src/qdev.rs
 +++ b/rust/hw/core/src/qdev.rs
-@@ -134,20 +134,24 @@ pub unsafe trait QDevProp {
+@@ -109,8 +109,8 @@ pub trait ResettablePhasesImpl {
+ ///
+ /// # Safety
+ ///
+-/// This trait is marked as `unsafe` because `BASE_INFO` must be a valid raw
+-/// reference to a [`bindings::PropertyInfo`].
++/// This trait is marked as `unsafe` because `BASE_INFO` and `BIT_INFO` must be
++/// the valid raw references to [`bindings::PropertyInfo`].
+ ///
+ /// Note we could not use a regular reference:
+ ///
+@@ -132,13 +132,18 @@ pub trait ResettablePhasesImpl {
+ /// [`bindings::PropertyInfo`] pointer for the trait implementation to be safe.
+ pub unsafe trait QDevProp {
      const BASE_INFO: *const bindings::PropertyInfo;
- }
- 
--/// Use [`bindings::qdev_prop_bool`] for `bool`.
--unsafe impl QDevProp for bool {
--    const BASE_INFO: *const bindings::PropertyInfo = addr_of!(bindings::qdev_prop_bool);
--}
--
--/// Use [`bindings::qdev_prop_uint64`] for `u64`.
--unsafe impl QDevProp for u64 {
--    const BASE_INFO: *const bindings::PropertyInfo = addr_of!(bindings::qdev_prop_uint64);
-+macro_rules! impl_qdev_prop {
-+    ($type:ty,$info:ident) => {
-+        unsafe impl $crate::qdev::QDevProp for $type {
-+            const BASE_INFO: *const $crate::bindings::PropertyInfo =
-+                addr_of!($crate::bindings::$info);
-+        }
++    const BIT_INFO: *const bindings::PropertyInfo = {
++        panic!("invalid type for bit property");
 +    };
  }
  
--/// Use [`bindings::qdev_prop_chr`] for [`chardev::CharBackend`].
--unsafe impl QDevProp for chardev::CharBackend {
--    const BASE_INFO: *const bindings::PropertyInfo = addr_of!(bindings::qdev_prop_chr);
--}
-+impl_qdev_prop!(bool, qdev_prop_bool);
-+impl_qdev_prop!(u8, qdev_prop_uint8);
-+impl_qdev_prop!(u16, qdev_prop_uint16);
-+impl_qdev_prop!(u32, qdev_prop_uint32);
-+impl_qdev_prop!(u64, qdev_prop_uint64);
-+impl_qdev_prop!(usize, qdev_prop_usize);
-+impl_qdev_prop!(i32, qdev_prop_int32);
-+impl_qdev_prop!(i64, qdev_prop_int64);
-+impl_qdev_prop!(chardev::CharBackend, qdev_prop_chr);
+ macro_rules! impl_qdev_prop {
+-    ($type:ty,$info:ident) => {
++    ($type:ty,$info:ident$(, $bit_info:ident)?) => {
+         unsafe impl $crate::qdev::QDevProp for $type {
+             const BASE_INFO: *const $crate::bindings::PropertyInfo =
+                 addr_of!($crate::bindings::$info);
++            $(const BIT_INFO: *const $crate::bindings::PropertyInfo =
++                addr_of!($crate::bindings::$bit_info);)?
+         }
+     };
+ }
+@@ -146,8 +151,8 @@ unsafe impl $crate::qdev::QDevProp for $type {
+ impl_qdev_prop!(bool, qdev_prop_bool);
+ impl_qdev_prop!(u8, qdev_prop_uint8);
+ impl_qdev_prop!(u16, qdev_prop_uint16);
+-impl_qdev_prop!(u32, qdev_prop_uint32);
+-impl_qdev_prop!(u64, qdev_prop_uint64);
++impl_qdev_prop!(u32, qdev_prop_uint32, qdev_prop_bit);
++impl_qdev_prop!(u64, qdev_prop_uint64, qdev_prop_bit64);
+ impl_qdev_prop!(usize, qdev_prop_usize);
+ impl_qdev_prop!(i32, qdev_prop_int32);
+ impl_qdev_prop!(i64, qdev_prop_int64);
+diff --git a/rust/qemu-macros/src/lib.rs b/rust/qemu-macros/src/lib.rs
+index b43ca31bae30..8109ff239227 100644
+--- a/rust/qemu-macros/src/lib.rs
++++ b/rust/qemu-macros/src/lib.rs
+@@ -162,6 +162,7 @@ enum DevicePropertyName {
+ #[derive(Debug)]
+ struct DeviceProperty {
+     rename: Option<DevicePropertyName>,
++    bitnr: Option<syn::Expr>,
+     defval: Option<syn::Expr>,
+ }
  
- /// Trait to define device properties.
- ///
+@@ -174,40 +175,56 @@ fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+         debug_assert_eq!(&attribute.to_string(), "property");
+         let mut retval = Self {
+             rename: None,
++            bitnr: None,
+             defval: None,
+         };
+         let content;
+         _ = syn::parenthesized!(content in bracketed);
+         while !content.is_empty() {
+             let value: syn::Ident = content.parse()?;
+-            if value == "rename" {
+-                let _: syn::Token![=] = content.parse()?;
+-                if retval.rename.is_some() {
+-                    return Err(syn::Error::new(
+-                        value.span(),
+-                        "`rename` can only be used at most once",
+-                    ));
++            match value {
++                ref v if v == "rename" => {
++                    let _: syn::Token![=] = content.parse()?;
++                    if retval.rename.is_some() {
++                        return Err(syn::Error::new(
++                            value.span(),
++                            "`rename` can only be used at most once",
++                        ));
++                    }
++                    if content.peek(syn::LitStr) {
++                        retval.rename =
++                            Some(DevicePropertyName::Str(content.parse::<syn::LitStr>()?));
++                    } else {
++                        retval.rename =
++                            Some(DevicePropertyName::CStr(content.parse::<syn::LitCStr>()?));
++                    }
+                 }
+-                if content.peek(syn::LitStr) {
+-                    retval.rename = Some(DevicePropertyName::Str(content.parse::<syn::LitStr>()?));
+-                } else {
+-                    retval.rename =
+-                        Some(DevicePropertyName::CStr(content.parse::<syn::LitCStr>()?));
++                ref v if v == "bit" => {
++                    let _: syn::Token![=] = content.parse()?;
++                    if retval.bitnr.is_some() {
++                        return Err(syn::Error::new(
++                            value.span(),
++                            "`bit` can only be used at most once",
++                        ));
++                    }
++                    retval.bitnr = Some(content.parse()?);
++                }
++                ref v if v == "default" => {
++                    let _: syn::Token![=] = content.parse()?;
++                    if retval.defval.is_some() {
++                        return Err(syn::Error::new(
++                            value.span(),
++                            "`default` can only be used at most once",
++                        ));
++                    }
++                    retval.defval = Some(content.parse()?);
+                 }
+-            } else if value == "default" {
+-                let _: syn::Token![=] = content.parse()?;
+-                if retval.defval.is_some() {
++                _ => {
+                     return Err(syn::Error::new(
+                         value.span(),
+-                        "`default` can only be used at most once",
++                        format!("unrecognized field `{value}`"),
+                     ));
+                 }
+-                retval.defval = Some(content.parse()?);
+-            } else {
+-                return Err(syn::Error::new(
+-                    value.span(),
+-                    format!("unrecognized field `{value}`"),
+-                ));
+             }
+ 
+             if !content.is_empty() {
+@@ -242,7 +259,11 @@ fn derive_device_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream
+     let mut properties_expanded = vec![];
+ 
+     for (field, prop) in properties {
+-        let DeviceProperty { rename, defval } = prop;
++        let DeviceProperty {
++            rename,
++            bitnr,
++            defval,
++        } = prop;
+         let field_name = field.ident.unwrap();
+         macro_rules! str_to_c_str {
+             ($value:expr, $span:expr) => {{
+@@ -272,14 +293,20 @@ macro_rules! str_to_c_str {
+             },
+         )?;
+         let field_ty = field.ty.clone();
+-        let qdev_prop = quote! { <#field_ty as ::hwcore::QDevProp>::BASE_INFO };
++        let qdev_prop = if bitnr.is_none() {
++            quote! { <#field_ty as ::hwcore::QDevProp>::BASE_INFO }
++        } else {
++            quote! { <#field_ty as ::hwcore::QDevProp>::BIT_INFO }
++        };
++        let bitnr = bitnr.unwrap_or(syn::Expr::Verbatim(quote! { 0 }));
+         let set_default = defval.is_some();
+         let defval = defval.unwrap_or(syn::Expr::Verbatim(quote! { 0 }));
+         properties_expanded.push(quote! {
+             ::hwcore::bindings::Property {
+                 name: ::std::ffi::CStr::as_ptr(#prop_name),
+-                info: #qdev_prop ,
++                info: #qdev_prop,
+                 offset: ::core::mem::offset_of!(#name, #field_name) as isize,
++                bitnr: #bitnr,
+                 set_default: #set_default,
+                 defval: ::hwcore::bindings::Property__bindgen_ty_1 { u: #defval as u64 },
+                 ..::common::Zeroable::ZERO
 -- 
 2.34.1
 
