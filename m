@@ -2,86 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26802B59FC0
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 19:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A452B59FC7
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 19:52:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyZpG-0006xY-64; Tue, 16 Sep 2025 13:50:51 -0400
+	id 1uyZq6-0007uP-GF; Tue, 16 Sep 2025 13:51:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3ZqPJaAYKCiEVR8FKWDLLDIB.9LJNBJR-ABSBIKLKDKR.LOD@flex--yubinz.bounces.google.com>)
- id 1uyZp4-0006vn-6p
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 13:50:34 -0400
-Received: from mail-pg1-x54a.google.com ([2607:f8b0:4864:20::54a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3ZqPJaAYKCiEVR8FKWDLLDIB.9LJNBJR-ABSBIKLKDKR.LOD@flex--yubinz.bounces.google.com>)
- id 1uyZp2-0008Ah-IC
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 13:50:33 -0400
-Received: by mail-pg1-x54a.google.com with SMTP id
- 41be03b00d2f7-b52047b3f21so3205199a12.2
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 10:50:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1758045030; x=1758649830; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=C2sbXY6bs/mvny00HoiBY8/e0G7pmko6uoGO6Lc1eg8=;
- b=SCOSMifc7IbWqaxqnhpnhgaqcqI47zdM4JoZlLmQqcznPTc8VI3o+Hu91dFke6L0GO
- c+RhPPncy2cGHW18bor94GUECP1GeBDs1yXcJLfxf4dA2h7s9N9uAf4IvEbneUhWlrMK
- 6DU7pqGtnHCQssyIg6gFx/gbNGOVY+3y284nnD9b93j5EQ5BdZn7sJ4G/CGwwe9dgXKl
- Baf9tJIXxXoXD0UWn/hpWAapf0VDfnsRKpoz3OLnMNPSSnB+eAbISfGALG+PQzbMqJYR
- QRTzDQRRJ8m8C/7KRIH/YT69Hkcwa1GKNfn07oOoYGEyhyxjAAFDAkeigda0xjzikaw+
- R3nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758045030; x=1758649830;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=C2sbXY6bs/mvny00HoiBY8/e0G7pmko6uoGO6Lc1eg8=;
- b=RUN8/dWHYm7rELUOrcBZrhE/T0do5+FeEQ7q7uWoenfbJxI9uGHL7MxW58W5kOxEVy
- khU1fSl2VAM8axoXtjtJuhKGN8sD08a++tUmn6yaQrU7ZWIHk1XlefoP0VHTg0rRSwFe
- BEt3rClHsksLTk/zfV+s4k5cIF57TQ3UPbPLZ03N7vfYxXnBlz1aBkuZIIgvK0/3e3i4
- sftSzB6FaZeSSn8ysxa0zjBekccl/qE90PUursZBA2DxmyYce/5oDwjbQMROcPoYUUaL
- +YACHjAvCOHLCn0EmDvFEuUozeTYZYtSVGTb92yzZM5rxyVT2t+UmOkRejo4uPyMhGgE
- 3hWg==
-X-Gm-Message-State: AOJu0Yy28Iw/LDDSFJro3oHLf1UVAxCHUZaWlTw2syi0XrE8r07P6jz7
- vg4gtkbYGKA46AA6pYUYJTkXE4H1k/uU5D9G1dFpnj5RbhHS504pqMGF4MsgpCznP5are7RN915
- AwHxxScudfdHoNxapGO4clninfYKoki8x6Wtf5Wknn3hf3XqoCaTF7IXFQLkLrH6HE/viN0zogH
- uosCPUQarEkemoeqgSpBshpiJUm0IKFAyYAqY=
-X-Google-Smtp-Source: AGHT+IGwoi3/55RlKfnOCjyz5JMtFpe1gTI0icV3nt0WS4zsk4ONA1zeCwsq40ejSZy83JX3W1dI+0nLX/k=
-X-Received: from plon4.prod.google.com ([2002:a17:903:1a84:b0:24c:7ef0:65c3])
- (user=yubinz job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:c407:b0:24c:784c:4a90
- with SMTP id d9443c01a7336-25d24cac4e3mr243400305ad.1.1758045030409; Tue, 16
- Sep 2025 10:50:30 -0700 (PDT)
-Date: Tue, 16 Sep 2025 17:50:16 +0000
-In-Reply-To: <20250916-quanta-q71l-eeproms-v1-0-3648692cc441@google.com>
-Mime-Version: 1.0
-References: <20250916-quanta-q71l-eeproms-v1-0-3648692cc441@google.com>
-X-Mailer: b4 0.14.2
-Message-ID: <20250916-quanta-q71l-eeproms-v1-2-3648692cc441@google.com>
-Subject: [PATCH 2/2] hw/arm: enable eeproms for quanta-q71l
-From: Yubin Zou <yubinz@google.com>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uyZps-0007K2-1A
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 13:51:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uyZpo-0008Er-9s
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 13:51:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758045075;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Wnm2c70/sInb5Kln1tljKEQJTxHEu5y+56S6FKsuwvw=;
+ b=iL7KnGZA1wWDQFiwygxLLxFX2wZ/pnv5ekIP5fpNEHQE3SnJModm4742xWecFJ0IJec1pB
+ gff9n84FNNGfTnWuMS/J5SSGe7SqjrdZ6YKS5iQLd+r1i/UXW80QY00M1rjfaZkd2g+3Td
+ hgBPePNIznfOelrUK0GbO/MVpl44LU4=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-C3Wg-JLLMdWSoDm71oYKoQ-1; Tue,
+ 16 Sep 2025 13:51:12 -0400
+X-MC-Unique: C3Wg-JLLMdWSoDm71oYKoQ-1
+X-Mimecast-MFC-AGG-ID: C3Wg-JLLMdWSoDm71oYKoQ_1758045070
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AF9FE1956087; Tue, 16 Sep 2025 17:51:10 +0000 (UTC)
+Received: from localhost (unknown [10.2.17.12])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id C5D39195608E; Tue, 16 Sep 2025 17:51:09 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: "=?utf-8?q?C=C3=A9dric_Le_Goater?=" <clg@kaod.org>,
- Peter Maydell <peter.maydell@linaro.org>, 
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, 
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, 
- Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org,
- Yubin Zou <yubinz@google.com>, Patrick Venture <venture@google.com>
+Cc: Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <rth@twiddle.net>
+Subject: [PULL v2 0/8] Tracing patches
+Date: Tue, 16 Sep 2025 13:51:00 -0400
+Message-ID: <20250916175108.139627-1-stefanha@redhat.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::54a;
- envelope-from=3ZqPJaAYKCiEVR8FKWDLLDIB.9LJNBJR-ABSBIKLKDKR.LOD@flex--yubinz.bounces.google.com;
- helo=mail-pg1-x54a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.009,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,53 +85,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Patrick Venture <venture@google.com>
+The following changes since commit 190d5d7fd725ff754f94e8e0cbfb69f279c82b5d:
 
-Tested: Quanta-q71l firmware booted to login and was populated via the
--drives for the corresponding eeproms.
-Signed-off-by: Patrick Venture <venture@google.com>
----
- hw/arm/aspeed.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+  Merge tag 'pull-request-2025-09-09' of https://gitlab.com/thuth/qemu into staging (2025-09-11 12:41:01 +0100)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index bae59ae7394882e3fc93863049a37ff5a8737ff8..8cef387a0b431576a873553704920886222cca86 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -562,16 +562,16 @@ static void quanta_q71l_bmc_i2c_init(AspeedMachineState *bmc)
-     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 1), "tmp105", 0x4f);
- 
-     /* Baseboard FRU */
--    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 1), 0x54, 8192);
-+    at24c_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 1), 1, 0x54, 8192, 0);
-     /* Frontpanel FRU */
--    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 1), 0x57, 8192);
-+    at24c_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 1), 1, 0x57, 8192, 1);
-     /* TODO: Add Memory Riser i2c mux and eeproms. */
- 
-     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), "pca9546", 0x74);
-     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 2), "pca9548", 0x77);
- 
-     /* Add BIOS FRU */
--    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 3), 0x56, 8192);
-+    at24c_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 3), 3, 0x56, 8192, 2);
- 
-     /* i2c-7 */
-     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 7), "pca9546", 0x70);
-@@ -581,9 +581,9 @@ static void quanta_q71l_bmc_i2c_init(AspeedMachineState *bmc)
-     /*        - i2c@3: pmbus@59 */
- 
-     /* PDB FRU */
--    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 7), 0x52, 8192);
-+    at24c_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 7), 7, 0x52, 8192, 3);
-     /* BMC FRU */
--    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 8), 0x50, 8192);
-+    at24c_eeprom_init_one(aspeed_i2c_get_bus(&soc->i2c, 8), 8, 0x50, 8192, 4);
- }
- 
- static void ast2500_evb_i2c_init(AspeedMachineState *bmc)
+are available in the Git repository at:
+
+  https://gitlab.com/stefanha/qemu.git tags/tracing-pull-request
+
+for you to fetch changes up to 2c27d8523927b0965b7b3d265eee3baf9a15c9c8:
+
+  tracetool-test: allow to run in parallel (2025-09-16 13:31:40 -0400)
+
+----------------------------------------------------------------
+Pull request
+
+Daniel's updated tracetool test suite that doesn't break Windows CI.
+
+----------------------------------------------------------------
+
+Daniel P. Berrangé (7):
+  checkpatch: cull trailing '*/' in SPDX check
+  tracetool: eliminate trailing whitespace in C format
+  tracetool: avoid space after "*" in arg types
+  tracetool: include SPDX-License-Identifier in generated files
+  tracetool: add test suite for tracetool with reference output
+  tracetool: drop the probe "__nocheck__" wrapping
+  qapi: switch to use QEMU_TEST_REGENERATE env var
+
+Marc-André Lureau (1):
+  tracetool-test: allow to run in parallel
+
+ MAINTAINERS                                  |   1 +
+ docs/devel/testing/main.rst                  |  40 +++++++
+ tests/Makefile.include                       |   1 +
+ tests/tracetool/dtrace.h                     |  45 ++++++++
+ tests/tracetool/ftrace.h                     |  59 ++++++++++
+ tests/tracetool/log.h                        |  43 ++++++++
+ tests/tracetool/simple.h                     |  40 +++++++
+ tests/tracetool/syslog.h                     |  43 ++++++++
+ tests/tracetool/ust.h                        |  41 +++++++
+ tests/tracetool/dtrace.c                     |  32 ++++++
+ tests/tracetool/ftrace.c                     |  32 ++++++
+ tests/tracetool/log.c                        |  32 ++++++
+ tests/tracetool/simple.c                     |  61 +++++++++++
+ tests/tracetool/syslog.c                     |  32 ++++++
+ tests/tracetool/ust.c                        |  32 ++++++
+ scripts/checkpatch.pl                        |   3 +
+ scripts/tracetool/__init__.py                |   9 +-
+ scripts/tracetool/format/c.py                |   3 +-
+ scripts/tracetool/format/d.py                |   3 +-
+ scripts/tracetool/format/h.py                |  17 +--
+ scripts/tracetool/format/log_stap.py         |   1 +
+ scripts/tracetool/format/simpletrace_stap.py |   1 +
+ scripts/tracetool/format/stap.py             |   1 +
+ scripts/tracetool/format/ust_events_c.py     |   1 +
+ scripts/tracetool/format/ust_events_h.py     |   1 +
+ tests/meson.build                            |   1 +
+ tests/qapi-schema/test-qapi.py               |   7 +-
+ tests/tracetool/dtrace.d                     |  10 ++
+ tests/tracetool/dtrace.log-stap              |  15 +++
+ tests/tracetool/dtrace.simpletrace-stap      |  16 +++
+ tests/tracetool/dtrace.stap                  |  14 +++
+ tests/tracetool/meson.build                  |  28 +++++
+ tests/tracetool/trace-events                 |   5 +
+ tests/tracetool/tracetool-test.py            | 107 +++++++++++++++++++
+ tests/tracetool/ust.ust-events-c             |  14 +++
+ tests/tracetool/ust.ust-events-h             |  56 ++++++++++
+ 36 files changed, 826 insertions(+), 21 deletions(-)
+ create mode 100644 tests/tracetool/dtrace.h
+ create mode 100644 tests/tracetool/ftrace.h
+ create mode 100644 tests/tracetool/log.h
+ create mode 100644 tests/tracetool/simple.h
+ create mode 100644 tests/tracetool/syslog.h
+ create mode 100644 tests/tracetool/ust.h
+ create mode 100644 tests/tracetool/dtrace.c
+ create mode 100644 tests/tracetool/ftrace.c
+ create mode 100644 tests/tracetool/log.c
+ create mode 100644 tests/tracetool/simple.c
+ create mode 100644 tests/tracetool/syslog.c
+ create mode 100644 tests/tracetool/ust.c
+ create mode 100644 tests/tracetool/dtrace.d
+ create mode 100644 tests/tracetool/dtrace.log-stap
+ create mode 100644 tests/tracetool/dtrace.simpletrace-stap
+ create mode 100644 tests/tracetool/dtrace.stap
+ create mode 100644 tests/tracetool/meson.build
+ create mode 100644 tests/tracetool/trace-events
+ create mode 100755 tests/tracetool/tracetool-test.py
+ create mode 100644 tests/tracetool/ust.ust-events-c
+ create mode 100644 tests/tracetool/ust.ust-events-h
 
 -- 
-2.51.0.384.g4c02a37b29-goog
+2.51.0
 
 
