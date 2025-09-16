@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC64B59736
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 15:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A77CCB5974E
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 15:18:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyVWn-0005je-1e; Tue, 16 Sep 2025 09:15:25 -0400
+	id 1uyVX3-0006IY-Ao; Tue, 16 Sep 2025 09:15:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uyVVq-0005Mf-9i; Tue, 16 Sep 2025 09:14:27 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ id 1uyVVq-0005Mh-BC; Tue, 16 Sep 2025 09:14:27 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uyVVj-0006Yj-S3; Tue, 16 Sep 2025 09:14:24 -0400
+ id 1uyVVk-0006Yn-1D; Tue, 16 Sep 2025 09:14:24 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 9BA1EC0257;
- Tue, 16 Sep 2025 16:14:14 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 50460C025B;
+ Tue, 16 Sep 2025 16:14:15 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:16c::1:b])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 5EQRob1Gj0U0-6n9ZlSaL; Tue, 16 Sep 2025 16:14:13 +0300
+ ESMTPSA id 5EQRob1Gj0U0-IfX8UzlS; Tue, 16 Sep 2025 16:14:14 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1758028454;
- bh=pyuFrVsIASANJ+N7QppBHO2Se495Z6bX5OmLVwFaQlA=;
+ bh=zrq9XhA2TuK4K/azMAe1NuiXl/HbWLCQkj9cUHTX4o8=;
  h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
- b=aobOPMojk8vdOU+jU3pMTIlqz/lp0G3s2D7uxzoGeuUi9uM5Jx/hfUMrFksMbjWDg
- /0q2uxCbHPaHgGcta1UN0AA+jX7ghFoyDnLpVdFtkfgozn7oMzB5eiyaRqz4kmBVGy
- 8EzbJ+DGtaYVawgod71oOruboPxhqz7DRiUxZ3O0=
+ b=EpzJLdhFsLrB15vYd4N6ivKeVDU1Rb5EAPcCDquW7n0eo7rYK5bKyAQg6MZSVIKA7
+ hDdYHe53k3FMHzZgXapZhTk6Czn2+Pgya9EYIkKpy+1/bbZMsbOAXyiK7IEYgwMChp
+ TlV72czuqd++yhJgj2gP4+1ctr2xQ17xO3RoH33g=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: berrange@redhat.com
 Cc: qemu-devel@nongnu.org, peterx@redhat.com, qemu-block@nongnu.org,
- vsementsov@yandex-team.ru, leiyang@redhat.com, marcandre.lureau@redhat.com,
- Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Stefan Weil <sw@weilnetz.de>
-Subject: [PATCH v5 07/13] util: drop qemu_socket_try_set_nonblock()
-Date: Tue, 16 Sep 2025 16:13:56 +0300
-Message-ID: <20250916131403.368343-8-vsementsov@yandex-team.ru>
+ vsementsov@yandex-team.ru, leiyang@redhat.com, marcandre.lureau@redhat.com
+Subject: [PATCH v5 08/13] io/channel-socket: rework
+ qio_channel_socket_copy_fds()
+Date: Tue, 16 Sep 2025 16:13:57 +0300
+Message-ID: <20250916131403.368343-9-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250916131403.368343-1-vsementsov@yandex-team.ru>
 References: <20250916131403.368343-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,198 +73,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we can use qemu_set_blocking() in these cases.
+We want to switch from qemu_socket_set_block() to newer
+qemu_set_blocking(), which provides return status of operation,
+to handle errors.
+
+Still, we want to keep qio_channel_socket_readv() interface clean,
+as currently it allocate @fds only on success.
+
+So, in case of error, we should close all incoming fds and keep
+user's @fds untouched or zero.
+
+Let's make separate functions qio_channel_handle_fds() and
+qio_channel_cleanup_fds(), to achieve what we want.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/qemu/sockets.h |  1 -
- net/dgram.c            | 12 +++---------
- net/socket.c           |  7 ++-----
- net/stream.c           |  9 +++------
- net/stream_data.c      | 10 ++++------
- util/oslib-posix.c     |  4 ----
- util/oslib-win32.c     |  9 ---------
- 7 files changed, 12 insertions(+), 40 deletions(-)
+ include/io/channel.h |  8 +++---
+ io/channel-socket.c  | 67 +++++++++++++++++++++++++++++++++-----------
+ 2 files changed, 55 insertions(+), 20 deletions(-)
 
-diff --git a/include/qemu/sockets.h b/include/qemu/sockets.h
-index 6477f90b9e..9512fec514 100644
---- a/include/qemu/sockets.h
-+++ b/include/qemu/sockets.h
-@@ -47,7 +47,6 @@ ssize_t qemu_send_full(int s, const void *buf, size_t count)
- int socket_set_cork(int fd, int v);
- int socket_set_nodelay(int fd);
- void qemu_socket_set_block(int fd);
--int qemu_socket_try_set_nonblock(int fd);
- int socket_set_fast_reuse(int fd);
+diff --git a/include/io/channel.h b/include/io/channel.h
+index 999a8f5f23..0f25ae0069 100644
+--- a/include/io/channel.h
++++ b/include/io/channel.h
+@@ -124,8 +124,8 @@ struct QIOChannelClass {
+      * incoming fds are set BLOCKING (unless
+      * QIO_CHANNEL_READ_FLAG_FD_PRESERVE_BLOCKING flag is set) and
+      * CLOEXEC (if available).
+-     * @fds and @nfds are set only on success path, and untouched
+-     * in case of errors.
++     * @fds and @nfds are set only on success path. Still, setting
++     * @fds and @nfds to zero is acceptable on failure path.
+      */
+     ssize_t (*io_readv)(QIOChannel *ioc,
+                         const struct iovec *iov,
+@@ -246,8 +246,8 @@ void qio_channel_set_name(QIOChannel *ioc,
+  * to call close() on each file descriptor and to
+  * call g_free() on the array pointer in @fds.
+  * @fds allocated and set (and @nfds is set too)
+- * _only_ on success path. These parameters are
+- * untouched in case of errors.
++ * _only_ on success path. Still, @fds and @nfds
++ * may be set to zero on failure path.
+  * qio_channel_readv_full() guarantees that all
+  * incoming fds are set BLOCKING (unless
+  * QIO_CHANNEL_READ_FLAG_FD_PRESERVE_BLOCKING flag
+diff --git a/io/channel-socket.c b/io/channel-socket.c
+index f7e3cb9742..e53d9ac76f 100644
+--- a/io/channel-socket.c
++++ b/io/channel-socket.c
+@@ -464,8 +464,7 @@ static void qio_channel_socket_finalize(Object *obj)
  
- #ifdef WIN32
-diff --git a/net/dgram.c b/net/dgram.c
-index fb9ded30df..baa126d514 100644
---- a/net/dgram.c
-+++ b/net/dgram.c
-@@ -287,7 +287,7 @@ static int net_dgram_mcast_init(NetClientState *peer,
-                                 Error **errp)
+ #ifndef WIN32
+ static void qio_channel_socket_copy_fds(struct msghdr *msg,
+-                                        int **fds, size_t *nfds,
+-                                        bool preserve_blocking)
++                                        int **fds, size_t *nfds)
  {
-     NetDgramState *s;
--    int fd, ret;
-+    int fd;
-     struct sockaddr_in *saddr;
+     struct cmsghdr *cmsg;
  
-     if (remote->type != SOCKET_ADDRESS_TYPE_INET) {
-@@ -335,11 +335,8 @@ static int net_dgram_mcast_init(NetClientState *peer,
-                 g_free(saddr);
-                 return -1;
+@@ -473,7 +472,7 @@ static void qio_channel_socket_copy_fds(struct msghdr *msg,
+     *fds = NULL;
+ 
+     for (cmsg = CMSG_FIRSTHDR(msg); cmsg; cmsg = CMSG_NXTHDR(msg, cmsg)) {
+-        int fd_size, i;
++        int fd_size;
+         int gotfds;
+ 
+         if (cmsg->cmsg_len < CMSG_LEN(sizeof(int)) ||
+@@ -491,24 +490,53 @@ static void qio_channel_socket_copy_fds(struct msghdr *msg,
+         gotfds = fd_size / sizeof(int);
+         *fds = g_renew(int, *fds, *nfds + gotfds);
+         memcpy(*fds + *nfds, CMSG_DATA(cmsg), fd_size);
++        *nfds += gotfds;
++    }
++}
+ 
+-        for (i = 0; i < gotfds; i++) {
+-            int fd = (*fds)[*nfds + i];
+-            if (fd < 0) {
+-                continue;
+-            }
++static bool qio_channel_handle_fds(int *fds, size_t nfds,
++                                   bool preserve_blocking, Error **errp)
++{
++    int *end = fds + nfds, *fd;
++
++#ifdef MSG_CMSG_CLOEXEC
++    if (preserve_blocking) {
++        /* Nothing to do */
++        return true;
++    }
++#endif
+ 
+-            if (!preserve_blocking) {
+-                /* O_NONBLOCK is preserved across SCM_RIGHTS so reset it */
+-                qemu_socket_set_block(fd);
++    for (fd = fds; fd != end; fd++) {
++        if (*fd < 0) {
++            continue;
++        }
++
++        if (!preserve_blocking) {
++            /* O_NONBLOCK is preserved across SCM_RIGHTS so reset it */
++            if (!qemu_set_blocking(*fd, true, errp)) {
++                return false;
              }
--            ret = qemu_socket_try_set_nonblock(fd);
--            if (ret < 0) {
-+            if (!qemu_set_blocking(fd, false, errp)) {
-                 g_free(saddr);
--                error_setg_errno(errp, -ret, "%s: Can't use file descriptor %d",
--                                 name, fd);
-                 return -1;
-             }
++        }
  
-@@ -572,10 +569,7 @@ int net_init_dgram(const Netdev *netdev, const char *name,
-         if (fd == -1) {
-             return -1;
+ #ifndef MSG_CMSG_CLOEXEC
+-            qemu_set_cloexec(fd);
++        qemu_set_cloexec(*fd);
+ #endif
++    }
++
++    return true;
++}
++
++static void qio_channel_cleanup_fds(int **fds, size_t *nfds)
++{
++    for (size_t i = 0; i < *nfds; i++) {
++        if ((*fds)[i] < 0) {
++            continue;
          }
--        ret = qemu_socket_try_set_nonblock(fd);
--        if (ret < 0) {
--            error_setg_errno(errp, -ret, "%s: Can't use file descriptor %d",
--                             name, fd);
-+        if (!qemu_set_blocking(fd, false, errp)) {
-             return -1;
-         }
-         dest_addr = NULL;
-diff --git a/net/socket.c b/net/socket.c
-index db25e3d9ae..1ad03fc9d4 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -718,7 +718,7 @@ int net_init_socket(const Netdev *netdev, const char *name,
+-        *nfds += gotfds;
++        close((*fds)[i]);
      }
- 
-     if (sock->fd) {
--        int fd, ret, so_type;
-+        int fd, so_type;
- 
-         fd = monitor_fd_param(monitor_cur(), sock->fd, errp);
-         if (fd == -1) {
-@@ -728,10 +728,7 @@ int net_init_socket(const Netdev *netdev, const char *name,
-         if (so_type < 0) {
-             return -1;
-         }
--        ret = qemu_socket_try_set_nonblock(fd);
--        if (ret < 0) {
--            error_setg_errno(errp, -ret, "%s: Can't use file descriptor %d",
--                             name, fd);
-+        if (!qemu_set_blocking(fd, false, errp)) {
-             return -1;
-         }
-         switch (so_type) {
-diff --git a/net/stream.c b/net/stream.c
-index d893f02cab..94f823a2a7 100644
---- a/net/stream.c
-+++ b/net/stream.c
-@@ -138,7 +138,6 @@ static void net_stream_server_listening(QIOTask *task, gpointer opaque)
-     NetStreamData *d = opaque;
-     QIOChannelSocket *listen_sioc = QIO_CHANNEL_SOCKET(d->listen_ioc);
-     SocketAddress *addr;
--    int ret;
-     Error *err = NULL;
- 
-     if (qio_task_propagate_error(task, &err)) {
-@@ -149,13 +148,11 @@ static void net_stream_server_listening(QIOTask *task, gpointer opaque)
- 
-     addr = qio_channel_socket_get_local_address(listen_sioc, NULL);
-     g_assert(addr != NULL);
--    ret = qemu_socket_try_set_nonblock(listen_sioc->fd);
--    if (addr->type == SOCKET_ADDRESS_TYPE_FD && ret < 0) {
--        qemu_set_info_str(&d->nc, "can't use file descriptor %s (errno %d)",
--                          addr->u.fd.str, -ret);
-+    if (!qemu_set_blocking(listen_sioc->fd, false, &err)) {
-+        qemu_set_info_str(&d->nc, "error: %s", error_get_pretty(err));
-+        error_free(err);
-         return;
-     }
--    g_assert(ret == 0);
-     qapi_free_SocketAddress(addr);
- 
-     d->nc.link_down = true;
-diff --git a/net/stream_data.c b/net/stream_data.c
-index 5af27e0d1d..03740e9f73 100644
---- a/net/stream_data.c
-+++ b/net/stream_data.c
-@@ -12,6 +12,7 @@
- #include "net/net.h"
- #include "io/channel.h"
- #include "io/net-listener.h"
-+#include "qemu/sockets.h"
- 
- #include "stream_data.h"
- 
-@@ -154,7 +155,6 @@ int net_stream_data_client_connected(QIOTask *task, NetStreamData *d)
- {
-     QIOChannelSocket *sioc = QIO_CHANNEL_SOCKET(d->ioc);
-     SocketAddress *addr;
--    int ret;
-     Error *err = NULL;
- 
-     if (qio_task_propagate_error(task, &err)) {
-@@ -166,14 +166,12 @@ int net_stream_data_client_connected(QIOTask *task, NetStreamData *d)
-     addr = qio_channel_socket_get_remote_address(sioc, NULL);
-     g_assert(addr != NULL);
- 
--    ret = qemu_socket_try_set_nonblock(sioc->fd);
--    if (addr->type == SOCKET_ADDRESS_TYPE_FD && ret < 0) {
--        qemu_set_info_str(&d->nc, "can't use file descriptor %s (errno %d)",
--                          addr->u.fd.str, -ret);
-+    if (!qemu_set_blocking(sioc->fd, false, &err)) {
-+        qemu_set_info_str(&d->nc, "error: %s", error_get_pretty(err));
-+        error_free(err);
-         qapi_free_SocketAddress(addr);
-         goto error;
-     }
--    g_assert(ret == 0);
-     qapi_free_SocketAddress(addr);
- 
-     net_socket_rs_init(&d->rs, net_stream_data_rs_finalize, false);
-diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index 599993d40d..7654febfa5 100644
---- a/util/oslib-posix.c
-+++ b/util/oslib-posix.c
-@@ -270,10 +270,6 @@ void qemu_socket_set_block(int fd)
-     g_unix_set_fd_nonblocking(fd, false, NULL);
++
++    g_clear_pointer(fds, g_free);
++    *nfds = 0;
  }
  
--int qemu_socket_try_set_nonblock(int fd)
--{
--    return g_unix_set_fd_nonblocking(fd, true, NULL) ? 0 : -errno;
--}
  
- int socket_set_fast_reuse(int fd)
- {
-diff --git a/util/oslib-win32.c b/util/oslib-win32.c
-index 1566eb57e7..bf5d478c5c 100644
---- a/util/oslib-win32.c
-+++ b/util/oslib-win32.c
-@@ -202,15 +202,6 @@ void qemu_socket_set_block(int fd)
-     ioctlsocket(fd, FIONBIO, &opt);
- }
+@@ -559,9 +587,16 @@ static ssize_t qio_channel_socket_readv(QIOChannel *ioc,
+     }
  
--int qemu_socket_try_set_nonblock(int fd)
--{
--    unsigned long opt = 1;
--    if (ioctlsocket(fd, FIONBIO, &opt) != NO_ERROR) {
--        return -socket_error();
--    }
--    return 0;
--}
--
- int socket_set_fast_reuse(int fd)
- {
-     /* Enabling the reuse of an endpoint that was used by a socket still in
+     if (fds && nfds) {
+-        qio_channel_socket_copy_fds(
+-            &msg, fds, nfds,
+-            flags & QIO_CHANNEL_READ_FLAG_FD_PRESERVE_BLOCKING);
++        bool preserve_blocking =
++            flags & QIO_CHANNEL_READ_FLAG_FD_PRESERVE_BLOCKING;
++
++        qio_channel_socket_copy_fds(&msg, fds, nfds);
++
++        if (!qio_channel_handle_fds(*fds, *nfds,
++                                    preserve_blocking, errp)) {
++            qio_channel_cleanup_fds(fds, nfds);
++            return -1;
++        }
+     }
+ 
+     return ret;
 -- 
 2.48.1
 
