@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785C3B599AE
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 16:25:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 422DDB5999A
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 16:24:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyWab-0005wS-13; Tue, 16 Sep 2025 10:23:25 -0400
+	id 1uyWaX-0005tV-P7; Tue, 16 Sep 2025 10:23:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uyWa0-0005i6-6W
+ id 1uyWa0-0005i7-6B
  for qemu-devel@nongnu.org; Tue, 16 Sep 2025 10:22:48 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uyWZu-0008HP-Dq
+ id 1uyWZu-0008HY-TR
  for qemu-devel@nongnu.org; Tue, 16 Sep 2025 10:22:45 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-25669596921so57024535ad.1
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 07:22:41 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-2445826fd9dso65598555ad.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 07:22:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758032560; x=1758637360; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758032561; x=1758637361; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ggwb1PQpRrrkLOGCaS9ng6BrXdIGDe+gz4mi5GKaHg4=;
- b=Qz5dtjqmycIzu1IkGeg7iLsNqD+MbZgs9cK5MzNp/+YbxQmXDwWC75vyfBcOHLa0Rj
- iLphL0UqWMzbfm3o9XKFAFB90u7D3jm9IC2I+jpmGhZA1OLGZtC81aSdJh8rxBgqwBnY
- 8VvtuMOVhqnmZmM+6ig8Ljx8j0bYFzuQ08XN8YujTBmY3qkG3CLmLnOYeBqoZ77rriBZ
- L41DLHIb7Y9hmvXkiz+E+qdq2Dzq116Nv7qqF9v/0ilESyXbvkZOCR63ffEmNn+rJQ0J
- uQ0Wgv44hAOhkKlK120bH1Q+ZEF2n9QmfBcQU7ATYjED8kPsx1El644SRjwzYeFK2nOm
- 2K7A==
+ bh=+3xm1kMJVy9epiTvDaZGGXppX5/JPVL6xwbTCzPX0xU=;
+ b=y3QarTMOHAL0Kk3Zr/nlcd3dYEIeFwTh37+pA7FHXdodzWf//kDKeJnKvQ74697JXx
+ sHNdAzDKIT4m/xRDGCatPRzrcnGEmkd83QSWfPWcBpwLmZ5xlNVzXxQPMiZbDD/1CjSy
+ kSH5l11sakNmqM7cKWb4TXujsMTqOyelRx336kpXZtlTGk0/9tVrsE9KAh8emE6GxiBo
+ kwYeJ3I8QM+SqHJ84j8wPBuf+SeZ2wlkF6J3LppwveidYoKLqcK6A2D6NzetRXJNEAXH
+ aSvOLa9nbuhqzfqZBTqPRDPCnHucCNEpv7aiF166fMFBujW8A0rhFsy4smI998BrFz2e
+ +FOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758032560; x=1758637360;
+ d=1e100.net; s=20230601; t=1758032561; x=1758637361;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ggwb1PQpRrrkLOGCaS9ng6BrXdIGDe+gz4mi5GKaHg4=;
- b=AdREueHiqbYH0e3k+9XYkV9Avnabaqid1ZOSfAXcQ9rL2rL4NOBF3PWT0op+pscttx
- 1a06Ij51GjrusKAXPlQz8/PJwVkVFwPzQLzvw7Snny9EqHauVqmDHkavK8BNLlitB7O2
- aNDgfP4ivGy1wKFXO3JxbdYCLkpA8jq3qXqCJrPiA2boiB7mIjqoteMIrj+UoofKz6EK
- E+WaW+J80NJ57HB8vlFHaB3oZ7hbODoYMoumz/PDy4Ks2mgwrDs+Lb2BU3741E7vjuM2
- E1cJBmkH0DgQKXVW8BUDhfg3lvp3i6n8KAD8Q3N41W2J11KFEDGyYOqoWvFSPoB8XZeR
- /HEA==
-X-Gm-Message-State: AOJu0Yya4BHxX76++w0oCogCzgJTZO0RlPtDG0pRxeVvNWygu2tViXts
- NHGOmYXK3f5CBNlIWjLm3TjQLuUF/E81sCf9jRUHJp/L9UPM38IC0M9ci9sPqNqYORgmFWyqhY8
- KmWEv
-X-Gm-Gg: ASbGncttZ3fMQq9dVcKYy0NK32IxdXgaJ6BDQPr2pa1RLBdC7BOJzCtT8ezjeFzEJEd
- kX20Ja+IRwo+VItnhMBEwlFG+sz7/oJMbQDncLxXoTTqRlqnzrkC9WM/wYiaoseHK1eGeVFS1RN
- y80Di58767yHdWv7lKThMtjdJizAM43xjhnvnvYwt+jevrK3AG5+CTaFXlQdaKL7vd/g7/Ca1Bj
- Qjj+o+hhEgsO9VZ6dI5cA0QS/OPPisIVrlLuxqa4P3RaS82NZ2+AAFl4syVFx8KjTJwwpjae4af
- Q23FRXbFCW1jNVaskXA9UHkNlg3KiOItr00D11HWJhXE2qpopczQ/stGjATzeOtGrpe3+RLXS7i
- Nf1Xic80dQx1wftDPoVgPYC0PDr29
-X-Google-Smtp-Source: AGHT+IE3CN+8SXPUqhiTrptq+LUoQb03jckSSvZOGZe49jHkgbp5Mfw/0e7ESoBQA2ho9ljZ3tPuCg==
-X-Received: by 2002:a17:903:37c4:b0:248:811e:f86c with SMTP id
- d9443c01a7336-25d26663209mr182399855ad.34.1758032560232; 
+ bh=+3xm1kMJVy9epiTvDaZGGXppX5/JPVL6xwbTCzPX0xU=;
+ b=WjEoYua50931+TPA1LeFB9fr/+ijAhJOLgTKI9VpB/f6kZlC41KXP+4jceZE5mwrGv
+ uqjVj8E9zjnu5/39w73283QT8nVzV6XNYuvAvKqbNyEiXD4Wlj47yhETR5XacjiC6A5M
+ Sr6SVDdbr1vvHeRoMUGku+BpnryhkGX4VmbtDx+GIRNmu+7bC5JUsgwIiRegvpFPvkGH
+ OdtuoFF46fPwCMXNCB3NrUECPNjGjhx8il8ho9KN9mKyrhuc++TGJ7QAVUyjSgCxq6rt
+ y6Nz3cdo4kyd2jd+A4HoVJtYGtcli4h0gkTRLUSJ7zhYJ/fxKdgxS66iC0ccUjQE0t4M
+ 4tFw==
+X-Gm-Message-State: AOJu0Yx2tlXeZfFeSqUB/CVKCoN084LU2K2ng8yU6bITcGTXP/ABn3A2
+ FkV1oeBTT8KCO4VYCrAoYnttSlLjttYlUWr+m/uTkwDLdNDOSyaxg+StXYa6119buJ8mzHRILwK
+ LVq6N
+X-Gm-Gg: ASbGncuThKnHqTXRhSisNp1DZyNAInPxfaUUG9znMSrfyzRpPkUm2XA7NgJERlNLDto
+ 2Hl1nM1v0+YJA/6umOcBKj3+msmyuvTsueQo0T7t0DwU9IumEoIr7h+KyZr0waPql19sVonWDb6
+ DnBjEqWzOc3I5gNAZME9QI2q7QtR9sv10SM7cNVHT0p747aTMknVBgCIj4+GMVd/4rY/LC7L3Z3
+ NCh1t4qn42q6ajC5S1c93x9WJgDDehkMHwoHY1VLNyj0jPpdRLWC40+6PHNPUIFB01zyRGEsjrr
+ T3Jp63Jh+kNnVj6diHEDgoP5jE1AIpbHCJS3ARpD7HGFavqCoep/12Pksde57uE1korBFpp3lYL
+ HLk/99A6L/XS7QdeNPVbqT2jU95/Y
+X-Google-Smtp-Source: AGHT+IEKYFr5mHf6j9pPZf1kw+lkToeLk+paj3zDSHydNPbS1vfxBAr8FDnRmwXS0QuIe2iW0HXWBQ==
+X-Received: by 2002:a17:903:287:b0:25c:d4b6:f117 with SMTP id
+ d9443c01a7336-25d276242femr211550615ad.35.1758032560961; 
  Tue, 16 Sep 2025 07:22:40 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2651d2df15esm73459905ad.45.2025.09.16.07.22.39
+ d9443c01a7336-2651d2df15esm73459905ad.45.2025.09.16.07.22.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Sep 2025 07:22:39 -0700 (PDT)
+ Tue, 16 Sep 2025 07:22:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	peter.maydell@linaro.org
-Subject: [PATCH v2 01/36] target/arm: Introduce KVMID_AA64_SYS_REG64
-Date: Tue, 16 Sep 2025 07:22:02 -0700
-Message-ID: <20250916142238.664316-2-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org, peter.maydell@linaro.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PATCH v2 02/36] target/arm: Move compare_u64 to helper.c
+Date: Tue, 16 Sep 2025 07:22:03 -0700
+Message-ID: <20250916142238.664316-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916142238.664316-1-richard.henderson@linaro.org>
 References: <20250916142238.664316-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,34 +98,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow us to create kvm ids directly, rather than going
-through ENCODE_AA64_CP_REG + cpreg_to_kvm_id.
+We will use this function beyond kvm.c.
 
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/kvm-consts.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ target/arm/internals.h |  3 +++
+ target/arm/helper.c    | 11 +++++++++++
+ target/arm/kvm.c       | 11 -----------
+ 3 files changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/target/arm/kvm-consts.h b/target/arm/kvm-consts.h
-index c44d23dbe7..fdb305eea1 100644
---- a/target/arm/kvm-consts.h
-+++ b/target/arm/kvm-consts.h
-@@ -180,4 +180,15 @@ MISMATCH_CHECK(CP_REG_ARM64_SYSREG_OP2_SHIFT, KVM_REG_ARM64_SYSREG_OP2_SHIFT);
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index f5a1e75db3..41133df778 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1999,4 +1999,7 @@ void vfp_clear_float_status_exc_flags(CPUARMState *env);
+ void vfp_set_fpcr_to_host(CPUARMState *env, uint32_t val, uint32_t mask);
+ bool arm_pan_enabled(CPUARMState *env);
  
- #undef MISMATCH_CHECK
- 
-+#define KVMID_AA64_SYS_REG_(op0, op1, crn, crm, op2)    \
-+    (CP_REG_AA64_MASK | CP_REG_ARM64_SYSREG |           \
-+     ((op0) << CP_REG_ARM64_SYSREG_OP0_SHIFT) |         \
-+     ((op1) << CP_REG_ARM64_SYSREG_OP1_SHIFT) |         \
-+     ((crn) << CP_REG_ARM64_SYSREG_CRN_SHIFT) |         \
-+     ((crm) << CP_REG_ARM64_SYSREG_CRM_SHIFT) |         \
-+     ((op2) << CP_REG_ARM64_SYSREG_OP2_SHIFT))
-+
-+#define KVMID_AA64_SYS_REG64(op0, op1, crn, crm, op2)   \
-+    (KVMID_AA64_SYS_REG_(op0, op1, crn, crm, op2) | CP_REG_SIZE_U64)
++/* Compare uint64_t for qsort and bsearch. */
++int compare_u64(const void *a, const void *b);
 +
  #endif
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 19637e7301..df9e0c7bca 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -40,6 +40,17 @@
+ 
+ static void switch_mode(CPUARMState *env, int mode);
+ 
++int compare_u64(const void *a, const void *b)
++{
++    if (*(uint64_t *)a > *(uint64_t *)b) {
++        return 1;
++    }
++    if (*(uint64_t *)a < *(uint64_t *)b) {
++        return -1;
++    }
++    return 0;
++}
++
+ uint64_t raw_read(CPUARMState *env, const ARMCPRegInfo *ri)
+ {
+     assert(ri->fieldoffset);
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 6672344855..9e569eff65 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -718,17 +718,6 @@ void kvm_arm_register_device(MemoryRegion *mr, uint64_t devid, uint64_t group,
+     memory_region_ref(kd->mr);
+ }
+ 
+-static int compare_u64(const void *a, const void *b)
+-{
+-    if (*(uint64_t *)a > *(uint64_t *)b) {
+-        return 1;
+-    }
+-    if (*(uint64_t *)a < *(uint64_t *)b) {
+-        return -1;
+-    }
+-    return 0;
+-}
+-
+ /*
+  * cpreg_values are sorted in ascending order by KVM register ID
+  * (see kvm_arm_init_cpreg_list). This allows us to cheaply find
 -- 
 2.43.0
 
