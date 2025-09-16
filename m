@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C586B59FC3
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 19:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A481B59FC6
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 19:52:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyZpy-0007gy-3N; Tue, 16 Sep 2025 13:51:30 -0400
+	id 1uyZq7-0007vU-ES; Tue, 16 Sep 2025 13:51:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uyZpu-0007X1-50
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 13:51:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uyZpv-0007eU-Vk
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 13:51:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uyZpr-0008FY-Od
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 13:51:25 -0400
+ id 1uyZpu-0008GB-6K
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 13:51:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758045081;
+ s=mimecast20190719; t=1758045085;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lmTIhiKnWLdIYW4rnhB1y56xrWSc6m32XIh81k3L+XQ=;
- b=f9Y83LLFespg+hETUHZ92ElR3xPVSVaKiDrmq+3FXU2ZOOBEZssNxzgp26iGE5rnqCOHp3
- PRz4kKFqdB1Ljt2zjomzUm1GJY5N95bXxyn2wzfPELTnMBU2q5R4Iab75tdiyZr0lyeUb+
- caC0dp7e1ZHwoHYtTKPgWV262N8BZso=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=IzGegXN/RYd7sYKmJgBVz2KOBcrD6fNofaN5o4NAuYE=;
+ b=K/dy5OwxaDoq55do8EfJ/BDy/L0bCkIeUb9ZsRaZvIjpBTalcQf5AkbwcBAHztDBbVSbjJ
+ wxnphrSehCKKy6x3PFhWNZdHT+8mlCYQP5XpPaOHSZpsaYb+FW9qBUYSi99jar0jP9dTRw
+ arhyw4owxvQGbTGjIcQJ/ImEhL7UhKA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-412-X7CBvEW1Nn-3blxWq517bA-1; Tue,
- 16 Sep 2025 13:51:19 -0400
-X-MC-Unique: X7CBvEW1Nn-3blxWq517bA-1
-X-Mimecast-MFC-AGG-ID: X7CBvEW1Nn-3blxWq517bA_1758045077
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-241-Ez6KGhAGNny0Mm__7goRaQ-1; Tue,
+ 16 Sep 2025 13:51:21 -0400
+X-MC-Unique: Ez6KGhAGNny0Mm__7goRaQ-1
+X-Mimecast-MFC-AGG-ID: Ez6KGhAGNny0Mm__7goRaQ_1758045079
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B431F195609E; Tue, 16 Sep 2025 17:51:17 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A63181800372; Tue, 16 Sep 2025 17:51:19 +0000 (UTC)
 Received: from localhost (unknown [10.2.17.12])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2940C195608E; Tue, 16 Sep 2025 17:51:16 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 1A4191800447; Tue, 16 Sep 2025 17:51:18 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -55,16 +55,17 @@ Cc: Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <rth@twiddle.net>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL v2 3/8] tracetool: avoid space after "*" in arg types
-Date: Tue, 16 Sep 2025 13:51:03 -0400
-Message-ID: <20250916175108.139627-4-stefanha@redhat.com>
+Subject: [PULL v2 4/8] tracetool: include SPDX-License-Identifier in generated
+ files
+Date: Tue, 16 Sep 2025 13:51:04 -0400
+Message-ID: <20250916175108.139627-5-stefanha@redhat.com>
 In-Reply-To: <20250916175108.139627-1-stefanha@redhat.com>
 References: <20250916175108.139627-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -91,41 +92,125 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-QEMU code style is to have no whitespace between "*" and the
-arg name. Since generated trace code will soon be added to
-git, make it comply with code style.
+While these files are auto-generated, a later commit will add
+reference output to git, so having SPDX-License-Identifier is
+desirable.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-id: 20250916081638.764020-4-berrange@redhat.com
+Message-id: 20250916081638.764020-5-berrange@redhat.com
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- scripts/tracetool/__init__.py | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ scripts/tracetool/format/c.py                | 1 +
+ scripts/tracetool/format/d.py                | 3 ++-
+ scripts/tracetool/format/h.py                | 1 +
+ scripts/tracetool/format/log_stap.py         | 1 +
+ scripts/tracetool/format/simpletrace_stap.py | 1 +
+ scripts/tracetool/format/stap.py             | 1 +
+ scripts/tracetool/format/ust_events_c.py     | 1 +
+ scripts/tracetool/format/ust_events_h.py     | 1 +
+ 8 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
-index 2ae2e562d6..0f33758870 100644
---- a/scripts/tracetool/__init__.py
-+++ b/scripts/tracetool/__init__.py
-@@ -170,10 +170,16 @@ def __len__(self):
+diff --git a/scripts/tracetool/format/c.py b/scripts/tracetool/format/c.py
+index 7aa51cd41a..e473fb6c6e 100644
+--- a/scripts/tracetool/format/c.py
++++ b/scripts/tracetool/format/c.py
+@@ -22,6 +22,7 @@ def generate(events, backend, group):
+     header = "trace-" + group + ".h"
  
-     def __str__(self):
-         """String suitable for declaring function arguments."""
-+        def onearg(t, n):
-+            if t[-1] == '*':
-+                return "".join([t, n])
-+            else:
-+                return " ".join([t, n])
-+
-         if len(self._args) == 0:
-             return "void"
-         else:
--            return ", ".join([ " ".join([t, n]) for t,n in self._args ])
-+            return ", ".join([ onearg(t, n) for t,n in self._args ])
+     out('/* This file is autogenerated by tracetool, do not edit. */',
++        '/* SPDX-License-Identifier: GPL-2.0-or-later */',
+         '',
+         '#include "qemu/osdep.h"',
+         '#include "qemu/module.h"',
+diff --git a/scripts/tracetool/format/d.py b/scripts/tracetool/format/d.py
+index ebfb714200..a5e096e214 100644
+--- a/scripts/tracetool/format/d.py
++++ b/scripts/tracetool/format/d.py
+@@ -39,7 +39,8 @@ def generate(events, backend, group):
+     if not events and platform != "darwin":
+         return
  
-     def __repr__(self):
-         """Evaluable string representation for this object."""
+-    out('/* This file is autogenerated by tracetool, do not edit. */'
++    out('/* This file is autogenerated by tracetool, do not edit. */',
++        '/* SPDX-License-Identifier: GPL-2.0-or-later */',
+         '',
+         'provider qemu {')
+ 
+diff --git a/scripts/tracetool/format/h.py b/scripts/tracetool/format/h.py
+index ea126b07ea..a00ae475f7 100644
+--- a/scripts/tracetool/format/h.py
++++ b/scripts/tracetool/format/h.py
+@@ -19,6 +19,7 @@ def generate(events, backend, group):
+     header = "trace/control.h"
+ 
+     out('/* This file is autogenerated by tracetool, do not edit. */',
++        '/* SPDX-License-Identifier: GPL-2.0-or-later */',
+         '',
+         '#ifndef TRACE_%s_GENERATED_TRACERS_H' % group.upper(),
+         '#define TRACE_%s_GENERATED_TRACERS_H' % group.upper(),
+diff --git a/scripts/tracetool/format/log_stap.py b/scripts/tracetool/format/log_stap.py
+index b49afababd..710d62bffe 100644
+--- a/scripts/tracetool/format/log_stap.py
++++ b/scripts/tracetool/format/log_stap.py
+@@ -88,6 +88,7 @@ def c_fmt_to_stap(fmt):
+ 
+ def generate(events, backend, group):
+     out('/* This file is autogenerated by tracetool, do not edit. */',
++        '/* SPDX-License-Identifier: GPL-2.0-or-later */',
+         '')
+ 
+     for event_id, e in enumerate(events):
+diff --git a/scripts/tracetool/format/simpletrace_stap.py b/scripts/tracetool/format/simpletrace_stap.py
+index 4f4633b4e6..72971133bf 100644
+--- a/scripts/tracetool/format/simpletrace_stap.py
++++ b/scripts/tracetool/format/simpletrace_stap.py
+@@ -22,6 +22,7 @@ def global_var_name(name):
+ 
+ def generate(events, backend, group):
+     out('/* This file is autogenerated by tracetool, do not edit. */',
++        '/* SPDX-License-Identifier: GPL-2.0-or-later */',
+         '')
+ 
+     for event_id, e in enumerate(events):
+diff --git a/scripts/tracetool/format/stap.py b/scripts/tracetool/format/stap.py
+index a218b0445c..4d77fbc11a 100644
+--- a/scripts/tracetool/format/stap.py
++++ b/scripts/tracetool/format/stap.py
+@@ -38,6 +38,7 @@ def generate(events, backend, group):
+               if "disable" not in e.properties]
+ 
+     out('/* This file is autogenerated by tracetool, do not edit. */',
++        '/* SPDX-License-Identifier: GPL-2.0-or-later */',
+         '')
+ 
+     for e in events:
+diff --git a/scripts/tracetool/format/ust_events_c.py b/scripts/tracetool/format/ust_events_c.py
+index deced9533d..569754a304 100644
+--- a/scripts/tracetool/format/ust_events_c.py
++++ b/scripts/tracetool/format/ust_events_c.py
+@@ -20,6 +20,7 @@ def generate(events, backend, group):
+               if "disabled" not in e.properties]
+ 
+     out('/* This file is autogenerated by tracetool, do not edit. */',
++        '/* SPDX-License-Identifier: GPL-2.0-or-later */',
+         '',
+         '#include "qemu/osdep.h"',
+         '',
+diff --git a/scripts/tracetool/format/ust_events_h.py b/scripts/tracetool/format/ust_events_h.py
+index b99fe6896b..2a31fefeca 100644
+--- a/scripts/tracetool/format/ust_events_h.py
++++ b/scripts/tracetool/format/ust_events_h.py
+@@ -25,6 +25,7 @@ def generate(events, backend, group):
+         include = "trace-ust.h"
+ 
+     out('/* This file is autogenerated by tracetool, do not edit. */',
++        '/* SPDX-License-Identifier: GPL-2.0-or-later */',
+         '',
+         '#undef TRACEPOINT_PROVIDER',
+         '#define TRACEPOINT_PROVIDER qemu',
 -- 
 2.51.0
 
