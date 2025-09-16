@@ -2,79 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D2AB59A33
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 16:33:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 683ADB59A6D
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 16:38:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyWiy-0004fi-2Y; Tue, 16 Sep 2025 10:32:04 -0400
+	id 1uyWos-000651-Uw; Tue, 16 Sep 2025 10:38:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uyWiT-0004ZY-To
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 10:31:37 -0400
-Received: from mail-yx1-xb12e.google.com ([2607:f8b0:4864:20::b12e])
+ id 1uyWoq-00063h-5h
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 10:38:08 -0400
+Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uyWiR-0001Bt-TO
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 10:31:33 -0400
-Received: by mail-yx1-xb12e.google.com with SMTP id
- 956f58d0204a3-61381743635so3009360d50.1
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 07:31:31 -0700 (PDT)
+ id 1uyWoo-0002Oi-5o
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 10:38:07 -0400
+Received: by mail-yw1-x1136.google.com with SMTP id
+ 00721157ae682-71d60504788so39673287b3.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 07:38:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758033090; x=1758637890; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758033483; x=1758638283; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=jw4FW/YIYVcsrY3eYPQ0oFEdQft+o2Z92VCWpTv71vU=;
- b=BkWsO+kyGpntYEezDNnNj8rwLh907CHYdqDqJIig6zRDCp+tGobjhUcObrlkjl36Xp
- egc4vwe6pQQ9fqnNU3Jxi4sotUDt6x6B8Lxj2PI9AIZZSHIMwhl2UFDLZMSe8OiOl3qo
- +SWYuAhbXQCRzwA40WQeZD2l4vZNKPYNCnpeTr7pTtP2C/V797H0L1wT72cJbw1UR62U
- XiH4YNenlF0Q8VVKht1iJK0kxE7p4wgSha9t2JiKOYRsO7DEG+JgjPCTt4AKbs8cR+yu
- U2evSbNPhfMy3TLhf+dXAKhzGMox07nEfUTzJQc5kFLCZfbHbi487N3ty3g3NK2Sn/PI
- zV5w==
+ bh=qX0GuAamKBTfw0frA2HFTZ5/tUgwMIal8NRgrJpGVa8=;
+ b=YCW6xiWmdeemPgvob2fuQeYP5FiPq1dZfLXX9YDWGD+CmDEwJvIjef0TiMx4li7O4m
+ MHCZZPdpt+2JVwxCyC6+OfYfGAw0o6IacxPEO06oTaOU1mCx5R/Jv4JhQMKz4G8sQayt
+ LblG1UD+WXsbrpNNwEmlN5XnFvCWCbHQ0JKm2bWitAvE7zDNAxV6PJj3AmEOePw6harz
+ 9n9KX4bRFrnJS/1MdznHoQlIlTgclf/djorV/zqcLFBIliNggBryJCexF4DRwXngsuKd
+ hpTc1bE2jvwAMJrbyB4FjHSBtuiLE8AvMYNgPVO4HmlTy3YBIR7ipv1OKa/2MqVMHzMS
+ 4a6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758033090; x=1758637890;
+ d=1e100.net; s=20230601; t=1758033483; x=1758638283;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=jw4FW/YIYVcsrY3eYPQ0oFEdQft+o2Z92VCWpTv71vU=;
- b=qYmdEwYu0SoPSC1YleqQB5OvXz5I4Cy5yQ7gyMUmbUiw5UhAKZbBc/NZdrzKLKqdZv
- bm/ZTvABWmwcT/gm7QKwgIfcZknSiH0nHB+kfALHLLBgxf+ttlcriGCpHVFZQe8l4Slm
- HDUclWN9tuY9kaoVJHA8kwiIW5J45aNXKVES2kQGyxJ6XDMn2xAw63t6LhdBxIuxVEh5
- 219nyhdxo20cANvlsbaa2OZpLS6jN0FId99WF/kkC6Cia4cjE2Ur43NuHKn9t4v5lhlb
- fKsEDN87YWX+NTQXIT+3XQz+b/ZeT9LYH4cMDmsJ80G2JZgQngZ97yXr9HEHmRdzNsgM
- D/fg==
-X-Gm-Message-State: AOJu0Yxt77nYzEHmyE74z1eCmlMn++ZuTfOZY1mwAf+zZp48TKIkBGxq
- w9bzrGz/OHsolu/eO3gfsAAGvpq2r94I9IvHTMfmdIqSRnIFiGk3uKV0fkZsr3og4iOrsAwaxNw
- usSvAyNps5o83UTAPHrHX1r8/oRi+Z0/U1s8i/UC7eg==
-X-Gm-Gg: ASbGnctVrrqqJZVAqx5n37QHnDStq9pigWz7U1hMMdwMz46l3a5dxDxTXygI+DxEZv3
- w7Z0hJP1KNVyeGHHxFAcorIPbEj6E+Jg7kpeo4i4IvF5w8CKytiQes3wYfWHAPmqriUAlLdoYhK
- orb8cteyWpZDU6mVA1CEmDBg4+rjN0SdU6JEXbjDzVum/+cT+WpjsjvskoLczQIOpOwk1CAto1i
- 0sc61TknUAGfK+Kw5Q=
-X-Google-Smtp-Source: AGHT+IGmhSpWgOrpui2ZyomB3l5pF7m6MCv1LSdbkn8tZpwwEwtzGFb1S2sFUzexa02nI0Ig1bjckHuR8zeG1Iuu+lw=
-X-Received: by 2002:a05:690c:ed1:b0:737:91f6:3f7b with SMTP id
- 00721157ae682-73791f649e2mr13295707b3.45.1758033089714; Tue, 16 Sep 2025
- 07:31:29 -0700 (PDT)
+ bh=qX0GuAamKBTfw0frA2HFTZ5/tUgwMIal8NRgrJpGVa8=;
+ b=UsKWaZkG+1NxVO3DN3adIorMnlJUq1USaHqzjMIWbVS3kXoSXGSm9Cy1mwg/lMFssd
+ 07ZXu16xXO/hASwqrVjUsbph7ce3qm2U3R3uAqG3wSTTL0k1a6Q33Asjbqvo+IqdsenU
+ 9R/grUz+Sdv4EJks6vBeC+D30j3KkA835qLMG+otVM/j+PdVNZmjTQ+d3pfq4vhruxkJ
+ dsco0a99jWzJKHZsd31VfexxJ9n86PplXWoQBzaaBNLQfvgfFpGMv2Zwv2VQN31STbNv
+ NDv419ECQSLPHhB34QNWVkngdbOOx2jATBb0Fo+Fo7geos3sYcN4JKFD+HWBuGIH8owq
+ tCNQ==
+X-Gm-Message-State: AOJu0YzSXMY3iXnvAk6NuMz28SPBX3nK5dJkaupuG4EpVnMwzOlzNW3F
+ p60xTmaR55GmZtBc7KBdP845WTKU0yJ8zCJoAIavgxAOFshqgN+ujWU6hfQu+DOTBII5UZe+w0H
+ OBKjOxaD935CVAJrOJlby5z8qr96y1Ymt8JJNms+iS5iWyX+a5FUA
+X-Gm-Gg: ASbGncsd2psTJ61kKoRpiSIh+/Pe1/7ZRqhRSN94TEm9VV6lopBTD9kjvVycuu2yPCt
+ DAG14MXSAQAtIRPsXZnDc9aMhxrb3KBAX8Bauv6T/Se734uDNkXwTTlOc2UnbjPbLpsuu3k4FIk
+ qmNyavxrKXWxQAy4WlRNoNy2sf8ba/yw39VDYqnaEdtMSIBk6EMKl61t1aSq+Cvfl0VwQFes3ab
+ aYA/A1Jc1RgEN3jmGQ=
+X-Google-Smtp-Source: AGHT+IGNNZs50oB77iHUmCEPCMZOwNHTR9xEy17OTSjLDn9zduGycbvuiPwUpl3truRDbi2XcztSyb4U2XU2urV5hJ8=
+X-Received: by 2002:a05:690c:304:b0:721:28ef:a9b0 with SMTP id
+ 00721157ae682-730623e2afbmr125908077b3.9.1758033482421; Tue, 16 Sep 2025
+ 07:38:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250912100059.103997-1-luc.michel@amd.com>
- <20250912100059.103997-40-luc.michel@amd.com>
-In-Reply-To: <20250912100059.103997-40-luc.michel@amd.com>
+References: <20250913080943.11710-1-pbonzini@redhat.com>
+ <CAFEAcA8nFU1fRFMQ_jLcDzKPoPKeV789L5iTgq-kqoa0zULmaQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA8nFU1fRFMQ_jLcDzKPoPKeV789L5iTgq-kqoa0zULmaQ@mail.gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 16 Sep 2025 15:31:17 +0100
-X-Gm-Features: Ac12FXyIZ_M7_l4mtZuzHgqidr-i53y5NlacE9gN9NtnIxirSGKnhW3Qn2gWb6Y
-Message-ID: <CAFEAcA8gBaxT19rHHBn2SQZAQvTjA==GNttmtndQ2oWgmBKP+A@mail.gmail.com>
-Subject: Re: [PATCH v5 39/47] target/arm/tcg/cpu64: add the cortex-a78ae CPU
-To: Luc Michel <luc.michel@amd.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Francisco Iglesias <francisco.iglesias@amd.com>,
- "Edgar E . Iglesias" <edgar.iglesias@amd.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Alistair Francis <alistair@alistair23.me>,
- Frederic Konrad <frederic.konrad@amd.com>, 
- Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+Date: Tue, 16 Sep 2025 15:37:51 +0100
+X-Gm-Features: Ac12FXy0-HQu6hEqC2MSVEvI4rjLguf0vkfkzJ27q1YAPrXFqs5p9_y1UqjLjww
+Message-ID: <CAFEAcA_+6hXCO3ruA+P_pYVGjtdCA-Li27D13McTf17GX4S94g@mail.gmail.com>
+Subject: Re: [PULL 00/61] CPU, Rust, x86 changes for 2025-09-13
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,13 +91,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 12 Sept 2025 at 11:03, Luc Michel <luc.michel@amd.com> wrote:
+On Sat, 13 Sept 2025 at 10:37, Peter Maydell <peter.maydell@linaro.org> wrote:
 >
-> Add support for the ARM Cortex-A78AE CPU.
+> On Sat, 13 Sept 2025 at 09:12, Paolo Bonzini <pbonzini@redhat.com> wrote:
+> >
+> > The following changes since commit 190d5d7fd725ff754f94e8e0cbfb69f279c82b5d:
+> >
+> >   Merge tag 'pull-request-2025-09-09' of https://gitlab.com/thuth/qemu into staging (2025-09-11 12:41:01 +0100)
+> >
+> > are available in the Git repository at:
+> >
+> >   https://gitlab.com/bonzini/qemu.git tags/for-upstream
+> >
+> > for you to fetch changes up to 8733ddc08165d901eb2c87f364f814f58ab9fd19:
+> >
+> >   accel/kvm: Set guest_memfd_offset to non-zero value only when guest_memfd is valid (2025-09-13 07:52:55 +0200)
+> >
+> > ----------------------------------------------------------------
+> > * cpu-exec: more cleanups to CPU loop exits
+> > * python: bump bundled Meson to 1.9.0
+> > * rust: require Rust 1.83.0
 >
-> Signed-off-by: Luc Michel <luc.michel@amd.com>
+> I still have an unanswered question about moving our Rust
+> minimum version forwards which I'd like to get clarity
+> on before we commit to this, please.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+So if I understood the outcome of today's call correctly,
+we should hold off on the 1.83.0 bump until that version
+has landed in the relevant ubuntu LTS distros (work in
+progress on their side), but after that it's available
+in all our target distro versions and we can take it as
+our minimum supported version ?
 
 thanks
 -- PMM
