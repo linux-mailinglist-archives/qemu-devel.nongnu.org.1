@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D5CB5A050
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:13:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B97B5A046
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:11:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uya5m-0004Ub-Ax; Tue, 16 Sep 2025 14:07:51 -0400
+	id 1uya5y-00057z-4x; Tue, 16 Sep 2025 14:08:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4z-0003DJ-Al
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:07:03 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1uya4y-0003Cp-Na
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:07:00 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4v-0001dt-Tl
+ id 1uya4s-0001dz-0U
  for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:07:00 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3e9ca387425so2284407f8f.0
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:46 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-45f29e5e89bso36185535e9.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758046006; x=1758650806; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758046007; x=1758650807; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WKrPXfhV0yZcHSRkAd9uqCS4QKSHcYCg0rne8WnkpnI=;
- b=ER8lvKoSqFqzfCfLj1NDCd6bmPyc/Q08usr2BgC1z3TuRPWwZ+wjJgHOKxxYmfTAc6
- nfLbQsrVR1fCB0rfRLfQIjGEUdvEPmXxW8wQqNPVu6pB3pFbeMvi74Gciyj8bqFOjQET
- uZouIxUC0oEZ9vqW8p0pxhTrUQMH27LmSOcOx9aqQj3CzujWDYwPezFSe0JoBKAYbWta
- DC8PRhFNDGElxNOcrKhGwnNTHQuWIXlFszJ15B33/vq+Kt/dKb156opDnPtoaZPG2rU5
- Cu51uTHyWrMoNYPX9n67tekQq2PHu1EGvLkKAOxjjgWtXzxoaXTtsNRwtY40sA/M9U2M
- Ah/A==
+ :reply-to; bh=QJC90Z9Jna1Frj0HcvsOKEe9UH6moSfHJHHkk9hg+yo=;
+ b=TA+ZtSf4tRL9WJ+3+raMkgpvqfV6Bu+UXUU525USzSZjb/xNAF3/wlvk4JPtdpoEqS
+ T8VkT6hhHp9aIyc0T17wtNMv8lEvcgFhd2Zn1SRtpUmJKVXtOnv78pTZpMNjxjCYqJKz
+ KcN6O95SUyas3b6vrgj/mszZovGljRoPMPEYQJcU4VCMhZjYknnttTyYGfRGAKPmbEwX
+ tL4xoYZvypQlVlh2Aw6WKL2nQFRQ0OrXZgddNaQcawtDKaMdlxA60IbIFzsB7vExgKBY
+ QwYjzAPz860LvTQF2QlEKpMfGGDxwGV4uUL8xZTMAR+pdPYQgVYgvLWFAsJSH8u7YjIR
+ oJcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758046006; x=1758650806;
+ d=1e100.net; s=20230601; t=1758046007; x=1758650807;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WKrPXfhV0yZcHSRkAd9uqCS4QKSHcYCg0rne8WnkpnI=;
- b=q6U3nZCcC+tCArTNmX0GnCyORQ1e5ZgYughiFqeLoGwzz+rYWa1x9+J2KbV5SvJcvq
- oC32DokkI6JHBu//R1q+P5ZjqsSOpUtxmEUCr0/qjk0bFXTIO+rNbXNmYu18VldPADMi
- yemJS0tsCviTVAq1CwlcOrULzDj26JUeazUeZ9UvBWBQRYtNO83f9QOLCRXX5CIRZ+uP
- OTvUNJK/Jkk84Jg21TJkL09nZjTDBAXWFztNf1h2mG5MtVEIJFUKI8vcBHX4D4Y/u0RY
- ZDb2uRZSdFe5MJY3pV7JP8QwONwXYtOMBgq47TU5JclAF2cnwdjBIuiwgfSXP8REIbfX
- cTiQ==
-X-Gm-Message-State: AOJu0YwOha+PcQu9U6sIM4+DdIKW9j4Qx094Gnem/GvUTp6/rbyGqkfl
- 8kXUB4rNzQN9XLGIC8GKNtE+IXIQYrBHuVMzzeRCVcbzGDBtkadPBHCMH7H90xzahjfKecrGtAS
- d5YOQ
-X-Gm-Gg: ASbGncuBdHQPGvJXApiDCuO9mDqOrVqW+5aO9T575nKO0FvX9ssr9HzBO/1+SGVz599
- IzEP7/bKYmRhWAckAmbqwMyh3q4XDlBPzizky3j5Dc5W9QMeSoyLE1RB+B21s6ADDQGdUmUUE8Z
- esTTKluYb6oq/hWieHsWP87YOegydOjraaYJOQ+moQPGMTY4U33RH4kWnBuOk8LlVt1X05ppMmx
- wuha4mGImdQmAzRXXHoHQV5Urz8FwE1BBvBJcUQ1219wHbeY+1/EpT6p8fMOOs8ivQnZLC/AgdS
- 8Uuufr+BEs16jugEplZIj8xQ3eskWMa8a7O/T2VdA1hRjmkHLV2M5WvxhnZqGbivh7jUr45r4Qs
- POrNOTEBXqFEpWePRbzxiRucLWXfG
-X-Google-Smtp-Source: AGHT+IGG/xL9OT5ukmdFF6iyS38WHQqljS5zhtvsweQV6Si2QyaUwWa1ZhbRurwpdy4mMpFX8+JCmQ==
-X-Received: by 2002:a05:6000:40de:b0:3e9:978e:48fd with SMTP id
- ffacd0b85a97d-3e9978e8e25mr10239585f8f.23.1758046005711; 
- Tue, 16 Sep 2025 11:06:45 -0700 (PDT)
+ bh=QJC90Z9Jna1Frj0HcvsOKEe9UH6moSfHJHHkk9hg+yo=;
+ b=osY+1YNj5Z7um7ZTB0Onir4m9A2bZrpKmOyYOOGT4q47XruhHc2boeXW2pqU0zKrp8
+ X6dECBzPDekZC1c79McKynoHCIcPtXMx6SnKCqdp9fHCJQTwmqikWjUElGjixhuUMb3h
+ 3277hu+dr7Pkhoq0iCSB+Je25zLk/w6O6zvTviPDi0qUecsWSkO6tnfOl8YrTO2/GOsE
+ Qhpsd+WM2AeJG0gIM/jj7xO1jspbsmp8lIHSJBSopHMttW39+35Lm6bqLackApz9Kxzm
+ W72NrX440ooJHbbwFNIPeHgEveMEh1j+SXJ4joju+8RXU+pTiEgC0FcaQ88z89nIOoWu
+ AleA==
+X-Gm-Message-State: AOJu0Yy8vLb3BPuPxp35QGkYVj+btyagiy1Df791XGIrkB0pCSJK3c+7
+ g4s4uSMh7u2vc5KAsznb0MurRjyqTFyjaKtjBwh4LTNPxD1JfM/JO/sYaVuYn1Zu6esOk5+0ifh
+ /OEL+
+X-Gm-Gg: ASbGncsjIF2S19kxBcwc6ysyllZR8Zq4sUG/9jyljordYdjYoR/wQqM2w8ZOdSSwC3M
+ lKJZkDpw7Nf/iq46s3NJE5fudZohyKWvjE2JA3Q/Vk2A6gvahEqGiDZyaebplToDILpUu7Xx2dH
+ +c3WAQzjQJ0TIP7eahAKsKWVs3SMlIna89jDx8SGPk/jOj/zW9JDVD1/Pg9+W1+ffCtwr6U9mME
+ COg75gZr1cowAKXWOQiR6U/hNSuDYAnclJHoqVRGMZ2CFxPbPI69dIDIr/JcSqLMYI06j38cR/U
+ LS/K3pUwwOEHevKe01QyjVbA/bfd062qbJ1xZyeKxJTPJgwXYKN2zY1rUrV7BNPBnpYlopfT5HN
+ GW0lrQXQA/83MyKKegEYzAt+su9mO
+X-Google-Smtp-Source: AGHT+IE7P2el+6TznladCGhlkoQyGMn+tDwscEdohPVr2RPJdGnqAogxRZGcxelBDTNh3ZuUA0qp8g==
+X-Received: by 2002:a05:600c:4685:b0:45c:b607:ea95 with SMTP id
+ 5b1f17b1804b1-45f211e6054mr184892085e9.18.1758046006924; 
+ Tue, 16 Sep 2025 11:06:46 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.44
+ ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Sep 2025 11:06:44 -0700 (PDT)
+ Tue, 16 Sep 2025 11:06:46 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/36] hw/arm/virt: Factor out common SMMUV3 dt bindings code
-Date: Tue, 16 Sep 2025 19:06:02 +0100
-Message-ID: <20250916180611.1481266-29-peter.maydell@linaro.org>
+Subject: [PULL 29/36] hw/arm/virt: Add an SMMU_IO_LEN macro
+Date: Tue, 16 Sep 2025 19:06:03 +0100
+Message-ID: <20250916180611.1481266-30-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916180611.1481266-1-peter.maydell@linaro.org>
 References: <20250916180611.1481266-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,12 +97,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shameer Kolothum <skolothumtho@nvidia.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-No functional changes intended. This will be useful when we
-add support for user-creatable smmuv3 device.
+This is useful as the subsequent support for new SMMUv3 dev will also
+use the same.
 
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Donald Dutile <ddutile@redhat.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Tested-by: Nathan Chen <nathanc@nvidia.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
@@ -110,94 +111,36 @@ Tested-by: Eric Auger <eric.auger@redhat.com>
 Tested-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
-Reviewed-by: Donald Dutile <ddutile@redhat.com>
-Message-id: 20250829082543.7680-5-skolothumtho@nvidia.com
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Message-id: 20250829082543.7680-6-skolothumtho@nvidia.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/virt.c | 54 +++++++++++++++++++++++++++------------------------
- 1 file changed, 29 insertions(+), 25 deletions(-)
+ hw/arm/virt.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 16a1ac3c2d9..bebe2d8cea9 100644
+index bebe2d8cea9..64b4dcf6071 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -1444,19 +1444,43 @@ static void create_pcie_irq_map(const MachineState *ms,
-                            0x7           /* PCI irq */);
- }
+@@ -151,6 +151,9 @@ static void arm_virt_compat_set(MachineClass *mc)
+ #define LEGACY_RAMLIMIT_GB 255
+ #define LEGACY_RAMLIMIT_BYTES (LEGACY_RAMLIMIT_GB * GiB)
  
-+static void create_smmuv3_dt_bindings(const VirtMachineState *vms, hwaddr base,
-+                                      hwaddr size, int irq)
-+{
-+    char *node;
-+    const char compat[] = "arm,smmu-v3";
-+    const char irq_names[] = "eventq\0priq\0cmdq-sync\0gerror";
-+    MachineState *ms = MACHINE(vms);
++/* MMIO region size for SMMUv3 */
++#define SMMU_IO_LEN 0x20000
 +
-+    node = g_strdup_printf("/smmuv3@%" PRIx64, base);
-+    qemu_fdt_add_subnode(ms->fdt, node);
-+    qemu_fdt_setprop(ms->fdt, node, "compatible", compat, sizeof(compat));
-+    qemu_fdt_setprop_sized_cells(ms->fdt, node, "reg", 2, base, 2, size);
-+
-+    qemu_fdt_setprop_cells(ms->fdt, node, "interrupts",
-+            GIC_FDT_IRQ_TYPE_SPI, irq    , GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
-+            GIC_FDT_IRQ_TYPE_SPI, irq + 1, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
-+            GIC_FDT_IRQ_TYPE_SPI, irq + 2, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
-+            GIC_FDT_IRQ_TYPE_SPI, irq + 3, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI);
-+
-+    qemu_fdt_setprop(ms->fdt, node, "interrupt-names", irq_names,
-+                     sizeof(irq_names));
-+
-+    qemu_fdt_setprop(ms->fdt, node, "dma-coherent", NULL, 0);
-+    qemu_fdt_setprop_cell(ms->fdt, node, "#iommu-cells", 1);
-+    qemu_fdt_setprop_cell(ms->fdt, node, "phandle", vms->iommu_phandle);
-+    g_free(node);
-+}
-+
- static void create_smmu(const VirtMachineState *vms,
-                         PCIBus *bus)
- {
-     VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
--    char *node;
--    const char compat[] = "arm,smmu-v3";
-     int irq =  vms->irqmap[VIRT_SMMU];
-     int i;
-     hwaddr base = vms->memmap[VIRT_SMMU].base;
-     hwaddr size = vms->memmap[VIRT_SMMU].size;
--    const char irq_names[] = "eventq\0priq\0cmdq-sync\0gerror";
-     DeviceState *dev;
--    MachineState *ms = MACHINE(vms);
- 
-     if (vms->iommu != VIRT_IOMMU_SMMUV3 || !vms->iommu_phandle) {
-         return;
-@@ -1475,27 +1499,7 @@ static void create_smmu(const VirtMachineState *vms,
-         sysbus_connect_irq(SYS_BUS_DEVICE(dev), i,
-                            qdev_get_gpio_in(vms->gic, irq + i));
-     }
--
--    node = g_strdup_printf("/smmuv3@%" PRIx64, base);
--    qemu_fdt_add_subnode(ms->fdt, node);
--    qemu_fdt_setprop(ms->fdt, node, "compatible", compat, sizeof(compat));
--    qemu_fdt_setprop_sized_cells(ms->fdt, node, "reg", 2, base, 2, size);
--
--    qemu_fdt_setprop_cells(ms->fdt, node, "interrupts",
--            GIC_FDT_IRQ_TYPE_SPI, irq    , GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
--            GIC_FDT_IRQ_TYPE_SPI, irq + 1, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
--            GIC_FDT_IRQ_TYPE_SPI, irq + 2, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI,
--            GIC_FDT_IRQ_TYPE_SPI, irq + 3, GIC_FDT_IRQ_FLAGS_EDGE_LO_HI);
--
--    qemu_fdt_setprop(ms->fdt, node, "interrupt-names", irq_names,
--                     sizeof(irq_names));
--
--    qemu_fdt_setprop(ms->fdt, node, "dma-coherent", NULL, 0);
--
--    qemu_fdt_setprop_cell(ms->fdt, node, "#iommu-cells", 1);
--
--    qemu_fdt_setprop_cell(ms->fdt, node, "phandle", vms->iommu_phandle);
--    g_free(node);
-+    create_smmuv3_dt_bindings(vms, base, size, irq);
- }
- 
- static void create_virtio_iommu_dt_bindings(VirtMachineState *vms)
+ /* Addresses and sizes of our components.
+  * 0..128MB is space for a flash device so we can run bootrom code such as UEFI.
+  * 128MB..256MB is used for miscellaneous device I/O.
+@@ -182,7 +185,7 @@ static const MemMapEntry base_memmap[] = {
+     [VIRT_FW_CFG] =             { 0x09020000, 0x00000018 },
+     [VIRT_GPIO] =               { 0x09030000, 0x00001000 },
+     [VIRT_UART1] =              { 0x09040000, 0x00001000 },
+-    [VIRT_SMMU] =               { 0x09050000, 0x00020000 },
++    [VIRT_SMMU] =               { 0x09050000, SMMU_IO_LEN },
+     [VIRT_PCDIMM_ACPI] =        { 0x09070000, MEMORY_HOTPLUG_IO_LEN },
+     [VIRT_ACPI_GED] =           { 0x09080000, ACPI_GED_EVT_SEL_LEN },
+     [VIRT_NVDIMM_ACPI] =        { 0x09090000, NVDIMM_ACPI_IO_LEN},
 -- 
 2.43.0
 
