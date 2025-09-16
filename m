@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94501B59686
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 14:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5066B59684
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 14:47:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyV3w-0003J7-74; Tue, 16 Sep 2025 08:45:36 -0400
+	id 1uyV3j-0003FR-Dm; Tue, 16 Sep 2025 08:45:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uyV3V-0003ER-Cx
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:45:12 -0400
+ id 1uyV3N-0003Dc-Rs
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:45:03 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uyV3I-0002JV-12
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:45:02 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1uyV3H-0002JH-23
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:44:59 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Bxnr+9W8lowPMKAA--.22300S3;
+ by gateway (Coremail) with SMTP id _____8BxmdG9W8lov_MKAA--.23816S3;
  Tue, 16 Sep 2025 20:44:45 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowJDxbMG4W8loS1uZAA--.42126S6;
+ by front1 (Coremail) with SMTP id qMiowJDxbMG4W8loS1uZAA--.42126S7;
  Tue, 16 Sep 2025 20:44:44 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: maobibo@loongson.cn
 Cc: qemu-devel@nongnu.org,
 	philmd@linaro.org,
 	jiaxun.yang@flygoat.com
-Subject: [PATCH v8 04/11] loongarch: add a direct interrupt controller device
-Date: Tue, 16 Sep 2025 20:21:02 +0800
-Message-Id: <20250916122109.749813-5-gaosong@loongson.cn>
+Subject: [PATCH v8 05/11] target/loongarch: add msg interrupt CSR registers
+Date: Tue, 16 Sep 2025 20:21:03 +0800
+Message-Id: <20250916122109.749813-6-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250916122109.749813-1-gaosong@loongson.cn>
 References: <20250916122109.749813-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJDxbMG4W8loS1uZAA--.42126S6
+X-CM-TRANSID: qMiowJDxbMG4W8loS1uZAA--.42126S7
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,167 +64,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add Loongarch direct interrupt controller device base Definition.
+include CSR_MSGIS0-3, CSR_MSGIR and CSR_MSGIE.
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/intc/Kconfig                   |  3 ++
- hw/intc/loongarch_dintc.c         | 68 +++++++++++++++++++++++++++++++
- hw/intc/meson.build               |  1 +
- hw/loongarch/Kconfig              |  1 +
- include/hw/intc/loongarch_dintc.h | 35 ++++++++++++++++
- 5 files changed, 108 insertions(+)
- create mode 100644 hw/intc/loongarch_dintc.c
- create mode 100644 include/hw/intc/loongarch_dintc.h
+ target/loongarch/cpu-csr.h |  3 +++
+ target/loongarch/cpu.h     | 11 +++++++++++
+ target/loongarch/machine.c | 25 +++++++++++++++++++++++--
+ 3 files changed, 37 insertions(+), 2 deletions(-)
 
-diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
-index 7547528f2c..9f456d7e43 100644
---- a/hw/intc/Kconfig
-+++ b/hw/intc/Kconfig
-@@ -109,3 +109,6 @@ config LOONGARCH_PCH_MSI
+diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
+index 0834e91f30..4792677086 100644
+--- a/target/loongarch/cpu-csr.h
++++ b/target/loongarch/cpu-csr.h
+@@ -186,6 +186,9 @@ FIELD(CSR_MERRCTL, ISMERR, 0, 1)
  
- config LOONGARCH_EXTIOI
-     bool
+ #define LOONGARCH_CSR_CTAG           0x98 /* TagLo + TagHi */
+ 
++#define LOONGARCH_CSR_MSGIS(N)       (0xa0 + N)
++#define LOONGARCH_CSR_MSGIR               0xa4
 +
-+config LOONGARCH_DINTC
-+    bool
-diff --git a/hw/intc/loongarch_dintc.c b/hw/intc/loongarch_dintc.c
-new file mode 100644
-index 0000000000..b2465cb022
---- /dev/null
-+++ b/hw/intc/loongarch_dintc.c
-@@ -0,0 +1,68 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * QEMU LoongArch direct interrupt controller.
-+ *
-+ * Copyright (C) 2025 Loongson Technology Corporation Limited
-+ */
+ /* Direct map windows CSRs*/
+ #define LOONGARCH_CSR_DMW(N)         (0x180 + N)
+ FIELD(CSR_DMW, PLV0, 0, 1)
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 1e8a9dbef8..807a710810 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -233,6 +233,13 @@ FIELD(TLB_MISC, ASID, 1, 10)
+ FIELD(TLB_MISC, VPPN, 13, 35)
+ FIELD(TLB_MISC, PS, 48, 6)
+ 
++/*Msg interrupt registers */
++#define N_MSGIS                4
++FIELD(CSR_MSGIS, IS, 0, 63)
++FIELD(CSR_MSGIR, INTNUM, 0, 8)
++FIELD(CSR_MSGIR, ACTIVE, 31, 1)
++FIELD(CSR_MSGIE, PT, 0, 8)
 +
-+#include "qemu/osdep.h"
-+#include "hw/sysbus.h"
-+#include "hw/irq.h"
-+#include "hw/intc/loongarch_pch_msi.h"
-+#include "hw/intc/loongarch_pch_pic.h"
-+#include "hw/intc/loongarch_dintc.h"
-+#include "hw/pci/msi.h"
-+#include "hw/misc/unimp.h"
-+#include "migration/vmstate.h"
-+#include "trace.h"
-+#include "hw/qdev-properties.h"
-+
-+
-+static void loongarch_dintc_realize(DeviceState *dev, Error **errp)
+ #define LSX_LEN    (128)
+ #define LASX_LEN   (256)
+ 
+@@ -350,6 +357,10 @@ typedef struct CPUArchState {
+     uint64_t CSR_DBG;
+     uint64_t CSR_DERA;
+     uint64_t CSR_DSAVE;
++    /* Msg interrupt registers */
++    uint64_t CSR_MSGIS[N_MSGIS];
++    uint64_t CSR_MSGIR;
++    uint64_t CSR_MSGIE;
+     struct {
+         uint64_t guest_addr;
+     } stealtime;
+diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
+index 4e70f5c879..73190fb367 100644
+--- a/target/loongarch/machine.c
++++ b/target/loongarch/machine.c
+@@ -45,6 +45,26 @@ static const VMStateDescription vmstate_fpu = {
+     },
+ };
+ 
++static bool msgint_needed(void *opaque)
 +{
-+    LoongArchDINTCClass *lac = LOONGARCH_DINTC_GET_CLASS(dev);
++    LoongArchCPU *cpu = opaque;
 +
-+    Error *local_err = NULL;
-+    lac->parent_realize(dev, &local_err);
-+    if (local_err) {
-+        error_propagate(errp, local_err);
-+        return;
-+    }
-+
-+    return;
++    return FIELD_EX64(cpu->env.cpucfg[1], CPUCFG1, MSG_INT);
 +}
 +
-+static void loongarch_dintc_unrealize(DeviceState *dev)
-+{
-+    return;
-+}
-+
-+static void loongarch_dintc_init(Object *obj)
-+{
-+    return;
-+}
-+
-+static void loongarch_dintc_class_init(ObjectClass *klass, const void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    LoongArchDINTCClass *lac = LOONGARCH_DINTC_CLASS(klass);
-+
-+    dc->unrealize = loongarch_dintc_unrealize;
-+    device_class_set_parent_realize(dc, loongarch_dintc_realize,
-+                                    &lac->parent_realize);
-+}
-+
-+static const TypeInfo loongarch_dintc_info = {
-+    .name          = TYPE_LOONGARCH_DINTC,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(LoongArchDINTCState),
-+    .instance_init = loongarch_dintc_init,
-+    .class_init    = loongarch_dintc_class_init,
++static const VMStateDescription vmstate_msgint = {
++    .name = "cpu/msgint",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = msgint_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT64_ARRAY(env.CSR_MSGIS, LoongArchCPU, N_MSGIS),
++        VMSTATE_UINT64(env.CSR_MSGIR, LoongArchCPU),
++        VMSTATE_UINT64(env.CSR_MSGIE, LoongArchCPU),
++        VMSTATE_END_OF_LIST()
++    },
 +};
 +
-+static void loongarch_dintc_register_types(void)
-+{
-+    type_register_static(&loongarch_dintc_info);
-+}
-+
-+type_init(loongarch_dintc_register_types)
-diff --git a/hw/intc/meson.build b/hw/intc/meson.build
-index 3efb276b6e..faae20b93d 100644
---- a/hw/intc/meson.build
-+++ b/hw/intc/meson.build
-@@ -80,3 +80,4 @@ specific_ss.add(when: 'CONFIG_LOONGARCH_PCH_MSI', if_true: files('loongarch_pch_
- specific_ss.add(when: 'CONFIG_LOONGARCH_EXTIOI', if_true: files('loongarch_extioi.c', 'loongarch_extioi_common.c'))
- specific_ss.add(when: ['CONFIG_KVM', 'CONFIG_LOONGARCH_EXTIOI'],
-                if_true: files('loongarch_extioi_kvm.c'))
-+specific_ss.add(when: 'CONFIG_LOONGARCH_DINTC', if_true: files('loongarch_dintc.c'))
-diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
-index bb2838b7b5..8024ddf1f3 100644
---- a/hw/loongarch/Kconfig
-+++ b/hw/loongarch/Kconfig
-@@ -15,6 +15,7 @@ config LOONGARCH_VIRT
-     select LOONGARCH_PCH_PIC
-     select LOONGARCH_PCH_MSI
-     select LOONGARCH_EXTIOI
-+    select LOONGARCH_DINTC
-     select LS7A_RTC
-     select SMBIOS
-     select ACPI_CPU_HOTPLUG
-diff --git a/include/hw/intc/loongarch_dintc.h b/include/hw/intc/loongarch_dintc.h
-new file mode 100644
-index 0000000000..aa94cd1003
---- /dev/null
-+++ b/include/hw/intc/loongarch_dintc.h
-@@ -0,0 +1,35 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * LoongArch  direct interrupt controller definitions
-+ *
-+ * Copyright (C) 2025 Loongson Technology Corporation Limited
-+ */
-+
-+#include "qom/object.h"
-+#include "hw/sysbus.h"
-+#include "hw/loongarch/virt.h"
-+
-+
-+#define NR_VECTORS     256
-+
-+#define TYPE_LOONGARCH_DINTC "loongarch_dintc"
-+OBJECT_DECLARE_TYPE(LoongArchDINTCState, LoongArchDINTCClass, LOONGARCH_DINTC)
-+
-+typedef struct DINTCCore {
-+    CPUState *cpu;
-+    qemu_irq parent_irq;
-+    uint64_t arch_id;
-+} DINTCCore;
-+
-+struct LoongArchDINTCState {
-+    SysBusDevice parent_obj;
-+    DINTCCore *cpu;
-+    uint32_t num_cpu;
-+};
-+
-+struct LoongArchDINTCClass {
-+    SysBusDeviceClass parent_class;
-+
-+    DeviceRealize parent_realize;
-+    DeviceUnrealize parent_unrealize;
-+};
+ static const VMStateDescription vmstate_lsxh_reg = {
+     .name = "lsxh_reg",
+     .version_id = 1,
+@@ -168,8 +188,8 @@ static const VMStateDescription vmstate_tlb = {
+ /* LoongArch CPU state */
+ const VMStateDescription vmstate_loongarch_cpu = {
+     .name = "cpu",
+-    .version_id = 3,
+-    .minimum_version_id = 3,
++    .version_id = 4,
++    .minimum_version_id = 4,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINTTL_ARRAY(env.gpr, LoongArchCPU, 32),
+         VMSTATE_UINTTL(env.pc, LoongArchCPU),
+@@ -245,6 +265,7 @@ const VMStateDescription vmstate_loongarch_cpu = {
+         &vmstate_tlb,
+ #endif
+         &vmstate_lbt,
++        &vmstate_msgint,
+         NULL
+     }
+ };
 -- 
 2.41.0
 
