@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2EAB5A026
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:08:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EE3B5A03F
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:10:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uya5n-0004VJ-8g; Tue, 16 Sep 2025 14:07:51 -0400
+	id 1uya5r-0004k8-6X; Tue, 16 Sep 2025 14:07:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4x-0003Aq-Ba
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:59 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1uya51-0003ET-ER
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:07:06 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4s-0001eG-3a
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:59 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3e8ea11a325so4025786f8f.1
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:51 -0700 (PDT)
+ id 1uya4w-0001eN-0u
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:07:02 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-45f29d2357aso22259015e9.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758046010; x=1758650810; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758046011; x=1758650811; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=lxKnBCOImWIkwJQbGUGHvGVkNj52S0Z0jeayxRUvfM8=;
- b=GW1/WWSJqjBZoIPea/2DmYHO55vlBVtCnwcg+bA/8zXCAlGRQjnfhs9ZSt/2DjNOis
- ICdtBhXN1C7arU/t3m+FMhr250C3GIFIKerO/HJi4lsL5L8f//yvtdGjLlgR7x1e8vGo
- QHnM8bjmCBBInxy/mxk92vHZroLd+dIzSA5oJsxO0EIZibfviJ9EFo9RkZJJpEjy3l7e
- +2CF805iJKyBhiPtHOvdd13knVQZ0fKK0O9ImtC5JWRw1zQYUpi4aRRKPJEER+vr21aa
- S8oPpfZBmwMmMhhe2182Q/CrW8Z53FgkvFAuYoyLGp568/0Y6M0OV+9HbcD+QhRtP7pA
- sYEw==
+ :reply-to; bh=g04gXkzqDwaTf/HMFL3z5yBF259ksFa2ePPUMCg8ocI=;
+ b=LFv7UTbKt6+1geUJ2E2opgb84nAHpBuKYT+a8+eX3Ua+/sewJuNjWcpZJVSwlA2FW8
+ 7vMekg/7CSL033cvI66TQAyJHYCJPVezfeW/IurwjzlJuIP4Z0ZpsJDyWjdAoqKPULxe
+ VNUjFtfPiC+AUaYm2vSE1s6pqs6yiL93x8cn6gouj19bH0Qk/Wwcgt27D9Fk/iBEoh2N
+ xdZlaUPGhITC72cugoK4/l9FoIv1dnda7imvjTulsJ0npcXuhTxmuIPZf6rrcaocvjf5
+ XofNTWuP7DKQ0kxJ+UVyAPKcQprpRchSJMr/JaKFCimpt391HTbdc7KElEcMFlbtUL19
+ gMcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758046010; x=1758650810;
+ d=1e100.net; s=20230601; t=1758046011; x=1758650811;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lxKnBCOImWIkwJQbGUGHvGVkNj52S0Z0jeayxRUvfM8=;
- b=BhNR99R6f8QtdC5cG0Ks0ps9TrTIg0699VFm6tYl05eCOBH+lTZzctTkUCePNXHVda
- vMNHKLcrhj0y+SUcim4QchKOwhpiCqRmw0009CgXo/GOe6lNpchOsEsOKlNMjO2wUjmY
- P4srW3Rg/8DiE2yFOYqvwz+/XpBUWgJNA0QD71OKSmu9RxyPy7F0Amj1sE9Fq2cy9qPB
- JHcoSJwxcvGPliW/amc2/iJbxOTMA8vwcnwb5QkKMqchejNstqsuJff9YkzN3tpXzzWP
- FFeArDfyYbrXBn7YH+Hfm1VAvhq6cJQAGptTvAms/I4XWanxZF4iotIQyplgdLm5rPhS
- nfeg==
-X-Gm-Message-State: AOJu0YwTH5gxqF27P4Y82qt8WcQQutoITGHPqhKI9slHo5iZBV7e1kCM
- h0WY5Dp1tpJQmiKEgT6AqYh6Y5FWR9qh7/byo1XYDGzCw1eW7zv/C1/TGW4bBDB6qVfQ8agbRnN
- a1lcT
-X-Gm-Gg: ASbGncvhlKbbkZ24LgvrpmkQ/WZw4N9U0r/M4AmK7BE7lWruc78OqKkS/Pgwjqi1CVE
- 0QKFFft3Vr176J4BuCTjWJzBHaoeLcZlqBjzTiu0zVxyS8Rbv3tTf/CGXzkiunHidkXS65aApJz
- k6RW47Zvec/bOQhkalOym9kFYP44ogzawlvqCNkN2oyNM4Ye/OyKJ2reR/+G7Tq1AlZOU03Nlv2
- 4gY7W5XwWWSIBOcVhtVltuhTLISME4xYHk9VqVhy+WklDugCyg0QxRxG/IQ0nyUUBRklgXfT8IE
- rVgL1HoKaavNqsBLf7SDfa0ut5fvVK57OBMHOR0xhurDn7OESVDrnDcIIDcXKgrdZlTU75oE1ul
- HTe8iCZGlUeYqiexHNRTxXcI9+RdU
-X-Google-Smtp-Source: AGHT+IHHs5iKR/6eQ4r5PhZvRxl/MonntUZZ4/DBZ1pdfnj8W/qAZAv0qR3SNv0TGnQAFqkTl6Z7Og==
-X-Received: by 2002:a5d:5d05:0:b0:3e2:c41c:bfe3 with SMTP id
- ffacd0b85a97d-3e7659d3a79mr16790645f8f.38.1758046009888; 
- Tue, 16 Sep 2025 11:06:49 -0700 (PDT)
+ bh=g04gXkzqDwaTf/HMFL3z5yBF259ksFa2ePPUMCg8ocI=;
+ b=nNobDsm6/sk+iaMtD+cJOwjIMzua0aW2h74jrYk2I4o5R3ophjZTtU4dIJMw6vo/sM
+ /CeLXEGdr4jbFRuMUkY3ri3yXz8v16z3A2WmmBjcxvewCj8e22w5MoHt/o9Kc34SP0eY
+ IRmgpiNIORoaAskTAYoNZNHI/3fQzuLunPocvsgKN2q/yyy0P2JgED2NCpB/MlxjNKsF
+ //u3/h0rcMwGL0Z21tYlpU93fNREte8m4y17JjHCm22Tr/L3obF0R3PxkoD1ci5PsoV+
+ B1u69hw0a9Vy7annSon/Fcrxgf2iilvvS6nRifv0xQopfvaarUIUDxigrwwTgd4JQb8J
+ GK/A==
+X-Gm-Message-State: AOJu0Yy1E708vf9fRy37ELcUPce9dc46OOzk8spwrWKekSX0cbwytLNp
+ xCfvjRzvAuxqVxQ69GgX1kYg/XFwhAviFRdu1TYpCDuxeezHHET6lpu/wmVQGAJywvGy1Nk7Nq1
+ Yj1we
+X-Gm-Gg: ASbGncuX5cVmYDcdIJSbTplvf2IPvjk8kSVqIpxzX3eIGZBgQ9Boby0tqcmfqr7ABz+
+ Aj9Jrt/jC9xH8Ljt2HSzz1w9+a6Ah1eZnIIvhG5SQAZSIUazxswwL7ZL2Vy9+CtpfjHl1mjsatw
+ 27PgSXClAnoDPAZNXJpEDSQvUhhbeRiai0cw9Xapc3MIChvxniCtaOERAmKEWkxxyGbmgyr5v2A
+ zGtdzqeY6wZhqbbLl75aetFfaEz+VM8iMx1W0fS5X/Ft2X9OpbTyUAKngnWDXEMZ8qrX+R7165r
+ o9Exe0bf4Njy3N5vPdnTM9O2GyfNAZoJCE4I8OxNT2Qg8W+K+wBbG4h/5Zdwp1YHjoM4DN5a6+1
+ aj9wuKtRzsGMU62s7oDDg6xIyAd3N
+X-Google-Smtp-Source: AGHT+IFfqxlrCXqOuWFAW5+8yS0nIQ3nrosZhM7H/7dTtDigUVzdaaNYcmjBjEvf3zahSrtOMyVXIg==
+X-Received: by 2002:a05:600c:c1c8:10b0:45b:43cc:e557 with SMTP id
+ 5b1f17b1804b1-45f212067efmr125240225e9.34.1758046010864; 
+ Tue, 16 Sep 2025 11:06:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.49
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Sep 2025 11:06:49 -0700 (PDT)
+ Tue, 16 Sep 2025 11:06:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 32/36] qemu-options.hx: Document the arm-smmuv3 device
-Date: Tue, 16 Sep 2025 19:06:06 +0100
-Message-ID: <20250916180611.1481266-33-peter.maydell@linaro.org>
+Subject: [PULL 33/36] bios-tables-test: Allow for smmuv3 test data.
+Date: Tue, 16 Sep 2025 19:06:07 +0100
+Message-ID: <20250916180611.1481266-34-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916180611.1481266-1-peter.maydell@linaro.org>
 References: <20250916180611.1481266-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,7 +99,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Shameer Kolothum <skolothumtho@nvidia.com>
 
-Now that arm,virt can have user-creatable smmuv3 devices, document it.
+The tests to be added exercise both legacy(iommu=smmuv3) and new
+-device arm-smmuv3,.. cases.
 
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
@@ -109,30 +110,42 @@ Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
 Reviewed-by: Donald Dutile <ddutile@redhat.com>
 Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Message-id: 20250829082543.7680-9-skolothumtho@nvidia.com
+Message-id: 20250829082543.7680-10-skolothumtho@nvidia.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- qemu-options.hx | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/qtest/bios-tables-test-allowed-diff.h     | 4 ++++
+ tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev    | 0
+ tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy | 0
+ tests/data/acpi/aarch64/virt/IORT.smmuv3-dev    | 0
+ tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy | 0
+ 5 files changed, 4 insertions(+)
+ create mode 100644 tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev
+ create mode 100644 tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy
+ create mode 100644 tests/data/acpi/aarch64/virt/IORT.smmuv3-dev
+ create mode 100644 tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index aa44b0e34ae..075f4be2e3e 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -1231,6 +1231,13 @@ SRST
-     ``aw-bits=val`` (val between 32 and 64, default depends on machine)
-         This decides the address width of the IOVA address space.
- 
-+``-device arm-smmuv3,primary-bus=id``
-+    This is only supported by ``-machine virt`` (ARM).
-+
-+    ``primary-bus=id``
-+        Accepts either the default root complex (pcie.0) or a
-+        pxb-pcie based root complex.
-+
- ERST
- 
- DEF("name", HAS_ARG, QEMU_OPTION_name,
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8bf..2e3e3ccdcec 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,5 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy",
++"tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev",
++"tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy",
++"tests/data/acpi/aarch64/virt/IORT.smmuv3-dev",
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev b/tests/data/acpi/aarch64/virt/DSDT.smmuv3-dev
+new file mode 100644
+index 00000000000..e69de29bb2d
+diff --git a/tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy b/tests/data/acpi/aarch64/virt/DSDT.smmuv3-legacy
+new file mode 100644
+index 00000000000..e69de29bb2d
+diff --git a/tests/data/acpi/aarch64/virt/IORT.smmuv3-dev b/tests/data/acpi/aarch64/virt/IORT.smmuv3-dev
+new file mode 100644
+index 00000000000..e69de29bb2d
+diff --git a/tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy b/tests/data/acpi/aarch64/virt/IORT.smmuv3-legacy
+new file mode 100644
+index 00000000000..e69de29bb2d
 -- 
 2.43.0
 
