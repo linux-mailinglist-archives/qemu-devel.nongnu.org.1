@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25233B5A037
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F7DB5A035
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:09:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uya4Y-00035b-TC; Tue, 16 Sep 2025 14:06:35 -0400
+	id 1uya4Y-00035g-SL; Tue, 16 Sep 2025 14:06:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4U-00033V-Cg
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:30 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1uya4V-00034z-SX
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:32 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4S-0001ak-G0
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:30 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3e9042021faso2270394f8f.3
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:28 -0700 (PDT)
+ id 1uya4T-0001au-Ph
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:31 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-45dec026c78so58632485e9.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758045987; x=1758650787; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758045988; x=1758650788; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=U5WkaCtDE6hB+ZTrL4FMHKfsJLEnw9EnHr7t9I7nEEw=;
- b=ycEIoMRtfCaiWaqKpbeUHIvBQ3j2g9PISjOcsvoXGpwD0831+tqon5Mg1Fmh4DNhPM
- 6bKR5krq2A907EYJC7JnK2Dore4yKmw8WcHAYzKo7OuYSjL5LckQ8M5f1WDWyBikHfcF
- 2sAHLCMx6uCgt1/NgBIdITc8WzdMqM5GlMrBV/QpZPFNlMz2e1OcWsaWcjTSv9HWR330
- mNXtz+FAbMI4Roi/uDOeXqEB0HGSuWEXRknNp9R897agaRvkMjqU44t42E48DhFXBtee
- k1qHeIj44OD+/u449j2+NC6Aw+lIGR0BI/M01fBXuDshXqWNqvYFXWJea2J7GcXK30Vb
- ecCw==
+ :reply-to; bh=81pXE1kDQVjDPPfH3enW9tfmeo8/1W7sfykAV4zpEFs=;
+ b=Duo4Xph9P8dB94M7JP3EYvNJQYV+eF2Cqa9GOCsek7DYZVT8C/97Wbabe4wo22jxQO
+ 5b1U/RZW1pkgsxpo+CJ5eMqPWph5JXM+McWipLE+qUMy8FlPh8iXHlbjEaz+j3GWCFVD
+ v8hWeaFV/466BUOfbm3XJhMqFnZCEQC9iMvqAeC4jS8SBND46dXTBXavDXfOSA23bOXF
+ tKxwKDhkp2ZCEl/fH82VIFp3fEmXNA7XgLUSe5jdw6vMJmHMn6IYMufsf+lM2axtesfH
+ 3jQO8DjQTw6LOac4gEyMeHw2rHip0EBwEbnFwTeXTvqFoVPXnFmQv2kPw5UlRqRsvixj
+ Gt3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758045987; x=1758650787;
+ d=1e100.net; s=20230601; t=1758045988; x=1758650788;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U5WkaCtDE6hB+ZTrL4FMHKfsJLEnw9EnHr7t9I7nEEw=;
- b=nLGuNcNQ37ZHwUEP9F2pWRpYe8ID0XunHMYLLDUsyxE0mZTU1KI+SfWJzfNZ3xCk0z
- /gPmhVn5ljrHVygNMWtL6roCEbhuzG1OYVBzWu+UU6rJylCBk76RSogHhzgW0wvwE+es
- oJMo596EWvPt1kNBGhKlGERNtEyQ7ou3YOKzcketPxcZWkFpCHeGnuLMU22QMO/Ptqfc
- iFtKrlvqTyyTFIpydwHGIj6zqVxV3Wnx8R0GU9hMGfmf1kvG9o4dwKaFJHASflzM/JNi
- hkRdizkWOm74SxrdQtW8qkSOguChvjpKQ/nhqsaV/tKKOj5de5nw1kDb+9CbNjf7KuPl
- Kzag==
-X-Gm-Message-State: AOJu0Yy07wB84uIjgWQk57NzDZYUagfmSJN9cN/JjForc3e2PrlKvaH/
- FtaIj0awtWWIygpvnI5Hct4Qf6E7QbpV1+6Sl4ti0zLYMBCQJM+dEgqsDvpri/+3WKcDB9b2uJt
- PFmlD
-X-Gm-Gg: ASbGncuX8mGaCNch5MHPnreScZujYbqFllJ9NB4NvOqjAk8wZcmZcYUMZmns24dOSbA
- N51ZztfdlZFhioKA12dDDIAAvXTLUZP73CvjsExKSpVLh0Dg3fFO02xuAcU1Op+0cgLDZgc3YZh
- You5i39OwWYvNhboFfAuWrdzJ0KbeKHVf072k93B7hTFOGZLlDd5gflAGxFtf7RG2Izb0uLyzSd
- aQFKPMVaBbW/SGJeIbACbjjx8kL9eZQcuP633L1gqwSQZC8Rr2N5r2WMnja0NpS8ICznIAUeeGN
- 2kk0nuPTSPtjhD+6gelNzsgw5QDtvj0AmErHZLEzXSTuKF/VhTPzA4f+8Uwn3339mkj8MJOIhK8
- uNrd71YNhnnswX/StGK/YLbsq7hS3yMw98dJm1gg=
-X-Google-Smtp-Source: AGHT+IGZjMjkLH887yNnbk033Mg4Lza5UHfaMOYATFEYAzPLuwZSGYlxavMS1ZD/7Ap+usL9Hhncsw==
-X-Received: by 2002:a05:6000:2084:b0:3ec:2529:b4e5 with SMTP id
- ffacd0b85a97d-3ec2529b4ffmr5139199f8f.38.1758045986832; 
- Tue, 16 Sep 2025 11:06:26 -0700 (PDT)
+ bh=81pXE1kDQVjDPPfH3enW9tfmeo8/1W7sfykAV4zpEFs=;
+ b=orDqWXn/Bd6fboGtv4IkN7fU+vO/Nyhl70y/mAp0gfOW84e12pZ2ba2UVsyQhX6WD/
+ Cekc6rQ5dnXNNP8o+kO6N7t30Du1i7YopoqBW57YHxWDyvFME6khiEzoiY7OnHIx8KxT
+ AMOV/fW0F3kWBwBJE5QGPns7bLJO16nqpycBTf7Ok7xAkfA/+ScZTjmaM4lypis81R7G
+ L1NRnuLIsm1Bk43dH8MupNgBhNJXzDk2dDqbWdiXkYJ/VzF1uN9I8V/iahWeQZq+97Hx
+ zvGixhCzq4AOMsWmggerq5b769XHkXiWaKb8RQp3cdOoYrrdodHI2eTD8duu42G+Ir3B
+ 40Qg==
+X-Gm-Message-State: AOJu0YyJiIYAr3o/hff+ht/CXJMcjd0BcQ5DcS+AdJKJnXrKoNuQN7O/
+ h1b8tAgTx2GAry4Vjw216PrHJ+fEp++4SDwC0wzMrsgqeTsBaSYcF5AMxuY1zaI7wMG1YMrgbmm
+ 26XQr
+X-Gm-Gg: ASbGnctwB1v4feEYVjJNiTcab9OgV3z7ynqGuz3c43yCGEVfiJUw1Qumk9X2hFfWODM
+ oUvrjRNPXGH195SYaMgpMXetEoGDlM45ecrkS2qgiQh2DYHYA68reDZyAtMDggRBoZF2xuthGso
+ B77TNN07f1PpNLvH/813uOLN98KK56YGSXj2oE3XYa3+ReOn0T+4ackzIpwEC0wRE9mKbwnSi5L
+ ABDRJ/cydCa6DOWYEV+eyyvIXu6cOZ6NkoZTWVMyEc3b9dnAKhOsgbJ1BhGUAM/Vqi/c33ZZakV
+ MrNB07//wr+fVmGvXhK0rlxPYzoKGVSHePeBZ9nHJhtXEc3ctQEiPzLdlkQXeKi5wcdbLkNigMG
+ XHTHgo2KsAV5iiCgKhDhe/6HaaBOr
+X-Google-Smtp-Source: AGHT+IHuQGlsxLMbpaL+EqVM2QX50MEwqvKvApkrj9WmAGhTEMnKjhUDKB2tUdOV5tKszyJBPgOTnA==
+X-Received: by 2002:a05:600c:458a:b0:45d:d1a3:ba6a with SMTP id
+ 5b1f17b1804b1-45f2218d97dmr179878095e9.33.1758045987756; 
+ Tue, 16 Sep 2025 11:06:27 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.25
+ ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Sep 2025 11:06:26 -0700 (PDT)
+ Tue, 16 Sep 2025 11:06:27 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/36] target/arm: Implement FEAT_ATS1A
-Date: Tue, 16 Sep 2025 19:05:47 +0100
-Message-ID: <20250916180611.1481266-14-peter.maydell@linaro.org>
+Subject: [PULL 14/36] hw/arm/raspi4b: remove redundant check in
+ raspi_add_memory_node
+Date: Tue, 16 Sep 2025 19:05:48 +0100
+Message-ID: <20250916180611.1481266-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916180611.1481266-1-peter.maydell@linaro.org>
 References: <20250916180611.1481266-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,134 +99,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
 
-Implement FEAT_ATS1A and enable for -cpu max.
+The if (acells == 0 || scells == 0) check is redundant in
+raspi_add_memory_node, since it is already checked in the call
+chain, arm_load_dtb. Also the return value of the function is
+not checked/used so it's removed.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250830054128.448363-13-richard.henderson@linaro.org
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Message-id: 20250902200818.43305-1-osama.abdelkader@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/emulation.rst |  1 +
- target/arm/cpregs.h           |  1 +
- target/arm/cpu-features.h     |  5 ++++
- target/arm/tcg/cpregs-at.c    | 44 +++++++++++++++++++++++++++++++++++
- target/arm/tcg/cpu64.c        |  1 +
- 5 files changed, 52 insertions(+)
+ hw/arm/raspi4b.c | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 4e8aca8b5d5..6b04c96c8c4 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -23,6 +23,7 @@ the following architecture extensions:
- - FEAT_AFP (Alternate floating-point behavior)
- - FEAT_Armv9_Crypto (Armv9 Cryptographic Extension)
- - FEAT_ASID16 (16 bit ASID)
-+- FEAT_ATS1A (Address Translation operations that ignore stage 1 permissions)
- - FEAT_BBM at level 2 (Translation table break-before-make levels)
- - FEAT_BF16 (AArch64 BFloat16 instructions)
- - FEAT_BTI (Branch Target Identification)
-diff --git a/target/arm/cpregs.h b/target/arm/cpregs.h
-index 1d103b577f7..2a4826f5c4f 100644
---- a/target/arm/cpregs.h
-+++ b/target/arm/cpregs.h
-@@ -854,6 +854,7 @@ typedef enum FGTBit {
-     DO_BIT(HFGITR, DVPRCTX),
-     DO_BIT(HFGITR, CPPRCTX),
-     DO_BIT(HFGITR, DCCVAC),
-+    DO_BIT(HFGITR, ATS1E1A),
- } FGTBit;
+diff --git a/hw/arm/raspi4b.c b/hw/arm/raspi4b.c
+index 20082d52667..4df951a0d82 100644
+--- a/hw/arm/raspi4b.c
++++ b/hw/arm/raspi4b.c
+@@ -36,9 +36,8 @@ struct Raspi4bMachineState {
+  * (see https://datasheets.raspberrypi.com/bcm2711/bcm2711-peripherals.pdf
+  * 1.2 Address Map)
+  */
+-static int raspi_add_memory_node(void *fdt, hwaddr mem_base, hwaddr mem_len)
++static void raspi_add_memory_node(void *fdt, hwaddr mem_base, hwaddr mem_len)
+ {
+-    int ret;
+     uint32_t acells, scells;
+     char *nodename = g_strdup_printf("/memory@%" PRIx64, mem_base);
  
- #undef DO_BIT
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index e49e0ae3af0..512eeaf551e 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -619,6 +619,11 @@ static inline bool isar_feature_aa64_lut(const ARMISARegisters *id)
-     return FIELD_EX64_IDREG(id, ID_AA64ISAR2, LUT);
+@@ -46,19 +45,16 @@ static int raspi_add_memory_node(void *fdt, hwaddr mem_base, hwaddr mem_len)
+                                    NULL, &error_fatal);
+     scells = qemu_fdt_getprop_cell(fdt, "/", "#size-cells",
+                                    NULL, &error_fatal);
+-    if (acells == 0 || scells == 0) {
+-        fprintf(stderr, "dtb file invalid (#address-cells or #size-cells 0)\n");
+-        ret = -1;
+-    } else {
+-        qemu_fdt_add_subnode(fdt, nodename);
+-        qemu_fdt_setprop_string(fdt, nodename, "device_type", "memory");
+-        ret = qemu_fdt_setprop_sized_cells(fdt, nodename, "reg",
+-                                           acells, mem_base,
+-                                           scells, mem_len);
+-    }
++    /* validated by arm_load_dtb */
++    g_assert(acells && scells);
++
++    qemu_fdt_add_subnode(fdt, nodename);
++    qemu_fdt_setprop_string(fdt, nodename, "device_type", "memory");
++    qemu_fdt_setprop_sized_cells(fdt, nodename, "reg",
++                                        acells, mem_base,
++                                        scells, mem_len);
+ 
+     g_free(nodename);
+-    return ret;
  }
  
-+static inline bool isar_feature_aa64_ats1a(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64_IDREG(id, ID_AA64ISAR2, ATS1A);
-+}
-+
- static inline bool isar_feature_aa64_fp_simd(const ARMISARegisters *id)
- {
-     /* We always set the AdvSIMD and FP fields identically.  */
-diff --git a/target/arm/tcg/cpregs-at.c b/target/arm/tcg/cpregs-at.c
-index bebf1689970..0e8f229aa7f 100644
---- a/target/arm/tcg/cpregs-at.c
-+++ b/target/arm/tcg/cpregs-at.c
-@@ -488,6 +488,47 @@ static const ARMCPRegInfo ats1cp_reginfo[] = {
-       .writefn = ats_write },
- };
- 
-+static void ats_s1e1a(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
-+{
-+    uint64_t hcr_el2 = arm_hcr_el2_eff(env);
-+    bool regime_e20 = (hcr_el2 & (HCR_E2H | HCR_TGE)) == (HCR_E2H | HCR_TGE);
-+    ARMMMUIdx mmu_idx = regime_e20 ? ARMMMUIdx_E20_2 : ARMMMUIdx_Stage1_E1;
-+    ARMSecuritySpace ss = arm_security_space_below_el3(env);
-+
-+    env->cp15.par_el[1] = do_ats_write(env, value, 0, mmu_idx, ss);
-+}
-+
-+static void ats_s1e2a(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
-+{
-+    uint64_t hcr_el2 = arm_hcr_el2_eff(env);
-+    ARMMMUIdx mmu_idx = hcr_el2 & HCR_E2H ? ARMMMUIdx_E20_2 : ARMMMUIdx_E2;
-+    ARMSecuritySpace ss = arm_security_space_below_el3(env);
-+
-+    env->cp15.par_el[1] = do_ats_write(env, value, 0, mmu_idx, ss);
-+}
-+
-+static void ats_s1e3a(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
-+{
-+    env->cp15.par_el[1] = do_ats_write(env, value, 0, ARMMMUIdx_E3,
-+                                       arm_security_space(env));
-+}
-+
-+static const ARMCPRegInfo ats1a_reginfo[] = {
-+    { .name = "AT_S1E1A", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 1, .opc1 = 0, .crn = 7, .crm = 9, .opc2 = 2,
-+      .access = PL1_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
-+      .fgt = FGT_ATS1E1A,
-+      .accessfn = at_s1e01_access, .writefn = ats_s1e1a },
-+    { .name = "AT_S1E2A", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 1, .opc1 = 4, .crn = 7, .crm = 9, .opc2 = 2,
-+      .access = PL2_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
-+      .accessfn = at_s1e2_access, .writefn = ats_s1e2a },
-+    { .name = "AT_S1E3A", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 1, .opc1 = 6, .crn = 7, .crm = 9, .opc2 = 2,
-+      .access = PL3_W, .type = ARM_CP_NO_RAW | ARM_CP_RAISES_EXC,
-+      .writefn = ats_s1e3a },
-+};
-+
- void define_at_insn_regs(ARMCPU *cpu)
- {
-     CPUARMState *env = &cpu->env;
-@@ -509,4 +550,7 @@ void define_at_insn_regs(ARMCPU *cpu)
-     if (cpu_isar_feature(aa32_ats1e1, cpu)) {
-         define_arm_cp_regs(cpu, ats1cp_reginfo);
-     }
-+    if (cpu_isar_feature(aa64_ats1a, cpu)) {
-+        define_arm_cp_regs(cpu, ats1a_reginfo);
-+    }
- }
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index b8b1981e702..abef6a246e8 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1179,6 +1179,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64ISAR2, BC, 1);       /* FEAT_HBC */
-     t = FIELD_DP64(t, ID_AA64ISAR2, WFXT, 2);     /* FEAT_WFxT */
-     t = FIELD_DP64(t, ID_AA64ISAR2, CSSC, 1);     /* FEAT_CSSC */
-+    t = FIELD_DP64(t, ID_AA64ISAR2, ATS1A, 1);    /* FEAT_ATS1A */
-     SET_IDREG(isar, ID_AA64ISAR2, t);
- 
-     t = GET_IDREG(isar, ID_AA64PFR0);
+ static void raspi4_modify_dtb(const struct arm_boot_info *info, void *fdt)
 -- 
 2.43.0
 
