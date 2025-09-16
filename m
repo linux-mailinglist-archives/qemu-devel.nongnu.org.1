@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C47B5903E
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 10:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07CC4B5905B
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 10:23:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyQtP-0004mT-I0; Tue, 16 Sep 2025 04:18:27 -0400
+	id 1uyQxp-0002YU-No; Tue, 16 Sep 2025 04:23:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uyQtI-0004bZ-W9
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:18:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uyQxm-0002Y3-Ku
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:22:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uyQtF-00048e-70
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:18:20 -0400
+ id 1uyQxi-0004rD-Ex
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:22:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758010693;
+ s=mimecast20190719; t=1758010972;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7AWTmib5mN1EOk7e63FiKsVri4qwmkD86mB7UV/mwYs=;
- b=a2AujgKTo/dMtESrdnFAolKqMcviDpLjd1L4pHIHs6g5WCfM/Y+merm1JSVktlq6tnf33k
- aNIuuU1GHoMDiGqphJc9U/UQsd9hMW2uOaWY4DYYYwQTVZPI5klg34Xts6eR+iHLw4s8IU
- GILrrv8AoLBY+4tYiOrG/vycsA1VXtA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=U5Dg6vTgdLbgvsXwjhkw7WbZxwdYGL4meToUEnlCNvI=;
+ b=cE+o+3mQs4YrPCVlcVNF8BA+Z1KA0UNGeL9BUlJEo98pfxLANVd4NUG2rmtPugZulO0D0I
+ PNeeGDyRjbqTvr5gHWwtn6SlBkbyr/prJ6/eopBrSByI+ZndCi3Xisfo89groQtcMjRPbP
+ Zg3rlMpJF1B412diz08jvbt9VjeX6PY=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-214-W7j9yYxPMAmF4JOJPr3unQ-1; Tue,
- 16 Sep 2025 04:18:08 -0400
-X-MC-Unique: W7j9yYxPMAmF4JOJPr3unQ-1
-X-Mimecast-MFC-AGG-ID: W7j9yYxPMAmF4JOJPr3unQ_1758010686
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-_EIKXNcYNS2H7NoYhrXd0A-1; Tue,
+ 16 Sep 2025 04:22:49 -0400
+X-MC-Unique: _EIKXNcYNS2H7NoYhrXd0A-1
+X-Mimecast-MFC-AGG-ID: _EIKXNcYNS2H7NoYhrXd0A_1758010968
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 18E661800378; Tue, 16 Sep 2025 08:18:05 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 387C118002CB; Tue, 16 Sep 2025 08:22:47 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.153])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D1C561955F79; Tue, 16 Sep 2025 08:18:00 +0000 (UTC)
-Date: Tue, 16 Sep 2025 09:17:57 +0100
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9276C1800446; Tue, 16 Sep 2025 08:22:40 +0000 (UTC)
+Date: Tue, 16 Sep 2025 09:22:36 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
- Michael Roth <michael.roth@amd.com>, Thomas Huth <thuth@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Richard Henderson <rth@twiddle.net>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: Re: [PULL 0/8] Tracing patches
-Message-ID: <aMkdNbA3MJ8gTs-8@redhat.com>
-References: <20250908140653.170707-1-stefanha@redhat.com>
- <CAFEAcA_jB-5wmRXUijcr_+hpto3huMZQnKzZA5rHFwS5ZWDSkw@mail.gmail.com>
- <CAJSP0QWumdKVQWknYQkXw_G18RJ93q_jrmPoUsDD-CN_B=PU-g@mail.gmail.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, peterx@redhat.com, qemu-block@nongnu.org,
+ leiyang@redhat.com, marcandre.lureau@redhat.com,
+ Eric Blake <eblake@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ John Levon <john.levon@nutanix.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Zhao Liu <zhao1.liu@intel.com>,
+ Coiby Xu <Coiby.Xu@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: Re: [PATCH v4 04/12] handle result of qio_channel_set_blocking()
+Message-ID: <aMkeTEfsqJJSsLc6@redhat.com>
+References: <20250915193105.230085-1-vsementsov@yandex-team.ru>
+ <20250915193105.230085-5-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJSP0QWumdKVQWknYQkXw_G18RJ93q_jrmPoUsDD-CN_B=PU-g@mail.gmail.com>
+In-Reply-To: <20250915193105.230085-5-vsementsov@yandex-team.ru>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -94,54 +98,43 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 11, 2025 at 04:49:57PM -0400, Stefan Hajnoczi wrote:
-> On Thu, Sep 11, 2025 at 7:40 AM Peter Maydell <peter.maydell@linaro.org> wrote:
-> >
-> > On Mon, 8 Sept 2025 at 15:10, Stefan Hajnoczi <stefanha@redhat.com> wrote:
-> > >
-> > > The following changes since commit 6a9fa5ef3230a7d51e0d953a59ee9ef10af705b8:
-> > >
-> > >   Merge tag 'pull-tcg-20250905' of https://gitlab.com/rth7680/qemu into staging (2025-09-05 09:51:27 +0200)
-> > >
-> > > are available in the Git repository at:
-> > >
-> > >   https://gitlab.com/stefanha/qemu.git tags/tracing-pull-request
-> > >
-> > > for you to fetch changes up to b91cbf4e691b397510584b04fd6197284f55b52c:
-> > >
-> > >   tracetool-test: allow to run in parallel (2025-09-08 09:48:10 -0400)
-> > >
-> > > ----------------------------------------------------------------
-> > > Pull request
-> > >
-> > > Daniel Berrangé's tracetool test suite and Marc-André Lureau's test suite fix.
-> > >
-> > > ----------------------------------------------------------------
-> >
-> > I ran this as a combined merge test with a couple of other
-> > pullreqs, but I'm assuming this one is the cause of this
-> > msys2-64bit job failure:
-> >
-> > https://gitlab.com/qemu-project/qemu/-/jobs/11318561687
-> >
-> > # [WinError 2] The system cannot find the file specified:
-> > 'C:/GitLab-Runner/builds/qemu-project/qemu/build/tests/tracetooldmg99xan/dtrace.c'
-> > not ok 1 - dtrace.c (set QEMU_TEST_REGENERATE=1 to recreate reference
-> > output if tracetool generator was intentionally changed)
-> > # [WinError 2] The system cannot find the file specified:
-> > 'C:/GitLab-Runner/builds/qemu-project/qemu/build/tests/tracetooldmg99xan/dtrace.h'
-> >
-> > and other similar errors.
+On Mon, Sep 15, 2025 at 10:30:56PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> Currently, we just always pass NULL as errp argument. That doesn't
+> look good.
 > 
-> Hi Daniel,
-> Looks like Windows is not happy with the new tracetool test suite.
-> Please take a look at
-> https://gitlab.com/qemu-project/qemu/-/jobs/11318561687.
+> Some realizations of interface may actually report errors.
+> Channel-socket realization actually either ignore or crash on
+> errors, but we are going to straighten it out to always reporting
+> an errp in further commits.
+> 
+> So, convert all callers to either handle the error (where environment
+> allows) or explicitly use &error_abort.
+> 
+> Take also a chance to change the return value to more convenient
+> bool (keeping also in mind, that underlying realizations may
+> return -1 on failure, not -errno).
+> 
+> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> ---
+>  block/nbd.c                      |  4 +++-
+>  chardev/char-socket.c            | 20 ++++++++++++++++----
+>  hw/remote/proxy.c                |  6 +++++-
+>  hw/remote/remote-obj.c           |  6 +++++-
+>  hw/vfio-user/proxy.c             | 11 ++++++++---
+>  include/io/channel.h             |  6 +++---
+>  io/channel.c                     |  4 ++--
+>  nbd/server.c                     |  4 +++-
+>  scsi/qemu-pr-helper.c            |  9 ++++++---
+>  tests/unit/io-channel-helpers.c  |  5 +++--
+>  tests/unit/test-io-channel-tls.c |  4 ++--
+>  tools/i386/qemu-vmsr-helper.c    |  6 ++++--
+>  ui/vnc.c                         |  2 +-
+>  util/vhost-user-server.c         |  7 ++++++-
+>  14 files changed, 67 insertions(+), 27 deletions(-)
 
-It was unhappy with spawning child processes on Windows for reasons
-that I've been unable to diagnose. Since the purpose of the test is
-simply to match the generated code output  against reference output,
-I decided to just disable it on Windows, and sent a v5 wit that.
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
 
 
 With regards,
