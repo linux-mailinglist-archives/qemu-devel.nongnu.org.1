@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B85B590D4
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 10:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E75B590D5
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 10:36:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyR99-0006lA-RX; Tue, 16 Sep 2025 04:34:44 -0400
+	id 1uyR9C-0006ui-IU; Tue, 16 Sep 2025 04:34:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uyR8z-0006bh-Q1; Tue, 16 Sep 2025 04:34:35 -0400
+ id 1uyR8y-0006b0-3v; Tue, 16 Sep 2025 04:34:33 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uyR8r-0005zs-JF; Tue, 16 Sep 2025 04:34:33 -0400
+ id 1uyR8r-0005zx-J8; Tue, 16 Sep 2025 04:34:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1758011666; x=1789547666;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=GuzeBHtL/53MAiPhgK+s+BNAuq5u5mNGV7VJ0Ymk0BQ=;
- b=b1pXEs7rEfKI7ro7vHKZ3spBVTI2RuaEeKRPlZcY2LebBlBPGaGLRyh/
- z5EiYlUOcwzIRTYE3uiFJ3cRZObKtPy2GZEAwqU1U0y5q+w2aJ4cFOS5U
- 0M3BwxLSZs7loXmMoynxgoeZL0vRP/fLE55N7cUhLgoO61NYKPkGRT1vE
- 1njR9kl2tDxGflDa5p4ZMYw4+zlaXeTD14i+Y2EftDmj1VdsIIVikENvu
- wrDzLaJKZjP4geeTwj/XRvSgKb7sC2Cm1swB+IjOFd7vpd/Oy1DkHkndA
- td5sosHUDO7CkFECKsqO1qSWcieA9XT+IfMsHamOMm+ye55fhfb638nw8 w==;
-X-CSE-ConnectionGUID: j7ouXmT0QaS/53AIXtgkKA==
-X-CSE-MsgGUID: Odwg114mRVeJue2z7UAm1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="77725147"
-X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="77725147"
+ bh=QhXn4b+aoCS1lHYLjiS4gbHnpewKQmdQNLfqddQ4+oA=;
+ b=XBY/1tDAd7iFfVMsjvvrid9FmeB8k6TziwiFexrfCwmVvcth0noQ96xG
+ +UuPt29UrnqUu86uZWuRlte3GuASovJgnNHbwqAzHCv1YFsx6rwSn9a1a
+ 8W1HyQOU1QwaHlbPXQoqfN5l5eZS484NVsgK62NcVPi0+DCnBRKDFBzow
+ BTlJ3ui8dVHJdZmvLZYqqH5QK2zyG6N39RoR/Dxv59UJkKs316IWrV4Ya
+ uPfhaeiKO5YlUrCMD+XIUqTIJ093ESkCkB8ujIvx89V+mkIWo/ozhhToA
+ sFSScFkAwdjw1ZFYP4IjXc+D318K5yOkIvgcskSRBVAmhDIFY55pL2haz Q==;
+X-CSE-ConnectionGUID: 63bpz2jcTQWSH6KqADCkQA==
+X-CSE-MsgGUID: 5iFKl4t3RRmS3GfpL7Edsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="77725154"
+X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="77725154"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2025 01:34:16 -0700
-X-CSE-ConnectionGUID: Oy3GDtaSQ5CHkw+dK+LgMA==
-X-CSE-MsgGUID: ik8W7+iQToi/4jB30uGitw==
+ 16 Sep 2025 01:34:17 -0700
+X-CSE-ConnectionGUID: cJCjiq65TgO2funTpBcsPQ==
+X-CSE-MsgGUID: uS2wbcb0QOa2PfeEeP6tLQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="174691025"
+X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="174691037"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 16 Sep 2025 01:34:13 -0700
+ by orviesa007.jf.intel.com with ESMTP; 16 Sep 2025 01:34:15 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 03/12] rust/qemu-macros: Fix Clippy's complaints about lambda
- parameter naming
-Date: Tue, 16 Sep 2025 16:55:48 +0800
-Message-Id: <20250916085557.2008344-4-zhao1.liu@intel.com>
+Subject: [PATCH 04/12] rust/common/uninit: Fix Clippy's complaints about
+ lifetime
+Date: Tue, 16 Sep 2025 16:55:49 +0800
+Message-Id: <20250916085557.2008344-5-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250916085557.2008344-1-zhao1.liu@intel.com>
 References: <20250916085557.2008344-1-zhao1.liu@intel.com>
@@ -63,7 +63,7 @@ X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,43 +79,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-error: `rename` shadows a previous, unrelated binding
-   --> qemu-macros/src/lib.rs:265:14
-    |
-265 |             |rename| -> Result<proc_macro2::TokenStream, Error> {
-    |              ^^^^^^
-    |
-note: previous binding is here
-   --> qemu-macros/src/lib.rs:245:30
-    |
-245 |         let DeviceProperty { rename, defval } = prop;
-    |                              ^^^^^^
-    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#shadow_unrelated
-    = note: requested on the command line with `-D clippy::shadow-unrelated`
+Clippy complains about the following cases and following its suggestion
+to fix these warnings.
 
-Rename the lambda parameter to "prop_rename" to fix the above clippy
-error.
+warning: the following explicit lifetimes could be elided: 'a
+  --> common/src/uninit.rs:38:6
+   |
+38 | impl<'a, T, U> Deref for MaybeUninitField<'a, T, U> {
+   |      ^^                                   ^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
+   = note: `#[warn(clippy::needless_lifetimes)]` on by default
+help: elide the lifetimes
+   |
+38 - impl<'a, T, U> Deref for MaybeUninitField<'a, T, U> {
+38 + impl<T, U> Deref for MaybeUninitField<'_, T, U> {
+   |
+
+warning: the following explicit lifetimes could be elided: 'a
+  --> common/src/uninit.rs:49:6
+   |
+49 | impl<'a, T, U> DerefMut for MaybeUninitField<'a, T, U> {
+   |      ^^                                      ^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
+help: elide the lifetimes
+   |
+49 - impl<'a, T, U> DerefMut for MaybeUninitField<'a, T, U> {
+49 + impl<T, U> DerefMut for MaybeUninitField<'_, T, U> {
+   |
+
+warning: `common` (lib) generated 2 warnings (run `cargo clippy --fix --lib -p common` to apply 2 suggestions)
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-macros/src/lib.rs | 4 ++--
+ rust/common/src/uninit.rs | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/qemu-macros/src/lib.rs b/rust/qemu-macros/src/lib.rs
-index 830b4326985b..ed4064d6e110 100644
---- a/rust/qemu-macros/src/lib.rs
-+++ b/rust/qemu-macros/src/lib.rs
-@@ -262,8 +262,8 @@ macro_rules! str_to_c_str {
+diff --git a/rust/common/src/uninit.rs b/rust/common/src/uninit.rs
+index e7f9fcd2e3fb..8d021b1dfc6e 100644
+--- a/rust/common/src/uninit.rs
++++ b/rust/common/src/uninit.rs
+@@ -35,7 +35,7 @@ pub const fn parent_mut(f: &mut Self) -> *mut T {
+     }
+ }
  
-         let prop_name = rename.map_or_else(
-             || str_to_c_str!(field_name.to_string(), field_name.span()),
--            |rename| -> Result<proc_macro2::TokenStream, Error> {
--                match rename {
-+            |prop_rename| -> Result<proc_macro2::TokenStream, Error> {
-+                match prop_rename {
-                     DevicePropertyName::CStr(cstr_lit) => Ok(quote! { #cstr_lit }),
-                     DevicePropertyName::Str(str_lit) => {
-                         str_to_c_str!(str_lit.value(), str_lit.span())
+-impl<'a, T, U> Deref for MaybeUninitField<'a, T, U> {
++impl<T, U> Deref for MaybeUninitField<'_, T, U> {
+     type Target = MaybeUninit<U>;
+ 
+     fn deref(&self) -> &MaybeUninit<U> {
+@@ -46,7 +46,7 @@ fn deref(&self) -> &MaybeUninit<U> {
+     }
+ }
+ 
+-impl<'a, T, U> DerefMut for MaybeUninitField<'a, T, U> {
++impl<T, U> DerefMut for MaybeUninitField<'_, T, U> {
+     fn deref_mut(&mut self) -> &mut MaybeUninit<U> {
+         // SAFETY: self.child was obtained by dereferencing a valid mutable
+         // reference; the content of the memory may be invalid or uninitialized
 -- 
 2.34.1
 
