@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ACFCB5944D
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 12:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE12B59522
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 13:29:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyTGA-0002C3-NT; Tue, 16 Sep 2025 06:50:07 -0400
+	id 1uyTr9-0004QS-7t; Tue, 16 Sep 2025 07:28:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uyTG7-0002BD-Qp
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 06:50:03 -0400
-Received: from linux.microsoft.com ([13.77.154.182])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uyTG4-00047i-0V
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 06:50:02 -0400
-Received: from example.com (unknown [167.220.208.43])
- by linux.microsoft.com (Postfix) with ESMTPSA id 15E652015502;
- Tue, 16 Sep 2025 03:49:52 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 15E652015502
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1758019797;
- bh=HCbRPKcprKJcjSOATe91AM595DaV6R6vHq8N3l6VuBk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=qbxLrE/yrli9F07if14u/EraMfkLE9b182+f4l5sqkYoFvocIX+n5bms3mhms0IBK
- ck06VLrwplrZuD7PjXMsPR6hCU7un9I1m60ecsfX20FVW1HDVW9x/s8qJyR+3KEcMj
- vn0NjmdH8l0jsJ6k9ZeRObYFuhv7PU6V88XKzyMA=
-Date: Tue, 16 Sep 2025 12:49:49 +0200
-From: Magnus Kulke <magnuskulke@linux.microsoft.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Magnus Kulke <magnus.kulke@linux.microsoft.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Magnus Kulke <magnus.kulke@microsoft.com>,
- Cornelia Huck <cohuck@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Thomas Huth <thuth@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Cameron Esfahani <dirty@apple.com>, Wei Liu <wei.liu@kernel.org>,
- Wei Liu <liuwe@microsoft.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v3 18/26] target/i386/mshv: Register CPUID entries with
- MSHV
-Message-ID: <aMlAzTJ7fhj3xal9@example.com>
-References: <20250807143951.1154713-1-magnuskulke@linux.microsoft.com>
- <20250807143951.1154713-19-magnuskulke@linux.microsoft.com>
- <aK7sFds3tf5fMToM@redhat.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyTr4-0004P6-3s
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 07:28:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyTqy-0001g5-Eh
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 07:28:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758022062;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=G+l0iJNAj9MI4FY1p3oxbJYsqGU7ofErcbPW1mu+rxI=;
+ b=Rgh5s1smWzAIm6aIkpD+BVsymj0bc7w4XOgsakrH+GEhuQ+VYbRT4S5Rl6ImWTUYuch8cE
+ xkq6I0iJcZEVgFfNHVXD2/iWR8T/lNS/Z4Ip/8jLKzUiYjZHy2kToJTaUjoekvQu9enD8m
+ EF7TXPFt6Eh0Mo8gSwAHpDR6PpTr+Qw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-503-9esmBWDwOGiJk-JOt236tg-1; Tue,
+ 16 Sep 2025 07:27:40 -0400
+X-MC-Unique: 9esmBWDwOGiJk-JOt236tg-1
+X-Mimecast-MFC-AGG-ID: 9esmBWDwOGiJk-JOt236tg_1758022059
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 48422195609E; Tue, 16 Sep 2025 11:27:39 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C1E291800451; Tue, 16 Sep 2025 11:27:38 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 0D50021E6A27; Tue, 16 Sep 2025 13:27:36 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,  odaki@rsg.ci.i.u-tokyo.ac.jp,
+ marcandre.lureau@redhat.com
+Subject: Re: [PATCH 12/12] error: Kill @error_warn
+In-Reply-To: <aKRfXdh-bclOVVyb@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Tue, 19 Aug 2025 12:26:21 +0100")
+References: <20250808080823.2638861-1-armbru@redhat.com>
+ <20250808080823.2638861-13-armbru@redhat.com>
+ <aKRfXdh-bclOVVyb@redhat.com>
+Date: Tue, 16 Sep 2025 13:27:36 +0200
+Message-ID: <87348mprh3.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aK7sFds3tf5fMToM@redhat.com>
-Received-SPF: pass client-ip=13.77.154.182;
- envelope-from=magnuskulke@linux.microsoft.com; helo=linux.microsoft.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.009,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,37 +88,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 27, 2025 at 12:29:25PM +0100, Daniel P. Berrangé wrote:
-> QEMU supports a variety of CPU models. '-cpu host' is intended to
-> expose every possible feature that the underlying hypervisor can
-> support, while '-cpu $NAME' exposes certain named CPU models.
-> 
-> Also KVM will force enable certain features that it can either
-> unconditionally emulate, or requires to always be present.
-> 
-> Are you aware if there any noteworthy differences /  restrictions
-> in the use of CPU models for MSHV that would not be present for
-> KVM, or vica-verca ?  I'm particularly wondering if there is
-> anything special libvirt needs to be aware of - most of what
-> libvirt does it gets via the QMP query-cpu-XXXX commands.
-> 
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-The current cpuid impl is rather simple/unopionated at this point. We
-will probably iterate on it in the future (e.g. include synthetic
-responses). In principle it should behave similar to the KVM accel:
+> On Fri, Aug 08, 2025 at 10:08:23AM +0200, Markus Armbruster wrote:
+>> We added @error_warn some two years ago in commit 3ffef1a55ca (error:
+>> add global &error_warn destination).  It has multiple issues:
+>>=20
+>> * error.h's big comment was not updated for it.
+>>=20
+>> * Function contracts were not updated for it.
+>>=20
+>> * ERRP_GUARD() is unaware of @error_warn, and fails to mask it from
+>>   error_prepend() and such.  These crash on @error_warn, as pointed
+>>   out by Akihiko Odaki.
+>>=20
+>> All fixable.  However, after more than two years, we had just of 15
+>> uses, of which the last few patches removed eight as unclean or
+>> otherwise undesirable.  I didn't look closely enough at the remaining
+>> seven to decide whether they are desirable or not.
+>>=20
+>> I don't think this feature earns its keep.  Drop it.
+>>=20
+>> Thanks-to: Akihiko  Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>> ---
+>>  include/qapi/error.h           |  6 ------
+>>  hw/display/virtio-gpu.c        |  8 ++++++--
+>>  hw/net/virtio-net.c            |  8 +++++++-
+>>  tests/unit/test-error-report.c | 17 -----------------
+>>  ui/gtk.c                       |  6 +++++-
+>>  util/error.c                   |  5 +----
+>>  6 files changed, 19 insertions(+), 31 deletions(-)
+>
+>> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+>> index 6b5b5dace3..7848e26278 100644
+>> --- a/hw/net/virtio-net.c
+>> +++ b/hw/net/virtio-net.c
+>> @@ -1289,6 +1289,8 @@ exit:
+>>=20=20
+>>  static bool virtio_net_load_ebpf(VirtIONet *n, Error **errp)
+>>  {
+>> +    Error *err =3D NULL;
+>> +
+>>      if (!virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
+>>          return true;
+>>      }
+>> @@ -1306,7 +1308,11 @@ static bool virtio_net_load_ebpf(VirtIONet *n, Er=
+ror **errp)
+>>          return virtio_net_load_ebpf_fds(n, errp);
+>>      }
+>>=20=20
+>> -    ebpf_rss_load(&n->ebpf_rss, &error_warn);
+>> +    ebpf_rss_load(&n->ebpf_rss, &err);
+>> +    /* Beware, ebpf_rss_load() can return false with @err unset */
+>
+> Per our other mail, this is a bug we should fix
 
--cpu host is reflecting the cpuid of the host CPU (i.e. dom0/root
- partition running on Hyper‑V). We are gathering those values from
- QEMU and register them with the hypervisor.
+Yes, but I still don't know how to fix it.  The remaining open question
+is "Is it a programming error when it happens?" in
+Message-ID: <87sehfsife.fsf@pond.sub.org>
 
--cpu $MODEL should works similar. The QEMU-supplied model definitions
- CPUID/MSR values are registered with HyperV. In case of an unsupported
- feature the registration would fail.
+Help!
 
-What the MSHV driver currently doesn't provide is something similar to
-KVM's KVM_GET_SUPPORTED_CPUID ioctl, so we do not currently force-enable
-or silently mask cpuid bits beyond what the CPU model requests.
+>> +    if (err) {
+>> +        warn_report_err(err);
+>> +    }
+>>      return true;
+>>  }
+>>=20=20
+>
+> With regards,
+> Daniel
 
-I'm not aware of any implications for libvirt and QMP that we would need
-to take into account wrt cpuid.
 
