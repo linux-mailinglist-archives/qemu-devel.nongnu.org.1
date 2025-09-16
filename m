@@ -2,83 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8138B59687
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 14:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3FB8B59699
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 14:50:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyV5k-00052l-9N; Tue, 16 Sep 2025 08:47:30 -0400
+	id 1uyV8E-0008N5-Ok; Tue, 16 Sep 2025 08:50:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyV4z-0004yv-Jk
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:46:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyV4w-0002iB-O5
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:46:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758026794;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=aG4W3mmDglu4lEoQcUF+7rzQ4DSjx/M0FEtfZHT5Tcg=;
- b=VcrFRUS6VLzRDcPMAczDyCQdLfJ0wA5nTSrBGcVAHpIb9iggvRqQeYhhI3vINubvWgvQP6
- h/MbwFd4dCT1aQ4QWco2NEjCw1rzmo1T7CCuYCvwwnbNN8HaMaHSZPqvdml90zvfLbRVYB
- a1KlMViJnOH3N7i/BbeWvOLw2+oarLU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-Hgj-_z-kOoaqxwHRQ_RUwQ-1; Tue,
- 16 Sep 2025 08:46:33 -0400
-X-MC-Unique: Hgj-_z-kOoaqxwHRQ_RUwQ-1
-X-Mimecast-MFC-AGG-ID: Hgj-_z-kOoaqxwHRQ_RUwQ_1758026791
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1D5F519560B4; Tue, 16 Sep 2025 12:46:31 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9E911180044F; Tue, 16 Sep 2025 12:46:30 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 05C1F21E6A27; Tue, 16 Sep 2025 14:46:28 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Naveen N Rao <naveen@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  Sean Christopherson
- <seanjc@google.com>,  qemu-devel <qemu-devel@nongnu.org>,
- kvm@vger.kernel.org,  "Daniel P. Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,  Eric Blake <eblake@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,  Zhao Liu <zhao1.liu@intel.com>,
- Nikunj A Dadhania <nikunj@amd.com>,  Tom Lendacky
- <thomas.lendacky@amd.com>,  Michael Roth <michael.roth@amd.com>,  Neeraj
- Upadhyay <neeraj.upadhyay@amd.com>,  Roy Hopkins
- <roy.hopkins@randomman.co.uk>
-Subject: Re: [RFC PATCH 3/7] target/i386: SEV: Add support for enabling
- debug-swap SEV feature
-In-Reply-To: <m5fnfafkzxqamg4iyc6xjun7jlxulcuufgugtrweap6myvmgov@5cmxu5n3pl2p>
- (Naveen N. Rao's message of "Mon, 15 Sep 2025 19:55:02 +0530")
-References: <cover.1757589490.git.naveen@kernel.org>
- <0a77cf472bc36fee7c1be78fc7d6d514d22bca9a.1757589490.git.naveen@kernel.org>
- <87jz239at0.fsf@pond.sub.org>
- <m5fnfafkzxqamg4iyc6xjun7jlxulcuufgugtrweap6myvmgov@5cmxu5n3pl2p>
-Date: Tue, 16 Sep 2025 14:46:27 +0200
-Message-ID: <87plbqo998.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uyV7n-0007oR-8P
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:49:36 -0400
+Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uyV7d-00033A-O4
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 08:49:34 -0400
+Received: by mail-yw1-x112c.google.com with SMTP id
+ 00721157ae682-71d6083cc69so51111697b3.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 05:49:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1758026964; x=1758631764; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=6irUkdVWbPW4o++8x4RerCm+gntlLcvww6kpAKS0emI=;
+ b=myB8W63sLuIiPLz+7ZBPu3zPx5f2qHUZhoDF3jCok/oK4b2Qyj7AKICUOVo5+3uPGg
+ x+darArXWbRULUttMvnxtbIpGHj+i0q6FIQR5sQM7x0lu4QozXYteaogZSghm3BX2KOY
+ BkU/bqqF79g4gTk+/VDe55M5MeIMGOiUu9eIVLlo7kd7At896MryGgkqXrcnTZJNhuA4
+ xivKaH4jtYHmGAzi7IO8pxKeCa5XqtnCtr4m+X3RoqTLqDi522AdFnCDXRoOtJqD68Qr
+ YST1SFEUzrtoLB8CSOgtyrCaLLHRRfG+BR3mYLV9fquWXCpsKmd7roVttOMjEk3i5ROJ
+ FMXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758026964; x=1758631764;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6irUkdVWbPW4o++8x4RerCm+gntlLcvww6kpAKS0emI=;
+ b=YoZEh8GF1f1t3oSGGMcgzVSNV9eJ287lzEf3Nmtn7JTf1SRdI2gcDBWPb1/dg6NjkM
+ 9+E/0ibei0b7XE/fkrrFBiQhNM7ox2V1i7r03ksJewO1G5ts3LynAhGGsGeW4kEYnCOf
+ fRx3Ea5dp4sJ6/L+fcan+ANScc9a7EupOPciPLHGO9uZtmaLl6lKISyiDLlgCMvHdZBF
+ 8Jjm8+A5+OEaYUnPYRKaRJtqV8987vCaIjpdPdYJGJUnXkTgPSvFoeKNZU8Zfy7sW4Jr
+ YW3gXP+J1WYlI5Hj5aLIfll4YKV3zH3Ycmo/09B3ZNNHnkcoT794UcToP2Qzsiy578lA
+ B+SQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX9YVB2Cwy4/5ZwjCgc7KSXndUSRGUc9QRj/W8xrUGEVoaKYwps36mS+b9bC/2vE53r8c2aK2ZLDzBG@nongnu.org
+X-Gm-Message-State: AOJu0YyPl19Cc3VJrzct6tsZ+4Bzc2tSHL40W2a970uVAVM6F2UCcLN2
+ SY7dZ2w+sfDbNYLugrnQXW+Xl/zvukCT6vxgrt11JXQ2+tIxXbErcZAKBjXzPNwygEE=
+X-Gm-Gg: ASbGnctQa+exvjPS0RwTyP7f5kRTLZ6PwQ8wdM/6RSz5SPejtx0aVaxdasyDjkmDVxm
+ EHOE1ibysoPVSe8FF0+QQl7cR3e6oQAmHJa57j02DLbdUV2AX51sGcAMzfMyswZyCk/y6cR/HkE
+ 6YCYmEVnxR5+LuRV2y448m2Sktk8T0syT9Z8ewBNP/vycJzVM6pC72WcjbCfJOIpbuCPxMXCE7H
+ IJX1prTWHxuldVjWM4B2PPK2mdhFC6/E0RybVBkNOqOqQ0fM06vUWqWNUgPnX2Z+WLuEdB7hy4Y
+ LUolH+G/JOyRtTjR7/4oqpN+XuB2th6b6Jaj1sESotJ8SGXOpsBFTB16CNwG06teRt277rFHYHZ
+ 25wmbTQ97YYyKx3k3ANWNr3xirVvLjewZYTgF5avhThZcb36M
+X-Google-Smtp-Source: AGHT+IFCBv4jJzCF9feEbWKQ/VRwlgD4Gu9QnH4zXySIGPqhoMTPEd9ZPNL4Smioow+yL0oUU8dkfQ==
+X-Received: by 2002:a05:690c:e0d:b0:71f:b944:100e with SMTP id
+ 00721157ae682-73065cb1982mr151037097b3.53.1758026963953; 
+ Tue, 16 Sep 2025 05:49:23 -0700 (PDT)
+Received: from [192.168.68.110] ([179.225.245.173])
+ by smtp.gmail.com with ESMTPSA id
+ 956f58d0204a3-6247cbed5bdsm5063880d50.1.2025.09.16.05.49.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Sep 2025 05:49:23 -0700 (PDT)
+Message-ID: <1d82761a-a968-467b-96ca-427bca7edc65@ventanamicro.com>
+Date: Tue, 16 Sep 2025 09:49:19 -0300
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/5] target/riscv: Implement SMSDID and SMMPT extension
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
+ liwei1518@gmail.com
+References: <20250909132533.32205-1-zhiwei_liu@linux.alibaba.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Language: en-US
+In-Reply-To: <20250909132533.32205-1-zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-yw1-x112c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.009,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,46 +102,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Naveen N Rao <naveen@kernel.org> writes:
+Hi!
 
-> Hi Markus,
->
-> On Fri, Sep 12, 2025 at 01:20:43PM +0200, Markus Armbruster wrote:
->> "Naveen N Rao (AMD)" <naveen@kernel.org> writes:
->> 
->> > Add support for enabling debug-swap VMSA SEV feature in SEV-ES and
->> > SEV-SNP guests through a new "debug-swap" boolean property on SEV guest
->> > objects. Though the boolean property is available for plain SEV guests,
->> > check_sev_features() will reject setting this for plain SEV guests.
->> 
->> Let's see whether I understand...
->> 
->> It's a property of sev-guest and sev-snp-guest objects.  These are the
->> "SEV guest objects".
->> 
->> I guess a sev-snp-guest object implies it's a SEV-SNP guest, and setting
->> @debug-swap on such an object just works.
->> 
->> With a sev-guest object, it's either a "plain SEV guest" or a "SEV-ES"
->> guest.
->> 
->> If it's the latter, setting @debug-swap just works.
->> 
->> If it's the former, and you set @debug-swap to true, then KVM
->> accelerator initialization will fail later on.  This might trigger
->> fallback to TCG.
->> 
->> Am I confused?
->
-> You're spot on, except that in the last case above (plain old SEV 
-> guest), qemu throws an error:
-> 	qemu-system-x86_64: check_sev_features: SEV features require either SEV-ES or SEV-SNP to be enabled
+On 9/9/25 10:25 AM, LIU Zhiwei wrote:
+> This patch set introduces support for the RISC-V Smmpt (Supervisor
+> Domain Access Protection) extension. It only includes two sub-extensions:
+> SMSDID and SMMPT.
+> 
+> This patch set implements the v0.3.4 version of Smmpt
+> (https://github.com/riscv/riscv-smmtt/releases/tag/v0.3.4).
+> 
+> As there are newer SMMPT specification versions, this patch set is
+> not intend for merging.
 
-Okay.
+I'm not sure I understood. Do you mean this patch set isn't supposed to be
+merged even after review?
 
-Can you (or anyone) explain to me why SEV-SNP gets its own object type,
-but SEV-ES does not?
 
-[...]
+Daniel
+
+> 
+> The implementation is broken down into a series of logical steps:
+> 
+> Patch 1 adds the fundamental definitions for the Smmpt extension,
+> including
+> new CSRs (mmpt, msdcfg), their bit-field layouts, and the corresponding
+> CPU
+> configuration flags (ext_smmpt, ext_smsdid).
+> 
+> Patch 2 introduces the core logic for Memory Protection Table (MPT)
+> lookups.
+> It includes a new file, riscv_smmpt.c, which implements the multi-level
+> table walk to determine permissions for a given physical address.
+> 
+> Patch 3 integrates the MPT permission checks into the main MMU and TLB
+> handling pathways. This ensures that both page table walks and final
+> data accesses are subject to Smmpt protection rules.
+> 
+> Patch 4 adds support for the new fence instructions defined by the Smmpt
+> extension, specifically `mfence.spa` and `minval.spa`.
+> 
+> Patch 5 enables smmpt and smsdia extendion.
+> 
+> With this series, QEMU can now model systems that utilize the Smmpt
+> extension for enhanced memory security.
+> 
+> LIU Zhiwei (5):
+>    target/riscv: Add basic definitions and CSRs for SMMPT
+>    target/riscv: Implement core SMMPT lookup logic
+>    target/riscv: Integrate SMMPT checks into MMU and TLB fill
+>    target/riscv: Implement SMMPT fence instructions
+>    target/riscv: Enable SMMPT extension
+> 
+>   target/riscv/cpu.c                            |   4 +
+>   target/riscv/cpu.h                            |   9 +-
+>   target/riscv/cpu_bits.h                       |  27 ++
+>   target/riscv/cpu_cfg_fields.h.inc             |   2 +
+>   target/riscv/cpu_helper.c                     |  81 +++++-
+>   target/riscv/csr.c                            |  83 ++++++
+>   target/riscv/insn32.decode                    |   2 +
+>   .../riscv/insn_trans/trans_privileged.c.inc   |  30 ++
+>   target/riscv/meson.build                      |   1 +
+>   target/riscv/pmp.h                            |   3 +
+>   target/riscv/riscv_smmpt.c                    | 273 ++++++++++++++++++
+>   target/riscv/riscv_smmpt.h                    |  38 +++
+>   12 files changed, 548 insertions(+), 5 deletions(-)
+>   create mode 100644 target/riscv/riscv_smmpt.c
+>   create mode 100644 target/riscv/riscv_smmpt.h
+> 
 
 
