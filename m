@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7072CB5A01F
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB22B5A054
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:14:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uya5S-0003Y9-GG; Tue, 16 Sep 2025 14:07:31 -0400
+	id 1uya5c-0003q7-Rs; Tue, 16 Sep 2025 14:07:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4i-00038g-PR
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:48 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1uya4s-00039w-7v
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:57 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4c-0001cg-IN
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:40 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3d44d734cabso3517680f8f.3
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:38 -0700 (PDT)
+ id 1uya4g-0001d1-Go
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:48 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-46130fc5326so1145495e9.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758045997; x=1758650797; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758045998; x=1758650798; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=/e4QFB40Kd5xVAD2ukP5PCzshfLjtIczMIicFl3oFOU=;
- b=PICNvghxoyqK9pUzmAdjyIu/YDyUQxbz2mBr7ffjquT1eioEk+ahXnxG1sPqKkVchL
- gLrQiP7k3GUuZwxq6w2P6Ik+JbO37OUjTiqXhg9rW7q8Vw5p9nVsjI+sN1PPFnv11I27
- oJPbsrzgMdVO7mbvmWCndL+GwFbqLkXCTHubTBlNFLN9W6DwXr5w7pqpPuIOuqqfSyaj
- r38HeCrh0DuQHeBDmD90R7ua0GivIp3r2C47F89qNqC1mDZemd1dv1HRVhhx1uq0sgGl
- jx5Nlotn6ec9uCq6cF/hmapYEPKdscRTWAObakZRmGdck+qIIMOKxugEx6/pzAkLheuE
- 8ugw==
+ :reply-to; bh=MRFSvzFCChYzJp3NpcD51YiWf88/DwCTl/TXq4h9hsM=;
+ b=hLV422k2kanQ1YWc0ioCmjZhBK2tK+Z5b4WOkWwb+2NbR1djer8Xn+1ECHzcjiZPED
+ HMB678jTn8u7WWdyQJDFhDdARloToLD24mSauOqx7D8ZFLXBzv+V7BC0bnKlGGIAorfH
+ q9eCNtEPR9OVmBRJoIiZNOf05N6i4+wII5alLCBTXthVkClIUcIZnfcRnWr0iXPljn2P
+ 6Y6Id1sJt1G87yBCGGT7cxR/MB+ByC5/U1UzxCnCVN5d53ooXTdcJu37ppVNiXDPRdnE
+ tbaF18WcIENx9x9EHF39q//p2sxSpLYBh9BWzDiZX8nSOr945UA1U1GE8rrg8M8xA4od
+ JRyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758045997; x=1758650797;
+ d=1e100.net; s=20230601; t=1758045998; x=1758650798;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/e4QFB40Kd5xVAD2ukP5PCzshfLjtIczMIicFl3oFOU=;
- b=iBcBJK4rfw5X0tb7d+qnuYdycQcDoYh4Osp8RQd/13WhGsR70VYa7GQz/XslSi/vIf
- VLjn8Nv8wX4ysJHCjtwN6w6rmrRX5lAPiL4oAWYG/Waus2M4NW6ps9O+PFhAQX0IMffJ
- lf5DZT/i/e9ig+/Kyiy99bVONKLUI1HSAjJFN/YTLf4fbYyfx59PJImU9+y3BNkbk9bN
- 9nBc5hbEcJ/BaVjmm9euyQFLTvvSE/SR5akVfopeDnDkto87ayIH5jIL6o4F0MuYQxcR
- fRd76qInHZQtEWIwmSV1t4lQLlspNqlfVCdN521+b47gbbcYgGsH8x0HY81aDvsFZlxZ
- 40Ew==
-X-Gm-Message-State: AOJu0YzD+XEXthEji0al0F8kh2wNigoMtXaxRuDRvPtF7WClH/nClO6q
- EFxP6qgIdRy4Hf2wqxro2hhy6JnSkzNh3T5np05NQ4632zdG3+dV3atlvqHuND9WQrp6ewQQKdH
- pvZb0
-X-Gm-Gg: ASbGnctiasRT/jJZ5YixwojaA2H7hgqvb/IFKx4a4McWvwLUvUcmOsshdfO58YHEf/K
- yHNumRJNKYq/ZRRX11YpJBVr13dQab3q2yqMQdSPMeXGIxHVePMPdW3FMvrP6QqZRkj+Fko6gs1
- b7ZWvr5paP5+0t8LGtaHfOy2l0SokzFgEPOEeo5+djAhwhqv0RvxCSTfCEC67iBWLxT8TYx+cLO
- c5kBiT5uX3t9/r5TBW31vu0IuCVmCXLxfhNcGeke+TdAPOqrWF9no8H70k5mBSD+0tR6FdeM0AL
- g69YRcpz+Y4WyOj4cWg5X0a7giU5i+7zRtRnZsFmlZz6N9Z5HkUHh8w0W5J/pQFmtSYlPzzGVTX
- 5tZGCzRSjqxR0yEs3YQyXu4h91FlC
-X-Google-Smtp-Source: AGHT+IHwX706fKouHMa3Qv6J9gvPGyae9Oz61rgIIeyY2z84Apis3lb6BYM+A+PzS3AyuaYdk0dtlA==
-X-Received: by 2002:a05:6000:230c:b0:3dc:1473:18bc with SMTP id
- ffacd0b85a97d-3e765530b01mr16650233f8f.0.1758045997000; 
- Tue, 16 Sep 2025 11:06:37 -0700 (PDT)
+ bh=MRFSvzFCChYzJp3NpcD51YiWf88/DwCTl/TXq4h9hsM=;
+ b=sRxeS+Z1EtyINIQKlz7jhw7eMFuWGIcB7vzm9lghu4CR5wPuhzHmj3YqwtxdDAfk+z
+ 4dA5YAiCtrKv+DwzpxGTlS/gTNUiN+P7TNIU5hhAwrRZ2C2RMvXsu6DL9vPLcjZS0HSY
+ Eya3pf5KtewIc+wV4FPsf7zMFoQZh0cIjDAOK3lgFwxwdDnO9fCP3gmGg4NLK/XkJBbk
+ C1TJMKudBde1XRHWjWrK0/ypsl9JIEljBsBpZkNVPY9r41wRLHzmvUmvqJs5i5l1VtgO
+ yLF5PnORL41LqWk4kIniLXF3yKYNkseKxgjXjS+sA4K84v8X8RHis5Nr7J8mJ24oKWQq
+ CyYw==
+X-Gm-Message-State: AOJu0Yzf1AZTYkwZb0HE8kzfyJqQCfjct3s2XRWm4/yDv9lcanNFyt4P
+ OAuP3we0OBwBr6/SpSErgLVr+h3JQzljSSgbDRmWi5SZsHwSRpaxJPX8/85jpKpeiyWswjUpEA+
+ x7tro
+X-Gm-Gg: ASbGnctPZJrSkEuF9xZURM+O7SagQOLv5EDXzCfedACZ+/p1tBWoSIY/xxcWKy4EIp6
+ YZHOnLrjixP7na0EuFIUC5Ciy6zLisAoLLREn19WqbdHzBGWU37yslnOWTis2OaK33ABQxtUibQ
+ IKTC4ZoqYYtJrOFOAtozR1S7owyXGIWtNJy5K+n4c5WyTMx6A01KX7J2K+9wdnLTwjjjjtVCwlr
+ rPCRMogb/CtAz7f42nooutZmokzqP8VLe50nVmN1dqRcxZIY93mChsnPZEqGNRn8oyGJLrHA413
+ bIDQ+9GER1IU0Dv/kMwn+ISCitQuTbuX6HLU6LTLuHWDk9ygzzbAeapFngGbmQoIKNmUdZHzP05
+ xCd7Sgvw+FLCfNajYEetvmFJckh40
+X-Google-Smtp-Source: AGHT+IFvuNkxlE3S11PG4LBPLfMGBCKSJ08y7vOWVR/+Y3rZ45tcOf1kXiE4Btish2XwEgk7zJjmqg==
+X-Received: by 2002:a5d:5d0a:0:b0:3e5:50:e070 with SMTP id
+ ffacd0b85a97d-3e765a19cbbmr14632391f8f.50.1758045998114; 
+ Tue, 16 Sep 2025 11:06:38 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.35
+ ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.37
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Sep 2025 11:06:35 -0700 (PDT)
+ Tue, 16 Sep 2025 11:06:37 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/36] arm/kvm: report registers we failed to set
-Date: Tue, 16 Sep 2025 19:05:55 +0100
-Message-ID: <20250916180611.1481266-22-peter.maydell@linaro.org>
+Subject: [PULL 22/36] target/arm: Increase MAX_PACKET_LENGTH for SME ZA remote
+ gdb debugging
+Date: Tue, 16 Sep 2025 19:05:56 +0100
+Message-ID: <20250916180611.1481266-23-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916180611.1481266-1-peter.maydell@linaro.org>
 References: <20250916180611.1481266-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,143 +98,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cornelia Huck <cohuck@redhat.com>
+From: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
 
-If we fail migration because of a mismatch of some registers between
-source and destination, the error message is not very informative:
+This patch increases the value of the MAX_PACKET_LEGNTH to
+131104 from 4096 to allow the GDBState.line_buf to be large enough
+to accommodate the full contents of the SME ZA storage when the
+vector length is maximal. This is in preparation for a related
+patch that allows SME register visibility through remote GDB
+debugging.
 
-qemu-system-aarch64: error while loading state for instance 0x0 ofdevice 'cpu'
-qemu-system-aarch64: Failed to put registers after init: Invalid argument
-
-At least try to give the user a hint which registers had a problem,
-even if they cannot really do anything about it right now.
-
-Sample output:
-
-Could not set register op0:3 op1:0 crn:0 crm:0 op2:0 to c00fac31 (is 413fd0c1)
-
-We could be even more helpful once we support writable ID registers,
-at which point the user might actually be able to configure something
-that is migratable.
-
-Suggested-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Sebastian Ott <sebott@redhat.com>
-Signed-off-by: Cornelia Huck <cohuck@redhat.com>
-Message-id: 20250911154159.158046-1-cohuck@redhat.com
+Signed-off-by: Vacha Bhavsar <vacha.bhavsar@oss.qualcomm.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20250909161012.2561593-2-vacha.bhavsar@oss.qualcomm.com
+[PMM: fixed up comment formatting]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/kvm.c | 86 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 86 insertions(+)
+ gdbstub/internals.h | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 66723448554..c1ec6654ca6 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -900,6 +900,58 @@ bool write_kvmstate_to_list(ARMCPU *cpu)
-     return ok;
- }
+diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+index bf5a5c63029..92466b28c18 100644
+--- a/gdbstub/internals.h
++++ b/gdbstub/internals.h
+@@ -11,7 +11,27 @@
  
-+/* pretty-print a KVM register */
-+#define CP_REG_ARM64_SYSREG_OP(_reg, _op)                       \
-+    ((uint8_t)((_reg & CP_REG_ARM64_SYSREG_ ## _op ## _MASK) >> \
-+               CP_REG_ARM64_SYSREG_ ## _op ## _SHIFT))
-+
-+static gchar *kvm_print_sve_register_name(uint64_t regidx)
-+{
-+    uint16_t sve_reg = regidx & 0x000000000000ffff;
-+
-+    if (regidx == KVM_REG_ARM64_SVE_VLS) {
-+        return g_strdup_printf("SVE VLS");
-+    }
-+    /* zreg, preg, ffr */
-+    switch (sve_reg & 0xfc00) {
-+    case 0:
-+        return g_strdup_printf("SVE zreg n:%d slice:%d",
-+                               (sve_reg & 0x03e0) >> 5, sve_reg & 0x001f);
-+    case 0x04:
-+        return g_strdup_printf("SVE preg n:%d slice:%d",
-+                               (sve_reg & 0x01e0) >> 5, sve_reg & 0x001f);
-+    case 0x06:
-+        return g_strdup_printf("SVE ffr slice:%d", sve_reg & 0x001f);
-+    default:
-+        return g_strdup_printf("SVE ???");
-+    }
-+}
-+
-+static gchar *kvm_print_register_name(uint64_t regidx)
-+{
-+        switch ((regidx & KVM_REG_ARM_COPROC_MASK)) {
-+        case KVM_REG_ARM_CORE:
-+            return g_strdup_printf("core reg %"PRIx64, regidx);
-+        case KVM_REG_ARM_DEMUX:
-+            return g_strdup_printf("demuxed reg %"PRIx64, regidx);
-+        case KVM_REG_ARM64_SYSREG:
-+            return g_strdup_printf("op0:%d op1:%d crn:%d crm:%d op2:%d",
-+                                   CP_REG_ARM64_SYSREG_OP(regidx, OP0),
-+                                   CP_REG_ARM64_SYSREG_OP(regidx, OP1),
-+                                   CP_REG_ARM64_SYSREG_OP(regidx, CRN),
-+                                   CP_REG_ARM64_SYSREG_OP(regidx, CRM),
-+                                   CP_REG_ARM64_SYSREG_OP(regidx, OP2));
-+        case KVM_REG_ARM_FW:
-+            return g_strdup_printf("fw reg %d", (int)(regidx & 0xffff));
-+        case KVM_REG_ARM64_SVE:
-+            return kvm_print_sve_register_name(regidx);
-+        case KVM_REG_ARM_FW_FEAT_BMAP:
-+            return g_strdup_printf("fw feat reg %d", (int)(regidx & 0xffff));
-+        default:
-+            return g_strdup_printf("%"PRIx64, regidx);
-+        }
-+}
-+
- bool write_list_to_kvmstate(ARMCPU *cpu, int level)
- {
-     CPUState *cs = CPU(cpu);
-@@ -927,11 +979,45 @@ bool write_list_to_kvmstate(ARMCPU *cpu, int level)
-             g_assert_not_reached();
-         }
-         if (ret) {
-+            gchar *reg_str = kvm_print_register_name(regidx);
-+
-             /* We might fail for "unknown register" and also for
-              * "you tried to set a register which is constant with
-              * a different value from what it actually contains".
-              */
-             ok = false;
-+            switch (ret) {
-+            case -ENOENT:
-+                error_report("Could not set register %s: unknown to KVM",
-+                             reg_str);
-+                break;
-+            case -EINVAL:
-+                if ((regidx & KVM_REG_SIZE_MASK) == KVM_REG_SIZE_U32) {
-+                    if (!kvm_get_one_reg(cs, regidx, &v32)) {
-+                        error_report("Could not set register %s to %x (is %x)",
-+                                     reg_str, (uint32_t)cpu->cpreg_values[i],
-+                                     v32);
-+                    } else {
-+                        error_report("Could not set register %s to %x",
-+                                     reg_str, (uint32_t)cpu->cpreg_values[i]);
-+                    }
-+                } else /* U64 */ {
-+                    uint64_t v64;
-+
-+                    if (!kvm_get_one_reg(cs, regidx, &v64)) {
-+                        error_report("Could not set register %s to %"PRIx64" (is %"PRIx64")",
-+                                     reg_str, cpu->cpreg_values[i], v64);
-+                    } else {
-+                        error_report("Could not set register %s to %"PRIx64,
-+                                     reg_str, cpu->cpreg_values[i]);
-+                    }
-+                }
-+                break;
-+            default:
-+                error_report("Could not set register %s: %s",
-+                             reg_str, strerror(-ret));
-+            }
-+            g_free(reg_str);
-         }
-     }
-     return ok;
+ #include "exec/cpu-common.h"
+ 
+-#define MAX_PACKET_LENGTH 4096
++/*
++ * Most "large" transfers (e.g. memory reads, feature XML
++ * transfer) have mechanisms in the gdb protocol for splitting
++ * them. However, register values in particular cannot currently
++ * be split. This packet size must therefore be at least big enough
++ * for the worst-case register size. Currently that is Arm SME
++ * ZA storage with a 256x256 byte value. We also must account
++ * for the conversion from raw data to hex in gdb_memtohex(),
++ * which writes 2 * size bytes, and for other protocol overhead
++ * including command, register number and checksum which add
++ * another 4 bytes of overhead. However, to be consistent with
++ * the changes made in gdbserver to address this same requirement,
++ * we add a total of 32 bytes to account for protocol overhead
++ * (unclear why specifically 32 bytes), bringing the value of
++ * MAX_PACKET_LENGTH to 2 * 256 * 256 + 32 = 131104.
++ *
++ * The commit making this change for gdbserver can be found here:
++ * https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=
++ * b816042e88583f280ad186ff124ab84d31fb592b
++ */
++#define MAX_PACKET_LENGTH 131104
+ 
+ /*
+  * Shared structures and definitions
 -- 
 2.43.0
 
