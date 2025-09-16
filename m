@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D684CB5A01C
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7072CB5A01F
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:08:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uya5r-0004nS-Ss; Tue, 16 Sep 2025 14:07:56 -0400
+	id 1uya5S-0003Y9-GG; Tue, 16 Sep 2025 14:07:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4m-000399-SQ
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:52 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1uya4i-00038g-PR
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:48 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4c-0001cK-EE
+ id 1uya4c-0001cg-IN
  for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:40 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-45f2c5ef00fso24679365e9.1
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:37 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3d44d734cabso3517680f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758045996; x=1758650796; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758045997; x=1758650797; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=iUSGbKecK/il7MHJUX3WdtSZLN2LPW6TZ0vx6cLCdjI=;
- b=lMo3ZMXr41HWUPrXx1/FZR3jAUna+ItSSNOkh3qOooHVvxNEhaJn8ZmySJsm6FqGer
- PvK9D4ljsErESQIppa2JRcYj2nqdQKRs1JhXCP/Sw1mPX/OqchHCJEAz0WU/xCwOXRF4
- nPMxauXvDQog2D3exTMXE7d1AHOfyfJGcHAn4i3pTZrNTlkQMaBYjrcJAXNF76hj3mhF
- 4EBC0FbLuGJwOUPaCzJGktLa3stMNURJigm3jA5b4MRsRsRnK13ilD9PIiGnoWnP/Tub
- 3a6oOD0Rtj2kru9n2IhHeLzy8/5KyuXpX9s5ePTlhm8nAP+KjiQg3xI+Bin5ZsJ8Z2iR
- P3iw==
+ :reply-to; bh=/e4QFB40Kd5xVAD2ukP5PCzshfLjtIczMIicFl3oFOU=;
+ b=PICNvghxoyqK9pUzmAdjyIu/YDyUQxbz2mBr7ffjquT1eioEk+ahXnxG1sPqKkVchL
+ gLrQiP7k3GUuZwxq6w2P6Ik+JbO37OUjTiqXhg9rW7q8Vw5p9nVsjI+sN1PPFnv11I27
+ oJPbsrzgMdVO7mbvmWCndL+GwFbqLkXCTHubTBlNFLN9W6DwXr5w7pqpPuIOuqqfSyaj
+ r38HeCrh0DuQHeBDmD90R7ua0GivIp3r2C47F89qNqC1mDZemd1dv1HRVhhx1uq0sgGl
+ jx5Nlotn6ec9uCq6cF/hmapYEPKdscRTWAObakZRmGdck+qIIMOKxugEx6/pzAkLheuE
+ 8ugw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758045996; x=1758650796;
+ d=1e100.net; s=20230601; t=1758045997; x=1758650797;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iUSGbKecK/il7MHJUX3WdtSZLN2LPW6TZ0vx6cLCdjI=;
- b=fWO3lIYRa0rAX4Wv5qfKxwz4WiBTCupf+LoWAcbT8f0momwG9xNBfFjdQDmJPSRcyy
- iKSsX7Nh17VEzAOJyC2kbd3iYJHLbwSoE0tgI7zeYOy2epoyfvALV2ZkSvq7NeWW4zTF
- cyfdEmycbG4fDzUw3RHMRnQ07jpT/IFaXbhJKaOOGU1Rzh8ztpvy3Qro5xlPp4DE+MnJ
- hTHR+6FloU5jEsfcH98ToNmJzOcvCaNAbuX4G8mL/P4OfhtF+ODfZH0HnhwWuVKxUD6l
- rCcnq7KliNjLRdiGQL4cVF0ufalNXAC/nfaoeFFGS7QLsrpBaTJf78l+MYTk5q5l5K3H
- nmYw==
-X-Gm-Message-State: AOJu0YwkqTyy3CS3XnvNNEaBe2op2FrR906x8ay3ZeEbsxY5AQeZ7CUh
- /BXp32BmaQnVlSTwOwsz4gcmhp3MEEO7lxF9zYjDhM6xeVmSK2Obt+tLZj/wrvjb4/cut+7vx/G
- LPo4J
-X-Gm-Gg: ASbGncvJa7FmDwfauGaAp0Rw4qgIXGhgzWzbB1fX1NFZ4EMmmZ/wdm4qGR+zJ8zfVn0
- hDLtRSIvh4UFgCcdrDTa4eFoDdPXC+XbDRDvMn5QsrR6APajVJKDwV8sclf5cQgE6kDDyV9Drd1
- 7qFCqbMPUF+Mur4SpXOeMzGt9LDM+RNSRWBQMIeybtrwuztfdQtFb20L1Gz0M/siHnq0xRTu1dg
- QFBKw+/QlCrKBcsX4638WbsXdHQFB9ElOIBvVeb2/G/8b887YXo8QmXHGN8fd2v5zp+TPZrhpUE
- IM5VbzqOVOT/xgO/XDxs1WQ5W9SrU06+pTGvL61mI3ek0FTlNvGlRHHrv3ppXJer/e3NxjAmmmn
- IYDcGW79/L6qcN9Exw4rtXu62VwWQ
-X-Google-Smtp-Source: AGHT+IHxsv5UH8m/FIUnvHir7BW0eDdGEDIGfdLgij1cFOQAbNPYT+wp+3EX8qZfwkgEVFBbzrP93Q==
-X-Received: by 2002:a05:600c:45c4:b0:45b:9912:9f30 with SMTP id
- 5b1f17b1804b1-45f211ca9a5mr173953065e9.6.1758045995510; 
- Tue, 16 Sep 2025 11:06:35 -0700 (PDT)
+ bh=/e4QFB40Kd5xVAD2ukP5PCzshfLjtIczMIicFl3oFOU=;
+ b=iBcBJK4rfw5X0tb7d+qnuYdycQcDoYh4Osp8RQd/13WhGsR70VYa7GQz/XslSi/vIf
+ VLjn8Nv8wX4ysJHCjtwN6w6rmrRX5lAPiL4oAWYG/Waus2M4NW6ps9O+PFhAQX0IMffJ
+ lf5DZT/i/e9ig+/Kyiy99bVONKLUI1HSAjJFN/YTLf4fbYyfx59PJImU9+y3BNkbk9bN
+ 9nBc5hbEcJ/BaVjmm9euyQFLTvvSE/SR5akVfopeDnDkto87ayIH5jIL6o4F0MuYQxcR
+ fRd76qInHZQtEWIwmSV1t4lQLlspNqlfVCdN521+b47gbbcYgGsH8x0HY81aDvsFZlxZ
+ 40Ew==
+X-Gm-Message-State: AOJu0YzD+XEXthEji0al0F8kh2wNigoMtXaxRuDRvPtF7WClH/nClO6q
+ EFxP6qgIdRy4Hf2wqxro2hhy6JnSkzNh3T5np05NQ4632zdG3+dV3atlvqHuND9WQrp6ewQQKdH
+ pvZb0
+X-Gm-Gg: ASbGnctiasRT/jJZ5YixwojaA2H7hgqvb/IFKx4a4McWvwLUvUcmOsshdfO58YHEf/K
+ yHNumRJNKYq/ZRRX11YpJBVr13dQab3q2yqMQdSPMeXGIxHVePMPdW3FMvrP6QqZRkj+Fko6gs1
+ b7ZWvr5paP5+0t8LGtaHfOy2l0SokzFgEPOEeo5+djAhwhqv0RvxCSTfCEC67iBWLxT8TYx+cLO
+ c5kBiT5uX3t9/r5TBW31vu0IuCVmCXLxfhNcGeke+TdAPOqrWF9no8H70k5mBSD+0tR6FdeM0AL
+ g69YRcpz+Y4WyOj4cWg5X0a7giU5i+7zRtRnZsFmlZz6N9Z5HkUHh8w0W5J/pQFmtSYlPzzGVTX
+ 5tZGCzRSjqxR0yEs3YQyXu4h91FlC
+X-Google-Smtp-Source: AGHT+IHwX706fKouHMa3Qv6J9gvPGyae9Oz61rgIIeyY2z84Apis3lb6BYM+A+PzS3AyuaYdk0dtlA==
+X-Received: by 2002:a05:6000:230c:b0:3dc:1473:18bc with SMTP id
+ ffacd0b85a97d-3e765530b01mr16650233f8f.0.1758045997000; 
+ Tue, 16 Sep 2025 11:06:37 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.34
+ ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.35
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Sep 2025 11:06:34 -0700 (PDT)
+ Tue, 16 Sep 2025 11:06:35 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/36] system: drop the -old-param option
-Date: Tue, 16 Sep 2025 19:05:54 +0100
-Message-ID: <20250916180611.1481266-21-peter.maydell@linaro.org>
+Subject: [PULL 21/36] arm/kvm: report registers we failed to set
+Date: Tue, 16 Sep 2025 19:05:55 +0100
+Message-ID: <20250916180611.1481266-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916180611.1481266-1-peter.maydell@linaro.org>
 References: <20250916180611.1481266-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,232 +97,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We deprecated the command line option -old-param for the 10.0
-release, which allows us to drop it in 10.2.  This option was used to
-boot Arm targets with a very old boot protocol using the
-'param_struct' ABI.  We only ever needed this on a handful of board
-types which have all now been removed from QEMU.
+From: Cornelia Huck <cohuck@redhat.com>
 
+If we fail migration because of a mismatch of some registers between
+source and destination, the error message is not very informative:
+
+qemu-system-aarch64: error while loading state for instance 0x0 ofdevice 'cpu'
+qemu-system-aarch64: Failed to put registers after init: Invalid argument
+
+At least try to give the user a hint which registers had a problem,
+even if they cannot really do anything about it right now.
+
+Sample output:
+
+Could not set register op0:3 op1:0 crn:0 crm:0 op2:0 to c00fac31 (is 413fd0c1)
+
+We could be even more helpful once we support writable ID registers,
+at which point the user might actually be able to configure something
+that is migratable.
+
+Suggested-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Sebastian Ott <sebott@redhat.com>
+Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+Message-id: 20250911154159.158046-1-cohuck@redhat.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-id: 20250828162700.3308812-1-peter.maydell@linaro.org
 ---
- docs/about/deprecated.rst       | 13 ------
- docs/about/removed-features.rst | 12 +++++
- include/system/system.h         |  1 -
- hw/arm/boot.c                   | 81 +--------------------------------
- system/globals.c                |  1 -
- system/vl.c                     |  4 --
- qemu-options.hx                 |  7 ---
- 7 files changed, 13 insertions(+), 106 deletions(-)
+ target/arm/kvm.c | 86 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 86 insertions(+)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index f0314147698..03f7cabf730 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -68,19 +68,6 @@ configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
- marked deprecated since 9.0, users have to ensure that all the topology members
- described with -smp are supported by the target machine.
- 
--``-old-param`` option for booting Arm kernels via param_struct (since 10.0)
--'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
--
--The ``-old-param`` command line option is specific to Arm targets:
--it is used when directly booting a guest kernel to pass it the
--command line and other information via the old ``param_struct`` ABI,
--rather than the newer ATAGS or DTB mechanisms. This option was only
--ever needed to support ancient kernels on some old board types
--like the ``akita`` or ``terrier``; it has been deprecated in the
--kernel since 2001. None of the board types QEMU supports need
--``param_struct`` support, so this option has been deprecated and will
--be removed in a future QEMU version.
--
- QEMU Machine Protocol (QMP) commands
- ------------------------------------
- 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index 65fd564d229..07ca4079d4b 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -560,6 +560,18 @@ the options along with the machine models they were intended for.
- 
- Use ``-run-with user=..`` instead.
- 
-+``-old-param`` option for booting Arm kernels via param_struct (removed in 10.2)
-+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+The ``-old-param`` command line option was specific to Arm targets:
-+it was used when directly booting a guest kernel to pass it the
-+command line and other information via the old ``param_struct`` ABI,
-+rather than the newer ATAGS or DTB mechanisms. This option was only
-+ever needed to support ancient kernels on some old board types
-+like the ``akita`` or ``terrier``; it has been deprecated in the
-+kernel since 2001. None of the board types QEMU supports need
-+``param_struct`` support, so this option has been removed.
-+
- 
- User-mode emulator command line arguments
- -----------------------------------------
-diff --git a/include/system/system.h b/include/system/system.h
-index a7effe7dfd8..03a2d0e9005 100644
---- a/include/system/system.h
-+++ b/include/system/system.h
-@@ -42,7 +42,6 @@ extern int graphic_height;
- extern int graphic_depth;
- extern int display_opengl;
- extern const char *keyboard_layout;
--extern int old_param;
- extern uint8_t *boot_splash_filedata;
- extern bool enable_cpu_pm;
- extern QEMUClockType rtc_clock;
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index d0840308f5a..e77d8679d88 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -337,81 +337,6 @@ static void set_kernel_args(const struct arm_boot_info *info, AddressSpace *as)
-     WRITE_WORD(p, 0);
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 66723448554..c1ec6654ca6 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -900,6 +900,58 @@ bool write_kvmstate_to_list(ARMCPU *cpu)
+     return ok;
  }
  
--static void set_kernel_args_old(const struct arm_boot_info *info,
--                                AddressSpace *as)
--{
--    hwaddr p;
--    const char *s;
--    int initrd_size = info->initrd_size;
--    hwaddr base = info->loader_start;
--
--    /* see linux/include/asm-arm/setup.h */
--    p = base + KERNEL_ARGS_ADDR;
--    /* page_size */
--    WRITE_WORD(p, 4096);
--    /* nr_pages */
--    WRITE_WORD(p, info->ram_size / 4096);
--    /* ramdisk_size */
--    WRITE_WORD(p, 0);
--#define FLAG_READONLY 1
--#define FLAG_RDLOAD   4
--#define FLAG_RDPROMPT 8
--    /* flags */
--    WRITE_WORD(p, FLAG_READONLY | FLAG_RDLOAD | FLAG_RDPROMPT);
--    /* rootdev */
--    WRITE_WORD(p, (31 << 8) | 0); /* /dev/mtdblock0 */
--    /* video_num_cols */
--    WRITE_WORD(p, 0);
--    /* video_num_rows */
--    WRITE_WORD(p, 0);
--    /* video_x */
--    WRITE_WORD(p, 0);
--    /* video_y */
--    WRITE_WORD(p, 0);
--    /* memc_control_reg */
--    WRITE_WORD(p, 0);
--    /* unsigned char sounddefault */
--    /* unsigned char adfsdrives */
--    /* unsigned char bytes_per_char_h */
--    /* unsigned char bytes_per_char_v */
--    WRITE_WORD(p, 0);
--    /* pages_in_bank[4] */
--    WRITE_WORD(p, 0);
--    WRITE_WORD(p, 0);
--    WRITE_WORD(p, 0);
--    WRITE_WORD(p, 0);
--    /* pages_in_vram */
--    WRITE_WORD(p, 0);
--    /* initrd_start */
--    if (initrd_size) {
--        WRITE_WORD(p, info->initrd_start);
--    } else {
--        WRITE_WORD(p, 0);
--    }
--    /* initrd_size */
--    WRITE_WORD(p, initrd_size);
--    /* rd_start */
--    WRITE_WORD(p, 0);
--    /* system_rev */
--    WRITE_WORD(p, 0);
--    /* system_serial_low */
--    WRITE_WORD(p, 0);
--    /* system_serial_high */
--    WRITE_WORD(p, 0);
--    /* mem_fclk_21285 */
--    WRITE_WORD(p, 0);
--    /* zero unused fields */
--    while (p < base + KERNEL_ARGS_ADDR + 256 + 1024) {
--        WRITE_WORD(p, 0);
--    }
--    s = info->kernel_cmdline;
--    if (s) {
--        address_space_write(as, p, MEMTXATTRS_UNSPECIFIED, s, strlen(s) + 1);
--    } else {
--        WRITE_WORD(p, 0);
--    }
--}
--
- static int fdt_add_memory_node(void *fdt, uint32_t acells, hwaddr mem_base,
-                                uint32_t scells, hwaddr mem_len,
-                                int numa_node_id)
-@@ -802,11 +727,7 @@ static void do_cpu_reset(void *opaque)
-                 cpu_set_pc(cs, info->loader_start);
- 
-                 if (!have_dtb(info)) {
--                    if (old_param) {
--                        set_kernel_args_old(info, as);
--                    } else {
--                        set_kernel_args(info, as);
--                    }
-+                    set_kernel_args(info, as);
-                 }
-             } else if (info->secondary_cpu_reset_hook) {
-                 info->secondary_cpu_reset_hook(cpu, info);
-diff --git a/system/globals.c b/system/globals.c
-index 9640c9511e9..98f9876d5d4 100644
---- a/system/globals.c
-+++ b/system/globals.c
-@@ -52,7 +52,6 @@ bool vga_interface_created;
- Chardev *parallel_hds[MAX_PARALLEL_PORTS];
- QEMUOptionRom option_rom[MAX_OPTION_ROMS];
- int nb_option_roms;
--int old_param;
- const char *qemu_name;
- unsigned int nb_prom_envs;
- const char *prom_envs[MAX_PROM_ENVS];
-diff --git a/system/vl.c b/system/vl.c
-index 3b7057e6c66..00f36947257 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -3524,10 +3524,6 @@ void qemu_init(int argc, char **argv)
-                 prom_envs[nb_prom_envs] = optarg;
-                 nb_prom_envs++;
-                 break;
--            case QEMU_OPTION_old_param:
--                warn_report("-old-param is deprecated");
--                old_param = 1;
--                break;
-             case QEMU_OPTION_rtc:
-                 opts = qemu_opts_parse_noisily(qemu_find_opts("rtc"), optarg,
-                                                false);
-diff --git a/qemu-options.hx b/qemu-options.hx
-index ab23f14d217..aa44b0e34ae 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -5347,13 +5347,6 @@ SRST
-         specified, the former is passed to semihosting as it always
-         takes precedence.
- ERST
--DEF("old-param", 0, QEMU_OPTION_old_param,
--    "-old-param      old param mode\n", QEMU_ARCH_ARM)
--SRST
--``-old-param``
--    Old param mode (ARM only).
--ERST
--
- DEF("sandbox", HAS_ARG, QEMU_OPTION_sandbox, \
-     "-sandbox on[,obsolete=allow|deny][,elevateprivileges=allow|deny|children]\n" \
-     "          [,spawn=allow|deny][,resourcecontrol=allow|deny]\n" \
++/* pretty-print a KVM register */
++#define CP_REG_ARM64_SYSREG_OP(_reg, _op)                       \
++    ((uint8_t)((_reg & CP_REG_ARM64_SYSREG_ ## _op ## _MASK) >> \
++               CP_REG_ARM64_SYSREG_ ## _op ## _SHIFT))
++
++static gchar *kvm_print_sve_register_name(uint64_t regidx)
++{
++    uint16_t sve_reg = regidx & 0x000000000000ffff;
++
++    if (regidx == KVM_REG_ARM64_SVE_VLS) {
++        return g_strdup_printf("SVE VLS");
++    }
++    /* zreg, preg, ffr */
++    switch (sve_reg & 0xfc00) {
++    case 0:
++        return g_strdup_printf("SVE zreg n:%d slice:%d",
++                               (sve_reg & 0x03e0) >> 5, sve_reg & 0x001f);
++    case 0x04:
++        return g_strdup_printf("SVE preg n:%d slice:%d",
++                               (sve_reg & 0x01e0) >> 5, sve_reg & 0x001f);
++    case 0x06:
++        return g_strdup_printf("SVE ffr slice:%d", sve_reg & 0x001f);
++    default:
++        return g_strdup_printf("SVE ???");
++    }
++}
++
++static gchar *kvm_print_register_name(uint64_t regidx)
++{
++        switch ((regidx & KVM_REG_ARM_COPROC_MASK)) {
++        case KVM_REG_ARM_CORE:
++            return g_strdup_printf("core reg %"PRIx64, regidx);
++        case KVM_REG_ARM_DEMUX:
++            return g_strdup_printf("demuxed reg %"PRIx64, regidx);
++        case KVM_REG_ARM64_SYSREG:
++            return g_strdup_printf("op0:%d op1:%d crn:%d crm:%d op2:%d",
++                                   CP_REG_ARM64_SYSREG_OP(regidx, OP0),
++                                   CP_REG_ARM64_SYSREG_OP(regidx, OP1),
++                                   CP_REG_ARM64_SYSREG_OP(regidx, CRN),
++                                   CP_REG_ARM64_SYSREG_OP(regidx, CRM),
++                                   CP_REG_ARM64_SYSREG_OP(regidx, OP2));
++        case KVM_REG_ARM_FW:
++            return g_strdup_printf("fw reg %d", (int)(regidx & 0xffff));
++        case KVM_REG_ARM64_SVE:
++            return kvm_print_sve_register_name(regidx);
++        case KVM_REG_ARM_FW_FEAT_BMAP:
++            return g_strdup_printf("fw feat reg %d", (int)(regidx & 0xffff));
++        default:
++            return g_strdup_printf("%"PRIx64, regidx);
++        }
++}
++
+ bool write_list_to_kvmstate(ARMCPU *cpu, int level)
+ {
+     CPUState *cs = CPU(cpu);
+@@ -927,11 +979,45 @@ bool write_list_to_kvmstate(ARMCPU *cpu, int level)
+             g_assert_not_reached();
+         }
+         if (ret) {
++            gchar *reg_str = kvm_print_register_name(regidx);
++
+             /* We might fail for "unknown register" and also for
+              * "you tried to set a register which is constant with
+              * a different value from what it actually contains".
+              */
+             ok = false;
++            switch (ret) {
++            case -ENOENT:
++                error_report("Could not set register %s: unknown to KVM",
++                             reg_str);
++                break;
++            case -EINVAL:
++                if ((regidx & KVM_REG_SIZE_MASK) == KVM_REG_SIZE_U32) {
++                    if (!kvm_get_one_reg(cs, regidx, &v32)) {
++                        error_report("Could not set register %s to %x (is %x)",
++                                     reg_str, (uint32_t)cpu->cpreg_values[i],
++                                     v32);
++                    } else {
++                        error_report("Could not set register %s to %x",
++                                     reg_str, (uint32_t)cpu->cpreg_values[i]);
++                    }
++                } else /* U64 */ {
++                    uint64_t v64;
++
++                    if (!kvm_get_one_reg(cs, regidx, &v64)) {
++                        error_report("Could not set register %s to %"PRIx64" (is %"PRIx64")",
++                                     reg_str, cpu->cpreg_values[i], v64);
++                    } else {
++                        error_report("Could not set register %s to %"PRIx64,
++                                     reg_str, cpu->cpreg_values[i]);
++                    }
++                }
++                break;
++            default:
++                error_report("Could not set register %s: %s",
++                             reg_str, strerror(-ret));
++            }
++            g_free(reg_str);
+         }
+     }
+     return ok;
 -- 
 2.43.0
 
