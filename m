@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F7DB5A035
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6231CB5A015
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:07:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uya4Y-00035g-SL; Tue, 16 Sep 2025 14:06:35 -0400
+	id 1uya4b-000370-42; Tue, 16 Sep 2025 14:06:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4V-00034z-SX
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:32 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1uya4X-00035i-Rs
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:34 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4T-0001au-Ph
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:31 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-45dec026c78so58632485e9.0
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:29 -0700 (PDT)
+ id 1uya4U-0001bH-IC
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:33 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-45dcfecdc0fso58276305e9.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758045988; x=1758650788; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758045989; x=1758650789; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=81pXE1kDQVjDPPfH3enW9tfmeo8/1W7sfykAV4zpEFs=;
- b=Duo4Xph9P8dB94M7JP3EYvNJQYV+eF2Cqa9GOCsek7DYZVT8C/97Wbabe4wo22jxQO
- 5b1U/RZW1pkgsxpo+CJ5eMqPWph5JXM+McWipLE+qUMy8FlPh8iXHlbjEaz+j3GWCFVD
- v8hWeaFV/466BUOfbm3XJhMqFnZCEQC9iMvqAeC4jS8SBND46dXTBXavDXfOSA23bOXF
- tKxwKDhkp2ZCEl/fH82VIFp3fEmXNA7XgLUSe5jdw6vMJmHMn6IYMufsf+lM2axtesfH
- 3jQO8DjQTw6LOac4gEyMeHw2rHip0EBwEbnFwTeXTvqFoVPXnFmQv2kPw5UlRqRsvixj
- Gt3A==
+ :reply-to; bh=962IUHk4Fm5KFmeKbrFTpPCwGn8ge5yNRC9E10wxbT4=;
+ b=sPaQS4P+BSRsyuDiiWdQgMOdQ94/Fc/UqV8VlGd9skSAN6pMZ8ZGehUJV2xPhvenc4
+ 8vODIVtkwGbHM6Yvv2gfnC/RiDa79MSid66CiMhB5VOOhJo7jmwkJxF/TOlAl2oHyWU4
+ tmAENKpEKvxl4voWMo0ip+s23puvJ9rqdEd3mWOhvhJzmZR5e/bHj3NE8qZmajWRYW2B
+ pnFFuPVqJUhxI05kW3Gw+iD5a8m4swtVCM8xmT2sMlbquB8nsF5xCAY3LNgf6a97dAFq
+ miTqYn+0CBaa00MKqIZXB9jL2Wa2tsl/plib4S66UKnneKRkJBLLDohV9+jDZ2lmHB7F
+ 1rxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758045988; x=1758650788;
+ d=1e100.net; s=20230601; t=1758045989; x=1758650789;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=81pXE1kDQVjDPPfH3enW9tfmeo8/1W7sfykAV4zpEFs=;
- b=orDqWXn/Bd6fboGtv4IkN7fU+vO/Nyhl70y/mAp0gfOW84e12pZ2ba2UVsyQhX6WD/
- Cekc6rQ5dnXNNP8o+kO6N7t30Du1i7YopoqBW57YHxWDyvFME6khiEzoiY7OnHIx8KxT
- AMOV/fW0F3kWBwBJE5QGPns7bLJO16nqpycBTf7Ok7xAkfA/+ScZTjmaM4lypis81R7G
- L1NRnuLIsm1Bk43dH8MupNgBhNJXzDk2dDqbWdiXkYJ/VzF1uN9I8V/iahWeQZq+97Hx
- zvGixhCzq4AOMsWmggerq5b769XHkXiWaKb8RQp3cdOoYrrdodHI2eTD8duu42G+Ir3B
- 40Qg==
-X-Gm-Message-State: AOJu0YyJiIYAr3o/hff+ht/CXJMcjd0BcQ5DcS+AdJKJnXrKoNuQN7O/
- h1b8tAgTx2GAry4Vjw216PrHJ+fEp++4SDwC0wzMrsgqeTsBaSYcF5AMxuY1zaI7wMG1YMrgbmm
- 26XQr
-X-Gm-Gg: ASbGnctwB1v4feEYVjJNiTcab9OgV3z7ynqGuz3c43yCGEVfiJUw1Qumk9X2hFfWODM
- oUvrjRNPXGH195SYaMgpMXetEoGDlM45ecrkS2qgiQh2DYHYA68reDZyAtMDggRBoZF2xuthGso
- B77TNN07f1PpNLvH/813uOLN98KK56YGSXj2oE3XYa3+ReOn0T+4ackzIpwEC0wRE9mKbwnSi5L
- ABDRJ/cydCa6DOWYEV+eyyvIXu6cOZ6NkoZTWVMyEc3b9dnAKhOsgbJ1BhGUAM/Vqi/c33ZZakV
- MrNB07//wr+fVmGvXhK0rlxPYzoKGVSHePeBZ9nHJhtXEc3ctQEiPzLdlkQXeKi5wcdbLkNigMG
- XHTHgo2KsAV5iiCgKhDhe/6HaaBOr
-X-Google-Smtp-Source: AGHT+IHuQGlsxLMbpaL+EqVM2QX50MEwqvKvApkrj9WmAGhTEMnKjhUDKB2tUdOV5tKszyJBPgOTnA==
-X-Received: by 2002:a05:600c:458a:b0:45d:d1a3:ba6a with SMTP id
- 5b1f17b1804b1-45f2218d97dmr179878095e9.33.1758045987756; 
- Tue, 16 Sep 2025 11:06:27 -0700 (PDT)
+ bh=962IUHk4Fm5KFmeKbrFTpPCwGn8ge5yNRC9E10wxbT4=;
+ b=Pnkjn/pf70TGtN/GxmDPm8rT/0hmoK7PPy2uPaRtuKGAASgsv6s3PimSqoc6AEozhi
+ Yz9vCY91csBLK204w56k6AmhkK2+y4bFUZryeQYD1KDQ4HgY5kz3WJahS6drjIdmpc2u
+ bF+qJ9PY7bQEW6tWzfXMBMs1Iyv6OhkrHkcL5jJCI9ESpdvxtnUUYMPAvRwDrVeU4aGN
+ 7O/ZVOi2pjtNN2ABO6oT51UIqBRR2CEkB4KXzD59nLqVkHPLa6UDlku3FkVynNYYgGe1
+ NH3wjf7TRzpTfu1m908BWHNhAhXrx4QiqAqV4pdPIzvZW4QFiRFmwjAgGGlgXv3ofdQb
+ jctg==
+X-Gm-Message-State: AOJu0YxAI2Z8/7upxZ90vXOixyRl+dXc/2VA5hu1WBU7LUFc2TQZntU1
+ C48pG5V2q2a3oW+dIZAXbWf1xN82he/5SMT2GROfcdRcOZBkFjE2VRTXqXgADDNNqh2kxBZ5Q1x
+ 8P1KR
+X-Gm-Gg: ASbGnctPM1Fa+q42ocyW4DxLP66Nz7hXPqNE7TERaNYK+mP9HRdWATdPprwJI1SMoyK
+ +fsWhJ3jOE44d2YyPWLwhQ8HJ0stZ4YxHb0Ejqo8Gu8CRIB5yUmqSmDnWWRf+V6TQCpCBcPIS57
+ COemJn7pFdE6EUb1rI9rDsnRtLdLoAO6LQVcz26cVyV8wOTIdueR1T0QO8n3xBiMvYbrb31zPLD
+ iOh2mCDsY+hju24AaNTIDQCigts38+6xy8p82d2ehjXciKnHjU3ZWtQQ+wvdo/bntxVF1TAUHDc
+ abM0OmXky93hf/wxXdBcwPahSh5icLQaXPWacoA5/yFz5GBa2plTBQZgUumRV+I7NiXY8Vjsb8e
+ VbDCXhT98hIezXFtStxzpi/C6EiJZ
+X-Google-Smtp-Source: AGHT+IFEXCWxSB5HAmMaNbHPRz3FibqOa9ns3O5p9NQ2qAhRyzaKMOqZepNY6usatT4uSFI3CD68Hw==
+X-Received: by 2002:a7b:cd97:0:b0:45d:f7dc:f71 with SMTP id
+ 5b1f17b1804b1-45f211efc4dmr129586365e9.25.1758045988713; 
+ Tue, 16 Sep 2025 11:06:28 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.26
+ ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Sep 2025 11:06:27 -0700 (PDT)
+ Tue, 16 Sep 2025 11:06:28 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/36] hw/arm/raspi4b: remove redundant check in
- raspi_add_memory_node
-Date: Tue, 16 Sep 2025 19:05:48 +0100
-Message-ID: <20250916180611.1481266-15-peter.maydell@linaro.org>
+Subject: [PULL 15/36] target/arm: Remove deprecated pxa CPU family
+Date: Tue, 16 Sep 2025 19:05:49 +0100
+Message-ID: <20250916180611.1481266-16-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916180611.1481266-1-peter.maydell@linaro.org>
 References: <20250916180611.1481266-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,65 +98,262 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
+In 10.0 we deprecated the pxa CPU family (pxa250, pxa255, pxa260
+pxa261, pxa262, pxa270-a0, pxa270-a1, pxa270, pxa270-b0, pxa270-b1,
+pxa270-c0, pxa270-c5).  Now we have released 10.1 we can remove them.
 
-The if (acells == 0 || scells == 0) check is redundant in
-raspi_add_memory_node, since it is already checked in the call
-chain, arm_load_dtb. Also the return value of the function is
-not checked/used so it's removed.
+This commit removes only the top level CPU definitions and updates
+the documentation. Removing the CPUs means that there is now a lot
+of dead iwMMXt code, which we will delete in subsequent commits.
 
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Message-id: 20250902200818.43305-1-osama.abdelkader@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20250828140422.3271703-2-peter.maydell@linaro.org
 ---
- hw/arm/raspi4b.c | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ docs/about/deprecated.rst       |  21 ----
+ docs/about/removed-features.rst |  14 +++
+ target/arm/tcg/cpu32.c          | 163 --------------------------------
+ 3 files changed, 14 insertions(+), 184 deletions(-)
 
-diff --git a/hw/arm/raspi4b.c b/hw/arm/raspi4b.c
-index 20082d52667..4df951a0d82 100644
---- a/hw/arm/raspi4b.c
-+++ b/hw/arm/raspi4b.c
-@@ -36,9 +36,8 @@ struct Raspi4bMachineState {
-  * (see https://datasheets.raspberrypi.com/bcm2711/bcm2711-peripherals.pdf
-  * 1.2 Address Map)
-  */
--static int raspi_add_memory_node(void *fdt, hwaddr mem_base, hwaddr mem_len)
-+static void raspi_add_memory_node(void *fdt, hwaddr mem_base, hwaddr mem_len)
- {
--    int ret;
-     uint32_t acells, scells;
-     char *nodename = g_strdup_printf("/memory@%" PRIx64, mem_base);
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index b2420732e1d..f0314147698 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -236,27 +236,6 @@ Keeping 32-bit host support alive is a substantial burden for the
+ QEMU project.  Thus QEMU will in future drop the support for all
+ 32-bit host systems.
  
-@@ -46,19 +45,16 @@ static int raspi_add_memory_node(void *fdt, hwaddr mem_base, hwaddr mem_len)
-                                    NULL, &error_fatal);
-     scells = qemu_fdt_getprop_cell(fdt, "/", "#size-cells",
-                                    NULL, &error_fatal);
--    if (acells == 0 || scells == 0) {
--        fprintf(stderr, "dtb file invalid (#address-cells or #size-cells 0)\n");
--        ret = -1;
--    } else {
--        qemu_fdt_add_subnode(fdt, nodename);
--        qemu_fdt_setprop_string(fdt, nodename, "device_type", "memory");
--        ret = qemu_fdt_setprop_sized_cells(fdt, nodename, "reg",
--                                           acells, mem_base,
--                                           scells, mem_len);
--    }
-+    /* validated by arm_load_dtb */
-+    g_assert(acells && scells);
+-linux-user mode CPUs
+---------------------
+-
+-iwMMXt emulation and the ``pxa`` CPUs (since 10.0)
+-''''''''''''''''''''''''''''''''''''''''''''''''''
+-
+-The ``pxa`` CPU family (``pxa250``, ``pxa255``, ``pxa260``,
+-``pxa261``, ``pxa262``, ``pxa270-a0``, ``pxa270-a1``, ``pxa270``,
+-``pxa270-b0``, ``pxa270-b1``, ``pxa270-c0``, ``pxa270-c5``) are no
+-longer used in system emulation, because all the machine types which
+-used these CPUs were removed in the QEMU 9.2 release. These CPUs can
+-now only be used in linux-user mode, and to do that you would have to
+-explicitly select one of these CPUs with the ``-cpu`` command line
+-option or the ``QEMU_CPU`` environment variable.
+-
+-We don't believe that anybody is using the iwMMXt emulation, and we do
+-not have any tests to validate it or any real hardware or similar
+-known-good implementation to test against. GCC is in the process of
+-dropping their support for iwMMXt codegen. These CPU types are
+-therefore deprecated in QEMU, and will be removed in a future release.
+-
+ System emulator CPUs
+ --------------------
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index fff781d6b7c..65fd564d229 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -1138,6 +1138,20 @@ reason the maintainers strongly suspected no one actually used it.
+ QEMU Nios II architecture was orphan; Intel has EOL'ed the Nios II
+ processor IP (see `Intel discontinuance notification`_).
+ 
++iwMMXt emulation and the ``pxa`` CPUs (removed in 10.2)
++'''''''''''''''''''''''''''''''''''''''''''''''''''''''
 +
-+    qemu_fdt_add_subnode(fdt, nodename);
-+    qemu_fdt_setprop_string(fdt, nodename, "device_type", "memory");
-+    qemu_fdt_setprop_sized_cells(fdt, nodename, "reg",
-+                                        acells, mem_base,
-+                                        scells, mem_len);
++The ``pxa`` CPU family (``pxa250``, ``pxa255``, ``pxa260``,
++``pxa261``, ``pxa262``, ``pxa270-a0``, ``pxa270-a1``, ``pxa270``,
++``pxa270-b0``, ``pxa270-b1``, ``pxa270-c0``, ``pxa270-c5``) were
++not available in system emulation, because all the machine types which
++used these CPUs were removed in the QEMU 9.2 release. We don't
++believe that anybody was using the iwMMXt emulation (which you
++would have to explicitly enable on the command line), and we did
++not have any tests to validate it or any real hardware or similar
++known-good implementation to test against. These CPUs have
++therefore been removed in linux-user mode as well.
++
+ TCG introspection features
+ --------------------------
  
-     g_free(nodename);
--    return ret;
+diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
+index a2a23eae0d7..f0761410ad0 100644
+--- a/target/arm/tcg/cpu32.c
++++ b/target/arm/tcg/cpu32.c
+@@ -807,144 +807,6 @@ static void sa1110_initfn(Object *obj)
+     cpu->reset_sctlr = 0x00000070;
  }
  
- static void raspi4_modify_dtb(const struct arm_boot_info *info, void *fdt)
+-static void pxa250_initfn(Object *obj)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    cpu->dtb_compatible = "marvell,xscale";
+-    set_feature(&cpu->env, ARM_FEATURE_V5);
+-    set_feature(&cpu->env, ARM_FEATURE_XSCALE);
+-    cpu->midr = 0x69052100;
+-    cpu->ctr = 0xd172172;
+-    cpu->reset_sctlr = 0x00000078;
+-}
+-
+-static void pxa255_initfn(Object *obj)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    cpu->dtb_compatible = "marvell,xscale";
+-    set_feature(&cpu->env, ARM_FEATURE_V5);
+-    set_feature(&cpu->env, ARM_FEATURE_XSCALE);
+-    cpu->midr = 0x69052d00;
+-    cpu->ctr = 0xd172172;
+-    cpu->reset_sctlr = 0x00000078;
+-}
+-
+-static void pxa260_initfn(Object *obj)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    cpu->dtb_compatible = "marvell,xscale";
+-    set_feature(&cpu->env, ARM_FEATURE_V5);
+-    set_feature(&cpu->env, ARM_FEATURE_XSCALE);
+-    cpu->midr = 0x69052903;
+-    cpu->ctr = 0xd172172;
+-    cpu->reset_sctlr = 0x00000078;
+-}
+-
+-static void pxa261_initfn(Object *obj)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    cpu->dtb_compatible = "marvell,xscale";
+-    set_feature(&cpu->env, ARM_FEATURE_V5);
+-    set_feature(&cpu->env, ARM_FEATURE_XSCALE);
+-    cpu->midr = 0x69052d05;
+-    cpu->ctr = 0xd172172;
+-    cpu->reset_sctlr = 0x00000078;
+-}
+-
+-static void pxa262_initfn(Object *obj)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    cpu->dtb_compatible = "marvell,xscale";
+-    set_feature(&cpu->env, ARM_FEATURE_V5);
+-    set_feature(&cpu->env, ARM_FEATURE_XSCALE);
+-    cpu->midr = 0x69052d06;
+-    cpu->ctr = 0xd172172;
+-    cpu->reset_sctlr = 0x00000078;
+-}
+-
+-static void pxa270a0_initfn(Object *obj)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    cpu->dtb_compatible = "marvell,xscale";
+-    set_feature(&cpu->env, ARM_FEATURE_V5);
+-    set_feature(&cpu->env, ARM_FEATURE_XSCALE);
+-    set_feature(&cpu->env, ARM_FEATURE_IWMMXT);
+-    cpu->midr = 0x69054110;
+-    cpu->ctr = 0xd172172;
+-    cpu->reset_sctlr = 0x00000078;
+-}
+-
+-static void pxa270a1_initfn(Object *obj)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    cpu->dtb_compatible = "marvell,xscale";
+-    set_feature(&cpu->env, ARM_FEATURE_V5);
+-    set_feature(&cpu->env, ARM_FEATURE_XSCALE);
+-    set_feature(&cpu->env, ARM_FEATURE_IWMMXT);
+-    cpu->midr = 0x69054111;
+-    cpu->ctr = 0xd172172;
+-    cpu->reset_sctlr = 0x00000078;
+-}
+-
+-static void pxa270b0_initfn(Object *obj)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    cpu->dtb_compatible = "marvell,xscale";
+-    set_feature(&cpu->env, ARM_FEATURE_V5);
+-    set_feature(&cpu->env, ARM_FEATURE_XSCALE);
+-    set_feature(&cpu->env, ARM_FEATURE_IWMMXT);
+-    cpu->midr = 0x69054112;
+-    cpu->ctr = 0xd172172;
+-    cpu->reset_sctlr = 0x00000078;
+-}
+-
+-static void pxa270b1_initfn(Object *obj)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    cpu->dtb_compatible = "marvell,xscale";
+-    set_feature(&cpu->env, ARM_FEATURE_V5);
+-    set_feature(&cpu->env, ARM_FEATURE_XSCALE);
+-    set_feature(&cpu->env, ARM_FEATURE_IWMMXT);
+-    cpu->midr = 0x69054113;
+-    cpu->ctr = 0xd172172;
+-    cpu->reset_sctlr = 0x00000078;
+-}
+-
+-static void pxa270c0_initfn(Object *obj)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    cpu->dtb_compatible = "marvell,xscale";
+-    set_feature(&cpu->env, ARM_FEATURE_V5);
+-    set_feature(&cpu->env, ARM_FEATURE_XSCALE);
+-    set_feature(&cpu->env, ARM_FEATURE_IWMMXT);
+-    cpu->midr = 0x69054114;
+-    cpu->ctr = 0xd172172;
+-    cpu->reset_sctlr = 0x00000078;
+-}
+-
+-static void pxa270c5_initfn(Object *obj)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    cpu->dtb_compatible = "marvell,xscale";
+-    set_feature(&cpu->env, ARM_FEATURE_V5);
+-    set_feature(&cpu->env, ARM_FEATURE_XSCALE);
+-    set_feature(&cpu->env, ARM_FEATURE_IWMMXT);
+-    cpu->midr = 0x69054117;
+-    cpu->ctr = 0xd172172;
+-    cpu->reset_sctlr = 0x00000078;
+-}
+-
+ #ifndef TARGET_AARCH64
+ /*
+  * -cpu max: a CPU with as many features enabled as our emulation supports.
+@@ -1032,31 +894,6 @@ static const ARMCPUInfo arm_tcg_cpus[] = {
+     { .name = "ti925t",      .initfn = ti925t_initfn },
+     { .name = "sa1100",      .initfn = sa1100_initfn },
+     { .name = "sa1110",      .initfn = sa1110_initfn },
+-    { .name = "pxa250",      .initfn = pxa250_initfn,
+-      .deprecation_note = "iwMMXt CPUs are no longer supported", },
+-    { .name = "pxa255",      .initfn = pxa255_initfn,
+-      .deprecation_note = "iwMMXt CPUs are no longer supported", },
+-    { .name = "pxa260",      .initfn = pxa260_initfn,
+-      .deprecation_note = "iwMMXt CPUs are no longer supported", },
+-    { .name = "pxa261",      .initfn = pxa261_initfn,
+-      .deprecation_note = "iwMMXt CPUs are no longer supported", },
+-    { .name = "pxa262",      .initfn = pxa262_initfn,
+-      .deprecation_note = "iwMMXt CPUs are no longer supported", },
+-    /* "pxa270" is an alias for "pxa270-a0" */
+-    { .name = "pxa270",      .initfn = pxa270a0_initfn,
+-      .deprecation_note = "iwMMXt CPUs are no longer supported", },
+-    { .name = "pxa270-a0",   .initfn = pxa270a0_initfn,
+-      .deprecation_note = "iwMMXt CPUs are no longer supported", },
+-    { .name = "pxa270-a1",   .initfn = pxa270a1_initfn,
+-      .deprecation_note = "iwMMXt CPUs are no longer supported", },
+-    { .name = "pxa270-b0",   .initfn = pxa270b0_initfn,
+-      .deprecation_note = "iwMMXt CPUs are no longer supported", },
+-    { .name = "pxa270-b1",   .initfn = pxa270b1_initfn,
+-      .deprecation_note = "iwMMXt CPUs are no longer supported", },
+-    { .name = "pxa270-c0",   .initfn = pxa270c0_initfn,
+-      .deprecation_note = "iwMMXt CPUs are no longer supported", },
+-    { .name = "pxa270-c5",   .initfn = pxa270c5_initfn,
+-      .deprecation_note = "iwMMXt CPUs are no longer supported", },
+ #ifndef TARGET_AARCH64
+     { .name = "max",         .initfn = arm_max_initfn },
+ #endif
 -- 
 2.43.0
 
