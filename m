@@ -2,67 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0CAB59E72
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 18:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 448B7B59E71
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 18:54:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyYuP-0006vf-17; Tue, 16 Sep 2025 12:52:01 -0400
+	id 1uyYua-0007t5-3O; Tue, 16 Sep 2025 12:52:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uyYuJ-0006jo-UA
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:51:56 -0400
-Received: from linux.microsoft.com ([13.77.154.182])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uyYuI-0006y2-6l
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:51:55 -0400
-Received: from localhost.localdomain (unknown [167.220.208.43])
- by linux.microsoft.com (Postfix) with ESMTPSA id 98EB720171A7;
- Tue, 16 Sep 2025 09:51:38 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 98EB720171A7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1758041502;
- bh=LjuN0WjmLAVD8POEH2VablPNt9nVWCcnJEOPCaktlKU=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=U0rBRAIbBwmqu0PSGLfXiazNCEa3CSpdUt7HCx0+nDPoh0As7d+X/wlLPo6JaC9Zt
- zhWJ+0MNxPaOPXRuDGGYHFm25dO9YKNIA7z8SFb9zw4gGlzlCDtDX8FOfZ0G/EFixn
- loBkoYQA4fMBu7Ex7qULwZchPLKUcH62OFSqmgyI=
-From: Magnus Kulke <magnuskulke@linux.microsoft.com>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Wei Liu <liuwe@microsoft.com>, Cornelia Huck <cohuck@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
- Magnus Kulke <magnuskulke@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Eric Blake <eblake@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 27/27] MAINTAINERS: Add maintainers for mshv accelerator
-Date: Tue, 16 Sep 2025 18:48:47 +0200
-Message-Id: <20250916164847.77883-28-magnuskulke@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250916164847.77883-1-magnuskulke@linux.microsoft.com>
-References: <20250916164847.77883-1-magnuskulke@linux.microsoft.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uyYuX-0007if-Q0
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:52:10 -0400
+Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uyYuV-00071Z-Mg
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:52:09 -0400
+Received: by mail-yw1-x112c.google.com with SMTP id
+ 00721157ae682-71d605c6501so39010157b3.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 09:52:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758041526; x=1758646326; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kE3Dp7r6y3co3znzJOR2UuPFk7sf69gvRxsgeXKJ8r4=;
+ b=hKNgBeB5SvXg0DtnAySfzZzUhP/9HHHFCPyavKarRmsa+VvIGOG2cECXisOvbTliO0
+ g8d5sl46xoXje7GFJsUAjJG8T+h51+1C+jnrI6O4mgHl0031/HfeSli1nKjbxQ+ZYgdP
+ d93ha/UrSwKtKACC627C3M16xR1Eha9RenhKJ6xx+5bKVUNV+X15JeKfl/bAdLRnNXk6
+ 5mrb5DTKnhVurPXeC9c8Pd00trOwQrI28h7rNbsCP4oueKUpKDnEM+EMcYG9w6/yFyHT
+ 7xz7Fc67hXrmO7OAwddpzrOBZLYSsm4uP3CFmpRnp6nG30UPQ9bZgf4h2nfVE8+vpZML
+ cDjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758041526; x=1758646326;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kE3Dp7r6y3co3znzJOR2UuPFk7sf69gvRxsgeXKJ8r4=;
+ b=OSb0LxgDmI3wqTjt1XkiP+3Tu536JTNGgOa6viSqSRan9EeeQdlwR5xMQJd8vrAdbP
+ E4IayqXngZtFe+aYCsZa+o6Ox4e+PIjhrqnqrssqXZE9DnPzoBE4xGgeqKr4jCNwS9uc
+ DvtUBhoDOeNcmPnzB3TCmMizCVN+xGdCNCN8jk88sH50yvUFLMNvNekmeIRTyYzuECyJ
+ Efjla9ew/hgbbu3FLZ4jOUvokpN3dfuY8CuiolNiAsMHY7LovOC5ysw22JOzOpRzDf7c
+ HJ9kPtUE3oIO1dqEakXjJW8Doq+DXm6CLNistJhiGWMybegXeKo3k91oRxrEdJb+kxdH
+ P32Q==
+X-Gm-Message-State: AOJu0Yz2p3dzZKiHSlCjcKa5GT80DlbCgMCfvusMvlQDK2R9WrcZcJKq
+ 1LcM/K5uBKwD9pg2OIIdUvd5UpfggmpLU/X8C/h2AH/MYc8LkQ94mbZ3/YufQX8RRYsHL4dTSMO
+ I4ylGfMgjrKHRaFmTL78lWle+8cMFnxy1exbbjzyr+g==
+X-Gm-Gg: ASbGnct61fN7x/6krdNnIV2EZltUmMGDrTaeBmWPQe7sS73d+mGPrSauHBnqkTO4QS8
+ lXDIA9Khr69wybZ+eZWlE1f8xpwf+RGs4zZ9Elg4xOqm5aWit80pgooN6br8O8hEX0MS3es8rZj
+ OrDnqMywFSIy9PP2OOuXWa9gZSfxV8h9eaOS0tU4pvrS7VMuHnqANWUdfNQ0g2Bn0jYDCIHi6Qi
+ YfaId0/
+X-Google-Smtp-Source: AGHT+IGd9+HcsgCHe3dYF7i7kTYLl3RuAUZcrggkmDp7qdcxevJeJ8oRx6fbxOGnpjY9ck92vdbtODqAeHO0bF+O5rw=
+X-Received: by 2002:a05:690c:2781:b0:722:6791:c5b2 with SMTP id
+ 00721157ae682-73062d9fa25mr159387407b3.12.1758041525431; Tue, 16 Sep 2025
+ 09:52:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=13.77.154.182;
- envelope-from=magnuskulke@linux.microsoft.com; helo=linux.microsoft.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20250909165726.3814465-1-berrange@redhat.com>
+ <aMmTxNB2eq6hSS9o@redhat.com>
+In-Reply-To: <aMmTxNB2eq6hSS9o@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 16 Sep 2025 17:51:53 +0100
+X-Gm-Features: AS18NWBqmTIVk5t2IYgpdj_zSP01wsBcwkCoWYKbplJm7geJKIomPmRf5Ona6Jo
+Message-ID: <CAFEAcA_GYSjg62-9b57QWOgfOxVLLY7q-5XreCZafb=bs8Evow@mail.gmail.com>
+Subject: Re: [PATCH <RFC> 00/15] Encode object type security status in code
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,41 +95,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adding Magnus Kulke and Wei Liu to the maintainers file for the
-respective folders/files.
+On Tue, 16 Sept 2025 at 17:43, Daniel P. Berrang=C3=A9 <berrange@redhat.com=
+> wrote:
+>
+> Ping: anyone have thoughts on this idea of annotating security
+> status of our code against QOM classes ?
 
-Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
----
- MAINTAINERS | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+I don't object to it, but I don't think we should
+block making our security policy clearer about
+coverage on instituting this kind of framework
+and marking-up of code.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fb045388b9..e756c8b526 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -551,6 +551,21 @@ F: target/i386/whpx/
- F: accel/stubs/whpx-stub.c
- F: include/system/whpx.h
- 
-+MSHV
-+M: Magnus Kulke <magnus.kulke@linux.microsoft.com>
-+R: Wei Liu <wei.liu@kernel.org>
-+S: Supported
-+F: accel/mshv/
-+F: include/system/mshv.h
-+F: include/hw/hyperv/hvgdk*.h
-+F: include/hw/hyperv/hvhdk*.h
-+
-+MSHV CPUs
-+M: Magnus Kulke <magnus.kulke@linux.microsoft.com>
-+R: Wei Liu <wei.liu@kernel.org>
-+S: Supported
-+F: target/i386/mshv/
-+
- X86 Instruction Emulator
- M: Cameron Esfahani <dirty@apple.com>
- M: Roman Bolshakov <rbolshakov@ddn.com>
--- 
-2.34.1
-
+thanks
+-- PMM
 
