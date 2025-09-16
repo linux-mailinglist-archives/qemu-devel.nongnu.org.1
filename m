@@ -2,80 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FD8B590EC
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 10:39:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02DABB590CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 10:34:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyRDe-0004rj-B7; Tue, 16 Sep 2025 04:39:22 -0400
+	id 1uyR94-0006Tq-47; Tue, 16 Sep 2025 04:34:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uyRDR-0004Pb-9b
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:39:12 -0400
-Received: from mail-yw1-x1131.google.com ([2607:f8b0:4864:20::1131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uyRCz-0006Qo-9t
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 04:38:52 -0400
-Received: by mail-yw1-x1131.google.com with SMTP id
- 00721157ae682-72267c05111so39251187b3.2
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 01:38:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758011910; x=1758616710; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=nXUYlnpSXxiJOL7NcgpwOHUm4vgvpdIMYxgPw3z+RY0=;
- b=XFHPsMj8mOsOo5GJEGF4+FnlhlydQU633ZTXoxQfs6jtfl33rkvqoEQ4CmIZ85b6L8
- SeqKp9TdRt8tMtLfyIu4AfB0rCeKfouiM6GEvxQI8UiZeT11Xmc/QRypEkG2RoFDQ+ZV
- U1ue6QbZ/DW8TrXzaxIznNL1mcpYLVrXoD/ZTO9/dLj2WCbALW/IttO1Bi3HbIz6a8nS
- zFTRqRwn/ST950ZxRikEYb0ptnj4d4oJXYg0jd8W5Viti1a/krEi9n1DHZhbSNUEOtAb
- UmqFLbGtTJprsFr8wq5/dpdDqkNe8317S1KlW2qUqxBu5cQJuu8bZEK/JdYhsgkoMu41
- cMIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758011910; x=1758616710;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=nXUYlnpSXxiJOL7NcgpwOHUm4vgvpdIMYxgPw3z+RY0=;
- b=wpSPfazT+fQlCUVzVhW2BtqrexV/r1e2QjuKhsz2/3vgHiuNep8LRP2WPmpzKpR+OA
- 1F2hUnVe3Bg8WFzEmClN5AuPgmvp0Ec5tjQVw2e/yswqkmd+dxydy5puvX1zxmtx8RAn
- ZkB3PpOCxSGGEe4Vu2qbiGNEZNy9KfmH6aicyp80HqMAad6KIyCsvv+r8yjkBmFR2f45
- q/BmB7vP7pzZp/MRzPQm/RhiiyIGmreUNaK6sRqJrKCF3J5Y9lBBGISuVI9NjJyDExwQ
- MvIGn1WuZnr016tPexgEn3ndK4CjBk9sVCgrgicJl6SthSA1MJay0NAQKJpqzDN2R/KV
- 2BWw==
-X-Gm-Message-State: AOJu0YyTWhKctB0gfPZQn4T+kqjDEr8MpMZezz5HL8aaQF29rnHLvgcF
- MAkJABX4POMTennvCJh1hq2i07+j84BuPq+/DIXj7t8KEG2Vm0goiklHj7Tn4FZApLf5u+in0mO
- oTBO9CkS7Vwt1lY0A00NDyEqyceLZLClmGhfBp9/PDQ==
-X-Gm-Gg: ASbGncvbfRTY35zc8sozITDmE6UsZjYnj8wNLUoB5A88PZyHPNY1ItCpEOSoO17foyH
- K3lJblPV8Eqcjh1pRlBNUm7+vVZh/ubmQ1DnSq/SmtwFCWx4DS2QDFR+0cB4bZSTz75k0mcXFZ+
- kcXU46Mqy3KwA0vD3rOzIbcg4d/Bu5VHxSBjviL9m7eWrBMn3vqxSfLvVZSH9ZEbDn+Jhp/oJHq
- NPRJh9m
-X-Google-Smtp-Source: AGHT+IHrBQlz7/Fdxv06eMmctttpp9NkMGIylulGPWLl6YvkOf7/ysjU3/ZWlDOCJ2OdN64Z+dKPnexj4It/HzCeo2g=
-X-Received: by 2002:a05:690c:a012:b0:730:c83b:e9f8 with SMTP id
- 00721157ae682-730c83c15d1mr114639477b3.37.1758011910099; Tue, 16 Sep 2025
- 01:38:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uyR8p-0006PF-90; Tue, 16 Sep 2025 04:34:23 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uyR8i-0005zs-Vw; Tue, 16 Sep 2025 04:34:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1758011657; x=1789547657;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=I/48RpoCPl6ZWK3Vj7H9PIyhemwGMzTTef3jIIR839g=;
+ b=gc9iXgBmfzRFpRpTTRR0xz48Sjm/uWgi+EAit2sc5qWz3B0/Xf73PkLu
+ HYvCIQxFMAn+Xf6NSFDq6K3eNYY3T8pZzT5NYwS3VtH+Bddk09dcu6Ljh
+ uHl0OKKhUgUYPWmGgl4cq+OaYMv4xNMDY4c2SXSmBzDM1id9WtZr5PHdl
+ ROiCOHw6NTTPHXGGH+azY5nMib6cILsPTkptThZENsbR+AzXxr0fPb82L
+ E6anyVWtRbQAs/0NPGDFGoCjekKSEJjpt/cdDy0JajDp5oIdG3JBlbwWF
+ Z3KMl4382uL1VvA7AGU23ajm0D7tbv4F2dUGipeLWq8vxT0GzxjBP24lQ A==;
+X-CSE-ConnectionGUID: h7ZfOAG6SBaoTN+2ntAPgA==
+X-CSE-MsgGUID: vQUO0vspRty6pO/4hoTQag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="77725128"
+X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="77725128"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Sep 2025 01:34:10 -0700
+X-CSE-ConnectionGUID: g+IsUANjR4aILovbVMHyRA==
+X-CSE-MsgGUID: UerIZdUiSd6q7snA9a3xjA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="174690990"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by orviesa007.jf.intel.com with ESMTP; 16 Sep 2025 01:34:08 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 00/12] rust: miscellaneous cleanup & HPET #property conversion
+Date: Tue, 16 Sep 2025 16:55:45 +0800
+Message-Id: <20250916085557.2008344-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20250826205532.1500639-1-nabihestefan@google.com>
-In-Reply-To: <20250826205532.1500639-1-nabihestefan@google.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 16 Sep 2025 09:38:18 +0100
-X-Gm-Features: Ac12FXzHJ_6Xu5ABADwYfQUkLL5s31ax-cHt6ck1N7iPzUzOF147hVcsH1W1DE0
-Message-ID: <CAFEAcA8zGzfh_b1UWAeTDpMi=z-KFVUgS2By6CgpONNMVjMP5A@mail.gmail.com>
-Subject: Re: [PATCH 0/2] hw/pci-bridge: Create PLX Virtual Switch Device
-To: Nabih Estefan <nabihestefan@google.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mst@redhat.com, 
- marcel.apfelbaum@gmail.com, venture@google.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1131;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1131.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.035,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,48 +76,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 26 Aug 2025 at 21:56, Nabih Estefan <nabihestefan@google.com> wrote:
->
-> Create a PLX PEX PCIe Virtual Switch implementation that can be used
-> for modeling trays. This is a generalized version of the xio3130 switch where
-> we can set the PCI information on creation, allowing us to model different
-> trays without creating specific devices for all of them. It is used the same
-> way the xio3130 switch is used + the PCI Signature information.
->
-> The idea is to minimize the difficulty of creating different trays whose
-> only difference is recognition by some daemon through PCI signatures.
-> Instead of having to create 8 different versions of xio3130 that have
-> the same functionality but different PCI Signatures, we create one
-> general version where you can declare the PCI Signature information,
-> while keeping the same base functionality. This is not meant to fully
-> replace xio3130 since that is easier to use without knowledge of the PCI
-> Signature, this is meant to decrease the difficulty of creating switch
-> trays that require certain PCI information for recognition without any
-> significant change from a normal PLX Virtual Switch functionality.
+Hi,
 
-Could we implement this as optional config properties on
-the xio3130 rather than as an entirely new device ?
+This series include:
+ * cleanup for .gitignore of subproject.
+ * cleanup for clippy error & warnings based on v1.83.
+ * support bit property in #property.
+ * HPET #property conversion.
+ * get rid of the legacy declare_properties & define_property.
 
-> Changes from v1&2: Updating different formatting and API changes that
-> ocurred QEMU-wide since these patches were first staged in 8.1.
->
-> Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-> Signed-off-by: Patrick Venture <venture@google.com>
->
-> Nabih Estefan (2):
->   hw/pci-bridge: Create Initial revision for PLX Virtual Switch
->   MAINTAINERS: Add entry for PLX VSwitches
->
->  MAINTAINERS                            |   6 +
->  hw/pci-bridge/Kconfig                  |   5 +
->  hw/pci-bridge/meson.build              |   1 +
->  hw/pci-bridge/plx_vswitch_downstream.c | 188 +++++++++++++++++++++++++
->  hw/pci-bridge/plx_vswitch_upstream.c   | 178 +++++++++++++++++++++++
->  include/hw/pci-bridge/plx_vswitch.h    |  43 ++++++
+And this series is based on the commit 355ce1d4fbaa of Paolo's
+rust-ci branch (since I understand that branch includes the latest
+rust PR patches.)
 
-I note from the diffstat that you have provided no
-documentation and no tests...
+Thanks and Best Regards,
+Zhao
+---
+Manos Pitsidianakis (2):
+  rust/qdev: use addr_of! in QDevProp
+  rust/qdev: Refine the documentation for QDevProp trait
 
-thanks
--- PMM
+Zhao Liu (10):
+  subprojects: Update .gitignore for proc-macro2 and syn
+  subprojects: Ignore .wraplock file generated by meson v1.9.0
+  rust/qemu-macros: Fix Clippy's complaints about lambda parameter
+    naming
+  rust/common/uninit: Fix Clippy's complaints about lifetime
+  rust/qdev: Rename PropertyInfo field from VALUE to BASE_INFO
+  rust/qdev: Support property info for more common types
+  rust/qdev: Support bit property in #property macro
+  rust/hpet: Clean up type mismatch for num_timers property
+  rust/hpet: Convert qdev properties to #property macro
+  rust/qdev: Drop declare_properties & define_property macros
+
+ rust/common/src/uninit.rs        |   4 +-
+ rust/hw/core/src/qdev.rs         | 105 ++++++++++---------------------
+ rust/hw/timer/hpet/src/device.rs |  55 +++-------------
+ rust/qemu-macros/src/lib.rs      |  81 ++++++++++++++++--------
+ subprojects/.gitignore           |   7 ++-
+ 5 files changed, 102 insertions(+), 150 deletions(-)
+
+-- 
+2.34.1
+
 
