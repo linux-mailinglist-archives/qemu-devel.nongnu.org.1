@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2BBEB5A058
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF99B5A019
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 20:07:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uya4Q-0002mX-Dq; Tue, 16 Sep 2025 14:06:26 -0400
+	id 1uya4S-0002z5-0l; Tue, 16 Sep 2025 14:06:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4L-0002fU-JR
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:21 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1uya4M-0002gP-IT
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:22 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uya4J-0001Yp-N0
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:21 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-45f29dd8490so28411115e9.1
- for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:19 -0700 (PDT)
+ id 1uya4K-0001Z8-KW
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 14:06:22 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-45dcff2f313so36462335e9.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Sep 2025 11:06:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758045978; x=1758650778; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758045979; x=1758650779; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=iJXgjCpBilcdbaSRNWIXr2Xsvv7vQk5GhQFN3jN+8R8=;
- b=LNdMK0U8MQvq+Sw5C0SnazuV36uYgBcwuIxGm0e96PK1lwyYBlLdd8TzFEa9iC5kLJ
- x6t+XRfDKOhGMnE9x2Rwi/lVms5nMGCN0jiSq/GarPs4IKzqw3RmKTdviUGg0mIn2WB2
- F3ri2to431GcO+TYops0Ifj+TI91zLqrhIKd2gfhGMysBYO8ha+7KCZVZEOD9EzCUXAj
- MwIz5Wg4JDNgwE/3pFm1B8/YboLn6MM6y30NBT4QkKohfES1B0HNS9rYWd4SRT3NzuB7
- dkB5Xj/Mfcl6R9jC+rSPdrQtLjCIUvRs/IKBzi7s1//wq5b3Iu9xQRkopouPRjHSYvbo
- WhMg==
+ :reply-to; bh=7fb8C6jKVF8IguArqYccsarl7uaiPckC2N324fDKSOw=;
+ b=Xxz4JIzJHOoq8nB/foZJ8PfZqYixhb6Mg3T2F17Kpyi/kHQB5chsTyyiXkANdJmkUm
+ elAAkezzWRMsMeadRjh1Ocm95wSkdt3T9hZB02kU0fAlfp0KAu9A+fSZXVZ5DSsE3MF3
+ 6thV0yRZgu5J35klEteq3u01QL7bUvD5d64SDe0O1Bw+33c0FlrEZKuDvk/YD84OHbxN
+ lC8pdfJM6nhakaU+AKLFCKAucSa0qf8vdo5kkktVwZ0Cs45afY+C9RSaLlLHu41BkbLE
+ f+QMXBIYhIsWYBUUMXUcl54ypFL7ekB3eGwy6pKm1sWDFIZzmM+I4pPcfXDgzGYRKfDg
+ zf2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758045978; x=1758650778;
+ d=1e100.net; s=20230601; t=1758045979; x=1758650779;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iJXgjCpBilcdbaSRNWIXr2Xsvv7vQk5GhQFN3jN+8R8=;
- b=Xdaqwc4cEsN80cGambsx8sVDV9UXmAiTwQhTEf8xCQgUOJVPBCAhMQ54731QhGvueQ
- BWYJ97FOclmDoss9OqXQh3I3PWTsjGfAASnyCZIZUQwvasaFdd6QNgVSgOt5c4eBYlE5
- qRhGVNWS7/m21RJy3nw4i13JGqZB0+UhpG5BM4PtfyZyHtK7Jo6iiAfTeFxUZGnuaiFp
- fUy9udJqK4+zcV6/T3xIvs1x4m9ou7VZ7AtsqwGqq0NXpw9Y33cz2djNkPdxQTWad3Se
- zCuCrrizo4Nxw+htIJqeaQoDPXJm+MT2l1ehcETmqSTA3O2ASQZRnMNp1mi3uBIQ45PZ
- e9Tg==
-X-Gm-Message-State: AOJu0YwJIQe9MYOp3k127MbKkiBAYyt1+6752+h7CcLiow09m5PXxs8j
- VWk0Ruvo5pGHu7H0fWdrkarX0hNFBG8OrvXr/VJhJfekZD7gz4VhlFxbwCHeCLc8HHJRr0GDJUb
- nzI9X
-X-Gm-Gg: ASbGnctxO1UvjB6604L3qu9O7uxD4iram445n0AFmoNMB1pgnEX/ID2FvZFF515mYvW
- dhG2IgNkUr8a+RJ7Z/J1dWG6ehuArWog2y/ucoXmnjyfre0rDZYvHKGmPY/mKzeIhj48O5fwFgt
- JvnsMMi97IEPVKx6UeBki3CD9jZ2x//kANU9KWuMyeQBDYuBnLGHlcDOkJWJZPOKViqCPkJGKdL
- bLOWRw+3BFPJSoH6b53bv9dKqQzx/sHDr7TRLw1bgxSuPc38AqCQRcPxayGib6L4jLBV7j/3z83
- JfZTC4xvfi6aj3FzM1FNp4TK4EemWW15p5aNZpsmtWgDstZjVRVOJ05FEDMD22imq9X6sN02qco
- tMxK88VAT2f0aYnBFrC8D+78VWQiOfqjPN4xwDgM=
-X-Google-Smtp-Source: AGHT+IE6cMcRK+maLGIOIJxs3AAuAsMqRQv+aK2vCDveh4GdVgTjeUEzO9gwPVw2w5j7gRu0Z3+a4A==
-X-Received: by 2002:a05:600c:6d41:b0:45b:47e1:ef68 with SMTP id
- 5b1f17b1804b1-45f21208123mr113111675e9.35.1758045977884; 
- Tue, 16 Sep 2025 11:06:17 -0700 (PDT)
+ bh=7fb8C6jKVF8IguArqYccsarl7uaiPckC2N324fDKSOw=;
+ b=QHFIDw7e1AbrBq5v01sBKhJvhwXKDy4YisEDLiN3pFna/bDHV0c3Z1GqhQ1gw3QrDU
+ qGLjdRq1UbOvkWuisjVTH4MvUgCtbtTf0fblWQMjgXKgUaZx7HqhJ1qEqo3Ims4UL+HT
+ AxJl2qLJynY6Fo3inhIYUOUEkBwIJmKgZFI8gJsMw6Bta3G9Q067yWI82e+d+VTeYTO0
+ o1hAbnPqm80yMYkgbxwNcww7cw8qr1URgbUOTiPI0xPb/73HpM39Mf4fGftgGiWfrvxQ
+ EpIbCAlZeFr93PlSbEIGwo3L9STC+GCSlM8J74xYQ2f+2o7I3Og0nDaaka1awhyYN8Z5
+ sVFg==
+X-Gm-Message-State: AOJu0YwYSr8T1MAgnhphh6imTAWksfP6sA8MFBBsQ1v7S1WUam08pFOs
+ dIiTgdaSqIBdPGmbuvn7eMyUxYvYHbsT6ayT9L4lPtemJ0AdSGcwKW5O4+zflqQuctWelvbYUrm
+ aG/2Y
+X-Gm-Gg: ASbGncvX+sdRZQDYHXDCOzzYIy1sO5bi6BR+LHUmWC675dbX8cS7p3IuPdB1Qo0G6zE
+ fj53obiSZDqBLv1vTRgy9Zorr40S1VaOl7ixzzNErt3JQs+zLE7dG5EjjXwUkxXSOq1xoG+xnHG
+ CXceSn37wBUpHliUZ5Q9aNHIdAHyt7WYfIuxVfrp3ankZiYSX88SXuJJO6sNv2iHRlDHNgf+iyO
+ eOBbZTsVkc7hqP+n/zxEd3QdqKzrfhExkEGmzygPVjANo56XmrpB3wpKeFhMXa0sC1kwGs9AC9M
+ IiNiYpbDgKdeJShzcnrwhtK7BhaKhvtYcZDzLrL/MAkKCRIn8Bo6jqnckRHTvOTwt8bU8M+QGHw
+ cIR4IqF/4B/iE4OhkwXWPfQEuBRVn
+X-Google-Smtp-Source: AGHT+IH6BLPVS2oi6VlLUZ0LJhSx7Z+YA0GWhA8qtEgwrfDULVq0spRX3WjF+CEOIGdc3pSDr4YFiw==
+X-Received: by 2002:a05:600c:828c:b0:45d:98be:ee95 with SMTP id
+ 5b1f17b1804b1-45f211caa67mr151008285e9.3.1758045978889; 
+ Tue, 16 Sep 2025 11:06:18 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.17
+ ffacd0b85a97d-3e760775880sm23033286f8f.2.2025.09.16.11.06.18
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Sep 2025 11:06:17 -0700 (PDT)
+ Tue, 16 Sep 2025 11:06:18 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/36] linux-user/aarch64: Generate ESR signal records
-Date: Tue, 16 Sep 2025 19:05:38 +0100
-Message-ID: <20250916180611.1481266-5-peter.maydell@linaro.org>
+Subject: [PULL 05/36] target/arm: Add prot_check parameter to pmsav8_mpu_lookup
+Date: Tue, 16 Sep 2025 19:05:39 +0100
+Message-ID: <20250916180611.1481266-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916180611.1481266-1-peter.maydell@linaro.org>
 References: <20250916180611.1481266-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,109 +100,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
+Separate the access_type from the protection check.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250830054128.448363-4-richard.henderson@linaro.org
+Message-id: 20250830054128.448363-5-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- linux-user/aarch64/cpu_loop.c |  3 +++
- linux-user/aarch64/signal.c   | 34 +++++++++++++++++++++++++++++++++-
- 2 files changed, 36 insertions(+), 1 deletion(-)
+ target/arm/internals.h    |  5 +++--
+ target/arm/ptw.c          | 11 ++++++-----
+ target/arm/tcg/m_helper.c |  4 ++--
+ 3 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/linux-user/aarch64/cpu_loop.c b/linux-user/aarch64/cpu_loop.c
-index 7ad26316dea..6060572eed3 100644
---- a/linux-user/aarch64/cpu_loop.c
-+++ b/linux-user/aarch64/cpu_loop.c
-@@ -33,6 +33,9 @@ static void signal_for_exception(CPUARMState *env, vaddr addr)
-     uint32_t syn = env->exception.syndrome;
-     int si_code, si_signo;
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index f5a1e75db37..899242e572f 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1624,8 +1624,9 @@ bool get_phys_addr_with_space_nogpc(CPUARMState *env, vaddr address,
+     __attribute__((nonnull));
  
-+    /* Let signal delivery see that ESR is live. */
-+    env->cp15.esr_el[1] = syn;
-+
-     switch (syn_get_ec(syn)) {
-     case EC_DATAABORT:
-     case EC_INSNABORT:
-diff --git a/linux-user/aarch64/signal.c b/linux-user/aarch64/signal.c
-index 668353bbda4..ef97be3ac7b 100644
---- a/linux-user/aarch64/signal.c
-+++ b/linux-user/aarch64/signal.c
-@@ -65,6 +65,13 @@ struct target_fpsimd_context {
-     uint64_t vregs[32 * 2]; /* really uint128_t vregs[32] */
- };
+ bool pmsav8_mpu_lookup(CPUARMState *env, uint32_t address,
+-                       MMUAccessType access_type, ARMMMUIdx mmu_idx,
+-                       bool is_secure, GetPhysAddrResult *result,
++                       MMUAccessType access_type, unsigned prot_check,
++                       ARMMMUIdx mmu_idx, bool is_secure,
++                       GetPhysAddrResult *result,
+                        ARMMMUFaultInfo *fi, uint32_t *mregion);
  
-+#define TARGET_ESR_MAGIC    0x45535201
-+
-+struct target_esr_context {
-+    struct target_aarch64_ctx head;
-+    uint64_t esr;
-+};
-+
- #define TARGET_EXTRA_MAGIC  0x45585401
- 
- struct target_extra_context {
-@@ -201,6 +208,14 @@ static void target_setup_fpsimd_record(struct target_fpsimd_context *fpsimd,
-     }
+ void arm_log_exception(CPUState *cs);
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index ed5c728eab6..9652f40ff82 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -2561,8 +2561,9 @@ static uint32_t *regime_rlar(CPUARMState *env, ARMMMUIdx mmu_idx,
  }
  
-+static void target_setup_esr_record(struct target_esr_context *ctx,
-+                                    CPUARMState *env)
-+{
-+    __put_user(TARGET_ESR_MAGIC, &ctx->head.magic);
-+    __put_user(sizeof(*ctx), &ctx->head.size);
-+    __put_user(env->cp15.esr_el[1], &ctx->esr);
-+}
-+
- static void target_setup_extra_record(struct target_extra_context *extra,
-                                       uint64_t datap, uint32_t extra_size)
+ bool pmsav8_mpu_lookup(CPUARMState *env, uint32_t address,
+-                       MMUAccessType access_type, ARMMMUIdx mmu_idx,
+-                       bool secure, GetPhysAddrResult *result,
++                       MMUAccessType access_type, unsigned prot_check,
++                       ARMMMUIdx mmu_idx, bool secure,
++                       GetPhysAddrResult *result,
+                        ARMMMUFaultInfo *fi, uint32_t *mregion)
  {
-@@ -531,6 +546,9 @@ static int target_restore_sigframe(CPUARMState *env,
-             fpsimd = (struct target_fpsimd_context *)ctx;
-             break;
+     /*
+@@ -2750,7 +2751,7 @@ bool pmsav8_mpu_lookup(CPUARMState *env, uint32_t address,
+     if (arm_feature(env, ARM_FEATURE_M)) {
+         fi->level = 1;
+     }
+-    return !(result->f.prot & (1 << access_type));
++    return (prot_check & ~result->f.prot) != 0;
+ }
  
-+        case TARGET_ESR_MAGIC:
-+            break; /* ignore */
-+
-         case TARGET_SVE_MAGIC:
-             if (sve || size < sizeof(struct target_sve_context)) {
-                 goto err;
-@@ -683,7 +701,7 @@ static void target_setup_frame(int usig, struct target_sigaction *ka,
-                                uc.tuc_mcontext.__reserved),
-     };
-     int fpsimd_ofs, fr_ofs, sve_ofs = 0, za_ofs = 0, tpidr2_ofs = 0;
--    int zt_ofs = 0;
-+    int zt_ofs = 0, esr_ofs = 0;
-     int sve_size = 0, za_size = 0, tpidr2_size = 0, zt_size = 0;
-     struct target_rt_sigframe *frame;
-     struct target_rt_frame_record *fr;
-@@ -693,6 +711,15 @@ static void target_setup_frame(int usig, struct target_sigaction *ka,
-     fpsimd_ofs = alloc_sigframe_space(sizeof(struct target_fpsimd_context),
-                                       &layout);
+ static bool v8m_is_sau_exempt(CPUARMState *env,
+@@ -2952,8 +2953,8 @@ static bool get_phys_addr_pmsav8(CPUARMState *env,
+         }
+     }
  
-+    /*
-+     * In user mode, ESR_EL1 is only set by cpu_loop while queueing the
-+     * signal, and it's only valid for the one sync insn.
-+     */
-+    if (env->cp15.esr_el[1]) {
-+        esr_ofs = alloc_sigframe_space(sizeof(struct target_esr_context),
-+                                       &layout);
-+    }
-+
-     /* SVE state needs saving only if it exists.  */
-     if (cpu_isar_feature(aa64_sve, env_archcpu(env)) ||
-         cpu_isar_feature(aa64_sme, env_archcpu(env))) {
-@@ -754,6 +781,11 @@ static void target_setup_frame(int usig, struct target_sigaction *ka,
+-    ret = pmsav8_mpu_lookup(env, address, access_type, mmu_idx, secure,
+-                            result, fi, NULL);
++    ret = pmsav8_mpu_lookup(env, address, access_type, 1 << access_type,
++                            mmu_idx, secure, result, fi, NULL);
+     if (sattrs.subpage) {
+         result->f.lg_page_size = 0;
+     }
+diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
+index 28307b56151..d856e3bc8e2 100644
+--- a/target/arm/tcg/m_helper.c
++++ b/target/arm/tcg/m_helper.c
+@@ -2829,8 +2829,8 @@ uint32_t HELPER(v7m_tt)(CPUARMState *env, uint32_t addr, uint32_t op)
+         ARMMMUFaultInfo fi = {};
  
-     target_setup_general_frame(frame, env, set);
-     target_setup_fpsimd_record((void *)frame + fpsimd_ofs, env);
-+    if (esr_ofs) {
-+        target_setup_esr_record((void *)frame + esr_ofs, env);
-+        /* Leave ESR_EL1 clear while it's not relevant. */
-+        env->cp15.esr_el[1] = 0;
-+    }
-     target_setup_end_record((void *)frame + layout.std_end_ofs);
-     if (layout.extra_ofs) {
-         target_setup_extra_record((void *)frame + layout.extra_ofs,
+         /* We can ignore the return value as prot is always set */
+-        pmsav8_mpu_lookup(env, addr, MMU_DATA_LOAD, mmu_idx, targetsec,
+-                          &res, &fi, &mregion);
++        pmsav8_mpu_lookup(env, addr, MMU_DATA_LOAD, PAGE_READ, mmu_idx,
++                          targetsec, &res, &fi, &mregion);
+         if (mregion == -1) {
+             mrvalid = false;
+             mregion = 0;
 -- 
 2.43.0
 
