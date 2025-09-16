@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B41AB59E6C
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 18:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 587C5B59E69
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Sep 2025 18:53:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyYto-0003JB-5F; Tue, 16 Sep 2025 12:51:24 -0400
+	id 1uyYtu-0003vc-Ea; Tue, 16 Sep 2025 12:51:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uyYtk-00036v-Du
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:51:20 -0400
+ id 1uyYtq-0003f4-Fs
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:51:26 -0400
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uyYth-0006tz-8z
- for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:51:20 -0400
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uyYtn-0006uf-5b
+ for qemu-devel@nongnu.org; Tue, 16 Sep 2025 12:51:26 -0400
 Received: from localhost.localdomain (unknown [167.220.208.43])
- by linux.microsoft.com (Postfix) with ESMTPSA id 19FEF20154FA;
- Tue, 16 Sep 2025 09:51:10 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 19FEF20154FA
+ by linux.microsoft.com (Postfix) with ESMTPSA id 9A3BB20154ED;
+ Tue, 16 Sep 2025 09:51:16 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9A3BB20154ED
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1758041475;
- bh=wZZJ67WAj10SF3zuvYXFEoM7hAJyuI6VPTxI0+FDbD0=;
+ s=default; t=1758041481;
+ bh=3SB0muVjy5p4SshW4BEPD2Sn28JiY1uHR2Pm1JKhOSk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=WjSSS+xFP7ZUKMsFME4q6ePniR93ncWKuR9jfUjTcrqx+YgMh9dF5bHUrFQq4IqDO
- KDaBNYl67w6wf223q5UoiUjDyuRwKxQJwvWVguP+4PS726BmewvoHt2DIcnVWtxFA5
- mfNIico2yJuNsWWw32fpiQFxsrfZ6OVcflEVkTQQ=
+ b=XgLDEFiw4fozov24g7z0w/3fenRBeou3YLylHsB2LI+LD9+i/r8hJWTzHTO9xu+1S
+ ImadaTemLMuuYI0/l49/LKdZcb6H50tiFG7QHwMi+8ETfPMCc67jeHW1X7nIGpc06C
+ V3Ae1g7ZpSbA5+duySuCIp85wQrneX6gN404H0YI=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -47,9 +47,9 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 22/27] target/i386/mshv: Implement mshv_vcpu_run()
-Date: Tue, 16 Sep 2025 18:48:42 +0200
-Message-Id: <20250916164847.77883-23-magnuskulke@linux.microsoft.com>
+Subject: [PATCH v4 23/27] accel/mshv: Handle overlapping mem mappings
+Date: Tue, 16 Sep 2025 18:48:43 +0200
+Message-Id: <20250916164847.77883-24-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250916164847.77883-1-magnuskulke@linux.microsoft.com>
 References: <20250916164847.77883-1-magnuskulke@linux.microsoft.com>
@@ -79,476 +79,683 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the main vCPU execution loop for MSHV using the MSHV_RUN_VP ioctl.
+QEMU maps certain regions into the guest multiple times, as seen in the
+trace below. Currently the MSHV kernel driver will reject those
+mappings. To workaround this, a record is kept (a static global list of
+"slots", inspired by what the HVF accelerator has implemented). An
+overlapping region is not registered at the hypervisor, and marked as
+mapped=false. If there is an UNMAPPED_GPA exit, we can look for a slot
+that is unmapped and would cover the GPA. In this case we map out the
+conflicting slot and map in the requested region.
 
-The execution loop handles guest entry and VM exits. There are handlers for
-memory r/w, PIO and MMIO to which the exit events are dispatched.
+mshv_set_phys_mem       add=1 name=pc.bios
+mshv_map_memory      => u_a=7ffff4e00000 gpa=00fffc0000 size=00040000
+mshv_set_phys_mem       add=1 name=ioapic
+mshv_set_phys_mem       add=1 name=hpet
+mshv_set_phys_mem       add=0 name=pc.ram
+mshv_unmap_memory       u_a=7fff67e00000 gpa=0000000000 size=80000000
+mshv_set_phys_mem       add=1 name=pc.ram
+mshv_map_memory         u_a=7fff67e00000 gpa=0000000000 size=000c0000
+mshv_set_phys_mem       add=1 name=pc.rom
+mshv_map_memory         u_a=7ffff4c00000 gpa=00000c0000 size=00020000
+mshv_set_phys_mem       add=1 name=pc.bios
+mshv_remap_attempt   => u_a=7ffff4e20000 gpa=00000e0000 size=00020000
 
-In case of MMIO the i386 instruction decoder/emulator is invoked to
-perform the operation in user space.
+The mapping table is guarded by a mutex for concurrent modification and
+RCU mechanisms for concurrent reads. Writes occur rarely, but we'll have
+to verify whether an unmapped region exist for each UNMAPPED_GPA exit,
+which happens frequently.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- target/i386/mshv/mshv-cpu.c | 444 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 442 insertions(+), 2 deletions(-)
+ accel/mshv/mem.c            | 406 +++++++++++++++++++++++++++++++++---
+ accel/mshv/mshv-all.c       |   2 +
+ accel/mshv/trace-events     |   5 +
+ include/system/mshv.h       |  24 ++-
+ target/i386/mshv/mshv-cpu.c |  43 ++++
+ 5 files changed, 448 insertions(+), 32 deletions(-)
 
-diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
-index 6cb4473124..50f5accf69 100644
---- a/target/i386/mshv/mshv-cpu.c
-+++ b/target/i386/mshv/mshv-cpu.c
-@@ -1081,10 +1081,450 @@ void mshv_arch_amend_proc_features(
-     features->access_guest_idle_reg = 1;
+diff --git a/accel/mshv/mem.c b/accel/mshv/mem.c
+index 150fb723af..c56e2c077f 100644
+--- a/accel/mshv/mem.c
++++ b/accel/mshv/mem.c
+@@ -11,7 +11,9 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/lockable.h"
+ #include "qemu/error-report.h"
++#include "qemu/rcu.h"
+ #include "linux/mshv.h"
+ #include "system/address-spaces.h"
+ #include "system/mshv.h"
+@@ -19,6 +21,137 @@
+ #include <sys/ioctl.h>
+ #include "trace.h"
+ 
++typedef struct SlotsRCUReclaim {
++    struct rcu_head rcu;
++    GList *old_head;
++    MshvMemorySlot *removed_slot;
++} SlotsRCUReclaim;
++
++static void rcu_reclaim_slotlist(struct rcu_head *rcu)
++{
++    SlotsRCUReclaim *r = container_of(rcu, SlotsRCUReclaim, rcu);
++    g_list_free(r->old_head);
++    g_free(r->removed_slot);
++    g_free(r);
++}
++
++static void publish_slots(GList *new_head, GList *old_head,
++                          MshvMemorySlot *removed_slot)
++{
++    MshvMemorySlotManager *manager = &mshv_state->msm;
++
++    assert(manager);
++    qatomic_store_release(&manager->slots, new_head);
++
++    SlotsRCUReclaim *r = g_new(SlotsRCUReclaim, 1);
++    r->old_head = old_head;
++    r->removed_slot = removed_slot;
++
++    call_rcu1(&r->rcu, rcu_reclaim_slotlist);
++}
++
++/* Needs to be called with mshv_state->msm.mutex held */
++static int remove_slot(MshvMemorySlot *slot)
++{
++    GList *old_head, *new_head;
++    MshvMemorySlotManager *manager = &mshv_state->msm;
++
++    assert(manager);
++    old_head = qatomic_load_acquire(&manager->slots);
++
++    if (!g_list_find(old_head, slot)) {
++        error_report("slot requested for removal not found");
++        return -1;
++    }
++
++    new_head = g_list_copy(old_head);
++    new_head = g_list_remove(new_head, slot);
++    manager->n_slots--;
++
++    publish_slots(new_head, old_head, slot);
++
++    return 0;
++}
++
++/* Needs to be called with mshv_state->msm.mutex held */
++static MshvMemorySlot *append_slot(uint64_t gpa, uint64_t userspace_addr,
++                                   uint64_t size, bool readonly)
++{
++    GList *old_head, *new_head;
++    MshvMemorySlot *slot;
++    MshvMemorySlotManager *manager = &mshv_state->msm;
++
++    assert(manager);
++
++    old_head = qatomic_load_acquire(&manager->slots);
++
++    if (manager->n_slots >= MSHV_MAX_MEM_SLOTS) {
++        error_report("no free memory slots available");
++        return NULL;
++    }
++
++    slot = g_new0(MshvMemorySlot, 1);
++    slot->guest_phys_addr = gpa;
++    slot->userspace_addr = userspace_addr;
++    slot->memory_size = size;
++    slot->readonly = readonly;
++
++    new_head = g_list_copy(old_head);
++    new_head = g_list_append(new_head, slot);
++    manager->n_slots++;
++
++    publish_slots(new_head, old_head, NULL);
++
++    return slot;
++}
++
++static int slot_overlaps(const MshvMemorySlot *slot1,
++                         const MshvMemorySlot *slot2)
++{
++    uint64_t start_1 = slot1->userspace_addr,
++             start_2 = slot2->userspace_addr;
++    size_t len_1 = slot1->memory_size,
++           len_2 = slot2->memory_size;
++
++    if (slot1 == slot2) {
++        return -1;
++    }
++
++    return ranges_overlap(start_1, len_1, start_2, len_2) ?  0 : -1;
++}
++
++static bool is_mapped(MshvMemorySlot *slot)
++{
++    /* Subsequent reads of mapped field see a fully-initialized slot */
++    return qatomic_load_acquire(&slot->mapped);
++}
++
++/*
++ * Find slot that is:
++ * - overlapping in userspace
++ * - currently mapped in the guest
++ *
++ * Needs to be called with mshv_state->msm.mutex or RCU read lock held.
++ */
++static MshvMemorySlot *find_overlap_mem_slot(GList *head, MshvMemorySlot *slot)
++{
++    GList *found;
++    MshvMemorySlot *overlap_slot;
++
++    found = g_list_find_custom(head, slot, (GCompareFunc) slot_overlaps);
++
++    if (!found) {
++        return NULL;
++    }
++
++    overlap_slot = found->data;
++    if (!overlap_slot || !is_mapped(overlap_slot)) {
++        return NULL;
++    }
++
++    return overlap_slot;
++}
++
+ static int set_guest_memory(int vm_fd,
+                             const struct mshv_user_mem_region *region)
+ {
+@@ -26,38 +159,169 @@ static int set_guest_memory(int vm_fd,
+ 
+     ret = ioctl(vm_fd, MSHV_SET_GUEST_MEMORY, region);
+     if (ret < 0) {
+-        error_report("failed to set guest memory");
+-        return -errno;
++        error_report("failed to set guest memory: %s", strerror(errno));
++        return -1;
+     }
+ 
+     return 0;
  }
  
-+static int set_memory_info(const struct hyperv_message *msg,
-+                           struct hv_x64_memory_intercept_message *info)
+-static int map_or_unmap(int vm_fd, const MshvMemoryRegion *mr, bool map)
++static int map_or_unmap(int vm_fd, const MshvMemorySlot *slot, bool map)
+ {
+     struct mshv_user_mem_region region = {0};
+ 
+-    region.guest_pfn = mr->guest_phys_addr >> MSHV_PAGE_SHIFT;
+-    region.size = mr->memory_size;
+-    region.userspace_addr = mr->userspace_addr;
++    region.guest_pfn = slot->guest_phys_addr >> MSHV_PAGE_SHIFT;
++    region.size = slot->memory_size;
++    region.userspace_addr = slot->userspace_addr;
+ 
+     if (!map) {
+         region.flags |= (1 << MSHV_SET_MEM_BIT_UNMAP);
+-        trace_mshv_unmap_memory(mr->userspace_addr, mr->guest_phys_addr,
+-                                mr->memory_size);
++        trace_mshv_unmap_memory(slot->userspace_addr, slot->guest_phys_addr,
++                                slot->memory_size);
+         return set_guest_memory(vm_fd, &region);
+     }
+ 
+     region.flags = BIT(MSHV_SET_MEM_BIT_EXECUTABLE);
+-    if (!mr->readonly) {
++    if (!slot->readonly) {
+         region.flags |= BIT(MSHV_SET_MEM_BIT_WRITABLE);
+     }
+ 
+-    trace_mshv_map_memory(mr->userspace_addr, mr->guest_phys_addr,
+-                          mr->memory_size);
++    trace_mshv_map_memory(slot->userspace_addr, slot->guest_phys_addr,
++                          slot->memory_size);
+     return set_guest_memory(vm_fd, &region);
+ }
+ 
++static int slot_matches_region(const MshvMemorySlot *slot1,
++                               const MshvMemorySlot *slot2)
 +{
-+    if (msg->header.message_type != HVMSG_GPA_INTERCEPT
-+            && msg->header.message_type != HVMSG_UNMAPPED_GPA
-+            && msg->header.message_type != HVMSG_UNACCEPTED_GPA) {
-+        error_report("invalid message type");
-+        return -1;
-+    }
-+    memcpy(info, msg->payload, sizeof(*info));
-+
-+    return 0;
++    return (slot1->guest_phys_addr == slot2->guest_phys_addr &&
++            slot1->userspace_addr  == slot2->userspace_addr &&
++            slot1->memory_size     == slot2->memory_size) ? 0 : -1;
 +}
 +
-+static int emulate_instruction(CPUState *cpu,
-+                               const uint8_t *insn_bytes, size_t insn_len,
-+                               uint64_t gva, uint64_t gpa)
++/* Needs to be called with mshv_state->msm.mutex held */
++static MshvMemorySlot *find_mem_slot_by_region(uint64_t gpa, uint64_t size,
++                                               uint64_t userspace_addr)
 +{
-+    X86CPU *x86_cpu = X86_CPU(cpu);
-+    CPUX86State *env = &x86_cpu->env;
-+    struct x86_decode decode = { 0 };
++    MshvMemorySlot ref_slot = {
++        .guest_phys_addr = gpa,
++        .userspace_addr  = userspace_addr,
++        .memory_size     = size,
++    };
++    GList *found;
++    MshvMemorySlotManager *manager = &mshv_state->msm;
++
++    assert(manager);
++    found = g_list_find_custom(manager->slots, &ref_slot,
++                               (GCompareFunc) slot_matches_region);
++
++    return found ? found->data : NULL;
++}
++
++static int slot_covers_gpa(const MshvMemorySlot *slot, uint64_t *gpa_p)
++{
++    uint64_t gpa_offset, gpa = *gpa_p;
++
++    gpa_offset = gpa - slot->guest_phys_addr;
++    return (slot->guest_phys_addr <= gpa && gpa_offset < slot->memory_size)
++        ? 0 : -1;
++}
++
++/* Needs to be called with mshv_state->msm.mutex or RCU read lock held */
++static MshvMemorySlot *find_mem_slot_by_gpa(GList *head, uint64_t gpa)
++{
++    GList *found;
++    MshvMemorySlot *slot;
++
++    trace_mshv_find_slot_by_gpa(gpa);
++
++    found = g_list_find_custom(head, &gpa, (GCompareFunc) slot_covers_gpa);
++    if (found) {
++        slot = found->data;
++        trace_mshv_found_slot(slot->userspace_addr, slot->guest_phys_addr,
++                              slot->memory_size);
++        return slot;
++    }
++
++    return NULL;
++}
++
++/* Needs to be called with mshv_state->msm.mutex held */
++static void set_mapped(MshvMemorySlot *slot, bool mapped)
++{
++    /* prior writes to mapped field becomes visible before readers see slot */
++    qatomic_store_release(&slot->mapped, mapped);
++}
++
++MshvRemapResult mshv_remap_overlap_region(int vm_fd, uint64_t gpa)
++{
++    MshvMemorySlot *gpa_slot, *overlap_slot;
++    GList *head;
 +    int ret;
-+    x86_insn_stream stream = { .bytes = insn_bytes, .len = insn_len };
++    MshvMemorySlotManager *manager = &mshv_state->msm;
 +
-+    ret = mshv_load_regs(cpu);
-+    if (ret < 0) {
-+        error_report("failed to load registers");
-+        return -1;
++    /* fast path, called often by unmapped_gpa vm exit */
++    WITH_RCU_READ_LOCK_GUARD() {
++        assert(manager);
++        head = qatomic_load_acquire(&manager->slots);
++        /* return early if no slot is found */
++        gpa_slot = find_mem_slot_by_gpa(head, gpa);
++        if (gpa_slot == NULL) {
++            return MshvRemapNoMapping;
++        }
++
++        /* return early if no overlapping slot is found */
++        overlap_slot = find_overlap_mem_slot(head, gpa_slot);
++        if (overlap_slot == NULL) {
++            return MshvRemapNoOverlap;
++        }
 +    }
 +
-+    decode_instruction_stream(env, &decode, &stream);
-+    exec_instruction(env, &decode);
++    /*
++     * We'll modify the mapping list, so we need to upgrade to mutex and
++     * recheck.
++     */
++    assert(manager);
++    QEMU_LOCK_GUARD(&manager->mutex);
 +
-+    ret = mshv_store_regs(cpu);
++    /* return early if no slot is found */
++    gpa_slot = find_mem_slot_by_gpa(manager->slots, gpa);
++    if (gpa_slot == NULL) {
++        return MshvRemapNoMapping;
++    }
++
++    /* return early if no overlapping slot is found */
++    overlap_slot = find_overlap_mem_slot(manager->slots, gpa_slot);
++    if (overlap_slot == NULL) {
++        return MshvRemapNoOverlap;
++    }
++
++    /* unmap overlapping slot */
++    ret = map_or_unmap(vm_fd, overlap_slot, false);
 +    if (ret < 0) {
-+        error_report("failed to store registers");
++        error_report("failed to unmap overlap region");
++        abort();
++    }
++    set_mapped(overlap_slot, false);
++    warn_report("mapped out userspace_addr=0x%016lx gpa=0x%010lx size=0x%lx",
++                overlap_slot->userspace_addr,
++                overlap_slot->guest_phys_addr,
++                overlap_slot->memory_size);
++
++    /* map region for gpa */
++    ret = map_or_unmap(vm_fd, gpa_slot, true);
++    if (ret < 0) {
++        error_report("failed to map new region");
++        abort();
++    }
++    set_mapped(gpa_slot, true);
++    warn_report("mapped in  userspace_addr=0x%016lx gpa=0x%010lx size=0x%lx",
++                gpa_slot->userspace_addr, gpa_slot->guest_phys_addr,
++                gpa_slot->memory_size);
++
++    return MshvRemapOk;
++}
++
+ static int handle_unmapped_mmio_region_read(uint64_t gpa, uint64_t size,
+                                             uint8_t *data)
+ {
+@@ -123,20 +387,97 @@ int mshv_guest_mem_write(uint64_t gpa, const uint8_t *data, uintptr_t size,
+     return -1;
+ }
+ 
+-static int set_memory(const MshvMemoryRegion *mshv_mr, bool add)
++static int tracked_unmap(int vm_fd, uint64_t gpa, uint64_t size,
++                        uint64_t userspace_addr)
+ {
+-    int ret = 0;
++    int ret;
++    MshvMemorySlot *slot;
++    MshvMemorySlotManager *manager = &mshv_state->msm;
++
++    assert(manager);
++
++    QEMU_LOCK_GUARD(&manager->mutex);
++
++    slot = find_mem_slot_by_region(gpa, size, userspace_addr);
++    if (!slot) {
++        trace_mshv_skip_unset_mem(userspace_addr, gpa, size);
++        /* no work to do */
++        return 0;
++    }
++
++    if (!is_mapped(slot)) {
++        /* remove slot, no need to unmap */
++        return remove_slot(slot);
++    }
+ 
+-    if (!mshv_mr) {
+-        error_report("Invalid mshv_mr");
++    ret = map_or_unmap(vm_fd, slot, false);
++    if (ret < 0) {
++        error_report("failed to unmap memory region");
++        return ret;
++    }
++    return remove_slot(slot);
++}
++
++static int tracked_map(int vm_fd, uint64_t gpa, uint64_t size, bool readonly,
++                       uint64_t userspace_addr)
++{
++    MshvMemorySlot *slot, *overlap_slot;
++    int ret;
++    MshvMemorySlotManager *manager = &mshv_state->msm;
++
++    assert(manager);
++
++    QEMU_LOCK_GUARD(&manager->mutex);
++
++    slot = find_mem_slot_by_region(gpa, size, userspace_addr);
++    if (slot) {
++        error_report("memory region already mapped at gpa=0x%lx, "
++                     "userspace_addr=0x%lx, size=0x%lx",
++                     slot->guest_phys_addr, slot->userspace_addr,
++                     slot->memory_size);
+         return -1;
+     }
+ 
+-    trace_mshv_set_memory(add, mshv_mr->guest_phys_addr,
+-                          mshv_mr->memory_size,
+-                          mshv_mr->userspace_addr, mshv_mr->readonly,
+-                          ret);
+-    return map_or_unmap(mshv_state->vm, mshv_mr, add);
++    slot = append_slot(gpa, userspace_addr, size, readonly);
++
++    overlap_slot = find_overlap_mem_slot(manager->slots, slot);
++    if (overlap_slot) {
++        trace_mshv_remap_attempt(slot->userspace_addr,
++                                 slot->guest_phys_addr,
++                                 slot->memory_size);
++        warn_report("attempt to map region [0x%lx-0x%lx], while "
++                    "[0x%lx-0x%lx] is already mapped in the guest",
++                    userspace_addr, userspace_addr + size - 1,
++                    overlap_slot->userspace_addr,
++                    overlap_slot->userspace_addr +
++                    overlap_slot->memory_size - 1);
++
++        /* do not register mem slot in hv, but record for later swap-in */
++        set_mapped(slot, false);
++
++        return 0;
++    }
++
++    ret = map_or_unmap(vm_fd, slot, true);
++    if (ret < 0) {
++        error_report("failed to map memory region");
 +        return -1;
 +    }
++    set_mapped(slot, true);
 +
 +    return 0;
 +}
 +
-+static int handle_mmio(CPUState *cpu, const struct hyperv_message *msg,
-+                       MshvVmExit *exit_reason)
++static int set_memory(uint64_t gpa, uint64_t size, bool readonly,
++                      uint64_t userspace_addr, bool add)
++{
++    int vm_fd = mshv_state->vm;
++
++    if (add) {
++        return tracked_map(vm_fd, gpa, size, readonly, userspace_addr);
++    }
++
++    return tracked_unmap(vm_fd, gpa, size, userspace_addr);
+ }
+ 
+ /*
+@@ -172,7 +513,9 @@ void mshv_set_phys_mem(MshvMemoryListener *mml, MemoryRegionSection *section,
+     bool writable = !area->readonly && !area->rom_device;
+     hwaddr start_addr, mr_offset, size;
+     void *ram;
+-    MshvMemoryRegion mshv_mr = {0};
++
++    size = align_section(section, &start_addr);
++    trace_mshv_set_phys_mem(add, section->mr->name, start_addr);
+ 
+     size = align_section(section, &start_addr);
+     trace_mshv_set_phys_mem(add, section->mr->name, start_addr);
+@@ -199,14 +542,21 @@ void mshv_set_phys_mem(MshvMemoryListener *mml, MemoryRegionSection *section,
+ 
+     ram = memory_region_get_ram_ptr(area) + mr_offset;
+ 
+-    mshv_mr.guest_phys_addr = start_addr;
+-    mshv_mr.memory_size = size;
+-    mshv_mr.readonly = !writable;
+-    mshv_mr.userspace_addr = (uint64_t)ram;
+-
+-    ret = set_memory(&mshv_mr, add);
++    ret = set_memory(start_addr, size, !writable, (uint64_t)ram, add);
+     if (ret < 0) {
+-        error_report("Failed to set memory region");
++        error_report("failed to set memory region");
+         abort();
+     }
+ }
++
++void mshv_init_memory_slot_manager(MshvState *mshv_state)
++{
++    MshvMemorySlotManager *manager;
++
++    assert(mshv_state);
++    manager = &mshv_state->msm;
++
++    manager->n_slots = 0;
++    manager->slots = NULL;
++    qemu_mutex_init(&manager->mutex);
++}
+diff --git a/accel/mshv/mshv-all.c b/accel/mshv/mshv-all.c
+index cc4d47f8f5..2f7b325985 100644
+--- a/accel/mshv/mshv-all.c
++++ b/accel/mshv/mshv-all.c
+@@ -436,6 +436,8 @@ static int mshv_init(AccelState *as, MachineState *ms)
+ 
+     mshv_init_msicontrol();
+ 
++    mshv_init_memory_slot_manager(s);
++
+     ret = create_vm(mshv_fd, &vm_fd);
+     if (ret < 0) {
+         close(mshv_fd);
+diff --git a/accel/mshv/trace-events b/accel/mshv/trace-events
+index 47b4158cbd..e5c42cf63d 100644
+--- a/accel/mshv/trace-events
++++ b/accel/mshv/trace-events
+@@ -26,3 +26,8 @@ mshv_map_memory(uint64_t userspace_addr, uint64_t gpa, uint64_t size) "\tu_a=0x%
+ mshv_unmap_memory(uint64_t userspace_addr, uint64_t gpa, uint64_t size) "\tu_a=0x%lx gpa=0x%010lx size=0x%08lx"
+ mshv_set_phys_mem(bool add, const char *name, uint64_t gpa) "\tadd=%d name=%s gpa=0x%010lx"
+ mshv_handle_mmio(uint64_t gva, uint64_t gpa, uint64_t size, uint8_t access_type) "\tgva=0x%lx gpa=0x%010lx size=0x%lx access_type=%d"
++
++mshv_found_slot(uint64_t userspace_addr, uint64_t gpa, uint64_t size) "\tu_a=0x%lx gpa=0x%010lx size=0x%08lx"
++mshv_skip_unset_mem(uint64_t userspace_addr, uint64_t gpa, uint64_t size) "\tu_a=0x%lx gpa=0x%010lx size=0x%08lx"
++mshv_remap_attempt(uint64_t userspace_addr, uint64_t gpa, uint64_t size) "\tu_a=0x%lx gpa=0x%010lx size=0x%08lx"
++mshv_find_slot_by_gpa(uint64_t gpa) "\tgpa=0x%010lx"
+diff --git a/include/system/mshv.h b/include/system/mshv.h
+index 5133d4571e..fc0a2829c1 100644
+--- a/include/system/mshv.h
++++ b/include/system/mshv.h
+@@ -40,6 +40,8 @@ typedef struct hyperv_message hv_message;
+ 
+ #define MSHV_MSR_ENTRIES_COUNT 64
+ 
++#define MSHV_MAX_MEM_SLOTS 32
++
+ #ifdef CONFIG_MSHV_IS_POSSIBLE
+ extern bool mshv_allowed;
+ #define mshv_enabled() (mshv_allowed)
+@@ -54,6 +56,12 @@ typedef struct MshvAddressSpace {
+     AddressSpace *as;
+ } MshvAddressSpace;
+ 
++typedef struct MshvMemorySlotManager {
++    size_t n_slots;
++    GList *slots;
++    QemuMutex mutex;
++} MshvMemorySlotManager;
++
+ typedef struct MshvState {
+     AccelState parent_obj;
+     int vm;
+@@ -62,6 +70,7 @@ typedef struct MshvState {
+     int nr_as;
+     MshvAddressSpace *as;
+     int fd;
++    MshvMemorySlotManager msm;
+ } MshvState;
+ extern MshvState *mshv_state;
+ 
+@@ -103,6 +112,12 @@ typedef enum MshvVmExit {
+     MshvVmExitSpecial  = 2,
+ } MshvVmExit;
+ 
++typedef enum MshvRemapResult {
++    MshvRemapOk = 0,
++    MshvRemapNoMapping = 1,
++    MshvRemapNoOverlap = 2,
++} MshvRemapResult;
++
+ void mshv_init_mmio_emu(void);
+ int mshv_create_vcpu(int vm_fd, uint8_t vp_index, int *cpu_fd);
+ void mshv_remove_vcpu(int vm_fd, int cpu_fd);
+@@ -139,21 +154,22 @@ int mshv_configure_msr(const CPUState *cpu, const MshvMsrEntry *msrs,
+                        size_t n_msrs);
+ 
+ /* memory */
+-typedef struct MshvMemoryRegion {
++typedef struct MshvMemorySlot {
+     uint64_t guest_phys_addr;
+     uint64_t memory_size;
+     uint64_t userspace_addr;
+     bool readonly;
+-} MshvMemoryRegion;
++    bool mapped;
++} MshvMemorySlot;
+ 
+-int mshv_add_mem(int vm_fd, const MshvMemoryRegion *mr);
+-int mshv_remove_mem(int vm_fd, const MshvMemoryRegion *mr);
++MshvRemapResult mshv_remap_overlap_region(int vm_fd, uint64_t gpa);
+ int mshv_guest_mem_read(uint64_t gpa, uint8_t *data, uintptr_t size,
+                         bool is_secure_mode, bool instruction_fetch);
+ int mshv_guest_mem_write(uint64_t gpa, const uint8_t *data, uintptr_t size,
+                          bool is_secure_mode);
+ void mshv_set_phys_mem(MshvMemoryListener *mml, MemoryRegionSection *section,
+                        bool add);
++void mshv_init_memory_slot_manager(MshvState *mshv_state);
+ 
+ /* interrupt */
+ void mshv_init_msicontrol(void);
+diff --git a/target/i386/mshv/mshv-cpu.c b/target/i386/mshv/mshv-cpu.c
+index 50f5accf69..6b7e795a36 100644
+--- a/target/i386/mshv/mshv-cpu.c
++++ b/target/i386/mshv/mshv-cpu.c
+@@ -1169,6 +1169,43 @@ static int handle_mmio(CPUState *cpu, const struct hyperv_message *msg,
+     return 0;
+ }
+ 
++static int handle_unmapped_mem(int vm_fd, CPUState *cpu,
++                               const struct hyperv_message *msg,
++                               MshvVmExit *exit_reason)
 +{
 +    struct hv_x64_memory_intercept_message info = { 0 };
-+    size_t insn_len;
-+    uint8_t access_type;
-+    uint8_t *instruction_bytes;
++    uint64_t gpa;
 +    int ret;
++    enum MshvRemapResult remap_result;
 +
 +    ret = set_memory_info(msg, &info);
 +    if (ret < 0) {
 +        error_report("failed to convert message to memory info");
 +        return -1;
 +    }
-+    insn_len = info.instruction_byte_count;
-+    access_type = info.header.intercept_access_type;
 +
-+    if (access_type == HV_X64_INTERCEPT_ACCESS_TYPE_EXECUTE) {
-+        error_report("invalid intercept access type: execute");
-+        return -1;
-+    }
++    gpa = info.guest_physical_address;
 +
-+    if (insn_len > 16) {
-+        error_report("invalid mmio instruction length: %zu", insn_len);
-+        return -1;
-+    }
-+
-+    trace_mshv_handle_mmio(info.guest_virtual_address,
-+                           info.guest_physical_address,
-+                           info.instruction_byte_count, access_type);
-+
-+    instruction_bytes = info.instruction_bytes;
-+
-+    ret = emulate_instruction(cpu, instruction_bytes, insn_len,
-+                              info.guest_virtual_address,
-+                              info.guest_physical_address);
-+    if (ret < 0) {
-+        error_report("failed to emulate mmio");
-+        return -1;
-+    }
-+
++    /* attempt to remap the region, in case of overlapping userspace mappings */
++    remap_result = mshv_remap_overlap_region(vm_fd, gpa);
 +    *exit_reason = MshvVmExitIgnore;
 +
-+    return 0;
-+}
-+
-+static int set_ioport_info(const struct hyperv_message *msg,
-+                           hv_x64_io_port_intercept_message *info)
-+{
-+    if (msg->header.message_type != HVMSG_X64_IO_PORT_INTERCEPT) {
-+        error_report("Invalid message type");
-+        return -1;
-+    }
-+    memcpy(info, msg->payload, sizeof(*info));
-+
-+    return 0;
-+}
-+
-+static int set_x64_registers(const CPUState *cpu, const uint32_t *names,
-+                             const uint64_t *values)
-+{
-+
-+    hv_register_assoc assocs[2];
-+    int ret;
-+
-+    for (size_t i = 0; i < ARRAY_SIZE(assocs); i++) {
-+        assocs[i].name = names[i];
-+        assocs[i].value.reg64 = values[i];
-+    }
-+
-+    ret = mshv_set_generic_regs(cpu, assocs, ARRAY_SIZE(assocs));
-+    if (ret < 0) {
-+        error_report("failed to set x64 registers");
-+        return -1;
-+    }
-+
-+    return 0;
-+}
-+
-+static inline MemTxAttrs get_mem_attrs(bool is_secure_mode)
-+{
-+    MemTxAttrs memattr = {0};
-+    memattr.secure = is_secure_mode;
-+    return memattr;
-+}
-+
-+static void pio_read(uint64_t port, uint8_t *data, uintptr_t size,
-+                     bool is_secure_mode)
-+{
-+    int ret = 0;
-+    MemTxAttrs memattr = get_mem_attrs(is_secure_mode);
-+    ret = address_space_rw(&address_space_io, port, memattr, (void *)data, size,
-+                           false);
-+    if (ret != MEMTX_OK) {
-+        error_report("Failed to read from port %lx: %d", port, ret);
-+        abort();
-+    }
-+}
-+
-+static int pio_write(uint64_t port, const uint8_t *data, uintptr_t size,
-+                     bool is_secure_mode)
-+{
-+    int ret = 0;
-+    MemTxAttrs memattr = get_mem_attrs(is_secure_mode);
-+    ret = address_space_rw(&address_space_io, port, memattr, (void *)data, size,
-+                           true);
-+    return ret;
-+}
-+
-+static int handle_pio_non_str(const CPUState *cpu,
-+                              hv_x64_io_port_intercept_message *info)
-+{
-+    size_t len = info->access_info.access_size;
-+    uint8_t access_type = info->header.intercept_access_type;
-+    int ret;
-+    uint32_t val, eax;
-+    const uint32_t eax_mask =  0xffffffffu >> (32 - len * 8);
-+    size_t insn_len;
-+    uint64_t rip, rax;
-+    uint32_t reg_names[2];
-+    uint64_t reg_values[2];
-+    uint16_t port = info->port_number;
-+
-+    if (access_type == HV_X64_INTERCEPT_ACCESS_TYPE_WRITE) {
-+        union {
-+            uint32_t u32;
-+            uint8_t bytes[4];
-+        } conv;
-+
-+        /* convert the first 4 bytes of rax to bytes */
-+        conv.u32 = (uint32_t)info->rax;
-+        /* secure mode is set to false */
-+        ret = pio_write(port, conv.bytes, len, false);
-+        if (ret < 0) {
-+            error_report("Failed to write to io port");
-+            return -1;
-+        }
-+    } else {
-+        uint8_t data[4] = { 0 };
-+        /* secure mode is set to false */
-+        pio_read(info->port_number, data, len, false);
-+
-+        /* Preserve high bits in EAX, but clear out high bits in RAX */
-+        val = *(uint32_t *)data;
-+        eax = (((uint32_t)info->rax) & ~eax_mask) | (val & eax_mask);
-+        info->rax = (uint64_t)eax;
-+    }
-+
-+    insn_len = info->header.instruction_length;
-+
-+    /* Advance RIP and update RAX */
-+    rip = info->header.rip + insn_len;
-+    rax = info->rax;
-+
-+    reg_names[0] = HV_X64_REGISTER_RIP;
-+    reg_values[0] = rip;
-+    reg_names[1] = HV_X64_REGISTER_RAX;
-+    reg_values[1] = rax;
-+
-+    ret = set_x64_registers(cpu, reg_names, reg_values);
-+    if (ret < 0) {
-+        error_report("Failed to set x64 registers");
-+        return -1;
-+    }
-+
-+    cpu->accel->dirty = false;
-+
-+    return 0;
-+}
-+
-+static int fetch_guest_state(CPUState *cpu)
-+{
-+    int ret;
-+
-+    ret = mshv_get_standard_regs(cpu);
-+    if (ret < 0) {
-+        error_report("Failed to get standard registers");
-+        return -1;
-+    }
-+
-+    ret = mshv_get_special_regs(cpu);
-+    if (ret < 0) {
-+        error_report("Failed to get special registers");
-+        return -1;
-+    }
-+
-+    return 0;
-+}
-+
-+static int read_memory(const CPUState *cpu, uint64_t initial_gva,
-+                       uint64_t initial_gpa, uint64_t gva, uint8_t *data,
-+                       size_t len)
-+{
-+    int ret;
-+    uint64_t gpa, flags;
-+
-+    if (gva == initial_gva) {
-+        gpa = initial_gpa;
-+    } else {
-+        flags = HV_TRANSLATE_GVA_VALIDATE_READ;
-+        ret = translate_gva(cpu, gva, &gpa, flags);
-+        if (ret < 0) {
-+            return -1;
-+        }
-+
-+        ret = mshv_guest_mem_read(gpa, data, len, false, false);
-+        if (ret < 0) {
-+            error_report("failed to read guest mem");
-+            return -1;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
-+static int write_memory(const CPUState *cpu, uint64_t initial_gva,
-+                        uint64_t initial_gpa, uint64_t gva, const uint8_t *data,
-+                        size_t len)
-+{
-+    int ret;
-+    uint64_t gpa, flags;
-+
-+    if (gva == initial_gva) {
-+        gpa = initial_gpa;
-+    } else {
-+        flags = HV_TRANSLATE_GVA_VALIDATE_WRITE;
-+        ret = translate_gva(cpu, gva, &gpa, flags);
-+        if (ret < 0) {
-+            error_report("failed to translate gva to gpa");
-+            return -1;
-+        }
-+    }
-+    ret = mshv_guest_mem_write(gpa, data, len, false);
-+    if (ret != MEMTX_OK) {
-+        error_report("failed to write to mmio");
-+        return -1;
-+    }
-+
-+    return 0;
-+}
-+
-+static int handle_pio_str_write(CPUState *cpu,
-+                                hv_x64_io_port_intercept_message *info,
-+                                size_t repeat, uint16_t port,
-+                                bool direction_flag)
-+{
-+    int ret;
-+    uint64_t src;
-+    uint8_t data[4] = { 0 };
-+    size_t len = info->access_info.access_size;
-+
-+    src = linear_addr(cpu, info->rsi, R_DS);
-+
-+    for (size_t i = 0; i < repeat; i++) {
-+        ret = read_memory(cpu, 0, 0, src, data, len);
-+        if (ret < 0) {
-+            error_report("Failed to read memory");
-+            return -1;
-+        }
-+        ret = pio_write(port, data, len, false);
-+        if (ret < 0) {
-+            error_report("Failed to write to io port");
-+            return -1;
-+        }
-+        src += direction_flag ? -len : len;
-+        info->rsi += direction_flag ? -len : len;
-+    }
-+
-+    return 0;
-+}
-+
-+static int handle_pio_str_read(CPUState *cpu,
-+                               hv_x64_io_port_intercept_message *info,
-+                               size_t repeat, uint16_t port,
-+                               bool direction_flag)
-+{
-+    int ret;
-+    uint64_t dst;
-+    size_t len = info->access_info.access_size;
-+    uint8_t data[4] = { 0 };
-+
-+    dst = linear_addr(cpu, info->rdi, R_ES);
-+
-+    for (size_t i = 0; i < repeat; i++) {
-+        pio_read(port, data, len, false);
-+
-+        ret = write_memory(cpu, 0, 0, dst, data, len);
-+        if (ret < 0) {
-+            error_report("Failed to write memory");
-+            return -1;
-+        }
-+        dst += direction_flag ? -len : len;
-+        info->rdi += direction_flag ? -len : len;
-+    }
-+
-+    return 0;
-+}
-+
-+static int handle_pio_str(CPUState *cpu, hv_x64_io_port_intercept_message *info)
-+{
-+    uint8_t access_type = info->header.intercept_access_type;
-+    uint16_t port = info->port_number;
-+    bool repop = info->access_info.rep_prefix == 1;
-+    size_t repeat = repop ? info->rcx : 1;
-+    size_t insn_len = info->header.instruction_length;
-+    bool direction_flag;
-+    uint32_t reg_names[3];
-+    uint64_t reg_values[3];
-+    int ret;
-+    X86CPU *x86_cpu = X86_CPU(cpu);
-+    CPUX86State *env = &x86_cpu->env;
-+
-+    ret = fetch_guest_state(cpu);
-+    if (ret < 0) {
-+        error_report("Failed to fetch guest state");
-+        return -1;
-+    }
-+
-+    direction_flag = (env->eflags & DESC_E_MASK) != 0;
-+
-+    if (access_type == HV_X64_INTERCEPT_ACCESS_TYPE_WRITE) {
-+        ret = handle_pio_str_write(cpu, info, repeat, port, direction_flag);
-+        if (ret < 0) {
-+            error_report("Failed to handle pio str write");
-+            return -1;
-+        }
-+        reg_names[0] = HV_X64_REGISTER_RSI;
-+        reg_values[0] = info->rsi;
-+    } else {
-+        ret = handle_pio_str_read(cpu, info, repeat, port, direction_flag);
-+        reg_names[0] = HV_X64_REGISTER_RDI;
-+        reg_values[0] = info->rdi;
-+    }
-+
-+    reg_names[1] = HV_X64_REGISTER_RIP;
-+    reg_values[1] = info->header.rip + insn_len;
-+    reg_names[2] = HV_X64_REGISTER_RAX;
-+    reg_values[2] = info->rax;
-+
-+    ret = set_x64_registers(cpu, reg_names, reg_values);
-+    if (ret < 0) {
-+        error_report("Failed to set x64 registers");
-+        return -1;
-+    }
-+
-+    cpu->accel->dirty = false;
-+
-+    return 0;
-+}
-+
-+static int handle_pio(CPUState *cpu, const struct hyperv_message *msg)
-+{
-+    struct hv_x64_io_port_intercept_message info = { 0 };
-+    int ret;
-+
-+    ret = set_ioport_info(msg, &info);
-+    if (ret < 0) {
-+        error_report("Failed to convert message to ioport info");
-+        return -1;
-+    }
-+
-+    if (info.access_info.string_op) {
-+        return handle_pio_str(cpu, &info);
-+    }
-+
-+    return handle_pio_non_str(cpu, &info);
-+}
-+
- int mshv_run_vcpu(int vm_fd, CPUState *cpu, hv_message *msg, MshvVmExit *exit)
- {
--    error_report("unimplemented");
--    abort();
-+    int ret;
-+    enum MshvVmExit exit_reason;
-+    int cpu_fd = mshv_vcpufd(cpu);
-+
-+    ret = ioctl(cpu_fd, MSHV_RUN_VP, msg);
-+    if (ret < 0) {
-+        return MshvVmExitShutdown;
-+    }
-+
-+    switch (msg->header.message_type) {
-+    case HVMSG_UNRECOVERABLE_EXCEPTION:
-+        return MshvVmExitShutdown;
-+    case HVMSG_UNMAPPED_GPA:
-+    case HVMSG_GPA_INTERCEPT:
-+        ret = handle_mmio(cpu, msg, &exit_reason);
-+        if (ret < 0) {
-+            error_report("failed to handle mmio");
-+            return -1;
-+        }
-+        return exit_reason;
-+    case HVMSG_X64_IO_PORT_INTERCEPT:
-+        ret = handle_pio(cpu, msg);
-+        if (ret < 0) {
-+            return MshvVmExitSpecial;
-+        }
-+        return MshvVmExitIgnore;
-+    default:
++    switch (remap_result) {
++    case MshvRemapNoMapping:
++        /* if we didn't find a mapping, it is probably mmio */
++        return handle_mmio(cpu, msg, exit_reason);
++    case MshvRemapOk:
++        break;
++    case MshvRemapNoOverlap:
++        /* This should not happen, but we are forgiving it */
++        warn_report("found no overlap for unmapped region");
++        *exit_reason = MshvVmExitSpecial;
 +        break;
 +    }
 +
-+    *exit = MshvVmExitIgnore;
 +    return 0;
- }
- 
- void mshv_remove_vcpu(int vm_fd, int cpu_fd)
++}
++
+ static int set_ioport_info(const struct hyperv_message *msg,
+                            hv_x64_io_port_intercept_message *info)
+ {
+@@ -1506,6 +1543,12 @@ int mshv_run_vcpu(int vm_fd, CPUState *cpu, hv_message *msg, MshvVmExit *exit)
+     case HVMSG_UNRECOVERABLE_EXCEPTION:
+         return MshvVmExitShutdown;
+     case HVMSG_UNMAPPED_GPA:
++        ret = handle_unmapped_mem(vm_fd, cpu, msg, &exit_reason);
++        if (ret < 0) {
++            error_report("failed to handle unmapped memory");
++            return -1;
++        }
++        return exit_reason;
+     case HVMSG_GPA_INTERCEPT:
+         ret = handle_mmio(cpu, msg, &exit_reason);
+         if (ret < 0) {
 -- 
 2.34.1
 
