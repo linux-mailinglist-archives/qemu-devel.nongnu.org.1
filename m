@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA84B807FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 579D6B8092C
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:31:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyrsq-0002iV-5E; Wed, 17 Sep 2025 09:07:40 -0400
+	id 1uyrsH-0000Up-V7; Wed, 17 Sep 2025 09:07:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyroe-0004yz-HH; Wed, 17 Sep 2025 09:03:20 -0400
+ id 1uyroe-0004z0-Iu; Wed, 17 Sep 2025 09:03:23 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyroa-0005tL-OV; Wed, 17 Sep 2025 09:03:20 -0400
+ id 1uyroa-0005tJ-GY; Wed, 17 Sep 2025 09:03:20 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6i008967
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6j008967
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 21:56:34 +0900 (JST)
+ Wed, 17 Sep 2025 21:56:35 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=uz+BL2X3YmDbVVBFbvJGic/cMJEwips82++86oOiCGc=; 
+DKIM-Signature: a=rsa-sha256; bh=SN54eqMpyxZn5t52ldVheDzKEoBDUBkvg/chu4l0yTs=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1758113795; v=1;
- b=c4CC69tVnJgnpKyDuD5vzuMxSmvIVObFGRYzQ7YgDCkTW4D2BTOOziGDq2HOTomj
- EGZ78CyMVy0sA7wO9v7B2O13lDdrwf0tPSfU6PCAqB6FTwXkjY7PZH+dLhjfGipm
- Saiktp8B/WvPhMOBvucPkble2/mkgO07bFo5T7N+c7MnvKfoM4kRPuFg2tzxk9hh
- H/Mq2zGXjSRCczBWAV+FDAepx9016OZIxigNIgdcR0do8MeNalYjGM6XKvK6QIRt
- WZKOK1QaTYbnyPIVoctTU4P2WbEJslCrYWD6KX0qMUL9xXfPmmfDj0XA/JI9BV9g
- oPYwT3tP4a8KIVGdG59rbQ==
+ s=rs20250326; t=1758113796; v=1;
+ b=DUSefoHX+5AQ41jKoyMQZ/520KnWRg3PTuzflX+/GPXZq3riyQSurxvuJq6Y+xeA
+ sc0QE5yEaHKX31nXhL9x1HMWA8aCw1Kd//xPmJ1dS9TuYPRYEBUV3wIEZhunNBJy
+ KSkDKTovU4HxAGab/4PCRKGMY+wWz4sLV/SxfhbPFp4A9F+HbrufBwEu6zktI+9n
+ 37l8Va3KoDIqMDlZsWOzKy4/48ABx7OARe8Nt0FjkxJ7uloAMGpNVwmyed0owEJw
+ 5AyPLLiP+X0+9IMBiwGrNzhPbldNRxURcOfovreIznCLAPrtI/DRx+W457D9g07k
+ PFKYTh6R/xZXDBSuQAmfDQ==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:16 +0900
-Subject: [PATCH 04/35] hw/alpha: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:17 +0900
+Subject: [PATCH 05/35] hw/arm: QOM-ify AddressSpace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-4-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-5-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -127,26 +127,67 @@ Make AddressSpaces QOM objects to ensure that they are destroyed when
 their owners are finalized and also to get a unique path for debugging
 output.
 
+The name arguments were used to distinguish AddresSpaces in debugging
+output, but they will represent property names after QOM-ification and
+debugging output will show QOM paths. So change them to make them more
+concise and also avoid conflicts with other properties.
+
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/alpha/typhoon.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/arm/armv7m.c         | 2 +-
+ hw/arm/aspeed_ast27x0.c | 2 +-
+ hw/arm/smmu-common.c    | 5 +++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/hw/alpha/typhoon.c b/hw/alpha/typhoon.c
-index d2307b076897..7c38be2378ed 100644
---- a/hw/alpha/typhoon.c
-+++ b/hw/alpha/typhoon.c
-@@ -900,8 +900,8 @@ PCIBus *typhoon_init(MemoryRegion *ram, qemu_irq *p_isa_irq,
-     memory_region_init_iommu(&s->pchip.iommu, sizeof(s->pchip.iommu),
-                              TYPE_TYPHOON_IOMMU_MEMORY_REGION, OBJECT(s),
-                              "iommu-typhoon", UINT64_MAX);
--    address_space_init(&s->pchip.iommu_as, NULL, MEMORY_REGION(&s->pchip.iommu),
--                       "pchip0-pci");
-+    address_space_init(&s->pchip.iommu_as, OBJECT(s),
-+                       MEMORY_REGION(&s->pchip.iommu), "pchip0-pci");
-     pci_setup_iommu(b, &typhoon_iommu_ops, s);
+diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
+index 7fa854bc14df..54d0d9f78207 100644
+--- a/hw/arm/armv7m.c
++++ b/hw/arm/armv7m.c
+@@ -117,7 +117,7 @@ static void bitband_realize(DeviceState *dev, Error **errp)
+         return;
+     }
  
-     /* Pchip0 PCI special/interrupt acknowledge, 0x801.F800.0000, 64MB.  */
+-    address_space_init(&s->source_as, NULL, s->source_memory, "bitband-source");
++    address_space_init(&s->source_as, OBJECT(s), s->source_memory, "as");
+ }
+ 
+ /* Board init.  */
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index f8c0ac5f87df..7fe097ad3f11 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -387,7 +387,7 @@ static bool aspeed_soc_ast2700_dram_init(DeviceState *dev, Error **errp)
+     memory_region_init(&s->dram_container, OBJECT(s), "ram-container",
+                        ram_size);
+     memory_region_add_subregion(&s->dram_container, 0, s->dram_mr);
+-    address_space_init(&s->dram_as, NULL, s->dram_mr, "dram");
++    address_space_init(&s->dram_as, OBJECT(s), s->dram_mr, "dram-as");
+ 
+     /*
+      * Add a memory region beyond the RAM region to emulate
+diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+index 081c50750947..7c1648165b9f 100644
+--- a/hw/arm/smmu-common.c
++++ b/hw/arm/smmu-common.c
+@@ -863,6 +863,7 @@ static AddressSpace *smmu_find_add_as(PCIBus *bus, void *opaque, int devfn)
+     sdev = sbus->pbdev[devfn];
+     if (!sdev) {
+         char *name = g_strdup_printf("%s-%d-%d", s->mrtypename, devfn, index++);
++        g_autofree char *as_name = g_strconcat(name, "-as", NULL);
+ 
+         sdev = sbus->pbdev[devfn] = g_new0(SMMUDevice, 1);
+ 
+@@ -873,8 +874,8 @@ static AddressSpace *smmu_find_add_as(PCIBus *bus, void *opaque, int devfn)
+         memory_region_init_iommu(&sdev->iommu, sizeof(sdev->iommu),
+                                  s->mrtypename,
+                                  OBJECT(s), name, UINT64_MAX);
+-        address_space_init(&sdev->as, NULL,
+-                           MEMORY_REGION(&sdev->iommu), name);
++        address_space_init(&sdev->as, OBJECT(s),
++                           MEMORY_REGION(&sdev->iommu), as_name);
+         trace_smmu_add_mr(name);
+         g_free(name);
+     }
 
 -- 
 2.51.0
