@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81893B8093B
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0906B80BDF
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:51:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyqip-0003uL-45; Wed, 17 Sep 2025 07:53:15 -0400
+	id 1uyqiL-0003BY-5Y; Wed, 17 Sep 2025 07:52:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqi2-00035a-1E
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqhz-00035F-81
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqhw-0003kQ-BG
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:25 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqht-0003kG-GL
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758109936;
+ s=mimecast20190719; t=1758109935;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IWr5sRd0zLRo8HiU4gGE75BJTnlCZ4dpR2z5L6kCcU4=;
- b=eitShH9mEDT6AXB+frCUFOXEJgNfjzx/BQG7OGzdLeK6/6wwOx2oqlfyroKpc1aE/H5V0v
- yBOXZZLXtz/QFrY091LGeJYryiX+nkHTrB5CyOWcAIY5V3UN9cMyT8wnR6+uu7+XOiMOvn
- F+fbZeKO8wrCpPuxbB4K2G15qYyl3IM=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=GKo74CCRhMR7hcfAtZoAXSswbGRrxhaev9f64FWC4RM=;
+ b=baRcw/tBXecQP67rtpZbzNfW2VeAR5S7EtfI8C1RcvE0mCy7/eGFEena11npwmfFaF5Ruv
+ +tlzwOhr1Mb1vaGjm5V9NELMKIFkXxr67D6OlEURtNWsD7dy+jRMtNDUGowWo50Sg9nnyg
+ 2+cEDweJGp3h2i0uN/pyQalCaUmzXHw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-158-Y2gM11AOMUmyZSUlVV3zyw-1; Wed,
- 17 Sep 2025 07:52:11 -0400
-X-MC-Unique: Y2gM11AOMUmyZSUlVV3zyw-1
-X-Mimecast-MFC-AGG-ID: Y2gM11AOMUmyZSUlVV3zyw_1758109930
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-_mKLCj0QOTWuRkCnAsW8LA-1; Wed,
+ 17 Sep 2025 07:52:12 -0400
+X-MC-Unique: _mKLCj0QOTWuRkCnAsW8LA-1
+X-Mimecast-MFC-AGG-ID: _mKLCj0QOTWuRkCnAsW8LA_1758109931
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 869021955F26; Wed, 17 Sep 2025 11:52:10 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C087E19560A7; Wed, 17 Sep 2025 11:52:10 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DE2EF19560B8; Wed, 17 Sep 2025 11:52:09 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 290AF1800451; Wed, 17 Sep 2025 11:52:09 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3B93121E6925; Wed, 17 Sep 2025 13:52:07 +0200 (CEST)
+ id 3FBCD21E6935; Wed, 17 Sep 2025 13:52:07 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: odaki@rsg.ci.i.u-tokyo.ac.jp, marcandre.lureau@redhat.com,
- berrange@redhat.com, Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 02/12] tcg: Fix error reporting on mprotect() failure in
- tcg_region_init()
-Date: Wed, 17 Sep 2025 13:51:57 +0200
-Message-ID: <20250917115207.1730186-3-armbru@redhat.com>
+ berrange@redhat.com, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 03/12] hw/cxl: Convert cxl_fmws_link() to Error
+Date: Wed, 17 Sep 2025 13:51:58 +0200
+Message-ID: <20250917115207.1730186-4-armbru@redhat.com>
 In-Reply-To: <20250917115207.1730186-1-armbru@redhat.com>
 References: <20250917115207.1730186-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,58 +85,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tcg_region_init() calls one of qemu_mprotect_rwx(),
-qemu_mprotect_rw(), and mprotect(), then reports failure with
-error_setg_errno(&error_fatal, errno, ...).
+Functions that use an Error **errp parameter to return errors should
+not also report them to the user, because reporting is the caller's
+job.  When the caller does, the error is reported twice.  When it
+doesn't (because it recovered from the error), there is no error to
+report, i.e. the report is bogus.
 
-The use of &error_fatal is undesirable.  qapi/error.h advises:
+cxl_fmws_link_targets() violates this principle: it calls
+error_setg(&error_fatal, ...) via cxl_fmws_link().  Goes back to
+commit 584f722eb3ab (hw/cxl: Make the CXL fixed memory windows
+devices.)  Currently harmless, because cxl_fmws_link_targets()'s
+callers always pass &error_fatal.  Clean this up by converting
+cxl_fmws_link() to Error.
 
- * Please don't error_setg(&error_fatal, ...), use error_report() and
- * exit(), because that's more obvious.
+Also change its return value on error from 1 to -1 to conform to the
+rules laid in qapi/error.h.  It's call chain cxl_fmws_link_targets()
+via object_child_foreach_recursive() is fine with that.
 
-The use of errno is wrong.  qemu_mprotect_rwx() and qemu_mprotect_rw()
-wrap around qemu_mprotect__osdep().  qemu_mprotect__osdep() calls
-mprotect() on POSIX, VirtualProtect() on Windows, and reports failure
-with error_report().  VirtualProtect() doesn't set errno.  mprotect()
-does, but error_report() may clobber it.
-
-Fix tcg_region_init() to report errors only when it calls mprotect(),
-and rely on qemu_mprotect_rwx()'s and qemu_mprotect_rw()'s error
-reporting otherwise.  Use error_report(), not error_setg().
-
-Fixes: 22c6a9938f75 (tcg: Merge buffer protection and guard page protection)
-Fixes: 6bc144237a85 (tcg: Use Error with alloc_code_gen_buffer)
-Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tcg/region.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ hw/cxl/cxl-host.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tcg/region.c b/tcg/region.c
-index 7ea0b37a84..74e3b4b774 100644
---- a/tcg/region.c
-+++ b/tcg/region.c
-@@ -832,13 +832,17 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_threads)
-             } else {
- #ifdef CONFIG_POSIX
-                 rc = mprotect(start, end - start, need_prot);
-+                if (rc) {
-+                    error_report("mprotect of jit buffer: %s",
-+                                 strerror(errno));
-+                }
-+
- #else
-                 g_assert_not_reached();
- #endif
-             }
-             if (rc) {
--                error_setg_errno(&error_fatal, errno,
--                                 "mprotect of jit buffer");
-+                exit(1);
-             }
+diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
+index 5c2ce25a19..0d891c651d 100644
+--- a/hw/cxl/cxl-host.c
++++ b/hw/cxl/cxl-host.c
+@@ -72,6 +72,7 @@ static void cxl_fixed_memory_window_config(CXLFixedMemoryWindowOptions *object,
+ 
+ static int cxl_fmws_link(Object *obj, void *opaque)
+ {
++    Error **errp = opaque;
+     struct CXLFixedWindow *fw;
+     int i;
+ 
+@@ -87,9 +88,9 @@ static int cxl_fmws_link(Object *obj, void *opaque)
+         o = object_resolve_path_type(fw->targets[i], TYPE_PXB_CXL_DEV,
+                                      &ambig);
+         if (!o) {
+-            error_setg(&error_fatal, "Could not resolve CXLFM target %s",
++            error_setg(errp, "Could not resolve CXLFM target %s",
+                        fw->targets[i]);
+-            return 1;
++            return -1;
          }
-         if (have_prot != 0) {
+         fw->target_hbs[i] = PXB_CXL_DEV(o);
+     }
+@@ -99,7 +100,7 @@ static int cxl_fmws_link(Object *obj, void *opaque)
+ void cxl_fmws_link_targets(Error **errp)
+ {
+     /* Order doesn't matter for this, so no need to build list */
+-    object_child_foreach_recursive(object_get_root(), cxl_fmws_link, NULL);
++    object_child_foreach_recursive(object_get_root(), cxl_fmws_link, errp);
+ }
+ 
+ static bool cxl_hdm_find_target(uint32_t *cache_mem, hwaddr addr,
 -- 
 2.49.0
 
