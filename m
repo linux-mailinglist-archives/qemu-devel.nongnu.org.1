@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA2CB8022D
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 16:42:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB3C4B8089C
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:27:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uypYx-0000Ry-RV; Wed, 17 Sep 2025 06:38:59 -0400
+	id 1uypUj-0002S7-H3; Wed, 17 Sep 2025 06:34:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uypYr-0000Ma-JK; Wed, 17 Sep 2025 06:38:53 -0400
+ id 1uypUS-0002Ir-MG; Wed, 17 Sep 2025 06:34:21 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uypYp-00074D-BX; Wed, 17 Sep 2025 06:38:53 -0400
+ id 1uypUJ-0005vo-SI; Wed, 17 Sep 2025 06:34:17 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HAWmAf099616
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HAWmAg099616
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
  Wed, 17 Sep 2025 19:32:59 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=xaI2KenS6q6E7iB3V1ZG5UGfMQv+qfK+9G24Jw3H4nE=; 
+DKIM-Signature: a=rsa-sha256; bh=iiyInnSiBdFW+yfPCMju2JfXG3ua48WG78dciSW5cd4=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1758105179; v=1;
- b=hgmGB1OIvwevgMatBnGGeuphoBq1R5fCIFkSAjZ5NLgd7MOEfc9IA7fC2+1STrc8
- sF2CyZq7TUMO8RaauK954x/v/61pm74h6K7bUG1A/KncVao7LQ/dKD8rGAIVpzWV
- sCKx7imv6MfkdGzVPIsNMU5qXuAArti4epwHkOc1ZO6bNSrO1EV4oMozIiTX7bCw
- Y7rK2nv0FzpVHttD9Wdf5SMM2+xeBy7UJ0gc0dcoNF2gN+jpockONxzdhAJmq7qA
- Q/kKdZ3kFUSz/IpNK4LCqd6WgGd6QAnz1jnQrK8DWe14Qtkgewvaun139wZk/q1F
- v5sybrdK3wi3O9hRTz9qNg==
+ s=rs20250326; t=1758105180; v=1;
+ b=v9dhW7QLdBBweNxXOtWsioFjH2uCC5/SSnoLJiBWQbWPqaWCL/CbG1vmBwDjdIDW
+ 0idTjsXtCqJeMqiFa1hWJjuyrY5RVy2BSRwjm7OdxaFlREo+xS9hcs/kbd3+yv0i
+ 4Z1vm+z5kEdHgd4+g9panmBrkcI4jzGZDr0AcyEx6ptGw5qTNPdkXszB9SfeEaUl
+ hKKFjasXbMIbfeT4NNC71PhqaaYCPMIFRmsbI79t2i4HooqmISmV8FtdioIJhtOp
+ o6EbgKAlLZ2Hhyu71c4L0HDlmk6iqCeRGbJCQ2DcqBj1e/bLsxSWholPNAmz0vLu
+ DKVRovnMUzg7kXDNata5aQ==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 19:32:53 +0900
-Subject: [PATCH 07/14] cmd646: Do not delete the subregions
+Date: Wed, 17 Sep 2025 19:32:54 +0900
+Subject: [PATCH 08/14] hw/ide/piix: Do not delete the subregions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-subregion-v1-7-bef37d9b4f73@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-subregion-v1-8-bef37d9b4f73@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-subregion-v1-0-bef37d9b4f73@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-subregion-v1-0-bef37d9b4f73@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -105,18 +105,18 @@ It is no longer necessary.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/ide/cmd646.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ hw/ide/piix.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
-index 2a59516a9ddb..ea4d501c5e40 100644
---- a/hw/ide/cmd646.c
-+++ b/hw/ide/cmd646.c
-@@ -302,17 +302,6 @@ static void pci_cmd646_ide_realize(PCIDevice *dev, Error **errp)
+diff --git a/hw/ide/piix.c b/hw/ide/piix.c
+index a0f2709c6973..138f8e1936b4 100644
+--- a/hw/ide/piix.c
++++ b/hw/ide/piix.c
+@@ -166,17 +166,6 @@ static void pci_piix_ide_realize(PCIDevice *dev, Error **errp)
      }
  }
  
--static void pci_cmd646_ide_exitfn(PCIDevice *dev)
+-static void pci_piix_ide_exitfn(PCIDevice *dev)
 -{
 -    PCIIDEState *d = PCI_IDE(dev);
 -    unsigned i;
@@ -127,17 +127,25 @@ index 2a59516a9ddb..ea4d501c5e40 100644
 -    }
 -}
 -
- static const Property cmd646_ide_properties[] = {
-     DEFINE_PROP_UINT32("secondary", PCIIDEState, secondary, 0),
- };
-@@ -325,7 +314,6 @@ static void cmd646_ide_class_init(ObjectClass *klass, const void *data)
-     device_class_set_legacy_reset(dc, cmd646_reset);
+ /* NOTE: for the PIIX3, the IRQs and IOports are hardcoded */
+ static void piix3_ide_class_init(ObjectClass *klass, const void *data)
+ {
+@@ -186,7 +175,6 @@ static void piix3_ide_class_init(ObjectClass *klass, const void *data)
+     device_class_set_legacy_reset(dc, piix_ide_reset);
      dc->vmsd = &vmstate_ide_pci;
-     k->realize = pci_cmd646_ide_realize;
--    k->exit = pci_cmd646_ide_exitfn;
-     k->vendor_id = PCI_VENDOR_ID_CMD;
-     k->device_id = PCI_DEVICE_ID_CMD_646;
-     k->revision = 0x07;
+     k->realize = pci_piix_ide_realize;
+-    k->exit = pci_piix_ide_exitfn;
+     k->vendor_id = PCI_VENDOR_ID_INTEL;
+     k->device_id = PCI_DEVICE_ID_INTEL_82371SB_1;
+     k->class_id = PCI_CLASS_STORAGE_IDE;
+@@ -209,7 +197,6 @@ static void piix4_ide_class_init(ObjectClass *klass, const void *data)
+     device_class_set_legacy_reset(dc, piix_ide_reset);
+     dc->vmsd = &vmstate_ide_pci;
+     k->realize = pci_piix_ide_realize;
+-    k->exit = pci_piix_ide_exitfn;
+     k->vendor_id = PCI_VENDOR_ID_INTEL;
+     k->device_id = PCI_DEVICE_ID_INTEL_82371AB;
+     k->class_id = PCI_CLASS_STORAGE_IDE;
 
 -- 
 2.51.0
