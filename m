@@ -2,103 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A1EB80B42
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:47:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0630FB805FB
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:08:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyrsW-0001jh-Hu; Wed, 17 Sep 2025 09:07:20 -0400
+	id 1uyrt2-0003A4-2z; Wed, 17 Sep 2025 09:07:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uyrom-00053R-Pe
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 09:03:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uyrqk-0006rf-2E
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 09:05:32 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uyrol-0005we-4J
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 09:03:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758114195;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=o0OFplTQWizPetRjTZMgOxEbv1WufdVL1LhjWNq7w6s=;
- b=G7prdQ/1XMGW1hoXYZQa6OuB2V7Q+pO/pTTCPVY56oh7LtG/VqtIE4MRh7gQ4JWBPQC/GV
- enbfhV9F6z67HhZ4SOFfn6mqUdMYXsVdhuwp2GLKEMmVFDphZ3AozKbouECxQPJjfKLiCr
- YwVwymBMDez3c5HycT1AsizeKif92lg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-484-2Fs-sGe0MbG4ZTr6Rqgi0A-1; Wed, 17 Sep 2025 09:01:15 -0400
-X-MC-Unique: 2Fs-sGe0MbG4ZTr6Rqgi0A-1
-X-Mimecast-MFC-AGG-ID: 2Fs-sGe0MbG4ZTr6Rqgi0A_1758114073
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3eb8215978aso2557245f8f.1
- for <qemu-devel@nongnu.org>; Wed, 17 Sep 2025 06:01:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758114073; x=1758718873;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o0OFplTQWizPetRjTZMgOxEbv1WufdVL1LhjWNq7w6s=;
- b=Kk2/Tfg27qwO6/Pu7zTFf+O7KWBWQ1nUIhJZ12MyyuDb/fAm6XVUcWGbJSeWQgQvhj
- es7GkRZARsX6eM/mjxogHzwITGfXOdsYhl5LyHVbOtiGiJittPVQhVkYAKITrz1INk7W
- kkRiTKuK6QMvK0prI86+WaKzIVCPog+6DxPy64+pDv14614QPl1JYTGNXfd3AhU82w0n
- kUgWP5xSYI0cPSGTiksdyKpSa2yqubZ4MojqcjiJmph7YWJnYsxTRdIqXndufjD+wvAL
- RQjY3mbFuyo/CQQCu6zrtueyW28skMChiP0QvcJ0a8Wee8N9j3Ht2awLUxHuKhOf2+Pw
- jmug==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVIoTd9OHLpvL9bOl0w6RvYxiIo8oAwjNi3jOuL2G0GrbsDrsM6s6kGhuzuq3VaQbtT5S9lw8ZrMzIv@nongnu.org
-X-Gm-Message-State: AOJu0YxKNGcbCfShGdCURolPXtHrUhyaTIlC3oliAa1CBK7DjCsibspD
- 16H9OVIjUBRpt9Vr4vN5jt73PiBOL8jkOI78cjljKZVEo19P0D8laRYmNE8eLK75inNKJaXW52I
- uocPDuw96XNmIzVHY+lNyT+c3ZEQK8VOu2NZKtSH1LqdgPtpX+A3Y7s8C
-X-Gm-Gg: ASbGnct99gMa84NgiSRhMfH57XrCqIMscHbODyNQRHFzxW46OxlONrAFV8tjhuIUdO4
- t+QdBWxnVEG2/1yzzNuWFA0OXMvs/EfjQAjQkk0j9Z1EbBPHfr/hGXfW5ou097ns8kTZRmRplW3
- 8e+BKoY5mMs4gpiD9Xiiq5i6aivENQsUqCogtq8hcZ4Gkk0tOyRT36GUhZXf9qucLfb1joCo4qf
- FPniWZlXHtjV3yRQkQ4dx8P3b6PTt9Q15MpNG40eqdRTxedDEPbbQ3hVXdmVHg1ruU7Lua9L++D
- +bHid/Rbhdx/H7TFnIYBcRIE4kJxMkRenO899IlWJSPdV8KXm3cHtGSO4pZza0Z15hsV7pJc9mG
- rlHj8CInhANhurrazJ7WuFWCMkAAqR8dIUiz/DhVrA2JhOZuvTL3ObCetBwzuPLVohQRQ
-X-Received: by 2002:a05:6000:26d2:b0:3df:b9e7:359f with SMTP id
- ffacd0b85a97d-3ecdfa16a23mr1790003f8f.35.1758114072893; 
- Wed, 17 Sep 2025 06:01:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEBOI7hlxfn74Qx+yJrZCb0vrh8HQnbKL7+dDSCC4Vwl5DmfGUqaw3apBxnyUXaT4/R+bP8+A==
-X-Received: by 2002:a05:6000:26d2:b0:3df:b9e7:359f with SMTP id
- ffacd0b85a97d-3ecdfa16a23mr1789848f8f.35.1758114070849; 
- Wed, 17 Sep 2025 06:01:10 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d721:7588:1cf1:5127:fd96:3013?
- (p200300cfd72175881cf15127fd963013.dip0.t-ipconnect.de.
- [2003:cf:d721:7588:1cf1:5127:fd96:3013])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3ecdf0bbf24sm2802576f8f.63.2025.09.17.06.01.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Sep 2025 06:01:09 -0700 (PDT)
-Message-ID: <ef822991-5af9-4ac7-9bcd-15f521579f8f@redhat.com>
-Date: Wed, 17 Sep 2025 15:01:07 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uyrqc-0006O6-6v
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 09:05:28 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cRf8h5Hw5z6GDKy;
+ Wed, 17 Sep 2025 21:03:32 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id A811A1400CB;
+ Wed, 17 Sep 2025 21:05:05 +0800 (CST)
+Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 17 Sep
+ 2025 15:05:05 +0200
+Date: Wed, 17 Sep 2025 14:05:03 +0100
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: "Michael S. Tsirkin" <mst@redhat.com>, <qemu-devel@nongnu.org>, "Vinayak
+ Holikatti" <vinayak.kh@samsung.com>, Fan Ni <fan.ni@samsung.com>
+Subject: Re: [PULL 03/27] hw/cxl/cxl-mailbox-utils: Add support for Media
+ operations discovery commands cxl r3.2 (8.2.10.9.5.3)
+Message-ID: <20250917140503.0000231b@huawei.com>
+In-Reply-To: <CAFEAcA-p5wZkNxK7wNVq_3PAzEE-muOd1Def-0O-FSpck4DrBQ@mail.gmail.com>
+References: <cover.1747223385.git.mst@redhat.com>
+ <77a8e9fe0ecb71b260d17f43221df5b18769b359.1747223385.git.mst@redhat.com>
+ <CAFEAcA-p5wZkNxK7wNVq_3PAzEE-muOd1Def-0O-FSpck4DrBQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] export/fuse: Safe termination for FUSE-uring
-To: Brian Song <hibriansong@gmail.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, armbru@redhat.com,
- bernd@bsbernd.com, fam@euphon.net, kwolf@redhat.com
-References: <20250830025025.3610-1-hibriansong@gmail.com>
- <20250830025025.3610-4-hibriansong@gmail.com>
- <20250909193358.GE218449@fedora>
- <CAKWCU7VFbJius06j1pXvP_5aSpmhmaJq6Z41H4efWFmeMjr4OQ@mail.gmail.com>
-Content-Language: en-US
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <CAKWCU7VFbJius06j1pXvP_5aSpmhmaJq6Z41H4efWFmeMjr4OQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,94 +69,122 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <jonathan.cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15.09.25 07:43, Brian Song wrote:
-> Hi Hanna,
+On Thu, 10 Jul 2025 14:26:07 +0100
+Peter Maydell <peter.maydell@linaro.org> wrote:
 
-Hi Brian!
+> On Wed, 14 May 2025 at 12:50, Michael S. Tsirkin <mst@redhat.com> wrote:
+> >
+> > From: Vinayak Holikatti <vinayak.kh@samsung.com>
+> >
+> > CXL spec 3.2 section 8.2.10.9.5.3 describes media operations commands.
+> > CXL devices supports media operations discovery command.
+> >
+> > Signed-off-by: Vinayak Holikatti <vinayak.kh@samsung.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Message-Id: <20250305092501.191929-4-Jonathan.Cameron@huawei.com>
+> > Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > ---
+> >  hw/cxl/cxl-mailbox-utils.c | 125 +++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 125 insertions(+)  
+> 
+> 
+> 
+> > +static CXLRetCode media_operations_discovery(uint8_t *payload_in,
+> > +                                             size_t len_in,
+> > +                                             uint8_t *payload_out,
+> > +                                             size_t *len_out)
+> > +{
+> > +    struct {
+> > +        uint8_t media_operation_class;
+> > +        uint8_t media_operation_subclass;
+> > +        uint8_t rsvd[2];
+> > +        uint32_t dpa_range_count;
+> > +        struct {
+> > +            uint16_t start_index;
+> > +            uint16_t num_ops;
+> > +        } discovery_osa;
+> > +    } QEMU_PACKED *media_op_in_disc_pl = (void *)payload_in;
+> > +    struct media_op_discovery_out_pl *media_out_pl =
+> > +        (struct media_op_discovery_out_pl *)payload_out;
+> > +    int num_ops, start_index, i;
+> > +    int count = 0;
+> > +
+> > +    if (len_in < sizeof(*media_op_in_disc_pl)) {
+> > +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+> > +    }
+> > +
+> > +    num_ops = media_op_in_disc_pl->discovery_osa.num_ops;
+> > +    start_index = media_op_in_disc_pl->discovery_osa.start_index;
+> > +
+> > +    /*
+> > +     * As per spec CXL r3.2 8.2.10.9.5.3 dpa_range_count should be zero and
+> > +     * start index should not exceed the total number of entries for discovery
+> > +     * sub class command.
+> > +     */
+> > +    if (media_op_in_disc_pl->dpa_range_count ||
+> > +        start_index > ARRAY_SIZE(media_op_matrix)) {  
+> 
+> Coverity thinks this bounds check is wrong (CID 1610091):
+> we allow start_index equal to the ARRAY_SIZE(media_op_matrix),
+> which means that in the loop below we will index off the
+> end of the array.
+> 
+> Don't we also need to be checking (start_index + num_ops)
+> against the array size bounds, not just start_index ?
 
-(Thanks for your heads-up!)
+Agreed. I think this should be
+start_index + num_ops > ARRAY_SIZE(media_op_matrix);
 
-> Stefan raised the above issue and proposed a preliminary solution: keep
-> closing the file descriptor in the delete section, but perform
-> umount separately for FUSE uring and traditional FUSE in the shutdown
-> and delete sections respectively. This approach avoids the race
-> condition on the file descriptor.
->
-> In the case of FUSE uring, umount must be performed in the shutdown
-> section. The reason is that the kernel currently lacks an interface to
-> explicitly cancel submitted SQEs. Performing umount forces the kernel to
-> flush all pending SQEs and return their CQEs. Without this step, CQEs
-> may arrive after the export has already been deleted, and invoking the
-> CQE handler at that point would dereference freed memory and trigger a
-> segmentation fault.
 
-The commit message says that incrementing the BB reference would be 
-enough to solve the problem (i.e. deleting is delayed until all requests 
-are done).  Why isn’t it?
+> 
+> > +        return CXL_MBOX_INVALID_INPUT;
+> > +    }
+> > +
+> > +    media_out_pl->dpa_range_granularity = CXL_CACHE_LINE_SIZE;
+> > +    media_out_pl->total_supported_operations =
+> > +                                     ARRAY_SIZE(media_op_matrix);
+> > +    if (num_ops > 0) {
+> > +        for (i = start_index; i < start_index + num_ops; i++) {
+> > +            media_out_pl->entry[count].media_op_class =
+> > +                    media_op_matrix[i].media_op_class;
+> > +            media_out_pl->entry[count].media_op_subclass =
+> > +                        media_op_matrix[i].media_op_subclass;
+> > +            count++;
+> > +            if (count == num_ops) {
+> > +                break;
+> > +            }
+> > +        }
+> > +    }
+> > +
+> > +    media_out_pl->num_of_supported_operations = count;
+> > +    *len_out = sizeof(*media_out_pl) + count * sizeof(*media_out_pl->entry);
+> > +    return CXL_MBOX_SUCCESS;
+> > +}  
+> 
+> The functions in this patch also look like they aren't correctly
+> handling the "guest and host endianness differ" case.
 
-> I’m curious about traditional FUSE: is it strictly necessary to perform
-> umount in the delete section, or could it also be done in shutdown?
+The fields in CXL mailbox commands are all defined as little endian.
+There is a problem with littlendian vs guest.  That's true of a lot
+of the CXL code and something that needs a thorough audit at some point.
+I'll leave this for now.  Given how slow emulating an big endian system
+is it's rather a marathon effort to test any such fixes.
 
-Looking into libfuse, fuse_session_unmount() (in fuse_kern_unmount()) 
-closes the FUSE FD.  I can imagine that might result in the potential 
-problems Stefan described.
+I'll sort out a fix for the issue in previous patch as well.
 
-> Additionally, what is the correct ordering between close(fd) and
-> umount, does one need to precede the other?
+Thanks,
 
-fuse_kern_unmount() closes the (queue 0) FD first before actually 
-unmounting, with a comment: “Need to close file descriptor, otherwise 
-synchronous umount would recurse into filesystem, and deadlock.”
+Jonathan
 
-Given that, I assume the FDs should all be closed before unmounting.
 
-(Though to be fair, before looking into it now, I don’t think I’ve ever 
-given it much thought…)
-
-Hanna
-
-> Thanks,
-> Brian
->
-> On 9/9/25 3:33 PM, Stefan Hajnoczi wrote:
->   > On Fri, Aug 29, 2025 at 10:50:24PM -0400, Brian Song wrote:
->   >> @@ -901,24 +941,15 @@ static void fuse_export_shutdown(BlockExport
-> *blk_exp)
->   >>            */
->   >>           g_hash_table_remove(exports, exp->mountpoint);
->   >>       }
->   >> -}
->   >> -
->   >> -static void fuse_export_delete(BlockExport *blk_exp)
->   >> -{
->   >> -    FuseExport *exp = container_of(blk_exp, FuseExport, common);
->   >>
->   >> -    for (int i = 0; i < exp->num_queues; i++) {
->   >> +    for (size_t i = 0; i < exp->num_queues; i++) {
->   >>           FuseQueue *q = &exp->queues[i];
->   >>
->   >>           /* Queue 0's FD belongs to the FUSE session */
->   >>           if (i > 0 && q->fuse_fd >= 0) {
->   >>               close(q->fuse_fd);
->   >
->   > This changes the behavior of the non-io_uring code. Now all fuse fds and
->   > fuse_session are closed while requests are potentially still being
->   > processed.
->   >
->   > There is a race condition: if an IOThread is processing a request here
->   > then it may invoke a system call on q->fuse_fd just after it has been
->   > closed but not set to -1. If another thread has also opened a new file
->   > then the fd could be reused, resulting in an accidental write(2) to the
->   > new file. I'm not sure whether there is a way to trigger this in
->   > practice, but it looks like a problem waiting to happen.
->   >
->   > Simply setting q->fuse_fd to -1 here doesn't fix the race. It would be
->   > necessary to stop processing fuse_fd in the thread before closing it
->   > here or to schedule a BH in each thread so that fuse_fd can be closed
->   > in the thread that uses the fd.
->
+> 
+> thanks
+> -- PMM
 
 
