@@ -2,60 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1A9B8094A
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3E9B80C1D
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:52:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uys1p-0003Gu-4g; Wed, 17 Sep 2025 09:16:57 -0400
+	id 1uys3n-0008LE-Fq; Wed, 17 Sep 2025 09:18:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uys18-0002yv-8h
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 09:16:25 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uys3C-00086H-6J
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 09:18:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uys13-0000Rc-2N
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 09:16:13 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cRfPH4Zs1z6GDKq;
- Wed, 17 Sep 2025 21:14:27 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 92A0D1400D4;
- Wed, 17 Sep 2025 21:16:00 +0800 (CST)
-Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 17 Sep
- 2025 15:16:00 +0200
-Date: Wed, 17 Sep 2025 14:15:58 +0100
-To: Markus Armbruster <armbru@redhat.com>
-CC: <qemu-devel@nongnu.org>, <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- <marcandre.lureau@redhat.com>, <berrange@redhat.com>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2 03/12] hw/cxl: Convert cxl_fmws_link() to Error
-Message-ID: <20250917141558.00007ae1@huawei.com>
-In-Reply-To: <20250917115207.1730186-4-armbru@redhat.com>
-References: <20250917115207.1730186-1-armbru@redhat.com>
- <20250917115207.1730186-4-armbru@redhat.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uys39-0000jP-6X
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 09:18:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758115098;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Qdcwf8s9HmUuLp1IBeZbjsBqwFaRhrktluqh5mPF+QI=;
+ b=iG9Z5FXkmXbln6dwAeO+lz45+Ci6y+a1YYmaolqTIsoDqPHwkt98t8i8ajJeCL//+HA8Hz
+ 83SLNcmLM3mHAkgcgiBGxsoXUA6u0jJR2mjz/Xw5eaxwiqNcJ+HhRXHWaApNNxd4pl4B91
+ af84N4/dyem91UakgnIycn1cj1m8CH8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-624-ZAwOnfOcOMO9PEQblHgkzQ-1; Wed,
+ 17 Sep 2025 09:18:14 -0400
+X-MC-Unique: ZAwOnfOcOMO9PEQblHgkzQ-1
+X-Mimecast-MFC-AGG-ID: ZAwOnfOcOMO9PEQblHgkzQ_1758115081
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A350A18002D6; Wed, 17 Sep 2025 13:17:58 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.195])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8FCDC180044F; Wed, 17 Sep 2025 13:17:39 +0000 (UTC)
+Date: Wed, 17 Sep 2025 14:17:35 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ John Levon <john.levon@nutanix.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Aleksandar Rikalo <arikalo@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ =?utf-8?B?SGVydsOp?= Poussineau <hpoussin@reactos.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ Bin Meng <bmeng.cn@gmail.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v3 0/7] Do not unparent in instance_finalize()
+Message-ID: <aMq073aYphuFO2En@redhat.com>
+References: <20250917-use-v3-0-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
+ <aMqiK5SaeBJlSa_h@redhat.com>
+ <a1ad2a8f-8a69-4d25-bffd-482aec2fe9db@rsg.ci.i.u-tokyo.ac.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a1ad2a8f-8a69-4d25-bffd-482aec2fe9db@rsg.ci.i.u-tokyo.ac.jp>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,36 +121,79 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <jonathan.cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 17 Sep 2025 13:51:58 +0200
-Markus Armbruster <armbru@redhat.com> wrote:
+On Wed, Sep 17, 2025 at 09:24:04PM +0900, Akihiko Odaki wrote:
+> On 2025/09/17 20:57, Daniel P. Berrangé wrote:
+> > On Wed, Sep 17, 2025 at 07:13:25PM +0900, Akihiko Odaki wrote:
+> > > Based-on: <cover.1751493467.git.balaton@eik.bme.hu>
+> > > ("[PATCH v2 00/14] hw/pci-host/raven clean ups")
+> > > 
+> > > Supersedes: <20240829-memory-v1-1-ac07af2f4fa5@daynix.com>
+> > > ("[PATCH] docs/devel: Prohibit calling object_unparent() for memory region")
+> > > 
+> > > Children are automatically unparented so manually unparenting is
+> > > unnecessary.
+> > 
+> > Where is automatic unparenting you're referring to being done ?
+> > 
+> > > Worse, automatic unparenting happens before the instance_finalize()
+> > > callback of the parent gets called, so object_unparent() calls in
+> > > the callback will refer to objects that are already unparented, which
+> > > is semantically incorrect.
+> > 
+> > IIUC, object_property_add_child will acquire a reference on
+> > the child, and object_property_del_child (and thus
+> > object_unparent) will release that reference.
+> > 
+> > The 'object_finalize' method, and thus 'instance_finalize'
+> > callback, won't be invoked until the last reference is
+> > dropped on the object in question.
+> > 
+> > IOW, it should be impossible for 'object_finalize' to ever
+> > run, as long as the child has a parent set.
+> > 
+> > So if we're in the 'finalize' then 'object_unparent' must
+> > be a no-op as the child must already have no references
+> > held and thus no parent.
+> > 
+> > IOW, the reason to remove 'object_unparent' calls from
+> > finalize is surely because they do nothing at all,
+> > rather than this talk about callbacks being run at the
+> > wrong time ?
+> 
+> This patch series deals with the situation where the parent calls
+> object_unparent() in its instance_finalize() callback. The process of
+> finalization looks like as follows:
+> 
+> 1. The parent's reference count reaches to zero. Please note that there can
+> be remaining children that are referenced by the parent at this point.
+> 
+> 2. object_finalize() is called.
+> 
+> 2a. object_property_del_all() is called and the parent releases references
+> to its children. This is what I referred as "automatic unparenting". The
+> children without any other references will be finalized here.
+> 
+> 2b. instance_finalize() is called. Past children may be already finalized,
+> and calling object_unparent() here will cause dereferencing finalized
+> objects in that case, which should be avoided.
 
-> Functions that use an Error **errp parameter to return errors should
-> not also report them to the user, because reporting is the caller's
-> job.  When the caller does, the error is reported twice.  When it
-> doesn't (because it recovered from the error), there is no error to
-> report, i.e. the report is bogus.
->=20
-> cxl_fmws_link_targets() violates this principle: it calls
-> error_setg(&error_fatal, ...) via cxl_fmws_link().  Goes back to
-> commit 584f722eb3ab (hw/cxl: Make the CXL fixed memory windows
-> devices.)  Currently harmless, because cxl_fmws_link_targets()'s
-> callers always pass &error_fatal.  Clean this up by converting
-> cxl_fmws_link() to Error.
->=20
-> Also change its return value on error from 1 to -1 to conform to the
-> rules laid in qapi/error.h.  It's call chain cxl_fmws_link_targets()
-> via object_child_foreach_recursive() is fine with that.
->=20
-> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
-LGTM with the updated commit message.  Thanks!
+Oh, so these object_unparent calls run by the parent, against the child
+in fact use-after-free flaws.
 
-Jonathan
+This is driven by the parent keeping hold of explicit pointers to the
+child (MemoryRegion), without also holding its own reference, and these
+pointers are invalidated when the parent<->child property is deleted.
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
