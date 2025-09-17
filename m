@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B74B80938
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:32:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 334D2B8087E
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:27:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyrkp-0000Gw-8A; Wed, 17 Sep 2025 08:59:23 -0400
+	id 1uyrsj-0002Nx-NK; Wed, 17 Sep 2025 09:07:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrkm-0000CO-0A; Wed, 17 Sep 2025 08:59:20 -0400
+ id 1uyrpm-0005wN-KW; Wed, 17 Sep 2025 09:04:36 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrkk-0005B2-4j; Wed, 17 Sep 2025 08:59:19 -0400
+ id 1uyrpj-0005xa-AN; Wed, 17 Sep 2025 09:04:29 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6g008967
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6h008967
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 21:56:32 +0900 (JST)
+ Wed, 17 Sep 2025 21:56:33 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=M6LAc6U0KEnsPQIm1uqYTu4quBLF6gytOLllDVEiXFY=; 
+DKIM-Signature: a=rsa-sha256; bh=KPkgneIU/Kxw3przf+/EO57BUaP8vFhAy1Y4oUYjPZY=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1758113793; v=1;
- b=it1Wa/2xaJ/D22ACAY3YGagNmi6Cj09qQ9BBpysoQlV7xutW/Iba/HfirTS5Bdrc
- 6xpvkoKR7tL3Ix8gUIaV7Uj2ECaDuXdJHBdsJldbz26a+wc9yOC7P42ThoB7BO1V
- Tz9VO1LMvwt7pnNeNJLIFJdx3Oom/efXsVKWUFogCSsHO4BRge0HBV7VWXFioZ58
- cG8etRZekU6fP3wJ/nCZ3/Pm1fDDw8UwN0UxDwjCb1FxRyhTMr4Oa3yH2AR9pZnT
- Knv+E1SCU1cXUZzstgAMz/GdiaF9qZ80YUV9lFa5vEkeifk2YZfK3Pae+FhyQ12Q
- kaa+IT7QThCh6fPbeYTexA==
+ s=rs20250326; t=1758113794; v=1;
+ b=p6CW3wGmzP/3BPNGDz1fVZLaV3/Flytml54QCdn8QBKxE6XKmetfZg+fVzt4n3th
+ uEh/vkZLkgUVKsYEiLky4LLz2fap1aN0EvqGq1e9vNVAWzWcfgG6K6sA+bGk5P2n
+ NvwF1DofnV5zwtMCEMIMrFE+9IU3tr5uTUhEGBa1t0tzJVVE/307LUt11ZJe1odm
+ n+Pr7o9eLkl6ZOYsvA0KBY13AXAqTmHrZ3Ar7hNmBQB5yMJeAkQG3AvdEXy6djmz
+ kH08sM2K4Hw+w6MGKkARhjxu6TBl4+r0aA38T1JSM5QVjwgYa0TiThAAholfXC6N
+ M6bs5/EkJjSFRjC8tqNnhQ==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:14 +0900
-Subject: [PATCH 02/35] hw/core/loader: Use address_space_get_path()
+Date: Wed, 17 Sep 2025 21:56:15 +0900
+Subject: [PATCH 03/35] vfio: Use address_space_get_path()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-2-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-3-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -129,36 +129,56 @@ address_space_get_path() instead.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/core/loader.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/vfio/listener.c     | 8 ++++++--
+ hw/virtio/vhost-vdpa.c | 4 +++-
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 524af6f14a09..1ee603f19c90 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -1258,10 +1258,10 @@ static bool roms_overlap(Rom *last_rom, Rom *this_rom)
-         last_rom->addr + last_rom->romsize > this_rom->addr;
- }
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index f498e23a9374..d0418db28c8b 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -137,9 +137,11 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+                                 iova, iova + iotlb->addr_mask);
  
--static const char *rom_as_name(Rom *rom)
-+static const char *rom_as_path(Rom *rom)
- {
--    const char *name = rom->as ? rom->as->name : NULL;
--    return name ?: "anonymous";
-+    const char *path = rom->as ? address_space_get_path(rom->as) : NULL;
-+    return path ?: "anonymous";
- }
+     if (iotlb->target_as != &address_space_memory) {
++        g_autofree char *path = address_space_get_path(iotlb->target_as);
++
+         error_setg(&local_err,
+                    "Wrong target AS \"%s\", only system memory is allowed",
+-                   iotlb->target_as->name ? iotlb->target_as->name : "none");
++                   path);
+         if (migration_is_running()) {
+             migration_file_set_error(-EINVAL, local_err);
+         } else {
+@@ -1060,9 +1062,11 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+     trace_vfio_iommu_map_dirty_notify(iova, iova + iotlb->addr_mask);
  
- static void rom_print_overlap_error_header(void)
-@@ -1280,7 +1280,7 @@ static void rom_print_one_overlap_error(Rom *last_rom, Rom *rom)
- {
-     error_printf(
-         "\nThe following two regions overlap (in the %s address space):\n",
--        rom_as_name(rom));
-+        rom_as_path(rom));
-     error_printf(
-         "  %s (addresses 0x" HWADDR_FMT_plx " - 0x" HWADDR_FMT_plx ")\n",
-         last_rom->name, last_rom->addr, last_rom->addr + last_rom->romsize);
+     if (iotlb->target_as != &address_space_memory) {
++        g_autofree char *path = address_space_get_path(iotlb->target_as);
++
+         error_setg(&local_err,
+                    "Wrong target AS \"%s\", only system memory is allowed",
+-                   iotlb->target_as->name ? iotlb->target_as->name : "none");
++                   path);
+         goto out;
+     }
+ 
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index 7061b6e1a386..7ed639358458 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -213,8 +213,10 @@ static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+     hwaddr xlat;
+ 
+     if (iotlb->target_as != &address_space_memory) {
++        g_autofree char *path = address_space_get_path(iotlb->target_as);
++
+         error_report("Wrong target AS \"%s\", only system memory is allowed",
+-                     iotlb->target_as->name ? iotlb->target_as->name : "none");
++                     path);
+         return;
+     }
+     RCU_READ_LOCK_GUARD();
 
 -- 
 2.51.0
