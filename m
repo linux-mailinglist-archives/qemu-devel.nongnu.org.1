@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0722B80652
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB34DB8018B
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 16:40:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyrss-0002kV-Ev; Wed, 17 Sep 2025 09:07:43 -0400
+	id 1uyrkT-0008OA-I3; Wed, 17 Sep 2025 08:59:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyroi-00052A-Ub; Wed, 17 Sep 2025 09:03:30 -0400
+ id 1uyrk4-00083q-Uq; Wed, 17 Sep 2025 08:58:36 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrog-0005ud-VX; Wed, 17 Sep 2025 09:03:24 -0400
+ id 1uyrk3-00054V-2w; Wed, 17 Sep 2025 08:58:36 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN75008967
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN76008967
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 21:56:51 +0900 (JST)
+ Wed, 17 Sep 2025 21:56:52 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=apJU/xEOhl+u20xNh0DgmznSGgywxoUvUFTbMIW9Ze8=; 
+DKIM-Signature: a=rsa-sha256; bh=7FgjsptE3YS3i6VK0ESKyy8+p9l4cjkMo+wmMtf5k7E=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1758113812; v=1;
- b=awFy0Dt7+ut7jGmxNZbyxz0TK7jmFiME4eor1MaNNhpa7g/8SOhmzMVM7L8aeMxP
- Gq3uCxvYJrDWJywV/ZFwlGgATLB1lTkSglO2o3HQpUcvYxJTd6eXjrArZXYL+2J5
- GQdON7vnVAZGEblgZ3LHio9IJiljkJ20Js46DJj+Y5C0HRawGmu7AQnSRCxe/ZUL
- U9RcWeSkSuRSjdQjDRfTNcmLPTExlSQNPE8pJJEbgy5Hk13I7mxFgHwiMUUtUDpg
- iq3wiEIKX+kiCPfZoNfF+NUUQp3+YO9Xxh8+2GNzuW4YuPbOFsmtldO0kCP2rbj9
- eZ8I2JCFqVXpGzCDqQ5lVg==
+ s=rs20250326; t=1758113813; v=1;
+ b=cyEwAgpDa+aZPzULAdFt7VBFZFqQFr1b9V18sdfhr4ZwCyw8YlRIQuffLcP1eGGI
+ T6A4P+gjm+Pbb8t53dxHuCndk86FGT74YKQdqZTBo9S9ZT2dBKRwFvrsAn0iaeh0
+ 1X5p+AnLdGg7Bcm/RBYz4fzuhLEz0mJ6SCADt1eptqY2M4Uce1kCI86GKg2TUYaM
+ Mh15+4+1+udKf/163Vp4HnScyy6CY/1pB7HwwFAPicW5qb2aFgEOa6doRXRlMWE6
+ MZfUeamNIjbomMcQ+10BMCpOqX9DkN2+Cqay56Gu7StrcIs7P/xpeBR0xB/rar1+
+ cgHkJZ+RH/LJpcTa6lrCWg==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:37 +0900
-Subject: [PATCH 25/35] hw/sparc: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:38 +0900
+Subject: [PATCH 26/35] hw/sparc64: QOM-ify AddressSpace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-25-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-26-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -134,23 +134,23 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/sparc/sun4m_iommu.c | 3 +--
+ hw/sparc64/sun4u_iommu.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/sparc/sun4m_iommu.c b/hw/sparc/sun4m_iommu.c
-index 7b8d78273b97..d1c18f800170 100644
---- a/hw/sparc/sun4m_iommu.c
-+++ b/hw/sparc/sun4m_iommu.c
-@@ -359,8 +359,7 @@ static void iommu_init(Object *obj)
+diff --git a/hw/sparc64/sun4u_iommu.c b/hw/sparc64/sun4u_iommu.c
+index 0a5703044e7a..72ccf293b46e 100644
+--- a/hw/sparc64/sun4u_iommu.c
++++ b/hw/sparc64/sun4u_iommu.c
+@@ -298,8 +298,7 @@ static void iommu_init(Object *obj)
      memory_region_init_iommu(&s->iommu, sizeof(s->iommu),
-                              TYPE_SUN4M_IOMMU_MEMORY_REGION, OBJECT(dev),
-                              "iommu-sun4m", UINT64_MAX);
+                              TYPE_SUN4U_IOMMU_MEMORY_REGION, OBJECT(s),
+                              "iommu-sun4u", UINT64_MAX);
 -    address_space_init(&s->iommu_as, NULL, MEMORY_REGION(&s->iommu),
 -                       "iommu-as");
-+    address_space_init(&s->iommu_as, OBJECT(s), MEMORY_REGION(&s->iommu), "as");
++    address_space_init(&s->iommu_as, obj, MEMORY_REGION(&s->iommu), "as");
  
-     sysbus_init_irq(dev, &s->irq);
- 
+     memory_region_init_io(&s->iomem, obj, &iommu_mem_ops, s, "iommu",
+                           IOMMU_NREGS * sizeof(uint64_t));
 
 -- 
 2.51.0
