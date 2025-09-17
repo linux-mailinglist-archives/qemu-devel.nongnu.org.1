@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A033B80BEA
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4003B805CE
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:06:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyrkM-0008FP-GJ; Wed, 17 Sep 2025 08:58:54 -0400
+	id 1uyrkA-000896-07; Wed, 17 Sep 2025 08:58:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrk2-00080l-Pn; Wed, 17 Sep 2025 08:58:34 -0400
+ id 1uyrk1-0007zY-Nj; Wed, 17 Sep 2025 08:58:33 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrjw-00051x-Qq; Wed, 17 Sep 2025 08:58:34 -0400
+ id 1uyrjw-000522-RI; Wed, 17 Sep 2025 08:58:33 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN72008967
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN73008967
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 21:56:49 +0900 (JST)
+ Wed, 17 Sep 2025 21:56:50 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=IS0Tljii9BUeTawhiYrgJzEedgytOqOQnDBHONON+jo=; 
+DKIM-Signature: a=rsa-sha256; bh=+indtpSimGXjSyGA1ZwrYrcaNl1E43SnA4RqaC0WcIE=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
  s=rs20250326; t=1758113810; v=1;
- b=g7mxblnCLeiiBLEETSS3OMb9IBlQ+4YOPgXVYl1zODnt2zyZMgW5VmrIGdwLS5OZ
- j5RLplNXlGHlgKKJjnf32OxeH7j3j+Ga3rwqpDHljTWZPhZ7hAM1hu6x/GfwlFzR
- IWGhkCORcMI5ozLVpZkQnRRmwzSuXEyt7yX7aAZ2bW3MrfMG9nFI8HSibmUMEezf
- yXcpDqyqCyrpYA9e3pHDtu3NjYlzuAew3kSTEvH3eM6uPSvxh6+OaGxJhNrauI5y
- TAaQ+bqEvcwoHtYA5tuDuF8x2uwrW5m84xknqXSOb38wl3m2ZMZBRQNwpR8dOCL2
- jRaeOOnYE0BoeD6vVrSAPA==
+ b=q3/5EIvZDEGpGLvWUkHGEi1Hx6CGIAWDn7m64ZrZURQ0m4ILX/PaeYoT89nX9seo
+ 4IV6gVYk0SNPdVDSsx8nFkL+T/T90q13WlK04/f8GRDEc+JXHmNSyUiAmCU4mI8e
+ jlqID+1gyw2Jd+mRSXm5DdNCDnE4uabpk49A7iw1LFRfMSdw3WBksgE2fd4neh+6
+ RaGX1BBLg8Ow7WBE3BjXKqfUY46i6xjgbKWAimuyX//fjsq4XlzElaVVMsl2tnXK
+ IwWrKTNuj9hmh5l/+cNgYpXZ8YEWh3kNsCAepaHfD7qTv/cQwGD3V1HOR4Zadc+6
+ OofzAkxh8r9MjJYtyoY/gQ==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:34 +0900
-Subject: [PATCH 22/35] hw/s390x: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:35 +0900
+Subject: [PATCH 23/35] hw/scsi: QOM-ify AddressSpace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-22-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-23-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -134,42 +134,33 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/s390x/s390-pci-bus.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ hw/scsi/lsi53c895a.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
-index 67fce1c133b0..3febf9df968f 100644
---- a/hw/s390x/s390-pci-bus.c
-+++ b/hw/s390x/s390-pci-bus.c
-@@ -623,18 +623,13 @@ static S390PCIIOMMU *s390_pci_get_iommu(S390pciState *s, PCIBus *bus,
-                                         pci_bus_num(bus),
-                                         PCI_SLOT(devfn),
-                                         PCI_FUNC(devfn));
--        char *as_name = g_strdup_printf("iommu-pci-%02x:%02x.%01x",
--                                        pci_bus_num(bus),
--                                        PCI_SLOT(devfn),
--                                        PCI_FUNC(devfn));
-         memory_region_init(&iommu->mr, OBJECT(iommu), mr_name, UINT64_MAX);
--        address_space_init(&iommu->as, NULL, &iommu->mr, as_name);
-+        address_space_init(&iommu->as, OBJECT(iommu), &iommu->mr, "as");
-         iommu->iotlb = g_hash_table_new_full(g_int64_hash, g_int64_equal,
-                                              NULL, g_free);
-         table->iommu[PCI_SLOT(devfn)] = iommu;
+diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
+index ee21b3c0d08a..b577f5ba2282 100644
+--- a/hw/scsi/lsi53c895a.c
++++ b/hw/scsi/lsi53c895a.c
+@@ -2356,8 +2356,8 @@ static void lsi_scsi_realize(PCIDevice *dev, Error **errp)
+     s->ram_io.disable_reentrancy_guard = true;
+     s->mmio_io.disable_reentrancy_guard = true;
  
-         g_free(mr_name);
--        g_free(as_name);
-     }
+-    address_space_init(&s->pci_io_as, NULL, pci_address_space_io(dev),
+-                       "lsi-pci-io");
++    address_space_init(&s->pci_io_as, OBJECT(s), pci_address_space_io(dev),
++                       "io-as");
+     qdev_init_gpio_out(d, &s->ext_irq, 1);
  
-     return iommu;
-@@ -785,7 +780,7 @@ static void s390_pci_iommu_free(S390pciState *s, PCIBus *bus, int32_t devfn)
-      * Remove the listeners now before destroying the address space.
-      */
-     address_space_remove_listeners(&iommu->as);
--    address_space_destroy(&iommu->as);
-+    object_unparent(OBJECT(&iommu->as));
-     object_unparent(OBJECT(&iommu->mr));
-     object_unparent(OBJECT(iommu));
-     object_unref(OBJECT(iommu));
+     pci_register_bar(dev, 0, PCI_BASE_ADDRESS_SPACE_IO, &s->io_io);
+@@ -2372,7 +2372,7 @@ static void lsi_scsi_exit(PCIDevice *dev)
+ {
+     LSIState *s = LSI53C895A(dev);
+ 
+-    address_space_destroy(&s->pci_io_as);
++    object_unparent(OBJECT(&s->pci_io_as));
+     timer_free(s->scripts_timer);
+ }
+ 
 
 -- 
 2.51.0
