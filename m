@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC48FB80BD5
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A92B8091E
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:31:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyqiL-0003FF-Ej; Wed, 17 Sep 2025 07:52:45 -0400
+	id 1uyqjH-00054z-5z; Wed, 17 Sep 2025 07:53:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqhy-00035A-I5
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqhy-00035C-Nl
  for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqht-0003jh-FS
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:20 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqhw-0003kh-BH
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758109932;
+ s=mimecast20190719; t=1758109938;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=q0VhAp6VHGylwcrKaI59tCKnj8YVWze8PKh4yroPvq4=;
- b=LBo5Rr3WIwhlvX+09wZCZuYbPhepsyGgv3WTBF58veMmahzXJLzHeM1H4FxPKWzid4qlX5
- XYhMvfi4jsH9bxrjZrXx6UmJXedKGKFnq9Zix5ozXwXYkbc0+mY+ddwj6qX6d+LYhWDijc
- LNf1TiFBc1pvDBnujCcSXPaXuTpfMe8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=DQlc2J4S+Y7sWvNha6HkIII0V/76lM4iGtQgm82KWy8=;
+ b=Fb33eiFL54aHuKChdrf2yxPu0NCn4lsJQxZxpMk577wjF3XHu+XB3JKobeFpeQwtFWB287
+ PxAbzATm4bgZG1cYtl/rukg1SK2TbSYXdjQR+OieP71pOLtigkJVVGuiofdO8L59BYJPca
+ Xkdwe2VgXBaLhbbm0HAJg8QBwVKzeo4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-260-F3YjbYhhPquTaySaPX6GeQ-1; Wed,
- 17 Sep 2025 07:52:11 -0400
-X-MC-Unique: F3YjbYhhPquTaySaPX6GeQ-1
-X-Mimecast-MFC-AGG-ID: F3YjbYhhPquTaySaPX6GeQ_1758109930
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-542--WSoovDmNo-nyJpXeNQwOw-1; Wed,
+ 17 Sep 2025 07:52:15 -0400
+X-MC-Unique: -WSoovDmNo-nyJpXeNQwOw-1
+X-Mimecast-MFC-AGG-ID: -WSoovDmNo-nyJpXeNQwOw_1758109934
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 817CB1800451; Wed, 17 Sep 2025 11:52:10 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C12E219560B1; Wed, 17 Sep 2025 11:52:13 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 03AD130001A4; Wed, 17 Sep 2025 11:52:09 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 737D51800446; Wed, 17 Sep 2025 11:52:13 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 43B4F21E6773; Wed, 17 Sep 2025 13:52:07 +0200 (CEST)
+ id 47EEE21E6774; Wed, 17 Sep 2025 13:52:07 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: odaki@rsg.ci.i.u-tokyo.ac.jp, marcandre.lureau@redhat.com,
- berrange@redhat.com, Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH v2 04/12] migration/cpr: Clean up error reporting in
- cpr_resave_fd()
-Date: Wed, 17 Sep 2025 13:51:59 +0200
-Message-ID: <20250917115207.1730186-5-armbru@redhat.com>
+ berrange@redhat.com, Jagannathan Raman <jag.raman@oracle.com>
+Subject: [PATCH v2 05/12] hw/remote/vfio-user: Clean up error reporting
+Date: Wed, 17 Sep 2025 13:52:00 +0200
+Message-ID: <20250917115207.1730186-6-armbru@redhat.com>
 In-Reply-To: <20250917115207.1730186-1-armbru@redhat.com>
 References: <20250917115207.1730186-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,48 +82,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qapi/error.h advises:
+VFU_OBJECT_ERROR() reports the error with error_setg(&error_abort,
+...) when auto-shutdown is enabled, else with error_report().
 
- * Please don't error_setg(&error_fatal, ...), use error_report() and
- * exit(), because that's more obvious.
+Issues:
 
-Do that, and replace exit() by g_assert_not_reached(), since this is
-actually a programming error.
+1. The error is serious enough to warrant aborting the process when
+auto-shutdown is enabled, yet harmless enough to permit carrying on
+when it's disabled.  This makes no sense to me.
 
-Cc: Steve Sistare <steven.sistare@oracle.com>
+2. Like assert(), &error_abort is strictly for programming errors.  Is
+this one?  Or should we exit(1) instead?
+
+3. qapi/error.h advises "don't error_setg(&error_abort, ...), use
+assert()."
+
+This patch addresses just 3.
+
+Cc: Jagannathan Raman <jag.raman@oracle.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- migration/cpr.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ hw/remote/vfio-user-obj.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/migration/cpr.c b/migration/cpr.c
-index 42ad0b0d50..9848a21ea6 100644
---- a/migration/cpr.c
-+++ b/migration/cpr.c
-@@ -7,6 +7,7 @@
+diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
+index ea6165ebdc..eb96982a3a 100644
+--- a/hw/remote/vfio-user-obj.c
++++ b/hw/remote/vfio-user-obj.c
+@@ -75,12 +75,9 @@ OBJECT_DECLARE_TYPE(VfuObject, VfuObjectClass, VFU_OBJECT)
+  */
+ #define VFU_OBJECT_ERROR(o, fmt, ...)                                     \
+     {                                                                     \
+-        if (vfu_object_auto_shutdown()) {                                 \
+-            error_setg(&error_abort, (fmt), ## __VA_ARGS__);              \
+-        } else {                                                          \
+-            error_report((fmt), ## __VA_ARGS__);                          \
+-        }                                                                 \
+-    }                                                                     \
++        error_report((fmt), ## __VA_ARGS__);                              \
++        assert(!vfu_object_auto_shutdown());                              \
++    }
  
- #include "qemu/osdep.h"
- #include "qapi/error.h"
-+#include "qemu/error-report.h"
- #include "hw/vfio/vfio-device.h"
- #include "migration/cpr.h"
- #include "migration/misc.h"
-@@ -100,10 +101,10 @@ void cpr_resave_fd(const char *name, int id, int fd)
-     if (old_fd < 0) {
-         cpr_save_fd(name, id, fd);
-     } else if (old_fd != fd) {
--        error_setg(&error_fatal,
--                   "internal error: cpr fd '%s' id %d value %d "
--                   "already saved with a different value %d",
--                   name, id, fd, old_fd);
-+        error_report("internal error: cpr fd '%s' id %d value %d "
-+                     "already saved with a different value %d",
-+                     name, id, fd, old_fd);
-+        g_assert_not_reached();
-     }
- }
- 
+ struct VfuObjectClass {
+     ObjectClass parent_class;
 -- 
 2.49.0
 
