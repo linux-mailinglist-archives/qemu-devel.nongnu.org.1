@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C2FB80B45
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A033B80BEA
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:51:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyrsW-0001k2-SN; Wed, 17 Sep 2025 09:07:20 -0400
+	id 1uyrkM-0008FP-GJ; Wed, 17 Sep 2025 08:58:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyroi-000529-To; Wed, 17 Sep 2025 09:03:30 -0400
+ id 1uyrk2-00080l-Pn; Wed, 17 Sep 2025 08:58:34 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrof-0005ub-LQ; Wed, 17 Sep 2025 09:03:24 -0400
+ id 1uyrjw-00051x-Qq; Wed, 17 Sep 2025 08:58:34 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN71008967
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN72008967
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 21:56:48 +0900 (JST)
+ Wed, 17 Sep 2025 21:56:49 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=GOQKVqefPAJmBrPvNMsFbTKEyGldKAyJfG+hCf+5Ixc=; 
+DKIM-Signature: a=rsa-sha256; bh=IS0Tljii9BUeTawhiYrgJzEedgytOqOQnDBHONON+jo=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1758113809; v=1;
- b=e1Ob/piSj7cxEtTEojTvIjLvvXI1f4M9y8dhT54XWq2NNAJK9e2AYRl2yqkukXIJ
- WNBaTiUjkp5ztkR7CHz3BNA978TDmZeQy5pc3yl62Vzt/0Js1cT0LcXU4FGcwqRg
- dRxW9VdL6bphyt4odv6HmfTX2+QpMhY89N+CyVoZn2mvzcV3M/keLZcktZ+IdaHU
- MJwsw33Awyb1v5g3OtTceF/ilc4az8tU3oVjdJYtf3Yige5Yi+G9ohT4ViEiNIUW
- Fal/pEC7t79R1ra38eeCEkawlu+TqatE52yndj1zYLalrJPWSKG6MimIXorWBWTv
- T6W+nb8n8IZMLJpu20ftXg==
+ s=rs20250326; t=1758113810; v=1;
+ b=g7mxblnCLeiiBLEETSS3OMb9IBlQ+4YOPgXVYl1zODnt2zyZMgW5VmrIGdwLS5OZ
+ j5RLplNXlGHlgKKJjnf32OxeH7j3j+Ga3rwqpDHljTWZPhZ7hAM1hu6x/GfwlFzR
+ IWGhkCORcMI5ozLVpZkQnRRmwzSuXEyt7yX7aAZ2bW3MrfMG9nFI8HSibmUMEezf
+ yXcpDqyqCyrpYA9e3pHDtu3NjYlzuAew3kSTEvH3eM6uPSvxh6+OaGxJhNrauI5y
+ TAaQ+bqEvcwoHtYA5tuDuF8x2uwrW5m84xknqXSOb38wl3m2ZMZBRQNwpR8dOCL2
+ jRaeOOnYE0BoeD6vVrSAPA==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:33 +0900
-Subject: [PATCH 21/35] hw/riscv: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:34 +0900
+Subject: [PATCH 22/35] hw/s390x: QOM-ify AddressSpace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-21-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-22-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -134,44 +134,42 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/riscv/riscv-iommu.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hw/s390x/s390-pci-bus.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/hw/riscv/riscv-iommu.c b/hw/riscv/riscv-iommu.c
-index aed84d87a823..6e2962f8331b 100644
---- a/hw/riscv/riscv-iommu.c
-+++ b/hw/riscv/riscv-iommu.c
-@@ -1221,8 +1221,8 @@ static AddressSpace *riscv_iommu_space(RISCVIOMMUState *s, uint32_t devid)
-         memory_region_init_iommu(&as->iova_mr, sizeof(as->iova_mr),
-             TYPE_RISCV_IOMMU_MEMORY_REGION,
-             OBJECT(as), "riscv_iommu", UINT64_MAX);
--        address_space_init(&as->iova_as, NULL, MEMORY_REGION(&as->iova_mr),
--                           name);
-+        address_space_init(&as->iova_as, OBJECT(s), MEMORY_REGION(&as->iova_mr),
-+                           "iova-as");
+diff --git a/hw/s390x/s390-pci-bus.c b/hw/s390x/s390-pci-bus.c
+index 67fce1c133b0..3febf9df968f 100644
+--- a/hw/s390x/s390-pci-bus.c
++++ b/hw/s390x/s390-pci-bus.c
+@@ -623,18 +623,13 @@ static S390PCIIOMMU *s390_pci_get_iommu(S390pciState *s, PCIBus *bus,
+                                         pci_bus_num(bus),
+                                         PCI_SLOT(devfn),
+                                         PCI_FUNC(devfn));
+-        char *as_name = g_strdup_printf("iommu-pci-%02x:%02x.%01x",
+-                                        pci_bus_num(bus),
+-                                        PCI_SLOT(devfn),
+-                                        PCI_FUNC(devfn));
+         memory_region_init(&iommu->mr, OBJECT(iommu), mr_name, UINT64_MAX);
+-        address_space_init(&iommu->as, NULL, &iommu->mr, as_name);
++        address_space_init(&iommu->as, OBJECT(iommu), &iommu->mr, "as");
+         iommu->iotlb = g_hash_table_new_full(g_int64_hash, g_int64_equal,
+                                              NULL, g_free);
+         table->iommu[PCI_SLOT(devfn)] = iommu;
  
-         QLIST_INSERT_HEAD(&s->spaces, as, list);
+         g_free(mr_name);
+-        g_free(as_name);
+     }
  
-@@ -2427,8 +2427,8 @@ static void riscv_iommu_realize(DeviceState *dev, Error **errp)
-     /* Memory region for downstream access, if specified. */
-     if (s->target_mr) {
-         s->target_as = g_new0(AddressSpace, 1);
--        address_space_init(s->target_as, NULL, s->target_mr,
--            "riscv-iommu-downstream");
-+        address_space_init(s->target_as, OBJECT(s), s->target_mr,
-+                           "downstream-as");
-     } else {
-         /* Fallback to global system memory. */
-         s->target_as = &address_space_memory;
-@@ -2437,7 +2437,7 @@ static void riscv_iommu_realize(DeviceState *dev, Error **errp)
-     /* Memory region for untranslated MRIF/MSI writes */
-     memory_region_init_io(&s->trap_mr, OBJECT(dev), &riscv_iommu_trap_ops, s,
-             "riscv-iommu-trap", ~0ULL);
--    address_space_init(&s->trap_as, NULL, &s->trap_mr, "riscv-iommu-trap-as");
-+    address_space_init(&s->trap_as, OBJECT(s), &s->trap_mr, "trap-as");
- 
-     if (s->cap & RISCV_IOMMU_CAP_HPM) {
-         s->hpm_timer =
+     return iommu;
+@@ -785,7 +780,7 @@ static void s390_pci_iommu_free(S390pciState *s, PCIBus *bus, int32_t devfn)
+      * Remove the listeners now before destroying the address space.
+      */
+     address_space_remove_listeners(&iommu->as);
+-    address_space_destroy(&iommu->as);
++    object_unparent(OBJECT(&iommu->as));
+     object_unparent(OBJECT(&iommu->mr));
+     object_unparent(OBJECT(iommu));
+     object_unref(OBJECT(iommu));
 
 -- 
 2.51.0
