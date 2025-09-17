@@ -2,60 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7BFB801FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 16:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA669B807E5
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:23:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyqix-0004b8-FW; Wed, 17 Sep 2025 07:53:23 -0400
+	id 1uyqiy-0004gl-Hf; Wed, 17 Sep 2025 07:53:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqi2-00035g-PA
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:31 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqhy-000359-PO
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqht-0003jj-G1
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:26 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqhv-0003kA-Nt
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758109933;
+ s=mimecast20190719; t=1758109935;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=CKlffNnKcnVtITFogyToj1SNgcC8+HgQy+s6SZ654FU=;
- b=QY6ufKDy+iXhCZCehXic7JWJWuiXjLKuLpvQWJzMxOvmbpBe769aq2huKyh0nuj105diHf
- HUfogQkxaRg8iFVcaCxn10g89CNAsQ4v8f/xGIai3zYKWTd22AbxZ+R/3v2aAAU0B+t7op
- lDsf9YBGYDcsWHbKB6Idwqo+ccNrKBI=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Y3HMLCacnb+v7Wzq9HTZD6Gukh/9NburV3fnXhNL514=;
+ b=Tj/zfSMb2KX69y+FrSJ7ezI6wo6eehcDu4/3Oi9rxYaWOy0mRo0UrqNvO1vrSq+IsHwFPj
+ DX+hSfub0I2RHJIq2t3epzlRh/hpQtC5ljEdL1zR81myKsojuX//w+do5ZHelA8cGVfuSK
+ KysZ9TLtjuscXwRu6cuK5t8Uw+Q+how=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-672-BvaQoch_M_Swhk1v0JdOoQ-1; Wed,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-672-DQxYahe1O1awA9yEU4tlXw-1; Wed,
  17 Sep 2025 07:52:11 -0400
-X-MC-Unique: BvaQoch_M_Swhk1v0JdOoQ-1
-X-Mimecast-MFC-AGG-ID: BvaQoch_M_Swhk1v0JdOoQ_1758109931
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+X-MC-Unique: DQxYahe1O1awA9yEU4tlXw-1
+X-Mimecast-MFC-AGG-ID: DQxYahe1O1awA9yEU4tlXw_1758109931
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ACC311800291; Wed, 17 Sep 2025 11:52:10 +0000 (UTC)
+ id BB706180057D; Wed, 17 Sep 2025 11:52:10 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 28CCE195608E; Wed, 17 Sep 2025 11:52:10 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 013181800447; Wed, 17 Sep 2025 11:52:09 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 356CB21E6A27; Wed, 17 Sep 2025 13:52:07 +0200 (CEST)
+ id 3774E21E6924; Wed, 17 Sep 2025 13:52:07 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: odaki@rsg.ci.i.u-tokyo.ac.jp, marcandre.lureau@redhat.com,
- berrange@redhat.com
-Subject: [PATCH v2 00/12] Error reporting cleanup, a fix,
- and &error_warn removal
-Date: Wed, 17 Sep 2025 13:51:55 +0200
-Message-ID: <20250917115207.1730186-1-armbru@redhat.com>
+ berrange@redhat.com,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v2 01/12] monitor: Clean up HMP gdbserver error reporting
+Date: Wed, 17 Sep 2025 13:51:56 +0200
+Message-ID: <20250917115207.1730186-2-armbru@redhat.com>
+In-Reply-To: <20250917115207.1730186-1-armbru@redhat.com>
+References: <20250917115207.1730186-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -81,81 +84,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From qapi/error.h:
+HMP command gdbserver used to emit two error messages for certain
+errors.  For instance, with -M none:
 
- * Please don't error_setg(&error_fatal, ...), use error_report() and
- * exit(), because that's more obvious.
- * Likewise, don't error_setg(&error_abort, ...), use assert().
+    (qemu) gdbserver
+    gdbstub: meaningless to attach gdb to a machine without any CPU.
+    Could not open gdbserver on device 'tcp::1234'
 
-Not mentioned, but just as undesirable: error_setg(&error_warn, ...).
+The first message is the specific error, and the second one a generic
+additional message that feels superfluous to me.
 
-This series eliminates such uses, and gets rid of &error_warn.
-&error_warn has multiple issues and little use.  PATCH 12 has full
-rationale.
+Commit c0e6b8b798b (system: propagate Error to gdbserver_start (and
+other device setups)) turned the first message into a warning:
 
-A note on warnings: we don't use warnings much, and when we use them,
-they're often pretty bad.  See my memo "Abuse of warnings for
-unhandled errors and programming errors"
-Message-ID: <87h5yijh3b.fsf@pond.sub.org>
-https://lore.kernel.org/qemu-devel/87h5yijh3b.fsf@pond.sub.org/
+    warning: gdbstub: meaningless to attach gdb to a machine without any CPU.
+    Could not open gdbserver on device 'tcp::1234'
 
-v2:
-* PATCH 03: Mention change of cxl_fmws_link() return value in commit
-  message [Jonathan]
-* PATCH 04: Change exit(1) to g_assert_not_reached(), because it's a
-  programming error.
-* PATCH 06+07: Replace questions in commit message by answers from
-  review.
-* PATCH 06: Fix a format string
-* PATCH 08: Keep warnings instead of reverting to silence [Daniel]
-* PATCH 12: Adjusted for replaced PATCH 08
+This is arguably worse.
 
-Issues raised in review I decided not to address in this series:
-* PATCH 03: messages could be improved further, in particular the
-  "gdbstub: " prefix could be dropped
-* ebpf_rss_load() can return false without setting an error
-* Capture the discussion on how to deal with undhandled errors in
-  cover letter and/or commit messages.
+hmp_gdbserver() passes &error_warn to gdbserver_start(), so that
+failure gets reported as warning, and then additionally emits the
+generic error on failure.  This is a misuse of &error_warn.
 
-The first two could be done on top.
+Instead, receive the error in &err and report it, as usual.  With
+this, gdbserver reports just the error:
 
-Markus Armbruster (12):
-  monitor: Clean up HMP gdbserver error reporting
-  tcg: Fix error reporting on mprotect() failure in  tcg_region_init()
-  hw/cxl: Convert cxl_fmws_link() to Error
-  migration/cpr: Clean up error reporting in cpr_resave_fd()
-  hw/remote/vfio-user: Clean up error reporting
-  net/slirp: Clean up error reporting
-  ui/spice-core: Clean up error reporting
-  util/oslib-win32: Do not treat null @errp as &error_warn
-  ui/pixman: Consistent error handling in qemu_pixman_shareable_free()
-  ui/dbus: Clean up dbus_update_gl_cb() error checking
-  ui/dbus: Consistent handling of texture mutex failure
-  error: Kill @error_warn
+    gdbstub: meaningless to attach gdb to a machine without any CPU.
 
- include/exec/gdbstub.h         |  3 ---
- include/qapi/error.h           |  6 ------
- include/system/os-win32.h      |  5 ++++-
- hw/cxl/cxl-host.c              |  7 ++++---
- hw/display/virtio-gpu.c        |  8 ++++++--
- hw/net/virtio-net.c            |  8 +++++++-
- hw/remote/vfio-user-obj.c      |  9 +++------
- io/channel-socket.c            |  4 ++--
- io/channel-watch.c             |  6 +++---
- migration/cpr.c                |  9 +++++----
- monitor/hmp-cmds.c             |  7 ++++---
- net/slirp.c                    |  6 ++++--
- tcg/region.c                   |  8 ++++++--
- tests/unit/test-error-report.c | 17 -----------------
- ui/dbus-listener.c             | 22 +++++++++++++++-------
- ui/gtk.c                       |  6 +++++-
- ui/qemu-pixman.c               |  5 ++++-
- ui/spice-core.c                |  3 ++-
- util/aio-win32.c               |  2 +-
- util/error.c                   |  5 +----
- util/oslib-win32.c             | 26 +++++++++++++++++++++-----
- 21 files changed, 97 insertions(+), 75 deletions(-)
+Cc: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ include/exec/gdbstub.h | 3 ---
+ monitor/hmp-cmds.c     | 7 ++++---
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index a16c0051ce..bd7182c4d3 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -55,9 +55,6 @@ void gdb_unregister_coprocessor_all(CPUState *cpu);
+  * system emulation you can use a full chardev spec for your gdbserver
+  * port.
+  *
+- * The error handle should be either &error_fatal (for start-up) or
+- * &error_warn (for QMP/HMP initiated sessions).
+- *
+  * Returns true when server successfully started.
+  */
+ bool gdbserver_start(const char *port_or_device, Error **errp);
+diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
+index 74a0f56566..33a88ce205 100644
+--- a/monitor/hmp-cmds.c
++++ b/monitor/hmp-cmds.c
+@@ -280,14 +280,15 @@ void hmp_log(Monitor *mon, const QDict *qdict)
+ 
+ void hmp_gdbserver(Monitor *mon, const QDict *qdict)
+ {
++    Error *err = NULL;
+     const char *device = qdict_get_try_str(qdict, "device");
++
+     if (!device) {
+         device = "tcp::" DEFAULT_GDBSTUB_PORT;
+     }
+ 
+-    if (!gdbserver_start(device, &error_warn)) {
+-        monitor_printf(mon, "Could not open gdbserver on device '%s'\n",
+-                       device);
++    if (!gdbserver_start(device, &err)) {
++        error_report_err(err);
+     } else if (strcmp(device, "none") == 0) {
+         monitor_printf(mon, "Disabled gdbserver\n");
+     } else {
 -- 
 2.49.0
 
