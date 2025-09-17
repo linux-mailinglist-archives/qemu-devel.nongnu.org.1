@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F5BB80FBE
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 18:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C6FB80FE5
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 18:29:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyv0Y-0004Xg-OU; Wed, 17 Sep 2025 12:27:50 -0400
+	id 1uyv1c-0005Eb-QL; Wed, 17 Sep 2025 12:28:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uyv0R-0004X6-Vb
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 12:27:43 -0400
+ id 1uyv1X-0005Dw-AJ
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 12:28:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uyv0Q-0002HC-Ax
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 12:27:43 -0400
+ id 1uyv1V-0002M4-9W
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 12:28:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758126461;
+ s=mimecast20190719; t=1758126528;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IXOx+jvVJd3lNAzICcdpQlTQ2913UvUrv5ED+R6MTL0=;
- b=EMD78PBVAGexFD6ErS6dro535hkkU9+x20MruK9zHhSeXVHJ0a5XMcqNb+WfDiDt5jl7+J
- UDDJLnTY1vz8tNhuiRweW1T13yU913kkky3yJo/nx2tnqJ5dY4p9rfmz3Y/3aDIyZzPETI
- 0qaDBg1Cm6pOxbbcXGxoON4163Y8eaM=
+ bh=ZDezycxulpvqbuXIFVRvukz4G+S7KwYiBf/Z4wmzbGY=;
+ b=h8S0G0kW/zljDBAwgfYF9a+mkZL5R/OJNCZRfpCSslztyMtgzelcjcYmhQLqxjuBS/tXd3
+ 2fbKsnCtlzMeiE4pslOvDKAYaA1p39k85jJ6aX2KqUqJzgGB4PPH6wtJlwynXjFoIcrIZQ
+ Nh0yZfbi50xNJSvNk5Ml+nDnkHX7iqo=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-SZbV2YjlNuOnI3UjfZyBFQ-1; Wed,
- 17 Sep 2025 12:27:39 -0400
-X-MC-Unique: SZbV2YjlNuOnI3UjfZyBFQ-1
-X-Mimecast-MFC-AGG-ID: SZbV2YjlNuOnI3UjfZyBFQ_1758126455
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-41-oHHjpyQePCWNg5nvpOTFhA-1; Wed,
+ 17 Sep 2025 12:28:46 -0400
+X-MC-Unique: oHHjpyQePCWNg5nvpOTFhA-1
+X-Mimecast-MFC-AGG-ID: oHHjpyQePCWNg5nvpOTFhA_1758126521
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D16311800284; Wed, 17 Sep 2025 16:27:33 +0000 (UTC)
+ id E449D1800578; Wed, 17 Sep 2025 16:28:39 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.195])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1FFA51800446; Wed, 17 Sep 2025 16:27:04 +0000 (UTC)
-Date: Wed, 17 Sep 2025 17:26:59 +0100
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7CCE819560B1; Wed, 17 Sep 2025 16:28:14 +0000 (UTC)
+Date: Wed, 17 Sep 2025 17:28:09 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
@@ -87,18 +87,18 @@ Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
  Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v3 3/7] hw/core/register: Do not unparent in
+Subject: Re: [PATCH v3 4/7] hv-balloon: hw/core/register: Do not unparent in
  instance_finalize()
-Message-ID: <aMrhU7-Z-mKUUVe3@redhat.com>
+Message-ID: <aMrhmYmZvRapJREE@redhat.com>
 References: <20250917-use-v3-0-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
- <20250917-use-v3-3-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
+ <20250917-use-v3-4-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250917-use-v3-3-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20250917-use-v3-4-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -125,7 +125,7 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 17, 2025 at 07:13:28PM +0900, Akihiko Odaki wrote:
+On Wed, Sep 17, 2025 at 07:13:29PM +0900, Akihiko Odaki wrote:
 > Children are automatically unparented so manually unparenting is
 > unnecessary.
 > 
@@ -136,9 +136,8 @@ On Wed, Sep 17, 2025 at 07:13:28PM +0900, Akihiko Odaki wrote:
 > 
 > Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 > ---
->  hw/core/register.c | 1 -
->  1 file changed, 1 deletion(-)
->
+>  hw/hyperv/hv-balloon.c | 12 +-----------
+>  1 file changed, 1 insertion(+), 11 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
