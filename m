@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4EA5B808D2
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90086B80C0E
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:52:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyqjJ-0005HV-GL; Wed, 17 Sep 2025 07:53:46 -0400
+	id 1uyqjI-0005Cp-SI; Wed, 17 Sep 2025 07:53:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqhz-00035H-BG
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqi2-00035e-JI
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqhw-0003ka-BS
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:23 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqhy-0003l9-9m
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758109937;
+ s=mimecast20190719; t=1758109940;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ArHtKM5ju1YLvAQu8dySMzQGDN2LsSt1pwvYRr2h5ss=;
- b=hN4t+fAegUYuiMItGbItpLPvG7cTz+7RJ0kpYtqpLNOpf3qnMFV2yhsVF486nf5zoggMZ6
- yRJjZ44GxEzAXM8O8buF5DS5RHs0j7sLKNhsSR0RdXL247nhqNTVyXzzdlVhPzocEpdntY
- /Q+h/O5Nugs/uhLvjc2Nt64qB7kHWWo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=xC9LOczZKUqz4OC+j5hH68ZHE+u4axLUlzty3xnb2z4=;
+ b=dQZkcF7ptMJyvsTT94vrgaeyFv1c2PfvG6o0HVenHFLbkAHWyym3NDzLrbJ6ZXCpDHW143
+ fyTFdt6o5NReCLFWPva6Lx1v+2Q0mXq6qiqls+NVobqFCdvDrcccgXDeoRoGmmETuixZt4
+ 84pKJfX0q7RLrHGGXWel7Piu3DvwAdQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-335-o5UrNfTzPey9BSGQbfXHeQ-1; Wed,
- 17 Sep 2025 07:52:14 -0400
-X-MC-Unique: o5UrNfTzPey9BSGQbfXHeQ-1
-X-Mimecast-MFC-AGG-ID: o5UrNfTzPey9BSGQbfXHeQ_1758109934
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-316-z5zkgVX_Mg-FByJJ1tFjNQ-1; Wed,
+ 17 Sep 2025 07:52:16 -0400
+X-MC-Unique: z5zkgVX_Mg-FByJJ1tFjNQ-1
+X-Mimecast-MFC-AGG-ID: z5zkgVX_Mg-FByJJ1tFjNQ_1758109933
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D8D0D19560B2; Wed, 17 Sep 2025 11:52:13 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B721919560AE; Wed, 17 Sep 2025 11:52:13 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8F42930001B5; Wed, 17 Sep 2025 11:52:13 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 65E7F1955F19; Wed, 17 Sep 2025 11:52:13 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4BF2121E6775; Wed, 17 Sep 2025 13:52:07 +0200 (CEST)
+ id 504C921E6779; Wed, 17 Sep 2025 13:52:07 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: odaki@rsg.ci.i.u-tokyo.ac.jp, marcandre.lureau@redhat.com,
  berrange@redhat.com
-Subject: [PATCH v2 06/12] net/slirp: Clean up error reporting
-Date: Wed, 17 Sep 2025 13:52:01 +0200
-Message-ID: <20250917115207.1730186-7-armbru@redhat.com>
+Subject: [PATCH v2 07/12] ui/spice-core: Clean up error reporting
+Date: Wed, 17 Sep 2025 13:52:02 +0200
+Message-ID: <20250917115207.1730186-8-armbru@redhat.com>
 In-Reply-To: <20250917115207.1730186-1-armbru@redhat.com>
 References: <20250917115207.1730186-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,47 +83,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-net_slirp_register_poll_sock() and net_slirp_unregister_poll_sock()
-report WSAEventSelect() failure with error_setg(&error_warn, ...).
-error_setg_win32(&error_warn, ...) is undesirable just like
-error_setg(&error_fatal, ...) and error_setg(&error_abort, ...)  are.
-Replace by warn_report().
+watch_add() reports _open_osfhandle() failure with
+error_setg(&error_warn, ...).  error_setg_win32(&error_warn, ...) is
+undesirable just like error_setg(&error_fatal, ...) and
+error_setg(&error_abort, ...) are.  Replace by warn_report().
 
-The failures should probably be errors, but these functions implement
-callbacks that cannot fail, exit(1) would be too harsh, and silent
-failure we don't want.  Thus, warnings.
+The failure should probably be an error, but this function implements
+a callback that doesn't take Error **.  I believe the failure will
+make spice_server_init() fail in qemu_spice_init(), which is treated
+as a fatal error.  The warning here provides more detail than the
+error message there.
 
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- net/slirp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ ui/spice-core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/slirp.c b/net/slirp.c
-index 9657e86a84..62f2684609 100644
---- a/net/slirp.c
-+++ b/net/slirp.c
-@@ -262,7 +262,8 @@ static void net_slirp_register_poll_sock(slirp_os_socket fd, void *opaque)
-     if (WSAEventSelect(fd, event_notifier_get_handle(&ctxt->notifier),
-                        FD_READ | FD_ACCEPT | FD_CLOSE |
-                        FD_CONNECT | FD_WRITE | FD_OOB) != 0) {
--        error_setg_win32(&error_warn, WSAGetLastError(), "failed to WSAEventSelect()");
-+        warn_report("failed to WSAEventSelect(): %s",
-+                    g_win32_error_message(WSAGetLastError()));
-     }
- #endif
- }
-@@ -271,7 +272,8 @@ static void net_slirp_unregister_poll_sock(slirp_os_socket fd, void *opaque)
- {
+diff --git a/ui/spice-core.c b/ui/spice-core.c
+index 5992f9daec..97bdd171cd 100644
+--- a/ui/spice-core.c
++++ b/ui/spice-core.c
+@@ -132,7 +132,8 @@ static SpiceWatch *watch_add(int fd, int event_mask, SpiceWatchFunc func, void *
  #ifdef WIN32
-     if (WSAEventSelect(fd, NULL, 0) != 0) {
--        error_setg_win32(&error_warn, WSAGetLastError(), "failed to WSAEventSelect()");
-+        warn_report("failed to WSAEventSelect(): %s",
+     fd = _open_osfhandle(fd, _O_BINARY);
+     if (fd < 0) {
+-        error_setg_win32(&error_warn, WSAGetLastError(), "Couldn't associate a FD with the SOCKET");
++        warn_report("Couldn't associate a FD with the SOCKET: %s"
 +                    g_win32_error_message(WSAGetLastError()));
+         return NULL;
      }
  #endif
- }
 -- 
 2.49.0
 
