@@ -2,44 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B36B80932
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 598A4B8067F
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:11:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uypEH-0001XL-0m; Wed, 17 Sep 2025 06:17:38 -0400
+	id 1uypDt-00019j-7X; Wed, 17 Sep 2025 06:17:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uypD2-0000m4-H8; Wed, 17 Sep 2025 06:16:28 -0400
+ id 1uypCu-0000bb-Nl; Wed, 17 Sep 2025 06:16:15 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uypD0-0003Lu-CQ; Wed, 17 Sep 2025 06:16:20 -0400
+ id 1uypCk-0003I7-Qc; Wed, 17 Sep 2025 06:16:12 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HAE8sC093528
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HAE8sD093528
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 19:14:23 +0900 (JST)
+ Wed, 17 Sep 2025 19:14:24 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=iR0pDnfR/s67erqtJ5ANa4aW2wGgB9XJZzw7HSfqAKs=; 
+DKIM-Signature: a=rsa-sha256; bh=hrFeIYsdveoSw39gLf38PDAGKQ7lahlpxgxSM3Eq+7Y=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1758104064; v=1;
- b=MxBH9GHNOqphNoMQVv2olt8dlKdOl9TJMNu7YMMgr89UjH08Y9n0qPtjUWRc7iYq
- lo7wdEMxdC51APmdrm9UPh8CfZxb3bk+jspaOXoFRl5jsFlh6Iz5JA9w2KafJbjm
- 7G2zQ9gkzbjamjM1dqhH0/0nsPahh7J4IDgAed9rbI3oyhk7UzkHTWGxuXpedIms
- eqX+B0rhLWWiY57QUZbZwVnPuXe+RMKAPemNLSI17uEjFA6zuOduO6K8J8pmjS1W
- venp0dEs+bSLGpYzaBiPhnMbLZv4JIJq1cQxmf71sy3DiC4pu5Z+JvHlF0C65El5
- KJfzqTlQGN/u7Qqj1H6bhQ==
+ s=rs20250326; t=1758104065; v=1;
+ b=DdLzysLdoItNX02agwRNTGyUnTrzx20tFWGfsRm6Kj1Bcgto7jzT6NanLKz/sw54
+ c+SFhhHxg7ZxwyzOUB5Y41jcQzG0ftXjCYbd7tD7stmwz9Yec0hIiAHCjVEYefqo
+ Me1eK3UKWbYxbezILi9fy2VOf4+KEZ0NQ+rdsHcRn5ADw2w01gtn/7p1u4GAwcZp
+ WUKHC47iY8/4AYK3RupRXpz8oDrep/DTUEkGUxzHWz4bCKSw+EvzspWajKbxAsT6
+ HwzYNR5qw2df5gfWZ1Rbu4esPyUm1QZ7oE2EIWvch8aXE6l+SM2RfSA9WQWmc+1c
+ RTagV4R6EmSTMQMcY55uCQ==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 19:13:29 +0900
-Subject: [PATCH v3 4/7] hv-balloon: hw/core/register: Do not unparent in
- instance_finalize()
+Date: Wed, 17 Sep 2025 19:13:30 +0900
+Subject: [PATCH v3 5/7] hw/sd/sdhci: Do not unparent in instance_finalize()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-use-v3-4-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-use-v3-5-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-use-v3-0-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-use-v3-0-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -118,39 +117,24 @@ is semantically incorrect.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/hyperv/hv-balloon.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ hw/sd/sdhci.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
-index 6dbcb2d9a29d..2d6d7db4ee0e 100644
---- a/hw/hyperv/hv-balloon.c
-+++ b/hw/hyperv/hv-balloon.c
-@@ -1475,16 +1475,6 @@ static void hv_balloon_ensure_mr(HvBalloon *balloon)
-     balloon->mr->align = memory_region_get_alignment(hostmem_mr);
- }
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 3c897e54b721..89b595ce4a5a 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -1578,10 +1578,6 @@ static void sdhci_sysbus_finalize(Object *obj)
+ {
+     SDHCIState *s = SYSBUS_SDHCI(obj);
  
--static void hv_balloon_free_mr(HvBalloon *balloon)
--{
--    if (!balloon->mr) {
--        return;
+-    if (s->dma_mr) {
+-        object_unparent(OBJECT(s->dma_mr));
 -    }
 -
--    object_unparent(OBJECT(balloon->mr));
--    g_clear_pointer(&balloon->mr, g_free);
--}
--
- static void hv_balloon_vmdev_realize(VMBusDevice *vdev, Error **errp)
- {
-     ERRP_GUARD();
-@@ -1580,7 +1570,7 @@ static void hv_balloon_vmdev_reset(VMBusDevice *vdev)
-  */
- static void hv_balloon_unrealize_finalize_common(HvBalloon *balloon)
- {
--    hv_balloon_free_mr(balloon);
-+    g_clear_pointer(&balloon->mr, g_free);
-     balloon->addr = 0;
+     sdhci_uninitfn(s);
+ }
  
-     balloon->memslot_count = 0;
 
 -- 
 2.51.0
