@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50964B80733
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23712B806A0
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:12:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyrkS-0008Kz-UC; Wed, 17 Sep 2025 08:59:00 -0400
+	id 1uyrp6-0004rz-55; Wed, 17 Sep 2025 09:03:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrk3-00081G-1U; Wed, 17 Sep 2025 08:58:35 -0400
+ id 1uyrn3-00020V-ME; Wed, 17 Sep 2025 09:01:43 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrjz-00052X-IM; Wed, 17 Sep 2025 08:58:34 -0400
+ id 1uyrn0-0005eP-T0; Wed, 17 Sep 2025 09:01:41 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN7C008967
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN7D008967
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 21:56:57 +0900 (JST)
+ Wed, 17 Sep 2025 21:56:58 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=iRO+hrK4XG9Id0QZlzueAlZAZ0CQr5cH8M80zLSFtdk=; 
+DKIM-Signature: a=rsa-sha256; bh=7PCGJmdjfJHA8NxdiTCGq5+u1H1eLf1xFPp6xeAliLU=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1758113818; v=1;
- b=DCgdJUt8BsdsHaJ7TwtGHOS5Bl+Hwe0u8DbfwZddRm5m1qylu0a+Tk+XJ9mPKh4V
- GI5qS8dH3Hppq9l5T4V9FNgNDWDqFIVCdhiln1db/ePtu4FqIB0OHAdFkAUb5mAy
- /Ji7aqCMf7kqS68Ly2a1S0sohdoaJyFCMstjOQZeJz7P4WkxQtZqvnChgL14XASY
- mO8cuykhmZhA4DLkJwQJzj2KKNbDgcb8ub5uOinuhksLZDWT+/BRod80gdIB1yUf
- Omoayby052Xn8pF4FkTs/Y9nXTcac/MxWwyCDfRLe1l2Q9QJm0k6W+4+VjIHkq6J
- 6ZqMRSnfmSFLUdRYgEG1Fg==
+ s=rs20250326; t=1758113819; v=1;
+ b=ltioezOZX36yhHqqk43mS978ufccOEdZSM8Jx7oYevVrtSzy7fAYmnbW5qi2XcRY
+ E+1tC5VWYu4GbRZzYOqObhHcNSFC2Rpdu7JjbMa4EL29PhopMiYnZZsptvTKNcrO
+ 6uqRg/E/2mVSI/orxoAOVoG5BvHeJpz+1FYJ9UqNxSJdjDnYBlZS3pJGXF1FCd+7
+ /kPSDyWBukC5UmKguKm6MqDuChgUXO1XIwv1FFtsTnG+niPGoBCF08flIQvrVrRO
+ rL2V/cS1ZaKTkRlI2KSe2R/6cu+VkCvQzNTJTV/mzmIVFIGAM4DyLAH3v0IgVqyX
+ mQOjOlLkEeAFxLM2qATLeg==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:44 +0900
-Subject: [PATCH 32/35] target/i386: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:45 +0900
+Subject: [PATCH 33/35] target/mips: QOM-ify AddressSpace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-32-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-33-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -134,22 +134,23 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- target/i386/kvm/kvm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/mips/cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 2ce071dfafb2..17f3c3c9e543 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2725,7 +2725,8 @@ static void register_smram_listener(Notifier *n, void *unused)
-         memory_region_set_enabled(smram, true);
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index b13df32e6479..571caf6f4e0b 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -505,8 +505,8 @@ static void mips_cpu_initfn(Object *obj)
+     if (mcc->cpu_def->lcsr_cpucfg2 & (1 << CPUCFG2_LCSRP)) {
+         memory_region_init_io(&env->iocsr.mr, OBJECT(cpu), NULL,
+                                 env, "iocsr", UINT64_MAX);
+-        address_space_init(&env->iocsr.as, NULL,
+-                            &env->iocsr.mr, "IOCSR");
++        address_space_init(&env->iocsr.as, OBJECT(cpu),
++                            &env->iocsr.mr, "iocsr-as");
      }
- 
--    address_space_init(&smram_address_space, NULL, &smram_as_root, "KVM-SMRAM");
-+    address_space_init(&smram_address_space, OBJECT(kvm_state), &smram_as_root,
-+                       "smram-as");
-     kvm_memory_listener_register(kvm_state, &smram_listener,
-                                  &smram_address_space, 1, "kvm-smram");
+ #endif
  }
 
 -- 
