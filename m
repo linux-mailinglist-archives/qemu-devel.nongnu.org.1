@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A92B806E8
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF45B80860
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:26:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyrsv-0002vJ-0Z; Wed, 17 Sep 2025 09:07:45 -0400
+	id 1uyro4-00040r-Q6; Wed, 17 Sep 2025 09:02:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyroj-00052D-ID; Wed, 17 Sep 2025 09:03:30 -0400
+ id 1uyrlB-0000fZ-KA; Wed, 17 Sep 2025 08:59:47 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyroh-0005vT-J1; Wed, 17 Sep 2025 09:03:25 -0400
+ id 1uyrl9-00058O-JK; Wed, 17 Sep 2025 08:59:45 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6t008967
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6u008967
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 21:56:43 +0900 (JST)
+ Wed, 17 Sep 2025 21:56:44 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=sWk4ldwEm81hImY15fAdNE8225OgpgDTf9M1ok3ksHE=; 
+DKIM-Signature: a=rsa-sha256; bh=KcdfImNWKUrOQSIAZWAELHa88NKPS345i+R9bE7i56Q=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1758113804; v=1;
- b=VXF6Tg0S7zBBkDE/CiYfRzkWeTlFr+6ZEh0S38cyqbWHfQ9qiAMFVpkAJOLAEXEK
- lBdi5qNC3MVDlpeOnLWSjWB+Sj3UnThMpV4VLl/lYhvlrNvrqatOjYFv8re7wyyh
- +MskVKrweSLjtAJ0sBeEb3J8gy2SwTmMOLv0XiAERONyRyReQrrgJMGhp41Cv4ir
- n3itFG2r9Wml+iaqaEHfe43afKfRnZ1fFmgB4ApFBg3BlZ+hGElOqdDZW2OyeWk3
- P7f3YvvV3FBCo3vFmz2aOuPkPHx0i9PaavbQetA5oLiGDdtbwgq7DW8UjOOnWHtW
- ORd6gPdXrw9LTarykihkSg==
+ s=rs20250326; t=1758113805; v=1;
+ b=GeMdsRiaQ1HzSgq1dVBdlCwV9fw8kyxV14WhrrS8pjcPt0VFR7MsBQrP2sU0UFqE
+ 3OGl13Dm+WAJOY8qxILNZh400lXX0kVS2yLKW7Hglm+asug5YncLuBYowvVHgjR8
+ rAFJwCnOF46sxAWi5YneSeWL6k/BczKPnMzKBTgRk5Wdk9byj6xYpsKzBI185Cbp
+ BFHE06D+R/eP1cp8n3YYywGkGQGXzeyxmov9+YLUoFH4GY9H1dSVmbJ6DCX5iK11
+ dwEaDJXj3l/v53GgkjFryhdVXLs00aJgmc5BBuBGJLTaUNiD4D4Jl3JLww3w00bQ
+ oCS212O2c8dp51N1g1CnRw==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:27 +0900
-Subject: [PATCH 15/35] hw/net: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:28 +0900
+Subject: [PATCH 16/35] hw/nubus: QOM-ify AddressSpace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-15-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-16-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -134,80 +134,31 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/net/allwinner-sun8i-emac.c | 2 +-
- hw/net/cadence_gem.c          | 4 ++--
- hw/net/dp8393x.c              | 2 +-
- hw/net/msf2-emac.c            | 2 +-
- hw/net/mv88w8618_eth.c        | 2 +-
- 5 files changed, 6 insertions(+), 6 deletions(-)
+ hw/nubus/nubus-bus.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/net/allwinner-sun8i-emac.c b/hw/net/allwinner-sun8i-emac.c
-index 27160c5ff2a4..4127fb55c817 100644
---- a/hw/net/allwinner-sun8i-emac.c
-+++ b/hw/net/allwinner-sun8i-emac.c
-@@ -820,7 +820,7 @@ static void allwinner_sun8i_emac_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
--    address_space_init(&s->dma_as, NULL, s->dma_mr, "emac-dma");
-+    address_space_init(&s->dma_as, OBJECT(s), s->dma_mr, "as");
- 
-     qemu_macaddr_default_if_unset(&s->conf.macaddr);
-     s->nic = qemu_new_nic(&net_allwinner_sun8i_emac_info, &s->conf,
-diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c
-index 3ba8ce017194..e1ff610b48da 100644
---- a/hw/net/cadence_gem.c
-+++ b/hw/net/cadence_gem.c
-@@ -1734,8 +1734,8 @@ static void gem_realize(DeviceState *dev, Error **errp)
-     CadenceGEMState *s = CADENCE_GEM(dev);
-     int i;
- 
--    address_space_init(&s->dma_as, NULL,
--                       s->dma_mr ? s->dma_mr : get_system_memory(), "dma");
-+    address_space_init(&s->dma_as, OBJECT(s),
-+                       s->dma_mr ? s->dma_mr : get_system_memory(), "as");
- 
-     if (s->num_priority_queues == 0 ||
-         s->num_priority_queues > MAX_PRIORITY_QUEUES) {
-diff --git a/hw/net/dp8393x.c b/hw/net/dp8393x.c
-index f65d8ef4dd45..9b9125954db8 100644
---- a/hw/net/dp8393x.c
-+++ b/hw/net/dp8393x.c
-@@ -908,7 +908,7 @@ static void dp8393x_realize(DeviceState *dev, Error **errp)
+diff --git a/hw/nubus/nubus-bus.c b/hw/nubus/nubus-bus.c
+index 1d553be77662..75767c9fc399 100644
+--- a/hw/nubus/nubus-bus.c
++++ b/hw/nubus/nubus-bus.c
+@@ -82,7 +82,7 @@ static void nubus_unrealize(BusState *bus)
  {
-     dp8393xState *s = DP8393X(dev);
+     NubusBus *nubus = NUBUS_BUS(bus);
  
--    address_space_init(&s->as, NULL, s->dma_mr, "dp8393x");
-+    address_space_init(&s->as, OBJECT(s), s->dma_mr, "as");
-     memory_region_init_io(&s->mmio, OBJECT(dev), &dp8393x_ops, s,
-                           "dp8393x-regs", SONIC_REG_COUNT << s->it_shift);
+-    address_space_destroy(&nubus->nubus_as);
++    object_unparent(OBJECT(&nubus->nubus_as));
+ }
  
-diff --git a/hw/net/msf2-emac.c b/hw/net/msf2-emac.c
-index 59c380db30dc..22a79d38403b 100644
---- a/hw/net/msf2-emac.c
-+++ b/hw/net/msf2-emac.c
-@@ -526,7 +526,7 @@ static void msf2_emac_realize(DeviceState *dev, Error **errp)
+ static void nubus_realize(BusState *bus, Error **errp)
+@@ -94,7 +94,7 @@ static void nubus_realize(BusState *bus, Error **errp)
          return;
      }
  
--    address_space_init(&s->dma_as, NULL, s->dma_mr, "emac-ahb");
-+    address_space_init(&s->dma_as, OBJECT(s), s->dma_mr, "as");
+-    address_space_init(&nubus->nubus_as, NULL, &nubus->nubus_mr, "nubus");
++    address_space_init(&nubus->nubus_as, OBJECT(nubus), &nubus->nubus_mr, "as");
+ }
  
-     qemu_macaddr_default_if_unset(&s->conf.macaddr);
-     s->nic = qemu_new_nic(&net_msf2_emac_info, &s->conf,
-diff --git a/hw/net/mv88w8618_eth.c b/hw/net/mv88w8618_eth.c
-index 1ea294bcced5..a02e7e60d562 100644
---- a/hw/net/mv88w8618_eth.c
-+++ b/hw/net/mv88w8618_eth.c
-@@ -348,7 +348,7 @@ static void mv88w8618_eth_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
--    address_space_init(&s->dma_as, NULL, s->dma_mr, "emac-dma");
-+    address_space_init(&s->dma_as, OBJECT(s), s->dma_mr, "as");
-     s->nic = qemu_new_nic(&net_mv88w8618_info, &s->conf,
-                           object_get_typename(OBJECT(dev)), dev->id,
-                           &dev->mem_reentrancy_guard, s);
+ static void nubus_init(Object *obj)
 
 -- 
 2.51.0
