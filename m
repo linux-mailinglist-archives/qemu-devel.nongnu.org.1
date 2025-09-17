@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455B1B808D8
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:29:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE3AB80685
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:11:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyrkD-0008BY-Pf; Wed, 17 Sep 2025 08:58:45 -0400
+	id 1uyrk6-00084B-5E; Wed, 17 Sep 2025 08:58:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrk4-00082B-2R; Wed, 17 Sep 2025 08:58:36 -0400
+ id 1uyrk1-0007zZ-Nw; Wed, 17 Sep 2025 08:58:33 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrk0-00053K-64; Wed, 17 Sep 2025 08:58:35 -0400
+ id 1uyrjw-00051r-Ok; Wed, 17 Sep 2025 08:58:33 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6m008967
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6n008967
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 21:56:37 +0900 (JST)
+ Wed, 17 Sep 2025 21:56:38 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=AJDWmN4L41yfypclNPa9nkE7NslZs1RqVWFRg0YxSyg=; 
+DKIM-Signature: a=rsa-sha256; bh=rWb4z4CPURkyznHmuzsh+cyMRQ6rj+WtDBcDWVfL1Fg=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1758113798; v=1;
- b=dGm/igvl0OzEWgpIft4X52yFO4DicZ/wHsTMsqmCrecZkl288EJNuCdc6YR7aLFl
- cD6x2SXhP9dwkXAZTmkozz9IiFMmGNWh5TAWN3MeDf4BDhlcd7iIyKyz91aBrHX6
- IC3CFZiA6L6CJNGf1ky42YxSm7oLbnWL95cWIxRaUFKGNDJg3x6D0EEHuwXbzJp0
- wbxJzp1aoWwvtkr8OJj//oGWy2/qsyIaaPfOSzuZvaCmpURg+ts848JlMWZ/pQI/
- ZzznLyojiU8ZDbTJZafavjV0m3AlDG1PI1loXSKUhfeAmGjUan7v7LAJ3tQYSvJj
- wIy+Cn8ACUUSUDHvhv5llw==
+ s=rs20250326; t=1758113799; v=1;
+ b=s2GROUIgd9BllbZt6A3B/JXj8BqN/Oh5UD2af4TVlfJ8VPzMcaCzhsu02Pm69WJs
+ Dh4FWzkvx95xkHyjO67nGKwF+OIfZ+B/KOQAAd9W8TSAHY2ti60BV5smaOhDlVy/
+ ixlrO3c0Pakjl6vkOzBW56e1d0I4fqjxR4CQblHl9+CezRtAg8D3S1ISppYmBI98
+ tB4KZZ9HKjolHZo2nNovu0lCairUd2x1JlnSECi99K5djxaxySeUCbKsG57czM6L
+ 0WHZiwMObW3+syeXI0sNWWAh9v/Etypk2cw3+3zqnNpmrSjNgS37OggF6gaat+Xb
+ T3cIRdYljETCSJSAJ0LjVA==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:20 +0900
-Subject: [PATCH 08/35] hw/fsi: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:21 +0900
+Subject: [PATCH 09/35] hw/i2c: QOM-ify AddressSpace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-8-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-9-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -134,22 +134,23 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/fsi/aspeed_apb2opb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i2c/aspeed_i2c.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/fsi/aspeed_apb2opb.c b/hw/fsi/aspeed_apb2opb.c
-index 8eda6f67cfd9..d337f567c6f5 100644
---- a/hw/fsi/aspeed_apb2opb.c
-+++ b/hw/fsi/aspeed_apb2opb.c
-@@ -349,7 +349,7 @@ static void fsi_opb_init(Object *o)
-     OPBus *opb = OP_BUS(o);
+diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
+index 9d216b3f0ea3..d1d980a8961f 100644
+--- a/hw/i2c/aspeed_i2c.c
++++ b/hw/i2c/aspeed_i2c.c
+@@ -1253,8 +1253,7 @@ static void aspeed_i2c_realize(DeviceState *dev, Error **errp)
+             return;
+         }
  
-     memory_region_init(&opb->mr, 0, TYPE_FSI_OPB, UINT32_MAX);
--    address_space_init(&opb->as, NULL, &opb->mr, TYPE_FSI_OPB);
-+    address_space_init(&opb->as, OBJECT(opb), &opb->mr, "as");
+-        address_space_init(&s->dram_as, NULL, s->dram_mr,
+-                           TYPE_ASPEED_I2C "-dma-dram");
++        address_space_init(&s->dram_as, OBJECT(s), s->dram_mr, "as");
+     }
  }
  
- static const TypeInfo opb_info = {
 
 -- 
 2.51.0
