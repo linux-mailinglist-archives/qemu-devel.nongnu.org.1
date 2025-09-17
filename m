@@ -2,136 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 927F3B805D4
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4111FB80C4D
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:54:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyqhA-0001yV-3o; Wed, 17 Sep 2025 07:51:32 -0400
+	id 1uyqhF-0002KN-6Z; Wed, 17 Sep 2025 07:51:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1uyqbN-0002ll-LP; Wed, 17 Sep 2025 07:45:38 -0400
-Received: from mail-northcentralusazlp170130007.outbound.protection.outlook.com
- ([2a01:111:f403:c105::7] helo=CH4PR04CU002.outbound.protection.outlook.com)
+ id 1uyqbJ-0002l7-Af; Wed, 17 Sep 2025 07:45:38 -0400
+Received: from mail-northcentralusazlp170100001.outbound.protection.outlook.com
+ ([2a01:111:f403:c105::1] helo=CH1PR05CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1uyqbK-0001qi-CI; Wed, 17 Sep 2025 07:45:33 -0400
+ id 1uyqbF-0001qB-Ox; Wed, 17 Sep 2025 07:45:28 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b0jHB3GHyD7Ay1AUliJREH8fmC+kdhTZCpSWRpFtVCI0RARDChO1TxjYmlETjrucKG0/bjxeFMhAafRPREIOGGn1ydeLvrmxWq0qBb2alV8hj+b7LjuNQtpRJY26dr740iTSNnwxJfNsWoC5mKWlWIE9Pocef9M/gc0dpaXn1YrD2oYcNEcINvMvkxPDTkHUy5ywWcWO1lZtU9Q1hGvvhn85i5fJX/W19dr+3Ol//R8cSPJLx/F6Oy7mqK4UTyEM7jLHFWIfBmZXFNrlLiP62l5jVqLzAoIA57tElu6hZncv1AIHxbCz5m/vUer5bSkbuaVTGYye7NahMk/qvSi5dw==
+ b=oxuuDhOcm2fBuFkLqC9o1P58yFSqWl+6wRm0OXvH0pzNPcmJQTIp4tXag7IvIrGjX56AeGK7trWvVqkIvowIIzh9uq1n4xVr5PrBIiv8aHSN1u6zCLOC8jbUyGyzkCrxPqV8y1h+ZaNq+2xk3+RKeLSpvR+v/396rSph6F2iqGRMwrENSGpwjWqb17pztKWLmVUEsCBfhAfWqD5blbiXJYgk0qGOgyABa6B8Xu1po/4wqR7KcCqx5AkmuReCeM0+mRSswsf3+50127r3wnAaDcCXo4/CrW4NP/inDFtyVDvL5Znhq+SuiFmj7M/JOlQGI96aHp0J1jg55WXBxi5olg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jHLqCSh80f+pJzfPw5wqXSO6whRkVPN9ypm0TIK6AU0=;
- b=DbVP0VIAO01CYQPaZpSrneisnRrhBH/bjpfGwgu5g+ZzuAWUvhIaR7oFL1IGIbPmWi7b15HjKozeJjMT08J9ehJoEK+BTRl/YDxOloGcmOF8oCUBj3uyBpTg6vF/s2ZGNR+UkdlIadam4jHDskqGJBNWnQ0hnmtBMr54QPLqqp4Z7apXvvNz4q6HmH4Z95+olarZgsLc9h2AegCnh/+rKboYVvMw9LsJjef1Xnyq+KbSIzkKOEJPpRwND62vHgcq+UErEfclgKuwsqaumfJuuUOrCTSGdR4RFQPeKhyqZ3F/q37board5npGMHB11GqcYmwnARZ45TZN4VxUtlgEqw==
+ bh=eMOpl3qNEntTC54I0UrCVD134WsVhW0KTLcb3rE4Rpc=;
+ b=y5o+kBCjs/gmqWLcP6qQWUvaqFQDqYDf0thgOHokvJ4Qg7/1GF/YA+Z7pZ24tpZMRm1tfEGubzKMHXOf6z/RcxqKkCrbJWCn19bxZfrjXV+vFMN16dchWydjuw5ypV0cqtPLQEZe0AhAb0nfYKm4lU6SQRaOJ7rnPNAUm5dsKzZaXYfHgjbyK9dCcPxYKL3MEhEW3fqLe2lp/QNNEBi93cdTR9Vsg+IBc62+Wx9XA7930yqKCn6B5q5QaZThmfVrG0g5DLUW1Sj1qrOwDoC39kuhZVd3w9bjalwLQqbIUuaAbirdSJvDgSx4uX6vDtYO03gmMc95gGdQu4VkwxYHFA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jHLqCSh80f+pJzfPw5wqXSO6whRkVPN9ypm0TIK6AU0=;
- b=UhkT3g3WkPTHnN+SIkEkQJJYp5NV8SBOEcGiVeAVnLqjEXQKMPym8q830nHpY1P5mJWtMRKHFJy0GrP6hq15//5XICH5wJeXFbUl/oNgHRdTK/x7G5QYgRYUEeK9VM1pUjgj3iT9B9mzvgfWyYwjO1LhWWxSF9vagehttHXkaDw=
-Received: from SA1P222CA0106.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:3c5::11)
- by SA1PR12MB6798.namprd12.prod.outlook.com (2603:10b6:806:25a::22)
+ bh=eMOpl3qNEntTC54I0UrCVD134WsVhW0KTLcb3rE4Rpc=;
+ b=jIsU4ZeB47CoXP3AMGVIC6k06V60B2f6Dlg1dOUzL7mG45wDgL4YJn+34FjyW7eucKOVMTd1t50HusXqFSza2ov6H0uCiIyHauGm1ZVTqN0sIeAa+DGz3HXTKTDHCnv87aa7ovSktntLToaAzJSRVjqMRxOW3vAF0VOOyhi6MCU=
+Received: from BY1P220CA0003.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::10)
+ by LV3PR12MB9117.namprd12.prod.outlook.com (2603:10b6:408:195::10)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 17 Sep
- 2025 11:45:25 +0000
-Received: from SN1PEPF00036F3E.namprd05.prod.outlook.com
- (2603:10b6:806:3c5:cafe::82) by SA1P222CA0106.outlook.office365.com
- (2603:10b6:806:3c5::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.13; Wed, 17 Sep
+ 2025 11:45:20 +0000
+Received: from CO1PEPF000066EB.namprd05.prod.outlook.com
+ (2603:10b6:a03:59d:cafe::e8) by BY1P220CA0003.outlook.office365.com
+ (2603:10b6:a03:59d::10) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.14 via Frontend Transport; Wed,
- 17 Sep 2025 11:45:25 +0000
+ 17 Sep 2025 11:45:20 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF00036F3E.mail.protection.outlook.com (10.167.248.22) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CO1PEPF000066EB.mail.protection.outlook.com (10.167.249.7) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.12 via Frontend Transport; Wed, 17 Sep 2025 11:45:25 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 17 Sep
- 2025 04:45:10 -0700
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 17 Sep
- 2025 06:45:10 -0500
+ 15.20.9137.12 via Frontend Transport; Wed, 17 Sep 2025 11:45:19 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 17 Sep
+ 2025 04:45:11 -0700
 Received: from XFR-LUMICHEL-L2.xilinx.com (10.180.168.240) by
  satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17
- via Frontend Transport; Wed, 17 Sep 2025 04:45:09 -0700
+ via Frontend Transport; Wed, 17 Sep 2025 04:45:10 -0700
 From: Luc Michel <luc.michel@amd.com>
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: Luc Michel <luc.michel@amd.com>, Peter Maydell <peter.maydell@linaro.org>, 
  Francisco Iglesias <francisco.iglesias@amd.com>, "Edgar E . Iglesias"
  <edgar.iglesias@amd.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
  <philmd@linaro.org>, Alistair Francis <alistair@alistair23.me>
-Subject: [PATCH 6/7] hw/net/can/xlnx-versal-canfd: refactor the banked
- registers logic
-Date: Wed, 17 Sep 2025 13:44:47 +0200
-Message-ID: <20250917114450.175892-7-luc.michel@amd.com>
+Subject: [PATCH 7/7] hw/net/can/xlnx-versal-canfd: remove register API usage
+ for banked regs
+Date: Wed, 17 Sep 2025 13:44:48 +0200
+Message-ID: <20250917114450.175892-8-luc.michel@amd.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250917114450.175892-1-luc.michel@amd.com>
 References: <20250917114450.175892-1-luc.michel@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: luc.michel@amd.com does not designate
- permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3E:EE_|SA1PR12MB6798:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2054cdb9-667d-4614-1cae-08ddf5dfb117
+X-MS-TrafficTypeDiagnostic: CO1PEPF000066EB:EE_|LV3PR12MB9117:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6fc04aef-e632-4d92-ddc9-08ddf5dfad6a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|1800799024|36860700013|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?/+oydm2vi30jO1sIvOjt0Ch5kByr7t8DmaDU0faRg5muajkIimvhuN3XWSYC?=
- =?us-ascii?Q?tLhsFWS1hpYWUY9cjbtKbDrpAkm7DtNb1omOTUoVHi8c6CVpzkJNbjnxLSvZ?=
- =?us-ascii?Q?7RIPu8LIooh7RqVJbDLeeF9wtrmyWu7eBa7vm8INDBg3Cr19SjmzPTmZR8ro?=
- =?us-ascii?Q?u9SdcfSQ90l2NOBA+E9dB/YwsYx/EImHu64vY+8IyLpigstxyBnax2/rsp0O?=
- =?us-ascii?Q?eKTNmZKqbsrGsQJ1flEFRRyV8CQxfzXLuwVpXcdo+ZHzRMjHTY+oqvl1/Upc?=
- =?us-ascii?Q?aD6ixPDd/02m9aJ1l9LL41ZKz3B8EnlniY/h3iuVrEjQ0h3LbuQsE5yjPGQl?=
- =?us-ascii?Q?LzjafNqPZ4g8BMhfZsKEbTgNmVEHSsOfAOtPPsiq8+qSjuckOtzsyrz2ydET?=
- =?us-ascii?Q?asXFqA11IjtpzFA4swtQAks2ZsXfhI+pljKvCKWXmp2JjTQjcANHg/OoU4Fj?=
- =?us-ascii?Q?tNarrU/uC8XQ9XjSpVQaZ1LFoFmjQkLe2q8drT66CbXwKy9QEtI2HoAaRhDZ?=
- =?us-ascii?Q?Q6jw51baOwRorIEu5h/LOMjXpNuLCoVwtpidXHKC9NRvNr551g7ttbgFcSn+?=
- =?us-ascii?Q?oNgLyfJcNgwSxev+nDlTGsbxq6pg5/tPjrB5fCTWgxgaQ6WEO8H9mTdEFXbH?=
- =?us-ascii?Q?dTL5ZZdUiWbciv6hMJrpVfHi3PW932X/B4z8lFIwqoXK5BFNQ+mFCaSjDvD3?=
- =?us-ascii?Q?WRia4aAT9TBJa7UJc2SkdVk4tdCFzYeeYBKro+S/FwFWGgT10DqENsLpnEGK?=
- =?us-ascii?Q?LKtaE/pUehG/Cx4HCkbh+bG2AHl0QLk/gRB1TihMtmvRk7LhYYqpDxaPfyMv?=
- =?us-ascii?Q?5FJsEJFwCUj04HbnGCZywmH9dZWAVbZ2nCxQf89f+Q2AuzcxQP3YS+qWpxOS?=
- =?us-ascii?Q?fP3HqkaJAQ1vW/wt7im9TcYLYodfGFKohxTYRrl88WcGxWT3h0D8Qzh+9KLO?=
- =?us-ascii?Q?7Q0iTFRyiTtPbu1GMAG/5x4Nw1PsKvVEqB+WVuEnBTzh1KaBc5SVv1TQu+U3?=
- =?us-ascii?Q?LwRl3zA8SCEkAFijBI10kkabUdbUoo/J8KnU50laJX2Nl/LZTql7CMwJe19W?=
- =?us-ascii?Q?PWgaZ1EW68+c4Y5UWSBfjeJwiyvb3H3mEeSdWIZebD9hsLDUnFNRjZhLcrH6?=
- =?us-ascii?Q?0gEi4mpThnvzATnCQVwlJEO3Hyh1FAdaEUTkfwTGr9wvndlOd65VSRn/EeD6?=
- =?us-ascii?Q?+SB8vzWV3gckm20flvh5HLLAlK1Fl79MfYuzqYizNgvh62b8zh/UpMhXblOy?=
- =?us-ascii?Q?ADQ5QlOXGz0pZ4yDFvKZvlxqN8UjoJVuSTLDrLif/7hPA2lxOiAfEOXc/zF3?=
- =?us-ascii?Q?3t1FtBQohqtdlLkSRQ4cDzouxYx6mfOkrD4JAHbre+Rk8/EC8/nlRNs6xRB4?=
- =?us-ascii?Q?8A3tGnb8ZqOq1+kC2wt85+DkxdW8vMSF9csp4k99BqHNVScIFZKBQuMSM8N2?=
- =?us-ascii?Q?uMHW51aZVtuEzlBw27hr1jZZPvY6+TJalxWGnMJMjgqbG4NqZpEgpXODQiBB?=
- =?us-ascii?Q?9EDk9+IxSMJfF594YZNVliN2fHZp0AflGAB3?=
+ ARA:13230040|376014|1800799024|82310400026|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?EYhY3iqSzpUCCx1Wm7Cunx8wLbslHh3jnrDSzmGebR4ZTKm/jHWR4ifse6yM?=
+ =?us-ascii?Q?HNV04wwdIfWyVfBJZjkS2Y9ih8We+9R+CiR+GwMOE5FSClfK40oo06Kv3z40?=
+ =?us-ascii?Q?0piS0VKcIhdX5LlVu0wxMqSnOZSEbO7MlBcZfpSR+UZxeVm8I4R35MA3OKa9?=
+ =?us-ascii?Q?l5NWG+RakH/atrMWlnepfq8wOXewHxYzOlVYRRhFd3ul7OMSDtfS2Zy6+vj9?=
+ =?us-ascii?Q?5dI36bg61uyls1MVRJ/QtGLBmJTtVtvmqROi3GfoeGpxVfMTTx5a5uEaKoYb?=
+ =?us-ascii?Q?P7hPn/Ly1zyQcfcCH6qtbCO9pRNLlWrBLvd4N23Ko77rQk6Z7PJ4NHxdOaVF?=
+ =?us-ascii?Q?NepNLgkRuHGTxVreNJzmXEj9SmX5O0i+EAvd7LXyJFVQWXeOn3d8D2b0Nauu?=
+ =?us-ascii?Q?gENq7KA0x8HYIFR2X1brKGo1dNK6D2CVak9f+3Ktg9GIig3Oot775eA+gIM+?=
+ =?us-ascii?Q?/W1pvMu4j5IAZmcCuIZcZ1SHk11SZd7nDf22cCmZ3hoZDPwy0aQ5K9OvFOrG?=
+ =?us-ascii?Q?zM7+4i0Hx7j4rF6AnQf5bMi1zJKYO2iEgYEDI40GYAq216TDK9pGEBsVFDAB?=
+ =?us-ascii?Q?99pjt06vF27mUcp4Hka9LE1+q5BZIixge7uSTX/S5NBhpjemC+jzOLg8kZZg?=
+ =?us-ascii?Q?3EngnlLu5/3/AgfRKdLfkMTqpOxuHIMbsYqtgNHPUipCFgouqoGcSRXM78ra?=
+ =?us-ascii?Q?/2guN+X8MgxuajEStkpBZWpK2HNoralGfTHzahkprdJFJQH9+L/PWoEk3OPD?=
+ =?us-ascii?Q?yc5JU0mzH9fgG161qTHZ7g7Y7Z6+bayDknWFdA4pASK9M6WH4mozl+zvgOK7?=
+ =?us-ascii?Q?+he1WDDchjFFbU0OPYEtL1ybxST/ScRD8Uy1kiLiTrbusG0oyCLFH5pX1XEx?=
+ =?us-ascii?Q?TIi+RyKNkQq5KnB8MDS8zc9qdkZUrat9oNA+zt1RBV/INbKkesWNTe2XS4j5?=
+ =?us-ascii?Q?R4JlSNS4Efoyjpo6c1n5MrcBcNFph8LEiFNrZv6AphMyZCNsEYDtEdbn6sDd?=
+ =?us-ascii?Q?WrQjaKZGk+a8dkhn9V/sx6mB70aZ0ZR9eNmdHbqrVO5771GAEH3O4+dkk19S?=
+ =?us-ascii?Q?JlRDh+jSzW8JmizTfbDh17WhvN3iv3TNjEVmqAG2g8u5optS63QnVNV7xGjI?=
+ =?us-ascii?Q?jHEvA/mvkPP2WiwXB8MII30aFgW6zC+7al5K1I4YXFI8O1fMzTMkZSu8e02d?=
+ =?us-ascii?Q?sz9nGdXV2YZO4TGONE+6oox1UeqJ0keycSDFqJjsu9CXQ6SI3X44ju8CzBb/?=
+ =?us-ascii?Q?RHmUAsFySUo5QbAvDXz3uEgGkONWmMvDPttt7FCAiWeo31Am9DjRKANDiJed?=
+ =?us-ascii?Q?mlxApW304NvNzKB2QbgBfU963xMsRtkPnJkhb4wbdQc2LoR2VBK4JUoE23B0?=
+ =?us-ascii?Q?SBaYyrNx3YvPFz/k4o2w30hDHYAbFb9AnP/K+3hKUtl9ndKit2zoNt5iGhg+?=
+ =?us-ascii?Q?mJqz8QeDr69iVjRfFi1NaDTA6XddebrYmwN3/pssTT5Ss0oCj3N4paXFKQRQ?=
+ =?us-ascii?Q?liF8L/9yYgVXlYaPPWiQVKPPax4bstmZbNxY?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014); DIR:OUT;
+ IPV:CAL; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 11:45:25.3698 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2054cdb9-667d-4614-1cae-08ddf5dfb117
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 11:45:19.1622 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fc04aef-e632-4d92-ddc9-08ddf5dfad6a
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF00036F3E.namprd05.prod.outlook.com
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000066EB.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6798
-Received-SPF: permerror client-ip=2a01:111:f403:c105::7;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9117
+Received-SPF: permerror client-ip=2a01:111:f403:c105::1;
  envelope-from=Luc.Michel@amd.com;
- helo=CH4PR04CU002.outbound.protection.outlook.com
+ helo=CH1PR05CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -153,231 +147,380 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CANFD device has several groups of registers:
-  - the main control registers from 0x0 to 0xec
-  - several banks of multiple registers. The number of banks is either
-    hardcoded, or configurable using QOM properties:
-      - Tx registers
-      - Filter registers
-      - Tx events registers
-      - Rx0 registers
-      - Rx1 registers
+Now that we have a simple decoding logic for all the banked registers,
+remove the register API usage for them. This restricts the register API
+usage to only the base registers (from 0x0 to 0xec).
 
-As of now, all the registers are handled using the register API. The
-banked register logic results in a convoluted code to correctly allocate
-the register descriptors for the register API. This code bypasses the
-standard register API creation function (register_init_block). The
-resulting code leaks memory when the device is finalized.
-
-This commit introduces decoding logic for the banked registers. Those
-registers are quite simple in practice. Accessing them triggers no
-side-effect (only the filter registers need a check to catch guest
-invalid behaviour). Starting from the Tx events registers, they are all
-read-only.
-
-The main device memory region is changed to an I/O one, calling the
-new decoding logic when accessed. The register API memory region still
-overlaps all of it so for now the introduced code has no effect. The
-next commit will remove the register API usage for banked registers.
+This also removes all the custom code that was creating register
+descriptors for the register API and was leading to memory leaks when
+the device was finalized.
 
 Signed-off-by: Luc Michel <luc.michel@amd.com>
 ---
- hw/net/can/xlnx-versal-canfd.c | 155 ++++++++++++++++++++++++++++++++-
- 1 file changed, 153 insertions(+), 2 deletions(-)
+ include/hw/net/xlnx-versal-canfd.h |   8 -
+ hw/net/can/xlnx-versal-canfd.c     | 295 +----------------------------
+ 2 files changed, 5 insertions(+), 298 deletions(-)
 
+diff --git a/include/hw/net/xlnx-versal-canfd.h b/include/hw/net/xlnx-versal-canfd.h
+index ad3104dd13f..396f90d6dc1 100644
+--- a/include/hw/net/xlnx-versal-canfd.h
++++ b/include/hw/net/xlnx-versal-canfd.h
+@@ -52,18 +52,10 @@ typedef struct XlnxVersalCANFDState {
+ 
+     qemu_irq                irq_canfd_int;
+     qemu_irq                irq_addr_err;
+ 
+     RegisterInfo            reg_info[XLNX_VERSAL_CANFD_R_MAX];
+-    RegisterAccessInfo      *tx_regs;
+-    RegisterAccessInfo      *rx0_regs;
+-    RegisterAccessInfo      *rx1_regs;
+-    RegisterAccessInfo      *af_regs;
+-    RegisterAccessInfo      *txe_regs;
+-    RegisterAccessInfo      *rx_mailbox_regs;
+-    RegisterAccessInfo      *af_mask_regs_mailbox;
+-
+     uint32_t                regs[XLNX_VERSAL_CANFD_R_MAX];
+ 
+     ptimer_state            *canfd_timer;
+ 
+     CanBusClientState       bus_client;
 diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
-index 343348660b5..81615bc52a6 100644
+index 81615bc52a6..49f1b174b70 100644
 --- a/hw/net/can/xlnx-versal-canfd.c
 +++ b/hw/net/can/xlnx-versal-canfd.c
-@@ -1408,10 +1408,27 @@ static uint64_t canfd_srr_pre_write(RegisterInfo *reg, uint64_t val64)
+@@ -1425,50 +1425,10 @@ static void filter_reg_write(XlnxVersalCANFDState *s, hwaddr addr,
+                       HWADDR_PRIx " changed while filter %zu enabled\n",
+                       path, addr, bank_idx + 1);
      }
- 
-     return s->regs[R_SOFTWARE_RESET_REGISTER];
  }
  
-+static void filter_reg_write(XlnxVersalCANFDState *s, hwaddr addr,
-+                             size_t bank_idx, uint32_t val)
-+{
-+    size_t reg_idx = addr / sizeof(uint32_t);
-+
-+    if (!(s->regs[R_ACCEPTANCE_FILTER_CONTROL_REGISTER] &
-+        (1 << bank_idx))) {
-+        s->regs[reg_idx] = val;
-+    } else {
-+        g_autofree char *path = object_get_canonical_path(OBJECT(s));
-+
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Acceptance filter register 0x%"
-+                      HWADDR_PRIx " changed while filter %zu enabled\n",
-+                      path, addr, bank_idx + 1);
-+    }
-+}
-+
- static uint64_t filter_mask(RegisterInfo *reg, uint64_t val64)
+-static uint64_t filter_mask(RegisterInfo *reg, uint64_t val64)
+-{
+-    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
+-    uint32_t reg_idx = (reg->access->addr) / 4;
+-    uint32_t val = val64;
+-    uint32_t filter_offset = (reg_idx - R_AFMR_REGISTER) / 2;
+-
+-    if (!(s->regs[R_ACCEPTANCE_FILTER_CONTROL_REGISTER] &
+-        (1 << filter_offset))) {
+-        s->regs[reg_idx] = val;
+-    } else {
+-        g_autofree char *path = object_get_canonical_path(OBJECT(s));
+-
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: Acceptance filter %d not enabled\n",
+-                      path, filter_offset + 1);
+-    }
+-
+-    return s->regs[reg_idx];
+-}
+-
+-static uint64_t filter_id(RegisterInfo *reg, uint64_t val64)
+-{
+-    XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
+-    hwaddr reg_idx = (reg->access->addr) / 4;
+-    uint32_t val = val64;
+-    uint32_t filter_offset = (reg_idx - R_AFIR_REGISTER) / 2;
+-
+-    if (!(s->regs[R_ACCEPTANCE_FILTER_CONTROL_REGISTER] &
+-        (1 << filter_offset))) {
+-        s->regs[reg_idx] = val;
+-    } else {
+-        g_autofree char *path = object_get_canonical_path(OBJECT(s));
+-
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: Acceptance filter %d not enabled\n",
+-                      path, filter_offset + 1);
+-    }
+-
+-    return s->regs[reg_idx];
+-}
+-
+ static uint64_t canfd_tx_fifo_status_prew(RegisterInfo *reg, uint64_t val64)
  {
      XlnxVersalCANFDState *s = XILINX_CANFD(reg->opaque);
-     uint32_t reg_idx = (reg->access->addr) / 4;
      uint32_t val = val64;
-@@ -1761,11 +1778,145 @@ static const RegisterAccessInfo canfd_regs_info[] = {
- static void xlnx_versal_canfd_ptimer_cb(void *opaque)
- {
-     /* No action required on the timer rollover. */
+     uint8_t read_ind = 0;
+@@ -1590,129 +1550,10 @@ static uint64_t canfd_write_check_prew(RegisterInfo *reg, uint64_t val64)
+         return val;
+     }
+     return 0;
  }
  
-+static bool canfd_decode_reg_bank(XlnxVersalCANFDState *s, hwaddr addr,
-+                                  hwaddr first_reg, hwaddr last_reg,
-+                                  size_t num_banks, size_t *idx, size_t *offset)
-+{
-+    hwaddr base = addr - first_reg;
-+    hwaddr span = last_reg - first_reg + sizeof(uint32_t);
-+
-+    *idx = base / span;
-+
-+    if (*idx >= num_banks) {
-+        return false;
-+    }
-+
-+    *offset = base % span;
-+    *offset += first_reg;
-+
-+    return true;
-+}
-+
-+/*
-+ * Decode the given addr into a (idx, offset) pair:
-+ *   - idx is the bank index of the register at addr,
-+ *   - offset is the register offset relative to bank 0
-+ *
-+ * @return true is the decoding succeded, false otherwise
-+ */
-+static bool canfd_decode_addr(XlnxVersalCANFDState *s, hwaddr addr,
-+                              size_t *idx, size_t *offset)
-+{
-+    if (addr <= A_RX_FIFO_WATERMARK_REGISTER) {
-+        /* from 0x0 to 0xec. Handled by the register API */
-+        g_assert_not_reached();
-+    } else if (addr < A_TB_ID_REGISTER) {
-+        /* no register in this gap */
-+        return false;
-+    } else if (addr < A_AFMR_REGISTER) {
-+        /* TX registers */
-+        return canfd_decode_reg_bank(s, addr,
-+                                     A_TB_ID_REGISTER, A_TB_DW15_REGISTER,
-+                                     s->cfg.tx_fifo, idx, offset);
-+    } else if (addr < A_TXE_FIFO_TB_ID_REGISTER) {
-+        /* Filter registers */
-+        return canfd_decode_reg_bank(s, addr,
-+                                     A_AFMR_REGISTER, A_AFIR_REGISTER,
-+                                     32, idx, offset);
-+    } else if (addr < A_RB_ID_REGISTER) {
-+        /* TX event registers */
-+        return canfd_decode_reg_bank(s, addr,
-+                                     A_TXE_FIFO_TB_ID_REGISTER,
-+                                     A_TXE_FIFO_TB_DLC_REGISTER,
-+                                     32, idx, offset);
-+    } else if (addr < A_RB_ID_REGISTER_1) {
-+        /* RX0 registers */
-+        return canfd_decode_reg_bank(s, addr,
-+                                     A_RB_ID_REGISTER,
-+                                     A_RB_DW15_REGISTER,
-+                                     s->cfg.rx0_fifo, idx, offset);
-+    } else if (addr <= A_RB_DW15_REGISTER_1) {
-+        /* RX1 registers */
-+        return canfd_decode_reg_bank(s, addr,
-+                                     A_RB_ID_REGISTER_1,
-+                                     A_RB_DW15_REGISTER_1,
-+                                     s->cfg.rx1_fifo, idx, offset);
-+    }
-+
-+    /* decode error */
-+    return false;
-+}
-+
-+static uint64_t canfd_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    XlnxVersalCANFDState *s = XILINX_CANFD(opaque);
-+    size_t bank_idx;
-+    hwaddr reg_offset;
-+    uint64_t ret;
-+
-+    if (!canfd_decode_addr(s, addr, &bank_idx, &reg_offset)) {
-+        qemu_log_mask(LOG_GUEST_ERROR, TYPE_XILINX_CANFD
-+                      ": read to unknown register at address 0x%"
-+                      HWADDR_PRIx "\n", addr);
-+        return 0;
-+    }
-+
-+    switch (reg_offset) {
-+    default:
-+        ret = s->regs[addr / sizeof(uint32_t)];
-+    }
-+
-+    return ret;
-+}
-+
-+static void canfd_write(void *opaque, hwaddr addr, uint64_t value,
-+                        unsigned size)
-+{
-+    XlnxVersalCANFDState *s = XILINX_CANFD(opaque);
-+    size_t bank_idx;
-+    hwaddr reg_offset;
-+
-+    if (!canfd_decode_addr(s, addr, &bank_idx, &reg_offset)) {
-+        qemu_log_mask(LOG_GUEST_ERROR, TYPE_XILINX_CANFD
-+                      ": write to unknown register at address 0x%"
-+                      HWADDR_PRIx "\n", addr);
-+        return;
-+    }
-+
-+    if (addr >= A_TXE_FIFO_TB_ID_REGISTER) {
-+        /* All registers from TX event regs to the end are read-only */
-+        qemu_log_mask(LOG_GUEST_ERROR, TYPE_XILINX_CANFD
-+                      ": write to read-only register at 0x%" HWADDR_PRIx "\n",
-+                      addr);
-+        return;
-+    }
-+
-+    switch (reg_offset) {
-+    case A_AFMR_REGISTER:
-+    case A_AFIR_REGISTER:
-+        filter_reg_write(s, addr, bank_idx, value);
-+        break;
-+
-+    default:
-+        s->regs[addr / sizeof(uint32_t)] = value;
-+    }
-+}
-+
- static const MemoryRegionOps canfd_ops = {
-+    .read = canfd_read,
-+    .write = canfd_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
-+};
-+
-+static const MemoryRegionOps canfd_regs_ops = {
-     .read = register_read_memory,
-     .write = register_write_memory,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-     .valid = {
-         .min_access_size = 4,
-@@ -2018,12 +2169,12 @@ static void canfd_realize(DeviceState *dev, Error **errp)
+-static const RegisterAccessInfo canfd_tx_regs[] = {
+-    {   .name = "TB_ID_REGISTER",  .addr = A_TB_ID_REGISTER,
+-    },{ .name = "TB0_DLC_REGISTER",  .addr = A_TB0_DLC_REGISTER,
+-    },{ .name = "TB_DW0_REGISTER",  .addr = A_TB_DW0_REGISTER,
+-    },{ .name = "TB_DW1_REGISTER",  .addr = A_TB_DW1_REGISTER,
+-    },{ .name = "TB_DW2_REGISTER",  .addr = A_TB_DW2_REGISTER,
+-    },{ .name = "TB_DW3_REGISTER",  .addr = A_TB_DW3_REGISTER,
+-    },{ .name = "TB_DW4_REGISTER",  .addr = A_TB_DW4_REGISTER,
+-    },{ .name = "TB_DW5_REGISTER",  .addr = A_TB_DW5_REGISTER,
+-    },{ .name = "TB_DW6_REGISTER",  .addr = A_TB_DW6_REGISTER,
+-    },{ .name = "TB_DW7_REGISTER",  .addr = A_TB_DW7_REGISTER,
+-    },{ .name = "TB_DW8_REGISTER",  .addr = A_TB_DW8_REGISTER,
+-    },{ .name = "TB_DW9_REGISTER",  .addr = A_TB_DW9_REGISTER,
+-    },{ .name = "TB_DW10_REGISTER",  .addr = A_TB_DW10_REGISTER,
+-    },{ .name = "TB_DW11_REGISTER",  .addr = A_TB_DW11_REGISTER,
+-    },{ .name = "TB_DW12_REGISTER",  .addr = A_TB_DW12_REGISTER,
+-    },{ .name = "TB_DW13_REGISTER",  .addr = A_TB_DW13_REGISTER,
+-    },{ .name = "TB_DW14_REGISTER",  .addr = A_TB_DW14_REGISTER,
+-    },{ .name = "TB_DW15_REGISTER",  .addr = A_TB_DW15_REGISTER,
+-    }
+-};
+-
+-static const RegisterAccessInfo canfd_rx0_regs[] = {
+-    {   .name = "RB_ID_REGISTER",  .addr = A_RB_ID_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DLC_REGISTER",  .addr = A_RB_DLC_REGISTER,
+-        .ro = 0xfe1fffff,
+-    },{ .name = "RB_DW0_REGISTER",  .addr = A_RB_DW0_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW1_REGISTER",  .addr = A_RB_DW1_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW2_REGISTER",  .addr = A_RB_DW2_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW3_REGISTER",  .addr = A_RB_DW3_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW4_REGISTER",  .addr = A_RB_DW4_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW5_REGISTER",  .addr = A_RB_DW5_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW6_REGISTER",  .addr = A_RB_DW6_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW7_REGISTER",  .addr = A_RB_DW7_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW8_REGISTER",  .addr = A_RB_DW8_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW9_REGISTER",  .addr = A_RB_DW9_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW10_REGISTER",  .addr = A_RB_DW10_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW11_REGISTER",  .addr = A_RB_DW11_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW12_REGISTER",  .addr = A_RB_DW12_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW13_REGISTER",  .addr = A_RB_DW13_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW14_REGISTER",  .addr = A_RB_DW14_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW15_REGISTER",  .addr = A_RB_DW15_REGISTER,
+-        .ro = 0xffffffff,
+-    }
+-};
+-
+-static const RegisterAccessInfo canfd_rx1_regs[] = {
+-    {   .name = "RB_ID_REGISTER_1",  .addr = A_RB_ID_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DLC_REGISTER_1",  .addr = A_RB_DLC_REGISTER_1,
+-        .ro = 0xfe1fffff,
+-    },{ .name = "RB0_DW0_REGISTER_1",  .addr = A_RB0_DW0_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW1_REGISTER_1",  .addr = A_RB_DW1_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW2_REGISTER_1",  .addr = A_RB_DW2_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW3_REGISTER_1",  .addr = A_RB_DW3_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW4_REGISTER_1",  .addr = A_RB_DW4_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW5_REGISTER_1",  .addr = A_RB_DW5_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW6_REGISTER_1",  .addr = A_RB_DW6_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW7_REGISTER_1",  .addr = A_RB_DW7_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW8_REGISTER_1",  .addr = A_RB_DW8_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW9_REGISTER_1",  .addr = A_RB_DW9_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW10_REGISTER_1",  .addr = A_RB_DW10_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW11_REGISTER_1",  .addr = A_RB_DW11_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW12_REGISTER_1",  .addr = A_RB_DW12_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW13_REGISTER_1",  .addr = A_RB_DW13_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW14_REGISTER_1",  .addr = A_RB_DW14_REGISTER_1,
+-        .ro = 0xffffffff,
+-    },{ .name = "RB_DW15_REGISTER_1",  .addr = A_RB_DW15_REGISTER_1,
+-        .ro = 0xffffffff,
+-    }
+-};
+-
+-/* Acceptance filter registers. */
+-static const RegisterAccessInfo canfd_af_regs[] = {
+-    {   .name = "AFMR_REGISTER",  .addr = A_AFMR_REGISTER,
+-        .pre_write = filter_mask,
+-    },{ .name = "AFIR_REGISTER",  .addr = A_AFIR_REGISTER,
+-        .pre_write = filter_id,
+-    }
+-};
+-
+-static const RegisterAccessInfo canfd_txe_regs[] = {
+-    {   .name = "TXE_FIFO_TB_ID_REGISTER",  .addr = A_TXE_FIFO_TB_ID_REGISTER,
+-        .ro = 0xffffffff,
+-    },{ .name = "TXE_FIFO_TB_DLC_REGISTER",  .addr = A_TXE_FIFO_TB_DLC_REGISTER,
+-        .ro = 0xffffffff,
+-    }
+-};
+-
+ static const RegisterAccessInfo canfd_regs_info[] = {
+     {   .name = "SOFTWARE_RESET_REGISTER",  .addr = A_SOFTWARE_RESET_REGISTER,
+         .pre_write = canfd_srr_pre_write,
+     },{ .name = "MODE_SELECT_REGISTER",  .addr = A_MODE_SELECT_REGISTER,
+         .pre_write = canfd_msr_pre_write,
+@@ -2001,146 +1842,20 @@ static int xlnx_canfd_connect_to_bus(XlnxVersalCANFDState *s,
+     s->bus_client.info = &canfd_xilinx_bus_client_info;
  
- static void canfd_init(Object *obj)
- {
-     XlnxVersalCANFDState *s = XILINX_CANFD(obj);
- 
--    memory_region_init(&s->iomem, obj, TYPE_XILINX_CANFD,
--                       XLNX_VERSAL_CANFD_R_MAX * 4);
-+    memory_region_init_io(&s->iomem, obj, &canfd_ops, s, TYPE_XILINX_CANFD,
-+                          XLNX_VERSAL_CANFD_R_MAX * 4);
+     return can_bus_insert_client(bus, &s->bus_client);
  }
  
- static const VMStateDescription vmstate_canfd = {
-     .name = TYPE_XILINX_CANFD,
-     .version_id = 1,
+-#define NUM_REG_PER_AF      ARRAY_SIZE(canfd_af_regs)
+-#define NUM_AF              32
+-#define NUM_REG_PER_TXE     ARRAY_SIZE(canfd_txe_regs)
+-#define NUM_TXE             32
+-
+-static int canfd_populate_regarray(XlnxVersalCANFDState *s,
+-                                  RegisterInfoArray *r_array, int pos,
+-                                  const RegisterAccessInfo *rae,
+-                                  int num_rae)
+-{
+-    int i;
+-
+-    for (i = 0; i < num_rae; i++) {
+-        int index = rae[i].addr / 4;
+-        RegisterInfo *r = &s->reg_info[index];
+-
+-        object_initialize(r, sizeof(*r), TYPE_REGISTER);
+-
+-        *r = (RegisterInfo) {
+-            .data = &s->regs[index],
+-            .data_size = sizeof(uint32_t),
+-            .access = &rae[i],
+-            .opaque = OBJECT(s),
+-        };
+-
+-        r_array->r[i + pos] = r;
+-    }
+-    return i + pos;
+-}
+-
+-static void canfd_create_rai(RegisterAccessInfo *rai_array,
+-                                const RegisterAccessInfo *canfd_regs,
+-                                int template_rai_array_sz,
+-                                int num_template_to_copy)
+-{
+-    int i;
+-    int reg_num;
+-
+-    for (reg_num = 0; reg_num < num_template_to_copy; reg_num++) {
+-        int pos = reg_num * template_rai_array_sz;
+-
+-        memcpy(rai_array + pos, canfd_regs,
+-               template_rai_array_sz * sizeof(RegisterAccessInfo));
+-
+-        for (i = 0; i < template_rai_array_sz; i++) {
+-            const char *name = canfd_regs[i].name;
+-            uint64_t addr = canfd_regs[i].addr;
+-            rai_array[i + pos].name = g_strdup_printf("%s%d", name, reg_num);
+-            rai_array[i + pos].addr = addr + pos * 4;
+-        }
+-    }
+-}
+-
+-static RegisterInfoArray *canfd_create_regarray(XlnxVersalCANFDState *s)
+-{
+-    const char *device_prefix = object_get_typename(OBJECT(s));
+-    uint64_t memory_size = XLNX_VERSAL_CANFD_R_MAX * 4;
+-    int num_regs;
+-    int pos = 0;
+-    RegisterInfoArray *r_array;
+-
+-    num_regs = ARRAY_SIZE(canfd_regs_info) +
+-                s->cfg.tx_fifo * NUM_REGS_PER_MSG_SPACE +
+-                s->cfg.rx0_fifo * NUM_REGS_PER_MSG_SPACE +
+-                NUM_AF * NUM_REG_PER_AF +
+-                NUM_TXE * NUM_REG_PER_TXE;
+-
+-    s->tx_regs = g_new0(RegisterAccessInfo,
+-                        s->cfg.tx_fifo * ARRAY_SIZE(canfd_tx_regs));
+-
+-    canfd_create_rai(s->tx_regs, canfd_tx_regs,
+-                     ARRAY_SIZE(canfd_tx_regs), s->cfg.tx_fifo);
+-
+-    s->rx0_regs = g_new0(RegisterAccessInfo,
+-                         s->cfg.rx0_fifo * ARRAY_SIZE(canfd_rx0_regs));
+-
+-    canfd_create_rai(s->rx0_regs, canfd_rx0_regs,
+-                     ARRAY_SIZE(canfd_rx0_regs), s->cfg.rx0_fifo);
+-
+-    s->af_regs = g_new0(RegisterAccessInfo,
+-                        NUM_AF * ARRAY_SIZE(canfd_af_regs));
+-
+-    canfd_create_rai(s->af_regs, canfd_af_regs,
+-                     ARRAY_SIZE(canfd_af_regs), NUM_AF);
+-
+-    s->txe_regs = g_new0(RegisterAccessInfo,
+-                         NUM_TXE * ARRAY_SIZE(canfd_txe_regs));
+-
+-    canfd_create_rai(s->txe_regs, canfd_txe_regs,
+-                     ARRAY_SIZE(canfd_txe_regs), NUM_TXE);
+-
+-    if (s->cfg.enable_rx_fifo1) {
+-        num_regs += s->cfg.rx1_fifo * NUM_REGS_PER_MSG_SPACE;
+-
+-        s->rx1_regs = g_new0(RegisterAccessInfo,
+-                             s->cfg.rx1_fifo * ARRAY_SIZE(canfd_rx1_regs));
+-
+-        canfd_create_rai(s->rx1_regs, canfd_rx1_regs,
+-                         ARRAY_SIZE(canfd_rx1_regs), s->cfg.rx1_fifo);
+-    }
+-
+-    r_array = g_new0(RegisterInfoArray, 1);
+-    r_array->r = g_new0(RegisterInfo * , num_regs);
+-    r_array->num_elements = num_regs;
+-    r_array->prefix = device_prefix;
+-
+-    pos = canfd_populate_regarray(s, r_array, pos,
+-                                  canfd_regs_info,
+-                                  ARRAY_SIZE(canfd_regs_info));
+-    pos = canfd_populate_regarray(s, r_array, pos,
+-                                  s->tx_regs, s->cfg.tx_fifo *
+-                                  NUM_REGS_PER_MSG_SPACE);
+-    pos = canfd_populate_regarray(s, r_array, pos,
+-                                  s->rx0_regs, s->cfg.rx0_fifo *
+-                                  NUM_REGS_PER_MSG_SPACE);
+-    if (s->cfg.enable_rx_fifo1) {
+-        pos = canfd_populate_regarray(s, r_array, pos,
+-                                      s->rx1_regs, s->cfg.rx1_fifo *
+-                                      NUM_REGS_PER_MSG_SPACE);
+-    }
+-    pos = canfd_populate_regarray(s, r_array, pos,
+-                                  s->af_regs, NUM_AF * NUM_REG_PER_AF);
+-    pos = canfd_populate_regarray(s, r_array, pos,
+-                                  s->txe_regs, NUM_TXE * NUM_REG_PER_TXE);
+-
+-    memory_region_init_io(&r_array->mem, OBJECT(s), &canfd_ops, r_array,
+-                          device_prefix, memory_size);
+-    return r_array;
+-}
+-
+ static void canfd_realize(DeviceState *dev, Error **errp)
+ {
+     XlnxVersalCANFDState *s = XILINX_CANFD(dev);
+     RegisterInfoArray *reg_array;
+ 
+-    reg_array = canfd_create_regarray(s);
++    reg_array = register_init_block32(dev, canfd_regs_info,
++                                      ARRAY_SIZE(canfd_regs_info), s->reg_info,
++                                      s->regs, &canfd_regs_ops, false,
++                                      A_RX_FIFO_WATERMARK_REGISTER
++                                          + sizeof(uint32_t));
+     memory_region_add_subregion(&s->iomem, 0x00, &reg_array->mem);
+     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iomem);
+     sysbus_init_irq(SYS_BUS_DEVICE(dev), &s->irq_canfd_int);
+ 
+     if (s->canfdbus) {
 -- 
 2.50.1
 
