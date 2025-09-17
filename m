@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F4AB80327
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 16:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50964B80733
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:14:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyrou-0004Yc-Fh; Wed, 17 Sep 2025 09:03:41 -0400
+	id 1uyrkS-0008Kz-UC; Wed, 17 Sep 2025 08:59:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrlY-00012C-Mt; Wed, 17 Sep 2025 09:00:12 -0400
+ id 1uyrk3-00081G-1U; Wed, 17 Sep 2025 08:58:35 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrlL-0005Gc-Jh; Wed, 17 Sep 2025 09:00:06 -0400
+ id 1uyrjz-00052X-IM; Wed, 17 Sep 2025 08:58:34 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN7B008967
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN7C008967
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 21:56:56 +0900 (JST)
+ Wed, 17 Sep 2025 21:56:57 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=QBwrwrnsE1FoC507zgp90eTWpyZH/hajqME9o3OUmT4=; 
+DKIM-Signature: a=rsa-sha256; bh=iRO+hrK4XG9Id0QZlzueAlZAZ0CQr5cH8M80zLSFtdk=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1758113817; v=1;
- b=kYxhy6+9dqTDk/uCvtp8qrxm6EFeDZp+tr0d4KtbPV3tOn6ezkr/WCTdJhOqhN2s
- /ldESHLVVgrZ2ZgMTakYedXLE2tsNxs5WMMy+mdKXWKGMFmlMa6TtKlnoW3G7nIp
- 1u6KYk8jrVsmGSP8/jyzKMvei5raAklSfI0GjrFEoijcKg50cu9RiorVHt6dX3Vw
- 4cwNeDvMERqWMj0aapNap1/TfbiUpn+LlKMULQl8NjcplNhEEhzm3VA9NyCidwbD
- V2vVeR4E992wgVQnFahlId4fRs6WJWJ3P5rUzkIKW8BN8OZ/h7561tDF4+Gf7bgm
- 6oojDAoTjZJg92PfQyhC/w==
+ s=rs20250326; t=1758113818; v=1;
+ b=DCgdJUt8BsdsHaJ7TwtGHOS5Bl+Hwe0u8DbfwZddRm5m1qylu0a+Tk+XJ9mPKh4V
+ GI5qS8dH3Hppq9l5T4V9FNgNDWDqFIVCdhiln1db/ePtu4FqIB0OHAdFkAUb5mAy
+ /Ji7aqCMf7kqS68Ly2a1S0sohdoaJyFCMstjOQZeJz7P4WkxQtZqvnChgL14XASY
+ mO8cuykhmZhA4DLkJwQJzj2KKNbDgcb8ub5uOinuhksLZDWT+/BRod80gdIB1yUf
+ Omoayby052Xn8pF4FkTs/Y9nXTcac/MxWwyCDfRLe1l2Q9QJm0k6W+4+VjIHkq6J
+ 6ZqMRSnfmSFLUdRYgEG1Fg==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:43 +0900
-Subject: [PATCH 31/35] system/physmem: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:44 +0900
+Subject: [PATCH 32/35] target/i386: QOM-ify AddressSpace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-31-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-32-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -134,85 +134,23 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- include/exec/cpu-common.h |  4 ++--
- system/physmem.c          | 17 ++++++++---------
- 2 files changed, 10 insertions(+), 11 deletions(-)
+ target/i386/kvm/kvm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 9b658a3f48f7..420e7a71001a 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -105,7 +105,7 @@ size_t qemu_ram_pagesize_largest(void);
-  * cpu_address_space_init:
-  * @cpu: CPU to add this address space to
-  * @asidx: integer index of this address space
-- * @prefix: prefix to be used as name of address space
-+ * @name: name of address space
-  * @mr: the root memory region of address space
-  *
-  * Add the specified address space to the CPU's cpu_ases list.
-@@ -121,7 +121,7 @@ size_t qemu_ram_pagesize_largest(void);
-  * Note that with KVM only one address space is supported.
-  */
- void cpu_address_space_init(CPUState *cpu, int asidx,
--                            const char *prefix, MemoryRegion *mr);
-+                            const char *name, MemoryRegion *mr);
- /**
-  * cpu_address_space_destroy:
-  * @cpu: CPU for which address space needs to be destroyed
-diff --git a/system/physmem.c b/system/physmem.c
-index 6190eca7daed..7fa7b9ee6b76 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -774,16 +774,13 @@ hwaddr memory_region_section_get_iotlb(CPUState *cpu,
- #endif /* CONFIG_TCG */
- 
- void cpu_address_space_init(CPUState *cpu, int asidx,
--                            const char *prefix, MemoryRegion *mr)
-+                            const char *name, MemoryRegion *mr)
- {
-     CPUAddressSpace *newas;
-     AddressSpace *as = g_new0(AddressSpace, 1);
--    char *as_name;
- 
-     assert(mr);
--    as_name = g_strdup_printf("%s-%d", prefix, cpu->cpu_index);
--    address_space_init(as, NULL, mr, as_name);
--    g_free(as_name);
-+    address_space_init(as, OBJECT(cpu), mr, name);
- 
-     /* Target code should have set num_ases before calling us */
-     assert(asidx < cpu->num_ases);
-@@ -831,7 +828,7 @@ void cpu_address_space_destroy(CPUState *cpu, int asidx)
-         memory_listener_unregister(&cpuas->tcg_as_listener);
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 2ce071dfafb2..17f3c3c9e543 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2725,7 +2725,8 @@ static void register_smram_listener(Notifier *n, void *unused)
+         memory_region_set_enabled(smram, true);
      }
  
--    address_space_destroy(cpuas->as);
-+    object_unparent(OBJECT(cpuas->as));
-     call_rcu1(&cpuas->as->rcu, address_space_free);
- 
-     if (asidx == 0) {
-@@ -2814,15 +2811,17 @@ static void tcg_commit(MemoryListener *listener)
- 
- static void memory_map_init(void)
- {
--    system_memory = g_malloc(sizeof(*system_memory));
-+    Object *owner = machine_get_container("unattached");
- 
-+    system_memory = g_malloc(sizeof(*system_memory));
-     memory_region_init(system_memory, NULL, "system", UINT64_MAX);
--    address_space_init(&address_space_memory, NULL, system_memory, "memory");
-+    address_space_init(&address_space_memory, owner, system_memory,
-+                       "system-as");
- 
-     system_io = g_malloc(sizeof(*system_io));
-     memory_region_init_io(system_io, NULL, &unassigned_io_ops, NULL, "io",
-                           65536);
--    address_space_init(&address_space_io, NULL, system_io, "I/O");
-+    address_space_init(&address_space_io, owner, system_io, "io-as");
+-    address_space_init(&smram_address_space, NULL, &smram_as_root, "KVM-SMRAM");
++    address_space_init(&smram_address_space, OBJECT(kvm_state), &smram_as_root,
++                       "smram-as");
+     kvm_memory_listener_register(kvm_state, &smram_listener,
+                                  &smram_address_space, 1, "kvm-smram");
  }
- 
- MemoryRegion *get_system_memory(void)
 
 -- 
 2.51.0
