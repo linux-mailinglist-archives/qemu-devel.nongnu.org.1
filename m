@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD99B80CD7
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4697B80D19
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 18:03:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyuX3-0002Wx-8b; Wed, 17 Sep 2025 11:57:21 -0400
+	id 1uyubd-0004tp-05; Wed, 17 Sep 2025 12:02:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uyuX0-0002Vy-Qp
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 11:57:18 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1uyuba-0004rr-Fy
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 12:02:02 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uyuWz-0006aS-80
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 11:57:18 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-32eb45ab7a0so2014751a91.0
- for <qemu-devel@nongnu.org>; Wed, 17 Sep 2025 08:57:15 -0700 (PDT)
+ id 1uyubY-0007XF-NZ
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 12:02:02 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-b4e84a61055so4562069a12.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Sep 2025 09:02:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758124634; x=1758729434; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758124918; x=1758729718; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=bupv5B6htqsvBANyvY6uKCINKi9p3Pj1w/o59z56t6M=;
- b=tFFspdx1reg0rjJIc542pyjJUU9z/2nbGueN04jUeaFMv+1SnTYDGy6sMJO4N9P5Zn
- 4QniXcu3IuBnCl2THjLJSdOOxwQ9NA3QFmjmrFNxP3xsbd+6zqgCnAUYG3QtqJzHZ82x
- dWy3lFTx/xLRovfHYme9PjJ0bCKWWXl+KhgQODRBX9NsjkqbD9EwKVA5OLFmUvBSGI/3
- +Po9Lnf3TPhA2WULgFgX/xkVxE19IAOUaTbW5eR0z3Cyf8VvVppVMXrSRDN4KJZogWJw
- mu7Ka6i0YfU216wkCA6coSO3415kDboxHqKAUaZ13Bmj3+MYBZhgkCd2MYwT8giv8LAi
- E8aw==
+ bh=ZZDmunlvUXfYoPx+TjhOyIN7WODU3fkgILedlMP8VxY=;
+ b=NsTNUuiwEnCY9i62Q+7NjUz4WVVELLZK8ToEFKBO2BjUibbM1lQm391vNB4YsnXn9z
+ QFHespZVqnkqQB5JJPIfXcekVLc9bSY7WaD76J2czWc4ABUfZ4w3L/HpEJ9uOoiReht1
+ TRfan0nmHecg9oCnrYG1H+boRp9xoMwIUw+Cy0Tdzanyn655wYHUnhtxFjl5gF8Mk1I8
+ wiE78aO0cNt4RjnYFpF8PVc+d2UEjH7nQDdLpJdt/+PKGjn8u0zu8CRNhMK6cyagNwjl
+ +zflCKpaAsuoMjbGTVH0OBlTk8VvBdR3r6+0DWKJgO33eqwb2V8hz0aGYHftiNMnzbD0
+ 6Gew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758124634; x=1758729434;
+ d=1e100.net; s=20230601; t=1758124918; x=1758729718;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bupv5B6htqsvBANyvY6uKCINKi9p3Pj1w/o59z56t6M=;
- b=eeWvfPZvWb8R/a3JIXtCX3wEdTQeuARcdhKUCOOEIExXwN2opKOI6B6Qg3KBYyijdg
- egW8NrceQgojS38k8A8uPPyc6JioyGT0IYrCD1bsMMHLGzOm74tNK3W7UUtxSXNwqeqh
- Qskc6ntnKLdPzjOzkp+5/gSzbYiypF8yY5J6LdnXejXT1XBfd1YgAHLY497qLseWlUKl
- gknaNqQP27IL7hitkgdLmojm60Ouz3+kQHr2f/cWRnzKmtKQM5PKuJegw2Kzba8RK6MG
- WXJPlOuYPfuHE4SjJquzJKgjvsVl+g3Kt8ftfSU7NUVDWyrQ61jvo1h4f6yX+2NE4t9Q
- c8GA==
+ bh=ZZDmunlvUXfYoPx+TjhOyIN7WODU3fkgILedlMP8VxY=;
+ b=F98OvHGTy8AeFq1YYhDbbZsW1yQq1vo8PXa4sxWWCZLK61CuYMIMBdgty/kGAmKi9/
+ 0UP9FYEycyKMKuaqWqkkppBQPHHFxz87Y34JRMRlRWCXnU8JJfNfZCUGRvTNstEWhNRU
+ edyiZID9HjvFNYTXmOgInCRN3Zrnhd/pcWS1KHbNSEF66zf6FQ6NA1wW+fCch4EiToWr
+ g7buFlQQhxaxC5XIN/2qtzyKdvwnw5QTZ0yxb6qoT0Rc443TESdVKrA9b1xaMsuGRusE
+ Q2WxaGDhFaaO7U5Me+cNqM8PTXgEHHzdhdWqLdOcYq5/HmX+xSqNo04njDtV6lar45Yl
+ +tYw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX20Ive/pSrdn39M7iv5mWRoEYYr7Z5BkBDoWAm6UpbArpX/dGsjOs+MgJYEComHAxk0te4/Uq+d3jo@nongnu.org
-X-Gm-Message-State: AOJu0Yzdgk2byBWa4jKQxuQV8l+ulW5MEOJnbYnBTSG7CXC9ipYfExvj
- XSxPWHlH7ESYghOgivFqqCg1iSt+f6C0C5b0gKP77r9MZfG8w2lXP69bVvY4rcn4RAQ=
-X-Gm-Gg: ASbGncvDDe5ccdCnJXATEcBw71q1fLlWAbLwRhI+qempT8v+uYBeHNy2IQRMl2lMe2a
- l6gnHrr7Th3FEC7SJX86f+l5Fm5yDX6Hg2PKYIFpJe48LRvwACoSToyaD2HIfT2Cg9gKF3r5v6K
- 19vEYUMzSKhw/UNkINtoQe0J5Dozoq4zEpt2BJo+OdhLa+sOcMAQ1fHpMVhPTNa5zrESrlodFHK
- Iod6eSvTEvO6qIOBnTyEbUorp9bFg2Dw1koPFVKXudFk8hxN1A2XsyY8x2uep5VzjSPJWJ6g58S
- WBqzoYtU7qQGxjenq0B3pzPTCSKLm1Zpue0pBER9iLf/gCuurJs0FJoNhEzqWL8EU2KE5rJdjhJ
- iOmOCNzLItZauq/K6leWNzDGTWEYaHJV5lFYyMPtjhQu1J75MmxSdWvo=
-X-Google-Smtp-Source: AGHT+IFKecNGPTGOrseYU9xHTmWv7Z+nImG1VdLH0FmlBeJp4OO0Jf0YYc4Xbj35CIbgFtzt1Y70DA==
-X-Received: by 2002:a17:90b:4a41:b0:32e:a6b6:6d00 with SMTP id
- 98e67ed59e1d1-32ee3f20ab5mr3424219a91.25.1758124634179; 
- Wed, 17 Sep 2025 08:57:14 -0700 (PDT)
+ AJvYcCUSH3ES2UQO/b8DNAr3TicLdvNlDiXeDrDBJuqJ2fCz8EnbrL0CCL8BqMKDiV2QoMqPghyUuBBo0/6z@nongnu.org
+X-Gm-Message-State: AOJu0YwxhJYwakYeP7NP16WEhgxfd3P8JZN2yVghFLaes08buWfxVJYC
+ C7WqCysPadXnbO/iNnhe72/Uv6dfXApJGQP9UVvfadDeJ6pLl4UXrJTl2gQCrIgVmK4CSxfa3Ly
+ v/trW
+X-Gm-Gg: ASbGncs4D3PgRPGXnKNdLQRb8deQpgJLtBEi/rYDqgvI0Y7hrrmM5SWC6DzgmvAbfoz
+ w77ae9p3tP6IryiZ7+KI+LABKDrWKlBPYVFd2gHh4emOWGJzW2uvmjhA7cJ0CgpyIHwzk15aGjX
+ EupiRmKDrhIXdqwW7ZgxPg/pJ/u5v2A0pXzNYKuIH5ix6rQpH+SxKAZClV2lGyVRTQbIqJPZD/x
+ Ezj/LprJcEN5H7zWx5AVhzDp8sHtIuEpQLKN2h2Bcd3rQSt4jxMS9YCpAa6lr8SdZsf8QnyBnDl
+ JL1IIAIQmWxyLHUogdLhVccePfVTy/zQz1cuDYT7W2CxwKSH/MA5pbYIXWBDsz2Hov5Zfd+mxgZ
+ XKEkhPdBh2ahibY9Em1SNrjoutlldHPglJ1D3
+X-Google-Smtp-Source: AGHT+IG7jopirO7rwPJh5cEbcYQlzbmcgc/qd7VLJ0+e7BM0GzXLZ9jRLzsLYfErWQd4JhybuMEIgQ==
+X-Received: by 2002:a17:903:1b25:b0:266:d648:bf53 with SMTP id
+ d9443c01a7336-268119b832bmr35331995ad.7.1758124918232; 
+ Wed, 17 Sep 2025 09:01:58 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.157.132])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-32ed257bb5asm2809015a91.0.2025.09.17.08.57.13
+ d9443c01a7336-269800541adsm62735ad.4.2025.09.17.09.01.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Sep 2025 08:57:13 -0700 (PDT)
-Message-ID: <cd595791-a110-4088-98dd-fefb90fa2da2@linaro.org>
-Date: Wed, 17 Sep 2025 08:57:12 -0700
+ Wed, 17 Sep 2025 09:01:57 -0700 (PDT)
+Message-ID: <a392927d-74cb-4005-95f6-6e7fa1eaae1b@linaro.org>
+Date: Wed, 17 Sep 2025 09:01:56 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/35] hw/arm: QOM-ify AddressSpace
+Subject: Re: [PATCH 35/35] memory: Drop non-QOM AddressSpace support
 To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
- <20250917-qom-v1-5-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+ <20250917-qom-v1-35-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 From: Richard Henderson <richard.henderson@linaro.org>
 Content-Language: en-US
-In-Reply-To: <20250917-qom-v1-5-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20250917-qom-v1-35-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,23 +103,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/17/25 05:56, Akihiko Odaki wrote:
-> Make AddressSpaces QOM objects to ensure that they are destroyed when
-> their owners are finalized and also to get a unique path for debugging
-> output.
+> Now all AddressSpace instances are converted to QOM so drop
+> non-QOM AddressSpace support.
 > 
-> The name arguments were used to distinguish AddresSpaces in debugging
-> output, but they will represent property names after QOM-ification and
-> debugging output will show QOM paths. So change them to make them more
-> concise and also avoid conflicts with other properties.
-> 
-> Signed-off-by: Akihiko Odaki<odaki@rsg.ci.i.u-tokyo.ac.jp>
+> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 > ---
->   hw/arm/armv7m.c         | 2 +-
->   hw/arm/aspeed_ast27x0.c | 2 +-
->   hw/arm/smmu-common.c    | 5 +++--
->   3 files changed, 5 insertions(+), 4 deletions(-)
+>   include/system/memory.h | 13 -------------
+>   system/memory.c         | 26 +++++---------------------
+>   2 files changed, 5 insertions(+), 34 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
