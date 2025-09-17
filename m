@@ -2,82 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02309B80D1C
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 18:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D6EB80885
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:27:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyuax-00041l-CF; Wed, 17 Sep 2025 12:01:23 -0400
+	id 1uyrkj-0008Vk-NT; Wed, 17 Sep 2025 08:59:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@kubuds.cn>)
- id 1uyraK-0005YW-8c
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 08:48:33 -0400
-Received: from smtpbguseast3.qq.com ([54.243.244.52])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uyrkX-0008Pm-3w; Wed, 17 Sep 2025 08:59:06 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@kubuds.cn>)
- id 1uyraD-0003Ul-0u
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 08:48:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kubuds.cn;
- s=reyb2403; t=1758113264;
- bh=x6PenYb2OYO7DzPSgQ8aaHOUIRmM43ePGDREyY/1fVo=;
- h=From:To:Subject:Date:Message-ID:MIME-Version;
- b=lzmeFv0dyOLa/tsBguW7baCxJN3bWRO8kvnZ5bxXOfjYDdLytDnPTS3dcegW6R6cg
- Vk30RctssPoFvq+lS56KPjwb1SZM0TyNWC4ij5rleFrS9uGhMVpxRJCnEU8wx5TtBY
- DFb/BIAmssijzhpv51bYdJnrQGcS90ws+X2KVUhI=
-X-QQ-mid: zesmtpip2t1758113258t8ce094d3
-X-QQ-Originating-IP: wRUuIu67yMSbAyqUUXkUFVaVcPuyWx9rRsCr3WtmfFI=
-Received: from liww-ubuntu.. ( [localhost]) by bizesmtp.qq.com (ESMTP) with 
- id ; Wed, 17 Sep 2025 20:47:36 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 403894999039657497
-EX-QQ-RecipientCnt: 8
-From: liweiwei@kubuds.cn
-To: richard.henderson@linaro.org, pbonzini@redhat.com, qemu-devel@nongnu.org
-Cc: kasperl@rivosinc.com, wangjunqiang@kubuds.cn, lazyparser@gmail.com,
- liwei1518@gmail.com, Weiwei Li <liweiwei@kubuds.cn>
-Subject: [PATCH] accel/tcg: fix self-modify-code problem when modify code in a
- single tb loop
-Date: Wed, 17 Sep 2025 20:47:06 +0800
-Message-ID: <6F6BF0F431B23852+20250917124734.443966-1-liweiwei@kubuds.cn>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uyrkU-00059w-I4; Wed, 17 Sep 2025 08:59:04 -0400
+Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
+ [133.11.54.205]) (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6e008967
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Wed, 17 Sep 2025 21:56:31 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=qUgDNts/pLAXfiQGYCf+Xi0EaL/7Ac8bseo+NFP/PSc=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=From:Subject:Date:Message-Id:To;
+ s=rs20250326; t=1758113792; v=1;
+ b=qNpm7Ef0U7klFkwYiNP1zPEvVVcxKtxzCfA9mWNff7hVl7gkKQk6u15xwrz6zo39
+ eLzbz+GcW4HpImOtDvQT/Nnz7BgUBdk2tJkJLHL5TmHPYyp48+ivXFX/5LAYxP7B
+ 5Vq4/k4lQrZys11cFTlX3cNJUJ1s7i7zwPWv48QD5LN456omn9h2MAua/U1KTKv7
+ hIZ5oaMakj2MHUKOKhGlWPxOsqYFpk4DfGPhpZf7+YdF02ZVeD82nu48L3R2oRmN
+ FiXHpNSI8zYr1M4zE0ABNoVuSveO9axxTUh8G0vu/Tyk5ycCNvhmQX8BSMhiShvY
+ 1MyA7TYRrp7XCIPztgcDfg==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: [PATCH 00/35] memory: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:12 +0900
+Message-Id: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:kubuds.cn:qybglogicsvrgz:qybglogicsvrgz7a-0
-X-QQ-XMAILINFO: N1R4WepIe4yL2Z78mJWGifio32eI50/k8Jg74jeqmQ8Ig9E5vGHEEuVa
- dFsRsJivnioDtniGTUlZllsTO9oIjOBUVFd18NjjFG2IIZWHncDDYtbrrih9x4a4lkof9tz
- wcdH7LDj1Fm7i+1eMn4bzh/IjSaqIxY8ZsoTBZE3wXRzxngyXPJsuyjgaNqULpnpqIb2dHl
- gTj1N2d4jiKcabNrLBQEEMcwFi76g1tYw+DRqSjDGecGZ5VTMSCh3Psrv8iakx42/Sjfijb
- ABIc3sTJVjEZVec066UXg0Y6Pzh+eBAJCmbU3+VlshqGHBM105mDF1dXZmlxftNWZF5fI0a
- QFA2GM1Ul8gdfqjS8slPyNdK2JW7dCGJ6SRefOYf0EEOygmiBqc86cPmdHpimiMLATNApy+
- A67/BDF1PWfvRJNd23u2G+ArhEfoq8NV8RVjetL5q8MqoVFgRjE4Uc5mEjcGBLx6x6XNlwL
- tnBfrbpldr3VM3GYQY8y/mnC7rlTH4U8KTUbM+oFHIabFvLqJhBuCQfTDJXCghcuP7iMsx8
- 1ONzUyhlbr5HTI6qmbp8SrWJIiqnAH8ByN8JdVVurHluM45lppsoVcyvEB2xrjyPen+T7Sf
- K2K0+3wGhMLl9iZe3WSC8LkvwbmIUcH3o0DO+fAAglQ+8Bq/qF3XiO2edB8TR9By3AEO9j2
- fyazShBMUF/mHwPYBQ27xxbBM1afT/X1rpyX/T9UpoKrAcAqq7cnlApgk3epIDCMpVjPY2P
- jG7FVKvGdZHXiS2fDlaONJ97IRnQR8sKIEtu7JNWd+WEhXvXGQirj53PO8eQPO5+fmi0wsJ
- /ICZz6Mi4e90L+rTCVg+HyqbNECpWceE+6l68maPehPN4c/8iNQFNQoJIPX2DkcTFWBfc50
- zhe/hO+IkgNAGw7aDAhjMIi2xhB91KnSoDjhxx5QHudEdOLDEjG6pxd24Ry5umGb8T9Co5O
- C86PZaquOwbSbgf2H0fnI20Gt2Xw3QjnxSTM3rBHkJQqxtGaQbGgecKE4iLUolYmgyj0z6w
- n+5ezgSlbSUop9Qke/pCuPWAqtIwrqBfM8tAW024KKykYcdZdX9S76hcDjdSVDr7et45Cw/
- zghotskeeT0wVpZCKhoNAw=
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
-X-QQ-RECHKSPAM: 0
-Received-SPF: pass client-ip=54.243.244.52; envelope-from=liweiwei@kubuds.cn;
- helo=smtpbguseast3.qq.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOyvymgC/0XMy27DIBCF4VexWBfE1QSrivIeVRZchgQ1mAZsq
+ 1KUdy+pK3X5j858D9SgJmhoGh6owpZaKnMP9jYgf7XzBXAKvRGnXFHDFL6XjEFH7y3XQQaH+vK
+ rQkzfv8rHee8K97Vjy378t6Zhl+iI1wZYaPDeUGEN0GnjLyxDa/Zv++7LBpUwrZg0Qo6aXNJCn
+ L3ZpcwnSJ/EZSDX9fh6dLaDvuSclmkARlkQQhuuBKVGREsdtSOoKAXIcPARpDowQOfn8wd/8d0
+ CBQEAAA==
+X-Change-ID: 20250915-qom-e7fcca27d4db
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, Eric Auger <eric.auger@redhat.com>,
+ Helge Deller <deller@gmx.de>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?utf-8?q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Aleksandar Rikalo <arikalo@gmail.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Ninad Palsule <ninad@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Jason Wang <jasowang@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+ =?utf-8?q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Aditya Gupta <adityag@linux.ibm.com>,
+ Gautam Menghani <gautam@linux.ibm.com>, Song Gao <gaosong@loongson.cn>,
+ Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Fan Ni <fan.ni@samsung.com>, David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+ Jan Kiszka <jan.kiszka@web.de>, Laurent Vivier <laurent@vivier.eu>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Bernhard Beschow <shentey@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Fam Zheng <fam@euphon.net>,
+ Bin Meng <bmeng.cn@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Peter Xu <peterx@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+ qemu-block@nongnu.org, kvm@vger.kernel.org,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.15-dev-179e8
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 17 Sep 2025 12:01:07 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,43 +127,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Weiwei Li <liweiwei@kubuds.cn>
+Based-on: <20250917-subregion-v1-0-bef37d9b4f73@rsg.ci.i.u-tokyo.ac.jp>
+("[PATCH 00/14] Fix memory region use-after-finalization")
 
-The problem is triggered in following conditions:
-- thread 1:
-    run spin loop(ended with a direct jump) like "0x0000006f, // jal zero, #0"
-- thread 2:
-    do something, and then modify the loop code of thread 1 to nop isntruction,
-    finally wait thread 1 exit.
+Make AddressSpaces QOM objects to ensure that they are destroyed when
+their owners are finalized and also to get a unique path for debugging
+output.
 
-The loop tb which is patched to jump to itself, will not be updated in this case
-and will never exit.
+Suggested by BALATON Zoltan:
+https://lore.kernel.org/qemu-devel/cd21698f-db77-eb75-6966-d559fdcab835@eik.bme.hu/
 
-Signed-off-by: Weiwei Li <liweiwei@kubuds.cn>
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- accel/tcg/cpu-exec.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Akihiko Odaki (35):
+      memory: QOM-ify AddressSpace
+      hw/core/loader: Use address_space_get_path()
+      vfio: Use address_space_get_path()
+      hw/alpha: QOM-ify AddressSpace
+      hw/arm: QOM-ify AddressSpace
+      hw/display: QOM-ify AddressSpace
+      hw/dma: QOM-ify AddressSpace
+      hw/fsi: QOM-ify AddressSpace
+      hw/i2c: QOM-ify AddressSpace
+      hw/i386: QOM-ify AddressSpace
+      hw/intc: QOM-ify AddressSpace
+      hw/loongarch: QOM-ify AddressSpace
+      hw/mem: QOM-ify AddressSpace
+      hw/misc: QOM-ify AddressSpace
+      hw/net: QOM-ify AddressSpace
+      hw/nubus: QOM-ify AddressSpace
+      hw/pci: QOM-ify AddressSpace
+      hw/pci-host: QOM-ify AddressSpace
+      hw/ppc: QOM-ify AddressSpace
+      hw/remote: QOM-ify AddressSpace
+      hw/riscv: QOM-ify AddressSpace
+      hw/s390x: QOM-ify AddressSpace
+      hw/scsi: QOM-ify AddressSpace
+      hw/sd: QOM-ify AddressSpace
+      hw/sparc: QOM-ify AddressSpace
+      hw/sparc64: QOM-ify AddressSpace
+      hw/ssi: QOM-ify AddressSpace
+      hw/usb: QOM-ify AddressSpace
+      hw/usb: QOM-ify AddressSpace
+      hw/virtio: QOM-ify AddressSpace
+      system/physmem: QOM-ify AddressSpace
+      target/i386: QOM-ify AddressSpace
+      target/mips: QOM-ify AddressSpace
+      target/xtensa: QOM-ify AddressSpace
+      memory: Drop non-QOM AddressSpace support
 
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 8491e5badd..6919d068c8 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -973,8 +973,12 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
-                 last_tb = NULL;
-             }
- #endif
--            /* See if we can patch the calling TB. */
--            if (last_tb) {
-+            /*
-+             * See if we can patch the calling TB.
-+             * To make self-modifying code work, we prevent patching the single
-+             * tb loop.
-+             */
-+            if (last_tb && last_tb != tb) {
-                 tb_add_jump(last_tb, tb_exit, tb);
-             }
- 
--- 
-2.43.0
+ include/exec/cpu-common.h     |  4 +--
+ include/system/memory.h       | 20 +++++++++------
+ hw/alpha/typhoon.c            |  4 +--
+ hw/arm/armv7m.c               |  2 +-
+ hw/arm/aspeed_ast27x0.c       |  2 +-
+ hw/arm/smmu-common.c          |  5 ++--
+ hw/core/loader.c              |  8 +++---
+ hw/display/artist.c           |  2 +-
+ hw/display/bcm2835_fb.c       |  2 +-
+ hw/dma/bcm2835_dma.c          |  2 +-
+ hw/dma/pl080.c                |  2 +-
+ hw/dma/pl330.c                |  3 +--
+ hw/dma/rc4030.c               |  4 +--
+ hw/dma/xilinx_axidma.c        |  4 +--
+ hw/dma/xlnx-zdma.c            |  2 +-
+ hw/dma/xlnx_csu_dma.c         |  2 +-
+ hw/fsi/aspeed_apb2opb.c       |  2 +-
+ hw/i2c/aspeed_i2c.c           |  3 +--
+ hw/i386/amd_iommu.c           |  5 ++--
+ hw/i386/intel_iommu.c         |  5 +++-
+ hw/intc/arm_gicv3_common.c    |  3 +--
+ hw/intc/pnv_xive.c            |  4 +--
+ hw/loongarch/virt.c           |  3 ++-
+ hw/mem/cxl_type3.c            | 44 +++++++++------------------------
+ hw/mem/memory-device.c        |  4 +--
+ hw/misc/aspeed_hace.c         |  2 +-
+ hw/misc/auxbus.c              |  2 +-
+ hw/misc/bcm2835_mbox.c        |  2 +-
+ hw/misc/bcm2835_property.c    |  2 +-
+ hw/misc/max78000_gcr.c        |  2 +-
+ hw/misc/tz-mpc.c              |  6 ++---
+ hw/misc/tz-msc.c              |  2 +-
+ hw/misc/tz-ppc.c              |  5 +++-
+ hw/net/allwinner-sun8i-emac.c |  2 +-
+ hw/net/cadence_gem.c          |  4 +--
+ hw/net/dp8393x.c              |  2 +-
+ hw/net/msf2-emac.c            |  2 +-
+ hw/net/mv88w8618_eth.c        |  2 +-
+ hw/nubus/nubus-bus.c          |  4 +--
+ hw/pci-host/astro.c           |  3 +--
+ hw/pci-host/designware.c      |  5 ++--
+ hw/pci-host/dino.c            |  4 +--
+ hw/pci-host/gt64120.c         |  2 +-
+ hw/pci-host/pnv_phb3.c        |  4 +--
+ hw/pci-host/pnv_phb4.c        |  4 +--
+ hw/pci-host/ppc440_pcix.c     |  2 +-
+ hw/pci-host/ppce500.c         |  2 +-
+ hw/pci-host/raven.c           |  2 +-
+ hw/pci/pci.c                  |  6 ++---
+ hw/pci/pci_bridge.c           | 10 ++++----
+ hw/ppc/pnv_lpc.c              |  2 +-
+ hw/ppc/pnv_xscom.c            |  2 +-
+ hw/ppc/spapr_pci.c            |  5 ++--
+ hw/ppc/spapr_vio.c            |  2 +-
+ hw/remote/iommu.c             |  4 +--
+ hw/riscv/riscv-iommu.c        |  9 ++++---
+ hw/s390x/s390-pci-bus.c       |  9 ++-----
+ hw/scsi/lsi53c895a.c          |  5 ++--
+ hw/sd/allwinner-sdhost.c      |  2 +-
+ hw/sd/sdhci.c                 |  4 +--
+ hw/sparc/sun4m_iommu.c        |  2 +-
+ hw/sparc64/sun4u_iommu.c      |  2 +-
+ hw/ssi/aspeed_smc.c           |  6 ++---
+ hw/usb/hcd-dwc2.c             |  2 +-
+ hw/usb/hcd-xhci-sysbus.c      |  2 +-
+ hw/vfio/listener.c            |  8 ++++--
+ hw/virtio/vhost-vdpa.c        |  4 ++-
+ hw/virtio/virtio-iommu.c      |  3 ++-
+ hw/virtio/virtio-pci.c        | 12 ++++-----
+ system/memory.c               | 57 ++++++++++++++++++++++++++++---------------
+ system/physmem.c              | 24 ++++++++++--------
+ target/i386/kvm/kvm.c         |  3 ++-
+ target/mips/cpu.c             |  4 +--
+ target/xtensa/cpu.c           |  2 +-
+ 74 files changed, 204 insertions(+), 195 deletions(-)
+---
+base-commit: e101d33792530093fa0b0a6e5f43e4d8cfe4581e
+change-id: 20250915-qom-e7fcca27d4db
+prerequisite-change-id: 20250906-use-37ecc903a9e0:v2
+prerequisite-patch-id: d464fda86a3c79ff8e6d7a2e623d979b2a47019b
+prerequisite-patch-id: 17b153237f69c898b9c5b93aad0d5116d0bfe49f
+prerequisite-patch-id: a323f67e01c672ab2958a237ea54b77f1443e2d1
+prerequisite-patch-id: 822094864ad7a6a702fee098e4835621bd8092fe
+prerequisite-patch-id: 5757efd81557b060257b5db6dec6fd189076ee77
+prerequisite-patch-id: bd912830a326f13186bf38e916655ec980e11af8
+prerequisite-patch-id: fe6b92112288829e60f10c305742a544f45e8984
+prerequisite-patch-id: ac4ff0c11dcc1fc5d08b4fc480c14721fde574ad
+prerequisite-patch-id: ff398fa97b5f2feee85372fdf108d82d8d5526b0
+prerequisite-patch-id: 7ac446ae76e05dd267a63889ff775ac609712c31
+prerequisite-patch-id: b49a74cd5f31348c3dc13dcfd1dad629e6b30387
+prerequisite-patch-id: 8f61fe1b81cf3ec906ebbf61776573edd96c1e8c
+prerequisite-patch-id: 01fb8ccbe7326021a94a8d7531189568d2e311a7
+prerequisite-patch-id: 974b0fc6d7c8d6d56b8f44597260647e1a53cf38
+prerequisite-patch-id: 55c4711a2a4e6b02b8b512e0283f8feaf7d3bfa3
+prerequisite-message-id: <cover.1751493467.git.balaton@eik.bme.hu>
+prerequisite-patch-id: f9c7e666c59cdc8a561d6d122e7937648da490e1
+prerequisite-patch-id: 9b52629b6d9d32e71e5c416aead9aadb0e3c7ae2
+prerequisite-patch-id: 16467219e7dd93204cec6ceb6d69577e3e86c03a
+prerequisite-patch-id: 37a3ee3288d2cda8303c9c9e3d5ec9d813b05ef6
+prerequisite-patch-id: b707ebf05289b55e8458b6b3515aa0fc559c7c88
+prerequisite-patch-id: 721e733f06ce38375881520725177c9da9c22633
+prerequisite-patch-id: 3cd399b599a9ff57066d820b1e6504b335be4f79
+prerequisite-patch-id: 8a607cc6e52a6a6958a73cd1a1b824b52a4f4582
+prerequisite-patch-id: af3976b1c4c3ef4859f2371a318214af5418e97d
+prerequisite-patch-id: 76c6e115f8771f31c99f454fd3188ca49e283025
+prerequisite-patch-id: 488b5dd5a90070331daae2e22f7c1f6419a7e428
+prerequisite-patch-id: 53b85575018fecb94e208bdb5d3047b8d66fb4dd
+prerequisite-patch-id: 0426e04bb68376f2d4fad6ade4ac641202172396
+prerequisite-patch-id: 6ba40a4bf6e2b0ba3d4ecf9a1c4fed7f46e5730c
+
+Best regards,
+--  
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
 
