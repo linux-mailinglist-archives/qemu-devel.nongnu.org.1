@@ -2,90 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B87B80532
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 783EDB808E4
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:29:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uypYw-0000Re-AK; Wed, 17 Sep 2025 06:38:58 -0400
+	id 1uypgD-0007DK-9a; Wed, 17 Sep 2025 06:46:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uypYr-0000MY-Hq; Wed, 17 Sep 2025 06:38:53 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uypg7-00075s-6W
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 06:46:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uypYp-000741-AX; Wed, 17 Sep 2025 06:38:53 -0400
-Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
- [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HAWmAm099616
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 19:33:02 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=POdHoCg5/LDRfXqqwG2wxEKm9Lch4GRRuKLv3lF9UqQ=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1758105183; v=1;
- b=hDEKL5Fg82+eD5D2TnjNAuAtLQ0/3HkFMUCoDxUSCQ21l34OGEkgmykD7hJtPGyL
- sZhC65i24ourRRFfYMhW46aSgTDxAmlqsBK7vpr2uVYtuuFOxaf/qKQPJlj5b8tf
- IWdLnrm4oUKfulFctn6pjO/RpjUtj/5pP8dQbHE+XPVDvHtOTGK7pdBKe9vduyzU
- kLjQ+z0I7KYEVxoRG38K34sJKz1uy0qsPOpq/LvMwWmveygcs0ZeZAZXY+6YijS0
- vrny7M4p3sDfPX3uiVWUNdlCQrvdMKFzd9P+BppVjZ7OPEsij+TDBwpdQYwG6A2x
- XX4p2DCxBFeDRSQKfQeHeA==
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 19:33:00 +0900
-Subject: [PATCH 14/14] hw/usb/hcd-xhci: Do not delete the subregions
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uypg3-0008Am-2x
+ for qemu-devel@nongnu.org; Wed, 17 Sep 2025 06:46:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758105976;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=AtbzjloC89zh/35p6UijKT43wnQvBLPBcQPZYHIa1Fg=;
+ b=jSsP2GxJiX8i+PFF0fy6OX/RzNxd6FO4qWWg0GbXHdPAExbBuevaiZPbEGfaeBiBzVDpBi
+ jUKokaiEIRx2wt7F7GDiLYXFDm7T7Z07fOibZ+9gadS+3YgwjmhM5TDosf5vtBSkTWx+Js
+ rkpS3brUov7zRHwGvo3SE5pDMYLebjQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-356-eQgWT5sDOQuwj_XF-oJ0Dw-1; Wed,
+ 17 Sep 2025 06:46:13 -0400
+X-MC-Unique: eQgWT5sDOQuwj_XF-oJ0Dw-1
+X-Mimecast-MFC-AGG-ID: eQgWT5sDOQuwj_XF-oJ0Dw_1758105972
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DF3B11800562; Wed, 17 Sep 2025 10:46:11 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 65A501955F21; Wed, 17 Sep 2025 10:46:11 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 868C721E6A27; Wed, 17 Sep 2025 12:46:08 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: <qemu-devel@nongnu.org>,  <odaki@rsg.ci.i.u-tokyo.ac.jp>,
+ <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH 03/12] hw/cxl: Convert cxl_fmws_link() to Error
+In-Reply-To: <87ikiygj64.fsf@pond.sub.org> (Markus Armbruster's message of
+ "Fri, 08 Aug 2025 13:13:55 +0200")
+References: <20250808080823.2638861-1-armbru@redhat.com>
+ <20250808080823.2638861-4-armbru@redhat.com>
+ <20250808114442.0000234d@huawei.com> <87ikiygj64.fsf@pond.sub.org>
+Date: Wed, 17 Sep 2025 12:46:08 +0200
+Message-ID: <87bjn973wv.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-subregion-v1-14-bef37d9b4f73@rsg.ci.i.u-tokyo.ac.jp>
-References: <20250917-subregion-v1-0-bef37d9b4f73@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20250917-subregion-v1-0-bef37d9b4f73@rsg.ci.i.u-tokyo.ac.jp>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>,
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>,
- qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- John Levon <john.levon@nutanix.com>,
- Thanos Makatos <thanos.makatos@nutanix.com>,
- Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Aleksandar Rikalo <arikalo@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
- =?utf-8?q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-X-Mailer: b4 0.15-dev-179e8
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.009,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,36 +85,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is no longer necessary.
+Markus Armbruster <armbru@redhat.com> writes:
 
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
----
- hw/usb/hcd-xhci.c | 10 ----------
- 1 file changed, 10 deletions(-)
+> Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
+>
+>> On Fri,  8 Aug 2025 10:08:14 +0200
+>> Markus Armbruster <armbru@redhat.com> wrote:
+>>
+>>> Functions that use an Error **errp parameter to return errors should
+>>> not also report them to the user, because reporting is the caller's
+>>> job.  When the caller does, the error is reported twice.  When it
+>>> doesn't (because it recovered from the error), there is no error to
+>>> report, i.e. the report is bogus.
+>>> 
+>>> cxl_fmws_link_targets() violates this principle: it calls
+>>> error_setg(&error_fatal, ...) via cxl_fmws_link().  Goes back to
+>>> commit 584f722eb3ab (hw/cxl: Make the CXL fixed memory windows
+>>> devices.)  Currently harmless, because cxl_fmws_link_targets()'s
+>>> callers always pass &error_fatal.  Clean this up by converting
+>>> cxl_fmws_link() to Error.
+>>
+>> Patch is definitely an improvement though I'm no sure how
+>> it is really a violation of the above principle given
+>> it has no effect on being called twice for example.
+>
+> Note I wrote "Clean this up", not "fix this" :)
+>
+> This is actually a canned commit message I've been using with suitable
+> adjustments for similar patches: commit b765d21e4ab, 35b1561e3ec,
+> e6696d3ee9b, 07d5b946539, ...
+>
+>>> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>>
+>> The -1 return is perhaps unrelated to the main thing here,
+>> but does make more sense than return 1 so fair enough.
+>
+> Accident, will back it out.
 
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index 292c378bfc98..b68a2aec3171 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -3454,16 +3454,6 @@ static void usb_xhci_unrealize(DeviceState *dev)
-         xhci->mfwrap_timer = NULL;
-     }
- 
--    memory_region_del_subregion(&xhci->mem, &xhci->mem_cap);
--    memory_region_del_subregion(&xhci->mem, &xhci->mem_oper);
--    memory_region_del_subregion(&xhci->mem, &xhci->mem_runtime);
--    memory_region_del_subregion(&xhci->mem, &xhci->mem_doorbell);
--
--    for (i = 0; i < xhci->numports; i++) {
--        XHCIPort *port = &xhci->ports[i];
--        memory_region_del_subregion(&xhci->mem, &port->mem);
--    }
--
-     usb_bus_release(&xhci->bus);
- }
- 
+Changed my mind: I'm keeping it, with rationale in the commit message.
 
--- 
-2.51.0
+>> None of the above comments I've raised are that important to me though.
+>>
+>> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+>
+> Thanks!
 
 
