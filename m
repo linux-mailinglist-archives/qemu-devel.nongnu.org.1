@@ -2,48 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDAAB8095C
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB221B80A47
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:39:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uypEO-0001nO-E8; Wed, 17 Sep 2025 06:17:44 -0400
+	id 1uypEE-0001RX-KT; Wed, 17 Sep 2025 06:17:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uypD3-0000pK-0U; Wed, 17 Sep 2025 06:16:28 -0400
+ id 1uypCu-0000bc-Ow; Wed, 17 Sep 2025 06:16:15 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uypD0-0003Lx-Q3; Wed, 17 Sep 2025 06:16:20 -0400
+ id 1uypCk-0003IL-PZ; Wed, 17 Sep 2025 06:16:12 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HAE8s8093528
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HAE8s9093528
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 19:14:21 +0900 (JST)
+ Wed, 17 Sep 2025 19:14:22 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=lJRKJLkUtQVuwFEISLl+dhYLnOkVsl4daLaMLN8WUus=; 
+DKIM-Signature: a=rsa-sha256; bh=tbKbnY2EjTKUHaLtZsZLQXCBZoyFNJpVfMbynsbGNqo=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=From:Subject:Date:Message-Id:To;
+ h=From:Date:Subject:Message-Id:To;
  s=rs20250326; t=1758104062; v=1;
- b=oSwItlPy6eUaF3lh0yljm0+YCQBLTh6nG41CDwERnyNvvOnjQMl7mGXP+YZv2tHG
- cQ85oqb0YLQ+StopBgfveBRpVYJohzqiHNNR2JdhLymCdpqUr6t6VXy8GRFHTT9R
- cIb8YmgQYR6vHa7S+mPZP9ORB5wu0etavueW/B/ziXBrRzZpESHRoKJwd8fWH5HF
- PtOMtXTi0fLWCW7X5lvU9RjXpf6e6h0rF+AGzgDO4rbZEcArb5JDrw9/xuhAQlbz
- ITpfxxz0BxXfnbauuAqKB2w9aQQgYlR/uCg4Xs6+Tl+oAD9GziK/hKFkTcd2l0eL
- SCbnL+KlTAWECgXyrOaWzQ==
+ b=L8qA32CUCpnM5wR9hyBKh3E3/yVIENsagGU1hOnAgvAMMqlfFWNsMEt2aZTPndT1
+ 789WFVfvIMnTmjILQ2a/n6nU42rVSG1NwIR23FhPpG2CBeMmrKgzeI5p6qgROC5L
+ NBrIr4Xb9ur7ofaNTCvw3IZHWSwJ8n3ReSrCn6YIv/vGP86RhHKGK7ito8oLS6xv
+ mhfGB0exEQKh1wFHt2ToijtgXVJRDHSE6hyg1tz+Q4MEV404KUYgN5PZa5xhUt7y
+ CDWjSftHQBO/8M3Teael6SsSbVBhBDSPHvF0ko20sHKelxLfwsz7aXE/sqDR1kt9
+ 3UY9vvUiMSInhL8GYh3TQA==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Subject: [PATCH v3 0/7] Do not unparent in instance_finalize()
-Date: Wed, 17 Sep 2025 19:13:25 +0900
-Message-Id: <20250917-use-v3-0-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
+Date: Wed, 17 Sep 2025 19:13:26 +0900
+Subject: [PATCH v3 1/7] docs/devel: Do not unparent in instance_finalize()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMWJymgC/3XMTQ6CMBCG4auQrm3TH5HUlfcwLsowhdFESAuNh
- HB3C2504fKdzPcsLGIgjOxcLCxgokj9M4c5FAw692yRU5ObaalLaeWJTxG5qRDASuMsSpY/h4C
- eXrtyveXuKI59mHc0qe36u0+KSw6lAud8o7CuLiG2AkiQmPjYP+ZeOBD3gW1Y0l+AKj+AzoA/Q
- uW9MrVH+xdY1/UN5gLO0eQAAAA=
-X-Change-ID: 20250906-use-37ecc903a9e0
+Message-Id: <20250917-use-v3-1-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
+References: <20250917-use-v3-0-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20250917-use-v3-0-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
@@ -110,12 +107,6 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: <cover.1751493467.git.balaton@eik.bme.hu>
-("[PATCH v2 00/14] hw/pci-host/raven clean ups")
-
-Supersedes: <20240829-memory-v1-1-ac07af2f4fa5@daynix.com>
-("[PATCH] docs/devel: Prohibit calling object_unparent() for memory region")
-
 Children are automatically unparented so manually unparenting is
 unnecessary.
 
@@ -124,58 +115,55 @@ callback of the parent gets called, so object_unparent() calls in
 the callback will refer to objects that are already unparented, which
 is semantically incorrect.
 
+Remove the instruction to call object_unparent(), and the exception
+of the "do not call object_unparent()" rule for instance_finalize().
+
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
-Changes in v3:
-- Added patches to remove other object_unparent() calls in
-  instance_finalize().
-- Dropped patch "qdev: Automatically delete memory subregions" and the
-  succeeding patches to avoid Ccing many.
-- Link to v2: https://lore.kernel.org/qemu-devel/20250915-use-v2-0-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp
+ docs/devel/memory.rst | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-Changes in v2:
-- Added a reference to "[PATCH] docs/devel: Prohibit calling
-  object_unparent() for memory region", which does something similar to
-  patch "docs/devel: Do not unparent in instance_finalize()" but I
-  forgot I sent it in the past.
-- Fixed a typo in patch
-  "docs/devel: Do not unparent in instance_finalize()" and
-  "[PATCH 02/22] vfio/pci: Do not unparent in instance_finalize()".
-- Dropped patches to move address_space_init() calls; I intend to
-  QOM-ify to fix memory leaks automatically as discussed in the
-  following thread:
-  https://lore.kernel.org/qemu-devel/cd21698f-db77-eb75-6966-d559fdcab835@eik.bme.hu/
-  But the QOM-ification will be big so I'll send it as a separate
-  series.
-- Rebased on top of "[PATCH v2 00/14] hw/pci-host/raven clean ups".
-  https://lore.kernel.org/qemu-devel/cover.1751493467.git.balaton@eik.bme.hu/
-- Link to v1: https://lore.kernel.org/qemu-devel/20250906-use-v1-0-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp
+diff --git a/docs/devel/memory.rst b/docs/devel/memory.rst
+index 57fb2aec76e0..749f11d8a4dd 100644
+--- a/docs/devel/memory.rst
++++ b/docs/devel/memory.rst
+@@ -161,18 +161,11 @@ or never.
+ Destruction of a memory region happens automatically when the owner
+ object dies.
+ 
+-If however the memory region is part of a dynamically allocated data
+-structure, you should call object_unparent() to destroy the memory region
+-before the data structure is freed.  For an example see VFIOMSIXInfo
+-and VFIOQuirk in hw/vfio/pci.c.
+-
+ You must not destroy a memory region as long as it may be in use by a
+ device or CPU.  In order to do this, as a general rule do not create or
+-destroy memory regions dynamically during a device's lifetime, and only
+-call object_unparent() in the memory region owner's instance_finalize
+-callback.  The dynamically allocated data structure that contains the
+-memory region then should obviously be freed in the instance_finalize
+-callback as well.
++destroy memory regions dynamically during a device's lifetime.
++The dynamically allocated data structure that contains the
++memory region should be freed in the instance_finalize callback.
+ 
+ If you break this rule, the following situation can happen:
+ 
+@@ -198,9 +191,9 @@ this exception is rarely necessary, and therefore it is discouraged,
+ but nevertheless it is used in a few places.
+ 
+ For regions that "have no owner" (NULL is passed at creation time), the
+-machine object is actually used as the owner.  Since instance_finalize is
+-never called for the machine object, you must never call object_unparent
+-on regions that have no owner, unless they are aliases or containers.
++machine object is actually used as the owner.  You must never call
++object_unparent on regions that have no owner, unless they are aliases
++or containers.
+ 
+ 
+ Overlapping regions and priority
 
----
-Akihiko Odaki (7):
-      docs/devel: Do not unparent in instance_finalize()
-      vfio/pci: Do not unparent in instance_finalize()
-      hw/core/register: Do not unparent in instance_finalize()
-      hv-balloon: hw/core/register: Do not unparent in instance_finalize()
-      hw/sd/sdhci: Do not unparent in instance_finalize()
-      vfio: Do not unparent in instance_finalize()
-      hw/xen: Do not unparent in instance_finalize()
-
- docs/devel/memory.rst  | 19 ++++++-------------
- hw/core/register.c     |  1 -
- hw/hyperv/hv-balloon.c | 12 +-----------
- hw/sd/sdhci.c          |  4 ----
- hw/vfio/pci-quirks.c   |  9 +--------
- hw/vfio/pci.c          |  4 ----
- hw/vfio/region.c       |  3 ---
- hw/xen/xen_pt_msi.c    | 11 +----------
- 8 files changed, 9 insertions(+), 54 deletions(-)
----
-base-commit: e101d33792530093fa0b0a6e5f43e4d8cfe4581e
-change-id: 20250906-use-37ecc903a9e0
-
-Best regards,
---  
-Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+-- 
+2.51.0
 
 
