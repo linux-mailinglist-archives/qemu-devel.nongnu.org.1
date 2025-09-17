@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D2EB80878
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12796B8065E
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:11:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyqjU-0005tt-4p; Wed, 17 Sep 2025 07:53:56 -0400
+	id 1uyqis-0004AZ-Pm; Wed, 17 Sep 2025 07:53:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqi0-00035Q-JX
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqi1-00035U-8V
  for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqhw-0003kc-BW
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uyqhw-0003kI-CV
  for qemu-devel@nongnu.org; Wed, 17 Sep 2025 07:52:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758109938;
+ s=mimecast20190719; t=1758109936;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=t0RTR14tGDCK7KLNx1SfxdzthJ+BwqbXRuDzYoEM00k=;
- b=BshVWX/WH4CW9b8ZDnape9mJUHo20SesQvq5xtToTfXV2dazN80c/JxOHv27lxUyjshkIY
- fYduqIW6bsBWIIFy/OlxPR40Gns55OB9oL504GHEg7HkSXal2NsSWuIzNa9UE89tJWiGtb
- 74FJHaNPaIEc+i/ogNdK23Y8AvU770U=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=I+jUF0eX+vQ+j7nrzGHoZQGU4GQeQJANoqy508N9Zg4=;
+ b=A/543SchVe0t3A/EMZPKGgVVyqZbIMIaVJ8tIZALs5oGYj1WoW3p4KU3GAozV4YB+b9kGf
+ ISVNqE0ACXIjC/u2ZjvEAsBy4kKTq3cHlf7w5y214a8KmxDbbW1IFSfM4W3ASSMvL1ISEQ
+ cZR11Hz9O3yyzaJS8KCx4BuIuvZFxtE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-U4cgBnetOu-qflRA18NaXg-1; Wed,
- 17 Sep 2025 07:52:15 -0400
-X-MC-Unique: U4cgBnetOu-qflRA18NaXg-1
-X-Mimecast-MFC-AGG-ID: U4cgBnetOu-qflRA18NaXg_1758109933
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-335-ZhpbcKEnMNKp7D4SKKrqlA-1; Wed,
+ 17 Sep 2025 07:52:14 -0400
+X-MC-Unique: ZhpbcKEnMNKp7D4SKKrqlA-1
+X-Mimecast-MFC-AGG-ID: ZhpbcKEnMNKp7D4SKKrqlA_1758109933
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D2F261956058; Wed, 17 Sep 2025 11:52:13 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CE2CF1800343; Wed, 17 Sep 2025 11:52:13 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.45.242.9])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 87A001955F21; Wed, 17 Sep 2025 11:52:13 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8284130001A4; Wed, 17 Sep 2025 11:52:13 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 580C621E66C4; Wed, 17 Sep 2025 13:52:07 +0200 (CEST)
+ id 5C0EF21E66D2; Wed, 17 Sep 2025 13:52:07 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: odaki@rsg.ci.i.u-tokyo.ac.jp, marcandre.lureau@redhat.com,
  berrange@redhat.com
-Subject: [PATCH v2 09/12] ui/pixman: Consistent error handling in
- qemu_pixman_shareable_free()
-Date: Wed, 17 Sep 2025 13:52:04 +0200
-Message-ID: <20250917115207.1730186-10-armbru@redhat.com>
+Subject: [PATCH v2 10/12] ui/dbus: Clean up dbus_update_gl_cb() error checking
+Date: Wed, 17 Sep 2025 13:52:05 +0200
+Message-ID: <20250917115207.1730186-11-armbru@redhat.com>
 In-Reply-To: <20250917115207.1730186-1-armbru@redhat.com>
 References: <20250917115207.1730186-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,36 +83,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_pixman_shareable_free() wraps around either qemu_memfd_free() or
-qemu_win32_map_free().  The former reports trouble as error, with
-error_report(), then succeeds.  The latter reports it as warning (we
-pass it &error_warn), then succeeds.
+From GLib "Rules for use of GError":
 
-Change the latter to report as error, too.
+    A GError* must be initialized to NULL before passing its address
+    to a function that can report errors.
+
+dbus_update_gl_cb() seemingly violates this rule: it passes &err to
+qemu_dbus_display1_listener_call_update_dmabuf_finish() and to
+qemu_dbus_display1_listener_win32_d3d11_call_update_texture2d_finish()
+without clearing it in between.  Harmless, because the first call is
+guarded by #ifdef CONFIG_GBM, the second by #ifdef WIN32, and the two
+are mutually exclusive.  I think.
+
+Clean this up to be obviously correct.
 
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/qemu-pixman.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ ui/dbus-listener.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
-index ef4e71da11..e46c6232cf 100644
---- a/ui/qemu-pixman.c
-+++ b/ui/qemu-pixman.c
-@@ -288,7 +288,10 @@ qemu_pixman_shareable_free(qemu_pixman_shareable handle,
-                            void *ptr, size_t size)
- {
- #ifdef WIN32
--    qemu_win32_map_free(ptr, handle, &error_warn);
-+    Error *err = NULL;
-+
-+    qemu_win32_map_free(ptr, handle, &err);
-+    error_report_err(err);
- #else
-     qemu_memfd_free(ptr, size, handle);
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index 42875b8eed..09d7a319b1 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -221,18 +221,21 @@ static void dbus_update_gl_cb(GObject *source_object,
+ #ifdef CONFIG_GBM
+     success = qemu_dbus_display1_listener_call_update_dmabuf_finish(
+         ddl->proxy, res, &err);
++    if (!success) {
++        error_report("Failed to call update: %s", err->message);
++    }
  #endif
+ 
+ #ifdef WIN32
+     success = qemu_dbus_display1_listener_win32_d3d11_call_update_texture2d_finish(
+         ddl->d3d11_proxy, res, &err);
+-    d3d_texture2d_acquire0(ddl->d3d_texture, &error_warn);
+-#endif
+-
+     if (!success) {
+         error_report("Failed to call update: %s", err->message);
+     }
+ 
++    d3d_texture2d_acquire0(ddl->d3d_texture, &error_warn);
++#endif
++
+     graphic_hw_gl_block(ddl->dcl.con, false);
+     g_object_unref(ddl);
+ }
 -- 
 2.49.0
 
