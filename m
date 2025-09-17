@@ -2,66 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B627B80803
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDAAB8095C
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:32:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uypAG-0007j3-WB; Wed, 17 Sep 2025 06:13:29 -0400
+	id 1uypEO-0001nO-E8; Wed, 17 Sep 2025 06:17:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uypAB-0007i1-TE; Wed, 17 Sep 2025 06:13:23 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uypD3-0000pK-0U; Wed, 17 Sep 2025 06:16:28 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uypA9-0002rv-Ew; Wed, 17 Sep 2025 06:13:23 -0400
-Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:94a9:0:640:a3fa:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id E2E728062F;
- Wed, 17 Sep 2025 13:13:15 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:b2a::1:6] (unknown [2a02:6bf:8080:b2a::1:6])
- by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id FDONDH0FpeA0-7VsqWdbc; Wed, 17 Sep 2025 13:13:15 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1758103995;
- bh=JxQcXc6mP+YnbJxWzxhNF51ObZBVDrdWt80DfbXrnGg=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=odOFeHDY4CsVHCm2ggxeTAE2g9KYQZhAjfLy+dyYPkhR4AS/Xh6iJyNFTBQkQTrzj
- lLg14WhipYxUcaAxBC11zrHGH2o24ajNq1dtHmdIQRnzJRBzbvWYIqDy3ETstjk8oE
- TL6fW3pvNVc7ZGSXDWcWQp1hwAmbLFaMO3+Y+12k=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <ea5f1352-e1f8-409e-a0cb-9568585628f1@yandex-team.ru>
-Date: Wed, 17 Sep 2025 13:13:15 +0300
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uypD0-0003Lx-Q3; Wed, 17 Sep 2025 06:16:20 -0400
+Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
+ [133.11.54.205]) (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HAE8s8093528
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Wed, 17 Sep 2025 19:14:21 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=lJRKJLkUtQVuwFEISLl+dhYLnOkVsl4daLaMLN8WUus=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=From:Subject:Date:Message-Id:To;
+ s=rs20250326; t=1758104062; v=1;
+ b=oSwItlPy6eUaF3lh0yljm0+YCQBLTh6nG41CDwERnyNvvOnjQMl7mGXP+YZv2tHG
+ cQ85oqb0YLQ+StopBgfveBRpVYJohzqiHNNR2JdhLymCdpqUr6t6VXy8GRFHTT9R
+ cIb8YmgQYR6vHa7S+mPZP9ORB5wu0etavueW/B/ziXBrRzZpESHRoKJwd8fWH5HF
+ PtOMtXTi0fLWCW7X5lvU9RjXpf6e6h0rF+AGzgDO4rbZEcArb5JDrw9/xuhAQlbz
+ ITpfxxz0BxXfnbauuAqKB2w9aQQgYlR/uCg4Xs6+Tl+oAD9GziK/hKFkTcd2l0eL
+ SCbnL+KlTAWECgXyrOaWzQ==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: [PATCH v3 0/7] Do not unparent in instance_finalize()
+Date: Wed, 17 Sep 2025 19:13:25 +0900
+Message-Id: <20250917-use-v3-0-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 13/13] util/vhost-user-server: vu_message_read():
- improve error handling
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, qemu-block@nongnu.org,
- leiyang@redhat.com, marcandre.lureau@redhat.com,
- Coiby Xu <Coiby.Xu@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-References: <20250916131403.368343-1-vsementsov@yandex-team.ru>
- <20250916131403.368343-14-vsementsov@yandex-team.ru>
- <aMmHUW5nqZf1RxTb@redhat.com>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <aMmHUW5nqZf1RxTb@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMWJymgC/3XMTQ6CMBCG4auQrm3TH5HUlfcwLsowhdFESAuNh
+ HB3C2504fKdzPcsLGIgjOxcLCxgokj9M4c5FAw692yRU5ObaalLaeWJTxG5qRDASuMsSpY/h4C
+ eXrtyveXuKI59mHc0qe36u0+KSw6lAud8o7CuLiG2AkiQmPjYP+ZeOBD3gW1Y0l+AKj+AzoA/Q
+ uW9MrVH+xdY1/UN5gLO0eQAAAA=
+X-Change-ID: 20250906-use-37ecc903a9e0
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>,
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ John Levon <john.levon@nutanix.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Aleksandar Rikalo <arikalo@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ =?utf-8?q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ Bin Meng <bmeng.cn@gmail.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ xen-devel@lists.xenproject.org,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.15-dev-179e8
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,28 +110,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16.09.25 18:50, Daniel P. Berrangé wrote:
-> On Tue, Sep 16, 2025 at 04:14:02PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> 1. Drop extra error_report_err(NULL), it will just crash, if we get
->> here.
->>
->> 2. Get and report error of qemu_set_blocking(), instead of aborting.
->>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> ---
->>   util/vhost-user-server.c | 17 +++++++++++------
->>   1 file changed, 11 insertions(+), 6 deletions(-)
-> 
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> 
+Based-on: <cover.1751493467.git.balaton@eik.bme.hu>
+("[PATCH v2 00/14] hw/pci-host/raven clean ups")
 
-Thanks a lot!
+Supersedes: <20240829-memory-v1-1-ac07af2f4fa5@daynix.com>
+("[PATCH] docs/devel: Prohibit calling object_unparent() for memory region")
 
-Now the whole series is reviewed. Will you queue it
-(together with base "[PATCH v4 0/2] save qemu-file incoming non-blocking fds")?
-Or we should wait for ACCs from other maintainers?
+Children are automatically unparented so manually unparenting is
+unnecessary.
 
--- 
+Worse, automatic unparenting happens before the instance_finalize()
+callback of the parent gets called, so object_unparent() calls in
+the callback will refer to objects that are already unparented, which
+is semantically incorrect.
+
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+---
+Changes in v3:
+- Added patches to remove other object_unparent() calls in
+  instance_finalize().
+- Dropped patch "qdev: Automatically delete memory subregions" and the
+  succeeding patches to avoid Ccing many.
+- Link to v2: https://lore.kernel.org/qemu-devel/20250915-use-v2-0-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp
+
+Changes in v2:
+- Added a reference to "[PATCH] docs/devel: Prohibit calling
+  object_unparent() for memory region", which does something similar to
+  patch "docs/devel: Do not unparent in instance_finalize()" but I
+  forgot I sent it in the past.
+- Fixed a typo in patch
+  "docs/devel: Do not unparent in instance_finalize()" and
+  "[PATCH 02/22] vfio/pci: Do not unparent in instance_finalize()".
+- Dropped patches to move address_space_init() calls; I intend to
+  QOM-ify to fix memory leaks automatically as discussed in the
+  following thread:
+  https://lore.kernel.org/qemu-devel/cd21698f-db77-eb75-6966-d559fdcab835@eik.bme.hu/
+  But the QOM-ification will be big so I'll send it as a separate
+  series.
+- Rebased on top of "[PATCH v2 00/14] hw/pci-host/raven clean ups".
+  https://lore.kernel.org/qemu-devel/cover.1751493467.git.balaton@eik.bme.hu/
+- Link to v1: https://lore.kernel.org/qemu-devel/20250906-use-v1-0-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp
+
+---
+Akihiko Odaki (7):
+      docs/devel: Do not unparent in instance_finalize()
+      vfio/pci: Do not unparent in instance_finalize()
+      hw/core/register: Do not unparent in instance_finalize()
+      hv-balloon: hw/core/register: Do not unparent in instance_finalize()
+      hw/sd/sdhci: Do not unparent in instance_finalize()
+      vfio: Do not unparent in instance_finalize()
+      hw/xen: Do not unparent in instance_finalize()
+
+ docs/devel/memory.rst  | 19 ++++++-------------
+ hw/core/register.c     |  1 -
+ hw/hyperv/hv-balloon.c | 12 +-----------
+ hw/sd/sdhci.c          |  4 ----
+ hw/vfio/pci-quirks.c   |  9 +--------
+ hw/vfio/pci.c          |  4 ----
+ hw/vfio/region.c       |  3 ---
+ hw/xen/xen_pt_msi.c    | 11 +----------
+ 8 files changed, 9 insertions(+), 54 deletions(-)
+---
+base-commit: e101d33792530093fa0b0a6e5f43e4d8cfe4581e
+change-id: 20250906-use-37ecc903a9e0
+
 Best regards,
-Vladimir
+--  
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+
 
