@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF45B80860
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82EBCB80C62
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:54:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyro4-00040r-Q6; Wed, 17 Sep 2025 09:02:45 -0400
+	id 1uyrsk-0002R5-DM; Wed, 17 Sep 2025 09:07:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrlB-0000fZ-KA; Wed, 17 Sep 2025 08:59:47 -0400
+ id 1uyrpp-0005yl-SU; Wed, 17 Sep 2025 09:04:36 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrl9-00058O-JK; Wed, 17 Sep 2025 08:59:45 -0400
+ id 1uyrpn-0005yS-VF; Wed, 17 Sep 2025 09:04:33 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6u008967
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6v008967
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 21:56:44 +0900 (JST)
+ Wed, 17 Sep 2025 21:56:45 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=KcdfImNWKUrOQSIAZWAELHa88NKPS345i+R9bE7i56Q=; 
+DKIM-Signature: a=rsa-sha256; bh=yCjTOSOzxNJD5tmMZUwxklHNpokb7XYrU7eEhj5X1Iw=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
  s=rs20250326; t=1758113805; v=1;
- b=GeMdsRiaQ1HzSgq1dVBdlCwV9fw8kyxV14WhrrS8pjcPt0VFR7MsBQrP2sU0UFqE
- 3OGl13Dm+WAJOY8qxILNZh400lXX0kVS2yLKW7Hglm+asug5YncLuBYowvVHgjR8
- rAFJwCnOF46sxAWi5YneSeWL6k/BczKPnMzKBTgRk5Wdk9byj6xYpsKzBI185Cbp
- BFHE06D+R/eP1cp8n3YYywGkGQGXzeyxmov9+YLUoFH4GY9H1dSVmbJ6DCX5iK11
- dwEaDJXj3l/v53GgkjFryhdVXLs00aJgmc5BBuBGJLTaUNiD4D4Jl3JLww3w00bQ
- oCS212O2c8dp51N1g1CnRw==
+ b=goSPsWuW9Jj92+Df4/yOaL+2mBbccLanyC5vTRtnIUxTOrzpx7c2JKj3BDVgBxnW
+ xMUACCiXN6RtiFkxp3kel2Dw9mb+UOs8qbI9DIx0f7bN49eXmTkZHHILSUJ5UpeL
+ fislhEzAdtQ9BljxNbp181vYL7ouDdHy+KNin8gOvSch1nlREyHc/eanNkaPD1i4
+ tKNaBHfLTG0MINVZLpOw7EJDitJt4dJorhJ+WLMiDLYjAkp/NprL7sl+Hu9SC+s9
+ RdxSj4+ywrD25EoQDA+iSura1pyexWC31pVOzrr/lrJgTB/FzXEpMaOaGV9SE59+
+ lT98kkQS3fqxLFGj4/NHOQ==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:28 +0900
-Subject: [PATCH 16/35] hw/nubus: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:29 +0900
+Subject: [PATCH 17/35] hw/pci: QOM-ify AddressSpace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-16-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-17-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -134,31 +134,66 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/nubus/nubus-bus.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/pci/pci.c        |  6 +++---
+ hw/pci/pci_bridge.c | 11 +++++------
+ 2 files changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/hw/nubus/nubus-bus.c b/hw/nubus/nubus-bus.c
-index 1d553be77662..75767c9fc399 100644
---- a/hw/nubus/nubus-bus.c
-+++ b/hw/nubus/nubus-bus.c
-@@ -82,7 +82,7 @@ static void nubus_unrealize(BusState *bus)
- {
-     NubusBus *nubus = NUBUS_BUS(bus);
- 
--    address_space_destroy(&nubus->nubus_as);
-+    object_unparent(OBJECT(&nubus->nubus_as));
- }
- 
- static void nubus_realize(BusState *bus, Error **errp)
-@@ -94,7 +94,7 @@ static void nubus_realize(BusState *bus, Error **errp)
-         return;
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 340384a8876a..7ab93df2969d 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -1188,7 +1188,7 @@ static void do_pci_unregister_device(PCIDevice *pci_dev)
+     if (xen_mode == XEN_EMULATE) {
+         xen_evtchn_remove_pci_device(pci_dev);
      }
- 
--    address_space_init(&nubus->nubus_as, NULL, &nubus->nubus_mr, "nubus");
-+    address_space_init(&nubus->nubus_as, OBJECT(nubus), &nubus->nubus_mr, "as");
+-    address_space_destroy(&pci_dev->bus_master_as);
++    object_unparent(OBJECT(&pci_dev->bus_master_as));
  }
  
- static void nubus_init(Object *obj)
+ /* Extract PCIReqIDCache into BDF format */
+@@ -1359,8 +1359,8 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+ 
+     memory_region_init(&pci_dev->bus_master_container_region, OBJECT(pci_dev),
+                        "bus master container", UINT64_MAX);
+-    address_space_init(&pci_dev->bus_master_as, NULL,
+-                       &pci_dev->bus_master_container_region, pci_dev->name);
++    address_space_init(&pci_dev->bus_master_as, OBJECT(pci_dev),
++                       &pci_dev->bus_master_container_region, "bus-master-as");
+     pci_dev->bus_master_as.max_bounce_buffer_size =
+         pci_dev->max_bounce_buffer_size;
+ 
+diff --git a/hw/pci/pci_bridge.c b/hw/pci/pci_bridge.c
+index 94b61b907ea2..fd74622edb9f 100644
+--- a/hw/pci/pci_bridge.c
++++ b/hw/pci/pci_bridge.c
+@@ -388,13 +388,12 @@ void pci_bridge_initfn(PCIDevice *dev, const char *typename)
+     sec_bus->map_irq = br->map_irq ? br->map_irq : pci_swizzle_map_irq_fn;
+     sec_bus->address_space_mem = &br->address_space_mem;
+     memory_region_init(&br->address_space_mem, OBJECT(br), "pci_bridge_pci", UINT64_MAX);
+-    address_space_init(&br->as_mem, NULL, &br->address_space_mem,
+-                       "pci_bridge_pci_mem");
++    address_space_init(&br->as_mem, OBJECT(br), &br->address_space_mem,
++                       "mem-as");
+     sec_bus->address_space_io = &br->address_space_io;
+     memory_region_init(&br->address_space_io, OBJECT(br), "pci_bridge_io",
+                        4 * GiB);
+-    address_space_init(&br->as_io, NULL, &br->address_space_io,
+-                       "pci_bridge_pci_io");
++    address_space_init(&br->as_io, OBJECT(br), &br->address_space_io, "io-as");
+     pci_bridge_region_update(br, true);
+     QLIST_INIT(&sec_bus->child);
+     QLIST_INSERT_HEAD(&parent->child, sec_bus, sibling);
+@@ -411,8 +410,8 @@ void pci_bridge_exitfn(PCIDevice *pci_dev)
+     PCIBridge *s = PCI_BRIDGE(pci_dev);
+     assert(QLIST_EMPTY(&s->sec_bus.child));
+     QLIST_REMOVE(&s->sec_bus, sibling);
+-    address_space_destroy(&s->as_mem);
+-    address_space_destroy(&s->as_io);
++    object_unparent(OBJECT(&s->as_mem));
++    object_unparent(OBJECT(&s->as_io));
+     pci_bridge_region_del(s, &s->windows);
+     pci_bridge_region_cleanup(s, &s->windows);
+     /* object_unparent() is called automatically during device deletion */
 
 -- 
 2.51.0
