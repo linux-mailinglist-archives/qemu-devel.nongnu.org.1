@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE3AB80685
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72CF1B80628
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:09:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyrk6-00084B-5E; Wed, 17 Sep 2025 08:58:38 -0400
+	id 1uyrlN-0000YZ-DV; Wed, 17 Sep 2025 08:59:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrk1-0007zZ-Nw; Wed, 17 Sep 2025 08:58:33 -0400
+ id 1uyrkw-0000Nk-6z; Wed, 17 Sep 2025 08:59:30 -0400
 Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1uyrjw-00051r-Ok; Wed, 17 Sep 2025 08:58:33 -0400
+ id 1uyrkt-0005CD-Cv; Wed, 17 Sep 2025 08:59:29 -0400
 Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
  [133.11.54.205]) (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6n008967
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58HCuN6o008967
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 17 Sep 2025 21:56:38 +0900 (JST)
+ Wed, 17 Sep 2025 21:56:39 +0900 (JST)
  (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=rWb4z4CPURkyznHmuzsh+cyMRQ6rj+WtDBcDWVfL1Fg=; 
+DKIM-Signature: a=rsa-sha256; bh=tPY4+EI/R0lfb/HHDdmqmqutVmQUXWIyf5YSX6d+Nrg=; 
  c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
  h=From:Date:Subject:Message-Id:To;
- s=rs20250326; t=1758113799; v=1;
- b=s2GROUIgd9BllbZt6A3B/JXj8BqN/Oh5UD2af4TVlfJ8VPzMcaCzhsu02Pm69WJs
- Dh4FWzkvx95xkHyjO67nGKwF+OIfZ+B/KOQAAd9W8TSAHY2ti60BV5smaOhDlVy/
- ixlrO3c0Pakjl6vkOzBW56e1d0I4fqjxR4CQblHl9+CezRtAg8D3S1ISppYmBI98
- tB4KZZ9HKjolHZo2nNovu0lCairUd2x1JlnSECi99K5djxaxySeUCbKsG57czM6L
- 0WHZiwMObW3+syeXI0sNWWAh9v/Etypk2cw3+3zqnNpmrSjNgS37OggF6gaat+Xb
- T3cIRdYljETCSJSAJ0LjVA==
+ s=rs20250326; t=1758113800; v=1;
+ b=eJtUuI0y0LUOY2dC6/fCaR+Bh0ijW4fQbJ2sQmiYy/YrVI6YmvqM7/Jwd4NxnUxo
+ ipjTF+BMIwcDGGphE4huoKwcn7iPR0U+nKUb90tHwGqjwGLjYkm5AM0og9m6+eWu
+ liiy2zLmYLSyGL7hGZ8FQ1MIynzLCMgPyiL7ARtm5JDfwPkwiHBq7jvp9laZv5kJ
+ kaAC8NktVMWu+fnle0EHp0AL10+dZoj2G22yiOHGy96UUUkRPurQJuFlpdBP5ORs
+ SpiFdFVM4c3Ma0cO6NDNCNe90O50OHySYO0GI/Sjl1uMfuKXYGZDXV69iiT4e0jL
+ +iIFDc9A8MiqeVblBq+z9Q==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 17 Sep 2025 21:56:21 +0900
-Subject: [PATCH 09/35] hw/i2c: QOM-ify AddressSpace
+Date: Wed, 17 Sep 2025 21:56:22 +0900
+Subject: [PATCH 10/35] hw/i386: QOM-ify AddressSpace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-qom-v1-9-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20250917-qom-v1-10-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 References: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20250917-qom-v1-0-7262db7b0a84@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -134,23 +134,57 @@ concise and also avoid conflicts with other properties.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- hw/i2c/aspeed_i2c.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/i386/amd_iommu.c   | 5 +++--
+ hw/i386/intel_iommu.c | 6 ++++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
-index 9d216b3f0ea3..d1d980a8961f 100644
---- a/hw/i2c/aspeed_i2c.c
-+++ b/hw/i2c/aspeed_i2c.c
-@@ -1253,8 +1253,7 @@ static void aspeed_i2c_realize(DeviceState *dev, Error **errp)
-             return;
-         }
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index af239390ba04..541b9a8c89e1 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1494,7 +1494,7 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
  
--        address_space_init(&s->dram_as, NULL, s->dram_mr,
--                           TYPE_ASPEED_I2C "-dma-dram");
-+        address_space_init(&s->dram_as, OBJECT(s), s->dram_mr, "as");
-     }
- }
+     /* set up AMD-Vi region */
+     if (!iommu_as[devfn]) {
+-        snprintf(name, sizeof(name), "amd_iommu_devfn_%d", devfn);
++        snprintf(name, sizeof(name), "as-%d", devfn);
  
+         iommu_as[devfn] = g_new0(AMDVIAddressSpace, 1);
+         iommu_as[devfn]->bus_num = (uint8_t)bus_num;
+@@ -1522,7 +1522,8 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+                                  "amd_iommu", UINT64_MAX);
+         memory_region_init(&amdvi_dev_as->root, OBJECT(s),
+                            "amdvi_root", UINT64_MAX);
+-        address_space_init(&amdvi_dev_as->as, NULL, &amdvi_dev_as->root, name);
++        address_space_init(&amdvi_dev_as->as, OBJECT(s), &amdvi_dev_as->root,
++                           name);
+         memory_region_add_subregion_overlap(&amdvi_dev_as->root, 0,
+                                             MEMORY_REGION(&amdvi_dev_as->iommu),
+                                             0);
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 1f40d904326e..5e6d7d510e03 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -4221,6 +4221,7 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
+     vtd_iommu_unlock(s);
+ 
+     if (!vtd_dev_as) {
++        g_autofree char *as_name = NULL;
+         struct vtd_as_key *new_key;
+         /* Slow path */
+ 
+@@ -4263,8 +4264,9 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
+         vtd_dev_as->iova_tree = iova_tree_new();
+ 
+         memory_region_init(&vtd_dev_as->root, OBJECT(s), name, UINT64_MAX);
+-        address_space_init(&vtd_dev_as->as, NULL, &vtd_dev_as->root,
+-                           "vtd-root");
++        as_name = g_strconcat(name, "-as", NULL);
++        address_space_init(&vtd_dev_as->as, OBJECT(s), &vtd_dev_as->root,
++                           as_name);
+ 
+         /*
+          * Build the DMAR-disabled container with aliases to the
 
 -- 
 2.51.0
