@@ -2,76 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0357B80D76
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 18:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02066B80D94
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 18:08:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyufK-00006S-QP; Wed, 17 Sep 2025 12:05:54 -0400
+	id 1uyuhF-0001o5-6T; Wed, 17 Sep 2025 12:07:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uyufI-00005v-7g
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 12:05:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uyuh8-0001mf-HE; Wed, 17 Sep 2025 12:07:48 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uyufE-00088u-60
- for qemu-devel@nongnu.org; Wed, 17 Sep 2025 12:05:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758125146;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mVx54heixKAevDXgK5bWe8sOChhtBRuCUuvsHB3jWoc=;
- b=G08/lcktSQbRQMDnkItbNAmzbwIi6n0KP8WhPWqKjRW/Yw3tSTJ/fhNybQ0PG49rb/bFBm
- l8QZsZBz+204+oxNOB0Y+2zu17LLYXNjF/upsHPrmqofE1qXe7EfjKNKogpCBnQIAtmhjR
- C2z3QjT3gbxS9v5JQik+xei5jAA7Yx4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-520-KkPy_VRvPuWScDWSmrwCWw-1; Wed,
- 17 Sep 2025 12:05:42 -0400
-X-MC-Unique: KkPy_VRvPuWScDWSmrwCWw-1
-X-Mimecast-MFC-AGG-ID: KkPy_VRvPuWScDWSmrwCWw_1758125141
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BB68F19560AA; Wed, 17 Sep 2025 16:05:41 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.195])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 98B6B19560B8; Wed, 17 Sep 2025 16:05:39 +0000 (UTC)
-Date: Wed, 17 Sep 2025 17:05:34 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Nabih Estefan <nabihestefan@google.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org
-Subject: Re: [PATCH] checkpatch: Ignore removed lines in license check
-Message-ID: <aMrcTg0J-dQuPkhI@redhat.com>
-References: <20250916165928.10048-1-nabihestefan@google.com>
- <aMp-MzBE19NORy4Y@redhat.com>
- <CA+QoejWaM+K895k=WcRndq=BNe1kNfJ4L5APKyk4+GHhmQLD0g@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uyuh0-0008Gx-Ee; Wed, 17 Sep 2025 12:07:46 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 27AB056F2D1;
+ Wed, 17 Sep 2025 18:07:36 +0200 (CEST)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id 4d_VPj-O1y-0; Wed, 17 Sep 2025 18:07:33 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id CBC3656F2AE; Wed, 17 Sep 2025 18:07:33 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id C943C56F295;
+ Wed, 17 Sep 2025 18:07:33 +0200 (CEST)
+Date: Wed, 17 Sep 2025 18:07:33 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Miles Glenn <milesg@linux.ibm.com>
+cc: Thomas Huth <thuth@redhat.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ qemu-devel@nongnu.org, qemu-ppc@nongnu.org, clg@redhat.com, 
+ npiggin@gmail.com, rathc@linux.ibm.com, richard.henderson@linaro.org
+Subject: Re: [PATCH v4 6/9] target/ppc: Add IBM PPE42 special instructions
+In-Reply-To: <14ea64c1c7c2f9e154b0d607d88b737adb067127.camel@linux.ibm.com>
+Message-ID: <2e4a6d39-650e-74a4-ad60-56d5422c83a1@eik.bme.hu>
+References: <20250912164808.371944-1-milesg@linux.ibm.com>
+ <20250912164808.371944-7-milesg@linux.ibm.com>
+ <a419ef55-d0d5-4d88-8302-ebcc9a8c4bab@linux.ibm.com>
+ <db99b84a-4d7c-49af-8185-97db09843006@redhat.com>
+ <14ea64c1c7c2f9e154b0d607d88b737adb067127.camel@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+QoejWaM+K895k=WcRndq=BNe1kNfJ4L5APKyk4+GHhmQLD0g@mail.gmail.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,102 +64,146 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 17, 2025 at 08:16:53AM -0700, Nabih Estefan wrote:
-> We ran it against an internal patch that we were updating, so I can't
-> show you the patch.
+On Wed, 17 Sep 2025, Miles Glenn wrote:
+> On Wed, 2025-09-17 at 08:20 +0200, Thomas Huth wrote:
+>> On 17/09/2025 06.57, Harsh Prateek Bora wrote:
+>>>
+>>> On 9/12/25 22:17, Glenn Miles wrote:
+>>>> Adds the following instructions exclusively for
+>>>> IBM PPE42 processors:
+>>>>
+>>>>    LSKU
+>>>>    LCXU
+>>>>    STSKU
+>>>>    STCXU
+>>>>    LVD
+>>>>    LVDU
+>>>>    LVDX
+>>>>    STVD
+>>>>    STVDU
+>>>>    STVDX
+>>>>    SLVD
+>>>>    SRVD
+>>>>    CMPWBC
+>>>>    CMPLWBC
+>>>>    CMPWIBC
+>>>>    BNBWI
+>>>>    BNBW
+>>>>    CLRBWIBC
+>>>>    CLRWBC
+>>>>    DCBQ
+>>>>    RLDICL
+>>>>    RLDICR
+>>>>    RLDIMI
+>>>>
+>>>> A PPE42 GCC compiler is available here:
+>>>> https://github.com/open-power/ppe42-gcc
+>>>>
+>>>> For more information on the PPE42 processors please visit:
+>>>> https://wiki.raptorcs.com/w/images/a/a3/PPE_42X_Core_Users_Manual.pdf
+>>>>
+>>>> Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
+>>>> ---
+>>>> Changes from v3:
+>>>>    - Removed copy of CHECK_VDR
+>>>>    - Refactored ld/st instructions
+>>>>
+>>>>   target/ppc/insn32.decode            |  66 ++-
+>>>>   target/ppc/translate.c              |  29 +-
+>>>>   target/ppc/translate/ppe-impl.c.inc | 665 ++++++++++++++++++++++++++++
+>>>>   3 files changed, 750 insertions(+), 10 deletions(-)
+>>>>   create mode 100644 target/ppc/translate/ppe-impl.c.inc
+>>>>
+>>>
+>>> <snip>
+>>>
+>>>> diff --git a/target/ppc/translate/ppe-impl.c.inc b/target/ppc/translate/
+>>>> ppe-impl.c.inc
+>>>> new file mode 100644
+>>>> index 0000000000..792103d7c2
+>>>> --- /dev/null
+>>>> +++ b/target/ppc/translate/ppe-impl.c.inc
+>>>> @@ -0,0 +1,665 @@
+>>>> +/*
+>>>> + * IBM PPE Instructions
+>>>> + *
+>>>> + * Copyright (c) 2025, IBM Corporation.
+>>>> + *
+>>>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>>>> + */
+>>>> +
+>>>> +
+>>>> +#if !defined(TARGET_PPC64)
+>>>> +static bool vdr_is_valid(uint32_t vdr)
+>>>> +{
+>>>> +    const uint32_t valid_bitmap = 0xf00003ff;
+>>>> +    return !!((1ul << (vdr & 0x1f)) & valid_bitmap);
+>>>> +}
+>>>> +
+>>>> +static bool ppe_gpr_is_valid(uint32_t reg)
+>>>> +{
+>>>> +    const uint32_t valid_bitmap = 0xf00027ff;
+>>>> +    return !!((1ul << (reg & 0x1f)) & valid_bitmap);
+>>>> +}
+>>>> +#endif
+>>>> +
+>>>> +#define CHECK_VDR(CTX, VDR)                             \
+>>>> +    do {                                                \
+>>>> +        if (unlikely(!vdr_is_valid(VDR))) {             \
+>>>> +            gen_invalid(CTX);                           \
+>>>> +            return true;                                \
+>>>> +        }                                               \
+>>>> +    } while (0)
+>>>> +
+>>>> +#define CHECK_PPE_GPR(CTX, REG)                         \
+>>>> +    do {                                                \
+>>>> +        if (unlikely(!ppe_gpr_is_valid(REG))) {         \
+>>>> +            gen_invalid(CTX);                           \
+>>>> +            return true;                                \
+>>>> +        }                                               \
+>>>> +    } while (0)
+>>>> +
+>>>> +#define VDR_PAIR_REG(VDR) (((VDR) + 1) & 0x1f)
+>>>> +
+>>>> +#define CHECK_PPE_LEVEL(CTX, LVL)                       \
+>>>> +    do {                                                \
+>>>> +        if (unlikely(!((CTX)->insns_flags2 & (LVL)))) { \
+>>>> +            gen_invalid(CTX);                           \
+>>>> +            return true;                                \
+>>>> +        }                                               \
+>>>> +    } while (0)
+>>>> +
+>>>> +static bool trans_LCXU(DisasContext *ctx, arg_LCXU *a)
+>>>> +{
+>>>> +#if defined(TARGET_PPC64)
+>>>> +    return false;
+>>>> +#else
+>>>
+>>> If we are building the PPE42 instructions only for !TARGET_PPC64, does
+>>> it still make it usable with qemu-system-ppc64?
+>>
+>> As explained in an earlier thread already, qemu-system-ppc64 is a superset
+>> of qemu-system-ppc. Thus the ppe42 stuff should work in qemu-system-ppc64, too.
+>>
+>>   Thomas
+>>
+>
+> Ah, yes, I don't think I fully understood the ramifications of Thomas's
+> statements earlier.  Looks like I'll need to scrub the code to ensure
+> that PPE42 can run even if TARGET_PPC64 is defined.
+>
+> Cedric, this requires me to change my response to your request to add
+> the check for TARGET_PPC64 inside the is_ppe() function.  I will need
+> to leave that function as-is if we want PPE42 to be supported in both
+> targets.  Will you be ok with that?
 
-If you can't share that private patch, perhaps you can create a
-dummy patch with the same type of diff structure that shows the
-problem ?
+Does it make sense to support it with !TARGET_PPC64 if its only use is in 
+qemu-system-ppc64? Even if the CPU is 32-bit it has some 64-bit 
+instructions IIUC so does that make it TARGET_PPC64 only?
 
-> However, the difference on it being affected might be in how we're
-> running it? To check
-> against just the changes being done in the specific patch, instead of
-> the whole file, we
-> trigger it by running `./scripts/checkpatch.pl --branch HEAD...HEAD^`.
-> Could that be
-> why it's triggering against existing files?
-
-I don't think that's a problem. It is just a different way ot getting
-a list of git commit hashes to analyse - it'll still operate against
-a patch diff IIUC.
-
-FWIW, I use   'checkpatch.pl master..' and/or 'git show| checkpatch.pl -'
-
-> 
-> Thanks,
-> Nabih
-> 
-> On Wed, Sep 17, 2025 at 2:24 AM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >
-> > On Tue, Sep 16, 2025 at 04:59:28PM +0000, Nabih Estefan wrote:
-> > > When running the license check, if we are updating a license it is
-> > > possible for the checkpatch script to test against old license lines
-> > > instead of newer ones, since the removal lines appear before the
-> > > addition lines in a .patch file.
-> >
-> > While we match the "SPDX-License-Identifier" text in any context,
-> > the "file must have SDPX" validation is only performed against
-> > files that are entirely new:
-> >
-> >   # Called at the end of processing a diff hunk for a file
-> >   sub process_end_of_file {
-> >         my $fileinfo = shift;
-> >
-> >         if ($fileinfo->{action} eq "new" &&
-> >             !exists $fileinfo->{facts}->{sawspdx}) {
-> >              ...raise error ....
-> >
-> > > Fix this by skipping over lines that start with "-" in the checkpatch
-> > > script.
-> >
-> > A new file cannot have any "-" lines present, so there isn't any
-> > bug that needs fixing AFAICT.  Can you show any patch or commit
-> > where this would have made a difference to what checkpatch.pl
-> > reports ?
-> >
-> > >
-> > > Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-> > > ---
-> > >  scripts/checkpatch.pl | 3 ++-
-> > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> > > index 833f20f555..c57a423f9f 100755
-> > > --- a/scripts/checkpatch.pl
-> > > +++ b/scripts/checkpatch.pl
-> > > @@ -1813,7 +1813,8 @@ sub process {
-> > >               }
-> > >
-> > >  # Check SPDX-License-Identifier references a permitted license
-> > > -             if ($rawline =~ m,SPDX-License-Identifier: (.*?)(\*/)?\s*$,) {
-> > > +             if (($rawline =~ m,SPDX-License-Identifier: (.*?)(\*/)?\s*$,) &&
-> > > +                     $rawline !~ /^-/) {
-> > >                       $fileinfo->{facts}->{sawspdx} = 1;
-> > >                       &checkspdx($realfile, $1);
-> > >               }
-> > > --
-> > > 2.51.0.384.g4c02a37b29-goog
-> > >
-> >
-> > With regards,
-> > Daniel
-> > --
-> > |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-> > |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-> > |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-> >
-> 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Regards,
+BALATON Zoltan
 
