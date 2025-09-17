@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549CBB806A3
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 17:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA2CB801E6
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Sep 2025 16:41:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uyqlP-0008TB-RM; Wed, 17 Sep 2025 07:55:56 -0400
+	id 1uyqm0-0001SH-Qm; Wed, 17 Sep 2025 07:56:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uyqky-0007hk-9V; Wed, 17 Sep 2025 07:55:28 -0400
+ id 1uyqky-0007hm-D3; Wed, 17 Sep 2025 07:55:28 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uyqkv-0004bt-HA; Wed, 17 Sep 2025 07:55:28 -0400
+ id 1uyqkv-0004bv-GD; Wed, 17 Sep 2025 07:55:28 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 51BCB4DC10;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 7FB204DC09;
  Wed, 17 Sep 2025 13:55:20 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, fam@euphon.net, stefanha@redhat.com,
  hreitz@redhat.com, kwolf@redhat.com
-Subject: [PATCH v2 2/5] block: make bdrv_co_parent_cb_resize() a proper IO API
- function
-Date: Wed, 17 Sep 2025 13:54:49 +0200
-Message-ID: <20250917115509.401015-3-f.ebner@proxmox.com>
+Subject: [PATCH v2 3/5] block: implement 'resize' callback for child_of_bds
+ class
+Date: Wed, 17 Sep 2025 13:54:50 +0200
+Message-ID: <20250917115509.401015-4-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250917115509.401015-1-f.ebner@proxmox.com>
 References: <20250917115509.401015-1-f.ebner@proxmox.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1758110111485
+X-Bm-Transport-Timestamp: 1758110111502
 Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
  helo=proxmox-new.maurer-it.com
 X-Spam_score_int: -18
@@ -57,69 +57,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation for calling it via the bdrv_child_cb_resize() callback
-that will be added by the next commit. Rename it to include the "_co_"
-part while at it.
+If a filtered child is resized, the size of the parent node is now
+also refreshed (recursively for chains of filtered children).
+
+For filter block drivers that do not implement .bdrv_co_getlength(),
+this commit does not change the current behavior, because
+bdrv_co_refresh_total_sectors() will used the current size via the
+passed-in hint. This is the case for block drivers for (some) block
+jobs, as well as copy-before-write.
+
+Block jobs already set up a blocker preventing a QMP block_resize
+operation while the job is running. That does not directly cover an
+associated 'file' node of a 'raw' node, but resizing such a 'file'
+node is already prevented too (backup, commit, mirror and stream were
+checked).
+
+The other case is copy-before-write. This commit does not change the
+fact that the copy-before-write node still has the same size after its
+filtered child is resized.
+
+Block drivers that do implement .bdrv_co_getlength() and where
+.is_filter is true, already returned the length of the file child, so
+there is no change before and after this commit, with two exceptions:
+1. preallocate can return an early data_end and otherwise queries the
+   file child, but that special casing is not changed.
+2. blkverify returns the length of the test file. This commit does not
+   affect that behavior.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/io.c                   | 9 +++------
- include/block/block_int-io.h | 6 ++++++
- 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/block/io.c b/block/io.c
-index 9bd8ba8431..928c02d1ad 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -46,9 +46,6 @@
- /* Maximum read size for checking if data reads as zero, in bytes */
- #define MAX_ZERO_CHECK_BUFFER (128 * KiB)
- 
--static void coroutine_fn GRAPH_RDLOCK
--bdrv_parent_cb_resize(BlockDriverState *bs);
--
- static int coroutine_fn bdrv_co_do_pwrite_zeroes(BlockDriverState *bs,
-     int64_t offset, int64_t bytes, BdrvRequestFlags flags);
- 
-@@ -2038,7 +2035,7 @@ bdrv_co_write_req_finish(BdrvChild *child, int64_t offset, int64_t bytes,
-          end_sector > bs->total_sectors) &&
-         req->type != BDRV_TRACKED_DISCARD) {
-         bs->total_sectors = end_sector;
--        bdrv_parent_cb_resize(bs);
-+        bdrv_co_parent_cb_resize(bs);
-         bdrv_dirty_bitmap_truncate(bs, end_sector << BDRV_SECTOR_BITS);
+Changes in v2:
+* Check for BDRV_CHILD_FILTERED rather than bs->drv->is_filter which
+  is more generic and for example, also covers the case when the
+  child of a 'raw' node is resized.
+* Expand commit message.
+
+ block.c                          | 12 ++++++++++++
+ include/block/block_int-common.h |  2 +-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/block.c b/block.c
+index 8848e9a7ed..cf08e64add 100644
+--- a/block.c
++++ b/block.c
+@@ -1497,6 +1497,17 @@ static void GRAPH_WRLOCK bdrv_child_cb_detach(BdrvChild *child)
      }
-     if (req->bytes) {
-@@ -3570,11 +3567,11 @@ int coroutine_fn bdrv_co_copy_range(BdrvChild *src, int64_t src_offset,
-                                    bytes, read_flags, write_flags);
  }
  
--static void coroutine_fn GRAPH_RDLOCK
--bdrv_parent_cb_resize(BlockDriverState *bs)
-+void coroutine_fn bdrv_co_parent_cb_resize(BlockDriverState *bs)
- {
-     BdrvChild *c;
- 
-+    IO_CODE();
-     assert_bdrv_graph_readable();
- 
-     QLIST_FOREACH(c, &bs->parents, next_parent) {
-diff --git a/include/block/block_int-io.h b/include/block/block_int-io.h
-index 4f94eb3c5a..ed8b5657d6 100644
---- a/include/block/block_int-io.h
-+++ b/include/block/block_int-io.h
-@@ -191,4 +191,10 @@ void bdrv_bsc_invalidate_range(BlockDriverState *bs,
-  */
- void bdrv_bsc_fill(BlockDriverState *bs, int64_t offset, int64_t bytes);
- 
-+/*
-+ * Notify all parents that the size of the child changed.
-+ */
-+void coroutine_fn GRAPH_RDLOCK
-+bdrv_co_parent_cb_resize(BlockDriverState *bs);
++static void coroutine_fn GRAPH_RDLOCK bdrv_child_cb_resize(BdrvChild *child)
++{
++    BlockDriverState *bs = child->opaque;
 +
- #endif /* BLOCK_INT_IO_H */
++    if (child->role & BDRV_CHILD_FILTERED) {
++        /* Best effort, ignore errors. */
++        bdrv_co_refresh_total_sectors(bs, bs->total_sectors);
++        bdrv_co_parent_cb_resize(bs);
++    }
++}
++
+ static int bdrv_child_cb_update_filename(BdrvChild *c, BlockDriverState *base,
+                                          const char *filename,
+                                          bool backing_mask_protocol,
+@@ -1529,6 +1540,7 @@ const BdrvChildClass child_of_bds = {
+     .detach          = bdrv_child_cb_detach,
+     .inactivate      = bdrv_child_cb_inactivate,
+     .change_aio_ctx  = bdrv_child_cb_change_aio_ctx,
++    .resize          = bdrv_child_cb_resize,
+     .update_filename = bdrv_child_cb_update_filename,
+     .get_parent_aio_context = child_of_bds_get_parent_aio_context,
+ };
+diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
+index 8a3d427356..c55b35da8e 100644
+--- a/include/block/block_int-common.h
++++ b/include/block/block_int-common.h
+@@ -1023,7 +1023,7 @@ struct BdrvChildClass {
+     /*
+      * Notifies the parent that the child was resized.
+      */
+-    void (*resize)(BdrvChild *child);
++    void GRAPH_RDLOCK_PTR (*resize)(BdrvChild *child);
+ 
+     /*
+      * Returns a name that is supposedly more useful for human users than the
 -- 
 2.47.2
 
