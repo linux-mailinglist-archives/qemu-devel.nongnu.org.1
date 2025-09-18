@@ -2,112 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CBAEB86EE5
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 22:38:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF708B86EEE
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 22:40:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzLOS-0005Qo-O6; Thu, 18 Sep 2025 16:38:16 -0400
+	id 1uzLPy-00065g-Jc; Thu, 18 Sep 2025 16:39:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1uzLOQ-0005Q7-IZ; Thu, 18 Sep 2025 16:38:14 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uzLPw-00065K-D7
+ for qemu-devel@nongnu.org; Thu, 18 Sep 2025 16:39:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1uzLOO-0005hg-5e; Thu, 18 Sep 2025 16:38:14 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58IICND5006031;
- Thu, 18 Sep 2025 20:38:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=AoAzgz
- vUhbPHmOq8WCnfvhroWVXY3sPLad7q5aqHJsg=; b=P2myOEI3ycuR+X6jUPre0n
- 9cpYeg/caTDV7WGnWcTv4gFi+2BwCHhtYdxb4AidomCb5sTfUz6tY3esZldlzN+Y
- yVG40Ga8vyHPyNM5j885Q0olffOpY3TMdEr59wjWMSQyzUSPjoA5xhCK+7+dZaTH
- 0ZZcO5uCGzhcKljDMrSQw+bc1pt7OY2Mu/yNGQ9OYoJw5ez6/iLbDx2jxBItsFDp
- mJKcPNj1tOt/I8S90v3xUJW/UfHlfVKop/WCFNqe1yRKDKqpdMUEpNoAKbE5m3mb
- o3c4E4pweNg0ebm96NMH1/2HwEbgxu9384YOGfGErj0ciLEl9w4mK8FWGzQudMOg
- ==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4nm7pm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Sep 2025 20:38:09 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58IHgn2o018629;
- Thu, 18 Sep 2025 20:38:09 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 495n5mrfgn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Sep 2025 20:38:09 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
- [10.39.53.231])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 58IKc7gr66519402
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Sep 2025 20:38:08 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CD94B58045;
- Thu, 18 Sep 2025 20:38:07 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 235E158056;
- Thu, 18 Sep 2025 20:38:06 +0000 (GMT)
-Received: from [9.61.251.145] (unknown [9.61.251.145])
- by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 18 Sep 2025 20:38:06 +0000 (GMT)
-Message-ID: <4c1fdfac-d366-40f0-b580-a341ff583e63@linux.ibm.com>
-Date: Thu, 18 Sep 2025 13:38:00 -0700
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uzLPu-0005q3-De
+ for qemu-devel@nongnu.org; Thu, 18 Sep 2025 16:39:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758227984;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=p1n032cmrX/Gp4d8c4D+amtSwM5kKN1y9xGc3stMOZ0=;
+ b=GOF5UFKsZrxtviqevtNVz1LNpIcHjitO5Y1+G9yyXUSVjIdCER5xcPRyAbIrxEOdTol3Sf
+ ripIlqqHpdS1YzFf3tj4Qo6C17SX7A4lC3a1e15Z+pI3Dd4sz3vvd0h61U8CdFZrju4qit
+ wmlMy0k6ka/KDIoAlVQHeJzTl/1cekE=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-554-XAGlmgSYOcGM6ECNOXs7sQ-1; Thu, 18 Sep 2025 16:39:43 -0400
+X-MC-Unique: XAGlmgSYOcGM6ECNOXs7sQ-1
+X-Mimecast-MFC-AGG-ID: XAGlmgSYOcGM6ECNOXs7sQ_1758227982
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4b5e178be7eso35226821cf.1
+ for <qemu-devel@nongnu.org>; Thu, 18 Sep 2025 13:39:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758227982; x=1758832782;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=p1n032cmrX/Gp4d8c4D+amtSwM5kKN1y9xGc3stMOZ0=;
+ b=PdKySF3hEAQrhZb7Ak60IUSzmWRvKYaO283jvg7vf878nJW6PU1wgW+JEKEiDCoepP
+ v8COi1A+QcLEym/DyrF9KLR7kwyzwRsSrI4f1N4lBsO36owz+QmxLtf5AjIM0RX8O6Ol
+ VY5arzYM68S/sdwLpgilPzpWFhqNRfHCaQdBACgo7yndEb9L6L8UcEWnmM6fgdeTBp8I
+ StQVhVDKn+Q/RT915BCNICWoO5ZisZ+eVzB51GVvxO3IL4n8JIISYM3vHL+bQw/Oaowx
+ oWQb5T23InTTuEm2h2RCQ5EP378gmxQVZ/L7gwGhlI+wisH2vxTjyEts2E3CMhcrSShr
+ AMZg==
+X-Gm-Message-State: AOJu0YxjMo4LFPC/G2QlO0CyFljgTkHd5plkhpPb+VQbnkcyomAQUM8c
+ 3kPVJ0wJvP7Y14pB3Dbd4ONuesYI84k5RHU9mA2V9Vk+k1Kf7hSPhqPxP5BlxHsPwkNhRIu3iGy
+ l9BhayABMoMPa/hjCX0z/y03OmtEeqW8IB+YADKmdFvC9dBBRemum0WGhrALn9M+RtKJ2F3dysn
+ 0uQOb67ITckXmubZ3fKNsPd4FOdD3tbg==
+X-Gm-Gg: ASbGncvmP0c62UGQf2elzZYGJ2Mh3Ql+PlG77Z7Qp91x3DRp7ugngIFDFvQpTEwaBAi
+ NmUDFgN3FpNRAtn4M4jz4DY8ZqkfLuuzICNGogpETl52MjKtrq4UBwm+SSHUFdRMukyX9ZSNBwI
+ OX0887IKrNjM0kw+O926iJLjWOcs3iwOB9yRi+tZ2F5LyXAgVsTV/a271A9n0lu3EP/UhdsHzvE
+ w5kQb731U5XHGvcH5P7Cqlaou7qRsvBWHZkDFochVFfn56GLx5QlgSslIy+bxdqLL6DjFQ/rVIQ
+ gFhmIo+yALVw1M1FBf0gCuERR1gffAvnWm8AZFAamiFVXvs9yxwfflt66cPd0AA=
+X-Received: by 2002:a05:622a:1f0b:b0:4b1:247f:4e0f with SMTP id
+ d75a77b69052e-4c072e27b63mr10827351cf.57.1758227980325; 
+ Thu, 18 Sep 2025 13:39:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFaEyKWvhmE7WECJBQ6jCOZ1GSpJG38uY5hxLbcAC/dHlA7+sDHpbLTFh61FPIVrJId8q3LhA==
+X-Received: by 2002:a05:622a:1f0b:b0:4b1:247f:4e0f with SMTP id
+ d75a77b69052e-4c072e27b63mr10827051cf.57.1758227979909; 
+ Thu, 18 Sep 2025 13:39:39 -0700 (PDT)
+Received: from x1.com
+ (bras-base-aurron9134w-grc-11-174-89-135-121.dsl.bell.ca. [174.89.135.121])
+ by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-836278b8082sm226276285a.22.2025.09.18.13.39.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 Sep 2025 13:39:39 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Juraj Marcin <jmarcin@redhat.com>
+Subject: [PATCH v3 0/2] migration/tls: Graceful shutdowns for main and
+ postcopy channels
+Date: Thu, 18 Sep 2025 16:39:35 -0400
+Message-ID: <20250918203937.200833-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/28] s390x/diag: Refactor address validation check
- from diag308_parm_check
-To: Zhuoying Cai <zycai@linux.ibm.com>, thuth@redhat.com, berrange@redhat.com, 
- richard.henderson@linaro.org, david@redhat.com, jrossi@linux.ibm.com,
- qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, pasic@linux.ibm.com,
- borntraeger@linux.ibm.com, farman@linux.ibm.com,
- mjrosato@linux.ibm.com, iii@linux.ibm.com, eblake@redhat.com,
- armbru@redhat.com
-References: <20250917232131.495848-1-zycai@linux.ibm.com>
- <20250917232131.495848-7-zycai@linux.ibm.com>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <20250917232131.495848-7-zycai@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=MN5gmNZl c=1 sm=1 tr=0 ts=68cc6db2 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=XA1qvbxqqnLpSlYgOKIA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: QGKCAb7NefZPkCsea0SMOaftE5ROrjPR
-X-Proofpoint-ORIG-GUID: QGKCAb7NefZPkCsea0SMOaftE5ROrjPR
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwNCBTYWx0ZWRfX+eWVwSPUoLMN
- J/GNdkqjUmv+z1Aq/L9egLyWocM6oxZnLBW7HdhCfmcS3dmo98waViaG4Wh32lT6f6ei/ObKtnR
- GOrbLyD7N6VIy78tGzjzTmzJ7Shos53fzZrXp2XWW00ziEMGr62drJDQju75BEwCPoMfKLpqH3T
- Es4+ta625BQXbOnvPOIlgU4784bEC7Jkge80DoR1fDe0rEZmRXRUpBPDmq13f8/RZEu4w5m8Y3u
- /XQsHX5ZDxTmP48WrZFXQ5MqArhvhRSRJnB7cQ95E0RaC1HRWZVx5YXclluaRys6GMK8AD6oZ7b
- bUwFkjM03Zu5vUCthya2CljAjCZVmIlR9JgH/7rgkLHjDhJs7MSt5Vehz6AQXTiKKWfmPTf8EJc
- i5V68Jjc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-18_02,2025-09-18_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 priorityscore=1501 bulkscore=0 impostorscore=0
- malwarescore=0 adultscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509160204
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=alifm@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.005,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,50 +106,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
+v3:
+- Patch 1
+  - Update qcrypto_tls_session_read() doc to reflect the new retval [Dan]
+  - Update commit message to explain the qatomic_read() change [Dan]
+- Patch 2 (old)
+  - Dropped for now, more at the end
 
-On 9/17/2025 4:21 PM, Zhuoying Cai wrote:
-> Create a function to validate the address parameter of DIAGNOSE.
->
-> Refactor the function for reuse in the next patch, which allows address
-> validation in read or write operation of DIAGNOSE.
->
-> Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
-> ---
->   hw/s390x/ipl.h      | 6 ++++++
->   target/s390x/diag.c | 4 +---
->   2 files changed, 7 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/s390x/ipl.h b/hw/s390x/ipl.h
-> index bee72dfbb3..e26fc1cd6a 100644
-> --- a/hw/s390x/ipl.h
-> +++ b/hw/s390x/ipl.h
-> @@ -118,6 +118,12 @@ QEMU_BUILD_BUG_MSG(offsetof(S390IPLState, iplb) & 3, "alignment of iplb wrong");
->   #define S390_IPLB_MIN_FCP_LEN 384
->   #define S390_IPLB_MIN_QEMU_SCSI_LEN 200
->   
-> +static inline bool diag_parm_addr_valid(uint64_t addr, size_t size, bool write)
-> +{
-> +    return address_space_access_valid(&address_space_memory, addr,
-> +                                      size, write, MEMTXATTRS_UNSPECIFIED);
-> +}
-> +
->   static inline bool iplb_valid_len(IplParameterBlock *iplb)
->   {
->       return be32_to_cpu(iplb->len) <= sizeof(IplParameterBlock);
-> diff --git a/target/s390x/diag.c b/target/s390x/diag.c
-> index a35d808fd7..e67ee57f01 100644
-> --- a/target/s390x/diag.c
-> +++ b/target/s390x/diag.c
-> @@ -65,9 +65,7 @@ static int diag308_parm_check(CPUS390XState *env, uint64_t r1, uint64_t addr,
->           s390_program_interrupt(env, PGM_SPECIFICATION, ra);
->           return -1;
->       }
-> -    if (!address_space_access_valid(&address_space_memory, addr,
-> -                                    sizeof(IplParameterBlock), write,
-> -                                    MEMTXATTRS_UNSPECIFIED)) {
-> +    if (!diag_parm_addr_valid(addr, sizeof(IplParameterBlock), write)) {
->           s390_program_interrupt(env, PGM_ADDRESSING, ra);
->           return -1;
->       }
+This is v3 of the series.
+
+Fabiano fixed graceful shutdowns for multifd channels previously:
+
+https://lore.kernel.org/qemu-devel/20250206175824.22664-1-farosas@suse.de/
+
+However we can still see an warning when running preempt unit test on TLS,
+even though migration functionality will not be affected:
+
+QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/migration-test --full -r /x86_64/migration/postcopy/preempt/tls/psk
+...
+qemu-kvm: Cannot read from TLS channel: The TLS connection was non-properly terminated.
+...
+
+It turns out this is because the crypto code only passes the ->shutdown
+field into the read function, however that value can change concurrently in
+another thread by a concurrent qio_channel_shutdown().
+
+Patch 1 should fix this issue.
+
+Patch 2 is something I found when looking at this problem, there's no known
+issues I am aware of with them, however I still think they're logically
+flawed, so I post them together here.
+
+Please review, thanks.
+
+============= ABOUT OLD PATCH 2 ===================
+
+I dropped it for now to unblock almost patch 1, because patch 1 will fix a
+real warning that can be triggered for not only qtest but also normal tls
+postcopy migration.
+
+While I was looking at temporary settings for multifd send iochannels to be
+blocking always, I found I cannot explain how migration_tls_channel_end()
+currently works, because it writes to the multifd iochannels while the
+channels should still be owned (and can be written at the same time?) by
+the sender threads.  It sounds like a thread-safety issue, or is it not?
+
+Peter Xu (2):
+  io/crypto: Move tls premature termination handling into QIO layer
+  migration: Make migration_has_failed() work even for CANCELLING
+
+ include/crypto/tlssession.h | 10 +++-------
+ crypto/tlssession.c         |  7 ++-----
+ io/channel-tls.c            | 21 +++++++++++++++++++--
+ migration/migration.c       |  3 ++-
+ 4 files changed, 26 insertions(+), 15 deletions(-)
+
+-- 
+2.50.1
+
 
