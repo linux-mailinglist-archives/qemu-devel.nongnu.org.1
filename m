@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0260EB83A52
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 11:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0BDB83A40
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 10:59:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzAU4-00011c-C1; Thu, 18 Sep 2025 04:59:20 -0400
+	id 1uzAU7-00019M-0D; Thu, 18 Sep 2025 04:59:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uzATp-0000uZ-If
- for qemu-devel@nongnu.org; Thu, 18 Sep 2025 04:59:10 -0400
+ id 1uzATu-0000x8-1o
+ for qemu-devel@nongnu.org; Thu, 18 Sep 2025 04:59:13 -0400
 Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uzATm-0004kl-Nw
- for qemu-devel@nongnu.org; Thu, 18 Sep 2025 04:59:04 -0400
+ id 1uzATr-0004kl-AS
+ for qemu-devel@nongnu.org; Thu, 18 Sep 2025 04:59:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758185942; x=1789721942;
+ t=1758185947; x=1789721947;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=3QbQwAvL99C3pcmh0zP/Z/wXhtsUFSfIes+PM1D7A18=;
- b=MEVIlOQGfgZ9kD60NrUPEyq/i/AALu50Aj5apsT8RrHVb0PTmbq1eMnG
- vmARZKwoO8vpvRpyusqwg5y5B+MbW2FlzQ5Qna7nBCRKPGwNsVEUfhWRg
- i03MSXyhW8QqTdLAjTv5o67hx/pc2EPZEQYk5cZDwTBa2ZBYcXk7ubx6i
- 1c/vZ5nrIwQsDgJS4txSwM/Y+xI4PtdH9Ij/i9f030PE2thYcS6wEcZSm
- ZbRl/kRnhfWSvD6Cqn7epZ2OKYElkXIcy0ZKawFVNlvmmOSzg3ZipbOgA
- YCXLwLyg6SNg1/AQRpDU5bvYAk0dPwhq6J6QTzXDyPWvG9ebfDvZrLYuk g==;
-X-CSE-ConnectionGUID: HYegYi0nSz6Xq372jTlXOg==
-X-CSE-MsgGUID: 7ipUqqzuS9+94cof8v4k2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="78109455"
-X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; d="scan'208";a="78109455"
+ bh=f4AXeDQrDSC8Bwx0WZxeYxfnR0oD0dSoUF+iu1iKyuA=;
+ b=feeTmIT/t2Ou6k1XcAXNo7Z6GLj1q8u1elzUxxBP2pD+Kp8jM/JE47t2
+ EuDUhqWA1ss3OpHoAVTO5d+WFpba6+gM521ByDx6OsP9HGHPWXpo47IXN
+ Q3O4UAoifH+KfgEBtfP8DSFgGEDjxBil2SQ3tEGHvxMgxdHB/wYWj4dGt
+ /NpI0crfK3ot2+xp9Qfvv9HYFqBhfTQeOdd03M4NTOWPE3cCS57fW2blS
+ f50iKLL5TsSCojiljRJbgvOYSXmO2P9JFUedq9aYdrtGxo9xqRJJaoofW
+ 6OarzQvFeB4vHjFqs7k4bV/8WV6V+hIRPkx8UYLjgJ492Y+9aGXabbLF6 w==;
+X-CSE-ConnectionGUID: vtgTpkisSpCc+Sv/uJYJoQ==
+X-CSE-MsgGUID: TC0CZwyhTaiuk1rbKl+oug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="78109477"
+X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; d="scan'208";a="78109477"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2025 01:59:00 -0700
-X-CSE-ConnectionGUID: I/Fc8bB8SpmcztQnNWq3OQ==
-X-CSE-MsgGUID: f4wol+GLS2mxaxlB9tH/xA==
+ 18 Sep 2025 01:59:04 -0700
+X-CSE-ConnectionGUID: u9qQ0tTBQGCxzc/l4Q6zfQ==
+X-CSE-MsgGUID: v4HWSAE6QMWoZDdKJodHkw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; d="scan'208";a="175930346"
+X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; d="scan'208";a="175930362"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2025 01:58:57 -0700
+ 18 Sep 2025 01:59:01 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,10 +52,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v6 07/22] intel_iommu: Introduce a new structure
- VTDHostIOMMUDevice
-Date: Thu, 18 Sep 2025 04:57:46 -0400
-Message-ID: <20250918085803.796942-8-zhenzhong.duan@intel.com>
+Subject: [PATCH v6 08/22] vfio/iommufd: Force creating nesting parent HWPT
+Date: Thu, 18 Sep 2025 04:57:47 -0400
+Message-ID: <20250918085803.796942-9-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250918085803.796942-1-zhenzhong.duan@intel.com>
 References: <20250918085803.796942-1-zhenzhong.duan@intel.com>
@@ -86,107 +85,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a new structure VTDHostIOMMUDevice which replaces
-HostIOMMUDevice to be stored in hash table.
+Call pci_device_get_viommu_flags() to get if vIOMMU supports
+VIOMMU_FLAG_WANT_NESTING_PARENT.
 
-It includes a reference to HostIOMMUDevice and IntelIOMMUState,
-also includes BDF information which will be used in future
-patches.
+If yes, create a nesting parent HWPT and add it to the container's hwpt_list,
+letting this parent HWPT cover the entire second stage mappings (GPA=>HPA).
 
+This allows a VFIO passthrough device to directly attach to this default HWPT
+and then to use the system address space and its listener.
+
+Introduce a vfio_device_get_viommu_flags_want_nesting() helper to facilitate
+this implementation.
+
+It is safe to do so because a vIOMMU will be able to fail in set_iommu_device()
+call, if something else related to the VFIO device or vIOMMU isn't compatible.
+
+Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
+Suggested-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
 ---
- hw/i386/intel_iommu_internal.h |  7 +++++++
- include/hw/i386/intel_iommu.h  |  2 +-
- hw/i386/intel_iommu.c          | 15 +++++++++++++--
- 3 files changed, 21 insertions(+), 3 deletions(-)
+ include/hw/vfio/vfio-device.h |  2 ++
+ hw/vfio/device.c              | 12 ++++++++++++
+ hw/vfio/iommufd.c             |  9 +++++++++
+ 3 files changed, 23 insertions(+)
 
-diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
-index 86b8bfc71f..9cdc8d5dbb 100644
---- a/hw/i386/intel_iommu_internal.h
-+++ b/hw/i386/intel_iommu_internal.h
-@@ -28,6 +28,7 @@
- #ifndef HW_I386_INTEL_IOMMU_INTERNAL_H
- #define HW_I386_INTEL_IOMMU_INTERNAL_H
- #include "hw/i386/intel_iommu.h"
-+#include "system/host_iommu_device.h"
+diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
+index e7e6243e2d..a964091135 100644
+--- a/include/hw/vfio/vfio-device.h
++++ b/include/hw/vfio/vfio-device.h
+@@ -257,6 +257,8 @@ void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainerBase *bcontainer,
  
- /*
-  * Intel IOMMU register specification
-@@ -608,4 +609,10 @@ typedef struct VTDRootEntry VTDRootEntry;
- /* Bits to decide the offset for each level */
- #define VTD_LEVEL_BITS           9
+ void vfio_device_unprepare(VFIODevice *vbasedev);
  
-+typedef struct VTDHostIOMMUDevice {
-+    IntelIOMMUState *iommu_state;
-+    PCIBus *bus;
-+    uint8_t devfn;
-+    HostIOMMUDevice *hiod;
-+} VTDHostIOMMUDevice;
- #endif
-diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-index 564d4d4236..3351892da0 100644
---- a/include/hw/i386/intel_iommu.h
-+++ b/include/hw/i386/intel_iommu.h
-@@ -295,7 +295,7 @@ struct IntelIOMMUState {
-     /* list of registered notifiers */
-     QLIST_HEAD(, VTDAddressSpace) vtd_as_with_notifiers;
- 
--    GHashTable *vtd_host_iommu_dev;             /* HostIOMMUDevice */
-+    GHashTable *vtd_host_iommu_dev;             /* VTDHostIOMMUDevice */
- 
-     /* interrupt remapping */
-     bool intr_enabled;              /* Whether guest enabled IR */
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 83c40975cc..ba40649c85 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -280,7 +280,10 @@ static gboolean vtd_hiod_equal(gconstpointer v1, gconstpointer v2)
- 
- static void vtd_hiod_destroy(gpointer v)
- {
--    object_unref(v);
-+    VTDHostIOMMUDevice *vtd_hiod = v;
++bool vfio_device_get_viommu_flags_want_nesting(VFIODevice *vbasedev);
 +
-+    object_unref(vtd_hiod->hiod);
-+    g_free(vtd_hiod);
+ int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
+                                 struct vfio_region_info **info);
+ int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t type,
+diff --git a/hw/vfio/device.c b/hw/vfio/device.c
+index 08f12ac31f..620cc78b77 100644
+--- a/hw/vfio/device.c
++++ b/hw/vfio/device.c
+@@ -23,6 +23,7 @@
+ 
+ #include "hw/vfio/vfio-device.h"
+ #include "hw/vfio/pci.h"
++#include "hw/iommu.h"
+ #include "hw/hw.h"
+ #include "trace.h"
+ #include "qapi/error.h"
+@@ -504,6 +505,17 @@ void vfio_device_unprepare(VFIODevice *vbasedev)
+     vbasedev->bcontainer = NULL;
  }
  
- static gboolean vtd_hash_remove_by_domain(gpointer key, gpointer value,
-@@ -4360,6 +4363,7 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-                                      HostIOMMUDevice *hiod, Error **errp)
- {
-     IntelIOMMUState *s = opaque;
-+    VTDHostIOMMUDevice *vtd_hiod;
-     struct vtd_as_key key = {
-         .bus = bus,
-         .devfn = devfn,
-@@ -4376,7 +4380,14 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-         return false;
-     }
- 
-+    vtd_hiod = g_malloc0(sizeof(VTDHostIOMMUDevice));
-+    vtd_hiod->bus = bus;
-+    vtd_hiod->devfn = (uint8_t)devfn;
-+    vtd_hiod->iommu_state = s;
-+    vtd_hiod->hiod = hiod;
++bool vfio_device_get_viommu_flags_want_nesting(VFIODevice *vbasedev)
++{
++    VFIOPCIDevice *vdev = vfio_pci_from_vfio_device(vbasedev);
 +
-     if (!vtd_check_hiod(s, hiod, errp)) {
-+        g_free(vtd_hiod);
-         vtd_iommu_unlock(s);
-         return false;
++    if (vdev) {
++        return !!(pci_device_get_viommu_flags(&vdev->parent_obj) &
++                  VIOMMU_FLAG_WANT_NESTING_PARENT);
++    }
++    return false;
++}
++
+ /*
+  * Traditional ioctl() based io
+  */
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 8c27222f75..f1684a39b7 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -379,6 +379,15 @@ static bool iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+         flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
      }
-@@ -4386,7 +4397,7 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-     new_key->devfn = devfn;
  
-     object_ref(hiod);
--    g_hash_table_insert(s->vtd_host_iommu_dev, new_key, hiod);
-+    g_hash_table_insert(s->vtd_host_iommu_dev, new_key, vtd_hiod);
- 
-     vtd_iommu_unlock(s);
- 
++    /*
++     * If vIOMMU requests VFIO's cooperation to create nesting parent HWPT,
++     * force to create it so that it could be reused by vIOMMU to create
++     * nested HWPT.
++     */
++    if (vfio_device_get_viommu_flags_want_nesting(vbasedev)) {
++        flags |= IOMMU_HWPT_ALLOC_NEST_PARENT;
++    }
++
+     if (cpr_is_incoming()) {
+         hwpt_id = vbasedev->cpr.hwpt_id;
+         goto skip_alloc;
 -- 
 2.47.1
 
