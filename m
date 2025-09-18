@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0918B86944
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 20:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64334B86923
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 20:51:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzJi7-0001tc-LL; Thu, 18 Sep 2025 14:50:27 -0400
+	id 1uzJiB-0001uR-8O; Thu, 18 Sep 2025 14:50:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uzJi3-0001qd-J5; Thu, 18 Sep 2025 14:50:23 -0400
+ id 1uzJi5-0001sK-5X; Thu, 18 Sep 2025 14:50:25 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uzJhq-0003Fl-7C; Thu, 18 Sep 2025 14:50:11 -0400
+ id 1uzJhr-0003GH-Dx; Thu, 18 Sep 2025 14:50:24 -0400
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 6A93A56F321;
- Thu, 18 Sep 2025 20:50:08 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 7541656F326;
+ Thu, 18 Sep 2025 20:50:09 +0200 (CEST)
 X-Virus-Scanned: amavis at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id NJw0foAQwLHH; Thu, 18 Sep 2025 20:50:06 +0200 (CEST)
+ id xJawOFEBwgGo; Thu, 18 Sep 2025 20:50:07 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 7216D56F30C; Thu, 18 Sep 2025 20:50:06 +0200 (CEST)
-Message-ID: <2950aa092b135b4652bf38d6aa6aeae6e875eab2.1758219840.git.balaton@eik.bme.hu>
+ id 7E48256F325; Thu, 18 Sep 2025 20:50:07 +0200 (CEST)
+Message-ID: <967c2416f25efd0162df32f43f8b2d048fe28b8d.1758219840.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1758219840.git.balaton@eik.bme.hu>
 References: <cover.1758219840.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v3 02/14] hw/pci-host/raven: Simplify host bridge type
- declaration
+Subject: [PATCH v3 03/14] hw/pci-host/raven: Use DEFINE_TYPES macro
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +37,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Nicholas Piggin <npiggin@gmail.com>
-Date: Thu, 18 Sep 2025 20:50:06 +0200 (CEST)
+Date: Thu, 18 Sep 2025 20:50:07 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -62,32 +61,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use OBJECT_DECLARE_SIMPLE_TYPE macro instead of open coding it.
+Convert to using DEFINE_TYPES macro and move raven_pcihost_class_init
+so methods of each object are grouped together.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci-host/raven.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ hw/pci-host/raven.c | 57 +++++++++++++++++++++------------------------
+ 1 file changed, 26 insertions(+), 31 deletions(-)
 
 diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-index 172f01694c..878c915de5 100644
+index 878c915de5..e0f98afebf 100644
 --- a/hw/pci-host/raven.c
 +++ b/hw/pci-host/raven.c
-@@ -39,11 +39,9 @@
- #define TYPE_RAVEN_PCI_DEVICE "raven"
- #define TYPE_RAVEN_PCI_HOST_BRIDGE "raven-pcihost"
+@@ -304,6 +304,15 @@ static void raven_pcihost_initfn(Object *obj)
+     h->bus = &s->pci_bus;
+ }
  
--typedef struct PRePPCIState PREPPCIState;
--DECLARE_INSTANCE_CHECKER(PREPPCIState, RAVEN_PCI_HOST_BRIDGE,
--                         TYPE_RAVEN_PCI_HOST_BRIDGE)
-+OBJECT_DECLARE_SIMPLE_TYPE(PREPPCIState, RAVEN_PCI_HOST_BRIDGE)
++static void raven_pcihost_class_init(ObjectClass *klass, const void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
++    dc->realize = raven_pcihost_realizefn;
++    dc->fw_name = "pci";
++}
++
+ static void raven_realize(PCIDevice *d, Error **errp)
+ {
+     d->config[PCI_CACHE_LINE_SIZE] = 0x08;
+@@ -329,37 +338,23 @@ static void raven_class_init(ObjectClass *klass, const void *data)
+     dc->user_creatable = false;
+ }
  
--struct PRePPCIState {
-+struct PREPPCIState {
-     PCIHostState parent_obj;
+-static const TypeInfo raven_info = {
+-    .name = TYPE_RAVEN_PCI_DEVICE,
+-    .parent = TYPE_PCI_DEVICE,
+-    .class_init = raven_class_init,
+-    .interfaces = (const InterfaceInfo[]) {
+-        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+-        { },
++static const TypeInfo raven_types[] = {
++    {
++        .name = TYPE_RAVEN_PCI_HOST_BRIDGE,
++        .parent = TYPE_PCI_HOST_BRIDGE,
++        .instance_size = sizeof(PREPPCIState),
++        .instance_init = raven_pcihost_initfn,
++        .class_init = raven_pcihost_class_init,
++    },
++    {
++        .name = TYPE_RAVEN_PCI_DEVICE,
++        .parent = TYPE_PCI_DEVICE,
++        .class_init = raven_class_init,
++        .interfaces = (const InterfaceInfo[]) {
++            { INTERFACE_CONVENTIONAL_PCI_DEVICE },
++            { },
++        },
+     },
+ };
  
-     OrIRQState *or_irq;
+-static void raven_pcihost_class_init(ObjectClass *klass, const void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(klass);
+-
+-    set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
+-    dc->realize = raven_pcihost_realizefn;
+-    dc->fw_name = "pci";
+-}
+-
+-static const TypeInfo raven_pcihost_info = {
+-    .name = TYPE_RAVEN_PCI_HOST_BRIDGE,
+-    .parent = TYPE_PCI_HOST_BRIDGE,
+-    .instance_size = sizeof(PREPPCIState),
+-    .instance_init = raven_pcihost_initfn,
+-    .class_init = raven_pcihost_class_init,
+-};
+-
+-static void raven_register_types(void)
+-{
+-    type_register_static(&raven_pcihost_info);
+-    type_register_static(&raven_info);
+-}
+-
+-type_init(raven_register_types)
++DEFINE_TYPES(raven_types)
 -- 
 2.41.3
 
