@@ -2,88 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2B7B83962
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 10:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 587C5B83995
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 10:52:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzAJg-0003zd-RS; Thu, 18 Sep 2025 04:48:36 -0400
+	id 1uzAMt-0005MS-Cm; Thu, 18 Sep 2025 04:51:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uzAJe-0003z6-4c
- for qemu-devel@nongnu.org; Thu, 18 Sep 2025 04:48:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uzAJZ-0003PU-Vn
- for qemu-devel@nongnu.org; Thu, 18 Sep 2025 04:48:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758185305;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3C0wxY+SOI8SbQ4JoLJErdE83oPuLxa/s9oZU6QBom0=;
- b=S+M6maHM8n8sOwTl964VJUSXlj1FJ3qW9f4ss8aeIMzE3dFuH/n00xiyNSIj6yPZ+ZmcjW
- bXsunQa3GaWm2ysDoY+NhyHTT4smHRDh6hY3jbDtPp1veH0tp1rQ+0ij6urzpztwO2G2Hq
- IEdwhk0k1h3EfSsYhymOd5RuN1NkdUo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-599--Br-DY42PP-iDwaYnTHUYQ-1; Thu,
- 18 Sep 2025 04:48:22 -0400
-X-MC-Unique: -Br-DY42PP-iDwaYnTHUYQ-1
-X-Mimecast-MFC-AGG-ID: -Br-DY42PP-iDwaYnTHUYQ_1758185300
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 82EB41956086; Thu, 18 Sep 2025 08:48:20 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.161])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 861071955F21; Thu, 18 Sep 2025 08:48:13 +0000 (UTC)
-Date: Thu, 18 Sep 2025 09:48:09 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
-Cc: Filip Hejsek <filip.hejsek@gmail.com>, amit@kernel.org,
- armbru@redhat.com, eblake@redhat.com, eduardo@habkost.net,
- lvivier@redhat.com, marcandre.lureau@redhat.com,
- marcel.apfelbaum@gmail.com, mst@redhat.com, noh4hss@gmail.com,
- pbonzini@redhat.com, philmd@linaro.org, qemu-devel@nongnu.org,
- wangyanan55@huawei.com, zhao1.liu@intel.com, nsg@linux.ibm.com
-Subject: Re: [PATCH v2] char-pty: add support for the terminal size
-Message-ID: <aMvHScAtr3E_H2KB@redhat.com>
-References: <95142e7fd2a103cfb8d8bea9727117bfe952baec.camel@linux.ibm.com>
- <E0EFD1A6-09E9-481D-82FD-84FD4B45CA9B@gmail.com>
- <aMq4Ta4aPwRgDrxR@redhat.com>
- <0A6C8C3D-68E7-4E88-BEBE-D653135915DF@gmail.com>
- <aMrfGUfCSWnvkXzT@redhat.com>
- <e2f80c7ad10b8b6376144ba5d959a2ad4739f81c.camel@gmail.com>
- <aMr1sn-LU2f-w49o@redhat.com>
- <15cc6bcd675f2e20efe4fbd6332018a693122b9c.camel@gmail.com>
- <aMvETd_dlUed-nlN@redhat.com>
- <8979fb7f27b9dbe48f6419d515c4d33a77cefe0a.camel@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
+ id 1uzAMr-0005Lk-0v
+ for qemu-devel@nongnu.org; Thu, 18 Sep 2025 04:51:53 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
+ id 1uzAMk-0003qR-Ut
+ for qemu-devel@nongnu.org; Thu, 18 Sep 2025 04:51:52 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-45f2f7ae386so4866915e9.3
+ for <qemu-devel@nongnu.org>; Thu, 18 Sep 2025 01:51:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1758185503; x=1758790303; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=TSut7jC223KcQ28OwKjoeYzAZ+HRkIOvvblOwLHh6ls=;
+ b=B4BmomWXoTUqxUDDoYEu9aKiGF7qMAUTc1EIUVEYHRJ+NOYl/lgzA6Mh3BOmea3TeM
+ 73mB6Drku5pI84GYuCEgygdGJGP/Kef6Iwl306+GGv2bRIQImDrCNayvxtWh1v6eFLhW
+ LgucW/7L6MfYKeAKYw/XNgBVdMP+gRFRNqW+V+p6nD0EwpgvZh2VUX7ifASP2kEHrMD+
+ oeEVo6e/TWAvqfczb06EuruYC+mHgkvpKnHrzCg0gLsFfwxGclTewlJfDRx9hkpXEc33
+ rl0oVR38iL9vHJQpbNQC244s97P/5yswdoSTPG04hkrghw7ULfDwknZM/W8FnaO1HAg4
+ aVYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758185503; x=1758790303;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TSut7jC223KcQ28OwKjoeYzAZ+HRkIOvvblOwLHh6ls=;
+ b=UlMf1LalCS8Boe5KxmnuKTM82oZrfLmCGaRaQKhF7XNaO2bwWoQwG1yuWHK2xHL7ap
+ 3Xn11Xn99o6HSUd9HeHzzmDF8fqKoxkuRl9gs2UOBIBv0OnpT9YjalrnWe02DBPs6yQ6
+ IW3TYEKLdFTTY8AAgxzFcg3bAXVciSlZRapsvqnEX87CPuglqcmQ4EMrKWHhFOUqA6jl
+ dwO0tfD/teLmNNtyvaRjCnCNb43xpnlJ+bPHJhK9peKEsmZMn4rpEtRRreofYtarXyYu
+ hdSYiBHeTOswv/FnuACe2+a49j3rpWv4sbO8KsfqMCeCLiXVk9ICZNN83ggUxR6UzVzW
+ QQZg==
+X-Gm-Message-State: AOJu0Ywvwe6r3CNm8cx1I5/WULAGV/4dlUjE3zfZ015Ul7ej92+wmJ7n
+ 1IUsKrGimvQ0lhKeGlj6Bqm5cXNLBFyq8OqA/ZlTY73kz4C02zp6yMe1
+X-Gm-Gg: ASbGncvNrncYjXfpKxQFJOkF8FsriGb7qLHuVPMSQG5oA2DYv+P9gEas2EqG+5m/7MJ
+ 3KfmUQgx79zYzuw0j0W8J8W5/cvKy/gjAy3OzCE1KrvNX6LMs2kNyv1gPzD3+z1ZbqI0ifXcQ1/
+ uO08U1YxxDrhdeTfSMNNRwh71m8sOJODBBSnRZBW+28Rx3bfCUlG9I+UZWAkZj+/c+DtGdO2pzi
+ WwfpAtIavrBl9W6gSXT4DC1rSDL+NgQp9/JCKVWJobDc7JT5LOMpphi+CYwYM1mQsdsNDv6Lwjw
+ G6nFk3HyHbF68zY6sO22JohLAat5n2Vyf/MfRSR2+EspgGrHE0Ynb4ME1JAKsYVqXZSgGJZXHPX
+ zmTzrc6DopdmVHOrPG4YERgHb7XsQdLpeMdM9ihFeI2+oE+Myz7SbL7GtGtayn35eue97hHxRys
+ HJhB9D
+X-Google-Smtp-Source: AGHT+IE5uikpqxy3TYJz0Ju4VzM0PvWit03x57v7mL/1K3QOBiBw4uI3Ip6HqESU4X37GEYqV5GRww==
+X-Received: by 2002:a05:600c:470d:b0:45d:5c71:76a9 with SMTP id
+ 5b1f17b1804b1-46205eb16bfmr52300295e9.24.1758185503273; 
+ Thu, 18 Sep 2025 01:51:43 -0700 (PDT)
+Received: from ehlo.thunderbird.net (37-48-56-34.nat.epc.tmcz.cz.
+ [37.48.56.34]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4613dccb5e2sm70546865e9.17.2025.09.18.01.51.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 18 Sep 2025 01:51:42 -0700 (PDT)
+Date: Thu, 18 Sep 2025 10:51:43 +0200
+From: Filip Hejsek <filip.hejsek@gmail.com>
+To: =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>
+CC: qemu-devel@nongnu.org,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Szymon Lukasz <noh4hss@gmail.com>
+Subject: Re: [PATCH v4 08/10] virtio-serial-bus: add terminal resize messages
+User-Agent: Thunderbird for Android
+In-Reply-To: <aMvBbkwaB2efBqRO@redhat.com>
+References: <20250912-console-resize-v4-0-7925e444afc4@gmail.com>
+ <20250912-console-resize-v4-8-7925e444afc4@gmail.com>
+ <aMvBbkwaB2efBqRO@redhat.com>
+Message-ID: <E502CAA9-4C94-4BE6-8F44-3C65C08C024A@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8979fb7f27b9dbe48f6419d515c4d33a77cefe0a.camel@linux.ibm.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=filip.hejsek@gmail.com; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,50 +108,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 18, 2025 at 10:39:28AM +0200, Maximilian Immanuel Brandtner wrote:
-> On Thu, 2025-09-18 at 09:35 +0100, Daniel P. Berrangé wrote:
-> > On Wed, Sep 17, 2025 at 08:29:39PM +0200, Filip Hejsek wrote:
-> > > On Wed, 2025-09-17 at 18:53 +0100, Daniel P. Berrangé wrote:
-> > > > On Wed, Sep 17, 2025 at 07:11:03PM +0200, Filip Hejsek wrote:
-> > > > > On Wed, 2025-09-17 at 17:17 +0100, Daniel P. Berrangé wrote:
-> > > > > 
-> > > > > > We shouldn't send any size info to the guest if the hsot
-> > > > > > backend
-> > > > > > does not have it available.
-> > > > > 
-> > > > > Does that mean sending 0x0, or not sending anything at all? The
-> > > > > later
-> > > > > is tricky, because for non-multiport devices it's only really
-> > > > > possible
-> > > > > by not offering the feature bit, but we don't know upfront
-> > > > > whether the
-> > > > > size command will be used.
-> > 
-> > What are the semantics in the guest if we sent 0x0 as the size ?
-> > AFAICT the virtio spec is silent on what '0x0' means.
-> > 
-> > It seems like it could conceivably have any behaviour, whether
-> > a zero-size console, or a console clamped to 1x1 as a min size,
-> > or a console reset to an arbitrary guest default like 80x24.
-> 
-> During testing the kernel resized the tty to 0x0 if VirtIO instructed
-> the kernel to resize the tty to 0x0.
+On September 18, 2025 10:23:33 AM GMT+02:00, "Daniel P=2E Berrang=C3=A9" <b=
+errange@redhat=2Ecom> wrote:
+> On Fri, Sep 12, 2025 at 05:39:53AM +0200, Filip Hejsek wrote:
+> > From: Szymon Lukasz <noh4hss@gmail=2Ecom>
+> >=20
+> > Implement the part of the virtio spec that allows to notify the virtio
+> > driver about terminal resizes=2E The virtio spec contains two methods =
+to
+> > achieve that:
+> >=20
+> > For legacy drivers, we have only one port and we put the terminal size
+> > in the config space and inject the config changed interrupt=2E
+> >=20
+> > For multiport devices, we use the control virtqueue to send a packet
+> > containing the terminal size=2E Note that old versions of the Linux ke=
+rnel
+> > used an incorrect order for the fields (rows then cols instead of cols
+> > then rows), until it was fixed by commit 5326ab737a47278dbd16ed3ee7380=
+b26c7056ddd=2E
+> >=20
+> > As a result, when using a Linux kernel older than 6=2E15, the number o=
+f rows
+> > and columns will be swapped=2E
+> >=20
+> > Signed-off-by: Szymon Lukasz <noh4hss@gmail=2Ecom>
+> > Reviewed-by: Michael S=2E Tsirkin <mst@redhat=2Ecom>
+> > Signed-off-by: Filip Hejsek <filip=2Ehejsek@gmail=2Ecom>
+> > ---
+> >  [=2E=2E=2E]
+> > +        vser->port0_cols =3D cols;
+> > +        vser->port0_rows =3D rows;
+> > +        virtio_notify_config(vdev);
+>=20
+> IIUC, we should skip sending this if port->id does NOT reflect
+> the primary port 0, as the virtio spec indicates F_SIZE only
+> applies to port 0 unless we have F_MULTIPORT  set=2E
 
-If the chardev backends are defaulting to 0x0 for everything except
-the 'stdio' backend, then this series is surely going to break all
-existing usage of virtio-console for non-stdio backends ?
+I have already changed this in my working version=2E I'm on a phone
+and don't have access to it right now, but it was something like this pseu=
+docode:
 
-What am I missing here ?
+if "console-size" enabled:
+  if port id =3D=3D 0:
+    port0_{cols,rows} =3D {cols,rows}
+  if multiport:
+    send VIRTIO_CONSOLE_RESIZE
+  else:
+    notify config
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+I guess I should make the config notification conditional on port 0 too=2E
 
