@@ -2,96 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612D1B84738
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 13:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73DCAB84C5B
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 15:18:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzDFT-0007JA-EI; Thu, 18 Sep 2025 07:56:27 -0400
+	id 1uzEVP-0002aD-Ij; Thu, 18 Sep 2025 09:16:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uzDFM-00078f-JR
- for qemu-devel@nongnu.org; Thu, 18 Sep 2025 07:56:20 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uzDFJ-0004oq-SA
- for qemu-devel@nongnu.org; Thu, 18 Sep 2025 07:56:19 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-45e03730f83so4168935e9.0
- for <qemu-devel@nongnu.org>; Thu, 18 Sep 2025 04:56:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758196575; x=1758801375; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ea4dGLZwkNAAjB6aRS/oVWq8L6qzJHadECqmXARy89A=;
- b=KPx+iMM9ZQEGQeTuwDW/WJ63Z+mwphiSCu7LeFClH52pn4EBG4A+6aBjlDd8YTt8X4
- WeJoMWywqANbGV0QsbEBuAo3j7H+B8Y64fLW9PEupr7kXUPqDJrBNXBvkKhedmdDdpTj
- witkmlJSn7mqk+DvCtZqlPYx7/BxNKRjWCdEueVkqskvnOBsgk7EGQ1dSKUI96mjtwU7
- HzC+Rcp1fc2DjBGRCJehLpUH0ZDR4damy4AB3tev7rPlO3FcN2ty7NYWdrM6/dSAgKcG
- dUf/33xyMhwaD6Mvapf7pgxPMAOu/qUMZ1wUQzwTOkCFl5iH6e2MEURrVUbyWYkSUIQC
- MjuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758196575; x=1758801375;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=ea4dGLZwkNAAjB6aRS/oVWq8L6qzJHadECqmXARy89A=;
- b=AqwxtbvBdiPD60or1rgTv22XL5Ca43VL7n9sY+ejnWehLCUs1O+IKSS5hT72lfm57c
- bpBTgeAUIm5JJGsaZZNgG4YfMbFb0ph//dJIr4wc2Ws+Bm1rCmRioLZcVUW5Kp/0WwwV
- cul/GnfN5LCJXDxwstVFoMrwKxCG8yVQ120LQ9780ePSEwJL9pUh/dthffwXLgyfFPjN
- NVzpkvPFTSJJDIDiAb+buKmsITbd9lacn26rwCBCQVi6C8us+EPIi9JFzDvPnuFOt/mP
- 8Qb0OPzy3kAKaiLHrzAGQVAhExbV5eCFz/tq5iR9oJzEoXMc4TFXniXY847pUKWjh7TQ
- MySQ==
-X-Gm-Message-State: AOJu0Yx4lCpjveEiXEOsvylq29GQyOTNvEy/RxIhFK5IquZf8oBKq9Rf
- FW2sb2TeQDoHQfD40Y41fZDyRQNTdStOtaFyDluP7ufGBQjAjiNFx19I55kwkK+nrhw=
-X-Gm-Gg: ASbGncv/0gC3firjkGs+p/cRJqLmGZUCooP48pgKkr4rPiwYlpGBeJ3Ul5VX4Eb1VCP
- oOsAX905WH3MuEAnz1KRt+7FTr4FkGpsRlPchD1YlHaFmSt5ZFRqDmcWb5bf390Ct5aO33ktR7H
- gK+amzz1OK2P6714yIVNM2paQ+kzciLpTPEEYa6zv21aJu/AYPiJWecd5XYW+uwZe5PZPmBwPJs
- rthgyDrvrHs7i16QoQN8O8YyIwjHm1/6mvO8g/lMN/Uzwrm9we7cYycc+9XoEr/BeGX8sSYdyAv
- 6c/e0J2AWLl+k4dxFoE7Fq3YI6h27kp0TYWzi72oo5cy2ClTd0U/c2IpeifnbPsJYGTTeRwBeEs
- O8o3e8FCZhTSQ4BD7wW4pmTdEXHjodSXszRRZUue/SQ==
-X-Google-Smtp-Source: AGHT+IGVamkNTcu9utD5pHxzuFfZ+jhfrZ9TwzK/0zXfYIby6q9QLkSPedCiw9zxurwYCpq6P6JcTQ==
-X-Received: by 2002:a05:600c:1991:b0:45f:2869:c3b2 with SMTP id
- 5b1f17b1804b1-462072d723emr55655395e9.33.1758196574857; 
- Thu, 18 Sep 2025 04:56:14 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-464f16272e4sm43170925e9.9.2025.09.18.04.56.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Sep 2025 04:56:14 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id F02FC5F8AC;
- Thu, 18 Sep 2025 12:56:12 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org,  qemu-arm@nongnu.org,  Alistair Francis
- <alistair.francis@wdc.com>,  Weiwei Li <liwei1518@gmail.com>,  Palmer
- Dabbelt <palmer@dabbelt.com>,  qemu-riscv@nongnu.org,
- richard.henderson@linaro.org,  Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>,  philmd@linaro.org,  Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>,  Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v4 00/12] single-binary: compile once semihosting
-In-Reply-To: <20250822150058.18692-1-pierrick.bouvier@linaro.org> (Pierrick
- Bouvier's message of "Fri, 22 Aug 2025 08:00:46 -0700")
-References: <20250822150058.18692-1-pierrick.bouvier@linaro.org>
-User-Agent: mu4e 1.12.12; emacs 30.1
-Date: Thu, 18 Sep 2025 12:56:12 +0100
-Message-ID: <87ms6sm0tf.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <aokblast@freebsd.org>)
+ id 1uzA79-0005WL-4U; Thu, 18 Sep 2025 04:35:39 -0400
+Received: from mx2.freebsd.org ([2610:1c1:1:606c::19:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aokblast@freebsd.org>)
+ id 1uzA71-00028m-40; Thu, 18 Sep 2025 04:35:38 -0400
+Received: from mx1.freebsd.org (mx1.freebsd.org [96.47.72.80])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits)
+ client-signature RSA-PSS (4096 bits))
+ (Client CN "mx1.freebsd.org", Issuer "R13" (verified OK))
+ by mx2.freebsd.org (Postfix) with ESMTPS id 4cS88l5kKkz4l1N;
+ Thu, 18 Sep 2025 08:35:19 +0000 (UTC)
+ (envelope-from aokblast@freebsd.org)
+Received: from smtp.freebsd.org (smtp.freebsd.org [96.47.72.83])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+ client-signature RSA-PSS (4096 bits) client-digest SHA256)
+ (Client CN "smtp.freebsd.org", Issuer "R13" (verified OK))
+ by mx1.freebsd.org (Postfix) with ESMTPS id 4cS88l4kcGz3gJ1;
+ Thu, 18 Sep 2025 08:35:19 +0000 (UTC)
+ (envelope-from aokblast@freebsd.org)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org; s=dkim;
+ t=1758184519;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=nGWsEyyTNCRjdeZClrgROu0NaO+T1l2OSaIp/9dq2wA=;
+ b=MllAaW6SfFEedhjWeNDHNaNXRX78JbuQyFXrqoxfBecna+WkM95qiZ3wt66dUj6aQ3l2YR
+ kWtXFJDraYj6ian00UgCE6XTyMK30hB3WXtyz8lJqlpuGouhC9xmWvgjVRQvOOzV0DPCBK
+ mfnx2HpSUimLtqZ1FFugL6Kvx/j3WvSCmoO9FCNKSQFWQIPBsDb9PrvGhQ74N8WDCOZtFN
+ 4CD3MWes1S1PAHnSYKhoZCtVI+2uq0gHbbltcPUVioTmMAiJjMKmTy/roE6x1zYWXEwAEr
+ YhMsEnt5MqIJnTagSwjBLmzuT28JE53/bP3aEApfwgtloi3g+zk6Mf7hdWn0IA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org;
+ s=dkim; t=1758184519;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=nGWsEyyTNCRjdeZClrgROu0NaO+T1l2OSaIp/9dq2wA=;
+ b=tUJdS7yMlOxlKO7jzSyfeVc0VGLnSL+3FJLX7UGOIiTCKMtkmr8C3RcB0nN7lGkseq/zVs
+ IkzYvsXL8D8wIMhnMZElztye+Oo351h4mjeuzedcvmp6Fh15yH2K225jPwiM5AqokLnrYO
+ 2jUYaOz46XEwymDMhUdbBWalfH3lxIo39hb46GVc3RzpVE7LHz8FhJcEv/ZqIZUYV2M499
+ Yrwla+8k8C9jpLbHb11qqsr2+G8cSxVerUWT1M1tkHd/4I1FqW5uXTee3Z2mpCIq2Hw6St
+ ateD+5yWX178ChW3fVUIFQRmdflzJWo5Nry/6xHgDRXe3ax/0vspkF5+WdNNKg==
+ARC-Seal: i=1; s=dkim; d=freebsd.org; t=1758184519; a=rsa-sha256; cv=none;
+ b=JXSsrKpgvpvrk/+UNwP1TnRHwsh2jsHoII6OYTnKJsU/Oar5ELU3Kv2e3vXmoWR8Qet9y/
+ kQ9APFtg7y99iKJuZMJotz/bBtaEsOPPuRjkLos4cgGqZ73HQIUm7WW7BG2ezZPbcf+P6q
+ +8x2zVPE0mceqOfjwVdMyumk+Klo7RGCIePk0LAtcKDTobwMNYUWXAXDRL7jhmGeJNim+I
+ /7MiT+74zqIej0XWrPVa+Tf9ClbiScwJwR0R7S/B4aytfH+5uVoJkMNlLxk2TdYIf9pLHZ
+ g2wB3dG3qPat682uGQVJEFCE0LbE7EmbmdvWLwuK+sB0VA6XLjSD1UdmSdbkLQ==
+ARC-Authentication-Results: i=1;
+	mx1.freebsd.org;
+	none
+Received: from aokblastdeMacBook-Pro.local
+ (2001-b400-e271-1dd2-850d-8faf-2637-ff5e.emome-ip6.hinet.net
+ [IPv6:2001:b400:e271:1dd2:850d:8faf:2637:ff5e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
+ server-digest SHA256) (Client did not present a certificate)
+ (Authenticated sender: aokblast)
+ by smtp.freebsd.org (Postfix) with ESMTPSA id 4cS88j4vdyzLgB;
+ Thu, 18 Sep 2025 08:35:17 +0000 (UTC)
+ (envelope-from aokblast@freebsd.org)
+From: ShengYi Hung <aokblast@FreeBSD.org>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-trivial@nongnu.org,  QEMU Development <qemu-devel@nongnu.org>
+Subject: Re: [PATCH] hid: fix incorrect return value for hid.
+In-Reply-To: <89ef2af7-d79d-4460-9c01-9127f906ee51@tls.msk.ru> (Michael
+ Tokarev's message of "Thu, 18 Sep 2025 09:14:47 +0300")
+References: <20250915175730.27825-1-aokblast@FreeBSD.org>
+ <89ef2af7-d79d-4460-9c01-9127f906ee51@tls.msk.ru>
+User-Agent: mu4e 1.12.13; emacs 30.1
+Date: Thu, 18 Sep 2025 16:35:07 +0800
+Message-ID: <m2ldmc40qs.fsf@FreeBSD.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=2610:1c1:1:606c::19:2;
+ envelope-from=aokblast@freebsd.org; helo=mx2.freebsd.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 18 Sep 2025 09:16:57 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,16 +111,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
 
-> This series compiles once semihosting files in system mode.
-> The most complicated file was semihosting/arm-compat-semi.c, which was ca=
-refully
-> cleaned in easy to understand steps.
+Hello Michael:
 
-Queued to semihosting/next, thanks.
+Thanks for your review and reply, I sent the mail to qemud-devel about a
+month ago but didn't receive any reply. Therefore, I send the mail to
+qemu-trivial again and forget CC to qemu-devel. I will be careful next
+time.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+The consequence is that if the guest operating system want to check the
+actual transfer length of a transfer, it may be regarded as a failed
+transfer since the actual transfer length is zero originally.
+
+Here is an example from FreeBSD:
+https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=288968.
+I have workarounded this issue by ignore any error from hid_write.
+
+Interestingly, Parallel seems to share the same issue and can be
+addressed with the same fix.
+
+Michael Tokarev <mjt@tls.msk.ru> writes:
+
+> Please always send all patches to qemu-devel@ (cc'd)
+> (in this case, in addition to qemu-trivial@).
+>
+> On 15.09.2025 20:57, ShengYi Hung wrote:
+>> The return value of hid_keyboard_write is used to set the packet's actual_length
+>> and pass to xhci directly to allow guest know how many byte actually processed.
+>> Therefore, return 1 to indicate a successful transfer or it will be
+>> considered as a wrong xfer.
+>> Signed-off-by: ShengYi Hung <aokblast@FreeBSD.org>
+>> ---
+>>   hw/input/hid.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>> diff --git a/hw/input/hid.c b/hw/input/hid.c
+>> index 76bedc1844..de24cd0ef0 100644
+>> --- a/hw/input/hid.c
+>> +++ b/hw/input/hid.c
+>> @@ -478,6 +478,7 @@ int hid_keyboard_write(HIDState *hs, uint8_t *buf, int len)
+>>               ledstate |= QEMU_CAPS_LOCK_LED;
+>>           }
+>>           kbd_put_ledstate(ledstate);
+>> +        return 1;
+>>       }
+>>       return 0;
+>>   }
+>
+> Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+>
+> and queued up to the trivial-patches tree.
+>
+> It's an interesting one, I wonder what the consequences are -
+> for having this at 0 all the time, and for actually making it 1.
+> Did we miss a byte somewhere with current code?
+>
+> Thanks,
+>
+> /mjt
+
+-- 
+Best Regards.
+ShengYi Hung.
 
