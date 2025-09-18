@@ -2,133 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51991B86DCC
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 22:13:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8125B86E54
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 22:22:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzKzF-0004vf-A4; Thu, 18 Sep 2025 16:12:13 -0400
+	id 1uzL8Z-0007O7-A1; Thu, 18 Sep 2025 16:21:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uzKzC-0004uP-O7
- for qemu-devel@nongnu.org; Thu, 18 Sep 2025 16:12:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uzL8T-0007Kt-CK; Thu, 18 Sep 2025 16:21:45 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uzKz9-0001v0-D1
- for qemu-devel@nongnu.org; Thu, 18 Sep 2025 16:12:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758226325;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=oEVcW8H0ePrVkukmBhlQeYMXet9+27y8NnV6UVsaWN8=;
- b=X2YbZBLYFhjoSd+VcbaRzH+Mf3p9exp3Y4SnAQkvElFMwi3IJPxwYVUVQkS9KEriV1qawR
- wRfRTeUuZSzxGgaIXgbP9jbRsyWinFenu7lxFcK/zo87ISRg1GyQzRY8ZN3AJi4mxghXdL
- u1piyFlURmbOUvR9bbM5JRovSW2ijjA=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-107-Wb6XzFxJNuawwdK0WbJ18Q-1; Thu, 18 Sep 2025 16:12:04 -0400
-X-MC-Unique: Wb6XzFxJNuawwdK0WbJ18Q-1
-X-Mimecast-MFC-AGG-ID: Wb6XzFxJNuawwdK0WbJ18Q_1758226324
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-4b5fb1f057fso17003761cf.0
- for <qemu-devel@nongnu.org>; Thu, 18 Sep 2025 13:12:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758226324; x=1758831124;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oEVcW8H0ePrVkukmBhlQeYMXet9+27y8NnV6UVsaWN8=;
- b=GcliFwaF+sQzYge9/PH2MPz/vqQdBtCt+gwh0VhrDlYTbc5N/oysIlf5xtvrl5Jetp
- usH5ULUPjGISxsepA/IYR3sQ8onEURCUUYpWlxTyXihfP/PYaWoykmYIIn0ZkhYfX/Bb
- hV324zm13VO/LblyTE5oNdia9W8R9mXPZmOJcEdNdNqqs9FJzRtA9t1ZsFhHN1zBg8TK
- m51ezYCO7Bp+m9K5eS5J7HRX7F2BdKoeVFJ1c3NU43Jt0x/FWwVnFlw9bSL9G7nkB7j0
- /JkMiimREpOb1l+euT9f5fFaMTHIpz6V9nDSslOHLQN15CkOzj8Okxx3qWyNacpR/1Ua
- p0UQ==
-X-Gm-Message-State: AOJu0YwecEbPf2UJMj/Nz8xd45cZmAdyqVWCg3S5Ly6HzbsV+OLFnDXe
- TMyREqwwT7GTH+oQ8hFgex/QdyAHgJb7yNBPcDj6ExeBFvcEcEYjb71Psb0DH6CKt09LDfAF817
- n7xHmqT/pzM3fVeyiOUN3ojtiNdyB9ZUiElsmh4vXV4sS0MZwp3BMn53y
-X-Gm-Gg: ASbGncv+JBDqX8ecNt9kILyc0CroAA+QsQy6j2JeFHhm42JI1YHdWfebpnj/zIO6ymZ
- z+PhMctQrgzVEfdIX7TBNQ1sjaU1sHaRY1K23bZ2+kFO+bqlYwrBNMDhJHQ6f69wDak9CMIEF1D
- r3QJcsVBdvwE9r7H75vWnKBiKSGpr/KQ+lrHxtjfSE6jUez7QrPlmyLchgmMSpAIN5ZsTdZtY43
- Th2FWQwSsgeIEHeUB0BWV7nKgTcThruUOYDNuJLUJybm6utXctScQMSI/A/IIa37ZQNNopzZkKI
- 9fpUqR4XbgEiGyahc1Cc2WrqwJJIHneUKc55ko3YIyS61ovfGmlySSdLx+spRoAYwjKqXqkNtKS
- IHW1WF6TTBsvNV5HX/gQwZA==
-X-Received: by 2002:a05:622a:1c15:b0:4b7:7c2c:8534 with SMTP id
- d75a77b69052e-4c06e3f8fe3mr6440781cf.15.1758226323618; 
- Thu, 18 Sep 2025 13:12:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGlL/+jeC2xoiK55a+vc+/BjJtvtoJAoNqaFYRNOAjjjJKNk/RRtRDSXXsR7MkcplaBP8vv5Q==
-X-Received: by 2002:a05:622a:1c15:b0:4b7:7c2c:8534 with SMTP id
- d75a77b69052e-4c06e3f8fe3mr6440401cf.15.1758226322974; 
- Thu, 18 Sep 2025 13:12:02 -0700 (PDT)
-Received: from x1.local
- (bras-base-aurron9134w-grc-11-174-89-135-121.dsl.bell.ca. [174.89.135.121])
- by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4bda23b2f56sm18877261cf.17.2025.09.18.13.12.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Sep 2025 13:12:02 -0700 (PDT)
-Date: Thu, 18 Sep 2025 16:11:59 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>,
- qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- John Levon <john.levon@nutanix.com>,
- Thanos Makatos <thanos.makatos@nutanix.com>,
- Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Aleksandar Rikalo <arikalo@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
- =?utf-8?B?SGVydsOp?= Poussineau <hpoussin@reactos.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Alistair Francis <alistair@alistair23.me>,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- Bin Meng <bmeng.cn@gmail.com>, Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v3 1/7] docs/devel: Do not unparent in instance_finalize()
-Message-ID: <aMxnj7ID0PpWUVNu@x1.local>
-References: <20250917-use-v3-0-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
- <20250917-use-v3-1-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
- <aMxlpfp_LSgiIk9Z@x1.local>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uzL89-00039O-CF; Thu, 18 Sep 2025 16:21:44 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 4025656F321;
+ Thu, 18 Sep 2025 22:21:21 +0200 (CEST)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id qEwDcIkVSeRl; Thu, 18 Sep 2025 22:21:19 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 2ECA756F30D; Thu, 18 Sep 2025 22:21:19 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 2CF1356F30C;
+ Thu, 18 Sep 2025 22:21:19 +0200 (CEST)
+Date: Thu, 18 Sep 2025 22:21:19 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ =?ISO-8859-15?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>, 
+ Artyom Tarasenko <atar4qemu@gmail.com>, 
+ Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 01/14] hw/pci-host/raven: Simplify PCI facing part
+In-Reply-To: <b5db600a-3278-427d-9f67-b222cb0c1bd1@ilande.co.uk>
+Message-ID: <db65a6dd-cfdf-18b8-1764-8a1d7d3fcc24@eik.bme.hu>
+References: <cover.1758219840.git.balaton@eik.bme.hu>
+ <ebfd5b64421e8a876c5a6e2ce3dc871de500b69d.1758219840.git.balaton@eik.bme.hu>
+ <b5db600a-3278-427d-9f67-b222cb0c1bd1@ilande.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aMxlpfp_LSgiIk9Z@x1.local>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.005,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,76 +66,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 18, 2025 at 04:03:49PM -0400, Peter Xu wrote:
-> On Wed, Sep 17, 2025 at 07:13:26PM +0900, Akihiko Odaki wrote:
-> > Children are automatically unparented so manually unparenting is
-> > unnecessary.
-> > 
-> > Worse, automatic unparenting happens before the instance_finalize()
-> > callback of the parent gets called, so object_unparent() calls in
-> > the callback will refer to objects that are already unparented, which
-> > is semantically incorrect.
-> > 
-> > Remove the instruction to call object_unparent(), and the exception
-> > of the "do not call object_unparent()" rule for instance_finalize().
-> > 
-> > Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> > ---
-> >  docs/devel/memory.rst | 19 ++++++-------------
-> >  1 file changed, 6 insertions(+), 13 deletions(-)
-> > 
-> > diff --git a/docs/devel/memory.rst b/docs/devel/memory.rst
-> > index 57fb2aec76e0..749f11d8a4dd 100644
-> > --- a/docs/devel/memory.rst
-> > +++ b/docs/devel/memory.rst
-> > @@ -161,18 +161,11 @@ or never.
-> >  Destruction of a memory region happens automatically when the owner
-> >  object dies.
-> >  
-> > -If however the memory region is part of a dynamically allocated data
-> > -structure, you should call object_unparent() to destroy the memory region
-> > -before the data structure is freed.  For an example see VFIOMSIXInfo
-> > -and VFIOQuirk in hw/vfio/pci.c.
-> 
-> Should we still keep some of these examples?  After the series they'll be
-> doing the right things.  Dynamic MRs are still slightly tricky, I think
-> it's still good to have some references.
-> 
-> > -
-> >  You must not destroy a memory region as long as it may be in use by a
-> >  device or CPU.  In order to do this, as a general rule do not create or
-> > -destroy memory regions dynamically during a device's lifetime, and only
-> > -call object_unparent() in the memory region owner's instance_finalize
-> > -callback.  The dynamically allocated data structure that contains the
-> > -memory region then should obviously be freed in the instance_finalize
-> > -callback as well.
-> > +destroy memory regions dynamically during a device's lifetime.
-> > +The dynamically allocated data structure that contains the
-> > +memory region should be freed in the instance_finalize callback.
-> >  
-> >  If you break this rule, the following situation can happen:
-> >  
-> > @@ -198,9 +191,9 @@ this exception is rarely necessary, and therefore it is discouraged,
-> >  but nevertheless it is used in a few places.
-> >  
-> >  For regions that "have no owner" (NULL is passed at creation time), the
-> > -machine object is actually used as the owner.  Since instance_finalize is
-> > -never called for the machine object, you must never call object_unparent
-> > -on regions that have no owner, unless they are aliases or containers.
-> > +machine object is actually used as the owner.  You must never call
-> > +object_unparent on regions that have no owner, unless they are aliases
-> > +or containers.
-> 
-> This looks like a completely separate change.  So we start to allow
-> machines to be finalized now?  I'm not familiar with machine object
-> lifecycles.  Maybe split it out even if it's true?
+On Thu, 18 Sep 2025, Mark Cave-Ayland wrote:
+> On 18/09/2025 19:50, BALATON Zoltan wrote:
+>> The raven PCI device does not need a state struct as it has no data to
+>> store there any more, so we can remove that to simplify code.
+>> 
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> ---
+>>   hw/pci-host/raven.c | 30 +-----------------------------
+>>   1 file changed, 1 insertion(+), 29 deletions(-)
+>> 
+>> diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
+>> index f8c0be5d21..172f01694c 100644
+>> --- a/hw/pci-host/raven.c
+>> +++ b/hw/pci-host/raven.c
+>> @@ -31,7 +31,6 @@
+>>   #include "hw/pci/pci_bus.h"
+>>   #include "hw/pci/pci_host.h"
+>>   #include "hw/qdev-properties.h"
+>> -#include "migration/vmstate.h"
+>>   #include "hw/intc/i8259.h"
+>>   #include "hw/irq.h"
+>>   #include "hw/or-irq.h"
+>> @@ -40,12 +39,6 @@
+>>   #define TYPE_RAVEN_PCI_DEVICE "raven"
+>>   #define TYPE_RAVEN_PCI_HOST_BRIDGE "raven-pcihost"
+>>   -OBJECT_DECLARE_SIMPLE_TYPE(RavenPCIState, RAVEN_PCI_DEVICE)
+>> -
+>> -struct RavenPCIState {
+>> -    PCIDevice dev;
+>> -};
+>> -
+>>   typedef struct PRePPCIState PREPPCIState;
+>>   DECLARE_INSTANCE_CHECKER(PREPPCIState, RAVEN_PCI_HOST_BRIDGE,
+>>                            TYPE_RAVEN_PCI_HOST_BRIDGE)
+>> @@ -65,7 +58,6 @@ struct PRePPCIState {
+>>       MemoryRegion bm_ram_alias;
+>>       MemoryRegion bm_pci_memory_alias;
+>>       AddressSpace bm_as;
+>> -    RavenPCIState pci_dev;
+>>         int contiguous_map;
+>>   };
+>> @@ -268,8 +260,7 @@ static void raven_pcihost_realizefn(DeviceState *d, 
+>> Error **errp)
+>>                             "pci-intack", 1);
+>>       memory_region_add_subregion(address_space_mem, 0xbffffff0, 
+>> &s->pci_intack);
+>>   -    /* TODO Remove once realize propagates to child devices. */
+>> -    qdev_realize(DEVICE(&s->pci_dev), BUS(&s->pci_bus), errp);
+>> +    pci_create_simple(&s->pci_bus, PCI_DEVFN(0, 0), 
+>> TYPE_RAVEN_PCI_DEVICE);
+>>   }
+>>     static void raven_pcihost_initfn(Object *obj)
+>> @@ -277,7 +268,6 @@ static void raven_pcihost_initfn(Object *obj)
+>>       PCIHostState *h = PCI_HOST_BRIDGE(obj);
+>>       PREPPCIState *s = RAVEN_PCI_HOST_BRIDGE(obj);
+>>       MemoryRegion *address_space_mem = get_system_memory();
+>> -    DeviceState *pci_dev;
+>>         memory_region_init(&s->pci_io, obj, "pci-io", 0x3f800000);
+>>       memory_region_init_io(&s->pci_io_non_contiguous, obj, &raven_io_ops, 
+>> s,
+>> @@ -314,12 +304,6 @@ static void raven_pcihost_initfn(Object *obj)
+>>       pci_setup_iommu(&s->pci_bus, &raven_iommu_ops, s);
+>>         h->bus = &s->pci_bus;
+>> -
+>> -    object_initialize(&s->pci_dev, sizeof(s->pci_dev), 
+>> TYPE_RAVEN_PCI_DEVICE);
+>> -    pci_dev = DEVICE(&s->pci_dev);
+>> -    object_property_set_int(OBJECT(&s->pci_dev), "addr", PCI_DEVFN(0, 0),
+>> -                            NULL);
+>> -    qdev_prop_set_bit(pci_dev, "multifunction", false);
+>>   }
+>>     static void raven_realize(PCIDevice *d, Error **errp)
+>> @@ -329,16 +313,6 @@ static void raven_realize(PCIDevice *d, Error **errp)
+>>       d->config[PCI_CAPABILITY_LIST] = 0x00;
+>>   }
+>>   -static const VMStateDescription vmstate_raven = {
+>> -    .name = "raven",
+>> -    .version_id = 0,
+>> -    .minimum_version_id = 0,
+>> -    .fields = (const VMStateField[]) {
+>> -        VMSTATE_PCI_DEVICE(dev, RavenPCIState),
+>> -        VMSTATE_END_OF_LIST()
+>> -    },
+>> -};
+>> -
+>>   static void raven_class_init(ObjectClass *klass, const void *data)
+>>   {
+>>       PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+>> @@ -350,7 +324,6 @@ static void raven_class_init(ObjectClass *klass, const 
+>> void *data)
+>>       k->revision = 0x00;
+>>       k->class_id = PCI_CLASS_BRIDGE_HOST;
+>>       dc->desc = "PReP Host Bridge - Motorola Raven";
+>> -    dc->vmsd = &vmstate_raven;
+>>       /*
+>>        * Reason: PCI-facing part of the host bridge, not usable without
+>>        * the host-facing part, which can't be device_add'ed, yet.
+>> @@ -361,7 +334,6 @@ static void raven_class_init(ObjectClass *klass, const 
+>> void *data)
+>>   static const TypeInfo raven_info = {
+>>       .name = TYPE_RAVEN_PCI_DEVICE,
+>>       .parent = TYPE_PCI_DEVICE,
+>> -    .instance_size = sizeof(RavenPCIState),
+>>       .class_init = raven_class_init,
+>>       .interfaces = (const InterfaceInfo[]) {
+>>           { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+>
+> I agree with removing RavenPCIState, but pci_create_simple() isn't the right 
+> solution here because it both init()s and realize()s the inner object. The 
+> right way to do this is for the parent to init() its inner object(s) within 
+> its init() function, and similarly for it to realize() its inner object(s) 
+> within its realize() function.
+>
+> FWIW it looks as if the same mistake is present in several other hw/pci-host 
+> devices.
 
-I didn't see anything elsewhere.  If you agree with above, I can queue this
-series with above touched up, then no need to repost.
+So maybe that's not a mistake then. There's no need to init and realize it 
+separately as this is an internal object which is enough to be created in 
+realize method and init and realize there at one go for which 
+pci_create_simple is appropriate. I think this inner object would only 
+need to be init separately if it exposed something (like a property) that 
+could be inspected or set before realize but that's not the case here so 
+it does not have to be created in init only in realize. (A lot of simple 
+devices don't even have init method only realize so init is only needed 
+for things that have to be set before realize.)
 
-Thanks,
-
--- 
-Peter Xu
-
+Regards,
+BALATON Zoltan
 
