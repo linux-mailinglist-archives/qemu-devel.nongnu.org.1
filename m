@@ -2,89 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55467B85A47
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 17:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F647B85CA9
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 17:54:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzGZy-0005YT-0a; Thu, 18 Sep 2025 11:29:50 -0400
+	id 1uzGwE-0006s3-3P; Thu, 18 Sep 2025 11:52:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uzGZs-000570-5z; Thu, 18 Sep 2025 11:29:44 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uzGw9-0006rV-R3
+ for qemu-devel@nongnu.org; Thu, 18 Sep 2025 11:52:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uzGZp-0003ca-QO; Thu, 18 Sep 2025 11:29:43 -0400
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id CC4D856F30D;
- Thu, 18 Sep 2025 17:29:36 +0200 (CEST)
-X-Virus-Scanned: amavis at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
- id kz7_8Rgw4BnB; Thu, 18 Sep 2025 17:29:34 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id C875B56F2AE; Thu, 18 Sep 2025 17:29:34 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id C493656F295;
- Thu, 18 Sep 2025 17:29:34 +0200 (CEST)
-Date: Thu, 18 Sep 2025 17:29:34 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uzGw7-0006mi-Kk
+ for qemu-devel@nongnu.org; Thu, 18 Sep 2025 11:52:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758210762;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=J2SF7btJxVeohr0vewYvPCSWQbbVw+SiGQo4tYA5B6I=;
+ b=EctAOWk+9e5iKmS7bnECaMzw9I8FcrzRhMuuSmuIufEtnveLz2dUK16bJcn+6hF8vsijHw
+ DdTlKiop3XoZwmr8+vSmUyKXMZKI4oYWakFCHIFVni3PkKz10K9u39MCkjI59nqUqJt2+t
+ xmcK7jejwvJjItHhw4viIMBgssLhG18=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-nH6pB2EkOIO8JDGCZt0tFQ-1; Thu,
+ 18 Sep 2025 11:52:35 -0400
+X-MC-Unique: nH6pB2EkOIO8JDGCZt0tFQ-1
+X-Mimecast-MFC-AGG-ID: nH6pB2EkOIO8JDGCZt0tFQ_1758210754
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1908918002C1; Thu, 18 Sep 2025 15:52:34 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.161])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 85C3319560BB; Thu, 18 Sep 2025 15:52:32 +0000 (UTC)
+Date: Thu, 18 Sep 2025 16:52:29 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Peter Xu <peterx@redhat.com>
-cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, qemu-devel@nongnu.org, 
- Alex Williamson <alex.williamson@redhat.com>, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, 
- David Hildenbrand <david@redhat.com>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Helge Deller <deller@gmx.de>, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
- John Snow <jsnow@redhat.com>, qemu-block@nongnu.org, 
- Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>, 
- Jesper Devantier <foss@defmacro.it>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org, 
- John Levon <john.levon@nutanix.com>, 
- Thanos Makatos <thanos.makatos@nutanix.com>, 
- Yanan Wang <wangyanan55@huawei.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- David Gibson <david@gibson.dropbear.id.au>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Alexey Kardashevskiy <aik@ozlabs.ru>, 
- =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
- Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, 
- Aurelien Jarno <aurelien@aurel32.net>, 
- Aleksandar Rikalo <arikalo@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, 
- =?ISO-8859-15?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Artyom Tarasenko <atar4qemu@gmail.com>, 
- Alistair Francis <alistair@alistair23.me>, 
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, 
- Bin Meng <bmeng.cn@gmail.com>, Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v3 0/7] Do not unparent in instance_finalize()
-In-Reply-To: <aMwRSpezxmIwIHrU@x1.local>
-Message-ID: <f536fc18-73ab-676c-bdec-59e94a3e5408@eik.bme.hu>
-References: <20250917-use-v3-0-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
- <aMwRSpezxmIwIHrU@x1.local>
+Cc: Juraj Marcin <jmarcin@redhat.com>, qemu-devel@nongnu.org,
+ Fabiano Rosas <farosas@suse.de>, Jiri Denemark <jdenemar@redhat.com>
+Subject: Re: [PATCH] migration: Apply migration specific keep-alive defaults
+ to inet socket
+Message-ID: <aMwqvbFzGlsX23C7@redhat.com>
+References: <aMBDIwKDxTVrBJBQ@redhat.com> <aMCjGVUiM3MY-RM3@x1.local>
+ <aMEkY3N9ITwH_Y8Z@redhat.com> <aMGpHBGth05JY2hl@x1.local>
+ <aMPz0WFmstNmKBQc@redhat.com> <aMQ19NmgFkLs8jkA@x1.local>
+ <aMhZn-fbq67WQX8u@redhat.com>
+ <r2tnbymosv7kxj7h4x6mnrczy7jdn66voiodlakivovu7lhwv4@eudkicvqwefc>
+ <aMwbAdKQLzLaf4Hd@redhat.com> <aMwg-ROjbDL_z_EM@x1.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aMwg-ROjbDL_z_EM@x1.local>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.005,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,21 +89,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 18 Sep 2025, Peter Xu wrote:
-> On Wed, Sep 17, 2025 at 07:13:25PM +0900, Akihiko Odaki wrote:
->> Based-on: <cover.1751493467.git.balaton@eik.bme.hu>
->> ("[PATCH v2 00/14] hw/pci-host/raven clean ups")
->
-> Could I ask why this is a dependency?
+On Thu, Sep 18, 2025 at 11:10:49AM -0400, Peter Xu wrote:
+> On Thu, Sep 18, 2025 at 03:45:21PM +0100, Daniel P. Berrangé wrote:
+> > There needs to be a way to initiate post-copy recovery regardless
+> > of whether we've hit a keepalive timeout. Especially if we can
+> > see one QEMU in postcopy-paused, but not the other side, it
+> > doesn't appear to make sense to block the recovery process.
+> > 
+> > The virDomainJobCancel command can do a migrate-cancel on the
+> > src, but it didn't look like we could do the same on the dst.
+> > Unless I've overlooked something, Libvirt needs to gain a way
+> > to explicitly force both sides into the postcopy-paused state,
+> > and thus be able to immediately initiate recovery.
+> 
+> Right, if libvirt can do that then problem should have been solved too.
+> 
+> > I'm fine with turning on keepalives on the socket, but IMHO the
+> > out of the box behaviour should be to honour the kernel default
+> > tunables unless the admin decides they want different behaviour.
+> > I'm not seeing a rational for why the kernel defaults should be
+> > forceably overridden in QEMU out of the box.
+> 
+> IMHO the rational here is that the socket here is in a special state and
+> for special purpose. So we're not trying to change anything globally for
+> qemu (without knowing what the socket is), but only this specific type of
+> socket that is used for either precopy or postcopy live migrations.
+> 
+> It's special because it's always safe to have a more aggresive
+> disconnection, and might be preferred versus very lengthy hangs (if
+> assuming libvirt doesn't yet have way to stop the hang), especially for a
+> postcopy phase.
 
-It removes an address_space usage from raven so this series does not have 
-to change that and I don't have to rebase that series. Otherwise these are 
-not related. I'll check the problem reported about my series and send an 
-updated one.
+I've already described up-thread that it is not guaranteed safe to
+have aggressive disconnection. It is often safe, but there is
+definitely non-negligible risk in prematurely terminating a migration
+connection.
 
-Regards,
-BALATON Zoltan
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
