@@ -2,78 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29234B8690F
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 20:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FCB8B86962
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 20:53:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzJhZ-0001kF-Kw; Thu, 18 Sep 2025 14:49:53 -0400
+	id 1uzJi5-0001rd-OW; Thu, 18 Sep 2025 14:50:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3Q1TMaAcKCmoabMdQMIOWWOTM.KWUYMUc-LMdMTVWVOVc.WZO@flex--steviea.bounces.google.com>)
- id 1uzJhU-0001jf-CY
- for qemu-devel@nongnu.org; Thu, 18 Sep 2025 14:49:48 -0400
-Received: from mail-pl1-x64a.google.com ([2607:f8b0:4864:20::64a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3Q1TMaAcKCmoabMdQMIOWWOTM.KWUYMUc-LMdMTVWVOVc.WZO@flex--steviea.bounces.google.com>)
- id 1uzJhS-0002yU-MW
- for qemu-devel@nongnu.org; Thu, 18 Sep 2025 14:49:48 -0400
-Received: by mail-pl1-x64a.google.com with SMTP id
- d9443c01a7336-2665df2e24aso22798905ad.2
- for <qemu-devel@nongnu.org>; Thu, 18 Sep 2025 11:49:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1758221380; x=1758826180; darn=nongnu.org;
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=SZh7HNwDggLgI0mFfjdx9B3XpYyPXunvtsg5o4BmdCs=;
- b=PgopiW2IQFILIwLP0YY8aoAXRtNTd8Lxq63Y/UI26EuZbjURk3J+FCQtGAweYCBYzk
- em+Jx8sUW5gYHOwz8UNS/lYUvHkC869yOo3DtlmMCricylQnG+YGP6GnfabIffCe2ekR
- S6GV3Hr20+MMZoNNkvZXQhvDY6V6yo4v83loPZ/pmPx760vlNFzBD9qNwnwpbDC2EDgY
- jNofD1oNKfCS6bm9ec6EEOZqlDnhOQ0VEWXh3JAn9CJIWkyak6oKjlaSLIX7Oi2jxb+m
- VnyTNIZ7YNn5t5JqHdy04MFZHs0R19Wvbd7q+4Wep+WVVnO490f/SY4JUBnI1sFSVejE
- aF9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758221380; x=1758826180;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SZh7HNwDggLgI0mFfjdx9B3XpYyPXunvtsg5o4BmdCs=;
- b=INJ0xw8/VPNuh3RrVzVa+HJ1vTFgInrpS3Z8L0SldFeantoN7ClRvcZ9DDfKVwCSsc
- +OLXwZwLMCdoEzaIz+EXHyW4KwvZw3h+gXc0bUgSJfZelOmYiz63EcCgGboMP3nMt7Di
- qHR1NwaFL7aumEV2g+EAAsi7d5a/zlMMJju5SKP9BOD0vPjBaIZibSdK0OwZGbU7sntz
- wngdKkoMUY9+RREwYr6pI52ZO5OwjHKA+LqLAvUQIEtfoUtKdFXHIMZ8izjsXRw2BsT1
- lfDZkZCvqGQGFWPq2wk9TvCClwMRkQukXdqEUr5rUKC9OL+3XPu6RNTC10YbFX/VgXFu
- I9AQ==
-X-Gm-Message-State: AOJu0YxqqljEG/rbcMgAzrHbuNypA8dwRLyd77drEZLvaNwnI0Vd6NQr
- scsEphNF4BintJgN/kfWrqv03kDDU4JBHkaxr23pF8O2cU0Bloz36flrmXIpRPpxXSi12l1nvPA
- kjC5RaG6SZA==
-X-Google-Smtp-Source: AGHT+IGN6+R7xiBzixLXr2GSr5BSsP/gfLd0IB/hHw4bwD91Jexn9kXU0/zQ6G+A78Tu/XRFeVidOGSyF0Ld
-X-Received: from pjtu6.prod.google.com ([2002:a17:90a:c886:b0:32d:a0b1:2b14])
- (user=steviea job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:1b68:b0:24b:24dc:91a7
- with SMTP id d9443c01a7336-269ba521114mr5942335ad.45.1758221379677; Thu, 18
- Sep 2025 11:49:39 -0700 (PDT)
-Date: Thu, 18 Sep 2025 18:49:35 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.470.ga7dc726c21-goog
-Message-ID: <20250918184935.2704752-1-steviea@google.com>
-Subject: [PATCH] linux-user: Surface more /proc/self/stat fields to the
- emulated process
-From: Stevie Alvarez <steviea@google.com>
-To: laurent@vivier.eu
-Cc: qemu-devel@nongnu.org, Shu-Chun Weng <scw@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::64a;
- envelope-from=3Q1TMaAcKCmoabMdQMIOWWOTM.KWUYMUc-LMdMTVWVOVc.WZO@flex--steviea.bounces.google.com;
- helo=mail-pl1-x64a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uzJi3-0001qa-FG; Thu, 18 Sep 2025 14:50:23 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uzJhp-0003F4-Ra; Thu, 18 Sep 2025 14:50:11 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 5086056F30D;
+ Thu, 18 Sep 2025 20:50:06 +0200 (CEST)
+X-Virus-Scanned: amavis at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by localhost (zero.eik.bme.hu [127.0.0.1]) (amavis, port 10028) with ESMTP
+ id hX23Mv9mT3G8; Thu, 18 Sep 2025 20:50:04 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 4D6EE56F30C; Thu, 18 Sep 2025 20:50:04 +0200 (CEST)
+Message-ID: <cover.1758219840.git.balaton@eik.bme.hu>
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v3 00/14] hw/pci-host/raven clean ups
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+To: qemu-devel@nongnu.org,
+    qemu-ppc@nongnu.org
+Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Nicholas Piggin <npiggin@gmail.com>
+Date: Thu, 18 Sep 2025 20:50:04 +0200 (CEST)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,143 +59,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shu-Chun Weng <scw@google.com>
+Hello,
 
+This series cleans up and simplifies the raven model which does some
+strange stuff that no other pci-host is doing and does it in a
+convoluted way and also has some legacy bits that can be removed.
+Apart from making the model much more readable this also fixes the
+non-contiguous IO control bit which was there but did not work as it
+was not connected but apparently it's not really used by any guest so
+that wasn't noticed.
 
-Some fields make sense even for the emulated process. Some external
-programs/tests might depend on the fields, e.g. starttime.
+Regards,
+BALATON Zoltan
 
-Signed-off-by: Shu-Chun Weng <scw@google.com>
----
- linux-user/syscall.c | 93 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 90 insertions(+), 3 deletions(-)
+V3:
+- rebase on master
+- Fix issue with device-crash-test reported by Akihiko Odaki: make
+sure device is correctly used by adding assert and making it not user
+creatable in patch 14.
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 91360a072c..7f3d346902 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8216,15 +8216,99 @@ static int open_self_smaps(CPUArchState *cpu_env, int fd)
-     return open_self_maps_1(cpu_env, fd, true);
- }
- 
-+#define NUM_PROC_SELF_STAT_FIELDS 52
-+
-+static void read_proc_self_stat(char buf[], int buf_size, const char *fields[])
-+{
-+    char *p;
-+    int i;
-+
-+    for (i = 0; i < NUM_PROC_SELF_STAT_FIELDS; i++) {
-+        fields[i] = NULL;
-+    }
-+
-+    int fd = open("/proc/self/stat", O_RDONLY);
-+    if (fd < 0) {
-+        return;
-+    }
-+    i = read(fd, buf, buf_size);
-+    close(fd);
-+    if (i <= 0) {
-+        return;
-+    }
-+    if (i == buf_size) {
-+        buf[buf_size - 1] = '\0';
-+    } else {
-+        buf[i] = '\0';
-+    }
-+
-+    fields[0] = strtok_r(buf, " \n", &p);
-+
-+    /*
-+     * Get the next field (comm), but don't tokenize -- we'll need to find the
-+     * right-most ')' that marks the end of the file name instead.
-+     */
-+    fields[1] = strtok_r(NULL, "", &p);
-+
-+    p = strrchr(fields[1], ')');
-+    if (!p) {
-+        return;
-+    }
-+    p[1] = '\0';
-+
-+    fields[2] = strtok_r(p + 2, " \n", &p);
-+    for (i = 3; i < NUM_PROC_SELF_STAT_FIELDS; i++) {
-+        fields[i] = strtok_r(NULL, " \n", &p);
-+    }
-+}
-+
- static int open_self_stat(CPUArchState *cpu_env, int fd)
- {
-     CPUState *cpu = env_cpu(cpu_env);
-     TaskState *ts = get_task_state(cpu);
-     g_autoptr(GString) buf = g_string_new(NULL);
-+    char host_stat_buf[1024];
-+    const char *fields[NUM_PROC_SELF_STAT_FIELDS];
-+    const int use_host_stat_fields[] = {
-+        /*
-+         * `man 5 proc` uses 1-based index, so indices here are one less than
-+         * on the man page.
-+         */
-+        0, /* pid */
-+        2, /* state */
-+        3, /* ppid */
-+        4, /* pgrp */
-+        5, /* session */
-+        6, /* tty_nr */
-+        7, /* tpgid */
-+        17, /* priority */
-+        18, /* nice */
-+        21, /* starttime */
-+        38, /* processor */
-+        39, /* rt_priority */
-+        40, /* policy */
-+        NUM_PROC_SELF_STAT_FIELDS, /* sentinel */
-+    };
-+
-     int i;
-+    const int *next_use_host_stat_field = use_host_stat_fields;
-+
-+    read_proc_self_stat(host_stat_buf, sizeof(host_stat_buf), fields);
-+
-+    for (i = 0; i < NUM_PROC_SELF_STAT_FIELDS; i++) {
-+        bool may_use_host_stat = i == (*next_use_host_stat_field);
-+        if (may_use_host_stat) {
-+            ++next_use_host_stat_field;
-+        }
- 
--    for (i = 0; i < 44; i++) {
--        if (i == 0) {
-+        if (may_use_host_stat && fields[i] != NULL && fields[i][0] != '\0') {
-+            g_string_printf(buf, "%s ", fields[i]);
-+
-+            /*
-+             * Some systems do not mount /proc so still check for 0 and 3 even
-+             * though `may_use_host_stat` is true for them.
-+             */
-+        } else if (i == 0) {
-             /* pid */
-             g_string_printf(buf, FMT_pid " ", getpid());
-         } else if (i == 1) {
-@@ -8259,7 +8343,8 @@ static int open_self_stat(CPUArchState *cpu_env, int fd)
-             g_string_printf(buf, TARGET_ABI_FMT_ld " ", ts->info->start_stack);
-         } else {
-             /* for the rest, there is MasterCard */
--            g_string_printf(buf, "0%c", i == 43 ? '\n' : ' ');
-+            g_string_printf(buf, "0%c",
-+                            i == NUM_PROC_SELF_STAT_FIELDS - 1 ? '\n' : ' ');
-         }
- 
-         if (write(fd, buf->str, buf->len) != buf->len) {
-@@ -8270,6 +8355,8 @@ static int open_self_stat(CPUArchState *cpu_env, int fd)
-     return 0;
- }
- 
-+#undef NUM_PROC_SELF_STAT_FIELDS
-+
- static int open_self_auxv(CPUArchState *cpu_env, int fd)
- {
-     CPUState *cpu = env_cpu(cpu_env);
+v2:
+- rebase on master
+- add R-b tags from Philippe
+
+BALATON Zoltan (14):
+  hw/pci-host/raven: Simplify PCI facing part
+  hw/pci-host/raven: Simplify host bridge type declaration
+  hw/pci-host/raven: Use DEFINE_TYPES macro
+  hw/pci-host/raven: Simplify PCI bus creation
+  hw/pci-host/raven: Simplify PCI interrupt routing
+  hw/pci-host/raven: Simplify direct config access address decoding
+  hw/pci-host/raven: Rename direct config access ops
+  hw/pci-host/raven: Use correct parameter in direct access ops
+  hw/pci-host/raven: Do not use parent object for mmcfg region
+  hw/pci-host/raven: Fix PCI config direct access region
+  hw/pci-host/raven: Simpify discontiguous IO access
+  hw/pci-host/raven: Move bus master address space creation to one place
+  hw/pci-host/raven: Do not map regions in init method
+  hw/ppc/prep: Fix non-contiguous IO control bit
+
+ hw/pci-host/raven.c       | 328 ++++++++++++--------------------------
+ hw/ppc/prep.c             |  19 ++-
+ hw/ppc/prep_systemio.c    |  17 +-
+ include/hw/pci/pci_host.h |   1 -
+ 4 files changed, 130 insertions(+), 235 deletions(-)
+
 -- 
-2.51.0.470.ga7dc726c21-goog
+2.41.3
 
 
