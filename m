@@ -2,105 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 696C1B859B1
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 17:31:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C34CB859D8
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 17:32:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzGXP-0001VC-DK; Thu, 18 Sep 2025 11:27:11 -0400
+	id 1uzGZK-00043V-7P; Thu, 18 Sep 2025 11:29:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uzGXF-0001M6-RK
- for qemu-devel@nongnu.org; Thu, 18 Sep 2025 11:27:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <gautam@linux.ibm.com>)
+ id 1uzGYs-0003ul-10
+ for qemu-devel@nongnu.org; Thu, 18 Sep 2025 11:28:43 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uzGXD-0003GF-P8
- for qemu-devel@nongnu.org; Thu, 18 Sep 2025 11:27:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758209217;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KL5XphfGve3/sGWIcFqGeYJJAdQnhKsRbINuS8YWb0o=;
- b=YKhSNddklVKpPBRhHO7cF05z0XMpZcAQ+Bj2vdAhsl+x2dEtE5M7KX3ToJk2bCwvE6OKAH
- 48oTmvyUWrBWcmUTz1KxzR/4jFNDcTCEv/At5TCeMBOUon5rTjUkEhk8snd+FH9KXXSHTc
- JxWsDAvoeTHApRxsEVQIVXQYbLDaHko=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-472-_zIABCdiMhSP7wyqpIkyXQ-1; Thu, 18 Sep 2025 11:26:55 -0400
-X-MC-Unique: _zIABCdiMhSP7wyqpIkyXQ-1
-X-Mimecast-MFC-AGG-ID: _zIABCdiMhSP7wyqpIkyXQ_1758209214
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45de5fdda1aso6260305e9.1
- for <qemu-devel@nongnu.org>; Thu, 18 Sep 2025 08:26:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758209214; x=1758814014;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KL5XphfGve3/sGWIcFqGeYJJAdQnhKsRbINuS8YWb0o=;
- b=HuTfltUhz2Mzonj7THuMnITGpzyRst/UoYYsG0XqZq0FwwURyTbdtrJnCmMOSOX9Kr
- lCmZyA9a1I2TXR5nXVCtp/HeU4GHl2uAFf8pj7+liKjI0Gk4FQ/N/woxDEhh2/Tgl0Ez
- KK9zd0MITp0NR1VgZcNgsW62h6+3q2BmvxJzoQicvoZKVnvAps2NhDo00SnWaOK+JahH
- VyFBXs7SoiXeMgDRpaXhKibHUmM68pAN7Weep4IiAGH7OuPT6cMTM1YLOPl4jPKxBnba
- dd1vsyV4tdtbPSUd4WPu9gAgmybdJrXTkRJtUv9Ksw2lls+anK8jsoOQXYS3e2i5oABV
- cfaw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVn2SpasqOGLKo2dYPhrxJ48PxQMZMaAjN8aI6RCe5DgsRc+aoOJB402OetnjpwEnLLT/ifhqvZCV63@nongnu.org
-X-Gm-Message-State: AOJu0YySc4AZxcDHCIWXtKNrlmeOsAn2+MZtJ+9M9WtoQ2xpDRAhbm8w
- u6fRDsW38/pwVwhLNXqvLsTOVTg2iUUu0qoWVHS9pyoI3knnB7sR5IyMV1wQ9GyCUWwd7V5CrKk
- RZnvsDS4AdBMzxZgVQEbD2V0/q80rHs0fy5LW87ImdjaF/flOEgFl5yFs
-X-Gm-Gg: ASbGncsmQ9/RFEjYsS6iYr61d4MWuel0Y5l4WlMVqO3JgL04z2V84buDeLRbgvFKGn9
- OIhcpIM6m1lUL0OTueonobrtmc4blQop0xQqENojjvqRxgMUHavdhT8uBqrfTLTPYSjpKgCaJXL
- Sxxn5CJWqgUQg7SSqhh9nIkddbwmeI+Egq+w8bk5tPjuXnf5KgQtR7sypzZ4kCTRVQUdluwXzZm
- RosyOmzSzTIF6QviG/WwbYFa98G10WNS1GRazAXwBmtL+kca8p1h1IJ4ZHO/GpByKnmVnx5BaDQ
- +yzIq+IyCxmM5SGNXDOI4RfXKI8By4woAcPuLr7NcPp4dxNMJQaZhqx5lHbYSgqhX/5Usof7xzQ
- gvVazTlhSwgc=
-X-Received: by 2002:a05:600c:19d4:b0:45b:8f5e:529a with SMTP id
- 5b1f17b1804b1-462031b1dfdmr63298635e9.14.1758209213821; 
- Thu, 18 Sep 2025 08:26:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEAFdhxqAFtJ5xKzXqH5L+rh3q+f9wj0clvTRsPw0BM11XcNBfnHbnLBJBzjrN/jbBhLHWSaw==
-X-Received: by 2002:a05:600c:19d4:b0:45b:8f5e:529a with SMTP id
- 5b1f17b1804b1-462031b1dfdmr63298295e9.14.1758209213397; 
- Thu, 18 Sep 2025 08:26:53 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
- ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3ee073f3d68sm4154041f8f.10.2025.09.18.08.26.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 Sep 2025 08:26:52 -0700 (PDT)
-Message-ID: <6a4651a8-d6ea-4bcd-9f73-3e852f9904dc@redhat.com>
-Date: Thu, 18 Sep 2025 17:26:52 +0200
+ (Exim 4.90_1) (envelope-from <gautam@linux.ibm.com>)
+ id 1uzGYj-0003Tb-H0
+ for qemu-devel@nongnu.org; Thu, 18 Sep 2025 11:28:41 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58IAHjUe018471;
+ Thu, 18 Sep 2025 15:28:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=0MeYOe
+ rMHFYbKZfJ8EkG1RQNkzgw/qLIW3GFK9uDXwo=; b=Gt+zRxd8+vpd1NQrJPYx/C
+ uwsEjU5dn07tR8d277Rf8zYaNQB7OeSCsISr/vRz5oJTH+06Ed771DaF8awMyptD
+ Ztcuzni0oQRGR+AVKHiAImkYagWnqSR733M1Y6qoMF7k8UQA6yFiu4qZw5tOUTqC
+ 8UNsLhdMEmrQMoYe09X8Jve0yzKXCIpat+C5tGTuhhczb1h48d4WmT6RLb6bJFKO
+ q2wDkKnnub+QvrTLakMxAnqgM7s3xOvWqckrK6m+mYlt0q4hJ/fsjqpUbNXlZdZS
+ 00t5t1ho6siz/6wFoFOvOh11ulqIAnkJeefnhw34A4ncvJfLnlsF1BCYiMCMCw3A
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4pb7wn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Sep 2025 15:28:24 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58IFEJ4V012353;
+ Thu, 18 Sep 2025 15:28:24 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4pb7wf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Sep 2025 15:28:24 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58IDJBho022300;
+ Thu, 18 Sep 2025 15:28:22 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kxpyb1r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Sep 2025 15:28:22 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 58IFSKRB36503810
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 18 Sep 2025 15:28:20 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 95CFA20040;
+ Thu, 18 Sep 2025 15:28:20 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9713D20049;
+ Thu, 18 Sep 2025 15:28:17 +0000 (GMT)
+Received: from Gautams-MacBook-Pro.local (unknown [9.43.53.186])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Thu, 18 Sep 2025 15:28:17 +0000 (GMT)
+Date: Thu, 18 Sep 2025 20:58:07 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Fabian Vogt <fvogt@suse.de>,
+ Peter Xu <peterx@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: Re: [PATCH 1/4] hw/intc/xics: Add missing call to register
+ vmstate_icp_server
+Message-ID: <aMwlB72gmJl0ILZt@Gautams-MacBook-Pro.local>
+References: <20250819223905.2247-1-farosas@suse.de>
+ <20250819223905.2247-2-farosas@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] target/arm/kvm: add constants for new PSCI versions
-Content-Language: en-US
-To: Sebastian Ott <sebott@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-References: <20250911144923.24259-1-sebott@redhat.com>
- <20250911144923.24259-2-sebott@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20250911144923.24259-2-sebott@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250819223905.2247-2-farosas@suse.de>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwNCBTYWx0ZWRfX2k0ky1GF2WzM
+ 0QpDqQahsmt+2o+w8fSbbq2I9RVJGjpDtkhgAMY1MdR3WVkY0qYDOSKKHiurfuSj+qk4zqTHIaW
+ 5YvJTrZxXwWy48oTmSmcmQe5upUPBn6FbMP/9mjBgxG3w0kLCkhESm3T8kkdy61lwn0VAjFNulM
+ kSjuHM66Zc1Ae42K67mfoQUs/pW/3TVA6cDUEC7x+8FkRvFpQI/+1Ik1K3eBQNVPpz6lZer4CkU
+ qpr+vQcltmNPubDQ1lxq72pUYmxCBhbt3x8rUSV7Cpd+SIrq/Y7caUTs53m2LCkxJeBTFy8QkIy
+ XZe4SGzKTfl+Q8lYktu3DSjmFz2En3yioo2r71VWGukM4Xewmk3tiyd2pchNIkN49OVVD4RXCpm
+ 5dn4hMLP
+X-Proofpoint-ORIG-GUID: 38C-8FmafV4jJClMJBf1pblBv47ZxvrY
+X-Proofpoint-GUID: F5tsoFa_QEZkNowFQDfDsvF7pMELBFjT
+X-Authority-Analysis: v=2.4 cv=cNzgskeN c=1 sm=1 tr=0 ts=68cc2518 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=8nJEP1OIZ-IA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8
+ a=VnNF1IyMAAAA:8 a=GCogdzMTRew3jUDZFjwA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+ a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-18_01,2025-09-18_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1011 spamscore=0 bulkscore=0 malwarescore=0
+ adultscore=0 priorityscore=1501 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509160204
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=gautam@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.005,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,37 +128,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 9/11/25 4:49 PM, Sebastian Ott wrote:
-> Add constants for PSCI version 1_2 and 1_3.
->
-> Signed-off-by: Sebastian Ott <sebott@redhat.com>
+On Tue, Aug 19, 2025 at 07:39:02PM -0300, Fabiano Rosas wrote:
+> From: Fabian Vogt <fvogt@suse.de>
+> 
+> An obsolete wrapper function with a workaround was removed entirely,
+> without restoring the call it wrapped.
+> 
+> Without this, the guest is stuck after savevm/loadvm.
+> 
+> Fixes: 24ee9229fe31 ("ppc/spapr: remove deprecated machine pseries-2.9")
+> Signed-off-by: Fabian Vogt <fvogt@suse.de>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Link: https://lore.kernel.org/qemu-devel/6187781.lOV4Wx5bFT@fvogt-thinkpad
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->  target/arm/kvm-consts.h | 2 ++
+>  hw/intc/xics.c | 2 ++
 >  1 file changed, 2 insertions(+)
->
-> diff --git a/target/arm/kvm-consts.h b/target/arm/kvm-consts.h
-> index c44d23dbe7..239a8801df 100644
-> --- a/target/arm/kvm-consts.h
-> +++ b/target/arm/kvm-consts.h
-> @@ -97,6 +97,8 @@ MISMATCH_CHECK(QEMU_PSCI_1_0_FN_PSCI_FEATURES, PSCI_1_0_FN_PSCI_FEATURES);
->  #define QEMU_PSCI_VERSION_0_2                     0x00002
->  #define QEMU_PSCI_VERSION_1_0                     0x10000
->  #define QEMU_PSCI_VERSION_1_1                     0x10001
-> +#define QEMU_PSCI_VERSION_1_2                     0x10002
-> +#define QEMU_PSCI_VERSION_1_3                     0x10003
+> 
+> diff --git a/hw/intc/xics.c b/hw/intc/xics.c
+> index d9a199e883..200710eb6c 100644
+> --- a/hw/intc/xics.c
+> +++ b/hw/intc/xics.c
+> @@ -335,6 +335,8 @@ static void icp_realize(DeviceState *dev, Error **errp)
+>              return;
+>          }
+>      }
+> +
+> +    vmstate_register(NULL, icp->cs->cpu_index, &vmstate_icp_server, icp);
+>  }
 >  
->  MISMATCH_CHECK(QEMU_PSCI_0_2_RET_TOS_MIGRATION_NOT_REQUIRED, PSCI_0_2_TOS_MP);
->  /* We don't bother to check every possible version value */
-I would simply squash this in next patch
+>  static void icp_unrealize(DeviceState *dev)
+> -- 
+> 2.35.3
+> 
+> 
 
-Thanks
 
-Eric
+I did some testing with QEMU-9.2.0 and 10.1.0 and my observations are:
+1. QEMU-9.2.0
+With XICS, both snapshots and migrations were broken and they work
+fine with this patch
 
+2. QEMU-10.1.0
+With XICS, snapshot and migration both are broken - lockups are observed
+(with and without this patch)
+
+The 10.1.0 can be fixed in a follow up patch.
+
+For now since 9.2 works fine, please feel free to add
+Reviewed-by: Gautam Menghani <gautam@linux.ibm.com>
+
+
+Thanks,
+Gautam
 
