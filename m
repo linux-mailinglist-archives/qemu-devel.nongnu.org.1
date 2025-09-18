@@ -2,60 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5F8B82B69
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 05:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E74ACB82B96
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 05:16:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uz53E-0004HW-2T; Wed, 17 Sep 2025 23:11:16 -0400
+	id 1uz55s-0005R5-EA; Wed, 17 Sep 2025 23:14:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1uz538-0004DL-Jj; Wed, 17 Sep 2025 23:11:10 -0400
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net ([162.243.164.118])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1uz534-0005Ls-QQ; Wed, 17 Sep 2025 23:11:10 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwB3DWFEeMtoyGxXBw--.54455S2;
- Thu, 18 Sep 2025 11:11:00 +0800 (CST)
-Received: from localhost (unknown [123.150.8.50])
- by mail (Coremail) with SMTP id AQAAfwAXeuc_eMtoJjUUAA--.17208S2;
- Thu, 18 Sep 2025 11:10:56 +0800 (CST)
-Date: Thu, 18 Sep 2025 11:10:38 +0800
-From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: rad@semihalf.com, peter.maydell@linaro.org,
- leif.lindholm@oss.qualcomm.com, chenbaozi@phytium.com.cn,
- qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
- qemu-arm@nongnu.org, ligen@phytium.com.cn
-Subject: Re: [RFC QEMU PATCH v7] hw/arm/sbsa-ref: Support CXL Host Bridge &
- CFMW
-Message-ID: <aMt4LqSympNcVqnb@phytium.com.cn>
-References: <20250807111037.241118-1-wangyuquan1236@phytium.com.cn>
- <20250917173914.0000331e@huawei.com>
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1uz55q-0005Qf-1b; Wed, 17 Sep 2025 23:13:58 -0400
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1uz55m-0005cU-U0; Wed, 17 Sep 2025 23:13:57 -0400
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 18 Sep
+ 2025 11:13:48 +0800
+Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Thu, 18 Sep 2025 11:13:48 +0800
+To: Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
+ <clg@kaod.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
+ Stanley" <joel@jms.id.au>, "Michael S. Tsirkin" <mst@redhat.com>, "Marcel
+ Apfelbaum" <marcel.apfelbaum@gmail.com>, "open list:ARM TCG CPUs"
+ <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
+ <nabihestefan@google.com>, <wuhaotsh@google.com>, <titusr@google.com>
+Subject: [PATCH v3 00/14] Support PCIe RC to AST2600 and AST2700
+Date: Thu, 18 Sep 2025 11:13:29 +0800
+Message-ID: <20250918031348.3991681-1-jamin_lin@aspeedtech.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917173914.0000331e@huawei.com>
-X-CM-TRANSID: AQAAfwAXeuc_eMtoJjUUAA--.17208S2
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAQAWjJu34I-gA1s3
-Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=wangyuquan
- 1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvdXoW7Xr1ktF1fJF4rtw1kGw1ftFb_yoWkWrb_ZF
- s2yr9avw4vkF9FgFsxt3ZIvrWftryDur47XwnrAas8JF9xtas5uF4DKFna9345Gr42qr42
- kr1YvrW3tanrZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8wcxFpf9Il3svdxBIdaVrnU
- Uv73VFW2AGmfu7jjvjm3AaLaJ3UjIYCTnIWjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRUUUUU
- UUUU=
-Received-SPF: pass client-ip=162.243.164.118;
- envelope-from=wangyuquan1236@phytium.com.cn;
- helo=zg8tmtyylji0my4xnjqumte4.icoremail.net
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=211.20.114.72;
+ envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,44 +60,183 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
+From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 17, 2025 at 05:39:14PM +0100, Jonathan Cameron wrote:
-> On Thu, 7 Aug 2025 19:10:37 +0800
-> wangyuquan <wangyuquan1236@phytium.com.cn> wrote:
-> 
-> > From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-> > 
-> > This creates a specific CXL host bridge (0001:00) with four cxl
-> > root ports on sbsa-ref. And the memory layout provides separate
-> > space windows for the cxl host bridge in the sbsa-ref memmap:
-> > 
-> > - 64K  CXL Host Bridge Component Registers (CHBCR)
-> > - 64K  CXL_PIO
-> > - 128M CXL_MMIO
-> > - 256M CXL_ECAM
-> > - 4G   CXL_MMIO_HIGH
-> > 
-> > To provide CFMWs on sbsa-ref, this extends 1TB space from the
-> > hole above RAM Memory [SBSA_MEM] for CXL Fixed Memory Window:
-> > 
-> > - 1T   CXL_FIXED_WINDOW
-> > 
-> > Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-> This looks pretty standard to me so FWIW as someone who hasn't used
-> the SBSA model.
-> 
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> 
->
+v1:
+ 1. Add PCIe PHY, CFG, and MMIO window support for AST2600.
+    Note: Only supports RC_H.
+ 2. Add PCIe PHY, CFG, and MMIO window support for AST2700.
+    Note: Supports 3 RCs.
 
-Hi, Leif and SBSA folks
+v2:
+  1. Introduce a new root port device.
+  2. For AST2600 RC_H, add the root device at 80:00.0 and a root port at 80.08.0 
+     to match the real hardware topology, allowing users to attach PCIe devices 
+     at the root port.
+  3. For AST2700, add a root port at 00.00.0 for each PCIe root complex to match
+     the real hardware topology, allowing users to attach PCIe devices at the
+     root port.
 
-We hope to hear from everyone regarding other suggestions for using the
-CXL on the sbsa-ref, as well as any areas where this patch might have
-been overlooked.
+v3:
+  1. Fix review issues.
+  2. update functional test for the e1000e network card.
+  3. update license header
+  4. Adding "Based on previous work from Cedric Le Goater, with Jamin's summary
+     implementation.
 
-Yuquan
+Dependencies
+
+QEMU version:
+https://github.com/qemu/qemu/commit/f0007b7f03e2d7fc33e71c3a582f2364c51a226b
+
+This patch series depends on the following patch series:
+1. hw/arm/aspeed Move ast2700-evb alias to ast2700a1-evb
+https://patchwork.kernel.org/project/qemu-devel/patch/20250902062550.3797040-1-jamin_lin@aspeedtech.com/
+2. tests/functional/arm: Update test images for ASPEED chips
+https://patchwork.kernel.org/project/qemu-devel/cover/20250904100556.1729604-1-kane_chen@aspeedtech.com/
+3. tests/functional/arm: Add OTP functional test 
+https://patchwork.kernel.org/project/qemu-devel/cover/20250917035917.4141723-1-kane_chen@aspeedtech.com/
+
+Testing the PCIe Root Complex model with the e1000e PCIe device
+
+AST2600 test environment
+Test image: ASPEED SDK v09.07
+Download
+https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2600-default-obmc.tar.gz
+
+When booted, lspci should show one root device at 80:00.0 and a root
+port at 80:08.0, matching the expected hardware topology:
+
+```
+root@ast2600-default:~# lspci
+80:00.0 Host bridge: ASPEED Technology, Inc. Device 2600
+80:08.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge
+```
+
+The e1000e driver is included in this image. Attach the e1000e device on
+bus pcie.0 with the following command line:
+
+```
+ -device e1000e,netdev=net0,bus=pcie.0 \
+ -netdev user,id=net0,hostfwd=:127.0.0.1:3222-:22,hostname=qemu0 \
+```
+
+After boot, lspci should show the e1000e device enumerated at 81:00.0:
+
+```
+root@ast2600-default:~# lspci
+80:00.0 Host bridge: ASPEED Technology, Inc. Device 2600
+80:08.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge
+81:00.0 Ethernet controller: Intel Corporation 82574L Gigabit Network Connection
+```
+
+The e1000e driver should probe successfully, and a new Ethernet interface
+should appear:
+
+```
+root@ast2600-default:~# ifconfig
+eth4      Link encap:Ethernet  HWaddr 52:54:00:12:34:5A
+          inet addr:10.0.2.15  Bcast:10.0.2.255  Mask:255.255.255.0
+          inet6 addr: fe80::5054:ff:fe12:345a/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:25 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:57 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:5524 (5.3 KiB)  TX bytes:8488 (8.2 KiB)
+          Interrupt:81 Memory:70040000-70060000
+```
+          
+AST2700 test environment
+Test image: ASPEED SDK v09.07
+Download
+https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.07/ast2700-default-obmc.tar.gz
+
+By default, the ASPEED SDK only enables PCIe root complex 2 (RC2). If you
+want to test all three PCIe root complexes, please use the customized
+image provided here:
+ https://github.com/jamin-aspeed/openbmc/releases/download/qemu-test-0907/ast2700-default-pcie-qemu.tar.xz
+
+When booted, lspci should show one root port at 00:00.0 on the
+pcie.2 bus. The domain for PCIe RC2 is 0002, which matches the
+expected hardware topology:
+
+```
+root@ast2700-default:~# lspci
+0002:00:00.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge
+```
+
+The e1000e driver is included in this image. Attach the e1000e device to
+bus pcie.2 using the following command line:
+
+```
+ -device e1000e,netdev=net0,bus=pcie.2 \
+ -netdev user,id=net0,hostfwd=:127.0.0.1:3222-:22,hostname=qemu0 \
+```
+
+After boot, lspci should show the e1000e device enumerated at
+0002:01:00.0:
+
+```
+root@ast2700-default:~# lspci
+0002:00:00.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge
+0002:01:00.0 Ethernet controller: Intel Corporation 82574L Gigabit Network Connection
+```
+
+The e1000e driver should probe successfully, and a new Ethernet interface
+should appear:
+
+```
+root@ast2700-default:~# ifconfig
+eth2      Link encap:Ethernet  HWaddr 52:54:00:12:34:56
+          inet addr:10.0.2.15  Bcast:10.0.2.255  Mask:255.255.255.0
+          inet6 addr: fe80::5054:ff:fe12:3456/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:21 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:48 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:5388 (5.2 KiB)  TX bytes:8244 (8.0 KiB)
+          Interrupt:42 Memory:a0040000-a0060000
+```          
+
+Jamin Lin (14):
+  hw/pci/pci_ids: Add PCI vendor ID for ASPEED
+  hw/pci-host/aspeed: Add AST2600 PCIe PHY model
+  hw/pci-host/aspeed: Add AST2600 PCIe config space and host bridge
+  hw/pci-host/aspeed: Add AST2600 PCIe Root Device support
+  hw/pci-host/aspeed: Add AST2600 PCIe Root Port and make address
+    configurable
+  hw/pci-host/aspeed: Add MSI support and per-RC IOMMU address space
+  hw/arm/aspeed: Wire up PCIe devices in SoC model
+  hw/arm/aspeed_ast2600: Add PCIe RC support (RC_H only)
+  hw/pci-host/aspeed: Add AST2700 PCIe PHY
+  hw/pci-host/aspeed: Add AST2700 PCIe config with dedicated H2X blocks
+  hw/pci-host/aspeed: Disable Root Device and place Root Port at 00:00.0
+    to AST2700
+  hw/arm/aspeed_ast27x0: Introduce 3 PCIe RCs for AST2700
+  tests/functional/arm/test_aspeed_ast2600: Add PCIe and network test
+  tests/functional/aarch64/aspeed_ast2700: Add PCIe and network tests
+
+ include/hw/arm/aspeed_soc.h                   |   14 +
+ include/hw/pci-host/aspeed_pcie.h             |  137 +++
+ include/hw/pci/pci_ids.h                      |    2 +
+ hw/arm/aspeed_ast2600.c                       |   79 ++
+ hw/arm/aspeed_ast27x0.c                       |   76 ++
+ hw/pci-host/aspeed_pcie.c                     | 1009 +++++++++++++++++
+ hw/arm/Kconfig                                |    3 +
+ hw/pci-host/Kconfig                           |    4 +
+ hw/pci-host/meson.build                       |    1 +
+ hw/pci-host/trace-events                      |   11 +
+ .../functional/aarch64/test_aspeed_ast2700.py |   19 +
+ .../aarch64/test_aspeed_ast2700fc.py          |   13 +
+ tests/functional/arm/test_aspeed_ast2600.py   |   20 +
+ 13 files changed, 1388 insertions(+)
+ create mode 100644 include/hw/pci-host/aspeed_pcie.h
+ create mode 100644 hw/pci-host/aspeed_pcie.c
+
+-- 
+2.43.0
 
 
