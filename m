@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E995B83A6D
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 11:01:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF136B83A55
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Sep 2025 11:00:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzAUt-000443-Ib; Thu, 18 Sep 2025 05:00:11 -0400
+	id 1uzAUz-00047A-Gk; Thu, 18 Sep 2025 05:00:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uzAUp-0003vk-6X
+ id 1uzAUo-0003tB-Ui
  for qemu-devel@nongnu.org; Thu, 18 Sep 2025 05:00:07 -0400
 Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uzAUj-0004rh-8v
+ id 1uzAUm-0004kl-6D
  for qemu-devel@nongnu.org; Thu, 18 Sep 2025 05:00:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758186001; x=1789722001;
+ t=1758186004; x=1789722004;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=P9+nzVOhX790y/qc4xR49BXWixXcP2jO+tGhon21nMI=;
- b=VE3kvfaLKit+5mGlK0n5wFu9TCgX4mmUHX4u4tu1yVeprAnVfNxAIg7H
- Gof8oGQQFTx3GwbTpy8ZJP++Xxsbi/Y8xWEeBK+NhjnD1J2Bkd93wdTEj
- lYRgbPT9QfUQ7CqOpiLHEzXe7sOzF5p7wItswHfqEmmeWveyHc3l80XWW
- j0spJLmVyzn8urj7Hk6yp3NfkpG8ek2wglLqXXRW0X0rSRQ5fH8/cgMse
- H6fLf8cLCUvEGNP8nlfdFiS6+LcZnCLgIBb2viP2l0I5XYLldvLk9BqFD
- Zh0J45a2Rsc/nOiGx5RRLALiAsZFz2K4K9RiBzL0ntN47GGZISC84C10d Q==;
-X-CSE-ConnectionGUID: tmojZfV+R0uQVw6rYyUFfg==
-X-CSE-MsgGUID: Oj8Wm+tPRWuslLDJF2x99g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="78109572"
-X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; d="scan'208";a="78109572"
+ bh=CHqmw14bMKZHqF6V7+19ya9aAL7hu+O14g1LnGYZSJ0=;
+ b=Wa+8sdUWF1GPTY88su4KMg/uCcXhj0dxShAz4PONzcwpPw4kLJtjWFfp
+ 6Y3ctxDelQ0mY4y0MOL3rVsgoodTSsTEqOVldQB5LlbWDEtPtjUKXgKvb
+ BbAjxrxHEFAuC74MI4vJAKtfxlQKP5Q8WqHzrE4tnQUDMvw7U9qYGoC0r
+ 04rlDxF9Pp4GtCcbu8W4WEq7fDNpv2oHr59v+anq/n1PVzJvQNduJZNv/
+ g2IhHNbx6ErZMkuSREVP3WTIK0vMdWbBjJX2B0iiaS/ojE3s9hEETKO8x
+ 1Ato7blNdcryzUR+KI6bqENY9Jy0yiVxM/CCZ9ey3iRkhcVuNMe2R5j4M Q==;
+X-CSE-ConnectionGUID: KRHjBzmHTemLMxREVvosmA==
+X-CSE-MsgGUID: wrO+uGbqQEWgsJ03eGMdLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="78109580"
+X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; d="scan'208";a="78109580"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2025 01:59:45 -0700
-X-CSE-ConnectionGUID: r0CFHSsaQ1yefIJz3pYRzQ==
-X-CSE-MsgGUID: +Zz+DO4lR1yiDhEbbUezyA==
+ 18 Sep 2025 01:59:49 -0700
+X-CSE-ConnectionGUID: fep0xTKBS8Os4UZlAPhUdg==
+X-CSE-MsgGUID: eSs6vPQhRu6nkE+sX1Ac/g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; d="scan'208";a="175930566"
+X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; d="scan'208";a="175930580"
 Received: from unknown (HELO gnr-sp-2s-612.sh.intel.com) ([10.112.230.229])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2025 01:59:41 -0700
+ 18 Sep 2025 01:59:45 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,10 +52,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v6 18/22] iommufd: Introduce a helper function to extract
- vendor capabilities
-Date: Thu, 18 Sep 2025 04:57:57 -0400
-Message-ID: <20250918085803.796942-19-zhenzhong.duan@intel.com>
+Subject: [PATCH v6 19/22] vfio: Add a new element bypass_ro in
+ VFIOContainerBase
+Date: Thu, 18 Sep 2025 04:57:58 -0400
+Message-ID: <20250918085803.796942-20-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250918085803.796942-1-zhenzhong.duan@intel.com>
 References: <20250918085803.796942-1-zhenzhong.duan@intel.com>
@@ -69,8 +69,8 @@ X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,99 +86,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In VFIO core, we call iommufd_backend_get_device_info() to return vendor
-specific hardware information data, but it's not good to extract this raw
-data in VFIO core.
+When bypass_ro is true, readonly memory section is bypassed from mapping
+in the container.
 
-Introduce host_iommu_extract_vendor_caps() to help extracting the raw
-data and return a bitmap in iommufd.c because it's the place defining
-iommufd_backend_get_device_info().
+This is a preparing patch to workaround Intel ERRATA_772415, see changelog
+in next patch for details about the errata.
 
-The other choice is to put vendor data extracting code in vendor vIOMMU
-emulation file, but that will make those files mixed with vIOMMU
-emulation and host IOMMU extracting code, also need a new callback in
-PCIIOMMUOps. So we choose a simpler way as above.
-
-Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/iommu.h                 |  5 +++++
- include/system/host_iommu_device.h | 16 ++++++++++++++++
- backends/iommufd.c                 | 13 +++++++++++++
- 3 files changed, 34 insertions(+)
+ include/hw/vfio/vfio-container-base.h |  1 +
+ hw/vfio/listener.c                    | 21 ++++++++++++++-------
+ 2 files changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/include/hw/iommu.h b/include/hw/iommu.h
-index 65d652950a..9b343e64b0 100644
---- a/include/hw/iommu.h
-+++ b/include/hw/iommu.h
-@@ -16,4 +16,9 @@ enum {
-      VIOMMU_FLAG_WANT_NESTING_PARENT = BIT_ULL(0),
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index acbd48a18a..2b9fec217a 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -52,6 +52,7 @@ struct VFIOContainerBase {
+     QLIST_HEAD(, VFIODevice) device_list;
+     GList *iova_ranges;
+     NotifierWithReturn cpr_reboot_notifier;
++    bool bypass_ro;
  };
  
-+enum {
-+    /* Nesting parent HWPT shouldn't have readonly mapping, due to errata */
-+     IOMMU_HW_NESTING_PARENT_BYPASS_RO = BIT_ULL(0),
-+};
-+
- #endif /* HW_IOMMU_H */
-diff --git a/include/system/host_iommu_device.h b/include/system/host_iommu_device.h
-index ab849a4a82..41c9159605 100644
---- a/include/system/host_iommu_device.h
-+++ b/include/system/host_iommu_device.h
-@@ -39,6 +39,22 @@ typedef struct HostIOMMUDeviceCaps {
-     uint64_t hw_caps;
-     VendorCaps vendor_caps;
- } HostIOMMUDeviceCaps;
-+
-+/**
-+ * host_iommu_extract_vendor_caps: Extract vendor capabilities
-+ *
-+ * This function converts @type specific hardware information data
-+ * into a standard bitmap format.
-+ *
-+ * @type: IOMMU Hardware Info Types
-+ *
-+ * @VendorCaps: IOMMU @type specific hardware information data
-+ *
-+ * Returns: 64bit bitmap with each bit represents a capability of host
-+ * IOMMU that we want to expose. See IOMMU_HW_* in include/hw/iommu.h
-+ * for all possible capabilities currently exposed.
-+ */
-+uint64_t host_iommu_extract_vendor_caps(uint32_t type, VendorCaps *caps);
- #endif
- 
- #define TYPE_HOST_IOMMU_DEVICE "host-iommu-device"
-diff --git a/backends/iommufd.c b/backends/iommufd.c
-index 2a33c7ab0b..0bb1ed40d3 100644
---- a/backends/iommufd.c
-+++ b/backends/iommufd.c
-@@ -19,6 +19,7 @@
- #include "migration/cpr.h"
- #include "monitor/monitor.h"
- #include "trace.h"
-+#include "hw/iommu.h"
- #include "hw/vfio/vfio-device.h"
- #include <sys/ioctl.h>
- #include <linux/iommufd.h>
-@@ -410,6 +411,18 @@ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
+ #define TYPE_VFIO_IOMMU "vfio-iommu"
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index e093833165..581ebfda36 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -76,8 +76,13 @@ static bool vfio_log_sync_needed(const VFIOContainerBase *bcontainer)
      return true;
  }
  
-+uint64_t host_iommu_extract_vendor_caps(uint32_t type, VendorCaps *caps)
-+{
-+    uint64_t vendor_caps = 0;
-+
-+    if (type == IOMMU_HW_INFO_TYPE_INTEL_VTD &&
-+        caps->vtd.flags & IOMMU_HW_INFO_VTD_ERRATA_772415_SPR17) {
-+        vendor_caps |= IOMMU_HW_NESTING_PARENT_BYPASS_RO;
+-static bool vfio_listener_skipped_section(MemoryRegionSection *section)
++static bool vfio_listener_skipped_section(MemoryRegionSection *section,
++                                          bool bypass_ro)
+ {
++    if (bypass_ro && section->readonly) {
++        return true;
 +    }
 +
-+    return vendor_caps;
-+}
-+
- bool iommufd_backend_invalidate_cache(IOMMUFDBackend *be, uint32_t id,
-                                       uint32_t data_type, uint32_t entry_len,
-                                       uint32_t *entry_num, void *data,
+     return (!memory_region_is_ram(section->mr) &&
+             !memory_region_is_iommu(section->mr)) ||
+            memory_region_is_protected(section->mr) ||
+@@ -368,9 +373,9 @@ static bool vfio_known_safe_misalignment(MemoryRegionSection *section)
+ }
+ 
+ static bool vfio_listener_valid_section(MemoryRegionSection *section,
+-                                        const char *name)
++                                        bool bypass_ro, const char *name)
+ {
+-    if (vfio_listener_skipped_section(section)) {
++    if (vfio_listener_skipped_section(section, bypass_ro)) {
+         trace_vfio_listener_region_skip(name,
+                 section->offset_within_address_space,
+                 section->offset_within_address_space +
+@@ -497,7 +502,8 @@ void vfio_container_region_add(VFIOContainerBase *bcontainer,
+     int ret;
+     Error *err = NULL;
+ 
+-    if (!vfio_listener_valid_section(section, "region_add")) {
++    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
++                                     "region_add")) {
+         return;
+     }
+ 
+@@ -663,7 +669,8 @@ static void vfio_listener_region_del(MemoryListener *listener,
+     int ret;
+     bool try_unmap = true;
+ 
+-    if (!vfio_listener_valid_section(section, "region_del")) {
++    if (!vfio_listener_valid_section(section, bcontainer->bypass_ro,
++                                     "region_del")) {
+         return;
+     }
+ 
+@@ -820,7 +827,7 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
+         container_of(listener, VFIODirtyRangesListener, listener);
+     hwaddr iova, end;
+ 
+-    if (!vfio_listener_valid_section(section, "tracking_update") ||
++    if (!vfio_listener_valid_section(section, false, "tracking_update") ||
+         !vfio_get_section_iova_range(dirty->bcontainer, section,
+                                      &iova, &end, NULL)) {
+         return;
+@@ -1214,7 +1221,7 @@ static void vfio_listener_log_sync(MemoryListener *listener,
+     int ret;
+     Error *local_err = NULL;
+ 
+-    if (vfio_listener_skipped_section(section)) {
++    if (vfio_listener_skipped_section(section, false)) {
+         return;
+     }
+ 
 -- 
 2.47.1
 
