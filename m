@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2584B8952D
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 13:55:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1509EB89515
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 13:54:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzZgo-0005BZ-8N; Fri, 19 Sep 2025 07:54:14 -0400
+	id 1uzZgV-0004db-EE; Fri, 19 Sep 2025 07:53:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uzZg5-0003zM-0Y
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:53:28 -0400
+ id 1uzZgI-0004RS-GV
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:53:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uzZfq-00014e-UX
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:53:16 -0400
+ id 1uzZg4-00019z-QS
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:53:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758282787;
+ s=mimecast20190719; t=1758282797;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tmONteAmIKfsTtmIPKxh9UZI8OuT5Rgmz4ekHvmX4zU=;
- b=D9IMYdy3yeffYGxZ+UEKR6jZRmUBjqPI58HisLRkvpKXkXyHiBJ475bITczvm7t9NIOoPY
- HyT3xtrYBWWJHBuUDgod+pLntNI07xT7T1iZ9v2gaMnYkvIIMBiubYRyjlA39mf+2KkuoD
- k6FSsqeK3VdSiTQf/8PDxJOv19qdhGw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=l/nPgGoxBal0yhdLm799HPkz/9tEha6vwLh4qn0x4io=;
+ b=ISD6ySah1p3G13D17ZpYEfvgmTEXUaeNyN1RYgLRxd1fXHP81LC0FZjyV6upc1jfdMeTiB
+ wDPSjldfyZwGklGSfwa4wrpxAECczUexNzVMCTLdNfTXRnLYaEFC7COF1+tXlwsB+Var6J
+ HDohvWjEQBBVxH3nRIWNslVN9itVkIQ=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-189-lQ4fwf1ZNZ6_S15GVzWtng-1; Fri,
- 19 Sep 2025 07:53:04 -0400
-X-MC-Unique: lQ4fwf1ZNZ6_S15GVzWtng-1
-X-Mimecast-MFC-AGG-ID: lQ4fwf1ZNZ6_S15GVzWtng_1758282782
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-411-_QGoYI_lP0u-9i_WIN13rw-1; Fri,
+ 19 Sep 2025 07:53:14 -0400
+X-MC-Unique: _QGoYI_lP0u-9i_WIN13rw-1
+X-Mimecast-MFC-AGG-ID: _QGoYI_lP0u-9i_WIN13rw_1758282792
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E3F0619560B2; Fri, 19 Sep 2025 11:53:01 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id ECDE3195608A; Fri, 19 Sep 2025 11:53:11 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.187])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 47F741955F21; Fri, 19 Sep 2025 11:52:53 +0000 (UTC)
+ id 6E0E11955F21; Fri, 19 Sep 2025 11:53:02 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -69,9 +69,10 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>,
  Kostiantyn Kostiuk <kkostiuk@redhat.com>,
  Hailiang Zhang <zhanghailiang@xfusion.com>
-Subject: [PULL 15/16] chardev: close an fd on failure path
-Date: Fri, 19 Sep 2025 12:50:16 +0100
-Message-ID: <20250919115017.1536203-16-berrange@redhat.com>
+Subject: [PULL 16/16] util/vhost-user-server: vu_message_read(): improve error
+ handling
+Date: Fri, 19 Sep 2025 12:50:17 +0100
+Message-ID: <20250919115017.1536203-17-berrange@redhat.com>
 In-Reply-To: <20250919115017.1536203-1-berrange@redhat.com>
 References: <20250919115017.1536203-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -87,7 +88,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.105,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,41 +106,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-There are at least two failure paths, where we forget
-to close an fd.
+1. Drop extra error_report_err(NULL), it will just crash, if we get
+here.
+
+2. Get and report error of qemu_set_blocking(), instead of aborting.
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- chardev/char-pty.c    | 1 +
- chardev/char-serial.c | 1 +
- 2 files changed, 2 insertions(+)
+ util/vhost-user-server.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/chardev/char-pty.c b/chardev/char-pty.c
-index fe6bfb043d..b066f01412 100644
---- a/chardev/char-pty.c
-+++ b/chardev/char-pty.c
-@@ -350,6 +350,7 @@ static void char_pty_open(Chardev *chr,
+diff --git a/util/vhost-user-server.c b/util/vhost-user-server.c
+index 04c72a92aa..1dbe409f82 100644
+--- a/util/vhost-user-server.c
++++ b/util/vhost-user-server.c
+@@ -62,7 +62,7 @@ static void vmsg_close_fds(VhostUserMsg *vmsg)
+     }
+ }
  
-     close(slave_fd);
-     if (!qemu_set_blocking(master_fd, false, errp)) {
-+        close(master_fd);
-         return;
+-static void vmsg_unblock_fds(VhostUserMsg *vmsg)
++static bool vmsg_unblock_fds(VhostUserMsg *vmsg, Error **errp)
+ {
+     int i;
+ 
+@@ -74,13 +74,16 @@ static void vmsg_unblock_fds(VhostUserMsg *vmsg)
+      */
+     if (vmsg->request == VHOST_USER_ADD_MEM_REG ||
+         vmsg->request == VHOST_USER_SET_MEM_TABLE) {
+-        return;
++        return true;
      }
  
-diff --git a/chardev/char-serial.c b/chardev/char-serial.c
-index c622d758db..4c6ca713eb 100644
---- a/chardev/char-serial.c
-+++ b/chardev/char-serial.c
-@@ -272,6 +272,7 @@ static void qmp_chardev_open_serial(Chardev *chr,
-         return;
+     for (i = 0; i < vmsg->fd_num; i++) {
+-        /* TODO: handle error more gracefully than aborting */
+-        qemu_set_blocking(vmsg->fds[i], false, &error_abort);
++        if (!qemu_set_blocking(vmsg->fds[i], false, errp)) {
++            return false;
++        }
      }
-     if (!qemu_set_blocking(fd, false, errp)) {
-+        close(fd);
-         return;
++
++    return true;
+ }
+ 
+ static void panic_cb(VuDev *vu_dev, const char *buf)
+@@ -123,7 +126,6 @@ vu_message_read(VuDev *vu_dev, int conn_fd, VhostUserMsg *vmsg)
+ 
+     vmsg->fd_num = 0;
+     if (!ioc) {
+-        error_report_err(local_err);
+         goto fail;
      }
-     tty_serial_init(fd, 115200, 'N', 8, 1);
+ 
+@@ -177,7 +179,10 @@ vu_message_read(VuDev *vu_dev, int conn_fd, VhostUserMsg *vmsg)
+     } while (read_bytes != VHOST_USER_HDR_SIZE);
+ 
+     /* qio_channel_readv_full will make socket fds blocking, unblock them */
+-    vmsg_unblock_fds(vmsg);
++    if (!vmsg_unblock_fds(vmsg, &local_err)) {
++        error_report_err(local_err);
++        goto fail;
++    }
+     if (vmsg->size > sizeof(vmsg->payload)) {
+         error_report("Error: too big message request: %d, "
+                      "size: vmsg->size: %u, "
 -- 
 2.50.1
 
