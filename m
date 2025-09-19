@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DEBB89D96
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 16:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0571AB89D7E
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 16:14:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzbra-0000yw-VP; Fri, 19 Sep 2025 10:13:27 -0400
+	id 1uzbrd-00012W-AN; Fri, 19 Sep 2025 10:13:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uzbr2-0000TZ-JA
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 10:12:54 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1uzbrF-0000ah-7U
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 10:13:10 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uzbqt-0007St-Ld
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 10:12:51 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58JDtmm8023181;
- Fri, 19 Sep 2025 14:12:40 GMT
+ id 1uzbqz-0007T7-AP
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 10:13:04 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58JDunD7010150;
+ Fri, 19 Sep 2025 14:12:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=wHeL1wm/V33LTNAX5D4U4fJeD/N74KTXsPJSJ4miq/E=; b=
- VEcCt84Z9iAnp1tV96+Je/5sKs94EYzWHflmbZt1GY0Bg20Ci4W6j3XiFZjyDGBK
- dGw0+2PrzgR/6HIQpPyGku7T6dbV1V/VJHeP3ONLunKqMHSxjXsZ+IH88BlwCPsV
- wtWwQhIpd+9ijthjLmvIHdrr779e+uFCEmnAVTh+1LWG4CPG4HmFNmwKGIUGJvdI
- vo/uhoGRZlKIFqAiVydQb/Yq+jCTtqgQLeZeF7bc5W914OiqFcqt3pia2nwIxmR5
- QAVdPfJiwp9cHE5T+njKoaAPcFVYm9mSczPpjop5kciEajdFwGVUNDfYua9ocVQt
- bJVbxyo6KgfSugmCOBuQtA==
+ corp-2025-04-25; bh=MbX+XABKhHuOtwP1+0G2UmM7gcUxrOsq74D1aZH620A=; b=
+ o9mEOsTm8jaNapiLc8UQqSVz+LGLBGV6h0O8ZdG+0n40jCFrAEs1bmCUE1QjKWjM
+ ijZcxVhqjhXXtj2tLFxotKCZMI4IRZBamBKHYWTwTS5Kopg6eN2F2NFvInNqlI5p
+ 41F03FuuoAfAkARvFu5eoryJide4ttjo3BqSJXk2NSf9qL97lG7vEDXrpleYOapI
+ qC/DWF0IVoycSLFgk+dwFYJ3QCY8gPFmdtJ/DpMJeAJwtFX6djoRvXS+MVsa8SlD
+ tYNhHfxdhC8MTjnvIPlHf0hb6yNNi92Fog0k8SD7iI+cfc38vHBfbQR4k6nW38vl
+ 7mF9BRVNVCI4s1FUPce4UA==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497fx6np7v-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497fxb5mm8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Sep 2025 14:12:39 +0000 (GMT)
+ Fri, 19 Sep 2025 14:12:41 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 58JD4V6N035195; Fri, 19 Sep 2025 14:12:39 GMT
+ with ESMTP id 58JD4V6O035195; Fri, 19 Sep 2025 14:12:40 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 494y2pu94y-1
+ 494y2pu95c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Sep 2025 14:12:39 +0000
+ Fri, 19 Sep 2025 14:12:40 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58JECYX9003357;
- Fri, 19 Sep 2025 14:12:38 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58JECYXB003357;
+ Fri, 19 Sep 2025 14:12:39 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 494y2pu924-5; Fri, 19 Sep 2025 14:12:38 +0000
+ ESMTP id 494y2pu924-6; Fri, 19 Sep 2025 14:12:39 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 04/11] tests/qtest: qtest_qemu_spawn_func
-Date: Fri, 19 Sep 2025 07:12:26 -0700
-Message-Id: <1758291153-349744-5-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 05/11] tests/qtest: qtest_init_after_exec
+Date: Fri, 19 Sep 2025 07:12:27 -0700
+Message-Id: <1758291153-349744-6-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1758291153-349744-1-git-send-email-steven.sistare@oracle.com>
 References: <1758291153-349744-1-git-send-email-steven.sistare@oracle.com>
@@ -70,22 +70,22 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  adultscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
  definitions=main-2509190132
-X-Authority-Analysis: v=2.4 cv=TqbmhCXh c=1 sm=1 tr=0 ts=68cd64d7 b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX5xZJZbBmKYfs
+ q6JWrIbZgDNSAFVaY+VjbWAya0jqOcPYbg1kq3trpvRNUyiGO0xwPMWF3m8T5iEDjRcAAbbKeht
+ tFJRGAo3BGc45pgGJ2ea02uIv6QtZ5mKfR2OqJ/KKzpe+4QoLJLHcGPdm6u3DMpGFtLVuRpKk2i
+ l8jGi7Ha9ad6tuwaqYm8OU1LKmPcVWLcovJtTeL1BsOY9L06mIV1PjGVB59gxllde2pjm82Ofze
+ G4e0If28YrWR9PKQFARlZzGcas+ZYPpTCI6iNv2qU3j5jpha+2D3QEXHJfWhwPg8bA1/4tS7r/7
+ M6XCvR2vFAd3cx/uzJS6lLmyFndVWQkbSW9nqpA3pvEHLwGx2treprR5WBb4ZFNzUIojNASlLTT
+ 08RRT/ZydmCPObS5Kzk2Cp1tfUBDfQ==
+X-Authority-Analysis: v=2.4 cv=KOJaDEFo c=1 sm=1 tr=0 ts=68cd64d9 b=1 cx=c_pps
  a=e1sVV491RgrpLwSTMOnk8w==:117
  a=e1sVV491RgrpLwSTMOnk8w==:17
- a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=GWFuMjjoAsU5Ejt__ZMA:9 cc=ntf
+ a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=-mka8b2Hcs0XyqHMhc8A:9 cc=ntf
  awl=host:13614
-X-Proofpoint-GUID: 5j7fPA6rsw0ukk-9TNTQieiNIyFkF4DP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX3d4Oj3gnrLPD
- UvMMhBI40ogF3NXUDBMRbAPQ0l2JQw758vGWpY1vKMe1RCpYrm84zKaZYfaJLQVLDVbtHiCywcz
- aa+hYs8w6Z93toB8ABW0Jnp+wNEYTcYgUGkmZhN/PhWMGVuCMfTQu4mWHeMdy+lQg3H13Hfn1dp
- DThxaBHQ09XqWw7ytD9i0Y5euUv/JSwKGzxgb+LyxpxeXl28PNxxWHYJCL74rV7hh2x+bIyQ86z
- xVAucrbCJCYqmRIwsXzqX19x29/fQzBOwT7B/UlmsUCsl3JRntKSvOoua/RHcZIy+VFlyP2G/SK
- tM/5Cm8FUS6OO6zmFjHrEzKIvxbiomrsuW9X4LWVq5AU7bwsGHllgczpkfcVrZYDu0tCnpC6CYs
- NGgOuvFaV7/gkO/agziuMVEwNSmOFQ==
-X-Proofpoint-ORIG-GUID: 5j7fPA6rsw0ukk-9TNTQieiNIyFkF4DP
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-GUID: LK_SXmfGJyldr3NlA_Y1jA69ZOKdi3V8
+X-Proofpoint-ORIG-GUID: LK_SXmfGJyldr3NlA_Y1jA69ZOKdi3V8
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -109,74 +109,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow the qtest_qemu_spawn caller to pass the function to be called
-to perform the spawn.  The opaque argument is needed by a new spawn
-function in a subsequent patch.
+Define a function to create a QTestState object representing the state
+of QEMU after old QEMU exec's new QEMU.  This is needed for testing
+the cpr-exec migration mode.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- tests/qtest/libqtest.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ tests/qtest/libqtest.h |  8 ++++++++
+ tests/qtest/libqtest.c | 19 +++++++++++++++++++
+ 2 files changed, 27 insertions(+)
 
+diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
+index a164f58..ce6b9b0 100644
+--- a/tests/qtest/libqtest.h
++++ b/tests/qtest/libqtest.h
+@@ -57,6 +57,14 @@ QTestState *qtest_vinitf(const char *fmt, va_list ap) G_GNUC_PRINTF(1, 0);
+ const char *qtest_qemu_binary(const char *var);
+ 
+ /**
++ * qtest_init_after_exec:
++ * @from: the previous QEMU state
++ *
++ * Return a test state representing new QEMU after @from exec's it.
++ */
++QTestState *qtest_init_after_exec(QTestState *from);
++
++/**
+  * qtest_qemu_args:
+  * @extra_args: Other arguments to pass to QEMU.
+  *
 diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index 3fa9317..d97144e 100644
+index d97144e..3522d75 100644
 --- a/tests/qtest/libqtest.c
 +++ b/tests/qtest/libqtest.c
-@@ -418,7 +418,8 @@ static QTestState *qtest_create_test_state(int pid)
+@@ -615,6 +615,25 @@ QTestState *qtest_init_ext(const char *var, const char *extra_args,
      return s;
  }
  
--static QTestState *qtest_spawn_qemu(const char *qemu_bin, const char *args)
-+static QTestState *qtest_spawn_qemu(const char *qemu_bin, const char *args,
-+                                    void *opaque)
- {
-     int pid;
-     g_autoptr(GString) command = g_string_new("");
-@@ -492,9 +493,15 @@ gchar *qtest_qemu_args(const char *extra_args)
-     return args;
- }
- 
-+typedef QTestState *(*qtest_qemu_spawn_func)(const char *qemu_bin,
-+                                             const char *extra_args,
-+                                             void *opaque);
++static QTestState *qtest_attach_qemu(const char *qemu_bin,
++                                     const char *extra_args,
++                                     void *opaque)
++{
++    int pid = *(int *)opaque;
++    return qtest_create_test_state(pid);
++}
 +
- static QTestState *qtest_init_internal(const char *qemu_bin,
-                                        const char *extra_args,
--                                       bool do_connect)
-+                                       bool do_connect,
-+                                       qtest_qemu_spawn_func spawn,
-+                                       void *opaque)
++QTestState *qtest_init_after_exec(QTestState *from)
++{
++    void *opaque = (void *)&from->qemu_pid;
++    QTestState *s;
++
++    s = qtest_init_internal(NULL, NULL, true, qtest_attach_qemu, opaque);
++    from->qemu_pid = -1;
++    qtest_qmp_handshake(s, NULL);
++    return s;
++}
++
+ QTestState *qtest_init(const char *extra_args)
  {
-     QTestState *s;
-     int sock, qmpsock, i;
-@@ -515,7 +522,7 @@ static QTestState *qtest_init_internal(const char *qemu_bin,
-     sock = init_socket(socket_path);
-     qmpsock = init_socket(qmp_socket_path);
- 
--    s = qtest_spawn_qemu(qemu_bin, args);
-+    s = spawn(qemu_bin, args, opaque);
- 
-     qtest_client_set_rx_handler(s, qtest_client_socket_recv_line);
-     qtest_client_set_tx_handler(s, qtest_client_socket_send);
-@@ -570,7 +577,8 @@ void qtest_connect(QTestState *s)
- 
- QTestState *qtest_init_without_qmp_handshake(const char *extra_args)
- {
--    return qtest_init_internal(qtest_qemu_binary(NULL), extra_args, true);
-+    return qtest_init_internal(qtest_qemu_binary(NULL), extra_args, true,
-+                               qtest_spawn_qemu, NULL);
- }
- 
- void qtest_qmp_handshake(QTestState *s, QList *capabilities)
-@@ -593,7 +601,7 @@ QTestState *qtest_init_ext(const char *var, const char *extra_args,
-                            QList *capabilities, bool do_connect)
- {
-     QTestState *s = qtest_init_internal(qtest_qemu_binary(var), extra_args,
--                                        do_connect);
-+                                        do_connect, qtest_spawn_qemu, NULL);
- 
-     if (do_connect) {
-         qtest_qmp_handshake(s, capabilities);
+     return qtest_init_ext(NULL, extra_args, NULL, true);
 -- 
 1.8.3.1
 
