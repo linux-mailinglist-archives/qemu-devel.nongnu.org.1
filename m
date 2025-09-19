@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC922B88B0B
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 11:58:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A86B88ADA
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 11:57:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzXqo-00066e-7k; Fri, 19 Sep 2025 05:56:22 -0400
+	id 1uzXr6-0006Dz-9g; Fri, 19 Sep 2025 05:56:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uzXqW-0005ef-Is
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 05:56:06 -0400
+ id 1uzXqY-0005ex-Ho
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 05:56:07 -0400
 Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uzXqQ-0004ZC-Ok
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 05:56:03 -0400
+ id 1uzXqR-0004ZJ-NU
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 05:56:04 -0400
 Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:1621:0:640:12d9:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 9E70C80E9F;
- Fri, 19 Sep 2025 12:55:52 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 4C92180EC8;
+ Fri, 19 Sep 2025 12:55:53 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a72::1:38])
  by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id ntP1fK1GvGk0-qt91nNcN; Fri, 19 Sep 2025 12:55:52 +0300
+ ESMTPSA id ntP1fK1GvGk0-S0UNffSb; Fri, 19 Sep 2025 12:55:52 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1758275752;
- bh=qObQrvMVyRCGspmUr6lxee7IIWmsVN+19cLKPz0e+Z4=;
- h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
- b=eKb8P3lOT6S6YyZ1rHL/MvGWdRaha+3l4FkMfSBSYC1P6+ZTlYWImFPSCxWvGvQ/U
- j023zQowvpGFONMololm0dy+0eJNry5PF1gvpZmjhi2gL6zS0KZAOu/l6Te2PXKfT5
- xHYQtB45/QIaojWpR1Iet3BClQejA4KuBEjATrZQ=
+ bh=cq2SnBEaLRu/0mSFxt8cmSAJ0yXaJUJztucOvIMJ7YE=;
+ h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=KhKqEiHBwaAP4nEtdqnpDVPtzOxxKlT7of3Ls6eNJyktcBmvwcr9ZqSOjfxawvYhc
+ KRJhULlmpfs7eUMlURjYG2Tl5uVgq43lBaErQPA8Tld5DAuecjiPC8gORwqWv8I73D
+ HA0ZfGcR6Jw3HtC4XNLhZHZE320eo0cqkdsQ9DZg=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -45,15 +45,14 @@ Cc: qemu-devel@nongnu.org, philmd@linaro.org, thuth@redhat.com,
  jasowang@redhat.com, steven.sistare@oracle.com, leiyang@redhat.com,
  davydov-max@yandex-team.ru, yc-core@yandex-team.ru,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH v5 02/19] io/channel: document how qio_channel_readv_full()
- handles fds
-Date: Fri, 19 Sep 2025 12:55:28 +0300
-Message-ID: <20250919095545.1912042-3-vsementsov@yandex-team.ru>
+Subject: [PATCH v5 03/19] net/tap: net_init_tap_one(): drop extra error
+ propagation
+Date: Fri, 19 Sep 2025 12:55:29 +0300
+Message-ID: <20250919095545.1912042-4-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250919095545.1912042-1-vsementsov@yandex-team.ru>
 References: <20250919095545.1912042-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=178.154.239.200;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
@@ -78,64 +77,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The only realization, which may have incoming fds is
-qio_channel_socket_readv() (in io/channel-socket.c).
-qio_channel_socket_readv() do call (through
-qio_channel_socket_copy_fds()) qemu_socket_set_block() and
-qemu_set_cloexec() for each fd.
-
-Also, qio_channel_socket_copy_fds() is called at the end of
-qio_channel_socket_readv(), on success path.
-
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Acked-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/io/channel.h | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ net/tap.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/io/channel.h b/include/io/channel.h
-index 12266256a8..c7f64506f7 100644
---- a/include/io/channel.h
-+++ b/include/io/channel.h
-@@ -118,6 +118,15 @@ struct QIOChannelClass {
-                          size_t nfds,
-                          int flags,
-                          Error **errp);
-+
-+    /*
-+     * The io_readv handler must guarantee that all
-+     * incoming fds are set BLOCKING (unless
-+     * QIO_CHANNEL_READ_FLAG_FD_PRESERVE_BLOCKING flag is set) and
-+     * CLOEXEC (if available).
-+     * @fds and @nfds are set only on success path, and untouched
-+     * in case of errors.
-+     */
-     ssize_t (*io_readv)(QIOChannel *ioc,
-                         const struct iovec *iov,
-                         size_t niov,
-@@ -125,6 +134,7 @@ struct QIOChannelClass {
-                         size_t *nfds,
-                         int flags,
-                         Error **errp);
-+
-     int (*io_close)(QIOChannel *ioc,
-                     Error **errp);
-     GSource * (*io_create_watch)(QIOChannel *ioc,
-@@ -235,6 +245,13 @@ void qio_channel_set_name(QIOChannel *ioc,
-  * was allocated. It is the callers responsibility
-  * to call close() on each file descriptor and to
-  * call g_free() on the array pointer in @fds.
-+ * @fds allocated and set (and @nfds is set too)
-+ * _only_ on success path. These parameters are
-+ * untouched in case of errors.
-+ * qio_channel_readv_full() guarantees that all
-+ * incoming fds are set BLOCKING (unless
-+ * QIO_CHANNEL_READ_FLAG_FD_PRESERVE_BLOCKING flag
-+ * is set) and CLOEXEC (if available).
-  *
-  * It is an error to pass a non-NULL @fds parameter
-  * unless qio_channel_has_feature() returns a true
+diff --git a/net/tap.c b/net/tap.c
+index f7df702f97..10799ab055 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -724,9 +724,8 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+         }
+ 
+         if (vhostfdname) {
+-            vhostfd = monitor_fd_param(monitor_cur(), vhostfdname, &err);
++            vhostfd = monitor_fd_param(monitor_cur(), vhostfdname, errp);
+             if (vhostfd == -1) {
+-                error_propagate(errp, err);
+                 goto failed;
+             }
+             if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
 -- 
 2.48.1
 
