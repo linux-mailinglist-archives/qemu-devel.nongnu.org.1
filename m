@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C60EB89452
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 13:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A18DB8942A
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 13:27:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzZFv-00019z-IL; Fri, 19 Sep 2025 07:26:23 -0400
+	id 1uzZFj-00017s-N3; Fri, 19 Sep 2025 07:26:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uzZFe-00018F-B5
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:26:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uzZFZ-00014W-2J
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:26:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uzZFV-00015y-3X
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:26:02 -0400
+ id 1uzZFW-000165-RA
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:26:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758281154;
+ s=mimecast20190719; t=1758281156;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nM1ctd6h2YEGewXFHto7qlkYZ0HE0gxY9P8cXkdZY54=;
- b=KZ8rWaLtRj7eUlT0g8YLXpzetBedcj8WOiWorwBG5LE2rhqOETdEdYEYIzlYDBnJIJAdLM
- kOxQ2WHbvQ+oW7xSkeH5WEyPa66oCJSklUrukGjAnmUH9HcqiHX8WfWt4k5D8G0DsbuVa+
- bzvSa5icrnh84qbS05dN6/ADAJlrNB4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=KUo28CHP7FCCXh5r1Z6RrGofUxFzz8ZREv636OwD0Dc=;
+ b=R6Mj2U3klgo8BwLVoxg4uE9i81FTVARL16VjqliJNVJ7rptr3afsCgEWT3SiPJgh6y8+4S
+ UDZgCpN9OYYlVl+opKyZLdPXwfjqgp5rZrZUTJGkPG7cHBH8BahebYALIMRrHSi41N6W5k
+ RJKPglOU4+uOknfzhdYEyL790HyKpjs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-v_s98JX_OnCMaMyu9QuEkw-1; Fri,
- 19 Sep 2025 07:25:49 -0400
-X-MC-Unique: v_s98JX_OnCMaMyu9QuEkw-1
-X-Mimecast-MFC-AGG-ID: v_s98JX_OnCMaMyu9QuEkw_1758281148
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-278-RzMVCz-FOSS3wTJnxOHmiA-1; Fri,
+ 19 Sep 2025 07:25:53 -0400
+X-MC-Unique: RzMVCz-FOSS3wTJnxOHmiA-1
+X-Mimecast-MFC-AGG-ID: RzMVCz-FOSS3wTJnxOHmiA_1758281152
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C8D2E195608B; Fri, 19 Sep 2025 11:25:47 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 32ED11800343; Fri, 19 Sep 2025 11:25:52 +0000 (UTC)
 Received: from avogadro.redhat.com (unknown [10.44.33.250])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 477E430002C5; Fri, 19 Sep 2025 11:25:43 +0000 (UTC)
+ id 9038230002C8; Fri, 19 Sep 2025 11:25:48 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Tanish Desai <tanishdesai37@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
@@ -52,24 +52,24 @@ Cc: Tanish Desai <tanishdesai37@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Mads Ynddal <mads@ynddal.dk>
-Subject: [PATCH 01/16] tracetool: fix usage of try_import()
-Date: Fri, 19 Sep 2025 13:25:21 +0200
-Message-ID: <20250919112536.141782-2-pbonzini@redhat.com>
+Subject: [PATCH 02/16] tracetool: remove dead code
+Date: Fri, 19 Sep 2025 13:25:22 +0200
+Message-ID: <20250919112536.141782-3-pbonzini@redhat.com>
 In-Reply-To: <20250919112536.141782-1-pbonzini@redhat.com>
 References: <20250919112536.141782-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.105,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,42 +85,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-try_import returns a tuple of a boolean and the requested module or attribute.
-exists() functions return tracetool.try_import("tracetool.format." + name)[1]
-but they should return the boolean value instead.
+There are no tcg-exec events anymore and the sub-event functionality was
+only used for it.  Excise it from tracetool.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/tracetool/backend/__init__.py | 2 +-
- scripts/tracetool/format/__init__.py  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ scripts/tracetool/__init__.py | 44 +++++------------------------------
+ scripts/tracetool/format/h.py |  5 ----
+ 2 files changed, 6 insertions(+), 43 deletions(-)
 
-diff --git a/scripts/tracetool/backend/__init__.py b/scripts/tracetool/backend/__init__.py
-index 7bfcc86cc53..6c6344deddb 100644
---- a/scripts/tracetool/backend/__init__.py
-+++ b/scripts/tracetool/backend/__init__.py
-@@ -94,7 +94,7 @@ def exists(name):
-     if name == "nop":
-         return True
-     name = name.replace("-", "_")
--    return tracetool.try_import("tracetool.backend." + name)[1]
-+    return tracetool.try_import("tracetool.backend." + name)[0]
+diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
+index 1d5238a0843..afa889e759e 100644
+--- a/scripts/tracetool/__init__.py
++++ b/scripts/tracetool/__init__.py
+@@ -122,10 +122,6 @@ def __init__(self, args):
+             else:
+                 self._args.append(arg)
  
+-    def copy(self):
+-        """Create a new copy."""
+-        return Arguments(list(self._args))
+-
+     @staticmethod
+     def build(arg_str):
+         """Build and Arguments instance from an argument string.
+@@ -222,13 +218,12 @@ class Event(object):
+                       r"(?P<name>\w+)"
+                       r"\((?P<args>[^)]*)\)"
+                       r"\s*"
+-                      r"(?:(?:(?P<fmt_trans>\".+),)?\s*(?P<fmt>\".+))?"
++                      r"(?P<fmt>\".+)?"
+                       r"\s*")
  
- class Wrapper:
-diff --git a/scripts/tracetool/format/__init__.py b/scripts/tracetool/format/__init__.py
-index 2dc46f3dd93..042fe7d103c 100644
---- a/scripts/tracetool/format/__init__.py
-+++ b/scripts/tracetool/format/__init__.py
-@@ -70,7 +70,7 @@ def exists(name):
-     if len(name) == 0:
-         return False
-     name = name.replace("-", "_")
--    return tracetool.try_import("tracetool.format." + name)[1]
-+    return tracetool.try_import("tracetool.format." + name)[0]
+     _VALID_PROPS = set(["disable"])
  
+-    def __init__(self, name, props, fmt, args, lineno, filename, orig=None,
+-                 event_trans=None, event_exec=None):
++    def __init__(self, name, props, fmt, args, lineno, filename):
+         """
+         Parameters
+         ----------
+@@ -236,20 +231,14 @@ def __init__(self, name, props, fmt, args, lineno, filename, orig=None,
+             Event name.
+         props : list of str
+             Property names.
+-        fmt : str, list of str
+-            Event printing format string(s).
++        fmt : str
++            Event printing format string.
+         args : Arguments
+             Event arguments.
+         lineno : int
+             The line number in the input file.
+         filename : str
+             The path to the input file.
+-        orig : Event or None
+-            Original Event before transformation/generation.
+-        event_trans : Event or None
+-            Generated translation-time event ("tcg" property).
+-        event_exec : Event or None
+-            Generated execution-time event ("tcg" property).
  
- def generate(events, format, backend, group):
+         """
+         self.name = name
+@@ -258,29 +247,16 @@ def __init__(self, name, props, fmt, args, lineno, filename, orig=None,
+         self.args = args
+         self.lineno = int(lineno)
+         self.filename = str(filename)
+-        self.event_trans = event_trans
+-        self.event_exec = event_exec
+ 
+         if len(args) > 10:
+             raise ValueError("Event '%s' has more than maximum permitted "
+                              "argument count" % name)
+ 
+-        if orig is None:
+-            self.original = weakref.ref(self)
+-        else:
+-            self.original = orig
+-
+         unknown_props = set(self.properties) - self._VALID_PROPS
+         if len(unknown_props) > 0:
+             raise ValueError("Unknown properties: %s"
+                              % ", ".join(unknown_props))
+-        assert isinstance(self.fmt, str) or len(self.fmt) == 2
+ 
+-    def copy(self):
+-        """Create a new copy."""
+-        return Event(self.name, list(self.properties), self.fmt,
+-                     self.args.copy(), self.lineno, self.filename,
+-                     self, self.event_trans, self.event_exec)
+ 
+     @staticmethod
+     def build(line_str, lineno, filename):
+@@ -302,8 +278,7 @@ def build(line_str, lineno, filename):
+         name = groups["name"]
+         props = groups["props"].split()
+         fmt = groups["fmt"]
+-        fmt_trans = groups["fmt_trans"]
+-        if fmt.find("%m") != -1 or fmt_trans.find("%m") != -1:
++        if fmt.find("%m") != -1:
+             raise ValueError("Event format '%m' is forbidden, pass the error "
+                              "as an explicit trace argument")
+         if fmt.endswith(r'\n"'):
+@@ -312,29 +287,22 @@ def build(line_str, lineno, filename):
+         if '\\n' in fmt:
+             raise ValueError("Event format must not use new line character")
+ 
+-        if len(fmt_trans) > 0:
+-            fmt = [fmt_trans, fmt]
+         args = Arguments.build(groups["args"])
+ 
+         return Event(name, props, fmt, args, lineno, posix_relpath(filename))
+ 
+     def __repr__(self):
+         """Evaluable string representation for this object."""
+-        if isinstance(self.fmt, str):
+-            fmt = self.fmt
+-        else:
+-            fmt = "%s, %s" % (self.fmt[0], self.fmt[1])
+         return "Event('%s %s(%s) %s')" % (" ".join(self.properties),
+                                           self.name,
+                                           self.args,
+-                                          fmt)
++                                          self.fmt)
+     # Star matching on PRI is dangerous as one might have multiple
+     # arguments with that format, hence the non-greedy version of it.
+     _FMT = re.compile(r"(%[\d\.]*\w+|%.*?PRI\S+)")
+ 
+     def formats(self):
+         """List conversion specifiers in the argument print format string."""
+-        assert not isinstance(self.fmt, list)
+         return self._FMT.findall(self.fmt)
+ 
+     QEMU_TRACE               = "trace_%(name)s"
+diff --git a/scripts/tracetool/format/h.py b/scripts/tracetool/format/h.py
+index b42a8268a81..bd9e0ca7f23 100644
+--- a/scripts/tracetool/format/h.py
++++ b/scripts/tracetool/format/h.py
+@@ -40,11 +40,6 @@ def generate(events, backend, group):
+             enabled = 0
+         else:
+             enabled = 1
+-        if "tcg-exec" in e.properties:
+-            # a single define for the two "sub-events"
+-            out('#define TRACE_%(name)s_ENABLED %(enabled)d',
+-                name=e.original.name.upper(),
+-                enabled=enabled)
+         out('#define TRACE_%s_ENABLED %d' % (e.name.upper(), enabled))
+ 
+     backend.generate_begin(events, group)
 -- 
 2.51.0
 
