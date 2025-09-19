@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC2FB89B45
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 15:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CCCFB89B1B
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 15:35:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzbFI-0004n4-CC; Fri, 19 Sep 2025 09:33:52 -0400
+	id 1uzbFI-0004oJ-QP; Fri, 19 Sep 2025 09:33:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uzbFE-0004ld-Ut
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 09:33:48 -0400
+ id 1uzbFG-0004n6-J8
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 09:33:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uzbF3-0002dA-Lo
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 09:33:48 -0400
+ id 1uzbF7-0002km-Tj
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 09:33:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758288811;
+ s=mimecast20190719; t=1758288818;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=3iWcHC4Jy7QP0nasLlGrpWxSR/JH6Jr0k3xgylX6sEs=;
- b=adgmyNkH0asL/OpI6bWVnfkVdHghBjb2uLzXDFIOAen2kaEWHwyxjkFc780naaYOtZW4Tl
- K/p1kWUTIpo5ISFG0EvCeSEOBojWSOxPgxhzuc2vGA+Q9rCcTDBsfz1UpbQWaprqTOHOxZ
- oElXYTpgsiv6nLei8L9VfuPtF0UL9TY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=6si5/BCcqfa1SQCCbA8R4nqfbHH7T0moQAtKn3zHdm0=;
+ b=GdEK4hJQmxtXod0FNtOBhv3d74DK3W5DetzMgdr5uugdMql6c9RM+dO0i8rgLqtVPmI6Dv
+ 4OveF0BBaYTnuACx+WmRrIodbFNRJulPvZR7GlLEBSzOLPm3dsOzG4APRybE0nkekfHdfj
+ B2/F3Lk8ylaeDo99ZEiWf6gKxE9bGXQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-izh62RH0PT6rx95m7nFJRg-1; Fri,
- 19 Sep 2025 09:33:28 -0400
-X-MC-Unique: izh62RH0PT6rx95m7nFJRg-1
-X-Mimecast-MFC-AGG-ID: izh62RH0PT6rx95m7nFJRg_1758288806
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-H1IpZlFONzyPql2eZqFg3w-1; Fri,
+ 19 Sep 2025 09:33:34 -0400
+X-MC-Unique: H1IpZlFONzyPql2eZqFg3w-1
+X-Mimecast-MFC-AGG-ID: H1IpZlFONzyPql2eZqFg3w_1758288813
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 119EE1955F2A; Fri, 19 Sep 2025 13:33:26 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C6A841956058; Fri, 19 Sep 2025 13:33:32 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.27])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8FDAD1800452; Fri, 19 Sep 2025 13:33:23 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 09D9C19560BB; Fri, 19 Sep 2025 13:33:30 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Ed Maste <emaste@freebsd.org>,
@@ -56,13 +57,15 @@ Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Ed Maste <emaste@freebsd.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Kohei Tokunaga <ktokunaga.mail@gmail.com>, Kyle Evans <kevans@freebsd.org>
-Subject: [PATCH 00/24] CI/build-sys fixes to enable Rust more widely
-Date: Fri, 19 Sep 2025 17:32:54 +0400
-Message-ID: <20250919133320.240145-1-marcandre.lureau@redhat.com>
+Subject: [PATCH 01/24] gitlab-ci: fix 'needs' property type must be array
+Date: Fri, 19 Sep 2025 17:32:55 +0400
+Message-ID: <20250919133320.240145-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20250919133320.240145-1-marcandre.lureau@redhat.com>
+References: <20250919133320.240145-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -71,9 +74,9 @@ X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.105,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,79 +94,487 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Hi,
+The gitlab "Pipeline editor" has some warnings, and gitlab-ci-local
+fails.
 
-This patch series fixes a number of issues with the build system and CI and
-enable Rust for many of our jobs, getting us closer to enable Rust by default.
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ .gitlab-ci.d/buildtest.yml     | 56 +++++++++++++++++-----------------
+ .gitlab-ci.d/crossbuilds.yml   | 46 ++++++++++++++--------------
+ .gitlab-ci.d/static_checks.yml |  6 ++--
+ 3 files changed, 54 insertions(+), 54 deletions(-)
 
-Marc-André Lureau (24):
-  gitlab-ci: fix 'needs' property type must be array
-  scripts/archive-source: speed up downloading subprojects
-  scripts/archive-source: silence subprojects downloads
-  configure: fix rust meson configuration
-  configure: set the bindgen cross target
-  RFC: configure: use the same machine as the host triple by default
-  tests/docker/common: print errors to stderr
-  tests/docker: use fully qualified image name for emsdk
-  tests/docker/common: print meson log on configure failure
-  lcitool: update, switch to f41
-  lcitool/qemu: include libclang-rt for TSAN
-  lcitool/alpine: workaround bindgen issue
-  tests/lcitool: add missing rust-std dep
-  tests: move mips to debian-legacy-test-cross
-  tests/lcitool: update to debian13
-  build-sys: cfi_debug and safe_stack are not compatible
-  tests/docker: add ENABLE_RUST environment
-  tests/lcitool: enable rust & refresh
-  configure: set the meson executable suffix/ext
-  tests/freebsd: enable Rust
-  meson: rust-bindgen limit allowlist-file to srcdir/include
-  WIP: tests/docker: add rust to debian-legacy-test-cross
-  WIP: gitlab-ci: enable rust for msys2-64bit
-  WIP: cirrus/macos: enable Rust
-
- configure                                     |  26 ++-
- meson.build                                   |  19 +-
- .gitlab-ci.d/buildtest.yml                    |  70 +++----
- .gitlab-ci.d/cirrus.yml                       |   4 +-
- .gitlab-ci.d/container-cross.yml              |  12 --
- .gitlab-ci.d/crossbuild-template.yml          |   4 +-
- .gitlab-ci.d/crossbuilds.yml                  |  72 ++-----
- .gitlab-ci.d/static_checks.yml                |   6 +-
- .gitlab-ci.d/windows.yml                      |   8 +-
- scripts/archive-source.sh                     |   5 +-
- .../ci/setup/ubuntu/ubuntu-2204-aarch64.yaml  |   5 +-
- .../ci/setup/ubuntu/ubuntu-2204-s390x.yaml    |   5 +-
- tests/docker/Makefile.include                 |   1 -
- tests/docker/common.rc                        |  11 +-
- tests/docker/dockerfiles/alpine.docker        |   6 +-
- tests/docker/dockerfiles/centos9.docker       |   4 +
- .../dockerfiles/debian-all-test-cross.docker  |   8 -
- .../dockerfiles/debian-amd64-cross.docker     |  18 +-
- .../dockerfiles/debian-arm64-cross.docker     |  18 +-
- .../dockerfiles/debian-armhf-cross.docker     |  21 +-
- .../dockerfiles/debian-i686-cross.docker      |  20 +-
- .../debian-legacy-test-cross.docker           |  11 +-
- .../dockerfiles/debian-mips64el-cross.docker  | 180 ------------------
- .../dockerfiles/debian-mipsel-cross.docker    | 180 ------------------
- .../dockerfiles/debian-ppc64el-cross.docker   |  18 +-
- .../dockerfiles/debian-riscv64-cross.docker   |  10 +-
- .../dockerfiles/debian-s390x-cross.docker     |  18 +-
- tests/docker/dockerfiles/debian.docker        |  18 +-
- .../dockerfiles/emsdk-wasm32-cross.docker     |   2 +-
- .../dockerfiles/fedora-rust-nightly.docker    |  18 +-
- .../dockerfiles/fedora-win64-cross.docker     |  15 +-
- tests/docker/dockerfiles/fedora.docker        |  18 +-
- tests/docker/dockerfiles/opensuse-leap.docker |   7 +-
- tests/docker/dockerfiles/ubuntu2204.docker    |   7 +-
- tests/lcitool/libvirt-ci                      |   2 +-
- tests/lcitool/projects/qemu.yml               |   3 +-
- tests/lcitool/refresh                         |  56 +++---
- tests/vm/freebsd                              |   4 +-
- 38 files changed, 320 insertions(+), 590 deletions(-)
- delete mode 100644 tests/docker/dockerfiles/debian-mips64el-cross.docker
- delete mode 100644 tests/docker/dockerfiles/debian-mipsel-cross.docker
-
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index f01978fb40..f8d7b6c3ac 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -36,7 +36,7 @@ build-system-ubuntu:
+     - .native_build_job_template
+     - .native_build_artifact_template
+   needs:
+-    job: amd64-ubuntu2204-container
++    - job: amd64-ubuntu2204-container
+   variables:
+     IMAGE: ubuntu2204
+     CONFIGURE_ARGS: --enable-docs
+@@ -66,7 +66,7 @@ build-system-debian:
+     - .native_build_job_template
+     - .native_build_artifact_template
+   needs:
+-    job: amd64-debian-container
++    - job: amd64-debian-container
+   variables:
+     IMAGE: debian
+     CONFIGURE_ARGS: --with-coroutine=sigaltstack --enable-rust
+@@ -109,7 +109,7 @@ build-system-fedora:
+     - .native_build_job_template
+     - .native_build_artifact_template
+   needs:
+-    job: amd64-fedora-container
++    - job: amd64-fedora-container
+   variables:
+     IMAGE: fedora
+     CONFIGURE_ARGS: --disable-gcrypt --enable-nettle --enable-docs --enable-crypto-afalg --enable-rust
+@@ -122,7 +122,7 @@ build-system-fedora-rust-nightly:
+     - .native_build_job_template
+     - .native_build_artifact_template
+   needs:
+-    job: amd64-fedora-rust-nightly-container
++    - job: amd64-fedora-rust-nightly-container
+   variables:
+     IMAGE: fedora-rust-nightly
+     CONFIGURE_ARGS: --disable-docs --enable-rust --enable-strict-rust-lints
+@@ -167,7 +167,7 @@ build-system-centos:
+     - .native_build_job_template
+     - .native_build_artifact_template
+   needs:
+-    job: amd64-centos9-container
++    - job: amd64-centos9-container
+   variables:
+     IMAGE: centos9
+     CONFIGURE_ARGS: --disable-nettle --enable-gcrypt --enable-vfio-user-server
+@@ -189,7 +189,7 @@ build-previous-qemu:
+       - build-previous/tests/qtest/migration-test
+       - build-previous/scripts
+   needs:
+-    job: amd64-opensuse-leap-container
++    - job: amd64-opensuse-leap-container
+   variables:
+     IMAGE: opensuse-leap
+     TARGETS: x86_64-softmmu aarch64-softmmu
+@@ -274,7 +274,7 @@ build-system-opensuse:
+     - .native_build_job_template
+     - .native_build_artifact_template
+   needs:
+-    job: amd64-opensuse-leap-container
++    - job: amd64-opensuse-leap-container
+   variables:
+     IMAGE: opensuse-leap
+     TARGETS: s390x-softmmu x86_64-softmmu aarch64-softmmu
+@@ -308,7 +308,7 @@ build-system-flaky:
+     - .native_build_job_template
+     - .native_build_artifact_template
+   needs:
+-    job: amd64-debian-container
++    - job: amd64-debian-container
+   variables:
+     IMAGE: debian
+     QEMU_JOB_OPTIONAL: 1
+@@ -338,7 +338,7 @@ functional-system-flaky:
+ build-tcg-disabled:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-centos9-container
++    - job: amd64-centos9-container
+   variables:
+     IMAGE: centos9
+   script:
+@@ -364,7 +364,7 @@ build-tcg-disabled:
+ build-user:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-debian-user-cross-container
++    - job: amd64-debian-user-cross-container
+   variables:
+     IMAGE: debian-all-test-cross
+     CONFIGURE_ARGS: --disable-tools --disable-system
+@@ -374,7 +374,7 @@ build-user:
+ build-user-static:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-debian-user-cross-container
++    - job: amd64-debian-user-cross-container
+   variables:
+     IMAGE: debian-all-test-cross
+     CONFIGURE_ARGS: --disable-tools --disable-system --static
+@@ -385,7 +385,7 @@ build-user-static:
+ build-legacy:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-debian-legacy-cross-container
++    - job: amd64-debian-legacy-cross-container
+   variables:
+     IMAGE: debian-legacy-test-cross
+     TARGETS: alpha-linux-user alpha-softmmu sh4-linux-user
+@@ -395,7 +395,7 @@ build-legacy:
+ build-user-hexagon:
+   extends: .native_build_job_template
+   needs:
+-    job: hexagon-cross-container
++    - job: hexagon-cross-container
+   variables:
+     IMAGE: debian-hexagon-cross
+     TARGETS: hexagon-linux-user
+@@ -408,7 +408,7 @@ build-user-hexagon:
+ build-some-softmmu:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-debian-user-cross-container
++    - job: amd64-debian-user-cross-container
+   variables:
+     IMAGE: debian-all-test-cross
+     CONFIGURE_ARGS: --disable-tools --enable-debug
+@@ -419,7 +419,7 @@ build-some-softmmu:
+ build-loongarch64:
+   extends: .native_build_job_template
+   needs:
+-    job: loongarch-debian-cross-container
++    - job: loongarch-debian-cross-container
+   variables:
+     IMAGE: debian-loongarch-cross
+     CONFIGURE_ARGS: --disable-tools --enable-debug
+@@ -430,7 +430,7 @@ build-loongarch64:
+ build-tricore-softmmu:
+   extends: .native_build_job_template
+   needs:
+-    job: tricore-debian-cross-container
++    - job: tricore-debian-cross-container
+   variables:
+     IMAGE: debian-tricore-cross
+     CONFIGURE_ARGS: --disable-tools --disable-fdt --enable-debug
+@@ -440,7 +440,7 @@ build-tricore-softmmu:
+ clang-system:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-fedora-container
++    - job: amd64-fedora-container
+   variables:
+     IMAGE: fedora
+     CONFIGURE_ARGS: --cc=clang --cxx=clang++ --enable-ubsan
+@@ -451,7 +451,7 @@ clang-system:
+ clang-user:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-debian-user-cross-container
++    - job: amd64-debian-user-cross-container
+   timeout: 70m
+   variables:
+     IMAGE: debian-all-test-cross
+@@ -582,7 +582,7 @@ functional-cfi-x86_64:
+ tsan-build:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-ubuntu2204-container
++    - job: amd64-ubuntu2204-container
+   variables:
+     IMAGE: ubuntu2204
+     CONFIGURE_ARGS: --enable-tsan --cc=clang --cxx=clang++
+@@ -596,7 +596,7 @@ tsan-build:
+ gcov:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-ubuntu2204-container
++    - job: amd64-ubuntu2204-container
+   timeout: 80m
+   variables:
+     IMAGE: ubuntu2204
+@@ -623,7 +623,7 @@ gcov:
+ build-oss-fuzz:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-fedora-container
++    - job: amd64-fedora-container
+   variables:
+     IMAGE: fedora
+   script:
+@@ -645,7 +645,7 @@ build-oss-fuzz:
+ build-tci:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-debian-user-cross-container
++    - job: amd64-debian-user-cross-container
+   variables:
+     IMAGE: debian-all-test-cross
+   script:
+@@ -670,7 +670,7 @@ build-tci:
+ build-without-defaults:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-centos9-container
++    - job: amd64-centos9-container
+   variables:
+     IMAGE: centos9
+     CONFIGURE_ARGS:
+@@ -688,7 +688,7 @@ build-libvhost-user:
+   stage: build
+   image: $CI_REGISTRY_IMAGE/qemu/fedora:$QEMU_CI_CONTAINER_TAG
+   needs:
+-    job: amd64-fedora-container
++    - job: amd64-fedora-container
+   script:
+     - mkdir subprojects/libvhost-user/build
+     - cd subprojects/libvhost-user/build
+@@ -702,9 +702,9 @@ build-tools-and-docs-debian:
+     - .native_build_job_template
+     - .native_build_artifact_template
+   needs:
+-    job: amd64-debian-container
+-    # when running on 'master' we use pre-existing container
+-    optional: true
++    - job: amd64-debian-container
++      # when running on 'master' we use pre-existing container
++      optional: true
+   variables:
+     IMAGE: debian
+     MAKE_CHECK_ARGS: check-unit ctags TAGS cscope
+@@ -791,7 +791,7 @@ build-wasm:
+   extends: .wasm_build_job_template
+   timeout: 2h
+   needs:
+-    job: wasm-emsdk-cross-container
++    - job: wasm-emsdk-cross-container
+   variables:
+     IMAGE: emsdk-wasm32-cross
+     CONFIGURE_ARGS: --static --disable-tools --enable-debug --enable-tcg-interpreter
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 3f76c901ba..8ff0c27f74 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -4,28 +4,28 @@ include:
+ cross-armhf-user:
+   extends: .cross_user_build_job
+   needs:
+-    job: armhf-debian-cross-container
++    - job: armhf-debian-cross-container
+   variables:
+     IMAGE: debian-armhf-cross
+ 
+ cross-arm64-system:
+   extends: .cross_system_build_job
+   needs:
+-    job: arm64-debian-cross-container
++    - job: arm64-debian-cross-container
+   variables:
+     IMAGE: debian-arm64-cross
+ 
+ cross-arm64-user:
+   extends: .cross_user_build_job
+   needs:
+-    job: arm64-debian-cross-container
++    - job: arm64-debian-cross-container
+   variables:
+     IMAGE: debian-arm64-cross
+ 
+ cross-arm64-kvm-only:
+   extends: .cross_accel_build_job
+   needs:
+-    job: arm64-debian-cross-container
++    - job: arm64-debian-cross-container
+   variables:
+     IMAGE: debian-arm64-cross
+     EXTRA_CONFIGURE_OPTS: --disable-tcg --without-default-features
+@@ -35,7 +35,7 @@ cross-i686-system:
+     - .cross_system_build_job
+     - .cross_test_artifacts
+   needs:
+-    job: i686-debian-cross-container
++    - job: i686-debian-cross-container
+   variables:
+     IMAGE: debian-i686-cross
+     EXTRA_CONFIGURE_OPTS: --disable-kvm
+@@ -46,7 +46,7 @@ cross-i686-user:
+     - .cross_user_build_job
+     - .cross_test_artifacts
+   needs:
+-    job: i686-debian-cross-container
++    - job: i686-debian-cross-container
+   variables:
+     IMAGE: debian-i686-cross
+     MAKE_CHECK_ARGS: check
+@@ -57,7 +57,7 @@ cross-i686-tci:
+     - .cross_test_artifacts
+   timeout: 60m
+   needs:
+-    job: i686-debian-cross-container
++    - job: i686-debian-cross-container
+   variables:
+     IMAGE: debian-i686-cross
+     ACCEL: tcg-interpreter
+@@ -71,49 +71,49 @@ cross-i686-tci:
+ cross-mipsel-system:
+   extends: .cross_system_build_job
+   needs:
+-    job: mipsel-debian-cross-container
++    - job: mipsel-debian-cross-container
+   variables:
+     IMAGE: debian-mipsel-cross
+ 
+ cross-mipsel-user:
+   extends: .cross_user_build_job
+   needs:
+-    job: mipsel-debian-cross-container
++    - job: mipsel-debian-cross-container
+   variables:
+     IMAGE: debian-mipsel-cross
+ 
+ cross-mips64el-system:
+   extends: .cross_system_build_job
+   needs:
+-    job: mips64el-debian-cross-container
++    - job: mips64el-debian-cross-container
+   variables:
+     IMAGE: debian-mips64el-cross
+ 
+ cross-mips64el-user:
+   extends: .cross_user_build_job
+   needs:
+-    job: mips64el-debian-cross-container
++    - job: mips64el-debian-cross-container
+   variables:
+     IMAGE: debian-mips64el-cross
+ 
+ cross-ppc64el-system:
+   extends: .cross_system_build_job
+   needs:
+-    job: ppc64el-debian-cross-container
++    - job: ppc64el-debian-cross-container
+   variables:
+     IMAGE: debian-ppc64el-cross
+ 
+ cross-ppc64el-user:
+   extends: .cross_user_build_job
+   needs:
+-    job: ppc64el-debian-cross-container
++    - job: ppc64el-debian-cross-container
+   variables:
+     IMAGE: debian-ppc64el-cross
+ 
+ cross-ppc64el-kvm-only:
+   extends: .cross_accel_build_job
+   needs:
+-    job: ppc64el-debian-cross-container
++    - job: ppc64el-debian-cross-container
+   variables:
+     IMAGE: debian-ppc64el-cross
+     EXTRA_CONFIGURE_OPTS: --disable-tcg --without-default-devices
+@@ -121,35 +121,35 @@ cross-ppc64el-kvm-only:
+ cross-riscv64-system:
+   extends: .cross_system_build_job
+   needs:
+-    job: riscv64-debian-cross-container
++    - job: riscv64-debian-cross-container
+   variables:
+     IMAGE: debian-riscv64-cross
+ 
+ cross-riscv64-user:
+   extends: .cross_user_build_job
+   needs:
+-    job: riscv64-debian-cross-container
++    - job: riscv64-debian-cross-container
+   variables:
+     IMAGE: debian-riscv64-cross
+ 
+ cross-s390x-system:
+   extends: .cross_system_build_job
+   needs:
+-    job: s390x-debian-cross-container
++    - job: s390x-debian-cross-container
+   variables:
+     IMAGE: debian-s390x-cross
+ 
+ cross-s390x-user:
+   extends: .cross_user_build_job
+   needs:
+-    job: s390x-debian-cross-container
++    - job: s390x-debian-cross-container
+   variables:
+     IMAGE: debian-s390x-cross
+ 
+ cross-s390x-kvm-only:
+   extends: .cross_accel_build_job
+   needs:
+-    job: s390x-debian-cross-container
++    - job: s390x-debian-cross-container
+   variables:
+     IMAGE: debian-s390x-cross
+     EXTRA_CONFIGURE_OPTS: --disable-tcg --enable-trace-backends=ftrace
+@@ -157,7 +157,7 @@ cross-s390x-kvm-only:
+ cross-mips64el-kvm-only:
+   extends: .cross_accel_build_job
+   needs:
+-    job: mips64el-debian-cross-container
++    - job: mips64el-debian-cross-container
+   variables:
+     IMAGE: debian-mips64el-cross
+     EXTRA_CONFIGURE_OPTS: --disable-tcg --target-list=mips64el-softmmu
+@@ -165,7 +165,7 @@ cross-mips64el-kvm-only:
+ cross-win64-system:
+   extends: .cross_system_build_job
+   needs:
+-    job: win64-fedora-cross-container
++    - job: win64-fedora-cross-container
+   variables:
+     IMAGE: fedora-win64-cross
+     EXTRA_CONFIGURE_OPTS: --enable-fdt=internal --disable-plugins
+@@ -181,7 +181,7 @@ cross-win64-system:
+ cross-amd64-xen-only:
+   extends: .cross_accel_build_job
+   needs:
+-    job: amd64-debian-cross-container
++    - job: amd64-debian-cross-container
+   variables:
+     IMAGE: debian-amd64-cross
+     ACCEL: xen
+@@ -190,7 +190,7 @@ cross-amd64-xen-only:
+ cross-arm64-xen-only:
+   extends: .cross_accel_build_job
+   needs:
+-    job: arm64-debian-cross-container
++    - job: arm64-debian-cross-container
+   variables:
+     IMAGE: debian-arm64-cross
+     ACCEL: xen
+diff --git a/.gitlab-ci.d/static_checks.yml b/.gitlab-ci.d/static_checks.yml
+index c3ed6de453..61fe2fa39a 100644
+--- a/.gitlab-ci.d/static_checks.yml
++++ b/.gitlab-ci.d/static_checks.yml
+@@ -32,7 +32,7 @@ check-python-minreqs:
+   variables:
+     GIT_DEPTH: 1
+   needs:
+-    job: python-container
++    - job: python-container
+ 
+ check-python-tox:
+   extends: .base_job_template
+@@ -45,7 +45,7 @@ check-python-tox:
+     QEMU_TOX_EXTRA_ARGS: --skip-missing-interpreters=false
+     QEMU_JOB_OPTIONAL: 1
+   needs:
+-    job: python-container
++    - job: python-container
+ 
+ check-rust-tools-nightly:
+   extends: .base_job_template
+@@ -76,7 +76,7 @@ check-build-units:
+   stage: build
+   image: $CI_REGISTRY_IMAGE/qemu/debian:$QEMU_CI_CONTAINER_TAG
+   needs:
+-    job: amd64-debian-container
++    - job: amd64-debian-container
+   before_script:
+     - source scripts/ci/gitlab-ci-section
+     - section_start setup "Install Tools"
 -- 
 2.51.0
 
