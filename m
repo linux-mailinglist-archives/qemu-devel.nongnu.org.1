@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25532B89B87
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 15:41:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B16B6B89B84
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 15:41:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzbIn-0000pl-Tm; Fri, 19 Sep 2025 09:37:30 -0400
+	id 1uzbIs-0001Yn-RY; Fri, 19 Sep 2025 09:37:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uzbHJ-0006zU-IA
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 09:36:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uzbHU-000739-6C
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 09:36:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uzbHC-0004AU-2Y
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 09:35:56 -0400
+ id 1uzbHK-0004Br-Dv
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 09:36:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758288946;
+ s=mimecast20190719; t=1758288952;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LzYhe+UScvln+YEzOD6xNro+VguPkAdfQ34MxRKubK8=;
- b=cEgF/1N8ILuuTiluS7fmpXipugqYHpDoEwTRU6sswH/g5dO1g3JlsEyEEBDDjXSfvueipG
- Y8QGF7l9pQJLid9+FpIybngtUsx920FAUbaY0Eqyn6Yl62JYYl4WCd5GXz64oGYpzY0jJ2
- 5VSBtXPnmDpIT08/sr2w0L5ToGGYH88=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=msb4UKtvSLmS0DJSTxPJEEU5eRGOe9nc3237xngWKRs=;
+ b=DXUd+Waf5DpBs14O0m+iF6den/RI1+lW+SvEyeLPGZG6d/4ujsLQBZnxSvIC20DGiC69Bs
+ bMgBQWRSomQ1Uv7wmvUrZ1eDN/kl708xKVlT2/TgyCdAnCMxFcDWa9Xy2S81T4MFZrSvL9
+ 6obpe4925t8FOQnZrmvXgRDHUUO2l2Q=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-377-f85gNh4TPiSz-tJHRKsPwQ-1; Fri,
- 19 Sep 2025 09:35:42 -0400
-X-MC-Unique: f85gNh4TPiSz-tJHRKsPwQ-1
-X-Mimecast-MFC-AGG-ID: f85gNh4TPiSz-tJHRKsPwQ_1758288941
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-570-vmsNuKSoOjeGs3kRq6sfyw-1; Fri,
+ 19 Sep 2025 09:35:49 -0400
+X-MC-Unique: vmsNuKSoOjeGs3kRq6sfyw-1
+X-Mimecast-MFC-AGG-ID: vmsNuKSoOjeGs3kRq6sfyw_1758288947
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3988A180028C; Fri, 19 Sep 2025 13:35:41 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 68B4919560AF; Fri, 19 Sep 2025 13:35:47 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.27])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A53091800447; Fri, 19 Sep 2025 13:35:39 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id F16A830002C5; Fri, 19 Sep 2025 13:35:45 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Ed Maste <emaste@freebsd.org>,
@@ -57,16 +57,16 @@ Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Ed Maste <emaste@freebsd.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Kohei Tokunaga <ktokunaga.mail@gmail.com>, Kyle Evans <kevans@freebsd.org>
-Subject: [PATCH 22/24] WIP: tests/docker: add rust to debian-legacy-test-cross
-Date: Fri, 19 Sep 2025 17:33:16 +0400
-Message-ID: <20250919133320.240145-23-marcandre.lureau@redhat.com>
+Subject: [PATCH 23/24] WIP: gitlab-ci: enable rust for msys2-64bit
+Date: Fri, 19 Sep 2025 17:33:17 +0400
+Message-ID: <20250919133320.240145-24-marcandre.lureau@redhat.com>
 In-Reply-To: <20250919133320.240145-1-marcandre.lureau@redhat.com>
 References: <20250919133320.240145-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -74,9 +74,9 @@ X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.105,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,55 +94,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Unfortunately, debian 11 has bindgen version 0.55...
-
-Should we install it with cargo install bindgen-cli?
+Currently fails with meson issue:
+https://github.com/mesonbuild/meson/pull/14991
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml                               | 2 +-
- tests/docker/dockerfiles/debian-legacy-test-cross.docker | 6 +++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ .gitlab-ci.d/windows.yml | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 94d646c5a7..efaa72f288 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -389,7 +389,7 @@ build-legacy:
-   variables:
-     IMAGE: debian-legacy-test-cross
-     TARGETS: alpha-linux-user alpha-softmmu sh4-linux-user mips-linux-user mips-softmmu mipsel-linux-user mipsel-softmmu mips64-linux-user mips64-softmmu
--    CONFIGURE_ARGS: --disable-tools
-+    CONFIGURE_ARGS: --disable-tools --enable-rust
-     MAKE_CHECK_ARGS: check-tcg
- 
- build-user-hexagon:
-diff --git a/tests/docker/dockerfiles/debian-legacy-test-cross.docker b/tests/docker/dockerfiles/debian-legacy-test-cross.docker
-index 8c922b47f5..0014e59127 100644
---- a/tests/docker/dockerfiles/debian-legacy-test-cross.docker
-+++ b/tests/docker/dockerfiles/debian-legacy-test-cross.docker
-@@ -25,6 +25,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
- RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-         apt install -y --no-install-recommends \
-         bison \
-+        cargo \
-         ccache \
-         clang  \
-         flex \
-@@ -41,9 +42,12 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
-         python3-pip \
-         python3-setuptools \
-         python3-venv \
--        python3-wheel && \
-+        python3-wheel \
-+        rustc-web \
-+        && \
-         dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt
- 
-+RUN cargo install bindgen-cli
- RUN /usr/bin/pip3 install tomli
- 
- ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
+diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+index 1e6a01bd9a..51297d3647 100644
+--- a/.gitlab-ci.d/windows.yml
++++ b/.gitlab-ci.d/windows.yml
+@@ -17,7 +17,7 @@ msys2-64bit:
+     # This feature doesn't (currently) work with PowerShell, it stops
+     # the echo'ing of commands being run and doesn't show any timing
+     FF_SCRIPT_SECTIONS: 0
+-    CONFIGURE_ARGS: --disable-system --enable-tools -Ddebug=false -Doptimization=0
++    CONFIGURE_ARGS: --disable-system --enable-tools -Ddebug=false -Doptimization=0 --enable-rust
+     # The Windows git is a bit older so override the default
+     GIT_FETCH_EXTRA_FLAGS: --no-tags --prune --quiet
+   artifacts:
+@@ -76,6 +76,7 @@ msys2-64bit:
+       bison diffutils flex
+       git grep make sed
+       mingw-w64-x86_64-binutils
++      mingw-w64-x86_64-ca-certificates
+       mingw-w64-x86_64-ccache
+       mingw-w64-x86_64-curl-winssl
+       mingw-w64-x86_64-gcc
+@@ -86,6 +87,9 @@ msys2-64bit:
+       mingw-w64-x86_64-pixman
+       mingw-w64-x86_64-pkgconf
+       mingw-w64-x86_64-python
++      mingw-w64-x86_64-python-certifi
++      mingw-w64-x86_64-rust
++      mingw-w64-x86_64-rust-bindgen
+       mingw-w64-x86_64-zstd"
+   - Write-Output "Running build at $(Get-Date -Format u)"
+   - $env:JOBS = $(.\msys64\usr\bin\bash -lc nproc)
+@@ -96,10 +100,12 @@ msys2-64bit:
+   - $env:CCACHE_MAXSIZE = "500M"
+   - $env:CCACHE_DEPEND = 1 # cache misses are too expensive with preprocessor mode
+   - $env:CC = "ccache gcc"
++  - $env:LIBCLANG_PATH = Join-Path -Path $PWD.Path -ChildPath "msys64/mingw64/bin"
+   - mkdir build
+   - cd build
+   - ..\msys64\usr\bin\bash -lc "ccache --zero-stats"
+   - ..\msys64\usr\bin\bash -lc "../configure $CONFIGURE_ARGS"
++  - ..\msys64\usr\bin\bash -lc "make V=1 rust/util/bindings.inc.rs"
+   - ..\msys64\usr\bin\bash -lc "make -j$env:JOBS"
+   - ..\msys64\usr\bin\bash -lc "make check MTESTARGS='$TEST_ARGS' || { cat meson-logs/testlog.txt; exit 1; } ;"
+   - ..\msys64\usr\bin\bash -lc "ccache --show-stats"
 -- 
 2.51.0
 
