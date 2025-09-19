@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD96B89D7B
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 16:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C152B89D64
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 16:14:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzbrZ-0000ot-2O; Fri, 19 Sep 2025 10:13:25 -0400
+	id 1uzbrb-0000xO-42; Fri, 19 Sep 2025 10:13:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uzbr8-0000Uv-Gw
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 10:13:01 -0400
+ id 1uzbrC-0000Yw-4o
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 10:13:02 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uzbqz-0007TJ-JH
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 10:12:57 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58JDtpX9003410;
- Fri, 19 Sep 2025 14:12:42 GMT
+ id 1uzbqz-0007TH-JG
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 10:13:00 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58JDtmJ4023169;
+ Fri, 19 Sep 2025 14:12:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=dY2NOTNkw1LjEzXQTZCL2DtK3kEwH8IcYpiFjp8CfxM=; b=
- k8sa82QiK3976rkh6i0m43eg760SAnqJV8YBAMme0qgfgWCV0PSdwms3Xnex3j8D
- pxhSHUZSy+VpvgFjCNpAObZTfngNDfd1pXgSCnyw1SJIxTaraOZm9dUdFctuImjP
- 2m5U+QzakmX0vIdbhN0uzjm2oUF8ahQ8z72UH3oTOKT4bDiWijAsIkZyGeBIp90q
- 4ITF3deHNw95Yn6Vm+FqdI863+cqpyIu4+toppv1rQDhofLXdqMs1iLPOqWpZUD7
- JHpUzQn/fb0oguq+tRAYD6W9yaR+VFQaRMjdvsvVu4uqZJNBM/G7ZI03xAYQrYZU
- A/A6T/OVhy8UgcR6Udf82w==
+ corp-2025-04-25; bh=KVZKlScSL3fpepmijDdmzuigZVGCzb2oGsUwxVW66x0=; b=
+ ZzX4FPYCgLjn0Ekjs+xp/JuEL5ZpQB//d/kTj8pf2d4Ot4DOgM0+twTFdkdo+2Fh
+ LL/lFhaCmM/FqVJBWniT9kCPRJVVRyk8MsNVxJT2xpnLFsNCKQvqtNGn7z90ub9E
+ cQDwr6csDM65aQZoOJ+zRGLYWGl2toz+D2LdEibpU14PhVaJQJ3bvDV7zvVBxfgC
+ Lc/aUldOzwqgLzltnVdxzakacxka9dCK1+yTHt6duh74f6CgrXDESGQQcNp5ugy1
+ mZMXByzWYuIgn6Ofqn1tBzw9w32EmnLGmNqL5H5RgiSFRRJFVnBHDQRebrcfcXZb
+ JyFXPDZG3bW0Vb4z0O4afg==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497fx8ng7j-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497fx6np81-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Sep 2025 14:12:41 +0000 (GMT)
+ Fri, 19 Sep 2025 14:12:42 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 58JCXkqs035167; Fri, 19 Sep 2025 14:12:41 GMT
+ with ESMTP id 58JD3Kc2035230; Fri, 19 Sep 2025 14:12:42 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 494y2pu95u-1
+ 494y2pu96c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Sep 2025 14:12:41 +0000
+ Fri, 19 Sep 2025 14:12:42 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58JECYXD003357;
- Fri, 19 Sep 2025 14:12:40 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58JECYXF003357;
+ Fri, 19 Sep 2025 14:12:41 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 494y2pu924-7; Fri, 19 Sep 2025 14:12:40 +0000
+ ESMTP id 494y2pu924-8; Fri, 19 Sep 2025 14:12:41 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 06/11] migration-test: only_source option
-Date: Fri, 19 Sep 2025 07:12:28 -0700
-Message-Id: <1758291153-349744-7-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 07/11] migration-test: shm path accessor
+Date: Fri, 19 Sep 2025 07:12:29 -0700
+Message-Id: <1758291153-349744-8-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1758291153-349744-1-git-send-email-steven.sistare@oracle.com>
 References: <1758291153-349744-1-git-send-email-steven.sistare@oracle.com>
@@ -70,20 +70,20 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  adultscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
  definitions=main-2509190132
-X-Authority-Analysis: v=2.4 cv=JNU7s9Kb c=1 sm=1 tr=0 ts=68cd64d9 b=1 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=TqbmhCXh c=1 sm=1 tr=0 ts=68cd64db b=1 cx=c_pps
  a=e1sVV491RgrpLwSTMOnk8w==:117
  a=e1sVV491RgrpLwSTMOnk8w==:17
- a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=lri74naOo4n2Vg3VkkMA:9
- a=0bXxn9q0MV6snEgNplNhOjQmxlI=:19 cc=ntf awl=host:13614
-X-Proofpoint-ORIG-GUID: -F1OK8KguzKzoD50y86U8us4W40un250
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfXycaHVw+XlYPK
- CN0kKyaM8xvyKwGxoBh8hbgYJEu7OXKWyQzTWaVMkJumIicEqU1PJWlu3FFwxuF8wP4Q6BpFXNn
- mMalrKn5JmnksJ3KzcDBD+ffc+57cuU2eeW1sgr6vOGfHlkwlKYdHwNhm7jBkbqUGkzPGCp5g94
- +L5Wa3jED8/DKCBYqpdsPJrveuTGWEWqvCNoGwtQjC8/Fckr1rrE+CqKYPXIRaX+tFmScEuxQ69
- P1AL0ahK81lK3vOcaVEK6DA74CAtuWUihgfwPOb9k3oMzl36kcEf3EEYL8z0GfhVXa9rqqkONn0
- K3XsPAY32MQ+7zXz4SLvKxuMfX3GqyWZ0Uva/YILHwO4CW8794MPyOe8WKYEP0XCS6YH+Z9Hu+k
- 0GE9IiVcrpMMiIuJ34eU1skBcyyHdg==
-X-Proofpoint-GUID: -F1OK8KguzKzoD50y86U8us4W40un250
+ a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=mXoANcZEXaB-ueEzDlQA:9 cc=ntf
+ awl=host:13614
+X-Proofpoint-GUID: b2W0aUOPtQGiKJ_vT_xq9BwQ8AW8wCC2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfXwH3/KmeVEsDE
+ vYBAyu4lz4jrdegu5V8xoXUEfG5u1bQ2iLoHcUjZYvrCAhIcewf52M4WrM4ESOSyUaRmkfddR4Y
+ l/D84sh828+E6E0o39Zf27F2fBKxgr+Ih7/b5Run2VEFMNOusfqYPI811JC3Dw/PDAd0/k9n19K
+ JS8IHOZwjj7TP5EOxSyq8mzmpoeNV3+LxFoF5+XPj9zyxOa+0XDbFkI3R6NcZucm6qi6JyoWaeg
+ EMagS1bhokE3f76qVMXd86liyORUliMB/+8CfYm7i/GT+R7Na6BeO5exRZsxOF1IvDm2qjv2cZj
+ 2yuXyxd3aNNUDV4jxskiVUdgYjSgtZ2xBrP+DmQ38hHPtsqepiHnStU9AyE5Qu2Vp3H3OCN4DGT
+ qWr4BoJwRpgekAtvt1iksBfSigmQ3Q==
+X-Proofpoint-ORIG-GUID: b2W0aUOPtQGiKJ_vT_xq9BwQ8AW8wCC2
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -109,83 +109,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the only_source option, analogous to only_target.
+Define an accessor for the shm path.  It will be referenced from
+multiple sites in a subsequent patch.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- tests/qtest/migration/framework.h |  2 ++
- tests/qtest/migration/framework.c | 24 +++++++++++++++---------
- 2 files changed, 17 insertions(+), 9 deletions(-)
+ tests/qtest/migration/framework.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index 01e425e..f1bb9d4 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -103,6 +103,8 @@ typedef struct {
-      */
-     bool hide_stderr;
-     bool use_shmem;
-+    /* only launch the source process */
-+    bool only_source;
-     /* only launch the target process */
-     bool only_target;
-     /* Use dirty ring if true; dirty logging otherwise */
 diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 407c902..9564293 100644
+index 9564293..9d04f36 100644
 --- a/tests/qtest/migration/framework.c
 +++ b/tests/qtest/migration/framework.c
-@@ -234,7 +234,7 @@ static void migrate_start_set_capabilities(QTestState *from, QTestState *to,
-      * to mimic as closer as that.
-      */
-     migrate_set_capability(from, "events", true);
--    if (!args->defer_target_connect) {
-+    if (!args->defer_target_connect && to) {
-         migrate_set_capability(to, "events", true);
-     }
- 
-@@ -246,8 +246,10 @@ static void migrate_start_set_capabilities(QTestState *from, QTestState *to,
-     if (args->caps[MIGRATION_CAPABILITY_MULTIFD]) {
-         migrate_set_parameter_int(from, "multifd-channels",
-                                   MULTIFD_TEST_CHANNELS);
--        migrate_set_parameter_int(to, "multifd-channels",
--                                  MULTIFD_TEST_CHANNELS);
-+        if (to) {
-+            migrate_set_parameter_int(to, "multifd-channels",
-+                                      MULTIFD_TEST_CHANNELS);
-+        }
-     }
- 
+@@ -255,6 +255,11 @@ static void migrate_start_set_capabilities(QTestState *from, QTestState *to,
      return;
-@@ -410,11 +412,13 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-                                  shmem_opts ? shmem_opts : "",
-                                  args->opts_target ? args->opts_target : "",
-                                  ignore_stderr);
--    *to = qtest_init_ext(QEMU_ENV_DST, cmd_target, capabilities,
--                         !args->defer_target_connect);
--    qtest_qmp_set_event_callback(*to,
--                                 migrate_watch_for_events,
--                                 &dst_state);
-+    if (!args->only_source) {
-+        *to = qtest_init_ext(QEMU_ENV_DST, cmd_target, capabilities,
-+                             !args->defer_target_connect);
-+        qtest_qmp_set_event_callback(*to,
-+                                     migrate_watch_for_events,
-+                                     &dst_state);
-+    }
+ }
  
-     /*
-      * Remove shmem file immediately to avoid memory leak in test failed case.
-@@ -424,7 +428,9 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-         unlink(shmem_path);
++static char *test_shmem_path(void)
++{
++    return g_strdup_printf("/dev/shm/qemu-%d", getpid());
++}
++
+ int migrate_start(QTestState **from, QTestState **to, const char *uri,
+                   MigrateStart *args)
+ {
+@@ -342,7 +347,7 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
      }
  
--    migrate_start_set_capabilities(*from, *to, args);
-+    migrate_start_set_capabilities(*from,
-+                                   args->only_source ? NULL : *to,
-+                                   args);
- 
-     return 0;
- }
+     if (args->use_shmem) {
+-        shmem_path = g_strdup_printf("/dev/shm/qemu-%d", getpid());
++        shmem_path = test_shmem_path();
+         shmem_opts = g_strdup_printf(
+             "-object memory-backend-file,id=mem0,size=%s"
+             ",mem-path=%s,share=on -numa node,memdev=mem0",
 -- 
 1.8.3.1
 
