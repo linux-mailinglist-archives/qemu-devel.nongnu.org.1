@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57BC0B8B5C6
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 23:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C188EB8B5B0
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 23:36:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzild-00067s-B1; Fri, 19 Sep 2025 17:35:45 -0400
+	id 1uzile-00068L-VQ; Fri, 19 Sep 2025 17:35:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uzilb-000677-LV
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 17:35:43 -0400
+ id 1uzild-00067u-3e
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 17:35:45 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uzilZ-0002VC-Gy
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 17:35:43 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58JDu89L017342;
- Fri, 19 Sep 2025 21:35:32 GMT
+ id 1uzila-0002VJ-Cc
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 17:35:44 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58JDtqE8014713;
+ Fri, 19 Sep 2025 21:35:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=e0XhY
- RcjNOv9dlHl2s1IooeLi/bMj0mmI0EDTOAuCUs=; b=CvZ5cHn2DnX2Tm9gWMtdt
- YlKXgXtSZGx3lUSpHAkJ3jhbWiJ0o503M7B8L5O0kwFvi3CrFSPCqbdN7WXeHqzr
- xTOp2elk3qxcFaT6GtegIFak9UCdLIyjqn7tyfQILzhE7s83EUEwledNhoFHJ+Wo
- Yz5rPyFBRrwiB93fXBP0R39nHh5wtyKY3HozzyzX15CeoIGWQSYKCV9P6QVbG7M7
- N2XphTP4tYd1oAC7T50UHyaumOihS1iialO+JGjy67c3E2e5c9wEsgWTv+/b6rDR
- IOX7AtlLG1aFwXHJSarQkmIBooCjeUjZZlF8Gh8+h18VSjEmvGy4ae7cbJs+iTzn
- w==
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=7H4V2
+ VrFjZBy+LVQSl70wmnQDOc7ZHv4McywNcQTxH4=; b=D7vX675QFUcV2ECmi+jX9
+ naR7kAdh1u2DGX6M9ZTPTOVD6+dpJ/WsdvY1qu+Ysm3Pl8z7zThTZfT03hrCXnHU
+ nOlmr3cWUxt61ttc+L7PVDouOw6/sJhUcBv5rAq9oNEWN8wfF1aVIDC9bXHqtot0
+ Kukz8Asa39MT62UA2oXdOHMV5KZV09ks3Fv2q9HyakeJ2RhzjPOSPW8K6oOOS1/N
+ Tj92zuxXv+KOiGiVpHXVvxM0ft3NPedV9TxlkbBe8hzU5ycEXl9gr3SmVjUQAxjC
+ JXygnHAA1idKxyEXPPqxyHgOhJcnP+9+B6QVUONBO5a1YVdjZmLqQ3YDPRxTTH7J
+ g==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497g0kefyw-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497fxbxdpw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Sep 2025 21:35:32 +0000 (GMT)
+ Fri, 19 Sep 2025 21:35:34 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 58JL5PaS033754; Fri, 19 Sep 2025 21:35:31 GMT
+ with ESMTP id 58JL2M1w033717; Fri, 19 Sep 2025 21:35:34 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 494y2gwrh5-1
+ 494y2gwrj8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Sep 2025 21:35:31 +0000
+ Fri, 19 Sep 2025 21:35:33 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58JLUm07004301;
- Fri, 19 Sep 2025 21:35:30 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58JLUm09004301;
+ Fri, 19 Sep 2025 21:35:33 GMT
 Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
  (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
  [100.100.254.235])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 494y2gwra3-6; Fri, 19 Sep 2025 21:35:30 +0000
+ 494y2gwra3-7; Fri, 19 Sep 2025 21:35:33 +0000
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, clement.mathieu--drif@eviden.com, pbonzini@redhat.com,
@@ -64,9 +64,10 @@ Cc: mst@redhat.com, clement.mathieu--drif@eviden.com, pbonzini@redhat.com,
  santosh.shukla@amd.com, sarunkod@amd.com, Wei.Huang2@amd.com,
  Ankit.Soni@amd.com, ethan.milon@eviden.com, joao.m.martins@oracle.com,
  boris.ostrovsky@oracle.com, alejandro.j.jimenez@oracle.com
-Subject: [PATCH v3 05/22] amd_iommu: Add helper function to extract the DTE
-Date: Fri, 19 Sep 2025 21:34:58 +0000
-Message-ID: <20250919213515.917111-6-alejandro.j.jimenez@oracle.com>
+Subject: [PATCH v3 06/22] amd_iommu: Return an error when unable to read PTE
+ from guest memory
+Date: Fri, 19 Sep 2025 21:34:59 +0000
+Message-ID: <20250919213515.917111-7-alejandro.j.jimenez@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250919213515.917111-1-alejandro.j.jimenez@oracle.com>
 References: <20250919213515.917111-1-alejandro.j.jimenez@oracle.com>
@@ -80,19 +81,20 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
  mlxlogscore=999 spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
  definitions=main-2509190201
-X-Authority-Analysis: v=2.4 cv=b9Oy4sGx c=1 sm=1 tr=0 ts=68cdcca4 b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX0uOTTIR7DdZ/
+ ih9ay55qMiMZT/btvh9dA8B32/WCCcJZHtHCY2QcT2Ln4WokJ/zKFAO1jieFX69BrGEg7qRJ085
+ WToF8kT7WqiemKSpX8f76PTvuuOZFU92/Dtr79ffHBIvaarNe/fEGfOhFvqRkZGeKnnaDOA3ll7
+ b3kM7TBGfH6db802kTfqdO4+7fK3UdG1RK5+b9GwFNuXYb4FInJx+o4sppPFnVV96+IVUB5YXr6
+ Ztjh+mhgVe0RnUQwAAjv8aXyB0lLS5Y2QjJY27C6OcviPyMWD5pGG03v4Kslu5UCD9/WRBjFhG/
+ u1gjs3SpYhD6agifJnnPBOrsXOfN23MzAaxchz99Sd0qbFwZBErWA+KZB83gdpXbKMYpZBLbu5c
+ wD9ruir3
+X-Authority-Analysis: v=2.4 cv=X5RSKHTe c=1 sm=1 tr=0 ts=68cdcca6 b=1 cx=c_pps
  a=WeWmnZmh0fydH62SvGsd2A==:117
  a=WeWmnZmh0fydH62SvGsd2A==:17
- a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=e7RXMJMBNNZR3-p0WbYA:9
-X-Proofpoint-GUID: jm5kqy_SuLfxZN275TQHxpF_57TXtKBH
-X-Proofpoint-ORIG-GUID: jm5kqy_SuLfxZN275TQHxpF_57TXtKBH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMyBTYWx0ZWRfX8zxgQHy8/ok8
- iDjQmqfQqhohJR3RYIaWrwEPXpNc/X6QzzfAfPCYA6Jt4ZfzvKEdd1a/MSof9lPDeKBXIxvU3fG
- Wf4MbF7TcisUYzty0N6xN1brzIkOXS8zEJwBO35/WckXI7OT3o/FcPUsr6PWQZr2TxybKUWC6AF
- zu071yGW9vMDZv5JFGGYyGdEVdIqI6KwIii9HY1gE8+zsnM76NbI/IyxohAEINrcXucQicfGBEI
- xJoBgQ2wIVVTlku6T/CPA67ThypeZxI+vo5TRRVprTSN1Tt+9uWgk+Adf/bKD7PVvRntdIjVEUf
- vIIsJhR+2zJcAnk0Vd/Sj7lGhBHw1Sz4D6zc+JANXQ6K2/jjXHDNa6rrptm73kP1ecLdY2WQpST
- jlu7VYC1
+ a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=R37TJkT3toX5d3LG1KMA:9
+ a=FjD-8dGO14Yd8gSk4-3N:22
+X-Proofpoint-GUID: ka7UQ2L7KNsql_Z6A6UwMCKSIxKpf8h-
+X-Proofpoint-ORIG-GUID: ka7UQ2L7KNsql_Z6A6UwMCKSIxKpf8h-
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -118,96 +120,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extracting the DTE from a given AMDVIAddressSpace pointer structure is a
-common operation required for syncing the shadow page tables. Implement a
-helper to do it and check for common error conditions.
+Make amdvi_get_pte_entry() return an error value (-1) in cases where the
+memory read fails, versus the current return of 0 to indicate failure.
+The reason is that 0 is also a valid value to have stored in the PTE in
+guest memory i.e. the guest does not have a mapping. Before this change,
+amdvi_get_pte_entry() returned 0 for both an error and for empty PTEs, but
+the page walker implementation that will be introduced in upcoming changes
+needs a method to differentiate between the two scenarios.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 ---
- hw/i386/amd_iommu.c | 48 +++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 42 insertions(+), 6 deletions(-)
+ hw/i386/amd_iommu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 202f0f8c6e90c..dc7531fd4a8b9 100644
+index dc7531fd4a8b9..29ed3f0ef292e 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -77,6 +77,18 @@ typedef struct AMDVIIOTLBEntry {
-     uint64_t page_mask;         /* physical page size  */
- } AMDVIIOTLBEntry;
- 
-+/*
-+ * These 'fault' reasons have an overloaded meaning since they are not only
-+ * intended for describing reasons that generate an IO_PAGE_FAULT as per the AMD
-+ * IOMMU specification, but are also used to signal internal errors in the
-+ * emulation code.
-+ */
-+typedef enum AMDVIFaultReason {
-+    AMDVI_FR_DTE_RTR_ERR = 1,   /* Failure to retrieve DTE */
-+    AMDVI_FR_DTE_V,             /* DTE[V] = 0 */
-+    AMDVI_FR_DTE_TV,            /* DTE[TV] = 0 */
-+} AMDVIFaultReason;
-+
- uint64_t amdvi_extended_feature_register(AMDVIState *s)
- {
-     uint64_t feature = AMDVI_DEFAULT_EXT_FEATURES;
-@@ -524,6 +536,28 @@ static inline uint64_t amdvi_get_pte_entry(AMDVIState *s, uint64_t pte_addr,
-     return pte;
- }
- 
-+static int amdvi_as_to_dte(AMDVIAddressSpace *as, uint64_t *dte)
-+{
-+    uint16_t devid = PCI_BUILD_BDF(as->bus_num, as->devfn);
-+    AMDVIState *s = as->iommu_state;
-+
-+    if (!amdvi_get_dte(s, devid, dte)) {
-+        /* Unable to retrieve DTE for devid */
-+        return -AMDVI_FR_DTE_RTR_ERR;
-+    }
-+
-+    if (!(dte[0] & AMDVI_DEV_VALID)) {
-+        /* DTE[V] not set, address is passed untranslated for devid */
-+        return -AMDVI_FR_DTE_V;
-+    }
-+
-+    if (!(dte[0] & AMDVI_DEV_TRANSLATION_VALID)) {
-+        /* DTE[TV] not set, host page table not valid for devid */
-+        return -AMDVI_FR_DTE_TV;
-+    }
-+    return 0;
-+}
-+
- /* log error without aborting since linux seems to be using reserved bits */
- static void amdvi_inval_devtab_entry(AMDVIState *s, uint64_t *cmd)
- {
-@@ -1081,6 +1115,7 @@ static void amdvi_do_translate(AMDVIAddressSpace *as, hwaddr addr,
-     uint16_t devid = PCI_BUILD_BDF(as->bus_num, as->devfn);
-     AMDVIIOTLBEntry *iotlb_entry = amdvi_iotlb_lookup(s, addr, devid);
-     uint64_t entry[4];
-+    int dte_ret;
- 
-     if (iotlb_entry) {
-         trace_amdvi_iotlb_hit(PCI_BUS_NUM(devid), PCI_SLOT(devid),
-@@ -1092,13 +1127,14 @@ static void amdvi_do_translate(AMDVIAddressSpace *as, hwaddr addr,
-         return;
+@@ -528,7 +528,7 @@ static inline uint64_t amdvi_get_pte_entry(AMDVIState *s, uint64_t pte_addr,
+                         &pte, sizeof(pte), MEMTXATTRS_UNSPECIFIED)) {
+         trace_amdvi_get_pte_hwerror(pte_addr);
+         amdvi_log_pagetab_error(s, devid, pte_addr, 0);
+-        pte = 0;
++        pte = (uint64_t)-1;
+         return pte;
      }
  
--    if (!amdvi_get_dte(s, devid, entry)) {
--        return;
--    }
-+    dte_ret = amdvi_as_to_dte(as, entry);
- 
--    /* devices with V = 0 are not translated */
--    if (!(entry[0] & AMDVI_DEV_VALID)) {
--        goto out;
-+    if (dte_ret < 0) {
-+        if (dte_ret == -AMDVI_FR_DTE_V) {
-+            /* DTE[V]=0, address is passed untranslated */
-+            goto out;
-+        }
-+        return;
-     }
- 
-     amdvi_page_walk(as, entry, ret,
+@@ -1081,7 +1081,7 @@ static void amdvi_page_walk(AMDVIAddressSpace *as, uint64_t *dte,
+             /* add offset and load pte */
+             pte_addr += ((addr >> (3 + 9 * level)) & 0x1FF) << 3;
+             pte = amdvi_get_pte_entry(as->iommu_state, pte_addr, as->devfn);
+-            if (!pte) {
++            if (!pte || (pte == (uint64_t)-1)) {
+                 return;
+             }
+             oldlevel = level;
 -- 
 2.43.5
 
