@@ -2,61 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF59B8AB7C
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 19:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55378B8AB84
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 19:15:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzefR-00013r-Rh; Fri, 19 Sep 2025 13:13:05 -0400
+	id 1uzefk-0001E8-Tv; Fri, 19 Sep 2025 13:13:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1uzefK-0000yq-BU; Fri, 19 Sep 2025 13:12:58 -0400
-Received: from imap5.colo.codethink.co.uk ([78.40.148.171])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1uzefC-0000bF-2q; Fri, 19 Sep 2025 13:12:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=codethink.co.uk; s=imap5-20230908; h=Sender:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
- Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=2AaJNbBXZYWWUnmM+BKdJopAgrcwg19UZCCbGrCXo68=; b=EvJQsbfarAiN6QWEkj3Zqku5G9
- 0niHUDAn2Agg4EcCcfxo7uqJSjMMa/0Bt1lM0C1HH1yozYixu93+JmVVy9aSX9kWvajuVmTt0u7yX
- qnMn/1pEajH5s6tkn0HH/UWNa/sErhO+IfDOG3E04RZ7NS80RzMWHjS6Gj8o6lFx/9On5iwZHjynj
- p/XZdGdw6pLB5PJEEgfe+MvtMiha0Guc1Gmhvek5m4lxHIHrWS8vb+fChNDBp6Dgb9m1FTRW2rYVi
- WE0KJKIuzUXSacj3ktxwUc7AmIlf8azAzkIcF4PRH9nRn8nNw4cxv+iKhBYRIXA9Dodgz8Q3f+5/Y
- SYy/9JSA==;
-Received: from [167.98.27.226] (helo=rainbowdash)
- by imap5.colo.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
- id 1uzeey-0026Op-3h; Fri, 19 Sep 2025 18:12:36 +0100
-Received: from ben by rainbowdash with local (Exim 4.98.2)
- (envelope-from <ben@rainbowdash>) id 1uzeey-00000000dgt-0cdf;
- Fri, 19 Sep 2025 18:12:36 +0100
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-To: qemu-riscv@nongnu.org
-Cc: qemu-devel@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- lawrence.hunter@codethink.co.uk, javier.jardon@codethink.co.uk,
- roan.richmond@codethink.co.uk, Ben Dooks <ben.dooks@codethink.co.uk>
-Subject: [PATCH v4 2/2] hw/riscv: add CVA6 machine
-Date: Fri, 19 Sep 2025 18:12:35 +0100
-Message-Id: <20250919171235.152476-3-ben.dooks@codethink.co.uk>
-X-Mailer: git-send-email 2.37.2.352.g3c44437643
-In-Reply-To: <20250919171235.152476-1-ben.dooks@codethink.co.uk>
-References: <20250919171235.152476-1-ben.dooks@codethink.co.uk>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uzefj-0001DT-6R
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 13:13:23 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uzefb-0000gb-Vt
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 13:13:22 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id A8FC23368C;
+ Fri, 19 Sep 2025 17:13:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1758301988; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HIUUnSgAHvzol6DzbY+PAeVfxImF2ZHEhdQq6INCa0k=;
+ b=TzESEctq8hcFqM+WJoO0fbKvV31O/Q1SDH5lJ9+7KQ1Wq3zifdMh5ZOfAHeW1zuZ4YfBAx
+ 9J5cSigh1mhzh6aMq4qbhqzhTA39zrd/ASr6/SY8YkJaOrnIAs9T+XXrP0w13tj2GUtgHk
+ c8/JShQysJ89tbbk9m6ddc2mUfdOqFI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1758301988;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HIUUnSgAHvzol6DzbY+PAeVfxImF2ZHEhdQq6INCa0k=;
+ b=el86pNcBOwa03eyZyrowRK0n4hEky/Es2T1n6A5XO+YIxv0qX3/GenV+S21EJhAo3KHo6R
+ 0II9qp/lfm5nU6DQ==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JNhuoSQl;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rdXJBpTc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1758301987; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HIUUnSgAHvzol6DzbY+PAeVfxImF2ZHEhdQq6INCa0k=;
+ b=JNhuoSQlZBD8BT9oQWnblnIIWjsdYZOzNC8HBdoWVjye+Mm0It3N7e5BlPAqeqy+nHu9AR
+ YfejSN5gFTnejZyte81aMLGHLIVVA70kqBm+T90orlEuokbpw2QhRlGFNJ4zQYLyVpi33J
+ +6vLZLSV1j+C1AiY+Dx/YxX6FAE47Nw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1758301987;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HIUUnSgAHvzol6DzbY+PAeVfxImF2ZHEhdQq6INCa0k=;
+ b=rdXJBpTcRVFdFWNo8NBrBPGr4DXyx6ChjRkhXrU0ak8Jv7rqmX2FrD34pUHKPDq9Y5je/Q
+ JsyBb3CiZPcX3eDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1CE3E13A78;
+ Fri, 19 Sep 2025 17:13:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id /J62MyKPzWjrXgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 19 Sep 2025 17:13:06 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, mst@redhat.com
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, thuth@redhat.com,
+ eblake@redhat.com, michael.roth@amd.com, armbru@redhat.com,
+ peterx@redhat.com, berrange@redhat.com, jasowang@redhat.com,
+ steven.sistare@oracle.com, leiyang@redhat.com, davydov-max@yandex-team.ru,
+ yc-core@yandex-team.ru
+Subject: Re: [PATCH v5 16/19] qapi: add interface for local TAP migration
+In-Reply-To: <82642da2-eff7-4eb6-b007-fd239fa0ef64@yandex-team.ru>
+References: <20250919095545.1912042-1-vsementsov@yandex-team.ru>
+ <20250919095545.1912042-17-vsementsov@yandex-team.ru>
+ <87y0qatqoa.fsf@suse.de>
+ <82642da2-eff7-4eb6-b007-fd239fa0ef64@yandex-team.ru>
+Date: Fri, 19 Sep 2025 14:13:04 -0300
+Message-ID: <87ms6qtlgf.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=78.40.148.171;
- envelope-from=srv_ts003@codethink.com; helo=imap5.colo.codethink.co.uk
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; FUZZY_RATELIMITED(0.00)[rspamd.com];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ ARC_NA(0.00)[]; RCPT_COUNT_TWELVE(0.00)[15];
+ MIME_TRACE(0.00)[0:+]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ MISSING_XM_UA(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,
+ imap1.dmz-prg2.suse.org:rdns, yandex-team.ru:email, suse.de:mid, suse.de:dkim]
+X-Rspamd-Queue-Id: A8FC23368C
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,436 +131,221 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a (currently Genesy2 based) CVA6 machine.
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
-Has SPI and UART, the GPIO and Ethernet are currently black-holed
-as there is no hardware model for them (lowRISC ethernet and Xilinx
-GPIO)
+> On 19.09.25 18:20, Fabiano Rosas wrote:
+>> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+>> 
+>> Hi Vladimir, as usual with "qapi:" patches, some comments about
+>> language:
+>> 
+>>> To migrate virtio-net TAP device backend (including open fds) locally,
+>>> user should simply set migration parameter
+>>>
+>>>     fds = [virtio-net]
+>>>
+>>> Why not simple boolean? To simplify migration to further versions,
+>>> when more devices will support fds migration.
+>>>
+>>> Alternatively, we may add per-device option to disable fds-migration,
+>>> but still:
+>>>
+>>> 1. It's more comfortable to set same capabilities/parameters on both
+>>> source and target QEMU, than care about each device.
+>>>
+>>> 2. To not break the design, that machine-type + device options +
+>>> migration capabilites and parameters are fully define the resulting
+>>> migration stream. We'll break this if add in future more fds-passing
+>>> support in devices under same fds=true parameter.
+>>>
+>> 
+>> These arguments look convincing to me.
+>> 
+>
+> [..]
+>
+>>>       return true;
+>>>   }
+>>>   
+>>> @@ -1297,6 +1315,11 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+>>>       if (params->has_direct_io) {
+>>>           dest->direct_io = params->direct_io;
+>>>       }
+>>> +
+>>> +    if (params->has_fds) {
+>>> +        dest->has_fds = true;
+>> 
+>> I think what you want is to set this in
+>> migrate_params_init(). block_bitmap_mapping is a bit of an outlier in
+>> that it takes an empty *input* as valid.
+>
+> Hmm I made it behave like block_bitmap_mapping because it also a list.
+>
+> As I understand, for list we have to treat empty list not like absent parameter: we should have a way
+> to clear previously set list by subsequent migrate-set-parameters call.
+>
 
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
----
-v4:
- - fixed comment style
- - moved the cva6 core-type to earlier in patch series
-v3:
- - fix missed plic comment
- - made 64bit only for now
-v2:
- - whitespace fixes
- - use g_autofree on plic
-v1:
- - squashed in fixes for sd-card and new qemu init
- - move to spdx for cva6 machine
- - code cleanups missed in first review
----
- hw/riscv/Kconfig        |  11 ++
- hw/riscv/cva6.c         | 265 ++++++++++++++++++++++++++++++++++++++++
- hw/riscv/meson.build    |   1 +
- include/hw/riscv/cva6.h |  88 +++++++++++++
- 4 files changed, 365 insertions(+)
- create mode 100644 hw/riscv/cva6.c
- create mode 100644 include/hw/riscv/cva6.h
+Sorry, I explained myself poorly. Yes, the empty list is valid and it
+clears a previously set value. But that's just:
 
-diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
-index fc9c35bd98..1759197540 100644
---- a/hw/riscv/Kconfig
-+++ b/hw/riscv/Kconfig
-@@ -9,6 +9,17 @@ config IBEX
- 
- # RISC-V machines in alphabetical order
- 
-+# technically it might be possible to build cva6 32bit
-+config CVA6
-+    bool
-+    default y
-+    depends on RISCV64
-+    select DEVICE_TREE
-+    select SIFIVE_PLIC
-+    select XILINX_SPI
-+    select RISCV_ACLINT
-+    select UNIMP
-+
- config MICROCHIP_PFSOC
-     bool
-     default y
-diff --git a/hw/riscv/cva6.c b/hw/riscv/cva6.c
-new file mode 100644
-index 0000000000..39aa118b21
---- /dev/null
-+++ b/hw/riscv/cva6.c
-@@ -0,0 +1,265 @@
-+/*
-+ * QEMU RISC-V Board for OpenHW CVA6 SoC
-+ *
-+ * Copyright (c) 2025 Codethink Ltd
-+ * Ben Dooks <ben.dooks@codethink.co.uk>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/error-report.h"
-+#include "qemu/units.h"
-+#include "qapi/error.h"
-+#include "qapi/visitor.h"
-+#include "hw/boards.h"
-+#include "hw/irq.h"
-+#include "hw/loader.h"
-+#include "hw/sysbus.h"
-+#include "hw/misc/unimp.h"
-+
-+#include "hw/sd/sd.h"
-+#include "hw/ssi/ssi.h"
-+
-+#include "hw/riscv/cva6.h"
-+#include "hw/riscv/boot.h"
-+#include "hw/intc/riscv_aclint.h"
-+
-+#include "system/system.h"
-+#include "system/device_tree.h"
-+
-+#include <libfdt.h>
-+
-+#define CVA6_ROM_BASE  0x10000
-+
-+static const MemMapEntry cva6_memmap[] = {
-+    [CVA6_DEBUG] =              {  0x0000000,  0x1000 },
-+    [CVA6_ROM] =                { CVA6_ROM_BASE, 0x10000 },
-+    [CVA6_CLINT] =              {  0x2000000, 0xC0000 },
-+    [CVA6_PLIC] =               {  0xC000000, 0x4000000 },
-+    [CVA6_UART] =               { 0x10000000, 0x1000 },
-+    [CVA6_TIMER] =              { 0x18000000, 0x10000 },
-+    [CVA6_SPI] =                { 0x20000000, 0x800000 },
-+    [CVA6_ETHERNET] =           { 0x30000000, 0x10000 },
-+    [CVA6_GPIO] =               { 0x40000000, 0x1000 },
-+    [CVA6_DRAM] =               { 0x80000000, 0x40000000 },
-+};
-+
-+static void cva6_machine_init(MachineState *machine)
-+{
-+    MachineClass *mc = MACHINE_GET_CLASS(machine);
-+    MemoryRegion *sys_mem = get_system_memory();
-+    hwaddr dram_addr = cva6_memmap[CVA6_DRAM].base;
-+    hwaddr dram_size = cva6_memmap[CVA6_DRAM].size;
-+    CVA6State *s = CVA6_MACHINE(machine);
-+    RISCVBootInfo boot_info;
-+
-+    object_initialize_child(OBJECT(machine), "soc", &s->soc, TYPE_RISCV_CVA6);
-+    qdev_realize(DEVICE(&s->soc), NULL, &error_fatal);
-+
-+    if (machine->ram_size > mc->default_ram_size) {
-+        error_report("RAM size is too big for DRAM area");
-+        exit(EXIT_FAILURE);
-+    }
-+
-+    memory_region_add_subregion(sys_mem, dram_addr, machine->ram);
-+    riscv_boot_info_init(&boot_info, &s->soc.cpus);
-+
-+    /* support two booting methods, either by supplying the bootrom as
-+     * -firmware or supplying a kernel and fdt file that's loaded and
-+     * executed via a fake boot vector
-+     */
-+    
-+    if (machine->firmware) {
-+         hwaddr firmware_load_addr = cva6_memmap[CVA6_ROM].base;
-+         riscv_load_firmware(machine->firmware, &firmware_load_addr, NULL);
-+    }
-+
-+     if (machine->kernel_filename) {
-+         uint64_t fdt_load_addr;
-+
-+         riscv_load_kernel(machine, &boot_info, dram_addr, false, NULL);
-+
-+         if (machine->dtb) {
-+             int fdt_size;
-+
-+             machine->fdt = load_device_tree(machine->dtb, &fdt_size);
-+             if (!machine->fdt) {
-+                error_report("load_device_tree() failed");
-+                exit(1);
-+             }
-+
-+             fdt_load_addr = riscv_compute_fdt_addr(dram_addr, dram_size,
-+                                                    machine, &boot_info);
-+
-+             riscv_load_fdt(fdt_load_addr, machine->fdt);
-+         } else {
-+             warn_report_once("no device tree file provided for kernel boot");
-+             fdt_load_addr = 0x0;
-+         }
-+
-+         /* kernel only, let's use the bootrom to build a simple resetvec
-+          * to start the kernel
-+          */
-+
-+         riscv_setup_rom_reset_vec(machine, &s->soc.cpus,
-+                                   boot_info.image_low_addr,
-+                                   cva6_memmap[CVA6_ROM].base,
-+                                   cva6_memmap[CVA6_ROM].size,
-+                                   dram_addr, fdt_load_addr);
-+    }
-+}
-+
-+static void cva6_machine_class_init(ObjectClass *oc, const void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+
-+    mc->desc = "RISC-V board for CVA6";
-+    mc->init = cva6_machine_init;
-+    mc->max_cpus = 1;
-+    mc->default_ram_id = "cva6.ram";
-+    mc->default_cpu_type = TYPE_RISCV_CPU_CVA6;
-+    mc->default_ram_size = cva6_memmap[CVA6_DRAM].size;
-+};
-+
-+static void cva6_soc_init(Object *obj)
-+{
-+    CVA6SoCState *s = RISCV_CVA6(obj);
-+
-+    object_initialize_child(obj, "cpus", &s->cpus, TYPE_RISCV_HART_ARRAY);
-+}
-+
-+static void cva6_add_spi(CVA6SoCState *s, const MemMapEntry *map)
-+{
-+    DriveInfo *dinfo;
-+    BlockBackend *blk;
-+    DeviceState *card_dev;
-+    qemu_irq sd_cs;
-+    DeviceState *sddev;
-+    SysBusDevice *busdev;
-+    DeviceState *spi_dev;
-+    SSIBus *spi;
-+
-+    spi_dev = qdev_new("xlnx.xps-spi");
-+    qdev_prop_set_uint8(spi_dev, "num-ss-bits", 1);
-+    qdev_prop_set_string(spi_dev, "endianness", "little");
-+
-+    busdev = SYS_BUS_DEVICE(spi_dev);
-+    sysbus_realize_and_unref(busdev, &error_fatal);
-+    sysbus_mmio_map(busdev, 0, map->base);
-+    sysbus_connect_irq(busdev, 0, qdev_get_gpio_in(DEVICE(s->plic), CVA6_SPI_IRQ));
-+
-+    spi = (SSIBus *)qdev_get_child_bus(spi_dev, "spi");
-+
-+    sddev = ssi_create_peripheral(spi, "ssi-sd");
-+    sd_cs = qdev_get_gpio_in_named(sddev, SSI_GPIO_CS, 0);
-+    sysbus_connect_irq(busdev, 1, sd_cs);
-+
-+    dinfo = drive_get(IF_SD, 0, 0);
-+    blk = dinfo ? blk_by_legacy_dinfo(dinfo) : NULL;
-+    card_dev = qdev_new(TYPE_SD_CARD_SPI);
-+    qdev_prop_set_drive_err(card_dev, "drive", blk, &error_fatal);
-+
-+    qdev_realize_and_unref(card_dev, qdev_get_child_bus(sddev, "sd-bus"), &error_fatal);
-+}
-+
-+static void not_implemented(const char *name, const MemMapEntry *map)
-+{
-+    create_unimplemented_device(name, map->base, map->size);
-+}
-+
-+static void cva6_soc_realize(DeviceState *dev_soc, Error **errp)
-+{
-+    MemoryRegion *system_memory = get_system_memory();
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    CVA6SoCState *s = RISCV_CVA6(dev_soc);
-+    const MemMapEntry *memmap = cva6_memmap;
-+    MemoryRegion *rom = g_new(MemoryRegion, 1);
-+    g_autofree char *plic_hart_config;
-+
-+    object_property_set_str(OBJECT(&s->cpus), "cpu-type", ms->cpu_type,
-+                            &error_abort);
-+    object_property_set_int(OBJECT(&s->cpus), "num-harts", ms->smp.cpus,
-+                            &error_abort);
-+    object_property_set_int(OBJECT(&s->cpus), "resetvec", CVA6_ROM_BASE,
-+                            &error_abort);
-+    sysbus_realize(SYS_BUS_DEVICE(&s->cpus), &error_fatal);
-+
-+    /* boot rom */
-+    memory_region_init_rom(rom, OBJECT(dev_soc), "riscv.cva6.bootrom",
-+                           memmap[CVA6_ROM].size, &error_fatal);
-+    memory_region_add_subregion(system_memory, memmap[CVA6_ROM].base,
-+                                rom);
-+
-+    /* create PLIC hart topology configuration string */
-+    plic_hart_config = riscv_plic_hart_config_string(ms->smp.cpus);
-+
-+    /* MMIO */
-+    s->plic = sifive_plic_create(memmap[CVA6_PLIC].base,
-+        plic_hart_config, ms->smp.cpus, 0,
-+        CVA6_PLIC_NUM_SOURCES,
-+        CVA6_PLIC_NUM_PRIORITIES,
-+        CVA6_PLIC_PRIORITY_BASE,
-+        CVA6_PLIC_PENDING_BASE,
-+        CVA6_PLIC_ENABLE_BASE,
-+        CVA6_PLIC_ENABLE_STRIDE,
-+        CVA6_PLIC_CONTEXT_BASE,
-+        CVA6_PLIC_CONTEXT_STRIDE,
-+        memmap[CVA6_PLIC].size);
-+
-+    riscv_aclint_swi_create(memmap[CVA6_CLINT].base, 0,
-+                            ms->smp.cpus, false);
-+
-+    riscv_aclint_mtimer_create(
-+        memmap[CVA6_CLINT].base + RISCV_ACLINT_SWI_SIZE,
-+        RISCV_ACLINT_DEFAULT_MTIMER_SIZE, 0, ms->smp.cpus,
-+        RISCV_ACLINT_DEFAULT_MTIMECMP, RISCV_ACLINT_DEFAULT_MTIME,
-+        CLINT_TIMEBASE_FREQ, true);
-+
-+    /* something in cva6-sdk uboot seems to prod the debug
-+     * unit by accident, so make it not implemented.
-+     */
-+    not_implemented("debug", &memmap[CVA6_DEBUG]);
-+
-+    /* 16550 uart, one 32bit register per 32bit word */
-+
-+    serial_mm_init(system_memory, memmap[CVA6_UART].base, 2,
-+                   qdev_get_gpio_in(DEVICE(s->plic), CVA6_UART_IRQ),
-+                   50*1000*10000,
-+                   serial_hd(0), DEVICE_LITTLE_ENDIAN);
-+
-+    /* just unimplement the timers, network and gpio here for now.
-+     * no-one seems to be using the apb timer block anyway,
-+     */
-+    not_implemented("net", &memmap[CVA6_ETHERNET]);
-+    not_implemented("gpio", &memmap[CVA6_GPIO]);
-+    not_implemented("timer", &memmap[CVA6_TIMER]);
-+
-+    /* connect xilinx spi block here */
-+    cva6_add_spi(s, &memmap[CVA6_SPI]);
-+}
-+
-+static void cva6_soc_class_init(ObjectClass *oc, const void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(oc);
-+
-+    dc->realize = cva6_soc_realize;
-+    dc->user_creatable = false;
-+};
-+
-+static const TypeInfo cva6_types[] = {
-+    {
-+        .name           = TYPE_RISCV_CVA6,
-+        .parent         = TYPE_DEVICE,
-+        .instance_size  = sizeof(CVA6SoCState),
-+        .instance_init  = cva6_soc_init,
-+        .class_init     = cva6_soc_class_init,
-+    }, {
-+        .name           = TYPE_CVA6_MACHINE,
-+        .parent         = TYPE_MACHINE,
-+        .instance_size  = sizeof(CVA6State),
-+        .class_init     = cva6_machine_class_init,
-+    }
-+};
-+
-+DEFINE_TYPES(cva6_types)
-diff --git a/hw/riscv/meson.build b/hw/riscv/meson.build
-index 2a8d5b136c..88c7eac970 100644
---- a/hw/riscv/meson.build
-+++ b/hw/riscv/meson.build
-@@ -2,6 +2,7 @@ riscv_ss = ss.source_set()
- riscv_ss.add(files('boot.c'))
- riscv_ss.add(when: 'CONFIG_RISCV_NUMA', if_true: files('numa.c'))
- riscv_ss.add(files('riscv_hart.c'))
-+riscv_ss.add(when: 'CONFIG_CVA6', if_true: files('cva6.c'))
- riscv_ss.add(when: 'CONFIG_OPENTITAN', if_true: files('opentitan.c'))
- riscv_ss.add(when: 'CONFIG_RISCV_VIRT', if_true: files('virt.c'))
- riscv_ss.add(when: 'CONFIG_SHAKTI_C', if_true: files('shakti_c.c'))
-diff --git a/include/hw/riscv/cva6.h b/include/hw/riscv/cva6.h
-new file mode 100644
-index 0000000000..48e0979a0a
---- /dev/null
-+++ b/include/hw/riscv/cva6.h
-@@ -0,0 +1,88 @@
-+/*
-+ * QEMU RISC-V Board for OpenHW CVA6 SoC
-+ * https://github.com/openhwgroup/cva6/tree/master/corev_apu
-+ *
-+ * Copyright (c) 2025 Codethink Ltd
-+ * Ben Dooks <ben.dooks@codethink.co.uk>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef HW_CVA6_H
-+#define HW_CVA6_H
-+
-+#include "hw/riscv/riscv_hart.h"
-+#include "hw/intc/sifive_plic.h"
-+#include "hw/char/serial-mm.h"
-+
-+#include "hw/boards.h"
-+#include "hw/sysbus.h"
-+#include "qom/object.h"
-+
-+#define TYPE_RISCV_CVA6 "riscv.cva6.soc"
-+OBJECT_DECLARE_SIMPLE_TYPE(CVA6SoCState, RISCV_CVA6)
-+
-+typedef struct CVA6SoCState {
-+    /*< private >*/
-+    DeviceState parent_obj;
-+
-+    /*< public >*/
-+    RISCVHartArrayState cpus;
-+    DeviceState *plic;
-+    MemoryRegion rom;
-+
-+    uint32_t resetvec;
-+} CVA6SoCState;
-+
-+#define TYPE_CVA6_MACHINE MACHINE_TYPE_NAME("cva6")
-+OBJECT_DECLARE_SIMPLE_TYPE(CVA6State, CVA6_MACHINE)
-+
-+typedef struct CVA6State {
-+    /*< private >*/
-+    MachineState parent_obj;
-+
-+    /*< public >*/
-+    CVA6SoCState soc;
-+}
-+CVA6State;
-+
-+enum {
-+    CVA6_DEBUG,
-+    CVA6_ROM,
-+    CVA6_CLINT,
-+    CVA6_PLIC,
-+    CVA6_UART,
-+    CVA6_TIMER,
-+    CVA6_SPI,
-+    CVA6_ETHERNET,
-+    CVA6_GPIO,
-+    CVA6_DRAM,
-+};
-+
-+enum {
-+    CVA6_UART_IRQ       = 1,
-+    CVA6_SPI_IRQ        = 2,
-+    CVA6_ETH_IRQ        = 3,
-+    CVA6_TIMER0_OVF_IRQ = 4,
-+    CVA6_TIMER0_CMP_IRQ = 5,
-+    CVA6_TIMER1_OVF_IRQ = 6,
-+    CVA6_TIMER1_CMP_IRQ = 7,
-+};
-+
-+#define CLINT_TIMEBASE_FREQ 25000000
-+
-+/*
-+ * plic register interface in corev_apu/rv_plic/rtl/plic_regmap.sv
-+ * https://github.com/pulp-platform/rv_plic/blob/master/rtl/plic_regmap.sv
-+*/
-+
-+#define CVA6_PLIC_NUM_SOURCES           32
-+#define CVA6_PLIC_NUM_PRIORITIES        7
-+#define CVA6_PLIC_PRIORITY_BASE         0x0000
-+#define CVA6_PLIC_PENDING_BASE          0x1000
-+#define CVA6_PLIC_ENABLE_BASE           0x2000
-+#define CVA6_PLIC_ENABLE_STRIDE         0x80
-+#define CVA6_PLIC_CONTEXT_BASE          0x200000
-+#define CVA6_PLIC_CONTEXT_STRIDE        0x1000
-+
-+#endif /* HW_CVA6_H */
--- 
-2.37.2.352.g3c44437643
+migrate_params_init(MigrationParameters *params):
+    ...
+    params->has_fds = true;
 
+migrate_params_test_apply(MigrateSetParameters *params,
+                          MigrationParameters *dest):
+    ...
+    /* means user provided it */                          
+    if (params->has_fds) {
+        dest->fds = params->fds;
+    }
+
+migrate_params_check(MigrationParameters *params):
+    ...
+    if (params->has_fds) {
+       /* empty list ok */
+    }
+
+migrate_params_apply(MigrateSetParameters *params):
+    ...
+    if (params->has_fds) {
+        qapi_free_...(s->parameters.fds);
+        /* clones the full list or the empty list, no difference */
+        s->parameters.fds = QAPI_CLONE(..., params->fds);
+    }
+
+The block_bitmap_mapping does the has_ part a bit differently because it
+wants to carry that flag over to the rest of the code. See 3cba22c9ad
+("migration: Fix block_bitmap_mapping migration"). In that case, even if
+the list is empty, it needs to know when it was made empty on purpose to
+carry on with the removal of the mappings. In your case, it doesn't
+matter, empty is empty, whether forcefully, or because it was never
+set. Right?
+
+(this migrate_params code is tricky, FYI I'm reworking that in:
+https://lore.kernel.org/r/20250603013810.4772-1-farosas@suse.de)
+
+>> 
+>>> +        dest->fds = params->fds;
+>>> +    }
+>>>   }
+>>>   
+>>>   static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+>>> @@ -1429,6 +1452,13 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+>>>       if (params->has_direct_io) {
+>>>           s->parameters.direct_io = params->direct_io;
+>>>       }
+>>> +
+>>> +    if (params->has_fds) {
+>>> +        qapi_free_FdsTargetList(s->parameters.fds);
+>>> +
+>>> +        s->parameters.has_fds = true;
+>>> +        s->parameters.fds = QAPI_CLONE(FdsTargetList, params->fds);
+>> 
+>> Same here, has_fds should always be true in s->parameters.
+>> 
+>>> +    }
+>>>   }
+>>>   
+>>>   void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
+>>> diff --git a/migration/options.h b/migration/options.h
+>>> index 82d839709e..a79472a235 100644
+>>> --- a/migration/options.h
+>>> +++ b/migration/options.h
+>>> @@ -87,6 +87,8 @@ const char *migrate_tls_hostname(void);
+>>>   uint64_t migrate_xbzrle_cache_size(void);
+>>>   ZeroPageDetection migrate_zero_page_detection(void);
+>>>   
+>>> +bool migrate_fds_virtio_net(void);
+>>> +
+>>>   /* parameters helpers */
+>>>   
+>>>   bool migrate_params_check(MigrationParameters *params, Error **errp);
+>>> diff --git a/qapi/migration.json b/qapi/migration.json
+>>> index 2387c21e9c..6ef9629c6d 100644
+>>> --- a/qapi/migration.json
+>>> +++ b/qapi/migration.json
+>>> @@ -747,6 +747,19 @@
+>>>         '*transform': 'BitmapMigrationBitmapAliasTransform'
+>>>     } }
+>>>   
+>>> +##
+>>> +# @FdsTarget:
+>>> +#
+>>> +# @virtio-net: Enable live backend migration for virtio-net.
+>> 
+>> So you're assuming normal migration is "non-live backend migration"
+>> because the backend is stopped and started again on the destination. I
+>> think it makes sense.
+>> 
+>>> +#     The only supported backend is TAP device. When enabled, TAP fds
+>>> +#     and all related state is passed to target QEMU through migration
+>>> +#     channel (which should be unix socket).
+>>> +#
+>>> +# Since: 10.2
+>>> +##
+>>> +{ 'enum': 'FdsTarget',
+>>> +  'data': [ 'virtio-net' ] }
+>>> +
+>>>   ##
+>>>   # @BitmapMigrationNodeAlias:
+>>>   #
+>>> @@ -924,10 +937,14 @@
+>>>   #     only has effect if the @mapped-ram capability is enabled.
+>>>   #     (Since 9.1)
+>>>   #
+>>> +# @fds: List of targets to enable live-backend migration for. This
+>>> +#     requires migration channel to be a unix socket (to pass fds
+>>> +#     through). (Since 10.2)
+>> 
+>> I think I prefer live-backend as written here rather than the non
+>> hyphenated version above. This clears up the ambiguity and can be used
+>> in variable names, as a name for the feature and ... _thinks really
+>> hard_ ... as the parameter name! (maybe)
+>> 
+>> On that note, fds is just too broad, I'm sure you know that, but to be
+>> specific, we already have fd migration, multifd, fdset (as argument of
+>> file: migration), etc. Talking just about the user interface here, of
+>> course.
+>> 
+>> Also: "@fds: List of targets..." is super confusing.
+>> 
+>> And although "to pass fds through" is helping clarify the meaning of
+>> @fds, it exposes implementation details on the QAPI, I don't think it's
+>> relevant in the parameter description.
+>
+> Agree. I see all this mess, each time I come with some new name:
+> live-tap, live-backend, fds-passing, fds migration, local tap migration, fds...
+> Finally, only one should be chosen for all names and in documentation.
+>
+
+Yeah, not to mention the similarities with CPR. I thought of borrowing
+the "transfer" term to underline that's a common concept between the two
+approaches, but I'm not sure it's worth the trouble.
+
+[live-]backend-transfer
+
+> With your comments, "live-backend" really looks the best one.
+>
+> Still, we can't say live-backends: [virtio-net], as virtio-net is not
+> a backed.
+>
+> Maybe
+>     
+>     live-backends: [virtio-net-tap]
+>
+> to show that it's about virtio-net+TAP pair.
+>
+
+Works for me.
+
+>> 
+>>> +#
+>>>   # Features:
+>>>   #
+>>> -# @unstable: Members @x-checkpoint-delay and
+>>> -#     @x-vcpu-dirty-limit-period are experimental.
+>
+>
+> Thanks!
 
