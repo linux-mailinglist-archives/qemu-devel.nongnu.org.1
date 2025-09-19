@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2AB2B88AD7
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 11:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB1ADB88B7E
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 12:00:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzXr9-0006Ft-9Q; Fri, 19 Sep 2025 05:56:43 -0400
+	id 1uzXqt-00069f-LL; Fri, 19 Sep 2025 05:56:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uzXqY-0005f4-K7
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 05:56:07 -0400
-Received: from forwardcorp1d.mail.yandex.net
- ([2a02:6b8:c41:1300:1:45:d181:df01])
+ id 1uzXqb-0005g9-0s
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 05:56:11 -0400
+Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uzXqS-0004ZW-Ec
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 05:56:06 -0400
+ id 1uzXqS-0004Ze-Dv
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 05:56:08 -0400
 Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:1621:0:640:12d9:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 8D11B80EA4;
- Fri, 19 Sep 2025 12:55:54 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 4901080ED9;
+ Fri, 19 Sep 2025 12:55:55 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:a72::1:38])
  by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id ntP1fK1GvGk0-hIyHZNeV; Fri, 19 Sep 2025 12:55:53 +0300
+ ESMTPSA id ntP1fK1GvGk0-Xm8jnOcW; Fri, 19 Sep 2025 12:55:54 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1758275753;
- bh=ms1B1DzCY1b4N0NqMoMWin+rDUcMV30qs3x75+Q5/Gc=;
+ s=default; t=1758275754;
+ bh=CGQxVo0F5DM5TI71ogpEMoIKdtU4cMrWeEhuC0QhepU=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=n6tmMnTNNQ9yLXGN2usMHAtOrM9ojh6ZQ8/ivfs5hG7QpVoCko2XGhg4nnhRzVOSg
- JjDRIe/uM3GG4L19twFoH+OolmeX2k0XE/pB8Ob72mz5EzOUClMSirMZ1mdx5VewCn
- dICHlCtAJPdfy1u0isxK3CtUIjqyGkh/iKkciAM8=
+ b=d5jTSKPgst2bvxOQadbULtYmK0vnrP49/9luf8Y27NhoL1o69iAascykaC+bZxXum
+ bdN2NPrnGrngpvyOq98Jpcu30juyxu7XP0k2ZOOe5+JJXTVFS8cknw+A0Wff7Y7PGw
+ F3b/k5j3Me8uIO0tbAawiwRDoyWF4BEcc3YGOUdg=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -46,23 +45,23 @@ Cc: qemu-devel@nongnu.org, philmd@linaro.org, thuth@redhat.com,
  jasowang@redhat.com, steven.sistare@oracle.com, leiyang@redhat.com,
  davydov-max@yandex-team.ru, yc-core@yandex-team.ru,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH v5 04/19] net/tap: net_init_tap_one(): move parameter checking
- earlier
-Date: Fri, 19 Sep 2025 12:55:30 +0300
-Message-ID: <20250919095545.1912042-5-vsementsov@yandex-team.ru>
+Subject: [PATCH v5 05/19] net/tap: rework net_tap_init()
+Date: Fri, 19 Sep 2025 12:55:31 +0300
+Message-ID: <20250919095545.1912042-6-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250919095545.1912042-1-vsementsov@yandex-team.ru>
 References: <20250919095545.1912042-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c41:1300:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.200;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,39 +76,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's keep all similar argument checking in net_init_tap() function.
+In future (to support live-TAP migration with fds passing through
+unix socket) we'll want to postpone fd-initialization to the later
+point, when QAPI structured parameters are not available. So, let's
+now rework the function to interface without "tap" parameter.
+
+Also, rename to net_tap_open(), as it's just a wrapper on tap_open(),
+and having net_tap_init() and net_init_tap() functions in one file
+is confusing.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- net/tap.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/tap.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
 diff --git a/net/tap.c b/net/tap.c
-index 10799ab055..e268d79a97 100644
+index e268d79a97..1e5eaae6e7 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -759,9 +759,6 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-                        "vhost-net requested but could not be initialized");
-             goto failed;
-         }
--    } else if (vhostfdname) {
--        error_setg(errp, "vhostfd(s)= is not valid without vhost");
--        goto failed;
-     }
+@@ -643,20 +643,12 @@ int net_init_bridge(const Netdev *netdev, const char *name,
+     return 0;
+ }
  
-     return;
-@@ -823,6 +820,11 @@ int net_init_tap(const Netdev *netdev, const char *name,
-         return -1;
-     }
+-static int net_tap_init(const NetdevTapOptions *tap, int *vnet_hdr,
++static int net_tap_open(int *vnet_hdr, bool vnet_hdr_required,
+                         const char *setup_script, char *ifname,
+                         size_t ifname_sz, int mq_required, Error **errp)
+ {
+     Error *err = NULL;
+-    int fd, vnet_hdr_required;
+-
+-    if (tap->has_vnet_hdr) {
+-        *vnet_hdr = tap->vnet_hdr;
+-        vnet_hdr_required = *vnet_hdr;
+-    } else {
+-        *vnet_hdr = 1;
+-        vnet_hdr_required = 0;
+-    }
++    int fd;
  
-+    if (tap->has_vhost && !tap->vhost && (tap->vhostfds || tap->vhostfd)) {
-+        error_setg(errp, "vhostfd(s)= is not valid without vhost");
-+        return -1;
-+    }
+     fd = RETRY_ON_EINTR(tap_open(ifname, ifname_sz, vnet_hdr, vnet_hdr_required,
+                       mq_required, errp));
+@@ -973,6 +965,8 @@ free_fail:
+     } else {
+         g_autofree char *default_script = NULL;
+         g_autofree char *default_downscript = NULL;
++        bool vnet_hdr_required = tap->has_vnet_hdr && tap->vnet_hdr;
 +
-     if (tap->fd) {
-         if (tap->ifname || tap->script || tap->downscript ||
-             tap->has_vnet_hdr || tap->helper || tap->has_queues ||
+         if (tap->vhostfds) {
+             error_setg(errp, "vhostfds= is invalid if fds= wasn't specified");
+             return -1;
+@@ -993,7 +987,9 @@ free_fail:
+         }
+ 
+         for (i = 0; i < queues; i++) {
+-            fd = net_tap_init(tap, &vnet_hdr, i >= 1 ? "no" : script,
++            vnet_hdr = tap->has_vnet_hdr ? tap->vnet_hdr : 1;
++            fd = net_tap_open(&vnet_hdr, vnet_hdr_required,
++                              i >= 1 ? "no" : script,
+                               ifname, sizeof ifname, queues > 1, errp);
+             if (fd == -1) {
+                 return -1;
 -- 
 2.48.1
 
