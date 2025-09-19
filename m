@@ -2,69 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752BAB89201
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 12:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15052B89294
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 12:54:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzYc1-0007ev-Bw; Fri, 19 Sep 2025 06:45:09 -0400
+	id 1uzYkG-0003xc-Lz; Fri, 19 Sep 2025 06:53:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uzYby-0007e3-9t; Fri, 19 Sep 2025 06:45:06 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uzYk8-0003rJ-9e; Fri, 19 Sep 2025 06:53:33 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1uzYbt-0003tH-LC; Fri, 19 Sep 2025 06:45:05 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c23:36c1:0:640:5f85:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 7268680B0A;
- Fri, 19 Sep 2025 13:44:54 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:a72::1:38] (unknown
- [2a02:6bf:8080:a72::1:38])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id riQA0U1Gna60-j2D2bLMJ; Fri, 19 Sep 2025 13:44:54 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1758278694;
- bh=F09edft7YaQymcxDKkLfbveodyxSViH4N4UkF/w1BaQ=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=V5Bql0G4aO5Ke1O3Cn2zRdk9JissuF64jX/f6OmNqXhr0jVn+OMzpnMLrXL3NomCx
- jH6IK69xumupHrDefhYaqjz0ytACKA9VDOwakNKG6gu3+BfO1qJMDeZDmjivsO/YdO
- ntbLPs2QaGLfv8vIJQUmvBxI7AkA1RfDBsR8fNRU=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <0a96b12b-5c51-4e45-bec7-679c2f588fa4@yandex-team.ru>
-Date: Fri, 19 Sep 2025 13:44:53 +0300
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uzYk5-0007Rk-2i; Fri, 19 Sep 2025 06:53:31 -0400
+Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58JAkcQT033756
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Fri, 19 Sep 2025 19:46:38 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=rWCFvrSz0E2oCjuTU959aed1+QCvq+UCU8sf+vOrvRg=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1758278798; v=1;
+ b=CJhWqRXMK7EVEqt5O4fzgwRHkpbvNlCZaOFGT2JRrokvtE+QlXyrJW49lss+htTp
+ KFQ9E4TwLqRPpCtI4tDvZhlu5p+VEeAg5rZ5h32ZHa35LPKVJVUy9pwNtE/60NSZ
+ qq56vOq+zd3BaQf/Jvtr0LJAzESnC/31asffQw6Px03Q2E14OlyKOsrSBsT9SdS/
+ sf6iBD4VFClJOHPImJDN5/M2qkalIoEDAePrmpoDFSsBz1S0IDQSBvgwEmvShJG+
+ 6hbf/Npf5//RO3LzPxRwYamdTAldhiXOb0FjhvPd7Yg15U62VVBLFDiaTcrYKflb
+ uoErgJ/vf6oO0EVI+zRkug==
+Message-ID: <7511a948-10ef-4325-9818-35775c522aee@rsg.ci.i.u-tokyo.ac.jp>
+Date: Fri, 19 Sep 2025 19:46:38 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 13/13] util/vhost-user-server: vu_message_read():
- improve error handling
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, qemu-block@nongnu.org,
- leiyang@redhat.com, marcandre.lureau@redhat.com,
- Coiby Xu <Coiby.Xu@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-References: <20250916131403.368343-1-vsementsov@yandex-team.ru>
- <20250916131403.368343-14-vsementsov@yandex-team.ru>
- <aMmHUW5nqZf1RxTb@redhat.com>
- <ea5f1352-e1f8-409e-a0cb-9568585628f1@yandex-team.ru>
- <aM0v-Gr0TTAllYmF@redhat.com>
+Subject: Re: [PATCH v3 1/7] docs/devel: Do not unparent in instance_finalize()
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ John Levon <john.levon@nutanix.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>, Aleksandar Rikalo
+ <arikalo@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ Bin Meng <bmeng.cn@gmail.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ xen-devel@lists.xenproject.org
+References: <20250917-use-v3-0-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
+ <20250917-use-v3-1-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp>
+ <aMxlpfp_LSgiIk9Z@x1.local> <aMxnj7ID0PpWUVNu@x1.local>
 Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <aM0v-Gr0TTAllYmF@redhat.com>
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <aMxnj7ID0PpWUVNu@x1.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,38 +107,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19.09.25 13:27, Daniel P. Berrangé wrote:
-> On Wed, Sep 17, 2025 at 01:13:15PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> On 16.09.25 18:50, Daniel P. Berrangé wrote:
->>> On Tue, Sep 16, 2025 at 04:14:02PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->>>> 1. Drop extra error_report_err(NULL), it will just crash, if we get
->>>> here.
->>>>
->>>> 2. Get and report error of qemu_set_blocking(), instead of aborting.
->>>>
->>>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->>>> ---
->>>>    util/vhost-user-server.c | 17 +++++++++++------
->>>>    1 file changed, 11 insertions(+), 6 deletions(-)
+On 2025/09/19 5:11, Peter Xu wrote:
+> On Thu, Sep 18, 2025 at 04:03:49PM -0400, Peter Xu wrote:
+>> On Wed, Sep 17, 2025 at 07:13:26PM +0900, Akihiko Odaki wrote:
+>>> Children are automatically unparented so manually unparenting is
+>>> unnecessary.
 >>>
->>> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+>>> Worse, automatic unparenting happens before the instance_finalize()
+>>> callback of the parent gets called, so object_unparent() calls in
+>>> the callback will refer to objects that are already unparented, which
+>>> is semantically incorrect.
 >>>
+>>> Remove the instruction to call object_unparent(), and the exception
+>>> of the "do not call object_unparent()" rule for instance_finalize().
+>>>
+>>> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+>>> ---
+>>>   docs/devel/memory.rst | 19 ++++++-------------
+>>>   1 file changed, 6 insertions(+), 13 deletions(-)
+>>>
+>>> diff --git a/docs/devel/memory.rst b/docs/devel/memory.rst
+>>> index 57fb2aec76e0..749f11d8a4dd 100644
+>>> --- a/docs/devel/memory.rst
+>>> +++ b/docs/devel/memory.rst
+>>> @@ -161,18 +161,11 @@ or never.
+>>>   Destruction of a memory region happens automatically when the owner
+>>>   object dies.
+>>>   
+>>> -If however the memory region is part of a dynamically allocated data
+>>> -structure, you should call object_unparent() to destroy the memory region
+>>> -before the data structure is freed.  For an example see VFIOMSIXInfo
+>>> -and VFIOQuirk in hw/vfio/pci.c.
 >>
->> Thanks a lot!
+>> Should we still keep some of these examples?  After the series they'll be
+>> doing the right things.  Dynamic MRs are still slightly tricky, I think
+>> it's still good to have some references.
+
+I agree. I'll restore it with the next version.
+
 >>
->> Now the whole series is reviewed. Will you queue it
->> (together with base "[PATCH v4 0/2] save qemu-file incoming non-blocking fds")?
->> Or we should wait for ACCs from other maintainers?
-> 
-> I'm queuing it, with fixes for the minor problems I pointed out.
-> 
-> If possible, try to feed big patch series through gitlab.com CI in
-> your own qemu.git fork before sending to catch all edge cases.
-> 
+>>> -
+>>>   You must not destroy a memory region as long as it may be in use by a
+>>>   device or CPU.  In order to do this, as a general rule do not create or
+>>> -destroy memory regions dynamically during a device's lifetime, and only
+>>> -call object_unparent() in the memory region owner's instance_finalize
+>>> -callback.  The dynamically allocated data structure that contains the
+>>> -memory region then should obviously be freed in the instance_finalize
+>>> -callback as well.
+>>> +destroy memory regions dynamically during a device's lifetime.
+>>> +The dynamically allocated data structure that contains the
+>>> +memory region should be freed in the instance_finalize callback.
+>>>   
+>>>   If you break this rule, the following situation can happen:
+>>>   
+>>> @@ -198,9 +191,9 @@ this exception is rarely necessary, and therefore it is discouraged,
+>>>   but nevertheless it is used in a few places.
+>>>   
+>>>   For regions that "have no owner" (NULL is passed at creation time), the
+>>> -machine object is actually used as the owner.  Since instance_finalize is
+>>> -never called for the machine object, you must never call object_unparent
+>>> -on regions that have no owner, unless they are aliases or containers.
+>>> +machine object is actually used as the owner.  You must never call
+>>> +object_unparent on regions that have no owner, unless they are aliases
+>>> +or containers.
+>>
+>> This looks like a completely separate change.  So we start to allow
+>> machines to be finalized now?  I'm not familiar with machine object
+>> lifecycles.  Maybe split it out even if it's true?
 
-Thanks! I'll try do it with "[PATCH v5 00/19] virtio-net: live-TAP local migration".
+I intended to remove phrase "since instance_finalize is never called for 
+the machine object" because whether instance_finalize is called or not 
+is no longer relevant, and thus object_unparent is always prohibited, 
+whether regions have owners or not, unless they are aliases or containers.
 
--- 
-Best regards,
-Vladimir
+The statement still mentions "regions that have no owner"; the 
+restriction of object_unparent is enforced whether the regions have 
+owners, so it is a bit misleading.
+
+> 
+> I didn't see anything elsewhere.  If you agree with above, I can queue this
+> series with above touched up, then no need to repost.
+
+I guess I will rewrite this patch, restoring the VFIOQuirk example, and 
+re-check if this whole section is structured logically and consistently.
+
+Regards,
+Akihiko Odaki
 
