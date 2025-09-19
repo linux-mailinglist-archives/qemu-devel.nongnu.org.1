@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 676B2B88716
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 10:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCC1B88719
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 10:37:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzWba-0002uW-8O; Fri, 19 Sep 2025 04:36:34 -0400
+	id 1uzWbj-0002xX-KL; Fri, 19 Sep 2025 04:36:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uzWbW-0002rS-9Z
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 04:36:30 -0400
+ id 1uzWbg-0002xC-Rf
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 04:36:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uzWbT-00020J-GK
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 04:36:30 -0400
+ id 1uzWbe-00021i-EG
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 04:36:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758270984;
+ s=mimecast20190719; t=1758270996;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding;
- bh=u2ujm1VawI3tEQj8Jm53WYSDc86i34iyikdx2/JKeC4=;
- b=bAeg+uaSRXhqrtj9X/0l2cJIHAUUhnXmNPOLLGa2NTbDDjx0i8snDXB8Q05Pvt6O8m8Pkv
- Q8PZLKZhnnUcJdQH9LO4IhsdV16gs7DEA/34st3tNBo4bsGWt8EU7r4qqpuYLnd9DSSblq
- b5uz9DjZ4VIv/1O9Q2KCo0vUKXd6mV0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=I7QpmFqByfXSGbut223Bkx57Iv2EkBrIKj3x/sFSAvk=;
+ b=gDzAjyr5DWVHR0O9zSZ9itGfssv20eeaJ4KoYMdLYbP++uvn87JsDknsWpWSyxGvQUhwwJ
+ p81vjDU+eRIultiOfYzygZfNLz7da4X223YKqub3wRAbsywwfBuVOd5htERrUaj50WLITX
+ DCTbTbYIGqvm161pnXvGMU96ptkUVnY=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-RF-ybB5DMY6_XFUMvCDXSg-1; Fri,
- 19 Sep 2025 04:36:22 -0400
-X-MC-Unique: RF-ybB5DMY6_XFUMvCDXSg-1
-X-Mimecast-MFC-AGG-ID: RF-ybB5DMY6_XFUMvCDXSg_1758270981
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-360-ub-z1p9bPFOjgZTBNV4sNA-1; Fri,
+ 19 Sep 2025 04:36:26 -0400
+X-MC-Unique: ub-z1p9bPFOjgZTBNV4sNA-1
+X-Mimecast-MFC-AGG-ID: ub-z1p9bPFOjgZTBNV4sNA_1758270985
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 02FBE1800285; Fri, 19 Sep 2025 08:36:21 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3BA44195609F
+ for <qemu-devel@nongnu.org>; Fri, 19 Sep 2025 08:36:25 +0000 (UTC)
 Received: from avogadro.redhat.com (unknown [10.44.33.250])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 84A2C1800452; Fri, 19 Sep 2025 08:36:19 +0000 (UTC)
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id C0B381800447; Fri, 19 Sep 2025 08:36:23 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org
-Subject: [PATCH] rust: build: add back common and util tests
-Date: Fri, 19 Sep 2025 10:36:17 +0200
-Message-ID: <20250919083617.86582-1-pbonzini@redhat.com>
+Cc: berrange@redhat.com
+Subject: [PATCH] docs: use the pyvenv version of Meson
+Date: Fri, 19 Sep 2025 10:36:21 +0200
+Message-ID: <20250919083621.86615-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -62,7 +63,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.005,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,43 +79,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These were dropped by mistake when extracting the crates.
+The version in the system might be too old for QEMU; this will be
+especially true if Rust is going to be enabled by default.
+
+Adjust the docs to suggest using pyvenv/bin/meson.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/common/meson.build | 3 +++
- rust/util/meson.build   | 4 ++++
- 2 files changed, 7 insertions(+)
+ docs/devel/build-system.rst | 2 +-
+ docs/devel/rust.rst         | 2 +-
+ docs/system/devices/igb.rst | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/rust/common/meson.build b/rust/common/meson.build
-index b805e0faf57..07d073182ed 100644
---- a/rust/common/meson.build
-+++ b/rust/common/meson.build
-@@ -24,6 +24,9 @@ _common_rs = static_library(
+diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
+index 2c884197a20..6204aa6a72e 100644
+--- a/docs/devel/build-system.rst
++++ b/docs/devel/build-system.rst
+@@ -450,7 +450,7 @@ are run with ``make bench``.  Meson test suites such as ``unit`` can be ran
+ with ``make check-unit``, and ``make check-tcg`` builds and runs "non-Meson"
+ tests for all targets.
  
- common_rs = declare_dependency(link_with: [_common_rs])
+-If desired, it is also possible to use ``ninja`` and ``meson test``,
++If desired, it is also possible to use ``ninja`` and ``pyvenv/bin/meson test``,
+ respectively to build emulators and run tests defined in meson.build.
+ The main difference is that ``make`` needs the ``-jN`` flag in order to
+ enable parallel builds or tests.
+diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
+index 13a20e86a16..2f0ab2e2821 100644
+--- a/docs/devel/rust.rst
++++ b/docs/devel/rust.rst
+@@ -66,7 +66,7 @@ __ https://mesonbuild.com/Commands.html#devenv
+ As shown above, you can use the ``--tests`` option as usual to operate on test
+ code.  Note however that you cannot *build* or run tests via ``cargo``, because
+ they need support C code from QEMU that Cargo does not know about.  Tests can
+-be run via ``meson test`` or ``make``::
++be run via Meson (``pyvenv/bin/meson test``) or ``make``::
  
-+rust.test('rust-common-tests', _common_rs,
-+          suite: ['unit', 'rust'])
-+
- # Doctests are essentially integration tests, so they need the same dependencies.
- # Note that running them requires the object files for C code, so place them
- # in a separate suite that is run by the "build" CI jobs rather than "check".
-diff --git a/rust/util/meson.build b/rust/util/meson.build
-index 87a893673d2..96330504459 100644
---- a/rust/util/meson.build
-+++ b/rust/util/meson.build
-@@ -44,6 +44,10 @@ _util_rs = static_library(
+    make check-rust
  
- util_rs = declare_dependency(link_with: [_util_rs], dependencies: [qemuutil, qom])
+diff --git a/docs/system/devices/igb.rst b/docs/system/devices/igb.rst
+index 71f31cb1160..50f625fd77e 100644
+--- a/docs/system/devices/igb.rst
++++ b/docs/system/devices/igb.rst
+@@ -54,7 +54,7 @@ directory:
  
-+rust.test('rust-util-tests', _util_rs,
-+          dependencies: [qemuutil, qom],
-+          suite: ['unit', 'rust'])
-+
- # Doctests are essentially integration tests, so they need the same dependencies.
- # Note that running them requires the object files for C code, so place them
- # in a separate suite that is run by the "build" CI jobs rather than "check".
+ .. code-block:: shell
+ 
+-  meson test qtest-x86_64/qos-test
++  pyvenv/bin/meson test qtest-x86_64/qos-test
+ 
+ ethtool can test register accesses, interrupts, etc. It is automated as an
+ functional test and can be run from the build directory with the following
 -- 
 2.51.0
 
