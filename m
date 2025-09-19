@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97855B8958D
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 14:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 941A8B89593
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 14:08:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzZrc-0008Ap-Ri; Fri, 19 Sep 2025 08:05:21 -0400
+	id 1uzZtD-0000aj-Q2; Fri, 19 Sep 2025 08:07:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jdenemar@redhat.com>)
- id 1uzZr8-0007y2-AG
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 08:04:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uzZsw-0000VM-1K; Fri, 19 Sep 2025 08:06:44 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jdenemar@redhat.com>)
- id 1uzZr2-0006lP-7S
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 08:04:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758283464;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VfEZK7k8xoSg2IiXntacZ3MMUI62+Jt/3fFuwo7O2MI=;
- b=LA193+BoZB+99LbgUfPfdnv58EvFtNJfsznzVRpg26JQYYN03VW5KvGzGDOu9mlqf8sf4p
- 5xJdTsyABQQQ9gZddcrOJkqNsqLksdNsVNPmI1GHHAS24ypcNVapdAOxMcO2g4eyYHn05C
- t+Hwq7GSBOJ/XTlxbS+vcqqSGB09o+A=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-578-SGhr9CwCMvC0mIyNzMoD3Q-1; Fri,
- 19 Sep 2025 08:04:23 -0400
-X-MC-Unique: SGhr9CwCMvC0mIyNzMoD3Q-1
-X-Mimecast-MFC-AGG-ID: SGhr9CwCMvC0mIyNzMoD3Q_1758283462
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6CB6E1800378; Fri, 19 Sep 2025 12:04:22 +0000 (UTC)
-Received: from orkuz (unknown [10.44.34.9])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9616B1800446; Fri, 19 Sep 2025 12:04:21 +0000 (UTC)
-Date: Fri, 19 Sep 2025 14:04:19 +0200
-From: =?utf-8?B?SmnFmcOt?= Denemark <jdenemar@redhat.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Juraj Marcin <jmarcin@redhat.com>, Peter Xu <peterx@redhat.com>,
- qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH] migration: Apply migration specific keep-alive defaults
- to inet socket
-Message-ID: <aM1Gw2NEYBx03Aog@orkuz.int.mamuti.net>
-References: <20250909150127.1494626-1-jmarcin@redhat.com>
- <aMBDIwKDxTVrBJBQ@redhat.com> <aMCjGVUiM3MY-RM3@x1.local>
- <aMEkY3N9ITwH_Y8Z@redhat.com> <aMGpHBGth05JY2hl@x1.local>
- <aMPz0WFmstNmKBQc@redhat.com> <aMQ19NmgFkLs8jkA@x1.local>
- <aMhZn-fbq67WQX8u@redhat.com>
- <r2tnbymosv7kxj7h4x6mnrczy7jdn66voiodlakivovu7lhwv4@eudkicvqwefc>
- <aMwbAdKQLzLaf4Hd@redhat.com>
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1uzZsj-0007GB-Ju; Fri, 19 Sep 2025 08:06:41 -0400
+Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
+ (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58JC5rvY060313
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Fri, 19 Sep 2025 21:05:53 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=zxBoene4j6Oa+6Rdc8pqs9GgvK8YJqS4410LfBRjQvI=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=Message-ID:Date:Subject:To:From;
+ s=rs20250326; t=1758283553; v=1;
+ b=uvafHsnROYeRDXjHLD5gqVuthxLsXuoGp0mmv7hIe4o+rxXaZMDfoo7QzwwrBug7
+ 2Z4WpsOPvmkBTXJqkoaGql9hI+ecPNDUPxi8CrBsKl6B1P+Ip0dEOl4E99Khs5ZR
+ WhS7FKSUs65rVXrlrfJKsEOW7q8fvbs93/cAVYD/MWGFMf3cC2U8O2z6r8Li9lG+
+ Ft/WyqtvdqSuj4xqgB6vlSAyGFItyFLhfQGpTtam44HLXG1eNmXrCCFeshLIwxPu
+ +vEJRPYcvwwlBb0CpSUEkIIkx23YnrQ//jMpTqxEWCmZvVBeyRxmXdWRGhWxftK9
+ 8Epi68x1nvoOcXld48gSyg==
+Message-ID: <3726af4b-55b3-4758-a61f-f38fc8f67648@rsg.ci.i.u-tokyo.ac.jp>
+Date: Fri, 19 Sep 2025 21:05:52 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aMwbAdKQLzLaf4Hd@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jdenemar@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.105,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 00/27] migration: propagate vTPM errors using Error
+ objects
+To: Arun Menon <armenon@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20250918-propagate_tpm_error-v14-0-36f11a6fb9d3@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20250918-propagate_tpm_error-v14-0-36f11a6fb9d3@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,65 +92,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 18, 2025 at 15:45:21 +0100, Daniel P. Berrangé wrote:
-> On Thu, Sep 18, 2025 at 04:16:56PM +0200, Juraj Marcin wrote:
-> > If there is no outgoing traffic from the destination side (this can be
-> > caused for example by a workload with no page faults or paused machine),
-> > QEMU has no way of knowing if the connection is still working or not.
-> > The TCP stack doesn't treat no incoming traffic as a sign of a broken
-> > connection. Therefore, QEMU would stay in postcopy-active waiting for
-> > pages indefinitely.
-> > 
-> > Also, libvirt might not be aware of a connection dropout between QEMUs,
-> > if libvirt's connection is intact, especially if libvirt daemons are
-> > communicating through some central entity that is managing the migration
-> > and not directly. And to do postcopy migration recovery, libvirt needs
-> > both sides to be in postcopy-paused state.
+On 2025/09/19 0:23, Arun Menon wrote:
+> Hello,
 > 
-> Whether keepalive timeouts are at the QEMU level or global kernel
-> level, there will always be situations where the timeouts are too
-> long. Apps/admins can have out of band liveliness checks between
-> hosts that detect a problem before the keepalives will trigger
-> and shouldn't have to wait to recover migration, once they have
-> resolved the underlying network issue.
+> Currently, when a migration of a VM with an encrypted vTPM
+> fails on the destination host (e.g., due to a mismatch in secret values),
+> the error message displayed on the source host is generic and unhelpful.
 > 
-> There needs to be a way to initiate post-copy recovery regardless
-> of whether we've hit a keepalive timeout. Especially if we can
-> see one QEMU in postcopy-paused, but not the other side, it
-> doesn't appear to make sense to block the recovery process.
+> For example, a typical error looks like this:
+> "operation failed: job 'migration out' failed: Sibling indicated error 1.
+> operation failed: job 'migration in' failed: load of migration failed:
+> Input/output error"
 > 
-> The virDomainJobCancel command can do a migrate-cancel on the
-> src, but it didn't look like we could do the same on the dst.
-> Unless I've overlooked something, Libvirt needs to gain a way
-> to explicitly force both sides into the postcopy-paused state,
-> and thus be able to immediately initiate recovery.
+> This message does not provide any specific indication of a vTPM failure.
+> Such generic errors are logged using error_report(), which prints to
+> the console/monitor but does not make the detailed error accessible via
+> the QMP query-migrate command.
 > 
-> > Alternatively, there also might be an issue with the connection between
-> > libvirt daemons, but not the migration connection. Even if the libvirt
-> > connection fails, the migration is not paused, rather libvirt lets the
-> > migration finish normally. Similarly, if the libvirt connection is
-> > broken up due to, for example, libvirt daemon restart, the ongoing
-> > migration is not paused, but after the libvirt daemon starts again, it
-> > sees an ongoing migration and lets it finish.
+> This series addresses the issue, by ensuring that specific TPM error
+> messages are propagated via the QEMU Error object.
+> To make this possible,
+> - A set of functions in the call stack is changed
+>    to incorporate an Error object as an additional parameter.
+> - Also, the TPM backend makes use of a new hook called post_load_errp()
+>    that explicitly passes an Error object.
 > 
-> Whole this is a reliability issue for libvirt, this doesn't have
-> any bearing on migration keepalive timeouts, as we're only concerned
-> about QEMU connections.
+> It is organized as follows,
+>   - Patches 1-23 focuses on pushing Error object into the functions
+>     that are important in the call stack where TPM errors are observed.
+>     We still need to make changes in rest of the functions in savevm.c
+>     such that they also incorporate the errp object for propagating errors.
+>   - Patches 12, 13, 20, are minor refactoring changes.
+>   - Patch 24 removes error variant of vmstate_save_state() function.
+>   - Patch 25 renames post_save() to cleanup_save()
+>   - Patch 26 introduces the new variants of the hooks in VMStateDescription
+>     structure. These hooks should be used in future implementations.
+>   - Patch 27 focuses on changing the TPM backend such that the errors are
+>     set in the Error object.
 > 
-> > Additionally, libvirt uses its own internal keep-alive packets with much
-> > more aggressive timeouts, waiting 5 - 10 seconds idle before sending a
-> > keep-alive packet and then killing the connection if there is no
-> > response in 30 seconds.
+> While this series focuses specifically on TPM error reporting during
+> live migration, it lays the groundwork for broader improvements.
+> A lot of methods in savevm.c that previously returned an integer now capture
+> errors in the Error object, enabling other modules to adopt the
+> post_load_errp hook in the future.
 > 
-> Yep, this keepalive is very aggressive and has frequently caused
-> problems with libvirt connections being torn down inappropriately.
+> One such change previously attempted:
+> https://lists.gnu.org/archive/html/qemu-devel/2021-02/msg01727.html
+> 
+> Resolves: https://issues.redhat.com/browse/RHEL-82826
+> 
+> Signed-off-by: Arun Menon <armenon@redhat.com>
 
-This was happening when a link was saturated with storage migrations and
-the keepalive messages in a separate (and otherwise idle) connection
-were not sent in time. We haven't seen any reports for quite some time.
-I believe it was identified as a kernel bug a few years ago and then the
-reports stopped.
+All comments I had are addressed and this series looks good to me.
+For the whole series:
 
-Jirka
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
+Regards,
+Akihiko Odaki
 
