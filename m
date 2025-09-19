@@ -2,91 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1509EB89515
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 13:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 106A2B89572
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 14:03:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzZgV-0004db-EE; Fri, 19 Sep 2025 07:53:53 -0400
+	id 1uzZnS-0005HY-ME; Fri, 19 Sep 2025 08:01:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uzZgI-0004RS-GV
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:53:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jdenemar@redhat.com>)
+ id 1uzZnK-0005G6-8T
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 08:00:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uzZg4-00019z-QS
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:53:33 -0400
+ (Exim 4.90_1) (envelope-from <jdenemar@redhat.com>)
+ id 1uzZn8-0003iV-1d
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 08:00:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758282797;
+ s=mimecast20190719; t=1758283234;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l/nPgGoxBal0yhdLm799HPkz/9tEha6vwLh4qn0x4io=;
- b=ISD6ySah1p3G13D17ZpYEfvgmTEXUaeNyN1RYgLRxd1fXHP81LC0FZjyV6upc1jfdMeTiB
- wDPSjldfyZwGklGSfwa4wrpxAECczUexNzVMCTLdNfTXRnLYaEFC7COF1+tXlwsB+Var6J
- HDohvWjEQBBVxH3nRIWNslVN9itVkIQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=KjPVlOX0JGIDw7TxiEhwTNmEnrIRF7fc2on10ERE2uE=;
+ b=RT+dz6bCixI8TwnWifhP+VROfi09yDETJRvQtkKUo6vaZfstwlMGgIhZgWhGZdhCiNBodJ
+ CICiG5zbbz785qM2H4pLHBdXWylhL0Q5aBxLX9+pOHurDgcgeBoznS7lRt1MnsG047d8JM
+ lLoq59ih+45eoA3XAGAKxYMjSNJBpCw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-411-_QGoYI_lP0u-9i_WIN13rw-1; Fri,
- 19 Sep 2025 07:53:14 -0400
-X-MC-Unique: _QGoYI_lP0u-9i_WIN13rw-1
-X-Mimecast-MFC-AGG-ID: _QGoYI_lP0u-9i_WIN13rw_1758282792
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-16-SYBRWJR3OnS9u_w-4zPiZA-1; Fri,
+ 19 Sep 2025 07:59:15 -0400
+X-MC-Unique: SYBRWJR3OnS9u_w-4zPiZA-1
+X-Mimecast-MFC-AGG-ID: SYBRWJR3OnS9u_w-4zPiZA_1758283154
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ECDE3195608A; Fri, 19 Sep 2025 11:53:11 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.187])
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C2CC419560A7; Fri, 19 Sep 2025 11:59:13 +0000 (UTC)
+Received: from orkuz (unknown [10.44.34.9])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6E0E11955F21; Fri, 19 Sep 2025 11:53:02 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Jagannathan Raman <jag.raman@oracle.com>, Zhao Liu <zhao1.liu@intel.com>,
- Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Thanos Makatos <thanos.makatos@nutanix.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Darren Kenny <darren.kenny@oracle.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, qemu-block@nongnu.org,
- Peter Xu <peterx@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- John Levon <john.levon@nutanix.com>, Fam Zheng <fam@euphon.net>,
- Alexander Bulekov <alxndr@bu.edu>, Stefan Weil <sw@weilnetz.de>,
- Gerd Hoffmann <kraxel@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Qiuhao Li <Qiuhao.Li@outlook.com>, Michael Roth <michael.roth@amd.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>,
- Kostiantyn Kostiuk <kkostiuk@redhat.com>,
- Hailiang Zhang <zhanghailiang@xfusion.com>
-Subject: [PULL 16/16] util/vhost-user-server: vu_message_read(): improve error
- handling
-Date: Fri, 19 Sep 2025 12:50:17 +0100
-Message-ID: <20250919115017.1536203-17-berrange@redhat.com>
-In-Reply-To: <20250919115017.1536203-1-berrange@redhat.com>
-References: <20250919115017.1536203-1-berrange@redhat.com>
+ id 2EE301955F21; Fri, 19 Sep 2025 11:59:12 +0000 (UTC)
+Date: Fri, 19 Sep 2025 13:59:11 +0200
+From: =?utf-8?B?SmnFmcOt?= Denemark <jdenemar@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Juraj Marcin <jmarcin@redhat.com>, qemu-devel@nongnu.org,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH] migration: Apply migration specific keep-alive defaults
+ to inet socket
+Message-ID: <aM1Fj6tpynIz9XHL@orkuz.int.mamuti.net>
+References: <aMBDIwKDxTVrBJBQ@redhat.com> <aMCjGVUiM3MY-RM3@x1.local>
+ <aMEkY3N9ITwH_Y8Z@redhat.com> <aMGpHBGth05JY2hl@x1.local>
+ <aMPz0WFmstNmKBQc@redhat.com> <aMQ19NmgFkLs8jkA@x1.local>
+ <aMhZn-fbq67WQX8u@redhat.com>
+ <r2tnbymosv7kxj7h4x6mnrczy7jdn66voiodlakivovu7lhwv4@eudkicvqwefc>
+ <aMwbAdKQLzLaf4Hd@redhat.com> <aMwg-ROjbDL_z_EM@x1.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aMwg-ROjbDL_z_EM@x1.local>
+User-Agent: Mutt/2.2.14 (2025-02-20)
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jdenemar@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.105,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,74 +92,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+On Thu, Sep 18, 2025 at 11:10:49 -0400, Peter Xu wrote:
+> On Thu, Sep 18, 2025 at 03:45:21PM +0100, Daniel P. Berrang� wrote:
+> > There needs to be a way to initiate post-copy recovery regardless
+> > of whether we've hit a keepalive timeout. Especially if we can
+> > see one QEMU in postcopy-paused, but not the other side, it
+> > doesn't appear to make sense to block the recovery process.
+> > 
+> > The virDomainJobCancel command can do a migrate-cancel on the
+> > src, but it didn't look like we could do the same on the dst.
+> > Unless I've overlooked something, Libvirt needs to gain a way
+> > to explicitly force both sides into the postcopy-paused state,
+> > and thus be able to immediately initiate recovery.
+> 
+> Right, if libvirt can do that then problem should have been solved too.
 
-1. Drop extra error_report_err(NULL), it will just crash, if we get
-here.
+I think we should be able to use the yank command to tell QEMU to close
+migration connections. I haven't tried it on the destination, but I
+guess it should work similarly to the source where it causes the
+migration to switch to postcopy-paused. It seems to be an equivalent of
+migrate-pause. So can we safely use yank in such situations?
 
-2. Get and report error of qemu_set_blocking(), instead of aborting.
-
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- util/vhost-user-server.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
-diff --git a/util/vhost-user-server.c b/util/vhost-user-server.c
-index 04c72a92aa..1dbe409f82 100644
---- a/util/vhost-user-server.c
-+++ b/util/vhost-user-server.c
-@@ -62,7 +62,7 @@ static void vmsg_close_fds(VhostUserMsg *vmsg)
-     }
- }
- 
--static void vmsg_unblock_fds(VhostUserMsg *vmsg)
-+static bool vmsg_unblock_fds(VhostUserMsg *vmsg, Error **errp)
- {
-     int i;
- 
-@@ -74,13 +74,16 @@ static void vmsg_unblock_fds(VhostUserMsg *vmsg)
-      */
-     if (vmsg->request == VHOST_USER_ADD_MEM_REG ||
-         vmsg->request == VHOST_USER_SET_MEM_TABLE) {
--        return;
-+        return true;
-     }
- 
-     for (i = 0; i < vmsg->fd_num; i++) {
--        /* TODO: handle error more gracefully than aborting */
--        qemu_set_blocking(vmsg->fds[i], false, &error_abort);
-+        if (!qemu_set_blocking(vmsg->fds[i], false, errp)) {
-+            return false;
-+        }
-     }
-+
-+    return true;
- }
- 
- static void panic_cb(VuDev *vu_dev, const char *buf)
-@@ -123,7 +126,6 @@ vu_message_read(VuDev *vu_dev, int conn_fd, VhostUserMsg *vmsg)
- 
-     vmsg->fd_num = 0;
-     if (!ioc) {
--        error_report_err(local_err);
-         goto fail;
-     }
- 
-@@ -177,7 +179,10 @@ vu_message_read(VuDev *vu_dev, int conn_fd, VhostUserMsg *vmsg)
-     } while (read_bytes != VHOST_USER_HDR_SIZE);
- 
-     /* qio_channel_readv_full will make socket fds blocking, unblock them */
--    vmsg_unblock_fds(vmsg);
-+    if (!vmsg_unblock_fds(vmsg, &local_err)) {
-+        error_report_err(local_err);
-+        goto fail;
-+    }
-     if (vmsg->size > sizeof(vmsg->payload)) {
-         error_report("Error: too big message request: %d, "
-                      "size: vmsg->size: %u, "
--- 
-2.50.1
+Jirka
 
 
