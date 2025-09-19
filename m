@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7436CB8946A
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 13:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D8AB8946D
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 13:29:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzZG0-0001bm-Ue; Fri, 19 Sep 2025 07:26:29 -0400
+	id 1uzZG1-0001gG-St; Fri, 19 Sep 2025 07:26:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uzZFj-00019I-0b
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:26:11 -0400
+ id 1uzZFn-0001AX-8H
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:26:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uzZFg-00017U-PT
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:26:10 -0400
+ id 1uzZFl-00018I-4G
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:26:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758281165;
+ s=mimecast20190719; t=1758281172;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GsX3ehLIekzk9S1dI+eEKr3gFdTAOOk/k5p38t88fGY=;
- b=CBApmfZ+5quSTfN5fxSXZypOT7TZYNsjV0AIs5GOk3GC5GXiFv1axaO6SWLABXXMS3eW3o
- +jvYMrj//FuI5t0p/PUpt4WrnMIF4FaJavXCBTSdLs7vI9VCfvf+GubqRJg53ggVv1q1Hb
- ToI4lwF5Q5ya+D6W/NZctfk0k1iRYZI=
+ bh=kjND0aUj9KRlLexwJ1p+kxgUGn2cNQpl2JPdVKoLLh0=;
+ b=EQPkcZA8oq3bq6c/zOHGKkkkmGLq6FC5vBNGpeF4BDm5+cTvgXhLkcGkZLLEH0dawf0gh2
+ pwK87QQ+8hb+cfzRs3RuX+Sd8wG2dR0J/fWU/0VUI4tqD9RvZ8WoREWTU2gLeBSUpQsr0u
+ Ec25jtqlp1GN8ItZPu0Ra5EBcJ8/Cns=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-18-u4ftFW8TPqGqYevVEKhRrA-1; Fri,
- 19 Sep 2025 07:26:02 -0400
-X-MC-Unique: u4ftFW8TPqGqYevVEKhRrA-1
-X-Mimecast-MFC-AGG-ID: u4ftFW8TPqGqYevVEKhRrA_1758281161
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-542-dKYu7tCyOuS8xUavAtFnpg-1; Fri,
+ 19 Sep 2025 07:26:06 -0400
+X-MC-Unique: dKYu7tCyOuS8xUavAtFnpg-1
+X-Mimecast-MFC-AGG-ID: dKYu7tCyOuS8xUavAtFnpg_1758281165
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2B192180028D; Fri, 19 Sep 2025 11:26:01 +0000 (UTC)
+ id 63ABC1800293; Fri, 19 Sep 2025 11:26:05 +0000 (UTC)
 Received: from avogadro.redhat.com (unknown [10.44.33.250])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6608A30002C5; Fri, 19 Sep 2025 11:25:57 +0000 (UTC)
+ id D943930002C5; Fri, 19 Sep 2025 11:26:01 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Tanish Desai <tanishdesai37@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
@@ -52,9 +52,10 @@ Cc: Tanish Desai <tanishdesai37@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Mads Ynddal <mads@ynddal.dk>
-Subject: [PATCH 04/16] tracetool: add SPDX headers
-Date: Fri, 19 Sep 2025 13:25:24 +0200
-Message-ID: <20250919112536.141782-5-pbonzini@redhat.com>
+Subject: [PATCH 05/16] trace/ftrace: move snprintf+write from tracepoints to
+ ftrace.c
+Date: Fri, 19 Sep 2025 13:25:25 +0200
+Message-ID: <20250919112536.141782-6-pbonzini@redhat.com>
 In-Reply-To: <20250919112536.141782-1-pbonzini@redhat.com>
 References: <20250919112536.141782-1-pbonzini@redhat.com>
 MIME-Version: 1.0
@@ -85,197 +86,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This simplifies the Python code and reduces the size of the tracepoints.
+
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/tracetool/__init__.py                | 2 ++
- scripts/tracetool/backend/__init__.py        | 2 ++
- scripts/tracetool/backend/dtrace.py          | 2 ++
- scripts/tracetool/backend/ftrace.py          | 2 ++
- scripts/tracetool/backend/log.py             | 2 ++
- scripts/tracetool/backend/simple.py          | 2 ++
- scripts/tracetool/backend/syslog.py          | 2 ++
- scripts/tracetool/backend/ust.py             | 2 ++
- scripts/tracetool/format/__init__.py         | 2 ++
- scripts/tracetool/format/c.py                | 2 ++
- scripts/tracetool/format/d.py                | 2 ++
- scripts/tracetool/format/h.py                | 2 ++
- scripts/tracetool/format/log_stap.py         | 2 ++
- scripts/tracetool/format/simpletrace_stap.py | 2 ++
- scripts/tracetool/format/stap.py             | 2 ++
- scripts/tracetool/format/ust_events_c.py     | 2 ++
- scripts/tracetool/format/ust_events_h.py     | 2 ++
- 17 files changed, 34 insertions(+)
+ tests/tracetool/ftrace.h            | 28 ++++++----------------------
+ trace/ftrace.h                      |  1 +
+ trace/ftrace.c                      | 15 +++++++++++++++
+ scripts/tracetool/backend/ftrace.py | 12 ++----------
+ 4 files changed, 24 insertions(+), 32 deletions(-)
 
-diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
-index 4f262d3394d..a58d7938658 100644
---- a/scripts/tracetool/__init__.py
-+++ b/scripts/tracetool/__init__.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- Machinery for generating tracing-related intermediate files.
- """
-diff --git a/scripts/tracetool/backend/__init__.py b/scripts/tracetool/backend/__init__.py
-index 70401309196..bf91e443e99 100644
---- a/scripts/tracetool/backend/__init__.py
-+++ b/scripts/tracetool/backend/__init__.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- Backend management.
+diff --git a/tests/tracetool/ftrace.h b/tests/tracetool/ftrace.h
+index fe22ea0f09f..1dfe4239413 100644
+--- a/tests/tracetool/ftrace.h
++++ b/tests/tracetool/ftrace.h
+@@ -21,18 +21,10 @@ extern uint16_t _TRACE_TEST_WIBBLE_DSTATE;
  
-diff --git a/scripts/tracetool/backend/dtrace.py b/scripts/tracetool/backend/dtrace.py
-index 4835454193d..b4af403025c 100644
---- a/scripts/tracetool/backend/dtrace.py
-+++ b/scripts/tracetool/backend/dtrace.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
+ static inline void trace_test_blah(void *context, const char *filename)
+ {
+-    {
+-        char ftrace_buf[MAX_TRACE_STRLEN];
+-        int unused __attribute__ ((unused));
+-        int trlen;
+-        if (trace_event_get_state(TRACE_TEST_BLAH)) {
++    if (trace_event_get_state(TRACE_TEST_BLAH)) {
+ #line 4 "trace-events"
+-            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,
+-                             "test_blah " "Blah context=%p filename=%s" "\n" , context, filename);
+-#line 33 "ftrace.h"
+-            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);
+-            unused = write(trace_marker_fd, ftrace_buf, trlen);
+-        }
++        ftrace_write("test_blah " "Blah context=%p filename=%s" "\n" , context, filename);
++#line 28 "ftrace.h"
+     }
+ }
+ 
+@@ -42,18 +34,10 @@ static inline void trace_test_blah(void *context, const char *filename)
+ 
+ static inline void trace_test_wibble(void *context, int value)
+ {
+-    {
+-        char ftrace_buf[MAX_TRACE_STRLEN];
+-        int unused __attribute__ ((unused));
+-        int trlen;
+-        if (trace_event_get_state(TRACE_TEST_WIBBLE)) {
++    if (trace_event_get_state(TRACE_TEST_WIBBLE)) {
+ #line 5 "trace-events"
+-            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,
+-                             "test_wibble " "Wibble context=%p value=%d" "\n" , context, value);
+-#line 54 "ftrace.h"
+-            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);
+-            unused = write(trace_marker_fd, ftrace_buf, trlen);
+-        }
++        ftrace_write("test_wibble " "Wibble context=%p value=%d" "\n" , context, value);
++#line 41 "ftrace.h"
+     }
+ }
+ #endif /* TRACE_TESTSUITE_GENERATED_TRACERS_H */
+diff --git a/trace/ftrace.h b/trace/ftrace.h
+index cb5e35d2171..16c122816d1 100644
+--- a/trace/ftrace.h
++++ b/trace/ftrace.h
+@@ -8,5 +8,6 @@
+ extern int trace_marker_fd;
+ 
+ bool ftrace_init(void);
++G_GNUC_PRINTF(1, 2) void ftrace_write(const char *fmt, ...);
+ 
+ #endif /* TRACE_FTRACE_H */
+diff --git a/trace/ftrace.c b/trace/ftrace.c
+index 9749543d9b2..6875faedb9c 100644
+--- a/trace/ftrace.c
++++ b/trace/ftrace.c
+@@ -38,6 +38,21 @@ static int find_mount(char *mount_point, const char *fstype)
+     return ret;
+ }
+ 
++void ftrace_write(const char *fmt, ...)
++{
++    char ftrace_buf[MAX_TRACE_STRLEN];
++    int unused __attribute__ ((unused));
++    int trlen;
++    va_list ap;
 +
- """
- DTrace/SystemTAP backend.
- """
++    va_start(ap, fmt);
++    trlen = vsnprintf(ftrace_buf, MAX_TRACE_STRLEN, fmt, ap);
++    va_end(ap);
++
++    trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);
++    unused = write(trace_marker_fd, ftrace_buf, trlen);
++}
++
+ bool ftrace_init(void)
+ {
+     char mount_point[PATH_MAX];
 diff --git a/scripts/tracetool/backend/ftrace.py b/scripts/tracetool/backend/ftrace.py
-index e6317ca4bfb..a14aafcee62 100644
+index a14aafcee62..8c0ce3f23a0 100644
 --- a/scripts/tracetool/backend/ftrace.py
 +++ b/scripts/tracetool/backend/ftrace.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- Ftrace built-in backend.
- """
-diff --git a/scripts/tracetool/backend/log.py b/scripts/tracetool/backend/log.py
-index 9842522b184..faacec46105 100644
---- a/scripts/tracetool/backend/log.py
-+++ b/scripts/tracetool/backend/log.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- Stderr built-in backend.
- """
-diff --git a/scripts/tracetool/backend/simple.py b/scripts/tracetool/backend/simple.py
-index 066e5e9f11f..97e40495ee9 100644
---- a/scripts/tracetool/backend/simple.py
-+++ b/scripts/tracetool/backend/simple.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- Simple built-in backend.
- """
-diff --git a/scripts/tracetool/backend/syslog.py b/scripts/tracetool/backend/syslog.py
-index 74af0380899..78ee67136b8 100644
---- a/scripts/tracetool/backend/syslog.py
-+++ b/scripts/tracetool/backend/syslog.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- Syslog built-in backend.
- """
-diff --git a/scripts/tracetool/backend/ust.py b/scripts/tracetool/backend/ust.py
-index 6cc651646dd..3aa9bb1da29 100644
---- a/scripts/tracetool/backend/ust.py
-+++ b/scripts/tracetool/backend/ust.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- LTTng User Space Tracing backend.
- """
-diff --git a/scripts/tracetool/format/__init__.py b/scripts/tracetool/format/__init__.py
-index 94a37bfce9f..7b9d1b57826 100644
---- a/scripts/tracetool/format/__init__.py
-+++ b/scripts/tracetool/format/__init__.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- Format management.
+@@ -28,18 +28,10 @@ def generate_h(event, group):
+     if len(event.args) > 0:
+         argnames = ", " + argnames
  
-diff --git a/scripts/tracetool/format/c.py b/scripts/tracetool/format/c.py
-index 3c4398c2373..50e03313cbf 100644
---- a/scripts/tracetool/format/c.py
-+++ b/scripts/tracetool/format/c.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- trace/generated-tracers.c
- """
-diff --git a/scripts/tracetool/format/d.py b/scripts/tracetool/format/d.py
-index 684598c1835..e9e33dfe30a 100644
---- a/scripts/tracetool/format/d.py
-+++ b/scripts/tracetool/format/d.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- trace/generated-tracers.dtrace (DTrace only).
- """
-diff --git a/scripts/tracetool/format/h.py b/scripts/tracetool/format/h.py
-index 2119753be10..be7f32e67b9 100644
---- a/scripts/tracetool/format/h.py
-+++ b/scripts/tracetool/format/h.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- trace/generated-tracers.h
- """
-diff --git a/scripts/tracetool/format/log_stap.py b/scripts/tracetool/format/log_stap.py
-index c6577b52c3a..e45d614ed47 100644
---- a/scripts/tracetool/format/log_stap.py
-+++ b/scripts/tracetool/format/log_stap.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- Generate .stp file that printfs log messages (DTrace with SystemTAP only).
- """
-diff --git a/scripts/tracetool/format/simpletrace_stap.py b/scripts/tracetool/format/simpletrace_stap.py
-index 863187c806e..d33bae757ff 100644
---- a/scripts/tracetool/format/simpletrace_stap.py
-+++ b/scripts/tracetool/format/simpletrace_stap.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- Generate .stp file that outputs simpletrace binary traces (DTrace with SystemTAP only).
- """
-diff --git a/scripts/tracetool/format/stap.py b/scripts/tracetool/format/stap.py
-index 04c7a35a25f..285c9203ba7 100644
---- a/scripts/tracetool/format/stap.py
-+++ b/scripts/tracetool/format/stap.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- Generate .stp file (DTrace with SystemTAP only).
- """
-diff --git a/scripts/tracetool/format/ust_events_c.py b/scripts/tracetool/format/ust_events_c.py
-index ea5f0ae99fa..074226bfd37 100644
---- a/scripts/tracetool/format/ust_events_c.py
-+++ b/scripts/tracetool/format/ust_events_c.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- trace/generated-ust.c
- """
-diff --git a/scripts/tracetool/format/ust_events_h.py b/scripts/tracetool/format/ust_events_h.py
-index 242c9814fdc..cee7970a403 100644
---- a/scripts/tracetool/format/ust_events_h.py
-+++ b/scripts/tracetool/format/ust_events_h.py
-@@ -1,3 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
- """
- trace/generated-ust-provider.h
- """
+-    out('    {',
+-        '        char ftrace_buf[MAX_TRACE_STRLEN];',
+-        '        int unused __attribute__ ((unused));',
+-        '        int trlen;',
+-        '        if (trace_event_get_state(%(event_id)s)) {',
++    out('    if (trace_event_get_state(%(event_id)s)) {',
+         '#line %(event_lineno)d "%(event_filename)s"',
+-        '            trlen = snprintf(ftrace_buf, MAX_TRACE_STRLEN,',
+-        '                             "%(name)s " %(fmt)s "\\n" %(argnames)s);',
++        '        ftrace_write("%(name)s " %(fmt)s "\\n" %(argnames)s);',
+         '#line %(out_next_lineno)d "%(out_filename)s"',
+-        '            trlen = MIN(trlen, MAX_TRACE_STRLEN - 1);',
+-        '            unused = write(trace_marker_fd, ftrace_buf, trlen);',
+-        '        }',
+         '    }',
+         name=event.name,
+         args=event.args,
 -- 
 2.51.0
 
