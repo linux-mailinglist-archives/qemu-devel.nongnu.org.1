@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D561B8854E
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 10:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5348B88543
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 10:07:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzW8D-00058f-97; Fri, 19 Sep 2025 04:06:13 -0400
+	id 1uzW8F-0005AM-0K; Fri, 19 Sep 2025 04:06:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uzW89-00056I-Bb
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uzW88-00055u-R1
  for qemu-devel@nongnu.org; Fri, 19 Sep 2025 04:06:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uzW87-0006ze-7J
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 04:06:09 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uzW86-0006zY-IZ
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 04:06:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758269166;
+ s=mimecast20190719; t=1758269165;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Dstga8pnvd10QnYFSJMTWUIwELxiahrLrZw8FqyVVtU=;
- b=Vo5fFwSAxarm6v1zr5+y6p9BGrI9VZ5GSY31fNL6INqwbx5X036726p3bMtvhle6zY2Gzb
- sJIVnPOSGvSezdhzo2fUdlsZx6d3PkFo/sp0/dwEz8G3+pxC9w1cHTf9eaAtP8Rkgf0S4Y
- Udd0vpv9gQxq+kiq6WhqUs+g+CqCLdk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=YKz20iASh/D67u7j+nz5UUJq2bajc8DmVciDI/JvwOk=;
+ b=KgsA/s0tdcahk72N0vljX7a76yiecJ5SantAtvI106ZbuB6rv4xrtYZvFwHgFnysFMU7uN
+ pQju5SXx/GzICiV/hlMA3NzRO903dv5hnPcHbOmPSfhm1PP/7fApEFSOHbAyQWkqHTbHy+
+ 3Z77bCdbJteCoQB5PgDUu0t6c4xi2jY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-210-PZVF3B5QMTC72GReTF8lMQ-1; Fri, 19 Sep 2025 04:05:58 -0400
-X-MC-Unique: PZVF3B5QMTC72GReTF8lMQ-1
-X-Mimecast-MFC-AGG-ID: PZVF3B5QMTC72GReTF8lMQ_1758269157
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-45f2f15003aso11472095e9.0
- for <qemu-devel@nongnu.org>; Fri, 19 Sep 2025 01:05:58 -0700 (PDT)
+ us-mta-349-8XWpjTP_Py6gFOiBywPJUg-1; Fri, 19 Sep 2025 04:06:03 -0400
+X-MC-Unique: 8XWpjTP_Py6gFOiBywPJUg-1
+X-Mimecast-MFC-AGG-ID: 8XWpjTP_Py6gFOiBywPJUg_1758269163
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3eae869cb3fso1263873f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 19 Sep 2025 01:06:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758269156; x=1758873956;
+ d=1e100.net; s=20230601; t=1758269163; x=1758873963;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Dstga8pnvd10QnYFSJMTWUIwELxiahrLrZw8FqyVVtU=;
- b=ARWgN7vfw+xhWMuuoo14d5ACCjXWoYitG2ojHtB546HTgvVSenabdIdVxl+N5DCFyQ
- ovTZvOJLJiqCBPeiBeagA3OjDAt8L1WFMtEDmT28driU+Kb8Cug7wTnwbfqT2YYfzx3u
- KrE3Ngu4RRKn8x6JU4RlBMYnmwRRFZ/AeBQreo1N7nI8V2aXmMUk0QYMqGZIgEK1Lgjf
- 77yxbGUdiCOTd3WM2kbdMOwzb9upJIZYET3PjPG/zX7YDv2xtJS7ztVWnknIiZMFaLil
- 2UWylTExqsBL5NsJRkKaKvkLoA5rtNUezs6JWqbHVmgIRyG4+U4dwNvMUOXNMmQSGOLk
- pvDg==
+ bh=YKz20iASh/D67u7j+nz5UUJq2bajc8DmVciDI/JvwOk=;
+ b=tgs3ljBMIh1eYFVAa+RX86awAV2TPG+ZP8fm0dHVvu4jbYk7ByF6SDVQj1jIXisfPy
+ Qqgg6FKhmzI7y5xWAuCxjR90CsWcnIKTS0Ato9FZymAbpmTen+hNPxyzu+ju/5pwJoBt
+ sl78a0vm4Ppvv98F75s+/FdM+kMPjxsRCMGZVCYp709KBrkLvmWDS5HDzCNlVchYCyy9
+ bi5hREw62kkWN7TMxl6XHPfB4oQekq7mGbNxJ9W0/+OTdjurLjnMBe/tBdJaZ1QZo4Tb
+ Y1dA9bzooZW4R5LiW5/a59VSIS8/EqHAiiM+pLBuJ9xlnHMVS7jXogVqkX/JdFoI/5yF
+ Nc/g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVcaFclSb1rITSQku2RhL2zFUIn5OyvUmV6JXyadYLNE6YsGc+fqCp6XApcFBAvgM2MK3crUKEw9Sr2@nongnu.org
-X-Gm-Message-State: AOJu0Yyga30vSpi1Bjps6HBl/OGVrulDP+ykugDCk3GXupMuwsR2Yjxb
- WYgesP630gmjhUws4i0xotqnIwdTR3cs4Ke26kJIIKZlymF4UHM/Ja1VmzA6NHvp8CTjo8ztPgY
- A3bxLbU8bk3YibfGdEiYLATOBqGOAsVgx4ga0GO8NzaWqGgHOpG6C8DrwrOCBoLnS
-X-Gm-Gg: ASbGncscFQhZJ5Fg28jrZAb7V/4XAgpAqRabForuC2/A2HC+dI6+Hxdx8xBKtsV6xoZ
- 5DRlzk1BwzkQ8cQflcR+QYRrOnlBuILKH7RYCMZL2K8aW4bDuQl5YSQpoDgPyY5rZcwU7gRCM1V
- G38sY2kI/LOFUL7RiP1HY5SBENgwyKKAnxe86nq+hT6qUeKfZa3qzCczb9u4MkWUPjYo9QGPzF9
- OJqm6BQ1ja05qrq95kiCgCQbOfqKw+APPykuQ9RPQKIRFpi+GgtBdKanobQ0lYWUcffhHWshQHf
- 8hrk9Q31K4Qv3ktzRr4Wvki+BMKH4XSlGQJWOxwFTNXWFlqvlQ84BjAjBD01MPg3Z47OMGwVwQQ
- Ph/E=
-X-Received: by 2002:a05:6000:2f83:b0:3d9:7021:fff0 with SMTP id
- ffacd0b85a97d-3ee8481fe2amr1342478f8f.37.1758269156270; 
- Fri, 19 Sep 2025 01:05:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEdX/VFUFW7Xrpi5NTzgCXtSiyKsCkG1EPem9THd8GStWhx73kif0M6QsD3A7dcS5oQi+ayHQ==
-X-Received: by 2002:a05:6000:2f83:b0:3d9:7021:fff0 with SMTP id
- ffacd0b85a97d-3ee8481fe2amr1342463f8f.37.1758269155794; 
- Fri, 19 Sep 2025 01:05:55 -0700 (PDT)
+ AJvYcCV+uBgdWdWGN1qbs+OUKc4AFGxrj0B4/UedyxlRwbmwKVUMnYxI4NZhoExXjEfX66q7q6bg78ljv/9/@nongnu.org
+X-Gm-Message-State: AOJu0Yxxp7/GaDtlpByE0MjHXZnUueotsM9TVwstVOWYh6I4ica+vIwj
+ BbF6eBFd0zB/03iIlSaeWzlGWDADMXLAFCdMf6+mxSkKbMYu/MxP/w1OO3Rk1TUQiFFKhZZlRg6
+ atoTvXZE6q1RwlTHGnMOVF06AsoF1O2kxWyuku7nUzxRzOLzniWUKw/nJ
+X-Gm-Gg: ASbGncvxchUQ4bbVyhcDQz3KSS/KbK92mPE06csX98D9oziVd+xauRiYQWYWGe2W5Wt
+ eizGS4ggoA9TFoedSvH/Nh/4CvBl4WD2TNQh42AGW+O90ViKrkIEw/C8R4dkcAUIgEiHdQv74th
+ NjJYVQTwd1cu1IJNlkj8/Lo0vzsllFF3tzYyhFon7pNRZ51Mdgy3gIxyaDJ42Y987kf7EMt4Kqa
+ sikC1m39EYSCXjK/0QD1/oIDguOcSk+WVlbPnLVrNSctaUYzyMjekxN2opX+uEYkUfVak2v3a8N
+ d3P63nhaRE3TVkDoNxRMGpzEqxSJThUAVZkHd6Ld61VYxxjw2o8OYfBF9vrDT2WqKgxexa38x+y
+ mGq8=
+X-Received: by 2002:a05:6000:2891:b0:3ea:b91f:8f4e with SMTP id
+ ffacd0b85a97d-3ee7e10617amr1784112f8f.21.1758269162427; 
+ Fri, 19 Sep 2025 01:06:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH3/JHcMV9Xmoj0vXYpV4orcUJAn9AYZrdS7EdBRHcoLc+jBOY/aPYLgEhj5/BGmTs4bwOWTw==
+X-Received: by 2002:a05:6000:2891:b0:3ea:b91f:8f4e with SMTP id
+ ffacd0b85a97d-3ee7e10617amr1784072f8f.21.1758269161907; 
+ Fri, 19 Sep 2025 01:06:01 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
  ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3ee0fbc7284sm6790274f8f.33.2025.09.19.01.05.54
+ ffacd0b85a97d-3ee0fbc7284sm6790274f8f.33.2025.09.19.01.06.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Sep 2025 01:05:55 -0700 (PDT)
-Message-ID: <0f9020d4-9209-433b-9228-63747172f0f5@redhat.com>
-Date: Fri, 19 Sep 2025 10:05:54 +0200
+ Fri, 19 Sep 2025 01:06:01 -0700 (PDT)
+Message-ID: <88839f9a-073d-40bd-a6f6-a9cefa64595a@redhat.com>
+Date: Fri, 19 Sep 2025 10:06:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [SPAM] [PATCH v4 05/14] hw/pci-host/aspeed: Add AST2600 PCIe Root
- Port and make address configurable
+Subject: Re: [SPAM] [PATCH v4 09/14] hw/pci-host/aspeed: Add AST2700 PCIe PHY
 To: Jamin Lin <jamin_lin@aspeedtech.com>, Paolo Bonzini
  <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
@@ -89,7 +88,7 @@ To: Jamin Lin <jamin_lin@aspeedtech.com>, Paolo Bonzini
 Cc: troy_lee@aspeedtech.com, nabihestefan@google.com, wuhaotsh@google.com,
  titusr@google.com
 References: <20250919032431.3316764-1-jamin_lin@aspeedtech.com>
- <20250919032431.3316764-6-jamin_lin@aspeedtech.com>
+ <20250919032431.3316764-10-jamin_lin@aspeedtech.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -135,19 +134,19 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250919032431.3316764-6-jamin_lin@aspeedtech.com>
+In-Reply-To: <20250919032431.3316764-10-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.005,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,27 +163,26 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/19/25 05:24, Jamin Lin wrote:
-> Introduce an ASPEED PCIe Root Port and wire it under the RC. The root port
-> is modeled as TYPE_ASPEED_PCIE_ROOT_PORT (subclass of TYPE_PCIE_ROOT_PORT).
+> Introduce a PCIe Host Controller PHY model for AST2700. This adds an
+> AST2700 specific PHY type (TYPE_ASPEED_2700_PCIE_PHY) with a 0x800 byte
+> register space and link-status bits compatible with the firmware’s
+> expectations.
 > 
-> Key changes:
-> - Add TYPE_ASPEED_PCIE_ROOT_PORT (PCIESlot-based) with vendor/device IDs
->    and AER capability offset.
-> - Extend AspeedPCIERcState to embed a root_port instance and a
->    configurable rp_addr.
-> - Add "rp-addr" property to the RC to place the root port at a specific
->    devfn on the root bus.
-> - Set the root port's "chassis" property to ensure a unique chassis per RC.
-> - Extend AspeedPCIECfgClass with rc_rp_addr defaulting to PCI_DEVFN(8,0).
+> AST2700 provides three PCIe RCs; PCIe0 and PCIe1 are GEN4, PCIe2 is
+> GEN2. The PHY exposes:
+> PEHR_2700_LINK_GEN2 at 0x344, bit 18 indicates GEN2 link up
+> PEHR_2700_LINK_GEN4 at 0x358, bit 8 indicates GEN4 link up
 > 
-> Rationale:
-> - AST2600 places the root port at 80:08.0 (bus 0x80, dev 8, fn 0).
-> - AST2700 must place the root port at 00:00.0, and it supports three RCs.
->    Each root port must therefore be uniquely identifiable; uses the
->    PCIe "chassis" ID for that.
-> - Providing a configurable "rp-addr" lets platforms select the correct
->    devfn per SoC family, while the "chassis" property ensures uniqueness
->    across multiple RC instances on AST2700.
+> In real hardware these GEN2/GEN4 link bits are mutually exclusive.
+> QEMU does not model GEN2 vs GEN4 signaling differences, so the reset
+> handler sets both bits to 1. This keeps the model simple and lets
+> firmware see the link as up; firmware will read the appropriate
+> register per RC port to infer the intended mode.
+> 
+> The header gains TYPE_ASPEED_2700_PCIE_PHY; the new class derives from
+> TYPE_ASPEED_PCIE_PHY, sets nr_regs to 0x800 >> 2, and installs an
+> AST2700 reset routine that programs the class code (0x06040011) and the
+> GEN2/GEN4 status bits.
 > 
 > Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 
@@ -197,171 +195,85 @@ C.
 
 
 > ---
->   include/hw/pci-host/aspeed_pcie.h | 11 +++++++
->   hw/pci-host/aspeed_pcie.c         | 50 +++++++++++++++++++++++++++++++
->   2 files changed, 61 insertions(+)
+>   include/hw/pci-host/aspeed_pcie.h |  1 +
+>   hw/pci-host/aspeed_pcie.c         | 39 +++++++++++++++++++++++++++++++
+>   2 files changed, 40 insertions(+)
 > 
 > diff --git a/include/hw/pci-host/aspeed_pcie.h b/include/hw/pci-host/aspeed_pcie.h
-> index fe30ac02ae..5346c15c81 100644
+> index 5e60cba07b..5806505f30 100644
 > --- a/include/hw/pci-host/aspeed_pcie.h
 > +++ b/include/hw/pci-host/aspeed_pcie.h
-> @@ -20,6 +20,7 @@
->   #include "hw/sysbus.h"
->   #include "hw/pci/pci_bridge.h"
->   #include "hw/pci/pcie_host.h"
-> +#include "hw/pci/pcie_port.h"
->   #include "qom/object.h"
->   
->   typedef struct AspeedPCIECfgTxDesc {
-> @@ -40,6 +41,13 @@ typedef struct AspeedPCIERegMap {
->       AspeedPCIERcRegs rc;
->   } AspeedPCIERegMap;
->   
-> +#define TYPE_ASPEED_PCIE_ROOT_PORT "aspeed.pcie-root-port"
-> +OBJECT_DECLARE_SIMPLE_TYPE(AspeedPCIERootPortState, ASPEED_PCIE_ROOT_PORT)
-> +
-> +typedef struct AspeedPCIERootPortState {
-> +    PCIESlot parent_obj;
-> +} AspeedPCIERootPortState;
-> +
->   #define TYPE_ASPEED_PCIE_ROOT_DEVICE "aspeed.pcie-root-device"
->   OBJECT_DECLARE_SIMPLE_TYPE(AspeedPCIERootDeviceState, ASPEED_PCIE_ROOT_DEVICE);
->   
-> @@ -58,12 +66,14 @@ struct AspeedPCIERcState {
->       MemoryRegion mmio;
->       MemoryRegion io;
->   
-> +    uint32_t rp_addr;
->       uint32_t bus_nr;
->       char name[16];
->       bool has_rd;
->       qemu_irq irq;
->   
->       AspeedPCIERootDeviceState root_device;
-> +    AspeedPCIERootPortState root_port;
+> @@ -114,6 +114,7 @@ struct AspeedPCIECfgClass {
 >   };
 >   
->   /* Bridge between AHB bus and PCIe RC. */
-> @@ -87,6 +97,7 @@ struct AspeedPCIECfgClass {
->       const AspeedPCIERegMap *reg_map;
->       const MemoryRegionOps *reg_ops;
+>   #define TYPE_ASPEED_PCIE_PHY "aspeed.pcie-phy"
+> +#define TYPE_ASPEED_2700_PCIE_PHY TYPE_ASPEED_PCIE_PHY "-ast2700"
+>   OBJECT_DECLARE_TYPE(AspeedPCIEPhyState, AspeedPCIEPhyClass, ASPEED_PCIE_PHY);
 >   
-> +    uint32_t rc_rp_addr;
->       uint64_t rc_bus_nr;
->       uint64_t nr_regs;
->       bool rc_has_rd;
+>   struct AspeedPCIEPhyState {
 > diff --git a/hw/pci-host/aspeed_pcie.c b/hw/pci-host/aspeed_pcie.c
-> index 6e563a07a3..dafffbde61 100644
+> index 8be55b962f..788160d532 100644
 > --- a/hw/pci-host/aspeed_pcie.c
 > +++ b/hw/pci-host/aspeed_pcie.c
-> @@ -21,6 +21,7 @@
->   #include "hw/registerfields.h"
->   #include "hw/irq.h"
->   #include "hw/pci/pci_host.h"
-> +#include "hw/pci/pcie_port.h"
->   #include "hw/pci-host/aspeed_pcie.h"
->   #include "hw/pci/msi.h"
->   #include "trace.h"
-> @@ -63,6 +64,32 @@ static const TypeInfo aspeed_pcie_root_device_info = {
->       },
+> @@ -696,6 +696,12 @@ REG32(PEHR_PROTECT,     0x7C)
+>   REG32(PEHR_LINK,        0xC0)
+>       FIELD(PEHR_LINK, STS, 5, 1)
+>   
+> +/* AST2700 */
+> +REG32(PEHR_2700_LINK_GEN2,  0x344)
+> +    FIELD(PEHR_2700_LINK_GEN2, STS, 18, 1)
+> +REG32(PEHR_2700_LINK_GEN4,  0x358)
+> +    FIELD(PEHR_2700_LINK_GEN4, STS, 8, 1)
+> +
+>   #define ASPEED_PCIE_PHY_UNLOCK  0xA8
+>   
+>   static uint64_t aspeed_pcie_phy_read(void *opaque, hwaddr addr,
+> @@ -803,6 +809,38 @@ static const TypeInfo aspeed_pcie_phy_info = {
+>       .class_size = sizeof(AspeedPCIEPhyClass),
 >   };
 >   
-> +/*
-> + * PCIe Root Port
-> + */
-> +
-> +static void aspeed_pcie_root_port_class_init(ObjectClass *klass,
-> +                                             const void *data)
+> +static void aspeed_2700_pcie_phy_reset(DeviceState *dev)
 > +{
-> +    PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +    PCIERootPortClass *rpc = PCIE_ROOT_PORT_CLASS(klass);
+> +    AspeedPCIEPhyState *s = ASPEED_PCIE_PHY(dev);
+> +    AspeedPCIEPhyClass *apc = ASPEED_PCIE_PHY_GET_CLASS(s);
 > +
-> +    dc->desc = "ASPEED PCIe Root Port";
-> +    k->vendor_id = PCI_VENDOR_ID_ASPEED;
-> +    k->device_id = 0x1150;
-> +    dc->user_creatable = true;
+> +    memset(s->regs, 0, apc->nr_regs << 2);
 > +
-> +    rpc->aer_offset = 0x100;
+> +    s->regs[R_PEHR_ID] =
+> +        (0x1150 << R_PEHR_ID_DEV_SHIFT) | PCI_VENDOR_ID_ASPEED;
+> +    s->regs[R_PEHR_CLASS_CODE] = 0x06040011;
+> +    s->regs[R_PEHR_2700_LINK_GEN2] = R_PEHR_2700_LINK_GEN2_STS_MASK;
+> +    s->regs[R_PEHR_2700_LINK_GEN4] = R_PEHR_2700_LINK_GEN4_STS_MASK;
 > +}
 > +
-> +static const TypeInfo aspeed_pcie_root_port_info = {
-> +    .name = TYPE_ASPEED_PCIE_ROOT_PORT,
-> +    .parent = TYPE_PCIE_ROOT_PORT,
-> +    .instance_size = sizeof(AspeedPCIERootPortState),
-> +    .class_init = aspeed_pcie_root_port_class_init,
+> +static void aspeed_2700_pcie_phy_class_init(ObjectClass *klass,
+> +                                            const void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +    AspeedPCIEPhyClass *apc = ASPEED_PCIE_PHY_CLASS(klass);
+> +
+> +    dc->desc = "ASPEED AST2700 PCIe Phy";
+> +    device_class_set_legacy_reset(dc, aspeed_2700_pcie_phy_reset);
+> +
+> +    apc->nr_regs = 0x800 >> 2;
+> +}
+> +
+> +static const TypeInfo aspeed_2700_pcie_phy_info = {
+> +    .name       = TYPE_ASPEED_2700_PCIE_PHY,
+> +    .parent     = TYPE_ASPEED_PCIE_PHY,
+> +    .class_init = aspeed_2700_pcie_phy_class_init,
 > +};
 > +
->   /*
->    * PCIe Root Complex (RC)
->    */
-> @@ -144,6 +171,13 @@ static void aspeed_pcie_rc_realize(DeviceState *dev, Error **errp)
->               return;
->           }
->       }
-> +
-> +    /* setup root port */
-> +    qdev_prop_set_int32(DEVICE(&rc->root_port), "addr", rc->rp_addr);
-> +    qdev_prop_set_uint16(DEVICE(&rc->root_port), "chassis", cfg->id);
-> +    if (!qdev_realize(DEVICE(&rc->root_port), BUS(pci->bus), errp)) {
-> +        return;
-> +    }
->   }
->   
->   static const char *aspeed_pcie_rc_root_bus_path(PCIHostState *host_bridge,
-> @@ -158,9 +192,19 @@ static const char *aspeed_pcie_rc_root_bus_path(PCIHostState *host_bridge,
->       return rc->name;
->   }
->   
-> +static void aspeed_pcie_rc_instance_init(Object *obj)
-> +{
-> +    AspeedPCIERcState *rc = ASPEED_PCIE_RC(obj);
-> +    AspeedPCIERootPortState *root_port = &rc->root_port;
-> +
-> +    object_initialize_child(obj, "root_port", root_port,
-> +                            TYPE_ASPEED_PCIE_ROOT_PORT);
-> +}
-> +
->   static const Property aspeed_pcie_rc_props[] = {
->       DEFINE_PROP_UINT32("bus-nr", AspeedPCIERcState, bus_nr, 0),
->       DEFINE_PROP_BOOL("has-rd", AspeedPCIERcState, has_rd, 0),
-> +    DEFINE_PROP_UINT32("rp-addr", AspeedPCIERcState, rp_addr, 0),
->   };
->   
->   static void aspeed_pcie_rc_class_init(ObjectClass *klass, const void *data)
-> @@ -183,6 +227,7 @@ static const TypeInfo aspeed_pcie_rc_info = {
->       .name = TYPE_ASPEED_PCIE_RC,
->       .parent = TYPE_PCIE_HOST_BRIDGE,
->       .instance_size = sizeof(AspeedPCIERcState),
-> +    .instance_init = aspeed_pcie_rc_instance_init,
->       .class_init = aspeed_pcie_rc_class_init,
->   };
->   
-> @@ -455,6 +500,9 @@ static void aspeed_pcie_cfg_realize(DeviceState *dev, Error **errp)
->       object_property_set_bool(OBJECT(&s->rc), "has-rd",
->                               apc->rc_has_rd,
->                               &error_abort);
-> +    object_property_set_int(OBJECT(&s->rc), "rp-addr",
-> +                            apc->rc_rp_addr,
-> +                            &error_abort);
->       if (!sysbus_realize(SYS_BUS_DEVICE(&s->rc), errp)) {
->           return;
->       }
-> @@ -488,6 +536,7 @@ static void aspeed_pcie_cfg_class_init(ObjectClass *klass, const void *data)
->       apc->nr_regs = 0x100 >> 2;
->       apc->rc_bus_nr = 0x80;
->       apc->rc_has_rd = true;
-> +    apc->rc_rp_addr = PCI_DEVFN(8, 0);
->   }
->   
->   static const TypeInfo aspeed_pcie_cfg_info = {
-> @@ -626,6 +675,7 @@ static void aspeed_pcie_register_types(void)
+>   static void aspeed_pcie_register_types(void)
 >   {
 >       type_register_static(&aspeed_pcie_rc_info);
->       type_register_static(&aspeed_pcie_root_device_info);
-> +    type_register_static(&aspeed_pcie_root_port_info);
+> @@ -810,6 +848,7 @@ static void aspeed_pcie_register_types(void)
+>       type_register_static(&aspeed_pcie_root_port_info);
 >       type_register_static(&aspeed_pcie_cfg_info);
 >       type_register_static(&aspeed_pcie_phy_info);
+> +    type_register_static(&aspeed_2700_pcie_phy_info);
 >   }
+>   
+>   type_init(aspeed_pcie_register_types);
 
 
