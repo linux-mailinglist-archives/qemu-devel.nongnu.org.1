@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97611B894FA
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 13:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA9DB894F7
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 13:52:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzZdu-0001ly-2R; Fri, 19 Sep 2025 07:51:10 -0400
+	id 1uzZe5-0002EF-7x; Fri, 19 Sep 2025 07:51:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uzZdr-0001l2-5F
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:51:07 -0400
+ id 1uzZe2-00027z-8N
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:51:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uzZdi-0000mT-ET
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:51:05 -0400
+ id 1uzZdw-0000oD-TP
+ for qemu-devel@nongnu.org; Fri, 19 Sep 2025 07:51:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758282656;
+ s=mimecast20190719; t=1758282668;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PdRoEwCHMx+zjgwRt6dMBJqTTFrggUWD628P7VP28VY=;
- b=YiXyl5LK1tOfFqE9IVloRk+rF0Yb3JdJjFKe33N91qQzEO/NZKnDbBVe5KgmfUsLEe+NdR
- 8MnPDTRBT6vZqI3ussv8lu9nvESLBOEsid6lz5yeRQRlLHOIBj0LwUuibCLi0z+wcB1Q1c
- YtKQu+ligb6EBhmrTwbWhGO1aSgJyiE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=kVgOQG1mOqMMrShBgYl6HdG7O1jge5gMd4Y6e+CPNqA=;
+ b=eOSq/Wn+meKdjJdobgJyw9GPdX08GuFfp3JMvOwCZXMnjyptRi21v5nbjEw8DDw0bHZRQy
+ alW6Mx3APs8i3sZjiZLbeKVlbVhFmabwfYN7/5WLCJA7Qjfc5FlJr075YrI7vXcLr9N87f
+ fENpMnSihD9z3bDr8N7EdzXTTUMrfTo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-313-FF262A2ENbOqTtDaVXgaPg-1; Fri,
- 19 Sep 2025 07:50:52 -0400
-X-MC-Unique: FF262A2ENbOqTtDaVXgaPg-1
-X-Mimecast-MFC-AGG-ID: FF262A2ENbOqTtDaVXgaPg_1758282650
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-33-mJWvmZtmPq-bINoxBXqtxw-1; Fri,
+ 19 Sep 2025 07:51:03 -0400
+X-MC-Unique: mJWvmZtmPq-bINoxBXqtxw-1
+X-Mimecast-MFC-AGG-ID: mJWvmZtmPq-bINoxBXqtxw_1758282661
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 39B5819560A1; Fri, 19 Sep 2025 11:50:50 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 90D59180035C; Fri, 19 Sep 2025 11:51:00 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.187])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DF2A01953944; Fri, 19 Sep 2025 11:50:40 +0000 (UTC)
+ id 9E1781955F21; Fri, 19 Sep 2025 11:50:50 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -69,10 +69,10 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>,
  Kostiantyn Kostiuk <kkostiuk@redhat.com>,
  Hailiang Zhang <zhanghailiang@xfusion.com>
-Subject: [PULL 02/16] migration/qemu-file: don't make incoming fds blocking
- again
-Date: Fri, 19 Sep 2025 12:50:03 +0100
-Message-ID: <20250919115017.1536203-3-berrange@redhat.com>
+Subject: [PULL 03/16] io/channel: document how qio_channel_readv_full()
+ handles fds
+Date: Fri, 19 Sep 2025 12:50:04 +0100
+Message-ID: <20250919115017.1536203-4-berrange@redhat.com>
 In-Reply-To: <20250919115017.1536203-1-berrange@redhat.com>
 References: <20250919115017.1536203-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -88,7 +88,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.105,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,88 +106,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-In migration we want to pass fd "as is", not changing its
-blocking status.
+The only realization, which may have incoming fds is
+qio_channel_socket_readv() (in io/channel-socket.c).
+qio_channel_socket_readv() do call (through
+qio_channel_socket_copy_fds()) qemu_socket_set_block() and
+qemu_set_cloexec() for each fd.
 
-The only current user of these fds is CPR state (through VMSTATE_FD),
-which of-course doesn't want to modify fds on target when source is
-still running and use these fds.
+Also, qio_channel_socket_copy_fds() is called at the end of
+qio_channel_socket_readv(), on success path.
 
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Acked-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/io/channel.h  |  1 +
- io/channel-socket.c   | 13 +++++++++----
- migration/qemu-file.c |  3 ++-
- 3 files changed, 12 insertions(+), 5 deletions(-)
+ include/io/channel.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/include/io/channel.h b/include/io/channel.h
-index 234e5db70d..12266256a8 100644
+index 12266256a8..c7f64506f7 100644
 --- a/include/io/channel.h
 +++ b/include/io/channel.h
-@@ -36,6 +36,7 @@ OBJECT_DECLARE_TYPE(QIOChannel, QIOChannelClass,
- 
- #define QIO_CHANNEL_READ_FLAG_MSG_PEEK 0x1
- #define QIO_CHANNEL_READ_FLAG_RELAXED_EOF 0x2
-+#define QIO_CHANNEL_READ_FLAG_FD_PRESERVE_BLOCKING 0x4
- 
- typedef enum QIOChannelFeature QIOChannelFeature;
- 
-diff --git a/io/channel-socket.c b/io/channel-socket.c
-index 3b7ca924ff..21f8f2e0c5 100644
---- a/io/channel-socket.c
-+++ b/io/channel-socket.c
-@@ -464,7 +464,8 @@ static void qio_channel_socket_finalize(Object *obj)
- 
- #ifndef WIN32
- static void qio_channel_socket_copy_fds(struct msghdr *msg,
--                                        int **fds, size_t *nfds)
-+                                        int **fds, size_t *nfds,
-+                                        bool preserve_blocking)
- {
-     struct cmsghdr *cmsg;
- 
-@@ -497,8 +498,10 @@ static void qio_channel_socket_copy_fds(struct msghdr *msg,
-                 continue;
-             }
- 
--            /* O_NONBLOCK is preserved across SCM_RIGHTS so reset it */
--            qemu_socket_set_block(fd);
-+            if (!preserve_blocking) {
-+                /* O_NONBLOCK is preserved across SCM_RIGHTS so reset it */
-+                qemu_socket_set_block(fd);
-+            }
- 
- #ifndef MSG_CMSG_CLOEXEC
-             qemu_set_cloexec(fd);
-@@ -556,7 +559,9 @@ static ssize_t qio_channel_socket_readv(QIOChannel *ioc,
-     }
- 
-     if (fds && nfds) {
--        qio_channel_socket_copy_fds(&msg, fds, nfds);
-+        qio_channel_socket_copy_fds(
-+            &msg, fds, nfds,
-+            flags & QIO_CHANNEL_READ_FLAG_FD_PRESERVE_BLOCKING);
-     }
- 
-     return ret;
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index b6ac190034..d5c6e7ec61 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -340,7 +340,8 @@ static ssize_t coroutine_mixed_fn qemu_fill_buffer(QEMUFile *f)
- 
-     do {
-         struct iovec iov = { f->buf + pending, IO_BUF_SIZE - pending };
--        len = qio_channel_readv_full(f->ioc, &iov, 1, pfds, pnfd, 0,
-+        len = qio_channel_readv_full(f->ioc, &iov, 1, pfds, pnfd,
-+                                     QIO_CHANNEL_READ_FLAG_FD_PRESERVE_BLOCKING,
-                                      &local_error);
-         if (len == QIO_CHANNEL_ERR_BLOCK) {
-             if (qemu_in_coroutine()) {
+@@ -118,6 +118,15 @@ struct QIOChannelClass {
+                          size_t nfds,
+                          int flags,
+                          Error **errp);
++
++    /*
++     * The io_readv handler must guarantee that all
++     * incoming fds are set BLOCKING (unless
++     * QIO_CHANNEL_READ_FLAG_FD_PRESERVE_BLOCKING flag is set) and
++     * CLOEXEC (if available).
++     * @fds and @nfds are set only on success path, and untouched
++     * in case of errors.
++     */
+     ssize_t (*io_readv)(QIOChannel *ioc,
+                         const struct iovec *iov,
+                         size_t niov,
+@@ -125,6 +134,7 @@ struct QIOChannelClass {
+                         size_t *nfds,
+                         int flags,
+                         Error **errp);
++
+     int (*io_close)(QIOChannel *ioc,
+                     Error **errp);
+     GSource * (*io_create_watch)(QIOChannel *ioc,
+@@ -235,6 +245,13 @@ void qio_channel_set_name(QIOChannel *ioc,
+  * was allocated. It is the callers responsibility
+  * to call close() on each file descriptor and to
+  * call g_free() on the array pointer in @fds.
++ * @fds allocated and set (and @nfds is set too)
++ * _only_ on success path. These parameters are
++ * untouched in case of errors.
++ * qio_channel_readv_full() guarantees that all
++ * incoming fds are set BLOCKING (unless
++ * QIO_CHANNEL_READ_FLAG_FD_PRESERVE_BLOCKING flag
++ * is set) and CLOEXEC (if available).
+  *
+  * It is an error to pass a non-NULL @fds parameter
+  * unless qio_channel_has_feature() returns a true
 -- 
 2.50.1
 
