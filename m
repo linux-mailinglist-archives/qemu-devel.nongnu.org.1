@@ -2,87 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0286AB89739
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 14:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C42B89C0C
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Sep 2025 15:59:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzaDY-0008Gt-54; Fri, 19 Sep 2025 08:28:00 -0400
+	id 1uzbcO-0004Yb-Rw; Fri, 19 Sep 2025 09:57:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uzaDD-0008G5-9T
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 08:27:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uzaD7-00055s-7w
- for qemu-devel@nongnu.org; Fri, 19 Sep 2025 08:27:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758284849;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=gkZuhX84S42dAzWd5lDeM01IGWlt01IQDxVV7y6SdAg=;
- b=EVJ+tOIimRLnxEL8J0dpdWHp7Gxz7SK1A9Rc/DpQzsFbQPXbFFrcy0Awf9xjyv86fpd2RX
- fiscJx7lnkczuy+83SBg4qfJ4I+6/aQEe87nzYVL/2THw/Pm4tGT+DNPBHD9JQllbzOCgK
- 5RZOP/iwhV3e6O4S4nF0a1DIRtOIjmI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-UAhuhii-PpqGouTZ893T3Q-1; Fri,
- 19 Sep 2025 08:27:25 -0400
-X-MC-Unique: UAhuhii-PpqGouTZ893T3Q-1
-X-Mimecast-MFC-AGG-ID: UAhuhii-PpqGouTZ893T3Q_1758284844
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D0EC5180034D; Fri, 19 Sep 2025 12:27:23 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.33])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 49E9E1800447; Fri, 19 Sep 2025 12:27:23 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 93F5721E6A27; Fri, 19 Sep 2025 14:27:20 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  Hanna Reitz
- <hreitz@redhat.com>,  Kevin Wolf <kwolf@redhat.com>,  =?utf-8?Q?Marc-Andr?=
- =?utf-8?Q?=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  Christian Schoenebeck
- <qemu_oss@crudebyte.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Manos Pitsidianakis
- <manos.pitsidianakis@linaro.org>,  Stefan Weil <sw@weilnetz.de>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Gerd Hoffmann
- <kraxel@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,  "Dr. David Alan Gilbert"
- <dave@treblig.org>
-Subject: Re: [PATCH v3 11/20] monitor: move error_vprintf() back to
- error-report.c
-In-Reply-To: <20250910180357.320297-12-berrange@redhat.com> ("Daniel
- P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Wed, 10 Sep 2025 19:03:48
- +0100")
-References: <20250910180357.320297-1-berrange@redhat.com>
- <20250910180357.320297-12-berrange@redhat.com>
-Date: Fri, 19 Sep 2025 14:27:20 +0200
-Message-ID: <874isyy6dz.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <c.speich@avm.de>)
+ id 1uzaKn-0001xR-W0; Fri, 19 Sep 2025 08:35:30 -0400
+Received: from mail.avm.de ([212.42.244.120])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <c.speich@avm.de>)
+ id 1uzaKe-00005D-L9; Fri, 19 Sep 2025 08:35:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
+ t=1758285309; bh=+CcdsuLZvpVt3WE/Oie6//pHCVefmVxTe48yvU7P96s=;
+ h=From:Subject:Date:To:Cc:From;
+ b=eGCtSXqJK4nE3nwc520Meit6RRG3NPBfKvpdGDhq8RE+ps9zsG5D2CZ9YQ+ecUt/2
+ fpxSPrR16QzfUsoRhpAPYjz9+jCyKFptM1o66BZApPg2WAM61ysc04H0E5+tGoWqax
+ rZm8Ow6Tg4SFLBny4VaVcKUF+IfVTd6AuMmJs58o=
+Received: from [172.16.0.1] (helo=mail.avm.de)
+ by mail.avm.de with ESMTP (eXpurgate 4.53.4)
+ (envelope-from <c.speich@avm.de>)
+ id 68cd4dfd-c042-7f0000032729-7f0000018842-1
+ for <multiple-recipients>; Fri, 19 Sep 2025 14:35:09 +0200
+Received: from mail-notes.avm.de (mail-notes.avm.de [172.16.0.1])
+ by mail.avm.de (Postfix) with ESMTP;
+ Fri, 19 Sep 2025 14:35:09 +0200 (CEST)
+Received: from [127.0.1.1] ([172.17.89.139])
+ by mail-notes.avm.de (HCL Domino Release 14.0FP4)
+ with ESMTP id 2025091914351037-13014 ;
+ Fri, 19 Sep 2025 14:35:10 +0200 
+From: Christian Speich <c.speich@avm.de>
+Subject: [PATCH 0/4] hw/sd: Improve performance of read/write/erase
+Date: Fri, 19 Sep 2025 14:34:39 +0200
+Message-Id: <20250919-sdcard-performance-b4-v1-0-e1037e481a19@avm.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.105,
+X-B4-Tracking: v=1; b=H4sIAN9NzWgC/x3MPQqAMAxA4atIZgOxKFivIg79STWDVVIQQby7x
+ fEb3nugsAoXmJoHlC8pcuSKrm0gbC6vjBKrwZAZyHYGSwxOI56s6dDd5cDoe4yWRu/94Ih6qO2
+ pnOT+v/Pyvh+0vtaKZwAAAA==
+X-Change-ID: 20250912-sdcard-performance-b4-d908bbb5a004
+To: qemu-devel@nongnu.org
+Cc: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Bin Meng
+ <bmeng.cn@gmail.com>, qemu-block@nongnu.org, Christian Speich
+ <c.speich@avm.de>
+X-Mailer: b4 0.14.2
+X-MIMETrack: Itemize by SMTP Server on ANIS1/AVM(Release 14.0FP4|March 10,
+ 2025) at 19.09.2025 14:35:10,
+ Serialize by Router on ANIS1/AVM(Release 14.0FP4|March 10, 2025) at
+ 19.09.2025 14:35:10, Serialize complete at 19.09.2025 14:35:10
+X-TNEFEvaluated: 1
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-purgate-ID: 149429::1758285309-25674DB6-0E91F56A/0/0
+X-purgate-type: clean
+X-purgate-size: 1707
+X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
+X-purgate: This mail is considered clean (visit https://www.eleven.de for
+ further information)
+X-purgate: clean
+Received-SPF: pass client-ip=212.42.244.120; envelope-from=c.speich@avm.de;
+ helo=mail.avm.de
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.105,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 19 Sep 2025 09:57:35 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,23 +88,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+This patch series improves the performance of read/write/erase operations
+on sdcards.
 
-> This conceptually reverts 397d30e9401d2da96dbdf0ce49805d6d4bb68833.
-> The discussion around stubs in that commit does not appear to be
-> important to the current state of the codebase.
+This is done by increasing the maximum buffer size that is worked on.
+From 1 byte (master) to 512 bytes (first commit) to larger than 512
+(adma commit).
 
-Can we figure out why Paolo's change is no longer needed?
+Testing on my system with fio I see the following rough performance 
+values in MiB/s.
 
-Discussion back then:
-https://lore.kernel.org/qemu-devel/37942764-b3c8-1ac1-5121-894ada7300f2@red=
-hat.com/
-https://lore.kernel.org/qemu-devel/1477326663-67817-1-git-send-email-pbonzi=
-ni@redhat.com/
+              read write readwrite 
+       master:   6     6     3/  3
+ first commit:  51    43    23/ 23
+second commit: 392   180   144/143
 
-> This makes the error_vprintf() impl source file match that
-> of error_printf(), and also match the header where it is declared.
->
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+Tested on a 2GiB raw image with:
+  fio --filename=/dev/mmcblk0 --direct=1 --runtime=60 --time_based --bs=128k --rw={mode}
+
+The adma values are somewhat unstable but always >100MiB/s, I'm not sure
+why but I guess it has something to do with the host side caching.
+
+For erasing the third commit changes the erase operation to write zeros,
+as indicated by DATA_STAT_AFTER_ERASE in SCR.
+
+The fourth commit allows erasure in large blocks, to speed it up
+significantly. Erasing 2GiB now takes 0.1s instead of 26s.
+
+Signed-off-by: Christian Speich <c.speich@avm.de>
+---
+Christian Speich (4):
+      hw/sd: Switch from byte-wise to buf+len read/writes
+      hw/sd/sdhci: Don't use bounce buffer for ADMA
+      hw/sd/sdcard: Erase blocks to zero
+      hw/sd/sdcard: Erase in large blocks
+
+ hw/sd/core.c       |  16 +---
+ hw/sd/sd.c         | 277 ++++++++++++++++++++++++++++++++++++++++-------------
+ hw/sd/sdhci.c      | 102 +++++++++++---------
+ include/hw/sd/sd.h |  13 +--
+ 4 files changed, 277 insertions(+), 131 deletions(-)
+---
+base-commit: e7c1e8043a69c5a8efa39d4f9d111f7c72c076e6
+change-id: 20250912-sdcard-performance-b4-d908bbb5a004
+
+Best regards,
+-- 
+Christian Speich <c.speich@avm.de>
 
 
