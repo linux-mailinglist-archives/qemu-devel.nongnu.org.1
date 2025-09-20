@@ -2,133 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014FBB8D164
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 23:05:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78412B8D251
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Sep 2025 01:47:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v04kR-000329-8X; Sat, 20 Sep 2025 17:03:59 -0400
+	id 1v07Hj-000509-JN; Sat, 20 Sep 2025 19:46:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohd.akram@outlook.com>)
- id 1v04ck-0001bq-2u; Sat, 20 Sep 2025 16:56:02 -0400
-Received: from mail-vi1eur05olkn20826.outbound.protection.outlook.com
- ([2a01:111:f403:2e13::826]
- helo=EUR05-VI1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohd.akram@outlook.com>)
- id 1v04cg-0000oM-F6; Sat, 20 Sep 2025 16:56:01 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ixPWYkYIQJgY1gfYfbYc8fnlea5S4yFQnUhk/dpLnL6jv0lTIeh7H8pTq6We+2crAjerXcZ8KTv2XVgmwUymEalTWF8uuY7oYeaMBxEoFzNWXMt7iTlvNQjmQG5yGzaXZlwKabhDcpXBZwcJxftZoDFiApsw3fb4EikR5g6nDrSwBJrB45UiXl2KrAJfPtidoyHBIyh6gybTrFpLTJrzntPHRdbNoyQG5VbzEkNZ/igNPMRVUffg39AiWv3EIUV+LnX1ocdf+b3rFYDSbDt+ELm6yLkkclKSBOFXWrRjDn1EszSXDymQ1g4CDsq4YXePVjUX8Jse+f1V7jQMmfDrRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C50+YBAca4uj7mjCMI3YXyQMp5e4tnkeCUwNIPLyjKI=;
- b=MkVL3PdXAkRqej0n+saOu6DDVLkR4TbCHft3YqTF9a3St0bGoJwJdGTUk1dz0tlh7eBurGZYEYEBPPoykV41/T09lrVXybNHaWSFZYK6lEaoB75WQWkhvF2imkFyJ1RiHZDPFz73nYwbzzeg89l+FmV4szhwW9EU8SY0dvcYMeVE17s5DDYxaquJxFefXe0FGrj6buLVM0v6af28/PdCzhtwP5jUIRKh+OlhuWpZooq1za0eSz4ZZN9xXpdPmogBHiL0lgWO/MZj0VUxvVidrMQPNZUypsYsfjk9kYZFIvQuiItYoqtpK5Rhre5rqH2XJzdNaFxAAmOkMfIurcY0Xg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C50+YBAca4uj7mjCMI3YXyQMp5e4tnkeCUwNIPLyjKI=;
- b=qXBOKywvhr0rNshyCVWXTvl0nNr/fUg3NITh9GLl1/iFKoyPYjU00yMzYCJrzNOXLsC+y4KL3rMVZVjUvOhOR6l2jAeiAbuf7W34i5GHxyx2QalgmQKS2dm3Olr1Zt/rTrBpgvMtbkaqpx5SgJklDIz6j2EOOY8rpOKcTJuS/nxXUtO5uMoZlJmkT5q3/9R3iDohEg0GY81iwD9dMbfIx/IruwanId7d/bd7lh8R9W/4TsgYvZInmhxcPS9xjNlvBF32LzE6cUc5fo/zI2iK1INWZi5/S20kAEUEcLFVs18gmqYUM2O16CvR17fFMjAQ/NbyZ7r4MzcuYpMR2EIfEQ==
-Received: from BESP195MB2851.EURP195.PROD.OUTLOOK.COM (2603:10a6:b10:eb::11)
- by VI6PPFF2B97355F.EURP195.PROD.OUTLOOK.COM (2603:10a6:808:1::12a) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.16; Sat, 20 Sep
- 2025 20:55:53 +0000
-Received: from BESP195MB2851.EURP195.PROD.OUTLOOK.COM
- ([fe80::b263:ce33:cd7d:676e]) by BESP195MB2851.EURP195.PROD.OUTLOOK.COM
- ([fe80::b263:ce33:cd7d:676e%2]) with mapi id 15.20.9137.017; Sat, 20 Sep 2025
- 20:55:53 +0000
-From: Mohamed Akram <mohd.akram@outlook.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "qemu-trivial@nongnu.org" <qemu-trivial@nongnu.org>
-Subject: [PATCH] ui/spice: Fix abort on SPICE client connect
-Thread-Topic: [PATCH] ui/spice: Fix abort on SPICE client connect
-Thread-Index: AQHcKnD0sTCpeqXnxUygP65JBgo1dA==
-Date: Sat, 20 Sep 2025 20:55:53 +0000
-Message-ID: <A759ECC2-6B53-4B3E-A005-7D06BA403FCB@outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Apple Mail (2.3826.700.81)
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BESP195MB2851:EE_|VI6PPFF2B97355F:EE_
-x-ms-office365-filtering-correlation-id: 5253937a-6249-48e1-125f-08ddf8881699
-x-microsoft-antispam: BCL:0;
- ARA:14566002|8060799015|19110799012|8062599012|31061999003|15080799012|461199028|39105399003|40105399003|51005399003|440099028|3412199025|102099032;
-x-microsoft-antispam-message-info: =?us-ascii?Q?RoXRwdq2A9w1+kRvMYX4pwZkKEvnI1SNBWMQcI17nMAEKMvVghFsHKktdZ7I?=
- =?us-ascii?Q?FKHoGIyz+m+zzvZV0SBM/dR7cbEeVMnfUUHMx+oikhUNTxWdPWB3l4k1Rte/?=
- =?us-ascii?Q?OdEWCTk31jw8XtbE7SlabeCIBgz68Kjwye845hqB8jqUDLtzpGfCfNAiOPb2?=
- =?us-ascii?Q?wAMtWAV5ELqhrcVYm+82D+P7ICDaYbUuAe1YvFrGSumgwU8vVnQyd2vFju0X?=
- =?us-ascii?Q?hezqC7mk6/vmcgTi8bcd4kQoj2gZz+jDH0sCjZv5g+ZFxEQtD/2h5/glaZg/?=
- =?us-ascii?Q?sW6iDR+cbHLk4z4cmw1I2fKMaz0IGPJh9Xza00ZursQt8msehTI3b0tAAZ8i?=
- =?us-ascii?Q?c6G56E+d8MNygFaGp8OSCcQHs5Ujxr2SXExc4BLknOZF+LX2wMNfvTy6txcy?=
- =?us-ascii?Q?GjEav3awjONtRzVCMuKTFwIkKpht4nBXreVbcXXgPG18nUsXjK7xHeahs/Oc?=
- =?us-ascii?Q?XNcGRwZN5LTLRcFXOpRq0p1IWyWCIPrj6HTYwGLDMfBFFSiT6g2WScgPViZt?=
- =?us-ascii?Q?mZWH16qDGT8AXCdhcrAt/YS87PzL+9qJvl5ZQH9HOc61b4WnPVPXinJWzPB1?=
- =?us-ascii?Q?0qCVoM2Jq7hRVsJEWZccujjqxrSxGb5Aba/4Ztt24+hJCKbkarnDaoNWSNXq?=
- =?us-ascii?Q?EDMfJ0MNawcRwSUmGkj03CZsg34NVppv80EXHj0W8eqBg65Dw2ZhPxk1R9eS?=
- =?us-ascii?Q?wbwLmbEmrvsb+3FBc0Jr+7KnSJEKAVufHuqGIcO4dNUbjlWzokehzvcY+j9C?=
- =?us-ascii?Q?XOSqwhXwozKPDxvx/qhiIPpkIM/5Yg87tNxoH4Y2RJ1byQ/BCyO0Su0ws4n1?=
- =?us-ascii?Q?G7QJvC8FLNGuOxLQu7l0figuKLdQRiNDqFBGZGdp7+ODBtiRrUXiTsfv92eV?=
- =?us-ascii?Q?MpR5GmWRTNUVm1aW5+X8qghV3J3d41Wk3hc0M+r3WkwrXs30XMmMH+fyoykD?=
- =?us-ascii?Q?4jMaKQaEqM0IsQK2G5lWWpuT6mJ+jcJNMjBJAF+VESzOG6pE/r+Tm0VCafZz?=
- =?us-ascii?Q?vmGdShIQcDIMBMh66SJ+1plyKSy0DVcPzsn5+m5d9OsY+ZSs4xp1hNirzRjT?=
- =?us-ascii?Q?6cKhsZoAOe9TdKFYGWsRBaFhfDTZ8MPFwRKnfVVoB5y0am5vSpb8EXefYrpO?=
- =?us-ascii?Q?lFa2fTNXcFF+xvhALmI/rlivrqaMIa44Eme4Qnh1cQF4Voby5lBD2AvQEnJg?=
- =?us-ascii?Q?uo+SNtkuy54QoF3VgLmALprqAzA0lEshbazKRg=3D=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?/wKylZ5HhmsktGwMrlP20d8CSOnarp9IVFCPYf1vo51O3fSw6dVJyPzaxNS0?=
- =?us-ascii?Q?2Mj2VR6O1JmZeNBSrnE4psKB5ZpiCNDHrl8kEy2ADwXg/80Prh8AyXEdZqoI?=
- =?us-ascii?Q?+tiW1FPfiuLju2TKZVN1lOHSRm9cpny9oKnWLItrfdYDb5XSKrrMYRkJuRTX?=
- =?us-ascii?Q?uA5Y/7LVUEo0XVYMAUZP99yJ3Kfdl1q5x3uhBVRU9hmQE4TvjxMy+NVHjJ3i?=
- =?us-ascii?Q?rbHyqZWeol85gpFEQbuU/M3EvvW5w5dEKNgUKf19vLeTOsUz9eEsnUNs2Z/g?=
- =?us-ascii?Q?JqBpTcF2NeD1UrWKcifpBSx9X579ZxkGLceUcLZPbrUFoegIYEZ50Rcteife?=
- =?us-ascii?Q?HOI4mBBB10VoM6J+Pc6B8vjtvmc+MwanXBi2ZYNXjRN6t4VE7p6zKLYX+2Bn?=
- =?us-ascii?Q?2FptciWv/AmYzxdZx6U3D6OXjID1uHIaVtA9M+0N/qpzFNixUPvM22VC8Vda?=
- =?us-ascii?Q?iIMjqte+vYSDu8WXRtcu0NlopSMFcRX4HirIO0hFKa03K06GeR0L1S368Xlf?=
- =?us-ascii?Q?giYEyehttEMVTZR5oL4Wp0u3NOsvaYhGwSPmSjgZ1hOdt7cLsIL+dDTRMgW3?=
- =?us-ascii?Q?XRZzTEYZW30O2Nic0IT5scqiVvQMAr9TrewGWH5IAS2IMwFiH1RH0GOY7UKI?=
- =?us-ascii?Q?nQoMk+pbadlPfKtVEmzIaJGQBfWEnJ3DyFyPDZ6zIS6ydpLb71o1WGhSNApT?=
- =?us-ascii?Q?5hyOAcq6WVVrZcQBaVHaqu+w4ghop3M/yyjAopc3FnPhTr2leCO983OethmD?=
- =?us-ascii?Q?7GaL9keeqc1g9QMwurNWHRObSydjYpyUpEhojhVX74NDF5y84ood9ziCDdes?=
- =?us-ascii?Q?X1WBg01pTDV9+7o6xsmW/lvMGp0A3s3oaFlPfqooEUV3/KcvuvIfVUaG6RGy?=
- =?us-ascii?Q?15U0nMAQwafJ1HXYUkNYcGjfZIeEpc6MSIOTTVPk/sVSR5IKAryXgkm0znrT?=
- =?us-ascii?Q?RDuFpFsQmd2PS1RtR8Snj21nJdFuL9U9oCfhl3b92Nmas6Q+ImT5JSGhLzB3?=
- =?us-ascii?Q?eK/KC0rO1nhl4+iLhPhIHrYivAWVADFbO48UXR2lg0R06QTWWWVNyZLpLCZB?=
- =?us-ascii?Q?leCxoTG8N/RBroIj3vG0m+xo9dVCsoqSERqh0aH6lLYrZ9fJVYrtECog3I7p?=
- =?us-ascii?Q?hBB7bHJKFeFR2y4xLqey4mom0sQxSvaDaRYHrZKpaiIYcG+2wKT2bnJNsDrs?=
- =?us-ascii?Q?+drrWdKU069eCnS1azr4zxeNhwJpulqCN3VBVD4VpDg4KlfjAU9l6qTY4pk?=
- =?us-ascii?Q?=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <6980DC5B5712FB4790C66D7C16069D9C@EURP195.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
+ id 1v07HR-0004Z1-Do
+ for qemu-devel@nongnu.org; Sat, 20 Sep 2025 19:46:18 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
+ id 1v07HL-0006eV-Pt
+ for qemu-devel@nongnu.org; Sat, 20 Sep 2025 19:46:10 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3f0ae439bc3so936155f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 20 Sep 2025 16:46:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1758411964; x=1759016764; darn=nongnu.org;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=X9w++XI6kuMpT/GrEdzmaBxMvxDieHeJG+/Fi0Z+ZQo=;
+ b=ZzMW5mOfZfo7312SREkR13B48AGcpJpKJblFX+S21VlK4o/6G4XR8BqnRd5SqkrAK7
+ 8d9lkGKSBPrAnzXdoPZg+IDOQaeq9sha7wdFxhDWPPZ83/uchEGGiI6Am/VAaWmKxDqg
+ NZh5ATPea9/dQz9qksxNdxpRqfZAb5eZYUCE+15b+AKuXyRP0QhwdBYUDCK9ubDUpD6G
+ cdAwROc0WlJ4YVyKXBczlLj4bKxnC0mk3N3Yr4UqEojjfZz8zYFzIjhsnl+6jnR2ssq1
+ BpwuVGtH8KQkYAlq5c6A//wosS4gvnKVVS5hA690lu8Vm9GC/U0totviBaMpjEJCFLZM
+ qLEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758411964; x=1759016764;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=X9w++XI6kuMpT/GrEdzmaBxMvxDieHeJG+/Fi0Z+ZQo=;
+ b=N2yv5YreiEfXTylcQSFaVLLEW5gqVyhIgUQDM9zsV+Z5rXxwtSsBYOf+ymz+9gdIYt
+ HonvQ/g93cF4UGslgLjBMHpXJM6IC2XQ1yjUVq7rQn2oDPjYUcH3qoUeEjyDavJySC6i
+ NrF+vn7vkkvl3aVjDkutoTo7K94C5L/tzsCbljfY+pkvBirUz/Fm87oXdgF1oUXKqg6b
+ gjH+hsa4X2LY7INZ1Qv2iA0YPdHFtCarrq3cRiXuc3cQ933hmGZBzTqHlnErO1tesT21
+ aE5L5G3Gbve0nbaqqlT6g8/kGjL6lrkY1DDXqvPXTkDlrxXOvUFfNvDQ/0A47A8S0XJ9
+ tuiQ==
+X-Gm-Message-State: AOJu0YxTvXeO+h3WTzPMSc8oRA/2gEEumP0ADgk6wYhpm+5QYU/efIiF
+ WQBlbbpeJLwFigtizfY1l1kHT74HdsHAoWF/vWmoYclrj170OPHWxYSF
+X-Gm-Gg: ASbGnctzv3+PG66wO1+mblb6pPK+6QvL7BgKcUSzRk2HPE47txNIAKp0LvqtjpoHsdU
+ Z0SKeRpbNCAj5X04v4Ni2U9fjQWxmjVqfpsXTVf0lFsRIU19iGZ/T0NIBrcyXEocSG3xs6SiZdh
+ DO9Ntd0qwnP8AXIvzmwuYUVdOCAWweTuWQF7wLxFndW4try1J8LMV/A4Oft1jbAYfYv/+gEQgeg
+ B+c5wz0ct42+GdWM/vGZNSnjDt45mSo45H1urZ5oarSpYpVW4R4nzUeCaUd0IwTXqUe+xH24IMZ
+ wccWPmesaT0kIEeAd6+ZYQy99yhsfncnjvKQtw7Zzv201+8XiFeTNv9xiGKpSffb5VtqX/Cly2i
+ A2/AmC99BlKTd8+RzftsjYtlrzgoERalD3V6fK6vRYuCnu5/Ylj8/
+X-Google-Smtp-Source: AGHT+IED3AWMCQbGAWiWzH/oThqA02hy/2UqEByCN0SmTju+gYhsIIZzewKbE+bGT/h87gXtMQWwAA==
+X-Received: by 2002:a05:6000:310f:b0:3e4:b44d:c586 with SMTP id
+ ffacd0b85a97d-3ee8472b5e6mr5913028f8f.34.1758411964279; 
+ Sat, 20 Sep 2025 16:46:04 -0700 (PDT)
+Received: from localhost (mem-185.47.220.165.jmnet.cz. [185.47.220.165])
+ by smtp.gmail.com with UTF8SMTPSA id
+ ffacd0b85a97d-3f95c5cdaaesm1699726f8f.4.2025.09.20.16.46.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 20 Sep 2025 16:46:03 -0700 (PDT)
+From: Filip Hejsek <filip.hejsek@gmail.com>
+Subject: [PATCH RFC v5 00/12] virtio-console: notify about the terminal
+ size
+Date: Sun, 21 Sep 2025 01:45:30 +0200
+Message-Id: <20250921-console-resize-v5-0-89e3c6727060@gmail.com>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BESP195MB2851.EURP195.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5253937a-6249-48e1-125f-08ddf8881699
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Sep 2025 20:55:53.4431 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI6PPFF2B97355F
-Received-SPF: pass client-ip=2a01:111:f403:2e13::826;
- envelope-from=mohd.akram@outlook.com;
- helo=EUR05-VI1-obe.outbound.protection.outlook.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJo8z2gC/3XOQQrCMBQE0KuUrP0lCT9t40oQPIBb6SLG3ybQN
+ pKUopbe3VoQ3LicgXnMzBJFT4nts5lFmnzyYViD2mXMOjO0BP62Zia5VFwLCTYMKXQEkZJ/Eej
+ CohTIr4ZXbB3dIzX+sYEXdj4dWb2WTQw9jC6S+VqcF1KLAjmKHEupZAUChuDQpXRoe+O73Ib+A
+ zqfxhCf28EJN/bflwmBQ6mlIkQ0jcUfqV6W5Q2zzma07QAAAA==
+X-Change-ID: 20250912-console-resize-96c42140ba08
+To: qemu-devel@nongnu.org
+Cc: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>, 
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>, 
+ Szymon Lukasz <noh4hss@gmail.com>, Filip Hejsek <filip.hejsek@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758411962; l=6043;
+ i=filip.hejsek@gmail.com; s=20250912; h=from:subject:message-id;
+ bh=/97Xcv5n5W+LYdTzUhdyogIyz5NuZYmhA+kWsYjVj5U=;
+ b=gkdCnxU0xzGReEIc/naeyrBz4yaPQyozD7pfJjneLEoW7lLEBgGsXq+6/3ATtdwVczOrl2Qnu
+ qFHQqCcWFghDawjU1ouWNIymTRGRXWrCmfXLyKOLgz2n9VatAE1l5S2
+X-Developer-Key: i=filip.hejsek@gmail.com; a=ed25519;
+ pk=nakB8gEK3oi+Q/5dBTMCy/LgZL47NP60z1jeDR6O/WU=
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=filip.hejsek@gmail.com; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sat, 20 Sep 2025 17:03:56 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -143,29 +118,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The BQL is already locked by the main loop, so avoid locking again
-unless needed to not trigger an assertion failure.
+The goal of this series is to have a resizable terminal into a guest
+without having to set up networking and using, e.g. ssh.
 
-Signed-off-by: Mohamed Akram <mohd.akram@outlook.com>
+I tagged this version as an RFC as we still need to wait for a decision
+on the swapped rows/cols issue by the virtio maintainers, so it cannot
+be merged right away. I would still like to request a review especially
+for the two (small) 'vc' chardev patches, which are new in this version.
+
+The virtio spec allows a virtio-console device to notify the guest about
+terminal resizes in the host. Linux Kernel implements the driver part of
+the spec. This series implement the device part in QEMU.
+
+Terminal size support is added for stdio and vc backends. It would make
+sense to also add size support to the pty and serial backends, however
+it's not possible to receive resize notifications for tty devices other
+than a process' controlling terminal. For the serial backend, it might
+still be useful to query the initial dimensions. (In a previous
+discussion, only the pty backend was considered, where the initial
+dimensions are useless.)
+
+The 'vc' chardev changes are incomplete, because this chardev has
+multiple implementations in QEMU. This series contains adds size support
+to the generic and gtk/vte implementations. I think I also need to add
+a spice implementation, please let me know if there is anything else.
+
+I would also like some advice on how to test resizing the virtual
+console. I tried resizing the window of the sdl backend, but that didn't
+change the dimensions of the console (instead rescaling the console
+image to fit the window).
+
+This series also introduces resize messages that can be sent over QMP to
+notify QEMU about the size of the terminal connented to some chardev.
+In the libvirt setting, it will allow to implement a resizable terminal
+for virsh console and other libvirt clients.
+
+For a long time, the Linux implementation of virtio-console had rows and
+columns swapped. This was fixed in Linux 6.15, but older versions will
+interpret the dimensions incorrectly. There are two ways this might be
+resolved:
+ - It has been proposed to change the virtio spec to match historical
+   Linux behavior. If the change is accepted, the fix would be reverted
+   and we would end up with only two or three broken Linux versions.
+ - Alternately, the Linux fix would be kept and backported to LTS
+   versions.
+
+In any case, users of broken Linux versions can disable the feature
+using the console-size property.
+
+Thanks to Markus, Daniel and Max for their feedback on v4,
+and to Michael for helping with the swapped rows/cols issue.
+
+v5:
+- rename chardev-resize -> chardev-window-size-changed
+- improve chardev-window-size-changed documentation
+- add partial implementation for 'vc' chardev
+- config space now returns port 0 size if multiport
+- console-size property completely disables size support
+- fix misnamed variables in char-win-stdio
+- Link to v4: https://lore.kernel.org/qemu-devel/20250912-console-resize-v4-0-7925e444afc4@gmail.com
+
+v4:
+- changed order of rows and cols fields
+- added support for terminal size on Windows
+- trace event is also emitted for legacy (non-multiport) drivers
+- minor fixes required because of changes in QEMU (DECLARE_INSTANCE_CHECKER, qmp-example)
+- updated version numbers ('Since: 10.2', hw_compat_10_1)
+- Link to v3: https://lore.kernel.org/qemu-devel/20200629164041.472528-1-noh4hss@gmail.com
+
+v3:
+- add resize messages over QMP, as suggested by Daniel
+
+v2:
+- fix adding a new virtio feature bit to the virtio console device
+
 ---
- ui/spice-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Filip Hejsek (3):
+      char-win-stdio: add support for terminal size
+      ui/console-vc: forward text console size to vc chardev
+      ui/gtk: forward gtk console size to vc chardev
 
-diff --git a/ui/spice-core.c b/ui/spice-core.c
-index 5992f9d..31c31f2 100644
---- a/ui/spice-core.c
-+++ b/ui/spice-core.c
-@@ -222,7 +222,7 @@ static void channel_event(int event, SpiceChannelEventI=
-nfo *info)
-      * thread and grab the BQL if so before calling qemu
-      * functions.
-      */
--    bool need_lock =3D !qemu_thread_is_self(&me);
-+    bool need_lock =3D !bql_locked();
-     if (need_lock) {
-         bql_lock();
-     }
---=20
-2.51.0
+Szymon Lukasz (9):
+      chardev: add cols, rows fields
+      chardev: add CHR_EVENT_RESIZE
+      chardev: add qemu_chr_resize()
+      char-mux: add support for the terminal size
+      main-loop: change the handling of SIGWINCH
+      char-stdio: add support for the terminal size
+      qmp: add chardev-window-size-changed command
+      virtio-serial-bus: add terminal resize messages
+      virtio-console: notify the guest about terminal resizes
+
+ backends/cryptodev-vhost-user.c   |  1 +
+ chardev/char-fe.c                 | 13 ++++++++
+ chardev/char-mux.c                | 18 ++++++++++-
+ chardev/char-stdio.c              | 30 +++++++++++++++++++
+ chardev/char-win-stdio.c          | 19 ++++++++++++
+ chardev/char.c                    | 26 ++++++++++++++++
+ hw/block/vhost-user-blk.c         |  1 +
+ hw/char/terminal3270.c            |  1 +
+ hw/char/trace-events              |  1 +
+ hw/char/virtio-console.c          | 63 ++++++++++++++++++++++++++++++++++++---
+ hw/char/virtio-serial-bus.c       | 51 +++++++++++++++++++++++++++++--
+ hw/core/machine.c                 |  4 ++-
+ hw/ipmi/ipmi_bmc_extern.c         |  1 +
+ hw/scsi/vhost-user-scsi.c         |  1 +
+ hw/usb/ccid-card-passthru.c       |  1 +
+ hw/usb/dev-serial.c               |  1 +
+ hw/usb/redirect.c                 |  1 +
+ hw/virtio/vhost-user-base.c       |  1 +
+ hw/virtio/vhost-user-scmi.c       |  1 +
+ include/chardev/char-fe.h         | 10 +++++++
+ include/chardev/char.h            |  7 +++++
+ include/hw/virtio/virtio-serial.h |  5 ++++
+ include/qemu/main-loop.h          |  4 +++
+ monitor/hmp.c                     |  1 +
+ monitor/qmp.c                     |  1 +
+ net/passt.c                       |  1 +
+ net/vhost-user.c                  |  1 +
+ qapi/char.json                    | 30 +++++++++++++++++++
+ ui/console-vc.c                   |  3 ++
+ ui/curses.c                       | 11 +++----
+ ui/gtk.c                          | 27 +++++++++++++++++
+ util/main-loop.c                  | 21 +++++++++++++
+ 32 files changed, 344 insertions(+), 13 deletions(-)
+---
+base-commit: 190d5d7fd725ff754f94e8e0cbfb69f279c82b5d
+change-id: 20250912-console-resize-96c42140ba08
+
+Best regards,
+-- 
+Filip Hejsek <filip.hejsek@gmail.com>
 
 
