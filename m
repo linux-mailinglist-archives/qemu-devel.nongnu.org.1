@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33CBB8CA1C
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 16:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CEB5B8CA30
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 16:07:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzyAr-0006a4-3R; Sat, 20 Sep 2025 10:02:49 -0400
+	id 1uzyBQ-0006zm-8d; Sat, 20 Sep 2025 10:03:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1uzyAm-0006YE-LM
- for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:02:45 -0400
-Received: from p-east3-cluster4-host6-snip4-7.eps.apple.com ([57.103.84.60]
+ id 1uzyBI-0006sN-5e
+ for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:03:16 -0400
+Received: from p-east3-cluster2-host10-snip4-4.eps.apple.com ([57.103.87.225]
  helo=outbound.qs.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1uzyAk-00086I-Ff
- for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:02:44 -0400
+ id 1uzyBE-00088D-CU
+ for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:03:15 -0400
 Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
  by p00-icloudmta-asmtp-us-east-2d-100-percent-3 (Postfix) with ESMTPS id
- DB56018172B4; Sat, 20 Sep 2025 14:02:38 +0000 (UTC)
+ 99F8E1817068; Sat, 20 Sep 2025 14:02:51 +0000 (UTC)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=X4HLxeIyHK0KKw8PIa5chPyq98xB5PG+vYgn4ck2iWM=;
+ s=sig1; bh=l47ShR3yc+s9lDuu6R+V9xY1Vhd6/20jPB9AbLb/Opc=;
  h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
- b=M+eZPXatDK6dooXdjidHzsI7suwSUiy40ecGxQ6u8oKEatcyFFSwx+gGj5fgmRiGMbm99W7S1c2/GuQ+gBZileH7MOsTNyapgVZyDO0UDTTLDlphep33KGS/VRVbvQQllEZaA5xICxOUQL1csmp88Tk8QfjFpVzK7zOe1dBqJYPHa3A+viROMw1ooVYCfOoyTfEBSRlTK+QSuGVaE3M18xO52Owkv8qy85JiQuVAQWqxX1lvV2XwboiSo4K1QtfNrRaBMPrpAP/3kOJfBcxAn8I8AD98Ng29Cmq2sq8OgvwFUbXNIQGwgwqrw5VghDnSjKV18BZ4yGdLXeotwyd4/g==
+ b=P1Ep/XbtyG6MWCl8xubUmooiDOMSyX7plVQRztwD04tTilok6Eh33T5+rdGqLNpwATjA6fmSx9sVcuD6xs90BW2h3m6EybKKdb7p/VE3D7+Mh+8IMuPpccAx41aIqtgzx+2festmLrW1L+5uF97eaCrDlabflnGFu2r0q/IaKqMreTk+8hh/N9npqrLDx2yYDfefEygpJ97Z09Aj3s6u8fmtUK+ZmUq16jPFm+MrAppy40NBMnxeQV2w7nSbJ9RV6x8kZxAsC5QO7DSDhrSJdcpMJkYJKizf/MJycplvV1Tr6E65JBsAenPmwTPZ/R9j9vy4w4aU84zvXBUuGCR4BA==
 mail-alias-created-date: 1752046281608
 Received: from localhost.localdomain (qs-asmtp-me-k8s.p00.prod.me.com
  [17.57.155.37])
  by p00-icloudmta-asmtp-us-east-2d-100-percent-3 (Postfix) with ESMTPSA id
- 36FD1181723F; Sat, 20 Sep 2025 14:02:03 +0000 (UTC)
+ 058B918172D7; Sat, 20 Sep 2025 14:02:14 +0000 (UTC)
 From: Mohamed Mediouni <mohamed@unpredictable.fr>
 To: qemu-devel@nongnu.org
 Cc: Shannon Zhao <shannon.zhaosl@gmail.com>,
@@ -52,31 +52,31 @@ Cc: Shannon Zhao <shannon.zhaosl@gmail.com>,
  Mohamed Mediouni <mohamed@unpredictable.fr>,
  Peter Maydell <peter.maydell@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v6 12/23] whpx: copy over memory management logic from hvf
-Date: Sat, 20 Sep 2025 16:01:13 +0200
-Message-ID: <20250920140124.63046-13-mohamed@unpredictable.fr>
+Subject: [PATCH v6 16/23] hw/arm, accel/hvf,
+ whpx: unify get_physical_address_range between WHPX and HVF
+Date: Sat, 20 Sep 2025 16:01:17 +0200
+Message-ID: <20250920140124.63046-17-mohamed@unpredictable.fr>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250920140124.63046-1-mohamed@unpredictable.fr>
 References: <20250920140124.63046-1-mohamed@unpredictable.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: OB2_HxLxhkWt_Zf1hZaQ5q2X-v-n2YSg
-X-Proofpoint-GUID: OB2_HxLxhkWt_Zf1hZaQ5q2X-v-n2YSg
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDEzNiBTYWx0ZWRfX43YlDBBnGfsH
- qnsqcL1V3f8DmuCOXC2t20nr97pGXEPjvJuci2tJlQ+IsFSOulVXi5TtGjEYJ04DFXXl8bxyyrk
- e/6ltmb/1YQXJeurw0xFm64Ogn0Iw2ffhA1I5dFuoRbc9asKwhXGSpPwtGOFRyRd1r76oDybEyn
- Pg/E1hi0xsb9OmvB3H93MtlPu7mpMNd6v/Q3sf2yMEqApSPO0DTPxb1VnO2N0Q6Uzz24AFOE9+/
- RpGuW/fAH0DloCUV9MJt1z45TCToSNmeH8FerW4m+52qn5QTsB7H1WWBdELKczz8XVqmev7l0=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDEzNiBTYWx0ZWRfX6cKorakJhLF/
+ HG3b5fNKtOd19M+bBQzfmioc7I9h5JoPxN6eH5aLysIGTZG+8AiQ3U7zAmfA8FN+LphErQqTNe3
+ 2QJ23vqHmAw2d/0kC+F3UsNMAMQcQslxqVv8I2v2WldLbHkec/7IYFuqeTKgnJBBxVAz/JnteUh
+ Ez+f5mv15awnxERMGa7g3jkymhnl6QIyiZGJFYRvPbcVrXv+XVrGLxypTw23v8e5i1nWP+u4J7T
+ 4GSl7MASgSrVfD1f8UHV1k2DksIYXNN3jrcuHWa6TGB73G0jzX/rRfXYh3xSXJU213OMeqGx8=
+X-Proofpoint-ORIG-GUID: cmUXp0vwt5Z4qa6CwC3Cj9BNtQYvndZd
+X-Proofpoint-GUID: cmUXp0vwt5Z4qa6CwC3Cj9BNtQYvndZd
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-20_05,2025-09-19_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- clxscore=1030 adultscore=0 mlxscore=0 bulkscore=0
- spamscore=0 malwarescore=0
- suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.22.0-2506270000 definitions=main-2509200136
-X-JNJ: AAAAAAABwM2bhCChUwdI4245QmSxe0GBo/Xycar3qbthOz5XAllHbX8vyUd2twdcTA2nuzG/Wh+uMyJl0VBJjgG1leJakIeEYLGfiBmul4dY/vITnxdM6N6ktGj14A1YEaWz+Kz0zEzCtAuSUi7xvJbailxGC8H6kd5YRwuh+54yoQE0oisFC+LQ5778PuHArX6Ba8xHYygTJDRUwuR8ThsjTC8DFEmGfAxqgbErJiNNOM/qFgujz6GwcOTV102A2uUOPpJnbQbf9ZTVeQ8Uo5/AXzcLQGNSyI3eG+0i0MkeU4PAFizhyxN35od1MF9SLKePclrMQsivpTRXg+CcY/56SWox1JbSYy6GbfRDnVXj6RU4oDwUpdVI4qNHa55w6QlqralnDNfVpVbU0aOlHJkLoMceunLCp7oQtx/6Ee5bPrX9mN8nulmY3eDNgBFGOsEZL3kpddUYBgxXzCI629nEKiuPKozBPvEb7FfTvINqLwCWRswrhYwo1AU/wgiRUQcSeThb/nJt6oKHpWstYsC0sqAmsHb2HmJ6hPIcTGPKW4Ksb3BUrbiN+6NWDBAFn5sYG4B6q/+tTfm5gOMF1Dq5v8wNmOUTsdZRWwI9+OgaIeapkIEtlTHygg9Vo3lD9mOkVzMtoe8vRTXaoKs+UdXPMfKK11QTTf/rkdSrcr9lOkuhQ/XkhzNIzPgDM1n6Xat2iNEviOnPwuxoQs1xDbBtsHdENjr3d1fWQpRARybBlPnJaieraawsJ2z42ZX2nsaTE4K0Wt/Ca3Ia8R4KS6cY7IOa+guFYEUQJ+Skaouj3LWzGSl2C+6HH8anbTMvYYipCYRxn88FnO8drU6jE20NJhEMmos7K+WZGVC/WbwuydQ7bYf3NUVFCYYGDbaH9boEyeqqZSc0oOrZOH8dBXCsOEwh
-Received-SPF: pass client-ip=57.103.84.60;
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ mlxlogscore=999 malwarescore=0 adultscore=0 mlxscore=0 suspectscore=0
+ spamscore=0 clxscore=1030 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506270000 definitions=main-2509200136
+X-JNJ: AAAAAAABE2loG5JZbXg/q7OCiGHoEfilORGrA0BIKu4MY+vFFfObt97A1jQGhHIF7dZelpAkVHHHH1p2Lw6JKDgeTMHXqzhEAynSBx7xUGhb8/fJ0mVmJWnJQDWoyKVSN+Jhz8qaw4z9o0Mrr7hPnJ7GmPCO9Xw9u3p3n0xblNcaXSSeRtwEajKcRFqnxauxUgOGPkzMFZnEW3BKWLuuqOLSc9WWZ4Mo4PN/R8Sa2Q/jo8FUb4RP3/8+JkQGQElbyWs1n2lyBNMnA+5XDoukRcPNyEOgynxECZn6hlZyROpp+I2K+yut/LUd7pPsyhD4+uolf6jjk/rP8X9CsdIZQM8T1FRWS5DpTO8RtpmaT1APLdiFDrIqR4OjYnQbbHd4+isc1A2skrCVeULGiSfed3WPBybkxfMLNrkCJmoH3DlArKCkMeZfAP0j+nVmWHw9dC7BNm49n6BiErS6urJ+h/I/wQNNa5/IA37UNTfqTjnee2g9sv6cHmafw7mr4fTErK0TywWfBQAI7cvcR46gxUr+DFE4/+CDBYBVbRd/+vCbtDJ5aZfqDgBSbZdQhZuUPDa09XMbRT/tuf6/ik38sJpo9InIEPdJML0pWFWqG2rmys/E9I2pnjNRBYNc2k0SZ81OAKvgQZWUUNWuPOOjpbM0dN5IQTHJIOkZn4I/zeHwr6+uk+o2hcoG9WQ6PTShNsXUzIhUbmLXEufPFSC9EQWpDMnnI6C5eTBKN3AWsGO0FnivRPeR8XThJbh7AoE30Le2ZAmUIoIPk+juhXM0NIRGtkrh5LbPKK5ss6z6nFh165A/6Awm2TjIXk9is+jDg7Hy/BcQx5Alh+JA/UUIpgCz1sRA5+ikKna4nYWx+0B8UD7z7BpdOqHDG6Ll2806Fq9Ne8D4qhZPtzklrNKVjpMQUrnvmw==
+Received-SPF: pass client-ip=57.103.87.225;
  envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,263 +100,264 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows edk2 to work, although u-boot is still not functional.
-
 Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- accel/whpx/whpx-common.c | 201 ++++++++++++++++++++++++++++-----------
- 1 file changed, 147 insertions(+), 54 deletions(-)
+ accel/hvf/hvf-all.c        |  7 +++++--
+ hw/arm/virt.c              | 41 ++++----------------------------------
+ include/hw/boards.h        |  4 ++--
+ include/system/hvf_int.h   |  2 ++
+ target/arm/hvf-stub.c      | 20 -------------------
+ target/arm/hvf/hvf.c       |  6 +++---
+ target/arm/hvf_arm.h       |  3 ---
+ target/arm/meson.build     |  1 -
+ target/arm/whpx/whpx-all.c |  5 +++--
+ target/i386/hvf/hvf.c      | 11 ++++++++++
+ 10 files changed, 30 insertions(+), 70 deletions(-)
+ delete mode 100644 target/arm/hvf-stub.c
 
-diff --git a/accel/whpx/whpx-common.c b/accel/whpx/whpx-common.c
-index c69792e638..f324f5c146 100644
---- a/accel/whpx/whpx-common.c
-+++ b/accel/whpx/whpx-common.c
-@@ -258,89 +258,174 @@ void whpx_vcpu_kick(CPUState *cpu)
-  * Memory support.
-  */
+diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
+index 0a4b498e83..8229ad8640 100644
+--- a/accel/hvf/hvf-all.c
++++ b/accel/hvf/hvf-all.c
+@@ -17,6 +17,7 @@
+ #include "system/hvf_int.h"
+ #include "hw/core/cpu.h"
+ #include "hw/boards.h"
++#include "target/arm/hvf_arm.h"
+ #include "trace.h"
  
--static void whpx_update_mapping(hwaddr start_pa, ram_addr_t size,
--                                void *host_va, int add, int rom,
--                                const char *name)
-+ /* whpx_slot flags */
-+#define WHPX_SLOT_LOG (1 << 0)
-+typedef struct whpx_slot {
-+    uint64_t start;
-+    uint64_t size;
-+    uint8_t *mem;
-+    int slot_id;
-+    uint32_t flags;
-+    MemoryRegion *region;
-+} whpx_slot;
+ bool hvf_allowed;
+@@ -256,8 +257,10 @@ static int hvf_accel_init(AccelState *as, MachineState *ms)
+     int pa_range = 36;
+     MachineClass *mc = MACHINE_GET_CLASS(ms);
+ 
+-    if (mc->hvf_get_physical_address_range) {
+-        pa_range = mc->hvf_get_physical_address_range(ms);
 +
-+typedef struct WHPXState {
-+    whpx_slot slots[32];
-+    int num_slots;
-+} WHPXState;
-+
-+ WHPXState *whpx_state;
-+
-+ struct mac_slot {
-+    int present;
-+    uint64_t size;
-+    uint64_t gpa_start;
-+    uint64_t gva;
-+};
-+
-+struct mac_slot mac_slots[32];
-+
-+static int do_whpx_set_memory(whpx_slot *slot, WHV_MAP_GPA_RANGE_FLAGS flags)
++    if (mc->get_physical_address_range) {
++        pa_range = mc->get_physical_address_range(ms,
++            hvf_arch_get_default_ipa_bit_size(), hvf_arch_get_max_ipa_bit_size());
+         if (pa_range < 0) {
+             return -EINVAL;
+         }
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 1583902305..fd4eaee68d 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -3237,43 +3237,11 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
+     return fixed_ipa ? 0 : requested_pa_size;
+ }
+ 
+-static int virt_whpx_get_physical_address_range(MachineState *ms)
++static int virt_get_physical_address_range(MachineState *ms,
++    int default_ipa_size, int max_ipa_size)
  {
-     struct whpx_state *whpx = &whpx_global;
-+    struct mac_slot *macslot;
-     HRESULT hr;
+     VirtMachineState *vms = VIRT_MACHINE(ms);
  
--    /*
--    if (add) {
--        printf("WHPX: ADD PA:%p Size:%p, Host:%p, %s, '%s'\n",
--               (void*)start_pa, (void*)size, host_va,
--               (rom ? "ROM" : "RAM"), name);
--    } else {
--        printf("WHPX: DEL PA:%p Size:%p, Host:%p,      '%s'\n",
--               (void*)start_pa, (void*)size, host_va, name);
-+    macslot = &mac_slots[slot->slot_id];
-+
-+    if (macslot->present) {
-+        if (macslot->size != slot->size) {
-+            macslot->present = 0;
-+            hr = whp_dispatch.WHvUnmapGpaRange(whpx->partition,
-+                 macslot->gpa_start, macslot->size);
-+            if (FAILED(hr)) {
-+                abort();
-+            }
-+        }
-     }
--    */
+-    int max_ipa_size = whpx_arm_get_ipa_bit_size();
 -
--    if (add) {
--        hr = whp_dispatch.WHvMapGpaRange(whpx->partition,
--                                         host_va,
--                                         start_pa,
--                                         size,
--                                         (WHvMapGpaRangeFlagRead |
--                                          WHvMapGpaRangeFlagExecute |
--                                          (rom ? 0 : WHvMapGpaRangeFlagWrite)));
+-    /* We freeze the memory map to compute the highest gpa */
+-    virt_set_memmap(vms, max_ipa_size);
+-
+-    int requested_ipa_size = 64 - clz64(vms->highest_gpa);
+-
+-    /*
+-     * If we're <= the default IPA size just use the default.
+-     * If we're above the default but below the maximum, round up to
+-     * the maximum. hvf_arm_get_max_ipa_bit_size() conveniently only
+-     * returns values that are valid ARM PARange values.
+-     */
+-    if (requested_ipa_size <= max_ipa_size) {
+-        requested_ipa_size = max_ipa_size;
 -    } else {
--        hr = whp_dispatch.WHvUnmapGpaRange(whpx->partition,
--                                           start_pa,
--                                           size);
-+
-+    if (!slot->size) {
-+        return 0;
+-        error_report("-m and ,maxmem option values "
+-                     "require an IPA range (%d bits) larger than "
+-                     "the one supported by the host (%d bits)",
+-                     requested_ipa_size, max_ipa_size);
+-        return -1;
+-    }
+-
+-    return requested_ipa_size;
+-}
+-
+-static int virt_hvf_get_physical_address_range(MachineState *ms)
+-{
+-    VirtMachineState *vms = VIRT_MACHINE(ms);
+-
+-    int default_ipa_size = hvf_arm_get_default_ipa_bit_size();
+-    int max_ipa_size = hvf_arm_get_max_ipa_bit_size();
+-
+     /* We freeze the memory map to compute the highest gpa */
+     virt_set_memmap(vms, max_ipa_size);
+ 
+@@ -3282,7 +3250,7 @@ static int virt_hvf_get_physical_address_range(MachineState *ms)
+     /*
+      * If we're <= the default IPA size just use the default.
+      * If we're above the default but below the maximum, round up to
+-     * the maximum. hvf_arm_get_max_ipa_bit_size() conveniently only
++     * the maximum. hvf_arch_get_max_ipa_bit_size() conveniently only
+      * returns values that are valid ARM PARange values.
+      */
+     if (requested_ipa_size <= default_ipa_size) {
+@@ -3358,8 +3326,7 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
+     mc->valid_cpu_types = valid_cpu_types;
+     mc->get_default_cpu_node_id = virt_get_default_cpu_node_id;
+     mc->kvm_type = virt_kvm_type;
+-    mc->hvf_get_physical_address_range = virt_hvf_get_physical_address_range;
+-    mc->whpx_get_physical_address_range = virt_whpx_get_physical_address_range;
++    mc->get_physical_address_range = virt_get_physical_address_range;
+     assert(!mc->get_hotplug_handler);
+     mc->get_hotplug_handler = virt_machine_get_hotplug_handler;
+     hc->pre_plug = virt_machine_device_pre_plug_cb;
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 3d01fb8cc9..aecf5ca92e 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -275,8 +275,8 @@ struct MachineClass {
+     void (*reset)(MachineState *state, ResetType type);
+     void (*wakeup)(MachineState *state);
+     int (*kvm_type)(MachineState *machine, const char *arg);
+-    int (*hvf_get_physical_address_range)(MachineState *machine);
+-    int (*whpx_get_physical_address_range)(MachineState *machine);
++    int (*get_physical_address_range)(MachineState *machine,
++        int default_ipa_size, int max_ipa_size);
+ 
+     BlockInterfaceType block_default_type;
+     int units_per_default_bus;
+diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
+index a3b06a3e75..8b6447c238 100644
+--- a/include/system/hvf_int.h
++++ b/include/system/hvf_int.h
+@@ -71,6 +71,8 @@ void assert_hvf_ok_impl(hv_return_t ret, const char *file, unsigned int line,
+ const char *hvf_return_string(hv_return_t ret);
+ int hvf_arch_init(void);
+ hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range);
++uint32_t hvf_arch_get_default_ipa_bit_size(void);
++uint32_t hvf_arch_get_max_ipa_bit_size(void);
+ int hvf_arch_init_vcpu(CPUState *cpu);
+ void hvf_arch_vcpu_destroy(CPUState *cpu);
+ int hvf_vcpu_exec(CPUState *);
+diff --git a/target/arm/hvf-stub.c b/target/arm/hvf-stub.c
+deleted file mode 100644
+index ff137267a0..0000000000
+--- a/target/arm/hvf-stub.c
++++ /dev/null
+@@ -1,20 +0,0 @@
+-/*
+- * QEMU Hypervisor.framework (HVF) stubs for ARM
+- *
+- *  Copyright (c) Linaro
+- *
+- * SPDX-License-Identifier: GPL-2.0-or-later
+- */
+-
+-#include "qemu/osdep.h"
+-#include "hvf_arm.h"
+-
+-uint32_t hvf_arm_get_default_ipa_bit_size(void)
+-{
+-    g_assert_not_reached();
+-}
+-
+-uint32_t hvf_arm_get_max_ipa_bit_size(void)
+-{
+-    g_assert_not_reached();
+-}
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index b77db99079..d77b8c7e1a 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -850,7 +850,7 @@ static uint64_t hvf_get_reg(CPUState *cpu, int rt)
+ static void clamp_id_aa64mmfr0_parange_to_ipa_size(ARMISARegisters *isar)
+ {
+     uint32_t ipa_size = chosen_ipa_bit_size ?
+-            chosen_ipa_bit_size : hvf_arm_get_max_ipa_bit_size();
++            chosen_ipa_bit_size : hvf_arch_get_max_ipa_bit_size();
+     uint64_t id_aa64mmfr0;
+ 
+     /* Clamp down the PARange to the IPA size the kernel supports. */
+@@ -940,7 +940,7 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     return r == HV_SUCCESS;
+ }
+ 
+-uint32_t hvf_arm_get_default_ipa_bit_size(void)
++uint32_t hvf_arch_get_default_ipa_bit_size(void)
+ {
+     uint32_t default_ipa_size;
+     hv_return_t ret = hv_vm_config_get_default_ipa_size(&default_ipa_size);
+@@ -949,7 +949,7 @@ uint32_t hvf_arm_get_default_ipa_bit_size(void)
+     return default_ipa_size;
+ }
+ 
+-uint32_t hvf_arm_get_max_ipa_bit_size(void)
++uint32_t hvf_arch_get_max_ipa_bit_size(void)
+ {
+     uint32_t max_ipa_size;
+     hv_return_t ret = hv_vm_config_get_max_ipa_size(&max_ipa_size);
+diff --git a/target/arm/hvf_arm.h b/target/arm/hvf_arm.h
+index ea82f2691d..5d19d82e5d 100644
+--- a/target/arm/hvf_arm.h
++++ b/target/arm/hvf_arm.h
+@@ -22,7 +22,4 @@ void hvf_arm_init_debug(void);
+ 
+ void hvf_arm_set_cpu_features_from_host(ARMCPU *cpu);
+ 
+-uint32_t hvf_arm_get_default_ipa_bit_size(void);
+-uint32_t hvf_arm_get_max_ipa_bit_size(void);
+-
+ #endif
+diff --git a/target/arm/meson.build b/target/arm/meson.build
+index 85cd68b9f4..6c49145611 100644
+--- a/target/arm/meson.build
++++ b/target/arm/meson.build
+@@ -33,7 +33,6 @@ arm_common_system_ss.add(files('cpu.c'))
+ arm_common_system_ss.add(when: 'TARGET_AARCH64', if_false: files(
+   'cpu32-stubs.c'))
+ arm_common_system_ss.add(when: 'CONFIG_KVM', if_false: files('kvm-stub.c'))
+-arm_common_system_ss.add(when: 'CONFIG_HVF', if_false: files('hvf-stub.c'))
+ arm_common_system_ss.add(files(
+   'arch_dump.c',
+   'arm-powerctl.c',
+diff --git a/target/arm/whpx/whpx-all.c b/target/arm/whpx/whpx-all.c
+index 62fd6c230a..19513b50a3 100644
+--- a/target/arm/whpx/whpx-all.c
++++ b/target/arm/whpx/whpx-all.c
+@@ -808,8 +808,9 @@ int whpx_accel_init(AccelState *as, MachineState *ms)
+         goto error;
      }
  
--    if (FAILED(hr)) {
--        error_report("WHPX: Failed to %s GPA range '%s' PA:%p, Size:%p bytes,"
--                     " Host:%p, hr=%08lx",
--                     (add ? "MAP" : "UNMAP"), name,
--                     (void *)(uintptr_t)start_pa, (void *)size, host_va, hr);
-+    macslot->present = 1;
-+    macslot->gpa_start = slot->start;
-+    macslot->size = slot->size;
-+    hr = whp_dispatch.WHvMapGpaRange(whpx->partition,
-+         slot->mem, slot->start, slot->size, flags);
-+    return 0;
+-    if (mc->whpx_get_physical_address_range) {
+-        pa_range = mc->whpx_get_physical_address_range(ms);
++    if (mc->get_physical_address_range) {
++        pa_range = mc->get_physical_address_range(ms,
++            whpx_arm_get_ipa_bit_size(), whpx_arm_get_ipa_bit_size());
+         if (pa_range < 0) {
+             return -EINVAL;
+         }
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 8445cadece..0994b8643d 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -225,6 +225,17 @@ int hvf_arch_init(void)
+     return 0;
+ }
+ 
++/* 48-bit on all Intel Macs. Function currently unused. */
++uint32_t hvf_arch_get_default_ipa_bit_size(void)
++{
++    g_assert_not_reached();
 +}
 +
-+static whpx_slot *whpx_find_overlap_slot(uint64_t start, uint64_t size)
++uint32_t hvf_arch_get_max_ipa_bit_size(void)
 +{
-+    whpx_slot *slot;
-+    int x;
-+    for (x = 0; x < whpx_state->num_slots; ++x) {
-+        slot = &whpx_state->slots[x];
-+        if (slot->size && start < (slot->start + slot->size) &&
-+            (start + size) > slot->start) {
-+            return slot;
-+        }
-     }
-+    return NULL;
- }
- 
--static void whpx_process_section(MemoryRegionSection *section, int add)
-+static void whpx_set_phys_mem(MemoryRegionSection *section, bool add)
++    g_assert_not_reached();
++}
++
+ hv_return_t hvf_arch_vm_create(MachineState *ms, uint32_t pa_range)
  {
--    MemoryRegion *mr = section->mr;
--    hwaddr start_pa = section->offset_within_address_space;
--    ram_addr_t size = int128_get64(section->size);
--    unsigned int delta;
--    uint64_t host_va;
-+    whpx_slot *mem;
-+    MemoryRegion *area = section->mr;
-+    bool writable = !area->readonly && !area->rom_device;
-+    WHV_MAP_GPA_RANGE_FLAGS flags;
-+    uint64_t page_size = qemu_real_host_page_size();
-+
-+    if (!memory_region_is_ram(area)) {
-+        if (writable) {
-+            return;
-+        } else if (!memory_region_is_romd(area)) {
-+            /*
-+             * If the memory device is not in romd_mode, then we actually want
-+             * to remove the whpx memory slot so all accesses will trap.
-+             */
-+             add = false;
-+        }
-+    }
- 
--    if (!memory_region_is_ram(mr)) {
--        return;
-+    if (!QEMU_IS_ALIGNED(int128_get64(section->size), page_size) ||
-+        !QEMU_IS_ALIGNED(section->offset_within_address_space, page_size)) {
-+        /* Not page aligned, so we can not map as RAM */
-+        add = false;
-     }
- 
--    delta = qemu_real_host_page_size() - (start_pa & ~qemu_real_host_page_mask());
--    delta &= ~qemu_real_host_page_mask();
--    if (delta > size) {
--        return;
-+    mem = whpx_find_overlap_slot(
-+            section->offset_within_address_space,
-+            int128_get64(section->size));
-+
-+    if (mem && add) {
-+        if (mem->size == int128_get64(section->size) &&
-+            mem->start == section->offset_within_address_space &&
-+            mem->mem == (memory_region_get_ram_ptr(area) +
-+            section->offset_within_region)) {
-+            return; /* Same region was attempted to register, go away. */
-+        }
-+    }
-+
-+    /* Region needs to be reset. set the size to 0 and remap it. */
-+    if (mem) {
-+        mem->size = 0;
-+        if (do_whpx_set_memory(mem, 0)) {
-+            error_report("Failed to reset overlapping slot");
-+            abort();
-+        }
-     }
--    start_pa += delta;
--    size -= delta;
--    size &= qemu_real_host_page_mask();
--    if (!size || (start_pa & ~qemu_real_host_page_mask())) {
-+
-+    if (!add) {
-         return;
-     }
- 
--    host_va = (uintptr_t)memory_region_get_ram_ptr(mr)
--            + section->offset_within_region + delta;
-+    if (area->readonly ||
-+        (!memory_region_is_ram(area) && memory_region_is_romd(area))) {
-+        flags = WHvMapGpaRangeFlagRead | WHvMapGpaRangeFlagExecute;
-+    } else {
-+        flags = WHvMapGpaRangeFlagRead | WHvMapGpaRangeFlagWrite
-+         | WHvMapGpaRangeFlagExecute;
-+    }
-+
-+    /* Now make a new slot. */
-+    int x;
-+
-+    for (x = 0; x < whpx_state->num_slots; ++x) {
-+        mem = &whpx_state->slots[x];
-+        if (!mem->size) {
-+            break;
-+        }
-+    }
-+
-+    if (x == whpx_state->num_slots) {
-+        error_report("No free slots");
-+        abort();
-+    }
- 
--    whpx_update_mapping(start_pa, size, (void *)(uintptr_t)host_va, add,
--                        memory_region_is_rom(mr), mr->name);
-+    mem->size = int128_get64(section->size);
-+    mem->mem = memory_region_get_ram_ptr(area) + section->offset_within_region;
-+    mem->start = section->offset_within_address_space;
-+    mem->region = area;
-+
-+    if (do_whpx_set_memory(mem, flags)) {
-+        error_report("Error registering new memory slot");
-+        abort();
-+    }
- }
- 
- static void whpx_region_add(MemoryListener *listener,
-                            MemoryRegionSection *section)
- {
--    memory_region_ref(section->mr);
--    whpx_process_section(section, 1);
-+    whpx_set_phys_mem(section, true);
- }
- 
- static void whpx_region_del(MemoryListener *listener,
-                            MemoryRegionSection *section)
- {
--    whpx_process_section(section, 0);
--    memory_region_unref(section->mr);
-+    whpx_set_phys_mem(section, false);
- }
- 
- static void whpx_transaction_begin(MemoryListener *listener)
-@@ -524,6 +609,14 @@ static void whpx_accel_instance_init(Object *obj)
-     memset(whpx, 0, sizeof(struct whpx_state));
-     /* Turn on kernel-irqchip, by default */
-     whpx->kernel_irqchip_allowed = true;
-+
-+    int x;
-+    whpx_state = malloc(sizeof(WHPXState));
-+    whpx_state->num_slots = ARRAY_SIZE(whpx_state->slots);
-+    for (x = 0; x < whpx_state->num_slots; ++x) {
-+        whpx_state->slots[x].size = 0;
-+        whpx_state->slots[x].slot_id = x;
-+    }
- }
- 
- static const TypeInfo whpx_accel_type = {
+     return hv_vm_create(HV_VM_DEFAULT);
 -- 
 2.50.1 (Apple Git-155)
 
