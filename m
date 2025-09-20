@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F1A4B8CBFD
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 17:45:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD7DB8CBEB
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 17:45:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzzku-00082s-IU; Sat, 20 Sep 2025 11:44:08 -0400
+	id 1uzzku-000837-I7; Sat, 20 Sep 2025 11:44:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uzzkl-0007ye-20; Sat, 20 Sep 2025 11:43:59 -0400
+ id 1uzzkn-000806-NH; Sat, 20 Sep 2025 11:44:01 -0400
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uzzkj-0001zT-BS; Sat, 20 Sep 2025 11:43:58 -0400
+ id 1uzzkl-0001zC-6g; Sat, 20 Sep 2025 11:44:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758383038; x=1789919038;
+ t=1758383040; x=1789919040;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=7K1AoX1vYKJi0eA0/Ol1SLh0EzyubRlT44C6WqHZJJI=;
- b=io4toLzMtAibBPZxMyoX9NVk+qNqlSkBYtkbZBZY0tSOltNvGFb/tL9v
- rm1vaeHfB1D3+oso7Lq1k4C7M7DXoFvFzZHoQNiiNyAiCda5cS4FpXQVy
- EidyIKrkhUWdeyFXZTAY5pcGtFYMuJ2KGRohcATxhjMi2Kgv9HO4//PKl
- hSLzy8QzX0TRZmwYwm6ZLvtR6yFvTZTGOK7ESdjFqBCpiX5wAn/cVjYw3
- X1FYHXLikVN6sXATg+lYqETdjf00zbvuzj33NCXYUcue+uWc5XeRat+1t
- p0nNVJe/ByK23f442DFbJvRUwOIboVo11hriG817EiSpwbBPTg8kzVceh g==;
-X-CSE-ConnectionGUID: 8Bnhm0sbTHGb/hfMzIM5hg==
-X-CSE-MsgGUID: Vfa7384yRm2qsImKSNnm0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11559"; a="70955558"
-X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; d="scan'208";a="70955558"
+ bh=waLJ79Z2ZxPOvRkgcef2yGkHILtwcEpwytE2aQ9sNt8=;
+ b=YEWnuszib5UMpc1h/HilWL9FleJ6Erb95MRrpcUpuS1xV/BgpsPsWqOA
+ zhlV2GKsifRcdM+NNvMsLYQkv5q5EMTkmwgdqGQimXfDAe76Mys4PTYl0
+ yF1JjvgYh1pKpwXEjnTPKtfHiN3GN/LI6i7neOVP7xkPAJCeVw3hnxdGK
+ Qf3m4PvpVk7Ah3Sc0BSYVQQnuEk9akLuTnuqefGV8sbzJyLtpMeAd7dur
+ TTu/9IzPdd4X8cTsXb6CB/eVAPOVVWn9ifPWyuBgu/e/Zslzk4SW2ur8x
+ zIj4yAtr6lWb9/NJkpmqBvtvZblt8qhSmorHg6yPPlMwp8BxcqNoFb5Xn Q==;
+X-CSE-ConnectionGUID: /i1VSowERXiuUVXmvPcsXg==
+X-CSE-MsgGUID: SvicmQXPRDiAQCapeS4y0w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11559"; a="70955565"
+X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; d="scan'208";a="70955565"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Sep 2025 08:43:54 -0700
-X-CSE-ConnectionGUID: mEvzBRn+RDCRYbPHf3wBNA==
-X-CSE-MsgGUID: 7QuzDe2uSne9WR8nvwfbkA==
+ 20 Sep 2025 08:43:55 -0700
+X-CSE-ConnectionGUID: JUtPN4YgSFGqR4wfx+Vu4A==
+X-CSE-MsgGUID: INZI3f0rR8i1Gn75AuY84A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; d="scan'208";a="181349478"
+X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; d="scan'208";a="181349485"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa004.fm.intel.com with ESMTP; 20 Sep 2025 08:43:52 -0700
+ by fmviesa004.fm.intel.com with ESMTP; 20 Sep 2025 08:43:53 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 09/12] rust/qdev: Test bit property for #property
-Date: Sun, 21 Sep 2025 00:05:17 +0800
-Message-Id: <20250920160520.3699591-10-zhao1.liu@intel.com>
+Subject: [PATCH v2 10/12] rust/hpet: Clean up type mismatch for num_timers
+ property
+Date: Sun, 21 Sep 2025 00:05:18 +0800
+Message-Id: <20250920160520.3699591-11-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250920160520.3699591-1-zhao1.liu@intel.com>
 References: <20250920160520.3699591-1-zhao1.liu@intel.com>
@@ -78,138 +79,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There's a diference between Rust and C:
-
-Though C macro (e.g., DEFINE_PROP_BIT or DEFINE_PROP_BIT64) always
-requires default value, Rust side allows to omit this "default" field
-in #property, and provides a default value ("0" - false) for this
-field.
-
-This minor difference does not break user habits and should be
-acceptable. Therefore, the test cases also cover this scenario.
+Now `num_timers` is `usize` other than `u8`. Although the type field in
+`declare_properties` macro hasn't been used, it's better to explicitly
+point this out and clean up this before doing other property work.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/qemu-macros/src/tests.rs | 99 +++++++++++++++++++++++++++++++++++
- 1 file changed, 99 insertions(+)
+ rust/hw/timer/hpet/src/device.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/qemu-macros/src/tests.rs b/rust/qemu-macros/src/tests.rs
-index c6b00c9783a8..7516bc3d92a0 100644
---- a/rust/qemu-macros/src/tests.rs
-+++ b/rust/qemu-macros/src/tests.rs
-@@ -89,6 +89,19 @@ struct DummyState {
-         "Duplicate argument",
-         "Already used here",
-     );
-+    derive_compile_fail!(
-+        derive_device_or_error,
-+        quote! {
-+            #[repr(C)]
-+            #[derive(Device)]
-+            struct DummyState {
-+                #[property(bit = 0, bit = 1)]
-+                flags: u32,
-+            }
-+        },
-+        "Duplicate argument",
-+        "Already used here",
-+    );
-     // Check that the field name is preserved when `rename` isn't used:
-     derive_compile!(
-         derive_device_or_error,
-@@ -145,6 +158,92 @@ unsafe impl ::hwcore::DevicePropertiesImpl for DummyState {
-             }
-         }
-     );
-+    // Check that `bit` value is used for the bit property without default
-+    // value (note: though C macro (e.g., DEFINE_PROP_BIT) always requires
-+    // default value, Rust side allows to default this field to "0"):
-+    derive_compile!(
-+        derive_device_or_error,
-+        quote! {
-+            #[repr(C)]
-+            #[derive(Device)]
-+            pub struct DummyState {
-+                parent: ParentField<DeviceState>,
-+                #[property(bit = 3)]
-+                flags: u32,
-+            }
-+        },
-+        quote! {
-+            unsafe impl ::hwcore::DevicePropertiesImpl for DummyState {
-+                const PROPERTIES: &'static [::hwcore::bindings::Property] = &[
-+                    ::hwcore::bindings::Property {
-+                        name: ::std::ffi::CStr::as_ptr(c"flags"),
-+                        info: <u32 as ::hwcore::QDevProp>::BIT_INFO,
-+                        offset: ::core::mem::offset_of!(DummyState, flags) as isize,
-+                        bitnr: 3,
-+                        set_default: false,
-+                        defval: ::hwcore::bindings::Property__bindgen_ty_1 { u: 0 as u64 },
-+                        ..::common::Zeroable::ZERO
-+                    }
-+                ];
-+            }
-+        }
-+    );
-+    // Check that `bit` value is used for the bit property when used:
-+    derive_compile!(
-+        derive_device_or_error,
-+        quote! {
-+            #[repr(C)]
-+            #[derive(Device)]
-+            pub struct DummyState {
-+                parent: ParentField<DeviceState>,
-+                #[property(bit = 3, default = true)]
-+                flags: u32,
-+            }
-+        },
-+        quote! {
-+            unsafe impl ::hwcore::DevicePropertiesImpl for DummyState {
-+                const PROPERTIES: &'static [::hwcore::bindings::Property] = &[
-+                    ::hwcore::bindings::Property {
-+                        name: ::std::ffi::CStr::as_ptr(c"flags"),
-+                        info: <u32 as ::hwcore::QDevProp>::BIT_INFO,
-+                        offset: ::core::mem::offset_of!(DummyState, flags) as isize,
-+                        bitnr: 3,
-+                        set_default: true,
-+                        defval: ::hwcore::bindings::Property__bindgen_ty_1 { u: true as u64 },
-+                        ..::common::Zeroable::ZERO
-+                    }
-+                ];
-+            }
-+        }
-+    );
-+    // Check that `bit` value is used for the bit property with rename when used:
-+    derive_compile!(
-+        derive_device_or_error,
-+        quote! {
-+            #[repr(C)]
-+            #[derive(Device)]
-+            pub struct DummyState {
-+                parent: ParentField<DeviceState>,
-+                #[property(rename = "msi", bit = 3, default = false)]
-+                flags: u64,
-+            }
-+        },
-+        quote! {
-+            unsafe impl ::hwcore::DevicePropertiesImpl for DummyState {
-+                const PROPERTIES: &'static [::hwcore::bindings::Property] = &[
-+                    ::hwcore::bindings::Property {
-+                        name: ::std::ffi::CStr::as_ptr(c"msi"),
-+                        info: <u64 as ::hwcore::QDevProp>::BIT_INFO,
-+                        offset: ::core::mem::offset_of!(DummyState, flags) as isize,
-+                        bitnr: 3,
-+                        set_default: true,
-+                        defval: ::hwcore::bindings::Property__bindgen_ty_1 { u: false as u64 },
-+                        ..::common::Zeroable::ZERO
-+                    }
-+                ];
-+            }
-+        }
-+    );
- }
- 
- #[test]
+diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
+index 3cfbe9c32bb1..fce75415579d 100644
+--- a/rust/hw/timer/hpet/src/device.rs
++++ b/rust/hw/timer/hpet/src/device.rs
+@@ -909,7 +909,7 @@ impl ObjectImpl for HPETState {
+         HPETState,
+         num_timers,
+         unsafe { &qdev_prop_usize },
+-        u8,
++        usize,
+         default = HPET_MIN_TIMERS
+     ),
+     define_property!(
 -- 
 2.34.1
 
