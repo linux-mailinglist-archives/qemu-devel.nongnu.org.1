@@ -2,88 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3487CB8CA24
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 16:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD45EB8CA54
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 16:32:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzyBV-0007C4-HM; Sat, 20 Sep 2025 10:03:29 -0400
+	id 1uzybL-0007F3-KI; Sat, 20 Sep 2025 10:30:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1uzyBS-00072B-PG
- for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:03:26 -0400
-Received: from p-east3-cluster3-host5-snip4-2.eps.apple.com ([57.103.86.45]
- helo=outbound.qs.icloud.com)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uzybJ-0007ET-Gg
+ for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:30:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mohamed@unpredictable.fr>)
- id 1uzyBR-0008CX-5W
- for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:03:26 -0400
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
- by p00-icloudmta-asmtp-us-east-2d-100-percent-3 (Postfix) with ESMTPS id
- 51D041817344; Sat, 20 Sep 2025 14:03:19 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr;
- s=sig1; bh=c/5rsUrStdeRorYSqBu3+Q8xyENsD0DokCuHFqMkrGk=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
- b=B64izZL1vTxTRxZdn12k8FBC3jD9Eu5bv9kzu+z9fxmEjgO+8zzKPtDuMebzIY/2JrgiV/FKVbNlihiSDDc2t0sxrja3m9mRAvkfrSD2/QttuNVqimylam5rcdUBZMvwo7dB+D0McyDYH8sI3Z+UpEQYhCpVc6MutWygV2ZsDJUH4OCQx7utswBC4fWkDSFEtaz39triYg0a3XEx1RwqpVMbWSmIFSMm8ny1RZ0xkg5DphIdS+REyg+jhG8Rmnzk+idvdQ8k3JPe5Y8+yrPhI4an/aeIKoPURifIuxrier2hYcmXtK8087Q0qxcF5A9A6ksz4plv8/R6tPrihB8mUA==
-mail-alias-created-date: 1752046281608
-Received: from localhost.localdomain (qs-asmtp-me-k8s.p00.prod.me.com
- [17.57.155.37])
- by p00-icloudmta-asmtp-us-east-2d-100-percent-3 (Postfix) with ESMTPSA id
- 4746018172C7; Sat, 20 Sep 2025 14:02:35 +0000 (UTC)
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uzybG-0005Pw-Ds
+ for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:30:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758378605;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=RXUdmalvHm+5/GVcC2GTT1297p4snx3KOMpnEPeu9zw=;
+ b=QT1CjjmXC8ggrB/22mJmHI5oiDKQqZAiNJuC2QRiP3mG3mVakfwqwnZgRAzVtuH7wb4VzX
+ 7w6/N5YPVgZbhYGXPbhgslePHSeiuLIzj9o8X3i671+HsjV/VesIVv4Ej9F0K9CQxsW0l+
+ OVY2VkmpD4UeuGYMdXl7ZATxjzOnL5E=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-543-HQuA5YxqMQu6Y_L_mxcEFg-1; Sat, 20 Sep 2025 10:30:02 -0400
+X-MC-Unique: HQuA5YxqMQu6Y_L_mxcEFg-1
+X-Mimecast-MFC-AGG-ID: HQuA5YxqMQu6Y_L_mxcEFg_1758378602
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-45e037fd142so29436365e9.3
+ for <qemu-devel@nongnu.org>; Sat, 20 Sep 2025 07:30:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758378601; x=1758983401;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RXUdmalvHm+5/GVcC2GTT1297p4snx3KOMpnEPeu9zw=;
+ b=KhLAZ8zPKtHW5+FyaggP/cOu0dlNPDB4j7OTUwLC/seu2Cp7wYgnSDotvrMJNAGSnX
+ cLT+7tC/JTzsG3FrgKVV1s5SlZ+9xClF4pXu3WXUzJPgsfyieOLLpaWRPwBJb4PVf8GJ
+ 20+V/siIBb4oYUs+Fo1L5iSJSIm09HBgnh/PcyyD0GUSh26wx90oxYePvtzfEJCtfqwh
+ H/xvxoQF9++6EL+xkwnME2F4jb0eHO0pog6ftinofnHcD2jhd/a+bGdoB65t3Pxr9xE5
+ +LfaD1A1jnvS/+QgrXAXMOO4xxvbRpxqwgiOg1CYRluh/KWOHDdnvibD0IvseBSN1i4r
+ YtUw==
+X-Gm-Message-State: AOJu0YweiWCfyA14XrH+v/sMA3jqY4EOBMYVSri41TlC5bHbgCtMfLeB
+ eY/OdpFnqGbmDvsC01Nr5rJyyQYxooKsRApVjeOlOzGtDNmZ+iJu/Q7oIadaqVL4ux9oI9/vnKW
+ xHFi266nGS8oVf0AyaO3OwKwe17jNF5tgOlg9i1GTXhl0ba0X0bx7jt28EdmXbuLY245RvV27Oi
+ vzP0W0lP1GG/mOWjD0XQBE8E8vxjRoAKFeyhxX9I36
+X-Gm-Gg: ASbGncuK9VQdD61YrYTJFKAr++bDgqc06Zo7A7GlA+JUXyiPmM+///5U9cTYkv+V91a
+ xyMV2kzlKbHrWeV31h723uuZ6zc8eki+KRiH0jhy9QlAy4dnzd31lGMoasCFwzwu8wo40Vs9Hrw
+ 8bR5DJkWmVbeSUIPqgsX+WkAq4x6Fd5fkfxF9gK5xLLlzMO9qsrNcL1fIUDKV33dkA8zgW4Kiuf
+ 9HCdzCfgIoQRurlRhLoOhRJmBhAZhXsVpQ+py2Q073vH7mc3UAQWUKnSmezskMAtKVpiWOxEM9r
+ BcaSAFl6BuwzSorCBdz4+kvQsCvqFDH92SWxNLYqWkRJYibivkoo7bGL5qYNvi7jG1EW2MIkgxQ
+ ss3TWlctRkSjorP2KrRPlmCNsa899ZUkY3n/nSGYotfc=
+X-Received: by 2002:a05:600c:3b26:b0:45d:d6fc:24f7 with SMTP id
+ 5b1f17b1804b1-467eaa86ec8mr52767775e9.32.1758378600758; 
+ Sat, 20 Sep 2025 07:30:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFCrUkp3V8CjdTu4EsyiVArwCL6I/AP7qbQj/vHr08l9AjYtRZnxN+l1Ek4Cd/kIiDgh7qnOQ==
+X-Received: by 2002:a05:600c:3b26:b0:45d:d6fc:24f7 with SMTP id
+ 5b1f17b1804b1-467eaa86ec8mr52767635e9.32.1758378600259; 
+ Sat, 20 Sep 2025 07:30:00 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.47.123])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3f0e28c83d6sm6447154f8f.56.2025.09.20.07.29.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 20 Sep 2025 07:29:59 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Shannon Zhao <shannon.zhaosl@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- kvm@vger.kernel.org, Igor Mammedov <imammedo@redhat.com>,
- qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Pedro Barbuda <pbarbuda@microsoft.com>, Alexander Graf <agraf@csgraf.de>,
- Sunil Muthuswamy <sunilmut@microsoft.com>,
- Eduardo Habkost <eduardo@habkost.net>, Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v6 23/23] whpx: apic: use non-deprecated APIs to control
- interrupt controller state
-Date: Sat, 20 Sep 2025 16:01:24 +0200
-Message-ID: <20250920140124.63046-24-mohamed@unpredictable.fr>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250920140124.63046-1-mohamed@unpredictable.fr>
-References: <20250920140124.63046-1-mohamed@unpredictable.fr>
+Cc: qemu-rust@nongnu.org, zhao1.liu@intel.com, manos.pitsidianakis@linaro.org
+Subject: [RFC PATCH 0/7] rust: migration: add high-level migration wrappers
+Date: Sat, 20 Sep 2025 16:29:51 +0200
+Message-ID: <20250920142958.181910-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDEzNiBTYWx0ZWRfX9z6N3cyeSVux
- +RrFvjrsbkKKcWyfTpBMoj/2bnC//IYiCJxi/U5ewhwymsheKn+sqk5LxwfMyxL4inO9XnYJuKP
- 4eXhjyw46jwHKhhR6EM/1YROvB5Fu2xmt0JflCpiAJETk+Ra3CCMhnXW2PGieGDcRC6kU+3XQ+4
- 9cILwuLeWBTQsevw5C2ziSJizQk/f6kazF4YPGvkcD5Tg5IFshQ2pLJJgXCGLwuZ5TA7QIIyvKN
- 8ksbpcyC1VWOegRd55ZvjxJ15FPr6dCwu3suXwGSyhzZsvRKUdFCKsxnN8oqHX1sK7eFS3qIY=
-X-Proofpoint-GUID: c83yXiQoG0AGIGpW8wmiFxYHfBhemJTi
-X-Proofpoint-ORIG-GUID: c83yXiQoG0AGIGpW8wmiFxYHfBhemJTi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-20_05,2025-09-19_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- mlxlogscore=818 clxscore=1030 suspectscore=0 adultscore=0 phishscore=0
- spamscore=0 malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2506270000 definitions=main-2509200136
-X-JNJ: AAAAAAABmrj6QRYIKNB2jjK68fLx1j8Ye4m2/dogagyZ06LY5SdiO0gKY3szkKLV6wZbdP6RmoPxsv/pQmJqRVLNkmGCPeLH7eW5KBSvwdZ73lbaDbHyGc64iPkGbWLcdMkkjCM0eE1uFnkK+uwAraaw91y4pUueOCX4MGrRjAIxd9/QecvttWiApxr1dIIpHLcy2HJqkG5Cx66zN2l+xKkPoErE24iXBaIXjJDgIQCeP0YfcwbhFmlG4qAI7ZYeoZy0Y6lrNLDcGqm2PT3RiHjUuzRtVzCoePpCz7TMsavb3TFMN+6Ima69FpY0i4cbj8cVyZHPV9yOvhpO5WEUsiocs1G0ymOO0+r/aCX477x+X1L88XXYsgTyBwimk77hnN4qKIy0Weo6d+p3WzbnhhRcY3r4qF3iQYPRCCears/rw19Fv5+mupNMrgvxT8TtKX7gBe5tQh/uMjnzw2nF5kwGTUpjC1chgIUcT/T3vQM7vBvf14znv78dOYdh3yY5AoU44O3AYR6GsMRUftetGF11KUOO9UroMORpW1bcQR569yPrwI7E0DEvwbEsSQc8ZEmcP66Qe6ysQcwDC2/3INBqFEqrEfQp3Qs1Ni8J//M0JGCbO86JRlWOnOrqMTEIw7OJzixq9KgeNeTyeMBQUx8F+ZxV0FPs99kZ8btYAHpqEc3s1mGjWF/nC+5SEqHK7g5G02Sk+bacw8VWKnrDZp4+IJqol4FGkOtFviymSWzPwbMFnrpnXBoMRdIQdz/zRXdJBtvdZhLV3U45NF3WFN15+Y1B3BlakJSUQ6XPR+4qvljaluwLz/YAwnl8ryCsQowHNHbLuDp9RIWVImxSnrfuEU6fcdR/zpRViefMeOhkhzQKT8ms/y8EvWP/I1q+qQ==
-Received-SPF: pass client-ip=57.103.86.45;
- envelope-from=mohamed@unpredictable.fr; helo=outbound.qs.icloud.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.045,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,107 +104,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-WHvGetVirtualProcessorInterruptControllerState2 and
-WHvSetVirtualProcessorInterruptControllerState2 are
-deprecated since Windows 10 version 2004.
+This series adds high-level wrappers to handle migration state; they consist
+of a Migratable<> type that implements the snapshotting technique mentioned
+at KVM Forum.  The concepts are also discussed at
+https://lore.kernel.org/qemu-devel/8076a298-1cd9-4c90-a64c-f65004753975@redhat.com/T/
 
-Use the non-deprecated WHvGetVirtualProcessorState and
-WHvSetVirtualProcessorState when available.
+The wrappers (should) make it possible to easily implement migration of
+thread-safe devices.  I say "should" because, even though there are tests
+included in the series, they are anything but "battle tested".  The first
+device to use this will be HPET.
 
-Signed-off-by: Mohamed Mediouni <mohamed@unpredictable.fr>
----
- include/system/whpx-internal.h |  9 +++++++
- target/i386/whpx/whpx-apic.c   | 46 +++++++++++++++++++++++++---------
- 2 files changed, 43 insertions(+), 12 deletions(-)
+This is an interesting step in enabling usage of Rust in QEMU; instead of
+just wrapping existing C APIs, it provides a new interface that deals
+better with unique features of the Rust language.  In other words,
+something like Migratable<> and ToMigrationState might hypothetically
+exist even if QEMU was written in Rust from scratch.
 
-diff --git a/include/system/whpx-internal.h b/include/system/whpx-internal.h
-index 366bc525a3..b87d35cf1b 100644
---- a/include/system/whpx-internal.h
-+++ b/include/system/whpx-internal.h
-@@ -84,6 +84,15 @@ void whpx_apic_get(DeviceState *s);
-   X(HRESULT, WHvSetVirtualProcessorInterruptControllerState2, \
-         (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, PVOID State, \
-          UINT32 StateSize)) \
-+  X(HRESULT, WHvGetVirtualProcessorState, \
-+        (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, \
-+        WHV_VIRTUAL_PROCESSOR_STATE_TYPE StateType, PVOID Buffer, \
-+        UINT32 BufferSizeInBytes, UINT32 *BytesWritten)) \
-+  X(HRESULT, WHvSetVirtualProcessorState, \
-+        (WHV_PARTITION_HANDLE Partition, UINT32 VpIndex, \
-+        WHV_VIRTUAL_PROCESSOR_STATE_TYPE StateType, PVOID Buffer, \
-+        UINT32 BufferSizeInBytes)) \
-+
- 
- #define LIST_WINHVEMULATION_FUNCTIONS(X) \
-   X(HRESULT, WHvEmulatorCreateEmulator, (const WHV_EMULATOR_CALLBACKS* Callbacks, WHV_EMULATOR_HANDLE* Emulator)) \
-diff --git a/target/i386/whpx/whpx-apic.c b/target/i386/whpx/whpx-apic.c
-index badb404b63..285ca28ba2 100644
---- a/target/i386/whpx/whpx-apic.c
-+++ b/target/i386/whpx/whpx-apic.c
-@@ -137,11 +137,21 @@ static void whpx_apic_put(CPUState *cs, run_on_cpu_data data)
-     whpx_put_apic_base(CPU(s->cpu), s->apicbase);
-     whpx_put_apic_state(s, &kapic);
- 
--    hr = whp_dispatch.WHvSetVirtualProcessorInterruptControllerState2(
--        whpx_global.partition,
--        cs->cpu_index,
--        &kapic,
--        sizeof(kapic));
-+    if (whp_dispatch.WHvSetVirtualProcessorState) {
-+        hr = whp_dispatch.WHvSetVirtualProcessorState(
-+            whpx_global.partition,
-+            cs->cpu_index,
-+            WHvVirtualProcessorStateTypeInterruptControllerState2,
-+            &kapic,
-+            sizeof(kapic));
-+    } else {
-+        hr = whp_dispatch.WHvSetVirtualProcessorInterruptControllerState2(
-+            whpx_global.partition,
-+            cs->cpu_index,
-+            &kapic,
-+            sizeof(kapic));
-+    }
-+
-     if (FAILED(hr)) {
-         fprintf(stderr,
-             "WHvSetVirtualProcessorInterruptControllerState failed: %08lx\n",
-@@ -156,16 +166,28 @@ void whpx_apic_get(DeviceState *dev)
-     APICCommonState *s = APIC_COMMON(dev);
-     CPUState *cpu = CPU(s->cpu);
-     struct whpx_lapic_state kapic;
-+    HRESULT hr;
-+
-+    if (whp_dispatch.WHvGetVirtualProcessorState) {
-+        hr = whp_dispatch.WHvGetVirtualProcessorState(
-+            whpx_global.partition,
-+            cpu->cpu_index,
-+            WHvVirtualProcessorStateTypeInterruptControllerState2,
-+            &kapic,
-+            sizeof(kapic),
-+            NULL);
-+    } else {
-+        hr = whp_dispatch.WHvGetVirtualProcessorInterruptControllerState2(
-+            whpx_global.partition,
-+            cpu->cpu_index,
-+            &kapic,
-+            sizeof(kapic),
-+            NULL);
-+    }
- 
--    HRESULT hr = whp_dispatch.WHvGetVirtualProcessorInterruptControllerState2(
--        whpx_global.partition,
--        cpu->cpu_index,
--        &kapic,
--        sizeof(kapic),
--        NULL);
-     if (FAILED(hr)) {
-         fprintf(stderr,
--            "WHvSetVirtualProcessorInterruptControllerState failed: %08lx\n",
-+            "WHvGetVirtualProcessorInterruptControllerState failed: %08lx\n",
-             hr);
- 
-         abort();
+Paolo
+
+
+Paolo Bonzini (7):
+  rust: bql: add BqlRefCell::get_mut()
+  rust: move VMState from bql to migration
+  rust: migration: extract vmstate_fields_ref
+  rust: migration: add high-level migration wrappers
+  rust: qemu-macros: add ToMigrationState derive macro
+  rust: migration: implement ToMigrationState for Timer
+  rust: migration: implement ToMigrationState as part of
+    impl_vmstate_bitsized
+
+ rust/Cargo.lock                         |   5 +-
+ rust/bql/Cargo.toml                     |   3 -
+ rust/bql/meson.build                    |   1 -
+ rust/bql/src/cell.rs                    |  25 +-
+ rust/meson.build                        |   2 +-
+ rust/migration/Cargo.toml               |   2 +
+ rust/migration/meson.build              |   7 +-
+ rust/migration/src/lib.rs               |   5 +
+ rust/migration/src/migratable.rs        | 469 ++++++++++++++++++++++++
+ rust/migration/src/vmstate.rs           |  44 ++-
+ rust/qemu-macros/src/lib.rs             |  88 +++++
+ rust/qemu-macros/src/migration_state.rs | 296 +++++++++++++++
+ rust/qemu-macros/src/tests.rs           | 112 +++++-
+ 13 files changed, 1034 insertions(+), 25 deletions(-)
+ create mode 100644 rust/migration/src/migratable.rs
+ create mode 100644 rust/qemu-macros/src/migration_state.rs
+
 -- 
-2.50.1 (Apple Git-155)
+2.51.0
 
 
