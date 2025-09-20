@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58509B8CBF4
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 17:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B85B8CC12
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 17:45:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzzko-0007zw-5k; Sat, 20 Sep 2025 11:44:02 -0400
+	id 1uzzkn-0007zF-9b; Sat, 20 Sep 2025 11:44:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uzzke-0007vb-V5; Sat, 20 Sep 2025 11:43:54 -0400
+ id 1uzzkh-0007vd-2d; Sat, 20 Sep 2025 11:43:55 -0400
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uzzkb-0001zT-Ij; Sat, 20 Sep 2025 11:43:51 -0400
+ id 1uzzkd-0001zY-2m; Sat, 20 Sep 2025 11:43:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758383030; x=1789919030;
+ t=1758383032; x=1789919032;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=IFeVZke/HWz43jXrNgwIElT7PX2TkqZW6CE4stypwe0=;
- b=jDxmMI1/ILn7peS301bL+Nao+e4O72D2cTWI9Bly7J4Q+fOW4j9PTHHn
- rifr4k+ih9Cf93muIDCXRKyaBWJRHxk7bCcl9QI/f/Nbb0gWo1r1WWpeB
- Lg83/8q4pY4VbIZAGfh/j+K6ENyqJmPcUppWOiFYdUf2Xxiw33PXR3+Al
- K01LAnGf+4yiyXXYo22omEytRoOtVdRGmgHbkVAnlOF8GuQn9kh51qjWe
- GlnpChdG5heISq38cENIf8C7YCw/y/1Qjh9GT0/FUDhpqql2xv4OWsrsO
- nw/rdNPwKHj8k2LygFxxSuQ2VQV5CUextsULeRBBk/LF0LVSojPsksSc+ A==;
-X-CSE-ConnectionGUID: TZEAcpPSRPOj4wKBxwG61w==
-X-CSE-MsgGUID: StN1+M9MQ4aEDVVEpo+NXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11559"; a="70955520"
-X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; d="scan'208";a="70955520"
+ bh=pFp62miZ41RQpRrF2bJMVDi/xIKfTioqkf1d5QID2Po=;
+ b=HW7wDw8RaxMiz4bzlhxgu+uWxq61jmlz2H4HONwWMBgq6DU5BjSzJGFA
+ PdU0/2g/klxfxS7mWPaxol0y87dHhFgqcMgnM0K9PTO2GHwGWP6cXuwdN
+ hxfrAn2p9L92aUlncvQUNI9G2UY4mM1V3AafnP1Cpw/1kfPIfeUfLGIlX
+ kmJk52PBuhUIfoSIgMUcZRDfzGRNQZB/W+RDUMukiUgZgkAsnwAYYrCGq
+ gGIozcjl2miXyj3MCaEa3KzIyZAm/uy54fd/dUUKtKtfc2AEqqfI2s4eI
+ iz/hVMJ7zu8BQR70Az9onR8PE6Bgejc/BxvBnQm9hPeZZZnQu/YgJGSVi w==;
+X-CSE-ConnectionGUID: hQrvM99RRVea5vGY8CzxcA==
+X-CSE-MsgGUID: 4IIb0a1JTBW0XuMaLstSaQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11559"; a="70955528"
+X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; d="scan'208";a="70955528"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Sep 2025 08:43:46 -0700
-X-CSE-ConnectionGUID: H/BeRLvgQnqBWnjE65lokw==
-X-CSE-MsgGUID: qWJixoeuRvCx9lYSolKF6g==
+ 20 Sep 2025 08:43:47 -0700
+X-CSE-ConnectionGUID: eBOXPHaETA6IqvSxTIl9Rw==
+X-CSE-MsgGUID: QmAk+qAqSnC0rTxNCMIh4Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; d="scan'208";a="181349451"
+X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; d="scan'208";a="181349455"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa004.fm.intel.com with ESMTP; 20 Sep 2025 08:43:44 -0700
+ by fmviesa004.fm.intel.com with ESMTP; 20 Sep 2025 08:43:46 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 04/12] rust/common/uninit: Fix Clippy's complaints about
- lifetime
-Date: Sun, 21 Sep 2025 00:05:12 +0800
-Message-Id: <20250920160520.3699591-5-zhao1.liu@intel.com>
+Subject: [PATCH v2 05/12] rust/qdev: use addr_of! in QDevProp
+Date: Sun, 21 Sep 2025 00:05:13 +0800
+Message-Id: <20250920160520.3699591-6-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250920160520.3699591-1-zhao1.liu@intel.com>
 References: <20250920160520.3699591-1-zhao1.liu@intel.com>
@@ -79,66 +78,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Clippy complains about the following cases and following its suggestion
-to fix these warnings.
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-warning: the following explicit lifetimes could be elided: 'a
-  --> common/src/uninit.rs:38:6
-   |
-38 | impl<'a, T, U> Deref for MaybeUninitField<'a, T, U> {
-   |      ^^                                   ^^
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
-   = note: `#[warn(clippy::needless_lifetimes)]` on by default
-help: elide the lifetimes
-   |
-38 - impl<'a, T, U> Deref for MaybeUninitField<'a, T, U> {
-38 + impl<T, U> Deref for MaybeUninitField<'_, T, U> {
-   |
+We want a &raw pointer, so unsafe { &_ } is not needed.
 
-warning: the following explicit lifetimes could be elided: 'a
-  --> common/src/uninit.rs:49:6
-   |
-49 | impl<'a, T, U> DerefMut for MaybeUninitField<'a, T, U> {
-   |      ^^                                      ^^
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
-help: elide the lifetimes
-   |
-49 - impl<'a, T, U> DerefMut for MaybeUninitField<'a, T, U> {
-49 + impl<T, U> DerefMut for MaybeUninitField<'_, T, U> {
-   |
-
-warning: `common` (lib) generated 2 warnings (run `cargo clippy --fix --lib -p common` to apply 2 suggestions)
-
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Suggested-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- rust/common/src/uninit.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/hw/core/src/qdev.rs | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/rust/common/src/uninit.rs b/rust/common/src/uninit.rs
-index e7f9fcd2e3fb..8d021b1dfc6e 100644
---- a/rust/common/src/uninit.rs
-+++ b/rust/common/src/uninit.rs
-@@ -35,7 +35,7 @@ pub const fn parent_mut(f: &mut Self) -> *mut T {
-     }
+diff --git a/rust/hw/core/src/qdev.rs b/rust/hw/core/src/qdev.rs
+index e384cad4d26b..d8113238e513 100644
+--- a/rust/hw/core/src/qdev.rs
++++ b/rust/hw/core/src/qdev.rs
+@@ -6,7 +6,7 @@
+ 
+ use std::{
+     ffi::{c_int, c_void, CStr, CString},
+-    ptr::NonNull,
++    ptr::{addr_of, NonNull},
+ };
+ 
+ use chardev::Chardev;
+@@ -129,17 +129,17 @@ pub unsafe trait QDevProp {
+ 
+ /// Use [`bindings::qdev_prop_bool`] for `bool`.
+ unsafe impl QDevProp for bool {
+-    const VALUE: *const bindings::PropertyInfo = unsafe { &bindings::qdev_prop_bool };
++    const VALUE: *const bindings::PropertyInfo = addr_of!(bindings::qdev_prop_bool);
  }
  
--impl<'a, T, U> Deref for MaybeUninitField<'a, T, U> {
-+impl<T, U> Deref for MaybeUninitField<'_, T, U> {
-     type Target = MaybeUninit<U>;
- 
-     fn deref(&self) -> &MaybeUninit<U> {
-@@ -46,7 +46,7 @@ fn deref(&self) -> &MaybeUninit<U> {
-     }
+ /// Use [`bindings::qdev_prop_uint64`] for `u64`.
+ unsafe impl QDevProp for u64 {
+-    const VALUE: *const bindings::PropertyInfo = unsafe { &bindings::qdev_prop_uint64 };
++    const VALUE: *const bindings::PropertyInfo = addr_of!(bindings::qdev_prop_uint64);
  }
  
--impl<'a, T, U> DerefMut for MaybeUninitField<'a, T, U> {
-+impl<T, U> DerefMut for MaybeUninitField<'_, T, U> {
-     fn deref_mut(&mut self) -> &mut MaybeUninit<U> {
-         // SAFETY: self.child was obtained by dereferencing a valid mutable
-         // reference; the content of the memory may be invalid or uninitialized
+ /// Use [`bindings::qdev_prop_chr`] for [`chardev::CharBackend`].
+ unsafe impl QDevProp for chardev::CharBackend {
+-    const VALUE: *const bindings::PropertyInfo = unsafe { &bindings::qdev_prop_chr };
++    const VALUE: *const bindings::PropertyInfo = addr_of!(bindings::qdev_prop_chr);
+ }
+ 
+ /// Trait to define device properties.
 -- 
 2.34.1
 
