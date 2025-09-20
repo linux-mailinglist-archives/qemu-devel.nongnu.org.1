@@ -2,91 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD45EB8CA54
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 16:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B48B0B8CA46
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 16:31:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzybL-0007F3-KI; Sat, 20 Sep 2025 10:30:11 -0400
+	id 1uzybL-0007FA-Nb; Sat, 20 Sep 2025 10:30:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uzybJ-0007ET-Gg
+ id 1uzybJ-0007EQ-Ai
  for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:30:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uzybG-0005Pw-Ds
- for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:30:09 -0400
+ id 1uzybH-0005QQ-Mh
+ for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:30:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758378605;
+ s=mimecast20190719; t=1758378607;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=RXUdmalvHm+5/GVcC2GTT1297p4snx3KOMpnEPeu9zw=;
- b=QT1CjjmXC8ggrB/22mJmHI5oiDKQqZAiNJuC2QRiP3mG3mVakfwqwnZgRAzVtuH7wb4VzX
- 7w6/N5YPVgZbhYGXPbhgslePHSeiuLIzj9o8X3i671+HsjV/VesIVv4Ej9F0K9CQxsW0l+
- OVY2VkmpD4UeuGYMdXl7ZATxjzOnL5E=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fJ3YNFEPq2/8msLkXx1NZ4U+hOxlX3VeLMqMSz14QdI=;
+ b=hgQ2X7ixbrM4qSSXK571LmVtoSA9TbmsBui39p7XhiypQTlnERm4T3UEgLj9UjpJAAhXdl
+ IiE5JhXEXwSmRXweK/HwuU9wuEfLZF7mZoi1NJs7TP9r5brGqnsCk5Vr0+Il+5YmiJMors
+ 8LlLPtQwxc69ulJ6DEJ1VM8BdPNM2nU=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-543-HQuA5YxqMQu6Y_L_mxcEFg-1; Sat, 20 Sep 2025 10:30:02 -0400
-X-MC-Unique: HQuA5YxqMQu6Y_L_mxcEFg-1
-X-Mimecast-MFC-AGG-ID: HQuA5YxqMQu6Y_L_mxcEFg_1758378602
+ us-mta-390-6LkvF3GKM5-Tt21ys0aBRQ-1; Sat, 20 Sep 2025 10:30:05 -0400
+X-MC-Unique: 6LkvF3GKM5-Tt21ys0aBRQ-1
+X-Mimecast-MFC-AGG-ID: 6LkvF3GKM5-Tt21ys0aBRQ_1758378604
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-45e037fd142so29436365e9.3
- for <qemu-devel@nongnu.org>; Sat, 20 Sep 2025 07:30:02 -0700 (PDT)
+ 5b1f17b1804b1-45de07b831dso17774155e9.1
+ for <qemu-devel@nongnu.org>; Sat, 20 Sep 2025 07:30:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758378601; x=1758983401;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RXUdmalvHm+5/GVcC2GTT1297p4snx3KOMpnEPeu9zw=;
- b=KhLAZ8zPKtHW5+FyaggP/cOu0dlNPDB4j7OTUwLC/seu2Cp7wYgnSDotvrMJNAGSnX
- cLT+7tC/JTzsG3FrgKVV1s5SlZ+9xClF4pXu3WXUzJPgsfyieOLLpaWRPwBJb4PVf8GJ
- 20+V/siIBb4oYUs+Fo1L5iSJSIm09HBgnh/PcyyD0GUSh26wx90oxYePvtzfEJCtfqwh
- H/xvxoQF9++6EL+xkwnME2F4jb0eHO0pog6ftinofnHcD2jhd/a+bGdoB65t3Pxr9xE5
- +LfaD1A1jnvS/+QgrXAXMOO4xxvbRpxqwgiOg1CYRluh/KWOHDdnvibD0IvseBSN1i4r
- YtUw==
-X-Gm-Message-State: AOJu0YweiWCfyA14XrH+v/sMA3jqY4EOBMYVSri41TlC5bHbgCtMfLeB
- eY/OdpFnqGbmDvsC01Nr5rJyyQYxooKsRApVjeOlOzGtDNmZ+iJu/Q7oIadaqVL4ux9oI9/vnKW
- xHFi266nGS8oVf0AyaO3OwKwe17jNF5tgOlg9i1GTXhl0ba0X0bx7jt28EdmXbuLY245RvV27Oi
- vzP0W0lP1GG/mOWjD0XQBE8E8vxjRoAKFeyhxX9I36
-X-Gm-Gg: ASbGncuK9VQdD61YrYTJFKAr++bDgqc06Zo7A7GlA+JUXyiPmM+///5U9cTYkv+V91a
- xyMV2kzlKbHrWeV31h723uuZ6zc8eki+KRiH0jhy9QlAy4dnzd31lGMoasCFwzwu8wo40Vs9Hrw
- 8bR5DJkWmVbeSUIPqgsX+WkAq4x6Fd5fkfxF9gK5xLLlzMO9qsrNcL1fIUDKV33dkA8zgW4Kiuf
- 9HCdzCfgIoQRurlRhLoOhRJmBhAZhXsVpQ+py2Q073vH7mc3UAQWUKnSmezskMAtKVpiWOxEM9r
- BcaSAFl6BuwzSorCBdz4+kvQsCvqFDH92SWxNLYqWkRJYibivkoo7bGL5qYNvi7jG1EW2MIkgxQ
- ss3TWlctRkSjorP2KrRPlmCNsa899ZUkY3n/nSGYotfc=
-X-Received: by 2002:a05:600c:3b26:b0:45d:d6fc:24f7 with SMTP id
- 5b1f17b1804b1-467eaa86ec8mr52767775e9.32.1758378600758; 
- Sat, 20 Sep 2025 07:30:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFCrUkp3V8CjdTu4EsyiVArwCL6I/AP7qbQj/vHr08l9AjYtRZnxN+l1Ek4Cd/kIiDgh7qnOQ==
-X-Received: by 2002:a05:600c:3b26:b0:45d:d6fc:24f7 with SMTP id
- 5b1f17b1804b1-467eaa86ec8mr52767635e9.32.1758378600259; 
- Sat, 20 Sep 2025 07:30:00 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1758378603; x=1758983403;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fJ3YNFEPq2/8msLkXx1NZ4U+hOxlX3VeLMqMSz14QdI=;
+ b=Ucz4W5XOUqFDYpgSnOJLdkG4xzuwABYwTPlvj9BMyNpbZXV5hzOIsw+u9AQzGtPF2f
+ HZgYucSnmChyU2v7WaTh/HB2bM7fZFiXGkZHtrmaxI8aLj8tw/5TsBAL/+GkH78n47XH
+ Jw+OtK9gYq+ns8g5SGb1b18zeYVE/q0LePEJJd9bTPQ/lqd9bFyMVrXKKx49jfSdq8GJ
+ EDdQBrwZpTyeyqwqIFd3W5fx24Uy85XaCV1LH3ejvbASltZs/m6K6Q4GT2mi748vch6d
+ XxAyoIZLbTUXh2evGdNXKq1XXwZ/XJstzrFD/8KMEWSV77pERHtsMMRYkV4SR1I3OjoT
+ M3AA==
+X-Gm-Message-State: AOJu0YwZ5WdXiPs3PQpWQLYOS84/gFT2/4vQ2tPDhE/k44FEi7Qd+tO4
+ YWsLkDX2VIQvS+/SA8Jq7gUNeZR92hzRG0B3MgulgRc5cxapsDr30OXhN8Oe+MnROacwww3e1+K
+ ZKPEMPc47w/k1qfLfRUIxJtb+EgsuPJtbh5/+0/CiTUopevvatESb4GYNzMsyTFVHFcNEEKNJwO
+ kHK16VadPVIUcVdbke0Gsr7mwBPLpnHxIHmZeHaNvB
+X-Gm-Gg: ASbGncvRQP9rYb9VHuCNmJcuaVMVA3M1BJjGzPnmoUYGwerCwp+TgTVQhTP5PC9dF6u
+ W3GAN8KXjC6ZDWWj1lvBAc5WX1ds936aj8BGIIRAZzlM792yJ2eGpEuBkR+5hESc5gnf9yTl+dB
+ xypoHdS6LmiJbMgoftF53eVH3MPGAthHMaYqXJT0xiCbJKAYVkb5oG+OW78+bR1+GiK2iPsWIsl
+ UnEPYY81TfuYs6m0Cr3jYbRiLBYt29MDRLZY6DLjU2Pg5pd5qRvU9XrdBycmKaqaKY63PftwaP5
+ eta8hF9wQ1oEr2KoB2fLDHWF/4arVBRk0KNYJCNCCryy2SyELWhPIuYHJAxAok1m5fx4xNyyQHX
+ AVNUak84lgkzC3mhZUnwTjvvEhJ7u8Xo3V3GSF8SP2KU=
+X-Received: by 2002:a05:600c:1d91:b0:468:11af:782b with SMTP id
+ 5b1f17b1804b1-46811af793emr56247815e9.29.1758378603311; 
+ Sat, 20 Sep 2025 07:30:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH/qk76o0RmehkijCLaE4imfHrVhxw+6WVQ5uZMGzREY2hhrdZoKipoZrfdr7YlRVt3B9wLmA==
+X-Received: by 2002:a05:600c:1d91:b0:468:11af:782b with SMTP id
+ 5b1f17b1804b1-46811af793emr56247585e9.29.1758378602834; 
+ Sat, 20 Sep 2025 07:30:02 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.47.123])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3f0e28c83d6sm6447154f8f.56.2025.09.20.07.29.59
+ 5b1f17b1804b1-45f32136cdasm99628655e9.4.2025.09.20.07.30.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 20 Sep 2025 07:29:59 -0700 (PDT)
+ Sat, 20 Sep 2025 07:30:01 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org, zhao1.liu@intel.com, manos.pitsidianakis@linaro.org
-Subject: [RFC PATCH 0/7] rust: migration: add high-level migration wrappers
-Date: Sat, 20 Sep 2025 16:29:51 +0200
-Message-ID: <20250920142958.181910-1-pbonzini@redhat.com>
+Subject: [PATCH 1/7] rust: bql: add BqlRefCell::get_mut()
+Date: Sat, 20 Sep 2025 16:29:52 +0200
+Message-ID: <20250920142958.181910-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250920142958.181910-1-pbonzini@redhat.com>
+References: <20250920142958.181910-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.045,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -104,52 +107,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series adds high-level wrappers to handle migration state; they consist
-of a Migratable<> type that implements the snapshotting technique mentioned
-at KVM Forum.  The concepts are also discussed at
-https://lore.kernel.org/qemu-devel/8076a298-1cd9-4c90-a64c-f65004753975@redhat.com/T/
+This method is rarely useful in QEMU due to the pervasiveness of
+shared references, but add it for when a &mut BqlRefCell<> is used.
 
-The wrappers (should) make it possible to easily implement migration of
-thread-safe devices.  I say "should" because, even though there are tests
-included in the series, they are anything but "battle tested".  The first
-device to use this will be HPET.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ rust/bql/src/cell.rs | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-This is an interesting step in enabling usage of Rust in QEMU; instead of
-just wrapping existing C APIs, it provides a new interface that deals
-better with unique features of the Rust language.  In other words,
-something like Migratable<> and ToMigrationState might hypothetically
-exist even if QEMU was written in Rust from scratch.
-
-Paolo
-
-
-Paolo Bonzini (7):
-  rust: bql: add BqlRefCell::get_mut()
-  rust: move VMState from bql to migration
-  rust: migration: extract vmstate_fields_ref
-  rust: migration: add high-level migration wrappers
-  rust: qemu-macros: add ToMigrationState derive macro
-  rust: migration: implement ToMigrationState for Timer
-  rust: migration: implement ToMigrationState as part of
-    impl_vmstate_bitsized
-
- rust/Cargo.lock                         |   5 +-
- rust/bql/Cargo.toml                     |   3 -
- rust/bql/meson.build                    |   1 -
- rust/bql/src/cell.rs                    |  25 +-
- rust/meson.build                        |   2 +-
- rust/migration/Cargo.toml               |   2 +
- rust/migration/meson.build              |   7 +-
- rust/migration/src/lib.rs               |   5 +
- rust/migration/src/migratable.rs        | 469 ++++++++++++++++++++++++
- rust/migration/src/vmstate.rs           |  44 ++-
- rust/qemu-macros/src/lib.rs             |  88 +++++
- rust/qemu-macros/src/migration_state.rs | 296 +++++++++++++++
- rust/qemu-macros/src/tests.rs           | 112 +++++-
- 13 files changed, 1034 insertions(+), 25 deletions(-)
- create mode 100644 rust/migration/src/migratable.rs
- create mode 100644 rust/qemu-macros/src/migration_state.rs
-
+diff --git a/rust/bql/src/cell.rs b/rust/bql/src/cell.rs
+index 24ab294b60d..8a0c8c14ad4 100644
+--- a/rust/bql/src/cell.rs
++++ b/rust/bql/src/cell.rs
+@@ -580,6 +580,25 @@ pub fn borrow_mut(&self) -> BqlRefMut<'_, T> {
+         }
+     }
+ 
++    /// Returns a mutable reference to the underlying data in this cell,
++    /// while the owner already has a mutable reference to the cell.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use bql::BqlRefCell;
++    ///
++    /// let mut c = BqlRefCell::new(5);
++    ///
++    /// *c.get_mut() = 10;
++    /// ```
++    #[inline]
++    pub const fn get_mut(&mut self) -> &mut T {
++        // SAFETY: there cannot be any outstanding borrow,
++        // since `self` is mutably owned.
++        unsafe { &mut *self.as_ptr() }
++    }
++
+     /// Returns a raw pointer to the underlying data in this cell.
+     ///
+     /// # Examples
 -- 
 2.51.0
 
