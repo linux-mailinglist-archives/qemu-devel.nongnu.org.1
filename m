@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD03B8D25D
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Sep 2025 01:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3A6B8D266
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Sep 2025 01:48:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v07Hj-0004zz-2s; Sat, 20 Sep 2025 19:46:31 -0400
+	id 1v07Hi-0004zy-Sl; Sat, 20 Sep 2025 19:46:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
- id 1v07HT-0004Zd-7A
- for qemu-devel@nongnu.org; Sat, 20 Sep 2025 19:46:18 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1v07HW-0004dt-ND
+ for qemu-devel@nongnu.org; Sat, 20 Sep 2025 19:46:19 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
- id 1v07HQ-0006eq-Pi
- for qemu-devel@nongnu.org; Sat, 20 Sep 2025 19:46:14 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3ee155e0c08so1834637f8f.2
- for <qemu-devel@nongnu.org>; Sat, 20 Sep 2025 16:46:09 -0700 (PDT)
+ id 1v07HR-0006f2-5t
+ for qemu-devel@nongnu.org; Sat, 20 Sep 2025 19:46:16 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3ece1102998so1859216f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 20 Sep 2025 16:46:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1758411967; x=1759016767; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1758411969; x=1759016769; darn=nongnu.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=dy5hUaCFo5FGHM9/D33wmAu73UOM/NcUHqn4eoaU47Q=;
- b=ie3lMOvAfjRwIn2x7x5CH30bCbAbojRT49QGnIuiBDN6R89JDfIb1y9WyR3RbyVksK
- EuTSDYRsOJ9y6s0Jp/dVGEOIqvX/kzpxpt7wyAfao20pIn9nBto7/m3ARhwfkY8HgEIK
- NSR/VaY0Wde+bRI1XDQDYs74OM10oVVBF3yedB9gFq58v5+JZdUpAYCUXTssQbqCl961
- 0gsjyK8cyyQv6oycBAf7lUMKVHgjC0k+GLDOUpCU/ubVmih5yOW93vBwRUPG3RejdP9g
- /o/S5bZKWzl5QCczYKu8Am//YbHpfK/Jdg28ZjgM09YmaTH1h82KZE6NNk7ix6psk+PG
- hMKg==
+ :reply-to; bh=rvBTG/+9uS+f4Heq4c0Vn8ltH3qtiDIFK5wU9txYcq8=;
+ b=AwcIKz5NWVy3/PbfQEfPtOYqtNVUQ/ye6VGVJCxe7Ddcar6dvpICuVCw9Hed4g5gfC
+ lU6zfD/Oppo4sOsYzARm4UeAJLuZnHPQfZmFfJPTXcTselE/dw2yFUnf+X2bg8X6Ilqb
+ K4fXMTaM8Ab/a9D29G4wjeXmioOk6I/8SdjnZW0r+JidxOoD1nzFuVsggpLFCWSH0YnA
+ Vk/SzjtPor+tTlVLJOZHh3dO/U0bSil1U04vbgSDQRTiWLBTpjCSS8O4wG/pZl5rMzFT
+ UCvrmJ04sWDGfWrNQgxA72e2xBfMkLcJORldhTa/myd0oNGlPvs3zicbvgPq9DOcN4bk
+ UdMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758411967; x=1759016767;
+ d=1e100.net; s=20230601; t=1758411969; x=1759016769;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dy5hUaCFo5FGHM9/D33wmAu73UOM/NcUHqn4eoaU47Q=;
- b=C6FH6/ZNGrgwPng8HszgWoLbhbwvV3fr5dY84pQThQ4g8H+7It0rcXQKp5op64pbrx
- LDna+n6Yb41RTC/xAB3qYqV/KOE/QWFO6+SEKdBfc9MK4ItPTYOgpMAsvZaw5+zCcmg8
- 220tA9YM57fNfvaKsOwxMc06WlVmflsstWkP1SxxegsUo1xdMyUa91cvHdb+8Ed1P0LD
- JC93ZJ94FOSiGtsS25GageJqj/rHj1eM/zSkFaBIxx9r4ZcKbOCollSeWev5VyoqyKxc
- Cp5oJyE4wcYs/sKKfy7Cm/AYVE/3J5kUUhqV5vUVUG+sGcDkqAzRUH7J6iqxGLxcY06i
- diVQ==
-X-Gm-Message-State: AOJu0Yy2HlqhMtJReyoY1jtEOBSWqYxqrq+ptkHAPu0p1TjT6vQZv4um
- +jDHpe4U1DlwlWmM2eLTacVX3/3sR849oQpDxgalX52W3JtTmrkSQgKe
-X-Gm-Gg: ASbGnctDJLgldMB5IuQ9sgeFog9w0RVSfeS4xS432plhM+AHpL/k5UM/6oHHxXYFWZz
- F7ATYMr9GhVDf8kjGy37/7N3dH/mhSNW2fwCnY1y7uZmxpgRFgHOOO42n6TM+TX/PyvSOUktg5C
- pMueP0ujL56nQbAzmeQSduBkfQPjMhxFjOSQbLC9MwZU/1HayMCDJKgn7dlvDCV+mC6Kr5IrLfE
- 55DEq9w9RoZIVDgQVUkGYCAbQ3DvFVGHCOrzMZAlnVwBaWNIzUg/t4gCj2xUp3qUHJKvAx5D9b9
- 9CWjsc8uD9o/WsRqVPDyqD0Rjnr/mJFKVCmkkERAoaagL1H9HJNNc292cL+0GV2YnrI/pVBU3rs
- KTyKbxGS7MBEC/c5iDE8Xy9GqaMvm2v1g9FNSYhK2RbwUwTBqK3Vi
-X-Google-Smtp-Source: AGHT+IFrVizIbqlhOZMa6zCr5DuB+Kasv28SArjjl+eXp73b7vkt4R7lwjY0ZjI8DI6zccbAQCE5fA==
-X-Received: by 2002:a05:6000:25c1:b0:3e4:64b0:a776 with SMTP id
- ffacd0b85a97d-3ee86d6d926mr6392702f8f.52.1758411967413; 
- Sat, 20 Sep 2025 16:46:07 -0700 (PDT)
+ bh=rvBTG/+9uS+f4Heq4c0Vn8ltH3qtiDIFK5wU9txYcq8=;
+ b=WnQCweC/iEe90abOv/kBXtaGe7eg6lD67wFaljKxnP+XiNaDyX0sRzKgT1+SNGooXj
+ KHntk3JQ0E1qu0jCpRU0RT3xg5qqfNuxrG9Kpw20OJG5diQitoXsNFjf6wt4lu/x34JI
+ W2P3aOCyx1ZXZ53OxV6fZGy2aMHPe0E+4lmUoMN4sTT/n7lw/TCYtM/AhaieKWQlbCUq
+ P1i1uRXLykiBW1L8I+KaET362kbnrAxHePHeyeQN1KCb6LUXEODtRfT0Bt1/Is7y9eDL
+ xvko3bXNi8v7gWHzQmnLvd914SMvLdEt+qvxsy0x7hAzhyo5htq8wE+7kN4tLNV04go6
+ 9gtw==
+X-Gm-Message-State: AOJu0Ywo3JIK7nbfryHUkks0VmU75jld0XycZopsVdGwOcmnRip5jET4
+ EdnomBvmI9tZqLUY1Z/CxKitDVLp4pOpYk/og2QYmJehty7+NAbYXEO7
+X-Gm-Gg: ASbGncv3unI69TyWmSA3ggPUyLh4jn23jiOlFmYl/tE46u4QDDTBQ2g9RZoav/bfqWh
+ yRg0ISGQQ3yCIqMy9LLc/19zKLm6AEhRHO/qGWAfKCT0IVI6ndxlA57BYcQfssoe/VlrthlUyEg
+ v6oEY84YVLmiGxRF8jWB2XSGN4NVDvKEbjZP6cY83bG2vu5WlNOWFxkLLr/D6H60ecI2Tt7QIgb
+ WCyA3bGktYGX4No/lHmh7T5z0PhepjrdY4nQ3L5Kc78dQkNIhZn+KsLttb99Uic656KvJJIbDil
+ CKPkILXqMrsZ66GDIVMDI5gnfKL15bcAmzcGaP6YBRjxeWPuilO/ofAD4ixHDduYxe7xTYxrqLD
+ n/qjnDIi/x5Dot7idEekQ/p/VZ2877AP1lG5/ZcztnjXgrJmnzGbT
+X-Google-Smtp-Source: AGHT+IGRoj9SRzbKiyUxZ3l42ZKr3XtggmDkJcvnkY2gig+0IRgpvA5zxFCA81eWWB7UW8lHAa16cw==
+X-Received: by 2002:adf:b35c:0:b0:3f4:8579:3692 with SMTP id
+ ffacd0b85a97d-3f485793972mr1680268f8f.11.1758411969007; 
+ Sat, 20 Sep 2025 16:46:09 -0700 (PDT)
 Received: from localhost (mem-185.47.220.165.jmnet.cz. [185.47.220.165])
  by smtp.gmail.com with UTF8SMTPSA id
- ffacd0b85a97d-3f88de2d09fsm2240207f8f.36.2025.09.20.16.46.06
+ 5b1f17b1804b1-464f5a285efsm161723765e9.18.2025.09.20.16.46.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 20 Sep 2025 16:46:06 -0700 (PDT)
+ Sat, 20 Sep 2025 16:46:08 -0700 (PDT)
 From: Filip Hejsek <filip.hejsek@gmail.com>
-Date: Sun, 21 Sep 2025 01:45:32 +0200
-Subject: [PATCH RFC v5 02/12] chardev: add CHR_EVENT_RESIZE
+Date: Sun, 21 Sep 2025 01:45:33 +0200
+Subject: [PATCH RFC v5 03/12] chardev: add qemu_chr_resize()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250921-console-resize-v5-2-89e3c6727060@gmail.com>
+Message-Id: <20250921-console-resize-v5-3-89e3c6727060@gmail.com>
 References: <20250921-console-resize-v5-0-89e3c6727060@gmail.com>
 In-Reply-To: <20250921-console-resize-v5-0-89e3c6727060@gmail.com>
 To: qemu-devel@nongnu.org
@@ -83,15 +83,15 @@ Cc: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>, 
  Szymon Lukasz <noh4hss@gmail.com>, Filip Hejsek <filip.hejsek@gmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758411962; l=9156;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758411962; l=1677;
  i=filip.hejsek@gmail.com; s=20250912; h=from:subject:message-id;
- bh=LC0GCimm79Ttvp8U99b3FJ3W3o5zmCxOxIlm/KYgPyU=;
- b=vAwPyMucSi3/Rc2cH5bUNqvgLX49Sl+shgX0E47bJQhPXFXBstV+dN0E4aZj19mhsOmEWGbjh
- 37dt7tpcOKkDxpvsJXfLDJNZYcS0ZS/6RahObMuGiDguygkO5p81uQ8
+ bh=EbVowVm5LMaQukItgCxeH7pJeB8Mnn5jMPvv+tRJQpY=;
+ b=iyft8MpVjFYz3uVM9G+jSleY9DpFYRLWM4DW4Hl+UbKYvPbPZasxhYg3+LYKdpco50XmYIim9
+ DSBkY9J9WTFANsHJwkuQZtZXvyHvH48k0P0yfMnyTFAWGQthSPXzgU8
 X-Developer-Key: i=filip.hejsek@gmail.com; a=ed25519;
  pk=nakB8gEK3oi+Q/5dBTMCy/LgZL47NP60z1jeDR6O/WU=
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=filip.hejsek@gmail.com; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=filip.hejsek@gmail.com; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,238 +116,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Szymon Lukasz <noh4hss@gmail.com>
 
-Add a new chardev event, CHR_EVENT_RESIZE, which a backend should
-trigger if it detects the size of the connected terminal changed.
+This function should be called whenever we learn about a new size of
+the terminal connected to a chardev.
 
 Signed-off-by: Szymon Lukasz <noh4hss@gmail.com>
 Signed-off-by: Filip Hejsek <filip.hejsek@gmail.com>
 ---
- backends/cryptodev-vhost-user.c | 1 +
- chardev/char.c                  | 1 +
- hw/block/vhost-user-blk.c       | 1 +
- hw/char/terminal3270.c          | 1 +
- hw/char/virtio-console.c        | 1 +
- hw/ipmi/ipmi_bmc_extern.c       | 1 +
- hw/scsi/vhost-user-scsi.c       | 1 +
- hw/usb/ccid-card-passthru.c     | 1 +
- hw/usb/dev-serial.c             | 1 +
- hw/usb/redirect.c               | 1 +
- hw/virtio/vhost-user-base.c     | 1 +
- hw/virtio/vhost-user-scmi.c     | 1 +
- include/chardev/char.h          | 4 ++++
- monitor/hmp.c                   | 1 +
- monitor/qmp.c                   | 1 +
- net/passt.c                     | 1 +
- net/vhost-user.c                | 1 +
- 17 files changed, 20 insertions(+)
+ chardev/char.c         | 11 +++++++++++
+ include/chardev/char.h |  2 ++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/backends/cryptodev-vhost-user.c b/backends/cryptodev-vhost-user.c
-index cb04e68b022abcc4d794df741dfc25181db660bc..9daca4b0f91e802f67cf3c7af1f8f26479026e1e 100644
---- a/backends/cryptodev-vhost-user.c
-+++ b/backends/cryptodev-vhost-user.c
-@@ -173,6 +173,7 @@ static void cryptodev_vhost_user_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
 diff --git a/chardev/char.c b/chardev/char.c
-index bbebd246c3a46c848847effc775f6390b5078e14..635d19fea4fd4bd0c7f171f055fe940f9f5ebed5 100644
+index 635d19fea4fd4bd0c7f171f055fe940f9f5ebed5..b45d79cb9b57643827eb7479257fdda2cf6b0434 100644
 --- a/chardev/char.c
 +++ b/chardev/char.c
-@@ -75,6 +75,7 @@ void qemu_chr_be_event(Chardev *s, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index c0cc5f6942815aa5e8d972553b3c76a623523ba4..942bc46171824017c98774d6fe793059082385b6 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -412,6 +412,7 @@ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
-diff --git a/hw/char/terminal3270.c b/hw/char/terminal3270.c
-index d950c172921f91e41fad2b86a8d2a3791f6b0330..2fdf823e3bab3187fa6a4d2214ecd991bac5f473 100644
---- a/hw/char/terminal3270.c
-+++ b/hw/char/terminal3270.c
-@@ -172,6 +172,7 @@ static void chr_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
-diff --git a/hw/char/virtio-console.c b/hw/char/virtio-console.c
-index 0932a3572b78eda866cd7680a32866f2077a91dd..881c862ce9d12027f392031bdea7dbe280ec5493 100644
---- a/hw/char/virtio-console.c
-+++ b/hw/char/virtio-console.c
-@@ -168,6 +168,7 @@ static void chr_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
-diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
-index 9f1ba7b2f8715daf3558fedde358c625c74da20e..b1f28c5b7db71d2cbd828227f176a484629a14f7 100644
---- a/hw/ipmi/ipmi_bmc_extern.c
-+++ b/hw/ipmi/ipmi_bmc_extern.c
-@@ -436,6 +436,7 @@ static void chr_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 25f2d894e7c827744a41302473712e7b34672536..a8d40046b714e5899262af7382a02611cb7f9a81 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -226,6 +226,7 @@ static void vhost_user_scsi_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
-diff --git a/hw/usb/ccid-card-passthru.c b/hw/usb/ccid-card-passthru.c
-index 1eea21a7337747667e9b1db97900c67b061f3729..08fec48dbe00cebef7e73053f2be76932175fb47 100644
---- a/hw/usb/ccid-card-passthru.c
-+++ b/hw/usb/ccid-card-passthru.c
-@@ -323,6 +323,7 @@ static void ccid_card_vscard_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-     case CHR_EVENT_CLOSED:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
-diff --git a/hw/usb/dev-serial.c b/hw/usb/dev-serial.c
-index 1c116d8b0fef7b23dd076aa6e7e81e52bb51cdbb..dd70db7705def9b93bd69cf176ff0ed7d8cb2cad 100644
---- a/hw/usb/dev-serial.c
-+++ b/hw/usb/dev-serial.c
-@@ -576,6 +576,7 @@ static void usb_serial_event(void *opaque, QEMUChrEvent event)
-         break;
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
-diff --git a/hw/usb/redirect.c b/hw/usb/redirect.c
-index f516ff42a114d014033ab9f2fce93d1ca48983a6..68c9b48f7a07558441c6d6cd3deccb98e833910b 100644
---- a/hw/usb/redirect.c
-+++ b/hw/usb/redirect.c
-@@ -1390,6 +1390,7 @@ static void usbredir_chardev_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
-diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
-index ff67a020b471b2edfacc6d238ffc50b3ba36afc4..57ff26e775df46135b84449f22929fadd33c684a 100644
---- a/hw/virtio/vhost-user-base.c
-+++ b/hw/virtio/vhost-user-base.c
-@@ -267,6 +267,7 @@ static void vub_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
-diff --git a/hw/virtio/vhost-user-scmi.c b/hw/virtio/vhost-user-scmi.c
-index f9264c4374e87cb78f8937fda852089487b477e8..180787ec6d94793d4915a26389ae2bece231064e 100644
---- a/hw/virtio/vhost-user-scmi.c
-+++ b/hw/virtio/vhost-user-scmi.c
-@@ -214,6 +214,7 @@ static void vu_scmi_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
+@@ -351,6 +351,17 @@ int qemu_chr_wait_connected(Chardev *chr, Error **errp)
+     return 0;
+ }
+ 
++void qemu_chr_resize(Chardev *chr, uint16_t cols, uint16_t rows)
++{
++    if (cols != chr->cols || rows != chr->rows) {
++        chr->cols = cols;
++        chr->rows = rows;
++        if (chr->be_open) {
++            qemu_chr_be_event(chr, CHR_EVENT_RESIZE);
++        }
++    }
++}
++
+ QemuOpts *qemu_chr_parse_compat(const char *label, const char *filename,
+                                 bool permit_mux_mon)
+ {
 diff --git a/include/chardev/char.h b/include/chardev/char.h
-index 336b2e68d099e70a9abe71ef842b160bf12ea932..45cb6349756ac8072dffab9354108caf90cd3565 100644
+index 45cb6349756ac8072dffab9354108caf90cd3565..1e69b038241074d627ebb7f096e98aee9953ebdf 100644
 --- a/include/chardev/char.h
 +++ b/include/chardev/char.h
-@@ -22,6 +22,10 @@ typedef enum {
-     CHR_EVENT_OPENED, /* new connection established */
-     CHR_EVENT_MUX_IN, /* mux-focus was set to this terminal */
-     CHR_EVENT_MUX_OUT, /* mux-focus will move on */
-+    CHR_EVENT_RESIZE, /*
-+                       * the size of the terminal connected to
-+                       * the chardev changed
-+                       */
-     CHR_EVENT_CLOSED /* connection closed.  NOTE: currently this event
-                       * is only bound to the read port of the chardev.
-                       * Normally the read port and write port of a
-diff --git a/monitor/hmp.c b/monitor/hmp.c
-index 34e2b8f748b425e1e4446e8e64aa25b1433d1162..be623a0ef0d0ebdf091d87e4d620175ad60d1566 100644
---- a/monitor/hmp.c
-+++ b/monitor/hmp.c
-@@ -1444,6 +1444,7 @@ static void monitor_event(void *opaque, QEMUChrEvent event)
-         break;
+@@ -232,6 +232,8 @@ int qemu_chr_write(Chardev *s, const uint8_t *buf, int len, bool write_all);
+ #define qemu_chr_write_all(s, buf, len) qemu_chr_write(s, buf, len, true)
+ int qemu_chr_wait_connected(Chardev *chr, Error **errp);
  
-     case CHR_EVENT_BREAK:
-+    case CHR_EVENT_RESIZE:
-         /* Ignored */
-         break;
-     }
-diff --git a/monitor/qmp.c b/monitor/qmp.c
-index cb99a12d94175b395033569e8ead908d9453e759..ff7548422bc60c64e47fc4f24adf092fc81c70b5 100644
---- a/monitor/qmp.c
-+++ b/monitor/qmp.c
-@@ -484,6 +484,7 @@ static void monitor_qmp_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
-diff --git a/net/passt.c b/net/passt.c
-index 32ecffb763b48af4e17b20b98537a4ffb3a6d3ea..2308e3b4d44aa410c374eb1b47e5081c2bef5cec 100644
---- a/net/passt.c
-+++ b/net/passt.c
-@@ -421,6 +421,7 @@ static void passt_vhost_user_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
-diff --git a/net/vhost-user.c b/net/vhost-user.c
-index 8b96157145a7ab719b15b1b70aadac1e88ebfd5f..1c7fdf8267d8c214dcb6ae92e0521747a9f59a6f 100644
---- a/net/vhost-user.c
-+++ b/net/vhost-user.c
-@@ -367,6 +367,7 @@ static void net_vhost_user_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-     case CHR_EVENT_MUX_OUT:
-+    case CHR_EVENT_RESIZE:
-         /* Ignore */
-         break;
-     }
++void qemu_chr_resize(Chardev *chr, uint16_t cols, uint16_t rows);
++
+ #define TYPE_CHARDEV "chardev"
+ OBJECT_DECLARE_TYPE(Chardev, ChardevClass, CHARDEV)
+ 
 
 -- 
 2.51.0
