@@ -2,97 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE5AB8CA4A
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 16:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13704B8CBF7
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Sep 2025 17:45:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uzybf-0007T1-Va; Sat, 20 Sep 2025 10:30:31 -0400
+	id 1uzzko-000809-Bx; Sat, 20 Sep 2025 11:44:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uzybd-0007Rr-Lu
- for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:30:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uzzka-0007uI-Ra; Sat, 20 Sep 2025 11:43:50 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uzybW-0005U1-Iv
- for qemu-devel@nongnu.org; Sat, 20 Sep 2025 10:30:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758378621;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=l9jcGdX1lSvJdDQcVF4FUrlARni1t0sPnSGCmO+JHDo=;
- b=WqDBvlhCakKgem+C+xKH3sFtIcbTbrcmehkRCQq2pLnZtD2VzlFs1AmSLPdJVeQIqnFBrg
- x3DI42EwGtuMDuWQWbhWFSJo1ue+9ZJS1bMY8XGFwHOrSoFVdyUXXcHV+AbUthy6EVKgW5
- YY/walyyT7OiCLlg25jkdXhjb9R022w=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-126-WEdMH3o4Pf2RjuC79T_biw-1; Sat, 20 Sep 2025 10:30:20 -0400
-X-MC-Unique: WEdMH3o4Pf2RjuC79T_biw-1
-X-Mimecast-MFC-AGG-ID: WEdMH3o4Pf2RjuC79T_biw_1758378619
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3ee888281c3so1647070f8f.3
- for <qemu-devel@nongnu.org>; Sat, 20 Sep 2025 07:30:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758378618; x=1758983418;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=l9jcGdX1lSvJdDQcVF4FUrlARni1t0sPnSGCmO+JHDo=;
- b=jUhwKZBm7vJyujgQAysNW8OSvPY0XF6jBWWnTyqjlEoScYJhT8kz9tM15yVmeeEwXD
- WydNtzDVb0YRQjDPOXKtV2YdpqgQyo+R5TmXTW9lHl+3FRCIfE/YpHHf7OtA6vNp7vt3
- 5qiAELT69Nm8j0Ymod+1jlAtAml7P9agYUG/tWQrHeXo44/+Jb281Rx7Ju8b3S/jxCWX
- Zn71Ifu/7T3EPSDJUXDG3Q/wBGcUhFZPphJEnpjaPVKioG4sQeXJnt/HRLtkXPPiEMcb
- DfokpjLoqrrwrCgiKmMswtaAJpc18iloBzFj+1un6UdVK51EIxAvGnoV6FFjbG4yEBQ5
- Q7lA==
-X-Gm-Message-State: AOJu0YyCOmZ7PAVR+cV4rfFw4J+OPprmxhU/Zi+vv7u73Q3hNtAGnXYm
- TAIxdVzF2bdKXu6uQBfKesuQc/BPFci52h/VINhtLed+XNExhyoBcir2nmovO4xo9/5T4sVbACo
- IyuBbSu9eRwr1nlRTZ7LfSxv8rvpDHr8e4utwFzr5jn1wwyFGTqCbQ9Om0/ukoOcCQ2DuUQA1CO
- ciWaolqc5og/+J37Z9PCMVzJp6Jct25Ctc0QmlPL2O
-X-Gm-Gg: ASbGnct6a1ylUmHv1aNGxOG+WCiZr52Jk40uSWOiqsB4nHh41vBxOARMIQKUTsLmAJy
- R+0poRyAgmY34FRIcny5hFceAbK2+yBK1DDz0PtEpwc2hRuHByoHTRQN1MMrEMABQwbnvD1kYrn
- GEUb3D/Wq9mYEM7V3FwxhJdV4/nWljLrCC5Inr27twpvILbza174d60dv7IhsF0qc+Osrj4Zpok
- JrBVHilAHTXxGzFcd2X5Cj1cSpVYhyxMHd75z18mqPyzaZgvoXg/l8VP06ltXQpDePLTps7x33+
- +fNu/mbs6LowzFnFkq/eAlc43Zxb7yB8TjiOH1CkXGh5rt7rg2CMCCPuGx0374UXwgtB1lKnr3O
- sr+xoS7zFvj8VDjMJTuyhhdkc173pCsf0SASnjbhUbj8=
-X-Received: by 2002:a05:6000:24c9:b0:3ec:ce37:3a6d with SMTP id
- ffacd0b85a97d-3ee857699acmr5746400f8f.47.1758378618448; 
- Sat, 20 Sep 2025 07:30:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGVsQCkxTEWRDRQztw0Hn3LuLOS8XxwHM2e/j9Mx0kRIkEmI+325YL5RSZSPJLHN5BW03f3fg==
-X-Received: by 2002:a05:6000:24c9:b0:3ec:ce37:3a6d with SMTP id
- ffacd0b85a97d-3ee857699acmr5746385f8f.47.1758378617995; 
- Sat, 20 Sep 2025 07:30:17 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.47.123])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3ee07407fa3sm12145305f8f.21.2025.09.20.07.30.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 20 Sep 2025 07:30:16 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org, zhao1.liu@intel.com, manos.pitsidianakis@linaro.org
-Subject: [PATCH 7/7] rust: migration: implement ToMigrationState as part of
- impl_vmstate_bitsized
-Date: Sat, 20 Sep 2025 16:29:58 +0200
-Message-ID: <20250920142958.181910-8-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250920142958.181910-1-pbonzini@redhat.com>
-References: <20250920142958.181910-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uzzkX-0001zC-PG; Sat, 20 Sep 2025 11:43:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1758383026; x=1789919026;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=KBVKhGRJQV5wgv2/eqkpjFKbdVkp94L7UsAfeGvMdk8=;
+ b=KDtXVzOJCE0qJy7hBy5N7i+gd+oM1VYEK9Wj92MtBxZ9KoZDkKIu3op+
+ AEvsDbtZnU8dKzG2KpCP70QdlQaTFiQ2YpLimrmju2Q+wr1nC06TQP8zM
+ lNZ3ATbMv91za/nT95OudhmVcM1Re2CDad1KXDN+CzNGkE1BJ2dJBcBSu
+ 0LMzW5A/x15VXjqDtTPyeg3MnODD8Zvwavy9pzF96mzewXquxymsM5cC8
+ 3PyiAko+/JxMSPABeM9JqZeTsXeyK0l5EBzq2JENEZOBHrFU/KOeUWfOp
+ Lh8Rpmeh3JETak31Zk19pLxd6HRBpf93jZg0HARInFVDwKgzRlxfdvfaN g==;
+X-CSE-ConnectionGUID: afuqSYKMQlO+/mLwzrJxFw==
+X-CSE-MsgGUID: 0JCTr3grQ4yK6oXZ/GjJFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11559"; a="70955487"
+X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; d="scan'208";a="70955487"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Sep 2025 08:43:40 -0700
+X-CSE-ConnectionGUID: VbbyAvJlRjKyh1MIxi3C4A==
+X-CSE-MsgGUID: wfWwVBM+TpyoiE1JbvN/WQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; d="scan'208";a="181349421"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
+ by fmviesa004.fm.intel.com with ESMTP; 20 Sep 2025 08:43:37 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v2 00/12] rust: miscellaneous cleanup & HPET #property
+ conversion
+Date: Sun, 21 Sep 2025 00:05:08 +0800
+Message-Id: <20250920160520.3699591-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.045,
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.045,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,45 +77,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is most likely desirable, and is the easiest way to migrate
-a bit-sized value without peeking at the innards of the bilge crate.
+Hi,
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+This series include:
+ * cleanup for .gitignore of subproject.
+ * cleanup for clippy error & warnings based on v1.83.
+ * support bit property in #property.
+ * HPET #property conversion.
+ * get rid of the legacy declare_properties & define_property.
+
+And this series is based on the commit 7a28f05aafb7 of Paolo's
+rust-next branch.
+
+Changes since v1
+ * Use attrs to parse "bit" field in #property.
+ * Squash the "VALUE" renaming patch into the patch of "bit" property
+   support.
+ * Add test case of bit property.
+
+Thanks and Best Regards,
+Zhao
+
 ---
- rust/migration/src/vmstate.rs | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+Manos Pitsidianakis (2):
+  rust/qdev: use addr_of! in QDevProp
+  rust/qdev: Refine the documentation for QDevProp trait
 
-diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
-index 421a236194d..882dab746fc 100644
---- a/rust/migration/src/vmstate.rs
-+++ b/rust/migration/src/vmstate.rs
-@@ -295,6 +295,25 @@ unsafe impl $crate::vmstate::VMState for $type {
-                                           as ::bilge::prelude::Number>::UnderlyingType
-                                          as $crate::vmstate::VMState>::VARRAY_FLAG;
-         }
-+
-+        impl $crate::migratable::ToMigrationState for $type {
-+            type Migrated = <<$type as ::bilge::prelude::Bitsized>::ArbitraryInt
-+                                          as ::bilge::prelude::Number>::UnderlyingType;
-+
-+            fn snapshot_migration_state(&self, target: &mut Self::Migrated) -> Result<(), $crate::InvalidError> {
-+                *target = Self::Migrated::from(*self);
-+                Ok(())
-+            }
-+
-+            fn restore_migrated_state_mut(
-+                &mut self,
-+                source: Self::Migrated,
-+                version_id: u8,
-+            ) -> Result<(), $crate::InvalidError> {
-+                *self = Self::from(source);
-+                Ok(())
-+            }
-+        }
-     };
- }
- 
+Zhao Liu (10):
+  subprojects: Update .gitignore for proc-macro2 and syn
+  subprojects: Ignore .wraplock file generated by meson v1.9.0
+  rust/qemu-macros: Fix Clippy's complaints about lambda parameter
+    naming
+  rust/common/uninit: Fix Clippy's complaints about lifetime
+  rust/qdev: Support property info for more common types
+  rust/qdev: Support bit property in #property macro
+  rust/qdev: Test bit property for #property
+  rust/hpet: Clean up type mismatch for num_timers property
+  rust/hpet: Convert qdev properties to #property macro
+  rust/qdev: Drop declare_properties & define_property macros
+
+ rust/common/src/uninit.rs        |   4 +-
+ rust/hw/core/src/qdev.rs         | 105 ++++++++++--------------------
+ rust/hw/timer/hpet/src/device.rs |  55 ++--------------
+ rust/qemu-macros/src/lib.rs      |  22 +++++--
+ rust/qemu-macros/src/tests.rs    | 107 ++++++++++++++++++++++++++++++-
+ subprojects/.gitignore           |   5 +-
+ 6 files changed, 168 insertions(+), 130 deletions(-)
+
 -- 
-2.51.0
+2.34.1
 
 
