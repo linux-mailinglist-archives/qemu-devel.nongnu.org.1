@@ -2,103 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A9DB8D279
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Sep 2025 01:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73673B8D44A
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Sep 2025 05:22:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v07Hj-000500-3C; Sat, 20 Sep 2025 19:46:31 -0400
+	id 1v0Acf-0005OB-OQ; Sat, 20 Sep 2025 23:20:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
- id 1v07He-0004zX-0z
- for qemu-devel@nongnu.org; Sat, 20 Sep 2025 19:46:26 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1v0Aca-0005Nm-Ik
+ for qemu-devel@nongnu.org; Sat, 20 Sep 2025 23:20:17 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <filip.hejsek@gmail.com>)
- id 1v07Hb-0006hA-Ie
- for qemu-devel@nongnu.org; Sat, 20 Sep 2025 19:46:25 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-46b7bf21fceso4786155e9.3
- for <qemu-devel@nongnu.org>; Sat, 20 Sep 2025 16:46:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1v0AcU-0007K2-Kt
+ for qemu-devel@nongnu.org; Sat, 20 Sep 2025 23:20:15 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-b54a2ab01ffso2376077a12.2
+ for <qemu-devel@nongnu.org>; Sat, 20 Sep 2025 20:20:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1758411980; x=1759016780; darn=nongnu.org;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=l+6U7vuZXoA2jAif1uxe87ybSSQD3PHGgeF0aqX99Qs=;
- b=Jb/2k5o8deS5nf8BN87KsHrMiXZowQ98Z9wajl7sjTOnuQgMuDGaGsk/EVVJFFxsvU
- Ph+eK50p2XzY4chiE4IN/xY3LUKQJyPULSrSWzLqLLII+7x/GXnkTiF6K3+9Hvn//95F
- xlCcyLK/5A/BzfdZU0BQeFBVSHb5m6ibIKaSr63HWiYZvFUpdnSxIBhFzadFdhcaJDgg
- 6vNX8mv5f9qsNTQB4Z+vg4RMH63yl/AhOMJ0llueBH+qh8ZT8sauCRsCxTJrLWSOGZ4W
- w2ySD2DCtbIRon/HLACEn+0t05vE7J3m7eu20hv5YSl1Ik/JpVpAoSnpzYaKSyvazqNq
- fxxw==
+ d=gmail.com; s=20230601; t=1758424806; x=1759029606; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=U+AOLgxchQSNO9JByX40uQeCEy7YPXJ8LnPidzeMAoU=;
+ b=Ump3VEJqz5GPword6Dlqn3yWaEWWkOno7x55VbnlidAyWkcJcZtlYaH5BY8lZsU4li
+ G4EIOGAZKbrTmPdPI/cH7+NW6tTyFeBi75u8eaV8jaF/OJhS5AyS1MnAfCfZ1Mq46ePB
+ KB8jWGbRWfEJdADedefP4+q1AuqGp0Qu+jA788EgC4bcPutFHezztBEKd/HEtE2aEfAp
+ b1EsJv/jgFcl404RyCbJRPG9nFJKgbX5LSx0ETHtmWJISQ+lh3XI4cSvk02yTVlIdYi9
+ V7IEBtjwFr1XJdFvcI+UsL80dlK1CitCobXscE6P3Urx8J1XfYd956BD28Z4g6UbeNm2
+ wj8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758411980; x=1759016780;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=l+6U7vuZXoA2jAif1uxe87ybSSQD3PHGgeF0aqX99Qs=;
- b=UCSii9w5PFlTUq7jcvvh99Tfm3IY9MATlm+4C0nhqTm9qEwkT3ITZNjrDT+O1qeTiM
- WXSrZ5sjRAmeCkITaF5kuR7SBlMGBnp2eJRVcwbp96ZhPXEpocn7PtwnNtf8b8pKTaB/
- hWr7HC7403qGPfSc/8bIdcO6O/YwQ4SAeGR/2JOe5UMwBsPXxUWHfA7oDRT/jcW5lgY0
- dHt4cZ+ZQkjxsQFVhsoS6ZUTE0BaksJQcxv6LbIbidASbI8tCztHcInJZzWPNUj5Vb1U
- Rg/psq3n03dmGA1fzco+HPntL8hbksOkKxvbOGSRpCvZGnOx1ZNNJn7hg/A/TrNqQHJx
- RvBw==
-X-Gm-Message-State: AOJu0YzLj35rkkCzJ4mJdNfyq2NoQqa33F2svq+UmmlPay32cbpw9WOv
- hXetlB4va/zRZjF3Ke6+vHb3jGQTQqrZmFDYgfLl7QC39SU/vhRQMt9c
-X-Gm-Gg: ASbGncvvrFL2v3qKv9rpAK42XCsyAFSmJsdJ8+P9XOp4o0mf8At5rOFiKDYtQCcwq77
- h3ubglO1ZoDdlSMNWjp9iu8NU0KWOTZ7CE0EJXKN+jwB1UTQZ9OWZuXpQoGz0k/iz87MOHRFP+b
- rWwZZEccjwwUEimPxJ66MzqFznRkq6B88XbXHt2/0WvDpHpN8Y7r3DCsHA/ca2I8yHWWqm9fz74
- MlGZBYSsYJTghM9rUg+IMdKl8421Igmj8lnrv8HoDtzKdeTijxBlg6jTKHiJY68hbpIb+Aj1aIe
- IMJqLGf/KOP64y95kWiTNGBN5IkyYRb3QQk3DsODgs/9AuG1vMMW8dLq5gNyxX0HJfxNRnQ44sL
- a+yaa7econePeBUfDeyyXApEG0gcyWSN8VjF+drf4RcP6woA7qwDc
-X-Google-Smtp-Source: AGHT+IGcPrcRTjfUt0bpQ7125j3MbMtv2zS3nJc/HrW2LnUXXiXefL03bmP0sDpYocEbB0Foz659gw==
-X-Received: by 2002:a05:600c:1f0e:b0:45d:e211:da7d with SMTP id
- 5b1f17b1804b1-467f3840538mr59904835e9.35.1758411980357; 
- Sat, 20 Sep 2025 16:46:20 -0700 (PDT)
-Received: from localhost (mem-185.47.220.165.jmnet.cz. [185.47.220.165])
- by smtp.gmail.com with UTF8SMTPSA id
- ffacd0b85a97d-3ee0fbf53cesm14756947f8f.59.2025.09.20.16.46.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 20 Sep 2025 16:46:19 -0700 (PDT)
-From: Filip Hejsek <filip.hejsek@gmail.com>
-Date: Sun, 21 Sep 2025 01:45:42 +0200
-Subject: [PATCH RFC v5 12/12] ui/gtk: forward gtk console size to vc
- chardev
+ d=1e100.net; s=20230601; t=1758424806; x=1759029606;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=U+AOLgxchQSNO9JByX40uQeCEy7YPXJ8LnPidzeMAoU=;
+ b=i99UmB9DbpjpNzKBg8CtUgS0hwO1zMYEYmNShruA1WxPiLKyB95iFob53S7ZX3TM/K
+ rAooVRY1tk3tNJlMgsiw3H7v1cjBCyn6MKTdrlbLxACuJZSiIqVDHnbdc4MIniuMnxiY
+ CZRZUEBeta1m4hhnFuWkYGn0yPgerNznGCL8QR3uZxsEE1x1VV6l32Fm1chgY+awHDlR
+ AfxsUCbn3ehwdPbb7Niih6sRgl9bJ34dKAe998CeVLLHGhJIlCFtguXmKT1PODCgG1vP
+ W32c1LtJkPMx4Nxi0GrF2uq+AW4//VTtkxgFLLo2yXOL0IOA21hcJV0Opa0ZIqbWQWDe
+ 8aUg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX4Uw74Ntm5afMOoi2QvZmKnRlhXC3bP9OjfBy5uuSvvYdYYHtufzTrBs0aNreW7Y0sk/0FXaKzJxIy@nongnu.org
+X-Gm-Message-State: AOJu0YymcVDy35zzXrKC+8GC28hcTSzfa4IDhOh1fChW4XZ4HaBorjB4
+ qvhBPWWnbmDvt9xhAOufdknBYBkthRDNW97pLgANmoBJ7GQe4sxnZ5F2lHtyOF+DhKCfrVww6AP
+ aoI7d7JsP3Qdry26Gdk5fUsxOloXPXug=
+X-Gm-Gg: ASbGncub7Ofbpz3bb3tE9DP9VVka4uCUGLRv1bKTg5sgfpYaiHpMUEZKeWodakwxCUD
+ 668DPMV38DIm8YHF96d0N65cYAYfFR7WhAfLntE/5gkWogI3DI1ZbYAbx/iTai1HP6DzJTA5Ltt
+ eY+ZjUGlSas0gGJcOXqx0FrD6P/DaNHvs3vgmcvvqZLtNAmVyD9HWJO5IssgYf7lID57Re9hg9D
+ /MtLbw=
+X-Google-Smtp-Source: AGHT+IHXgldAWbLPNGVAoQT85RQk0kuvGbzHuFKoBUpuvxg3gyei7f6RpYOdZoM1CEKBHicQ3ZcjLIwQQyzhoLsixp0=
+X-Received: by 2002:a17:902:e34d:b0:24b:1589:5054 with SMTP id
+ d9443c01a7336-269ba459b10mr76021905ad.23.1758424805778; Sat, 20 Sep 2025
+ 20:20:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250921-console-resize-v5-12-89e3c6727060@gmail.com>
-References: <20250921-console-resize-v5-0-89e3c6727060@gmail.com>
-In-Reply-To: <20250921-console-resize-v5-0-89e3c6727060@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>, 
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>, 
- Filip Hejsek <filip.hejsek@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758411962; l=2083;
- i=filip.hejsek@gmail.com; s=20250912; h=from:subject:message-id;
- bh=dxDuA1//VqDvH1os8q3NA6tUkxpa0NEBJc+VF1MvYLw=;
- b=Lp2Tht9hYrjoAEySxAR3OJMXr3WT/mfoGacMMEscps/BvMb/NljPryz8VBuKmLpDzn32+Jn4V
- llUX42tmoy8CWHexDfs5lHjMp1W3aKnJnt3Upyanjlm3n43uSCEdHEv
-X-Developer-Key: i=filip.hejsek@gmail.com; a=ed25519;
- pk=nakB8gEK3oi+Q/5dBTMCy/LgZL47NP60z1jeDR6O/WU=
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=filip.hejsek@gmail.com; helo=mail-wm1-x32e.google.com
+References: <20250919133320.240145-1-marcandre.lureau@redhat.com>
+ <20250919133320.240145-9-marcandre.lureau@redhat.com>
+In-Reply-To: <20250919133320.240145-9-marcandre.lureau@redhat.com>
+From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Date: Sun, 21 Sep 2025 12:19:53 +0900
+X-Gm-Features: AS18NWBElD4T3RJYFf1RGNY3E5yDKZP4muaTfL46Pi2r4JghF39kR9BIWjUohqs
+Message-ID: <CAEDrbUatca2WBq5xLoC6CPgFz30ndAmFpucGNzWYynY_EkvkHw@mail.gmail.com>
+Subject: Re: [PATCH 08/24] tests/docker: use fully qualified image name for
+ emsdk
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Ed Maste <emaste@freebsd.org>, 
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Li-Wen Hsu <lwhsu@freebsd.org>, Yonggang Luo <luoyonggang@gmail.com>,
+ Warner Losh <imp@bsdimp.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Kyle Evans <kevans@freebsd.org>
+Content-Type: multipart/alternative; boundary="000000000000e9aaef063f472d74"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,63 +102,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Query the terminal size from the vte library when creating the console
-and every time it might change. Vte doesn't send any signal specifically
-for terminal size changes, so instead we register callbacks for
-size-allocate and char-size-changed.
+--000000000000e9aaef063f472d74
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Filip Hejsek <filip.hejsek@gmail.com>
----
- ui/gtk.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> Without it, at least it fails with podman on fc42:
+>
+> [1/6] STEP 1/15: FROM emscripten/emsdk:3.1.50 AS build-base
+> Error: creating build container: short-name resolution enforced but
+cannot prompt without a TTY
+>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> ---
+>  tests/docker/dockerfiles/emsdk-wasm32-cross.docker | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
+b/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
+> index 60a7d02f56..6b1642a207 100644
+> --- a/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
+> +++ b/tests/docker/dockerfiles/emsdk-wasm32-cross.docker
+> @@ -8,7 +8,7 @@ ARG PIXMAN_VERSION=3D0.44.2
+>  ARG FFI_VERSION=3Dv3.4.7
+>  ARG MESON_VERSION=3D1.5.0
+>
+> -FROM emscripten/emsdk:$EMSDK_VERSION_QEMU AS build-base
+> +FROM docker.io/emscripten/emsdk:$EMSDK_VERSION_QEMU AS build-base
+>  ARG MESON_VERSION
+>  ENV TARGET=3D/builddeps/target
+>  ENV CPATH=3D"$TARGET/include"
 
-diff --git a/ui/gtk.c b/ui/gtk.c
-index e91d093a49e5d05c10f1dbea5b9b94ff1389b456..ff2709160787f0e2974c83802d932758866f6d44 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -2025,6 +2025,27 @@ static gboolean gd_vc_in(VteTerminal *terminal, gchar *text, guint size,
-     return TRUE;
- }
- 
-+static void gd_vc_vte_update_size(VirtualConsole *vc)
-+{
-+    uint16_t cols = vte_terminal_get_column_count(VTE_TERMINAL(vc->vte.terminal));
-+    uint16_t rows = vte_terminal_get_row_count(VTE_TERMINAL(vc->vte.terminal));
-+    qemu_chr_resize(vc->vte.chr, cols, rows);
-+}
-+
-+static void gd_vc_size_allocate(VteTerminal *terminal,
-+                                GtkAllocation *allocation, gpointer user_data)
-+{
-+    VirtualConsole *vc = user_data;
-+    gd_vc_vte_update_size(vc);
-+}
-+
-+static void gd_vc_char_size_changed(VteTerminal *terminal, guint width,
-+                                    guint height, gpointer user_data)
-+{
-+    VirtualConsole *vc = user_data;
-+    gd_vc_vte_update_size(vc);
-+}
-+
- static GSList *gd_vc_vte_init(GtkDisplayState *s, VirtualConsole *vc,
-                               Chardev *chr, int idx,
-                               GSList *group, GtkWidget *view_menu)
-@@ -2090,6 +2111,12 @@ static GSList *gd_vc_vte_init(GtkDisplayState *s, VirtualConsole *vc,
- 
-     qemu_chr_be_event(vc->vte.chr, CHR_EVENT_OPENED);
- 
-+    g_signal_connect(vc->vte.terminal, "size-allocate",
-+                     G_CALLBACK(gd_vc_size_allocate), vc);
-+    g_signal_connect(vc->vte.terminal, "char-size-changed",
-+                     G_CALLBACK(gd_vc_char_size_changed), vc);
-+    gd_vc_vte_update_size(vc);
-+
-     return group;
- }
- 
+Reviewed-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 
--- 
-2.51.0
+Regards,
+Kohei Tokunaga
 
+--000000000000e9aaef063f472d74
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">&gt; From: Marc-Andr=C3=A9 Lureau &lt;<a =
+href=3D"mailto:marcandre.lureau@redhat.com">marcandre.lureau@redhat.com</a>=
+&gt;<br>&gt; <br>&gt; Without it, at least it fails with podman on fc42:<br=
+>&gt; <br>&gt; [1/6] STEP 1/15: FROM emscripten/emsdk:3.1.50 AS build-base<=
+br>&gt; Error: creating build container: short-name resolution enforced but=
+ cannot prompt without a TTY<br>&gt; <br>&gt; Signed-off-by: Marc-Andr=C3=
+=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@redhat.com">marcandre.lur=
+eau@redhat.com</a>&gt;<br>&gt; ---<br>&gt; =C2=A0tests/docker/dockerfiles/e=
+msdk-wasm32-cross.docker | 2 +-<br>&gt; =C2=A01 file changed, 1 insertion(+=
+), 1 deletion(-)<br>&gt; <br>&gt; diff --git a/tests/docker/dockerfiles/ems=
+dk-wasm32-cross.docker b/tests/docker/dockerfiles/emsdk-wasm32-cross.docker=
+<br>&gt; index 60a7d02f56..6b1642a207 100644<br>&gt; --- a/tests/docker/doc=
+kerfiles/emsdk-wasm32-cross.docker<br>&gt; +++ b/tests/docker/dockerfiles/e=
+msdk-wasm32-cross.docker<br>&gt; @@ -8,7 +8,7 @@ ARG PIXMAN_VERSION=3D0.44.=
+2<br>&gt; =C2=A0ARG FFI_VERSION=3Dv3.4.7<br>&gt; =C2=A0ARG MESON_VERSION=3D=
+1.5.0<br>&gt; <br>&gt; -FROM emscripten/emsdk:$EMSDK_VERSION_QEMU AS build-=
+base<br>&gt; +FROM <a href=3D"http://docker.io/emscripten/emsdk:$EMSDK_VERS=
+ION_QEMU">docker.io/emscripten/emsdk:$EMSDK_VERSION_QEMU</a> AS build-base<=
+br>&gt; =C2=A0ARG MESON_VERSION<br>&gt; =C2=A0ENV TARGET=3D/builddeps/targe=
+t<br>&gt; =C2=A0ENV CPATH=3D&quot;$TARGET/include&quot;<br><br>Reviewed-by:=
+ Kohei Tokunaga &lt;<a href=3D"mailto:ktokunaga.mail@gmail.com">ktokunaga.m=
+ail@gmail.com</a>&gt;<br><br>Regards,<br>Kohei Tokunaga</div></div>
+
+--000000000000e9aaef063f472d74--
 
