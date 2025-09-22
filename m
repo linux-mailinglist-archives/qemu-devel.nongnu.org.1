@@ -2,88 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C94B9066B
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 13:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2814B90682
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 13:34:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0em9-0006gO-W4; Mon, 22 Sep 2025 07:32:10 -0400
+	id 1v0emP-0006jI-B5; Mon, 22 Sep 2025 07:32:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v0em7-0006g2-Hf
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 07:32:07 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v0em1-0001gy-SV
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 07:32:07 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-45f2acb5f42so32144045e9.1
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 04:31:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758540715; x=1759145515; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=AMr+T/dfewAzBS9BwfAt5nh2TRF2iZakiGe0kPUTzjE=;
- b=y+xjQlxngEDEU94S7IPyuksj8b5CigiLvpJNWSISYLYMMTSOG//U/G+l0LjTv7t/Bk
- GGz8wGPQCeExY1wrhVm/mXnXO5g4MgHMs4v/mpqzqt99fZzwSpOdm6TR+VVGih9prAiN
- 0fsUl5L7f0fm4A/yfwcJm6tEWsCXY7ZDjHDr/WvKo+yi09MnIpdMhnEXjSsw6MI2Y5Ez
- 27l9yVK2xcwxaW2Rq7Z7SCGJnYMI0fXM+T3tdADoaAZZqNnssnZWk8cjVMShOD6kcf8C
- 3jF5DC2H7bCQHaIE64H1OQzsksYOouiy5imdVtrLgh2aef4xbqSar08JP6DoVS7dGi8b
- xmAQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v0emH-0006j0-VX
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 07:32:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v0emF-0001jz-Ay
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 07:32:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758540731;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=pfEf0KPRFEi/1qGChhZlFYNcWUCNMDujVMEg7yKLIxU=;
+ b=QtNvhj7lrGVExW5XrTwwfwcK8cnL71Le+plcMF6qicyVEWutKIAJ0Nd3mmCmZw//PQoZ26
+ QyCHYDf+lRHErOIubxoio062Yf2BzIdaXvnjT3FazD1FHRF20OLfdwBeCfIKk2TNdRpyav
+ mBriEQ5KamKCTolEjkjd5Fl63V+hcDU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-279-aD-gEgfXNKuZQTTPhlwxcA-1; Mon, 22 Sep 2025 07:32:10 -0400
+X-MC-Unique: aD-gEgfXNKuZQTTPhlwxcA-1
+X-Mimecast-MFC-AGG-ID: aD-gEgfXNKuZQTTPhlwxcA_1758540729
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3f384f10762so804777f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 04:32:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758540715; x=1759145515;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AMr+T/dfewAzBS9BwfAt5nh2TRF2iZakiGe0kPUTzjE=;
- b=cXByVb8ggyfCtJQwyNxFyvFBZC3QyWz6apZUuXz9VF5rr23RPNHNb3lgoQ9Y5+QVoF
- 1AAugBtYnSUKwrBtUsRINx5jtYmDXi4RJtewyPzRPXI6HTnThVD6FOTTtqf7zOfRJ8+h
- QNSfsHMM7UACqAD/AvsvPreJ8V/N4YsD9dnBQS3LAAE5+qeTiDiMvk4Dy2AifDLDQc90
- Py+6vYYJT7ILqQ1U7THjxA89o9z6xfyxHOe4zHmv7Knst6IRe/9ev+rlmxyAdSOhMQx4
- p21hNN3pa+W8URU0zgInSRsiro/P6FrTKU9xcZHulFdYAW/6UVUd3cJ5cajjGYVNEzJs
- Ghjg==
+ d=1e100.net; s=20230601; t=1758540729; x=1759145529;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pfEf0KPRFEi/1qGChhZlFYNcWUCNMDujVMEg7yKLIxU=;
+ b=H1ZwzclXoTXR15E1+Ayw239ZvGaGlhK4IagEy5YeLZwVVMNoT4k1AZKcJsjvEeevv6
+ FRMMVF0APT7MRa7GJPx4BhAhyRmC7XTEl3sCQLciPH5ziqzrDHfUPG3OjpdAhrm9IRhm
+ 3pIygKmDMb3G5MFYnlqHYyA9yHJSWOHP5RTE+m8LYYGRFKAaww4/fTGzztzU0PCEc3U2
+ jzuo+BUU4tT4PeboTujDreRFPj8k6yOdWrBHw4b2iPtNvAGEJo5k9V0KGbOipZ7n9w5/
+ B48yweD17AMZUzkXT6jlZsT8dsSCfw5OwP7Cc2F4qo+x1Fm0Nf05oe/vpo15hJw0H111
+ in1w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVT7UzSa3VyL+0R2lbdeT7pf6EH2OqRwku86uXsrgULI1PHyEJaiMeKwQNqjJwxOielShQs1PmBkHs0@nongnu.org
-X-Gm-Message-State: AOJu0YzNze2CGllWTzSEbzpN5+T2u6SQg14n/qTp+2yzW3YnZYMUAT2j
- r7xGAWM2UyONPz/Zi7TniEcI+bQLdqAEenC6fp6o/qLD9tcrPFoKbzKWT+21362grRRQzZYy/td
- EAm+9zuCCgA==
-X-Gm-Gg: ASbGncscrP7F5CHiDTmZO1zb3UN+uicF0yIPC/pzBbRlQfCTKWdXjiKDQG5Oo8qAum2
- AqA2/syVBdPx3IlUpJV+DmJJ5i7FcKh56nN6nxRY7CTAm7NzK8ay/jBiUw4WCRgEEX21UKYlfW5
- ACdZrtodDWE+5SojflW/QeZojQFEQwu2tPsku+pKKW0dYNV72aU5P0t9tbGe+fjPHAnuL29B5Fo
- hijtGKHoJi4AhBYr2p6/IoiChV9NZ9Be0UUx1ZU3deu/Bj2GxulPXJgNpMAEVKFUfS8ta3J2kGD
- +YUFeaMN79kUPcfr3pRd6CmdOV8Kj6wD8V4hh4aa/dnHwrsj5GkBA+bWOGLQSsN3LY2F2cGLZWs
- zb1TOiRYeti8NBonqfGIsb5B09HO2byG/lkmfeIxaZr5t+8PZXTD64ezIQ7OWFTDhLA==
-X-Google-Smtp-Source: AGHT+IG80KW8yzt1wcCS627aI+TTFBnIGIe5knMqOEvabBY+IU5XW5jtfz5BfwjMfaoiONoW1gKTAQ==
-X-Received: by 2002:a05:600c:4c99:b0:45f:21e6:3ef7 with SMTP id
- 5b1f17b1804b1-464fdf4431bmr113357295e9.17.1758540714863; 
- Mon, 22 Sep 2025 04:31:54 -0700 (PDT)
-Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3f88de2ced0sm8041078f8f.33.2025.09.22.04.31.53
+ AJvYcCX6QhPw9XDNz4zW9ZnqBlCOhpIKoVwHAUhnPKbnZXfHz1tNdw8N8baZhnv2Z7Ixn+jXYGHEx9zJrF/Q@nongnu.org
+X-Gm-Message-State: AOJu0YynEegYPsM2Wnh3SvdrqV0dQqJpxWIfQo50dbWXQ+9iDU+YWW5E
+ zkSxIpR7zBHCWiRy909hxdefF+JgxPA+OdyStZX/s+5ibNogII4oOHkJGZUMa9MVxizqR2ScZpF
+ dDJV6r6ccItlwcnIXFqMVqIPvcGqyU/0EN97vr8akUjk6Duv41CX3p899
+X-Gm-Gg: ASbGncv+Y29lzMd9tGSnfPf5uyQjX/C2goM1xlc1Sx8kT43ifqwwvkjCwr+1pb3xtqI
+ 6AoX8T3NX3DPGCEEbkjtQkrYzQTMhGE3tbSXgo410nLHZpPQR+Zh8Vo2tbyRZA6kF8yJ0RRagb1
+ +85oaDSnaD5vk9DhZC4qy7JRBd0MbnnXt7RMsvc3VOC4pSplvI0xhZ90KNGPet//r+iY21EEDsv
+ ZIZRZBbUeUO5RNUQs24eUwBtMCWvceGheKxVNRS6mXDwAuVrsgPh/b+ofSCJf9jTTBNTQZg9YWF
+ mSRGG0EC+5VU6RkGP/ATNmAjcY29xynKD9a3J55g7Q2F47HNMpVmwseV+lPE7DE04CvkDknQetU
+ h00uT9Q==
+X-Received: by 2002:adf:e006:0:b0:3f0:d752:34b6 with SMTP id
+ ffacd0b85a97d-3f13bfea75emr6732257f8f.53.1758540728993; 
+ Mon, 22 Sep 2025 04:32:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFodxjjZSemxbb9lOeMoQ1ZVlJu8hOn0b6k8/FHzJbTAC1J80lEnq202/80ILugoSc4IE9xuQ==
+X-Received: by 2002:adf:e006:0:b0:3f0:d752:34b6 with SMTP id
+ ffacd0b85a97d-3f13bfea75emr6732225f8f.53.1758540728536; 
+ Mon, 22 Sep 2025 04:32:08 -0700 (PDT)
+Received: from [192.168.0.7] (ltea-047-064-113-218.pools.arcor-ip.net.
+ [47.64.113.218]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3ee0740841dsm19434906f8f.23.2025.09.22.04.32.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Sep 2025 04:31:54 -0700 (PDT)
-Message-ID: <2506e480-3226-4fdc-bf1d-bf4324132ba4@linaro.org>
-Date: Mon, 22 Sep 2025 13:31:53 +0200
+ Mon, 22 Sep 2025 04:32:08 -0700 (PDT)
+Message-ID: <ab633307-4dbf-42c9-8c12-dcb22608cafc@redhat.com>
+Date: Mon, 22 Sep 2025 13:32:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/25] tcg-plugins: add hooks for discontinuities
-To: Julian Ganz <neither@nut.email>, qemu-devel@nongnu.org
-References: <cover.1757018626.git.neither@nut.email>
+Subject: Re: [PATCH 01/25] docs/devel: fix typo in code-provenance.rst
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Iooss <erdnaxe@crans.org>, 
+ Mahmoud Mandour <ma.mandourr@gmail.com>, qemu-riscv@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20250922093711.2768983-1-alex.bennee@linaro.org>
+ <20250922093711.2768983-2-alex.bennee@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <cover.1757018626.git.neither@nut.email>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250922093711.2768983-2-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,39 +161,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Julian,
-
-On 4/9/25 22:46, Julian Ganz wrote:
-> Some analysis greatly benefits, or depends on, information about
-> certain types of dicontinuities such as interrupts. For example, we may
-> need to handle the execution of a new translation block differently if
-> it is not the result of normal program flow but of an interrupt.
+On 22/09/2025 11.36, Alex Bennée wrote:
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   docs/devel/code-provenance.rst | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Even with the existing interfaces, it is more or less possible to
-> discern these situations, e.g. as done by the cflow plugin. However,
-> this process poses a considerable overhead to the core analysis one may
-> intend to perform.
-> 
-> These changes introduce a generic and easy-to-use interface for plugin
-> authors in the form of a callback for discontinuities. Patch 1 defines
-> an enumeration of some trap-related discontinuities including somewhat
-> narrow definitions of the discontinuity evetns and a callback type.
-> Patch 2 defines the callback registration function. Patch 3 adds some
-> hooks for triggering the callbacks. Patch 4 adds an example plugin
-> showcasing the new API.
-> 
-> Patches 5 through 22 call the hooks for all architectures but hexagon,
-> mapping architecture specific events to the three categories defined in
-> patch 1. We don't plan to add hooks for hexagon since despite having
-> exceptions apparently doesn't have any discontinuities associated with
-> them.
+> diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.rst
+> index b5aae2e2532..af5d7349e12 100644
+> --- a/docs/devel/code-provenance.rst
+> +++ b/docs/devel/code-provenance.rst
+> @@ -331,7 +331,7 @@ ChatGPT, Anthropic's Claude, and Meta's Code Llama, and code/content
+>   generation agents which are built on top of such tools.
+>   
+>   This policy may evolve as AI tools mature and the legal situation is
+> -clarifed. In the meanwhile, requests for exceptions to this policy will be
+> +clarified. In the meanwhile, requests for exceptions to this policy will be
+>   evaluated by the QEMU project on a case by case basis. To be granted an
+>   exception, a contributor will need to demonstrate clarity of the license and
+>   copyright status for the tool's output in relation to its training model and
 
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-> Richard Henderson proposed streamlining interrupts and exceptions for
-> all targets and calling the hooks from a higher level rather than in
-> each target code. However, there are a few obstacled and I decided to
-> not do this as part of this series.
-
-Does that mean another part is planned, and when it lands then these
-patches will be reverted?
 
