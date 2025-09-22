@@ -2,78 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37813B91A43
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 16:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A01E0B91A7F
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 16:24:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0hPB-00074T-8N; Mon, 22 Sep 2025 10:20:37 -0400
+	id 1v0hOx-00070y-WE; Mon, 22 Sep 2025 10:20:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1v0hP8-00073v-OI
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 10:20:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v0hOs-0006vy-AY; Mon, 22 Sep 2025 10:20:19 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1v0hP6-00078u-58
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 10:20:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758550831;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hbHK5FHHB61N9P1xhbMtMWKe3gV9sghx7N24vQkQ/1o=;
- b=E5Zl4PrwGVOaj8owJmJOuZNN/am5wGCsPrnG1nsUR6rPqRXiAy2NIyTKDOsYGQOSfWI9DF
- 8jvevGEXVTBOMy9FN8jaEn1TDDo5OL7ec6IBYS5dWoGqcN0eQJ39h5IezH/HQtDo/XjCRK
- uJvlLUtA/ghS1enDFCGfLY5kNwAuInA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-77-TypgAQ40MtS9CqW4VVi6Kw-1; Mon,
- 22 Sep 2025 10:20:26 -0400
-X-MC-Unique: TypgAQ40MtS9CqW4VVi6Kw-1
-X-Mimecast-MFC-AGG-ID: TypgAQ40MtS9CqW4VVi6Kw_1758550823
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 92C6D180047F; Mon, 22 Sep 2025 14:20:23 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.32.247])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 29B9B19560BB; Mon, 22 Sep 2025 14:20:18 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
- Jason Wang <jasowang@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Luigi Rizzo <lrizzo@google.com>,
- Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
- Vincenzo Maffione <v.maffione@gmail.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v7 14/14] net: implement UDP tunnel features offloading
-Date: Mon, 22 Sep 2025 16:18:28 +0200
-Message-ID: <093b4bc68368046bffbcab2202227632d6e4e83b.1758549625.git.pabeni@redhat.com>
-In-Reply-To: <cover.1758549625.git.pabeni@redhat.com>
-References: <cover.1758549625.git.pabeni@redhat.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v0hOj-0006nq-Qt; Mon, 22 Sep 2025 10:20:17 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c2d:7394:0:640:5a8a:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 5EE50C014C;
+ Mon, 22 Sep 2025 17:20:00 +0300 (MSK)
+Received: from [IPV6:2a02:6bf:8080:128::1:39] (unknown
+ [2a02:6bf:8080:128::1:39])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id uJXxak2FvCg0-JX49YaIP; Mon, 22 Sep 2025 17:19:59 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1758550799;
+ bh=ZTjKdl4STmXb8aQJ1kiFEBlnB4Q2Te3uwMwSRKMzg/E=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=MBaRzLnpC896rV89wbM9knfdVDcNGpHUM0+AFmGj2wH7K1nyguBeFePC833KVVlhx
+ TNUqjMbDC74qD+YeXHJznMi3fxGYwwTRhzIdUo8nbjdcl8Ji3/Jq4eVym5FGVjYSxE
+ i8WnUamvlu2EpjAt6gMjsymS9g5ORHflE5X6pm30=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <e9a86cc0-977e-4353-867c-35a1ed361eac@yandex-team.ru>
+Date: Mon, 22 Sep 2025 17:19:56 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 13/16] treewide: use qemu_set_blocking instead of
+ g_unix_set_fd_nonblocking
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>, Jagannathan Raman <jag.raman@oracle.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Eric Blake <eblake@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Darren Kenny <darren.kenny@oracle.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, qemu-block@nongnu.org,
+ Peter Xu <peterx@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ John Levon <john.levon@nutanix.com>, Fam Zheng <fam@euphon.net>,
+ Alexander Bulekov <alxndr@bu.edu>, Stefan Weil <sw@weilnetz.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
+ Qiuhao Li <Qiuhao.Li@outlook.com>, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>,
+ Kostiantyn Kostiuk <kkostiuk@redhat.com>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>
+References: <20250919115017.1536203-1-berrange@redhat.com>
+ <20250919115017.1536203-14-berrange@redhat.com>
+ <CAFEAcA8cdGC7j1WxsuZ4K0yR2i7t8=Zq0gDq6wczoBSOO_vifw@mail.gmail.com>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <CAFEAcA8cdGC7j1WxsuZ4K0yR2i7t8=Zq0gDq6wczoBSOO_vifw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pabeni@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,206 +96,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When any host or guest GSO over UDP tunnel offload is enabled the
-virtio net header includes the additional tunnel-related fields,
-update the size accordingly.
+On 22.09.25 16:40, Peter Maydell wrote:
+> On Fri, 19 Sept 2025 at 12:54, Daniel P. Berrangé <berrange@redhat.com> wrote:
+>>
+>> From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>>
+>> Instead of open-coded g_unix_set_fd_nonblocking() calls, use
+>> QEMU wrapper qemu_set_blocking().
+>>
+>> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>> [DB: fix missing closing ) in tap-bsd.c, remove now unused GError var]
+>> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+>> ---
+> 
+>> index fe4be6be17..e83e6c6ee9 100644
+>> --- a/hw/misc/ivshmem-flat.c
+>> +++ b/hw/misc/ivshmem-flat.c
+>> @@ -154,7 +154,8 @@ static void ivshmem_flat_add_vector(IvshmemFTState *s, IvshmemPeer *peer,
+>>        * peer.
+>>        */
+>>       peer->vector[peer->vector_counter].id = peer->vector_counter;
+>> -    g_unix_set_fd_nonblocking(vector_fd, true, NULL);
+>> +    /* WARNING: qemu_socket_set_nonblock() return code ignored */
+>> +    qemu_set_blocking(vector_fd, false, &error_warn);
+>>       event_notifier_init_fd(&peer->vector[peer->vector_counter].event_notifier,
+>>                              vector_fd);
+> 
+> What is this WARNING comment intended to mean? Is it a
+> TODO/bug ?
+> 
 
-Push the GSO over UDP tunnel offloads all the way down to the tap
-device extending the newly introduced NetFeatures struct, and
-eventually enable the associated features.
+In my opinion it's a bug (preexisting): we ignore an error. We want to unblock the fd. If we failed, most
+probably it means that fd is invalid and further use of it will fail anyway.. Or something
+will block on blocking operation which should be non-blocking.
 
-As per virtio specification, to convert features bit to offload bit,
-map the extended features into the reserved range.
+The function doesn't return a value, as well as its caller, and its caller and so on up to
+qemu_chr_fe_set_handlers()...
 
-Finally, make the vhost backend aware of the exact header layout, to
-copy it correctly. The tunnel-related field are present if either
-the guest or the host negotiated any UDP tunnel related feature:
-add them to the kernel supported features list, to allow qemu
-transfer to the backend the needed information.
+On the other hand, at start of ivshmem_flat_add_vector(), we have
 
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
----
-v3 -> v4:
-  - '|' -> '||'
+     if (peer->vector_counter >= IVSHMEM_MAX_VECTOR_NUM) {
+         trace_ivshmem_flat_add_vector_failure(peer->vector_counter,
+                                               vector_fd, peer->id);
+         close(vector_fd);
 
-v2 -> v3:
-  - rebased on top of "net: Consolidate vhost feature bits into vhost_net
-    structure"
-  - _array -> _ex
-
-v1 -> v2:
-  - squashed vhost support into this patch
-  - dropped tun offload consistency checks; they are implemented in
-    the kernel side
-  - virtio_has_tnl_hdr ->virtio_has_tunnel_hdr
----
- hw/net/virtio-net.c | 34 ++++++++++++++++++++++++++--------
- include/net/net.h   |  2 ++
- net/net.c           |  3 ++-
- net/tap-linux.c     |  6 ++++++
- net/tap.c           |  2 ++
- 5 files changed, 38 insertions(+), 9 deletions(-)
-
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 0abb8c8a62..f021663f92 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -103,6 +103,12 @@
- #define VIRTIO_NET_F2O_SHIFT          (VIRTIO_NET_OFFLOAD_MAP_MIN - \
-                                        VIRTIO_NET_FEATURES_MAP_MIN + 64)
- 
-+static bool virtio_has_tunnel_hdr(const uint64_t *features)
-+{
-+    return virtio_has_feature_ex(features, VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO) ||
-+           virtio_has_feature_ex(features, VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO);
-+}
-+
- static const VirtIOFeature feature_sizes[] = {
-     {.flags = 1ULL << VIRTIO_NET_F_MAC,
-      .end = endof(struct virtio_net_config, mac)},
-@@ -659,7 +665,8 @@ static bool peer_has_tunnel(VirtIONet *n)
- }
- 
- static void virtio_net_set_mrg_rx_bufs(VirtIONet *n, int mergeable_rx_bufs,
--                                       int version_1, int hash_report)
-+                                       int version_1, int hash_report,
-+                                       int tunnel)
- {
-     int i;
-     NetClientState *nc;
-@@ -667,9 +674,11 @@ static void virtio_net_set_mrg_rx_bufs(VirtIONet *n, int mergeable_rx_bufs,
-     n->mergeable_rx_bufs = mergeable_rx_bufs;
- 
-     if (version_1) {
--        n->guest_hdr_len = hash_report ?
--            sizeof(struct virtio_net_hdr_v1_hash) :
--            sizeof(struct virtio_net_hdr_mrg_rxbuf);
-+        n->guest_hdr_len = tunnel ?
-+            sizeof(struct virtio_net_hdr_v1_hash_tunnel) :
-+            (hash_report ?
-+             sizeof(struct virtio_net_hdr_v1_hash) :
-+             sizeof(struct virtio_net_hdr_mrg_rxbuf));
-         n->rss_data.populate_hash = !!hash_report;
-     } else {
-         n->guest_hdr_len = n->mergeable_rx_bufs ?
-@@ -803,6 +812,10 @@ static void virtio_net_apply_guest_offloads(VirtIONet *n)
-        .ufo  = !!(n->curr_guest_offloads & (1ULL << VIRTIO_NET_F_GUEST_UFO)),
-        .uso4 = !!(n->curr_guest_offloads & (1ULL << VIRTIO_NET_F_GUEST_USO4)),
-        .uso6 = !!(n->curr_guest_offloads & (1ULL << VIRTIO_NET_F_GUEST_USO6)),
-+       .tnl  = !!(n->curr_guest_offloads &
-+                  (1ULL << VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_MAPPED)),
-+       .tnl_csum = !!(n->curr_guest_offloads &
-+                      (1ULL << VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM_MAPPED)),
-     };
- 
-     qemu_set_offload(qemu_get_queue(n->nic)->peer, &ol);
-@@ -824,7 +837,9 @@ virtio_net_guest_offloads_by_features(const uint64_t *features)
-         (1ULL << VIRTIO_NET_F_GUEST_ECN)  |
-         (1ULL << VIRTIO_NET_F_GUEST_UFO)  |
-         (1ULL << VIRTIO_NET_F_GUEST_USO4) |
--        (1ULL << VIRTIO_NET_F_GUEST_USO6);
-+        (1ULL << VIRTIO_NET_F_GUEST_USO6) |
-+        (1ULL << VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_MAPPED) |
-+        (1ULL << VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM_MAPPED);
- 
-     return guest_offloads_mask & virtio_net_features_to_offload(features);
- }
-@@ -937,7 +952,8 @@ static void virtio_net_set_features(VirtIODevice *vdev,
-                                virtio_has_feature_ex(features,
-                                                   VIRTIO_F_VERSION_1),
-                                virtio_has_feature_ex(features,
--                                                  VIRTIO_NET_F_HASH_REPORT));
-+                                                  VIRTIO_NET_F_HASH_REPORT),
-+                               virtio_has_tunnel_hdr(features));
- 
-     n->rsc4_enabled = virtio_has_feature_ex(features, VIRTIO_NET_F_RSC_EXT) &&
-         virtio_has_feature_ex(features, VIRTIO_NET_F_GUEST_TSO4);
-@@ -3163,13 +3179,15 @@ static int virtio_net_post_load_device(void *opaque, int version_id)
-     VirtIONet *n = opaque;
-     VirtIODevice *vdev = VIRTIO_DEVICE(n);
-     int i, link_down;
-+    bool has_tunnel_hdr = virtio_has_tunnel_hdr(vdev->guest_features_ex);
- 
-     trace_virtio_net_post_load_device();
-     virtio_net_set_mrg_rx_bufs(n, n->mergeable_rx_bufs,
-                                virtio_vdev_has_feature(vdev,
-                                                        VIRTIO_F_VERSION_1),
-                                virtio_vdev_has_feature(vdev,
--                                                       VIRTIO_NET_F_HASH_REPORT));
-+                                                      VIRTIO_NET_F_HASH_REPORT),
-+                               has_tunnel_hdr);
- 
-     /* MAC_TABLE_ENTRIES may be different from the saved image */
-     if (n->mac_table.in_use > MAC_TABLE_ENTRIES) {
-@@ -3989,7 +4007,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
- 
-     n->vqs[0].tx_waiting = 0;
-     n->tx_burst = n->net_conf.txburst;
--    virtio_net_set_mrg_rx_bufs(n, 0, 0, 0);
-+    virtio_net_set_mrg_rx_bufs(n, 0, 0, 0, 0);
-     n->promisc = 1; /* for compatibility */
- 
-     n->mac_table.macs = g_malloc0(MAC_TABLE_ENTRIES * ETH_ALEN);
-diff --git a/include/net/net.h b/include/net/net.h
-index 9a9084690d..72b476ee1d 100644
---- a/include/net/net.h
-+++ b/include/net/net.h
-@@ -43,6 +43,8 @@ typedef struct NetOffloads {
-     bool ufo;
-     bool uso4;
-     bool uso6;
-+    bool tnl;
-+    bool tnl_csum;
- } NetOffloads;
- 
- #define DEFINE_NIC_PROPERTIES(_state, _conf)                            \
-diff --git a/net/net.c b/net/net.c
-index 9536184a0c..27e0d27807 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -575,7 +575,8 @@ void qemu_set_vnet_hdr_len(NetClientState *nc, int len)
- 
-     assert(len == sizeof(struct virtio_net_hdr_mrg_rxbuf) ||
-            len == sizeof(struct virtio_net_hdr) ||
--           len == sizeof(struct virtio_net_hdr_v1_hash));
-+           len == sizeof(struct virtio_net_hdr_v1_hash) ||
-+           len == sizeof(struct virtio_net_hdr_v1_hash_tunnel));
- 
-     nc->vnet_hdr_len = len;
-     nc->info->set_vnet_hdr_len(nc, len);
-diff --git a/net/tap-linux.c b/net/tap-linux.c
-index 98b0ae9602..2a90b58467 100644
---- a/net/tap-linux.c
-+++ b/net/tap-linux.c
-@@ -284,6 +284,12 @@ void tap_fd_set_offload(int fd, const NetOffloads *ol)
-         if (ol->uso6) {
-             offload |= TUN_F_USO6;
-         }
-+        if (ol->tnl) {
-+            offload |= TUN_F_UDP_TUNNEL_GSO;
-+        }
-+        if (ol->tnl_csum) {
-+            offload |= TUN_F_UDP_TUNNEL_GSO_CSUM;
-+        }
+         return;
      }
- 
-     if (ioctl(fd, TUNSETOFFLOAD, offload) != 0) {
-diff --git a/net/tap.c b/net/tap.c
-index 5124372316..abe3b2d036 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -62,6 +62,8 @@ static const int kernel_feature_bits[] = {
-     VIRTIO_F_NOTIFICATION_DATA,
-     VIRTIO_NET_F_RSC_EXT,
-     VIRTIO_NET_F_HASH_REPORT,
-+    VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO,
-+    VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO,
-     VHOST_INVALID_FEATURE_BIT
- };
- 
--- 
-2.51.0
 
+probably we can handle fd-unblocking failure the same way (and move call to qemu_set_blocking()
+to the top, to avoid any further modifications ("adding the vector"?) in case of error.
+I can send a patch, it seems safer then blindly continue using the fd.
+
+-- 
+Best regards,
+Vladimir
 
