@@ -2,72 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B840B901F7
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 12:39:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E44B9B9029C
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 12:41:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0dvx-0000g5-Qk; Mon, 22 Sep 2025 06:38:14 -0400
+	id 1v0dye-0002D2-Ii; Mon, 22 Sep 2025 06:41:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v0dvv-0000fq-62
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 06:38:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v0dyY-0002Ce-Hm
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 06:40:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v0dvs-0004j1-MZ
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 06:38:10 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v0dyU-0005Nq-5d
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 06:40:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758537485;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1758537645;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5XBhWgFAKXTqU3skqGTyp1zNW17oZO4Gh4amL3NQG6Y=;
- b=ipUAXTZU2C+1Fqe46S3OhZ0eO7I8Enu7am5Qv/QgdXJ/SwkAXdh3RwcjlGnNLcFlkduESN
- FM+b1h6S0xxR48asbE/SnRxhCHyXJryWMevD5h8NmTfwEXdt0nqc6ujn8BGqvgwHI0G9wO
- YazX+N8bxyY0GfhE2mmRyOWJVDj5Q+w=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=Y0AZWxyfSdZzqywxsR3keG7CQjdhGKWL77UGnfcgHsY=;
+ b=Sp7xmx9RalLFBNpZOHZbRwjW9xNu3xJiMiT4x/DOfM4+LelCF4YRbuJTTSK4/VRi/LXs5C
+ DP5iy5PsyZ/dmPnOFSQ+/iG7XV7H3T6HMVqOEmmppwp97YNuWGwX7zzYVagBZTdGJ7tve3
+ 2HCX2ph40muALJX50G1E89W/MtcGPhM=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-th3SJM1YPD68W4h7174MbA-1; Mon,
- 22 Sep 2025 06:38:02 -0400
-X-MC-Unique: th3SJM1YPD68W4h7174MbA-1
-X-Mimecast-MFC-AGG-ID: th3SJM1YPD68W4h7174MbA_1758537481
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-671-jMDdSjkoO6ma_Z7oGZSC7A-1; Mon,
+ 22 Sep 2025 06:40:42 -0400
+X-MC-Unique: jMDdSjkoO6ma_Z7oGZSC7A-1
+X-Mimecast-MFC-AGG-ID: jMDdSjkoO6ma_Z7oGZSC7A_1758537640
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E4F89180048E; Mon, 22 Sep 2025 10:38:00 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.33])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7310C1800446; Mon, 22 Sep 2025 10:38:00 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A14E121E6A27; Mon, 22 Sep 2025 12:37:57 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Alessandro Ratti <alessandro@0x65c.net>
-Cc: alex.bennee@linaro.org,  alessandro.ratti@gmail.com,  philmd@linaro.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] virtio: Add function name to error messages
-In-Reply-To: <20250915162643.44716-2-alessandro@0x65c.net> (Alessandro Ratti's
- message of "Mon, 15 Sep 2025 18:19:38 +0200")
-References: <87a52wqa03.fsf@draig.linaro.org>
- <20250915162643.44716-1-alessandro@0x65c.net>
- <20250915162643.44716-2-alessandro@0x65c.net>
-Date: Mon, 22 Sep 2025 12:37:57 +0200
-Message-ID: <87h5wulqm2.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 504FB19560B6; Mon, 22 Sep 2025 10:40:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.69])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E63FA3000198; Mon, 22 Sep 2025 10:40:35 +0000 (UTC)
+Date: Mon, 22 Sep 2025 11:40:31 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Ed Maste <emaste@freebsd.org>, Thomas Huth <thuth@redhat.com>,
+ Li-Wen Hsu <lwhsu@freebsd.org>,
+ Yonggang Luo <luoyonggang@gmail.com>, Warner Losh <imp@bsdimp.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Kohei Tokunaga <ktokunaga.mail@gmail.com>, Kyle Evans <kevans@freebsd.org>
+Subject: Re: [PATCH 19/24] configure: set the meson executable suffix/ext
+Message-ID: <aNEnnyvfqHgF4rq1@redhat.com>
+References: <20250919133320.240145-1-marcandre.lureau@redhat.com>
+ <20250919133320.240145-20-marcandre.lureau@redhat.com>
+ <aM1rj-5Rja1CXqy0@redhat.com>
+ <CAMxuvay3zOzcRZBDseDw4UwqTRC5k1Qk1cRomGvVRzR2jV8U3w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMxuvay3zOzcRZBDseDw4UwqTRC5k1Qk1cRomGvVRzR2jV8U3w@mail.gmail.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,56 +92,92 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alessandro Ratti <alessandro@0x65c.net> writes:
+On Mon, Sep 22, 2025 at 02:34:25PM +0400, Marc-André Lureau wrote:
+> Hi
+> 
+> On Fri, Sep 19, 2025 at 6:41 PM Daniel P. Berrangé <berrange@redhat.com>
+> wrote:
+> 
+> > On Fri, Sep 19, 2025 at 05:33:13PM +0400, marcandre.lureau@redhat.com
+> > wrote:
+> > > From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> >
+> >
+> > Please actually the reason why the change is needed. The code
+> > change seems related to msys2 / Windows, but our CI is already
+> > covering this and so what's broken ?
+> >
+> 
+> It doesn't cover --enable-rust yet:
+> 
+> ../rust/meson.build:41:2: ERROR: Program
+> '/c/Users/User/qemu/build/pyvenv/bin/meson' not found or not executable
 
-> Replace virtio_error() with a macro that automatically prepends the
-> calling function name to error messages. This provides better context
-> for debugging virtio issues by showing exactly which function
-> encountered the error.
->
-> Before: "Invalid queue size: 1024"
-> After:  "virtio_queue_set_num: Invalid queue size: 1024"
->
-> The implementation uses a macro to insert __func__ at compile time,
-> avoiding any runtime overhead while providing more specific error
-> context than a generic "virtio:" prefix.
+So it is is called meson.exe on Windows, even though it is a
+script, not an executable ?
 
-A need for function names and such in error messages suggests the error
-messages are crap.
+Can you put all this info in the commit message.
 
-Consider the example above.  From users' point of view, the message
-changes from gobbledygook to more verbose gobbledygook.  Was the error
-the user's fault?  The guest's?  Something else's?  What can the user do
-about it now?  If you need a developer to answer such questions, the
-user interface is *dire*.
+> 
+> 
+> >
+> >
+> > > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> > > ---
+> > >  configure | 14 +++++++++++++-
+> > >  1 file changed, 13 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/configure b/configure
+> > > index 8d84e3c5c0..7b1795ab29 100755
+> > > --- a/configure
+> > > +++ b/configure
+> > > @@ -1000,7 +1000,19 @@ $mkvenv ensuregroup --dir
+> > "${source_path}/python/wheels" \
+> > >  # We ignore PATH completely here: we want to use the venv's Meson
+> > >  # *exclusively*.
+> > >
+> > > -meson="$(cd pyvenv/bin; pwd)/meson"
+> > > +# for msys2
+> > > +get_pwd() {
+> > > +    if pwd -W >/dev/null 2>&1; then
+> > > +        pwd -W
+> > > +    else
+> > > +        pwd
+> > > +    fi
+> > > +}
+> > > +
+> > > +meson="$(cd pyvenv/bin; get_pwd)/meson"
+> > > +if [ -f "$meson$EXESUF" ]; then
+> > > +  meson="$meson$EXESUF"
+> > > +fi
+> > >
+> > >  # Conditionally ensure Sphinx is installed.
+> > >
+> > > --
+> > > 2.51.0
+> > >
+> >
+> > With regards,
+> > Daniel
+> > --
+> > |: https://berrange.com      -o-
+> > https://www.flickr.com/photos/dberrange :|
+> > |: https://libvirt.org         -o-
+> > https://fstop138.berrange.com :|
+> > |: https://entangle-photo.org    -o-
+> > https://www.instagram.com/dberrange :|
+> >
+> >
 
-Clue: virtio_error() sets vdev->broken to true.  Did the device just
-stop working?  If yes, shouldn't we tell the user?
-
-Note that __func__ does not materially improve things even for developer
-when the error message template string is unique.  Almost all are.
-
-Fun example: "Region caches not initialized".  Three instances:
-
-hw/virtio/virtio.c:        virtio_error(vdev, "Region caches not initialized");
-hw/virtio/virtio.c:        virtio_error(vdev, "Region caches not initialized");
-hw/virtio/virtio.c:            error_setg(errp, "Region caches not initialized");
-
-Your patch adds __func__ in two out of three cases.  I'm not asking you
-to add it to the third case, I'm only mentioning this to illustrate the
-depth of the error reporting swamp around here.
-
-I'll shut up now :)
-
-> Also remove manual __func__ usage in virtio-balloon to avoid duplicate
-> function names in error messages.
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/230
-> Buglink: https://bugs.launchpad.net/qemu/+bug/1919021
->
-> Signed-off-by: Alessandro Ratti <alessandro@0x65c.net>
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
