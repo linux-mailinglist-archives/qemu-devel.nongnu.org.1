@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A997B92B7B
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 21:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F88FB92B43
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 21:00:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0lfn-0004Y9-BF; Mon, 22 Sep 2025 14:54:03 -0400
+	id 1v0lfZ-0003rS-EZ; Mon, 22 Sep 2025 14:53:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0lfC-0003Z2-QU
+ id 1v0lfD-0003Zu-PF
  for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:53:29 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0lf5-0004wK-K2
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:53:26 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-b4ee87cc81eso4591888a12.1
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 11:53:15 -0700 (PDT)
+ id 1v0lf5-0004wR-MP
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:53:27 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-27c369f8986so2664445ad.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 11:53:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758567194; x=1759171994; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758567195; x=1759171995; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=c8wyuys4m1d8GhLqeKYb3zwEPLO/sLqR4mHAelbDpjY=;
- b=GRO4EMf2KFL/IY1EpbX25Eopao1U+R5cPMtyu9VaGDxxM79ZS1YsT3ty9JETv7IDvU
- C/4wQb/ecuSaKLgo/0Mlp0Iu+bOZ5HUAsvLLUw9UfAAeUKF5ywY3yFBf1dcYiUztAe4c
- RZmluZRqoSFT8vyR0Ob0ISqAdtsauqfyG0FWNBRAMa37CRGQUbK4VEhsJVWMB+sTT1Oi
- AQP9eGj9zLXxNZ5kevZKsEjZyWEj5QpMt7e681itR1b0Zsh1/DGEgS66BDykOWuEzjKG
- M3bSgiFSAloEzs0NHu5fFi7iZ77+616aVFcVjOBJkKF78zAgu1WR+jrxe/tcpQCZsPTE
- dmTA==
+ bh=r/+MTJp0FVnVyO2Dilom7VZKL92xrFknYdg/x1N7080=;
+ b=AvEVHPYzcutqp9rEGsI6DmDCAn6JOrjaLrdxXIe5/dqP8+lW2znD0ZIhpK7Smgl2UB
+ EafwYSyg7jaR6mczjIgYgOQBj9eN6v+RMVnAhP14+5iJI6KtyIlJhn4WOG036acDYHpE
+ 8xk+QCnYebleVLMT9kZWCnRKnQXHY77AwH4G1jGqIUQ0Ghy9fm9bMKLqwv/zlstSSwcV
+ rGhjC7tIdQKW1KbcDUPkCSD7lcEVqVmA0Ry9t40lVFVR8gFgDRqAQwt5rbUGrAwAWnfp
+ YR1u8yJANnr6h/F3K/SJPg53aZx1YywOr8Ct9d4mVH26ZYSWaD3lQTW3hRXDCnqNkXjz
+ tqAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758567194; x=1759171994;
+ d=1e100.net; s=20230601; t=1758567195; x=1759171995;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=c8wyuys4m1d8GhLqeKYb3zwEPLO/sLqR4mHAelbDpjY=;
- b=DFULTRMVinu6xVZbH/umWVjOLXEkiZqm9DhUyS1M0t9JCynshhW0KwFwbGQ7Y5jXAK
- Gga7zJbXwykaLAaZvYdG7PM/+o0fDyRgMVCDzjoJdSvKQmKbuy32h14NrebKRZSU/Hio
- zwyl09bpRvJZjGeDbPLX8VwNCJjqf/bRh3XgdRh1P4q7ZQyH+K6KnaBORcFlZnsTZmmm
- qVQ0noptOEoheiALBGl0OOh7DcNvwc9TtAg5JVTfYbThGASzXsDWhUKbwMk+XkhVSUJl
- pkcuUFnnnXARSC/j5RHmL2tXVi4CXYzx7HgTkhSHvxab6krdOFgE20B0plmOk6nWvcB7
- +o/w==
-X-Gm-Message-State: AOJu0Yzf//DpfvGSuiklLBXewQWkNinxT46URdeh+xLdzviFEJCoWKCY
- MphEBAwToH72oEGBp2YwuN99hudRar299XZFeSrhHtjL5Ws5VLK1reoUklo04aaTxH9IR3AK6Ef
- npkrL
-X-Gm-Gg: ASbGncsfeDR+IAf8WETQ+IBbPGuJGsqvUKgEXHYF6aACxqNUWgMCfGe+tjhkZV191Vd
- oqI7JZRip1PQi1CCEyQQcSiQq7QCZDUJ1lukMyZNBaVtN3/TJLlcqdEi3uV/TOKyoNtHgOv1Tdf
- X+J0as2FseguuhzAMqGpjg+Sbys/ynb2whYlJ6+H0OxrUvxAEEJ1L5fIiIqCzk96WaEFfkegxlI
- sYUQhoRqmA6W2Zc6dVvjxZH4CvKxE4yglnp6Nq0RmdLNCuCl0GCFiRa+Bt+IgapLHoonmnrvAxQ
- zE5Hfv3TPZMs1RJQtMtcibxdakwa59+pax4Zqe8uCl2pW/6ybM3Oot4OFOk6L4X41eBj1dAIlZe
- E3Htlb1dBgRmDw7vS8peilfJkvyp5
-X-Google-Smtp-Source: AGHT+IG5dEyukZKTtzWMUKbT+WNVl/fuUbv7f6jTIQPKZqdUH78QggLxTRJxyyqzFsbg93OGaGDOPw==
-X-Received: by 2002:a17:902:eccf:b0:269:8404:9a6b with SMTP id
- d9443c01a7336-269ba563609mr208360705ad.57.1758567194008; 
+ bh=r/+MTJp0FVnVyO2Dilom7VZKL92xrFknYdg/x1N7080=;
+ b=PCkYITb2bfUeAQNzaZskyvFtH8a8ldMzZh1c3YKThenSmmSInaDkV7fvjIYtBq+VEx
+ 5x4XAee8q6M720EIU1h9GEq40XvNFVWiBK745MLzIPrDwCLKOp55d1jGg36tF5RZ6c7O
+ WqIIUnir2qiRbdlZpwUqFP3u0EHsE44CE6ey+XXosNU+Fs+izkoKGFp1wFM7aPEz+7km
+ ywOMxJPJNZVSOsHrm1ORRHjYQhm5HppjQKrWtfE6goBkoXsskRTe4ZrJ6/fHmoVcTrX5
+ RtRGNAl+F6GsMVfM5J3ijfrN5Ed7VRnh0gtCtTEVSWfncBKIsq0UEafk/g+48CgfOUfY
+ /gxw==
+X-Gm-Message-State: AOJu0YxK4ETh31V5uBEb6laTaN4pTcT2IQhGs0dmo6fgsjERpqN8Nj4x
+ 3/7PKkpo1WugKFcqeFIOr9JO0UN9Vga04I+29mA29s5fbCWoQ1+XyBpmi31bOdEvKaetC5iw+nk
+ DCCxX
+X-Gm-Gg: ASbGncv2RMQVg1IlhNdfSkAgXZK4sCAmQz7GstgOWzQaiQpr4HbbjKjpaDjdF4G4dad
+ lbpbnoiL+9CR0PyK3THdce6xcn9N1fPs9+5yKBqYK3C1uICO2K2QvqiR/o/nbfvFICgxLBa/TmT
+ IOvKlcCdd1OxPUQ59udD8RJdlZZRG10ywVvz9E4E3x5kFrn08yALHZNTb0tmnrQEbgaGBFkLihW
+ svL0BgxMMfU6T5r5nquBiWiLXsAP3v5o15Hx6HpHEytqe2hwS6cgHYev2OhwqkMWFKHFeKTh79Z
+ oG97xcmwpnynrQ6x+Ol8yTLTUO9Hn2Ij2nWVx4anmJpqLeJP422KoJ/hErTaShQfV9PkPD8UuiY
+ nv9eYhYblTR6HP8py/pQ8oBGeWthB
+X-Google-Smtp-Source: AGHT+IF8q01WYMf2ytLpXH6ORmO9Y+M0xrI2gRQhsTZpJyzz6v3961fWIkQRu4zJ6xX66aLy9BZQmw==
+X-Received: by 2002:a17:902:ecc1:b0:272:f9c3:31fa with SMTP id
+ d9443c01a7336-272f9c33570mr95270645ad.9.1758567194767; 
  Mon, 22 Sep 2025 11:53:14 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2698018a472sm138554795ad.58.2025.09.22.11.53.13
+ d9443c01a7336-2698018a472sm138554795ad.58.2025.09.22.11.53.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Sep 2025 11:53:13 -0700 (PDT)
+ Mon, 22 Sep 2025 11:53:14 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH v5 41/76] target/arm: Add arm_hcr_el2_nvx_eff
-Date: Mon, 22 Sep 2025 11:48:49 -0700
-Message-ID: <20250922184924.2754205-42-richard.henderson@linaro.org>
+Subject: [PATCH v5 42/76] target/arm: Use arm_hcr_el2_nvx_eff in access_nv1
+Date: Mon, 22 Sep 2025 11:48:50 -0700
+Message-ID: <20250922184924.2754205-43-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250922184924.2754205-1-richard.henderson@linaro.org>
 References: <20250922184924.2754205-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -96,47 +96,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement the pseudocode function EffectiveHCR_EL2_NVx.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.h    |  1 +
- target/arm/helper.c | 10 ++++++++++
- 2 files changed, 11 insertions(+)
+ target/arm/helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index c79393d9c2..b36436ee2b 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -2639,6 +2639,7 @@ static inline bool arm_is_el2_enabled(CPUARMState *env)
-  */
- uint64_t arm_hcr_el2_eff_secstate(CPUARMState *env, ARMSecuritySpace space);
- uint64_t arm_hcr_el2_eff(CPUARMState *env);
-+uint64_t arm_hcr_el2_nvx_eff(CPUARMState *env);
- uint64_t arm_hcrx_el2_eff(CPUARMState *env);
- 
- /*
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 37cfd2064c..e3ea5254c5 100644
+index e3ea5254c5..8b5ae0c543 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -3899,6 +3899,16 @@ uint64_t arm_hcr_el2_eff(CPUARMState *env)
-     return arm_hcr_el2_eff_secstate(env, arm_security_space_below_el3(env));
- }
+@@ -3423,7 +3423,7 @@ static CPAccessResult access_nv1(CPUARMState *env, const ARMCPRegInfo *ri,
+                                  bool isread)
+ {
+     if (arm_current_el(env) == 1) {
+-        uint64_t hcr_nv = arm_hcr_el2_eff(env) & (HCR_NV | HCR_NV1 | HCR_NV2);
++        uint64_t hcr_nv = arm_hcr_el2_nvx_eff(env);
  
-+uint64_t arm_hcr_el2_nvx_eff(CPUARMState *env)
-+{
-+    uint64_t hcr = arm_hcr_el2_eff(env);
-+
-+    if (!(hcr & HCR_NV)) {
-+        return 0; /* CONSTRAINED UNPREDICTABLE wrt NV1 */
-+    }
-+    return hcr & (HCR_NV2 | HCR_NV1 | HCR_NV);
-+}
-+
- /*
-  * Corresponds to ARM pseudocode function ELIsInHost().
-  */
+         if (hcr_nv == (HCR_NV | HCR_NV1)) {
+             return CP_ACCESS_TRAP_EL2;
 -- 
 2.43.0
 
