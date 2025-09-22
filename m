@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02035B90709
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 13:38:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D1EB9071B
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 13:39:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0eru-000424-9R; Mon, 22 Sep 2025 07:38:06 -0400
+	id 1v0et3-0004OS-4A; Mon, 22 Sep 2025 07:39:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <luzhipeng@cestc.cn>)
- id 1v0erp-00041a-H9; Mon, 22 Sep 2025 07:38:01 -0400
+ id 1v0es5-00045m-7w; Mon, 22 Sep 2025 07:38:17 -0400
 Received: from smtp-pop-umt-1.cecloud.com ([1.203.97.246]
  helo=smtp.cecloud.com) by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <luzhipeng@cestc.cn>)
- id 1v0erk-0002zO-Rm; Mon, 22 Sep 2025 07:38:00 -0400
+ id 1v0es2-00035i-A4; Mon, 22 Sep 2025 07:38:16 -0400
 Received: from localhost (localhost [127.0.0.1])
- by smtp.cecloud.com (Postfix) with ESMTP id CB7827C0113;
- Mon, 22 Sep 2025 19:37:43 +0800 (CST)
+ by smtp.cecloud.com (Postfix) with ESMTP id F05F67C0112;
+ Mon, 22 Sep 2025 19:38:09 +0800 (CST)
 X-MAIL-GRAY: 0
 X-MAIL-DELIVERY: 1
 X-SKE-CHECKED: 1
@@ -26,7 +26,7 @@ X-ANTISPAM-LEVEL: 2
 Received: from localhost.localdomain (unknown [111.48.69.245])
  by smtp.cecloud.com (postfix) whith ESMTP id
  P2727722T281471788773744S1758541042646696_; 
- Mon, 22 Sep 2025 19:37:42 +0800 (CST)
+ Mon, 22 Sep 2025 19:38:09 +0800 (CST)
 X-IP-DOMAINF: 1
 X-RL-SENDER: luzhipeng@cestc.cn
 X-SENDER: luzhipeng@cestc.cn
@@ -37,7 +37,7 @@ X-LOCAL-RCPT-COUNT: 1
 X-MUTI-DOMAIN-COUNT: 0
 X-SENDER-IP: 111.48.69.245
 X-ATTACHMENT-NUM: 0
-X-UNIQUE-TAG: <a4144ca1cbe28597e869cf5c640d6576>
+X-UNIQUE-TAG: <924cbd567aa55ba9cd31795ed4509aac>
 X-System-Flag: 0
 From: luzhipeng <luzhipeng@cestc.cn>
 To: qemu-block@nongnu.org
@@ -46,9 +46,11 @@ Cc: John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  luzhipeng <luzhipeng@cestc.cn>
 Subject: [PATCH] mirror: Optimize mirroring for zero blocks in
  mirror_read_complete
-Date: Mon, 22 Sep 2025 19:36:54 +0800
-Message-ID: <20250922113657.391-1-luzhipeng@cestc.cn>
+Date: Mon, 22 Sep 2025 19:36:55 +0800
+Message-ID: <20250922113657.391-2-luzhipeng@cestc.cn>
 X-Mailer: git-send-email 2.45.1.windows.1
+In-Reply-To: <20250922113657.391-1-luzhipeng@cestc.cn>
+References: <20250922113657.391-1-luzhipeng@cestc.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=1.203.97.246; envelope-from=luzhipeng@cestc.cn;
