@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE2FB8FD6F
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 11:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45420B8FD4A
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 11:47:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0d6A-0006sR-4l; Mon, 22 Sep 2025 05:44:42 -0400
+	id 1v0d67-0006ZU-4S; Mon, 22 Sep 2025 05:44:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v0d50-0005GA-B6
+ id 1v0d4z-0005Do-QM
  for qemu-devel@nongnu.org; Mon, 22 Sep 2025 05:43:31 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v0d4p-0001zr-0k
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 05:43:30 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3f0ae439b56so1933637f8f.3
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 02:43:16 -0700 (PDT)
+ id 1v0d4m-0001yo-Qa
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 05:43:24 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3f2cf786abeso1430878f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 02:43:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758534194; x=1759138994; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758534191; x=1759138991; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wwmopQy5poKTlF9P1QjQmB8FAMOd4qFHdrOJJCzmIwA=;
- b=TgCHgNuO7FPyalq3hLwOu9mLbNY4Yn5+9r2FxqQrG62oKz1FZgpJiF313rgEAj2SVH
- R+qaFY977hlXqS/gyXUfW6nnMQh9ptBpWZN2iTxI47nacVNcQqldxlRm/qGoIJybu5AL
- dx43dhsChvn3L1ZroI3cyk5zKq7qx4lxjHO4KAQMMOtuSPwGEto6HGbRiAngmVmZNESg
- rPoPgWu+DU0vWwPQjTNN5y1D0aonfjLTcjyY7wqKp3QoqaiLzR47OMopQNn0LFXW5GCa
- z5M9dXxon4lYqwzEylnYDXKcquZB4g+aEYdMid2AQpp419bFmM+cHTSDv5d/uMNWHbLs
- 9n1g==
+ bh=COW9Y8xwuzCyUVpCahD7I0T5DWgjtjyjaT4BE1jdt0E=;
+ b=DXtx0A9bqs5FjoJS3pFUV4NgOPfSWArZfvkcbWmCqtGe0y/X6lUqFW87p08sPZB4kV
+ pgCpIuCMhXqUzSY5aDtOa854GfwJSRLI/Q0X0nFpoxRm4Wrcno2PSslCAbV68VC6+zF9
+ DcUr77JXlMlg16V/4/WWhUOeoC+V0XVCKVNIyRb9N7RcsiIlJwJLry9xVYqchrotzvgZ
+ fHnZIidbdIy1bn7H5sAq9WO9sVUFmOYUQs4k2/4ZeqzVfcAPMjV3J1/MnUtK6bqZt+ub
+ 6LD0JrrsRKUIl6181y1POHvw4WopvTit5/FUZgw2NlCu+RaBdk0xHrnUgrkmPxLkM4+a
+ rGcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758534194; x=1759138994;
+ d=1e100.net; s=20230601; t=1758534191; x=1759138991;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wwmopQy5poKTlF9P1QjQmB8FAMOd4qFHdrOJJCzmIwA=;
- b=ZMr0aXJxeDkWzu8bH7BxHrI5+ox/MWb7AFFXtKmyRzMKEl3b5o5wr2Pnqnpsk2K2zE
- bzXptkDWF8DIkpI+tPuDo5ZQITbAtbTBdn6r7KVq2ukygmRInmyR3PW6ljVuRuhoEiy4
- 3DQVcaXa1zx8YPlR8vSdk8WHA74qnjSFphQj+mX+q5LCHGKakL2JL713CKGuC3LJE8Nn
- 7WKDeolW4iyhrNB5RwLMsLTseQWN3lCRfOXaD9wj/5jGqi9BA5LN5zkoGFE/foIy8W5e
- TJDe0MCq1gLZuHZ5Hkzu583DLAFD2YTQwEBBVk55t11Dv6c6wmH3PwTW/G0Su7ouW/FG
- IPZA==
-X-Gm-Message-State: AOJu0YxVXJyI73qCUBEdA9zlChgKnLZXZ0zd7YOG/JXPn66iHFlqGC2A
- uYJdpsDrcQrvqeS+V7Tdvt5MAEQfbYSaYn5EGEo4fvc1Joo5AiAj7GoRxSg9dskxrTU=
-X-Gm-Gg: ASbGncu657Qa1W7Fzu/xBUB5tvE3QulrmAT/EK+I7BKfd+dIRA9B+jsyJ6CHCMM3WD5
- nAf2D6vf1IlIKli1+kaPM0vaN/4jOZLVHyn2+Uk41rKsBj5tkIQ18DNs9p1VHTNE9OSNAUSTWoJ
- 5o5OkPSCLUaE5H5FNB7765ZvAVI+3tQbnSl+hbXRiKwElWx6YjwlPGxNSHThcnVGXnSHYbk/TCW
- uR/62CZ8J+cj7a7ciiGgEyAcZ5l9iL6N85AnjpTEVqBwh3K2K27C7ewzcZgtfIK61fW1La7nIRf
- 7VpCLhRduvKgPD26C19bYc4iYipNOmUtpO6aWBuWOK2xOOZVFTl/sDYzWKBsRaai6m4jf4E0adJ
- PMPUj4EA0tiStba0uezEdIA0=
-X-Google-Smtp-Source: AGHT+IHMb7n8NgsSwTEBDg3Np3NqZkfBfUKE8Q9bExmdMOlV/5F5WjvCwT/FYoiST7DXBexP9nLiFQ==
-X-Received: by 2002:a05:6000:18a8:b0:3e7:ff32:1ab with SMTP id
- ffacd0b85a97d-3ee852a42a5mr10908154f8f.50.1758534194033; 
- Mon, 22 Sep 2025 02:43:14 -0700 (PDT)
+ bh=COW9Y8xwuzCyUVpCahD7I0T5DWgjtjyjaT4BE1jdt0E=;
+ b=o63Fg289D5YGrCkzfwtYxlTPSnWV8/PQ9OR6v78WkbH9EDlwjOe37OgvyfG7BtC9eA
+ 5YCd0cZhIbZrvhfAq4uukt7gYBNSAVFR9zXi9V4Fkw2iHEHRteqaOwvbujEnZa3ZTEyT
+ rKJYcwSQlafNg/3BjQuA5UopB7pH92bgbxCW8FDcxTj+8LMyVyFDtQ5X6ujhaWsbRYPo
+ Pjih5SXxAKKJnquZRDftV6hc/q85GcXCS6N3u13yaxKpL0WCGsQyDxQIRdnsyzi2p984
+ C7p0SiAGs1GzcxYf9xPQfxGcgRg5xmlhBOemcjhC2VFtvYqQZbbUYYWqoMMHgQOKVZeB
+ u3Vw==
+X-Gm-Message-State: AOJu0YzzqVJ1G5IY2owr1ridFlu0NwmPskkWvCNhLxqWZlJnHdHYQlYK
+ Cz2hkC4taJQIZYcs5CNACHT4XgwArncuU4HGFTJ/Xd2YunBE7wjV/LnSPiCF2UMz5A8=
+X-Gm-Gg: ASbGnctevpEpuV349fgiX/58x/RUS608Mag5y6lqiPh+kbIFUzVK5W2DLAtEqf5ZlcU
+ lNlHWMEQvgUqY1MxXCcBYJ+uEBExug4gMfPJaTZatt5UzTBi/y4ZKVPSvANqneHOKHD+sRILgi4
+ P8aCACIYa9Y74RpwyudIffn98OLW/Z+icRpsyGxPPLw89btK+vS1GYjYXeffl73YII651+i24rH
+ dTYLYJyjSV5Ik2hERn2dyVZu7yIiIn4VhU+Y/Rfc1qxpGJNHc3Xjq1mgktZRv7u/cAuhhoMpay7
+ iVHi5dm6XD5XXc5+SpwayBdW/KsxYZtckodXk+U1q1ddjKqf/Aa1pGXzWhrMCRaYw7bTibjtu43
+ vDpGZojXXJTB0aqtRQEu+uxw=
+X-Google-Smtp-Source: AGHT+IHLbjUF8i0k/tPt7x/Uu2eYY7Q6S0uvgkPi5mtaus/cinWWpe0hTy804rS6nd6Sv5iO7mnudw==
+X-Received: by 2002:a05:6000:4210:b0:3e7:6197:9947 with SMTP id
+ ffacd0b85a97d-3ee868a74bamr10869516f8f.53.1758534191147; 
+ Mon, 22 Sep 2025 02:43:11 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3ee0fbefd5csm20259833f8f.51.2025.09.22.02.43.09
+ 5b1f17b1804b1-464f5a2850csm194393615e9.19.2025.09.22.02.43.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 22 Sep 2025 02:43:09 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5A0265F8B9;
+ by draig.lan (Postfix) with ESMTP id 73C535FA31;
  Mon, 22 Sep 2025 10:37:13 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -75,19 +75,18 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Iooss <erdnaxe@crans.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Weiwei Li <liwei1518@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH 19/25] contrib/plugins/uftrace: track callstack
-Date: Mon, 22 Sep 2025 10:37:04 +0100
-Message-ID: <20250922093711.2768983-20-alex.bennee@linaro.org>
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH 20/25] contrib/plugins/uftrace: implement tracing
+Date: Mon, 22 Sep 2025 10:37:05 +0100
+Message-ID: <20250922093711.2768983-21-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250922093711.2768983-1-alex.bennee@linaro.org>
 References: <20250922093711.2768983-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,230 +111,274 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-We now track callstack, based on frame pointer analysis. We can detect
-function calls, returns, and discontinuities.
-We implement a frame pointer based unwinding that is used for
-discontinuities.
+We implement tracing, following uftrace format.
+Trace is flushed every 32 MB, so file operations don't impact
+performance at runtime.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+A different trace is generated per cpu, and we ensure they have a unique
+name, based on vcpu_index, while keeping room for privilege level coming
+in next commit.
+
+Uftrace format is not officially documented, but it can be found here:
+https://github.com/namhyung/uftrace/blob/v0.18/libmcount/record.c#L909
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20250902075042.223990-4-pierrick.bouvier@linaro.org>
+Message-ID: <20250902075042.223990-5-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- contrib/plugins/uftrace.c | 160 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 160 insertions(+)
+ contrib/plugins/uftrace.c | 152 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 151 insertions(+), 1 deletion(-)
 
 diff --git a/contrib/plugins/uftrace.c b/contrib/plugins/uftrace.c
-index d060513446c..bb775916270 100644
+index bb775916270..b9dcd531987 100644
 --- a/contrib/plugins/uftrace.c
 +++ b/contrib/plugins/uftrace.c
-@@ -15,6 +15,15 @@
+@@ -12,6 +12,15 @@
+ #include <qemu-plugin.h>
+ #include <glib.h>
+ #include <stdio.h>
++#include <sys/stat.h>
++#include <sys/time.h>
++#include <time.h>
++#include <unistd.h>
++
++#define MiB     (INT64_C(1) << 20)
++#define NANOSECONDS_PER_SECOND 1000000000LL
++#define TRACE_FLUSH_SIZE (32 * MiB)
++#define TRACE_ID_SCALE 100
  
  QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
  
+@@ -24,6 +33,13 @@ typedef struct {
+     uint64_t frame_pointer;
+ } CallstackEntry;
+ 
 +typedef struct {
-+    GArray *s;
-+} Callstack;
-+
-+typedef struct {
-+    uint64_t pc;
-+    uint64_t frame_pointer;
-+} CallstackEntry;
++    GArray *t;
++    GString *path;
++    GString *name;
++    uint32_t id;
++} Trace;
 +
  typedef struct Cpu Cpu;
  
  typedef struct {
-@@ -25,6 +34,7 @@ typedef struct {
+@@ -34,6 +50,7 @@ typedef struct {
  } CpuOps;
  
  typedef struct Cpu {
-+    Callstack *cs;
++    Trace *trace;
+     Callstack *cs;
      GByteArray *buf;
      CpuOps ops;
-     void *arch;
-@@ -37,6 +47,71 @@ typedef struct {
+@@ -44,9 +61,41 @@ typedef struct {
+     struct qemu_plugin_register *reg_fp;
+ } Aarch64Cpu;
+ 
++typedef struct {
++    uint64_t timestamp;
++    uint64_t data;
++} UftraceEntry;
++
++typedef enum {
++    UFTRACE_ENTRY,
++    UFTRACE_EXIT,
++    UFTRACE_LOST,
++    UFTRACE_EVENT,
++} UftraceRecordType;
++
  static struct qemu_plugin_scoreboard *score;
  static CpuOps arch_ops;
  
-+static Callstack *callstack_new(void)
++static uint64_t gettime_ns(void)
 +{
-+    Callstack *cs = g_new0(Callstack, 1);
-+    cs->s = g_array_new(false, false, sizeof(CallstackEntry));
-+    return cs;
++#ifdef _WIN32
++    /*
++     * On Windows, timespec_get is available only with UCRT, but not with
++     * MinGW64 environment. Simplify by using only gettimeofday on this
++     * platform. This may result in a precision loss.
++     */
++    struct timeval tv;
++    gettimeofday(&tv, NULL);
++    uint64_t now_ns = tv.tv_sec * NANOSECONDS_PER_SECOND + tv.tv_usec * 1000;
++#else
++    /* We need nanosecond precision for short lived functions. */
++    struct timespec ts;
++    timespec_get(&ts, TIME_UTC);
++    uint64_t now_ns = ts.tv_sec * NANOSECONDS_PER_SECOND + ts.tv_nsec;
++#endif
++    return now_ns;
 +}
 +
-+static void callstack_free(Callstack *cs)
+ static Callstack *callstack_new(void)
+ {
+     Callstack *cs = g_new0(Callstack, 1);
+@@ -112,6 +161,86 @@ static CallstackEntry callstack_pop(Callstack *cs)
+     return e;
+ }
+ 
++static Trace *trace_new(uint32_t id, GString *name)
 +{
-+    g_array_free(cs->s, true);
-+    cs->s = NULL;
-+    g_free(cs);
++    Trace *t = g_new0(Trace, 1);
++    t->t = g_array_new(false, false, sizeof(UftraceEntry));
++    t->path = g_string_new(NULL);
++    g_string_append_printf(t->path, "./uftrace.data/%"PRIu32".dat", id);
++    t->name = g_string_new(name->str);
++    t->id = id;
++    return t;
 +}
 +
-+static size_t callstack_depth(const Callstack *cs)
++static void trace_free(Trace *t)
 +{
-+    return cs->s->len;
++    g_assert(t->t->len == 0);
++    g_array_free(t->t, true);
++    t->t = NULL;
++    g_string_free(t->path, true);
++    t->path = NULL;
++    g_string_free(t->name, true);
++    t->name = NULL;
++    g_free(t);
 +}
 +
-+static size_t callstack_empty(const Callstack *cs)
++static void trace_flush(Trace *t, bool append)
 +{
-+    return callstack_depth(cs) == 0;
-+}
-+
-+static void callstack_clear(Callstack *cs)
-+{
-+    g_array_set_size(cs->s, 0);
-+}
-+
-+static const CallstackEntry *callstack_at(const Callstack *cs, size_t depth)
-+{
-+    g_assert(depth > 0);
-+    g_assert(depth <= callstack_depth(cs));
-+    return &g_array_index(cs->s, CallstackEntry, depth - 1);
-+}
-+
-+static CallstackEntry callstack_top(const Callstack *cs)
-+{
-+    if (callstack_depth(cs) >= 1) {
-+        return *callstack_at(cs, callstack_depth(cs));
++    int create_dir = g_mkdir_with_parents("./uftrace.data",
++                                          S_IRWXU | S_IRWXG | S_IRWXO);
++    g_assert(create_dir == 0);
++    FILE *dat = fopen(t->path->str, append ? "a" : "w");
++    g_assert(dat);
++    GArray *data = t->t;
++    if (data->len) {
++        size_t wrote = fwrite(data->data, sizeof(UftraceEntry), data->len, dat);
++        g_assert(wrote == data->len);
 +    }
-+    return (CallstackEntry){};
++    fclose(dat);
++    g_array_set_size(data, 0);
 +}
 +
-+static CallstackEntry callstack_caller(const Callstack *cs)
++static void trace_add_entry(Trace *t, uint64_t timestamp, uint64_t pc,
++                            size_t depth, UftraceRecordType type)
 +{
-+    if (callstack_depth(cs) >= 2) {
-+        return *callstack_at(cs, callstack_depth(cs) - 1);
++    /* https://github.com/namhyung/uftrace/blob/v0.18/libmcount/record.c#L909 */
++    const uint64_t record_magic = 0x5;
++    uint64_t data = type | (record_magic << 3);
++    data += depth << 6;
++    data += pc << 16;
++    UftraceEntry e = {.timestamp = timestamp, .data = data};
++    g_array_append_val(t->t, e);
++    if (t->t->len * sizeof(UftraceEntry) > TRACE_FLUSH_SIZE) {
++        trace_flush(t, true);
 +    }
-+    return (CallstackEntry){};
 +}
 +
-+static void callstack_push(Callstack *cs, CallstackEntry e)
++static void trace_enter_function(Trace *t, uint64_t timestamp,
++                                 uint64_t pc, size_t depth)
 +{
-+    g_array_append_val(cs->s, e);
++    trace_add_entry(t, timestamp, pc, depth, UFTRACE_ENTRY);
 +}
 +
-+static CallstackEntry callstack_pop(Callstack *cs)
++static void trace_exit_function(Trace *t, uint64_t timestamp,
++                                uint64_t pc, size_t depth)
 +{
-+    g_assert(!callstack_empty(cs));
-+    CallstackEntry e = callstack_top(cs);
-+    g_array_set_size(cs->s, callstack_depth(cs) - 1);
-+    return e;
++    trace_add_entry(t, timestamp, pc, depth, UFTRACE_EXIT);
++}
++
++static void trace_enter_stack(Trace *t, Callstack *cs, uint64_t timestamp)
++{
++    for (size_t depth = 1; depth <= callstack_depth(cs); ++depth) {
++        trace_enter_function(t, timestamp, callstack_at(cs, depth)->pc, depth);
++    }
++}
++
++static void trace_exit_stack(Trace *t, Callstack *cs, uint64_t timestamp)
++{
++    for (size_t depth = callstack_depth(cs); depth > 0; --depth) {
++        trace_exit_function(t, timestamp, callstack_at(cs, depth)->pc, depth);
++    }
 +}
 +
  static uint64_t cpu_read_register64(Cpu *cpu, struct qemu_plugin_register *reg)
  {
      GByteArray *buf = cpu->buf;
-@@ -47,6 +122,50 @@ static uint64_t cpu_read_register64(Cpu *cpu, struct qemu_plugin_register *reg)
-     return *((uint64_t *) buf->data);
- }
- 
-+static uint64_t cpu_read_memory64(Cpu *cpu, uint64_t addr)
-+{
-+    g_assert(addr);
-+    GByteArray *buf = cpu->buf;
-+    g_byte_array_set_size(buf, 0);
-+    bool read = qemu_plugin_read_memory_vaddr(addr, buf, 8);
-+    if (!read) {
-+        return 0;
-+    }
-+    g_assert(buf->len == 8);
-+    return *((uint64_t *) buf->data);
-+}
-+
-+static void cpu_unwind_stack(Cpu *cpu, uint64_t frame_pointer, uint64_t pc)
-+{
-+    g_assert(callstack_empty(cpu->cs));
-+
-+    #define UNWIND_STACK_MAX_DEPTH 1024
-+    CallstackEntry unwind[UNWIND_STACK_MAX_DEPTH];
-+    size_t depth = 0;
-+    do {
-+        /* check we don't have an infinite stack */
-+        for (size_t i = 0; i < depth; ++i) {
-+            if (frame_pointer == unwind[i].frame_pointer) {
-+                break;
-+            }
-+        }
-+        CallstackEntry e = {.frame_pointer = frame_pointer, .pc = pc};
-+        unwind[depth] = e;
-+        depth++;
-+        if (frame_pointer) {
-+            frame_pointer = cpu_read_memory64(cpu, frame_pointer);
-+        }
-+        pc = cpu_read_memory64(cpu, frame_pointer + 8); /* read previous lr */
-+    } while (frame_pointer && pc && depth < UNWIND_STACK_MAX_DEPTH);
-+    #undef UNWIND_STACK_MAX_DEPTH
-+
-+    /* push it from bottom to top */
-+    while (depth) {
-+        callstack_push(cpu->cs, unwind[depth - 1]);
-+        --depth;
-+    }
-+}
-+
- static struct qemu_plugin_register *plugin_find_register(const char *name)
+@@ -223,7 +352,9 @@ static void track_callstack(unsigned int cpu_index, void *udata)
  {
-     g_autoptr(GArray) regs = qemu_plugin_get_registers();
-@@ -102,6 +221,43 @@ static CpuOps aarch64_ops = {
+     uint64_t pc = (uintptr_t) udata;
+     Cpu *cpu = qemu_plugin_scoreboard_find(score, cpu_index);
++    uint64_t timestamp = gettime_ns();
+     Callstack *cs = cpu->cs;
++    Trace *t = cpu->trace;
  
- static void track_callstack(unsigned int cpu_index, void *udata)
- {
-+    uint64_t pc = (uintptr_t) udata;
-+    Cpu *cpu = qemu_plugin_scoreboard_find(score, cpu_index);
-+    Callstack *cs = cpu->cs;
+     uint64_t fp = cpu->ops.get_frame_pointer(cpu);
+     if (!fp && callstack_empty(cs)) {
+@@ -232,6 +363,7 @@ static void track_callstack(unsigned int cpu_index, void *udata)
+          * long as a proper call does not happen.
+          */
+         callstack_push(cs, (CallstackEntry){.frame_pointer = fp, .pc = pc});
++        trace_enter_function(t, timestamp, pc, callstack_depth(cs));
+         return;
+     }
+ 
+@@ -244,7 +376,8 @@ static void track_callstack(unsigned int cpu_index, void *udata)
+     CallstackEntry caller = callstack_caller(cs);
+     if (fp == caller.frame_pointer) {
+         /* return */
+-        callstack_pop(cs);
++        CallstackEntry e = callstack_pop(cs);
++        trace_exit_function(t, timestamp, e.pc, callstack_depth(cs));
+         return;
+     }
+ 
+@@ -252,12 +385,16 @@ static void track_callstack(unsigned int cpu_index, void *udata)
+     if (caller_fp == top.frame_pointer) {
+         /* call */
+         callstack_push(cs, (CallstackEntry){.frame_pointer = fp, .pc = pc});
++        trace_enter_function(t, timestamp, pc, callstack_depth(cs));
+         return;
+     }
+ 
+     /* discontinuity, exit current stack and unwind new one */
++    trace_exit_stack(t, cs, timestamp);
+     callstack_clear(cs);
 +
-+    uint64_t fp = cpu->ops.get_frame_pointer(cpu);
-+    if (!fp && callstack_empty(cs)) {
-+        /*
-+         * We simply push current pc. Note that we won't detect symbol change as
-+         * long as a proper call does not happen.
-+         */
-+        callstack_push(cs, (CallstackEntry){.frame_pointer = fp, .pc = pc});
-+        return;
-+    }
-+
-+    CallstackEntry top = callstack_top(cs);
-+    if (fp == top.frame_pointer) {
-+        /* same function */
-+        return;
-+    }
-+
-+    CallstackEntry caller = callstack_caller(cs);
-+    if (fp == caller.frame_pointer) {
-+        /* return */
-+        callstack_pop(cs);
-+        return;
-+    }
-+
-+    uint64_t caller_fp = fp ? cpu_read_memory64(cpu, fp) : 0;
-+    if (caller_fp == top.frame_pointer) {
-+        /* call */
-+        callstack_push(cs, (CallstackEntry){.frame_pointer = fp, .pc = pc});
-+        return;
-+    }
-+
-+    /* discontinuity, exit current stack and unwind new one */
-+    callstack_clear(cs);
-+    cpu_unwind_stack(cpu, fp, pc);
+     cpu_unwind_stack(cpu, fp, pc);
++    trace_enter_stack(t, cs, timestamp);
  }
  
  static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-@@ -140,12 +296,16 @@ static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
- 
+@@ -297,6 +434,16 @@ static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
      cpu->ops.init(cpu);
      cpu->buf = g_byte_array_new();
+ 
++    g_assert(vcpu_index < UINT32_MAX / TRACE_ID_SCALE);
++    /* trace_id is: cpu_number * TRACE_ID_SCALE */
++    uint32_t trace_id = (vcpu_index + 1) * TRACE_ID_SCALE;
 +
-+    cpu->cs = callstack_new();
++    g_autoptr(GString) trace_name = g_string_new(NULL);
++    g_string_append_printf(trace_name, "cpu%u", vcpu_index);
++    cpu->trace = trace_new(trace_id, trace_name);
++    /* create/truncate trace file */
++    trace_flush(cpu->trace, false);
++
+     cpu->cs = callstack_new();
  }
  
- static void vcpu_end(unsigned int vcpu_index)
- {
+@@ -305,6 +452,7 @@ static void vcpu_end(unsigned int vcpu_index)
      Cpu *cpu = qemu_plugin_scoreboard_find(score, vcpu_index);
      g_byte_array_free(cpu->buf, true);
-+
-+    callstack_free(cpu->cs);
+ 
++    trace_free(cpu->trace);
+     callstack_free(cpu->cs);
      memset(cpu, 0, sizeof(Cpu));
  }
+@@ -312,6 +460,8 @@ static void vcpu_end(unsigned int vcpu_index)
+ static void at_exit(qemu_plugin_id_t id, void *data)
+ {
+     for (size_t i = 0; i < qemu_plugin_num_vcpus(); ++i) {
++        Cpu *cpu = qemu_plugin_scoreboard_find(score, i);
++        trace_flush(cpu->trace, true);
+         vcpu_end(i);
+     }
  
 -- 
 2.47.3
