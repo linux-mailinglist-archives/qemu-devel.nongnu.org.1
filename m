@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4895CB92AB9
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 20:56:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD17B92A6F
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 20:51:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0lbf-0004fe-J6; Mon, 22 Sep 2025 14:49:47 -0400
+	id 1v0lbi-0004jF-OB; Mon, 22 Sep 2025 14:49:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0lbY-0004dt-DT
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:49:41 -0400
+ id 1v0lba-0004ew-NA
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:49:43 -0400
 Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0lbT-000441-Gb
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:49:39 -0400
+ id 1v0lbU-00044O-BF
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:49:42 -0400
 Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-77f2e960728so1970468b3a.2
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 11:49:32 -0700 (PDT)
+ d2e1a72fcca58-77ee6e252e5so2905073b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 11:49:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758566972; x=1759171772; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758566973; x=1759171773; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=usu7YBpSCdSYku4HM9JrcfIZ8CuetQgTTrUpbI5sQ3I=;
- b=IKTx84AMUs0JouFXSYG0rhGgtmzF77MBB603x5QcLkjCYqepetsfxV+PXA12p514H+
- FxZQ2FkCe5xjTQ6QRm4KKs5zbSIjVQE/OXJpjJ5mjo9/vgHEqCrRGkWdJHg5SwVZZ5xh
- ArLowqMEvh/1RVBwU76TpUGCJht7sCvVNmTajSm8ydXEqNuOCgQ/iksfueclEWMzQ0Mw
- TTFHHdAUaufwnoV02zEUp2EIHd0Ut3o97pltaa178ZwfZgUAZnph2Z7LSPJuz2eJ6y7j
- KMSyF9H72wzjvFkdW9tHLPiNhVfBm/Hdfn/VDRApKPf19Orra6HjY1suTxiH4ib9PMcc
- GCRw==
+ bh=PVdjjmeNl369fORWFFYrAmuAxl5OexK+Goh2FzAHrEY=;
+ b=m5agun4KvHBgNcQVjdcCMf3eeYwOT5RY+5OZPMWqJ1NQJsAEUDIByyATq+OG9f8AKk
+ 48jlgLpxAv72PeYyXrhE0LtrG1qm0oZcGo5RPjb8MNORVFvckXWfa3t/g9iS+Fj8G0yA
+ PhTnQ82RPJseRSbo4xk2PkpqMQypTgcc+vkdvAZwp7G2LbxYx+AC+MLsitxiwCcAL/Ll
+ +/fwfUOAFVRQTfj8vRXka3zO7cLsqPPM83rwPUsjSD+2Di8phHhc/tUTyM1WP1Si5fwg
+ q/0dmynlmJnOrxjw9tkkV45O+wekAqgcEh7BKdje5JJdkku7GjnHYNANmlyMt/XvBb/C
+ 01ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758566972; x=1759171772;
+ d=1e100.net; s=20230601; t=1758566973; x=1759171773;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=usu7YBpSCdSYku4HM9JrcfIZ8CuetQgTTrUpbI5sQ3I=;
- b=dI+HolmcCmXC20qzo2DliIr4FktU5BKgny+VuXb9GzhSHdaI1Y9DtD/NIxz93PhZUM
- s1RwZBVamWonl72gUx5GYHTSz6dIUE/RMh1rdpnbBUQUjhOlfuE9pQHgwWPUVe8HJ3ep
- YKF2rV9xGF/bqn1Aqx1pxSN0ZmonHJvqsv+f7zTfCdQwZY727zBQPusAEMFIWK4BQx61
- 7GE3kILpmytvh1/YSxcSNuZmmJcyuf2zbG1UOiSN5OZk9dsE0uRlBxX5ktsv9zL8AjDb
- +GYCXVVazSb6Z83RBv89Ks9tvb+padS1hes28aLFwBdMba7Vxx/SRTVVaX8DI7FDGFwu
- eYHg==
-X-Gm-Message-State: AOJu0YxlQo1DRWdPBmEZrd2BxT3ok35A+Kc5qiErQslE4iMeW458Ysqx
- LHS0XAWXHRZCMBmZemNfUCZQ1p4SFCKdFK5CxavhNsdS204YBKdrmxfygfdJQrDrwBOuPYrGsDD
- rArAm
-X-Gm-Gg: ASbGncvFdXkLfMEHODG0MK8y/KcdDdbqkZut16KURdqzhQsVZINaalv3URcTUNR5IrR
- DrBF9CQyA4PQ5cu+/ScBm3dhkzNrJQU6or8NfJfJM1jRjbedpKLNGxcweYsI4TAfdJSj5WCa0oY
- zXdTh8Ea87PcevVfC6NA6AbDw7PmCsmsFnwVvcNS4WfZ0lODHdNW3vZ/XhVs8G8kRNDQ/ig3r6R
- gzyL4EJb9nFAwqSx0DCeTgF9yYTmLpOdHtHg1F2ygdkroAKqE5zcp+AL9CGExhvC9rvxOqLp+IF
- m0iWQRw5ic/L4fdUgZnz5NDrzrTA7Fwm+P3mh12v1+B787jiG2jeJRA+0VjiDrsHkZuAEQJ5fzV
- Li1L2Vn5DFMNDzwxJL1BvYmpDr9Rs
-X-Google-Smtp-Source: AGHT+IETVvMsCDlXvsd46szIOmlOkgvLZTrqXe3kGWBLJdkSm7XCSuaUvwXqPt0UkqMcz7IyDeJ//w==
-X-Received: by 2002:a05:6a00:139d:b0:772:fc2:be71 with SMTP id
- d2e1a72fcca58-77e4e8ab212mr15129226b3a.20.1758566971768; 
- Mon, 22 Sep 2025 11:49:31 -0700 (PDT)
+ bh=PVdjjmeNl369fORWFFYrAmuAxl5OexK+Goh2FzAHrEY=;
+ b=uCmnR67PBXnUk4X2FYJD0da2gIHlvgMxrfwY4uu7/oywjqLD9jI0L1lV+v/oQ5LIQZ
+ tNSszvXVb2ZwrfbXKh1JMHVG8+97wsSjgUNYdfTOB7Z4hstYBTsw2ZN7NvBnxClTE6qZ
+ 5ne7XR0MU/XCPOyNl4+N+L/SNUYHSVqXhCawsZS0ubwmiI4H6Cp+A5m3ctCfxWBTeVhg
+ 6fd80bzkt62ndhYUXAIB/ErDaGDsNMjf9hMeySpEtvECIqTz11wrLisChLwJwxqOlKGH
+ +p6mpG8jDIZ28p2QHZfsWe/K0mD+XJ27aJN/pxIb5c2mWIEExIyf0dVKqkeazHTmkK6g
+ x3gg==
+X-Gm-Message-State: AOJu0Yw5pXbFL29uTSKNUyJglzQYym57UVishCgxZlrejiHs5xF51pSm
+ 0SmaZPLtY+QpIlMWitd1YsyTY6o32IsgUWN2nG0tV9W4B5zV3eV55n1UcuOI8m14aqlFif8Jkka
+ QjxdP
+X-Gm-Gg: ASbGncsIaIN031R3mHp7l7Z1Tnl//G0jBySGicG54r/1CqjyhXxxH9OYhZ80jQF/ZUs
+ m4RSJy8OBLCn5NeUrYCDoEvgs+LRRK/B+rx5MKhAUm7QSiknz5wbFusKIS0bYPr5beBBnNf2+M8
+ KsaaSN3Pzg7R58xgJnsbFxL0Y3kSoW1rc+1K2my8PHvKTTNkMc5vL0YM+zbykVABYOItmfzi4LN
+ SlIkJyduzzIJF0k2D5iS+27e/BW6sWRbB7pfLLbNuNJzHYLNOmUqvloMRqLRZH0XugWjbXCPxnu
+ iXlqO2TiCGH8u6zfunnKHZUUi0ry//UyYvbWzCxQOwUk08BLFKv3Cpuw6aSi5p7Mb8N+GovieTe
+ cGAGKeWK3+DM5o6mGnPOp4RP8XjTt
+X-Google-Smtp-Source: AGHT+IEOwp7yBrFpj2ykLOAsvcpYVsTDMi5AA+MwGHlNEj9aY/o6Wx17ebuMIC2GGn5J9WHXam2wMw==
+X-Received: by 2002:a05:6a00:c85:b0:77f:472b:bc73 with SMTP id
+ d2e1a72fcca58-77f472bbe3amr2909312b3a.6.1758566972882; 
+ Mon, 22 Sep 2025 11:49:32 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-77e5fe6de75sm10583861b3a.19.2025.09.22.11.49.30
+ d2e1a72fcca58-77e5fe6de75sm10583861b3a.19.2025.09.22.11.49.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Sep 2025 11:49:31 -0700 (PDT)
+ Mon, 22 Sep 2025 11:49:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v5 04/76] target/arm: Force HPD for stage2 translations
-Date: Mon, 22 Sep 2025 11:48:12 -0700
-Message-ID: <20250922184924.2754205-5-richard.henderson@linaro.org>
+Subject: [PATCH v5 05/76] target/arm: Cache NV1 early in get_phys_addr_lpae
+Date: Mon, 22 Sep 2025 11:48:13 -0700
+Message-ID: <20250922184924.2754205-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250922184924.2754205-1-richard.henderson@linaro.org>
 References: <20250922184924.2754205-1-richard.henderson@linaro.org>
@@ -82,7 +82,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,78 +98,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stage2 translations do not have hierarchial permissions.
-Setting HPD means we can eliminate an extra check against
-regime_is_stage2.
+We were not using the correct security space in the existing call
+to nv_nv1_enabled, because it may have been modified for NSTable.
+
+Cache it early, as we will shortly need it elsewhere as well.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/helper.c |  7 +++++--
- target/arm/ptw.c    | 24 +++++++++++++-----------
- 2 files changed, 18 insertions(+), 13 deletions(-)
+ target/arm/ptw.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index c0b499946c..f64543dc78 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -9383,8 +9383,11 @@ ARMVAParameters aa64_va_parameters(CPUARMState *env, uint64_t va,
-         tsz = extract32(tcr, 0, 6);
-         gran = tg0_to_gran_size(extract32(tcr, 14, 2));
-         if (stage2) {
--            /* VTCR_EL2 */
--            hpd = false;
-+            /*
-+             * Stage2 does not have hierarchical permissions.
-+             * Thus disabling them makes things easier during ptw.
-+             */
-+            hpd = true;
-         } else {
-             hpd = extract32(tcr, 24, 1);
-         }
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 6344971fa6..ebb260d54d 100644
+index ebb260d54d..d6d704e2a9 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -1471,8 +1471,12 @@ static ARMVAParameters aa32_va_parameters(CPUARMState *env, uint32_t va,
-         }
-         tsz = sextract32(tcr, 0, 4) + 8;
-         select = 0;
--        hpd = false;
-         epd = false;
-+        /*
-+         * Stage2 does not have hierarchical permissions.
-+         * Thus disabling them makes things easier during ptw.
-+         */
-+        hpd = true;
-     } else if (el == 2) {
-         /* HTCR */
-         tsz = extract32(tcr, 0, 3);
-@@ -1978,16 +1982,14 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-      * except NSTable (which we have already handled).
+@@ -76,6 +76,8 @@ typedef struct S1Translate {
+      * may be suppressed for debug or AT insns.
       */
-     attrs = new_descriptor & (MAKE_64BIT_MASK(2, 10) | MAKE_64BIT_MASK(50, 14));
--    if (!regime_is_stage2(mmu_idx)) {
--        if (!param.hpd) {
--            attrs |= extract64(tableattrs, 0, 2) << 53;     /* XN, PXN */
--            /*
--             * The sense of AP[1] vs APTable[0] is reversed, as APTable[0] == 1
--             * means "force PL1 access only", which means forcing AP[1] to 0.
--             */
--            attrs &= ~(extract64(tableattrs, 2, 1) << 6); /* !APT[0] => AP[1] */
--            attrs |= extract32(tableattrs, 3, 1) << 7;    /* APT[1] => AP[2] */
--        }
-+    if (!param.hpd) {
-+        attrs |= extract64(tableattrs, 0, 2) << 53;     /* XN, PXN */
-+        /*
-+         * The sense of AP[1] vs APTable[0] is reversed, as APTable[0] == 1
-+         * means "force PL1 access only", which means forcing AP[1] to 0.
-+         */
-+        attrs &= ~(extract64(tableattrs, 2, 1) << 6); /* !APT[0] => AP[1] */
-+        attrs |= extract32(tableattrs, 3, 1) << 7;    /* APT[1] => AP[2] */
+     uint8_t in_prot_check;
++    /* Cached EffectiveHCR_EL2_NVx() bit */
++    bool in_nv1;
+     bool out_rw;
+     bool out_be;
+     ARMSecuritySpace out_space;
+@@ -1641,12 +1643,6 @@ static bool lpae_block_desc_valid(ARMCPU *cpu, bool ds,
      }
+ }
  
-     ap = extract32(attrs, 6, 2);
+-static bool nv_nv1_enabled(CPUARMState *env, S1Translate *ptw)
+-{
+-    uint64_t hcr = arm_hcr_el2_eff_secstate(env, ptw->in_space);
+-    return (hcr & (HCR_NV | HCR_NV1)) == (HCR_NV | HCR_NV1);
+-}
+-
+ /**
+  * get_phys_addr_lpae: perform one stage of page table walk, LPAE format
+  *
+@@ -1698,6 +1694,16 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+                                    !arm_el_is_aa64(env, 1));
+         level = 0;
+ 
++        /*
++         * Cache NV1 before we adjust ptw->in_space for NSTable.
++         * Note that this is only relevant for EL1&0, and that
++         * computing it would assert for ARMSS_Root.
++         */
++        if (el == 1) {
++            uint64_t hcr = arm_hcr_el2_eff_secstate(env, ptw->in_space);
++            ptw->in_nv1 = (hcr & (HCR_NV | HCR_NV1)) == (HCR_NV | HCR_NV1);
++        }
++
+         /*
+          * If TxSZ is programmed to a value larger than the maximum,
+          * or smaller than the effective minimum, it is IMPLEMENTATION
+@@ -2073,7 +2079,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+         xn = extract64(attrs, 54, 1);
+         pxn = extract64(attrs, 53, 1);
+ 
+-        if (el == 1 && nv_nv1_enabled(env, ptw)) {
++        if (el == 1 && ptw->in_nv1) {
+             /*
+              * With FEAT_NV, when HCR_EL2.{NV,NV1} == {1,1}, the block/page
+              * descriptor bit 54 holds PXN, 53 is RES0, and the effective value
 -- 
 2.43.0
 
