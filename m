@@ -2,105 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A655B917DD
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 15:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4E0B9185A
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 15:51:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0grD-0007GT-5O; Mon, 22 Sep 2025 09:45:31 -0400
+	id 1v0gvj-0000Uf-6X; Mon, 22 Sep 2025 09:50:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v0gr9-0007DM-AK
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:45:27 -0400
-Received: from mail-yx1-xb12c.google.com ([2607:f8b0:4864:20::b12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v0gr5-0000tz-5X
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:45:26 -0400
-Received: by mail-yx1-xb12c.google.com with SMTP id
- 956f58d0204a3-6352c8b683eso1732620d50.2
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 06:45:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758548718; x=1759153518; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=w8sjjumbn4JBIclp1F0hI+lAKAn1WjOH5l5djxjRmZA=;
- b=dhVnfbkSbcG8JjkXvkQtGvv9cLYD+IpOD6K+H9b8yiffFzBlibohdULZqH+wVYKlvZ
- 6+9h40xsH/EQ2fd7JYsmXuJkfM+3kmj3GOR+oBFUMDr6QAK3uSUsiZ7xR872z7CsqHg/
- 3A81GnJ3RGMRc1FXL8MwVKr8JdRDbTCuN1th+pCU8/BnlY8gH2tf8FMNVCCazFrJYMou
- BHKWHSGfZbXLPA6b82k8V47hsW7m9Eoca0AvfeHhukJukDJVCJqducTI3mnZ7c1ilhyV
- bcVs1qUOjchS4UAhYsIadEsrJxaEOz69vdqw2A3XaPS4HATdbG1v9CLvAs71SY2cwPuQ
- JLSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758548718; x=1759153518;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=w8sjjumbn4JBIclp1F0hI+lAKAn1WjOH5l5djxjRmZA=;
- b=K50W+fypL+MLvkPoqFWjzX6ZLs8nOpd6bFSCHiXaS0iNkNXCNO7DKeremPBQ6YHdhL
- rIwwQ0GRnNN30k1vCc3hMAV9O7RQujmZJILP+f4vCYZ+x1ywA/n64K5mInl1bz34nntW
- lT5Wcm8eLVtjxAbijL0Ntu/Q2WD3PUsQdyK0fkD++wj2WHZlXQC2IWSfO7bEUmKOvSX8
- PxRbQOhnFlDFxh+JDfbSKBhUmju7WZtQ9dzUMN6RJ0biZvO17IOxoFJobBlkXOnFZoHc
- i0NGb4S0pMbIuI8TmfdXUOoQfxmPv9VwsFo1HjpjXQRJN7sAMCCXDkoYt/HzuDwDDkec
- KQzQ==
-X-Gm-Message-State: AOJu0Yya9ukBJgNuFIB/zzUbyk/MFsHDUROFBBFGCpXEpN+50dvxpRyZ
- Zof/krrXicr3WhdVm2EKUAtbVEcpcFNsaUCCwzpxqQ9JZrzPbdY8pBcUv2a7eJfJjQ9cuFaouxH
- xNQB9Nd7J86/AdJbrMzNhIfMql62hp4bUs/dz/ddiWw==
-X-Gm-Gg: ASbGnctaguxbW2VaAeg3uV8DWStwoLPWBppMxmemAGJgZjA3j8rvYfaMHBt3E92FUT5
- UuVuUVeWnzOLJTlk4rrbvZmRJ2Ol4ZWw0Kw1Bpx9wzLqfVpA9sZEKIM4NeJYCHlJkHErsBbCmlT
- KW75Fl1RtFzGig6NtfTvY4kEjpckSAhRtZlgBphdCW/Ovn/0QXFqwNX45FliyGgJQ9ErRueM6xR
- jNDT2gl
-X-Google-Smtp-Source: AGHT+IH26FMcUs6hEUBPdKjcdcczzX4rU7GplcMb+9VPZTNC8BelfgwoubWy11mn6tUGppR3MsTSWOjLIWGLiO7RkPw=
-X-Received: by 2002:a53:ac8d:0:b0:635:2ba3:c264 with SMTP id
- 956f58d0204a3-6352ba3c3bemr8676387d50.19.1758548717863; Mon, 22 Sep 2025
- 06:45:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1v0gve-0000SB-AN
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:50:06 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1v0gvT-0001tU-5s
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:50:06 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58M7NNjL029543;
+ Mon, 22 Sep 2025 13:49:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=corp-2025-04-25; bh=POhOhOxyD143gRYB
+ obaNPqEEqO+F3uKC5lLMnhpfznc=; b=e+VIxY5YirPI6dsMD2fPSPMosUAHo+8w
+ yQIib8BMeewf7nu+IIYyBbtFkM+f8opNBTcdb1Wiy81+UTIegXyIoct0YaNsd9mH
+ nz3YPVPUA+UA5ceILR9S6qEuUwxIHZ0GiPZc0iAvNXpZEmjGSw7Uv3rUuL5E9Kda
+ OZGAiAn0D4ujoV1ABb/WaOLPbR81jQgNiPOFZhGOjU/GPEt+hq7nBzDZsdcnLBoh
+ ozplTLyl4Iwv66sFSmTCAPSo76VwOkb6qTC4bTsMQKdpq50CyLu5EOgxH7L0s+Lz
+ ldBF5THGI1tcjY4vxCrld+Z2HSHAFsTMuj3s2gxelP+U128O34ng8g==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 499k23agd7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 22 Sep 2025 13:49:49 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 58MCKUP8034410; Mon, 22 Sep 2025 13:49:48 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 49a6nhan7k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 22 Sep 2025 13:49:48 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58MDnlWB004351;
+ Mon, 22 Sep 2025 13:49:47 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 49a6nhan6x-1; Mon, 22 Sep 2025 13:49:47 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Cedric Le Goater <clg@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V4 0/8] Live update: cpr-exec
+Date: Mon, 22 Sep 2025 06:49:37 -0700
+Message-Id: <1758548985-354793-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
-References: <20250919115017.1536203-1-berrange@redhat.com>
- <20250919115017.1536203-15-berrange@redhat.com>
-In-Reply-To: <20250919115017.1536203-15-berrange@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 22 Sep 2025 14:45:06 +0100
-X-Gm-Features: AS18NWAytbopHV_sqAbRooQHLq7rtMpwhmMsEf6VOoQUF9G2rLDlCGubkELpJiM
-Message-ID: <CAFEAcA8AE4AcF6VOAPmtNeJi1XRBXityX1mLPw6K9+++VW6EEw@mail.gmail.com>
-Subject: Re: [PULL 14/16] chardev: qemu_chr_open_fd(): add errp
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Jagannathan Raman <jag.raman@oracle.com>, Zhao Liu <zhao1.liu@intel.com>, 
- Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
- Gustavo Romero <gustavo.romero@linaro.org>,
- Thanos Makatos <thanos.makatos@nutanix.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Darren Kenny <darren.kenny@oracle.com>,
- Stefano Garzarella <sgarzare@redhat.com>, 
- Kevin Wolf <kwolf@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- qemu-block@nongnu.org, 
- Peter Xu <peterx@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Jason Wang <jasowang@redhat.com>, 
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- John Levon <john.levon@nutanix.com>, 
- Fam Zheng <fam@euphon.net>, Alexander Bulekov <alxndr@bu.edu>,
- Stefan Weil <sw@weilnetz.de>, 
- Gerd Hoffmann <kraxel@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>, 
- Qiuhao Li <Qiuhao.Li@outlook.com>, Michael Roth <michael.roth@amd.com>, 
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Bandan Das <bsd@redhat.com>, Kostiantyn Kostiuk <kkostiuk@redhat.com>, 
- Hailiang Zhang <zhanghailiang@xfusion.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b12c;
- envelope-from=peter.maydell@linaro.org; helo=mail-yx1-xb12c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-22_01,2025-09-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ adultscore=0 mlxscore=0
+ spamscore=0 malwarescore=0 phishscore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
+ definitions=main-2509220135
+X-Authority-Analysis: v=2.4 cv=C5XpyRP+ c=1 sm=1 tr=0 ts=68d153fd b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117
+ a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VsTg9rq-Wku7RHCzQ2gA:9
+ a=QEXdDO2ut3YA:10 cc=ntf awl=host:13614
+X-Proofpoint-GUID: wlMeApFBorKq6v5jKLEY9yh3gXeRlTiw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAxNiBTYWx0ZWRfX2LBewYj4AXlb
+ Zhr8qjqiEfBms7iUBHljSAEAQgYyzPSoHbWInlKJV/ob/2Th7w7VxX9GV2xLmcMZ1pCDtEgqHyB
+ 9RiAVWC8IiKHJS8oM14y3tBqazsy7gcoWlc3a6l6G5aIgnbzdmPv8kLYtEY9oLgr6prrEUcHS8D
+ BzVG1iM4VamuykP04lYkc76Oz3i+q7xGHuMV/8F2RUFJm0sf1Vq3kRCCH/FtSvGfQEmVt38CAv3
+ iYhEdNQWyD5FTmhLlPrgXVbEcfnLwUc9YJiX2pkuFETbBP7dKmftJjjo33BRSF0kEM8nf8vKqR9
+ tMk0EMlHSe/UmvXaKbPSLfUQZmaBMoHmcS1bVYoWDqWjMGYYHlsOpnm07357wC3ZPrRGwEHMqaE
+ IFLSfraaSGTH/C9zbCj+x08qwKxtDg==
+X-Proofpoint-ORIG-GUID: wlMeApFBorKq6v5jKLEY9yh3gXeRlTiw
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,46 +114,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 19 Sept 2025 at 12:55, Daniel P. Berrang=C3=A9 <berrange@redhat.com=
-> wrote:
->
-> From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->
-> Every caller already support errp, let's go further.
->
-> Suggested-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+This patch series adds the live migration cpr-exec mode.
 
-Coverity reports a bug in this change (CID 1630444):
+The new user-visible interfaces are:
+  * cpr-exec (MigMode migration parameter)
+  * cpr-exec-command (migration parameter)
 
+cpr-exec mode is similar in most respects to cpr-transfer mode, with the
+primary difference being that old QEMU directly exec's new QEMU.  The user
+specifies the command to exec new QEMU in the migration parameter
+cpr-exec-command.
 
-> diff --git a/chardev/char-file.c b/chardev/char-file.c
-> index a9e8c5e0d7..89e9cb849c 100644
-> --- a/chardev/char-file.c
-> +++ b/chardev/char-file.c
-> @@ -92,7 +92,11 @@ static void qmp_chardev_open_file(Chardev *chr,
->          }
->      }
->
-> -    qemu_chr_open_fd(chr, in, out);
-> +    if (!qemu_chr_open_fd(chr, in, out, errp)) {
-> +        qemu_close(out);
-> +        qemu_close(in);
+Why?
 
-Here 'in' can be -1 (if there is only an output file
-and no separate input file specified), so we can
-try to close(-1). Suggested fix:
+In a containerized QEMU environment, cpr-exec reuses an existing QEMU
+container and its assigned resources.  By contrast, cpr-transfer mode
+requires a new container to be created on the same host as the target of
+the CPR operation.  Resources must be reserved for the new container, while
+the old container still reserves resources until the operation completes.
+Avoiding over commitment requires extra work in the management layer.
+This is one reason why a cloud provider may prefer cpr-exec.  A second reason
+is that the container may include agents with their own connections to the
+outside world, and such connections remain intact if the container is reused.
 
-         if (in >=3D 0) {
-             qemu_close(in);
-         }
+How?
 
-> +        return;
-> +    }
->  #endif
->  }
+cpr-exec preserves descriptors across exec by clearing the CLOEXEC flag,
+and by sending the unique name and value of each descriptor to new QEMU
+via CPR state.
 
--- PMM
+CPR state cannot be sent over the normal migration channel, because devices
+and backends are created prior to reading the channel, so this mode sends
+CPR state over a second migration channel that is not visible to the user.
+New QEMU reads the second channel prior to creating devices or backends.
+
+The exec itself is trivial.  After writing to the migration channels, the
+migration code calls a new main-loop hook to perform the exec.
+
+Example:
+
+In this example, we simply restart the same version of QEMU, but in
+a real scenario one would use a new QEMU binary path in cpr-exec-command.
+
+  # qemu-kvm -monitor stdio
+  -object memory-backend-memfd,id=ram0,size=1G
+  -machine memory-backend=ram0 -machine aux-ram-share=on ...
+
+  QEMU 10.1.50 monitor - type 'help' for more information
+  (qemu) info status
+  VM status: running
+  (qemu) migrate_set_parameter mode cpr-exec
+  (qemu) migrate_set_parameter cpr-exec-command qemu-kvm ... -incoming file:vm.state
+  (qemu) migrate -d file:vm.state
+  (qemu) QEMU 10.1.50 monitor - type 'help' for more information
+  (qemu) info status
+  VM status: running
+
+Changes in V2:
+  * dropped patch "helper to request exec" and use a BH to exec
+  * used g_shell_parse_argv for cpr-exec-command parameter
+  * fixed check for channel in cpr_state_load
+  * tweaked QAPI docs, developer docs, and code comments
+  * fixed doc: rename cpr-exec-args -> cpr-exec-command
+
+Steve Sistare (8):
+  migration: multi-mode notifier
+  migration: add cpr_walk_fd
+  oslib: qemu_clear_cloexec
+  migration: cpr-exec-command parameter
+  migration: cpr-exec save and load
+  migration: cpr-exec mode
+  migration: cpr-exec docs
+  vfio: cpr-exec mode
+
+ docs/devel/migration/CPR.rst   | 106 +++++++++++++++++++++++-
+ qapi/migration.json            |  46 ++++++++++-
+ include/migration/cpr.h        |   9 +++
+ include/migration/misc.h       |  12 +++
+ include/qemu/osdep.h           |   9 +++
+ hw/vfio/container.c            |   3 +-
+ hw/vfio/cpr-iommufd.c          |   3 +-
+ hw/vfio/cpr-legacy.c           |   9 ++-
+ hw/vfio/cpr.c                  |  13 +--
+ migration/cpr-exec.c           | 178 +++++++++++++++++++++++++++++++++++++++++
+ migration/cpr.c                |  41 +++++++++-
+ migration/migration-hmp-cmds.c |  30 +++++++
+ migration/migration.c          |  70 ++++++++++++----
+ migration/options.c            |  14 ++++
+ migration/ram.c                |   1 +
+ migration/vmstate-types.c      |   8 ++
+ system/vl.c                    |   4 +-
+ util/oslib-posix.c             |   9 +++
+ util/oslib-win32.c             |   4 +
+ hmp-commands.hx                |   2 +-
+ migration/meson.build          |   1 +
+ migration/trace-events         |   1 +
+ 22 files changed, 538 insertions(+), 35 deletions(-)
+ create mode 100644 migration/cpr-exec.c
+
+base-commit: e7c1e8043a69c5a8efa39d4f9d111f7c72c076e6
+-- 
+1.8.3.1
+
 
