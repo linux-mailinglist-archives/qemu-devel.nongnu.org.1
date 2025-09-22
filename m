@@ -2,90 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0598B92BDB
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 21:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6899FB92BFF
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 21:12:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0lbs-0004rB-K4; Mon, 22 Sep 2025 14:50:00 -0400
+	id 1v0lbt-0004rk-OY; Mon, 22 Sep 2025 14:50:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0lbp-0004ph-AX
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:49:57 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1v0lbq-0004q9-3u
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:49:58 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0lbh-00048t-Hg
+ id 1v0lbk-00049W-1I
  for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:49:57 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-77f2c7ba550so1514539b3a.1
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 11:49:48 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-77f32d99a97so1307006b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 11:49:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758566987; x=1759171787; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758566989; x=1759171789; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CRoS3UC8ynsEV5t3sfVyTe2E9WbHdc5gfYPgW1+H1wE=;
- b=agncZOIFEXRV6BoZVmNDjFhystcd57uVpRQlwVbbLzZxWu8dxYQQv7whCQMdP5SZAs
- m8dxYTyHjpF0+Mjy6wKDfzxMDMPgRE8+CU+v9LrtJDIP7N39sYajTKd3w1k44CxPd5ie
- SDPgg8x3pIDpHr8VwlskpsljMG8LxxpRYtzTqMjvR/aokm9/kr2Xbi14TG3bUrZf3Jrw
- mVwoyhyoqTXHF7GGfOqvd5mBU34qdAvhj2USHhV+7rQQICZVu4BXSpTyvBU1T/yoQZuD
- 5Oe9WGr5JLn4F5XaAKC/A/osiWp4L2q9d65EUa71e/Ii7Xa22Oy9/q5L/7RDiUB2aRxq
- 7ByA==
+ bh=UkNyZZYFhHeil9ygYrAE1UXkAwT1+GtqIOD2Xj8zAVs=;
+ b=pEmx/1CjQrYB4tRZErGu10iyJd4tBiy3gAVsrdp4fHK3d+TL7Rk6DPAyh2aHdgtlMj
+ BLl2o/jp/nOGgkqGMx6ax3jjwDTJzZi7VRW7kFOZrQONQLJWF/7BeMpyVVDC6nDuJqGQ
+ uApR9NWYVJ5fnkUd+kG7L0d8gnX5pkxT1DHt45m1Efn+ZhwaC2S6bBq38AUznkMHiU7L
+ pXJnK4HldLwaUNtSjJc72m7oazfBvPJcGnOIT70gE7b0fAbxDZj4SQo+U+TeiozSZUH8
+ ID/UvaJJ1LTf1AlYFSRLeg1Uszx6sn1sret8+q1W0li6V9rVyZBOvxtlQI8gqvWUa7PR
+ gsWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758566987; x=1759171787;
+ d=1e100.net; s=20230601; t=1758566989; x=1759171789;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CRoS3UC8ynsEV5t3sfVyTe2E9WbHdc5gfYPgW1+H1wE=;
- b=bbh9vfPz0UBh0auKtzgDPNuEwXH+4M7/rYAEb4q8xJo6DNoVxWIsWGxcFGxs6ImpUI
- 4nfDKxlXy0YIAy2BkKQDPNGTlUbnNpng3hXEIAgi9+WFpf4dzpoUO/nB9In2LA56BujZ
- HfLLIGSLPNDzRoMKBhMDQCvBqcD/AQ74jy2H5Dba65OjH5g6BtdmRgRsV1VLDeKNFJkB
- M4P7eK73eWuX758KnzgKMC1jY545EfihJ69C+mRSEtHxxcLC1agDZQBv03OiaZrhS/Ju
- k9u9AM4+itlkUxPyb/xVMNFc+yeRmUbFN4wdgR4f2gb7Ien5pzgF7Ich0xqSBuna9YI5
- 0dOA==
-X-Gm-Message-State: AOJu0YxNpshqqcVWa44kuShaq4rHzHJBrR04i6Upzqf8uhaPBgFoeZ1v
- cG7btpyxWxsyRmsOO3qy7AkgUV7aN++TR7gZW5R77BlpwiAAueNsnJX1G3FHPfmhIA1/Su6QgNN
- bBYPk
-X-Gm-Gg: ASbGncsTWc6Iy9xR1E1Xx+3I0qze8WJbgpCqe+ehwEY+gOSiVR5w0bJnupcF++VTeDE
- AkcSym5yq73LMhAiKWbYEbclXYdOumwimpvKonpEmfQRm/FjYNNUmZV2iVV02Jbx88QYwiXHBSQ
- L8etVg5ERjJSDQwkC8dBHGURBUZbz0IL3X4L6TPfdQ2LtWeAyCK7VOgy2eyrExy8VVb+EqIpbj8
- VKDVLljKWs4IEgoPXefcSEWGHVvU1GTzu/n8XDIZkBj0niOwMqxE914K4pjtF24sgcI0VhX43Fe
- lLtwsWlLlHWrPT8NCQPoIyzFp3U+YUKeg0TVWnFUCGS3bOVASt+7PZtOnf+qYPg+K+ZfRpx2pV1
- ZMFXImOqFaqq49bznOY6FRb/dDbJT
-X-Google-Smtp-Source: AGHT+IFQNqhco4itF03EKjOw3uvmKZWs6kr/zNFfVaHpdJUJzD/Uzstne/WFCk/fAKveIeRR+rWxrQ==
-X-Received: by 2002:a05:6a00:2190:b0:77d:52a1:ac6e with SMTP id
- d2e1a72fcca58-77e4eac6e2fmr16198998b3a.19.1758566987601; 
- Mon, 22 Sep 2025 11:49:47 -0700 (PDT)
+ bh=UkNyZZYFhHeil9ygYrAE1UXkAwT1+GtqIOD2Xj8zAVs=;
+ b=p1MTYN8Z6j2cHqWTW8y6xUGHoJY1dUIRXshsaYyAp9eVh7OUx0MBBff0GnCBNkmtvE
+ 9v/TstnreQn4KPACzB+Sfw0KK+2sMZpwSradUY+j/ph+n/5wyUD7V0NWnzhs1OE1Bd57
+ Xhf/pbuolefi1r9SDptpFnGP0LqutjXoUMPRBQ60SIk9712ncCtC2fskRvGt5RPVf9hT
+ WdJ+jP/Nh/qJH1JZ9QJBv6SE4IevpiujGy8Ji/JHYt9owJjr1swDZB6iiRM299xJGgNQ
+ 98gRh7Smqn97V1Io/aA/aG7ws5EGsQ1RA9oMyVHSj4LnnjebrzMHtqbSZGd80m+TDNHc
+ B3kg==
+X-Gm-Message-State: AOJu0Yw6VhcpJ2gUWqWUIUVN4pwQlFNw6xbnKv9uGZvNRlNcaGynJP23
+ qlj7uq8dffw8gUmSX3boUOxttmE+8wHgLQbwhyzb4lLzjQC7Vp701fZZQlqoO/OUNZsBuna6i8u
+ UjhUh
+X-Gm-Gg: ASbGncu1Hw+Am84OMoV3tokQuvkh2cdnb68PJ+V5VsM/K2cWAu+mDC/4YdEEZGTwXzA
+ jMJC7wFPzNH/Itnj0VtKTOSWpefuY0dCWblu4ghYUgtDiisOew/sOa4c3U0zzB5gr83hAkfWOcY
+ rqa2xmkfqwlXglFgfpdty37eacBNOoi0ogTD9qxyZerosIXWmbaB0ygYPzte7LFR9ARZpuVFl/0
+ 4fpvlQE5DEe2hLgtuXVnDW3UITVVCkj5YeHJxX5Z1POwHmDdMudhQ03m58nm9HmmLEH8/p3rgz3
+ X883bdaN052Ao8zVqSbVgNDe4ZkOgu+tAedyWDTmQ56w+wZUAlvG6/xiSkKoLd7LnDw/vsIEoe5
+ sB7PEVdDweQSpbkUkP7aB1LHLND4mGRVtG5pRDeI=
+X-Google-Smtp-Source: AGHT+IFm1jQ14e/HafETcVxEpydEO9fijrVrhiivcFC1bIWbis5xgLtS+4+gXCP+oREyGCPRTMJXLg==
+X-Received: by 2002:a05:6a20:12c3:b0:2c5:d3c6:6a59 with SMTP id
+ adf61e73a8af0-2cfe89915d1mr131708637.29.1758566988969; 
+ Mon, 22 Sep 2025 11:49:48 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-77e5fe6de75sm10583861b3a.19.2025.09.22.11.49.46
+ d2e1a72fcca58-77e5fe6de75sm10583861b3a.19.2025.09.22.11.49.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Sep 2025 11:49:47 -0700 (PDT)
+ Mon, 22 Sep 2025 11:49:48 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v5 15/76] include/hw/core/cpu: Invert the indexing into
- CPUTLBDescFast
-Date: Mon, 22 Sep 2025 11:48:23 -0700
-Message-ID: <20250922184924.2754205-16-richard.henderson@linaro.org>
+	Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v5 16/76] target/hppa: Adjust mmu indexes to begin with 0
+Date: Mon, 22 Sep 2025 11:48:24 -0700
+Message-ID: <20250922184924.2754205-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250922184924.2754205-1-richard.henderson@linaro.org>
 References: <20250922184924.2754205-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,62 +98,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This array is within CPUNegativeOffsetState, which means the
-last element of the array has an offset from env with the
-smallest magnitude.  This can be encoded into fewer bits
-when generating TCG fast path memory references.
+This is a logical reversion of 2ad04500543, though
+there have been additions to the set of mmu indexes
+since then.  The impetus to that original patch,
+"9-15 will use shorter assembler instructions when
+run on a x86-64 host" is now handled generically.
 
-When we changed the NB_MMU_MODES to be a global constant,
-rather than a per-target value, we pessimized the code
-generated for targets which use only a few mmu indexes.
-By inverting the array index, we counteract that.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h | 11 ++++++++++-
- tcg/tcg.c             |  3 ++-
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ target/hppa/cpu.h | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 30e335d7d0..89fe937a6f 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -595,9 +595,18 @@ static inline CPUArchState *cpu_env(CPUState *cpu)
- }
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 11d59d11ca..672ab3750c 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -29,21 +29,21 @@
+ #include "qemu/interval-tree.h"
+ #include "hw/registerfields.h"
  
- #ifdef CONFIG_TCG
-+/*
-+ * Invert the index order of the CPUTLBDescFast array so that lower
-+ * mmu_idx have offsets from env with smaller magnitude.
-+ */
-+static inline int mmuidx_to_fast_index(int mmu_idx)
-+{
-+    return NB_MMU_MODES - 1 - mmu_idx;
-+}
-+
- static inline CPUTLBDescFast *cpu_tlb_fast(CPUState *cpu, int mmu_idx)
- {
--    return &cpu->neg.tlb.f[mmu_idx];
-+    return &cpu->neg.tlb.f[mmuidx_to_fast_index(mmu_idx)];
- }
- #endif
+-#define MMU_ABS_W_IDX     6
+-#define MMU_ABS_IDX       7
+-#define MMU_KERNEL_IDX    8
+-#define MMU_KERNEL_P_IDX  9
+-#define MMU_PL1_IDX       10
+-#define MMU_PL1_P_IDX     11
+-#define MMU_PL2_IDX       12
+-#define MMU_PL2_P_IDX     13
+-#define MMU_USER_IDX      14
+-#define MMU_USER_P_IDX    15
++#define MMU_KERNEL_IDX    0
++#define MMU_KERNEL_P_IDX  1
++#define MMU_PL1_IDX       2
++#define MMU_PL1_P_IDX     3
++#define MMU_PL2_IDX       4
++#define MMU_PL2_P_IDX     5
++#define MMU_USER_IDX      6
++#define MMU_USER_P_IDX    7
++#define MMU_ABS_IDX       8
++#define MMU_ABS_W_IDX     9
  
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index afac55a203..294762c283 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -425,7 +425,8 @@ static uintptr_t G_GNUC_UNUSED get_jmp_target_addr(TCGContext *s, int which)
- static int __attribute__((unused))
- tlb_mask_table_ofs(TCGContext *s, int which)
- {
--    return (offsetof(CPUNegativeOffsetState, tlb.f[which]) -
-+    int fi = mmuidx_to_fast_index(which);
-+    return (offsetof(CPUNegativeOffsetState, tlb.f[fi]) -
-             sizeof(CPUNegativeOffsetState));
- }
+-#define MMU_IDX_MMU_DISABLED(MIDX)  ((MIDX) < MMU_KERNEL_IDX)
+-#define MMU_IDX_TO_PRIV(MIDX)       (((MIDX) - MMU_KERNEL_IDX) / 2)
+-#define MMU_IDX_TO_P(MIDX)          (((MIDX) - MMU_KERNEL_IDX) & 1)
+-#define PRIV_P_TO_MMU_IDX(PRIV, P)  ((PRIV) * 2 + !!(P) + MMU_KERNEL_IDX)
++#define MMU_IDX_MMU_DISABLED(MIDX)  ((MIDX) >= MMU_ABS_IDX)
++#define MMU_IDX_TO_PRIV(MIDX)       ((MIDX) / 2)
++#define MMU_IDX_TO_P(MIDX)          ((MIDX) & 1)
++#define PRIV_P_TO_MMU_IDX(PRIV, P)  ((PRIV) * 2 + !!(P))
  
+ #define PRIV_KERNEL       0
+ #define PRIV_USER         3
 -- 
 2.43.0
 
