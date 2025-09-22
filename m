@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 505F8B936CF
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 00:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ADFCB936D5
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 00:03:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0obo-0005jU-GS; Mon, 22 Sep 2025 18:02:08 -0400
+	id 1v0obq-0005ns-Nz; Mon, 22 Sep 2025 18:02:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v0obh-0005e0-Ng
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 18:02:01 -0400
+ id 1v0obk-0005jS-7R
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 18:02:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v0obe-0001sI-Lh
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 18:02:01 -0400
+ id 1v0obi-0001st-4U
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 18:02:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758578515;
+ s=mimecast20190719; t=1758578520;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=+rshgyCdBIuDTsFJnW77Yg4Y41sdmr4f5CG2JHHpJs8=;
- b=UYhn8Tdy7cacfiBK646ket9gGzXj00H6wiwsFQjSlqgegT1J19KTyd7jF9maHhmFXjveLE
- IIJ/O4Q4LXNCAJCRpkF9oFpSREM8i8EN94Lk0hqBzg76eU8Wz4xn6P/TwhQt702zm4bWqz
- ukNn3qfW9hNgXf9tqeyxtjwm91QHpek=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=x+xonViXNrhX+Y2vsLPFiHj9moTtLnBh7lb0zW5gpSs=;
+ b=NU70kbxSLbwhorBf3aznZUZfKoQYhQzQdbPhE+uaOE2MNwoY9ZR42z22Fr++fZVm93kXWB
+ Y0M5qBjy5Kp0kIn1JiiPf5zhMwbo8y8n+shaM4YWY2Lz7yFwl2/fJY3NrZ3x2v199k6Tss
+ UXO9E6vHzbXyVQzievYe0BbiiZiJGpY=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-602-IIlhRA2YPj-v1YrFLcOQTg-1; Mon,
- 22 Sep 2025 18:01:53 -0400
-X-MC-Unique: IIlhRA2YPj-v1YrFLcOQTg-1
-X-Mimecast-MFC-AGG-ID: IIlhRA2YPj-v1YrFLcOQTg_1758578512
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-646-8LiljfrPMYOFHj6hPTKjOg-1; Mon,
+ 22 Sep 2025 18:01:56 -0400
+X-MC-Unique: 8LiljfrPMYOFHj6hPTKjOg-1
+X-Mimecast-MFC-AGG-ID: 8LiljfrPMYOFHj6hPTKjOg_1758578515
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4C6DC1800350; Mon, 22 Sep 2025 22:01:52 +0000 (UTC)
+ id A33421800452; Mon, 22 Sep 2025 22:01:54 +0000 (UTC)
 Received: from localhost (unknown [10.2.17.92])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3B0B41800446; Mon, 22 Sep 2025 22:01:50 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E88211800452; Mon, 22 Sep 2025 22:01:53 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -52,13 +53,14 @@ Cc: Kevin Wolf <kwolf@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH 0/5] virtio: allow virtio_error() in IOThreads
-Date: Mon, 22 Sep 2025 18:01:44 -0400
-Message-ID: <20250922220149.498967-1-stefanha@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 1/5] vhost: use virtio_config_get_guest_notifier()
+Date: Mon, 22 Sep 2025 18:01:45 -0400
+Message-ID: <20250922220149.498967-2-stefanha@redhat.com>
+In-Reply-To: <20250922220149.498967-1-stefanha@redhat.com>
+References: <20250922220149.498967-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -84,31 +86,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The hw/virtio/ code calls virtio_error() when the guest driver does something
-invalid. virtio_error() is currently not usable outside the Big QEMU Lock (BQL)
-because it calls into the interrupt code path (MSI, etc) that requires the BQL.
+There is a getter function so avoid accessing the ->config_notifier
+field directly.
 
-Make the hw/virtio.c code aware of the IOThread case where the BQL is not held
-and use irqfd there. This makes virtio_error() available to IOThreads.
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ hw/virtio/vhost.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-Stefan Hajnoczi (5):
-  vhost: use virtio_config_get_guest_notifier()
-  virtio: unify virtio_notify_irqfd() and virtio_notify()
-  virtio: support irqfd in virtio_notify_config()
-  tests/libqos: extract qvirtqueue_set_avail_idx()
-  tests/virtio-scsi: add a virtio_error() IOThread test
-
- include/hw/virtio/virtio.h     |  1 -
- tests/qtest/libqos/virtio.h    |  2 ++
- hw/block/virtio-blk.c          |  6 +-----
- hw/scsi/virtio-scsi.c          |  6 +-----
- hw/virtio/vhost.c              | 11 +++++++----
- hw/virtio/virtio.c             | 35 ++++++++++++++++++----------------
- tests/qtest/libqos/virtio.c    | 16 ++++++++++++----
- tests/qtest/virtio-scsi-test.c | 32 +++++++++++++++++++++++++++++++
- hw/virtio/trace-events         |  1 -
- 9 files changed, 74 insertions(+), 36 deletions(-)
-
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 6557c58d12..37b39aa0c2 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1817,7 +1817,7 @@ void vhost_config_mask(struct vhost_dev *hdev, VirtIODevice *vdev, bool mask)
+     int r;
+     EventNotifier *notifier =
+         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier;
+-    EventNotifier *config_notifier = &vdev->config_notifier;
++    EventNotifier *config_notifier = virtio_config_get_guest_notifier(vdev);
+     assert(hdev->vhost_ops);
+ 
+     if ((hdev->started == false) ||
+@@ -1848,13 +1848,15 @@ static void vhost_stop_config_intr(struct vhost_dev *dev)
+ static void vhost_start_config_intr(struct vhost_dev *dev)
+ {
+     int r;
++    EventNotifier *config_notifier =
++        virtio_config_get_guest_notifier(dev->vdev);
+ 
+     assert(dev->vhost_ops);
+-    int fd = event_notifier_get_fd(&dev->vdev->config_notifier);
++    int fd = event_notifier_get_fd(config_notifier);
+     if (dev->vhost_ops->vhost_set_config_call) {
+         r = dev->vhost_ops->vhost_set_config_call(dev, fd);
+         if (!r) {
+-            event_notifier_set(&dev->vdev->config_notifier);
++            event_notifier_set(config_notifier);
+         }
+     }
+ }
+@@ -2139,12 +2141,13 @@ static int do_vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev,
+ {
+     int i;
+     int rc = 0;
++    EventNotifier *config_notifier = virtio_config_get_guest_notifier(vdev);
+ 
+     /* should only be called after backend is connected */
+     assert(hdev->vhost_ops);
+     event_notifier_test_and_clear(
+         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
+-    event_notifier_test_and_clear(&vdev->config_notifier);
++    event_notifier_test_and_clear(config_notifier);
+     event_notifier_cleanup(
+         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
+ 
 -- 
 2.51.0
 
