@@ -2,77 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9061AB9162C
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 15:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A6C5B91638
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 15:26:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0gXN-0005my-0A; Mon, 22 Sep 2025 09:25:01 -0400
+	id 1v0gYo-0006XT-0J; Mon, 22 Sep 2025 09:26:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v0gXH-0005l9-Rz
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:24:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v0gXC-0005SJ-HI
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:24:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758547487;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=okNeSa+d8C6foROpHgu1ke0gMYdV5jiqfKkoGfNQjPY=;
- b=OU9dRqkj0NELSawFZxVgD8CROaZ0zP5BbE3CTGhxiM6h3nKIFE1Q67TRIkUKy22dxcrZvu
- WgKWFb9YfnXiq0vcjtlBtBFtzdQxCUctYVYOtA4SsyFrDE5DBGZ03xa5krizU4OymqoNsc
- jPNsoYPrGocy2E3ob7av22HY5ds0szk=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-183-k8fn_st-MLunGAWL86R4kg-1; Mon,
- 22 Sep 2025 09:24:45 -0400
-X-MC-Unique: k8fn_st-MLunGAWL86R4kg-1
-X-Mimecast-MFC-AGG-ID: k8fn_st-MLunGAWL86R4kg_1758547484
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4964119560AD; Mon, 22 Sep 2025 13:24:44 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.69])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 08AB81800452; Mon, 22 Sep 2025 13:24:41 +0000 (UTC)
-Date: Mon, 22 Sep 2025 14:24:38 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [RFC PATCH 2/4] docs/code-provenance: make the exception process
- more prominent
-Message-ID: <aNFOFq_H8KjWM-oy@redhat.com>
-References: <20250922113219.32122-1-pbonzini@redhat.com>
- <20250922113219.32122-3-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v0gYl-0006XK-Pj
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:26:27 -0400
+Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v0gYa-0005yC-FG
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:26:27 -0400
+Received: by mail-yw1-x112d.google.com with SMTP id
+ 00721157ae682-72e565bf2f0so34031067b3.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 06:26:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758547573; x=1759152373; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JM5QaxpFdIxstXICZ9MSePRrwB8nlQ+4Fi8I1OdTnn0=;
+ b=q5KI3mwmihBap+Dq5HcADID1L/naB9hg4nPmsUrqpKrcH5axYaFqcjpYmAd1+4Gd+5
+ nmz3W6/TjuhXF8xU184U92JWoA8QwO252D2DmjhR5uGHiJUPZ8SsQOFPJa1kbwWNdaDR
+ sDzuWQRavPOoRm/q41MnzW5N1P0RsRu8Man2KZm+h2G7SDj4V6Q97bEqp2wIA0E3Qt+f
+ XovOZjCmvnAL9TwO9VHm0lUaFZlCSst73+oLn559WIJvjnJqhOqF36YjG02VBZjd8y1K
+ S3MgLJPuwWR8ojY930fDz6nMTr//XydabHSMA4uFbskMV4aCF+9cURqdXoR5ey5DYtEg
+ r+Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758547573; x=1759152373;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JM5QaxpFdIxstXICZ9MSePRrwB8nlQ+4Fi8I1OdTnn0=;
+ b=N2pHPWSmL+Q8ZYccYtva6qHdMzbAjyLrYeEsxz5MFFsKrmlOWXZ2rI8HnbmqYc+5n4
+ vUfGJseHQN/wWHa3b+EWL2x4RZZqgA2suLeOtgNY4eRv+wW92areekYCnj6fGpQttXpc
+ Ebc/jSo0PqdPE76a4IVvL83eqazppIjqZL2MP+BcgdjhqrDO6Ie+/ocRf92IgBj8Oeef
+ Dlg7OIb3Gg29RVSDF+lQzZyNm3VH1/Yt15Y6DSN2U28pwUxSkKM7xWpylGswAUBUMoFJ
+ K7Bcl3KGl9JCTmo6yoW4BIhFZfxS/z65WO2Cy46S124c1ImSePnUWUXCCQONBEJIK0Xb
+ 6Wnw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVCHYgIEAwjwzIlq8PPw2LOxpbAgCUDLiGTkKSa8ZjDsxtoHdGPvDqQRVtJruOO9ffZkLXbG8o9pMsF@nongnu.org
+X-Gm-Message-State: AOJu0YzsWWtamXCFOt2LaQxhJKZ2YLMtDDDKwboLhdd0n8CrtpRfshib
+ aIehJYTjiLoJZahA0gIN/BtEp776Jokem69kwZXYOVhh/viCl0AyaT7OK+YasJcaINTUytE+QXZ
+ RduKLxQQaD+0GJFdNnSUuFj8BfGwFJjMHnf+Aq+a4wIWPDkjTOil7
+X-Gm-Gg: ASbGncsa0I0GXNbIjyzEwnFZDSjnzmq15YYLUFM3bB9TdF3wednMuLcv6SLCys15q0j
+ 7aafky2AImPGqUKCePbkDcOJBSG0tvTAgVhd7oMeuBznHcae0OctUX0ZrqRCEPO2NccP6FS4/Lr
+ WZEPSU1MUmZdzL2rxCETg+GFlvH6VPAvPoUhwpLDIDnGtcKgPVUZX/mpPZIUdzS5slhzWOl0paG
+ +vmojPH
+X-Google-Smtp-Source: AGHT+IHzXUfXlsiEFEhmRJj4ZT8YeTCX+lMdIw5Z7uOVSKn1nYSeS9FPGgN9AJHI4erLTBRwXjOgqFMJFlGBtXZwPmI=
+X-Received: by 2002:a05:690c:4912:b0:724:2cad:8df6 with SMTP id
+ 00721157ae682-73d3150f3eamr126583667b3.16.1758547573385; Mon, 22 Sep 2025
+ 06:26:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250922113219.32122-3-pbonzini@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+References: <20250922113219.32122-1-pbonzini@redhat.com>
+ <20250922113219.32122-5-pbonzini@redhat.com>
+ <CAFEAcA9Vr2rxeJ0P7Yohqt2+NWQ8CmmpKsB016CoKv8RchkDDQ@mail.gmail.com>
+ <aNFJVrusgEUaLuDW@redhat.com>
+In-Reply-To: <aNFJVrusgEUaLuDW@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 22 Sep 2025 14:26:00 +0100
+X-Gm-Features: AS18NWAoNoDu4YTZqZt5QO7LU-nTnV3SGdLsEUi71zSCkidLS077XL63XCVYZY8
+Message-ID: <CAFEAcA_rQhXdavAUCEt8atMhpZYEu0Lz6tVdu4+mfgPOK9iUuw@mail.gmail.com>
+Subject: Re: [RFC PATCH 4/4] docs/code-provenance: make the exception process
+ feasible
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,159 +97,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 22, 2025 at 01:32:17PM +0200, Paolo Bonzini wrote:
-> The exception process is a second thought in QEMU's policy for AI-generated
-> content.  It is not really possible to understand how people want to use
-> these tools without formalizing it a bit more and encouraging people to
-> request exceptions if they see a good use for AI-generated content.
-> 
-> Note that right now, in my opinion, the exception process remains
-> infeasible, because there is no agreement on how to "demonstrate
-> clarity of the license and copyright status for the tool's output".
-> This will be sorted out separately.
+On Mon, 22 Sept 2025 at 14:05, Daniel P. Berrang=C3=A9 <berrange@redhat.com=
+> wrote:
+>
+> On Mon, Sep 22, 2025 at 12:46:51PM +0100, Peter Maydell wrote:
+> > On Mon, 22 Sept 2025 at 12:32, Paolo Bonzini <pbonzini@redhat.com> wrot=
+e:
+> > >
+> > > I do not think that anyone knows how to demonstrate "clarity of the
+> > > copyright status in relation to training".
+> >
+> > Yes; to me this is the whole driving force behind the policy.
+> >
+> > > On the other hand, AI tools can be used as a natural language refacto=
+ring
+> > > engine for simple tasks such as modifying all callers of a given func=
+tion
+> > > or even less simple ones such as adding Python type annotations.
+> > > These tasks have a very low risk of introducing training material in
+> > > the code base, and can provide noticeable time savings because they a=
+re
+> > > easily tested and reviewed; for the lack of a better term, I will cal=
+l
+> > > these "tasks with limited or non-existing creative content".
+> >
+> > Does anybody know how to demonstrate "limited or non-existing
+> > creative content", which I assume is a standin here for
+> > "not copyrightable" ?
+>
+> That was something we aimed to intentionally avoid specifying in the
+> policy. It is very hard to define it in a way that will be clearly
+> understood by all contributors.
 
-FWIW, I considered that the "exception process" would end up
-being something like...
+> TL;DR: I don't think we should attempt to define whether the boundary
+> is between copyrightable and non-copyrightable code changes.
 
- * someone wants to use a particular tool for something they
-   believe is compelling
- * they complain on qemu-devel that our policy blocks their
-   valid use
- * we debate it
- * if agreed, we add a note to this code-proveance.rst doc to
-   allow it
+Well, this is why I think a policy that just says "no" is
+more easily understandable and followable. As soon as we
+start defining and granting exceptions then we're effectively
+in the position of making judgements and defining the boundary.
 
-
-I would imagine that exceptions might fall into two buckets
-
- * Descriptions of techniques/scenarios for using tools
-   that limit the licensing risk
- * Details of specific tools (or more likely models) that
-   are judged to have limited licensing risk
-
-it is hard to predict the future though, so this might be
-too simplistic. Time will tell when someone starts the
-debate...
-
-
-IOW, my suggestion would be that the document simply tells
-people to raise a thread on qemu-devel if they would like
-to discuss need for a particular exception, and mention
-that any exceptions will be documented in this doc if they
-are aggreed upon.
-
-> What is missing: do we want a formal way to identify commits for which an
-> exception to the AI policy was granted?  The common way to do so seems to
-> be "Generated-by" or "Assisted-by" but I don't want to turn commit message
-> into an ad space.  I would lean more towards something like
-> 
->   AI-exception-granted-by: Mary Maintainer <mary.maintainer@mycorp.test>
-
-IMHO the code-provenance.rst doc is what grants the exception, not
-any individual person, nor any individual commit.
-
-Whether we want to reference that a given commit is relying on an
-exception or not is hard to say at this point as we don't know what
-any exception would be like.
-
-Ideally the applicability of an exception could be self-evident
-from the commit. Realiyt might be more fuzzy. So if self-evident,
-then it likely warrants a sentence two of english text in the
-commit to justify its applicability.
-
-IOW, a tag like AI-exception-granted-by doesn't feel like it is
-particularly useful.
-
-> 
-> but at the same time I don't want to invent something just for QEMU.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  docs/devel/code-provenance.rst | 22 ++++++++++++----------
->  1 file changed, 12 insertions(+), 10 deletions(-)
-> 
-> diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.rst
-> index dba99a26f64..d435ab145cf 100644
-> --- a/docs/devel/code-provenance.rst
-> +++ b/docs/devel/code-provenance.rst
-> @@ -292,7 +292,8 @@ TL;DR:
->  
->    **Current QEMU project policy is to DECLINE any contributions which are
->    believed to include or derive from AI generated content. This includes
-> -  ChatGPT, Claude, Copilot, Llama and similar tools.**
-> +  ChatGPT, Claude, Copilot, Llama and similar tools.  Exceptions may be
-> +  requested on a case-by-case basis.**
-
-I'm not sure what you mean by 'case-by-case basis' ? I certainly don't
-think we should entertain debating use of AI in individual patch series,
-as that'll be a never ending burden on reviewer/maintainer resources.
-
-Exceptions should be things that can be applied somewhat generically to
-tools, or models or usage scenarios IMHO.
-
->  
->    **This policy does not apply to other uses of AI, such as researching APIs
->    or algorithms, static analysis, or debugging, provided their output is not
-> @@ -322,18 +323,19 @@ How contributors could comply with DCO terms (b) or (c) for the output of AI
->  content generators commonly available today is unclear.  The QEMU project is
->  not willing or able to accept the legal risks of non-compliance.
->  
-> -The QEMU project thus requires that contributors refrain from using AI content
-> -generators on patches intended to be submitted to the project, and will
-> -decline any contribution if use of AI is either known or suspected.
-> +The QEMU project requires contributors to refrain from using AI content
-> +generators without going through an exception request process.
-> +AI-generated code will only be included in the project after the
-> +exception request has been evaluated by the QEMU project.  To be
-> +granted an exception, a contributor will need to demonstrate clarity of
-> +the license and copyright status for the tool's output in relation to its
-> +training model and code, to the satisfaction of the project maintainers.
->  
-> +Maintainers are not allow to grant an exception on their own patch
-> +submissions.
->  
->  Examples of tools impacted by this policy includes GitHub's CoPilot, OpenAI's
->  ChatGPT, Anthropic's Claude, and Meta's Code Llama, and code/content
->  generation agents which are built on top of such tools.
-> -
->  This policy may evolve as AI tools mature and the legal situation is
-> -clarifed. In the meanwhile, requests for exceptions to this policy will be
-> -evaluated by the QEMU project on a case by case basis. To be granted an
-> -exception, a contributor will need to demonstrate clarity of the license and
-> -copyright status for the tool's output in relation to its training model and
-> -code, to the satisfaction of the project maintainers.
-> +clarified.
-
-I would suggest only this last paragraph be changed
-
-
-  This policy may evolve as AI tools mature and the legal situation is
-  clarifed.
-
-  Exceptions
-  ----------
-
-  The QEMU project welcomes discussion on any exceptions to this policy,
-  or more general revisions. This can be done by contacting the qemu-devel
-  mailing list with details of a proposed tool / model / usage scenario /
-  etc that is beneficial to QEMU, while still mitigating the legal risks
-  to the project.
-
-  After discussion, any exceptions that can be relied upon in contributions
-  will be listed below. The listing of an exception does not remove the
-  need for contributors to comply with all other pre-existing contribution
-  requirements, including DCO signoff.
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+-- PMM
 
