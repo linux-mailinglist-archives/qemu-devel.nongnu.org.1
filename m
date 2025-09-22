@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720F2B9067C
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 13:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 446E5B90679
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 13:34:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0emV-0006l3-Px; Mon, 22 Sep 2025 07:32:32 -0400
+	id 1v0emc-0006m6-I7; Mon, 22 Sep 2025 07:32:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v0emT-0006km-0D
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 07:32:29 -0400
+ id 1v0emY-0006lL-3I
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 07:32:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v0emQ-0001m2-3x
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 07:32:28 -0400
+ id 1v0emU-0001mX-It
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 07:32:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758540744;
+ s=mimecast20190719; t=1758540748;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=RJsPurcUhETQnVe1w4L58iY3pZt2bn1MFBYexwubz8g=;
- b=amAgeGv1v/5hHAfarfOYyy/8ZxgSQPHE7j/QTHrX1zA0JxsPr2bGjaP95HC48q4Jdw2C/x
- cU1B1zoUaZsoJ2y33BcG6u05w8Gerw4Aw1yy97R4d9F6b7TDIgfdm3LbfLlISxSeh8Mkgt
- CQFwKrzcJoFsRKQM/lJmMMf2V9Te3ic=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3ygR+TBxEysSyhAtQHJklwk6mtotPKGvbijBWQXyPuc=;
+ b=iB81WCfAWz4KQtjTbu8YksQPd3kCNCbPhOUkcLqKtyU4rYNm/cttYwv0ZO4apPay/yGlKM
+ aqD3sb0GaCtU0E27xXnsZmBBuDNyu77V9iFd1sEU+q/AeWBYNi/aBW53e2dG9IzD3aPWDP
+ 2O0wAsS84z96f83w8dCnH9yY62if0h4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-378-qUKrluAoMBKTxhyMY5e7FA-1; Mon, 22 Sep 2025 07:32:23 -0400
-X-MC-Unique: qUKrluAoMBKTxhyMY5e7FA-1
-X-Mimecast-MFC-AGG-ID: qUKrluAoMBKTxhyMY5e7FA_1758540742
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-45df7e734e0so40925765e9.0
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 04:32:22 -0700 (PDT)
+ us-mta-278-HhjTHkquPImGmib5hDVz6A-1; Mon, 22 Sep 2025 07:32:26 -0400
+X-MC-Unique: HhjTHkquPImGmib5hDVz6A-1
+X-Mimecast-MFC-AGG-ID: HhjTHkquPImGmib5hDVz6A_1758540746
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3ece0cb7c9cso3172333f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 04:32:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758540741; x=1759145541;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RJsPurcUhETQnVe1w4L58iY3pZt2bn1MFBYexwubz8g=;
- b=HjvOKfe3K/rNF2es7gABBPcHggY7//XWmn6dmX8Yg6M8tUfQGXLH1lenJZfBCJOWc0
- z9H36Prcnzs7YC/e9vV0Mn+cKEqTUXD/6KLSp9iT2rjIoJCfcL4mFGaCI2AvmiPXrBYL
- MyUWcp9ng45Y0BlhSylzJpmbWVqBTjiBwLOcsQEyWFdWE9Oy3IEL7Dh+asNVJX3VzBgL
- 6miOOGdHn+aH5G1CtyNA856Wa99YNti6x8ngFBQdHsx8XQlf8ag7wyNfyhE72agjYIUv
- 2POT/9k8Ke2Etfmx2aiGmUaVzrfBmTkoWbl1HQiWxGVpIPFX+iM0oKhnLs7b7Xp2JYKV
- /qsQ==
-X-Gm-Message-State: AOJu0Yxi1bAv2d4CxSwQIU8IJll1Ri1Nt1PrWfGYCJJSPmZCbehTdkai
- UcM9z7VXjue0tIBIWfrHDNTRyTVz7rbFzrhNBxISjH93lvdrpBth64u1Sfr/+X8VsEBGPS+RgNa
- uG+KEOo9N0mN/Bon9dlhVVfh0MRF0KiFVQ4cIxM17JTbDMh541a+Nwwktkt/W8wbNKUypldYAuq
- kF19DybR1dsI3VQfgA+eWzH7vtoaxHJLpu2o54nsei
-X-Gm-Gg: ASbGncsaOowEivovFys3rMIJLWal4uQkaGfNoVDzGtkk8SRcMU9Ws4uxfF26laegWOB
- AOarkb2zGagLPLsSU2GxolreZxeJ+slGqZYyGjVpdS+XkNixNHtA3sJxIOj0lzKhlj3jHHPp2nB
- cZjO+SzU38mCVpifIiozMTNvTLXVVRsSCvmytgEsuyxQ8X73H7eXrZSbgAf6bNciLSA3Ca0JsZl
- IsR6Gbykah95d/QGX6GtZ+3tzfcaJCdxMXQEf4421iegYfNjVtzm/HAZSq2+2i5PtSdOUIXs3to
- P9B7ivSnrKmZ9DOGZmD/Fs6U3gN/s86nroTfwFqmzPMLlaOuBJqb3kLh/kD6egM3aFGBQwdg03W
- IFnKZXyGh6XNHt09KGfELmRT5xHLjx2aOcJb/KaP96+A=
-X-Received: by 2002:a05:600c:c87:b0:45b:7b00:c129 with SMTP id
- 5b1f17b1804b1-467ebda8e61mr108969605e9.35.1758540741273; 
- Mon, 22 Sep 2025 04:32:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG/Ns+BEh7lx1MQeRGg5tBLKCkuv99COrfjyMkdrBtZCk96q9wmtUAMH/R9xyRWMEuNLWO1OA==
-X-Received: by 2002:a05:600c:c87:b0:45b:7b00:c129 with SMTP id
- 5b1f17b1804b1-467ebda8e61mr108969285e9.35.1758540740846; 
- Mon, 22 Sep 2025 04:32:20 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1758540745; x=1759145545;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3ygR+TBxEysSyhAtQHJklwk6mtotPKGvbijBWQXyPuc=;
+ b=Fk4zuiVEf25Tilk0Enu1sX2caUrlQ4qgIw0BBcvrHbkRP8QbTpay6xYRu3XRC3ASRW
+ CSHoeO3UE5gYJ1boyBS0yP4Wb/BKUAvANxy+L80Zl0usfT6bCtrYP7OL2gidbcSDItk0
+ GbaA9oYkcB63O5e1tMGw0MtlLhgzkQtK9KlPsQ0wFdBqieAN7ewbmHFTYfanZVfwA3Sv
+ 83KAwOpq5E1bYYjGDIyMj14yHmYW55M+e0ZxNeoICHIYTdVkc/yrNaSJ5lKq7nzmGNBQ
+ fe9glVp8t0LIR2/1Q9mOxipaeChZlRLLvXoMvEu+0mgPJn/fFCL7DfSodP+EFg+yVxqM
+ PdIw==
+X-Gm-Message-State: AOJu0YylYWSAmw2CWtuf82bLylu4CAovq6EifrtdUuREuuCVSSp9Lu+y
+ uwqhTDhYpEHB4yR1pZcei6sna+F/GpEJ/7YIrn6QnaxGjE8qbH/lP79kjrrRbkEUdWVnkpf76fR
+ 7JZpTrdoh0d0l9ZbmsGoWOK4hD3icvG+gsV/whmTqiWwoBh2H+DRINHOsdEyF3gDJN6sJP1iS69
+ 2PTVqY7eCaS9VOw/hG5HlEy9kwYqWNCYfkxl714alH
+X-Gm-Gg: ASbGncvlXYTwqQE5HrYJPaR43cmIYfkOZEqtT+21AoEoml7H0vSiF1ueU4bAz0K4iwW
+ bSoNYN6Hb3z1HLq+3Z5EQqwECsRot8FcFvmppjibvxOqYI3XzFysYnialf8ty7tgWj6cx3SWgXN
+ B/+99Fl8ioDYsXGHGrHpvzkWvJXiwvM64BpUVifU2yPOVgaCkLNbYS+JEqIKO1p0/HsCsTNTrZI
+ VTUPUSNvx1YwmJKz2JlNn3loSPZ3elO1h8Su980RVp//cDejetqHl8YpgU5/nxRUYrkDA+a9kaq
+ unyd4Jy/Xep5WZhSVxNVZoA/z5cJsIaeonMGY9azEIJJtvL5aBC6tSA1hGIDG5jdjN7E+t6EhYL
+ UVZRV3OqKAIpNpkiyn8Txnk00QhWXHK2qenboG5XFkdU=
+X-Received: by 2002:a05:6000:40cc:b0:3ec:d78d:8fde with SMTP id
+ ffacd0b85a97d-3ee8585e38dmr10304890f8f.44.1758540744662; 
+ Mon, 22 Sep 2025 04:32:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFtkmjwxG41JZQ26ueWqbgWb+OBEnHp+Q1/gCQU2FnuFPYdW1I62mAWq0nX9WY0OdtO7sCc6A==
+X-Received: by 2002:a05:6000:40cc:b0:3ec:d78d:8fde with SMTP id
+ ffacd0b85a97d-3ee8585e38dmr10304849f8f.44.1758540744073; 
+ Mon, 22 Sep 2025 04:32:24 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.47.123])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-464f190721esm196975625e9.10.2025.09.22.04.32.19
+ 5b1f17b1804b1-46138695223sm241623805e9.5.2025.09.22.04.32.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Sep 2025 04:32:20 -0700 (PDT)
+ Mon, 22 Sep 2025 04:32:21 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -77,11 +78,12 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [RFC PATCH 0/4] docs/code-provenance: make AI policy clearer and more
- practical
-Date: Mon, 22 Sep 2025 13:32:15 +0200
-Message-ID: <20250922113219.32122-1-pbonzini@redhat.com>
+Subject: [RFC PATCH 1/4] docs/code-provenance: clarify scope very early
+Date: Mon, 22 Sep 2025 13:32:16 +0200
+Message-ID: <20250922113219.32122-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250922113219.32122-1-pbonzini@redhat.com>
+References: <20250922113219.32122-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -109,38 +111,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These patches contain three changes to QEMU's code provenance policy
-with respect to AI-generated content.  I am sorting them from least to
-most controversial.
+The AI policy in QEMU is not about content generators, it is about
+generated content.  Other uses are explicitly not covered.  Rename the
+policy and mention its scope only as a matter of convenience to the
+reader, in the TL;DR section.
 
-First, I am emphasizing the intended scope: the policy is not about
-content generators, it is about generated content (patch 1).
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ docs/devel/code-provenance.rst | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-Second, I am adding some procedural requirements and liability boundaries
-to the exception process (patches 2-3).  These changes provide a structure
-for the process and clarify that the process is not an expansion of the
-maintainers' responsibilities.
-
-On top of these changes, however, I am also expanding the exception
-process so that it is actually feasible to request and obtain an
-exception. Requesting "clarity of the license and copyright status
-for the tool's output" is almost asking for the impossible; a problem
-that is also shared by other AI policies such as the Linux Foundation's
-(https://www.linuxfoundation.org/legal/generative-ai). Therefore, add a
-second case for an exception, limited but practical, which is "limited
-or non-existing creative content" (patch 4).
-
-Paolo
-
-Paolo Bonzini (4):
-  docs/code-provenance: clarify scope very early
-  docs/code-provenance: make the exception process more prominent
-  docs/code-provenance: clarify the scope of AI exceptions
-  docs/code-provenance: make the exception process feasible
-
- docs/devel/code-provenance.rst | 46 +++++++++++++++++++++++-----------
- 1 file changed, 31 insertions(+), 15 deletions(-)
-
+diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.rst
+index b5aae2e2532..dba99a26f64 100644
+--- a/docs/devel/code-provenance.rst
++++ b/docs/devel/code-provenance.rst
+@@ -285,8 +285,8 @@ Such tools are acceptable to use, provided there is clearly defined copyright
+ and licensing for their output. Note in particular the caveats applying to AI
+ content generators below.
+ 
+-Use of AI content generators
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++Use of AI-generated content
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ TL;DR:
+ 
+@@ -294,6 +294,10 @@ TL;DR:
+   believed to include or derive from AI generated content. This includes
+   ChatGPT, Claude, Copilot, Llama and similar tools.**
+ 
++  **This policy does not apply to other uses of AI, such as researching APIs
++  or algorithms, static analysis, or debugging, provided their output is not
++  included in contributions.**
++
+ The increasing prevalence of AI-assisted software development results in a
+ number of difficult legal questions and risks for software projects, including
+ QEMU.  Of particular concern is content generated by `Large Language Models
+@@ -322,9 +326,6 @@ The QEMU project thus requires that contributors refrain from using AI content
+ generators on patches intended to be submitted to the project, and will
+ decline any contribution if use of AI is either known or suspected.
+ 
+-This policy does not apply to other uses of AI, such as researching APIs or
+-algorithms, static analysis, or debugging, provided their output is not to be
+-included in contributions.
+ 
+ Examples of tools impacted by this policy includes GitHub's CoPilot, OpenAI's
+ ChatGPT, Anthropic's Claude, and Meta's Code Llama, and code/content
 -- 
 2.51.0
 
