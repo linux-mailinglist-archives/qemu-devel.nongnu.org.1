@@ -2,76 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15306B8FC63
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 11:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A212DB8FC7C
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 11:39:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0cwi-0007TK-Qc; Mon, 22 Sep 2025 05:34:56 -0400
+	id 1v0czR-0001x1-MV; Mon, 22 Sep 2025 05:37:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v0cwg-0007O7-6e
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 05:34:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v0cwV-0008Sm-MU
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 05:34:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758533679;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=uRLxGlxDlDSeMzcitLammO8xKvDXJ8vNPFvwt/Lh1+8=;
- b=Z3oCY3UQartK2QFIo9pYv3asjrKm2JhMQa2nRuGwFWnYc6d2jHK4qEdaxEl3nmdOzWugql
- MdMeZ6WgnxPPdK5iTfpqGHum9EMyWEXWJLvMjkTY6v0sc38isk3Nlql33JIfZ9fGhf7Gau
- +PcgVnih9J8ZTniJHk4sm+7Ocrimqqs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-640-9qRwSZV1O_GCkxakduxNbg-1; Mon,
- 22 Sep 2025 05:34:35 -0400
-X-MC-Unique: 9qRwSZV1O_GCkxakduxNbg-1
-X-Mimecast-MFC-AGG-ID: 9qRwSZV1O_GCkxakduxNbg_1758533673
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C3073180034F; Mon, 22 Sep 2025 09:34:33 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.69])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3A5421800577; Mon, 22 Sep 2025 09:34:29 +0000 (UTC)
-Date: Mon, 22 Sep 2025 10:34:25 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Gustavo Romero <gustavo.romero@linaro.org>
-Cc: qemu-devel@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com,
- qemu-arm@nongnu.org, manos.pitsidianakis@linaro.org,
- peter.maydell@linaro.org
-Subject: Re: [PATCH v3 4/4] tests/functional: Adapt arches to
- reverse_debugging w/o Avocado
-Message-ID: <aNEYIeDsszbgfCQB@redhat.com>
-References: <20250922054351.14289-1-gustavo.romero@linaro.org>
- <20250922054351.14289-5-gustavo.romero@linaro.org>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v0cz2-0001qR-GQ
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 05:37:20 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1v0cyz-0000cG-4K
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 05:37:20 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3ecdf2b1751so2388984f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 02:37:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758533834; x=1759138634; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=DY0XmkUw/px6He2/QViLhoiKimIF9WS2BOzUGcig47M=;
+ b=PRJhJXsQuRNVUX4enWK7NFbkSDSg0iemfSk5i549omoA0IaoiJNnV0MVuPyfBse8Pg
+ Tov9TRIezI/UsJvSCq1S5ujaiIUfjr58Bzq3AitgEFizGBZU4NHnKqoajYvz36DMGITu
+ 8mHCiLFZC1AYpxUEy1tMVTWyvw2Za0houDPMRac7MenoHmiAIhQReXpQwuiw1sGghjns
+ 6bthUT/WIUU16q4FwLvrhCOdRBBxPB8MJftFMUouQQxkJkRuv6QkKVNlPH0saItxZA4T
+ ANarUY00AuZ9gRRl8gtxoS61WX3PKbvR2mNsnUr21+NNozXeR+7KxJ0xqmXo0HBaC4P0
+ u6Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758533834; x=1759138634;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=DY0XmkUw/px6He2/QViLhoiKimIF9WS2BOzUGcig47M=;
+ b=effw5buWzMZ9ifutRDGc0GBvH4Ls/B+XdGI6b3jFQ7fMrGsSsLA7RJJBFYBGRai4xI
+ nJDCzdCrZMgcSk0MFejDN6wmgZ19TvM6l/5PWxyJmLreAjLumU9PElo3457c7qymhAaq
+ 6ZcJORhEerxGLbIm0pymuPFAa6Wxi2rTtQAdiRI5SxpPwkaGStZ5fA1RKSrO63U79Hoe
+ f3IEhU4w5RkVwraX6fGeBNtLjtlGeb0y40UY5CKlIpQuGzP5G1gm2x3OF09jXJFpQq61
+ Djccz9Tne1qI0zDNQmfdaZoYf2bVveRnV9EvVwHmqtROw52r2MB6beecG0Bhc6OIyWpg
+ 6ZuQ==
+X-Gm-Message-State: AOJu0Yx/Fp6cJVshGK+VkGjrBZWgTzgV3OI6BqxXdc2705rP8CQ+fMyW
+ rfvw0b2MGaTlrSVo21u+XoZG2LcH5v+BaJ9KGwu3iZWClQpm6eZZb+XgT01citgb+QE=
+X-Gm-Gg: ASbGncugOpE+gUoo/HIh7JilyLZc8cWQYDNZVgPDr7Ai4sX5rTBU5LyEEO6B4OTrbG2
+ bjdNKgW0RZrW1j5Z3xVFGkT5VGQoYxuGqetUKIGCjtffTlr28VMNZJY1I7Sn0bvh7XndvYN14bv
+ rF16CwLvcSKOi90ykM6+0R6jwUKnrpCblbTOd9eExhHggryzDl+14Rrpwp3zVNj0hFd9EjDks+D
+ slInSp3Am/Pca0f376ZCAd3f4buxy9E9TdYVtyDvhptDV1/yRuBnlma4yPEP+9+C+YxCmS0ZlYP
+ IL95odRkANEm3Z2eip071I8TjHzMnqDOrHj9TklxSr+XMLMfiLTX+LanGjo5mW7JhQprYLYoG8E
+ RUgu6sL1GHTvVQuFIZZZO4b4LoPkT7I+PRQ==
+X-Google-Smtp-Source: AGHT+IHWrI4/43aheYywm2/WnfKmVmn8vZizXgUs4ZCZPfXuPbJzRHgAuqENnwGr/lbSzIRfsf+B8Q==
+X-Received: by 2002:a05:6000:440a:b0:3f9:e348:f5c with SMTP id
+ ffacd0b85a97d-3f9e34815b0mr2918240f8f.60.1758533834086; 
+ Mon, 22 Sep 2025 02:37:14 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46d7a566a27sm27122065e9.20.2025.09.22.02.37.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 Sep 2025 02:37:12 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 85B005F7B1;
+ Mon, 22 Sep 2025 10:37:11 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, qemu-riscv@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>, qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH 00/25] September maintainer updates (docs, plugins,
+ semihosting) pre-PR
+Date: Mon, 22 Sep 2025 10:36:45 +0100
+Message-ID: <20250922093711.2768983-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250922054351.14289-5-gustavo.romero@linaro.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,92 +104,101 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 22, 2025 at 05:43:51AM +0000, Gustavo Romero wrote:
-> reverse_debugging no longer depends on Avocado, so remove the import
-> checks for Avocado, the per-arch endianness tweaks, and the per-arch
-> register settings. All of these are now handled in the ReverseDebugging
-> class.
-> 
-> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-> ---
->  .../functional/aarch64/test_reverse_debug.py  | 13 +++++--------
->  tests/functional/ppc64/test_reverse_debug.py  | 15 +++++----------
->  tests/functional/x86_64/test_reverse_debug.py | 19 ++++++-------------
->  3 files changed, 16 insertions(+), 31 deletions(-)
-> 
-> diff --git a/tests/functional/aarch64/test_reverse_debug.py b/tests/functional/aarch64/test_reverse_debug.py
-> index 8bc91ccfde..7f816025a9 100755
-> --- a/tests/functional/aarch64/test_reverse_debug.py
-> +++ b/tests/functional/aarch64/test_reverse_debug.py
-> @@ -1,26 +1,23 @@
-> -#!/usr/bin/env python3
-> -#
->  # SPDX-License-Identifier: GPL-2.0-or-later
->  #
-> -# Reverse debugging test
-> +# Reverse debugging test for aarch64
->  #
->  # Copyright (c) 2020 ISP RAS
-> +# Copyright (c) 2025 Linaro Limited
->  #
->  # Author:
->  #  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-> +#  Gustavo Romero <gustavo.romero@linaro.org> (Run without Avocado)
->  #
->  # This work is licensed under the terms of the GNU GPL, version 2 or
->  # later.  See the COPYING file in the top-level directory.
->  
-> -from qemu_test import Asset, skipIfMissingImports, skipFlakyTest
-> +from qemu_test import Asset, skipFlakyTest
->  from reverse_debugging import ReverseDebugging
->  
->  
-> -@skipIfMissingImports('avocado.utils')
->  class ReverseDebugging_AArch64(ReverseDebugging):
->  
-> -    REG_PC = 32
-> -
->      ASSET_KERNEL = Asset(
->          ('https://archives.fedoraproject.org/pub/archive/fedora/linux/'
->           'releases/29/Everything/aarch64/os/images/pxeboot/vmlinuz'),
-> @@ -35,4 +32,4 @@ def test_aarch64_virt(self):
->  
->  
->  if __name__ == '__main__':
-> -    ReverseDebugging.main()
-> +    ReverseDebugging_AArch64.main()
+These are all bits and pieces that have been mostly reviewed when
+posted with a few minor additional patches. I plan to send the PR by
+the end of the week.
 
-This shouldn't be needed AFAICT ?  (Same for other files)
+Plugins
 
+  - minor fix checking return values from Peter
+  - Pierrick's nifty uftrace plugin
 
+Semihosting
 
->      @skipFlakyTest("https://gitlab.com/qemu-project/qemu/-/issues/2922")
->      def test_x86_64_pc(self):
->          self.set_machine('pc')
-> -        # start with BIOS only
-> +        # Start with BIOS only
+  - build the sub-system once (single binary work)
 
-Spurious comment change
+Misc
 
->          self.reverse_debugging()
->  
->  
->  if __name__ == '__main__':
-> -    ReverseDebugging.main()
-> +    ReverseDebugging_X86_64.main()
-> -- 
-> 2.34.1
-> 
+  - typo fix
+  - tweak to checkpatch license checking
+  - *new* gitlab-failure-analysis script
 
-With regards,
-Daniel
+The following still need review:
+
+  scripts/ci: add gitlab-failure-analysis script
+  docs/devel: fix typo in code-provenance.rst
+
+Alex.
+
+Alex Bennée (2):
+  docs/devel: fix typo in code-provenance.rst
+  scripts/ci: add gitlab-failure-analysis script
+
+Nabih Estefan (1):
+  checkpatch: Ignore removed lines in license check
+
+Peter Maydell (1):
+  contrib/plugins/execlog: Explicitly check for
+    qemu_plugin_read_register() failure
+
+Pierrick Bouvier (21):
+  semihosting/syscalls: compile once in system and per target for user
+    mode
+  semihosting/syscalls: replace uint64_t with vaddr where appropriate
+  semihosting/guestfd: compile once for system/user
+  semihosting/arm-compat-semi: change common_semi_sys_exit_extended
+  target/riscv/common-semi-target: remove sizeof(target_ulong)
+  target/{arm, riscv}/common-semi-target: eradicate target_ulong
+  include/semihosting/common-semi: extract common_semi API
+  semihosting/arm-compat-semi: eradicate sizeof(target_ulong)
+  semihosting/arm-compat-semi: replace target_ulong with vaddr
+  semihosting/arm-compat-semi: eradicate target_long
+  semihosting/arm-compat-semi: remove dependency on cpu.h
+  semihosting/arm-compat-semi: compile once in system and per target for
+    user mode
+  contrib/plugins/uftrace: skeleton file
+  contrib/plugins/uftrace: define cpu operations and implement aarch64
+  contrib/plugins/uftrace: track callstack
+  contrib/plugins/uftrace: implement tracing
+  contrib/plugins/uftrace: implement privilege level tracing
+  contrib/plugins/uftrace: generate additional files for uftrace
+  contrib/plugins/uftrace: implement x64 support
+  contrib/plugins/uftrace_symbols.py
+  contrib/plugins/uftrace: add documentation
+
+ docs/about/emulation.rst                      | 199 ++++
+ docs/devel/code-provenance.rst                |   2 +-
+ include/semihosting/common-semi.h             |   6 +
+ include/semihosting/guestfd.h                 |   7 -
+ include/semihosting/semihost.h                |   2 +
+ include/semihosting/syscalls.h                |  30 +-
+ contrib/plugins/execlog.c                     |   1 +
+ contrib/plugins/uftrace.c                     | 878 ++++++++++++++++++
+ semihosting/arm-compat-semi-stub.c            |  19 +
+ semihosting/arm-compat-semi.c                 |  63 +-
+ semihosting/guestfd.c                         |  26 +-
+ semihosting/syscalls.c                        | 109 ++-
+ ...mon-semi-target.h => common-semi-target.c} |  22 +-
+ ...mon-semi-target.h => common-semi-target.c} |  23 +-
+ contrib/plugins/meson.build                   |   3 +-
+ contrib/plugins/uftrace_symbols.py            | 152 +++
+ scripts/checkpatch.pl                         |   3 +-
+ scripts/ci/gitlab-failure-analysis            | 117 +++
+ semihosting/meson.build                       |  18 +-
+ target/arm/meson.build                        |   4 +
+ target/riscv/meson.build                      |   4 +
+ 21 files changed, 1539 insertions(+), 149 deletions(-)
+ create mode 100644 contrib/plugins/uftrace.c
+ create mode 100644 semihosting/arm-compat-semi-stub.c
+ rename target/arm/{common-semi-target.h => common-semi-target.c} (59%)
+ rename target/riscv/{common-semi-target.h => common-semi-target.c} (53%)
+ create mode 100755 contrib/plugins/uftrace_symbols.py
+ create mode 100755 scripts/ci/gitlab-failure-analysis
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.47.3
 
 
