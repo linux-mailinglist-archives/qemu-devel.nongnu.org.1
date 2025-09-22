@@ -2,71 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8B7B9162F
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 15:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D4F9B91635
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 15:26:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0gYe-0006RX-Vn; Mon, 22 Sep 2025 09:26:21 -0400
+	id 1v0gYx-0006YO-HH; Mon, 22 Sep 2025 09:26:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1v0gYd-0006QK-AC
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:26:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1v0gYX-0005xI-Mz
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:26:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758547570;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=yes9Jnc3LJqUJbfXApPLRKCAd68306n62YCHewm4POc=;
- b=VyREYt9sv6j/IDRyvX97cCGZWKK3H9QB8fc46bpx7EeZIGXQeHa2HJ8DmljhpiD5nmgDCs
- KDQT0PMJ78la7nMl+hb/70iRYhC3Q0hVsXIDZijrxSjC/K+gk/7EoJ5CBJXNVBtOwJSwjJ
- vGaL/ydhPmwNERS6cnI9Ffep30dNt1k=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-rA8jh1lHMeuJiEE8AEte7g-1; Mon,
- 22 Sep 2025 09:26:05 -0400
-X-MC-Unique: rA8jh1lHMeuJiEE8AEte7g-1
-X-Mimecast-MFC-AGG-ID: rA8jh1lHMeuJiEE8AEte7g_1758547564
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A8B46180029D
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 13:26:04 +0000 (UTC)
-Received: from dell-r430-03.lab.eng.brq2.redhat.com
- (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6A1D31800447; Mon, 22 Sep 2025 13:26:03 +0000 (UTC)
-From: Igor Mammedov <imammedo@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com,
-	imammedo@redhat.com
-Subject: [PATCH] x86: ich9: fix default value of 'No Reboot' bit in GCS
-Date: Mon, 22 Sep 2025 15:26:00 +0200
-Message-ID: <20250922132600.562193-1-imammedo@redhat.com>
+ (Exim 4.90_1) (envelope-from <c.speich@avm.de>) id 1v0gYs-0006Xx-1w
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:26:34 -0400
+Received: from mail.avm.de ([2001:bf0:244:244::94])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <c.speich@avm.de>) id 1v0gYp-00061T-1M
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:26:33 -0400
+Received: from [172.16.0.1] (helo=mail.avm.de)
+ by mail.avm.de with ESMTP (eXpurgate 4.53.4)
+ (envelope-from <c.speich@avm.de>)
+ id 68d14e80-f941-7f0000032729-7f000001e5b8-1
+ for <multiple-recipients>; Mon, 22 Sep 2025 15:26:24 +0200
+Received: from mail-notes.avm.de (mail-notes.avm.de [172.16.0.1])
+ by mail.avm.de (Postfix) with ESMTP;
+ Mon, 22 Sep 2025 15:26:24 +0200 (CEST)
+Received: from l-cspeich ([172.17.89.139])
+ by mail-notes.avm.de (HCL Domino Release 14.0FP4)
+ with ESMTP id 2025092215262457-15975 ;
+ Mon, 22 Sep 2025 15:26:24 +0200 
+Date: Mon, 22 Sep 2025 15:26:23 +0200
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, Stefano Garzarella <sgarzare@redhat.com>, Alex
+ =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: Re: [PATCH] virtio: vhost-user-device: Make user creatable again
+Message-ID: <kmdwf2xbgtvqiijw7mjd4ocqixvznaeszbr5zzfvuhaqrmpqn3@wdt4fhnocmxv>
+References: <20250919-vhost-user-device-creatable-v1-1-87eefeea7f68@avm.de>
+ <20250919160526-mutt-send-email-mst@kernel.org>
+ <aNE0Bp0hsA31sLCJ@redhat.com>
+ <20250922081403-mutt-send-email-mst@kernel.org>
+ <aNFF8wsycqqOTc-x@redhat.com>
+ <20250922090748-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20250922090748-mutt-send-email-mst@kernel.org>
+X-MIMETrack: Itemize by SMTP Server on ANIS1/AVM(Release 14.0FP4|March 10,
+ 2025) at 22.09.2025 15:26:24,
+ Serialize by Router on ANIS1/AVM(Release 14.0FP4|March 10, 2025) at
+ 22.09.2025 15:26:24, Serialize complete at 22.09.2025 15:26:24
+X-TNEFEvaluated: 1
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+X-purgate-ID: 149429::1758547584-11B9B482-5901DFEB/0/0
+X-purgate-type: clean
+X-purgate-size: 3857
+X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
+X-purgate: This mail is considered clean (visit https://www.eleven.de for
+ further information)
+X-purgate: clean
+Received-SPF: pass client-ip=2001:bf0:244:244::94;
+ envelope-from=c.speich@avm.de; helo=mail.avm.de
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,73 +77,99 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Christian Speich <c.speich@avm.de>
+From:  Christian Speich via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[2] initialized 'No Reboot' bit to 1 by default. And due to quirk it happened
-to work with linux iTCO_wdt driver (which clears it on module load).
+On Mon, Sep 22, 2025 at 09:08:47AM -0400, Michael S. Tsirkin wrote:
+> On Mon, Sep 22, 2025 at 01:49:55PM +0100, Daniel P. Berrangé wrote:
+> > On Mon, Sep 22, 2025 at 08:15:20AM -0400, Michael S. Tsirkin wrote:
+> > > On Mon, Sep 22, 2025 at 12:33:26PM +0100, Daniel P. Berrangé wrote:
+> > > > On Fri, Sep 19, 2025 at 04:07:19PM -0400, Michael S. Tsirkin wrote:
+> > > > > On Fri, Sep 19, 2025 at 04:30:53PM +0200, Christian Speich wrote:
+> > > > > > This removes the change introduced in [1] that prevents the use of
+> > > > > > vhost-user-device and vhost-user-device-pci on unpatched QEMU builds.
+> > > > > > 
+> > > > > > [1]: 6275989647efb708f126eb4f880e593792301ed4
+> > > > > > 
+> > > > > > Signed-off-by: Christian Speich <c.speich@avm.de>
+> > > > > > ---
+> > > > > > vhost-user-device and vhost-user-device-pci started out as user
+> > > > > > creatable devices. This was changed in [1] when the vhost-user-base was
+> > > > > > introduced.
+> > > > > > 
+> > > > > > The reason given is to prevent user confusion. Searching qemu-discuss or
+> > > > > > google for "vhost-user-device" I've seen no confused users.
+> > > > > > 
+> > > > > > Our use case is to provide wifi emulation using "vhost-user-device-pci",
+> > > > > > which currently is working fine with the QEMU 9.0.2 present in Ubuntu
+> > > > > > 24.04. With newer QEMU versions we now need to patch, distribute and
+> > > > > > maintain our own QEMU packages, which is non-trivial.
+> > > > > > 
+> > > > > > So I want to propose lifting this restriction to make this feature
+> > > > > > usable without a custom QEMU.
+> > > > > > 
+> > > > > > [1]: 6275989647efb708f126eb4f880e593792301ed4
+> > > > > 
+> > > > > The confusion is after someone reuses the ID you are claiming without
+> > > > > telling anyone and then linux guests will start binding that driver to
+> > > > > your device.
+> > > > > 
+> > > > > 
+> > > > > We want people doing this kind of thing to *at a minimum*
+> > > > > go ahead and register a device id with the virtio TC,
+> > > > > but really to write and publish a spec.
+> > > > 
+> > > > Wanting people to register a device ID is a social problem and
+> > > > we're trying to apply a technical hammer to it, which is rarely
+> > > > an productive approach.
+> > > > 
+> > > > If we want to demonstrate that vhost-user-device is "risky", then
+> > > > how about we rename it to have an 'x-' prefix and thus disclaim
+> > > > any support for it, but none the less allow its use. Document it
+> > > > as an experimental device, and if it breaks, users get to keep
+> > > > both pieces.
+> > > 
+> > > Maybe with the insecure tag you are working on?
+> > 
+> > Sure.
+> > 
+> > > And disable in the default config?
+> > 
+> > Disabling in default config would retain the very problem that Christian
+> > is trying to solve - that no distro would have the functionality available
+> > for users.
+> 
+> I think his problem is that he has to patch qemu.
 
-However spec [1] states:
-"
-R/W. This bit is set when the â€œNo Rebootâ€ strap (SPKR pin on
-ICH9) is sampled high on PWROK.
-"
+Yes I'm trying to avoid that. Patching qemu also involes providing updates
+(and security patches!) for it. This is a very high burden to turn this
+simple flag on.
 
-So it should be set only when  '-global ICH9-LPC.noreboot=true' and cleared
-when it's false (which should be default).
+> 
+> As described, this is a developer option not an end user one.
 
-Fix it to behave according to spec and set 'No Reboot' bit only when
-'-global ICH9-LPC.noreboot=true'.
+I don't really get the distintion between developer and end user here.
 
-1)
-Intel I/O Controller Hub 9 (ICH9) Family Datasheet (rev: 004)
-2)
-Fixes: 920557971b6 (ich9: add TCO interface emulation)
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
----
- include/hw/southbridge/ich9.h | 2 +-
- hw/isa/lpc_ich9.c             | 7 ++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+As a developer I'm an end user too, I'm concerned with the linux kernel
+and the additional host tooling for mac80211_hwsim support but QEMU
+I'm just using as an user.
 
-diff --git a/include/hw/southbridge/ich9.h b/include/hw/southbridge/ich9.h
-index 1e231e89c9..2c35dd0484 100644
---- a/include/hw/southbridge/ich9.h
-+++ b/include/hw/southbridge/ich9.h
-@@ -95,7 +95,7 @@ struct ICH9LPCState {
- #define ICH9_CC_OIC                             0x31FF
- #define ICH9_CC_OIC_AEN                         0x1
- #define ICH9_CC_GCS                             0x3410
--#define ICH9_CC_GCS_DEFAULT                     0x00000020
-+#define ICH9_CC_GCS_DEFAULT                     0x00000000
- #define ICH9_CC_GCS_NO_REBOOT                   (1 << 5)
- 
- /* D28:F[0-5] */
-diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
-index 304dffac32..c9cb8f7779 100644
---- a/hw/isa/lpc_ich9.c
-+++ b/hw/isa/lpc_ich9.c
-@@ -132,6 +132,11 @@ static void ich9_cc_init(ICH9LPCState *lpc)
- static void ich9_cc_reset(ICH9LPCState *lpc)
- {
-     uint8_t *c = lpc->chip_config;
-+    uint32_t gcs = ICH9_CC_GCS_DEFAULT;
-+
-+    if (lpc->pin_strap.spkr_hi) {
-+        gcs |= ICH9_CC_GCS_NO_REBOOT;
-+    }
- 
-     memset(lpc->chip_config, 0, sizeof(lpc->chip_config));
- 
-@@ -142,7 +147,7 @@ static void ich9_cc_reset(ICH9LPCState *lpc)
-     pci_set_long(c + ICH9_CC_D27IR, ICH9_CC_DIR_DEFAULT);
-     pci_set_long(c + ICH9_CC_D26IR, ICH9_CC_DIR_DEFAULT);
-     pci_set_long(c + ICH9_CC_D25IR, ICH9_CC_DIR_DEFAULT);
--    pci_set_long(c + ICH9_CC_GCS, ICH9_CC_GCS_DEFAULT);
-+    pci_set_long(c + ICH9_CC_GCS, gcs);
- 
-     ich9_cc_update(lpc);
- }
--- 
-2.47.3
+Greetings,
+Christian
 
+> 
+> 
+> I know Red Hat will disable it anyway - we support what we ship.
+> 
+> 
+> > With regards,
+> > Daniel
+> > -- 
+> > |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+> > |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+> > |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> 
+> 
 
