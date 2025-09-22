@@ -2,90 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EC4B91BA5
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 16:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD78B91955
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 16:08:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0hZK-00030s-Te; Mon, 22 Sep 2025 10:31:06 -0400
+	id 1v0hCg-0001cv-Uh; Mon, 22 Sep 2025 10:07:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alessandro.ratti@gmail.com>)
- id 1v0gk0-0004NV-FB
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:38:04 -0400
-Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v0hCf-0001cm-5n
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 10:07:41 -0400
+Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alessandro.ratti@gmail.com>)
- id 1v0gjy-000847-45
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:38:04 -0400
-Received: by mail-yw1-x112b.google.com with SMTP id
- 00721157ae682-71d6083cc69so44036577b3.2
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 06:38:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1v0hCa-00045y-Tz
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 10:07:40 -0400
+Received: by mail-yw1-x112f.google.com with SMTP id
+ 00721157ae682-72ce9790aceso29901587b3.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 07:07:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1758548279; x=1759153079; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Osjmw+mo0WRJAWhqe4sRjIUj/l0VUlkt9NMApqW7j8w=;
- b=CeXYtliQErdA8sLGh5wd/RY7Z9nsvR19ZGUkT8MAf+wWL7DE0eLEsIb4gM+nEiRKX3
- EJa7wp06QVxn0C/96CCu2GDY2aWfzr/VdvYwGpJMKpF8CV1JIy+NwVMNOy3q5GleRfJE
- 75xx7+S7oGwpmmbMNqcfvnyWKf6a+2TPF/6x+p9v1+lWdLbCzHfz1TLTbhrrhTFVrd2P
- P0S+1Y0n91ByrcEP71IUiBXRrJZVdLmUUZL84jrRP/MbbBLlcFDhbS6C+Vj1Xnr947Xa
- /zn48QFNbrq2Kf32lEU2TCuDVe06eoT/opxsmDueJeWC+LDUngCtf32uPg5vmXNrEwJB
- ucRQ==
+ d=linaro.org; s=google; t=1758550052; x=1759154852; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Bya9AGe1MKcELk12G4taz6HbfdLxg/xP+VvPFK5KaPE=;
+ b=hp8n4U1usvTdLF4a1zsaleNuHrK8o7Y9Hu+7vip2sjil0QtlgMFNat+2Lb0bRh0/Fs
+ hxN5RjMP5k+vK6yFOCNKDuCUbI4frMvbay7sL03WXdprTvRDdw4YcrusqjX7AqdRTBhn
+ /+gnImH7XNigrVCTCrD1/kzXZt8o/WldMzTuggxl4WBdDFVoAZo2G9d7k0mb1AM5womm
+ HYYaQ0MFRUsi+h0kpzBpcCf8lIzVrdtRiO2Qzv1OF+rrB4B37O/Ik4a9g8yjvkTu1/BR
+ Tx411jBiHb7TXkLfxXTE9AQ5DKuZvXplvoIFCGNvcT5cye/2it7QA5DBmmkjN+eSIRM2
+ r4TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758548279; x=1759153079;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Osjmw+mo0WRJAWhqe4sRjIUj/l0VUlkt9NMApqW7j8w=;
- b=saQCCr/jqb/4ZgBx//3GS/pz7Apu9wuUFgevwVx//7pEUrTBZq9xeQun/X+ktWO0la
- 4xX1TgLWPeolvAkNs2+KkalOen3zU5pMXUh/lt9yh6wAnQ4dwxVvsI04Fo01dZ75r+vf
- kMDVpDXrbAKfxVj4eaCNx5wgfvXOowVNxxBedFXICiF92velidiBYMkl2VQcBlkF4h9+
- tigTi7M/41+2vzbXE1gSDEkdymYDRjj6f7MBt93BZqCqy9pV0+DjbYWPgFFkIkTdsVmX
- 5Q/qCr7UyI/t6YDmx7TNoUxeslNqwk0ajaaPN6W6hv1uvB0z9JjENnGZcVjVVaczdYGR
- sXWg==
-X-Gm-Message-State: AOJu0YwLOofVjjk3AVUz6pHanaZkwfIuIW/b3tEjnCvVVw8rCb/P0MDQ
- Qifxn5OHWZAKQdtN0F/y7gv2eepHbK26brPSja3YMqEygwJ7i+/VtCSWmy3LmEqqoKTbrCY0ymN
- 5TOTR+KjclAi7DnBiBKBX0JnkbMh1khR5OxNI
-X-Gm-Gg: ASbGncsOm++NVEb9tDkK5wcPTGEgDQemsHmSGVLvNfnxiNjIxc7p+Rj5/zmdzrVFEbl
- gvqOeJgfxNljidd5+72R+0PR4/2vLzGc5+/7UPDlWGevGPsqTbS/ms0V6mVs0pROWAyJn9I5Q8V
- Ik+82cNXgkabL/XEbBqm2t7too8+UbSzFsmH3HBUwl/LbZ2+6G7dTzbsv2PrZv6W/SXBoyApfPO
- K18CUGfbkPKi1kG
-X-Google-Smtp-Source: AGHT+IH+Z5GEHFgKrFt3Q7AB3kZYA+c6Y9pq5hPXdADUDmXMjmE+vCpBmTBU6QP8Rxv9LQcjurCHgzKQPGHMtg64H+w=
-X-Received: by 2002:a05:690c:4882:b0:73a:27e7:e736 with SMTP id
- 00721157ae682-73d3fc9d810mr107963557b3.50.1758548278865; Mon, 22 Sep 2025
- 06:37:58 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1758550052; x=1759154852;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Bya9AGe1MKcELk12G4taz6HbfdLxg/xP+VvPFK5KaPE=;
+ b=Dye2SxoLEbCOYL1JPifQGpofXn89DDiaAcXEKvVD4VcP15lLz6V1hR+23Hfmvo59IQ
+ Q3fnmFmwg25PuElhAbkx1HA5m4AwazYDKut3GB1urfJ63YEMvnija6IVZ/CvdlWSl155
+ ZM/o/i6YET9MhctTLA6kWdyEXcnKN9/TnNI4zFDcG9uuTnMBOsC26Cxmx8C38hdddacl
+ O5aoTeQJUqvJvMg/Ao5Mf+imXE2KqB5WS956630FfcH/n/fukZcAw0+OTMkHAHaTdIic
+ gHzVzwWoMeyFLNsyLcsatZc/eogSRpKFfSUagJzt6kDxtMZRVnxNGhj+TNyhOyUCmQp9
+ hN2Q==
+X-Gm-Message-State: AOJu0Yw3wkZUKTUifJdeISjwISr9xjzoobdmalpwjOfeWtgQ44BvyhBX
+ amsSSl9qNUqt+GHjTCI/6nX2/lDXeAQ9pzxx8MjiadmwGCXJmikjF0Kq3K7aGD7dLyZ6VxjgjIM
+ zF1pUizRdDU0Ju9eZV8xPfUiVk1hgnWqVELRQ+jiY7w==
+X-Gm-Gg: ASbGncuqxnKGY3hlsl7gujp4uEmbxHBI6r794CkJv6jsFHCSIyspZFq7DdNULUAB+QH
+ bPmVKrL0Y1BZ7I5NF5JP6/tuXjtum+aax7vmGCirvDhovS51aEuZpl7x8HTTD/Avi+w4XlFAYOo
+ U0Nqgt7pAGuBvEZa7bj4lz8VjlkhPIoQ9gAM2NyVV5NcyjRvKQX3UW9PfFjr7IhYRpNspIkWWWB
+ B1kR1cu
+X-Google-Smtp-Source: AGHT+IEEQ+k9/2eN0BE0Yp7WNWSPyMDrnE3kx6sgjiX29cAOQlP8et7rbpwyv3BqJWXTTo+vErYol+HZ7NdjXw2v0i8=
+X-Received: by 2002:a05:690c:e17:b0:728:a5d1:e340 with SMTP id
+ 00721157ae682-73d1efe65d4mr117627027b3.2.1758550052388; Mon, 22 Sep 2025
+ 07:07:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <87a52wqa03.fsf@draig.linaro.org>
- <20250915162643.44716-1-alessandro@0x65c.net>
- <20250915162643.44716-2-alessandro@0x65c.net> <87h5wulqm2.fsf@pond.sub.org>
- <aNEpVhkZ2r5e2Z9X@redhat.com> <87wm5qoig7.fsf@draig.linaro.org>
- <877bxqk6vp.fsf@pond.sub.org>
-In-Reply-To: <877bxqk6vp.fsf@pond.sub.org>
-From: Alessandro Ratti <alessandro.ratti@gmail.com>
-Date: Mon, 22 Sep 2025 15:37:47 +0200
-X-Gm-Features: AS18NWB083YEHMdwZW_wFb4-92bMlu0ZXzPYaSvgrxJoNEhPpiHeJe6gSwU290Q
-Message-ID: <CAKiXHKe07RKxBUCqfTFYkaGRj6T-avnS4C5=WcUqevD9eBQ4_g@mail.gmail.com>
-Subject: Re: [PATCH v2] virtio: Add function name to error messages
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Alessandro Ratti <alessandro@0x65c.net>, philmd@linaro.org, 
- Markus Armbruster <armbru@redhat.com>
+References: <20250913080943.11710-1-pbonzini@redhat.com>
+ <20250913080943.11710-22-pbonzini@redhat.com>
+In-Reply-To: <20250913080943.11710-22-pbonzini@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 22 Sep 2025 15:07:21 +0100
+X-Gm-Features: AS18NWAIcMLeGxS63iwhSXrZS1tSH_-R69YYQ_o_UJgA81eF28qpjG8U7Qd-QVg
+Message-ID: <CAFEAcA9QA5WZnk0R2ZYg4rraX_+1LdRjfo7Ybb6MQkrBuaRt3A@mail.gmail.com>
+Subject: Re: [PULL 21/61] configure: bump Meson to 1.9.0 for use with Rust
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
- envelope-from=alessandro.ratti@gmail.com; helo=mail-yw1-x112b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 22 Sep 2025 10:31:04 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,111 +91,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 22 Sept 2025 at 14:29, Markus Armbruster <armbru@redhat.com> wrote:
+On Sat, 13 Sept 2025 at 09:15, Paolo Bonzini <pbonzini@redhat.com> wrote:
 >
-> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+> Meson 1.9.0 provides mixed linking of Rust and C objects.  As a side effect,
+> this also allows adding dependencies with "sources: ..." files to Rust crates
+> that use structured_sources().
 >
-> > Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
-> >
-> >> On Mon, Sep 22, 2025 at 12:37:57PM +0200, Markus Armbruster wrote:
-> >>> Alessandro Ratti <alessandro@0x65c.net> writes:
-> >>>
-> >>> > Replace virtio_error() with a macro that automatically prepends the
-> >>> > calling function name to error messages. This provides better conte=
-xt
-> >>> > for debugging virtio issues by showing exactly which function
-> >>> > encountered the error.
-> >>> >
-> >>> > Before: "Invalid queue size: 1024"
-> >>> > After:  "virtio_queue_set_num: Invalid queue size: 1024"
-> >>> >
-> >>> > The implementation uses a macro to insert __func__ at compile time,
-> >>> > avoiding any runtime overhead while providing more specific error
-> >>> > context than a generic "virtio:" prefix.
-> >>>
-> >>> A need for function names and such in error messages suggests the err=
-or
-> >>> messages are crap.
-> >>
-> >> I pretty much agree. If we take that view forwards, then I think our
-> >> coding guidelines should explicitly state something like
-> >>
-> >>  "Function names must never be included in error messages.
-> >>
-> >>   The messages need to be sufficiently descriptive in their
-> >>   text, such that including function names is redundant"
->
-> I'm in favor.
->
-> > Ahh I missed the fact this ends up as an error_report. I think having
-> > function names in debug output is fine.
->
-> No argument!
->
-> > It does however miss important information like which VirtIO device is
-> > actually failing, despite having vdev passed down to the function.
->
-> Yes, which device failed should definitely be reported.
->
-> [...]
+> It can also clean up up the meson.build files for Rust noticeably, but due
+> to an issue with doctests (see https://github.com/mesonbuild/meson/pull/14973)
+> that will have to wait for 1.9.1.
 
-Hi Markus, Alex, Daniel,
 
-Thanks again for the thoughtful feedback and for helping me see the bigger
-picture. I now fully agree that adding function names to error messages (vi=
-a
-__func__) doesn't really address the core issue, and I appreciate the
-push to rethink how error reporting can better serve both users and develop=
-ers.
+It looks like this new version of meson now creates a
+subprojects/.wraplock file which shows up in "git status"
+output. Should this be listed in .gitignore ?
 
-I've taken a first stab at improving one of the messages in
-virtio_init_region_cache(), following your suggestions.
-
-Here's the updated call:
-
----8<--- Example diff --8<---
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -240,6 +240,7 @@ void virtio_init_region_cache(VirtIODevice *vdev, int n=
-)
-     VirtQueue *vq =3D &vdev->vq[n];
-     VRingMemoryRegionCaches *old =3D vq->vring.caches;
-     VRingMemoryRegionCaches *new =3D NULL;
-+    DeviceState *dev =3D DEVICE(vdev);
-     hwaddr addr, size;
-     int64_t len;
-     bool packed;
-@@ -264,7 +265,10 @@ void virtio_init_region_cache(VirtIODevice *vdev, int =
-n)
-     len =3D address_space_cache_init(&new->used, vdev->dma_as,
-                                    vq->vring.used, size, true);
-     if (len < size) {
--        virtio_error(vdev, "Cannot map used");
-+        virtio_error(vdev,
-+                    "Failed to map used ring for device %s - "
-+                    "possible guest misconfiguration or insufficient memor=
-y",
-+                    qdev_get_dev_path(dev));
-         goto err_used;
-     }
-
-With this change, the error output now reads:
-
-    qemu-system-x86_64: Failed to map used ring for device
-0000:00:04.0 - possible guest misconfiguration or insufficient memory
-
-This feels like a clear improvement =E2=80=94 it gives context (what failed=
-),
-identifies the device, and hints at likely causes.
-
-If this is more in line with what you'd expect, I'd be happy to submit a ne=
-w
-patch focused solely on improving a few key virtio error messages in this
-direction, starting with the worst offenders in virtio_init_region_cache().
-
-Thanks again for your time and guidance =E2=80=94 I'm learning a lot from t=
-his process.
-
-Best regards,
-Alessandro
+thanks
+-- PMM
 
