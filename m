@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23334B92A9B
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 20:53:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A11B92ACE
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 20:57:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0lbk-0004ju-1u; Mon, 22 Sep 2025 14:49:52 -0400
+	id 1v0lbl-0004kd-3t; Mon, 22 Sep 2025 14:49:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0lbf-0004fU-Ex
+ id 1v0lbf-0004gg-NH
  for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:49:47 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0lbW-00045Z-IF
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:49:43 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-77f41086c11so1129101b3a.0
+ id 1v0lbY-000464-HA
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:49:47 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-77dedf198d4so5063582b3a.0
  for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 11:49:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758566977; x=1759171777; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758566978; x=1759171778; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=w2rBRozKEd87zp0jXWm3YMjmof4kQNhr2ot0ultU52Y=;
- b=vm25QWfmp1ZbnIH9B4CuHAjkAXuOznUr2gCCM7QGEJDtq2tHdm0Wal8Gh+xCZLN4nO
- MTjRe4I0vZaiAAKVrwFxiYSXWfBHtH8pIskPnonwCTUDsspAAmsCPNgGbGeAIb6Zgn2N
- AShxKfoFvEeALwZ+tzXJQTZvr+du5B2DQ0JfZQX4qAbDMFwpT+bOINSJK+Yex1rWmLDE
- V5axznxaQcMvx2+qyPT1WOJwPJelYcxtbo/7ifTnr38oIRvQTnutSJn5PGd3VUX/istz
- s2+4DezHEPcgvb/c/LGslKoVA75djce4tPff8T1ipQs6fmi5yV83CPwfpsNcsUaoUUm5
- U2rg==
+ bh=qtUZ/Uu6kwNI+zAAOhv8j6MlV2cWVEsAAEi36fFJ9wU=;
+ b=OjDWBZMBLjnpJc7x6Aa4QgdSzygtjvRhUpowCykKcdF/9fRqJ4sdQHV3eIb7F+GsVn
+ q3Fg0i+yttFksUw28ORI69sG4/BYFqBpzhc8M1cD3WAz8z7ZzFcsXlc0bK6q7pRbw+SZ
+ jDaSKX7iYBwvfzcIF3joFtQd5I1mfrgpvBCtI7AdidzrweaUAP8vJMIASv0VOXFwWM/b
+ j8sDrLwx6qcZVyWKcY0snGv71L8POmLLXzw6F9t8nt39i1B2+TwVaSsUl9wsjAGYLRlX
+ 87VhMpDtAfC5Kda5jEMxT5nNJS2M6N043X+paHsK2pIfGXwBlmQD8HwjC5b094PtvFT5
+ RYEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758566977; x=1759171777;
+ d=1e100.net; s=20230601; t=1758566978; x=1759171778;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w2rBRozKEd87zp0jXWm3YMjmof4kQNhr2ot0ultU52Y=;
- b=aKkMfuagYDn4U/24ka7GIDNT6pyP8H6vHXkc5c+zpUOmqitx7x2ZJkQtwUBMvhbj5y
- iW1RDysJf8Ht2Xv9KbZqPqWvAfPzkjbJnWKrck4b8Cx12ickfdLYI38I+ZS62yWRDF1a
- Rkcq9o7hjEKT6NxFmYtoNsIPefbQ7rkACWabkVGT7JrP73dxKTBh0FpIxTMewhdntzWE
- cbT3XAeRrCbHOKwki6PDnE2kEU3FcS2p+0yKtt7hX9KzY5OlX7C0TEFyw16M1T3fBxEw
- OAnJQ48dU+MHsSnXzrvxZtBAECf2960TeGtlONm+5o0hFCLC8Uw6bOZ3HiFcFrpJZL9d
- CvUg==
-X-Gm-Message-State: AOJu0Yw+wa1qScd6SYsk7iHnb9YVmRAzIlX+k6lugdyXfCMIkhOuwEoy
- R2uhFmRRJnC6k+XMi6jmOBIWffEaEswI3V7DBF77brmGvx1e9Y9eMTdN3Jv3e6uNsLz+vIsuR0B
- GDoLr
-X-Gm-Gg: ASbGncurL3rUWlMjdae1TNh8iBS2yd7kHWZbiT2WiCrTIhaVEEQ5d8Kry3tjaxR2gxd
- VapqfBjAUa+R8A59enh+DNdu4yKcswd/sDGTK6V9nsjo6lDP6H433tofnLpw8QqklNtaxZDYIJB
- 8/FA2ateTtEikEDDD/MN+xfUVfKsWLKm3PsGS3WNKZR5l77AIIaR/CKmEgP0JuSN46FpxxZXfhL
- ZhMU2m23u8lhTulUls0K8eOIeTV+bNnMJhnlOXSlh/ia5VnZFsliakdPGYdSXVzeWzPsvoTmmvq
- wnoeFlXFFHpwMy/odl8rU6Dmr2TOmQ6bJSVmcjFyrYpkM6N39IspSyURTS0q2Q334VFPAzvxHAo
- onf1twJ0qbBhV9CcC8OFqOe0Jmnjyhl0bC1n0Q1w=
-X-Google-Smtp-Source: AGHT+IGcZkuu58nGoulniswH9n8OgRK7reB6bHSUbs+eDGr5jRp99dCxcIRVIJjF9ZIXfJycucRD3g==
-X-Received: by 2002:a05:6a00:2194:b0:77f:2978:30b0 with SMTP id
- d2e1a72fcca58-77f29783c90mr7096659b3a.11.1758566976669; 
- Mon, 22 Sep 2025 11:49:36 -0700 (PDT)
+ bh=qtUZ/Uu6kwNI+zAAOhv8j6MlV2cWVEsAAEi36fFJ9wU=;
+ b=APLNyfbdIv4qluwfzNavljD0RBb7v12Tf3ZPfBamC8LQOIzDYwssLkKC+70C+uoJkE
+ sKqQHjYuFbcWGdupzUGLKHEqv6cvq+v+UxBUAKwSiebK6jgaiFSRqmIe7FwIa8NUlFJk
+ KS+z0MK6jRPw/59fVGqBV19NnpIRDshxwYvSOEtAeTXp0jgVO1MrPfRlUqMMFwa4LRhG
+ tzQMbAP4rsvnYFISTpxgNSB+Lyhu+3VSzXmVhqd4mTevuvcZDdbaRUFjKpvmsslWrux0
+ wywXlK79cG4dgxZhZs3bWHZr9qgXmQ06QsOI4pG/buqeNW7QAmQ+B+gqBiFDDQNMoQQd
+ r/Hw==
+X-Gm-Message-State: AOJu0YwTh6jkj5RDOL+AC6UxytS/1N5OB+nVf+h1szw/iLZqZFq+QyDh
+ Lmp3XWYQaXMH6KAIS7UlPx3chZM7uTZPJhkwu53eMJMEyVwSut+/qKz9arEHnUMF0cKPyQSkLd5
+ xaXcp
+X-Gm-Gg: ASbGnct4qabVt3iY5ZZZKeIUQIbn5vqeT4CPtzJvx8ux30Ona25zsfuS7dfw+lWn4vp
+ SELL2hwhY5PxgopM8SN5sZclaLMM4ndCOXH0LJAaz2b75Ho6CdapGz2p9cAiT625smD6WY7y1OJ
+ hUAiq/kfg38J3CvL/4jA1DbJu50apbzNHMlqeM0fOaOEK5zmWCOtT+CX92wAzXwj6ewhsfkSNdr
+ hSTuvQ4HOMIAw1kFFlrcbiO3J3THIuo20j+rdQwrseZ9xjceqI8C/NKKeLP7/gh8jkZYYJ+dFjF
+ iRyXca5iSmN+HDRgl1RfmxEaOdMKSY0QdjYEv8HsPc7J1s1txygjLE15smZi0EfZmcKqObnNf40
+ B8bFUT6p0coKgw22o17dh+5UX2lpT
+X-Google-Smtp-Source: AGHT+IESM/forMLR2F+S29Rci4k5HQuQ8p3sORu0O/CLXi5/n/5F+jspnyzO2DfHSPetAMQXPz4UMw==
+X-Received: by 2002:a05:6a00:230a:b0:77f:3e56:c1c0 with SMTP id
+ d2e1a72fcca58-77f3e56d116mr5522665b3a.32.1758566977707; 
+ Mon, 22 Sep 2025 11:49:37 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-77e5fe6de75sm10583861b3a.19.2025.09.22.11.49.35
+ d2e1a72fcca58-77e5fe6de75sm10583861b3a.19.2025.09.22.11.49.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Sep 2025 11:49:36 -0700 (PDT)
+ Mon, 22 Sep 2025 11:49:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v5 08/76] target/arm: Implement get_S2prot_indirect
-Date: Mon, 22 Sep 2025 11:48:16 -0700
-Message-ID: <20250922184924.2754205-9-richard.henderson@linaro.org>
+Subject: [PATCH v5 09/76] target/arm: Expand CPUARMState.exception.syndrome to
+ 64 bits
+Date: Mon, 22 Sep 2025 11:48:17 -0700
+Message-ID: <20250922184924.2754205-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250922184924.2754205-1-richard.henderson@linaro.org>
 References: <20250922184924.2754205-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,194 +99,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the stage2 permissions for normal accesses to
-GetPhysAddrResult.s2prot.  Put the stage2 permissions
-for page table walking in CPUTLBEntryFull.prot.
-This allows the permission checks in S1_ptw_translate
-and arm_casq_ptw to see the right permission.
+This will be used for storing the ISS2 portion of the
+ESR_ELx registers in aarch64 state.  Re-order the fsr
+member to eliminate two structure holes.
+
+Drop the comment about "if we implement EL2" since we
+have already done so.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/internals.h |  7 ++++
- target/arm/ptw.c       | 81 +++++++++++++++++++++++++++++++-----------
- 2 files changed, 68 insertions(+), 20 deletions(-)
+ target/arm/cpu.h     |  7 ++-----
+ target/arm/helper.c  |  2 +-
+ target/arm/machine.c | 32 +++++++++++++++++++++++++++++++-
+ 3 files changed, 34 insertions(+), 7 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index b7a1b69561..aa41054af0 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1572,6 +1572,13 @@ typedef struct ARMCacheAttrs {
- typedef struct GetPhysAddrResult {
-     CPUTLBEntryFull f;
-     ARMCacheAttrs cacheattrs;
-+    /*
-+     * For ARMMMUIdx_Stage2*, the protection installed into f.prot
-+     * is the result for AccessType_TTW, i.e. the page table walk itself.
-+     * The protection installed info s2prot is the one to be merged
-+     * with the stage1 protection.
-+     */
-+    int s2prot;
- } GetPhysAddrResult;
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index d17252f734..4dd4c6d4bf 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -633,13 +633,10 @@ typedef struct CPUArchState {
+      * entry process.
+      */
+     struct {
+-        uint32_t syndrome; /* AArch64 format syndrome register */
+-        uint32_t fsr; /* AArch32 format fault status register info */
++        uint64_t syndrome; /* AArch64 format syndrome register */
+         uint64_t vaddress; /* virtual addr associated with exception, if any */
++        uint32_t fsr; /* AArch32 format fault status register info */
+         uint32_t target_el; /* EL the exception should be targeted for */
+-        /* If we implement EL2 we will also need to store information
+-         * about the intermediate physical address for stage 2 faults.
+-         */
+     } exception;
  
- /**
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 4fb4436db1..6dcd3adbdf 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -1280,7 +1280,7 @@ do_fault:
-  * @xn:      XN (execute-never) bits
-  * @s1_is_el0: true if this is S2 of an S1+2 walk for EL0
-  */
--static int get_S2prot_noexecute(int s2ap)
-+static int get_S2prot(CPUARMState *env, int s2ap, int xn, bool s1_is_el0)
- {
-     int prot = 0;
- 
-@@ -1290,12 +1290,6 @@ static int get_S2prot_noexecute(int s2ap)
-     if (s2ap & 2) {
-         prot |= PAGE_WRITE;
+     /* Information associated with an SError */
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 1111a16330..f66868f9ef 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -9182,7 +9182,7 @@ void arm_cpu_do_interrupt(CPUState *cs)
+                   new_el);
+     if (qemu_loglevel_mask(CPU_LOG_INT)
+         && !excp_is_internal(cs->exception_index)) {
+-        qemu_log_mask(CPU_LOG_INT, "...with ESR 0x%x/0x%" PRIx32 "\n",
++        qemu_log_mask(CPU_LOG_INT, "...with ESR 0x%x/0x%" PRIx64 "\n",
+                       syn_get_ec(env->exception.syndrome),
+                       env->exception.syndrome);
      }
--    return prot;
--}
--
--static int get_S2prot(CPUARMState *env, int s2ap, int xn, bool s1_is_el0)
--{
--    int prot = get_S2prot_noexecute(s2ap);
+diff --git a/target/arm/machine.c b/target/arm/machine.c
+index 6666a0c50c..ce20b46f50 100644
+--- a/target/arm/machine.c
++++ b/target/arm/machine.c
+@@ -848,6 +848,23 @@ static const VMStateInfo vmstate_powered_off = {
+     .put = put_power,
+ };
  
-     if (cpu_isar_feature(any_tts2uxn, env_archcpu(env))) {
-         switch (xn) {
-@@ -1327,6 +1321,44 @@ static int get_S2prot(CPUARMState *env, int s2ap, int xn, bool s1_is_el0)
-     return prot;
- }
- 
-+static int get_S2prot_indirect(CPUARMState *env, GetPhysAddrResult *result,
-+                               int pi_index, int po_index, bool s1_is_el0)
++static bool syndrome64_needed(void *opaque)
 +{
-+    /* Last index is (priv, unpriv, ttw) */
-+    static const uint8_t perm_table[16][3] = {
-+        /* 0 */ { 0, 0, 0 },   /* no access */
-+        /* 1 */ { 0, 0, 0 },   /* reserved */
-+        /* 2 */ { PAGE_READ, PAGE_READ, PAGE_READ | PAGE_WRITE },
-+        /* 3 */ { PAGE_READ, PAGE_READ, PAGE_READ | PAGE_WRITE },
-+        /* 4 */ { PAGE_WRITE, PAGE_WRITE, 0 },
-+        /* 5 */ { 0, 0, 0 },   /* reserved */
-+        /* 6 */ { PAGE_READ, PAGE_READ, PAGE_READ | PAGE_WRITE },
-+        /* 7 */ { PAGE_READ, PAGE_READ, PAGE_READ | PAGE_WRITE },
-+        /* 8 */ { PAGE_READ, PAGE_READ, PAGE_READ },
-+        /* 9 */ { PAGE_READ, PAGE_READ | PAGE_EXEC, PAGE_READ },
-+        /* A */ { PAGE_READ | PAGE_EXEC, PAGE_READ, PAGE_READ },
-+        /* B */ { PAGE_READ | PAGE_EXEC, PAGE_READ | PAGE_EXEC, PAGE_READ },
-+        /* C */ { PAGE_READ | PAGE_WRITE,
-+                  PAGE_READ | PAGE_WRITE,
-+                  PAGE_READ | PAGE_WRITE },
-+        /* D */ { PAGE_READ | PAGE_WRITE,
-+                  PAGE_READ | PAGE_WRITE | PAGE_EXEC,
-+                  PAGE_READ | PAGE_WRITE },
-+        /* E */ { PAGE_READ | PAGE_WRITE | PAGE_EXEC,
-+                  PAGE_READ | PAGE_WRITE,
-+                  PAGE_READ | PAGE_WRITE },
-+        /* F */ { PAGE_READ | PAGE_WRITE | PAGE_EXEC,
-+                  PAGE_READ | PAGE_WRITE | PAGE_EXEC,
-+                  PAGE_READ | PAGE_WRITE },
-+    };
-+
-+    uint64_t pir = (env->cp15.scr_el3 & SCR_PIEN ? env->cp15.s2pir_el2 : 0);
-+    int s2pi = extract64(pir, pi_index * 4, 4);
-+
-+    result->f.prot = perm_table[s2pi][2];
-+    return perm_table[s2pi][s1_is_el0];
++    ARMCPU *cpu = opaque;
++    return cpu->env.exception.syndrome > UINT32_MAX;
 +}
 +
- /*
-  * Translate section/page access permissions to protection flags
-  * @env:     CPUARMState
-@@ -1777,7 +1809,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-     int32_t stride;
-     int addrsize, inputsize, outputsize;
-     uint64_t tcr = regime_tcr(env, mmu_idx);
--    int ap;
-+    int ap, prot;
-     uint32_t el = regime_el(env, mmu_idx);
-     uint64_t descaddrmask;
-     bool aarch64 = arm_el_is_aa64(env, el);
-@@ -2101,6 +2133,18 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-     ap = extract32(attrs, 6, 2);
-     out_space = ptw->in_space;
-     if (regime_is_stage2(mmu_idx)) {
-+        if (param.pie) {
-+            int pi = extract64(attrs, 6, 1)
-+                   | (extract64(attrs, 51, 1) << 1)
-+                   | (extract64(attrs, 53, 2) << 2);
-+            int po = extract64(attrs, 60, 3);
-+            prot = get_S2prot_indirect(env, result, pi, po, ptw->in_s1_is_el0);
-+        } else {
-+            int xn = extract64(attrs, 53, 2);
-+            prot = get_S2prot(env, ap, xn, ptw->in_s1_is_el0);
-+            /* Install TTW permissions in f.prot. */
-+            result->f.prot = prot & (PAGE_READ | PAGE_WRITE);
-+        }
-         /*
-          * R_GYNXY: For stage2 in Realm security state, bit 55 is NS.
-          * The bit remains ignored for other security states.
-@@ -2109,11 +2153,9 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-          */
-         if (out_space == ARMSS_Realm && extract64(attrs, 55, 1)) {
-             out_space = ARMSS_NonSecure;
--            result->f.prot = get_S2prot_noexecute(ap);
--        } else {
--            int xn = extract64(attrs, 53, 2);
--            result->f.prot = get_S2prot(env, ap, xn, ptw->in_s1_is_el0);
-+            prot &= ~PAGE_EXEC;
-         }
-+        result->s2prot = prot;
- 
-         result->cacheattrs.is_s2_format = true;
-         result->cacheattrs.attrs = extract32(attrs, 2, 4);
-@@ -2185,9 +2227,8 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-              * Note that we modified ptw->in_space earlier for NSTable, but
-              * result->f.attrs retains a copy of the original security space.
-              */
--            result->f.prot = get_S1prot_indirect(env, ptw, mmu_idx, pi, po,
--                                                 result->f.attrs.space,
--                                                 out_space);
-+            prot = get_S1prot_indirect(env, ptw, mmu_idx, pi, po,
-+                                       result->f.attrs.space, out_space);
-         } else {
-             int xn = extract64(attrs, 54, 1);
-             int pxn = extract64(attrs, 53, 1);
-@@ -2216,10 +2257,10 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-              * Note that we modified ptw->in_space earlier for NSTable, but
-              * result->f.attrs retains a copy of the original security space.
-              */
--            result->f.prot = get_S1prot(env, mmu_idx, aarch64,
--                                        user_rw, prot_rw, xn, pxn,
--                                        result->f.attrs.space, out_space);
-+            prot = get_S1prot(env, mmu_idx, aarch64, user_rw, prot_rw, xn, pxn,
-+                              result->f.attrs.space, out_space);
-         }
-+        result->f.prot = prot;
- 
-         /* Index into MAIR registers for cache attributes */
-         attrindx = extract32(attrs, 2, 3);
-@@ -2265,7 +2306,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-         result->f.tlb_fill_flags = 0;
++static const VMStateDescription vmstate_syndrome64 = {
++    .name = "cpu/syndrome64",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = syndrome64_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT64(env.exception.syndrome, ARMCPU),
++        VMSTATE_END_OF_LIST()
++    },
++};
++
+ static int cpu_pre_save(void *opaque)
+ {
+     ARMCPU *cpu = opaque;
+@@ -1065,7 +1082,19 @@ const VMStateDescription vmstate_arm_cpu = {
+         VMSTATE_UINT64(env.exclusive_val, ARMCPU),
+         VMSTATE_UINT64(env.exclusive_high, ARMCPU),
+         VMSTATE_UNUSED(sizeof(uint64_t)),
+-        VMSTATE_UINT32(env.exception.syndrome, ARMCPU),
++        /*
++         * If any bits are set in the upper 32 bits of syndrome,
++         * then the cpu/syndrome64 subsection will override this
++         * with the full 64 bit state.
++         */
++        {
++            .name = "env.exception.syndrome",
++            .version_id = 0,
++            .size = sizeof(uint32_t),
++            .info = &vmstate_info_uint32,
++            .flags = VMS_SINGLE,
++            .offset = offsetoflow32(ARMCPU, env.exception.syndrome),
++        },
+         VMSTATE_UINT32(env.exception.fsr, ARMCPU),
+         VMSTATE_UINT64(env.exception.vaddress, ARMCPU),
+         VMSTATE_TIMER_PTR(gt_timer[GTIMER_PHYS], ARMCPU),
+@@ -1098,6 +1127,7 @@ const VMStateDescription vmstate_arm_cpu = {
+         &vmstate_serror,
+         &vmstate_irq_line_state,
+         &vmstate_wfxt_timer,
++        &vmstate_syndrome64,
+         NULL
      }
- 
--    if (ptw->in_prot_check & ~result->f.prot) {
-+    if (ptw->in_prot_check & ~prot) {
-         fi->type = ARMFault_Permission;
-         goto do_fault;
-     }
-@@ -3463,7 +3504,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-     fi->s2addr = ipa;
- 
-     /* Combine the S1 and S2 perms.  */
--    result->f.prot &= s1_prot;
-+    result->f.prot = s1_prot & result->s2prot;
- 
-     /* If S2 fails, return early.  */
-     if (ret) {
+ };
 -- 
 2.43.0
 
