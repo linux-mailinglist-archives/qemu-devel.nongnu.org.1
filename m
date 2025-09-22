@@ -2,106 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3DF1B8FD6E
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 11:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF314B8FF1B
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 12:13:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0d6A-0006jF-IP; Mon, 22 Sep 2025 05:44:42 -0400
+	id 1v0dWH-0000Gt-OC; Mon, 22 Sep 2025 06:11:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v0d5q-0005pA-On
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 05:44:24 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v0dWF-0000GO-8e
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 06:11:39 -0400
+Received: from mailgate01.uberspace.is ([2001:1a50:11:0:c83f:a8ff:fea6:c8da])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1v0d5g-0002BN-Gx
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 05:44:19 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3fc36b99e92so556805f8f.0
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 02:44:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758534250; x=1759139050; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jr95vMRsHHMubUlsg4+sKMganqm23DvV5j1sCOAb5Cw=;
- b=bJh421HVTekd/pWHXRqmxCs8H+PE/pBS9SGOvSKSVdSb7o/CUpEsHSWnCAcSzTPt+p
- bzKoaBXmOtdogBl8kLMMVN31/HD1UWmII+wWNVfoiXG9yYY3hJOYkZ+FpKVo1Fvzfpg5
- u6UMgJrTMSA0f000fOMg5w/sRpxu7n8O6EXQwzzr9B8gG/0N7IRUE6xAkjBvhaInxv/T
- qcG7nqnnUnMW0LBd93f+jbdPW1aYCwBCZqWxhpGZm29+Slz5vv+0G+rDW0FAooJvYI0l
- HfbJWmKVEOgfxK37RdK29YpFpMSR5OhsJi+m62VKzPgIv9jOxEhyVaWR1Brdy8B3wC85
- PKyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758534250; x=1759139050;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=jr95vMRsHHMubUlsg4+sKMganqm23DvV5j1sCOAb5Cw=;
- b=lyES3nG8TOahojzzWBBWHpkhwFRlXUJ6jQS4wmXU4N4ITTiDsaZFKeB4zjp2dcfY4y
- AmQ6aNN56cfJ/+VzMgkBGsnWz71qFFY/v8huuls89QAGQ0FTfzjUasJbCNtXplAwld3J
- S8ZhT0E8kxVds1BCKUF/PZNb4WgwHbi4rOn1dJP7eL0nbPnWLlc/VMj0x5aFsKQTPpjj
- V0LuIYffS/sR/PMvr5LWkleQEf2N/PyJNJs3qDkQGLHo9u9V00iM6mvwdn8MwWjtKjr2
- DNnE8yajHTRIS+RMxdd5Cly3s31cnIqgTQ2frV4L0e9fP5jyex9hC5Nza5lnIGKqx5tL
- rvjw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUfDkTwryWrfiWxk9iUbw5jXNZ+yBdlSpxANWwAF/py2YusFunX1fvjQBkIR0YQw2xuuKYlB+8KERAg@nongnu.org
-X-Gm-Message-State: AOJu0Yyv5w6RSKjCWrXvDbthNgmYZWsHYbjVhoeX3YdBLvjQ4j1lBuVm
- 5+7P+4goXwlH9I7OqmsXJNxcsTcsXAN8w4OZX9CLt4AqrwQbwf0FbE2ezOGgEoAiVHNGH1djaFU
- 0zNHAdjI=
-X-Gm-Gg: ASbGncswXoL9kzRTmi/PIiZUr8LIK9LbnQ+fJipJFVgZ1mmqQxiHEbs6ZqgsTNda2ZU
- rqj6yArVD9bXSPul8RwC+WVZZiHZcWFqYmXwhxz4RAT7XEvTD74iKgQp61SwpNVKL7fJEyvv+/h
- n6OADACYs1MJpT5Hu5lKAonnAC9u1hEZ3fwbzzeN64v4/ilg8Lmx9STFUgVDOmTgdmcz5NRNm4U
- huxS/o0fKWS7H5Wgjo3XbOYRGx3HUMRsiFZG0zG4wIignSA5hddstB0I5Ge8IAnPlaZEguCaqIU
- qfwDGmEuHy9JIJeLncS8eCnq6rHGdujk/G+YAdeznyQ8xMapjOG475XtdyjVWetUlMe0nKqWTdT
- fxmnyljTJtfYBqEdxOHMZxOM=
-X-Google-Smtp-Source: AGHT+IFWMcO0aFxfnbp0F8M6DiOuKwB33EE5iAnntvaffzKJQ5g55iC4Byz6uJdCroYAuGkO7VlRCw==
-X-Received: by 2002:a05:6000:4024:b0:3bd:13d6:6c21 with SMTP id
- ffacd0b85a97d-3edc9e2ba59mr16426216f8f.0.1758534250193; 
- Mon, 22 Sep 2025 02:44:10 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3ef166e62e5sm14263140f8f.40.2025.09.22.02.44.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Sep 2025 02:44:09 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 697245F7B1;
- Mon, 22 Sep 2025 10:44:08 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,  Ed Maste <emaste@freebsd.org>,
- Thomas Huth <thuth@redhat.com>,  Li-Wen Hsu <lwhsu@freebsd.org>,
- Yonggang Luo <luoyonggang@gmail.com>,  Warner Losh <imp@bsdimp.com>,
- Paolo Bonzini <pbonzini@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud?=
- =?utf-8?Q?=C3=A9?=
- <philmd@linaro.org>,  Kohei Tokunaga <ktokunaga.mail@gmail.com>,  Kyle
- Evans <kevans@freebsd.org>
-Subject: Re: [PATCH 14/24] tests: move mips to debian-legacy-test-cross
-In-Reply-To: <aNERkB5WhM4ePIHn@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Mon, 22 Sep 2025 10:06:24 +0100")
-References: <20250919133320.240145-1-marcandre.lureau@redhat.com>
- <20250919133320.240145-15-marcandre.lureau@redhat.com>
- <aM1m13xBnM9WU_E3@redhat.com>
- <CAMxuvayXSdVaz=i56T686oKpKf5gE4y6YaPgedPBKGQEPx0v8w@mail.gmail.com>
- <aNERkB5WhM4ePIHn@redhat.com>
-User-Agent: mu4e 1.12.12; emacs 30.1
-Date: Mon, 22 Sep 2025 10:44:08 +0100
-Message-ID: <878qi6q0t3.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1v0dWC-0007U0-DW
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 06:11:38 -0400
+Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
+ by mailgate01.uberspace.is (Postfix) with ESMTPS id BF2FF60B57
+ for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 12:11:23 +0200 (CEST)
+Received: (qmail 27313 invoked by uid 990); 22 Sep 2025 10:11:23 -0000
+Authentication-Results: skiff.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unkown) (::1)
+ by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
+ Mon, 22 Sep 2025 12:11:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Date: Mon, 22 Sep 2025 10:11:23 +0000
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+From: "Julian Ganz" <neither@nut.email>
+Message-ID: <51342318ee32c932dc2a867c808989ea627d874f@nut.email>
+TLS-Required: No
+Subject: Re: [PATCH v6 23/25] tests: add plugin asserting correctness of 
+ discon event's to_pc
+To: "=?utf-8?B?QWxleCBCZW5uw6ll?=" <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, "Pierrick Bouvier" <pierrick.bouvier@linaro.org>,
+ "Alexandre Iooss" <erdnaxe@crans.org>, "Mahmoud Mandour"
+ <ma.mandourr@gmail.com>
+In-Reply-To: <87segf69f6.fsf@draig.linaro.org>
+References: <cover.1757018626.git.neither@nut.email>
+ <073cad7dd8ae509ff64a2835fd146833b60c1f60.1757018626.git.neither@nut.email>
+ <87segf69f6.fsf@draig.linaro.org>
+X-Rspamd-Bar: +
+X-Rspamd-Report: SUSPICIOUS_RECIPS(1.5) BAYES_HAM(-0.000336) MIME_GOOD(-0.1)
+X-Rspamd-Score: 1.399663
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
+ h=from:to:cc:subject:date;
+ bh=zTtRtbb5ThRRaDTZZ8a4SvnVD2pktMvpvt/CeUQ9esk=;
+ b=FlN8BKc9jCNF6H/shkPkwJ9AAF7o72jPFKHaz2V2Ktk44RLx70PcC++9S/xE4BgegcSKMkTm99
+ frRvTeAjRQ6QxEwwOoGbmrgv9NUi0gHddM2dwfE60aYgEYjwxJ30yN1D+xcU4k1afiNTZv9jHhGG
+ NohlGwvW0LdoRDB/bDU6XuuER8TWSUjYzjNs4N6ndMB/925Vo+c6GSYokPxnpdjDDjsVasMM6KBH
+ d+nRz3vZX+vb9OlNCV6lGkFFsFIZFd45cQ4MI9gQEg+LMuVwMRDLrU3sFy5cJ4NH3Ys/XWtx76qH
+ ZPRQgxiQQXT1gnr4Bwizljc6avFWfJ5c0AfB37hPOrbWkAQGLcKQLxlBqRNoe/NEx6cGTKmyInCt
+ xhPM61aE095+e4I201oNAeZ6YEJQ9fdPAgNvklxcLJiC8eWiVZrTpd5HZO8/wXd7thFLGfDZzphh
+ /Xd3n3iXI/EZ4MHFDn9sJE0UMIwpOYpx+EnxwJl5wasF2BvjnoY8uHyimSBKJ4uLThC68MupbduF
+ 1dJYNwsnFjsYbO72JnH8OxpzkzJ/E38HtOrqOmQDN0rs7ThVQNzeLy43+ne0UZImbiVgSfvz2NBF
+ nxKPnLlwRX17akB9L3CWL89EDtqSd5cxVRUN8TSwP1TV2yQiwqb6idMPpppOVAue5gfrpEmX9ZPK
+ c=
+Received-SPF: pass client-ip=2001:1a50:11:0:c83f:a8ff:fea6:c8da;
+ envelope-from=neither@nut.email; helo=mailgate01.uberspace.is
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,97 +81,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+Hi Alex,
 
-> On Mon, Sep 22, 2025 at 12:38:09PM +0400, Marc-Andr=C3=A9 Lureau wrote:
->> Hi
->>=20
->> On Fri, Sep 19, 2025 at 6:21=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrang=
-e@redhat.com>
->> wrote:
->>=20
->> > On Fri, Sep 19, 2025 at 05:33:08PM +0400, marcandre.lureau@redhat.com
->> > wrote:
->> > > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->> > >
->> > > We are updating debian which dropped support for it:
->> > >
->> > https://www.debian.org/releases/trixie/release-notes/issues.html#mips-=
-architectures-removed
->> >
->> > If Debian 13 has dropped it, why aren't we just keeping the mips
->> > dockerfiles on 12 ?
->> >
->> > The debian-legacy-test-cross a manually written dockerfile that
->> > has almost none of our deps installed, and is still on 11 which
->> > is outside our support matrix now. So I don't think we should
->> > be expanding use of debian-legacy-test-cross, ideally it would
->> > be removed entirely.
->> >
->> >
->> debian-legacy-test-cross is for tests/tcg. Debian 11 supports more
->> architecture than 12 or 13..
->
-> If there are architectures in 11 that can't be tested in 12,
-> then from QEMU's POV that is now an untestable feature, since
-> 11 is outside our support target and we don't want to be
-> holding back our support platforms for this.
->
->> > > diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
->> > > index 6f98a91277..917ff4abfb 100755
->> > > --- a/tests/lcitool/refresh
->> > > +++ b/tests/lcitool/refresh
->> > > @@ -215,16 +215,6 @@ try:
->> > >                                              "x86_64-linux-user,"
->> > >
->> > "i386-softmmu,i386-linux-user"))
->> > >
->> > > -    generate_dockerfile("debian-mips64el-cross", "debian-12",
->> > > -                        cross=3D"mips64el",
->> > > -                        trailer=3Dcross_build("mips64el-linux-gnuab=
-i64-",
->> > > -
->> > "mips64el-softmmu,mips64el-linux-user"))
->> > > -
->> > > -    generate_dockerfile("debian-mipsel-cross", "debian-12",
->> > > -                        cross=3D"mipsel",
->> > > -                        trailer=3Dcross_build("mipsel-linux-gnu-",
->> > > -
->> > "mipsel-softmmu,mipsel-linux-user"))
->> > > -
->> >
->> > I'm not seeing the need to remove these, when they could just
->> > stay on -12, when the next commit updates the other arches
->> > to -13.
->> >
->>=20
->> Indeed.. it depends how much we want to keep covering. We already don't
->> cover all qemu cross compilations. The question is do we want to keep
->> cross-compiling for soon unsupported arches?
+September 21, 2025 at 6:46 PM, "Alex Benn=C3=A9e" <alex.bennee@linaro.org=
+ mailto:alex.bennee@linaro.org?to=3D%22Alex%20Benn%C3%A9e%22%20%3Calex.be=
+nnee%40linaro.org%3E > wrote:
+> Julian Ganz <neither@nut.email> writes:
+> >  +static void report_mismatch(const char *pc_name, unsigned int vcpu_=
+index,
+> >  + enum qemu_plugin_discon_type type, uint64_t last,
+> >  + uint64_t expected, uint64_t encountered)
+> >  +{
+> >  + GString *report;
+> >=20
+>=20This could be:
+>=20
+>=20 g_autoptr(GString) buf =3D g_string_new(NULL);
 
-Cross compiling QEMU depends on decent multi-arch support and indeed we
-should deprecate it now so we can drop it when bookworm finally drops
-out of LTS.
+I wanted to avoid doing an allocation regardless of whether we do have
+anything to report or not. But I guess a performance plugin isn't
+performance critical enough to worry? Anyway, I will have another look
+at g_autoptr.
 
-debian-legacy-test-cross is the held back version of
-debian-all-test-cross which is a native build + the cross compilers for
-check-tcg.
+> > + const char *discon_type_name =3D "unknown";
+> >  +
+> >  + if (addr_eq(expected, encountered)) {
+> >  + return;
+> >  + }
+> >  +
+> >  + switch (type) {
+> >  + case QEMU_PLUGIN_DISCON_INTERRUPT:
+> >  + discon_type_name =3D "interrupt";
+> >  + break;
+> >  + case QEMU_PLUGIN_DISCON_EXCEPTION:
+> >  + discon_type_name =3D "exception";
+> >  + break;
+> >  + case QEMU_PLUGIN_DISCON_HOSTCALL:
+> >  + discon_type_name =3D "hostcall";
+> >  + break;
+> >  + default:
+> >  + break;
+> >  + }
+> >  +
+> >  + report =3D g_string_new(NULL);
+> >  + g_string_append_printf(report,
+> >  + "Discon %s PC mismatch on VCPU %d\nExpected: %"
+> >  + PRIx64"\nEncountered: %"PRIx64"\nExecuted Last: %"
+> >  + PRIx64"\nEvent type: %s\n",
+> >  + pc_name, vcpu_index, expected, encountered, last,
+> >  + discon_type_name);
+> >  + qemu_plugin_outs(report->str);
+> >=20
+>=20I think we might want to flush here because
 
+Yes we do. I probably (incorrectly) assumed `qemu_plugin_outs` already
+did that.
 
->>=20
->> @Benn=C3=A9e, Alex <alex.bennee@linaro.org> might know, thanks
->
-> A feature remains fully supported for production use the while time it
-> is marked as deprecated. Provided one of our current supported platforms
-> has the ability to test it, there should be no change to our testing
-> status of deprecated features. Given that -12 is still a supported
-> platform we should continue to use that, and certainly not replace it
-> with -11 which is an unsupported platform.
->
-> With regards,
-> Daniel
+>=20
+>=20>=20
+>=20> + if (abort_on_mismatch) {
+> >  + g_abort();
+> >  + }
+> >=20
+>=20This is firing on:
+>=20
+>=20 =F0=9F=95=9917:35:50 alex@draig:tests/tcg/i386-linux-user on =EE=82=
+=A0 review/tcg-discon-v6 [$!?]=20
+>=20 =E2=9E=9C make run-plugin-catch-syscalls-with-libdiscons.so V=3D1
+>  timeout -s KILL --foreground 120 env QEMU=3D/home/alex/lsrc/qemu.git/b=
+uilds/sanitisers/qemu-i386 /home/alex/lsrc/qemu.git/builds/sanitisers/qem=
+u-i386 -plugin ../plugins/libdiscons.so -d plugin -D catch-syscalls-with-=
+libdiscons.so.pout catch-syscalls > run-plugin-catch-syscalls-with-libdis=
+cons.so.out
+>  Aborted
+>  make: *** [Makefile:226: run-plugin-catch-syscalls-with-libdiscons.so]=
+ Error 134
+>  =F0=9F=95=9917:35:52 alex@draig:tests/tcg/i386-linux-user on =EE=82=A0=
+ review/tcg-discon-v6 [$!?] [=F0=9F=94=B4 USAGE]=20
+>=20 =E2=9C=97
+>=20
+>=20although it never gets to the point of reporting what failed:
+>=20
+>=20 Thread 1 "qemu-i386" hit Breakpoint 1, __GI_abort () at ./stdlib/abo=
+rt.c:72
+>  warning: 72 ./stdlib/abort.c: No such file or directory
+>  (gdb) bt
+>  #0 __GI_abort () at ./stdlib/abort.c:72
+>  #1 0x00007ffff630874d in report_mismatch (pc_name=3D0x7ffff630a220 "ta=
+rget", vcpu_index=3D0, type=3DQEMU_PLUGIN_DISCON_EXCEPTION, last=3D134574=
+955, expected=3D134574953,=20
+>=20 encountered=3D134574955) at ../../tests/tcg/plugins/discons.c:89
+>  #2 0x00007ffff6308c0d in insn_exec (vcpu_index=3D0, userdata=3D0x0) at=
+ ../../tests/tcg/plugins/discons.c:132
+>  #3 0x00007fffea431114 in code_gen_buffer ()
+>  #4 0x000055555577b0a6 in cpu_tb_exec (cpu=3D0x529000005200, itb=3D0x7f=
+ffea431000 <code_gen_buffer+200659>, tb_exit=3D0x7ffff49c9530) at ../../a=
+ccel/tcg/cpu-exec.c:438
+>  #5 0x000055555577c92f in cpu_loop_exec_tb (cpu=3D0x529000005200, tb=3D=
+0x7fffea431000 <code_gen_buffer+200659>, pc=3D134574955, last_tb=3D0x7fff=
+f49c9540, tb_exit=3D0x7ffff49c9530)
+>  at ../../accel/tcg/cpu-exec.c:871
+>  #6 0x000055555577d151 in cpu_exec_loop (cpu=3D0x529000005200, sc=3D0x7=
+ffff483a740) at ../../accel/tcg/cpu-exec.c:981
+>  #7 0x000055555577d2fe in cpu_exec_setjmp (cpu=3D0x529000005200, sc=3D0=
+x7ffff483a740) at ../../accel/tcg/cpu-exec.c:998
+>  #8 0x000055555577d4c8 in cpu_exec (cpu=3D0x529000005200) at ../../acce=
+l/tcg/cpu-exec.c:1024
+>  #9 0x00005555557bfc83 in cpu_loop (env=3D0x529000007dd0) at ../../linu=
+x-user/i386/cpu_loop.c:215
+>  #10 0x00005555558ee3e1 in main (argc=3D4, argv=3D0x7fffffffe688, envp=
+=3D0x7fffffffe6b0) at ../../linux-user/main.c:1038
+>  (gdb) f 1
+>  #1 0x00007ffff630874d in report_mismatch (pc_name=3D0x7ffff630a220 "ta=
+rget", vcpu_index=3D0, type=3DQEMU_PLUGIN_DISCON_EXCEPTION, last=3D134574=
+955, expected=3D134574953,=20
+>=20 encountered=3D134574955) at ../../tests/tcg/plugins/discons.c:89
+>  89 g_abort();
+>  (gdb) p report
+>  $1 =3D (GString *) 0x50300002bf00
+>  (gdb) p report->Str
+>  There is no member named Str.
+>  (gdb) p report->str
+>  $2 =3D (gchar *) 0x51100001fbc0 "Discon target PC mismatch on VCPU 0\n=
+Expected: 8057369\nEncountered: 805736b\nExecuted Last: 805736b\nEvent ty=
+pe: exception\n"
+>  (gdb)=20
+>=20
+> I think this is where it is going wrong:
+>=20
+>=20 IN: _dl_early_allocate
+>  0x0805736b: 89 c2 movl %eax, %edx
+>  0x0805736d: 8d 1c 28 leal (%eax, %ebp), %ebx
+>  0x08057370: 89 c8 movl %ecx, %eax
+>  0x08057372: cd 80 int $0x80
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Thanks! I'll have a closer look.
+
+> >=20
+>=20> + g_string_free(report, true);
+> >=20
+>=20so we could drop this... or..
+
+As aborting is optional, we should free.
+
+Regards,
+Julian
 
