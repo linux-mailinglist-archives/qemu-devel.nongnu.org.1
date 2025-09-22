@@ -2,88 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD52B92B96
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 21:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97842B92A8F
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 20:53:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0lcH-0005Bq-3P; Mon, 22 Sep 2025 14:50:25 -0400
+	id 1v0lc8-00052N-5M; Mon, 22 Sep 2025 14:50:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0lc1-0004xv-RR
+ id 1v0lc1-0004ya-Kp
  for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:50:10 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0lbs-0004CA-0R
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:50:08 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-77f1f8a114bso1622251b3a.0
+ id 1v0lbu-0004Cb-GJ
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 14:50:09 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-77f3405c38aso1263841b3a.0
  for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 11:49:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758566997; x=1759171797; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758566998; x=1759171798; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8HfYM97rkS2HFXVpmImKidouR7djYhqCiCCIkuQ4XIE=;
- b=acdsw12H8WYCCf/JNS78C7xPFL1ADS+inhZYrO/PZPah1oddlDsIKKGilBPx9vYzQ+
- N0oo5HjObQTRyUXj/d5hbclpT0npOu+/K7Jb5i4SuAdUJidj573qLif5hu7Qaik/KxF+
- epBtXEPBLdCqlIsgfDmcCES4MrEf9wDK9Oqb/tP1MesEui1fU0IEkEWKtGZmEBaU2j/y
- fw/bKX7viR1IqKtFSWueelDHixOjhUNnOL68etUSdzX31peW6wM3G/CXvW6Hp2bFixOb
- C/WvamJBYHZZ0OFgkaA0hFcTw4LtCNOnyYDdhxxh0Lq/kWJLsabHl3J5tBIZd3yjKrKP
- sK0w==
+ bh=HidgR8YbdGgwoHKVV2oZVXdM2RMQ3ecG9VGCjbLMY1s=;
+ b=hFS9XJylgsenpGO6uMkh8PMcGh4z5swIi8+qjIH/YX7WHpKFWA1ed1gtctls2UzaLq
+ Wgw/Pu3JTRVPAw1spggV/16qH1ArdUCdwjZ4RoHSmyONMYER7hIbfX8FpqC8yJAXRidY
+ UPeZnDLF5lYF0oF3n17NGFylAxaqoAPbzMnZ+th2s5ajZA7mR9RsBKnr79egKZVUgvl+
+ MKbVsrPisMZD1zj8ZTrT/56ff9wJepMUzVLQAjFjXI0+dejgtSl1HZKZh/hQJuspasfQ
+ NqL79oSUsnzzBPnPX3/dB9Uiw1v1aPCQGFe983JI4ASpUFuAv8YPfVSRb5iHuP8V/xXp
+ GQGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758566997; x=1759171797;
+ d=1e100.net; s=20230601; t=1758566998; x=1759171798;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8HfYM97rkS2HFXVpmImKidouR7djYhqCiCCIkuQ4XIE=;
- b=b24Ge7WtHzD9VbinP6dGDqfkGlbLXfDm4ZfM8gRF9P4DCjKPN3ENHSgnMFRVmXIZLw
- LZbPDB1rKxpTSKCyGXKDQmK6d07OTYU937783T+OiOS+PCDQpwapmz/fgSQRvm7FOYU+
- QzrkT0wnY4Zp64xvvnE3IMUOcoBSCYfo6Z3hYcp5lKD+6wl08V+nruxDIGxMiFwLR3TF
- Nld2/gZRNYFBf0/vHXuNmIsSSfP/rnZPk+2n+WZclsSSS39gj2GruZxtb4QqtRKOT4dB
- RUHDNGC9HI3C4o8PbuZglIhBrFAk33L5fMwWw1Aq39xCF+mwux71ZqJg/IrsDHId7Zo3
- 1EoQ==
-X-Gm-Message-State: AOJu0YxngRJrc77qzeHpAZJYsjSc+uVXCEHa8Ra5fr6nsckxYRQd6k1u
- 5UHusjwcLqGQ3azLS/H/R/nxMyRe595kmnknM66X9MXgvR/UJ/wQ8excu56Aiq38z4U4cJWwkGi
- Zjk1W
-X-Gm-Gg: ASbGncsvq9k+FI9UuuJXJqrLWmCTyKOxufzpo64KJXINjZQKwDKHlqYb+mh+RW4QFKG
- vHDAnL+ijVbyAyqjNJah/hE7VM7Z0U7MqA0AuzJR0AxFmnAgeEJQHzJs9n9TF0z8Qjww9lTk/ZV
- HRlMcjMFYbkvTotQVuBAJYBdAvpu7r3pTDUPcPoFLzXczrsANs6WjC3PnAXLGoR70o/S24j+i7i
- Gw/gUwsT9nNQhmlBFSb9xvGyb6nmNjMT1Or3wbtbh1ja+MzJUuuT1ZR4ihsaMV3TwYPewBjDvDY
- Qm1qcQ8CpAcrM+DkhLUybvLQyJvt/VHRTY54us+wDa73Aqp6SWbujB6RryKTFc7vQFyCRYd+omU
- hTCismR9Xocf452dRq43JHMoKCYTfLKCqeioDNis=
-X-Google-Smtp-Source: AGHT+IG73M0BaDKpuRN3SiaqIjL34X10Tl5tV5q2m747yXhQZmk01oflbfQx3dtdaBE88yo7CvbfDg==
-X-Received: by 2002:a05:6a20:1595:b0:263:4717:559 with SMTP id
- adf61e73a8af0-292188e67a3mr15919813637.20.1758566996778; 
- Mon, 22 Sep 2025 11:49:56 -0700 (PDT)
+ bh=HidgR8YbdGgwoHKVV2oZVXdM2RMQ3ecG9VGCjbLMY1s=;
+ b=jFz4LvStQ2qkfUnSdTeCfsJLC0a8Zc9kW/htwh3iVD5ER0Vsni4ULtt6tV34Dnxd4B
+ a7PvniwKz38ISECoxtL9RtuDLLKtB3C9yzqK8I9w/Cs1hn4hJrJk+7JdRCVC/pKMVarb
+ O6yGfMN80CUJAA2LfhNlWURKncEg/fRs7EABsrDG/h7Oe5V/Plm34tFAbLcDXXg5YHyj
+ bW817YDGrlPDlKAhkN/yDHA97NOEFBxCOsofVNC9ta6oc2tzyJbGy5lIMltLD3FQ8XuQ
+ cMpXeJfVmpaikTWFIDJ9UBactddyXTS3hCK4PEEN1DGIgqJDGyl0ENUzb4Tc5CIHFqvW
+ iMQw==
+X-Gm-Message-State: AOJu0YytbfN7B9hpzA6eZwQVsVgBjJ3aJpdTMcZ5dRFR5Riq2VTccL3T
+ R2pyQqFP7gkdqEwBAMrbRtfz0LK71KLEP5AZ08x80gqncrWEHr7LLetZ4nihKSEeupm6f8YSShF
+ PqT/y
+X-Gm-Gg: ASbGncuk3mR+TY6RIZnu/0OXNV0C4w114uG9Ohe/bPt7eJLfH8uvsIZstf1y56Kt135
+ ySLREOwPknhASxM3Wlm9pXniLlGiXwIddKP1F8MJQjM2f99Y9CECWcWbazKKJYoZESGKXVZXwHi
+ 5iNwJYk8k4u//qkOBVX08SAIJWhb0FXB+Hs+60cvhAG0b3VMrrWYAjVQTmGU8W+mbuUh7CfzKet
+ i3lreBNwLnzKeuuuK2vZZFD6Oj/Vr7o2G54vhGkQNNKUq3dEKjxZgzdBD5NrZNwc1AD02LAm+e4
+ XbiqKwTxw7FRzq9wEUC/1cJijbrfgcGTNfea3vVoAKR5E7duiiNSj36rY/yktil7uWyeqMscCO3
+ QH6eC4QwU2A9wK+dBM0mRVBovolly
+X-Google-Smtp-Source: AGHT+IEz49kNzWGti3Us/0yjyZzEpNLwdomoQLQFyFMC90XvzhCEeZzjsrGNFZcfduEuXuW6QybXww==
+X-Received: by 2002:a05:6a00:23c3:b0:77f:42d5:b914 with SMTP id
+ d2e1a72fcca58-77f42d5bb6amr3565135b3a.12.1758566997680; 
+ Mon, 22 Sep 2025 11:49:57 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-77e5fe6de75sm10583861b3a.19.2025.09.22.11.49.55
+ d2e1a72fcca58-77e5fe6de75sm10583861b3a.19.2025.09.22.11.49.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Sep 2025 11:49:56 -0700 (PDT)
+ Mon, 22 Sep 2025 11:49:57 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
-	Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v5 23/76] target/arm: Convert regime_has_2_ranges from switch
- to table
-Date: Mon, 22 Sep 2025 11:48:31 -0700
-Message-ID: <20250922184924.2754205-24-richard.henderson@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v5 24/76] target/arm: Remove unused env argument from
+ regime_is_pan
+Date: Mon, 22 Sep 2025 11:48:32 -0700
+Message-ID: <20250922184924.2754205-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250922184924.2754205-1-richard.henderson@linaro.org>
 References: <20250922184924.2754205-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,129 +101,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/internals.h       | 28 ----------------------------
- target/arm/mmuidx-internal.h | 17 +++++++++++++++++
- target/arm/mmuidx.c          | 19 ++++++++++---------
- 3 files changed, 27 insertions(+), 37 deletions(-)
+ target/arm/internals.h | 2 +-
+ target/arm/ptw.c       | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/target/arm/internals.h b/target/arm/internals.h
-index a886282957..a25ef90c4c 100644
+index a25ef90c4c..b32c31779c 100644
 --- a/target/arm/internals.h
 +++ b/target/arm/internals.h
-@@ -1027,34 +1027,6 @@ static inline void arm_call_el_change_hook(ARMCPU *cpu)
+@@ -1027,7 +1027,7 @@ static inline void arm_call_el_change_hook(ARMCPU *cpu)
      }
  }
  
--/*
-- * Return true if this address translation regime has two ranges.
-- * Note that this will not return the correct answer for AArch32
-- * Secure PL1&0 (i.e. mmu indexes E3, E30_0, E30_3_PAN), but it is
-- * never called from a context where EL3 can be AArch32. (The
-- * correct return value for ARMMMUIdx_E3 would be different for
-- * that case, so we can't just make the function return the
-- * correct value anyway; we would need an extra "bool e3_is_aarch32"
-- * argument which all the current callsites would pass as 'false'.)
-- */
--static inline bool regime_has_2_ranges(ARMMMUIdx mmu_idx)
--{
--    switch (mmu_idx) {
--    case ARMMMUIdx_Stage1_E0:
--    case ARMMMUIdx_Stage1_E1:
--    case ARMMMUIdx_Stage1_E1_PAN:
--    case ARMMMUIdx_E10_0:
--    case ARMMMUIdx_E10_1:
--    case ARMMMUIdx_E10_1_PAN:
--    case ARMMMUIdx_E20_0:
--    case ARMMMUIdx_E20_2:
--    case ARMMMUIdx_E20_2_PAN:
--        return true;
--    default:
--        return false;
--    }
--}
--
- static inline bool regime_is_pan(CPUARMState *env, ARMMMUIdx mmu_idx)
+-static inline bool regime_is_pan(CPUARMState *env, ARMMMUIdx mmu_idx)
++static inline bool regime_is_pan(ARMMMUIdx mmu_idx)
  {
      switch (mmu_idx) {
-diff --git a/target/arm/mmuidx-internal.h b/target/arm/mmuidx-internal.h
-index d8d64a14d6..f03a2ab94c 100644
---- a/target/arm/mmuidx-internal.h
-+++ b/target/arm/mmuidx-internal.h
-@@ -15,6 +15,7 @@ FIELD(MMUIDXINFO, EL, 0, 2)
- FIELD(MMUIDXINFO, ELVALID, 2, 1)
- FIELD(MMUIDXINFO, REL, 3, 2)
- FIELD(MMUIDXINFO, RELVALID, 5, 1)
-+FIELD(MMUIDXINFO, 2RANGES, 6, 1)
- 
- extern const uint32_t arm_mmuidx_table[ARM_MMU_IDX_M + 8];
- 
-@@ -39,4 +40,20 @@ static inline uint32_t regime_el(ARMMMUIdx idx)
-     return FIELD_EX32(arm_mmuidx_table[idx], MMUIDXINFO, REL);
- }
- 
-+/*
-+ * Return true if this address translation regime has two ranges.
-+ * Note that this will not return the correct answer for AArch32
-+ * Secure PL1&0 (i.e. mmu indexes E3, E30_0, E30_3_PAN), but it is
-+ * never called from a context where EL3 can be AArch32. (The
-+ * correct return value for ARMMMUIdx_E3 would be different for
-+ * that case, so we can't just make the function return the
-+ * correct value anyway; we would need an extra "bool e3_is_aarch32"
-+ * argument which all the current callsites would pass as 'false'.)
-+ */
-+static inline bool regime_has_2_ranges(ARMMMUIdx idx)
-+{
-+    tcg_debug_assert(arm_mmuidx_is_valid(idx));
-+    return FIELD_EX32(arm_mmuidx_table[idx], MMUIDXINFO, 2RANGES);
-+}
-+
- #endif /* TARGET_ARM_MMUIDX_INTERNAL_H */
-diff --git a/target/arm/mmuidx.c b/target/arm/mmuidx.c
-index 6dfefa56c2..f880d21606 100644
---- a/target/arm/mmuidx.c
-+++ b/target/arm/mmuidx.c
-@@ -9,18 +9,19 @@
- 
- #define EL(X)  ((X << R_MMUIDXINFO_EL_SHIFT) | R_MMUIDXINFO_ELVALID_MASK)
- #define REL(X) ((X << R_MMUIDXINFO_REL_SHIFT) | R_MMUIDXINFO_RELVALID_MASK)
-+#define R2     R_MMUIDXINFO_2RANGES_MASK
- 
- const uint32_t arm_mmuidx_table[ARM_MMU_IDX_M + 8] = {
-     /*
-      * A-profile.
-      */
--    [ARMMMUIdx_E10_0]           = EL(0) | REL(1),
--    [ARMMMUIdx_E10_1]           = EL(1) | REL(1),
--    [ARMMMUIdx_E10_1_PAN]       = EL(1) | REL(1),
-+    [ARMMMUIdx_E10_0]           = EL(0) | REL(1) | R2,
-+    [ARMMMUIdx_E10_1]           = EL(1) | REL(1) | R2,
-+    [ARMMMUIdx_E10_1_PAN]       = EL(1) | REL(1) | R2,
- 
--    [ARMMMUIdx_E20_0]           = EL(0) | REL(2),
--    [ARMMMUIdx_E20_2]           = EL(2) | REL(2),
--    [ARMMMUIdx_E20_2_PAN]       = EL(2) | REL(2),
-+    [ARMMMUIdx_E20_0]           = EL(0) | REL(2) | R2,
-+    [ARMMMUIdx_E20_2]           = EL(2) | REL(2) | R2,
-+    [ARMMMUIdx_E20_2_PAN]       = EL(2) | REL(2) | R2,
- 
-     [ARMMMUIdx_E2]              = EL(2) | REL(2),
- 
-@@ -31,9 +32,9 @@ const uint32_t arm_mmuidx_table[ARM_MMU_IDX_M + 8] = {
-     [ARMMMUIdx_Stage2_S]        = REL(2),
-     [ARMMMUIdx_Stage2]          = REL(2),
- 
--    [ARMMMUIdx_Stage1_E0]       = REL(1),
--    [ARMMMUIdx_Stage1_E1]       = REL(1),
--    [ARMMMUIdx_Stage1_E1_PAN]   = REL(1),
-+    [ARMMMUIdx_Stage1_E0]       = REL(1) | R2,
-+    [ARMMMUIdx_Stage1_E1]       = REL(1) | R2,
-+    [ARMMMUIdx_Stage1_E1_PAN]   = REL(1) | R2,
- 
-     /*
-      * M-profile.
+     case ARMMMUIdx_Stage1_E1_PAN:
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 622b5cf520..db51e55cd2 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -1393,10 +1393,10 @@ static int get_S1prot(CPUARMState *env, ARMMMUIdx mmu_idx, bool is_aa64,
+          * We make the IMPDEF choices that SCR_EL3.SIF and Realm EL2&0
+          * do not affect EPAN.
+          */
+-        if (user_rw && regime_is_pan(env, mmu_idx)) {
++        if (user_rw && regime_is_pan(mmu_idx)) {
+             prot_rw = 0;
+         } else if (cpu_isar_feature(aa64_pan3, cpu) && is_aa64 &&
+-                   regime_is_pan(env, mmu_idx) &&
++                   regime_is_pan(mmu_idx) &&
+                    (regime_sctlr(env, mmu_idx) & SCTLR_EPAN) && !xn) {
+             prot_rw = 0;
+         }
+@@ -1535,7 +1535,7 @@ static int get_S1prot_indirect(CPUARMState *env, S1Translate *ptw,
+             p_perm &= ~(PAGE_RWX | PAGE_GCS);
+             u_perm &= ~(PAGE_RWX | PAGE_GCS);
+         }
+-        if ((u_perm & (PAGE_RWX | PAGE_GCS)) && regime_is_pan(env, mmu_idx)) {
++        if ((u_perm & (PAGE_RWX | PAGE_GCS)) && regime_is_pan(mmu_idx)) {
+             p_perm &= ~(PAGE_READ | PAGE_WRITE);
+         }
+         perm = regime_is_user(env, mmu_idx) ? u_perm : p_perm;
 -- 
 2.43.0
 
