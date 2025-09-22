@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E676B91863
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 15:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 244EFB9183D
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 15:51:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0gvi-0000Tq-3f; Mon, 22 Sep 2025 09:50:10 -0400
+	id 1v0gvh-0000Tp-MW; Mon, 22 Sep 2025 09:50:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1v0gva-0000QV-Bp
+ id 1v0gvZ-0000QE-1H
  for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:50:02 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1v0gvT-0001ti-1u
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:50:02 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58M7NKHu006483;
- Mon, 22 Sep 2025 13:49:50 GMT
+ id 1v0gvS-0001u0-HU
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 09:50:00 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58M7NNsc024185;
+ Mon, 22 Sep 2025 13:49:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=a1OWDnMLDg8boXx6EnW3WJpFBvSqT8/lF0638NDHTDw=; b=
- m7peNvEpdWJWWx16SmsiO5beBcqIwtsXHrG4iKEBU5/+/7vfF85jnuAfhUFYqmjk
- DfcgLw4LxG5/GcYn995GRwho7OHpFM5rm0BGhoyOqOYuOMHDIgC5LjF0DS5Yz0fX
- tKDoJiHQa9e5t26KGTfOhptCZLoDxnwCsf6GWwz3zxGUif7slOag9ddsg98h8thU
- qEwKij1k7GHaI7MYOP/FGI1S2vQ2O4GzjnjEzWZl/Qj/zvv7Okn4s6ncSDZke+ni
- h0C4Vbhp/kyL0XWvmznXKCeu0KJhuO2KSO3K2EVUkRDyMh9ikPmy8H6cLKATIa/b
- nww5fxwRfINQmh2+ZwOeow==
+ corp-2025-04-25; bh=2bWnxhTfby+JfYwTzPOe6ikvJvlzOf50/3Bo9FgmuXY=; b=
+ NQvdccYfVL5jq/ZkR111bxNufECVf3MD6fmxY0ZJjJZINL6TQ+4U6wgdykgk0Ujw
+ BfB6xas9VM3rDb4Bsf2RMCvKIPDPFk7zzEyZu1eMi9JEAp5r3bjtz1o1wVM5Nlaf
+ SF4sRzCc6EnasZOlC9sRILJrZmtkl4oE+KbE3CkPmFIgAYhVZTgI3gJxKfjYd/uc
+ 0EuZFJBL3ueLNNqNvKA6GKNO5c7c65mSfy4C52hFT+zfTyKl96bhJFnh0s+kfHZg
+ izkdDg0VZUtpPkW29pgapZu1kMPa5RvZlBUcEg9jUNcXKe7Fzd2NUoP0OcWw7cFJ
+ ZgYmeXRMfwvnSkv54mkoyw==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 499kvttfmn-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 499jpdjg8p-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Sep 2025 13:49:50 +0000 (GMT)
+ Mon, 22 Sep 2025 13:49:51 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 58MCMrcL034116; Mon, 22 Sep 2025 13:49:49 GMT
+ with ESMTP id 58MCGFgP034388; Mon, 22 Sep 2025 13:49:51 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 49a6nhan86-1
+ 49a6nhan8m-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Sep 2025 13:49:49 +0000
+ Mon, 22 Sep 2025 13:49:51 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58MDnlWD004351;
- Mon, 22 Sep 2025 13:49:49 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58MDnlWF004351;
+ Mon, 22 Sep 2025 13:49:50 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 49a6nhan6x-2; Mon, 22 Sep 2025 13:49:49 +0000
+ ESMTP id 49a6nhan6x-3; Mon, 22 Sep 2025 13:49:50 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
@@ -60,9 +60,9 @@ Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  Cedric Le Goater <clg@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V4 1/8] migration: multi-mode notifier
-Date: Mon, 22 Sep 2025 06:49:38 -0700
-Message-Id: <1758548985-354793-2-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V4 2/8] migration: add cpr_walk_fd
+Date: Mon, 22 Sep 2025 06:49:39 -0700
+Message-Id: <1758548985-354793-3-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1758548985-354793-1-git-send-email-steven.sistare@oracle.com>
 References: <1758548985-354793-1-git-send-email-steven.sistare@oracle.com>
@@ -74,20 +74,20 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  spamscore=0 malwarescore=0 phishscore=0 bulkscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
  definitions=main-2509220135
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAyNSBTYWx0ZWRfX/Qe2ZnnjzvI5
- M95mU5YM4OhUfWRi2qOQKbY6wEs28p9LUG4X9YzECVxyjHcdYxbYZoYHkOpy+znyOjiTLSxmpbl
- LwXtHySknXKxckP3eXoHKxv0rSNWPE3N4qwlATjgU9F2Fj3NBfDCYsdwCsdmm928uO2p2F9PDvW
- WmUXr7EfD8ISG035cl7ppEDxUARiaTF7akwIWdKnlfVp4i9fsiHl9qFRJREtGGFevv6REAU6yNO
- ELOVvrylyZWpkQl50iJLjFqvq+j2hTWM+u7dqskBnYbfTPMH0XIHpVXL7k9OM++uUIQvYu+9NpQ
- tK3S3epdOlV6T7g64Es5dPwZ+fx9qjmhBOf+xZ2+BU1WvtCsWZZaEBOXgFTZs4u7EBywv/wnEtJ
- jWVmNmyOdEB1jmf2o2FBeYKzCFufYQ==
-X-Authority-Analysis: v=2.4 cv=UPPdHDfy c=1 sm=1 tr=0 ts=68d153fe b=1 cx=c_pps
+X-Proofpoint-GUID: x1yL8aEv2pIU9zhWR_lXw7jXqChR34yy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAxMiBTYWx0ZWRfX+XJwVbkWD8fk
+ K0/tiBKNEXrF0IHc9mjVauGZsmaMwncb6yHjrdY2ZFmunZ6MAAGuuusKszS8L/YUmOhy4VxyxJ4
+ 54ZzG0CMMoGG6A0gD2zkZxrR/1YJnnZvIAeLL2l0KtPkrOxO2NuK/bbmJ0axMZm2KuDSmVk32PD
+ YVkhdUVKTdJoW6BiipEWGUtINcFgfP1R/Xywk+x7MhiZM8t2JcU8+XTIzSfwVWm98yWvpV+fmSX
+ hHWUbEmdjHJZERSEjOBG/j0Ip1jK4v5pIMETulBlaztfg6bQLJdgaoX6OX91ReKWEsRx/eGCDqg
+ 0ruxrdcu6cvIznPyBFusWsO6QZSfERfqy0yPs3qAirOX6COWhufSMhupHjoRDSm/P6qD991dgO7
+ w78hPTfdtIEBUTMLEN9VgtNrvIT/1A==
+X-Authority-Analysis: v=2.4 cv=aJPwqa9m c=1 sm=1 tr=0 ts=68d153ff b=1 cx=c_pps
  a=e1sVV491RgrpLwSTMOnk8w==:117
  a=e1sVV491RgrpLwSTMOnk8w==:17
- a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=qm0lDVemfS40E2rT5CEA:9 cc=ntf
- awl=host:13614
-X-Proofpoint-GUID: Ga9aDgP-61HG5lJfm8DQqM3p0By6obAZ
-X-Proofpoint-ORIG-GUID: Ga9aDgP-61HG5lJfm8DQqM3p0By6obAZ
+ a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8 a=XbKixnoXw7dXUEClIQQA:9
+ cc=ntf awl=host:13614
+X-Proofpoint-ORIG-GUID: x1yL8aEv2pIU9zhWR_lXw7jXqChR34yy
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -95,9 +95,9 @@ X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,143 +113,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow a notifier to be added for multiple migration modes.
-To allow a notifier to appear on multiple per-node lists, use
-a generic list type.  We can no longer use NotifierWithReturnList,
-because it shoe horns the notifier onto a single list.
+Add a helper to walk all CPR fd's and run a callback for each.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- include/migration/misc.h | 12 ++++++++++
- migration/migration.c    | 60 +++++++++++++++++++++++++++++++++++++-----------
- 2 files changed, 59 insertions(+), 13 deletions(-)
+ include/migration/cpr.h |  3 +++
+ migration/cpr.c         | 13 +++++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index a261f99..592b930 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -95,7 +95,19 @@ void migration_add_notifier(NotifierWithReturn *notify,
- void migration_add_notifier_mode(NotifierWithReturn *notify,
-                                  MigrationNotifyFunc func, MigMode mode);
+diff --git a/include/migration/cpr.h b/include/migration/cpr.h
+index 3fc19a7..2b074d7 100644
+--- a/include/migration/cpr.h
++++ b/include/migration/cpr.h
+@@ -34,6 +34,9 @@ void cpr_resave_fd(const char *name, int id, int fd);
+ int cpr_open_fd(const char *path, int flags, const char *name, int id,
+                 Error **errp);
  
-+/*
-+ * Same as migration_add_notifier, but applies to all @mode in the argument
-+ * list.  The list is terminated by -1 or MIG_MODE_ALL.  For the latter,
-+ * the notifier is added for all modes.
-+ */
-+void migration_add_notifier_modes(NotifierWithReturn *notify,
-+                                  MigrationNotifyFunc func, MigMode mode, ...);
++typedef bool (*cpr_walk_fd_cb)(int fd);
++bool cpr_walk_fd(cpr_walk_fd_cb cb);
 +
-+/*
-+ * Remove a notifier from all modes.
-+ */
- void migration_remove_notifier(NotifierWithReturn *notify);
-+
- void migration_file_set_error(int ret, Error *err);
- 
- /* True if incoming migration entered POSTCOPY_INCOMING_DISCARD */
-diff --git a/migration/migration.c b/migration/migration.c
-index 10c216d..08a98f7 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -74,11 +74,7 @@
- 
- #define INMIGRATE_DEFAULT_EXIT_ON_ERROR true
- 
--static NotifierWithReturnList migration_state_notifiers[] = {
--    NOTIFIER_ELEM_INIT(migration_state_notifiers, MIG_MODE_NORMAL),
--    NOTIFIER_ELEM_INIT(migration_state_notifiers, MIG_MODE_CPR_REBOOT),
--    NOTIFIER_ELEM_INIT(migration_state_notifiers, MIG_MODE_CPR_TRANSFER),
--};
-+static GSList *migration_state_notifiers[MIG_MODE__MAX];
- 
- /* Messages sent on the return path from destination to source */
- enum mig_rp_message_type {
-@@ -1665,23 +1661,51 @@ void migration_cancel(void)
-     }
+ MigMode cpr_get_incoming_mode(void);
+ void cpr_set_incoming_mode(MigMode mode);
+ bool cpr_is_incoming(void);
+diff --git a/migration/cpr.c b/migration/cpr.c
+index 42ad0b0..d3e370e 100644
+--- a/migration/cpr.c
++++ b/migration/cpr.c
+@@ -121,6 +121,19 @@ int cpr_open_fd(const char *path, int flags, const char *name, int id,
+     return fd;
  }
  
-+static int get_modes(MigMode mode, va_list ap);
-+
-+static void add_notifiers(NotifierWithReturn *notify, int modes)
++bool cpr_walk_fd(cpr_walk_fd_cb cb)
 +{
-+    for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
-+        if (modes & BIT(mode)) {
-+            migration_state_notifiers[mode] =
-+                g_slist_prepend(migration_state_notifiers[mode], notify);
++    CprFd *elem;
++
++    QLIST_FOREACH(elem, &cpr_state.fds, next) {
++        g_assert(elem->fd >= 0);
++        if (!cb(elem->fd)) {
++            return false;
 +        }
 +    }
++    return true;
 +}
 +
-+void migration_add_notifier_modes(NotifierWithReturn *notify,
-+                                  MigrationNotifyFunc func, MigMode mode, ...)
-+{
-+    int modes;
-+    va_list ap;
-+
-+    va_start(ap, mode);
-+    modes = get_modes(mode, ap);
-+    va_end(ap);
-+
-+    notify->notify = (NotifierWithReturnFunc)func;
-+    add_notifiers(notify, modes);
-+}
-+
- void migration_add_notifier_mode(NotifierWithReturn *notify,
-                                  MigrationNotifyFunc func, MigMode mode)
- {
--    notify->notify = (NotifierWithReturnFunc)func;
--    notifier_with_return_list_add(&migration_state_notifiers[mode], notify);
-+    migration_add_notifier_modes(notify, func, mode, -1);
- }
- 
- void migration_add_notifier(NotifierWithReturn *notify,
-                             MigrationNotifyFunc func)
- {
--    migration_add_notifier_mode(notify, func, MIG_MODE_NORMAL);
-+    migration_add_notifier_modes(notify, func, MIG_MODE_NORMAL, -1);
- }
- 
- void migration_remove_notifier(NotifierWithReturn *notify)
- {
-     if (notify->notify) {
--        notifier_with_return_remove(notify);
-+        for (MigMode mode = 0; mode < MIG_MODE__MAX; mode++) {
-+            migration_blockers[mode] =
-+                g_slist_remove(migration_state_notifiers[mode], notify);
-+        }
-         notify->notify = NULL;
-     }
- }
-@@ -1691,13 +1715,23 @@ int migration_call_notifiers(MigrationState *s, MigrationEventType type,
- {
-     MigMode mode = s->parameters.mode;
-     MigrationEvent e;
-+    NotifierWithReturn *notifier;
-+    GSList *elem, *next;
-     int ret;
- 
-     e.type = type;
--    ret = notifier_with_return_list_notify(&migration_state_notifiers[mode],
--                                           &e, errp);
--    assert(!ret || type == MIG_EVENT_PRECOPY_SETUP);
--    return ret;
-+
-+    for (elem = migration_state_notifiers[mode]; elem; elem = next) {
-+        next = elem->next;
-+        notifier = (NotifierWithReturn *)elem->data;
-+        ret = notifier->notify(notifier, &e, errp);
-+        if (ret) {
-+            assert(type == MIG_EVENT_PRECOPY_SETUP);
-+            return ret;
-+        }
-+    }
-+
-+    return 0;
- }
- 
- bool migration_has_failed(MigrationState *s)
+ /*************************************************************************/
+ static const VMStateDescription vmstate_cpr_state = {
+     .name = CPR_STATE,
 -- 
 1.8.3.1
 
