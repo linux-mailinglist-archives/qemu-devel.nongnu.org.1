@@ -2,67 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C974B8F357
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 09:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A1DB8F35D
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Sep 2025 09:00:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0aVw-0005hh-6w; Mon, 22 Sep 2025 02:59:08 -0400
+	id 1v0aW1-0005i7-Nq; Mon, 22 Sep 2025 02:59:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nanliu@redhat.com>) id 1v0aVu-0005hC-1r
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 02:59:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nanliu@redhat.com>) id 1v0aVr-0008Ib-TV
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 02:59:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758524342;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=vSFNZtp1OF3sI2KNcg8k091rCczXY4eX9fStYwBSy0g=;
- b=ifpPSmE7lHeWOlA9G4cLDpX+4nz22S2Lg8Wc1Dsnt3ytKvwKdxx2pHnzSuqwcxKfjISFsW
- TFor3OP2TuQcoW85KNDargZ9sWjj8vgVwSfBLNhgZAsPrs/1WBHyZE5uZNRWjn+mUcXZOM
- hinQ2IMTnowsKG3SbO4TZKa7+5Uk6T8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-258-4gE9Fvp-PeKJrCTKscJODQ-1; Mon,
- 22 Sep 2025 02:57:49 -0400
-X-MC-Unique: 4gE9Fvp-PeKJrCTKscJODQ-1
-X-Mimecast-MFC-AGG-ID: 4gE9Fvp-PeKJrCTKscJODQ_1758524269
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D7E91180034D
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 06:57:48 +0000 (UTC)
-Received: from nanliu-thinkpadp16vgen1.raycom.csb (unknown [10.72.116.113])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2B61F1800577; Mon, 22 Sep 2025 06:57:45 +0000 (UTC)
-From: nanliu <nanliu@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: kraxel@redhat.com,
-	nanliu <nanliu@redhat.com>
-Subject: [PATCH] docs/devel: Correct uefi-vars-x64 device name
-Date: Mon, 22 Sep 2025 14:57:14 +0800
-Message-ID: <20250922065714.93081-1-nanliu@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v0aVz-0005hr-EJ
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 02:59:11 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v0aVx-0008JU-R7
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 02:59:11 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3e9042021faso3172030f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 21 Sep 2025 23:59:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758524348; x=1759129148; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3TrDNN+SaNnGfqX0st6UljeB4F4bS62VvZnuSvsaIcU=;
+ b=CUVtHoEVoYkV4xlpylXixxY4WtBpfJrN89aJfRrkbeJA6e2ZcfUoN1JSW/9REHSN5I
+ 0qKnDBXwzSWYCNCxe7M03etpQTGa1SBbKDJX5r0JAPa4CDQW4gLjlPRrfs0n7bpt9yBw
+ 7IlgoHy4I3xoI93huk/rVLQ9Ky1tf6lG6c9VfjJqcTxbWNn+sFiZcmOMS0crL1Zo8Qb1
+ Cbq4gR7ZxwXDwczxbD3/U4Ca057LbxZaQQjbyT/qQJOkOrALzl72J9Hi3COFmBMIUxhQ
+ G+d/dr2tFhv+VZa6zYEJjI1fOfSNSLa2TFk5ZnlEiG9YRJONUWe9t8iWPxVwApABtCUw
+ b/YA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758524348; x=1759129148;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3TrDNN+SaNnGfqX0st6UljeB4F4bS62VvZnuSvsaIcU=;
+ b=V4Je8Owo7t0MQoRDsLwt4tQNzC5jORmu4jO6onLu+R4Q4/18i5lCeSNQIkpMZyhtIw
+ QuIdus2d8RpL1MlCoKefbW8AetKjymdKCdDPneaJr4YCmXHPkYjMBARQr2TiER76uS9+
+ wyFI/bF83IooLc86F3r6eyHRH20MD8LubK1cj3IJ03U/yUMBEYgmeZjSkooF+sKuAS40
+ gnSzKVg9zuHZ2KRumZM8rnNZDYvJGVWlL90oOmuv7cll+PBhX1Qr38NA4VpNpo5W4bVH
+ 5Nv3wRVIHiCUe0QrLVzyqTYlm4Kek6RSeLFr2WtKIAYgEbG9jTFbeyBld0MPxsK0f0Fx
+ CjGg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUKY45JV7ahKXcLvJBs4xmEg//NyMnZef/QHYkTbDwhCuVIXIQPYd4fZAjH52EAQEEyw4YVXldAmplG@nongnu.org
+X-Gm-Message-State: AOJu0Yx2mb9m4sU9wt4HjF76m4G7eBCequZifvBwQAK0rIf54jP5rPnq
+ lZ4CScNqKun04IwpWhDFA9xfXchg4HTHOD2sM7FC7CORIDH0+WM5z//VAev1l5jVSn0=
+X-Gm-Gg: ASbGncv7QFYBE/6SfVITwC1wg3ZiQbONluv4diQIUkc9DZi8QM8bF3pcMxs6r148n6a
+ iR9l8XI2lWt8k/S+LIvb6EzXeTHZ4oRQu5PeB0raoqyJh201JtJGrVRY60VGPnPx/aSMbFJXoWT
+ b1+baYcg0X36XzqNv3LZ88ur/EIVjhWqhTeBE1Y0c6xph2gSBdAIKaUCBZmtQc6uNr0KOxS5zpj
+ uo4bKsWRxBn7O1Nky9KWnuibDIaRCdP/oMdRS9vNmgiD6HO7Xn0GmGIIKloS5dJeJ+nf7Vc6HiZ
+ GKCkoC5MTlyIqdFzn78elrEQmDV/cZVprITDKm83CiNXeqe45Cwg4ZfB9VYFE6eM5I0Xf8Z4nIJ
+ 5XQPUNE4RR2kte5lXDS8UPC3u5DGM4pSsa9vZkmX7MeA2b88W0NoENs4g8d53OIwqh6r2G6w=
+X-Google-Smtp-Source: AGHT+IEDSU1AZQ+WzavlZzIBhKC/VWEC0uYtRTxB63EcjNIIdNuD7aEifZ8qIVZVoRj+Dr8142tVjg==
+X-Received: by 2002:a05:6000:2203:b0:3d4:2f8c:1d37 with SMTP id
+ ffacd0b85a97d-3ee7e106162mr10244216f8f.26.1758524347691; 
+ Sun, 21 Sep 2025 23:59:07 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-464f5a285efsm212240755e9.18.2025.09.21.23.59.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 21 Sep 2025 23:59:07 -0700 (PDT)
+Message-ID: <12f33412-18c0-45a2-8acf-abb4cdf1439d@linaro.org>
+Date: Mon, 22 Sep 2025 08:59:05 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-10.1? 0/3] linux-user: Select default CPUs for
+ MicroMIPS and MIPS16e ASEs
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>, Jiaxun Yang
+ <jiaxun.yang@flygoat.com>, qemu-stable <qemu-stable@nongnu.org>
+References: <20250814070650.78657-1-philmd@linaro.org>
+ <5f3ccbec-5f6f-42c5-bb65-1139a7fe86a6@tls.msk.ru>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <5f3ccbec-5f6f-42c5-bb65-1139a7fe86a6@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=nanliu@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,43 +102,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The documentation for UEFI variable storage in uefi-vars.rst
-incorrectly listed the device name as `uefi-vars-x86`.
+On 4/9/25 22:15, Michael Tokarev wrote:
+> On 14.08.2025 10:06, Philippe Mathieu-Daudé wrote:
+>> We weren't parsing MIPS ASE in the ELF header, so couldn't
+>> automatically pick an appropriate CPU.
+>>
+>> Since we'll have a rc4, I propose these sensible patches
+>> for 10.1, but both ASEs are available since 15 years in QEMU,
+>> so this isn't something broken since the latest release, and
+>> I don't mind holding it for 10.2.
+> 
+> Now I wonder what should I do with this wrt qemu-stable series.
+> Since no one complained (?) for so many years..  is it worth
+> to add this to previous stable releases?
 
-The correct device name as implemented in the source code is
-`uefi-vars-x64`.
+I fixed these for correctness, but indeed nobody cares.
 
-This commit updates the documentation to use the correct name,
-aligning it with the implementation.
+> 
+> (fwiw, all 3 patches are needed, obviously.  Also, for 7.2,
+> the following 2 patches can also be picked up:
+> f7e3d7521b4 "linux-user/mips: Use P5600 as default CPU to run NaN2008 
+> ELF binaries"
+> 3e8130da7c9 "linux-user/mips: Do not try to use removed R5900 CPU")
+> 
+> What do you think?
 
-Signed-off-by: Nana Liu <nanliu@redhat.com>
----
- docs/devel/uefi-vars.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Ditto. If this is too much burden for you to carry them,
+don't worry dropping them.
 
-diff --git a/docs/devel/uefi-vars.rst b/docs/devel/uefi-vars.rst
-index 0151a26a0a..b4013b5d12 100644
---- a/docs/devel/uefi-vars.rst
-+++ b/docs/devel/uefi-vars.rst
-@@ -34,7 +34,7 @@ configures the shared buffer location and size, and traps to the host
- to process the requests.
- 
- The ``uefi-vars`` device implements the UEFI virtual device.  It comes
--in ``uefi-vars-x86`` and ``uefi-vars-sysbus`` flavours.  The device
-+in ``uefi-vars-x64`` and ``uefi-vars-sysbus`` flavours.  The device
- reimplements the handlers needed, specifically
- ``EfiSmmVariableProtocol`` and ``VarCheckPolicyLibMmiHandler``.  It
- also consumes events (``EfiEndOfDxeEventGroup``,
-@@ -57,7 +57,7 @@ usage on x86_64
- .. code::
- 
-    qemu-system-x86_64 \
--      -device uefi-vars-x86,jsonfile=/path/to/vars.json
-+      -device uefi-vars-x64,jsonfile=/path/to/vars.json
- 
- usage on aarch64
- ----------------
--- 
-2.50.1
+> 
+> I picked all 3 up for 7.2, 10.0 and 10.1 series for now.
 
+Thanks for your careful work with the stable tree :)
 
