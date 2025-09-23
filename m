@@ -2,94 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E1FB95264
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 11:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC0E0B952D2
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 11:12:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0z0G-0004My-2w; Tue, 23 Sep 2025 05:08:05 -0400
+	id 1v0z2U-00075t-UA; Tue, 23 Sep 2025 05:10:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1v0z0B-0004LR-Ul
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 05:08:00 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1v0z06-00005c-Io
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 05:07:59 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-2680cf68265so39420455ad.2
- for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 02:07:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1758618467; x=1759223267; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vvZnoVopgO+vVIobVK5W/azjACmzwY/8WsAkXBWzMOY=;
- b=nPYLCub83pkFOYgcDMv22CPTOzymanxbNYR3euSE5+IyYiaips9CRJggwnuOIx6I+9
- o67Q27votnxgX2IHURYLMfUFvZ76y4IPHcoHd/7xp1/yJWOORcqZGuaGlGwx9fsJDzK9
- Zik5RL8KoSA1RI5VI4Tju8UgoHPPbBMFGuTsGmVeUIkU/IpZ8YXrcdzpAsAsjWPGvS0s
- 0rjwL4p6OrZuuZb7SPFDuVEMiL+dEWDoJtzeQU2fM+BbIOUibtwtPbrDl7NGd7UKfFfY
- e+oqwqZAmte+4D9VyLpOqVS+IiCsyZXs4QieK9bPFkHqF4uHIUIKpjeVXGkHGP/Xob7W
- yxSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758618467; x=1759223267;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vvZnoVopgO+vVIobVK5W/azjACmzwY/8WsAkXBWzMOY=;
- b=AtsJJrd1UkxgkwtGmkoiOJfSZePVKvWxtPwNOKNlX7UTysnpQZo5ki++fKVYqn9Pka
- 1FlERhnVXwDegv24WwpT6SJI5vVeziWkbl/KvhCfFr4fQvtCAhVNaZKZjNdAnA0ctVSt
- ul4XEKPgaKT9lft83ctTBxl6VGETAHtKs3CmL1S/muNJdVQtbRNxojoKYLnQudiPhj+5
- 4gkT+FyX2qzkUGR2cyuSGGBop1U02fKYXaMCi8o1DDBUW9Oc5tISi6zHmQNlzFzqC9Uo
- hp8xtMI/E9URTqnmqk9LI3ddUwvHtrnHuesPQDjxxRkYMRw1GRUgTB3/X83Hn40GY05K
- 7UqQ==
-X-Gm-Message-State: AOJu0Yw/hGweU8Vwq1q3wouksc3HZ9FLZel2OeOZS2L9qqmtI6+dBmfs
- pV4atl53UJx9S7HqKatE1T1SFD5w2r7FVhk4ozkb8F7Rdvau6hPCFMY4KOAo7MYg5EKz6TeKLOQ
- OX2xji6KwT3wY5xumzAACFz1VpzYGQpkvYSqHXlwsdww8Mc4Y2gs28vKIpq/x1j2RzvzyabMadK
- f5EX0hzg9iaF9aWsab/HC1S60lZ3EN5ZoRFLs3xGNjFA==
-X-Gm-Gg: ASbGncvNyEYJ7OGVarnsT07p3qdr6bIK70/ZTlmg4YRTSxp9KOknimT949h++3fXTVr
- 2JxXYX1Gh/kc3CsceQwJR3E1yLQbT8MOqcLu7AH4siDxfdLk0Ro1V8aj2sMTaX7tK6JH3Dd3b19
- k+7Ph7OCDxDRnc8F8cj5DTlY/Hq+cF+/8KOCxk/Si2XpXAstRhqJHG3IB8o5Jh9K9fPORG4Cv3P
- We0VkiYoKe/vDbG+7gb6DGfaiTEKgce/vIdum9PQ56A+XWYGRGB7sBg/JpU5yKQOguHAcgbpBYw
- whFkRHNyc1vaXLCC/thmwz31neHmm7DUdlxq6t3G4K2qSQx0jwQLFTom0W/9vt0T419uSeov6lR
- LqjvJp2Rzlj8QM6IocWPeBowV7XsGIIqhlPenviWTK3MUkb6DYqhkMt1SDNu4rvF4Jig=
-X-Google-Smtp-Source: AGHT+IG+0y2srJ2JYUnN52fG2LoVoYCbwcMfOcRxg+HWUMV0x1Iqgukvc0dqT1IWn4sB9CqDe14KzA==
-X-Received: by 2002:a17:903:19f0:b0:26a:ac66:ef3f with SMTP id
- d9443c01a7336-27cc09e378emr21133705ad.8.1758618467437; 
- Tue, 23 Sep 2025 02:07:47 -0700 (PDT)
-Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
- [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-269800530b7sm157486245ad.18.2025.09.23.02.07.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Sep 2025 02:07:47 -0700 (PDT)
-From: Max Chou <max.chou@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>
-Subject: [PATCH v2 2/2] target/riscv: rvv: Modify minimum VLEN according to
- enabled vector extensions
-Date: Tue, 23 Sep 2025 17:07:29 +0800
-Message-ID: <20250923090729.1887406-3-max.chou@sifive.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250923090729.1887406-1-max.chou@sifive.com>
-References: <20250923090729.1887406-1-max.chou@sifive.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v0z2P-00074l-1I
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 05:10:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v0z2K-0000PW-S0
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 05:10:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758618607;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=kE8kUx7/iPwzXaQI3A5Btxf7jPVzx2qat8YkfsXyGJY=;
+ b=RkzdHZEOwgDnt2hPP4QQfmBIVLzu3vLuSZvVi1+kulRrpG3FuWUR48cN2eavjHq/WCarwD
+ sG3P1G2JZzUWQ7FY0uTidwVtl+XvC1fTyvM4RCTFrzohjcggg8OQnwI9s/DHwX5U87A4tV
+ HfxrLCGcsg7zV8M++rCF9R8ggs0QWQc=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-595-A6EksgaJM52IFAiDuewURg-1; Tue,
+ 23 Sep 2025 05:10:04 -0400
+X-MC-Unique: A6EksgaJM52IFAiDuewURg-1
+X-Mimecast-MFC-AGG-ID: A6EksgaJM52IFAiDuewURg_1758618603
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 69CA619560B5; Tue, 23 Sep 2025 09:10:03 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.33])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C91C518004D8; Tue, 23 Sep 2025 09:10:02 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4BF4721E6A27; Tue, 23 Sep 2025 11:10:00 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: odaki@rsg.ci.i.u-tokyo.ac.jp, marcandre.lureau@redhat.com,
+ berrange@redhat.com, richard.henderson@linaro.org,
+ vsementsov@yandex-team.ru
+Subject: [PATCH v3 00/13] Error reporting cleanup, a fix,
+ and &error_warn removal
+Date: Tue, 23 Sep 2025 11:09:47 +0200
+Message-ID: <20250923091000.3180122-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=max.chou@sifive.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,62 +82,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the RISC-V unprivileged specification, the VLEN should be greater
-or equal to the ELEN. This commit modifies the minimum VLEN based on the vector
-extensions and introduces a check rule for VLEN and ELEN.
+>From qapi/error.h:
 
-  Extension     Minimum VLEN
-* V                      128
-* Zve64[d|f|x]            64
-* Zve32[f|x]              32
+ * Please don't error_setg(&error_fatal, ...), use error_report() and
+ * exit(), because that's more obvious.
+ * Likewise, don't error_setg(&error_abort, ...), use assert().
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
----
- target/riscv/tcg/tcg-cpu.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+Not mentioned, but just as undesirable: error_setg(&error_warn, ...).
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index a6f60f55ceb..02d99bb0ae9 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -416,12 +416,21 @@ static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
- static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
-                                  Error **errp)
- {
-+    uint32_t min_vlen;
-     uint32_t vlen = cfg->vlenb << 3;
- 
--    if (vlen > RV_VLEN_MAX || vlen < 128) {
-+    if (riscv_has_ext(env, RVV)) {
-+        min_vlen = 128;
-+    } else if (cfg->ext_zve64x) {
-+        min_vlen = 64;
-+    } else if (cfg->ext_zve32x) {
-+        min_vlen = 32;
-+    }
-+
-+    if (vlen > RV_VLEN_MAX || vlen < min_vlen) {
-         error_setg(errp,
-                    "Vector extension implementation only supports VLEN "
--                   "in the range [128, %d]", RV_VLEN_MAX);
-+                   "in the range [%d, %d]", min_vlen, RV_VLEN_MAX);
-         return;
-     }
- 
-@@ -431,6 +440,12 @@ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
-                    "in the range [8, 64]");
-         return;
-     }
-+
-+    if (vlen < cfg->elen) {
-+        error_setg(errp, "Vector extension implementation requires VLEN "
-+                         "to be greater than or equal to ELEN");
-+        return;
-+    }
- }
- 
- static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+This series eliminates such uses, and gets rid of &error_warn.
+&error_warn has multiple issues and little use.  PATCH 12 has full
+rationale.
+
+A note on warnings: we don't use warnings much, and when we use them,
+they're often pretty bad.  See my memo "Abuse of warnings for
+unhandled errors and programming errors"
+Message-ID: <87h5yijh3b.fsf@pond.sub.org>
+https://lore.kernel.org/qemu-devel/87h5yijh3b.fsf@pond.sub.org/
+
+v3:
+* PATCH 02: Whitespace cleanup [Akihiko Odaki]
+* PATCH 06+07: Memory leaks on error paths [Akihiko Odaki]
+* PATCH 08+13: Rebase conflicts
+* PATCH 12: New
+
+v2:
+* PATCH 03: Mention change of cxl_fmws_link() return value in commit
+  message [Jonathan]
+* PATCH 04: Change exit(1) to g_assert_not_reached(), because it's a
+  programming error.
+* PATCH 06+07: Replace questions in commit message by answers from
+  review.
+* PATCH 06: Fix a format string
+* PATCH 08: Keep warnings instead of reverting to silence [Daniel]
+* PATCH 12: Adjusted for replaced PATCH 08
+
+Issues raised in review I decided not to address in this series:
+* PATCH 03: messages could be improved further, in particular the
+  "gdbstub: " prefix could be dropped
+* ebpf_rss_load() can return false without setting an error
+* Capture the discussion on how to deal with undhandled errors in
+  cover letter and/or commit messages.
+
+The first two could be done on top.
+
+Markus Armbruster (13):
+  monitor: Clean up HMP gdbserver error reporting
+  tcg: Fix error reporting on mprotect() failure in  tcg_region_init()
+  hw/cxl: Convert cxl_fmws_link() to Error
+  migration/cpr: Clean up error reporting in cpr_resave_fd()
+  hw/remote/vfio-user: Clean up error reporting
+  net/slirp: Clean up error reporting
+  ui/spice-core: Clean up error reporting
+  util/oslib-win32: Do not treat null @errp as &error_warn
+  ui/pixman: Consistent error handling in qemu_pixman_shareable_free()
+  ui/dbus: Clean up dbus_update_gl_cb() error checking
+  ui/dbus: Consistent handling of texture mutex failure
+  ivshmem-flat: Mark an instance of missing error handling FIXME
+  error: Kill @error_warn
+
+ include/exec/gdbstub.h         |  3 ---
+ include/qapi/error.h           |  6 ------
+ include/system/os-win32.h      |  5 ++++-
+ hw/cxl/cxl-host.c              |  7 ++++---
+ hw/display/virtio-gpu.c        |  8 ++++++--
+ hw/misc/ivshmem-flat.c         |  8 ++++++--
+ hw/net/virtio-net.c            |  8 +++++++-
+ hw/remote/vfio-user-obj.c      |  9 +++------
+ io/channel-socket.c            |  4 ++--
+ io/channel-watch.c             |  6 +++---
+ migration/cpr.c                |  9 +++++----
+ monitor/hmp-cmds.c             |  7 ++++---
+ net/slirp.c                    |  9 +++++++--
+ tcg/region.c                   |  7 +++++--
+ tests/unit/test-error-report.c | 17 -----------------
+ ui/dbus-listener.c             | 22 +++++++++++++++-------
+ ui/gtk.c                       |  6 +++++-
+ ui/qemu-pixman.c               |  5 ++++-
+ ui/spice-core.c                |  6 ++++--
+ util/aio-win32.c               |  2 +-
+ util/error.c                   |  5 +----
+ util/oslib-win32.c             | 25 ++++++++++++++++++++-----
+ 22 files changed, 106 insertions(+), 78 deletions(-)
+
 -- 
-2.43.0
+2.49.0
 
 
