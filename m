@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F56B97251
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 19:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7A5B97252
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 19:59:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v17HC-0003XX-Nl; Tue, 23 Sep 2025 13:58:06 -0400
+	id 1v17Hp-0003pK-NF; Tue, 23 Sep 2025 13:58:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v17HA-0003XC-S5
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 13:58:05 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v17H7-00033P-Ow
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 13:58:03 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3ee1381b835so3885976f8f.1
- for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 10:58:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758650280; x=1759255080; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BW5jVmojF7BTekEQU23zqKenHHzqa5Btf2NwoKDIct4=;
- b=Tn5Ch5PnPf1gDLD1/6pH8X9082XKI907Ma1evTEGht2BVMg8grE+vHe1OZiuVH8cuP
- mW+m/vibcQX4FSjMCO7Gx3VClHRLkLY72JFomUK/eVenGoFLxcKa42/EAaK3MKDEMeyI
- i7jYktP0eLb4SeCuOZDJc1ZXoTNjLq1kprD7cmI2x/XpeCvfb3eHvYHPhyxAjycrOtQR
- 00JvP+RrW94nvMR4zjLTqD8exJPwx1vuPR5iXbqqPwo+quTaINC5NZNOTTcfweOC0SZo
- Fi0z44uQRMtduRSSu2qoWvUn8axVCQkkHeKyinuQ3mPHNUubdedZU14FT/2fIqrR9tCF
- 6kPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758650280; x=1759255080;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BW5jVmojF7BTekEQU23zqKenHHzqa5Btf2NwoKDIct4=;
- b=TobLymiWWeWCeu82GDjFN06TmBKlilCxPIp5OvA95P9oZH9Z5P+vxRX3s3v/ks+/B0
- D1aGSccCz6nr1E+YqlFGbF6KLdSIyQIgjyZ3MQ0VlyuPcNX0LHwd6jSgyYX01nBww78P
- C3kUM8eH5ySh7g6+0yBJb6cFC73EUOM+C7aaxk4li47s+W6cWi2NwiA8Bg2EU/HwRhgg
- pKy2x6Th8jw1pa9zFI6BfJj824k3fuh9Q1FpMn6WHTHtueRLFFoZ7AoEnG+hmWWn9g1A
- 36Rpt366QQ5+u7Y/Qfl1DrNCcP4CJbGqNvOvkV5M6KO7CMdvygG53JiwsYFCTRofcQxP
- h0iQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUhds6KqHnSH7mnT6zjfMSWHFsC0o76vnEQXLC/kAJ7C3DgY569omwo6l4COfQ94d4AdgJgiButSNA9@nongnu.org
-X-Gm-Message-State: AOJu0YxIPx45WMNzsfwQ3IhI1lM/msZJqs3bnpvtXVlcuI0U0rFbP2dS
- WDEMN6aNG3rc025VY77aJhXPQU84Xnbk2X/tQXnT20KWXeM6L15Vuz0muKqHdsN+xI+zEMjZxkB
- XsDHE
-X-Gm-Gg: ASbGncvMdhFt400yNqYH1T3T3RwNMiMdtg/mQXhTGnWbGHotkhcaYwnNQetVlvGJUMt
- cgnQygYYMk8pu81LtekiBWXxKwmkrekiumX4bpYKHgg1H0d4e7B31msV8Fjkwm952uTwDT9c5wz
- 7BUfEBTlv7aw+nzTmEsOVoD5QC96eBC43ytLrHByKdiN3qBd1ZQ/C6zdXfaRpNQnkXLCDkNnTSJ
- nwxZ7ljnUT9GmYk9yqRrn+hkPqRl5YaMokMOrSoW/OnMnYRvygS9J+RLW0lzsQ3p+bovxyzJQ7I
- vyIArvmXFj0vjq7WNMxInCO6ahWkmSUn7b9KF0n1h67opUveE6zATV0tr6Vjf2tmCjoK0bA5xVO
- iKjjBzRbzvPoRbGBBnDJQSFbtH9Vi
-X-Google-Smtp-Source: AGHT+IEu4dh2QD5E/jWeaaJq9bfDRd9SBgZlv+QJkCdUTo5Aleu4KwHJ/FfAw983hajWiV4GMKgygg==
-X-Received: by 2002:a05:6000:26cf:b0:3ee:1125:fb6d with SMTP id
- ffacd0b85a97d-405c49a2bf2mr2445224f8f.9.1758650279747; 
- Tue, 23 Sep 2025 10:57:59 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46d1c97a87csm97657155e9.20.2025.09.23.10.57.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Sep 2025 10:57:57 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH v2 2/2] target/arm: Implement ID_AA64PFR2_EL1
-Date: Tue, 23 Sep 2025 18:57:51 +0100
-Message-ID: <20250923175751.966795-3-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250923175751.966795-1-peter.maydell@linaro.org>
-References: <20250923175751.966795-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1v17Hn-0003n2-0e
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 13:58:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1v17Hj-0003Hp-08
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 13:58:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758650312;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=svf0TTqxjoBEdj/rDDy8hPRqa3QnBg6O5aGsfeXUVzY=;
+ b=g2Jcbo1VE6vja3jb/KQzD4eahrqt+jrlAjBNNNXUQdZftttNZVHEDl4/63rHcXyu6qsbiL
+ NtbS7umhQRJkxnRjQP4VINP6gsOjRYK0JAv7EAUNL3wCm2p4jnWpflepnimK5OGEmrV/ZS
+ CWQO9dHusqifwNii79ozdzzVqveIgLM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-110-P_OM-tSINJaBIY4cM6U5KQ-1; Tue,
+ 23 Sep 2025 13:58:28 -0400
+X-MC-Unique: P_OM-tSINJaBIY4cM6U5KQ-1
+X-Mimecast-MFC-AGG-ID: P_OM-tSINJaBIY4cM6U5KQ_1758650308
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C13B1195608C; Tue, 23 Sep 2025 17:58:27 +0000 (UTC)
+Received: from localhost (unknown [10.2.17.69])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 3CE8D300018D; Tue, 23 Sep 2025 17:58:27 +0000 (UTC)
+Date: Tue, 23 Sep 2025 13:58:26 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 2/3] docs/code-provenance: make the exception process
+ more prominent
+Message-ID: <20250923175826.GB509965@fedora>
+References: <20250922154843.60233-1-pbonzini@redhat.com>
+ <20250922154843.60233-3-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="Y2IDlzQMWZkpdJPE"
+Content-Disposition: inline
+In-Reply-To: <20250922154843.60233-3-pbonzini@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,115 +88,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we define the ID_AA64PFR2_EL1 encoding as reserved (with
-the required RAZ behaviour for unassigned system registers in the ID
-register encoding space).  Newer architecture versions start to
-define fields in this ID register, so define the appropriate
-constants and implement it as an ID register backed by a field in
-cpu->isar.  Since none of our CPUs set that isar field to non-zero,
-there is no behavioural change here (other than the name exposed to
-the user via the gdbstub), but this paves the way for implementing
-the new features that use fields in this register.
 
-The fields here are the ones documented in rev L.b of the Arm ARM.
+--Y2IDlzQMWZkpdJPE
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/cpu-features.h    | 5 +++++
- target/arm/cpu-sysregs.h.inc | 1 +
- target/arm/helper.c          | 6 ++++--
- target/arm/hvf/hvf.c         | 2 ++
- target/arm/kvm.c             | 1 +
- 5 files changed, 13 insertions(+), 2 deletions(-)
+On Mon, Sep 22, 2025 at 05:48:41PM +0200, Paolo Bonzini wrote:
+> QEMU's AI generated content policy does not flesh out the exception
+> process yet.  Do it, while at the same time keeping things informal: ask
+> contributors to explain what they would like to use AI for, and let them
+> reach a consensus with the project on why it is credible to claim DCO
+> compliance in that specific scenario.
+>=20
+> In other words, exceptions do not "solve the AI copyright problem".  They
+> take a position that a reasonable contributor could have, and assert that
+> we're comfortable with the argument.
+>=20
+> Suggested-by: Daniel P. Berrang=E9 <berrange@redhat.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  docs/devel/code-provenance.rst | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.=
+rst
+> index dba99a26f64..103e0a97d76 100644
+> --- a/docs/devel/code-provenance.rst
+> +++ b/docs/devel/code-provenance.rst
+> @@ -326,8 +326,13 @@ The QEMU project thus requires that contributors ref=
+rain from using AI content
+>  generation agents which are built on top of such tools.
+> =20
+>  This policy may evolve as AI tools mature and the legal situation is
+> -clarifed. In the meanwhile, requests for exceptions to this policy will =
+be
+> -evaluated by the QEMU project on a case by case basis. To be granted an
+> -exception, a contributor will need to demonstrate clarity of the license=
+ and
+> -copyright status for the tool's output in relation to its training model=
+ and
+> -code, to the satisfaction of the project maintainers.
+> +clarified.
+> +
+> +Exceptions
+> +^^^^^^^^^^
+> +
+> +The QEMU project welcomes discussion on any exceptions to this policy,
+> +or more general revisions. This can be done by contacting the qemu-devel
+> +mailing list with details of a proposed tool, model, usage scenario, etc.
+> +that is beneficial to QEMU, while still mitigating the legal risks to the
+> +project.  After discussion, any exception will be listed below.
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index ad571e2ffee..602f6a88e53 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -277,6 +277,11 @@ FIELD(ID_AA64PFR1, MTEX, 52, 4)
- FIELD(ID_AA64PFR1, DF2, 56, 4)
- FIELD(ID_AA64PFR1, PFAR, 60, 4)
- 
-+FIELD(ID_AA64PFR2, MTEPERM, 0, 4)
-+FIELD(ID_AA64PFR2, MTESTOREONLY, 4, 4)
-+FIELD(ID_AA64PFR2, MTEFAR, 8, 4)
-+FIELD(ID_AA64PFR2, FPMR, 32, 4)
-+
- FIELD(ID_AA64MMFR0, PARANGE, 0, 4)
- FIELD(ID_AA64MMFR0, ASIDBITS, 4, 4)
- FIELD(ID_AA64MMFR0, BIGEND, 8, 4)
-diff --git a/target/arm/cpu-sysregs.h.inc b/target/arm/cpu-sysregs.h.inc
-index f48a9daa7c1..2bb2861c623 100644
---- a/target/arm/cpu-sysregs.h.inc
-+++ b/target/arm/cpu-sysregs.h.inc
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0-or-later */
- DEF(ID_AA64PFR0_EL1, 3, 0, 0, 4, 0)
- DEF(ID_AA64PFR1_EL1, 3, 0, 0, 4, 1)
-+DEF(ID_AA64PFR2_EL1, 3, 0, 0, 4, 2)
- DEF(ID_AA64SMFR0_EL1, 3, 0, 0, 4, 5)
- DEF(ID_AA64DFR0_EL1, 3, 0, 0, 5, 0)
- DEF(ID_AA64DFR1_EL1, 3, 0, 0, 5, 1)
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index c44294711f8..258cda4e90e 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -6278,11 +6278,11 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-               .access = PL1_R, .type = ARM_CP_CONST,
-               .accessfn = access_aa64_tid3,
-               .resetvalue = GET_IDREG(isar, ID_AA64PFR1)},
--            { .name = "ID_AA64PFR2_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
-+            { .name = "ID_AA64PFR2_EL1", .state = ARM_CP_STATE_AA64,
-               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 4, .opc2 = 2,
-               .access = PL1_R, .type = ARM_CP_CONST,
-               .accessfn = access_aa64_tid3,
--              .resetvalue = 0 },
-+              .resetvalue = GET_IDREG(isar, ID_AA64PFR2)},
-             { .name = "ID_AA64PFR3_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
-               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 4, .opc2 = 3,
-               .access = PL1_R, .type = ARM_CP_CONST,
-@@ -6510,6 +6510,8 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-                                R_ID_AA64PFR1_SSBS_MASK |
-                                R_ID_AA64PFR1_MTE_MASK |
-                                R_ID_AA64PFR1_SME_MASK },
-+            { .name = "ID_AA64PFR2_EL1",
-+              .exported_bits = 0 },
-             { .name = "ID_AA64PFR*_EL1_RESERVED",
-               .is_glob = true },
-             { .name = "ID_AA64ZFR0_EL1",
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index b77db99079e..90e438e4e16 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -495,6 +495,7 @@ static struct hvf_sreg_match hvf_sreg_match[] = {
-     { HV_SYS_REG_ID_AA64PFR0_EL1, HVF_SYSREG(0, 4, 3, 0, 0) },
- #endif
-     { HV_SYS_REG_ID_AA64PFR1_EL1, HVF_SYSREG(0, 4, 3, 0, 1) },
-+    /* Add ID_AA64PFR2_EL1 here when HVF supports it */
-     { HV_SYS_REG_ID_AA64DFR0_EL1, HVF_SYSREG(0, 5, 3, 0, 0) },
-     { HV_SYS_REG_ID_AA64DFR1_EL1, HVF_SYSREG(0, 5, 3, 0, 1) },
-     { HV_SYS_REG_ID_AA64ISAR0_EL1, HVF_SYSREG(0, 6, 3, 0, 0) },
-@@ -869,6 +870,7 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-     } regs[] = {
-         { HV_SYS_REG_ID_AA64PFR0_EL1, &host_isar.idregs[ID_AA64PFR0_EL1_IDX] },
-         { HV_SYS_REG_ID_AA64PFR1_EL1, &host_isar.idregs[ID_AA64PFR1_EL1_IDX] },
-+        /* Add ID_AA64PFR2_EL1 here when HVF supports it */
-         { HV_SYS_REG_ID_AA64DFR0_EL1, &host_isar.idregs[ID_AA64DFR0_EL1_IDX] },
-         { HV_SYS_REG_ID_AA64DFR1_EL1, &host_isar.idregs[ID_AA64DFR1_EL1_IDX] },
-         { HV_SYS_REG_ID_AA64ISAR0_EL1, &host_isar.idregs[ID_AA64ISAR0_EL1_IDX] },
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index c1ec6654ca6..65a262529a7 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -324,6 +324,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-         err = 0;
-     } else {
-         err |= get_host_cpu_reg(fd, ahcf, ID_AA64PFR1_EL1_IDX);
-+        err |= get_host_cpu_reg(fd, ahcf, ID_AA64PFR2_EL1_IDX);
-         err |= get_host_cpu_reg(fd, ahcf, ID_AA64SMFR0_EL1_IDX);
-         err |= get_host_cpu_reg(fd, ahcf, ID_AA64DFR0_EL1_IDX);
-         err |= get_host_cpu_reg(fd, ahcf, ID_AA64DFR1_EL1_IDX);
--- 
-2.43.0
+"Legal risks to the project" is all-encompassing and vague. People may
+not know how to start addressing the topic and might therefore not
+attempt to request an exception.
+
+I suggest replacing "legal risks to the project" with something more
+concrete like "issues around license and copyright status required to
+satisfy the Developer Certificate of Origin (DCO) requirements".
+
+> --=20
+> 2.51.0
+>=20
+
+--Y2IDlzQMWZkpdJPE
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjS38EACgkQnKSrs4Gr
+c8jm2wf/bYYsxujMp71GCOU8Hr8OoXDRZN6BD2Jlb/JeXMGrFY4CbR+XJm8/ogm6
+jHFX64QUtuzNF+0T8bAdMuhWYPRu8LA0J0hFVzLRZGhmsJjmxqyOEmZV5RYO5ARi
+jtmeOfYitGOvmy6zMzyiaCu6iEmkP1HjCqapCX8BOj4cLKqg6RSwZsJWAgqzterA
+3tbD1D0CZzWqlmhGW3FRq4byVzgUg9cwaAIYhc8yOvjf3NfjGhxDqrT+Q67JsLAu
+w5FEeODMRkIdYG95UBAhJ7avGKNL6NDC9LYWUv4ZukhfYWCD+17GSwB1gMWA58YB
+963OULzPatfcjWxmUPxszKhvb34Vfw==
+=p/oS
+-----END PGP SIGNATURE-----
+
+--Y2IDlzQMWZkpdJPE--
 
 
