@@ -2,93 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD4CB93F99
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 04:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FCF1B93FE2
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 04:23:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0sUl-0002Xb-CG; Mon, 22 Sep 2025 22:11:08 -0400
+	id 1v0sfa-0006zM-Lx; Mon, 22 Sep 2025 22:22:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0sUi-0002Wc-TW
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:11:05 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0sUb-00009a-Le
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:11:04 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-77f1f8a114bso1909739b3a.0
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 19:10:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758593445; x=1759198245; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=s4+SlQx+DMzy+4DCfZxmwJDvy0AC/rcKOjjhVaXW8is=;
- b=tROlP25o3avZ87b0NeJBAMaT+xBEw+VFa242Un5ERN5NItxt0UNcMl7tSwuj4chFLO
- OxuUPHpLTDu4R122GM/8DhY0RnxoKbkCtR0dAlj25HbURnK5HkYGAP23bSn++yzhOTuV
- py2KK+yV8xsMRF64CsLF9lVu042YRFBXSG04Py1PS7DP/DY7aMBqNfevMMOLsNQwCZTV
- 9Sb5fUFnga3lm78AjnYZober51M9l3Z1dvpnC99FNr3yNZs2LRRr3DOFGuRdkkX9k+zU
- XyBQGotbuLcQZ/KcNsXLDJ53WKDKkcSea8jB1NBtq46OjJdoQZ6PoDgUTk09RgLFX0Ta
- G7Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758593445; x=1759198245;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=s4+SlQx+DMzy+4DCfZxmwJDvy0AC/rcKOjjhVaXW8is=;
- b=HuW/5Qnw3brbVOzGlznPNYnmsQyhmh0VG8E6afqmrhKX78VqV1sbYT89DZwC9xf5yf
- c3l5v6kZDsvvOW/ZPTkqxux0UyCH2RTS9igoyDpifwsy3gCVqprim6l/Q1gPqZpOBmKq
- X6Ik+9wAGKeVFOA9LtiptyfEef7EmXWbuBCJ/FPEj7QXzQ7VsrbUTS54gxX2mPwCvjrc
- fmXOQqlj2t27oAb+74mLnoTRE+mPdPy4g+hyM0eZM8JJIxaK9JYYg4ibLyzFzL8MA8l3
- bsF7TOs5gFyI5zLj8krZG0nj7VANK71CTwj9PtYVW8Ib5FlFPtLQ6Sut3WqF8HVj3DBN
- H+vA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVhUhyJUu4+0yizfbltgOOFhGBMhscGbTC6Yp4DgO2hg4KF1ykDRtPm5ls3rqfbAf31HS6QnKH/v8xH@nongnu.org
-X-Gm-Message-State: AOJu0Yz7DnY/glD54Als5hqRiYczxo1REH3f/R3c999a9peJnByrex/I
- uXx8DlS9q/rT9a19E/Fg9IZZpTbWf5u0QUJ/98RpVVHRz0mvV8tww6ARpuM/PoPmbvc=
-X-Gm-Gg: ASbGncvvIuaJZwCM+ZdyuKMoKZzGLILBRO4a51P51koJbdAqfLrHIlt/BwHpYm8fkrX
- ACF7WZNKDWW0VdAGJ5ytOpOuXjh1FQlnGmhym6+2DazXrZfQkUIpMvrdrSR/R4caHKCxGoIPwuz
- OFitJ5VwubDNj0J7fN/YlymvSLdypzlLGZlzhx5JQTl7BC8CqzbjM55p1uReFVZvLtYKk4eDCMb
- k0fDA6iqs6WAXYEvtml9y4M8CVR3q1RsMYMpiohF3dIxhojcCOX5HLtZNCfWFOlk8XD+orOyHjH
- xidx3+wumPxe/ZzN7Ls7CsBnMATLhPnbZHVX0DE2F+O+4RqKyaTH1hng11eLZyMVjhykbjzlUml
- 3g730GtnmkIawtzCnfuSt3MLrmmHakdRojlIw
-X-Google-Smtp-Source: AGHT+IGnuP5BsIL6t8f1XgxP6tQ6pTsRRSiXj2y3bN9ZlJyC/DgmPkH1te3ywstvmQeNrB6aALgo1g==
-X-Received: by 2002:a05:6a00:2ea6:b0:77f:37a5:97b6 with SMTP id
- d2e1a72fcca58-77f5486f60dmr875260b3a.6.1758593445333; 
- Mon, 22 Sep 2025 19:10:45 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.157.132])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-77ea933bfeasm10715652b3a.53.2025.09.22.19.10.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Sep 2025 19:10:44 -0700 (PDT)
-Message-ID: <455f0e94-4539-494d-ab8f-23c7832a991f@linaro.org>
-Date: Mon, 22 Sep 2025 19:10:43 -0700
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1v0sfV-0006xp-1E
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:22:13 -0400
+Received: from mx1.zhaoxin.com ([210.0.225.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1v0sfH-0001Na-Dq
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:22:10 -0400
+X-ASG-Debug-ID: 1758594100-086e236d0e00350001-jgbH7p
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by
+ mx1.zhaoxin.com with ESMTP id E6701Frv8kQlH2p4 (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Tue, 23 Sep 2025 10:21:40 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXSHMBX3.zhaoxin.com (10.28.252.165) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Tue, 23 Sep
+ 2025 10:21:40 +0800
+Received: from ZXSHMBX3.zhaoxin.com ([fe80::a428:faf0:c549:abe6]) by
+ ZXSHMBX3.zhaoxin.com ([fe80::a428:faf0:c549:abe6%6]) with mapi id
+ 15.01.2507.044; Tue, 23 Sep 2025 10:21:40 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ewan-server.lan (10.28.24.128) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Tue, 23 Sep
+ 2025 10:11:33 +0800
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>
+CC: <qemu-devel@nongnu.org>
+Subject: [PATCH 0/3] target/i386: Add support for Zhaoxin Shijidadao vCPU
+ models
+Date: Mon, 22 Sep 2025 22:11:30 -0400
+X-ASG-Orig-Subj: [PATCH 0/3] target/i386: Add support for Zhaoxin Shijidadao
+ vCPU models
+Message-ID: <20250923021133.190725-1-ewanhai-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] accel/tcg: fix self-modify-code problem when modify code
- in a single tb loop
-To: =?UTF-8?B?5p2O5aiB5aiB?= <liweiwei@kubuds.cn>,
- pbonzini <pbonzini@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
-Cc: kasperl <kasperl@rivosinc.com>, =?UTF-8?B?546L5L+K5by6?=
- <wangjunqiang@kubuds.cn>, Wei Wu <lazyparser@gmail.com>,
- liwei1518 <liwei1518@gmail.com>
-References: <tencent_55B681D209516B8364F39BD9@qq.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <tencent_55B681D209516B8364F39BD9@qq.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [10.28.24.128]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Moderation-Data: 9/23/2025 10:21:38 AM
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1758594100
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 1556
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No,
+ SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.147541
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+Received-SPF: pass client-ip=210.0.225.12; envelope-from=EwanHai-oc@zhaoxin.com;
+ helo=mx1.zhaoxin.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,31 +93,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/22/25 19:04, 李威威 wrote:
->  > If there's a problem with 1 tb, there's also a problem with 2 tb like
->  >
->  >         jal     zero, #4
->  >         jal     zero, #-4
->  >
-> 
-> I tried this case. And it didn't have this problem.
-> This problem seems only existed in single tb loop.
-> 
->  >
->  > But unlinking the tb should be part of invalidation, so I don't quite see where the
->  > problem is.  You need to expand on the description of the problem.
->  >
-> 
-> I think the problem is the single tb is always in use  when the single tb is linked with 
-> itself，
-> and it cannot be updated when we update the code。
+This patchset introduces cache enumeration and two vCPU models (Client
+and Server) for the Zhaoxin "Shijidadao" architecture. With these
+additions, QEMU can expose the core identity and features of this
+architecture without relying on host-passthrough.
 
-There's no use count for tb's, so that explanation doesn't make sense.
-Can you please share a testcase for this?
+There are several points that may need particular attention from
+maintainers:
 
-For extra kudos, a small assembly test for tests/tcg/loongarch64/system/, so that we have 
-a regression test for the issue.  :-)
+1. The Shijidadao-Client model uses '.version =3D 1' to represent the
+   hardware v1 revision, with 'version=3D2' added to capture v2
+   differences. Please check whether this usage aligns with existing
+   versioning practices.
 
+2. For both Shijidadao-Client and Shijidadao-Server, the
+   "x-force-cpuid-0x1f" feature is placed under the version 1
+   definition. At present there is no mechanism to represent this
+   feature via `.features[index]` in the default model definition,
+   so attaching it to v1 is the only available option. Feedback on
+   whether this placement is acceptable would be appreciated.
 
-r~
+3. The Shijidadao-Server model enables the 'core-capability' bit by
+   default, but KVM does not yet virtualize the corresponding MSR.
+   Guidance on whether this setting should remain in the model is
+   requested.
+
+Thanks for your time reviewing this series!
+
+Ewan Hai (3):
+  target/i386: Add cache model for Zhaoxin Shijidadao vCPUs
+  target/i386: Introduce Zhaoxin Shijidadao-Client CPU model
+  target/i386: Introduce Zhaoxin Shijidadao-Server CPU model
+
+ target/i386/cpu.c | 385 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 385 insertions(+)
+
+--=20
+2.34.1
+
 
