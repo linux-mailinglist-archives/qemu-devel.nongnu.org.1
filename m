@@ -2,93 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A89EB93F2A
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 04:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3E2B93F9C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 04:12:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0sPg-0000Yn-CZ; Mon, 22 Sep 2025 22:05:52 -0400
+	id 1v0sVN-0002ki-0G; Mon, 22 Sep 2025 22:11:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@kubuds.cn>)
- id 1v0sPd-0000YH-2P
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:05:49 -0400
-Received: from smtpbguseast2.qq.com ([54.204.34.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@kubuds.cn>)
- id 1v0sPS-00085Q-95
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:05:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kubuds.cn;
- s=reyb2403; t=1758593088;
- bh=/AbnPR+R+isrSTmMzJqlnhqIyh2RbvsFPwL4iVZ2liA=;
- h=From:To:Subject:Mime-Version:Date:Message-ID;
- b=oH0GEA01GPS/MhAnNowaQsOiCM15SHXanx1rPEPhsq9ZCkr3+hThkYvBBp33f/2gx
- zYK6d6iSkwDhks+W9oR58ql0hsgjzpmw0xOkarPKDGgtxAr6SO5yVOD3vfX+s81/k9
- /f+tgGvEg27yjE52nvdCT7QUWUruUb1qg133MEWs=
-EX-QQ-RecipientCnt: 7
-X-QQ-GoodBg: 2
-X-QQ-SSF: 00400000000000F0
-X-QQ-FEAT: D4aqtcRDiqQ/FTdNJNZZ5kJldjn3TTKGTDiQTNQJo28=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: GNuAIe4AAwcY1N5swqzg8pUKeYIiDanR1Z7WuuGn/KU=
-X-Originating-IP: 139.227.152.226
-X-QQ-STYLE: 
-X-QQ-mid: lv2sz3a-1t1758593082t8e25c4be
-From: "=?utf-8?B?5p2O5aiB5aiB?=" <liweiwei@kubuds.cn>
-To: "=?utf-8?B?UmljaGFyZCBIZW5kZXJzb24=?=" <richard.henderson@linaro.org>,
- "=?utf-8?B?cGJvbnppbmk=?=" <pbonzini@redhat.com>,
- "=?utf-8?B?cWVtdS1kZXZlbA==?=" <qemu-devel@nongnu.org>
-Cc: "=?utf-8?B?a2FzcGVybA==?=" <kasperl@rivosinc.com>,
- "=?utf-8?B?546L5L+K5by6?=" <wangjunqiang@kubuds.cn>,
- "=?utf-8?B?V2VpIFd1?=" <lazyparser@gmail.com>,
- "=?utf-8?B?bGl3ZWkxNTE4?=" <liwei1518@gmail.com>
-Subject: Re: Re: [PATCH] accel/tcg: fix self-modify-code problem when modify
- code in a single tb loop
-Mime-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="----=_NextPart_68D20039_C9129260_1D3F922C"
-Content-Transfer-Encoding: 8Bit
-Date: Tue, 23 Sep 2025 10:04:41 +0800
-X-Priority: 3
-Message-ID: <tencent_55B681D209516B8364F39BD9@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-X-QQ-ReplyHash: 1756259144
-X-BIZMAIL-ID: 16342767215359068385
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1]) by smtp.qq.com (ESMTP) with SMTP
- id ; Tue, 23 Sep 2025 10:04:43 +0800 (CST)
-Feedback-ID: lv:kubuds.cn:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: NGozucvtNhs93edkWbgeKn9CMtK0SpPl5JRfnFP/WUUg2TvHiRbKpJzm
- 8uQjT/l4vN1l0U0c5qlqEfTH3nAB7ljQeF8VYSaMcji0615viVSRrT5UvbabDxzkbzHsLY7
- Doo6bgjIhp0EP33HVhQDZ2SrWLV4A7ELw2UBX58+C8gxXS32ewTGkCj3ambWBExKjpldI2A
- LRblehOHBwqv+MDDh+pk5JQHaNj0kek6K2CYp8ubC8O4NvmAU6EM8bombBCjWp3B+7Xcb68
- TO6p7OjzXEoo/x41GdoFhQqFcObnmrmpuscSpitfFogB1AC5jeFqHUFjinG0ssXu/e5BXcy
- 54ZfC+Wi084FDpSQK+tF2PMYUPgn4On3zA9Tp2kQ4luFQFmLvN/tgkCkAh8Bgbyrb53Byv0
- r1Yp+XTEAkCiNwc0NKHKnzSFNggMffh6qLL78+6DfhtwIz+j/oWVQNdYbyzRS/Yfo8U3kzR
- xM/bo5Km8UKi5cvr7d4dJ3FD/vdQxX635uKEacrYuygUu2n6ow77SMT8rQCBIyL81FzYS4n
- tu+6rxMIXmiQ6/njorSBJI6kdJ3fGQCUfJnN4w+zV5H4bRtdeTCPCRTAUKdprTAAJb8DVn1
- LJDYPM/suL79A5zN/yQjniKY7ijyPw+OiHKlUyDT3XB80kZdDWG2TMfIDk0jHuPbYW7AUAS
- 7NltVwyNd151h5zhAJ6kv5Y299X/9ZpBYZwbwfyCvxT0XFA1dMM2uy+ye4vH6bD9JZyHiQm
- 5PoJS7bWWLycl3UZzjxZBH7R36UzgpuekwNCSqAl+wZsnbsUYQD0GpMvxngphuzY3RQaboj
- UL5oI3dYSxlckpOXFJjdePigiLJlvyfrTzoHveNE3A+rHDjS1hpsTMfMrIPj2D0GHngeViB
- YYdlT3Dk4PaOZD91kXZoMLqt2h5TtPBq8MiSGVR9apiQCdFhVVej76qPID/PTJLzFuv3nHS
- WkX3PM88yJkYwU2TVm/GPnykD03Vu2LjDeyZ5sDCaLuKOtv/OjjqFqRIngMJhIxT2bKaGUR
- jKXrobmh5z/39AtaLA
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-X-QQ-RECHKSPAM: 0
-Received-SPF: pass client-ip=54.204.34.130; envelope-from=liweiwei@kubuds.cn;
- helo=smtpbguseast2.qq.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- MSGID_FROM_MTA_HEADER=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1v0sVD-0002k3-Fa
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:11:35 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1v0sV2-0000BO-6q
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:11:35 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8CxHvDDAdJoGXoNAA--.28890S3;
+ Tue, 23 Sep 2025 10:11:16 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowJBxzsHBAdJo9O6mAA--.45386S3;
+ Tue, 23 Sep 2025 10:11:15 +0800 (CST)
+Subject: Re: [PATCH] hw/loongarch/virt: Align VIRT_GED_CPUHP_ADDR to 4 bytes
+To: Huacai Chen <chenhuacai@kernel.org>, Song Gao <gaosong@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, WANG Xuerui <git@xen0n.name>,
+ qemu-devel@nongnu.org, Huacai Chen <chenhuacai@loongson.cn>,
+ Nathan Chancellor <nathan@kernel.org>, WANG Rui <wangrui@loongson.cn>
+References: <20250922141557.1939333-1-chenhuacai@kernel.org>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <8c422837-ea2f-1de0-c43f-840166096b82@loongson.cn>
+Date: Tue, 23 Sep 2025 10:09:04 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20250922141557.1939333-1-chenhuacai@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowJBxzsHBAdJo9O6mAA--.45386S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7KFW8uw4rKry3XF4fKF43twc_yoW8tF15p3
+ Z7Aa1vgF1UJF1xuay0qFy3WF47Jrn7GrsFkFW7K34fA3Wvkw18uF10ywn8CrWqqws3WF4I
+ vr4qkayxWas8JwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6F4UJVW0owAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
+ Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_
+ JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
+ CYjI0SjxkI62AI1cAE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+ 6r4UMxCIbckI1I0E14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+ AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+ 0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
+ v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
+ xVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU74lkDUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.559,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,96 +81,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
+yes, it is actually one problem. And thanks for doing this.
 
-------=_NextPart_68D20039_C9129260_1D3F922C
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 
-UmljaGFyZCBIZW5kZXJzb24gPHJpY2hhcmQuaGVuZGVyc29uQGxpbmFyby5vcmcmZ3Q7IOS6
-jjIwMjXlubQ55pyIMjPml6XlkajkuowgMDc6MjLlhpnpgZPvvJoNCiZndDsNCiZndDsgT24g
-OS8xNy8yNSAwNTo0NywgbGl3ZWl3ZWlAa3VidWRzLmNuIHdyb3RlOg0KJmd0OyAmZ3Q7IEZy
-b206IFdlaXdlaSBMaSA8bGl3ZWl3ZWlAa3VidWRzLmNuJmd0Ow0KJmd0OyAmZ3Q7DQomZ3Q7
-ICZndDsgVGhlIHByb2JsZW0gaXMgdHJpZ2dlcmVkIGluIGZvbGxvd2luZyBjb25kaXRpb25z
-Og0KJmd0OyAmZ3Q7IC0gdGhyZWFkIDE6DQomZ3Q7ICZndDsgJm5ic3A7ICZuYnNwOyAmbmJz
-cDtydW4gc3BpbiBsb29wKGVuZGVkIHdpdGggYSBkaXJlY3QganVtcCkgbGlrZSAiMHgwMDAw
-MDA2ZiwgLy8gamFsIHplcm8sICMwIg0KJmd0OyAmZ3Q7IC0gdGhyZWFkIDI6DQomZ3Q7ICZn
-dDsgJm5ic3A7ICZuYnNwOyAmbmJzcDtkbyBzb21ldGhpbmcsIGFuZCB0aGVuIG1vZGlmeSB0
-aGUgbG9vcCBjb2RlIG9mIHRocmVhZCAxIHRvIG5vcCBpc250cnVjdGlvbiwNCiZndDsgJmd0
-OyAmbmJzcDsgJm5ic3A7ICZuYnNwO2ZpbmFsbHkgd2FpdCB0aHJlYWQgMSBleGl0Lg0KJmd0
-OyAmZ3Q7DQomZ3Q7ICZndDsgVGhlIGxvb3AgdGIgd2hpY2ggaXMgcGF0Y2hlZCB0byBqdW1w
-IHRvIGl0c2VsZiwgd2lsbCBub3QgYmUgdXBkYXRlZCBpbiB0aGlzIGNhc2UNCiZndDsgJmd0
-OyBhbmQgd2lsbCBuZXZlciBleGl0Lg0KJmd0OyAmZ3Q7DQomZ3Q7ICZndDsgU2lnbmVkLW9m
-Zi1ieTogV2Vpd2VpIExpIDxsaXdlaXdlaUBrdWJ1ZHMuY24mZ3Q7DQomZ3Q7ICZndDsgLS0t
-DQomZ3Q7ICZndDsgJm5ic3A7IGFjY2VsL3RjZy9jcHUtZXhlYy5jIHwgOCArKysrKystLQ0K
-Jmd0OyAmZ3Q7ICZuYnNwOyAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCAyIGRl
-bGV0aW9ucygtKQ0KJmd0Ow0KJmd0OyBJZiB0aGVyZSdzIGEgcHJvYmxlbSB3aXRoIDEgdGIs
-IHRoZXJlJ3MgYWxzbyBhIHByb2JsZW0gd2l0aCAyIHRiIGxpa2UNCiZndDsNCiZndDsgJm5i
-c3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7IGphbCAmbmJzcDsgJm5ic3A7IHplcm8sICM0DQom
-Z3Q7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyBqYWwgJm5ic3A7ICZuYnNwOyB6ZXJv
-LCAjLTQNCiZndDsNCg0KSSB0cmllZCB0aGlzIGNhc2UuIEFuZCBpdCBkaWRuJ3QgaGF2ZSB0
-aGlzIHByb2JsZW0uDQpUaGlzIHByb2JsZW0gc2VlbXMgb25seSBleGlzdGVkIGluIHNpbmds
-ZSB0YiBsb29wLg0KJmd0Ow0KJmd0OyBCdXQgdW5saW5raW5nIHRoZSB0YiBzaG91bGQgYmUg
-cGFydCBvZiBpbnZhbGlkYXRpb24sIHNvIEkgZG9uJ3QgcXVpdGUgc2VlIHdoZXJlIHRoZQ0K
-Jmd0OyBwcm9ibGVtIGlzLiAmbmJzcDtZb3UgbmVlZCB0byBleHBhbmQgb24gdGhlIGRlc2Ny
-aXB0aW9uIG9mIHRoZSBwcm9ibGVtLg0KJmd0Ow0KDQoNCkkgdGhpbmsgdGhlIHByb2JsZW0g
-aXMgdGhlIHNpbmdsZSB0YiBpcyBhbHdheXMgaW4gdXNlJm5ic3A7Jm5ic3A7d2hlbiB0aGUg
-c2luZ2xlIHRiIGlzIGxpbmtlZCB3aXRoIGl0c2VsZu+8jA0KYW5kIGl0IGNhbm5vdCBiZSB1
-cGRhdGVkIHdoZW4gd2UgdXBkYXRlIHRoZSBjb2Rl44CCDQoNCg0KUmVnYXJkc++8jA0KV2Vp
-d2VpIExpDQoNCiZndDsNCiZndDsgcn4=
-
-------=_NextPart_68D20039_C9129260_1D3F922C
-Content-Type: text/html;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-
-PGRpdiBzdHlsZT0iZm9udC1zaXplOiAxMXB0OyBjb2xvcjogcmdiKDAsIDAsIDApOyBsaW5l
-LWhlaWdodDogMS40MzsgZm9udC1mYW1pbHk6IC1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lz
-dGVtRm9udCwgJnF1b3Q7UGluZ0ZhbmcgU0MmcXVvdDssICZxdW90O01pY3Jvc29mdCBZYUhl
-aSZxdW90OzsiPjxkaXYgY2xhc3M9IkFtIGFpTCBhTzkgQWwgZWRpdGFibGUgTFctYXZmIHRT
-LXRXIHRTLXRZIiBzdHlsZT0ibWluLWhlaWdodDo4NXB4IiBzcGVsbGNoZWNrPSJmYWxzZSI+
-PGRpdiBjbGFzcz0iQW0gYWlMIGFPOSBBbCBlZGl0YWJsZSBMVy1hdmYgdFMtdFcgdFMtdFki
-IHN0eWxlPSJtaW4taGVpZ2h0Ojg1cHgiIHNwZWxsY2hlY2s9ImZhbHNlIj48YnI+UmljaGFy
-ZCBIZW5kZXJzb24gJmx0O3JpY2hhcmQuaGVuZGVyc29uQGxpbmFyby5vcmcmZ3Q7IOS6jjIw
-MjXlubQ55pyIMjPml6XlkajkuowgMDc6MjLlhpnpgZPvvJo8YnI+Jmd0Ozxicj4mZ3Q7IE9u
-IDkvMTcvMjUgMDU6NDcsIGxpd2Vpd2VpQGt1YnVkcy5jbiB3cm90ZTo8YnI+Jmd0OyAmZ3Q7
-IEZyb206IFdlaXdlaSBMaSAmbHQ7bGl3ZWl3ZWlAa3VidWRzLmNuJmd0Ozxicj4mZ3Q7ICZn
-dDs8YnI+Jmd0OyAmZ3Q7IFRoZSBwcm9ibGVtIGlzIHRyaWdnZXJlZCBpbiBmb2xsb3dpbmcg
-Y29uZGl0aW9uczo8YnI+Jmd0OyAmZ3Q7IC0gdGhyZWFkIDE6PGJyPiZndDsgJmd0OyAmbmJz
-cDsgJm5ic3A7ICZuYnNwO3J1biBzcGluIGxvb3AoZW5kZWQgd2l0aCBhIGRpcmVjdCBqdW1w
-KSBsaWtlICIweDAwMDAwMDZmLCAvLyBqYWwgemVybywgIzAiPGJyPiZndDsgJmd0OyAtIHRo
-cmVhZCAyOjxicj4mZ3Q7ICZndDsgJm5ic3A7ICZuYnNwOyAmbmJzcDtkbyBzb21ldGhpbmcs
-IGFuZCB0aGVuIG1vZGlmeSB0aGUgbG9vcCBjb2RlIG9mIHRocmVhZCAxIHRvIG5vcCBpc250
-cnVjdGlvbiw8YnI+Jmd0OyAmZ3Q7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ZmluYWxseSB3YWl0
-IHRocmVhZCAxIGV4aXQuPGJyPiZndDsgJmd0Ozxicj4mZ3Q7ICZndDsgVGhlIGxvb3AgdGIg
-d2hpY2ggaXMgcGF0Y2hlZCB0byBqdW1wIHRvIGl0c2VsZiwgd2lsbCBub3QgYmUgdXBkYXRl
-ZCBpbiB0aGlzIGNhc2U8YnI+Jmd0OyAmZ3Q7IGFuZCB3aWxsIG5ldmVyIGV4aXQuPGJyPiZn
-dDsgJmd0Ozxicj4mZ3Q7ICZndDsgU2lnbmVkLW9mZi1ieTogV2Vpd2VpIExpICZsdDtsaXdl
-aXdlaUBrdWJ1ZHMuY24mZ3Q7PGJyPiZndDsgJmd0OyAtLS08YnI+Jmd0OyAmZ3Q7ICZuYnNw
-OyBhY2NlbC90Y2cvY3B1LWV4ZWMuYyB8IDggKysrKysrLS08YnI+Jmd0OyAmZ3Q7ICZuYnNw
-OyAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKTxicj4m
-Z3Q7PGJyPiZndDsgSWYgdGhlcmUncyBhIHByb2JsZW0gd2l0aCAxIHRiLCB0aGVyZSdzIGFs
-c28gYSBwcm9ibGVtIHdpdGggMiB0YiBsaWtlPGJyPiZndDs8YnI+Jmd0OyAmbmJzcDsgJm5i
-c3A7ICZuYnNwOyAmbmJzcDsgamFsICZuYnNwOyAmbmJzcDsgemVybywgIzQ8YnI+Jmd0OyAm
-bmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgamFsICZuYnNwOyAmbmJzcDsgemVybywgIy00
-PGJyPiZndDs8YnI+PGJyPkkgdHJpZWQgdGhpcyBjYXNlLiBBbmQgaXQgZGlkbid0IGhhdmUg
-dGhpcyBwcm9ibGVtLjxicj5UaGlzIHByb2JsZW0gc2VlbXMgb25seSBleGlzdGVkIGluIHNp
-bmdsZSB0YiBsb29wLjxkaXYgc3R5bGU9ImJhY2tncm91bmQtY29sb3I6IHJnYigyNTUsIDI1
-NSwgMjU1KTsiPjxicj4mZ3Q7PGJyPiZndDsgQnV0IHVubGlua2luZyB0aGUgdGIgc2hvdWxk
-IGJlIHBhcnQgb2YgaW52YWxpZGF0aW9uLCBzbyBJIGRvbid0IHF1aXRlIHNlZSB3aGVyZSB0
-aGU8YnI+Jmd0OyBwcm9ibGVtIGlzLiAmbmJzcDtZb3UgbmVlZCB0byBleHBhbmQgb24gdGhl
-IGRlc2NyaXB0aW9uIG9mIHRoZSBwcm9ibGVtLjxicj4mZ3Q7PGJyPjxicj48L2Rpdj48ZGl2
-IHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMjU1LCAyNTUsIDI1NSk7Ij5JIHRoaW5r
-IHRoZSBwcm9ibGVtIGlzIHRoZSBzaW5nbGUgdGIgaXMgYWx3YXlzIGluIHVzZSZuYnNwOyZu
-YnNwO3doZW4gdGhlIHNpbmdsZSB0YiBpcyBsaW5rZWQgd2l0aCBpdHNlbGbvvIw8L2Rpdj48
-ZGl2IHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMjU1LCAyNTUsIDI1NSk7Ij5hbmQg
-aXQgY2Fubm90IGJlIHVwZGF0ZWQgd2hlbiB3ZSB1cGRhdGUgdGhlIGNvZGXjgII8YnI+PC9k
-aXY+PGRpdiBzdHlsZT0iYmFja2dyb3VuZC1jb2xvcjogcmdiKDI1NSwgMjU1LCAyNTUpOyI+
-PGJyPlJlZ2FyZHPvvIw8YnI+V2Vpd2VpIExpPGJyPjxicj4mZ3Q7PGJyPiZndDsgcn48L2Rp
-dj48L2Rpdj48L2Rpdj48YnI+PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj48YnI+PC9kaXY+
-
-
-------=_NextPart_68D20039_C9129260_1D3F922C--
+On 2025/9/22 下午10:15, Huacai Chen wrote:
+> From: Huacai Chen <chenhuacai@loongson.cn>
+> 
+> Now VIRT_GED_CPUHP_ADDR is not aligned to 4 bytes, but if Linux kernel
+> is built with ACPI_MISALIGNMENT_NOT_SUPPORTED, it assumes the alignment,
+> otherwise we get ACPI errors at boot phase:
+> 
+> ACPI Error: AE_AML_ALIGNMENT, Returned by Handler for [SystemMemory] (20250404/evregion-301)
+> ACPI Error: Aborting method \_SB.CPUS.CSTA due to previous error (AE_AML_ALIGNMENT) (20250404/psparse-529)
+> ACPI Error: Aborting method \_SB.CPUS.C000._STA due to previous error (AE_AML_ALIGNMENT) (20250404/psparse-529)
+> ACPI Error: Method execution failed \_SB.CPUS.C000._STA due to previous error (AE_AML_ALIGNMENT) (20250404/uteval-68)
+> 
+> VIRT_GED_MEM_ADDR and VIRT_GED_REG_ADDR are already aligned now, but use
+> QEMU_ALIGN_UP() to explicitly align them can make code more robust.
+> 
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Suggested-by: WANG Rui <wangrui@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+>   include/hw/loongarch/virt.h | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+> index 602feab0f0..be4f5d603f 100644
+> --- a/include/hw/loongarch/virt.h
+> +++ b/include/hw/loongarch/virt.h
+> @@ -28,9 +28,9 @@
+>   #define VIRT_LOWMEM_SIZE        0x10000000
+>   #define VIRT_HIGHMEM_BASE       0x80000000
+>   #define VIRT_GED_EVT_ADDR       0x100e0000
+> -#define VIRT_GED_MEM_ADDR       (VIRT_GED_EVT_ADDR + ACPI_GED_EVT_SEL_LEN)
+> -#define VIRT_GED_REG_ADDR       (VIRT_GED_MEM_ADDR + MEMORY_HOTPLUG_IO_LEN)
+> -#define VIRT_GED_CPUHP_ADDR     (VIRT_GED_REG_ADDR + ACPI_GED_REG_COUNT)
+> +#define VIRT_GED_MEM_ADDR       QEMU_ALIGN_UP(VIRT_GED_EVT_ADDR + ACPI_GED_EVT_SEL_LEN, 4)
+> +#define VIRT_GED_REG_ADDR       QEMU_ALIGN_UP(VIRT_GED_MEM_ADDR + MEMORY_HOTPLUG_IO_LEN, 4)
+> +#define VIRT_GED_CPUHP_ADDR     QEMU_ALIGN_UP(VIRT_GED_REG_ADDR + ACPI_GED_REG_COUNT, 4)
+>   
+>   #define COMMAND_LINE_SIZE       512
+>   
+> 
 
 
