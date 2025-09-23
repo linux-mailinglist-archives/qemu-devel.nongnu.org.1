@@ -2,59 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 859A2B964E3
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 16:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A22B964EC
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 16:37:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v148J-00038b-OH; Tue, 23 Sep 2025 10:36:43 -0400
+	id 1v148k-0003LD-N4; Tue, 23 Sep 2025 10:37:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenhuacai@kernel.org>)
- id 1v148F-00037Z-4W
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 10:36:39 -0400
-Received: from sea.source.kernel.org ([172.234.252.31])
+ id 1v148j-0003Ki-Aw
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 10:37:09 -0400
+Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenhuacai@kernel.org>)
- id 1v148C-0002r1-Uq
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 10:36:38 -0400
+ id 1v148h-0002vH-GG
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 10:37:09 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id 3F007433AF;
- Tue, 23 Sep 2025 14:36:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28360C113D0;
- Tue, 23 Sep 2025 14:36:30 +0000 (UTC)
+ by tor.source.kernel.org (Postfix) with ESMTP id 86C8F60286;
+ Tue, 23 Sep 2025 14:37:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30ABC113CF;
+ Tue, 23 Sep 2025 14:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1758638194;
- bh=HjFoetad7pVh56arqUjyTqmHVD2kvUjNM6Qt9XVUY6o=;
+ s=k20201202; t=1758638225;
+ bh=h/vocRLC3EsjFTFrRzRzyUm/9TY0VTtNrZpUtfxmFZQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=q7MpH9CfdeeR9O4RaZXlMviBorSf2k6lIiar8rOr51qPzINu4JjwTvPWzdc/oH4U2
- 5FiFiS7lm8XW65Ur6p2iAJr3++a2BZAZh+l7Ji2QHg7i1vYtMGCaqUBZ4Kq4AMoY+f
- eR0qTsfNWV9XEvGtdsY6JpO/lJ7C1SxXNoLTWyySb3oOMBIUCxMo08NzHWyBSXl6DW
- tETJaBha3sRBEFpWZOeR79Gdd/fQEbSCE8c0LSm3eHrur92ElYoKyh62aaOoRQ85FP
- 3EybSXOPP0MRH/4yQiYEJs2sORbeIPrPnsMcn3Pf8sMzng2nJKuy0q3KQgyqdUK7GL
- Z2mM8eTqjEVZQ==
+ b=jSq8UULxWpHrMj4EfxJX9gw30lKNxwTjnTCmz0M2/EAlzIhLW1AFWB+u6Qk+T0lfg
+ QzwmPYIRnklmcorvXotbb1HofRPusHYalpSGBwXZu2hlCYCEDxbRKYucLuIWttAM7F
+ O482TG3xcDkoLXew1gzlmcF2+Q4E93y48dia9YQZXIuHU2uYl+nCFrp/1cBbLzSJft
+ lpqNTnYMzbGmkPGpt62kAi+rM88WcGFRyGy+OfLfwQ7Ou9lt8dTIRixe7shYcNJAXc
+ H3KYz/5lJBmzIzDMxVcxUlsioIUKO1OE5DeEjUnsaywobeYCy7+yj3LvukwDZ1wmsX
+ nUrNH76j/zMJA==
 From: Huacai Chen <chenhuacai@kernel.org>
 To: Bibo Mao <maobibo@loongson.cn>,
 	Song Gao <gaosong@loongson.cn>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, WANG Xuerui <git@xen0n.name>,
- qemu-devel@nongnu.org, Huacai Chen <chenhuacai@loongson.cn>,
- Nathan Chancellor <nathan@kernel.org>, WANG Rui <wangrui@loongson.cn>
-Subject: [PATCH 2/3] hw/loongarch/virt: Align VIRT_GED_CPUHP_ADDR to 4 bytes
-Date: Tue, 23 Sep 2025 22:35:41 +0800
-Message-ID: <20250923143542.2391576-3-chenhuacai@kernel.org>
+ qemu-devel@nongnu.org, Huacai Chen <chenhuacai@kernel.org>
+Subject: [PATCH 3/3] tests/data/acpi/loongarch64: Update expected DSDT.*
+Date: Tue, 23 Sep 2025 22:35:42 +0800
+Message-ID: <20250923143542.2391576-4-chenhuacai@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250923143542.2391576-1-chenhuacai@kernel.org>
 References: <20250923143542.2391576-1-chenhuacai@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=172.234.252.31;
- envelope-from=chenhuacai@kernel.org; helo=sea.source.kernel.org
+Received-SPF: pass client-ip=2600:3c04:e001:324:0:1991:8:25;
+ envelope-from=chenhuacai@kernel.org; helo=tor.source.kernel.org
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,44 +69,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+DSDT diffs from "iasl -d":
 
-Now VIRT_GED_CPUHP_ADDR is not aligned to 4 bytes, but if Linux kernel
-is built with ACPI_MISALIGNMENT_NOT_SUPPORTED, it assumes the alignment,
-otherwise we get ACPI errors at boot phase:
+@@ -11,7 +11,7 @@
+  *     Signature        "DSDT"
+  *     Length           0x000011FB (4603)
+  *     Revision         0x01 **** 32-bit table (V1), no 64-bit math support
+- *     Checksum         0x5D
++ *     Checksum         0x5B
+  *     OEM ID           "BOCHS "
+  *     OEM Table ID     "BXPC    "
+  *     OEM Revision     0x00000001 (1)
+@@ -1426,11 +1426,11 @@
+             Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
+             {
+                 Memory32Fixed (ReadWrite,
+-                    0x100E001F,         // Address Base
++                    0x100E0020,         // Address Base
+                     0x0000000C,         // Address Length
+                     )
+             })
+-            OperationRegion (PRST, SystemMemory, 0x100E001F, 0x0C)
++            OperationRegion (PRST, SystemMemory, 0x100E0020, 0x0C)
+             Field (PRST, ByteAcc, NoLock, WriteAsZeros)
+             {
+                 Offset (0x04), 
 
-ACPI Error: AE_AML_ALIGNMENT, Returned by Handler for [SystemMemory] (20250404/evregion-301)
-ACPI Error: Aborting method \_SB.CPUS.CSTA due to previous error (AE_AML_ALIGNMENT) (20250404/psparse-529)
-ACPI Error: Aborting method \_SB.CPUS.C000._STA due to previous error (AE_AML_ALIGNMENT) (20250404/psparse-529)
-ACPI Error: Method execution failed \_SB.CPUS.C000._STA due to previous error (AE_AML_ALIGNMENT) (20250404/uteval-68)
-
-VIRT_GED_MEM_ADDR and VIRT_GED_REG_ADDR are already aligned now, but use
-QEMU_ALIGN_UP() to explicitly align them can make code more robust.
-
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Suggested-by: WANG Rui <wangrui@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@kernel.org>
 ---
- include/hw/loongarch/virt.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tests/data/acpi/loongarch64/virt/DSDT         | Bin 4603 -> 4603 bytes
+ tests/data/acpi/loongarch64/virt/DSDT.memhp   | Bin 5824 -> 5824 bytes
+ tests/data/acpi/loongarch64/virt/DSDT.numamem | Bin 4609 -> 4609 bytes
+ .../data/acpi/loongarch64/virt/DSDT.topology  | Bin 4905 -> 4905 bytes
+ tests/qtest/bios-tables-test-allowed-diff.h   |   4 ----
+ 5 files changed, 4 deletions(-)
 
-diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-index 602feab0f0..be4f5d603f 100644
---- a/include/hw/loongarch/virt.h
-+++ b/include/hw/loongarch/virt.h
-@@ -28,9 +28,9 @@
- #define VIRT_LOWMEM_SIZE        0x10000000
- #define VIRT_HIGHMEM_BASE       0x80000000
- #define VIRT_GED_EVT_ADDR       0x100e0000
--#define VIRT_GED_MEM_ADDR       (VIRT_GED_EVT_ADDR + ACPI_GED_EVT_SEL_LEN)
--#define VIRT_GED_REG_ADDR       (VIRT_GED_MEM_ADDR + MEMORY_HOTPLUG_IO_LEN)
--#define VIRT_GED_CPUHP_ADDR     (VIRT_GED_REG_ADDR + ACPI_GED_REG_COUNT)
-+#define VIRT_GED_MEM_ADDR       QEMU_ALIGN_UP(VIRT_GED_EVT_ADDR + ACPI_GED_EVT_SEL_LEN, 4)
-+#define VIRT_GED_REG_ADDR       QEMU_ALIGN_UP(VIRT_GED_MEM_ADDR + MEMORY_HOTPLUG_IO_LEN, 4)
-+#define VIRT_GED_CPUHP_ADDR     QEMU_ALIGN_UP(VIRT_GED_REG_ADDR + ACPI_GED_REG_COUNT, 4)
- 
- #define COMMAND_LINE_SIZE       512
- 
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT b/tests/data/acpi/loongarch64/virt/DSDT
+index b31841aec6ed296f10ea1695a67ead38f45424d5..55aa34f988d6ef69293e91c5fe45bee0a02bc5f1 100644
+GIT binary patch
+delta 44
+zcmeyZ{9BpJCD<k8w;%%pWAsL@BfP>2415AS3=9mF4ABh%LBSymJPMm1@=CD)02#3h
+APXGV_
+
+delta 44
+zcmeyZ{9BpJCD<k8w;%%pW9&w*BfP@$415AS3=9mF4ABh%LBSymJo1|#@=CD)02$8<
+APXGV_
+
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT.memhp b/tests/data/acpi/loongarch64/virt/DSDT.memhp
+index e291200fc91caa3d93dcd6ec4736f7340f5e3f65..c0955eb60448cc5f4d38d410abc260ae54ea2e9a 100644
+GIT binary patch
+delta 44
+zcmX@0dq9`VCD<k8fEWV<W5PzRW+7n(20j5E1_p*ohUkWXpx_V&9)-;dgcMi+`vnS0
+
+delta 44
+zcmX@0dq9`VCD<k8fEWV<W70;hW+7pD20j5E1_p*ohUkWXpx_V&9{J4+gcMi+`y&cU
+
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT.numamem b/tests/data/acpi/loongarch64/virt/DSDT.numamem
+index 07923ac39584c5a5e73c9556d251814ce10de6cc..61e47e7252155dcf9c76879c4f60f4b3eef63f86 100644
+GIT binary patch
+delta 44
+zcmZovX;k5I33dr#6k=dte72G62(PdL1D^m70|P@PLv%wxP;dwXkHY4Myb3G;-$V)Z
+
+delta 44
+zcmZovX;k5I33dr#6k=dte6f-12(Pd_1D^m70|P@PLv%wxP;dwXkNoC`yb3G;-(m^%
+
+diff --git a/tests/data/acpi/loongarch64/virt/DSDT.topology b/tests/data/acpi/loongarch64/virt/DSDT.topology
+index 6dfbb495f88b74b87849b58473e46717bc588a56..b2afebc938ce45d798c8aa5f45a463f1617e257e 100644
+GIT binary patch
+delta 44
+zcmZ3fwo;ADCD<iIQ<#B)@!UqPBfP>2415AS3=9mF4ABh%LBSymJPMm1@_MiW0PuGT
+Ag8%>k
+
+delta 44
+zcmZ3fwo;ADCD<iIQ<#B)@xn%~BfP@$415AS3=9mF4ABh%LBSymJo1|#@_MiW0PvLx
+Ag8%>k
+
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index 2ed837faee..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,5 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/loongarch64/virt/DSDT",
+-"tests/data/acpi/loongarch64/virt/DSDT.memhp",
+-"tests/data/acpi/loongarch64/virt/DSDT.numamem",
+-"tests/data/acpi/loongarch64/virt/DSDT.topology",
 -- 
 2.47.3
 
