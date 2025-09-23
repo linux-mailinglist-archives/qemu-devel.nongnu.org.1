@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC49B9406F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 04:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74BE5B94073
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 04:41:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0swO-0004EK-Jf; Mon, 22 Sep 2025 22:39:42 -0400
+	id 1v0swg-0004KB-0c; Mon, 22 Sep 2025 22:39:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0swK-0004Ds-O3
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:39:36 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ id 1v0swR-0004GP-Us
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:39:44 -0400
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0swE-0003gx-JD
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:39:36 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-b553412a19bso1637846a12.1
+ id 1v0swG-0003gz-IQ
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:39:43 -0400
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-3322e6360bbso2276744a91.0
  for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 19:39:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1758595167; x=1759199967; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WtS+tUcTZk2GBqf6yxqhjiU0irGyIDNvqIFdhqaZrSY=;
- b=wwyDa6JkLfuLYwBHIc8zEiL39+DMOFgA8u6f9Y7p/++TqfwKw20od+LOsdtvKh/cOV
- gQp/eSIAGhu8Ssm3+TIwVRKs90Vm05o8Js58buuuAedvLy60LdysavT6l5+5wtTzSIXW
- HlsG4RWAh3hVBfZIYn7VgdnUB8c1xa0wOcwXx3ac0+CtYnzTtkiB2pTZUPIFPHwgrahR
- GOyRuohSFDzpvwGUJG0RQnpEza4L1VWiFIJBuU6ZfcYq9pKhZHoKycesSsBqd+oWGRGW
- OoEljtf4QotrMxOEzonSjKy1Xu4DwEyimbv0QrH2s5G+NoyIDZb+uIGkUPMgjPILc4eK
- u0ew==
+ bh=n6OMk5ACCeNuXf8eKcDPF9+TwMN9mapKYv0wPDXsO4I=;
+ b=FnbYQTwzmFbRmA9F3gWb/pv/rqwPVwwJOWn0ozbbRlK0Q+1hvWkB3oIXlU2gcASkGO
+ hdV9/SlGmZKg0wsDa9LNkhDOg6/KdITvn0ZVXm7yvbo3K08QRhEFJd9H0A6LyJojihfp
+ +qqsAbbwndeOCxbt8TIzjqqHZfSa2XfIsW3BmTcaPlmF4/h7DIRkOtHCVkvavaq83SLV
+ tczAAyJdVVFqEdHLHobi7PmgePJ5jfecH4Po8Fp2U0HdfsU5fbF+CeqEr20DpACSAD8c
+ MwmxmYP5MtwLxptfLWUjkWWEfKMsUcSuQUSDMKemL8TpdaiQWfYxFYT9032elCjWZD3L
+ LGxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1758595167; x=1759199967;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WtS+tUcTZk2GBqf6yxqhjiU0irGyIDNvqIFdhqaZrSY=;
- b=PqZjBp/y+A+857FpjiyJYnP6T0zjnNFBVnGaT+0GAMeMvuO+hahNPnPcgIKWWDShHO
- KD8OGwaNCR/2xmeybiA2tASLeAh9nixlZxrWfP75kO0GoTC1t2siicGjRtF+FrW418bX
- vNoe44UsKp8Yozgoc3wL6KlyZ+YZSaxuP8WLFRpgHazMqCKlNo9+4n6I4VLzs8M98+1a
- XDgqVqz+l4UFhIgOa2xxlwxFVd2lNCBpxWQkN43yKbzByt1yz8ShdqbkYZv8GgbkjiWU
- 2/puOfHqwboviohtXD9kcaB2QCiNqVDyo6uQ2FMvhQkoB5SeYz5m0JyW3Pg1LnzGM64K
- koyw==
-X-Gm-Message-State: AOJu0YwBzq5ITgTldVpmlM8T3dTgN8QcaNywhaIQKkShexm0iptMuXtk
- Et/OaTUGvCJl/bW8PDEcBxzkB0lS1XB9hvy4NlId6GHTH0gPaUiaEjnASWRpsX767WA775YQy3n
- FtfYS
-X-Gm-Gg: ASbGncsfctYEk+wgVUVu0rUroYfDEjwIPl1kd6sQymFdBjzj1Ipg8Slhxm+ojT3rmbx
- sZ2nDkkLTThksxDWvH+jzoyJuGtxc+cAzJNR3+4VECDClanueJOTsbw04emNskksKLd1f3uEqWV
- UnmsG3kA7HUrXIR4k6oSmQOYuC/hH88wwgXPnxmIdHQzSPYh+qVA4qVQfEqLOP0qJVqO7TLw6iB
- sFtYE1I3ejPnb4M+IEXZ9ayHy/7VATxhel66Z1/8t+3jTn2MBVkzzwNIm01q2jx9gnWKKzAcamr
- ezubfyBXPQdSI+M+N3bmDxqbViRjacDiIRkslb7wpGUTXq7dTLfrc7iInmTeG9FaKcR7YdPxt9a
- dy8DYuUUTYfEK8fqu1SdKAfkOP/45
-X-Google-Smtp-Source: AGHT+IFhdkBYZJ64ekLETcR0+kLRvIW8hmVQeZ3JUqgpSGj4LuHeM+ubYQVBCmKgaFBEgQRM79KwiQ==
-X-Received: by 2002:a17:902:ef4c:b0:26e:62c9:1cc4 with SMTP id
- d9443c01a7336-27cc1197880mr10617925ad.4.1758595166932; 
- Mon, 22 Sep 2025 19:39:26 -0700 (PDT)
+ bh=n6OMk5ACCeNuXf8eKcDPF9+TwMN9mapKYv0wPDXsO4I=;
+ b=f8kLNL81c9dv1D4O8WEnAm/jSAvfflQCfS0jWh/aUtEM9yMOorMwCBuQsr5KAOk25j
+ +UJfaiPu7LB9gMCl9zK5O8/FrG6AotIvgRfzXOlX49Y/kFjybL54eBMhExZP+HqAdTJg
+ N8Mhwlok8xPMfLHs83SLcRUXrby8Vd3cufkON5pZFuS0CbvC3Zseq0vVxaUcZHcY5EWc
+ LcoQ9M4WY7gEBOotuySIr7w3GgYJ908oHQdINddy4OrW4Ey5eFWfpp28n7hf32GWEPIQ
+ qlLvz0Q7vQ+jzXu8Q4Y1jOToH3O8SSokPj/5mCTT1ycsStatE7mm5tOkSUD8wsb5azTo
+ LZDg==
+X-Gm-Message-State: AOJu0YyaGoz0O8rkqNX7WQJikbJ9S1jISTZtYZDfWAfbdD5tN/ddqs4N
+ C83szPnJg835f3w/FVK29Ln6AYCrSrAnhiTZzZwqHiI1eN9OOtoDuYK2hXNIA/Ky5QvzsGcY/sg
+ 9hx2f
+X-Gm-Gg: ASbGncsS/hXcBpFRv9Uhs62kX6IBhbXsIlbm0k4zVK7FfgLItA7JO/yxS9l6UmacMVX
+ WU31pz8kvy5/FrWbKwQASa9Ohwc41uUMk2h4gZXiUENzmthknd4c2ZKYipjlCcMEGVgU6AMnq3c
+ zqbzg2UzlK0aVn4GkIqj/eUxcFnkS3CMIUs3lYfl7dhWW6M1G6EUx6cT2hB79pZ/z+fuV0WPQUR
+ Tsg43OAzmns10I7RFqNs/H9xB2V3x5opg9RMgkDRkAjWR569ewNOwjstIU1D7x9HFFjvVDpSA7l
+ zlIAiyeigKya0MrmWmx421M4fDuJuiyzrRKPXgPqyU0xrV4WicN27Sea9HpMp8UtMVTWjuXe5uY
+ sOGWdXHkK7gHprZSpUKbrESQgf1Cv
+X-Google-Smtp-Source: AGHT+IFghoo6+gWcrYmlQsslGgXlGMxcfqMJmFmnJGcvtjHP/qjZwDBopV9ltsSJKYt9PvQthlUckw==
+X-Received: by 2002:a17:90b:528e:b0:32d:601d:f718 with SMTP id
+ 98e67ed59e1d1-332a96fd5d0mr1210655a91.31.1758595167630; 
+ Mon, 22 Sep 2025 19:39:27 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-77f0da43089sm9899622b3a.90.2025.09.22.19.39.26
+ d2e1a72fcca58-77f0da43089sm9899622b3a.90.2025.09.22.19.39.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Sep 2025 19:39:26 -0700 (PDT)
+ Mon, 22 Sep 2025 19:39:27 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
-Subject: [PATCH v2 04/12] target/riscv: Record misa_ext in
- TCGTBCPUState.cs_base
-Date: Mon, 22 Sep 2025 19:39:08 -0700
-Message-ID: <20250923023922.3102471-5-richard.henderson@linaro.org>
+ Peter Xu <peterx@redhat.com>
+Subject: [PATCH v2 05/12] accel/tcg: Move post-load tb_flush to
+ vm_change_state hook
+Date: Mon, 22 Sep 2025 19:39:09 -0700
+Message-ID: <20250923023922.3102471-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250923023922.3102471-1-richard.henderson@linaro.org>
 References: <20250923023922.3102471-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,63 +99,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The tb_flush within write_misa was incorrect.  It assumed
-that we could adjust the ISA of the current processor and
-discard all TB and all would be well.  But MISA is per vcpu,
-so globally flushing TB does not mean that the TB matches
-the MISA of any given vcpu.
+We need not call tb_flush once per cpu, only once per vmload.
 
-By recording misa in the tb state, we ensure that the code
-generated matches the vcpu.
+By moving the call from cpu_common_post_load to a tcg-specific
+vm_change_state_handler, we do even better than that: we only
+flush when called from HMP triggered loadvm, when we had old
+state to flush.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-Cc: Alistair Francis <alistair.francis@wdc.com>
-Cc: Weiwei Li <liwei1518@gmail.com>
-Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-riscv@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>
 ---
- target/riscv/csr.c         | 3 ---
- target/riscv/tcg/tcg-cpu.c | 3 ++-
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ accel/tcg/tcg-all.c  | 21 +++++++++++++++++++++
+ hw/core/cpu-system.c |  8 --------
+ 2 files changed, 21 insertions(+), 8 deletions(-)
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 8842e07a73..3c8989f522 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -25,7 +25,6 @@
- #include "pmu.h"
- #include "time_helper.h"
- #include "exec/cputlb.h"
--#include "exec/tb-flush.h"
- #include "exec/icount.h"
- #include "accel/tcg/getpc.h"
- #include "qemu/guest-random.h"
-@@ -2173,8 +2172,6 @@ static RISCVException write_misa(CPURISCVState *env, int csrno,
-         env->mstatus &= ~MSTATUS_FS;
+diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
+index 5125e1a4e2..a0bc0e58c7 100644
+--- a/accel/tcg/tcg-all.c
++++ b/accel/tcg/tcg-all.c
+@@ -38,6 +38,8 @@
+ #include "qemu/target-info.h"
+ #ifndef CONFIG_USER_ONLY
+ #include "hw/boards.h"
++#include "exec/tb-flush.h"
++#include "system/runstate.h"
+ #endif
+ #include "accel/accel-ops.h"
+ #include "accel/accel-cpu-ops.h"
+@@ -82,6 +84,23 @@ static void tcg_accel_instance_init(Object *obj)
+ 
+ bool one_insn_per_tb;
+ 
++#ifndef CONFIG_USER_ONLY
++static void tcg_vm_change_state(void *opaque, bool running, RunState state)
++{
++    if (state == RUN_STATE_RESTORE_VM) {
++        /*
++         * loadvm will update the content of RAM, bypassing the usual
++         * mechanisms that ensure we flush TBs for writes to memory
++         * we've translated code from, so we must flush all TBs.
++         *
++         * vm_stop() has just stopped all cpus, so we are exclusive.
++         */
++        assert(!running);
++        tb_flush__exclusive();
++    }
++}
++#endif
++
+ static int tcg_init_machine(AccelState *as, MachineState *ms)
+ {
+     TCGState *s = TCG_STATE(as);
+@@ -124,6 +143,8 @@ static int tcg_init_machine(AccelState *as, MachineState *ms)
+     default:
+         g_assert_not_reached();
+     }
++
++    qemu_add_vm_change_state_handler(tcg_vm_change_state, NULL);
+ #endif
+ 
+     tcg_allowed = true;
+diff --git a/hw/core/cpu-system.c b/hw/core/cpu-system.c
+index 09c928c1f9..1fd9571017 100644
+--- a/hw/core/cpu-system.c
++++ b/hw/core/cpu-system.c
+@@ -207,14 +207,6 @@ static int cpu_common_post_load(void *opaque, int version_id)
+         cpu_reset_interrupt(cpu, 0x01);
+ 
+         tlb_flush(cpu);
+-
+-        /*
+-         * loadvm has just updated the content of RAM, bypassing the
+-         * usual mechanisms that ensure we flush TBs for writes to
+-         * memory we've translated code from. So we must flush all TBs,
+-         * which will now be stale.
+-         */
+-        tb_flush(cpu);
      }
  
--    /* flush translation cache */
--    tb_flush(env_cpu(env));
-     env->xl = riscv_cpu_mxl(env);
-     return RISCV_EXCP_NONE;
- }
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 78fb279184..143ab079d4 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -191,7 +191,8 @@ static TCGTBCPUState riscv_get_tb_cpu_state(CPUState *cs)
- 
-     return (TCGTBCPUState){
-         .pc = env->xl == MXL_RV32 ? env->pc & UINT32_MAX : env->pc,
--        .flags = flags
-+        .flags = flags,
-+        .cs_base = env->misa_ext,
-     };
- }
- 
+     return 0;
 -- 
 2.43.0
 
