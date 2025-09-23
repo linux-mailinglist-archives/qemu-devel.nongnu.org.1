@@ -2,72 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED1BB973CF
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 20:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4C5B976CE
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 21:54:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v183L-000726-TO; Tue, 23 Sep 2025 14:47:51 -0400
+	id 1v194I-00083f-CS; Tue, 23 Sep 2025 15:52:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v183E-00071k-B9
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 14:47:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <prvs=8361951d9f=erick.shepherd@ni.com>)
+ id 1v188M-0000fl-7V
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 14:53:02 -0400
+Received: from mx0b-00300601.pphosted.com ([148.163.142.35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v183C-0002it-3h
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 14:47:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758653259;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=1P3YME+UcVZM2GPE7hqCzpOVF6GYqIDDX0zDNldBWnY=;
- b=Cn9u6s7upRQprsyfjCNBg6gkn9bYeTM1pVZPeJT2uVm07KfxgqhNJ3h77SngmQjqw/SfrB
- EoYJnAyH01MmVykzGlaRS3LEk6GvMVN4b44tGl0JjcSjpUZDhLJZOukp37fAItOB04EeGF
- SwiTMNNevQBUKh06uSvujxLbGc51fbA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-455-c4OfasqtO5ai3J2unKjHVw-1; Tue,
- 23 Sep 2025 14:47:37 -0400
-X-MC-Unique: c4OfasqtO5ai3J2unKjHVw-1
-X-Mimecast-MFC-AGG-ID: c4OfasqtO5ai3J2unKjHVw_1758653257
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CCFC21956058; Tue, 23 Sep 2025 18:47:36 +0000 (UTC)
-Received: from localhost (unknown [10.2.17.69])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 46B6D300018D; Tue, 23 Sep 2025 18:47:36 +0000 (UTC)
-Date: Tue, 23 Sep 2025 14:47:35 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, mads@ynddal.dk
-Subject: Re: [PATCH v2] tracing: deprecate "ust" tracing backend
-Message-ID: <20250923184735.GE509965@fedora>
-References: <20250923074418.87716-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <prvs=8361951d9f=erick.shepherd@ni.com>)
+ id 1v188K-0003Pc-Gt
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 14:53:01 -0400
+Received: from pps.filterd (m0484883.ppops.net [127.0.0.1])
+ by mx0b-00300601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58NB5qvI029488;
+ Tue, 23 Sep 2025 18:52:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ni.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=PPS11142024;
+ bh=Px6YGZ48sPXzDjWpljCb4XloWMrMosfQuA3cRmjexsQ=; b=wASnRVdtOrYm
+ f5t4pw0xPY10Gx+gp2fbiYUb8o7CpIEz3NBXW7MiKs9Yaib8ip6ev6iZGvoRp7Ay
+ XBhFleObEOa3yl6jTYUfGqubRz3MEh1PrvjyVkC9kPfoiO0JFNrWlwgZhR+26OXX
+ AtGOkDsQ2aGe7Ew7UG/fz1CGOz0sTtZnsZE7JT6iTTPui8Eqeq7RZE/6lRjFaXzM
+ 9eskRgjV+D/C6uaTkKS12Acu4cRQeUJ16Fh+ej4yDuru+k65ErkDn5Fofngyeyoc
+ VggDrNDGy6+y4NUtLoafN6JCH56sUQRK2T3bZfXP2nd1DXmsMRNVShb9hPXuOQqI
+ eHaDSyqSSg==
+Received: from us-aus-excas-p2.ni.corp.natinst.com ([130.164.94.74])
+ by mx0b-00300601.pphosted.com (PPS) with ESMTPS id 49btch3ka4-16
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 23 Sep 2025 18:52:57 +0000 (GMT)
+Received: from us-aus-excas-p1.ni.corp.natinst.com (130.164.68.17) by
+ us-aus-excas-p2.ni.corp.natinst.com (130.164.68.18) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Tue, 23 Sep 2025 13:52:52 -0500
+Received: from ershephe-ubuntu.ni.corp.natinst.com (172.18.68.32) by
+ us-aus-excas-p1.ni.corp.natinst.com (130.164.68.17) with Microsoft SMTP
+ Server id 15.2.1258.28 via Frontend Transport; Tue, 23 Sep 2025 13:52:52
+ -0500
+From: Erick Shepherd <erick.shepherd@ni.com>
+To: <berrange@redhat.com>
+CC: <qemu-devel@nongnu.org>
+Subject: Re: [PATCH] .gitmodules: Update URLs for the u-boot submodules
+Date: Tue, 23 Sep 2025 13:52:51 -0500
+Message-ID: <20250923185251.279242-1-erick.shepherd@ni.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <aNJD-OXimJj9KZkS@redhat.com>
+References: <aNJD-OXimJj9KZkS@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="NzRVrZ4TapwK8k06"
-Content-Disposition: inline
-In-Reply-To: <20250923074418.87716-1-pbonzini@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Proofpoint-GUID: 5gAK7a-KbSkRIm-TTdii2tj9kkXSjlW0
+X-Proofpoint-ORIG-GUID: 5gAK7a-KbSkRIm-TTdii2tj9kkXSjlW0
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIzMDEwMiBTYWx0ZWRfX0mgxpZaZkHqC
+ 012CubhncsvpQRGsFMT17MHilph1hvlB0/VZVVnpbqUmcr0n8FBe4MPc6nbX7IEkqdCTEsesRIn
+ Kvf6nA5nWYYyVfg8PSKbn/bvqATXTkJn/z0Jhu8mTxr/nA0PP3Ih78WYOayoXUtYPHKp2h9I1lE
+ Revc9yf+sgNW++zppMOp4wCCyKNo0TyaX5u5tcUdfWontBLcQz6pxkK46zBdCPj2s8GCX4wg2JW
+ wAJ+XHTvT6pn4Hxbu5YGJJ3sG4vdt0cJxM07wE4VTvp6UhaTjPImcrI0p6cT/Ke5HcjKXXnGUqM
+ I4ZcueFHnEntzcWsBsPS7BGOvWBc5ym83uDlKrmiq0WxixRDhrDLyqV7gIbjnWvSiZKd9214jvc
+ 4QvpJT27
+X-Authority-Analysis: v=2.4 cv=Q/bS452a c=1 sm=1 tr=0 ts=68d2ec89 cx=c_pps
+ a=VUOoxcgKHUMpfFMIT0tLvw==:117 a=VUOoxcgKHUMpfFMIT0tLvw==:17
+ a=yJojWOMRYYMA:10 a=Rk38NhaUC7qMvX-nwn8A:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-23_04,2025-09-22_05,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0
+ phishscore=0 bulkscore=0 impostorscore=0 suspectscore=0 priorityscore=1501
+ malwarescore=0 clxscore=1011 classifier=typeunknown authscore=0 authtc=
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509230102
+Received-SPF: pass client-ip=148.163.142.35;
+ envelope-from=prvs=8361951d9f=erick.shepherd@ni.com;
+ helo=mx0b-00300601.pphosted.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 23 Sep 2025 15:52:52 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,115 +103,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
---NzRVrZ4TapwK8k06
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Sep 23, 2025 at 09:44:18AM +0200, Paolo Bonzini wrote:
-> The "ust" backend is complex (tracetool contains two output formats just
-> for that backend).  It is not clear if if it has any users, and LTTng
-> anyway can use the uprobe tracepoints provided by the "dtrace" backend,
-> therefore deprecate "ust".
-
-LTTng UST cannot trace all of QEMU's SDT probes because QEMU uses SDT
-semaphores. Semaphores appear to be unsupported by LTTng:
-https://bugs.lttng.org/issues/1180
-
-Here is an example that won't work:
-
-  static MemTxResult  memory_region_read_accessor(MemoryRegion *mr,
-                                                  hwaddr addr,
-                                                  uint64_t *value,
-                                                  unsigned size,
-                                                  signed shift,
-                                                  uint64_t mask,
-                                                  MemTxAttrs attrs)
-  {
-      uint64_t tmp;
- =20
-      tmp =3D mr->ops->read(mr->opaque, addr, size);
-      if (mr->subpage) {
-          trace_memory_region_subpage_read(get_cpu_index(), mr, addr, tmp, =
-size);
-      } else if (trace_event_get_state_backends(TRACE_MEMORY_REGION_OPS_REA=
-D)) {
-                 ^^^ semaphore ^^^
-          hwaddr abs_addr =3D memory_region_to_absolute_addr(mr, addr);
-          trace_memory_region_ops_read(get_cpu_index(), mr, abs_addr, tmp, =
-size,
-                                       memory_region_name(mr));
-      }
-
-However, I don't remember hearing from LTTng UST users all these years,
-so I think it's okay to deprecate this tracing backend.
-
-Please update the commit description to mention that trace events that
-use SDT semaphores do not work with LTTng UST.
-
-Thanks,
-Stefan
-
->=20
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  docs/about/deprecated.rst | 9 +++++++++
->  meson.build               | 4 ++++
->  2 files changed, 13 insertions(+)
->=20
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index aa300bbd507..57250f9d47f 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -533,3 +533,12 @@ command documentation for details on the ``fdset`` u=
-sage.
-> =20
->  The ``zero-blocks`` capability was part of the block migration which
->  doesn't exist anymore since it was removed in QEMU v9.1.
-> +
-> +Host features
-> +-------------
-> +
-> +``ust`` tracing backend
-> +-----------------------
-> +
-> +LTTng can use uprobe tracepoints, therefore it is recommended to use
-> +the ``dtrace`` backend instead.
-> diff --git a/meson.build b/meson.build
-> index 72da97829ab..b5e2186b35e 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -5073,3 +5073,7 @@ if not actually_reloc and (host_os =3D=3D 'windows'=
- or get_option('relocatable'))
->    message('QEMU will have to be installed under ' + get_option('prefix')=
- + '.')
->    message('Use --disable-relocatable to remove this warning.')
->  endif
-> +
-> +if 'ust' in get_option('trace_backends')
-> +  warning('ust trace backend is deprecated, use dtrace backend for uprob=
-e support')
-> +endif
-> --=20
-> 2.51.0
->=20
-
---NzRVrZ4TapwK8k06
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjS60YACgkQnKSrs4Gr
-c8jUiwf+IKrd4qx+F6jWq8DtJKzjWuU+/sb8FVBEqsAKp9CpeWa3MI0IYjn7Tt2Z
-YIr/AzTL5ioH2csHd0XCR5/qHe3dRkbPsFtZo27GilMQwStKh6My5qxPbaqTUwZ0
-0Ye0sbfZsGqO2PYHQjzv6a4oIZprI6JymNsYLrai9RuUX+tqb+OmJmk08NzQ8gGG
-oAg0YSNmPc4CUc6vhnZzZMEyEeQB0gpcitW4npeStt+lS14ACOOW7H/GYGqUgcso
-5xd6r1WtTBXMY38fiZNZ8tWaCbGEcUqnyh2ADhPkiHw99zbejSA+qi2y1BKN3lnw
-sGGh/9vCxJyobqZOqDW1ekjBR6hfnw==
-=cUdY
------END PGP SIGNATURE-----
-
---NzRVrZ4TapwK8k06--
-
+Ah, I must have missed that, are there any plans to cherrypick the=0D
+change to any of the other branches? I'm particularly interested in the=0D
+xlnx_rel_v2025.1 branch since that is what is used by the meta-xilinx=0D
+scarthgap branch.=0D
+=0D
+Regards,=0D
+Erick Shepherd=0D
 
