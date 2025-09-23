@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B7EB94081
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 04:42:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF708B9407E
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 04:42:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0swf-0004Jd-4h; Mon, 22 Sep 2025 22:39:57 -0400
+	id 1v0swk-0004Qs-S2; Mon, 22 Sep 2025 22:40:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0swR-0004GO-S8
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:39:44 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1v0swZ-0004IF-CK
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:39:51 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v0swF-0003h8-P8
- for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:39:43 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-77ee6e252e5so3235892b3a.2
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 19:39:30 -0700 (PDT)
+ id 1v0swI-0003hF-RH
+ for qemu-devel@nongnu.org; Mon, 22 Sep 2025 22:39:50 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-77d94c6562fso5075577b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 19:39:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758595168; x=1759199968; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758595169; x=1759199969; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tkiiaZ/I0kCUxEv1YuYFr7w89DooS5qqrLfJGIO7KtE=;
- b=LC7Gblweeg0S1xRCKppNhoYn7ozf0sYipigeyoV6Gmv0QnrEPeklJg0q4lHIOzKZ6e
- G0ALfnRwr/b9osVJNiiu9Zuufo04KtHDKml/IRyEW0iFaSuznIvVH3OrYB8xOKF/+i8d
- NR6DouFj+ZKH55fEy85LGEFCtYQms5y4m8MZfks0Px4kpzQXi4dYiN1FuRgNEXGTNhhR
- i3LBtuRwxQcjJGyW+6ZNMZPmAvoDOgXSis9UlmG0jlCbaj2RK3wyftUWljXLMnY0zAyv
- byx4R0Yiok4OeOlCN3Oxsf31UDtSlWJ+WNAJRAPoXHJg467yeEgyviUgizktXEXUjsaL
- OV/Q==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=tqfT+leZhy7Rg922mo2u8oPpLUYve9eJPBZJd2GWVis=;
+ b=I3M2/Dmhwi4M106iH8BPZhLk+HEJvn6Z4zCWzwT7xDdQuoIMxgZzx65eZTNwsaxMBs
+ 4l9a51La/Sr2hz5BB8NUkE+aRuJhLZDFngJgig+4KS4+RYTuqcWE0bb6CuN4Q3r4tm7+
+ RV/yc8w3Nu7b8Kv/3BH+n6I0jwzlbs8lIKe7REDyFU8lE9H1lPzW9LKEIUoXskD6sIdR
+ b+Z1OKYd3co+F4VhNojWJ/arKvoK1xSunXzLL2V6Or7YRZvg5lij0gqyil8kB6a0vG2S
+ A0ySRObbiMjVSFtIBW/bqnjxKsUi2klqdk7ilwCXvotn06GYE4IBdovzhFbPxoQ+eNjZ
+ gBcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758595168; x=1759199968;
+ d=1e100.net; s=20230601; t=1758595169; x=1759199969;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tkiiaZ/I0kCUxEv1YuYFr7w89DooS5qqrLfJGIO7KtE=;
- b=kWCBKxq9lqoeq/ceyQ9aBLQTWqkskFY4Bx3kcdo+eXF9lulecfh6ylg9IFwRc/NSUC
- ZVxPLdg0GEULO4h8B7b5+pCKr1VVkFubGkeJbGe1BIcEvakQ44b/8KavjJJOdhd7TWnv
- 2U3i5rvkJr1OB6n409JIZNWps2QMJWIuirb8kt2eLd+uRwykQiD9TznFhqSqLaXRXSuk
- khiypcs+CJSr68Qhle+JZKsi5vY2A0s1xNPCLoaWgUFWoiuLIpfCWPqAgio+ZjW1XmKW
- hTECXF0InlT5kBZ9l9icGx9a5S/Gjrpg7MuazKKv+Cjl5rNwYazZj0yHAEivJYY/Ov4A
- 4yrw==
-X-Gm-Message-State: AOJu0YxnyzsFMy+YZrglrmhNr82aBUMNzUsFTAvGbSZG6uMJjoXfIt8P
- 47576t1XJHmSuklqFakDiSDHUmA/4qQyOz9HC0lT1MUZabb96xp9OY1E/ky/Kcy8wtmWzSk+X7h
- YTl3D
-X-Gm-Gg: ASbGnctmpyMU5faO+xqVhSJ/BqVDGtl9cun3OIuPe2m8AY6rt4ibFzHv3XVgrzwFFFS
- 8BwuV2TNRVKwSm40GarflXAtD6CiNRN1H5h03zU0oyBceYwGQNAdX1tXj3jf+Gj9g5cnMQmLA48
- Nzq6rClLyMGTcpQbPpbtAYCAJ5MO3g8ABc4Mu4yOr4NWf8+osxgfNmg9ng29JQshBFA59htR39O
- VoHtPHXY1uw1y+tQjHI7a38hAdBfvT4bMziVkXw1yQrabEfaS7NccTNwpqogAObSaTwecFA5+jd
- d4DZ3SWwo72HBy0Vwz3Mqm2tJJzutBmLsU45WKY+ATKfaQCNeKfYTdA2+Pm6cDe5Ypn3d2pm8nN
- ooyciLncFucke8U7ekY/k+obMP22m
-X-Google-Smtp-Source: AGHT+IHKMVMp3APayk1JjMJxSPmPTqAkEmmzM3hi5fTyha+r0zmvy4EH9e4oNBzdMQjC4nC6Ku6DMw==
-X-Received: by 2002:a05:6a00:3904:b0:77f:1ef8:8acb with SMTP id
- d2e1a72fcca58-77f538ffa10mr1444422b3a.13.1758595168286; 
- Mon, 22 Sep 2025 19:39:28 -0700 (PDT)
+ bh=tqfT+leZhy7Rg922mo2u8oPpLUYve9eJPBZJd2GWVis=;
+ b=iCS5meeHhQR8asYjQk6HWuXzTF4Ygi/D9TD2HO5FLnlvR+4JB2IIu6TLBIB9eTOJVL
+ fVic6pdhzHEKaeFmi/Zc9KbN2ylj2Mbjm1bPpzZGhAvPQkBxKcqKgoLm6JnnRxTTkVUE
+ myQFH6LEzX4Q9N3ulAbmCDEIvuFC6GMHADOAVH1zaaBlZPvkz7+CqlUyXvQxNermHwYT
+ BQYfgeFxmez3ImGiatvEzk/yVCTKQ7x2dk5p29q4tTHv6Z6uedGIialzUCGCTdBAlmWo
+ 9KCX216vbD6D6Pyf9DLCFMUHbk6nR/uc6auQUdD+va/oNt2AkYC3tt221Cwl1PzBROeJ
+ Bckg==
+X-Gm-Message-State: AOJu0YzfLiKlclC/nJt3OpOJ518PA5mu0ux3mLetxQsLQtTz3alaHOhq
+ csgp2Pw8pEfSoCcwKUU+3O6E/ZmNUX/NNnYPdiE3ATxzoJxHxr+en3wzRV8CYhBHXdvFmLXKYbJ
+ JsCsx
+X-Gm-Gg: ASbGncsSv2Sich3O1VG2QEVgeZZBAvR2zg19egZ5T2AV9iwTz3lO9TlGC0cj93Yr060
+ /Wl92cO/nLLU0mRtDqLVdVdoHr1n5URBX9fdY1ohmZ9qAmidmeexXwV4jQ126TNzUeDle8xPd51
+ RVdmUy5zlIIcxhAoAC+MDvrUL8+WQyhLdq+VUHlqrbEapvz2xRlGjyz+DZrd1O/EfQlcScTetoY
+ RgRplh8Ek1lroX++QVNu5nLsJf5Y8jv5XRY6G7PmYmPJUyuxD0588B2OsgqnPFraAgwM67HjfI7
+ eqFYJokJyA0uI1TqN2iDF/mxQ9eDpCPI7xvxxKrP41etH1Ofzb5ndQLuas43d7mtwclIDhreDpe
+ IBGodJUCku8JPJBdiZvQxYdnFoE5At8keomH7zfE=
+X-Google-Smtp-Source: AGHT+IErno92lfG+bJ1b4AjLPNa+us69nGKrvhN9BIwPqCk9C/+OIn0I3J2Bi71XpwCNL9PhpsWnWA==
+X-Received: by 2002:a05:6a00:b91:b0:77c:6621:6168 with SMTP id
+ d2e1a72fcca58-77f53ae6f76mr976584b3a.30.1758595169079; 
+ Mon, 22 Sep 2025 19:39:29 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-77f0da43089sm9899622b3a.90.2025.09.22.19.39.27
+ d2e1a72fcca58-77f0da43089sm9899622b3a.90.2025.09.22.19.39.28
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Sep 2025 19:39:27 -0700 (PDT)
+ Mon, 22 Sep 2025 19:39:28 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
-Subject: [PATCH v2 06/12] hw/ppc/spapr: Use tb_invalidate_phys_range in
- h_page_init
-Date: Mon, 22 Sep 2025 19:39:10 -0700
-Message-ID: <20250923023922.3102471-7-richard.henderson@linaro.org>
+Subject: [PATCH v2 07/12] linux-user: Use tb_flush_exclusive to start second
+ thread
+Date: Mon, 22 Sep 2025 19:39:11 -0700
+Message-ID: <20250923023922.3102471-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250923023922.3102471-1-richard.henderson@linaro.org>
 References: <20250923023922.3102471-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,40 +97,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We only need invalidate tbs from a single page, not flush
-all translations.
+When we start the second thread, we discard all translations
+so that we can re-do them with CF_PARALLEL.  Since there is
+as yet only one cpu, and we are processing a syscall, there
+are no live translation blocks and we have exclusivity.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Cc: qemu-ppc@nongnu.org
----
- hw/ppc/spapr_hcall.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ linux-user/mmap.c    | 4 ++--
+ linux-user/syscall.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-index c594d4b916..feb31d5dd8 100644
---- a/hw/ppc/spapr_hcall.c
-+++ b/hw/ppc/spapr_hcall.c
-@@ -8,7 +8,7 @@
- #include "qemu/main-loop.h"
- #include "qemu/module.h"
- #include "qemu/error-report.h"
--#include "exec/tb-flush.h"
-+#include "exec/translation-block.h"
- #include "exec/target_page.h"
- #include "helper_regs.h"
- #include "hw/ppc/ppc.h"
-@@ -301,7 +301,7 @@ static target_ulong h_page_init(PowerPCCPU *cpu, SpaprMachineState *spapr,
-         if (kvm_enabled()) {
-             kvmppc_icbi_range(cpu, pdst, len);
-         } else if (tcg_enabled()) {
--            tb_flush(CPU(cpu));
-+            tb_invalidate_phys_range(CPU(cpu), dst, len);
-         } else {
-             g_assert_not_reached();
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index 002e1e668e..bd2bbaf1f4 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -1010,7 +1010,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+         CPUState *cpu = thread_cpu;
+         if (!tcg_cflags_has(cpu, CF_PARALLEL)) {
+             tcg_cflags_set(cpu, CF_PARALLEL);
+-            tb_flush(cpu);
++            tb_flush__exclusive();
          }
+     }
+ 
+@@ -1450,7 +1450,7 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
+      */
+     if (!tcg_cflags_has(cpu, CF_PARALLEL)) {
+         tcg_cflags_set(cpu, CF_PARALLEL);
+-        tb_flush(cpu);
++        tb_flush__exclusive();
+     }
+ 
+     if (qemu_loglevel_mask(CPU_LOG_PAGE)) {
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 91360a072c..d9c394856f 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -6633,7 +6633,7 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
+          */
+         if (!tcg_cflags_has(cpu, CF_PARALLEL)) {
+             tcg_cflags_set(cpu, CF_PARALLEL);
+-            tb_flush(cpu);
++            tb_flush__exclusive();
+         }
+ 
+         /* we create a new CPU instance. */
 -- 
 2.43.0
 
