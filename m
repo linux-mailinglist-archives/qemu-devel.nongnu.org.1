@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34194B97253
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 19:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80601B97263
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 20:00:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v17Hq-0003pc-MG; Tue, 23 Sep 2025 13:58:46 -0400
+	id 1v17JC-0006PR-02; Tue, 23 Sep 2025 14:00:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v17Hn-0003ng-Ta
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 13:58:44 -0400
+ id 1v17J9-0006PD-LE
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 14:00:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1v17Hj-0003Jj-Pn
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 13:58:43 -0400
+ id 1v17J5-0003ZW-A6
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 14:00:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758650318;
+ s=mimecast20190719; t=1758650402;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=N6dt0WK7X/t+kzGUWVf2rXxcbie0XrHsG8meIrCOUJo=;
- b=hEh4jF1VvLnF8l770f9t72F/eoHCpHCLHneOVhGnV8tu1Upv+98N8jnVo7jU6DRcdKojuw
- Uw8CZFj0F9TlJVY2KX3cz02YxGn02i+3HwP/x0WXSA7cNxnbulDnhwLnPP8x3CF79IuIR6
- HQlqAat/jlEk2WfJv70uS7cBZnvRURA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=eacQxv6pgrHdboqFFU3dcqFS04smjIBxLfh6YOLugaU=;
+ b=JGrCOO9LeNssSt5ZmNJ+1+K6FIxGT17LYIeol5bd1hA87E9eslfRP1W8ia0VGfi5jJZ7S2
+ jxkGxM49N8BoKomDyaexnNk3mzzMsUV7MhDxY1dwNUYScy89sXb4CMLb2NHx4IzJxMStv0
+ DVpEE3qF+Yhy2SW7v3d/uC5MhKi1l8k=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-kRp6Sm9CN4u0FetS0mkYdA-1; Tue,
- 23 Sep 2025 13:58:34 -0400
-X-MC-Unique: kRp6Sm9CN4u0FetS0mkYdA-1
-X-Mimecast-MFC-AGG-ID: kRp6Sm9CN4u0FetS0mkYdA_1758650313
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-511-F2Xh0YGKP9muvRbO5bQ_7g-1; Tue,
+ 23 Sep 2025 14:00:00 -0400
+X-MC-Unique: F2Xh0YGKP9muvRbO5bQ_7g-1
+X-Mimecast-MFC-AGG-ID: F2Xh0YGKP9muvRbO5bQ_7g_1758650399
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3541E1956054; Tue, 23 Sep 2025 17:58:33 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0C42E1800577; Tue, 23 Sep 2025 17:59:59 +0000 (UTC)
 Received: from localhost (unknown [10.2.17.69])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A76131800451; Tue, 23 Sep 2025 17:58:32 +0000 (UTC)
-Date: Tue, 23 Sep 2025 13:58:31 -0400
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 7742D1955F19; Tue, 23 Sep 2025 17:59:58 +0000 (UTC)
+Date: Tue, 23 Sep 2025 13:59:57 -0400
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org,
@@ -52,16 +52,17 @@ Cc: qemu-devel@nongnu.org,
  Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 1/3] docs/code-provenance: clarify scope very early
-Message-ID: <20250923175831.GC509965@fedora>
+Subject: Re: [PATCH 3/3] docs/code-provenance: AI exceptions are in addition
+ to DCO
+Message-ID: <20250923175957.GD509965@fedora>
 References: <20250922154843.60233-1-pbonzini@redhat.com>
- <20250922154843.60233-2-pbonzini@redhat.com>
+ <20250922154843.60233-4-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="m8ub2eQC8XTpK4Ab"
+ protocol="application/pgp-signature"; boundary="sYSeXdabDD4a1k8m"
 Content-Disposition: inline
-In-Reply-To: <20250922154843.60233-2-pbonzini@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+In-Reply-To: <20250922154843.60233-4-pbonzini@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -88,41 +89,44 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---m8ub2eQC8XTpK4Ab
-Content-Type: text/plain; charset=iso-8859-1
+--sYSeXdabDD4a1k8m
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 22, 2025 at 05:48:40PM +0200, Paolo Bonzini wrote:
-> The AI policy in QEMU is not about content generators, it is about genera=
-ted
-> content.  Other uses are explicitly not covered.  Rename the policy and c=
-larify
-> its scope in the TL;DR section, as a matter of convenience to the reader.
+On Mon, Sep 22, 2025 at 05:48:42PM +0200, Paolo Bonzini wrote:
+> Using phrasing from https://openinfra.org/legal/ai-policy (with just
+> "commit" replaced by "submission", because we do not submit changes
+> as commits but rather emails), clarify that the contributor remains
+> responsible for its copyright or license status.
 >=20
-> Reviewed-by: Daniel P. Berrang=E9 <berrange@redhat.com>
+> [This is not my preferred phrasing.  I would prefer something lighter
+> like "the "Signed-off-by" label in the contribution gives the author
+> responsibility".  But for the sake of not reinventing the wheel I am
+> keeping the exact words from the OpenInfra policy.]
+>=20
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  docs/devel/code-provenance.rst | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
+>  docs/devel/code-provenance.rst | 6 ++++++
+>  1 file changed, 6 insertions(+)
 
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
---m8ub2eQC8XTpK4Ab
+--sYSeXdabDD4a1k8m
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjS38cACgkQnKSrs4Gr
-c8iOpAf/cYOIT0styt+Y8HWLeKKCTFJM0qFZQfazjbqnamniqgeUK+eZNPCR6gMf
-SchsyuZDRPxuVVciUqPmwszQUXYWtjhwlm7UGOwK+spi9zhwLgNhtJ1GwKtNOp/F
-y2j94XJWuB1FwuASCuzAB+9NRZdz1jhPj9q09fgb3Vkd9+JQfvbYpoWl2fE41r29
-Y5oPK9HJn2lzUjS/1L0c11W9nQ5GA+ydnzAc/tXbwzXI05l/GAW4gNddFkOetF76
-znOxgZLXrMr6Ky8OA5/54yv/g/OhAwX3pVAVflJPNB0r6F5pEDlWeR2T4zHPZTTS
-gHv4a48X5z9WDW4f8aW2K78iczkCdA==
-=VSTR
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjS4BwACgkQnKSrs4Gr
+c8gWeAf+IMZtwZl4OGRW8MmUVTKPUHn9R5jdKnA7Kh/gvoidvaCrvdyVor2eXqqP
+rEhszfJtoxrvOUmEZWiEWn3oXjNMZi2Wsn//Z06C8lG5takl5lXJAjlkt21ZQL7L
+FMXgO/MiW6VIktnlDloVJ11Clh/BVXeTjnqxiinXsv19qQJZhtx7gt1KY19gWbqu
+odnnH8Yoq7ZTYUM1/j+1pSLHMuY1Hv9go397I5F4246wLqWNL1j1ZI97AFXL1qcK
+WS1o6vqrgRTLqXqXDIRv/4wWGOyoymiDa9lbOlZYqwGr8YTQpvr0snJWaM9K+5dj
+x/WCVfVljwaD9Oi+CW42SA23LDy3+Q==
+=aj03
 -----END PGP SIGNATURE-----
 
---m8ub2eQC8XTpK4Ab--
+--sYSeXdabDD4a1k8m--
 
 
