@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A59AB964E0
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 16:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A66CB964E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 16:37:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v147y-00033L-J8; Tue, 23 Sep 2025 10:36:22 -0400
+	id 1v1489-000366-Db; Tue, 23 Sep 2025 10:36:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenhuacai@kernel.org>)
- id 1v147t-00031w-12
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 10:36:18 -0400
-Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
+ id 1v147y-00033X-Ka
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 10:36:24 -0400
+Received: from sea.source.kernel.org ([172.234.252.31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenhuacai@kernel.org>)
- id 1v147q-0002mf-Ka
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 10:36:16 -0400
+ id 1v147v-0002nN-Uo
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 10:36:21 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id C482843C05;
- Tue, 23 Sep 2025 14:36:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5AFBC4CEF5;
- Tue, 23 Sep 2025 14:36:05 +0000 (UTC)
+ by sea.source.kernel.org (Postfix) with ESMTP id D9659442E3;
+ Tue, 23 Sep 2025 14:36:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EDCC113CF;
+ Tue, 23 Sep 2025 14:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1758638168;
- bh=jmy6aIjFGD3f57e90WPumKX2dq3ZPrvC07Lu6nuPVz4=;
- h=From:To:Cc:Subject:Date:From;
- b=Nz6M05Mw40A2ykzGXSZD9JPtCUjil7xV3AnGkEyopqefGteetSgEHwOhqlQrTyZBq
- OI3O2E/cH7az7Hgd/Xgg28jB1rM+3RH5Rzy2MYlCmz2xW/iQOFVL5RGe89xQvTq07I
- NpLDSKIpWVhz1nVv9skImXqrGcC3vPGoXMIgD0I0jJdUvsLOs6XCSOfCwiHqOB9+lj
- Cy4bnL5YrNzhPHCIG/7qMzB8mzFyY+REjatkE2ga5gY+TRaklOawWS8rJfEx1UGroP
- mfUcT7DTDL19XP+tqZVlRLaeFl0v+6luqEEEsLrcVGf7drTUpVegNFptEk+7Gh8Skp
- i6P4Zb+/KgtpA==
+ s=k20201202; t=1758638175;
+ bh=9auIKoebOATipv+LsapWaUr2Od/3MQw86GYQvAsRfh4=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=E/3vCWxr7uejcoOsxW1Q9uqGaSvz61f4cEr9doTWms+t/Z4KRkOYQkrPVaF/PYwXX
+ 8P5xd1LxExIig+mQh8mHLUzJXmp4Jmikr8+oXOaaXEJKLWRYeIHT2jcn9QoUWZErlU
+ Y062kTQDLgqnvBmWjjvXHJghkUUPiTlCSiVV9ubD8/x7MqMwU9xff2rMz8+ryjF0aZ
+ 1QyRI5xGGforADJU7ftU78B1YblU39ll2CWLTfFdQTppOenyWBJQsJ5HQLz6Nn0p4q
+ JVr+hxJ3EEQO0AkXIsKVfsJM3pFtABi2sylPy/11QTPlpT8n1AivzKj8/HCosiwbYv
+ HMEoD4eZmshcQ==
 From: Huacai Chen <chenhuacai@kernel.org>
 To: Bibo Mao <maobibo@loongson.cn>,
 	Song Gao <gaosong@loongson.cn>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, WANG Xuerui <git@xen0n.name>,
- qemu-devel@nongnu.org, Huacai Chen <chenhuacai@kernel.org>,
- Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 0/3] LoongArch: Align VIRT_GED_CPUHP_ADDR
-Date: Tue, 23 Sep 2025 22:35:39 +0800
-Message-ID: <20250923143542.2391576-1-chenhuacai@kernel.org>
+ qemu-devel@nongnu.org, Huacai Chen <chenhuacai@kernel.org>
+Subject: [PATCH 1/3] bios-tables-test-allowed-diff.h: Allow LoongArch DSDT.*
+Date: Tue, 23 Sep 2025 22:35:40 +0800
+Message-ID: <20250923143542.2391576-2-chenhuacai@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250923143542.2391576-1-chenhuacai@kernel.org>
+References: <20250923143542.2391576-1-chenhuacai@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2600:3c0a:e001:78e:0:1991:8:25;
+Received-SPF: pass client-ip=172.234.252.31;
  envelope-from=chenhuacai@kernel.org; helo=sea.source.kernel.org
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,21 +70,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Align VIRT_GED_CPUHP_ADDR to 4 bytes to avoid ACPI errors during boot.
-
-Huacai Chen (3):
- bios-tables-test-allowed-diff.h: Allow LoongArch DSDT.*
- hw/loongarch/virt: Align VIRT_GED_CPUHP_ADDR to 4 bytes
- tests/data/acpi/loongarch64: Update expected DSDT.*
-
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@kernel.org>
 ---
- include/hw/loongarch/virt.h                    |   6 +++---
- tests/data/acpi/loongarch64/virt/DSDT          | Bin 4603 -> 4603 bytes
- tests/data/acpi/loongarch64/virt/DSDT.memhp    | Bin 5824 -> 5824 bytes
- tests/data/acpi/loongarch64/virt/DSDT.numamem  | Bin 4609 -> 4609 bytes
- tests/data/acpi/loongarch64/virt/DSDT.topology | Bin 4905 -> 4905 bytes
- 5 files changed, 3 insertions(+), 3 deletions(-)
---
-2.7.0
+ tests/qtest/bios-tables-test-allowed-diff.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..2ed837faee 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,5 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/loongarch64/virt/DSDT",
++"tests/data/acpi/loongarch64/virt/DSDT.memhp",
++"tests/data/acpi/loongarch64/virt/DSDT.numamem",
++"tests/data/acpi/loongarch64/virt/DSDT.topology",
+-- 
+2.47.3
+
 
