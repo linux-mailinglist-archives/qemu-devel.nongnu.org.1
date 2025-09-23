@@ -2,142 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEABCB95E3B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 14:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9241B95F3D
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 15:10:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v12Vu-0000Z3-0b; Tue, 23 Sep 2025 08:52:58 -0400
+	id 1v12kX-0007ZH-SH; Tue, 23 Sep 2025 09:08:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1v12Vc-0000Xc-Gh
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 08:52:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1v12VV-00031g-H3
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 08:52:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758631947;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=KI4j1ztN2iBmMQ6QxYrRzu/PKlF81s/uI/+JC+vAJC8=;
- b=SEtzj69bKSNxiYKeknCsYQZxzzEoj0KQMAmYAo/e3f2/TXQxBWnoperm0A6vOSNcUiRJcP
- Chlk3O346XY2BT/5MhkqcO/FT6u0BxE9RGPZQqExV3GEwCuXWqEKKXCVEujWEjH6CiF+N1
- Vn1q6AjOlyGM3A6w+D0sbqO0Wq3bSdQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-458--ezrUkXfNeWXwmbynwQekA-1; Tue, 23 Sep 2025 08:52:19 -0400
-X-MC-Unique: -ezrUkXfNeWXwmbynwQekA-1
-X-Mimecast-MFC-AGG-ID: -ezrUkXfNeWXwmbynwQekA_1758631938
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-46da436df64so13921305e9.0
- for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 05:52:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758631938; x=1759236738;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KI4j1ztN2iBmMQ6QxYrRzu/PKlF81s/uI/+JC+vAJC8=;
- b=rK2/bMWxb+haBW3B1pJm66Q9AKQL2Vgno5pI40KhsN0NrL+/51tcL/nQ4JAh3nPNte
- 6C+GDFWA4Bh2fOm11evwzJQvRG3qxRKgwV1FN8o2Ysd1kdX3UxPH/77A3LNGmYbSuqPS
- wtsF/4yuy1cZr+BO1JV3fFEjnjlv4UyDGfgGkTnvTLmpJ0Zd7iU7qJfkZbSXJmQxaze5
- EwNuML4tUmHdvO76ayU7mFtVayUIS/H0UskkBBePyrC8JQaiyDsGZR7vtQBvUNunzdP+
- nRlz+T215sHP1F0PkSbGDIJa7XqbIVIFshdGznsSCmdt04galLWbX5F68DtjNufzyJPB
- LwkQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWbvHELvsHN2l/ZpkCMU5AZDa9wm1U4MC57Rj2fvWdFExtF5frlto517mOv+dqNsdaapQdE4yI7gLlP@nongnu.org
-X-Gm-Message-State: AOJu0Yx34pht56Tvf4WzCeMYKndgUgjDNwWKlcw8G5oCgD/wv2Nqhil3
- RmY0OmGkSZj4DCSeisXtfZ+yd4uBcDu9aEBeeRtQpsydkHpR42hiOcKJenO+t42hGyxsXtUA4iD
- OQIVIYNaSN130TABsyhEuHsJmf1ULTvowLAU2Gs3iERsdbhSnKUu+qRwJ5sAdRLRc
-X-Gm-Gg: ASbGncvB2Ywr7miE1zqOO4cCXPSelfFbNq4Gnz+TMSGetdPq2dK4DCuQ30d+jxxhjkg
- uFK0E+UGbcqD8fH2mJQH0TbCx4KPTjfV7oti7S98DlVdpJDM17vQHa20jn14uGH4LS/u+AgfHSk
- UBOmzJh47lxwEYxb2BdmO+Vg+JusHyf9GOmorUyYw2Bw1OvHMNBdNn6qJO22YOY5oCFpF9o1eFj
- ujIPrPJKYooPl9sGPAAPhd5EJIE/RKburJ+ppu5NMJc2ceMy8vCYsB/OGfSEggTaopNp/CCx35n
- BZcPwjIfUOxZGx7cRlIQmsomoZRHB6e6xxlmDzZtGhLwcrFEQtYmzk3GCKfcojIlVz11JNgPjkm
- rgLQ=
-X-Received: by 2002:a05:600c:1ca5:b0:468:9798:2043 with SMTP id
- 5b1f17b1804b1-46e1dabf75bmr30262955e9.26.1758631937906; 
- Tue, 23 Sep 2025 05:52:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEnD2NMX+bf29QjAG22vBLi7OvC7Bh7NRyKDgTnkMs/Hvi63nB+zYmGaxjOaYzx6X4AyyWI8g==
-X-Received: by 2002:a05:600c:1ca5:b0:468:9798:2043 with SMTP id
- 5b1f17b1804b1-46e1dabf75bmr30262605e9.26.1758631937471; 
- Tue, 23 Sep 2025 05:52:17 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:e10:ef90:343a:68f:2e91:95c?
- ([2a01:e0a:e10:ef90:343a:68f:2e91:95c])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3fcb01a9049sm9137057f8f.61.2025.09.23.05.52.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Sep 2025 05:52:17 -0700 (PDT)
-Message-ID: <5c952898-c129-426f-a68f-42b369ca7aa7@redhat.com>
-Date: Tue, 23 Sep 2025 14:52:16 +0200
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1v12kS-0007Yc-QS
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 09:08:02 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1v12kM-00057e-6W
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 09:08:00 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 8C1F921EE5;
+ Tue, 23 Sep 2025 13:07:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1758632866; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MR7BNvsR95iZz3KTAo/fq5mPt4IXJJqy8ebd/FOHoU4=;
+ b=PAm9mVMRnxTFNvi/7CcGCz5IDA1l9hNl7TiZ0CA1iopeXiaAZGuTszo5hxExwtlF+2COSw
+ 9w8POQQnfPlI1znSftJq/StcXGqa6n5Hl0X5qXqyOpqauwgPCySu/5JmhhrPOam8YwFdII
+ i6RVWNy3eTFO/NVVkv4dO3KObks7YwI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1758632866;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MR7BNvsR95iZz3KTAo/fq5mPt4IXJJqy8ebd/FOHoU4=;
+ b=BIysUCdmB+OXOCnYRWF5w5kzBIyZutIUjqFYbf3MVmD6tksf0lv9Ew9PJJYh1Bs9H8h52S
+ kHwhl5U9LHOSSxDA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1758632866; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MR7BNvsR95iZz3KTAo/fq5mPt4IXJJqy8ebd/FOHoU4=;
+ b=PAm9mVMRnxTFNvi/7CcGCz5IDA1l9hNl7TiZ0CA1iopeXiaAZGuTszo5hxExwtlF+2COSw
+ 9w8POQQnfPlI1znSftJq/StcXGqa6n5Hl0X5qXqyOpqauwgPCySu/5JmhhrPOam8YwFdII
+ i6RVWNy3eTFO/NVVkv4dO3KObks7YwI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1758632866;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MR7BNvsR95iZz3KTAo/fq5mPt4IXJJqy8ebd/FOHoU4=;
+ b=BIysUCdmB+OXOCnYRWF5w5kzBIyZutIUjqFYbf3MVmD6tksf0lv9Ew9PJJYh1Bs9H8h52S
+ kHwhl5U9LHOSSxDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 05AB71388C;
+ Tue, 23 Sep 2025 13:07:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id hNgqLaGb0mhOJgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 23 Sep 2025 13:07:45 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>, Laurent Vivier
+ <lvivier@redhat.com>, Fam Zheng <fam@euphon.net>, Paolo Bonzini
+ <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, Stefano
+ Garzarella <sgarzare@redhat.com>
+Subject: Re: [PATCH 4/5] tests/libqos: extract qvirtqueue_set_avail_idx()
+In-Reply-To: <20250922220149.498967-5-stefanha@redhat.com>
+References: <20250922220149.498967-1-stefanha@redhat.com>
+ <20250922220149.498967-5-stefanha@redhat.com>
+Date: Tue, 23 Sep 2025 10:07:43 -0300
+Message-ID: <871pnxmi5c.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] passt: Declare dependency on gio
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20250922132217.680404-1-peter.maydell@linaro.org>
-Content-Language: en-US
-From: Laurent Vivier <lvivier@redhat.com>
-Autocrypt: addr=lvivier@redhat.com; keydata=
- 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
-In-Reply-To: <20250922132217.680404-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lvivier@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.26 / 50.00]; BAYES_HAM(-2.96)[99.84%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; MISSING_XM_UA(0.00)[];
+ FUZZY_RATELIMITED(0.00)[rspamd.com]; MIME_TRACE(0.00)[0:+];
+ RCPT_COUNT_SEVEN(0.00)[11]; MID_RHS_MATCH_FROM(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, suse.de:mid,
+ suse.de:email]
+X-Spam-Score: -4.26
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,37 +117,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/09/2025 15:22, Peter Maydell wrote:
-> The passt network backend uses gio; declare this dependency in
-> meson.build, so we don't try to build it if configured with
-> --disable-gio or if gio is not present.
-> 
-> Cc: qemu-stable@nongnu.org
-> Fixes: 854ee02b222 ("net: Add passt network backend")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3121
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   meson.build | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/meson.build b/meson.build
-> index 6ade30f36ad..c5a56ba5deb 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -1279,6 +1279,7 @@ if not get_option('slirp').auto() or have_system
->   endif
->   
->   enable_passt = get_option('passt') \
-> +  .require(gio.found(), error_message: 'passt requires gio') \
->     .require(host_os == 'linux', error_message: 'passt is supported only on Linux') \
->     .allowed()
->   
+Stefan Hajnoczi <stefanha@redhat.com> writes:
 
-I sent the same patch two months ago:
-https://lists.nongnu.org/archive/html/qemu-devel/2025-07/msg04907.html
+> Setting the vring's avail.idx can be useful for low-level VIRTIO tests,
+> especially for testing error scenarios with invalid vrings. Extract it
+> into a new function so that the next commit can add a test that uses
+> this new test API.
+>
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-Reviewed-by: Laurent Vivier <lvivier@redhat.com>
-
-Laurent
-
+Acked-by: Fabiano Rosas <farosas@suse.de>
 
