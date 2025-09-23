@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D29B97AA6
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 23:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53848B97A9D
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 23:56:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Ay6-0006KG-86; Tue, 23 Sep 2025 17:54:38 -0400
+	id 1v1Ay4-0006JL-9c; Tue, 23 Sep 2025 17:54:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1Ay0-0006Hg-Hn
+ id 1v1Ay0-0006IK-Qq
  for qemu-devel@nongnu.org; Tue, 23 Sep 2025 17:54:32 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1Axy-0003iB-OT
+ id 1v1Axz-0003iG-6m
  for qemu-devel@nongnu.org; Tue, 23 Sep 2025 17:54:32 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-267facf9b58so44832705ad.2
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2570bf6058aso82387525ad.0
  for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 14:54:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758664469; x=1759269269; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758664470; x=1759269270; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hhvyGjhjUkCNEHZh1gnQZUsirw8YiHVeIFO9VlHtSAY=;
- b=AWk+E3MJVypdb0Q8LFQSvRnrbHSoT61Rg7Rgfs/OSpKa1nHAn8dHKILfurr/S2Mc6Z
- 3mIet07bHVU3F4cSuUrgLngi/jferYln0ERyW90k6W0l+NCTqIBZCCfXcdmcbgYEoFMz
- QhOo2H5G6PnLjN6y8Osz0pCXbtTW6OEo/Z4s9szT0xPMyToTgl63DyBS7ffoRLPPVkbZ
- /xf7FJ0TEmZ6Ldv87IBQsiX4TC5JrwIVv8/2V9SfKMjv6lPI0716vsebOJwCtyW7P29f
- 2t+ueoMfngFlTrNtpdstFj48yp4b9n15QXqOaC30bSov2lN6SP31qVLEQdF5m4XTA+A3
- pP6w==
+ bh=bI01yo0kUGWJmBVW9EA2Eo0iWFIm1s7La1lCDq4SBkA=;
+ b=qdOAGKq7VMRi2rtVVHF6ehiP0tuEl6ke3+5CsTA7/c9ls/rKj+ySkKYMyazZmIgYj0
+ DId5UsrtCezR/W+cLLh7dqqM9geW6pJGoEpQho/IlX2VUCBilrP+wWNRj0yn4hMCPRhG
+ BHfZhuGAT0r/YeyBI1gDJFQkoZ8gTXjZkWSF9t7gkrNX2MykDCUfBlVPuWSdrmqEJOZF
+ d0hKB4xuAkp5faegKjuPam6xfhF4D9GqsvTnu+rxsoZq/Copgy35bi6exnNtOK9xsp7P
+ V1xW8T8qEsmyG3XzMNjEHxc14UJ6UnT65hDMlaAYMk9c3R0cA/wfGe/lgs8gKGHlhDuX
+ zkHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758664469; x=1759269269;
+ d=1e100.net; s=20230601; t=1758664470; x=1759269270;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hhvyGjhjUkCNEHZh1gnQZUsirw8YiHVeIFO9VlHtSAY=;
- b=F1GmlrzTXvxEhoXcPw+J3a3ngM7tIc5NfD/sEtqcLbeGNos5x+xGPEDZM6C1fh7GHe
- HMvx5H1hX68KHrNTKKqUnX2JKdhtJxbS+taoChQPQ2369uSQKrDovlwKbMTWJ+83u6Ox
- 9b30ZkzFbBpEOD6l/5KajIrJeywTvUswRN6wp2I2lvgb1DzzvR4dk8GBeGhzwKUx+Z2X
- VeUbuQREJo4NxZ3TmmeOM/3ItF7WPDc1hMuEGz/5tqX91YMShMenR6e3xYXjPmdQYim2
- tAq7f3ZtKpJizY/eTKFR3dLrnKJsf2TeJNn6QOGSFFqRTksMJQDBYLO7dJFgdt6nvuEL
- fz8w==
-X-Gm-Message-State: AOJu0YwCETh13yEJ4s3OrAlRvCzEq0OrIsjWAtGtQJgfYkUR7GMycO0i
- hjFPZ7QPZWIffTVZNsdJmmBw2PU1jw9HURLb8/ThtCF7qoexmaiveiwGqmLjYoGMFLZ6Q4KiovE
- 0W0ZR
-X-Gm-Gg: ASbGncvyKyd1hup34UliwFWW03eFH3I0xQT0aryOJGUqimCDhjxWkEduAp4lbbgzyeV
- I2Rfr9MGQmciT+XzQyirHELm/Ha8xQi/zXk/EMKnj+8pIaxqpNQXncmtkave9XzsIwnHI/YhSFk
- 2zsZrfUL8GJ0+SnF3YSScuSKHRV7/rbTlVrFqoTWUFqandOXyFRODjE1ZlW2s6/iAh5j26N8EsM
- xAoXZMmS5oXkVsOCKajJlZi6SeIpffSAJR6td9xIH1xSbthAwuYFTcuxaGPKBz3W4v/qV1XfM3B
- 2hkcm26B6OsIyevdQXqxaSGkDwp+Q60bpjsF7fAWOqblh5DW39c9wU+ZW3pyQG/eU8F3uS65Tmb
- GIv2bs8gjLSKdFZ5H9v1trEZWvq9m
-X-Google-Smtp-Source: AGHT+IEn5Oxb4i7FOn1Fa1bspf261Rtx1+QilAne9nm+qkS/xMq3hv8VeYEzqIOg+U/w2wEG5n8rpA==
-X-Received: by 2002:a17:902:e84f:b0:26a:589b:cf11 with SMTP id
- d9443c01a7336-27cc678387amr56335895ad.43.1758664469096; 
+ bh=bI01yo0kUGWJmBVW9EA2Eo0iWFIm1s7La1lCDq4SBkA=;
+ b=rS3AQEkV4I7SuLPsgwm6myKdmh2twnJa5+ycqDK5/YUtDlKzr/fDXOuskHHoJDMPMC
+ d2fgGFn4HWzRLKQN4CzACtDH1hno9heu5+2SAylo2Qq9ckFmBGUjX+F+jI/9xgx5Y5vX
+ igS7k9qt2CJxqAWZU45HBQ3/4MpH0O6olIBQEUeE0yvhnBerOVp4OplRNYnMEMbBLiTH
+ LY1jTUPKEgkpiCY7PATbjL3i7RhguoMr8Nz/zNXJ9PUD1O1ShPj5UW+LjU+H9enJSm/g
+ 6z/nU5hsiv8xpodRYjQCfC+NH3DWr4GKDrlJEsNVY0/lpa8vCGg2R4h3Prf3mLpEXIMZ
+ TemQ==
+X-Gm-Message-State: AOJu0YxHeIxke/itiK4aBddYSwY86sS3BFNlvlTYIdx+/raew2JU+26u
+ 1860+yAO6fTh2cGzyHGkVdSRFMkYWG/vPZ4bS5x9FS7UsR/KQKuvgmxOSPEhpLPZ4AOEgSq//yc
+ swAQB
+X-Gm-Gg: ASbGncubHzsyMvRGBtSsqp/frpIkd4APA64qY79sdikB8I+QJWUHCdRAWzxvY4DhtE8
+ +MjnO+VPZJhujrmlS+7ZtkSnSsjhU6BAn8aEl+LrbHURWnEG0FCtqhoOgQVrUejCBEYekAwUO/N
+ hC0Ws4Tqwcp0B9Wvoc56kkz+JCmqUKwCUDfFcBqpIMYPNV0j5/Yqq9OVGA/lpoVa6oHLvVvtCsJ
+ elQedmpMLYI7zfKXmYPrsSAj8T36LdZmPTqJG20aADWQUrA4fyniGqAiuG2S2/6DbmPfrCQlYzz
+ +wKtFiOwem/Nc1lHzVRBzUwTyV249PtcIPnBqYv9FyXTkxNMHaDdr87Vo8/ZKMG+OxMOqw40YX6
+ X9HlJbLCfqimZpMixY+2WrBjhZdGm
+X-Google-Smtp-Source: AGHT+IHcYuBbcewqNEI3mRL74jOEb3uZRLQBgpWk7nlFGZ6+LNRdunme5Cfzda+pGBZh40NHotPVxg==
+X-Received: by 2002:a17:903:3c25:b0:26b:3aab:f6b8 with SMTP id
+ d9443c01a7336-27cc98a13f3mr54679475ad.58.1758664469764; 
  Tue, 23 Sep 2025 14:54:29 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-269802e14f1sm168294035ad.71.2025.09.23.14.54.28
+ d9443c01a7336-269802e14f1sm168294035ad.71.2025.09.23.14.54.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Sep 2025 14:54:28 -0700 (PDT)
+ Tue, 23 Sep 2025 14:54:29 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 03/10] target/riscv: Record misa_ext in
- TCGTBCPUState.cs_base
-Date: Tue, 23 Sep 2025 14:54:17 -0700
-Message-ID: <20250923215425.3685950-4-richard.henderson@linaro.org>
+Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PATCH v3 04/10] hw/ppc/spapr: Use tb_invalidate_phys_range in
+ h_page_init
+Date: Tue, 23 Sep 2025 14:54:18 -0700
+Message-ID: <20250923215425.3685950-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250923215425.3685950-1-richard.henderson@linaro.org>
 References: <20250923215425.3685950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,57 +98,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The tb_flush within write_misa was incorrect.  It assumed
-that we could adjust the ISA of the current processor and
-discard all TB and all would be well.  But MISA is per vcpu,
-so globally flushing TB does not mean that the TB matches
-the MISA of any given vcpu.
+We only need invalidate tbs from a single page, not flush
+all translations.
 
-By recording misa in the tb state, we ensure that the code
-generated matches the vcpu.
-
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/csr.c         | 3 ---
- target/riscv/tcg/tcg-cpu.c | 3 ++-
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ hw/ppc/spapr_hcall.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 8842e07a73..3c8989f522 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -25,7 +25,6 @@
- #include "pmu.h"
- #include "time_helper.h"
- #include "exec/cputlb.h"
+diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+index c594d4b916..8c1e0a4817 100644
+--- a/hw/ppc/spapr_hcall.c
++++ b/hw/ppc/spapr_hcall.c
+@@ -8,7 +8,7 @@
+ #include "qemu/main-loop.h"
+ #include "qemu/module.h"
+ #include "qemu/error-report.h"
 -#include "exec/tb-flush.h"
- #include "exec/icount.h"
- #include "accel/tcg/getpc.h"
- #include "qemu/guest-random.h"
-@@ -2173,8 +2172,6 @@ static RISCVException write_misa(CPURISCVState *env, int csrno,
-         env->mstatus &= ~MSTATUS_FS;
-     }
- 
--    /* flush translation cache */
--    tb_flush(env_cpu(env));
-     env->xl = riscv_cpu_mxl(env);
-     return RISCV_EXCP_NONE;
- }
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 78fb279184..143ab079d4 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -191,7 +191,8 @@ static TCGTBCPUState riscv_get_tb_cpu_state(CPUState *cs)
- 
-     return (TCGTBCPUState){
-         .pc = env->xl == MXL_RV32 ? env->pc & UINT32_MAX : env->pc,
--        .flags = flags
-+        .flags = flags,
-+        .cs_base = env->misa_ext,
-     };
- }
- 
++#include "exec/translation-block.h"
+ #include "exec/target_page.h"
+ #include "helper_regs.h"
+ #include "hw/ppc/ppc.h"
+@@ -301,7 +301,7 @@ static target_ulong h_page_init(PowerPCCPU *cpu, SpaprMachineState *spapr,
+         if (kvm_enabled()) {
+             kvmppc_icbi_range(cpu, pdst, len);
+         } else if (tcg_enabled()) {
+-            tb_flush(CPU(cpu));
++            tb_invalidate_phys_range(CPU(cpu), dst, dst + len - 1);
+         } else {
+             g_assert_not_reached();
+         }
 -- 
 2.43.0
 
