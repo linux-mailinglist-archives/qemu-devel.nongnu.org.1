@@ -2,85 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82805B95C4F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 14:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3658EB95EE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 15:04:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v11iq-0005iq-Ip; Tue, 23 Sep 2025 08:02:16 -0400
+	id 1v12gW-0004QV-PO; Tue, 23 Sep 2025 09:03:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v11iI-0005CV-Jf
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 08:01:44 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1v11i7-0003Ku-H5
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 08:01:40 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3ece1102998so3459010f8f.2
- for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 05:01:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758628884; x=1759233684; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=54hFyXF1XYUQuxGdWNU3fLqwHsZbQkwurRxxRgOmLPA=;
- b=XFMtInHAEwfqtuG8WwW1E206DhO3AabPrLRaPLPGHc1vj0hG8sNpqCMazhQKiD+irp
- FPDRa9WtSBIL4dKFqIYRW7Sv2rAwVh/uEiUq2NL+PKZ4uqoWF4racxnNaOP0WUV14X48
- 8MNwr1UN40dVEOoa5Y/WzS21C93PB5N67Lka+IruKzz/JvvNJXelQes2FbLdGV+C4oP5
- pEKOUvij8TmioPiJCPsxzzJipRpFSAyeAnBHs1OZ/su7Fuoh3CBf//Au17NQBm/7Qyfc
- EY1PF9Qr1BSBFtUQSa8vUcCmf5CuHzNODjFawmeTGwhZT9UOFLa+OM+l2/QPAqGE0b9k
- swlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758628884; x=1759233684;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=54hFyXF1XYUQuxGdWNU3fLqwHsZbQkwurRxxRgOmLPA=;
- b=a/3I2D5zpaU1Oh0ED3iTrbTHnKI7se4WvG8daVCNK6xbgzHqmS4Y5LrvtB0gPSBfa2
- 30EUEYcfKi76nkSzntXpVrFlcawG0N1f2S6JW+9HNiHxI+XCKoLgenWqF4weZwZRm/F2
- 6inLUbwqy7aTx9PJk9PMHdPWrHKqxJ2GyQnkXxz0PJWtkDRZchRuR8+3nNDO+rfl4viO
- E8dRjEC7zK8rU27rRlDlenndKw6AbpvpiCJuyGYNYjx9L39A1+tK6I74h4DqgHI6jsro
- MvPB+8dwmsyhnf2P3icsMQNUy7c6jFePwmKcG5cVT/eNMPN1TgQAaBEdMcshCtJjzyF/
- rikw==
-X-Gm-Message-State: AOJu0YzCFhvw0dbybjLtd5WiFeiVns7SSU2nuletY0SCvgkLZHhS8Ea1
- ocr2VzkSJhPWfNRHCvuARKsupkI44BblAIw4SlfVkI0Ju9zCQWdv8uP0OvTiL9PRBTxbr/MMf9c
- iWatA
-X-Gm-Gg: ASbGncusR1B9DZNe3fxHV/YN4VN191h2wA5GVwR1OQHAwt8jNuj8KHE1AR3K9j1D8n1
- Pt3613wsuhIXRYykT7zzkUXVgk59kmtawrNA2syt16WOKr/hlavoZ4f3dOsqI5dBgHdb2TaLLjI
- yMF5pMQQ9sVnG9crv7sZLSH1DQ2sp52quYKDH3IH4N4kt42Xz16uMiz4TcLx7lmwySt5BX6HiMx
- iQD+3IxA+6zIhsq7McdcO/3lC1q5FUbg5YZZxJR26F+UuoDHa9E63rt2+pqMOPxH3zyenHlQvPR
- bO3cQBHvot+G7z4+Djb2T56LSqiLz4cxF8Jo8XeNMalw/+6cVavPuRXUVUB4/Dks3MoTHKJGzAK
- ab7mwg8jiU6ytNcELtJ4Uohzwwlar
-X-Google-Smtp-Source: AGHT+IFRGkQw3wEEuf9fH6gi570fbfo+WzQWc+Ejc0rHD/1W17Yax/Mb45NlT9Tw2yLlwKoYun8mJg==
-X-Received: by 2002:a05:6000:2891:b0:3e9:4fe4:2619 with SMTP id
- ffacd0b85a97d-405c5ccd047mr2271433f8f.25.1758628883618; 
- Tue, 23 Sep 2025 05:01:23 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3ee07411f4dsm23527878f8f.26.2025.09.23.05.01.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Sep 2025 05:01:20 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org
-Subject: [PATCH] docs/specs/spdm.rst: Fix typo in x86_64 architecture name
-Date: Tue, 23 Sep 2025 13:01:18 +0100
-Message-ID: <20250923120118.858581-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <lizhaoxin04@baidu.com>)
+ id 1v11VD-0008RF-8U
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 07:48:11 -0400
+Received: from mx22.baidu.com ([220.181.50.185] helo=baidu.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lizhaoxin04@baidu.com>)
+ id 1v11Uy-0001bp-Mn
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 07:48:10 -0400
+To: Stefano Garzarella <sgarzare@redhat.com>, Cindy Lu <lulu@redhat.com>
+CC: qemu-devel <qemu-devel@nongnu.org>, "Michael S . Tsirkin"
+ <mst@redhat.com>, "Gao, Shiyuan" <gaoshiyuan@baidu.com>, "Li, Zhaoxin(ACG CCN)"
+ <lizhaoxin04@baidu.com>
+Subject: Re: [PATCH] vhost: Do not actively send a config interrupt
+Thread-Topic: [PATCH] vhost: Do not actively send a config interrupt
+Thread-Index: AQHcLH2wF/bELexHwkqw5/pJbz2kZQ==
+Date: Tue, 23 Sep 2025 11:32:06 +0000
+Message-ID: <B01AB465-37DF-468F-9B76-2FC3D59E4749@baidu.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.127.72.28]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <54C0FFEE9BE8E548A87B6A2F33983B5D@baidu.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-FEAS-Client-IP: 172.31.50.12
+X-FE-Last-Public-Client-IP: ::1
+X-FE-Policy-ID: 52:10:53:SYSTEM
+Received-SPF: pass client-ip=220.181.50.185;
+ envelope-from=lizhaoxin04@baidu.com; helo=baidu.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 23 Sep 2025 09:03:53 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,32 +60,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  "Li,Zhaoxin(ACG CCN)" <lizhaoxin04@baidu.com>
+From:  "Li,Zhaoxin(ACG CCN)" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The spdm.rst docs call the 64-bit x86 architecture "x64-64".
-This is a typo; correct it to our canonical name for the
-architecture, "x86_64".
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- docs/specs/spdm.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/docs/specs/spdm.rst b/docs/specs/spdm.rst
-index f7de080ff0b..0e3ad25bc69 100644
---- a/docs/specs/spdm.rst
-+++ b/docs/specs/spdm.rst
-@@ -102,7 +102,7 @@ Then you can add this to your QEMU command line:
- 
- At which point QEMU will try to connect to the SPDM server.
- 
--Note that if using x64-64 you will want to use the q35 machine instead
-+Note that if using x86_64 you will want to use the q35 machine instead
- of the default. So the entire QEMU command might look like this
- 
- .. code-block:: shell
--- 
-2.43.0
-
+T24gMjAyNS85LzIzIDE3OjA277yM4oCcU3RlZmFubyBHYXJ6YXJlbGxh4oCdPHNnYXJ6YXJlQHJl
+ZGhhdC5jb20gPG1haWx0bzpzZ2FyemFyZUByZWRoYXQuY29tPj4gd3JvdGU6DQoNCj5DQ2luZyBD
+aW5keSBzaW5jZSBzaGUgaW50cm9kdWNlZCB0aGlzIGNvZGUgd2l0aCBjb21taXQNCj5mOWEwOWNh
+M2VhICgidmhvc3Q6IGFkZCBzdXBwb3J0IGZvciBjb25maWd1cmUgaW50ZXJydXB0IiksIHNvIHNo
+ZSBjYW4gDQo+aGVscCB0byByZXZpZXcgdGhpcywgc2luY2UgSSBkb24ndCByZWFsbHkgZ2V0IHRo
+aXMgY2hhbmdlLg0KDQo+T24gTW9uLCBTZXAgMjIsIDIwMjUgYXQgMTE6MTk6MzJQTSArMDgwMCwg
+TGkgWmhhb3hpbiB3cm90ZToNCj4+RnJvbTogbGl6aGFveGluIDxsaXpoYW94aW4wNEBiYWlkdS5j
+b20gPG1haWx0bzpsaXpoYW94aW4wNEBiYWlkdS5jb20+Pg0KPj4NCj4+QWZ0ZXIgdGhlIFZNIGlz
+IHN1c3BlbmRlZC9yZXN1bWVkIG9yIGxpdmUtbWlncmF0ZWQsDQo+PndlIGRvIG5vdCB3YW50IHRo
+ZSBndWVzdCB0byBvdXRwdXQgaW5mb3JtYXRpb24gc3VjaCBhcw0KPj50aGUgY2FwYWNpdHkgb2Yg
+dGhlIGJsb2NrIGRldmljZSwgYXMgdGhpcyBpcyBub3RpY2VhYmxlIHRvIHRoZSB0ZW5hbnQuDQo+
+PkFsc28sIHRoZXJlIGlzIG5vIG5lZWQgdG8gaW1tZWRpYXRlbHkgc2VuZCBhIGNvbmZpZyBub3Rp
+Zmllcg0KPj5mb3IgdGhlIHZpcnRpbyBkZXZpY2UgYWZ0ZXIgdmhvc3RfZGV2X3N0YXJ0Lg0KDQo+
+Q2FuIHlvdSBleHBsYWluIG1vcmUgY2xlYXJseSB3aGF0IHlvdXIgcHJvYmxlbSBpcyBhbmQgd2h5
+IHRoaXMgcGF0Y2ggDQo+c29sdmVzIGl0Pw0KDQo+VGhhbmtzLA0KPlN0ZWZhbm8NCg0KSGkgU3Rl
+ZmFubyBhbmQgQ2luZHksDQoNCkluIHRoZSB2aG9zdC12ZHBhIHNjZW5hcmlvLCBhZnRlciBleGVj
+dXRpbmcgdmlyc2ggc3VzcGVuZCB2bSBmb2xsb3dlZCBieSB2aXJzaCByZXN1bWUgdm0sIG9yIHdo
+ZW4gbGl2ZSBtaWdyYXRpbmcgdGhlIFZNIHRvIHRoZSBkZXN0aW5hdGlvbiBob3N0LCB0aGUgZ3Vl
+c3Qga2VybmVsIHdpbGwgb3V0cHV0IHRoZSBmb2xsb3dpbmcgYWRkaXRpb25hbCBsb2dzOg0KDQpb
+VHVlIFNlcCAyMyAxOTowNzowNCAyMDI1XSB2aXJ0aW9fYmxrIHZpcnRpbzE6IFt2ZGFdIG5ldyBz
+aXplOiAyMDk3MTUyMCA1MTItYnl0ZSBsb2dpY2FsIGJsb2NrcyAoMTAuNyBHQi8xMC4wIEdpQikN
+CltUdWUgU2VwIDIzIDE5OjA3OjA0IDIwMjVdIHZpcnRpb19ibGsgdmlydGlvMzogW3ZkYl0gbmV3
+IHNpemU6IDIwOTcxNTIwIDUxMi1ieXRlIGxvZ2ljYWwgYmxvY2tzICgxMC43IEdCLzEwLjAgR2lC
+KQ0KDQpUaGlzIG9jY3VycyBiZWNhdXNlIHdoZW4gdGhlIHZob3N0IGRldmljZSBpcyBzdGFydGVk
+LCB0aGUgc2VxdWVuY2Ugdmhvc3RfZGV2X3N0YXJ0IC0+IHZob3N0X3N0YXJ0X2NvbmZpZ19pbnRy
+IC0+IGV2ZW50X25vdGlmaWVyX3NldCgmZGV2LT52ZGV2LT5jb25maWdfbm90aWZpZXIpIGlzIHRy
+aWdnZXJlZCwgd2hpY2ggc2VuZHMgYSBjb25maWd1cmF0aW9uIGNoYW5nZSBub3RpZmljYXRpb24g
+KGNvbmZpZyBub3RpZmljYXRpb24pIHRvIHRoZSBndWVzdC4gSG93ZXZlciwgaXQgYXBwZWFycyB0
+aGF0IGFjdGl2ZWx5IHNlbmRpbmcgdGhpcyBub3RpZmljYXRpb24gaXMgY3VycmVudGx5IHVubmVj
+ZXNzYXJ5LCBhbmQgbm8gYWRkaXRpb25hbCBwcm9jZXNzaW5nIGlzIHBlcmZvcm1lZCBpbiB0aGUg
+ZXZlbnQgb2YgYSBzZW5kaW5nIGZhaWx1cmUuIFNvLCB3ZSByZW1vdmVkIHRoZSBjYWxsIHRvIGV2
+ZW50X25vdGlmaWVyX3NldCgmZGV2LT52ZGV2LT5jb25maWdfbm90aWZpZXIpLg0KDQpUaGFua3Ms
+DQpMaSBaaGFveGluDQoNCj4+DQo+PkNvLWRldmVsb3BlZC1ieTogR2FvIFNoaXl1YW4gPGdhb3No
+aXl1YW5AYmFpZHUuY29tIDxtYWlsdG86Z2Fvc2hpeXVhbkBiYWlkdS5jb20+Pg0KPj5TaWduZWQt
+b2ZmLWJ5OiBHYW8gU2hpeXVhbiA8Z2Fvc2hpeXVhbkBiYWlkdS5jb20gPG1haWx0bzpnYW9zaGl5
+dWFuQGJhaWR1LmNvbT4+DQo+PlNpZ25lZC1vZmYtYnk6IExpIFpoYW94aW4gPGxpemhhb3hpbjA0
+QGJhaWR1LmNvbSA8bWFpbHRvOmxpemhhb3hpbjA0QGJhaWR1LmNvbT4+DQo+Pi0tLQ0KPj4gaHcv
+dmlydGlvL3Zob3N0LmMgfCA3ICstLS0tLS0NCj4+IDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlv
+bigrKSwgNiBkZWxldGlvbnMoLSkNCj4+DQo+PmRpZmYgLS1naXQgYS9ody92aXJ0aW8vdmhvc3Qu
+YyBiL2h3L3ZpcnRpby92aG9zdC5jDQo+PmluZGV4IDY1NTdjNThkMTIuLjFmOGE0OTVlZjggMTAw
+NjQ0DQo+Pi0tLSBhL2h3L3ZpcnRpby92aG9zdC5jDQo+PisrKyBiL2h3L3ZpcnRpby92aG9zdC5j
+DQo+PkBAIC0xODQ3LDE1ICsxODQ3LDEwIEBAIHN0YXRpYyB2b2lkIHZob3N0X3N0b3BfY29uZmln
+X2ludHIoc3RydWN0IHZob3N0X2RldiAqZGV2KQ0KPj4NCj4+IHN0YXRpYyB2b2lkIHZob3N0X3N0
+YXJ0X2NvbmZpZ19pbnRyKHN0cnVjdCB2aG9zdF9kZXYgKmRldikNCj4+IHsNCj4+LSBpbnQgcjsN
+Cj4+LQ0KPj4gYXNzZXJ0KGRldi0+dmhvc3Rfb3BzKTsNCj4+IGludCBmZCA9IGV2ZW50X25vdGlm
+aWVyX2dldF9mZCgmZGV2LT52ZGV2LT5jb25maWdfbm90aWZpZXIpOw0KPj4gaWYgKGRldi0+dmhv
+c3Rfb3BzLT52aG9zdF9zZXRfY29uZmlnX2NhbGwpIHsNCj4+LSByID0gZGV2LT52aG9zdF9vcHMt
+PnZob3N0X3NldF9jb25maWdfY2FsbChkZXYsIGZkKTsNCj4+LSBpZiAoIXIpIHsNCj4+LSBldmVu
+dF9ub3RpZmllcl9zZXQoJmRldi0+dmRldi0+Y29uZmlnX25vdGlmaWVyKTsNCj4+LSB9DQo+Pisg
+ZGV2LT52aG9zdF9vcHMtPnZob3N0X3NldF9jb25maWdfY2FsbChkZXYsIGZkKTsNCj4+IH0NCj4+
+IH0NCj4+DQo+Pi0tIA0KPj4yLjM0LjENCj4+DQoNCg0KDQoNCg0K
 
