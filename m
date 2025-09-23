@@ -2,70 +2,149 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04789B972BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 20:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB16CB973F0
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 20:53:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v17SV-0001gS-DO; Tue, 23 Sep 2025 14:09:48 -0400
+	id 1v188D-0000f2-Pb; Tue, 23 Sep 2025 14:52:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1v17SH-0001cq-HC
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 14:09:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1v188A-0000et-VO
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 14:52:51 -0400
+Received: from mail-eastus2azon11010007.outbound.protection.outlook.com
+ ([52.101.56.7] helo=BN1PR04CU002.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1v17SD-00055U-GR
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 14:09:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758650966;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=DjBtG0fDQUjMrg6hAnCIull9AvTRB2FACXoPgEZcKv4=;
- b=IjVvSD1tZ/TKApT3wykCc1/fdDrkKOcK0k9Qnn+npoeUQgp9NWiColjE32bItveHGGE3lz
- CCaB2lFvvHglGzocthSnXssy42DGW3ZPDH9CwKBzubl0daT5xQIRmOgyITFNgr3LM7Row4
- Ios89fjuiiGcMLt8tcX7ETVx9JtUOY0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-195-AD2jCumGOzOiSAvRowa5lw-1; Tue,
- 23 Sep 2025 14:09:23 -0400
-X-MC-Unique: AD2jCumGOzOiSAvRowa5lw-1
-X-Mimecast-MFC-AGG-ID: AD2jCumGOzOiSAvRowa5lw_1758650962
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9F3731956089; Tue, 23 Sep 2025 18:09:22 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.89])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ECB631955F19; Tue, 23 Sep 2025 18:09:20 +0000 (UTC)
-Date: Tue, 23 Sep 2025 13:09:17 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, hreitz@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH 2/2] qemu-img info: Optionally show block limits
-Message-ID: <xsupfh7ch565s7tmiq5r4u7zwc2nui7grdrt4dliqodaujvn5z@d3u7as7xqwhx>
-References: <20250923163735.378254-1-kwolf@redhat.com>
- <20250923163735.378254-3-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1v1887-0003P4-Aj
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 14:52:50 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wViOlmOnmU1rgKYM5IBp0o16X1iZgSkmPN2azuvzGvpQ27IiixtW+zWKaVOdBTQjR6v+OppyQVoJ/aC5C0J6ZW91Enr8/3XvMHpc5j6MjPG8E+5QTLh3nJ/gUxyxKsv97OClRoLbScAWe0RSOMUZqg2cCr6kCry+sZBlNjrvZT0ralWXXmFNesNnx8Ud7CnJEywO0gKSsyIO7ouJW95ctAUa4Ec5l0SEAxrnrxFlwgYIQDS1Z2pc/WcOKnZB/9iTh4/dzObbNVMkAGkar7dieZ20N5uGv2JfCajsxitckdur1A6nGYXL3zlHVG+6RggJfelE0mfG05Gtjdqz2jN0Aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=biTBG7TtbjrlNAO8UJLEWCSmiwdLJFuNpJ4Pm7AbJWc=;
+ b=HonGbTbksdF393cBSjgVoiJ5Om9TNAhn9Ez+3FBK2cY164Y6TSmlfMv3f8o2b1BN6NXgxXhTzymW5ck57RMnN+xA3U5qGN7QANtp/K9u4Kk+syMeNivagk3jrF18LgvsPJRojGpl5KEvUdYlndnmLUvcU9VgZSIJAXa4LiBFCEIEEsz11itvnJaXCqqcyOBXgEMrfCIfehkcMSyB3d2StbrJFjhysPZFJhfLOyUkt883ds1qCdUiTmYW2Ku0lJi6gCJFyYQSbNJSHn74ArLGyx2zwV1aIDZt8uu6vOpGQPs0tRVg7rKoiBMxtYMhmHelBgQ+2wtobwlSZgzm8b+3uw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=biTBG7TtbjrlNAO8UJLEWCSmiwdLJFuNpJ4Pm7AbJWc=;
+ b=D4kNlcTK9Qv+MctWCoasaZxDoKKsMW8tYfbOGnoZc4M8hCVdl6UFOeFIIlLuGC8ohyKyAPp1//XyJQqpk9VWEMtExVojDm3soIiMRY60gtNjHf9ZRaUcXfXu42uXWtKs2HZduZPeFwP6YP/dbSWzf717azR7aut/hPDsDAZChJVN8/getZEYznKsMY7obXXSySaxZ1pXe7C/JmTXoeysBOa8UEsv1qzdsc2ATQOxYR91ByqUmDscQ6eaGdV4cy+PoDoG/MgHINcezcM9fwR8+MI2RiXBf1EnvFnRhAbinqOcnFlzvOjo3gkdNpfVz7DYm8epXEC85rLkalc+tWyNEQ==
+Received: from SA0PR11CA0197.namprd11.prod.outlook.com (2603:10b6:806:1bc::22)
+ by MN2PR12MB4375.namprd12.prod.outlook.com (2603:10b6:208:24f::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.20; Tue, 23 Sep
+ 2025 18:47:39 +0000
+Received: from SN1PEPF0002636D.namprd02.prod.outlook.com
+ (2603:10b6:806:1bc:cafe::b8) by SA0PR11CA0197.outlook.office365.com
+ (2603:10b6:806:1bc::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.20 via Frontend Transport; Tue,
+ 23 Sep 2025 18:47:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SN1PEPF0002636D.mail.protection.outlook.com (10.167.241.138) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9137.12 via Frontend Transport; Tue, 23 Sep 2025 18:47:38 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.34; Tue, 23 Sep
+ 2025 11:47:23 -0700
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 23 Sep
+ 2025 11:47:23 -0700
+Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com (10.129.68.6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Tue, 23 Sep 2025 11:47:22 -0700
+Date: Tue, 23 Sep 2025 11:47:20 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>
+CC: <qemu-devel@nongnu.org>, <alex.williamson@redhat.com>, <clg@redhat.com>,
+ <eric.auger@redhat.com>, <mst@redhat.com>, <jasowang@redhat.com>,
+ <peterx@redhat.com>, <ddutile@redhat.com>, <jgg@nvidia.com>,
+ <skolothumtho@nvidia.com>, <joao.m.martins@oracle.com>,
+ <clement.mathieu--drif@eviden.com>, <kevin.tian@intel.com>,
+ <yi.l.liu@intel.com>, <chao.p.peng@intel.com>
+Subject: Re: [PATCH v6 05/22] hw/pci: Introduce pci_device_get_viommu_flags()
+Message-ID: <aNLrOIbBxZy00cS4@Asurada-Nvidia>
+References: <20250918085803.796942-1-zhenzhong.duan@intel.com>
+ <20250918085803.796942-6-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20250923163735.378254-3-kwolf@redhat.com>
-User-Agent: NeoMutt/20250510
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+In-Reply-To: <20250918085803.796942-6-zhenzhong.duan@intel.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002636D:EE_|MN2PR12MB4375:EE_
+X-MS-Office365-Filtering-Correlation-Id: f2093e82-a8f6-4e29-c4be-08ddfad1aba4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|376014|7416014|1800799024|36860700013|7053199007; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Y6GOWr2TgnOB09bt7SC1n/Qsun+j8aAPrqdpM+32htE+P70Xt9zN4Q3pCFvq?=
+ =?us-ascii?Q?DtZkXmr6pUOnnWSzb3WdVURMB9upSKjo3GhtSwrvdOsSdRM8XvgbFRuWBxNg?=
+ =?us-ascii?Q?u2Bb1HE6G1X2ov18dPd+Q9eUoPKcCJX4USEJF5Xft/4MQrLs8P2YERLEHLxJ?=
+ =?us-ascii?Q?TdZHwKrTS5sqv+GwCOoRF7Zg1NkljU0XBoHmE/QxFcDR48eJRnoN7tYS/ozk?=
+ =?us-ascii?Q?LB86lQyR9NtXWZ8GATOnpU2Fr9TnCMmkBbd6lr1QvQscMmspHayvb09yjfvp?=
+ =?us-ascii?Q?+l19seor1rcEJAiJaNYRyVO/pA1fef5shXBHtLxirtonZRAPyCDXq2cIu7En?=
+ =?us-ascii?Q?VJue7SzeDt5Loiof6srMKlkm1MVK4vr1AkfWD6LrJz6YTJpTnWlgxg4xMjKk?=
+ =?us-ascii?Q?oI8XHqmCtK4H0YJxiuZe7xNriVVc3z7yoe4yHbX7zODZxWjU4uwDpM9avmVA?=
+ =?us-ascii?Q?nx02XDmA4EVnt2O0210x/Q7FGeMt4r5JMLVg93HPVPhTL0QijjBu8GNuy6Fa?=
+ =?us-ascii?Q?01v3x/kTYNq2INzePOWubP4vjm/7ijjyLWlfDXlI3KtpI5whxayGb/8f7WfH?=
+ =?us-ascii?Q?o3yJ3b4YHJIa54ZYla0DYNLrLpcz56YFpzBQ4/mm5djNj6H0skumeRXruYf1?=
+ =?us-ascii?Q?qQ7bjQM/mr2aushrj70JzH3INEqSEAEpMlfY6XnxVN970T63R5uQg03QD9cg?=
+ =?us-ascii?Q?AV2WKHoGzEoFXao1C1Pdmf4yEdP2guehsnLazdmjqj/i3rJ2AYX+Dg3MJA/1?=
+ =?us-ascii?Q?P6IWAwuS8ZYEcBfPcjs7jpUXuuvzdGgWt/Ypz5wHMllm2aZQLxzJBUX0LwyS?=
+ =?us-ascii?Q?UUiTAWnNOTVaXSnDuK+wdIEXyBzJfN2m/2FeZtyGidrMqucJ5FjG3G4uDTuC?=
+ =?us-ascii?Q?LME7M18RvRkGcjMqCi156uegBlNBGrsnG821HtdXqQskMKoR6xNMn5dp/7pg?=
+ =?us-ascii?Q?gHHo5Se/dJpCBW8TLNKxJXDvh+IeVopDU0DBukRsFEVTwgvsS+GT/rBEIQ8U?=
+ =?us-ascii?Q?USACAYNCvf5XeV+ujbt51ExVHtHa78ls6Dr+9YeibwN3M28QFIbyK6IyD8ZH?=
+ =?us-ascii?Q?FMHlbqwJrv2CsvrIqEqTSp1YY6iO//TsZpzwauY2CoSF3qV93zOgzjOQHMbP?=
+ =?us-ascii?Q?9iRyjKDM9CatQInWGkykYhwQVnv5d9ufD9nJxEg4FD2oCycsN9hmSSjXXd/E?=
+ =?us-ascii?Q?1gcvA1jSvO6ee3fXDdpPPXgHtBqDeRz95FxpsVq5RPq1ViaSG/NnLCAq5pUh?=
+ =?us-ascii?Q?OHPzWD73Ndtl1L+ShYWweXSpuEvQoX/AkZJbht/L0TySLbYUjNcuoh3scwOo?=
+ =?us-ascii?Q?fXTF/qp1/pkugdovyou1YTuq7cVOmtL9buEmsf3qPOqzuD38dmfSVS7OD4mg?=
+ =?us-ascii?Q?tYgw7js+PQ0m73JbXeZpKREAnTd1G/VJ74svT+jepMk7bHLwcvrNxCMDw9B9?=
+ =?us-ascii?Q?31oX+hOgsN2QhJ4LDPH9Pjml5BDYuj7jW7v/73v5nd1A8LBb87nr/Ov+kbMj?=
+ =?us-ascii?Q?hTvtgBphYI4SyV+6Iif1Yl5bdxWTg2VVIW7J?=
+X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
+ SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700013)(7053199007);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2025 18:47:38.9731 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2093e82-a8f6-4e29-c4be-08ddfad1aba4
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002636D.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4375
+Received-SPF: permerror client-ip=52.101.56.7;
+ envelope-from=nicolinc@nvidia.com;
+ helo=BN1PR04CU002.outbound.protection.outlook.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ FORGED_SPF_HELO=1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,49 +160,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 23, 2025 at 06:37:35PM +0200, Kevin Wolf wrote:
-> Add a new --limits option to 'qemu-img info' that displays the block
-> limits for the image and all of its children, making the information
-> more accessible for human users than in QMP. This option is not enabled
-> by default because it can be a lot of output that isn't usually relevant
-> if you're not specifically trying to diagnose some I/O problem.
+On Thu, Sep 18, 2025 at 04:57:44AM -0400, Zhenzhong Duan wrote:
+> Introduce a new PCIIOMMUOps optional callback, get_viommu_flags() which
+> allows to retrieve flags exposed by a vIOMMU. The first planned vIOMMU
+> device flag is VIOMMU_FLAG_WANT_NESTING_PARENT that advertises the
+> support of HW nested stage translation scheme and wants other sub-system
+> like VFIO's cooperation to create nesting parent HWPT.
 > 
-> This makes the same information automatically also available in HMP
-> 'info block -v'.
+> pci_device_get_viommu_flags() is a wrapper that can be called on a PCI
+> device potentially protected by a vIOMMU.
 > 
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->  docs/tools/qemu-img.rst |  6 +++++-
->  include/block/qapi.h    |  2 +-
->  block/qapi.c            | 34 ++++++++++++++++++++++++++++++++--
->  qemu-img.c              | 15 ++++++++++++---
->  qemu-img-cmds.hx        |  4 ++--
->  5 files changed, 52 insertions(+), 9 deletions(-)
+> get_viommu_flags() is designed to return 64bit bitmap of purely vIOMMU
+> flags which are only determined by user's configuration, no host
+> capabilities involved. Reasons are:
 > 
+> 1. host may has heterogeneous IOMMUs, each with different capabilities
+> 2. this is migration friendly, return value is consistent between source
+>    and target.
+> 3. host IOMMU capabilities are passed to vIOMMU through set_iommu_device()
+>    interface which have to be after attach_device(), when get_viommu_flags()
+>    is called in attach_device(), there is no way for vIOMMU to get host
+>    IOMMU capabilities yet, so only pure vIOMMU flags can be returned.
 
-> +++ b/qemu-img.c
+"no way" sounds too strong..
 
-> @@ -3119,6 +3123,8 @@ static int img_info(const img_cmd_t *ccmd, int argc, char **argv)
->  "     display information about the backing chain for copy-on-write overlays\n"
->  "  -U, --force-share\n"
->  "     open image in shared mode for concurrent access\n"
-> +"  --limits\n"
-> +"     show detected block limits (may depend on options, e.g. cache mode)\n"
+There is an iommufd_backend_get_device_info() call there. So, we
+could have passed the host IOMMU capabilities to a vIOMMU. Just,
+we chose not to (assuming for migration reason?).
 
-I'm trying to figure out how the parenthetical helps the --help
-message.  The fact that it is detected limits already implies that
-anything else (like cache mode) that can change what gets detected
-would have an impact.  So I think it would be fine to just use " show
-detected block limits\n".
+>    See below sequence:
+> 
+>      vfio_device_attach():
+>          iommufd_cdev_attach():
+>              pci_device_get_viommu_flags() for HW nesting cap
+>              create a nesting parent HWPT
+>              attach device to the HWPT
+>              vfio_device_hiod_create_and_realize() creating hiod
+>      ...
+>      pci_device_set_iommu_device(hiod)
+> 
+> Suggested-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-But overall, I like the idea of being able to display what used to be
-internal information.
+Despite some nits, patch looks good to me:
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+> +enum {
+> +    /* Nesting parent HWPT will be reused by vIOMMU to create nested HWPT */
+> +     VIOMMU_FLAG_WANT_NESTING_PARENT = BIT_ULL(0),
+> +};
 
+How about adding a name and move the note here:
+
+/*
+ * Theoretical vIOMMU flags. Only determined by the vIOMMU device properties and
+ * independent on the actual host IOMMU capabilities they may depend on.
+ */
+enum viommu_flags {
+	...
+};
+
+> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+> index bde9dca8e2..c54f2b53ae 100644
+> --- a/include/hw/pci/pci.h
+> +++ b/include/hw/pci/pci.h
+> @@ -462,6 +462,23 @@ typedef struct PCIIOMMUOps {
+>       * @devfn: device and function number of the PCI device.
+>       */
+>      void (*unset_iommu_device)(PCIBus *bus, void *opaque, int devfn);
+> +    /**
+> +     * @get_viommu_flags: get vIOMMU flags
+> +     *
+> +     * Optional callback, if not implemented, then vIOMMU doesn't support
+> +     * exposing flags to other sub-system, e.g., VFIO. Each flag can be
+> +     * an expectation or request to other sub-system or just a pure vIOMMU
+> +     * capability. vIOMMU can choose which flags to expose.
+
+The 2nd statement is somewhat redundant. Perhaps we could squash
+it into the notes at enum viommu_flags above, if we really need.
+
+> +     *
+> +     * @opaque: the data passed to pci_setup_iommu().
+> +     *
+> +     * Returns: 64bit bitmap with each bit represents a flag that vIOMMU
+> +     * wants to expose. See VIOMMU_FLAG_* in include/hw/iommu.h for all
+> +     * possible flags currently used. These flags are theoretical which
+> +     * are only determined by vIOMMU device properties and independent on
+> +     * the actual host capabilities they may depend on.
+> +     */
+> +    uint64_t (*get_viommu_flags)(void *opaque);
+
+With the notes above, we could simplify this:
+
+     * Returns: bitmap with each representing a vIOMMU flag defined in
+     * enum viommu_flags
+
+> +/**
+> + * pci_device_get_viommu_flags: get vIOMMU flags.
+> + *
+> + * Returns a 64bit bitmap with each bit represents a vIOMMU exposed
+> + * flags, 0 if vIOMMU doesn't support that.
+> + *
+> + * @dev: PCI device pointer.
+> + */
+> +uint64_t pci_device_get_viommu_flags(PCIDevice *dev);
+ 
+and could make this aligned too:
+
+     * Returns: bitmap with each representing a vIOMMU flag defined in
+     * enum viommu_flags. Or 0 if vIOMMU doesn't report any.
+
+Nicolin
 
