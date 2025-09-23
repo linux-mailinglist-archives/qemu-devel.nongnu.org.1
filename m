@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2B32B9517F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 10:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F8BB95245
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 11:08:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0yoa-0008IZ-1L; Tue, 23 Sep 2025 04:56:00 -0400
+	id 1v0yya-0003ne-Gr; Tue, 23 Sep 2025 05:06:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v0yoO-0008Gk-C2
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 04:55:51 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v0yyX-0003mB-05
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 05:06:17 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v0yoH-00077u-82
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 04:55:48 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3f2ae6fae12so1846978f8f.1
- for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 01:55:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v0yyM-0008NA-DC
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 05:06:15 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-45f2cf99bbbso25066365e9.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 02:06:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758617735; x=1759222535; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=94ZY4lsRezsD6JpcPVX6PoxjsyVUQTAMf3zT7OOJyTs=;
- b=BEIbw2+atj13ahAgqTaiLWZDWtMnY4xuFd/Eb8kWA5Hr5slitoZZz+marQ0JiR36GA
- EqkTEZ754qWhlUr5mUcgvywMjAuwymaPbHRPKnxdoAgRZnxi8/TVnwwQEyk8AqLU/IFw
- QPyMr2g2WFqRgNSlKHO3SPumGapiVgDNZ+0HKhrcjPxapcREFk0akvh/HeFaSwoHVtXz
- Boxsw+4LDmX/FV/WHqdOrPUS4ttWzK5jpAawnLT3dXNyVdXRcN1dUD+Fee8urPxCAwCo
- pF5DxNcPRFB1M5o2UiE2tg3FC41zCqYT0oh23rr4D9Ep8H3kTNSF8FCViqux+fn5npDf
- Gn+A==
+ d=linaro.org; s=google; t=1758618359; x=1759223159; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DLhw0MG6P/nv2aD54ftxzSa4yDLYhf66ozUOdh2WoYk=;
+ b=QJ7sm4ujFiQ5kJ6nml9XgIaRd3BaWmVDig4cji8bAFJM9ec66HxtdFyGJv17De0soK
+ XJVOOgcNV/4cApP5IXnf07AWz47nk34CFXRYAbF+OdJZLHIB1xU+KXPtaRGA3S3Ml/mJ
+ vnZN/p8vUCvev9aHmx0XvGQaG7a8h+7jGTDCcv3VHsbl4QTt8p6BwS4mPV6sfrxTjT/Z
+ SPnXFlcYzZdNvxtfiRvNSaLNceBLFEsgTUzxmXtRChx1V94K1usTzt1yS/EfPdu/7nmW
+ q5YABDOXXzXNSHUJRBWKa/AUgD0uQxzI9LlQgIqR2QhpxOGS5pEtMqspTBzOdC3Mzgee
+ dUqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758617735; x=1759222535;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1758618359; x=1759223159;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=94ZY4lsRezsD6JpcPVX6PoxjsyVUQTAMf3zT7OOJyTs=;
- b=tH8dYReRknwJW15X+RV/yVeBPvzvI1C5Oe2AeZU2tzlEmqkk43jQu/q3r0SPj2SaVp
- L0Ls0qP1y6XoBWcMgPvNYw2iTfd918QRXbcc2YtCaYHNiVZeEz5WDGNG0GMdxTpFnNQS
- uOke6hgCagGRPmozo9p+/9+z7AJTmlwbmXfWMkK/vnVQV/9q4Nx55DESODtKXvOj9iNg
- dhFdeR8g6OcXHQgsX6pKPWP5eWDoRkcLUj7rLxGd/WXkOY/vueKEOiOCweqxDSuuVH/8
- OXCHUMmE1TpNA/lksvxnuERoeZFR3W5rzDsRnM0xj6qoRXZNYbt2jyeCRKe8S38/69qQ
- JhKw==
+ bh=DLhw0MG6P/nv2aD54ftxzSa4yDLYhf66ozUOdh2WoYk=;
+ b=Qys4yBn2oJEbk0GnLgayoUIpAfY2tTThde9231FuTmQJEdcvTVY2M7SnwmjIvM4XyA
+ QsrGf8SOF3CjTBlo7hwwvUtailHZHr8BZ/OWKZWiEnhLmbITB3X1BhB97f+Zzh7a/HqG
+ TV+ZW+UBmmmAkueriZqlKrLsl4P08yfgSUYqespj9idndcXj9rR7Gyd3HZx3QJ7NmJkP
+ DR04sMybJEkMU1uCChTNPgvH33btOfzpCEhAO4zdYiltT78e6hDy9vu1edTFh5ToxUBU
+ tXBbc48hKeiB0WnWHtFXd/OYiQ71xDfRjB/zj4jPt7D5e8gbIJ1W5UpQje5EuQO15rYH
+ 3YSA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV8oGyLSFKsMJqyWVCQSakDV3IfAaTSvYWn0ykKe/27Ak5nD1LvQoOScX3v1wAsBrB8R0wmda6kqjka@nongnu.org
-X-Gm-Message-State: AOJu0Yw+Kka4HKXHFjEYHOfaFZgkQ2EgmG6vWQ3dQp6TjsttolCr10Dz
- gSUNxHLWoG/7N91m6+TgZUo7MhgRGVMeyqDyfh74i0b2YIbIUOXYyCNOyyjtVQwHnDA=
-X-Gm-Gg: ASbGncvJsQ0k1QEOSHAkTRrOCjVP4bkJkBac8xz25vwZQcydkBg3GI9W8W5ruXtxy3A
- nI8tXGir+s24tdNHW+YM2qQ/8obJYZomGIsBk5Qeu290o/b6LkXqLMmMnu0qb2lsnhB9lhZUiK5
- hJyhZcPH9gMfTGGBz34RwpBFEmnD6OpmURW4BgeM82vuCUqot5A7i3o3Ql0ycPNM4NHr6AF6Kg/
- q5JZGWrPP1FPDoXCA1Fs7jH0LZx+8Wj1QtxMGpFj+Xr4ZyJTXKjLDwuNyWOg/P28hADMSiePv2L
- 7xCbWkYCpWSWV9FV4g4ER31QHDSiS4+9LgyfcPp0EY+u9MhYJYP23FrnNjUxivXwtaEeBlw+jK9
- fvXLQHjfHvrw3WpEc47qtD2J6xOzQEPhJLGIje0WJTKLVfhygN2vb70WErjF7LEyRqA==
-X-Google-Smtp-Source: AGHT+IHQ6WmvWhJNVmzJ03KMtS34Yp8QNSX7JBk+ih+Dutzw8z/ZHso3Gdz872E9Uxx/9ht+gtUWuQ==
-X-Received: by 2002:a05:6000:178e:b0:3f1:2671:6d9e with SMTP id
- ffacd0b85a97d-405c33a35bamr1316964f8f.1.1758617734649; 
- Tue, 23 Sep 2025 01:55:34 -0700 (PDT)
+ AJvYcCUVH1DaNQr+xfmmkw8Lxz5M79a68q/KKzwTSN5Tv5E9TmjQeNgI7FFSW6K8YCxaVlf4TYNttSw/yeyp@nongnu.org
+X-Gm-Message-State: AOJu0YwAQQTjCIfIJbYGZhysz+Rbp6qdgU0x+SUoW3mF7JbGvLpIwO8d
+ FprBxSWJ0Ltx8REaPro2j2nSlV14c4Qzb+fLn012j2P/E9kwJpi3dTdFTRI/xNSg0czjMPlGGQo
+ /4FzCpg97tg==
+X-Gm-Gg: ASbGncvp4JKwNVW7hzopoij85JwKoXEStQ8fgR/Toaagf/rVFs5duGLp/NWvzYvEk/2
+ ziNHim5X2NMZ32rorrRv7QjZUGbvdTEggDKiY/KyU0HbwAIVSf5zPJkTLHytTRl3WNqbS4EOZkJ
+ 5Sr4GOGyG6fPJ0lu1otUWXkxSgw03txH+7qmYEgRamK7/BoUNr44yxtjIv8mI/IQnrT8ZV0ju32
+ QFUU2IqnQLIiQ0MK4ExYCyoMysPjL8cwUtilLn9BNXLGDHEgW04NT+YzWj1BEtmICbH4WLF8pmG
+ 5J53dD0f6+jn/ZM2i2FOn0aKDq+SX1/Hyn+cCu1woqGLIc1Beh6Mpgbu0pKvfqMVnhs4FXPyTqA
+ cvNaNMY/hphFIW7VIVnVUcBP+gT1NEKLOxbckt91A22Ho3JlZWB5qNGqGUTwMAYAZlQfx1U7Ikd
+ sG
+X-Google-Smtp-Source: AGHT+IGI7ncS2M2tBg9fLBqO6Cm1CbYif3sOR2AXL3cS/1Epj2HhCvT8b+PFIwYe1vJoYo9WfBKbhw==
+X-Received: by 2002:a05:600c:1e09:b0:45d:cf5f:cff8 with SMTP id
+ 5b1f17b1804b1-46e1d97fad2mr15504235e9.11.1758618359295; 
+ Tue, 23 Sep 2025 02:05:59 -0700 (PDT)
 Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3ee07407d33sm23276803f8f.18.2025.09.23.01.55.33
+ 5b1f17b1804b1-46c9d5d52dcsm103412655e9.8.2025.09.23.02.05.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Sep 2025 01:55:34 -0700 (PDT)
-Message-ID: <5ed7c59b-5e61-4e79-b4e0-a8441ac5b784@linaro.org>
-Date: Tue, 23 Sep 2025 10:55:33 +0200
+ Tue, 23 Sep 2025 02:05:58 -0700 (PDT)
+Message-ID: <6a091e0b-c198-42ce-9279-702785939cfb@linaro.org>
+Date: Tue, 23 Sep 2025 11:05:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/12] hw/ppc/spapr: Use tb_invalidate_phys_range in
- h_page_init
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
-References: <20250923023922.3102471-1-richard.henderson@linaro.org>
- <20250923023922.3102471-7-richard.henderson@linaro.org>
-Content-Language: en-US
+Subject: Re: [PATCH v2 03/12] target/alpha: Simplify call_pal implementation
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250923023922.3102471-7-richard.henderson@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20250923023922.3102471-1-richard.henderson@linaro.org>
+ <20250923023922.3102471-4-richard.henderson@linaro.org>
+ <adcd026f-398f-47c3-828b-af13f362cc94@linaro.org>
+Content-Language: en-US
+In-Reply-To: <adcd026f-398f-47c3-828b-af13f362cc94@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,47 +101,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/9/25 04:39, Richard Henderson wrote:
-> We only need invalidate tbs from a single page, not flush
-> all translations.
+On 23/9/25 09:30, Philippe Mathieu-Daudé wrote:
+> On 23/9/25 04:39, Richard Henderson wrote:
+>> Since 288a5fe980f, we don't link translation blocks
+>> directly to palcode entry points.  If we load palbr
+>> from env instead of encoding the constant, we avoid
+>> all need for tb_flush().
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   target/alpha/helper.h     |  1 -
+>>   target/alpha/sys_helper.c |  6 ------
+>>   target/alpha/translate.c  | 21 ++++++---------------
+>>   3 files changed, 6 insertions(+), 22 deletions(-)
+
+
+> Probably unrelated but still same target, could you also update the
+> comment added in commit fe57ca82b09 ("target-alpha: Add placeholders
+> for missing userspace PALcalls")?
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> Cc: qemu-ppc@nongnu.org
-> ---
->   hw/ppc/spapr_hcall.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>          case 0x86:
+>              /* IMB */
+>              /* ??? We can probably elide the code using page_unprotect
+>                 that is checking for self-modifying code.  Instead we
+>                 could simply call tb_flush here.  Until we work out the
+>                 changes required to turn off the extra write protection,
+>                 this can be a no-op.  */
+>              break;
 > 
-> diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-> index c594d4b916..feb31d5dd8 100644
-> --- a/hw/ppc/spapr_hcall.c
-> +++ b/hw/ppc/spapr_hcall.c
-> @@ -8,7 +8,7 @@
->   #include "qemu/main-loop.h"
->   #include "qemu/module.h"
->   #include "qemu/error-report.h"
-> -#include "exec/tb-flush.h"
-> +#include "exec/translation-block.h"
->   #include "exec/target_page.h"
->   #include "helper_regs.h"
->   #include "hw/ppc/ppc.h"
-> @@ -301,7 +301,7 @@ static target_ulong h_page_init(PowerPCCPU *cpu, SpaprMachineState *spapr,
->           if (kvm_enabled()) {
->               kvmppc_icbi_range(cpu, pdst, len);
->           } else if (tcg_enabled()) {
-> -            tb_flush(CPU(cpu));
-> +            tb_invalidate_phys_range(CPU(cpu), dst, len);
 
-Shouldn't this be:
+Otherwise,
 
-                tb_invalidate_phys_range(CPU(cpu), dst, dst + len - 1);
-
-?
-
->           } else {
->               g_assert_not_reached();
->           }
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
