@@ -2,59 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20016B95EDA
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 15:04:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F96DB95E0B
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 14:50:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v12ew-0003Wh-21; Tue, 23 Sep 2025 09:02:18 -0400
+	id 1v12SA-0007Gq-Pa; Tue, 23 Sep 2025 08:49:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net>)
- id 1v12dh-0002xd-H5
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 09:01:03 -0400
-Received: from m239-4.eu.mailgun.net ([185.250.239.4])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v12S5-0007Fa-5n
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 08:49:04 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1)
- (envelope-from <bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net>)
- id 1v12dU-0004FZ-PG
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 09:01:01 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=0x65c.net; q=dns/txt;
- s=email; t=1758632440; x=1758639640; 
- h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To:
- Message-ID: Date: Subject: Subject: Cc: To: To: From: From: Sender: Sender; 
- bh=kP14q/0Mx0zm3yfYkDEee+ZWpJ6IGvWbrA7wLXXpjEs=;
- b=RMpEvi8ob9NxIKO11Y8YWERm4/qDMG/FOGCM0Dy3P22XuKkZyQIf73wv532hToxztJItCcioWVOR4WHEtANjRekipX+ekDVvNmQGOIPWBSYeOEPRa9+mEHkq08Gr2oCW+nOb6bTS2WwND8AoXJsIz64eh/yaIAL2xkwtV5Wf6nbF+MmIZ57KD/U1Yo9/LE3KUDdDnPfoRBQxn92EjmRVJojYn/wKjJmBHi4fki8MMTmN/750tKphwH+wGoqu2IX0lueZSrbK1GoHdaR4xmB0S+SGymu2f12D686b8lXYDbEy0caX8oC4/X8bimkBDuiFWa/0weVMU5louexwlNZ2Kw==
-X-Mailgun-Sid: WyJiNjdhNCIsInFlbXUtZGV2ZWxAbm9uZ251Lm9yZyIsIjU0ZWY0Il0=
-Received: from fedora (pub082136115007.dh-hfc.datazug.ch [82.136.115.7]) by
- 55fdd80091757d6f49ccd5a4be9c092de5292e63009b174a6410b8c2f163bec3 with SMTP id
- 68d299f818d8f1fae9087dd3; Tue, 23 Sep 2025 13:00:40 GMT
-X-Mailgun-Sending-Ip: 185.250.239.4
-From: Alessandro Ratti <alessandro@0x65c.net>
-To: qemu-devel@nongnu.org
-Cc: alessandro.ratti@gmail.com, armbru@redhat.com, berrange@redhat.com,
- alex.bennee@linaro.org, mst@redhat.com,
- Alessandro Ratti <alessandro@0x65c.net>
-Subject: [PATCH] virtio: improve virtqueue mapping error messages
-Date: Tue, 23 Sep 2025 14:46:52 +0200
-Message-ID: <20250923130034.486370-2-alessandro@0x65c.net>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250923130034.486370-1-alessandro@0x65c.net>
-References: <20250923130034.486370-1-alessandro@0x65c.net>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v12S0-0002S7-Kh
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 08:48:59 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3ee13baf2e1so4089327f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 05:48:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758631728; x=1759236528; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lm0RIuxWrWjgFKSw/2KL2MfW+Vwvpl7lKfmYWVPDu7A=;
+ b=BCDdS0J2EitKCesNNzLjFLegy8C4hKbJBqq41a7KUDGbXwvhMyBOjQvtzmONF6khlr
+ WVBJajgfAb7cv8MPlRcvTDomA050QYZrifa+p0gM7xvFr64fUn5uFFf/JZ1Gyp/OudTm
+ rlFX7ErnUIfam6TMIT4MocZo3hY8jDu5Dnh1OX5q0SlvgIgK/CrZbKouZufc3mDszvf3
+ Vmh9o/9zowVSyEclfRniU0Y9OPpilTOp+15f+yzJ7vScqqD/FpE9ZWucqU366z+vwCFw
+ yc8PYpXoo0UzMU+3StVV3RHvgREYMJCPEZobq44pBJc/HyJKvRZVwdggHgGjlIM40ERr
+ d+cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758631728; x=1759236528;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lm0RIuxWrWjgFKSw/2KL2MfW+Vwvpl7lKfmYWVPDu7A=;
+ b=Hj4yB7Bs6ZN06nAihLU62l2VrwIxCvX+Nf5R+aJ5WjDRUz/NnKKOP8HZZ33D0XdAlT
+ 1pOL1adbLC0rHoXsT7E/YlMhbiFOuvYk2fIuI1sW01hwP/8vCQLWf4dzRleeWNDb421f
+ 2l4wBikC/ieKo7PUuxhDBbN2OzVhmncOlRDjBaGWiMZ6IdQEE0rdB5UjgrIvgdpLlhoS
+ GHDdAvs5tGyMZknNfx0Jk6Sl0lkeroePlvl7GyYzBSIkFiyghVDU5w07szuX3Q+h7btB
+ yJMVoYy9l1M+VIYeyexX1idwqWoMDDx/bLsF0qb6ijfu7WiPA/+hGCZaVlNgzl26Tg1Z
+ K+Xw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVjRnXyY0zstAfd5gXKWVBxJfawiy9QPtqtXubL61ZO1RpwosUntirs11AIUaJXmOzvMVV44+igaeTK@nongnu.org
+X-Gm-Message-State: AOJu0YydTjjwaadr3wrpDafNivHQWrq1uHuynNvxtvlNemyzzrUrI444
+ Qqym/QleRMu9oVVwOTB8ARtAJZyB9FgNjPTdm6GE8aPIG70nNWBK5kTHvIbsfiode8E=
+X-Gm-Gg: ASbGnctH28NpayI0bZB6G8gI3jUjlCmS7ddobsCldgQZllVW7YLFTlW+E1rbKMx7GBb
+ W25Kis1YcTlMe0u63tsv2YXnBhcwMYSJwdidThnMUP1kf/9ibT4Bz3sbN+v7XZXg299fbBv3r9g
+ Vq1xetbqNBrRsKqqF4hIshQ61DLXd0wSOpQ3T8GiGKR2SujcrN/6EXvRV+iijkIn2eKiiln4P8N
+ 0LAgT92mgACqxSmwF0l7IDhQNsGZG9UbcW/1ffvvxcMocG7lsfb50P1fMQ9xxQZvyrBq7gxK8yT
+ dtUo44W7fcbRvl+bejQ7/MXjSQYS4HP7nmyH/R1c16dRT17cuvMKxY/nImeWy6vohKMkxMDzDll
+ Jyk1XG732kDb4NdfjO4Z3LG25Apzkpwu08vYbhhUW1QyUTHKa567Qj1QupoP8rg4XMQ==
+X-Google-Smtp-Source: AGHT+IF9wgXq4+2DaDjIUrjR18DFC+UouChP0XXZXHpY3SB+c0PNfUpvO/3Tn29J+JeH3Zyp8USJ8g==
+X-Received: by 2002:a05:6000:2407:b0:400:1bbb:d279 with SMTP id
+ ffacd0b85a97d-405c9446b6fmr2209900f8f.39.1758631727772; 
+ Tue, 23 Sep 2025 05:48:47 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3ee073f3d73sm23563515f8f.8.2025.09.23.05.48.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 Sep 2025 05:48:47 -0700 (PDT)
+Message-ID: <b45e8286-a823-46c0-ab20-7cf26945275a@linaro.org>
+Date: Tue, 23 Sep 2025 14:48:46 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 10/20] monitor: remove redundant
+ error_[v]printf_unless_qmp
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Stefan Weil <sw@weilnetz.de>, Gerd Hoffmann <kraxel@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>
+References: <20250910180357.320297-1-berrange@redhat.com>
+ <20250910180357.320297-11-berrange@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250910180357.320297-11-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=185.250.239.4;
- envelope-from=bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net;
- helo=m239-4.eu.mailgun.net
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,95 +110,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Improve error reporting when virtqueue ring mapping fails by including a
-device identifier in the error message.
+On 10/9/25 20:03, Daniel P. Berrangé wrote:
+> These functions only had one caller which was easily converted to
+> the normal error_printf() function. Remove them as they don't add
+> sufficient value.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   include/monitor/monitor.h |  3 ---
+>   monitor/monitor.c         | 24 ------------------------
+>   stubs/error-printf.c      |  5 -----
+>   3 files changed, 32 deletions(-)
 
-Introduce a helper virtio_get_pretty_dev_name() that returns either:
+:)
 
- - the device ID, if explicitly provided (e.g. -device ...,id=foo)
- - the QOM path from qdev_get_dev_path(dev) otherwise
-
-This makes it easier to identify which device triggered the error in
-multi-device setups or when debuggin complex guest configurations.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/230
-Buglink: https://bugs.launchpad.net/qemu/+bug/1919021
-
-Signed-off-by: Alessandro Ratti <alessandro@0x65c.net>
----
- hw/virtio/virtio.c | 37 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 34 insertions(+), 3 deletions(-)
-
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 9a81ad912e..3b3ad2e0ac 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -235,6 +235,28 @@ static void virtio_virtqueue_reset_region_cache(struct VirtQueue *vq)
-     }
- }
- 
-+static const char *virtio_get_pretty_dev_name(VirtIODevice *vdev)
-+{
-+    DeviceState *dev = DEVICE(vdev);
-+
-+    /*
-+     * Return device ID if explicity set
-+     * (e.g. -device virtio-blk-pci,id=foo)
-+     * This allows users to correlate errors with their custom device
-+     * names.
-+     */
-+    if (dev->id) {
-+        return dev->id;
-+    }
-+    /*
-+     * Fall back to the canonical QOM device path (eg. ID for PCI
-+     * devices).
-+     * This ensures the device is still uniquely and meaningfully
-+     * identified.
-+     */
-+    return qdev_get_dev_path(dev);
-+}
-+
- void virtio_init_region_cache(VirtIODevice *vdev, int n)
- {
-     VirtQueue *vq = &vdev->vq[n];
-@@ -256,7 +278,10 @@ void virtio_init_region_cache(VirtIODevice *vdev, int n)
-     len = address_space_cache_init(&new->desc, vdev->dma_as,
-                                    addr, size, packed);
-     if (len < size) {
--        virtio_error(vdev, "Cannot map desc");
-+        virtio_error(vdev,
-+                "Failed to map descriptor ring for device %s: "
-+                "invalid guest physical address or corrupted queue setup",
-+                virtio_get_pretty_dev_name(vdev));
-         goto err_desc;
-     }
- 
-@@ -264,7 +289,10 @@ void virtio_init_region_cache(VirtIODevice *vdev, int n)
-     len = address_space_cache_init(&new->used, vdev->dma_as,
-                                    vq->vring.used, size, true);
-     if (len < size) {
--        virtio_error(vdev, "Cannot map used");
-+        virtio_error(vdev,
-+                "Failed to map used ring for device %s: "
-+                "possible guest misconfiguration or insufficient memory",
-+                virtio_get_pretty_dev_name(vdev));
-         goto err_used;
-     }
- 
-@@ -272,7 +300,10 @@ void virtio_init_region_cache(VirtIODevice *vdev, int n)
-     len = address_space_cache_init(&new->avail, vdev->dma_as,
-                                    vq->vring.avail, size, false);
-     if (len < size) {
--        virtio_error(vdev, "Cannot map avail");
-+        virtio_error(vdev,
-+                "Failed to map avalaible ring for device %s: "
-+                "possible queue misconfiguration or overlapping memory region",
-+                virtio_get_pretty_dev_name(vdev));
-         goto err_avail;
-     }
- 
--- 
-2.39.5
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
