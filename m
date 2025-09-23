@@ -2,73 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712A4B9437B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 06:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0953FB94416
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 06:52:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0uYo-0004QW-DK; Tue, 23 Sep 2025 00:23:26 -0400
+	id 1v0uyh-00038D-2A; Tue, 23 Sep 2025 00:50:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenhuacai@kernel.org>)
- id 1v0uYl-0004QD-PQ
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 00:23:24 -0400
-Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1v0uyd-00036s-N5; Tue, 23 Sep 2025 00:50:07 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenhuacai@kernel.org>)
- id 1v0uYh-0000kb-5j
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 00:23:23 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id 06C0944D39
- for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 04:23:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2059C113CF
- for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 04:23:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1758601391;
- bh=1/qrgHoa2j7ulr8oZ6R/RE8U3p0nUHGQ82rMg2R4iTY=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=sfbWriOFUfhypypqCCKRwRd1vmi9fe5hWYbrb8OMmWwVuAprjihjqsWDimOv/6VbB
- ZrQRzDGZJWt6d1bDAQ5rU1pztVb7H4XiG7rQrXzMzlvEiW/StnRkvV3ErU2QreXsy1
- tlV3OpfLS0o8Eo1fVd4vsM38c6UASuaKOlU+8f75Xfvfhi3dkAjeq6Q6NU0dUfslri
- JBmAg2SwEa9yDI6v4fcpDm9ojRJ171q5EjHhTUV1GoLKm3o8KL0R27TD+F/rM2YQr8
- 1Y9h315iDwYKaWhoiwsm8uWdV/A5tV0QnLWO5cqfHX0R/Jb9KoIP4QuBsltVZhD10D
- sfBb8xROr69nw==
-Received: by mail-ej1-f50.google.com with SMTP id
- a640c23a62f3a-b07c28f390eso938456166b.2
- for <qemu-devel@nongnu.org>; Mon, 22 Sep 2025 21:23:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUVA4S2fwvvhBOmy+Sn1TdskWK0ExglyIiaM+braG02ZUuHZKXnAcEtEn0Uq3NBztmRfmHh+5hseMyC@nongnu.org
-X-Gm-Message-State: AOJu0Yz2y4fGoBVCCvOlmOQAPrx0MKGa8At+fN4pVyWXeqdlTB7TlDI/
- Vo0HnZx+M80Cegrw/A305EPup8VQH27SWKANau1zJbWI9ea38zIr5s5ZdTKvoIhHwfpMTWp+Aou
- XfjtzguYPdQVepTpx20Y7TEHIpnZ8ps8=
-X-Google-Smtp-Source: AGHT+IH3HnE9f3krQa8ccEnCQLAmt87nTWKPkmHvaxekKa9jZJIb+tkM4N/rrnG7FG5vTxbh8y0Hx83c0JUmGqBMgLs=
-X-Received: by 2002:a17:907:c26:b0:b04:858e:c1ee with SMTP id
- a640c23a62f3a-b30260c9adcmr100389466b.2.1758601390386; Mon, 22 Sep 2025
- 21:23:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1v0uya-0004av-Sp; Tue, 23 Sep 2025 00:50:07 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58MMs4Xu012027;
+ Tue, 23 Sep 2025 04:49:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=LKOx8k
+ k+6lH7FqcN3zxH9xUGjrPmldSivtqEY3yMldM=; b=NdYoanWN+LSNP5cjLHMM1e
+ KdwaP6c9R3hLLzFuC5JVM+HUiLLcT/XZa6G5A1kNyEf0eSyKbmzDKeqStlV12Lz2
+ C2w3F/+SvxJ8FNizr7esDsyET/H1cO7c4uDn12R91ou4Gz00CeqjB1mZpKyPomDf
+ MuVAQHLiJxX0bj8dTR8JCW2JjU2HpgvGBUvlgkzDe5RybvDyKHeg/diSHOERoUvD
+ f8Qe+n0zFZ6ljLFTve2NIS4jhUR5Sd/4dGdgX44txnHuXDD5OdZgrR6MFq4XwWys
+ wAl2/yXKqGZbe1grvEwleGpU/Ce0Q9c28+2r7RoSe5Y7OwT0X3Tr6LD5ogXFULgg
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499ksbpuy2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 23 Sep 2025 04:49:55 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58N4nsYP028600;
+ Tue, 23 Sep 2025 04:49:54 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499ksbpuy1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 23 Sep 2025 04:49:54 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58N1mQkf019671;
+ Tue, 23 Sep 2025 04:49:53 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49a83k1cu6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 23 Sep 2025 04:49:53 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 58N4nqit34930944
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 23 Sep 2025 04:49:52 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DFD5E5805A;
+ Tue, 23 Sep 2025 04:49:51 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0F0485803F;
+ Tue, 23 Sep 2025 04:49:50 +0000 (GMT)
+Received: from [9.109.242.24] (unknown [9.109.242.24])
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 23 Sep 2025 04:49:49 +0000 (GMT)
+Message-ID: <c13cb29e-88c5-4751-9273-4e9833289f75@linux.ibm.com>
+Date: Tue, 23 Sep 2025 10:19:48 +0530
 MIME-Version: 1.0
-References: <20250922141557.1939333-1-chenhuacai@kernel.org>
- <b8f1cea3-cd26-855a-b772-1f4d8b9b2fc3@loongson.cn>
-In-Reply-To: <b8f1cea3-cd26-855a-b772-1f4d8b9b2fc3@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 23 Sep 2025 12:22:56 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4pONDCQSOg1rRO2Mu5ADHkpA8Pk2ep7Cf0OT72yg=YeQ@mail.gmail.com>
-X-Gm-Features: AS18NWAR09zFaDbvp6Jw8tlYmKcb4_0ixoQ4n6Sdge_Gt0XXOP7rwzlEe129Ltg
-Message-ID: <CAAhV-H4pONDCQSOg1rRO2Mu5ADHkpA8Pk2ep7Cf0OT72yg=YeQ@mail.gmail.com>
-Subject: Re: [PATCH] hw/loongarch/virt: Align VIRT_GED_CPUHP_ADDR to 4 bytes
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- WANG Xuerui <git@xen0n.name>, qemu-devel@nongnu.org, 
- Huacai Chen <chenhuacai@loongson.cn>, Nathan Chancellor <nathan@kernel.org>, 
- WANG Rui <wangrui@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2600:3c0a:e001:78e:0:1991:8:25;
- envelope-from=chenhuacai@kernel.org; helo=sea.source.kernel.org
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/12] hw/ppc/spapr: Use tb_invalidate_phys_range in
+ h_page_init
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ Chinmay Rath <rathc@linux.ibm.com>, anushree.mathur@linux.ibm.com
+References: <20250923023922.3102471-1-richard.henderson@linaro.org>
+ <20250923023922.3102471-7-richard.henderson@linaro.org>
+Content-Language: en-US
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20250923023922.3102471-7-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: tGRM27YPlM1PZHU8s20Ko5bmaLXn8dTP
+X-Proofpoint-GUID: 4NtuJLd4cc3dZKjShn_VuJUiXW9WYsDv
+X-Authority-Analysis: v=2.4 cv=SdH3duRu c=1 sm=1 tr=0 ts=68d226f3 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=f7IdgyKtn90A:10 a=KKAkSRfTAAAA:8
+ a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=69wJf7TsAAAA:8 a=luTRIxdsBxbQojV5VVoA:9
+ a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22 a=Fg1AiH1G6rFz08G2ETeA:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAyMCBTYWx0ZWRfX9drwdlKQl4x0
+ l5fkfcCnIr5ucMRSl1GAi3eQ8i07UJ9qcNd8CPgazAekFKmGx4i+jcbEH8e9FNQ4Ze+3Ngd2uWk
+ z0WISksfUBvjL+8MzyFVf1L6fAwc7odOs3wrXjwn+BOgdtKuXF7NFl7GlEQmOB4W4NhQSHCABG9
+ 5GppgFhf4D3sXrNW++590sgdlAbJSmZZk+YM8RHM4jJySjMwMYSDQkB2G08zY9jfhGywlTc+6Mc
+ lF/wBLD7zIeveDVHA/aOBsyG3PadBN400Gfa1iEo44zHaY80fO7dEhe0ggoYTRjqp2+FCxEtCMD
+ SM7J+5QGiHrhpfPnMZ+LwiL26GzycQ4SmVd9DPU2pqrmBXj0iWQgfENgz0NiZf2BM9nI4Ypw27l
+ SNShhQNF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-23_01,2025-09-22_05,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 phishscore=0 spamscore=0 bulkscore=0
+ priorityscore=1501 clxscore=1015 adultscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509200020
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,101 +127,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Bibo,
++ Chinmay, Anu - FYI
 
-On Tue, Sep 23, 2025 at 11:40=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wro=
-te:
->
-> Hi huacai,
->
-> It breaks with compatible issue since acpi table is changed, and test
-> case qtest-loongarch64/bios-tables-test fails to run.
->
-> LoongArch VM compatibility is not perfect now, one method is to modify
-> test case at the same time, another method is to add extra option in
-> order to support aligned GED ACPI address.
->
-> Does this issue must be fixed now? With ACPI spec, 5.2.12.20 Core
-> Programmable Interrupt Controller (CORE PIC) Structure, ACPI Processor
-> ID is not aligned also, its size is 4 byte and offset is 3 bytes.
-They are different.
+On 9/23/25 08:09, Richard Henderson wrote:
+> We only need invalidate tbs from a single page, not flush
+> all translations.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> Cc: qemu-ppc@nongnu.org
+> ---
+>   hw/ppc/spapr_hcall.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+> index c594d4b916..feb31d5dd8 100644
+> --- a/hw/ppc/spapr_hcall.c
+> +++ b/hw/ppc/spapr_hcall.c
+> @@ -8,7 +8,7 @@
+>   #include "qemu/main-loop.h"
+>   #include "qemu/module.h"
+>   #include "qemu/error-report.h"
+> -#include "exec/tb-flush.h"
+> +#include "exec/translation-block.h"
+>   #include "exec/target_page.h"
+>   #include "helper_regs.h"
+>   #include "hw/ppc/ppc.h"
+> @@ -301,7 +301,7 @@ static target_ulong h_page_init(PowerPCCPU *cpu, SpaprMachineState *spapr,
+>           if (kvm_enabled()) {
+>               kvmppc_icbi_range(cpu, pdst, len);
+>           } else if (tcg_enabled()) {
+> -            tb_flush(CPU(cpu));
+> +            tb_invalidate_phys_range(CPU(cpu), dst, len);
 
-ACPI tables are probably packed (so the members may not be aligned),
-such as CORE PIC you mentioned. Linux kernel defines two kinds of
-accessors to parse members. You can see the code in
-drivers/acpi/acpica/acmacros.h from the kernel as an example.
+Much needed improvement. Thanks.
 
-The problem mentioned in this patch is the alignment of a struct as a
-whole. If the struct itself isn't aligned, Linux kernel cannot handle
-it on hardware without UAL, even with two kinds of accessors.
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
->
-> If it must be fixed, the test case should be modified also together with
-> the patch. If not, it can be record as pending bug, will solve it if VM
-> compatibility method is decided.
-Generally speaking, I think this should be fixed, because it is
-allowed for qemu to emulate a machine without UAL. I will take a look
-at qtest-loongarch64/bios-tables-test (maybe you means
-tests/qtest/bios-tables-test.c?), but it seeams a separate patch is
-better?
-
-Huacai
-
->
-> Regards
-> Bibo Mao
->
-> On 2025/9/22 =E4=B8=8B=E5=8D=8810:15, Huacai Chen wrote:
-> > From: Huacai Chen <chenhuacai@loongson.cn>
-> >
-> > Now VIRT_GED_CPUHP_ADDR is not aligned to 4 bytes, but if Linux kernel
-> > is built with ACPI_MISALIGNMENT_NOT_SUPPORTED, it assumes the alignment=
-,
-> > otherwise we get ACPI errors at boot phase:
-> >
-> > ACPI Error: AE_AML_ALIGNMENT, Returned by Handler for [SystemMemory] (2=
-0250404/evregion-301)
-> > ACPI Error: Aborting method \_SB.CPUS.CSTA due to previous error (AE_AM=
-L_ALIGNMENT) (20250404/psparse-529)
-> > ACPI Error: Aborting method \_SB.CPUS.C000._STA due to previous error (=
-AE_AML_ALIGNMENT) (20250404/psparse-529)
-> > ACPI Error: Method execution failed \_SB.CPUS.C000._STA due to previous=
- error (AE_AML_ALIGNMENT) (20250404/uteval-68)
-> >
-> > VIRT_GED_MEM_ADDR and VIRT_GED_REG_ADDR are already aligned now, but us=
-e
-> > QEMU_ALIGN_UP() to explicitly align them can make code more robust.
-> >
-> > Reported-by: Nathan Chancellor <nathan@kernel.org>
-> > Suggested-by: WANG Rui <wangrui@loongson.cn>
-> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > ---
-> >   include/hw/loongarch/virt.h | 6 +++---
-> >   1 file changed, 3 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-> > index 602feab0f0..be4f5d603f 100644
-> > --- a/include/hw/loongarch/virt.h
-> > +++ b/include/hw/loongarch/virt.h
-> > @@ -28,9 +28,9 @@
-> >   #define VIRT_LOWMEM_SIZE        0x10000000
-> >   #define VIRT_HIGHMEM_BASE       0x80000000
-> >   #define VIRT_GED_EVT_ADDR       0x100e0000
-> > -#define VIRT_GED_MEM_ADDR       (VIRT_GED_EVT_ADDR + ACPI_GED_EVT_SEL_=
-LEN)
-> > -#define VIRT_GED_REG_ADDR       (VIRT_GED_MEM_ADDR + MEMORY_HOTPLUG_IO=
-_LEN)
-> > -#define VIRT_GED_CPUHP_ADDR     (VIRT_GED_REG_ADDR + ACPI_GED_REG_COUN=
-T)
-> > +#define VIRT_GED_MEM_ADDR       QEMU_ALIGN_UP(VIRT_GED_EVT_ADDR + ACPI=
-_GED_EVT_SEL_LEN, 4)
-> > +#define VIRT_GED_REG_ADDR       QEMU_ALIGN_UP(VIRT_GED_MEM_ADDR + MEMO=
-RY_HOTPLUG_IO_LEN, 4)
-> > +#define VIRT_GED_CPUHP_ADDR     QEMU_ALIGN_UP(VIRT_GED_REG_ADDR + ACPI=
-_GED_REG_COUNT, 4)
-> >
-> >   #define COMMAND_LINE_SIZE       512
-> >
-> >
->
+>           } else {
+>               g_assert_not_reached();
+>           }
 
