@@ -2,76 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0143FB976A9
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 21:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F820B976F7
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 22:01:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v191D-0006Wt-Us; Tue, 23 Sep 2025 15:49:43 -0400
+	id 1v19Bi-0001ib-UZ; Tue, 23 Sep 2025 16:00:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <galush.horowitz@gmail.com>)
- id 1v191C-0006WP-Oa
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 15:49:42 -0400
-Received: from mail-yb1-xb36.google.com ([2607:f8b0:4864:20::b36])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1v19Bg-0001iI-GD
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 16:00:32 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <galush.horowitz@gmail.com>)
- id 1v191B-0002Ey-4J
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 15:49:42 -0400
-Received: by mail-yb1-xb36.google.com with SMTP id
- 3f1490d57ef6-ea63e86b79aso4566596276.2
- for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 12:49:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1v19Be-0004xr-Vp
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 16:00:32 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-62fc28843ecso6146831a12.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 13:00:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1758656980; x=1759261780; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1758657629; x=1759262429; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mipdv18VfFuC/432BNpDUrAwkE9so7YadlxCqijScAg=;
- b=OEea1NvFoK72idk0+1GgTNFfo/SorIYbZ/24+Up5DidHnztID43kU93qG0rPcEfIRZ
- bgqOnIQQQ/vlast4S3GuGPDE75Yrkh4YWiay9lRN2A2W3Yu7Y1BEjvM+Emteo8qs9w5k
- JQuJneOE1HwHwjlgh3ycyXJI7OpIhPzTu5V4Sogz0ykV8YnQoKdf5u1cylANhx8ljPsr
- oz5ErwMV/MlUjUZB20HFsD6mD2AWs6lRfvzo0ZbKtsWhQep8TZJ35WYCVBVyfbHtY7WN
- zSajQz+28tbGEDnuOF30oZCrkK0i0b1IklONzRzpzuVCTvitt0jwvL+2QsfJ5vNBJLv5
- MZqw==
+ bh=m3G3c0nkQKew2ntKNWNXsbgvqlpxLiAsf/W1nzKD3Qg=;
+ b=biXzOXzS1yIkRs7ClnoU7DTqnymis2yao7hN68zrrnhGAjuXg0bDhCfQS2S29lsJC+
+ /Qq8ez6jy5xr2sW7KFqn5HiVTwRPXpd6jI0/b13xY/gOCACI5evmN2X4frA+wfvqYyiR
+ srzI4LETI+G72ulq856Wv5lRX1/jTT8B5x/J3qEy6/r+rbXDKrIGYi+Q4qZkIyxBmC/b
+ PD0u6XaznmkTj+aDg2y81RZmMZOT+s+qJNcb0YTjK4X6xRhGUpsck9e54cEr96wSho8o
+ CQh/1oQgoIbtUQq20U5E46SFKLEJnL6xuRx1QdbCkaO7/yVr65toJ1lyguTJMfZpJKJj
+ LUtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758656980; x=1759261780;
+ d=1e100.net; s=20230601; t=1758657629; x=1759262429;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mipdv18VfFuC/432BNpDUrAwkE9so7YadlxCqijScAg=;
- b=NMbavidCNuqSO0MGSm5yMDR0xioUqC8z1FVE0vT3XvjHSbiopsAPwl1D2u93WnPY3Y
- hDnr3K+1Gv/B/2VEXe1zVsdx799FDqs/Av0LM22q5VwgeJxH3A23wQaTnPZpXUvILGL2
- M+rwPc0NQk/526KZKqQumedg8z3SiBfafQwx2eYD9dahek/YATEoyGd/s8tBTSjwJ3N+
- k2T004HzxEuDfAzuHR8anvOSrECMa1+hiOpoZftw8aBWNq9NoORgPj7h169YQr3SeF99
- ADAFAQ9RgxUeHlvlqgYF9Hubk7p8ZdBnDQ4qyRi15JWcBeOcTbC3slD+0hqoUXmIfJIF
- xHHw==
-X-Gm-Message-State: AOJu0Yy6JnxEib1kN1LhIdZQ1JaxrOXXzPgHuam/8V4ULT+aO49luGSn
- GL07gmfSqeLkg9pcwTHcreYyvTUreSiszApcN4NipRqo9I43BQVVm8pgDRJ/lJA1ymFjV4glAKE
- Orb3Iaq8vUTW61oYTnnnDU9NPFH6xhPg=
-X-Gm-Gg: ASbGncuVyOg51IhmK29ou1/m0N47JC/itw85rIrvr3NTAfEGCVsBvdvg/zKrq/utHZM
- fyZGd38FLoxAPE40pcsQc5IF5rRfxTY19NufAQE6B5E880OONT2bonyvECS5sA8yvgVxuP0C/g1
- CEAZy2ZHE5ocbJTNWbhoE8FVHFAXSMz1srBMAh1iBVx/+3GEai+kkkILf9CR2DnQglLMoY0HVcw
- Kre0K2zgbKeKY9b4+gOgYIDowvqvO0/FovV49k=
-X-Google-Smtp-Source: AGHT+IHIiejlUvpdy08I1Qmf2lHFdjaGyC15vCQqyzPscpLUbJdNBO04VoBkFjzJnJHI6KZ+rffJDU6QqrlFNExkEJ0=
-X-Received: by 2002:a05:690c:4986:b0:721:10a3:6584 with SMTP id
- 00721157ae682-75893dd5067mr32041817b3.11.1758656979527; Tue, 23 Sep 2025
- 12:49:39 -0700 (PDT)
+ bh=m3G3c0nkQKew2ntKNWNXsbgvqlpxLiAsf/W1nzKD3Qg=;
+ b=Xa2DtbLTOtf71GkOnTxq96ZeNzEVmnj4XvS0kLmN7aJjecVLTpoxMu1ZjHmZzV2NbP
+ 0qY2E4sg6T2uMT0+3RHJLZlZ3iC7UkzO97t7HPiIdJKuTDxlvZ2uMT98Jox5VkL6Iyl5
+ yUMPOL4Ec/RlKIl3xBIQWBPHBkCqyMgdE1Mr869CN9zDdmvA3MiklGPdl41k64EjeVPk
+ 6ghnVvsBGcsaSqPXNSPipUY36nrQlwFMY65gLU7iR8gbbQiMP+ByRwkbbplOnN9xEDE+
+ ajallS9LJW1bC9BrVSDlYuS1bkWcVCXyPSaYIlbmenpvpaOHTDmI9FWrhjnTfAqSExVI
+ Bckg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU3PVk3TOJSVqwqu4sq3AvlVmEc5xHHZURZM5NyCRkDQZjQt5y73jjhTucXXe0fWGnE8w85VC9LbbSh@nongnu.org
+X-Gm-Message-State: AOJu0YwL0bBte5e1T/xEFWuGQ758fQ8u0DkOxbB0dPrecYl3Cx+j+duR
+ wJrt+Cstp9Ui/Y/GNLjLCypA3UXRuTj/KqKnXYxdLMYM2QNJQ1Lxtac9ciOk53QmxkMUC4qIxzS
+ vy7rgr0AAvlzTxgnghBrRVOv/Dt9j0zw=
+X-Gm-Gg: ASbGnctgLjygpqGY1mbZ+D1E4wK0+14mJvEseI0WLpPMDRT+aO4kbkfMoLYP/4rLbes
+ Mf328myWeiFWHbsvGIlpeLKwW+6pQ2QYCZpdHGqrF1gzPr3oe/tnRm58/OHb6k9hy5ICcxT3Pr/
+ pdeTH45THH5RiucXFywb/M/ls9e0TrcIO8NtouDJ2vLbstC3xbBLd2Wx5fj6SgGQcu9fchDD8j2
+ 1Euig==
+X-Google-Smtp-Source: AGHT+IEcL7c1IEeRuS5h0kyHLtQYmSQ1NYbsID6OQOAiOzBd6mrQwIGDCe612IbSQxEufbPO8HzLhgGvk/C9AL18YzA=
+X-Received: by 2002:a05:6402:24d5:b0:634:4e56:ba02 with SMTP id
+ 4fb4d7f45d1cf-634677ed06dmr3042412a12.23.1758657628466; Tue, 23 Sep 2025
+ 13:00:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250920-fix-win32-multiple-taps-v1-1-bee41dcc213d@gmail.com>
- <aNKFwDuH6jNglWUO@redhat.com>
-In-Reply-To: <aNKFwDuH6jNglWUO@redhat.com>
-From: Gal Horowitz <galush.horowitz@gmail.com>
-Date: Tue, 23 Sep 2025 22:49:03 +0300
-X-Gm-Features: AS18NWAaZRUhO0qptpDD06Y-F11CL9FWqbLjSGEiktFKe7jvDz9TEjm86duSOpw
-Message-ID: <CAP4rq2BigKd6bbL=Q+rHhpT2mfvWQtwK18GsuEqk741wTfVWjA@mail.gmail.com>
-Subject: Re: [PATCH] tap-win32: fix multiple tap support
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>, 
- Stefan Weil <sw@weilnetz.de>
+References: <20250922154843.60233-1-pbonzini@redhat.com>
+ <20250922154843.60233-3-pbonzini@redhat.com>
+ <20250923175826.GB509965@fedora>
+ <3232b3d4-a298-42d0-9756-0556f9edc241@redhat.com>
+In-Reply-To: <3232b3d4-a298-42d0-9756-0556f9edc241@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 23 Sep 2025 16:00:15 -0400
+X-Gm-Features: AS18NWCrFyNJBfj53i4ODrD8P2nxLSoaXzAsqjGeWIUXVJt00D-wHzuHqy_WZJo
+Message-ID: <CAJSP0QVmYUCvz_LAnMEXFEOiYvTS6E-YmCeVTpF0S52H3-=bFQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] docs/code-provenance: make the exception process more
+ prominent
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b36;
- envelope-from=galush.horowitz@gmail.com; helo=mail-yb1-xb36.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=stefanha@gmail.com; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,109 +101,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hey Daniel, thanks for the review!
+On Tue, Sep 23, 2025 at 3:20=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
+>
+> On 9/23/25 19:58, Stefan Hajnoczi wrote:
+> >> +The QEMU project welcomes discussion on any exceptions to this policy=
+,
+> >> +or more general revisions. This can be done by contacting the qemu-de=
+vel
+> >> +mailing list with details of a proposed tool, model, usage scenario, =
+etc.
+> >> +that is beneficial to QEMU, while still mitigating the legal risks to=
+ the
+> >> +project.  After discussion, any exception will be listed below.
+> >
+> > "Legal risks to the project" is all-encompassing and vague. People may
+> > not know how to start addressing the topic and might therefore not
+> > attempt to request an exception.
+> >
+> > I suggest replacing "legal risks to the project" with something more
+> > concrete like "issues around license and copyright status required to
+> > satisfy the Developer Certificate of Origin (DCO) requirements".
+>
+> It's already a long sentence.  Would "while still mitigating issues aroun=
+d
+> compliance with the DCO" be enough?
 
-On Tue, 23 Sept 2025 at 14:34, Daniel P. Berrang=C3=A9 <berrange@redhat.com=
-> wrote:
->
-> On Sat, Sep 20, 2025 at 03:01:39PM +0300, Gal Horowitz wrote:
-> > Currently when more than one tap is created on Windows, QEMU immediatel=
-y
-> > crashes with a null-deref since the code incorrectly uses a static glob=
-al
-> > for the tap state.
-> >
-> > Instead, this patch allocates a structure for each tap at startup.
-> >
-> > Signed-off-by: Gal Horowitz <galush.horowitz@gmail.com>
-> > ---
-> >  net/tap-win32.c | 14 +++++++++-----
-> >  1 file changed, 9 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/net/tap-win32.c b/net/tap-win32.c
-> > index 38baf90e0b3f121f74eb32f1bff779c84ce03114..217a43cc2f5effdd92e1bf4=
-9466fe8d2cd0490e6 100644
-> > --- a/net/tap-win32.c
-> > +++ b/net/tap-win32.c
-> > @@ -114,8 +114,6 @@ typedef struct tap_win32_overlapped {
-> >      tun_buffer_t* output_queue_back;
-> >  } tap_win32_overlapped_t;
-> >
-> > -static tap_win32_overlapped_t tap_overlapped;
-> > -
-> >  static tun_buffer_t* get_buffer_from_free_list(tap_win32_overlapped_t*=
- const overlapped)
-> >  {
-> >      tun_buffer_t* buffer =3D NULL;
-> > @@ -605,6 +603,7 @@ static int tap_win32_open(tap_win32_overlapped_t **=
-phandle,
-> >      } version;
-> >      DWORD version_len;
-> >      DWORD idThread;
-> > +    tap_win32_overlapped_t *tap_overlapped =3D NULL;
-> >
-> >      if (preferred_name !=3D NULL) {
-> >          snprintf(name_buffer, sizeof(name_buffer), "%s", preferred_nam=
-e);
-> > @@ -645,12 +644,14 @@ static int tap_win32_open(tap_win32_overlapped_t =
-**phandle,
-> >          return -1;
-> >      }
-> >
-> > -    tap_win32_overlapped_init(&tap_overlapped, handle);
-> > +    tap_overlapped =3D g_new0(tap_win32_overlapped_t, 1);
-> > +
-> > +    tap_win32_overlapped_init(tap_overlapped, handle);
->
-> I'd suggest chaing tap_win32_overlapped_init to be
-> tap_win32_overlapped_new. Have it be responsible
-> for the g_new0 call and returning the allocate struct
-> instead of passing it in as a param.
+Yes.
 
-Will do.
-
->
-> >
-> > -    *phandle =3D &tap_overlapped;
-> > +    *phandle =3D tap_overlapped;
->
-> eg so this becomes
->
->   *phandle =3D tap_win32_overlapped_new(handle);
->
-> >
-> >      CreateThread(NULL, 0, tap_win32_thread_entry,
-> > -                 (LPVOID)&tap_overlapped, 0, &idThread);
-> > +                 (LPVOID)tap_overlapped, 0, &idThread);
-> >      return 0;
-> >  }
-> >
-> > @@ -670,6 +671,9 @@ static void tap_cleanup(NetClientState *nc)
-> >      /* FIXME: need to kill thread and close file handle:
-> >         tap_win32_close(s);
-> >      */
-> > +
-> > +   g_free(s->handle);
-> > +   s->handle =3D NULL;
->
-> The tap_overlapped_t struct contains many HANDLE fields. If we just
-> free the struct, then those handles are all leaked. There are also
-> some allocated pointers. We'd hope they would all be released already
-> but who knows ?
->
-> This is a pre-existing problem as the current code did not attempt
-> to free anything, but with your changes the leak stands out more.
->
-> At the same time though, the FIXME comment points out a risk here.
->
-> The thread is still running and yet we're freeing the 's->handle'
-> that the thread has access to. So if we don't stop the thread, we
-> are at risk of a use-after-free.
->
-
-I'll add a best-effort to clean up handles and such. I'll also
-terminate the thread before freeing.
-
-With Regards,
-Gal
+Thanks,
+Stefan
 
