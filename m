@@ -2,158 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B192AB94B44
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 09:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A4DEB94B5C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 09:11:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0x7h-00068W-8P; Tue, 23 Sep 2025 03:07:37 -0400
+	id 1v0xAh-0003hI-1u; Tue, 23 Sep 2025 03:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v0x7Q-0005vh-Vs
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 03:07:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v0xAd-0003gR-H5
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 03:10:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v0x7G-0007rT-6C
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 03:07:20 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v0xAa-0008Ip-SY
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 03:10:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758611223;
+ s=mimecast20190719; t=1758611434;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=q9yNzF29/1iKrWb4ojzY/o3aj5UaFziGgP2iInvFeLg=;
- b=cVirc3LdVl3A7OAe1mhtRhyvOjcFz2Hla4Dx3eeguW5Sc1yhxd0r936ukSzfofEv73vZrb
- 48nHIkngKvZqyJ71wu8d8G9j9Z0j67UALpW9oO+K6oLyFALAPbnDvfz6M9PfBNu5Ai0HTr
- dzfiwIpnhFyLMht/CgSROcmMprE17Ic=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rpnSJ6NJ4RoYMK29SwlPSEa0ilMxmvA4JP131Z0CyNE=;
+ b=iY0+y410qtc1T+VvYB5LaBxY5zGcRp1D1akAiXj5lOOSknupxOHuS5qpx9j+J732CkKBb0
+ nAhOWwOkHJTDYl1BzY81tqW51x7DlrJx2rYq2Gi9/t67Hjiom+iiUbT7FJo1c0q8Okkdgq
+ TwmkSpj3uV8nfQJ3/S0iVB2QwhiLuGc=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-562-GceZQZ4NOmOB8TZTTs5YTg-1; Tue, 23 Sep 2025 03:07:02 -0400
-X-MC-Unique: GceZQZ4NOmOB8TZTTs5YTg-1
-X-Mimecast-MFC-AGG-ID: GceZQZ4NOmOB8TZTTs5YTg_1758611221
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-46e19f00bc2so9415675e9.3
- for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 00:07:01 -0700 (PDT)
+ us-mta-357-CDDauXN5NEmOdL_jwy27oA-1; Tue, 23 Sep 2025 03:10:32 -0400
+X-MC-Unique: CDDauXN5NEmOdL_jwy27oA-1
+X-Mimecast-MFC-AGG-ID: CDDauXN5NEmOdL_jwy27oA_1758611431
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-62fce1f3fa8so3250899a12.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 00:10:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758611220; x=1759216020;
+ d=1e100.net; s=20230601; t=1758611430; x=1759216230;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=q9yNzF29/1iKrWb4ojzY/o3aj5UaFziGgP2iInvFeLg=;
- b=uiOYAj3MS5ZcRLQv+cSxW7I1ZgOCjPWGOX1p3+89R/b1M7f3oYk2aN+5TYag4k0/RL
- yxSuXVkQfHxUFl9fFwfTn3zug6gq8dRy9nQs+dhqFyhhbEWyOkcs/QYCpM2PvOjCr+r7
- 8Jh7bH3j/YCJlM+KmBfKYgl2Mmhd52IYmfZFpNHY//9R7z6Z1zKfxmGsgUZd7cE4D3QR
- 10nN+Kne9QksS5e3dSuWmJSp4NX4tm0aDTafjvoT4tBpe0UiVkbVyl7fVYEoTuV+UEH8
- 0+hy8HWeUWv3wRRWe9DGvTJMiKxTWfgJII/ucRXar7yY9MC+dHeiRv96HSHdKB4RFTq7
- k0aQ==
+ :from:references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rpnSJ6NJ4RoYMK29SwlPSEa0ilMxmvA4JP131Z0CyNE=;
+ b=eVbbYvHBtGX+ILMfbFdHYHmznU3sDksWBx2O4CDNORbOf+FL9t/ldBkc4/jt8zLT/R
+ EUnajCc4K3kkLUpV7FxUmBiFTt9uShakyqPEGawLyronPNHes3mZOIwNEZVndpqchrec
+ XQddHzJBkNT4c0cpsi8I+0JoHqEDorXKUfZfc5uQtOxJFWm20fPntwYD98JqoqVYtGXL
+ xAcLxBgoBKgaJE/8LU/nCNqkxNHoraiLM1m7PgbKnvy037wF7ZQiQHqH7AtCpg2PigGV
+ +9C/dgvG9mEbc1zbNqnNhBYcKqaNxabzu9D7v+xas/LqxDmiAGZCMuF42oJipzTB6Kgl
+ HfEQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUr+JIcSFdxucaxPjjrPbk/pf8YkOQjc9ixacLxD8wD19CecPkjeBHKdj9MHgQy8TiMkVMvKLuupuTl@nongnu.org
-X-Gm-Message-State: AOJu0YxA8g7UHWT5J9REZe6haTw4MumkcbQqOLCSu5PhSR5S5uPQwOBZ
- NKHah0Mynw+GhZHMXbUG5O9O3h+A/AzPXH+e+mcaEbUglnm4XMqrXppRaL8Svm7jM4BGB11rRZi
- 7noaVgyHSWBlHymgWcCSSa1RGAWlCNKAZgJk05icvSEVpQ4DxpiE+HJ+x
-X-Gm-Gg: ASbGncvThEN3b6Vq10p/ECQM/O7BseGQqwEan9O6SAf/izx9SMTdp1+efjwOX8wi1b0
- BlSkcWwseKBcHARh8Bn17nxnJI+Q5zQqoK7Y4uU8sj2OPz19TkQ05BuIsb/v+VJ/77/WD22MMe4
- ntGWdqbB+HeaKCwCz4Cht0U4OxsSn2TlGwOcKgq7mZau08ZV7EF91kSfg4ZyDLy/qXawUadVjFV
- hKcb8sRrgNkncjWO/i2lVFTqNCbAZ9lS+c2A03oVEXo0KHgg45E2EBxkbqdE5NIGOytRdt/5Ow/
- lq+4ZV/KDeEKWwVKJ/3neg4jcBhDgCWUr2ZVMr/oiikyDx32u5KzUjeGHDUcV/wf5YSYNmTruIT
- LDV0=
-X-Received: by 2002:a05:600c:3baa:b0:46e:1f92:49aa with SMTP id
- 5b1f17b1804b1-46e1f924cd6mr9261845e9.15.1758611220142; 
- Tue, 23 Sep 2025 00:07:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHlDPTFDh5cmGbg5MqH28ZTD5Eqx0HAK1hAPRlaCDucVuhsnsSmq8C+ihDf78qPutN2K/nOBw==
-X-Received: by 2002:a05:600c:3baa:b0:46e:1f92:49aa with SMTP id
- 5b1f17b1804b1-46e1f924cd6mr9261375e9.15.1758611219668; 
- Tue, 23 Sep 2025 00:06:59 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46d7a566a27sm63754735e9.20.2025.09.23.00.06.58
+ AJvYcCXP9hMIaUXMmmlcQ97mY04iePAbisCMyMdOw3ncvylSMRJLkgCyTFnSA8JvpSv/O3wNLRGVJByMUWGE@nongnu.org
+X-Gm-Message-State: AOJu0YyUq0NkCcqpMgFDMjRX4LZHUwv7mxy0xeB3dA1IxCauzSVmbFIh
+ ZFF2ma3O1i9Sfh4W2pUHWFd85/um8FzTNxLdbUs1WgKrIq0d2GEhK/uxFW3uGrY5a71Ihn/fBQo
+ fh775s4Nhr3zOPPpyeHSr0F/cMY5KdQ8l8Kv3nl/9xU2ej6gk+yvvL1QQqk3lU/K7
+X-Gm-Gg: ASbGncs7Szk3sN6WENQNMAwrSqFYg6s/hVAAj8OLo3xDaAlrYmqwW/p1yrosxci1jVx
+ zrX6W/DxgjH7uhOO87zTM9s5LQ8H2yzAH9QzNmx0p3GBW1uqMV/O4rs1gjfIu/qrVxBz2KoSz6h
+ ZL4zAzEuZVryFwHoSlE4BKp0yNr7x0mYanAhQXJZw9RkijNBle183C98hhl/ig8d5nTLGoYNucb
+ P26qu6dW8cF3r+zpkUJs9sPiMTsNid9DotQ60qI+PSqPyiJGJ39AXyn52IIPXpMp76U8gVlesXt
+ SdYYyZJEbRe3MSrGJ/4d1Q1XYK9NBLaNH41R3HwgSUvengHWPQnKCkus8Y4qgnz+jE6v96qxCNC
+ eXp1c3ISYlolBfkHuE2PLhddkE1n5hWNqmONeQIWgb7OPOg==
+X-Received: by 2002:a05:6402:1d24:b0:634:5722:cc3f with SMTP id
+ 4fb4d7f45d1cf-6346779876dmr1131125a12.16.1758611430538; 
+ Tue, 23 Sep 2025 00:10:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEYOHc3MDHr+TEeYcICfcjGVqjEAvxLcPdHLHqRCHmS3kzA4yXc/Vb6To875f84F7VshkKC1A==
+X-Received: by 2002:a05:6402:1d24:b0:634:5722:cc3f with SMTP id
+ 4fb4d7f45d1cf-6346779876dmr1131101a12.16.1758611430130; 
+ Tue, 23 Sep 2025 00:10:30 -0700 (PDT)
+Received: from [192.168.10.48] ([176.206.127.188])
+ by smtp.googlemail.com with ESMTPSA id
+ 4fb4d7f45d1cf-62fa5f2b4d3sm10309499a12.42.2025.09.23.00.10.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Sep 2025 00:06:59 -0700 (PDT)
-Message-ID: <d1345c59-e9aa-479e-a71e-aa1f427bd059@redhat.com>
-Date: Tue, 23 Sep 2025 09:06:57 +0200
+ Tue, 23 Sep 2025 00:10:29 -0700 (PDT)
+Message-ID: <67f2c84b-4bb3-437b-8184-e7dfb9947df9@redhat.com>
+Date: Tue, 23 Sep 2025 09:10:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] vfio/iommufd: Add framework code to support getting
- dirty bitmap before unmap
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "jasowang@redhat.com"
- <jasowang@redhat.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "clement.mathieu--drif@eviden.com" <clement.mathieu--drif@eviden.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
- "avihaih@nvidia.com" <avihaih@nvidia.com>, "Hao, Xudong"
- <xudong.hao@intel.com>, "Cabiddu, Giovanni" <giovanni.cabiddu@intel.com>,
- "Gross, Mark" <mark.gross@intel.com>,
- "Van De Ven, Arjan" <arjan.van.de.ven@intel.com>
-References: <20250910023701.244356-1-zhenzhong.duan@intel.com>
- <20250910023701.244356-2-zhenzhong.duan@intel.com>
- <ee5c9d7c-a85e-4da4-bd5a-a59951a19a06@redhat.com>
- <IA3PR11MB91368AE2A58185BE00627E149212A@IA3PR11MB9136.namprd11.prod.outlook.com>
- <e0a2c3f0-eb14-4d06-9658-23208ee6e870@redhat.com>
- <IA3PR11MB9136A7B487A547CB5EAD9FEE921DA@IA3PR11MB9136.namprd11.prod.outlook.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <IA3PR11MB9136A7B487A547CB5EAD9FEE921DA@IA3PR11MB9136.namprd11.prod.outlook.com>
+Subject: Re: [PATCH v2 09/12] accel/tcg: Introduce EXCP_TB_FLUSH
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20250923023922.3102471-1-richard.henderson@linaro.org>
+ <20250923023922.3102471-10-richard.henderson@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20250923023922.3102471-10-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -169,110 +145,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/23/25 04:45, Duan, Zhenzhong wrote:
+On 9/23/25 04:39, Richard Henderson wrote:
+> We are going to disallow tb_flush from within the context
+> of a running cpu.  Introduce a tcg-internal exception to
+> return out of the cpu run loop and perform the flush there.
 > 
-> 
->> -----Original Message-----
->> From: Cédric Le Goater <clg@redhat.com>
->> Subject: Re: [PATCH 1/5] vfio/iommufd: Add framework code to support
->> getting dirty bitmap before unmap
->>
->> On 9/22/25 05:17, Duan, Zhenzhong wrote:
->>> Hi Cedric,
->>>
->>>> -----Original Message-----
->>>> From: Cédric Le Goater <clg@redhat.com>
->>>> Subject: Re: [PATCH 1/5] vfio/iommufd: Add framework code to support
->>>> getting dirty bitmap before unmap
->>>>
->>>> Hello Zhenzhong
->>>>
->>>> On 9/10/25 04:36, Zhenzhong Duan wrote:
->>>>> Currently we support device and iommu dirty tracking, device dirty
->>>>> tracking is preferred.
->>>>>
->>>>> Add the framework code in iommufd_cdev_unmap_one() to choose
->> either
->>>>> device or iommu dirty tracking, just like vfio_legacy_dma_unmap_one().
->>>>
->>>> I wonder if commit 567d7d3e6be5 ("vfio/common: Work around kernel
->>>> overflow bug in DMA unmap") could be removed now to make the code
->>>> common to both VFIO IOMMU Type1 and IOMMUFD backends.
->>>
->>> I am not clear if there is other reason to keep the workaround, but the
->> original
->>> kernel issue had been fixed with below commit:
->>>
->>> commit 58fec830fc19208354895d9832785505046d6c01
->>> Author: Alex Williamson <alex.williamson@redhat.com>
->>> Date:   Mon Jan 7 22:13:22 2019 -0700
->>>
->>>       vfio/type1: Fix unmap overflow off-by-one
->>>
->>>       The below referenced commit adds a test for integer overflow, but in
->>>       doing so prevents the unmap ioctl from ever including the last page
->> of
->>>       the address space.  Subtract one to compare to the last address of
->> the
->>>       unmap to avoid the overflow and wrap-around.
->>>
->>>       Fixes: 71a7d3d78e3c ("vfio/type1: silence integer overflow warning")
->>>       Link: https://bugzilla.redhat.com/show_bug.cgi?id=1662291
->>>       Cc: stable@vger.kernel.org # v4.15+
->>>       Reported-by: Pei Zhang <pezhang@redhat.com>
->>>       Debugged-by: Peter Xu <peterx@redhat.com>
->>>       Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
->>>       Reviewed-by: Peter Xu <peterx@redhat.com>
->>>       Tested-by: Peter Xu <peterx@redhat.com>
->>>       Reviewed-by: Cornelia Huck <cohuck@redhat.com>
->>>       Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
->>>
->>>>
->>>> I asked Alex and Peter in another thread.
->>>
->>> Just curious on the answer, may I ask which thread?
->>
->> According to Alex, the QEMU workaround can be removed :
->>
->> https://lore.kernel.org/qemu-devel/20250919102447.748e17fe.alex.williams
->> on@redhat.com/
->>
->>> btw: I just found unmapping in halves seems unnecessary as both backends
->> of kernel side support unmap_all now.
->>>
->>>       if (unmap_all) {
->>>           /* The unmap ioctl doesn't accept a full 64-bit span. */
->>>           Int128 llsize = int128_rshift(int128_2_64(), 1);
->>>
->>>           ret = vfio_legacy_dma_unmap_one(bcontainer, 0,
->> int128_get64(llsize),
->>>                                           iotlb);
->>>
->>>           if (ret == 0) {
->>>               ret = vfio_legacy_dma_unmap_one(bcontainer,
->> int128_get64(llsize),
->>>                                               int128_get64(llsize),
->> iotlb);
->>>           }
->>>
->>>       } else {
->>>           ret = vfio_legacy_dma_unmap_one(bcontainer, iova, size,
->> iotlb);
->>>       }
->>
->> Good. So we can simply both backends it seems.
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-*ify
+One small difference is that different CPUs can fail tcg_tb_alloc() at 
+the same time and flush multiple times.
 
-> 
-> Will you handle them or not? I mean the workaround removing and unmapping_all optimization.
+I think the check on the generation count should remain.  Instead of 
+introducing EXCP_TB_FLUSH, you can keep the guts of tb_flush() as
 
-I can revert 567d7d3e6be5 ("vfio/common: Work around kernel overflow
-bug in DMA unmap") but, AFAICT, the "unmap DMAs in halves" method (see
-1b296c3def4b) should be kept.
+void tb_queue_flush(CPUState *cpu)
+{
+     unsigned tb_flush_count = qatomic_read(&tb_ctx.tb_flush_count);
+     async_safe_run_on_cpu(cpu, do_tb_flush,
+                           RUN_ON_CPU_HOST_INT(tb_flush_count));
+}
 
-Thanks,
+With the unconditional async_safe_run_on_cpu() hidden behind a function, 
+this patch goes away while the next one survives as
 
-C.
+      if (unlikely(!tb)) {
+-        /* flush must be done */
+-        tb_flush(cpu);
+          mmap_unlock();
+-        /* Make the execution loop process the flush as soon as 
+possible.  */
+-        cpu->exception_index = EXCP_INTERRUPT;
++        tb_queue_flush(cpu);
+          cpu_loop_exit(cpu);
+      }
+
+Paolo
 
 
