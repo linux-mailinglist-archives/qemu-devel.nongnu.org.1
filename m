@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1F0B94A19
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 08:58:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C2EB94AE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 09:06:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0wxm-0007OY-K7; Tue, 23 Sep 2025 02:57:22 -0400
+	id 1v0x4v-000156-Ex; Tue, 23 Sep 2025 03:04:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1v0wxj-0007NS-TA; Tue, 23 Sep 2025 02:57:19 -0400
-Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
+ id 1v0x4g-00013l-1J; Tue, 23 Sep 2025 03:04:30 -0400
+Received: from sea.source.kernel.org ([172.234.252.31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
- id 1v0wxh-00066u-9k; Tue, 23 Sep 2025 02:57:19 -0400
+ id 1v0x4a-0007Jz-SA; Tue, 23 Sep 2025 03:04:29 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id 85C9144185;
- Tue, 23 Sep 2025 06:57:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5429C4CEF5;
- Tue, 23 Sep 2025 06:57:09 +0000 (UTC)
+ by sea.source.kernel.org (Postfix) with ESMTP id 59B47448F9;
+ Tue, 23 Sep 2025 07:04:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A94C116D0;
+ Tue, 23 Sep 2025 07:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1758610631;
- bh=VfTZtweG+rMvO8QkFHrpIA+XRbhzgEaglatdkL/UTEg=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=SdqHgTb3OIVrTCv0LnuAE1pGpejIaQ+qxYf8/24QryAXFi+MzfS1xYKBc8Z/NQFYN
- vUCLb6AMwKFx9YGCL5VHHielRxDS4rQB1hbDONnuoHnzS/ZnRwuprWsNt4jHs/xU6I
- 77zfIeq++Jeto5yVIJ00su/9TH7opv8SejdbGB5o6LSYIthoMbK1C2ANDnIbN4tX9g
- nlh58fNDAku8pUNtoWsdh1UFtQb6D3xh5vBS1JmwXjw8GUmZH1LGglUT1mKcHyCJtM
- Bt/jVc7AIhwmAZueCUBKPhDfRfURg5UAWRvz5CNnUcwc84/IPA7VHBEZhQya3SoEkQ
- Ar8uwzn+RcWuw==
-Date: Tue, 23 Sep 2025 08:57:06 +0200
+ s=k20201202; t=1758611060;
+ bh=NrCRjk5FC0rmqYA3EeiHmbo7AdCpSc/fA+RDneefq0w=;
+ h=From:To:Cc:Subject:Date:From;
+ b=lqFrVxpleWu5j82uYMw2bAQgFF8wKa2ztGKB2qoPK6Un1+pRl3Afj63aA+1U/s95+
+ OTpZszeyT42MNu87edyOlnLc17JHLuhQ6Y9MIbNb0sx8TmZk92KAjL8JI00Fa4ibvU
+ vRWSeI7QQcauT/hnaBhDhnJ7JBTu4gAejVEHt4+dObPnXUSiyQ2Mj3g+oTfV8Ut8n4
+ OVjsgXjIj40bW5GsuHcwegNT0LxHyD/8iLpANt0oQ8/cc43vvYnWfGeK3X8ZUm6Fzo
+ aVO2WwbkRsAEK7amlx7p1Q8wFPwACMPM0vITZHyQDnV/ClfWedv9OWZCsiOTAGR2J1
+ 7JmTYLe/68Xxg==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
+ (envelope-from <mchehab+huawei@kernel.org>)
+ id 1v0x4U-00000006bKL-0gQK; Tue, 23 Sep 2025 09:04:18 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Shiju Jose <shiju.jose@huawei.com>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>
-Subject: Re: [PATCH v11 15/17] tests/acpi: virt: update HEST and DSDT tables
-Message-ID: <20250923085706.456ef52b@foz.lan>
-In-Reply-To: <20250922065207-mutt-send-email-mst@kernel.org>
-References: <cover.1757084668.git.mchehab+huawei@kernel.org>
- <e2c35dc477479eecc895425117b257540b4b74c6.1757084668.git.mchehab+huawei@kernel.org>
- <20250922065207-mutt-send-email-mst@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+To: Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Shiju Jose <shiju.jose@huawei.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH v12 00/17] Change ghes to use HEST-based offsets and add
+ support for error inject
+Date: Tue, 23 Sep 2025 09:03:54 +0200
+Message-ID: <cover.1758610789.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2600:3c0a:e001:78e:0:1991:8:25;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=172.234.252.31;
  envelope-from=mchehab+huawei@kernel.org; helo=sea.source.kernel.org
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,27 +70,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Em Mon, 22 Sep 2025 06:52:47 -0400
-"Michael S. Tsirkin" <mst@redhat.com> escreveu:
+Hi Michael,
 
-> On Fri, Sep 05, 2025 at 05:09:22PM +0200, Mauro Carvalho Chehab wrote:
-> > --- /tmp/DSDT_old.dsl	2025-09-05 15:03:18.964968499 +0200
-> > +++ /tmp/DSDT.dsl	2025-09-05 15:03:18.966968470 +0200
-> > @@ -5,13 +5,13 @@
-> >   *
-> >   * Disassembling to symbolic ASL+ operators
-> >   *
-> > - * Disassembly of /tmp/DSDT_old
-> > + * Disassembly of /tmp/DSDT
-> >   *
-> >   * Original Table Header:
-...
+This is v11 of the patch series, rebased to apply after release
+10.1. Just like v1, the difference against v10 is a minor conflict
+resolution.
 
-> Mauro dumping raw diff in a way that confuses git am is
-> not the way to submit patches. I fixed it but take care pls.
+Please apply as soon as possible to avoid new conflicts.
 
-Ok, I'm adding a 4 spaces indentation to the description diff.
+Thanks!
 
-Thanks,
-Mauro
+-
+
+As ghes_record_cper_errors() was written since the beginning
+to be public and used by ghes-cper.c. It ended being meged
+earlier because the error-injection series become too big,
+so it was decided last year to split in two to make easier for
+reviewers and maintainers to discuss.
+
+This series change the way HEST table offsets are calculated,
+making them identical to what an OSPM would do and allowing
+multiple HEST entries without causing migration issues. It open
+space to add HEST support for non-arm architectures, as now
+the number and type of HEST notification entries are not
+hardcoded at ghes.c. Instead, they're passed as a parameter
+from the arch-dependent init code.
+
+With such issue addressed, it adds a new notification type and
+add support to inject errors via a Python script. The script
+itself is at the final patch.
+
+---
+v12:
+- some descriptions changed verbal tense to imperative;
+- since updated at acpi-hest.json;
+- added a g_free at qmp_inject_ghes_v2_error() and fixed coding style;
+- fixed NOTIFIER_LIST_INITIALIZER() parameter;
+- changed a patch description with a diff on it to avoid issues with
+  git am.
+
+v11:
+- rebased on the top of current upstream:
+  baa79455fa92 ("Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging")
+- backward-compatibility logic moved to version 10.1;
+- BIOS test tables re-generated, as DSDT tables changed on 10.0;
+- added a missing SPDX tag on a new file.
+
+
+v10:
+- rebased on the top of current upstream:
+  d9ce74873a6a ("Merge tag 'pull-vfio-20250611' of https://github.com/legoater/qemu into staging")
+- solved a minor conflict
+
+v9:
+- backward compatibility logic moved to version 10.0;
+- fixed a compilation issue with target/arm/kvm.c (probably
+  caused by some rebase - funny enough, incremental 
+  compilation was fine here);
+- added two missing SPDX comments.
+
+v8:
+  - added a patch to revert recently-added changeset causing a
+    conflict with these. All remaining patches are identical.
+
+v7:
+  - minor editorial change at the patch updating HEST doc spec
+   with the new workflow
+
+v6:
+- some minor nits addressed:
+   - use GPA instead of offset;
+   - merged two patches;
+   - fixed a couple of long line coding style issues;
+   - the HEST/DSDT diff inside a patch was changed to avoid troubles
+     applying it.
+
+v5:
+- make checkpatch happier;
+- HEST table is now tested;
+- some changes at HEST spec documentation to align with code changes;
+- extra care was taken with regards to git bisectability.
+
+v4:
+- added an extra comment for AcpiGhesState structure;
+- patches reordered;
+- no functional changes, just code shift between the patches in this series.
+
+v3:
+- addressed more nits;
+- hest_add_le now points to the beginning of HEST table;
+- removed HEST from tests/data/acpi;
+- added an extra patch to not use fw_cfg with virt-10.0 for hw_error_le
+
+v2:
+- address some nits;
+- improved ags cleanup patch and removed ags.present field;
+- added some missing le*_to_cpu() calls;
+- update date at copyright for new files to 2024-2025;
+- qmp command changed to: inject-ghes-v2-error ans since updated to 10.0;
+- added HEST and DSDT tables after the changes to make check target happy.
+  (two patches: first one whitelisting such tables; second one removing from
+   whitelist and updating/adding such tables to tests/data/acpi)
+
+Mauro Carvalho Chehab (17):
+  Revert "hw/acpi/ghes: Make ghes_record_cper_errors() static"
+  acpi/ghes: Cleanup the code which gets ghes ged state
+  acpi/ghes: prepare to change the way HEST offsets are calculated
+  acpi/ghes: add a firmware file with HEST address
+  acpi/ghes: Use HEST table offsets when preparing GHES records
+  acpi/ghes: don't hard-code the number of sources for HEST table
+  acpi/ghes: add a notifier to notify when error data is ready
+  acpi/generic_event_device: Update GHES migration to cover hest addr
+  acpi/generic_event_device: add logic to detect if HEST addr is
+    available
+  acpi/generic_event_device: add an APEI error device
+  tests/acpi: virt: allow acpi table changes at DSDT and HEST tables
+  arm/virt: Wire up a GED error device for ACPI / GHES
+  qapi/acpi-hest: add an interface to do generic CPER error injection
+  acpi/generic_event_device.c: enable use_hest_addr for QEMU 10.x
+  tests/acpi: virt: update HEST and DSDT tables
+  docs: hest: add new "etc/acpi_table_hest_addr" and update workflow
+  scripts/ghes_inject: add a script to generate GHES error inject
+
+ MAINTAINERS                                   |  10 +
+ docs/specs/acpi_hest_ghes.rst                 |  28 +-
+ hw/acpi/Kconfig                               |   5 +
+ hw/acpi/aml-build.c                           |  10 +
+ hw/acpi/generic_event_device.c                |  44 ++
+ hw/acpi/ghes-stub.c                           |   7 +-
+ hw/acpi/ghes.c                                | 233 ++++--
+ hw/acpi/ghes_cper.c                           |  40 +
+ hw/acpi/ghes_cper_stub.c                      |  20 +
+ hw/acpi/meson.build                           |   2 +
+ hw/arm/virt-acpi-build.c                      |  35 +-
+ hw/arm/virt.c                                 |  19 +-
+ hw/core/machine.c                             |   5 +-
+ include/hw/acpi/acpi_dev_interface.h          |   1 +
+ include/hw/acpi/aml-build.h                   |   2 +
+ include/hw/acpi/generic_event_device.h        |   1 +
+ include/hw/acpi/ghes.h                        |  51 +-
+ include/hw/arm/virt.h                         |   2 +
+ qapi/acpi-hest.json                           |  36 +
+ qapi/meson.build                              |   1 +
+ qapi/qapi-schema.json                         |   1 +
+ scripts/arm_processor_error.py                | 476 ++++++++++++
+ scripts/ghes_inject.py                        |  51 ++
+ scripts/qmp_helper.py                         | 703 ++++++++++++++++++
+ target/arm/kvm.c                              |   7 +-
+ tests/data/acpi/aarch64/virt/DSDT             | Bin 5293 -> 5337 bytes
+ .../data/acpi/aarch64/virt/DSDT.acpihmatvirt  | Bin 5379 -> 5423 bytes
+ tests/data/acpi/aarch64/virt/DSDT.acpipcihp   | Bin 6202 -> 6246 bytes
+ .../acpi/aarch64/virt/DSDT.hpoffacpiindex     | Bin 5347 -> 5391 bytes
+ tests/data/acpi/aarch64/virt/DSDT.memhp       | Bin 6654 -> 6698 bytes
+ tests/data/acpi/aarch64/virt/DSDT.pxb         | Bin 7768 -> 7812 bytes
+ tests/data/acpi/aarch64/virt/DSDT.topology    | Bin 5495 -> 5539 bytes
+ tests/data/acpi/aarch64/virt/DSDT.viot        | Bin 5310 -> 5354 bytes
+ tests/data/acpi/aarch64/virt/HEST             | Bin 132 -> 224 bytes
+ 34 files changed, 1700 insertions(+), 90 deletions(-)
+ create mode 100644 hw/acpi/ghes_cper.c
+ create mode 100644 hw/acpi/ghes_cper_stub.c
+ create mode 100644 qapi/acpi-hest.json
+ create mode 100644 scripts/arm_processor_error.py
+ create mode 100755 scripts/ghes_inject.py
+ create mode 100755 scripts/qmp_helper.py
+
+-- 
+2.51.0
+
+
 
