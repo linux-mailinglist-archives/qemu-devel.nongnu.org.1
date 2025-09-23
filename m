@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0EC1B955F7
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 12:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E2B1B955F0
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 12:03:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v0zqe-00036g-HX; Tue, 23 Sep 2025 06:02:13 -0400
+	id 1v0zqj-0003EF-C7; Tue, 23 Sep 2025 06:02:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v0zq3-0002ln-Lc
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 06:01:35 -0400
+ id 1v0zqC-0002qk-Ni
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 06:01:44 -0400
 Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v0zpo-0000ta-FM
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 06:01:35 -0400
+ id 1v0zpp-0000ts-Mt
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 06:01:43 -0400
 Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:cf2d:0:640:140f:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 982448092A;
- Tue, 23 Sep 2025 13:01:17 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 75EDD809DD;
+ Tue, 23 Sep 2025 13:01:18 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b38::1:12])
  by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id C1Ug0C0Fha60-zOD1wE8b; Tue, 23 Sep 2025 13:01:17 +0300
+ ESMTPSA id C1Ug0C0Fha60-VMeo8eL5; Tue, 23 Sep 2025 13:01:17 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1758621677;
- bh=jwgfCyxnkeS08WSpdIGIVrRghpy+hEGHPwdSeT5sp+k=;
+ bh=0rkp9X76WiOzr/q2WYArxjfrFUzR5vC9iuDCQ/fVu7w=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=uk0Clw0FF3xirjmVsJlwHgaJ7q6wSDJDMTDs3ZqzlwT5wzfxqgZcc4sV82lKvMcRB
- FgIFUto1kxFnzJBQ3248OMYZ87x49ubqgCCmTu+qHAQret5evxGO3Jj+xo4tXdxo22
- KJgdg7fEoFHz0odHTjNFbKdPSCAi+/uXPPfsgQgw=
+ b=iyE4HqxKkLn2d8luJmXgX3xgFBj6cyfa2kSBHsI8J4dkYIxtx8xOAnzXddi6KxYok
+ F8VlUxRd/ECjxnnqaF+5MTCa+1AH3/YuF1sGzbSb4hK41t7HZ0178q7fOxu6ikLRAL
+ Tu7abXVx0qA0Ryz3Qe+hAFQm6lKw3SrWvaoUwM0E=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -45,9 +45,9 @@ Cc: qemu-devel@nongnu.org, philmd@linaro.org, thuth@redhat.com,
  jasowang@redhat.com, steven.sistare@oracle.com, leiyang@redhat.com,
  davydov-max@yandex-team.ru, yc-core@yandex-team.ru,
  vsementsov@yandex-team.ru
-Subject: [PATCH v6 08/19] net/tap: tap_set_sndbuf(): add return value
-Date: Tue, 23 Sep 2025 13:00:59 +0300
-Message-ID: <20250923100110.70862-9-vsementsov@yandex-team.ru>
+Subject: [PATCH v6 09/19] net/tap: rework tap_set_sndbuf()
+Date: Tue, 23 Sep 2025 13:01:00 +0300
+Message-ID: <20250923100110.70862-10-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250923100110.70862-1-vsementsov@yandex-team.ru>
 References: <20250923100110.70862-1-vsementsov@yandex-team.ru>
@@ -76,119 +76,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Follow common recommendations in include/qapi/error.h of having
-a return value together with errp. This allows to avoid error propagation.
+Keep NetdevTapOptions related logic in tap.c, and make tap_set_sndbuf a
+simple system call wrapper, more like other functions in tap-linux.c
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- net/tap-bsd.c     | 3 ++-
- net/tap-linux.c   | 5 ++++-
- net/tap-solaris.c | 3 ++-
- net/tap-stub.c    | 3 ++-
- net/tap.c         | 5 +----
- net/tap_int.h     | 2 +-
- 6 files changed, 12 insertions(+), 9 deletions(-)
+ net/tap-bsd.c     |  2 +-
+ net/tap-linux.c   | 16 ++--------------
+ net/tap-solaris.c |  2 +-
+ net/tap-stub.c    |  2 +-
+ net/tap.c         |  6 +++++-
+ net/tap_int.h     |  4 +---
+ 6 files changed, 11 insertions(+), 21 deletions(-)
 
 diff --git a/net/tap-bsd.c b/net/tap-bsd.c
-index 3f98d0ea82..501bf9d3eb 100644
+index 501bf9d3eb..7dd9f0aeda 100644
 --- a/net/tap-bsd.c
 +++ b/net/tap-bsd.c
-@@ -206,8 +206,9 @@ error:
+@@ -206,7 +206,7 @@ error:
  }
  #endif /* __FreeBSD__ */
  
--void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
-+bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+-bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
++bool tap_set_sndbuf(int fd, int sndbuf, Error **errp)
  {
-+    return true;
+     return true;
  }
- 
- int tap_probe_vnet_hdr(int fd, Error **errp)
 diff --git a/net/tap-linux.c b/net/tap-linux.c
-index e832810665..8cb9dc0787 100644
+index 8cb9dc0787..e3e71b713d 100644
 --- a/net/tap-linux.c
 +++ b/net/tap-linux.c
-@@ -145,7 +145,7 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+@@ -143,21 +143,9 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+  * Ethernet NICs generally have txqueuelen=1000, so 1Mb is
+  * a good value, given a 1500 byte MTU.
   */
- #define TAP_DEFAULT_SNDBUF 0
- 
--void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
-+bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+-#define TAP_DEFAULT_SNDBUF 0
+-
+-bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
++bool tap_set_sndbuf(int fd, int sndbuf, Error **errp)
  {
-     int sndbuf;
- 
-@@ -159,7 +159,10 @@ void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
- 
-     if (ioctl(fd, TUNSETSNDBUF, &sndbuf) == -1 && tap->has_sndbuf) {
+-    int sndbuf;
+-
+-    sndbuf = !tap->has_sndbuf       ? TAP_DEFAULT_SNDBUF :
+-             tap->sndbuf > INT_MAX  ? INT_MAX :
+-             tap->sndbuf;
+-
+-    if (!sndbuf) {
+-        sndbuf = INT_MAX;
+-    }
+-
+-    if (ioctl(fd, TUNSETSNDBUF, &sndbuf) == -1 && tap->has_sndbuf) {
++    if (ioctl(fd, TUNSETSNDBUF, &sndbuf) == -1) {
          error_setg_errno(errp, errno, "TUNSETSNDBUF ioctl failed");
-+        return false;
+         return false;
      }
-+
-+    return true;
- }
- 
- int tap_probe_vnet_hdr(int fd, Error **errp)
 diff --git a/net/tap-solaris.c b/net/tap-solaris.c
-index af2ebb16f5..496c1323fc 100644
+index 496c1323fc..79e01a9de3 100644
 --- a/net/tap-solaris.c
 +++ b/net/tap-solaris.c
-@@ -207,8 +207,9 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+@@ -207,7 +207,7 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
      return fd;
  }
  
--void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
-+bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+-bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
++bool tap_set_sndbuf(int fd, int sndbuf, Error **errp)
  {
-+    return true;
+     return true;
  }
- 
- int tap_probe_vnet_hdr(int fd, Error **errp)
 diff --git a/net/tap-stub.c b/net/tap-stub.c
-index 38673434cb..8e328c679f 100644
+index 8e328c679f..326e76843e 100644
 --- a/net/tap-stub.c
 +++ b/net/tap-stub.c
-@@ -33,8 +33,9 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+@@ -33,7 +33,7 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
      return -1;
  }
  
--void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
-+bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
+-bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp)
++bool tap_set_sndbuf(int fd, int sndbuf, Error **errp)
  {
-+    return true;
+     return true;
  }
- 
- int tap_probe_vnet_hdr(int fd, Error **errp)
 diff --git a/net/tap.c b/net/tap.c
-index 048d130247..95cbd75fe4 100644
+index 95cbd75fe4..e6431d0e08 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -688,15 +688,12 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-                              const char *downscript, const char *vhostfdname,
-                              int vnet_hdr, int fd, Error **errp)
+@@ -690,10 +690,14 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
  {
--    Error *err = NULL;
      TAPState *s = net_tap_new(peer, model, name);
      int vhostfd;
++    bool sndbuf_required = tap->has_sndbuf;
++    int sndbuf =
++        (tap->has_sndbuf && tap->sndbuf) ? MIN(tap->sndbuf, INT_MAX) : INT_MAX;
  
      net_tap_set_fd(s, fd, vnet_hdr);
  
--    tap_set_sndbuf(s->fd, tap, &err);
--    if (err) {
--        error_propagate(errp, err);
-+    if (!tap_set_sndbuf(s->fd, tap, errp)) {
+-    if (!tap_set_sndbuf(s->fd, tap, errp)) {
++    if (!tap_set_sndbuf(fd, sndbuf, sndbuf_required ? errp : NULL) &&
++        sndbuf_required) {
          goto failed;
      }
  
 diff --git a/net/tap_int.h b/net/tap_int.h
-index 8857ff299d..08c40094b8 100644
+index 08c40094b8..08e4a592a0 100644
 --- a/net/tap_int.h
 +++ b/net/tap_int.h
-@@ -33,7 +33,7 @@ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+@@ -26,14 +26,12 @@
+ #ifndef NET_TAP_INT_H
+ #define NET_TAP_INT_H
+ 
+-#include "qapi/qapi-types-net.h"
+-
+ int tap_open(char *ifname, int ifname_size, int *vnet_hdr,
+              int vnet_hdr_required, int mq_required, Error **errp);
  
  ssize_t tap_read_packet(int tapfd, uint8_t *buf, int maxlen);
  
--void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
-+bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
+-bool tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
++bool tap_set_sndbuf(int fd, int sndbuf, Error **errp);
  int tap_probe_vnet_hdr(int fd, Error **errp);
  int tap_probe_has_ufo(int fd);
  int tap_probe_has_uso(int fd);
