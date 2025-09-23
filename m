@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AA5B97A88
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Sep 2025 23:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E396CB97C69
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 01:06:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Ay9-0006Lo-M0; Tue, 23 Sep 2025 17:54:41 -0400
+	id 1v1C3h-0006t5-2P; Tue, 23 Sep 2025 19:04:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1Ay6-0006KT-3o
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 17:54:38 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1v1C3f-0006sf-5k
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 19:04:27 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1Ay4-0003jN-DZ
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 17:54:37 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-24457f581aeso60505845ad.0
- for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 14:54:35 -0700 (PDT)
+ id 1v1C3Z-0004R1-Vz
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 19:04:26 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-77d94c6562fso6193019b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 16:04:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758664475; x=1759269275; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=3tkOqHK5ejgU7JIInVN+rKgDfoWboky6FhXhkFrd/5A=;
- b=IiPHP9Ws22ffgZ0/bs2NfR+x+igKL5hLp8ArkBclhXKUw2bxQzHdGZI4860DU3Qn71
- ag84k8r3hhzmGOln9uGMfBaD82lMoJfoHqW6V9ArRLimiKGCqeX8gTlgesO9Tc+rqszt
- DCmpVAAdW4DEY6qjs3nbnzsSymwKCwscVqzTmVdyrgK4cxBJG2ZV0ePuaown/nE+qirt
- GHs79o78gD+UweDRCRYvW2tP8WUFnPTRtm55igTV3XNynR2nN7NZxhlp7raApZqo3tmz
- tmoMABhgT37Tkynqoa+zwF4QclQsyLGl2yyeUL2CihqlfCICrU6eBDQaQwi8AHpIRmn9
- T0EQ==
+ d=linaro.org; s=google; t=1758668657; x=1759273457; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=h7jBToDckL+9WdyOpUrdDydxCn382Hk4iBNUg68buw0=;
+ b=X+DJb1NEH4YreAED7QZCPtJn/bAGNmhZROrIcZ7aVw/oWLV/WWdVh12IUJPF6/mMSf
+ PldgC6VLtKiqZjZz9LAC0AInlHvj3mWsIIPsl9Zt52M0Ap3pnwrGNBhmZ6KtvnHKEhNM
+ 2n9oXix6akpFkwfmMxDwyphKv7ONk9aRlzyGkHhqJHou/eQA/XETlefPrUKhkD3lwHc2
+ KPT2EVUyR5rjiVnA5iPlYC+X0LCP/hMbleG/KAGhISsuBhozMQnCHtqUDh51jxG4C1yF
+ 8NeiJBxStfTyeaY9YcWy/OfpBmWdkcMzipw7Eof9uZh7CmOYQrvLxd2w14vNXu96IaPu
+ c+HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758664475; x=1759269275;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3tkOqHK5ejgU7JIInVN+rKgDfoWboky6FhXhkFrd/5A=;
- b=lXDc5htdIvOhE1tT2VFv9EqUvyCdcN3YRJQAb/fiUX1p7fplv4SVKGeN7xxvYr33vn
- s2dRSSGcYSLSR3n5ghRzcGA67ClsWQyQer66Nxy7G6vxjfkBdF/GqHKmhj/wYm/elPRI
- nV/2lUmAui8owD9bTv7Vw1f7Ot86iWDiNV5DMEkht/+ZZ7JR8Mq2U2LgQkcOpH+X2MgW
- cNfKaV8Cq+4duq+7a4p/4tutniYN0CxltEXntT9R/q6/7o0qrowFoGLtyu0tGZleTlSV
- GvZyLT9lwUPl8Xpj2PTo/J5VbGqN0gvfr/19sjatljQz5o857V5W6womZ+nc4NBW/sjI
- n5qg==
-X-Gm-Message-State: AOJu0Yz7jde7NLxzuZ6idR7C+L/RikfeeDQRHM/F2jchvyIZ9X8r4R5T
- i78FjEJgO4S1wpuiT8OpLjD7kdlxod5FaPUP6TcftfhrFM+engPTaWx+1b68PfnVEGNGe9EYJTP
- m7Qf5
-X-Gm-Gg: ASbGncv+R2gPdJzOjz3ZLYsv/+BbOoJoONe5r78h4Mww1r/laHxlpIZMTV76wdKVtOH
- 5qTsqQT127B2XABJo5iPNrMkpd809CWfKEhU7wtu7093zLR6PJnaqsMfiffELjaJ6vIVwe1wQMz
- eHfB6qQswVKxWaa9O+hUGCGSoJGGyCBvsuPkQN1RVxPLFFW5tFuzSPsE+fu18nOgIMo2cHaqgiW
- Ib6FJR+0vkJz+2IOetFuxQSxZiR94QmysvtjkfTTqwLIG69UYnoPwCu99GTOWezNIz3KDPb9TAB
- U/uDkzqVONpJ3oLvWVtAPK5aYHDyf/sOsbW5zSj8J2skLSkpOpAqe79PZAJlN21dpZcgjoqM0Wy
- pmfzT/YTV1lP6cBWAFoiBptiaJede
-X-Google-Smtp-Source: AGHT+IHRJgiKIW6ISvVJIrNpGL51FXSlJ3tm6v5g1PhoZ/EziWy+Ll9Q46Db0pJGvBxKrMVWYwzj5Q==
-X-Received: by 2002:a17:903:22d0:b0:248:ff5a:b768 with SMTP id
- d9443c01a7336-27cc09e4465mr40093885ad.10.1758664474299; 
- Tue, 23 Sep 2025 14:54:34 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1758668657; x=1759273457;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=h7jBToDckL+9WdyOpUrdDydxCn382Hk4iBNUg68buw0=;
+ b=a0eqQEe2Wyuh0hdVMWrYEUBAdjchFsypfEL4Xi7oq1N7pDXOgm3I6UsTSfO7GxyeCN
+ GQao7IlRTCzf6D9Xy+RMLmyd9wjR8O4W2ZMjL+DbOcL3mEviLrDrYx3DFNIMnnEn/gx4
+ D+3R00g7aMIQfiTaNYML1xmLy3ukF3PUXRdHlWzM3KDdKdH0Q+6s5AmxfWqGOmGoSbKq
+ t3ODFThMl+BfgLEdYW+H0wt8HYlwfFuQIHUPyo67hGHWjJlOvpBL+zZSaoljBvSd/wj0
+ mfzgYuKOwKf36OYMvv4XSwg7/b750DBOIC0VmiuqUrB/UgmND9chEnmmzBtYIdDwc7Ob
+ KN3w==
+X-Gm-Message-State: AOJu0YxAm3As1VlkKy4XnAJCWsQ8FgK6WnkMZ335EQn4XsYK+6ryUKyA
+ 7Cc6k/sf8PaY8nSqb6JD5uDQMQGOt+s+F8S3vE/G0DWOD9tCvKns9oH7vwgOGkB+ZStSC5+x339
+ vKHpR
+X-Gm-Gg: ASbGncssF8dCovbbBkA4pFNk+XVc5glGgIPuDqcH8tp/5hsxa9XBGv7qGVAsLl7aPpj
+ evlegrGuWz1gtsLxDx1PSACQSCTpYmlwbc9mN9KZHx1OhVagPCITtijBuu+HXHDSFFKIAcFdVM+
+ aBf9NDLMLTfIHLhTdzRmTfxHMOVeGxHrwxa/XEPVgf9iogzlMBfl7fKcruP6LY2yE3+pedsPHnp
+ /lCn1jzUiAHSaMc01GXZbqPd66nVjey22Kst/s0RFjTagtj4PqBnc+MapPk8jWek/6YkmSN8grV
+ xsdbCBKMyohOSDh4RgvS6SLN4LovVEg+NNhFjcBsqjxr9BWaa6uCCIEsOAf8wUTwq04NU06ljDo
+ ALhWmsaSN3xnPbDuYRhfEst//id6Q
+X-Google-Smtp-Source: AGHT+IEYyt6JwWFXglePl3CgdewMub9FyehNXYnz+1CLME8YsVNXpHdn2zuXJG1NrzAjlzcm4Xrd6A==
+X-Received: by 2002:a05:6a00:139e:b0:772:4b05:7899 with SMTP id
+ d2e1a72fcca58-77f538479dfmr4313594b3a.7.1758668656875; 
+ Tue, 23 Sep 2025 16:04:16 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-269802e14f1sm168294035ad.71.2025.09.23.14.54.33
- for <qemu-devel@nongnu.org>
+ d2e1a72fcca58-77f297235fcsm8901897b3a.16.2025.09.23.16.04.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Sep 2025 14:54:33 -0700 (PDT)
+ Tue, 23 Sep 2025 16:04:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 10/10] accel/tcg: Improve buffer overflow in tb_gen_code
-Date: Tue, 23 Sep 2025 14:54:24 -0700
-Message-ID: <20250923215425.3685950-11-richard.henderson@linaro.org>
+Cc: kasperl@rivosinc.com, lazyparser@gmail.com, liwei1518@gmail.com,
+ =?UTF-8?q?=E6=9D=8E=E5=A8=81=E5=A8=81?= <liweiwei@kubuds.cn>
+Subject: [PATCH] accel/tcg: Properly unlink a TB linked to itself
+Date: Tue, 23 Sep 2025 16:04:15 -0700
+Message-ID: <20250923230415.3688766-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250923215425.3685950-1-richard.henderson@linaro.org>
-References: <20250923215425.3685950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,30 +96,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If we only have one vcpu, or within cpu_exec_step_atomic,
-we needn't jump all the way back out to the cpu loop to
-empty the code gen buffer.
+When we remove dest from orig's links, we lose the link
+that we rely on later to reset links.  This can lead to
+failure to release from spinlock with self-modifying code.
 
+Reported-by: 李威威 <liweiwei@kubuds.cn>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/translate-all.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ accel/tcg/tb-maint.c              |  8 +++++
+ tests/tcg/riscv64/tb-link.c       | 60 +++++++++++++++++++++++++++++++
+ tests/tcg/riscv64/Makefile.target |  1 +
+ 3 files changed, 69 insertions(+)
+ create mode 100644 tests/tcg/riscv64/tb-link.c
 
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 31bc0f8bc5..da9d7f1675 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -289,6 +289,10 @@ TranslationBlock *tb_gen_code(CPUState *cpu, TCGTBCPUState s)
-     tb = tcg_tb_alloc(tcg_ctx);
-     if (unlikely(!tb)) {
-         /* flush must be done */
-+        if (cpu_in_serial_context(cpu)) {
-+            tb_flush__exclusive_or_serial();
-+            goto buffer_overflow;
-+        }
-         queue_tb_flush(cpu);
-         mmap_unlock();
-         /* Make the execution loop process the flush as soon as possible.  */
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index 0048316f99..e6d45c9c12 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -836,6 +836,14 @@ static inline void tb_remove_from_jmp_list(TranslationBlock *orig, int n_orig)
+      * We first acquired the lock, and since the destination pointer matches,
+      * we know for sure that @orig is in the jmp list.
+      */
++    if (dest == orig) {
++        /*
++         * In the case of a TB that links to itself, removing the entry
++         * from the list means that it won't be present later during
++         * tb_jmp_unlink -- unlink now.
++         */
++        tb_reset_jump(orig, n_orig);
++    }
+     pprev = &dest->jmp_list_head;
+     TB_FOR_EACH_JMP(dest, tb, n) {
+         if (tb == orig && n == n_orig) {
+diff --git a/tests/tcg/riscv64/tb-link.c b/tests/tcg/riscv64/tb-link.c
+new file mode 100644
+index 0000000000..b6fcca8668
+--- /dev/null
++++ b/tests/tcg/riscv64/tb-link.c
+@@ -0,0 +1,60 @@
++#include <assert.h>
++#include <string.h>
++#include <sys/mman.h>
++#include <pthread.h>
++#include <stdint.h>
++#include <unistd.h>
++
++
++int main()
++{
++    /*
++     * ## 1. RISC-V machine code.
++     * Assembly:
++     *   L: j L          ; Jump to self (spin).
++     *   li a0, 42       ; Place 42 into the return value register a0.
++     *   ret             ; Return to caller.
++     */
++    static const uint32_t machine_code[] = {
++        0x0000006f, /* jal zero, #0 */
++        0x02a00513, /* addi a0, zero, 42 */
++        0x00008067  /* jalr zero, ra, 0 */
++    };
++    size_t code_size = sizeof(machine_code);
++    int tmp;
++    pthread_t thread_id;
++    void *thread_return_value;
++    uint32_t *buffer;
++
++    /* ## 2. Allocate executable memory. */
++    buffer = mmap(
++        NULL,
++        code_size,
++        PROT_READ | PROT_WRITE | PROT_EXEC,
++        MAP_PRIVATE | MAP_ANONYMOUS,
++        -1, 0
++    );
++    assert(buffer != MAP_FAILED);
++
++    /* ## 3. Copy machine code into buffer. */
++    memcpy(buffer, machine_code, code_size);
++
++    /* ## 4. Execute the code in a separate thread. */
++    tmp = pthread_create(&thread_id, NULL, (void *(*)(void *))buffer, NULL);
++    assert(tmp == 0);
++
++    /*
++     * Wait a second and then try to patch the generated code to get the
++     * runner thread to get unstuck by patching the spin jump.
++     */
++    sleep(1);
++    buffer[0] = 0x00000013;  /* nop */
++    __builtin___clear_cache((char *)buffer, (char *)(buffer + 1));
++
++    tmp = pthread_join(thread_id, &thread_return_value);
++    assert(tmp == 0);
++
++    tmp = (intptr_t)thread_return_value;
++    assert(tmp == 42);
++    return 0;
++}
+diff --git a/tests/tcg/riscv64/Makefile.target b/tests/tcg/riscv64/Makefile.target
+index 4da5b9a3b3..ba684616fd 100644
+--- a/tests/tcg/riscv64/Makefile.target
++++ b/tests/tcg/riscv64/Makefile.target
+@@ -4,6 +4,7 @@
+ VPATH += $(SRC_PATH)/tests/tcg/riscv64
+ TESTS += test-div
+ TESTS += noexec
++TESTS += tb-link
+ 
+ # Disable compressed instructions for test-noc
+ TESTS += test-noc
 -- 
 2.43.0
 
