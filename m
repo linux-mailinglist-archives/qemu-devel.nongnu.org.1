@@ -2,97 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D60B99242
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C232B9925B
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:30:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1LoZ-0004jf-MX; Wed, 24 Sep 2025 05:29:31 -0400
+	id 1v1Loc-0004mm-O9; Wed, 24 Sep 2025 05:29:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1LoW-0004iO-Ej
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1v1LoZ-0004kd-Sr
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1LoP-0004mh-D6
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:28 -0400
+ id 1v1LoT-0004my-0k
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758706160;
+ s=mimecast20190719; t=1758706162;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cQtQgz5paDlJPQB2PzlMqA4uvKzTZV/KR4MEWJ2j6p8=;
- b=IV4pwMCB0SKcIeQ/avuGIIQ+sbZ/r6Q+y6WQ1oHNyESbabA0lCydDw/6qZE8TpXBjRxqMb
- xNDM7Vb/bvCgyGPg/cmQ4vPscHWtCYLr7xN7tofiZ0y6bvNPIJbpviuRz9rf4Elc7yd0pj
- YU8SYS6PSfB6e1o5JUlT6UakJ/t9pMg=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/64Gu6b95cqgymZa2iJ9Dsvt2JhtLtmji/4lA/f78T0=;
+ b=PQSY4QW9B/96XVnCtGH/52p99t+5Bi3Uaeo6QmRiKdf9OQXFw15+s4KxID0UEvHQeUNCkO
+ 4qoq7LOGVGXtg+gi7Yg0hct9dXP4eu6A/MdF+p0NB/l/372hmKtgqNsPRfyjHcBaVBqMRv
+ uzPK0ouaMeRr15za30XPMMeEVE3Ixco=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-fYuwfd_8PACXOPLLYLBflA-1; Wed, 24 Sep 2025 05:29:18 -0400
-X-MC-Unique: fYuwfd_8PACXOPLLYLBflA-1
-X-Mimecast-MFC-AGG-ID: fYuwfd_8PACXOPLLYLBflA_1758706157
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-b07c2924d53so317575866b.3
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:29:18 -0700 (PDT)
+ us-mta-112-qsfbHJ5GPDOy8uBNC8DRiA-1; Wed, 24 Sep 2025 05:29:21 -0400
+X-MC-Unique: qsfbHJ5GPDOy8uBNC8DRiA-1
+X-Mimecast-MFC-AGG-ID: qsfbHJ5GPDOy8uBNC8DRiA_1758706160
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-afe6216085aso583861266b.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:29:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758706156; x=1759310956;
+ d=1e100.net; s=20230601; t=1758706160; x=1759310960;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cQtQgz5paDlJPQB2PzlMqA4uvKzTZV/KR4MEWJ2j6p8=;
- b=wb1fiXtQ+szRGQW04XItvP2poM3KAMEeAm6FSJOi+Ra98OHm18V9tWgRVpJIuGHVFm
- Yy3Ex/g3zva/EYEDfmwZVnNYZpn9b407joGSSxt287kN3SMkiVVpG/vx+bFdkVawWyNX
- f6tM/6kOfjZeJanwSYD+St4EdZYCP4skqm4lTQRF+hTCZ9w7TvzuLqc18URRmQeTVomV
- gTDhjA9qLRsjDwCkI9WNdam8S6vA3p0GARScr8lIQIQ68zEIV5NEoPQfDv6eZsNr2vlM
- OXTpAc7WLq5H5b0Jp0WUXiOqtsKkn6KIEgKNSAtvX/TwNxJuMua5Zd4HegG/z3CHvq6G
- UDXQ==
-X-Gm-Message-State: AOJu0YxR8nA1kPCPtwfiwEyq+yXTe7dA2H7ilUbkQ+8Dk1pr675hTiEE
- yCUMwV7Z+1yEtMpB5JU/3z8IBAgXktV7EyLcR7ohnQrwl6NM9q5EU1rcbQIHzuC1aA919GKjsy8
- 5/kdJxAyqISv/EqkeCC5BIxM6gFGnnbit7yy+6wGGSzp3ii0lB3XfC9a4u16Lq0jBHDdYXK5PGG
- UoGzpXkSSOWfWNFqeVJnF5K8DhMEWlpxIr30p0t07V
-X-Gm-Gg: ASbGncuC/2f+ua4yT1r6c88iEIXK2CZcSXl3RjLPI0bWQkvfrAIM8q1GNrs6qvonDbh
- Rf6gn65f3aX1KuqSwLm9jCeN/Gb3yiLLn6uy/r6r5WKKlcXPoiMJxTEDKFdgbvNPB94rx+vyVIi
- 5NNJitX1yKqpFRpcerOxvm9TP6RyUn0sXXdHmGse7ZO6S5MLVMxpDjTnSbd4i4mhlG1+hnNd8od
- xEkI6Nsy9+H6a+0QaViFw34UbfuE8JcSpX9L0LFPc3IIFndzVHKmAp+yxWazdU1IOA2oeUxxxdU
- BCDo7zhgTiR3YMNRsIqnt2Jl3BC3dS1u9pIgnevqVbiGF2gm3HaR9iMvxja2gu1peWOr8J1eY+T
- A0vc/LLJVdV4/WJHREEfZzdgdA5jBekzFHSVP/2XYr1/26Q==
-X-Received: by 2002:a17:907:3dab:b0:b2c:bf1e:2788 with SMTP id
- a640c23a62f3a-b302ac325acmr545950066b.39.1758706156144; 
- Wed, 24 Sep 2025 02:29:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFUPph/8p4yfLKz9JGOSXuhkU3JFaptmlKllL6HwAJB2mvMlYDczB5flsfU+2ErEWuwnLjtJQ==
-X-Received: by 2002:a17:907:3dab:b0:b2c:bf1e:2788 with SMTP id
- a640c23a62f3a-b302ac325acmr545948166b.39.1758706155728; 
- Wed, 24 Sep 2025 02:29:15 -0700 (PDT)
+ bh=/64Gu6b95cqgymZa2iJ9Dsvt2JhtLtmji/4lA/f78T0=;
+ b=vacQPUJ0dB92fq9aOKlfCGzB4fsDENezc2Gy+eyzEsQBsAc80E0A+/WsAm544rq2t8
+ QCnq/bR16t3aUZi2HyJiVvcXtd5G/xUqk1CnGMfxiHlRQBKXIHepfDMu1vbp/6GwoVY+
+ 2m86m3Is+jIw2KdukkK6F3RIwf+vkt85wrqy29yuyYQ7fH7w8ay78fijxJzTkz7KsA+l
+ 4IYGIIBuA49tZtJ5pd8U4Qt48AIsbxElovEF1OnIg52KR4Ykol9ViJNAVb3pteXp4cz+
+ Qa7M23VzXUQHsGejDGdOEXVn6BoYnTSTNbwLk201V2kuV8XLJ1mE0CWPB5SFy0MLOHtS
+ RJCg==
+X-Gm-Message-State: AOJu0YxgFi18XLNBYdUGOpmRRjsGqRchavqiyoFyQ0JPDrqpTPwsTpD7
+ 3UlJW1R0dyS6LaxdkYCQQWz+gHOvveOhQAvU0iWTjdDvUycT/8oj3xVjkbB3DrNMMjblmc1HNoP
+ xQ9oy/uEreSX6v2ZuILGJOMOp2gm8NHyq2BE2Y8t9jnYbJ//1ijYFg7TquUHo9Lm0ZdCvofzQvp
+ WF1KsigyM2YN2UVFgbqWEdcgRrtz2zs1vedZj0P5GM
+X-Gm-Gg: ASbGncvl8azsnfy2J+OdqVD8i3CisywmsLUpYXbx3CuxJEnLGZQVy1p2hWSPuc8rEeP
+ qc7cryMZckRjF0iRyurrDl+tK+vlHHUlL53T91mNAEQHa8bD/ISQ8q1E4M9xf4mRnx+7DYC9X/2
+ 2WjF48YPxmzo0LwCLjZGh5SBG7OdAztpmRnRVM70m4CdDkxJ6ojPsXC6yQlowspIe3IQEuoYmyE
+ TwdveWzGIQAWPM1eL71Wq531jaZbogstTHxj/CF16C8QAAbkyrQ5wacatwmhJcmBvjLx863JAqX
+ Zuht9rQU2GrYyH+DtLvnf/GzMQlUOSYQbh3reSeYSqZru/GQu99IPYpp90zDW6gYfuSsfYUuvAE
+ cYFVghZvIpAcx/Nb+5+U44/uwXUj8+D+Hk50L6tDwLdhCAg==
+X-Received: by 2002:a17:907:3d0d:b0:b04:6fc9:f108 with SMTP id
+ a640c23a62f3a-b3026e7496amr548660966b.24.1758706159189; 
+ Wed, 24 Sep 2025 02:29:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEhTuI2dLSW24mpq2xa+z1xoEEHONHmSmjNbY7VG9ZzG4w6429rzEoVVf/hSFgfBzcdCVmPLw==
+X-Received: by 2002:a17:907:3d0d:b0:b04:6fc9:f108 with SMTP id
+ a640c23a62f3a-b3026e7496amr548657866b.24.1758706158641; 
+ Wed, 24 Sep 2025 02:29:18 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b27d7eeafc7sm1054233966b.86.2025.09.24.02.29.14
+ a640c23a62f3a-b1fcfe88bb8sm1469689166b.56.2025.09.24.02.29.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Sep 2025 02:29:15 -0700 (PDT)
+ Wed, 24 Sep 2025 02:29:16 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 07/29] subprojects: Update .gitignore for proc-macro2 and syn
-Date: Wed, 24 Sep 2025 11:28:27 +0200
-Message-ID: <20250924092850.42047-8-pbonzini@redhat.com>
+Subject: [PULL 08/29] subprojects: Ignore .wraplock file generated by meson
+ v1.9.0
+Date: Wed, 24 Sep 2025 11:28:28 +0200
+Message-ID: <20250924092850.42047-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924092850.42047-1-pbonzini@redhat.com>
 References: <20250924092850.42047-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,27 +111,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
+The .wraplock file is automatically generated by meson v1.9.0 (the
+related issue: https://github.com/mesonbuild/meson/issues/14948).
+
+Ignore it for now.
+
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20250920160520.3699591-2-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250920160520.3699591-3-zhao1.liu@intel.com
 ---
- subprojects/.gitignore | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ subprojects/.gitignore | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-index 983c4c1549e..38e949640f6 100644
+index 38e949640f6..58a29f01204 100644
 --- a/subprojects/.gitignore
 +++ b/subprojects/.gitignore
-@@ -17,7 +17,7 @@
- /libc-0.2.162
- /proc-macro-error-1.0.4
- /proc-macro-error-attr-1.0.4
--/proc-macro2-1.0.84
-+/proc-macro2-1.0.95
+@@ -21,3 +21,6 @@
  /quote-1.0.36
  /syn-2.0.66
  /unicode-ident-1.0.12
++
++# Workaround for Meson v1.9.0 https://github.com/mesonbuild/meson/issues/14948
++/.wraplock
 -- 
 2.51.0
 
