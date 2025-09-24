@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DFACB99170
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 532F8B9911A
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:20:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Les-0003vF-TB; Wed, 24 Sep 2025 05:19:30 -0400
+	id 1v1LeY-0003ng-M4; Wed, 24 Sep 2025 05:19:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Djordje.Todorovic@htecgroup.com>)
- id 1v1LeQ-0003hH-8G; Wed, 24 Sep 2025 05:19:03 -0400
-Received: from mail-northeuropeazlp170110003.outbound.protection.outlook.com
- ([2a01:111:f403:c200::3] helo=DU2PR03CU002.outbound.protection.outlook.com)
+ id 1v1LeV-0003k9-DV; Wed, 24 Sep 2025 05:19:07 -0400
+Received: from mail-northeuropeazlp170120005.outbound.protection.outlook.com
+ ([2a01:111:f403:c200::5] helo=DUZPR83CU001.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Djordje.Todorovic@htecgroup.com>)
- id 1v1LeH-0002zm-Es; Wed, 24 Sep 2025 05:19:01 -0400
+ id 1v1LeT-00030I-DC; Wed, 24 Sep 2025 05:19:07 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zLKeXbh9+j0zlt0/BT15E2CT0B1NpNGEWUMh14yAVGYWIMpyuxpeFKw4qwsc8qPbivr0hQVzVNAiXqWJThilwVIdg4BP2tKjvYpl7pMgatTBROcsx3G7tafZuan/h7xwWnAzgG+qByGocqWazPxRKe1ViURys2CwFZiZBMnPqDvYxhEjrXkcv98p4N/auZUt9S3tIlm6AuQ5mb8jxjHyOtWe0Fc2s6kGY1M9n4lo5CcBzQ9Cy98Gs5tZt/Ovs+YsLdb6QLEJCKWKue6i1h600mGS2TYoL/WsgRWV968YHlOraIrHwJtm/cy/fsJ4bvSTpHd+WI10O5H1pCXeY6QTCw==
+ b=Fq/Jd6SgbNlXX1I8W9VR1fjXq7cfOMY0D/FA8O+1+fzwZQ+fbhvYxtATXKvKHRdAeq4jAkCCYhJOOgx/JdpJauVGK+pk0/y8rW3V0uDKrP5Jt6aUfPJIrfc6XhjbWdPIt6rSPgvgIoz66/00AWwM8j69CIpN6kfoOlGY/UjFzAv+vd5qorfBE25HGO84ZAqHL8vSPVwNxXn8IztfhXo2ag7+xFYjHhzhKTgiu2Bne2OPopwyhRBSDLbR/uPhhEXBug8x08IVeUOmf2C/GtwGWUE21MggtDwgweINxmsUm2zgjDUtGQFgcNjbUCGUDntPQFXOsZEaMzUoMfSv5xQd5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZnCq6oAHcDE9wLU9sZyEZDc+HMO9X+rmjmzPK2pBu4U=;
- b=u+Npw7Nv+JQ6Glq9FMkMIgKb814riqZEBD6RfP+aDxfRqW+nl+8MeGb/iucebiaY+jVpSOg24Y0O8KVdbsvYm7Rb4E0xZs1KxxsKwxFKvHCGFkxteap3a9xWC2U5eBBG3kjGQBPkMHCf9KQrhl4woX4xexFvla8HV+kY5oAgHJAvTgoJqCzvGhlqMH5O7aEbS1ScFSJWJxH4tNsBg+1ZkR2tQmjt90XITVykMl+jwWYC/ttAH7tTJ4DGQh2lOdwo0Hf3HJ+jDBIPaDpmgHNHF1ObNqxsbEuVvrONKQdM7lBC2Be51syE30eEUmtSXSmTthUZ4QqO65VPwBRhIOzyww==
+ bh=eC2z39Vf+7MGFSTzi8JX8b8fP2AzHsqmMcAR/iHhppY=;
+ b=PpxWSrAzSS+1JmNedsnoSiqQW+SELbDnBkglbd0zzJsNQyxqVTqzS0EdQ0ZNRS70eD/QqOrQwYBCGjjzCBYt+Dua1A3xQveQiw3PeFS1RD5csoBIySAJqnPcjb8CuFsM8EHW6h2Cxvzfov3GjpJZkhcTZkycZ6teYE/yaxHdLz41DauiduRCAKK3Jb+ZVIw02XAlR3Q1TorD7sA5pM6CgGNG3W+1AfCknF4THtwbqjyvwsHB8hb2EdMdzxS5UadGtvZVFniHZLQTUU3qnetJO4U+jwHJW1btZevDOfOW2wnYl0q9cV8FPxeA1L/S2SATUcUnMCZmT5jtDdi4THfdoA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=htecgroup.com; dmarc=pass action=none
  header.from=htecgroup.com; dkim=pass header.d=htecgroup.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=htecgroup.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZnCq6oAHcDE9wLU9sZyEZDc+HMO9X+rmjmzPK2pBu4U=;
- b=a1lbXKWL6S0oqbqclL+pxv4dYUKq9a/NH0Ak4GR7nlmldoX/4QgZOJKfEzjnzieDEaf8Q36sdfRGGIwlk8B380XnYKz0MadljuDvlkCMJxmt4jbAad74/p+PZYofHSnq/iIoHpOArfWvDvIwMm8M4+Zw7BtIpdFr3gqkdKz99bkbQMq/hzXNBU1wcU2VY9vj4tmvV7cuYBSdJieczMcDYqBvytOyI0NQ8DLoOGTJoeTLrL591AEz2P5L00yZo18oZdkKn+pdSf7r3pf4XtS7GtsJ3rpLF1RJI/HuPgtIj8zJVMnnvH54E5R5Uq9U9um8PTLGmmGlnFW4XEFpGaCPZQ==
+ bh=eC2z39Vf+7MGFSTzi8JX8b8fP2AzHsqmMcAR/iHhppY=;
+ b=EHiQ+OjKn2jwq9yuonIdcA8RWW6+QBz3MdrH379xJ9nJiChJ1LEaoE8DSYpL9FwXavO1a/+kVY6+6BHMsKHkMgFBtSnK87/Zz6sqFI3Sd+bPZOZi9mfzhuRVnXp0pIkOHki8JVw2OlKPZpymERxfGtjYyRSOWSOeVlqA2o3H/MxW+ERGw/04U/J9/A93nAthNoSH+eshWJFDFh0/xHMFbmWlSYUOGCvORc/5bTxFOjlhdR8uIii/yVc9nKtQSn1SzFznG9TuFhgaACBBZYhwH3FRBiiQytbNW92Z5ihEWz+6gPEEjA1BSAjXyovIln3i39Ks1gq9KwxjQ7GMYbxSSQ==
 Received: from AS4PR09MB6518.eurprd09.prod.outlook.com (2603:10a6:20b:4fb::5)
  by VI0PR09MB7826.eurprd09.prod.outlook.com (2603:10a6:800:21b::12)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.20; Wed, 24 Sep
- 2025 09:18:20 +0000
+ 2025 09:18:21 +0000
 Received: from AS4PR09MB6518.eurprd09.prod.outlook.com
  ([fe80::ad50:891a:847c:580a]) by AS4PR09MB6518.eurprd09.prod.outlook.com
  ([fe80::ad50:891a:847c:580a%4]) with mapi id 15.20.9160.008; Wed, 24 Sep 2025
- 09:18:20 +0000
+ 09:18:21 +0000
 From: Djordje Todorovic <Djordje.Todorovic@htecgroup.com>
 To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 CC: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>, "cfu@mips.com"
@@ -48,11 +48,11 @@ CC: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>, "cfu@mips.com"
  "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
  "dbarboza@ventanamicro.com" <dbarboza@ventanamicro.com>, "philmd@linaro.org"
  <philmd@linaro.org>, Djordje Todorovic <Djordje.Todorovic@htecgroup.com>
-Subject: [PATCH v8 08/14] hw/misc: Add RISC-V CMGCR device implementation
-Thread-Topic: [PATCH v8 08/14] hw/misc: Add RISC-V CMGCR device implementation
-Thread-Index: AQHcLTQol+4S5fOIZkCwK+zeVIiXLQ==
-Date: Wed, 24 Sep 2025 09:18:16 +0000
-Message-ID: <20250924091746.1882125-9-djordje.todorovic@htecgroup.com>
+Subject: [PATCH v8 12/14] hw/pci: Allow explicit function numbers in pci
+Thread-Topic: [PATCH v8 12/14] hw/pci: Allow explicit function numbers in pci
+Thread-Index: AQHcLTQpNMlUwFw1ck2qxI/DmLV3sQ==
+Date: Wed, 24 Sep 2025 09:18:17 +0000
+Message-ID: <20250924091746.1882125-13-djordje.todorovic@htecgroup.com>
 References: <20250924091746.1882125-1-djordje.todorovic@htecgroup.com>
 In-Reply-To: <20250924091746.1882125-1-djordje.todorovic@htecgroup.com>
 Accept-Language: en-US
@@ -63,85 +63,102 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=htecgroup.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: AS4PR09MB6518:EE_|VI0PR09MB7826:EE_
-x-ms-office365-filtering-correlation-id: ff685668-40f1-404a-8626-08ddfb4b4dd2
+x-ms-office365-filtering-correlation-id: b2672f90-3589-4e64-2035-08ddfb4b4ea2
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?VIeQxMF+nZOqi3e703t7sRwVwcuhK9hqYw1m1VgPRHzteAms4dnCvp7uaV?=
- =?iso-8859-1?Q?Ovb2C5UAe/MKqektZMxOav+Elpo4mzQWwLMD0F7mMNIcbX08nqRm8og7UJ?=
- =?iso-8859-1?Q?7DV4bRpO6Gp2rgAMGJMt5d3Xx3KidjGOJlDqUR9jP37yfielFcSU3ZLmsc?=
- =?iso-8859-1?Q?8eMSZGQSEeclcBZ45dMUze7wegUvIBVLa3vm9yqutM31M87jiS1eZiTYY6?=
- =?iso-8859-1?Q?QRoWKRR9YUG0YcTYezOeJaoaHS4/dYcX3w5vPNsRfez4m4G/dE2XoC6ClO?=
- =?iso-8859-1?Q?nsAEvOjUzljf4TxjdrYb2tiakOXiOaJwIH3lX/1mHPma3nFLqB2HnaExto?=
- =?iso-8859-1?Q?JsSQcMiJQfCZOWMpEU29c0dWTozQ6woPf6fba9mKueiaBkJUJFL4QDKHbb?=
- =?iso-8859-1?Q?7JmEo4k9mbwyvCc5W/JrsbKHzWv+sshaTM/5CxUlpdnVkVYPDQZ0k0chUj?=
- =?iso-8859-1?Q?tHDKj8plgRHxN7w+4+/pXa75ub5560b+V9dSJmuSUTXlbsS4baASLG0vBG?=
- =?iso-8859-1?Q?WHnWJv9juMOAl8ZCaTHSZoIX9Qyz3mzjygsAELSrnbm0naW0HtUoyRtVhJ?=
- =?iso-8859-1?Q?74VEoHU5+DCwfl00tDMNNpkCUy9XAavc8sdoIe5YPdEjtWNzeFg4s3KycX?=
- =?iso-8859-1?Q?d/tkFnroxVVYWCdvT9HTSjpMHRhRijxCFJeBvnRDNcKyg12v0thYZtwKIk?=
- =?iso-8859-1?Q?4itNatCDsMZU8pEzIgefteCmFWLXIJaa9elR24aFmqN7/ZWgJCU578uWG5?=
- =?iso-8859-1?Q?69ei5+0Qsq7Ws8ISxH9ZTqt/qWHyVmkrm75K6SaGNS9cNi41Z3e3IGIzNj?=
- =?iso-8859-1?Q?qqNZelcMhLFxACxQ9//pxJoRPr3iL3AMCI3IheKjTwk+MTyTCRVUg9pqci?=
- =?iso-8859-1?Q?QPaeGmig1lHnzNreVUEKTP2zrX2vb9/sqQDbhTdOjT3macfomStlNIaYbX?=
- =?iso-8859-1?Q?jB8JABuHJWO4DKVQjAnjOx+/lJ8QXqsmpi94R53Kykp63f/QFgtL2b1F2y?=
- =?iso-8859-1?Q?XpeYWFXV/+aBzc3yvGK8sqPQLJtnHGLG6JRnQ5uJEhFRAEqWtJ45XcpRNM?=
- =?iso-8859-1?Q?NRBMQWKbF37f7KENE3Rds4+2VEF79Fu3mevp+u9EEtMZ+DiQB7SqwewKW2?=
- =?iso-8859-1?Q?ErQRPkb9lJC5LpLqk3mnSsM+qolkmC9hk0x9yP4XJaSwMa1KhxjeL8HNjz?=
- =?iso-8859-1?Q?hVmWUY/MSEASB50uaIcx3qxTp/s9yTWSPaoQcfn/254U7ODaGE+QLCVg2H?=
- =?iso-8859-1?Q?JHxNljPcyk7PG87iUQmD4MjYSWWBftFpx8leaeDVQ0RP+Mn+GykKG6V4b2?=
- =?iso-8859-1?Q?jN6qgy5zMDpxjXsDWPnpLV2x5Gd/8VrRJ+QFJT77TvrfUEcaUeSCKxO8aq?=
- =?iso-8859-1?Q?8gc4f7i9A9ubrusPMPAnFp1//smfKN+fUtO3ArGYKCnugz9Ncb5jaxhStp?=
- =?iso-8859-1?Q?KsdcQfRQkYGxvDh6rGGA3IMWHdcp6zyLkfV+zMyPtdxRwXjXfPp/kqaqGL?=
- =?iso-8859-1?Q?dikSBTi+xj0xkkMwafJiu9Np2QHwvtZvMdxlk0V4DChQ=3D=3D?=
+x-microsoft-antispam-message-info: =?utf-8?B?Z2VRVlRMNmJUd3diaCtBU2UrTi9vcXNwSCtGRi9qZlY5QUlncEFTQ21YdGpZ?=
+ =?utf-8?B?VXlRajZXZFJZMEJJN2NaZE04VnBZSitseWtZeDMxckFZTzcwVmVJZi81OVVL?=
+ =?utf-8?B?Yll6U0szQlNzM1JxWGRSVjBIQ3JvM1VSazJFNUdnOGxCdXJORGxUQXpaYXhY?=
+ =?utf-8?B?UHlVMkM5OFdaanhqR2dCdkVzNGhvL2krcmJLY3BjYmhoTDltRnpSdXQwODhJ?=
+ =?utf-8?B?Zk5PcElOclY3a0lYVU50Smdqc2VsQlRTelNMRG1lZW15YytTTmpHOVAxSE9E?=
+ =?utf-8?B?NlZ5R3NLYTFOZWNwZVlWWE9hM1NhamRNUGhTdDUyUXFONUxZbS9ZM3Y3VEpl?=
+ =?utf-8?B?TjhVUitKdVBHRXFReklCMlYzRlh5SENyTlhkc3hLd1FTdVRjLzVCMWxwSTF3?=
+ =?utf-8?B?QUZlazdHZzhacW9FZll4NktxVERuMU1UTHBGU09aKzh2S01McFovTDNIU2xi?=
+ =?utf-8?B?dGpOci9keHdlL0p3K1FWd2NqWUV6TFlpQ3pRdDhlK3lYQWtmWXdydVVJR2lG?=
+ =?utf-8?B?ZUwwSUk2VGREVnFSdXc5RnNTT20wVkpaNytYWFJ1NEJodVpRUlF5SlRkNXBW?=
+ =?utf-8?B?OXI1ZUV1bE9tOFJaWllaWUxwMEVXd2V2Tmc5UVQ3Um1kNm1QQ1ZlMVhjZGRp?=
+ =?utf-8?B?QWpUcjdCNEZST3dZYTc3blQ0YW9nZzYxd3lBakhSZnMyUFIzNVRTY3FrblFG?=
+ =?utf-8?B?MVFORnhCcmhCeEowQmd3TTg1UTduWElLZi9Vbm16U3pCdDR5STdDQmJRK2U3?=
+ =?utf-8?B?MVQwN3k3anhtRW00eEQ4eDEyd2lZenk3VVRaTjhZQTBZUTVxdzBRbU5odzNK?=
+ =?utf-8?B?WlhFNWZteFQwNkx2bGR3Z3p5djJCNkxjMTRKNm0xKzVTWS8wL1VLbEFwNlJR?=
+ =?utf-8?B?TzBtQ1NScVNDOG9WZ3NFMDg2ODhUME82RWVPOXUyQVdtbUZEN01pQWxwaERU?=
+ =?utf-8?B?enBJb2xzZ21SRFZYcmp0VGJvc2o0bFBwMlpZSmlyM0dMY2ZDL2lvY29EVy94?=
+ =?utf-8?B?ZVhVNlU3VU0wS1Q5WFlrV2FiWUlWMHB5RlIxWWdpZkNDbWtnQXJ6ZDNkTDFL?=
+ =?utf-8?B?OURXSEJqVkdtQnRQOHFybzZ6c2xvMU9DbVJGL1ZWbnNnYUlsdi93YittRXdQ?=
+ =?utf-8?B?MGplSHNqZU56emNaWHl2NEZHdzRVZTZpOTh3L3UxaHMvaXVCZ0NYaVYyUmx0?=
+ =?utf-8?B?V3E2K2lKS3hFbUZVdFA4UkdZQS9zZU03ajZ6ZlNmWmIwamo0aHpzMUNvbmd6?=
+ =?utf-8?B?L2EvWlU3Y00vL2tBa0x3ZGtud3NoR25jZktzcG1la1ZLSnVHQ1U5MmNyajgx?=
+ =?utf-8?B?MUZtMmNUN3p1UDJ0REdEQUZGUlFuZW5VV0tvVDNESG5zZnFKd2N2NWh5c2JB?=
+ =?utf-8?B?OVZiOUJsWDNCdlc5VUErcEJ3blpUa3ZLSVdIMFk2Q09YTUU4UmR3aVlJTGxV?=
+ =?utf-8?B?dUJiV25vODBmTXJSQUFYRWRmYmtmNVF6N2x0V3dJK1VjT0E0TVQrejViNERR?=
+ =?utf-8?B?UmtxUlBoQ0dMemFoM0wrSTlZM2FXeVkwSVJwUDV0Q2NybUxnWUV2MXl4NmM3?=
+ =?utf-8?B?VFZHWDJKWWl1dXlhc0dmYkNYMjRNczJMSVZzSlhIYis2QUFKL08yWUFUbS9F?=
+ =?utf-8?B?Uk9obXJ2VHg5WlRXK2twcEszaFpYd3pzb0NTb0EybCswcTZyZHNmY0FEK0hD?=
+ =?utf-8?B?cGY2QWp1UzV3dG0rUlYveDBwTXRqcnE5UFlLaUl5TnpaR2N4YmJ5eUdwRGVu?=
+ =?utf-8?B?WW1QVUZzVHVPSFJUNzhLNjZ4Zk8xSW82eVVPc2VhZWliWW8wa28zMDJYbzB2?=
+ =?utf-8?B?MXBZU3JuMjJGQTJTMDlKWVpqRnoxZWZuQjgrdDFmNkRJT2Z4S2xZdmpwVmJk?=
+ =?utf-8?B?Rk13c3JyTmpMejFXMHVUMlJmbzJMZDlpc01rbjNySkIvNEExSlZuQVZpU3Zy?=
+ =?utf-8?B?Z3prcFFCWWcxVzlTOGFlMmpLbFdUTG1EcDhUR1FIQksyQjFsWXRSdndjVzVG?=
+ =?utf-8?B?WUJBVzZpTU1nPT0=?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:AS4PR09MB6518.eurprd09.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(376014)(1800799024)(366016)(38070700021); DIR:OUT; SFP:1102; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?tUAfvxsVkJtggf+eXxU05koU+LB0vlQxEfJwCji1bmUIE0YXC87zbKgf/m?=
- =?iso-8859-1?Q?A0Q7QnWnn9rTA2SRwCLFVwsTBmNtCN1WRtHGqh9M8Rf3/F4geJQpXoWnw3?=
- =?iso-8859-1?Q?vaOdmGeprVkyC67k7QguqVuF0HEYGE/ao2mW566iN0lw77vnZi1PQlONFu?=
- =?iso-8859-1?Q?uESdJgGANwCTDFL8UXinBrTaLDZrSW831hSPSkIZwVZ/YCOab12JWpOfso?=
- =?iso-8859-1?Q?HR1Yr9bmHMl8v1N4/HJBg07RSdJxN+Am/47NEcBSdv7QSh2vZGY/1XS95Q?=
- =?iso-8859-1?Q?LdTdRyTyCjalsz/NTOYi+/ROqfBD+QR60ETU2ceQ26dODh5wPibbSXCko7?=
- =?iso-8859-1?Q?hgzAEUNy0Y6mfqXcuUK+j2sSYpr0Pvff5c0WrjL/vBPRSYlTHd9Jqy00CS?=
- =?iso-8859-1?Q?3IFdJXAn0acoChRxwnYObzyspHaFg45ilvR7AmYWvUCrZzaDQrBEBDIx7l?=
- =?iso-8859-1?Q?3Yyt6KRJ2nVCLrb5o2pAwjx60CHXnHXgqVedQ6SEDGO7WyzPWvboOyRF9s?=
- =?iso-8859-1?Q?DY947ccfyGhq6TkeYjLxvb1l/uYjUZ5jtqxSBiod1s6RbmOxN8ZHnq9i88?=
- =?iso-8859-1?Q?6W5At1CLc5WiIMFYXhYydIIptYd2ATH4356Sy63DQCpp2+4QaUCRHo7fNf?=
- =?iso-8859-1?Q?a9G0ssQcHfc/7Y9AIX93eDAsrSLk1mcdzOusRTVBXpghucKHB4NMgIT+r/?=
- =?iso-8859-1?Q?WkvVdlvro/Oj1OroxVoCSUlIqZHvVghBiBp8KmN/VEQ4Uu7wjz6rodDeUA?=
- =?iso-8859-1?Q?CPNHyM52LX6hq0Jhaq5JI1dfr59VyCrRo48c4SbnnvM6qcLqazbpFQSm3b?=
- =?iso-8859-1?Q?uibAl2AmXtrQeAAv5NoXyI9HIAAe12/I7M0hMggrSS42fB2e0C013l19Qr?=
- =?iso-8859-1?Q?Cj7xyT32lvZZ3Zb15+gqtzT6IqZXtiEeitJ+tJRtZv62eb8Ij6NFbFxW8a?=
- =?iso-8859-1?Q?oqi99Ejtm5h3I3C9DA2RC4uomraCsneTNC+purAKtLbpKZrkbZS4iI/5ip?=
- =?iso-8859-1?Q?oodOa7e05EBvk+ZyMVMKNwobfxAvMoTmeGCAjlP1aYtFb0+rCDCTDLz0Xx?=
- =?iso-8859-1?Q?DbVS1nvClzS0QMD/+rqnM8gzfwsZBG5kR1VFoqIo7jjFdkkQnVAKdTGb+Q?=
- =?iso-8859-1?Q?4yPqSjHVab9UCjsWoLP18O+CQujHdDTtukiw864of3MW64/a90pkSnuJ6E?=
- =?iso-8859-1?Q?OiR3GXTdr/9rhhYJ9jHWF7ogutwPpJeFKHNtJKU4amICIezWkO55V9mLri?=
- =?iso-8859-1?Q?3xd0OQH/9dtsWEYqA8VscOBaDGQ0oQy5Oo0csE7NMEGms9b4aY5Gp+YWsQ?=
- =?iso-8859-1?Q?+D1z9r7D7vgqcBln7fwGidFO/UKjQD0sT4UAUQ8CeD2pqSH4COSHkfq5ft?=
- =?iso-8859-1?Q?TjFQHSkpiW5WVxCTEC44xW32BpTjUBmsXwmwbE8oiOVrnxfNMYemRoYkh0?=
- =?iso-8859-1?Q?7hYNiW8cfJ/pCDXqy3TqwEMEIzZJukDxqSYXz5OI9GPNhSytWbPTvzrJ1Q?=
- =?iso-8859-1?Q?bOyNaBhef4hyLw6CQgMxPACKJzatLXg8wkhYLeI85ynxx8IqzAr+foyqqV?=
- =?iso-8859-1?Q?l6A7GY/xjYfdCnla5+Ihp+g+TVYTGEodEImn9hU503zMy4Z6ohS2SzTdiO?=
- =?iso-8859-1?Q?K+/q6rzf227lX3KHQMe+k9D46H461Wg74Ukuay58uKqcTGkzxZKejYqkS5?=
- =?iso-8859-1?Q?/3O2d3xHJ91AWyKLOqI=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VzRKVC9rMmFLL1lQZ1ZYS0xsS2NEdTNlcTNjcW1SVEdhMnQyaTlGL2szSCtu?=
+ =?utf-8?B?WDFDcmlNU3FIRUNRMUFJMy9zdnNyUW9QaWdMd1B6L2UyaDZGREUxL2VwQjI3?=
+ =?utf-8?B?TVVtbmhBN0JXOUpsUFJ3QWRZbm9DVnRTSURFR29VbWtmT3dFY1NTL0NKUmRj?=
+ =?utf-8?B?b3RLL0tWWHI2cFgvUnpwelljSUsweW03akxWMlhJaXd6Y2JMdE8zOTZ5eEFj?=
+ =?utf-8?B?OGxKWjY1c2c1bUZVbXI1dFA5SHY5TlBGdmpnTDBRTU44dDdGWVpGV1cxWWVX?=
+ =?utf-8?B?TXVjcldRakRWYWFnc2F1dTk2V2VmTnpxY04xamFyOGdIWjlIaVNMMVdqU0JP?=
+ =?utf-8?B?UWpiazdlTEhYdmFVWjUwV3owL211SFlvaGMwdzFxNEE5eE12cGtReE9ETTdN?=
+ =?utf-8?B?ZXNGYk1ZdDExTUdQb0xsK0lFUVlsMXF0YUZIcnRtVTBsaUhhU21YRVFQQ0lx?=
+ =?utf-8?B?c3VPSEVEQVVsOGcwUnhGaFY3VUxpaldqYStHQWVvOXJURVFVWjU2SFI3bmtH?=
+ =?utf-8?B?cjVYQ2x4QTBWSXNqdVcrbVZBdVVhR21PWmk0WnVYSS9KclYrWUhLRjkwdnhM?=
+ =?utf-8?B?VGtwUHdwNmwrRUttWDY0OFFtS1JocmdTR3FIZ0MwV1pMak13S2hzVDV5VXhE?=
+ =?utf-8?B?aUFXZWtJakdjd2NRL1RqR1hhQmkwSVMzS09EMC8rdy9keldDZUl2OE4vdFVn?=
+ =?utf-8?B?MzlVSVh2N2pSUWRxcFhHMXF4STh0T1dtaFRxcGpxdCs0YjRFd3VqcHlZUG5y?=
+ =?utf-8?B?L3RJdTh3WEdwaDJ0UWhpdHFjNzc1bitQck8wZk94OFF0TXp0WUczbHdJaVFN?=
+ =?utf-8?B?Ymc3QXNjQTVjSkdoYkFLbXJudkRSYjVaekVqZldjK21BZ2tUK3E1Zm9QSTlC?=
+ =?utf-8?B?RTNHZzVoZVhWYk1ORHlqcHY3U2NxSXhETlZoeDRUS3VONkU1MXBYdWdGVVZP?=
+ =?utf-8?B?VTJnL3JUYXhFZWF6emVVOEFzMUtvdWdNUk00ZGFJZVZ0UVBEQ0l0bWdOb2Yy?=
+ =?utf-8?B?dVkvOGNuU0tUbjVPamc0d01qcmRHU3pLSGdOSFlSekk0RkNZaE1OQk9PTWlq?=
+ =?utf-8?B?SFgvcDlNOVdtR3QyNHpVMHZ4cksvM1liMzQ1UVlISmczR0RSNm1ZcVFLb004?=
+ =?utf-8?B?K1RLdk04U0JDb2ZsOWVQK0E2bzZoa0ZEZFhkNTNnUEtBTVhpandqZnBnZEtj?=
+ =?utf-8?B?eWhsQzAzRjhwelNZb1JOV1c3cmNFM0F1NFRNSkQ0NUFYM3hwUHlUd3dHMnU2?=
+ =?utf-8?B?VmNZdzJzUjd6NXBtanlhSWhUQWY0V3ltdWJ5cEwxdVBBWnNCclgzWjVaemRh?=
+ =?utf-8?B?UVRHZDU3Q2dHN3hIRGpnZDg3ZTUxSitzT3psaVo4UWhLaE1vdkRYUGYrYnJY?=
+ =?utf-8?B?LzlRY0drd0dOdUpQdDN5UVRmOUhIblhJWU41S3FVdTBkTmFYSERFdHNmbE1k?=
+ =?utf-8?B?SS82N05UUEVNREprZkhySStkY0J3N3pNcm5USjVxU2ZHNjJXRCtKamIvTW5S?=
+ =?utf-8?B?bUplcWJmcVlaVXg2NlVJbVJlK29JYnVjVGJSeEZiWHIwdlBPVmw2ejRLWmZZ?=
+ =?utf-8?B?L2hrOWs5QkhCTHk4SUJUNVR6OTA1cTZ3N1U1b0xRWGRpVStnZG9oTm0yNFdB?=
+ =?utf-8?B?MDhFN1RWdlhaVStDZDJXVzFxbGRvcGxJSXFPbXFCZ3FoWXFmR2FXblhsakVI?=
+ =?utf-8?B?SmRjZmk3dklPdXU1MktETklXMjA1OHVuWlpLUzUyOXBzbmtOZG5VQ0x6Rnk3?=
+ =?utf-8?B?QkZtbmRyOFl4L1hmNmZEaEtXZWhKYWlkUlR0UU1zS3BxamlZMGxXMTNJSlpQ?=
+ =?utf-8?B?em42bkxRck9pMUJQb1EycmYxR1ZyWWxqZjA2dzZENDZmY0RPNWdRNjVTZUdP?=
+ =?utf-8?B?ZEhtWHJGYmsyQ0VaZGVTM2taQTc1dURNV3BNZ3U4ZW5jYlc1QWhFbXFLWXFO?=
+ =?utf-8?B?SHdMRmZOVTZBazJ1Zlh3VXlzVlltbWswK0FhUnQxZlYzb0FGOS9yNlB2d3Ur?=
+ =?utf-8?B?bnZOOHBqQlRlN3pUeWNCNlNuVTJaM25Mb0drWWFDSDZ6empCL1YyQUd4dkU5?=
+ =?utf-8?B?NE9vVEtaNlArOVpVcjZYKzdtcTFSQXczd0dxMmI3aDVQZTNsdzBNU016aC94?=
+ =?utf-8?B?NlFiNjN3RW9MRThkcUFGYzljY2xBZUJ1UEhGVmFEdTVtb3EwNFZVL1hwM3pJ?=
+ =?utf-8?Q?Ctf137vQpM+dq3+OyIG9dNw=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <880FEA0B115BB94CBDC54F9099B00E88@eurprd09.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-OriginatorOrg: htecgroup.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: AS4PR09MB6518.eurprd09.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff685668-40f1-404a-8626-08ddfb4b4dd2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Sep 2025 09:18:16.1230 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2672f90-3589-4e64-2035-08ddfb4b4ea2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Sep 2025 09:18:17.9394 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 9f85665b-7efd-4776-9dfe-b6bfda2565ee
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +4gDARigM5Ah/1QpaUoMpOy63AarPwDTiI06PfuYYQ0sAd5ZhA2RAgSqYxtQ7GtBUiFQqgKnBlvE2HnT5RA6ftS3llfKBqA5IU7bPk3kuQQ=
+X-MS-Exchange-CrossTenant-userprincipalname: nkioj/78qIsr8LZoGZgbE71Y8+VDQtTrlGIy5pNQEj2mRK1pVslBywnyP/9tW5EwleexYRzoZ0LXRzUj6Fyz8W6GXOv1+0y1r3VJsk0TQ5M=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR09MB7826
-Received-SPF: pass client-ip=2a01:111:f403:c200::3;
+Received-SPF: pass client-ip=2a01:111:f403:c200::5;
  envelope-from=Djordje.Todorovic@htecgroup.com;
- helo=DU2PR03CU002.outbound.protection.outlook.com
+ helo=DUZPR83CU001.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -163,382 +180,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add RISC-V implementation of the Coherent Manager Global Control
-Register (CMGCR) device. It is based on the existing MIPS CMGCR
-implementation but adapted for RISC-V systems.
-
-The CMGCR device provides global system control for multi-core
-configurations in RISC-V systems.
-
-This is needed for the MIPS BOSTON AIA board.
-
-Signed-off-by: Chao-ying Fu <cfu@mips.com>
-Signed-off-by: Djordje Todorovic <djordje.todorovic@htecgroup.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- hw/misc/Kconfig               |   9 ++
- hw/misc/meson.build           |   2 +
- hw/misc/riscv_cmgcr.c         | 246 ++++++++++++++++++++++++++++++++++
- include/hw/misc/riscv_cmgcr.h |  50 +++++++
- 4 files changed, 307 insertions(+)
- create mode 100644 hw/misc/riscv_cmgcr.c
- create mode 100644 include/hw/misc/riscv_cmgcr.h
-
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index 4e35657468..c72927c3ff 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -121,6 +121,15 @@ config MIPS_ITU
-     bool
-     depends on TCG
-=20
-+config RISCV_CMGCR
-+    bool
-+
-+config MIPS_BOSTON_AIA
-+    bool
-+    default y
-+    depends on RISCV64
-+    select RISCV_CMGCR
-+
- config MPS2_FPGAIO
-     bool
-     select LED
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index b1d8d8e5d2..ef891e465b 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -157,6 +157,8 @@ specific_ss.add(when: 'CONFIG_MAC_VIA', if_true: files(=
-'mac_via.c'))
- specific_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('mips_cmgcr.c', 'm=
-ips_cpc.c'))
- specific_ss.add(when: 'CONFIG_MIPS_ITU', if_true: files('mips_itu.c'))
-=20
-+specific_ss.add(when: 'CONFIG_RISCV_CMGCR', if_true: files('riscv_cmgcr.c'=
-))
-+
- system_ss.add(when: 'CONFIG_SBSA_REF', if_true: files('sbsa_ec.c'))
-=20
- # HPPA devices
-diff --git a/hw/misc/riscv_cmgcr.c b/hw/misc/riscv_cmgcr.c
-new file mode 100644
-index 0000000000..cb8351a3bf
---- /dev/null
-+++ b/hw/misc/riscv_cmgcr.c
-@@ -0,0 +1,246 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Pub=
-lic
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2012  MIPS Technologies, Inc.  All rights reserved.
-+ * Authors: Sanjay Lal <sanjayl@kymasys.com>
-+ *
-+ * Copyright (C) 2015 Imagination Technologies
-+ *
-+ * Copyright (C) 2025 MIPS
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "qapi/error.h"
-+#include "hw/sysbus.h"
-+#include "migration/vmstate.h"
-+#include "hw/misc/riscv_cmgcr.h"
-+#include "hw/qdev-properties.h"
-+
-+#include "cpu.h"
-+
-+#define CM_RESET_VEC 0x1FC00000
-+#define GCR_ADDRSPACE_SZ        0x8000
-+
-+/* Offsets to register blocks */
-+#define RISCV_GCB_OFS        0x0000 /* Global Control Block */
-+#define RISCV_CLCB_OFS       0x2000 /* Core Control Block */
-+#define RISCV_CORE_REG_STRIDE 0x100 /* Stride between core-specific regist=
-ers */
-+
-+/* Global Control Block Register Map */
-+#define GCR_CONFIG_OFS      0x0000
-+#define GCR_BASE_OFS        0x0008
-+#define GCR_REV_OFS         0x0030
-+#define GCR_CPC_STATUS_OFS  0x00F0
-+#define GCR_L2_CONFIG_OFS   0x0130
-+
-+/* GCR_L2_CONFIG register fields */
-+#define GCR_L2_CONFIG_BYPASS_SHF    20
-+#define GCR_L2_CONFIG_BYPASS_MSK    ((0x1ULL) << GCR_L2_CONFIG_BYPASS_SHF)
-+
-+/* GCR_BASE register fields */
-+#define GCR_BASE_GCRBASE_MSK     0xffffffff8000ULL
-+
-+/* GCR_CPC_BASE register fields */
-+#define GCR_CPC_BASE_CPCEN_MSK   1
-+#define GCR_CPC_BASE_CPCBASE_MSK 0xFFFFFFFF8000ULL
-+#define GCR_CPC_BASE_MSK (GCR_CPC_BASE_CPCEN_MSK | GCR_CPC_BASE_CPCBASE_MS=
-K)
-+
-+/* GCR_CL_RESETBASE_OFS register fields */
-+#define GCR_CL_RESET_BASE_RESETBASE_MSK 0xFFFFFFFFFFFFF000U
-+#define GCR_CL_RESET_BASE_MSK GCR_CL_RESET_BASE_RESETBASE_MSK
-+
-+static inline bool is_cpc_connected(RISCVGCRState *s)
-+{
-+    return s->cpc_mr !=3D NULL;
-+}
-+
-+static inline void update_cpc_base(RISCVGCRState *gcr, uint64_t val)
-+{
-+    if (is_cpc_connected(gcr)) {
-+        gcr->cpc_base =3D val & GCR_CPC_BASE_MSK;
-+        memory_region_transaction_begin();
-+        memory_region_set_address(gcr->cpc_mr,
-+                                  gcr->cpc_base & GCR_CPC_BASE_CPCBASE_MSK=
-);
-+        memory_region_set_enabled(gcr->cpc_mr,
-+                                  gcr->cpc_base & GCR_CPC_BASE_CPCEN_MSK);
-+        memory_region_transaction_commit();
-+    }
-+}
-+
-+static inline void update_gcr_base(RISCVGCRState *gcr, uint64_t val)
-+{
-+    gcr->gcr_base =3D val & GCR_BASE_GCRBASE_MSK;
-+    memory_region_set_address(&gcr->iomem, gcr->gcr_base);
-+
-+    /*
-+     * For boston-aia, cpc_base is set to gcr_base + 0x8001 to enable
-+     * cpc automatically.
-+     */
-+    update_cpc_base(gcr, val + 0x8001);
-+}
-+
-+/* Read GCR registers */
-+static uint64_t gcr_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    RISCVGCRState *gcr =3D (RISCVGCRState *) opaque;
-+
-+    switch (addr) {
-+    /* Global Control Block Register */
-+    case GCR_CONFIG_OFS:
-+        /* Set PCORES to 0 */
-+        return 0;
-+    case GCR_BASE_OFS:
-+        return gcr->gcr_base;
-+    case GCR_REV_OFS:
-+        return gcr->gcr_rev;
-+    case GCR_CPC_STATUS_OFS:
-+        return is_cpc_connected(gcr);
-+    case GCR_L2_CONFIG_OFS:
-+        /* L2 BYPASS */
-+        return GCR_L2_CONFIG_BYPASS_MSK;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "Read %d bytes at GCR offset 0x%" HWADDR_=
-PRIx
-+                      "\n", size, addr);
-+    }
-+    return 0;
-+}
-+
-+static inline target_ulong get_exception_base(RISCVGCRVPState *vps)
-+{
-+    return vps->reset_base & GCR_CL_RESET_BASE_RESETBASE_MSK;
-+}
-+
-+/* Write GCR registers */
-+static void gcr_write(void *opaque, hwaddr addr, uint64_t data, unsigned s=
-ize)
-+{
-+    RISCVGCRState *gcr =3D (RISCVGCRState *)opaque;
-+    RISCVGCRVPState *current_vps;
-+    int cpu_index, c, h;
-+
-+    for (c =3D 0; c < gcr->num_core; c++) {
-+        for (h =3D 0; h < gcr->num_hart; h++) {
-+            if (addr =3D=3D RISCV_CLCB_OFS + c * RISCV_CORE_REG_STRIDE + h=
- * 8) {
-+                cpu_index =3D c * gcr->num_hart + h;
-+                current_vps =3D &gcr->vps[cpu_index];
-+                current_vps->reset_base =3D data & GCR_CL_RESET_BASE_MSK;
-+                cpu_set_exception_base(cpu_index + gcr->cluster_id *
-+                                       gcr->num_core * gcr->num_hart,
-+                                       get_exception_base(current_vps));
-+                return;
-+            }
-+        }
-+    }
-+
-+    switch (addr) {
-+    case GCR_BASE_OFS:
-+        update_gcr_base(gcr, data);
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "Write %d bytes at GCR offset 0x%" HWADDR=
-_PRIx
-+                      " 0x%" PRIx64 "\n", size, addr, data);
-+        break;
-+    }
-+}
-+
-+static const MemoryRegionOps gcr_ops =3D {
-+    .read =3D gcr_read,
-+    .write =3D gcr_write,
-+    .endianness =3D DEVICE_NATIVE_ENDIAN,
-+    .impl =3D {
-+        .max_access_size =3D 8,
-+    },
-+};
-+
-+static void riscv_gcr_init(Object *obj)
-+{
-+    SysBusDevice *sbd =3D SYS_BUS_DEVICE(obj);
-+    RISCVGCRState *s =3D RISCV_GCR(obj);
-+
-+    memory_region_init_io(&s->iomem, OBJECT(s), &gcr_ops, s,
-+                          "riscv-gcr", GCR_ADDRSPACE_SZ);
-+    sysbus_init_mmio(sbd, &s->iomem);
-+}
-+
-+static void riscv_gcr_reset(DeviceState *dev)
-+{
-+    RISCVGCRState *s =3D RISCV_GCR(dev);
-+    int i;
-+
-+    /* Update cpc_base to gcr_base + 0x8001 to enable cpc automatically. *=
-/
-+    update_cpc_base(s, s->gcr_base + 0x8001);
-+
-+    for (i =3D 0; i < s->num_vps; i++) {
-+        s->vps[i].reset_base =3D CM_RESET_VEC & GCR_CL_RESET_BASE_MSK;
-+        cpu_set_exception_base(i, get_exception_base(&s->vps[i]));
-+    }
-+}
-+
-+static const VMStateDescription vmstate_riscv_gcr =3D {
-+    .name =3D "riscv-gcr",
-+    .version_id =3D 0,
-+    .minimum_version_id =3D 0,
-+    .fields =3D (VMStateField[]) {
-+        VMSTATE_UINT64(cpc_base, RISCVGCRState),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-+
-+static const Property riscv_gcr_properties[] =3D {
-+    DEFINE_PROP_UINT32("cluster-id", RISCVGCRState, cluster_id, 0),
-+    DEFINE_PROP_UINT32("num-vp", RISCVGCRState, num_vps, 1),
-+    DEFINE_PROP_UINT32("num-hart", RISCVGCRState, num_hart, 1),
-+    DEFINE_PROP_UINT32("num-core", RISCVGCRState, num_core, 1),
-+    DEFINE_PROP_INT32("gcr-rev", RISCVGCRState, gcr_rev, 0xa00),
-+    DEFINE_PROP_UINT64("gcr-base", RISCVGCRState, gcr_base, GCR_BASE_ADDR)=
-,
-+    DEFINE_PROP_LINK("cpc", RISCVGCRState, cpc_mr, TYPE_MEMORY_REGION,
-+                     MemoryRegion *),
-+};
-+
-+static void riscv_gcr_realize(DeviceState *dev, Error **errp)
-+{
-+    RISCVGCRState *s =3D RISCV_GCR(dev);
-+
-+    /* Validate num_vps */
-+    if (s->num_vps =3D=3D 0) {
-+        error_setg(errp, "num-vp must be at least 1");
-+        return;
-+    }
-+    if (s->num_vps > GCR_MAX_VPS) {
-+        error_setg(errp, "num-vp cannot exceed %d", GCR_MAX_VPS);
-+        return;
-+    }
-+
-+    /* Create local set of registers for each VP */
-+    s->vps =3D g_new(RISCVGCRVPState, s->num_vps);
-+}
-+
-+static void riscv_gcr_class_init(ObjectClass *klass, const void *data)
-+{
-+    DeviceClass *dc =3D DEVICE_CLASS(klass);
-+    device_class_set_props(dc, riscv_gcr_properties);
-+    dc->vmsd =3D &vmstate_riscv_gcr;
-+    device_class_set_legacy_reset(dc, riscv_gcr_reset);
-+    dc->realize =3D riscv_gcr_realize;
-+}
-+
-+static const TypeInfo riscv_gcr_info =3D {
-+    .name          =3D TYPE_RISCV_GCR,
-+    .parent        =3D TYPE_SYS_BUS_DEVICE,
-+    .instance_size =3D sizeof(RISCVGCRState),
-+    .instance_init =3D riscv_gcr_init,
-+    .class_init    =3D riscv_gcr_class_init,
-+};
-+
-+static void riscv_gcr_register_types(void)
-+{
-+    type_register_static(&riscv_gcr_info);
-+}
-+
-+type_init(riscv_gcr_register_types)
-diff --git a/include/hw/misc/riscv_cmgcr.h b/include/hw/misc/riscv_cmgcr.h
-new file mode 100644
-index 0000000000..c57d4ada1c
---- /dev/null
-+++ b/include/hw/misc/riscv_cmgcr.h
-@@ -0,0 +1,50 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Pub=
-lic
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2015 Imagination Technologies
-+ *
-+ * Copyright (C) 2025 MIPS
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ */
-+
-+#ifndef RISCV_CMGCR_H
-+#define RISCV_CMGCR_H
-+
-+#include "hw/sysbus.h"
-+#include "qom/object.h"
-+
-+#define TYPE_RISCV_GCR "riscv-gcr"
-+OBJECT_DECLARE_SIMPLE_TYPE(RISCVGCRState, RISCV_GCR)
-+
-+#define GCR_BASE_ADDR           0x1fb80000ULL
-+#define GCR_MAX_VPS             256
-+
-+typedef struct RISCVGCRVPState RISCVGCRVPState;
-+struct RISCVGCRVPState {
-+    uint64_t reset_base;
-+};
-+
-+typedef struct RISCVGCRState RISCVGCRState;
-+struct RISCVGCRState {
-+    SysBusDevice parent_obj;
-+
-+    int32_t gcr_rev;
-+    uint32_t cluster_id;
-+    uint32_t num_vps;
-+    uint32_t num_hart;
-+    uint32_t num_core;
-+    hwaddr gcr_base;
-+    MemoryRegion iomem;
-+    MemoryRegion *cpc_mr;
-+
-+    uint64_t cpc_base;
-+
-+    /* VP Local/Other Registers */
-+    RISCVGCRVPState *vps;
-+};
-+
-+#endif /* RISCV_CMGCR_H */
---=20
-2.34.1
+U2luY2UgdGhlcmUgaXMgbm8gcGNoX2diZSBlbXVsYXRpb24sIHdlIGNvdWxkIGJlIHVzaW5nIGZ1
+bmMgb3RoZXINCnRoYW4gMCB3aGVuIGFkZGluZyBuZXcgZGV2aWNlcyB0byBzcGVjaWZpYyBib2Fy
+ZHMuDQoNClNpZ25lZC1vZmYtYnk6IENoYW8teWluZyBGdSA8Y2Z1QG1pcHMuY29tPg0KU2lnbmVk
+LW9mZi1ieTogRGpvcmRqZSBUb2Rvcm92aWMgPGRqb3JkamUudG9kb3JvdmljQGh0ZWNncm91cC5j
+b20+DQpSZXZpZXdlZC1ieTogUGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgPHBoaWxtZEBsaW5hcm8u
+b3JnPg0KLS0tDQogaHcvcGNpL3BjaS5jIHwgMjAgKysrKysrKysrKysrLS0tLS0tLS0NCiAxIGZp
+bGUgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgOCBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdp
+dCBhL2h3L3BjaS9wY2kuYyBiL2h3L3BjaS9wY2kuYw0KaW5kZXggYzcwYjVjZWViYS4uNWQ0ZmZk
+MGQzZSAxMDA2NDQNCi0tLSBhL2h3L3BjaS9wY2kuYw0KKysrIGIvaHcvcGNpL3BjaS5jDQpAQCAt
+OTg0LDE0ICs5ODQsMTUgQEAgc3RhdGljIGludCBwY2lfcGFyc2VfZGV2YWRkcihjb25zdCBjaGFy
+ICphZGRyLCBpbnQgKmRvbXAsIGludCAqYnVzcCwNCiANCiAgICAgc2xvdCA9IHZhbDsNCiANCi0g
+ICAgaWYgKGZ1bmNwICE9IE5VTEwpIHsNCi0gICAgICAgIGlmICgqZSAhPSAnLicpDQorICAgIGlm
+IChmdW5jcCAhPSBOVUxMICYmICplICE9IDApIHsNCisgICAgICAgIGlmICgqZSAhPSAnLicpIHsN
+CiAgICAgICAgICAgICByZXR1cm4gLTE7DQotDQorICAgICAgICB9DQogICAgICAgICBwID0gZSAr
+IDE7DQogICAgICAgICB2YWwgPSBzdHJ0b3VsKHAsICZlLCAxNik7DQotICAgICAgICBpZiAoZSA9
+PSBwKQ0KKyAgICAgICAgaWYgKGUgPT0gcCkgew0KICAgICAgICAgICAgIHJldHVybiAtMTsNCisg
+ICAgICAgIH0NCiANCiAgICAgICAgIGZ1bmMgPSB2YWw7DQogICAgIH0NCkBAIC0yMDU0LDE1ICsy
+MDU1LDE4IEBAIGJvb2wgcGNpX2luaXRfbmljX2luX3Nsb3QoUENJQnVzICpyb290YnVzLCBjb25z
+dCBjaGFyICptb2RlbCwNCiAgICAgaW50IGRvbSwgYnVzbnIsIGRldmZuOw0KICAgICBQQ0lEZXZp
+Y2UgKnBjaV9kZXY7DQogICAgIHVuc2lnbmVkIHNsb3Q7DQorICAgIHVuc2lnbmVkIGZ1bmM7DQor
+DQogICAgIFBDSUJ1cyAqYnVzOw0KIA0KICAgICBpZiAoIW5kKSB7DQogICAgICAgICByZXR1cm4g
+ZmFsc2U7DQogICAgIH0NCiANCi0gICAgaWYgKCFkZXZhZGRyIHx8IHBjaV9wYXJzZV9kZXZhZGRy
+KGRldmFkZHIsICZkb20sICZidXNuciwgJnNsb3QsIE5VTEwpIDwgMCkgew0KLSAgICAgICAgZXJy
+b3JfcmVwb3J0KCJJbnZhbGlkIFBDSSBkZXZpY2UgYWRkcmVzcyAlcyBmb3IgZGV2aWNlICVzIiwN
+Ci0gICAgICAgICAgICAgICAgICAgICBkZXZhZGRyLCBtb2RlbCk7DQorICAgIGlmICghZGV2YWRk
+ciB8fA0KKyAgICAgICAgcGNpX3BhcnNlX2RldmFkZHIoZGV2YWRkciwgJmRvbSwgJmJ1c25yLCAm
+c2xvdCwgJmZ1bmMpIDwgMCkgew0KKyAgICAgICAgZXJyb3JfcmVwb3J0KCJJbnZhbGlkIFBDSSBk
+ZXZpY2UgYWRkcmVzcyAlcyBmb3IgZGV2aWNlICVzIiwgZGV2YWRkciwNCisgICAgICAgICAgICAg
+ICAgICAgICBtb2RlbCk7DQogICAgICAgICBleGl0KDEpOw0KICAgICB9DQogDQpAQCAtMjA3MSw3
+ICsyMDc1LDcgQEAgYm9vbCBwY2lfaW5pdF9uaWNfaW5fc2xvdChQQ0lCdXMgKnJvb3RidXMsIGNv
+bnN0IGNoYXIgKm1vZGVsLA0KICAgICAgICAgZXhpdCgxKTsNCiAgICAgfQ0KIA0KLSAgICBkZXZm
+biA9IFBDSV9ERVZGTihzbG90LCAwKTsNCisgICAgZGV2Zm4gPSBQQ0lfREVWRk4oc2xvdCwgZnVu
+Yyk7DQogDQogICAgIGJ1cyA9IHBjaV9maW5kX2J1c19ucihyb290YnVzLCBidXNucik7DQogICAg
+IGlmICghYnVzKSB7DQotLSANCjIuMzQuMQ0K
 
