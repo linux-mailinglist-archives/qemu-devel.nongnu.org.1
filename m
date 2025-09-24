@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C376B99C3D
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 14:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B852B99C37
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 14:08:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1OFj-0000y6-EQ; Wed, 24 Sep 2025 08:05:43 -0400
+	id 1v1OFV-0000w3-Ic; Wed, 24 Sep 2025 08:05:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v1OFX-0000wi-VT
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:05:32 -0400
+ id 1v1OFS-0000va-1d
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:05:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v1OFP-0005yU-0G
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:05:31 -0400
+ id 1v1OFH-0005y3-H1
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:05:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758715514;
+ s=mimecast20190719; t=1758715511;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6gAv70L+lmpO2zyGpyLAiun7ldORnQ0pOaWq0N6T3gM=;
- b=KUbqDZijmJWon3zcia+1uzZLCJlsxFoe/FbdmZrfCzZ1f2bydUuqkv+89FpIed01/or7RP
- ccnVyr6B9bEcy/wZNuu6FgupHs0ZcPZK+CaVKex2lwk0+TnjxMZ7JXtBUR3mZCSoaU9ozr
- Sdrf0YQvyPfpxgEhy1u4ZF8mEdPca34=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=dRv8/ekMxzoG9gBpq9onGvzVMHRWU7qNi5lXY2GT+hs=;
+ b=CwENgYC+58aZ8seJQ5kYg1Fzgn8DQzDz2EaWANuSBdkMdIDb7+mugZaqngHFoCDcNDI56b
+ vhmq6tH7j314blhaYG+xrNIpPBcf9KSEPew6WPF+zu3gvNtrWszCOADvqlRkS8xjpUctkB
+ LnA6e4MQQeHM44uEOiUoQiz7JYOTn4g=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-249-HRXjd0GWNCm8T8hTc5gowQ-1; Wed,
- 24 Sep 2025 08:05:06 -0400
-X-MC-Unique: HRXjd0GWNCm8T8hTc5gowQ-1
-X-Mimecast-MFC-AGG-ID: HRXjd0GWNCm8T8hTc5gowQ_1758715498
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-91-zuMtPkKZM5eOSRtif9LblQ-1; Wed,
+ 24 Sep 2025 08:05:07 -0400
+X-MC-Unique: zuMtPkKZM5eOSRtif9LblQ-1
+X-Mimecast-MFC-AGG-ID: zuMtPkKZM5eOSRtif9LblQ_1758715505
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9027218002C0; Wed, 24 Sep 2025 12:04:58 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2EBE219560B1; Wed, 24 Sep 2025 12:05:05 +0000 (UTC)
 Received: from localhost (unknown [10.44.22.38])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8BE54180035E; Wed, 24 Sep 2025 12:04:56 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 9ECDF300018D; Wed, 24 Sep 2025 12:05:03 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Kyle Evans <kevans@freebsd.org>,
@@ -59,16 +59,15 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Kyle Evans <kevans@freebsd.org>,
  devel@lists.libvirt.org, qemu-rust@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Subject: [PATCH v2 03/27] scripts/archive-source: speed up downloading
- subprojects
-Date: Wed, 24 Sep 2025 16:04:00 +0400
-Message-ID: <20250924120426.2158655-4-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 04/27] scripts/archive-source: silence subprojects downloads
+Date: Wed, 24 Sep 2025 16:04:01 +0400
+Message-ID: <20250924120426.2158655-5-marcandre.lureau@redhat.com>
 In-Reply-To: <20250924120426.2158655-1-marcandre.lureau@redhat.com>
 References: <20250924120426.2158655-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -79,7 +78,8 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,32 +97,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Running meson on each subproject is quite slow.
-
-According to Paolo, meson will run download tasks in parallel.
+It's too verbose.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- scripts/archive-source.sh | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ scripts/archive-source.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
-index 035828c532..85cd0a63a0 100755
+index 85cd0a63a0..68eb9672de 100755
 --- a/scripts/archive-source.sh
 +++ b/scripts/archive-source.sh
-@@ -77,9 +77,10 @@ function subproject_dir() {
+@@ -77,7 +77,7 @@ function subproject_dir() {
  git archive --format tar "$(tree_ish)" > "$tar_file"
  test $? -ne 0 && error "failed to archive qemu"
  
-+meson subprojects download $subprojects
-+test $? -ne 0 && error "failed to download subprojects $subprojects"
-+
+-meson subprojects download $subprojects
++meson subprojects download $subprojects >/dev/null
+ test $? -ne 0 && error "failed to download subprojects $subprojects"
+ 
  for sp in $subprojects; do
--    meson subprojects download $sp
--    test $? -ne 0 && error "failed to download subproject $sp"
-     tar --append --file "$tar_file" --exclude=.git subprojects/"$(subproject_dir $sp)"
-     test $? -ne 0 && error "failed to append subproject $sp to $tar_file"
- done
 -- 
 2.51.0
 
