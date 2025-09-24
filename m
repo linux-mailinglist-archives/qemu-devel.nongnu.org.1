@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD25B9928D
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74447B99299
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:33:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1LqU-00072n-4c; Wed, 24 Sep 2025 05:31:30 -0400
+	id 1v1LqM-0006Y9-6u; Wed, 24 Sep 2025 05:31:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1LpN-0005py-Av
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:30:23 -0400
+ id 1v1LpP-0005t7-B1
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:30:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1LpI-00054S-5S
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:30:21 -0400
+ id 1v1LpK-00055O-N9
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:30:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758706209;
+ s=mimecast20190719; t=1758706215;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=H+LXSYu1vPoTI2M5Dk2GrlTJk3l5n1j7O+7TuG4JzCk=;
- b=So404Bu8HyRWOWaTM4AfR29wHe3rZD9RhXiBAdT1rT+32c8HRIupa34BKpNLiaM7Kc+VlN
- YlqN8wh2zynk/6NR9KsoiG+I432uBmSEmHWtjjNH74b+RnAUv95Wz1DmCEoS6VoktXsHsL
- TIiLYnrVhSNKjEXUX1RUUVrS5DfcKgY=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lfUywyyQC7TDO8J0Ge3oQBTlQoIjAPXNPeMkAMHIjcI=;
+ b=KVSXPK06Mnkv1ZOk6LPJpIkV1cAuIwYeJBysJ1lJPrGrVO+Y6xoYAoCW6RGJJOCABrJA1E
+ Go7ez7Ic3eRlNkhqUQpG9uGj6Av1P2hzExUOSxlWSJT+6mOi1G9ApFmvlDIXIvjSfktXYK
+ ad/3djUZgipJp8U3cCgcVk70li/m4OA=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-380-tZNW-OJpPwao-feVLyTeWQ-1; Wed, 24 Sep 2025 05:30:07 -0400
-X-MC-Unique: tZNW-OJpPwao-feVLyTeWQ-1
-X-Mimecast-MFC-AGG-ID: tZNW-OJpPwao-feVLyTeWQ_1758706206
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-b335ec149a8so34534966b.1
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:30:07 -0700 (PDT)
+ us-mta-244-xU0Vth7rM3WXELJqcDuw6g-1; Wed, 24 Sep 2025 05:30:13 -0400
+X-MC-Unique: xU0Vth7rM3WXELJqcDuw6g-1
+X-Mimecast-MFC-AGG-ID: xU0Vth7rM3WXELJqcDuw6g_1758706212
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-634741fccc9so1067860a12.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:30:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758706205; x=1759311005;
+ d=1e100.net; s=20230601; t=1758706210; x=1759311010;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H+LXSYu1vPoTI2M5Dk2GrlTJk3l5n1j7O+7TuG4JzCk=;
- b=JhAoiFcyA40DXaz8JsePegybxmqcxqqAtarRSWz6cCno/m7gc8QpWLWpHu3OxZjdwf
- YuMKi403a8nYSELSzCW7NHbcxTMxH3ESCPibjopskhP58ZaMRH+mBLd6tOahk/MyyohN
- uJSGinBtK5rJaJl3qKu6Gsnn7djLMkzSajPBecwvheOp73dTywdN6ON0XtgaB54UsY8t
- dl+F534naprK+kthW3So2YdqZ9flgn8m5J4lzH0B4H+XwZlmFi+rYHrMhzuESSIwMOtr
- pYJjO4TYDwkC90wt79qbpU/l2CBW8XT+KZHeBRI033Rkoyx6Fd734y14/+3myHMg+FlE
- /q4A==
-X-Gm-Message-State: AOJu0YzlC6Drb1LAbesIo5VNLogyChuc3PPGoSQdsLdCGxKfJXiEQiP0
- M/ud+9MZ4VDkvG308HNlo01ArzzGzdDEh/vS7VvAdNn+mI0gERoVp+yo1m1XfrHA0RFsOlYyFHj
- 80SjCHoMUQ01Qr3wtCSuSVRNIK8YT2i46Ex9rQr5n4SRP+r0ql4o7cPPsaAw3rPawCD3nUBSUfA
- P4SbonkgbMOzAsv+2XlX5RCCXrPBwEtz1USTgL/ybM
-X-Gm-Gg: ASbGncuTY8qfwLZ5hAI/m2T7xHfpQuG6qReJn5rAF+nxyHgxOVfPjY8ikw1/giqhdBT
- A6bbZV2WSI+dbRa7x9tBtru9TIQT+IptpclvhtGf8WncFbMTru7cYMZD5zviMP2uFlrWne2QS0q
- 3/52Ly3mwZGoAjRyXsyGPBrapkeb0bbIF8827KhOT6D1ublYbBXxk+lliyIpx27x9FrmbQfT0Dc
- fTfEZ8otZSqKrTPA32lwHXkbWnSgOYha0eWNJ6gxoLAeJV2Y+XpViLx9/LVpk0aNAnFfQOxKa04
- GD5rwIyl0s2wi1iGKq08Abi3g6IlbFkns7eAAk5Jtj544p3MTyCB2Sdgdc+95d6S/Ozt1GqBDv/
- TQlTEVzY4NNLhmtAcsb8MXRv1QrkPqKodsvXbRcWDM7jeeg==
-X-Received: by 2002:a17:907:7e88:b0:b2c:fa41:c1cb with SMTP id
- a640c23a62f3a-b302ac2b4f4mr597049966b.31.1758706204977; 
- Wed, 24 Sep 2025 02:30:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHw7yBCZpQ53lyypzzXWv658CtjB+C2D8W+j4togBI1SVOu5bWjyvlytsaYT0c3vkDdhFOaBQ==
-X-Received: by 2002:a17:907:7e88:b0:b2c:fa41:c1cb with SMTP id
- a640c23a62f3a-b302ac2b4f4mr597042566b.31.1758706203688; 
- Wed, 24 Sep 2025 02:30:03 -0700 (PDT)
+ bh=lfUywyyQC7TDO8J0Ge3oQBTlQoIjAPXNPeMkAMHIjcI=;
+ b=VKSIHA40oLwgvAbNgLq0gkkYozod6ki6HZi49wPeWOHzZLS0+9VZXVMSTpDpiMW4yw
+ Z+oBC7HR8feD6A3XpCmyhdMWa0k0PckpVLqocA4W63KMrqVdShda7z2+r7xX+jk5Ep72
+ 9+zBmyX0yHYHkQqMQu3DFbV3Xi64YJJ1Q+wHxanY2qMm27gPoWXtrqvC0gnft6QhRz2K
+ YBisindncCgoi4y6M8gnOfbAjzPxX411GZ5P+nOKUuHCqI8XFiaWq+iJO8X3qKAaI/8E
+ PqFoTqWKs5hTzRRqbC/NyZYnxw56qMZM3hED7giZeCVimHgJ287AvJ1iYORYeJpfecTr
+ FiyA==
+X-Gm-Message-State: AOJu0YxJWBS1Vz/hHhNcDsSN59EWDO3Ixl5TLmEdfyJwz8otGb0PjdkM
+ fsatd0krjFFlWy9UGyaIzwZdj1VrWDtmSZnv2C4ahdNX87774Is7VYDHUzaCBBsFrhKMcnydBIx
+ 5lOEVmAjAQfpqIrbSyzzr8AXqcgolZFU+2U4YSKzd0gPZG6N/tATh0Zc98knQVpKShP9+M9c44W
+ tCA0OyihMa/0qAcjGuNGE559PWxQdufm4mvSs3LL3O
+X-Gm-Gg: ASbGncuG1rUaOb0764GhH40sdVfQH5m75llSO0BLnbpzGmSTr+dT80vdgzmvsZQHdGs
+ kXTXRSWQiY3LmQL1qfn1/IQplQThJUjBLxpLc7DaBTWWu+deb/W+5k/dxj2LgnqCu4M9EnpG4ze
+ BZuOTU86FWcEQ/bHZlcUSIxDC7uDi2LTmO78OWJ3CB33AKJmf/fpkbxvh3VuKb2qu9zmpEjs7Tm
+ jv4QLnQTRQOJCuN/HrIY0YC+od9VMjy2JzULW+7ZQv6Wyfx+MeTddzV6X7Uzwz7bYRiAbBNu1ym
+ pyNbX7mxCPy1l/7qd+jM4xciBNTW12JO5R7Ue6JueDWdzQAhFi/LNlMvLtLeTHCirgJYnTL2Gut
+ +x+K1SQV9oAEdsakqw1NrOFDSG7Uj8ymJe0e42lFiEVJ/Yw==
+X-Received: by 2002:a17:907:724b:b0:b04:7ef0:9dd6 with SMTP id
+ a640c23a62f3a-b302b11e21bmr617135066b.55.1758706210487; 
+ Wed, 24 Sep 2025 02:30:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGBv26aG+WXqSnyMwmt2w/8kD3fCQw1qknKr1M/CZ0E3ooktbRHf4Sz/w8WyJm16upCEJgeEQ==
+X-Received: by 2002:a17:907:724b:b0:b04:7ef0:9dd6 with SMTP id
+ a640c23a62f3a-b302b11e21bmr617115066b.55.1758706207381; 
+ Wed, 24 Sep 2025 02:30:07 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b33411470b8sm72632866b.98.2025.09.24.02.30.02
+ a640c23a62f3a-b2e33da6226sm513053166b.110.2025.09.24.02.30.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Sep 2025 02:30:02 -0700 (PDT)
+ Wed, 24 Sep 2025 02:30:05 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 25/29] vfio: Do not unparent in instance_finalize()
-Date: Wed, 24 Sep 2025 11:28:45 +0200
-Message-ID: <20250924092850.42047-26-pbonzini@redhat.com>
+Subject: [PULL 26/29] hw/xen: Do not unparent in instance_finalize()
+Date: Wed, 24 Sep 2025 11:28:46 +0200
+Message-ID: <20250924092850.42047-27-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924092850.42047-1-pbonzini@redhat.com>
 References: <20250924092850.42047-1-pbonzini@redhat.com>
@@ -121,66 +121,32 @@ is semantically incorrect.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Link: https://lore.kernel.org/r/20250924-use-v4-6-07c6c598f53d@rsg.ci.i.u-tokyo.ac.jp
+Link: https://lore.kernel.org/r/20250924-use-v4-7-07c6c598f53d@rsg.ci.i.u-tokyo.ac.jp
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/vfio/pci-quirks.c | 9 +--------
- hw/vfio/region.c     | 3 ---
- 2 files changed, 1 insertion(+), 11 deletions(-)
+ hw/xen/xen_pt_msi.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
-index c97606dbf19..b5da6afbf5b 100644
---- a/hw/vfio/pci-quirks.c
-+++ b/hw/vfio/pci-quirks.c
-@@ -1159,15 +1159,12 @@ void vfio_vga_quirk_exit(VFIOPCIDevice *vdev)
+diff --git a/hw/xen/xen_pt_msi.c b/hw/xen/xen_pt_msi.c
+index 09cca4eecb1..e9ba17317ab 100644
+--- a/hw/xen/xen_pt_msi.c
++++ b/hw/xen/xen_pt_msi.c
+@@ -637,14 +637,5 @@ void xen_pt_msix_unmap(XenPCIPassthroughState *s)
  
- void vfio_vga_quirk_finalize(VFIOPCIDevice *vdev)
+ void xen_pt_msix_delete(XenPCIPassthroughState *s)
  {
--    int i, j;
-+    int i;
- 
-     for (i = 0; i < ARRAY_SIZE(vdev->vga->region); i++) {
-         while (!QLIST_EMPTY(&vdev->vga->region[i].quirks)) {
-             VFIOQuirk *quirk = QLIST_FIRST(&vdev->vga->region[i].quirks);
-             QLIST_REMOVE(quirk, next);
--            for (j = 0; j < quirk->nr_mem; j++) {
--                object_unparent(OBJECT(&quirk->mem[j]));
--            }
-             g_free(quirk->mem);
-             g_free(quirk->data);
-             g_free(quirk);
-@@ -1207,14 +1204,10 @@ void vfio_bar_quirk_exit(VFIOPCIDevice *vdev, int nr)
- void vfio_bar_quirk_finalize(VFIOPCIDevice *vdev, int nr)
- {
-     VFIOBAR *bar = &vdev->bars[nr];
--    int i;
- 
-     while (!QLIST_EMPTY(&bar->quirks)) {
-         VFIOQuirk *quirk = QLIST_FIRST(&bar->quirks);
-         QLIST_REMOVE(quirk, next);
--        for (i = 0; i < quirk->nr_mem; i++) {
--            object_unparent(OBJECT(&quirk->mem[i]));
--        }
-         g_free(quirk->mem);
-         g_free(quirk->data);
-         g_free(quirk);
-diff --git a/hw/vfio/region.c b/hw/vfio/region.c
-index d04c57db630..b165ab0b937 100644
---- a/hw/vfio/region.c
-+++ b/hw/vfio/region.c
-@@ -365,12 +365,9 @@ void vfio_region_finalize(VFIORegion *region)
-     for (i = 0; i < region->nr_mmaps; i++) {
-         if (region->mmaps[i].mmap) {
-             munmap(region->mmaps[i].mmap, region->mmaps[i].size);
--            object_unparent(OBJECT(&region->mmaps[i].mem));
-         }
-     }
- 
--    object_unparent(OBJECT(region->mem));
+-    XenPTMSIX *msix = s->msix;
 -
-     g_free(region->mem);
-     g_free(region->mmaps);
- 
+-    if (!msix) {
+-        return;
+-    }
+-
+-    object_unparent(OBJECT(&msix->mmio));
+-
+-    g_free(s->msix);
+-    s->msix = NULL;
++    g_clear_pointer(&s->msix, g_free);
+ }
 -- 
 2.51.0
 
