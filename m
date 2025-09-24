@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDB0B9A8FE
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 17:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 335EDB9A88F
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 17:14:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1RBA-000389-Vr; Wed, 24 Sep 2025 11:13:13 -0400
+	id 1v1RBP-0003GC-B1; Wed, 24 Sep 2025 11:13:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v1RAs-00034h-Rw
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 11:12:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v1RBE-0003B9-2b
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 11:13:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v1RAp-0003QE-Ov
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 11:12:54 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v1RB5-0003SB-AB
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 11:13:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758726769;
+ s=mimecast20190719; t=1758726784;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=us+P3iJERuOyPKXri6HE+c6P3DAPmFCks2JgCL8MJ4k=;
- b=Lo8WGUb/rT9FUy/4GtljsgvCix0q7hn3XQrSQvcgUi1UYJNo30OgS7dXp1dW/I/pLqKKrA
- cYLcvC4oR9C8BCYJ0zhnQfBVZZI8gngm4Qi2n2AWUXuhdQZhijh1m9xstFTnZH2Tz7Jc6+
- UpR6MJ/a8jaKtnuVzHe95QAivopkZR0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+zBj3z5LfvDZj7N3KVZk4nLe2ZU5k4JS+bm1Nb81WWU=;
+ b=ghi09Ao10vX3HqDSjmj+Cfjkql/9hXPCPK4pa6s+rmtaJ6OZjj31uy0ZJ1+fhSYW71ggJs
+ xm07sxjPp3wBuflpvOe15cTL6ZQJ7y3wBIg0OrQClJB/6GUs70MAk1NpGayFWtkosDGnQO
+ BROQkHBX9WaYn8GbKqU5fxNmMfkebSc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-DZySXMi1PBKqZceAd7unDw-1; Wed, 24 Sep 2025 11:12:47 -0400
-X-MC-Unique: DZySXMi1PBKqZceAd7unDw-1
-X-Mimecast-MFC-AGG-ID: DZySXMi1PBKqZceAd7unDw_1758726766
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-46e19ee1094so27523435e9.0
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 08:12:47 -0700 (PDT)
+ us-mta-17-_djSVyZCMWGwDqEkE9YvlQ-1; Wed, 24 Sep 2025 11:13:03 -0400
+X-MC-Unique: _djSVyZCMWGwDqEkE9YvlQ-1
+X-Mimecast-MFC-AGG-ID: _djSVyZCMWGwDqEkE9YvlQ_1758726782
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-46b15e6f227so18343225e9.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 08:13:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758726766; x=1759331566;
+ d=1e100.net; s=20230601; t=1758726782; x=1759331582;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=us+P3iJERuOyPKXri6HE+c6P3DAPmFCks2JgCL8MJ4k=;
- b=MftnJsbUgOWuiLKtGZfHad44UdqH7wUv7U0RGqfouH7ZqAb/mbuVI7XKUZtkJWGuqU
- VdwGDiIe7RXYnPbJIsbbelFanmM8mQvLMaCAR8rtQgYdOg3iHAYAbvM2y3/f3tbr655d
- 7TET7zgUysxjlEOS8O64krZbZm6IB7wxR7S6/iMJN8w9w6ckuOsKzGnbpxhHPWJrJx+k
- ou3ItL4kHlatx1ZWogudvXW3ZYh8NIv/mkMk+2Tb4mVlsGHAZP2ZCgpGVlVhLE6FunjE
- e47QtsF1T33AoHeMs6KZbxXhv1DZtZm2MpJ3l8FN3+ok8TW8kYHv4O1hUEZ3StuYukjK
- 1VcA==
+ bh=+zBj3z5LfvDZj7N3KVZk4nLe2ZU5k4JS+bm1Nb81WWU=;
+ b=bGoyW5L187KetFyRapsg3mjfJt+w11IzFbFb/4CsNF7EIOmk4iAcuRcLZ02FTb+Axm
+ aJ4Mzix4WEn4PPvsZ+fJ+olJKbD8JdLC+19o3Vjl/9HAmcOSzsNuOKoI7cmkY0MNdxPb
+ uh0AOclGQGBOUIZX+CHp6GrIYPdwvcFj7Wqrji6qAjzjQvopr3ESmOof4ViWHfr5yeT7
+ H4sS3lVuECYfuBFoX3TnwB0+454gypEOK85R0vETCpkk+nqY56UOo5VvH3kTc8LV3A9u
+ jFRoheILS+pmmvJ4xp34DWpZ4mmgO3KolEijWYtrScRclMUCAIhjz8t3XgVgGLOkdj6H
+ 6F7g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVbwBDzcNNjt4WhveZTH6ispciDRfTVEPG4JvOEBbYwKqW5Sk2Kxmc9ty4GKLxGcpNjCDgQhkdjMcM/@nongnu.org
-X-Gm-Message-State: AOJu0Yyu7hgThbJDR9v7W0pOCspqxgsQFkdJAA0RfNLswtoE/8GfgTuw
- ujeFMucaavHFYMKgzmttXzK266HJYgmGsYqYfwagmq5i2sPW5iCoDagOddvsLfzm+w9pY6Ubuln
- 51/BRGXO3eqkf5rrjaHorj54qk02IW8H5nZmOYIDyRQAce78dudJ3S3kv
-X-Gm-Gg: ASbGncua9ogGMsu7L2PgxoZ3iDp9LxtQ2szA5d2RxoEsgLH4OO6Vkd5I7HnGpJ1ULgH
- lde7V49oze8JSQmHV4VKlCp7iWhxu6jx8mAknSvstb0uwGTjr7U0Wy3NLLt46woq6q//as12vPq
- FaQ8VhYpz2uPQ7rfz/Y2CwajJWKCg8kQdwq0sx6QWx2b8uoTaE6NWj7f9hkMNCfztzR68fHtxNk
- iwtd5vkalJhgZhlfSTslaV2QhqGMm3TM7OW9UPgFDKP6ibqY+DVZeZgGn5OEQ6AD23+lBFJLY9m
- t3eykL8yhHx7fHlysyoMKI6v0X+newjltC8w9QIiSfasRDX1uOSXcMc5ICrdLANmVaejqR1kxMf
- uZPc=
-X-Received: by 2002:a05:600c:4e4c:b0:46d:27b7:e7e5 with SMTP id
- 5b1f17b1804b1-46e32a51741mr1589775e9.32.1758726766311; 
- Wed, 24 Sep 2025 08:12:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHjcdQIREvs/+gYrKw+WJmy2VLwU3FWTXY0iKCnGo2ehMpx1qSPssUkjULZMMdwuPnakgMy/Q==
-X-Received: by 2002:a05:600c:4e4c:b0:46d:27b7:e7e5 with SMTP id
- 5b1f17b1804b1-46e32a51741mr1589445e9.32.1758726765900; 
- Wed, 24 Sep 2025 08:12:45 -0700 (PDT)
+ AJvYcCXXaeBBDb1Uifrring05Bn6/WWC5pVeB0L/VVyRP9UxfJiuBVdHQWxAmBLJKvYXExGorIPGA1VOE4gW@nongnu.org
+X-Gm-Message-State: AOJu0YytYm+nt3Mw9rx/5vkGEaUTIYAA6KmBu28pooEN6jimRFcXBmW2
+ TqCvLcWqfZdrl9pzm/HDBCElJfHPqMSrdbC4I+4VxSKE7+sA35e32J9RBjrJ94zew/vAo2DGD1W
+ w/WSP+oubK3FCwdiS/fvYwuiBn1Sjc6qfwW6XLH5gVyVfe2X6vphUuGC1
+X-Gm-Gg: ASbGncu4hK5gGYhEkb5ptROqAPgHEhMnwimgO0eEHeP85BULbDKQMyyEYyrce8MDv77
+ M9xGgHH/egquPQGK7dq2DJcNJRKElDGYNaXiAeZnG/9R2HA3skezW4dO/+9ZRzOiEMfisjgyd0a
+ cxi/1/nBUiLgAf76ujrgZLlVfuaxiuRY05yuiBQEmcTUxokBqHYQsLFNgDi9Zx/RezyhBse/WuR
+ 0T7IPnIeqM4M9O2GvyeLv29XjrxV0G0k3b0AIrz4QxOf85vZOc8IbZGYRHN5gZLBfhWuc9tlcce
+ hY9q4HJbudT8pKY2XCn5Ug4kF+IaPl5p5pwjHfGlVJ0JhI/ZnoD0CBM+kZeRvjgm7IuBKHcEmqQ
+ /DF0=
+X-Received: by 2002:a05:600c:c168:b0:45d:f897:fbe1 with SMTP id
+ 5b1f17b1804b1-46e32a0de18mr2212475e9.32.1758726781979; 
+ Wed, 24 Sep 2025 08:13:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGu4MYmL26xBxnPZ5rx4H8jppkuAZ4HYn+QOuMInyHbr1D2WIHvTUQ+vUrJe+Yofwzt5fgmA==
+X-Received: by 2002:a05:600c:c168:b0:45d:f897:fbe1 with SMTP id
+ 5b1f17b1804b1-46e32a0de18mr2212115e9.32.1758726781538; 
+ Wed, 24 Sep 2025 08:13:01 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
  ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3f0e28c83d6sm23772422f8f.56.2025.09.24.08.12.44
+ 5b1f17b1804b1-46e2a9be025sm36127545e9.11.2025.09.24.08.13.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 Sep 2025 08:12:45 -0700 (PDT)
-Message-ID: <f2871edb-24f0-4bb5-802b-9a1c4038e503@redhat.com>
-Date: Wed, 24 Sep 2025 17:12:44 +0200
+ Wed, 24 Sep 2025 08:13:01 -0700 (PDT)
+Message-ID: <a0d0a1e4-d43f-449f-bc4f-a3e501750a02@redhat.com>
+Date: Wed, 24 Sep 2025 17:13:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 19/27] vfio/pci.c: rename vfio_pci_dev_properties[] to
- vfio_pci_properties[]
+Subject: Re: [PATCH 20/27] vfio/pci.c: rename
+ vfio_pci_dev_nohotplug_properties[] to vfio_pci_nohotplug_properties[]
 To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
  harshpb@linux.ibm.com, mjrosato@linux.ibm.com, farman@linux.ibm.com,
  pasic@linux.ibm.com, borntraeger@linux.ibm.com, thuth@redhat.com,
@@ -85,7 +85,7 @@ To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
  alex.williamson@redhat.com, steven.sistare@oracle.com, qemu-ppc@nongnu.org,
  qemu-s390x@nongnu.org, qemu-devel@nongnu.org
 References: <20250923135352.1157250-1-mark.caveayland@nutanix.com>
- <20250923135352.1157250-20-mark.caveayland@nutanix.com>
+ <20250923135352.1157250-21-mark.caveayland@nutanix.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -131,17 +131,17 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250923135352.1157250-20-mark.caveayland@nutanix.com>
+In-Reply-To: <20250923135352.1157250-21-mark.caveayland@nutanix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -168,27 +168,27 @@ On 9/23/25 15:53, Mark Cave-Ayland wrote:
 >   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
 > diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index e8d2e36df0..839b5af339 100644
+> index 839b5af339..a32a507059 100644
 > --- a/hw/vfio/pci.c
 > +++ b/hw/vfio/pci.c
-> @@ -3687,7 +3687,7 @@ static const TypeInfo vfio_pci_device_info = {
+> @@ -3924,7 +3924,7 @@ static const TypeInfo vfio_pci_info = {
+>       .instance_finalize = vfio_pci_finalize,
+>   };
 >   
->   static PropertyInfo vfio_pci_migration_multifd_transfer_prop;
+> -static const Property vfio_pci_dev_nohotplug_properties[] = {
+> +static const Property vfio_pci_nohotplug_properties[] = {
+>       DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
+>       DEFINE_PROP_BOOL("use-legacy-x86-rom", VFIOPCIDevice,
+>                        use_legacy_x86_rom, false),
+> @@ -3937,7 +3937,7 @@ static void vfio_pci_nohotplug_dev_class_init(ObjectClass *klass,
+>   {
+>       DeviceClass *dc = DEVICE_CLASS(klass);
 >   
-> -static const Property vfio_pci_dev_properties[] = {
-> +static const Property vfio_pci_properties[] = {
->       DEFINE_PROP_PCI_HOST_DEVADDR("host", VFIOPCIDevice, host),
->       DEFINE_PROP_UUID_NODEFAULT("vf-token", VFIOPCIDevice, vf_token),
->       DEFINE_PROP_STRING("sysfsdev", VFIOPCIDevice, vbasedev.sysfsdev),
-> @@ -3773,7 +3773,7 @@ static void vfio_pci_class_init(ObjectClass *klass, const void *data)
->       PCIDeviceClass *pdc = PCI_DEVICE_CLASS(klass);
+> -    device_class_set_props(dc, vfio_pci_dev_nohotplug_properties);
+> +    device_class_set_props(dc, vfio_pci_nohotplug_properties);
+>       dc->hotpluggable = false;
 >   
->       device_class_set_legacy_reset(dc, vfio_pci_reset);
-> -    device_class_set_props(dc, vfio_pci_dev_properties);
-> +    device_class_set_props(dc, vfio_pci_properties);
->   #ifdef CONFIG_IOMMUFD
->       object_class_property_add_str(klass, "fd", NULL, vfio_pci_set_fd);
->   #endif
+>       object_class_property_set_description(klass, /* 3.1 */
 
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
