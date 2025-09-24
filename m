@@ -2,47 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27ED3B98876
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D42B9889A
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:29:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Jns-0005x9-Vx; Wed, 24 Sep 2025 03:20:41 -0400
+	id 1v1Jqp-0003fs-2H; Wed, 24 Sep 2025 03:23:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jnn-0005sQ-Si
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:35 -0400
-Received: from rev.ng ([94.130.142.21])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1v1JqU-0003Wi-LD
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:23:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jnk-0003hM-6g
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=p7zOOqCv9NfopwAwQRfWfxNnq+p4UwtqD5QxNAbVGJM=; b=HaBmLGzrsZVdrF2
- 6AQHKwjFsZSOxXq7NfEAx3ONYzn894UJShvutrCeirvY9pSNvQ02NopecxSi8EnjgSjw0+cU5CF6U
- uEhIZh0cdX6zFpTsiefjempxbY8mzNrVySTj73ij0hlmRJ/SMoV8cFcPtceP/7ji/HZlgzgkqs5Xi
- yA=;
-To: qemu-devel@nongnu.org
-Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
- palmer@dabbelt.com
-Subject: [RFC PATCH 34/34] target/riscv: Make pmp.h target_ulong agnostic
-Date: Wed, 24 Sep 2025 09:21:24 +0200
-Message-ID: <20250924072124.6493-35-anjo@rev.ng>
-In-Reply-To: <20250924072124.6493-1-anjo@rev.ng>
-References: <20250924072124.6493-1-anjo@rev.ng>
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1v1JqA-0003vp-LY
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:23:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758698578;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Rj3RQ4GXp5AjX5PkH/P7r4/EWTQrzqL0qIzlzX+1qL0=;
+ b=Y+mJY5LEEjDY0bSJvnjD3UKNOXRN7Z6Lz+aMBHBQ7jQdJB54+L51UrTTdYUGIA3sWoTo8k
+ Jl68J+jqum37UFhzSx7Ce2Wn30e1C4IgdPTFUInkQ348IDO5v3VFz/7npVTD9+2sfSD2XR
+ yikAVSYc8dn3THNBUkjR8KNcrG5Y+Z8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-358-bgCGd124NM6_dEC5D2jEqg-1; Wed, 24 Sep 2025 03:22:57 -0400
+X-MC-Unique: bgCGd124NM6_dEC5D2jEqg-1
+X-Mimecast-MFC-AGG-ID: bgCGd124NM6_dEC5D2jEqg_1758698576
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-46c84b3b27bso22127975e9.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 00:22:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758698575; x=1759303375;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Rj3RQ4GXp5AjX5PkH/P7r4/EWTQrzqL0qIzlzX+1qL0=;
+ b=v4gwLmAWuDAzT8VVgNqPnaLLmsh4HmryBuBmveKcm/XqiNrmmFVb9bhqa28q66MJTT
+ KaibKzpl4ZVFynGP/2IsaVFiqJPm8fsR8RoX8aXSMA06IM/LclqZWPITMqguhYBHM3ah
+ uNx6gXhFsvN+aINkGZ5h8cyMxcU+ydwJkK/qTRLBezkLR1J9n1sbLCEcJAkNdcKMAq8c
+ a3Y4M/ZqJRIxgiYwAMhvBLO6eoo5DAuLKZEuB7hm9e3/IS/MMhNr8z0GtXnjCjGQPUh2
+ e0KKodgCLKB4z+ud4zNm54dPgLl1d0BPZYCnG8Ild+rMSvBPl1B5Xz9XWSK4DSP3JdRv
+ 0URw==
+X-Gm-Message-State: AOJu0YxtFMZltZBcY/gLIBgyS2slsJFg1DQH+bO127+wADYpWJ3dQbFM
+ VtJZy+jWtx8QLx2KbEz6GcNAGPOSJ9Q7UiVhR9YRl39E591NQ1PqwAMbZcm3PsHlKqjt18NOo+T
+ k2k5BF2xEpz4JkBl7wb/VNgCdn+iy384d0gsc6eFFO232N54SZuTrk/IQ1ocBTHJ+
+X-Gm-Gg: ASbGncsWzRLCt4MIJnKgNx2WdLxbwXi0x27groAgHeBVE38aNH7L4h/TITXC75B8lCl
+ Wb7FrkS23nvw9Z4PEGWdASXKparb3TrJ2/QIEljg+v8+4yzEM6uUK5CIIySl+qSYDolyd46xtDV
+ UZiAcQfnN5i5eaQQmOi9nBjBpLB653/lxk7D9RKnWF33ej9Kv+2U9fkXKVfa74LMiZ3fiXxC84U
+ CAcWPtmYAB80/QAm0ESYcDaOdhxdlmzPKh7MMrwfOtFSTufR50drp/4Bvw81cDYSGzll2uC1Wlr
+ DLhQEqMDQgGtnzLIkCUabXiN5odjBRUbpc3tkQjPUFY=
+X-Received: by 2002:a05:600c:c04b:10b0:46e:1eaf:2564 with SMTP id
+ 5b1f17b1804b1-46e1eaf29femr34543285e9.29.1758698575290; 
+ Wed, 24 Sep 2025 00:22:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGzJEWAI4D1F69jZufVQMJVr/24juD8nmCY08MX7KVV/ISHu4zCaYuSPhOjJQePyJez3MDnA==
+X-Received: by 2002:a05:600c:c04b:10b0:46e:1eaf:2564 with SMTP id
+ 5b1f17b1804b1-46e1eaf29femr34543135e9.29.1758698574901; 
+ Wed, 24 Sep 2025 00:22:54 -0700 (PDT)
+Received: from sgarzare-redhat ([5.77.110.171])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-46e2aacfc3dsm19268265e9.16.2025.09.24.00.22.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 24 Sep 2025 00:22:54 -0700 (PDT)
+Date: Wed, 24 Sep 2025 09:22:47 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Li Zhaoxin <lizhaoxin04@baidu.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, Jonah Palmer <jonah.palmer@oracle.com>,
+ Miao Kezhan <miaokezhan@baidu.com>
+Subject: Re: [PATCH] vdpa-dev: add get_vhost() callback for vhost-vdpa device
+Message-ID: <lh5yr3s3xej3mejfkoz5q6m5jf62b6ox2mvaspu5t3niuhv3qx@gdwzsqquroei>
+References: <bf9c6885d0d425248a5765951a817ea518d92e8a.1758635007.git.lizhaoxin04@baidu.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
- helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <bf9c6885d0d425248a5765951a817ea518d92e8a.1758635007.git.lizhaoxin04@baidu.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -57,148 +103,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The pmp.h header is exposed through cpu.h.  pmp_table_t is also used in
-CPUArchState.  CSR declaraions are only used in target/ and are moved to
-csr.h.  In pmp.h, addr_reg is widened to 64 bits and the privilege mode
-parameter is fixed to 8 bits, similar to previous commits.
+On Tue, Sep 23, 2025 at 09:51:10PM +0800, Li Zhaoxin wrote:
+>Commit c255488d67 "virtio: add vhost support for virtio devices"
+>added the get_vhost() function, but it did not include vhost-vdpa devices.
+>Now we add it.
 
-Signed-off-by: Anton Johansson <anjo@rev.ng>
----
- target/riscv/csr.h     | 12 ++++++++++++
- target/riscv/pmp.h     | 20 +++++---------------
- target/riscv/machine.c |  2 +-
- target/riscv/pmp.c     |  9 +++++----
- 4 files changed, 23 insertions(+), 20 deletions(-)
+Again, could you please explain what problem you had and how this patch 
+solves it?
 
-diff --git a/target/riscv/csr.h b/target/riscv/csr.h
-index 552e6c5de5..3752a0ef43 100644
---- a/target/riscv/csr.h
-+++ b/target/riscv/csr.h
-@@ -78,4 +78,16 @@ void riscv_set_csr_ops(int csrno, const riscv_csr_operations *ops);
- /* In th_csr.c */
- extern const RISCVCSR th_csr_list[];
- 
-+/* PMP CSRs, defined in pmp.c */
-+void pmpcfg_csr_write(CPURISCVState *env, uint32_t reg_index,
-+                      target_ulong val);
-+target_ulong pmpcfg_csr_read(CPURISCVState *env, uint32_t reg_index);
-+
-+void mseccfg_csr_write(CPURISCVState *env, uint64_t val);
-+uint64_t mseccfg_csr_read(CPURISCVState *env);
-+
-+void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
-+                       target_ulong val);
-+target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index);
-+
- #endif /* RISCV_CSR_H */
-diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
-index e322904637..c9b0ee6c58 100644
---- a/target/riscv/pmp.h
-+++ b/target/riscv/pmp.h
-@@ -22,8 +22,6 @@
- #ifndef RISCV_PMP_H
- #define RISCV_PMP_H
- 
--#include "cpu.h"
--
- typedef enum {
-     PMP_READ  = 1 << 0,
-     PMP_WRITE = 1 << 1,
-@@ -50,7 +48,7 @@ typedef enum {
- } mseccfg_field_t;
- 
- typedef struct {
--    target_ulong addr_reg;
-+    uint64_t addr_reg;
-     uint8_t  cfg_reg;
- } pmp_entry_t;
- 
-@@ -65,21 +63,13 @@ typedef struct {
-     uint32_t num_rules;
- } pmp_table_t;
- 
--void pmpcfg_csr_write(CPURISCVState *env, uint32_t reg_index,
--                      target_ulong val);
--target_ulong pmpcfg_csr_read(CPURISCVState *env, uint32_t reg_index);
--
--void mseccfg_csr_write(CPURISCVState *env, uint64_t val);
--uint64_t mseccfg_csr_read(CPURISCVState *env);
-+typedef struct CPUArchState CPURISCVState;
- 
--void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
--                       target_ulong val);
--target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index);
- bool pmp_hart_has_privs(CPURISCVState *env, hwaddr addr,
--                        target_ulong size, pmp_priv_t privs,
-+                        int size, pmp_priv_t privs,
-                         pmp_priv_t *allowed_privs,
--                        target_ulong mode);
--target_ulong pmp_get_tlb_size(CPURISCVState *env, hwaddr addr);
-+                        uint8_t mode);
-+uint64_t pmp_get_tlb_size(CPURISCVState *env, hwaddr addr);
- void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index);
- void pmp_update_rule_nums(CPURISCVState *env);
- uint32_t pmp_get_num_rules(CPURISCVState *env);
-diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index 72bc0b04b5..8545bb121c 100644
---- a/target/riscv/machine.c
-+++ b/target/riscv/machine.c
-@@ -51,7 +51,7 @@ static const VMStateDescription vmstate_pmp_entry = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .fields = (const VMStateField[]) {
--        VMSTATE_UINTTL(addr_reg, pmp_entry_t),
-+        VMSTATE_UINT64(addr_reg, pmp_entry_t),
-         VMSTATE_UINT8(cfg_reg, pmp_entry_t),
-         VMSTATE_END_OF_LIST()
-     }
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 85199c7387..6089e2730e 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -23,6 +23,7 @@
- #include "qemu/log.h"
- #include "qapi/error.h"
- #include "cpu.h"
-+#include "csr.h"
- #include "trace.h"
- #include "exec/cputlb.h"
- #include "exec/page-protection.h"
-@@ -272,7 +273,7 @@ static int pmp_is_in_range(CPURISCVState *env, int pmp_index, hwaddr addr)
-  */
- static bool pmp_hart_has_privs_default(CPURISCVState *env, pmp_priv_t privs,
-                                        pmp_priv_t *allowed_privs,
--                                       target_ulong mode)
-+                                       uint8_t mode)
- {
-     bool ret;
- 
-@@ -331,8 +332,8 @@ static bool pmp_hart_has_privs_default(CPURISCVState *env, pmp_priv_t privs,
-  * Return false if no match
-  */
- bool pmp_hart_has_privs(CPURISCVState *env, hwaddr addr,
--                        target_ulong size, pmp_priv_t privs,
--                        pmp_priv_t *allowed_privs, target_ulong mode)
-+                        int size, pmp_priv_t privs,
-+                        pmp_priv_t *allowed_privs, uint8_t mode)
- {
-     int i = 0;
-     int pmp_size = 0;
-@@ -662,7 +663,7 @@ uint64_t mseccfg_csr_read(CPURISCVState *env)
-  * To avoid this we return a size of 1 (which means no caching) if the PMP
-  * region only covers partial of the TLB page.
-  */
--target_ulong pmp_get_tlb_size(CPURISCVState *env, hwaddr addr)
-+uint64_t pmp_get_tlb_size(CPURISCVState *env, hwaddr addr)
- {
-     hwaddr pmp_sa;
-     hwaddr pmp_ea;
--- 
-2.51.0
+This information must always be included in a commit message, so please 
+pay attention to this.
+
+Thanks,
+Stefano
+
+>
+>Co-developed-by: Miao Kezhan <miaokezhan@baidu.com>
+>Signed-off-by: Miao Kezhan <miaokezhan@baidu.com>
+>Signed-off-by: Li Zhaoxin <lizhaoxin04@baidu.com>
+>---
+> hw/virtio/vdpa-dev.c | 7 +++++++
+> 1 file changed, 7 insertions(+)
+>
+>diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
+>index d1da40afc8..4a7b970976 100644
+>--- a/hw/virtio/vdpa-dev.c
+>+++ b/hw/virtio/vdpa-dev.c
+>@@ -338,6 +338,12 @@ static int vhost_vdpa_device_set_status(VirtIODevice *vdev, uint8_t status)
+>     return 0;
+> }
+>
+>+static struct vhost_dev *vhost_vdpa_device_get_vhost(VirtIODevice *vdev)
+>+{
+>+    VhostVdpaDevice *s = VHOST_VDPA_DEVICE(vdev);
+>+    return &s->dev;
+>+}
+>+
+> static const Property vhost_vdpa_device_properties[] = {
+>     DEFINE_PROP_STRING("vhostdev", VhostVdpaDevice, vhostdev),
+>     DEFINE_PROP_UINT16("queue-size", VhostVdpaDevice, queue_size, 0),
+>@@ -369,6 +375,7 @@ static void vhost_vdpa_device_class_init(ObjectClass *klass, const void *data)
+>     vdc->set_config = vhost_vdpa_device_set_config;
+>     vdc->get_features = vhost_vdpa_device_get_features;
+>     vdc->set_status = vhost_vdpa_device_set_status;
+>+    vdc->get_vhost = vhost_vdpa_device_get_vhost;
+> }
+>
+> static void vhost_vdpa_device_instance_init(Object *obj)
+>-- 
+>2.34.1
+>
 
 
