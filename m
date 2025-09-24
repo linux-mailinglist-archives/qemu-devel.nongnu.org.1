@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E03B9BA75
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 21:17:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8839B9BA62
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 21:16:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1UqL-00029I-Fg; Wed, 24 Sep 2025 15:07:58 -0400
+	id 1v1Uqx-0002wC-9g; Wed, 24 Sep 2025 15:08:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1UmC-00070W-Kl
+ id 1v1UmB-00070v-N1
  for qemu-devel@nongnu.org; Wed, 24 Sep 2025 15:03:42 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1Uk8-0007uO-9C
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 15:03:35 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-32ec291a325so157954a91.1
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 12:01:26 -0700 (PDT)
+ id 1v1UkB-0007uR-9M
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 15:03:36 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-3304a57d842so129072a91.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 12:01:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1758740485; x=1759345285; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZamIB9qOqLDXfHWztLFTsDY1Wf4aDJfUVKiJDrru8TA=;
- b=aH/PiVsipMaHhj+o+ok+FePadXftrIY0Ih9XsrlPfQFsvQRJpStqv0WrdTZVeAhq+/
- Vg9YV4DBqW2CIqRgGRZ/T6UC2MhcXPWcGxCex/qQuYr5meYzuAfEGRA2d7xYACu/xRLw
- ClA0ZjD/DC2ymRoAtoSol2nxwHuSiPk9Q3wlzwfCSnLZAd6ZeNskxM+22dwsUUlm/lGY
- z1ltw9usa5xo17/udqlRydtizqvK12wQ/wdiQyydMjshR4SFfkKYDDoFv62qmKnFmFqp
- dBjetFAbHSPURt4AjGdXIF/5KgJjHKhnqWgA/AQ3P2CRinJ0S4u18rz1/sFC7DEDLUnL
- QFCg==
+ bh=hhvyGjhjUkCNEHZh1gnQZUsirw8YiHVeIFO9VlHtSAY=;
+ b=ZHq/XuD3WWxnR6ABsumUMdILeKingyufwZt2140jjoph+C/s56dcf+EWujQWiW7HrT
+ GZ0uzxJD4Q7SdJXIcoycji593KrT5jxJTnURNToRkXPyCcPhF0PzgzFFHDzrRunF+yvh
+ KwxPMjY/lgM/RzvtflHUt4NSBYolZT8QYcabpgj10WzKDPNVzK+1V0cjxQq9RHrm4NLd
+ dOJmWyTXLvRI6Me8lTOeXNy4wUWzIlB5ayU0fIvXsgXPmtXiogI4ioVklG0dP8vCcKTQ
+ vK/x7Rz1YB9+senWkb56ICaFb2/yWIEEVBUNCxys2NmnspP55a4CK7t84Wru6mQD21WQ
+ VEJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1758740485; x=1759345285;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZamIB9qOqLDXfHWztLFTsDY1Wf4aDJfUVKiJDrru8TA=;
- b=HBBwd6ibCKk1qAmSqixznTo14h/9NedaUwTPOgaggZHMKMYNt8vpH0dw1HW+sFd7aQ
- jvnThvat7tdfqF2hjH/t2RaawXbRg81hLZ8QIuVrxd2mrP7tbk6E2aA2gdmtv8QL/Gbk
- zkvA3nFZcr8qouzJ76dkNVjNvk8emJNl/uPIPeHt0tCeQTWRAExrLIoMAL0UmHJd6j3w
- YQJD+URuph44hMRewFmS0f6C/lmFCCLjk8m3XsJy/n8H24uP6l3fJ0+9Tf982DUjaj9Q
- erLkilCvWtBN/elfxe4vAG7xsRI5BjJrfp3CLCYBvSGX2KpA6k+hdrD92erxK6+p8IFJ
- Cpww==
-X-Gm-Message-State: AOJu0YwJ/R0LnYcQxxHIB12FAHwFsn+wLhiLmBJlzyUzop5Svu7bIjw1
- EmREd0RvNzF/EDLaZzzHualcKE100fEDaYIOcLEUgTzgMayvFiQtBkj6nhXMBUof8GC++FM2MXf
- vE5Z4
-X-Gm-Gg: ASbGncscQZD2anjSkGoi8Ptlp1NiJrlHNZivmrI5xLgIGyziiFmFEN96AvYLlLiJmVi
- pih1xA5mZujgdzdJLabmw2h2FtOHvvMtRqag1Hz9RUS/QBq8M6aikHhvZFOjhmKFdaUTvxQYqqj
- dQGOJsLwewbHmEKr0KUlzCViYHS/X1BM5F7AggkGTTFSsNMFHDhCWoc+cSflJ6E1o+eERVvACNP
- cRaPUF0P98QRvk63hkzAbOHesILtMkH7cW6uyRXPvXk/uUd7vH/Chqhl9YKpEVgOqm9IupjAdVW
- KLnFiypiqjlNfJnB5ZAL0E/0/8Oq6av5lhPW1ElHFq32GBzds8fEtpLZuuio7Z0FqcesMv5XhQr
- r4kZgRXhfEC2pmaLIIyNuZtGPLSc0
-X-Google-Smtp-Source: AGHT+IFv45f/OnNP+Iysqh/993rV03KXDoq/W52sw5GObjCaPNWjtMIXmX5qcAT4xz0gXbn7D2a18g==
-X-Received: by 2002:a17:90b:4d88:b0:32e:38bc:f5a9 with SMTP id
- 98e67ed59e1d1-3342a260f75mr720522a91.9.1758740483853; 
- Wed, 24 Sep 2025 12:01:23 -0700 (PDT)
+ bh=hhvyGjhjUkCNEHZh1gnQZUsirw8YiHVeIFO9VlHtSAY=;
+ b=garDq0ktxN8xvs+dWfWQngbb8PHHvBHC4qrlcsxbjiiJnMgBhnTFbJDIgMsPuDltnO
+ zXMtuZJKxnk0hWTJWnXE67zXC5Oduz+2uOLser5pnG4LxhGJ4wlZX01FTnAW8fNoB4Wt
+ Ln3a3sehe8Vw/yajBlwY8USTUQwmSPjqrqlM0ePdQNB2oYw721GRKn8HX563Do1wf7HJ
+ 515Pnx6z9PqcTvm5PjiA6MlA92HDCO/cku7xIma2W3jDcRSOzwlqUbladKpdzGmmG04F
+ TZi9kxmKctOC49US9lCmq43FUwN0lnzOJ2aWd6IRHSSoNUF0TX5yYnskb5Br8TDErJOw
+ oGQw==
+X-Gm-Message-State: AOJu0YzBdXosjH/2Q+gfUgPZtOvKN8Ta5NWdFnl0gkY58VYYCVUPK6Mp
+ 2Wm0y0q7RupIaOdxYqU+q/oypyBjWKXMgF1xrMIl7WAY1ApjO+klVn1ypJy3NRe3TRiil2Bnnmi
+ e2Ob/
+X-Gm-Gg: ASbGncsjySJA41f3fgsW9apPTK5v/UkqB/OMlk7OgGogwasD1uzs8AJuHojXnTyoci+
+ qy3s5Ad+l+6iTp474gxfAEHC6gvzxpIz5mAI9K1uQkLHM4hcqc4DKepKYtWz+wRFH8lj3QlAlY3
+ NDBADDIvA+pxMP6Vhv2YKGAPTzx5IwAQNJliT57YNokCaRDZCBweYAnH8EMaw2ALNhSg+b48fiQ
+ sp9YaMOiRab6erWx0h89V5h0UOwc0AHFVV1/yFfMP53KNoXY/yeLyAG5savcpGn1KKOD5GJM3Z+
+ prC9pKnCVc18sO5CFgPnzKD6lcqkeFBc1q/1V+bA5BKFJ1yGEojXm3r20cwRieSn0/YSVPzyDI0
+ NVoG/Ob2hiwmqcGytCfd+ao/Yo2Iy
+X-Google-Smtp-Source: AGHT+IEcz36kYNF6iolo9Zk5zAr0PB+ICTYJJpytomdFKyVytRF0RvmWxyVXxWCTEjCliVIYYKzYxA==
+X-Received: by 2002:a17:90a:d886:b0:32f:469:954c with SMTP id
+ 98e67ed59e1d1-3342a2f9276mr637787a91.34.1758740484847; 
+ Wed, 24 Sep 2025 12:01:24 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-33439103461sm63221a91.8.2025.09.24.12.01.23
+ 98e67ed59e1d1-33439103461sm63221a91.8.2025.09.24.12.01.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Sep 2025 12:01:23 -0700 (PDT)
+ Wed, 24 Sep 2025 12:01:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 22/32] target/alpha: Simplify call_pal implementation
-Date: Wed, 24 Sep 2025 12:00:55 -0700
-Message-ID: <20250924190106.7089-23-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 23/32] target/riscv: Record misa_ext in TCGTBCPUState.cs_base
+Date: Wed, 24 Sep 2025 12:00:56 -0700
+Message-ID: <20250924190106.7089-24-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250924190106.7089-1-richard.henderson@linaro.org>
 References: <20250924190106.7089-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,131 +89,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since 288a5fe980f, we don't link translation blocks
-directly to palcode entry points.  If we load palbr
-from env instead of encoding the constant, we avoid
-all need for tb_flush().
+The tb_flush within write_misa was incorrect.  It assumed
+that we could adjust the ISA of the current processor and
+discard all TB and all would be well.  But MISA is per vcpu,
+so globally flushing TB does not mean that the TB matches
+the MISA of any given vcpu.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+By recording misa in the tb state, we ensure that the code
+generated matches the vcpu.
+
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/alpha/helper.h       |  1 -
- linux-user/alpha/cpu_loop.c |  5 -----
- target/alpha/sys_helper.c   |  6 ------
- target/alpha/translate.c    | 21 ++++++---------------
- 4 files changed, 6 insertions(+), 27 deletions(-)
+ target/riscv/csr.c         | 3 ---
+ target/riscv/tcg/tcg-cpu.c | 3 ++-
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/target/alpha/helper.h b/target/alpha/helper.h
-index d60f208703..788d2fbf28 100644
---- a/target/alpha/helper.h
-+++ b/target/alpha/helper.h
-@@ -90,7 +90,6 @@ DEF_HELPER_FLAGS_2(ieee_input_s, TCG_CALL_NO_WG, void, env, i64)
- #if !defined (CONFIG_USER_ONLY)
- DEF_HELPER_FLAGS_1(tbia, TCG_CALL_NO_RWG, void, env)
- DEF_HELPER_FLAGS_2(tbis, TCG_CALL_NO_RWG, void, env, i64)
--DEF_HELPER_FLAGS_1(tb_flush, TCG_CALL_NO_RWG, void, env)
- 
- DEF_HELPER_1(halt, void, i64)
- 
-diff --git a/linux-user/alpha/cpu_loop.c b/linux-user/alpha/cpu_loop.c
-index bb8346b509..f93597c400 100644
---- a/linux-user/alpha/cpu_loop.c
-+++ b/linux-user/alpha/cpu_loop.c
-@@ -94,11 +94,6 @@ void cpu_loop(CPUAlphaState *env)
-                 break;
-             case 0x86:
-                 /* IMB */
--                /* ??? We can probably elide the code using page_unprotect
--                   that is checking for self-modifying code.  Instead we
--                   could simply call tb_flush here.  Until we work out the
--                   changes required to turn off the extra write protection,
--                   this can be a no-op.  */
-                 break;
-             case 0x9E:
-                 /* RDUNIQUE */
-diff --git a/target/alpha/sys_helper.c b/target/alpha/sys_helper.c
-index 51e3254428..87e37605c1 100644
---- a/target/alpha/sys_helper.c
-+++ b/target/alpha/sys_helper.c
-@@ -20,7 +20,6 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 8842e07a73..3c8989f522 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -25,7 +25,6 @@
+ #include "pmu.h"
+ #include "time_helper.h"
  #include "exec/cputlb.h"
 -#include "exec/tb-flush.h"
- #include "exec/helper-proto.h"
- #include "system/runstate.h"
- #include "system/system.h"
-@@ -38,11 +37,6 @@ void helper_tbis(CPUAlphaState *env, uint64_t p)
-     tlb_flush_page(env_cpu(env), p);
- }
- 
--void helper_tb_flush(CPUAlphaState *env)
--{
--    tb_flush(env_cpu(env));
--}
--
- void helper_halt(uint64_t restart)
- {
-     if (restart) {
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index cebab0318c..f11b382438 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -48,8 +48,6 @@ struct DisasContext {
- 
- #ifdef CONFIG_USER_ONLY
-     MemOp unalign;
--#else
--    uint64_t palbr;
- #endif
-     uint32_t tbflags;
-     int mem_idx;
-@@ -1155,7 +1153,6 @@ static DisasJumpType gen_call_pal(DisasContext *ctx, int palcode)
- #else
-     {
-         TCGv tmp = tcg_temp_new();
--        uint64_t entry;
- 
-         gen_pc_disp(ctx, tmp, 0);
-         if (ctx->tbflags & ENV_FLAG_PAL_MODE) {
-@@ -1165,12 +1162,11 @@ static DisasJumpType gen_call_pal(DisasContext *ctx, int palcode)
-         }
-         tcg_gen_st_i64(tmp, tcg_env, offsetof(CPUAlphaState, exc_addr));
- 
--        entry = ctx->palbr;
--        entry += (palcode & 0x80
--                  ? 0x2000 + (palcode - 0x80) * 64
--                  : 0x1000 + palcode * 64);
--
--        tcg_gen_movi_i64(cpu_pc, entry);
-+        tcg_gen_ld_i64(cpu_pc, tcg_env, offsetof(CPUAlphaState, palbr));
-+        tcg_gen_addi_i64(cpu_pc, cpu_pc,
-+                         palcode & 0x80
-+                         ? 0x2000 + (palcode - 0x80) * 64
-+                         : 0x1000 + palcode * 64);
-         return DISAS_PC_UPDATED;
+ #include "exec/icount.h"
+ #include "accel/tcg/getpc.h"
+ #include "qemu/guest-random.h"
+@@ -2173,8 +2172,6 @@ static RISCVException write_misa(CPURISCVState *env, int csrno,
+         env->mstatus &= ~MSTATUS_FS;
      }
- #endif
-@@ -1292,11 +1288,7 @@ static DisasJumpType gen_mtpr(DisasContext *ctx, TCGv vb, int regno)
-     case 7:
-         /* PALBR */
-         tcg_gen_st_i64(vb, tcg_env, offsetof(CPUAlphaState, palbr));
--        /* Changing the PAL base register implies un-chaining all of the TBs
--           that ended with a CALL_PAL.  Since the base register usually only
--           changes during boot, flushing everything works well.  */
--        gen_helper_tb_flush(tcg_env);
--        return DISAS_PC_STALE;
-+        break;
  
-     case 32 ... 39:
-         /* Accessing the "non-shadow" general registers.  */
-@@ -2874,7 +2866,6 @@ static void alpha_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
-     ctx->ir = cpu_std_ir;
-     ctx->unalign = (ctx->tbflags & TB_FLAG_UNALIGN ? MO_UNALN : MO_ALIGN);
- #else
--    ctx->palbr = env->palbr;
-     ctx->ir = (ctx->tbflags & ENV_FLAG_PAL_MODE ? cpu_pal_ir : cpu_std_ir);
- #endif
+-    /* flush translation cache */
+-    tb_flush(env_cpu(env));
+     env->xl = riscv_cpu_mxl(env);
+     return RISCV_EXCP_NONE;
+ }
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 78fb279184..143ab079d4 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -191,7 +191,8 @@ static TCGTBCPUState riscv_get_tb_cpu_state(CPUState *cs)
+ 
+     return (TCGTBCPUState){
+         .pc = env->xl == MXL_RV32 ? env->pc & UINT32_MAX : env->pc,
+-        .flags = flags
++        .flags = flags,
++        .cs_base = env->misa_ext,
+     };
+ }
  
 -- 
 2.43.0
