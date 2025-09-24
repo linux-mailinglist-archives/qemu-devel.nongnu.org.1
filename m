@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F1C5B99290
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66794B99279
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:32:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1LoP-0004aX-KH; Wed, 24 Sep 2025 05:29:21 -0400
+	id 1v1LoQ-0004cs-HP; Wed, 24 Sep 2025 05:29:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1LoE-0004XV-Bz
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:12 -0400
+ id 1v1LoI-0004Zb-4K
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1Lo8-0004l1-3V
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:09 -0400
+ id 1v1LoA-0004l9-AQ
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758706141;
+ s=mimecast20190719; t=1758706143;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CxCkSne5lIEz+6v/DtZSGsRBXxpV2mGxzrf4U3hlZ3E=;
- b=PEI6OK/gGyeNRZI/KglddCdc4j/Sq+mRFw9AHLTAnkRy30FaIWTaX574u3A/UJJCTJcMp+
- QarQUGwaJ0KL46uOW7npq4WRtCVuwUVAIEcw+GjY6jxq5+xiEmhZh4KhncohpuiHBAPIda
- 2uQ/gSvKSmhNcTlN+7vyXFaMhte/1ks=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4hJt6IuC0vyLZr1331KBBwz4pXpM7XhSe3x8xtgsFGY=;
+ b=bA3WSt/13oqw6SIib8q3bTo+SIen5MC5bZKgtdGzRkNHk/Gx0gOlMNk+Ly/2L6oPSwW08J
+ zFUI5MgoKMJXc4LHIlRHp+ntNVwsAq7NZjDW8E2IDRHvGvcLUBb2wKm2OMjGzdZvS3CQEJ
+ EeFxBdZ7LwdkLzlZ4toEUn+6nUJY1+0=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-149-VhKQ_cnYO02k3-A56ORUzw-1; Wed, 24 Sep 2025 05:28:59 -0400
-X-MC-Unique: VhKQ_cnYO02k3-A56ORUzw-1
-X-Mimecast-MFC-AGG-ID: VhKQ_cnYO02k3-A56ORUzw_1758706138
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-b2e9e07a887so205178266b.0
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:28:59 -0700 (PDT)
+ us-mta-275-yWbQS6yIOzCWA7W7P8XqXg-1; Wed, 24 Sep 2025 05:29:02 -0400
+X-MC-Unique: yWbQS6yIOzCWA7W7P8XqXg-1
+X-Mimecast-MFC-AGG-ID: yWbQS6yIOzCWA7W7P8XqXg_1758706141
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-b2ef8e0133fso214148266b.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:29:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758706137; x=1759310937;
+ d=1e100.net; s=20230601; t=1758706140; x=1759310940;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CxCkSne5lIEz+6v/DtZSGsRBXxpV2mGxzrf4U3hlZ3E=;
- b=Jgajjco0qRlGWIDcXrrEfGJy2dLZnI+d9gwsHWTEtoree76RSb/nAyIYjSfqp4UKw1
- 92vPEQ6kxesDWlyP8+GiV3Ey8llZKHrvsZTr8p4Mj71epV0AO6pjYw+6QfZlCT977BET
- uNz5/Cek7z1n6VXoHEiGr7ugKg53fMhTAX8CNuwxdNVBVQsWw5Ph6bI6YIQpT7L7GJvm
- qQ6kzUUfWIcpOddcXuTYXffkx2GIq0KBXlIEo4z0GD9ppabzuMop2lR2kRE0VycMlNOl
- hUkO2llwAbAlGroAOem97bHoVHM7F+hPCJ+QfTWKMISBN4Yv2qhyMsBJb2AixG6nnKcH
- fttA==
-X-Gm-Message-State: AOJu0YzS5WfJDd8yfaLn6Brf471Fk6VGOH5ERH/BggTTwOB9eMV8Xwpg
- X3/FTE+RuLPVW6icv7wbJBcdK4d8srVVeHGQCFZ0mQ5l4EBwoMjKe80GM87qZMu4MSYK3RKURth
- btQ0JDGJVpxVTopQMNEEvDq9OFu+rGbrHKdv4gpxvMWAILmUMrVoeyeglFIQyl/BWnmxga6R/Cq
- JsI1TKqgqPkQdxhB78r/m5IPH3Ie6avsXrHZsl1vQp
-X-Gm-Gg: ASbGncsbeVfTUt9mUJxpKvjTVkCacvrj7ROiUyrKBhHX1cTmCI3MuqBBgxZH2LFuTuK
- x2WhJXf3UfsqV5khbG9a5BO3uDSa1bEeGr1zVHL50IaKDmF9/8ueSGLLhdlbkCCKVcr7hDhIi76
- DydLJTKqxJTzCc9bTGrzfrrpJsR8b1GmiyuUF2xQd8xuCG7srsE6Io1d3KXO3JXZMZTb56kPvw7
- zFJtBGx5C+X5dxdr/Wm2i/uSx9PIOBoMXRi0xzg3zXgEyUYXbxo82fCZOcuvmadDZcDQlj0osow
- VN2iUMWFSeIagJ7hsch7RWAA8S8v66vUvJPOJ551rW+wHDOOs1yOHFR3aRWV62UVp1xhYkCNsrl
- +0u81DDjK97Sa1PpoNkzcwMHX2SnjDgK5gMBSOl2Rfh3b3g==
-X-Received: by 2002:a17:906:f590:b0:b2e:51cc:9b9 with SMTP id
- a640c23a62f3a-b3027d3e5a8mr550170466b.24.1758706137287; 
- Wed, 24 Sep 2025 02:28:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEMW/EaiCphCU8LY3mf9U8MF3IfLZCXOhbU5+69ONTRLAqAHzNSWw8O9susRhfo321/NvySiw==
-X-Received: by 2002:a17:906:f590:b0:b2e:51cc:9b9 with SMTP id
- a640c23a62f3a-b3027d3e5a8mr550168266b.24.1758706136793; 
- Wed, 24 Sep 2025 02:28:56 -0700 (PDT)
+ bh=4hJt6IuC0vyLZr1331KBBwz4pXpM7XhSe3x8xtgsFGY=;
+ b=jS8QSWM90+spZePC6iWyzzmgnTqxC804HCFOeTmf/LftgWvixlZTddD9uUoUX6siLy
+ oUUXYkjMHapizTfcKTXTJHdgJz8Asr/6jW67eTDDjvf2XyGgetAxoACSWFP4tVl4RdEJ
+ AGNcSqoRgQqo5YQosklrMaNUaC6WtEnt3Itp8eCpzL90ACy1t8J+oFbrsSNKes8tKKl2
+ h0d8WehXyOYnRtAnPfXj4UCl49X7KyVVVN/B0IBeBKnHi49idJGICdDTRwTdCP7fwKWF
+ +QC9J0znDJ4H6TrJD9lDgV5AMSl2qUxBmlz0gsm/VHPgCWyXla94pkwmEtwfiv99m5WY
+ QaTw==
+X-Gm-Message-State: AOJu0YwUBiJ9lmv/+jPLC4PFcx7QVgYCOcNVzW+dWACehdkKwCnZZNkV
+ a2EhhDfBXJ+dA5AlqEgR0LtIYaSvhN0XWA7Eg08CwmjgIIL/cfWnoMwIqPbS4M95jYkGfyscu/g
+ 876X7VgUAfrsjho3btySNEqx7KBnNN4Hbun1Iy3JyivyWTfkYhZIY54aUZ/QWfQ7mK9Rzjgv7iL
+ fk4TG6V/upHcHHwykCIESPcXJ0Zx8Jqn3EHIVgjJYo
+X-Gm-Gg: ASbGnctTFrbfsUY+6L+jHVlFTAN6ZmTLmOQshxo2bn60apOLA3YSpTvcA6peazTj9HR
+ 2ncZviUEdXGKBc38rAZ7R1PJOxPWCPDTMQiBi09mGicIpRHTjzVzwVv4yZgKXc2ZWszAbDN4DqD
+ 3ngTVhTY1T2ywttIeOtetVPqaVfFfFJ+O+M66hhAxRe8NsJoKWA2i2ipVijtNazOGlWbXg5KMJe
+ VwrUZucP7skV491AGIR4/IFsWp6JH+CkOZHa1Ph6ANXP19JJuuZY4JyIj5h78pMauaq9OET//k9
+ 3ICEmyEj1cWBobpGSYClT+ZFoLkJBr6QY2y5jnj737gm5DAHLKOptzhtioZXe1a+61B7t2EVq9a
+ vsRIxaVKD9z2JzoR/jvaXKcfsiLnqXtkyKoLOLtMA80C90g==
+X-Received: by 2002:a17:906:c14e:b0:b07:c714:f3ca with SMTP id
+ a640c23a62f3a-b302a84f6c9mr589812966b.50.1758706139944; 
+ Wed, 24 Sep 2025 02:28:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHGRiKSUbM+jAMl5IXfzA8a/ZgIWbv3ntJ5e6m1yyWXXoz6LFLxkpFfEk0Dx/CXRehI2E8cfQ==
+X-Received: by 2002:a17:906:c14e:b0:b07:c714:f3ca with SMTP id
+ a640c23a62f3a-b302a84f6c9mr589810566b.50.1758706139441; 
+ Wed, 24 Sep 2025 02:28:59 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b3163e9b70esm236882566b.42.2025.09.24.02.28.54
+ a640c23a62f3a-b2d5c22db22sm569500866b.68.2025.09.24.02.28.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Sep 2025 02:28:54 -0700 (PDT)
+ Wed, 24 Sep 2025 02:28:57 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 02/29] rust: build: add back common and util tests
-Date: Wed, 24 Sep 2025 11:28:22 +0200
-Message-ID: <20250924092850.42047-3-pbonzini@redhat.com>
+Subject: [PULL 03/29] rust: vmstate: use "cast()" instead of "as"
+Date: Wed, 24 Sep 2025 11:28:23 +0200
+Message-ID: <20250924092850.42047-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924092850.42047-1-pbonzini@redhat.com>
 References: <20250924092850.42047-1-pbonzini@redhat.com>
@@ -84,11 +84,11 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -107,44 +107,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These were dropped by mistake when extracting the crates.
+Reported by clippy, fix it.
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/common/meson.build | 3 +++
- rust/util/meson.build   | 4 ++++
- 2 files changed, 7 insertions(+)
+ rust/migration/src/vmstate.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/common/meson.build b/rust/common/meson.build
-index b805e0faf57..07d073182ed 100644
---- a/rust/common/meson.build
-+++ b/rust/common/meson.build
-@@ -24,6 +24,9 @@ _common_rs = static_library(
- 
- common_rs = declare_dependency(link_with: [_common_rs])
- 
-+rust.test('rust-common-tests', _common_rs,
-+          suite: ['unit', 'rust'])
-+
- # Doctests are essentially integration tests, so they need the same dependencies.
- # Note that running them requires the object files for C code, so place them
- # in a separate suite that is run by the "build" CI jobs rather than "check".
-diff --git a/rust/util/meson.build b/rust/util/meson.build
-index 87a893673d2..96330504459 100644
---- a/rust/util/meson.build
-+++ b/rust/util/meson.build
-@@ -44,6 +44,10 @@ _util_rs = static_library(
- 
- util_rs = declare_dependency(link_with: [_util_rs], dependencies: [qemuutil, qom])
- 
-+rust.test('rust-util-tests', _util_rs,
-+          dependencies: [qemuutil, qom],
-+          suite: ['unit', 'rust'])
-+
- # Doctests are essentially integration tests, so they need the same dependencies.
- # Note that running them requires the object files for C code, so place them
- # in a separate suite that is run by the "build" CI jobs rather than "check".
+diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
+index c05c4a1fd66..e04b19b3c9f 100644
+--- a/rust/migration/src/vmstate.rs
++++ b/rust/migration/src/vmstate.rs
+@@ -144,7 +144,7 @@ macro_rules! vmstate_of {
+         $crate::bindings::VMStateField {
+             name: ::core::concat!(::core::stringify!($field_name), "\0")
+                 .as_bytes()
+-                .as_ptr() as *const ::std::os::raw::c_char,
++                .as_ptr().cast::<::std::os::raw::c_char>(),
+             offset: ::std::mem::offset_of!($struct_name, $field_name),
+             $(num_offset: ::std::mem::offset_of!($struct_name, $num),)?
+             $(field_exists: $crate::vmstate_exist_fn!($struct_name, $test_fn),)?
 -- 
 2.51.0
 
