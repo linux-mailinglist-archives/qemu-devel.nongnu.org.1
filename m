@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FB2B9929C
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1C4B992BA
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:34:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Lp5-0005LX-KX; Wed, 24 Sep 2025 05:30:04 -0400
+	id 1v1Lp7-0005N8-PA; Wed, 24 Sep 2025 05:30:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1Lp1-0005JC-Mp
+ id 1v1Lp1-0005J8-HV
  for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1Lot-0004pj-0y
+ id 1v1Loy-0004q8-44
  for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758706189;
+ s=mimecast20190719; t=1758706192;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iIHJDm7aNxFUbTsEnGeRE1qG811mxITS7dOJUdDzhCI=;
- b=Cw+uy1P6DeLeyV2sy8tlfpDv+Oz3aoIoRIbxOeUtCfBt//gqDCSu4FxkwUaYIubou13Z22
- RPlCfFLwl0pZ+6icmbkaChlBICmtHCfzfW8Ovvfz8VQQSWTLHbQkllQFihWQMvGJNvNQrZ
- F3C0q8KlQ+A2NWqzJljQos+or42Aug4=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5Lr8fIGw+ra7DxehRDJAgbjkaaSFobuUwVbfza7dpxE=;
+ b=i/Kw9wSx3ToCViat8L16lrDB5IdqWnVMV89nfw+EMl4Evv03KHb0nsdxgxsUpFQs7F62Sk
+ CGYZpPHk/Gi+7ll+jyVzTPEujAY/FfG59cJrPmSl49jX9BvDPhsWOkvMAxZCOShH9OwWvK
+ 5uypY2kpVhD9iLrUPOQRDC99obkHu88=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-gOnjK2UxOay9E7HwvAUFFg-1; Wed, 24 Sep 2025 05:29:48 -0400
-X-MC-Unique: gOnjK2UxOay9E7HwvAUFFg-1
-X-Mimecast-MFC-AGG-ID: gOnjK2UxOay9E7HwvAUFFg_1758706187
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-b2d604db3easo267300566b.3
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:29:47 -0700 (PDT)
+ us-mta-329-G2xi3pd-M8SswEIwGpdwcA-1; Wed, 24 Sep 2025 05:29:51 -0400
+X-MC-Unique: G2xi3pd-M8SswEIwGpdwcA-1
+X-Mimecast-MFC-AGG-ID: G2xi3pd-M8SswEIwGpdwcA_1758706190
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-b3347f0b205so37571266b.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:29:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758706186; x=1759310986;
+ d=1e100.net; s=20230601; t=1758706189; x=1759310989;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iIHJDm7aNxFUbTsEnGeRE1qG811mxITS7dOJUdDzhCI=;
- b=YV3QZXWcuTYR8iLZH+oR375DRTX+3C3asR10ATqBeCq2V1+ZtioiImyNIi3dzTMGpz
- 2Sxg0nY+meGxqCXJQJ/LPFp6M+hrP2IgLFE7UTYdGkVk9Wx+x342nJLl8+jn9xJdpnwG
- GRVWfSjp4W227uqDbSETCDbcjOjUYDSLuOwsqdNn/6lN+qkssBl5ZiCl5iYIqSRYMk32
- 5MP+WI1PxzLtMcPDMtxscJN4epTIEXx+MGbhjiuOyqlRLgy5rcvAZcacptp/86MPkwX6
- FxGtLJQY//L7iNCwG2xtblJoHmnlYkR8+QlAzj0jqWMH07/yWWjjw1hlavXF8eDDw0NR
- lJ/w==
-X-Gm-Message-State: AOJu0YwVe3KLwO9mLfQ19RrNLZdz8qSjiBZs6W900Go6BhWblyJpd87i
- yaae01Rhh165tE6BoobBnKVDItzus0mB6qDE/freiK0cnZI/5sgIpjGMKWTirBbgqMpIB8bDjEE
- yDeVdp37ofWh9SpGUPc7c1pWnFveDcXasNgGW6EMQLWGLWPIEsq7CAsvOceXjTTXEYINjZHryzb
- yYeIcQ5jqIBP6upoMnkz7yxVAn1nrkiJw0MBj3dZK/
-X-Gm-Gg: ASbGncvfDXB/tX0m2YVSMvCtMUV2i3krr+cV9EWsuJeuNsNgELI7TlZaNsT8aTgMyLW
- imGjgbBDvjvXH5bVhjXrAus5UI3rCY88zzuzr3KTtVRrGmnBJcxxhysQAoha/pmuwaPVo5ZuKF1
- tJCLmz6jJfwS8ERIxJSlc14bBGI8OUKqy4oA0UIF5ON7YRK01G7kwvgsLHTXd1sHnNfFBybMrjW
- +HPUmRMNTtnDiLys5h0o+heVulcGOss5uNXUVF5yzI6WsiExQRzNN7y1FxFZHNRnrBBRX+iEolU
- nliP0JKF+58IwZZwjlyxX70iYsvP8It9qnqi5uZuHor6hw4LrlbaPCwA/Qb3c8A1vYDAuga2liE
- nAc+lJBELsffphstCy2+cOyD9kaq5ExKDeUsMtk5Hk4vFwA==
-X-Received: by 2002:a17:907:7f9f:b0:b2f:963:1d2f with SMTP id
- a640c23a62f3a-b302b2245c1mr588086266b.51.1758706186319; 
- Wed, 24 Sep 2025 02:29:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEmoP3C/NHDS4xRr4gqAP8qX1UBKgqfm2XW05R9uIlJdS1Od78xbxBKY9m2d+9zBVQP43lM7A==
-X-Received: by 2002:a17:907:7f9f:b0:b2f:963:1d2f with SMTP id
- a640c23a62f3a-b302b2245c1mr588084166b.51.1758706185893; 
- Wed, 24 Sep 2025 02:29:45 -0700 (PDT)
+ bh=5Lr8fIGw+ra7DxehRDJAgbjkaaSFobuUwVbfza7dpxE=;
+ b=f/AI1ws7In8TENTsJqKSb3DsFOZQAL+UUhrV17EZ3Jziqa/xGd1La/g2l02+fniXIQ
+ S55y4vPc4JHbqhFq613NfEic8pjxhHX7FuuoL64b270wezqRPc/5OzBTbtWX29zJq/ZO
+ gB4Jn92BzOEJQi6zGuvr2dHLgWd6yCNIGe09YFFWKg8Kw9Z7hH0yajYuOb3khHSTNO6x
+ lU24Y4BgahAv+z7r2liHzl3Ud6KeuL3QWKMKBPL/ZCNRedIlXqfGtqY8Y0zugdhhY9/s
+ RW2RLuPygcaaZmgWhvUDms3Gt5mFSDdA66KhrhRb4ywvD3ad1HaZZW2nrqkD8SxZrIiE
+ bVfA==
+X-Gm-Message-State: AOJu0YzyhxBgszNK4YWr8ROgpHGlhtEX3A/q2YRwOn0Uv/8IZW7Jyq40
+ 8r5ia8JqQLByPwYhFSF4j9C40W8XvgUQ5y+iAuAUF9HMIGwlWZpJyBeqVRAEijawRVnBPCiw7Ra
+ C0VIJmLs2QnqQgr+U8eYExYolGfRTppputbyVc9F5hrc+0i2+8jE43p80jtoMUEKIIXZtjtRS1g
+ wzRWeE51D+fHIA8mtuXF3qFl0q85yW6JM6UutCQAbe
+X-Gm-Gg: ASbGncuTrU9addeIlpCv3n6hW1/qVrQkQyzCWDq044Jti17Po2rXUnnTWIh//U8+qZX
+ 6ksbw0dbYEwIDFyP7PIsFawlEIctLjhGRYp3c7G/ilsiayaogqyNu/N5Q7WbU52uzOZ9fEeN17v
+ 7z43/ODrlCKZBaLEUc7d+zH4Q+MT/QZ0BZpF02nWI36oPw6F3Kjj58t5YvXIh1XKh4WjGFX3chw
+ Kj8QdUFrlC0qdsXK1/DLNAw07sD/UuN7f9ebjImzYtXBLfqCckCFXcFeodweeJDVeRYzouPUHWj
+ JyUsGS7rxRiL4+JgfRx/BjLGpR6YQVUzkBEdS/oNAzF+1IOA7VjjaYssfSOsADP7A4TH3E8jo+R
+ PiLfa0nmDwBiRcjm05NbTv88l5hxlWrliP5CVp2JdOyZURA==
+X-Received: by 2002:a17:907:d14:b0:b1d:285d:185d with SMTP id
+ a640c23a62f3a-b3021ca6d78mr537924166b.0.1758706189067; 
+ Wed, 24 Sep 2025 02:29:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMQNcYKQvCMZuf1j6Q0h3pUx+56rZgVUcElX3RFudcdOG4EbiU3uNSSjPlf2xO9OUrxqBuwQ==
+X-Received: by 2002:a17:907:d14:b0:b1d:285d:185d with SMTP id
+ a640c23a62f3a-b3021ca6d78mr537920766b.0.1758706188618; 
+ Wed, 24 Sep 2025 02:29:48 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b2a2a5f6cb9sm834859966b.36.2025.09.24.02.29.44
+ a640c23a62f3a-b32859673b4sm130560566b.30.2025.09.24.02.29.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Sep 2025 02:29:44 -0700 (PDT)
+ Wed, 24 Sep 2025 02:29:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 18/29] rust/qdev: Drop declare_properties & define_property
- macros
-Date: Wed, 24 Sep 2025 11:28:38 +0200
-Message-ID: <20250924092850.42047-19-pbonzini@redhat.com>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 19/29] linux-user: avoid -Werror=int-in-bool-context
+Date: Wed, 24 Sep 2025 11:28:39 +0200
+Message-ID: <20250924092850.42047-20-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924092850.42047-1-pbonzini@redhat.com>
 References: <20250924092850.42047-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -109,86 +109,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+linux-user is failing to compile on Fedora 43:
 
-After HPET's #property conversion, there's no use case for
-declare_properties & define_property. So get rid of them for now.
+../linux-user/strace.c:57:66: error: enum constant in boolean context [-Werror=int-in-bool-context]
+   57 | #define FLAG_BASIC(V, M, N)      { V, M | QEMU_BUILD_BUG_ON_ZERO(!(M)), N }
 
-In future, if there's something that #property really cannot resolve,
-they can be brought back.
+The warning does not seem to be too useful and we could even disable it,
+but the workaround is simple in this case.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-stable@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20250920160520.3699591-13-zhao1.liu@intel.com
 ---
- rust/hw/core/src/qdev.rs | 53 ----------------------------------------
- 1 file changed, 53 deletions(-)
+ linux-user/strace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/hw/core/src/qdev.rs b/rust/hw/core/src/qdev.rs
-index 9c82e1716c5..a4493dbf011 100644
---- a/rust/hw/core/src/qdev.rs
-+++ b/rust/hw/core/src/qdev.rs
-@@ -248,59 +248,6 @@ pub fn class_init<T: DeviceImpl>(&mut self) {
-     }
- }
+diff --git a/linux-user/strace.c b/linux-user/strace.c
+index 1233ebceb08..758c5d32b6c 100644
+--- a/linux-user/strace.c
++++ b/linux-user/strace.c
+@@ -54,7 +54,7 @@ struct flags {
+ };
  
--#[macro_export]
--macro_rules! define_property {
--    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty, bit = $bitnr:expr, default = $defval:expr$(,)*) => {
--        $crate::bindings::Property {
--            // use associated function syntax for type checking
--            name: ::std::ffi::CStr::as_ptr($name),
--            info: $prop,
--            offset: ::std::mem::offset_of!($state, $field) as isize,
--            bitnr: $bitnr,
--            set_default: true,
--            defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval as u64 },
--            ..::common::zeroable::Zeroable::ZERO
--        }
--    };
--    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty, default = $defval:expr$(,)*) => {
--        $crate::bindings::Property {
--            // use associated function syntax for type checking
--            name: ::std::ffi::CStr::as_ptr($name),
--            info: $prop,
--            offset: ::std::mem::offset_of!($state, $field) as isize,
--            set_default: true,
--            defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval as u64 },
--            ..::common::zeroable::Zeroable::ZERO
--        }
--    };
--    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty$(,)*) => {
--        $crate::bindings::Property {
--            // use associated function syntax for type checking
--            name: ::std::ffi::CStr::as_ptr($name),
--            info: $prop,
--            offset: ::std::mem::offset_of!($state, $field) as isize,
--            set_default: false,
--            ..::common::zeroable::Zeroable::ZERO
--        }
--    };
--}
--
--#[macro_export]
--macro_rules! declare_properties {
--    ($ident:ident, $($prop:expr),*$(,)*) => {
--        pub static $ident: [$crate::bindings::Property; {
--            let mut len = 0;
--            $({
--                _ = stringify!($prop);
--                len += 1;
--            })*
--            len
--        }] = [
--            $($prop),*,
--        ];
--    };
--}
--
- unsafe impl ObjectType for DeviceState {
-     type Class = DeviceClass;
-     const TYPE_NAME: &'static CStr =
+ /* No 'struct flags' element should have a zero mask. */
+-#define FLAG_BASIC(V, M, N)      { V, M | QEMU_BUILD_BUG_ON_ZERO(!(M)), N }
++#define FLAG_BASIC(V, M, N)      { V, M | QEMU_BUILD_BUG_ON_ZERO((M) == 0), N }
+ 
+ /* common flags for all architectures */
+ #define FLAG_GENERIC_MASK(V, M)  FLAG_BASIC(V, M, #V)
 -- 
 2.51.0
 
