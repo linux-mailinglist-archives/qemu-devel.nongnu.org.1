@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE970B9A223
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 15:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F02B1B9A22F
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 15:59:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Pzy-00043d-Sb; Wed, 24 Sep 2025 09:57:36 -0400
+	id 1v1Q0I-0004Pz-RF; Wed, 24 Sep 2025 09:57:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v1Pzj-0003x0-CP
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 09:57:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v1Q00-0004CW-KB
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 09:57:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v1Pzb-0007Zm-FL
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 09:57:17 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v1Pzq-0007bb-A9
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 09:57:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758722222;
+ s=mimecast20190719; t=1758722242;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=hJ6aunHCCFJQQ0UYPmcMC7mUQSIVcobFj3gEBWe6sV8=;
- b=DBlel69CY90Ye9Z1AF/X0DQf3TNJOWRnWZMt8ZMIyNpT7QX5+OMmUfg1mH2dZCgxZJJS7y
- no1QLA8eP20BRYNvKxdncse10tGSZffUfqPN8/etA0/JkmPcQj/UAhOvgn1aEIspKJqdSA
- 7fhBqKy8oqqv/i1fyDkhYoZI42Gxw4w=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XFOHKVMEsv4AUWvL8lebJMB5TvqZAI7qXGMQZGoQJK0=;
+ b=BM+6FG+FJBKrrdUH+MCUjCWBtKZscO6BMdYilvfudjyzk68JtcxRkdje1jIURNl9N/CQG7
+ 4ACvXuEmyHNBoKANGd3smwz7qSF40PnouB3OHMnwqPCGWyccrjHH9Dmas90lmVna1fRsWy
+ a64dYP64OSXi45/sq3HQryOwCFV+c9Q=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-43-R2BgLNvwP0mfk3Bv8ufdiQ-1; Wed, 24 Sep 2025 09:57:00 -0400
-X-MC-Unique: R2BgLNvwP0mfk3Bv8ufdiQ-1
-X-Mimecast-MFC-AGG-ID: R2BgLNvwP0mfk3Bv8ufdiQ_1758722219
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3ece14b9231so3486669f8f.0
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 06:57:00 -0700 (PDT)
+ us-mta-232-SZVEt9XNPCGOVdDjs8nlEA-1; Wed, 24 Sep 2025 09:57:20 -0400
+X-MC-Unique: SZVEt9XNPCGOVdDjs8nlEA-1
+X-Mimecast-MFC-AGG-ID: SZVEt9XNPCGOVdDjs8nlEA_1758722239
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-46e303235e8so3299605e9.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 06:57:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758722219; x=1759327019;
+ d=1e100.net; s=20230601; t=1758722239; x=1759327039;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hJ6aunHCCFJQQ0UYPmcMC7mUQSIVcobFj3gEBWe6sV8=;
- b=YrgQs+a3dkmWkqhhOLlAsMB1h7U7cn2k6nrcNjrJbHew8RXOklUDPE2tFVKEROKhIB
- hof57l//moTwF/YaQjqPErR2oQI3nhoy79oiOfa257LraR/DFExgBvYRO9zB+TchTH7E
- e/ztd5VSpCH/hrPkL9LT2ciwMW6tJRUSu7wpbHQEMoyZaJEqN0DQsjfIQPNunF63CL9J
- Gn1jVeGS2hhM/ayfvgggWQhn6vtcJmCJApGalRRy4pkaFdBZUOnweecbUZpA2RxnUZQk
- yEL92jpGwC3TRwBnebsvoVnpELipC/oiHNJqOHuioW+TTDyqLGHId4utuFXnUxhp8bmG
- BKig==
+ bh=XFOHKVMEsv4AUWvL8lebJMB5TvqZAI7qXGMQZGoQJK0=;
+ b=JIfqeVSc4trMGstTAAH+UjmyS/A5wrVSmzoQqONkUrJ19brw8XXcEX/JcWT1niWP2v
+ /fCHIbQTqEdn1F+s63Y1SBXvveZ8rsfxYQC4PgmxpU+jkqgm3PFGIewkMFhwLBILnyw3
+ acg4MCMnvHmRkfRyeqXG+pqNCJksjte3OKkalIbHsd45mhaE3qkt0dXWPDH3XTuvWJNH
+ OlFRnSWZi4AYA0Du927dfcx4cZEU9YJf1d12RfWZFEIaK9zgR4zhOk9AUzHQ0a4K1BJD
+ +3sH3IDyneWFpyjqKD8CeaC/IrmUUM7Gq6F/ON/769iK1rAJGgA64raXRFU09QL8aEqk
+ 6RNA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW+PwJu5WGzDBvxc1PU2sj3H0uLR044njEf0aizY/K4yDntsq5yKOoHW1fAsqZUDx8LZiFV2CDdXSEc@nongnu.org
-X-Gm-Message-State: AOJu0Yz1nQQmVq+UyAhH/7qgRaejV2rWWSULMkwSs2XssBsGgXX/lttJ
- iEEn0iwhIGleb16D4EpbAC5SXwKaoKUXDMaOpXUWV0znHJ/nxpuxQOKXv8EaqOz9Nb6rB0DyboF
- CWhA0nVdUNPHiGk1LdI/W/wrLe7OG8VSpBvvYnIzPs0zfyA9sGNujkuQt
-X-Gm-Gg: ASbGncsdzWWrGF3Na2IcmDt/pfTgzRiQLeQl/hxpkCxKNRBVeGnhguao2Agxi2xIxGh
- KTYrnhTHQ76rM8IB4vPNuNTbZARVP1if9hXhk87Dh/1VlRN1JvNUyf2ET58Nj7oa4biyRG1haD2
- rNQ9BMI8oFXcUQ8a/ZzBdiTzGbiDWuNnX9mcKHv0Im5J1kjnp/ot0EjXlT4PWIn+Sq0ZOdP2PpG
- R9gwmAIKO8M0oEmI3/uUh3N77gnFJO6p/sJ3b+5865zmJ06HSdfWtAm10xt4dxyUz3L8IHNa38p
- gcX2SSVk65zYuUyDK1RKNns+d860Lq2nnWsflFPANNwSRm92a4kVTjYYOG8KKBsNyIZv9CEudWy
- QPCM=
-X-Received: by 2002:a05:6000:1a85:b0:3d6:212b:9ae2 with SMTP id
- ffacd0b85a97d-40e50f5734bmr18610f8f.63.1758722219241; 
- Wed, 24 Sep 2025 06:56:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHW6gEuWSLW8HwUf5qNN3ct4O6cBAElQkWl1jGdlRF7G+PP8+rhB71qIYnNABYPZ1/6uWxIWw==
-X-Received: by 2002:a05:6000:1a85:b0:3d6:212b:9ae2 with SMTP id
- ffacd0b85a97d-40e50f5734bmr18575f8f.63.1758722218705; 
- Wed, 24 Sep 2025 06:56:58 -0700 (PDT)
+ AJvYcCW5iHb4XDUNGrTfPCuMLbSTJIfMmR7LKyZDbYxbpNbZX/K1fKE0ZzAgpJLQL4u9LQtzw5zrv+RAyuDy@nongnu.org
+X-Gm-Message-State: AOJu0YyCWtzfAILbc0ls+sUkAneAWJS4kIr9tBqDXs0cRqWjMg6WJsaI
+ unkOQx4IxkVlBUUg3u2BmoLpnGaFme1+oTjytteiCXZ6G+upk8vljt5sCRKvFmuBMob/dQM5LiM
+ wAzhT5f4U+DemLciwcYuO0fULyH7jjiiZmhFKO4GNQaXuluf3wo3SC5t2
+X-Gm-Gg: ASbGncsYru0CymDyINALQi9X8aeC1wDjLkwR5n+FhU6EsYloKh5C/uHQAqhAdxRsYXa
+ 08DSTyoV63BGYNagkEFZpqcj9L/HQph4njGpVFNno+4z/33Y/RgX3Tmude5ONfdEr/zaLCkZMoG
+ nLwqTdDWJ8CG3Fmu1f63LSg6u+ZqAogVao+6TNlmk4Z5WeX1vwiHrPGKJmWmCawicwWQ/oa2+EG
+ gEeGwzN5+hjJfVjpgDkr1H+idFfWlPjIuc305M4HBWeOsZzCsMVHGxBfXQxws+dErxXyuSkuNoz
+ QgKBOv2OynaAYWi/3upsGuAUGCWP+Ef8kOwf/mzh3Yif6IU5KgUi/i0uOQS+90QWv7u6gqlC406
+ VkZk=
+X-Received: by 2002:a05:600c:4f07:b0:45d:e54b:fa29 with SMTP id
+ 5b1f17b1804b1-46e1daa2548mr63005805e9.14.1758722239404; 
+ Wed, 24 Sep 2025 06:57:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFT+jBdYTy3Rb6OsCgtdaiE9s5GyIRLCdX2y8VTi+psH/I4INOu/8ImLTcecfI8XpYXZ3jWIQ==
+X-Received: by 2002:a05:600c:4f07:b0:45d:e54b:fa29 with SMTP id
+ 5b1f17b1804b1-46e1daa2548mr63005585e9.14.1758722239019; 
+ Wed, 24 Sep 2025 06:57:19 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
  ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-408a9057b87sm3998902f8f.3.2025.09.24.06.56.57
+ 5b1f17b1804b1-46e2a9af27dsm34708595e9.8.2025.09.24.06.57.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 Sep 2025 06:56:58 -0700 (PDT)
-Message-ID: <f79e92b9-dd75-4241-97ec-ae87dd5f2b88@redhat.com>
-Date: Wed, 24 Sep 2025 15:56:57 +0200
+ Wed, 24 Sep 2025 06:57:18 -0700 (PDT)
+Message-ID: <9f789eee-f9d9-4205-9ca5-079c6bca352f@redhat.com>
+Date: Wed, 24 Sep 2025 15:57:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/27] vfio/vfio-iommufd.h: rename VFIOContainer
- bcontainer field to parent_obj
+Subject: Re: [PATCH 10/27] vfio/spapr.c: use QOM casts where appropriate
 To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
  harshpb@linux.ibm.com, mjrosato@linux.ibm.com, farman@linux.ibm.com,
  pasic@linux.ibm.com, borntraeger@linux.ibm.com, thuth@redhat.com,
@@ -85,7 +84,7 @@ To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
  alex.williamson@redhat.com, steven.sistare@oracle.com, qemu-ppc@nongnu.org,
  qemu-s390x@nongnu.org, qemu-devel@nongnu.org
 References: <20250923135352.1157250-1-mark.caveayland@nutanix.com>
- <20250923135352.1157250-10-mark.caveayland@nutanix.com>
+ <20250923135352.1157250-11-mark.caveayland@nutanix.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Content-Language: en-US, fr
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -131,19 +130,19 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250923135352.1157250-10-mark.caveayland@nutanix.com>
+In-Reply-To: <20250923135352.1157250-11-mark.caveayland@nutanix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -160,37 +159,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/23/25 15:53, Mark Cave-Ayland wrote:
-> Now that nothing accesses the bcontainer field directly, rename bcontainer to
-> parent_obj as per our current coding guidelines.
+> Use QOM casts to convert between VFIOSpaprContainer and VFIOLegacyContainer
+> instead of accessing bcontainer directly.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 > ---
->   hw/vfio/vfio-iommufd.h | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
+>   hw/vfio/spapr.c | 19 +++++++------------
+>   1 file changed, 7 insertions(+), 12 deletions(-)
 > 
-> diff --git a/hw/vfio/vfio-iommufd.h b/hw/vfio/vfio-iommufd.h
-> index 13f412aad7..6b28e1ff7b 100644
-> --- a/hw/vfio/vfio-iommufd.h
-> +++ b/hw/vfio/vfio-iommufd.h
-> @@ -22,12 +22,13 @@ typedef struct VFIOIOASHwpt {
->   
->   typedef struct IOMMUFDBackend IOMMUFDBackend;
->   
-> -typedef struct VFIOIOMMUFDContainer {
-> -    VFIOContainer bcontainer;
-> +struct VFIOIOMMUFDContainer {
-> +    VFIOContainer parent_obj;
-> +
->       IOMMUFDBackend *be;
->       uint32_t ioas_id;
->       QLIST_HEAD(, VFIOIOASHwpt) hwpt_list;
-> -} VFIOIOMMUFDContainer;
-> +};
->   
->   OBJECT_DECLARE_SIMPLE_TYPE(VFIOIOMMUFDContainer, VFIO_IOMMU_IOMMUFD);
->   
-
-
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
