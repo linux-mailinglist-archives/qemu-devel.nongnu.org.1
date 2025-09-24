@@ -2,87 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83F0B9AE27
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 18:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 153ADB9AE5A
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 18:41:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1SQw-0001K9-1b; Wed, 24 Sep 2025 12:33:34 -0400
+	id 1v1SWh-00059e-U6; Wed, 24 Sep 2025 12:39:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1SQr-0001IC-4p
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 12:33:29 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v1SWb-00055n-Hy
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 12:39:27 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1SQi-0007hh-GW
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 12:33:28 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-46c889b310dso10366345e9.0
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 09:33:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v1SWL-0008WN-Vd
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 12:39:20 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-77f2e621ef8so64489b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 09:39:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758731593; x=1759336393; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MYlzON49AvbxhbpDD4RKuVLUadRyeOo7snZVQLU3QFA=;
- b=SqkSQwfetOuFTbKcHMIiXLP6wFy57ATTdu3KwfvXkpsFD9gov44CXMBlilEoD++YmU
- SpIjWdipKDcECv8wBh58Wzv7Ur3NZHwD/yHD0ECQpAMkNi78IK4ILoASJlyuSpm8Kk14
- i7RC4Wtx0+dQLmzdKmhoAMvXm45/pJnsLXpHjWqZjAi+kWhjGco4xIJw7MSrjZqJMMom
- xOtc1ggtisQD6MeXHnpHP95ThrmmFl2kIY9q3k/dup2QjDf1UCYB7hbt9Yz81lWx/k9+
- iqYCjvwyiAef8WDhj2BQ3G0/3omkH3+f4si+XRa6ZDIxXEf7QJTbgvRY5ejA0hORtARI
- 65Yg==
+ d=linaro.org; s=google; t=1758731942; x=1759336742; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Xib1yeeW4VxdYdCEaHe4ye8jhO22FyajqAxMF3SO7pg=;
+ b=hyLwPjB79mN7u2zMlJPGzhjALoq6dSKaoF4zMxK94FAMnkFNuLK/z6udqgdRC4bikm
+ bifL0enLvH0vMT4Hei1fG1WwQko1X1MFDgO0GZdRQJW07XftiYM1HqD4sLsn2zDt2tLN
+ Ie1YIXVhfvhMV9Pdklw5NBvQWk0RUlh0OG/pZhpWhZMI+gCb7gkH+nOetYci1GmP2HT6
+ vyIZZkCre3NCF5cJmQjMmI+oqIzwU5mJQn6ngnn6gGIOsPaVe3Xl12LsTbo+dunfhAoG
+ xhe5sjsFZptcNCtjrtrEHx2pHcT4JlyxS69MbVSn3c61quUkc71YYTGsQzu+kxEq6E4B
+ P6kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758731593; x=1759336393;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MYlzON49AvbxhbpDD4RKuVLUadRyeOo7snZVQLU3QFA=;
- b=UiXL8n6xuDkoMLQz/eLrfhGGkLN1Oc7xAMAliHF/bkCAVGnlhxzfvN1uJInm9VsXoE
- /TwXwyVlwAJPxtIeK+Rox0DMsTjn9yCy+CLp1Ki+Elr6fBuRlOXkg5QyEl/iAv0otXxk
- xL0/1uOKi18anjxBkO6xDnG/SJ5wyJX7z6JdbMfIrUt8LUbek584tZwEjy0/O9YHJRjM
- CW9f+PrMrdZ8RxwejN7JHoSJb616sUpFw5P9MmsRU/RgNotFFsOhqAHbACR33onvdJxw
- jCemC9mfCxWtmsxkUcW1pDQYoldh8xhgPNXWj0W0mLBRXATEEJtCic3rwiXNaCx8X8c6
- qlMA==
-X-Gm-Message-State: AOJu0Yw/R1jJpb4/gxA6YNvu13Yb8a9o8DEcd6FGPNTFewQRZ9jXHpnR
- pWy2GnI1HBsDGgnQ7dZv1lDfb1h66zgCn4ibIgDFymf2ZDUV7l9hsanxyjQSHimMJA6DOO0IA/Y
- YIUS4u10aPw==
-X-Gm-Gg: ASbGncvYLBQnBVl2g+U9mf7dk1KVyGFcNsPrzjpNm0Mud438GsLAMX0+/CYKZLJgwN7
- zzYdsk6CggIZx/JoN0nyQSMg7T8xJ91O9fLvmbn76PpPEhWblk3koRt9S6pNl3JPAdrXBk9tMQS
- 9gmbt/b+jZeXhMX+e2cvxZb45zL1Mlwqx9GrQZfBrNJWKGnufn264GbsUeXaDtMnxKaw4W6x04w
- 5EHtadiS2Do+jQpViljD/hxqPfswKW+clZ3YAqmPgYa5Nd4kA0filQCtJyAFuWlY5VIiRK8JUG7
- b76zIfx6P0ddKeZhADmeI0a6PfpvXK3e1N2F2liN1UaEJi8BL3Iznslf578odD5CYRT76K7LNsd
- fsxUL91luuDrqWwFatS9Wv3RZqnP6FHkU/ZolPNYpBL09ol7tDhLqq5rEMiSojpiJY3oOw7Ds
-X-Google-Smtp-Source: AGHT+IFpm5/Mi91c3TswF2pQWn0IjvbQT1b6SShTq1L+n9QlPfIQGuSY2+UZNUfBKkIXOXfdRAXOGg==
-X-Received: by 2002:a05:600c:4695:b0:45d:98be:eea6 with SMTP id
- 5b1f17b1804b1-46e32c2f687mr2944445e9.3.1758731592607; 
- Wed, 24 Sep 2025 09:33:12 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-402188ef7b2sm10155281f8f.34.2025.09.24.09.33.11
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Sep 2025 09:33:12 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/3] target/arm: Trace vCPU reset call
-Date: Wed, 24 Sep 2025 18:32:54 +0200
-Message-ID: <20250924163255.51145-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250924163255.51145-1-philmd@linaro.org>
-References: <20250924163255.51145-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1758731942; x=1759336742;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Xib1yeeW4VxdYdCEaHe4ye8jhO22FyajqAxMF3SO7pg=;
+ b=e5ul49shOpKV+XMid7tyTOD8phwmtpDS18URnw8mjNmIxuKdgFkcp0qlX8TanMkYo0
+ 5AiBt9UbNBY6R1bp748tTJpGUoxs7uiE5ebaPzjktJ4VR55X0ayVwcmNZHahsF8wVc5j
+ SpFKYrnVUcslFe3ibkL9nhw3KESvyaCgPz9E6UGMgfClD1SUUvfzgrgWnSYawuV0eY2p
+ nm8E7icPScgAa9WVobiMpEFLRDn/y8zNy872Y5qm2edIWTL8hbyU6xrByTRsjiffnbeh
+ zTXsNibVhqW2BNHW8IAmqWP7XeA8BmbWPAM3mCbcqNezp8zOkKR8iKXWONyP5V6Dxf4+
+ H1+Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUpVMJQt3Kli4f48f8Blv109zdWHOv5b2kSWsSiauTCPOkfsoFKj6Pk43pL/qODcQXKMlm9Cfy3rhuP@nongnu.org
+X-Gm-Message-State: AOJu0YzXaE7TolC4/+F9C8rSG9yee0PWs/zTdGNcIjR2LseAMFP+F8bo
+ +gkiYrMPHvlbZYMnv7mwquprAvXZ8wRY1nzI/RhiHhKpPw+ByJIl7hHWc9QAsAyAJtv/ApAuV5q
+ KH0je
+X-Gm-Gg: ASbGncsYR2qBb3bST3LGB0QaowPVIXdyWV5Dm2MogRe5HvFYMRd+lYk8DNW25E4sx20
+ 04OhyqywhbhtR/me3GuFnHMVNqO40hTH5lw23xWx8/9bEMc4VEV2C0RW7agQxX/qIiiX97yAuyf
+ KiTDc2+YkHvvFQDqkoPXA0Pa97RAmAJDPSfGC8wXY4OknuaCc8NsbGFrhMpVFsqEr8+5n8Xf8tv
+ r7SGmjXvcfgcI5tSQjP3SMPgLPDyser5SEruoKH5MFqFaDGQEHN5ekNAn25jOD/YVXSnoYibgLQ
+ jwevZigw20RzZ7Gdk68NXvKDpuCIf3ah4geoD9ssAdTwVK+gJzQWBeN9DRQEjGNcuPB6D+rIRsA
+ 8ICXudB4jZCug80+hJgSYIuBek3DleKKpBei3
+X-Google-Smtp-Source: AGHT+IE5KR+jjHmDKn+5BXEIUYkiU6jwPkTqKbzTcYwF/LZ6uoc6VUy94HaPbbvy1HKgk23h57t7Zg==
+X-Received: by 2002:a05:6a00:986:b0:77f:2d28:8938 with SMTP id
+ d2e1a72fcca58-780fcefa51amr529583b3a.30.1758731942356; 
+ Wed, 24 Sep 2025 09:39:02 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.157.132])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-77f60e640cbsm3724167b3a.65.2025.09.24.09.39.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 24 Sep 2025 09:39:01 -0700 (PDT)
+Message-ID: <9758de22-e663-412a-b536-a8fcce30ffbc@linaro.org>
+Date: Wed, 24 Sep 2025 09:39:00 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/10] accel/tcg: Improve tb_flush usage
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20250923215425.3685950-1-richard.henderson@linaro.org>
+ <6ef7e6e1-9ac1-466d-b4bc-332e135c258e@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <6ef7e6e1-9ac1-466d-b4bc-332e135c258e@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,38 +103,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/arm/cpu.c        | 2 ++
- target/arm/trace-events | 1 +
- 2 files changed, 3 insertions(+)
+On 9/24/25 05:14, Philippe Mathieu-Daudé wrote:
+> On 23/9/25 23:54, Richard Henderson wrote:
+>> It is too easy to mis-use tb_flush().  For instance, because of
+>> the cpu argument, some parts assumed that it needed to call the
+>> global flush function for every cpu.  It is easy to forget that
+>> the flush is not complete when the call returns: we have merely
+>> queued work to the cpu run loop.  So: remove tb_flush and expose
+>> only the core as tb_flush__exclusive, to be used only when we
+>> are already within an exclusive context.
+>>
+>> In some cases (gdbstub, alpha, riscv, ppc spapr),
+>> we can eliminate the need for tb_flush completely.
+>>
+>> Changes for v3:
+>>    - Rename to tb_flush__exclusive_or_serial; retain the serial
+>>      check within, not updating to exclusive only.
+>>    - Rename the existing tb_flush to queue_tb_flush; retain the
+>>      sequence number check for duplicated flushes.
+>>    - Drop EXCP_TB_FLUSH.
+> 
+> When using my split-accel branch, I had good results with v2.
+> 
+> I'm getting crashes with v3:
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index f422e608bf3..391a03c1953 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -233,6 +233,8 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
-     ARMCPUClass *acc = ARM_CPU_GET_CLASS(obj);
-     CPUARMState *env = &cpu->env;
- 
-+    trace_arm_cpu_reset(arm_cpu_mp_affinity(cpu));
-+
-     if (acc->parent_phases.hold) {
-         acc->parent_phases.hold(obj, type);
-     }
-diff --git a/target/arm/trace-events b/target/arm/trace-events
-index badff2b2e46..72a2c7d0969 100644
---- a/target/arm/trace-events
-+++ b/target/arm/trace-events
-@@ -15,6 +15,7 @@ arm_gt_update_irq(int timer, int irqstate) "gt_update_irq: timer %d irqstate %d"
- kvm_arm_fixup_msi_route(uint64_t iova, uint64_t gpa) "MSI iova = 0x%"PRIx64" is translated into 0x%"PRIx64
- 
- # cpu.c
-+arm_cpu_reset(uint64_t mp_aff) "cpu %" PRIu64
- arm_emulate_firmware_reset(uint64_t mp_aff, unsigned target_el) "cpu %" PRIu64 " @EL%u"
- 
- # arm-powerctl.c
--- 
-2.51.0
+Are you sure you didn't just get lucky with v2?
+There's little functional change to v3...
 
+Point me at your branch?  While I can't test HVF, I can double-check at how you integrated 
+the flush.
+
+
+r~
 
