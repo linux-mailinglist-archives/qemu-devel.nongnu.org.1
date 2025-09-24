@@ -2,95 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21053B99278
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4FB2B9929C
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:33:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Lp4-0005Hz-F7; Wed, 24 Sep 2025 05:30:02 -0400
+	id 1v1Lp5-0005LX-KX; Wed, 24 Sep 2025 05:30:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1Loy-0005GJ-CL
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1v1Lp1-0005JC-Mp
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1Lot-0004pd-2E
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:56 -0400
+ id 1v1Lot-0004pj-0y
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758706187;
+ s=mimecast20190719; t=1758706189;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DQUPVZSKZhpdKrFkjv8ftxjx2NnW+jSnVDAPdZWCuMI=;
- b=XLZ8uvtJTyjRAGxxrbZG1XSXCHgKK7YMY9tgodZA+buF8JP9OLhOEf91xQ+BikjasSrc8G
- QapPQscXw0SCIYXC5ZARamLP8AMvoK823DbNWt0iJBW0cxAeBbnE8wm5QT1PYe+jk/YVnT
- VNFeV1S8tPBvbHONJUKwraD+I9wnUNE=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iIHJDm7aNxFUbTsEnGeRE1qG811mxITS7dOJUdDzhCI=;
+ b=Cw+uy1P6DeLeyV2sy8tlfpDv+Oz3aoIoRIbxOeUtCfBt//gqDCSu4FxkwUaYIubou13Z22
+ RPlCfFLwl0pZ+6icmbkaChlBICmtHCfzfW8Ovvfz8VQQSWTLHbQkllQFihWQMvGJNvNQrZ
+ F3C0q8KlQ+A2NWqzJljQos+or42Aug4=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-144-ivMewdKTOiWlriHp0i0aiQ-1; Wed, 24 Sep 2025 05:29:46 -0400
-X-MC-Unique: ivMewdKTOiWlriHp0i0aiQ-1
-X-Mimecast-MFC-AGG-ID: ivMewdKTOiWlriHp0i0aiQ_1758706185
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-b04a8ae1409so640533666b.2
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:29:45 -0700 (PDT)
+ us-mta-355-gOnjK2UxOay9E7HwvAUFFg-1; Wed, 24 Sep 2025 05:29:48 -0400
+X-MC-Unique: gOnjK2UxOay9E7HwvAUFFg-1
+X-Mimecast-MFC-AGG-ID: gOnjK2UxOay9E7HwvAUFFg_1758706187
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-b2d604db3easo267300566b.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:29:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758706184; x=1759310984;
+ d=1e100.net; s=20230601; t=1758706186; x=1759310986;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DQUPVZSKZhpdKrFkjv8ftxjx2NnW+jSnVDAPdZWCuMI=;
- b=q/ZV5+KdOois4+1Wr3uywbqco6wrSwFT27KyTD1/F5zm2wJLzRzCDtmi+Z84Lul7X2
- ANTTKcvW+sWEKzLCVxjajqEU9LzGt4by30BPIhoiY2f9IDDsT1UEue/OqD+wiLGfLb5A
- xcgf0sqd0j8sJf4URCF889/vbmsdSw2F0duF0cSIgbIN78Io+05Pubq+osdBuptP2OYp
- 5gWUAJKGdRH6PDutOwP/T8qetX8ddoeu6l8bwflGzBixMicmK3hj2wTqHgp/uhSGwocw
- QxpcNFVQFxOdq1hynHvlql4mKNzM3IoO1YeUYhry5ebrDQ4ETmuFqYHCGxW9XduaJj2o
- EPBg==
-X-Gm-Message-State: AOJu0YzeeYZX0Qg+zSMv4/8L8OnlRPqSIdIthLGLgCo/DBT9sMZHnhMU
- IFcLeBETKP/G0j2qxkoiRdNnLebvg3eXk2j9qzou9vnNbo7X3qFVUMOIYjgdxG//8zYLHSKGtos
- 7T+EkNRcqbDtZam/RWDA0LbdR7F86Zc1SfuiIfcixiNXlZpYb5gDPpJq5TnysJY2+rhhR1t+VIp
- x3pVaCq+4hmC3kFdKAA5kSJkwsSRQas1cNwS/pDwYm
-X-Gm-Gg: ASbGncvBxq7r5IuaXXot15tlG3+epihM2fjJp0+FVTZEJpAsr7ehkYptVUNyOLCDKIc
- oGxfzYbNL4Jhm+x/KjjYTrFVWgMB5QH1MpobpY8MgzpFW9hkqZST74TZQVLUvMn9dszNHB3FlDH
- bOK6g7p5XjmBog2NGhH8p4kJtKbN2JJniGSz/Y6xPHeZajErz53kI8Z/4DS6RuWQWX+NPUPQGHm
- wfQaBbmKuEmCDcp3ce+kLKv+eQPU0w1iWg+1daiYFCiIe8osxbCAYy0rwkI3Ujgsni+NQjFE9n0
- DoJCV9U4R8G5UgU2j20u/ZN8EqbF/OV8tj5/lIce4CxuMeceMYufZtn/x1kxLGatqPuSPCj8k9E
- QRRQ1Xz0qgkTIxIJRPeOL20MQM4uzxYf0Ar8tA95pcF1+Lw==
-X-Received: by 2002:a17:906:f042:b0:b29:d157:9a0f with SMTP id
- a640c23a62f3a-b302802deaamr572549366b.25.1758706184059; 
- Wed, 24 Sep 2025 02:29:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFFjqcNYeRBMBFY7tRlEFITHRc3g1r3wmija6z20r8YuFPyxyD9EQMTiZ6yI2N44RtjZZYU/g==
-X-Received: by 2002:a17:906:f042:b0:b29:d157:9a0f with SMTP id
- a640c23a62f3a-b302802deaamr572547166b.25.1758706183561; 
- Wed, 24 Sep 2025 02:29:43 -0700 (PDT)
+ bh=iIHJDm7aNxFUbTsEnGeRE1qG811mxITS7dOJUdDzhCI=;
+ b=YV3QZXWcuTYR8iLZH+oR375DRTX+3C3asR10ATqBeCq2V1+ZtioiImyNIi3dzTMGpz
+ 2Sxg0nY+meGxqCXJQJ/LPFp6M+hrP2IgLFE7UTYdGkVk9Wx+x342nJLl8+jn9xJdpnwG
+ GRVWfSjp4W227uqDbSETCDbcjOjUYDSLuOwsqdNn/6lN+qkssBl5ZiCl5iYIqSRYMk32
+ 5MP+WI1PxzLtMcPDMtxscJN4epTIEXx+MGbhjiuOyqlRLgy5rcvAZcacptp/86MPkwX6
+ FxGtLJQY//L7iNCwG2xtblJoHmnlYkR8+QlAzj0jqWMH07/yWWjjw1hlavXF8eDDw0NR
+ lJ/w==
+X-Gm-Message-State: AOJu0YwVe3KLwO9mLfQ19RrNLZdz8qSjiBZs6W900Go6BhWblyJpd87i
+ yaae01Rhh165tE6BoobBnKVDItzus0mB6qDE/freiK0cnZI/5sgIpjGMKWTirBbgqMpIB8bDjEE
+ yDeVdp37ofWh9SpGUPc7c1pWnFveDcXasNgGW6EMQLWGLWPIEsq7CAsvOceXjTTXEYINjZHryzb
+ yYeIcQ5jqIBP6upoMnkz7yxVAn1nrkiJw0MBj3dZK/
+X-Gm-Gg: ASbGncvfDXB/tX0m2YVSMvCtMUV2i3krr+cV9EWsuJeuNsNgELI7TlZaNsT8aTgMyLW
+ imGjgbBDvjvXH5bVhjXrAus5UI3rCY88zzuzr3KTtVRrGmnBJcxxhysQAoha/pmuwaPVo5ZuKF1
+ tJCLmz6jJfwS8ERIxJSlc14bBGI8OUKqy4oA0UIF5ON7YRK01G7kwvgsLHTXd1sHnNfFBybMrjW
+ +HPUmRMNTtnDiLys5h0o+heVulcGOss5uNXUVF5yzI6WsiExQRzNN7y1FxFZHNRnrBBRX+iEolU
+ nliP0JKF+58IwZZwjlyxX70iYsvP8It9qnqi5uZuHor6hw4LrlbaPCwA/Qb3c8A1vYDAuga2liE
+ nAc+lJBELsffphstCy2+cOyD9kaq5ExKDeUsMtk5Hk4vFwA==
+X-Received: by 2002:a17:907:7f9f:b0:b2f:963:1d2f with SMTP id
+ a640c23a62f3a-b302b2245c1mr588086266b.51.1758706186319; 
+ Wed, 24 Sep 2025 02:29:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEmoP3C/NHDS4xRr4gqAP8qX1UBKgqfm2XW05R9uIlJdS1Od78xbxBKY9m2d+9zBVQP43lM7A==
+X-Received: by 2002:a17:907:7f9f:b0:b2f:963:1d2f with SMTP id
+ a640c23a62f3a-b302b2245c1mr588084166b.51.1758706185893; 
+ Wed, 24 Sep 2025 02:29:45 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-b1fd271f895sm1489702866b.97.2025.09.24.02.29.42
+ a640c23a62f3a-b2a2a5f6cb9sm834859966b.36.2025.09.24.02.29.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Sep 2025 02:29:42 -0700 (PDT)
+ Wed, 24 Sep 2025 02:29:44 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 17/29] rust/hpet: Convert qdev properties to #property macro
-Date: Wed, 24 Sep 2025 11:28:37 +0200
-Message-ID: <20250924092850.42047-18-pbonzini@redhat.com>
+Subject: [PULL 18/29] rust/qdev: Drop declare_properties & define_property
+ macros
+Date: Wed, 24 Sep 2025 11:28:38 +0200
+Message-ID: <20250924092850.42047-19-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924092850.42047-1-pbonzini@redhat.com>
 References: <20250924092850.42047-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -110,130 +111,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Convert HPET's properties to #property macro:
- * num_timers: usize property.
- * flags: u32 bit property.
- * int_route_cap: u32 property.
- * hpet_offset_saved: bool property.
+After HPET's #property conversion, there's no use case for
+declare_properties & define_property. So get rid of them for now.
+
+In future, if there's something that #property really cannot resolve,
+they can be brought back.
 
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20250920160520.3699591-12-zhao1.liu@intel.com
+Link: https://lore.kernel.org/r/20250920160520.3699591-13-zhao1.liu@intel.com
 ---
- rust/hw/timer/hpet/src/device.rs | 55 ++++----------------------------
- 1 file changed, 7 insertions(+), 48 deletions(-)
+ rust/hw/core/src/qdev.rs | 53 ----------------------------------------
+ 1 file changed, 53 deletions(-)
 
-diff --git a/rust/hw/timer/hpet/src/device.rs b/rust/hw/timer/hpet/src/device.rs
-index fce75415579..86638c07666 100644
---- a/rust/hw/timer/hpet/src/device.rs
-+++ b/rust/hw/timer/hpet/src/device.rs
-@@ -13,9 +13,8 @@
- use bql::{BqlCell, BqlRefCell};
- use common::{bitops::IntegerExt, uninit_field_mut};
- use hwcore::{
--    bindings::{qdev_prop_bit, qdev_prop_bool, qdev_prop_uint32, qdev_prop_usize},
--    declare_properties, define_property, DeviceImpl, DeviceMethods, DeviceState, InterruptSource,
--    Property, ResetType, ResettablePhasesImpl, SysBusDevice, SysBusDeviceImpl, SysBusDeviceMethods,
-+    DeviceImpl, DeviceMethods, DeviceState, InterruptSource, ResetType, ResettablePhasesImpl,
-+    SysBusDevice, SysBusDeviceImpl, SysBusDeviceMethods,
- };
- use migration::{
-     self, impl_vmstate_struct, vmstate_fields, vmstate_of, vmstate_subsections, vmstate_validate,
-@@ -520,7 +519,7 @@ fn write(&mut self, reg: TimerRegister, value: u64, shift: u32, len: u32) {
- 
- /// HPET Event Timer Block Abstraction
- #[repr(C)]
--#[derive(qom::Object)]
-+#[derive(qom::Object, hwcore::Device)]
- pub struct HPETState {
-     parent_obj: ParentField<SysBusDevice>,
-     iomem: MemoryRegion,
-@@ -540,10 +539,12 @@ pub struct HPETState {
-     // Internal state
-     /// Capabilities that QEMU HPET supports.
-     /// bit 0: MSI (or FSB) support.
-+    #[property(rename = "msi", bit = HPET_FLAG_MSI_SUPPORT_SHIFT as u8, default = false)]
-     flags: u32,
- 
-     /// Offset of main counter relative to qemu clock.
-     hpet_offset: BqlCell<u64>,
-+    #[property(rename = "hpet-offset-saved", default = true)]
-     hpet_offset_saved: bool,
- 
-     irqs: [InterruptSource; HPET_NUM_IRQ_ROUTES],
-@@ -555,11 +556,13 @@ pub struct HPETState {
-     /// the timers' interrupt can be routed, and is encoded in the
-     /// bits 32:64 of timer N's config register:
-     #[doc(alias = "intcap")]
-+    #[property(rename = "hpet-intcap", default = 0)]
-     int_route_cap: u32,
- 
-     /// HPET timer array managed by this timer block.
-     #[doc(alias = "timer")]
-     timers: [BqlRefCell<HPETTimer>; HPET_MAX_TIMERS],
-+    #[property(rename = "timers", default = HPET_MIN_TIMERS)]
-     num_timers: usize,
-     num_timers_save: BqlCell<u8>,
- 
-@@ -901,44 +904,6 @@ impl ObjectImpl for HPETState {
-     const CLASS_INIT: fn(&mut Self::Class) = Self::Class::class_init::<Self>;
+diff --git a/rust/hw/core/src/qdev.rs b/rust/hw/core/src/qdev.rs
+index 9c82e1716c5..a4493dbf011 100644
+--- a/rust/hw/core/src/qdev.rs
++++ b/rust/hw/core/src/qdev.rs
+@@ -248,59 +248,6 @@ pub fn class_init<T: DeviceImpl>(&mut self) {
+     }
  }
  
--// TODO: Make these properties user-configurable!
--declare_properties! {
--    HPET_PROPERTIES,
--    define_property!(
--        c"timers",
--        HPETState,
--        num_timers,
--        unsafe { &qdev_prop_usize },
--        usize,
--        default = HPET_MIN_TIMERS
--    ),
--    define_property!(
--        c"msi",
--        HPETState,
--        flags,
--        unsafe { &qdev_prop_bit },
--        u32,
--        bit = HPET_FLAG_MSI_SUPPORT_SHIFT as u8,
--        default = false,
--    ),
--    define_property!(
--        c"hpet-intcap",
--        HPETState,
--        int_route_cap,
--        unsafe { &qdev_prop_uint32 },
--        u32,
--        default = 0
--    ),
--    define_property!(
--        c"hpet-offset-saved",
--        HPETState,
--        hpet_offset_saved,
--        unsafe { &qdev_prop_bool },
--        bool,
--        default = true
--    ),
+-#[macro_export]
+-macro_rules! define_property {
+-    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty, bit = $bitnr:expr, default = $defval:expr$(,)*) => {
+-        $crate::bindings::Property {
+-            // use associated function syntax for type checking
+-            name: ::std::ffi::CStr::as_ptr($name),
+-            info: $prop,
+-            offset: ::std::mem::offset_of!($state, $field) as isize,
+-            bitnr: $bitnr,
+-            set_default: true,
+-            defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval as u64 },
+-            ..::common::zeroable::Zeroable::ZERO
+-        }
+-    };
+-    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty, default = $defval:expr$(,)*) => {
+-        $crate::bindings::Property {
+-            // use associated function syntax for type checking
+-            name: ::std::ffi::CStr::as_ptr($name),
+-            info: $prop,
+-            offset: ::std::mem::offset_of!($state, $field) as isize,
+-            set_default: true,
+-            defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval as u64 },
+-            ..::common::zeroable::Zeroable::ZERO
+-        }
+-    };
+-    ($name:expr, $state:ty, $field:ident, $prop:expr, $type:ty$(,)*) => {
+-        $crate::bindings::Property {
+-            // use associated function syntax for type checking
+-            name: ::std::ffi::CStr::as_ptr($name),
+-            info: $prop,
+-            offset: ::std::mem::offset_of!($state, $field) as isize,
+-            set_default: false,
+-            ..::common::zeroable::Zeroable::ZERO
+-        }
+-    };
 -}
 -
- static VMSTATE_HPET_RTC_IRQ_LEVEL: VMStateDescription<HPETState> =
-     VMStateDescriptionBuilder::<HPETState>::new()
-         .name(c"hpet/rtc_irq_level")
-@@ -1001,12 +966,6 @@ impl ObjectImpl for HPETState {
-         ))
-         .build();
- 
--// SAFETY: HPET_PROPERTIES is a valid Property array constructed with the
--// hwcore::declare_properties macro.
--unsafe impl hwcore::DevicePropertiesImpl for HPETState {
--    const PROPERTIES: &'static [Property] = &HPET_PROPERTIES;
+-#[macro_export]
+-macro_rules! declare_properties {
+-    ($ident:ident, $($prop:expr),*$(,)*) => {
+-        pub static $ident: [$crate::bindings::Property; {
+-            let mut len = 0;
+-            $({
+-                _ = stringify!($prop);
+-                len += 1;
+-            })*
+-            len
+-        }] = [
+-            $($prop),*,
+-        ];
+-    };
 -}
 -
- impl DeviceImpl for HPETState {
-     const VMSTATE: Option<VMStateDescription<Self>> = Some(VMSTATE_HPET);
-     const REALIZE: Option<fn(&Self) -> util::Result<()>> = Some(Self::realize);
+ unsafe impl ObjectType for DeviceState {
+     type Class = DeviceClass;
+     const TYPE_NAME: &'static CStr =
 -- 
 2.51.0
 
