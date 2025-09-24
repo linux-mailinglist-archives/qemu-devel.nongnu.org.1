@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6F5B98813
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F705B9883D
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:24:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1JnO-0005be-JL; Wed, 24 Sep 2025 03:20:10 -0400
+	id 1v1JnL-0005Z5-56; Wed, 24 Sep 2025 03:20:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1JnL-0005a3-EV
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:07 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1JnG-0005Xm-TI
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:03 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1JnB-0003QK-At
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:06 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1JnC-0003QX-VF
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=xnZkf8T3aYXEsrxPDI2eMRXW35Q/mALOg3UnwThFjFw=; b=ZIZTFiOGAcDG3+n
- Owd3aOU8x6gqj/zmefIz8lTmOFZU8VmNT/DU1a+Uh3H5Ywc3YrFoTnePEueLSK/xWE/6rc8WPTkmX
- O3wtZUm8ZL8nd76SCbhs7+yWJpPQ3qyPIejKthuNUL1qddg0nCxWtA9vP4g/nSUx+Nv9hu2+qHsPJ
- B8=;
+ List-Help; bh=TfzxWl+or/W5/6gQ6p08jZFPuH70Q3mNAcKQk3lTP6Q=; b=difapeYNemmwQQS
+ nWS2kiygQRXQPlM3ckt3SP3EPUfOLKwc5oU1ruVAckbRhoSWpLDclONtk+pBuc7n0UCK2jujpBZh0
+ Unq/PMcxAAQwvBXb9ATFWmJdH+NjHOsW89O5aw3fLJPz9CDLx9uiXxqskRTsXRoEDcDBMy+Mw+mak
+ U8=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com
-Subject: [RFC PATCH 14/34] target/riscv: Fix size of badaddr and bins
-Date: Wed, 24 Sep 2025 09:21:04 +0200
-Message-ID: <20250924072124.6493-15-anjo@rev.ng>
+Subject: [RFC PATCH 15/34] target/riscv: Fix size of guest_phys_fault_addr
+Date: Wed, 24 Sep 2025 09:21:05 +0200
+Message-ID: <20250924072124.6493-16-anjo@rev.ng>
 In-Reply-To: <20250924072124.6493-1-anjo@rev.ng>
 References: <20250924072124.6493-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,83 +62,62 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix these fields to 64 bits as they cannot be made smaller. Also make
-sure stores to these fields from TCG are 64 bits in size to avoid
-incorrect values on big endian hosts.
+Widen to 64 bits, and use hwaddr as argument to get_physical_address().
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- target/riscv/cpu.h                             | 4 ++--
- target/riscv/machine.c                         | 2 +-
- target/riscv/translate.c                       | 6 ++++--
- target/riscv/insn_trans/trans_privileged.c.inc | 2 +-
- 4 files changed, 8 insertions(+), 6 deletions(-)
+ target/riscv/cpu.h        | 2 +-
+ target/riscv/cpu_helper.c | 3 +--
+ target/riscv/machine.c    | 2 +-
+ 3 files changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index cf10662b3a..343cc6bab7 100644
+index 343cc6bab7..b36d596127 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -233,8 +233,8 @@ struct CPUArchState {
-     uint8_t frm;
-     float_status fp_status;
+@@ -236,7 +236,7 @@ struct CPUArchState {
+     uint64_t badaddr;
+     uint64_t bins;
  
--    target_ulong badaddr;
--    target_ulong bins;
-+    uint64_t badaddr;
-+    uint64_t bins;
+-    target_ulong guest_phys_fault_addr;
++    uint64_t guest_phys_fault_addr;
  
-     target_ulong guest_phys_fault_addr;
- 
+     target_ulong priv_ver;
+     target_ulong vext_ver;
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 36f7baf690..c9594b8719 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1186,7 +1186,7 @@ static bool check_svukte_addr(CPURISCVState *env, vaddr addr)
+  */
+ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
+                                 int *ret_prot, vaddr addr,
+-                                target_ulong *fault_pte_addr,
++                                hwaddr *fault_pte_addr,
+                                 int access_type, int mmu_idx,
+                                 bool first_stage, bool two_stage,
+                                 bool is_debug, bool is_probe)
+@@ -1787,7 +1787,6 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+         ret = get_physical_address(env, &pa, &prot, address,
+                                    &env->guest_phys_fault_addr, access_type,
+                                    mmu_idx, true, true, false, probe);
+-
+         /*
+          * A G-stage exception may be triggered during two state lookup.
+          * And the env->guest_phys_fault_addr has already been set in
 diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index d38243b278..a1cd67de99 100644
+index a1cd67de99..472b2dcd8f 100644
 --- a/target/riscv/machine.c
 +++ b/target/riscv/machine.c
-@@ -412,7 +412,7 @@ const VMStateDescription vmstate_riscv_cpu = {
-         VMSTATE_UINT64(env.load_res, RISCVCPU),
+@@ -413,7 +413,7 @@ const VMStateDescription vmstate_riscv_cpu = {
          VMSTATE_UINT64(env.load_val, RISCVCPU),
          VMSTATE_UINT8(env.frm, RISCVCPU),
--        VMSTATE_UINTTL(env.badaddr, RISCVCPU),
-+        VMSTATE_UINT64(env.badaddr, RISCVCPU),
-         VMSTATE_UINTTL(env.guest_phys_fault_addr, RISCVCPU),
+         VMSTATE_UINT64(env.badaddr, RISCVCPU),
+-        VMSTATE_UINTTL(env.guest_phys_fault_addr, RISCVCPU),
++        VMSTATE_UINT64(env.guest_phys_fault_addr, RISCVCPU),
          VMSTATE_UINTTL(env.priv_ver, RISCVCPU),
          VMSTATE_UINTTL(env.vext_ver, RISCVCPU),
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index b856792d3b..339ef91f6b 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -252,7 +252,7 @@ static void generate_exception(DisasContext *ctx, RISCVException excp)
- 
- static void gen_exception_illegal(DisasContext *ctx)
- {
--    tcg_gen_st_i32(tcg_constant_i32(ctx->opcode), tcg_env,
-+    tcg_gen_st_i64(tcg_constant_i64(ctx->opcode), tcg_env,
-                    offsetof(CPURISCVState, bins));
-     if (ctx->virt_inst_excp) {
-         generate_exception(ctx, RISCV_EXCP_VIRT_INSTRUCTION_FAULT);
-@@ -263,7 +263,9 @@ static void gen_exception_illegal(DisasContext *ctx)
- 
- static void gen_exception_inst_addr_mis(DisasContext *ctx, TCGv target)
- {
--    tcg_gen_st_tl(target, tcg_env, offsetof(CPURISCVState, badaddr));
-+    TCGv_i64 ext = tcg_temp_new_i64();
-+    tcg_gen_extu_tl_i64(ext, target);
-+    tcg_gen_st_i64(ext, tcg_env, offsetof(CPURISCVState, badaddr));
-     generate_exception(ctx, RISCV_EXCP_INST_ADDR_MIS);
- }
- 
-diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/riscv/insn_trans/trans_privileged.c.inc
-index 8a62b4cfcd..a8eaccef67 100644
---- a/target/riscv/insn_trans/trans_privileged.c.inc
-+++ b/target/riscv/insn_trans/trans_privileged.c.inc
-@@ -68,7 +68,7 @@ static bool trans_ebreak(DisasContext *ctx, arg_ebreak *a)
-     if (pre == 0x01f01013 && ebreak == 0x00100073 && post == 0x40705013) {
-         generate_exception(ctx, RISCV_EXCP_SEMIHOST);
-     } else {
--        tcg_gen_st_tl(tcg_constant_tl(ebreak_addr), tcg_env,
-+        tcg_gen_st_i64(tcg_constant_i64(ebreak_addr), tcg_env,
-                       offsetof(CPURISCVState, badaddr));
-         generate_exception(ctx, RISCV_EXCP_BREAKPOINT);
-     }
+         VMSTATE_UINT32(env.misa_mxl, RISCVCPU),
 -- 
 2.51.0
 
