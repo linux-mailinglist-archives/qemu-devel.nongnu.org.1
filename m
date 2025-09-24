@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D58EB986DD
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 08:44:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E06B986DA
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 08:44:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1JAy-0002Uu-Ff; Wed, 24 Sep 2025 02:40:29 -0400
+	id 1v1JAu-0002UA-Ok; Wed, 24 Sep 2025 02:40:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAv-0002UO-Pv
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAr-0002Tt-I4
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAh-0006gs-9w
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:22 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAh-0006ho-A8
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758696006;
+ s=mimecast20190719; t=1758696008;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zeRkTPCaOQ4BFfDiWdF99N1t2c77iucL/acwXAdfPdY=;
- b=agQ9aKWF+suF2IC0A0cZKNR6IfY3+haOkJ14iczf5ajXvx1mmLZE9HgerihyYD0gyfc11K
- BghDpBJF9UsywXIWZWP9yfkEm0sz5aRQh4c4KRYWrw4TQ8B3qChsemmcHTPzWnIb7blDsm
- AE/Tyn6kysM6OeRu5xiT1ncmEAPD8aE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=JBRmuVpLJ3m0aks1MPvEMgz6IPDXFlW9qQuRyAUlJgs=;
+ b=G/Gd5XUADFQ+I0A62TVy5Sn8YnPS4yorqz6mKCS4IMk9rc7ZqQvVIDZJ3oyAWGuJXQ/IUN
+ vSuAKHS8o9UxPwwCY0lVJ9WpEw44awPQ08XcDvwmbYXcQNBf9JsYYTORGS4o/Kii7u5r/H
+ otGDBBrRzDhEmVncY5lmr1oob3DnpOs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-1YTZxpriN_GIvvT0CT-ZUw-1; Wed,
- 24 Sep 2025 02:40:02 -0400
-X-MC-Unique: 1YTZxpriN_GIvvT0CT-ZUw-1
-X-Mimecast-MFC-AGG-ID: 1YTZxpriN_GIvvT0CT-ZUw_1758696001
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-NpllkZugNPizCFvMDUJPfA-1; Wed,
+ 24 Sep 2025 02:40:03 -0400
+X-MC-Unique: NpllkZugNPizCFvMDUJPfA-1
+X-Mimecast-MFC-AGG-ID: NpllkZugNPizCFvMDUJPfA_1758696002
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3E9921956089; Wed, 24 Sep 2025 06:40:01 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B46D31800447; Wed, 24 Sep 2025 06:40:02 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-176.str.redhat.com
  [10.33.192.176])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CC3111955F19; Wed, 24 Sep 2025 06:39:59 +0000 (UTC)
+ id 932D91955F19; Wed, 24 Sep 2025 06:40:01 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/12] tests/functional/m68k: Use proper polling in the
- next-cube test
-Date: Wed, 24 Sep 2025 08:39:45 +0200
-Message-ID: <20250924063956.519792-2-thuth@redhat.com>
+ Jared Rossi <jrossi@linux.ibm.com>
+Subject: [PULL 02/12] tests/functional/s390x/test_pxelinux: Fix warnings from
+ pylint
+Date: Wed, 24 Sep 2025 08:39:46 +0200
+Message-ID: <20250924063956.519792-3-thuth@redhat.com>
 In-Reply-To: <20250924063956.519792-1-thuth@redhat.com>
 References: <20250924063956.519792-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,67 +84,116 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The next-cube tests currently sleep for 2 seconds to wait for the
-guest's display to come up with the expected results. That's bad
-since there is still a theoretical race left here, and since there
-are two subtests, the whole test takes more than 4 seconds this way.
+pylint complains about wrong indentation in one of the lines and
+that the pxelinux_cfg_contents is a constant that should be written
+with capital letters. While we're at it, also add the missing doc
+strings.
 
-Looking at what the firmware does, there is a better way instead of
-blindly waiting for two seconds: The firmware is writing some values
-to the FPU registers during a test (and never touches them again
-afterwards, so we can be sure about the final values), so we can
-poll for the right values in those registers to know when we reached
-a state when the display is initialized for sure. We just have to
-also make sure to not look for text anymore that is only printed
-after the FPU test has been done by the guest firmware.
-
-This way the whole tests finishes in less than 1 second here, and
-there should be no race condition here anymore.
-
-Message-ID: <20250909074817.84661-1-thuth@redhat.com>
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Jared Rossi <jrossi@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250912085251.274294-1-thuth@redhat.com>
 ---
- tests/functional/m68k/test_nextcube.py | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ tests/functional/s390x/test_pxelinux.py | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/tests/functional/m68k/test_nextcube.py b/tests/functional/m68k/test_nextcube.py
-index c1610e58456..e5e1c69dcbd 100755
---- a/tests/functional/m68k/test_nextcube.py
-+++ b/tests/functional/m68k/test_nextcube.py
-@@ -29,8 +29,15 @@ def check_bootrom_framebuffer(self, screenshot_path):
-         self.vm.launch()
+diff --git a/tests/functional/s390x/test_pxelinux.py b/tests/functional/s390x/test_pxelinux.py
+index 4fc33b8c46d..c00cce6a5a4 100755
+--- a/tests/functional/s390x/test_pxelinux.py
++++ b/tests/functional/s390x/test_pxelinux.py
+@@ -1,10 +1,11 @@
+ #!/usr/bin/env python3
+ #
+ # SPDX-License-Identifier: GPL-2.0-or-later
+-#
+-# Functional test that checks the pxelinux.cfg network booting of a s390x VM
+-# (TFTP booting without config file is already tested by the pxe qtest, so
+-#  we don't repeat that here).
++'''
++Functional test that checks the pxelinux.cfg network booting of a s390x VM
++(TFTP booting without config file is already tested by the pxe qtest, so
++we don't repeat that here).
++'''
  
-         self.log.info('VM launched, waiting for display')
--        # TODO: wait for the 'displaysurface_create 1120x832' trace-event.
--        time.sleep(2)
-+        # Wait for the FPU test to finish, then the display is available, too:
-+        while True:
-+            res = self.vm.cmd('human-monitor-command',
-+                              command_line='info registers')
-+            if ("F0 = 400e 8400000000000000" in res and
-+                "F1 = 400e 83ff000000000000" in res and
-+                "F2 = 400e 83ff000000000000" in res):
-+                break
-+            time.sleep(0.1)
+ import os
+ import shutil
+@@ -12,7 +13,7 @@
+ from qemu_test import QemuSystemTest, Asset, wait_for_console_pattern
  
-         res = self.vm.cmd('human-monitor-command',
-                           command_line='screendump %s' % screenshot_path)
-@@ -56,10 +63,10 @@ def test_bootrom_framebuffer_ocr_with_tesseract(self):
-         self.check_bootrom_framebuffer(screenshot_path)
-         lines = tesseract_ocr(screenshot_path)
-         text = '\n'.join(lines)
-+        self.assertIn('Backplane slot', text)
-+        self.assertIn('Ethernet address', text)
-         self.assertIn('Testing the FPU', text)
--        self.assertIn('System test failed. Error code', text)
--        self.assertIn('Boot command', text)
--        self.assertIn('Next>', text)
-+
  
- if __name__ == '__main__':
-     QemuSystemTest.main()
+-pxelinux_cfg_contents='''# pxelinux.cfg style config file
++PXELINUX_CFG_CONTENTS='''# pxelinux.cfg style config file
+ default Debian
+ label Nonexisting
+ kernel kernel.notavailable
+@@ -26,6 +27,10 @@
+ '''
+ 
+ class S390PxeLinux(QemuSystemTest):
++    '''
++    Test various ways of booting via a pxelinux.cfg file, for details see:
++    https://wiki.syslinux.org/wiki/index.php?title=PXELINUX#Configuration
++    '''
+ 
+     ASSET_DEBIAN_KERNEL = Asset(
+         ('https://snapshot.debian.org/archive/debian/'
+@@ -46,6 +51,7 @@ class S390PxeLinux(QemuSystemTest):
+         '480859574f3f44caa6cd35c62d70e1ac0609134e22ce2a954bbed9b110c06e0b')
+ 
+     def pxelinux_launch(self, pl_name='default', extra_opts=None):
++        '''Create a pxelinux.cfg file in the right location and launch QEMU'''
+         self.require_netdev('user')
+         self.set_machine('s390-ccw-virtio')
+ 
+@@ -66,11 +72,11 @@ def pxelinux_launch(self, pl_name='default', extra_opts=None):
+ 
+         cfg_fname = self.scratch_file('tftp', 'pxelinux.cfg', pl_name)
+         with open(cfg_fname, 'w', encoding='utf-8') as f:
+-            f.write(pxelinux_cfg_contents)
++            f.write(PXELINUX_CFG_CONTENTS)
+ 
+         virtio_net_dev = 'virtio-net-ccw,netdev=n1,bootindex=1'
+         if extra_opts:
+-                virtio_net_dev += ',' + extra_opts
++            virtio_net_dev += ',' + extra_opts
+ 
+         self.vm.add_args('-m', '384',
+                          '-netdev', f'user,id=n1,tftp={tftpdir}',
+@@ -80,6 +86,7 @@ def pxelinux_launch(self, pl_name='default', extra_opts=None):
+ 
+ 
+     def test_default(self):
++        '''Check whether the guest uses the "default" file name'''
+         self.pxelinux_launch()
+         # The kernel prints its arguments to the console, so we can use
+         # this to check whether the kernel parameters are correctly handled:
+@@ -89,11 +96,13 @@ def test_default(self):
+         wait_for_console_pattern(self, 'Run /init as init process')
+ 
+     def test_mac(self):
++        '''Check whether the guest uses file name based on its MAC address'''
+         self.pxelinux_launch(pl_name='01-02-ca-fe-ba-be-42',
+                              extra_opts='mac=02:ca:fe:ba:be:42,loadparm=3')
+         wait_for_console_pattern(self, 'Linux version 5.3.7-301.fc31.s390x')
+ 
+     def test_uuid(self):
++        '''Check whether the guest uses file name based on its UUID'''
+         # Also add a non-bootable disk to check the fallback to network boot:
+         self.vm.add_args('-blockdev', 'null-co,size=65536,node-name=d1',
+                          '-device', 'virtio-blk,drive=d1,bootindex=0,loadparm=1',
+@@ -102,11 +111,13 @@ def test_uuid(self):
+         wait_for_console_pattern(self, 'Debian 4.19.146-1 (2020-09-17)')
+ 
+     def test_ip(self):
++        '''Check whether the guest uses file name based on its IP address'''
+         self.vm.add_args('-M', 'loadparm=3')
+         self.pxelinux_launch(pl_name='0A00020F')
+         wait_for_console_pattern(self, 'Linux version 5.3.7-301.fc31.s390x')
+ 
+     def test_menu(self):
++        '''Check whether the boot menu works for pxelinux.cfg booting'''
+         self.vm.add_args('-boot', 'menu=on,splash-time=10')
+         self.pxelinux_launch(pl_name='0A00')
+         wait_for_console_pattern(self, '[1] Nonexisting')
 -- 
 2.51.0
 
