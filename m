@@ -2,48 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB03B9928A
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 444A3B992C0
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:34:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Lr1-0000n2-Q2; Wed, 24 Sep 2025 05:32:06 -0400
+	id 1v1Lr1-0000r7-QF; Wed, 24 Sep 2025 05:32:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net>)
- id 1v1Lqw-0000bi-08
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:31:58 -0400
+ id 1v1Lqx-0000bg-0X
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:31:59 -0400
 Received: from m204-227.eu.mailgun.net ([161.38.204.227])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1)
  (envelope-from <bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net>)
- id 1v1Lqr-0005K3-F3
+ id 1v1Lqs-0005Jz-11
  for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:31:56 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=0x65c.net; q=dns/txt;
- s=email; t=1758706304; x=1758713504; 
- h=Content-Transfer-Encoding: Content-Type: MIME-Version: References:
- In-Reply-To: Message-ID: Date: Subject: Subject: Cc: To: To: From: From:
- Sender: Sender; 
- bh=9OWBILG/MEb85AU5rnQ0gq6gxxt8z8W8K79L15U28D0=;
- b=ZgnhAqsqL3oKwglDdP2Vld6vwKwseCqD7/gX+S90DZTENEsTNFBwX8/lFFXRvOOn+0/ov+/9a/jVtf8xsyT9lFK296q+HWyXogyEeNVbDJNU67IR1/yhP+UxmxwdsjYqq9smlJTakHfMM12uM92RPzGsd+YLJuDldZbzYBDZvmsm8lEDXEgDSn+kNvQz1h0+GcaArxvkG5ZmO3Jxwavft4sDR9yhM373OlsqPBOaArVNAm+EA6LB+9TEtYgSeaVLSLekPhpSpj/6sbOVueRRGjPMYQV3yCzMBL7L9DB6ZkxTtZZclCJe1UOgYAcfq4DZjbwpPBJBDN4f3J/1tHd2Ew==
+ s=email; t=1758706305; x=1758713505; 
+ h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To:
+ Message-ID: Date: Subject: Subject: Cc: To: To: From: From: Sender: Sender; 
+ bh=zgVAUJj5Z4q6C9ZqO0rq/kxl0ZQ0bFrXg2qcUVtHtAE=;
+ b=XDKEk8wIWhV1zwQwY+X/EnoIK9MuaX1NjM9txJqmmXFrbDOKs7ZBlCUb3nrGeASIl/bj/v8yDez2YC7ckazqJkUEH22WfSDD48WIlU6WMQLn4gPFohVjsPPF8eB4NsZuxS1LMHwKomy+no9E7pppkLXDrVw4/nrezqc1Er1y7Z67r4Fnag0JKbH5CaorzWYogTSVGFmg47eWRtWbAuMtkRl5gSfG9lyRhlXNExrUlRsnXGGM0JWHttgnPbmXh/N8UAh3/+FoXV+yLUEyZcpP63pO3louJ4mhrctfJ1acOIAgJTGKvESGwHeOsQO4cA+Q6ISg0vJ287oaPc5pzLcMVw==
 X-Mailgun-Sid: WyJiNjdhNCIsInFlbXUtZGV2ZWxAbm9uZ251Lm9yZyIsIjU0ZWY0Il0=
 Received: from fedora (pub082136115007.dh-hfc.datazug.ch [82.136.115.7]) by
  3410bf604baf3b1186e1b7c3ddb9946731989e4e31ae93aebc8156634f8d87f1 with SMTP id
- 68d3ba8014c8477b826badd8; Wed, 24 Sep 2025 09:31:44 GMT
+ 68d3ba80ccb80735fe678ef9; Wed, 24 Sep 2025 09:31:44 GMT
 X-Mailgun-Sending-Ip: 161.38.204.227
 From: Alessandro Ratti <alessandro@0x65c.net>
 To: berrange@redhat.com
 Cc: alessandro.ratti@gmail.com, alessandro@0x65c.net, alex.bennee@linaro.org,
  armbru@redhat.com, mst@redhat.com, qemu-devel@nongnu.org
 Subject: [PATCH v3] virtio: improve virtqueue mapping error messages
-Date: Wed, 24 Sep 2025 11:14:03 +0200
-Message-ID: <20250924093138.559872-1-alessandro@0x65c.net>
+Date: Wed, 24 Sep 2025 11:14:04 +0200
+Message-ID: <20250924093138.559872-2-alessandro@0x65c.net>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <aNLIHOwcGB47qbUY@redhat.com>
+In-Reply-To: <20250924093138.559872-1-alessandro@0x65c.net>
 References: <aNLIHOwcGB47qbUY@redhat.com>
+ <20250924093138.559872-1-alessandro@0x65c.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=161.38.204.227;
  envelope-from=bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net;
@@ -71,64 +70,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Improve error reporting when virtqueue ring mapping fails by including a
+device identifier in the error message.
 
-On Tue, 23 Sept 2025 at 18:17, Daniel P. Berrangé <berrange@redhat.com> wrote:
->
-[...]
-> >  hw/virtio/virtio.c | 46 +++++++++++++++++++++++++++++++++++++++++++---
-> >  1 file changed, 43 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> > index 9a81ad912e..f5adc381a4 100644
-> > --- a/hw/virtio/virtio.c
-> > +++ b/hw/virtio/virtio.c
-> > @@ -235,6 +235,37 @@ static void virtio_virtqueue_reset_region_cache(struct VirtQueue *vq)
-> >      }
-> >  }
-> >
-> > +static const char *virtio_get_pretty_dev_name(VirtIODevice *vdev)
->
-> I'd suggest this be  'const char *qdev_get_printable_name(DeviceState *dev)'
-> and live in  the same header & source files as qdev_get_dev_path.
->
-> I used 'printable' rather than 'pretty' as I'm not sure I'd claim
-> that qdev_get_dev_path() results can be said to be pretty :-)
+Introduce a helper qdev_get_printable_name() in qdev-core, which returns
+either:
 
-Thanks for the review and the suggestion.
+ - the device ID, if explicitly provided (e.g. -device ...,id=foo)
+ - the QOM path from qdev_get_dev_path(dev) otherwise
+ - "<unknown device>" as a fallback when no identifier is present
 
-Fair enough :) — I've renamed the helper to qdev_get_printable_name() and moved
-it next to qdev_get_dev_path() in `hw/core/qdev.c`, as you recommended.
+This makes it easier to identify which device triggered the error in
+multi-device setups or when debugging complex guest configurations.
 
-[...]
-> > +    /*
-> > +     * Final fallback: if all else fails, return a placeholder string.
-> > +     * This ensures the error message always contains a valid string.
-> > +     */
-> > +    return "<unknow device>";
->
-> s/unknow/unknown/
->
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/230
+Buglink: https://bugs.launchpad.net/qemu/+bug/1919021
 
-Fixed, thanks for catching that!
-
-[...]
->
-> This part all looks good
-
-Glad to hear! I've sent out v3 with the changes above. Let me know if you
-have any further thoughts or improvements in mind.
-
-
-Thanks again for your time and helpful reviews.
-
-Best regards,
-Alessandro
-
+Suggested-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Alessandro Ratti <alessandro@0x65c.net>
 ---
+ hw/core/qdev.c         | 29 +++++++++++++++++++++++++++++
+ hw/virtio/virtio.c     | 15 ++++++++++++---
+ include/hw/qdev-core.h |  1 +
+ 3 files changed, 42 insertions(+), 3 deletions(-)
 
-Changes since v2:
-- Renamed helper to qdev_get_printable_name()
-- Moved helper to appropriate source/header location
-- Fixed typo in fallback string
-- Incorporated review feedback from Daniel Barrangé
+diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+index f600226176..fab42a7270 100644
+--- a/hw/core/qdev.c
++++ b/hw/core/qdev.c
+@@ -411,6 +411,35 @@ char *qdev_get_dev_path(DeviceState *dev)
+     return NULL;
+ }
+ 
++const char *qdev_get_printable_name(DeviceState *vdev)
++{
++    /*
++     * Return device ID if explicity set
++     * (e.g. -device virtio-blk-pci,id=foo)
++     * This allows users to correlate errors with their custom device
++     * names.
++     */
++    if (vdev->id) {
++        return vdev->id;
++    }
++    /*
++     * Fall back to the canonical QOM device path (eg. ID for PCI
++     * devices).
++     * This ensures the device is still uniquely and meaningfully
++     * identified.
++     */
++    const char *path = qdev_get_dev_path(vdev);
++    if (path) {
++        return path;
++    }
++
++    /*
++     * Final fallback: if all else fails, return a placeholder string.
++     * This ensures the error message always contains a valid string.
++     */
++    return "<unknown device>";
++}
++
+ void qdev_add_unplug_blocker(DeviceState *dev, Error *reason)
+ {
+     dev->unplug_blockers = g_slist_prepend(dev->unplug_blockers, reason);
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 9a81ad912e..0caea5b8ce 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -256,7 +256,10 @@ void virtio_init_region_cache(VirtIODevice *vdev, int n)
+     len = address_space_cache_init(&new->desc, vdev->dma_as,
+                                    addr, size, packed);
+     if (len < size) {
+-        virtio_error(vdev, "Cannot map desc");
++        virtio_error(vdev,
++                "Failed to map descriptor ring for device %s: "
++                "invalid guest physical address or corrupted queue setup",
++                qdev_get_printable_name(DEVICE(vdev)));
+         goto err_desc;
+     }
+ 
+@@ -264,7 +267,10 @@ void virtio_init_region_cache(VirtIODevice *vdev, int n)
+     len = address_space_cache_init(&new->used, vdev->dma_as,
+                                    vq->vring.used, size, true);
+     if (len < size) {
+-        virtio_error(vdev, "Cannot map used");
++        virtio_error(vdev,
++                "Failed to map used ring for device %s: "
++                "possible guest misconfiguration or insufficient memory",
++                qdev_get_printable_name(DEVICE(vdev)));
+         goto err_used;
+     }
+ 
+@@ -272,7 +278,10 @@ void virtio_init_region_cache(VirtIODevice *vdev, int n)
+     len = address_space_cache_init(&new->avail, vdev->dma_as,
+                                    vq->vring.avail, size, false);
+     if (len < size) {
+-        virtio_error(vdev, "Cannot map avail");
++        virtio_error(vdev,
++                "Failed to map avalaible ring for device %s: "
++                "possible queue misconfiguration or overlapping memory region",
++                qdev_get_printable_name(DEVICE(vdev)));
+         goto err_avail;
+     }
+ 
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index 530f3da702..a7bfb10dc7 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -1064,6 +1064,7 @@ bool qdev_set_parent_bus(DeviceState *dev, BusState *bus, Error **errp);
+ extern bool qdev_hot_removed;
+ 
+ char *qdev_get_dev_path(DeviceState *dev);
++const char *qdev_get_printable_name(DeviceState *dev);
+ 
+ void qbus_set_hotplug_handler(BusState *bus, Object *handler);
+ void qbus_set_bus_hotplug_handler(BusState *bus);
+-- 
+2.39.5
+
 
