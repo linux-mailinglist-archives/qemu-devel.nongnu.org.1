@@ -2,71 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1930DB988A0
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:29:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABBE0B98A76
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:50:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Jvg-0002sK-Me; Wed, 24 Sep 2025 03:28:44 -0400
+	id 1v1KEC-0000kv-1f; Wed, 24 Sep 2025 03:47:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1v1Jvb-0002l2-GC
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:28:39 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1v1JvU-0004RJ-IR
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:28:38 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8BxndKZndNoMfsNAA--.29619S3;
- Wed, 24 Sep 2025 15:28:25 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowJDxQ+SVndNoXNWqAA--.21338S3;
- Wed, 24 Sep 2025 15:28:23 +0800 (CST)
-Subject: Re: [PATCH 3/3] tests/data/acpi/loongarch64: Update expected DSDT.*
-To: Huacai Chen <chenhuacai@kernel.org>, Song Gao <gaosong@loongson.cn>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, WANG Xuerui <git@xen0n.name>,
- qemu-devel@nongnu.org
-References: <20250923143542.2391576-1-chenhuacai@kernel.org>
- <20250923143542.2391576-4-chenhuacai@kernel.org>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <08a40419-c56e-4944-2a8e-045f0512fe04@loongson.cn>
-Date: Wed, 24 Sep 2025 15:26:13 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1v1KE8-0000kV-Th
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:47:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1v1KDz-0007Ty-QH
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:47:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758700049;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=eAzI8wJAd958OJzq6pRAZXIO++kRaX+Gs0RvkKHKaNI=;
+ b=Vpg+pnFINHN8GXJMcl698MWWkazUdLKN/7HRYqQQ8kAeLoHssrBxsXatsN4o90nf3ThP47
+ m6yer/Rwy3H9YaaPsSErL8xWwZ/jfqtATa7wSOcCojN+9QNCq9fLxQiKuoC78FS3vhNfAS
+ MslnRmZpQIhXPpPjVxkFCOHQSnizmv4=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-465-cHgBic0TPKiFK-yfhOYb0A-1; Wed, 24 Sep 2025 03:47:26 -0400
+X-MC-Unique: cHgBic0TPKiFK-yfhOYb0A-1
+X-Mimecast-MFC-AGG-ID: cHgBic0TPKiFK-yfhOYb0A_1758700046
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-b07d13a7752so872998466b.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 00:47:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758700045; x=1759304845;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=eAzI8wJAd958OJzq6pRAZXIO++kRaX+Gs0RvkKHKaNI=;
+ b=QC8qsgR37YgMSRc/5mmX2EmvWIw7K8ClqOqjixIHuFSEoHVX7160A/wLN8/4EovD/G
+ s3LZdg5CbbsobeV97f70hN/1M1HG3dT40O9QkWjimUAdblYw0IA0GBOIN/3pX/SlFAfq
+ S9wX4mdRbfD6ukWmrPdJ68K0vUBudz5CSgBgHhDPicoJqp+Wh2aXSlD7kXWnqrjqGYn1
+ 7OUK5Z5W3x0R4Dn5eQYbWG+s1yzHzS20ssTkCXQhh5+oN11dzkzyJ7IXiGjIjuXAw/cd
+ kSt4KyL4c5uyj4Fp7usmQsrHA9ymp+j9EvMGZQ44tdb8dI+fZ3PhEUjwMenA45e3+bVd
+ u6IA==
+X-Gm-Message-State: AOJu0YySTpBgejOx1FX0immeDAoKoDqoVwbfvH6ruOEKnMo/jnhB6uzy
+ OnwMAhD476HR8XEXSNOvzkPhz2UJOZ3R2YYifNyqAjm0NlU9Oznc1zDI+Ux9hbsPEqCuU58q7XW
+ hVIr4C8rwus1znBdQiUbLgDbuM+LsYSlDEFr9wPuuY2Ig1T5AnrHRuvVRdyClmWe4lSwPRr7S5T
+ aUy6CVVJhoUtcPvKEgQznR0TgnROYakWs=
+X-Gm-Gg: ASbGnct6w5fEKGe1X5x3qPTDLeO1+R8zxJMqTp3wuJ/blTbNR8q83hJVh6AyYJG1KGJ
+ dYyb/s6PG4fWdwNBiu4CHy3HHivxIWIId9hrRNUFdr6Qzpf4gMCRwJ05AjRS8Ss0AxHddXqGbiD
+ 8+tMlR7TXjsudJ9bAKzTLTJw==
+X-Received: by 2002:a17:907:9447:b0:b2e:ca89:dcc4 with SMTP id
+ a640c23a62f3a-b302a36e904mr493196566b.37.1758700045380; 
+ Wed, 24 Sep 2025 00:47:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGyo023aARO/D/5dtew7jdxibf3/FQYiq9Pf5uxlDFm3R28YtMwPBWlOhK+dIyJ1Wqz1NGRyBolwPuMKLteObw=
+X-Received: by 2002:a17:907:9447:b0:b2e:ca89:dcc4 with SMTP id
+ a640c23a62f3a-b302a36e904mr493193666b.37.1758700044890; Wed, 24 Sep 2025
+ 00:47:24 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20250923143542.2391576-4-chenhuacai@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJDxQ+SVndNoXNWqAA--.21338S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxurWxJrWkZrW3AF17Zw1UurX_yoW5KFyxp3
- y3Arsakr4xtFn3GFyDWrs8WFn5JrZF9FsFgF4xXry2kFsrGr1qvw1agr9aga45A34Yqa10
- v3WkGFy8tF1rW3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
- 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
- kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
- wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
- 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU82g43UU
- UUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -36
-X-Spam_score: -3.7
-X-Spam_bar: ---
-X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.829,
+References: <cover.1758549625.git.pabeni@redhat.com>
+In-Reply-To: <cover.1758549625.git.pabeni@redhat.com>
+From: Lei Yang <leiyang@redhat.com>
+Date: Wed, 24 Sep 2025 15:46:48 +0800
+X-Gm-Features: AS18NWA3PiYTFDk7fM62_t5QlcaIt7fWw-cPpE6qoBYXjDLTx48G-HDQsVuh-SY
+Message-ID: <CAPpAL=y=4=OmyX+L16Kd1a_3LLrRqfWUQxf9O50hm=M6AG=_7w@mail.gmail.com>
+Subject: Re: [PATCH v7 00/14] virtio: introduce support for GSO over UDP tunnel
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, 
+ Jason Wang <jasowang@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, 
+ Luigi Rizzo <lrizzo@google.com>, Giuseppe Lettieri <g.lettieri@iet.unipi.it>, 
+ Vincenzo Maffione <v.maffione@gmail.com>, Eric Blake <eblake@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,94 +109,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add Michael
+Tested this series of patches with virtio-net regression tests,
+everything works fine.
 
-On 2025/9/23 下午10:35, Huacai Chen wrote:
-> DSDT diffs from "iasl -d":
-> 
-> @@ -11,7 +11,7 @@
->    *     Signature        "DSDT"
->    *     Length           0x000011FB (4603)
->    *     Revision         0x01 **** 32-bit table (V1), no 64-bit math support
-> - *     Checksum         0x5D
-> + *     Checksum         0x5B
->    *     OEM ID           "BOCHS "
->    *     OEM Table ID     "BXPC    "
->    *     OEM Revision     0x00000001 (1)
-> @@ -1426,11 +1426,11 @@
->               Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
->               {
->                   Memory32Fixed (ReadWrite,
-> -                    0x100E001F,         // Address Base
-> +                    0x100E0020,         // Address Base
->                       0x0000000C,         // Address Length
->                       )
->               })
-> -            OperationRegion (PRST, SystemMemory, 0x100E001F, 0x0C)
-> +            OperationRegion (PRST, SystemMemory, 0x100E0020, 0x0C)
->               Field (PRST, ByteAcc, NoLock, WriteAsZeros)
->               {
->                   Offset (0x04),
-> 
-> Signed-off-by: Huacai Chen <chenhuacai@kernel.org>
+Tested-by: Lei Yang <leiyang@redhat.com>
+
+On Mon, Sep 22, 2025 at 10:21=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wr=
+ote:
+>
+> Some virtualized deployments use UDP tunnel pervasively and are impacted
+> negatively by the lack of GSO support for such kind of traffic in the
+> virtual NIC driver.
+>
+> The virtio_net specification recently introduced support for GSO over
+> UDP tunnel, and the kernel side of the implementation has been merged
+> into the net-next tree; this series updates the virtio implementation to
+> support such a feature.
+>
+> Currently the qemu virtio support limits the feature space to 64 bits,
+> while the virtio specification allows for a larger number of features.
+> Specifically the GSO-over-UDP-tunnel-related virtio features use bits
+> 65-69; the larger part of this series (patches 4-12) actually deals with
+> extending the features space.
+>
+> The extended features are carried by fixed size uint64_t arrays,
+> bringing the current maximum features number to 128.
+>
+> The patches use some syntactic sugar to try to minimize the otherwise
+> very large code churn. Specifically the extended features are boundled
+> in an union with 'legacy' features definition, allowing no changes in
+> the virtio devices not needing the extended features set.
+>
+> The actual offload implementation is in patches 13 and 14 and boils down
+> to propagating the new offload to the tun devices and the vhost backend.
+>
+> Patch 1 is a small pre-req refactor that ideally could enter the
+> tree separately; it's presented here in the same series to help
+> reviewers more easily getting the full picture, patch 2 updates to
+> linux headers update script to deal with annotations recently introduce
+> in the kernel and patch 3 is a needed linux headers update.
+>
+> Tested with basic stream transfer with all the possible permutations of
+> host kernel/qemu/guest kernel with/without GSO over UDP tunnel support,
+> vs snapshots creation and restore and vs migration.
+>
+> The new features are disabled by default to avoid compatibilty issues.
+> They could be enabled with a later patch, together with the related
+> compatiblity entries.
 > ---
->   tests/data/acpi/loongarch64/virt/DSDT         | Bin 4603 -> 4603 bytes
->   tests/data/acpi/loongarch64/virt/DSDT.memhp   | Bin 5824 -> 5824 bytes
->   tests/data/acpi/loongarch64/virt/DSDT.numamem | Bin 4609 -> 4609 bytes
->   .../data/acpi/loongarch64/virt/DSDT.topology  | Bin 4905 -> 4905 bytes
->   tests/qtest/bios-tables-test-allowed-diff.h   |   4 ----
->   5 files changed, 4 deletions(-)
-> 
-> diff --git a/tests/data/acpi/loongarch64/virt/DSDT b/tests/data/acpi/loongarch64/virt/DSDT
-> index b31841aec6ed296f10ea1695a67ead38f45424d5..55aa34f988d6ef69293e91c5fe45bee0a02bc5f1 100644
-> GIT binary patch
-> delta 44
-> zcmeyZ{9BpJCD<k8w;%%pWAsL@BfP>2415AS3=9mF4ABh%LBSymJPMm1@=CD)02#3h
-> APXGV_
-> 
-> delta 44
-> zcmeyZ{9BpJCD<k8w;%%pW9&w*BfP@$415AS3=9mF4ABh%LBSymJo1|#@=CD)02$8<
-> APXGV_
-> 
-> diff --git a/tests/data/acpi/loongarch64/virt/DSDT.memhp b/tests/data/acpi/loongarch64/virt/DSDT.memhp
-> index e291200fc91caa3d93dcd6ec4736f7340f5e3f65..c0955eb60448cc5f4d38d410abc260ae54ea2e9a 100644
-> GIT binary patch
-> delta 44
-> zcmX@0dq9`VCD<k8fEWV<W5PzRW+7n(20j5E1_p*ohUkWXpx_V&9)-;dgcMi+`vnS0
-> 
-> delta 44
-> zcmX@0dq9`VCD<k8fEWV<W70;hW+7pD20j5E1_p*ohUkWXpx_V&9{J4+gcMi+`y&cU
-> 
-> diff --git a/tests/data/acpi/loongarch64/virt/DSDT.numamem b/tests/data/acpi/loongarch64/virt/DSDT.numamem
-> index 07923ac39584c5a5e73c9556d251814ce10de6cc..61e47e7252155dcf9c76879c4f60f4b3eef63f86 100644
-> GIT binary patch
-> delta 44
-> zcmZovX;k5I33dr#6k=dte72G62(PdL1D^m70|P@PLv%wxP;dwXkHY4Myb3G;-$V)Z
-> 
-> delta 44
-> zcmZovX;k5I33dr#6k=dte6f-12(Pd_1D^m70|P@PLv%wxP;dwXkNoC`yb3G;-(m^%
-> 
-> diff --git a/tests/data/acpi/loongarch64/virt/DSDT.topology b/tests/data/acpi/loongarch64/virt/DSDT.topology
-> index 6dfbb495f88b74b87849b58473e46717bc588a56..b2afebc938ce45d798c8aa5f45a463f1617e257e 100644
-> GIT binary patch
-> delta 44
-> zcmZ3fwo;ADCD<iIQ<#B)@!UqPBfP>2415AS3=9mF4ABh%LBSymJPMm1@_MiW0PuGT
-> Ag8%>k
-> 
-> delta 44
-> zcmZ3fwo;ADCD<iIQ<#B)@xn%~BfP@$415AS3=9mF4ABh%LBSymJo1|#@_MiW0PvLx
-> Ag8%>k
-> 
-> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-> index 2ed837faee..dfb8523c8b 100644
-> --- a/tests/qtest/bios-tables-test-allowed-diff.h
-> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
-> @@ -1,5 +1 @@
->   /* List of comma-separated changed AML files to ignore */
-> -"tests/data/acpi/loongarch64/virt/DSDT",
-> -"tests/data/acpi/loongarch64/virt/DSDT.memhp",
-> -"tests/data/acpi/loongarch64/virt/DSDT.numamem",
-> -"tests/data/acpi/loongarch64/virt/DSDT.topology",
-> 
+> v6 -> v7:
+>   - collected more acks
+>   - fixed a few types in commit message and description string
+>
+> v6: https://lists.gnu.org/archive/html/qemu-devel/2025-09/msg02411.html
+>
+> v5 -> v6:
+>   - colleted ack-by/reviewed-by tags
+>   - re-included pre-req patch as per Michael's request
+>   - minor checkpatch and whitestaces fixes
+>
+> v5: https://lists.gnu.org/archive/html/qemu-devel/2025-08/msg02005.html
+>
+> v4 -> v5:
+>   - more sparse cleanup
+>   - dropped RFC tag
+>   - disable the new features by default
+>
+> v4: https://lists.gnu.org/archive/html/qemu-devel/2025-07/msg05513.html
+>
+> v3 -> v4:
+>   - more sparse cleanups
+>   - fix build failures on a couple of targets
+> v3: https://lists.gnu.org/archive/html/qemu-devel/2025-07/msg04872.html
+>
+> v2 -> v3:
+>   - consolidated suffixes for new fields to '_ex'
+>   - avoid pre/post load trickery and relay on reset zeroing the features
+>   - cleaned-up virtio store implementation deduplicating a bit of code
+>   - many more cleanups, see the individual patches changelog for the
+>     details
+>   - I left patch 1 unmodified, still some hope we could live with that;)
+> v2: https://lists.gnu.org/archive/html/qemu-devel/2025-07/msg03000.html
+>
+> Paolo Abeni (14):
+>   net: bundle all offloads in a single struct
+>   linux-headers: deal with counted_by annotation
+>   linux-headers: Update to Linux v6.17-rc1
+>   virtio: introduce extended features type
+>   virtio: serialize extended features state
+>   virtio: add support for negotiating extended features
+>   virtio-pci: implement support for extended features
+>   vhost: add support for negotiating extended features
+>   qmp: update virtio features map to support extended features
+>   vhost-backend: implement extended features support
+>   vhost-net: implement extended features support
+>   virtio-net: implement extended features support
+>   net: implement tunnel probing
+>   net: implement UDP tunnel features offloading
+>
+>  hw/net/e1000e_core.c                          |   5 +-
+>  hw/net/igb_core.c                             |   5 +-
+>  hw/net/vhost_net-stub.c                       |   8 +-
+>  hw/net/vhost_net.c                            |  45 ++--
+>  hw/net/virtio-net.c                           | 234 ++++++++++++------
+>  hw/net/vmxnet3.c                              |  13 +-
+>  hw/virtio/vhost-backend.c                     |  62 ++++-
+>  hw/virtio/vhost.c                             |  68 +++--
+>  hw/virtio/virtio-bus.c                        |  11 +-
+>  hw/virtio/virtio-hmp-cmds.c                   |   3 +-
+>  hw/virtio/virtio-pci.c                        |  76 +++++-
+>  hw/virtio/virtio-qmp.c                        |  91 ++++---
+>  hw/virtio/virtio-qmp.h                        |   3 +-
+>  hw/virtio/virtio.c                            | 100 +++++---
+>  include/hw/virtio/vhost-backend.h             |   6 +
+>  include/hw/virtio/vhost.h                     |  56 ++++-
+>  include/hw/virtio/virtio-features.h           | 126 ++++++++++
+>  include/hw/virtio/virtio-net.h                |   2 +-
+>  include/hw/virtio/virtio-pci.h                |   2 +-
+>  include/hw/virtio/virtio.h                    |  11 +-
+>  include/net/net.h                             |  20 +-
+>  include/net/vhost_net.h                       |  33 ++-
+>  include/standard-headers/drm/drm_fourcc.h     |  56 ++++-
+>  include/standard-headers/linux/ethtool.h      |   4 +-
+>  .../linux/input-event-codes.h                 |   8 +
+>  include/standard-headers/linux/input.h        |   1 +
+>  include/standard-headers/linux/pci_regs.h     |   9 +
+>  include/standard-headers/linux/vhost_types.h  |   5 +
+>  include/standard-headers/linux/virtio_net.h   |  33 +++
+>  linux-headers/LICENSES/preferred/GPL-2.0      |  10 +-
+>  linux-headers/asm-arm64/unistd_64.h           |   2 +
+>  linux-headers/asm-generic/unistd.h            |   8 +-
+>  linux-headers/asm-loongarch/unistd_64.h       |   2 +
+>  linux-headers/asm-mips/unistd_n32.h           |   2 +
+>  linux-headers/asm-mips/unistd_n64.h           |   2 +
+>  linux-headers/asm-mips/unistd_o32.h           |   2 +
+>  linux-headers/asm-powerpc/kvm.h               |  13 -
+>  linux-headers/asm-powerpc/unistd_32.h         |   2 +
+>  linux-headers/asm-powerpc/unistd_64.h         |   2 +
+>  linux-headers/asm-riscv/kvm.h                 |   1 +
+>  linux-headers/asm-riscv/unistd_32.h           |   2 +
+>  linux-headers/asm-riscv/unistd_64.h           |   2 +
+>  linux-headers/asm-s390/unistd_32.h            |   2 +
+>  linux-headers/asm-s390/unistd_64.h            |   2 +
+>  linux-headers/asm-x86/unistd_32.h             |   2 +
+>  linux-headers/asm-x86/unistd_64.h             |   2 +
+>  linux-headers/asm-x86/unistd_x32.h            |   2 +
+>  linux-headers/linux/iommufd.h                 | 154 +++++++++++-
+>  linux-headers/linux/kvm.h                     |   2 +
+>  linux-headers/linux/vfio.h                    |  12 +-
+>  linux-headers/linux/vhost.h                   |  35 +++
+>  net/net.c                                     |  17 +-
+>  net/netmap.c                                  |   3 +-
+>  net/tap-bsd.c                                 |   8 +-
+>  net/tap-linux.c                               |  38 ++-
+>  net/tap-linux.h                               |   9 +
+>  net/tap-solaris.c                             |   9 +-
+>  net/tap-stub.c                                |   8 +-
+>  net/tap.c                                     |  21 +-
+>  net/tap_int.h                                 |   5 +-
+>  qapi/virtio.json                              |   9 +-
+>  scripts/update-linux-headers.sh               |   1 +
+>  62 files changed, 1196 insertions(+), 291 deletions(-)
+>  create mode 100644 include/hw/virtio/virtio-features.h
+>
+> --
+> 2.51.0
+>
+>
 
 
