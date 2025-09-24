@@ -2,96 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F114B99275
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E23EAB9926C
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:32:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1LoT-0004dO-RA; Wed, 24 Sep 2025 05:29:25 -0400
+	id 1v1LoU-0004ff-By; Wed, 24 Sep 2025 05:29:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1LoP-0004cr-Px
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1v1LoS-0004dY-9E
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1LoE-0004ll-CC
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:20 -0400
+ id 1v1LoP-0004me-K0
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:29:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758706148;
+ s=mimecast20190719; t=1758706158;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4J9lM6M2NH6+IBy5oZZhi7qe3sJv/LOLw1XFzXMwbNc=;
- b=gHBgRBh4KQAcTf62FtLQvUhjnm4vpRGl/vfYFiTGlvxDb9GGmQ2wemp9zFhWi5ruEjsTep
- q4esAbuNL6jxu5KOOIYmbIw/0AkIXgaIzkltkU0u0A52tBXoTUqc2y4HFc0bfe0vte5A+l
- 1h5da82AQFoLfCJnObCCEKr3xzs9jpI=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=i/j0P/MSV+X5BLJW2jx5BBKNa2M5lI05wnZcxCRbxSk=;
+ b=e57obKe10H4g6OtLrJIkU5K5x7Jb7LO773GgveJfHizi+W+u4TkrS21YD32LiwillxPTQ5
+ znX7//Lh4xTjfJOb9CPUv19oMGoX7EIDuE5xsu05OxKnyUuIOomEv26dq6ttMNHKsqfiz6
+ 7YppdldRViuHhSZxalsRB6CHHAytmh4=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-465-3rvgeYAFMqKSbzowkChNEw-1; Wed, 24 Sep 2025 05:29:07 -0400
-X-MC-Unique: 3rvgeYAFMqKSbzowkChNEw-1
-X-Mimecast-MFC-AGG-ID: 3rvgeYAFMqKSbzowkChNEw_1758706146
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-631dbb59345so5553742a12.3
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:29:06 -0700 (PDT)
+ us-mta-210-7XHbMKErPqySi057Tk8vvQ-1; Wed, 24 Sep 2025 05:29:17 -0400
+X-MC-Unique: 7XHbMKErPqySi057Tk8vvQ-1
+X-Mimecast-MFC-AGG-ID: 7XHbMKErPqySi057Tk8vvQ_1758706156
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-b2f989de76eso73893966b.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:29:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758706145; x=1759310945;
+ d=1e100.net; s=20230601; t=1758706155; x=1759310955;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4J9lM6M2NH6+IBy5oZZhi7qe3sJv/LOLw1XFzXMwbNc=;
- b=j06J7g2+jPETuN4ZGYHPSgJuf7RL7wdbLK7Y6I0cU5wQd2qAnhyDfY3maSmWYRvCJ5
- /TbW1CycaGGWPYSn+82AKVLca/CLJAwIxsbH2y+9GtgWK8vM2NEBnddZ6/hm2WtMj/r2
- +j9rl1+jNNJcHXeeqZKXPspXf7Ad5B+mkvcySd65QWNDI/IZtkrtMC2xMcdjyFB/Evxr
- RxKxMxiroGTZ1x3+GQrB17PpDjOyRPGHQLP4AfYlAigCHwXU1TePiwdmP4UgAJRCe0/Q
- Zr7IWSilkncB4qVKgUGJFDt8HCu+03MqNKjB7Is9BL+ghqch5UZRGqFgMSdaMO78KwvG
- /Zlg==
-X-Gm-Message-State: AOJu0Ywh0t5Bu5ysofj5Jt/EHckk9VNUb3w+0lEK97MWDg5RSqv8uroi
- edRYNSNzqBVG+wMSCLP2jpmSN7Qj1/duxSTCwwy+k8pdE7svE+CJ5ykbvYQyFAt7sw/jhrFKCZS
- Sfu/6jTEBQOocD0rRtohTYjXiko+9PkoLHEkKNitNowfzV0/mUeq7WqfyJ6NhPVFgPVQZjkkHLE
- B73uxlkmNBxt7AWuAlnIxJlVrD3LfXfbwew2NNYPSp
-X-Gm-Gg: ASbGnctrlzeIsMxXzs+8LfO7mlS77Gvyo3tUm618loWqM689Dp5tyOeRD4iX7+wJFck
- NadvCCOj258+jmM5d4eEJEvMEP6dqUKS0inhPu7JefT7KMoQwGngiuMtVynNV6RfCAiBzGmPhyR
- lE6zcRVLjWk190AgtqI+mX3BSV2Gywd6Qdd84SeX4OF0JVaHInW48fBYW4PyEwM2GHwssfXQUCA
- j1UszfXFWhUBgalcOF0Klv/yGA98VCctLsFjihxnHMS8UzACaPxz/lmTyKWD97dZMHsf2GGX7Rd
- EqZOHp4fqJqfCSXLe+ONV0l4ta8/9RzL/0ITTHlZNLYv9MQGXO7P5wkiTSzfMRuXr4Ilf8wOH/4
- qWJrSeDlHhSIQZvkWB9ZS0QaOKyeFWeo4kMgW1+J8IGfZ0A==
-X-Received: by 2002:a05:6402:505a:b0:62f:65f5:a8cd with SMTP id
- 4fb4d7f45d1cf-63467679abamr4666552a12.7.1758706145313; 
- Wed, 24 Sep 2025 02:29:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFvcC8bkXEj/h60ZkLfx+nh+e6fwJ3ON1CaVmstnBdpVSz8tjJ6xPKUf2NaNIaJWQdAihqaqg==
-X-Received: by 2002:a05:6402:505a:b0:62f:65f5:a8cd with SMTP id
- 4fb4d7f45d1cf-63467679abamr4666530a12.7.1758706144716; 
- Wed, 24 Sep 2025 02:29:04 -0700 (PDT)
+ bh=i/j0P/MSV+X5BLJW2jx5BBKNa2M5lI05wnZcxCRbxSk=;
+ b=P5dpGzEIkXQylxdIo26kHarcbh3S/aoBrpAbxomZbrFDEQA3qK/jFjueiF2dAj/UEk
+ z2xhzc2l/Fecf28Hjeku8EM09Sj5oGLA+MQqf9Bg3osEc0qi1Lh7zYzPjGNmerD6u5X/
+ 9Jv4Pj+1uRAEtB7hrbZuZ/Oi1xW1EgSwYk3+T2hPlH2z+mZQGfhewKfFCbaaucPRCgWy
+ 3vjfJylxD5R1Wgls1d+X+EufEENueq+Mg3KtDpB/cQ5wO8KFhG1otHwDVLCtdjsCE3G4
+ PWHP4vrv3n7SVBWc0akNBIdc3uCuC2lfObMolYMdeEAEmxv4u49ltgs7dWtZ5atvveMU
+ UEVg==
+X-Gm-Message-State: AOJu0Yw/PwcGmouXHxYUnR2YBcSYiDyhhXJYXfHVf8hoziShwbP3NrJk
+ HoN+DH0L14PgGgAAxG/Lj+Jrca0heglkan/BNamVtoAFZleSkO86DCdTfu0a3O+P+0ooVB4SYWr
+ lttBYL3AghtDO6FXpSROtzDNi4K6XmmLF5JV0Ne/Tt/LtPXjn8cHuqP5PkQBjyJa4EoqrEXfmOT
+ mXitUxHDn5dpb/8z4kMedEGYOq/rePNRLsAQ3mszEC
+X-Gm-Gg: ASbGncvKIjVzmDndnMEVCdq7wc4A9AsLjRcFX8uqCYjRudmuJIaBkNzOQM23cPU0puv
+ zOJZT8GAVecfS7CYMijoVbgTu79KKP3/4ItEmxJLal7CbaHLD+GNuQiMnuILHOpHDEoU2DcyWvh
+ zc+uGmAejs8UdCmbMHi9ROIooxByPE10/q2u/oLP9N60KZXykzoorPuDAu1GVzMthNOWyQZxU16
+ n5w9RP2vJfx4qJVwblP03h432DiOJs847HiU7HF/6xzzfjj7CYl8/tqJCg4DzBBbHAsnd7OEmVR
+ OaMKbwwvM6Nf8DK6SeemduxfWM2HPQ5VI2q+bTQ5ll2EpYeNPsjdte4kLDvJFrkzTENPbKJHG9C
+ CK85vQOuUg/GJLWcjCIzXSiWZVn/AbA2fOEfIqYQCwAP7QQ==
+X-Received: by 2002:a17:907:d1a:b0:b2a:10a3:7112 with SMTP id
+ a640c23a62f3a-b32caf90a7emr175817066b.24.1758706154963; 
+ Wed, 24 Sep 2025 02:29:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMlv3+YnITlkTGPOSxHh5xSGdLNPdYRVziQLvktkLpNKacbi9KQjjECAXYQhgJxXfHsYOOKQ==
+X-Received: by 2002:a17:907:d1a:b0:b2a:10a3:7112 with SMTP id
+ a640c23a62f3a-b32caf90a7emr175776166b.24.1758706146742; 
+ Wed, 24 Sep 2025 02:29:06 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-6347788dc8bsm1688110a12.9.2025.09.24.02.29.02
+ a640c23a62f3a-b2ba267f745sm720317166b.33.2025.09.24.02.29.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Sep 2025 02:29:02 -0700 (PDT)
+ Wed, 24 Sep 2025 02:29:05 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/29] subprojects: add attrs crate
-Date: Wed, 24 Sep 2025 11:28:25 +0200
-Message-ID: <20250924092850.42047-6-pbonzini@redhat.com>
+Subject: [PULL 06/29] rust: qemu-macros: switch #[property] parsing to use
+ combinators
+Date: Wed, 24 Sep 2025 11:28:26 +0200
+Message-ID: <20250924092850.42047-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924092850.42047-1-pbonzini@redhat.com>
 References: <20250924092850.42047-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,154 +108,197 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The attrs crate is a simple combinator-based for Rust attributes.  It
-will be used instead of a handwritten parser.
+Since we are going to add more attribute parsing for high-level migration
+state macros, use the attrs crate instead of a handwritten parser for
+device properties as well.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/meson.build                              |  2 ++
- rust/qemu-macros/Cargo.toml                   |  1 +
- rust/qemu-macros/meson.build                  |  1 +
- scripts/archive-source.sh                     |  2 +-
- scripts/make-release                          |  2 +-
- subprojects/.gitignore                        |  1 +
- subprojects/attrs-0.2-rs.wrap                 |  7 ++++
- .../packagefiles/attrs-0.2-rs/meson.build     | 33 +++++++++++++++++++
- 8 files changed, 47 insertions(+), 2 deletions(-)
- create mode 100644 subprojects/attrs-0.2-rs.wrap
- create mode 100644 subprojects/packagefiles/attrs-0.2-rs/meson.build
+ rust/Cargo.lock               | 11 +++++
+ rust/qemu-macros/src/lib.rs   | 86 ++++++++++++++---------------------
+ rust/qemu-macros/src/tests.rs |  8 ++--
+ 3 files changed, 49 insertions(+), 56 deletions(-)
 
-diff --git a/rust/meson.build b/rust/meson.build
-index c7bd6aba45f..b3ac3a71970 100644
---- a/rust/meson.build
-+++ b/rust/meson.build
-@@ -13,10 +13,12 @@ libc_rs = dependency('libc-0.2-rs')
- subproject('proc-macro2-1-rs', required: true)
- subproject('quote-1-rs', required: true)
- subproject('syn-2-rs', required: true)
-+subproject('attrs-0.2-rs', required: true)
+diff --git a/rust/Cargo.lock b/rust/Cargo.lock
+index eea928621a7..8315f98c46f 100644
+--- a/rust/Cargo.lock
++++ b/rust/Cargo.lock
+@@ -14,6 +14,16 @@ version = "1.2.7"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "c84fc003e338a6f69fbd4f7fe9f92b535ff13e9af8997f3b14b6ddff8b1df46d"
  
- quote_rs_native = dependency('quote-1-rs', native: true)
- syn_rs_native = dependency('syn-2-rs', native: true)
- proc_macro2_rs_native = dependency('proc-macro2-1-rs', native: true)
-+attrs_rs_native = dependency('attrs-0.2-rs', native: true)
++[[package]]
++name = "attrs"
++version = "0.2.9"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "2a207d40f43de65285f3de0509bb6cb16bc46098864fce957122bbacce327e5f"
++dependencies = [
++ "proc-macro2",
++ "syn",
++]
++
+ [[package]]
+ name = "bilge"
+ version = "0.2.0"
+@@ -188,6 +198,7 @@ dependencies = [
+ name = "qemu_macros"
+ version = "0.1.0"
+ dependencies = [
++ "attrs",
+  "proc-macro2",
+  "quote",
+  "syn",
+diff --git a/rust/qemu-macros/src/lib.rs b/rust/qemu-macros/src/lib.rs
+index 830b4326985..7ab18061776 100644
+--- a/rust/qemu-macros/src/lib.rs
++++ b/rust/qemu-macros/src/lib.rs
+@@ -3,10 +3,14 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
  
- genrs = []
+ use proc_macro::TokenStream;
+-use quote::{quote, quote_spanned, ToTokens};
++use quote::{quote, quote_spanned};
+ use syn::{
+-    parse::Parse, parse_macro_input, parse_quote, punctuated::Punctuated, spanned::Spanned,
+-    token::Comma, Data, DeriveInput, Error, Field, Fields, FieldsUnnamed, Ident, Meta, Path, Token,
++    parse::{Parse, ParseStream},
++    parse_macro_input, parse_quote,
++    punctuated::Punctuated,
++    spanned::Spanned,
++    token::Comma,
++    Attribute, Data, DeriveInput, Error, Field, Fields, FieldsUnnamed, Ident, Meta, Path, Token,
+     Variant,
+ };
+ mod bits;
+@@ -159,61 +163,37 @@ enum DevicePropertyName {
+     Str(syn::LitStr),
+ }
  
-diff --git a/rust/qemu-macros/Cargo.toml b/rust/qemu-macros/Cargo.toml
-index 3b6f1d337f8..c25b6c0b0da 100644
---- a/rust/qemu-macros/Cargo.toml
-+++ b/rust/qemu-macros/Cargo.toml
-@@ -16,6 +16,7 @@ rust-version.workspace = true
- proc-macro = true
+-#[derive(Debug)]
++impl Parse for DevicePropertyName {
++    fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
++        let lo = input.lookahead1();
++        if lo.peek(syn::LitStr) {
++            Ok(Self::Str(input.parse()?))
++        } else if lo.peek(syn::LitCStr) {
++            Ok(Self::CStr(input.parse()?))
++        } else {
++            Err(lo.error())
++        }
++    }
++}
++
++#[derive(Default, Debug)]
+ struct DeviceProperty {
+     rename: Option<DevicePropertyName>,
+     defval: Option<syn::Expr>,
+ }
  
- [dependencies]
-+attrs = "0.2.9"
- proc-macro2 = "1"
- quote = "1"
- syn = { version = "2", features = ["extra-traits"] }
-diff --git a/rust/qemu-macros/meson.build b/rust/qemu-macros/meson.build
-index d0b2992e204..0f27e0df925 100644
---- a/rust/qemu-macros/meson.build
-+++ b/rust/qemu-macros/meson.build
-@@ -8,6 +8,7 @@ _qemu_macros_rs = rust.proc_macro(
-     '--cfg', 'feature="proc-macro"',
-   ],
-   dependencies: [
-+    attrs_rs_native,
-     proc_macro2_rs_native,
-     quote_rs_native,
-     syn_rs_native,
-diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
-index 035828c532e..476a996a70d 100755
---- a/scripts/archive-source.sh
-+++ b/scripts/archive-source.sh
-@@ -27,7 +27,7 @@ sub_file="${sub_tdir}/submodule.tar"
- # in their checkout, because the build environment is completely
- # different to the host OS.
- subprojects="keycodemapdb libvfio-user berkeley-softfloat-3
--  berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
-+  berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs attrs-0.2-rs bilge-0.2-rs
-   bilge-impl-0.2-rs either-1-rs foreign-0.3-rs itertools-0.11-rs
-   libc-0.2-rs proc-macro2-1-rs
-   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
-diff --git a/scripts/make-release b/scripts/make-release
-index 87f563ef5f7..bc1b43caa25 100755
---- a/scripts/make-release
-+++ b/scripts/make-release
-@@ -40,7 +40,7 @@ fi
+-impl Parse for DeviceProperty {
+-    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+-        let _: syn::Token![#] = input.parse()?;
+-        let bracketed;
+-        _ = syn::bracketed!(bracketed in input);
+-        let attribute = bracketed.parse::<syn::Ident>()?;
+-        debug_assert_eq!(&attribute.to_string(), "property");
+-        let mut retval = Self {
+-            rename: None,
+-            defval: None,
+-        };
+-        let content;
+-        _ = syn::parenthesized!(content in bracketed);
+-        while !content.is_empty() {
+-            let value: syn::Ident = content.parse()?;
+-            if value == "rename" {
+-                let _: syn::Token![=] = content.parse()?;
+-                if retval.rename.is_some() {
+-                    return Err(syn::Error::new(
+-                        value.span(),
+-                        "`rename` can only be used at most once",
+-                    ));
+-                }
+-                if content.peek(syn::LitStr) {
+-                    retval.rename = Some(DevicePropertyName::Str(content.parse::<syn::LitStr>()?));
+-                } else {
+-                    retval.rename =
+-                        Some(DevicePropertyName::CStr(content.parse::<syn::LitCStr>()?));
+-                }
+-            } else if value == "default" {
+-                let _: syn::Token![=] = content.parse()?;
+-                if retval.defval.is_some() {
+-                    return Err(syn::Error::new(
+-                        value.span(),
+-                        "`default` can only be used at most once",
+-                    ));
+-                }
+-                retval.defval = Some(content.parse()?);
+-            } else {
+-                return Err(syn::Error::new(
+-                    value.span(),
+-                    format!("unrecognized field `{value}`"),
+-                ));
+-            }
++impl DeviceProperty {
++    fn parse_from(&mut self, a: &Attribute) -> syn::Result<()> {
++        use attrs::{set, with, Attrs};
++        let mut parser = Attrs::new();
++        parser.once("rename", with::eq(set::parse(&mut self.rename)));
++        parser.once("default", with::eq(set::parse(&mut self.defval)));
++        a.parse_args_with(&mut parser)
++    }
  
- # Only include wraps that are invoked with subproject()
- SUBPROJECTS="libvfio-user keycodemapdb berkeley-softfloat-3
--  berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
-+  berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs attrs-0.2-rs bilge-0.2-rs
-   bilge-impl-0.2-rs either-1-rs foreign-0.3-rs itertools-0.11-rs
-   libc-0.2-rs proc-macro2-1-rs
-   proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
-diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-index f4281934ce1..983c4c1549e 100644
---- a/subprojects/.gitignore
-+++ b/subprojects/.gitignore
-@@ -8,6 +8,7 @@
- /slirp
- /anyhow-1.0.98
- /arbitrary-int-1.2.7
-+/attrs-0.2.9
- /bilge-0.2.0
- /bilge-impl-0.2.0
- /either-1.12.0
-diff --git a/subprojects/attrs-0.2-rs.wrap b/subprojects/attrs-0.2-rs.wrap
-new file mode 100644
-index 00000000000..cd43c91d63e
---- /dev/null
-+++ b/subprojects/attrs-0.2-rs.wrap
-@@ -0,0 +1,7 @@
-+[wrap-file]
-+directory = attrs-0.2.9
-+source_url = https://crates.io/api/v1/crates/attrs/0.2.9/download
-+source_filename = attrs-0.2.9.tar.gz
-+source_hash = 2a207d40f43de65285f3de0509bb6cb16bc46098864fce957122bbacce327e5f
-+#method = cargo
-+patch_directory = attrs-0.2-rs
-diff --git a/subprojects/packagefiles/attrs-0.2-rs/meson.build b/subprojects/packagefiles/attrs-0.2-rs/meson.build
-new file mode 100644
-index 00000000000..ee575476cb2
---- /dev/null
-+++ b/subprojects/packagefiles/attrs-0.2-rs/meson.build
-@@ -0,0 +1,33 @@
-+project('attrs-0.2-rs', 'rust',
-+  meson_version: '>=1.5.0',
-+  version: '0.2.9',
-+  license: 'MIT OR Apache-2.0',
-+  default_options: [])
-+
-+subproject('proc-macro2-1-rs', required: true)
-+subproject('syn-2-rs', required: true)
-+
-+proc_macro2_dep = dependency('proc-macro2-1-rs', native: true)
-+syn_dep = dependency('syn-2-rs', native: true)
-+
-+_attrs_rs = static_library(
-+  'attrs',
-+  files('src/lib.rs'),
-+  gnu_symbol_visibility: 'hidden',
-+  override_options: ['rust_std=2021', 'build.rust_std=2021'],
-+  rust_abi: 'rust',
-+  rust_args: [
-+    '--cap-lints', 'allow',
-+  ],
-+  dependencies: [
-+    proc_macro2_dep,
-+    syn_dep,
-+  ],
-+  native: true,
-+)
-+
-+attrs_dep = declare_dependency(
-+  link_with: _attrs_rs,
-+)
-+
-+meson.override_dependency('attrs-0.2-rs', attrs_dep, native: true)
+-            if !content.is_empty() {
+-                let _: syn::Token![,] = content.parse()?;
+-            }
+-        }
++    fn parse(a: &Attribute) -> syn::Result<Self> {
++        let mut retval = Self::default();
++        retval.parse_from(a)?;
+         Ok(retval)
+     }
+ }
+@@ -235,7 +215,7 @@ fn derive_device_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream
+             f.attrs
+                 .iter()
+                 .filter(|a| a.path().is_ident("property"))
+-                .map(|a| Ok((f.clone(), syn::parse2(a.to_token_stream())?)))
++                .map(|a| Ok((f.clone(), DeviceProperty::parse(a)?)))
+         })
+         .collect::<Result<Vec<_>, Error>>()?;
+     let name = &input.ident;
+diff --git a/rust/qemu-macros/src/tests.rs b/rust/qemu-macros/src/tests.rs
+index 9ab7eab7f37..00a106612fc 100644
+--- a/rust/qemu-macros/src/tests.rs
++++ b/rust/qemu-macros/src/tests.rs
+@@ -60,7 +60,7 @@ struct DummyState {
+                 migrate_clock: bool,
+             }
+         },
+-        "unrecognized field `defalt`"
++        "Expected one of `default` or `rename`"
+     );
+     // Check that repeated attributes are not allowed:
+     derive_compile_fail!(
+@@ -73,7 +73,8 @@ struct DummyState {
+                 migrate_clock: bool,
+             }
+         },
+-        "`rename` can only be used at most once"
++        "Duplicate argument",
++        "Already used here",
+     );
+     derive_compile_fail!(
+         derive_device_or_error,
+@@ -85,7 +86,8 @@ struct DummyState {
+                 migrate_clock: bool,
+             }
+         },
+-        "`default` can only be used at most once"
++        "Duplicate argument",
++        "Already used here",
+     );
+     // Check that the field name is preserved when `rename` isn't used:
+     derive_compile!(
 -- 
 2.51.0
 
