@@ -2,62 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80787B98015
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 03:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC6DAB980D6
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 04:09:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1EKF-0003dy-Hy; Tue, 23 Sep 2025 21:29:44 -0400
+	id 1v1Ev8-0002zR-2r; Tue, 23 Sep 2025 22:07:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v1EKB-0003df-G7
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 21:29:39 -0400
-Received: from www3579.sakura.ne.jp ([49.212.243.89])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
- id 1v1EK6-0006oV-Qw
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 21:29:38 -0400
-Received: from [133.11.54.205] (h205.csg.ci.i.u-tokyo.ac.jp [133.11.54.205])
- (authenticated bits=0)
- by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58O1TKbN005265
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 24 Sep 2025 10:29:20 +0900 (JST)
- (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=GeCXbzOAB7Ri8I5WI56flm3hPXB98NZ58kyzN9iMias=; 
- c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
- h=Message-ID:Date:Subject:To:From;
- s=rs20250326; t=1758677361; v=1;
- b=ipMzuw2VEJJWX6kEzp7ddIYzokWDC1ffz7Sx1rEZzaUnf+HbUSQ+NTu60/h9HTvT
- 6cFqH1s2jH5nfqnmTbgx8Hiqz6lxDpqbzV9WLc+LgKVGgsFfHmWLLAMEGeHBT5Xl
- 6zS8p/CdL0lw9QV7EgdDadeve5kImqFCNqQzooWnh84f6eEm5NoTgufZUIuB+bvx
- 2PSDknrpW4v/uNp60at+f8gymol1SfFopm6+sh1s0EdpgyCj+fcg7AuMiiBdycQ7
- Bs7Hv+NAWuO6SxMPmEJ+P6s8s/j1IwjPFT/ikOEHLYOH2J/lQxz+OIUGIE0+w4l5
- YLDcF313OtjNpBYilkwKFQ==
-Message-ID: <d1d48391-2b34-4e7c-b732-ee2f528115d6@rsg.ci.i.u-tokyo.ac.jp>
-Date: Wed, 24 Sep 2025 10:29:19 +0900
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v1Ev4-0002yg-M1
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 22:07:47 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1v1Euy-0002bl-UU
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 22:07:46 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-33082c95fd0so5526639a91.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 19:07:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1758679658; x=1759284458; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7IKE+UgQbwjYQbDe2+KyzEk5pzBNRctV0JxsiSB+t8k=;
+ b=oTXtpkF1E02n8JUChjAt5yvnrzvFeGnk6n47K9Gtq48CZx94BumTa7c2XhYtp5bWt8
+ BWcPEhXIupCNUQELSg5wTBkA5KIaP8E5XgRj3V+ejoo/LChYNwwAGC3T0A9vUI0Y06t+
+ 8CWy6IacNaeNlJqWm2PoyoTMWlsn8tDC9CaY22JwVxxpKhxHcUcahB8OPQs7M1ziLB4n
+ H+j31hLxjU8Uz1HMd3P/ZUMaGUjK2RV/fmNblvmCm3x9l+X0WDsf+NssMP0x0xUWWdZd
+ UHgsqLivz3tSm0Yn62/Rk5Ik2QLa2FiGrXivDK5eSUR1l7zyj9xi3l0Sz5IcuIYx61v3
+ oMSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758679658; x=1759284458;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7IKE+UgQbwjYQbDe2+KyzEk5pzBNRctV0JxsiSB+t8k=;
+ b=SxDaqeZYODv/I+IHCyOQ0f1OFRSyMJnxlWNHRlm2mC9h9nT+r1F+QM3zeF87R1DdoG
+ wy/P33SEnanaaqErgET+pYYbq/IpyITXEdmYSrRRdngq+gZkXfdu6VwJU/4ZJR4cXTJy
+ 3banSz5JgOdKvpaFqF6Q2hglYS+h1xKUNbnUFM5PU6gHH/kOBr/ctQktUedF3p8pa/oY
+ RNcRJgHuNX7eYA4+Bcb0ptvrnQ5GtGELEHSMpYpDBwlDANcpm2EDI/RBeURgXD5mU0BU
+ ZnJ/gif6hTeUoxDPPQ4W0ZhtIoCfN3jL0VMGsonounk7ljHo7K5HxzIyuvh47l+Qx0D6
+ eIrw==
+X-Gm-Message-State: AOJu0Yz7xBgyvE6rKw+LKA1BMyFByxmv2wSX3dWhrcLJJg/LRX3Aj2ck
+ TK0L6veo+yj8eTK44QiPK9WYZgRBujMZPu8YA1191zVTXXrBz2kiczQEhjOvEp9C+8daoWxkgdS
+ e0SGH
+X-Gm-Gg: ASbGnctnWUXazzuzyskYaextNuvkKCipEGkuIvF6ZWJQA5JRijDn+4/m0fDYzIF+bcx
+ kSvliiFMJXCw5oatMyCOb3jHXpsq3J47xYm/s4uMXvvcvAxJopO9RkguHq/iY1HUV7n+0xMybCg
+ vKVMKE5PbxitHMM4MYKkeBSan8cMo8/CL90qah9bHG8YjrHrFrdmP78Dc6+gvgUBx4Q08TGoFPv
+ VsimVtF5nF327MEjAMf9ppfD3Qt4Q3R0z3SEwu+c3VO/Zi4iW1RGhOTz54BgzNbPUOl2mg4QrQE
+ 2O5etIxVSilX3dq6o0E5ConB/xwPLgT3ynwmXE+X18fRRyCP3UjZxJcxi9T5cp3PUKAz6Jp6uqu
+ pNSXhru3CdAegU5o5spXiuPwuKfMM
+X-Google-Smtp-Source: AGHT+IETp7MYBMMtep3JPMkKQGqbDDd3nbla7SPamxZJp4xjxc5r/649ECZZMqyVdtfx7Ua9mwSE+g==
+X-Received: by 2002:a17:90b:54cb:b0:32e:9f1e:4ee4 with SMTP id
+ 98e67ed59e1d1-332a95bbde0mr5494377a91.17.1758679658083; 
+ Tue, 23 Sep 2025 19:07:38 -0700 (PDT)
+Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-3341bcd9afbsm565664a91.0.2025.09.23.19.07.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 Sep 2025 19:07:37 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: jonwilson030981@googlemail.com
+Subject: [PATCH 0/2] linux-user: Support MADV_DONTDUMP, MADV_DODUMP
+Date: Tue, 23 Sep 2025 19:07:32 -0700
+Message-ID: <20250924020735.3909216-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/13] Error reporting cleanup, a fix, and &error_warn
- removal
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, berrange@redhat.com,
- richard.henderson@linaro.org, vsementsov@yandex-team.ru
-References: <20250923091000.3180122-1-armbru@redhat.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20250923091000.3180122-1-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=49.212.243.89;
- envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,92 +94,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/09/23 18:09, Markus Armbruster wrote:
->>From qapi/error.h:
-> 
->   * Please don't error_setg(&error_fatal, ...), use error_report() and
->   * exit(), because that's more obvious.
->   * Likewise, don't error_setg(&error_abort, ...), use assert().
-> 
-> Not mentioned, but just as undesirable: error_setg(&error_warn, ...).
-> 
-> This series eliminates such uses, and gets rid of &error_warn.
-> &error_warn has multiple issues and little use.  PATCH 12 has full
-> rationale.
-> 
-> A note on warnings: we don't use warnings much, and when we use them,
-> they're often pretty bad.  See my memo "Abuse of warnings for
-> unhandled errors and programming errors"
-> Message-ID: <87h5yijh3b.fsf@pond.sub.org>
-> https://lore.kernel.org/qemu-devel/87h5yijh3b.fsf@pond.sub.org/
-> 
-> v3:
-> * PATCH 02: Whitespace cleanup [Akihiko Odaki]
-> * PATCH 06+07: Memory leaks on error paths [Akihiko Odaki]
-> * PATCH 08+13: Rebase conflicts
-> * PATCH 12: New
-> 
-> v2:
-> * PATCH 03: Mention change of cxl_fmws_link() return value in commit
->    message [Jonathan]
-> * PATCH 04: Change exit(1) to g_assert_not_reached(), because it's a
->    programming error.
-> * PATCH 06+07: Replace questions in commit message by answers from
->    review.
-> * PATCH 06: Fix a format string
-> * PATCH 08: Keep warnings instead of reverting to silence [Daniel]
-> * PATCH 12: Adjusted for replaced PATCH 08
-> 
-> Issues raised in review I decided not to address in this series:
-> * PATCH 03: messages could be improved further, in particular the
->    "gdbstub: " prefix could be dropped
-> * ebpf_rss_load() can return false without setting an error
-> * Capture the discussion on how to deal with undhandled errors in
->    cover letter and/or commit messages.
-> 
-> The first two could be done on top.
-> 
-> Markus Armbruster (13):
->    monitor: Clean up HMP gdbserver error reporting
->    tcg: Fix error reporting on mprotect() failure in  tcg_region_init()
->    hw/cxl: Convert cxl_fmws_link() to Error
->    migration/cpr: Clean up error reporting in cpr_resave_fd()
->    hw/remote/vfio-user: Clean up error reporting
->    net/slirp: Clean up error reporting
->    ui/spice-core: Clean up error reporting
->    util/oslib-win32: Do not treat null @errp as &error_warn
->    ui/pixman: Consistent error handling in qemu_pixman_shareable_free()
->    ui/dbus: Clean up dbus_update_gl_cb() error checking
->    ui/dbus: Consistent handling of texture mutex failure
->    ivshmem-flat: Mark an instance of missing error handling FIXME
->    error: Kill @error_warn
-> 
->   include/exec/gdbstub.h         |  3 ---
->   include/qapi/error.h           |  6 ------
->   include/system/os-win32.h      |  5 ++++-
->   hw/cxl/cxl-host.c              |  7 ++++---
->   hw/display/virtio-gpu.c        |  8 ++++++--
->   hw/misc/ivshmem-flat.c         |  8 ++++++--
->   hw/net/virtio-net.c            |  8 +++++++-
->   hw/remote/vfio-user-obj.c      |  9 +++------
->   io/channel-socket.c            |  4 ++--
->   io/channel-watch.c             |  6 +++---
->   migration/cpr.c                |  9 +++++----
->   monitor/hmp-cmds.c             |  7 ++++---
->   net/slirp.c                    |  9 +++++++--
->   tcg/region.c                   |  7 +++++--
->   tests/unit/test-error-report.c | 17 -----------------
->   ui/dbus-listener.c             | 22 +++++++++++++++-------
->   ui/gtk.c                       |  6 +++++-
->   ui/qemu-pixman.c               |  5 ++++-
->   ui/spice-core.c                |  6 ++++--
->   util/aio-win32.c               |  2 +-
->   util/error.c                   |  5 +----
->   util/oslib-win32.c             | 25 ++++++++++++++++++++-----
->   22 files changed, 106 insertions(+), 78 deletions(-)
-> 
+This is a refresh of
 
-For the whole series:
+  20250506173423.1312788-1-jonwilson030981@gmail.com
+  [PATCH v4] Support madvise(MADV_DONTDUMP) when creating core \
+  dumps for qemu-user
 
-Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+using my suggestion of expanding the interface of page_set_flags.
+
+
+r~
+
+
+Jon Wilson (1):
+  linux-user: Support MADV_DONTDUMP, MADV_DODUMP
+
+Richard Henderson (1):
+  accel/tcg: Add clear_flags argument to page_set_flags
+
+ bsd-user/bsd-mem.h             |   7 +-
+ include/exec/page-protection.h |  21 +++---
+ include/user/page-protection.h |   9 ++-
+ target/arm/cpu.h               |   1 -
+ accel/tcg/user-exec.c          | 114 +++++++++------------------------
+ bsd-user/mmap.c                |   6 +-
+ linux-user/arm/elfload.c       |   2 +-
+ linux-user/elfload.c           |   4 +-
+ linux-user/hppa/elfload.c      |   2 +-
+ linux-user/mmap.c              |  38 +++++++----
+ linux-user/x86_64/elfload.c    |   2 +-
+ 11 files changed, 85 insertions(+), 121 deletions(-)
+
+-- 
+2.43.0
+
 
