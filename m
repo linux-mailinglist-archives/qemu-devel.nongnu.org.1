@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FEC9B980D4
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 04:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EFFB980D3
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 04:09:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Ev8-0002zg-5U; Tue, 23 Sep 2025 22:07:50 -0400
+	id 1v1EvB-00030R-2D; Tue, 23 Sep 2025 22:07:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1Ev5-0002z3-S0
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 22:07:48 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ id 1v1Ev9-0002zt-G5
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 22:07:51 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1Ev1-0002bu-1D
- for qemu-devel@nongnu.org; Tue, 23 Sep 2025 22:07:47 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-32326e2f0b3so5388128a91.2
- for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 19:07:42 -0700 (PDT)
+ id 1v1Ev1-0002c1-QW
+ for qemu-devel@nongnu.org; Tue, 23 Sep 2025 22:07:51 -0400
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-33082c95fd0so5526671a91.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 19:07:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758679661; x=1759284461; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758679662; x=1759284462; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=h7jBToDckL+9WdyOpUrdDydxCn382Hk4iBNUg68buw0=;
- b=qjYW/6aRdIx6y3ggZqh7mfvUk4MlFNsKY/fKnh3KXKucVsaLGWgzt8X82OXI3NKKEM
- PKMUVn1PUSD616t4Qpx6O8p/GjXkdcgjWR0J4NoCWxoPeRzddCr8isFwm/fu1Rerc1TP
- pLsUahaBBy0tm5rmJxnSWGLw/AaortCh4nBiZ7fbw3UER0gK1Nz7FljRyptrJlo6uIFO
- gyGLmZuBkJBDTTQiDkcQNOIbzlq9O845dkUbr/kLWgAua8mEi03hPLOv0ViBmiZAfBYv
- d9Lvqm04dlP3JIBmrH6YO3jyfHRJHsXc7wDBxLKOrvhL36DhhLPovjNS12SHRfdA/h9L
- 6L6Q==
+ bh=JpDWwmGB3FDcx3IksRaylh4MrMqkVjqSJs30QhIpAxg=;
+ b=VppkE6KNC02/Ir9Je6Q5Yj9xEXHIIj6lK2lxtDjUxLF6ooigO9VdTT1Vq7YhMlkEeE
+ mu1MTOuPYIn+ehz+BUB/74YbDN9eXPn3T4yimdRfveNtXQdhu5BDbU8TwpyF7m+uefPh
+ 7MDS8WbgN2gqHl2COnrh0qk/RosUqbR/qgMzkhRURTAuXQogvfxvomG6pwqvxOVnlIi/
+ Bu1GNDqfvd+6qOsD9mNxxWyUdDBSuuTRVEiDOzIZ+5dVrI5uI7FhAAgZJ40e7ASNFlFo
+ kM7X0KoXnHFsM7sxGe7totj6wfHs7tkp9332JlRmb+yz6PY6QRAo06lgn/JsB7/hpQgu
+ iseA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758679661; x=1759284461;
+ d=1e100.net; s=20230601; t=1758679662; x=1759284462;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=h7jBToDckL+9WdyOpUrdDydxCn382Hk4iBNUg68buw0=;
- b=K7ieVGHCLYcDZ1GMqW1nLJ3mX5ryga3ddjr82Dw65Qmlb+Yd+F+5niqBNIWrc5QUFW
- kAbP/4u/ic1OlcJaMI569O6Nl7KQHS+C4pSMZbhJMvqQ5c6pTqMHKOprM+TwW4ZaEtBV
- P9aox57htLpb12dP3M1stBKhq7RyiqU2fbRMTQEhIUklTrW+1Oj0Abc+2apOKJzx895x
- rKsYLua/YWqrBuagamgvkBc2sRleUn3hfRdRmYv75MoMpUykUtUrxJeOKO5Kh2JMYJIn
- JShtu8KVjX7yobkOt2SvEWf1WNzEKn88BMrvd63VAy7HuaLX+LJsvsDXcQo1rkaWXq09
- WTfQ==
-X-Gm-Message-State: AOJu0Ywz85tvHruo1pq4MPzEXW7CrpNPL/mZV1syFBY9mEQYRNUkue7x
- SASSDEkOb59EI1X8dyU7tOHbWafjs6HfRiyOSD5v73b8u4RNTlywW+6mbnGX0RGgMFcieaxKVuT
- mNp5C
-X-Gm-Gg: ASbGncsfstknzS7wWWHEQH5e5mM3jlTZ1w82B6wLd87P0Mxz+vqWH7f6qWwGWn31DIh
- 4+ZeN+sDnY49m+Kf/c9GTwRA5KMa+irFaaW6twYiy4iotUokOdaDBruIIzv9bfGqeQklguJcCG4
- Ol3VbDkxF87DLamFwkNjlm1jWW/gG6eHexxafYRRhM5QOqSUbCNbJcGt7twi7UIhnjm7C7XIvZk
- l1YUS8+dOSH5wYwN/YWmKVpBoeZxAaY04Y6JMMYGbLPPcK0c+8CxtWxVi067+yA3flNGdKBNIYh
- ONyRGIAeXynZ/Jfl0qbR4FFBCOAdKpnkW0g+QB2aaH4TaLJ1Olan0jm7s7y99PeEEniaudeIM0a
- pE7FRZpc27QGKnqACxYjhgqGr/+7h
-X-Google-Smtp-Source: AGHT+IHZ3FQuinlKS2Fe6eVclEaZuS++WO6bhj8ERA9KXKXcpkvZBCc8qVR90RtQUTD8rCxNyVxe+g==
-X-Received: by 2002:a17:90a:f944:b0:32e:87fa:d96a with SMTP id
- 98e67ed59e1d1-332a95e2926mr5451175a91.26.1758679660692; 
- Tue, 23 Sep 2025 19:07:40 -0700 (PDT)
+ bh=JpDWwmGB3FDcx3IksRaylh4MrMqkVjqSJs30QhIpAxg=;
+ b=kSLC10Gtdq+AKSriFd8kOntZS05t3I840aA/X3h7QJoC5Wc3rhDStcgyp9nTC3QRHe
+ mG2TrjK5dKh8jtsXAeclUk3Ho3B9WbcPmkw7Vb0/ew4He3QzA2aSTn0yiMnAQGt2akTM
+ 6ed1nciQszpo2OQDa7wJIESVAORIAg5vpuo4FKbg2vMXIeGZTvkXS1zYWIgllD77Nz0M
+ rZCzduD09rE2r8hjzfRzxwdt8K5OMrNvUWC5AnlYk+06dguCynECCSI6AZgQgmkWUspe
+ 6aTjfsoAN06oQjj5uK8srZjoC7RH8HcsznKoBMJE0+Qd97oEyKWJpTDrwbqX2Lwx0Kep
+ dfhA==
+X-Gm-Message-State: AOJu0Ywyb2nGg0gZskfV9hILQwDytBmuSslvvbMdZxdqj1FrR91Mr2Fq
+ k6nX5VGGue+t/c+lcjyIBad0WTIa/2qc+yClShMDWD3k+zEx0Yg2dshyKH3VPlvjww/GX8PTb0j
+ Zdkmw
+X-Gm-Gg: ASbGncuvFXBx7g2wLe7CgKBtd/MKCJUcjg262MA7TWp1p1CPiq44Bci8ygoy+KhcvGy
+ 7ZzqIuSMPLGel7z9+B97d0WOExZPc00BqZ10rXYF3LBzr2V27y+t4xHynkWpXOwwpRzWksgMS5D
+ o794VvAy7u5pk2xjJf4kjPIUAPGaUbmsdchSdXmE64AJ1XwnUxX2Q32qLIL/uYaquV2K52QPFlu
+ /GVR5h4LKQEYNeayc/elP+AkYRfiN354aXFemZwdOwEUqagIaE3ILfoUnql0bIvRD9IVJOsXwk3
+ uRp91kQ86zgkPcRk2l3qPnWBKnUl7668tXXohsfEhXShCI8iUoirQ1P5JVl40nb8NGviBfxlWEq
+ PM7AfV7FOAZiFNbFy2x8J/zh7avpnqbfxvW9OvC4=
+X-Google-Smtp-Source: AGHT+IEV9YOSi1IisUEgR8K0mA2ffn94YvICW/k2Jx1BIJdgz//uM5/Le8u4Q8s001D17q1kTOPC4Q==
+X-Received: by 2002:a17:90b:394a:b0:32f:469:954c with SMTP id
+ 98e67ed59e1d1-332a96fb67fmr4816850a91.34.1758679661859; 
+ Tue, 23 Sep 2025 19:07:41 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3341bcd9afbsm565664a91.0.2025.09.23.19.07.39
+ 98e67ed59e1d1-3341bcd9afbsm565664a91.0.2025.09.23.19.07.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Sep 2025 19:07:40 -0700 (PDT)
+ Tue, 23 Sep 2025 19:07:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: jonwilson030981@googlemail.com,
- =?UTF-8?q?=E6=9D=8E=E5=A8=81=E5=A8=81?= <liweiwei@kubuds.cn>
-Subject: [PATCH] accel/tcg: Properly unlink a TB linked to itself
-Date: Tue, 23 Sep 2025 19:07:34 -0700
-Message-ID: <20250924020735.3909216-3-richard.henderson@linaro.org>
+	Jon Wilson <jonwilson030981@gmail.com>
+Subject: [PATCH 2/2] linux-user: Support MADV_DONTDUMP, MADV_DODUMP
+Date: Tue, 23 Sep 2025 19:07:35 -0700
+Message-ID: <20250924020735.3909216-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250924020735.3909216-1-richard.henderson@linaro.org>
 References: <20250924020735.3909216-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,116 +98,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we remove dest from orig's links, we lose the link
-that we rely on later to reset links.  This can lead to
-failure to release from spinlock with self-modifying code.
+From: Jon Wilson <jonwilson030981@gmail.com>
 
-Reported-by: 李威威 <liweiwei@kubuds.cn>
+Set and clear PAGE_DONTDUMP, and honor that in vma_dump_size.
+
+Signed-off-by: Jon Wilson <jonwilson030981@gmail.com>
+[rth: Use new page_set_flags semantics; also handle DODUMP]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tb-maint.c              |  8 +++++
- tests/tcg/riscv64/tb-link.c       | 60 +++++++++++++++++++++++++++++++
- tests/tcg/riscv64/Makefile.target |  1 +
- 3 files changed, 69 insertions(+)
- create mode 100644 tests/tcg/riscv64/tb-link.c
+ include/exec/page-protection.h | 6 +++++-
+ linux-user/elfload.c           | 4 ++--
+ linux-user/mmap.c              | 6 ++++++
+ 3 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 0048316f99..e6d45c9c12 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -836,6 +836,14 @@ static inline void tb_remove_from_jmp_list(TranslationBlock *orig, int n_orig)
-      * We first acquired the lock, and since the destination pointer matches,
-      * we know for sure that @orig is in the jmp list.
-      */
-+    if (dest == orig) {
-+        /*
-+         * In the case of a TB that links to itself, removing the entry
-+         * from the list means that it won't be present later during
-+         * tb_jmp_unlink -- unlink now.
-+         */
-+        tb_reset_jump(orig, n_orig);
-+    }
-     pprev = &dest->jmp_list_head;
-     TB_FOR_EACH_JMP(dest, tb, n) {
-         if (tb == orig && n == n_orig) {
-diff --git a/tests/tcg/riscv64/tb-link.c b/tests/tcg/riscv64/tb-link.c
-new file mode 100644
-index 0000000000..b6fcca8668
---- /dev/null
-+++ b/tests/tcg/riscv64/tb-link.c
-@@ -0,0 +1,60 @@
-+#include <assert.h>
-+#include <string.h>
-+#include <sys/mman.h>
-+#include <pthread.h>
-+#include <stdint.h>
-+#include <unistd.h>
-+
-+
-+int main()
-+{
-+    /*
-+     * ## 1. RISC-V machine code.
-+     * Assembly:
-+     *   L: j L          ; Jump to self (spin).
-+     *   li a0, 42       ; Place 42 into the return value register a0.
-+     *   ret             ; Return to caller.
-+     */
-+    static const uint32_t machine_code[] = {
-+        0x0000006f, /* jal zero, #0 */
-+        0x02a00513, /* addi a0, zero, 42 */
-+        0x00008067  /* jalr zero, ra, 0 */
-+    };
-+    size_t code_size = sizeof(machine_code);
-+    int tmp;
-+    pthread_t thread_id;
-+    void *thread_return_value;
-+    uint32_t *buffer;
-+
-+    /* ## 2. Allocate executable memory. */
-+    buffer = mmap(
-+        NULL,
-+        code_size,
-+        PROT_READ | PROT_WRITE | PROT_EXEC,
-+        MAP_PRIVATE | MAP_ANONYMOUS,
-+        -1, 0
-+    );
-+    assert(buffer != MAP_FAILED);
-+
-+    /* ## 3. Copy machine code into buffer. */
-+    memcpy(buffer, machine_code, code_size);
-+
-+    /* ## 4. Execute the code in a separate thread. */
-+    tmp = pthread_create(&thread_id, NULL, (void *(*)(void *))buffer, NULL);
-+    assert(tmp == 0);
-+
-+    /*
-+     * Wait a second and then try to patch the generated code to get the
-+     * runner thread to get unstuck by patching the spin jump.
-+     */
-+    sleep(1);
-+    buffer[0] = 0x00000013;  /* nop */
-+    __builtin___clear_cache((char *)buffer, (char *)(buffer + 1));
-+
-+    tmp = pthread_join(thread_id, &thread_return_value);
-+    assert(tmp == 0);
-+
-+    tmp = (intptr_t)thread_return_value;
-+    assert(tmp == 42);
-+    return 0;
-+}
-diff --git a/tests/tcg/riscv64/Makefile.target b/tests/tcg/riscv64/Makefile.target
-index 4da5b9a3b3..ba684616fd 100644
---- a/tests/tcg/riscv64/Makefile.target
-+++ b/tests/tcg/riscv64/Makefile.target
-@@ -4,6 +4,7 @@
- VPATH += $(SRC_PATH)/tests/tcg/riscv64
- TESTS += test-div
- TESTS += noexec
-+TESTS += tb-link
+diff --git a/include/exec/page-protection.h b/include/exec/page-protection.h
+index 5a18f98a3a..c50ce57d15 100644
+--- a/include/exec/page-protection.h
++++ b/include/exec/page-protection.h
+@@ -30,7 +30,11 @@
+ #define PAGE_PASSTHROUGH 0x40
+ /* For linux-user, indicates that the page is MAP_ANON. */
+ #define PAGE_ANON      0x0080
+-
++/*
++ * For linux-user, indicates that the page should not be
++ * included in a core dump.
++ */
++#define PAGE_DONTDUMP  0x0100
+ /* Target-specific bits that will be used via page_get_flags().  */
+ #define PAGE_TARGET_1  0x0200
+ #define PAGE_TARGET_2  0x0400
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 26c090c95d..b213f1a35b 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -2120,8 +2120,8 @@ static void bswap_note(struct elf_note *en)
+  */
+ static size_t vma_dump_size(vaddr start, vaddr end, int flags)
+ {
+-    /* The area must be readable. */
+-    if (!(flags & PAGE_READ)) {
++    /* The area must be readable and dumpable. */
++    if (!(flags & PAGE_READ) || (flags & PAGE_DONTDUMP)) {
+         return 0;
+     }
  
- # Disable compressed instructions for test-noc
- TESTS += test-noc
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index 0b69efe54c..35698c413c 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -1254,6 +1254,12 @@ abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
+      */
+     mmap_lock();
+     switch (advice) {
++    case MADV_DONTDUMP:
++        page_set_flags(start, start + len - 1, PAGE_DONTDUMP, 0);
++        break;
++    case MADV_DODUMP:
++        page_set_flags(start, start + len - 1, 0, PAGE_DONTDUMP);
++        break;
+     case MADV_WIPEONFORK:
+     case MADV_KEEPONFORK:
+         ret = -EINVAL;
 -- 
 2.43.0
 
