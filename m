@@ -2,125 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D47B99C95
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 14:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5015AB99CBD
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 14:17:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1OOu-0003OG-PD; Wed, 24 Sep 2025 08:15:13 -0400
+	id 1v1OPi-0004jF-9A; Wed, 24 Sep 2025 08:16:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ganeshgr@linux.ibm.com>)
- id 1v1OOW-0003BM-H8; Wed, 24 Sep 2025 08:14:52 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v1OP5-0004ZJ-UO
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:15:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ganeshgr@linux.ibm.com>)
- id 1v1OOM-0007H5-5T; Wed, 24 Sep 2025 08:14:45 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58O4q0Pq015979;
- Wed, 24 Sep 2025 12:14:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=bmFSH5
- gKLeJ0ECRwMAaw601S78Ne37KqaOCKIp0XjnY=; b=XT/PLngfQ/zzmFFC3sCH2+
- D3e9HQe7dX/pMDKwGdwYPvpwtALrl5v759Pg+lYp7iaXVGbqCL9TrDi3ivJL3Uzw
- zrYpyhC0WIV/ux32CNSb+5PkuyByeFVpiaAysa64wj3S20q/L+E+eI+5IXdH77Jr
- 7NqwOOJsJVrr8eUqk9bpcbvdHU82ggfRWdDXK17FXgyKzxn4WBjbVZBJRXSM7P61
- bqa6cVJD47ovY4U93jB3STQ6p4E3Qz+HDpP65OOV8YP30t9N58jZLUgyvq3HX0Mu
- pTpZMpcvR6sEhsb7RwBZhM9fVzcbgoL/zU5+BEkAxCEg/kWPKYnPLzZVKGckjaDA
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499ky67bbb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Sep 2025 12:14:25 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58OCEOLl014614;
- Wed, 24 Sep 2025 12:14:24 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499ky67bb6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Sep 2025 12:14:24 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58O9up9J013592;
- Wed, 24 Sep 2025 12:14:23 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49a8tjg8tb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Sep 2025 12:14:23 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 58OCEKK760621116
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 24 Sep 2025 12:14:20 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2192020049;
- Wed, 24 Sep 2025 12:14:20 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2261020040;
- Wed, 24 Sep 2025 12:14:18 +0000 (GMT)
-Received: from [9.98.111.232] (unknown [9.98.111.232])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 24 Sep 2025 12:14:17 +0000 (GMT)
-Message-ID: <f22953e3-5e87-4c86-844a-aba5c35ca3ca@linux.ibm.com>
-Date: Wed, 24 Sep 2025 17:44:16 +0530
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1v1OP2-0007YS-9c
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:15:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758716113;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+VJ81iI/BYOgcd30DJXdVmgjY7sz2jQMQ3ox4YPssAo=;
+ b=Nsa97KCWFC91BOIe59LrVU/Jz+v+5O7e1WIwQDS9R+QIsI/SYdvMGVZ7rA7IfgrzdrRmBx
+ QcyKiEJIQCGlbaNHeYM4V0LW/TKIapuOClbcBVJVBE8dbE+MAEg1JH70R8dcWIagakTsxn
+ U+TOfHtReM7LZuZLscLgv8TYCjehi3U=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-VsMO-_M5Mr2N1xNR_T4EJw-1; Wed, 24 Sep 2025 08:15:11 -0400
+X-MC-Unique: VsMO-_M5Mr2N1xNR_T4EJw-1
+X-Mimecast-MFC-AGG-ID: VsMO-_M5Mr2N1xNR_T4EJw_1758716110
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-46e1ac7110eso16141985e9.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 05:15:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758716110; x=1759320910;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+VJ81iI/BYOgcd30DJXdVmgjY7sz2jQMQ3ox4YPssAo=;
+ b=gQ18s2sLMPEbTgt++xhMF8CwG4eIvKjxuyxBdfy8/QIyNREFBFIbGMZAiHYBmiWad9
+ kbuGy3FGpjrVvMYFqT7BYpIz5sjP1pl14NisdshS3ERNAuHMN/rxmU6hRAih4+xocJEz
+ oJHJv4+6Qb+27fBpBOhvOWsOejAZVOIX6BQ+tgeZCE+LktabJwZFQoONKJIOXtFbPNnC
+ f15wkVdS0+ZdYdszAdtvZCA02nSphUNo4P9MNHOn2QHHnkQM3UN85dMeK9hNZa3NdxaN
+ Pm80wLnfVV5vQAfbyjtAKnS86dwutFvM7DgM5QiA7viJmq7TfR6V/G1vdfibJ3kUfHZO
+ WXbw==
+X-Gm-Message-State: AOJu0YzTre8NmYXec1DueR5d2s3fmzlBYHf8vwtrSAv6cwrcIarF5GWD
+ u3alK7QIy8/hTMlgQNMV1RddnD8mThTYQ6a/DfdtVP3E8dI02ELCoY/MESg/nh3r8Nnc+U/cLFt
+ ejT6shfyiU8kmiTC2+zvXJYb0pELiFZ9/kk1cqxoyR0bjK88FlKgjWg5fyna6qw7XuBkkQehAz1
+ IjLhcYh3w+OlYVxNIM0mjA0p3OjWvFwwM=
+X-Gm-Gg: ASbGncstYO0tXUeY0VQC2VpE1gU4Qp4nixDLdtwacLf2VocoNRO+iZwyQSWumVEcBc4
+ ybfeK0dhPPZj8wxrqiJrb9Qi8AJ15qXVLnOnF+EWLX+sxsrJTfw/0CjZBtxakWgmdf9d1BHV/HR
+ cwth0tTdrAwOWtQq7A8AZCeCElrp8pOO7MTL2w3rKlHWl1RSeHtdLvtO0qv8czQV7j7sma9voC7
+ OJ+79GGm8WP0DBqcKY0cBycVjs=
+X-Received: by 2002:a05:600c:8b35:b0:46c:adf8:c845 with SMTP id
+ 5b1f17b1804b1-46e1d98cba8mr80830705e9.16.1758716109709; 
+ Wed, 24 Sep 2025 05:15:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IErRZSiHTOP3DZFlZz6QshcgI3XGibhpRXmjJP3YhkUw+ylIvbciUri+i/BfIy5ypo5QfAJGkuRxmsxPPZfoHo=
+X-Received: by 2002:a05:600c:8b35:b0:46c:adf8:c845 with SMTP id
+ 5b1f17b1804b1-46e1d98cba8mr80830405e9.16.1758716109307; Wed, 24 Sep 2025
+ 05:15:09 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Access to remote XIVE2 units (was Re: [PATCH v9 0/7] Power11
- support for QEMU [PowerNV])
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Aditya Gupta <adityag@linux.ibm.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org, Glenn Miles <milesg@linux.ibm.com>,
- gautam@linux.ibm.com
-References: <20250808115929.1073910-1-adityag@linux.ibm.com>
- <baf6c854-832b-4a2e-922f-d34e6dadf821@redhat.com>
- <yo6uk5z6dlq4jlk5hsaoyhymozdpo6ijpq5bz4fipkf5ftws4b@um57vsttgf65>
- <wdkarichs5jrmpz3k4gxosw42dt6qxwodnc6t6tcuecsmxgqcd@km4q644fiixb>
- <04eb08b6-b787-47f3-86b7-b2d3a0f50ed6@redhat.com>
- <utzcz3bpixqmviolacg7qv2f526tedqovvx6wcrl6ypk3v4v7w@nmjtwot6lhjs>
- <3456f764-616b-412c-839c-aaef4bf1e47c@redhat.com>
-Content-Language: en-US
-From: Ganesh G R <ganeshgr@linux.ibm.com>
-In-Reply-To: <3456f764-616b-412c-839c-aaef4bf1e47c@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: WTJGjx1hSaOeEox7RwgUiJDHUS274_r6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAyMCBTYWx0ZWRfX8xiUXweA+Q8x
- szCwtETowPpwcuE9Oj1BvYlOgqS4DU1mOAiRDn6lzApBErQnAgpqj8dBkkCDP65Sj9wie+H7ydZ
- wv0tp6pafG87Ecyj2XxqxplNIDwt6WHTTEI24TAE1z5wmOsDyzSbY62BMhloat0o4jzZT1pfodv
- 4kkY9y9xXCGnrl0/nLNbc/eO9B3yP6Y2mg64Ohp2CqHlJtFgdfBuHLbZNMjAqNCM/sLd5c6V1WK
- ynlKEIt/8NVIFNHliuX8x/evNAaRQaM1S7pACAhdJ35prhV6oXPXIRJvKEM1IlRmcXt1m4RD0/+
- R/HT4e4y+0vetI7eUst5me2LMjPIWVRAawuINHroLn8VPIpJf3vGDM6b2B3us8+YqYWlxhp2wpW
- OGtst2Gi
-X-Authority-Analysis: v=2.4 cv=XYGJzJ55 c=1 sm=1 tr=0 ts=68d3e0a1 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=8Su4eGmFbs7b5p4w14gA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 7o-bU4dZfr8FFvplpu0sb0vLUM7rHADg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-24_03,2025-09-22_05,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 clxscore=1011 adultscore=0 malwarescore=0
- suspectscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509200020
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=ganeshgr@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <20250920142958.181910-1-pbonzini@redhat.com>
+ <20250920142958.181910-2-pbonzini@redhat.com>
+ <aNK44f/1+VEiOUQs@intel.com>
+In-Reply-To: <aNK44f/1+VEiOUQs@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 24 Sep 2025 14:14:58 +0200
+X-Gm-Features: AS18NWCvW4P7x8NNkHbSZh_nqku4dMTJINVfzdBa5v5Z4kHTVmaag5Hci95STkA
+Message-ID: <CABgObfZ-+Og8pJ02Dz7Wfk9_o=c-Wv60JAJjw-cX7a3du6yjkg@mail.gmail.com>
+Subject: Re: [PATCH 1/7] rust: bql: add BqlRefCell::get_mut()
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org, 
+ Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000f4d888063f8b000a"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -136,118 +103,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--000000000000f4d888063f8b000a
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/29/25 3:19 AM, Cédric Le Goater wrote:
-> On 8/28/25 14:04, Aditya Gupta wrote:
->> + Ganesh
->>
->> On 25/08/10 02:46PM, Cédric Le Goater wrote:
->>> + Glenn
->>> + Gautam
->>>
->>> On 8/10/25 12:45, Aditya Gupta wrote:
->>>> On 25/08/10 12:26PM, Aditya Gupta wrote:
->>>>>> <...snip...>
->>>>>
->>>>> About the error, seems xive2 always expecting powernv10 chip, I will
->>>>> have to rethink how should I use the same xive2 for powernv11.
->>>>>
->>>>
->>>> There's a type cast to Pnv10Chip in 'pnv_xive2_get_remote'.
->>>> The cast is only temporarily used to get the 'PnvXive2' object in the
->>>> Pnv10Chip.
->>>> It's the only place in hw/intc/pnv_xive2.c assuming Pnv10Chip object.
->>>>
->>>> Thinking to have a helper function to just return the 'PnvXive2' object
->>>> inside the chip, given a 'PnvChip'.
->>>>
->>>> Or the below change where we are adding another pointer in 
->>>> PnvChipClass:
->>>>
->>>>       diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
->>>>       index e019cad5c14c..9832be5fd297 100644
->>>>       --- a/hw/intc/pnv_xive2.c
->>>>       +++ b/hw/intc/pnv_xive2.c
->>>>       @@ -110,8 +110,8 @@ static PnvXive2 
->>>> *pnv_xive2_get_remote(uint32_t vsd_type, hwaddr fwd_addr)
->>>>            int i;
->>>>            for (i = 0; i < pnv->num_chips; i++) {
->>>>       -        Pnv10Chip *chip10 = PNV10_CHIP(pnv->chips[i]);
->>>>       -        PnvXive2 *xive = &chip10->xive;
->>>>       +        PnvChipClass *k = PNV_CHIP_GET_CLASS(pnv->chips[i]);
->>>>       +        PnvXive2 *xive = k->intc_get(pnv->chips[i]);
->>>>                /*
->>>>                 * Is this the XIVE matching the forwarded VSD 
->>>> address is for this
->>>>
->>>> Which one do you suggest ? Or should I look for another way ?
->>>>
->>>> I am preferring the first way to have a helper, but both ways look 
->>>> hacky.
->>>
->>> Any call to qdev_get_machine() in device model is at best
->>> a modeling shortcut, most likely it is a hack :
->>>
->>>    /*
->>>     * Remote access to INT controllers. HW uses MMIOs(?). For now, a 
->>> simple
->>>     * scan of all the chips INT controller is good enough.
->>>     */
->>>
->>> So all these calls are suspicious :
->>>
->>>    $ git grep qdev_get_machine hw/*/*pnv*
->>>    hw/intc/pnv_xive2.c:    PnvMachineState *pnv = 
->>> PNV_MACHINE(qdev_get_machine());
->>>    hw/pci-host/pnv_phb.c:    PnvMachineState *pnv = 
->>> PNV_MACHINE(qdev_get_machine());
->>>    hw/pci-host/pnv_phb3.c:    PnvMachineState *pnv = 
->>> PNV_MACHINE(qdev_get_machine());
->>>    hw/ppc/pnv.c:    PnvMachineState *pnv = 
->>> PNV_MACHINE(qdev_get_machine());
->>>    hw/ppc/pnv.c:    PnvMachineState *pnv = 
->>> PNV_MACHINE(qdev_get_machine());
->>>    hw/ppc/pnv_chiptod.c:    PnvMachineState *pnv = 
->>> PNV_MACHINE(qdev_get_machine());
->>>    hw/ppc/pnv_chiptod.c:    PnvMachineState *pnv = 
->>> PNV_MACHINE(qdev_get_machine());
->>>    hw/ppc/pnv_lpc.c:    PnvMachineState *pnv = 
->>> PNV_MACHINE(qdev_get_machine());
->>>
->>> In the particular case of XIVE2, the solution is to rework
->>> pnv_xive2_get_remote() like it was for P9. See b68147b7a5bf
->>> ("ppc/xive: Add support for the PC MMIOs").
->>>
->>
->> Hi Cedric,
->>
->> While I am working with XIVE engineers to get the pnv_xive2_get_remote()
->> reworked as suggested (since it's a bit more work due to multiple cases
->> of indirect/direct vst, nvg/nvc types in case of XIVE2), I would like
->> to propose below patch to have as an interim solution to unblock
->> the PowerNV11 support patches.
-> 
-> pHyp is an unknown FW implementation for opensource. Until an image
-> is released somewhere (please think about it), QEMU has nothing to
-> worry about other than supporting OPAL.
-> 
-> For now, let's forget about the grouping aspect of XIVE2, simply
-> rework pnv_xive2_get_remote() as it was done in b68147b7a5bf for
-> XIVE. This shouldn't take long. And, for the nvg/nvc types, report
-> an error of some sort and add a TODO in the code.
-> 
-A similar change cannot be done to XIVE2, because Fredric’s commit 
-(96a2132ce95) has introduced modifications to the NVPG and NVC MMIO 
-callbacks in order to support backlog counter operations.
->>
->> Please let me know if it looks good to you.
-> 
-> It's a hack. So please try the above first.
-> 
-> 
-> Thanks,
-> 
-> C.
-> 
+On Tue, Sep 23, 2025, 16:50 Zhao Liu <zhao1.liu@intel.com> wrote:
+
+> > +    pub const fn get_mut(&mut self) -> &mut T {
+> > +        // SAFETY: there cannot be any outstanding borrow,
+> > +        // since `self` is mutably owned.
+> > +        unsafe { &mut *self.as_ptr() }
+>
+> Why not use UnsafeCell::get_mut?
+>
+> self.value.get_mut()
+>
+
+Uh, of course. I thought it was too new, but it's even available as const
+in 1.83.
+
+Paolo
+
+Regards,
+> Zhao
+>
+>
+
+--000000000000f4d888063f8b000a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Sep 23, 2025, 16:50 Zhao=
+ Liu &lt;<a href=3D"mailto:zhao1.liu@intel.com">zhao1.liu@intel.com</a>&gt;=
+ wrote:</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
+0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+&gt; +=C2=A0 =C2=A0 pub const fn get_mut(&amp;mut self) -&gt; &amp;mut T {<=
+br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 // SAFETY: there cannot be any outstandin=
+g borrow,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 // since `self` is mutably owned.<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 unsafe { &amp;mut *self.as_ptr() }<br>
+<br>
+Why not use UnsafeCell::get_mut?<br>
+<br>
+self.value.get_mut()<br></blockquote></div></div><div dir=3D"auto"><br></di=
+v><div dir=3D"auto">Uh, of course. I thought it was too new, but it&#39;s e=
+ven available as const in 1.83.</div><div dir=3D"auto"><br></div><div dir=
+=3D"auto">Paolo</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div cla=
+ss=3D"gmail_quote gmail_quote_container"><blockquote class=3D"gmail_quote" =
+style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pa=
+dding-left:1ex">
+Regards,<br>
+Zhao<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000f4d888063f8b000a--
 
 
