@@ -2,53 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32051B986A6
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 08:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D58EB986DD
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 08:44:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1JB3-0002VC-FH; Wed, 24 Sep 2025 02:40:33 -0400
+	id 1v1JAy-0002Uu-Ff; Wed, 24 Sep 2025 02:40:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAx-0002Ua-L1
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:27 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAv-0002UO-Pv
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAh-0006hj-IL
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:26 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAh-0006gs-9w
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758696007;
+ s=mimecast20190719; t=1758696006;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=QvctvtOOKhapFr6/WqYxgGhqMLMuWcjQvA2OEyQGX8E=;
- b=iGBDyfRpXtixi1SmcpeB6JgHH13JLabx2/UkadNhL7v9Fug3Q02i0sUpVu26324GesI7D0
- +95xbpYomA55SDg99t1OkjPWCQ3L/fwV0mT0p9kyR+CmXFSgDP7h2x0ZBA3udUr9IW0p3G
- DP1XrfniYaySECszonCW4bXgeoC4bUw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zeRkTPCaOQ4BFfDiWdF99N1t2c77iucL/acwXAdfPdY=;
+ b=agQ9aKWF+suF2IC0A0cZKNR6IfY3+haOkJ14iczf5ajXvx1mmLZE9HgerihyYD0gyfc11K
+ BghDpBJF9UsywXIWZWP9yfkEm0sz5aRQh4c4KRYWrw4TQ8B3qChsemmcHTPzWnIb7blDsm
+ AE/Tyn6kysM6OeRu5xiT1ncmEAPD8aE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-394-NikKt0e3PmKtWrMN1l7JxA-1; Wed,
- 24 Sep 2025 02:40:00 -0400
-X-MC-Unique: NikKt0e3PmKtWrMN1l7JxA-1
-X-Mimecast-MFC-AGG-ID: NikKt0e3PmKtWrMN1l7JxA_1758695999
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-1YTZxpriN_GIvvT0CT-ZUw-1; Wed,
+ 24 Sep 2025 02:40:02 -0400
+X-MC-Unique: 1YTZxpriN_GIvvT0CT-ZUw-1
+X-Mimecast-MFC-AGG-ID: 1YTZxpriN_GIvvT0CT-ZUw_1758696001
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3992A1956086; Wed, 24 Sep 2025 06:39:59 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3E9921956089; Wed, 24 Sep 2025 06:40:01 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-176.str.redhat.com
  [10.33.192.176])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4BA411955F19; Wed, 24 Sep 2025 06:39:57 +0000 (UTC)
+ id CC3111955F19; Wed, 24 Sep 2025 06:39:59 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 00/12] Functional test patches
-Date: Wed, 24 Sep 2025 08:39:44 +0200
-Message-ID: <20250924063956.519792-1-thuth@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 01/12] tests/functional/m68k: Use proper polling in the
+ next-cube test
+Date: Wed, 24 Sep 2025 08:39:45 +0200
+Message-ID: <20250924063956.519792-2-thuth@redhat.com>
+In-Reply-To: <20250924063956.519792-1-thuth@redhat.com>
+References: <20250924063956.519792-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -60,9 +66,8 @@ X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,83 +83,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi Richard!
+From: Thomas Huth <thuth@redhat.com>
 
-The following changes since commit ab8008b231e758e03c87c1c483c03afdd9c02e19:
+The next-cube tests currently sleep for 2 seconds to wait for the
+guest's display to come up with the expected results. That's bad
+since there is still a theoretical race left here, and since there
+are two subtests, the whole test takes more than 4 seconds this way.
 
-  Merge tag 'pull-9p-20250918' of https://github.com/cschoenebeck/qemu into staging (2025-09-19 12:21:35 -0700)
+Looking at what the firmware does, there is a better way instead of
+blindly waiting for two seconds: The firmware is writing some values
+to the FPU registers during a test (and never touches them again
+afterwards, so we can be sure about the final values), so we can
+poll for the right values in those registers to know when we reached
+a state when the display is initialized for sure. We just have to
+also make sure to not look for text anymore that is only printed
+after the FPU test has been done by the guest firmware.
 
-are available in the Git repository at:
+This way the whole tests finishes in less than 1 second here, and
+there should be no race condition here anymore.
 
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-09-24
+Message-ID: <20250909074817.84661-1-thuth@redhat.com>
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/functional/m68k/test_nextcube.py | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-for you to fetch changes up to 097bbfc5e0ba889ce17106ef941a56111c3de270:
-
-  tests/functional: treat unknown exceptions as transient faults (2025-09-24 08:26:11 +0200)
-
-----------------------------------------------------------------
-* New functional tests to check via the vmstate-static-checker.py script
-* New functional tests for CD-ROM boot on hppa
-* Skip functional tests on more exotic network errors, too
-* Fix another issue with htags in the gitlab CI
-* Some additional minor fixes to various functional tests
-
-----------------------------------------------------------------
-Daniel P. Berrangé (3):
-      tests/functional: use self.log for all logging
-      tests/functional: retry when seeing ConnectionError exception
-      tests/functional: treat unknown exceptions as transient faults
-
-Peter Maydell (1):
-      .gitlab-ci.d/buildtest.yml: Unset CI_COMMIT_DESCRIPTION for htags
-
-Thomas Huth (8):
-      tests/functional/m68k: Use proper polling in the next-cube test
-      tests/functional/s390x/test_pxelinux: Fix warnings from pylint
-      tests: Move the old vmstate-static-checker files to tests/data/
-      tests/functional: Test whether the vmstate-static-checker script works fine
-      tests/data/vmstate-static-checker: Add dump files from QEMU 7.2.17
-      tests/functional: Use vmstate-static-checker.py to test data from v7.2
-      tests/functional/hppa: Add a CD-ROM boot test for qemu-system-hppa
-      tests: Fix "make check-functional" for targets without thorough tests
-
- MAINTAINERS                                        |    6 +-
- .gitlab-ci.d/buildtest.yml                         |    2 +-
- tests/Makefile.include                             |    3 +
- .../vmstate-static-checker/aarch64/virt-7.2.json   | 2571 +++++++++++++++
- .../vmstate-static-checker}/dump1.json             |    0
- .../vmstate-static-checker}/dump2.json             |    0
- .../data/vmstate-static-checker/m68k/virt-7.2.json | 2936 +++++++++++++++++
- .../vmstate-static-checker/ppc64/pseries-7.2.json  | 1068 +++++++
- .../s390x/s390-ccw-virtio-7.2.json                 |  475 +++
- .../vmstate-static-checker/x86_64/pc-q35-7.2.json  | 3297 ++++++++++++++++++++
- tests/functional/aarch64/meson.build               |    1 +
- tests/functional/aarch64/test_virt.py              |    4 +-
- tests/functional/arm/test_integratorcp.py          |    3 +-
- tests/functional/generic/test_vmstate.py           |   67 +
- tests/functional/hppa/meson.build                  |    4 +
- tests/functional/hppa/test_cdboot.py               |   38 +
- tests/functional/m68k/meson.build                  |    4 +
- tests/functional/m68k/test_nextcube.py             |   17 +-
- tests/functional/mips64el/test_malta.py            |    3 +-
- tests/functional/ppc64/meson.build                 |    1 +
- tests/functional/qemu_test/asset.py                |   10 +-
- tests/functional/replay_kernel.py                  |   16 +-
- tests/functional/s390x/meson.build                 |    4 +
- tests/functional/s390x/test_pxelinux.py            |   25 +-
- tests/functional/x86_64/meson.build                |    4 +-
- tests/functional/x86_64/test_acpi_bits.py          |   31 +-
- tests/functional/x86_64/test_bad_vmstate.py        |   58 +
- 27 files changed, 10599 insertions(+), 49 deletions(-)
- create mode 100644 tests/data/vmstate-static-checker/aarch64/virt-7.2.json
- rename tests/{vmstate-static-checker-data => data/vmstate-static-checker}/dump1.json (100%)
- rename tests/{vmstate-static-checker-data => data/vmstate-static-checker}/dump2.json (100%)
- create mode 100644 tests/data/vmstate-static-checker/m68k/virt-7.2.json
- create mode 100644 tests/data/vmstate-static-checker/ppc64/pseries-7.2.json
- create mode 100644 tests/data/vmstate-static-checker/s390x/s390-ccw-virtio-7.2.json
- create mode 100644 tests/data/vmstate-static-checker/x86_64/pc-q35-7.2.json
- create mode 100755 tests/functional/generic/test_vmstate.py
- create mode 100755 tests/functional/hppa/test_cdboot.py
- create mode 100755 tests/functional/x86_64/test_bad_vmstate.py
+diff --git a/tests/functional/m68k/test_nextcube.py b/tests/functional/m68k/test_nextcube.py
+index c1610e58456..e5e1c69dcbd 100755
+--- a/tests/functional/m68k/test_nextcube.py
++++ b/tests/functional/m68k/test_nextcube.py
+@@ -29,8 +29,15 @@ def check_bootrom_framebuffer(self, screenshot_path):
+         self.vm.launch()
+ 
+         self.log.info('VM launched, waiting for display')
+-        # TODO: wait for the 'displaysurface_create 1120x832' trace-event.
+-        time.sleep(2)
++        # Wait for the FPU test to finish, then the display is available, too:
++        while True:
++            res = self.vm.cmd('human-monitor-command',
++                              command_line='info registers')
++            if ("F0 = 400e 8400000000000000" in res and
++                "F1 = 400e 83ff000000000000" in res and
++                "F2 = 400e 83ff000000000000" in res):
++                break
++            time.sleep(0.1)
+ 
+         res = self.vm.cmd('human-monitor-command',
+                           command_line='screendump %s' % screenshot_path)
+@@ -56,10 +63,10 @@ def test_bootrom_framebuffer_ocr_with_tesseract(self):
+         self.check_bootrom_framebuffer(screenshot_path)
+         lines = tesseract_ocr(screenshot_path)
+         text = '\n'.join(lines)
++        self.assertIn('Backplane slot', text)
++        self.assertIn('Ethernet address', text)
+         self.assertIn('Testing the FPU', text)
+-        self.assertIn('System test failed. Error code', text)
+-        self.assertIn('Boot command', text)
+-        self.assertIn('Next>', text)
++
+ 
+ if __name__ == '__main__':
+     QemuSystemTest.main()
+-- 
+2.51.0
 
 
