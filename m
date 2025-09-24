@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4611B99C86
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 14:14:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B9C9B99C89
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 14:14:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1OJI-0004wM-H6; Wed, 24 Sep 2025 08:09:28 -0400
+	id 1v1OI8-0003fi-KT; Wed, 24 Sep 2025 08:08:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v1OHE-00023L-3I
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:07:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1v1OHc-0002ko-Gd
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:07:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v1OH8-0006E0-DT
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:07:12 -0400
+ id 1v1OHN-0006GL-24
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:07:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758715626;
+ s=mimecast20190719; t=1758715637;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gKXLERfSjh4Y5FUpkbNvYpX8f4W5fYjmQ5uSXku9KAQ=;
- b=HawmTAEkLNB+9luesfGbazpO8b9rd/klTrELWd6wrQA2lohM02F7nkvNBtnEI1C/xUkdlY
- 4li00IC3i49fHjA0Y2/+kRljXjplGYHErXiydJnsxoMQ6lR3f7Vcp1w+dFXEWKE1wRUyUZ
- Oit4ejI3Xa6GhLHh3PGYYzx/vio0d3c=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=GNIZhP4SB0pepWcJITSv8uuI1BUDyXfi69KUjl/0Tp8=;
+ b=DRLYW4RexG4s8POuyPuIt7vfq6rQmOVCfvnJLIEELkEKUOrndRjlPuyFemtmUXspCsF0L/
+ ICnstR7LHE+VqpU5nX8SC0N6VEBTJ0w4KfUvHyUL6iT0pJRhVqvv8Ng0pMn076yGI+Dj8Y
+ Cx/cBrhFZpPs89BXT1HmzjczLQjrOM4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-205-98o4ATU6M5aoUfiTt1ulmw-1; Wed,
- 24 Sep 2025 08:07:01 -0400
-X-MC-Unique: 98o4ATU6M5aoUfiTt1ulmw-1
-X-Mimecast-MFC-AGG-ID: 98o4ATU6M5aoUfiTt1ulmw_1758715620
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-58-owlZfo2iM9OCvNLABqV25A-1; Wed,
+ 24 Sep 2025 08:07:08 -0400
+X-MC-Unique: owlZfo2iM9OCvNLABqV25A-1
+X-Mimecast-MFC-AGG-ID: owlZfo2iM9OCvNLABqV25A_1758715626
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0ACC71956053; Wed, 24 Sep 2025 12:07:00 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1E2E3180028E; Wed, 24 Sep 2025 12:07:06 +0000 (UTC)
 Received: from localhost (unknown [10.44.22.38])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 376E01800452; Wed, 24 Sep 2025 12:06:57 +0000 (UTC)
+ id E38BF1800452; Wed, 24 Sep 2025 12:07:04 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Kyle Evans <kevans@freebsd.org>,
@@ -59,26 +59,27 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Kyle Evans <kevans@freebsd.org>,
  devel@lists.libvirt.org, qemu-rust@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Subject: [PATCH v2 20/27] tests/freebsd: enable Rust
-Date: Wed, 24 Sep 2025 16:04:17 +0400
-Message-ID: <20250924120426.2158655-21-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 21/27] meson: rust-bindgen limit allowlist-file to
+ srcdir/include
+Date: Wed, 24 Sep 2025 16:04:18 +0400
+Message-ID: <20250924120426.2158655-22-marcandre.lureau@redhat.com>
 In-Reply-To: <20250924120426.2158655-1-marcandre.lureau@redhat.com>
 References: <20250924120426.2158655-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,41 +97,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
----
- .gitlab-ci.d/cirrus.yml | 2 +-
- tests/vm/freebsd        | 4 +++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+gitlab CI restricts usage of directories for the build environment and
+cache. Msys64 is installed under project root ($srcdir/msys64). This
+confuses rust-bindgen allowlist-file which will generate bindings for
+all the system include headers under msys64/.
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 75b611418e..13a0bf5bb9 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -42,7 +42,7 @@ x64-freebsd-14-build:
-     CIRRUS_VM_RAM: 8G
-     UPDATE_COMMAND: pkg update; pkg upgrade -y
-     INSTALL_COMMAND: pkg install -y
--    CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblaze-softmmu,mips64el-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4eb-softmmu,xtensa-softmmu
-+    CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblaze-softmmu,mips64el-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4eb-softmmu,xtensa-softmmu --enable-rust
-     TEST_TARGETS: check
- 
- aarch64-macos-build:
-diff --git a/tests/vm/freebsd b/tests/vm/freebsd
-index 2e96c9eba5..ea09b21fbc 100755
---- a/tests/vm/freebsd
-+++ b/tests/vm/freebsd
-@@ -40,7 +40,9 @@ class FreeBSDVM(basevm.BaseVM):
-         tar -xf /dev/vtbd1;
-         cd ../build;
-         ../src/configure --extra-ldflags=-L/usr/local/lib \
--                         --extra-cflags=-I/usr/local/include {configure_opts};
-+                         --extra-cflags=-I/usr/local/include \
-+                         --enable-rust \
-+                         {configure_opts};
-         gmake --output-sync -j{jobs} {target} {verbose};
-     """
- 
+blocklist-file is also too strict, as it prevents generating all the
+recursively dependent types coming from system includes.
+
+Instead, let's not use allowlist-file from the project root,
+
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ meson.build | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index 9663725529..cf154fe67e 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4237,8 +4237,7 @@ if have_rust
+     '--no-layout-tests',
+     '--no-prepend-enum-name',
+     '--allowlist-file', meson.project_source_root() + '/include/.*',
+-    '--allowlist-file', meson.project_source_root() + '/.*',
+-    '--allowlist-file', meson.project_build_root() + '/.*'
++    '--allowlist-file', meson.project_build_root() + '/.*',
+     ]
+   if not rustfmt.found()
+     if bindgen.version().version_compare('<0.65.0')
 -- 
 2.51.0
 
