@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BFAB9AE57
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 18:41:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01DE3B9AE5D
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 18:42:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1SWz-0005J5-KO; Wed, 24 Sep 2025 12:39:49 -0400
+	id 1v1SYK-0005sL-8A; Wed, 24 Sep 2025 12:41:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1SWs-0005I2-KO
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 12:39:42 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1SXi-0005nF-1a
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 12:40:35 -0400
 Received: from mail-wm1-x344.google.com ([2a00:1450:4864:20::344])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1SWf-00006d-6f
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 12:39:41 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1v1SXZ-0000RP-40
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 12:40:32 -0400
 Received: by mail-wm1-x344.google.com with SMTP id
- 5b1f17b1804b1-46e23a6617dso130005e9.0
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 09:39:17 -0700 (PDT)
+ 5b1f17b1804b1-46e317bc647so3710075e9.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 09:40:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758731953; x=1759336753; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=eeqAk2Jyan0GqrbvgVH06Gi+p6oEHUacWiCvS3RqmM0=;
- b=azCGnAct/mYuTZBqlLXErg6ZV4M/FUxvgdSgArqQHFw9bFAWWLRrtMhrdAMqHZDd5/
- iTEF9FHHSl30W1oznixAdnCkXpxK2iI3Z/D9iKtRr8H2GjHvQNJccKWM6EkqvBSmsrvo
- PNOqXPm/WmFppJi62mBEEGAFOgBBybgFD0jEwQnOPW8E2h0ULsMIqr5rZL6mJL4XusyG
- qxTllM8XvR8zZbdmGGXckhYyBRSqHD7ce5As+sZEYsAvJI8UjAeg8MXQxhT9lQoCN0i5
- DrCS2k1JZh7NkuU7pBSNoyAcX3xtKdK4JkcSapfBU0whBgJws7RxutJJkjmLJ6juzNE5
- WeSw==
+ d=linaro.org; s=google; t=1758732017; x=1759336817; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gu6yUgiVh9d5U81j9Y3EUC7hWTF1x0xYVkxXp3FokLU=;
+ b=KWAt+biJKWUKQA6KtM7xQcQ7jfWBtMcMg8ufZcnTEOV6y+28TjhvyNaxvTdFcs7mWy
+ WlOI6p6/b2bPp3IwBcft7q0uY59Ud+HuMaD1CljshVaivTII20b9qDDV2jepOsjQvh/p
+ CRndUnk/MEMhHr1j2jRyZU9Mv20oQ5uXy0Q5UTij5yNXoZfH2luZevdEljXtV8nRlSD0
+ aiSeMsmoN1toupQtV0aZUXwiYJer2by6SimHYlesabmVZo1uVOpmeMlXhkQP93MwTX5+
+ lGc3HziWykntGfpO1gXy5RIm356oBvyCWwQleDdkmb+qI4cK3GxBnikAk3hL79Ac90L8
+ brtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758731953; x=1759336753;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eeqAk2Jyan0GqrbvgVH06Gi+p6oEHUacWiCvS3RqmM0=;
- b=UHXhM2xGurbBCQ9csg3hC4xzWHtPmlOePhGB8KuFbkuNtb6wULLi1yz8ztFMAhw/BE
- 7VZeEBbk/2cFzOG26vEeGakp2nsXq7FqUlV++rsaSVrgqo9dHMyE/9SrFX1PRJzMmaF0
- 9kCFuo6B8T0fLXkiOvyIuh1ZAgpdT9XJeYyGxOTURJkjYPdoFxPWMz75ObNHJU0j+GQs
- AigG+3eWqTaWGV6YVQyPjhEi4p99z+9ATlfU3UlTy1vsH4lHXgiMtyTkRDrUwp8smqmj
- MpE0C/CYKJRRgKXf9ah7qt5eXlhxHuTps6kJFZgRl6RgYpYjE5m/lrkChXKTYe+XxRZd
- sQ0Q==
-X-Gm-Message-State: AOJu0YxTbOrk/OvrZc3APN4uxzS6Qt7d9Jw88Ws5DbcyX2PzNdZf3+Rx
- 0dKKVDlJdp+IZRsT2D+Jvqer3eWUlaRGQPmLSeFjz3PSZTL8hCwZ7mM0XnmppUVhftAeqAy2CI2
- kKV/F2KfpAmQG
-X-Gm-Gg: ASbGncvE9xhw+VPtK0S/CvmSA4zvIloCJTkcA2RPg/e4O32d1WHMYZu/fXHOej25FyJ
- GOFlEAu11sQTc7zyqlFOjTu3vC0PLvUky2yd2adoq8TdMfxo1rwsIbJgm6NRqVP2NFEW6SXSE6k
- TDlSapAw1Bn4942sZw2a0asSmorR1R2d18g7ERD1LlXJxmUxMTaLOTyYWGbKWNJ0GgTOECsU3zi
- 8f0OcT6LLqHcDt12uGMTqdfeK7DhQl7PMxFKbwPLN6qvom0JALDjfrRok895gKIb+uXIxo62mkv
- O5tAkMtwPTzWH9z1WOcRV9nORx13ex2v82r3YQi984Q+HNDn+AASgi80OLq3bn9qoAEuRLQuYrF
- W1/PN07FP9+lF2lBwtKsPTHk2jw1ncK4XkupaoYb0ybUbH38x/XlvdwIioomyZ5kYLg0fC69G
-X-Google-Smtp-Source: AGHT+IFaHoimVBp+twR438md+QB0HD/Nr5kuW6ZlzDHZtPED4dPV+tGPQZIvqTExJo0a+1gteWRVFA==
-X-Received: by 2002:a05:600c:3b8e:b0:45f:2cf9:c236 with SMTP id
- 5b1f17b1804b1-46e329d4744mr6275415e9.4.1758731953478; 
- Wed, 24 Sep 2025 09:39:13 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ d=1e100.net; s=20230601; t=1758732017; x=1759336817;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gu6yUgiVh9d5U81j9Y3EUC7hWTF1x0xYVkxXp3FokLU=;
+ b=UygoWuuGSQjLlaXe7SZLCFbc96gWUXUyg89n8wZHRAUQudwgD13ZbAKORnFWbxUsh8
+ cAVCNV9/7TRuSq1UaGwVtiJ84SEI7BQMXFDTF8JprlG19UMa9F3diHs4G3jYlNWGHIia
+ OGadw/Tk/6xDM1rHgEUtRQ+a+TQZDKV7GGdkV0mOXS5HdVGVCXoPliUHQ1MMD7jayGfV
+ SLu4+vTdSmfzaWccPUrODw2ypLD4JUmCZhfMLfwjjnoTOi1T0mcnJmmnrli4gE1VuWp0
+ OGu2RC7gQ14WVjbqhnvQHwl2yi/EZe60Du9rCgTiH4cGmTAvc1f5bcpX3cwE3UURqSin
+ 0PYw==
+X-Gm-Message-State: AOJu0Yx1dYATp4sA4OEH/BqAuFg5JAhC/oefYXbZQRYZBtgZ5VKm1RiL
+ SSHo0BQV2dCPcOjgmuFglLZ8HhSuJgunmRn7Mp3qiPP4vVOFnG4XMGZbQDCq7i7lxTBEv4rfLg4
+ wzx+qEBvqdtkU
+X-Gm-Gg: ASbGncuO8s/bB6RfV2uHrAA0kvWlZ6POHIJX0m47HpjfAGbAD1XHQjPkGAi+9vcFe/h
+ sErpi6lUt3BxCi97UoMV5uIM95s+EXUsyVS7niTLIOl9LzhC52p64OtJDzBRc2pimzgQGUGBUiF
+ lyv45M/JfLhq5bb70znVuWfqJkfML+Q2s19L9Az+rpMa6ssI62cwsz4lAYIc4NFuodQqu2sIn1W
+ 2S988lKAF27uEV3vy1MuQVJJ+kuDEJpuhkMEJgm0Ap1HMtT4x+OnyaiUvKonbnMPMr2/be+4kkw
+ QFcIFHQK5zqFNKSvjkKvGabiOA0/b6Tums5wkq5mWJnoWkBTMZF2hMqgzVzQE/cubn3qLJXlSuf
+ zMJmhBs0bKm8gLXICRKpAcyxIw2vFho69J1cGuPCGxR43dRbOCiF4yfXlv7J1DNoCTQ==
+X-Google-Smtp-Source: AGHT+IGbRnDibNupntsRWTL9/Xpllt7LcnVbncFcVKCBgEPCflFms08wu+bTXhsDsXDvysmZohpFEg==
+X-Received: by 2002:a05:600c:5297:b0:465:a51d:ab with SMTP id
+ 5b1f17b1804b1-46e329bbf5amr5447735e9.15.1758732017098; 
+ Wed, 24 Sep 2025 09:40:17 -0700 (PDT)
+Received: from [192.168.69.221] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e2aadf5c9sm39028005e9.19.2025.09.24.09.39.12
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Sep 2025 09:39:12 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Alexander Bulekov <alxndr@bu.edu>, Thomas Huth <thuth@redhat.com>,
- Darren Kenny <darren.kenny@oracle.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] scripts/checkpatch: Avoid recommending legacy
- qemu_bh_new_guarded()
-Date: Wed, 24 Sep 2025 18:39:11 +0200
-Message-ID: <20250924163911.51479-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.51.0
+ ffacd0b85a97d-3f70b47ca57sm18186683f8f.0.2025.09.24.09.40.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 24 Sep 2025 09:40:16 -0700 (PDT)
+Message-ID: <2891f8d5-e4ea-433f-84ba-a878875bb4d6@linaro.org>
+Date: Wed, 24 Sep 2025 18:40:15 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scripts/checkpatch: Avoid recommending legacy
+ qemu_bh_new_guarded()
+Content-Language: en-US
+To: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Alexander Bulekov <alxndr@bu.edu>, Thomas Huth <thuth@redhat.com>,
+ Darren Kenny <darren.kenny@oracle.com>
+References: <20250924163911.51479-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250924163911.51479-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::344;
  envelope-from=philmd@linaro.org; helo=mail-wm1-x344.google.com
@@ -81,7 +85,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,33 +101,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_bh_new_guarded() is considered legacy since commit 9c86c97f12c
-("async: Add an optional reentrancy guard to the BH API"); recommend
-the new API: aio_bh_new_guarded().
+(forgot to Cc qemu-block@nongnu.org)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- scripts/checkpatch.pl | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 91616c974f2..6a0c06bebb9 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -3197,9 +3197,9 @@ sub process {
- 		if ($line =~ /\bsignal\s*\(/ && !($line =~ /SIG_(?:IGN|DFL)/)) {
- 			ERROR("use sigaction to establish signal handlers; signal is not portable\n" . $herecurr);
- 		}
--# recommend qemu_bh_new_guarded instead of qemu_bh_new
--        if ($realfile =~ /.*\/hw\/.*/ && $line =~ /\bqemu_bh_new\s*\(/) {
--			ERROR("use qemu_bh_new_guarded() instead of qemu_bh_new() to avoid reentrancy problems\n" . $herecurr);
-+# recommend aio_bh_new_guarded instead of legacy qemu_bh_new / qemu_bh_new_guarded
-+        if ($realfile =~ /.*\/hw\/.*/ && $line =~ /\bqemu_bh_new(_guarded)?\s*\(/) {
-+			ERROR("use aio_bh_new_guarded() instead of qemu_bh_new*() to avoid reentrancy problems\n" . $herecurr);
- 		}
- # recommend aio_bh_new_guarded instead of aio_bh_new
-         if ($realfile =~ /.*\/hw\/.*/ && $line =~ /\baio_bh_new\s*\(/) {
--- 
-2.51.0
+On 24/9/25 18:39, Philippe Mathieu-Daudé wrote:
+> qemu_bh_new_guarded() is considered legacy since commit 9c86c97f12c
+> ("async: Add an optional reentrancy guard to the BH API"); recommend
+> the new API: aio_bh_new_guarded().
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   scripts/checkpatch.pl | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> index 91616c974f2..6a0c06bebb9 100755
+> --- a/scripts/checkpatch.pl
+> +++ b/scripts/checkpatch.pl
+> @@ -3197,9 +3197,9 @@ sub process {
+>   		if ($line =~ /\bsignal\s*\(/ && !($line =~ /SIG_(?:IGN|DFL)/)) {
+>   			ERROR("use sigaction to establish signal handlers; signal is not portable\n" . $herecurr);
+>   		}
+> -# recommend qemu_bh_new_guarded instead of qemu_bh_new
+> -        if ($realfile =~ /.*\/hw\/.*/ && $line =~ /\bqemu_bh_new\s*\(/) {
+> -			ERROR("use qemu_bh_new_guarded() instead of qemu_bh_new() to avoid reentrancy problems\n" . $herecurr);
+> +# recommend aio_bh_new_guarded instead of legacy qemu_bh_new / qemu_bh_new_guarded
+> +        if ($realfile =~ /.*\/hw\/.*/ && $line =~ /\bqemu_bh_new(_guarded)?\s*\(/) {
+> +			ERROR("use aio_bh_new_guarded() instead of qemu_bh_new*() to avoid reentrancy problems\n" . $herecurr);
+>   		}
+>   # recommend aio_bh_new_guarded instead of aio_bh_new
+>           if ($realfile =~ /.*\/hw\/.*/ && $line =~ /\baio_bh_new\s*\(/) {
 
 
