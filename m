@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09212B99C71
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 14:11:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 589EBB99C77
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 14:12:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1OK3-0005rF-D1; Wed, 24 Sep 2025 08:10:11 -0400
+	id 1v1OK8-0006HN-Px; Wed, 24 Sep 2025 08:10:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v1OHp-0002yo-3A
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:07:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1v1OHx-0003HV-Rh
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:08:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v1OHZ-0006JE-Br
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:07:52 -0400
+ id 1v1OHp-0006Me-TC
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:08:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758715652;
+ s=mimecast20190719; t=1758715667;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NtgbSAwue8JTbYQxtc4bAVA0bopO7DE9J9ca5Np8TqI=;
- b=FOOMQNdLFnADzoFzsdE9r05JA6sfiooocmZhv5sOAZxU15rJW3La8tk4LtCDfZXCELsBQ2
- jI5ouvpYVIHJDP563WvamB9Inys0JFESUhY9/cQO0iovg6JEGnntTXPhbNMs5Uh81kZe8F
- wEVVPQDvuE8ZGGbku9IrQ/qHMVpFdqk=
+ bh=ceU5G3FTw2aKcj2aUtgK14fEBUcEZq8MIHAJ8aZb8PU=;
+ b=ZkZu1u4lvvMjbABPxqWR10eyLASyvxU9LBB6zA1OEV00+w5mUePllOV6cXdRhAbN1MjnwQ
+ mlAM6DKaJ8ubajY2I2PfBb9ep7ol8yK/8CdQgUAsr+SpJi73lgN2CHYXXwlKdFyfNvYQby
+ txBmIhCNHpF75Sw2iiaiHAbqh7SLzoo=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-435-7jhqfyV-N8WMyVwnI1XbrA-1; Wed,
- 24 Sep 2025 08:07:29 -0400
-X-MC-Unique: 7jhqfyV-N8WMyVwnI1XbrA-1
-X-Mimecast-MFC-AGG-ID: 7jhqfyV-N8WMyVwnI1XbrA_1758715647
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-48-Doq-a5ZpN9CFTzSLKkmI0w-1; Wed,
+ 24 Sep 2025 08:07:36 -0400
+X-MC-Unique: Doq-a5ZpN9CFTzSLKkmI0w-1
+X-Mimecast-MFC-AGG-ID: Doq-a5ZpN9CFTzSLKkmI0w_1758715654
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B34531800370; Wed, 24 Sep 2025 12:07:27 +0000 (UTC)
+ id 43854180034F; Wed, 24 Sep 2025 12:07:34 +0000 (UTC)
 Received: from localhost (unknown [10.44.22.38])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 06DB9300018D; Wed, 24 Sep 2025 12:07:25 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 4E3921955F19; Wed, 24 Sep 2025 12:07:31 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Kyle Evans <kevans@freebsd.org>,
@@ -59,26 +59,26 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Kyle Evans <kevans@freebsd.org>,
  devel@lists.libvirt.org, qemu-rust@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Subject: [PATCH v2 24/27] WIP: cirrus/macos: enable Rust
-Date: Wed, 24 Sep 2025 16:04:21 +0400
-Message-ID: <20250924120426.2158655-25-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 25/27] RFC: build-sys: deprecate mips host
+Date: Wed, 24 Sep 2025 16:04:22 +0400
+Message-ID: <20250924120426.2158655-26-marcandre.lureau@redhat.com>
 In-Reply-To: <20250924120426.2158655-1-marcandre.lureau@redhat.com>
 References: <20250924120426.2158655-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,33 +96,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Currently fails with a linking issue:
-  = note: some arguments are omitted. use `--verbose` to show all linker arguments
-  = note: ld: warning: ignoring duplicate libraries: '-lSystem', '-lc', '-llibgio-2.0.dylib', '-llibglib-2.0.dylib', '-llibgmodule-2.0.dylib', '-llibgnutls.dylib', '-llibgobject-2.0.dylib', '-llibintl.dylib', '-llibqemuutil.a', '-lm', 'libqemuutil.a'
-          ld: library 'libqemuutil.a' not found
-          clang: error: linker command failed with exit code 1 (use -v to see invocation)
-
-error: aborting due to 1 previous error
-
-Fixed in upcoming meson:
-https://github.com/mesonbuild/meson/pull/15024
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- .gitlab-ci.d/cirrus.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/about/build-platforms.rst | 2 --
+ docs/about/deprecated.rst      | 9 +++------
+ meson.build                    | 8 ++++++++
+ 3 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 13a0bf5bb9..17d52e8db3 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -56,5 +56,5 @@ aarch64-macos-build:
-     INSTALL_COMMAND: brew install
-     PATH_EXTRA: /opt/homebrew/ccache/libexec:/opt/homebrew/gettext/bin
-     PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
--    CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblazeel-softmmu,mips64-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4-softmmu,xtensaeb-softmmu
-+    CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblazeel-softmmu,mips64-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4-softmmu,xtensaeb-softmmu --enable-rust
-     TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
+diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
+index 0160d3adb8..798cb4631d 100644
+--- a/docs/about/build-platforms.rst
++++ b/docs/about/build-platforms.rst
+@@ -44,8 +44,6 @@ Those hosts are officially supported, with various accelerators:
+      - Accelerators
+    * - Arm
+      - hvf (64 bit only), kvm (64 bit only), tcg, xen
+-   * - MIPS (64 bit little endian only)
+-     - kvm, tcg
+    * - PPC
+      - kvm, tcg
+    * - RISC-V
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index aa300bbd50..285a8354f6 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -172,8 +172,8 @@ This argument has always been ignored.
+ Host Architectures
+ ------------------
+ 
+-Big endian MIPS since 7.2; 32-bit little endian MIPS since 9.2
+-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++Big endian MIPS since 7.2; 32-bit little endian MIPS since 9.2, MIPS since 11.0
++'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ As Debian 10 ("Buster") moved into LTS the big endian 32 bit version of
+ MIPS moved out of support making it hard to maintain our
+@@ -181,10 +181,7 @@ cross-compilation CI tests of the architecture. As we no longer have
+ CI coverage support may bitrot away before the deprecation process
+ completes.
+ 
+-Likewise, the little endian variant of 32 bit MIPS is not supported by
+-Debian 13 ("Trixie") and newer.
+-
+-64 bit little endian MIPS is still a supported host architecture.
++Likewise, MIPS is not supported by Debian 13 ("Trixie") and newer.
+ 
+ System emulation on 32-bit x86 hosts (since 8.0)
+ ''''''''''''''''''''''''''''''''''''''''''''''''
+diff --git a/meson.build b/meson.build
+index cf154fe67e..2f134c9e75 100644
+--- a/meson.build
++++ b/meson.build
+@@ -5039,6 +5039,14 @@ elif host_long_bits < 64
+   message()
+   message('Support for 32-bit CPU host architecture ' + cpu + ' is going')
+   message('to be dropped in a future QEMU release.')
++elif host_arch == 'mips'
++  message()
++  warning('DEPRECATED HOST CPU')
++  message()
++  message('Support for CPU host architecture ' + cpu + ' is going to be')
++  message('dropped as soon as the QEMU project stops supporting Debian 12')
++  message('("Bookworm"). Going forward, the QEMU project will not guarantee')
++  message('that QEMU will compile or work on this host CPU.')
+ endif
+ 
+ if not supported_oses.contains(host_os)
 -- 
 2.51.0
 
