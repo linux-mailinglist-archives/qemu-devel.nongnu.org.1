@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08614B98861
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:25:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 755B7B9889D
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:29:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Jno-0005sR-Q9; Wed, 24 Sep 2025 03:20:36 -0400
+	id 1v1Jnp-0005tk-OY; Wed, 24 Sep 2025 03:20:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jnh-0005pD-TG
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jnj-0005pi-PV
  for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:32 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1JnZ-0003fm-7d
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:27 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jnc-0003gG-5D
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=ui9d7qGLrNXHd9ideOeuKiUKn3f8NG9mb5zPIxxyYtQ=; b=aN9wrBeUSbxiwkO
- tV/Qu02uCt0Xb9H6Jkm/k6fDJmeWLx1DHohd8L9j1C2MJY8bJmCysJGjPL4kkjoZvfQYVDPQJ0xb+
- VHtUZx1XBBXbL+rp6YLZO3G8oblyNT36BkNICK95VamJ9hm5KeLZbJaBRzovxAJBHpWrNSDUOH2cy
- 2k=;
+ List-Help; bh=sDybAYeeUsTQsbUo0pXvCjbSZzRWA1DwGfuoWsq/Zjo=; b=G95CjJhdKUXEFTx
+ sI7f7a+Lgyi8F9UjwfwrFqTr8RK9ziU2U9ieVfDUqp2DHwua0sMdoK9llnLuLQSpi32PpQGzbbFj8
+ 7VZCI5jg2UkpGJUMzjeapspHsXjYnZoNnNnpiD/8Bks5S6L+OPBSL8q7rsXVBPvn+PKWvcKiTUce2
+ XE=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com
-Subject: [RFC PATCH 28/34] target/riscv: Replace target_ulong in
- riscv_ctr_add_entry()
-Date: Wed, 24 Sep 2025 09:21:18 +0200
-Message-ID: <20250924072124.6493-29-anjo@rev.ng>
+Subject: [RFC PATCH 29/34] target/riscv: Fix size of trigger data
+Date: Wed, 24 Sep 2025 09:21:19 +0200
+Message-ID: <20250924072124.6493-30-anjo@rev.ng>
 In-Reply-To: <20250924072124.6493-1-anjo@rev.ng>
 References: <20250924072124.6493-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -63,42 +62,56 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Widen to 64 bits in size to hold all relevant values.
+mcontext is at most 14 bits in size with the H extension, fix to 16
+bits. trigger_cur indexes into tdata*[RV_MAX_TRIGGERS] which holds 2
+elements, fix to 8 bits.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- target/riscv/cpu.h        | 2 +-
- target/riscv/cpu_helper.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ target/riscv/cpu.h     | 10 +++++-----
+ target/riscv/machine.c |  8 ++++----
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 1498ae063e..592c741947 100644
+index 592c741947..f8ab66adb3 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -653,7 +653,7 @@ RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit);
+@@ -460,11 +460,11 @@ struct CPUArchState {
+     target_ulong mseccfg;
  
- void riscv_cpu_set_mode(CPURISCVState *env, uint8_t newpriv, bool virt_en);
- 
--void riscv_ctr_add_entry(CPURISCVState *env, target_long src, target_long dst,
-+void riscv_ctr_add_entry(CPURISCVState *env, uint64_t src, uint64_t dst,
-     enum CTRType type, uint8_t prev_priv, bool prev_virt);
- void riscv_ctr_clear(CPURISCVState *env);
- 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 2945a89a9c..4acfccc9d8 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -925,8 +925,8 @@ static bool riscv_ctr_check_xte(CPURISCVState *env, uint8_t src_prv,
-  *    entry = isel - CTR_ENTRIES_FIRST;
-  *    idx = (sctrstatus.WRPTR - entry - 1) & (depth - 1);
-  */
--void riscv_ctr_add_entry(CPURISCVState *env, target_long src, target_long dst,
--    enum CTRType type, uint8_t src_priv, bool src_virt)
-+void riscv_ctr_add_entry(CPURISCVState *env, uint64_t src, uint64_t dst,
-+                         enum CTRType type, uint8_t src_priv, bool src_virt)
- {
-     bool tgt_virt = env->virt_enabled;
-     uint64_t src_mask = riscv_ctr_priv_to_mask(src_priv, src_virt);
+     /* trigger module */
+-    target_ulong trigger_cur;
+-    target_ulong tdata1[RV_MAX_TRIGGERS];
+-    target_ulong tdata2[RV_MAX_TRIGGERS];
+-    target_ulong tdata3[RV_MAX_TRIGGERS];
+-    target_ulong mcontext;
++    uint16_t mcontext;
++    uint8_t trigger_cur;
++    uint64_t tdata1[RV_MAX_TRIGGERS];
++    uint64_t tdata2[RV_MAX_TRIGGERS];
++    uint64_t tdata3[RV_MAX_TRIGGERS];
+     struct CPUBreakpoint *cpu_breakpoint[RV_MAX_TRIGGERS];
+     struct CPUWatchpoint *cpu_watchpoint[RV_MAX_TRIGGERS];
+     QEMUTimer *itrigger_timer[RV_MAX_TRIGGERS];
+diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+index a18bcdf13e..72bc0b04b5 100644
+--- a/target/riscv/machine.c
++++ b/target/riscv/machine.c
+@@ -243,10 +243,10 @@ static const VMStateDescription vmstate_debug = {
+     .needed = debug_needed,
+     .post_load = debug_post_load,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINTTL(env.trigger_cur, RISCVCPU),
+-        VMSTATE_UINTTL_ARRAY(env.tdata1, RISCVCPU, RV_MAX_TRIGGERS),
+-        VMSTATE_UINTTL_ARRAY(env.tdata2, RISCVCPU, RV_MAX_TRIGGERS),
+-        VMSTATE_UINTTL_ARRAY(env.tdata3, RISCVCPU, RV_MAX_TRIGGERS),
++        VMSTATE_UINT8(env.trigger_cur, RISCVCPU),
++        VMSTATE_UINT64_ARRAY(env.tdata1, RISCVCPU, RV_MAX_TRIGGERS),
++        VMSTATE_UINT64_ARRAY(env.tdata2, RISCVCPU, RV_MAX_TRIGGERS),
++        VMSTATE_UINT64_ARRAY(env.tdata3, RISCVCPU, RV_MAX_TRIGGERS),
+         VMSTATE_END_OF_LIST()
+     }
+ };
 -- 
 2.51.0
 
