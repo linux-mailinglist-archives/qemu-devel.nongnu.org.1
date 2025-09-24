@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E06B986DA
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 08:44:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F0FB986C2
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 08:43:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1JAu-0002UA-Ok; Wed, 24 Sep 2025 02:40:25 -0400
+	id 1v1JBe-0002dT-2Q; Wed, 24 Sep 2025 02:41:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAr-0002Tt-I4
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:21 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JB1-0002VT-4e
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAh-0006ho-A8
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:19 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAh-0006hZ-IV
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758696008;
+ s=mimecast20190719; t=1758696007;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JBRmuVpLJ3m0aks1MPvEMgz6IPDXFlW9qQuRyAUlJgs=;
- b=G/Gd5XUADFQ+I0A62TVy5Sn8YnPS4yorqz6mKCS4IMk9rc7ZqQvVIDZJ3oyAWGuJXQ/IUN
- vSuAKHS8o9UxPwwCY0lVJ9WpEw44awPQ08XcDvwmbYXcQNBf9JsYYTORGS4o/Kii7u5r/H
- otGDBBrRzDhEmVncY5lmr1oob3DnpOs=
+ bh=A8COaldwMRSaf5JfpLlxP8JmSL6270M/8xp+nySKuyM=;
+ b=AogxpRl5hbf4chO7tvBsIE6n0wI3uy6XFIFak+7tr/SvKCGR6UV2p1j75IGt5wJAZkZ5h1
+ qhK4XkaDZJfFVHmpK9KKi62gkcenTYci/W/1pElDFR+6BRA9Hh5szlL8EUYn/IxKfNjIYd
+ H5q8Asg/Uq48moanPW/TtD/4/CvDwW0=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-NpllkZugNPizCFvMDUJPfA-1; Wed,
- 24 Sep 2025 02:40:03 -0400
-X-MC-Unique: NpllkZugNPizCFvMDUJPfA-1
-X-Mimecast-MFC-AGG-ID: NpllkZugNPizCFvMDUJPfA_1758696002
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-OaNyVmCHODamTizjOfPbPQ-1; Wed,
+ 24 Sep 2025 02:40:05 -0400
+X-MC-Unique: OaNyVmCHODamTizjOfPbPQ-1
+X-Mimecast-MFC-AGG-ID: OaNyVmCHODamTizjOfPbPQ_1758696004
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B46D31800447; Wed, 24 Sep 2025 06:40:02 +0000 (UTC)
+ id 7625F180048E; Wed, 24 Sep 2025 06:40:04 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-176.str.redhat.com
  [10.33.192.176])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 932D91955F19; Wed, 24 Sep 2025 06:40:01 +0000 (UTC)
+ id 3D3881955F19; Wed, 24 Sep 2025 06:40:02 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Jared Rossi <jrossi@linux.ibm.com>
-Subject: [PULL 02/12] tests/functional/s390x/test_pxelinux: Fix warnings from
- pylint
-Date: Wed, 24 Sep 2025 08:39:46 +0200
-Message-ID: <20250924063956.519792-3-thuth@redhat.com>
+ Peter Xu <peterx@redhat.com>
+Subject: [PULL 03/12] tests: Move the old vmstate-static-checker files to
+ tests/data/
+Date: Wed, 24 Sep 2025 08:39:47 +0200
+Message-ID: <20250924063956.519792-4-thuth@redhat.com>
 In-Reply-To: <20250924063956.519792-1-thuth@redhat.com>
 References: <20250924063956.519792-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -64,9 +64,8 @@ X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,116 +83,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-pylint complains about wrong indentation in one of the lines and
-that the pxelinux_cfg_contents is a constant that should be written
-with capital letters. While we're at it, also add the missing doc
-strings.
+All other test data resides in tests/data/, so let's move the dump
+files here, too.
 
-Reviewed-by: Jared Rossi <jrossi@linux.ibm.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250912085251.274294-1-thuth@redhat.com>
+Message-ID: <20250912100755.316518-2-thuth@redhat.com>
 ---
- tests/functional/s390x/test_pxelinux.py | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ MAINTAINERS                                                     | 2 +-
+ .../vmstate-static-checker}/dump1.json                          | 0
+ .../vmstate-static-checker}/dump2.json                          | 0
+ 3 files changed, 1 insertion(+), 1 deletion(-)
+ rename tests/{vmstate-static-checker-data => data/vmstate-static-checker}/dump1.json (100%)
+ rename tests/{vmstate-static-checker-data => data/vmstate-static-checker}/dump2.json (100%)
 
-diff --git a/tests/functional/s390x/test_pxelinux.py b/tests/functional/s390x/test_pxelinux.py
-index 4fc33b8c46d..c00cce6a5a4 100755
---- a/tests/functional/s390x/test_pxelinux.py
-+++ b/tests/functional/s390x/test_pxelinux.py
-@@ -1,10 +1,11 @@
- #!/usr/bin/env python3
- #
- # SPDX-License-Identifier: GPL-2.0-or-later
--#
--# Functional test that checks the pxelinux.cfg network booting of a s390x VM
--# (TFTP booting without config file is already tested by the pxe qtest, so
--#  we don't repeat that here).
-+'''
-+Functional test that checks the pxelinux.cfg network booting of a s390x VM
-+(TFTP booting without config file is already tested by the pxe qtest, so
-+we don't repeat that here).
-+'''
- 
- import os
- import shutil
-@@ -12,7 +13,7 @@
- from qemu_test import QemuSystemTest, Asset, wait_for_console_pattern
- 
- 
--pxelinux_cfg_contents='''# pxelinux.cfg style config file
-+PXELINUX_CFG_CONTENTS='''# pxelinux.cfg style config file
- default Debian
- label Nonexisting
- kernel kernel.notavailable
-@@ -26,6 +27,10 @@
- '''
- 
- class S390PxeLinux(QemuSystemTest):
-+    '''
-+    Test various ways of booting via a pxelinux.cfg file, for details see:
-+    https://wiki.syslinux.org/wiki/index.php?title=PXELINUX#Configuration
-+    '''
- 
-     ASSET_DEBIAN_KERNEL = Asset(
-         ('https://snapshot.debian.org/archive/debian/'
-@@ -46,6 +51,7 @@ class S390PxeLinux(QemuSystemTest):
-         '480859574f3f44caa6cd35c62d70e1ac0609134e22ce2a954bbed9b110c06e0b')
- 
-     def pxelinux_launch(self, pl_name='default', extra_opts=None):
-+        '''Create a pxelinux.cfg file in the right location and launch QEMU'''
-         self.require_netdev('user')
-         self.set_machine('s390-ccw-virtio')
- 
-@@ -66,11 +72,11 @@ def pxelinux_launch(self, pl_name='default', extra_opts=None):
- 
-         cfg_fname = self.scratch_file('tftp', 'pxelinux.cfg', pl_name)
-         with open(cfg_fname, 'w', encoding='utf-8') as f:
--            f.write(pxelinux_cfg_contents)
-+            f.write(PXELINUX_CFG_CONTENTS)
- 
-         virtio_net_dev = 'virtio-net-ccw,netdev=n1,bootindex=1'
-         if extra_opts:
--                virtio_net_dev += ',' + extra_opts
-+            virtio_net_dev += ',' + extra_opts
- 
-         self.vm.add_args('-m', '384',
-                          '-netdev', f'user,id=n1,tftp={tftpdir}',
-@@ -80,6 +86,7 @@ def pxelinux_launch(self, pl_name='default', extra_opts=None):
- 
- 
-     def test_default(self):
-+        '''Check whether the guest uses the "default" file name'''
-         self.pxelinux_launch()
-         # The kernel prints its arguments to the console, so we can use
-         # this to check whether the kernel parameters are correctly handled:
-@@ -89,11 +96,13 @@ def test_default(self):
-         wait_for_console_pattern(self, 'Run /init as init process')
- 
-     def test_mac(self):
-+        '''Check whether the guest uses file name based on its MAC address'''
-         self.pxelinux_launch(pl_name='01-02-ca-fe-ba-be-42',
-                              extra_opts='mac=02:ca:fe:ba:be:42,loadparm=3')
-         wait_for_console_pattern(self, 'Linux version 5.3.7-301.fc31.s390x')
- 
-     def test_uuid(self):
-+        '''Check whether the guest uses file name based on its UUID'''
-         # Also add a non-bootable disk to check the fallback to network boot:
-         self.vm.add_args('-blockdev', 'null-co,size=65536,node-name=d1',
-                          '-device', 'virtio-blk,drive=d1,bootindex=0,loadparm=1',
-@@ -102,11 +111,13 @@ def test_uuid(self):
-         wait_for_console_pattern(self, 'Debian 4.19.146-1 (2020-09-17)')
- 
-     def test_ip(self):
-+        '''Check whether the guest uses file name based on its IP address'''
-         self.vm.add_args('-M', 'loadparm=3')
-         self.pxelinux_launch(pl_name='0A00020F')
-         wait_for_console_pattern(self, 'Linux version 5.3.7-301.fc31.s390x')
- 
-     def test_menu(self):
-+        '''Check whether the boot menu works for pxelinux.cfg booting'''
-         self.vm.add_args('-boot', 'menu=on,splash-time=10')
-         self.pxelinux_launch(pl_name='0A00')
-         wait_for_console_pattern(self, '[1] Nonexisting')
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 70eb0241d36..79abe5f6c9a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3613,7 +3613,7 @@ F: migration/
+ F: scripts/vmstate-static-checker.py
+ F: tests/functional/migration.py
+ F: tests/functional/*/*migration.py
+-F: tests/vmstate-static-checker-data/
++F: tests/data/vmstate-static-checker/
+ F: tests/qtest/migration/
+ F: tests/qtest/migration-*
+ F: docs/devel/migration/
+diff --git a/tests/vmstate-static-checker-data/dump1.json b/tests/data/vmstate-static-checker/dump1.json
+similarity index 100%
+rename from tests/vmstate-static-checker-data/dump1.json
+rename to tests/data/vmstate-static-checker/dump1.json
+diff --git a/tests/vmstate-static-checker-data/dump2.json b/tests/data/vmstate-static-checker/dump2.json
+similarity index 100%
+rename from tests/vmstate-static-checker-data/dump2.json
+rename to tests/data/vmstate-static-checker/dump2.json
 -- 
 2.51.0
 
