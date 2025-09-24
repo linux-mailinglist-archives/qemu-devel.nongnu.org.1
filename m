@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA9DB9B988
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 21:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C2CB9BA0E
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 21:12:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Uoa-0008MB-1T; Wed, 24 Sep 2025 15:06:10 -0400
+	id 1v1UnH-0007n9-4H; Wed, 24 Sep 2025 15:04:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1Uly-0006w0-1H
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 15:03:29 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1v1Ulu-0006v0-4P
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 15:03:25 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1Ujx-0007oC-8V
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 15:03:21 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-76e4fc419a9so214234b3a.0
+ id 1v1Uju-0007oY-IN
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 15:03:19 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-77f7da24397so185652b3a.2
  for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 12:01:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1758740472; x=1759345272; darn=nongnu.org;
+ d=linaro.org; s=google; t=1758740473; x=1759345273; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xlzJQOFlorrMw5CndfvG4jengOA2DFNt3pdatOiYndA=;
- b=jBtxunwpEslYpEoaaJq2Htbj2sQntCYVHW9G7P6b/TS13fDIRvKrwcbDmZ/R6QR3q0
- MEhCkPGZmFBQ2oDevv1yaOxfUOqaZt07wwhit8u1UswZ+DkFn3pPXItfeT2/KPmJ0suh
- ScQGP0MCcnUZukvD8EpmamorcNpzyIai2ewkRXszvE42IF8tcFugBe1YLHmaoEmWnOYb
- W0IFK27y/BOGAg/lXMy/mHRK+Itg1h4JA7uKwziDwBQMo8qLH9xgbrC9jSR7KNjaAzPC
- I7Pfa+b/PB2a9OpOtUvTKVa9LvXjtSjP/z6qVphCgdErncSHxHpw+ym5XMKN46ceT2OA
- s5rw==
+ bh=QRAc5xsl1m+VhgQiShnpQM6Hj9dAAWKFHFsWJQupR0Q=;
+ b=v1/bSwxCL4P4iXSu9edc8YRmYKzVbR+EbkeC8hvjjW7Z9JjjEaP2Gpjz+RZzYIRCsd
+ 9CPGwD3OODSCEyvD16pMmGMlqj/M9ERNCBB3U+2SEpjDI9H+UbBT/U+tCIEGbb38h26V
+ p13r9GDBlnvjm4Pho7LDVVpnI2I42UwFKP3otyjsgVRn1o0kLdGpfHRvNfOHaABkvarF
+ z0TPwGyz/7/SrvgRzNaWVUhtyTZsj5GQXF9CLcKnVelNEmKclRFtvd3AtH25K7UtQ3C3
+ 7AmZDUX784SHEBeqDC9ihQjt6EOs+RRUV5/qzCcuCIhaqTTVS7OZLeFV6qv1g24JsdgS
+ Qf+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758740472; x=1759345272;
+ d=1e100.net; s=20230601; t=1758740473; x=1759345273;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xlzJQOFlorrMw5CndfvG4jengOA2DFNt3pdatOiYndA=;
- b=fWyiIOW4TuS3kTDyOMnCJ5/DjdJLH69OIbvHCoWjlQMDBd5g8BdZ5yEJvWgfAOeTQ4
- wuZUxEHeH88FMDEH2raWQlDt//DCQ7IEWUYAEvgwHiJioMt4bQhw1vkOwjWCtwsc6xn7
- Tqbvs2pcCFGYeLKMxxAt8rqsDkG6glPhiHxvK1/3izHSgULK+M+aw2lxjdW22ke3x/D1
- F3rH7ejV/lKJQPkuzZk1noeXaSoq+BbtEI8sVl7Ggbacec0ov+h/sQLAeb3E3Q2FaZ0d
- HUSjiQ2ibHHdq4kJnepU99PV9d5f0O5/sgNxZHwFzJbDviDe2hFDTfOmELapxg7Ova17
- ShwQ==
-X-Gm-Message-State: AOJu0YyhC71Lm/5/heOBi+n+U4aSrLPTAB7WBdAwR57IwuVwOdFRYq8E
- TvxCWdQU5uTalZUQS9LP97D4PycCCRT7/890VQNorRPFC4Q1JAzBiAZtVvChgG4TLnZATFs1R8G
- hiCcW
-X-Gm-Gg: ASbGncsc1KJOUj1K30ocNZnAOEUz5WGH2NtFqKfkO4VilyUJwxgajKY22d5EW6Brghr
- oWjAD0dCdF/oTq1yXLQG/rD/nnWMI8QPnnN4JU6oE9Vfzxi9rMc9PF3yVyUyAZpdeC5GHRr6joa
- NcvDLTK91xQ/Z7b/1GUAsNTM7KtjO+uv7gVFsiP9DMCYrzno+a+vofghFPuVrIEcaCLjN8uVfGt
- zMYc0sqQamxv7ZsUD1DU3/0B8hhZxc+VMNxV+rShHdNbfnjmAePtLwJbzrnG/I8xBdeB9ikMOdc
- SJMeI9mhTmBoslmgYAIKvkiaFDt0LKua4mOiGw0ZGSOc83qmFsSwDlzHtFVt4aqRNcjbL8p+YLN
- 2nTzuRGzCdZyfpJd0LE31hyc3Vczd
-X-Google-Smtp-Source: AGHT+IF1mo+pVFpoGBzT0gOPLgJO4eZDbacPcxdrukY31f3QgjV+KjwpbRNffDDYYz/IkAZZ3BXQ+g==
-X-Received: by 2002:a17:90b:4c46:b0:32e:a10b:ce48 with SMTP id
- 98e67ed59e1d1-3342a260f90mr890419a91.12.1758740471680; 
- Wed, 24 Sep 2025 12:01:11 -0700 (PDT)
+ bh=QRAc5xsl1m+VhgQiShnpQM6Hj9dAAWKFHFsWJQupR0Q=;
+ b=dP5mfTeZzJKI7L7/JQgCl0OJXYpKd4wR+ExtIggOFRLwQbIp0oSO4cdPcB3j1WydIi
+ 4Dj8zClcdGJGFgGi5hUt76x7GdgQts10K6s6jDllT+WVsn9Tt3UhOg8NhZemU0mxstz8
+ BH90Y5wZIotVNNWFD0cAmuGy+RujHUrYqalEHdSpM4PZGgl+G0dcTx3RTA5BVEbWqaGM
+ u7vYl1z20V7KeQwjQJN7S//xpNpQB2d4KocplExvRvshbZiCDIsTf77/fcsj5EW2ZpDm
+ cTa2IPHZHvBnj5JGTxqix/eq9lma+eU2H88w3Jhu/CORzwXqGTPJkOizK+adR0+OX/wD
+ ibeQ==
+X-Gm-Message-State: AOJu0YxvB22TN9h+k17hu9gVvNelASQn3RL47MWtyfi4DDcrmRZRZ6/+
+ sg1zoOOWbf2MP98JDBMjOHED0i426Q6zRjaEP1Yuq0eejydDlZHYajzc2k2hhjQXJ+CwG1gQP40
+ 1h5QN
+X-Gm-Gg: ASbGncsNcUBzq7r1KK6/gi09V5vWHg3pF/sijUMF0UX+0AtbAPMNMABxN7PjyLTDOOx
+ 30FV1y6IKRoFF570cCxdxFX8cxt9DBfLlY+UmyxhEQJgjAWGQJiRN+zfUE39eBuoD3I9qOerUAa
+ Y2j39aOp4VBuP2c2dhT3eXqZpRAcC7D6tWNX79FiiA3MR+fCTNHGoGUwHyVCjlwqpUAbezdrLCQ
+ t/rfORGtr85rubFli6zzcMLtaR520RZVho+E+V7KzUbktXk9FRMW/3LkONNQSQsQMq5pfkaLC1U
+ QgFOIJR/ON9gA+J8mCjH70BxEwnAa3zVYxgFnjU4NgyyWBRVVq+uPm2AzSOn0Gf2f3qruOG4IcO
+ H/qC2xdBWbTDhUKcLYeSt3LI3jj5hnbI6wAgyHXo=
+X-Google-Smtp-Source: AGHT+IESJOoC5kPn5/kpVKuA5LDdy4i5FEvEW9gZ723lmIA3QwKVU5kRGbe6+4kR5Z1n170PE47ZQA==
+X-Received: by 2002:a17:90b:1b4b:b0:32e:dd8c:dd18 with SMTP id
+ 98e67ed59e1d1-3342a2f9055mr779194a91.17.1758740472354; 
+ Wed, 24 Sep 2025 12:01:12 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-33439103461sm63221a91.8.2025.09.24.12.01.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
@@ -65,16 +65,16 @@ Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 06/32] target/sparc: Loosen decode of STBAR for v8
-Date: Wed, 24 Sep 2025 12:00:39 -0700
-Message-ID: <20250924190106.7089-7-richard.henderson@linaro.org>
+Subject: [PULL 07/32] target/sparc: Loosen decode of RDY for v7
+Date: Wed, 24 Sep 2025 12:00:40 -0700
+Message-ID: <20250924190106.7089-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250924190106.7089-1-richard.henderson@linaro.org>
 References: <20250924190106.7089-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,74 +89,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Solaris 8 appears to have a bug whereby it executes v9 MEMBAR
-instructions when booting a freshly installed image. According
-to the SPARC v8 architecture manual, whilst bits 13 and bits 12-0
-of the "Read State Register Instructions" are notionally zero,
-they are marked as unused (i.e. ignored).
+Bits [18:0] are not decoded with v7, and for v8 unused values
+of rs1 simply produce undefined results.
 
 Fixes: af25071c1d ("target/sparc: Move RDASR, STBAR, MEMBAR to decodetree")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3097
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- target/sparc/translate.c  |  5 ++++-
- target/sparc/insns.decode | 13 ++++++++++++-
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ target/sparc/translate.c  | 14 ++------------
+ target/sparc/insns.decode | 12 ++++++++++--
+ 2 files changed, 12 insertions(+), 14 deletions(-)
 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 336583beab..ece393fffc 100644
+index ece393fffc..cfdd9c1ce4 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -2823,12 +2823,15 @@ static bool trans_Tcc_i_v9(DisasContext *dc, arg_Tcc_i_v9 *a)
-     return do_tcc(dc, a->cond, a->cc, a->rs1, true, a->i);
+@@ -2863,18 +2863,8 @@ static TCGv do_rdy(DisasContext *dc, TCGv dst)
+     return cpu_y;
  }
  
--static bool trans_STBAR(DisasContext *dc, arg_STBAR *a)
-+static bool do_stbar(DisasContext *dc)
- {
-     tcg_gen_mb(TCG_MO_ST_ST | TCG_BAR_SC);
-     return advance_pc(dc);
- }
+-static bool trans_RDY(DisasContext *dc, arg_RDY *a)
+-{
+-    /*
+-     * TODO: Need a feature bit for sparcv8.  In the meantime, treat all
+-     * 32-bit cpus like sparcv7, which ignores the rs1 field.
+-     * This matches after all other ASR, so Leon3 Asr17 is handled first.
+-     */
+-    if (avail_64(dc) && a->rs1 != 0) {
+-        return false;
+-    }
+-    return do_rd_special(dc, true, a->rd, do_rdy);
+-}
++TRANS(RDY_v7, 32, do_rd_special, true, a->rd, do_rdy)
++TRANS(RDY_v9, 64, do_rd_special, true, a->rd, do_rdy)
  
-+TRANS(STBAR_v8, 32, do_stbar)
-+TRANS(STBAR_v9, 64, do_stbar)
-+
- static bool trans_MEMBAR(DisasContext *dc, arg_MEMBAR *a)
+ static TCGv do_rd_leon3_config(DisasContext *dc, TCGv dst)
  {
-     if (avail_32(dc)) {
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 9e39d23273..1b1b85e9c2 100644
+index 1b1b85e9c2..74848996ae 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -88,7 +88,7 @@ CALL    01 i:s30
- 
- {
-   [
--    STBAR           10 00000 101000 01111 0 0000000000000
-+    STBAR_v9        10 00000 101000 01111 0 0000000000000
+@@ -91,6 +91,7 @@ CALL    01 i:s30
+     STBAR_v9        10 00000 101000 01111 0 0000000000000
      MEMBAR          10 00000 101000 01111 1 000000 cmask:3 mmask:4
  
++    RDY_v9          10 rd:5  101000 00000 0 0000000000000
      RDCCR           10 rd:5  101000 00010 0 0000000000000
-@@ -107,6 +107,17 @@ CALL    01 i:s30
-     RDSTICK_CMPR    10 rd:5  101000 11001 0 0000000000000
-     RDSTRAND_STATUS 10 rd:5  101000 11010 0 0000000000000
-   ]
-+
-+  # The v8 manual, section B.30 STBAR instruction, says
-+  # bits [12:0] are ignored, but bit 13 must be 0.
-+  # However, section B.28 Read State Register Instruction has a
-+  # comment that RDASR with rs1 = 15, rd = 0 is STBAR.  Here,
-+  # bit 13 is also ignored and rd != 0 is merely reserved.
-+  #
-+  # Solaris 8 executes v9 MEMBAR instruction 0x8143e008 during boot.
-+  # This confirms that bit 13 is ignored, as 0x8143c000 is STBAR.
-+  STBAR_v8          10 ----- 101000 01111 - -------------
-+
-   # Before v8, all rs1 accepted; otherwise rs1==0.
-   RDY               10 rd:5  101000 rs1:5 0 0000000000000
+     RDASI           10 rd:5  101000 00011 0 0000000000000
+     RDTICK          10 rd:5  101000 00100 0 0000000000000
+@@ -118,8 +119,15 @@ CALL    01 i:s30
+   # This confirms that bit 13 is ignored, as 0x8143c000 is STBAR.
+   STBAR_v8          10 ----- 101000 01111 - -------------
+ 
+-  # Before v8, all rs1 accepted; otherwise rs1==0.
+-  RDY               10 rd:5  101000 rs1:5 0 0000000000000
++  # For v7, bits [18:0] are ignored.
++  # For v8, bits [18:14], aka rs1, are repurposed and rs1 = 0 is RDY,
++  # and other values are RDASR.  However, the v8 manual explicitly
++  # says that rs1 in 1..14 yield undefined results and do not cause
++  # an illegal instruction trap, and rs1 in 16..31 are available for
++  # implementation specific usage.
++  # Implement not causing an illegal instruction trap for v8 by
++  # continuing to interpret unused values per v7, i.e. as RDY.
++  RDY_v7            10 rd:5  101000 ----- - -------------
  }
+ 
+ {
 -- 
 2.43.0
 
