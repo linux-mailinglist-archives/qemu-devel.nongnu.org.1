@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90565B9886D
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79824B987DD
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:21:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Jnn-0005sA-SA; Wed, 24 Sep 2025 03:20:35 -0400
+	id 1v1Jns-0005tl-4e; Wed, 24 Sep 2025 03:20:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jnh-0005pE-Ti
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:32 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jnm-0005rj-EA
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:34 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jnb-0003ge-LD
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:27 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jnf-0003gx-EN
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:20:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=Sqz+ivCspogTyB/gCdvWNpQo0T3U3V/5KehjqwKx1ss=; b=DN1ZfxHJJy3+oWA
- pi1cFsUn6Ub84+SRqHUhq420LxzpIhOku66DdvzHXbGj+Uyhp+Ik6IJvfJCeYQX28DvPZDOBPzfLX
- zy67lQK2Ql7pIdZzhpnJGebsMe8Oqj3adD0Q4WG5laVbNBOXARqh6tubAwJ0sHukE75QlsrH1TBLV
- tY=;
+ List-Help; bh=I1gMG2L8YpYilfMkG81ggclFtIPYKdFhhQ3xAqN8STs=; b=IOUmdr9QyRikf8H
+ FZgPpE3KDNvh+WCWEqNkgPUem40lB/LD1NZTHWTtfRPX4gE8VxDkEwTL9NdfZ8ZKvhgjSoAbM86D/
+ nlAPZuN39NmHsahMxMJ3wSj9FBwkAU48nhxOojRml+vaqm5/4Iehc4TX4qStRsKAwRNMqxdG2q1AW
+ 4w=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com
-Subject: [RFC PATCH 30/34] target/riscv: Fix size of mseccfg
-Date: Wed, 24 Sep 2025 09:21:20 +0200
-Message-ID: <20250924072124.6493-31-anjo@rev.ng>
+Subject: [RFC PATCH 31/34] target/riscv: Move debug.h include away from cpu.h
+Date: Wed, 24 Sep 2025 09:21:21 +0200
+Message-ID: <20250924072124.6493-32-anjo@rev.ng>
 In-Reply-To: <20250924072124.6493-1-anjo@rev.ng>
 References: <20250924072124.6493-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,66 +62,106 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-mseccfg is defined in version 20250508 of the privileged specification
-to be 64 bits in size.  Update relevant function arguments.
+All debug.h definitions except for RV_MAX_TRIGGERS are internal to
+target/riscv.  Move RV_MAX_TRIGGERS to cpu.h and include debug.h from
+all translation units which relied on the cpu.h include.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- target/riscv/cpu.h | 2 +-
- target/riscv/pmp.h | 4 ++--
- target/riscv/pmp.c | 4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ target/riscv/cpu.h         | 4 ++--
+ target/riscv/debug.h       | 2 --
+ target/riscv/cpu.c         | 3 +++
+ target/riscv/csr.c         | 3 +++
+ target/riscv/debug.c       | 1 +
+ target/riscv/tcg/tcg-cpu.c | 1 +
+ 6 files changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index f8ab66adb3..4c90b8b035 100644
+index 4c90b8b035..2fe5cb211a 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -457,7 +457,7 @@ struct CPUArchState {
+@@ -177,14 +177,14 @@ extern RISCVCPUImpliedExtsRule *riscv_multi_ext_implied_rules[];
+ #define MAX_RISCV_PMPS (64)
+ #define OLD_MAX_RISCV_PMPS (16)
  
-     /* physical memory protection */
-     pmp_table_t pmp_state;
--    target_ulong mseccfg;
-+    uint64_t mseccfg;
+-#if !defined(CONFIG_USER_ONLY)
++#if !defined(CONFIG_LINUX_USER)
+ #include "pmp.h"
+-#include "debug.h"
+ #endif
  
-     /* trigger module */
-     uint16_t mcontext;
-diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
-index 271cf24169..e322904637 100644
---- a/target/riscv/pmp.h
-+++ b/target/riscv/pmp.h
-@@ -69,8 +69,8 @@ void pmpcfg_csr_write(CPURISCVState *env, uint32_t reg_index,
-                       target_ulong val);
- target_ulong pmpcfg_csr_read(CPURISCVState *env, uint32_t reg_index);
+ #define RV_VLEN_MAX 1024
+ #define RV_MAX_MHPMEVENTS 32
+ #define RV_MAX_MHPMCOUNTERS 32
++#define RV_MAX_TRIGGERS 2
  
--void mseccfg_csr_write(CPURISCVState *env, target_ulong val);
--target_ulong mseccfg_csr_read(CPURISCVState *env);
-+void mseccfg_csr_write(CPURISCVState *env, uint64_t val);
-+uint64_t mseccfg_csr_read(CPURISCVState *env);
+ FIELD(VTYPE, VLMUL, 0, 3)
+ FIELD(VTYPE, VSEW, 3, 3)
+diff --git a/target/riscv/debug.h b/target/riscv/debug.h
+index f76b8f944a..d3aae619db 100644
+--- a/target/riscv/debug.h
++++ b/target/riscv/debug.h
+@@ -24,8 +24,6 @@
  
- void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
-                        target_ulong val);
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 72f1372a49..85199c7387 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -597,7 +597,7 @@ target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index)
- /*
-  * Handle a write to a mseccfg CSR
-  */
--void mseccfg_csr_write(CPURISCVState *env, target_ulong val)
-+void mseccfg_csr_write(CPURISCVState *env, uint64_t val)
- {
-     int i;
-     uint64_t mask = MSECCFG_MMWP | MSECCFG_MML;
-@@ -643,7 +643,7 @@ void mseccfg_csr_write(CPURISCVState *env, target_ulong val)
- /*
-  * Handle a read from a mseccfg CSR
-  */
--target_ulong mseccfg_csr_read(CPURISCVState *env)
-+uint64_t mseccfg_csr_read(CPURISCVState *env)
- {
-     trace_mseccfg_csr_read(env->mhartid, env->mseccfg);
-     return env->mseccfg;
+ #include "exec/breakpoint.h"
+ 
+-#define RV_MAX_TRIGGERS         2
+-
+ /* register index of tdata CSRs */
+ enum {
+     TDATA1 = 0,
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 5206abe640..246ec81beb 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -37,6 +37,9 @@
+ #include "kvm/kvm_riscv.h"
+ #include "tcg/tcg-cpu.h"
+ #include "tcg/tcg.h"
++#if !defined(CONFIG_USER_ONLY)
++#include "debug.h"
++#endif
+ 
+ /* RISC-V CPU definitions */
+ static const char riscv_single_letter_exts[] = "IEMAFDQCBPVH";
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index f73dfbe78b..b3c5b75aac 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -33,6 +33,9 @@
+ #include "qapi/error.h"
+ #include "tcg/insn-start-words.h"
+ #include "internals.h"
++#if !defined(CONFIG_USER_ONLY)
++#include "debug.h"
++#endif
+ #include <stdbool.h>
+ 
+ /* CSR function table public API */
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index 5664466749..f5b2043405 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -27,6 +27,7 @@
+ #include "qemu/log.h"
+ #include "qapi/error.h"
+ #include "cpu.h"
++#include "debug.h"
+ #include "trace.h"
+ #include "exec/helper-proto.h"
+ #include "exec/watchpoint.h"
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index f90abbc594..8e0e929aaa 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -37,6 +37,7 @@
+ #include "hw/boards.h"
+ #include "system/tcg.h"
+ #include "exec/icount.h"
++#include "debug.h"
+ #endif
+ 
+ /* Hash that stores user set extensions */
 -- 
 2.51.0
 
