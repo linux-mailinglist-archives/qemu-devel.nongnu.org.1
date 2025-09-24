@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28388B992B1
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BF9B99276
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:32:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1LpA-0005OW-7g; Wed, 24 Sep 2025 05:30:08 -0400
+	id 1v1LpC-0005P6-95; Wed, 24 Sep 2025 05:30:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1Lp7-0005Nu-D2
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:30:05 -0400
+ id 1v1LpA-0005Op-0G
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:30:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1v1Lp0-0004qZ-0Y
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:30:04 -0400
+ id 1v1Lp4-0004qn-A9
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:30:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758706195;
+ s=mimecast20190719; t=1758706197;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=I8cEfG6CElNn+HuO5d12EMpl/GXUm1guGpqHc+tS2vE=;
- b=dGhEq7vwqz+Qf04vDB7unaj9XFC6W23S6sMicFQc8R+e3Dw+v4sV4189aUTmxIWj20V53e
- nTtG6wsIb+NtjyrCMy7elU5Q8O42pABqMifff9YlLoppHtQrr+3Odszfre1a6xyzPa+r+s
- YxwHP2icmDa5Sltwbgo1H415WAff68E=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Y/XW/L14MoMb/+kv4FvaAffCMOO2k+fD1qoCEwPIK8o=;
+ b=XpqBW5+nLwIWEnKctTtxiFhzrPPFjgX9IrslpvuRve2CVqoI2VSzOhoPs3/yMBBMJzZmN7
+ DrnWEz0Ixh90NuYkLVGmAEUOxAq359m9eKQiz8rLiejgtuVRSG1mSoSbTuA6ZAnLiEpN7S
+ 7gzZfJL/20uSDp4xJ4mXzSbyfhDJSt8=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-KRsb8OqoOaOFSpE-DSDJEA-1; Wed, 24 Sep 2025 05:29:54 -0400
-X-MC-Unique: KRsb8OqoOaOFSpE-DSDJEA-1
-X-Mimecast-MFC-AGG-ID: KRsb8OqoOaOFSpE-DSDJEA_1758706193
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-6345ebdf489so2327362a12.0
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:29:54 -0700 (PDT)
+ us-mta-435-55Ts5bbpOO2AO5uRU4fJAA-1; Wed, 24 Sep 2025 05:29:55 -0400
+X-MC-Unique: 55Ts5bbpOO2AO5uRU4fJAA-1
+X-Mimecast-MFC-AGG-ID: 55Ts5bbpOO2AO5uRU4fJAA_1758706195
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-b04a302fb7cso591013166b.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 02:29:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758706192; x=1759310992;
+ d=1e100.net; s=20230601; t=1758706194; x=1759310994;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I8cEfG6CElNn+HuO5d12EMpl/GXUm1guGpqHc+tS2vE=;
- b=S1Kk4d7k7H6Eb07oHzB52+YFHF3aLpY6RL6JPx+0lHVZtH6lYmd8s6zddB60JuNsMP
- O+eARMPC1XitnIVBr+sZBc0//PtFWTg2LR1tyOR2N9X+cJVyzaRWecFRqHNtJry8vUVe
- qjDCWYiLXtm2w1zjCM+j42y5qowIJ7ilkrw63KTD9X2XotKINP/jlqC/u4PlQQ1i1rX3
- +kBG7+tLSYtMRTSdm6672M3jYiRHWkjnrRmXGLm1p9fcoYV7oyk53x/LzIrR4nTakgwV
- 75FLFJ30DnpVLVEB3iGSwbqnClTdBlpbLxBlhm1iNHZrkuutW76L5wlb/+CMKtzCwECZ
- E4BA==
-X-Gm-Message-State: AOJu0YxzO+Rx7ZNeuXUY2FwQUVrbdifXkjp1oNNlsaHjf6ABEMyEMTd4
- JjVl7jFlbpOXTmwZcf4P53nD1DB03qZwqFUfb88KmjEGmUXLg1LrNbemJ6TdlsEPNd7kvWDzJpT
- n5Sp1fpKsb0WxInIttssTPPSZNu4V2OQ9Jn3QVZd3XuQ737Hzbsw1nVwGM5RSOpL211H9k0K+Sh
- n3EqGFgTcwH/HA1VbXT2D7JhDrRLCuKejWRAxPPVgb
-X-Gm-Gg: ASbGncsUTNxGeVEFEFmWAPmN+G4u7P8Ix8q12ZDcq9ELVlbsqnPVvPUP9LKrW88iOWJ
- Go2vVyTjhbBvz8YiXRzaoDRwIavLe+azEJqeLMhIj12Q1Y9b5MkC65E/9bdnVwSkoOgOFqKKMUu
- AEQurLo8zFeTTZBi1WyZVEzobaOsbgKpdMV42KRPtFy4aVPRdKYZGhUBuwZGy8N5RtuK/UmMmMD
- 8u4BUUF2jNDdPgKGNggW3a8VH66PTJlvXvMwhiDSyyPqY/1sfcnGkTBIIE4q/tcFKFQsd1oFIq4
- emBSEAwd69gg3L1FGIKT6vRHj0T/cujOBr7NqxaOdybuNEOJvmbpb/hUwfikbaXC++VJGiIbpmw
- Cahy881BDIMhN0Ga8r7OKzkut98KiQJ7YLNWSRhwAHAq9cw==
-X-Received: by 2002:a05:6402:5246:b0:62f:26cb:8072 with SMTP id
- 4fb4d7f45d1cf-634677b5849mr5033808a12.13.1758706192583; 
- Wed, 24 Sep 2025 02:29:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGjVEYltsJo1r+6P6oKmTUcpZaXo+ShhEFNdBI4+yNKm2nKg1uTx1QkX0y7LQR5Kt3m7vec1Q==
-X-Received: by 2002:a05:6402:5246:b0:62f:26cb:8072 with SMTP id
- 4fb4d7f45d1cf-634677b5849mr5033733a12.13.1758706191284; 
- Wed, 24 Sep 2025 02:29:51 -0700 (PDT)
+ bh=Y/XW/L14MoMb/+kv4FvaAffCMOO2k+fD1qoCEwPIK8o=;
+ b=X9WeE+asxCacvjRRG6Y+U+DAhHik2kgDa7P7Uh5kPWB2fY5l69naQYNtFF3GsZqO/r
+ mYzS9N3E0XZMoWPA7523FH+6OYHIir5wgtqVzJnp/xOxRxsewl7EcLX3Q28VRyM43lR5
+ uGAVCbs+XJiycn8jtyMUL2TVf7koRGktZjP+JxUjwyezLQQ7MQTt9fE+dMzraKdX2Nib
+ fZMEQt0qLCYh8o8rJ4+c6fOOgccX0MKo/lkcDt459Id+rbZLu64m1O/Pu+/++ush9aFR
+ MxKqGOBdpSwPMx4g9mJ9c+W8tRQWN9KKxDQp8Q7ESWzGFjZyQ4vNeKoqvfnnyW2nN8xM
+ 2vww==
+X-Gm-Message-State: AOJu0YxgnpAK7/MshW6KQKQLOTDjFRtvXpF/fTGFYdE15PWr6QcYPRrY
+ Qd8DDjez2ZLrz7qx96azAjLCcGFDzvW5FZWMtx7ucVw7gzEAcFAExAYyL8ajMZnjwsKEeIrW40D
+ WU7nOeyRmVeE9A3h/25i0ZnAFJZpCDgYDitERroK+WSjS6FSuv6R7h665pq+fm8FBdYTkbf+9zd
+ Qz6+PoPVBPwjg2ZNa59inc1oFbiaQQGSEoKljDqfgO
+X-Gm-Gg: ASbGncs3kGnSubtOzAzuHCG+aWRbtzxTrESqqtjVj7d7gNY+WmC9MqP3Ccz0mkhSigm
+ D5RQEea/FvhpQzPwoLOMs0XMzbcTSm8dkbROEkuaeA47eONLwO7XvcaiJvfHH0QFa3OEyjmTGOV
+ n2yhwi0QqkmWDWfvHBIGxws0L1yv9pZ/lFXdLm1abChC1vUixu/fRTVT2gJsI7m1tocjK79OAsU
+ lxciTJ0HED0dvgootYQzpcZXoXyDJuW7Kn88foMDXdJ62Xi75yOOjab3wdDDm7jhXKTa/Cl4dxj
+ 5SjH2sEOp9zm28184Ezgc4os25HI/53cbY1mTjaglQrc/VohmYr5yvoBHPNhPS/8ISSIZz5FxPO
+ LpgSxRjXWlWVrYUpOdAzHPZH4lJ31NWQwN5KlY89mLmG/tA==
+X-Received: by 2002:a17:907:2684:b0:b2d:e514:5348 with SMTP id
+ a640c23a62f3a-b302af25c48mr612513266b.33.1758706193756; 
+ Wed, 24 Sep 2025 02:29:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFsr/n0FH4WBt5zip9OnDytlsECvMZdytAy4u8yZUMAQ75jFafqmkuG1D1zLAJUSmTSuMAztw==
+X-Received: by 2002:a17:907:2684:b0:b2d:e514:5348 with SMTP id
+ a640c23a62f3a-b302af25c48mr612510666b.33.1758706193208; 
+ Wed, 24 Sep 2025 02:29:53 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.127.188])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-63469f30772sm2789490a12.22.2025.09.24.02.29.49
+ a640c23a62f3a-b2a660738dcsm842067166b.84.2025.09.24.02.29.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Sep 2025 02:29:50 -0700 (PDT)
+ Wed, 24 Sep 2025 02:29:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 20/29] docs/devel: Do not unparent in instance_finalize()
-Date: Wed, 24 Sep 2025 11:28:40 +0200
-Message-ID: <20250924092850.42047-21-pbonzini@redhat.com>
+Subject: [PULL 21/29] vfio/pci: Do not unparent in instance_finalize()
+Date: Wed, 24 Sep 2025 11:28:41 +0200
+Message-ID: <20250924092850.42047-22-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924092850.42047-1-pbonzini@redhat.com>
 References: <20250924092850.42047-1-pbonzini@redhat.com>
@@ -86,14 +86,14 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,60 +114,41 @@ From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 Children are automatically unparented so manually unparenting is
 unnecessary.
 
-Worse, automatic unparenting happens before the instance_finalize()
+Worse, automatic unparenting happens before the insntance_finalize()
 callback of the parent gets called, so object_unparent() calls in
 the callback will refer to objects that are already unparented, which
 is semantically incorrect.
 
-Remove the instruction to call object_unparent(), and the exception
-of the "do not call object_unparent()" rule for instance_finalize().
-
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Link: https://lore.kernel.org/r/20250924-use-v4-1-07c6c598f53d@rsg.ci.i.u-tokyo.ac.jp
+Link: https://lore.kernel.org/r/20250924-use-v4-2-07c6c598f53d@rsg.ci.i.u-tokyo.ac.jp
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/devel/memory.rst | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ hw/vfio/pci.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/docs/devel/memory.rst b/docs/devel/memory.rst
-index 42d3ca29c43..f22146e56ce 100644
---- a/docs/devel/memory.rst
-+++ b/docs/devel/memory.rst
-@@ -165,17 +165,14 @@ and finalized one by one.  The order in which memory regions will be
- finalized is not guaranteed.
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index d14e96b2f82..bc0b4c4d562 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2025,7 +2025,6 @@ static void vfio_bars_finalize(VFIOPCIDevice *vdev)
+         vfio_region_finalize(&bar->region);
+         if (bar->mr) {
+             assert(bar->size);
+-            object_unparent(OBJECT(bar->mr));
+             g_free(bar->mr);
+             bar->mr = NULL;
+         }
+@@ -2033,9 +2032,6 @@ static void vfio_bars_finalize(VFIOPCIDevice *vdev)
  
- If however the memory region is part of a dynamically allocated data
--structure, you should call object_unparent() to destroy the memory region
--before the data structure is freed.  For an example see VFIOMSIXInfo
--and VFIOQuirk in hw/vfio/pci.c.
-+structure, you should free the memory region in the instance_finalize
-+callback.  For an example see VFIOMSIXInfo and VFIOQuirk in
-+hw/vfio/pci.c.
- 
- You must not destroy a memory region as long as it may be in use by a
- device or CPU.  In order to do this, as a general rule do not create or
--destroy memory regions dynamically during a device's lifetime, and only
--call object_unparent() in the memory region owner's instance_finalize
--callback.  The dynamically allocated data structure that contains the
--memory region then should obviously be freed in the instance_finalize
--callback as well.
-+destroy memory regions dynamically during a device's lifetime, and never
-+call object_unparent().
- 
- If you break this rule, the following situation can happen:
- 
-@@ -201,9 +198,7 @@ this exception is rarely necessary, and therefore it is discouraged,
- but nevertheless it is used in a few places.
- 
- For regions that "have no owner" (NULL is passed at creation time), the
--machine object is actually used as the owner.  Since instance_finalize is
--never called for the machine object, you must never call object_unparent
--on regions that have no owner, unless they are aliases or containers.
-+machine object is actually used as the owner.
- 
- 
- Overlapping regions and priority
+     if (vdev->vga) {
+         vfio_vga_quirk_finalize(vdev);
+-        for (i = 0; i < ARRAY_SIZE(vdev->vga->region); i++) {
+-            object_unparent(OBJECT(&vdev->vga->region[i].mem));
+-        }
+         g_free(vdev->vga);
+     }
+ }
 -- 
 2.51.0
 
