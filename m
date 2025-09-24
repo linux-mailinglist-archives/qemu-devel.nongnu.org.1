@@ -2,88 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A7B5B9A09C
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 15:32:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A53DCB9A0AC
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 15:34:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1PaE-000379-RS; Wed, 24 Sep 2025 09:30:59 -0400
+	id 1v1Pco-0004At-3o; Wed, 24 Sep 2025 09:33:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v1PZu-00034g-JM
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 09:30:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v1Pcf-00049I-F9
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 09:33:31 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v1PZn-0003mW-BU
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 09:30:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758720628;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=0q0AD55+4Gr4QXqPdtncsfokbi0PrLu1WfnIPLqCwpQ=;
- b=ggDe8G9on35hPOZwoXZw8tEH+Fckwm+CAGP+g8gCCPVdahNpcHnAnfBpAoq22zNi3WawNN
- MnbyKQFKbP255JwZdIayGjSBIN6QnGgbJNaVtxcZtIFzz9nsxDIFUN/ycBmiA1TUE7XdUL
- VplzXAHex45lbXxu7BUVpxfXq+PtixE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-482-xJcDF44TO1Grb2PryAc_Fw-1; Wed,
- 24 Sep 2025 09:30:24 -0400
-X-MC-Unique: xJcDF44TO1Grb2PryAc_Fw-1
-X-Mimecast-MFC-AGG-ID: xJcDF44TO1Grb2PryAc_Fw_1758720623
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 878E118002C8; Wed, 24 Sep 2025 13:30:22 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.136])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 643511800446; Wed, 24 Sep 2025 13:30:17 +0000 (UTC)
-Date: Wed, 24 Sep 2025 14:30:13 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Stefan Weil <sw@weilnetz.de>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: Re: [PATCH v3 08/20] log: avoid repeated prefix on incremental
- qemu_log calls
-Message-ID: <aNPyZbpiyiR6ZqD4@redhat.com>
-References: <20250910180357.320297-1-berrange@redhat.com>
- <20250910180357.320297-9-berrange@redhat.com>
- <87plbh8cpx.fsf@pond.sub.org> <aNK0-q58zw_KygMU@redhat.com>
- <87h5ws5nxs.fsf@pond.sub.org> <87ecrw112h.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1v1PcV-00047T-Gs
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 09:33:29 -0400
+Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id B861CC1029;
+ Wed, 24 Sep 2025 16:33:11 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b6c::1:2c])
+ by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id AXYn2X0FqeA0-WzNQvIhn; Wed, 24 Sep 2025 16:33:11 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1758720791;
+ bh=cdAUYUW6CaGo6OSkpa51udzVT01n/maSNPSGJTWgwAM=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=zK1CsGTgjbJixRfHIy7Bp7g6KsCAcO2s8IL8SrCtSpca2PQqZDtZfGJ02NgaPGn3p
+ NOq8OovXEcGBXtGlFJURnNz1hyws34BJnOE2JU8DXseRXw7PgVmLoWPTuKV9dEgsz1
+ IvcVuGSWwPqZMUQa63P5bxbaDkploN4dhyCtnO3U=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: armbru@redhat.com
+Cc: qemu-devel@nongnu.org, eblake@redhat.com, jasowang@redhat.com,
+ devel@lists.libvirt.org, pbonzini@redhat.com, marcandre.lureau@redhat.com,
+ yc-core@yandex-team.ru, vsementsov@yandex-team.ru,
+ d-tatianin@yandex-team.ru
+Subject: [PATCH 0/2] remove deprecated 'reconnect' options
+Date: Wed, 24 Sep 2025 16:33:07 +0300
+Message-ID: <20250924133309.334631-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87ecrw112h.fsf@pond.sub.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -92,52 +70,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 24, 2025 at 02:34:30PM +0200, Markus Armbruster wrote:
-> Pondering the interleave between logging and error reporting led me to
-> an interleave between error reporting and itself.
-> 
-> vreport() prints a single line to stderr in several parts:
-> 
-> * Timestamp (if enabled)
-> 
-> * Guest name (if enabled)
-> 
-> * Program name
-> 
-> * Location (if there is one)
-> 
-> * Message type
-> 
-> * Message text
-> 
-> * Newline
-> 
-> Stdio guarantees that each part comes out as a whole even when other
-> threads print to the same FILE at the same time.  But another thread's
-> print output can still squeeze in between parts.  Unlikely, but
-> possible.  To avoid it, we'd need to guard vreport()'s printing with
-> flockfile() ... funlockfile().
-> 
-> Thoughts?
+They were deprecated in 9.2, now we can remove them.
+New options to use are reconnect-ms.
 
-You are totally correct. The qemu_log code will do the right thing
-with flockfile /funlockfile, but we're missing that serialization
-in the error report code. It doesn't matter quite as much as logging,
-since much of time when error_report is used, it is in a scenario
-that is likely to either be serialized, or be about to call exit/
-abort. None the less I'm sure we can come up with real world
-scenarios where error report will be concurrent in QEMU that can
-interleave, so we should add the flockfile usage.
+v2: fixup docs and error messages
 
-With regards,
-Daniel
+Vladimir Sementsov-Ogievskiy (2):
+  chardev: remove deprecated 'reconnect' option
+  net/stream: remove deprecated 'reconnect' option
+
+ chardev/char-socket.c           | 24 +++++-------------------
+ chardev/char.c                  |  3 ---
+ docs/about/deprecated.rst       | 15 ---------------
+ docs/about/removed-features.rst | 22 ++++++++++++++++++++++
+ net/stream.c                    | 20 +++++---------------
+ qapi/char.json                  | 14 +-------------
+ qapi/net.json                   | 13 +------------
+ 7 files changed, 34 insertions(+), 77 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.48.1
 
 
