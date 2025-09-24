@@ -2,72 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73EB3B98873
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4171BB9885E
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:25:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Jq0-0002R7-PA; Wed, 24 Sep 2025 03:22:52 -0400
+	id 1v1Jmx-0005NU-Va; Wed, 24 Sep 2025 03:19:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1v1Jpp-0002FZ-CX
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:22:43 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1v1Jpj-0003uM-Ji
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:22:40 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8DxLvAwnNNoWfoNAA--.30006S3;
- Wed, 24 Sep 2025 15:22:24 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by front1 (Coremail) with SMTP id qMiowJAxE+QvnNNotdCqAA--.20412S3;
- Wed, 24 Sep 2025 15:22:23 +0800 (CST)
-Subject: Re: [PATCH 2/3] hw/loongarch/virt: Align VIRT_GED_CPUHP_ADDR to 4
- bytes
-To: Huacai Chen <chenhuacai@kernel.org>, Song Gao <gaosong@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, WANG Xuerui <git@xen0n.name>,
- qemu-devel@nongnu.org, Huacai Chen <chenhuacai@loongson.cn>,
- Nathan Chancellor <nathan@kernel.org>, WANG Rui <wangrui@loongson.cn>
-References: <20250923143542.2391576-1-chenhuacai@kernel.org>
- <20250923143542.2391576-3-chenhuacai@kernel.org>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <42001195-f7ad-4348-046d-78ede6d33c46@loongson.cn>
-Date: Wed, 24 Sep 2025 15:20:14 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jmt-0005N0-DE
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:19:39 -0400
+Received: from rev.ng ([94.130.142.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jmo-0003Nk-GV
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:19:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:
+ To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
+ List-Help; bh=gFJkB2OrJPTxGlQ0jsL1K5bpwLVi5sAs+TIYHi8sp+E=; b=kzVkCsLoIUcmfbv
+ 60GdzIITrPZNlbZw4AsdzOPNtzp1wD8ZwRpAv4cQ7B8YXB2Ex5pjAE/s+Sqtsc052esOV+sZm20yQ
+ JjRe0hauT14uc7WEbP6Dmvbm2SiyxrXYd3rShWd3U4trg4BTj2yplh6p59ouobbnwJz+ZIibdUu8f
+ Fc=;
+To: qemu-devel@nongnu.org
+Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
+ palmer@dabbelt.com
+Subject: [RFC PATCH 00/34] single-binary: Make riscv cpu.h target independent
+Date: Wed, 24 Sep 2025 09:20:50 +0200
+Message-ID: <20250924072124.6493-1-anjo@rev.ng>
 MIME-Version: 1.0
-In-Reply-To: <20250923143542.2391576-3-chenhuacai@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowJAxE+QvnNNotdCqAA--.20412S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Ar48ZF4Dury5Zr1ruF48AFc_yoW8uw4rp3
- Z7Aa1vgF1UJF1xCay0qFy3WF47Xrn7GrsFkFW7K34Sy3Wvkw18uF10kwn8CrWDtan3WF4I
- vF4qkayIgas8JwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU70PfDUUU
- U
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -36
-X-Spam_score: -3.7
-X-Spam_bar: ---
-X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.829,
+Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
+ helo=rev.ng
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,51 +55,98 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
 
+this is a first patchset moving towards single-binary support for riscv.
+Additional patchsets for hw/ and target/ are based on this one so it's
+best to make sure the approach taken is ok.  Most patches in this set
+concern fields in CPUArchState which are either widened (usually to
+uint64_t) or fixed to a smaller size which handles all use cases.
 
-On 2025/9/23 下午10:35, Huacai Chen wrote:
-> From: Huacai Chen <chenhuacai@loongson.cn>
-> 
-> Now VIRT_GED_CPUHP_ADDR is not aligned to 4 bytes, but if Linux kernel
-> is built with ACPI_MISALIGNMENT_NOT_SUPPORTED, it assumes the alignment,
-> otherwise we get ACPI errors at boot phase:
-> 
-> ACPI Error: AE_AML_ALIGNMENT, Returned by Handler for [SystemMemory] (20250404/evregion-301)
-> ACPI Error: Aborting method \_SB.CPUS.CSTA due to previous error (AE_AML_ALIGNMENT) (20250404/psparse-529)
-> ACPI Error: Aborting method \_SB.CPUS.C000._STA due to previous error (AE_AML_ALIGNMENT) (20250404/psparse-529)
-> ACPI Error: Method execution failed \_SB.CPUS.C000._STA due to previous error (AE_AML_ALIGNMENT) (20250404/uteval-68)
-> 
-> VIRT_GED_MEM_ADDR and VIRT_GED_REG_ADDR are already aligned now, but use
-> QEMU_ALIGN_UP() to explicitly align them can make code more robust.
-> 
-> Reported-by: Nathan Chancellor <nathan@kernel.org>
-> Suggested-by: WANG Rui <wangrui@loongson.cn>
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> ---
->   include/hw/loongarch/virt.h | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-> index 602feab0f0..be4f5d603f 100644
-> --- a/include/hw/loongarch/virt.h
-> +++ b/include/hw/loongarch/virt.h
-> @@ -28,9 +28,9 @@
->   #define VIRT_LOWMEM_SIZE        0x10000000
->   #define VIRT_HIGHMEM_BASE       0x80000000
->   #define VIRT_GED_EVT_ADDR       0x100e0000
-> -#define VIRT_GED_MEM_ADDR       (VIRT_GED_EVT_ADDR + ACPI_GED_EVT_SEL_LEN)
-> -#define VIRT_GED_REG_ADDR       (VIRT_GED_MEM_ADDR + MEMORY_HOTPLUG_IO_LEN)
-> -#define VIRT_GED_CPUHP_ADDR     (VIRT_GED_REG_ADDR + ACPI_GED_REG_COUNT)
-> +#define VIRT_GED_MEM_ADDR       QEMU_ALIGN_UP(VIRT_GED_EVT_ADDR + ACPI_GED_EVT_SEL_LEN, 4)
-> +#define VIRT_GED_REG_ADDR       QEMU_ALIGN_UP(VIRT_GED_MEM_ADDR + MEMORY_HOTPLUG_IO_LEN, 4)
-> +#define VIRT_GED_CPUHP_ADDR     QEMU_ALIGN_UP(VIRT_GED_REG_ADDR + ACPI_GED_REG_COUNT, 4)
->   
->   #define COMMAND_LINE_SIZE       512
->   
-> 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+General purpose registers and fields mapped to TCG are dealt with by
+widening the type and applying an offset to tcg_global_mem_new() to
+correctly handle 32-bit targets on big endian hosts.
+
+Quick question to correct my understanding. AFAICT riscv64-softmmu is a
+superset of riscv32-softmmu which handles 32-, 64, and 128-bit ISAs, so
+concerning single-binary do we for the time being only need to support
+riscv64-softmmu?
+
+Let me know what you think of the direction taken here and if you would
+prefer something else.
+
+Anton Johansson (34):
+  target/riscv: Use 32 bits for misa extensions
+  target/riscv: Fix size of trivial CPUArchState fields
+  target/riscv: Fix size of mcause
+  target/riscv: Fix size of mhartid
+  target/riscv: Bugfix riscv_pmu_ctr_get_fixed_counters_val()
+  target/riscv: Combine mhpmevent and mhpmeventh
+  target/riscv: Combine mcyclecfg and mcyclecfgh
+  target/riscv: Combine minstretcfg and minstretcfgh
+  target/riscv: Combine mhpmcounter and mhpmcounterh
+  target/riscv: Fix size of gpr and gprh
+  target/riscv: Fix size of vector CSRs
+  target/riscv: Fix size of pc, load_[val|res]
+  target/riscv: Fix size of frm and fflags
+  target/riscv: Fix size of badaddr and bins
+  target/riscv: Fix size of guest_phys_fault_addr
+  target/riscv: Fix size of priv_ver and vext_ver
+  target/riscv: Fix size of retxh
+  target/riscv: Fix size of ssp
+  target/riscv: Fix size of excp_uw2
+  target/riscv: Fix size of sw_check_code
+  target/riscv: Fix size of priv
+  target/riscv: Fix size of gei fields
+  target/riscv: Fix size of [m|s|vs]iselect fields
+  target/riscv: Fix arguments to board IMSIC emulation callbacks
+  target/riscv: Fix size of irq_overflow_left
+  target/riscv: Indent PMUFixedCtrState correctly
+  target/riscv: Replace target_ulong in riscv_cpu_get_trap_name()
+  target/riscv: Replace target_ulong in riscv_ctr_add_entry()
+  target/riscv: Fix size of trigger data
+  target/riscv: Fix size of mseccfg
+  target/riscv: Move debug.h include away from cpu.h
+  target/riscv: Move CSR declarations to separate csr.h header
+  target/riscv: Introduce externally facing CSR access functions
+  target/riscv: Make pmp.h target_ulong agnostic
+
+ target/riscv/cpu.h                            | 341 +++++++-----------
+ target/riscv/csr.h                            |  93 +++++
+ target/riscv/debug.h                          |   2 -
+ target/riscv/pmp.h                            |  20 +-
+ hw/intc/riscv_imsic.c                         |  34 +-
+ hw/riscv/riscv_hart.c                         |   7 +-
+ linux-user/riscv/signal.c                     |   5 +-
+ target/riscv/cpu.c                            |  11 +-
+ target/riscv/cpu_helper.c                     |  37 +-
+ target/riscv/csr.c                            | 284 ++++++++-------
+ target/riscv/debug.c                          |   1 +
+ target/riscv/fpu_helper.c                     |   6 +-
+ target/riscv/gdbstub.c                        |   1 +
+ target/riscv/kvm/kvm-cpu.c                    |   1 +
+ target/riscv/machine.c                        | 133 ++++---
+ target/riscv/op_helper.c                      |   1 +
+ target/riscv/pmp.c                            |  13 +-
+ target/riscv/pmu.c                            | 150 ++------
+ target/riscv/tcg/tcg-cpu.c                    |   3 +-
+ target/riscv/th_csr.c                         |   1 +
+ target/riscv/translate.c                      |  53 ++-
+ target/riscv/vector_helper.c                  |  22 +-
+ .../riscv/insn_trans/trans_privileged.c.inc   |   2 +-
+ target/riscv/insn_trans/trans_rvi.c.inc       |  16 +-
+ target/riscv/insn_trans/trans_rvm.c.inc       |  16 +-
+ target/riscv/insn_trans/trans_rvv.c.inc       |  22 +-
+ target/riscv/insn_trans/trans_rvzicfiss.c.inc |  22 +-
+ 27 files changed, 644 insertions(+), 653 deletions(-)
+ create mode 100644 target/riscv/csr.h
+
+-- 
+2.51.0
 
 
