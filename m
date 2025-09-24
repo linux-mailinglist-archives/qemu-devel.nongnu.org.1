@@ -2,84 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B444B99B5A
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 13:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51418B9A153
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 15:43:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1O7V-0007Zz-1C; Wed, 24 Sep 2025 07:57:14 -0400
+	id 1v1Pl7-0000uK-Le; Wed, 24 Sep 2025 09:42:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v1O7O-0007ZM-Pj
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 07:57:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <FangSheng.Huang@amd.com>)
+ id 1v1Mtr-0002yY-Sp
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 06:39:04 -0400
+Received: from mail-northcentralusazon11013040.outbound.protection.outlook.com
+ ([40.107.201.40] helo=CH4PR04CU002.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1v1O7B-0004Wn-54
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 07:57:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758715006;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=J5o0tFxeQt/nbhCmz99fpYqI4M5a6n7zPiB11zUC00Y=;
- b=dTKD8LJ/gtuj+M+f+LiARPjY93nBtp4a/me2FteSdT9uRPT6w34eJhwiD1GkIfzyHi7LnK
- gJMFlDrVN339WC8bsfurNP+ucydUWkUnVr5x6bBaFUFaGkuW7TMqrPtxv12EQPzQQqyPtp
- CAP2wvPKaki0o9VLlxHSuUSnJrwZZAI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-448-qNzaHx8ZNxi3S2YM28U7rw-1; Wed,
- 24 Sep 2025 07:56:43 -0400
-X-MC-Unique: qNzaHx8ZNxi3S2YM28U7rw-1
-X-Mimecast-MFC-AGG-ID: qNzaHx8ZNxi3S2YM28U7rw_1758715002
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 678F019560B7; Wed, 24 Sep 2025 11:56:42 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.136])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5EB2D1955F19; Wed, 24 Sep 2025 11:56:39 +0000 (UTC)
-Date: Wed, 24 Sep 2025 12:56:35 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- Tanish Desai <tanishdesai37@gmail.com>, Zhao Liu <zhao1.liu@intel.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Mads Ynddal <mads@ynddal.dk>
-Subject: Re: [PATCH 08/16] tracetool: Add Rust format support
-Message-ID: <aNPcc8gFTVPS8xse@redhat.com>
-References: <20250919112536.141782-1-pbonzini@redhat.com>
- <20250919112536.141782-9-pbonzini@redhat.com>
- <20250923192354.GL509965@fedora>
- <85ebee67-3c30-4f14-93ca-d9cf65708619@redhat.com>
- <aNOi40MRaGEL0df3@redhat.com>
- <CAJSP0QXL1fXebRRtRTjQOzArtX0a-8q1wWDVb3WdU=Z5DYqaJQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <FangSheng.Huang@amd.com>)
+ id 1v1Mtj-0007TM-Mo
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 06:39:02 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mdnFuNbwTdpT/DJbERLChpgS+1AFwzhPX+SZAMerdDA+Bo88KhLjmb4q2778Z1idRfDDdzzg4Kqm5875fpknO7qDe6eLJqMbZs3WIvvGzqTOGEaYCwMjPkMuCd05Bv3acF2pCl6Qo8MlbjU/re2dYPziKOPGMT7f5LXnT04My5wdYt8EpxW+WyOQXFxz+18Yucg+QEcqLkmdYxLn6IVf5UwTkMYArATYL3ULcoxOJlDgMy+ZNW5Kf9XO2tZJZu/vBxQeMsXmy6K3RnUh9TiT5CNJFABgEqmiFaJFnp4U5nDRinZp9jXnkLj2xKuPxp7q5MgW3t8bRogJkfEr39C1Kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LnhgkfcW+ymY+9s0VKEETt4HgrAAo7OEJHXJTtZ3KcI=;
+ b=DeasmFAEQHxJcsfcL4+Ox9rckrtF77aDH1++uct6QNO6xRWhn6TlKhGALbh3ufI5RkL7TpNRhoiIuiH04BELK7JcfoOiT80jsOlgDCnojRlOM12BoimUGwYAdUvvixpMJrldL4/xE4z/GjVsCpvs1mVOr3NDxeqwwCor01nXlLem1JARJ5bZn+PQ5BA8kTAH2Vj4EE56BTZAzmYgWIdLXGFde2shyleMRPAtEPIIXRrMcZOt6hnmHHFIIj6h4nxHzwOUYJ/HBnpKkAL6p8rSzGslRpC2EoBbwWkBbTIXjnmNg4gpYhmseiavy3JSq3C8lTB6hpj2M27geCqQjGqpFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LnhgkfcW+ymY+9s0VKEETt4HgrAAo7OEJHXJTtZ3KcI=;
+ b=JzlYGhG0lDLdM8IGJCT8fMuswMJf40066/+G/9Q11TUbC7t2SuXTmmqPUG2J5tj+JOje++H2nBRxWeZKybv/oQr4LXtkujyOhWWFNbm3WGLCsosMVT0EiGTN4yroL3xahIrlhM4r0TmFR7ayCnhGPF8eaJjs5Mmxi3ei50Hot4g=
+Received: from BY1P220CA0003.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::10)
+ by CY8PR12MB7513.namprd12.prod.outlook.com (2603:10b6:930:91::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Wed, 24 Sep
+ 2025 10:33:43 +0000
+Received: from CO1PEPF000042AA.namprd03.prod.outlook.com
+ (2603:10b6:a03:59d:cafe::f8) by BY1P220CA0003.outlook.office365.com
+ (2603:10b6:a03:59d::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.22 via Frontend Transport; Wed,
+ 24 Sep 2025 10:33:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CO1PEPF000042AA.mail.protection.outlook.com (10.167.243.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9160.9 via Frontend Transport; Wed, 24 Sep 2025 10:33:42 +0000
+Received: from k-Super-Server.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 24 Sep
+ 2025 03:33:40 -0700
+From: fanhuang <FangSheng.Huang@amd.com>
+To: <qemu-devel@nongnu.org>, <david@redhat.com>
+CC: <Zhigang.Luo@amd.com>, <Lianjie.Shi@amd.com>, <FangSheng.Huang@amd.com>
+Subject: [PATCH] numa: add 'spm' option for special purpose memory
+Date: Wed, 24 Sep 2025 18:33:23 +0800
+Message-ID: <20250924103324.2074819-1-FangSheng.Huang@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJSP0QXL1fXebRRtRTjQOzArtX0a-8q1wWDVb3WdU=Z5DYqaJQ@mail.gmail.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000042AA:EE_|CY8PR12MB7513:EE_
+X-MS-Office365-Filtering-Correlation-Id: 571c1153-7703-404d-b62d-08ddfb55d546
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|1800799024|82310400026|376014|43062017; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?TrsFY2QGXhIzHP5vTwdkyxP5Qp8LSR/rsMh22cpkKS07TzUmLXj1tVzTrQ7h?=
+ =?us-ascii?Q?09iT0NqMewRg7NpHWPhQbibEjkD1lX4i34KWuuqvTcaUrUPBMzb04vSPxtuH?=
+ =?us-ascii?Q?V/deuPzeI3jRz1DENP+ypaInUjdzk/rQ/xizZduBoQ3rK/D1oVIJmsOGTqYx?=
+ =?us-ascii?Q?QXHw5uFDneGGRf2bOFXMGc0wqiiVfPmZ/e2+RQUraT0XU/8CGdz42K9H6SPh?=
+ =?us-ascii?Q?qiOHiiH1fMBQSOatJ1c6LIaFQ6VahJ1YkW0Lx3K8vXe+qrmXlbiPcQqb54tV?=
+ =?us-ascii?Q?gtp4CMN2LcoFprgB3WcjmRyGCE/RN+Qwf+eZy9WYPzZeZyiSZwtqnGBmJ1ar?=
+ =?us-ascii?Q?YPs6xcG6LEh7p+yA1mmmzL1BYvRpUUPfjBUnbt2uTPep2MO73v9gM5bIHe1z?=
+ =?us-ascii?Q?GKo8bBFVhDcLNmWCRQkXxGeE25JHwAdPa9jKGU/9f2JXVTmHTKPrPrdpaxgh?=
+ =?us-ascii?Q?T3hwGx6CtAmKHeclznacxZO6bKrbrmA1NMt31AgAaL4gAsgAR4vu7Em5tzeP?=
+ =?us-ascii?Q?1812naEhNsNmkqq4hOlTl+R9sR0X9yuaYe+OaianhfiIOD9eIKMziQF/f0bJ?=
+ =?us-ascii?Q?3elZp4oc9ki/+u/nr86GN5jFhZpYyr57zBPWiqhIUOoXus9v+8EVyiQrqKoq?=
+ =?us-ascii?Q?VJa+GViVvELI1cTtwAbRaWopqBCtas4upzOxs7VNn36rQZnLxfTzHnm+bJeq?=
+ =?us-ascii?Q?Kv2gay4S24003Q2gKYrNjc48YFrVr6j7gIRbcJL13mSLAjZYqRaCaqZxe95Q?=
+ =?us-ascii?Q?3VHFzyGpoPeEK/v1o1UiQTW8AwzqukqTxSPEMWruL78VVQrIutIOLn1VK+KI?=
+ =?us-ascii?Q?z9OZMLwFMgtVrh9rvxTSeDNoePFd735gAHaSv1epUNyNmYjCW+dnVIrwXD/P?=
+ =?us-ascii?Q?4JGVyWHmJXQ0AojMBS4QNLj0Hl0Dd3+ZScgAgZ4BgqSETmobkpBk/57b/2zk?=
+ =?us-ascii?Q?q+IDTj0mCiHx3OhJUYx2BrDArlVZ+qWV0jACpbyAaablHKi2YDYt7AnubzF5?=
+ =?us-ascii?Q?Aw7qj00128vC4dhjK7GZDngevJEMYUCJeholR4pV11Yl3f+tzhmrbOgxCM3M?=
+ =?us-ascii?Q?reLm+Qqf7kDX39BqU84a0CGnYAXeInlzIJlYOaLhT+l7sTn+1fnH9tmY5ntg?=
+ =?us-ascii?Q?6ggdYhtqiJTMWGdJGckKAuteL7R1V79sB5lguoUrlTvu8im3GgLpjqe2PFE3?=
+ =?us-ascii?Q?uKZqI+IN+X87DwuuKZlKKPY0UDKGdZgW/8t2Jw+bu/TxaKUHSdlOM//QY38V?=
+ =?us-ascii?Q?/6Lkxijcwpgjok4mZVNuatOqcL0jERRDkVd71eN8KD1+nAUYQ40xtvwpEi0/?=
+ =?us-ascii?Q?nyp8YTOPgh6c6RZjTejTPqcLEC+4A3OVgzSf0JJTzr0trw2Ew/IhBZ3dehBG?=
+ =?us-ascii?Q?f7ErwkA85prlvIcu5J+JBjLQ9Wy+DxCCOwERj9kMS962kuW918kxXNdyTF+D?=
+ =?us-ascii?Q?ELevxx5/y0cdOwZSQnnJIo8NxnR8cyFaaUzIw7riwwXYidgS/ZoUfcVDEX/Q?=
+ =?us-ascii?Q?kgNbTxldNHFZKSNjuW460NfHKfA2+zrNj/Ifn/CVUXVZTY+55muYFJTIiw?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(43062017);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2025 10:33:42.4117 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 571c1153-7703-404d-b62d-08ddfb55d546
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000042AA.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7513
+Received-SPF: permerror client-ip=40.107.201.40;
+ envelope-from=FangSheng.Huang@amd.com;
+ helo=CH4PR04CU002.outbound.protection.outlook.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 24 Sep 2025 09:42:06 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,95 +144,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 24, 2025 at 07:49:49AM -0400, Stefan Hajnoczi wrote:
-> On Wed, Sep 24, 2025 at 3:51 AM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >
-> > On Wed, Sep 24, 2025 at 09:13:15AM +0200, Paolo Bonzini wrote:
-> > > On 9/23/25 21:23, Stefan Hajnoczi wrote:
-> > > > > +    out('// SPDX-License-Identifier: GPL-2.0-or-later',
-> > > > > +        '// This file is @generated by tracetool, do not edit.',
-> > > > > +        '',
-> > > > > +        '#[allow(unused_imports)]',
-> > > > > +        'use std::ffi::c_char;',
-> > > > > +        '#[allow(unused_imports)]',
-> > > > > +        'use util::bindings;',
-> > > > > +        '',
-> > > > > +        '#[inline(always)]',
-> > > > > +        'fn trace_event_get_state_dynamic_by_id(_id: u16) -> bool {',
-> > > > > +        '    unsafe { (trace_events_enabled_count != 0) && (_id != 0) }',
-> > > > > +        '}',
-> > > >
-> > > > This was translated to Rust from:
-> > > >
-> > > >    /* it's on fast path, avoid consistency checks (asserts) */
-> > > >    #define trace_event_get_state_dynamic_by_id(id) \
-> > > >        (unlikely(trace_events_enabled_count) && _ ## id ## _DSTATE)
-> > > >
-> > > > The _id != 0 expression is incorrect. The purpose was to check whether
-> > > > the trace event is currently enabled (i.e. dynamically at runtime).
-> > >
-> > > The expression is correct, but the function and argument names are not. It
-> > > should be
-> > >
-> > > fn trace_event_state_is_enabled(dstate: u16) -> bool {
-> > >      unsafe { trace_events_enabled_count } != 0 && dstate != 0
-> > > }
-> > >
-> > > > > +    # static state
-> > > > > +    for e in events:
-> > > > > +        if 'disable' in e.properties:
-> > > > > +            enabled = "false"
-> > > > > +        else:
-> > > > > +            enabled = "true"
-> > > >
-> > > > What is the purpose of this loop? The variable enabled is unused so I
-> > > > think it can be deleted.
-> > >
-> > > The Rust code generator is not emitting any code for disabled tracepoints.
-> > > Unlike C, where the disabled tracepoints can produce e.g. -Wformat warnings,
-> > > there's no real benefit here.
-> > >
-> > > In the RFC the "enabled" variable was used to produce a const for the static
-> > > state; it had no user so I removed it, but I left behind this dead Python
-> > > code.  Sorry about that!
-> >
-> > Is the concept of build time 'disabled' tracepoints actually useful to
-> > still support ? AFAICT we use it in only places, which doesn't make it
-> > sound too compelling:
-> >
-> > $ find -name trace-events | xargs grep '^disable'
-> > ./target/hppa/trace-events:disable hppa_tlb_flush_ent(void *env, void *ent, uint64_t va_b, uint64_t va_e, uint64_t pa) "env=%p ent=%p va_b=0x%lx va_e=0x%lx pa=0x%lx"
-> > ./target/hppa/trace-events:disable hppa_tlb_find_entry(void *env, void *ent, int valid, uint64_t va_b, uint64_t va_e, uint64_t pa) "env=%p ent=%p valid=%d va_b=0x%lx va_e=0x%lx pa=0x%lx"
-> > ./target/hppa/trace-events:disable hppa_tlb_find_entry_not_found(void *env, uint64_t addr) "env=%p addr=%08lx"
-> > ...snip...
-> > ./target/hppa/trace-events:disable hppa_tlb_lpa_success(void *env, uint64_t addr, uint64_t phys) "env=%p addr=0x%lx phys=0x%lx"
-> > ./target/hppa/trace-events:disable hppa_tlb_lpa_failed(void *env, uint64_t addr) "env=%p addr=0x%lx"
-> > ./target/hppa/trace-events:disable hppa_tlb_probe(uint64_t addr, int level, int want) "addr=0x%lx level=%d want=%d"
-> > ./hw/display/trace-events:disable qxl_io_write_vga(int qid, const char *mode, uint32_t addr, uint32_t val) "%d %s addr=%u val=%u"
-> 
-> My recollection is that disabled events were supposed to eliminate the
-> cost of trace events. Downstreams could disable trace events that they
-> didn't need.
+Hi David,
 
-IMHO if that is a required use case, then the dtrace backend is the
-answer.
+I hope this email finds you well. It's been several months since Zhigang last discussion about the Special Purpose Memory (SPM) implementation in QEMU with you, and I wanted to provide some background context before presenting the new patch based on your valuable suggestions.
 
-The main premise of tracing is that you can rarely predict what info
-will be needed ahead of time, so you need runtime controls. dtrace
-gives that with near zero overhead, while QEMU's other backends have
-that at the cost of a branch to check the enabled state.  Disabling
-events at build time feels at odds with the intended use case of
-tracing.
+Previous Discussion Summary
+===========================
+Back in December 2024, we had an extensive discussion regarding my original patch that added the `hmem` option to `memory-backend-file`. During that conversation, you raised several important concerns about the design approach:
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Original Approach (December 2024)
+----------------------------------
+- Zhigang's patch: Added `hmem=on` option to `memory-backend-file`
+- QEMU cmdline example:
+  -object memory-backend-file,size=16G,id=m1,mem-path=/dev/dax0.0,prealloc=on,align=1G,hmem=on
+  -numa node,nodeid=1,memdev=m1
+
+Your Concerns and Suggestions
+-----------------------------
+You correctly identified some issues with the original approach:
+- Configuration Safety: Users could create problematic configurations like:
+   -object memory-backend-file,size=16G,id=unused,mem-path=whatever,hmem=on
+
+- Your Recommendation: You proposed a cleaner approach using NUMA node configuration:
+   -numa node,nodeid=1,memdev=m1,spm=on
+
+Project Context
+===============
+To refresh your memory on the use case:
+- Objective: Pass `EFI_MEMORY_SP` (Special Purpose Memory) type memory from host to QEMU virtual machine
+- Application: Memory reserved for specific PCI devices (e.g., VFIO-PCI devices)
+- Guest Behavior: The SPM memory should be recognized by the guest OS and claimed by hmem-dax driver
+
+Complete QEMU Configuration Example:
+-object memory-backend-ram,size=8G,id=m0
+-object memory-backend-file,size=16G,id=m1,mem-path=/dev/dax0.0,prealloc=on,align=1G
+-numa node,nodeid=0,memdev=m0
+-numa node,nodeid=1,memdev=m1,spm=on  # <-- New approach based on your suggestion
+
+New Patch Implementation
+========================
+Following your recommendations, I have completely redesigned the implementation:
+
+Key Changes:
+1. Removed `hmem` option from `memory-backend-file`
+2. Added `spm` (special-purpose) option to NUMA node configuration
+
+I would appreciate your review of the new patch implementation. The design now follows your suggested approach of using NUMA node configuration rather than memory backend options, which should resolve the safety and scope issues we discussed.
+Thank you for your time and valuable guidance on this implementation.
+
+Please note that I'm located in UTC+8 timezone, so there might be some delay in my responses to your emails due to the time difference. I appreciate your patience and understanding.
+
+Best regards,
+FangSheng Huang
 
 
