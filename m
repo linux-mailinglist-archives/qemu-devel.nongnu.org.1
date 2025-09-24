@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B88B986D4
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 08:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD622B986B6
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 08:42:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1JBT-0002Zi-9m; Wed, 24 Sep 2025 02:40:59 -0400
+	id 1v1JBS-0002Zj-1O; Wed, 24 Sep 2025 02:40:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JB2-0002W0-8k
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JB5-0002Wc-Gh
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAq-0006jm-H7
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1v1JAs-0006kF-P5
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 02:40:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758696019;
+ s=mimecast20190719; t=1758696021;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=H8yb+/BlmXDgV5NPSaTzAS8HXmVhCTwuGI7zVJKiS7o=;
- b=GFTtGm0Ce5HDf0z3vmLw/Ug1xtIgv20F+2Uos6hY5Mo6F932Qazw0uhnYf5pcuDlcZ9xsH
- pYH3W7FT/rWQ/LmxvGLKidioVFlhgUexLkeVWTxHD4byDx9aoc0wfMPw9ltBQSJ5f/7TOU
- oPfry6fBrIFWHUCX+FgkaaOXSElDqgc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=L9bO/FBfh6fhBzvvDHXJehrK4hQVreAPaWELrmWUx2M=;
+ b=REDHyVE9JIQnb3S7D4BlhciiHj9Cfpmxyt5Y/9SPrAJMDoiamx7z6DLVxGdBS1xy9GJvCs
+ eMvJGF8Hg837Up6ULvXTRcGPTUQmQNCo3aPV/Clx3YkfIm8DzccmMomKzk6rroFd6b1fh4
+ RsaCAY88/FmMyJ5+VKy4OAzJifDz7oo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-fKZ5JOoROaCn2e71tjIRKA-1; Wed,
- 24 Sep 2025 02:40:14 -0400
-X-MC-Unique: fKZ5JOoROaCn2e71tjIRKA-1
-X-Mimecast-MFC-AGG-ID: fKZ5JOoROaCn2e71tjIRKA_1758696013
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-357-2yMavWpjMA2Ujif6iXVKFQ-1; Wed,
+ 24 Sep 2025 02:40:17 -0400
+X-MC-Unique: 2yMavWpjMA2Ujif6iXVKFQ-1
+X-Mimecast-MFC-AGG-ID: 2yMavWpjMA2Ujif6iXVKFQ_1758696016
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9CE4A1956094; Wed, 24 Sep 2025 06:40:13 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C456E1800366; Wed, 24 Sep 2025 06:40:15 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-176.str.redhat.com
  [10.33.192.176])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D591A1955F19; Wed, 24 Sep 2025 06:40:11 +0000 (UTC)
+ id 277DD1955F19; Wed, 24 Sep 2025 06:40:13 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-stable@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 08/12] .gitlab-ci.d/buildtest.yml: Unset CI_COMMIT_DESCRIPTION
- for htags
-Date: Wed, 24 Sep 2025 08:39:52 +0200
-Message-ID: <20250924063956.519792-9-thuth@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Sven Schnelle <svens@stackframe.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 09/12] tests/functional/hppa: Add a CD-ROM boot test for
+ qemu-system-hppa
+Date: Wed, 24 Sep 2025 08:39:53 +0200
+Message-ID: <20250924063956.519792-10-thuth@redhat.com>
 In-Reply-To: <20250924063956.519792-1-thuth@redhat.com>
 References: <20250924063956.519792-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -85,42 +85,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 
-In commit 52a21689cd829 we added a workaround for a bug in older
-versions of htags where they fail with a weird error message if the
-environment is too large.  However, we missed one variable which
-gitlab CI can set to the body of the commit message:
-CI_COMMIT_DESCRIPTION.
+Add a test which boots a HP-UX firmware upgrade CD-ROM. It exercise
+the PCI LSI53C895A SCSI controller. The ISO image comes from:
+https://web.archive.org/web/20101204061612/http://ftp.parisc-linux.org/kernels/712/PF_C7120023
+The test is very quick, less than 3s.
 
-Add this to the variables we unset when running htags, so that
-the 'pages' job doesn't fail if the most recent commit happens
-to have a very large commit message.
+Based on an old patch from Philippe that has been posted here:
+https://www.mail-archive.com/qemu-devel@nongnu.org/msg651012.html
 
-Cc: qemu-stable@nongnu.org
-Fixes: 52a21689cd8 (".gitlab-ci.d/buildtest.yml: Work around htags bug when environment is large")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250916163030.1467893-1-peter.maydell@linaro.org>
+Suggested-by: Sven Schnelle <svens@stackframe.org>
+Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+[thuth: Adjusted the patch to the functional framework,
+        and adjusted the commit message]
+Message-ID: <20250918122447.105861-1-thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS                          |  2 +-
+ tests/functional/hppa/meson.build    |  4 +++
+ tests/functional/hppa/test_cdboot.py | 38 ++++++++++++++++++++++++++++
+ 3 files changed, 43 insertions(+), 1 deletion(-)
+ create mode 100755 tests/functional/hppa/test_cdboot.py
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index f01978fb40c..e296fc3c14a 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -736,7 +736,7 @@ pages:
-     - make gtags
-     # We unset variables to work around a bug in some htags versions
-     # which causes it to fail when the environment is large
--    - CI_COMMIT_MESSAGE= CI_COMMIT_TAG_MESSAGE= htags
-+    - CI_COMMIT_MESSAGE= CI_COMMIT_TAG_MESSAGE= CI_COMMIT_DESCRIPTION= htags
-         -anT --tree-view=filetree -m qemu_init
-         -t "Welcome to the QEMU sourcecode"
-     - mv HTML public/src
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3d1f88a4bbe..24b71a4fc54 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1276,7 +1276,7 @@ F: include/hw/pci-host/astro.h
+ F: include/hw/pci-host/dino.h
+ F: pc-bios/hppa-firmware.img
+ F: roms/seabios-hppa/
+-F: tests/functional/hppa/test_seabios.py
++F: tests/functional/hppa/
+ 
+ LoongArch Machines
+ ------------------
+diff --git a/tests/functional/hppa/meson.build b/tests/functional/hppa/meson.build
+index a3348370884..df2f7ccc9c3 100644
+--- a/tests/functional/hppa/meson.build
++++ b/tests/functional/hppa/meson.build
+@@ -3,3 +3,7 @@
+ tests_hppa_system_quick = [
+   'seabios',
+ ]
++
++tests_hppa_system_thorough = [
++  'cdboot',
++]
+diff --git a/tests/functional/hppa/test_cdboot.py b/tests/functional/hppa/test_cdboot.py
+new file mode 100755
+index 00000000000..84421e8d63e
+--- /dev/null
++++ b/tests/functional/hppa/test_cdboot.py
+@@ -0,0 +1,38 @@
++#!/usr/bin/env python3
++#
++# CD boot test for HPPA machines
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++from qemu_test import QemuSystemTest, Asset, exec_command_and_wait_for_pattern
++from qemu_test import wait_for_console_pattern
++
++
++class HppaCdBoot(QemuSystemTest):
++
++    ASSET_CD = Asset(
++        ('https://github.com/philmd/qemu-testing-blob/raw/ec1b741/'
++         'hppa/hp9000/712/C7120023.frm'),
++        '32c612ad2074516986bdc27768903c561fa92af2ca48e5ac3f3359ade1c42f70')
++
++    def test_cdboot(self):
++        self.set_machine('B160L')
++        cdrom_path = self.ASSET_CD.fetch()
++
++        self.vm.set_console()
++        self.vm.add_args('-cdrom', cdrom_path,
++                         '-boot', 'd',
++                         '-no-reboot')
++        self.vm.launch()
++        wait_for_console_pattern(self, 'Unrecognized MODEL TYPE = 502')
++        wait_for_console_pattern(self, 'UPDATE PAUSED>')
++
++        exec_command_and_wait_for_pattern(self, 'exit\r', 'UPDATE>')
++        exec_command_and_wait_for_pattern(self, 'ls\r', 'IMAGE1B')
++        wait_for_console_pattern(self, 'UPDATE>')
++        exec_command_and_wait_for_pattern(self, 'exit\r',
++                        'THIS UTILITY WILL NOW RESET THE SYSTEM.....')
++
++
++if __name__ == '__main__':
++    QemuSystemTest.main()
 -- 
 2.51.0
 
