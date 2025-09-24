@@ -2,81 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23CDFB9838D
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 06:41:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1168BB983A5
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 06:42:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1HH1-00067w-Nd; Wed, 24 Sep 2025 00:38:35 -0400
+	id 1v1HId-0006ZQ-4q; Wed, 24 Sep 2025 00:40:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wangrui@loongson.cn>)
- id 1v1HGx-00067M-Li
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 00:38:31 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <wangrui@loongson.cn>) id 1v1HGq-0006JR-8q
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 00:38:30 -0400
-Received: from loongson.cn (unknown [209.85.166.50])
- by gateway (Coremail) with SMTP id _____8Dx+tGkddNoPPENAA--.30308S3;
- Wed, 24 Sep 2025 12:37:57 +0800 (CST)
-Received: from mail-io1-f50.google.com (unknown [209.85.166.50])
- by front1 (Coremail) with SMTP id qMiowJBxZOSiddNoe1+qAA--.15742S3;
- Wed, 24 Sep 2025 12:37:55 +0800 (CST)
-Received: by mail-io1-f50.google.com with SMTP id
- ca18e2360f4ac-8b0055cbd0fso356387639f.2
- for <qemu-devel@nongnu.org>; Tue, 23 Sep 2025 21:37:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCW42zFR5BE5rDfMFVL9PKyPEwuFIJNaNzYY/A8zeN+tz9jRBJP6/VFqXkL2SBj26NV29mINUTHW/XN6@nongnu.org
-X-Gm-Message-State: AOJu0YyFGieXgFITd/QVcD1w+v5fhAYFIB/NUREztqV846mv4PWoIxtB
- nvNS2esZ0XVyQhxZMrRJDKIHA570G+s9UFhLt9iDKMMA7bm3dXaap1ZURs20zk2PecI7K17gQBF
- eS8KQ82Pd5o8MGZiPwEKATOB+NR55C9HXGuzRwtRKbw==
-X-Google-Smtp-Source: AGHT+IFNW0m077Y9mnwp3sxHRMgYsO7DN7QCoFKdNshrBEsDOjId6wnXA3XIuEeFr+2cPXM8Lo2hLP/BNo/APCViUEc=
-X-Received: by 2002:a05:690e:2588:b0:635:4ecd:75a4 with SMTP id
- 956f58d0204a3-63604663e32mr2791959d50.50.1758688177365; Tue, 23 Sep 2025
- 21:29:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1v1HI9-0006Mn-BP; Wed, 24 Sep 2025 00:39:45 -0400
+Received: from www3579.sakura.ne.jp ([49.212.243.89])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <odaki@rsg.ci.i.u-tokyo.ac.jp>)
+ id 1v1HI3-0006QP-2g; Wed, 24 Sep 2025 00:39:44 -0400
+Received: from h205.csg.ci.i.u-tokyo.ac.jp (h205.csg.ci.i.u-tokyo.ac.jp
+ [133.11.54.205]) (authenticated bits=0)
+ by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 58O4bSms091795
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Wed, 24 Sep 2025 13:37:38 +0900 (JST)
+ (envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=4Lrx+OHmEWMxnbxoN2F7Ox37ZHsYr5d+IsqXMnVqT1o=; 
+ c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+ h=From:Subject:Date:Message-Id:To;
+ s=rs20250326; t=1758688659; v=1;
+ b=UAXiXKO4Ji2vMqO4/0Y9wj6BVXDQ0BLFjbEBQlzZfWNdKZ7EehKftBG/zVO7C2CD
+ gZMA31hZQaPekdxCHeEquvjPWsJ+tNGhTgp3tH4qQ++pq3IOJn0j5WbkZhrmtH0P
+ 8J4BUrEuD5GSWFI7bGB/xClYcXwviVMSPSwBpsOq0aemdfD/EnhdyjvbU6IA/gVg
+ yZJMAHLl/323C6NqM3uIurnJq0/txBN/IPFkMf9CrwXtbQp6+cLx/gbIiXkGbPDB
+ /VcwOelMjazEgXZIaR+olA4iYG20nC81SCiN0e/gP4FYvURae3M1ucgYB4HCJ2Cp
+ bfMmFGxBXYoh+4tIcWKsRw==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: [PATCH v4 0/7] Do not unparent in instance_finalize()
+Date: Wed, 24 Sep 2025 13:37:19 +0900
+Message-Id: <20250924-use-v4-0-07c6c598f53d@rsg.ci.i.u-tokyo.ac.jp>
 MIME-Version: 1.0
-References: <20250919124901.2756538-1-wangrui@loongson.cn>
- <c0fc38df-9c52-406f-8d8b-f2496b4e410f@linaro.org>
-In-Reply-To: <c0fc38df-9c52-406f-8d8b-f2496b4e410f@linaro.org>
-From: WANG Rui <wangrui@loongson.cn>
-Date: Wed, 24 Sep 2025 12:29:25 +0800
-X-Gmail-Original-Message-ID: <CAHirt9ifqqrzcc3oJ1VAfEhHAP+U4bW=yh+BJJxkgaArKOhG+A@mail.gmail.com>
-X-Gm-Features: AS18NWBtrwwrjVnLSgY09gqOQZDuhDvbENnMDhxFPX2b9vUJHi1TthEXAB6_r0s
-Message-ID: <CAHirt9ifqqrzcc3oJ1VAfEhHAP+U4bW=yh+BJJxkgaArKOhG+A@mail.gmail.com>
-Subject: Re: [PATCH] tcg/optimize: Fix folding of vector bitsel
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- qemu@hev.cc
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID: qMiowJBxZOSiddNoe1+qAA--.15742S3
-X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxJF15ZF13WFykuF4fZw17XFc_yoW8Cr4Upr
- 4F9FsFkF98X3y8ur90kr9rtry5CrZ8ta18JryYyF4DZw1DtFn8W34DKrWagF9rZrnYkr10
- vF1vva47CanFqabCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvCb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6F4UJVW0owAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
- Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
- Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
- CF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUAVWU
- twC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1V
- AFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xII
- jxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4
- A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI
- 43ZEXa7IU8OyCJUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=wangrui@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAH9102gC/33MTQ6CMBCG4auYrm3TH6HgynsYF3WYQjWxpAUiI
+ dzdAhtc6PKdzPdMJGJwGMn5MJGAg4vOv1KcjgcCjXnVSF2VmkguM17ynPYRqdIIUHJlSuQkfbY
+ BrXuvyvWWunGx82Fc0UEs1+/9ICinkAkwxlYC7/oSYs3AMcd62vnn6JkB9mjJgg1yB4hsA2QC7
+ Am0tULdLZZ/AbUH9AaoBGgJ0uRFoSGHn8A8zx+kFuP8JQEAAA==
+X-Change-ID: 20250906-use-37ecc903a9e0
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>,
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, John Snow <jsnow@redhat.com>,
+ qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Jesper Devantier <foss@defmacro.it>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ John Levon <john.levon@nutanix.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ Yanan Wang <wangyanan55@huawei.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Aleksandar Rikalo <arikalo@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ =?utf-8?q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ Bin Meng <bmeng.cn@gmail.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ xen-devel@lists.xenproject.org,
+ Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.15-dev-179e8
+Received-SPF: pass client-ip=49.212.243.89;
+ envelope-from=odaki@rsg.ci.i.u-tokyo.ac.jp; helo=www3579.sakura.ne.jp
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,73 +110,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 24, 2025 at 12:03=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
->
-> On 19/9/25 14:49, WANG Rui wrote:
-> > It looks like a typo.
->
-> Likely from the TCG_TARGET_HAS_andc_vec case.
->
-> > When the false value (C) is the constant -1, the
-> > correct fold should be: R =3D B | ~A
-> >
-> > Reproducer (LoongArch64 assembly):
-> >
-> >       .text
-> >       .globl  _start
-> >   _start:
-> >       vldi    $vr1, 3073
-> >       vldi    $vr2, 1023
-> >       vbitsel.v       $vr0, $vr2, $vr1, $vr2
-> >       vpickve2gr.d    $a1, $vr0, 1
-> >       xori    $a0, $a1, 1
-> >       li.w    $a7, 93
-> >       syscall 0
-> >
-> > Fixes: e58b977238e3 ("tcg/optimize: Optimize bitsel_vec")
-> > Link: https://github.com/llvm/llvm-project/issues/159610
-> > Signed-off-by: WANG Rui <wangrui@loongson.cn>
-> > ---
-> >   tcg/optimize.c | 3 ++-
-> >   1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/tcg/optimize.c b/tcg/optimize.c
-> > index 3638ab9fea..f69702b26e 100644
-> > --- a/tcg/optimize.c
-> > +++ b/tcg/optimize.c
-> > @@ -1568,9 +1568,10 @@ static bool fold_bitsel_vec(OptContext *ctx, TCG=
-Op *op)
-> >               return fold_and(ctx, op);
-> >           }
-> >           if (fv =3D=3D -1 && TCG_TARGET_HAS_orc_vec) {
-> > +            TCGArg ta =3D op->args[2];
-> >               op->opc =3D INDEX_op_orc_vec;
-> >               op->args[2] =3D op->args[1];
-> > -            op->args[1] =3D op->args[3];
-> > +            op->args[1] =3D ta;
-> >               return fold_orc(ctx, op);
-> >           }
-> >       }
-> Looks correct, but I don't understand the swap. Can't we justkeep the
-> same argument order for an ORC opcode? I'd have done:
->
-> -- >8 --
-> @@ -1569,8 +1569,6 @@ static bool fold_bitsel_vec(OptContext *ctx, TCGOp
-> *op)
->           }
->           if (fv =3D=3D -1 && TCG_TARGET_HAS_orc_vec) {
->               op->opc =3D INDEX_op_orc_vec;
-> -            op->args[2] =3D op->args[1];
-> -            op->args[1] =3D op->args[3];
->               return fold_orc(ctx, op);
->           }
+Supersedes: <20240829-memory-v1-1-ac07af2f4fa5@daynix.com>
+("[PATCH] docs/devel: Prohibit calling object_unparent() for memory region")
 
-Bitwise logic can be tricky and easy to get wrong. In general, (a |
-~b) !=3D (b | ~a). For example, when a =3D 0 and b =3D 1, the results
-differ.
+Children are automatically unparented so manually unparenting is
+unnecessary.
 
->       }
-> ---
+Worse, automatic unparenting happens before the instance_finalize()
+callback of the parent gets called, so object_unparent() calls in
+the callback will refer to objects that are already unparented, which
+is semantically incorrect.
+
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+---
+Changes in v4:
+- Removed Based-on:.
+- Restored the examples of VFIOMSIXInfo and VFIOQuirk in
+  docs/devel/memory.rst.
+- Ensured that the timing to call object_unparent() and free memory
+  regions is mentioned once for each.
+- Link to v3: https://lore.kernel.org/qemu-devel/20250917-use-v3-0-72c2a6887c6c@rsg.ci.i.u-tokyo.ac.jp
+
+Changes in v3:
+- Added patches to remove other object_unparent() calls in
+  instance_finalize().
+- Dropped patch "qdev: Automatically delete memory subregions" and the
+  succeeding patches to avoid Ccing many.
+- Link to v2: https://lore.kernel.org/qemu-devel/20250915-use-v2-0-f4c7ff13bfe9@rsg.ci.i.u-tokyo.ac.jp
+
+Changes in v2:
+- Added a reference to "[PATCH] docs/devel: Prohibit calling
+  object_unparent() for memory region", which does something similar to
+  patch "docs/devel: Do not unparent in instance_finalize()" but I
+  forgot I sent it in the past.
+- Fixed a typo in patch
+  "docs/devel: Do not unparent in instance_finalize()" and
+  "[PATCH 02/22] vfio/pci: Do not unparent in instance_finalize()".
+- Dropped patches to move address_space_init() calls; I intend to
+  QOM-ify to fix memory leaks automatically as discussed in the
+  following thread:
+  https://lore.kernel.org/qemu-devel/cd21698f-db77-eb75-6966-d559fdcab835@eik.bme.hu/
+  But the QOM-ification will be big so I'll send it as a separate
+  series.
+- Rebased on top of "[PATCH v2 00/14] hw/pci-host/raven clean ups".
+  https://lore.kernel.org/qemu-devel/cover.1751493467.git.balaton@eik.bme.hu/
+- Link to v1: https://lore.kernel.org/qemu-devel/20250906-use-v1-0-c51caafd1eb7@rsg.ci.i.u-tokyo.ac.jp
+
+---
+Akihiko Odaki (7):
+      docs/devel: Do not unparent in instance_finalize()
+      vfio/pci: Do not unparent in instance_finalize()
+      hw/core/register: Do not unparent in instance_finalize()
+      hv-balloon: hw/core/register: Do not unparent in instance_finalize()
+      hw/sd/sdhci: Do not unparent in instance_finalize()
+      vfio: Do not unparent in instance_finalize()
+      hw/xen: Do not unparent in instance_finalize()
+
+ docs/devel/memory.rst  | 17 ++++++-----------
+ hw/core/register.c     |  1 -
+ hw/hyperv/hv-balloon.c | 12 +-----------
+ hw/sd/sdhci.c          |  4 ----
+ hw/vfio/pci-quirks.c   |  9 +--------
+ hw/vfio/pci.c          |  4 ----
+ hw/vfio/region.c       |  3 ---
+ hw/xen/xen_pt_msi.c    | 11 +----------
+ 8 files changed, 9 insertions(+), 52 deletions(-)
+---
+base-commit: ab8008b231e758e03c87c1c483c03afdd9c02e19
+change-id: 20250906-use-37ecc903a9e0
+
+Best regards,
+--  
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
 
