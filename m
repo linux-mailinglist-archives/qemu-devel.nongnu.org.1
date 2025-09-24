@@ -2,95 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D42B9889A
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1930DB988A0
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:29:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Jqp-0003fs-2H; Wed, 24 Sep 2025 03:23:43 -0400
+	id 1v1Jvg-0002sK-Me; Wed, 24 Sep 2025 03:28:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1v1JqU-0003Wi-LD
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:23:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1v1JqA-0003vp-LY
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:23:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758698578;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Rj3RQ4GXp5AjX5PkH/P7r4/EWTQrzqL0qIzlzX+1qL0=;
- b=Y+mJY5LEEjDY0bSJvnjD3UKNOXRN7Z6Lz+aMBHBQ7jQdJB54+L51UrTTdYUGIA3sWoTo8k
- Jl68J+jqum37UFhzSx7Ce2Wn30e1C4IgdPTFUInkQ348IDO5v3VFz/7npVTD9+2sfSD2XR
- yikAVSYc8dn3THNBUkjR8KNcrG5Y+Z8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-358-bgCGd124NM6_dEC5D2jEqg-1; Wed, 24 Sep 2025 03:22:57 -0400
-X-MC-Unique: bgCGd124NM6_dEC5D2jEqg-1
-X-Mimecast-MFC-AGG-ID: bgCGd124NM6_dEC5D2jEqg_1758698576
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-46c84b3b27bso22127975e9.2
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 00:22:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758698575; x=1759303375;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Rj3RQ4GXp5AjX5PkH/P7r4/EWTQrzqL0qIzlzX+1qL0=;
- b=v4gwLmAWuDAzT8VVgNqPnaLLmsh4HmryBuBmveKcm/XqiNrmmFVb9bhqa28q66MJTT
- KaibKzpl4ZVFynGP/2IsaVFiqJPm8fsR8RoX8aXSMA06IM/LclqZWPITMqguhYBHM3ah
- uNx6gXhFsvN+aINkGZ5h8cyMxcU+ydwJkK/qTRLBezkLR1J9n1sbLCEcJAkNdcKMAq8c
- a3Y4M/ZqJRIxgiYwAMhvBLO6eoo5DAuLKZEuB7hm9e3/IS/MMhNr8z0GtXnjCjGQPUh2
- e0KKodgCLKB4z+ud4zNm54dPgLl1d0BPZYCnG8Ild+rMSvBPl1B5Xz9XWSK4DSP3JdRv
- 0URw==
-X-Gm-Message-State: AOJu0YxtFMZltZBcY/gLIBgyS2slsJFg1DQH+bO127+wADYpWJ3dQbFM
- VtJZy+jWtx8QLx2KbEz6GcNAGPOSJ9Q7UiVhR9YRl39E591NQ1PqwAMbZcm3PsHlKqjt18NOo+T
- k2k5BF2xEpz4JkBl7wb/VNgCdn+iy384d0gsc6eFFO232N54SZuTrk/IQ1ocBTHJ+
-X-Gm-Gg: ASbGncsWzRLCt4MIJnKgNx2WdLxbwXi0x27groAgHeBVE38aNH7L4h/TITXC75B8lCl
- Wb7FrkS23nvw9Z4PEGWdASXKparb3TrJ2/QIEljg+v8+4yzEM6uUK5CIIySl+qSYDolyd46xtDV
- UZiAcQfnN5i5eaQQmOi9nBjBpLB653/lxk7D9RKnWF33ej9Kv+2U9fkXKVfa74LMiZ3fiXxC84U
- CAcWPtmYAB80/QAm0ESYcDaOdhxdlmzPKh7MMrwfOtFSTufR50drp/4Bvw81cDYSGzll2uC1Wlr
- DLhQEqMDQgGtnzLIkCUabXiN5odjBRUbpc3tkQjPUFY=
-X-Received: by 2002:a05:600c:c04b:10b0:46e:1eaf:2564 with SMTP id
- 5b1f17b1804b1-46e1eaf29femr34543285e9.29.1758698575290; 
- Wed, 24 Sep 2025 00:22:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEGzJEWAI4D1F69jZufVQMJVr/24juD8nmCY08MX7KVV/ISHu4zCaYuSPhOjJQePyJez3MDnA==
-X-Received: by 2002:a05:600c:c04b:10b0:46e:1eaf:2564 with SMTP id
- 5b1f17b1804b1-46e1eaf29femr34543135e9.29.1758698574901; 
- Wed, 24 Sep 2025 00:22:54 -0700 (PDT)
-Received: from sgarzare-redhat ([5.77.110.171])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e2aacfc3dsm19268265e9.16.2025.09.24.00.22.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Sep 2025 00:22:54 -0700 (PDT)
-Date: Wed, 24 Sep 2025 09:22:47 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Li Zhaoxin <lizhaoxin04@baidu.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Jonah Palmer <jonah.palmer@oracle.com>,
- Miao Kezhan <miaokezhan@baidu.com>
-Subject: Re: [PATCH] vdpa-dev: add get_vhost() callback for vhost-vdpa device
-Message-ID: <lh5yr3s3xej3mejfkoz5q6m5jf62b6ox2mvaspu5t3niuhv3qx@gdwzsqquroei>
-References: <bf9c6885d0d425248a5765951a817ea518d92e8a.1758635007.git.lizhaoxin04@baidu.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1v1Jvb-0002l2-GC
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:28:39 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1v1JvU-0004RJ-IR
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:28:38 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8BxndKZndNoMfsNAA--.29619S3;
+ Wed, 24 Sep 2025 15:28:25 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowJDxQ+SVndNoXNWqAA--.21338S3;
+ Wed, 24 Sep 2025 15:28:23 +0800 (CST)
+Subject: Re: [PATCH 3/3] tests/data/acpi/loongarch64: Update expected DSDT.*
+To: Huacai Chen <chenhuacai@kernel.org>, Song Gao <gaosong@loongson.cn>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, WANG Xuerui <git@xen0n.name>,
+ qemu-devel@nongnu.org
+References: <20250923143542.2391576-1-chenhuacai@kernel.org>
+ <20250923143542.2391576-4-chenhuacai@kernel.org>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <08a40419-c56e-4944-2a8e-045f0512fe04@loongson.cn>
+Date: Wed, 24 Sep 2025 15:26:13 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <bf9c6885d0d425248a5765951a817ea518d92e8a.1758635007.git.lizhaoxin04@baidu.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+In-Reply-To: <20250923143542.2391576-4-chenhuacai@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowJDxQ+SVndNoXNWqAA--.21338S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxurWxJrWkZrW3AF17Zw1UurX_yoW5KFyxp3
+ y3Arsakr4xtFn3GFyDWrs8WFn5JrZF9FsFgF4xXry2kFsrGr1qvw1agr9aga45A34Yqa10
+ v3WkGFy8tF1rW3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+ 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AK
+ xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+ AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+ 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
+ kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+ wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+ 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU82g43UU
+ UUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.829,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,55 +82,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 23, 2025 at 09:51:10PM +0800, Li Zhaoxin wrote:
->Commit c255488d67 "virtio: add vhost support for virtio devices"
->added the get_vhost() function, but it did not include vhost-vdpa devices.
->Now we add it.
+Add Michael
 
-Again, could you please explain what problem you had and how this patch 
-solves it?
-
-This information must always be included in a commit message, so please 
-pay attention to this.
-
-Thanks,
-Stefano
-
->
->Co-developed-by: Miao Kezhan <miaokezhan@baidu.com>
->Signed-off-by: Miao Kezhan <miaokezhan@baidu.com>
->Signed-off-by: Li Zhaoxin <lizhaoxin04@baidu.com>
->---
-> hw/virtio/vdpa-dev.c | 7 +++++++
-> 1 file changed, 7 insertions(+)
->
->diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
->index d1da40afc8..4a7b970976 100644
->--- a/hw/virtio/vdpa-dev.c
->+++ b/hw/virtio/vdpa-dev.c
->@@ -338,6 +338,12 @@ static int vhost_vdpa_device_set_status(VirtIODevice *vdev, uint8_t status)
->     return 0;
-> }
->
->+static struct vhost_dev *vhost_vdpa_device_get_vhost(VirtIODevice *vdev)
->+{
->+    VhostVdpaDevice *s = VHOST_VDPA_DEVICE(vdev);
->+    return &s->dev;
->+}
->+
-> static const Property vhost_vdpa_device_properties[] = {
->     DEFINE_PROP_STRING("vhostdev", VhostVdpaDevice, vhostdev),
->     DEFINE_PROP_UINT16("queue-size", VhostVdpaDevice, queue_size, 0),
->@@ -369,6 +375,7 @@ static void vhost_vdpa_device_class_init(ObjectClass *klass, const void *data)
->     vdc->set_config = vhost_vdpa_device_set_config;
->     vdc->get_features = vhost_vdpa_device_get_features;
->     vdc->set_status = vhost_vdpa_device_set_status;
->+    vdc->get_vhost = vhost_vdpa_device_get_vhost;
-> }
->
-> static void vhost_vdpa_device_instance_init(Object *obj)
->-- 
->2.34.1
->
+On 2025/9/23 下午10:35, Huacai Chen wrote:
+> DSDT diffs from "iasl -d":
+> 
+> @@ -11,7 +11,7 @@
+>    *     Signature        "DSDT"
+>    *     Length           0x000011FB (4603)
+>    *     Revision         0x01 **** 32-bit table (V1), no 64-bit math support
+> - *     Checksum         0x5D
+> + *     Checksum         0x5B
+>    *     OEM ID           "BOCHS "
+>    *     OEM Table ID     "BXPC    "
+>    *     OEM Revision     0x00000001 (1)
+> @@ -1426,11 +1426,11 @@
+>               Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
+>               {
+>                   Memory32Fixed (ReadWrite,
+> -                    0x100E001F,         // Address Base
+> +                    0x100E0020,         // Address Base
+>                       0x0000000C,         // Address Length
+>                       )
+>               })
+> -            OperationRegion (PRST, SystemMemory, 0x100E001F, 0x0C)
+> +            OperationRegion (PRST, SystemMemory, 0x100E0020, 0x0C)
+>               Field (PRST, ByteAcc, NoLock, WriteAsZeros)
+>               {
+>                   Offset (0x04),
+> 
+> Signed-off-by: Huacai Chen <chenhuacai@kernel.org>
+> ---
+>   tests/data/acpi/loongarch64/virt/DSDT         | Bin 4603 -> 4603 bytes
+>   tests/data/acpi/loongarch64/virt/DSDT.memhp   | Bin 5824 -> 5824 bytes
+>   tests/data/acpi/loongarch64/virt/DSDT.numamem | Bin 4609 -> 4609 bytes
+>   .../data/acpi/loongarch64/virt/DSDT.topology  | Bin 4905 -> 4905 bytes
+>   tests/qtest/bios-tables-test-allowed-diff.h   |   4 ----
+>   5 files changed, 4 deletions(-)
+> 
+> diff --git a/tests/data/acpi/loongarch64/virt/DSDT b/tests/data/acpi/loongarch64/virt/DSDT
+> index b31841aec6ed296f10ea1695a67ead38f45424d5..55aa34f988d6ef69293e91c5fe45bee0a02bc5f1 100644
+> GIT binary patch
+> delta 44
+> zcmeyZ{9BpJCD<k8w;%%pWAsL@BfP>2415AS3=9mF4ABh%LBSymJPMm1@=CD)02#3h
+> APXGV_
+> 
+> delta 44
+> zcmeyZ{9BpJCD<k8w;%%pW9&w*BfP@$415AS3=9mF4ABh%LBSymJo1|#@=CD)02$8<
+> APXGV_
+> 
+> diff --git a/tests/data/acpi/loongarch64/virt/DSDT.memhp b/tests/data/acpi/loongarch64/virt/DSDT.memhp
+> index e291200fc91caa3d93dcd6ec4736f7340f5e3f65..c0955eb60448cc5f4d38d410abc260ae54ea2e9a 100644
+> GIT binary patch
+> delta 44
+> zcmX@0dq9`VCD<k8fEWV<W5PzRW+7n(20j5E1_p*ohUkWXpx_V&9)-;dgcMi+`vnS0
+> 
+> delta 44
+> zcmX@0dq9`VCD<k8fEWV<W70;hW+7pD20j5E1_p*ohUkWXpx_V&9{J4+gcMi+`y&cU
+> 
+> diff --git a/tests/data/acpi/loongarch64/virt/DSDT.numamem b/tests/data/acpi/loongarch64/virt/DSDT.numamem
+> index 07923ac39584c5a5e73c9556d251814ce10de6cc..61e47e7252155dcf9c76879c4f60f4b3eef63f86 100644
+> GIT binary patch
+> delta 44
+> zcmZovX;k5I33dr#6k=dte72G62(PdL1D^m70|P@PLv%wxP;dwXkHY4Myb3G;-$V)Z
+> 
+> delta 44
+> zcmZovX;k5I33dr#6k=dte6f-12(Pd_1D^m70|P@PLv%wxP;dwXkNoC`yb3G;-(m^%
+> 
+> diff --git a/tests/data/acpi/loongarch64/virt/DSDT.topology b/tests/data/acpi/loongarch64/virt/DSDT.topology
+> index 6dfbb495f88b74b87849b58473e46717bc588a56..b2afebc938ce45d798c8aa5f45a463f1617e257e 100644
+> GIT binary patch
+> delta 44
+> zcmZ3fwo;ADCD<iIQ<#B)@!UqPBfP>2415AS3=9mF4ABh%LBSymJPMm1@_MiW0PuGT
+> Ag8%>k
+> 
+> delta 44
+> zcmZ3fwo;ADCD<iIQ<#B)@xn%~BfP@$415AS3=9mF4ABh%LBSymJo1|#@_MiW0PvLx
+> Ag8%>k
+> 
+> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+> index 2ed837faee..dfb8523c8b 100644
+> --- a/tests/qtest/bios-tables-test-allowed-diff.h
+> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
+> @@ -1,5 +1 @@
+>   /* List of comma-separated changed AML files to ignore */
+> -"tests/data/acpi/loongarch64/virt/DSDT",
+> -"tests/data/acpi/loongarch64/virt/DSDT.memhp",
+> -"tests/data/acpi/loongarch64/virt/DSDT.numamem",
+> -"tests/data/acpi/loongarch64/virt/DSDT.topology",
+> 
 
 
