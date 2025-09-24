@@ -2,148 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4079B9A8D3
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 17:16:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88066B9A6F3
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 17:02:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1RDY-0005sk-LO; Wed, 24 Sep 2025 11:15:40 -0400
+	id 1v1QyJ-000864-8X; Wed, 24 Sep 2025 10:59:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v1RCc-0004uw-Ri
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 11:14:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1v1QyF-00085F-3j; Wed, 24 Sep 2025 10:59:51 -0400
+Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1v1RCR-0003dH-I2
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 11:14:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758726866;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=pZlCoLe+8RfJq3/5/yFqyM6lcjrTbwJqMM1u1WkVPEw=;
- b=jKmYh2g63asvcvEN5qwIkWCjC4TOP5x8yjzvIxIMErKpDIyTbRCVZNHrEGH6jp/6esfcgi
- uwqy+K01sLIZ5+bZfawTKjBhHscl6C7t90v1CgMOteKoczLwL5dJa4e4bVsYYJUuemAWhc
- 4K4p0kz9h8Ewha6K8ryZJO4nmJNx7rg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-149-4ovUsrj0ObygN71dQ3upTg-1; Wed, 24 Sep 2025 11:14:24 -0400
-X-MC-Unique: 4ovUsrj0ObygN71dQ3upTg-1
-X-Mimecast-MFC-AGG-ID: 4ovUsrj0ObygN71dQ3upTg_1758726863
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-46e1b05b42fso20101675e9.2
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 08:14:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758726863; x=1759331663;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pZlCoLe+8RfJq3/5/yFqyM6lcjrTbwJqMM1u1WkVPEw=;
- b=DYNcMLPgHKZWTZ52ECruUGgIeRArTm28EUhpJWCc+RVcfSGgAlVO3nD27X6TEPQekR
- mUjXkSSwAQlWcC5bJ1WI5MnmjLAkeyo7wdRxBhaqBFLyeILMoYO9GHCJXD14zzUeGUmo
- SQHHAG2AyQAzKZK361lgFmx3yBuCRI/a559LBZGphkwc2R0R13TlKpzFFObmxmehFtnu
- acrZO41GsNegHMrGascA14SEqN6HlgS/Rjk3id+dWSWClVfft6wKGT3/r0YU0lvH2kqO
- FTo35Nn9QtgJVrQiguwlQ9Qkb0blSttACr+utSwiviiZPgq7Va9PZrYm5ovEiAm2wLt3
- eTzg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVLxP6prkHTo7D3L5iJV8ZEneKKDSYkFgPiKBZyQi55vyirxEh3YvaCF/b2XOt9FIvvxMvizVXyXtcN@nongnu.org
-X-Gm-Message-State: AOJu0YzMfGWXbLbj1Ah+mluP/r3b/e4U+ADzg0vJsOutAVtMmAwzr3Qb
- i+S+mlTayO08mIG+Df/Kk8HQuRTBXpkxyRiglZdJwQ/NANX59W1FT3vDgqErpSZ39TrvU2MykVd
- 7Mcnam9Kt7j5OJkTGdnUi7JlzpIixIePVmW8BXD1YrAC9n3oOzBTa98IT
-X-Gm-Gg: ASbGncttcxCSNMuWfsF1EGXdwWLE469Q1VItPYFdZfIRLoGKGNVkw7swVGqlKZKZH1S
- K/HCfKmp1K4dkrywiWjg4aIfzQcFPCBwQr2QvYP00TA0pXkx0yzlx/cxN+Y6jTYKBe63wx/c0dR
- w2DTjRRWC/BQKBJBTGyRMTCxYxrfJlWWi6WVON58P0QjObtmO+PheESGHrRzHlTiNtNaw/JWMmb
- 3wM0MqkCqFVFFoKhHvUtB1sHrIkLfeYN2g0q5c1AMUyr++cjDeopgaIS081taoh5N7zoVka5GsI
- 3xU6asKQdMauk0oqOgyuCKlo/rmWjYthIGLN6x/AewEl/CSYTq01znboNTbEbrgc+wpc2HaItIi
- znNI=
-X-Received: by 2002:a05:600c:444d:b0:468:86e0:de40 with SMTP id
- 5b1f17b1804b1-46e3299a5c0mr2621845e9.4.1758726862610; 
- Wed, 24 Sep 2025 08:14:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGkypRSnXe/ZJRGS0nhCyexk9yPG4RWgI0we/b6nJrbRHumeH0kImr1Xr6nccuJ5REHd6nsjQ==
-X-Received: by 2002:a05:600c:444d:b0:468:86e0:de40 with SMTP id
- 5b1f17b1804b1-46e3299a5c0mr2621495e9.4.1758726862168; 
- Wed, 24 Sep 2025 08:14:22 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-46e2ab48c28sm35471765e9.18.2025.09.24.08.14.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 Sep 2025 08:14:21 -0700 (PDT)
-Message-ID: <7f62838c-8df6-445d-b58a-f0f5246ed165@redhat.com>
-Date: Wed, 24 Sep 2025 17:14:20 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1v1Qy5-0001NM-VF; Wed, 24 Sep 2025 10:59:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1758725982; x=1790261982;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=rOXY819Wgt9Lpauwown9+ZsR16/omkh1nC1gq7ttzLI=;
+ b=dOzyHZb9QJntAOlUBFoDUiwl3eoK64vj8HuCNrXv95byAbL6yAJ1K8LB
+ nzhG6Sz+x6If11HI+q+YXSDGVPBQblB26reJ3IHkupuQyC5HEmCSEDOQV
+ uS9/bCuXQD/KUymTEya1kTSCGTvMTd56lgzc65WcNG6ZsiJzaV2EOfLrf
+ hHmv3ehrZEsWfKL+BtOS4p5k4km5vplaACnC6/+dvRoF1P25HHbIliVSo
+ dXwbx7RnBttVbasrRW0rqlwk+6gMj12eEqLs2v6C0W4X+nvGGWLRPOBYh
+ BgkboJqDJlm9C0oOQh0fz+vPOft6TpOBnhj0TrO1JIMNNC8Jqp33CI0hD Q==;
+X-CSE-ConnectionGUID: Ok/E/4tpQgKA8QH7JLfQHQ==
+X-CSE-MsgGUID: 9kzaXrcXTnaZTMj+bc0Xvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11563"; a="60727627"
+X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; d="scan'208";a="60727627"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Sep 2025 07:59:34 -0700
+X-CSE-ConnectionGUID: sK3syfCjRqyz8oVm9GRLKQ==
+X-CSE-MsgGUID: ieb04+yEQAeiEOdlRoqQsw==
+X-ExtLoop1: 1
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa003.fm.intel.com with ESMTP; 24 Sep 2025 07:59:33 -0700
+Date: Wed, 24 Sep 2025 23:21:30 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org, manos.pitsidianakis@linaro.org
+Subject: Re: [PATCH 3/7] rust: migration: extract vmstate_fields_ref
+Message-ID: <aNQMekqSqG7DjmPX@intel.com>
+References: <20250920142958.181910-1-pbonzini@redhat.com>
+ <20250920142958.181910-4-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 27/27] vfio-user/pci.c: rename vfio_user_pci_dev_info to
- vfio_user_pci_info
-To: Mark Cave-Ayland <mark.caveayland@nutanix.com>, npiggin@gmail.com,
- harshpb@linux.ibm.com, mjrosato@linux.ibm.com, farman@linux.ibm.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com, thuth@redhat.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- john.levon@nutanix.com, thanos.makatos@nutanix.com,
- alex.williamson@redhat.com, steven.sistare@oracle.com, qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-References: <20250923135352.1157250-1-mark.caveayland@nutanix.com>
- <20250923135352.1157250-28-mark.caveayland@nutanix.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@redhat.com; keydata=
- xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
- 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
- yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
- 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
- ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
- RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
- gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
- 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
- Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
- tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSJDw6lkcmljIExl
- IEdvYXRlciA8Y2xnQHJlZGhhdC5jb20+wsGRBBMBCAA7FiEEoPZlSPBIlev+awtgUaNDx8/7
- 7KEFAmTLlVECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQUaNDx8/77KG0eg//
- S0zIzTcxkrwJ/9XgdcvVTnXLVF9V4/tZPfB7sCp8rpDCEseU6O0TkOVFoGWM39sEMiQBSvyY
- lHrP7p7E/JYQNNLh441MfaX8RJ5Ul3btluLapm8oHp/vbHKV2IhLcpNCfAqaQKdfk8yazYhh
- EdxTBlzxPcu+78uE5fF4wusmtutK0JG0sAgq0mHFZX7qKG6LIbdLdaQalZ8CCFMKUhLptW71
- xe+aNrn7hScBoOj2kTDRgf9CE7svmjGToJzUxgeh9mIkxAxTu7XU+8lmL28j2L5uNuDOq9vl
- hM30OT+pfHmyPLtLK8+GXfFDxjea5hZLF+2yolE/ATQFt9AmOmXC+YayrcO2ZvdnKExZS1o8
- VUKpZgRnkwMUUReaF/mTauRQGLuS4lDcI4DrARPyLGNbvYlpmJWnGRWCDguQ/LBPpbG7djoy
- k3NlvoeA757c4DgCzggViqLm0Bae320qEc6z9o0X0ePqSU2f7vcuWN49Uhox5kM5L86DzjEQ
- RHXndoJkeL8LmHx8DM+kx4aZt0zVfCHwmKTkSTQoAQakLpLte7tWXIio9ZKhUGPv/eHxXEoS
- 0rOOAZ6np1U/xNR82QbF9qr9TrTVI3GtVe7Vxmff+qoSAxJiZQCo5kt0YlWwti2fFI4xvkOi
- V7lyhOA3+/3oRKpZYQ86Frlo61HU3r6d9wzOwU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhW
- pOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNLSoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZ
- KXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVUcP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwp
- bV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6
- TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFU
- CSLB2AE4wXQkJbApye48qnZ09zc929df5gU6hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iS
- YBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616dtb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6g
- LxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7
- JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1cOY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0Sdu
- jWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/Jx
- IqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k
- 8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoXywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjK
- yKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9j
- hQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Tad2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yop
- s302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it+OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/p
- LHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1nHzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBU
- wYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVISl73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lU
- XOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfA
- HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
- izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250923135352.1157250-28-mark.caveayland@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250920142958.181910-4-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -159,44 +78,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/23/25 15:53, Mark Cave-Ayland wrote:
-> This changes the prefix to match the name of the QOM type.
+Hi Paolo,
+
+On Sat, Sep 20, 2025 at 04:29:54PM +0200, Paolo Bonzini wrote:
+> Date: Sat, 20 Sep 2025 16:29:54 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 3/7] rust: migration: extract vmstate_fields_ref
+> X-Mailer: git-send-email 2.51.0
 > 
-> Signed-off-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+> This is useful when building a VMState for generic structs, because you have
+> to avoid nested statics.  Using vmstate_fields! will fail in the likely case
+> where the _FIELDS static uses Self from an outer item, because that is
+> forbidden.
+
+vmstate_fields_ref is good for me.
+
+> I also looked into returning a &'static [VMStateField] from vmstate_fields!,
+> but that also fails; the fields are not promoted to static, which is
+> unfortunate but intentional (https://github.com/rust-lang/rust/issues/60502):
+> 
+> error[E0716]: temporary value dropped while borrowed
+>    --> rust/hw/char/pl011/libpl011.rlib.p/structured/device.rs:743:17
+>     |
+> 738 | /      VMStateDescriptionBuilder::<PL011State>::new()
+> 739 | |          .name(c"pl011/clock")
+> 740 | |          .version_id(1)
+> 741 | |          .minimum_version_id(1)
+> 742 | |          .needed(&PL011State::clock_needed)
+> 743 | |          .fields(vmstate_fields! {
+>     | | _________________^
+> 744 | ||              vmstate_of!(PL011State, clock),
+> 745 | ||         })
+>     | ||_________^- argument requires that borrow lasts for `'static`
+>     |  |_________|
+>     |            creates a temporary value which is freed while still in use
+> 746 |            .build();
+>     |                   - temporary value is freed at the end of this statement
+
+And I'm curious what change caused this error... I guess you're
+indicating the following case?
+
+diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
+index c05c4a1fd665..bff6ba502e02 100644
+--- a/rust/migration/src/vmstate.rs
++++ b/rust/migration/src/vmstate.rs
+@@ -417,14 +417,13 @@ const fn phantom__<T>(_: &T) -> ::core::marker::PhantomData<T> {
+ #[macro_export]
+ macro_rules! vmstate_fields {
+     ($($field:expr),*$(,)*) => {{
+-        static _FIELDS: &[$crate::bindings::VMStateField] = &[
++        &[
+             $($field),*,
+             $crate::bindings::VMStateField {
+                 flags: $crate::bindings::VMStateFlags::VMS_END,
+                 ..::common::zeroable::Zeroable::ZERO
+             }
+-        ];
+-        _FIELDS.as_ptr()
++        ]
+     }}
+ }
+
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   hw/vfio-user/pci.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>  rust/migration/src/vmstate.rs | 23 +++++++++++++++++------
+>  1 file changed, 17 insertions(+), 6 deletions(-)
 > 
-> diff --git a/hw/vfio-user/pci.c b/hw/vfio-user/pci.c
-> index d4f5c7b9d7..b53ed3b456 100644
-> --- a/hw/vfio-user/pci.c
-> +++ b/hw/vfio-user/pci.c
-> @@ -463,7 +463,7 @@ static void vfio_user_pci_class_init(ObjectClass *klass, const void *data)
->       pdc->realize = vfio_user_pci_realize;
->   }
->   
-> -static const TypeInfo vfio_user_pci_dev_info = {
-> +static const TypeInfo vfio_user_pci_info = {
->       .name = TYPE_VFIO_USER_PCI,
->       .parent = TYPE_VFIO_PCI_DEVICE,
->       .instance_size = sizeof(VFIOUserPCIDevice),
-> @@ -474,7 +474,7 @@ static const TypeInfo vfio_user_pci_dev_info = {
->   
->   static void register_vfio_user_dev_type(void)
->   {
-> -    type_register_static(&vfio_user_pci_dev_info);
-> +    type_register_static(&vfio_user_pci_info);
->   }
->   
-> - type_init(register_vfio_user_dev_type)
-> +type_init(register_vfio_user_dev_type)
+> diff --git a/rust/migration/src/vmstate.rs b/rust/migration/src/vmstate.rs
+> index 05a833a8b7d..421a236194d 100644
+> --- a/rust/migration/src/vmstate.rs
+> +++ b/rust/migration/src/vmstate.rs
+> @@ -413,19 +413,30 @@ const fn phantom__<T>(_: &T) -> ::core::marker::PhantomData<T> {
+>      }};
+>  }
+>  
+> +/// Add a terminator to the fields in the arguments, and return
+> +/// a reference to the resulting array of values.
+> +#[macro_export]
+> +macro_rules! vmstate_fields_ref {
+> +    ($($field:expr),*$(,)*) => {
+> +        &[
+> +            $($field),*,
+> +            $crate::bindings::VMStateField {
+> +                flags: $crate::bindings::VMStateFlags::VMS_END,
+> +                ..::common::zeroable::Zeroable::ZERO
+> +            }
+> +        ]
+> +    }
+> +}
+> +
+>  /// Helper macro to declare a list of
+>  /// ([`VMStateField`](`crate::bindings::VMStateField`)) into a static and return
+>  /// a pointer to the array of values it created.
+>  #[macro_export]
+>  macro_rules! vmstate_fields {
+>      ($($field:expr),*$(,)*) => {{
+> -        static _FIELDS: &[$crate::bindings::VMStateField] = &[
+> +        static _FIELDS: &[$crate::bindings::VMStateField] = $crate::vmstate_fields_ref!(
+>              $($field),*,
+> -            $crate::bindings::VMStateField {
+> -                flags: $crate::bindings::VMStateFlags::VMS_END,
+> -                ..::common::zeroable::Zeroable::ZERO
+> -            }
+> -        ];
+> +        );
+>          _FIELDS.as_ptr()
 
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Considerring the idea about returing &'static [VMStateField], I think at
+least we could return `_FIELDS.as_ptr()` directly from vmstate_fields!,
+and convert &'static [VMStateField] to *const [VMStateField] in
+fields(), just like subsections() did.
 
 Thanks,
+Zhao
 
-C.
-
-
+>      }}
+>  }
+> -- 
+> 2.51.0
+> 
 
