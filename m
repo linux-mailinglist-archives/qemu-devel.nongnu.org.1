@@ -2,82 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A3EFB9B9ED
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 21:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BCFB9BA17
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 21:13:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1UnO-0007sx-AL; Wed, 24 Sep 2025 15:04:54 -0400
+	id 1v1Uqf-0002Tv-Cm; Wed, 24 Sep 2025 15:08:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1Uly-0006wF-1f
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 15:03:29 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1v1UmC-00071m-Bn
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 15:03:42 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1v1Ujz-0007tI-Mo
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 15:03:24 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-77f38a9de0bso214652b3a.0
- for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 12:01:23 -0700 (PDT)
+ id 1v1Uk8-0007tc-Bu
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 15:03:35 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-26e68904f0eso1685065ad.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 12:01:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1758740482; x=1759345282; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vltAWZSqvesV3ZE5+hWwklFe75NLCLedOuJYJPed2R8=;
- b=lfXryQ9VdT5e4OKfvlubYGLuSFZ8B+OfrKHthWqFRH3deg3HHBOCcLoLIuWwX7/pgN
- 8OhVM0UuCzqW0KbNXeJxg0rj4Bumq26VMCuAPievbIF8JiCsa+HbyXLyQMfJc4lz0c1V
- piVWLJZT1sFQW5RYbP4h3Q5etKOtX26ATItxTMZhZn0fB4rSOeHdizYDROOTop38Ss0x
- 5P5eCZk786NYJBfIW9gg7kEJrziX7uru9DarRB8i+izbnyvEg1GvyRBzbW2F5lwU1QKZ
- cZNxh/jFK/TmDiwYdSJmlSB9Os8RG18BhybOYXm1RBSck424yMliNxsiKrTBAK8Qnwhb
- cmCA==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=qa2sDKUiUC20wAaM6+SQbaSw+0i5rndYlOzgzIF1jc8=;
+ b=dOtNuENRZkrA9wWPs/jsFj35bVO5sHSOFlCytRTPlKjQ45Segep0rVPqhYeN2mmk6O
+ KyT1FyZmKWOFhrmYWqJWlziq55Efs2eD2eQ9ABTf8znNfQUQmTAQZhRnircp29i3lrcb
+ TaeguLjMurOiHfnvfJRvLoUsjv6Gq9e7/IcY3iAqCTfwQ4IsE5No4lXTcF9FzOtgnmN+
+ BDbh4BD8opXCueJhmpQUIkM9mTv1j17IIoo7394US5KaEXSxioAssIJq3nxVp4/99m4N
+ 4PM1h/nUkgiCz7kye0U5EKcOVs0KOAIRdYUoLnOf1s8jUq2W87R+PemDx3/Mep/qqJDo
+ LtmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1758740482; x=1759345282;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vltAWZSqvesV3ZE5+hWwklFe75NLCLedOuJYJPed2R8=;
- b=PiKUJw7JlMYJwKy5lEjG0jr39d9V/NOlGbckynkK7hLA04IM8IX9ZRGatTApDpt6H1
- 8iryvCyvNP4OPhIDlJHJYolAM5PAo7q8cBR/e6IYz5scRch8msBzM4jc9TBdI0IA1RtF
- NAODjpGtCNWSU2okC/zd7VCHhCqOSoXJux+uHk6FSl3cwo5pkJfFoSsECJKoQCXHN09A
- hdp81Zub/aBVejGhX8yyQt8DqxPTrxm6+TW0Ms/sisCwO93g/whc+U7oAezkYb82hJuX
- hvBb6XbBqV5Or9f7RJzyu9JjCHkZEcWZGzDexztymeYLeOF/qw3nVmVbLSfpzCZTsa41
- aCCQ==
-X-Gm-Message-State: AOJu0YwW06yFt2EPOPAWnrL1CQHXDsgr6qtA8fiEQ5UEc/zY12jTGQs+
- /l4tggClYg/SpcX4lzKQSAw+8hQHnNszPPcpRcd0MRJx/QR2OgQUNXnkGV9k9mSr0CfyxyQn5NM
- gY2M3
-X-Gm-Gg: ASbGnctKhDGZvRctYuKX5zipqmEbGBZqpPpC+xAwrtWIsuNuMQQOe3DHnKR0bYl8K+v
- iu4JEQboWrTD3QMw0isqZ9o3Y1w3q0NDoM+UJPLptj/eTrcebmoOCzikv4BZCUwvpvc7zeatGO1
- Uwev584BVUzH2YHDM4vAH2kMwQZl88NW03Y0FqZeAflyprUjo761ae0u7hlqgFTNgN7CpKpbKQh
- iFPK/4LsdPWlI7VxhztPyLvOhagbh5qdrGtdcJN2L934OSZUsASTQOQnayVIQZ01OBeGOXWE6Rj
- c7NIBIM0Zbux1TijGcTcytoeAxaEUuLo818QSqhewQImfhL+PbsNPO+ZP6EzRTYSp6HdE5wpyOh
- Ec/6eCrWpN++E78HMYNUfaT9Truon
-X-Google-Smtp-Source: AGHT+IEXqN87d40gqw1SuokRexTIT2BhOh/CnniN/YmapQOj3QM8LvDaxhgJVYLGTzafwAQ1uxI0ug==
-X-Received: by 2002:a17:90b:4d0a:b0:32e:a54a:be53 with SMTP id
- 98e67ed59e1d1-3342a2608eamr688704a91.16.1758740481810; 
- Wed, 24 Sep 2025 12:01:21 -0700 (PDT)
+ bh=qa2sDKUiUC20wAaM6+SQbaSw+0i5rndYlOzgzIF1jc8=;
+ b=ssfRgXuyJyO1vt5Ujn9CceBgyvDJgXALVsdGmWDT4sK6O8QDFtAHCqsjCSNiWK5J6M
+ bmCebwVuY4QSGZUglMagL0ACHo3gzVcwRzGULYgNS5gq7J0nwR9sMCOKtfSpfpzCtr0h
+ AeVi6b7ubGXNoAwV77+Z7TxcjCwcDRPLSGzcfggoDqA/vl8UJ7hEafEU6WC+7+eP2pBR
+ opZi3Gyqk0Op2AzU96ZpaGoOLzWMjB5vuJIzG49szNY5AqcMWJJbSIDXjDWxLuFocvzl
+ quvA8nCo3emBtrQBBTtRKfdgEvWkW0GJJk3blo7emyJJ7NdUCnJ/9VAPOMjjBI6ZO/7X
+ Kycw==
+X-Gm-Message-State: AOJu0Yy0NoPCj6cXK6HiXoLujeabUbPeB9zsbTFcpkwS0YVyNvn4IJUO
+ 2qYw3wa/nll22L0WOgWmxambtwaKjdwzkNJPUM75tvnzG+u7MelMtm8XmBvzgcIwLUSnfFTBIdn
+ BS5Zh
+X-Gm-Gg: ASbGncu4M0d44jz28JJZRUrS65a840zpNhZZ5QbN5SdlbvbD2tr/uWX6dT5C5en9uAa
+ qvdL3ozfdxVxE4Eviw/7jmMy23vH64QuZtZfodYSh5ULXzW1vvWmvwKRZWqgFxMyXH/whsdOEvb
+ hoG4X9nOXOt7vtoh7vbfi7hRVSJlzD0M/KsbCSalHfxMr3Ht5huc+aX8rC2n3TMLevcmPpRiYiK
+ tsNUncTeuqvEBoBKPuglCoFyhttoXmobMNFQpxD1WybnSlydA21XFKXjFHc2IzqS/tbpGuh8NAW
+ n8Htuj1X2wj3fMSmBPf6mJmfKyj8v8lVS8Kk1nE3D47+gRGkx+svVWe2sw3MYFh8kqwxAMABn1G
+ EMwGfldtEkcwM+xLIJ6FnGKQCcU65
+X-Google-Smtp-Source: AGHT+IFWga0YPa43HWu3lzRfrpX8ucM3rGOA6o9I2YrWLYeUlTEaEyMd9qPyYK0EA1gcDg9m0/nZ0w==
+X-Received: by 2002:a17:902:cf42:b0:267:95ad:8cb8 with SMTP id
+ d9443c01a7336-27ed4a96047mr7033055ad.44.1758740482418; 
+ Wed, 24 Sep 2025 12:01:22 -0700 (PDT)
 Received: from stoup.. ([71.212.157.132]) by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-33439103461sm63221a91.8.2025.09.24.12.01.21
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Sep 2025 12:01:21 -0700 (PDT)
+ Wed, 24 Sep 2025 12:01:22 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?=E6=9D=8E=E5=A8=81=E5=A8=81?= <liweiwei@kubuds.cn>,
- Anton Johansson <anjo@rev.ng>
-Subject: [PULL 19/32] accel/tcg: Properly unlink a TB linked to itself
-Date: Wed, 24 Sep 2025 12:00:52 -0700
-Message-ID: <20250924190106.7089-20-richard.henderson@linaro.org>
+Subject: [PULL 20/32] tests/tcg/multiarch: Add tb-link test
+Date: Wed, 24 Sep 2025 12:00:53 -0700
+Message-ID: <20250924190106.7089-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250924190106.7089-1-richard.henderson@linaro.org>
 References: <20250924190106.7089-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,38 +88,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we remove dest from orig's links, we lose the link
-that we rely on later to reset links.  This can lead to
-failure to release from spinlock with self-modifying code.
-
-Cc: qemu-stable@nongnu.org
-Reported-by: 李威威 <liweiwei@kubuds.cn>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Tested-by: Anton Johansson <anjo@rev.ng>
 ---
- accel/tcg/tb-maint.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tests/tcg/multiarch/tb-link.c       | 67 +++++++++++++++++++++++++++++
+ tests/tcg/multiarch/Makefile.target |  2 +
+ 2 files changed, 69 insertions(+)
+ create mode 100644 tests/tcg/multiarch/tb-link.c
 
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 0048316f99..e6d45c9c12 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -836,6 +836,14 @@ static inline void tb_remove_from_jmp_list(TranslationBlock *orig, int n_orig)
-      * We first acquired the lock, and since the destination pointer matches,
-      * we know for sure that @orig is in the jmp list.
-      */
-+    if (dest == orig) {
-+        /*
-+         * In the case of a TB that links to itself, removing the entry
-+         * from the list means that it won't be present later during
-+         * tb_jmp_unlink -- unlink now.
-+         */
-+        tb_reset_jump(orig, n_orig);
+diff --git a/tests/tcg/multiarch/tb-link.c b/tests/tcg/multiarch/tb-link.c
+new file mode 100644
+index 0000000000..4e40306fa1
+--- /dev/null
++++ b/tests/tcg/multiarch/tb-link.c
+@@ -0,0 +1,67 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Verify that a single TB spin-loop is properly invalidated,
++ * releasing the thread from the spin-loop.
++ */
++
++#include <assert.h>
++#include <sys/mman.h>
++#include <pthread.h>
++#include <stdint.h>
++#include <stdbool.h>
++#include <unistd.h>
++#include <sched.h>
++
++
++#ifdef __x86_64__
++#define READY   0x000047c6      /* movb $0,0(%rdi) */
++#define LOOP    0xfceb9090      /* 1: nop*2; jmp 1b */
++#define RETURN  0x909090c3      /* ret; nop*3 */
++#define NOP     0x90909090      /* nop*4 */
++#elif defined(__aarch64__)
++#define READY   0x3900001f      /* strb wzr,[x0] */
++#define LOOP    0x14000000      /* b . */
++#define RETURN  0xd65f03c0      /* ret */
++#define NOP     0xd503201f      /* nop */
++#elif defined(__riscv)
++#define READY   0x00050023      /* sb zero, (a0) */
++#define LOOP    0x0000006f      /* jal zero, #0 */
++#define RETURN  0x00008067      /* jalr zero, ra, 0 */
++#define NOP     0x00000013      /* nop */
++#endif
++
++
++int main()
++{
++#ifdef READY
++    int tmp;
++    pthread_t thread_id;
++    bool hold = true;
++    uint32_t *buf;
++
++    buf = mmap(NULL, 3 * sizeof(uint32_t),
++               PROT_READ | PROT_WRITE | PROT_EXEC,
++               MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++    assert(buf != MAP_FAILED);
++
++    buf[0] = READY;
++    buf[1] = LOOP;
++    buf[2] = RETURN;
++
++    alarm(2);
++
++    tmp = pthread_create(&thread_id, NULL, (void *(*)(void *))buf, &hold);
++    assert(tmp == 0);
++
++    while (hold) {
++        sched_yield();
 +    }
-     pprev = &dest->jmp_list_head;
-     TB_FOR_EACH_JMP(dest, tb, n) {
-         if (tb == orig && n == n_orig) {
++
++    buf[1] = NOP;
++    __builtin___clear_cache(&buf[1], &buf[2]);
++
++    tmp = pthread_join(thread_id, NULL);
++    assert(tmp == 0);
++#endif
++    return 0;
++}
+diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+index 8dc65d7a06..f5b4d2b813 100644
+--- a/tests/tcg/multiarch/Makefile.target
++++ b/tests/tcg/multiarch/Makefile.target
+@@ -46,6 +46,8 @@ vma-pthread: LDFLAGS+=-pthread
+ sigreturn-sigmask: CFLAGS+=-pthread
+ sigreturn-sigmask: LDFLAGS+=-pthread
+ 
++tb-link: LDFLAGS+=-lpthread
++
+ # GCC versions 12/13/14/15 at least incorrectly complain about
+ # "'SHA1Transform' reading 64 bytes from a region of size 0"; see the gcc bug
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106709
 -- 
 2.43.0
 
