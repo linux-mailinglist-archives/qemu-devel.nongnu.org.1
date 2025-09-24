@@ -2,71 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0B6B99082
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB03B9928A
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 11:32:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1LRN-0007zV-UE; Wed, 24 Sep 2025 05:05:34 -0400
+	id 1v1Lr1-0000n2-Q2; Wed, 24 Sep 2025 05:32:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1v1LRL-0007zM-Kd
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:05:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1v1LRF-0001Xp-UQ
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:05:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758704722;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=1rx9oExJqcQwxeQjrNCXXi25qlxwjO+98xOS1J8+lOk=;
- b=BW/wYW7+RrisFEVjWzHg46LmDxHZtwCOjmuSE71afWnfvN0JXsEPG8h1E8kxm7JlMwvvs1
- QUEt9wed376YaanzsdkRA2HeQP0hG0LpOwBY7anbtxw9TBrl6qnffxce0H1ki4krtUfDZj
- bXj//pW3KeVJktK9OJnDT0eyLJmCdkQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-rlU5vzfVPQaAlnZ8Uk_Ajw-1; Wed,
- 24 Sep 2025 05:05:18 -0400
-X-MC-Unique: rlU5vzfVPQaAlnZ8Uk_Ajw-1
-X-Mimecast-MFC-AGG-ID: rlU5vzfVPQaAlnZ8Uk_Ajw_1758704717
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A47E61800365; Wed, 24 Sep 2025 09:05:17 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.225.13])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C3040300018D; Wed, 24 Sep 2025 09:05:15 +0000 (UTC)
-Date: Wed, 24 Sep 2025 11:05:13 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-block@nongnu.org, hreitz@redhat.com, eblake@redhat.com,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/2] block: Expose block limits for images in QMP
-Message-ID: <aNO0SZalsYn-AYCW@redhat.com>
-References: <20250923163735.378254-1-kwolf@redhat.com>
- <20250923163735.378254-2-kwolf@redhat.com>
- <87o6r05qkf.fsf@pond.sub.org>
+ (Exim 4.90_1)
+ (envelope-from <bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net>)
+ id 1v1Lqw-0000bi-08
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:31:58 -0400
+Received: from m204-227.eu.mailgun.net ([161.38.204.227])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1)
+ (envelope-from <bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net>)
+ id 1v1Lqr-0005K3-F3
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 05:31:56 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=0x65c.net; q=dns/txt;
+ s=email; t=1758706304; x=1758713504; 
+ h=Content-Transfer-Encoding: Content-Type: MIME-Version: References:
+ In-Reply-To: Message-ID: Date: Subject: Subject: Cc: To: To: From: From:
+ Sender: Sender; 
+ bh=9OWBILG/MEb85AU5rnQ0gq6gxxt8z8W8K79L15U28D0=;
+ b=ZgnhAqsqL3oKwglDdP2Vld6vwKwseCqD7/gX+S90DZTENEsTNFBwX8/lFFXRvOOn+0/ov+/9a/jVtf8xsyT9lFK296q+HWyXogyEeNVbDJNU67IR1/yhP+UxmxwdsjYqq9smlJTakHfMM12uM92RPzGsd+YLJuDldZbzYBDZvmsm8lEDXEgDSn+kNvQz1h0+GcaArxvkG5ZmO3Jxwavft4sDR9yhM373OlsqPBOaArVNAm+EA6LB+9TEtYgSeaVLSLekPhpSpj/6sbOVueRRGjPMYQV3yCzMBL7L9DB6ZkxTtZZclCJe1UOgYAcfq4DZjbwpPBJBDN4f3J/1tHd2Ew==
+X-Mailgun-Sid: WyJiNjdhNCIsInFlbXUtZGV2ZWxAbm9uZ251Lm9yZyIsIjU0ZWY0Il0=
+Received: from fedora (pub082136115007.dh-hfc.datazug.ch [82.136.115.7]) by
+ 3410bf604baf3b1186e1b7c3ddb9946731989e4e31ae93aebc8156634f8d87f1 with SMTP id
+ 68d3ba8014c8477b826badd8; Wed, 24 Sep 2025 09:31:44 GMT
+X-Mailgun-Sending-Ip: 161.38.204.227
+From: Alessandro Ratti <alessandro@0x65c.net>
+To: berrange@redhat.com
+Cc: alessandro.ratti@gmail.com, alessandro@0x65c.net, alex.bennee@linaro.org,
+ armbru@redhat.com, mst@redhat.com, qemu-devel@nongnu.org
+Subject: [PATCH v3] virtio: improve virtqueue mapping error messages
+Date: Wed, 24 Sep 2025 11:14:03 +0200
+Message-ID: <20250924093138.559872-1-alessandro@0x65c.net>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <aNLIHOwcGB47qbUY@redhat.com>
+References: <aNLIHOwcGB47qbUY@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87o6r05qkf.fsf@pond.sub.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=161.38.204.227;
+ envelope-from=bounce+db73df.54ef4-qemu-devel=nongnu.org@0x65c.net;
+ helo=m204-227.eu.mailgun.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,157 +71,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 24.09.2025 um 08:10 hat Markus Armbruster geschrieben:
-> Kevin Wolf <kwolf@redhat.com> writes:
-> 
-> > This information can be useful both for debugging and for management
-> > tools trying to configure guest devices with the optimal limits
-> > (possibly across multiple hosts). There is no reason not to make it
-> > available, so just add it to BlockNodeInfo.
+
+On Tue, 23 Sept 2025 at 18:17, Daniel P. Berrangé <berrange@redhat.com> wrote:
+>
+[...]
+> >  hw/virtio/virtio.c | 46 +++++++++++++++++++++++++++++++++++++++++++---
+> >  1 file changed, 43 insertions(+), 3 deletions(-)
 > >
-> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> > ---
-> >  qapi/block-core.json             | 59 ++++++++++++++++++++++++++++++++
-> >  block/qapi.c                     | 34 ++++++++++++++++--
-> >  tests/qemu-iotests/184           |  3 +-
-> >  tests/qemu-iotests/184.out       |  8 -----
-> >  tests/qemu-iotests/common.filter |  3 +-
-> >  5 files changed, 94 insertions(+), 13 deletions(-)
+> > diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+> > index 9a81ad912e..f5adc381a4 100644
+> > --- a/hw/virtio/virtio.c
+> > +++ b/hw/virtio/virtio.c
+> > @@ -235,6 +235,37 @@ static void virtio_virtqueue_reset_region_cache(struct VirtQueue *vq)
+> >      }
+> >  }
 > >
-> > diff --git a/qapi/block-core.json b/qapi/block-core.json
-> > index dc6eb4ae23..eda041ac1c 100644
-> > --- a/qapi/block-core.json
-> > +++ b/qapi/block-core.json
-> > @@ -275,6 +275,62 @@
-> >        'file': 'ImageInfoSpecificFileWrapper'
-> >    } }
-> >  
-> > +##
-> > +# @BlockLimitsInfo:
-> > +#
-> > +# @request-alignment: Alignment requirement, in bytes, for offset/length of I/O
-> > +#     requests.
-> > +#
-> > +# @max-discard: Maximum number of bytes that can be discarded at once. If not
-> > +#     present, there is no specific maximum.
-> > +#
-> > +# @discard-alignment: Optimal alignment for discard requests in bytes. A power
-> > +#     of 2 is best, but not mandatory. If not present, discards don't have a
-> > +#     alignment requirement different from @request-alignment.
-> 
-> What does the second sentence try to convey?  As far as I can tell, QMP
-> has BlockLimitsInfo is only in the result of query-block and
-> query-named-block-nodes, i.e. it's not something the user picks.
+> > +static const char *virtio_get_pretty_dev_name(VirtIODevice *vdev)
+>
+> I'd suggest this be  'const char *qdev_get_printable_name(DeviceState *dev)'
+> and live in  the same header & source files as qdev_get_dev_path.
+>
+> I used 'printable' rather than 'pretty' as I'm not sure I'd claim
+> that qdev_get_dev_path() results can be said to be pretty :-)
 
-I copied these descriptions from the comments in struct BlockLimits,
-just leaving out things that are clearly internal. Their nature is the
-same there, we never configure block limits, we only detect them.
+Thanks for the review and the suggestion.
 
-What I think this sentence wants to tell us is that while you may
-intuitively expect power-of-two limits, you shouldn't be surprised to
-occasionally find other numbers here, too.
+Fair enough :) — I've renamed the helper to qdev_get_printable_name() and moved
+it next to qdev_get_dev_path() in `hw/core/qdev.c`, as you recommended.
 
-Maybe "Note that this doesn't have to be a power of two" instead? Both
-in QAPI and the struct definition.
+[...]
+> > +    /*
+> > +     * Final fallback: if all else fails, return a placeholder string.
+> > +     * This ensures the error message always contains a valid string.
+> > +     */
+> > +    return "<unknow device>";
+>
+> s/unknow/unknown/
+>
 
-> > +#
-> > +# @max-write-zeroes: Maximum number of bytes that can be zeroed out at once. If
-> > +#     not present, there is no specific maximum.
-> > +#
-> > +# @write-zeroes-alignment: Optimal alignment for write_zeroes requests in
-> > +#     bytes. A power of 2 is best, but not mandatory. If not present,
-> > +#     write_zeroes doesn't have a alignment requirement different from
-> > +#     @request-alignment.
-> 
-> Likewise.
-> 
-> > +#
-> > +# @opt-transfer: Optimal transfer length in bytes. If not present, there is no
-> > +#     preferred size.
-> > +#
-> > +# @max-transfer: Maximal transfer length in bytes. If not present, there is no
-> > +#     specific maximum.
-> > +#
-> > +# @max-hw-transfer: Maximal hardware transfer length in bytes.  Applies
-> > +#     whenever transfers to the device bypass the kernel I/O scheduler, for
-> > +#     example with SG_IO. If not present, there is no specific maximum.
-> > +#
-> > +# @max-iov: Maximum number of scatter/gather elements
-> > +#
-> > +# @max-hw-iov: Maximal number of scatter/gather elements allowed by the hardware.
-> 
-> Maximum number
-> 
-> > +#     Applies whenever transfers to the device bypass the kernel I/O scheduler,
-> > +#     for example with SG_IO. If not present, the hardware limits is unknown
-> > +#     and @max-iov is always used.
-> > +#
-> > +# @min-mem-alignment: memory alignment in bytes so that no bounce buffer is needed
-> > +#
-> > +# @opt-mem-alignment: memory alignment in bytes that is used for bounce buffers
-> 
-> Why is this "opt"?  I guess it means "optimal".
+Fixed, thanks for catching that!
 
-Yes, I think so. How about this:
+[...]
+>
+> This part all looks good
 
-@min-mem-alignment: Minimal required memory alignment in bytes for
-zero-copy I/O to succeed. For unaligned requrests, a bounce buffer will
-be used.
+Glad to hear! I've sent out v3 with the changes above. Let me know if you
+have any further thoughts or improvements in mind.
 
-@opt-mem-alignment: Optimal memory alignment in bytes. This is the
-alignment used for any buffer allocations QEMU performs internally.
 
-> > +##
-> > +{ 'struct': 'BlockLimitsInfo',
-> > +  'data': { 'request-alignment': 'uint32',
-> > +            '*max-discard': 'uint64',
-> > +            '*discard-alignment': 'uint32',
-> > +            '*max-write-zeroes': 'uint64',
-> > +            '*write-zeroes-alignment': 'uint32',
-> > +            '*opt-transfer': 'uint32',
-> > +            '*max-transfer': 'uint32',
-> > +            '*max-hw-transfer': 'uint32',
-> > +            'max-iov': 'int',
-> > +            '*max-hw-iov': 'int',
-> > +            'min-mem-alignment': 'size',
-> > +            'opt-mem-alignment': 'size' } }
-> > +
-> >  ##
-> >  # @BlockNodeInfo:
-> >  #
-> > @@ -304,6 +360,8 @@
-> >  #
-> >  # @snapshots: list of VM snapshots
-> >  #
-> > +# @limits: block limits that are used for I/O on the node (Since 10.2)
-> > +#
-> >  # @format-specific: structure supplying additional format-specific
-> >  #     information (since 1.7)
-> >  #
-> > @@ -315,6 +373,7 @@
-> >             '*cluster-size': 'int', '*encrypted': 'bool', '*compressed': 'bool',
-> >             '*backing-filename': 'str', '*full-backing-filename': 'str',
-> >             '*backing-filename-format': 'str', '*snapshots': ['SnapshotInfo'],
-> > +           '*limits': 'BlockLimitsInfo',
-> >             '*format-specific': 'ImageInfoSpecific' } }
-> >  
-> >  ##
-> 
-> docs/devel/qapi-code-gen.rst:
-> 
->     For legibility, wrap text paragraphs so every line is at most 70
->     characters long.
-> 
->     Separate sentences with two spaces.
+Thanks again for your time and helpful reviews.
 
-It would be better to use a uniform text width across the project that
-can be trivially configured in every editor than wasting our brain
-cycles on manually enforcing an idiosyncratic style in certain parts of
-certain files.
+Best regards,
+Alessandro
 
-I'll make the change for this patch, but without tool support, I'm
-almost sure that this will happen again and again.
+---
 
-Kevin
-
+Changes since v2:
+- Renamed helper to qdev_get_printable_name()
+- Moved helper to appropriate source/header location
+- Fixed typo in fallback string
+- Incorporated review feedback from Daniel Barrangé
 
