@@ -2,117 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECF4B99668
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 12:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3CEB9979D
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 12:46:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1MZt-0005SM-Fq; Wed, 24 Sep 2025 06:18:26 -0400
+	id 1v1Mye-00058y-Jc; Wed, 24 Sep 2025 06:44:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v1MZo-0005RR-7v
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 06:18:20 -0400
-Received: from 10.mo552.mail-out.ovh.net ([87.98.187.244])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v1Myd-00058m-64
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 06:43:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1v1MZl-0003cl-7z
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 06:18:19 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.110.58.89])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4cWt8j10s2z5xnc;
- Wed, 24 Sep 2025 10:18:13 +0000 (UTC)
-Received: from kaod.org (37.59.142.110) by DAG8EX2.mxp5.local (172.16.2.72)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.59; Wed, 24 Sep
- 2025 12:18:12 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-110S004dd71ae72-f1f5-4569-865c-b52d18d36ee4,
- FFBB6E977D22EB3F6A0A3CEA11E4CFA931BEF3A6) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <8dadee14-1c58-4122-8bd3-db4aca9fd951@kaod.org>
-Date: Wed, 24 Sep 2025 12:18:11 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1v1MyW-0008SG-Aw
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 06:43:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758710627;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=q0e1wHU5VzOMqpwJCzrLVk1l0oeaYv9MFOEBaJu7UHg=;
+ b=X5bS6JKEfiV0OhnetdgKX7CkvU9Q7irNTJ0DKk6o69jeHP+HFtpYKUpzC97AvTv9mPstQD
+ 92y8quNAvJDFcuXnUNQ/TGOPUDaKpdKD4AeDwTcXgEsAzdxJToRqlq9rAj2pSk+SjzOiYu
+ 42naR+qMh/ZzkqygZHJJUQytFUxpBEQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-HM_9uTkSPq61gmoiMNUvyA-1; Wed,
+ 24 Sep 2025 06:43:43 -0400
+X-MC-Unique: HM_9uTkSPq61gmoiMNUvyA-1
+X-Mimecast-MFC-AGG-ID: HM_9uTkSPq61gmoiMNUvyA_1758710623
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AEBBF180057F; Wed, 24 Sep 2025 10:43:42 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.33])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1DEAA1955F22; Wed, 24 Sep 2025 10:43:42 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4EEF721E6A27; Wed, 24 Sep 2025 12:43:39 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org,  hreitz@redhat.com,  eblake@redhat.com,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/2] block: Expose block limits for images in QMP
+In-Reply-To: <aNO0SZalsYn-AYCW@redhat.com> (Kevin Wolf's message of "Wed, 24
+ Sep 2025 11:05:13 +0200")
+References: <20250923163735.378254-1-kwolf@redhat.com>
+ <20250923163735.378254-2-kwolf@redhat.com>
+ <87o6r05qkf.fsf@pond.sub.org> <aNO0SZalsYn-AYCW@redhat.com>
+Date: Wed, 24 Sep 2025 12:43:39 +0200
+Message-ID: <87a52k2kro.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/7] hw/arm/aspeed_ast27x0-fc: Add VBOOTROM support
-To: Jamin Lin <jamin_lin@aspeedtech.com>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
- Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <troy_lee@aspeedtech.com>
-References: <20250924055602.294857-1-jamin_lin@aspeedtech.com>
- <20250924055602.294857-8-jamin_lin@aspeedtech.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20250924055602.294857-8-jamin_lin@aspeedtech.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.110]
-X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG8EX2.mxp5.local
- (172.16.2.72)
-X-Ovh-Tracer-GUID: 74d08e3b-1933-4ae0-b855-0035033f806b
-X-Ovh-Tracer-Id: 14223775000604478256
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTFQeBHXiaKPjkjjKqyUZ2N6jw1alt3VReKi/zi/9g5o7hv/xzZFsbdfzYPEUdpA1dJVWnNcjV711twQjtGiN31q6MUJ8q4Rw1G3YWu9l8amGjZqjSQVKOuf5VGrkBlVQWvmNhNzaiEQ6yRGP/WW8SwtZLtGRhD005SpzoD3xg0ByTrD1C9Ba6Pj+rmRXGY4Gro15A19a8qILJJGJ2q/B8jxoPlbETnznQiptFadgaQoztW8fWD6sbnG48a4BH1eh6zEswJSm1Lo+y6WxYjYLzZJL1exi4aq2/zxYNkewGGps1w+y0rJ2BXxPxSHwNQrpXuC6U77XP06sR24d+LhuWiDUa3EOAbx7G8LEKyDRPeP9bR0G2kBeMZD+6gCGb0+yt6mWuSBoIThpcNR9Zm8g9mlbDOwh98tDVOzwJSSm2icDTWwA9XUvlx/FeCP+KugZqCrGSuugU1tGcVnu0q9p3CKEFjIaOuFG7eI/9Xbd5eVk9VV4h5ctouJ4GjosHMCAGdXbO+W7FuQAZ+aThBSorcG30PtIKHmzGKG5FVf02JnhOgFrESDv0mvcpajcAK3+FfHc3OZf8EOM4RmQyMkb+55x7HEo3JMdx7GRLHtY8qlSE4rr4vjPEdkkl9Y0H2j4v55Qo/QV9vqSeZ0Zuy65hBegqLxcjGCgkDeeKojnAdOog
-DKIM-Signature: a=rsa-sha256; bh=T7hPPcjccDxB4NSjPMZ1oymxcqo5xlIX2gxuuh7sg6E=; 
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1758709093; v=1;
- b=sXxJGPWsRZ/bzw3lIgmdF+i2oEdMSBD1sij6VeZqFSsooEBhbZNXkHy/h7M2OKaLOVDwXg1r
- NczgfykGZ0hZfAXke+mBBzb/erQwUx2vewXsugDnSuM6RvoHN9ujUqI+V4m7Jg9kqRtcNqlPP8G
- BUKYCv92FdSIRQsWX38touNKNBk361PXQwajulZNUUQfSW5sfLP2UuYERd5DQtOENp9sTSWp05g
- /roHljZAkglrknfsD21xR/i5OK86Djt86hCsaPHF2z+gU3lf1o3zaQSVe1zhE7y/6MDBkkRIf0H
- Idys9WcDHZ8CHVhsYuT4z7hx5IdlSLkUCb7Tufr4oWeJQ==
-Received-SPF: pass client-ip=87.98.187.244; envelope-from=clg@kaod.org;
- helo=10.mo552.mail-out.ovh.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.442,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,45 +85,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/24/25 07:56, Jamin Lin wrote:
-> Introduces support for loading a vbootrom image into the dedicated vbootrom
-> memory region in the AST2700 Full Core machine.
-> 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-> ---
->   hw/arm/aspeed_ast27x0-fc.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/hw/arm/aspeed_ast27x0-fc.c b/hw/arm/aspeed_ast27x0-fc.c
-> index 2e6036b192..b2d963e1fe 100644
-> --- a/hw/arm/aspeed_ast27x0-fc.c
-> +++ b/hw/arm/aspeed_ast27x0-fc.c
-> @@ -62,6 +62,7 @@ static void ast2700fc_ca35_init(MachineState *machine)
->       Ast2700FCState *s = AST2700A1FC(machine);
->       AspeedSoCState *soc;
->       AspeedSoCClass *sc;
-> +    const char *bios_name = NULL;
->       BlockBackend *fmc0 = NULL;
->       DeviceState *dev = NULL;
->       Error **errp = NULL;
-> @@ -133,6 +134,10 @@ static void ast2700fc_ca35_init(MachineState *machine)
->           }
->       }
->   
-> +    /* VBOOTROM */
-> +    bios_name = machine->firmware ?: VBOOTROM_FILE_NAME;
-> +    aspeed_load_vbootrom(soc, bios_name, errp);
-> +
->       arm_load_kernel(ARM_CPU(first_cpu), machine, &ast2700fc_board_info);
->   }
->   
+Kevin Wolf <kwolf@redhat.com> writes:
 
+> Am 24.09.2025 um 08:10 hat Markus Armbruster geschrieben:
+>> Kevin Wolf <kwolf@redhat.com> writes:
+>> 
+>> > This information can be useful both for debugging and for management
+>> > tools trying to configure guest devices with the optimal limits
+>> > (possibly across multiple hosts). There is no reason not to make it
+>> > available, so just add it to BlockNodeInfo.
+>> >
+>> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+>> > ---
+>> >  qapi/block-core.json             | 59 ++++++++++++++++++++++++++++++++
+>> >  block/qapi.c                     | 34 ++++++++++++++++--
+>> >  tests/qemu-iotests/184           |  3 +-
+>> >  tests/qemu-iotests/184.out       |  8 -----
+>> >  tests/qemu-iotests/common.filter |  3 +-
+>> >  5 files changed, 94 insertions(+), 13 deletions(-)
+>> >
+>> > diff --git a/qapi/block-core.json b/qapi/block-core.json
+>> > index dc6eb4ae23..eda041ac1c 100644
+>> > --- a/qapi/block-core.json
+>> > +++ b/qapi/block-core.json
+>> > @@ -275,6 +275,62 @@
+>> >        'file': 'ImageInfoSpecificFileWrapper'
+>> >    } }
+>> >  
+>> > +##
+>> > +# @BlockLimitsInfo:
+>> > +#
+>> > +# @request-alignment: Alignment requirement, in bytes, for offset/length of I/O
+>> > +#     requests.
+>> > +#
+>> > +# @max-discard: Maximum number of bytes that can be discarded at once. If not
+>> > +#     present, there is no specific maximum.
+>> > +#
+>> > +# @discard-alignment: Optimal alignment for discard requests in bytes. A power
+>> > +#     of 2 is best, but not mandatory. If not present, discards don't have a
+>> > +#     alignment requirement different from @request-alignment.
+>> 
+>> What does the second sentence try to convey?  As far as I can tell, QMP
+>> has BlockLimitsInfo is only in the result of query-block and
+>> query-named-block-nodes, i.e. it's not something the user picks.
+>
+> I copied these descriptions from the comments in struct BlockLimits,
+> just leaving out things that are clearly internal. Their nature is the
+> same there, we never configure block limits, we only detect them.
+>
+> What I think this sentence wants to tell us is that while you may
+> intuitively expect power-of-two limits, you shouldn't be surprised to
+> occasionally find other numbers here, too.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Well, I would be surprised, so having the doc mention it makes sense.
 
-Thanks,
+> Maybe "Note that this doesn't have to be a power of two" instead? Both
+> in QAPI and the struct definition.
 
-C.
+Works for me.
 
+>> > +#
+>> > +# @max-write-zeroes: Maximum number of bytes that can be zeroed out at once. If
+>> > +#     not present, there is no specific maximum.
+>> > +#
+>> > +# @write-zeroes-alignment: Optimal alignment for write_zeroes requests in
+>> > +#     bytes. A power of 2 is best, but not mandatory. If not present,
+>> > +#     write_zeroes doesn't have a alignment requirement different from
+>> > +#     @request-alignment.
+>> 
+>> Likewise.
+>> 
+>> > +#
+>> > +# @opt-transfer: Optimal transfer length in bytes. If not present, there is no
+>> > +#     preferred size.
+>> > +#
+>> > +# @max-transfer: Maximal transfer length in bytes. If not present, there is no
+>> > +#     specific maximum.
+>> > +#
+>> > +# @max-hw-transfer: Maximal hardware transfer length in bytes.  Applies
+>> > +#     whenever transfers to the device bypass the kernel I/O scheduler, for
+>> > +#     example with SG_IO. If not present, there is no specific maximum.
+>> > +#
+>> > +# @max-iov: Maximum number of scatter/gather elements
+>> > +#
+>> > +# @max-hw-iov: Maximal number of scatter/gather elements allowed by the hardware.
+>> 
+>> Maximum number
+>> 
+>> > +#     Applies whenever transfers to the device bypass the kernel I/O scheduler,
+>> > +#     for example with SG_IO. If not present, the hardware limits is unknown
+>> > +#     and @max-iov is always used.
+>> > +#
+>> > +# @min-mem-alignment: memory alignment in bytes so that no bounce buffer is needed
+>> > +#
+>> > +# @opt-mem-alignment: memory alignment in bytes that is used for bounce buffers
+>> 
+>> Why is this "opt"?  I guess it means "optimal".
+>
+> Yes, I think so. How about this:
+>
+> @min-mem-alignment: Minimal required memory alignment in bytes for
+> zero-copy I/O to succeed. For unaligned requrests, a bounce buffer will
+
+requests
+
+> be used.
+>
+> @opt-mem-alignment: Optimal memory alignment in bytes. This is the
+> alignment used for any buffer allocations QEMU performs internally.
+
+Good!
+
+[...]
 
 
