@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3658CB98A83
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3302AB98A6E
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:50:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1KFG-0000s1-ES; Wed, 24 Sep 2025 03:48:59 -0400
+	id 1v1KFM-0000tW-4N; Wed, 24 Sep 2025 03:49:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1v1KF7-0000r1-Dr
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:48:50 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1v1KFA-0000rd-QB
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:48:53 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1v1KF4-0007d1-Tz
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:48:49 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-77f343231fcso1498462b3a.3
+ id 1v1KF6-0007dL-5X
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:48:52 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-77f605f22easo1160131b3a.2
  for <qemu-devel@nongnu.org>; Wed, 24 Sep 2025 00:48:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1758700120; x=1759304920; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Bt6FROfWVPEeXPVJk3keuUb3yGmPAjxGB9eCdrJ47Vs=;
- b=bXEyI8jhbdizjvdxEVuXx97LAL8FgSzTbHixTgGZ1MfK+ARLGaqIkjGRNyO3UpvZWS
- /ISHIqtKtkCn+0Edf3GnetCB7zzEMgjsDGSLJLDiWKwhvjTyUdAoESzu2OMfN2K9rU0e
- na1gfiV3qnPbSmCA/yx9lgS9ohe6adjGypKtiSWyLxRxRV6FRJMr6MPcJYPv2EmQWXwB
- bvfpOsUDUDZvKTKzTo07FsL1poUmRWSHpCORWRRnUrTDa1qqUjtdSV7tllB7VdyuJ/6z
- yBjqyon0GNB5BFTn7h+NT3C2pONjvi9PzJjwbz2e71vo77D5jJtf3lgbjQnHhqN5EJPY
- 4vOQ==
+ d=sifive.com; s=google; t=1758700122; x=1759304922; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=KB38NnEtT9B3jB0+dFkrRyRsrLIOQtL/A8YIF8wY9qo=;
+ b=dnb1YioTTi76PUWMtgkpy806ZQ1Ct3eViwO2kUaZ/3cDD88PC7O/TO6swYc0LcEhEH
+ m2XuwBZvCQbTJE2kYpilz6A4E4IeIVEmBwT40ArC8QpbiInCUifLHLl7JUxfjIC8wjiS
+ DvpN2wSZTa4HrpuwiaDbKbxUa9/FRQQQ9azos/CwaOg/NZ5ohrnMwtFNZYysoisi1T/G
+ 1dMdD58Rw+rV9XF4WREs5J/1OkDUJRHvrmvEc7jTvq0q4wQaTpKTKasjvtJDuXTt7410
+ QVXBTZuIR8PxbUuCiTTPMX6qhOrY/I3PIuUX/4tB4MuEYduQR/W8W3VdZ6gZHaSiLR9r
+ fqMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758700120; x=1759304920;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Bt6FROfWVPEeXPVJk3keuUb3yGmPAjxGB9eCdrJ47Vs=;
- b=nyNkakBvPFKF+4wnUev8laH98PGw7dDciKmxon4X765FmTys6SSU0sXDb9fJT8XQnG
- DMj/Q65J2TdzDMy8hKePcPDfk5A1BNnw34yMyAJuNxfBg3jXmfFm8xdW8xbi9dl26bRu
- l6LNfNuAMLDYj//YjEkXp6zJs/A6f1Ugrw/Jg7/FvLSxEf+6+V2sxZCHrFbVT1D11NFB
- p2MO35XArEZk6v43RjFL462CA1Q6JMN/4VFTdgg/+zJkWsxO+eV+/YEBDqrNMzPcMTO2
- NYNWhdDo7dkRJG+RUgEOdI3Vmab7KgVCNPnbezmmd/wvbn1QrYL0MQPFiVBWJBrqpWQR
- 8DMA==
-X-Gm-Message-State: AOJu0YyAZlw6djp2uzpvQkWl8hNMwvl8CfMGfBFqCbtx1NmuOSv9x+xY
- AVo0nSQGyzBeGu4P3K7y0uL3W9EV2h+hBQJ0pelpllD4NwzPTVsFDAAjz3Dtpx5RUAXPplqo5L3
- iIGoqKYrWDAjtBuaAVbF/FQdKkB66DaAKITQ/TtAQ+S4esNGkEEdB+tE6QsC1QuWbChcBWau1en
- b7BSuwHNaUIdqreuHcIxLJ63MMxGZJRgOUVQDCgQ==
-X-Gm-Gg: ASbGncvc5c1257zAHBfTLxRW3v5L2QqaVQGvXvWFESaqbbnQ/VSD/CaYAtlqbF8gZFz
- Sg3zNnYZSPlJy/qxapwBUcSyEkxs2eeMzrkYpVxMLAMc0mO6doRGdtUGvt0iedMQ1cznsPewkzA
- dcc/Pmqw+kDnjtkx5QI14Aj2clPgnBYDU/eMl2MEX27wk3un7eH8S/A90TzAnGC2iVW14HFPxTU
- VVr5gW+y0Z4dCpUweH/gRTnVUka5ncutewQ+u9rD2trQF2tRAAeZn1MP4oT/moWmcAtnh8O+CNE
- PUJda8sUnY8O+NrwjDKvqur0tTZ14antZKQBvPrt+qCUMsz9ggkyOZbC2npfEJCbOuecO19R633
- xzDtBk8knF1R6eqAIWZMv6pYXudnZapxHbZWG72jxbN4p
-X-Google-Smtp-Source: AGHT+IElm6viL79BKQVSbOUsKh70z86hI/2kfhje80Chyz3P+lsg2VqTQnGhXh76LFfc1fkQZJWx1w==
-X-Received: by 2002:a05:6a20:3d08:b0:2ca:1b5:9d4d with SMTP id
- adf61e73a8af0-2cfd4836d5cmr7731771637.2.1758700119682; 
- Wed, 24 Sep 2025 00:48:39 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1758700122; x=1759304922;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=KB38NnEtT9B3jB0+dFkrRyRsrLIOQtL/A8YIF8wY9qo=;
+ b=HmLOd75hWcbK1WPQUgeS7w94UELmx7YB1LyHygpX/zxl5rB/pIVhqZRUo3BsvrWJln
+ EwkuzXFeg8i600o8/BpCpv7nDFbU0+S4+F8FLfAdWXN3f0xAkbLlTJ4Vrnf4kCke1dIJ
+ i4v6m9Ri5FfeOGyCrpG6nLz8Jz7WaKbsejc6mpae60pDrGAkxo3T5r4YAj3icNAbt+qB
+ PHaBOI39PpSvuskzSSnmSmWbLtXSH00PTqBP/Eai2bgjNu3x7ao15swcofBqap9+gQE4
+ GWPsMRsvnTnOXpgozARP+IceGIbYLqQA276nDW2P91ipR1rPL2Xt4TnyVFfNfa7GZLge
+ 8npA==
+X-Gm-Message-State: AOJu0YwfGPQ4q/rmvK4yTbSFaQFvmkqH4O0qP8PeIMwCVZMzPi5psoxQ
+ xIz5xrh6NGAbCbY0DzW/d7PMVYqxZNaaPy7qFAG04vsL5nhf9tCbNYNocemlBAcEjCr6uFI5v5Y
+ +6HNrCVX43OgjjOp/qRUKMgbEid69u2pCiA/bvxtB3ccDc053G4+IdewpEaPnBEOW58KyQFlpZ5
+ J5G5HXUZ4TQOabMj1nuSGYXWHDyS9DnD1c7CskTg==
+X-Gm-Gg: ASbGncsqDQRmkIbCHqSWW47t+tsFzf6KkAZMvwG5XQ0dlPeqDDFMJxqO41qakeY5VTz
+ 2ajvyUO/pKFfN8HF7Uj9pPMWy+S3Fz0O29VplySonfoaYj2IyfMwFYmsv57+DEWwlYrz5l5JmmF
+ GSSJcUTQwgnwDqmcsGYwUy4Q+M0KHwc5d+ITWWmjtaqRCM2djo4RUwYOlE9P4kLX2+YAUaZljSE
+ 6lVH6ORYzgqH5YzebROgEX0IMzLTxCcKUXhXsdbDKDrnU8g+VrVyr67n8eUAkdZZFKNb8eFt204
+ diOUawveJjLbFAfzqxg4banEXPduM2c1wBRS4YDrOC49tDWpfg/taP0MhCW9QY/ktnU4ItDztXL
+ lqbfUPhtmvRGzFbfIjbMSICFRuzBp1HKU2rw4g/sgEzpmZ/W4oWDPaeY=
+X-Google-Smtp-Source: AGHT+IFXI3WzGp2hjeRy8sgxLFhWiU3qxsCqDdU6XJvdOsip9rH89UUsmInCapi4Lhmh805ImBC34Q==
+X-Received: by 2002:a05:6a20:6a22:b0:2bd:2798:7ae7 with SMTP id
+ adf61e73a8af0-2cfe9410fe3mr8110708637.31.1758700122014; 
+ Wed, 24 Sep 2025 00:48:42 -0700 (PDT)
 Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b5541f0374csm8778502a12.49.2025.09.24.00.48.37
+ 41be03b00d2f7-b5541f0374csm8778502a12.49.2025.09.24.00.48.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Sep 2025 00:48:39 -0700 (PDT)
+ Wed, 24 Sep 2025 00:48:41 -0700 (PDT)
 From: Jim Shu <jim.shu@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -71,20 +72,22 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH v1 0/3] Minor fixes of RISC-V CFI
-Date: Wed, 24 Sep 2025 15:48:15 +0800
-Message-ID: <20250924074818.230010-1-jim.shu@sifive.com>
+Subject: [PATCH v1 1/3] target/riscv: Fix the mepc when sspopchk triggers the
+ exception
+Date: Wed, 24 Sep 2025 15:48:16 +0800
+Message-ID: <20250924074818.230010-2-jim.shu@sifive.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250924074818.230010-1-jim.shu@sifive.com>
+References: <20250924074818.230010-1-jim.shu@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=jim.shu@sifive.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=jim.shu@sifive.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,21 +104,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch series contains several CFI fixes:
-  (1) Fix the mepc in the exception from sspopchk instruction
-  (2) Fix the exception type from SSP CSR and ssamoswap instruction
+When sspopchk is in the middle of TB and triggers the SW check
+exception, it should update PC from gen_update_pc(). If not, RISC-V mepc
+CSR will get wrong PC address which is still at the start of TB.
 
-Jim Shu (3):
-  target/riscv: Fix the mepc when sspopchk triggers the exception
-  target/riscv: Fix SSP CSR error handling in VU/VS mode
-  target/riscv: Fix ssamoswap error handling
+Signed-off-by: Jim Shu <jim.shu@sifive.com>
+---
+ target/riscv/insn_trans/trans_rvzicfiss.c.inc | 1 +
+ 1 file changed, 1 insertion(+)
 
- target/riscv/csr.c                            |  2 +
- target/riscv/helper.h                         |  5 ++
- target/riscv/insn_trans/trans_rvzicfiss.c.inc |  9 ++++
- target/riscv/op_helper.c                      | 49 +++++++++++++++++++
- 4 files changed, 65 insertions(+)
-
+diff --git a/target/riscv/insn_trans/trans_rvzicfiss.c.inc b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
+index b0096adcd0..45686af4d6 100644
+--- a/target/riscv/insn_trans/trans_rvzicfiss.c.inc
++++ b/target/riscv/insn_trans/trans_rvzicfiss.c.inc
+@@ -40,6 +40,7 @@ static bool trans_sspopchk(DisasContext *ctx, arg_sspopchk *a)
+     tcg_gen_brcond_tl(TCG_COND_EQ, data, rs1, skip);
+     tcg_gen_st_tl(tcg_constant_tl(RISCV_EXCP_SW_CHECK_BCFI_TVAL),
+                   tcg_env, offsetof(CPURISCVState, sw_check_code));
++    gen_update_pc(ctx, 0);
+     gen_helper_raise_exception(tcg_env,
+                   tcg_constant_i32(RISCV_EXCP_SW_CHECK));
+     gen_set_label(skip);
 -- 
 2.43.0
 
