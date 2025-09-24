@@ -2,68 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8A6B9A0BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 15:34:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC90BB9A0D0
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 15:36:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Pcl-0004A3-Qb; Wed, 24 Sep 2025 09:33:35 -0400
+	id 1v1Pf2-0006Dv-Uz; Wed, 24 Sep 2025 09:35:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v1Pce-00049H-TA
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 09:33:31 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v1Pey-0006Bk-4I
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 09:35:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1v1PcT-00047a-Vt
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 09:33:28 -0400
-Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 4F62EC1025;
- Wed, 24 Sep 2025 16:33:13 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6bf:8080:b6c::1:2c])
- by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id AXYn2X0FqeA0-DZShcip8; Wed, 24 Sep 2025 16:33:12 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1758720792;
- bh=sdrF5tdB3xjrPNa6ut8UxL36Gu5ZirU/pnueFYWYoUY=;
- h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=zxtfxEJnoO6u5HsNcIdRfmoq33JmdrLXr8DFm2FKcFAidj/hNCSznyJqPDNtvNFNW
- 7nRc7Pm8Kco3baTgSv5je9kF9NRjdFbWOXYcitzarzoFdQ9oya5yXpKJF5yvAh+a42
- qy9m2gHxBcUOFKjfpBpGPFdOwOSvKq6KHeopgOrE=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: armbru@redhat.com
-Cc: qemu-devel@nongnu.org, eblake@redhat.com, jasowang@redhat.com,
- devel@lists.libvirt.org, pbonzini@redhat.com, marcandre.lureau@redhat.com,
- yc-core@yandex-team.ru, vsementsov@yandex-team.ru,
- d-tatianin@yandex-team.ru
-Subject: [PATCH v2 2/2] net/stream: remove deprecated 'reconnect' option
-Date: Wed, 24 Sep 2025 16:33:09 +0300
-Message-ID: <20250924133309.334631-3-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250924133309.334631-1-vsementsov@yandex-team.ru>
-References: <20250924133309.334631-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1v1Pes-0004jL-LR
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 09:35:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1758720941;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Bag7Ptn4J5Y/1DWF7VKOZgfEh15GMqlPJfGBL0E4bLw=;
+ b=E0quDb9+ayB/aIiXAlNK+b3upOBenI5Teiw9ICCT7hSqLziKRPOrap26eu2C53KEuNMhO3
+ rzz9204aZvtQCOPgfbkma4bcCuD1gNDqlNYXxOFwR//K4A9XzbN+IHcmQSqoxluJGQz6Eu
+ mou9iIqDiG6Nv9lcfJVe6EL/vdvZPYs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-412-8LYYRJ2xObq8va08EsbTiA-1; Wed,
+ 24 Sep 2025 09:35:36 -0400
+X-MC-Unique: 8LYYRJ2xObq8va08EsbTiA-1
+X-Mimecast-MFC-AGG-ID: 8LYYRJ2xObq8va08EsbTiA_1758720934
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B844718002C0; Wed, 24 Sep 2025 13:35:33 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.136])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6D7153000198; Wed, 24 Sep 2025 13:35:27 +0000 (UTC)
+Date: Wed, 24 Sep 2025 14:35:24 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Kyle Evans <kevans@freebsd.org>, Yonggang Luo <luoyonggang@gmail.com>,
+ Li-Wen Hsu <lwhsu@freebsd.org>, Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Warner Losh <imp@bsdimp.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Ed Maste <emaste@freebsd.org>, devel@lists.libvirt.org,
+ qemu-rust@nongnu.org,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Subject: Re: [PATCH v2 11/27] build-sys: cfi_debug and safe_stack are not
+ compatible
+Message-ID: <aNPznNG2e5x94Xts@redhat.com>
+References: <20250924120426.2158655-1-marcandre.lureau@redhat.com>
+ <20250924120426.2158655-12-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+In-Reply-To: <20250924120426.2158655-12-marcandre.lureau@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -72,127 +94,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It was deprecated in 9.2, time to remove.
+On Wed, Sep 24, 2025 at 04:04:08PM +0400, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> It fails to link on fedora >= 41:
+> /usr/bin/ld: /usr/bin/../lib/clang/20/lib/x86_64-redhat-linux-gnu/libclang_rt.safestack.a(safestack.cpp.o): in function `__sanitizer_internal_memcpy':
+> (.text.__sanitizer_internal_memcpy+0x0): multiple definition of `__sanitizer_internal_memcpy'; /usr/bin/../lib/clang/20/lib/x86_64-redhat-linux-gnu/libclang_rt.ubsan_standalone.a(sanitizer_libc.cpp.o):(.text.__sanitizer_internal_memcpy+0x0): first defined here
+> /usr/bin/ld: /usr/bin/../lib/clang/20/lib/x86_64-redhat-linux-gnu/libclang_rt.safestack.a(safestack.cpp.o): in function `__sanitizer_internal_memmove':
+> (.text.__sanitizer_internal_memmove+0x0): multiple definition of `__sanitizer_internal_memmove'; /usr/bin/../lib/clang/20/lib/x86_64-redhat-linux-gnu/libclang_rt.ubsan_standalone.a(sanitizer_libc.cpp.o):(.text.__sanitizer_internal_memmove+0x0): first defined here
+> /usr/bin/ld: /usr/bin/../lib/clang/20/lib/x86_64-redhat-linux-gnu/libclang_rt.safestack.a(safestack.cpp.o): in function `__sanitizer_internal_memset':
+> (.text.__sanitizer_internal_memset+0x0): multiple definition of `__sanitizer_internal_memset'; /usr/bin/../lib/clang/20/lib/x86_64-redhat-linux-gnu/libclang_rt.ubsan_standalone.a(sanitizer_libc.cpp.o):(.text.__sanitizer_internal_memset+0x0): first defined here
+> 
+> cfi_debug seems to pull ubsan which has conflicting symbols with safe_stack.
+> 
+> See also: https://bugzilla.redhat.com/show_bug.cgi?id=2397265
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>  meson.build                | 3 +++
+>  .gitlab-ci.d/buildtest.yml | 6 +++---
+>  2 files changed, 6 insertions(+), 3 deletions(-)
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- docs/about/deprecated.rst       |  9 ---------
- docs/about/removed-features.rst | 10 ++++++++++
- net/stream.c                    | 20 +++++---------------
- qapi/net.json                   | 13 +------------
- 4 files changed, 16 insertions(+), 36 deletions(-)
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index ba0be97513..4452c08bf5 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -439,15 +439,6 @@ Backend ``memory`` (since 9.0)
- ``memory`` is a deprecated synonym for ``ringbuf``.
- 
- 
--Net device options
--''''''''''''''''''
--
--Stream ``reconnect`` (since 9.2)
--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
--
--The ``reconnect`` option only allows specifying second granularity timeouts,
--which is not enough for all types of use cases, use ``reconnect-ms`` instead.
--
- CPU device properties
- '''''''''''''''''''''
- 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index d67928956a..ae7d7287fc 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -1373,4 +1373,14 @@ Character device options
- The ``reconnect`` has been replaced by ``reconnect-ms``, which provides
- better precision.
- 
-+Net device options
-+''''''''''''''''''
-+
-+Stream ``reconnect`` (removed in 10.2)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+The ``reconnect`` has been replaced by ``reconnect-ms``, which provides
-+better precision.
-+
-+
- .. _Intel discontinuance notification: https://www.intel.com/content/www/us/en/content-details/781327/intel-is-discontinuing-ip-ordering-codes-listed-in-pdn2312-for-nios-ii-ip.html
-diff --git a/net/stream.c b/net/stream.c
-index 94f823a2a7..ea83f4a763 100644
---- a/net/stream.c
-+++ b/net/stream.c
-@@ -274,23 +274,13 @@ int net_init_stream(const Netdev *netdev, const char *name,
-     sock = &netdev->u.stream;
- 
-     if (!sock->has_server || !sock->server) {
--        uint32_t reconnect_ms = 0;
--
--        if (sock->has_reconnect && sock->has_reconnect_ms) {
--            error_setg(errp, "'reconnect' and 'reconnect-ms' are mutually "
--                             "exclusive");
--            return -1;
--        } else if (sock->has_reconnect_ms) {
--            reconnect_ms = sock->reconnect_ms;
--        } else if (sock->has_reconnect) {
--            reconnect_ms = sock->reconnect * 1000u;
--        }
--
-         return net_stream_client_init(peer, "stream", name, sock->addr,
--                                      reconnect_ms, errp);
-+                                      sock->has_reconnect_ms ?
-+                                          sock->reconnect_ms : 0,
-+                                      errp);
-     }
--    if (sock->has_reconnect || sock->has_reconnect_ms) {
--        error_setg(errp, "'reconnect' and 'reconnect-ms' options are "
-+    if (sock->has_reconnect_ms) {
-+        error_setg(errp, "'reconnect-ms' option is "
-                          "incompatible with socket in server mode");
-         return -1;
-     }
-diff --git a/qapi/net.json b/qapi/net.json
-index 78bcc9871e..642d4d03cd 100644
---- a/qapi/net.json
-+++ b/qapi/net.json
-@@ -770,29 +770,18 @@
- #
- # @server: create server socket (default: false)
- #
--# @reconnect: For a client socket, if a socket is disconnected, then
--#     attempt a reconnect after the given number of seconds.  Setting
--#     this to zero disables this function.  (default: 0) (since 8.0)
--#
- # @reconnect-ms: For a client socket, if a socket is disconnected, then
- #     attempt a reconnect after the given number of milliseconds.  Setting
--#     this to zero disables this function.  This member is mutually
--#     exclusive with @reconnect.  (default: 0) (Since: 9.2)
-+#     this to zero disables this function.  (default: 0) (Since: 9.2)
- #
- # Only `SocketAddress` types 'unix', 'inet' and 'fd' are supported.
- #
--# Features:
--#
--# @deprecated: Member @reconnect is deprecated.  Use @reconnect-ms
--#     instead.
--#
- # Since: 7.2
- ##
- { 'struct': 'NetdevStreamOptions',
-   'data': {
-     'addr':   'SocketAddress',
-     '*server': 'bool',
--    '*reconnect': { 'type': 'int', 'features': [ 'deprecated' ] },
-     '*reconnect-ms': 'int' } }
- 
- ##
+
+With regards,
+Daniel
 -- 
-2.48.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
