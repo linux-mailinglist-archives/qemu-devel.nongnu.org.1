@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC954B99C7A
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 14:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE216B99C2B
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 14:07:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1OFr-00010t-2P; Wed, 24 Sep 2025 08:05:51 -0400
+	id 1v1OFp-000105-Uy; Wed, 24 Sep 2025 08:05:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v1OFZ-0000x8-7g
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:05:34 -0400
+ id 1v1OFd-0000xX-6p
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:05:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1v1OFR-0005yw-IK
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:05:32 -0400
+ id 1v1OFT-0005zL-1Z
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 08:05:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758715517;
+ s=mimecast20190719; t=1758715522;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qiUxbehf/Kb4+6E+H4lgZaMJv9lZE8sTm0XcJ0f7HgY=;
- b=TFlEVMrcakZ16AD2dOKUjQ9b+DBTBSp7WDji1ClYUzcDj/onIJVpNoPPgiv1yOWEwv2/f4
- AG75W2sMkTqti1CUcuIl8xEi4tBeeXKdvpuNo0G1wiPZ14bNZC4rDxgFSHhRwHs8JuFo5z
- G2EKa9CwvRSUu1kHqm4bQb1YwzervYk=
+ bh=na1b6KQeTEWl4nKxegQ8eSjCGcF2ci5XyCoad6ADEnQ=;
+ b=Fhm39ZvNOkn915JyNK42fgSptUyQytHirIcAp3vz82h4T8vHYOCYOFYmP5dbLZGhFyyXJA
+ imNfPzI4xTeVkihaNh0b4hMkcqdPsLdnz36kXPCd12FLSnYa2VE4naIqyAeigubTjQXQHU
+ omGXt22xUc3gCa7RDHORdd08d45EOVI=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-296-sJkt2jWaMge2BkiE6yt75g-1; Wed,
- 24 Sep 2025 08:05:13 -0400
-X-MC-Unique: sJkt2jWaMge2BkiE6yt75g-1
-X-Mimecast-MFC-AGG-ID: sJkt2jWaMge2BkiE6yt75g_1758715511
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-422-bUG_0GnWOnSClrHC8gIcGA-1; Wed,
+ 24 Sep 2025 08:05:20 -0400
+X-MC-Unique: bUG_0GnWOnSClrHC8gIcGA-1
+X-Mimecast-MFC-AGG-ID: bUG_0GnWOnSClrHC8gIcGA_1758715518
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 83BB81800295; Wed, 24 Sep 2025 12:05:11 +0000 (UTC)
+ id B265D1800293; Wed, 24 Sep 2025 12:05:18 +0000 (UTC)
 Received: from localhost (unknown [10.44.22.38])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 050FF1800578; Wed, 24 Sep 2025 12:05:09 +0000 (UTC)
+ id 00075180035E; Wed, 24 Sep 2025 12:05:16 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Kyle Evans <kevans@freebsd.org>,
@@ -59,9 +59,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Kyle Evans <kevans@freebsd.org>,
  devel@lists.libvirt.org, qemu-rust@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Subject: [PATCH v2 05/27] scripts/archive-source: use a bash array
-Date: Wed, 24 Sep 2025 16:04:02 +0400
-Message-ID: <20250924120426.2158655-6-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 06/27] configure: fix rust meson configuration
+Date: Wed, 24 Sep 2025 16:04:03 +0400
+Message-ID: <20250924120426.2158655-7-marcandre.lureau@redhat.com>
 In-Reply-To: <20250924120426.2158655-1-marcandre.lureau@redhat.com>
 References: <20250924120426.2158655-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -76,9 +76,9 @@ X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.444,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,61 +96,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- scripts/archive-source.sh | 30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+It was incorrectly set on the [host_machine] and caused error:
+File "/tmp/qemu-test/build/pyvenv/lib/python3.11/site-packages/mesonbuild/envconfig.py", line 281, in from_literal
+    assert all(isinstance(v, str) for v in raw.values()), 'for mypy'
+AssertionError: for mypy
 
-diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
-index 68eb9672de..f55130ec34 100755
---- a/scripts/archive-source.sh
-+++ b/scripts/archive-source.sh
-@@ -26,12 +26,26 @@ sub_file="${sub_tdir}/submodule.tar"
- # independent of what the developer currently has initialized
- # in their checkout, because the build environment is completely
- # different to the host OS.
--subprojects="keycodemapdb libvfio-user berkeley-softfloat-3
--  berkeley-testfloat-3 anyhow-1-rs arbitrary-int-1-rs bilge-0.2-rs
--  bilge-impl-0.2-rs either-1-rs foreign-0.3-rs itertools-0.11-rs
--  libc-0.2-rs proc-macro2-1-rs
--  proc-macro-error-1-rs proc-macro-error-attr-1-rs quote-1-rs
--  syn-2-rs unicode-ident-1-rs"
-+subprojects=(
-+  anyhow-1-rs
-+  arbitrary-int-1-rs
-+  berkeley-softfloat-3
-+  berkeley-testfloat-3
-+  bilge-0.2-rs
-+  bilge-impl-0.2-rs
-+  either-1-rs
-+  foreign-0.3-rs
-+  itertools-0.11-rs
-+  keycodemapdb
-+  libc-0.2-rs
-+  libvfio-user
-+  proc-macro-error-1-rs
-+  proc-macro-error-attr-1-rs
-+  proc-macro2-1-rs
-+  quote-1-rs
-+  syn-2-rs
-+  unicode-ident-1-rs
-+)
- sub_deinit=""
- 
- function cleanup() {
-@@ -77,10 +91,10 @@ function subproject_dir() {
- git archive --format tar "$(tree_ish)" > "$tar_file"
- test $? -ne 0 && error "failed to archive qemu"
- 
--meson subprojects download $subprojects >/dev/null
-+meson subprojects download ${subprojects[@]} >/dev/null
- test $? -ne 0 && error "failed to download subprojects $subprojects"
- 
--for sp in $subprojects; do
-+for sp in "${subprojects[@]}"; do
-     tar --append --file "$tar_file" --exclude=.git subprojects/"$(subproject_dir $sp)"
-     test $? -ne 0 && error "failed to append subproject $sp to $tar_file"
- done
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure b/configure
+index 0f7eb95586..66613f3f4c 100755
+--- a/configure
++++ b/configure
+@@ -1958,7 +1958,7 @@ if test "$skip_meson" = no; then
+     echo "[binaries]" >> $native
+     echo "c = [$(meson_quote $host_cc)]" >> $native
+     if test "$rust" != disabled; then
+-      echo "rust = [$(meson_quote $rustc)]" >> $cross
++      echo "rust = [$(meson_quote $rustc)]" >> $native
+     fi
+     mv $native config-meson.native
+     meson_option_add --native-file
 -- 
 2.51.0
 
