@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E39FB9881C
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D4BB987E6
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Sep 2025 09:22:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1Jn7-0005Sa-PJ; Wed, 24 Sep 2025 03:19:54 -0400
+	id 1v1Jn1-0005PH-TJ; Wed, 24 Sep 2025 03:19:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jn3-0005RV-2b
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:19:49 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jmy-0005O8-6q
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:19:44 -0400
 Received: from rev.ng ([94.130.142.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jmq-0003Nz-Lr
- for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:19:48 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1v1Jmq-0003O5-WE
+ for qemu-devel@nongnu.org; Wed, 24 Sep 2025 03:19:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=tIUjEoxmD+L3v5TUv5lmknEUjE1dS8nrXtJKYtFhI0M=; b=G/FRv/dNNOrxu9I
- WUwmliUrglHH/LdvdYh9ayDDc9rgqUXMaeE7wLEKbiVM6YOVEzg7cDW9laEmfagYBFbBOlrHeCgTL
- fJHjb1SzX8zXs2gIQwH0tUVosT0SAOGO3KSAB2AJX49IBfYytXydQKnRYHJcptLtSmcoYGZvlPLGe
- K0=;
+ List-Help; bh=XM/Bwlfn1Sl226Bvx3vx+HDk47D8PqIg+tFiODBQbEA=; b=qWfrERk1wZVM4Vp
+ fdW5MZdYgUq1ES230Gqqsa/Q320qEAmALmwa++hRPro/ITm9YsN5IYNi8d5EwjANQwDUR8tkrCzPT
+ dBCqIH5pDkZzzsWm3sKQccoOJURfkbLJJkM9WqvFOpgz38LxTxHl3KwAqyg6h2W120sNZ55W24l8p
+ PU=;
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, philmd@linaro.org, alistair.francis@wdc.com,
  palmer@dabbelt.com
-Subject: [RFC PATCH 03/34] target/riscv: Fix size of mcause
-Date: Wed, 24 Sep 2025 09:20:53 +0200
-Message-ID: <20250924072124.6493-4-anjo@rev.ng>
+Subject: [RFC PATCH 04/34] target/riscv: Fix size of mhartid
+Date: Wed, 24 Sep 2025 09:20:54 +0200
+Message-ID: <20250924072124.6493-5-anjo@rev.ng>
 In-Reply-To: <20250924072124.6493-1-anjo@rev.ng>
 References: <20250924072124.6493-1-anjo@rev.ng>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
  helo=rev.ng
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,40 +62,68 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-and update formatting in logs.
+and update formatting in log.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- target/riscv/cpu.h     | 2 +-
- target/riscv/machine.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ target/riscv/cpu.h         | 2 +-
+ target/riscv/cpu_helper.c  | 2 +-
+ target/riscv/machine.c     | 2 +-
+ target/riscv/tcg/tcg-cpu.c | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 8c8d34f3ac..32e30a36ac 100644
+index 32e30a36ac..f94f773a84 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -323,7 +323,7 @@ struct CPUArchState {
+@@ -279,7 +279,7 @@ struct CPUArchState {
+     target_ulong geilen;
+     uint64_t resetvec;
  
-     uint64_t mtvec;
-     uint64_t mepc;
--    target_ulong mcause;
-+    uint64_t mcause;
-     uint64_t mtval;  /* since: priv-1.10.0 */
+-    target_ulong mhartid;
++    uint64_t mhartid;
+     /*
+      * For RV32 this is 32-bit mstatus and 32-bit mstatush.
+      * For RV64 this is a 64-bit mstatus.
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 3479a62cc7..9d0683f200 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -2278,7 +2278,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+                      riscv_cpu_get_trap_name(cause, async));
  
-     uint64_t mctrctl;
+     qemu_log_mask(CPU_LOG_INT,
+-                  "%s: hart:"TARGET_FMT_ld", async:%d, cause:"TARGET_FMT_lx", "
++                  "%s: hart:%"PRIu64", async:%d, cause:"TARGET_FMT_lx", "
+                   "epc:0x"TARGET_FMT_lx", tval:0x"TARGET_FMT_lx", desc=%s\n",
+                   __func__, env->mhartid, async, cause, env->pc, tval,
+                   riscv_cpu_get_trap_name(cause, async));
 diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index f42be027e3..438c44dbb0 100644
+index 438c44dbb0..32cc94858d 100644
 --- a/target/riscv/machine.c
 +++ b/target/riscv/machine.c
-@@ -442,7 +442,7 @@ const VMStateDescription vmstate_riscv_cpu = {
-         VMSTATE_UINT64(env.scause, RISCVCPU),
-         VMSTATE_UINT64(env.mtvec, RISCVCPU),
-         VMSTATE_UINT64(env.mepc, RISCVCPU),
--        VMSTATE_UINTTL(env.mcause, RISCVCPU),
-+        VMSTATE_UINT64(env.mcause, RISCVCPU),
-         VMSTATE_UINT64(env.mtval, RISCVCPU),
-         VMSTATE_UINTTL(env.miselect, RISCVCPU),
-         VMSTATE_UINTTL(env.siselect, RISCVCPU),
+@@ -425,7 +425,7 @@ const VMStateDescription vmstate_riscv_cpu = {
+         VMSTATE_UINTTL(env.priv, RISCVCPU),
+         VMSTATE_BOOL(env.virt_enabled, RISCVCPU),
+         VMSTATE_UINT64(env.resetvec, RISCVCPU),
+-        VMSTATE_UINTTL(env.mhartid, RISCVCPU),
++        VMSTATE_UINT64(env.mhartid, RISCVCPU),
+         VMSTATE_UINT64(env.mstatus, RISCVCPU),
+         VMSTATE_UINT64(env.mip, RISCVCPU),
+         VMSTATE_UINT64(env.miclaim, RISCVCPU),
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 78fb279184..f90abbc594 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -471,7 +471,7 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+                 continue;
+             }
+ #ifndef CONFIG_USER_ONLY
+-            warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
++            warn_report("disabling %s extension for hart 0x%" PRIx64
+                         " because privilege spec version does not match",
+                         edata->name, env->mhartid);
+ #else
 -- 
 2.51.0
 
