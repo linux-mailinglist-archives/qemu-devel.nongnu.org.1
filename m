@@ -2,92 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD328BA1564
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 22:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D8BBA1570
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Sep 2025 22:21:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1v1sOZ-0002gP-Ut; Thu, 25 Sep 2025 16:16:52 -0400
+	id 1v1sRU-0004F2-Sn; Thu, 25 Sep 2025 16:19:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v1sO8-0002Y7-Mt
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 16:16:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
+ id 1v1sQr-0003pr-VG; Thu, 25 Sep 2025 16:19:14 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1v1sO0-00064h-9Y
- for qemu-devel@nongnu.org; Thu, 25 Sep 2025 16:16:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1758831366;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=0NZWcxr2QhIo68KFqDly9zHtTMtop+9FSb8bMswxvic=;
- b=VS0r5Xs42sMPToq7wliT+cUG+cgojlUQI1VIN6D6Hi5A2x0q2NTTPXnRA/IF9seat8x7ca
- mwseIGT63Umzfc0otnWtvEN1SJZwJ867TOmkLn6NFFB33bZr0FAlfAdH9PnJH8GnCy/qAT
- u+jyTOC/0KgPO+G6auNFekgDv+0+9kc=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-8SnZyTGuMQ-p-gFJOtQ-gQ-1; Thu, 25 Sep 2025 16:16:05 -0400
-X-MC-Unique: 8SnZyTGuMQ-p-gFJOtQ-gQ-1
-X-Mimecast-MFC-AGG-ID: 8SnZyTGuMQ-p-gFJOtQ-gQ_1758831365
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-4b5ee6cd9a3so33008291cf.2
- for <qemu-devel@nongnu.org>; Thu, 25 Sep 2025 13:16:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1758831364; x=1759436164;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0NZWcxr2QhIo68KFqDly9zHtTMtop+9FSb8bMswxvic=;
- b=Liy2pmtiScxQGj6hyubGbrGhhC6AoZ+ROqfI3ZK0AS/HKqv5/Wz/o/RRmuPM7bAU68
- OCTQ93sTlYYNFNjKC4u2F2VG9nPmBJBPKhCdRtTmAL+34gv3bcUaXl38ZIggpEZ8Ef7K
- wEAn9lQ75DHkvGB4SDV2FpSxBO0tdRzGY83ji0/GSyJSCmgrNEUx9FemOwlqNK76JD37
- WtJ53+uWFaE7iJs5skIffsbbXIxZaPNJ4IS+eRbYrwTO8KeLmcj0EAlgnPC7ZS6e/Qx3
- 8WoJhSkP75S6tTS9XfwsqMnTeA5QrsAiwxYexupTDHXOyxARHzp2qRjVHRYfQbihbz1L
- ik9Q==
-X-Gm-Message-State: AOJu0YzfgzBwymhe3sPQMGuZIwhewT0usHUSOu+lulOwrt6qHCB5w4QH
- OU3wcu1Yi4lKmS2JNiyPPIhIXUHPbLmAuvVpLN/gyVAqSydwbNDdTcMivE1/VLM1ucMbbEc3PCX
- 7qqQuG7Up4K8sSlkBvyGDDWU8ahLNmsJsbV9mPsIZ/bzcl3c5NsKSruX9BVM489K5VVWk8/pMAA
- prYrs8lGb0hyc7aLXQgNqCJZ3J1PaEl6Atw/1AQw==
-X-Gm-Gg: ASbGncuC3mdeRA/RelQWioDka33Es5Ck5ArWAG74NNPVK8QNrkcuwf8Gf9p3SzEyQND
- 8MN1Yk0qXkG3axdVdOzUuwMLAtCWSvxMHhPS5FUeREQ/hDchXkPKBPylT/JLXSvPl5uxQr/w4d7
- 2/7gkTez4OPI2qLoScb4biA+/ixr2gJp7Vk1bgeOhxB5PdWc0kKjwcGIiMlh5TfC9lJDT76fp4J
- xyb7pMxBUZRA+TyWttYK5aqKJDBMZ7mVT5S1w9W84XJGO2GM5Wh9YWHK9xUNLIOxTaWxMSyh57A
- qzOO4CmWnJqfwDlGmTAK8Fu9AjGQ3Q==
-X-Received: by 2002:a05:622a:a06:b0:4b5:f6c5:cfc with SMTP id
- d75a77b69052e-4da484c185bmr66938741cf.19.1758831364128; 
- Thu, 25 Sep 2025 13:16:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF374wMCl/ONp7q+x8uH/G2zVOeU7okz9ugsfgrqZ9+xOYq92DpCfZPhqHXXXwOJ2Q+ngjhuw==
-X-Received: by 2002:a05:622a:a06:b0:4b5:f6c5:cfc with SMTP id
- d75a77b69052e-4da484c185bmr66938221cf.19.1758831363570; 
- Thu, 25 Sep 2025 13:16:03 -0700 (PDT)
-Received: from x1.com ([142.188.210.50]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4db11cd52e5sm15708131cf.47.2025.09.25.13.16.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Sep 2025 13:16:02 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
+ id 1v1sQZ-0006FB-Uh; Thu, 25 Sep 2025 16:19:12 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58PIlqnG029534;
+ Thu, 25 Sep 2025 20:18:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=pp1; bh=z+LY5dkLXbzHeiIQF9t/zOuSQepF
+ CIJvs1v563fZykM=; b=Kr+rgW5RsGqogiaciZEXcHyeaHu9rJ2kP4OvpArY6M9N
+ nDypr8JhKDuaDGKOqSL424OpRR6VxXsc6Xxvbf2iouC8TWR4AyNB0upmFNXWKbAM
+ SFHlv34lwKdHhMzCOUtCO1XDGNXwgzhMpaIOL3gdFhZWJBidR/OwIzfIq4sUVSgn
+ 77wo5d8qYRLW+0BySrSUF326mCrDwnrPa04/NggsOg9dRns2n6msMPb48p4R6kFa
+ VcYPmdRp2ElE0f29vzhvhC3lUXTqx8fdYPRVdVQNYaERGQYNp0ih3gqp8ftjPg96
+ c14c4p3pGQrHPeBJVOTM7pYhmGlbfBUQWPa/+eFRww==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49dbb3rfp8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Sep 2025 20:18:44 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58PK8M2w010724;
+ Thu, 25 Sep 2025 20:18:43 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49dbb3rfp6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Sep 2025 20:18:43 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58PIJDa0025844;
+ Thu, 25 Sep 2025 20:18:42 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49dawprjfd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Sep 2025 20:18:42 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 58PKIeoJ33423898
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 25 Sep 2025 20:18:40 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9EAC15805A;
+ Thu, 25 Sep 2025 20:18:40 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2C5A558051;
+ Thu, 25 Sep 2025 20:18:40 +0000 (GMT)
+Received: from mglenn-KVM.. (unknown [9.10.239.198])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 25 Sep 2025 20:18:40 +0000 (GMT)
+From: Glenn Miles <milesg@linux.ibm.com>
 To: qemu-devel@nongnu.org
-Cc: Juraj Marcin <jmarcin@redhat.com>, peterx@redhat.com,
- Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH] migration/multifd/tls: Cleanup BYE message processing on
- sender side
-Date: Thu, 25 Sep 2025 16:16:01 -0400
-Message-ID: <20250925201601.290546-1-peterx@redhat.com>
-X-Mailer: git-send-email 2.50.1
+Cc: Glenn Miles <milesg@linux.ibm.com>, qemu-ppc@nongnu.org, clg@redhat.com,
+ npiggin@gmail.com, harshpb@linux.ibm.com, thuth@redhat.com,
+ rathc@linux.ibm.com, richard.henderson@linaro.org
+Subject: [PATCH v6 0/9] Add IBM PPE42 CPU support
+Date: Thu, 25 Sep 2025 15:17:38 -0500
+Message-ID: <20250925201758.652077-1-milesg@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI1MDE3NCBTYWx0ZWRfX46kElZe5IbHn
+ ZGFvPOHUm13WmaRMQC6gwAuGtPC23dxJejuesYHxdOwkW6kosO47MauOSUfJDXdH78KBTJAY/wW
+ xeV4hJHg2cVYYoXkDObb5cGmbBqRWTWFJkjLNn3+9T+mVwRIpXheIQpmCNtOCLp4LbbuXfXnpTU
+ reuLmB5zCW6mmnXXMqP+2ofNJK/BaDQCh9x8laOa2nztKFV57Hrh6MRiWcJhB4aNK/mXIxSWsOV
+ eKf3Fgn38LzS5/UDPZFKhh5F7k/gqr2IfhZ0NWEWu/MLsVy7YtO4ryqznCVenvMnxVlQw+LF78q
+ oU4UzdgxEtfyFaI0HWUIolOXjvsUrw+I6oCrWRpqkMnAk1F+wWSIe9xp0SjwoMIjL1QDVSo1n7v
+ t7kou6OlPxY31abCxz20RFX5YJDb+g==
+X-Proofpoint-GUID: tpeO4sWps7qbD8eStavB3t6vvRKKtzoY
+X-Authority-Analysis: v=2.4 cv=T/qBjvKQ c=1 sm=1 tr=0 ts=68d5a3a4 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=jRLB2SoPAAAA:8 a=NEAV23lmAAAA:8
+ a=jdePcm41jcmF87SOckgA:9 a=QEXdDO2ut3YA:10 a=yloqiLrygL2q3s9aD-8D:22
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: tiYUNawwkRviUbB3lxKT4a25lGy2PfX6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-25_01,2025-09-25_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1015 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509250174
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=milesg@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.445,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,126 +122,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch is a trivial cleanup to the BYE messages on the multifd sender
-side.  It could also be a fix, but since we do not have a solid clue,
-taking this as a cleanup only.
+v6:
+  Patch 2:
+  - Added missing POWERPC_FLAG_PPE42 check (Chinmay)
 
-One trivial concern is, migration_tls_channel_end() might be unsafe to be
-invoked in the migration thread if migration is not successful, because
-when failed / cancelled we do not know whether the multifd sender threads
-can be writting to the channels, while GnuTLS library (when it's a TLS
-channel) logically doesn't support concurrent writes.
+This patchset adds support for the IBM PPE42 processor,
+including a simple machine providing a platform for
+testing the PPE42 instructions.
 
-When at it, cleanup on a few things.  What changed:
+The PPE42 processor is used as an embedded processor in
+the IBM Power9, Power10 and Power12 processors for various
+tasks.  It is basically a stripped down version of the
+IBM PowerPC 405 processor, with some added instructions
+for handling 64-bit loads and stores and some 64-bit
+logical operations.
+    
+For more information on the PPE 42 processor please visit:
+    
+https://wiki.raptorcs.com/w/images/a/a3/PPE_42X_Core_Users_Manual.pdf
 
-  - Introduce a helper to do graceful shutdowns with rich comment, hiding
-    the details
+A functional test is included.  This test downloads a
+prebuilt test image from:
 
-  - Only send bye() iff migration succeeded, skip if it failed / cancelled
+https://github.com/milesg-github/ppe42-tests
 
-  - Detect TLS channel using channel type rather than thread created flags
+Building the image rquires a forked version of an old
+version of GCC, which can be found here:
 
-  - Move the loop into the existing one that will close the channels, but
-    do graceful shutdowns before channel shutdowns
+https://github.com/open-power/ppe42-gcc
 
-  - local_err seems to have been leaked if set, fix it along the way
+Thanks,
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/multifd.c | 65 ++++++++++++++++++++++++---------------------
- 1 file changed, 34 insertions(+), 31 deletions(-)
+Glenn
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index b255778855..98873cee74 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -439,6 +439,39 @@ static void multifd_send_set_error(Error *err)
-     }
- }
- 
-+/*
-+ * Gracefully shutdown IOChannels. Only needed for successful migrations on
-+ * top of TLS channels.  Otherwise it is same to qio_channel_shutdown().
-+ *
-+ * A successful migration also guarantees multifd sender threads are
-+ * properly flushed and halted.  It is only safe to send BYE in the
-+ * migration thread here when we know there's no other thread writting to
-+ * the channel, because GnuTLS doesn't support concurrent writers.
-+ */
-+static void migration_ioc_shutdown_gracefully(QIOChannel *ioc)
-+{
-+    g_autoptr(Error) local_err = NULL;
-+
-+    if (!migration_has_failed(migrate_get_current()) &&
-+        object_dynamic_cast((Object *)ioc, TYPE_QIO_CHANNEL_TLS)) {
-+
-+        /*
-+         * The destination expects the TLS session to always be properly
-+         * terminated. This helps to detect a premature termination in the
-+         * middle of the stream.  Note that older QEMUs always break the
-+         * connection on the source and the destination always sees
-+         * GNUTLS_E_PREMATURE_TERMINATION.
-+         */
-+        migration_tls_channel_end(ioc, &local_err);
-+        if (local_err) {
-+            warn_report("Failed to gracefully terminate TLS connection: %s",
-+                        error_get_pretty(local_err));
-+        }
-+    }
-+
-+    qio_channel_shutdown(ioc, QIO_CHANNEL_SHUTDOWN_BOTH, NULL);
-+}
-+
- static void multifd_send_terminate_threads(void)
- {
-     int i;
-@@ -460,7 +493,7 @@ static void multifd_send_terminate_threads(void)
- 
-         qemu_sem_post(&p->sem);
-         if (p->c) {
--            qio_channel_shutdown(p->c, QIO_CHANNEL_SHUTDOWN_BOTH, NULL);
-+            migration_ioc_shutdown_gracefully(p->c);
-         }
-     }
- 
-@@ -547,36 +580,6 @@ void multifd_send_shutdown(void)
-         return;
-     }
- 
--    for (i = 0; i < migrate_multifd_channels(); i++) {
--        MultiFDSendParams *p = &multifd_send_state->params[i];
--
--        /* thread_created implies the TLS handshake has succeeded */
--        if (p->tls_thread_created && p->thread_created) {
--            Error *local_err = NULL;
--            /*
--             * The destination expects the TLS session to always be
--             * properly terminated. This helps to detect a premature
--             * termination in the middle of the stream.  Note that
--             * older QEMUs always break the connection on the source
--             * and the destination always sees
--             * GNUTLS_E_PREMATURE_TERMINATION.
--             */
--            migration_tls_channel_end(p->c, &local_err);
--
--            /*
--             * The above can return an error in case the migration has
--             * already failed. If the migration succeeded, errors are
--             * not expected but there's no need to kill the source.
--             */
--            if (local_err && !migration_has_failed(migrate_get_current())) {
--                warn_report(
--                    "multifd_send_%d: Failed to terminate TLS connection: %s",
--                    p->id, error_get_pretty(local_err));
--                break;
--            }
--        }
--    }
--
-     multifd_send_terminate_threads();
- 
-     for (i = 0; i < migrate_multifd_channels(); i++) {
+
+Glenn Miles (9):
+  target/ppc: IBM PPE42 general regs and flags
+  target/ppc: Add IBM PPE42 family of processors
+  target/ppc: IBM PPE42 exception flags and regs
+  target/ppc: Add IBM PPE42 exception model
+  target/ppc: Support for IBM PPE42 MMU
+  target/ppc: Add IBM PPE42 special instructions
+  hw/ppc: Support for an IBM PPE42 CPU decrementer
+  hw/ppc: Add a test machine for the IBM PPE42 CPU
+  tests/functional: Add test for IBM PPE42 instructions
+
+ MAINTAINERS                         |   7 +
+ hw/ppc/Kconfig                      |   5 +
+ hw/ppc/meson.build                  |   2 +
+ hw/ppc/ppc_booke.c                  |   7 +-
+ hw/ppc/ppe42_machine.c              | 102 +++++
+ include/hw/ppc/ppc.h                |   1 +
+ target/ppc/cpu-models.c             |   7 +
+ target/ppc/cpu-models.h             |   4 +
+ target/ppc/cpu.h                    |  76 +++-
+ target/ppc/cpu_init.c               | 244 +++++++++--
+ target/ppc/excp_helper.c            | 163 ++++++++
+ target/ppc/helper_regs.c            |  45 +-
+ target/ppc/insn32.decode            |  66 ++-
+ target/ppc/tcg-excp_helper.c        |  12 +
+ target/ppc/translate.c              |  35 +-
+ target/ppc/translate/ppe-impl.c.inc | 610 ++++++++++++++++++++++++++++
+ tests/functional/ppc/meson.build    |   1 +
+ tests/functional/ppc/test_ppe42.py  |  79 ++++
+ 18 files changed, 1398 insertions(+), 68 deletions(-)
+ create mode 100644 hw/ppc/ppe42_machine.c
+ create mode 100644 target/ppc/translate/ppe-impl.c.inc
+ create mode 100644 tests/functional/ppc/test_ppe42.py
+
 -- 
-2.50.1
+2.43.0
 
 
